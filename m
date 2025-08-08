@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12371DA3D
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 18:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B601DA3D
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 18:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754676746; cv=none; b=tr2U7DquBUxI0iGLGy+k6d4+AuDLAWSpDRRtpBLsLa+Avj+utKi8eTKT2qfwl9XBnu5UJBBymOycPE+6AWWCw2K8Oc9TSYk2iFKP932YXlkIcFdzaLt04McGGixBSi4XOjBAr269bi6y0WUu1sRF1TZod0K7ugHe9zX5J5iknj4=
+	t=1754676750; cv=none; b=jHCm0X68PAl7OPTYPuAI7zaodCLBEwnSg9FKdrUsB8NDjIYv9PCd8guiAtFIhZNu5wJv09N2f4vzOKUx71Gyu7GNkvYXACkMkZP5Eo0U6P0VXn1c+W34DMr6RvS7N18ds3HIJ6twgUOURaVwpeGHquDSdDgMzsObJkOEr5R80Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754676746; c=relaxed/simple;
-	bh=49tvZx0TV8kuKrD0WmdQZ3tp93qtW1t84y96hT//V10=;
+	s=arc-20240116; t=1754676750; c=relaxed/simple;
+	bh=iJoYPl3qNwWXMrX3Fe3H6Bnv++cB+fO9kMhqD86lXPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=midHDEIkGHim9/CqMj73pKFgqGUb+B+TOMHo8C40ROPtwIWRaNKS43WkFJ3Kj0g858QC7BzfxH45iYX+YTW/sFIfst+i1OJUYk7i/osFnkcj1bIb7iqrcrVzZoWa/q2M2PY+B8K951yRZxJUave1nzA2WrEX/x7FiBLjhMQs5wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIgvVxIl; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=t4BiY5rgtFCDEURUOpteNL3p1Tj5LO5lA2Ddk6QmFxAuDkM6GN9dKGPMIFlcvM+lu8kOu8NhOCTR9Kjayi0UyAAv3e94Rb8U7qKOyxoMaeeXjomvjPGdkb7GhqvrvCQZayrg88y2w/UUMrPSF57MzAhWYZNhiPm4lrQwmf2f2Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TqiYuvKb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIgvVxIl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D457C4CEF0;
-	Fri,  8 Aug 2025 18:12:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TqiYuvKb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E784C4CEED;
+	Fri,  8 Aug 2025 18:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754676746;
-	bh=49tvZx0TV8kuKrD0WmdQZ3tp93qtW1t84y96hT//V10=;
+	s=k20201202; t=1754676750;
+	bh=iJoYPl3qNwWXMrX3Fe3H6Bnv++cB+fO9kMhqD86lXPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIgvVxIlO95u/ZPJvhNu5dnsenp4FcBV/p3E8OEvjCbwOXENYOyE3dh8kyiq3jU5V
-	 snvSiqfxg62y8NMTRxQWjaJoH0UlJgdGdKK3acbh1eXbtTIGlooUTGbZAVxaz4tXGO
-	 8AzdlDJK2CnLABZm/CQa6CkUGsD6ORhZkqN2MTw8djG5r4x52kiYmQFph73x3e6XSx
-	 l17joHabPW77Wk+yBX0/ZlaYmOf2LljiZJC6UHzUU9InINJcrubT9tMmECRKhYgreA
-	 MaJaOPQTSU01dRJFc9PjpuX1ECeWKCNG5HcYDhteq3yPkvNu2xKaWEp8lOufgJMr3E
-	 hn6m+Y/HKHszQ==
+	b=TqiYuvKbhCp0zwV03Un5fPfUeH75SFJcT/qi/VRVTrk1mwgKZIH9sx7cPlrHQFWiC
+	 Yi9hdiAmoR2xWFqRMPtimDzR6FlMh+AJ3Qu4gKTsUqbmZ6Q6c7TqLJNnHcd72PYcB0
+	 TLlUIvm8yR0+BbFifLAWD7QISI7e+gagQg9e+MTvBQuEgGrHiZlJdztaAy580GyRok
+	 kdlTZOLo24wXmAw59if2P3WHFmd4B8CPQStualybYSnnxSB4ByGyM3ZUgTX8CEl1cx
+	 UD+mfYtlu/0V4VeZbMc8HHqFWsEx9yalGfE0XV+Q1dEkzh+cVZEvpYguTYzCuxhxOl
+	 /d8u/IZiKSwJg==
 From: Danilo Krummrich <dakr@kernel.org>
 To: lorenzo.stoakes@oracle.com,
 	vbabka@suse.cz,
@@ -44,9 +44,9 @@ To: lorenzo.stoakes@oracle.com,
 	acourbot@nvidia.com
 Cc: rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v3 5/7] rust: alloc: kbox: implement IntoPageIter for VBox
-Date: Fri,  8 Aug 2025 20:10:19 +0200
-Message-ID: <20250808181155.223504-6-dakr@kernel.org>
+Subject: [PATCH v3 6/7] rust: alloc: layout: implement ArrayLayout::size()
+Date: Fri,  8 Aug 2025 20:10:20 +0200
+Message-ID: <20250808181155.223504-7-dakr@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250808181155.223504-1-dakr@kernel.org>
 References: <20250808181155.223504-1-dakr@kernel.org>
@@ -58,74 +58,32 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement IntoPageIter for VBox; this allows to iterate and borrow the
-backing pages of a VBox. This, for instance, is useful in combination
-with VBox backing a scatterlist.
+Provide a convenience method for ArrayLayout to calculate the size of
+the ArrayLayout in bytes.
 
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- rust/kernel/alloc/kbox.rs | 37 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ rust/kernel/alloc/layout.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index 856d05aa60f1..8054bed0ab1c 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -3,7 +3,7 @@
- //! Implementation of [`Box`].
- 
- #[allow(unused_imports)] // Used in doc comments.
--use super::allocator::{KVmalloc, Kmalloc, Vmalloc};
-+use super::allocator::{KVmalloc, Kmalloc, Vmalloc, VmallocPageIter};
- use super::{AllocError, Allocator, Flags};
- use core::alloc::Layout;
- use core::borrow::{Borrow, BorrowMut};
-@@ -18,6 +18,7 @@
- 
- use crate::ffi::c_void;
- use crate::init::InPlaceInit;
-+use crate::page::IntoPageIter;
- use crate::types::ForeignOwnable;
- use pin_init::{InPlaceWrite, Init, PinInit, ZeroableOption};
- 
-@@ -598,3 +599,37 @@ fn drop(&mut self) {
-         unsafe { A::free(self.0.cast(), layout) };
+diff --git a/rust/kernel/alloc/layout.rs b/rust/kernel/alloc/layout.rs
+index 93ed514f7cc7..5c3db8e9f930 100644
+--- a/rust/kernel/alloc/layout.rs
++++ b/rust/kernel/alloc/layout.rs
+@@ -98,6 +98,11 @@ pub const fn len(&self) -> usize {
+     pub const fn is_empty(&self) -> bool {
+         self.len == 0
      }
- }
 +
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::prelude::*;
-+/// use kernel::alloc::allocator::VmallocPageIter;
-+/// use kernel::page::{IntoPageIter, PAGE_SIZE};
-+///
-+/// let mut vbox = VBox::new((), GFP_KERNEL)?;
-+///
-+/// assert!(vbox.page_iter().next().is_none());
-+///
-+/// let mut vbox = VBox::<[u8; PAGE_SIZE]>::new_uninit(GFP_KERNEL)?;
-+///
-+/// let page = vbox.page_iter().next().expect("At least one page should be available.\n");
-+///
-+/// // SAFETY: There is no concurrent read or write to the same page.
-+/// unsafe { page.fill_zero_raw(0, PAGE_SIZE)? };
-+/// # Ok::<(), Error>(())
-+/// ```
-+impl<'a, T> IntoPageIter<'a> for VBox<T> {
-+    type Iter = VmallocPageIter<'a>;
-+
-+    fn page_iter(&'a mut self) -> Self::Iter {
-+        let ptr = self.0.cast();
-+        let size = size_of::<T>();
-+
-+        // SAFETY:
-+        // - `ptr` is a valid pointer to the beginning of a `Vmalloc` allocation.
-+        // - `ptr` is guaranteed to be valid for the lifetime of `'a`.
-+        // - `size` is the size of the `Vmalloc` allocation `ptr` points to.
-+        unsafe { VmallocPageIter::new(ptr, size) }
++    /// Returns the size of the [`ArrayLayout`] in bytes.
++    pub const fn size(&self) -> usize {
++        self.len() * size_of::<T>()
 +    }
-+}
+ }
+ 
+ impl<T> From<ArrayLayout<T>> for Layout {
 -- 
 2.50.1
 
