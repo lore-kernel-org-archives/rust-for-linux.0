@@ -1,50 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0676C2AE74;
-	Fri,  8 Aug 2025 09:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F792AE74;
+	Fri,  8 Aug 2025 09:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754645813; cv=none; b=grj+LuEVpEkD+JTCmEpcrdbiGLEBO2qcUpAinwaLV8Y9BQqpG+S9REpGeuW11FdZ9q4X0iWkOEsHZhiZQTsPdKrJNEGeGK6QgjE4KgBFnUt4r4rpzo1j8LFTXrGDwTEPpAT+quBIOxzTzeduUajSU9Z60MN0E4b3NyFxeb5/mOY=
+	t=1754645817; cv=none; b=bEGTbRBLCqSklYp59dZM22Y8MP6i7WGHGWzCBhlM1Fifmm/KSG/qyYmlJKKK/dT91nvheuNsu6iiViz1fHUOPnolUTPbeh14fiIaZ3moC9/ITRTilD4gZZTvf8wpRudVIXZfnPjzGNf+wZ+7TFGhFPK+PzevJJLYdhvJyu3lEHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754645813; c=relaxed/simple;
-	bh=nkYfMtqkmchCRW26gGfc/31rsd8iTVwqWA+8uKAAyTM=;
+	s=arc-20240116; t=1754645817; c=relaxed/simple;
+	bh=al/iObMczjpm4VX9XgQiZo/h+mnI8uLsIGdUYDDhiac=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IxRGmUzfhWUFzRuuisXA6/XpmrXwJK32ZDgZzNYwaY3GhVD7KGt8UJ6WV7VmIcoY0t+mvTjklAlfd0WthQMwdvJVs5piw7zGdlTvs2Vrn00QSg2yKPr1ABdh7RHc/KRpXSxJUlEWu0EZ9mBmVNt0BGMvItNLGL1fTRu0PePkrYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9usCQuk; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=eddyL5wfErT4i4cmVzeAtUg4RZoEc/5kRNi3Dl/4sGcH5AwdjXwr5Ini2zJfJtIILYt5U98rRcCQoD+ZeI5V/F0u3DrrloLijsqR8RH8JbtGDrKJgzJ6CVC9g+b9XeQPJImw0dSNySZ6gVJbOGdiGQ5EUAUicWP3+MCl1S3+DM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tbnkeF9i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9usCQuk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBAAC4CEED;
-	Fri,  8 Aug 2025 09:36:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tbnkeF9i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C11C4CEF0;
+	Fri,  8 Aug 2025 09:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754645812;
-	bh=nkYfMtqkmchCRW26gGfc/31rsd8iTVwqWA+8uKAAyTM=;
+	s=k20201202; t=1754645816;
+	bh=al/iObMczjpm4VX9XgQiZo/h+mnI8uLsIGdUYDDhiac=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=G9usCQuk9f4pzDFzBmPHDL8b/4qo+g2P9dvOOv5ayL/j1th0MtZgPPkP7NQQ0R3t9
-	 3gupCmrttmw/c+Qm9vawhBoDC9dXVySkdplYdfCJW0CHcHHOiYcjpLgcu+bjpQpjH4
-	 H445eagdhHYVoO9DYaAZQFl+qvYmi7rZsvuksHY09dfXs6RGMRV2lCbkVGz/xed1bL
-	 FkbT9RpAflA7MU+QtGFui8+J+KUJJES9fjud/+RRCmFYLMRq9vqc+lDDPFEiAsLE1V
-	 l2jlxwWKxW/CaZEbeRNZlYJs5npDRtfU6C33Q/Tc0izEcBAc40EuYEyM+DAe8wrCbB
-	 y9RBUmU2JX6QA==
+	b=tbnkeF9i/CKN3dqiPJCr8laz+m53wjZypW/ri64L1HI36xJhovfZnzAr+EysxcAmX
+	 oB7wa3DJbHcNKEgKbIpPML6AJiOiWSxvRT386quPflKJ2RBAvPTvtuXJIj0xhVNH1V
+	 TN5I/I6Emue4F1tbZKZOg4GAPGZnltfIdVdjCunDr5taDLD6oNx2Id44stMGCn1uII
+	 mPBXc9jQ9hqCZ2d9XPxQviF2uTrgxndLg3ZK4903yoaAPwXplHkMH4k6+zq8bP3sxr
+	 EMsn/oSiVtve5VFVk59sj7mJikL4+dV7HfPkUpNyGZKBZ9Uxjt8vXhkqSr8vTYUj4R
+	 ToQdjTvfFewAQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Benno Lossin <lossin@kernel.org>, Benno Lossin <lossin@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Fiona Behrens <me@kloenk.dev>, Christian Schrefl
- <chrisi.schrefl@gmail.com>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 03/13] rust: pin-init: add `zeroed()` &
- `Zeroable::zeroed()` functions
-In-Reply-To: <20250523145125.523275-4-lossin@kernel.org>
+To: Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe
+ <axboe@kernel.dk>, Yutaro Ohno <yutaro.ono.418@gmail.com>, Xizhe Yin
+ <xizheyin@smail.nju.edu.cn>, Manas <manas18244@iiitd.ac.in>, Fiona
+ Behrens <me@kloenk.dev>
+Cc: Lyude Paul <lyude@redhat.com>, linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 11/13] rust: block: replace `core::mem::zeroed` with
+ `pin_init::zeroed`
+In-Reply-To: <20250523145125.523275-12-lossin@kernel.org>
 References: <20250523145125.523275-1-lossin@kernel.org>
- <YQB28aSuStBXa5rR42ragT81sJsdvHv1g7oHQlBw4amdaPtRIczi3CYqYY6E1tumr63Ell5XB371DiuTZ6sU_w==@protonmail.internalid>
- <20250523145125.523275-4-lossin@kernel.org>
-Date: Fri, 08 Aug 2025 11:31:48 +0200
-Message-ID: <87pld65fcr.fsf@kernel.org>
+ <ygVv2TD4X8QxR1siVW36cSGzeG722j-diB-TA2u1vdX6T_J-hb_dKDiU5vqAhccX3PrLw8yIbuHrgoz2aH-dbw==@protonmail.internalid>
+ <20250523145125.523275-12-lossin@kernel.org>
+Date: Fri, 08 Aug 2025 11:35:04 +0200
+Message-ID: <87ms8a5f7b.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,18 +56,20 @@ Content-Type: text/plain
 
 "Benno Lossin" <lossin@kernel.org> writes:
 
-> `zeroed()` returns a zeroed out value of a sized type implementing
-> `Zeroable`.
+> All types in `bindings` implement `Zeroable` if they can, so use
+> `pin_init::zeroed` instead of relying on `unsafe` code.
 >
-> The function is added as a free standing function, in addition to an
-> associated function on `Zeroable`, because then it can be marked `const`
-> (functions in traits can't be const at the moment).
+> If this ends up not compiling in the future, something in bindgen or on
+> the C side changed and is most likely incorrect.
+>
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> ---
 
-Do you want to add a note on this in the code, so we can const the trait
-function and let go of the other one if it becomes possible in the
-future?
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+
 
 Best regards,
 Andreas Hindborg
+
 
 
