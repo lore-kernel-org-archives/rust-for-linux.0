@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B983D186E2D;
-	Fri,  8 Aug 2025 20:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5D7226CFC;
+	Fri,  8 Aug 2025 20:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754684501; cv=none; b=AHp3xEVdrJ+Oa+m82gHZpO7NcreRsZNo2gJFN2ajFQ/3NSHWqiGAjRbd95jIuEAMd93h4d+jVRBKOmSxcTU3C/x2Cabx7mq2U4SFc3djFoF4wzA3TNqLg8Mi5qIwjT9mL0q+GfSUUiAKoT0i2g4+driP/pmBWlYAZsdg2CC3eh0=
+	t=1754684559; cv=none; b=LKxa0PUSB4EEMttHbINbidmWsao5TpSjyIOXTkI/O3Xc0k6XZraotOBKmItxV2h0V4lc/rhvw8UbDDTvk6v17Z36PeZwwJI3NCd7Ve3P11E3BvUOlTCsBQ+JNM81UdkHdEyfs32DtW/e7V2SfDrQf0OkDGsP8DXUjPbEIIUqhzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754684501; c=relaxed/simple;
-	bh=R8oG58Z481rL+wJgJ81k7mSvjv7QsSdJBB8O91oeHRM=;
+	s=arc-20240116; t=1754684559; c=relaxed/simple;
+	bh=t/vo08g2fcHA60iYHkCCGhJZ72RNaz7CO/sVrUS7wS0=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=If1i14wrzw+Zo+71TovGQur0cBuDtjU5T81hDurIZd/LtmOPTyIYcGXKHcmJTBFyNFdVF2yCnv4xKFZ3OSDHgaa3HalX43iR/TzHXwaNhGkIP7YFkgsSRZVtHSDyfy/SNZdpKZWDiDDVNz5T9ZfarBVJjcQSlE+pEvDpZanEjTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kvl5RbfS; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=oDM56j0XN9OLfG1jjfPugwwsMdUmZ3i3a/17/9InaSjqqDc821g6c2kJR67AiSLMonDlU03Tnj9bDA1FJOPFL/O2VMEKgUcL58QQMsVVWdZmDwy69GeMkHeZ4czbx2d6eOS7t39t5MOLQLjoxYry3TJi8hDCxgMKnZXMNWq74BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFWtBxXU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kvl5RbfS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13DBC4CEED;
-	Fri,  8 Aug 2025 20:21:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFWtBxXU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1F9C4CEED;
+	Fri,  8 Aug 2025 20:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754684501;
-	bh=R8oG58Z481rL+wJgJ81k7mSvjv7QsSdJBB8O91oeHRM=;
+	s=k20201202; t=1754684559;
+	bh=t/vo08g2fcHA60iYHkCCGhJZ72RNaz7CO/sVrUS7wS0=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Kvl5RbfSpqyiiVHewCSmgJkOP2uYeyTKwa0yCyEj5OwtmZCGEU9WI4Pdw3Frp5Qk7
-	 CM3F5MvNMwdd0ZLZY9/A9QlGhnoAcv8FhoHKmFZNVR/KaD5j9aWslVXDN6MPf4XhgY
-	 JcN4hvNr7T4A5jOWHDg9NIM9zMYa/FuhoKfX2AOOFvdcCYb5EtUIG+/TNDtPZ+w8UK
-	 hFvf6hWl0/sLH85JzJx04TJLACciMeb5S9ZCMH3mcR/E4wM6sBM6wGrqMOZsAP8iIs
-	 jku+xILiSV9ryI7YDNjBAJbysuWMeOolmubQgzOyT+ahbNrsShDDJUC2UA8Jsfq7R1
-	 Af94KvOK5N/7w==
+	b=GFWtBxXUiSlVAZia8rKXtkQKibw+n0bzqNVw95lQXHM2eZJwE9SRgRLmQf3bG9WXH
+	 fVRIAO6Q9E7E+DW6be4DMUb/dALUoJJ+QheQ3f4nrd2+HPKTCMwIXrZ8gQjZjIQMwB
+	 mvzPXzPdYDtf83wnvDkm+5VLs6Xk3/RpfKWW3p/x/EucHz4LycVI4XGutFieoX2lmT
+	 2AO6b93HuzWxLy7DJY5dhl5WSh0qATtQscRCNIObGsEou1n5SJbgll5duFQiuF9/TR
+	 l0MRL7sC+a8965ygHr3v4rNgMuIAu39YuU+u/SQBWRVj9c8z0zMjs/46lmqUtoMhiO
+	 sUrwWVtWPDYgQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,57 +34,57 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 08 Aug 2025 22:21:35 +0200
-Message-Id: <DBXBQP6IAQNQ.ZOW1WR7T66A8@kernel.org>
-Cc: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Boqun Feng" <boqun.feng@gmail.com>, "FUJITA Tomonori"
+Date: Fri, 08 Aug 2025 22:22:34 +0200
+Message-Id: <DBXBRG094WRM.NF5B4VEE4C71@kernel.org>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "FUJITA Tomonori"
  <fujita.tomonori@gmail.com>, "Frederic Weisbecker" <frederic@kernel.org>,
  "Thomas Gleixner" <tglx@linutronix.de>, "Anna-Maria Behnsen"
  <anna-maria@linutronix.de>, "John Stultz" <jstultz@google.com>, "Stephen
  Boyd" <sboyd@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>
 Subject: Re: [PATCH v2 2/2] rust: time: Implement basic arithmetic
  operations for Delta
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Lyude Paul"
+ <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.20.1
 References: <20250807190649.3078875-1-lyude@redhat.com>
  <20250807190649.3078875-2-lyude@redhat.com>
- <DBWUBK3RSCMB.F1FJ5V6NCOJU@kernel.org> <aJW70pW5zVTPSrdj@google.com>
-In-Reply-To: <aJW70pW5zVTPSrdj@google.com>
+ <svb53oAEKDteq_fe9645of8UzIGnGcXC0HEIIeNsJIP_nuoKl7MzDUllEsinlM-ZwlGEDg-SXo8WzfZfko77TQ==@protonmail.internalid> <DBWUBK3RSCMB.F1FJ5V6NCOJU@kernel.org> <87sei25fm5.fsf@kernel.org>
+In-Reply-To: <87sei25fm5.fsf@kernel.org>
 
-On Fri Aug 8, 2025 at 10:56 AM CEST, Alice Ryhl wrote:
-> On Fri, Aug 08, 2025 at 08:42:30AM +0200, Benno Lossin wrote:
+On Fri Aug 8, 2025 at 11:26 AM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+>
 >> On Thu Aug 7, 2025 at 9:06 PM CEST, Lyude Paul wrote:
->> > While rvkms is only going to be using a few of these, since Deltas are
->> > basically the same as i64 it's easy enough to just implement all of th=
+>>> While rvkms is only going to be using a few of these, since Deltas are
+>>> basically the same as i64 it's easy enough to just implement all of the
+>>> basic arithmetic operations for Delta types.
+>>>
+>>> Keep in mind there's one quirk here - the kernel has no support for
+>>> i64 % i64 on 32 bit platforms, the closest we have is i64 % i32 through
+>>> div_s64_rem(). So, instead of implementing ops::Rem or ops::RemAssign w=
 e
->> > basic arithmetic operations for Delta types.
->> >
->> > Keep in mind there's one quirk here - the kernel has no support for
->> > i64 % i64 on 32 bit platforms, the closest we have is i64 % i32 throug=
-h
->> > div_s64_rem(). So, instead of implementing ops::Rem or ops::RemAssign =
-we
->> > simply provide Delta::rem_nanos().
->>=20
+>>> simply provide Delta::rem_nanos().
+>>
 >> We could still provide the trait implementations on CONFIG_64BIT? WDYT?
->>=20
->> > +impl ops::Div for Delta {
->> > +    type Output =3D Self;
->> > +
->> > +    #[inline]
->> > +    fn div(self, rhs: Self) -> Self::Output {
->> > +        #[cfg(CONFIG_64BIT)]
->> > +        {
->>=20
+>>
+>>> +impl ops::Div for Delta {
+>>> +    type Output =3D Self;
+>>> +
+>>> +    #[inline]
+>>> +    fn div(self, rhs: Self) -> Self::Output {
+>>> +        #[cfg(CONFIG_64BIT)]
+>>> +        {
+>>
 >> This pattern seems to be rather common in this patchset & in general I
 >> think I've also seen it elsewhere. We should think about adding a
 >> `if_cfg!` macro:
->>=20
+>>
 >>     Self {
 >>         nanos: if_cfg! {
 >>             if CONFIG_64BIT {
@@ -94,18 +94,20 @@ we
 >>             }
 >>         },
 >>     }
->>=20
->> But we can do that later. I'll file a good-first-issue.
+>>
 >
-> This kind of macro breaks rustfmt, so I wouldn't recommend it.
+> Why the need for a macro. `cfg!` is built-in [1]:
+>
+>   if cfg!(CONFIG_64BIT) {
+>      ...
+>   } else {
+>      ...
+>   }
+>
+> The conditional expression should be optimized statically and the dead
+> part should be removed.
 
-Ah then just use `if_cfg!(...)` that should work.
-
-> I would suggest just using the native Rust pattern rather than
-> introduce even more macros.
-
-Trevor showed me https://github.com/rust-lang/rust/issues/115585, so we
-can use that in the future. I still think the macro is useful though.
+AIUI the `self.nanos / rhs.nanos` won't compile on 32 bit platforms.
 
 ---
 Cheers,
