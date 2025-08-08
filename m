@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5463C1DA3D
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 18:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554771DA3D
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 18:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754676735; cv=none; b=Q77jnoxmhjVoRKYOqQLxhUSfjE4Q6EiYJ46qQDFlGlE5wr0CNk3ZxvsCzEqosCa8HV91Gxd/rT5jsr3z3mu6L58JrclXo5uEnA3Yximj8U70l+BwM1wZbZ7IOxHJVqBP6AOndAUiymYqabu/Dk/++aa23cs/vK5HNxysDsTrikw=
+	t=1754676739; cv=none; b=rCb0XEzKqnuHCo8HAjO1hWr5MEWsrDoMIQflX9PpPCyehsK9e+HxbjRv6B4cyaIZWOrqEl5je5Z19cAGut9OoUd+eSi9zuikWzb5/0/6R3l3+VLFH1gqAYj/+h8P3uictn+k6c2gTPLjRc3FueQKAaPLOWZCSRo15BIHIpxaQ5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754676735; c=relaxed/simple;
-	bh=4tvL88ufipHskEsNTaE+FlwWOo8AZajlkAVsr8bFxCI=;
+	s=arc-20240116; t=1754676739; c=relaxed/simple;
+	bh=+bAJrjVZY5gu9Jz2uq0aLVq+7CdtuLb4Lt3g/phO0Ig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxV87psnbK1oElUUemnBiVh4DlsAQ/HkZVxFimkWVYj0JUB5CE/5qyNcZRicqgI1lfBMW4VGseWZmazMiAQud/1mDmvn10zIVeAL8DXEXHcO0ETfokBDBsfq12xxNkfCoB9jPZlQUq7pop545782+RNDNdomcd6i8m3rdSl+Rfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXMGA26c; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=OQFTVsY5BW5cqs3KHQcE0lHOA04y24hLmpFiPvgU1/tTLpFUYqFi9a7JN4EjPFJRptK9KVD08uPFMYkwRCWYSsLIyAMsIAjuB+SGpf/7V2fHXOmYtddOEKoe728sm/hNUxDexuccpAzSDdFrkwBUuNTyXTsbAChHJZ5jRnMe4SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=om4Ob3rB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXMGA26c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960A5C4CEED;
-	Fri,  8 Aug 2025 18:12:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="om4Ob3rB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6471BC4CEF8;
+	Fri,  8 Aug 2025 18:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754676735;
-	bh=4tvL88ufipHskEsNTaE+FlwWOo8AZajlkAVsr8bFxCI=;
+	s=k20201202; t=1754676738;
+	bh=+bAJrjVZY5gu9Jz2uq0aLVq+7CdtuLb4Lt3g/phO0Ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXMGA26cD99NkgRUym8vwwaC+d08wiCjhDZY9G2q5dH7vBMw/TtQoJrptq2m0LHI6
-	 Te7VVtMEA7Es0EpT3dnRrCpz48B5KW7YZDKY7W0vPhu+HixyFP934KzmhnrTp9yVEe
-	 rl4TUg11sNpS4gjFfm98IA96a7s8jNJVGXTNkLx4ncIzCtNTUw0Sr+WSyIFAkCZ/44
-	 5qJexpP+GVh4MDZ7k8RGEO9wQE/WMe2AcjEovIQT+Ic04w3AQNdnz0LqAXKxH6yJvG
-	 cjRxU1qNSGLJyxaGM4h87dpOi5d49RCdXRGU71QcaObB9Qu3UBvWvIZuRlf6giLYqN
-	 TPhymij/mlFfQ==
+	b=om4Ob3rBE4IrtHnavs1ShYhXdUy9HE0qpX1X5f1HEYHx2RHddeGLmfaUj6EcWvrKy
+	 hGw5YV0Z2BFtCii7PTPQ4CZ2YUuytV8z+aV0yOIjwpTI5EL8McyK8qiu+xzGcnJ/Ps
+	 q+h+7K9lxpNabAwx6KnYw+ryWQwZmYPK0wvhjr/J9Iun74TCxYHZHGW0T54jcZKyzn
+	 +pB0N9Hcj0e7UE608HkAOPgppsiwv9f5bMjYNtMB+r2rpa7XX3ekURRn0wSeNW0bOf
+	 FqT+qQDliSL1Wcg/ZbxlMSv0aAsDceeiU7I4P6g8BtVvAEhTWeD/vUzGqqfHJtbPs+
+	 hZhuLWrPjANDA==
 From: Danilo Krummrich <dakr@kernel.org>
 To: lorenzo.stoakes@oracle.com,
 	vbabka@suse.cz,
@@ -44,9 +44,9 @@ To: lorenzo.stoakes@oracle.com,
 	acourbot@nvidia.com
 Cc: rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v3 2/7] rust: alloc: vmalloc: implement Vmalloc::to_page()
-Date: Fri,  8 Aug 2025 20:10:16 +0200
-Message-ID: <20250808181155.223504-3-dakr@kernel.org>
+Subject: [PATCH v3 3/7] rust: alloc: implement VmallocPageIter
+Date: Fri,  8 Aug 2025 20:10:17 +0200
+Message-ID: <20250808181155.223504-4-dakr@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250808181155.223504-1-dakr@kernel.org>
 References: <20250808181155.223504-1-dakr@kernel.org>
@@ -58,82 +58,126 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement an abstraction of vmalloc_to_page() for subsequent use in the
-PageOwner implementation of VBox and VVec.
+Introduce the VmallocPageIter type; an instance of VmallocPageIter may
+be exposed by owners of vmalloc allocations to provide borrowed access
+to the backing pages of the vmalloc allocation.
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+For instance, this is useful to access and borrow the backing pages of
+allocation primitives, such as Box and Vec, backing a scatterlist.
+
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- rust/kernel/alloc/allocator.rs | 49 ++++++++++++++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+ rust/kernel/alloc/allocator.rs | 92 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
 diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index aa2dfa9dca4c..2315f5063011 100644
+index 2315f5063011..3ed2d5ff1e37 100644
 --- a/rust/kernel/alloc/allocator.rs
 +++ b/rust/kernel/alloc/allocator.rs
-@@ -15,6 +15,7 @@
+@@ -10,6 +10,7 @@
  
- use crate::alloc::{AllocError, Allocator};
- use crate::bindings;
-+use crate::page;
- use crate::pr_warn;
+ use super::Flags;
+ use core::alloc::Layout;
++use core::marker::PhantomData;
+ use core::ptr;
+ use core::ptr::NonNull;
  
- /// The contiguous kernel allocator.
-@@ -140,6 +141,54 @@ unsafe fn realloc(
+@@ -236,3 +237,94 @@ unsafe fn realloc(
+         unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags) }
      }
  }
- 
-+impl Vmalloc {
-+    /// Convert a pointer to a [`Vmalloc`] allocation to a [`page::BorrowedPage`].
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use core::ptr::{NonNull, from_mut};
-+    /// # use kernel::{page, prelude::*};
-+    /// use kernel::alloc::allocator::Vmalloc;
-+    ///
-+    /// let mut vbox = VBox::<[u8; page::PAGE_SIZE]>::new_uninit(GFP_KERNEL)?;
-+    ///
-+    /// {
-+    ///     // SAFETY: By the type invariant of `Box` the inner pointer of `vbox` is non-null.
-+    ///     let ptr = unsafe { NonNull::new_unchecked(from_mut(&mut *vbox)) };
-+    ///
-+    ///     // SAFETY:
-+    ///     // `ptr` is a valid pointer to a `Vmalloc` allocation.
-+    ///     // `ptr` is valid for the entire lifetime of `page`.
-+    ///     let page = unsafe { Vmalloc::to_page(ptr.cast()) };
-+    ///
-+    ///     // SAFETY: There is no concurrent read or write to the same page.
-+    ///     unsafe { page.fill_zero_raw(0, page::PAGE_SIZE)? };
-+    /// }
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    ///
-+    /// # Safety
-+    ///
-+    /// - `ptr` must be a valid pointer to a [`Vmalloc`] allocation.
-+    /// - `ptr` must remain valid for the entire duration of `'a`.
-+    pub unsafe fn to_page<'a>(ptr: NonNull<u8>) -> page::BorrowedPage<'a> {
-+        // SAFETY: `ptr` is a valid pointer to `Vmalloc` memory.
-+        let page = unsafe { bindings::vmalloc_to_page(ptr.as_ptr().cast()) };
 +
-+        // SAFETY: `vmalloc_to_page` returns a valid pointer to a `struct page` for a valid pointer
-+        // to `Vmalloc` memory.
-+        let page = unsafe { NonNull::new_unchecked(page) };
++/// An [`Iterator`] of [`page::BorrowedPage`] items owned by a [`Vmalloc`] allocation.
++///
++/// # Guarantees
++///
++/// The pages iterated by the [`Iterator`] appear in the order as they are mapped in the CPU's
++/// virtual address space ascendingly.
++///
++/// # Invariants
++///
++/// - `buf` is a valid pointer to the beginning of a [`Vmalloc`] allocation.
++/// - `size` is the size of the [`Vmalloc`] allocation `buf` points to.
++pub struct VmallocPageIter<'a> {
++    /// The base address of the [`Vmalloc`] buffer.
++    buf: NonNull<u8>,
++    /// The size of the buffer pointed to by `buf` in bytes.
++    size: usize,
++    /// The current page index of the [`Iterator`].
++    index: usize,
++    _p: PhantomData<&'a u8>,
++}
++
++impl<'a> Iterator for VmallocPageIter<'a> {
++    type Item = page::BorrowedPage<'a>;
++
++    fn next(&mut self) -> Option<Self::Item> {
++        let offset = self.index.checked_mul(page::PAGE_SIZE)?;
++
++        // Even though `self.size()` may be smaller than `Self::page_count() * page::PAGE_SIZE`, it
++        // is always a number between `(Self::page_count() - 1) * page::PAGE_SIZE` and
++        // `Self::page_count() * page::PAGE_SIZE`, hence the check below is sufficient.
++        if offset < self.size() {
++            self.index += 1;
++        } else {
++            return None;
++        }
++
++        // TODO: Use `NonNull::add()` instead, once the minimum supported compiler version is
++        // bumped to 1.80 or later.
++        //
++        // SAFETY: `offset` is in the interval `[0, (self.page_count() - 1) * page::PAGE_SIZE]`,
++        // hence the resulting pointer is guaranteed to be within the same allocation.
++        let ptr = unsafe { self.buf.as_ptr().add(offset) };
++
++        // SAFETY: `ptr` is guaranteed to be non-null given that it is derived from `self.buf`.
++        let ptr = unsafe { NonNull::new_unchecked(ptr) };
 +
 +        // SAFETY:
-+        // - `page` is a valid pointer to a `struct page`, given that by the safety requirements of
-+        //   this function `ptr` is a valid pointer to a `Vmalloc` allocation.
-+        // - By the safety requirements of this function `ptr` is valid for the entire lifetime of
-+        //   `'a`.
-+        unsafe { page::BorrowedPage::from_raw(page) }
++        // - `ptr` is a valid pointer to a `Vmalloc` allocation.
++        // - `ptr` is valid for the duration of `'a`.
++        Some(unsafe { Vmalloc::to_page(ptr) })
 +    }
 +}
 +
- // SAFETY: `realloc` delegates to `ReallocFunc::call`, which guarantees that
- // - memory remains valid until it is explicitly freed,
- // - passing a pointer to a valid memory allocation is OK,
++impl<'a> VmallocPageIter<'a> {
++    /// Creates a new [`VmallocPageIter`] instance.
++    ///
++    /// # Safety
++    ///
++    /// - `buf` must be a pointer to the beginning of a [`Vmalloc`] allocation.
++    /// - `buf` points to must at least be valid for the lifetime of `'a`.
++    /// - `size` must be the size of the [`Vmalloc`] allocation `buf` points to.
++    pub unsafe fn new(buf: NonNull<u8>, size: usize) -> Self {
++        // INVARIANT: `buf` is a valid pointer to the beginning of a `Vmalloc` allocation by the
++        // safety requirements of this function.
++        Self {
++            buf,
++            size,
++            index: 0,
++            _p: PhantomData,
++        }
++    }
++
++    /// Returns the base address of the backing [`Vmalloc`] allocation.
++    pub fn base_address(&self) -> NonNull<u8> {
++        self.buf
++    }
++
++    /// Returns the size of the backing [`Vmalloc`] allocation in bytes.
++    ///
++    /// Note that this is the size the [`Vmalloc`] allocation has been allocated with. Hence, this
++    /// number may be smaller than `[`Self::page_count`] * [`page::PAGE_SIZE`]`.
++    pub fn size(&self) -> usize {
++        self.size
++    }
++
++    /// Returns the number of pages owned by the backing [`Vmalloc`] allocation.
++    pub fn page_count(&self) -> usize {
++        self.size().div_ceil(page::PAGE_SIZE)
++    }
++}
 -- 
 2.50.1
 
