@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D9E4A11;
-	Fri,  8 Aug 2025 08:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3DC4A11;
+	Fri,  8 Aug 2025 08:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754641625; cv=none; b=HupkHBpimRqmCcvLXECoufRa4+OCjReQBL2dFu3qhfG636dBJIIoT/YkFByDnjvRTBi3I18NJ9eGd1WvJAy4oSS2N6w0cwf53mghDmkPUmBCTHZ13Nug6PhxioLutr6KuUCwiQCfNDBH5IkEQ7WpKQyVjqwKcE1CqpidNqEIX/c=
+	t=1754641629; cv=none; b=FanS2BeBu4QYZeQCm6SHdnZ9KN6WKo82wQIiDQpHYCt6530CGzcFiJiz1Cmep+xJtcVexbWq9YbkyWr9/Alh5moLr+fOJt+gA2AGGjEeOeOq/QOBh3DcXKFJu1dB2GTAxPB2VaT3VKeAzNK49PAeMr/KcIVUIbO/tn5zKgId1Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754641625; c=relaxed/simple;
-	bh=Jgh2qS3kG6kQ1i46rsLuhwXlMgWqyeYURAc8TMAVvsc=;
+	s=arc-20240116; t=1754641629; c=relaxed/simple;
+	bh=R61IV7cr8iemY0WmVZFNaI72L7yRCaCDEndX4PJJX4o=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eq8zsugjYuwYLdJmkC3FUT080pFhICCdCddxvefYWcMG+6oK7GlPYNRyTVQxS7jR6h7Lr6yh5tVsJmT/PGjM/LG0V6QvIUp3K0rtaLwrQM42qThiGCUl0y0oVbAuUgkR9z9lghJTFqfsCjTltete6XWJFuQ4yOTPOdeohYxUpCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJqf+GXO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=lbvKOZeXiX0rcdOUChJC4tD+s2wB29aqxoq6+0qyoIU85yU8WU/MBeyFTxu6tKehcUBkzspczYp7QAT5yN0GXK5diDgULKYLwx/xQ8o/QmNp5FdQIX2gYE4Vu9QqhP8zn20uu0Yns0WnHZG5bZEeIz3tLZ/oaJIuQDJHnpYZs74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bW+F9GPs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJqf+GXO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F6EC4CEF6;
-	Fri,  8 Aug 2025 08:27:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bW+F9GPs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5B6C4CEED;
+	Fri,  8 Aug 2025 08:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754641624;
-	bh=Jgh2qS3kG6kQ1i46rsLuhwXlMgWqyeYURAc8TMAVvsc=;
+	s=k20201202; t=1754641628;
+	bh=R61IV7cr8iemY0WmVZFNaI72L7yRCaCDEndX4PJJX4o=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WJqf+GXOkSFbEGKoiIYMIZilPpyauyddhVRa8C+SmxOPYcammooLyV566IMRFtoEt
-	 EibUnVSXdkLZIrbf/lhy5N3OVhNaC50mQwQjvqa5b0p5BETuw2a9/j/H4hZO2l+g5r
-	 N5S5uG1Pkz6lDfAvqNeNmxEHjmFB0BK0nFy+67K02HdApKQOilkL0ZBqOD2keG8aTL
-	 n+sqrK+E0RX70TqGWK4klF9sA8vu6G9ztRmEXeE+eED9/0GdQ+MszYwC/tf3vTmtIH
-	 52E/RvAHTno84It09WEEAAtabsEbpCggbS7MOh49kFCXvZQO0As1VONACSq1FOviHr
-	 /gdwxsdHzIJDw==
+	b=bW+F9GPsCwvzvnk5yzzAKBc8HUDaa7PtC1gHHOAe/Xl8E5laCX99cluS7WdK/+SdA
+	 cKP5HgglIZO9PRfS2pM+uvJJo26z72lZDu0G9Gqzyu4FbV6SVJEUr8qep6rjGXmXdP
+	 RWgsie4oow2hzwIWpvevV2d5geWR05iybXzYB2guDTmPXAfq75UQPFHD+zVN+G8bpf
+	 +w2D2NQo2yGz6+Z57ncv9NNxKAmVQJYyru093crEmckfttxLV3y+D6nQHH6rtCPeRI
+	 bZ7+/CpVbeKT/kJvmv2QQ+m1e5Q022JCe6dTIW4dOWyjz7pUTVkgt3+LErcn6+/l9y
+	 Zpqh3JdsKeIGA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Thomas
  Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>,
@@ -38,14 +38,13 @@ Cc: Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen
  <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
  <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
  <dakr@kernel.org>
-Subject: Re: [PATCH v6 5/7] rust: hrtimer: Add forward_now() to HrTimer and
- HrTimerCallbackContext
-In-Reply-To: <20250724185236.556482-6-lyude@redhat.com>
+Subject: Re: [PATCH v6 6/7] rust: time: Add Instant::from_nanos()
+In-Reply-To: <20250724185236.556482-7-lyude@redhat.com>
 References: <20250724185236.556482-1-lyude@redhat.com>
- <yyxia-6jPRe4MK9jt_2OV95A6jC-eLuNR_lsLS_1VkIM8qMTKw1SsmayBxpaRQNi3OeGqZCG2t01zssg4QwxjA==@protonmail.internalid>
- <20250724185236.556482-6-lyude@redhat.com>
-Date: Fri, 08 Aug 2025 10:14:06 +0200
-Message-ID: <878qju6xip.fsf@kernel.org>
+ <LY2kmMXxEF1D0iSiWPZ3CYRDUHMmMhqr8W0WbZKqvobIYNcU3cntVHAVGbX6mozRNJXB3KF4Sp8ByD3SytwcnA==@protonmail.internalid>
+ <20250724185236.556482-7-lyude@redhat.com>
+Date: Fri, 08 Aug 2025 10:19:02 +0200
+Message-ID: <875xey6xah.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,12 +55,9 @@ Content-Type: text/plain
 
 "Lyude Paul" <lyude@redhat.com> writes:
 
-> Using the HrTimer::raw_time_cb() function, we can now add an equivalent to
-> hrtimer_forward_now() to both HrTimer and HrTimerCallbackContext.
+> For implementing Rust bindings which can return a point in time.
 >
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
-
-With the commit message fixed:
 
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
