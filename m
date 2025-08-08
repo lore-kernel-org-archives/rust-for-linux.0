@@ -1,226 +1,78 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83355222585;
-	Fri,  8 Aug 2025 06:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD721BFE00;
+	Fri,  8 Aug 2025 06:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754633635; cv=none; b=FZxAQIZNNh26oHT8W2LuoGqNC9/dHdkC0Z16sP5ba7/e4F5yvybvf9S95NLp2TxVg6Fd3YcDa2A+xwa0pwIu+obySf+vjwE4+FyYh0FhkkiLhXRhUFuYvmu2eW5cYA5EgwE3g4gJyURe7nDqflxO4dl/pKWcszWTtT1q+yuZRns=
+	t=1754634852; cv=none; b=TOCP7VsH3Gwq/0HsQRfjnDSlhcggY5px0H4rXl0QucDgyfW7zdJQim0QR6meCxSsps1REw97WLoIiKlxaXp7gJw7Vv92J90bCXmf2LFfeNKNJfQjqtFcnAzJdw0+Aj6w5P9/w1UoELbnVQ+D5x+u7xN1e2aVQKeK3rmJdQtfcsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754633635; c=relaxed/simple;
-	bh=JntV3RGjz1Jbe0FoUMzE5n20T/KBYLOoC0wvMbE0SQA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c/5Knw/n8yzFGWPTwj0OfeRCQbzDRgFNn/rWZn9fULJWbf0QBCErbKw3V/QDdFTy8OXLxirw5/kC3PbiPc/4DISKv79ixR+z4WtJu7ZpE/wrmZFQzc2pg5OyPQMD/1mwYdA3816DGir5hBG0zXyi1rsP09lMC0MPOlGLeLo9CKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=dxqFy/+P; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1754634852; c=relaxed/simple;
+	bh=ATW9vNCxb1rnbDaObyRWJtyhRtkMXi1VhaLZGXxZbkU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=sOJB69MzyIcgunapVIaBffm2qE+8SnyqolwZKxf05f50Hqs9TDBotm99bpfXEn7kQj12W+i4s9rz+AEl+df4qbNSRW3QRowhl9DeBPANYYSXSEmVqKZ4koMuhPLcXJFu1gSfdmfDnHZOS2bxDhhgg5w5KYpd7eU0RWNNKBE0C04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYxJdjbS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="dxqFy/+P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1754633631; x=1754892831;
-	bh=xrSdxGPnLC2CBHkZSGp5i4YD6BUUlFfg9BJWTFd34G0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=dxqFy/+PkjD1o+TA0cM1CwWEqQvubtgpEPW8WVL3uw/rnyG3NcdGSR0dFjb1h0Wu5
-	 znkAb5aDlzNmXnvq8CGoWo4Uzyp7zNhUZpVcfBRz8bMOWYN0mM3lC/bWySBSRC/2DB
-	 +cJ0z3V/o8UX0j4DER9YkChO+CpJCAl1RLjLCiiEtaRdYLIg3y0wzkjbg64HLOvp5D
-	 UoeiM5t8i+SFcrtcU2KOUWJGY6ri1pwRHLIFBp/blsAZFkZDw9EMIvBN+oQWXJBbxn
-	 WSyzKNu4rnKrjHPVtWMmf9o/gVzzo5x7k9EmFyTV+VN6nhlf5UhbV4Pk3dltOhB5vC
-	 Aoh/NVMZM2wHw==
-Date: Fri, 08 Aug 2025 06:13:45 +0000
-To: linux-input@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Jiri Kosina <jikos@kernel.org>, a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, Benjamin Tissoires <benjamin.tissoires@redhat.com>, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, db48x@db48x.net, gary@garyguo.net, ojeda@kernel.org, tmgross@umich.edu, peter.hutterer@who-t.net, Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Subject: [PATCH v3 RESEND 3/3] rust: hid: Glorious PC Gaming Race Model O and O- mice reference driver
-Message-ID: <20250808061223.3770-4-sergeantsagara@protonmail.com>
-In-Reply-To: <20250808061223.3770-1-sergeantsagara@protonmail.com>
-References: <20250808061223.3770-1-sergeantsagara@protonmail.com>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: c9bd5a3fc1b9156b0fec7d365b455a8cf514e2b3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYxJdjbS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF82C4CEED;
+	Fri,  8 Aug 2025 06:34:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754634851;
+	bh=ATW9vNCxb1rnbDaObyRWJtyhRtkMXi1VhaLZGXxZbkU=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=uYxJdjbSzjXZbIGa9xc1EVu09rIR0BfbDTJUmGNShgCzxdSD7aYyxOvQVgTGrxOJX
+	 TcvhaWGfp8ZwDw1Q0W2/Mw23VtFEd45OyFWMX48Jag5wILkYJrUXYo11qZE8z4WDmj
+	 EHjDOeXSgXzw0/HTTT1THCKfKlB9obnaQjXfMHCNiDSZPWXJwhXTuC5ZyEgxUtsb6Y
+	 VFU7JQSwJyderNXcPl5FFbckZ8lPrhPujLKx+2CupfanVB50OItxsIsUd+4vJKDGV1
+	 zBNiVX5U0Aky+PYzml3nLBV/PtnUjI7icF9ARbUo3qZ5mfy2fpalnV8Kt1oVThS7tw
+	 YVBzJnqBTXDtQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 08 Aug 2025 08:34:06 +0200
+Message-Id: <DBWU54JHWVNO.Y3EEXGS9TSSM@kernel.org>
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
+ "Frederic Weisbecker" <frederic@kernel.org>, "Thomas Gleixner"
+ <tglx@linutronix.de>, "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+ "John Stultz" <jstultz@google.com>, "Stephen Boyd" <sboyd@kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 1/2] rust: time: Implement Add<Delta>/Sub<Delta> for
+ Instant
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250807190649.3078875-1-lyude@redhat.com>
+In-Reply-To: <20250807190649.3078875-1-lyude@redhat.com>
 
-Demonstrate how to perform a report fixup from a Rust HID driver. The mice
-specify the const flag incorrectly in the consumer input report descriptor,
-which leads to inputs being ignored. Correctly patch the report descriptor
-for the Model O and O- mice.
+On Thu Aug 7, 2025 at 9:06 PM CEST, Lyude Paul wrote:
+> In order to maintain the invariants of Instant, we use saturating
+> addition/subtraction that is clamped to the valid value range for a
+> non-negative Ktime.
 
-Portions of the HID report post-fixup:
-device 0:0
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               84
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               112
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               140
+You're not using saturating operations in the patch?
 
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
 ---
+Cheers,
+Benno
 
-Notes:
-    Changelog:
-   =20
-        v2->v3:
-          * Fixed docstring formatting
-          * Updated MAINTAINERS file based on v1 and v2 discussion
-        v1->v2:
-          * Use vendor id and device id from drivers/hid/hid-ids.h bindings
-          * Make use for dev_err! as appropriate
-
- MAINTAINERS                      |  7 ++++
- drivers/hid/Kconfig              |  8 +++++
- drivers/hid/Makefile             |  1 +
- drivers/hid/hid-glorious.c       |  2 ++
- drivers/hid/hid_glorious_rust.rs | 60 ++++++++++++++++++++++++++++++++
- 5 files changed, 78 insertions(+)
- create mode 100644 drivers/hid/hid_glorious_rust.rs
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6c60765f2aaa..eee9a33914ef 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10200,6 +10200,13 @@ L:=09platform-driver-x86@vger.kernel.org
- S:=09Maintained
- F:=09drivers/platform/x86/gigabyte-wmi.c
-=20
-+GLORIOUS RUST DRIVER [RUST]
-+M:=09Rahul Rameshbabu <sergeantsagara@protonmail.com>
-+L:=09linux-input@vger.kernel.org
-+S:=09Maintained
-+T:=09git git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git rust
-+F:=09drivers/hid/hid_glorious_rust.rs
-+
- GNSS SUBSYSTEM
- M:=09Johan Hovold <johan@kernel.org>
- S:=09Maintained
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index 922e76e18af2..b8ef750fb8b6 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -406,6 +406,14 @@ config HID_GLORIOUS
- =09  Support for Glorious PC Gaming Race mice such as
- =09  the Glorious Model O, O- and D.
-=20
-+config HID_GLORIOUS_RUST
-+=09tristate "Glorious O and O- mice Rust reference driver"
-+=09depends on USB_HID
-+=09depends on RUST_HID_ABSTRACTIONS
-+=09help
-+=09  Support for Glorious PC Gaming Race O and O- mice
-+=09  in Rust.
-+
- config HID_HOLTEK
- =09tristate "Holtek HID devices"
- =09depends on USB_HID
-diff --git a/drivers/hid/Makefile b/drivers/hid/Makefile
-index 10ae5dedbd84..bd86b3db5d88 100644
---- a/drivers/hid/Makefile
-+++ b/drivers/hid/Makefile
-@@ -55,6 +55,7 @@ obj-$(CONFIG_HID_FT260)=09=09+=3D hid-ft260.o
- obj-$(CONFIG_HID_GEMBIRD)=09+=3D hid-gembird.o
- obj-$(CONFIG_HID_GFRM)=09=09+=3D hid-gfrm.o
- obj-$(CONFIG_HID_GLORIOUS)  +=3D hid-glorious.o
-+obj-$(CONFIG_HID_GLORIOUS_RUST)=09+=3D hid_glorious_rust.o
- obj-$(CONFIG_HID_VIVALDI_COMMON) +=3D hid-vivaldi-common.o
- obj-$(CONFIG_HID_GOODIX_SPI)=09+=3D hid-goodix-spi.o
- obj-$(CONFIG_HID_GOOGLE_HAMMER)=09+=3D hid-google-hammer.o
-diff --git a/drivers/hid/hid-glorious.c b/drivers/hid/hid-glorious.c
-index 5bbd81248053..d7362852c20f 100644
---- a/drivers/hid/hid-glorious.c
-+++ b/drivers/hid/hid-glorious.c
-@@ -76,8 +76,10 @@ static int glorious_probe(struct hid_device *hdev,
- }
-=20
- static const struct hid_device_id glorious_devices[] =3D {
-+#if !IS_ENABLED(CONFIG_HID_GLORIOUS_RUST)
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- =09=09USB_DEVICE_ID_GLORIOUS_MODEL_O) },
-+#endif
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- =09=09USB_DEVICE_ID_GLORIOUS_MODEL_D) },
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_LAVIEW,
-diff --git a/drivers/hid/hid_glorious_rust.rs b/drivers/hid/hid_glorious_ru=
-st.rs
-new file mode 100644
-index 000000000000..8cffc1c605dd
---- /dev/null
-+++ b/drivers/hid/hid_glorious_rust.rs
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2025 Rahul Rameshbabu <sergeantsagara@protonmail.com>
-+
-+//! Rust reference HID driver for Glorious Model O and O- mice.
-+
-+use kernel::{self, bindings, device, hid, prelude::*};
-+
-+struct GloriousRust;
-+
-+kernel::hid_device_table!(
-+    HID_TABLE,
-+    MODULE_HID_TABLE,
-+    <GloriousRust as hid::Driver>::IdInfo,
-+    [(
-+        hid::DeviceId::new_usb(
-+            hid::Group::Generic,
-+            bindings::USB_VENDOR_ID_SINOWEALTH,
-+            bindings::USB_DEVICE_ID_GLORIOUS_MODEL_O,
-+        ),
-+        (),
-+    )]
-+);
-+
-+#[vtable]
-+impl hid::Driver for GloriousRust {
-+    type IdInfo =3D ();
-+    const ID_TABLE: hid::IdTable<Self::IdInfo> =3D &HID_TABLE;
-+
-+    /// Fix the Glorious Model O and O- consumer input report descriptor t=
-o use
-+    /// the variable and relative flag, while clearing the const flag.
-+    ///
-+    /// Without this fixup, inputs from the mice will be ignored.
-+    fn report_fixup<'a, 'b: 'a>(hdev: &hid::Device<device::Core>, rdesc: &=
-'b mut [u8]) -> &'a [u8] {
-+        if rdesc.len() =3D=3D 213
-+            && (rdesc[84] =3D=3D 129 && rdesc[85] =3D=3D 3)
-+            && (rdesc[112] =3D=3D 129 && rdesc[113] =3D=3D 3)
-+            && (rdesc[140] =3D=3D 129 && rdesc[141] =3D=3D 3)
-+        {
-+            dev_info!(
-+                hdev.as_ref(),
-+                "patching Glorious Model O consumer control report descrip=
-tor\n"
-+            );
-+
-+            rdesc[85] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATIV=
-E;
-+            rdesc[113] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATI=
-VE;
-+            rdesc[141] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATI=
-VE;
-+        }
-+
-+        rdesc
-+    }
-+}
-+
-+kernel::module_hid_driver! {
-+    type: GloriousRust,
-+    name: "GloriousRust",
-+    authors: ["Rahul Rameshbabu <sergeantsagara@protonmail.com>"],
-+    description: "Rust reference HID driver for Glorious Model O and O- mi=
-ce",
-+    license: "GPL",
-+}
---=20
-2.47.2
-
-
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>
+> ---
+> V2:
+> * Change behavior in ops::{Add,Sub}<Delta> so that we panic on overflows
+>   under the same conditions that arithmetic operations in rust would pani=
+c
+>   by default.
+> ---
+>  rust/kernel/time.rs | 43 ++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 42 insertions(+), 1 deletion(-)
