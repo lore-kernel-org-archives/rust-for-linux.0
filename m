@@ -1,97 +1,137 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1892153C1;
-	Sun, 10 Aug 2025 11:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B8F1BC41
+	for <rust-for-linux@vger.kernel.org>; Sun, 10 Aug 2025 13:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754826186; cv=none; b=nKCLbHubVNrQwgfB2DaRfv6V9HZV2oFJI3O+ZfB1nXZ8qnGndm4Z2G+rMPlUlwu05MDz6IYG/AieGs4J776lzTJTU3OlcvqgRg3UDZkZ78CHHTdM6plgPHOHsTcKbP932nYa33ytvAfmywNcGURcqEcFNUGzM0Tl5ASVzrZX1PU=
+	t=1754833827; cv=none; b=rVvXU2z+zDR/g2mXvuFWonyv/2Pudv988vET9A8FhWfO2wpYf9aFy1QVhx6woNZ/ynHOrNuJIzrQWhnbPz4w2BzbLauNz1vaav3CLqOsYLO0kv9b6cTE2MJndjvvkDcQbc0EGgB3iX/sebo21gLShN08B9wNSDCBPT8TwDbNZFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754826186; c=relaxed/simple;
-	bh=91ET5rF86WWJH2uEOY8goKvqnyw4egDzDk+qkBG4z3c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kFY1PC1ei8MXbKxnz18oTwkPmhHfgGyUQ2zuhuuvW7jwbfHdPva1DKm77jxo3hoAEb8WuA/+HAwasalZ6NXOz2/A7TnORwub9PGuywqVTphL8NuI2tJUTbLJS9/RTLzyJ2yGbWPqISy29HjvLQQ/WctiClAsFZgGEjdiE1DELj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qgy74BJ8; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1754833827; c=relaxed/simple;
+	bh=p7BsbrGAmeMQfqoDvx2nZTX6wg9kIycv6VZ0kixKOJw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fuQs1IKCRWnTCwklIdrZTSNQn3B1yCY0EIAi2V1OhwImiZvDgyDlsbyxTyu6r+blHL5LFEDYF9Vw10w1FJuq2fCAjrIbvgsYJsiFhASvXqS8I+RQs611mTQNcIx/bDli+YWD9F0SfB/u6NFVykN++cB2Gt03ecnBSW1H/JnlLOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=U6melqi+; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qgy74BJ8"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-31f3f978cd1so746074a91.2;
-        Sun, 10 Aug 2025 04:43:05 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="U6melqi+"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2405c0c431cso33472425ad.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 10 Aug 2025 06:50:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754826185; x=1755430985; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=91ET5rF86WWJH2uEOY8goKvqnyw4egDzDk+qkBG4z3c=;
-        b=Qgy74BJ8zODdIZT/Oh21nrMfefWPDo4ZkyMqQr7OFTd6FMZbwCUGGSaUqAc39nKTEJ
-         2MkBajrsMYi7iXZAAFB9vYfGyrSaV4GWjIROrR01/3XK9pPzlohbC0qvvmh25mYYn2ia
-         O2j3gDM4++noGILMM+T9qQWGxqc9rtyQj02GI73yFrjJZiXMXgSDVhX2BRmwRqjLAhgn
-         9q5fuywNoZVoRgAFUXx70CcxDuxVk6f8X+Ey0cIYfIhvoVk8+VsKqZBLX6ykhECPbBx2
-         0d7HCdaYWqqlh2ja2RNfsarjP+r3z5BF1+jIkhdxAnxp7XLASBkh00HJvBbarVbHLdqe
-         YP8A==
+        d=furiosa.ai; s=google; t=1754833826; x=1755438626; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uEJoriNDa5rnMjLc9ZXlpdYdb6v5lPl2Mbkc+ZGNcbk=;
+        b=U6melqi+MzSUKfUE9ovqN5bJ23rejO1JDxIecibUEd3O8cx6TTnvxd+61g97jj6DSq
+         a9VT8lm5r2EmVgvFUDggjsKY6iIoqGU753Sm25+LDER5n0rahvDWu5j/E1m/OLg4BgeM
+         +EXpm+hArXaHO2TP7dvmu2FQDEn9nJYlUWUJo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754826185; x=1755430985;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=91ET5rF86WWJH2uEOY8goKvqnyw4egDzDk+qkBG4z3c=;
-        b=lWHLHPTuQQk4xFSz0sTfVGLkMl6UL0/52GqppuXS6aA3wtDpbeyzb3laNp/xxxFNsA
-         DO0Jt165kZUER/SAEX/sLsmOqVXdcIVqCMF7mVLMV3/zPiaOf9r0b4CrOe0b39/ruyLy
-         km019blT7RJJz0C03t9gvg7hI/WcD+5hVTMyytjbCiKapypsofwaZupT3PSWGEyQtHFG
-         BKrjChMPgPEM/mEEAfdTyehp8UgQu1uTgrHE6etpdCryaA8XT+hBA/2c7/xcAATQ2tWY
-         ZAwN2+TnqlSDkLMI1BVSB/VIALgmtfUtFuQJJX4nYQEhyjikLLijx4L6dhddAvqKjrg6
-         wIog==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ1VFhsXGnxqISOqmTzLxj+zkei+0IoufkBA8JhCvMKh5vdOOHz2iAoxshwvLsg76zQCUy2h0p8IAbg4nTuT0=@vger.kernel.org, AJvYcCVRi7Ms4CQwMz35p8FbMSXZPydnv6shR8249qyJMztS+tz1Jvbr4DjY2Hw6CYxE2VNIcpcS1ioKFrqZAQ==@vger.kernel.org, AJvYcCX+nJqrKmApAyZElK/SSGaHy1I/53V+KwploS19k6bjLD3sbNaYooi/wdVZYYp3A9ov9K/6NgezmpW5Q5VP@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVS4P17+0n0PmL+VN4X91SAbkd/10fGKYyuBFo2CYEIaoCqYHp
-	mOjVZARFettXWQKK+frl2ds6LpUPRVfmB86eWyaFsDu7i/5ZUWMSD31eMtROucW+cjwSStDMXfn
-	MhpGwjClkeTJpqnqZuaEKdt7q1w13OSc=
-X-Gm-Gg: ASbGncsM6PxUqUqr9Fga+bl98f1D/IJTmAZpf25a74QkIhy7IgwfVzvRuIFZATinsYJ
-	huDn7o4wJk8iIbHrzwqX08iT6Nwqs7Fn9DoDWl1KuyypI4hxXt9XqchoTaXCh+GgEIOk0fwkEC9
-	Q3qL880ovHYEpExh17UePiBT0eRRWP9FP0NH3SJtQIkoq84M0WvQO3EjFppEkz6s5RUpCsClAFi
-	hOxbz2hJ05U03gG0vU=
-X-Google-Smtp-Source: AGHT+IEqlt+PxFuiuxU8+W6GDdBLu+oKjOa+sDHv3M270eVfk0DsWulSC2im2qIc7BEaNIkCa9aAu0zY6SmB9nZdT+w=
-X-Received: by 2002:a17:902:ceca:b0:240:33c7:fbf9 with SMTP id
- d9443c01a7336-242d6d83ea4mr32253205ad.11.1754826184602; Sun, 10 Aug 2025
- 04:43:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754833826; x=1755438626;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uEJoriNDa5rnMjLc9ZXlpdYdb6v5lPl2Mbkc+ZGNcbk=;
+        b=ZvLA5QAJJaopU6t/7KkI4t+2Dig5EO9up81o6gpBHsQdB7bvcXytRCIIb+G+8bt0V7
+         PN3SGaITo/tTvCb2nNq3BAbTdjAwwMzq19xVyxZe8ZHtY417fRV7PehfGKJA4T6fWeU1
+         wxUrBcA6d6WcPmiuiEuKcpGl1UWkBfnp6Dp5UF2NFsKq6FezkRk8FxqlSOh1CZb/l/BU
+         Lk4jmGqaCSive2yLlR+C07u34ExoSjz70g8DK0YBgwPYT8L/AqRJjHxUJJEsmUAlFnRQ
+         S6ayo/4XxIlDPUbf/5rZXpFDukyih60Fxs5JyGjcSSsqbj+F9anaOXGNd2m93/8w7yw2
+         Urew==
+X-Forwarded-Encrypted: i=1; AJvYcCWLGCyijleXg2xge/UefJAjzYsCrQ/qJ7R/YHoP3KyM3tN6n0P03M0mfi5RZWrpNwvE/x1EgGgpuRVZMoej9g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVdWkSn3j4Smn/KdD/iMeiYJhBYSvdNWT5dN/o+KvTGDXtyQN4
+	66UtsTLXM7WybdIxActjcPE7BXUv1sOykIhYayskRnu9naXPim/f+OHLAnSMyJn8GUQ=
+X-Gm-Gg: ASbGncsibnBHE0vKk5OPboIZV/eWtTXKympRShDAJQF50cICQNkYyW31mKIwnIQ5oq2
+	dC0vyQ7dHH36ETqbGFh0LJJvp6S/KzqQT/6Xo1XuwSUkAj/IwJj5cO63+obEE0MYoRrkPSZPcID
+	cRjHwK2pwbRP7AIH+x4BffJF1e7p1O3gAFzQtqWXsISK4R6otBtXlSxb5I+xZBv3d0sofSiY6Oo
+	noBXaw2SzudkhVkEFELuZbPF7HLOTRM9JygKQEv8aZIHQotL0SUyoPmcH2F/PKGZWH85ZOOAEO/
+	7vFN+s3NKX2HCXY88VZe/J7HEWwQu5wzwp/ptaukD0KXluC8v3X0VD9qUysC5zKbcpwbhqLz4Do
+	o+Qd7OkDnCsrwa99LkZ7+7fSYEdfa5GKUYFFulS4fHLjD0+m0sGi2XHRu
+X-Google-Smtp-Source: AGHT+IENp31HkWj826CiJ1+k4dxYMOt11EipK3CH7vyGbmZkeyW3/TjnLaKgr24R7x7nzGfXFeZ0iQ==
+X-Received: by 2002:a17:902:d486:b0:240:a21c:89a6 with SMTP id d9443c01a7336-242c2003830mr150469815ad.12.1754833825790;
+        Sun, 10 Aug 2025 06:50:25 -0700 (PDT)
+Received: from sidongui-MacBookPro.local ([175.195.128.78])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef7557sm249307295ad.19.2025.08.10.06.50.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Aug 2025 06:50:25 -0700 (PDT)
+Date: Sun, 10 Aug 2025 22:50:07 +0900
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Caleb Sander Mateos <csander@purestorage.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
+ for io-uring cmd
+Message-ID: <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
+References: <D6CDE1A5-879F-49B1-9E10-2998D04B678F@collabora.com>
+ <DBRVVTJ5LDV2.2NHTJ4S490N8@kernel.org>
+ <949A27C5-1535-48D1-BE7E-F7E366A49A52@collabora.com>
+ <DBVDWWHX8UY7.TG5OHXBZM2OX@kernel.org>
+ <aJWfl87T3wehIviV@sidongui-MacBookPro.local>
+ <DBWX0L4LIOF6.1AVJJV0SMDQ3P@kernel.org>
+ <aJXG3wPf9W3usEj2@sidongui-MacBookPro.local>
+ <DBXTJQ27RY6K.1R6KUNEXF008N@kernel.org>
+ <aJdEbFI2FqSCBt9L@sidongui-MacBookPro.local>
+ <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <KnSfzGK6OiA0mL5BZ32IZgEYWCuETu6ggzSHiqnzsYBLsUHWR5GcVRzt-FSa8sCXmYXz_jOKWGZ6B_QyeTZS2w==@protonmail.internalid>
- <20250716090712.809750-1-shankari.ak0208@gmail.com> <87cy965edf.fsf@kernel.org>
-In-Reply-To: <87cy965edf.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 10 Aug 2025 13:42:53 +0200
-X-Gm-Features: Ac12FXziWX50nYsrNpMzmQ37_zE0gmW2f0vWbEXqgMwK4juLfdxsar3rKHw4jKs
-Message-ID: <CANiq72=Yb=APVFiJbdveVD45=fwmAbXR3vUXLTBfqu_n-BpcOA@mail.gmail.com>
-Subject: Re: [PATCH 1/7] rust: block: update ARef and AlwaysRefCounted imports
- from sync::aref
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
 
-On Fri, Aug 8, 2025 at 11:53=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Sat, Aug 09, 2025 at 10:22:06PM +0200, Benno Lossin wrote:
+> On Sat Aug 9, 2025 at 2:51 PM CEST, Sidong Yang wrote:
+> > On Sat, Aug 09, 2025 at 12:18:49PM +0200, Benno Lossin wrote:
+> >> We'd need to ensure that `borrow_pdu` can only be called if `store_pdu`
+> >> has been called before. Is there any way we can just ensure that pdu is
+> >> always initialized? Like a callback that's called once, before the value
+> >> is used at all?
+> >
+> > I've thought about this. As Celab said, returning `&mut MaybeUninit<[u8;32]> is
+> > simple and best. Only driver knows it's initialized. There is no way to
+> > check whether it's initialized with reading the pdu. The best way is to return
+> > `&mut MaybeUninit<[u8;32]>` and driver initializes it in first time. After 
+> > init, driver knows it's guranteed that it's initialized so it could call 
+> > `assume_init_mut()`. And casting to other struct is another problem. The driver
+> > is responsible for determining how to interpret the PDU, whether by using it
+> > directly as a byte array or by performing an unsafe cast to another struct.
+> 
+> But then drivers will have to use `unsafe` & possibly cast the slice to
+> a struct? I think that's bad design since we try to avoid unsafe code in
+> drivers as much as possible. Couldn't we try to ensure from the
+> abstraction side that any time you create such an object, the driver
+> needs to provide the pdu data? Or we could make it implement `Default`
+> and then set it to that before handing it to the driver.
 
-I think you can pick this one, i.e. the idea was to allow changes to
-be picked independently.
+pdu data is [u8; 32] memory space that driver can borrow. this has two kind of
+issues. The one is that the array is not initialized and another one is it's
+array type that driver should cast it to private data structure unsafely.
+The first one could be resolved with returning `&mut MaybeUninit<>`. And the
+second one, casting issue, is remaining. 
 
-Otherwise, I can pick it eventually with the final change, but it
-would be best to get these cleanups done.
+It seems that we need new unsafe trait like below:
 
-Thanks!
+/// Pdu should be... repr C or transparent, sizeof <= 20
+unsafe trait Pdu: Sized {}
 
-Cheers,
-Miguel
+/// Returning to casted Pdu type T
+pub fn pdu<T: Pdu>(&mut self) -> &mut MaybeUninit<T>
+
+I think it is like bytemuck::Pod trait. Pod meaning plain old data.
+
+Thanks,
+Sidong
+
+
+> 
+> ---
+> Cheers,
+> Benno
