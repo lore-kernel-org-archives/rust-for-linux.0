@@ -1,165 +1,103 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F255F2BE65C
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 11:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1987DDF6C;
+	Mon, 11 Aug 2025 11:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754910152; cv=none; b=XqevPFIreQIdTjVbmStv3dCKZ53awnrlvS9Kk/wae8JZTDz2d1jrAf1IBQ08w7rNeVJktidju8uBXL7Iv7JQUB9QEoboiYVRF+iLd9lZHXPcmgD9Fl7EJeXok44PW8yDPiqvRkT9qRg+wkn3ttzU4d9F+hVAivmaf62vusilZXo=
+	t=1754912427; cv=none; b=OfNNPTqAINVkoj422A6+vIAOt/kjebqxAyaSaCltd161pcLEPTC8Obl4LhH+mxXN8b00iyFD0mUhwlCL58NPGQqZ43GMKhWycKw5N/pyPuFSmuLV3thAL+kDVsW4uLCGIZQd1lsJ3kb8zB3vmJJTZtMD0nQJySzri7dcqkRBDeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754910152; c=relaxed/simple;
-	bh=PZvpmMGKZoBLVkqYrM3rKvbs5tN16syyK8pG0HEe30E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VGoXBdQrE+3ITBDJ2UqN8Vd5tedyvDFr1E+ma090cX3SNjCbK63o5iAhJESKcslcSGwlNSXwV4yeKzetT/iN6ELR3oHm+wJbrjur2X0I0f5iCfLFv5iUuf5Ti8En3UKOObiRv7sqWSZbSVGnNsQd3RvBXM/bQZMS4Dwfdn3TU3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q4NDh5La; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1754912427; c=relaxed/simple;
+	bh=aY1/v2vYacmu029BEs0gmPRFN4q4+3GQdnp0j66cyQw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gmBwkLm74mg8QYImyQnRFBMnk+M8QEcg3aFSsUozO7V1+iL4obVTkvN0tHVH5PjOw6ODtAGQROTvSkPAMB7O1BRXFr6qftL3sCutV3bpcsGst4oP4ZBMDY6Kx6Sh8mKpKcgABUHhi1SH76EkDO5ikOMPeVUpwl37A9pMe7b7MSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S1E8Yn8a; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q4NDh5La"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-459dfbece11so21677545e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 04:02:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S1E8Yn8a"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-76bd202ef81so5416371b3a.3;
+        Mon, 11 Aug 2025 04:40:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754910149; x=1755514949; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XoFLgAaU3dTMlkB3ivuNiJh7YAxvoPGHMa/b1QxLM0U=;
-        b=q4NDh5Latt5zJ/bzhTzRV3KKeCBgd40ySBv5apIR4hMVMPIGRbT80C5QupvbSq3vEc
-         WlJt0AhlF9IBFWwVF3Z76EyLrCpqSWKMa0JSPwbUNGZSPunKLL/1zinw3oJyTZf0dPef
-         nhyigFjmRhWVh3P95UhwW2jfZqOLZEZ2i82H0Zl4qF0BgCrUFlKE5r6qZ+KrBLtbr58U
-         2J9FbkEIYLa8fOFnWjamOJUuqH6OYJQWEHzTsLznt4toYX560yL7/53oSGK+GYfShXvv
-         RQxEYQrmAYgzFK542LL6JHUxMOcQ5OdMYo/nsve9tscUxy+spFW48OgK/9Ko9O6DKKa+
-         OXqQ==
+        d=gmail.com; s=20230601; t=1754912425; x=1755517225; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tVd+PaoPv29GhtyZaa2oKmb/IOsF7WgMozB6NnJzQ6o=;
+        b=S1E8Yn8aA1ZYPGn8wC/AUkdsu/ardJr/zI8vb2ApOGVa6h1udFplPtLLY+9xNcr6Si
+         j9omnf4WWn/1GDgknw9VAMDhanZb1F63Q3YVxXAahmQ62BfxLoNDIFo1QVVjCC4S2ycA
+         7bLy67bKrqXB36hEnEjTbhwqyoHx+63ymv81EByMhtuKQaA8/7js0tkwz6+Obr0yIlgg
+         MDw+0GIOK8GA/ie0jcOa1RkzRZMcW7uxc/K7Ola8zVwsEXDm7ruDNDRmOM7U+37LtwVC
+         0YuxV+2DU8VXUwPhprb+a7MwTtoqVzw4dl13aamYnSmeMujYCsnCU7z0N83JxDYs4veN
+         spwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754910149; x=1755514949;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XoFLgAaU3dTMlkB3ivuNiJh7YAxvoPGHMa/b1QxLM0U=;
-        b=ET6zrIZDBHnWIhttqrogfTd+iXzUejEHPpwXfUtPVp7lDQzRam74MW+CVjt8ViPfwd
-         /oJg1dckyd9e1yyYSQfmQGyNiDX5hiyZa8a+EYmupLh/a2qV5rArcK3YTgug7RPkIdji
-         9xbvOHQJaSVgRSE+lUmsnlcUlXWoxnILfyVIkAe+ZH+cWooM3cqm2vwHwdaKp7HK7CAZ
-         x5LynArcLDiWVC3ANmHIEUPH+fTPi8lf8clYg+xfu1eV6aDYR/Cbsj8xWeSEMcWYVucK
-         HhXhJWLyysO6R+cqtcsKq3RKfDvfvI+J8cWeKq88SeIDYiSq7ug/ADsfXHHJcg6T0gYQ
-         eN3A==
-X-Forwarded-Encrypted: i=1; AJvYcCV7Ym4XVGZ8l8Bs3AoqA5cilXPODsE0Dif4c+ILUOWU/6NFyYJpnyhjGOMAVU71mTqmJFSM2tazACb5a2Zclg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqVf0+1Ji8swZor5SqO43gvyEJqJK+14gkmOwVv371l+WpzdXX
-	pNsIOud4xI2UkTQhfrKYO7C4R52u7NxiQbzi5hgq9WJImTJ9HvMeKMnfSGnvi90zJ5u54tPUx0K
-	/mHzUHjCaTJOVPaUqvA==
-X-Google-Smtp-Source: AGHT+IEHj90/RHzHpvJsu5QjMlw4g2edIeCdvOyz1s9R5fzcMKzgwi4o+H+e3XIfZKtOyXsp93grjLNDgnKyY0Q=
-X-Received: from wmbay18.prod.google.com ([2002:a05:600c:1e12:b0:459:e01c:3d6d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:15d1:b0:459:e025:8c5b with SMTP id 5b1f17b1804b1-459f60d2211mr79186135e9.30.1754910149427;
- Mon, 11 Aug 2025 04:02:29 -0700 (PDT)
-Date: Mon, 11 Aug 2025 11:02:28 +0000
-In-Reply-To: <20250810-topics-tyr-request_irq2-v8-4-8163f4c4c3a6@collabora.com>
+        d=1e100.net; s=20230601; t=1754912425; x=1755517225;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tVd+PaoPv29GhtyZaa2oKmb/IOsF7WgMozB6NnJzQ6o=;
+        b=Zda5pu3x0ekuwJcn6zbQYGkQ2CnjoNX84/9hdgbUJCTWBH3GYzZp11a5JDG//LrLKC
+         ix0tHYSt0WLi/iso5EREI9n/EaGi7MAozCjees0L3jCHJAiLsEyOE8+mkJSoZ48jrYL1
+         rfwfv/P8aDZgql6jo0RpyJfbjyX98y7S/V51+nrW9FkLCJ9upqPWV/n6K2UQrC8xO4EP
+         UaNdn0n1QIaD0JkutM55qLlY8nxBSF1mnqD8VjcrB0QNIXTgxA9EDdYApjYNbEwWMFeY
+         9S8AE7MbkhLwm0MSC+v1tsVhEmhQPHFCaQVYdRGQ3dKYL/IteerfSXp7STIAWLk/d6UY
+         RGEA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2GVjjoNyVv5WOaayOz8PJPZ6ggD6GfMwtTNQ4+IWJc2mLerMsQJh+Tm+tDcI9+Progi+IXAGrg/reeqY=@vger.kernel.org, AJvYcCVVHgCnmCa9wYqCmrMdhUw2uB8klBvOKcMrHj2Y3ILSjnWsnAD9L3Hn36STeuSROiB/E6t2QNLzOww2JpGm2hE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2lrwHUByccBKXE15ow6q0e0mJQHiwTaG4vqHivpH0YWRO0Kdf
+	vBU464V6X+A7UtXBIAuHUJyeY1TDu+ycWZQpr5nfTKOjug3+6/j4HJUuvbRolw==
+X-Gm-Gg: ASbGnctPIa24ogc7v+nkX2AcpzvTxbTY0G8aCpU230a5//sx4KmBVmDGOyZlh9jBKOO
+	s3mHM8aZsPPFLCrZ3APy+aVafFL/HiL3ryerP3qGMI7y3FVhVBG0I53dB5gxjVm/TUwbbbDVHRU
+	+hTk15DWSUDc1K9sWX58eoDSD7FFNoIrgdyULcrtPF5c8qk6GNzFyXAq1pHqyj6HvziL1wTfQO/
+	bw2OjKNn8WERTY1n9Y51tbYL4Ke2o/esuckhZ3YopOlWm0NaKSNP1Mof8sGmB57DnnE4mbS6vk3
+	xkJ4FwuHsc9PsH0V9fAa+OTIMW8uwVYYGMqz1rAI2YQuNAh9NU1Fo8+u9IYXe4p33mWC4x75paU
+	E4cLPjtisaIVewHRW6vCrKqGrnQiP3A==
+X-Google-Smtp-Source: AGHT+IEH9vgTlcxdiF6XhfOIZ03uZg7cVj9D2X5Kcvl8l+VjTxJYJ7B4eonG3Ob9wEjzq5TdghQxaw==
+X-Received: by 2002:a05:6a00:2daa:b0:749:b41:2976 with SMTP id d2e1a72fcca58-76c46095e41mr19801888b3a.3.1754912425266;
+        Mon, 11 Aug 2025 04:40:25 -0700 (PDT)
+Received: from fedora ([2405:201:5501:4085:eece:e0ff:6b68:de2e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce89132sm26837930b3a.29.2025.08.11.04.40.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 04:40:24 -0700 (PDT)
+Date: Mon, 11 Aug 2025 17:10:52 +0530
+From: Ritvik Gupta <ritvikfoss@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] rust: kernel: introduce `unsafe_precondition_assert!`
+ macro
+Message-ID: <aJnWxD7qyOOXz543@fedora>
+References: <20250808192005.209188-1-ritvikfoss@gmail.com>
+ <aJm1iWpM_mR7mkMh@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250810-topics-tyr-request_irq2-v8-0-8163f4c4c3a6@collabora.com> <20250810-topics-tyr-request_irq2-v8-4-8163f4c4c3a6@collabora.com>
-Message-ID: <aJnNxMmWarz9MWKH@google.com>
-Subject: Re: [PATCH v8 4/6] rust: irq: add support for threaded IRQs and handlers
-From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Dirk Behme <dirk.behme@de.bosch.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJm1iWpM_mR7mkMh@google.com>
 
-On Sun, Aug 10, 2025 at 09:32:17PM -0300, Daniel Almeida wrote:
-> This patch adds support for threaded IRQs and handlers through
-> irq::ThreadedRegistration and the irq::ThreadedHandler trait.
+> > +    ($cond:expr, $($arg:tt)+) => {
+> > +        $crate::unsafe_precondition_assert!(@inner $cond, ::core::format_args!($($arg)+))
 > 
-> Threaded interrupts are more permissive in the sense that further
-> processing is possible in a kthread. This means that said execution takes
-> place outside of interrupt context, which is rather restrictive in many
-> ways.
-> 
-> Registering a threaded irq is dependent upon having an IrqRequest that
-> was previously allocated by a given device. This will be introduced in
-> subsequent patches.
-> 
-> Tested-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Tamir, taking your fmt series into account, what's the correct
+> replacement for ::core::format_args! here?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Whoops! I wasn't aware of the fmt-series! Thanks for mentioning it :)
 
-> +/// # Examples
-> +///
-> +/// The following is an example of using [`ThreadedRegistration`]. It uses a
-> +/// [`Mutex`](kernel::sync::Mutex) to provide interior mutability.
-> +///
-> +/// ```
-> +/// # use kernel::c_str;
-> +/// # use kernel::device::Bound;
-> +/// # use kernel::irq::{
-> +/// #   self, Flags, IrqRequest, IrqReturn, ThreadedHandler, ThreadedIrqReturn,
-> +/// #   ThreadedRegistration,
-> +/// # };
-> +/// # use kernel::prelude::*;
-> +/// # use kernel::sync::{Arc, Mutex};
+After a quick search, `kernel::prelude::fmt!` type/macro [1,2] seems to be the relevant replacement.
+So, the line would look like:
 
-I would probably remove the # and keep imports visible in the example.
+	`$crate::unsafe_precondition_assert!(@inner $cond, $crate::prelude::fmt!($($arg)+))`
 
-> +/// // Declare a struct that will be passed in when the interrupt fires. The u32
-> +/// // merely serves as an example of some internal data.
-> +/// //
-> +/// // [`irq::ThreadedHandler::handle`] takes `&self`. This example
-> +/// // illustrates how interior mutability can be used when sharing the data
-> +/// // between process context and IRQ context.
-> +/// struct Data {
-> +///     value: Mutex<u32>,
-> +/// }
+Does that sound right?
 
-This example struct should use #[pin_data].
-
-> +///
-> +/// type Handler = Data;
-
-I think the type alias is confusing in this example. I'd either rename
-the struct or use "Data" everywhere.
-
-> +/// impl ThreadedHandler for Handler {
-> +///     // This will run (in a separate kthread) if and only if
-> +///     // [`ThreadedHandler::handle`] returns [`WakeThread`], which it does by
-> +///     // default.
-> +///     fn handle_threaded(&self) -> IrqReturn {
-> +///         let mut data = self.value.lock();
-> +///         *data += 1;
-> +///         IrqReturn::Handled
-> +///     }
-> +/// }
-> +///
-> +/// // Registers a threaded IRQ handler for the given [`IrqRequest`].
-> +/// //
-> +/// // This is executing in process context and assumes that `request` was
-> +/// // previously acquired from a device.
-> +/// fn register_threaded_irq(
-> +///     handler: impl PinInit<Handler, Error>,
-> +///     request: IrqRequest<'_>,
-> +/// ) -> Result<Arc<ThreadedRegistration<Handler>>> {
-> +///     let registration =
-> +///         ThreadedRegistration::new(request, Flags::SHARED, c_str!("my_device"), handler);
-> +///
-> +///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
-> +///
-> +///     {
-> +///         // The data can be accessed from process context too.
-> +///         let mut data = registration.handler().value.lock();
-> +///         *data += 1;
-> +///     }
-> +///
-> +///     Ok(registration)
-> +/// }
-> +/// # Ok::<(), Error>(())
-> +/// ```
-
-Alice
+[1]: https://github.com/Rust-for-Linux/linux/blob/8f5ae30d69d7543eee0d70083daf4de8fe15d585/rust/kernel/prelude.rs#L36
+[2]: https://lore.kernel.org/rust-for-linux/20250719-core-cstr-fanout-1-v2-4-1ab5ba189c6e@gmail.com/
