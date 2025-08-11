@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97232550DD;
-	Mon, 11 Aug 2025 12:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5B22D3A71;
+	Mon, 11 Aug 2025 12:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754916294; cv=pass; b=im3C4ILC+Gy6f0+kiRsxfdRJKA1jw/LkBm14K7zqMHed5+95K+anGfPKhXcMrG2bZskmwp2KSMSNi8RDaVW1EHDNjzIC7iTFxE2J4FxbKTnCRucja9xISzp1hxXkTzNOnUOK4pySQwaPSeqaJuryQ37WLcJFZAg1mcPkemR7nUE=
+	t=1754916976; cv=pass; b=tNdEwqtw/3K1nHMhN512MeSRuGUT8dVSpBnyx+W2tWZhS5nh8Ux1sFFYKKmu0O/v7x5VQuh6kEFIH1bWTeUw2f5qbAN+S/YA4Vq+4uxTcFBqJJYE4bDHoaZqfxwa+Bx/g0HvvruucurBL+t4ZYHqjpabWb53s9l/q4bi5kDbHOU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754916294; c=relaxed/simple;
-	bh=ulnko+f7RhYbqw4rJ0GmLKtW69KU7fq6k2US4VAeWA4=;
+	s=arc-20240116; t=1754916976; c=relaxed/simple;
+	bh=tqTp9yVpcdT4vXKwkCs7JMmSn2cfWp5BI746F/8NzMM=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Dv85gQwstvT9zo7WbljaQ7tqXLNiqx6QXQG6HqzdNOPuu4M8CKJSajwhw+abJOyd7XPfX0yM6/sorp/NgFbkRUx+246We7ynYoJXh2HHohsQhEMRN4Nqj2SV5OoCTmn5/Ld6OiHP0/W/L1yzOPxaCWZ9zfaZL39/cFaS5dpgzAg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ZuuGQRIO; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=MnWnPtBcc2hVAmopZS7+o0X92H5OuwnKnf0WpdSP5NgP5xeRAWDxyPpVI912KZKW8LgOklu1s81nks9uc6TCbzzYt8iVvq5wR/IQW+dRx1ZndecbLreF/V5oK0BDHjPbtq1mLofU5qXPZD/PvoAT8/03P5zBazLh57CAC9v1+08=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=RH8tub5M; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ZuuGQRIO"
-ARC-Seal: i=1; a=rsa-sha256; t=1754916280; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="RH8tub5M"
+ARC-Seal: i=1; a=rsa-sha256; t=1754916949; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=bGgTo0/YKQqNOPrytVrA6Np4r6JiWq7Enb2OsfBOnj17lIZsTs0pKhUcHN9kRZmf0LSXp+TBalhgAk5igueU6tOhndIc7Sz6jvWn5xTz2kKlYcxyZYiY4wm+AkuQLiBCa+bVdvzQyKgk1J8ao4y2jA0OmYxj89CHJ3unt5N1NDs=
+	b=DdJ4aUf2InT4dryqfStAX/Aw5xYE93/JQrEAAkYfjyRL0yDQ+3k4PcMVW9CKSkrT7ZWlbDp0l+7hY2JLGK2Ef8jigQlSJXvTv1uQaGXd2fTfzxTfsfYVeKvgA131jIeg/ZcLvew8tR5QZ6mEWGpDEGDn1NPM/BaP/o/s7JQhUH0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754916280; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ulnko+f7RhYbqw4rJ0GmLKtW69KU7fq6k2US4VAeWA4=; 
-	b=VnqdKbndosnkWXEOHO+199cZ342LFdhHoLinXTzIi0WMv0jPQkP01vleAHKXKkRwKwFs2CXWY4ASeiSRhkaq9igV7+bmG0/4xJ5RLAMWxKmdjeNr/cQNJoO54wCWMVheSg6PL5JtNbC+6gh7ENA+IBi0Xzdz1E2xOda8Kegeh9E=
+	t=1754916949; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=M9GGVyNyOKdJ+YkHugnVzHXtWsO7h0KXofaHhZwbK/0=; 
+	b=T2omoj56lBrIM0wz1sw+nvwG9yjwbV36VXjpKApRDdfQ/j/vcTLI3lSEq4D+IZnkcGyzevfzHYMSpbSjLyJh+LZvHvYXJF5eMP077LVt7nSXumKIkc1aH0HrtfzAEyMr5zKYCB2kZm8NO/sOrGo3Jp8480Gv3P1y6mqttBtQf04=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754916279;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754916949;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=ulnko+f7RhYbqw4rJ0GmLKtW69KU7fq6k2US4VAeWA4=;
-	b=ZuuGQRIOKxWONQNCGjUWlUVkXRh1aRFuzgzoaB70rbsnocvTXGbMxyvxG6Y3fp8U
-	YmFr7KyMOp21k7x4/5vQ9LbyPAAWROlXRTBFaoHP+gEDVBw1+mDJ2WCVJsVduijWopG
-	9cyMUQ4Y6CX5hfQEvEx1K2nSDXt5LCv0PM7j5/+M=
-Received: by mx.zohomail.com with SMTPS id 1754916277144319.23689616237255;
-	Mon, 11 Aug 2025 05:44:37 -0700 (PDT)
+	bh=M9GGVyNyOKdJ+YkHugnVzHXtWsO7h0KXofaHhZwbK/0=;
+	b=RH8tub5MmJN8gtOodZ+GYR5hlZm0EiLVafm/w5ZEUu7zior5xgzlnuNkrjetMcsG
+	GfKOGhA8uBy/3rcKLfM6cKahf+e2vGXL4Lg8iv23Tgjf6mq/wlXvcA153R5zMYF4cDZ
+	u0xvpryqjU/vPYRNKTTyYoSYiMmrP/X5F5paS01I=
+Received: by mx.zohomail.com with SMTPS id 1754916946139376.6117182445307;
+	Mon, 11 Aug 2025 05:55:46 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,60 +44,84 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction for
- io-uring cmd
+Subject: Re: [PATCH v8 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
-Date: Mon, 11 Aug 2025 09:44:22 -0300
-Cc: Benno Lossin <lossin@kernel.org>,
- Caleb Sander Mateos <csander@purestorage.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Jens Axboe <axboe@kernel.dk>,
+In-Reply-To: <CAH5fLggOqsrob-h2v8c5hsnMquJZhXJ2euAub2ia2fjj=NY8Vg@mail.gmail.com>
+Date: Mon, 11 Aug 2025 09:55:29 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Benno Lossin <lossin@kernel.org>,
  linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ Dirk Behme <dirk.behme@de.bosch.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <8416C381-A654-41D4-A731-323CEDE58BB1@collabora.com>
-References: <aJWfl87T3wehIviV@sidongui-MacBookPro.local>
- <DBWX0L4LIOF6.1AVJJV0SMDQ3P@kernel.org>
- <aJXG3wPf9W3usEj2@sidongui-MacBookPro.local>
- <DBXTJQ27RY6K.1R6KUNEXF008N@kernel.org>
- <aJdEbFI2FqSCBt9L@sidongui-MacBookPro.local>
- <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
- <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
- <81C84BD8-D99C-4103-A280-CFC71DF58E3B@collabora.com>
- <aJiwrcq9nz0mUqKh@sidongui-MacBookPro.local>
- <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
- <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
-To: Sidong Yang <sidong.yang@furiosa.ai>
+Message-Id: <77FB27DB-ACE0-4AC4-A3D9-CCF1EB4A34D2@collabora.com>
+References: <20250810-topics-tyr-request_irq2-v8-0-8163f4c4c3a6@collabora.com>
+ <20250810-topics-tyr-request_irq2-v8-3-8163f4c4c3a6@collabora.com>
+ <aJnM1LgUYjTloVwV@google.com>
+ <4EE6F260-5AC9-47AD-9F34-0D6C224A8559@collabora.com>
+ <CAH5fLghV0aVZBBEmjf9CF9gFyG08dH7nFzKHnHM6RiANuSZaMw@mail.gmail.com>
+ <AF48133C-BD57-4EEF-8E4A-ABEECB8A5C49@collabora.com>
+ <CAH5fLggOqsrob-h2v8c5hsnMquJZhXJ2euAub2ia2fjj=NY8Vg@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
 
->=20
-> There is `uring_cmd` callback in `file_operation` at c side. `Pin<&mut =
-IoUringCmd>`
-> would be create in the callback function. But the callback function =
-could be
-> called repeatedly with same `io_uring_cmd` instance as far as I know.
->=20
-> But in c side, there is initialization step `io_uring_cmd_prep()`.
-> How about fill zero pdu in `io_uring_cmd_prep()`? And we could assign =
-a byte
-> as flag in pdu for checking initialized also we should provide 31 =
-bytes except
-> a byte for the flag.
->=20
 
-That was a follow-up question of mine. Can=E2=80=99t we enforce =
-zero-initialization
-in C to get rid of this MaybeUninit? Uninitialized data is just bad in =
-general.
+> On 11 Aug 2025, at 09:43, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> On Mon, Aug 11, 2025 at 2:38=E2=80=AFPM Daniel Almeida
+> <daniel.almeida@collabora.com> wrote:
+>>=20
+>>=20
+>>>> Also, I was getting tons of =E2=80=9Cunreachable_pub=E2=80=9D =
+warnings
+>>>> otherwise, FYI.
+>>>=20
+>>> If you got unreachable_pub warnings, then you are missing =
+re-exports.
+>>>=20
+>>> Alice
+>>=20
+>> The re-exports are as-is in the current patch, did I miss anything? =
+Because I
+>> don=E2=80=99t think so.
+>>=20
+>> In particular, should the irq module itself be private?
+>=20
+> No, the end-user should be able to write
+>=20
+>    use kernel::irq::Flags;
+>=20
+> so the irq module needs to be public.
+>=20
+> Alice
 
-Hopefully this can be done as you've described above, but I don't want =
-to over
-extend my opinion on something I know nothing about.
+Ah, maybe this is the issue then, i.e [0]:
 
-=E2=80=94 Daniel=
+```
+(This requires a re-export in the irq module if you don't have one
+already. Also, I would make the irq module private so that end-users
+import everything via the irq:: path without a sub-module.)
+```
+
+Fine, let me try this again.
+
+=E2=80=94 Daniel
+
+[0]: https://lore.kernel.org/all/aH5TMzJGqzg3wNjK@google.com/=
