@@ -1,182 +1,97 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6870517BEBF
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 12:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754915688; cv=none; b=H7rIMWO4HTICugOB1lEqukqtfuPnCs6KP/b2uHktro6XoNvrUT37Gu156fVUXS269t7DDrwN3FFF4UbJNZQTkG43zixe93kIvZGUiQ917ZaVFUeaVfxkTupqNUkV1MeijnkFTff/s7dylnsT1AgK5KjWS14x6JEAaoygLMXL2bA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754915688; c=relaxed/simple;
-	bh=XPovIlxIpK3Xyq5m0fxGOWM6Yw0u3P4oVgNQIGmTFhc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YUBDUIrpTMrQdIsT9Wb5HRwVook3c6OrTiOeFVx7u5hMgP3wma4F7niyCH2xeyAo4YoiR57GQe9kHoeFQWWJ8k2tBWPr4PITJsyAPEzdH6Azdl6SU5wYJigiOPqdfH8cj8es3XV0ngagWe1PIMnNl0M2Dyy9v7QRnLJvF6NrKCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=Rbxhtke7; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112662D3A83;
+	Mon, 11 Aug 2025 12:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754915901; cv=pass; b=oIX6Hboto15hG2Avt6wOGBcZw05USyft4tcHdosUJNb0GjMX54HiTG7UlK/rXNb5KUDfEKeY2PR2Oi6ifrE6oy3DKyxodaEUW66tYc4Cw0nny4sto1KAokg2i3VnN3S+N4n7VdfXbNjVmc6xXCAyjqJtmrENN5clCC5Pe9WqN1Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754915901; c=relaxed/simple;
+	bh=NFbMZQad2B+B3Dr1/R/+HFea9OlYoyRt+gHpZZeusOA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ukktIRzFgE4wD1IaJJd2xb9CevwDP3/FUGTPhyRnPaxXVAMqo04Byivu9kqDu9FzmiruUtkkFXTJSEfDRtTUt/cX6XAUyBBzrsWFAvGjstnaGXX0TG4fSTyg2Z8pfgSM8amiWhEcBgNxO+ENWD/NF94YuALEKtTbRMyG80+XhOI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=EXiQUWyY; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="Rbxhtke7"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b3f80661991so3696137a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 05:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1754915687; x=1755520487; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jnhz3gg9UqvoEaKu6PtG0eWIp3XZKcHUtlBjEIsc8uo=;
-        b=Rbxhtke7Do6Ln4tLtq8h1ckX80tU+9AHWKU5Rx/rTnAzIRru4dvk8wYDPfow0gx3wF
-         ZXxkylJiiFCeRlF0SP/9RdP0+2bd9JqsNpbXxv7o7KTRRx6OT2fHVEV866luFxX3Lu/M
-         wk8+vKfBea78XyvCcEIGZWb+tLPu8bS/ed1u0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754915687; x=1755520487;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jnhz3gg9UqvoEaKu6PtG0eWIp3XZKcHUtlBjEIsc8uo=;
-        b=EFtw2Zuy2iWetLJvsiPxx8aCn9WuzPW6wun/i8iVd738vnaPGL9dMc5nCIpZSIKnD3
-         SiR1yZSGm/29+AWilRW8BCyrt5j5LFTW8dCVVSAhjudeOyxVz7/HPrZ/apKcK2gFds+q
-         Y82tFKgyQeZ/iGi4oKhEqvT5PIXg9rEvY1SHBFcYit4oN+KfLROpOVV/Luhm7g09ltHm
-         i8MynE/B1y/CKqAdeU51SSL9wFQlDkmAS646XsDiKLMlX3i2ZRUMrZF55msdKGsIG25F
-         7CoHyT2FEWNy3QMxTCHOY7PGYi3RLfh/n/IwKFdV7B5bnzi6tWXnOJIEQkZrg93lJOH/
-         Co+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXQTa/5EiZjoxXiV1gBFFi+BsUhCAN2vjCWgTUDMW3lfemRp8/+c2JKPsztgRRmSdzIe96HM+b6HjkJpGdfmw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyXHbfuU4nNwetfdoYBADTs/Uev8UsmC3xp+Agfl6QDKFv3wZL
-	fQmdAQC1pGYbwcZCQm/Nt6SQQx/PnfwHvkRhPL2Kwkc0M8HLTkUa8XSqhNwBDj2zPGo=
-X-Gm-Gg: ASbGncs1bbZ73xMZwCGpmtFWqH6WczXYbhgITPegGghcYzCNRFvYLFfbhjdWJ+IrMEs
-	KbCUSh7uiG9A+aIL23+SIWB/CZYBc09trQodKm4vkor73AuKtP1IyeLzZ8hfMLYtS3dIb7nuad5
-	V+XwhLmtLrjh2GiD5hBvxpxD94rUMsus/ocWrgdhATzKcPSnbb6vAKCWxMAUgriIKMx3BR33Atd
-	4L8lgLqvtKR1uUm5jZHOcKAcmkDuyRtNTfi5TXMn+DO+klZwi2ylaqtbLXXWFoOU6tg3qRyXT2O
-	YRZ8xw4E+RMk6kzU9EleYC0dvfXLuPEyLx15Mv9Iu/HoVE6zsBtHQb9pzWD2ACIs9YsvCB/aEr2
-	niCvAHZfLIL3P8/D2lKzhQTpr2pbzxLEy2jY/AlYpc/kYHzEUYyNMaOEe
-X-Google-Smtp-Source: AGHT+IHKUm9OnDYHdk/WKwUbriS/iwTepKs5TyQMaFN4XNopewnVVvMHIJNAzd7+96ZNmHDCNZ6O7Q==
-X-Received: by 2002:a17:902:f54d:b0:235:e1e4:edb0 with SMTP id d9443c01a7336-242b0792788mr291538425ad.22.1754915686551;
-        Mon, 11 Aug 2025 05:34:46 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([175.195.128.78])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e899adc3sm273742055ad.118.2025.08.11.05.34.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 05:34:46 -0700 (PDT)
-Date: Mon, 11 Aug 2025 21:34:40 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
- for io-uring cmd
-Message-ID: <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
-References: <aJWfl87T3wehIviV@sidongui-MacBookPro.local>
- <DBWX0L4LIOF6.1AVJJV0SMDQ3P@kernel.org>
- <aJXG3wPf9W3usEj2@sidongui-MacBookPro.local>
- <DBXTJQ27RY6K.1R6KUNEXF008N@kernel.org>
- <aJdEbFI2FqSCBt9L@sidongui-MacBookPro.local>
- <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
- <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
- <81C84BD8-D99C-4103-A280-CFC71DF58E3B@collabora.com>
- <aJiwrcq9nz0mUqKh@sidongui-MacBookPro.local>
- <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="EXiQUWyY"
+ARC-Seal: i=1; a=rsa-sha256; t=1754915875; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=IzY73z6r4ssJL8TFUMNyJ4BPI12C+9QJOnhAYcvwGDUp5mNucGIevzhvJg7GUzX7zBh8Dwep/VhLZK0D4TKK6ihMqIutc4H8tkuQ/7kPWArRvYMV9hkvYLhakzSL7glFpwxgaKVHE01Xftnrzm/fkV2ReyqQ/iCwYYLstM0lpV4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1754915875; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=NFbMZQad2B+B3Dr1/R/+HFea9OlYoyRt+gHpZZeusOA=; 
+	b=dQs2yZrKeDB4o6DZT6ddsBA7cPzsCsGsrOP2PBRHyf1VDl/g5eyAoySlgesdOM5KmRVtaTK3rPo5Cwzq83G0Ao4+a8WwKa1Xy86eU/E9B4fRbCwOh9odUSbd97X46XBXVORQ1h5eMJiYAO02jg0+UWFmtqIh25PlxQGeougOPt8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754915875;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=NFbMZQad2B+B3Dr1/R/+HFea9OlYoyRt+gHpZZeusOA=;
+	b=EXiQUWyYFbqLgGeZfn3sbOk4F3sJ5VOTV0Lj8gGT4fEORBibVj+OGH0Rp9XFt+TR
+	2zXr4zN8zfPhwDjD0CijBr7E6apTwNyGEvhDQ+lUDx5Upgo/AuD+S9w3qFS0tn7dcXC
+	qbj6g+Xj3yyJgMrHmOw41PcRUZgpqN3jUQnsnPGM=
+Received: by mx.zohomail.com with SMTPS id 1754915873419805.6256233376367;
+	Mon, 11 Aug 2025 05:37:53 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v8 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAH5fLghV0aVZBBEmjf9CF9gFyG08dH7nFzKHnHM6RiANuSZaMw@mail.gmail.com>
+Date: Mon, 11 Aug 2025 09:37:36 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ Dirk Behme <dirk.behme@de.bosch.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AF48133C-BD57-4EEF-8E4A-ABEECB8A5C49@collabora.com>
+References: <20250810-topics-tyr-request_irq2-v8-0-8163f4c4c3a6@collabora.com>
+ <20250810-topics-tyr-request_irq2-v8-3-8163f4c4c3a6@collabora.com>
+ <aJnM1LgUYjTloVwV@google.com>
+ <4EE6F260-5AC9-47AD-9F34-0D6C224A8559@collabora.com>
+ <CAH5fLghV0aVZBBEmjf9CF9gFyG08dH7nFzKHnHM6RiANuSZaMw@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Sun, Aug 10, 2025 at 10:06:21PM +0200, Benno Lossin wrote:
-> On Sun Aug 10, 2025 at 4:46 PM CEST, Sidong Yang wrote:
-> > On Sun, Aug 10, 2025 at 11:27:12AM -0300, Daniel Almeida wrote:
-> >> > On 10 Aug 2025, at 10:50, Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >> > 
-> >> > On Sat, Aug 09, 2025 at 10:22:06PM +0200, Benno Lossin wrote:
-> >> >> On Sat Aug 9, 2025 at 2:51 PM CEST, Sidong Yang wrote:
-> >> >>> On Sat, Aug 09, 2025 at 12:18:49PM +0200, Benno Lossin wrote:
-> >> >>>> We'd need to ensure that `borrow_pdu` can only be called if `store_pdu`
-> >> >>>> has been called before. Is there any way we can just ensure that pdu is
-> >> >>>> always initialized? Like a callback that's called once, before the value
-> >> >>>> is used at all?
-> >> >>> 
-> >> >>> I've thought about this. As Celab said, returning `&mut MaybeUninit<[u8;32]> is
-> >> >>> simple and best. Only driver knows it's initialized. There is no way to
-> >> >>> check whether it's initialized with reading the pdu. The best way is to return
-> >> >>> `&mut MaybeUninit<[u8;32]>` and driver initializes it in first time. After 
-> >> >>> init, driver knows it's guranteed that it's initialized so it could call 
-> >> >>> `assume_init_mut()`. And casting to other struct is another problem. The driver
-> >> >>> is responsible for determining how to interpret the PDU, whether by using it
-> >> >>> directly as a byte array or by performing an unsafe cast to another struct.
-> >> >> 
-> >> >> But then drivers will have to use `unsafe` & possibly cast the slice to
-> >> >> a struct? I think that's bad design since we try to avoid unsafe code in
-> >> >> drivers as much as possible. Couldn't we try to ensure from the
-> >> >> abstraction side that any time you create such an object, the driver
-> >> >> needs to provide the pdu data? Or we could make it implement `Default`
-> >> >> and then set it to that before handing it to the driver.
-> >> > 
-> >> > pdu data is [u8; 32] memory space that driver can borrow. this has two kind of
-> >> > issues. The one is that the array is not initialized and another one is it's
-> >> > array type that driver should cast it to private data structure unsafely.
-> >> > The first one could be resolved with returning `&mut MaybeUninit<>`. And the
-> >> > second one, casting issue, is remaining. 
-> >> > 
-> >> > It seems that we need new unsafe trait like below:
-> >> > 
-> >> > /// Pdu should be... repr C or transparent, sizeof <= 20
-> >> > unsafe trait Pdu: Sized {}
-> >> > 
-> >> > /// Returning to casted Pdu type T
-> >> > pub fn pdu<T: Pdu>(&mut self) -> &mut MaybeUninit<T>
-> >> 
-> >> Wait, you receive an uninitialized array, and you´re supposed to cast it to
-> >> T, is that correct? Because that does not fit the signature above.
-> >
-> > Sorry if my intent wasn´t clear. More example below:
-> >
-> > // in rust/kernel/io_uring.rs
-> > unsafe trait Pdu: Sized {}
-> > pub fn pdu<T: Pdu>(&mut self) -> &mut MaybeUninit<T> {
-> >     let inner = unsafe { &mut *self.inner.get() };
-> >     let ptr = &raw mut inner.pdu as *mut MaybeUninit<T>; // the cast here
-> >     unsafe { &mut *ptr }
-> > }
-> >
-> > // in driver code
-> > #[repr(C)] struct MyPdu { value: u64 }
-> > unsafe impl Pdu for MyPdu {}
-> >
-> > // initialize
-> > ioucmd.pdu().write(MyPdu { value: 1 });
-> >
-> > // read or modify
-> > let mypdu = unsafe { ioucmd.pdu().assume_init_mut() };
-> 
-> This is the kind of code I'd like to avoid, since it plans to use
-> `unsafe` in driver code (the `unsafe impl` above is also a problem, but
-> we can solve that with a derive macro).
-> 
-> Where are the entrypoints for `IoUringCmd` for driver code? I imagine
-> that there is some kind of a driver callback (like `probe`, `open` etc)
-> that contains an `Pin<&mut IoUringCmd>` as an argument, right? When is
-> it created, can we control that & just write some default value to the
-> pdu field?
 
-There is `uring_cmd` callback in `file_operation` at c side. `Pin<&mut IoUringCmd>`
-would be create in the callback function. But the callback function could be
-called repeatedly with same `io_uring_cmd` instance as far as I know.
+>> Also, I was getting tons of =E2=80=9Cunreachable_pub=E2=80=9D =
+warnings
+>> otherwise, FYI.
+>=20
+> If you got unreachable_pub warnings, then you are missing re-exports.
+>=20
+> Alice
 
-But in c side, there is initialization step `io_uring_cmd_prep()`.
-How about fill zero pdu in `io_uring_cmd_prep()`? And we could assign a byte
-as flag in pdu for checking initialized also we should provide 31 bytes except
-a byte for the flag.
+The re-exports are as-is in the current patch, did I miss anything? =
+Because I
+don=E2=80=99t think so.
 
-Thanks,
-Sidong
-> 
-> ---
-> Cheers,
-> Benno
+In particular, should the irq module itself be private?=20
+
+
