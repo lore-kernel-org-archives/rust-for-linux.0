@@ -1,66 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFA0284688;
-	Mon, 11 Aug 2025 10:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A96275846
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 10:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754909244; cv=none; b=jUtii+4/lWpbrF6MNt1FCHPN0EQ8w8fyGoDyDnlsk/iKJlWpGNMQ6GIebSs/ZSf5kBKI2N/aPLeM9tcHlsHFO3bSvM0lcayAAg5ZDXaVCiT/QQEcGVBLjzdX1hQ9MsWwtzqrZrNMQA18i9GAaXTqs2HejM8SRuJjhKd2tFVFAFw=
+	t=1754909913; cv=none; b=pqpmRo7NACdm4CdIzLU6f8FaIV6em/BMJaE3NSwoFdo9A09fleUB4yhYiSznLQuDx/wIQdOEwNOddj3sdDgFJVh0bQolPajh4zWXoTLxT+KSA4T0oGMutX+uaC66a/qt+JLDyuAlvWLh6vFuHLldLGFZB2IE8rmztqqD3UFC/JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754909244; c=relaxed/simple;
-	bh=LQU8/Ph8t2p6npAH8god//1ZNaCbmitonsyyBNhJpeE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kzTNujYLmRhsjUHjcDbTxUhzZhfowtbMZPldyGQ0tyzRbiZGlPSrfXI2bLZhx5Es60AHXuBYB1l8GcAjIK5xu9k1Ahjm6rtijasbPr9YHv6hRwExwOzUWSdvbKO4zXNhhpe061DXO8ZA6+gCkWOUu7kOi4kFFchzwUebexZ5Q5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRAVvrzT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754909913; c=relaxed/simple;
+	bh=TOxT2K8UzAbuHX//OTejCpfdS4ER15Cjb0TOQpxNcJk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=b05VqhLEJ2UdE7Q+JEO4vsYriadwb2/aQeMSHsV+G8vrdqd8MXACIzKmOlAi0I3q39TesqTPs7kIAy1utKVbe6w5UPnos3fr8zSJR5b3LVdvVTerzB/97dGqKhVoFRE5u+Yecch252iWlPOMKjMBRm4jieaOLvRN2aI0kIt5gv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3MtQ2wBk; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRAVvrzT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB1CC4CEED;
-	Mon, 11 Aug 2025 10:47:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754909244;
-	bh=LQU8/Ph8t2p6npAH8god//1ZNaCbmitonsyyBNhJpeE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WRAVvrzTlhfM4xpGeNizC8QMuGtwV/JEroIxLBsFkRubXQbGlkk027F8RQvHVc1Vm
-	 yWh5KXBKEpP2snMb14joILR8Xm2qN9wRoySMWz9AIoS9V/hkfh9qRz1ZNO8VfBeqVq
-	 6raspn8BsooMhPrQGSauywsLiOMFcqYgDG9620IeTSBh2eA5EXEvwBHdQBQUL3BWyR
-	 j4HGv05q7Uwzv8l87V4FYrTqgxmVW5iIFQEUaS+Rhi+FepUzMsVAPV6r8fuNcW6xK2
-	 Z9UisnO4s/DgkQfnmRp0XrakmjXf5sZr7Snh4z3wdmq/U7yLCOKqh6hYzSdsgM9a4c
-	 QZGmDq21ZuFSA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, alex.gaynor@gmail.com,
- ojeda@kernel.org
-Cc: aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
- linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
- rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de,
- tmgross@umich.edu, acourbot@nvidia.com, daniel.almeida@collabora.com
-Subject: Re: [PATCH v1 1/2] rust: Add cpu_relax() helper
-In-Reply-To: <20250811041039.3231548-2-fujita.tomonori@gmail.com>
-References: <20250811041039.3231548-1-fujita.tomonori@gmail.com>
- <btV8FNpdoKJ0AyY7M-Rlo8b-iV7kgsatB9XV5VgY4GTQRxPlWfMiBvngzXo1blvuezqJ_8PKIdORtVXf7pc-Kg==@protonmail.internalid>
- <20250811041039.3231548-2-fujita.tomonori@gmail.com>
-Date: Mon, 11 Aug 2025 12:45:13 +0200
-Message-ID: <871ppigmrq.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3MtQ2wBk"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-459d7da3647so36074615e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 03:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754909909; x=1755514709; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6VBe2G11vJFi6UMiG8m5vVj3u8k4cJ5Bq1V5ylB2VXQ=;
+        b=3MtQ2wBksb1lMRjHRPwZQ6G9jnuyzPmCMHYI/9n33KJ9ls1EAltDbX8KRbGWB+EvDI
+         V9/OdBUNL4kZDh7I5yJo3DkvU//PVyjySbXSWzkbODbLWc7VF+VV58umQkYrRtJrVj5q
+         Zp+5aCnlFGQIhnVqXrgK73l0rwtSuo1Fe1w6LSc6fdD/qe6akNbKgh4GEL6/3yPaTsXz
+         zXAolUDuSxi0HKNDDi4qKjaqkawoO5onSaI2m5p2kBHctmXlJolBXM8ArERg4jaPWs3h
+         04gEMQT+UaExqHoEVe9T/OIdM5OmTn3ZEBuXy2kWfgu7wnldLqRTySLc7dYwsOGyW1gu
+         tYww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754909909; x=1755514709;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6VBe2G11vJFi6UMiG8m5vVj3u8k4cJ5Bq1V5ylB2VXQ=;
+        b=socYwCA3aglEfT3RRf+sci67mySZKqbBlF7aX08QXu213gcXN1S2lgkhEKk6yfDHla
+         /xsT2n6MixiqPQnrVm9wYzWqUw7KPuWcnFbkhVC+VEpcxoq8TcAdyo3JmZII+1VQTQrM
+         OS/Te0WvtDPj6u0NoozP88cL7sf5vhsLdIat8luzW9GI+PWfDgXaKDU1d01IO9rbvTUJ
+         n3e0tEeGHpSI/GWJEM3M2V2vsDksAIboJXXIMXSigXBfhreDwpFtBiPUL/TdFzp+fICz
+         KM3CCUMmkFcMl3Pu9ubIWdwC65Ji7DK89XfHP5yikB8LAYl7y/VShmMYRTcyDiBFla3u
+         UYRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOSG7io0ZiHPx9849BVMcwKsSdI9+EZUtm8AD2nrAbpv+CgLricNFD8ia3AEJVFonfMjHvpp1dwJFhVUCzPA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvQqe7s8w9QH9o5cDuNzE1vguIdwRgrt6ZFr5odOBh3Ot/A2H5
+	KynipSYbgCjnQ2nKE4r+t2AhZUJvYhJsWfmDgpjL4eb4ERgIQ/bHKq1YvE2NtBvXsN2TCTkPhPE
+	LS3jxDehm7Ogeq7t0Sg==
+X-Google-Smtp-Source: AGHT+IG8sKzGdKyWVo6N+Tazm1JzwCygSw4ih7pHvSmuGIdELFLS7ZBU3K2iJtSgj1DIhq+h6UpYCJqpemM7GTw=
+X-Received: from wmbhj11.prod.google.com ([2002:a05:600c:528b:b0:458:b662:fbc4])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:310d:b0:456:a1b:e906 with SMTP id 5b1f17b1804b1-459f4fc2d8emr103138305e9.33.1754909908982;
+ Mon, 11 Aug 2025 03:58:28 -0700 (PDT)
+Date: Mon, 11 Aug 2025 10:58:28 +0000
+In-Reply-To: <20250810-topics-tyr-request_irq2-v8-3-8163f4c4c3a6@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20250810-topics-tyr-request_irq2-v8-0-8163f4c4c3a6@collabora.com> <20250810-topics-tyr-request_irq2-v8-3-8163f4c4c3a6@collabora.com>
+Message-ID: <aJnM1LgUYjTloVwV@google.com>
+Subject: Re: [PATCH v8 3/6] rust: irq: add support for non-threaded IRQs and handlers
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Dirk Behme <dirk.behme@de.bosch.com>
+Content-Type: text/plain; charset="utf-8"
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+On Sun, Aug 10, 2025 at 09:32:16PM -0300, Daniel Almeida wrote:
+> This patch adds support for non-threaded IRQs and handlers through
+> irq::Registration and the irq::Handler trait.
+> 
+> Registering an irq is dependent upon having a IrqRequest that was
+> previously allocated by a given device. This will be introduced in
+> subsequent patches.
+> 
+> Tested-by: Joel Fernandes <joelagnelf@nvidia.com>
+> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-> Add cpu_relax() helper in preparation for supporting
-> read_poll_timeout().
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
+> index d6306415f561f94a05b1c059eaa937b0b585471d..f7d89a46ad1894dda5a0a0f53683ff97f2359a4e 100644
+> --- a/rust/kernel/irq.rs
+> +++ b/rust/kernel/irq.rs
+> @@ -13,5 +13,11 @@
+>  /// Flags to be used when registering IRQ handlers.
+>  pub mod flags;
+>  
+> +/// IRQ allocation and handling.
+> +pub mod request;
 
+Same comment here about removing `pub` from `mod request`.
 
-Best regards,
-Andreas Hindborg
+>  #[doc(inline)]
+>  pub use flags::Flags;
+> +
+> +#[doc(inline)]
+> +pub use request::{Handler, IrqRequest, IrqReturn, Registration};
 
+With `pub` removed above, you don't need doc(inline) here.
 
+Alice
