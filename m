@@ -1,65 +1,65 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A96275846
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 10:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F255F2BE65C
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 11:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754909913; cv=none; b=pqpmRo7NACdm4CdIzLU6f8FaIV6em/BMJaE3NSwoFdo9A09fleUB4yhYiSznLQuDx/wIQdOEwNOddj3sdDgFJVh0bQolPajh4zWXoTLxT+KSA4T0oGMutX+uaC66a/qt+JLDyuAlvWLh6vFuHLldLGFZB2IE8rmztqqD3UFC/JU=
+	t=1754910152; cv=none; b=XqevPFIreQIdTjVbmStv3dCKZ53awnrlvS9Kk/wae8JZTDz2d1jrAf1IBQ08w7rNeVJktidju8uBXL7Iv7JQUB9QEoboiYVRF+iLd9lZHXPcmgD9Fl7EJeXok44PW8yDPiqvRkT9qRg+wkn3ttzU4d9F+hVAivmaf62vusilZXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754909913; c=relaxed/simple;
-	bh=TOxT2K8UzAbuHX//OTejCpfdS4ER15Cjb0TOQpxNcJk=;
+	s=arc-20240116; t=1754910152; c=relaxed/simple;
+	bh=PZvpmMGKZoBLVkqYrM3rKvbs5tN16syyK8pG0HEe30E=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=b05VqhLEJ2UdE7Q+JEO4vsYriadwb2/aQeMSHsV+G8vrdqd8MXACIzKmOlAi0I3q39TesqTPs7kIAy1utKVbe6w5UPnos3fr8zSJR5b3LVdvVTerzB/97dGqKhVoFRE5u+Yecch252iWlPOMKjMBRm4jieaOLvRN2aI0kIt5gv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3MtQ2wBk; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=VGoXBdQrE+3ITBDJ2UqN8Vd5tedyvDFr1E+ma090cX3SNjCbK63o5iAhJESKcslcSGwlNSXwV4yeKzetT/iN6ELR3oHm+wJbrjur2X0I0f5iCfLFv5iUuf5Ti8En3UKOObiRv7sqWSZbSVGnNsQd3RvBXM/bQZMS4Dwfdn3TU3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q4NDh5La; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3MtQ2wBk"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-459d7da3647so36074615e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 03:58:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q4NDh5La"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-459dfbece11so21677545e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 04:02:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754909909; x=1755514709; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1754910149; x=1755514949; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6VBe2G11vJFi6UMiG8m5vVj3u8k4cJ5Bq1V5ylB2VXQ=;
-        b=3MtQ2wBksb1lMRjHRPwZQ6G9jnuyzPmCMHYI/9n33KJ9ls1EAltDbX8KRbGWB+EvDI
-         V9/OdBUNL4kZDh7I5yJo3DkvU//PVyjySbXSWzkbODbLWc7VF+VV58umQkYrRtJrVj5q
-         Zp+5aCnlFGQIhnVqXrgK73l0rwtSuo1Fe1w6LSc6fdD/qe6akNbKgh4GEL6/3yPaTsXz
-         zXAolUDuSxi0HKNDDi4qKjaqkawoO5onSaI2m5p2kBHctmXlJolBXM8ArERg4jaPWs3h
-         04gEMQT+UaExqHoEVe9T/OIdM5OmTn3ZEBuXy2kWfgu7wnldLqRTySLc7dYwsOGyW1gu
-         tYww==
+        bh=XoFLgAaU3dTMlkB3ivuNiJh7YAxvoPGHMa/b1QxLM0U=;
+        b=q4NDh5Latt5zJ/bzhTzRV3KKeCBgd40ySBv5apIR4hMVMPIGRbT80C5QupvbSq3vEc
+         WlJt0AhlF9IBFWwVF3Z76EyLrCpqSWKMa0JSPwbUNGZSPunKLL/1zinw3oJyTZf0dPef
+         nhyigFjmRhWVh3P95UhwW2jfZqOLZEZ2i82H0Zl4qF0BgCrUFlKE5r6qZ+KrBLtbr58U
+         2J9FbkEIYLa8fOFnWjamOJUuqH6OYJQWEHzTsLznt4toYX560yL7/53oSGK+GYfShXvv
+         RQxEYQrmAYgzFK542LL6JHUxMOcQ5OdMYo/nsve9tscUxy+spFW48OgK/9Ko9O6DKKa+
+         OXqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754909909; x=1755514709;
+        d=1e100.net; s=20230601; t=1754910149; x=1755514949;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6VBe2G11vJFi6UMiG8m5vVj3u8k4cJ5Bq1V5ylB2VXQ=;
-        b=socYwCA3aglEfT3RRf+sci67mySZKqbBlF7aX08QXu213gcXN1S2lgkhEKk6yfDHla
-         /xsT2n6MixiqPQnrVm9wYzWqUw7KPuWcnFbkhVC+VEpcxoq8TcAdyo3JmZII+1VQTQrM
-         OS/Te0WvtDPj6u0NoozP88cL7sf5vhsLdIat8luzW9GI+PWfDgXaKDU1d01IO9rbvTUJ
-         n3e0tEeGHpSI/GWJEM3M2V2vsDksAIboJXXIMXSigXBfhreDwpFtBiPUL/TdFzp+fICz
-         KM3CCUMmkFcMl3Pu9ubIWdwC65Ji7DK89XfHP5yikB8LAYl7y/VShmMYRTcyDiBFla3u
-         UYRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOSG7io0ZiHPx9849BVMcwKsSdI9+EZUtm8AD2nrAbpv+CgLricNFD8ia3AEJVFonfMjHvpp1dwJFhVUCzPA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvQqe7s8w9QH9o5cDuNzE1vguIdwRgrt6ZFr5odOBh3Ot/A2H5
-	KynipSYbgCjnQ2nKE4r+t2AhZUJvYhJsWfmDgpjL4eb4ERgIQ/bHKq1YvE2NtBvXsN2TCTkPhPE
-	LS3jxDehm7Ogeq7t0Sg==
-X-Google-Smtp-Source: AGHT+IG8sKzGdKyWVo6N+Tazm1JzwCygSw4ih7pHvSmuGIdELFLS7ZBU3K2iJtSgj1DIhq+h6UpYCJqpemM7GTw=
-X-Received: from wmbhj11.prod.google.com ([2002:a05:600c:528b:b0:458:b662:fbc4])
+        bh=XoFLgAaU3dTMlkB3ivuNiJh7YAxvoPGHMa/b1QxLM0U=;
+        b=ET6zrIZDBHnWIhttqrogfTd+iXzUejEHPpwXfUtPVp7lDQzRam74MW+CVjt8ViPfwd
+         /oJg1dckyd9e1yyYSQfmQGyNiDX5hiyZa8a+EYmupLh/a2qV5rArcK3YTgug7RPkIdji
+         9xbvOHQJaSVgRSE+lUmsnlcUlXWoxnILfyVIkAe+ZH+cWooM3cqm2vwHwdaKp7HK7CAZ
+         x5LynArcLDiWVC3ANmHIEUPH+fTPi8lf8clYg+xfu1eV6aDYR/Cbsj8xWeSEMcWYVucK
+         HhXhJWLyysO6R+cqtcsKq3RKfDvfvI+J8cWeKq88SeIDYiSq7ug/ADsfXHHJcg6T0gYQ
+         eN3A==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Ym4XVGZ8l8Bs3AoqA5cilXPODsE0Dif4c+ILUOWU/6NFyYJpnyhjGOMAVU71mTqmJFSM2tazACb5a2Zclg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqVf0+1Ji8swZor5SqO43gvyEJqJK+14gkmOwVv371l+WpzdXX
+	pNsIOud4xI2UkTQhfrKYO7C4R52u7NxiQbzi5hgq9WJImTJ9HvMeKMnfSGnvi90zJ5u54tPUx0K
+	/mHzUHjCaTJOVPaUqvA==
+X-Google-Smtp-Source: AGHT+IEHj90/RHzHpvJsu5QjMlw4g2edIeCdvOyz1s9R5fzcMKzgwi4o+H+e3XIfZKtOyXsp93grjLNDgnKyY0Q=
+X-Received: from wmbay18.prod.google.com ([2002:a05:600c:1e12:b0:459:e01c:3d6d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:310d:b0:456:a1b:e906 with SMTP id 5b1f17b1804b1-459f4fc2d8emr103138305e9.33.1754909908982;
- Mon, 11 Aug 2025 03:58:28 -0700 (PDT)
-Date: Mon, 11 Aug 2025 10:58:28 +0000
-In-Reply-To: <20250810-topics-tyr-request_irq2-v8-3-8163f4c4c3a6@collabora.com>
+ 2002:a05:600c:15d1:b0:459:e025:8c5b with SMTP id 5b1f17b1804b1-459f60d2211mr79186135e9.30.1754910149427;
+ Mon, 11 Aug 2025 04:02:29 -0700 (PDT)
+Date: Mon, 11 Aug 2025 11:02:28 +0000
+In-Reply-To: <20250810-topics-tyr-request_irq2-v8-4-8163f4c4c3a6@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250810-topics-tyr-request_irq2-v8-0-8163f4c4c3a6@collabora.com> <20250810-topics-tyr-request_irq2-v8-3-8163f4c4c3a6@collabora.com>
-Message-ID: <aJnM1LgUYjTloVwV@google.com>
-Subject: Re: [PATCH v8 3/6] rust: irq: add support for non-threaded IRQs and handlers
+References: <20250810-topics-tyr-request_irq2-v8-0-8163f4c4c3a6@collabora.com> <20250810-topics-tyr-request_irq2-v8-4-8163f4c4c3a6@collabora.com>
+Message-ID: <aJnNxMmWarz9MWKH@google.com>
+Subject: Re: [PATCH v8 4/6] rust: irq: add support for threaded IRQs and handlers
 From: Alice Ryhl <aliceryhl@google.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -73,12 +73,17 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Joel Fernandes <joelagnelf@nvidia.com>, Dirk Behme <dirk.behme@de.bosch.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, Aug 10, 2025 at 09:32:16PM -0300, Daniel Almeida wrote:
-> This patch adds support for non-threaded IRQs and handlers through
-> irq::Registration and the irq::Handler trait.
+On Sun, Aug 10, 2025 at 09:32:17PM -0300, Daniel Almeida wrote:
+> This patch adds support for threaded IRQs and handlers through
+> irq::ThreadedRegistration and the irq::ThreadedHandler trait.
 > 
-> Registering an irq is dependent upon having a IrqRequest that was
-> previously allocated by a given device. This will be introduced in
+> Threaded interrupts are more permissive in the sense that further
+> processing is possible in a kthread. This means that said execution takes
+> place outside of interrupt context, which is rather restrictive in many
+> ways.
+> 
+> Registering a threaded irq is dependent upon having an IrqRequest that
+> was previously allocated by a given device. This will be introduced in
 > subsequent patches.
 > 
 > Tested-by: Joel Fernandes <joelagnelf@nvidia.com>
@@ -87,25 +92,74 @@ On Sun, Aug 10, 2025 at 09:32:16PM -0300, Daniel Almeida wrote:
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
-> index d6306415f561f94a05b1c059eaa937b0b585471d..f7d89a46ad1894dda5a0a0f53683ff97f2359a4e 100644
-> --- a/rust/kernel/irq.rs
-> +++ b/rust/kernel/irq.rs
-> @@ -13,5 +13,11 @@
->  /// Flags to be used when registering IRQ handlers.
->  pub mod flags;
->  
-> +/// IRQ allocation and handling.
-> +pub mod request;
+> +/// # Examples
+> +///
+> +/// The following is an example of using [`ThreadedRegistration`]. It uses a
+> +/// [`Mutex`](kernel::sync::Mutex) to provide interior mutability.
+> +///
+> +/// ```
+> +/// # use kernel::c_str;
+> +/// # use kernel::device::Bound;
+> +/// # use kernel::irq::{
+> +/// #   self, Flags, IrqRequest, IrqReturn, ThreadedHandler, ThreadedIrqReturn,
+> +/// #   ThreadedRegistration,
+> +/// # };
+> +/// # use kernel::prelude::*;
+> +/// # use kernel::sync::{Arc, Mutex};
 
-Same comment here about removing `pub` from `mod request`.
+I would probably remove the # and keep imports visible in the example.
 
->  #[doc(inline)]
->  pub use flags::Flags;
-> +
-> +#[doc(inline)]
-> +pub use request::{Handler, IrqRequest, IrqReturn, Registration};
+> +/// // Declare a struct that will be passed in when the interrupt fires. The u32
+> +/// // merely serves as an example of some internal data.
+> +/// //
+> +/// // [`irq::ThreadedHandler::handle`] takes `&self`. This example
+> +/// // illustrates how interior mutability can be used when sharing the data
+> +/// // between process context and IRQ context.
+> +/// struct Data {
+> +///     value: Mutex<u32>,
+> +/// }
 
-With `pub` removed above, you don't need doc(inline) here.
+This example struct should use #[pin_data].
+
+> +///
+> +/// type Handler = Data;
+
+I think the type alias is confusing in this example. I'd either rename
+the struct or use "Data" everywhere.
+
+> +/// impl ThreadedHandler for Handler {
+> +///     // This will run (in a separate kthread) if and only if
+> +///     // [`ThreadedHandler::handle`] returns [`WakeThread`], which it does by
+> +///     // default.
+> +///     fn handle_threaded(&self) -> IrqReturn {
+> +///         let mut data = self.value.lock();
+> +///         *data += 1;
+> +///         IrqReturn::Handled
+> +///     }
+> +/// }
+> +///
+> +/// // Registers a threaded IRQ handler for the given [`IrqRequest`].
+> +/// //
+> +/// // This is executing in process context and assumes that `request` was
+> +/// // previously acquired from a device.
+> +/// fn register_threaded_irq(
+> +///     handler: impl PinInit<Handler, Error>,
+> +///     request: IrqRequest<'_>,
+> +/// ) -> Result<Arc<ThreadedRegistration<Handler>>> {
+> +///     let registration =
+> +///         ThreadedRegistration::new(request, Flags::SHARED, c_str!("my_device"), handler);
+> +///
+> +///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
+> +///
+> +///     {
+> +///         // The data can be accessed from process context too.
+> +///         let mut data = registration.handler().value.lock();
+> +///         *data += 1;
+> +///     }
+> +///
+> +///     Ok(registration)
+> +/// }
+> +/// # Ok::<(), Error>(())
+> +/// ```
 
 Alice
