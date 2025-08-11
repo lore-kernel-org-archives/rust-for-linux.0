@@ -1,270 +1,269 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229A4253958;
-	Mon, 11 Aug 2025 14:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6DD25D558
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 14:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754922901; cv=none; b=Pg5ZkVZstW4cMtioXKo7AYgq+8hLjXYgtqUfZZm5IwI5SXjqLz4oQ/ia1c0qSBN/52hm4EalYNZUsAnnu+Wxo5T0jjFIhA+xNk53U8DyyuUqY/HqTq+rVANnh41Fqa/YHbW/pCOi5BFjt6LmNYtWewdioxamY6XaJ7UcC0+dWo4=
+	t=1754923082; cv=none; b=T1b+BsuXNvDeaHFgi1RPxLv9FTSVJWjueWcqgpjKNz2GnlyNQ6rlhUrQxGKxz15bIRqVzXD/yNAt55npk+Fh5njvVpogNQUCJNCWMVQC34/3p71bNl7Wh+9T8MKSCB1xwYRZ2M2+0d485pl2IjvJimzCpF9b7W8WX/DTthAlBkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754922901; c=relaxed/simple;
-	bh=kp+heYHj8N1j8ackGeFHTYbZTNiWqigm8+L8Yk/CwP8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MiXMO8e3zoJAMLyTOqyMux0a60YaKQPURTmCAup0qiy1xRCDLdLsnuYaZjVb7FmcLc5xJgLH1Sk78lusFsajbC3DM/MbBuM+hVXBqanh7ZxIWD6KTWnR2Llpibh6ODdjfem+Pd+sjUeslFuvOzqzu/PxzdUFA2xMlszBAC2Jtu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2BBC52641;
-	Mon, 11 Aug 2025 07:34:51 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 602813F738;
-	Mon, 11 Aug 2025 07:34:53 -0700 (PDT)
-Date: Mon, 11 Aug 2025 16:34:30 +0200
-From: Beata Michalska <beata.michalska@arm.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Janne Grunau <j@jannau.net>
-Subject: Re: [PATCH v2 3/3] rust: xarray: add `insert` and `reserve`
-Message-ID: <aJn_dtWDcoscYpgV@arm.com>
-References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
- <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com>
- <aJnojv8AWj2isnit@arm.com>
- <CAJ-ks9=BU2jfT-MPzxDcXrZj7uQkKbVm6WhzGiJsM_628b2kmg@mail.gmail.com>
+	s=arc-20240116; t=1754923082; c=relaxed/simple;
+	bh=kO1JB1VmeHgW6zo6ygzZHs1c8xvTe+S4IMczMwehw00=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IMZDivfri5QxmHUqqm/Qwi79Ap3Z70odh7AZzgXYHoVV5jU+jf8p4eMhmRRWDyI9j1S7hGGfY/u1X5ueZpnWxh0Dtk3pb6g5rizf1qoUhn5M0FHWAg2Xh0w2bT6nj0k7tZelZ7YIEzGnITFneTBf0Z2FBNNKdc850L4644ASg90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=weEn2iwH; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="weEn2iwH"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3b783ea502eso3128566f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 07:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754923077; x=1755527877; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K+z3k6Ua1tsSSnOHatF9KK1NYrriwb9RYvKnWmfP/Fo=;
+        b=weEn2iwHXmVMOCm/xOXbwW7nQErwXs7Jye7e/mcjS1oHn5ij+pEE6RKIT43IitWCrc
+         123I0llgP/ayBwTJTOD8FVBs4mCwgIOHM9O3vJaEg6MG6yL4vvgIFP0FjaZIFKNkU/XN
+         OtTGFDWRkl3R86TAGQUOrt6CBkZ0Cn3EARRk6WHzEpHD/HVLalLri3WYYf/oP0z9igKn
+         iD5Ue82W/CP7qVxK0QlSKThI22YrbfWwLcoizn8sQd8sdi1FFZNHccHV5/b1tR5jPTZa
+         XIzGSnJ+suyLIY4SXFiBctzjBVobdy8fYHeFKjtEipZk45tS5Gq2G7HgiAjPHGVUpIrO
+         QZVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754923077; x=1755527877;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K+z3k6Ua1tsSSnOHatF9KK1NYrriwb9RYvKnWmfP/Fo=;
+        b=kP8+EgLQkWAEL56LfBu6l1HW9XFyHW7F/lvGmrTgnugvk+tdO9XVJ6l+hj1bBD7au4
+         j/Gy4Mms6mZo6QYjKajscYAf/o/jKJ4ZmjLZ4oVwOD3bFh9QNHXWLOuOZtXieLEbEtP3
+         uzkMOPKZHRkRe10P6LVulUKA30cRGsq5I+VWoHV4y7hBJ6cFjbkNFCOQhBh4W6Vy5OOL
+         T973fQvn8zg6k1vB63ZBEdQiUlG0hhg2Qwf/5wBRWtR0wHKIK9Yh3qXGFeMomAi0eZIY
+         XgcYclwNvVEQP95tnlxyevuLLouIPPLLcAcZCC6boO79qBTi9qANvqeZOeCcqOo/lLjR
+         retA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOYUSKVOx0/b9itJa/d7ihFxJuApX62CZvhNAYMsc5xMmZ8ATZKnorL6XHfbFUMHitRLbnlE3zVSQmtbi2hg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJhqtyQPLuOYlKNtORFCcRMPNcfdBak4X10Q65J2V0PiG2XIEI
+	dmzNn9DroQBBH+Ri2w68sWNsGtpqxaIbPXzSa1S1LXU6udvvk640lfl3koF5lXUhbB5iHd1UXJs
+	+zLgU+HIeczdE4SOdOij9Zt8PUa/qadBh7z+dI16a
+X-Gm-Gg: ASbGncvxXx+0DO6aQGK/wemdzMfgcOfBs9d0Nzm1gRgFXtWlvLMAhupK0d+nz8FErip
+	NVWXenK6y2Xj2gUEbXtICYM1ZonPgiM0EKhNfD1zPMNwtUIIT1IhVMCRq1aPw7ngb+lteMKNCA+
+	+Tv8HOuE8IVI9RILtOwYFm6V9suvpGXogMZ7YmHXerq0FcJ32oi4PmbwKamilJ3ZZDqRG1Pom0H
+	bLfe+lp
+X-Google-Smtp-Source: AGHT+IE/Frgb3ZlY2MCzOV2I5cZU+C8DcXR8cxM8f86Ka67fehrhKUAUXkGM5NC5xvbtWIrLzx/eTMLVG4wd/T3IpUE=
+X-Received: by 2002:a05:6000:2481:b0:3a5:5130:1c71 with SMTP id
+ ffacd0b85a97d-3b910ecf283mr134206f8f.0.1754923076907; Mon, 11 Aug 2025
+ 07:37:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9=BU2jfT-MPzxDcXrZj7uQkKbVm6WhzGiJsM_628b2kmg@mail.gmail.com>
+References: <20250811-irq-bound-device-v2-1-d73ebb4a50a2@google.com>
+ <aJn2ogBSmedhpuCa@Mac.home> <CAH5fLghitfmSOByu4ZRmhwdsOadzJOLei_qrAjNM+V15spq44w@mail.gmail.com>
+ <aJn9M3WPcI_ZGems@Mac.home> <CAH5fLgg+1FtiHkXOzKLHFP-gRrq1Dq8yUO4RmyE7tM4aSDYioA@mail.gmail.com>
+ <aJn-q-SebbQoyiyy@Mac.home>
+In-Reply-To: <aJn-q-SebbQoyiyy@Mac.home>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 11 Aug 2025 16:37:44 +0200
+X-Gm-Features: Ac12FXzBwx5G7tLxLwgUz7FQbJ9ALGarXtm0IVz3Ujr5_Yy2TvPeR4j1O5s2IRw
+Message-ID: <CAH5fLgicWki8Z+ne9fMn4KbQYYz340FhpOONU5dCCMwfo0wnhg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: irq: add &Device<Bound> argument to irq callbacks
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 11, 2025 at 09:09:56AM -0400, Tamir Duberstein wrote:
-> On Mon, Aug 11, 2025 at 8:57 AM Beata Michalska <beata.michalska@arm.com> wrote:
-> >
-> > Hi Tamir,
-> >
-> > Apologies for such a late drop.
-> 
-> Hi Beata, no worries, thanks for your review.
-> 
-> >
-> > On Sun, Jul 13, 2025 at 08:05:49AM -0400, Tamir Duberstein wrote:
-[snip] ...
-> > > +/// A reserved slot in an array.
-> > > +///
-> > > +/// The slot is released when the reservation goes out of scope.
-> > > +///
-> > > +/// Note that the array lock *must not* be held when the reservation is filled or dropped as this
-> > > +/// will lead to deadlock. [`Reservation::fill_locked`] and [`Reservation::release_locked`] can be
-> > > +/// used in context where the array lock is held.
-> > > +#[must_use = "the reservation is released immediately when the reservation is unused"]
-> > > +pub struct Reservation<'a, T: ForeignOwnable> {
-> > > +    xa: &'a XArray<T>,
-> > > +    index: usize,
-> > > +}
-> > > +
-[snip] ...
-> > > +
-> > > +impl<T: ForeignOwnable> Drop for Reservation<'_, T> {
-> > > +    fn drop(&mut self) {
-> > > +        // NB: Errors here are possible since `Guard::store` does not honor reservations.
-> > > +        let _: Result = self.release_inner(None);
-> > This seems bit risky as one can drop the reservation while still holding the
-> > lock?
-> 
-> Yes, that's true. The only way to avoid it would be to make the
-> reservation borrowed from the guard, but that would exclude usage
-> patterns where the caller wants to reserve and fulfill in different
-> critical sections.
-> 
-> Do you have a specific suggestion?
-I guess we could try with locked vs unlocked `Reservation' types, which would
-have different Drop implementations, and providing a way to convert locked into
-unlocked. Just thinking out loud, so no, nothing specific here.
-At very least we could add 'rust_helper_spin_assert_is_held() ?'
+On Mon, Aug 11, 2025 at 4:31=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
 >
-> > > +    }
-> > >  }
+> On Mon, Aug 11, 2025 at 04:25:50PM +0200, Alice Ryhl wrote:
+> > On Mon, Aug 11, 2025 at 4:24=E2=80=AFPM Boqun Feng <boqun.feng@gmail.co=
+m> wrote:
 > > >
-> > >  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
-> > > @@ -282,3 +617,136 @@ unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
-> > >  // SAFETY: `XArray<T>` serialises the interior mutability it provides so it is `Sync` iff `T` is
-> > >  // `Send`.
-> > >  unsafe impl<T: ForeignOwnable + Send> Sync for XArray<T> {}
-> > > +
-> > > +#[macros::kunit_tests(rust_xarray_kunit)]
-> > > +mod tests {
-> > > +    use super::*;
-> > > +    use pin_init::stack_pin_init;
-> > > +
-> > > +    fn new_kbox<T>(value: T) -> Result<KBox<T>> {
-> > > +        KBox::new(value, GFP_KERNEL).map_err(Into::into)
-> > I believe this should be GFP_ATOMIC as it is being called while holding the xa
-> > lock.
-> 
-> I'm not sure what you mean - this function can be called in any
-> context, and besides: it is test-only code.
-Actually it cannot: allocations using GFP_KERNEL can sleep so should not be
-called from atomic context, which is what is happening in the test cases.
+> > > On Mon, Aug 11, 2025 at 04:05:31PM +0200, Alice Ryhl wrote:
+> > > > On Mon, Aug 11, 2025 at 3:56=E2=80=AFPM Boqun Feng <boqun.feng@gmai=
+l.com> wrote:
+> > > > >
+> > > > > On Mon, Aug 11, 2025 at 12:33:51PM +0000, Alice Ryhl wrote:
+> > > > > [...]
+> > > > > > @@ -207,8 +207,8 @@ pub fn new<'a>(
+> > > > > >              inner <- Devres::new(
+> > > > > >                  request.dev,
+> > > > > >                  try_pin_init!(RegistrationInner {
+> > > > > > -                    // SAFETY: `this` is a valid pointer to th=
+e `Registration` instance
+> > > > > > -                    cookie: unsafe { &raw mut (*this.as_ptr())=
+.handler }.cast(),
+> > > > > > +                    // INVARIANT: `this` is a valid pointer to=
+ the `Registration` instance
+> > > > > > +                    cookie: this.as_ptr().cast::<c_void>(),
+> > > > >
+> > > > > At this moment the `Regstration` is not fully initialized...
+> > > > >
+> > > > > >                      irq: {
+> > > > > >                          // SAFETY:
+> > > > > >                          // - The callbacks are valid for use w=
+ith request_irq.
+> > > > > > @@ -221,7 +221,7 @@ pub fn new<'a>(
+> > > > > >                                  Some(handle_irq_callback::<T>)=
+,
+> > > > > >                                  flags.into_inner(),
+> > > > > >                                  name.as_char_ptr(),
+> > > > > > -                                (&raw mut (*this.as_ptr()).han=
+dler).cast(),
+> > > > > > +                                this.as_ptr().cast::<c_void>()=
+,
+> > > > > >                              )
+> > > > >
+> > > > > ... and interrupt can happen right after request_irq() ...
+> > > > >
+> > > > > >                          })?;
+> > > > > >                          request.irq
+> > > > > > @@ -258,9 +258,13 @@ pub fn synchronize(&self, dev: &Device<Bou=
+nd>) -> Result {
+> > > > > >  ///
+> > > > > >  /// This function should be only used as the callback in `requ=
+est_irq`.
+> > > > > >  unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32=
+, ptr: *mut c_void) -> c_uint {
+> > > > > > -    // SAFETY: `ptr` is a pointer to T set in `Registration::n=
+ew`
+> > > > > > -    let handler =3D unsafe { &*(ptr as *const T) };
+> > > > > > -    T::handle(handler) as c_uint
+> > > > > > +    // SAFETY: `ptr` is a pointer to `Registration<T>` set in =
+`Registration::new`
+> > > > > > +    let registration =3D unsafe { &*(ptr as *const Registratio=
+n<T>) };
+> > > > >
+> > > > > ... hence it's not correct to construct a reference to `Registrat=
+ion`
+> > > > > here, but yes, both `handler` and the `device` part of `inner` ha=
+s been
+> > > > > properly initialized. So
+> > > > >
+> > > > >         let registration =3D ptr.cast::<Registration<T>>();
+> > > > >
+> > > > >         // SAFETY: The `data` part of `Devres` is `Opaque` and he=
+re we
+> > > > >         // only access `.device()`, which has been properly initi=
+alized
+> > > > >         // before `request_irq()`.
+> > > > >         let device =3D unsafe { (*registration).inner.device() };
+> > > > >
+> > > > >         // SAFETY: The irq callback is removed before the device =
+is
+> > > > >         // unbound, so the fact that the irq callback is running =
+implies
+> > > > >         // that the device has not yet been unbound.
+> > > > >         let device =3D unsafe { device.as_bound() };
+> > > > >
+> > > > >         // SAFETY: `.handler` has been properly initialized befor=
+e
+> > > > >         // `request_irq()`.
+> > > > >         T::handle(unsafe { &(*registration).handler }, device) as=
+ c_uint
+> > > > >
+> > > > > Thoughts? Similar for the threaded one.
+> > > >
+> > > > This code is no different. It creates a reference to `inner` before
+> > > > the `irq` field is written. Of course, it's also no different in th=
+at
+> > > > since data of a `Devres` is in `Opaque`, this is not actually UB.
+> > > >
+> > >
+> > > Well, I think we need at least mentioning that it's safe because we
+> > > don't access .inner.inner here, but..
+> > >
+> > > > What I can offer you is to use the closure form of pin-init to call
+> > > > request_irq after initialization has fully completed.
+> > > >
+> > >
+> > > .. now you mention this, I think we can just move the `request_irq()`
+> > > to the initializer of `_pin`:
+> > >
+> > > ------>8
+> > > diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+> > > index ae5d967fb9d6..3343964fc1ab 100644
+> > > --- a/rust/kernel/irq/request.rs
+> > > +++ b/rust/kernel/irq/request.rs
+> > > @@ -209,26 +209,26 @@ pub fn new<'a>(
+> > >                  try_pin_init!(RegistrationInner {
+> > >                      // INVARIANT: `this` is a valid pointer to the `=
+Registration` instance
+> > >                      cookie: this.as_ptr().cast::<c_void>(),
+> > > -                    irq: {
+> > > -                        // SAFETY:
+> > > -                        // - The callbacks are valid for use with re=
+quest_irq.
+> > > -                        // - If this succeeds, the slot is guarantee=
+d to be valid until the
+> > > -                        //   destructor of Self runs, which will der=
+egister the callbacks
+> > > -                        //   before the memory location becomes inva=
+lid.
+> > > -                        to_result(unsafe {
+> > > -                            bindings::request_irq(
+> > > -                                request.irq,
+> > > -                                Some(handle_irq_callback::<T>),
+> > > -                                flags.into_inner(),
+> > > -                                name.as_char_ptr(),
+> > > -                                this.as_ptr().cast::<c_void>(),
+> > > -                            )
+> > > -                        })?;
+> > > -                        request.irq
+> > > -                    }
+> > > +                    irq: request.irq
+> > >                  })
+> > >              ),
+> > > -            _pin: PhantomPinned,
+> > > +            _pin: {
+> > > +                // SAFETY:
+> > > +                // - The callbacks are valid for use with request_ir=
+q.
+> > > +                // - If this succeeds, the slot is guaranteed to be =
+valid until the
+> > > +                //   destructor of Self runs, which will deregister =
+the callbacks
+> > > +                //   before the memory location becomes invalid.
+> > > +                to_result(unsafe {
+> > > +                    bindings::request_irq(
+> > > +                        request.irq,
+> > > +                        Some(handle_irq_callback::<T>),
+> > > +                        flags.into_inner(),
+> > > +                        name.as_char_ptr(),
+> > > +                        this.as_ptr().cast::<c_void>(),
+> > > +                    )
+> > > +                })?;
+> > > +                PhantomPinned
+> > > +            },
+> > >          })
+> > >      }
+> > >
+> > >
+> > > Thoughts?
+> >
+> > That calls free_irq if request_irq fails, which is illegal.
+> >
+>
+> Ah, right. I was missing that. Then back to the "we have to mention that
+> we are not accessing the data of Devres" suggestion, which I think is
+> more appropriate for this case.
 
----
-BR
-Beata
-> 
-> >
-> > Otherwise:
-> >
-> > Tested-By: Beata Michalska <beata.michalska@arm.com>
-> 
-> Thanks!
-> Tamir
-> 
-> >
-> > ---
-> > BR
-> > Beata
-> > > +    }
-> > > +
-> > > +    #[test]
-> > > +    fn test_alloc_kind_alloc() -> Result {
-> > > +        test_alloc_kind(AllocKind::Alloc, 0)
-> > > +    }
-> > > +
-> > > +    #[test]
-> > > +    fn test_alloc_kind_alloc1() -> Result {
-> > > +        test_alloc_kind(AllocKind::Alloc1, 1)
-> > > +    }
-> > > +
-> > > +    fn test_alloc_kind(kind: AllocKind, expected_index: usize) -> Result {
-> > > +        stack_pin_init!(let xa = XArray::new(kind));
-> > > +        let mut guard = xa.lock();
-> > > +
-> > > +        let reservation = guard.reserve_limit(.., GFP_KERNEL)?;
-> > > +        assert_eq!(reservation.index(), expected_index);
-> > > +        reservation.release_locked(&mut guard)?;
-> > > +
-> > > +        let insertion = guard.insert_limit(.., new_kbox(0x1337)?, GFP_KERNEL);
-> > > +        assert!(insertion.is_ok());
-> > > +        let insertion_index = insertion.unwrap();
-> > > +        assert_eq!(insertion_index, expected_index);
-> > > +
-> > > +        Ok(())
-> > > +    }
-> > > +
-> > > +    #[test]
-> > > +    fn test_insert_and_reserve_interaction() -> Result {
-> > > +        const IDX: usize = 0x1337;
-> > > +
-> > > +        fn insert<T: ForeignOwnable>(
-> > > +            guard: &mut Guard<'_, T>,
-> > > +            value: T,
-> > > +        ) -> Result<(), StoreError<T>> {
-> > > +            guard.insert(IDX, value, GFP_KERNEL)
-> > > +        }
-> > > +
-> > > +        fn reserve<'a, T: ForeignOwnable>(guard: &mut Guard<'a, T>) -> Result<Reservation<'a, T>> {
-> > > +            guard.reserve(IDX, GFP_KERNEL)
-> > > +        }
-> > > +
-> > > +        #[track_caller]
-> > > +        fn check_not_vacant<'a>(guard: &mut Guard<'a, KBox<usize>>) -> Result {
-> > > +            // Insertion fails.
-> > > +            {
-> > > +                let beef = new_kbox(0xbeef)?;
-> > > +                let ret = insert(guard, beef);
-> > > +                assert!(ret.is_err());
-> > > +                let StoreError { error, value } = ret.unwrap_err();
-> > > +                assert_eq!(error, EBUSY);
-> > > +                assert_eq!(*value, 0xbeef);
-> > > +            }
-> > > +
-> > > +            // Reservation fails.
-> > > +            {
-> > > +                let ret = reserve(guard);
-> > > +                assert!(ret.is_err());
-> > > +                assert_eq!(ret.unwrap_err(), EBUSY);
-> > > +            }
-> > > +
-> > > +            Ok(())
-> > > +        }
-> > > +
-> > > +        stack_pin_init!(let xa = XArray::new(Default::default()));
-> > > +        let mut guard = xa.lock();
-> > > +
-> > > +        // Vacant.
-> > > +        assert_eq!(guard.get(IDX), None);
-> > > +
-> > > +        // Reservation succeeds.
-> > > +        let reservation = {
-> > > +            let ret = reserve(&mut guard);
-> > > +            assert!(ret.is_ok());
-> > > +            ret.unwrap()
-> > > +        };
-> > > +
-> > > +        // Reserved presents as vacant.
-> > > +        assert_eq!(guard.get(IDX), None);
-> > > +
-> > > +        check_not_vacant(&mut guard)?;
-> > > +
-> > > +        // Release reservation.
-> > > +        {
-> > > +            let ret = reservation.release_locked(&mut guard);
-> > > +            assert!(ret.is_ok());
-> > > +            let () = ret.unwrap();
-> > > +        }
-> > > +
-> > > +        // Vacant again.
-> > > +        assert_eq!(guard.get(IDX), None);
-> > > +
-> > > +        // Insert succeeds.
-> > > +        {
-> > > +            let dead = new_kbox(0xdead)?;
-> > > +            let ret = insert(&mut guard, dead);
-> > > +            assert!(ret.is_ok());
-> > > +            let () = ret.unwrap();
-> > > +        }
-> > > +
-> > > +        check_not_vacant(&mut guard)?;
-> > > +
-> > > +        // Remove.
-> > > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xdead));
-> > > +
-> > > +        // Reserve and fill.
-> > > +        {
-> > > +            let beef = new_kbox(0xbeef)?;
-> > > +            let ret = reserve(&mut guard);
-> > > +            assert!(ret.is_ok());
-> > > +            let reservation = ret.unwrap();
-> > > +            let ret = reservation.fill_locked(&mut guard, beef);
-> > > +            assert!(ret.is_ok());
-> > > +            let () = ret.unwrap();
-> > > +        };
-> > > +
-> > > +        check_not_vacant(&mut guard)?;
-> > > +
-> > > +        // Remove.
-> > > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xbeef));
-> > > +
-> > > +        Ok(())
-> > > +    }
-> > > +}
-> > >
-> > > --
-> > > 2.50.1
-> > >
-> > >
-> 
+I will add:
+
+// - When `request_irq` is called, everything that `handle_irq_callback`
+//   will touch has already been initialized, so it's safe for the callback
+//   to be called immediately.
+
+Will you offer your Reviewed-by ?
+
+Alice
