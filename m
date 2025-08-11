@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F312D77EF;
-	Mon, 11 Aug 2025 13:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC34C1F5820;
+	Mon, 11 Aug 2025 13:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754918984; cv=none; b=rqSUkjsgl57EQPuDRpQSKX0n1i4XZCdaSgrAHfNjM+TOSlmuNlfpRsxaS5gQVZcLudWc9jX/USOjQxUAW6vikxI/YS/Ebu7pNZKWCmeGz4u4yBPLuTbRNH0dJ6Afj1uX8VdeS1Kv3N/LdRc375WVnN2kGlJgX2mGswUzTAHOGDQ=
+	t=1754918988; cv=none; b=czlyiJV/3qUQawsJLCD3Bx2qtW+N2GuyZ0nU9rjkszVVXorb6vXL0BY/lVa6vc8238JqauqRm6kDG5zLMubDwYnaDnOKs9vP59ORPWNm/VcC5oJf12LuuDA5cVan0ZPutsDyyx+fnY8QeQNlxYlpPzBMVcTHwnsINZgop6E61Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754918984; c=relaxed/simple;
-	bh=IZ3wvkv63IesEvvPXCEb04QsAfvpGvn64Li4Jd/16Tw=;
+	s=arc-20240116; t=1754918988; c=relaxed/simple;
+	bh=TgjO8kHAVKI3l7CYVMLzptQqzc2/jaFVmi388jyGESY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=idfw69HThw9NhKfZumAgKmERnmEvigIzcqzPs1YtBgnRMdIDXGcxTMWvW1Se6fCMxnsPxBmDoNalqFOyko4B0yMscgF/E3znEFpfBtgdh1Ht93h5rChx20f/YohdvAkNkbEp+t7zmfv7M/zY9iG0kLM7MjwXtBkRl6BEMQqfzrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k73R8cds; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=uGCYg/t1TrSkEyHb5cQvnFiyel9UHMRwGZ42v/SJf372XcAKSeXc9WmnCMsvQ4sySfpyp9nSJ14GnlPhsQVsHz5BmZ0FVSpiLV6F42wGJ7dzgU1dG9/Rp105g6STPXga3MJLU3d6vpcN+XY4cd/llx+pDls/RziPubL6sffs5Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHYQdHSS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k73R8cds"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6043CC4CEF4;
-	Mon, 11 Aug 2025 13:29:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHYQdHSS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E83C4CEF7;
+	Mon, 11 Aug 2025 13:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754918984;
-	bh=IZ3wvkv63IesEvvPXCEb04QsAfvpGvn64Li4Jd/16Tw=;
+	s=k20201202; t=1754918988;
+	bh=TgjO8kHAVKI3l7CYVMLzptQqzc2/jaFVmi388jyGESY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=k73R8cds/dBvx3cph4Kg0NCZBBbnknZoxSbx2nq/NI7ojCzvIDSO7V/A/R7OAPRbo
-	 SBX8CwdI96xiePyMRuuhmTKml0PmrSI7u0bNC4J0WLMuABOt8XxvGPC359qU+SgsZn
-	 sufctmnONQmCr55g94CfA5HFynUCR8XKvr4/J99Cwa5W7toHYWqMlDISFlzilRWHmP
-	 NgOG1uKS6PaA8sSkV5mKYHZ/vxFrupDwxAnUDE5nhTsGNJ8f2b3XmtP1h90WVEiYW0
-	 l2KQDQtseCI48OoicKSnYBDYlhjeVRi9L/ALadjmc60pKCHd/gXQO2imUym4G/7qqo
-	 FWCxv9vo5kgbw==
+	b=nHYQdHSSsQwSWCD3WrYy07OaO4m86uNO8iyi3aw6PA55zHLFltaTHVJUygKn6D2GA
+	 Y+UmhsiLOJ3RptaWumnpZZT3EVrIi746eRRBdDKeY1WVcqoZsuatOyykNiQxQFNbGj
+	 5nHPIR4LS3w7UJvKIMLUD8vkAXFafB8oYjzL/KUiL8zEt7xrg+Rn6jh0utGwwReCvZ
+	 nPF5SQ7W2+epSEgJ26xHgkiO3gPZTnBluEWwiv5/YQfkNMv0tpyfPmv0Ra35lLUyK5
+	 kv7xn3kkbcotz4S40rFwfiuHybfIoFUDaUYQL6m9MEoAiZm8Dk2UOzQeN1lk/wk6ap
+	 yNI4p5nOvyF4Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
@@ -39,13 +39,13 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Daniel Almeida
  <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Janne
  Grunau <j@jannau.net>
-Subject: Re: [PATCH v2 2/3] rust: xarray: implement Default for AllocKind
-In-Reply-To: <20250713-xarray-insert-reserve-v2-2-b939645808a2@gmail.com>
+Subject: Re: [PATCH v2 3/3] rust: xarray: add `insert` and `reserve`
+In-Reply-To: <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com>
 References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
- <VsBkv88RSMICpG9KPe3i9REC7ElfySwTUyyWRfk9nGea5F7RxX7llxUd-lfFvGvw6fTVIKo8NOfWIt51BFngsA==@protonmail.internalid>
- <20250713-xarray-insert-reserve-v2-2-b939645808a2@gmail.com>
-Date: Mon, 11 Aug 2025 13:07:37 +0200
-Message-ID: <87sehyf75y.fsf@t14s.mail-host-address-is-not-set>
+ <iPv7ly-33WYOq_9Fait3DBD6dQCAn1WCRGwXjlPgNBmuj5yejzu0D6-qfg3VYyJfwu9uS4rJOu9o3L2ebudROw==@protonmail.internalid>
+ <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com>
+Date: Mon, 11 Aug 2025 15:28:11 +0200
+Message-ID: <87o6smf0no.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,18 +56,106 @@ Content-Type: text/plain
 
 "Tamir Duberstein" <tamird@gmail.com> writes:
 
-> Most users are likely to want 0-indexed arrays. Clean up the
-> documentation test accordingly.
+> Add `Guard::{insert,reserve}` and `Guard::{insert,reserve}_limit`, which
+> are akin to `__xa_{alloc,insert}` in C.
+>
+> Note that unlike `xa_reserve` which only ensures that memory is
+> allocated, the semantics of `Reservation` are stricter and require
+> precise management of the reservation. Indices which have been reserved
+> can still be overwritten with `Guard::store`, which allows for C-like
+> semantics if desired.
+>
+> `__xa_cmpxchg_raw` is exported to facilitate the semantics described
+> above.
 >
 > Tested-by: Janne Grunau <j@jannau.net>
 > Reviewed-by: Janne Grunau <j@jannau.net>
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+<cut>
+
+> +    /// Stores an element somewhere in the given range of indices.
+> +    ///
+> +    /// On success, takes ownership of `ptr`.
+> +    ///
+> +    /// On failure, ownership returns to the caller.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must be `NULL` or have come from a previous call to `T::into_foreign`.
+> +    unsafe fn alloc(
+
+
+The naming of this method in C is confusing. Could we call it
+insert_limit_raw on the Rust side?
+
+Even though this is private, I think we should also document that the
+effect of inserting NULL is to reserve the entry.
+
+> +        &mut self,
+> +        limit: impl ops::RangeBounds<u32>,
+> +        ptr: *mut T::PointedTo,
+> +        gfp: alloc::Flags,
+> +    ) -> Result<usize> {
+> +        // NB: `xa_limit::{max,min}` are inclusive.
+> +        let limit = bindings::xa_limit {
+> +            max: match limit.end_bound() {
+> +                ops::Bound::Included(&end) => end,
+> +                ops::Bound::Excluded(&end) => end - 1,
+> +                ops::Bound::Unbounded => u32::MAX,
+> +            },
+> +            min: match limit.start_bound() {
+> +                ops::Bound::Included(&start) => start,
+> +                ops::Bound::Excluded(&start) => start + 1,
+> +                ops::Bound::Unbounded => 0,
+> +            },
+> +        };
+> +
+> +        let mut index = u32::MAX;
+> +
+> +        // SAFETY:
+> +        // - `self.xa` is always valid by the type invariant.
+> +        // - `self.xa` was initialized with `XA_FLAGS_ALLOC` or `XA_FLAGS_ALLOC1`.
+> +        //
+> +        // INVARIANT: `ptr` is either `NULL` or came from `T::into_foreign`.
+> +        match unsafe {
+> +            bindings::__xa_alloc(
+> +                self.xa.xa.get(),
+> +                &mut index,
+> +                ptr.cast(),
+> +                limit,
+> +                gfp.as_raw(),
+> +            )
+> +        } {
+> +            0 => Ok(to_usize(index)),
+> +            errno => Err(Error::from_errno(errno)),
+> +        }
+> +    }
+> +
+> +    /// Allocates an entry somewhere in the array.
+
+Should we rephrase this to match `alloc`?
+
+  Stores an entry somewhere in the given range of indices.
+
+<cut>
+
+> +impl<T: ForeignOwnable> Reservation<'_, T> {
+> +    /// Returns the index of the reservation.
+> +    pub fn index(&self) -> usize {
+> +        self.index
+> +    }
+> +
+> +    /// Replaces the reserved entry with the given entry.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must be `NULL` or have come from a previous call to `T::into_foreign`.
+
+We should document the effect of replacing with NULL.
 
 
 Best regards,
 Andreas Hindborg
-
 
 
