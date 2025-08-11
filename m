@@ -1,83 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F58F3D561
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 09:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CFE21FF39
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 09:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754904609; cv=none; b=bri8Cyoi74Y7ANSe1zGIA/+htZS/orsxT7Fiau6+PsQ7vlbuUJt/MVOG8tKorkw0SEAZq1MZCQr5Iw1kwjYnJkP6Evt/hcTb1wIYBENjsrLXwYHGJvXyNso0XaY0GgrFnaUGGFUwpA5F1gJMsabptD07YpiQgDE4Sn6fHqVtWpg=
+	t=1754905180; cv=none; b=lnrwhlh3sITCi7VGEyVnwjCdHvRWlQYHCp0RkW85kmmACcDAiwJf9O/Mx/Ss1FxK0cVi4mNYivjuS5oiHIHY6Xjc0N1pNOyi3JnQb3Rwp/2Y2pG5vtMMLya1nJWvhX8znr0WNGGYy9wkS3pQJ+kfKAfnkuBRNLNV8hD8ZZTthKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754904609; c=relaxed/simple;
-	bh=AB6lDCcY3EkhUUou7Ts27A1hUvHnntmPf/4n2yqGzpc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=FwGSV7UmAVNacx44M10jPFK6vVP9bkuysYR0WEqB+JQiblltNzhyBAdONrB1HXamyKrilVJCRSj3M5VKoNZcyNVT+U6u9deGXooTupVhBHNksVHKFZbNP0zn7EYbLgOBLIqv0MMpGomCyS45+d/SGL5DdBNyzUvRSJ1e7vR8khA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLIOXGYO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754905180; c=relaxed/simple;
+	bh=y4j5CDX+twNfOWnSZDQeS1iNPT/a8KEGUcdjXqfrqzk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=kFwI8rOYKxIJ367q4IAk/uBeuE2xKZ5UU719kJzH0dkDQQl2QxaXmzn1MBaEtkzuE+XsIp++MRAGiDn5ENb5PDfNsWN9io0GxzWa663EPB9k+h2jUp2/qCCTjp5VPpk+/RHg/oUhSqLo09q/CDgWnrecx04ukzUF3aOLwXYX6qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RKQqgeNc; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLIOXGYO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536FAC4CEED;
-	Mon, 11 Aug 2025 09:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754904609;
-	bh=AB6lDCcY3EkhUUou7Ts27A1hUvHnntmPf/4n2yqGzpc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=mLIOXGYO1OTmWkEINNH1jK9WnWbjCMEXGra7RzEdGK+btVJliLrLe6LDZgQsOH9kq
-	 +5gvTwT0JJP5YYSWJtKfTmu0KJLprx9AyP6JbEUfam38EBuPTsmFKY5SYe0ZLdQn2A
-	 oFgShRTXlUE0jxZ8oFJXQsIPZ3QDIy96cId81uhMY6zDgmnWdfaZJQu7Du4jd0NhBT
-	 ukgUitMScPMwFcRe3vhAx1rHkkg8seFvUTnQy1AIKm6rIdGHn3XnFPpWamTAc+iJud
-	 8ZJ772ELxFIqCjnu6UBSAnOztP1JU2MNF3DaYAO0PuxDCJd2QpjVJwAa7+dKBuPJw6
-	 eaEeYg2GJhXog==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RKQqgeNc"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4538f375e86so31588165e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 02:39:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754905177; x=1755509977; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EMnTZa0hu09hQK4MHqHVVwoEW2DRyBKmSxuuhXJfUcU=;
+        b=RKQqgeNcNmWxbtzOe6OIjavx+iKtD5p6BP6WkcGpDxV3wBTODw7mqTI1C5yO5He+mp
+         dXeDHSp7a1Q3GExl4cU664g/ZYhWVyhQIPwZydCqL4DjgfB3c5fKWUxjAapXWeDzqL88
+         qsfzGUQcVj/H94v13ck+YnF362UftZ2Pn1ilaauQ7xt9hrYCEDf492PlE/11hWouIIgv
+         1Lp3jSY2UZvlNBeCzD0KiBipDvuNsZVgUIbzXCGRnJBulA8mMxQBuAdxkTQ5dmeB5QxK
+         nZQEUMdMHe1XTKY9TY2O9ERoJTWODE0ONFe9ymdxxhR9egzHaMW1eFcUsZ3QJu0ZZKpw
+         70Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754905177; x=1755509977;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EMnTZa0hu09hQK4MHqHVVwoEW2DRyBKmSxuuhXJfUcU=;
+        b=VrbiuhFE7FjXk6nB2VMPt4oFDKlcd/FEIKouGxylMASZS7VH37GaFCLU5YOknSfONT
+         kTW3sB1ruEzS5D3lBNsN6367KLZRN+Ip85L7TRplB9oGGHF9kIIsTsDSyhrWPGD/nGv0
+         iMEBbb9MToT0VTt5+SmQOH/Xax7kI/3Cdirv+nM51BHiMjpjAo6GOszx70/hN5I+zPPA
+         I1RRsxlm9AbOsiTAAmO1W2eTEaz+T7TzEwoRUkVPKt7TE01pOH63HGlTquSi53CKZN/b
+         6rHHoeMORezuZzhWDiCnEf1M1v0UMzOLi0lXt7OG1ReLSPUs5W2bTIx/W48C7DpVXFGX
+         Oqtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVKW3v4Yk/ttNr39CFTeo4BTwnnlmIhUh+6JVa7CnYH6EXP3HRb9HW/eE11dt313zns+DzziOMUkGwiBxLN8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkJg3Ad4rn1o7BcaLNq0GDMFrNrfMx+VZzAQ0OBCJ7dliyTbf2
+	u7ZFp/O4sA9YBlZgQ0TFCSbTwVYcElXi3OH7L2XxR7mJuwcDANeFUMUaudi61QskqWRfO2fJnX2
+	MHrO9t9/ASZi/xp/kyw==
+X-Google-Smtp-Source: AGHT+IFT7h27MqE6VDgXteUcy3w8jAS+2Z96fj5nuIKzzs6pQOCqQDyObRy1nNyD3X3uF9z1SCe1X+iCSK04QMo=
+X-Received: from wmrn35.prod.google.com ([2002:a05:600c:5023:b0:459:d3ab:b232])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:b93:b0:459:d408:d890 with SMTP id 5b1f17b1804b1-459f4fc4a95mr102409515e9.33.1754905177426;
+ Mon, 11 Aug 2025 02:39:37 -0700 (PDT)
+Date: Mon, 11 Aug 2025 09:39:36 +0000
+In-Reply-To: <20250811041039.3231548-2-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 11 Aug 2025 11:30:04 +0200
-Message-Id: <DBZHRHSE33E9.2AMO99NOCX0C0@kernel.org>
-Subject: Re: [PATCH v3 3/7] rust: alloc: implement VmallocPageIter
-Cc: <lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>,
- <Liam.Howlett@oracle.com>, <urezki@gmail.com>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>, <acourbot@nvidia.com>,
- <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250808181155.223504-1-dakr@kernel.org>
- <20250808181155.223504-4-dakr@kernel.org> <aJm0duBjfWyZT3YJ@google.com>
-In-Reply-To: <aJm0duBjfWyZT3YJ@google.com>
+References: <20250811041039.3231548-1-fujita.tomonori@gmail.com> <20250811041039.3231548-2-fujita.tomonori@gmail.com>
+Message-ID: <aJm6WGaxITeIxtJc@google.com>
+Subject: Re: [PATCH v1 1/2] rust: Add cpu_relax() helper
+From: Alice Ryhl <aliceryhl@google.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, ojeda@kernel.org, 
+	anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
+	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
+	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
+	tmgross@umich.edu, acourbot@nvidia.com, daniel.almeida@collabora.com
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Aug 11, 2025 at 11:14 AM CEST, Alice Ryhl wrote:
-> On Fri, Aug 08, 2025 at 08:10:17PM +0200, Danilo Krummrich wrote:
->> +/// An [`Iterator`] of [`page::BorrowedPage`] items owned by a [`Vmallo=
-c`] allocation.
->> +///
->> +/// # Guarantees
->> +///
->> +/// The pages iterated by the [`Iterator`] appear in the order as they =
-are mapped in the CPU's
->> +/// virtual address space ascendingly.
->> +///
->> +/// # Invariants
->> +///
->> +/// - `buf` is a valid pointer to the beginning of a [`Vmalloc`] alloca=
-tion.
->> +/// - `size` is the size of the [`Vmalloc`] allocation `buf` points to.
->> +pub struct VmallocPageIter<'a> {
->> +    /// The base address of the [`Vmalloc`] buffer.
->> +    buf: NonNull<u8>,
->> +    /// The size of the buffer pointed to by `buf` in bytes.
->> +    size: usize,
->> +    /// The current page index of the [`Iterator`].
->> +    index: usize,
->
-> My understanding is that an implementation using two pointers that
-> repeatedly increments the starting pointer until it reaches the end
-> pointer is more efficient.
+On Mon, Aug 11, 2025 at 01:10:37PM +0900, FUJITA Tomonori wrote:
+> Add cpu_relax() helper in preparation for supporting
+> read_poll_timeout().
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-If I directly advance the start pointer until hitting the end pointer, I ne=
-ed
-three pointers, i.e. start, end and the advancing one, otherwise I can't
-implement base_address() anymore, hence I went with an index instead.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+> +pub fn cpu_relax() {
+> +    // SAFETY: Always safe to call.
+> +    unsafe { bindings::cpu_relax() }
+> +}
+
+Let's mark this #[inline].
+
+Alice
