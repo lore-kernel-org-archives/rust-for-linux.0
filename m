@@ -1,99 +1,102 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C39244665;
-	Mon, 11 Aug 2025 10:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2325C283695;
+	Mon, 11 Aug 2025 10:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754909055; cv=none; b=c+pJH07tKnZ3ziCEE6A5SlSY8YmNUZnd5B154EZCtVYRKfU6YbP1+HqzoBEr38oCNzk0w7f2IMf/wTOgFTAc/ZLPkeoHucc4Rd/fRF9lwCSoPY+iAIAsUCTJyW4dj9t6SsIQL4D55vNrRy2dXKsH5CRklZMIQVy6/12yODGFhro=
+	t=1754909240; cv=none; b=dNNkUU30JAiajo74FP+ls/ipYEu4yd7XKWzknpbU+FY2VeErfabvTP7GANyNJUDrkuCtO2XDemO7Lxy8neUq8VQ6SK8584CJRbe0MpF5Gzl4GhXV+aB+7STZSohaHSmUvQEGiKR4Vkx0ys5flmgcJEc4up/fzJ+n06SQVRvoevY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754909055; c=relaxed/simple;
-	bh=gfZ7G0h1i+MM8nYnDnkCE3r/LrlXSMNQkNtx8jPmfrg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HX2XSZqC8yXF4OzAxT/2ePaA9OQ1uAMyteDSHYQu4wx8zFzEs+mvPtpv63cOfJT130QNyWz7W4CU3R9O8e5oE5f5oFn6kmbD0RAP+jkCZibQew/Pvf8bpuJN3LDRelQSMz5zMzNJxhLT4tVVn8ImS50w73pGgWlPHd933JYW/ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KFEj9Oqg; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1754909240; c=relaxed/simple;
+	bh=cBR5dgtLg6ItwRpBd2lNHF0XtNlSGctZGm/Qe2yRzE0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=H6YEcO+J+mOK54JpaHHY6ZGXEanYtXMfcelJG7MJ8D82znTO4lehYaRHRyWV0N0FgKAM1vMiwjVnnCalJcsSsRQxOexLd9vwVC501nbIIcymo2ghB+CNmyzHTi6RmhrPEvlkA4zkxqUJiJIWmvAd/uWYeS9AGao8qtv/km673VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8H+K/hQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KFEj9Oqg"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2400145aa5aso4879585ad.2;
-        Mon, 11 Aug 2025 03:44:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754909053; x=1755513853; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gfZ7G0h1i+MM8nYnDnkCE3r/LrlXSMNQkNtx8jPmfrg=;
-        b=KFEj9Oqg4DDrC1xAZm6k8a+ZDg0y55BVLw7VcCYoSGTvY8+vUrjxuG0kXy/XiorO+J
-         5Wlv0DcFNa+lAMMFs79Rjbu2tMdXBnUdcBz+0wyx7aC51WgTQqWF2iIT4c0frtl4/pIh
-         yEWiSsB8eKdr6S+3wyj/4BY45hUXvLn2jrDw64FzBFUyRskB4Bjgmz3XIt4DrqF/1mIo
-         +nPi7ghi5KeXuv7eY17Xqsusjck5ACAUCkY4JWj3Xofk2qK5iYgKScsd5xyPl3XqBmMf
-         +t/uAu2Fxvmz2de0XqPU1pEecNgBOx/f6ixsej97mFhQwlqvaS1+LS7HKPG5OGhLWOXJ
-         ehzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754909053; x=1755513853;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gfZ7G0h1i+MM8nYnDnkCE3r/LrlXSMNQkNtx8jPmfrg=;
-        b=cBHfZtea292c2Qa0M+xC+OGgOfkBdjsgmie9GrS5Xyc1hTzYndGubEwKggW6fqXlfS
-         pA0X+yfPHpMrzFwFv20PeSm7Cg9Uxe8MKEAbqw3msQxJQAjys1IuMuAKhi1um3WwTgDf
-         1dUFgMFtwTHxMr9IGoPx5lyFFE5J7Pnt4s/aaSXalpd929CfWZqOmIxCkQCs7Xp9FPzJ
-         WXMXcJfgM2XSjwopDJsskbEoSyZnvIKBRTU6+AIt1Kn1DAoZ3er/l/OTwXnD8xLSVOR7
-         Sy0MSQ2ei756zT5kJZXbAOY7d0n9S0CTj+9qlvgGoTfpwsf9i+uPzwPPQEaWC2orX3cd
-         Zzgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUDrZawKEGdpjDYGc/bsv/XfW2Ly0nRnRnEGFr/BEJ3j6DuTAmvztR2BLkcKSEwC2D2M5h7KsfCOJJhea7S0Hs=@vger.kernel.org, AJvYcCUMoRTmNOpZIXocD9vKws3witu6KMRUcD71yMjO/l8dYQRB7hZ8AXAriEklG/eR3MLdMfr4kxsYkXegZA==@vger.kernel.org, AJvYcCUu5tcHNAdSyZPRWgfu8qYbO8uYrbVOJKS1Srf1ZoiPJEUhpXG5lIBS+dVA/gMz7mny4N3CHr/CiiZqUMp0@vger.kernel.org
-X-Gm-Message-State: AOJu0YziOj4MzRcdNHAbBbhtCwgk33uEkFTOimHel+8t3zywhbsdiCsg
-	G5QfpiiYE6DvVSXhXbeL3KG6fYDkvOq9g+6sFWqrdC800C8Yn6mYa2zvuGzbAVvy8GAKn4zpvxP
-	9WULtUk+qzlLtCeKXEr/e65ppe2Xw64I=
-X-Gm-Gg: ASbGnctKpwmfYRLY9fBuKCSkpqRZj9SG0Gc4O+jiBW5vV8oOl+DYrawlau1IZT8mI8c
-	NWkxVAXmPKQ7o9lpf0gfXufu0g6zuqVXANz/Irx33v/4oWFZZyZyRiF5n9Fdg86eQ3cPkYHe6vv
-	gl0XulJUfMD2vnKcfiLponuDzZ/65Bh5xwpUn9xC16bXal6n1J4Pal97O4GSbVbr1MWRm7sWmz8
-	y/0gixe
-X-Google-Smtp-Source: AGHT+IHBEayTjGLrQ28Nl6YgJMqiLAz/4X0Aw0J+moveKgZE67C9fl06ZhkzW+Q8uCam3lkMVIjhyTvvbD65hAoMIKA=
-X-Received: by 2002:a17:903:11c6:b0:240:8717:e393 with SMTP id
- d9443c01a7336-242d6c0062emr38009075ad.5.1754909053302; Mon, 11 Aug 2025
- 03:44:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8H+K/hQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE059C4CEF6;
+	Mon, 11 Aug 2025 10:47:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754909239;
+	bh=cBR5dgtLg6ItwRpBd2lNHF0XtNlSGctZGm/Qe2yRzE0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=M8H+K/hQx6MUsJcTv5rkLS7b/sGAgeGoRnO1lHUMTVeYaroyctZN9lwK2vW3UMA5S
+	 VTgOacvGgKgw4tyyjwjY670wlWl3sAjLv3Uutxj2dA6dgHjjLt69ft8o0PGrj1/WFv
+	 fouyMuTwlDMcY/guI4F3j7MLB64QxIUl2s2lmWcQw6rVFy/0CdyasVuphk3Malk7tD
+	 Gvfv/oAVVlz+n7UPMMgX/BxYv4197TIy3KRa+oHiCV6Ny+0HOPLOy8O1Wt8QTZW54n
+	 VJOgzvZ6MWg5n2x/wdLN6PeiSVghMq38KP0RkP4fllKPzUq6V7Uu9lJC5YSJ2lNfwJ
+	 qoZofIXH9zfjg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, alex.gaynor@gmail.com,
+ ojeda@kernel.org
+Cc: aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
+ frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
+ linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
+ rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de,
+ tmgross@umich.edu, acourbot@nvidia.com, daniel.almeida@collabora.com,
+ Fiona Behrens <me@kloenk.dev>
+Subject: Re: [PATCH v1 2/2] rust: Add read_poll_timeout functions
+In-Reply-To: <20250811041039.3231548-3-fujita.tomonori@gmail.com>
+References: <20250811041039.3231548-1-fujita.tomonori@gmail.com>
+ <Iv9M9a9F8T9S94p9QgZ9kCFVfc3vMnCAzIx0RGc7nNZ7uZPDENFeH-lvGH6cXIn-DOoU0K-ccURCAgKm7d8aUQ==@protonmail.internalid>
+ <20250811041039.3231548-3-fujita.tomonori@gmail.com>
+Date: Mon, 11 Aug 2025 12:47:07 +0200
+Message-ID: <87y0rqf844.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <KnSfzGK6OiA0mL5BZ32IZgEYWCuETu6ggzSHiqnzsYBLsUHWR5GcVRzt-FSa8sCXmYXz_jOKWGZ6B_QyeTZS2w==@protonmail.internalid>
- <20250716090712.809750-1-shankari.ak0208@gmail.com> <87cy965edf.fsf@kernel.org>
- <iuNf4uKy1tAU76PDHMl0imyutwtKX6ih6M-JYDuYoQFmEx6VPeRH-YmY7Y76fWS6ORuhrquUVGELY7dj0r1MkA==@protonmail.internalid>
- <CANiq72=Yb=APVFiJbdveVD45=fwmAbXR3vUXLTBfqu_n-BpcOA@mail.gmail.com> <87bjomguwl.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87bjomguwl.fsf@t14s.mail-host-address-is-not-set>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 11 Aug 2025 12:44:01 +0200
-X-Gm-Features: Ac12FXwKnNS2Uil1IBymCFdkc9yuEKlRejX_BH56vg8mj4EEUhAy-C-uXdK0J_w
-Message-ID: <CANiq72k_+eA259oEq1fBKCOVOK+2GCAwqF_JfweJ9A3ih_Px0A@mail.gmail.com>
-Subject: Re: [PATCH 1/7] rust: block: update ARef and AlwaysRefCounted imports
- from sync::aref
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Shankari Anand <shankari.ak0208@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Aug 11, 2025 at 9:49=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+
+> Add read_poll_timeout functions which poll periodically until a
+> condition is met or a timeout is reached.
 >
-> Jens is picking the block patches directly from list. I would prefer
-> sending a PR, but that is not the way we agreed on doing it.
+> The C's read_poll_timeout (include/linux/iopoll.h) is a complicated
+> macro and a simple wrapper for Rust doesn't work. So this implements
+> the same functionality in Rust.
 >
-> @Jens, do you still prefer to pick the rust block patches directly?
+> The C version uses usleep_range() while the Rust version uses
+> fsleep(), which uses the best sleep method so it works with spans that
+> usleep_range() doesn't work nicely with.
+>
+> The sleep_before_read argument isn't supported since there is no user
+> for now. It's rarely used in the C version.
+>
+> read_poll_timeout() can only be used in a nonatomic context. This
+> requirement is not checked by these abstractions, but it is intended
+> that klint [1] or a similar tool will be used to check it in the
+> future.
+>
+> Link: https://rust-for-linux.com/klint [1]
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-That is fine, if Jens wants to pick it, that is nice. Otherwise, I can
-pick it up, no worries.
+With the example removed:
 
-Thanks!
+-///
+-/// ```rust
+-/// use kernel::sync::{SpinLock, new_spinlock};
+-/// use kernel::time::Delta;
+-/// use kernel::time::poll::read_poll_timeout;
+-///
+-/// let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
+-/// let g = lock.lock();
+-/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), Some(Delta::from_micros(42)));
+-/// drop(g);
+-///
+-/// # Ok::<(), Error>(())
+-/// ```
 
-Cheers,
-Miguel
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+
+Best regards,
+Andreas Hindborg
+
+
