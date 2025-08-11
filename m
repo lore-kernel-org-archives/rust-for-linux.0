@@ -1,67 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F3E2D879D;
-	Mon, 11 Aug 2025 07:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F791F76A5;
+	Mon, 11 Aug 2025 07:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754896409; cv=none; b=t3LEGUB62Hx9UFOsnTbVtT0J0uL3UBZctm5QtGlnsfwSHmSy51boNSFlcSUt4Pyi1/2ghKa4v96LQylNvPev3N5kJgMnjzLm5KXA0lDYKGjZCTFM/BWHXR1W2fhp+3FbFNW8JX3v1njx1KyRYdnw/6AgeGiPWa88C8h/Yz2T/1I=
+	t=1754898579; cv=none; b=kSH36nwpsbMHhghNoc/DVxfMPqIoyeAC7TLwEc8GdQ4cJjJwHXM+bOGI+tX0+jKN2uxREiPhd0oIwZmAKXqqkVEyQ3xaUv9rShDhct2rsi80qmNlsfkKaY21f+YjS7+iLVEqYy81lqz01Wjaxk1yVw1AdvHeOcFm/l1vKtQTAIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754896409; c=relaxed/simple;
-	bh=fy6WKKXfLb4l8ZbekJpf2ROr+HJdYo+cKWY2UVwT3Tk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cRUn9EQDF+KUxdW0shLAfu8QHyV7OfKw1G/5HbA/yFkEM7kITQxAVwFCYytSp5r+/CDdzuZnOV+5ng+T1NW2Nqw0LLehnZlkPX4GUvfoVv++uN4+LDQbHAhvhIA2VLN9vZhLL58z0yRDDGQqwhVX5rcjHk1o0p4SFLbq6ONKUyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsVvcghb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754898579; c=relaxed/simple;
+	bh=obXcfu770nMVidxk73qNra/bKfWCOjeYA+F0vhuy/Iw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ngR2MvK+cTsbak5CfMScvgvHFhx0pEHjGm4iS1R97kiK+Ho2ekitHOwgpNRd04wPKPg+ImJUPYWlG7i3TFa2vooekyYDJFk3KWH5fU6kG606TDNFplxrM7vKrWnTjHiJRpsjuwMH1eo68ey/6DZtL99RmIOCdqBkzdGPPt5Dxl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOuKRCCm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsVvcghb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB387C4CEED;
-	Mon, 11 Aug 2025 07:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1754896409;
-	bh=fy6WKKXfLb4l8ZbekJpf2ROr+HJdYo+cKWY2UVwT3Tk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FsVvcghbsb6k19xq8a6pV7q08tWDaU+fGYyRfLH3zsYm+ENHMRLRRvQkVzj9bOSbZ
-	 K5AxcFvPA6XLTmFn9fHz7j7fnb0wfPwF3jIE0iXAaXqFDnHDm/TRBzP5BkPIxCn+4s
-	 VWJf3FxVkF9lgu/nJpyDBCZJgahdjf9BUy65HgLI=
-Date: Mon, 11 Aug 2025 09:13:25 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: ~_xllx_ <elle@weathered-steel.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH linux] of: resolves TODO for copy_from_slice
-Message-ID: <2025081151-brunt-grief-fd48@gregkh>
-References: <175489428990.9320.6825335165759789458-0@git.sr.ht>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOuKRCCm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3C8C4CEED;
+	Mon, 11 Aug 2025 07:49:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754898579;
+	bh=obXcfu770nMVidxk73qNra/bKfWCOjeYA+F0vhuy/Iw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=EOuKRCCm2LlEvfMg72vKt8Que7zNQvjwjILf7+0Lz3OtPmi+Zw39fOAOBPGWKjhPl
+	 lHI12YSShHuUkFvtZYI29FuEQuCPYujI8z0VRre080ovzo3VTIkNzNluyK0NG7zsfR
+	 NBqmL2nIU+67H+UiJNhDlo3yy1Ca+f3b7o9Kz5y6rsko6ltYSRW0X8PLX9IUc1w9Lu
+	 XvO8NZBVIga0LEe0c7c66bsbER7QieyOHWhERLJ1rNxcaLevD6lUj4q7ZDmbKFLyog
+	 7iI9O3HwnVC/MxoXH+0/iUb02h9aOxypmkTGkEhdzS3NuYrZHrp5Iv3tZuXNXoLejr
+	 fWQkwyFV01qmw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Jens Axboe
+ <axboe@kernel.dk>
+Cc: Shankari Anand <shankari.ak0208@gmail.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Boqun
+ Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>
+Subject: Re: [PATCH 1/7] rust: block: update ARef and AlwaysRefCounted
+ imports from sync::aref
+In-Reply-To: <CANiq72=Yb=APVFiJbdveVD45=fwmAbXR3vUXLTBfqu_n-BpcOA@mail.gmail.com>
+References: <KnSfzGK6OiA0mL5BZ32IZgEYWCuETu6ggzSHiqnzsYBLsUHWR5GcVRzt-FSa8sCXmYXz_jOKWGZ6B_QyeTZS2w==@protonmail.internalid>
+ <20250716090712.809750-1-shankari.ak0208@gmail.com>
+ <87cy965edf.fsf@kernel.org>
+ <iuNf4uKy1tAU76PDHMl0imyutwtKX6ih6M-JYDuYoQFmEx6VPeRH-YmY7Y76fWS6ORuhrquUVGELY7dj0r1MkA==@protonmail.internalid>
+ <CANiq72=Yb=APVFiJbdveVD45=fwmAbXR3vUXLTBfqu_n-BpcOA@mail.gmail.com>
+Date: Mon, 11 Aug 2025 09:49:30 +0200
+Message-ID: <87bjomguwl.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <175489428990.9320.6825335165759789458-0@git.sr.ht>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 10, 2025 at 11:23:55PM +0000, ~_xllx_ wrote:
-> From: elle <elle@weathered-steel.dev>
-> 
-> Replaces the copy loop with `copy_from_slice` which became `const` in
-> stable Rust with version `1.87.0`.
-> 
-> Authored-by: elle <elle@weathered-steel.dev>
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
-This isn't a normal kernel tag, the "From:" line guarantes this, please
-no need to repeat it again.
+> On Fri, Aug 8, 2025 at 11:53=E2=80=AFAM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> I think you can pick this one, i.e. the idea was to allow changes to
+> be picked independently.
 
-Also, we need a full name please, as per our documentation.
+Jens is picking the block patches directly from list. I would prefer
+sending a PR, but that is not the way we agreed on doing it.
 
-thanks,
+@Jens, do you still prefer to pick the rust block patches directly?
 
-greg k-h
+Best regards,
+Andreas Hindborg
+
+
+
