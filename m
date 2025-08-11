@@ -1,63 +1,65 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2862E2DE9;
-	Mon, 11 Aug 2025 18:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7762E3B00;
+	Mon, 11 Aug 2025 18:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754936428; cv=none; b=p6ZlSVnwmoxwNYL9q/cM/V3+Hkn7sVzMVsnVZ9ixhgGWIgxyx+oqMTKi9NIKGQxSvSwt8wm/z0rB40Ah7Odt2xnAI9tvWbURCe1679NIF99ymUMkczHD5xXnGb9tVMauXMNpcStWkSGj80fdMzgimcSf9I99MedUH6ZC69E8mzw=
+	t=1754936545; cv=none; b=D1vaav/sY3YjBmbTdT3sNMspxTFOEFnjzCkUj4pDu08gJqa5vDCwAyqKAp4Pwxa3jGhitWb5PiBI+uZT4E6eSEouSpqqT+LPg2+ywslO241gCjBZLuWrZGoIYkzstatXQ1Ybun+1MKY2OKRJ+ENoLcx+344ZzdQjcikXHSjqNZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754936428; c=relaxed/simple;
-	bh=j4Z7I48pgUVtT1N8DvipQ/LEVf5M33eHpNoPnJ4KmCk=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=gM1lSN3elSldkwjbTkcRDn5LO4GWkPShhFDG3vg6DPwTP0mcO8MSt2agDoRc5gpFUyVgNPzozDdApmalvS0/jSuqW2D4uUOD2USpqjiQGBPjjy5stjqvwDZjhXn7riASw8POY80WnU5N8ZPqmI/1HvIeWvpokowDBTf4X8OgHTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kuWt6+UK; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1754936545; c=relaxed/simple;
+	bh=mOVxMwHNXKnJipk47e8SQdaZXOBitrJX60mFQRCQalw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=aUlUqnEkqSE+wubvEga6l2VQyGYvrBkKjBgQ8AHNomtf21DEUoYHJpL4GTJXWtkbftC1JgGmDwmigrcBIpSxnjSXJ+BW11vRjbJZo2CvTEeuxdkaTd1Y+DUon+nayxMtN9XuP0Gv2J1iGwsns/rqWRcWGWaqgIMfHQfJCQ4A0Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fkj1toEf; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kuWt6+UK"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76bd9d723bfso4056353b3a.1;
-        Mon, 11 Aug 2025 11:20:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fkj1toEf"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76bfd457607so4570927b3a.0;
+        Mon, 11 Aug 2025 11:22:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754936426; x=1755541226; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GimiQk31QxHr3PFh4m9HMVZ9bJCvV7EJFcpqqkOaSaI=;
-        b=kuWt6+UKM0yJGWYTAAtueYZHkIbidEf+hKsEEIpymcFB67/6aP2Xv0jypmdf2B/8Xm
-         tjl5oXtSu+/aFBlx8dEDJWS7rkEOi/CpdFjqZ/RiGek1QTcMQf0ij8XWaAx0W/dabNOM
-         vHgbRPJp4zLn1VrM+Wis1rW90P1bCG0XHeJeH26HIVN6zk8yNWEwk+11DpHwbbrLPbE8
-         530MwMy3FNuG0djIspaHsejHVj7Gw4EY2DamfccTH2UDAx5reTYcim/arah4BSRpv/nw
-         Q9tLoa+f3fryYesyNbS+OS8TqIDjf/yJ7OYjG/crzUH0JBIAOgVo9tMgNJ7l5O562489
-         FfUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754936426; x=1755541226;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+        d=gmail.com; s=20230601; t=1754936543; x=1755541343; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GimiQk31QxHr3PFh4m9HMVZ9bJCvV7EJFcpqqkOaSaI=;
-        b=QuzYoyshFzWjDWhflhJKDnq+k4d7FQzzbQ6TiNuA1DvA787KrOMgvUiQuxoThEi+hD
-         x83w4CZBfIVNorH2Ns2HREJ8b+ZPf1WEdtpD8SjuRAfZJ/AsELJo+WH3lun9Z9wvZIrx
-         PtOT++Cwx7awIOBO0hTT4gt3gL1sDAgNXXGi0q/xWfihsXcnzarMS1VxsNLUTq1A55RO
-         IGgKAAsTUuM4zaN63KkEHeD/lJheWC0YHkFlyBvZ/1o0g9H/F/eyvyJQbXY8g7rE4PLS
-         UMYdIrfNOF/rDRWCdpKKtV/UqwkKCaxXskBtIBjT/jPEhCNP7Jr39mKNBSSFOhrLmm8m
-         MjUQ==
-X-Gm-Message-State: AOJu0YzKyHO7RGNhXtIP+vIXJXtNROv19yCvxNTVZ0jSbLaryNqCVPAW
-	ySLOFWBLxDZeWx1QyQ+UuQJTbv0xRyINXIcDejUrZBKEZCW6ZoFCpvleAIGLyTFm
-X-Gm-Gg: ASbGncswyB1ARTQTUA1s36EAz7/XvtMPsGLY6dd0j1Qc9X49be1Zam9k4qXNWIiI85B
-	kTP7aaROiVSDSxrI15qRSpusMYSPZhuNatxoX8V24cN4gZ06mru8AFOiJkgnD66WK4F36mZbSGl
-	q3wG0HaP10mZyvshGWSGeGggOdozJevwNTd95nwZiOlPhna70kk9uVw/3s26qcXcUwJhwtdhyWd
-	tzjywmyfSG8wp29c2iYFnbekxgumxyUyE1cvN4Odh/CiN3dOlA582D2DaW5axthTN9YGPzRUP6K
-	LOKuv/wH1zm7C4bzMJMDxmD79U6lhOBEMkbLzgj39Y7dWlQFuADASaFbUUDNBBJlb6+ACLKWQe2
-	lj8TpvCpM34qFL4Jlbbj8/E3vW8hRUt8uL/mkzRpOKYTY2YFp12T19jo5weGu/4Y2v6OTGWqN
-X-Google-Smtp-Source: AGHT+IEBXqamYJpr2XWIjcnZ+itsOP/Q1FW3WxO2G/PduGQvEMRbFWwn3lXt4+JZJCtjNwaP9TIcNg==
-X-Received: by 2002:a05:6a20:7494:b0:240:198:7790 with SMTP id adf61e73a8af0-2409a8be3a9mr712164637.10.1754936426305;
-        Mon, 11 Aug 2025 11:20:26 -0700 (PDT)
+        bh=7mEWpl63ZoyplRlAL0IOHiBd7kGAmwSsw36Ew/d61UE=;
+        b=Fkj1toEfW50X+RdT6+VOTE2rzhoDpl4GokJcAK+0i215+2PJc9fFlc/NUf9vinPiz9
+         HK3EAmveabWqOF89Tn9n7id3bdDVLfX/hiBrL1zAvdKgdTmTuHeCz93k+nSlmF4BR+Yz
+         13OI6WAYBYnp1eQb+x4ELs/Ua8Kmi9GqBY8BdC7pZu24yKgR4nsOllijmkM04K/CwJvV
+         T8JUIYUiqtXgbkelh3T92jbgB2XJS/yf9WtvQPZwcYg95ONRsgtAdo7JMpgrUSB0x5uv
+         5JTd0RMstwy3Gn08VBo9WPIZUUzgRacE8uUxtxs3w16kvptqR6Z2YrWYChY+/NNNpcg8
+         hVrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754936543; x=1755541343;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7mEWpl63ZoyplRlAL0IOHiBd7kGAmwSsw36Ew/d61UE=;
+        b=XAKAm9kcnoGumfEA1RmtM6zl4U9Lj33/D92/OYb+xc3DCmYPvzUrMYWiPd7DvKUeF0
+         1gmy3irm3oMTWUSIKsetK0n/7UJFTK6ompxpPHl9VzszrkoLTkvQqnm9AoY6XwrB0u2F
+         bWy2uiATWvuns7akPnzgo8kn9c08ziPgPZCqT0u1aTmmIGEBF3hR5ZKi+UzYvl2FQG7f
+         jgpR/86X0liMCA476C4zj4aSCy6Qz7QC+N4Z7bA2mfMIZ7JRNvG3Klv18JQckIcomxBd
+         /WATIHTSFhWit6BQH5WlIqK7qbIHt/xWbkSRit9JqcoGlYGRzxJk+sRiSgcFxEv5SBk1
+         Oj+w==
+X-Gm-Message-State: AOJu0YwwMrX7oZ+Qm1KOCBbqv9THCgveiI5Wlx1ns9ufQ1h3TopZa+/m
+	aeeDrOUeT6lrzt0I4f4sh5U2aeeQJZa7Cc1YtKfUzBynb0dC242gxwgfDG1evodY
+X-Gm-Gg: ASbGncsL4YuUNoz4BUUUZVFuXkAuzaCwFRwimzIuaU/8SrRniryPAqE9ng8V785eqSq
+	2zdJELqLdighWLCRY4IJHS0hQ2vPs+2Wf4LdAjROEDX1ddZE8XH8KKxUuCYYgr5IQM3SMjC1EKL
+	wYPlkdoPklocff5swUN4znuPRFtVbwFgCA1bzwHSVXITyf0EwAF+q4DioMZ3CDOmbTRrJ006ybR
+	fy8/3OBeBjLZoQa/wMpJsvOAXLzNR+MJEZvoxvQl3r9HBEEKmCljvS7LN0ur81PVU6ure6aT3xb
+	PsS2eroO7UIqBFXbC7wIgn//50UpyQfkhAjlluECV//aEDprGyz4HtHxTPgn1J5HksPas0wi2Hi
+	D4y/dB014j5Zi81psIwEC7Wowylrubl23HJK0P/BlKHA2KkQ/OCfoTBuFAgT9TMmZLSXy+eWQZk
+	ZRyGDWKQg=
+X-Google-Smtp-Source: AGHT+IHEDbEUXj8YoO4yyjGR/BV3tZDxo1gsO3xYNRHNCBTZx1ulNcZoy5PO/brKhi/Qlu/QPgR2QA==
+X-Received: by 2002:a05:6a21:3391:b0:240:1ca4:297d with SMTP id adf61e73a8af0-2409a8be8bcmr747279637.13.1754936542697;
+        Mon, 11 Aug 2025 11:22:22 -0700 (PDT)
 Received: from ?IPV6:2804:14c:de86:8d34:add1:b1bb:ed29:6539? ([2804:14c:de86:8d34:add1:b1bb:ed29:6539])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b422b642931sm23622862a12.0.2025.08.11.11.20.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bf772116asm21417693b3a.97.2025.08.11.11.22.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 11:20:25 -0700 (PDT)
-Message-ID: <79821f85-9e95-4426-8b1f-8752f8683dc9@gmail.com>
-Date: Mon, 11 Aug 2025 15:20:22 -0300
+        Mon, 11 Aug 2025 11:22:22 -0700 (PDT)
+Message-ID: <42c3fc0c-46a8-4502-ad53-d3b886fad5e8@gmail.com>
+Date: Mon, 11 Aug 2025 15:22:18 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,28 +67,90 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+Subject: Re: [PATCH v3 1/2] Rust: kernel patch series
+From: AI Talking about AI <aitalkingai@gmail.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-From: AI Talking about AI <aitalkingai@gmail.com>
-Subject: [PATCH v3 0/2] Rust: kernel patch series
+References: <79821f85-9e95-4426-8b1f-8752f8683dc9@gmail.com>
+Content-Language: en-US
+In-Reply-To: <79821f85-9e95-4426-8b1f-8752f8683dc9@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi all,
+From 21a3d2a2dcff13f445915602c06a17af07835ee7 Mon Sep 17 00:00:00 2001
+From: AI talking about AI <aitalkingai@gmail.com>
+Date: Thu, 7 Aug 2025 07:53:56 -0700
+Subject: [PATCH 1/2] rust: mark CStr::to_str #[must_use] and update docs
 
-This is a two-patch series for the Rust-for-Linux tree:
+Add explanation about handling UTF-8 errors and mark CStr::to_str as #[must_use] to prevent silent error ignoring. Also document safety requirements of as_str_unchecked.
 
-  1) rust: mark CStr::to_str #[must_use] and update docs
-     - Adds an "# Errors" section explaining UTF-8 failure modes
-     - Prevents silent ignores by marking to_str() as #[must_use]
-     - Documents safety preconditions on as_str_unchecked()
+Signed-off-by: AI talking about AI <aitalkingai@gmail.com>
+---
+ rust/kernel/str.rs | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-  2) rust: clarify safety comments in workqueue.rs
-     - Replaces generic SAFETY: TODO with detailed invariants
-       for RawWorkItem::__enqueue and WorkItemPointer::run
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index 6c89255..290031b 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -37,12 +37,8 @@ impl BStr {
+     /// # Examples
+     ///
+     /// ```
+-    /// # use kernel::b_str;
+-    /// assert_eq!(Some(b_str!("bar")), b_str!("foobar").strip_prefix(b_str!("foo")));
+-    /// assert_eq!(None, b_str!("foobar").strip_prefix(b_str!("bar")));
+-    /// assert_eq!(Some(b_str!("foobar")), b_str!("foobar").strip_prefix(b_str!("")));
+-    /// assert_eq!(Some(b_str!("")), b_str!("foobar").strip_prefix(b_str!("foobar")));
+-    /// ```
++
++///
+     pub fn strip_prefix(&self, pattern: impl AsRef<Self>) -> Option<&BStr> {
+         self.deref()
+             .strip_prefix(pattern.as_ref().deref())
+@@ -346,7 +342,7 @@ impl CStr {
+     ///
+     /// If the contents of the [`CStr`] are valid UTF-8 data, this
+     /// function will return the corresponding [`&str`] slice. Otherwise,
+-    /// it will return an error with details of where UTF-8 validation failed.
++    /// it will return an [`Err`] with details of where UTF-8 validation failed.
+     ///
+     /// # Examples
+     ///
+@@ -356,7 +352,21 @@ impl CStr {
+     /// assert_eq!(cstr.to_str(), Ok("foo"));
+     /// # Ok::<(), kernel::error::Error>(())
+     /// ```
++
++    ///
++    /// # Errors
++    ///
++    /// This function returns an [`Err`] when the underlying bytes are not
++    /// valid UTF-8. The [`Err`] must be handled; it cannot be discarded,
++    /// as indicated by the `#[must_use]` annotation on this method.
++    ///
++    /// This method returns a [`Result`] because not all C strings contain
++    /// valid UTF-8. To avoid accidentally ignoring a failed conversion,
++    /// the return type is marked `#[must_use]`. Code that calls this
++    /// function should handle the error case explicitly (e.g. by logging or
++    /// propagating it), rather than silently discarding it.
+     #[inline]
++    #[must_use]
+     pub fn to_str(&self) -> Result<&str, core::str::Utf8Error> {
+         core::str::from_utf8(self.as_bytes())
+     }
+@@ -380,7 +390,10 @@ impl CStr {
+     /// ```
+     #[inline]
+     pub unsafe fn as_str_unchecked(&self) -> &str {
+-        // SAFETY: TODO.
++        // SAFETY: The data behind `self` are bytes from a `CStr`, i.e. a NUL-terminated sequence
++        // of u8 values. `from_utf8_unchecked` requires that the byte slice be valid UTF-8; the
++        // caller of this method must therefore guarantee that the `CStr` contains valid UTF-8
++        // data before calling this function. See [`to_str`] for a checked version.
+         unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
+     }
+ 
+-- 
+2.39.5
 
-Please let me know if you’d like any tweaks.
-
-Thanks,
-—AI talking about AI
