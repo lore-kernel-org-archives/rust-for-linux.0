@@ -1,65 +1,64 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7762E3B00;
-	Mon, 11 Aug 2025 18:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70272E093C;
+	Mon, 11 Aug 2025 18:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754936545; cv=none; b=D1vaav/sY3YjBmbTdT3sNMspxTFOEFnjzCkUj4pDu08gJqa5vDCwAyqKAp4Pwxa3jGhitWb5PiBI+uZT4E6eSEouSpqqT+LPg2+ywslO241gCjBZLuWrZGoIYkzstatXQ1Ybun+1MKY2OKRJ+ENoLcx+344ZzdQjcikXHSjqNZE=
+	t=1754936658; cv=none; b=KQj7vJWVXveiNk1/fQQfXmPBoaD4dcsbfEURhSbn43EuGwTcNdQWbvMM42nUGbTdgg94Mn7Tcoqnjrl1L2VexDG8HSwkmo4npiu8JENlWJuhayT+Nj0YQdFk6wOYiR82QWjmmOUlP6QrJdd/dTn73yDOv11mv85YKVxUfaBF1kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754936545; c=relaxed/simple;
-	bh=mOVxMwHNXKnJipk47e8SQdaZXOBitrJX60mFQRCQalw=;
+	s=arc-20240116; t=1754936658; c=relaxed/simple;
+	bh=eoincyoK3XVw5SZWAL09GLB9GcpLHMIrUCNieqviHcY=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=aUlUqnEkqSE+wubvEga6l2VQyGYvrBkKjBgQ8AHNomtf21DEUoYHJpL4GTJXWtkbftC1JgGmDwmigrcBIpSxnjSXJ+BW11vRjbJZo2CvTEeuxdkaTd1Y+DUon+nayxMtN9XuP0Gv2J1iGwsns/rqWRcWGWaqgIMfHQfJCQ4A0Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fkj1toEf; arc=none smtp.client-ip=209.85.210.178
+	 In-Reply-To:Content-Type; b=P9FcYErb/zL8o3o3ydnZ3GH+Pr9ErqyXUtweb2Y4rVX8AtCIu1SSZZHPrZmlAx3PqHqS+isabW7EK1+xyqVQ6zZqhUupeqeQ/Cr7NArMHe9IC++Q/dOa9AdrkRLw/klrtNdzGl7pHMj+C8mO2wYJwgDpfCK9z8niPzAH88kCKmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NrqR2T6B; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fkj1toEf"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76bfd457607so4570927b3a.0;
-        Mon, 11 Aug 2025 11:22:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NrqR2T6B"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b423036a317so2931594a12.3;
+        Mon, 11 Aug 2025 11:24:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754936543; x=1755541343; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754936656; x=1755541456; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=7mEWpl63ZoyplRlAL0IOHiBd7kGAmwSsw36Ew/d61UE=;
-        b=Fkj1toEfW50X+RdT6+VOTE2rzhoDpl4GokJcAK+0i215+2PJc9fFlc/NUf9vinPiz9
-         HK3EAmveabWqOF89Tn9n7id3bdDVLfX/hiBrL1zAvdKgdTmTuHeCz93k+nSlmF4BR+Yz
-         13OI6WAYBYnp1eQb+x4ELs/Ua8Kmi9GqBY8BdC7pZu24yKgR4nsOllijmkM04K/CwJvV
-         T8JUIYUiqtXgbkelh3T92jbgB2XJS/yf9WtvQPZwcYg95ONRsgtAdo7JMpgrUSB0x5uv
-         5JTd0RMstwy3Gn08VBo9WPIZUUzgRacE8uUxtxs3w16kvptqR6Z2YrWYChY+/NNNpcg8
-         hVrw==
+        bh=d/BYSlI48P8Nb03HBAZm4OMfQQPLVUCFN2VqcKKE/5o=;
+        b=NrqR2T6BNLWhTF21m9e4aLbgqYbGcvm4+49cjOesgZTcYBQms3as+P8e4HQnYUCGL/
+         kD94yLzanTQxvOq5zDuiKzR4qE+RGPQdeLeI4CZo1fNHXwaaYW+GG5q+6q1sNftgooXT
+         ashziChPNxwBFJXrX49di1BtH6yN01x2Zl0zm+oMAb2czR7UTQhT83TkP85qRAgrDIsC
+         /zdQSDY3POWXTyktSvPifARv5TlNax1NRbDq6wicsvZ/YMUazAwC6/gbwANIDR06EYdz
+         sQLqUbsu8130R6B+lyINg2bvGdhsR6LTHv2PM7ZLNSgstToRG0vkNiNV7XwotmUOHF75
+         IWzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754936543; x=1755541343;
+        d=1e100.net; s=20230601; t=1754936656; x=1755541456;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7mEWpl63ZoyplRlAL0IOHiBd7kGAmwSsw36Ew/d61UE=;
-        b=XAKAm9kcnoGumfEA1RmtM6zl4U9Lj33/D92/OYb+xc3DCmYPvzUrMYWiPd7DvKUeF0
-         1gmy3irm3oMTWUSIKsetK0n/7UJFTK6ompxpPHl9VzszrkoLTkvQqnm9AoY6XwrB0u2F
-         bWy2uiATWvuns7akPnzgo8kn9c08ziPgPZCqT0u1aTmmIGEBF3hR5ZKi+UzYvl2FQG7f
-         jgpR/86X0liMCA476C4zj4aSCy6Qz7QC+N4Z7bA2mfMIZ7JRNvG3Klv18JQckIcomxBd
-         /WATIHTSFhWit6BQH5WlIqK7qbIHt/xWbkSRit9JqcoGlYGRzxJk+sRiSgcFxEv5SBk1
-         Oj+w==
-X-Gm-Message-State: AOJu0YwwMrX7oZ+Qm1KOCBbqv9THCgveiI5Wlx1ns9ufQ1h3TopZa+/m
-	aeeDrOUeT6lrzt0I4f4sh5U2aeeQJZa7Cc1YtKfUzBynb0dC242gxwgfDG1evodY
-X-Gm-Gg: ASbGncsL4YuUNoz4BUUUZVFuXkAuzaCwFRwimzIuaU/8SrRniryPAqE9ng8V785eqSq
-	2zdJELqLdighWLCRY4IJHS0hQ2vPs+2Wf4LdAjROEDX1ddZE8XH8KKxUuCYYgr5IQM3SMjC1EKL
-	wYPlkdoPklocff5swUN4znuPRFtVbwFgCA1bzwHSVXITyf0EwAF+q4DioMZ3CDOmbTRrJ006ybR
-	fy8/3OBeBjLZoQa/wMpJsvOAXLzNR+MJEZvoxvQl3r9HBEEKmCljvS7LN0ur81PVU6ure6aT3xb
-	PsS2eroO7UIqBFXbC7wIgn//50UpyQfkhAjlluECV//aEDprGyz4HtHxTPgn1J5HksPas0wi2Hi
-	D4y/dB014j5Zi81psIwEC7Wowylrubl23HJK0P/BlKHA2KkQ/OCfoTBuFAgT9TMmZLSXy+eWQZk
-	ZRyGDWKQg=
-X-Google-Smtp-Source: AGHT+IHEDbEUXj8YoO4yyjGR/BV3tZDxo1gsO3xYNRHNCBTZx1ulNcZoy5PO/brKhi/Qlu/QPgR2QA==
-X-Received: by 2002:a05:6a21:3391:b0:240:1ca4:297d with SMTP id adf61e73a8af0-2409a8be8bcmr747279637.13.1754936542697;
-        Mon, 11 Aug 2025 11:22:22 -0700 (PDT)
+        bh=d/BYSlI48P8Nb03HBAZm4OMfQQPLVUCFN2VqcKKE/5o=;
+        b=VfCaIuzpwNuQSY+H5LEXscSNs5bMBkRA9BeBjDOtFOTEjdjLf9DkDd1QDiB2/YTIMe
+         eKzWNa4k4T08WYe6NXBWCksnYZXyZZGFM+3aCe0gGU4aJi8n9/jg8uxolxJTidCJhlAx
+         ZXqGovndv99NrJJtCx1ci6W5aOzhq3yNRI4th2LKUcKHKUud7SIaGRFtDKltjfmXOL4n
+         /UJjWshWtoKMBdB/UFZByPX0LPGg72ojL+aQ7ZjoUANGg55t9WlGbY8C8h4z+b33Yv0Q
+         7J/QbvBLOuZxOxVsyY4i0queJhxP3iajH3J3+xKjVoBuxDqsGDmldaU5ve1dxErIXb2X
+         eiNQ==
+X-Gm-Message-State: AOJu0YwenaM37wUk6hdkZDCQp4x1L+AhiJBmgv6akNRGymG6CCcDnDkA
+	nf+kspETPiEhhjaXyr9tvpEm3uviBxKFVwNUxy+ilCNUd4T3sobElTHCN+V25PlZ
+X-Gm-Gg: ASbGncsCE/r2m21X9HdCKxlK9avcsl4Yh0/OY1gAEJmY7Ya/lCvHwfYBYQTSuIPcuow
+	hZIahRQWIks/TH637EwJ3tWq2CsyUzqHIKubvb8PuHBvTLAGV0bOW0lcukGpE0hNzo0liObaLuc
+	HYkYIlJxLnACv1ODyhEUSbVf+sg7DunsJIkULl9YchnI6Er34eHSQ8tYmcpzGH9mY9n5lXCHvhL
+	pg+VENR5bB9+T74dpYOnvbDP3Nm4YSofcyo6+3VEBxqvKxkoF8FE13Ce/zQCrt/mtIAtV0QuYaF
+	p/JWsUz2t8+0l28kQWY0U5LXlwNDihoi49uT18RWQuvHUMgoU2T9V2j6ydbSywf7250+QoGbcvB
+	juutLcuoRvdnTDaKE7pcBfFezDj0D+HIAnFEVUvo30Wqte71QUJHUnyXtXdxz8MS59Noy2A+z
+X-Google-Smtp-Source: AGHT+IHo6FctEUcjPn2KrmdXGUeOut5S7prT9FmUzm6kMGygaDyHisucD/VcusLBFQJD2CHLUNMlTQ==
+X-Received: by 2002:a17:903:187:b0:240:e9d:6c43 with SMTP id d9443c01a7336-242fc3b52b9mr7381265ad.51.1754936655665;
+        Mon, 11 Aug 2025 11:24:15 -0700 (PDT)
 Received: from ?IPV6:2804:14c:de86:8d34:add1:b1bb:ed29:6539? ([2804:14c:de86:8d34:add1:b1bb:ed29:6539])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bf772116asm21417693b3a.97.2025.08.11.11.22.20
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f0f603sm279795445ad.48.2025.08.11.11.24.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 11:22:22 -0700 (PDT)
-Message-ID: <42c3fc0c-46a8-4502-ad53-d3b886fad5e8@gmail.com>
-Date: Mon, 11 Aug 2025 15:22:18 -0300
+        Mon, 11 Aug 2025 11:24:15 -0700 (PDT)
+Message-ID: <a7c2ee4a-e9d8-40e9-8695-4bb777d42812@gmail.com>
+Date: Mon, 11 Aug 2025 15:24:12 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,90 +66,76 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] Rust: kernel patch series
+Subject: Re: [PATCH v3 2/2] Rust: kernel patch series
 From: AI Talking about AI <aitalkingai@gmail.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 References: <79821f85-9e95-4426-8b1f-8752f8683dc9@gmail.com>
+ <42c3fc0c-46a8-4502-ad53-d3b886fad5e8@gmail.com>
 Content-Language: en-US
-In-Reply-To: <79821f85-9e95-4426-8b1f-8752f8683dc9@gmail.com>
+In-Reply-To: <42c3fc0c-46a8-4502-ad53-d3b886fad5e8@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-From 21a3d2a2dcff13f445915602c06a17af07835ee7 Mon Sep 17 00:00:00 2001
+From d66384514f12bf7607fbb45185bc66699e6cbf48 Mon Sep 17 00:00:00 2001
 From: AI talking about AI <aitalkingai@gmail.com>
-Date: Thu, 7 Aug 2025 07:53:56 -0700
-Subject: [PATCH 1/2] rust: mark CStr::to_str #[must_use] and update docs
+Date: Thu, 7 Aug 2025 07:54:00 -0700
+Subject: [PATCH 2/2] rust: clarify safety comments in workqueue.rs
 
-Add explanation about handling UTF-8 errors and mark CStr::to_str as #[must_use] to prevent silent error ignoring. Also document safety requirements of as_str_unchecked.
+Replace placeholder `SAFETY: TODO` comments in rust/kernel/workqueue.rs with detailed explanations of safety invariants for RawWorkItem and WorkItemPointer, following rust kernel guidelines.
 
 Signed-off-by: AI talking about AI <aitalkingai@gmail.com>
 ---
- rust/kernel/str.rs | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ rust/kernel/workqueue.rs | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 6c89255..290031b 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -37,12 +37,8 @@ impl BStr {
-     /// # Examples
-     ///
-     /// ```
--    /// # use kernel::b_str;
--    /// assert_eq!(Some(b_str!("bar")), b_str!("foobar").strip_prefix(b_str!("foo")));
--    /// assert_eq!(None, b_str!("foobar").strip_prefix(b_str!("bar")));
--    /// assert_eq!(Some(b_str!("foobar")), b_str!("foobar").strip_prefix(b_str!("")));
--    /// assert_eq!(Some(b_str!("")), b_str!("foobar").strip_prefix(b_str!("foobar")));
--    /// ```
-+
-+///
-     pub fn strip_prefix(&self, pattern: impl AsRef<Self>) -> Option<&BStr> {
-         self.deref()
-             .strip_prefix(pattern.as_ref().deref())
-@@ -346,7 +342,7 @@ impl CStr {
-     ///
-     /// If the contents of the [`CStr`] are valid UTF-8 data, this
-     /// function will return the corresponding [`&str`] slice. Otherwise,
--    /// it will return an error with details of where UTF-8 validation failed.
-+    /// it will return an [`Err`] with details of where UTF-8 validation failed.
-     ///
-     /// # Examples
-     ///
-@@ -356,7 +352,21 @@ impl CStr {
-     /// assert_eq!(cstr.to_str(), Ok("foo"));
-     /// # Ok::<(), kernel::error::Error>(())
-     /// ```
-+
-+    ///
-+    /// # Errors
-+    ///
-+    /// This function returns an [`Err`] when the underlying bytes are not
-+    /// valid UTF-8. The [`Err`] must be handled; it cannot be discarded,
-+    /// as indicated by the `#[must_use]` annotation on this method.
-+    ///
-+    /// This method returns a [`Result`] because not all C strings contain
-+    /// valid UTF-8. To avoid accidentally ignoring a failed conversion,
-+    /// the return type is marked `#[must_use]`. Code that calls this
-+    /// function should handle the error case explicitly (e.g. by logging or
-+    /// propagating it), rather than silently discarding it.
-     #[inline]
-+    #[must_use]
-     pub fn to_str(&self) -> Result<&str, core::str::Utf8Error> {
-         core::str::from_utf8(self.as_bytes())
-     }
-@@ -380,7 +390,10 @@ impl CStr {
-     /// ```
-     #[inline]
-     pub unsafe fn as_str_unchecked(&self) -> &str {
--        // SAFETY: TODO.
-+        // SAFETY: The data behind `self` are bytes from a `CStr`, i.e. a NUL-terminated sequence
-+        // of u8 values. `from_utf8_unchecked` requires that the byte slice be valid UTF-8; the
-+        // caller of this method must therefore guarantee that the `CStr` contains valid UTF-8
-+        // data before calling this function. See [`to_str`] for a checked version.
-         unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
-     }
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index b9343d5..4a34651 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -881,7 +881,19 @@ where
+ {
+ }
  
+-// SAFETY: TODO.
++    // SAFETY:
++    //
++    // The [`run`](WorkItemPointer::run) function pointer stored in the `work_struct` always
++    // originates from a prior call to [`__enqueue`](RawWorkItem::__enqueue) on a
++    // `Pin<KBox<T>>`.  A `Pin<KBox<T>>` owns its heap allocation and, by virtue of being
++    // pinned, guarantees that its contents will not be moved.  When the C side of the
++    // workqueue invokes the function pointer, it passes back the same `work_struct`
++    // pointer that was produced by `__enqueue`.  This implementation computes the
++    // original `KBox` from that pointer via `work_container_of` and converts it back
++    // into a pinned box, which is safe because ownership is transferred back from the
++    // kernel.  Therefore, the pointer passed to `run` is always valid for the
++    // duration of the call, and dereferencing it is sound.
++
+ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
+@@ -901,7 +913,20 @@ where
+     }
+ }
+ 
+-// SAFETY: TODO.
++    // SAFETY:
++    //
++    // The implementation of [`RawWorkItem::__enqueue`] for `Pin<KBox<T>>` allocates a
++    // new `Work<T, ID>` and obtains a raw pointer to its embedded `work_struct` via
++    // [`raw_get_work`](Work::raw_get).  It then passes that pointer to the provided
++    // closure.  The `Pin<KBox<T>>` is freshly allocated and by type invariants cannot
++    // already be enqueued, so the closure must return `true`.  If it were to return
++    // `false`, the implementation invokes `unreachable_unchecked()`, which is never
++    // reached in valid usage.  When the closure returns `true` the C workqueue
++    // subsystem takes ownership of the `work_struct` and will eventually call back
++    // into [`WorkItemPointer::run`], at which point the box is recovered and
++    // dropped.  Throughout this process the raw pointer passed to the closure
++    // remains valid for the duration specified in [`RawWorkItem`]'s safety contract.
++
+ unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
 -- 
 2.39.5
 
