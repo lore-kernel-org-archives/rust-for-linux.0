@@ -1,165 +1,349 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DD02D3A9B
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 12:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4107E1E522
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 12:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754915531; cv=none; b=WIbMGpCkT0Gu78T7JivWiNmzIhr0PkvsHiv2rBsYu0RD9kU/9c+uWwUmIPGw8vgR9z/8kzLILIK5xsih45tPDXhkbjrUam1MVVDf01A88+DCksPJzscQAHOG4BX2ylpxc9KWEKZcsmg6hOAaN1z2yGifXQs/57OWKm/JpmvpYoc=
+	t=1754915643; cv=none; b=YMixoal3N2/2sWtwUV468qKrG7hSPk1JYVfGTFB+kg92JdQj17BDnxj9S8idJhEaDCaT903LozJdNIMmyCOc0RjehdfZEOZYvOGK8bU7vik0Mh0zMmr4ZqBGc/P+AGm5tmjj9gsfq9t0/a6MxgMtwEbEFJS9J+J84FLtzmveLjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754915531; c=relaxed/simple;
-	bh=3TOHdsav1ycB+aZ84BPSmdU5PVabBdrJYr0uju0OSxE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=thq6aegdsit942Krq77AQwL5TCrRrpyj9VpdSYWbxJpG2vHNUz1GOS0rTYSR7s6Ot1gPUDaDBv6GRvSllZ/3RPhxgCztTHeE7ZSsFe7prRitD6Z9aXyWP+3V5LNNyqRy7vDOJkJz46EAIRPtRazHYSStnUl5DHREfgKiSXDa5WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t+mYYA3m; arc=none smtp.client-ip=209.85.221.74
+	s=arc-20240116; t=1754915643; c=relaxed/simple;
+	bh=LA2sJU/vYsLUweasr0huPRBxzSYqgCWcqXzUJeextJc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MHmjMqkCSZ4TPFhsm3VjlLnezuhtn4ahGp+pkYy9cZGmzI50rdJNuFBN3nvOnOsHAvVQFJoNR9gZQEe8DktXpvJBiVdZ4yh9bVQzjz1KysZ9R6+l3nUxmDOGAgEAEpB9zvdoQ6vs88ghLSsxtt5Wu8nC9he+9bzmXMJfd+Sj09k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4FJyc+h3; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t+mYYA3m"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3b79629bd88so1854069f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 05:32:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4FJyc+h3"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-459d6c83e2eso24424615e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 05:34:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754915528; x=1755520328; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9rlOmIicLtEp3jt4sv4CSTuwkEdgZbSMhZPZuiG0qNY=;
-        b=t+mYYA3mMQvkekV2PRoPz1Toy0BH1Egyl91FoUPmdK/yH8GVPmfMXJJX4JRMMqs30C
-         V5C78yDx/8GOfgpT0gQgU1IJYoxK1LZrm4qjQllChU4WZkWk3NnlvhPL0aR6kJSSAnoM
-         5HivFRLTn5STS5rad7RSjCFlMd7pNL3zerx+7NrfZieY26dHYUrj1diDUgUhLJexsFYA
-         IjZbHTntlP/mxhiBNRokh7oT3BuGZoqdSUxzRTzpZgN+LY29J7nROVV558Q1pO79jHPG
-         pYu0zp61+aUb+hi+9t4j4TEonNKf2rT1ApLFydPB8zCdRcuE5EzRoUKwsmaPSXLRvoAO
-         vJSw==
+        d=google.com; s=20230601; t=1754915639; x=1755520439; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YZvjerL4wW8XwzhEFHvETehXGYRte2K2Qlr0P8nqiFM=;
+        b=4FJyc+h3b5oOBG1vq/ls7j9p4Tmzj3haFaijvdL+4+TIu2wqPXDUVGHsUzOeqsAZ11
+         HkHo3rNKq7fQrRfQ6gz1D4xe57F8pS7k0IHAghq6MNDYM20mUdU+LB2lkKHC34NlEnoX
+         IatlcgT1F85A9GfiGqlwDoZIp4RyQkDQ4NeG03fxdWFQtgKBl0vIGHqrvUY38X2fDGq1
+         R+TxMarOOy5loEqvh+LjDET4HKDZ6337pqTZX4Z7gMSry+SYnPRGfPoz7M9GN95/HEOx
+         Ju7glZSkSdNMdVJ3tck3G6FDQNgXHgDOMZHsFCul7VemDYYRN9kELzGwmQaD470RK+/a
+         Ljrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754915528; x=1755520328;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9rlOmIicLtEp3jt4sv4CSTuwkEdgZbSMhZPZuiG0qNY=;
-        b=SkhBXJgAk4pz1wt4Se46TtXbPWfYx40eCJGeMkM8W4f/Ep/kjq7vmLDS1o2OTrsYIK
-         3uJYdhRPRMzkvq1ldWOzSbsWpCOIFa3WXRK4idNU5MY3c25lB6+YP3+GixLqp9Whp86s
-         rrhqUu8VJRw1gDUn5P2yKs/YIQ7AA0MVQLmHQAByTfomrFlhbh40wb4WBD5DNVb+z/x1
-         3C+VY54t2sCD9/SLJVEV7jpRNZTE/tqWqYiV3AthZYbSeFK2T3s2VomftTw7TF5kArvv
-         +94Xh3n5Gd4SJ4U5ToXw+NxbLSPVPgxzltAx7Na1HgBfuPo17czx5vi9rmoUa1EZCOfb
-         qZ4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUk/hv2dBr0UBGMkQSKjQc78FSkXZuYxF+89nqqDpw2iC2pFs7t04KyjNcXwrfR/0Rw7zme2Yj1OlMo9HYc3A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgniZHdxFidlmwtmh/l8ktb4Mm6lMHE6gWAlmsEU2X6xwcoibJ
-	ebE39mMGTPGdvt9PWwMhoMEwzfW7bMl6rMLPK5+5Q/qhSjNW3EL45B/Lo+rfVGJ3FELIDqkxFsj
-	cTFK5sE4y2fVEHG6Xsw==
-X-Google-Smtp-Source: AGHT+IGLqvqODrNKUqFGV1RPHxhNKh2ajU+3kusbjIAlTVO5vOTLv+p7fkC+SL8LO9kaXdUyiw31plWpnKodurU=
-X-Received: from wmth4.prod.google.com ([2002:a05:600c:8b64:b0:459:dcf5:1b54])
+        d=1e100.net; s=20230601; t=1754915639; x=1755520439;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YZvjerL4wW8XwzhEFHvETehXGYRte2K2Qlr0P8nqiFM=;
+        b=gYzLKQyU34ckN02U8rGGhL2TOINAhZ08EHEBCJpzrepSqgVpvApcqYij22r16lwy2a
+         QyrPL8AR8UnhAAd6Sgi1Jo2qy5nsfOGISD76xHP6exC1VaCNIVe4dDPhQEmpNjrjrKK9
+         3xckwUV0Wy1ReRXNyhJAhipFPn4FLkB1iEYu3suzjf8dg5wp7gdWcs5el1iJVn2k4+Rq
+         GSTLEPbBa2w1HUXqW2zP0RZk6JZ28P+wCBKV3rzpWeiqR5lduXNyvyRI1GHZ5i6jQsH8
+         twr5IPMHsb1Rtx/PC3ZhTK7LdyK2u9nKj6ugJGAKU3wPzVxFoI6Vc0CXaZSOWIejCYu1
+         H9Pw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrbCSpLuzpnAmSEeu8pG37BkH2JWfITGXNi/v4Hg9HFDOBkzme6UAWZdSxqiUOFcmlm0J/nFpRZvmiqye0OQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY6tUunxTX0qqLIGxHIQ54K9r2uXogPrcYT57Nmc426EXWlWQw
+	cpVruiSC4SSMOtDAEGGkpxHG5lpsB4koxUKo0nw7Wkk+grXSGuofz2jCn6rJ93M4/ShLjELxUvZ
+	5uU4SS/hZruf8tzu3Bg==
+X-Google-Smtp-Source: AGHT+IECjH7ZxJgUgCbKEQia1xksFNnwEbZnbG3a0LNrmnvx31ihF54FFzDkbVYCzEsCpZpt9AEhsXfm3/Gscng=
+X-Received: from wmsr17.prod.google.com ([2002:a05:600c:8b11:b0:458:715c:51a1])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:25c4:b0:3b7:76ac:8b72 with SMTP id ffacd0b85a97d-3b9009294e5mr9096299f8f.12.1754915527779;
- Mon, 11 Aug 2025 05:32:07 -0700 (PDT)
-Date: Mon, 11 Aug 2025 12:31:51 +0000
-In-Reply-To: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
+ 2002:a05:600c:4511:b0:456:43c:dcdc with SMTP id 5b1f17b1804b1-459f4f5474bmr98747335e9.33.1754915638678;
+ Mon, 11 Aug 2025 05:33:58 -0700 (PDT)
+Date: Mon, 11 Aug 2025 12:33:51 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
+X-B4-Tracking: v=1; b=H4sIAC/jmWgC/32Py47CMAxFf6XKeoxIpqVpV/wHQqM8nGJp2kASo
+ kGIfx9TNqxYXss+5/ouMibCLMbmLhJWyhQXDuqrEe5klgmBPGehtqrb9koCpQvYeF08eF53CG4
+ I3gbvtfOD4LNzwkB/K/Jw5HyiXGK6rYYqn9MPsCpBQhusMqGV2uy+91OM0y9uXJzF8fHCJ7xcu
+ Wh5OYQ1mVvEeaYyNnW3kT0kJ8X7B/zQqpQKSjyTy1BuCZ4czOWHWygw2CMOVne6a8eqWfb4B11 E8m8dAQAA
+X-Change-Id: 20250721-irq-bound-device-c9fdbfdd8cd9
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3044; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=3TOHdsav1ycB+aZ84BPSmdU5PVabBdrJYr0uju0OSxE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBomeLD7qI0nZRsYh9EJ8g3j8Abdi0u+B75wO6Tr
- Lti2BBLUReJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaJniwwAKCRAEWL7uWMY5
- RvAWD/4qmVr48iymYXFuDkGmxltJS6ILykjTpfpC8zNFFY76rrYxiOtJRaNzi/FbdFsdgGHH8pn
- U0Dtcj+pEVp/ac9Jej3eTY8RdHtWiHTTza/GeRYt0vKrl3j4qp2GHh4oN9wOLqbpdNL5QbAaxjg
- tXiwjycVXRR5inzf7VtQ+6ERQHeN4ja6xDxdRNOze2ltFpQ2pELfdJbXhlQEGqyQOhVTZpqjfsg
- EUJi3VLNXZnyJGCj3florbFn848EvfG/QkErQdXkFee+qxsVygZ0ev+z0G9p5y4crdFdM9Qt0E9
- gWUpG2sWvqV1qLgdXfwMwhDfJxEHNJz5Vm6nG92uwaWkn5EsjmUsZs7MgawgTWTtZmrxZc0R1ik
- NDgBhTaWzKXM0XCga0yHRhiOMZqH9XB9IGSnUKTsXedMRhP8As3rnf6FF1TVb9j6Ru3eb2/AljH
- 4q7FWAuTi3flms0P0eG5AYEY8rvlRz7Wj+QA0Owu32mVmiJ6bCEeX0H4swgrsY1aJu9dbck5izo
- 1S+kHlcnmzXt65jisEuoc6rH6ZeI3RI4jzfeSLEc2xBl8m7MbEXOuJsiuHURnTn6+g8oFV5VlRo
- Rizotk0lWMfBDg2orMlo48dCPAIUQrYPoRD2JAejExoHgqLXffV5tz1anAo6KMnTE5rpam+aV8z JDLA7pMlhh3Ymog==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11382; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=LA2sJU/vYsLUweasr0huPRBxzSYqgCWcqXzUJeextJc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBomeM1+T38PVs0JpVVlt/3imJNIorqlnF/5r+eC
+ wQ+tL9FBGyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaJnjNQAKCRAEWL7uWMY5
+ RsKkD/0VIBK8zT8TZDQQOHzPP//REva7kqgrPeD2n5l4B5RZUz3jz8IJLG0qsbTGocJ1iFJz6DS
+ dqlTOvJmGtgT+gkjIjWWTF8DNQGycGso2yTBdxcmGNMfgrkIjmVC7h+xAbVZjagYBHr+sFIsG/J
+ 4lK3J2rw4o5TNi5tirQHX6gLg1jEp4CXjcFRrqIZzbcvg6DH1jaxEx7wOXLKLETlhw5F9G1B5T+
+ 0u+s3My7G2vpC+DE3uRaCakrwrfKepHwwuA8O9meCfucd7M6/QqKkKJ0FwjPgtByzTWQzZ+rS5H
+ albGmMdE8CeJN3HH/aoFGPKtyaf8Lt7ZrgLL8SPyNR1S+I7poON1wlhYvfxLg5k0mtqQ4CMfG+d
+ E4zan9g0Yq82yg0VoOUY26CXMmNBHteThASPTUQHp4CkPW/dwOKb/+qxqJY1KS02EpNfITqf7D/
+ dJGf3qoFsMNI2gcGXhIKJtdIHCKcT2Ny2gf9vNzDicY/Z/cTKx19xtqVi3pxbeach8SRpR4a+u8
+ T8lmuaPg2hB7tGtTF3pa2wKfKdE4xxH5W0SKhlIna3D2njLQOtTAdlQ1cThlQ8Aq8SUEuE6hFHU
+ XNYPbWAkehALEiwV+3zwOKEbRIZ02/nNrPHKh/lYMhRl868+z0W48XW54RSQNKzcip3mo1TYfti V82AVDSa5xnNG/Q==
 X-Mailer: b4 0.14.2
-Message-ID: <20250811-align-min-allocator-v2-2-3386cc94f4fc@google.com>
-Subject: [PATCH v2 2/2] rust: alloc: take the allocator into account for FOREIGN_ALIGN
+Message-ID: <20250811-irq-bound-device-v2-1-d73ebb4a50a2@google.com>
+Subject: [PATCH v2] rust: irq: add &Device<Bound> argument to irq callbacks
 From: Alice Ryhl <aliceryhl@google.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@gmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"=?utf-8?q?Krzysztof_Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	Dirk Behme <dirk.behme@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pci@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-When converting a Box<T> into a void pointer, the allocator might
-guarantee a higher alignment than the type itself does, and in that case
-it is guaranteed that the void pointer has that higher alignment.
+When working with a bus device, many operations are only possible while
+the device is still bound. The &Device<Bound> type represents a proof in
+the type system that you are in a scope where the device is guaranteed
+to still be bound. Since we deregister irq callbacks when unbinding a
+device, if an irq callback is running, that implies that the device has
+not yet been unbound.
 
-This is quite useful when combined with the XArray, which you can only
-create using a ForeignOwnable whose FOREIGN_ALIGN is at least 4. This
-means that you can now always use a Box<T> with the XArray no matter the
-alignment of T.
+To allow drivers to take advantage of that, add an additional argument
+to irq callbacks.
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/alloc/kbox.rs | 13 +++++++++----
- rust/kernel/sync/arc.rs   |  6 +++---
- 2 files changed, 12 insertions(+), 7 deletions(-)
+This patch is a follow-up to Daniel's irq series [1] that adds a
+&Device<Bound> argument to all irq callbacks. This allows you to use
+operations that are only safe on a bound device inside an irq callback.
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index 856d05aa60f13485d8afc98f0b7fe7593867b5a1..eedab0be1eff78a8150524346348ec0759f852e2 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -401,12 +401,17 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
+[1]: https://lore.kernel.org/all/20250810-topics-tyr-request_irq2-v8-0-8163f4c4c3a6@collabora.com/
+---
+Changes in v2:
+- Rebase on v8 of [1] (and hence v6.17-rc1).
+- Link to v1: https://lore.kernel.org/r/20250721-irq-bound-device-v1-1-4fb2af418a63@google.com
+---
+ rust/kernel/irq/request.rs | 85 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 49 insertions(+), 36 deletions(-)
+
+diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+index 29597573e91106d0990ec096a8e7f93ef2f89f2b..ae5d967fb9d6a748b4274464b615e6dd965bca10 100644
+--- a/rust/kernel/irq/request.rs
++++ b/rust/kernel/irq/request.rs
+@@ -36,18 +36,18 @@ pub trait Handler: Sync {
+     /// All work that does not necessarily need to be executed from
+     /// interrupt context, should be deferred to a threaded handler.
+     /// See also [`ThreadedRegistration`].
+-    fn handle(&self) -> IrqReturn;
++    fn handle(&self, device: &Device<Bound>) -> IrqReturn;
  }
  
- // SAFETY: The pointer returned by `into_foreign` comes from a well aligned
--// pointer to `T`.
-+// pointer to `T` allocated by `A`.
- unsafe impl<T: 'static, A> ForeignOwnable for Box<T, A>
- where
-     A: Allocator,
- {
--    const FOREIGN_ALIGN: usize = core::mem::align_of::<T>();
-+    const FOREIGN_ALIGN: usize = if core::mem::align_of::<T>() < A::MIN_ALIGN {
-+        A::MIN_ALIGN
-+    } else {
-+        core::mem::align_of::<T>()
-+    };
-+
-     type Borrowed<'a> = &'a T;
-     type BorrowedMut<'a> = &'a mut T;
- 
-@@ -435,12 +440,12 @@ unsafe fn borrow_mut<'a>(ptr: *mut c_void) -> &'a mut T {
- }
- 
- // SAFETY: The pointer returned by `into_foreign` comes from a well aligned
--// pointer to `T`.
-+// pointer to `T` allocated by `A`.
- unsafe impl<T: 'static, A> ForeignOwnable for Pin<Box<T, A>>
- where
-     A: Allocator,
- {
--    const FOREIGN_ALIGN: usize = core::mem::align_of::<T>();
-+    const FOREIGN_ALIGN: usize = <Box<T, A> as ForeignOwnable>::FOREIGN_ALIGN;
-     type Borrowed<'a> = Pin<&'a T>;
-     type BorrowedMut<'a> = Pin<&'a mut T>;
- 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 63a66761d0c7d752e09ce7372bc230661b2f7c6d..74121cf935f364c16799b5c31cc88714dfd6b702 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -373,10 +373,10 @@ pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
+ impl<T: ?Sized + Handler + Send> Handler for Arc<T> {
+-    fn handle(&self) -> IrqReturn {
+-        T::handle(self)
++    fn handle(&self, device: &Device<Bound>) -> IrqReturn {
++        T::handle(self, device)
      }
  }
  
--// SAFETY: The pointer returned by `into_foreign` comes from a well aligned
--// pointer to `ArcInner<T>`.
-+// SAFETY: The pointer returned by `into_foreign` was originally allocated as an
-+// `KBox<ArcInner<T>>`, so that type is what determines the alignment.
- unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
--    const FOREIGN_ALIGN: usize = core::mem::align_of::<ArcInner<T>>();
-+    const FOREIGN_ALIGN: usize = <KBox<ArcInner<T>> as ForeignOwnable>::FOREIGN_ALIGN;
+ impl<T: ?Sized + Handler, A: Allocator> Handler for Box<T, A> {
+-    fn handle(&self) -> IrqReturn {
+-        T::handle(self)
++    fn handle(&self, device: &Device<Bound>) -> IrqReturn {
++        T::handle(self, device)
+     }
+ }
  
-     type Borrowed<'a> = ArcBorrow<'a, T>;
-     type BorrowedMut<'a> = Self::Borrowed<'a>;
+@@ -140,7 +140,7 @@ pub fn irq(&self) -> u32 {
+ ///
+ /// ```
+ /// # use kernel::c_str;
+-/// # use kernel::device::Bound;
++/// # use kernel::device::{Bound, Device};
+ /// # use kernel::irq::{self, Flags, IrqRequest, IrqReturn, Registration};
+ /// # use kernel::prelude::*;
+ /// # use kernel::sync::{Arc, Completion};
+@@ -153,7 +153,7 @@ pub fn irq(&self) -> u32 {
+ ///
+ /// impl irq::Handler for Handler {
+ ///     // Executed in IRQ context.
+-///     fn handle(&self) -> IrqReturn {
++///     fn handle(&self, _dev: &Device<Bound>) -> IrqReturn {
+ ///         self.completion.complete_all();
+ ///         IrqReturn::Handled
+ ///     }
+@@ -179,7 +179,7 @@ pub fn irq(&self) -> u32 {
+ ///
+ /// # Invariants
+ ///
+-/// * We own an irq handler using `&self.handler` as its private data.
++/// * We own an irq handler whose cookie is a pointer to `Self`.
+ #[pin_data]
+ pub struct Registration<T: Handler + 'static> {
+     #[pin]
+@@ -207,8 +207,8 @@ pub fn new<'a>(
+             inner <- Devres::new(
+                 request.dev,
+                 try_pin_init!(RegistrationInner {
+-                    // SAFETY: `this` is a valid pointer to the `Registration` instance
+-                    cookie: unsafe { &raw mut (*this.as_ptr()).handler }.cast(),
++                    // INVARIANT: `this` is a valid pointer to the `Registration` instance
++                    cookie: this.as_ptr().cast::<c_void>(),
+                     irq: {
+                         // SAFETY:
+                         // - The callbacks are valid for use with request_irq.
+@@ -221,7 +221,7 @@ pub fn new<'a>(
+                                 Some(handle_irq_callback::<T>),
+                                 flags.into_inner(),
+                                 name.as_char_ptr(),
+-                                (&raw mut (*this.as_ptr()).handler).cast(),
++                                this.as_ptr().cast::<c_void>(),
+                             )
+                         })?;
+                         request.irq
+@@ -258,9 +258,13 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
+ ///
+ /// This function should be only used as the callback in `request_irq`.
+ unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: *mut c_void) -> c_uint {
+-    // SAFETY: `ptr` is a pointer to T set in `Registration::new`
+-    let handler = unsafe { &*(ptr as *const T) };
+-    T::handle(handler) as c_uint
++    // SAFETY: `ptr` is a pointer to `Registration<T>` set in `Registration::new`
++    let registration = unsafe { &*(ptr as *const Registration<T>) };
++    // SAFETY: The irq callback is removed before the device is unbound, so the fact that the irq
++    // callback is running implies that the device has not yet been unbound.
++    let device = unsafe { registration.inner.device().as_bound() };
++
++    T::handle(&registration.handler, device) as c_uint
+ }
+ 
+ /// The value that can be returned from [`ThreadedHandler::handle`].
+@@ -286,7 +290,8 @@ pub trait ThreadedHandler: Sync {
+     /// handler, i.e. [`ThreadedHandler::handle_threaded`].
+     ///
+     /// The default implementation returns [`ThreadedIrqReturn::WakeThread`].
+-    fn handle(&self) -> ThreadedIrqReturn {
++    #[expect(unused_variables)]
++    fn handle(&self, device: &Device<Bound>) -> ThreadedIrqReturn {
+         ThreadedIrqReturn::WakeThread
+     }
+ 
+@@ -294,26 +299,26 @@ fn handle(&self) -> ThreadedIrqReturn {
+     ///
+     /// This is executed in process context. The kernel creates a dedicated
+     /// `kthread` for this purpose.
+-    fn handle_threaded(&self) -> IrqReturn;
++    fn handle_threaded(&self, device: &Device<Bound>) -> IrqReturn;
+ }
+ 
+ impl<T: ?Sized + ThreadedHandler + Send> ThreadedHandler for Arc<T> {
+-    fn handle(&self) -> ThreadedIrqReturn {
+-        T::handle(self)
++    fn handle(&self, device: &Device<Bound>) -> ThreadedIrqReturn {
++        T::handle(self, device)
+     }
+ 
+-    fn handle_threaded(&self) -> IrqReturn {
+-        T::handle_threaded(self)
++    fn handle_threaded(&self, device: &Device<Bound>) -> IrqReturn {
++        T::handle_threaded(self, device)
+     }
+ }
+ 
+ impl<T: ?Sized + ThreadedHandler, A: Allocator> ThreadedHandler for Box<T, A> {
+-    fn handle(&self) -> ThreadedIrqReturn {
+-        T::handle(self)
++    fn handle(&self, device: &Device<Bound>) -> ThreadedIrqReturn {
++        T::handle(self, device)
+     }
+ 
+-    fn handle_threaded(&self) -> IrqReturn {
+-        T::handle_threaded(self)
++    fn handle_threaded(&self, device: &Device<Bound>) -> IrqReturn {
++        T::handle_threaded(self, device)
+     }
+ }
+ 
+@@ -332,7 +337,7 @@ fn handle_threaded(&self) -> IrqReturn {
+ ///
+ /// ```
+ /// # use kernel::c_str;
+-/// # use kernel::device::Bound;
++/// # use kernel::device::{Bound, Device};
+ /// # use kernel::irq::{
+ /// #   self, Flags, IrqRequest, IrqReturn, ThreadedHandler, ThreadedIrqReturn,
+ /// #   ThreadedRegistration,
+@@ -355,7 +360,7 @@ fn handle_threaded(&self) -> IrqReturn {
+ ///     // This will run (in a separate kthread) if and only if
+ ///     // [`ThreadedHandler::handle`] returns [`WakeThread`], which it does by
+ ///     // default.
+-///     fn handle_threaded(&self) -> IrqReturn {
++///     fn handle_threaded(&self, _dev: &Device<Bound>) -> IrqReturn {
+ ///         let mut data = self.value.lock();
+ ///         *data += 1;
+ ///         IrqReturn::Handled
+@@ -388,7 +393,7 @@ fn handle_threaded(&self) -> IrqReturn {
+ ///
+ /// # Invariants
+ ///
+-/// * We own an irq handler using `&T` as its private data.
++/// * We own an irq handler whose cookie is a pointer to `Self`.
+ #[pin_data]
+ pub struct ThreadedRegistration<T: ThreadedHandler + 'static> {
+     #[pin]
+@@ -416,8 +421,8 @@ pub fn new<'a>(
+             inner <- Devres::new(
+                 request.dev,
+                 try_pin_init!(RegistrationInner {
+-                    // SAFETY: `this` is a valid pointer to the `ThreadedRegistration` instance.
+-                    cookie: unsafe { &raw mut (*this.as_ptr()).handler }.cast(),
++                    // INVARIANT: `this` is a valid pointer to the `ThreadedRegistration` instance.
++                    cookie: this.as_ptr().cast::<c_void>(),
+                     irq: {
+                         // SAFETY:
+                         // - The callbacks are valid for use with request_threaded_irq.
+@@ -431,7 +436,7 @@ pub fn new<'a>(
+                                 Some(thread_fn_callback::<T>),
+                                 flags.into_inner(),
+                                 name.as_char_ptr(),
+-                                (&raw mut (*this.as_ptr()).handler).cast(),
++                                this.as_ptr().cast::<c_void>(),
+                             )
+                         })?;
+                         request.irq
+@@ -471,16 +476,24 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
+     _irq: i32,
+     ptr: *mut c_void,
+ ) -> c_uint {
+-    // SAFETY: `ptr` is a pointer to T set in `ThreadedRegistration::new`
+-    let handler = unsafe { &*(ptr as *const T) };
+-    T::handle(handler) as c_uint
++    // SAFETY: `ptr` is a pointer to `ThreadedRegistration<T>` set in `ThreadedRegistration::new`
++    let registration = unsafe { &*(ptr as *const ThreadedRegistration<T>) };
++    // SAFETY: The irq callback is removed before the device is unbound, so the fact that the irq
++    // callback is running implies that the device has not yet been unbound.
++    let device = unsafe { registration.inner.device().as_bound() };
++
++    T::handle(&registration.handler, device) as c_uint
+ }
+ 
+ /// # Safety
+ ///
+ /// This function should be only used as the callback in `request_threaded_irq`.
+ unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler>(_irq: i32, ptr: *mut c_void) -> c_uint {
+-    // SAFETY: `ptr` is a pointer to T set in `ThreadedRegistration::new`
+-    let handler = unsafe { &*(ptr as *const T) };
+-    T::handle_threaded(handler) as c_uint
++    // SAFETY: `ptr` is a pointer to `ThreadedRegistration<T>` set in `ThreadedRegistration::new`
++    let registration = unsafe { &*(ptr as *const ThreadedRegistration<T>) };
++    // SAFETY: The irq callback is removed before the device is unbound, so the fact that the irq
++    // callback is running implies that the device has not yet been unbound.
++    let device = unsafe { registration.inner.device().as_bound() };
++
++    T::handle_threaded(&registration.handler, device) as c_uint
+ }
 
+---
+base-commit: 062b3e4a1f880f104a8d4b90b767788786aa7b78
+change-id: 20250721-irq-bound-device-c9fdbfdd8cd9
+prerequisite-change-id: 20250712-topics-tyr-request_irq2-ae7ee9b85854:v8
+prerequisite-patch-id: 0ed57dd6c685034df8a741c0290e1647880ad9b9
+prerequisite-patch-id: 939809f0395089541acb9421cdb798ea625bd31b
+prerequisite-patch-id: 5106394e817b371de5035a8289f6820f8aea3895
+prerequisite-patch-id: 402fb2b44076d5a5d2a7210a8496e665d05e7c2a
+prerequisite-patch-id: c4d08dda330b2ae8b5c8bb7a9d6bdef379119a6d
+prerequisite-patch-id: 0a639274db9c6e7002828a6652a9f5a7d1dfd67f
+
+Best regards,
 -- 
-2.50.1.703.g449372360f-goog
+Alice Ryhl <aliceryhl@google.com>
 
