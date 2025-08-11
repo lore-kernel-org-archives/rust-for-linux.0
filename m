@@ -1,169 +1,153 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CA01F4C96
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Aug 2025 10:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2D82367C5;
+	Mon, 11 Aug 2025 10:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754907313; cv=none; b=pxY6J+ncf6wj6swq5NrMeKhSzyt/8rDRIfRo/4c+OrP0VP9xkESazxZw1/Wb1IV3rmYHtuW0rgpzZbla3LqmWM+rh94DapHV2XQjohcSzG/mdbnukWeBxaYTdV6Sa5PtBJvs8jcksG7Jl7zb9o9mUoLMDn+aweSQYaeL/6hSPvk=
+	t=1754908398; cv=none; b=UwFt6JmheaGd1VDQaO0cvlW7YO1DHdsZfrRxkmWYGOhL1aTpkCwTOF/gwYvyCJo70791VI6EJQM7kxbUVOSnsby0mg6ccgxoe53yIr5P4UitKUgHKsVw4jbE75sqpHccMbZnvROmnpLynSRlhC6FVxsx6uQr3vmlpnLVIfbOJBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754907313; c=relaxed/simple;
-	bh=iDo6uT2Dr5g1uhEmnQj8ZY1fZ0cJQ9BUtJFLb7W34NY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=u+yISmHVqVe2AMmSDG+JJxkNsCDzgo1rwZUIcup90F3CZVT8j0zzUNpy/jeWxn9kPsPkA5BrMPLkd0gGO1n8NoGxSKG3KPbnXC08N6SpZqU24xYcOU3M+Sq0B/QM+Wfx9LZoxSEOFjqwiEO01y/sGIMA/HAtekM/Qyv4pcNBMPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=O98KwPcr; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=GwSRppAX; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1754908398; c=relaxed/simple;
+	bh=Bb+HJJMwXAa9wHZL9KaKBaWkuVtOZHy9HVPQEPFbXGM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=j3QOofl95SLq682zr+D27h9k1KtjVBMSemwFuTVnY7FVloRj5BHQSRDryCUOtbxhHckwwZOxsIC60X5c7Ha7ATxAqiOVuQECAcq61AjU6IzJTMO5+m0A1ZhyINTREjEV09NKyYKL+MYMzy33dW1zS7Yo38IajhQXBK+eoERiCTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJVlXne2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="O98KwPcr";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="GwSRppAX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754907301; x=1755512101;
-	d=konsulko.se; s=rsa1;
-	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-	 from;
-	bh=14R4+Gj/HwcaD0TXtbOX6HbfeIwMHoTAJNp5m0FSvT0=;
-	b=O98KwPcrxJvMyf77pDgP5cmFedtBncws3QfWsFQKJtAhIdfWp7wu2yQ/Nj76wN/WDtmHjxjxbjlxN
-	 WjJBRrJNl28hUoeVZKfOonCGDOfBWTSw6X5oBBlJBmpwqRCH3u3gspoEgQF8TZGUAPN414sPBs1J5s
-	 vbehSX5hDybUto/M63wuJg/mSpl8FCum/VH85gllirZBBE7K3yP/9Uw/6wq87XfMfff4MdOPkK3IIr
-	 dsocNxTY22y0+KfdaIZBvOvruVlXDUYzWxCvmWHG2+2ie1+gMc/JbPdYS5SALWRS3AH8HK0xc9oIDC
-	 rgFN8p5fD3WzbsZMA/R3mJAnl9SI0eQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754907301; x=1755512101;
-	d=konsulko.se; s=ed1;
-	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-	 from;
-	bh=14R4+Gj/HwcaD0TXtbOX6HbfeIwMHoTAJNp5m0FSvT0=;
-	b=GwSRppAXU3gBmGzatksNbCtufxeGENmGNRQG+jUJte3E3W5Ep/cop65Ccoqid3saBZkBTwRF1WXGe
-	 DbB7HpTBQ==
-X-HalOne-ID: 09db4792-769c-11f0-bde6-632fe8569f3f
-Received: from slottsdator.home (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id 09db4792-769c-11f0-bde6-632fe8569f3f;
-	Mon, 11 Aug 2025 10:15:00 +0000 (UTC)
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Vitaly Wool <vitaly.wool@konsulko.se>
-Subject: [PATCH v3] rust: alloc: implement Box::pin_slice()
-Date: Mon, 11 Aug 2025 12:14:56 +0200
-Message-Id: <20250811101456.2901694-1-vitaly.wool@konsulko.se>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJVlXne2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C91C4CEED;
+	Mon, 11 Aug 2025 10:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754908397;
+	bh=Bb+HJJMwXAa9wHZL9KaKBaWkuVtOZHy9HVPQEPFbXGM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DJVlXne2ZkiAwJkHm/6RC99HvsVCiZA11kpjiJz5hAN8Jm+mlpndEiNmawPR5soiL
+	 6LHryqS81sO1H9pGeeqKgc5Ug32IdY7UYgBApXPSgBMwY5zrh8lG910CmcVX6xyZHQ
+	 mGmjCO+Y26gOzkUzNhmJ1DpDgkFtuGVYwZymqbHIuJchEqEGx4twTWLdycELpMvS9j
+	 SD8PfFpAnG+FDUYEOQXfoAxD3dA4gNOdoalkO1PYA3sPfsW+jn00S0jgu3cXEfmYSp
+	 bv6yR8eAdBJJWWXzYxT/Vxg49hf8vwNZMS98iedbquWVCKoT/mJh13zf9sDrySjyZw
+	 Wi2wSzMs5CalQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>
+Cc: alex.gaynor@gmail.com, ojeda@kernel.org, aliceryhl@google.com,
+ anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+ frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
+ linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
+ rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de,
+ tmgross@umich.edu, acourbot@nvidia.com, daniel.almeida@collabora.com,
+ Fiona Behrens <me@kloenk.dev>
+Subject: Re: [PATCH v1 2/2] rust: Add read_poll_timeout functions
+In-Reply-To: <DBZIBAUIBYNH.3I8AZG4I8I59E@kernel.org>
+References: <20250811041039.3231548-1-fujita.tomonori@gmail.com>
+ <20250811041039.3231548-3-fujita.tomonori@gmail.com>
+ <g-GNshC-IMvTiMmll2fadYBIoaUfWmifTVixFSbVa_ezg_KutSYmwQpXnfFnBmUkk7f2_prupGl9g7LONjFhiA==@protonmail.internalid>
+ <DBZIBAUIBYNH.3I8AZG4I8I59E@kernel.org>
+Date: Mon, 11 Aug 2025 12:32:51 +0200
+Message-ID: <875xeugncc.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Alice Ryhl <aliceryhl@google.com>
+"Danilo Krummrich" <dakr@kernel.org> writes:
 
-Add a new constructor to Box to facilitate Box creation from a pinned
-slice of elements. This allows to efficiently allocate memory for e.g.
-slices of structrures containing spinlocks or mutexes. Such slices may
-be used in kmemcache like or zpool API implementations.
+> On Mon Aug 11, 2025 at 6:10 AM CEST, FUJITA Tomonori wrote:
+>> Add read_poll_timeout functions which poll periodically until a
+>> condition is met or a timeout is reached.
+>>
+>> The C's read_poll_timeout (include/linux/iopoll.h) is a complicated
+>> macro and a simple wrapper for Rust doesn't work. So this implements
+>> the same functionality in Rust.
+>>
+>> The C version uses usleep_range() while the Rust version uses
+>> fsleep(), which uses the best sleep method so it works with spans that
+>> usleep_range() doesn't work nicely with.
+>>
+>> The sleep_before_read argument isn't supported since there is no user
+>> for now. It's rarely used in the C version.
+>>
+>> read_poll_timeout() can only be used in a nonatomic context. This
+>> requirement is not checked by these abstractions, but it is intended
+>> that klint [1] or a similar tool will be used to check it in the
+>> future.
+>>
+>> Link: https://rust-for-linux.com/klint [1]
+>> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+>> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> ---
+>>  rust/kernel/time.rs      |   1 +
+>>  rust/kernel/time/poll.rs | 104 +++++++++++++++++++++++++++++++++++++++
+>
+> Hm, are we should this should go in the time module? I does use timekeeping
+> stuff, but not every user of timekeeping stuff should go under the time module.
+>
+> This is rather I/O stuff and I'd expect it in rust/kernel/io/poll.rs instead.
+>
+>> +/// Polls periodically until a condition is met or a timeout is reached.
+>> +///
+>> +/// The function repeatedly executes the given operation `op` closure and
+>> +/// checks its result using the condition closure `cond`.
+>> +///
+>> +/// If `cond` returns `true`, the function returns successfully with the result of `op`.
+>> +/// Otherwise, it waits for a duration specified by `sleep_delta`
+>> +/// before executing `op` again.
+>> +///
+>> +/// This process continues until either `cond` returns `true` or the timeout,
+>> +/// specified by `timeout_delta`, is reached. If `timeout_delta` is `None`,
+>> +/// polling continues indefinitely until `cond` evaluates to `true` or an error occurs.
+>> +///
+>> +/// This function can only be used in a nonatomic context.
+>> +///
+>> +/// # Examples
+>> +///
+>> +/// ```no_run
+>> +/// use kernel::io::Io;
+>> +/// use kernel::time::{poll::read_poll_timeout, Delta};
+>> +///
+>> +/// const HW_READY: u16 = 0x01;
+>> +///
+>> +/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result<()> {
+>> +///     // The `op` closure reads the value of a specific status register.
+>> +///     let op = || -> Result<u16> { io.try_read16(0x1000) };
+>> +///
+>> +///     // The `cond` closure takes a reference to the value returned by `op`
+>> +///     // and checks whether the hardware is ready.
+>> +///     let cond = |val: &u16| *val == HW_READY;
+>> +///
+>> +///     match read_poll_timeout(op, cond, Delta::from_millis(50), Some(Delta::from_secs(3))) {
+>> +///         Ok(_) => {
+>> +///             // The hardware is ready. The returned value of the `op`` closure isn't used.
+>> +///             Ok(())
+>> +///         }
+>> +///         Err(e) => Err(e),
+>> +///     }
+>> +/// }
+>> +/// ```
+>
+> This is exactly what I had in mind, thanks!
+>
+>> +/// ```rust
+>> +/// use kernel::sync::{SpinLock, new_spinlock};
+>> +/// use kernel::time::Delta;
+>> +/// use kernel::time::poll::read_poll_timeout;
+>> +///
+>> +/// let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
+>> +/// let g = lock.lock();
+>> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), Some(Delta::from_micros(42)));
+>
+> I assume you want to demonstrate misuse from atomic contex here? I'd rather not
+> do so. But if we really want that, there should be a *very* obvious comment
+> about this being wrong somewhere.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
----
- rust/kernel/alloc/kbox.rs | 72 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 72 insertions(+)
+I think we should just drop this example.
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index 1fef9beb57c8..ea9b08e3f8ea 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -290,6 +290,78 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, A>>, AllocError>
-         Ok(Self::new(x, flags)?.into())
-     }
- 
-+    /// Construct a pinned slice of elements `Pin<Box<[T], A>>`.
-+    ///
-+    /// This is a convenient means for creation of e.g. slices of structrures containing spinlocks
-+    /// or mutexes.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::sync::{new_spinlock, SpinLock};
-+    ///
-+    /// struct Inner {
-+    ///     a: u32,
-+    ///     b: u32,
-+    /// }
-+    /// #[pin_data]
-+    /// struct Example {
-+    ///     c: u32,
-+    ///     #[pin]
-+    ///     d: SpinLock<Inner>,
-+    /// }
-+    ///
-+    /// impl Example {
-+    ///     fn new() -> impl PinInit<Self, Error> {
-+    ///         try_pin_init!(Self {
-+    ///             c: 10,
-+    ///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
-+    ///         })
-+    ///     }
-+    /// }
-+    /// // Allocate a boxed slice of 10 `Example`s.
-+    /// let s = KBox::pin_slice(
-+    ///     | _i | Example::new(),
-+    ///     10,
-+    ///     GFP_KERNEL
-+    /// )?;
-+    /// assert_eq!(s[5].c, 10);
-+    /// assert_eq!(s[3].d.lock().a, 20);
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn pin_slice<Func, Item, E>(
-+        mut init: Func,
-+        len: usize,
-+        flags: Flags,
-+    ) -> Result<Pin<Box<[T], A>>, E>
-+    where
-+        Func: FnMut(usize) -> Item,
-+        Item: PinInit<T, E>,
-+        E: From<AllocError>,
-+    {
-+        let mut buffer = super::Vec::<T, A>::with_capacity(len, flags)?;
-+        for i in 0..len {
-+            let ptr = buffer.spare_capacity_mut().as_mut_ptr().cast();
-+            // SAFETY:
-+            // - `ptr` is a valid pointer to uninitialized memory.
-+            // - `ptr` is not used if an error is returned.
-+            // - `ptr` won't be moved until it is dropped, i.e. it is pinned.
-+            unsafe { init(i).__pinned_init(ptr)? };
-+
-+            // SAFETY:
-+            // - `i + 1 <= len`, hence we don't exceed the capacity, due to the call to
-+            // `with_capacity()` above
-+            // - the new value at index buffer.len() + 1 is the only element being added here, and
-+            // it has been initialized above by `init(i).__pinned_init(ptr)`
-+            unsafe { buffer.inc_len(1) };
-+        }
-+        let (ptr, _, _) = buffer.into_raw_parts();
-+        let slice = core::ptr::slice_from_raw_parts_mut(ptr, len);
-+        // SAFETY: `slice` points to an allocation allocated with `A` (`buffer`) and holds a valid
-+        // `[T]`
-+        Ok(Pin::from(unsafe { Box::from_raw(slice) }))
-+    }
-+
-     /// Convert a [`Box<T,A>`] to a [`Pin<Box<T,A>>`]. If `T` does not implement
-     /// [`Unpin`], then `x` will be pinned in memory and can't be moved.
-     pub fn into_pin(this: Self) -> Pin<Self> {
--- 
-2.39.2
+
+Best regards,
+Andreas Hindborg
+
+
 
