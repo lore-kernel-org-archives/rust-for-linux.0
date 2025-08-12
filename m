@@ -1,71 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3338C21C187;
-	Tue, 12 Aug 2025 19:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025779; cv=none; b=QYD28N/iNyQuObORMDiesnj6xRyzCTS4IUc//Vd1DfqRh3qTzJNI/mbAVJEcO7WgHLDsKOFLHWI+0e50hV/SAsZfhJ29siRmVDCGQvh4NBWUULiaZoeB3CcqJFmCjUjFBXB5Xy8mwLQFuCPtjTPWPCw0RHQGT7xKwymPvewQaok=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025779; c=relaxed/simple;
-	bh=LvZNxTA/XdUFkun/KxvVg6Qvu5B2F0JIqObjZjqM9RU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=KTGY8lqZ17go7WeziAhn43ZU1P5f1e9eWoSquFS8i3lPBXOvKAR6qky878Sk6m1AlmnyDzNQp7/rUcyI614nUiGC5f3ubNOj5HoQh4jpJsIFYJS4gFVaCqxk7tbQorW93782gG3B3Xkyf7LjA9QJqq238tGHnpbIM9F1cYCYCXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dbvTCkRG; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAC521A43B;
+	Tue, 12 Aug 2025 19:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755026303; cv=pass; b=h+SSi1HNh+WnvozUXL0iapGoarDHb2dhNaN0MALCCa+dmGs1l1cHdqJop0f/Q96aRj72Bg7xudF8QgcDLfrOBUcHAvnLJ8V09XUptyUOGAhvkm08gkn6N63I8WDejLtysYxC3dk3RoEQ+3wr+8BOtc6G3cOR9lSHVPfgZcHCPe0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755026303; c=relaxed/simple;
+	bh=X010dt4M8kjVw5H5fDuTg6LtyzcPSDUVqnJXHPbf7ww=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=L4YytclMUE4ydLOn1YgPjUdFactpbz4rzOdxK6ro10YDicUeTQdGCjBOYNSLhMsJprisicdrsm3X5bF+zw/GCMo8vLFt2QG+Hj2C0rmK0kr0Al6I4lpJyZpdhzPkoVyZPBMvNz//Jb+8c/jMMAz75GHg4LGSbYKTyFhugYHVshQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=HMlKFjFo; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dbvTCkRG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30440C4CEF0;
-	Tue, 12 Aug 2025 19:09:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755025777;
-	bh=LvZNxTA/XdUFkun/KxvVg6Qvu5B2F0JIqObjZjqM9RU=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=dbvTCkRGH7zxEuwPOPFE7SMDjqBZzXLbVBc6MJzEcigcIvqGLi3A+U9RBIMhT7enU
-	 lJIyUeuj61MfT7VbIYBIxrPQf5IlRj49bLm57C8hxXyY87FHqvoZuA9ZY3DIv8eX+B
-	 hsxC7Tj6Eee/x6s90+3HZJsrH1klY71CAAJydGTnX7bxC+EIRYuDcs1kqjIR/By/iZ
-	 rFC9XTi5VJ0PRHF5V5TWKG1vqdG4Rm35eEN2Yg7A4PMQWi/7Ntg+9WOKvM+ZoFru7u
-	 1jjgA1IbJ2hnb8V8lHNk6zJAOBfr3ZfDjJzoh54m+cAZOvBLn+F96DdHMaOR3S2OQL
-	 hpq80ry96hdNA==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="HMlKFjFo"
+ARC-Seal: i=1; a=rsa-sha256; t=1755026265; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Xgve4pZ3Z9RZS3TnrHT+xexKlq9WGDiFyqgzjTjoZJDp1HsBVfJYQ3UxR/jl6rQrH6mBKelFOuiq2OeZrA+ZJhIVK81NtL7TASS4dM3Rpl19ErZySHuz8Ju/6xucfQy8x5a2HSbj7gPZJ4m8/K+9UCA/ZHovyFf2QZjRka7IwZ0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755026265; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=HowzcOhqi3O6roTmvdhGX/VDaG77s7UCCc3lDRQ8ukg=; 
+	b=hX+ct7aqbxiLx84COZ3G9EXXnWGfpLPicpQIPVP4RLViAdWRN0lqdWUl/dSmGJ9DxbtTS0SbqWo+gOKw+6sCckAco7hkm1Bi812Y6I1XrPkfrmDBb4uZlJadc7G3AhiERUKm6fIRRlH/octl5aA79B51qlqWVGulx9Qu2U3WpSw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755026264;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=HowzcOhqi3O6roTmvdhGX/VDaG77s7UCCc3lDRQ8ukg=;
+	b=HMlKFjFo1xVVaNLjZiG3rMkQHRke1w+fV0x+a/EMaiZY+ChPzo0CXOHnU5HmqFPN
+	BHoQWEBGfSb4A/PuykK38vPEtTqjwNUkQ8GPpzpJSsVojPwV0UsgzhKS7VflW9rV/pN
+	9xaLjggn480sDhbjG4ZzwdpCbGO7dkNuJCy+LFw8=
+Received: by mx.zohomail.com with SMTPS id 1755026262500131.7242334577868;
+	Tue, 12 Aug 2025 12:17:42 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v9 0/7] rust: add support for request_irq
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DC0OOFT2RTO7.2PCAP981HCCN3@kernel.org>
+Date: Tue, 12 Aug 2025 16:17:25 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ Dirk Behme <dirk.behme@de.bosch.com>
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 21:09:33 +0200
-Message-Id: <DC0OPPWZ9175.108IURNC3VEM1@kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: add "DEVICE I/O & IRQ [RUST]" entry
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <patches@lists.linux.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>
-References: <20250725202840.2251768-1-ojeda@kernel.org>
-In-Reply-To: <20250725202840.2251768-1-ojeda@kernel.org>
+Message-Id: <6B887813-8FA6-4627-9527-76547508E66A@collabora.com>
+References: <20250811-topics-tyr-request_irq2-v9-0-0485dcd9bcbf@collabora.com>
+ <DC0OOFT2RTO7.2PCAP981HCCN3@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Fri Jul 25, 2025 at 10:28 PM CEST, Miguel Ojeda wrote:
-> This entry will handle device I/O patches and abstractions (such as
-> memory-mapped IO and system resources series [1]), as well as IRQ ones
-> (such as the `request_irq` series [2]).
->
-> Patches will flow through driver-core, at least for the time being.
->
-> Danilo, Alice and Daniel will maintain it.
->
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Daniel Almeida <daniel.almeida@collabora.com>
-> Link: https://lore.kernel.org/rust-for-linux/20250717-topics-tyr-platform=
-_iomem-v15-0-beca780b77e3@collabora.com/ [1]
-> Link: https://lore.kernel.org/rust-for-linux/20250715-topics-tyr-request_=
-irq2-v7-0-d469c0f37c07@collabora.com/ [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi Danilo,
 
-Applied to driver-core-testing, thanks!
+> On 12 Aug 2025, at 16:07, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Mon Aug 11, 2025 at 6:03 PM CEST, Daniel Almeida wrote:
+>=20
+> Applied to driver-core-testing, thanks!
+
+Awesome, thanks everyone involved here :)
+
+>=20
+>> Alice Ryhl (1):
+>>      rust: irq: add &Device<Bound> argument to irq callbacks
+>>=20
+>> Daniel Almeida (6):
+>>      rust: irq: add irq module
+>>      rust: irq: add flags module
+>=20
+>    [ Use expect(dead_code) for into_inner(), fix broken intra-doc link =
+and
+>      typo. - Danilo ]
+
+Right, I=E2=80=99ll consider inter-patch issues like this in the future, =
+sorry.
+
+[=E2=80=A6]
+
+>=20
+>    [ Remove expect(dead_code) from IrqRequest::new(), re-format macros =
+and
+>      macro invocations to not exceed 100 characters line length. - =
+Danilo ]
+>=20
+>>      rust: pci: add irq accessors
+>=20
+
+How? rustfmt doesn=E2=80=99t format this, so I assume that you just =
+manually
+wrapped the lines in a suitable way?
+
+=E2=80=94 Daniel=
