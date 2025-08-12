@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5BE2F7475;
-	Tue, 12 Aug 2025 17:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FA1273D6B;
+	Tue, 12 Aug 2025 17:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755019289; cv=none; b=Bt2LNC6fAVC85B/orS4W6dSCNWaD2Bcr2O/8nYPJlJoCKBHAsbEDSqG6YNBlFPdNZZxt42zfK+ZkFDbHs60r+1xXyUuN7qobVTmLKvnDlCgdtsSZlPsGTa1OXZ1vaxlF2La9kkVRJrAfUTrtqUZJyXeymGF/dF3hQZwZF3QVrPg=
+	t=1755019752; cv=none; b=iD7ecdNvx686Qc+uR/Wu8yKIVdSW5ZFirVyFUZaqL7sA7P4TGBC1kAdl+MPZUzMbYvSdfszK6dRh6KPUgvSeEqiXXC3X/BhBKMpyAQ7vAPrYt+gwy8S7ZNYFDHkOGv2fdnAsAT2EASDbBspvtdf4wpGlGdwqkeD9q3A4mIj2v98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755019289; c=relaxed/simple;
-	bh=DF7fq4sugiWX44J4BGYSAH4q/ZkOHSYVkqcu0c2uu3o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=qmUQi1Wuo5rzVcQgnDP2CuU/HXYAlWIyJFVWgN9X4ZWnfmKCJhKRTcEhKbax5LDZryQ6BVz/T52KntF0YeOR3szhdumOOJFyZRuOdKzS73cUiYrESnz43sxClikBD7Ro9IRXxDnZNe5Dd7CEe6KW7V7qPC0YgNtkWjxKHkbm9Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHWaBBSk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755019752; c=relaxed/simple;
+	bh=VT5RV/eXYswbOXkV2oGMDMWd9Wx9gtGb9ZZrBa2mi+w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=I23Z3w8mlZEsMJ3++MXUO2/ZLJpK5GxJQ7iG6ZEd9gth5t+CAxdwMO+PjjxYntXW6qwO63X1sSn2ct2zYm9YMfk3MgoounvnvOd8om47j5mK0Jy5q3z9v1O99pXiQcH9lXZMSZBiy5RqrJWADJkTHMGW3v1jlMePEaOlrEQAbYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yvl/AuzY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHWaBBSk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FB8C4CEF0;
-	Tue, 12 Aug 2025 17:21:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yvl/AuzY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAFCC4CEF0;
+	Tue, 12 Aug 2025 17:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755019288;
-	bh=DF7fq4sugiWX44J4BGYSAH4q/ZkOHSYVkqcu0c2uu3o=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=qHWaBBSkQcOoYSUnfMZFYdCKB422Pplu7AjQxhZY6pBIsJwhA2PGv2KKSkKp/OQCW
-	 EBfO2vpWYRYFRLnTXkVZws2NbrEmHfjDazj0vr1v6BVAj/dDxXtEFvS3/6lb/GgqX+
-	 VTT6LKlSQ2ktIgZhBlapHcUQVplF/wbtPC1uTb5ji1Vxagodlntg8ddbvMasNOAF8a
-	 ElpgiL3cQJEC7ZHQRxKylyoccZGlb5CpPuHl2bHHjdEK4RAts7sdoMTjbsqJZv4D6I
-	 WrMBE5KjxUkxSfSzBQXbPE9ZwpVjoEfyUpYKQjfMWkHnQhtNiAlkW1lBSxBFgpOI1n
-	 C5WgUU3yNqCSA==
+	s=k20201202; t=1755019751;
+	bh=VT5RV/eXYswbOXkV2oGMDMWd9Wx9gtGb9ZZrBa2mi+w=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=Yvl/AuzY2FrpLcnbh0ut3xoPfDkpI4k+Kbnnrrp+XXjoMSHENX8ao3LIolfeJB7rW
+	 yHUVS0oQPOlj0dTpUjF32aPc1TqVI9dCrhNBH+Ye5S5JNq/h01u8qyzfpHABQeBQiv
+	 e3+hyF/x4Hu/rAZyh3o0GJNtlLO1ZuULVJPQjUsoTmjR6xu5EP+8wVjnHMj4ksT8kk
+	 jI7/5JEBjlRmlyT22bHApHDYDhPUi0Nlvzutc0VWA56wo3oMNl2fX4xgYEii4qgtlZ
+	 uGUXjTvctWOXPuuAQ7S86POfW2Xc1y/l5NwwAGo2dPIG5jsb20hpJ6YgtBIctfhq1E
+	 AAvuXj28scxZg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,37 +34,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 19:21:23 +0200
-Message-Id: <DC0MEWPXV9NJ.3HQEPBFID0YD9@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <david.m.ertman@intel.com>,
- <ira.weiny@intel.com>, <leon@kernel.org>, <ojeda@kernel.org>,
+Date: Tue, 12 Aug 2025 19:29:07 +0200
+Message-Id: <DC0MKTKUSL65.VZX2UIBJMTDN@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 0/3] Documentation for Device / Driver infrastructure
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
  <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
  <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Abhinav Ananthu" <abhinav.ogl@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: auxiliary: Use `c_` types from prelude instead of
-References: <20250812075109.4099-1-abhinav.ogl@gmail.com>
-In-Reply-To: <20250812075109.4099-1-abhinav.ogl@gmail.com>
+ <aliceryhl@google.com>, <tmgross@umich.edu>
+References: <20250722150110.23565-1-dakr@kernel.org>
+In-Reply-To: <20250722150110.23565-1-dakr@kernel.org>
 
-On Tue Aug 12, 2025 at 9:51 AM CEST, Abhinav Ananthu wrote:
-> Update auxiliary FFI callback signatures to reference the `c_` types
-> provided by the kernel prelude, rather than accessing them via
-> `kernel::ffi::`.
->
-> Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
+On Tue Jul 22, 2025 at 4:59 PM CEST, Danilo Krummrich wrote:
 
-This looks good now, I'll later on pick this one up.
+Applied to driver-core-linus, thanks!
 
-One additional note, when sending updates on previous patches, please make =
-sure
-to increase the version number of the patch, see also [1].
+> Danilo Krummrich (3):
+>   device: rust: expand documentation for DeviceContext
 
-Also, please add a note about what changes you made between versions below =
-the
-'---' line of the commit.
+    [ Fix two minor typos. - Danilo ]
 
-- Danilo
+>   device: rust: expand documentation for Device
 
-[1] https://docs.kernel.org/process/submitting-patches.html#subject-line
+    [ Add empty line after code blocks, "in" -> "within", remove unnecessar=
+y
+      pin annotations in class device example. - Danilo ]
+
+>   driver: rust: expand documentation for driver infrastructure
