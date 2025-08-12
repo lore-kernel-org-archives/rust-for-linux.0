@@ -1,178 +1,99 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6E9199385;
-	Tue, 12 Aug 2025 18:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634AF305E08;
+	Tue, 12 Aug 2025 18:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021620; cv=none; b=fIITNglXxHBoKFYaxIGOnvryWtN1FhFqOYxGgTBwz2Qp5W9V4GGVUw1twgif3WCb7bWdsMHXHSnMVgjpfsmL6CdccuqYJaWvO1xICmAD77cCOd92JzZVrxlC7P6Nx0wCT+lZumrwrvdNsMLpZWQdzuguPl47NuT88E4WHOQd860=
+	t=1755022063; cv=none; b=pfrG2N8fHgIQmfrzK8mDzLGvnOi9Xk6gfrT/QLRcJ0X/Ze9OewkekUn4vbT6ebKyWjsJRierLKmUX56CbLvWUQidsyv3s9rhiUUIxu933d4hCCE/FSDP2FeXJxPUZS7aZMGeHd7zfwfARMlF0U3Pgu3H7ev+dXAW+rN3TD/QosY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021620; c=relaxed/simple;
-	bh=iDyxY/PZQM7oGCOy+paVEs7C+/hlmIaMwEsNZ1lDMps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=XbkR1f/MoJMzEgqgNKQBdZnAIulXfDrEompkP1Fo0yQdbHubaKle9mKKJgmh72vRydy+siPOPZYE+ECnavMePlXxmQAwuNG8FC9/KwJnPfgDa3lw6HZOVKYtBLkrQH8NApUlPTntbaQr1YZvOoHtIMu+zaQ0lLAYkWT1/oo3QHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LBGUyBUv; arc=none smtp.client-ip=209.85.210.175
+	s=arc-20240116; t=1755022063; c=relaxed/simple;
+	bh=7tVlMxBxSUqDkQ/YT+j6av2beaKwd8lQaB291K7ue9Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HUGbgWL1vRK+gMgRq7DeeT0JkdsfCHHmtPNfaf2khm3G8xfhnDTjnkrZ2cklIjg6PAlBHkVecGzhuTEqrATAZkpRnUzZt/kDsnfo8jrCwWanlhDPYwEQNRZgc24aZVs5HEUb0ljS/dF1So2iv47i9gu9FbHb8MIO92wbWTN1R14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IDkPZEBs; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LBGUyBUv"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-75f7fc34691so437443b3a.1;
-        Tue, 12 Aug 2025 11:00:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IDkPZEBs"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23fd3fe0d81so54892055ad.3;
+        Tue, 12 Aug 2025 11:07:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755021617; x=1755626417; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=voR0zXJlK2R52Nv6d0LXSLHhujcZH2Ghy4ugQmK1XkI=;
-        b=LBGUyBUvux08M6me3pZ9Aoy9wt39iB3Kxk8A0zWG71uluKoFoD63+hxx60NKdNpuKb
-         lhCbxJ5kcS2jf0GD7N5O/dEGahYAKTi5DnUfk2saTf5bxvYtaiNfwg3MNBLyz/DkFrYm
-         J5KgItEiMNZjV0x9Ykdux1KtDVIUicYzTsXunnJx4xQpX5vIqACeqcyvbboCsaXiyx/f
-         WW3vqQrZ04F1CC9ioY8/ci4NJL5kdmAjvwtFyOxZEU2obSOPZtWfw4yUuFiwqouTtqcO
-         3pzcIJR9pqq5R5bLpOfIQNTApBL0Ts5LrfX979ZgOUWGh431Q4P5sREv9aosu7Xo/FaG
-         FMMA==
+        d=gmail.com; s=20230601; t=1755022061; x=1755626861; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7tVlMxBxSUqDkQ/YT+j6av2beaKwd8lQaB291K7ue9Y=;
+        b=IDkPZEBs9R1irTV/l3N/8Gm/AS9GNaGXDrnFu0qB3TPQk98dt1JFP65/8w5PesFVNJ
+         pbdgYJlzoKK0kUAoqbgp99VSVhdGXuO05CmMp9rg3ZLWrdU67fgiBPnVUVeORIWks1Me
+         7swpFiQbSVmag+zyTx8Z7s3sbjI4F347f8iE3zEat8seHxOPQlDDPSa6R1ZpcNPW1o8F
+         wqPYretpBTYEkJFR7Ht6QqZmR9/izoeEbptT5FH+R4FW91OcvSEFD6ROmd2dMYzihDcV
+         3vma2fAWo35Z4NWxiEXeMGPDtgsV1d3BM/VLyg6Q7DhKeURWYGMIGtXchNPYD/2lIcrs
+         NI/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755021617; x=1755626417;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1755022062; x=1755626862;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=voR0zXJlK2R52Nv6d0LXSLHhujcZH2Ghy4ugQmK1XkI=;
-        b=lpEn8+7oCdauLbLljmMv1JWECk6optax/kGKRgSZec4aelCPyJN57PYwk+NyXQHwxP
-         YqDuB5jVJsnkuXLMP9ALdw/BfuHuMoOHJdagfqIkSCREtXxoYkQ+7zFKYAJMH3PqxNTO
-         cxmW38yOIwNv/EQP46UNgFTBLUGskwvOzKywm2m8XVE8qrS0g3xCC59K+9DPDDv1HgzX
-         fkq2oa7WnD0+r3vq+NGpXQGEJNgPJCHG+XuOo8YUAPTEwUn2t4N5yabA+XgQupPcTx1o
-         zFGfvgOTZL4nVB1rC+VGmjGUEOC83MKDu1P2ed4wDQZan1tGaAuKbEqjIEpxCkqUQhmJ
-         VoEg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+6TUX1xBcercvv/pm5d32qqhunqXZoUdZEKdIgDX0t6kQRhTMdHqs14sD7AolpgBxixGbAzY3UTvna9eWSa8=@vger.kernel.org, AJvYcCXbIEec+vJsUGFX2XfQW2R8lOHSNOSV0YCLHbNAtfOWKDa2avaM2KjV333AYGbSHHvIUhW1jRyleC73Gks=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywgp0rsl3undyax4KjWnyIHS7GcMy9bmq1z+K1lk9foaCqYQHpT
-	OpTk8O9QkCEdpw6HgOKL/zggeYT5chr6X7KvxAxf3JFkTNa/1dyBPoVG
-X-Gm-Gg: ASbGncumvaQurwNWd9AkLnS+UlXkSznWVaV/NQmAH0wUih+XsSCsjjpFyiZZPR7uFu0
-	Niaa1pn3uKMek8kIUN9HS3sKmYt5hdkqdCyQghcSpIsdtdmNAF7oOu0Y9q4WYfcOWXksJqmm3hT
-	C08MXfjXjR2+wAoQ3M2QQP82uwYZCaqZNLS55Qvzy/QwNqK0m2KxdQho0hvVgMnDdQgmcVihCVN
-	cmL8kBZD6V9p4SKEG64vR5d0ZigibxciHQGle7UEbPQ0H2xuNptgK7Fk7k7C+F4PGqv8I3aKPbp
-	ptqoTgjVUmT/j3/Vis/TmLCx+1RDF/+7fNR7MSIrxaY/qm39nitI2CpASIF5yKgo7nD6TlMcsnj
-	2waVxoOf16/xArg6GSBlHCLA5KBiQs8Ih2cYfTRYFsnw=
-X-Google-Smtp-Source: AGHT+IHw0jgfljEaeUHz/KoG72Dm8SGNFvRENR44IU43ChOyBFGQXszRhCZbmlGaNKZKrTALAGX2Ng==
-X-Received: by 2002:a05:6a00:928b:b0:76b:cf2b:18ab with SMTP id d2e1a72fcca58-76e20c9a15emr87578b3a.1.1755021617194;
-        Tue, 12 Aug 2025 11:00:17 -0700 (PDT)
-Received: from [192.168.0.110] ([138.94.103.170])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bccfbd98csm29777279b3a.67.2025.08.12.11.00.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Aug 2025 11:00:16 -0700 (PDT)
-Message-ID: <5204b598-7792-460b-bec2-e3a4a4c7e32d@gmail.com>
-Date: Tue, 12 Aug 2025 15:00:11 -0300
+        bh=7tVlMxBxSUqDkQ/YT+j6av2beaKwd8lQaB291K7ue9Y=;
+        b=irkrS/20ETfpyZjCHtMK0h2vcyBy8+QvbSVsxDRjTvU/LWvMlh6K2WKejRd12IJb5D
+         +nt0tkYrej5Ghh3r/rHUxkeDiP/MUCPfPmUjmn7M9YTcHxnwJ1Y64Dpk/5GHnpjdDpK/
+         XMFbceXyTb1WDAPHT0gQtJQ/Jqlojr1vEg0g4e0MmNnp9PKYcp9fB+Fj9tbVYIIg48mJ
+         ayah7wwTzZj5C31+PiExj/hVa0FqaUJzxUhCkH4CGMb4xNmnGbXV3CqYeOsM+J0xGYty
+         1WhkvSLXgYBA5dkFeymkgO5Ig+y8M2URMroAAgIZt8XaD3/O51Btyh1fAqQT948LI4bV
+         0oSA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuYsvMJFG47E+QPP+uiPgof1ySUl2r4NCfU2dog165FiBH6gG/5VjrH8n+IlW1rL6RxzjTBK2pSYkO5Fc=@vger.kernel.org, AJvYcCWX6DvKU9HzcqrsjijnWmVXPp/rR2pFiBVlbvCDiOA6LgdzZryn5tBq6iYalPfIYW3AsQcMmpqqA3/HSNLXyIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6Dk1mwLsUy8KSldWFyCI8NQYqdt6My2+ajYWwwKAnKl0lY40j
+	FtMTFXDcjpZSditc0IRLbXwUtdAMLqFMoF2TKazEO3zWLimyzffOQxnF
+X-Gm-Gg: ASbGncuuEKSR1z0SJfU97mfqZai4hQ80yBwaw60dVN8VyuuLyk0n5pcPy0YxR6D8gw9
+	FCW/PSKu8i6hRVZj50omARdcWKHWWwVOAYYsb8znL71Fs3QVRh9wHW+SI0/71g7fjjOCyUHTaaS
+	1svrAnLFIcFNeSxfpWKC4L2V9aGxWDG7hmE9Uyx7nL6/YuImSNwapog20HaSgT27pTnzy6IZdI+
+	ddzC9wLDT09xUgLGO+rNGNx57ejIRK9rr5WUFvuMHK+qm3Zjp92Q4RPCK9DVsxTKaPH/Lcuq6nY
+	60w8ldYa8wCsugxOPEez8l2PzT+WMHnm+QMJxUr99hyLbdsXEzr5k+j0R0tmK6MyWk4DNAh66sD
+	jZHEHoehrou52IKh4TaGeXjXFLas7Dw==
+X-Google-Smtp-Source: AGHT+IH2eAbhw6s8RrO6LOuLceoPWy7RgMZVatbE8YimrP9qcp0B/w2fFg+C1Bb2gud7MsEdF4yB8g==
+X-Received: by 2002:a17:903:2447:b0:240:9006:1523 with SMTP id d9443c01a7336-2430d0b1ea3mr2286925ad.10.1755022061514;
+        Tue, 12 Aug 2025 11:07:41 -0700 (PDT)
+Received: from fedora ([2405:201:5501:4085:eece:e0ff:6b68:de2e])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e89a077csm305678965ad.138.2025.08.12.11.07.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 11:07:40 -0700 (PDT)
+Date: Tue, 12 Aug 2025 23:38:06 +0530
+From: Ritvik Gupta <ritvikfoss@gmail.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] rust: kernel: introduce `unsafe_precondition_assert!`
+ macro
+Message-ID: <aJuDBtpYijOBQUJa@fedora>
+References: <20250808192005.209188-1-ritvikfoss@gmail.com>
+ <202508122341.rb7U1Q2P-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9] rust: transmute: Add methods for FromBytes trait
-To: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- ~lkcamp/patches@lists.sr.ht, richard120310@gmail.com
-References: <20250811213851.65644-1-christiansantoslima21@gmail.com>
- <DC0INEKNZPSE.WLEQH24SLW1I@nvidia.com>
-Content-Language: en-US
-From: Christian <christiansantoslima21@gmail.com>
-In-Reply-To: <DC0INEKNZPSE.WLEQH24SLW1I@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <202508122341.rb7U1Q2P-lkp@intel.com>
 
-Hi, Alexandre.
+If someone's referring to it in the future, this was doctest issue.
 
-> I mentioned it on v8 [1] and v7 [2], but the tests that break due to
-> this change need to be updated by this patch as well. This includes:
->
-> * The doctests in `rust/kernel/dma.rs`,
-> * The `samples/rust/rust_dma.rs` sample,
-> * The example for `FromBytes` introduced by this patch which uses `?` without
-> defining a function.
+It’s actually the second time I’ve hit it.
+On my end, this error wasn't occurring when compiling the kernel.
 
-Sorry for my inattention, I'll fix this in the next version.
+What I was missing:
+1. Enable `Kernel Hacking > Kernel Testing and Coverage > KUnit`
+2. Enable Doctest in `Rust hacking > Doctests for the 'kernel' crate`
 
-> Please make sure to compile with `CONFIG_RUST_KERNEL_DOCTESTS` and
-> `CONFIG_SAMPLE_RUST_DMA` to see the failures.
->
-> Also, now that we are on 6.17-rc1, the types in `nova-core` that implement
-> `FromBytes` will also fail to build unless they are switched to
-> `FromBytesSized`. Which I guess speaks in favor of taking this into the Nova
-> tree if there are not other planned user for this cycle?
->
-> [1]
-> https://lore.kernel.org/rust-for-linux/DB5KEWX9EJ2Q.3CX5EGS66OVHH@nvidia.com/
-> [2]
-> https://lore.kernel.org/rust-for-linux/DANSZ6Q476EC.3GY00K717QVUL@nvidia.com/
->
-> In case this helps, here is the diff I needed to apply to get the tests
-> to build:
->
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index 1801836f31455..3797c70c13040 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -597,7 +597,7 @@ unsafe impl<T: AsBytes + FromBytes + Send> Send for CoherentAllocation<T> {}
->   /// struct MyStruct { field: u32, }
->   ///
->   /// // SAFETY: All bit patterns are acceptable values for `MyStruct`.
-> -/// unsafe impl kernel::transmute::FromBytes for MyStruct{};
-> +/// unsafe impl kernel::transmute::FromBytesSized for MyStruct{};
->   /// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
->   /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
->   ///
-> @@ -641,7 +641,7 @@ macro_rules! dma_read {
->   /// struct MyStruct { member: u32, }
->   ///
->   /// // SAFETY: All bit patterns are acceptable values for `MyStruct`.
-> -/// unsafe impl kernel::transmute::FromBytes for MyStruct{};
-> +/// unsafe impl kernel::transmute::FromBytesSized for MyStruct{};
->   /// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
->   /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
->   ///
-> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-> index ba21fe49e4f07..e7bd698ec99cd 100644
-> --- a/rust/kernel/transmute.rs
-> +++ b/rust/kernel/transmute.rs
-> @@ -16,6 +16,7 @@
->   /// ```
->   /// use kernel::transmute::FromBytes;
->   ///
-> +/// # fn test() -> Option<()> {
->   /// let foo = [1, 2, 3, 4];
->   ///
->   /// let result = u32::from_bytes(&foo)?;
-> @@ -25,6 +26,7 @@
->   ///
->   /// #[cfg(target_endian = "big")]
->   /// assert_eq!(*result, 0x1020304);
-> +/// # Some(()) }
->   /// ```
->   ///
->   /// # Safety
-> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
-> index 9fb3ae1dd8587..36ad877d4804d 100644
-> --- a/samples/rust/rust_dma.rs
-> +++ b/samples/rust/rust_dma.rs
-> @@ -65,7 +65,7 @@ fn new(h: u32, b: u32) -> Self {
->   // SAFETY: All bit patterns are acceptable values for `MyStruct`.
->   unsafe impl kernel::transmute::AsBytes for MyStruct {}
->   // SAFETY: Instances of `MyStruct` have no uninitialized portions.
-> -unsafe impl kernel::transmute::FromBytes for MyStruct {}
-> +unsafe impl kernel::transmute::FromBytesSized for MyStruct {}
->
->   kernel::pci_device_table!(
->       PCI_TABLE,
->
-> -- end of diff --
-
-Thanks for your diffs, it'll help a lot.
-
-And sorry for the delay. I'll send a new version as soon as possible.
-
-Thanks, Christian
-
+I can now reproduce capture the issue locally.
+Won't happen again :)
