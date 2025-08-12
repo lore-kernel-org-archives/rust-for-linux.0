@@ -1,215 +1,116 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768D1242D89;
-	Tue, 12 Aug 2025 13:22:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755004971; cv=pass; b=RDjfNmB0b60YT9evoOsSb9hOAuNbDlvgmy1G6wODhWBg12hyHs01b96yvFo+x2nX3dTHIp4eeKOse0bxQfyWYlMv/klwvSCgI/5you+LlQQ/4+DuWGBpCdgL6exeOGDNc0uJVKApkPN+drX8UMnZrJ8RDApU/M91LVFEkTGERl4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755004971; c=relaxed/simple;
-	bh=wJEfiacmZ8Ss+iACIHgAUWVIOd/2EX7Osuvbw/khPDw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=YX+mnwGhk4jfwu74L+wssL5KwWWrfbo/papSgRNjpT+sgz40V+ymf78H5ZjND236kN0oJAxxJFoLguCRgwVxGuzTPAu+p+vAT6g5lATvjLcAprJSdrLLHT9ohjTSOLWNxZ67yeVCaonCTwpGQeNnkYKRMNSDJJk3Knitw9WLBCc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=S0IPvs3h; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0047C284B39;
+	Tue, 12 Aug 2025 13:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755005362; cv=none; b=aPazHCC/XQCbslFCbKf29Esax0Sikh1KoVdoVzYESBbS3ZPb0uyFy67lR3hvuc2sQhem1FdPQsvJpXaU/kzTcJNx6Rwql8bq1sqES8uF9SPEvVlaOcD/oSfacNtCr9oHVNPivKbt++MRuM0TYu3RUQwBXAJA4hrVMfzs0axutgA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755005362; c=relaxed/simple;
+	bh=IEeHt29EbAGwAmdrm+Bkmgts0MfalXN7j7gGaBeDylM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kfbBIM1SfP29PjoYrp4xOtF61fO/6tvVxYtQbRwOA+HdKgEtmBUaC/4hSiCKVeiiyFvjXH52YcAFyjNU3HdUmTfBsbYYQHb0fMQftbb7/QJOp2JiOXn6RpuW9fOl1t+Ijb2+2ZGFDWIvDXllqon3Fix9qFyXEesEEJQOTo8GmwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ILUcj/a9; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="S0IPvs3h"
-ARC-Seal: i=1; a=rsa-sha256; t=1755004954; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=La9rNnpxJ56VoQJYi9cgAr00sVVAd9KVKWw3AX9aiBiCkVliwesHuXpedEm+oXx/ASjt/wwwzQygeqiUjJkSw9p83Qd6tr6+dwHcDNUpt68V2Gr5i7ambqWOMsQh4PKmzKUFeNCm5lDgAbS1VkHRpbhb0X8Ad1J9w+Rju9JlCus=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755004954; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=wJEfiacmZ8Ss+iACIHgAUWVIOd/2EX7Osuvbw/khPDw=; 
-	b=RM4rjl9FNm1c5fSr6t5+PCicAzpMXy01f2TLKBM/0w19LSxMznwjn8g/gUoEX0ZdQQCLzGBFE8mBJX+W7R5BzduEK7/KUJxB/U77mXHCuK0S3S9VrpzStRIAx8djyMKa56HxQ4dxf6S9F6S+NZu+fr5w97IcMt+efdYcefyHjrM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755004954;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=wJEfiacmZ8Ss+iACIHgAUWVIOd/2EX7Osuvbw/khPDw=;
-	b=S0IPvs3hV1oG33m+/zAgpt7WDsyHb1lAThCFUNtCNLSfc4BKh/VpeJA0gjuAgTxB
-	FA9judP92pd0Xs+IEgjxMGJCSHPW0RkTOg+LMYh+677AsPqDFnWI+cYXyj+cftxu8JR
-	B3eeBuP8uFYBaIZS1z2z04bJqhBv2gNHzMFz1Lus=
-Received: by mx.zohomail.com with SMTPS id 1755004951949796.0813368240631;
-	Tue, 12 Aug 2025 06:22:31 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ILUcj/a9"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3b7848df30cso3660363f8f.0;
+        Tue, 12 Aug 2025 06:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755005358; x=1755610158; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1sFms8DfYlZzU9dKa8CQCWgZb50bkFnu2RQfAfYZeVs=;
+        b=ILUcj/a9e0WlLDYUz/WthXD33FglbqlRJLYQ1k3dZQyfaPMlpvuAk6qLYEoqbcABHa
+         4Ba5O72EKGDpNgEHCZolMbLZi3eekXNBW4R87+J6jnTCst9JwNbM3SyEk8kcaBdm76Ct
+         QL4uSNKyboWezCPUE0kK8xIQ1EjEtp62idug0a7B2N9kHAqmNc+UFx06qL1plm2Mtjc5
+         Ue3Q4/UCmZyW4mh8QTZ51GNbVNpww/w1DsuNbTfxlrqIeJKsDooQy9UwKbnbkzZCiaSn
+         GHH4anIXxYzrPodqLthhutcQK0JUoMkM/9zI+eDmgMtzRCDmQr8LN+JMjsz9hp9CMBOD
+         DKWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755005358; x=1755610158;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1sFms8DfYlZzU9dKa8CQCWgZb50bkFnu2RQfAfYZeVs=;
+        b=vCcLx64lrjUJcDGgvDYpaO0xGUcqJLwITpKl0kj7GQYnCWRDrwBNen6zZVFhbbF/Hf
+         bx9oKpUMeZIrx0ymeaJkgXvWgQd+7V/brDoWuEhna0xXL/V1Vszf/8b689NAY5U4Ewra
+         xezaWTJFOPNHk5INQ+sSb+80yycOEotX/GSkFMkAOZjjZJv5emDAgVVJevCq62oefE9V
+         L4JXV+8S7M7f7fZhn6tq61DOCsHzbzWYteeQFSA+s6tO2SlCWP88CbZoTpJyxEkNKo0u
+         xQcsCjq8eBj8aMSW1cYfI2JUEAsVUM8Yh7cmYJ3ZunH40DbFSAFQmQ7fgDvYjDlJijzS
+         rU1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUzOb35iOvDEoNX9K/8nY9lAr28jKMsZqPWktV6BiTiBNcsf0tWkKmc0sEtJLyLSG3lnwAUCDSHXWZ1HvE=@vger.kernel.org, AJvYcCXZh6vxqeTgxlyKN08DKqB/soKZ2T9NFTYf5Ko/GF6bABm5I1WNZ+y+rolCw7z2CnF6cEez7TtHc2OkehpU9lE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3JeoAxaS3PZsgVFy1+hOupaKg2OJ4Ave4mqnOJfWC5XynRTug
+	JhwRqysgRB81WkFRVhyOf4qnSQLkY6OlyCL5JGFm9iqW/2GfLtBxAg3y
+X-Gm-Gg: ASbGncvHT9zV9pIzIKddF03mdZQWC+XkWjX0sEEIDc9meiR3Ym8XrDtxCjwlc86XzAN
+	NbVTnkeE6cIv0eEAHUQk5oaYzQqZdvnVOesqGcnh3/GE20uM53dk2XdlUdXK2AvjqR5tb7zCbpC
+	IOipX2eAnjdpofSy8dQGICGrGtqj+Jr3ZiWFzE4tLR7Hpxfu/iUgRZtf6XacLe1leZuesGfG/Lq
+	FQMADeilCEwSVvweWgef7E9Gp8W9NOPe8mgDcJeGx23TyaCuyeVJBVrJNG/rMIJjMixekrAfi7p
+	hLCaXL6WEvt9oQfhowbZH0DwVTYbO0veLpWc50i2Qsxm/KQtgjkezkOm5JKIULadZeZ9Bl8+OB7
+	o/00V4vkJiX4xxjcJIUCvBPUDpoIsUCzqzqq1ueM1m2Ic
+X-Google-Smtp-Source: AGHT+IGYEv1UKXbeigwHa2TP8gKJ65pVI0sFh0NThS1xGWQn0fvli/9NFZm7AX5K1g9q3yR/X2RpyQ==
+X-Received: by 2002:a05:6000:250d:b0:3a5:8934:4959 with SMTP id ffacd0b85a97d-3b9111f4b67mr2712178f8f.27.1755005358067;
+        Tue, 12 Aug 2025 06:29:18 -0700 (PDT)
+Received: from blepers-Latitude-5420.. ([213.55.220.53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458b8aab8c0sm433003905e9.19.2025.08.12.06.29.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 06:29:17 -0700 (PDT)
+From: Baptiste Lepers <baptiste.lepers@gmail.com>
+To: 
+Cc: Baptiste Lepers <baptiste.lepers@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: mm: Mark VmaNew as transparent
+Date: Tue, 12 Aug 2025 15:26:56 +0200
+Message-ID: <20250812132712.61007-1-baptiste.lepers@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v2 1/3] device: rust: expand documentation for
- DeviceContext
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250722150110.23565-2-dakr@kernel.org>
-Date: Tue, 12 Aug 2025 10:22:16 -0300
-Cc: gregkh@linuxfoundation.org,
- rafael@kernel.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A56A6D46-68FF-4579-AD34-B18B804841E2@collabora.com>
-References: <20250722150110.23565-1-dakr@kernel.org>
- <20250722150110.23565-2-dakr@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Danilo,
+Unsafe code in VmaNew's methods assumes that the type has the same
+layout as the inner `bindings::vm_area_struct`. This is not guaranteed by
+the default struct representation in Rust, but requires specifying the
+`transparent` representation.
 
-> On 22 Jul 2025, at 11:59, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> Expand the documentation around DeviceContext states and types, in =
-order
-> to provide detailed information about their purpose and relationship
-> with each other.
->=20
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-> rust/kernel/device.rs | 69 ++++++++++++++++++++++++++++++++++++-------
-> 1 file changed, 58 insertions(+), 11 deletions(-)
->=20
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index ca82926fd67f..f5d1db568f00 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -311,28 +311,75 @@ unsafe impl Send for Device {}
-> // synchronization in `struct device`.
-> unsafe impl Sync for Device {}
->=20
-> -/// Marker trait for the context of a bus specific device.
-> +/// Marker trait for the context or scope of a bus specific device.
-> ///
-> -/// Some functions of a bus specific device should only be called =
-from a certain context, i.e. bus
-> -/// callbacks, such as `probe()`.
-> +/// [`DeviceContext`] is a marker trait for types representing the =
-context of a bus specific
-> +/// [`Device`].
-> ///
-> -/// This is the marker trait for structures representing the context =
-of a bus specific device.
-> +/// The specific device context types are: [`CoreInternal`], =
-[`Core`], [`Bound`] and [`Normal`].
-> +///
-> +/// [`DeviceContext`] types are hierarchical, which means that there =
-is a strict hierarchy that
-> +/// defines which [`DeviceContext`] type can be derived from another. =
-For instance, any
-> +/// [`Device<Core>`] can dereference to a [`Device<Bound>`].
-> +///
-> +/// The following enunumeration illustrates the dereference hierarchy =
-of [`DeviceContext`] types.
-> +///
-> +/// - [`CoreInternal`] =3D> [`Core`] =3D> [`Bound`] =3D> [`Normal`]
-> +///
-> +/// Bus devices can automatically implement the dereference hierarchy =
-by using
-> +/// [`impl_device_context_deref`].
-> +///
-> +/// Note that the guarantee for a [`Device`] reference to have a =
-certain [`DeviceContext`] comes
-> +/// from the specific scope the [`Device`] reference is valid in.
-> +///
-> +/// [`impl_device_context_deref`]: kernel::impl_device_context_deref
-> pub trait DeviceContext: private::Sealed {}
->=20
-> -/// The [`Normal`] context is the context of a bus specific device =
-when it is not an argument of
-> -/// any bus callback.
-> +/// The [`Normal`] context is the default [`DeviceContext`] of any =
-[`Device`].
-> +///
-> +/// The normal context does not indicate any specific context. Any =
-`Device<Ctx>` is also a valid
-> +/// [`Device<Normal>`]. It is the only [`DeviceContext`] for which it =
-is valid to implement
-> +/// [`AlwaysRefCounted`] for.
-> +///
-> +/// [`AlwaysRefCounted`]: kernel::types::AlwaysRefCounted
-> pub struct Normal;
->=20
-> -/// The [`Core`] context is the context of a bus specific device when =
-it is supplied as argument of
-> -/// any of the bus callbacks, such as `probe()`.
-> +/// The [`Core`] context is the context of a bus specific device when =
-it appears as argument of
-> +/// any bus specific callback, such as `probe()`.
-> +///
-> +/// The core context indicates that the [`Device<Core>`] reference's =
-scope is limited to the bus
-> +/// callback it appears in. It is intended to be used for =
-synchronization purposes. Bus device
-> +/// implementations can implement methods for [`Device<Core>`], such =
-that they can only be called
-> +/// from bus callbacks.
-> pub struct Core;
->=20
-> -/// Semantically the same as [`Core`] but reserved for internal usage =
-of the corresponding bus
-> +/// Semantically the same as [`Core`], but reserved for internal =
-usage of the corresponding bus
-> +/// abstraction.
-> +///
-> +/// The internal core context is intended to be used in exactly the =
-same way as the [Core] context,
-> +/// with the difference that this [`DeviceContext`] is internal to =
-the corresponding bus
-> /// abstraction.
-> +///
-> +/// This context mainly exists to share generic [`Device`] =
-infrastructure that should only be called
-> +/// from bus callbacks with bus abstractions, but without making them =
-accessible for drivers.
-> pub struct CoreInternal;
->=20
-> -/// The [`Bound`] context is the context of a bus specific device =
-reference when it is guaranteed to
-> -/// be bound for the duration of its lifetime.
-> +/// The [`Bound`] context is the [`DeviceContext`] of a bus specific =
-device when it is guaranteed to
-> +/// be bound to a driver.
-> +///
-> +/// The bound context indicates that for the entire duration of the =
-lifetime of a [`Device<Bound>`]
-> +/// reference, the [`Device`] is guaranteed to be bound to a driver.
-> +///
-> +/// Some APIs, such as [`dma::CoherentAllocation`] or [`Devres`] rely =
-on the [`Device`] to be bound,
-> +/// which can be proven with the [`Bound`] device context.
-> +///
-> +/// Any abstraction that can guarantee a scope where the =
-corresponding bus device is bound, should
-> +/// provide a [`Device<Bound>`] reference to its users for this =
-scope. This allows users to benefit
-> +/// from optimizations for accessing device resources, see also =
-[`Devres::access`].
-> +///
-> +/// [`Devres`]: kernel::devres::Devres
-> +/// [`Devres::access`]: kernel::devres::Devres::access
-> +/// [`dma::CoherentAllocation`]: kernel::dma::CoherentAllocation
-> pub struct Bound;
->=20
-> mod private {
-> --=20
-> 2.50.0
->=20
->=20
+Fixes: dcb81aeab406e ("mm: rust: add VmaNew for f_ops->mmap()")
+Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
+---
+ rust/kernel/mm/virt.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+index 6086ca981b06..a1bfa4e19293 100644
+--- a/rust/kernel/mm/virt.rs
++++ b/rust/kernel/mm/virt.rs
+@@ -209,6 +209,7 @@ pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result {
+ ///
+ /// For the duration of 'a, the referenced vma must be undergoing initialization in an
+ /// `f_ops->mmap()` hook.
++#[repr(transparent)]
+ pub struct VmaNew {
+     vma: VmaRef,
+ }
+-- 
+2.43.0
+
