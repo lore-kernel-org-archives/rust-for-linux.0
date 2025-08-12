@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF302DE6EA;
-	Tue, 12 Aug 2025 08:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E22D2882C9;
+	Tue, 12 Aug 2025 08:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754986310; cv=none; b=FSOyonQIcGDIJkxTJOGWVeq+Z6O+KKgEpnrgNNG5eB8k6diVCBcCyuQlns7BLjVgHwiKbD1Hjb08lPsd5yc2Hh1IHj9Lh2ApeDn9ds9NK3EAALUWllAEpRmmajnsse1yek0ZbpcTCITAL3dGtF0Kwq4AGlDa33eF4TZuqUu+/hg=
+	t=1754986359; cv=none; b=aok/aZBcSWFCcTOQQ7dFldvmqHftJCM2Ane+uNxTQJsKxlqAPWTKrTnZfA17Y14BMsK/cl8Efpi+pux+1fBv9Xa7QGjlqY606G7Au9Vpi3q5aHw43rdasS8VQxVnE5Ll5qfjwZ4ZyEhmBUp4JvdahpVtzLkY1Cq1BcP9v70xVn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754986310; c=relaxed/simple;
-	bh=0V7U3rTiwFSJd5eMfwC739jhVOM/UljdnAB801+DTgQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=SpDD4oJGk9jj9v6Xe1gzqsMjNp6yxIHOv3feD17T1YVqt80T7K3AhjgrnU9PGhkpCzMBMraUdUaBxCAlSkeWcJOjUwTHsDj4XGwUvQ9zz6NzrPx6Dom7LUa279NFjPtsgc5TxVLtp6aBskEkW//l7ie4oXwRKfbyNglqeDb9/9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r8SlcYjY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754986359; c=relaxed/simple;
+	bh=Q3v2a9wegNqf+dAAUCSd2yKhORKs4z8ixJkHi/sttGk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=OfWredCh3OaaHT8wElIlDKzs1hZOhWI3eBfa81UmPAA1RsTiT2pW6kaWg9Zwymp4x5C1EFSyXOxS9luWR059sbV1Ece1nWsyAAKye2YrC1RKIvi8tmc1hUwFiHHl+xeNvS1HN/B1/u/QVDi8X2RkIv9cIAVoojYKCvPdvAQ+SCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6dTdEuy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r8SlcYjY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A53C4CEF0;
-	Tue, 12 Aug 2025 08:11:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6dTdEuy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BCCC4CEF0;
+	Tue, 12 Aug 2025 08:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754986309;
-	bh=0V7U3rTiwFSJd5eMfwC739jhVOM/UljdnAB801+DTgQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=r8SlcYjYjFOwegtCIGl/2aOv55Xef/MYMPC6+HwMc/JRWuIhpD92NEAVF4UFHBKOY
-	 N1zv+UzRNlxYP4AP3uYBy1ZqptGaOEI4YgLZli7ZMgpoMzj6bTcXNPRnzDLZV6bqwW
-	 GisPbyzel86QToq2OosB9iKNX9MfSNVUnPs8+0wpFxjLDitnfDSU94Hculkx/EurkG
-	 +I9f8b8o6LOVQ8Sve/Evi+gxRGEac11sDEZ/PZsMopFfuW2U0fHO69xT3Uuk9I05eI
-	 t0dHYEIDr0rYVFXphYyk2RxlQPVPYh4bj0iwaW96K/peWjDuPnWQoJEYDEVRgXlIad
-	 CA5bG3dzQkOZw==
+	s=k20201202; t=1754986356;
+	bh=Q3v2a9wegNqf+dAAUCSd2yKhORKs4z8ixJkHi/sttGk=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=T6dTdEuyHuvVSS3J+ThcLpypDVXyY0AT/y4n7OOJfrwtTagw9AacHBTuc0SWFfAma
+	 9b0zbqZ2fNgDkD2E7Ytx1DqpPz+lttTdCpcA8k/nZpt1ixWKWZU/IHY9/OXDj8QLli
+	 NxVM1u+4K4wbQHafF0kkowpWnO7ebne1ICohsGcfXdljQkMW6aber0pbDQlB17oLkG
+	 vGYl1Z69E/ivlzlKPb9hnLprsvs7yeegJ7i3onR15isHegtDbd4vGg0aax32jagvXS
+	 IiZtgOzjEXAXaFBLrc6av9V2J2+AvDRVPeqBHkYNBJ/E6oJkqV2BdkSjO2XCW56DZM
+	 eHoBzmQwVynZg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,39 +34,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 10:11:43 +0200
-Message-Id: <DC0AQ1UOF0TG.134431D3TCJ9W@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 1/5] rust: implement `kernel::sync::Refcount`
+Date: Tue, 12 Aug 2025 10:12:31 +0200
+Message-Id: <DC0AQNL2V4TL.1UDSNIRZX4SFU@kernel.org>
+Subject: Re: [PATCH v5 3/5] rust: convert `Arc` to use `Refcount`
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Gary Guo" <gary@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
  Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
  Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
  "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Tamir Duberstein" <tamird@gmail.com>, "Ingo
- Molnar" <mingo@kernel.org>, "Mitchell Levy" <levymitchell0@gmail.com>,
- "Lyude Paul" <lyude@redhat.com>, "Wedson Almeida Filho"
- <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>
+ "Danilo Krummrich" <dakr@kernel.org>, "Tamir Duberstein"
+ <tamird@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Alex
+ Mantel" <alexmantel93@mailbox.org>
+Cc: "Will Deacon" <will@kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Mark Rutland" <mark.rutland@arm.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.20.1
 References: <20250723233312.3304339-1-gary@kernel.org>
- <20250723233312.3304339-2-gary@kernel.org>
-In-Reply-To: <20250723233312.3304339-2-gary@kernel.org>
+ <20250723233312.3304339-4-gary@kernel.org>
+In-Reply-To: <20250723233312.3304339-4-gary@kernel.org>
 
 On Thu Jul 24, 2025 at 1:32 AM CEST, Gary Guo wrote:
-> +    /// Set a refcount's value.
-> +    #[inline]
-> +    pub fn set(&self, value: i32) {
-> +        // SAFETY: `self.as_ptr()` is valid.
-> +        unsafe { bindings::refcount_set(self.as_ptr(), value) }
-> +    }
+> From: Gary Guo <gary@garyguo.net>
+>
+> With `Refcount` type created, `Arc` can use `Refcount` instead of
+> calling into FFI directly.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-One more thing, I think this function could use some better docs. When
-do you want to use it? (How) does it synchronize with other reads/writes?
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
 ---
 Cheers,
 Benno
+
+> ---
+>  rust/kernel/sync/arc.rs | 45 +++++++++++++----------------------------
+>  1 file changed, 14 insertions(+), 31 deletions(-)
