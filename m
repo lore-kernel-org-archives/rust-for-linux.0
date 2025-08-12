@@ -1,102 +1,134 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D412E1C64;
-	Tue, 12 Aug 2025 08:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958292E7BD4;
+	Tue, 12 Aug 2025 08:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754987286; cv=none; b=bdDX5eFO+Lv3+Yri6l2fOW31L1mbjD3DC6+1wMEy3ZVjLFurWbtogsgnxRTy1BkZOni+KKR0EKn0zR+DEWAHZ1zFHRP0fnuIM8nadfRdGhAIYJviiahUvNoprWn7nWdO6dNLkahLiX6qrD6Iw0d9cpck0m9kLc/KSAaG1ggy0/U=
+	t=1754987700; cv=none; b=O6iWzPh43vQA/nAg1qmsOPDHIlymp0e3bkv3Ac3BDFyurHpTF1PdruWWMYhOKlWqi5wS5PkgZsGzuTR+y4+oqvio6nTf6WLAl62vN9xMBRjuIrORXgsDAu4jkIOxrGcbreyz1qNgkD+Y0X1RUeyboyEHNI8YFrDPH3jbC1AsylQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754987286; c=relaxed/simple;
-	bh=evdZCpKMinNJEdPnry5D9ypsZUNp562Cq4fO09qNdiQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lZBjLuNzjSkN5kQbIkAEfPMHkJkvon10kIH4MBiiObby0uQceJWad07tK3vSDqNpl+knOpf9OGBhG0C44Xjc9UccrE94CHIE1hMDAw2RsK3k8uwfRkaKCMHquQKUBSuQIgjT9mCrhIgM+zj0OI7uuUAqh1qsWcgRdlC9z9mveR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKpG62E/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754987700; c=relaxed/simple;
+	bh=xTdISAyT0Kzubsk+Rx8mfxAyPYBnzZHTr/cxp81IiDg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=c/a1MK95UztSAp92zzG41/5KY/0T+rZp+4fv6aUb1lNlwHPpJzNqNf9o0u4gTLG0pieEa6inXwEBfEN0BiSwD2zE6RjKviCijHryOTv9/cKAK9JjbAnLvffukxbi4rLq4EHay2f+ShrrjD44LaRiOn+v3dI7+DX3SFtPxyDzSNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hkd2yKo/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKpG62E/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF96C4CEF7;
-	Tue, 12 Aug 2025 08:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1754987285;
-	bh=evdZCpKMinNJEdPnry5D9ypsZUNp562Cq4fO09qNdiQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VKpG62E/aOxA/V9fAEf5VL1TsT+S1MR09ortTRbjMOIgLan4TBq3b/JQp7LPJPYm0
-	 nnzKsDVruLd/66g2z6EaMnLUuzlAoyVhJmcg3/mGLVZdtRuxPVaWNEM0TEY4NDU+Rm
-	 wlMMUMiv0jJcLuRSY08V2RLGe3GHxm2/o9iTusPU=
-Date: Tue, 12 Aug 2025 10:27:57 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Abhinav Ananthu <abhinav.ogl@gmail.com>
-Cc: david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: auxiliary: Use `c_` types from prelude instead of
-Message-ID: <2025081245-chubby-strep-1181@gregkh>
-References: <20250812075109.4099-1-abhinav.ogl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hkd2yKo/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAF6C4CEF4;
+	Tue, 12 Aug 2025 08:34:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754987700;
+	bh=xTdISAyT0Kzubsk+Rx8mfxAyPYBnzZHTr/cxp81IiDg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Hkd2yKo/gVbX3VsamhkYHbKRttvNnisB93+cA9XGxZfcrtke2QmefE7w9fBcu4aNx
+	 lCl9WtvZPEtgJMy/Q3qMk/jM6jAsOLWjY0SFwp4ZEwYfsw5G5vadd5n7V5sGU/XH9X
+	 QGbzBfaj+bmwgJVQ3LdJGOqjubLphcJeRxq8Vto1fro5FFQEIBWnwLNgd9vpT6N0lY
+	 fk+ySHit55c3ow/+ej6DSWoP1cMnk4bWASbJq8BOG5de7YIWjNc1jLGKJrqt04m8Ym
+	 2lzpPsSfJsTLsxYEJ8eypyTAYB39tq8GEWkL0FfXapB7IILpjYrvJg2WJMElCk86b6
+	 oDhIwd0yKqweA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812075109.4099-1-abhinav.ogl@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 12 Aug 2025 10:34:56 +0200
+Message-Id: <DC0B7TRVRFMY.29LDRJOU3WJY2@kernel.org>
+Cc: "Caleb Sander Mateos" <csander@purestorage.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>, "Jens Axboe"
+ <axboe@kernel.dk>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <io-uring@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
+ for io-uring cmd
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Sidong Yang" <sidong.yang@furiosa.ai>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>
+X-Mailer: aerc 0.20.1
+References: <aJXG3wPf9W3usEj2@sidongui-MacBookPro.local>
+ <DBXTJQ27RY6K.1R6KUNEXF008N@kernel.org>
+ <aJdEbFI2FqSCBt9L@sidongui-MacBookPro.local>
+ <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
+ <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
+ <81C84BD8-D99C-4103-A280-CFC71DF58E3B@collabora.com>
+ <aJiwrcq9nz0mUqKh@sidongui-MacBookPro.local>
+ <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
+ <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
+ <8416C381-A654-41D4-A731-323CEDE58BB1@collabora.com>
+ <aJoDTDwkoj50eKBX@sidongui-MacBookPro.local>
+In-Reply-To: <aJoDTDwkoj50eKBX@sidongui-MacBookPro.local>
 
-On Tue, Aug 12, 2025 at 01:21:10PM +0530, Abhinav Ananthu wrote:
-> Update auxiliary FFI callback signatures to reference the `c_` types
-> provided by the kernel prelude, rather than accessing them via
-> `kernel::ffi::`.
-> 
-> Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
-> ---
->  rust/kernel/auxiliary.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-> index d2cfe1eeefb6..030e31333689 100644
-> --- a/rust/kernel/auxiliary.rs
-> +++ b/rust/kernel/auxiliary.rs
-> @@ -56,7 +56,7 @@ impl<T: Driver + 'static> Adapter<T> {
->      extern "C" fn probe_callback(
->          adev: *mut bindings::auxiliary_device,
->          id: *const bindings::auxiliary_device_id,
-> -    ) -> kernel::ffi::c_int {
-> +    ) -> c_int {
->          // SAFETY: The auxiliary bus only ever calls the probe callback with a valid pointer to a
->          // `struct auxiliary_device`.
->          //
-> -- 
-> 2.34.1
-> 
-> 
+On Mon Aug 11, 2025 at 4:50 PM CEST, Sidong Yang wrote:
+> On Mon, Aug 11, 2025 at 09:44:22AM -0300, Daniel Almeida wrote:
+>> > There is `uring_cmd` callback in `file_operation` at c side. `Pin<&mut=
+ IoUringCmd>`
+>> > would be create in the callback function. But the callback function co=
+uld be
+>> > called repeatedly with same `io_uring_cmd` instance as far as I know.
+>> >=20
+>> > But in c side, there is initialization step `io_uring_cmd_prep()`.
+>> > How about fill zero pdu in `io_uring_cmd_prep()`? And we could assign =
+a byte
+>> > as flag in pdu for checking initialized also we should provide 31 byte=
+s except
+>> > a byte for the flag.
+>> >=20
+>>=20
+>> That was a follow-up question of mine. Can=C2=B4t we enforce zero-initia=
+lization
+>> in C to get rid of this MaybeUninit? Uninitialized data is just bad in g=
+eneral.
+>>=20
+>> Hopefully this can be done as you've described above, but I don't want t=
+o over
+>> extend my opinion on something I know nothing about.
+>
+> I need to add a commit that initialize pdu in prep step in next version.=
+=20
+> I'd like to get a comment from io_uring maintainer Jens. Thanks.
+>
+> If we could initialize (filling zero) in prep step, How about casting iss=
+ue?
+> Driver still needs to cast array to its private struct in unsafe?
 
-Hi,
+We still would have the casting issue.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Can't we do the following:
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+* Add a new associated type to `MiscDevice` called `IoUringPdu` that
+  has to implement `Default` and have a size of at most 32 bytes.
+* make `IoUringCmd` generic
+* make `MiscDevice::uring_cmd` take `Pin<&mut IoUringCmd<Self::IoUringPdu>>=
+`
+* initialize the private data to be `IoUringPdu::default()` when we
+  create the `IoUringCmd` object.
+* provide a `fn pdu(&mut self) -> &mut Pdu` on `IoUringPdu<Pdu>`.
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+Any thoughts? If we don't want to add a new associated type to
+`MiscDevice` (because not everyone has to declare the `IoUringCmd`
+data), I have a small trait dance that we can do to avoid that:
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+    pub trait IoUringMiscDevice: MiscDevice {
+        type IoUringPdu: Default; // missing the 32 byte constraint
+    }
 
-thanks,
+and then in MiscDevice we still add this function:
 
-greg k-h's patch email bot
+        fn uring_cmd(
+            _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+            _io_uring_cmd: Pin<&mut IoUringCmd<Self::IoUringPdu>>,
+            _issue_flags: u32,
+        ) -> Result<i32>
+        where
+            Self: IoUringMiscDevice,
+        {
+            build_error!(VTABLE_DEFAULT_ERROR)
+        }
+
+It can only be called when the user also implements `IoUringMiscDevice`.
+
+---
+Cheers,
+Benno
