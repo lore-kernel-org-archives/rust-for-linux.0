@@ -1,134 +1,158 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958292E7BD4;
-	Tue, 12 Aug 2025 08:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C711F37D3;
+	Tue, 12 Aug 2025 08:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754987700; cv=none; b=O6iWzPh43vQA/nAg1qmsOPDHIlymp0e3bkv3Ac3BDFyurHpTF1PdruWWMYhOKlWqi5wS5PkgZsGzuTR+y4+oqvio6nTf6WLAl62vN9xMBRjuIrORXgsDAu4jkIOxrGcbreyz1qNgkD+Y0X1RUeyboyEHNI8YFrDPH3jbC1AsylQ=
+	t=1754988343; cv=none; b=mbFH5xCS8Q3mH+J4DthA9ZCPMCRSpikDJzvQT7jx7JGGOjH+rk022URoqKt+4R7QBQXCYE6CGerGKXZSzrgHUGMB3nkxwR4ByQLfplnU5PTdAn/R3MEtc4UDXPCJIpci0+aFD0Oa7yBzktwIZ7/mhYz7vigk05abMWfEK4VnofA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754987700; c=relaxed/simple;
-	bh=xTdISAyT0Kzubsk+Rx8mfxAyPYBnzZHTr/cxp81IiDg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=c/a1MK95UztSAp92zzG41/5KY/0T+rZp+4fv6aUb1lNlwHPpJzNqNf9o0u4gTLG0pieEa6inXwEBfEN0BiSwD2zE6RjKviCijHryOTv9/cKAK9JjbAnLvffukxbi4rLq4EHay2f+ShrrjD44LaRiOn+v3dI7+DX3SFtPxyDzSNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hkd2yKo/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754988343; c=relaxed/simple;
+	bh=Ccx5zgSLlbSIiXofZb52HFU6BY4bx1BMin6k8F+fBLU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fptkrUorGs6nxICQewD1niW/OULKv02vDjT8pnTxlE+DTZh42xUvD0/Z08bbcGkw3MeJSvwXhhLRtZgMEwrCbTW7jz38DGE1yt1ypixKE4P0OZ16peqaWGS8lbuzjy21Hu6n3X8fOD4p0Txm1tVb5KOqzYfY8jrTr4czQoFAqe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKFo4FVZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hkd2yKo/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAF6C4CEF4;
-	Tue, 12 Aug 2025 08:34:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKFo4FVZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0272CC4CEF0;
+	Tue, 12 Aug 2025 08:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754987700;
-	bh=xTdISAyT0Kzubsk+Rx8mfxAyPYBnzZHTr/cxp81IiDg=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Hkd2yKo/gVbX3VsamhkYHbKRttvNnisB93+cA9XGxZfcrtke2QmefE7w9fBcu4aNx
-	 lCl9WtvZPEtgJMy/Q3qMk/jM6jAsOLWjY0SFwp4ZEwYfsw5G5vadd5n7V5sGU/XH9X
-	 QGbzBfaj+bmwgJVQ3LdJGOqjubLphcJeRxq8Vto1fro5FFQEIBWnwLNgd9vpT6N0lY
-	 fk+ySHit55c3ow/+ej6DSWoP1cMnk4bWASbJq8BOG5de7YIWjNc1jLGKJrqt04m8Ym
-	 2lzpPsSfJsTLsxYEJ8eypyTAYB39tq8GEWkL0FfXapB7IILpjYrvJg2WJMElCk86b6
-	 oDhIwd0yKqweA==
+	s=k20201202; t=1754988342;
+	bh=Ccx5zgSLlbSIiXofZb52HFU6BY4bx1BMin6k8F+fBLU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=oKFo4FVZm43yYmuz3eVUVd/hsTA/yidp1enNvBSPO3fpYKBEUlWrEbdUvFVeuAnwd
+	 7a2sRAJzEF7Gt+SRpuRbAKDE7vaTW/aQPP7Qv03XKOnjXnI9G5q4OlclWjQDV/Z+KR
+	 Be4SxiiJYYhiReKNs08d8Ymaap6YpnlZGr6aItA8+/MOpL+zFJvIAi2D6oH/q6jizx
+	 WPlqRIVeUFaL7KVp7S0KHXAIcI1g3aHJvRXRL46Boi7Wrk8hYZuDRi6vfG3MIEL/YA
+	 H3s44Hs5Vmhs8NnA8y+F+JaOzkON64yKeZNQ1XUs0myGYXNpt4OCDck8g04I66Hihy
+	 /FX1CXJd7Kscw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Tue, 12 Aug 2025 10:44:25 +0200
+Subject: [PATCH v4 07/15] rust: block: remove `RawWriter`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 10:34:56 +0200
-Message-Id: <DC0B7TRVRFMY.29LDRJOU3WJY2@kernel.org>
-Cc: "Caleb Sander Mateos" <csander@purestorage.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>, "Jens Axboe"
- <axboe@kernel.dk>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <io-uring@vger.kernel.org>
-Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
- for io-uring cmd
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Sidong Yang" <sidong.yang@furiosa.ai>, "Daniel Almeida"
- <daniel.almeida@collabora.com>
-X-Mailer: aerc 0.20.1
-References: <aJXG3wPf9W3usEj2@sidongui-MacBookPro.local>
- <DBXTJQ27RY6K.1R6KUNEXF008N@kernel.org>
- <aJdEbFI2FqSCBt9L@sidongui-MacBookPro.local>
- <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
- <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
- <81C84BD8-D99C-4103-A280-CFC71DF58E3B@collabora.com>
- <aJiwrcq9nz0mUqKh@sidongui-MacBookPro.local>
- <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
- <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
- <8416C381-A654-41D4-A731-323CEDE58BB1@collabora.com>
- <aJoDTDwkoj50eKBX@sidongui-MacBookPro.local>
-In-Reply-To: <aJoDTDwkoj50eKBX@sidongui-MacBookPro.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250812-rnull-up-v6-16-v4-7-ed801dd3ba5c@kernel.org>
+References: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org>
+In-Reply-To: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2507; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=Ccx5zgSLlbSIiXofZb52HFU6BY4bx1BMin6k8F+fBLU=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBomv8iIkoNkqQUOnDywI9o6nQQFQELgIpckIOPV
+ FPvKRB0To+JAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaJr/IgAKCRDhuBo+eShj
+ d66UD/9FI7DxPt6eeUbAybLCy13Y/KUouBapa3d2tfUklAlEDtK4XIum0BrtyGWbUvTwpzcofpi
+ tcwaBvFH3+K26D1sTDgykvMdHdHUGIXBxWK3va381Wdlx9QAKJ2frWCYQxV6QXBg5dkT2ORgEZ/
+ J+oMiq53O82eIBmxNHMxs4ioHFRcU7kdSl1GIPXtbmtAlkS2+r8sxutQCbVpQWlZHaFQ9n8boen
+ HO6Ibs2LBIKmNgXWG8jGWa09mVaS474zOHpuXei0TRDUoSKKL0OUQXNjujx2D5577W1JEQ91rko
+ N+MLnkgMKB69HbQC2InW96KRDGKhRZizU35bPmbsVRMoU4TqZoSA3xM8qYAjYCuIPRoKZ+cgfJH
+ dW+Aal+djZxYReAIzig1APbxKfmuc2gRHZnu4ZTFcuiHMucbRq75ZM3GmpA8G7cFbiCTbb4FrpD
+ BwIYOY+1mnIxRcsiq4KcfkmqJVWQ7Zdz0qTzI2urCVhm1L62C6t+zKXe1kQTmEaa1licilECFJa
+ NBTvq2fjinwrbY/81wgxiHnPD8HgDZ+EzXV4dZhgt3K+O/kWMqPAhM1TVjGVdbIF3VQcWCRFNP1
+ /tNDkIVyHryZrYt/8ievZ2AAdBPx5DrurwnaLVId58xGjcFDahfKlt26b0iz2QCu7ZhJN79dLVD
+ QHmBExR+eepfpwg==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Mon Aug 11, 2025 at 4:50 PM CEST, Sidong Yang wrote:
-> On Mon, Aug 11, 2025 at 09:44:22AM -0300, Daniel Almeida wrote:
->> > There is `uring_cmd` callback in `file_operation` at c side. `Pin<&mut=
- IoUringCmd>`
->> > would be create in the callback function. But the callback function co=
-uld be
->> > called repeatedly with same `io_uring_cmd` instance as far as I know.
->> >=20
->> > But in c side, there is initialization step `io_uring_cmd_prep()`.
->> > How about fill zero pdu in `io_uring_cmd_prep()`? And we could assign =
-a byte
->> > as flag in pdu for checking initialized also we should provide 31 byte=
-s except
->> > a byte for the flag.
->> >=20
->>=20
->> That was a follow-up question of mine. Can=C2=B4t we enforce zero-initia=
-lization
->> in C to get rid of this MaybeUninit? Uninitialized data is just bad in g=
-eneral.
->>=20
->> Hopefully this can be done as you've described above, but I don't want t=
-o over
->> extend my opinion on something I know nothing about.
->
-> I need to add a commit that initialize pdu in prep step in next version.=
-=20
-> I'd like to get a comment from io_uring maintainer Jens. Thanks.
->
-> If we could initialize (filling zero) in prep step, How about casting iss=
-ue?
-> Driver still needs to cast array to its private struct in unsafe?
+`RawWriter` is now dead code, so remove it.
 
-We still would have the casting issue.
-
-Can't we do the following:
-
-* Add a new associated type to `MiscDevice` called `IoUringPdu` that
-  has to implement `Default` and have a size of at most 32 bytes.
-* make `IoUringCmd` generic
-* make `MiscDevice::uring_cmd` take `Pin<&mut IoUringCmd<Self::IoUringPdu>>=
-`
-* initialize the private data to be `IoUringPdu::default()` when we
-  create the `IoUringCmd` object.
-* provide a `fn pdu(&mut self) -> &mut Pdu` on `IoUringPdu<Pdu>`.
-
-Any thoughts? If we don't want to add a new associated type to
-`MiscDevice` (because not everyone has to declare the `IoUringCmd`
-data), I have a small trait dance that we can do to avoid that:
-
-    pub trait IoUringMiscDevice: MiscDevice {
-        type IoUringPdu: Default; // missing the 32 byte constraint
-    }
-
-and then in MiscDevice we still add this function:
-
-        fn uring_cmd(
-            _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-            _io_uring_cmd: Pin<&mut IoUringCmd<Self::IoUringPdu>>,
-            _issue_flags: u32,
-        ) -> Result<i32>
-        where
-            Self: IoUringMiscDevice,
-        {
-            build_error!(VTABLE_DEFAULT_ERROR)
-        }
-
-It can only be called when the user also implements `IoUringMiscDevice`.
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
-Cheers,
-Benno
+ rust/kernel/block/mq.rs            |  1 -
+ rust/kernel/block/mq/raw_writer.rs | 56 --------------------------------------
+ 2 files changed, 57 deletions(-)
+
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index 831445d37181..98fa0d6bc8f7 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -89,7 +89,6 @@
+ 
+ pub mod gen_disk;
+ mod operations;
+-mod raw_writer;
+ mod request;
+ mod tag_set;
+ 
+diff --git a/rust/kernel/block/mq/raw_writer.rs b/rust/kernel/block/mq/raw_writer.rs
+deleted file mode 100644
+index 0aef55703e71..000000000000
+--- a/rust/kernel/block/mq/raw_writer.rs
++++ /dev/null
+@@ -1,56 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-use core::fmt::{self, Write};
+-
+-use crate::error::Result;
+-use crate::prelude::EINVAL;
+-
+-/// A mutable reference to a byte buffer where a string can be written into.
+-///
+-/// # Invariants
+-///
+-/// `buffer` is always null terminated.
+-pub(crate) struct RawWriter<'a> {
+-    buffer: &'a mut [u8],
+-    pos: usize,
+-}
+-
+-impl<'a> RawWriter<'a> {
+-    /// Create a new `RawWriter` instance.
+-    fn new(buffer: &'a mut [u8]) -> Result<RawWriter<'a>> {
+-        *(buffer.last_mut().ok_or(EINVAL)?) = 0;
+-
+-        // INVARIANT: We null terminated the buffer above.
+-        Ok(Self { buffer, pos: 0 })
+-    }
+-
+-    #[expect(dead_code)]
+-    pub(crate) fn from_array<const N: usize>(
+-        a: &'a mut [crate::ffi::c_char; N],
+-    ) -> Result<RawWriter<'a>> {
+-        Self::new(
+-            // SAFETY: the buffer of `a` is valid for read and write as `u8` for
+-            // at least `N` bytes.
+-            unsafe { core::slice::from_raw_parts_mut(a.as_mut_ptr().cast::<u8>(), N) },
+-        )
+-    }
+-}
+-
+-impl Write for RawWriter<'_> {
+-    fn write_str(&mut self, s: &str) -> fmt::Result {
+-        let bytes = s.as_bytes();
+-        let len = bytes.len();
+-
+-        // We do not want to overwrite our null terminator
+-        if self.pos + len > self.buffer.len() - 1 {
+-            return Err(fmt::Error);
+-        }
+-
+-        // INVARIANT: We are not overwriting the last byte
+-        self.buffer[self.pos..self.pos + len].copy_from_slice(bytes);
+-
+-        self.pos += len;
+-
+-        Ok(())
+-    }
+-}
+
+-- 
+2.47.2
+
+
