@@ -1,124 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B36D2E974D;
-	Tue, 12 Aug 2025 09:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823191A9F84;
+	Tue, 12 Aug 2025 10:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754992620; cv=none; b=oYNJill4xFPtQoU+ujMBxukopHkaPqrhg9UUyEpLT9AAvVRt15RNit1WFC8BYsjPOoJUIUu64W2K3hfVd8OMyCwuFE056P7H6wv62ioBh677CMR0t/EtNs0xIcALvjwQm3tg47pzKT8AfvYXKjRUvmmfoXo0Z+l/o4NO65D3WM8=
+	t=1754994310; cv=none; b=e4lh04TXQNyYJMMk0lVK/dbRyMmhP8oDS9sAKjQzMrJCDiYHJfQl1T0F1LOdGLfhZGWrI8u13sOiePvTtAVVVtFbMDtPi+MLhlmbGQH3R0v/VWO7KUu4wsB7yIeY3piDlqsHmCcq7/EBLMsVsH953kOw/zFyq6Web+GHHmfpTOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754992620; c=relaxed/simple;
-	bh=kZ2l5x950PA0cR5I+Bh1ES8Lujux+bvQVQOPWBN9iz0=;
+	s=arc-20240116; t=1754994310; c=relaxed/simple;
+	bh=3h1jtYlTahoZiW9S6ipVCny34gqJSUikkQKszPkOZjo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CjODPMt4Peie6rkKPt/dyJ0QAPjfFBV1ULJOLPwTRZWOFFM0rgppz8jy/6dXmzcO/b8ZBPu1GxhmbhSqvrnW8fZssNS/fBohRbqN+zdu1tPC92saVCGOOdInSOvu6wFmObirz3NhpPqaiPxWq6FfJcCfzCZQmSNfCpnxogD1JXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fxOupTQL; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=KKX4DKjfpk3EMCMv3r8z16GGN84cqunhuGGOPO91E3RfUb524DUfw4JWuDbCPidi9K7UQCnXli4vrk9uy4MD09nIWTzO8LhQZo2ySrUsnKYd+e5yFdxhO1+IC3t9Pjg+ZwCG9MleU/mLGs6NujChcroPn7/RK6jWT6Rgkemais8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PE/h0CXL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=d08ZUSUn; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fxOupTQL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754992618; x=1786528618;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kZ2l5x950PA0cR5I+Bh1ES8Lujux+bvQVQOPWBN9iz0=;
-  b=fxOupTQLXW2woqAZkKM0GBwShs4XLJcDPFw47AGMJq5WzEIdlU9dQtHW
-   2IshLG/RJl8NERSSxDS+7ak3LzN7i6p7LITkYOywXozbzaL9BWfqcISVN
-   3+zJAzE3XNbJWfs5ClFN0ZJmgL04pI6bXZFkaTBPYCWSt81yXQztSAcO5
-   thFs+H0Xh6GbE0lSIuk17hTUa0tQ4xshAgPrZN6GBneXlSkyHVgmeF8cQ
-   k/b9QX7ppc/7gXjaAPP5ZBtml0rrcWUL8+7WA1GY7PX8JuOkjHnCTKzMe
-   l1nm1MEEFQxy4zbXzKOrouRBdSAe4JotS963EqNE99k1QTPPu0uNzMg1A
-   Q==;
-X-CSE-ConnectionGUID: Y2Z3js9JRT+KIe+iW1Rzgw==
-X-CSE-MsgGUID: 08MeM3WYRgm0d8TErknVuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="67968760"
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="67968760"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 02:56:58 -0700
-X-CSE-ConnectionGUID: RkPC6m94SoKqMbnl2CRniA==
-X-CSE-MsgGUID: 9h5Ou5W5QQuC4liiIRCzig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="165655966"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 12 Aug 2025 02:56:54 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ullk8-0006eW-2k;
-	Tue, 12 Aug 2025 09:56:39 +0000
-Date: Tue, 12 Aug 2025 17:55:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: ~_xllx_ <_xllx_@git.sr.ht>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH linux] of: resolves TODO for copy_from_slice
-Message-ID: <202508121650.l7ZSniGd-lkp@intel.com>
-References: <175489428990.9320.6825335165759789458-0@git.sr.ht>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PE/h0CXL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="d08ZUSUn"
+Date: Tue, 12 Aug 2025 12:25:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1754994306;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=25qTZ0NaTrHWGb9HaUnJeL7nrC5oZiUKeYs+yDJzlIA=;
+	b=PE/h0CXLoDspX2fANx7Ncb8CVFtBKWb74CPFkn5FvbRq5vUh8xJ/D9+xoDDjw2LUetVzT8
+	RpFfYmHz4E3F9ll02QH9VKxCKR619bMfkmV6WqHcFIAmPp5GF/3MfWHVzfN9XpuouMWbcy
+	LTYQX4o1mqFChjqhce6mHGd2c1LHT3OdxDkTdY41Iqtmjd9USkMe+0lHqvTsXImXcOa5J2
+	N5axkDEs5Gaslbs/leHd3B/sgbcPP4va94B8IEL4B5jnyAnhNawEqeF2G8BSBY+QypvUME
+	ptD88qDUehbBo8JJI++jfkIwGJZvN5vT70WyWMU//iNP31eXpWJEGeP/t6yRnw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1754994306;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=25qTZ0NaTrHWGb9HaUnJeL7nrC5oZiUKeYs+yDJzlIA=;
+	b=d08ZUSUnbOIPQl4p4/pa0+MKiK4FeI6AtekH+SuEc2o0On3Cdy1lEtjvQZ135kYlujG4F/
+	FFsCjgogRVvqU1Aw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/2] kbuild: enable CONFIG_WERROR for more build steps
+Message-ID: <20250812121545-f00f588b-2239-4d96-baeb-55cbf4914556@linutronix.de>
+References: <20250812-kbuild-werror-v1-0-36c9ff653700@linutronix.de>
+ <CANiq72k-PdSH2BNgbq=X+FhpyEErifSCKfO5ObXz6bu9_J8+fA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <175489428990.9320.6825335165759789458-0@git.sr.ht>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72k-PdSH2BNgbq=X+FhpyEErifSCKfO5ObXz6bu9_J8+fA@mail.gmail.com>
 
-Hi ~_xllx_,
+Hi Miguel,
 
-kernel test robot noticed the following build errors:
+On Tue, Aug 12, 2025 at 11:21:24AM +0200, Miguel Ojeda wrote:
+> On Tue, Aug 12, 2025 at 7:31 AM Thomas Weißschuh
+> <thomas.weissschuh@linutronix.de> wrote:
+> >
+> > CONFIG_WERROR is useful for all build steps, not only compilation of C and
+> > Rust sources linked into the kernel.
+> >
+> > Also enable it for assembler and linker invocations, userprogs, as well as
+> > C and Rust hostprogs.
+> >
+> > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> 
+> The Rust part is:
+> 
+>     https://lore.kernel.org/rust-for-linux/20240519211235.589325-1-ojeda@kernel.org/
 
-[auto build test ERROR on linux/master]
+Thanks for the pointer. We can keep the logic in Makefile.extrawarn.
+But adding FLAGS-y machinery for all of the flags will be a bit noisy.
+Having one ifdef CONFIG_WERROR around everything is much easier to read.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/_xllx_/of-resolves-TODO-for-copy_from_slice/20250811-144924
-base:   linux/master
-patch link:    https://lore.kernel.org/r/175489428990.9320.6825335165759789458-0%40git.sr.ht
-patch subject: [PATCH linux] of: resolves TODO for copy_from_slice
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250812/202508121650.l7ZSniGd-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250812/202508121650.l7ZSniGd-lkp@intel.com/reproduce)
+> However, Masahiro back then mentioned that we shouldn't make the C
+> host flags depend on `WERROR` since `HOSTCC` builds Kconfig and, for
+> consistency, not for Rust host progs either:
+> 
+>     https://lore.kernel.org/rust-for-linux/CAK7LNATPx2wTEM=KDmGtcH8vVTB4suOhh-CUQKP54F8wtPWDiw@mail.gmail.com/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508121650.l7ZSniGd-lkp@intel.com/
+That does make sense.
 
-All errors (new ones prefixed by >>):
+> Perhaps it could make sense to explicitly exclude certain bits, like
+> Kconfig, from `WERROR`, and apply it for everything else instead.
 
->> error[E0080]: evaluation of constant value failed
-   --> rust/doctests_kernel_generated.rs:6978:11
-   |
-   6978 |          (of::DeviceId::new(c_str!("test,device")), ())
-   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation panicked: copy_from_slice: source slice length does not match destination slice length
-   |
-   note: inside `rust_doctest_kernel_alloc_kbox_rs_7::kernel::of::DeviceId::new`
-   --> rust/kernel/of.rs:42:9
-   |
-   42   |         of.compatible.copy_from_slice(src);
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
---
->> error[E0080]: evaluation of constant value failed
-   --> samples/rust/rust_driver_platform.rs:88:7
-   |
-   88 |     [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
-   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation panicked: copy_from_slice: source slice length does not match destination slice length
-   |
-   note: inside `kernel::of::DeviceId::new`
-   --> rust/kernel/of.rs:42:9
-   |
-   42 |         of.compatible.copy_from_slice(src);
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
+The users will still pass -Werror explicitly, we can't filter that out.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Let's skip hostprogs for now. Another possibility would be to use -Werror
+for hostprogs unconditionally. Various tools/ are doing that for example.
+
+
+Thomas
