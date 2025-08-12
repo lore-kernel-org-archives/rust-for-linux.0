@@ -1,76 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00392F0679;
-	Tue, 12 Aug 2025 20:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94342F0666;
+	Tue, 12 Aug 2025 20:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755030958; cv=none; b=HyeSY4IDdJiCRt4Ecu56SaM/YX8GlHNnx7FiMifcN7lEJxEoV2SMo/5hIRSVQf1wzqROZr2Bk6YJizB2p2UqZ1EEP0/nGJQhPgnZ1q7i66i0mwUD5E822Tu+V1YGIe4l0HhF3CpFSgfTYZiik7AJVp8v7ZqSxchqMBXj1qS6SsA=
+	t=1755032171; cv=none; b=ZtmmmSdRCbJwSGpSDPmxwp9NyZM8qErk5Ljnq0XAfG/fekDQFt8SGOfRbJQJCBWFwj+Ws/IH391cA3FY25SkVofPx2RahL/q3Zt4TLQ/yTO5MxtXGGxdhu75Ol967bEdSkKU4uiJPGRZ4yElD4Uv3L1nVe37L7WcRPb2QoKgIuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755030958; c=relaxed/simple;
-	bh=+StpLUbIz4Cn8lrRgBX1tOfusvqJ9s3Ec800QrIyjPA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=K6sPRYK6HecKQC2sjKjocuhapqSt2ZosFCTwarRNFHD67QxSe+TWPIZLlPau9cekhFX6GFeJxsdBgOXMiihdRu8k84rURHnvkc+N4hCxXIvEJLzc3NnJq5bF7OSvpnEuV410kL2IA39/3tl1Yt3UFiYqUAVVSysOXSYtIGlIq0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cc8mOwnQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755032171; c=relaxed/simple;
+	bh=oDx/4yjF6fOIMLyafK6z36XCnn2dAEJD56/3U6byJhU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q911vhZOE+YV3W5WGxKQEP02MQ7ZajyBsScy3hIZy+C0qgKwXDAJmCygefgr+9K8FVHt4QpJ0sloPZB2IM+yHi8fj9aD9zyX+ADXyp6Atc9ihi8YPPT+eQSNZC1B0vgUn6EsdKD7XxP9EVMekwNkT1CHWkxbbYCsGAs2poU5g04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aci32url; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cc8mOwnQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2625AC4CEF0;
-	Tue, 12 Aug 2025 20:35:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aci32url"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B44CC4CEF0;
+	Tue, 12 Aug 2025 20:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755030958;
-	bh=+StpLUbIz4Cn8lrRgBX1tOfusvqJ9s3Ec800QrIyjPA=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=cc8mOwnQMZouqZAXTEyb1qgwlK4LxASLn1WbYrTamO5NeyoXsjkgs45NM5Ncb6WeX
-	 lfrGeYSoJyYaUu/mwqNs4aR/NSPzwj/E20p6IlE4JbfJNUgnneyAPDcBuctVUNO/Ci
-	 zBjbIwiEwiuAnUOPIfRZ4Bmrk/Ay921LRP8MnzaYyx9tmeg/gqA7fMzyVWQICn+6D1
-	 L8HGJLEpqgdHcDZIUrsq+IidnYyDtSaa2AEd5sNgWED626W6EsGp6f62fb1l8IDodX
-	 H9awiY1T72RF14BTyzbL1DxAJBwy3wM1jGHCRtUxIitVHNvFxKZkDLkJ4lB9W4sVmB
-	 3kgHgKcu0V+aw==
+	s=k20201202; t=1755032170;
+	bh=oDx/4yjF6fOIMLyafK6z36XCnn2dAEJD56/3U6byJhU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aci32urlrI9CgDWLLZVE10UPVqDe2MuCNb7FoPCabmVIHnD2dNYTBYIDd9rymhZOn
+	 +a3CykFh184IeqAog5f/VAmRx++PklO1nWODv/on3WAGwhyitMTujNyt6XqdZhHFEz
+	 xWZQ962qlvMX6GwCKbv0yVR0F/fxvmMti10W0YMtTmGMTfAtGJMprjLU7r2dywA0oA
+	 8L+A0S6Wx5/380Esa0eS02O6q9H8l2zEvaeFIcN/w0GUSaLde/wZxNI3IoKam0WtCx
+	 fCy9mEAvvYLx92Sskkk0eQIEFQ84T1taZJKNbQ/oKzSdlWrKQDPyMTTK+Ng1i7CARu
+	 +r7orZEZFPFWw==
+Date: Tue, 12 Aug 2025 13:56:04 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/2] kbuild: enable CONFIG_WERROR for more build steps
+Message-ID: <20250812205604.GA532342@ax162>
+References: <20250812-kbuild-werror-v1-0-36c9ff653700@linutronix.de>
+ <CANiq72k-PdSH2BNgbq=X+FhpyEErifSCKfO5ObXz6bu9_J8+fA@mail.gmail.com>
+ <20250812121545-f00f588b-2239-4d96-baeb-55cbf4914556@linutronix.de>
+ <CANiq72=rhY_k1RRJoTzsY8PnEW5D=m2Org9m0v3erJsWxW4HkQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 22:35:52 +0200
-Message-Id: <DC0QJT650CI5.268HLIHWB4L8I@kernel.org>
-Cc: <lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>,
- <Liam.Howlett@oracle.com>, <urezki@gmail.com>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
- <tzimmermann@suse.de>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/4] rust: alloc: replace aligned_size() with
- Kmalloc::aligned_layout()
-References: <20250731154919.4132-1-dakr@kernel.org>
- <20250731154919.4132-2-dakr@kernel.org>
- <CANiq72mWVmso1yMYGYih-NDwjB9E1iVE=_oSpPiSvqTu5mkE0g@mail.gmail.com>
- <DC0PSDBCPGVO.38EGYXRFQVM8N@kernel.org>
- <CANiq72nfpecn3qQqNJiXGDX_Veg1Q9yQF0BZzCk68Ue_i3qtVg@mail.gmail.com>
-In-Reply-To: <CANiq72nfpecn3qQqNJiXGDX_Veg1Q9yQF0BZzCk68Ue_i3qtVg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=rhY_k1RRJoTzsY8PnEW5D=m2Org9m0v3erJsWxW4HkQ@mail.gmail.com>
 
-On Tue Aug 12, 2025 at 10:12 PM CEST, Miguel Ojeda wrote:
-> On Tue, Aug 12, 2025 at 10:00=E2=80=AFPM Danilo Krummrich <dakr@kernel.or=
-g> wrote:
->>
->> I don't think so, it just lead to pad to the alignment for Vmalloc too.
->>
->> Technically, this makes no difference, since Vmalloc is always PAGE_SIZE=
- aligned
->> and the size always a multiple of PAGE_SIZE.
->
-> Got it, thanks for the quick reply! Then I guess we could have skipped
-> the Fixes in this one, but it is not a big deal and as usual it
-> depends on how one defines "fix".
+On Tue, Aug 12, 2025 at 12:50:44PM +0200, Miguel Ojeda wrote:
+> On Tue, Aug 12, 2025 at 12:25 PM Thomas Weißschuh
+> > Another possibility would be to use -Werror
+> > for hostprogs unconditionally. Various tools/ are doing that for example.
+> 
+> Not sure what Kbuild thinks about that -- we have a small risk of
+> breaking things with newer compilers, but that may be not too bad for
+> just hostprogs (unlike when it was attempted to make it default `y`).
+...
+> appear -- so that should be fine, but it does make it way more urgent
+> if they are errors every time, though, since it blocks other testing
+> too).
 
-Yeah, in the past I was more on the "'Fixes:' for actual bugs only" side of
-things, but I changed my mind a bit; I find it useful to have this as a
-reference even for minor issues that might not be actual bugs, such as this
-one.
+Yeah I am conflicted. On the one hand, KBUILD_HOSTCFLAGS only has -Wall
+and a couple of extra warnings so the risk of new warnings breaking the
+build is pretty low. You can see the rate at which warnings get added or
+removed from -Wall in clang in the warning-wall.c test:
+
+  https://github.com/llvm/llvm-project/commits/main/clang/test/Misc/warning-wall.c
+
+I'm obviously on top of testing upstream LLVM against hostprogs because
+LLVM= makes it easy to set HOSTCC. I suspect that GCC trunk sees less
+testing against the hostprogs unless the user has it in their PATH
+somehow.
+
+On the other hand, the recent changes to -Wuninitialized and the
+addition of -Wuninitialized-const-pointer were extremely disruptive only
+because of -Werror... I would have no problems with fast tracking fixes
+for hostprogs -Werror usage but I am not sure all maintainers will. This
+would also impact vendored host programs like dtc, which may be harder
+to update.
+
+We could try it for a development cycle in -next to see if anything gets
+noticed. Always easy to back out retrospectively as well. Alternatively,
+we could just recommend people use HOSTCFLAGS=-Werror if they desire it.
+
+Cheers,
+Nathan
