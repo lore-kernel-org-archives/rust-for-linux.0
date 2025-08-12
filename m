@@ -1,149 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36352E717B;
-	Tue, 12 Aug 2025 08:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA442E2DFD;
+	Tue, 12 Aug 2025 09:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754988399; cv=none; b=j2OeL6E+rYoEP5gAoayG+u/XCE/0HaEVKsZHkOXXh56Grt/UcpPb9CRUikrPoqpO5gZrn1yxShbVR8H9XUbZSdeiXOSyUXw2Ew/daLClDp7ZaOAH3tnnpmh1b2h5QxTKSA6N8HZvSoZltUV88D59KILBSJWW21gvasWHyNLtcGo=
+	t=1754990498; cv=none; b=doO6NL+WEUr3EEFlXBps/sy50GCLmiYbt1BJRuWcaRTnnxcJMrtotqxV6V8SORQ7rpnHERjKw5o45FDivZ5gb1P8I7dQe+rhblAA2VOwjffpfERKex28IsjSk5O507HjNirRPJer6C1jIXOsP0Ah9tmAQya7mmkgz7M0xENKLOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754988399; c=relaxed/simple;
-	bh=5vdh1riAR0ZL9xaLLQRBtVtO//nClfhfAq/IqeV6FBY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mhvxgm1FO9fpiO7AKfG0X5TDKLe84/p/QiFYH6aI3p9uDHednN+dmoiA3tOPlP1yxnEVY++C7TPsZDEthQsDZsqlwA+Y4e5tUvmcvS8hurdB//zFuIynpApFYiFC4Xm90wOJpBdp34LEFqnc3pmPDbZDoUtwrQIilCynBq1xOF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZPD/D0Z4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754990498; c=relaxed/simple;
+	bh=WQiyorV77zyaTQ7AF1IMpiv7Z306Tvbk0U/iXRpbHnk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kel6zdjgAMcvz2EFBfzxT6MW4SE4HOc/9TPq3XjvbPmCygBCBbvruOi16xF6sWiaDISBJ6FckBNwIqefJNF/SGMfOkmVaFPhFP1drZqP6zLprBNZ+uvDxFL3ylIcKMpoD/m/LpDBesn69bBXSXojCaME1tjTtGRrB6OGtPI3F34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZW0ayuv; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZPD/D0Z4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E1BC4CEF0;
-	Tue, 12 Aug 2025 08:46:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754988398;
-	bh=5vdh1riAR0ZL9xaLLQRBtVtO//nClfhfAq/IqeV6FBY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ZPD/D0Z4UaD4iVP8yjxS4+6iYcJ392xZhUk6BdaEv35g1us/JnEDazC5fTkbogXrl
-	 tYKmB2FhB4fH1+n+zfwvHk9zB2WawE38DO9dCxbks3NfxMbEG+LB6+0kUJSxUNdOit
-	 aeopHDVSUNLSTOR03IOUAHT6f/xcOEIll3iOJ56Qj5Mz9r6WG0G0Mp0vZ/ZQVQnt5x
-	 EI6+kZmbkjg61xgf/onnEJyxRF22vTnzhMj7LuAfIFRbslv19xo9sty81J9sLVAmXx
-	 heXvN76DKe/KP48hKTHgNuem+L1+KcS+890S6x83pwblFH9tuVJ9GzKnp0LtXEjcKe
-	 Go3RvBr7k5sSg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 12 Aug 2025 10:44:22 +0200
-Subject: [PATCH v4 04/15] rust: str: introduce `NullTerminatedFormatter`
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZW0ayuv"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-76624ecc7efso587504b3a.0;
+        Tue, 12 Aug 2025 02:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754990496; x=1755595296; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hYvCo0iEJq+ZxS2rhikncTd5AQY0cs0mvYn/ZYwYUdM=;
+        b=JZW0ayuvO8n0KSMxpEzedi0/H9GwnZH7VLnE130JcwKxHWPlhybUsw7vzABJhoN16x
+         lDGVeJo1k6kCWmv15zDYnvNkH7B2PEnaYJ9C9/F3ah4GJaX7UbQlf2tLbfXGLyfwJjFw
+         23QVSiTV4XC3YIyL55u770CUb5AMPPUFAmat6irz3AIgbGNBoil85Y8yCavn0vnZ9CME
+         goG84+TqzTqXnU41r6DTNLT2wgSfJ+bj2ufTmn1uSUd3D4+qcv3aZGKXmdcSxdDUGzTv
+         8RuklAp1M2d81e1Ab2do2iMW1Ko5SsDmoMzGw3AKNoB7UL2Ep7ySu38KBPWpEZLRcj37
+         asNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754990496; x=1755595296;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hYvCo0iEJq+ZxS2rhikncTd5AQY0cs0mvYn/ZYwYUdM=;
+        b=w0h2Gm+m3JaFvxM/kYoJGzGCbneFaEK/5ItGy93ezxC1nkYLs/GBaxoQ5z96CNhNVn
+         k0bOCOEsst8RgI8X4Vrk21YIuWixmGwACinI71CSDGSjB6pkNs8ptWNCp10jK3QghCmw
+         oT1wylscCwRORTlxzcAmDSSp/atNLOThq2dTEdZZUrCFjs3FchymX70Q+gyCsk2TMDaA
+         uJvTvFZvd4/UDjHw/tmNEtWQYazvUUlaquuLnsrbD6IPs/oxCNkp3ldDKCrKr3vxo6N1
+         4Hizh0aU1UEIQhpM//afJcFaHSDVRjucEeRJJxZ5XLik+gVPy0hze2YIjASLthD8C4Sh
+         kPDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWsD0Y7Em/vWV1617DMGt8db5GDA6BXMVh5+X7869Ixcuw+oRIDr7tfwYvOzTp+EdUdPVUzPIx3SJTE2YZvB/A=@vger.kernel.org, AJvYcCXMwS/31Q08WfaVdb7vZx5a8rEvQ9ETXqvj7oARPd9RxPKC311YTJ1SiFNqa8mQ9rQ46n7oQLr7PrrotlJg@vger.kernel.org, AJvYcCXPG07N3oNr+DCZZ/fCMxYUieqe5J/mX4VozWNnr5dC1jgFF36hhCbiY7m7aWIyFnQZPflJg5tdTSjp7yA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo2ZTlI6H/zKHs+XbO+q5IgLgdfNmj9BO2mXi3Z+N+tM0JfZVW
+	2uAhj7+MW8Ds3L3+AuCkSLi4dppvEcFRjum7AUE6AxTZp6YS7xFOZTSIQgG3MJ5mGXv2ovPSiP7
+	PxGrPoKQR4yZOoIhinUu5sm8l7J1s//o=
+X-Gm-Gg: ASbGncvTPv25audxpwuy4hsFK4Kb8pQLf1O0gltSlJcWLE6aVUf4macT7DO9VsWKOc1
+	6ht94xQ2zPYW132eqBZvIJsAUQwgzqtWtk6tQTj/LNVu7zgILVsVZEc0Q9ZrYyvVspb6UR22D6h
+	8Z4sywMrVBW8yXBWuM21dl+OtEbtryStsCn+4cn4tEktSSXjHKp1fiRokGsQ5gL/1BRLhReBoQJ
+	Rb+VPBu0d+V3pKCfOs=
+X-Google-Smtp-Source: AGHT+IESYKcihEDu0NOwPQjnLbNGzr/vMkV0bVQOv7S3LdRIIZarF+53jISTF5/kFZPUqcmWXoC+txIkwTl2k1Thny0=
+X-Received: by 2002:a17:90b:4acc:b0:313:2f9a:13c0 with SMTP id
+ 98e67ed59e1d1-321c87397f5mr416660a91.1.1754990495995; Tue, 12 Aug 2025
+ 02:21:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250812-rnull-up-v6-16-v4-4-ed801dd3ba5c@kernel.org>
-References: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org>
-In-Reply-To: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2720; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=5vdh1riAR0ZL9xaLLQRBtVtO//nClfhfAq/IqeV6FBY=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBomv8fKlpJ8jBjQG7Hiw5jhqLFg/iPJu/OAJjPr
- lI8UDjotlaJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaJr/HwAKCRDhuBo+eShj
- dxdgD/kBvs3r8XCENbIp6EI7LHK7yDcd18oPIe4WjKcM17srqNA1W23fdXxzM6Ry0kpdjfD1R4v
- 3MPlNXPzD4ohFd2AM5ApFqhG8Ym28IH1UHRkJvdYYSnEN1jaV5yUzv+/AZC+BoV8GC9DyK9N+W2
- CfBE/M33G4Rr8ZOQVwIu9fS5V7Aqq8M4L4DP4uappH90wGIvqAgQvmbdLW+LgsvWE4yxKuqwyxc
- E3iK+KFCo6lRUHcCKw64fG8yV3DwPPFk2mVI8WDKdky8sSkglJ8Nezk9ruTIXxi157oCuTwLt1N
- ejTAgTZIZz1dGp9Nxclb4JI3JFUKex/1BS/SWNEvAfLa1PnlIB4n+ukE8rL3WfcDm5DOt+2K+gi
- MCdhiMGzctEnC9p/LcIuz/9JaZyib8nIF0rH857tyMa9NZRPHtkAHCEmexTg3AY2WhnEv46s24Z
- sQiJ8hteUPu9xINr1BTe4MTEoDtcMiutlkGkiBxvv/wAxBTpQyintIIoLVz2NIQAa7QQEKPcCTO
- VqUz/kJGMlaqAhFA/MPerlK90N2UkGRGhFWEAu2MGhvr0Gf6vswAKDoKsLDkjrFncVpixFgFp0c
- p4qS5xFck4keRtbgMqV+VdGHtsjbvW6RMVt/F+LEvrfWZvlN8vMdjtq6udljN21VrDqsHg9qPnQ
- tBJqlRnf49ysphg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <20250812-kbuild-werror-v1-0-36c9ff653700@linutronix.de>
+In-Reply-To: <20250812-kbuild-werror-v1-0-36c9ff653700@linutronix.de>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 12 Aug 2025 11:21:24 +0200
+X-Gm-Features: Ac12FXw0jpURTsZx35iCN2Jrw_NmdxAdgGldjx7cwS7E5VDyFiyvWmS_xdA2Pto
+Message-ID: <CANiq72k-PdSH2BNgbq=X+FhpyEErifSCKfO5ObXz6bu9_J8+fA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] kbuild: enable CONFIG_WERROR for more build steps
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add `NullTerminatedFormatter`, a formatter that writes a null terminated
-string to an array or slice buffer. Because this type needs to manage the
-trailing null marker, the existing formatters cannot be used to implement
-this type.
+On Tue, Aug 12, 2025 at 7:31=E2=80=AFAM Thomas Wei=C3=9Fschuh
+<thomas.weissschuh@linutronix.de> wrote:
+>
+> CONFIG_WERROR is useful for all build steps, not only compilation of C an=
+d
+> Rust sources linked into the kernel.
+>
+> Also enable it for assembler and linker invocations, userprogs, as well a=
+s
+> C and Rust hostprogs.
+>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/str.rs | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+The Rust part is:
 
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 46cdc85dad63..e84f62c01815 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -871,6 +871,61 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
-     }
- }
- 
-+/// A mutable reference to a byte buffer where a string can be written into.
-+///
-+/// The buffer will be automatically null terminated after the last written character.
-+///
-+/// # Invariants
-+///
-+/// * The first byte of `buffer` is always zero.
-+/// * The length of `buffer` is at least 1.
-+pub(crate) struct NullTerminatedFormatter<'a> {
-+    buffer: &'a mut [u8],
-+}
-+
-+impl<'a> NullTerminatedFormatter<'a> {
-+    /// Create a new [`Self`] instance.
-+    pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
-+        *(buffer.first_mut()?) = 0;
-+
-+        // INVARIANT:
-+        //  - We wrote zero to the first byte above.
-+        //  - If buffer was not at least length 1, `buffer.first_mut()` would return None.
-+        Some(Self { buffer })
-+    }
-+
-+    #[expect(dead_code)]
-+    pub(crate) fn from_array<const N: usize>(
-+        buffer: &'a mut [crate::ffi::c_char; N],
-+    ) -> Option<NullTerminatedFormatter<'a>> {
-+        Self::new(buffer)
-+    }
-+}
-+
-+impl Write for NullTerminatedFormatter<'_> {
-+    fn write_str(&mut self, s: &str) -> fmt::Result {
-+        let bytes = s.as_bytes();
-+        let len = bytes.len();
-+
-+        // We want space for a zero. By type invariant, buffer length is always at least 1, so no
-+        // underflow.
-+        if len > self.buffer.len() - 1 {
-+            return Err(fmt::Error);
-+        }
-+
-+        let buffer = core::mem::take(&mut self.buffer);
-+        // We break the zero start invariant for a short while.
-+        buffer[..len].copy_from_slice(bytes);
-+        // INVARIANT: We checked above that buffer will have size at least 1 after this assignment.
-+        self.buffer = &mut buffer[len..];
-+
-+        // INVARIANT: We write zero to the first byte of the buffer.
-+        self.buffer[0] = 0;
-+
-+        Ok(())
-+    }
-+}
-+
- /// An owned string that is guaranteed to have exactly one `NUL` byte, which is at the end.
- ///
- /// Used for interoperability with kernel APIs that take C strings.
+    https://lore.kernel.org/rust-for-linux/20240519211235.589325-1-ojeda@ke=
+rnel.org/
 
--- 
-2.47.2
+However, Masahiro back then mentioned that we shouldn't make the C
+host flags depend on `WERROR` since `HOSTCC` builds Kconfig and, for
+consistency, not for Rust host progs either:
 
+    https://lore.kernel.org/rust-for-linux/CAK7LNATPx2wTEM=3DKDmGtcH8vVTB4s=
+uOhh-CUQKP54F8wtPWDiw@mail.gmail.com/
 
+Perhaps it could make sense to explicitly exclude certain bits, like
+Kconfig, from `WERROR`, and apply it for everything else instead.
+
+Cheers,
+Miguel
