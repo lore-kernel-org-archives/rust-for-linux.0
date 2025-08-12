@@ -1,160 +1,112 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B7129993E;
-	Tue, 12 Aug 2025 14:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755007226; cv=pass; b=gJ3Hbp/22GRHnUM427baJEsGG3iDuw+Fvte7DVU+ekqmuFcMJrODKqt/84lWo/+dloTvwfhwDDTnljc0rZ5oOagGGbWIBiFNJcBIGQvwd/6GV5+0QUoTkWa9zVqVTXrjrw0G0QQwkC8gY+wxb/RPVPph8JM619eKux31g212eBI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755007226; c=relaxed/simple;
-	bh=j/ZA9gBNBT8J+qne6/TuGelsITMow80OaGf0G+XRTkA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=RbxZ838UnyeFhiPdmAm4SHR9mhwjKu1Te3Ck2Ft1+Oc/VVxbNUc6OJzJrHaY24Kip10mnvSHp5Nrynp8QSuqQb0rnujHNI9NNbxVbbtzmhbuyUTxnse6omKbhXmSD2ejhfyIynB6WnsG7b2bBMaVjaKOpd4Hdc7QuFO+5P02IK4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ce7kOzhR; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890F82ED167;
+	Tue, 12 Aug 2025 14:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755007885; cv=none; b=MwIz0VBjRoH4A/d+veV/vBbrVzaiNUFqap/si7MkZrXUtA45u+WQaGinsjmsSqPZD4C862luNEQ50CGyUeNgiCipU4GQBpav5UvaPFRwIG+IR6Hl54M3XDqqEiLJYsK0uek7g7n5AzXeitOOjuNfTpmGFuXPbn6z776LA9/DiNQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755007885; c=relaxed/simple;
+	bh=kRbNEAZybW8bsdsYVLZsjN5ixwMs7RSBCCzBfeTNXJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p8riCmxOIvsJzXs9xz7eOSh/0IglYDI6Bm0IHUTV7oYMZ5HJ3gfkgwjIOJY5ykEPPXJEzjCrRxxsbvOOC2XVD3LvT0nFbKpOPxP0JIvVCZ3zYnyTRLwToiA1iMg2nc88NuDdD2cZpeXwueL3Ed5+p6JOpe8BSeIRqJxzWkarB9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoiYFUtL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ce7kOzhR"
-ARC-Seal: i=1; a=rsa-sha256; t=1755007212; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=IcuDeos2bCTRmTMoVIBbpJaTJYJ30GqATX28LI3my20fN+iU+WJWEz0/64KjFXHelkSfEAhLlsFuqKJeu2Waf1wFg0CDhFOzGwxD+0uQtPTqxqV9FMXKSrFGOKQ8n+oii0v5FUr3Vj9tIimLoNuuijXMRIIU+HFMY6tvU6qP+dQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755007212; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=j/ZA9gBNBT8J+qne6/TuGelsITMow80OaGf0G+XRTkA=; 
-	b=Yx8wVISr71b7mBgqaVHc4qkAAm7QErSSSx3cdG9CGqhAZuPkcvbR0GO2Ce4QxsmWTeN67p5TKngJt5TZNz8JY4ZkEuTLEEVDX1BOh2jvQ1qDjHqTCf/FK4AVN7Rb/io7Vrr/FeVnCl0v3wziHGVGGjfW2bNfAxFHj6g17QRQHSE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755007212;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=j/ZA9gBNBT8J+qne6/TuGelsITMow80OaGf0G+XRTkA=;
-	b=ce7kOzhRfJmPLf4ZYtzz/7eIbfviSb3l3LRdtmjLbG0oPiJLU0cqZrSZP6RtKle/
-	9ppwtg6iL+qmZ5n+Un+LnLBWsxkqe36IbdkhL2YOnDgfWVXOR/+shBQNmLM8aQywsQx
-	UOf5v5JBn74EA5v30Q1S8SItsj7rHJgBr+WLTbzU=
-Received: by mx.zohomail.com with SMTPS id 1755007210561917.3985262935906;
-	Tue, 12 Aug 2025 07:00:10 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoiYFUtL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEBBC4CEF0;
+	Tue, 12 Aug 2025 14:11:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755007885;
+	bh=kRbNEAZybW8bsdsYVLZsjN5ixwMs7RSBCCzBfeTNXJ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UoiYFUtLjyQmEIhc+Wa/8+XncbxuAtrLvKU7RDhBHVEpfeTQEQvKN/Wnr9xR+vWBN
+	 eUnNSqmi1edCVH5VjfH3bBQC2jQ/JKaAbsj/ZUY3E+apdlmuhCE83DWykNixe9NKjf
+	 P4gP79OVSzC2yFI/l41Pd3HAyo5Ca6EhCTPpJpxg=
+Date: Tue, 12 Aug 2025 16:11:21 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Baptiste Lepers <baptiste.lepers@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: mm: Mark VmaNew as transparent
+Message-ID: <2025081205-bagel-radio-1c94@gregkh>
+References: <20250812132712.61007-1-baptiste.lepers@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aJtIDlSBLJSRxBwQ@sidongui-MacBookPro.local>
-Date: Tue, 12 Aug 2025 10:59:55 -0300
-Cc: Benno Lossin <lossin@kernel.org>,
- Caleb Sander Mateos <csander@purestorage.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F3F2A1C5-AD63-4F6C-A60D-F7C5CE7E65A9@collabora.com>
-References: <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
- <81C84BD8-D99C-4103-A280-CFC71DF58E3B@collabora.com>
- <aJiwrcq9nz0mUqKh@sidongui-MacBookPro.local>
- <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
- <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
- <8416C381-A654-41D4-A731-323CEDE58BB1@collabora.com>
- <aJoDTDwkoj50eKBX@sidongui-MacBookPro.local>
- <DC0B7TRVRFMY.29LDRJOU3WJY2@kernel.org>
- <aJsxUpWXu6phEMLR@sidongui-MacBookPro.local>
- <9A6E941F-3F40-40C5-A900-4C22B27D1982@collabora.com>
- <aJtIDlSBLJSRxBwQ@sidongui-MacBookPro.local>
-To: Sidong Yang <sidong.yang@furiosa.ai>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812132712.61007-1-baptiste.lepers@gmail.com>
 
+On Tue, Aug 12, 2025 at 03:26:56PM +0200, Baptiste Lepers wrote:
+> Unsafe code in VmaNew's methods assumes that the type has the same
+> layout as the inner `bindings::vm_area_struct`. This is not guaranteed by
+> the default struct representation in Rust, but requires specifying the
+> `transparent` representation.
+> 
+> Fixes: dcb81aeab406e ("mm: rust: add VmaNew for f_ops->mmap()")
+> Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
+> ---
+>  rust/kernel/mm/virt.rs | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> index 6086ca981b06..a1bfa4e19293 100644
+> --- a/rust/kernel/mm/virt.rs
+> +++ b/rust/kernel/mm/virt.rs
+> @@ -209,6 +209,7 @@ pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result {
+>  ///
+>  /// For the duration of 'a, the referenced vma must be undergoing initialization in an
+>  /// `f_ops->mmap()` hook.
+> +#[repr(transparent)]
+>  pub struct VmaNew {
+>      vma: VmaRef,
+>  }
+> -- 
+> 2.43.0
+> 
+> 
 
+Hi,
 
-> On 12 Aug 2025, at 10:56, Sidong Yang <sidong.yang@furiosa.ai> wrote:
->=20
-> On Tue, Aug 12, 2025 at 09:43:56AM -0300, Daniel Almeida wrote:
->>=20
->>=20
->>> On 12 Aug 2025, at 09:19, Sidong Yang <sidong.yang@furiosa.ai> =
-wrote:
->>>=20
->>> On Tue, Aug 12, 2025 at 10:34:56AM +0200, Benno Lossin wrote:
->>>> On Mon Aug 11, 2025 at 4:50 PM CEST, Sidong Yang wrote:
->>>>> On Mon, Aug 11, 2025 at 09:44:22AM -0300, Daniel Almeida wrote:
->>>>>>> There is `uring_cmd` callback in `file_operation` at c side. =
-`Pin<&mut IoUringCmd>`
->>>>>>> would be create in the callback function. But the callback =
-function could be
->>>>>>> called repeatedly with same `io_uring_cmd` instance as far as I =
-know.
->>>>>>>=20
->>>>>>> But in c side, there is initialization step =
-`io_uring_cmd_prep()`.
->>>>>>> How about fill zero pdu in `io_uring_cmd_prep()`? And we could =
-assign a byte
->>>>>>> as flag in pdu for checking initialized also we should provide =
-31 bytes except
->>>>>>> a byte for the flag.
->>>>>>>=20
->>>>>>=20
->>>>>> That was a follow-up question of mine. Can=C2=B4t we enforce =
-zero-initialization
->>>>>> in C to get rid of this MaybeUninit? Uninitialized data is just =
-bad in general.
->>>>>>=20
->>>>>> Hopefully this can be done as you've described above, but I don't =
-want to over
->>>>>> extend my opinion on something I know nothing about.
->>>>>=20
->>>>> I need to add a commit that initialize pdu in prep step in next =
-version.=20
->>>>> I'd like to get a comment from io_uring maintainer Jens. Thanks.
->>>>>=20
->>>>> If we could initialize (filling zero) in prep step, How about =
-casting issue?
->>>>> Driver still needs to cast array to its private struct in unsafe?
->>>>=20
->>>> We still would have the casting issue.
->>>>=20
->>>> Can't we do the following:
->>>>=20
->>>> * Add a new associated type to `MiscDevice` called `IoUringPdu` =
-that
->>>> has to implement `Default` and have a size of at most 32 bytes.
->>>> * make `IoUringCmd` generic
->>>> * make `MiscDevice::uring_cmd` take `Pin<&mut =
-IoUringCmd<Self::IoUringPdu>>`
->>>> * initialize the private data to be `IoUringPdu::default()` when we
->>>> create the `IoUringCmd` object.
->>>=20
->>> `uring_cmd` could be called multiple times. So we can't initialize
->>> in that time. I don't understand that how can we cast [u8; 32] to
->>> `IoUringPdu` safely. It seems that casting can't help to use unsafe.
->>> I think best way is that just return zerod `&mut [u8; 32]` and
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-Also, I agree about zeroing out the array, let=E2=80=99s try to not have =
-this
-MaybeUninit thing here if possible.
+You are receiving this message because of the following common error(s)
+as indicated below:
 
->>> each driver implements safe serde logic for its private data.=20
->>>=20
->>=20
->> Again, can=C2=B4t we use FromBytes for this?
->=20
-> Agreed, we need FromBytes for read_pdu and AsBytes for write_pdu. I'll =
-reference
-> dma code for next version.
->=20
-> Thanks,
-> Sidong
->>=20
->>=20
+- You have marked a patch with a "Fixes:" tag for a commit that is in an
+  older released kernel, yet you do not have a cc: stable line in the
+  signed-off-by area at all, which means that the patch will not be
+  applied to any older kernel releases.  To properly fix this, please
+  follow the documented rules in the
+  Documentation/process/stable-kernel-rules.rst file for how to resolve
+  this.
 
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
+thanks,
+
+greg k-h's patch email bot
