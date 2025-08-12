@@ -1,63 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E37311C18;
-	Tue, 12 Aug 2025 06:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77C52D6E7A;
+	Tue, 12 Aug 2025 07:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754980274; cv=none; b=iP59g9AVdKpd87nvg3f5IF7O1lIfs3HEMxsYzjRYpvHGSzi+5rG7SOiteDRi01NJ0UFWDrclL7yoGquwjG4v7DuhzmxO0f8M0nHHj7cMRNvaR1hZbfmhgAf/L/fH/0K0f8TJJS5/kMycXZntG7lkZkZ35D38+EA8tgh5hNXkRkA=
+	t=1754982631; cv=none; b=cLp4rceJfnsg+1MCIa9jflBY0WkH7hv1C3Jakdn69neVmRlQQD4jmgiX5X1QM0dwL+AE8O39yWU6UBdqqgTL4vMkJ6Q4CAXCLkKXsUeXg2LB3iaW5cJFHg2fP0E5pscf6biN58yei4WYGctO6ueUDyNJrMFle0OiICpiNWJOTaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754980274; c=relaxed/simple;
-	bh=7ntg7hCJndrDrkBOIgTar0qxh5TJTKhcARbugOihxew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YbgoWhbeo6FeKkUIfW8gfl8lX7X3OwI0xmG/NPFXZ2deSZoSa9QibqNPuNARAuib5XgGTOx/StoJb5c9i5Ei3kTVWvAw4rCu2HZWskfBWH3/wJBe59PVOf3DnVu/9ii2ctWZ249StpeprOExE4fBVvWMYe9qtC9iGUUjKShQhXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA/CdNfX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754982631; c=relaxed/simple;
+	bh=B+eNOKNbtodD+znFABmxjT8K6g5YAEHrMgmMns8bHq0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=iW2NHyLX3YutqnQ99Dz+Hi6QzaPtFIqRfGyHPPnV/etXFFkJ8ia2JFV1QcSrp08uP5h3xKw191y4UB+z5NFBG3pYLh3m7tcNz/sS4oPE3S0PO3B5R83qvoxC/Ds9CJjwGM8KvZfClyiWLBtfmnWnVH1CC41hP/e60uDpI8+egNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9r9OFZD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA/CdNfX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3A8C4CEF0;
-	Tue, 12 Aug 2025 06:31:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1754980274;
-	bh=7ntg7hCJndrDrkBOIgTar0qxh5TJTKhcARbugOihxew=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RA/CdNfXpO0/L5y/fEQ7qUDSWLCGZCEx4xcI5l8D89VEOEV46wdaZqVB/n/csTjx5
-	 T/m0u2xQHPSqn/2WZaoeH9EVEruSK+EbzPylI3fvf26xURbipijkGSmPgXTLy4xpZX
-	 hV/P9EYzx4u42XtIpV7pAgo9tV8p9gjcJP+a1N2w=
-Date: Tue, 12 Aug 2025 08:31:11 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: herculoxz <abhinav.ogl@gmail.com>
-Cc: david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: auxiliary: Use `c_` types from prelude instead of
-Message-ID: <2025081228-deskwork-runaround-3c99@gregkh>
-References: <20250812035420.8123-1-abhinav.ogl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9r9OFZD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99431C4CEF0;
+	Tue, 12 Aug 2025 07:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754982631;
+	bh=B+eNOKNbtodD+znFABmxjT8K6g5YAEHrMgmMns8bHq0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=p9r9OFZDh2YO7Y+qTqWPJ7OiqY5xrYTnvPf35Pkc6VKkQ++qEpe/XpVt3Hv/70dVF
+	 NOqcF2aWuJW5DrI/Oi+EIBBSXpO5a+UUSUP3PdZwkrgNGGkU3C7Cd8XFKKwplxpCPa
+	 v613fn5xo5y9Ow/Yy39PWkQs01S7MKq4tGM1Efkd/5UN/MSoFQhHqbwMlrpsYFbi2f
+	 8W3/t9f32wK04WKLYMbqE7W63eIvR/bqXTYciFzkWP8e9RI/cQZm/mnS9eUqw3zjlS
+	 sSpgfIWWjPknl9L0kNpKYbY3wiYrPnzx3ZNxq9qFDvVhmlYKHJRtWAavoJBEByYVXr
+	 OTodw7RWzHCbQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812035420.8123-1-abhinav.ogl@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 12 Aug 2025 09:10:26 +0200
+Message-Id: <DC09F4MPGE3B.1HCG1U3C0KVAA@kernel.org>
+Subject: Re: [PATCH] rust: devres: fix leaking call to devm_add_action()
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250811214619.29166-1-dakr@kernel.org>
+ <DBZYO8O9YTO3.10MKWPYN8YEOB@kernel.org>
+ <DBZZBNP278NH.2DR4PMWX9HKST@kernel.org>
+In-Reply-To: <DBZZBNP278NH.2DR4PMWX9HKST@kernel.org>
 
-On Tue, Aug 12, 2025 at 09:24:21AM +0530, herculoxz wrote:
-> From: Abhinav Ananthu <abhinav.ogl@gmail.com>
-> 
->  Update auxiliary FFI callback signatures to reference the `c_` types
->  provided by the kernel prelude, rather than accessing them via
->  `kernel::ffi::`.
+On Tue Aug 12, 2025 at 1:15 AM CEST, Danilo Krummrich wrote:
+> On Tue Aug 12, 2025 at 12:45 AM CEST, Benno Lossin wrote:
+>> On Mon Aug 11, 2025 at 11:44 PM CEST, Danilo Krummrich wrote:
+>> One solution would be to use `pin_chain` on the initializer for `Inner`
+>> (not opaque). Another one would be to not use opaque, `UnsafePinned`
+>> actually looks like the better fit for this use-case.
+>
+> Yeah, the problem should go away with UnsafePinned. Maybe, until we have =
+it, we
+> can just do the following:
+>
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> index bfccf4177644..1981201fa7f9 100644
+> --- a/rust/kernel/devres.rs
+> +++ b/rust/kernel/devres.rs
+> @@ -161,6 +161,9 @@ pub fn new<'a, E>(
+>                  //    live at least as long as the returned `impl PinIni=
+t<Self, Error>`.
+>                  to_result(unsafe {
+>                      bindings::devm_add_action(dev.as_raw(), Some(callbac=
+k), inner.cast())
+> +                }).inspect_err(|_| {
+> +                    // SAFETY: `inner` is valid for dropping.
+> +                    unsafe { core::ptr::drop_in_place(inner) };
 
-Why is this indented?
+Yeah that works too. Though I'd add a comment & improve the safety
+comment.
 
-Also, note that your "From:" line in your email client doesn't reflect
-your name here.  That might be fine, but it's a bit odd and triggers my
-checks.
-
-thanks,
-
-greg k-h
+---
+Cheers,
+Benno
