@@ -1,239 +1,124 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FD42153E7
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 09:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B36D2E974D;
+	Tue, 12 Aug 2025 09:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754990871; cv=none; b=nzFFqkXTqrSvjIl5V/JoQlaIoZ8ZLSHW1hRNvIhCFJ2AptJUPl8eyoJJY33dACP4+JCgKH6JroKEvrSJvgPeRTaW6q1gm+fpcrczGsKPnSg7Gi4WpHNDxm7c62xZcb46ts2X3EvrVIYNPeYu2xO7nPNif3Vqm64oAZxtn4T2Nsc=
+	t=1754992620; cv=none; b=oYNJill4xFPtQoU+ujMBxukopHkaPqrhg9UUyEpLT9AAvVRt15RNit1WFC8BYsjPOoJUIUu64W2K3hfVd8OMyCwuFE056P7H6wv62ioBh677CMR0t/EtNs0xIcALvjwQm3tg47pzKT8AfvYXKjRUvmmfoXo0Z+l/o4NO65D3WM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754990871; c=relaxed/simple;
-	bh=PbGYvMlzqYx/gA6RLDXradsyz4rLJzdKXURDIyRfsNY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=uqYNOe6yQkrmyduYDZm8eocvqe9ObjH3fXTYWyZ2fppggiuC4H2/w18UNldECtGbbbY/UbxhZcRHFuJIYNEqTqnC44cM2iWLA+p07HuGuKZqxH59LVhyc8IWUPZYrVvcAOyPgccWs5wzEiimG9VrKO3o61aAjDdjgBkQ28KVLMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=BH8Y9mql; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1754992620; c=relaxed/simple;
+	bh=kZ2l5x950PA0cR5I+Bh1ES8Lujux+bvQVQOPWBN9iz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CjODPMt4Peie6rkKPt/dyJ0QAPjfFBV1ULJOLPwTRZWOFFM0rgppz8jy/6dXmzcO/b8ZBPu1GxhmbhSqvrnW8fZssNS/fBohRbqN+zdu1tPC92saVCGOOdInSOvu6wFmObirz3NhpPqaiPxWq6FfJcCfzCZQmSNfCpnxogD1JXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fxOupTQL; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="BH8Y9mql"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250812092742euoutp018339dbd543fb04270a4591c77b4b5c8e~a_uQTpCI00459704597euoutp01a
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 09:27:42 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250812092742euoutp018339dbd543fb04270a4591c77b4b5c8e~a_uQTpCI00459704597euoutp01a
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1754990862;
-	bh=g5AHVnaN02SeQdkCUMm3F2XPQfpkP2d1uFtnb+36e6Q=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=BH8Y9mqlR6X9EU5moo2uOBrTPNczuunrcW8Ux10UL2wyrvY6vSPwG4QNWW46ESur9
-	 p2aY8bBqiCXDxtdwd7SytNYVQhwDR05pieKCiv73sttnT69PpAG+4Cm0cfBxsh6Ax7
-	 brkLi2eSJYaMJ9d6/Zs+7zjt/inUnI/tcYMKuWao=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250812092741eucas1p18ed7f17ece1be26778845f58868fb528~a_uPpEoNJ3008930089eucas1p1V;
-	Tue, 12 Aug 2025 09:27:41 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250812092740eusmtip28fd35ea1890563e079e686f04b78ca2c~a_uOfedmj3004730047eusmtip2C;
-	Tue, 12 Aug 2025 09:27:40 +0000 (GMT)
-Message-ID: <00ea8f31-140f-467f-8083-e1c044afa391@samsung.com>
-Date: Tue, 12 Aug 2025 11:27:40 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fxOupTQL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754992618; x=1786528618;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kZ2l5x950PA0cR5I+Bh1ES8Lujux+bvQVQOPWBN9iz0=;
+  b=fxOupTQLXW2woqAZkKM0GBwShs4XLJcDPFw47AGMJq5WzEIdlU9dQtHW
+   2IshLG/RJl8NERSSxDS+7ak3LzN7i6p7LITkYOywXozbzaL9BWfqcISVN
+   3+zJAzE3XNbJWfs5ClFN0ZJmgL04pI6bXZFkaTBPYCWSt81yXQztSAcO5
+   thFs+H0Xh6GbE0lSIuk17hTUa0tQ4xshAgPrZN6GBneXlSkyHVgmeF8cQ
+   k/b9QX7ppc/7gXjaAPP5ZBtml0rrcWUL8+7WA1GY7PX8JuOkjHnCTKzMe
+   l1nm1MEEFQxy4zbXzKOrouRBdSAe4JotS963EqNE99k1QTPPu0uNzMg1A
+   Q==;
+X-CSE-ConnectionGUID: Y2Z3js9JRT+KIe+iW1Rzgw==
+X-CSE-MsgGUID: 08MeM3WYRgm0d8TErknVuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="67968760"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="67968760"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 02:56:58 -0700
+X-CSE-ConnectionGUID: RkPC6m94SoKqMbnl2CRniA==
+X-CSE-MsgGUID: 9h5Ou5W5QQuC4liiIRCzig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="165655966"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa007.fm.intel.com with ESMTP; 12 Aug 2025 02:56:54 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ullk8-0006eW-2k;
+	Tue, 12 Aug 2025 09:56:39 +0000
+Date: Tue, 12 Aug 2025 17:55:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: ~_xllx_ <_xllx_@git.sr.ht>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH linux] of: resolves TODO for copy_from_slice
+Message-ID: <202508121650.l7ZSniGd-lkp@intel.com>
+References: <175489428990.9320.6825335165759789458-0@git.sr.ht>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 3/3] rust: pwm: Add complete abstraction layer
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
-	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
-	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
-	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
-	Turquette <mturquette@baylibre.com>, Drew Fustini <fustini@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <8C20C615-DBF2-4DF9-9AB3-E78C4B1E7493@collabora.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250812092741eucas1p18ed7f17ece1be26778845f58868fb528
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250717090833eucas1p16c916450b59a77d81bd013527755cb21
-X-EPHeader: CA
-X-CMS-RootMailID: 20250717090833eucas1p16c916450b59a77d81bd013527755cb21
-References: <20250717-rust-next-pwm-working-fan-for-sending-v12-0-40f73defae0c@samsung.com>
-	<CGME20250717090833eucas1p16c916450b59a77d81bd013527755cb21@eucas1p1.samsung.com>
-	<20250717-rust-next-pwm-working-fan-for-sending-v12-3-40f73defae0c@samsung.com>
-	<42C9DF97-2E0F-453B-800A-1DA49BF8F29F@collabora.com>
-	<8ad10cc3-6e7d-4a8b-b6f6-9568403ee2b3@samsung.com>
-	<8C20C615-DBF2-4DF9-9AB3-E78C4B1E7493@collabora.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <175489428990.9320.6825335165759789458-0@git.sr.ht>
 
+Hi ~_xllx_,
 
+kernel test robot noticed the following build errors:
 
-On 8/6/25 14:49, Daniel Almeida wrote:
-> Hi Michal,
-> 
->> On 4 Aug 2025, at 19:29, Michal Wilczynski <m.wilczynski@samsung.com> wrote:
->>
->>
->> On 7/25/25 17:56, Daniel Almeida wrote:
->>>> +
->>>> +    /// Gets the label for this PWM device, if any.
->>>> +    pub fn label(&self) -> Option<&CStr> {
->>>> +        // SAFETY: self.as_raw() provides a valid pointer.
->>>> +        let label_ptr = unsafe { (*self.as_raw()).label };
->>>> +        if label_ptr.is_null() {
->>>> +            None
->>>> +        } else {
->>>> +            // SAFETY: label_ptr is non-null and points to a C string
->>>> +            // managed by the kernel, valid for the lifetime of the PWM device.
->>>> +            Some(unsafe { CStr::from_char_ptr(label_ptr) })
->>>> +        }
->>>> +    }
->>>
->>> nit: this can be written more concisely, but I personally don’t mind.
->>
->> Do you have something specific in mind ? I think the alternative way of
->> expressing this would use NonNull, but somehow this feels less readable
->> for me.
-> 
-> Yes, an early return, i.e.:
-> 
-> if label_ptr.is_null() {
->   return None
-> }
-> 
-> It saves you one level of indentation by removing the else branch.
-> 
->>
->>
->>>> +
->>>> +/// Trait defining the operations for a PWM driver.
->>>> +pub trait PwmOps: 'static + Sized {
->>>> +    /// The driver-specific hardware representation of a waveform.
->>>> +    ///
->>>> +    /// This type must be [`Copy`], [`Default`], and fit within `PWM_WFHWSIZE`.
->>>> +    type WfHw: Copy + Default;
->>>
->>> Can’t you use a build_assert!() here? i.e.:
->>>
->>>    #[doc(hidden)]
->>>    const _CHECK_SZ: () = {
->>>        build_assert!(core::mem::size_of::<Self::WfHw>() <= bindings::PWM_WFHWSIZE as usize);
->>>    };
->>
->> This doesn't work i.e the driver using oversized WfHw compiles
->> correctly, but putting the assert inside the serialize did work, please
->> see below.
-> 
-> Can you show how it looks like with the build_assert included? Just as a sanity check.
+[auto build test ERROR on linux/master]
 
-For a sanity check, here’s the code I added to the PwmOps trait, exactly
-as you suggested:
+url:    https://github.com/intel-lab-lkp/linux/commits/_xllx_/of-resolves-TODO-for-copy_from_slice/20250811-144924
+base:   linux/master
+patch link:    https://lore.kernel.org/r/175489428990.9320.6825335165759789458-0%40git.sr.ht
+patch subject: [PATCH linux] of: resolves TODO for copy_from_slice
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250812/202508121650.l7ZSniGd-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250812/202508121650.l7ZSniGd-lkp@intel.com/reproduce)
 
-#[doc(hidden)]
-const _CHECK_SZ: () = {
-    build_assert!(core::mem::size_of::<Self::WfHw>() <= bindings::PWM_WFHWSIZE as usize);
-};
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508121650.l7ZSniGd-lkp@intel.com/
 
-To test it, I went into the pwm-th1520 driver and changed its WfHw
-implementation to be larger than PWM_WFHWSIZE. I expected the build to
-fail because of the build_assert!, but it compiled without any errors.
+All errors (new ones prefixed by >>):
 
-This is why I concluded it "doesn't work" in this position, whereas
-placing the check inside the serialize function did cause a (linker)
-error as expected. I'm probably missing something subtle here.
+>> error[E0080]: evaluation of constant value failed
+   --> rust/doctests_kernel_generated.rs:6978:11
+   |
+   6978 |          (of::DeviceId::new(c_str!("test,device")), ())
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation panicked: copy_from_slice: source slice length does not match destination slice length
+   |
+   note: inside `rust_doctest_kernel_alloc_kbox_rs_7::kernel::of::DeviceId::new`
+   --> rust/kernel/of.rs:42:9
+   |
+   42   |         of.compatible.copy_from_slice(src);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
+--
+>> error[E0080]: evaluation of constant value failed
+   --> samples/rust/rust_driver_platform.rs:88:7
+   |
+   88 |     [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation panicked: copy_from_slice: source slice length does not match destination slice length
+   |
+   note: inside `kernel::of::DeviceId::new`
+   --> rust/kernel/of.rs:42:9
+   |
+   42 |         of.compatible.copy_from_slice(src);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the failure occurred here
 
-> 
->>
->>
->>>
->>>> +        Err(ENOTSUPP)
->>>> +    }
->>>> +
->>>> +    /// Convert a hardware-specific representation back to a generic waveform.
->>>> +    /// This is typically a pure calculation and does not perform I/O.
->>>> +    fn round_waveform_fromhw(
->>>> +        _chip: &Chip<Self>,
->>>> +        _pwm: &Device,
->>>> +        _wfhw: &Self::WfHw,
->>>> +        _wf: &mut Waveform,
->>>> +    ) -> Result<c_int> {
->>>> +        Err(ENOTSUPP)
->>>> +    }
->>>
->>> Please include at least a description of what this returns.
->>
->> Instead I think it should just return Result, reviewed the code and it's
->> fine.
->>
-> 
-> Ack.
-> 
->>>
->>>> +/// Bridges Rust `PwmOps` to the C `pwm_ops` vtable.
->>>> +struct Adapter<T: PwmOps> {
->>>> +    _p: PhantomData<T>,
->>>> +}
->>>> +
->>>> +impl<T: PwmOps> Adapter<T> {
->>>> +    const VTABLE: PwmOpsVTable = create_pwm_ops::<T>();
->>>> +
->>>> +    /// # Safety
->>>> +    ///
->>>> +    /// `wfhw_ptr` must be valid for writes of `size_of::<T::WfHw>()` bytes.
->>>> +    unsafe fn serialize_wfhw(wfhw: &T::WfHw, wfhw_ptr: *mut c_void) -> Result {
->>>> +        let size = core::mem::size_of::<T::WfHw>();
->>>> +        if size > bindings::PWM_WFHWSIZE as usize {
->>>> +            return Err(EINVAL);
->>>> +        }
->>>
->>> See my previous comment on using build_assert if possible.
->>
->> So I did try this and it does work, however it results in a cryptic
->> linker error:
->> ld.lld: error: undefined symbol: rust_build_error
->>>>> referenced by pwm_th1520.2c2c3938312114c-cgu.0
->>>>>              drivers/pwm/pwm_th1520.o:(<kernel::pwm::Adapter<pwm_th1520::Th1520PwmDriverData>>::read_waveform_callback) in archive vmlinux.a
->>>>> referenced by pwm_th1520.2c2c3938312114c-cgu.0
->>>>>              drivers/pwm/pwm_th1520.o:(<kernel::pwm::Adapter<pwm_th1520::Th1520PwmDriverData>>::round_waveform_tohw_callback) in archive vmlinux.a
->> make[2]: *** [scripts/Makefile.vmlinux:91: vmlinux] Error 1
->>
->> I assume this could be fixed at some point to better explain what
->> failed? I think putting the assert in serialize functions is fine and
->> the proposed _CHECK_SZ isn't really required.
->>
->> I would love to do some debugging and find out why that is myself if
->> time allows :-)
-> 
-> There is nothing wrong here. A canonical Rust-for-Linux experience is stumbling
-> upon the error generated by build_assert and being rightly confused. People ask
-> about this every few months :)
-> 
-> This just means that the build_assert triggered and the build failed as a
-> result. IOW, it means that your build_assert is working properly to catch
-> errors.
-
-Yeah it is working correctly, I was just hoping errors can be somehow
-made more informative :-), but it is hard and would require some support
-from compiler as I imagine.
-
-> 
-> — Daniel
-> 
-> 
-
-Best regards,
 -- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
