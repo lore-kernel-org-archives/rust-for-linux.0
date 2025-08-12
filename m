@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04EA2D6E6E;
-	Tue, 12 Aug 2025 08:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F11D2D9EFC;
+	Tue, 12 Aug 2025 08:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754985961; cv=none; b=JISHl5r7K6ptwni9zWY9HDsMKPSB0A2W5mPsbTTQR4xi36D3YH42eXJtRpTVmUjE3+h6c18KoQEJI0UXVwxIMEAqenF+WPAYqadtL0WUXdtlq23ciHm5CVP4AUj/gOwH0LyqyyQ1wzbbDJvtoqcu9t84POsN+/GKjuwGJp2tNJ4=
+	t=1754986214; cv=none; b=uOjQY+HL+TgFXj8PCtpjjjNfBVyQ+rRYQA0+55HxjriJK7mauEWNnK4cEl9z6gnMV6BgySrC0kD1mBQeQZRFjgRLHhd2+cb/MliVxsn9b2Ha715uITNxI2jw8Rook/bWmM9W5b1JrlLgnd/XhMicBRI2z90IIRY72hHm60T5MHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754985961; c=relaxed/simple;
-	bh=5DpB1j/jjDtQv09u4mMfcNessE849li59iNJC0nJX5k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=t2WT2X0skDi11ecjHt49hq6eVogIiiXK+UZB/LvOoij7HOu2WYRtm7Bk7PMXpU13UNTZEDOa4c4y2Tkkt2zQatC02TmlZpfyse2ndLxA1BXKuvrHxuLUKzouR7wEHgi0yxf2N2r1ipemleuEzYerksEL8v1K7mHsIgYHMrCdZ2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efxkhYBx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754986214; c=relaxed/simple;
+	bh=1AYWQG54H8dP/KuZvbHzMDhOf9ghwMUB+eF7IZwj644=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=S+dJdmVCrhHnHlfi8zPPyqA4Wb4v/j12k27R2+LxokwQp4oomDHIsaknXW9+jt6CIOlLNoUMlIrh9WKjLV3Qa1RmMg9M9GqLAl762DQTs0vf15rByodoalUlzGxkMdqLXNe0mQh3bXHucfVAnAD39d5wWvbMYUsBDbfU4ybrcA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g4vwAT74; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efxkhYBx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE3FC4CEF0;
-	Tue, 12 Aug 2025 08:05:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g4vwAT74"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3036C4CEF0;
+	Tue, 12 Aug 2025 08:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754985959;
-	bh=5DpB1j/jjDtQv09u4mMfcNessE849li59iNJC0nJX5k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=efxkhYBx+bTd0OVA2m5bYYxoikgZjzv1kduRKgsI6EU066GKfQT5pQ+Muv2+/3Y+g
-	 S3KzeO06BLtKYwOJK2CmkirRrfNsB5Nscq6woJ3bJwoAd+6PiIsAhlQ1TM9e1jG7sd
-	 xA5+suaAA4+Yu1/1NdDNCjIDSxn53QpxqXY3X6UnMEA7c04d+jIP8xCS/xOb6FY68q
-	 tneT0Vku0uevWSWPFAunoRxYKz8UQNrzN1P4IVn5j3lJ/KUHlBaKwHecsDBM2UggmT
-	 XoXt4kbGq67UYGbG8nl31qEioWKtEjV30gIHBP7eRiMVVIWKfIgt8HjJ8+wmZn2lLh
-	 M5DMI/tP/U/0A==
+	s=k20201202; t=1754986213;
+	bh=1AYWQG54H8dP/KuZvbHzMDhOf9ghwMUB+eF7IZwj644=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=g4vwAT742Ka0RCJqUh0mUyTeLmR+9TiwWx/Dz7xQuTmmdAqxmdsyFc0u9fcRBDXLI
+	 ouv2ni5rhF5SS5CP8pjLjIu8t4er7GqSJSh6q/gvDd4I/wMm9EvXn1smxXdEVM+Fua
+	 yiz2fxwqGZLuxclKd4Q87VYfRVpiHFuuiJjg2DRAYDkqt9VbiL3+NFFSlFzRJrayDY
+	 gerxoZGpdnx2u6r4vPavKh5WfG0BEoixnbw23bSJ5jxT51jF3JdKMui39akhZe/VYa
+	 OtkQnzgZhf4U6oji9ql7kLQwIfbbY9v00vh8xIIK6VVJdaQMcUQ0pCeYRNHGnNoDKD
+	 fxG0664O7NeUg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,37 +34,85 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 10:05:55 +0200
-Message-Id: <DC0ALLZU4B8V.31REA4LHMQ6JL@kernel.org>
+Date: Tue, 12 Aug 2025 10:10:08 +0200
+Message-Id: <DC0AOTWSN7X8.2ZCPAFGHB9XJ@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 1/5] rust: implement `kernel::sync::Refcount`
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>
-Cc: "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+To: "Gary Guo" <gary@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] rust: sync: clean up LockClassKey and its docs
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Tamir Duberstein" <tamird@gmail.com>, "Ingo
+ Molnar" <mingo@kernel.org>, "Mitchell Levy" <levymitchell0@gmail.com>,
+ "Lyude Paul" <lyude@redhat.com>, "Wedson Almeida Filho"
+ <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>
 X-Mailer: aerc 0.20.1
-References: <20250728-lock-class-key-cleanup-v2-0-ad02b80c69e1@google.com>
- <20250728-lock-class-key-cleanup-v2-2-ad02b80c69e1@google.com>
-In-Reply-To: <20250728-lock-class-key-cleanup-v2-2-ad02b80c69e1@google.com>
+References: <20250723233312.3304339-1-gary@kernel.org>
+ <20250723233312.3304339-2-gary@kernel.org>
+In-Reply-To: <20250723233312.3304339-2-gary@kernel.org>
 
-On Mon Jul 28, 2025 at 11:42 AM CEST, Alice Ryhl wrote:
-> Several aspects of the code and documentation for this type is
-> incomplete. Also several things are hidden from the docs. Thus, clean it
-> up and make it easier to read the rendered html docs.
+On Thu Jul 24, 2025 at 1:32 AM CEST, Gary Guo wrote:
+> From: Gary Guo <gary@garyguo.net>
 >
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> This is a wrapping layer of `include/linux/refcount.h`. Currently the
+> kernel refcount has already been used in `Arc`, however it calls into
+> FFI directly.
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
 Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+> ---
+>  rust/helpers/refcount.c      | 10 ++++
+>  rust/kernel/sync.rs          |  2 +
+>  rust/kernel/sync/refcount.rs | 98 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 110 insertions(+)
+>  create mode 100644 rust/kernel/sync/refcount.rs
+
+> +    #[inline]
+> +    fn as_ptr(&self) -> *mut bindings::refcount_t {
+
+I think we should make this `pub(crate)` from the get-go.
+
+> +        self.0.get()
+> +    }
+> +
+
+> +    /// Decrement a refcount and test if it is 0.
+> +    ///
+> +    /// It will `WARN` on underflow and fail to decrement when saturated=
+.
+> +    ///
+> +    /// Provides release memory ordering, such that prior loads and stor=
+es are done
+> +    /// before, and provides an acquire ordering on success such that me=
+mory deallocation
+> +    /// must come after.
+> +    ///
+> +    /// Returns true if the resulting refcount is 0, false otherwise.
+> +    ///
+> +    /// # Notes
+> +    ///
+> +    /// A common pattern of using `Refcount` is to free memory when the =
+reference count reaches
+> +    /// zero. This means that the reference to `Refcount` could become i=
+nvalid after calling this
+> +    /// function. This is fine as long as the reference to `Refcount` is=
+ no longer used when this
+> +    /// function returns `false`. It is not necessary to use raw pointer=
+s in this scenario, see
+> +    /// https://github.com/rust-lang/rust/issues/55005.
+
+Missing `<>` around link.
 
 ---
 Cheers,
 Benno
-
-> ---
->  rust/kernel/sync.rs | 55 ++++++++++++++++++++++++++++++++++++++---------=
-------
->  1 file changed, 40 insertions(+), 15 deletions(-)
