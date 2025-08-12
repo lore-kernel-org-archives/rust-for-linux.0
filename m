@@ -1,138 +1,98 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737233C2F;
-	Tue, 12 Aug 2025 12:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755002669; cv=pass; b=f86WGSuUYZJ4eP4IdIUE2u+UHxmwmZab/g6jw83WaZtp4wwEFQxPT0XAotn+mbpp8zY9VjqkOOzruQ967tnW9WLsP569rdOi/dX7G5yMJ8USI8lrS+6hKVru+dLX2qQeBMfWN4+yhhhiZT6k2hb6Ply1lJeBN5gOoFdyV71k4X8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755002669; c=relaxed/simple;
-	bh=aovnMvauQF14l6Ev5ezrn3B0Zeb5MSpsT+UmdVvzVno=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=N34LPRXHpjxFbpID+wqfZqDjsQdFw1SFDakyaiVDpJWev2h2XWbUoxv5IvI+0rdu3xDV2oNQmEj7+EyvifndFs+m9GmKdYS2i9omC1SKLlOGd6U80DjiTvMH8wq7GzxGuTboY+yyI6MUxo/rkGtgOjkG4cr6bcfXmOOjfC8PnSc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WTKJMJNG; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02554239096
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 12:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755002962; cv=none; b=HaZFYsVLt8JrMy3ov/TLnAvcqg/qL+qgZL/3rNLOFJHvuFeEr3iI0GNp/g1rxAZ5IfS6Qvvidt20KoToz3WWH2OYfE7BzKihZiasuqWabZonoMwTIXp3gKbfqJ7vPUjqKNZaqwGBIccBC4108azAtnGRhK2b5V10g3Q7lCS/vq8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755002962; c=relaxed/simple;
+	bh=exJH9qV20PmfRA67Nc0mzkXNYH20APnMYURrH6ZbFgY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D/fJdoqrIrbb17Cdv3JF+C204oxGiyhNnkE49+Gfi2Sqesdra8t57PcQZGDy/aMSMtvwXH+TFLPzqaxJjinkVB8PJgqlq4PEmsWlBqWZ4tb60JmD54VF0aoh6QP53QIgmPDTYgHqCVIRp5AJsiRUpg4wSaASTSUISQTfdqNHuL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MtOdPr99; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WTKJMJNG"
-ARC-Seal: i=1; a=rsa-sha256; t=1755002654; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=lVQIibjdfhvMYBlR2QpvF1RpUnyaGJfDmIVEFm3xuwbZcYpobtvb/c3y6dMugUmzWCCYGzbietd7im/ZYeZ3a2vCQjrlHYrk7bd4hJ9UQGZ9qm4Gh8xuyJWjiOPaipLeea5+dlAtyIORY21oc7UPnqjTW7v0riPFQsy4FaczsIk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755002654; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=NOOoxngxEdcM2kIUlTo4kWzeob+fFsO+rooI1FvSjkE=; 
-	b=nytNkYIIiLDhhjbMrHhe2+Z5MxLiti3Szv3XASp1+vniC+tsQ9mnhozUKxRZk+LXZEJ8YwbebpSABegV7MzIrYY+fkglLUcZxS4AlWnSi4OQvBtAKEk2EgBCIzrJix2x5VRpp6oEGzlKHLTYYMtreDBVRY+Npj4RbEOT/OkZGrc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755002654;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=NOOoxngxEdcM2kIUlTo4kWzeob+fFsO+rooI1FvSjkE=;
-	b=WTKJMJNGyjpvuT+FaweVGWfRNbK7cw18YEFnMqJ+BdA4lIjv4WTx8YVo2+rTxwTw
-	LaR+Dm8z+NfEXiPbDuh5ZlodPnt/uLRFTiLA9HiaHtxN1vVIHmNBHoqTjBomQ3Pq52e
-	GEU7dhMZRGyThkxeepM3njE/+99uTEPNMc7LGz1E=
-Received: by mx.zohomail.com with SMTPS id 1755002651086223.74919088830302;
-	Tue, 12 Aug 2025 05:44:11 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MtOdPr99"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76bf762cd52so569239b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 05:49:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755002960; x=1755607760; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=exJH9qV20PmfRA67Nc0mzkXNYH20APnMYURrH6ZbFgY=;
+        b=MtOdPr990riN75Zp9tHDsoN2QNtuB0Ksa2xu519UMEOHZCwXF8BgH71lz6YrEKfwOc
+         j908uv3SgNKnLUqs5fOXeeLpRzW+DSgKWz36dLeFVerOYe3z6s2KO2kcGh+TYF/Z4/2q
+         AjMwkdrH7GaByxFbk/vxcu/Go9aL4x7qjeNlAL4YbL+sCxODQEFQ8DPoQjeb9bs8i57G
+         cDCyp6qOo8Vm7kXcqcOho8YPYZbq6GG8LvqrhcGyl6a38zcBij17GKNkjJPXzxpu6Tuc
+         F3P2iicJroH1AzD2KqnUY4lKmqqaiRdEpnQPoVIWoSKCUruHi+czJksf7VSWnDHEm9zm
+         MfWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755002960; x=1755607760;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=exJH9qV20PmfRA67Nc0mzkXNYH20APnMYURrH6ZbFgY=;
+        b=ClrCnKTSfFIy8SdbUxU4AMwFLe5Rm1DTCiIRocc/7KKUhpmbAo663uY+sNYD8zpKg/
+         JHuwILTcmp+sTkb8ydfOHx8qPIOsP72UKiG/EUg4T44NPPSVfivW0Jfsm2rxYqXOOHNY
+         DZI3U8hGcbB4++zfXRwQJWHox64EJjjCN8y+DmG1/zK4s7LrTkSMFFDi9kGiXFqyLkCQ
+         ofL1GMi7ntiuJkbR2Sqk8fI/SWInEus1GCfNVNpNOtgpfSf493ZC0S/5tqNEd0yWMYoa
+         j/3fAxhkWKQ44mebHeGjYgQ47h6IBYNT3q58/KdQ9WUEjnvcNeRPj3BqDl7q3R1LSyNN
+         aUJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVf46f4U9eAo0EYEkPP9QAcI8gC6BPYjhzb9ktJZ0f9YXojGgNe5xaK8HzMEs6qzKwoWfKH4JCogEobmXwm7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yys7CYmluA/TJeiwXMvUeiBAudmMByAcIJaMV990Ll7T3WQe7wN
+	7IXSCOpz5P2xf+HIgKLzisrw20CQmGCsIrCLx9SXh8PpiwU2PiQNFK/1iwNq6m7MF6TkcAeleZi
+	Hw5egMOekd1XUGFxPMnf6WPxrV1oWeiM=
+X-Gm-Gg: ASbGnct5UanM4m721kGev/pN27dspolwxoYWeqhfj17RiZKm9Jb2Ru6sOmond7yQA/n
+	Ve9bc0eVFecH6E+xmytJDtRPljiS5Qcrgv+1kfXdCvoENW6estwI1gHPEi1KTOAzmZockb3m+mk
+	CNKpLAdN5i2P8K0KEOMzUCapL8GdAXp9g6LY+PzTFEFgRU0DtLKbJswCuUw2/NFzRtmvc1VZb8z
+	24LE+TV8Nd7OikNK8Q=
+X-Google-Smtp-Source: AGHT+IHXrycj81bdHIYuHtLdvoBL4ADtNG1pPoycijw8zJc6Jtvw6Ytfnz5V40Fp6SpRcSAntzIPf9RAYZOChUztmCI=
+X-Received: by 2002:a05:6a21:1f81:b0:1ee:d5fb:dff1 with SMTP id
+ adf61e73a8af0-240a242b3eemr819138637.8.1755002960131; Tue, 12 Aug 2025
+ 05:49:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aJsxUpWXu6phEMLR@sidongui-MacBookPro.local>
-Date: Tue, 12 Aug 2025 09:43:56 -0300
-Cc: Benno Lossin <lossin@kernel.org>,
- Caleb Sander Mateos <csander@purestorage.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
+MIME-Version: 1.0
+References: <CACvsgUCBk5Dt2yBSy9_NA0z38-wP68vvBX7XDYgJGinTURT1kQ@mail.gmail.com>
+ <2025081221-cloning-able-a6ed@gregkh> <CACvsgUDP8rX4evCbaNC1MTy56qWH655Cc2bOLuryUxfP-o4_4g@mail.gmail.com>
+In-Reply-To: <CACvsgUDP8rX4evCbaNC1MTy56qWH655Cc2bOLuryUxfP-o4_4g@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 12 Aug 2025 14:49:08 +0200
+X-Gm-Features: Ac12FXwPYKABrF7JxATwUmuwMyv7bSvDojv1CaXxXv3juURnLwNy_V7pV5TP3XE
+Message-ID: <CANiq72nn+mPHWdt1XwQ-znL2ydMwWRN=7-9Vdq_5UkU8hFeqPA@mail.gmail.com>
+Subject: Re: [PATCH] rust: aref: make `AlwaysRefCounted::inc_ref` an
+ associated function
+To: trev <trev@trevrosa.dev>
+Cc: Greg KH <gregkh@linuxfoundation.org>, alex.gaynor@gmail.com, ojeda@kernel.org, 
+	rafael@kernel.org, dakr@kernel.org, arlied@gmail.com, 
+	"simona@ffwll.ch" <simona@ffwll.ch>, "aliceryhl@google.com" <aliceryhl@google.com>, vireshk@kernel.org, nm@ti.com, 
+	sboyd@kernel.org, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, brauner@kernel.org, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	rust-for-linux@vger.kernel.org, david.m.ertman@intel.com, ira.weiny@intel.com, 
+	leon@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, jack@suse.cz
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <9A6E941F-3F40-40C5-A900-4C22B27D1982@collabora.com>
-References: <aJdEbFI2FqSCBt9L@sidongui-MacBookPro.local>
- <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
- <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
- <81C84BD8-D99C-4103-A280-CFC71DF58E3B@collabora.com>
- <aJiwrcq9nz0mUqKh@sidongui-MacBookPro.local>
- <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
- <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
- <8416C381-A654-41D4-A731-323CEDE58BB1@collabora.com>
- <aJoDTDwkoj50eKBX@sidongui-MacBookPro.local>
- <DC0B7TRVRFMY.29LDRJOU3WJY2@kernel.org>
- <aJsxUpWXu6phEMLR@sidongui-MacBookPro.local>
-To: Sidong Yang <sidong.yang@furiosa.ai>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
 
+On Tue, Aug 12, 2025 at 2:24=E2=80=AFPM trev <trev@trevrosa.dev> wrote:
+>
+> Sorry, my bad, what should I do to fix it?
 
+It seems your patch is also word-wrapped, which suggests you perhaps
+copy-pasted it into an editor/clients like Gmail, so it cannot be
+applied.
 
-> On 12 Aug 2025, at 09:19, Sidong Yang <sidong.yang@furiosa.ai> wrote:
->=20
-> On Tue, Aug 12, 2025 at 10:34:56AM +0200, Benno Lossin wrote:
->> On Mon Aug 11, 2025 at 4:50 PM CEST, Sidong Yang wrote:
->>> On Mon, Aug 11, 2025 at 09:44:22AM -0300, Daniel Almeida wrote:
->>>>> There is `uring_cmd` callback in `file_operation` at c side. =
-`Pin<&mut IoUringCmd>`
->>>>> would be create in the callback function. But the callback =
-function could be
->>>>> called repeatedly with same `io_uring_cmd` instance as far as I =
-know.
->>>>>=20
->>>>> But in c side, there is initialization step `io_uring_cmd_prep()`.
->>>>> How about fill zero pdu in `io_uring_cmd_prep()`? And we could =
-assign a byte
->>>>> as flag in pdu for checking initialized also we should provide 31 =
-bytes except
->>>>> a byte for the flag.
->>>>>=20
->>>>=20
->>>> That was a follow-up question of mine. Can=C2=B4t we enforce =
-zero-initialization
->>>> in C to get rid of this MaybeUninit? Uninitialized data is just bad =
-in general.
->>>>=20
->>>> Hopefully this can be done as you've described above, but I don't =
-want to over
->>>> extend my opinion on something I know nothing about.
->>>=20
->>> I need to add a commit that initialize pdu in prep step in next =
-version.=20
->>> I'd like to get a comment from io_uring maintainer Jens. Thanks.
->>>=20
->>> If we could initialize (filling zero) in prep step, How about =
-casting issue?
->>> Driver still needs to cast array to its private struct in unsafe?
->>=20
->> We still would have the casting issue.
->>=20
->> Can't we do the following:
->>=20
->> * Add a new associated type to `MiscDevice` called `IoUringPdu` that
->>  has to implement `Default` and have a size of at most 32 bytes.
->> * make `IoUringCmd` generic
->> * make `MiscDevice::uring_cmd` take `Pin<&mut =
-IoUringCmd<Self::IoUringPdu>>`
->> * initialize the private data to be `IoUringPdu::default()` when we
->>  create the `IoUringCmd` object.
->=20
-> `uring_cmd` could be called multiple times. So we can't initialize
-> in that time. I don't understand that how can we cast [u8; 32] to
-> `IoUringPdu` safely. It seems that casting can't help to use unsafe.
-> I think best way is that just return zerod `&mut [u8; 32]` and
-> each driver implements safe serde logic for its private data.=20
->=20
+I would suggest you try `git send-email` (it comes with Git).
 
-Again, can=E2=80=99t we use FromBytes for this?
+Thanks!
 
-
+Cheers,
+Miguel
