@@ -1,122 +1,409 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1622C2ED15A;
-	Tue, 12 Aug 2025 11:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73E72EAD15
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 11:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754996869; cv=none; b=TBSAnkv2a9AW5BCVbQOGOcCKLnVC6J6fAyOv66QdlLwiCfEuStpoAvK+5mSm1eS+Mgu1AyH2iq7a+xFlHoSIkxIvDn4OqOywLUNPKiGsHHiATleJdQIqZknnrnhw7HE9np+mUhkTZb5VAXiYcAYgSve31SBRlTd7YomqTZEUZ5w=
+	t=1754996984; cv=none; b=Soe/4FFd+Q5NT3avVGSnUGD/ZWVwxNPcujg/m4w19Vu2PCSF4AhteOzLRhKt7k/wCnClcNUTToz1KWuAgzYCSGtHBALwaQQEwLn6UeP3cnrW5s0nhYVEAIdmKod+zsATnWzXQgYDuRxb6hunDeFBO25lCgEoo5HkF+oWVHbF9D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754996869; c=relaxed/simple;
-	bh=mM1oIijYsTieBVXwDdbk88e2RvtyWnf8BqoF2nILFwk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MXt6qnyaqM9oTWgDY7v3lowa9uqIxKYzDTiOooTT/gBfW65Y2gC0DAjruZppDAHuZNtfZ/fMzxwqiridGaawPw2HZRDQPHP9wVYVHUyK/B6qsqNGM8Rm6LmjzGczHh1OB2r6zGNvRDYbJcbfBSZn5kEFQosLNkDrMSJaxd7kp7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NZbEhp4v; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1754996984; c=relaxed/simple;
+	bh=dRZhMMbOhPKe2GJWD5fEJq1VAUz0OJMW6vAu952DSHw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=pJUyqViMFP2OP45NtQZfpvLgFrSHYp1I94fuzx52Zef2dWIRDeQ2r+DXBMEOu31G0fpyTVj9Y5BO1O7V67wbBEEMR8F3mEh3tbZ593PilgF8f5dIk+KMBlisdrXcvKhlH/2uMAOnWWbHRUcYPCphjW8n4uRmRXcsM0Sn2PZyFqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=trevrosa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=trevrosa.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NZbEhp4v"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24286ed4505so10303595ad.3;
-        Tue, 12 Aug 2025 04:07:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754996867; x=1755601667; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mM1oIijYsTieBVXwDdbk88e2RvtyWnf8BqoF2nILFwk=;
-        b=NZbEhp4vn+EP/XmzUJFdBF80tngRBymjuHYcNg4ukpIba/WRM0CEEGOiR/GzhMEVh9
-         u8WROr5Si2zb4McFRIscoUT7fgB8nalCBpqweF+yApa+psnaUSvoSuDEaIc3F5Z42dkm
-         7cj04DDxC8eYINnu53+i1GR8ueB+mtzvYdMbScM0BgmAYzbh7lNcLChHhdp1olNroq2S
-         jAcPYAJjCFoAmf0Sf/ooC6Dc2TGLpsAJwzP9kJjRGFQxQA3IXi9C4OKD/i5sw+HdBZ3v
-         ElB/+cM2a2pGvuroznTnU6wMnY9PGyIRTHxf9FP2RXVz1IGQteCTa0sY5kzK7oQT/ZNA
-         ThYA==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-af9180a11bcso1010035066b.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 04:09:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754996867; x=1755601667;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mM1oIijYsTieBVXwDdbk88e2RvtyWnf8BqoF2nILFwk=;
-        b=ancB9ImStV4gYpR53A1Eyj9ulJuIzf6DLkP7YM19DLlWCayFrhkTKV35Pgljn2Vuch
-         wCrs8l8AkpQpWIx38N9ZiLMBTY0OPP8F7Y7gDYcDM03ZcWkpG15UEdY9SK6U6c3a6U00
-         tRGoRGGykEuIyrLV1ipcq32HwoV9O2ttz6+NWbrAhXR1E0VRIgOLuJdHx/vbu33arnM9
-         3M1dz7qgcLkiQnoSKEZOhdTuzkOCTtoj8FTLCRwsB/w95PBjGkVaTU+X+e38VVmwucSm
-         +AGN8npHNnfGpdMiH4fLSu5pan7O+K/JxQFMFcPmeEk3oiOOsVVMKqyac9ARX2oumRm/
-         zPyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPF0r3bZI1QAHfCRaMmBIVQsJ5VWBDdVcqbuuENvEcBX37AoJubpqXhtbNNe4/QkWueF5Tku/pKNaH0xYm@vger.kernel.org, AJvYcCUQGxzxygN/rT9eGlSo0r/TkbssitpDuaNfCu0Pw29cM5icH9C0yxW8DhrcXT6EELKaa+o4iukp+8j1wS76saA=@vger.kernel.org, AJvYcCUSHtutdT0m64oM3UndSqi8hVhVYW+4dBVvCfMntz31yCKlcxIhKEs8jk+zYlNqGhq88sE0tPowDIzz3XI=@vger.kernel.org, AJvYcCVefoaZxOU58kECtiIfVxfvr5Ig0rG4RBweQroX4mMe/ioB0/ejXG9UjjfDTdnYFvqKv8+oFBorSFHH7w==@vger.kernel.org, AJvYcCXgFlttS1dWIcCq5tHPMQ7iK/cHTHOhkJWa4hohtuDqOQEjB3cRHZgEL/Vm41db1BfAmKbuxxJm0hhYKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpC2oHZBw/PTmDFhCUq6KO3juEUYhb8twDoVofAnCqq5KPoLfY
-	5N4FxZnOzd0OasbVbaA15OUdawRezkxLjzCgrPdqkAcFCHv1HQITzeFnk5C2hQh765KsurNGC4H
-	lYlf8DNY94CRzDgGvwf/leu5gJJmj/8w=
-X-Gm-Gg: ASbGncsUeWeL9hftL5PGf/OI5axFaj/uJa/iDMKRawGtRqW1O4euIPSCzktwQY8p0Og
-	Uasal2/leGF8nsDr5BzTW969BRWxBTWLj2bl8rjHjraJnH+Z4cq9x/sVgGAVoC4MgzPtVSNP9ho
-	AlGtpU+7efRIIOzXfJTr5UR/azOCzdUwik0hPWFzoNXMPeMH8rPJyeBuBrKlV8wP8yl56frqUru
-	XU2XHUBf1KLRldb83o=
-X-Google-Smtp-Source: AGHT+IGLTgav5Ly0pJQ7DxONlyuqSGpB75/R07ZLvB4KvAdVZt2KEevtP/u+Z9PPdrxzblYTwfgzUXYmCR2PQbfj+a0=
-X-Received: by 2002:a17:903:1a70:b0:240:5c13:979a with SMTP id
- d9443c01a7336-24306da5537mr4831165ad.9.1754996867136; Tue, 12 Aug 2025
- 04:07:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754996980; x=1755601780;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4cmy/s2VZg4LYWoUlK90R0+3I4q6tnI8g1RdZKLc0yY=;
+        b=n6JjGO8Y3HgCb95fL3j8akQXoUOLAVsguN3rUphVz11H396hHd4S6bv3cUqInMP2xk
+         nJrUui8CDspD6RCTPV5mITpkbLCOTuL9kh8LKvgToqQoCwZISyZ5k7wyjuvi0Q0LhXoY
+         eN4z2Cr7ycBFzb9p+nqjhoXhZoN5Wm8NcOhg4QkDwehtxeEa5P65S8zEgzUKDO55WLWO
+         c0nkJFxy1Ca9Zsz+Jxw3I0LqUQzyaUnFqcCZXBIGvenWgAXkfYG/tBcy38UebSShUItl
+         iQdTrq/UwOWLP5zL7+iJAVXEdOE/ZEjklCp22ga1klBv3iw4xndS4zuBVXh1txK+Yjzb
+         HK3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXQut+ni0IwsSkXmH9CHGBQjnQwu1QPfJcxjxH6or9R1PB77RUD2OgmY4jGzTlBVGNu/2Iyx3nINaVLsYj5Zw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+KCG6wuJuzAG119/C+9GG5kPKkiQeZ5Tzl6m+pfd/MWL8pgSP
+	8VRh5qtwptI6uNqQH9ufPZTNXctQ2+8Fc1sXhSLYeeQ/kNFFXxUWfUmWwxKI4J4dsBE=
+X-Gm-Gg: ASbGncsFTiN73TrE2OjUxR5ublgQ8Iseq2dUomewvwt2d72ZZwjrF8B73CEzy9pTari
+	NJaauo/+uuRc+pAvwbyL8oaMUwU6Ljo5LuHuDzJAvb4LPd+huzmmDq8NbParBsz4ZSWTuRvYdAh
+	pl9fZvC4n09xZIUidgznTc6HtAwWnruaoNwR0Afj3kW1U+M2mR7ky0olKyS0lAG3mCGWYls/dy0
+	EQ/u28gatM2ooJXIQdhPmMisjNEQ5Ah694Bf1HkL+7f4Ypvem0EKxcsp+yIgEzemsJoOguy37XP
+	EA0XI553hBg11ea437kU6kbKsl7rB3Ijt1MH1QKzegCt52jyma+/jKvPbLg/oLKirM8Fm7xTNBV
+	1M2ur392ugiCjDEun7M2UoWBjooaAXXv2B3IJYLgrP8MRxBAVIRmJoV3x
+X-Google-Smtp-Source: AGHT+IEwqAnW3mzq2gaky9ZY3dCnkNTGkqUlv76xshBFzHBrNGhzk5EM+hw7estTnOZ3tM4aomzxuw==
+X-Received: by 2002:a17:907:724e:b0:af9:41a4:25b3 with SMTP id a640c23a62f3a-afa1d96ec98mr269327766b.29.1754996979425;
+        Tue, 12 Aug 2025 04:09:39 -0700 (PDT)
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af99604e648sm1189396966b.6.2025.08.12.04.09.38
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Aug 2025 04:09:38 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6156463fae9so10036966a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 04:09:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWoblWefX1D2CrWacwJlQkEpXWsRKxoX6Lt8wkodGjlDF5FtYNIQwyl4wHHqy1h+t2IrJVtkTC5dD3igUW+ng==@vger.kernel.org
+X-Received: by 2002:a17:907:e890:b0:af9:32db:2b50 with SMTP id
+ a640c23a62f3a-afa1d6a4e21mr287378466b.10.1754996978255; Tue, 12 Aug 2025
+ 04:09:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
-In-Reply-To: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 12 Aug 2025 13:07:34 +0200
-X-Gm-Features: Ac12FXz75fv-5GwEH7lTNJ0yhooMj6nwQ9IaaKPBS7pSI2ZcZDdB8Ex-5Z7LxRg
-Message-ID: <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
-Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
-	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@redhat.com>, Alexandre Ghiti <alexghiti@rivosinc.com>
+From: trev <trev@trevrosa.dev>
+Date: Tue, 12 Aug 2025 19:09:11 +0800
+X-Gmail-Original-Message-ID: <CACvsgUCBk5Dt2yBSy9_NA0z38-wP68vvBX7XDYgJGinTURT1kQ@mail.gmail.com>
+X-Gm-Features: Ac12FXyEFCQLZpaPcjTv4p5-2b7rXO-pZrDbFpW4n9UvMnX6h4vXCRWx7WjFWh4
+Message-ID: <CACvsgUCBk5Dt2yBSy9_NA0z38-wP68vvBX7XDYgJGinTURT1kQ@mail.gmail.com>
+Subject: [PATCH] rust: aref: make `AlwaysRefCounted::inc_ref` an associated function
+To: alex.gaynor@gmail.com, ojeda@kernel.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, dakr@kernel.org, arlied@gmail.com, 
+	"simona@ffwll.ch" <simona@ffwll.ch>, "aliceryhl@google.com" <aliceryhl@google.com>, vireshk@kernel.org, nm@ti.com, 
+	sboyd@kernel.org, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, brauner@kernel.org
+Cc: boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	rust-for-linux@vger.kernel.org, david.m.ertman@intel.com, ira.weiny@intel.com, 
+	leon@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, jack@suse.cz
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 12, 2025 at 7:44=E2=80=AFAM Thomas Wei=C3=9Fschuh
-<thomas.weissschuh@linutronix.de> wrote:
->
-> Kbuild and Rust folks: This contains custom definitions of hostprog
-> bindgen and rust library commands.
-> These are currently only defined inside the subsystem directory.
-> Let me know if they should go into scripts/Makefile.host.
+`AlwaysRefCounted::inc_ref` is a function that shouldn't be called lightly.
 
-Glad to see more Rust host progs :)
+To prevent accidentally calling it, `inc_ref` is now changed to be an
+associated function.
 
-Keeping them local may be a bit easier initially to land, I guess
-(e.g. no docs), and then we can generalize when needed later.
+Modifies all `AlwaysRefCounted` implementors to work with this change.
 
-By the way, for consistency with elsewhere, probably we want
-`HOSTRUSTLIB` -> `HOSTRUSTC L`. Though I am thinking to remove the `L`
-anyway since eventually a lot of code will be "lib".
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1177
+Signed-off-by: Trevor Chan <trev@trevrosa.dev>
+---
+diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+index 4749fb6bffef..b205c9d4f057 100644
+--- a/rust/kernel/auxiliary.rs
++++ b/rust/kernel/auxiliary.rs
+@@ -246,9 +246,9 @@ extern "C" fn release(dev: *mut bindings::device) {
 
-Cheers,
-Miguel
+ // SAFETY: Instances of `Device` are always reference-counted.
+ unsafe impl crate::types::AlwaysRefCounted for Device {
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference guarantees
+that the refcount is non-zero.
+-        unsafe { bindings::get_device(self.as_ref().as_raw()) };
++        unsafe { bindings::get_device(obj.as_ref().as_raw()) };
+     }
+
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index fefd394f064a..8124c72cd674 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -236,8 +236,8 @@ fn atomic_relaxed_op_unless(target: &AtomicU64,
+op: impl Fn(u64) -> u64, pred: u
+ // keeps the object alive in memory at least until a matching reference count
+ // decrement is executed.
+ unsafe impl<T: Operations> AlwaysRefCounted for Request<T> {
+-    fn inc_ref(&self) {
+-        let refcount = &self.wrapper_ref().refcount();
++    fn inc_ref(obj: &Self) {
++        let refcount = &obj.wrapper_ref().refcount();
+
+         #[cfg_attr(not(CONFIG_DEBUG_MISC), allow(unused_variables))]
+         let updated = atomic_relaxed_op_unless(refcount, |x| x + 1, 0);
+diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
+index 2599f01e8b28..6fb5d854c374 100644
+--- a/rust/kernel/cred.rs
++++ b/rust/kernel/cred.rs
+@@ -76,9 +76,9 @@ pub fn euid(&self) -> Kuid {
+ // SAFETY: The type invariants guarantee that `Credential` is always
+ref-counted.
+ unsafe impl AlwaysRefCounted for Credential {
+     #[inline]
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference means that the
+refcount is nonzero.
+-        unsafe { bindings::get_cred(self.0.get()) };
++        unsafe { bindings::get_cred(obj.0.get()) };
+     }
+
+     #[inline]
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index b8613289de8e..63b2d47df833 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -293,9 +293,9 @@ pub fn fwnode(&self) -> Option<&property::FwNode> {
+
+ // SAFETY: Instances of `Device` are always reference-counted.
+ unsafe impl crate::types::AlwaysRefCounted for Device {
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference guarantees
+that the refcount is non-zero.
+-        unsafe { bindings::get_device(self.as_raw()) };
++        unsafe { bindings::get_device(obj.as_raw()) };
+     }
+
+     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+index 49ee12a906db..ccb83856745e 100644
+--- a/rust/kernel/device/property.rs
++++ b/rust/kernel/device/property.rs
+@@ -359,10 +359,10 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>)
+-> core::fmt::Result {
+
+ // SAFETY: Instances of `FwNode` are always reference-counted.
+ unsafe impl crate::types::AlwaysRefCounted for FwNode {
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference guarantees that the
+         // refcount is non-zero.
+-        unsafe { bindings::fwnode_handle_get(self.as_raw()) };
++        unsafe { bindings::fwnode_handle_get(obj.as_raw()) };
+     }
+
+     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index 3bb7c83966cf..affbb58dad98 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -183,9 +183,9 @@ fn deref(&self) -> &Self::Target {
+ // SAFETY: DRM device objects are always reference counted and the
+get/put functions
+ // satisfy the requirements.
+ unsafe impl<T: drm::Driver> AlwaysRefCounted for Device<T> {
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference guarantees
+that the refcount is non-zero.
+-        unsafe { bindings::drm_dev_get(self.as_raw()) };
++        unsafe { bindings::drm_dev_get(obj.as_raw()) };
+     }
+
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index b71821cfb5ea..febb6cc83fd9 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -56,9 +56,9 @@ pub trait IntoGEMObject: Sized +
+super::private::Sealed + AlwaysRefCounted {
+
+ // SAFETY: All gem objects are refcounted.
+ unsafe impl<T: IntoGEMObject> AlwaysRefCounted for T {
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference guarantees
+that the refcount is non-zero.
+-        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
++        unsafe { bindings::drm_gem_object_get(obj.as_raw()) };
+     }
+
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index 35fd5db35c46..831327e65c94 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -192,9 +192,9 @@ unsafe impl Sync for File {}
+ // makes `ARef<File>` own a normal refcount.
+ unsafe impl AlwaysRefCounted for File {
+     #[inline]
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference means that the
+refcount is nonzero.
+-        unsafe { bindings::get_file(self.as_ptr()) };
++        unsafe { bindings::get_file(obj.as_ptr()) };
+     }
+
+     #[inline]
+@@ -228,9 +228,9 @@ pub struct LocalFile {
+ // makes `ARef<LocalFile>` own a normal refcount.
+ unsafe impl AlwaysRefCounted for LocalFile {
+     #[inline]
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference means that the
+refcount is nonzero.
+-        unsafe { bindings::get_file(self.as_ptr()) };
++        unsafe { bindings::get_file(obj.as_ptr()) };
+     }
+
+     #[inline]
+diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+index 43f525c0d16c..a030763c25fd 100644
+--- a/rust/kernel/mm.rs
++++ b/rust/kernel/mm.rs
+@@ -56,9 +56,9 @@ unsafe impl Sync for Mm {}
+ // SAFETY: By the type invariants, this type is always refcounted.
+ unsafe impl AlwaysRefCounted for Mm {
+     #[inline]
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The pointer is valid since self is a reference.
+-        unsafe { bindings::mmgrab(self.as_raw()) };
++        unsafe { bindings::mmgrab(obj.as_raw()) };
+     }
+
+     #[inline]
+@@ -92,9 +92,9 @@ unsafe impl Sync for MmWithUser {}
+ // SAFETY: By the type invariants, this type is always refcounted.
+ unsafe impl AlwaysRefCounted for MmWithUser {
+     #[inline]
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The pointer is valid since self is a reference.
+-        unsafe { bindings::mmget(self.as_raw()) };
++        unsafe { bindings::mmget(obj.as_raw()) };
+     }
+
+     #[inline]
+diff --git a/rust/kernel/mm/mmput_async.rs b/rust/kernel/mm/mmput_async.rs
+index 9289e05f7a67..2d7117a76e33 100644
+--- a/rust/kernel/mm/mmput_async.rs
++++ b/rust/kernel/mm/mmput_async.rs
+@@ -36,9 +36,9 @@ unsafe impl Sync for MmWithUserAsync {}
+ // SAFETY: By the type invariants, this type is always refcounted.
+ unsafe impl AlwaysRefCounted for MmWithUserAsync {
+     #[inline]
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The pointer is valid since self is a reference.
+-        unsafe { bindings::mmget(self.as_raw()) };
++        unsafe { bindings::mmget(obj.as_raw()) };
+     }
+
+     #[inline]
+diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+index 08126035d2c6..e0b8802f3c5f 100644
+--- a/rust/kernel/opp.rs
++++ b/rust/kernel/opp.rs
+@@ -1043,9 +1043,9 @@ unsafe impl Sync for OPP {}
+
+ /// SAFETY: The type invariants guarantee that [`OPP`] is always refcounted.
+ unsafe impl AlwaysRefCounted for OPP {
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference means that the
+refcount is nonzero.
+-        unsafe { bindings::dev_pm_opp_get(self.0.get()) };
++        unsafe { bindings::dev_pm_opp_get(obj.0.get()) };
+     }
+
+     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 887ee611b553..579b2405d808 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -456,9 +456,9 @@ impl crate::dma::Device for Device<device::Core> {}
+
+ // SAFETY: Instances of `Device` are always reference-counted.
+ unsafe impl crate::types::AlwaysRefCounted for Device {
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference guarantees
+that the refcount is non-zero.
+-        unsafe { bindings::pci_dev_get(self.as_raw()) };
++        unsafe { bindings::pci_dev_get(obj.as_raw()) };
+     }
+
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+diff --git a/rust/kernel/pid_namespace.rs b/rust/kernel/pid_namespace.rs
+index 0e93808e4639..d3302b86b864 100644
+--- a/rust/kernel/pid_namespace.rs
++++ b/rust/kernel/pid_namespace.rs
+@@ -46,9 +46,9 @@ pub unsafe fn from_ptr<'a>(ptr: *const
+bindings::pid_namespace) -> &'a Self {
+ // SAFETY: Instances of `PidNamespace` are always reference-counted.
+ unsafe impl AlwaysRefCounted for PidNamespace {
+     #[inline]
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference means that the
+refcount is nonzero.
+-        unsafe { bindings::get_pid_ns(self.as_ptr()) };
++        unsafe { bindings::get_pid_ns(obj.as_ptr()) };
+     }
+
+     #[inline]
+diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+index 8f028c76f9fa..04e650e6218f 100644
+--- a/rust/kernel/platform.rs
++++ b/rust/kernel/platform.rs
+@@ -293,9 +293,9 @@ impl crate::dma::Device for Device<device::Core> {}
+
+ // SAFETY: Instances of `Device` are always reference-counted.
+ unsafe impl crate::types::AlwaysRefCounted for Device {
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference guarantees
+that the refcount is non-zero.
+-        unsafe { bindings::get_device(self.as_ref().as_raw()) };
++        unsafe { bindings::get_device(obj.as_ref().as_raw()) };
+     }
+
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index dbd77bb68617..484aad2dc647 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -24,7 +24,9 @@
+ /// alive.)
+ pub unsafe trait AlwaysRefCounted {
+     /// Increments the reference count on the object.
+-    fn inc_ref(&self);
++    ///
++    /// This function should not be called lightly.
++    fn inc_ref(obj: &Self);
+
+     /// Decrements the reference count on the object.
+     ///
+@@ -103,7 +105,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+     ///
+     /// # // SAFETY: TODO.
+     /// unsafe impl AlwaysRefCounted for Empty {
+-    ///     fn inc_ref(&self) {}
++    ///     fn inc_ref(obj: &Self) {}
+     ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
+     /// }
+     ///
+@@ -122,7 +124,7 @@ pub fn into_raw(me: Self) -> NonNull<T> {
+
+ impl<T: AlwaysRefCounted> Clone for ARef<T> {
+     fn clone(&self) -> Self {
+-        self.inc_ref();
++        T::inc_ref(self);
+         // SAFETY: We just incremented the refcount above.
+         unsafe { Self::from_raw(self.ptr) }
+     }
+@@ -139,7 +141,7 @@ fn deref(&self) -> &Self::Target {
+
+ impl<T: AlwaysRefCounted> From<&T> for ARef<T> {
+     fn from(b: &T) -> Self {
+-        b.inc_ref();
++        T::inc_ref(b);
+         // SAFETY: We just incremented the refcount above.
+         unsafe { Self::from_raw(NonNull::from(b)) }
+     }
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 7d0935bc325c..b0577b00280c 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -349,9 +349,9 @@ pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
+ // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+ unsafe impl crate::types::AlwaysRefCounted for Task {
+     #[inline]
+-    fn inc_ref(&self) {
++    fn inc_ref(obj: &Self) {
+         // SAFETY: The existence of a shared reference means that the
+refcount is nonzero.
+-        unsafe { bindings::get_task_struct(self.as_ptr()) };
++        unsafe { bindings::get_task_struct(obj.as_ptr()) };
+     }
+
+     #[inline]
