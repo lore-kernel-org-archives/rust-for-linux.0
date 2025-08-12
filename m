@@ -1,97 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94342F0666;
-	Tue, 12 Aug 2025 20:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074D0270EBA;
+	Tue, 12 Aug 2025 21:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755032171; cv=none; b=ZtmmmSdRCbJwSGpSDPmxwp9NyZM8qErk5Ljnq0XAfG/fekDQFt8SGOfRbJQJCBWFwj+Ws/IH391cA3FY25SkVofPx2RahL/q3Zt4TLQ/yTO5MxtXGGxdhu75Ol967bEdSkKU4uiJPGRZ4yElD4Uv3L1nVe37L7WcRPb2QoKgIuE=
+	t=1755033961; cv=none; b=TZ10YPkiS5cPHyZK6G+L5wxnMZOXfvTE+TBdZaAApUIj/OZSJAm/GFsgwP6rForbUWgqMNf9BbOk+8K5zz9MZi2n+KL0ajrASsVmeyvVlZrspVr0Swgih/cHWHQF1hiP41veEGi71cAcE8S1F72yl949vPizXD4FLOnHUQPd0Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755032171; c=relaxed/simple;
-	bh=oDx/4yjF6fOIMLyafK6z36XCnn2dAEJD56/3U6byJhU=;
+	s=arc-20240116; t=1755033961; c=relaxed/simple;
+	bh=QsczK3PoMDKgHLqMUXABZVq0fMFVJStyGNK0F2JQqq4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q911vhZOE+YV3W5WGxKQEP02MQ7ZajyBsScy3hIZy+C0qgKwXDAJmCygefgr+9K8FVHt4QpJ0sloPZB2IM+yHi8fj9aD9zyX+ADXyp6Atc9ihi8YPPT+eQSNZC1B0vgUn6EsdKD7XxP9EVMekwNkT1CHWkxbbYCsGAs2poU5g04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aci32url; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UbKCBC5G4DYPoygraX4V4RKCV/LnSj3gPXoRMpxVlCrQUkjO513z9dEncqhWpb1kKkoa5Lm0qFGSOJGF1xjwQ0TK4V8fDsGybcoV2zNgElOLUErkov19wSPefkVISf4F5GZOlzW9RQx1jGCkG/JHiadoUnlCJzn+iXJfZ3GapRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZFPBjmZY; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aci32url"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B44CC4CEF0;
-	Tue, 12 Aug 2025 20:56:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755032170;
-	bh=oDx/4yjF6fOIMLyafK6z36XCnn2dAEJD56/3U6byJhU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aci32urlrI9CgDWLLZVE10UPVqDe2MuCNb7FoPCabmVIHnD2dNYTBYIDd9rymhZOn
-	 +a3CykFh184IeqAog5f/VAmRx++PklO1nWODv/on3WAGwhyitMTujNyt6XqdZhHFEz
-	 xWZQ962qlvMX6GwCKbv0yVR0F/fxvmMti10W0YMtTmGMTfAtGJMprjLU7r2dywA0oA
-	 8L+A0S6Wx5/380Esa0eS02O6q9H8l2zEvaeFIcN/w0GUSaLde/wZxNI3IoKam0WtCx
-	 fCy9mEAvvYLx92Sskkk0eQIEFQ84T1taZJKNbQ/oKzSdlWrKQDPyMTTK+Ng1i7CARu
-	 +r7orZEZFPFWw==
-Date: Tue, 12 Aug 2025 13:56:04 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZFPBjmZY"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3b9170db547so124392f8f.1;
+        Tue, 12 Aug 2025 14:25:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755033958; x=1755638758; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LUXsTMGS1hoLJRdMmGStWy7qZBWo6O3VqHZsniSFB58=;
+        b=ZFPBjmZYeIV9QRGSk14kXUT2hfI+7EKsiwGwQ3nVFKJK7AYAEdUis/JdN/pGhEE/Td
+         gXpAUgPbmtxX0C7sU/Nlm2J72f2XgNxcoMUJVx6byZ5s/bcVZj7KOzwvMWpKjA5lrJZZ
+         ConstE7oU9Sm5OviulReQAlnZe1eO1u4PYAfOBV+wfZB7H8xQxBB4EN8KPqsO31Lt706
+         nkhjKWnI6VjKL9El87tVsx80O1jk0JRTVr8aN5nFlk87WSpEoAiB9PsbHVvY2NGoePdU
+         9RqNJyDbuELPHZ5uSLk/W7IPz27upewSQT1EC7Gkb2ATqUd6lSkjWy+mgoADJIglRtAa
+         1nxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755033958; x=1755638758;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LUXsTMGS1hoLJRdMmGStWy7qZBWo6O3VqHZsniSFB58=;
+        b=rZUf3QP0XkFa2cjAcB+NLhqLkD9I+b+kw4ZyWlcaw3aUxz3Z6o5PNja/2q6A8E+nf4
+         Pz1pTHkbepY4jPcR4chR2s7FrvEMnMusklOelsRl/mI8woc4I3NnAaYkIhuLwTDFyZNX
+         G6ffz3meiVUNwHG4AnvhscT9wEd++BY6/PtlrRHd5jqYwOd9M0jX9JsFpAroXdtaBmtV
+         OSzT4RPuUtnjTOOmZaQ+EGTjgX0htrjovQ9ob6d2S3t1LCH2bOWJ8su22g4+B9i/Sgdn
+         jEDSDiZXFEcLm31DqhvyDuprL341fUmeMwuSxoSR71CdeVHFT/uy9lQjA3w31mPPO3Sv
+         kjAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhobMXdrkpqzlgBP0s6lqdiHKMoyId0M/+su8AoeNwsdy2KuCKJFTLFcpvD/MBjGXvF/MEthnOCO5adxC2zQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuHhKlzjUEEHpYgDbLYWc0dK3JHyIMqGAWOtGQAq7GcBZZasmv
+	vD3tRKOnS0jKP6VlAFlkiagwPhwLXo2C/vuWV+T47B0W9eT/7RLtpPRGf8DNHA==
+X-Gm-Gg: ASbGncscS3/igEtezOiluoMz/X6IZntt9ZT1CEUktp0dAnxSqfndpQVZfFpPTqftgNB
+	21mPL6Og1b56pFZsl3BQdgSfKaZDiEMeAVnpLhwNAK6vJAckKJzwa2d8ruL4IVqUQ9jMdZwRb7T
+	J6/fbcj7opr6bvviDQxdZ3G7UVs+ZQ5f7ttKrp1ovVxBK6QvxWNCqlV3ZEtIlBa/TNFOCoyT/Tb
+	WqPA8/kjlmBQiO2VCSDcUpkzr1oz8PuG9nBGtCvXy+lOaQ900anSp95uNe50jBirJoeUqIBU5kw
+	NJAUliKKilQozbWQ4582LdIRbYvPORAX6i5VxFTjZ92d7Ge1IU8Xbv6QZ+/GIxq024p7as496FP
+	tcH4kAb9GeenU45Fw+eSDQMm2SA796A==
+X-Google-Smtp-Source: AGHT+IGxtGU1Wd6l714Qe6Xu+u5PrVWcM71n9/QDnRKPYwk0AfHVE2Tl4ZwcKT/IX4cm3n8wIOjA1g==
+X-Received: by 2002:a05:6000:3107:b0:3b9:16e5:bd38 with SMTP id ffacd0b85a97d-3b918c4cebcmr51195f8f.4.1755033957868;
+        Tue, 12 Aug 2025 14:25:57 -0700 (PDT)
+Received: from fedora ([2405:201:5501:4085:eece:e0ff:6b68:de2e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b90fdc85a4sm6229401f8f.60.2025.08.12.14.25.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 14:25:56 -0700 (PDT)
+Date: Wed, 13 Aug 2025 02:56:20 +0530
+From: Ritvik Gupta <ritvikfoss@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/2] kbuild: enable CONFIG_WERROR for more build steps
-Message-ID: <20250812205604.GA532342@ax162>
-References: <20250812-kbuild-werror-v1-0-36c9ff653700@linutronix.de>
- <CANiq72k-PdSH2BNgbq=X+FhpyEErifSCKfO5ObXz6bu9_J8+fA@mail.gmail.com>
- <20250812121545-f00f588b-2239-4d96-baeb-55cbf4914556@linutronix.de>
- <CANiq72=rhY_k1RRJoTzsY8PnEW5D=m2Org9m0v3erJsWxW4HkQ@mail.gmail.com>
+	Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] rust: kernel: introduce `unsafe_precondition_assert!`
+ macro
+Message-ID: <aJuxfHaslGAlBJTR@fedora>
+References: <20250808192005.209188-1-ritvikfoss@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=rhY_k1RRJoTzsY8PnEW5D=m2Org9m0v3erJsWxW4HkQ@mail.gmail.com>
+In-Reply-To: <20250808192005.209188-1-ritvikfoss@gmail.com>
 
-On Tue, Aug 12, 2025 at 12:50:44PM +0200, Miguel Ojeda wrote:
-> On Tue, Aug 12, 2025 at 12:25 PM Thomas Weißschuh
-> > Another possibility would be to use -Werror
-> > for hostprogs unconditionally. Various tools/ are doing that for example.
-> 
-> Not sure what Kbuild thinks about that -- we have a small risk of
-> breaking things with newer compilers, but that may be not too bad for
-> just hostprogs (unlike when it was attempted to make it default `y`).
-...
-> appear -- so that should be fine, but it does make it way more urgent
-> if they are errors every time, though, since it blocks other testing
-> too).
+> +/// # Examples
+> +///
+> +/// ```no_run
+> +/// # use kernel::unsafe_precondition_assert;
+> +/// # use kernel::cpu::{nr_cpu_ids, CpuId};
+> +/// /// Creates a [`CpuId`] from the given `id` without bound checks.
+> +/// ///
+> +/// /// # Safety
+> +/// ///
+> +/// /// The caller must ensure that `id` is a valid CPU ID (i.e, `0 <= id < nr_cpu_ids()`).
+> +/// unsafe fn new_cpu_id_unchecked(id: i32) -> CpuId {
+> +///     let max_cpus = nr_cpu_ids();
+> +///
+> +///     unsafe_precondition_assert!(id >= 0, "id ({}) must be positive", id);
+> +///
+> +///     unsafe_precondition_assert!(
+> +///         id < max_cpus, "id ({}) must be less than total CPUs ({})", id, max_cpus
+> +///     );
+> +///
+> +///     CpuId(id)
+> +/// }
+> +/// ```
 
-Yeah I am conflicted. On the one hand, KBUILD_HOSTCFLAGS only has -Wall
-and a couple of extra warnings so the risk of new warnings breaking the
-build is pretty low. You can see the rate at which warnings get added or
-removed from -Wall in clang in the warning-wall.c test:
+The example I've included is incorrect because `CpuId` inner field is private,
+so it can't be constructed this way.
 
-  https://github.com/llvm/llvm-project/commits/main/clang/test/Misc/warning-wall.c
+`CpuId::from_i32_unchecked()` exists, using it here would make the example a
+trivial wrapper around that method, that would be unnecessary and confusing.
+Also, I wasn't sure about the doctest config when I wrote it.
 
-I'm obviously on top of testing upstream LLVM against hostprogs because
-LLVM= makes it easy to set HOSTCC. I suspect that GCC trunk sees less
-testing against the hostprogs unless the user has it in their PATH
-somehow.
-
-On the other hand, the recent changes to -Wuninitialized and the
-addition of -Wuninitialized-const-pointer were extremely disruptive only
-because of -Werror... I would have no problems with fast tracking fixes
-for hostprogs -Werror usage but I am not sure all maintainers will. This
-would also impact vendored host programs like dtc, which may be harder
-to update.
-
-We could try it for a development cycle in -next to see if anything gets
-noticed. Always easy to back out retrospectively as well. Alternatively,
-we could just recommend people use HOSTCFLAGS=-Werror if they desire it.
-
-Cheers,
-Nathan
+I'll send v5 with correct and much better example.
+Plz ignore it. Sorry for the noise.
