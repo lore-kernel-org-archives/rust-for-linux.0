@@ -1,103 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AB9268C73;
-	Tue, 12 Aug 2025 17:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6E9199385;
+	Tue, 12 Aug 2025 18:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021160; cv=none; b=tesbhR5ps+9sP8Tj/V2l4lpouSMa95qIwoXZ2LwUfyhJjO7jJLYjGNJHkRFILeCm1CoQR01nwdv2UbuHBYNO0gGbr70eXKcXEumE+tPcUWCXkTTkYMh7ftZxzatYiGwMuv6J2YTSUudmziVIjTegeptapVrQIWLuVVDl4Z9h+Fg=
+	t=1755021620; cv=none; b=fIITNglXxHBoKFYaxIGOnvryWtN1FhFqOYxGgTBwz2Qp5W9V4GGVUw1twgif3WCb7bWdsMHXHSnMVgjpfsmL6CdccuqYJaWvO1xICmAD77cCOd92JzZVrxlC7P6Nx0wCT+lZumrwrvdNsMLpZWQdzuguPl47NuT88E4WHOQd860=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021160; c=relaxed/simple;
-	bh=HrWt7KsFmQFhR+gbni5exLfgmFjQs3b24up4/s6MmUg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=a0IaZD9hXM/rswVsx0XKBPR7gWadtHkRCNx7gmNUI1arpPyFU49if6jp6VmXUaAIxPsLBj/IOkmAPqRyJyE0Z+A+00KO/5NWKu6O+VQnWjQ17ICBcKkOW/ewBu7G/fahdPBQua01CYCjkpVslvn2XoT6yC2WEEx1uY1t1hvMpYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDf+4lx4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755021620; c=relaxed/simple;
+	bh=iDyxY/PZQM7oGCOy+paVEs7C+/hlmIaMwEsNZ1lDMps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XbkR1f/MoJMzEgqgNKQBdZnAIulXfDrEompkP1Fo0yQdbHubaKle9mKKJgmh72vRydy+siPOPZYE+ECnavMePlXxmQAwuNG8FC9/KwJnPfgDa3lw6HZOVKYtBLkrQH8NApUlPTntbaQr1YZvOoHtIMu+zaQ0lLAYkWT1/oo3QHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LBGUyBUv; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDf+4lx4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48EFC4CEF6;
-	Tue, 12 Aug 2025 17:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755021159;
-	bh=HrWt7KsFmQFhR+gbni5exLfgmFjQs3b24up4/s6MmUg=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=EDf+4lx4IuM9rw8qi4wI1aL1fFeQH/N1+zaWTH51ERi8hnA7G07qo26tb3konaG7C
-	 sMqCLR2++PPj/UJzbowqN3eJHrxckicnDUjnrPXqS426jZIuJuQqTnQwV7+9TTKNpE
-	 ryRfutW6sZyjUFRqYcRpiY5mugzhPWIbv2HC0Ivbe/4zPfeFBzg/BxKlcDHdK9+Slp
-	 aXAMyKg+rbnfEmYb8gKgzuIHKc/kha6hu4YVSfA6suInHQO2SDLrrzMRDsnYmIb+u7
-	 Rt1ask5T+OWQCX0BGHsZr+mkNLbQV54y60NM2DEWzXbKR4NJl1weaKKPE8+JQy5wAq
-	 iMpJ232uW+npg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LBGUyBUv"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-75f7fc34691so437443b3a.1;
+        Tue, 12 Aug 2025 11:00:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755021617; x=1755626417; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=voR0zXJlK2R52Nv6d0LXSLHhujcZH2Ghy4ugQmK1XkI=;
+        b=LBGUyBUvux08M6me3pZ9Aoy9wt39iB3Kxk8A0zWG71uluKoFoD63+hxx60NKdNpuKb
+         lhCbxJ5kcS2jf0GD7N5O/dEGahYAKTi5DnUfk2saTf5bxvYtaiNfwg3MNBLyz/DkFrYm
+         J5KgItEiMNZjV0x9Ykdux1KtDVIUicYzTsXunnJx4xQpX5vIqACeqcyvbboCsaXiyx/f
+         WW3vqQrZ04F1CC9ioY8/ci4NJL5kdmAjvwtFyOxZEU2obSOPZtWfw4yUuFiwqouTtqcO
+         3pzcIJR9pqq5R5bLpOfIQNTApBL0Ts5LrfX979ZgOUWGh431Q4P5sREv9aosu7Xo/FaG
+         FMMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755021617; x=1755626417;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=voR0zXJlK2R52Nv6d0LXSLHhujcZH2Ghy4ugQmK1XkI=;
+        b=lpEn8+7oCdauLbLljmMv1JWECk6optax/kGKRgSZec4aelCPyJN57PYwk+NyXQHwxP
+         YqDuB5jVJsnkuXLMP9ALdw/BfuHuMoOHJdagfqIkSCREtXxoYkQ+7zFKYAJMH3PqxNTO
+         cxmW38yOIwNv/EQP46UNgFTBLUGskwvOzKywm2m8XVE8qrS0g3xCC59K+9DPDDv1HgzX
+         fkq2oa7WnD0+r3vq+NGpXQGEJNgPJCHG+XuOo8YUAPTEwUn2t4N5yabA+XgQupPcTx1o
+         zFGfvgOTZL4nVB1rC+VGmjGUEOC83MKDu1P2ed4wDQZan1tGaAuKbEqjIEpxCkqUQhmJ
+         VoEg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+6TUX1xBcercvv/pm5d32qqhunqXZoUdZEKdIgDX0t6kQRhTMdHqs14sD7AolpgBxixGbAzY3UTvna9eWSa8=@vger.kernel.org, AJvYcCXbIEec+vJsUGFX2XfQW2R8lOHSNOSV0YCLHbNAtfOWKDa2avaM2KjV333AYGbSHHvIUhW1jRyleC73Gks=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywgp0rsl3undyax4KjWnyIHS7GcMy9bmq1z+K1lk9foaCqYQHpT
+	OpTk8O9QkCEdpw6HgOKL/zggeYT5chr6X7KvxAxf3JFkTNa/1dyBPoVG
+X-Gm-Gg: ASbGncumvaQurwNWd9AkLnS+UlXkSznWVaV/NQmAH0wUih+XsSCsjjpFyiZZPR7uFu0
+	Niaa1pn3uKMek8kIUN9HS3sKmYt5hdkqdCyQghcSpIsdtdmNAF7oOu0Y9q4WYfcOWXksJqmm3hT
+	C08MXfjXjR2+wAoQ3M2QQP82uwYZCaqZNLS55Qvzy/QwNqK0m2KxdQho0hvVgMnDdQgmcVihCVN
+	cmL8kBZD6V9p4SKEG64vR5d0ZigibxciHQGle7UEbPQ0H2xuNptgK7Fk7k7C+F4PGqv8I3aKPbp
+	ptqoTgjVUmT/j3/Vis/TmLCx+1RDF/+7fNR7MSIrxaY/qm39nitI2CpASIF5yKgo7nD6TlMcsnj
+	2waVxoOf16/xArg6GSBlHCLA5KBiQs8Ih2cYfTRYFsnw=
+X-Google-Smtp-Source: AGHT+IHw0jgfljEaeUHz/KoG72Dm8SGNFvRENR44IU43ChOyBFGQXszRhCZbmlGaNKZKrTALAGX2Ng==
+X-Received: by 2002:a05:6a00:928b:b0:76b:cf2b:18ab with SMTP id d2e1a72fcca58-76e20c9a15emr87578b3a.1.1755021617194;
+        Tue, 12 Aug 2025 11:00:17 -0700 (PDT)
+Received: from [192.168.0.110] ([138.94.103.170])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bccfbd98csm29777279b3a.67.2025.08.12.11.00.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Aug 2025 11:00:16 -0700 (PDT)
+Message-ID: <5204b598-7792-460b-bec2-e3a4a4c7e32d@gmail.com>
+Date: Tue, 12 Aug 2025 15:00:11 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 19:52:35 +0200
-Message-Id: <DC0N2SBVHIS7.2P91EJSTIT1FM@kernel.org>
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Matthew Wilcox" <willy@infradead.org>, "Tamir Duberstein"
- <tamird@gmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <linux-mm@kvack.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: alloc: specify the minimum alignment of
- each allocator
-References: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
- <20250811-align-min-allocator-v2-1-3386cc94f4fc@google.com>
-In-Reply-To: <20250811-align-min-allocator-v2-1-3386cc94f4fc@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9] rust: transmute: Add methods for FromBytes trait
+To: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ~lkcamp/patches@lists.sr.ht, richard120310@gmail.com
+References: <20250811213851.65644-1-christiansantoslima21@gmail.com>
+ <DC0INEKNZPSE.WLEQH24SLW1I@nvidia.com>
+Content-Language: en-US
+From: Christian <christiansantoslima21@gmail.com>
+In-Reply-To: <DC0INEKNZPSE.WLEQH24SLW1I@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon Aug 11, 2025 at 2:31 PM CEST, Alice Ryhl wrote:
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
-.rs
-> index aa2dfa9dca4c309e5a9eafc7da6a8a9bd7b54b11..25fc9f9ae3b4e471a08d77130=
-b374bd1397f7384 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -17,6 +17,8 @@
->  use crate::bindings;
->  use crate::pr_warn;
-> =20
-> +const ARCH_KMALLOC_MINALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN a=
-s usize;
+Hi, Alexandre.
 
-I think this needs the following diff:
+> I mentioned it on v8 [1] and v7 [2], but the tests that break due to
+> this change need to be updated by this patch as well. This includes:
+>
+> * The doctests in `rust/kernel/dma.rs`,
+> * The `samples/rust/rust_dma.rs` sample,
+> * The example for `FromBytes` introduced by this patch which uses `?` without
+> defining a function.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helpe=
-r.h
-index 84d60635e8a9..4ad9add117ea 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -84,6 +84,7 @@
+Sorry for my inattention, I'll fix this in the next version.
 
- /* `bindgen` gets confused at certain things. */
- const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN;
-+const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN =3D ARCH_KMALLOC_MINA=
-LIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE =3D PAGE_SIZE;
- const gfp_t RUST_CONST_HELPER_GFP_ATOMIC =3D GFP_ATOMIC;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL =3D GFP_KERNEL;
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.r=
-s
-index 25fc9f9ae3b4..5003907f0240 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -17,7 +17,7 @@
- use crate::bindings;
- use crate::pr_warn;
+> Please make sure to compile with `CONFIG_RUST_KERNEL_DOCTESTS` and
+> `CONFIG_SAMPLE_RUST_DMA` to see the failures.
+>
+> Also, now that we are on 6.17-rc1, the types in `nova-core` that implement
+> `FromBytes` will also fail to build unless they are switched to
+> `FromBytesSized`. Which I guess speaks in favor of taking this into the Nova
+> tree if there are not other planned user for this cycle?
+>
+> [1]
+> https://lore.kernel.org/rust-for-linux/DB5KEWX9EJ2Q.3CX5EGS66OVHH@nvidia.com/
+> [2]
+> https://lore.kernel.org/rust-for-linux/DANSZ6Q476EC.3GY00K717QVUL@nvidia.com/
+>
+> In case this helps, here is the diff I needed to apply to get the tests
+> to build:
+>
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> index 1801836f31455..3797c70c13040 100644
+> --- a/rust/kernel/dma.rs
+> +++ b/rust/kernel/dma.rs
+> @@ -597,7 +597,7 @@ unsafe impl<T: AsBytes + FromBytes + Send> Send for CoherentAllocation<T> {}
+>   /// struct MyStruct { field: u32, }
+>   ///
+>   /// // SAFETY: All bit patterns are acceptable values for `MyStruct`.
+> -/// unsafe impl kernel::transmute::FromBytes for MyStruct{};
+> +/// unsafe impl kernel::transmute::FromBytesSized for MyStruct{};
+>   /// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
+>   /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
+>   ///
+> @@ -641,7 +641,7 @@ macro_rules! dma_read {
+>   /// struct MyStruct { member: u32, }
+>   ///
+>   /// // SAFETY: All bit patterns are acceptable values for `MyStruct`.
+> -/// unsafe impl kernel::transmute::FromBytes for MyStruct{};
+> +/// unsafe impl kernel::transmute::FromBytesSized for MyStruct{};
+>   /// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
+>   /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
+>   ///
+> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+> index ba21fe49e4f07..e7bd698ec99cd 100644
+> --- a/rust/kernel/transmute.rs
+> +++ b/rust/kernel/transmute.rs
+> @@ -16,6 +16,7 @@
+>   /// ```
+>   /// use kernel::transmute::FromBytes;
+>   ///
+> +/// # fn test() -> Option<()> {
+>   /// let foo = [1, 2, 3, 4];
+>   ///
+>   /// let result = u32::from_bytes(&foo)?;
+> @@ -25,6 +26,7 @@
+>   ///
+>   /// #[cfg(target_endian = "big")]
+>   /// assert_eq!(*result, 0x1020304);
+> +/// # Some(()) }
+>   /// ```
+>   ///
+>   /// # Safety
+> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+> index 9fb3ae1dd8587..36ad877d4804d 100644
+> --- a/samples/rust/rust_dma.rs
+> +++ b/samples/rust/rust_dma.rs
+> @@ -65,7 +65,7 @@ fn new(h: u32, b: u32) -> Self {
+>   // SAFETY: All bit patterns are acceptable values for `MyStruct`.
+>   unsafe impl kernel::transmute::AsBytes for MyStruct {}
+>   // SAFETY: Instances of `MyStruct` have no uninitialized portions.
+> -unsafe impl kernel::transmute::FromBytes for MyStruct {}
+> +unsafe impl kernel::transmute::FromBytesSized for MyStruct {}
+>
+>   kernel::pci_device_table!(
+>       PCI_TABLE,
+>
+> -- end of diff --
 
--const ARCH_KMALLOC_MINALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN as =
-usize;
-+const ARCH_KMALLOC_MINALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN;
+Thanks for your diffs, it'll help a lot.
 
- /// The contiguous kernel allocator.
- ///
+And sorry for the delay. I'll send a new version as soon as possible.
 
+Thanks, Christian
 
-No need to resend I can fix it up when applying the patch.
