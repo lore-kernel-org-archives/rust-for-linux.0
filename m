@@ -1,68 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B952F8BF5;
-	Tue, 12 Aug 2025 15:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235A323D7C5
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 15:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755013972; cv=none; b=cBJw/fEixrU6LFnwUQQBp/hr/ABS2IGyLmlwYT0AbRG8XN7ZFP42QENCV1eQeZ0odg9vmClv2WaBrKHM3Kl6em/OE0VlOueH2bDje5EyhfDwl9NkDjk2olDGzDlPtu6SlCtDFX8WWFhCjmZjLMlSwg8tiQoCEhvtwMTVOkYKYW4=
+	t=1755014201; cv=none; b=asP0TnCi9v+Ob6Io/HVDQedpDYqDukRnn8CsdxKkORGlCquPfpjR+ve4GdaHGXBxA6k4gck9d8FnZPzKeYFyFdLUmjpEgOaJU0zX8Kl06wgDA2UcUNt9wdFNvmapJDqZD4gfb2/DhXNlvXo9+lmV/keOhii/TnHMf1vkmInE9ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755013972; c=relaxed/simple;
-	bh=xGqRUdnbzPC+ihtI7x1CKaRb+bb/xRHekZu9g4Xe/HU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZBSWgdDuXL7eSIcqLss0KI0Zh66uCsA18vxIcAs30KRSFLHdhB00tNHo7ccgsJljOIoZ/OEicwbNR6Ji/Tu/nEtLsdA0WvsaAbhXEyN5C/Sy3a74sDWVcFxOQ63oSWHrqOsz32FGcvY+qF3hUP8UEcSimVovDxEQYKs7UlQbxiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W3qr45cZ; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1755014201; c=relaxed/simple;
+	bh=MKBy2ptFtdluhexTaSNJsjT+1GddEgf06NUJwp5g4I4=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lg7wfU5HQaqRHmixKHKUhybE+2PGuBQhyemTJzZMqT2L+RcqUC+tX/Fr1pOLmcYNzCh1siBDBqz2DAsfuOzBAzskn5FYXOAz6+u10TacaPlyDxwDrJcX+LrXpgn5wmJGWnTbK2NzUwWWd2wrjHC/o5wsyO9rdcReH+mgZqSOINs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E9ZpQetl; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W3qr45cZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755013970; x=1786549970;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xGqRUdnbzPC+ihtI7x1CKaRb+bb/xRHekZu9g4Xe/HU=;
-  b=W3qr45cZt+XTIzsSuTquVJ2sLeT8YtZkSJehEYO4ob7WDhE/2zUbH6VZ
-   phJHgz6cK8ucgPJKvH3jO1YU+gnwSjQAaC8bdFck7xHH1nwYhLO6y4KtV
-   S947u/nNGs2KNO951XgtO/6oT27JIZZpDvD26u+qlzStxqqIew3iwEjDn
-   i6PYye1MkVBKZkGplz+IXA/sIcQqNkZAh0hnelSLhRseWZb3CzOikcIOI
-   XiZL+hX97qVniXPnctSdJiMB33hwK+xzhMghUw1y4QvdnhCVMBl/2UkID
-   YtZPiRRyD36PEuU2eVFY7L93FwW+kgn88FWpdSt4jIdaN0nxqR0uyRmmy
-   w==;
-X-CSE-ConnectionGUID: j5lM1hjyR2mh1T9IFvE+nA==
-X-CSE-MsgGUID: q7frcN9mT+Gk2R+pxZ5uOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57214438"
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="57214438"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 08:52:49 -0700
-X-CSE-ConnectionGUID: 0bsw4FC6RT6UhF2rBBn1Xw==
-X-CSE-MsgGUID: V+pW2tW4R/SxfVbWnVAIWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="165862736"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 12 Aug 2025 08:52:46 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ulrIp-0006wd-2S;
-	Tue, 12 Aug 2025 15:52:43 +0000
-Date: Tue, 12 Aug 2025 23:52:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ritvik Gupta <ritvikfoss@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4] rust: kernel: introduce `unsafe_precondition_assert!`
- macro
-Message-ID: <202508122341.rb7U1Q2P-lkp@intel.com>
-References: <20250808192005.209188-1-ritvikfoss@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E9ZpQetl"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b0a13bb0b7so65427751cf.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 08:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755014199; x=1755618999; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:feedback-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jqTGpzjJfJfaj7mfsYNwlHyc6WOEGNm6kD4TyZr5JL4=;
+        b=E9ZpQetlVwd8qwFTrNPtkwfHoqfAKvr/rzVu/JP6MaIk2WrVXDHkoNlEy8R1hmpl0t
+         D8RRidBbWCS9c5InzjX/fKwU75hVmUDswIwGq2w7wogkTJwQrS2wmWDgzx6DB9Fpr+D5
+         hOW3NNEewnbB3HQ5cPEd9myc99JDsgsrmUQr0EFgb94fXCb/toJ79sL1USyUzDlFIZA9
+         aWLh5L0J0lD+gtdqBcJ0MhEuKmY3HQLhhHMc+s2bxmPWamA3hXWDy5sf0WlnMaN4/Ym6
+         20oRSQsfg+XlA2iF9zcCTYJhKNYHnAXFpp+XlYJElC+6gNhJbHv4NaIOBcZQZKHcPwUm
+         sXBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755014199; x=1755618999;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jqTGpzjJfJfaj7mfsYNwlHyc6WOEGNm6kD4TyZr5JL4=;
+        b=pQJOSyZUKdW7qwZ60lDjSH4/2mPdulZuE4eDCFs9Znse3JQ33Pi6MeGDfgDjeLQw6w
+         b8VCYnvPUPf0x6/dO0MGznF/sVmMyrkiuM9i/niXW6iP5K43n3kUxi7xixwziOYASrbF
+         NPrqgVqMSEtKvK5H7lW0ks2ZK6CZ5daaxMOns/JTPrKQAp1rWU3ritD+2rqOVohsUWVZ
+         CeOyZx913ItOYuXNLwkQKwNmzbcbVbQrsqKE8CbZjzXwIxRPY/NR8pVZk+niJUZmnUo3
+         fDf0aiWduxTYf0upFjWnkn8pS+3L8gxcdc8Zh0KqvSEm/i02ea188D9vFwqyUF2T1mcJ
+         sPiw==
+X-Gm-Message-State: AOJu0YwnN2f0OZxuGcgZ9iT/KkmwJdVGqDxGD+ZwrclgpZ2+/HEbfR5z
+	+9WFrkchy8fdvV3eV1YHFWEmBHPyPeEzYIumpl6az4+DHmxvYU7gw+B4KOxYqA==
+X-Gm-Gg: ASbGncsAqjYlm68h4RruEXJambFStonvDOYDspE83WkCM70+ImiJ8HJ/K8JivhP8Wcr
+	J/RdIB0WpdpjYyHeiopNxyMNuyAXF0SN9Wp8xfGgIpbGiuzhRKo5PHxcW8KEO4WCmJHhd6VNdoi
+	yU+DCPUKEPJkqHiOil2MBmZcvO9L01LjVGv7QA/LamTth8L08R0hg4gTfWKEUH3ieYBFQB6gtC/
+	Wrw2quxP5As+sS7z9DnzraVtpBQ2fH4nMqhIuqW+JEPeuRD7yVn7XeeJl/9X3l8yrx7kgzZ+pRA
+	LWmq6P03u7LtKWIvvx1956nComZlKebHjYQ6zZotv3VHhxT73DFITgZbLbtGa9T1mXJYo9uK4bM
+	arRgsN4ifYZODoM6HWqsZMQ7wG7qEVw76vrh5QczO+0F00GqawAjGr6QwyFMJj/GTzTxRv13f4n
+	zW/yt+8u/fYixHKBh8CSP0hE7AfvgNgYn4nQ==
+X-Google-Smtp-Source: AGHT+IHEREDfQ3yQUY3sSNY62xae3Pz/KOCD3/xhLsbOV4F2OtGXZKFLlDG17mPVjkarrVgmoERZHQ==
+X-Received: by 2002:ac8:5a13:0:b0:4b0:6ffe:5b40 with SMTP id d75a77b69052e-4b0fa7c6eaemr1489841cf.1.1755014198654;
+        Tue, 12 Aug 2025 08:56:38 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b076710ff1sm115145021cf.52.2025.08.12.08.56.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 08:56:38 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E481BF40066;
+	Tue, 12 Aug 2025 11:56:37 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 12 Aug 2025 11:56:37 -0400
+X-ME-Sender: <xms:NWSbaKqAOFqSUaoyBkgVmLaBK3oBM9AQA7AtzOANdnjM5C3skXzLEw>
+    <xme:NWSbaI16qGr668IFZaqExkWEygdHgZ5p3-HsyKO9HEK9mHwSnZjhhOm3xc5RaRDAY
+    _ZDAUtYZYi1UtfS9g>
+X-ME-Received: <xmr:NWSbaBAlrS9V8mAcVT5rGWeLOY7xOe1hwnBM82GuzQDQ0Q6RG0rCAL8Imw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufeehjeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvuffkfhggtggujgesthdtredttd
+    dtvdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgr
+    ihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtefftdelgffgheegfeffteeiuefhie
+    ejkeffgeevjeeffffhtddtkeeghedtheenucffohhmrghinhepghhoohhglhgvrdgtohhm
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedvpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:NWSbaIeli9Ca4Jj0vM_ZkgACUCjubCqi-tW3MlSVyeCr_hHBtcWmLw>
+    <xmx:NWSbaOivOIpEVHfMHYLaPm-yS-cwcJbz3hsINwfRr_Y6eH_kz3h3VA>
+    <xmx:NWSbaIoIov0nETM4fbATZhKHkA6OG2jTNZUQqJu-CV0c8wpAIbiXzQ>
+    <xmx:NWSbaGGWs853dV3fJfwPYuouURMN-MZJ8npvmTglqHlOdocrHk7oPg>
+    <xmx:NWSbaKk1fE9xrztByXWv6Ju21faIRt1g4v-2nzQ_sKEoOPI9DzgWQVSQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 Aug 2025 11:56:37 -0400 (EDT)
+Date: Tue, 12 Aug 2025 08:56:36 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Open Meeting at Aug 20
+Message-ID: <aJtkNLp1pETbl9UI@Mac.home>
+References: <ZPyqLJ62B2GZg6BA@boqun-archlinux>
+ <ZUk14802ZWGpR2iM@boqun-archlinux>
+ <Za_9bJxeyW0pddKL@boqun-archlinux>
+ <ZgHBE8yRuZ5_8Bwi@boqun-archlinux>
+ <ZlX_KOjdd65k9Jkw@boqun-archlinux>
+ <ZqpWRo2M2SaTWU76@Boquns-Mac-mini.home>
+ <Z1ClkseCwaEXS6GE@boqun-archlinux>
+ <Z6IvhjRFU9R32jHV@Mac.home>
+ <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
+ <aEXLAPOV_FrH7Q5C@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,53 +110,19 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250808192005.209188-1-ritvikfoss@gmail.com>
+In-Reply-To: <aEXLAPOV_FrH7Q5C@tardis.local>
 
-Hi Ritvik,
+Hi all,
 
-kernel test robot noticed the following build errors:
+Due to a conflict with Rust-for-Linux / Rust-language sync, the open
+meeting this time will be the Wednesday next week.
 
-[auto build test ERROR on 37816488247ddddbc3de113c78c83572274b1e2e]
+Please join us at Wednesday (Aug 20, 2025) 18:00 UTC at:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ritvik-Gupta/rust-kernel-introduce-unsafe_precondition_assert-macro/20250809-032122
-base:   37816488247ddddbc3de113c78c83572274b1e2e
-patch link:    https://lore.kernel.org/r/20250808192005.209188-1-ritvikfoss%40gmail.com
-patch subject: [PATCH v4] rust: kernel: introduce `unsafe_precondition_assert!` macro
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250812/202508122341.rb7U1Q2P-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250812/202508122341.rb7U1Q2P-lkp@intel.com/reproduce)
+	https://meet.google.com/cik-xrih-wij
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508122341.rb7U1Q2P-lkp@intel.com/
+If you plan to present something cool, feel free to let us know ahead of
+the time ;-)
 
-All errors (new ones prefixed by >>):
-
->> error[E0423]: cannot initialize a tuple struct which contains private fields
-   --> rust/doctests_kernel_generated.rs:8841:5
-   |
-   8841 |     CpuId(id)
-   |     ^^^^^
-   |
-   note: constructor is not visible here due to private fields
-   --> rust/kernel/cpu.rs:47:18
-   |
-   47   | pub struct CpuId(u32);
-   |                  ^^^ private field
-   help: you might have meant to use an associated function to build this type
-   |
-   8841 -     CpuId(id)
-   8841 +     CpuId::from_i32_unchecked(_)
-   |
-   8841 -     CpuId(id)
-   8841 +     CpuId::from_u32_unchecked(_)
-   |
-   8841 -     CpuId(id)
-   8841 +     CpuId::current()
-   |
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Boqun
