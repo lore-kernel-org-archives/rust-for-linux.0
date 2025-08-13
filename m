@@ -1,95 +1,121 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668EF2D5A13
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 07:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6AD2E7BD3
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 07:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755070858; cv=none; b=Vhv3pYwKzmU8rHLYYe9Wjip4D37KRg3Kp0P+gt0cQsTafwhvtQUUCnplFUh67cXowo3QWrQJURajm4SQ4bt+Nd7Um8VKiljIiSVOrWsVYQxIeXHHO1CrhkiIR4JIUvWeX9BRH8C+0yuZcAtqel21lN+J+pvIWlZFMQfBwKel6c8=
+	t=1755071564; cv=none; b=LzeHIMKm3hOmF5KNj8tK9jfc5NvAge060aSWp2+e93MtTHMrOtrYUUXpWloXIJ8gsv0tHkeWHdCQ4e0ApPFE7qLcn/xIUdt1g5pMQMl1t99jmUQL/U/BVkWVNxUoDmqVNccfWddhAio8P28gt9DrJWF3KeUiRL2SpIadT7D2piY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755070858; c=relaxed/simple;
-	bh=c9Ccc4FdRlKahKVue2t027gTXn3WFY4nUn/bdTfbFWk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=njd4f+HHBVhpCHPUCndLerXmp1T75xywgL2kZvJJ9UmkxTs0meWiOEEslho31HrDwa1rDKGbhSn0pD3ZvCY0ZzPKYXTozGU3MJ7bAXDmIqOjnsGK2WnzsnFWx7v39qunANmcgh8V/9zizSjyWRBZh+GnHGj8y16StYcb3sVVrVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oYNS9sMr; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1755071564; c=relaxed/simple;
+	bh=wTHkbolkWVsr/NVVpXeCQCswoJSODOIqqyaUV2Gnosc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uKXumEohratoouXvtdmt19snU4b2V2r5LeGxjlL2MuPmVH36AZDKuXtqBGBz7fTFSCenLWBPJE5U3zlWRzr2VWjspIaJPQkKTzsY/xTiPZB9cxQuluC0U9t4+gd/fOJ4Sga8VjPxFnu5Ltxwk7X9JOuSbZm2PmSjOZWEvH5jDBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z6rea7jY; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oYNS9sMr"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3b788feab29so3849102f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:40:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z6rea7jY"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3b78a034d25so3233581f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755070856; x=1755675656; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c9Ccc4FdRlKahKVue2t027gTXn3WFY4nUn/bdTfbFWk=;
-        b=oYNS9sMr6a1jozHeEjf+SffWX8dSDvJxiFp8QIjNJr1EF9wwdkZQsblYzf+SIU/YY2
-         4bxlhy3CpnZy/s2efNbWCnwrZeR2q9Ut1aWWoZ+TKwEgxVjN83WTgir9MozdhVEiopO8
-         rf9S8FV5MgkKwSUp6zIo0999djvYEhsmEUvJUj65Zyp7aG323LL5AfelEN8METZ2t7P7
-         WLruAOqR46oDWgVfGl78cbp1WyLUOmcVEUcSbk6wd7uBNflOO5KpmTezRTFid0QCFlha
-         XyeLFPxICKNonexgxUOSBWkUURyLDjbiBFzhTyp3Bqeu067/Sy+3wqs/4veTwsL6dE/h
-         LYRg==
+        d=google.com; s=20230601; t=1755071561; x=1755676361; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=02qDuB/EcGaJVS8+Q8TL27euIcDkVRhwVcM5c3itE0g=;
+        b=Z6rea7jYeCtyCSFwOyVUAQIaHXdyS0VCOlSr3MtzNu9Ypcd4ywiMu6dsxcp0n5pOgZ
+         nXpKZ4I1T/ERUEBULOdifeV3JwtOTnXLKRyar86NkCfW2q2Pk3ZNKvxaCaFUNnaWmxgp
+         2IQLbW28wSCax7DqjUwyF48ZuAlsm3+kSGs/+szAZpfB57PIEPOwk7re6nrX52rdC2Sn
+         82EIr2hLkGVnVIWkqgmhCHG1iz3OA5C/HhOaggfDlHfkjkEuecEW1247fROHZdIAaxQd
+         KS4dewOSWkS0VcTdyjTJK+xkNcNVRqpN/A9XQCeHiBKgZMRd17j+hP2ApmtsTZzUP9z1
+         fjng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755070856; x=1755675656;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c9Ccc4FdRlKahKVue2t027gTXn3WFY4nUn/bdTfbFWk=;
-        b=bfWIA6nigXvX+3vinInfIH1e/6X6G36Y6uFg2cbSrj9bKUEq9vUB7bbn/d09cS44G0
-         ufIZw/xOmTvO/HKQnXeo9UUHXOcEU8s8B6CRdbloV5wOhs9KHHm0DhCqQETujh5Abpzo
-         h4+NzOJKOdh4RlNTHIH5UAbL7BMPr6gKTSB0Fx5iuQRzO8xGKeVekCzxNfKfpddmaxSC
-         iG5YBD51JcSgElmNAzGRIKGVeFa3ZxQHfXAQrUWVuPz3GC4qbE58KolvCaEO+npcLk4M
-         z2h6N+UPX7K6txWEM7UBuxpWf8mMmhUHpFlGQ1FoAyNH/IRyH++yg94y7Hnu4wbS9fFU
-         H0cw==
-X-Forwarded-Encrypted: i=1; AJvYcCVebW8aaZlXXqwh9BuINXKeS4c+brhb7rN3KddyPBDA5udRI7QVlvh3PP+OJOAoC9k/4DpJJ0t9gZpAeoGmOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaeSxqF/In/6qs0YxEjm7zZrNtzsT8HNJXY0+5mhi2vJkjxyX6
-	pSHavZ7pZMkupedDTcM3um6VO+RNPZGBzLfLiHGZ0F7X8zMLQg/S43Q1W/rMC51plZ75AlMffVp
-	efdCzJnz2K321NRPAugYvma5R7YD2wU/4NwUj07oi
-X-Gm-Gg: ASbGnct7iHQDuWW6RZ/MsQ7lqrTdFbFxwhkuIjY1mbvUkop03vTaYJYr2ys/jLk6rNe
-	gsAnOTgefp8mVhld4Wa9nUCLQC13D6bgjrOnT5dm+83A2+7Pv3vB+kpgJX4e9GuuKjNADseR33A
-	At+HqAe5OPkh1vBUXynXSdfgKCrdWuKCLPwfCoCPFCyv0+FSqLz2M6cmDIhMwT+gwCXNgbNfu7q
-	iL4AQ3/t2tga15d7vtiJtRwi6Q3C3brreNkY36+0EgYQsjvKpv0DaRx3iw=
-X-Google-Smtp-Source: AGHT+IGGtpaH+it538UfR2iaRDBz9X7fJpT1gAY6RgW0EDKE5fzEZ79ezay15oRdLHx3Xf5OdtuQ3FdbihxaglEAAsY=
-X-Received: by 2002:a5d:64ca:0:b0:3b7:8fc4:2f4c with SMTP id
- ffacd0b85a97d-3b917d2b0f8mr1196666f8f.1.1755070855659; Wed, 13 Aug 2025
- 00:40:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755071561; x=1755676361;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=02qDuB/EcGaJVS8+Q8TL27euIcDkVRhwVcM5c3itE0g=;
+        b=WNK5JRgeTSya/fSNcTFp67gjXr46qe7tsLmmr2XjLE6EFGfLug/ET75hNrxYXE9KyQ
+         tjOr/Ew3DRAdgxA2gSzICBY7BfSiQUsQq4P36+i2fG6WVMEJShxA6fcdNLRN/zolJhmS
+         gSwz4lgAytlHVY9lwwOH6cSZ/qjFsXASJ/nR7M32wT3tIdemY1USLodbvRvg+zsXAtQ1
+         UfLnP96xBonNMPB++bl2NN5OPs9xhOWxUnSE+8D/KUgDvKu+OFUyseSrVhaoWafYInPJ
+         nk0PUlwGxtXGUxFkwIbM2PmWe6yuPmSaPopAHY7OZk3WPWP/65FwDD8s8AqzcTkN0PX4
+         W5nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTUcdW/cJ70mSj8tvyLAMZhHlER/qKJMAl9kheYsg9sG5kKjfIGeJweV1kGx7WhR01NPsmrtJzbxe5wyPg7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfxdRgyaeHMDP/K2HI8UhiaEc5CaeYTEEqgKJiz1iJe0olIIBY
+	GJ5MW0DC0sVJEZ+JCYQMSyJSY7QZnKDLoWyuifp4w75j/ntuFigG9HnfgC2Ci2oqfwFjHkOnc34
+	+qwRkeLteBfl7tRiw0g==
+X-Google-Smtp-Source: AGHT+IFQOnB3WTKhyHtvWJmH83iA6/rYttG73Tf1N82jwPFXufEqb0tOp/a1EyEQXFyeHLXn1qK53ixfr0QTKsU=
+X-Received: from wmbjg12.prod.google.com ([2002:a05:600c:a00c:b0:458:a7ae:4acf])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:5d85:0:b0:3b7:61e5:a8a5 with SMTP id ffacd0b85a97d-3b917eb5b43mr1445076f8f.47.1755071560984;
+ Wed, 13 Aug 2025 00:52:40 -0700 (PDT)
+Date: Wed, 13 Aug 2025 07:52:40 +0000
+In-Reply-To: <DC0N2SBVHIS7.2P91EJSTIT1FM@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250812144215.64809-1-baptiste.lepers@gmail.com>
-In-Reply-To: <20250812144215.64809-1-baptiste.lepers@gmail.com>
+Mime-Version: 1.0
+References: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
+ <20250811-align-min-allocator-v2-1-3386cc94f4fc@google.com> <DC0N2SBVHIS7.2P91EJSTIT1FM@kernel.org>
+Message-ID: <aJxESG0l4-kyUHXg@google.com>
+Subject: Re: [PATCH v2 1/2] rust: alloc: specify the minimum alignment of each allocator
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 13 Aug 2025 09:40:42 +0200
-X-Gm-Features: Ac12FXx8h4Xky-40CstbMiW32Dc7_qYQSYrfMREs0zT_bsEsb1sqx3OupPHpEcM
-Message-ID: <CAH5fLgg6eFYZ906GPFev_nha0axsUR71yC+En4X_fMjSn85UiA@mail.gmail.com>
-Subject: Re: [PATCH] rust: cpumask: Mark CpumaskVar as transparent
-To: Baptiste Lepers <baptiste.lepers@gmail.com>
-Cc: stable@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Tamir Duberstein <tamird@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Aug 12, 2025 at 4:42=E2=80=AFPM Baptiste Lepers
-<baptiste.lepers@gmail.com> wrote:
->
-> Unsafe code in CpumaskVar's methods assumes that the type has the same
-> layout as `bindings::cpumask_var_t`. This is not guaranteed by
-> the default struct representation in Rust, but requires specifying the
-> `transparent` representation.
->
-> Fixes: 8961b8cb3099a ("rust: cpumask: Add initial abstractions")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
+On Tue, Aug 12, 2025 at 07:52:35PM +0200, Danilo Krummrich wrote:
+> On Mon Aug 11, 2025 at 2:31 PM CEST, Alice Ryhl wrote:
+> > diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+> > index aa2dfa9dca4c309e5a9eafc7da6a8a9bd7b54b11..25fc9f9ae3b4e471a08d77130b374bd1397f7384 100644
+> > --- a/rust/kernel/alloc/allocator.rs
+> > +++ b/rust/kernel/alloc/allocator.rs
+> > @@ -17,6 +17,8 @@
+> >  use crate::bindings;
+> >  use crate::pr_warn;
+> >  
+> > +const ARCH_KMALLOC_MINALIGN: usize = bindings::ARCH_KMALLOC_MINALIGN as usize;
+> 
+> I think this needs the following diff:
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 84d60635e8a9..4ad9add117ea 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -84,6 +84,7 @@
+> 
+>  /* `bindgen` gets confused at certain things. */
+>  const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+> +const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
+>  const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
+>  const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
+>  const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
+> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+> index 25fc9f9ae3b4..5003907f0240 100644
+> --- a/rust/kernel/alloc/allocator.rs
+> +++ b/rust/kernel/alloc/allocator.rs
+> @@ -17,7 +17,7 @@
+>  use crate::bindings;
+>  use crate::pr_warn;
+> 
+> -const ARCH_KMALLOC_MINALIGN: usize = bindings::ARCH_KMALLOC_MINALIGN as usize;
+> +const ARCH_KMALLOC_MINALIGN: usize = bindings::ARCH_KMALLOC_MINALIGN;
+> 
+>  /// The contiguous kernel allocator.
+>  ///
+> 
+> 
+> No need to resend I can fix it up when applying the patch.
 
-Only during CONFIG_CPUMASK_OFFSTACK=3Dn, but yes.
+Hmm. Maybe that depends on the configuration? The constant was generated
+for me. Either way, happy with the suggested change.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Alice
