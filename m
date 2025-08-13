@@ -1,116 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C632FD7B9;
-	Wed, 13 Aug 2025 20:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D0827EFE1;
+	Wed, 13 Aug 2025 20:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755115925; cv=none; b=C5GjDD4/Pq/KOcrV+wPeKDvyX/iAC0mIiSdUBD0pvuB6sKvvaWIW5IPAIvSh/Ej8GiKd9sQV7Xj32DQbLXzhsq1im7Jtz9AYn+ssNYj2Pm7ilvs6JFJf+xxqVTEaeNQ8vrEa8Vk/NrgSx8KRVFffG6JrOCc9hB35oAI2Idv6kXU=
+	t=1755117548; cv=none; b=At+7+mMbysf0kjvBiXaqODBgMt2mroyB/rcJ94L0S4kbNqtCRiv3BZN87k8nueUFdm0G+a72bE9klWl0sNlHRXDMITSH4iXHpDd4cqi2pcbuhPGQpEWCeFxYBK4B1kAglOcJsx4LKMYWY5cf2bpP9zWrfBRv36GibtBP+tGQbXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755115925; c=relaxed/simple;
-	bh=Juf1ZTnx/FB2vFj4STFZmefBih8aOZWA68hdzIY4NFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JB5AJSzkOAuoNNWpWM6/mxFcqW4DWDAa05IPPI8B6A+k1q8f82MTGOPHrGPwH8WFxwza2Z62Q8i5PUMxFqiBseCBszGY1Y8l290CpEWaGDltftg5jdoJ+1caSUCrMFD06smVfCPrFhl6E8oj2NHZ8BLE+XYFtbilzDyOaUK8Lgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4096C4CEEF;
-	Wed, 13 Aug 2025 20:11:53 +0000 (UTC)
-Date: Wed, 13 Aug 2025 21:11:51 +0100
-From: Mark Brown <broonie@debian.org>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	s=arc-20240116; t=1755117548; c=relaxed/simple;
+	bh=CjCb5b3c3XVR0SKfAN3cTznTc5gFjabIUuOSBKsePX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nvuMcIZh84dHG91NLa4TTUFWyc8KGyUi9F2G/sQWDf1y6R0ZztrQxpJwRAY/dTyYsroybDXYardxt82ULfJ3n7R66aaUoXASrj2s5xzJwKL0cMqJBRG/fFcX6my/vnKpgScjB/SU1QWbjjzWN8OqwnK7rAuov2Gy3E8+Ep1MerI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dk7QgSt+; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dk7QgSt+"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45a1b0bd237so1481855e9.2;
+        Wed, 13 Aug 2025 13:39:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755117544; x=1755722344; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PBx+aI2GZUNjzRZKCiUKPus1NJlwpPhIvyJpPhFBon8=;
+        b=dk7QgSt+6tJnQ5SN4nC+qNzQKjqyJEW/NqhvB1JebGNnAfG7FQ3sP4NPH6PYOW0pHg
+         66sQcUyGWTGQjFJuY07zP4A5t0kn8x+K5qI9y7CrGRupTYngGYla/oG9Wmd2Y08mSGkJ
+         fdkeoqTgS7c2n+PL8R0y98SSihRy7NP9yBhvuATcm07HrlE/cvarsf03GPdcfbQn0Pjw
+         +zuJ4Vuy8vGM8Ub6COEoCtA922nTBB739zxI47KPulOvHftkYQKBLR2jNyemI7A2GrRS
+         0Wd0RZPtcMMOim4rKhQybMHECa/IwwHFheRAlmguuPYeHl3QlTgq2/KE2f4/R/zimajv
+         Rr8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755117544; x=1755722344;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PBx+aI2GZUNjzRZKCiUKPus1NJlwpPhIvyJpPhFBon8=;
+        b=lx4rnJw1+HAEjDddMgvu5HsvNjfrM7MZbpTsLK4yyJe0ZgyGAMQF6F+kQX/Ec5gRuC
+         Ftq4tbkQL7lFmyyxjHP9ux/liRj55Km5lKerIHMzLQAHvtY5vWdb7SdvBapFveIH80vO
+         iSysMkoNeErRquySWqb005m7fsCbJcna4SorkHfNUgAlGNimutNBCjcmhMIDhDcEoSUx
+         KgxeofAX2TOQ2rhsLitRIzMWT+06oyDJch+6rIyMEG50bLRrYwFoKhyp5DKpJN6u2sTe
+         5JETSUVs2+T9FrUkN0RdeQLhEAMLS66778KAwrHw6gbLJr0MOrSnwVMr28C/49WqyQiO
+         ZxTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjbSQ/ZCtPiPaFrBXc6S7X4qurCxTVJ+tEKtqaP6WK/YsI1PsAYYSWJUIYo+8rBLBTxxUx+I9W0dgBSQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyz1nnaqd4uxbzKfQHRI+O3qhGBnwsMiHUN266FKcKcu5V//Gfx
+	a4KVJ9Eylmbi9g4rxW1qAPe5x7JrcMZiCcF8Tk3t/7WBVbZg131z5ZdZsRmZo52XIJtUig==
+X-Gm-Gg: ASbGncuIGLzdbk+3+YSjlwQfjT7e2+Y7HQhPKFLPySGNpermwQfp8+LEv6OmEE2yI7x
+	/iOn9s5mj2EoAkQ8KlHbrNrgssicNxtjlBpbcCwVB146oBDmxCTJjvdHkW0pNS/9V4s29zgikvU
+	41QMw+2IQvBPJW6cH7Qo2+9GAN+1JneDAFRxpe9Wr2iBa8gjCObQt3YMbgVj290JrBVkDipNJCA
+	YbV6GTdA2fPHlih3E8xBJDmqx2Z+0tbIFrZlwoAbj5PWprZKsMRVvtCuYdI4la/+4zWQPuwf4Ay
+	e8Z8Hvw4fWw9/DiDHfcpb7X+BNlJLOL/VO4fXy58VKdmUInOX1qDOxxqrdk2lRIyDdBI8e3jkLs
+	rezB868q6juBE5AbTSsHJc7hPe30j0lGwGNn+VsY=
+X-Google-Smtp-Source: AGHT+IESLZ8kjjL1lvI2Mv+vn42VzZmwiuHVYUI0mGlwY35FF32aMQH+TZzu0vD93GA8PseijNSLCg==
+X-Received: by 2002:a05:6000:26c9:b0:3b7:9589:1fd1 with SMTP id ffacd0b85a97d-3b9fc36b38emr490839f8f.44.1755117543720;
+        Wed, 13 Aug 2025 13:39:03 -0700 (PDT)
+Received: from PC.. ([2407:d000:a:88a6:5d81:9c3b:954d:498b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3bf93dsm48867283f8f.27.2025.08.13.13.38.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 13:39:03 -0700 (PDT)
+From: Areej <areejhamid8560@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Breno Leitao <leitao@debian.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Liam Girdwood <lgirdwood@gmail.com>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org, linux-clk@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 00/19] rust: replace `kernel::c_str!` with C-Strings
-Message-ID: <34d384af-6123-4602-bde0-85ca3d14fe09@sirena.org.uk>
-References: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	Areej <areejhamid8560@gmail.com>
+Subject: [PATCH] rust: lib: add if_cfg! macro for conditional compilation
+Date: Thu, 14 Aug 2025 01:38:26 +0500
+Message-ID: <20250813203826.3145553-1-areejhamid8560@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6FVk2V0LrGBjdKpm"
-Content-Disposition: inline
-In-Reply-To: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
-X-Cookie: Turn the other cheek.
+Content-Transfer-Encoding: 8bit
 
+Add a new if_cfg! macro to simplify conditional compilation using
+cfg attributes. This macro expands to paired #[cfg(cond)] and 
+#[cfg(not(cond))] blocks, allowing compile-time selection between 
+code branches in both expression and statement contexts.
 
---6FVk2V0LrGBjdKpm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1183
+Signed-off-by: Areej Hamid <areejhamid8560@gmail.com>
+---
+ rust/kernel/lib.rs | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-On Wed, Aug 13, 2025 at 11:59:10AM -0400, Tamir Duberstein wrote:
-> This series depends on step 3[0] which depends on steps 2a[1] and 2b[2]
-> which both depend on step 1[3].
->=20
-> This series also has a minor merge conflict with a small change[4] that
-> was taken through driver-core-testing. This series is marked as
-> depending on that change; as such it contains the post-conflict patch.
->=20
-> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
-> can be taken through Miguel's tree (where the previous series must go).
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ed53169e795c..47e73949392d 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -294,6 +294,42 @@ macro_rules! asm {
+     };
+ }
+ 
++/// Conditionally compiles and executes code based on a `#[cfg]` condition.
++///
++/// Expands to `#[cfg(cond)] { ... }` and `#[cfg(not(cond))] { ... }`,
++/// allowing conditional compilation in both expression and statement positions.
++///
++/// This macro is useful when both branches must be valid Rust code and the
++/// selection between them is done at compile time via a config option.
++/// # Examples
++/// ```
++/// # use kernel::if_cfg;
++/// // Select a value depending on CONFIG_64BIT.
++/// let x = if_cfg!(if CONFIG_64BIT {
++///     64
++/// } else {
++///     32
++/// });
++///
++/// // `x` will be 64 if CONFIG_64BIT is enabled, otherwise 32.
++/// assert!(x == 64 || x == 32);
++/// ```
++#[macro_export]
++macro_rules! if_cfg {
++    (if $cond:tt { $($then:tt)* } else { $($else:tt)* }) => {{
++        #[cfg($cond)]
++        { $($then)* }
++        #[cfg(not($cond))]
++        { $($else)* }
++    }};
++    (if $cond:tt { $($then:tt)* }) => {{
++        #[cfg($cond)]
++        { $($then)* }
++        #[cfg(not($cond))]
++        { () }
++    }};
++}
++
+ /// Gets the C string file name of a [`Location`].
+ ///
+ /// If `file_with_nul()` is not available, returns a string that warns about it.
+@@ -337,3 +373,4 @@ pub fn file_from_location<'a>(loc: &'a core::panic::Location<'a>) -> &'a core::f
+         c"<Location::file_with_nul() not supported>"
+     }
+ }
++
+-- 
+2.43.0
 
-Something seems to have gone wrong with your posting, both my mail
-server and the mail archives stop at patch 15.  If it were just rate
-limiting or greylisting I'd have expected things to have sorted
-themselves out by now for one or the other.
-
---6FVk2V0LrGBjdKpm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmic8YYACgkQJNaLcl1U
-h9Cumwf/YkCiNa2FUFyl0xap34GT0uNu8Xh2QH5gQa+2jI19lL8u1OybvUdzWI8N
-dryQmdo4BgnkEFiIeCiAWIUh8fHachIQqfAZfj8yJRexfSk3R0S/Nrg8CfGa9myh
-jkwom0F4sUSvZpsacG1c/oCya64UwN/bCgC+Yw2fivCPjjw/vz1JE5gtarpJEQly
-EJBbiexaSe0XYdtZ3cIT4wm0YElZqekk8U953MglLhWOOLXzt59bkslAam/8fori
-si1u/uVgWv1vyziB8dYHRa26Gsgy9OkgjCD0P64YWkoAV/uSnxsEo5wtWBx2ys1n
-pZ4kmgo8dh16iRQ7pqHeV2g3wE9HiQ==
-=xgNk
------END PGP SIGNATURE-----
-
---6FVk2V0LrGBjdKpm--
