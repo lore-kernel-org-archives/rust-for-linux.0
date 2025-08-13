@@ -1,66 +1,65 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29521D5CD4
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 07:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653062E9725
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 07:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755069501; cv=none; b=AuCdxNx8AjqJkWwbcfhtcc4cSRnFGr2YB2ifemvaMXld83a/lHJSAOcDV506pJ07D04b9FclqzL1a98ISRKYf8VDo1ltzEnY1D2Byvbmvk5+jx0Ba5WVGZd6ydhKgW8kNgKhCn4gbSYAUvZqacqkhfM0ypNx6nwrqCtu1CgsY/I=
+	t=1755069686; cv=none; b=rgDDugstH25T+0OFaxv/WEks+zKLS/jEU017YJ7aagVRGwn2LIc8CYX/9eLmr0uv8C/WTKk48FYKcW4Ka5u9LJZSfQbTsvpch2T8hIdzCebjJ9Q21cL2JFL4cbvGN4Q/3dj35GPPot9sb3JMi5CjmlyGaABx20TN3EpuryhrKJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755069501; c=relaxed/simple;
-	bh=76//572e3GuN8QuIbbgtVsmbxe2c+f4YWelOTwIFWV0=;
+	s=arc-20240116; t=1755069686; c=relaxed/simple;
+	bh=yYtc86jTqQuPqXSQG7t/PuhwvRbJ/TjC3YM7JlrgQis=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BjSiuLCErMXE7f16Zx49qqSq91g2JSi6mWBLtC7SqNbg3DMvfbpZy0RwNccmWIEJdHDFhUBYn6J4FLMvSIZoAMd/i3cm7BHM81pLCkaRPeASb7XGtztpMOTZFOLchUSthz1r+G/TfMz3QoMG6ZriXdcFNEe761QmbUE11aCEwlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KqgHbZBF; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=YjdkMLIiEIcs+b7S9E6skZ2vKFnRGH5HOEdWIlBbiAaamHLXqhoM50PtsOq+1pKlbSz7+Q3qjzIR7pyjI6s2Eu0oz8CJiYbwpg5vJBaI0yES1FpgOj/UW343bzVhgEHHCOyNZb9Skze6kv7PLJgfX1iBjNee92XwNtm74bx2OCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AnKapQiv; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KqgHbZBF"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-459dfbece11so31964935e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:18:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AnKapQiv"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4595cfed9f4so28460185e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:21:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755069498; x=1755674298; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755069683; x=1755674483; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b8PGywyUjn2jqIoFYcL6q2Rc5vzcUYBuErIM9vPcqig=;
-        b=KqgHbZBFClClymRWFHGpdQ3zgru0hEd4qaEYJ9byi2OWidZ007wpmXOycXSf9qAfZ+
-         K2SupGndWP11nQhEtgjUX2v2fkeqMW/1hlVjUhU2uqfRGdWXCdDr4OZCRAqZcOz6JyCI
-         iIfOSc5oiDbjD7Koh9EYePbrcmEr/UmVYcAziGZgumYBsW6lpmU+pj1cSjckvOtiVY8i
-         vdL80RMUEgLO9qciKMZrsUhYpOJONJutlJ5471ItBgy+fbC2qp/fK6RUc8vBubvntgeR
-         Jm1AL7Inm3dchEFmsGLyH2W/8GtG0vgmHSohFqc/tlp19Qvmza4IrruwTM42IEi5KAhN
-         7t8A==
+        bh=6auZLdmjrU9XvvBQvF7iO6sbfbUfX9sDWwrhFdoryBw=;
+        b=AnKapQivXVs34H1YWSRid2s/9ImyCzBp5v+YrliZiWR3hBrH7kTGtareYVsbInDeNV
+         MBRjSxSYbfQ31vtC86mgOv2jSNcQ+C4oNSV7ZL/m/8RlYHu7XssmBKbMvzf8q7h4J462
+         uoLfm4/w8jIN2mmqgAYxwdzycDB2Vik72QDOcrcKJ7UpMfja3kD2HI+O6MBCh7FNekhT
+         2g2WX6sdDWKguqnNXF9uEp792g88yRNZdJfFSZYanLqyDoVu/DHBDjGLGdUrqUjczrxG
+         HWI/vbZahyvNrjy2tAEF9NH2V4bwdm19TCs2xLK2mzw0FIhwbd5ra6LlSbYbXUigmxSE
+         JcSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755069498; x=1755674298;
+        d=1e100.net; s=20230601; t=1755069683; x=1755674483;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b8PGywyUjn2jqIoFYcL6q2Rc5vzcUYBuErIM9vPcqig=;
-        b=Oq3joVIjrdZacpRwqLBHxr7C1Fs0GJT6SEgVKtnVmvMKP1A2N4S/ALLQMTyhifFh8U
-         HYAYAOtT2EKYeOITAoTaub0lPOxp1uCWjbsg86vd3ASie+Aqet1FZoNExJU8zaYBUae8
-         RF6mIW1AtEuHcueZ5ZbeFlAXJMy0hM0umJiPWqEjtXh3mcV340dU1jtfNHbKqVDXI+pT
-         P1+jxvBjrhnKAEpTm6V7VSytxu2mSltyoQ/4cuVlmVtWyj/NAoxYHZ61bNALGsTkNPlN
-         4SO5ehyIbHNa+km/9rYJQF/6gNRilTELswlvjSev4IcYOhVqIR5VRli+AEzBsi7zVQV5
-         DAKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVH2LpV9uN5U0OAGUQr5+7uFu2XEE+9masmvsJWaTk6fcv2+5uWqlFogRV039rYu/P6oSxgHMOrguZSnUeiew==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwehQnNXzZ0u846WSjiceoKgcu+luLYfQ7kVVjgz90u505gs6sQ
-	+gv9K857IG8vsLmE8MfqRZdbQqExfQ60ngk13RLGioNccIkFGr/1vDwagL0ozu3YNaVf0kb4dxk
-	ofkVUlliT3ej0igTDAg==
-X-Google-Smtp-Source: AGHT+IFYAm0EM8LGqSZmqKj4g6RbZs5uWJ6zUvXyA5Y9b4tkpBxnEvOrAIIuhQP/5o3wMcKMghvX9znN7995pOQ=
-X-Received: from wmqa2.prod.google.com ([2002:a05:600c:3482:b0:459:dac7:4ea6])
+        bh=6auZLdmjrU9XvvBQvF7iO6sbfbUfX9sDWwrhFdoryBw=;
+        b=NGfWpRfsu+d/7YHKSkF20MHNmWhpzCpM7mgBktW59YajOqAfbK6gVl5xKdmG89BbzZ
+         s5Unfs+LX2147coeHAMKuaPRcRCD5Qey7xzNDjQgoHsG7d/11sGU1UIftaW9y8oRHsKW
+         2kr/WZdmqnSJsA9KhfpSu/8Hv+Z0qHrlTe/X43KvI3ELO1coU57al7EgJlw/OLbeDRni
+         S4PEC5JqJJAhQrN3yN+mCMP6actcBB8q5MjfpCZJVgeqDGDRl9BY+Oors79hsx74TKoB
+         MJcCrH1XfpU/a9c2mivO26U2NA1N3F26Qy480tybkmTu3pqLUrP4ZRe+aUzfVbnRtCOD
+         Tdkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWcqPg/459FpsgJB1nqt1TOZ5tRrNDqoTkOtIo1dnXWdypC920042dd9UNjV9RqXSqxRs50itGvb93BuFezmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywsc/vxxHPy942aMJheLN52QHVY6F+VqNmnVAQnLy1ZSibB9dh9
+	pB82/PtYpR50i7ncMdypAfAR4U0FLXqkrtQqZyOokT1XqD0zp9iAwTMGzOWCMj3bPMkvGPayO4g
+	D784pEKzSAnuVnvdD4Q==
+X-Google-Smtp-Source: AGHT+IF0Y//cw0eQBZRIh69r+ikstzcZPTKfdKKV7ybr3e7Hu/OWn7hC8UwPmHe3snLhsQgpFa+DXwZzHEcEXCo=
+X-Received: from wmbes27.prod.google.com ([2002:a05:600c:811b:b0:459:d67d:cbd1])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4ec6:b0:458:bf7c:f744 with SMTP id 5b1f17b1804b1-45a16609bebmr14368275e9.32.1755069498178;
- Wed, 13 Aug 2025 00:18:18 -0700 (PDT)
-Date: Wed, 13 Aug 2025 07:18:16 +0000
-In-Reply-To: <20250812-rnull-up-v6-16-v4-3-ed801dd3ba5c@kernel.org>
+ 2002:a05:600c:548a:b0:456:1824:4808 with SMTP id 5b1f17b1804b1-45a16602c99mr13135805e9.32.1755069682800;
+ Wed, 13 Aug 2025 00:21:22 -0700 (PDT)
+Date: Wed, 13 Aug 2025 07:21:20 +0000
+In-Reply-To: <20250812-rnull-up-v6-16-v4-4-ed801dd3ba5c@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org> <20250812-rnull-up-v6-16-v4-3-ed801dd3ba5c@kernel.org>
-Message-ID: <aJw8OO4v141gFBVy@google.com>
-Subject: Re: [PATCH v4 03/15] rust: str: expose `str::{Formatter,
- RawFormatter}` publicly.
+References: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org> <20250812-rnull-up-v6-16-v4-4-ed801dd3ba5c@kernel.org>
+Message-ID: <aJw88P7K_6GFmWvW@google.com>
+Subject: Re: [PATCH v4 04/15] rust: str: introduce `NullTerminatedFormatter`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -71,10 +70,19 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Aug 12, 2025 at 10:44:21AM +0200, Andreas Hindborg wrote:
-> rnull is going to make use of `str::Formatter` and `str::RawFormatter`, so
-> expose them with public visibility.
+On Tue, Aug 12, 2025 at 10:44:22AM +0200, Andreas Hindborg wrote:
+> Add `NullTerminatedFormatter`, a formatter that writes a null terminated
+> string to an array or slice buffer. Because this type needs to manage the
+> trailing null marker, the existing formatters cannot be used to implement
+> this type.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+> +    #[expect(dead_code)]
+> +    pub(crate) fn from_array<const N: usize>(
+
+Don't you delete this function in the next patch?
+
+Alice
