@@ -1,56 +1,56 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD821BF58
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 12:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B36C136672
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 12:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755087375; cv=none; b=eoYlhC3ECR2ymkCFVj5ZO8C4PBVW6hdOQ9R3VNdfdAsWpxhSq++Q84sLKF1Lg6YJepnH2wBqO6T/BVhBO7RQ+ZyEJs2Sbzz+X4bxo+ZOT2+6lFgJjLmn/qezPEPxemD4SpKdz6r6eVUS0CPgtZ7h0kB2sL6Mi11iXhHTM5rf9q4=
+	t=1755087422; cv=none; b=jkMv+vC1MxzRg7McMm0rkn+FwT24WL6ACGkMFol3SlM2NQjBmfNnxK++WUP1viaKh4dv7ZF4q0Pnp3L8OCwEjZaB0vGnZe6XTt9dbgysdaYHmJOH5oWlOX2a1nQLH/ysyo6H2GUvaezZOjpe1LS5XMOuJUH4PD8EkH/HHYsNWvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755087375; c=relaxed/simple;
-	bh=KTxhxErkoGgk/leFb1vBfn7BgYRjz8Airvmxh2BK/so=;
+	s=arc-20240116; t=1755087422; c=relaxed/simple;
+	bh=wAo2VqlFlJopjFFfSucdmHCi26JHGsyjifftNs9pg7Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FJlOftIbGMFjoy3loPtOCFhZwIc9SuO7RiUzDHCzmEp9BTSA0wgel6L8aCBDw79FlmsQqnQ9Y3E36WVHTZItBOqOiAveMMEhZAgDP/DnwD5gmwJD/NEJ0T+16qJV84O8VaVcqrbwA1IZRyVnG38WpwS+NmqwIlLyaPeuvhjyGek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XbTwTFmm; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=Oe2WlvEO8/JabhhPDDlYC9gUbXvkgrmYStNPJtHgYmAyTiYXpzBzprwmnvX02nRxIueK9kpzgfH17fZlbkgMggsa8c9ipQgtNB2mtaNPmEbHFvJGXrtUH4KnMiLXqi7bTk9o8HzcDbP8XEpG7T1g3gIJsE6z0LQJl1hEhF2MA5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oJ+2Aba2; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XbTwTFmm"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b783265641so1342810f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 05:16:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oJ+2Aba2"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45a15f10f31so4732455e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 05:17:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755087372; x=1755692172; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755087420; x=1755692220; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aAcPy6OOvaDLuQladKA+UxyQehpIidG6jH1BCeWHQN8=;
-        b=XbTwTFmmbHI5J3agCyaBGjc5d4WYnjRRJtHLO3V0bI95ko4skDPrXR5L7dhz3qoccV
-         JUfcsuB8TldH0d0cRTa5Stg/iVeStSAHanr9Vk06QxUynCxt8HtWLnzl8j0PwplaefTx
-         fqe/7VjNgySAV/HcVD2fkuu/DLbkZ9sZJg875Q0gEEFTMe92PBGYc+I3n3BMvkmtwWvw
-         q7nyuz2dL/fUUz8giOxHvkusFWCpi8UtJEwIR3CV+oKJvsGLeumcGMf9s1qKfQj7ltyi
-         UdPeZY/KhWyiVoBKlaRnTPfjL8ArmkQW+JupUE07rJ3FqUXFvvHEEBF4Ws0sw8gIUjwW
-         NZzw==
+        bh=azHdJtvoWCo9lbLQNxh8/rKwr+/it+wez+K7ot8lNP4=;
+        b=oJ+2Aba2kBOqSoEqwcCZLtzLiRlti6Mky55NLlI4vqcCq/3CGh9EHQC4UCk6rxlCHs
+         81Nub0WmJhCtZFm1dTZAgqM9KNtk8X0deKYUoz6nZLcxwoK8wDTRtZkJify9kWQ4waJn
+         9T71kO+Z7V4Bpcdtw2X5uQoGxz4y3xNNWhpkxD39SihQc3akA+cBLSysYanZ3gEB5Gul
+         2UMTv4UEyLYrs95JXUlhBS2vhIKsOrFWjQNoycwFvCJfom7VvRIb2M/RwJ2DOyMjzMfV
+         ICaY4/SeM3sbmBDBvdi9f2AgX449eW+rcPmATny2IAZJSoPDJoosmOkxAald8lGJnHa/
+         8X0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755087372; x=1755692172;
+        d=1e100.net; s=20230601; t=1755087420; x=1755692220;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aAcPy6OOvaDLuQladKA+UxyQehpIidG6jH1BCeWHQN8=;
-        b=lHXyLHPw6N7E8vPInTIGCRIDSDak9RknyOoyXz/sCpHspzxnYoP0lFVFzz/vvPocQ5
-         WwfR1FpJbLCR82O4L6aJub6fkdHqq3fiZCV2L5YhqAEk11/OwwuHR/2kKhboYUnO7Gt5
-         i20RcAnd00gNJ/yL1RLBq8kCXog2e9aQmQG/JvfHutsRal/cIeau0qOo+2IXmTVvlkYj
-         ofgsu/Uo6PmMSjJdhTefr95nufcub2i0xGUEdTynMk8UGtcC+w26i8528XQIHAYfOUJa
-         BnMUlETqOZgIggUBPGV6rjH+Wg8x5LRyfW+Z4JgORIcHM2nq1kJ6l+yLqPr6Chqc0QFO
-         +qLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUme12+o2bKzVxLeFBmlFTJhGSVTjR+LEY8zrQ/Y7lLvPxAvcA+upxf2XnhGTpZLyiMravTUYnSd7JQkwiSHg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrZzsiAhT400dgZRPK5u/vHJQfC0cz8Ou2fkrdtW8tRG9htE52
-	AwVeaXg6VdClkuy9qe7kEjhY57uQ50KrUnEXpiXUPznM2CuO8/D1YZ+31+dgQtZdI37la9j2cly
-	FzBXNlp4kKywzNAc82Q==
-X-Google-Smtp-Source: AGHT+IHQ0m8F2SjtH5Qg/7q2hHM6FptOekHUq3DOw5fmB7MUe0ubMRTJVwa0W90hEX/2RnQENQYYs5PVkQXrucY=
-X-Received: from wrbed6.prod.google.com ([2002:a05:6000:20c6:b0:3b7:84f0:22c7])
+        bh=azHdJtvoWCo9lbLQNxh8/rKwr+/it+wez+K7ot8lNP4=;
+        b=tSu9vQRrYwRIx4bfG8aZKHyOY/8ybYNTuaiAAHpFBnZQB7hEv9o0MvAxFw1ycknP6G
+         f6MibAA3pVrmfsiz+PjwkGPRnpcnHn2CnSwAdt5jpi1DTntJG0a9IAx6+lz1vjle6pY/
+         9P4i6gqLRcJOsEQIl+sN0DiLODSLUEHQvdMtSikgzqHC9ZihHHyQJTOcpkHGOBd7h7eA
+         g+j01biInYl5TU6ky83HL4V/XqXzuhzG7Jznmmc+Lkv+7MyeXv/lW7POK95bGw4BSwCK
+         NAdXTerVgvs7tOvct1dlvNPyyqJ1dDzmjD5dR42HVb66buRPWq7ieCGOFLlYJ80UqhWG
+         BFCA==
+X-Forwarded-Encrypted: i=1; AJvYcCVfm0Hu2QEqUxXmD56t9ewu2Cla/bBBMP79M2Jim0jPXxuZp6lN/fCcAKlmEC8UnZaIolcedCM2zs3f1KbcjA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxGgWkdxYGCXsIkcCgrA9DYqdPc6sphNT0uSz5i3XTFmwj++0e
+	3iJ3Ghpna48j1Yvd7AaattED9kp2u0f8mwVG+Jlehv9uIF1pLy9yDKqZZDaE4ZsYXXy89vfO3Ph
+	wSJ14RaYrKAugPBM42w==
+X-Google-Smtp-Source: AGHT+IHjmy+UviZ4eW9rsL27U2fQ6FLiqNhcpr1Ge5BkDRbzHCvmzxNi9aapvYSs1nGodQf/yqh86ceebrZUDl8=
+X-Received: from wmbdv5.prod.google.com ([2002:a05:600c:6205:b0:459:dc8a:ec9f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:238a:b0:3b9:53c:24a4 with SMTP id ffacd0b85a97d-3b917eb4a14mr2231295f8f.39.1755087372444;
- Wed, 13 Aug 2025 05:16:12 -0700 (PDT)
-Date: Wed, 13 Aug 2025 12:16:11 +0000
-In-Reply-To: <DC19IMWVL93E.S1AO2KPXB3HU@kernel.org>
+ 2002:a05:6000:40cd:b0:3b9:13a4:729 with SMTP id ffacd0b85a97d-3b918c15ae8mr1790773f8f.7.1755087419665;
+ Wed, 13 Aug 2025 05:16:59 -0700 (PDT)
+Date: Wed, 13 Aug 2025 12:16:58 +0000
+In-Reply-To: <DC19RGJ4EPSK.1QRTOMYUKY34@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,9 +58,10 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250813-iov-iter-v4-0-c4f1932b05ef@google.com>
- <20250813-iov-iter-v4-1-c4f1932b05ef@google.com> <DC19IMWVL93E.S1AO2KPXB3HU@kernel.org>
-Message-ID: <aJyCC9E1kr4onwJ3@google.com>
-Subject: Re: [PATCH v4 1/4] rust: iov: add iov_iter abstractions for ITER_SOURCE
+ <20250813-iov-iter-v4-3-c4f1932b05ef@google.com> <DC19RGJ4EPSK.1QRTOMYUKY34@kernel.org>
+Message-ID: <aJyCOstIjMuvzLwH@google.com>
+Subject: Re: [PATCH v4 3/4] rust: miscdevice: Provide additional abstractions
+ for iov_iter and kiocb structures
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -69,47 +70,60 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, 
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Benno Lossin <lossin@kernel.org>
+	Benno Lossin <lossin@kernel.org>, Christian Brauner <brauner@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Aug 13, 2025 at 01:27:41PM +0200, Danilo Krummrich wrote:
+On Wed, Aug 13, 2025 at 01:39:12PM +0200, Danilo Krummrich wrote:
 > On Wed Aug 13, 2025 at 10:27 AM CEST, Alice Ryhl wrote:
-> > +    /// Read data from this IO vector and append it to a vector.
+> > +pub struct Kiocb<'a, T> {
+> > +    inner: NonNull<bindings::kiocb>,
+> > +    _phantom: PhantomData<&'a T>,
+> > +}
+> > +
+> > +impl<'a, T: ForeignOwnable> Kiocb<'a, T> {
+> > +    /// Create a `Kiocb` from a raw pointer.
 > > +    ///
-> > +    /// Returns the number of bytes that have been copied.
-> > +    #[inline]
-> > +    pub fn copy_from_iter_vec<A: Allocator>(
-> > +        &mut self,
-> > +        out: &mut Vec<u8, A>,
-> > +        flags: Flags,
-> > +    ) -> Result<usize> {
-> > +        out.reserve(self.len(), flags)?;
-> > +        let len = self.copy_from_iter_raw(out.spare_capacity_mut()).len();
-> > +        // SAFETY: `Self::copy_from_iter_raw` guarantees that the first `len` bytes of the spare
-> > +        // capacity have been initialized.
-> 
-> Technically, this covers the safety requirements from inc_len(). However, do we
-> want to provide a list of justifications if the unsafe functions has a list of
-> requirements, such that they are easier to match?
-
-I will reword to:
-
-// SAFETY:
-// - `len` is the length of a subslice of the spare capacity, so `len`
-//   is at most the length of the spare capacity.
-// - `Self::copy_from_iter_raw` guarantees that the first `len` bytes of
-//   the spare capacity have been initialized.
-
-Ok?
-
-> > +        unsafe { out.inc_len(len) };
-> > +        Ok(len)
+> > +    /// # Safety
+> > +    ///
+> > +    /// The pointer must reference a valid `struct kiocb` for the duration of `'a`. The private
+> > +    /// data of the file must be `T`.
+> > +    pub unsafe fn from_raw(kiocb: *mut bindings::kiocb) -> Self {
+> > +        Self {
+> > +            // SAFETY: If a pointer is valid it is not null.
+> > +            inner: unsafe { NonNull::new_unchecked(kiocb) },
+> > +            _phantom: PhantomData,
+> > +        }
 > > +    }
+> > +
+> > +    /// Access the underlying `struct kiocb` directly.
+> > +    pub fn as_raw(&self) -> *mut bindings::kiocb {
+> > +        self.inner.as_ptr()
+> > +    }
+> > +
+> > +    /// Get the filesystem or driver specific data associated with the file.
+> > +    pub fn file(&self) -> <T as ForeignOwnable>::Borrowed<'a> {
+> > +        // SAFETY: We have shared access to this kiocb and hence the underlying file, so we can
+> > +        // read the file's private data.
+> > +        let private = unsafe { (*(*self.as_raw()).ki_filp).private_data };
+> > +        // SAFETY: The kiocb has shared access to the private data.
+> > +        unsafe { <T as ForeignOwnable>::borrow(private) }
+> > +    }
+> > +
+> > +    /// Gets the current value of `ki_pos`.
+> > +    pub fn ki_pos(&self) -> i64 {
+> > +        // SAFETY: We have shared access to the kiocb, so we can read its `ki_pos` field.
+> > +        unsafe { (*self.as_raw()).ki_pos }
+> > +    }
+> > +
+> > +    /// Gets a mutable reference to the `ki_pos` field.
+> > +    pub fn ki_pos_mut(&mut self) -> &mut i64 {
+> > +        // SAFETY: We have exclusive access to the kiocb, so we can write to `ki_pos`.
+> > +        unsafe { &mut (*self.as_raw()).ki_pos }
+> > +    }
+> > +}
 > 
-> Either way,
-> 
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> I think this should be a separate commit.
 
-Thanks!
+I can split it.
 
 Alice
