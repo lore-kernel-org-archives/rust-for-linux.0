@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95E82DECB7;
-	Wed, 13 Aug 2025 11:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638B274420;
+	Wed, 13 Aug 2025 11:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755084891; cv=none; b=QrNViixFqRHjhidTKWXoqaQLFB/iQAKDB06y3Zsd/gSrrkjBUy43hTkDEnGumMDhYLwA/JO7958ttWVQQJHqovfj2J00XnKBPyQYqQ5rqwTY+jHe0aMFmXOqMabUqELfDXfrx6n6/UebRgAWWyewuJAMh4s2vIRCd2xdoesDfGs=
+	t=1755085158; cv=none; b=k4xVFWue0sia1n4E8urXWAHHq9I6p3ybH0x2Sx+GnpqBh2N/CCELt6KT1LzhVgQDQK9BzQnDQSP3EGiyHnUBM9oPArna2CI3YxaGxYSC/vbvKO27wdoFpe/J3ntB5P+EGztF2zPqVtHlkmzpOV0uYSQa5BuVdjXKTGRq7e9rXZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755084891; c=relaxed/simple;
-	bh=X4vNORY0gNVMLcTMbJBl9AZI/E/tVAyLeI+zBrGpA20=;
+	s=arc-20240116; t=1755085158; c=relaxed/simple;
+	bh=5IhWcO6Hlh8+7Bh9KVR8E9e7jvvQP/xcEdo0b6n7GpM=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=lIJ1U+bYS9NGYr638uFICCmI1LPm2B+eyRPjQhvjevW1oHCZaqHo4k6ov01TvwMUt6d4pLY28tKPlLlXar14tDNJ6ywPx/oK8oKWPug6n/4gzxErAvsRHmLeNCN5wpjkyxjaWFhHaEggxZ2wq/jkeOR/IVHKOKvpmGrz6lLDoI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=elQKqUFt; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=W6nzr2tnV4SZUN6XdcOWc5iSjn7XZKSTv1OjGkidL9vM1AoB7rB2VSSv0jaovfjE9ciWCYkiIUoGhL5iaaXZ06DjVvaD2HasYFI8KSN3XFGCsWoEvcPMiSc/Z7PZScEvRztOmC31UHXZ8+IXHFJyCQyTYkm/2W4r5bKaCKmcj1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bdvK7816; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="elQKqUFt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A5FC4CEEB;
-	Wed, 13 Aug 2025 11:34:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bdvK7816"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98326C4CEEB;
+	Wed, 13 Aug 2025 11:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755084891;
-	bh=X4vNORY0gNVMLcTMbJBl9AZI/E/tVAyLeI+zBrGpA20=;
+	s=k20201202; t=1755085157;
+	bh=5IhWcO6Hlh8+7Bh9KVR8E9e7jvvQP/xcEdo0b6n7GpM=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=elQKqUFtQbPTMzjD1auLz1Vhx8wScCFz+KJ8+ho15GyriBPh0Z/PWLIqdrle5YcUc
-	 ovzroerAJnqYl4CBbMJO3927jtHjbHEJOoxYYYl6uo4BMtAuOBSfNMpcGaqG7l9BNJ
-	 23i6RImwJg/i4ja0i0v4NLeMnTcLa5QoyZI6veLzE44l/3PZ4alBMRnUua/6aauwsG
-	 5rYYwJ35ZTFOhjAPvspahvXHCVS3xSK2fuYVGFXYfGS9SRSykRh7M11ki0QxPCPlS7
-	 j+bnCGcBwyOBDOxLEnhjBB0Xv+EhquG6sF/4zGQ1LoiYFw5CTAAOgZBy+QygdaEotW
-	 6zFHE1RxvyQDw==
+	b=bdvK7816x427a1xdfXtGxAsNJFmHCD9Ct09EqV7Eaa2KDYZ3vB53SYbbttqizc9wC
+	 1mgVzmvtnoVtlTU7rW/p0+BXLRJYOyapTOkcnbvKvH0dhDCjM23tviej/L7oYjJFyO
+	 2b6+2YoSr+QcGsvLrhxqQz3JeEtCMhdfSj2nZPf7GqxOs4LrISczAwFKGzZ7MsYof7
+	 OyIw+EkPjD20+0YLhhTzav91/rMqhezlACZtsUiAI3Db7rF5DoD6UZVypfmLF/C2iB
+	 UW9PrUXcHlGlXR6Q7qlABBH5x/nebN5tkiJPoHHIg3a4mVGBl+6KxFvlPKPBce8dXZ
+	 mlZfZ9iyu98aw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 13 Aug 2025 13:34:46 +0200
-Message-Id: <DC19O2AXINJW.3DS7GDDU3O3E1@kernel.org>
-Subject: Re: [PATCH v4 2/4] rust: iov: add iov_iter abstractions for
- ITER_DEST
+Date: Wed, 13 Aug 2025 13:39:12 +0200
+Message-Id: <DC19RGJ4EPSK.1QRTOMYUKY34@kernel.org>
+Subject: Re: [PATCH v4 3/4] rust: miscdevice: Provide additional
+ abstractions for iov_iter and kiocb structures
 Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Alexander Viro"
  <viro@zeniv.linux.org.uk>, "Arnd Bergmann" <arnd@arndb.de>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
@@ -45,69 +45,110 @@ Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Alexander Viro"
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
  "Trevor Gross" <tmgross@umich.edu>, "Matthew Maurer" <mmaurer@google.com>,
  "Lee Jones" <lee@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Benno Lossin" <lossin@kernel.org>
+ <rust-for-linux@vger.kernel.org>, "Benno Lossin" <lossin@kernel.org>,
+ "Christian Brauner" <brauner@kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20250813-iov-iter-v4-0-c4f1932b05ef@google.com>
- <20250813-iov-iter-v4-2-c4f1932b05ef@google.com>
-In-Reply-To: <20250813-iov-iter-v4-2-c4f1932b05ef@google.com>
+ <20250813-iov-iter-v4-3-c4f1932b05ef@google.com>
+In-Reply-To: <20250813-iov-iter-v4-3-c4f1932b05ef@google.com>
 
 On Wed Aug 13, 2025 at 10:27 AM CEST, Alice Ryhl wrote:
-> +    /// Write data to this IO vector.
+> diff --git a/rust/kernel/fs.rs b/rust/kernel/fs.rs
+> index 0121b38c59e63d01a89f22c8ef6983ef5c3234de..6ba6bdf143cb991c6e7821517=
+8eb585260215da0 100644
+> --- a/rust/kernel/fs.rs
+> +++ b/rust/kernel/fs.rs
+> @@ -6,3 +6,6 @@
+> =20
+>  pub mod file;
+>  pub use self::file::{File, LocalFile};
+> +
+> +mod kiocb;
+> +pub use self::kiocb::Kiocb;
+> diff --git a/rust/kernel/fs/kiocb.rs b/rust/kernel/fs/kiocb.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..84c936cd69b0e9b490d54c87d=
+8c7279b27d4476a
+> --- /dev/null
+> +++ b/rust/kernel/fs/kiocb.rs
+> @@ -0,0 +1,68 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Kernel IO callbacks.
+> +//!
+> +//! C headers: [`include/linux/fs.h`](srctree/include/linux/fs.h)
+> +
+> +use core::marker::PhantomData;
+> +use core::ptr::NonNull;
+> +use kernel::types::ForeignOwnable;
+> +
+> +/// Wrapper for the kernel's `struct kiocb`.
+> +///
+> +/// Currently this abstractions is incomplete and is essentially just a =
+tuple containing a
+> +/// reference to a file and a file position.
+> +///
+> +/// The type `T` represents the filesystem or driver specific data assoc=
+iated with the file.
+> +///
+> +/// # Invariants
+> +///
+> +/// `inner` points at a valid `struct kiocb` whose file has the type `T`=
+ as its private data.
+> +pub struct Kiocb<'a, T> {
+> +    inner: NonNull<bindings::kiocb>,
+> +    _phantom: PhantomData<&'a T>,
+> +}
+> +
+> +impl<'a, T: ForeignOwnable> Kiocb<'a, T> {
+> +    /// Create a `Kiocb` from a raw pointer.
 > +    ///
-> +    /// Returns the number of bytes that were written. If this is shorte=
-r than the provided slice,
-> +    /// then no more bytes can be written.
-> +    #[inline]
-> +    pub fn copy_to_iter(&mut self, input: &[u8]) -> usize {
-> +        // SAFETY:
-> +        // * By the struct invariants, it is still valid to write to thi=
-s IO vector.
-
-NIT: I think we usually say type invariants.
-
-> +        // * `input` is valid for `input.len()` bytes.
-> +        unsafe { bindings::_copy_to_iter(input.as_ptr().cast(), input.le=
-n(), self.as_raw()) }
+> +    /// # Safety
+> +    ///
+> +    /// The pointer must reference a valid `struct kiocb` for the durati=
+on of `'a`. The private
+> +    /// data of the file must be `T`.
+> +    pub unsafe fn from_raw(kiocb: *mut bindings::kiocb) -> Self {
+> +        Self {
+> +            // SAFETY: If a pointer is valid it is not null.
+> +            inner: unsafe { NonNull::new_unchecked(kiocb) },
+> +            _phantom: PhantomData,
+> +        }
 > +    }
 > +
-> +    /// Utility for implementing `read_iter` given the full contents of =
-the file.
-> +    ///
-> +    /// The full contents of the file being read from is represented by =
-`contents`. This call will
-> +    /// write the appropriate sub-slice of `contents` and update the fil=
-e position in `ppos` so
-> +    /// that the file will appear to contain `contents` even if takes mu=
-ltiple reads to read the
-> +    /// entire file.
-> +    #[inline]
-> +    pub fn simple_read_from_buffer(&mut self, ppos: &mut i64, contents: =
-&[u8]) -> Result<usize> {
-> +        if *ppos < 0 {
-> +            return Err(EINVAL);
-> +        }
-> +        let Ok(pos) =3D usize::try_from(*ppos) else {
-> +            return Ok(0);
-> +        };
-> +        if pos >=3D contents.len() {
-> +            return Ok(0);
-> +        }
+> +    /// Access the underlying `struct kiocb` directly.
+> +    pub fn as_raw(&self) -> *mut bindings::kiocb {
+> +        self.inner.as_ptr()
+> +    }
 > +
-> +        // BOUNDS: We just checked that `pos < contents.len()` above.
-
-I like this one (and the one below). It would be nice to have a lint asking=
- for such
-comments, such as I'd like to have a "FORGET" one. :)
-
-> +        let num_written =3D self.copy_to_iter(&contents[pos..]);
+> +    /// Get the filesystem or driver specific data associated with the f=
+ile.
+> +    pub fn file(&self) -> <T as ForeignOwnable>::Borrowed<'a> {
+> +        // SAFETY: We have shared access to this kiocb and hence the und=
+erlying file, so we can
+> +        // read the file's private data.
+> +        let private =3D unsafe { (*(*self.as_raw()).ki_filp).private_dat=
+a };
+> +        // SAFETY: The kiocb has shared access to the private data.
+> +        unsafe { <T as ForeignOwnable>::borrow(private) }
+> +    }
 > +
-> +        // OVERFLOW: `pos+num_written <=3D contents.len() <=3D isize::MA=
-X <=3D i64::MAX`.
-> +        *ppos =3D (pos + num_written) as i64;
+> +    /// Gets the current value of `ki_pos`.
+> +    pub fn ki_pos(&self) -> i64 {
+> +        // SAFETY: We have shared access to the kiocb, so we can read it=
+s `ki_pos` field.
+> +        unsafe { (*self.as_raw()).ki_pos }
+> +    }
 > +
-> +        Ok(num_written)
+> +    /// Gets a mutable reference to the `ki_pos` field.
+> +    pub fn ki_pos_mut(&mut self) -> &mut i64 {
+> +        // SAFETY: We have exclusive access to the kiocb, so we can writ=
+e to `ki_pos`.
+> +        unsafe { &mut (*self.as_raw()).ki_pos }
 > +    }
 > +}
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+I think this should be a separate commit.
