@@ -1,138 +1,116 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0062F998A;
-	Wed, 13 Aug 2025 19:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C632FD7B9;
+	Wed, 13 Aug 2025 20:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755113193; cv=none; b=bgRmePeE+i6pQpgrJfp1AoqAqJYg1QcNkgyUzvij1200N3YZ/tLWc7g693ykhXVlIoWN3xq/SBeiI4WBkV5+TTHTYyu/jN/PBKZ4vcTtG8zyRWSxN0ssNEG7yT5RpPVpRK/KGYXXu3a+OEtbZw803vqf6GXHdU5jtUGUlNL/G6A=
+	t=1755115925; cv=none; b=C5GjDD4/Pq/KOcrV+wPeKDvyX/iAC0mIiSdUBD0pvuB6sKvvaWIW5IPAIvSh/Ej8GiKd9sQV7Xj32DQbLXzhsq1im7Jtz9AYn+ssNYj2Pm7ilvs6JFJf+xxqVTEaeNQ8vrEa8Vk/NrgSx8KRVFffG6JrOCc9hB35oAI2Idv6kXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755113193; c=relaxed/simple;
-	bh=RFBBQlHRnkNYzzKSJ6hIcRMJ4NrYVoHlFmTcHfe4flg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=F6946x3Ga9bYEbaESqy/KW68cSAegxnm0v1knwOhufRgOgHEh8RQCYHF0Dsum0XCn1tu6Jq/PzBUc0ExW7BbcpCzsuOVxoFbrZJZ2jzZ1M4SK7qoXm5cnrBT+aqIYBEM0zfTQSEUItvBhriAgCANp5ch23MJDD4uCHC6jUxz7S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KH+QN3as; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KH+QN3as"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b4717563599so75430a12.3;
-        Wed, 13 Aug 2025 12:26:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755113191; x=1755717991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=poj7FxUdJ2JTjxAX+M2fvgvulHtue+zz+NWRBAXK06E=;
-        b=KH+QN3asGxw4fv/CgTmri+z/bi+DUM624yH9ctpk/WV40NmAYjfLmq2ew9FIKUqG9D
-         4YPqi+272ucVtZam3IHrbcvuli+bsZuUbJjv36xFOYYfGS5Jt4htDU4cmMCBFxfW7CQb
-         cgieuAjYaNaD9UnQCe84G/0uoSjuCfJ4LLkyiVYx9lh1UqMNzDxeSvZ75rglDMH0a1KE
-         UJR0gdk7I8a0eWze73wnaXBuelSm7EzWMNGZpIPoh5xGmREolg0vBBioyHmka3QZDhCb
-         zYKYN2YzGDIxeX7SrPXLo9jAkAEtlJRPgbRJ7t3Tm0xXDrDXv4aWyFeItsRaRLGK2Q4S
-         loxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755113191; x=1755717991;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=poj7FxUdJ2JTjxAX+M2fvgvulHtue+zz+NWRBAXK06E=;
-        b=BriQOP1HPd1+xDRJRX5j85HKMa3WvmsgITKxn6foRZdPaWbd0wjmZj/H+wIngf6VzY
-         Cuf+E89v5Jw/jTcPzqTIlPcUDgNyl00FjyfvOD38Uijj6yhMzPpy5KKzNuUvlfydhT80
-         NCptzTRiFN+wiksXnhwtt1QnA1h72bY2HvBiIg7OTxov84/WhC1E2jm+Gtz+x5xXvVVF
-         IB9Gs06qkLUY4KCKDCSJFrxUZaq9e87zYrx1nbqZnBmsyxvF+hkAcd3W4gxGPyLTAkVu
-         UM5vaFuXVVKoTQ22XWDqDu6WQX7sv9XppoXOHN9LVzUjeg091DF9ALrRQ+4+oEJwYVQe
-         adTw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnPhL89oQmm93XKw6oKqaRSGTz994wI59q6Pf+eg7UxLd5mB1q9l48H8ur9bPezLqcJnG+k8E80ZWscPA=@vger.kernel.org, AJvYcCX+EZdlO54pyLkyL7YHpZ1IhCkxsFsouo/Ciu8+VIe/TUW/3oCjl50oyLNhJgYoaDbOV2U6ZlXYwkaS5Vv4iSk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywx6lTjYkjOQHFCsc49Bx2RkwU3wsdiD/uA/0K217lpGldd3r+b
-	auhKUGVh7TRd35PSPsYbTWuXXIEhs9UhLrbmxUTr5nEbIiu5RagqT9JP
-X-Gm-Gg: ASbGnctrY/PQy/9sFNLY/lJt4l68RNjRbxTAvnKd+KgPtIHU1xZexEgoFJp+BhMNJ/9
-	1QPfRIsFV6KZXUt5NBfq1D2TvebBIrI/ovgGxZKExvqxknfAb33YY8nkCgQA7KorWqtbdH8RG01
-	i767D5f3hTGYJJoJEgwSj/JYbWNeZlOXfr4LMDnUB3ZbkXGD7inqZW64s+MMoTHW2MObm4r9RJe
-	xhNWo3drGcTEgIMnm2WVjO/EfweIJ1Lgvg+hIU31pVclcqBv8AMuYvcl6iJod9H4bT7Kz0X4hXV
-	8zefMaKlBbbsLPYVhV8/SpN84+YOfE7SpT/KZJKZURr2Xi/4zdATEenaH5ivpRGiiEZujGax93X
-	iIckcmx3GlIvjYmQfXclpFRT4+EPvuFiCRO22
-X-Google-Smtp-Source: AGHT+IEGj1Q2xRz6Xt2WVuCgpqbRCBJdrpMzyjN515raj6kZrfnWdWTXSklBiROvb9eYbWPZiQXXng==
-X-Received: by 2002:a17:902:e743:b0:242:fbc6:6a83 with SMTP id d9443c01a7336-244582ca727mr4225945ad.0.1755113190679;
-        Wed, 13 Aug 2025 12:26:30 -0700 (PDT)
-Received: from shankari-IdeaPad.. ([103.24.60.31])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2422ba1e09csm306391195ad.16.2025.08.13.12.26.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 12:26:30 -0700 (PDT)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
+	s=arc-20240116; t=1755115925; c=relaxed/simple;
+	bh=Juf1ZTnx/FB2vFj4STFZmefBih8aOZWA68hdzIY4NFA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JB5AJSzkOAuoNNWpWM6/mxFcqW4DWDAa05IPPI8B6A+k1q8f82MTGOPHrGPwH8WFxwza2Z62Q8i5PUMxFqiBseCBszGY1Y8l290CpEWaGDltftg5jdoJ+1caSUCrMFD06smVfCPrFhl6E8oj2NHZ8BLE+XYFtbilzDyOaUK8Lgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4096C4CEEF;
+	Wed, 13 Aug 2025 20:11:53 +0000 (UTC)
+Date: Wed, 13 Aug 2025 21:11:51 +0100
+From: Mark Brown <broonie@debian.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: Re: [PATCH 4/7] rust: fs: update ARef and AlwaysRefCounted imports from sync::aref
-Date: Thu, 14 Aug 2025 00:56:21 +0530
-Message-Id: <20250813192621.25255-1-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250716091827.816971-1-shankari.ak0208@gmail.com>
-References: <20250716091827.816971-1-shankari.ak0208@gmail.com>
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Liam Girdwood <lgirdwood@gmail.com>, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 00/19] rust: replace `kernel::c_str!` with C-Strings
+Message-ID: <34d384af-6123-4602-bde0-85ca3d14fe09@sirena.org.uk>
+References: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6FVk2V0LrGBjdKpm"
+Content-Disposition: inline
+In-Reply-To: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
+X-Cookie: Turn the other cheek.
 
-On Wed, Jul 16, 2025 at 02:48:27PM +0530, Shankari Anand wrote:
-> Update call sites in the fs subsystem to import `ARef` and
-> `AlwaysRefCounted` from `sync::aref` instead of `types`.
-> 
-> This aligns with the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to sync.
-> 
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-> ---
-> It part of a subsystem-wise split series, as suggested in:
-> https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
-> This split series is intended to ease review and subsystem-level maintenance.
-> 
-> The original moving patch is here:
-> https://lore.kernel.org/rust-for-linux/20250625111133.698481-1-shankari.ak0208@gmail.com/
-> 
-> Gradually the re-export from types.rs will be eliminated in the
-> future cycle.
-> ---
->  rust/kernel/fs/file.rs | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-> index 35fd5db35c46..18cf579d3312 100644
-> --- a/rust/kernel/fs/file.rs
-> +++ b/rust/kernel/fs/file.rs
-> @@ -11,7 +11,8 @@
->      bindings,
->      cred::Credential,
->      error::{code::*, Error, Result},
-> -    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
-> +    sync::aref::{ARef, AlwaysRefCounted},
-> +    types::{NotThreadSafe, Opaque},
->  };
->  use core::ptr;
->  
-> -- 
-> 2.34.1
-> 
 
-Hello, can this be picked for review?
+--6FVk2V0LrGBjdKpm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The initial patch which moves ARef and AlwaysRefCounted to sync/aref.rs is upstream (commit 07dad44aa9a93) [1]
+On Wed, Aug 13, 2025 at 11:59:10AM -0400, Tamir Duberstein wrote:
+> This series depends on step 3[0] which depends on steps 2a[1] and 2b[2]
+> which both depend on step 1[3].
+>=20
+> This series also has a minor merge conflict with a small change[4] that
+> was taken through driver-core-testing. This series is marked as
+> depending on that change; as such it contains the post-conflict patch.
+>=20
+> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
+> can be taken through Miguel's tree (where the previous series must go).
 
-Thanks,
-Shankari
+Something seems to have gone wrong with your posting, both my mail
+server and the mail archives stop at patch 15.  If it were just rate
+limiting or greylisting I'd have expected things to have sorted
+themselves out by now for one or the other.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+--6FVk2V0LrGBjdKpm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmic8YYACgkQJNaLcl1U
+h9Cumwf/YkCiNa2FUFyl0xap34GT0uNu8Xh2QH5gQa+2jI19lL8u1OybvUdzWI8N
+dryQmdo4BgnkEFiIeCiAWIUh8fHachIQqfAZfj8yJRexfSk3R0S/Nrg8CfGa9myh
+jkwom0F4sUSvZpsacG1c/oCya64UwN/bCgC+Yw2fivCPjjw/vz1JE5gtarpJEQly
+EJBbiexaSe0XYdtZ3cIT4wm0YElZqekk8U953MglLhWOOLXzt59bkslAam/8fori
+si1u/uVgWv1vyziB8dYHRa26Gsgy9OkgjCD0P64YWkoAV/uSnxsEo5wtWBx2ys1n
+pZ4kmgo8dh16iRQ7pqHeV2g3wE9HiQ==
+=xgNk
+-----END PGP SIGNATURE-----
+
+--6FVk2V0LrGBjdKpm--
