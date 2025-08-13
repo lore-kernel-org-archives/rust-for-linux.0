@@ -1,97 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEA935977;
-	Wed, 13 Aug 2025 15:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3891CEEBE;
+	Wed, 13 Aug 2025 15:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755097665; cv=none; b=lRp73g/z8Vn8oXkJhU/NDwyux5F4opqeCs5BFV/GZd66yo25MllvIycSk81q5o97HZfITjXz5w13ocr4b+Thz6ruB0DCVh35E4ZV+qGNwUqCurG3CyrmoB3askApAcZquvuqvLe2/P63tnVmvVwY9yyyvxiCZQWuXjJE7symQsk=
+	t=1755099167; cv=none; b=dhVMRPtUz7rO5eePH7jnpL7jI/q9xzRzDTGn1tDFywe4jrF493mut92fUmhh/q6pW6g84WHlT49vkdaOjH4Jr7JNsSylIhB+Kwhfn6hOov7TgIXhe2zgwn61Ocz79F4Lul8tdAH8Np8UoOTlsGPr9hcYTcf+fcWcCISJkbVUXOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755097665; c=relaxed/simple;
-	bh=4gygrHPcm56qsPqtSIULPZO9eKZFnIsDVyMn5VmpQwo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=nSobGemFjSuWwW/ZtGgkvwiVE9L/ZPrjQ4qwX61p0DnD7AvJ0JCrm9Se3JwAT/stHqCzde58RkR0sIi6/qBZ/HdCvnXaJ9HwQeyoj2/dm5HO1Oqke+mea1qlZk6HZ4iEIdK+HwRC08nwyVygd7LJdm/lMZQt9ZZKsL2usPC5oRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K/xm8xJp; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K/xm8xJp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34F0C4CEEB;
-	Wed, 13 Aug 2025 15:07:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755097665;
-	bh=4gygrHPcm56qsPqtSIULPZO9eKZFnIsDVyMn5VmpQwo=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=K/xm8xJpakKu7oVtPtkeei94hI5k4tH85a16o5ygnjcVL3bUw5VeOh6SlW1x+QSMF
-	 25YwJSlXoJ8P0qgeAMy9MJIlUKakzxd9nSx3rQTIXJByUV/FOUjJpsaG70o+xvIUu/
-	 iyRY69HkDVsSbPHTiiuWDXc4zVd8LM9HbDcbcISotNmygJAJT31g0+vmrekV9ZhWwO
-	 U43+M4ncy46NZmid+0H737mlzFXgY7v8wVQ9aHHKTHw1ZjtujyDWHUaFH9TQJkHs/i
-	 InjE4h0Lu9pkQJ3c3tLOeIUp/fyfkjQxw6wZvyxmYc+wGlMdSTxlWbXqC2VToLrQux
-	 iGkt7rXEG1SkQ==
+	s=arc-20240116; t=1755099167; c=relaxed/simple;
+	bh=D/uvKpo6QWrljkkhIfUFoaMPZb+JGNXElpWPMpHscq0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=op5AcbRd9fMsagukSrGg4Lum638ueZSK/VQFzNg+XwS7Bj0PyZ0CuRZ2/wRyCLETwB6meBc1NT1Jxxg92QbsTu4kVzdhIG2Wpf/FcfbroFTKo+82R/qorly2ImnzaPK9eU/89asuECODtFh+Ze/bdZPD+LISkDGuKTsJCz89mZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
+Received: from [192.168.12.24] (54-240-197-224.amazon.com [54.240.197.224])
+	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id D7B93400AA;
+	Wed, 13 Aug 2025 15:32:41 +0000 (UTC)
+Authentication-Results: Plesk;
+        spf=pass (sender IP is 54.240.197.224) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=[192.168.12.24]
+Received-SPF: pass (Plesk: connection is authenticated)
+Message-ID: <ade03ed8-e815-4135-9b75-ac7f58c5693a@arnaud-lcm.com>
+Date: Wed, 13 Aug 2025 16:32:41 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 13 Aug 2025 17:07:41 +0200
-Message-Id: <DC1E72OCYMMU.1C1EWX0YPDEOT@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] rust: devres: fix leaking call to devm_add_action()
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-References: <20250812130928.11075-1-dakr@kernel.org>
- <aJw7sx0p0Ec-oLkz@google.com>
-In-Reply-To: <aJw7sx0p0Ec-oLkz@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] checkpatch.pl: Add warning for // comments on private
+ Rust items
+To: joe@perches.com
+Cc: apw@canonical.com, dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20250729195615.34707-1-contact@arnaud-lcm.com>
+Content-Language: en-US
+From: "Lecomte, Arnaud" <contact@arnaud-lcm.com>
+In-Reply-To: <20250729195615.34707-1-contact@arnaud-lcm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <175509916269.4108.369360240532251769@Plesk>
+X-PPP-Vhost: arnaud-lcm.com
 
-On Wed Aug 13, 2025 at 9:16 AM CEST, Alice Ryhl wrote:
-> On Tue, Aug 12, 2025 at 03:09:06PM +0200, Danilo Krummrich wrote:
->> When the data argument of Devres::new() is Err(), we leak the preceding
->> call to devm_add_action().
->>=20
->> In order to fix this, call devm_add_action() in a unit type initializer =
-in
->> try_pin_init!() after the initializers of all other fields.
->>=20
->> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Hi !
+Just checking in on this patch series. Is there anything I can clarify 
+or improve to help move this forward ?
+
+Cheers,
+Arnaud
+
+On 29/07/2025 20:56, Arnaud Lecomte wrote:
+> Hi,
 >
-> This looks ok:
+> Background
+> ----------
 >
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> The Rust-for-Linux project currently lacks enforcement of documentation for private Rust items,
+> as highlighted in https://github.com/Rust-for-Linux/linux/issues/1157.
+> While rustc already lints missing documentation for public items, private items remain unchecked.
+> This patch series aims to close that gap by ensuring proper documentation practices
+> for private Rust items in the kernel as mentioned in the coding
+> guidelines for the Rust linux kernel: Documentation/rust/coding-guidelines.rst.
 >
-> But can't we do it like this instead?
-> 1. Allocate devm job.
-> 2. Initialize inner field.
-> 3. Use allocation from (1.) to devm_add_action() infallibly.
-
-Theoretically, we could with a few additions to the C API. But I don't thin=
-k
-it's worth and I don't think we should do it in the context of this patch.
-
-> This way, there's no risk that the inner value may get dropped, which
-> could be an expensive operation.
-
-If we actually fail to allocate a devres node on the C side, I'm not that
-concerned about having to drop data.
-
-However, there's also another reason why I think there's no need to conside=
-r it
-now: I still have the rework on my list to get devres callbacks in place su=
-ch
-that we can first revoke the Revocable objects of all corresponding Devres
-objects, call synchronize_rcu() once, and then drop the contained data in-p=
-lace.
-
-In this context I also plan to directly embedd a struct devres_node in the =
-Rust
-Devres type, such that the *only* allocation that remains is the final one =
-when
-the user of Devres allocates for the final impl PinInit, that directly or
-indirectly contains the Devres.
-
-Once we have that, adding the devres node will also always be infallible.
+> The actual solution comes in several parts
+> ------------------------------------------
+>
+>   1) Patch 1 : Implements detection logic to emit warnings for improperly
+>   documented private Rust items (e.g., // comments instead of ///)
+>   through a set of heuristics.
+>   2) Patch 2 : Adds an auto-fix mechanism via the --fix option to help
+>   developers correct documentation issues.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1157
+> Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+> --
+> 2.43.0
