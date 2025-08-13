@@ -1,116 +1,155 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D242D321B
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 08:25:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E384A2EE5F5
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 08:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755073546; cv=none; b=EAqR1hVDTPKs8IS5vXUYGng1n1Sn9MyM9X1ZTjVSs/YAQYctUpvbrXXncqh3AcJNj9K6fQHqUPQEPCLtoVm8NxEOra0IzVjVOdPjGTsdZJzGSAY3KXSrFPyUx/M67WA9ielhL+JVQvdwqkHVH4ESZ8NZjso5CBK+IBSbe0Zi/iA=
+	t=1755073650; cv=none; b=De5NxY0DePaij5hIMIiunZ399D0YkSq/peKt73kc+2hNFgJyd5a0DWVNMqZGBbVx0f62cYXacjUwxVDJeTQXOAS1jf8J2RYTvI/+LT9liYIwA4y3Ylyj8s6kOrGfpDm5eqnwOU5oSHT3mwVaH/Nqy5tvaCikG6b9TAa9+hZtFxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755073546; c=relaxed/simple;
-	bh=TfyHyM+aPoGATUw4nqeYMrokly0/0joq/A4xYGbqR60=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GjnGmKjnjC2kF8t0rram7AIHVrDYfAew+CrA71IIU9A09nykZtVc57Rc46TCaqkXsCUnD/FxYz9YKg1BTJrC/NMd0HQiuo9HHZsrp/oeq5jNbvCR8N8LA2orcm9wdhSegZ9I4wM0Er3oZghO3GU6IC0jlDyf+v+CA/L4aLVTRkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2Zdb4IQp; arc=none smtp.client-ip=209.85.221.43
+	s=arc-20240116; t=1755073650; c=relaxed/simple;
+	bh=uy/Iw+XWGBLly+HHdmY98LIdt0CV7nmd76FKd60CxfE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mmqGHyS/Mq68AkGE9norZAZhg9jePA+u8Cld1CPUhnagy2ohB1KUI2V7qyIy/Jf2HZTzxD3nFB+uaQsNfywexTcBlExSMSi0tpN6S3QGI9/tUX36Cp5kbXtl0ezu1nkzc1SWQr/nqKpNV9CqgQxOP3d9SbzlAgNIZ4B4MiPVBAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3Z/umrxF; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2Zdb4IQp"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b783ea502eso412473f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 01:25:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3Z/umrxF"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b78329f007so3728773f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 01:27:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755073543; x=1755678343; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TfyHyM+aPoGATUw4nqeYMrokly0/0joq/A4xYGbqR60=;
-        b=2Zdb4IQprIJ0hjhgFxmzeKHBqFWu8DWwq8GaxAWt9Bt5tJpOEaR0J1vf3WSFQlvDyC
-         wHGnIqA46v49qLZuu8YynwMDvYCGatGSj1A6cAhCf0CvdGAmvIMNbeovyniPLqHO/eK/
-         oL26bjQzRoYOhuXQg60uAstIl0HBq5a4MRo0gXf6sqMaz03TCdYwLVMY7NfaJnl2vQVN
-         p49gH3xag6EZnr2eSplkv1SC6REycYiF1P2BgVRv7VkUcyRWwvVINa10QH7UMDgqIaDR
-         6aX85o1SwZ7sRdiJYvfvekTrgp7oR2z1T+gjnJPNqxqa2XPcc4x8BkpFRk+ykRfRDqmm
-         n5rA==
+        d=google.com; s=20230601; t=1755073647; x=1755678447; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qimbAAoxT8ZeS1FOvJvAo6rG4Md7ODurdBa5LI6o3gA=;
+        b=3Z/umrxFSe5KCQAvlx7lzjPGU5g62x++9gAGUjKNRojEQV58OUvH9vYWWRw7gNq70I
+         lXggNVsCS0Kcrki/XMeXgAEPD9HoKumJjmAmV6KsAeLkA7YhH9dH/NDOqdJt21NKyJtR
+         9JxcCXRi9r809fyO+sz6iSygN+splXrGgpQlTXKHG79W1nVbonFhlPMTIhpqqy8TC1DM
+         JEalITedwxVlL1ZwyAjHNLSz4SGLLNIaULSSeQ6TZyfFP3XGzIBN1J793B+Y21hN7fbx
+         5ta9AYRiclYk6oTHjPhHA6u0OU6LVyRhbuDUslusv77waU0+LEzJm9fyx4K5ueHqgGPm
+         XHfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755073543; x=1755678343;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TfyHyM+aPoGATUw4nqeYMrokly0/0joq/A4xYGbqR60=;
-        b=LorGQdtiqwcrdSAuFaLrpyNRnHTbZQidoSvU7vMEe0reXVMNU1Dl/DVPux6BqhDqGb
-         MZSctkm8k4lxaY/AA7Vw6dLdU1rfr1Orn+C9ZOO3NrbGnPlEg+8Y3JV/F9jxSGhfYyIT
-         CerPvQ+5WmXEEeFzrrKuFTUZfxXxHId5/qg/fD/Rx8I7M2C/cC2lzq5UOCtfxkoPL4R4
-         LS38xjaE2MYBNXMi7PRuebJgDe+kE1mYXx7dUeBUpHpTY7zyxZn7cvWkPv1N+7VJsoNZ
-         K4BBvO7hB79XJR/aip/6Y2nu9z0vpIc0quYImLJfenuXQdkBnIwdm/1QaKr4n4vI2nOt
-         KFTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEb60IR9r3gi1qtxEwG6v/pvxzXhARgIF/XIipFbXPkeXUHbyBNAFSBxK608lV7fgsGtUtCcdDkyTZBvC9Og==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhY/zpj21Ow8sE3OlOXh2ncVE1NS/OUXDxS6ZVc4i7mZ9tLRxw
-	vv1ZK+Hy9J9E2reQHVO7rapEAremvzrF41gKWEYhzeom9hxOD8a6by9SrQQ1D59AX9AZ7dD+eSx
-	YBxtwj6oNLkKhiCjrz9vOQ9EF3hShv745VsLX/MTc
-X-Gm-Gg: ASbGncvRUf/32+IQJ37jBvcrOqSAoKyT+BXxyRp17+G9LVftFlOTR76cHQ3ozh0NaCd
-	8QG2VQlXLXBmTzycBBOZdX7D46MqLgp1LDOsclmioYaPiYYdTLBUx8kkZOvyZ1Fny/NUoSsnWiK
-	rHE+l0QI0bUelYuboFgoN5YxSwEf/wOQ7OVWLsyDD6UPz2OBmDVkLrcwfk5lYkITw1iR4TqUkQS
-	4Mn52zVjcMKt17F+8LE8aJVc1V9iLo6yt1bww==
-X-Google-Smtp-Source: AGHT+IGY8xOJhuxXer2/3Pbwrp1emdix1e/JoImlcCZrrHv9N9isJvPlPDtFtYalPYDTjWDI7ClusCqF8QmRUwherEo=
-X-Received: by 2002:a05:6000:3101:b0:3b7:8ed8:1c80 with SMTP id
- ffacd0b85a97d-3b918bf96d8mr1067834f8f.3.1755073543000; Wed, 13 Aug 2025
- 01:25:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755073647; x=1755678447;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qimbAAoxT8ZeS1FOvJvAo6rG4Md7ODurdBa5LI6o3gA=;
+        b=v5uQEvjhSFenIzfMMR5IRfF8CiumrLCs13z8kYXLkPNRc8cf+z969La9vYHakS4XdU
+         Mjk9b61Q88+HEolVegS86wd/uW6kwSRdnxq9hoPhNpj6p4tnyZrx21RnJ8xKdxZFCAuN
+         14OBsYHOwNyOFBlKD9q2its7x3jcruNFsx5ARiju48rIYmGv2NEHYMCy6g0IBYZ+alFv
+         G4KdEqWEYMV7HbdN4FF6LvKDIlrKOlemYVHIsDPub13umnUrGeeOtZSL1hKkUZnkeaNk
+         E8JGFY8zt5DvxLQNsYnl/hkRLmAs7XWNuLEx13cL5awRGloHm3oAH4w8cyD5+LOz96EX
+         HPmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWAYH5euUcO9NTAZfp7ap2xt86+QgeYw4RytiaxAqSTyB+OHLQWBp9V1M/vL/xWhz2SD1l5NUFOqYbCOzWuhQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+gUKTirfjv/3Tj1COnc8uKp90uyWi3m7LARwCh7p/fET8FBoz
+	T1LP18dB44nU+J8svUqfuIfm2MtuPmlFl7sA03DdVaI7qpOsaeMny3MOXpMA9rTqcwu4tjnVwIp
+	vHr/eovDqj3WpnpZ3Ng==
+X-Google-Smtp-Source: AGHT+IEbzHDEA9Xcjx7US9S+uclopgBEUuk+xo320UgBoIkE1EjePMRTfYAL8dOp/IU2GQ1AlO0j45cZL4SGzGY=
+X-Received: from wmbid6.prod.google.com ([2002:a05:600c:a186:b0:459:d4b5:52cc])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:314c:b0:43c:f44c:72a6 with SMTP id 5b1f17b1804b1-45a17258921mr9201445e9.2.1755073647042;
+ Wed, 13 Aug 2025 01:27:27 -0700 (PDT)
+Date: Wed, 13 Aug 2025 08:27:16 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250722-iov-iter-v3-0-3efc9c2c2893@google.com>
- <hpbmPd1Q-NkvYKLgqaQjVLXCh6FOGHnM7qKDqY2kMnrK27N9UT2w1xvS6x4c7aO9_lQNI_G83Jh_usDUF-BPEQ==@protonmail.internalid>
- <20250722-iov-iter-v3-2-3efc9c2c2893@google.com> <87y0ry80or.fsf@kernel.org>
-In-Reply-To: <87y0ry80or.fsf@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGRMnGgC/22QwU7DMAyGX6XKmUyxE9pmJ94DcQie21liy0hKB
+ Jr27njbgSI4/vb/fZJ9NpWLcDXb7mwKN6mSjxrCQ2don44zW9lpNujw0XkAK7lZWbhYimNInNy
+ wg9Fo/VR4ks+b6vlF817qksvXzdzgOv1H0sA6O/UUwQdOI4anOef5jTeUD+ZqafhDDi6sSFSS+
+ 5jSQDAFx39IvyIRV6RX0vNEkZBwjP4XebmfUvj9Q5+x3O8xr6my1f1Blm3X+g0MthBo+/INDUs Dy0IBAAA=
+X-Change-Id: 20250311-iov-iter-c984aea07d18
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2476; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=uy/Iw+XWGBLly+HHdmY98LIdt0CV7nmd76FKd60CxfE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBonExosgq1Bx5w2KM6Im73vtXLq9cx1HbCg836D
+ kZoz+wmbYGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaJxMaAAKCRAEWL7uWMY5
+ RsJ+EACFwgEUSo7zu+JZfLI+CAkYpUdKzxSPHR1QUJHdnSkPle62fo0C/kj2ggV18BkgA38qu6Z
+ 2o5++A8S5+S8G1HZ3Gu5TGy8m3YvP+etNDrQyuwzB93/aJqIAt9oX4YxJrYqfxbl7M3OiG6NP1V
+ /pDHnTYMhIuJt/d0ZtPl+1bzpG+ll7VMxaOHVPjrGvCqZFv2f0Gryd9gdbBanIQGiiXm4/xQsGA
+ ZfuF3p38F0ryWxpIlZ9/ug5JHYGMGdC2YTq1kxAnmWWQu18mX3OKUoijZf6TeIbi/pje8gupSga
+ 2XOMkR96z19NMl78SrxLFJ9sV3F+v3RSbCm4tzUBRBu2JUoLOQ3kbkUMeqQTX1QxeQRu64cQSI3
+ 067UlNFdsy5uIThqazzWTbYCA9ZGXgZI+FmTTUMm3BdMoudEL9PqpfmL+uM7+mca2iRa2jESvK8
+ aW6Y26B9HykbZdhcrXqnPI5b44CufI9VQyNyOqNb4aoL3Dpa1d2mhNomsR77YMS33YRtOftupsE
+ cRvTKYWh5S1BlemlpY+gCcSl22nEXrIAkISTytNuRTJNtji/1/DsqNEpEegGLsaIrGfkcrp2OqZ
+ cwEerUHF1E3BefXA35+kohTJtIrZX2lgpK1n8ZdYgiuCnUGNFIxlq7U1Cm6UIwXdUP51eiN+83U srEuJ05ggh7QjoQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20250813-iov-iter-v4-0-c4f1932b05ef@google.com>
+Subject: [PATCH v4 0/4] Rust support for `struct iov_iter`
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 13 Aug 2025 10:25:31 +0200
-X-Gm-Features: Ac12FXzKZ6feZxlTBnmeKx7gtVOW1A7zFEt6VNKxhvPnfB3R5NozAOUkzYS4tRc
-Message-ID: <CAH5fLgjNu9YaqzEoaHfoxCA3Rh5_4t_AvTEMHNqb0vYKaRcpag@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] rust: iov: add iov_iter abstractions for ITER_DEST
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
 	Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Benno Lossin <lossin@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Benno Lossin <lossin@kernel.org>, Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Aug 5, 2025 at 1:31=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
-> "Alice Ryhl" <aliceryhl@google.com> writes:
->
-> > This adds abstractions for the iov_iter type in the case where
-> > data_source is ITER_DEST. This will make Rust implementations of
-> > fops->read_iter possible.
-> >
-> > This series only has support for using existing IO vectors created by C
-> > code. Additional abstractions will be needed to support the creation of
-> > IO vectors in Rust code.
-> >
-> > These abstractions make the assumption that `struct iov_iter` does not
-> > have internal self-references, which implies that it is valid to move i=
-t
-> > between different local variables.
-> >
-> > This patch adds an IovIterDest struct that is very similar to the
-> > IovIterSource from the previous patch. However, as the methods on the
-> > two structs have very little overlap (just getting the length and
-> > advance/revert), I do not think it is worth it to try and deduplicate
-> > this logic.
->
-> Is it not like 50% duplication? `as_raw`, `len`, `is_empty`, `advance`,
-> `revert`. It looks like it makes sense to me, but =F0=9F=A4=B7 We can alw=
-ays do it
-> later.
+This series adds support for the `struct iov_iter` type. This type
+represents an IO buffer for reading or writing, and can be configured
+for either direction of communication.
 
-Well, maybe. But I think having those be duplicated leads to a simpler
-API for the end-user.
+In Rust, we define separate types for reading and writing. This will
+ensure that you cannot mix them up and e.g. call copy_from_iter in a
+read_iter syscall.
 
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+To use the new abstractions, miscdevices are given new methods read_iter
+and write_iter that can be used to implement the read/write syscalls on
+a miscdevice. The miscdevice sample is updated to provide read/write
+operations.
 
-Thanks!
+Intended for Greg's miscdevice tree.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v4:
+- Rebase on v6.17-rc1. No longer any dependencies.
+- Adjust wording of `revert` safety comment.
+- Adjust "deinitialize" wording to "write uninitialized".
+- Adjust several comments' wording in `rust/kernel/fs/kiocb.rs`.
+- Link to v3: https://lore.kernel.org/r/20250722-iov-iter-v3-0-3efc9c2c2893@google.com
+
+Changes in v3:
+- Rebase on rust-next.
+- Use ptr::from_mut to silence warning.
+- Move Kiocb to rust::fs.
+- Rename Kiocb::device() to Kiocb::file() as it's no longer miscdevice
+  specific.
+- Significant rewording of docs and safety comments, especially patch 1
+  and 2.
+- Link to v2: https://lore.kernel.org/r/20250704-iov-iter-v2-0-e69aa7c1f40e@google.com
+
+Changes in v2:
+- Remove Send/Sync/Copy impls.
+- Reword docs significantly.
+- Rename Kiocb::private_data() to Kiocb::device().
+- Rebase on v6.16-rc2.
+- Link to v1: https://lore.kernel.org/r/20250311-iov-iter-v1-0-f6c9134ea824@google.com
+
+---
+Alice Ryhl (3):
+      rust: iov: add iov_iter abstractions for ITER_SOURCE
+      rust: iov: add iov_iter abstractions for ITER_DEST
+      rust: miscdevice: Provide additional abstractions for iov_iter and kiocb structures
+
+Lee Jones (1):
+      samples: rust_misc_device: Expand the sample to support read()ing from userspace
+
+ rust/kernel/fs.rs                |   3 +
+ rust/kernel/fs/kiocb.rs          |  68 +++++++++
+ rust/kernel/iov.rs               | 311 +++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/miscdevice.rs        |  63 +++++++-
+ samples/rust/rust_misc_device.rs |  36 ++++-
+ 6 files changed, 479 insertions(+), 3 deletions(-)
+---
+base-commit: 062b3e4a1f880f104a8d4b90b767788786aa7b78
+change-id: 20250311-iov-iter-c984aea07d18
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
