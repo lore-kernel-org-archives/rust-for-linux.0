@@ -1,63 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCF42C0F92;
-	Wed, 13 Aug 2025 00:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB06535949
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755046105; cv=none; b=Phe1xrPn3fLDEBtgEQPzjCgy2pXrrFEVcU8BLjLkdkp8B8sNCbjcdgZ9czGmslbq/wA9DiFuXixdHx8hmQKjYBA+DkALA945bho/GAnBP58QzM+azvcwa1/qho5NoU2veddEvrLbardOtRZLhXN4SJrFog7gx2pZsDvAi4GkpFQ=
+	t=1755046490; cv=none; b=YWGc7CDSJTI0GKI5d/94/nCpLbHgqTDJUzsOtwYEk/UugXJiI+bW+Yegld6vtU/w+K5I4WgKi8AaSLHNTyCP6L0NOvxGTPtfOfMz6YZAb5Wya0MY93ZcV1ESEYtwmv1ZWbTbkFAe8Iju/rDrO87Lv8FmsAua4x+PSSeg3h5qsrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755046105; c=relaxed/simple;
-	bh=5jlaVkoazA/uK2otNb+2tprjlUa4zKnguyC+SLUu1V4=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oDipQxWV7KwNZGjaycBoycD3WGyXU8qZz0Zmg12Lb2u6Q7VFNkKYafkrRc/A6gLYcz9U66fpMRYRBa9gPzTj2adjcbwASacgz8lemnb8O28B1lID3S2tVEpoVwV8Foh/m6LtDVqx9JQkWei2ca/z9WyfG+sKMX9CeUA7DgetJW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+Mq0EWp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755046490; c=relaxed/simple;
+	bh=ZAK0iu2nam4TRzSPQ+RT8lQPoKAFlyGFpIFTAuhS/Js=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HCuYOlIanFPvaRUYVQe2iKbyAjleQgskyx5QMPFKl8dqpwRIcRQm0ntBXmlCV3lfJwOwMmESJ4jaCudNrp9kA3bm8KDKV/ZzepSjD4Gv69PVxxZUuPYneI+/IKoVKWBYFiSTwL00DkB9j/yAYuv/Fc46BMC7oGLfWYPtgZI1BMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=TNtK1W5T; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+Mq0EWp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E888CC4CEF0;
-	Wed, 13 Aug 2025 00:48:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755046105;
-	bh=5jlaVkoazA/uK2otNb+2tprjlUa4zKnguyC+SLUu1V4=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=m+Mq0EWpf+LK7mTEQHi0JSGAX0sUmEkxlkB0pkz6E8FFlAYdbaiPcpRE3SaUye6nt
-	 r97oT5MfzSgnnTpgn+6b1pCVGjvKnNDalawobpQdPlhzklfWByPelMY8s5mmwOwmvN
-	 IWRMT3PRQlc+BrdnpQ3GTk7ubpzA9AV+y+JU4RwBMTLa11itZGKSBoexL6cJrneu5/
-	 lzCGeC6RhuZEg69jx8OLuxqNWEawVubFRpmqKl/OI0/Q3C7G8L/6b7So0KyQMwnkTJ
-	 KKbR97pWbxzbHiqT/xpN54VTiDmQTU2z4OIiG7giBFqgh7F2QH/DU5uVkkDQ8MwR2B
-	 1d5I9pN1toAiQ==
-Date: Wed, 13 Aug 2025 03:48:21 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: tpm2@lists.linux.dev, linux-integrity@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: tpm2_protocol
-Message-ID: <aJvg1UO_soccGwnY@kernel.org>
-References: <aJs6rWexGNsH45_Z@kernel.org>
- <aJve98-cGPKdEOlB@kernel.org>
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="TNtK1W5T"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b4255b4d8f9so4113695a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 17:54:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=furiosa.ai; s=google; t=1755046488; x=1755651288; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6NpFBcxoc04uyrK8/s01LPPrR4PakN3UQlJaijfjW20=;
+        b=TNtK1W5TlTn7jtoFNeZaElo4Vz8Q+ZqaQg/AAemruxmBgdGWDXrjHwSt76FvkKhih0
+         8Y5XMVf4aLsB9QMPr0PjaDPqpqV+TaazjZcDD8DE557XG1eWpNxLRRzVqggLit2oFT6p
+         tjuVhjWF8yVUicW76Zm9CWvvMQdXStPubPF+U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755046488; x=1755651288;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6NpFBcxoc04uyrK8/s01LPPrR4PakN3UQlJaijfjW20=;
+        b=d8dp3tx08KISHC3l7RYzpuW9Rmw/5n1NjI0Z6xITLfSIg/NG9ZnF/qPScX2FO/K81q
+         BmpyJ3NDpB85CDbeNwME5nYwVl+qQzwsv6utCIm4n2LCk2UMlN4L+R/MxEz0VpnTxr2s
+         zVswo4QEjxNVDaHihbn64wHZgYbEiUUzCxC1yU59A3Z0Mhd4PesdSyHGN+h0IO8Y2KaF
+         1UomgNl9ib84VKh2HUwgVNfx0zcVWIca/vH1m0RR5nPUvT64tzXncXikpgAa9bEk7EOB
+         D/T5LSOYqU5Wsb1sWVeUkpVpVhkzgA61JYdNiri6daiScCYVkdgXVNvgZWMQ/I8hfNqf
+         ouoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZXAFpwQt+TySKAdEXRV02h29iE7getfNVUIQ86kWtjIz8LSafD8/wsHMabBB4/1JtQiMhFMApW5ZMW5E6pQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrlfDFIP04ZsvdDZFWpaWcTOm4gYv6jEmVIda0BIvWj6yXZJJ0
+	lUU1NcSqRNMkJ9EWvZfrKTKZ8BYClUqzT2YXyU2tunKkVVh2q2nPlSI3XGdCXmoEe5A=
+X-Gm-Gg: ASbGncuRNSuj0wf9lvY80HJFh4JZHzZw0vK4/eDpcGrf+VxzZYUPL5dJnu+0/dsYt6+
+	MnxTAc7vVa1kkHh7oR/QeTRdF1gIZ73HxtQpo5S2Ic0FUgM1/79bbFOrnaHUpvpPNTngjQ3ZUP2
+	WFViLi3WYceBYaWCEDtlvTIa+hhiMi4GRvEgMDuxwWjBJK7cp/0eZ+pUAkk3Ucs55qftDKqruzj
+	taNMJz+NNxnLikNOEza+wUgeet0an5CHBscJkH/Qw05rWIAqhS/giBdYJ7WfxlMpoitSO1FGOzS
+	jwQVOpfMfVODOLg7s/AHVtJAINfeLfYO2ToNu9Gr/ctkgk1CNwXZplt4+DzBisqTeAiiUU8CHwZ
+	NoUVgMClhyS9UK1doJoQC3Q4wwBmp8EbJUTzdfdEV/cDGUqZ6AqQ/2D9YSSLrzMbe
+X-Google-Smtp-Source: AGHT+IHA/9Hoe2WUXGmM827/WBBWCmDTjLeBDQa+8tvMPHlD5EOr8tpNby6jVzEanoAxA3ONDgWNew==
+X-Received: by 2002:a17:902:c94b:b0:243:43a:fa2b with SMTP id d9443c01a7336-2430d299051mr17789945ad.56.1755046488174;
+        Tue, 12 Aug 2025 17:54:48 -0700 (PDT)
+Received: from sidongui-MacBookPro.local ([61.83.209.48])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24309cd3e2bsm15232115ad.62.2025.08.12.17.54.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 17:54:47 -0700 (PDT)
+Date: Wed, 13 Aug 2025 09:54:42 +0900
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Benno Lossin <lossin@kernel.org>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
+ for io-uring cmd
+Message-ID: <aJviUiNhTwCsMbaX@sidongui-MacBookPro.local>
+References: <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
+ <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
+ <81C84BD8-D99C-4103-A280-CFC71DF58E3B@collabora.com>
+ <aJiwrcq9nz0mUqKh@sidongui-MacBookPro.local>
+ <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
+ <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
+ <8416C381-A654-41D4-A731-323CEDE58BB1@collabora.com>
+ <aJoDTDwkoj50eKBX@sidongui-MacBookPro.local>
+ <DC0B7TRVRFMY.29LDRJOU3WJY2@kernel.org>
+ <06EA9E60-9BED-4275-9ED3-DA54CF3A8451@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aJve98-cGPKdEOlB@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <06EA9E60-9BED-4275-9ED3-DA54CF3A8451@collabora.com>
 
-On Wed, Aug 13, 2025 at 03:40:27AM +0300, Jarkko Sakkinen wrote:
-> This is designed as unipolar TPM protocol stack i.e. it's designed not
-> only send commands and receive responses, but also send responses and
-> receive commands.
- 
-Unipolarity has been my design goal from the get go given that:
+On Tue, Aug 12, 2025 at 11:38:51AM -0300, Daniel Almeida wrote:
+> 
+> 
+> > On 12 Aug 2025, at 05:34, Benno Lossin <lossin@kernel.org> wrote:
+> > 
+> > On Mon Aug 11, 2025 at 4:50 PM CEST, Sidong Yang wrote:
+> >> On Mon, Aug 11, 2025 at 09:44:22AM -0300, Daniel Almeida wrote:
+> >>>> There is `uring_cmd` callback in `file_operation` at c side. `Pin<&mut IoUringCmd>`
+> >>>> would be create in the callback function. But the callback function could be
+> >>>> called repeatedly with same `io_uring_cmd` instance as far as I know.
+> >>>> 
+> >>>> But in c side, there is initialization step `io_uring_cmd_prep()`.
+> >>>> How about fill zero pdu in `io_uring_cmd_prep()`? And we could assign a byte
+> >>>> as flag in pdu for checking initialized also we should provide 31 bytes except
+> >>>> a byte for the flag.
+> >>>> 
+> >>> 
+> >>> That was a follow-up question of mine. Can´t we enforce zero-initialization
+> >>> in C to get rid of this MaybeUninit? Uninitialized data is just bad in general.
+> >>> 
+> >>> Hopefully this can be done as you've described above, but I don't want to over
+> >>> extend my opinion on something I know nothing about.
+> >> 
+> >> I need to add a commit that initialize pdu in prep step in next version. 
+> >> I'd like to get a comment from io_uring maintainer Jens. Thanks.
+> >> 
+> >> If we could initialize (filling zero) in prep step, How about casting issue?
+> >> Driver still needs to cast array to its private struct in unsafe?
+> > 
+> > We still would have the casting issue.
+> > 
+> > Can't we do the following:
+> > 
+> > * Add a new associated type to `MiscDevice` called `IoUringPdu` that
+> >  has to implement `Default` and have a size of at most 32 bytes.
+> > * make `IoUringCmd` generic
+> > * make `MiscDevice::uring_cmd` take `Pin<&mut IoUringCmd<Self::IoUringPdu>>`
+> > * initialize the private data to be `IoUringPdu::default()` when we
+> >  create the `IoUringCmd` object.
+> > * provide a `fn pdu(&mut self) -> &mut Pdu` on `IoUringPdu<Pdu>`.
+> > 
+> > Any thoughts? If we don't want to add a new associated type to
+> > `MiscDevice` (because not everyone has to declare the `IoUringCmd`
+> > data), I have a small trait dance that we can do to avoid that:
+> 
+> 
+> Benno,
+> 
+> IIUC, and note that I'm not proficient with io_uring in general:
+> 
+> I think we have to accept that we will need to parse types from and to byte
+> arrays, and that is inherently unsafe. It is no different from what is going on
+> in UserSliceReader/UserSliceWriter, and IMHO, we should copy that in as much as
+> it makes sense.
+> 
+> I think that the only difference is that all uAPI types de-facto satisfy all
+> the requirements for FromBytes/AsBytes, as we've discussed previously, whereas
+> here, drivers have to prove that their types can implement the trait.
+> 
+> 
+> By the way, Sidong, is this byte array shared with userspace? i.e.: is there
+> any copy_to/from_user() taking place here?
 
-1. It enables high granularity filtering i.e. as capable or more capable
-   resource managers in kernel as pre-existing user space resource
-   managers (once the implementation has matured enough ofc but it
-   has the core design principles right I think).
-2. Software defined TPM devices e.g., in-kernel TPM emulators and
-   interoperability layers for other crypto devices and confidential
-   computing technologies. I'm not sure if anyone wants anything
-   like this, just plain highilighting the possibilities.
+No. pdu array allocated from kernel. I'll use `core::ptr::copy_nonoverlapping`.
 
-BR, Jarkko
+Thanks,
+Sidong
+> 
+> -- Daniel
