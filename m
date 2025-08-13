@@ -1,111 +1,120 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C2B22425B;
-	Wed, 13 Aug 2025 08:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047662690D9
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 08:24:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755072968; cv=none; b=Up/Vi/MQ2ic8h02iuhgbVoZceW6WCbuIerErgpv+6k8tlE7W5f4B4mIvDbkIyZcfWGDYptbH8RWOy2wBdQW+xDvTCVTn4bo5KuGPVFwFTrWZJOVdGZhYpffriyAQT1aRSbNPWFBtp1O4sCu3i53B85XICY6+rrXfZzLZ0+z+tXo=
+	t=1755073468; cv=none; b=EP8qbfOCXiTiecxWI1baugY+v+okldjXhGF87qMr2FuGqsQu8BBw7jAOzy2zv2ppbHRPI/HQ1UP8NtweQ5o8zmpskUQuEBOYqvNg2cK4IVBzYadYvcOLLzr9JzDk4pIwfLmgR+7hiwbSVy6d/hxn1bLky9A+p6vB5PhsC2cP0fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755072968; c=relaxed/simple;
-	bh=qLk7KTbjb9ze2aC5zK7QVoAdhOj3IvIDiRP14d2KdAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hortiraxeFtIBlhaLKLKfEEzJn3lu3DeetG23uNMPdOO8cbXhdV4KclU4IZaxZBingC4SRmO50Cf+QsWjAX16zsTtfK2gONBVaienq6IIPmDrbjgs4tT8XIPgoXW9LMw9Ub3ijyCwSfUDwW2dn4wZJUG3s9sXzutk8xNnqA9FO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t3ZaanvF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E1zvWv48; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1755073468; c=relaxed/simple;
+	bh=i7q6cu4XOofJpPaygp+2HmHMBYvZuvOZRgvH9TX/sCA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mLh1co13DFBGftQ3Ar1T/84MJrWHLgNrMRGUsfhT3IoSFBwwQVqsbiQOdOm7I/SviJ16Vwi/An5cZwYh2FLROAHgP4PhXE2qJIgnQUep3BAoCQv8khHir1HhHvqymYvYTXhmlzWQ+683CK6U7Jq728iQ1ufDVf6EMS/6kG8Jw6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y+9B8ZRY; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t3ZaanvF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E1zvWv48"
-Date: Wed, 13 Aug 2025 10:16:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1755072965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
-	b=t3ZaanvFJHTW1l1H2nSwoa1VFh8EVFo/BJn0UMRG7bq78PXYOpzqMO9UGefI5UiLZP7nNe
-	J1FX1/E5cqcFOVpKvUjolk1j8zY71ykS0B7X6UJ1jM73mZGhOMT+2RFDhdp4Y1WmHG3lB8
-	fhvgGlk/PFabS5Cn+w3uMjkgmqVzkQuRRvX4xJrjg/8hJ+0j7jOT/qLXJIWkp6a9jfxObj
-	LUOs4JziO5PF87uDbwzJHBzRMHIM1CkGRGPGIwWfVdP7ckTLMMlHtUDzc+O5vxoBEjlmG7
-	1skI/bKKNj/R2CTmQujVy01wAp2WhS97QfxNvozWzsRXygdxqvZz7+ZCEZyixQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1755072965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
-	b=E1zvWv48KJJ+SOu4RstGU/Hts0jpCLaRVEpYFntAu8DSCAbOKCuCF3vYrHswu5Uo/Nk8OK
-	GMt5eI9bpKssCIDA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@redhat.com>, Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
-Message-ID: <20250813101305-04911850-2375-4be5-9a06-ced21de3ca22@linutronix.de>
-References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
- <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y+9B8ZRY"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b8db5e9b35so3800882f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 01:24:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755073465; x=1755678265; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j36Wt2d1lcdfM4qMmSBsoKx8o0T/CsoyesZWxgamGL8=;
+        b=Y+9B8ZRYLT/LKQm7fSfdHyyHSbWoIpIx4/0+X63tmrj0EwmgPjpeTaDixHbPtKSUbD
+         GSgk+jJDpySj7jousX3IT7j9bMezBv9ubwAAz0ZQ7ZnJ9RUFLzDXdrhCsLPeaeZZ8j8A
+         IWhlag8AUXpgR3sehbL+rzLpHHwIP2NGhQGSl5B1JqQzg/yFsv7OGoEFSsJY1yHG+YRO
+         uSu6pAwAejbkUhUlHo2bTZx5YgwtacVUerSffuGpCQW14WXZBlb5h81u94mE7wkUmwvn
+         /RrbnZztNMHAuEc66rCev58tRMFnnXzVGsWShBfCJnABwT7kqy8wxCRlpEDn2yeA6o/J
+         xKxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755073465; x=1755678265;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j36Wt2d1lcdfM4qMmSBsoKx8o0T/CsoyesZWxgamGL8=;
+        b=EDNH0haHoJOtGK5+zLl5/wc9FWnRfx5LJn/P1rwAw1y5+36QQAeceF4U5v7gxko0Ms
+         xCYBuXspfCN0VOgnqxwDg3Qz5REMDgoaXGqbbbJQdxB7RjrDV4SBI74cOkaGKr0KFNiE
+         TM/4q1B/AZvs2IabTZqEtfEHP66ww9Aq8iUe7jL9xZjtYMrKcenMRyPj56rb6qH00C+y
+         kNEaWd5N7CDVQnXkC8tpztUtpR1eld18yM/ksAdNeEiMCoCulxlYDs5ENyPOZaUFvKfr
+         FxQFniHOqiXSKvpveasrN/5nG/iJ7qc0z2K8nOEufO4ItXhWXt2gICba300aSucSlnpH
+         mfnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXWq7VRUbliOutjo9AUPDlQPnitzmP6/Jh63Xi62I8vIUe0j3RORi+Si9j5FzhLlQN9NkRLFm7p08jisYP8dw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNOGENEGKam/hxkgJy30NsOCwEJap4bzeibrUo7gvV8vRfUfAF
+	5xa5zZSOFCedrrIwOkA9+pRGLArQlsroRfp+urZq+fOu5/oeHdP5ka21RYN0/sTjawIC9EM60k4
+	WyxBSh8G7zddGj0cHShZAC75Url5AskSxs2sj1vB7
+X-Gm-Gg: ASbGncsBKfW4rQ28TCRE9KdxqCnBqWoNN2x/aUBTXYlCTWIcPSwHlzWNnEf1CuH6DaK
+	6xLI6zd5SDc7l6/huXUiNGLNWehcOIM5cuTXMAIrx1Wig/7bHvxzZkAvvFWTJqr31Io6O0fJgwA
+	+r3vWX6Wg/p8H5jtmvAIbWUxKqcb/Oc76tdQh+/7UPupz4XZrVq7Dtfpx67N/yJWIegTe0ZLE5Y
+	isaIA7Atg9dL9XJ+BJxiaQT1mBG/HFBQxeO2Q==
+X-Google-Smtp-Source: AGHT+IEQTBj4vbtzEEQ6lxltaO/FqbXF7A9ORef0fFY6z6R00Et5UkVsjPhHS6jo/ghAMR6v/ylRnCX7wGQtfB7kXBU=
+X-Received: by 2002:a5d:5d10:0:b0:3b9:1457:df79 with SMTP id
+ ffacd0b85a97d-3b917d1e6b2mr1381034f8f.5.1755073465088; Wed, 13 Aug 2025
+ 01:24:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
+References: <20250722-iov-iter-v3-0-3efc9c2c2893@google.com>
+ <IMil7T48wWl_KirFiwKV5bNm7TuVsFNPEX3_6CJWEzwQ6n4jaVn943ujBotHAettCFL5Slnb0v_3Cz50enMdqw==@protonmail.internalid>
+ <20250722-iov-iter-v3-1-3efc9c2c2893@google.com> <871ppq9fve.fsf@kernel.org>
+In-Reply-To: <871ppq9fve.fsf@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 13 Aug 2025 10:24:13 +0200
+X-Gm-Features: Ac12FXyZHCu-I22etoYCjoFadSFqXkK4cOQ639JdLkpUnt1K4hiGXS3NmFf7rkc
+Message-ID: <CAH5fLghb_YoZgNGGJOa1aLA3bM=tyZKziDwyUqnVPHMg8NW4CQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] rust: iov: add iov_iter abstractions for ITER_SOURCE
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Benno Lossin <lossin@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 12, 2025 at 01:07:34PM +0200, Miguel Ojeda wrote:
-> On Tue, Aug 12, 2025 at 7:44 AM Thomas Weißschuh
-> <thomas.weissschuh@linutronix.de> wrote:
-> >
-> > Kbuild and Rust folks: This contains custom definitions of hostprog
-> > bindgen and rust library commands.
-> > These are currently only defined inside the subsystem directory.
-> > Let me know if they should go into scripts/Makefile.host.
-> 
-> Glad to see more Rust host progs :)
-> 
-> Keeping them local may be a bit easier initially to land, I guess
-> (e.g. no docs), and then we can generalize when needed later.
+On Tue, Aug 5, 2025 at 1:18=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
+> > +
+> > +    /// Advance this IO vector backwards by `bytes` bytes.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The IO vector must not be reverted to before its beginning.
+> > +    #[inline]
+> > +    pub unsafe fn revert(&mut self, bytes: usize) {
+> > +        // SAFETY: By the struct invariants, `self.iov` is a valid IO =
+vector, and `bytes` is in
+> > +        // bounds.
+>
+> "... and by method safety requirements `bytes` is in bounds", right?
 
-I'm happy to do the docs etc. I only wanted to avoid doing all that work,
-only for it to stay a subsystem-local solution.
+Will reword.
 
-Also it would be nice to have a Kconfig symbol, RUSTC_CAN_LINK or similar,
-which indicates that the rust compiler can build host programs.
+> > +        unsafe { bindings::iov_iter_revert(self.as_raw(), bytes) };
+> > +    }
+> > +
+> > +    /// Read data from this IO vector.
+> > +    ///
+> > +    /// Returns the number of bytes that have been copied.
+> > +    #[inline]
+> > +    pub fn copy_from_iter(&mut self, out: &mut [u8]) -> usize {
+> > +        // SAFETY: `Self::copy_from_iter_raw` guarantees that it will =
+not deinitialize any bytes in
+> > +        // the provided buffer, so `out` is still a valid `u8` slice a=
+fter this call.
+>
+> I am curious if there is a particular reason you chose "deinitialize"
+> over "write uninitialized" for the wording throughout this patch? It's
+> an unfamiliar phrasing to me.
 
-> By the way, for consistency with elsewhere, probably we want
-> `HOSTRUSTLIB` -> `HOSTRUSTC L`. Though I am thinking to remove the `L`
-> anyway since eventually a lot of code will be "lib".
+I've seen it a fair number of times, but I'll change it to less niche wordi=
+ng.
 
-Ack.
+Alice
