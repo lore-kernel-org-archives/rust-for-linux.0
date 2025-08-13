@@ -1,65 +1,65 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5131C2D979B
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 07:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A012D2390
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 07:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755070249; cv=none; b=tMjKEgPrPtCKOusZMbTCpYB7A7v1Rl9jkN1+LvPW8iAK4elI3GhfGY8VEFSUKEyuMjr/fy4hKJceNwuLREwcTb3UYAOqmfFC6K40UlwGvC4yJ4xtQdQSSRYLu5nlK9EPevtfrHY8Z2+kBPjHfykr9t5Kz+54yFLG9TTZ0vimXYE=
+	t=1755070349; cv=none; b=XGFzP6NCyNXsAbB1hGNN3YqvxSWAAc+L1bMbImkjX8PppefVnsvREkOGlvEH9MppjKJpIjZMQEmqRFxMctLlgmZFCE9ObuvzfiE5M9lMeW8Ncray77nR+eL3CKpzPSyEXgSTTLhxyErkgEICmM7MRkqOZnFnReaHGH6DkLl7WJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755070249; c=relaxed/simple;
-	bh=xFiWYf6vm77n+FxmlLtopRR841nq8GvnS98l1p0hoP4=;
+	s=arc-20240116; t=1755070349; c=relaxed/simple;
+	bh=IHuZIPIubs/w3SJF5skp9Te+eH5DawaYvyi++z+e2+Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EFcTbvOZz0z06XvH/G7TGe8njvLIYxSdtrRoAslIT4UYYYLEpcjyzfGJAoT42MuPrBu/glpv2xf89Q4BHTtJ51IZN2n1owps9IBMThJNWITZWzrqYUpWihS+rRryVi1JU5IYyuW9otJAFkTYOXyDPMKxjlGzRGc3jKgdK9fumMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H8s3rm4y; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=UiguWDSCVtJh/gPyokW5xPJUn0uyqp1iU3+7ZNExrTh99VQoiM0N/xAkaKQ5Vu32cAC/3X610b9dAgl8/EjLgCHZlwxuEIey7VufrBl1SiKzZFY53APYbGPU8w0OkfjbMsXH2Oymzzaht7TvFq5FEDRD9gNwprO0nQD6s+H5ZG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iNPFUwNl; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H8s3rm4y"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b783265641so1137814f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:30:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iNPFUwNl"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-458bb0e68c6so37444185e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:32:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755070246; x=1755675046; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755070345; x=1755675145; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I9E4czyKyrtOFU4GSVFspn06u33hT1ZkBVcdtezrkgQ=;
-        b=H8s3rm4yEQ8hRnqUGBhHfc9lBf/KbWZoDRnL7lFAUKJSrieeGQIQFIBMLEuOPk+Gnq
-         uIKZ/npSz8lEsEEiB+pzpgYn/VOx1fnqlXBOa2m2zwpceULZxhohAKa5VIyeB5GanIpB
-         zFQm04yutDLfs0WOcfsRZW1qMKVkBTCbt5MZ6P0418vrvzQXs3NFDN3hvHIyz0YfrAgH
-         QMhRnq0ZX5ihjlPzK5btfFvHx1DxNgQ2606TMxHy/ruXWwkydo7RnYgOXMIICPt9WbU2
-         CcFguxXmR1ZGnL07FveCIuEgyBK+0Ik8siKemLMRQPMY5wClc/1sAZgnoPb4svrZuU0R
-         Onmg==
+        bh=5312UrazGm2nSYVWWroUOeaj5Kd6bEVW+F6s4R1WTC4=;
+        b=iNPFUwNlBqgNSEiZ6QAOBCrHH/jtjgqtB7OKbSCDI5mVVfWpxvwNgdFszEhBpua9bL
+         FmMMgD6NwekZQPTkMfAiEptakgZsb/s6Hn7xQwJopEe0AEtr0biPPaRgeqza/nv77uRR
+         bsbIL62dgjBzXjPkcM822hEkhRLXspqMto264oASMZTSbhAM5NA8Kphs7GC9FLlhC36v
+         OlXI1A/uL+7TRMNmPgqeO3hIT0JBAxwMkmRAIOps3BplNY/SMeIQvSqeR8tdYz8qZnKF
+         z5mpjzauuKQPKfdOFDJ7xrnBkiB5OS81A6LTFKA/zNtjdG95Kpza8PlAfP9AYmFicUjv
+         ZXwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755070246; x=1755675046;
+        d=1e100.net; s=20230601; t=1755070345; x=1755675145;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I9E4czyKyrtOFU4GSVFspn06u33hT1ZkBVcdtezrkgQ=;
-        b=rfIEDvxpggwrFf1bHq1/69eKICHVTEDAV2KImhnxCHkEPSiZqOmmGErAC1yARGP0XR
-         WFcoDOroZppzfR9dizC3SY0uVCgCPG2Nu0SnthWjQ7INiPRffyfR5P7uixN5JhdFBMtv
-         sEubJyoUx33svjBVNhxbKB93xL7dbLMVLo7IKZWg0Xw6Ym3PVugtclv8uSN97BQ6obWv
-         lWrXD02c6ikec/Mp8JNxHNZML3CQkVH9PvKxaGbSn/cOCb8hC3ncYs29rEb5ifTnVEAJ
-         s7KfFjR58nZOowqZMi4bCVOe9+IHq8A6WOQAXW2fCnX++cehZugTzMXtCqQqiC2ct/Ig
-         SRSg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/eMGpm6WP1I+WAsAIdKH7oR46bgiGkdupbkHXtlqZ03mchriSxybqlhjQhqjqGU4upn3S3TRUUm8VwZxc6w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvrapVsy70vLN48xP7HVkSKbJMFNzxKyx2T7bFh7VT9ZKQsd0y
-	cWAmeS8pFUIusW05VI69BBQdCz8q0AEA51+rqHkpdvf65Bz0N/1LMyd6BsdN1r2JBxBvh1Y51lS
-	Z4sp9qho1rya0zCvWeg==
-X-Google-Smtp-Source: AGHT+IHo652ghTmRZRdcMehtLxMpYB3nmtn0BGPYwzhYi+iVXFrTKYXDm2Ct2IcY8FiWrF3mc/zYizwObHRd2AA=
-X-Received: from wre18.prod.google.com ([2002:a05:6000:4b12:b0:3b9:95c:a591])
+        bh=5312UrazGm2nSYVWWroUOeaj5Kd6bEVW+F6s4R1WTC4=;
+        b=vx8nbwPyiFGSYYxbBx8lr2sKhMG08bKWjX6nOsA+jUyMrPWm32empO0gAovV8bwtxI
+         GBIseyA9gAkPvjPZNY//0teozndD9PMqXflIU8Govk7ancwpEUfkjwAcPNfQ5MKKzRDv
+         0Vp8ktpSYhAHgtrtxvrydy2UEVA4MDS9aF/x052ixF0KSqstTRnF4e2vK4Qx+t+S+xHZ
+         hU/oeYRCPDP0OtKHplSqz9sTeKVTfkD2+v9seKgbN+6QsR2JWMJ6J/5KfLiJxzK6eOwB
+         3ouQK1dRv/+3Vabq6x6uC5LbCtY7yOEyrPz8cIbB+8mP+6uKSdFhCay04Dk3CPjxY7D+
+         rfMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWavQYdj0LqLW6UCP2CmQvpgeFC271LCyawotHnYOAdkYJHnJWe6xS7s1SuxIFdDNNb5drMdi5VaF1R+QPc9w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBOq0+bBI8YigK/bPwnlafAvhUg7gHA99KGiLz2UPG1pJXp3bO
+	WvDb+D1JcZMb8iQys7BmolLpqM3LjVppqXPsiCduHY8Y8zfaYsSIGfOFasDtpOXPan/Fsfm+JOi
+	zQZOttVktbdsVEfgotg==
+X-Google-Smtp-Source: AGHT+IGoPY0Up3k4B4X0DXNUDKXTeE+1fGEGc5eaPkBD/CJZX1FdQoee8fbt1gqhWP4uOguA63HM+AhbSh+cNrc=
+X-Received: from wrbgv1.prod.google.com ([2002:a05:6000:4601:b0:3b8:dd13:ef63])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:402a:b0:3b7:8fcd:d145 with SMTP id ffacd0b85a97d-3b917d2b1b8mr1298903f8f.5.1755070245509;
- Wed, 13 Aug 2025 00:30:45 -0700 (PDT)
-Date: Wed, 13 Aug 2025 07:30:43 +0000
-In-Reply-To: <20250812-rnull-up-v6-16-v4-12-ed801dd3ba5c@kernel.org>
+ 2002:a05:6000:250f:b0:3a5:3a03:79c1 with SMTP id ffacd0b85a97d-3b917ebf766mr1284367f8f.48.1755070345355;
+ Wed, 13 Aug 2025 00:32:25 -0700 (PDT)
+Date: Wed, 13 Aug 2025 07:32:24 +0000
+In-Reply-To: <20250812-rnull-up-v6-16-v4-15-ed801dd3ba5c@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org> <20250812-rnull-up-v6-16-v4-12-ed801dd3ba5c@kernel.org>
-Message-ID: <aJw_I-YQUfupWCXL@google.com>
-Subject: Re: [PATCH v4 12/15] rust: block: add `GenDisk` private data support
+References: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org> <20250812-rnull-up-v6-16-v4-15-ed801dd3ba5c@kernel.org>
+Message-ID: <aJw_iJZLXPml4Abl@google.com>
+Subject: Re: [PATCH v4 15/15] rnull: add soft-irq completion support
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -70,87 +70,15 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Aug 12, 2025 at 10:44:30AM +0200, Andreas Hindborg wrote:
-> Allow users of the rust block device driver API to install private data in
-> the `GenDisk` structure.
+On Tue, Aug 12, 2025 at 10:44:33AM +0200, Andreas Hindborg wrote:
+> rnull currently only supports direct completion. Add option for completing
+> requests across CPU nodes via soft IRQ or IPI.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Overall LGTM.
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> +        let text = core::str::from_utf8(page)?.trim();
+> +        let value = text.parse::<u8>().map_err(|_| EINVAL)?;
 
->          self,
->          name: fmt::Arguments<'_>,
->          tagset: Arc<TagSet<T>>,
-> +        queue_data: T::QueueData,
->      ) -> Result<GenDisk<T>> {
-> +        let data = queue_data.into_foreign();
-> +        let recover_data = ScopeGuard::new(|| {
-> +            drop(
-> +                // SAFETY: T::QueueData was created by the call to `into_foreign()` above
-> +                unsafe { T::QueueData::from_foreign(data) },
-> +            );
-
-This is usually formatted as:
-
-// SAFETY: T::QueueData was created by the call to `into_foreign()` above
-drop(unsafe { T::QueueData::from_foreign(data) });
-
->  impl<T: Operations> Drop for GenDisk<T> {
->      fn drop(&mut self) {
-> +        // SAFETY: By type invariant of `Self`, `self.gendisk` points to a valid
-> +        // and initialized instance of `struct gendisk`, and, `queuedata` was
-> +        // initialized with the result of a call to
-> +        // `ForeignOwnable::into_foreign`.
-> +        let queue_data = unsafe { (*(*self.gendisk).queue).queuedata };
-> +
->          // SAFETY: By type invariant, `self.gendisk` points to a valid and
->          // initialized instance of `struct gendisk`, and it was previously added
->          // to the VFS.
->          unsafe { bindings::del_gendisk(self.gendisk) };
-> +
-> +        drop(
-> +            // SAFETY: `queue.queuedata` was created by `GenDiskBuilder::build` with
-> +            // a call to `ForeignOwnable::into_foreign` to create `queuedata`.
-> +            // `ForeignOwnable::from_foreign` is only called here.
-> +            unsafe { T::QueueData::from_foreign(queue_data) },
-> +        );
-
-Ditto here.
-
->          //    reference counted by `ARef` until then.
->          let rq = unsafe { Request::aref_from_raw((*bd).rq) };
->  
-> +        // SAFETY: `hctx` is valid as required by this function.
-> +        let queue_data = unsafe { (*(*hctx).queue).queuedata };
-> +
-> +        // SAFETY: `queue.queuedata` was created by `GenDisk::try_new()` with a
-> +        // call to `ForeignOwnable::into_pointer()` to create `queuedata`.
-> +        // `ForeignOwnable::from_foreign()` is only called when the tagset is
-> +        // dropped, which happens after we are dropped.
-> +        let queue_data = unsafe { T::QueueData::borrow(queue_data.cast()) };
-
-Is this cast necessary? Is it not a void pointer?
-
-> @@ -110,9 +129,18 @@ impl<T: Operations> OperationsVTable<T> {
->      ///
->      /// # Safety
->      ///
-> -    /// This function may only be called by blk-mq C infrastructure.
-> -    unsafe extern "C" fn commit_rqs_callback(_hctx: *mut bindings::blk_mq_hw_ctx) {
-> -        T::commit_rqs()
-> +    /// This function may only be called by blk-mq C infrastructure. The caller
-> +    /// must ensure that `hctx` is valid.
-> +    unsafe extern "C" fn commit_rqs_callback(hctx: *mut bindings::blk_mq_hw_ctx) {
-> +        // SAFETY: `hctx` is valid as required by this function.
-> +        let queue_data = unsafe { (*(*hctx).queue).queuedata };
-> +
-> +        // SAFETY: `queue.queuedata` was created by `GenDisk::try_new()` with a
-> +        // call to `ForeignOwnable::into_pointer()` to create `queuedata`.
-> +        // `ForeignOwnable::from_foreign()` is only called when the tagset is
-> +        // dropped, which happens after we are dropped.
-> +        let queue_data = unsafe { T::QueueData::borrow(queue_data.cast()) };
-
-Ditto here.
+Same comment about kstrtobool here as on the other patch.
 
 Alice
