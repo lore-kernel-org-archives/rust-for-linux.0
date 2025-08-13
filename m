@@ -1,160 +1,132 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB06535949
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F16BA42;
+	Wed, 13 Aug 2025 01:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755046490; cv=none; b=YWGc7CDSJTI0GKI5d/94/nCpLbHgqTDJUzsOtwYEk/UugXJiI+bW+Yegld6vtU/w+K5I4WgKi8AaSLHNTyCP6L0NOvxGTPtfOfMz6YZAb5Wya0MY93ZcV1ESEYtwmv1ZWbTbkFAe8Iju/rDrO87Lv8FmsAua4x+PSSeg3h5qsrA=
+	t=1755047248; cv=none; b=a3EU/C2N/ahhg3XkFRqJ6OQG3lm7pwnYwsyeYsdG++loUjxfD/lB/7Ytx3m1xD9W6huQ4Q5NGQ1fvfGQE+cxSPZyRnGUNbvRh9pw/IYfkZF+kuGXXUV08H4lon8kJvkFMjt09ILK5ByRj7GffuIy4yUGsYimHkAXoAM0MNEZiYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755046490; c=relaxed/simple;
-	bh=ZAK0iu2nam4TRzSPQ+RT8lQPoKAFlyGFpIFTAuhS/Js=;
+	s=arc-20240116; t=1755047248; c=relaxed/simple;
+	bh=YOqgCET3sgCMudSdk7vjfyd62U6KchjYeSESnAN8BC0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HCuYOlIanFPvaRUYVQe2iKbyAjleQgskyx5QMPFKl8dqpwRIcRQm0ntBXmlCV3lfJwOwMmESJ4jaCudNrp9kA3bm8KDKV/ZzepSjD4Gv69PVxxZUuPYneI+/IKoVKWBYFiSTwL00DkB9j/yAYuv/Fc46BMC7oGLfWYPtgZI1BMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=TNtK1W5T; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	 Content-Type:Content-Disposition:In-Reply-To; b=REu3YoQdsGSZIp26jYHbuV/idXQLCdC+CiZJrlqpSmALgCeQnzfr0QUKKPwvLBoCDFhyjGJlE2Bdv7jDdgDzZ5QA+5+NfLRKNg9cA8SUAkz7NwNhSGChvsF+86hOprzUa3Pq3LnahPp2FodPJf5fn34vZNBmTWEcCGsLk8LvhVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l2uHuSvO; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="TNtK1W5T"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b4255b4d8f9so4113695a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 Aug 2025 17:54:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1755046488; x=1755651288; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6NpFBcxoc04uyrK8/s01LPPrR4PakN3UQlJaijfjW20=;
-        b=TNtK1W5TlTn7jtoFNeZaElo4Vz8Q+ZqaQg/AAemruxmBgdGWDXrjHwSt76FvkKhih0
-         8Y5XMVf4aLsB9QMPr0PjaDPqpqV+TaazjZcDD8DE557XG1eWpNxLRRzVqggLit2oFT6p
-         tjuVhjWF8yVUicW76Zm9CWvvMQdXStPubPF+U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755046488; x=1755651288;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6NpFBcxoc04uyrK8/s01LPPrR4PakN3UQlJaijfjW20=;
-        b=d8dp3tx08KISHC3l7RYzpuW9Rmw/5n1NjI0Z6xITLfSIg/NG9ZnF/qPScX2FO/K81q
-         BmpyJ3NDpB85CDbeNwME5nYwVl+qQzwsv6utCIm4n2LCk2UMlN4L+R/MxEz0VpnTxr2s
-         zVswo4QEjxNVDaHihbn64wHZgYbEiUUzCxC1yU59A3Z0Mhd4PesdSyHGN+h0IO8Y2KaF
-         1UomgNl9ib84VKh2HUwgVNfx0zcVWIca/vH1m0RR5nPUvT64tzXncXikpgAa9bEk7EOB
-         D/T5LSOYqU5Wsb1sWVeUkpVpVhkzgA61JYdNiri6daiScCYVkdgXVNvgZWMQ/I8hfNqf
-         ouoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZXAFpwQt+TySKAdEXRV02h29iE7getfNVUIQ86kWtjIz8LSafD8/wsHMabBB4/1JtQiMhFMApW5ZMW5E6pQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrlfDFIP04ZsvdDZFWpaWcTOm4gYv6jEmVIda0BIvWj6yXZJJ0
-	lUU1NcSqRNMkJ9EWvZfrKTKZ8BYClUqzT2YXyU2tunKkVVh2q2nPlSI3XGdCXmoEe5A=
-X-Gm-Gg: ASbGncuRNSuj0wf9lvY80HJFh4JZHzZw0vK4/eDpcGrf+VxzZYUPL5dJnu+0/dsYt6+
-	MnxTAc7vVa1kkHh7oR/QeTRdF1gIZ73HxtQpo5S2Ic0FUgM1/79bbFOrnaHUpvpPNTngjQ3ZUP2
-	WFViLi3WYceBYaWCEDtlvTIa+hhiMi4GRvEgMDuxwWjBJK7cp/0eZ+pUAkk3Ucs55qftDKqruzj
-	taNMJz+NNxnLikNOEza+wUgeet0an5CHBscJkH/Qw05rWIAqhS/giBdYJ7WfxlMpoitSO1FGOzS
-	jwQVOpfMfVODOLg7s/AHVtJAINfeLfYO2ToNu9Gr/ctkgk1CNwXZplt4+DzBisqTeAiiUU8CHwZ
-	NoUVgMClhyS9UK1doJoQC3Q4wwBmp8EbJUTzdfdEV/cDGUqZ6AqQ/2D9YSSLrzMbe
-X-Google-Smtp-Source: AGHT+IHA/9Hoe2WUXGmM827/WBBWCmDTjLeBDQa+8tvMPHlD5EOr8tpNby6jVzEanoAxA3ONDgWNew==
-X-Received: by 2002:a17:902:c94b:b0:243:43a:fa2b with SMTP id d9443c01a7336-2430d299051mr17789945ad.56.1755046488174;
-        Tue, 12 Aug 2025 17:54:48 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24309cd3e2bsm15232115ad.62.2025.08.12.17.54.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 17:54:47 -0700 (PDT)
-Date: Wed, 13 Aug 2025 09:54:42 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Benno Lossin <lossin@kernel.org>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
- for io-uring cmd
-Message-ID: <aJviUiNhTwCsMbaX@sidongui-MacBookPro.local>
-References: <DBY6DMQYZ2CL.2P0LZO2HF13MJ@kernel.org>
- <aJijj4kiMV9yxOrM@sidongui-MacBookPro.local>
- <81C84BD8-D99C-4103-A280-CFC71DF58E3B@collabora.com>
- <aJiwrcq9nz0mUqKh@sidongui-MacBookPro.local>
- <DBZ0O49ME4BF.2JFHBZQVPJ4TK@kernel.org>
- <aJnjYPAqA6vtn9YH@sidongui-MacBookPro.local>
- <8416C381-A654-41D4-A731-323CEDE58BB1@collabora.com>
- <aJoDTDwkoj50eKBX@sidongui-MacBookPro.local>
- <DC0B7TRVRFMY.29LDRJOU3WJY2@kernel.org>
- <06EA9E60-9BED-4275-9ED3-DA54CF3A8451@collabora.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l2uHuSvO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755047247; x=1786583247;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YOqgCET3sgCMudSdk7vjfyd62U6KchjYeSESnAN8BC0=;
+  b=l2uHuSvOLiEnfeAuRsNBG7Zu441yDxJCNiwErVkrs1iw3Ehr+6tj+ORf
+   KPqOmuKcgIxFD37Mr9cVXPTeB+VTeJKUrFxmvrysP4+EzggVbPbavlcOa
+   5iS9AqHzFoX7Dv3693vO5tPvJuJXdA1AapVj50IJgmqdW5pZ6AKjtgDqM
+   Y8zfz8XJJ0Pq7Kog0yCVDV4U9TaeiIMM69xuM3yNQdxGxJTThAUPXVWwm
+   5H6rRvB+LT73MSYl/FXX/hFLxISfhefOKMmrAU3KFm63do0I7m3IF/HO4
+   pPCO99+EYPtatFskwGgpd4/GqQkoBwPIX08pHFgBx4mLcc/dszm7NPdST
+   Q==;
+X-CSE-ConnectionGUID: U1V79hlUSuqD5Ex9lWGWPA==
+X-CSE-MsgGUID: WxfHVP6HRayN6xcD5gKmGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57395803"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="57395803"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 18:07:26 -0700
+X-CSE-ConnectionGUID: QqUNkE64T/KB9wIQ+rDQBg==
+X-CSE-MsgGUID: rc0OWkRKTpm2ZDmsjmHVfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="170540166"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 12 Aug 2025 18:07:22 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ulzxP-0009Qi-32;
+	Wed, 13 Aug 2025 01:07:12 +0000
+Date: Wed, 13 Aug 2025 09:06:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Christian S. Lima" <christiansantoslima21@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht,
+	richard120310@gmail.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v9] rust: transmute: Add methods for FromBytes trait
+Message-ID: <202508130702.MtRUndHU-lkp@intel.com>
+References: <20250811213851.65644-1-christiansantoslima21@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <06EA9E60-9BED-4275-9ED3-DA54CF3A8451@collabora.com>
+In-Reply-To: <20250811213851.65644-1-christiansantoslima21@gmail.com>
 
-On Tue, Aug 12, 2025 at 11:38:51AM -0300, Daniel Almeida wrote:
-> 
-> 
-> > On 12 Aug 2025, at 05:34, Benno Lossin <lossin@kernel.org> wrote:
-> > 
-> > On Mon Aug 11, 2025 at 4:50 PM CEST, Sidong Yang wrote:
-> >> On Mon, Aug 11, 2025 at 09:44:22AM -0300, Daniel Almeida wrote:
-> >>>> There is `uring_cmd` callback in `file_operation` at c side. `Pin<&mut IoUringCmd>`
-> >>>> would be create in the callback function. But the callback function could be
-> >>>> called repeatedly with same `io_uring_cmd` instance as far as I know.
-> >>>> 
-> >>>> But in c side, there is initialization step `io_uring_cmd_prep()`.
-> >>>> How about fill zero pdu in `io_uring_cmd_prep()`? And we could assign a byte
-> >>>> as flag in pdu for checking initialized also we should provide 31 bytes except
-> >>>> a byte for the flag.
-> >>>> 
-> >>> 
-> >>> That was a follow-up question of mine. Can´t we enforce zero-initialization
-> >>> in C to get rid of this MaybeUninit? Uninitialized data is just bad in general.
-> >>> 
-> >>> Hopefully this can be done as you've described above, but I don't want to over
-> >>> extend my opinion on something I know nothing about.
-> >> 
-> >> I need to add a commit that initialize pdu in prep step in next version. 
-> >> I'd like to get a comment from io_uring maintainer Jens. Thanks.
-> >> 
-> >> If we could initialize (filling zero) in prep step, How about casting issue?
-> >> Driver still needs to cast array to its private struct in unsafe?
-> > 
-> > We still would have the casting issue.
-> > 
-> > Can't we do the following:
-> > 
-> > * Add a new associated type to `MiscDevice` called `IoUringPdu` that
-> >  has to implement `Default` and have a size of at most 32 bytes.
-> > * make `IoUringCmd` generic
-> > * make `MiscDevice::uring_cmd` take `Pin<&mut IoUringCmd<Self::IoUringPdu>>`
-> > * initialize the private data to be `IoUringPdu::default()` when we
-> >  create the `IoUringCmd` object.
-> > * provide a `fn pdu(&mut self) -> &mut Pdu` on `IoUringPdu<Pdu>`.
-> > 
-> > Any thoughts? If we don't want to add a new associated type to
-> > `MiscDevice` (because not everyone has to declare the `IoUringCmd`
-> > data), I have a small trait dance that we can do to avoid that:
-> 
-> 
-> Benno,
-> 
-> IIUC, and note that I'm not proficient with io_uring in general:
-> 
-> I think we have to accept that we will need to parse types from and to byte
-> arrays, and that is inherently unsafe. It is no different from what is going on
-> in UserSliceReader/UserSliceWriter, and IMHO, we should copy that in as much as
-> it makes sense.
-> 
-> I think that the only difference is that all uAPI types de-facto satisfy all
-> the requirements for FromBytes/AsBytes, as we've discussed previously, whereas
-> here, drivers have to prove that their types can implement the trait.
-> 
-> 
-> By the way, Sidong, is this byte array shared with userspace? i.e.: is there
-> any copy_to/from_user() taking place here?
+Hi Christian,
 
-No. pdu array allocated from kernel. I'll use `core::ptr::copy_nonoverlapping`.
+kernel test robot noticed the following build errors:
 
-Thanks,
-Sidong
-> 
-> -- Daniel
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on linus/master v6.17-rc1 next-20250812]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Christian-S-Lima/rust-transmute-Add-methods-for-FromBytes-trait/20250812-054010
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20250811213851.65644-1-christiansantoslima21%40gmail.com
+patch subject: [PATCH v9] rust: transmute: Add methods for FromBytes trait
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250813/202508130702.MtRUndHU-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508130702.MtRUndHU-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508130702.MtRUndHU-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0046]: not all trait items implemented, missing: `from_bytes`, `from_bytes_mut`
+   --> rust/doctests_kernel_generated.rs:4749:1
+   |
+   4749 | unsafe impl kernel::transmute::FromBytes for MyStruct{};
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `from_bytes`, `from_bytes_mut` in implementation
+   |
+   = help: implement the missing item: `fn from_bytes(_: &[u8]) -> Option<&Self> { todo!() }`
+   = help: implement the missing item: `fn from_bytes_mut<Self>(_: &mut [u8]) -> Option<&mut Self> where Self: AsBytes { todo!() }`
+--
+>> error[E0046]: not all trait items implemented, missing: `from_bytes`, `from_bytes_mut`
+   --> rust/doctests_kernel_generated.rs:4814:1
+   |
+   4814 | unsafe impl kernel::transmute::FromBytes for MyStruct{};
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `from_bytes`, `from_bytes_mut` in implementation
+   |
+   = help: implement the missing item: `fn from_bytes(_: &[u8]) -> Option<&Self> { todo!() }`
+   = help: implement the missing item: `fn from_bytes_mut<Self>(_: &mut [u8]) -> Option<&mut Self> where Self: AsBytes { todo!() }`
+--
+>> error[E0046]: not all trait items implemented, missing: `from_bytes`, `from_bytes_mut`
+   --> samples/rust/rust_dma.rs:42:1
+   |
+   42 | unsafe impl kernel::transmute::FromBytes for MyStruct {}
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `from_bytes`, `from_bytes_mut` in implementation
+   |
+   = help: implement the missing item: `fn from_bytes(_: &[u8]) -> Option<&Self> { todo!() }`
+   = help: implement the missing item: `fn from_bytes_mut<Self>(_: &mut [u8]) -> Option<&mut Self> where Self: AsBytes { todo!() }`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
