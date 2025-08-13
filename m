@@ -1,95 +1,79 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD622BE053
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 07:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF182D5C6F
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 07:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755069368; cv=none; b=uAwbSwHC0X3i6VOM/w3M0xUOuugW35MY731ZSbTYmQTOtmNt0EPost/Pchv9Q/wLzZ/h4grzGEqwtZ+4C6+pOiu0Z7a5ZEYTL79V0Jrp7O4Vfp8B9NRhTIjgCk9cTW3cNml5KkabeSJR0gRUgFRgWzaEbQT9oK2sGOJ9hZjFDHk=
+	t=1755069487; cv=none; b=ZWnW/qkeb9rqCQGKZvJoKjt8qBADsc2DBRDU8nc610FSGQyOhP81/QrOGVhMKzTBpKCvuNvqvYu1o7RuXwrMlXIqJkZbaoWlCRfYJC66M2KNKO/l03uBLGyqZvJe4QDEvv9MMoo0j138jB/IEKU4Ia45GUmEGMiGEjZwQZOUYSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755069368; c=relaxed/simple;
-	bh=NhVTFbvvpqfogNChl/Cm4fS2mV3xXJQLZ40lWN95q/0=;
+	s=arc-20240116; t=1755069487; c=relaxed/simple;
+	bh=sPWPCpPwShzFiMT6CKlCXRbcuSDh5ua57E9eE9f66x0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tbeItJFdU+vwFKmEmOW1jjM1decdeaDS7WS+geNquZI5C2nZcdGeHtH2d6AudQdKYYkc2UrGpBROso6nRPibhAjSJxv42QMwnIDpiobW4rdiDQl5C9jA2MTpWaE6PhAAz48nllcWlT8MT9DO8OUAYd0dMNJVvf8em5VL9EBgSdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OKSKh8wJ; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=ZBFbk2vwIBVeKBz47Clr3cQ60l75zciJR3Zxwcb6fWIimeFpKFyXUv9lL12+QT9RrZM22LTeAiq3gyoTyYIA3dt8hYFCOithROTsCrYCr9gnPjxlxPOWFtIbtaF5LX4JHUFaCt2jL8PF1G4LE67pzRFQ1w6So5A3Y40cGnrPYgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bbipfT0Q; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OKSKh8wJ"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-451ecc3be97so31844145e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:16:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bbipfT0Q"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3b788e2581bso2979614f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 00:18:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755069365; x=1755674165; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755069484; x=1755674284; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JLjeI8+9ea/bTSV4n1k4A8UNtWc7Tl8iuoP8d9RZlwA=;
-        b=OKSKh8wJ/Powo6xA8xVJ45D0cOZ2buG24eb8WbzUDP8OvbtgSdmHBYaHaVS1JnqvYQ
-         cUWBtqmsAlOD9T6YvSxB/AN8qHv+CnxsTeBCL0qAiB+WsTNjqxpT7aT1segvSCuEoCw1
-         bLmP+sOB/WO2xsABIoD0XFr8jVBhVXxWReDl2FJ1GRmuYugww1ODFOLE7cT8FeQhaQVA
-         XHXX6gDA9Xda89CD4ApHrV6wcoH6VW/uiSdMRPLrPaDAXzzojqN5zmDc6snBKVC6NHvl
-         VsSKMIE5NQtkIf9mhlWd/15bn+IWdl6VFcmuiMTkKbFy+rSZlBGIuSW0mqNdE+Xx8RkB
-         VdzQ==
+        bh=mzwpjQYxEeh146hCNuF74/A9Awy7IkKcC2sZoitYFXY=;
+        b=bbipfT0QRMoyHXIAdg+gd9Lds5zGi05nUUt7uAzLIaV9D3OHLYWle2/uBLaoHnGlk/
+         6XKOknYCBszvL/1M5cHGU4ZpVAEG/khjdmN3OGI158+0rtGzovmYogGMSqDtjfnfEs+t
+         y127uxWdQOdBwMTx7k0aznKSY0H3XOXjTiJPhKGf/8GsJoHYjk8OOGOEB5dwK7mR06Y6
+         OaM/Xd9Wej5tg3XnzgQ8TQkyfK5zj0RzWLObTd9YtybfKNXbxM8PaUOFr3gtKs9ulcaO
+         hOehA1fRES/axMFglhzOuTKQUZMB5+TkIaV5ioQ1vY0TZoawujgMu9lPazT9HQ0m+ZZj
+         xGQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755069366; x=1755674166;
+        d=1e100.net; s=20230601; t=1755069484; x=1755674284;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JLjeI8+9ea/bTSV4n1k4A8UNtWc7Tl8iuoP8d9RZlwA=;
-        b=ggfzP2W9LspeNroemBKeEbhJdHGUf9Hq1+P2ZMPppWO4B3rn/IikvNNPZ7+F69P96a
-         YeboMrFvt/4jAkI7D6KOACQCd3YuQKZpJ9eASkfDgUtJRJx1ymUz+k+Ib3N+Wdii7i4V
-         DgzvTETGhOIB66R3RRFItmkmReKZpgiwHKDxhTyB2nm89aZx0uyxb+t7LkveP4H/rvOM
-         5DE6jydN4ZbObC10Vrv+5YkhyUUXPoS5lRrkExKddC3FN4htpB+26CEtlkJAQrWQ9V6A
-         3UwB6O6UCkh9n87uFr9nEINim5T9gW0jdAyNbASEjMWJ90K7UVpRPZIZmvTwfDWlqulD
-         7EVw==
-X-Forwarded-Encrypted: i=1; AJvYcCW6FIHeAg3UssuueG6ceWR56lrxKaaIY9d+jfaE505jxhcqhUwwG5ZhDtqIdmCnNp/I6XmrN6YUgx4KsB9SWg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUFdOKaOCLgVOL0UkuXQFHgAbX9m+glODD0HQ+p6dKNpwo1JN6
-	9+M75ACmK5ypH/ArGjB8RgvocuFNyd4+WaBWWc6+qeXq3WTQ83SDsb0YwCpOdHp+YbyglxK60u1
-	HfaNIqAYPTdjK+ibfHg==
-X-Google-Smtp-Source: AGHT+IEnDE33D5c/8svampQZEEl4cLQ8i9FduHgUIGYYPQxm9xf8zHlTArRqFNlJ998MjdEqs896WniYniitZ2A=
-X-Received: from wmbjg12.prod.google.com ([2002:a05:600c:a00c:b0:458:bed1:8923])
+        bh=mzwpjQYxEeh146hCNuF74/A9Awy7IkKcC2sZoitYFXY=;
+        b=aAaX8j/6fROgEeteVHd6KS+mMYQIwZAtmvkXLZEDIjv614n06LojgzQFpvqMXlrmrN
+         XhuKoPJdfC97+mWslu9TEH7VZM00NdB8pSavdy4dQR/TAxnpNoMdJmYY//cF7jAB0gGc
+         h4KGvqdRIoRehdPykbCdmrqjVmcv+6nIt560OIoKLynj0AcjYYJK/tzo+fOpzTWt72At
+         oTltptM7zkw4H4KtR5zloEF8/9aeUJTOWE/qs9PkcpwsLlVwwP23t2fB/m07/Nd7IsaH
+         qy5chzKwK0JyPIGEnwzPUphCiGT1iYRJvLXK/IRKz6g71i49nmimSddwH6sFe36qWaso
+         h9og==
+X-Forwarded-Encrypted: i=1; AJvYcCWsowVYgfomxJBt8XvSOO/qxQO9NPmZpbieJOPzgPkQ3kM6RlQTlawnVABw0CBN5S3OS+ApFlKOwva4cvGkvA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfhXn8XASfqDACqIw5oxqjG587Rq9krLtu9yZM69gOSC8KDQtA
+	/YZz2N7YzSRkoCptwxFeH8+bA2j3zvYqBy4Ke2acBiWzogNo4uhximi35BtZBzGIlHjVQUZhwtv
+	Waxfs4VEnxNgSoOh9VQ==
+X-Google-Smtp-Source: AGHT+IFYBSCuYTUdmry4oLbAzZ+PQAZNZZrLb+T/c83Ca2zlX+gpWOhZSckyieIV2C06E1FjAI/637OzgaaH4Oo=
+X-Received: from wmbek12.prod.google.com ([2002:a05:600c:3ecc:b0:459:df6f:4ef2])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:524b:b0:459:dde3:1a3d with SMTP id 5b1f17b1804b1-45a165f00e0mr15511875e9.26.1755069365626;
- Wed, 13 Aug 2025 00:16:05 -0700 (PDT)
-Date: Wed, 13 Aug 2025 07:16:03 +0000
-In-Reply-To: <20250812130928.11075-1-dakr@kernel.org>
+ 2002:a05:6000:4305:b0:3b7:7cb3:1124 with SMTP id ffacd0b85a97d-3b917d2af6dmr1509508f8f.11.1755069483927;
+ Wed, 13 Aug 2025 00:18:03 -0700 (PDT)
+Date: Wed, 13 Aug 2025 07:18:02 +0000
+In-Reply-To: <20250812-rnull-up-v6-16-v4-2-ed801dd3ba5c@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250812130928.11075-1-dakr@kernel.org>
-Message-ID: <aJw7sx0p0Ec-oLkz@google.com>
-Subject: Re: [PATCH v2] rust: devres: fix leaking call to devm_add_action()
+References: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org> <20250812-rnull-up-v6-16-v4-2-ed801dd3ba5c@kernel.org>
+Message-ID: <aJw8KiOJfrGAVVBD@google.com>
+Subject: Re: [PATCH v4 02/15] rust: str: allow `str::Formatter` to format into
+ `&mut [u8]`.
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Aug 12, 2025 at 03:09:06PM +0200, Danilo Krummrich wrote:
-> When the data argument of Devres::new() is Err(), we leak the preceding
-> call to devm_add_action().
+On Tue, Aug 12, 2025 at 10:44:20AM +0200, Andreas Hindborg wrote:
+> Improve `Formatter` so that it can write to an array or slice buffer.
 > 
-> In order to fix this, call devm_add_action() in a unit type initializer in
-> try_pin_init!() after the initializers of all other fields.
-> 
-> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-
-This looks ok:
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-But can't we do it like this instead?
-1. Allocate devm job.
-2. Initialize inner field.
-3. Use allocation from (1.) to devm_add_action() infallibly.
-
-This way, there's no risk that the inner value may get dropped, which
-could be an expensive operation.
-
-Alice
-
