@@ -1,183 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9258A3019CB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A502FB960;
 	Thu, 14 Aug 2025 10:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755166497; cv=none; b=Hk2zp2vlvvaBrHDEMFVILZKZklZ6tZEhk9hw3u+9CKmRTgEg+r+rI/5r1qFkjleu4NlGiL7Y7hNWf6HXUFbM44YgBuaJj58KmbRgwhL7z9Bfo5P9tBWVBs5tipbW+UCoB/Mq1kQ/xA9u6cH4FCkU9fZNfFqUNRPpsZVZbnpuq+0=
+	t=1755166499; cv=none; b=e/MW1WiqzaHC9D0B6C8DFNDK8T5Nwn8VQPSlSBWmMQnqtQKkAe/+UNB5Qnaf7jyIw5VX7DDk0GOdPrXG4tKNOexlKlpgFmPRUAyRbeCloHMU4BZ/aD22oh4Z3UXFD6fr/wuyBrQLexvNatxlHyvjwVAJkKZxI+tOchoND2sD/0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755166497; c=relaxed/simple;
-	bh=VNpaHZYPDKoIVZk7JizQ+fAc7bXMl6IIrMQIwsKC7lg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UR4BevQsG0dbK5JY/mGos9EQT9pY1vmjtbaF6Tdq3msqDCv/xLSjsyrKP4QRttVgfhCDflsLqz1yTTZHS3+Fqn0/nhqFlf7ehxhMreR4BZhlaj7XAImb8zmqev6gaITd1+4XuXokQ5biY6RYqSIxVBDrzw5E3ejP8gKsxtAOoy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgcAjNmQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755166499; c=relaxed/simple;
+	bh=pa8PdBnag5fYYJVttkJ4ojzfP+jzfXoOjQRbMlzFjEY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VnPwRFrCbVbZ4Wltc1R0UiVDu9b+Wx6BT1j7lPJgRitoECTuggKDNx3LM1olJuRvZu1Rms03trXzcBkBUFgLWaR4IEk/GfhyDZ4pa88CqdxVdUPeKjQELzTxUMN+GaU1NH++97Mo8oYJDs+HTbHowCgz9nP7PF0AbP64bEliiW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HPEJjy2C; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+r3+Uw9Q; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgcAjNmQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E732C4CEED;
-	Thu, 14 Aug 2025 10:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755166497;
-	bh=VNpaHZYPDKoIVZk7JizQ+fAc7bXMl6IIrMQIwsKC7lg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgcAjNmQ4H9PR9eNw1PcsrGYJZDdCoIhSA00MB1PlPh4PY294zzHjmBNp/Feerkz5
-	 onfh+H4AOnhzfctRKBnuKCZx/TKbia4qDj/ZGv49iPN8pTjetV2F9L2VUkgOWdWDRc
-	 XlrdyafRknSjL//iLlaNOBweJcYzh6FKt3CyXPCoJvTLjW4fEmAhBIfd9+UAEg8Pzu
-	 GT/aO6y+QSatuf+mIF+REo7cmsN0/u40Aqx/jFMMVRttbv3XnuIdoCIUPj7ks/cy6e
-	 xakUo8h2pDLy9UhEDhcLSzeOH+G0q/blCWi158fJN5vnT8J/3Fmo24+nsmO++3Zqz5
-	 MlYCBR+W1ikrA==
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com,
-	Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v2 15/16] block-dma: properly take MMIO path
-Date: Thu, 14 Aug 2025 13:13:33 +0300
-Message-ID: <87b7d3a0e3f6be9da49947923d52355ed0835833.1755153054.git.leon@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755153054.git.leon@kernel.org>
-References: <cover.1755153054.git.leon@kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HPEJjy2C";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+r3+Uw9Q"
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1755166496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EBpqRI6i2kXSfd9AzTzdOpLrFWh91/jGpWY95euJX5k=;
+	b=HPEJjy2Cbh+rgvMXx0/c02wNDIA0BpKXcJ5aRR39Tk+T+A0v3NX9PSCvLBXkvhgOatFxCf
+	FBM1HL/BU6Vp9h+Gyoof2N7GbOQHhIrux0NHZGYpjw7nrctnvpQz2O2Fm9Lv5kQCzAuKjH
+	woL/dTO0/vZ7DjtHslMr1Tvw2recS035qMIpl6P95iZEVYYuO4VPHvbch/4Kgg0Jxl4Ugg
+	990rR4I4eGMDCqNPvKFUcpwfEV5n59exFXRFwomuXfaFI/erttpJV558S44cdZm8Q+uD+X
+	MrHwjRVSejEhVS9RFliOiJIcb6jZVQdJWLYzP7LGYTd/mp1XRKl2XYtSuL4Kjg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1755166496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EBpqRI6i2kXSfd9AzTzdOpLrFWh91/jGpWY95euJX5k=;
+	b=+r3+Uw9QPQyY3dJat11egGmNhIB6io8ka5g1VlKGsKrwGVuAC9vAGYQ2EkXSmUXHWJwpYV
+	yik/5aMOSBg4kzBw==
+Subject: [PATCH v2 0/6] kbuild: enable CONFIG_WERROR for more build steps
+Date: Thu, 14 Aug 2025 12:14:40 +0200
+Message-Id: <20250814-kbuild-werror-v2-0-c01e596309d2@linutronix.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABC3nWgC/13Myw6CMBCF4VchXVszLeGiK9/DsFA6lYmkJVOoG
+ NJ3txJXLv+TnG8TAZkwiHOxCcZIgbzLoQ+F6Iebe6Akk1to0BW0oOTzvtBo5AuZPUtolW20RVQ
+ GRf5MjJbW3bt2uQcKs+f3zkf1XX+S0n9SVBJkWfcna+uqbAAuI7llZu9oPWa8Syl9AGipmtiuA
+ AAA
+X-Change-ID: 20250801-kbuild-werror-081f72fee1de
+To: Nathan Chancellor <nathan@kernel.org>, 
+ Nicolas Schier <nicolas.schier@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755166493; l=1487;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=pa8PdBnag5fYYJVttkJ4ojzfP+jzfXoOjQRbMlzFjEY=;
+ b=Se4TW3EW+EJeKpwq2Y760ReNkGjdDVXlxP/8HXWtAKeJMEnvq0VC7N91W5FSgxNpUZqCrmw7S
+ cBPm/dzLwyTBh1QOLANVpRpCza1Ict73l0rCOwP/+9FdnQhnIDfEFG4
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-From: Leon Romanovsky <leonro@nvidia.com>
+CONFIG_WERROR is useful for all build steps, not only compilation of C and
+Rust sources linked into the kernel.
 
-Make sure that CPU is not synced and IOMMU is configured to take
-MMIO path by providing newly introduced DMA_ATTR_MMIO attribute.
+Also enable it for assembler and linker invocations and userprogs.
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+In addition unify the implementations of CONFIG_WERROR and W=e.
+
+This partially implements features of Miguel's Rust -Werror series [0].
+The changes to $(common_rust_flags) are not incorporated as it also modifies
+Rust hostprog flags.
+
+[0] https://lore.kernel.org/rust-for-linux/20240519211235.589325-2-ojeda@kernel.org
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- block/blk-mq-dma.c         | 13 +++++++++++--
- include/linux/blk-mq-dma.h |  6 +++++-
- include/linux/blk_types.h  |  2 ++
- 3 files changed, 18 insertions(+), 3 deletions(-)
+Changes in v2:
+- Unify CONFIG_WERROR with W=e
+- Unconditionally enable -Werror for C and Rust hostprogs
+- Link to v1: https://lore.kernel.org/r/20250812-kbuild-werror-v1-0-36c9ff653700@linutronix.de
 
-diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
-index 37e2142be4f7..d415088ed9fd 100644
---- a/block/blk-mq-dma.c
-+++ b/block/blk-mq-dma.c
-@@ -87,8 +87,13 @@ static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
- static bool blk_dma_map_direct(struct request *req, struct device *dma_dev,
- 		struct blk_dma_iter *iter, struct phys_vec *vec)
- {
-+	unsigned int attrs = 0;
-+
-+	if (req->cmd_flags & REQ_MMIO)
-+		attrs = DMA_ATTR_MMIO;
-+
- 	iter->addr = dma_map_phys(dma_dev, vec->paddr, vec->len,
--			rq_dma_dir(req), 0);
-+			rq_dma_dir(req), attrs);
- 	if (dma_mapping_error(dma_dev, iter->addr)) {
- 		iter->status = BLK_STS_RESOURCE;
- 		return false;
-@@ -103,14 +108,17 @@ static bool blk_rq_dma_map_iova(struct request *req, struct device *dma_dev,
- {
- 	enum dma_data_direction dir = rq_dma_dir(req);
- 	unsigned int mapped = 0;
-+	unsigned int attrs = 0;
- 	int error;
- 
- 	iter->addr = state->addr;
- 	iter->len = dma_iova_size(state);
-+	if (req->cmd_flags & REQ_MMIO)
-+		attrs = DMA_ATTR_MMIO;
- 
- 	do {
- 		error = dma_iova_link(dma_dev, state, vec->paddr, mapped,
--				vec->len, dir, 0);
-+				vec->len, dir, attrs);
- 		if (error)
- 			break;
- 		mapped += vec->len;
-@@ -176,6 +184,7 @@ bool blk_rq_dma_map_iter_start(struct request *req, struct device *dma_dev,
- 			 * same as non-P2P transfers below and during unmap.
- 			 */
- 			req->cmd_flags &= ~REQ_P2PDMA;
-+			req->cmd_flags |= REQ_MMIO;
- 			break;
- 		default:
- 			iter->status = BLK_STS_INVAL;
-diff --git a/include/linux/blk-mq-dma.h b/include/linux/blk-mq-dma.h
-index c26a01aeae00..6c55f5e58511 100644
---- a/include/linux/blk-mq-dma.h
-+++ b/include/linux/blk-mq-dma.h
-@@ -48,12 +48,16 @@ static inline bool blk_rq_dma_map_coalesce(struct dma_iova_state *state)
- static inline bool blk_rq_dma_unmap(struct request *req, struct device *dma_dev,
- 		struct dma_iova_state *state, size_t mapped_len)
- {
-+	unsigned int attrs = 0;
-+
- 	if (req->cmd_flags & REQ_P2PDMA)
- 		return true;
- 
- 	if (dma_use_iova(state)) {
-+		if (req->cmd_flags & REQ_MMIO)
-+			attrs = DMA_ATTR_MMIO;
- 		dma_iova_destroy(dma_dev, state, mapped_len, rq_dma_dir(req),
--				 0);
-+				 attrs);
- 		return true;
- 	}
- 
-diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
-index 09b99d52fd36..283058bcb5b1 100644
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -387,6 +387,7 @@ enum req_flag_bits {
- 	__REQ_FS_PRIVATE,	/* for file system (submitter) use */
- 	__REQ_ATOMIC,		/* for atomic write operations */
- 	__REQ_P2PDMA,		/* contains P2P DMA pages */
-+	__REQ_MMIO,		/* contains MMIO memory */
- 	/*
- 	 * Command specific flags, keep last:
- 	 */
-@@ -420,6 +421,7 @@ enum req_flag_bits {
- #define REQ_FS_PRIVATE	(__force blk_opf_t)(1ULL << __REQ_FS_PRIVATE)
- #define REQ_ATOMIC	(__force blk_opf_t)(1ULL << __REQ_ATOMIC)
- #define REQ_P2PDMA	(__force blk_opf_t)(1ULL << __REQ_P2PDMA)
-+#define REQ_MMIO	(__force blk_opf_t)(1ULL << __REQ_MMIO)
- 
- #define REQ_NOUNMAP	(__force blk_opf_t)(1ULL << __REQ_NOUNMAP)
- 
+---
+Miguel Ojeda (1):
+      kbuild: rust: move `-Dwarnings` handling to `Makefile.extrawarn`
+
+Thomas Weißschuh (5):
+      kbuild: align W=e with CONFIG_WERROR
+      kbuild: unify W=e and CONFIG_WERROR
+      kbuild: respect CONFIG_WERROR for linker and assembler
+      kbuild: respect CONFIG_WERROR for userprogs
+      kbuild: enable -Werror for hostprogs
+
+ Makefile                   |  3 ---
+ scripts/Makefile.extrawarn | 18 +++++++++++++-----
+ 2 files changed, 13 insertions(+), 8 deletions(-)
+---
+base-commit: e8ee794a1f7705edd64b9eb9837e7baa4421c084
+change-id: 20250801-kbuild-werror-081f72fee1de
+
+Best regards,
 -- 
-2.50.1
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
