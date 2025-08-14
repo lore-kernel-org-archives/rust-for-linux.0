@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E38D27A12B;
-	Thu, 14 Aug 2025 08:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F3827587D;
+	Thu, 14 Aug 2025 08:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755158816; cv=none; b=fQhlQNOI5PE+CDve6sxPVJgcPYoPxjKwG+vGQcBf64XKJhR8xwZVWyCWTpRVljTlnTZO5IOxPlWamvZjRVRQgf98PGiW8toZiFZr4Zw4quCW5VneW7XQOEjAEqoIAgJes5QimgLZoxCtK2vYzsrGD9qzPclLv2Dpgk4/GvM9/Fk=
+	t=1755159040; cv=none; b=jJStjg3CQoB6VRd5bYjK8QCOTCqxyRaKUasbvLD8GrHPoRjfzrmQdKfwZpJ7D8B0RCZXTd1t1P3VnXmU6NXv1M4JKBN5cYs237/WHEGYAKsoNRysPYCJS8XmfybdDyECY6JBL9v9sGUUSTQ1ogSCcjft8Q960WDoFDTW4OUYpPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755158816; c=relaxed/simple;
-	bh=cICgknm5aE0tdDgyfidlUK1Hbu9WfKnqPKmWMA3QDyk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=VbVP5vhWZjhVKUaqmT70D5pURFlTO4Rnmsx9/QSXj6QZryWxTZdPjuWOn9PQXy8tweosrAdtresWdvGm+zYcpErL82fLLlcJmH0tfbW15D856hAkDEEdXoSuplnRYEQ8V/bjWzF+QdHSZO40eWIJeIPi1nmFSx2BCWJdbpjfElA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBWkJxXa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755159040; c=relaxed/simple;
+	bh=8PGdpqI11ac8Y8fSWkUX0aKnppBjPfTLxK1xdjlz6cE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=PtEhGhFRSOTxnEqm7Iw+VTGJAl/s2l//MyjB190sPlDAMHS3ZvQdETwlYsCdXKPua1bPmE1RTTOGtRFQaDUXjXMIxslxEgL5z79wF+3QR70LNp6f21x80Mn1umGoKqbWT0Gx5qW/G1HalFm7cr1FO7jY4ZPM0didQIlUC3S2O10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DLbJ0NC1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBWkJxXa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B7FC4CEEF;
-	Thu, 14 Aug 2025 08:06:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DLbJ0NC1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2747C4CEF4;
+	Thu, 14 Aug 2025 08:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755158815;
-	bh=cICgknm5aE0tdDgyfidlUK1Hbu9WfKnqPKmWMA3QDyk=;
-	h=Date:Subject:From:To:References:In-Reply-To:From;
-	b=WBWkJxXaYlnmb0wwTZrD5h2yYfkZzlw31h6V8C1NZJfblLkryaWBiS0ZPuZ4bn4Md
-	 g7rmnBokkG6JpC4V4d/QUmjf8q3zX091wSXtHCCuhF1xNDzoAnPcM6i7FW7zTxPD4e
-	 INRSopUL17efivYxJq2dMqgyqQ17yHn7qPS0TAuMsViWrDDZuqyoO3woMqgInIIUz+
-	 8g1msaKFsLWAhg9TKEeh3D5GUMxcKZq8TjEVrXjpxr9YeLB/1s2lmIPPtcMYc/lCqK
-	 8ontYLD0tKRLpdyiUfgyxk6wDqtG4xsbEmFk/0SQYxa2mjRhEx9pUinTjt7sUonjWt
-	 VnBM52ufi7cGA==
+	s=k20201202; t=1755159040;
+	bh=8PGdpqI11ac8Y8fSWkUX0aKnppBjPfTLxK1xdjlz6cE=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=DLbJ0NC153asI54kpXF/bKi1f5qTjJYsdUrlcRx7KzPAUp3hOB3VlFXB2QW7nMuiK
+	 tNAuNlLZzXMh5kyDx4qeuZA+eFTi9ZHbFPq7QZ4nIOLtndciGqwzCJN/rXowebYeng
+	 h7yTuboG83nXDd+Buqo5VVartYvky3YZ+6YMqRrsaYBUGjjRudUE6LutBc93y9fZAG
+	 VflSSnl1UZlFjNfQWsNH8ltDGKwlrLSo3XQeaAvYbjQMoaq9r9jWSxc41YktvdTf8C
+	 qqZ3E+bbhcSlbLc0C0YRYrSk15I0J2lvCVoRPuhIQwY1gjU0+JBx5AVe9d72U5QYeA
+	 FRGRzpivjT7zg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,127 +34,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 14 Aug 2025 10:06:50 +0200
-Message-Id: <DC1ZVE8AM8GJ.3UZBQBW7HOFE3@kernel.org>
-Subject: Re: [PATCH v9] rust: transmute: Add methods for FromBytes trait
+Date: Thu, 14 Aug 2025 10:10:31 +0200
+Message-Id: <DC1ZY7PYGCK6.2LDYPXE3XSUMK@kernel.org>
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v3 11/11] rust: acpi: use `core::ffi::CStr` method names
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Christian S. Lima" <christiansantoslima21@gmail.com>, "Miguel Ojeda"
+To: "Tamir Duberstein" <tamird@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
  <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <~lkcamp/patches@lists.sr.ht>,
- <richard120310@gmail.com>
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Breno Leitao" <leitao@debian.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Russ Weight"
+ <russ.weight@linux.dev>, "Brendan Higgins" <brendan.higgins@linux.dev>,
+ "David Gow" <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@google.com>, "Jocelyn Falempe"
+ <jfalempe@redhat.com>, "Javier Martinez Canillas" <javierm@redhat.com>,
+ "Arnd Bergmann" <arnd@arndb.de>, "Len Brown" <lenb@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250811213851.65644-1-christiansantoslima21@gmail.com>
-In-Reply-To: <20250811213851.65644-1-christiansantoslima21@gmail.com>
+References: <20250813-core-cstr-fanout-1-v3-0-545c14bc44ff@gmail.com>
+ <20250813-core-cstr-fanout-1-v3-11-545c14bc44ff@gmail.com>
+In-Reply-To: <20250813-core-cstr-fanout-1-v3-11-545c14bc44ff@gmail.com>
 
-On Mon Aug 11, 2025 at 11:38 PM CEST, Christian S. Lima wrote:
-> @@ -9,27 +11,136 @@
->  ///
->  /// It's okay for the type to have padding, as initializing those bytes =
-has no effect.
->  ///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::transmute::FromBytes;
-> +///
-> +/// let foo =3D [1, 2, 3, 4];
-> +///
-> +/// let result =3D u32::from_bytes(&foo)?;
-> +///
-> +/// #[cfg(target_endian =3D "little")]
-> +/// assert_eq!(*result, 0x4030201);
-> +///
-> +/// #[cfg(target_endian =3D "big")]
-> +/// assert_eq!(*result, 0x1020304);
-> +/// ```
-> +///
-> +/// # Safety
-> +///
-> +/// All bit-patterns must be valid for this type. This type must not hav=
-e interior mutability.
-> +pub unsafe trait FromBytes {
-> +    /// Converts a slice of bytes to a reference to `Self` when the refe=
-rence
-> +    /// is properly aligned and the size of slice is equal to that of `T=
-`
-> +    /// and is different from zero. In another case, it will return
-> +    ///`None`.
+On Wed Aug 13, 2025 at 5:42 PM CEST, Tamir Duberstein wrote:
+> Prepare for `core::ffi::CStr` taking the place of `kernel::str::CStr` by
+> avoid methods that only exist on the latter.
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-The first line in any documentation should be a single, short sentence.
-Also separate it from the contents by a newline, otherwise markdown will
-render it as a single paragraph.
-
-> +    fn from_bytes(bytes: &[u8]) -> Option<&Self>;
-> +
-> +    /// Converts a mutable slice of bytes to a reference to `Self`
-> +    /// when the reference is properly aligned and the size of slice
-> +    /// is equal to that of `T` and is different from zero. In another
-> +    /// case, it will return `None`.
-> +    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
-> +    where
-> +        Self: AsBytes;
-> +}
-
-> +
-> +// SAFETY: If all bit patterns are acceptable for individual values in a=
-n array, then all bit
-> +// patterns are also acceptable for arrays of that type.
-> +unsafe impl<T: FromBytes> FromBytes for [T] {
-> +    fn from_bytes(bytes: &[u8]) -> Option<&Self> {
-> +        let size =3D ::core::mem::size_of::<T>();
-> +        build_assert!(size =3D=3D 0, "Can't create a slice with zero ele=
-ments");
-
-This message is wrong, it sounds as if the size of `bytes` was zero and
-you can definitely create a slice with zero elements.
-
-> +        let slice_ptr =3D bytes.as_ptr().cast::<T>();
-> +        if bytes.len() % size =3D=3D 0 && slice_ptr.is_aligned() {
-> +            // SAFETY: Since the number of elements is different from
-> +            // zero and the pointer is aligned, the slice is valid.
-
-Please take a look at the documentation of `from_raw_parts`, there are
-several bullet points of safety requirements. Please provide a
-justification for each one and also place them in a bullet point list.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
 ---
 Cheers,
 Benno
 
-> +            unsafe { Some(::core::slice::from_raw_parts(slice_ptr, bytes=
-.len() / size)) }
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +
-> +    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
-> +    where
-> +        Self: AsBytes,
-> +    {
-> +        let size =3D ::core::mem::size_of::<T>();
-> +        build_assert!(size =3D=3D 0, "Can't create a slice with zero ele=
-ments");
-> +        let slice_ptr =3D bytes.as_mut_ptr().cast::<T>();
-> +        if bytes.len() % size =3D=3D 0 && slice_ptr.is_aligned() {
-> +            // SAFETY: Since the number of elements is different from
-> +            // zero and the pointer is aligned, the slice is valid.
-> +            unsafe {
-> +                Some(::core::slice::from_raw_parts_mut(
-> +                    slice_ptr,
-> +                    bytes.len() / size,
-> +                ))
-> +            }
-> +        } else {
-> +            None
-> +        }
-> +    }
->  }
-> =20
->  /// Types that can be viewed as an immutable slice of initialized bytes.
-
+> ---
+>  rust/kernel/acpi.rs | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
