@@ -1,66 +1,66 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A891E1A17
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 04:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177081F91C7
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 04:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755144940; cv=none; b=UE68AmrtH0zkkFUI5yZia2h5CeNs4kfWSpZLgQ2SB9U60Xcc6K/83pLFqIyyR4ZE5g5F83JmTIauHnOsucQ587JWUYedAAh6j0EPRbjwFyp3V2nptqM5B2IBI/IFiuGwS6mKZIfL294RyJuk4+fEJQE8rC8aCdBz3Tijb+zgdj8=
+	t=1755145588; cv=none; b=btA4LCqVtF30PxVWBQWzvhBVl6WM99jskuAqotYjbdbX+FQLwtytpxeBSdCCNsWIyMHNhVD0wcYb828RlOqbnl7qzZVA0B6X34BZed3Y6H/DO1MU4UzfKsAj5kOsysevGKC9uFMDKAX5TTAIBydP1uZBtbM+ZuWkmnxqQHppkZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755144940; c=relaxed/simple;
-	bh=aINf4JQIOzGrbC8KNPOs49EQ27ER0B2fAmdlIOg6AJw=;
+	s=arc-20240116; t=1755145588; c=relaxed/simple;
+	bh=M+zbR6R1Nm/4pCp0B7gheJGuNDaXY/XrNqF/Pyj8bmU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h90I3H6qDodBIh4EbmvmQ/xOCHPGYUv9e1D9OFUsq1Jo7LEHUotLmQ2UUb5g6o2wpPwrCVHfD9Nymagg8GnMMfk3FExJuPMyUjH78yLMPFEOjF14cxwz7vZauKd5DSpyU89Wjq0M7KsHweFLMnldIryo6fQlz9GTLdwFUuuqxgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VFk8wODM; arc=none smtp.client-ip=209.85.210.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xgynju76i+cXpeQ7zV3KlBpkSucF0pjYKSa+gSacgI9Gph0XqIaOmFctB6H/bnY+bFaN7fzI0cDYvCCCRBO/cRv0PtBwxt4OaMsnZP2uyKWRcR9JbDJ369/MeS+zPvigx9fOFLAZJABEWOtRQntHZg9IDbH4IBNtl/nK+hr/Sms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zJzVGlIh; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VFk8wODM"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76e2e5d244cso602442b3a.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 21:15:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zJzVGlIh"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76e2eb6ce24so524088b3a.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 21:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755144938; x=1755749738; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1755145586; x=1755750386; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=34KWmLyAieUzqtSrdM5jM6hi2YW8C3abPtgGolrQZzs=;
-        b=VFk8wODMCPp4sykRcxFNrGPwYPG/tsAGsdvjgE8c//5GEJgXop+PzeRQ86GIEnq+Jt
-         ASnKVOR4xGiZ4gw3PsRdnQIZmOaAliJXJMdIgmMpEIALEpSHT7cBRDzkwbzLoco5gInP
-         2Abkeoobct2tyzQw6OD8fUL7uatVHX+mJDw5ev5SBRFATouJVPxFd3u2MWeryMAoCQRa
-         OLz16rLSNbNZSh7wwfTHosg5H9wZjviaTXy8WCve6PISnwpN4KltPa/Polk9HYhhXvzH
-         /Gf67SHkyWDytV3RVGaHCQm7l7DWx7B1HC3m87leSgUlALZeAiB1gChgw4j7cMuET9Dk
-         xRWw==
+        bh=4Y4+VbSY2gENC6vjJLIhD6H5q5HP7szxm2F2pf2ubmU=;
+        b=zJzVGlIhOOZynWHY+t7mRu8y3SWCOAPEcC0ucyRK12R+yWvC05JlQ3kKWYyoFTS4W0
+         3Rtv6Iiq4omT8z/bs3GsfWgiDZWRllOvEorxYQyaqYSZBST4JzvcdF7Tkc/HRTy7OqrE
+         cPY4tIZwxUWgmIyA9MTBZzOtualAg954lX8N8/6lEkkHfECN1oGAdT4s9WxkGVzE0mam
+         1Q8xRe9atpVbOcHoWfEUaMpqA/ouqwq+KvMxpzJu8Ys4nAF5e2i63sW0JRvZZohyarRd
+         8gfz8Sa84PUTu8vHnHURHgz1Uf6j93ow6VqxmC9hILfGqwi3SSD1FxJKh8YMCsJvizhd
+         7pVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755144938; x=1755749738;
+        d=1e100.net; s=20230601; t=1755145586; x=1755750386;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=34KWmLyAieUzqtSrdM5jM6hi2YW8C3abPtgGolrQZzs=;
-        b=PP/nIUeNFqYue0HoJYIIfTp2FJbKUm41+hTfgCgDeCJ/mngCr7xplX2q64ZxjfxjWq
-         ujm4UzeGYYu6REXr4yKv0T/5TZXdpSvcxWjem82YthH24RbkFOZtTSZmF4ncD/a4vPBl
-         bR11fnVqz/bICJ6fAw4orLzZlqeiaonUcEDTXkGmrfWyyPvZa3d8YzedUJjIY8qgXpk/
-         bA6c9DbPP2QJJFWOOjOHe7GxqWCGmh4i1ATasdPL6QfYoXUttRjW0GIvjsbOwmXufTQj
-         5eq6gWZn2H87mhjRPPwIB0rtQM2JxViRaYf+87+P2BObIWpPJdFAWGcLwGsB2hZk9cY/
-         zJ5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUcuml0776VE0NIwxWVdr50j9DTCfE0+53L476Y6EjIrGJ/1R2uG+VmDsZgYBluNK3HeNA7lc6uAYU4OQfhpA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT55HE5UMqmZ31lybWMFxGWShJOoVPbFmteazU675c0QA9Yf5P
-	onVYhxgm9QtS/SKVuJXA3mB/6N5ueMzeJSQtYfb8DQSNxZudqjqvv/8AzvQPvYxa52Y=
-X-Gm-Gg: ASbGncsg/Vwz56sdT6q6n82wgJexkjx70QtqqGVIzek4Q+v/L5iF+hjO3rjdo8dlJLK
-	TyTCSXWvae1Gelvrpl1rmI+TWjVIWRdzlRFIYX0SF5vPn4UvebIlz2tJBvJDTdRSvWTTONyyOrq
-	dsdzFYI8YHbSSDoXBg5xpmEyEmbiHmfNKf9eWc5duPUdsqgPQZTlbRucy9qMpW4AiJfl/SK+ZJj
-	rgAELjsz2FbFEG8SeM3EYPEz/2McUHACxEShVw2VTKXlZHcmwhWaU0lJ1RLAJdn1f2QIKw2hx1f
-	+hrKX7ubusbeoOoKuJVcViyPvEewC5BIxVQC2/bvpowNUH0Bbnv3aZOlRZqNeapVsS/YwDNzlUq
-	YcpMpkNR5aXC06d0sOZVbJaNfEsNhSdkGy4c=
-X-Google-Smtp-Source: AGHT+IFKmQVKtrRTGaZ8hTWhd7nE8H1E8AgUXml21TmSiOXRMbfiiTxpX/j+26/xYc1Zfc3ne6Vv/g==
-X-Received: by 2002:a05:6a20:7d8b:b0:240:1204:dd5 with SMTP id adf61e73a8af0-240bcfbba85mr2301691637.8.1755144938050;
-        Wed, 13 Aug 2025 21:15:38 -0700 (PDT)
+        bh=4Y4+VbSY2gENC6vjJLIhD6H5q5HP7szxm2F2pf2ubmU=;
+        b=cy1pyHfTevJGpMhWYban5a3+h/lb3ZKg3pJ0ya0ebkcTVhOp9MoR6EiZJtchSJDI2L
+         mYudcmiTE/wQt2oQyV4VnCHUuf/TruC65O7eWkovsXol7C0NVMKfwHcu0ykkO8wUqVYf
+         kGHWZYldsG/toxbuwpZplnzhmz1y0zgFXUx6PAMS/zhcRJSR2+1D7yEXHVJ/L/5fulet
+         ocMx5VPaVE2tzoA0+2b2b/wIDKnQ/xXEeSWNs4PDNkpxoOpy9+YtUKgKvPwZT7WD+2WN
+         u+pWWsKA5+4Fnq6djemUTL3bWjbSKCWgDSHozeBbxHaFOm3c97JGkIU1s7Uht5xwWP9f
+         gliQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3fnX5ZM4IUDUcGo+OYFXe4xMtXkVMrMRvzyIjH6iPdakjR2VJZsJ3ZaUw1SrY1rB5QrrS0w60JrpelDUmZQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgZubmCnhTrbIzWE9fCxHxDCbOld6a3azR+pDsW0D55Na+Y0Ze
+	Cym1PwuGwwyVR5KlysMCLUftfO1kHb8NGH5MwdAXgLIlg74lp2rtj7+XlohjQ3MYpRM=
+X-Gm-Gg: ASbGnctgbrwmSRQ/Y9QJ61FS75DFWcPRCDIilXPuNm1GJE71h2DSEXpvWy30Dm0MCx+
+	f3kwC3upZ34SE/JUnXBI/DnUvNo3ITprfmgEtFzQ6Su+LvH43PQgDHOiRAMkrb7tjFOo6a5zqig
+	9HtjViqOjasLlKFeGMHBSgM0IPmDPgRyUxO8pYuYAa2wIPn12/zrvPQSX8OMavVCNA98Huzq79Q
+	z0rawVyUExIxmYw2pKG4Pd/8NORp0jPSgFC6Xb80bXs+2g+02injob3FgReLZzkrhzsB7/oFkox
+	6vO+6ytMZTltpEbsBreG9siSDF6KmDz2jAjYnMEUMn4jWg1UcBq1BZ06b9sgLJ/xnhg0+vMu79x
+	pilcc7pdUJV7miPXjTXfu1SN2B3IlhQtwd+g=
+X-Google-Smtp-Source: AGHT+IHTIvSY9FFJNBppNNZLO9sn/8s0tAcL4Le93FVv9JRJ529BpdCYJLpwI72ZJr0ZEnJN7dNv2g==
+X-Received: by 2002:a05:6a00:1304:b0:740:aa31:fe66 with SMTP id d2e1a72fcca58-76e2f8cf708mr2713273b3a.4.1755145585869;
+        Wed, 13 Aug 2025 21:26:25 -0700 (PDT)
 Received: from localhost ([122.172.87.165])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bd9795200sm31652911b3a.114.2025.08.13.21.15.36
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e2037acf2sm3493102b3a.112.2025.08.13.21.26.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 21:15:37 -0700 (PDT)
-Date: Thu, 14 Aug 2025 09:45:35 +0530
+        Wed, 13 Aug 2025 21:26:25 -0700 (PDT)
+Date: Thu, 14 Aug 2025 09:56:22 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+To: Baptiste Lepers <baptiste.lepers@gmail.com>
+Cc: stable@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
@@ -68,47 +68,11 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Breno Leitao <leitao@debian.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org, linux-clk@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 04/19] rust: clk: replace `kernel::c_str!` with
- C-Strings
-Message-ID: <20250814041535.l7yj2wm4ae3l4k7p@vireshk-i7>
-References: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
- <20250813-core-cstr-cstrings-v2-4-00be80fc541b@gmail.com>
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: cpumask: Mark CpumaskVar as transparent
+Message-ID: <20250814042622.t2qx6mlelntxi77b@vireshk-i7>
+References: <20250812144215.64809-1-baptiste.lepers@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -117,22 +81,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250813-core-cstr-cstrings-v2-4-00be80fc541b@gmail.com>
+In-Reply-To: <20250812144215.64809-1-baptiste.lepers@gmail.com>
 
-On 13-08-25, 11:59, Tamir Duberstein wrote:
-> C-String literals were added in Rust 1.77. Replace instances of
-> `kernel::c_str!` with C-String literals where possible.
+On 12-08-25, 16:42, Baptiste Lepers wrote:
+> Unsafe code in CpumaskVar's methods assumes that the type has the same
+> layout as `bindings::cpumask_var_t`. This is not guaranteed by
+> the default struct representation in Rust, but requires specifying the
+> `transparent` representation.
 > 
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Benno Lossin <lossin@kernel.org>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> Acked-by: Stephen Boyd <sboyd@kernel.org>
+> Fixes: 8961b8cb3099a ("rust: cpumask: Add initial abstractions")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
 > ---
->  rust/kernel/clk.rs | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  rust/kernel/cpumask.rs | 1 +
+>  1 file changed, 1 insertion(+)
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Applied. Thanks.
 
 -- 
 viresh
