@@ -1,157 +1,112 @@
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B85D15C158;
-	Thu, 14 Aug 2025 05:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218C11993B9;
+	Thu, 14 Aug 2025 05:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755148030; cv=none; b=L7KhqvObc+51OILXZU1pQovvOGZGpNDyXtPsYLx7zfoFgxaN25t94jwNA0J6jJuamOR7pWZr9tNadn1AAqgECinb7/n0OSK+AteFIBYEm0dSemodLDdp4DIlJJXLwrkDZ0naotMRK2SmWnGSEG6VoUfxedX/WpY+TwJ1td4In10=
+	t=1755150810; cv=none; b=gHvZ97uOeDe7XtmmgfrEI5uHV5d8Q2hwFjePS134HCJQAldpvp4xbNlIQKnYKyNMIqF401PzV6DFgmhRPIgT8VQF2qC+F401bX6jW/Ao6tov/06B+45Fw6I357bJnfbo91K3z0uKalh2p7cop/xLdd+FEBkIoyQ5+VrF/1J/sqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755148030; c=relaxed/simple;
-	bh=VztCtVb1F6J08m8kcczuqOBBAcn6HWfQArYFqR+enXQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bD8V7gWiC+pP7MjmeN1WNSwHqSF5ijlJ+1dh7zxKrHUnMkU+4exo58NdLeZOpVeRhn997h4vk4vUrZ9C1XOaUw9s3nlq8SweAxNselVy7jjwb8wGSIfIKw6i0TM9iXee5I2baSJ2Mt+SxgQxhzT38o0H4b16hgZnjExm0JjKGBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de; spf=pass smtp.mailfrom=t-8ch.de; dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b=Z6xPu47k; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-8ch.de
+	s=arc-20240116; t=1755150810; c=relaxed/simple;
+	bh=6adqea4GhIXGOmF5MfSXsSimmVOG8gIRKdr8/MyOQiw=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=oHwtLwVUkPzQBkfJt+U/CLfkYmovpSlnu/SynhfIAPA1Bh8CXy9lJEQNcBBNniR95cdvuPObJ2zoNQwmE59gFvIMP1Mz1LLL2f8OiOlQeAXVkNttztuArQzDtQovY2+Rse0PoIe78u9e5eVEs2U8vITwI9sIJ6/jGF0+rRqrlUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=drMEm+Bt; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b="Z6xPu47k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
-	t=1755148025; bh=VztCtVb1F6J08m8kcczuqOBBAcn6HWfQArYFqR+enXQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z6xPu47k6TbziQ1cHXsBO9JK7M/eMUFmb7dID/QrQty8SHOeEQaXa8cYvenR/qEdu
-	 ADWjkppBxpyNNwUb0epVQjdev1i7oitz9n52DalNZFGfr+ApJaHBLk7WqHdXaowjbP
-	 EnPTLFie6SAqkgtFt+YmfG5B0Mh4Cv0f+zMu0pIk=
-Date: Thu, 14 Aug 2025 07:07:05 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To: Areej <areejhamid8560@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Tamir Duberstein <tamird@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>
-Subject: Re: [PATCH] rust: lib: add if_cfg! macro for conditional compilation
-Message-ID: <ec0dcd14-e974-43ff-b4f4-3dfe2f31a91c@t-8ch.de>
-References: <20250813203826.3145553-1-areejhamid8560@gmail.com>
- <7cca1f5d-e214-481c-96a8-b841ad1d8fb9@t-8ch.de>
- <CAMjM9+b60ate7cpHfm6uPHFauuYyPA1KcukqMgLjCQcC_zak+A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="drMEm+Bt"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76e2eb6d07bso601844b3a.3;
+        Wed, 13 Aug 2025 22:53:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755150808; x=1755755608; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KqYhRuNqPqJ9ur4OBBFMvH3TILkl8nxpwAKTyy4UuTM=;
+        b=drMEm+Btu+DG6kRQlrlx4rw0CGnabSFcAG4DdxyXeVfR1MHO7OLEUqM8cND3cLYcZI
+         Th0CiGdvOWyldFJEomIgKnv8UjlaNdcUb63fWFq6/fMQxzz+4HP0LXQjJA+nqBonX4l1
+         vDs2bzR5lFJclxoMzLTyfxWfl3Zb8q7/gKKv+pUrdm/cQiBZIkhkVbGgJs4eCQBAsURj
+         U/+hKAIIy1n6krq8uhQWjIkrUbiX5JZRbnF57O7W0KA8fDEZU6U5irEvVqxwNK1RTFPc
+         4Mre6P9r9KSOIP/em75X724LrpD3io2RIY2/kU197vOxbICjRTLSSQcrv5VxKU5OP7Ip
+         XfZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755150808; x=1755755608;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KqYhRuNqPqJ9ur4OBBFMvH3TILkl8nxpwAKTyy4UuTM=;
+        b=Exac3DNgWV6q7tNeV767UFeKmEQepAyagZebw+6KGlmYA6hTNxLHB2wkiMExPNaO8M
+         jmWtmK3cwO+rSqc/evBYXqtKdBWlBZBKEHyF3f+djnkTRTevJE3c/SY3W9UJjg3zsmly
+         LPLOVrkMuh9WCAqP0jzKfykben6q+mEpRjU87QbwczjAib7iXCgTpkL6oCYv81a3F5Nx
+         X1Eb9ZumguZWdpiDf+YjfMEhOEThSCpsk+uUaZOXOPvY7/kqVQWlTd+T8MZIBYT+qo7R
+         ZA0xNum94TqDn98Ziiiadj1Qv1pMY9DeShZOAQv4aP3cyt55/5ZTCsR+Kr0HtW9yv7Y+
+         KJAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxyWG1/ZhzLpMCZCu9NCzyyuWA2xMIJacv7LqLvSyIAgrkZ1ZKpQZp7u21eM63aUWNk4i38Gwj5SDoct8=@vger.kernel.org, AJvYcCVy/qKriA25tY2jB4jLI3ZL1WrKwAtb2a3OyaJTQ4mWYEzkUV/X42TTTXGvlfAPkyIjWHrw4WX3HhSOc21O4qY=@vger.kernel.org, AJvYcCWgfMTcmdSzA82PwT+sRiQ6HqKNaG7jEFFLhbXyxL58fiCTboqwNTvPJ8Hdbl6b+oHXhczRqlMw@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMWK+kOb68rPc3O6zxM8/hwVXxywgJXsDPyxHoG63byGm8ynV/
+	qoWnTeEhMtgdkX/ziTcqQu2bnXi9yZ4dw2eceRxGGcgXvcgY95fYVmUqSzSk8rkB
+X-Gm-Gg: ASbGncuXBOQQcJ/B0gY3i3yC2/ekYUXKQYHy5gAzYlYqB3/kIK/RjI1thXa1AE/PcoJ
+	EEEDskHYpOKQ69c49G38JERoNWMY4lkH6MRtXbOFQvD67V3lAy9kZjN0u8ZPa61xaS0L2zd/3Ho
+	KCBl7PF/QEeUb5p6ci3Z63++f2iUq1vajodwWHvWjlLlNlLjyRNCNv/JJEQHpiFae3386RE3/JN
+	mOg5dLfjR6govNJTeoIMSZ8nCWn7sqqFcST8gJ+8d/WVJruT73PC8azCUNvH8Kqq9GOKfWXYzPb
+	p1J6zXOcJMPn4n+Kj0NA8LavHZeSyV5xGadrlls0dLQdmYk+OcktdE9Dmyv5qZq1CVILvIBI4Eg
+	8NZzgTegF8opw5gjOGLbygV/ZDedoz32SEo+2wxX8VWJGM+TUztt+oljP3DLsPTQ7SeJkdr8iF3
+	zG
+X-Google-Smtp-Source: AGHT+IHog791igqliEoqszyb8l5Cw0JJ8BUbMHP5SRxTZ/fdAGK+R6bJxJOoYp21eBkF3lNYfYepXw==
+X-Received: by 2002:a05:6a00:84f:b0:76b:cadf:5dbe with SMTP id d2e1a72fcca58-76e2f5c1b40mr2945355b3a.0.1755150808217;
+        Wed, 13 Aug 2025 22:53:28 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bd7887522sm32503028b3a.20.2025.08.13.22.53.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 22:53:27 -0700 (PDT)
+Date: Thu, 14 Aug 2025 14:53:09 +0900 (JST)
+Message-Id: <20250814.145309.293965922516473208.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ tgunders@redhat.com, me@kloenk.dev, david.laight.linux@gmail.com
+Subject: Re: [PATCH v11 7/8] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <878qjqgpnt.fsf@t14s.mail-host-address-is-not-set>
+References: <huGw-FNRjvsPJK5CIsoI3puxml780Rr5GbJB6xg92PGzQOCMRTwC_utxTpn8u7G1sNjqq35iWOTNANpVUuip4w==@protonmail.internalid>
+	<20250811.105320.1421518245611388442.fujita.tomonori@gmail.com>
+	<878qjqgpnt.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMjM9+b60ate7cpHfm6uPHFauuYyPA1KcukqMgLjCQcC_zak+A@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On Mon, 11 Aug 2025 11:42:46 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-Please respond inline instead of top-posting.
-
-On 2025-08-14 05:22:51+0500, Areej wrote:
-> On Thu, 14 Aug 2025 at 01:59, Thomas Weißschuh <thomas@t-8ch.de> wrote:
+>>> Could you document the reason for the test. As an example, this code is
+>>> not really usable. `#[test]` was staged for 6.15, so perhaps move this
+>>> to a unit test instead?
+>>>
+>>> The test throws this BUG, which is what I think is also your intention:
+>>
+>> might_sleep() doesn't throw BUG(), just a warning. Can the test
+>> infrastructure handle such?
 > 
-> > On 2025-08-14 01:38:26+0500, Areej wrote:
-> > > Add a new if_cfg! macro to simplify conditional compilation using
-> > > cfg attributes. This macro expands to paired #[cfg(cond)] and
-> > > #[cfg(not(cond))] blocks, allowing compile-time selection between
-> > > code branches in both expression and statement contexts.
-> > >
-> > > Suggested-by: Benno Lossin <lossin@kernel.org>
-> > > Link: https://github.com/Rust-for-Linux/linux/issues/1183
-> > > Signed-off-by: Areej Hamid <areejhamid8560@gmail.com>
-> > > ---
-> > >  rust/kernel/lib.rs | 37 +++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 37 insertions(+)
-> > >
-> > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > > index ed53169e795c..47e73949392d 100644
-> > > --- a/rust/kernel/lib.rs
-> > > +++ b/rust/kernel/lib.rs
-> > > @@ -294,6 +294,42 @@ macro_rules! asm {
-> > >      };
-> > >  }
-> > >
-> > > +/// Conditionally compiles and executes code based on a `#[cfg]`
-> > condition.
-> > > +///
-> > > +/// Expands to `#[cfg(cond)] { ... }` and `#[cfg(not(cond))] { ... }`,
-> > > +/// allowing conditional compilation in both expression and statement
-> > positions.
-> > > +///
-> > > +/// This macro is useful when both branches must be valid Rust code and
-> > the
-> > > +/// selection between them is done at compile time via a config option.
-> > > +/// # Examples
-> > > +/// ```
-> > > +/// # use kernel::if_cfg;
-> > > +/// // Select a value depending on CONFIG_64BIT.
-> > > +/// let x = if_cfg!(if CONFIG_64BIT {
-> > > +///     64
-> > > +/// } else {
-> > > +///     32
-> > > +/// });
-> >
-> > Isn't this the same as cfg!()?
-> >
-> > if cfg!(CONFIG_64BIT) {
-> >         64
-> > } else {
-> >         32
-> > }
-> >
-> > https://doc.rust-lang.org/std/macro.cfg.html
+> As I wrote, kunit does not handle this. But I am confused about the
+> bug/warn comment. The trace I pasted clearly says "BUG"?
 
-> The key difference is that cfg!() requires both branches to contain valid,
-> compilable code, while if_cfg!() uses true conditional compilation via
-> #[cfg], so only the branch that matches the configuration is compiled. This
-> difference matters when different configurations enable/disable entire
-> subsystems, and functions or types may only exist under certain config
-> options. The if_cfg!() macro enables cleaner conditional compilation
-> without compilation errors from referencing code that isn’t included in the
-> current configuration.
+Yeah, might_sleep() says "BUG" like BUG() macros but they are
+different. might_sleep() simply prints debug information.
 
-The docs for if_cfg!() also says that "both branches must be valid Rust code".
-And the example case would be better served by cfg!(). Can both the docs and
-example provide a clear distinction between the two?
 
-> > the
-> 
-> > > +///
-> > > +/// // `x` will be 64 if CONFIG_64BIT is enabled, otherwise 32.
-> > > +/// assert!(x == 64 || x == 32);
-> > > +/// ```
-> > > +#[macro_export]
-> > > +macro_rules! if_cfg {
-> > > +    (if $cond:tt { $($then:tt)* } else { $($else:tt)* }) => {{
-> > > +        #[cfg($cond)]
-> > > +        { $($then)* }
-> > > +        #[cfg(not($cond))]
-> > > +        { $($else)* }
-> > > +    }};
-> > > +    (if $cond:tt { $($then:tt)* }) => {{
-> > > +        #[cfg($cond)]
-> > > +        { $($then)* }
-> > > +        #[cfg(not($cond))]
-> > > +        { () }
-> > > +    }};
-> > > +}
-> > > +
-> > >  /// Gets the C string file name of a [`Location`].
-> > >  ///
-> > >  /// If `file_with_nul()` is not available, returns a string that warns
-> > about it.
-> > > @@ -337,3 +373,4 @@ pub fn file_from_location<'a>(loc: &'a
-> > core::panic::Location<'a>) -> &'a core::f
-> > >          c"<Location::file_with_nul() not supported>"
-> > >      }
-> > >  }
-> > > +
-> >
-> > Spurous whitespace change.
-> >
+> I think we should just remove this test for now.
+
+I'll do in the next version.
