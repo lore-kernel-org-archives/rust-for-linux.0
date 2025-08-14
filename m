@@ -1,102 +1,110 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71870287241
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 09:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CF91459EA
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 09:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755163998; cv=none; b=Mc/8E6ggz6q5zTJALPZoL+Rm3KqQcRCf2VfCbDrzGsYEo0fWkhn/nSXJZ7F15Kp7faN/2OJCL5ydbbVVVOYg78HonpT51/oAHJQA2tTOHFe3xILKPbO3sQabdjofebKmtN6dnL+DNAH7WWJ94wMhzAIMrCGx8LJqKA69DhY4l7o=
+	t=1755164079; cv=none; b=aOE8Nhf0oeRPOZFXZ2xCZp+txmxi16NDhuzWytRuWCoTuGzknBWkwlyT+4kjDJN8H++cya/lJrZea4614XA12f3arq/4SQPVmz890V9uR0ijKcIWVvf42V/UwHnhkwH/1xWP9JuatiCGnIyrVAKviZvXWPQ81n7y8Cvnue2Zaiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755163998; c=relaxed/simple;
-	bh=0gM4P2+1/T/+38ZTBChRF/kXSK6T1iDcWw4qbZja++o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YcZ1bM7KIQ9F4rYO/DXene+Jd903Pu3f2IjU248XSV2TTWYlfcpbuTkztRSprhkDEArRt3FWfjG5Q0MTw9kF/Rxzux7uQ1V9PLuSZSnXfLB6Z8q7npXes875PM3Y5bH5aSLCKllirG1g3XLd9fa4GlxSsJb5BdR/K3rDKhnn09s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YDBscpxD; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1755164079; c=relaxed/simple;
+	bh=9YfRZ70uA2wqntNJ6ClXC12LLq6YZ5kV9UeTtcV85CA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YUWg0akqkCymuzdOZDQFchnxFQaic7iz6i5k5I6kplLsXjdE0HRio6wPRjg+KiK6k6kk6l6Tn8L0Wa3uJmrIcespD/YG+qNBMQM3umB9ldN303VEZfNfMH9Ofku8sfl+ZEBhxZAqowaeEIx0ReA6ZRwmxtzwgm/rAJUtlIg2xbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYkH1jey; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YDBscpxD"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e2e88c6a6so711939b3a.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 02:33:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755163997; x=1755768797; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=97uhtudkNMK5UOUbW8xAkf4ktNa2lEEMb/M2K9wPi10=;
-        b=YDBscpxDfuxNoFpC8tHnWpRopz5ucs/vCcV50Xyl57Q9Dai7rsAQdobrrda7uxi/cm
-         GfLHQZhHtnBDJoqv8sFtrw4wLo0g0LASeXo9KnOXTzfqlWMJT0nGnabtjQVgM9aYTnUc
-         n9RNRg1ovKQ1nCU8CIefO9RV2Vf+iq7Q62nHsYGaq+ZaPVO57UDQYMNEjkX/LuhGaeTd
-         SQydQ+K6hEGmnwEI4mtqOhOyWphwGgvKGKhYIbtPujOsjrZDDZhjWA0rwEgNlArLWuzI
-         pxNiRcMuIlL0/VFrqZUc+jBaKX9HxZbQlOZkYWopFAfB/Gwjyw3zXcnvJHqGS5Anzl2z
-         icXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755163997; x=1755768797;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=97uhtudkNMK5UOUbW8xAkf4ktNa2lEEMb/M2K9wPi10=;
-        b=sIe5fqZIffEF5UrzJuoq65WpeZu5KtHWe0xoRw/Hg1281CepxsAZ0iTuLjOJCAG4Jz
-         hXAmIitFgoUAVEvYGpJVfEa8nmxBT5MGO2GgamTP3//L3k/MGOWE+PGrRU3ypE+7k2AK
-         tZ/QRbnehYpOAh3JIyHPH8tbGTfftOkf4euJhtCIS1xyrMQottuKGvTHqskrKNO3O9cr
-         LgsFFOxgcAEJ9lIeKTEX1rdUGjToERT3yq3hKxMT5SKKbjZ4itgnYcjFXrQ8QkTCCn+W
-         01kDWtue2tqs6a0HqBehbX8o5giXVSN+vrcOJIyQah3XlCPTV2XEfrGm80Aq2O/aDAyD
-         XBfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+IpDvzv7GaCLM30VUFoVvnkGtK7pn16lv5UvB5F2IgyqGpFyX7mcoyPPF7zIW3s11JNqbdms4PLH046iqAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrmRGM4bJyt/lmeE6YKY60pUsgt6km/WZo3zxukm85IiBetDDt
-	4anIs9QsMfHbMloS8YfmS5DCVe4CM+iR1MvThyJBKZO9biGFJDxrd1Fqzl8E1sKVpbw=
-X-Gm-Gg: ASbGncv0Mmzs6i73EcwhTu2M0cFoh+zek5OSSziRSiM8v8ixpt9Em/60SkzsUZJ3598
-	wX6v0YmpofUmQGCxBSIokQupG35FHZGzRLB/K2YBZsukaD/lao69JAPsDnAzg+2WVPFA0dj6pRW
-	il1C+oZS1FSc1FLDdqu2Ac4J3g735Mk7rbd86g4TQqJdflqOTJhpA+j+7CLvveYbG+fRCoWA+YE
-	/tK4ySa5A8C072M7Og887IHLJwM61QMm1aUjn2ZQ/V2aWuT9uTfdJjRxMOSvauOzkjXntfKS2A8
-	Ws1oCXjxOMPWxigYqcztOaOza6L6uqkGeFrwzfK8onrwis1vDJEEr1VJqaTP/DjtSM1Ce3tQaQA
-	nX5PQZehlPlP98bb4qju7fY5F
-X-Google-Smtp-Source: AGHT+IFy/7RDjF0U+OSnhBCxHWxK5dAZ48NiN2cIVg2ZnqQ/azV24PgRQXm1YdY8wqvBXOnUK4P7OA==
-X-Received: by 2002:a05:6a00:22d5:b0:76b:995c:4bb1 with SMTP id d2e1a72fcca58-76e2fd434e1mr3525599b3a.15.1755163996646;
-        Thu, 14 Aug 2025 02:33:16 -0700 (PDT)
-Received: from localhost ([122.172.87.165])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcdd40f63sm34159888b3a.87.2025.08.14.02.33.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 02:33:15 -0700 (PDT)
-Date: Thu, 14 Aug 2025 15:03:13 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 11/11] rust: cpufreq: replace
- `MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`
-Message-ID: <20250814093313.wossgn7jk35pc4c4@vireshk-i7>
-References: <20250814093046.2071971-1-lossin@kernel.org>
- <20250814093046.2071971-12-lossin@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYkH1jey"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86771C4CEED;
+	Thu, 14 Aug 2025 09:34:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755164077;
+	bh=9YfRZ70uA2wqntNJ6ClXC12LLq6YZ5kV9UeTtcV85CA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZYkH1jeyGSmX0vsDKUYArAScqqc4CAskoYskdGWnRQJcrGoT4xtZblLsBNT7CJkaZ
+	 rh7maUbUf3yfUTafWATK+7XS80clWIfsK5c+utDdGtu6MoLNdEt54aZQfehjSRl5U2
+	 a4vMGS9ApJK4Gu9Vu2H/X/f7SJByL7qkAAJHuURSAd8vdc0dFDyJYrkhouFUzWrURb
+	 lVsG/vnHvP+44luEIvxr35ummoFO4ezY4Cr8fJA0INDIl5pFPDlcdUqBG9gPMyCXUr
+	 Xd/SOkRAUxNJEmXoR/Ps4h7cQ+py7QDVvzGvaMV3udMDYYTh8Fu/H5IktWWH9ehNba
+	 MCx8E5NNDSwcQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: lorenzo.stoakes@oracle.com,
+	vbabka@suse.cz,
+	Liam.Howlett@oracle.com,
+	urezki@gmail.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	abdiel.janulgue@gmail.com,
+	acourbot@nvidia.com
+Cc: rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v4 0/7] BorrowedPage, AsPageIter and VmallocPageIter
+Date: Thu, 14 Aug 2025 11:33:39 +0200
+Message-ID: <20250814093427.19629-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814093046.2071971-12-lossin@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On 14-08-25, 11:30, Benno Lossin wrote:
-> All types in `bindings` implement `Zeroable` if they can, so use
-> `pin_init::zeroed` instead of relying on `unsafe` code.
-> 
-> If this ends up not compiling in the future, something in bindgen or on
-> the C side changed and is most likely incorrect.
-> 
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> ---
->  rust/kernel/cpufreq.rs | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+This patch series implements the BorrowedPage type, the AsPageIter trait and
+VmallocPageIter type.
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+AsPageIter can be implemented by any type that owns pages to allow users to
+borrow them through a generic interface.
 
+For instance, this is useful to access and borrow the backing pages of
+allocation primitives, such as Box and Vec, backing a scatterlist.
+
+Hence, implement AsPageIter for VBox and VVec.
+
+Additionally, implement Vmalloc::to_page() and ArrayLayout::size(), which are
+dependencies of the above.
+
+Changes in v4:
+  - Rename IntoPageIter into AsPageIter.
+  - Put lifetime on AsPageIter::Iter instead of AsPageIter itself.
+  - Implement size_hint() for VmallocPageIter.
+  - Use PhantomData<page::BorrowedPage<'a>> instead of PhantomData<&'a u8>.
+
+Changes in v3:
+  - Generalize the previous PageOwner impl of VBox and VVec in VmallocPageIter.
+  - Correspondingly, replace PageOwner with IntoPageIter.
+
+Changes in v2:
+  - BorrowedPage
+    - Add link to Ownable
+    - Use borrow_page() in the example
+  - Add PageOwner, Vmalloc::to_page(), ArrayLayout, VBox, VVec patches.
+
+
+Danilo Krummrich (7):
+  rust: page: implement BorrowedPage
+  rust: alloc: vmalloc: implement Vmalloc::to_page()
+  rust: alloc: implement VmallocPageIter
+  rust: page: define trait AsPageIter
+  rust: alloc: kbox: implement AsPageIter for VBox
+  rust: alloc: layout: implement ArrayLayout::size()
+  rust: alloc: kvec: implement AsPageIter for VVec
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/alloc/allocator.rs  | 147 ++++++++++++++++++++++++++++++++
+ rust/kernel/alloc/kbox.rs       |  40 ++++++++-
+ rust/kernel/alloc/kvec.rs       |  40 ++++++++-
+ rust/kernel/alloc/layout.rs     |   5 ++
+ rust/kernel/page.rs             |  87 ++++++++++++++++++-
+ 6 files changed, 317 insertions(+), 3 deletions(-)
+
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
 -- 
-viresh
+2.50.1
+
