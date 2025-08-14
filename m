@@ -1,98 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386DF25C706;
-	Thu, 14 Aug 2025 12:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755175145; cv=none; b=InuDgcACN0tzWpZtQa60p2Ei/ItVtSx2TuFmjd3BVNwyupgD8tqDoAyDSugyowDF281cBIVvqCrzuFxAazRbehMdbAgllDFppG2RbxnHFRODXtUEY7SpM6FTlTyeH9J4owrq8/y36SByxPQPtRkC4U5UzPo1Rbs1/uJrni24zH4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755175145; c=relaxed/simple;
-	bh=ySXXtCWInS8Dd3/1b6Y0gmPDaMaREnzvgVBoXZIcJWs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r7Jll0wCVd1d1siJOWGDOWGBvIQ3ZZDTxpxxCGduuwO9clUhfaT1+X1DrxBJvx2CBiDMjve9xn0hYLzq30klYhXMczRqMuLVrUU4iFlOPyg9Z7sqLmqO/OUQNo+66cphLJ+WsszwVoZAoKF1Jf7VbiMXINn/O+zs3mHbXBsxZY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=akItc4ij; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFCC2FA0C9;
+	Thu, 14 Aug 2025 12:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755175176; cv=pass; b=ADxnOCbNVKu0iLwd3t3HpBaZtHZoYEB4EmDBQ+maqZBnJjbm1Y1rF1+GZwrmhDZb+lMolTV+wvgsZlmHj4OxO6/RoZE8DpWW7rCHoTdSpc8YOGrZ6KjG5nrqs2DoZSiSE6AbVhdlRN8Zn6ldx2Ph879MBXh86ZWEiMCQQ9/tamQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755175176; c=relaxed/simple;
+	bh=swsZ61pLGJ4jo8/qPA4Fexe23uwltcFhTwTEkL3zDHs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=JoOrDyZV33B6cHj2UTRx3+yI8OlIVU6rEAqcPYzb7aT7ASHFEurPey7q+8Qj3Ymg3rRltrB/g1sIIEYgUF9FUBgxkBrbQouxQCyzVFS/XEOcwFT0i4e8QU44IHO5FdAJm0mgPd2UbcIPzqtHE0r0OviocszDj1MgaUsU1Ccfko0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=OXQ5NJFB; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="akItc4ij"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52747C4CEED;
-	Thu, 14 Aug 2025 12:39:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755175144;
-	bh=ySXXtCWInS8Dd3/1b6Y0gmPDaMaREnzvgVBoXZIcJWs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=akItc4ijtv7KbvHP7dipeKN2FgLp05rwNWt1rXWKAFydgSzO7hW1J8nrFuZDREgId
-	 704i5w0FfP2rUOtUHRI6CaAdXZF77FtLgVA3gOELEv2z+T6+q3u/q9MfRzo6ERStq4
-	 RqLtFsGBChRZwSGqPM9r+GZ/Ti71KG63W3C6o/cVjO81pu4CV1wI8ftQTfBdOOMNPo
-	 eqf150V7ELf8Qvq+UudbpXy71JNKcsT4vDBbAninETTOo5GzblNmp7rDszN0HmBEwg
-	 3G5gdF5rRAqH2JMEkSk2S06Z/35XNtNe6k9LXvWT7U7KKLMfvRhPgvcovYfr3M3A4h
-	 xsoZum7n9VV5Q==
-Date: Thu, 14 Aug 2025 14:10:13 +0200
-From: Nicolas Schier <nsc@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] kbuild: enable -Werror for hostprogs
-Message-ID: <aJ3SJWu8-o2S-KU5@levanger>
-References: <20250814-kbuild-werror-v2-0-c01e596309d2@linutronix.de>
- <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="OXQ5NJFB"
+ARC-Seal: i=1; a=rsa-sha256; t=1755175136; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=X4fwlHBMggOzGyGWWjo8plbrs2IOxRETM4eIjmY2MmndKCXojpvT71RF/u7otxFBDPYkLD21hIFjpFpD6AjcEoZdytuf/yFd3ftrZ/hKhSaCHKQI90lOWJRnTn/JNQZJF4KACr4OPwJnk1G7UoFDObr6eqLALj3S8mZyywbRmGo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755175136; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+Vu80FDSkV/ra3f3s6oko3bfl071bY2li9WH4zeUyz8=; 
+	b=AV2fJh0CPp/Ob7Z9IR7an2orcUkMh0H4z5aXplXLcat/vtcHodO4QnUjH5oNM5lHO2uYNXQ0cYJmeF4gQQudw9WO5T8XrMfb4rlQeDDvC8Y4f8HRs52vRN18/HQr5wQXDbuAGXKd0BMy9QUOK4bXPGqpcapwo6HHHlcrx24DOM0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755175136;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=+Vu80FDSkV/ra3f3s6oko3bfl071bY2li9WH4zeUyz8=;
+	b=OXQ5NJFB2nYH0BXLwk2W8YwpSve/mcSq0DMhhBg+5qYFBkUfCWqrp5RL0dLgCwW8
+	RnZ1ct8pIFKRkH7uxQe38NNN5rRwxYlxUB0fXPXqd/TBTHnyrqxEInTALHBaIdZX7yT
+	lrqHUO42XuMxCebkN12emP/+pkQYepphtyDejB/Q=
+Received: by mx.zohomail.com with SMTPS id 1755175135123867.0633490787785;
+	Thu, 14 Aug 2025 05:38:55 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250814141302.1eabda12@nimda.home>
+Date: Thu, 14 Aug 2025 09:38:38 -0300
+Cc: Benno Lossin <lossin@kernel.org>,
+ Lyude Paul <lyude@redhat.com>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ peterz@infradead.org,
+ mingo@redhat.com,
+ will@kernel.org,
+ longman@redhat.com,
+ felipe_life@live.com,
+ daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <76D4D052-79B6-4D3F-AAA1-164FF7A41284@collabora.com>
+References: <20250621184454.8354-1-work@onurozkan.dev>
+ <20250724165351.509cff53@nimda.home>
+ <ec32fc5f5a8658c084f96540bd41f5462fa5c182.camel@gmail.com>
+ <20250806085702.5bf600a3@nimda.home>
+ <539d3e0da773c32a42b4ab5c9d4aa90383481ff6.camel@redhat.com>
+ <DBVLEGFYBWKE.2RW8J853CJHTY@kernel.org> <20250814141302.1eabda12@nimda.home>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Thu, Aug 14, 2025 at 12:14:46PM +0200, Thomas Weiﬂschuh wrote:
-> The hostprog compilers and linkers do not share the regular compiler flags,
-> so they are not affected by CONFIG_WERROR or W=e. As hostprogs are used
-> during the bootstrap of the build, they can't depend on kconfig options.
-> 
-> Enable -Werror unconditionally.
-> 
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> 
-> ---
-> For testing in -next, as discussed in
-> https://lore.kernel.org/lkml/20250812-kbuild-werror-v1-2-36c9ff653700@linutronix.de/
+Hi Onur,
 
-yeah, I am not sure if this is a good change, but I am ok with testing
-it in next, as Nathan suggested.
+> On 14 Aug 2025, at 08:13, Onur =C3=96zkan <work@onurozkan.dev> wrote:
+>=20
+> Hi all,
+>=20
+> I have been brainstorming on the auto-unlocking (on dynamic number of
+> mutexes) idea we have been discussing for some time.
+>=20
+> There is a challange with how we handle lock guards and my current
+> thought is to remove direct data dereferencing from guards. Instead,
+> data access would only be possible through a fallible method (e.g.,
+> `try_get`). If the guard is no longer valid, this method would fail to
+> not allow data-accessing after auto-unlock.
+>=20
+> In practice, it would work like this:
+>=20
+> let a_guard =3D ctx.lock(mutex_a)?;
+> let b_guard =3D ctx.lock(mutex_b)?;
+>=20
+> // Suppose user tries to lock `mutex_c` without aborting the
+> // entire function (for some reason). This means that even on
+> // failure, `a_guard` and `b_guard` will still be accessible.
+> if let Ok(c_guard) =3D ctx.lock(mutex_c) {
+>     // ...some logic
+> }
+>=20
+> let a_data =3D a_guard.try_get()?;
+> let b_data =3D b_guard.try_get()?;
 
-For the rest of the series:
+Can you add more code here? How is this going to look like with the two
+closures we=E2=80=99ve been discussing?
 
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
+>=20
+> If user wants to access the data protected by `a_guard` or `b_guard`,
+> they must call `try_get()`. This will only succeed if the guard is
+> still valid (i.e., it hasn't been automatically unlocked by a failed
+> `lock(mutex_c)` call due to `EDEADLK`). This way, data access after an
+> auto-unlock will be handled safely.
+>=20
+> Any thoughts/suggestions?
+>=20
+> Regards,
+> Onur
+>=20
 
-Thanks.
-
-> ---
->  scripts/Makefile.extrawarn | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-> index 96ff3f5582d651f0016c8ccd49d46022cc6fe070..1434cb6208cb82f20aeb29cc8c059220d1a1f6d2 100644
-> --- a/scripts/Makefile.extrawarn
-> +++ b/scripts/Makefile.extrawarn
-> @@ -224,3 +224,8 @@ KBUILD_USERLDFLAGS	+= -Wl,--fatal-warnings
->  KBUILD_RUSTFLAGS	+= -Dwarnings
->  
->  endif
-> +
-> +# Hostprog flags are used during build bootstrapping and can not rely on CONFIG_ symbols.
-> +KBUILD_HOSTCFLAGS	+= -Werror
-> +KBUILD_HOSTLDFLAGS	+= -Wl,--fatal-warnings
-> +KBUILD_HOSTRUSTFLAGS	+= -Dwarnings
-> 
-> -- 
-> 2.50.1
-> 
+=E2=80=94 Daniel=
