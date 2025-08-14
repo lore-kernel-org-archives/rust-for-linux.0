@@ -1,193 +1,116 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486842E974B
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 08:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0AC2EAD0D;
+	Thu, 14 Aug 2025 09:07:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755161943; cv=none; b=QBUw20tYOjnvyO+L7QMNeFY5oB41YMYGoDXvysoBNARu54yysHegnvh6IJ8gjOUTZaq55mJP5jwW0IGN1uPBu3XSeyWZBpOMSEMZZmnNcSZN6Fh2qOMO3TF/k8ok68GAafFEJ2J/5JxhzLk2Akhi7P776OIUo8kyUxxncEffa+c=
+	t=1755162458; cv=none; b=tas6mO3ZA3tLpnYP10BhaedqODzEiQejs49esWTvt7yrRcfYcYkeshENuljoHUfBqJ+KIg3ymyyE92+kHXH3/M5tn/18Axu3Rx6zJVQqL9nHPYmrNC/SrQe6ud143fKSLAtzMv0LImSFpJvwVjkPSbzawVGk9mFtPfTtA8qweeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755161943; c=relaxed/simple;
-	bh=o1Szdoofusn4ja6J2Nq+EgTM/QeJljSbOzJBQYC5Xlc=;
+	s=arc-20240116; t=1755162458; c=relaxed/simple;
+	bh=w8hCbPXfmihu7zR72JNGg3vbfSeuvBM7obhn0s4J7IU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dmZCp1oh9NxaHb5+LoRah/qklBlpbHUvqDQoLSD2OISwNfsn7xchixJh0f8AC2wPZVUSYTR/dtWLY/9GBidqPySPOKtECsx12LqW5aqxeluwPoGOnMWeishZWUCKrnLLU7N7hNATgI5Cv8POB8bCMUGtGh3nY/ig5/tUggJLFmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y0/dIBtK; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=KsgTihtT+eq8SXnymtHhw9hHT8Zg25T9G7R97Isd5tUEygr5UF7zHki3daTGozDYLPyVZrhAwrkyU1jWPOO9hxC0SkLfzprSqpfhT+T8BOMPsYQ9JifkTOxS+79ez3JzQXqEL+BmKbm+9nakEtxGv/DCChmiOkUlxNxLazKw3hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xf8P/+q7; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y0/dIBtK"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3b9e7437908so583715f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 01:59:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xf8P/+q7"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b4717006ea9so75049a12.0;
+        Thu, 14 Aug 2025 02:07:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755161940; x=1755766740; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755162455; x=1755767255; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q2fToAB1Rcjn651wF/AF4BoAGXD5OP38Zu/DND4w8MA=;
-        b=Y0/dIBtKTmYifsnHoIBTCIVgap2xoV8Ns5E06zvmEzqpCNc+sDVKcsVIp4uBFr8cff
-         n1rJASrGfvqtB2frY7WhcqZqDgULq6pak42bw2Jjhns9euLdLg996QaqJF2RG9eQq1aE
-         I1gbeai0a7LihfaFeAuQop6eWYSI9Sd1rro8+EdV8t0ESw0WcEtgpJMYxenYtvelp9dT
-         b/P6bWjjvMR8rH1205dpExMfG/XbpLSCf1PxpmH1OpyRuoATVqKi94ZvUb5s/GI/IfDO
-         aYwfXzHuUzDGPYXCZXIr3h3NN+AkHF82AHmk1ckNRlFonj/25Jq7j3Hht2/Sfag5gpb5
-         T2KA==
+        bh=L58BGBn53CdEaQI/pHX66dG5GkpXtAAIQcYXknidNg4=;
+        b=Xf8P/+q7FP7Sj6wUfRijJLt6MHzwIgFGKK3Hy+/iaRBWNmJuKnEgp6Q4heqzKmy/ns
+         CbI6us6t0QerSP9xU4HCyBAnFO47uXNHXmDTEWFDE4aFl3F5tw1EMXrHhwaSP+Q94Yle
+         hUbYVGt33Rl4FUjof+vKYA3XEAGntJgIiKneoa6py0QbM1xesztFcO0PJlfLO/KPayfk
+         KbzFIZVWKytOYTo70RHDQFLmhTYeuaKaxxOkBZxC70kMplRE79PdCvYuqPa8Hq/oyrDP
+         ieTWI3j8jVmZRD9aRu9AZuZL+UhL997ePMlnNvAUIbatTYk+36efO+YO7O0aq6Vs8DaZ
+         7qxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755161940; x=1755766740;
+        d=1e100.net; s=20230601; t=1755162455; x=1755767255;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=q2fToAB1Rcjn651wF/AF4BoAGXD5OP38Zu/DND4w8MA=;
-        b=PSV+CB/JZLRZp81Xk74jX+97xUwelmrtsZg9NXsb10uaERJ5JaeP1A9K3/P4l8r5jk
-         l3GCdGlVkmxpXN97fS4cdOt9/AKNXcUmxIYKc/eqpHQGuulS6ISSFcew6L2Ru4k2JiOp
-         Rjysn7eiJNuHkiSNneBBz5mQi36Wm4p7FaGqUw1SlJbvheWaRqo2aGElrZ/BjCHKeo8P
-         z+E5YaUl+cxeAnbQS0k2YgkKxa+bjNYaK/NDs9qlz7BssUsUxsffuf1bEOr1UZX6J55y
-         qoJES6K9msYvdfLjzwb37jZq+XplsOdzKf77Oqgz8Dl75nXEH8a5CyuocoW+GhVv4HnJ
-         UVEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUlKfrSjeDBiFPN6wRjZzlevYKjVJVss+4lzWGNMUgd36neMAcdrIuu87//rPwvPbZnArRUCjk6yahgZR6Cyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfdzmHMa6JpaCUMw7XqguaW45Pg7LCzBSHaI9mZVfblJtL/fy6
-	4u2atrlqxAEY3Oeh8nP1UHBFgxPEy5RVq9SM1yULCv6Zuery3dgvOrmiJHRRQ4t/liQD1BZfnvb
-	5g3bgFg3HoohydcN276lY60GMA4sfHlVcvS3IxWwb
-X-Gm-Gg: ASbGnctkp/qf+8BNkOaSGQKq8g2mO8OtH5V3UY3KtxvEDOJJMwo53vIf3l+QfBEZwMO
-	DHPaSV18l9CoOg5S0vquOM6Eh5NVTfxs/iA2wgJ6bsOr5+jgyf9cMXcQL/r/D08s16iTEgD2bz5
-	LYaZfBEt23HEMCB+q9iH4Wi1KYWVFs8VvFCXoVieCtXp+fcjUZpQA/fnyhAG6BC6xbBT4dnO8W2
-	+Gz0hARaipjI40mT96IL7p0Qw==
-X-Google-Smtp-Source: AGHT+IEnok90zWddm6EeCa9vOgl+9GHdTol46JTh/NRAVk1/tIT9B8eSdrtVYMiMwwhqV9azFUftNTxZaAYRyPY4DVY=
-X-Received: by 2002:a05:600c:64c7:b0:459:e398:ed89 with SMTP id
- 5b1f17b1804b1-45a1b61538fmr14062525e9.1.1755161939436; Thu, 14 Aug 2025
- 01:58:59 -0700 (PDT)
+        bh=L58BGBn53CdEaQI/pHX66dG5GkpXtAAIQcYXknidNg4=;
+        b=S1DHe7qi75DsfyW67moRz6bTP62osfv4ZupVGK66+/6oRl/PSBBrpxouOA3s0CK+/J
+         eVeuQ1mNW+ATUkgbrOub/RJu5cMNsZuFZI2O2s01GlVIudT15VlPvi31NoSysrV0I/os
+         aVYTDNLR8S3lb7pSeDeQD1Y4n5d82Sb6ASiJ8HH9C+AgCUMz/yZuOQyTSR2XsVIWAvkT
+         1tfHA2IIUyf7STmWmv5VCsH0unkXUZrLNgzaVI/RBKtSQ2XqptqYMHuv1EtcxLTj0nXV
+         Nr3ERjmLyxOCGWQ2sOEZaekqoFppCx2c1336nLoWSXz6WSP4N+InZTmzBoBl5l4qO17R
+         La1w==
+X-Forwarded-Encrypted: i=1; AJvYcCU2AkLqzX62Vycq+X6usAtf/cvgf3AuXGjPMkTI5weB5qRSez+BRbQPp0VwlXAi8l6t6j5XcN6i@vger.kernel.org, AJvYcCUwuph8ybeUT2N+0zvQDwO/H6dav7+g/3s7KdJDGD4tHT73X+tE+FVegC8zuKNl182WSqoaLbPtQjI=@vger.kernel.org, AJvYcCV10rheNuYpNIv9Osg6EBPwerim/bHVHpgLsdwESRLoMhXEXTYw3Io03QZozPaa+nRh+WYL+3hoX80D@vger.kernel.org, AJvYcCVwLNHl+ID6/Mk6+JKZ3yCFOn5nOsH7AfmBmJybSY1PXDzdUTPH/dVuvZ036iQnRjUFqnHiwu3BFaPpDFL6@vger.kernel.org, AJvYcCWU64E2Bp0aS+//LKch0vW1UXHMSEz6PgT8bo77hg7nGHusEgUdCYOp4WqjVpmDmrVSGSl9wQN6LXE8PTZzXhG+@vger.kernel.org, AJvYcCWdbDoZ13ifKjijbNra1QB+3WrB9S7KIM3u7yTRScbvEWDRq5R5A/ySrT9+wgKeLQMo1WtBVxdQAJJwyw==@vger.kernel.org, AJvYcCX445xNq7eU4zuJA/nSWvEm96C59lCZYfvEIUslFz8g4O8hivF2aQ0VWYkKENKl2/90MdduNfdC33C5@vger.kernel.org, AJvYcCXDrwJ8uyybzhIeAp2qlzh0mixgbHHjA9WAqkaFZmBkGgDrf0QyPf6JONV3+Y/HKmq4mupee4IslTmAYfGCXto=@vger.kernel.org, AJvYcCXfV82ubBzNsUdCdy60J2WTzXOtVfNtxdObhOckteiU0awOI7UNKhP/w/7Ds2KXNuiCEi5+9Jtya9bnx1W67A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YypINaXScbYWu7AGqasYGV8fdyR3+x9hPlk+3U2Vr5IEgIvclm8
+	TFzwmHPLFMzEx3AggrVZ99bzcKxt2fjFBRfTRbQewEezlSqj6NnVPkWqnjD/lUMDNgUmSe3GZSF
+	lykirKCdz7P7+z8jZZE+LKaVYuYSSCMf78Th3BwE=
+X-Gm-Gg: ASbGncvc/qynT4YZKqaP9Sy1oQaLptA0kKszFqn87yqjhQVN1bnzA5BpLAQtpKgyJxv
+	DNf6bsK2GhoDrE2MqVcHfNhoyX9mM9xiDFQLIJN6MYP4WIWtzgsaihTxUhWYtMpqW++OdzckXGL
+	arntGWRa5tL8xRO6g7m32YglmVjV7rPn7awFAh53Z28pQXssmWj0nmaGr8wApLqHwNurFUA/gkV
+	f6a
+X-Google-Smtp-Source: AGHT+IGz6bvQQDm0FDjw3b6Z4zK6LWUctdhJrkeBml6MEiQLxKVKVm/2E3KeNDssnbiZd1rTjK+/reiEgrFQf4jGtow=
+X-Received: by 2002:a17:902:ec8d:b0:240:5c13:979a with SMTP id
+ d9443c01a7336-2430d22a83dmr44771485ad.9.1755162454741; Thu, 14 Aug 2025
+ 02:07:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org>
- <20250812-rnull-up-v6-16-v4-11-ed801dd3ba5c@kernel.org> <mACGre8-fNXj9Z2EpuE3yez_o2T-TtqrdB6HB-VkO0cuvhXsqzECKWMhsz_c43NJUxpsnVpO_U0oLbaaNhXqRQ==@protonmail.internalid>
- <aJw-XWhDahVeejl3@google.com> <87cy8zfkw5.fsf@t14s.mail-host-address-is-not-set>
- <WporCpRrDB_e8ocWi63px_bwtPWqRjDL4kVPNNXFNoI6H-4bgk5P_n4iO0E4m-ElwkiNTyBITwgdMXjREE8VXQ==@protonmail.internalid>
- <CAH5fLggraEP7bwzJ+4ww8-7Ku-Z+d0Em3=NDUpa7r8oTLQy81A@mail.gmail.com>
- <877bz7f7jg.fsf@t14s.mail-host-address-is-not-set> <wKjTynzVeXix56T1eCrpF4Y7zM7dJVumIB3DljSJeXkHx7Vyb4jKR5X5c5B2yV0DFKItLrncGLWxcTkVynD12g==@protonmail.internalid>
- <CAH5fLgi+R=ZW2bFnZP2=231vV6JAHTZJ0UBYkdojG=HjBYR3MA@mail.gmail.com> <87zfc2e4gy.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87zfc2e4gy.fsf@t14s.mail-host-address-is-not-set>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 14 Aug 2025 10:58:47 +0200
-X-Gm-Features: Ac12FXzvl-VOlMNOzmyRS7iEzUNls9Gq8WBcmNjnQTA3yaE2PQLweZJ0Y0vj2qk
-Message-ID: <CAH5fLgjnYiAo3jfbyjZeRu5siMgoqYi1fbFaxrixGdqXxtZXcA@mail.gmail.com>
-Subject: Re: [PATCH v4 11/15] rnull: enable configuration via `configfs`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
+ <34d384af-6123-4602-bde0-85ca3d14fe09@sirena.org.uk> <aJ2dST9C8QLUcftA@google.com>
+In-Reply-To: <aJ2dST9C8QLUcftA@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 14 Aug 2025 11:07:23 +0200
+X-Gm-Features: Ac12FXw9McZU8Dlo3fmof7Lor15J3uB_TM7gEYyMiiYtjURPvTaxggH_LYJAg0o
+Message-ID: <CANiq72nnXG8mzGD5ydu1pMpaBAHTWvfQWSo0w38xefu=1JSURA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/19] rust: replace `kernel::c_str!` with C-Strings
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Mark Brown <broonie@debian.org>, Tamir Duberstein <tamird@gmail.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Breno Leitao <leitao@debian.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Liam Girdwood <lgirdwood@gmail.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 14, 2025 at 9:40=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Thu, Aug 14, 2025 at 10:24=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >
-> "Alice Ryhl" <aliceryhl@google.com> writes:
->
-> > On Wed, Aug 13, 2025 at 7:36=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
-rnel.org> wrote:
-> >>
-> >> "Alice Ryhl" <aliceryhl@google.com> writes:
-> >>
-> >> > For your convenience, I already wrote a safe wrapper of kstrtobool f=
-or
-> >> > an out-of-tree driver. You're welcome to copy-paste this:
-> >> >
-> >> > fn kstrtobool(kstr: &CStr) -> Result<bool> {
-> >> >     let mut res =3D false;
-> >> >     to_result(unsafe {
-> >> > kernel::bindings::kstrtobool(kstr.as_char_ptr(), &mut res) })?;
-> >> >     Ok(res)
-> >> > }
-> >>
-> >> Thanks, I did one as well today, accepting `&str` instead. The example=
-s
-> >> highlight why it is not great:
-> >
-> > Yeah, well, I think we should still use it for consistency.
-> >
-> >>   /// Convert common user inputs into boolean values using the kernel'=
-s `kstrtobool` function.
-> >>   ///
-> >>   /// This routine returns `Ok(bool)` if the first character is one of=
- 'YyTt1NnFf0', or
-> >>   /// [oO][NnFf] for "on" and "off". Otherwise it will return `Err(EIN=
-VAL)`.
-> >>   ///
-> >>   /// # Examples
-> >>   ///
-> >>   /// ```
-> >>   /// # use kernel::str::kstrtobool;
-> >>   ///
-> >>   /// // Lowercase
-> >>   /// assert_eq!(kstrtobool("true"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("tr"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("t"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("twrong"), Ok(true)); // <-- =F0=9F=A4=B7
-> >>   /// assert_eq!(kstrtobool("false"), Ok(false));
-> >>   /// assert_eq!(kstrtobool("f"), Ok(false));
-> >>   /// assert_eq!(kstrtobool("yes"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("no"), Ok(false));
-> >>   /// assert_eq!(kstrtobool("on"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("off"), Ok(false));
-> >>   ///
-> >>   /// // Camel case
-> >>   /// assert_eq!(kstrtobool("True"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("False"), Ok(false));
-> >>   /// assert_eq!(kstrtobool("Yes"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("No"), Ok(false));
-> >>   /// assert_eq!(kstrtobool("On"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("Off"), Ok(false));
-> >>   ///
-> >>   /// // All caps
-> >>   /// assert_eq!(kstrtobool("TRUE"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("FALSE"), Ok(false));
-> >>   /// assert_eq!(kstrtobool("YES"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("NO"), Ok(false));
-> >>   /// assert_eq!(kstrtobool("ON"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("OFF"), Ok(false));
-> >>   ///
-> >>   /// // Numeric
-> >>   /// assert_eq!(kstrtobool("1"), Ok(true));
-> >>   /// assert_eq!(kstrtobool("0"), Ok(false));
-> >>   ///
-> >>   /// // Invalid input
-> >>   /// assert_eq!(kstrtobool("invalid"), Err(EINVAL));
-> >>   /// assert_eq!(kstrtobool("2"), Err(EINVAL));
-> >>   /// ```
-> >>   pub fn kstrtobool(input: &str) -> Result<bool> {
-> >>       let mut result: bool =3D false;
-> >>       let c_str =3D CString::try_from_fmt(fmt!("{input}"))?;
-> >>
-> >>       // SAFETY: `c_str` points to a valid null-terminated C string, a=
-nd `result` is a valid
-> >>       // pointer to a bool that we own.
-> >>       let ret =3D unsafe { bindings::kstrtobool(c_str.as_char_ptr(), &=
-mut result as *mut bool) };
-> >>
-> >>       kernel::error::to_result(ret).map(|_| result)
-> >>   }
-> >>
-> >> Not sure if we should take `CStr` or `str`, what do you think?
-> >
-> > Using CStr makes sense, since it avoids having the caller perform a
-> > useless utf-8 check.
->
-> If we re-implement the entire function in rust, we can do the processing
-> on a `&str`. That way, we can skip the allocation to enforce null
-> termination. At least for this use case. I would rather do a utf8 check
-> than allocate and copy.
+> Tamir mentioned to me that he ran into a daily limit on the number of
+> emails he could send.
 
-You can copy to an array on the stack, so allocations aren't necessary
-even if the string is not nul-terminated. I don't think we should
-duplicate this logic.
+He is posting the updates around the migration in Zulip:
 
-And if we do add a Rust method that does not enforce a nul-check, then
-I'd say it should use &[u8] as the argument rather than &str. (Or
-possibly &Bstr.)
+    https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/top=
+ic/CStr.20migration/near/527957336
 
-Alice
+Cheers,
+Miguel
