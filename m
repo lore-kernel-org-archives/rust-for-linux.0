@@ -1,63 +1,63 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C251EA7DD
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 04:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A891E1A17
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 04:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755144914; cv=none; b=MaaybtQ7sRb5OvK+F/ZhRTewX0ZRmKU2Xa6giT8f8GNwc9EWIoiW74N1y9t6yOKFS3YmX2xrf0vHhw7f6+4IVG7QVXiafA+I84KW75gRCv7ykKYxVO1E9c/IaHlUNxBhALjndzuZ2Fd69ngRjw/xl7JcrU+duZqew0OlMhqX2JE=
+	t=1755144940; cv=none; b=UE68AmrtH0zkkFUI5yZia2h5CeNs4kfWSpZLgQ2SB9U60Xcc6K/83pLFqIyyR4ZE5g5F83JmTIauHnOsucQ587JWUYedAAh6j0EPRbjwFyp3V2nptqM5B2IBI/IFiuGwS6mKZIfL294RyJuk4+fEJQE8rC8aCdBz3Tijb+zgdj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755144914; c=relaxed/simple;
-	bh=iHbUtFxOXhf7il6cDn7qoU0zrfBE97XzO4Li8Mythgc=;
+	s=arc-20240116; t=1755144940; c=relaxed/simple;
+	bh=aINf4JQIOzGrbC8KNPOs49EQ27ER0B2fAmdlIOg6AJw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QdYWRZUL8Jn12uVxuHui+SrRm4judg6O2l3ijYisqQ+dO8scRE47iR5rrIMiUR7LA4ge5bzUOGZN7QP6Cjcr1KG7gD5hKHtDYx5mK7VL735fyOv/G2brwS35xgsUkU96nimMhC7NL1i70Q4wdhetGxd1CX0mqByDoOTXBcVuQRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pNbGFJM3; arc=none smtp.client-ip=209.85.215.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=h90I3H6qDodBIh4EbmvmQ/xOCHPGYUv9e1D9OFUsq1Jo7LEHUotLmQ2UUb5g6o2wpPwrCVHfD9Nymagg8GnMMfk3FExJuPMyUjH78yLMPFEOjF14cxwz7vZauKd5DSpyU89Wjq0M7KsHweFLMnldIryo6fQlz9GTLdwFUuuqxgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VFk8wODM; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pNbGFJM3"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b471746a879so266624a12.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 21:15:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VFk8wODM"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76e2e5d244cso602442b3a.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 21:15:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755144911; x=1755749711; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1755144938; x=1755749738; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sWxfCtON1zed9A8C3GYhEYa8VInQ0SpyFdE2rQUbX1c=;
-        b=pNbGFJM3r7Fp0rL4gKREFbOHswsDoHAePNGJ1kmjZ2X87eguaDnER+nTNt6Tn+kqYz
-         TyHMKRLOPUsJwPAdUBWddF/nxreZkEBsgmoQXpel7GnXjJKoFhDi1NeX+XK4zu7jPMFj
-         4N13aNme+MJgNqk5t5VcXxgz6eomieRPrZB9uS7npzTK/SgaTuYXbm48+kTI9G9aBuWP
-         SAgeMgcEY54Wl0rTqoL9W8/xKSAEw5orXW1ZiAFIMA8qjPfRrg9BW3fiPrrgVOEV4PqR
-         w288Q1XscVAC6jaQmOW67EyZ4+TyGSJ75vZODf3CKh1jJd8PeJ0PrFb/ZXCSEU/IjsCi
-         bJ1Q==
+        bh=34KWmLyAieUzqtSrdM5jM6hi2YW8C3abPtgGolrQZzs=;
+        b=VFk8wODMCPp4sykRcxFNrGPwYPG/tsAGsdvjgE8c//5GEJgXop+PzeRQ86GIEnq+Jt
+         ASnKVOR4xGiZ4gw3PsRdnQIZmOaAliJXJMdIgmMpEIALEpSHT7cBRDzkwbzLoco5gInP
+         2Abkeoobct2tyzQw6OD8fUL7uatVHX+mJDw5ev5SBRFATouJVPxFd3u2MWeryMAoCQRa
+         OLz16rLSNbNZSh7wwfTHosg5H9wZjviaTXy8WCve6PISnwpN4KltPa/Polk9HYhhXvzH
+         /Gf67SHkyWDytV3RVGaHCQm7l7DWx7B1HC3m87leSgUlALZeAiB1gChgw4j7cMuET9Dk
+         xRWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755144911; x=1755749711;
+        d=1e100.net; s=20230601; t=1755144938; x=1755749738;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sWxfCtON1zed9A8C3GYhEYa8VInQ0SpyFdE2rQUbX1c=;
-        b=kB3Uk+daZn6u58fyRbxiyR5otcPImpB/Hfy+LbDEH4kOcVPXvGQwg0GNcjp0i3ZqZk
-         h8QkuNbBCLFwBnvPMJBZA7zF6ZeWqOtKJJmhuL/166pefqpjLC1q0f101pwzFXlUoXsp
-         i6gBW4wLW2EEpqScma4JcG352MLb9w4Y5Q/qhn6uQ7QAp0FXWil7ZH35kkkp3XS84dST
-         cy1DKFyAUT9/nnVIQiFflWwuFFM8FShuiAiaajZ6PVLe0luki4Wwq7wTGxvg2We7BZZz
-         m5vacpjLBvadC+IVR1mtinxNdDTaqm0SUv5hYbzgcaU/JD95diNlWTGh+deHcTKAH0Gd
-         bK6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWCv0xBDLzrvVIli7jZovuqozmx42m7RYKbujPnN2NrWwBvBH10vIUaSBHpej1QW7k+5EVXYer8MBBWRE9dmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEOsQxEvv+ihN7dAgJnllGV+Tukcy0vhKCiD/g0AVTVedt/x2J
-	Zh7OGLfXTjD7SZOroMKhxisHFSNs1+ftnXzQNY18rk61CiYaa7UT5Zt/2Pd5NBhphao=
-X-Gm-Gg: ASbGnctzRKrhOw2Yb/qYQO3eJrNjaiB53FZGCN8kb0aTowiWQrAD61jTitqIRJGxFyl
-	5yM0wcKecY2cIyqRVaOnCU+wyaBJw24AMUqoCDSvY9EtKxCffv682BIe8vQU//GauohH7L1bIHH
-	vOQtBt7510yndYMGcZ8eiDf6vuJEptPylxf86GOv8rlLX2tiEpqIE0Uz7DJU5l50n/SYrYYepDb
-	N871lHtov1ncwpQtZlGWutKpraBhMMR71AndAiBxbmvgvKLXvMkZl8rR9YJ30iorxcVx+pL88uO
-	L4B8bRqpancJPLaeCAFMmaj8EAJKSXzGg5oy8taGN7U15uhIxJFTCldikNpIQO62fKmfBFRDvM9
-	9qlJtB2oJhrQ13WgHdX/q81Jo
-X-Google-Smtp-Source: AGHT+IHt40bX0FwSrzcBQt9NOrie8YIvE0Bd/aZbf1eDUrCgWfF/cOlo6cUv942myCO6XkFRZpWJjg==
-X-Received: by 2002:a17:902:ef46:b0:243:80d:c513 with SMTP id d9443c01a7336-244584c278amr22862505ad.4.1755144910690;
-        Wed, 13 Aug 2025 21:15:10 -0700 (PDT)
+        bh=34KWmLyAieUzqtSrdM5jM6hi2YW8C3abPtgGolrQZzs=;
+        b=PP/nIUeNFqYue0HoJYIIfTp2FJbKUm41+hTfgCgDeCJ/mngCr7xplX2q64ZxjfxjWq
+         ujm4UzeGYYu6REXr4yKv0T/5TZXdpSvcxWjem82YthH24RbkFOZtTSZmF4ncD/a4vPBl
+         bR11fnVqz/bICJ6fAw4orLzZlqeiaonUcEDTXkGmrfWyyPvZa3d8YzedUJjIY8qgXpk/
+         bA6c9DbPP2QJJFWOOjOHe7GxqWCGmh4i1ATasdPL6QfYoXUttRjW0GIvjsbOwmXufTQj
+         5eq6gWZn2H87mhjRPPwIB0rtQM2JxViRaYf+87+P2BObIWpPJdFAWGcLwGsB2hZk9cY/
+         zJ5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUcuml0776VE0NIwxWVdr50j9DTCfE0+53L476Y6EjIrGJ/1R2uG+VmDsZgYBluNK3HeNA7lc6uAYU4OQfhpA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwT55HE5UMqmZ31lybWMFxGWShJOoVPbFmteazU675c0QA9Yf5P
+	onVYhxgm9QtS/SKVuJXA3mB/6N5ueMzeJSQtYfb8DQSNxZudqjqvv/8AzvQPvYxa52Y=
+X-Gm-Gg: ASbGncsg/Vwz56sdT6q6n82wgJexkjx70QtqqGVIzek4Q+v/L5iF+hjO3rjdo8dlJLK
+	TyTCSXWvae1Gelvrpl1rmI+TWjVIWRdzlRFIYX0SF5vPn4UvebIlz2tJBvJDTdRSvWTTONyyOrq
+	dsdzFYI8YHbSSDoXBg5xpmEyEmbiHmfNKf9eWc5duPUdsqgPQZTlbRucy9qMpW4AiJfl/SK+ZJj
+	rgAELjsz2FbFEG8SeM3EYPEz/2McUHACxEShVw2VTKXlZHcmwhWaU0lJ1RLAJdn1f2QIKw2hx1f
+	+hrKX7ubusbeoOoKuJVcViyPvEewC5BIxVQC2/bvpowNUH0Bbnv3aZOlRZqNeapVsS/YwDNzlUq
+	YcpMpkNR5aXC06d0sOZVbJaNfEsNhSdkGy4c=
+X-Google-Smtp-Source: AGHT+IFKmQVKtrRTGaZ8hTWhd7nE8H1E8AgUXml21TmSiOXRMbfiiTxpX/j+26/xYc1Zfc3ne6Vv/g==
+X-Received: by 2002:a05:6a20:7d8b:b0:240:1204:dd5 with SMTP id adf61e73a8af0-240bcfbba85mr2301691637.8.1755144938050;
+        Wed, 13 Aug 2025 21:15:38 -0700 (PDT)
 Received: from localhost ([122.172.87.165])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef6e45sm337724835ad.22.2025.08.13.21.15.08
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bd9795200sm31652911b3a.114.2025.08.13.21.15.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 21:15:09 -0700 (PDT)
-Date: Thu, 14 Aug 2025 09:45:07 +0530
+        Wed, 13 Aug 2025 21:15:37 -0700 (PDT)
+Date: Thu, 14 Aug 2025 09:45:35 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -104,11 +104,11 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 06/19] rust: cpufreq: replace `kernel::c_str!` with
+Subject: Re: [PATCH v2 04/19] rust: clk: replace `kernel::c_str!` with
  C-Strings
-Message-ID: <20250814041507.sqkdumgaxfcalkhb@vireshk-i7>
+Message-ID: <20250814041535.l7yj2wm4ae3l4k7p@vireshk-i7>
 References: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
- <20250813-core-cstr-cstrings-v2-6-00be80fc541b@gmail.com>
+ <20250813-core-cstr-cstrings-v2-4-00be80fc541b@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -117,7 +117,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250813-core-cstr-cstrings-v2-6-00be80fc541b@gmail.com>
+In-Reply-To: <20250813-core-cstr-cstrings-v2-4-00be80fc541b@gmail.com>
 
 On 13-08-25, 11:59, Tamir Duberstein wrote:
 > C-String literals were added in Rust 1.77. Replace instances of
@@ -127,10 +127,10 @@ On 13-08-25, 11:59, Tamir Duberstein wrote:
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Reviewed-by: Benno Lossin <lossin@kernel.org>
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> Acked-by: Stephen Boyd <sboyd@kernel.org>
 > ---
->  drivers/cpufreq/rcpufreq_dt.rs | 5 ++---
->  rust/kernel/cpufreq.rs         | 3 +--
->  2 files changed, 3 insertions(+), 5 deletions(-)
+>  rust/kernel/clk.rs | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 
 Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
