@@ -1,100 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B67192D97;
-	Thu, 14 Aug 2025 07:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A4D2DA758
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 07:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755158059; cv=none; b=f8tY2XnyihZRuthgQKVZlZT8BAXw4VmUcrdtpGE6fwNaJVHbEJDlyLEa87yEjbPhLwjnscKK3t1KJWYXxQDHYeFl2aeHmCjh7TnbGklFP/r97Nq/S0Ea3HETvTlxrkukm/I15m2S2OtFRhVrLFWaBjqGfWWIvUr/2V971l1vWBc=
+	t=1755158121; cv=none; b=hXL9qR5jl3Sd3C5Fw6BR6p8bMzBRWPk/bL/p/CPYqxFfAimDPuOafIIhIZGPPRYmLFmSCRLavjlRWOdYm9ijgT2T+oaKadw4wWcm94EyfYPgk8yDG0CEJ6P1mJrTtAeYf35//t/o9Ad+mlPyHQYWz1BXCGTm8bVi0Cm7DCxg59w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755158059; c=relaxed/simple;
-	bh=8n2URVW1zH35PTkcFhfdDY6JdVB2waPtDBeuhXieSmc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ohqebMix+NuvGeK4kyIXHCy556VGh9XM2XSZ34wAb7/aLm4FfDk5pFoCVAJ32IGQEiRjAnfn6PbGv8/2e++0jsBC41bP53uaU3lsBltPXFLlWfCGVPdaorZySA9c2CZlUfCx/R7Hz5og8b8LrY4c0ENTJV9xs9Nc8ybsrgqhAB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XwG6sxcS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755158121; c=relaxed/simple;
+	bh=VMoY9uH+QCsljh5aA/42PVLV0HoLhQc+LEs/AXP4pXo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fPm29e6/vrglVIOn19If0w0GkFBAA+arptnEife75KAmdoCI+JgWJEh8BNMGpHeM3dZcmfHkR8zDDpX9OkEhg9yOjIocHtvS254JIpUrCOE3tePz5SO2amJjyGM3KtXbNe7qZNHA20K/KmS3g5IU8O+xahnheb4YZ5YWbcs+E3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bMWUXmaL; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XwG6sxcS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD96C4CEEF;
-	Thu, 14 Aug 2025 07:54:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755158058;
-	bh=8n2URVW1zH35PTkcFhfdDY6JdVB2waPtDBeuhXieSmc=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=XwG6sxcSZ4e7RBPNZDqVWlc3ShcGu5AG24wQYLVS5LuPGPuFBTFuMUCfAU9DlDul3
-	 YqAuR5TsBysOtbQlj172ZmkZPYKd/7ItYBX8xn88aB0G/Z+kY515VurN2zAL9MK+aP
-	 2MG1rFQwZ3KyVb4cEWKd1tWhVQdukyPiHI8Yh3wLIVATqkFlhbQQImhS5e/7yMLNHR
-	 g4k8WyYDr386xoOcjRyzRjEC8hppnuQiX2NLbtUlHHCbwZ5ifMdulAfJM2VT+XMC7r
-	 c3m+hh/ldIFcj/wcOXssueSZ7r00TCMS+BmzLqghaiMWPzbkWNstIT4NASnh2yY2Pt
-	 VKLxy8v3XucDg==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bMWUXmaL"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45a1b0b14daso2136825e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 00:55:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755158117; x=1755762917; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pkt9ozF4HjNo8N7YGJsDJbGhL2IzfusvyUWTBzPyf7M=;
+        b=bMWUXmaLJ2VY9BrnPhBdWDTNKgaidBDAgDHtqzX1xwruasy3p2zdPeVofPOOCy+H6F
+         ur6rlycSX3XzkRE3Y7/N0JNC+VNWp0GkarcvAubefHc02phibGLuLnbSatCoGXNFef7l
+         EAeswCuZ6NK8kZ07G5F0cOMGzixl5ayQSKIx/ZrZi+TLTwpNotOoeKJNJWZssh/coEO8
+         VfV9QIkhwn2HXjQ5EtWQzcTKF2HBED148ZAJ2gKWfgpjadfy6zWCzaya/RuUSZR63wHR
+         Oo17x60f+W873WOaEIRcqx3VWMw9XAiAr4CmNK5Pjf2OvsHS5Dt2uYPIs2HTxxsWWvTM
+         wWhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755158117; x=1755762917;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pkt9ozF4HjNo8N7YGJsDJbGhL2IzfusvyUWTBzPyf7M=;
+        b=iDtbp+dGkHdkot/BvuB/dioOmrCwCGDNokKA+DSkbI2k42RfmrtGTwfgi68BjsURpi
+         wkyJmtDBpkZ6Me6gjkcByuLhvQcBEGxFcOkBR/khuVEXiT1SP0EoMA0xvkqUeY6ZKyg9
+         o0sppxBhMjDxCFUkMNTipmdLfeTDJyPVtMU2LZRtrqYB5O8niP101jEY6D/uvB9yTk8S
+         g9S4E3ZetGxKpf+AXMmnmhOEuVDQx0USA914JkJsDSJoLBv9AFXbCwjmEDIDIjiEtXLF
+         1l2m2rgkNl8AU1TBUpKLYBGEa0nWm0Ef8ed1WVLSLCuRwVX9DbyCU87xB6IggOa0hXni
+         KESw==
+X-Gm-Message-State: AOJu0YxagNKSAnrs6dZtenU7WUT49CJGSriOV5QldCKTe6f0vjjLNB5M
+	nyfXxspfbc9BHZ5qw9ylC1RYlRT1TCVZjJKzfIaNSpFzu1a1pa8VWEmM3GjdU+U4byFqKHjWeEZ
+	vZDky22ll+I2/Vn2aKA==
+X-Google-Smtp-Source: AGHT+IEwXLvyCAoWDtNfNW5WIiz6Y+KDZTy2eN5q6Eu1bB6BXaaznui8SXDAth8yHInJovhcWZQN9Sn9q2E2DRU=
+X-Received: from wmbem15.prod.google.com ([2002:a05:600c:820f:b0:451:d768:b11d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1d16:b0:459:94a7:220f with SMTP id 5b1f17b1804b1-45a1b6577f9mr12470205e9.26.1755158116883;
+ Thu, 14 Aug 2025 00:55:16 -0700 (PDT)
+Date: Thu, 14 Aug 2025 07:54:54 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 14 Aug 2025 09:54:10 +0200
-Message-Id: <DC1ZLP61HJAL.3I2YF82Y4T7L9@kernel.org>
-Cc: <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-block@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <kunit-dev@googlegroups.com>, <linux-fsdevel@vger.kernel.org>
-Subject: Re: [PATCH v3 9/9] rust: device: use `kernel::{fmt,prelude::fmt!}`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Jens Axboe" <axboe@kernel.dk>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
- <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>, "Jan
- Kara" <jack@suse.cz>
-X-Mailer: aerc 0.20.1
-References: <20250813-core-cstr-fanout-1-v3-0-a15eca059c51@gmail.com>
- <20250813-core-cstr-fanout-1-v3-9-a15eca059c51@gmail.com>
-In-Reply-To: <20250813-core-cstr-fanout-1-v3-9-a15eca059c51@gmail.com>
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1090; i=aliceryhl@google.com;
+ h=from:subject; bh=VMoY9uH+QCsljh5aA/42PVLV0HoLhQc+LEs/AXP4pXo=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBonZXTyaGB12UQz+He5R88gG56onLNWGp1jIqZ1
+ vmC6SORLquJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaJ2V0wAKCRAEWL7uWMY5
+ RmxKD/9XTAtpkY0tqkvQ/KI118GdnayeBzkBm3Ju8ZviwzKu1pt+Tj6C1oq7NXbmw4VPt2/JwEr
+ +R97IGMF5xudWN38Ee9hYouRwVKyE4412lVzr9KrDd0L59UpOvfYViUFV2Jt8pZynbJUUdDeVu4
+ NJ7AQJguuboQVezTI72dlooiVSoEqQgjqlTI5695l8FS31ddO7IBRt1gd3402n3emVpGjNUq7FD
+ QJz4++Wa2QsJ2SK8w9beudiWP1zXoFtJFQqQJp7eYVbFCtYi044prekxwkOpZayKSOa6YU6WfCq
+ dtSPrqA9zQESg+HbayhaPci7lGtJyGIqO70/gLuGesr5Ql440rigeOD8lO9OXkVLGw7+q5tAZWi
+ M1PQffntwdm6EQBR+fS437Z6Fu+wD6hXnDjJDpv/r/0DN22z0WH2Vd4+VP5qnsM3GQcl+GitSXo
+ gvbx3C/SuktLE7U1OMFFY9X9fzmV+lwi9ToMuL6OkwGpHYyX41TuoftVpF+qhDcqfoSXKAA2SI4
+ O54FedWn8jTp8GeasAV/pVgFAC/aklaQ5CBrmWyaZ4GH7kBSBzC9EEMz41LXZK/0jCJ4DamiqAh
+ guRlN8WW7goErG1vaOvwNELh0WlekDFeb8MoU4WRMBtLwLYLaqie52aaITPoleWWXJoept+Lbc7 83Xlpn3nO+wY5Hg==
+X-Mailer: git-send-email 2.51.0.rc0.215.g125493bb4a-goog
+Message-ID: <20250814075454.1596482-1-aliceryhl@google.com>
+Subject: [PATCH] mm: rust: add page.rs to MEMORY MANAGEMENT - RUST
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed Aug 13, 2025 at 5:39 PM CEST, Tamir Duberstein wrote:
-> Reduce coupling to implementation details of the formatting machinery by
-> avoiding direct use for `core`'s formatting traits and macros.
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+The page.rs file currently isn't included anywhere, and I think it's a
+good fit for the MEMORY MANAGEMENT - RUST entry. The file was originally
+added for use by Rust Binder, but I believe there is also work to use it
+in the upcoming scatterlist abstractions.
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-
-> ---
->  rust/kernel/device/property.rs | 23 ++++++++++++-----------
->  1 file changed, 12 insertions(+), 11 deletions(-)
-   =20
-> @@ -413,9 +414,9 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> co=
-re::fmt::Result {
->                  // SAFETY: `fwnode_get_name_prefix` returns null or a
->                  // valid C string.
->                  let prefix =3D unsafe { CStr::from_char_ptr(prefix) };
-> -                write!(f, "{prefix}")?;
-> +                fmt::Display::fmt(prefix, f)?;
->              }
-> -            write!(f, "{}", fwnode.display_name())?;
-
-So we're not able to use `write!` with our `Display` or did you also
-write a `FmtAdapter` wrapper for that? (don't think we need it now, just
-wanted to know if we have this issue possibly in the future)
-
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Cheers,
-Benno
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +            fmt::Display::fmt(&fwnode.display_name(), f)?;
->          }
-> =20
->          Ok(())
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fe168477caa4..45f7a21dafd4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16244,15 +16244,17 @@ S:	Maintained
+ MEMORY MANAGEMENT - RUST
+ M:	Alice Ryhl <aliceryhl@google.com>
+ R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+ R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+ L:	linux-mm@kvack.org
+ L:	rust-for-linux@vger.kernel.org
+ S:	Maintained
+ W:	http://www.linux-mm.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+ F:	rust/helpers/mm.c
++F:	rust/helpers/page.c
+ F:	rust/kernel/mm.rs
+ F:	rust/kernel/mm/
++F:	rust/kernel/page.rs
+ 
+ MEMORY MAPPING
+ M:	Andrew Morton <akpm@linux-foundation.org>
+-- 
+2.51.0.rc0.215.g125493bb4a-goog
 
