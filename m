@@ -1,134 +1,117 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B57A2E717F
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 08:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0785F288C14
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 08:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755159128; cv=none; b=K78qeiPDCbgJI+ZVmORXQKGzJGgq4CSjdH17ULeorpA0JKVo+7MeEwhWG6m/TuRr8AOtxrenYfUT5d50he4zMmLdbjC0aUts/Z3gQbEpLC9T5H2I7pAXdg4uDm9geziOlBsiC6pfj3QaULoWkUzQR2Q84BhF0JXuzMI0KhSndCY=
+	t=1755159189; cv=none; b=F4q9rvVT2CRfH1pB9zq64W0X3+aSyDu2vinXBkct/VxR5ag7LWRpyDfsjVy16S+PYM2+0qV2pAskVzenLtnxBMkPDLNK+zmFPr4sn6Q+TBpMdggIF+4Zs5VDP7NE4VRSelmQpnb+w9FSaZW875YqOD4sCIyewnRnk2hERfzc+WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755159128; c=relaxed/simple;
-	bh=etPciUF+58gxBC38Z5tb2kbCgRKAGBYjba2+obhP3Pk=;
+	s=arc-20240116; t=1755159189; c=relaxed/simple;
+	bh=BKeIEPdgx1Yr0aP+47s/5kOZDM0elo0Ce7jkvP34sQk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e8uandRxm60OVJ9GVb1NpRaM6sKusNkyG3QIwlOMZx1ebQjP0zEL0aQMyU3wmXUefhToRR5muIGFHKIOtUUaG7q4+XHsvUYie24AIVlSM+5sxP4/+I3cJ1f6rQzYdTb3c12dPBxHeeZnVofmcOydCETD0Ql40OqQVoEmKE0VT8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yZE5IBOU; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=LoMJdF2V/x1w4iRSokNv87bBN59eN3ogVQ8jpn1s8b2wiwH0xQaIq4Ls5ThfsTeC9NPrE0Hb/kXfum7cWhuHTu+tBERHDK8NzK3c35fV9lOqcHqx1ZQBxq2VEEY9X+t4/znBAYDvydHMOO5eG2bjBlD3s5gJWJlQKsLDbAcrYbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AkEm5sQz; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yZE5IBOU"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45a1b05a59cso3229285e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 01:12:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AkEm5sQz"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6188b5dbff5so591403a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 01:13:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755159124; x=1755763924; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755159185; x=1755763985; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iiv0D3Enw9HFquQbvd+ThrKyXaUitLTqjTCCoxDtDU4=;
-        b=yZE5IBOUbz8EFYZpMjKI4pgWb2674opRK1u7Mp8CpZgBoEp1Gi+ABWV3tfs3ct8ifA
-         Dlc3rjJG+hdeMN4QvAY3+NCxn3xL/o6RI2WU99gzxkMCd9QY3PHmRGcAPXcRv0twn73G
-         TZ/rYCZmGHtXaa33MN4rV/ag8rNG9edLePWdLE/cBHExO+GTOqecCXAeHa2lIAY5+iAg
-         C4/P6NUxgK6LLXEpCakQSiJxJJ/XlPp41S4yML41pEDIncEZAqrkNGUFcKkMDJbAK96A
-         oYsoEjZ74t3ueGi99QYjBaY3KWhioV85S4s72nRV8M2IieZjpaX4vT0WbKdM2LeWqtbK
-         TFFg==
+        bh=gUVJLjhJjYfPZGYawsfN3qdob23UWt0Rkn4PBgxrSwU=;
+        b=AkEm5sQzJGOKq+F2xY49/ijTTW6Na2jfQu/EM0rhVTTk6Fa50trzcZ4hIg71W8KhMN
+         5E1Y2bBWpEWPeaLMZg0JaGe+7OKm3yzuXxjUYEFMR5dKOflJTWPmsVBHMLqIAQC978sr
+         w1L5SGLI05ZocAWWfi31iV0AbVKrwfhn96tpj09bMdMZJ0DrCJK1HbMbpd8Eau67GPla
+         sstVaetvpym38KzI/7pXIxrY/VbF+/9+pCAgh6+RvNkTwGygQHNfKHynhmfeknbx6l9G
+         p5Zgu/0lu4LFBGD9KCv2ggCIq94YBUwE84iyx0Jn3IcMoMkODa8L4F+2vf2pj0buZ9iq
+         dCxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755159124; x=1755763924;
+        d=1e100.net; s=20230601; t=1755159185; x=1755763985;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iiv0D3Enw9HFquQbvd+ThrKyXaUitLTqjTCCoxDtDU4=;
-        b=QlmjRpbhMaD3FOXMbw1GnhwP4i0pUiF4eQor0yPVPG0BkEF0HTRzlojObWi59lQoB4
-         qUp5b+bDf25Ra/bd/Q+Abm0SiUC1b+L28Boahk9DvmuS6coi7MSQW5ipKBy1U3KowVcH
-         KfBb2xclvaG+Kj9X+xEkbgFZLEZoTk6tulQ/v5ffrQTmYahhX31d8lfR8TPUzUH0owNh
-         79LYxZ5RYXruIF1bqvNBqMvQNe9PS/CutOuONBujBSMGeJaAXAjOuN3lrJ2I9EYVNgzN
-         OAy7E/MwisJpnm3tJf1YfhVt2Qt5kqcky17+XWZ6ZKUBONVLrxIDGiCJvB02jkLPuhL9
-         7pKw==
-X-Forwarded-Encrypted: i=1; AJvYcCV9KJS4pf2+NszDiHcz73vPA8q9DZScOgKPIWgs/ULmFPLkDX8Te+xpKfvo26kGGD2pDqVlJnMoqpqKY18eWw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFm6gg2hVwDPvrRy11Qtp7Cgaa05KO7Hxn+dYYyeqKmW20cMi2
-	+ggMselP3zE03dV85j7ObcXMrVzZs3Y+C3QQVnA3j1ciiTKy3uDnagWIDLt24iir9XPGDXkm9lZ
-	0Mrf14MgIQcAi4a46tA==
-X-Google-Smtp-Source: AGHT+IESv7C6uOw2zHqQOv3YRyUouZwm6W4bbO31jyAkUIflR+veVNh5T/iYXpCb7ihU/hXwmic0ConekAIa/1U=
-X-Received: from wmsp31.prod.google.com ([2002:a05:600c:1d9f:b0:456:111e:4717])
+        bh=gUVJLjhJjYfPZGYawsfN3qdob23UWt0Rkn4PBgxrSwU=;
+        b=sJHFcd0y7ydY+Iu95EILGw6a9ZG9+xaIqj+IMezXnD+jUSPLXHCKoST0EIfx8TZT7I
+         MfFWTPepwC4Uw98GyUXhH1AmeqBvtsGsVJKaoY2Jf0aF/NxbFM8qUO5rYFfdknRZ2UDW
+         W22W2AFpcmG1FBBBDs97ot9N97H4yyWQZivOZHA0ksjQhpQMipZHaFpIIdBc4iab0+L0
+         W972aQS4b3yYbmsmvzF4wAwxlaV+zt1K/bi3hu+YFrew5/s+YQrXyj17rnwCUupJ1mSS
+         r/y3tCzLYAFPfsRiRgfSDz5cDlGJRwcu5qZ7hQ2fBTk2e3EPc13nIiWY2BhwKp2YaFbV
+         xxtA==
+X-Forwarded-Encrypted: i=1; AJvYcCXBGa09/Ek8ya/65wndUNtglSupp/lVProooOEenlLtk4OmSn7iBuWQv0OzwybNoGYnmy0F8ZTZu1bD2hO9UQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4EsLr5WahOVThCV75EAQgsl7yQVTPZ3yJUqKxgv/O63/VAYEw
+	w538YnQL7y8qEJkPgXaj4u+96JjiICeL9W8rpzPwNiqxI0HmnLeVXKHUOjapQD282vMN+wU5EeP
+	FYPnwb5RN7zFUbSEjwQ==
+X-Google-Smtp-Source: AGHT+IGDK25s3mGVbqV4mde9ao+gXJj5qscZZLzoR07Uks9qBQi84mrlQGWiLRHKrTfsHPo8A4vI/B2xpju3rbQ=
+X-Received: from ejcso11.prod.google.com ([2002:a17:907:390b:b0:ae3:5480:d3fb])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:46cb:b0:456:1bca:7faf with SMTP id 5b1f17b1804b1-45a1ba14d28mr15596215e9.16.1755159124425;
- Thu, 14 Aug 2025 01:12:04 -0700 (PDT)
-Date: Thu, 14 Aug 2025 08:12:03 +0000
-In-Reply-To: <20250813192621.25255-1-shankari.ak0208@gmail.com>
+ 2002:a17:907:9623:b0:ad8:a329:b490 with SMTP id a640c23a62f3a-afcb97d3e31mr183972366b.23.1755159185217;
+ Thu, 14 Aug 2025 01:13:05 -0700 (PDT)
+Date: Thu, 14 Aug 2025 08:13:04 +0000
+In-Reply-To: <DC1E72OCYMMU.1C1EWX0YPDEOT@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250716091827.816971-1-shankari.ak0208@gmail.com> <20250813192621.25255-1-shankari.ak0208@gmail.com>
-Message-ID: <aJ2aUwi1L5RjK-X_@google.com>
-Subject: Re: [PATCH 4/7] rust: fs: update ARef and AlwaysRefCounted imports
- from sync::aref
+References: <20250812130928.11075-1-dakr@kernel.org> <aJw7sx0p0Ec-oLkz@google.com>
+ <DC1E72OCYMMU.1C1EWX0YPDEOT@kernel.org>
+Message-ID: <aJ2akK9rVo2XwgQB@google.com>
+Subject: Re: [PATCH v2] rust: devres: fix leaking call to devm_add_action()
 From: Alice Ryhl <aliceryhl@google.com>
-To: Shankari Anand <shankari.ak0208@gmail.com>, Christian Brauner <brauner@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Aug 14, 2025 at 12:56:21AM +0530, Shankari Anand wrote:
-> On Wed, Jul 16, 2025 at 02:48:27PM +0530, Shankari Anand wrote:
-> > Update call sites in the fs subsystem to import `ARef` and
-> > `AlwaysRefCounted` from `sync::aref` instead of `types`.
-> > 
-> > This aligns with the ongoing effort to move `ARef` and
-> > `AlwaysRefCounted` to sync.
-> > 
-> > Suggested-by: Benno Lossin <lossin@kernel.org>
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> > Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-> > ---
-> > It part of a subsystem-wise split series, as suggested in:
-> > https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
-> > This split series is intended to ease review and subsystem-level maintenance.
-> > 
-> > The original moving patch is here:
-> > https://lore.kernel.org/rust-for-linux/20250625111133.698481-1-shankari.ak0208@gmail.com/
-> > 
-> > Gradually the re-export from types.rs will be eliminated in the
-> > future cycle.
-> > ---
-> >  rust/kernel/fs/file.rs | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-> > index 35fd5db35c46..18cf579d3312 100644
-> > --- a/rust/kernel/fs/file.rs
-> > +++ b/rust/kernel/fs/file.rs
-> > @@ -11,7 +11,8 @@
-> >      bindings,
-> >      cred::Credential,
-> >      error::{code::*, Error, Result},
-> > -    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
-> > +    sync::aref::{ARef, AlwaysRefCounted},
-> > +    types::{NotThreadSafe, Opaque},
-> >  };
-> >  use core::ptr;
-> >  
-> > -- 
-> > 2.34.1
-> > 
+On Wed, Aug 13, 2025 at 05:07:41PM +0200, Danilo Krummrich wrote:
+> On Wed Aug 13, 2025 at 9:16 AM CEST, Alice Ryhl wrote:
+> > On Tue, Aug 12, 2025 at 03:09:06PM +0200, Danilo Krummrich wrote:
+> >> When the data argument of Devres::new() is Err(), we leak the preceding
+> >> call to devm_add_action().
+> >> 
+> >> In order to fix this, call devm_add_action() in a unit type initializer in
+> >> try_pin_init!() after the initializers of all other fields.
+> >> 
+> >> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
+> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> >
+> > This looks ok:
+> >
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> >
+> > But can't we do it like this instead?
+> > 1. Allocate devm job.
+> > 2. Initialize inner field.
+> > 3. Use allocation from (1.) to devm_add_action() infallibly.
 > 
-> Hello, can this be picked for review?
+> Theoretically, we could with a few additions to the C API. But I don't think
+> it's worth and I don't think we should do it in the context of this patch.
 > 
-> The initial patch which moves ARef and AlwaysRefCounted to sync/aref.rs is upstream (commit 07dad44aa9a93) [1]
+> > This way, there's no risk that the inner value may get dropped, which
+> > could be an expensive operation.
 > 
-> Thanks,
-> Shankari
+> If we actually fail to allocate a devres node on the C side, I'm not that
+> concerned about having to drop data.
 > 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+> However, there's also another reason why I think there's no need to consider it
+> now: I still have the rework on my list to get devres callbacks in place such
+> that we can first revoke the Revocable objects of all corresponding Devres
+> objects, call synchronize_rcu() once, and then drop the contained data in-place.
+> 
+> In this context I also plan to directly embedd a struct devres_node in the Rust
+> Devres type, such that the *only* allocation that remains is the final one when
+> the user of Devres allocates for the final impl PinInit, that directly or
+> indirectly contains the Devres.
+> 
+> Once we have that, adding the devres node will also always be infallible.
 
-Christian maintains rust/kernel/fs, so could you resend this patch with
+Embedding devres_node in Devres sounds look a good plan.
 
-	Christian Brauner <brauner@kernel.org>
-
-as a recipient?
-
-Feel free to add this when you resend:
-Acked-by: Alice Ryhl <aliceryhl@google.com>
-
+Alice
