@@ -1,120 +1,64 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD11279DD3
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 22:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910C1319873;
+	Thu, 14 Aug 2025 22:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755208920; cv=none; b=OM0ZhPDUUCs0RTOYhkaBOGhtt04HjZ0HTN4zMm0WMS/eLLiZhPhVOl6abR2/znxXVa5GRbo263IEoXGka0V4/PPnKIC/jaeP7CrdjXuXq3cGV7XET6zt2PsjFo8UfKsZBtsJ3Hpu9kwPfCCPOuLCjBhBQZBcgjji+ZN4K01H7IE=
+	t=1755209832; cv=none; b=gFQz1WSE858kktAPOj54IMT4LWpAQp71dgXpdpRwRKm43h/j+wEtG/O2yP1CmWQ2epEzOJYBJPLO+pN9PbQ/gOB/yPhA86x4eZUhX07a/fY8vlGXxPmE6/vlv0DTCpotEIeE5q63w7UWewd9I6EXXXRqTPRQfrjrGh8ZLeSz+Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755208920; c=relaxed/simple;
-	bh=4XRnisqu9O3Dx+8tug0BrmRshiqBof51dFIrTfCIjUs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Emtnc5UPPkgy8I7deTKIDt5e3B2X+xntCRUlfCN4YLPB6PgnzDKjSNN+ECUR21ooSznijGT1W44rYMpPIyvHOVm8wJjgel6SIG1kBaEcaXkKR7oOTx5k3+dUHvNp+3cFfq/QJDC+zgc47f10/OQcu/aVUG5dIws3lPnBcEtUU9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=M31sWAG7; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	s=arc-20240116; t=1755209832; c=relaxed/simple;
+	bh=aSc5vIIoQsAueHjH5bF58EokT80rr3IpA5ugwyr7Ook=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=DSkTNz7oaj+6r7A7he+hjvQiyVvP/5+wPCfI5O4BWqIgJz7If8HntOhy6X4ey8/3gtWG7dZSen0v9c5ER+B0sOHnAULzKCBTTT5a3Vdj9VPiBECLGTwRI0xjz6DxI8CeDedD7ClSrzjka0iUVTuEzh1BYFcVIOci2FzkN6sTNc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CfgEIOog; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="M31sWAG7"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32326e67c95so1957513a91.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 15:01:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1755208918; x=1755813718; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4XRnisqu9O3Dx+8tug0BrmRshiqBof51dFIrTfCIjUs=;
-        b=M31sWAG7mWHhJiDsA0+DndcrTX6zs/MOfjGCRfPh18ZPQk9ObCOyC/MP6gMa/GTaid
-         +Lli8PDAI/OZkHTsMiFZ577EB15qcY59ssLHSe2yIeFSdbuMU3RYXfYEa8G545U8tvEp
-         uInuuKRiLoZl4I9Ya5mQ4B3cXRBud8Vhc5De9PR0c+e63hV6OlGmxmc4e4R4r+CoTt0O
-         gwfozw2fIF+7M6cpts9QTUsBuzBeqqzHVKqKebxdzmxRdY25hwteyRCJ8iXIHcGPw0W4
-         TfouhIdm+5LMHXPFoFfXI2VL1jXWgFWmAiHjXXhOjAC+OMzDFb02RADODs5q7/PyJ8Ib
-         e74Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755208918; x=1755813718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4XRnisqu9O3Dx+8tug0BrmRshiqBof51dFIrTfCIjUs=;
-        b=oF1c0pzKMnOxFEYkUUvGjuYqcAcZnZqxuYwRWxRcfZ/utz/vELeZE0Xh0ap1AmTL4j
-         iZ9TyfZxd45iLaHDIcfZ/pECIJl6sVp4jgzCFCk4J+SBnqqZUS88fqQgaqbek7vxAtLk
-         8nPznkdUFrHUJMinBdddZsF+nzWcG69HbXkrc7fb2+R1AXUtsUDRFt8N45SB/sT2dKeK
-         MPJ/uQEZE09IR/prtKK/l9qtEFZwxstGWlYy5AXS69RUGzS2gmzhRM0SWD1KtKmnk26p
-         qN4DzVQfoI8RPNBntvo8YNicPXmG2WQriTPnn6S6/kDdt+uuOHUGEuXhfrRatdjePk1a
-         rnuA==
-X-Forwarded-Encrypted: i=1; AJvYcCXq0Ef02tUTwKXkv63pCxYibhXNV49RqT2sUuBEV2WR7NVcqdTF4gscRhyQHUv4O4vG3HDcNOJUeJHXsSncqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz26FlC7ohuIYo+WjcYQhKBe+I8U0riOxB5TPnTGZgmnCOyLkp2
-	lyTuF1/n/x0L+bFq70oBBVYTp3GWDCR2oco0hwRjOPryZkAMohYCZ3ADoZzica1r38tXdYPCSZP
-	fByQyh1tuzHwZLuXu022wZlk5X3qj3f84JxjOQI4e
-X-Gm-Gg: ASbGncvD8Y8BAQJi48I8N1iAr5mXPg5F7pS8nQObGvaGraRW7jrED7uN20tjo4ZLFIK
-	sMF6ZkXXq+vxKYeak8HZBgSuGFkCGBIYFw91Xk+RyWC5zUwCoc6J/cvryGB7CYGsvVlQPCWYhgu
-	OCCno9jnluPBoOjpPdsmIzUze79AT4wap1I9q20uwyI5HvgXnSnTPPwodbNguX+S8D7R5bYDjce
-	JB5TQU=
-X-Google-Smtp-Source: AGHT+IEDzGUCUbmkKBi2lNmiCJDObwt7jyLc+L7VNoACWG6u+R/JY1FN/9Lybn1yT+eA+zKooGC4MTk6BwBsiV+iI+4=
-X-Received: by 2002:a17:90b:57e4:b0:31f:1757:f9f4 with SMTP id
- 98e67ed59e1d1-3233d227a0dmr691002a91.24.1755208918463; Thu, 14 Aug 2025
- 15:01:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CfgEIOog"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BEDC4CEED;
+	Thu, 14 Aug 2025 22:17:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755209832;
+	bh=aSc5vIIoQsAueHjH5bF58EokT80rr3IpA5ugwyr7Ook=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=CfgEIOogNaOu87OFC/4Mk2HfCKtM8fM+jPZzBhiMLDjvzVURv9r5jvYoxJHb/phyY
+	 gHjSxhFA3fRyOP3H90sxxV9+yxKD22kgQwvgpe6r3LKVU7OR8ufYbUYS7BU72Udm/i
+	 pKMovl0pwxk1fHiNL5nDh0XmyV6XWXMYfCBPSL6M5mg3yXahuGrM2zqjqDJ94xq9jH
+	 jWy6hD7BiyqD/tKsdhoXUMeIYIeP/9U0E+sBfEUzZrKFzd9UGVmXHaShunwB2qGJsR
+	 D4zdJxOJtCaaKPrvfmqWw8zS2enQAT0l0i5G9fo/xMDbcZmQQ+61Hbh6x7uYD3SIMz
+	 ttSgMQTm4r4AA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250814093046.2071971-1-lossin@kernel.org> <20250814093046.2071971-8-lossin@kernel.org>
- <CAHC9VhQXOezJ2=B1BQOqLgfuzDJEVS5G_r9+_bQ+OUNTpjZCKw@mail.gmail.com>
- <CANiq72=vhPsGjSx9u0FvDa6uzMFkFQFP9qG+DhtZ_U5TyV=bJQ@mail.gmail.com>
- <CAHC9VhQNi31KSpB-MtvZO9e5fzuM_87VWb6rrMtxcqOGSPTiNg@mail.gmail.com> <DC2BTIG40SRU.16QBMDH0PP01Q@kernel.org>
-In-Reply-To: <DC2BTIG40SRU.16QBMDH0PP01Q@kernel.org>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 14 Aug 2025 18:01:46 -0400
-X-Gm-Features: Ac12FXype_aLvHDtZZOQRIYNqbuL19JtT5JJvdcu70_SXP98N_IoFGs7sLelUB8
-Message-ID: <CAHC9VhQAk4irkap1UUY1dLST3DVAGxMJ8m5VqX6BpkC7rLdhxQ@mail.gmail.com>
-Subject: Re: [PATCH v3 07/11] rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, Jocelyn Falempe <jfalempe@redhat.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 15 Aug 2025 00:17:07 +0200
+Message-Id: <DC2HYF56GPWI.2EIEHWAGVK9AI@kernel.org>
+Subject: Re: [PATCH v6 6/9] modpost: Add modname to mod_device_table alias
+Cc: "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier"
+ <nicolas.schier@linux.dev>, "Masahiro Yamada" <masahiroy@kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Luis Chamberlain" <mcgrof@kernel.org>, "Sami
+ Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
+ <linux-kernel@vger.kernel.org>, <linux-modules@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ <rust-for-linux@vger.kernel.org>
+To: "Alexey Gladkov" <legion@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <cover.1755170493.git.legion@kernel.org>
+ <15724fb8669dae64e3c8d31ab620f977984b2177.1755170493.git.legion@kernel.org>
+ <DC26OG2L7OMH.31RE7460D4DHU@kernel.org> <aJ3qsonmvUUErQx9@example.org>
+ <DC27G409IQGT.H9G83QDQ9V7R@kernel.org> <aJ5ZMJC4eCpDb5D8@example.org>
+In-Reply-To: <aJ5ZMJC4eCpDb5D8@example.org>
 
-On Thu, Aug 14, 2025 at 1:28=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
-ote:
-> On Thu Aug 14, 2025 at 5:54 PM CEST, Paul Moore wrote:
-> > On Thu, Aug 14, 2025 at 11:31=E2=80=AFAM Miguel Ojeda
-> > <miguel.ojeda.sandonis@gmail.com> wrote:
-> >> On Thu, Aug 14, 2025 at 5:19=E2=80=AFPM Paul Moore <paul@paul-moore.co=
-m> wrote:
-> >> >
-> >> > I'm happy to take this via the LSM tree, but it would be nice to see=
- a
-> >> > Reviewed-by/Acked-by from someone with a better understanding of Rus=
-t
-> >> > :)
-> >>
-> >> I think the idea is to take all these through the Rust one with
-> >> Acked-bys from the maintainers (or we can skip this one and do it in a
-> >> future cycle when the first patches get in).
-> >
-> > [CC'd the LSM list, as I just realized it wasn't on the original patch
-> > posting; in the future please include the LSM list on LSM related Rust
-> > patchsets/patches]
->
-> I checked and I didn't find a maintainers entry for that this file & the
-> LSM list. I'm using scripts/get_maintainer.pl to get the people I send
-> patches to and that also checks git commits, so I guess it added you
-> through that (which is very good :). So can we add a maintainers entry
-> for `rust/kernel/security.rs` so people don't miss this in the future?
-> Thanks!
+On Thu Aug 14, 2025 at 11:46 PM CEST, Alexey Gladkov wrote:
+> Again, no. We need the entire symbol to be unique so that the linker
+> doesn't complain. In fact, this symbol will later be removed from the elf=
+.
+> It is only needed for the modpost utility.
 
-Here ya go ...
+Gotcha -- I think I got confused; for the device ID parts:
 
-https://lore.kernel.org/linux-security-module/20250814215952.238316-2-paul@=
-paul-moore.com/
-
---=20
-paul-moore.com
+Acked-by: Danilo Krummrich <dakr@kernel.org>
