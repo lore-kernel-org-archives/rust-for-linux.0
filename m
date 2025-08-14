@@ -1,117 +1,116 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0785F288C14
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 08:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79632E7BBB
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 08:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755159189; cv=none; b=F4q9rvVT2CRfH1pB9zq64W0X3+aSyDu2vinXBkct/VxR5ag7LWRpyDfsjVy16S+PYM2+0qV2pAskVzenLtnxBMkPDLNK+zmFPr4sn6Q+TBpMdggIF+4Zs5VDP7NE4VRSelmQpnb+w9FSaZW875YqOD4sCIyewnRnk2hERfzc+WU=
+	t=1755159886; cv=none; b=MR0bITNfLfRGoSBxXDHxRP/2kJWKtaM7YFi35YXLhTtDdUzLQC+Ec4OaIcvSikz3Lhu8U2gNTE7FYTNXjbSOap6DFtX8dr39+88T9XAEJDrFN8zKqmwJzwas3FB6P1itWXHejfhLsBcXlWMtGS9IbFGndbpMKiXjm2ZJy7os91s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755159189; c=relaxed/simple;
-	bh=BKeIEPdgx1Yr0aP+47s/5kOZDM0elo0Ce7jkvP34sQk=;
+	s=arc-20240116; t=1755159886; c=relaxed/simple;
+	bh=01JJlSModoqysW+sRDKwyF6wO+ZTlR4O5R5WhdmWmU8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LoMJdF2V/x1w4iRSokNv87bBN59eN3ogVQ8jpn1s8b2wiwH0xQaIq4Ls5ThfsTeC9NPrE0Hb/kXfum7cWhuHTu+tBERHDK8NzK3c35fV9lOqcHqx1ZQBxq2VEEY9X+t4/znBAYDvydHMOO5eG2bjBlD3s5gJWJlQKsLDbAcrYbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AkEm5sQz; arc=none smtp.client-ip=209.85.208.74
+	 To:Cc:Content-Type; b=oyVYLvMzqpUYj9TDDxqLKBNiS9aG2zGZhn0PYw0fnQfR2kpDoMVQwqNfhtAB7g0qJBHpV3dZ7HBT7q4ThxCiddrEzbqz5AQTR4Scy+ZWlsqRn+bMk0PFLriKPF+CTuZlkcaemwufXN+I90DOj+ItgA66NV6WuILny/4hv7rqGJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v1YV6rWN; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AkEm5sQz"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6188b5dbff5so591403a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 01:13:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v1YV6rWN"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45a1b00149cso2132575e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 01:24:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755159185; x=1755763985; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755159882; x=1755764682; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gUVJLjhJjYfPZGYawsfN3qdob23UWt0Rkn4PBgxrSwU=;
-        b=AkEm5sQzJGOKq+F2xY49/ijTTW6Na2jfQu/EM0rhVTTk6Fa50trzcZ4hIg71W8KhMN
-         5E1Y2bBWpEWPeaLMZg0JaGe+7OKm3yzuXxjUYEFMR5dKOflJTWPmsVBHMLqIAQC978sr
-         w1L5SGLI05ZocAWWfi31iV0AbVKrwfhn96tpj09bMdMZJ0DrCJK1HbMbpd8Eau67GPla
-         sstVaetvpym38KzI/7pXIxrY/VbF+/9+pCAgh6+RvNkTwGygQHNfKHynhmfeknbx6l9G
-         p5Zgu/0lu4LFBGD9KCv2ggCIq94YBUwE84iyx0Jn3IcMoMkODa8L4F+2vf2pj0buZ9iq
-         dCxw==
+        bh=XjZ/eR6SQYjR+SXWKMp+2N2e/5Kxjm09W05WAM7WjMU=;
+        b=v1YV6rWNmU6fsaHjl4Aai9kCoub56MSu6ji+yAqRobOgvUtCVokLnu/7FVpgK43Ax5
+         VVTst6wVaTIjTD/1Dw9t+CzUf3AyOwIg5515ucymvGnfx28L/uIOGSQRS5cwKUA4csna
+         Jy2EP47cb/GBaEAA86liWMLeXlajFf2WBYhZSbbBj2Yk6GGyTyUxWoTjHI6gJC6DsLNb
+         Qg1nd5QPetY17WeE4yUUEXKSXo3V5khlF2xGZmc1qjnUrc0ctrREG8Zi9/jhAbbuCgjt
+         KSKKA7Knd9IQqfKV9AuX0icnKtdAKSnlQisnyVxIov4/yiM4Jxk3f/z9qp0CzY9kq15+
+         IqXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755159185; x=1755763985;
+        d=1e100.net; s=20230601; t=1755159882; x=1755764682;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gUVJLjhJjYfPZGYawsfN3qdob23UWt0Rkn4PBgxrSwU=;
-        b=sJHFcd0y7ydY+Iu95EILGw6a9ZG9+xaIqj+IMezXnD+jUSPLXHCKoST0EIfx8TZT7I
-         MfFWTPepwC4Uw98GyUXhH1AmeqBvtsGsVJKaoY2Jf0aF/NxbFM8qUO5rYFfdknRZ2UDW
-         W22W2AFpcmG1FBBBDs97ot9N97H4yyWQZivOZHA0ksjQhpQMipZHaFpIIdBc4iab0+L0
-         W972aQS4b3yYbmsmvzF4wAwxlaV+zt1K/bi3hu+YFrew5/s+YQrXyj17rnwCUupJ1mSS
-         r/y3tCzLYAFPfsRiRgfSDz5cDlGJRwcu5qZ7hQ2fBTk2e3EPc13nIiWY2BhwKp2YaFbV
-         xxtA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBGa09/Ek8ya/65wndUNtglSupp/lVProooOEenlLtk4OmSn7iBuWQv0OzwybNoGYnmy0F8ZTZu1bD2hO9UQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4EsLr5WahOVThCV75EAQgsl7yQVTPZ3yJUqKxgv/O63/VAYEw
-	w538YnQL7y8qEJkPgXaj4u+96JjiICeL9W8rpzPwNiqxI0HmnLeVXKHUOjapQD282vMN+wU5EeP
-	FYPnwb5RN7zFUbSEjwQ==
-X-Google-Smtp-Source: AGHT+IGDK25s3mGVbqV4mde9ao+gXJj5qscZZLzoR07Uks9qBQi84mrlQGWiLRHKrTfsHPo8A4vI/B2xpju3rbQ=
-X-Received: from ejcso11.prod.google.com ([2002:a17:907:390b:b0:ae3:5480:d3fb])
+        bh=XjZ/eR6SQYjR+SXWKMp+2N2e/5Kxjm09W05WAM7WjMU=;
+        b=tkErZwPYW1dghW/DRtfDg+tS0lbCEXj7IpOcyng6yDbR2peyqpeZJeSLmZ+xO/nOn4
+         45WIRLN5Ku8Muvt4iO7fdiQafCK53ftu8ulQw1MfXDXolM3powvVEZB10JCcsuIUnInX
+         ZePTHgTqyS3wwSX3JY7u/kZU4pBb+ICAnTdA7cVmo0xwI5ZP5eJw5MIPSMDJqTHAVnyY
+         MGqEzyiZMUqCtC+97VNoZSuiUvql0U4oICPmJGUnlY2PULALPtzt/yUmfHDtAjNeiT6M
+         SQOTMJg+uAVuLNsiUdLIKCdtaFW+7WvOXuyfWpnlOMx+Zse+h0XdxDbz50RmaW118bZY
+         yVOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwSCRCwJLWyhUtEaBF13kPEGFVVZBiv1Z9GJ6pF63Gclv0g2+J2PJbpL/fWrewTIcbQmjEnZR83BXkedvYiw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbIvnX5EFn9lwyOFJfGyoEsPqBZw63Kxu14dfIhV2qybKeOAJZ
+	S9k16Sck5WXQ+OdF3kMUEFr6PieNmv+1+aCtf1QdN0ENx4YzLEq6Oud/vHaX0MJfXmyTRT2ahge
+	9zKCkfjbwZQ7+IfC41g==
+X-Google-Smtp-Source: AGHT+IEGivgrzos4CoGDHY7uH0CTjOvIWOyqPK2uMv3U+POUyDq1mhFpmt0OotkxsQj2w6KHcsTz1JVeOL0tM4c=
+X-Received: from wmbjg12.prod.google.com ([2002:a05:600c:a00c:b0:458:a7ae:4acf])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:9623:b0:ad8:a329:b490 with SMTP id a640c23a62f3a-afcb97d3e31mr183972366b.23.1755159185217;
- Thu, 14 Aug 2025 01:13:05 -0700 (PDT)
-Date: Thu, 14 Aug 2025 08:13:04 +0000
-In-Reply-To: <DC1E72OCYMMU.1C1EWX0YPDEOT@kernel.org>
+ 2002:a05:600c:190a:b0:459:d6a6:792 with SMTP id 5b1f17b1804b1-45a1b67a1ddmr13345765e9.29.1755159881981;
+ Thu, 14 Aug 2025 01:24:41 -0700 (PDT)
+Date: Thu, 14 Aug 2025 08:24:41 +0000
+In-Reply-To: <34d384af-6123-4602-bde0-85ca3d14fe09@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250812130928.11075-1-dakr@kernel.org> <aJw7sx0p0Ec-oLkz@google.com>
- <DC1E72OCYMMU.1C1EWX0YPDEOT@kernel.org>
-Message-ID: <aJ2akK9rVo2XwgQB@google.com>
-Subject: Re: [PATCH v2] rust: devres: fix leaking call to devm_add_action()
+References: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com> <34d384af-6123-4602-bde0-85ca3d14fe09@sirena.org.uk>
+Message-ID: <aJ2dST9C8QLUcftA@google.com>
+Subject: Re: [PATCH v2 00/19] rust: replace `kernel::c_str!` with C-Strings
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@debian.org>
+Cc: Tamir Duberstein <tamird@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Breno Leitao <leitao@debian.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Liam Girdwood <lgirdwood@gmail.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Aug 13, 2025 at 05:07:41PM +0200, Danilo Krummrich wrote:
-> On Wed Aug 13, 2025 at 9:16 AM CEST, Alice Ryhl wrote:
-> > On Tue, Aug 12, 2025 at 03:09:06PM +0200, Danilo Krummrich wrote:
-> >> When the data argument of Devres::new() is Err(), we leak the preceding
-> >> call to devm_add_action().
-> >> 
-> >> In order to fix this, call devm_add_action() in a unit type initializer in
-> >> try_pin_init!() after the initializers of all other fields.
-> >> 
-> >> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
-> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> >
-> > This looks ok:
-> >
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> >
-> > But can't we do it like this instead?
-> > 1. Allocate devm job.
-> > 2. Initialize inner field.
-> > 3. Use allocation from (1.) to devm_add_action() infallibly.
+On Wed, Aug 13, 2025 at 09:11:51PM +0100, Mark Brown wrote:
+> On Wed, Aug 13, 2025 at 11:59:10AM -0400, Tamir Duberstein wrote:
+> > This series depends on step 3[0] which depends on steps 2a[1] and 2b[2]
+> > which both depend on step 1[3].
+> > 
+> > This series also has a minor merge conflict with a small change[4] that
+> > was taken through driver-core-testing. This series is marked as
+> > depending on that change; as such it contains the post-conflict patch.
+> > 
+> > Subsystem maintainers: I would appreciate your `Acked-by`s so that this
+> > can be taken through Miguel's tree (where the previous series must go).
 > 
-> Theoretically, we could with a few additions to the C API. But I don't think
-> it's worth and I don't think we should do it in the context of this patch.
-> 
-> > This way, there's no risk that the inner value may get dropped, which
-> > could be an expensive operation.
-> 
-> If we actually fail to allocate a devres node on the C side, I'm not that
-> concerned about having to drop data.
-> 
-> However, there's also another reason why I think there's no need to consider it
-> now: I still have the rework on my list to get devres callbacks in place such
-> that we can first revoke the Revocable objects of all corresponding Devres
-> objects, call synchronize_rcu() once, and then drop the contained data in-place.
-> 
-> In this context I also plan to directly embedd a struct devres_node in the Rust
-> Devres type, such that the *only* allocation that remains is the final one when
-> the user of Devres allocates for the final impl PinInit, that directly or
-> indirectly contains the Devres.
-> 
-> Once we have that, adding the devres node will also always be infallible.
+> Something seems to have gone wrong with your posting, both my mail
+> server and the mail archives stop at patch 15.  If it were just rate
+> limiting or greylisting I'd have expected things to have sorted
+> themselves out by now for one or the other.
 
-Embedding devres_node in Devres sounds look a good plan.
+Tamir mentioned to me that he ran into a daily limit on the number of
+emails he could send.
 
 Alice
