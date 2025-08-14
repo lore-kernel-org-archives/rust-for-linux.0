@@ -1,184 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505FC1A238C;
-	Thu, 14 Aug 2025 21:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD11279DD3
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 22:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755207992; cv=none; b=PG+iUuXdnOZeV3df47cfaTWh0upp5zE/ro6hIqaHCHtLcdJK+Tl5VgKnu1M0oCChw8Ho0t8tEsqF8T+KEvNj1l8mLB3o8s6NSV8e6xqz5RqxYit3b7jmpbw0ItFR96kL5nM8EjPeQJspP9UDO+KDjH4M/GPK7QTMXSVw3jG9lU0=
+	t=1755208920; cv=none; b=OM0ZhPDUUCs0RTOYhkaBOGhtt04HjZ0HTN4zMm0WMS/eLLiZhPhVOl6abR2/znxXVa5GRbo263IEoXGka0V4/PPnKIC/jaeP7CrdjXuXq3cGV7XET6zt2PsjFo8UfKsZBtsJ3Hpu9kwPfCCPOuLCjBhBQZBcgjji+ZN4K01H7IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755207992; c=relaxed/simple;
-	bh=H5t50i2Arx8cGLKWfYb6yZf07e2LtwSpP7PZAJqXp/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kMJVvrElGdagDOXV97f2v/i2IpoQm5sxLLQgUD4lWyyM/OUsX3KcAf7BM9qNRr5jW6YTg3TMtLEcP/WKJKg6mKOXcQKHSbkhrJI0VydIz8t/OBW/xCReBua8LJeX8RDngbB4csRBMkDGFsNQ7fAkhUT2IbfjlZccGbjaWvwI7yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXJpknXi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755208920; c=relaxed/simple;
+	bh=4XRnisqu9O3Dx+8tug0BrmRshiqBof51dFIrTfCIjUs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Emtnc5UPPkgy8I7deTKIDt5e3B2X+xntCRUlfCN4YLPB6PgnzDKjSNN+ECUR21ooSznijGT1W44rYMpPIyvHOVm8wJjgel6SIG1kBaEcaXkKR7oOTx5k3+dUHvNp+3cFfq/QJDC+zgc47f10/OQcu/aVUG5dIws3lPnBcEtUU9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=M31sWAG7; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXJpknXi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECAAC4CEED;
-	Thu, 14 Aug 2025 21:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755207991;
-	bh=H5t50i2Arx8cGLKWfYb6yZf07e2LtwSpP7PZAJqXp/M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NXJpknXinO50P0+vSaRs7K7YYw4Wo4RbRFwUweNTAz5Nk84MifsScECN9mkqAPJfz
-	 8SU0cz4tqZpvri04RpBLcInZpWOOi+L1LslTZUe5sAFUo/C4EPYzAi1oHFhzn5xPRf
-	 78sBywQ+wpIeohQxeuP/86TNWP9NC5vqzt6SaG9atDJ+QaOAfVRmev1qNHTjLykCfB
-	 17ZmC/qHErJa4+TdyyLg5CwJp5vN0S8EbmY75Q6FI0o2Qk4DouzT91XSOpPJB6HC6T
-	 GAKUSJV8Z5yQ2roiQCffAaYgeSUI1qq19G8Eoj3Nb2l2NWOklMOdPLLysQp4aIPgAT
-	 QMSL6YQQhwsfA==
-Date: Thu, 14 Aug 2025 23:46:24 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 6/9] modpost: Add modname to mod_device_table alias
-Message-ID: <aJ5ZMJC4eCpDb5D8@example.org>
-References: <cover.1755170493.git.legion@kernel.org>
- <15724fb8669dae64e3c8d31ab620f977984b2177.1755170493.git.legion@kernel.org>
- <DC26OG2L7OMH.31RE7460D4DHU@kernel.org>
- <aJ3qsonmvUUErQx9@example.org>
- <DC27G409IQGT.H9G83QDQ9V7R@kernel.org>
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="M31sWAG7"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32326e67c95so1957513a91.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 15:01:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1755208918; x=1755813718; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4XRnisqu9O3Dx+8tug0BrmRshiqBof51dFIrTfCIjUs=;
+        b=M31sWAG7mWHhJiDsA0+DndcrTX6zs/MOfjGCRfPh18ZPQk9ObCOyC/MP6gMa/GTaid
+         +Lli8PDAI/OZkHTsMiFZ577EB15qcY59ssLHSe2yIeFSdbuMU3RYXfYEa8G545U8tvEp
+         uInuuKRiLoZl4I9Ya5mQ4B3cXRBud8Vhc5De9PR0c+e63hV6OlGmxmc4e4R4r+CoTt0O
+         gwfozw2fIF+7M6cpts9QTUsBuzBeqqzHVKqKebxdzmxRdY25hwteyRCJ8iXIHcGPw0W4
+         TfouhIdm+5LMHXPFoFfXI2VL1jXWgFWmAiHjXXhOjAC+OMzDFb02RADODs5q7/PyJ8Ib
+         e74Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755208918; x=1755813718;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4XRnisqu9O3Dx+8tug0BrmRshiqBof51dFIrTfCIjUs=;
+        b=oF1c0pzKMnOxFEYkUUvGjuYqcAcZnZqxuYwRWxRcfZ/utz/vELeZE0Xh0ap1AmTL4j
+         iZ9TyfZxd45iLaHDIcfZ/pECIJl6sVp4jgzCFCk4J+SBnqqZUS88fqQgaqbek7vxAtLk
+         8nPznkdUFrHUJMinBdddZsF+nzWcG69HbXkrc7fb2+R1AXUtsUDRFt8N45SB/sT2dKeK
+         MPJ/uQEZE09IR/prtKK/l9qtEFZwxstGWlYy5AXS69RUGzS2gmzhRM0SWD1KtKmnk26p
+         qN4DzVQfoI8RPNBntvo8YNicPXmG2WQriTPnn6S6/kDdt+uuOHUGEuXhfrRatdjePk1a
+         rnuA==
+X-Forwarded-Encrypted: i=1; AJvYcCXq0Ef02tUTwKXkv63pCxYibhXNV49RqT2sUuBEV2WR7NVcqdTF4gscRhyQHUv4O4vG3HDcNOJUeJHXsSncqA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz26FlC7ohuIYo+WjcYQhKBe+I8U0riOxB5TPnTGZgmnCOyLkp2
+	lyTuF1/n/x0L+bFq70oBBVYTp3GWDCR2oco0hwRjOPryZkAMohYCZ3ADoZzica1r38tXdYPCSZP
+	fByQyh1tuzHwZLuXu022wZlk5X3qj3f84JxjOQI4e
+X-Gm-Gg: ASbGncvD8Y8BAQJi48I8N1iAr5mXPg5F7pS8nQObGvaGraRW7jrED7uN20tjo4ZLFIK
+	sMF6ZkXXq+vxKYeak8HZBgSuGFkCGBIYFw91Xk+RyWC5zUwCoc6J/cvryGB7CYGsvVlQPCWYhgu
+	OCCno9jnluPBoOjpPdsmIzUze79AT4wap1I9q20uwyI5HvgXnSnTPPwodbNguX+S8D7R5bYDjce
+	JB5TQU=
+X-Google-Smtp-Source: AGHT+IEDzGUCUbmkKBi2lNmiCJDObwt7jyLc+L7VNoACWG6u+R/JY1FN/9Lybn1yT+eA+zKooGC4MTk6BwBsiV+iI+4=
+X-Received: by 2002:a17:90b:57e4:b0:31f:1757:f9f4 with SMTP id
+ 98e67ed59e1d1-3233d227a0dmr691002a91.24.1755208918463; Thu, 14 Aug 2025
+ 15:01:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DC27G409IQGT.H9G83QDQ9V7R@kernel.org>
+References: <20250814093046.2071971-1-lossin@kernel.org> <20250814093046.2071971-8-lossin@kernel.org>
+ <CAHC9VhQXOezJ2=B1BQOqLgfuzDJEVS5G_r9+_bQ+OUNTpjZCKw@mail.gmail.com>
+ <CANiq72=vhPsGjSx9u0FvDa6uzMFkFQFP9qG+DhtZ_U5TyV=bJQ@mail.gmail.com>
+ <CAHC9VhQNi31KSpB-MtvZO9e5fzuM_87VWb6rrMtxcqOGSPTiNg@mail.gmail.com> <DC2BTIG40SRU.16QBMDH0PP01Q@kernel.org>
+In-Reply-To: <DC2BTIG40SRU.16QBMDH0PP01Q@kernel.org>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 14 Aug 2025 18:01:46 -0400
+X-Gm-Features: Ac12FXype_aLvHDtZZOQRIYNqbuL19JtT5JJvdcu70_SXP98N_IoFGs7sLelUB8
+Message-ID: <CAHC9VhQAk4irkap1UUY1dLST3DVAGxMJ8m5VqX6BpkC7rLdhxQ@mail.gmail.com>
+Subject: Re: [PATCH v3 07/11] rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
+To: Benno Lossin <lossin@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, Jocelyn Falempe <jfalempe@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 14, 2025 at 04:03:01PM +0200, Danilo Krummrich wrote:
-> On Thu Aug 14, 2025 at 3:54 PM CEST, Alexey Gladkov wrote:
-> > On Thu, Aug 14, 2025 at 03:26:53PM +0200, Danilo Krummrich wrote:
-> >> On Thu Aug 14, 2025 at 3:07 PM CEST, Alexey Gladkov wrote:
-> >> > At this point, if a symbol is compiled as part of the kernel,
-> >> > information about which module the symbol belongs to is lost.
+On Thu, Aug 14, 2025 at 1:28=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
+> On Thu Aug 14, 2025 at 5:54 PM CEST, Paul Moore wrote:
+> > On Thu, Aug 14, 2025 at 11:31=E2=80=AFAM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> >> On Thu, Aug 14, 2025 at 5:19=E2=80=AFPM Paul Moore <paul@paul-moore.co=
+m> wrote:
 > >> >
-> >> > To save this it is possible to add the module name to the alias name.
-> >> > It's not very pretty, but it's possible for now.
-> >> >
-> >> > Cc: Miguel Ojeda <ojeda@kernel.org>
-> >> > Cc: Andreas Hindborg <a.hindborg@kernel.org>
-> >> > Cc: Danilo Krummrich <dakr@kernel.org>
-> >> > Cc: Alex Gaynor <alex.gaynor@gmail.com>
-> >> > Cc: rust-for-linux@vger.kernel.org
-> >> > Signed-off-by: Alexey Gladkov <legion@kernel.org>
-> >> > ---
-> >> >  include/linux/module.h   | 14 +++++++++++++-
-> >> >  rust/kernel/device_id.rs |  8 ++++----
-> >> >  scripts/mod/file2alias.c | 18 ++++++++++++++----
-> >> >  3 files changed, 31 insertions(+), 9 deletions(-)
-> >> >
-> >> > diff --git a/include/linux/module.h b/include/linux/module.h
-> >> > index 3319a5269d28..e31ee29fac6b 100644
-> >> > --- a/include/linux/module.h
-> >> > +++ b/include/linux/module.h
-> >> > @@ -244,10 +244,22 @@ struct module_kobject *lookup_or_create_module_kobject(const char *name);
-> >> >  /* What your module does. */
-> >> >  #define MODULE_DESCRIPTION(_description) MODULE_INFO(description, _description)
-> >> >  
-> >> > +/*
-> >> > + * Format: __mod_device_table__kmod_<modname>__<type>__<name>
-> >> > + * Parts of the string `__kmod_` and `__` are used as delimiters when parsing
-> >> > + * a symbol in file2alias.c
-> >> > + */
-> >> > +#define __mod_device_table(type, name)	\
-> >> > +	__PASTE(__mod_device_table__,	\
-> >> > +	__PASTE(__KBUILD_MODNAME,	\
-> >> > +	__PASTE(__,			\
-> >> > +	__PASTE(type,			\
-> >> > +	__PASTE(__, name)))))
-> >> > +
-> >> >  #ifdef MODULE
-> >> >  /* Creates an alias so file2alias.c can find device table. */
-> >> >  #define MODULE_DEVICE_TABLE(type, name)					\
-> >> > -static typeof(name) __mod_device_table__##type##__##name		\
-> >> > +static typeof(name) __mod_device_table(type, name)			\
-> >> >    __attribute__ ((used, alias(__stringify(name))))
-> >> >  #else  /* !MODULE */
-> >> >  #define MODULE_DEVICE_TABLE(type, name)
-> >> > diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
-> >> > index 70d57814ff79..62c42da12e9d 100644
-> >> > --- a/rust/kernel/device_id.rs
-> >> > +++ b/rust/kernel/device_id.rs
-> >> > @@ -195,10 +195,10 @@ macro_rules! module_device_table {
-> >> >      ($table_type: literal, $module_table_name:ident, $table_name:ident) => {
-> >> >          #[rustfmt::skip]
-> >> >          #[export_name =
-> >> > -            concat!("__mod_device_table__", $table_type,
-> >> > -                    "__", module_path!(),
-> >> > -                    "_", line!(),
-> >> > -                    "_", stringify!($table_name))
-> >> > +            concat!("__mod_device_table__", line!(),
-> >> 
-> >> Why do we have line!() between "__mod_device_table__" and "__kmod_", while the
-> >> format is defined as "__mod_device_table__kmod_<modname>__<type>__<name>" above?
+> >> > I'm happy to take this via the LSM tree, but it would be nice to see=
+ a
+> >> > Reviewed-by/Acked-by from someone with a better understanding of Rus=
+t
+> >> > :)
+> >>
+> >> I think the idea is to take all these through the Rust one with
+> >> Acked-bys from the maintainers (or we can skip this one and do it in a
+> >> future cycle when the first patches get in).
 > >
-> > The "__mod_device_table__" is used to filter symbols.
-> > The meaning part starts after "__kmod_" part. After that, order becomes
-> > important.
-> >
-> >> The previous logic was to create a unique name with
-> >> using "<module_path>_<line>_<table_name>" as "<name>". So, I think this should
-> >> actually be:
-> >> 
-> >> 	concat!("__mod_device_table__kmod_",
-> >> 		module_path!(),
-> >> 		"__", $table_type,
-> >> 		"__", stringify!($table_name),
-> >> 		"_", line!())
-> >> 
-> >> rather than the below.
-> >
-> > No. "stringify!($table_name)" should be the last thing in this string.
-> > This is the a symbol name that will be searched for in the elf to generate
-> > modalias.
-> 
-> $table_name is not guaranteed to be unique for a certain module_path!(), hence
-> we need line!() to guarantee uniqueness.
-> 
-> The symbol name will be unique no matter where you place line!() of course, but
-> $table_name + line!() is the unique table name, which I think is what we want?
+> > [CC'd the LSM list, as I just realized it wasn't on the original patch
+> > posting; in the future please include the LSM list on LSM related Rust
+> > patchsets/patches]
+>
+> I checked and I didn't find a maintainers entry for that this file & the
+> LSM list. I'm using scripts/get_maintainer.pl to get the people I send
+> patches to and that also checks git commits, so I guess it added you
+> through that (which is very good :). So can we add a maintainers entry
+> for `rust/kernel/security.rs` so people don't miss this in the future?
+> Thanks!
 
-Again, no. We need the entire symbol to be unique so that the linker
-doesn't complain. In fact, this symbol will later be removed from the elf.
-It is only needed for the modpost utility.
+Here ya go ...
 
-The modpost requires a format symbol:
+https://lore.kernel.org/linux-security-module/20250814215952.238316-2-paul@=
+paul-moore.com/
 
-__mod_device_table__<random>*__kmod_<modname>__<type>__<name>
-
-"<random>*" may or may not exist. This is a place to add uniqueness if
-needed.
-
-The fields "<modname>”, "<type>" and "<name>" must be very specific and
-must not be random. These values are used for generation.
-
-> 
-> >> 
-> >> > +                    "__kmod_", module_path!(),
-> >> > +                    "__", $table_type,
-> >> > +                    "__", stringify!($table_name))
-> >> >          ]
-> >> >          static $module_table_name: [::core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
-> >> >              unsafe { ::core::mem::transmute_copy($table_name.raw_ids()) };
-> >> 
-> >
-> > -- 
-> > Rgrds, legion
-> 
-
--- 
-Rgrds, legion
-
+--=20
+paul-moore.com
