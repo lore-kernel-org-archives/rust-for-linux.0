@@ -1,236 +1,108 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B283731984D;
-	Thu, 14 Aug 2025 18:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755195831; cv=pass; b=WQaFQFb+5YTr+BIePiwAM57xiz+fGhGkQXxw6+vRprzeUpV2T2W8pHWp5aV8TeyOEU/tDxlrPMKm4o32y+13LQxHlzVInyBwPF7gcfxixH6eJk10MS5gsPSwdQ7kpC+Zj3d5qSOVxHypWl3nes/Ir73hufrYbZvilOi0hzVg/D8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755195831; c=relaxed/simple;
-	bh=cWrE7F658AJkN3XHv/TWsYx7H7MlB2s+H9UyIbhoWNw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=cUZ8zuIq+TzJ4jaTzE1SxWUkS99A8s+fNH90KTFjxpX2JE122nCV0300gTVZkoSO/KFV8IzfiOG3QDoIUKSl1HPen2S1PsQEhoYKs9C8wjUf3DOy0KFTtwIvWHZCdrLWv+DAljcqT8slFjv5uxeCud0x1Heqv+JuzBalEMP5H90=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Ocqlxd2O; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D182178F2B
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 18:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755196021; cv=none; b=YK4t4QbU5fBaodOzDcOMkFjQmBaniesK0txaIsypDmKCaLnpR8CHaZ/yIV0ky+RHOGYwYlNskOzVU2nmyyM93RxHAfmf5R2w2jDlGnHE5ROMDNYcWcxUgHRYnOhCtzeZ+B9nxIPyvqZASyK5PikLSaq2aieJILghjyNPHQL9QeE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755196021; c=relaxed/simple;
+	bh=JkBThSuYBCeGcbsIDoSX+/A/yMFC3KXC/p6bYfxrqXY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XiCNXZQ6K0+zSRnoCP+DG/02G/Mw2rbtUzeSwwDMjI+5KqHg7utQowBnQ7jF4jgCr6c53L4mqzHQRULbVS/MjvXAw4KnyRaLNJgpJj+YHkD8rTCBG0nquTb0elSA1oCyLRcels1x8SGEGOE1jI021Hlo9iUVYgqrDL8LK98YxwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OLUEc7Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Ocqlxd2O"
-ARC-Seal: i=1; a=rsa-sha256; t=1755195797; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=f2GttAgI0nXf91lwE14wbQoE11hF1oh8ruNvXwTVlO02FBc6fyjV3Ks/HsdkTRWf+oRN7cW5JdLkjDLRDmmUyqrc+rmgSnPdriyVddcOZPjL4Qd7moWVEAGIyudO3OzlyB02nTl/IheDZv6wgZSmFDVhyEOtf625o9Qf4XNqDmw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755195797; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=O6Wo9DBymeqfNkNyv1Ydoh1TJb6CT7lI7fo4TpEycTE=; 
-	b=eUL/JtHVYt2ijhxegX5jYuyWtWihSD7IDebQlwQzgaIrBMU1OU48oUxGcStSYXtXWop3z+u7sdf9ftJ7A5ll+alKQQnNy55bYo1XqWuowELIpPGFwyJQQWITNu29BKC+OExAuJ4C7R23iWr9waqlazloJ3dxxnfgDvo4EF0zWUg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755195797;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=O6Wo9DBymeqfNkNyv1Ydoh1TJb6CT7lI7fo4TpEycTE=;
-	b=Ocqlxd2OAA42fEdFtDWTfNoRzFt+5Key7BfS+d5g8iDp48eh+gn7qiNLohcmRhJ2
-	JWB1myGPsro/g377E70xZLOEJBrd8obVHm4TigQvnU5w5ng1b7813AXMGLVBq3VMAi1
-	IJZBrGBM99J5drELNVsVrBEsJdona/pUHGWLVgfw=
-Received: by mx.zohomail.com with SMTPS id 1755195796206305.7272068943655;
-	Thu, 14 Aug 2025 11:23:16 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OLUEc7Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAA1C4CEED;
+	Thu, 14 Aug 2025 18:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755196020;
+	bh=JkBThSuYBCeGcbsIDoSX+/A/yMFC3KXC/p6bYfxrqXY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0OLUEc7QHllhz5iPZJLWm4vZRLQNAcz6HJRsnkOG/Ebo3notX5y377B9xU1JSZifx
+	 fNnwiCKfBjPywXl7a+9ZodQRuygvFQP+J21Zu8/gvn60/3TOthAv192tQt+OhQ+p1a
+	 aRbuMOkmwuzTqbmS7DcbCDZqqnF511QSYDACyLbE=
+Date: Thu, 14 Aug 2025 20:26:56 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 0/4] Untrusted Data API
+Message-ID: <2025081435-broker-valium-7b22@gregkh>
+References: <20250814124424.516191-1-lossin@kernel.org>
+ <2025081416-sufferer-economist-3f00@gregkh>
+ <DC295B7454Y8.9RVKVMPORAZ9@kernel.org>
+ <2025081448-creation-timid-b972@gregkh>
+ <DC2BPSUKOWAX.2QTWBJM1ZQPJ3@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250814185622.468aad30@nimda.home>
-Date: Thu, 14 Aug 2025 15:22:57 -0300
-Cc: Benno Lossin <lossin@kernel.org>,
- Lyude Paul <lyude@redhat.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- bjorn3_gh@protonmail.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <182E916F-3B59-4721-B415-81C3CF175DA7@collabora.com>
-References: <20250621184454.8354-1-work@onurozkan.dev>
- <20250724165351.509cff53@nimda.home>
- <ec32fc5f5a8658c084f96540bd41f5462fa5c182.camel@gmail.com>
- <20250806085702.5bf600a3@nimda.home>
- <539d3e0da773c32a42b4ab5c9d4aa90383481ff6.camel@redhat.com>
- <DBVLEGFYBWKE.2RW8J853CJHTY@kernel.org> <20250814141302.1eabda12@nimda.home>
- <76D4D052-79B6-4D3F-AAA1-164FF7A41284@collabora.com>
- <20250814185622.468aad30@nimda.home>
-To: Onur <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DC2BPSUKOWAX.2QTWBJM1ZQPJ3@kernel.org>
 
+On Thu, Aug 14, 2025 at 07:23:45PM +0200, Benno Lossin wrote:
+> On Thu Aug 14, 2025 at 5:42 PM CEST, Greg KH wrote:
+> > On Thu, Aug 14, 2025 at 05:22:57PM +0200, Benno Lossin wrote:
+> >> On Thu Aug 14, 2025 at 4:37 PM CEST, Greg KH wrote:
+> >> > On Thu, Aug 14, 2025 at 02:44:12PM +0200, Benno Lossin wrote:
+> >> >> I didn't have too much time to spend on this API, so this is mostly a
+> >> >> resend of v3. There are some changes in the last commit, updating to the
+> >> >> latest version of Alice's iov_iter patche series [1] & rebasing on top
+> >> >> of v6.17-rc1.
+> >> >> 
+> >> >> I think we should just merge the first two patches this cycle in order
+> >> >> to get the initial, bare-bones API into the kernel and have people
+> >> >> experiment with it. The validation logic in the third patch still needs
+> >> >> some work and I'd need to find some time to work on that (no idea when I
+> >> >> find it though).
+> >> >
+> >> > Nice, thanks for reviving this!
+> >> >
+> >> > And we should at least add an example using it, otherwise it's not going
+> >> > to help out much here.  Add it to the misc device driver api?
+> >> 
+> >> You mean `rust/kernel/miscdevice.rs`? What parts of that API are
+> >> untrusted? 
+> >
+> > mmap() is, but you can't do anything about that...
+> 
+> Which parameter is untrusted there and why can't I do anything about it?
 
-Hi Onur,
+The whole memory range is untrusted as to what is written there, sorry,
+it was a bad attempt at a joke, the kernel never gets a chance to know
+what is happening.
 
-> On 14 Aug 2025, at 12:56, Onur <work@onurozkan.dev> wrote:
->=20
-> On Thu, 14 Aug 2025 09:38:38 -0300
-> Daniel Almeida <daniel.almeida@collabora.com> wrote:
->=20
->> Hi Onur,
->>=20
->>> On 14 Aug 2025, at 08:13, Onur =C3=96zkan <work@onurozkan.dev> =
-wrote:
->>>=20
->>> Hi all,
->>>=20
->>> I have been brainstorming on the auto-unlocking (on dynamic number
->>> of mutexes) idea we have been discussing for some time.
->>>=20
->>> There is a challange with how we handle lock guards and my current
->>> thought is to remove direct data dereferencing from guards. Instead,
->>> data access would only be possible through a fallible method (e.g.,
->>> `try_get`). If the guard is no longer valid, this method would fail
->>> to not allow data-accessing after auto-unlock.
->>>=20
->>> In practice, it would work like this:
->>>=20
->>> let a_guard =3D ctx.lock(mutex_a)?;
->>> let b_guard =3D ctx.lock(mutex_b)?;
->>>=20
->>> // Suppose user tries to lock `mutex_c` without aborting the
->>> // entire function (for some reason). This means that even on
->>> // failure, `a_guard` and `b_guard` will still be accessible.
->>> if let Ok(c_guard) =3D ctx.lock(mutex_c) {
->>>    // ...some logic
->>> }
->>>=20
->>> let a_data =3D a_guard.try_get()?;
->>> let b_data =3D b_guard.try_get()?;
->>=20
->> Can you add more code here? How is this going to look like with the
->> two closures we=E2=80=99ve been discussing?
->=20
-> Didn't we said that tuple-based closures are not sufficient when
-> dealing with a dynamic number of locks (ref [1]) and ww_mutex is =
-mostly
-> used with dynamic locks? I thought implementing that approach is not
-> worth it (at least for now) because of that.
->=20
-> [1]: https://lore.kernel.org/all/DBS8REY5E82S.3937FAHS25ANA@kernel.org
->=20
-> Regards,
-> Onur
+> > ioctl() is the callback that is taking untrusted data from userspace.
+> > That's one place we have had more kernel buffer overflows then I can
+> > count and ALWAYS needs to be properly verified before anything can be
+> > done with the data there.
+> 
+> Are the `cmd` & `arg` parameters the untrusted part?
 
+Yes, especially as `arg` is usually a pointer to "something".
 
+> If so we probably
+> should have a single parameter so users can verify them at the same
+> time. Or am I thinking of the wrong thing to verify? (`file` should be
+> already in kernel memory, right?)
 
-I am referring to this [0]. See the discussion and itemized list at the =
-end.
+Both are usually verified at different places, first `cmd` tells what
+`arg` is going to be, and then the code goes off and parses whatever
+`arg` points to (or contains for simple ioctls).
 
-To recap, I am proposing a separate type that is similar to drm_exec, =
-and that
-implements this:
+And for some, `arg` is just a place to write something back, so `arg`
+needs no verification for them, it depends on what `cmd` is.
 
-```
-a) run a user closure where the user can indicate which ww_mutexes they =
-want to lock
-b) keep track of the objects above
-c) keep track of whether a contention happened
-d) rollback if a contention happened, releasing all locks
-e) rerun the user closure from a clean slate after rolling back
-f) run a separate user closure whenever we know that all objects have =
-been locked.
-```
+thanks,
 
-In other words, we need to run a closure to let the user implement a =
-given
-locking strategy, and then one closure that runs when the user signals =
-that
-there are no more locks to take.
-
-What I said is different from what Benno suggested here:
-
->>>>>>    let (a, c, d) =3D ctx.begin()
->>>>>>        .lock(a)
->>>>>>        .lock(b)
->>>>>>        .lock(c)
->>>>>>        .custom(|(a, _, c)| (a, c))
->>>>>>        .lock(d)
->>>>>>        .finish();
-
-i.e.: here is a brief example of how the API should be used by clients:
-
-```
-// The Context keeps track of which locks were successfully taken.
-let locking_algorithm =3D |ctx: &Context| {
-  // client-specific code, likely some loop trying to acquire multiple =
-locks:
-  //
-  // note that it does not _have_ to be a loop, though. It up to the =
-clients to
-  // provide a suitable implementation here.
-  for (..) {
-    ctx.lock(foo); // If this succeeds, the context will add  "foo" to =
-the list of taken locks.
-  }
-
-  // if this closure returns EDEADLK, then our abstraction must =
-rollback, and
-  // run it again.
-};
-
-// This runs when the closure above has indicated that there are no more =
-locks
-// to take.
-let on_all_locks_taken =3D |ctx: &Context| {
-  // everything is locked here, give access to the data in the guards.
-};
-
-ctx.lock_all(locking_algorithm, on_all_locks_taken)?;
-```
-
-Yes, this will allocate but that is fine because drm_exec allocates as =
-well.
-
-We might be able to give more control of when the allocation happens if =
-the
-number of locks is known in advance, e.g.:
-
-```
-struct Context<T> {
-  taken_locks: KVec<Guard<T>>,
-}
-
-impl<T> Context<T> {
-  fn prealloc_slots(num_slots: usize, flags: ...) -> Result<Self> {
-    let taken_locks =3D ... // pre-alloc a KVec here.=20
-    Self {
-      taken_slots,
-    }=20
-  }
-}
-```
-
-The main point is that this API is optional. It builds a lot of =
-convenience of
-top of the Rust WWMutex abstraction, but no one is forced to use it.
-
-IOW: What I said should be implementable with a dynamic number of locks. =
-Please
-let me know if I did not explain this very well.=20
-
-[0]: =
-https://lore.kernel.org/rust-for-linux/8B1FB608-7D43-4DD9-8737-DCE59ED74CC=
-A@collabora.com/=
+greg k-h
