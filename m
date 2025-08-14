@@ -1,105 +1,143 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD78430C90C;
-	Thu, 14 Aug 2025 10:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FBF318133;
+	Thu, 14 Aug 2025 10:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755166504; cv=none; b=qFdaF9tzea9+3snAtQ3NnStgZlLjuWDruoYB+Vpe3uxupywKCUMaYZpjVVrfLrVJdNJWDpAqgfY/R3UGM87k0I/r2mKcf85NZqi4sfJ5b5R72M/DM0xzHKuib29PoP0s5MI8FIMB0E7B+6iFAfEYRJ9tJayU4Zbqh7k0dN/MHJE=
+	t=1755168127; cv=none; b=didO9qkphZBOA0Km9BYA6z5XZvx6LOsKj/DLL9bzExXygChZuZw9VprzjB/bjOmoya8ul63nwshv5sr0+CxSbE+jhsdH9tB6usSfdqaPEInSCYzKi2Pwbh4/olwCLE1Mgod5uALHqLUg+3nkjql8zzpEoks4Uggkw86bkY8uJmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755166504; c=relaxed/simple;
-	bh=f1CS2VIWQbY8mqOlPEfsez31acj0r6vOn5h2GAEgQx8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qEOhaSHKQ93BRbpCj0Sd5I9OlkGPeM1ZX1K2sX9ivBH/ZXqh34liPQidu6cDCSGakbkMJesSwdKJKAIzA1HrMEgB3VwtxTSaZ5r+wFZYhnE//yD0HDLQYr6jeA2aO/H/V81FGoncsLRxaei8x6P7yZ3mxMMwNB5PT2JZY0utrJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QJ9KW2NF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NNaslw3r; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1755168127; c=relaxed/simple;
+	bh=YDHXqww6lfzE+/9Ryw7hZXv56iPIOFxc3rgl9NiHkmQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oOPbH+59itNbJdDfMVRBCRMFEIwxARa32wE5tmhC+vHuxGCrWhfjE06Ktm5+feaexTTN4jtKLIorZkTj4UVCwYc2e8U9mJiMjo17bAEZGCcEqn5SgSZs55uVneR37gAijOLNdCGhRjtfqaUNKpTWxE/dVnTPZyrii4CHlf1Z6Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PnHTTVHX; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QJ9KW2NF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NNaslw3r"
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1755166499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=to+JGxG1GuQ3pUanrHLU8cpAbRux/zwfu75r2skKHHA=;
-	b=QJ9KW2NFL4djCo69Tkh6cENzgWu5nCipeYttVR5H70uTbVwx8BQlBPSoHvEvjpHw9i/nFp
-	hrwv4luzZCN1ZG7aiC5KIoMz6eE+BSjptj1TeJ6ht5bnY9vviYLdGo2G58MeXwCsWxMLPo
-	dALgv4hKChgjtoZogULpaz+Xjx61upjPt+MhsmoB43xNb9EWoXsZAO0acieRwuWmwbzcG3
-	WvascBzJrIPR33iMVDHXFHrsztjLD9j0dJyHC+/13KKnn+qonHS/sTjXHthSgFMzygI4ZO
-	xgjQnBuM+7h1HVx/c5dWyUsfnZACY0a3gQ5ICU/5a+powHkY2TE23HquxQ+2kg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1755166499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=to+JGxG1GuQ3pUanrHLU8cpAbRux/zwfu75r2skKHHA=;
-	b=NNaslw3rFrWQfsd+4ek8lyLoRIO1PGaiz6GNwom16RGpZJvrp03dXISEX0h9HLvVVyktpF
-	2xfhZn3VqswBMcCA==
-Date: Thu, 14 Aug 2025 12:14:46 +0200
-Subject: [PATCH v2 6/6] kbuild: enable -Werror for hostprogs
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PnHTTVHX"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b4716f92a0aso477353a12.0;
+        Thu, 14 Aug 2025 03:42:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755168125; x=1755772925; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mfIPc5wFs9ZcYbXsfBo/Pj0Ll3AvI3my6jaZhninXLc=;
+        b=PnHTTVHXoygAPa9D+bEbDHapUM2a1n76+mDjlwzixtXN+g95TsQq1aSiag7o7DjR/J
+         EX7U3S5XcETvty1dFuYcn4EeQ8LlhU8OX/idK0IBmlHDhL3zMUQq+EZxlY66fcJq7JxK
+         SVMcpTBHRXdNc0JzaUHL+KZ6tHTYjueujIEubzEMS6+igCzWZCb4M8kZ3JB3YBqhiw/u
+         XJLrCrtQge2p3bY1N5uBeByZ2RnbPNCYteNReSYLN3Yp3WPyb5Ks9OIhBjCPRsu3UJNu
+         l7N637AUtyuDa2kbGHSPhBD/PzqslvzIjwsI9kJ32yYwbYueagZ2Z12XSjWTJlP+C/uM
+         n5RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755168125; x=1755772925;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mfIPc5wFs9ZcYbXsfBo/Pj0Ll3AvI3my6jaZhninXLc=;
+        b=TqR4QJBd8kJ7FUXY2IvgaLVVQRt7CmDPP7Qe9CS0jG14Dlu2AR/VR7jMQ2mJ5Rb/F5
+         5HiESAEQ3/vviM2vmQnZfONW43EZrS8cq8ytRFQFYgAOXqjSlJE+k/tHMcxhZWt3tX4r
+         SfXYVQ6QGcn5bKAHyZ5c8VqZkcNBixauD3FHcvfrKfvOwakX2ayOytIqiRDweUXN4a6p
+         Ah2nlGT/vnJfH4WT9IKN4Qzh01vuv/f+nIO4FkkGK/zv/HeLNbdzwlNTrYxGPaCLImJM
+         DzhjPEZwi8qgEjqnyrzCPAaQ6vg4hR73qWh6R7WqySQDHujDxBJYH5bVJYF7DWxAedMd
+         NXWg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6Y5zOqXjs/lC/uxXNz01kEPQacYeiq8rOmly+EfA76/fKbBkEfoGtbwejy97pRb+0I88FbRjIV4+v4meOPK0=@vger.kernel.org, AJvYcCUK2ub+TuJ07X4Thmw9kYZcV3AlnOoma4GEl2aTS3twVwyekNXbzNxDfKVlWs4ujwApdMX7sljLmSNgYk0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqWxI/7s6l+4oCsMFYpmVwYGNhHh9MqO+S59EMU8CeUXdoxrq4
+	cSuxHKt2P2rVyLN1CT0MY8vn0mTglo0M21IpXv5i3n7HB9S29lQ463Ev
+X-Gm-Gg: ASbGncspflFCKIZKQbH4lGMN2VlGPsIwNS83nQ/2EpUCsNTHztde5V16QWf7enKPdNd
+	GMIPUo9ogQYIr7Y2pZu4A43Ew/uWkNZRblKVWis/eIIrdqpQa3akvVjXk0woEJxRXD4Z+qvCkyA
+	6JVoviBVEorpnONLW+6O4Bnk+Ur9dnGfsTAH42UDZvGxtt03qktTk8e1BMeu/oDpx+bXX5GjpmS
+	RCXsfyk67z25tZuD9yb8w9I74nwivzg6ODjsXK5C7byhqWue4P61dEHsfnNcd1NxCojpI5LkoQl
+	JC1XINtNrqsOuBt0VYy+ZDAHr6lY7KrDeh8EnjjsbURo+6p9QQAAoGcR8/ZqJq6raKsE20fZVWm
+	zimiOfkP+mtiPwX7w/LFLWYaIwKwblV37WzcR
+X-Google-Smtp-Source: AGHT+IF+FD/C7tiTBlSi+3uSUeTawLz1xv8qvuCNxcOudad3itQtv+P2EYotXfwWxkimINBB1H6zKg==
+X-Received: by 2002:a17:903:1b48:b0:242:ff89:d724 with SMTP id d9443c01a7336-244586d1433mr38347175ad.47.1755168124911;
+        Thu, 14 Aug 2025 03:42:04 -0700 (PDT)
+Received: from shankari-IdeaPad.. ([103.24.60.31])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f0f7bfsm347762665ad.41.2025.08.14.03.41.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Aug 2025 03:42:04 -0700 (PDT)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Subject: [PATCH] rust: dma: Update ARef and AlwaysRefCounted imports from sync::aref
+Date: Thu, 14 Aug 2025 16:11:33 +0530
+Message-Id: <20250814104133.350093-1-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
-References: <20250814-kbuild-werror-v2-0-c01e596309d2@linutronix.de>
-In-Reply-To: <20250814-kbuild-werror-v2-0-c01e596309d2@linutronix.de>
-To: Nathan Chancellor <nathan@kernel.org>, 
- Nicolas Schier <nicolas.schier@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755166493; l=1107;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=f1CS2VIWQbY8mqOlPEfsez31acj0r6vOn5h2GAEgQx8=;
- b=Ychs4ju/XrBO8iisbBKsFf5dGG0tMUlTh1L86wu4YL/VhEjedBC4es09EBmpqR3EPAt6SkfOO
- 2K1Y4ahYIqID6BZRYF9WIZmtR5eQuEaNQ7AoK5CfBT11ktKRu6arLwU
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-The hostprog compilers and linkers do not share the regular compiler flags,
-so they are not affected by CONFIG_WERROR or W=e. As hostprogs are used
-during the bootstrap of the build, they can't depend on kconfig options.
+Update call sites in the dma subsystem to import `ARef` and
+`AlwaysRefCounted` from `sync::aref` instead of `types`.
 
-Enable -Werror unconditionally.
+This aligns with the ongoing effort to move `ARef` and
+`AlwaysRefCounted` to sync.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1173
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 ---
-For testing in -next, as discussed in
-https://lore.kernel.org/lkml/20250812-kbuild-werror-v1-2-36c9ff653700@linutronix.de/
----
- scripts/Makefile.extrawarn | 5 +++++
- 1 file changed, 5 insertions(+)
+It part of a subsystem-wise split series, as suggested in:
+https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
+This split series is intended to ease review and subsystem-level maintenance.
 
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index 96ff3f5582d651f0016c8ccd49d46022cc6fe070..1434cb6208cb82f20aeb29cc8c059220d1a1f6d2 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -224,3 +224,8 @@ KBUILD_USERLDFLAGS	+= -Wl,--fatal-warnings
- KBUILD_RUSTFLAGS	+= -Dwarnings
+The original moving patch is here: (commit 07dad44aa9a93)
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+
+Gradually the re-export from types.rs will be eliminated in the
+future cycle.
+---
+ rust/kernel/dma.rs       | 2 +-
+ samples/rust/rust_dma.rs | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index 2bc8ab51ec28..68fe67624424 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -9,8 +9,8 @@
+     device::{Bound, Core},
+     error::{to_result, Result},
+     prelude::*,
++    sync::aref::ARef,
+     transmute::{AsBytes, FromBytes},
+-    types::ARef,
+ };
  
- endif
-+
-+# Hostprog flags are used during build bootstrapping and can not rely on CONFIG_ symbols.
-+KBUILD_HOSTCFLAGS	+= -Werror
-+KBUILD_HOSTLDFLAGS	+= -Wl,--fatal-warnings
-+KBUILD_HOSTRUSTFLAGS	+= -Dwarnings
+ /// Trait to be implemented by DMA capable bus devices.
+diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+index c5e7cce68654..997a9c4cf2b3 100644
+--- a/samples/rust/rust_dma.rs
++++ b/samples/rust/rust_dma.rs
+@@ -10,7 +10,7 @@
+     dma::{CoherentAllocation, Device, DmaMask},
+     pci,
+     prelude::*,
+-    types::ARef,
++    sync::aref::ARef,
+ };
+ 
+ struct DmaSampleDriver {
 
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
 -- 
-2.50.1
+2.34.1
 
