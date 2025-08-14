@@ -1,76 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8BE2236F7;
-	Thu, 14 Aug 2025 15:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0865B241667
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 15:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755185898; cv=none; b=Rpm6DdBBEV2mpzjw4UKyCz+m7oNoZNRW6an/LaEMNRDvo0Ba5HTCJ8FBjTu7cDnxjyqGUCBgb0vonxinTr55Qc2MVDeoS6o1PzM9Ge8xpbd4G7dvQkRlpOo6F5HfqCO7mowR7RZRQPKjS8MNMhrlgIRpsmrIq214aBzqBbwg5Xk=
+	t=1755186157; cv=none; b=ADD0wLvMysyA8SjqWUzqmrLTfqk0AZMYIugQrqyOo+1jtnIIAUamxvaPp3tQWTgsRZe0QfL0p06z4ImKkaTTr7ynOoGVGWpFtbS3iojAM9p5RV6I1m/Gz9bWqaolJ3q/vmywhDj7S7x5dNxk+Ph+Rm9yftTDmF+p6pLBZc0CAhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755185898; c=relaxed/simple;
-	bh=1LcIUzqAaW6zCjsY1yHCk7sVqaWkzG1WY7/GcG7KUa8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=WPunI2jNzRxww0oyZxJ0Qx5Ef1SXE6iHHloOKCmOcDGQWruzLgn2quWDswBWiUc8BgJ4z8WW7FaIyDDGqhnSa2J8lhO2/7Coq59kqrpNlYHaB1VU8W7fPkTLx+7U/I8iL8r6lMSGhDfRXtb9uSCSZ4cq4+DOELlqUeHkg82kimM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+GbxeHA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755186157; c=relaxed/simple;
+	bh=eMCwDboLuWyNB9/My+olZFONfgoNRgzSV7iZNhYF778=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qdTUxfEmmsOjedjVsJyfPhxr9+oo4qjWkrjgE5OAiCqWHK4w0O6skog4GOjamoqHAr/EyujdZ6aFfykKRo8VBUvGpo9WHYVoDPcAyXLOLNWp+ZvYzSmLUZ8GuUQnJ4GdNVdTH4j224pPuHOxBogKSTNtMM6mvTluuYiPn1aZLUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIaF2Jnx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+GbxeHA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D77C4CEF6;
-	Thu, 14 Aug 2025 15:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755185898;
-	bh=1LcIUzqAaW6zCjsY1yHCk7sVqaWkzG1WY7/GcG7KUa8=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=M+GbxeHA/fwPi9Spwcg37O0nsyMZvnG1O2nkPNnteb0lvsFUzl4A24FRFAFeIYOD5
-	 onpshTvk/UrsCJvSM4rJE3MdxlHkOx/hYMSU8T4GWiQiFqvjuHCFOuVrA4qnD3iJ47
-	 Q+L/SJkUdqNQtY/dm6OsMovrZhuu5UtWKK4ajSpj/CJyaLXdtBsmizajvNk5iec3d4
-	 KW8W5MwI7XGGvHBrD6I3m8zOZz0DvKc27o5OCD+QCniKM1WVDsgYyYoaAbKRS75gzF
-	 fjcSQlje2h5BlKXqkMGZVA+yIifx6/G3TvMbY3XrRc/AeABbQo1gE+PZg/XRuAunJf
-	 qOS9qCljx/IoA==
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIaF2Jnx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AA7C4CEED;
+	Thu, 14 Aug 2025 15:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755186156;
+	bh=eMCwDboLuWyNB9/My+olZFONfgoNRgzSV7iZNhYF778=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fIaF2JnxDc+usxhZWwoN1tpZj9tgiQz6Qv3uAE+uZQwhOhAxonOoDmiDahF5aCvda
+	 JSvtjXV4n0WXZQw5QJ8VpzUFoQM7oRb4Na4xGos1mUucpnp4l0TqJsXO0RZ/al2PlL
+	 H10OPqFqCb8pQcipgwPlbRTBqFc/vQXYaa0w+vmM=
+Date: Thu, 14 Aug 2025 17:42:32 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 0/4] Untrusted Data API
+Message-ID: <2025081448-creation-timid-b972@gregkh>
+References: <20250814124424.516191-1-lossin@kernel.org>
+ <2025081416-sufferer-economist-3f00@gregkh>
+ <DC295B7454Y8.9RVKVMPORAZ9@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 14 Aug 2025 17:38:13 +0200
-Message-Id: <DC29H09I86EP.1WC5FDOG2NMN9@kernel.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Fiona Behrens" <me@kloenk.dev>, "Jocelyn Falempe" <jfalempe@redhat.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 07/11] rust: security: replace `core::mem::zeroed`
- with `pin_init::zeroed`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Paul Moore"
- <paul@paul-moore.com>
-X-Mailer: aerc 0.20.1
-References: <20250814093046.2071971-1-lossin@kernel.org>
- <20250814093046.2071971-8-lossin@kernel.org>
- <CAHC9VhQXOezJ2=B1BQOqLgfuzDJEVS5G_r9+_bQ+OUNTpjZCKw@mail.gmail.com>
- <CANiq72=vhPsGjSx9u0FvDa6uzMFkFQFP9qG+DhtZ_U5TyV=bJQ@mail.gmail.com>
- <CANiq72k8kWHeBGLgHVE6vN36n6ashq-TVX3+h6WxLtc1jpUefQ@mail.gmail.com>
-In-Reply-To: <CANiq72k8kWHeBGLgHVE6vN36n6ashq-TVX3+h6WxLtc1jpUefQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DC295B7454Y8.9RVKVMPORAZ9@kernel.org>
 
-On Thu Aug 14, 2025 at 5:33 PM CEST, Miguel Ojeda wrote:
-> On Thu, Aug 14, 2025 at 5:31=E2=80=AFPM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
->>
->> I think the idea is to take all these through the Rust one with
->
-> Or through the pin-init one, which gets pulled into the Rust one.
+On Thu, Aug 14, 2025 at 05:22:57PM +0200, Benno Lossin wrote:
+> On Thu Aug 14, 2025 at 4:37 PM CEST, Greg KH wrote:
+> > On Thu, Aug 14, 2025 at 02:44:12PM +0200, Benno Lossin wrote:
+> >> I didn't have too much time to spend on this API, so this is mostly a
+> >> resend of v3. There are some changes in the last commit, updating to the
+> >> latest version of Alice's iov_iter patche series [1] & rebasing on top
+> >> of v6.17-rc1.
+> >> 
+> >> I think we should just merge the first two patches this cycle in order
+> >> to get the initial, bare-bones API into the kernel and have people
+> >> experiment with it. The validation logic in the third patch still needs
+> >> some work and I'd need to find some time to work on that (no idea when I
+> >> find it though).
+> >
+> > Nice, thanks for reviving this!
+> >
+> > And we should at least add an example using it, otherwise it's not going
+> > to help out much here.  Add it to the misc device driver api?
+> 
+> You mean `rust/kernel/miscdevice.rs`? What parts of that API are
+> untrusted? 
 
-There are no pin-init changes in this patchset (in v2 there were, but I
-took them for v6.16), so I think it should go via the rust tree.
+mmap() is, but you can't do anything about that...
 
-We can of course wait with patches 3-11 until the next cycle and let
-maintainers pick them individually, but since they are so small, I think
-it's easier to just pick them all at once via the rust tree.
+ioctl() is the callback that is taking untrusted data from userspace.
+That's one place we have had more kernel buffer overflows then I can
+count and ALWAYS needs to be properly verified before anything can be
+done with the data there.
 
----
-Cheers,
-Benno
+And if write() ever gets implemented, that would be as well (but the io
+iter stuff should cover that).
+
+thanks,
+
+greg k-h
