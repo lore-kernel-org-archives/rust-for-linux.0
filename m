@@ -1,171 +1,218 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2046.outbound.protection.outlook.com [40.107.95.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FCA21255F;
-	Thu, 14 Aug 2025 14:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755180186; cv=none; b=oO864Ov1ar50wdMG/6C1VCFlsd3M/To1RvZSyKg/0KHldyouoXDGoaFICXGcjCdidFaSGbsSXpW4fqgB9c4P86a9uaVsxrlGINQ6/A3b3nKtdpHNbBx5k5iqAP8XXSoi7Bt8Wwwqr7dBxEK7o7R8W6N9T/XBBIqMW71lZ/LjHcQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755180186; c=relaxed/simple;
-	bh=fkuvnt/nhIsW4uFPf54kchcjyRpmPi2o2BwgdSR5hnI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=nWBM3PKrCWD7T9AXWgwg1m2EIH4rEjHvDeZgGeenxtcPhzdZ9q4Wn0jGEkq9rn13RrWCNenCO33GDKmC41c4I6nN+NUF76KW6S+BTabAcTcRWvnRT8dkmAsEr/ZFLdLM7vThRC/z3aQRDQgCTigtn8iwflTzFAj6DNQvnAMjnow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/yrQwQe; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F65232142C;
+	Thu, 14 Aug 2025 14:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755180885; cv=fail; b=SzIHvrW1WVkJBPZlC4Jip9FykAiTOfTNfcOPHf5EJHVRmMvxKUfR9R8c6cFX7G/Cj+2HFeMJaLbAoSwyn4OQWikiTe23svRLeMka7FOgSS/HRaL42DaQhpZEPLteytgynXonhtCwY20caXpq/LX1H/LWMe0j25LIeeNH/+tNgW0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755180885; c=relaxed/simple;
+	bh=50SRQ8EBgldjuzdze1oKRxEHM8mNSrnH09QXFQ2Ohq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lkEm3nyniGNZneikdzUwORN2hQh3vKU9yqj28YzA1Yxc/jTJia9x3TYqkY3APWkYTrBfgKVmUwbWJ/6gq4rWCXNLhkcjoHOU5De0QsKfCquRJjz4P73GrKmc6HtFa5dST8fMZWjve2IZz4B+6DkQjq4yqMTfKMs12HYEvsKQFjs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EiAYv4Ep; arc=fail smtp.client-ip=40.107.95.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/yrQwQe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B321C4CEED;
-	Thu, 14 Aug 2025 14:03:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755180186;
-	bh=fkuvnt/nhIsW4uFPf54kchcjyRpmPi2o2BwgdSR5hnI=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=J/yrQwQeD2hK6mnXREmbW4FpJfJihpyW/1NonyUrtiB+aWjWzHdAQdABNc7t7WOx2
-	 9FC9s+4QLnvgR/pNReqjZ2ZHTLvrT9yv0YcNYDfFV6A85N7pu03tcsdyMKj8WrlZ3s
-	 MbbtYy6hvPPKiY1awBXz1RAD3Nfhoufkl5K7MHGHVcVJlbXWSrD3rSuR563nD8P854
-	 a0LEbyYYSinpH2iCsu7GF4cv12jWMJXxStjdzofDPhkkeSNq8ffDKYkUdy3iuXmAb4
-	 LoSkOagbNnGxdtNWXrtFa02/1IHp5QA8eFiDZgLPk8a+2Tz56+ImyxXsK1qlnj082k
-	 +0OEfGLGZiDUQ==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EiAYv4Ep"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GU/BvIQz3DTXmYOdGLkh+HDcnJ9GH6Ik0rR2UlhlkjgtsQw8N4vsmdx5kcxRf1WgiDTFsBFEFGCSOko8OFp8bcXwF0hLK8E2XfhX0cfhH5I7AKTc8bfK1oCZNB8hOUrPCxA7JqoaNyFbWZOU4PSR5v5zcdbb4Pi6IAJqPlmwtwt5n+8ppswVwPBEj5hbML3avj0BGinez1mF0WlYA/xUIcuC+4Yz/6i7lBq+K4ELNOTPkl/WJwqYJChB1021V9OXylSalQvRZo5fOoOymQUM9CxZOWx/1sXx2apLf+xlqGlUEg5dgzC29XiWSlL4YTx3cGe4DCq4i9yO3m3emvrROw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ruO6zNzO4KB71Lkb6cSwWsEi4wP8AIx5i5wd80Kfkcs=;
+ b=yxXRDrAQc+7mUCPP3py13VkcS1bDJC/YtuPGqof3Dbi6jopCxGFfEmfXcscFobyNUqwyETyivD//2ExukT43zMU8DPwYweB66AXZvSW7ljhlr0o2/vukDatbk8XWea1IGCog2XUGb965zuON7Oi1oFRqgR/e5OGcC3T/24M3R2Jr8zGu7JUkfEmu/hSPmdnVDr1nrxc6Sv6eno/kHxyPD1iRzFQge7UqXIVIztrZq1sa2bpY5GJnhkzCLe3nTqMbnQxdBuWrjLPMcZpoJAQ+lzldYMFFiqton8T/2g+c7RazWm2M8DRfrfjZtFQlr8XAR0JE5uKUGS8qMHAMaeuh1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ruO6zNzO4KB71Lkb6cSwWsEi4wP8AIx5i5wd80Kfkcs=;
+ b=EiAYv4Epcj8RrMO6/lmFl5X0ZqQ0yWhj19Yc3cOkghZpr4a1bbc5yMdbT1f0vEPcgbNCsQAgCHa7U3LhYuZ2jA6OuLoHt0l3aNOOcRKggQiYDbY9m/dhtGEg2z702BeZKdwnrZPLRAvHrOOjGd32buyV/OPmF9MN5ZEVSb6qVP0E4ZTjl/cTiBDg4s268TtVbm4e05g1mZYPEdzALI4QDba7IXBgt5LP3IIAN2GSdJCmZKDqCmihxrUJocW9FnMDtcI5LPQQA5kYxifJpOMGXkhBO3C6faR18kGIZvtz3eWdiF80hllGZZm7PRUiB7Ga6i1QdJmTse+JWnvkMxGBEw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by MN2PR12MB4111.namprd12.prod.outlook.com (2603:10b6:208:1de::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.16; Thu, 14 Aug
+ 2025 14:14:38 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9031.012; Thu, 14 Aug 2025
+ 14:14:38 +0000
+Date: Thu, 14 Aug 2025 11:14:37 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 08/16] kmsan: convert kmsan_handle_dma to use physical
+ addresses
+Message-ID: <20250814141437.GH802098@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+ <5b40377b621e49ff4107fa10646c828ccc94e53e.1754292567.git.leon@kernel.org>
+ <20250807122115.GH184255@nvidia.com>
+ <20250813150718.GB310013@unreal>
+ <20250814121316.GC699432@nvidia.com>
+ <20250814123506.GD310013@unreal>
+ <20250814124448.GE699432@nvidia.com>
+ <20250814133106.GE310013@unreal>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814133106.GE310013@unreal>
+X-ClientProxiedBy: BL0PR02CA0137.namprd02.prod.outlook.com
+ (2603:10b6:208:35::42) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 14 Aug 2025 16:03:01 +0200
-Message-Id: <DC27G409IQGT.H9G83QDQ9V7R@kernel.org>
-To: "Alexey Gladkov" <legion@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v6 6/9] modpost: Add modname to mod_device_table alias
-Cc: "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier"
- <nicolas.schier@linux.dev>, "Masahiro Yamada" <masahiroy@kernel.org>, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Luis Chamberlain" <mcgrof@kernel.org>, "Sami
- Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
- <linux-kernel@vger.kernel.org>, <linux-modules@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- <rust-for-linux@vger.kernel.org>
-References: <cover.1755170493.git.legion@kernel.org>
- <15724fb8669dae64e3c8d31ab620f977984b2177.1755170493.git.legion@kernel.org>
- <DC26OG2L7OMH.31RE7460D4DHU@kernel.org> <aJ3qsonmvUUErQx9@example.org>
-In-Reply-To: <aJ3qsonmvUUErQx9@example.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|MN2PR12MB4111:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e3ba93d-4319-4e2a-c39d-08dddb3ce778
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WgfRGDEKKHuNso3gGtoTuh6waQ9PCACwW3Xer9wmxp9cTa3pI6GwFYV/fJwL?=
+ =?us-ascii?Q?uMkVfKCSxkLu46+hc29ievexAGINSRbhu7JYwTU0XfwC3xuq+YaufFGnn3Vn?=
+ =?us-ascii?Q?cpMOGqWuXDbpmMy1LmmxLX4aDD9c/RqOmAZJpv5mfDHm2clHXS4UgOzngTmD?=
+ =?us-ascii?Q?pbnofH4YtXT0ZgTGt6BiOFvtENoyZJKCby7Mjhgffi7jeZkXgNkkuF7vGmDh?=
+ =?us-ascii?Q?khvbdocQDP08VF8PzLtV9eIf8x5rWeQfu6y+bnEf80Xy+CimU6ZVs1mHDn8M?=
+ =?us-ascii?Q?Va20NUjK0kGA2V9cveBWcp/bdylGfAuil7IpGcakYsc2DunpQ+m0adkeTAZu?=
+ =?us-ascii?Q?pt97X1t1VXWEBN7qg11nJjbx87HF0c35kmDZeoane30eKI1Bwgqzk4KxsN0k?=
+ =?us-ascii?Q?z2GHRAf+JSgcqz0hbOjiQq+F9anqyTVIQdz+aJh1ukalLlr/564G3PicNHbt?=
+ =?us-ascii?Q?LPr49wr+78ylFSDEfISFwIgF+JSVYmhqvuofMjkbjsA2VuQjCYrOBrsJSYKf?=
+ =?us-ascii?Q?wMjG6p7RvK/pfthf9CtYkKkCAiTp8ebvlOWY8iJxJxT8mucsIvDTNZU4NkDb?=
+ =?us-ascii?Q?v0z/o73VHfPBC27fiQ7o+HO5EAktvti/ZcKDRf08rN7aiM8orpyNVQjVcAE5?=
+ =?us-ascii?Q?VqHSsE83Ap2qOC4Wx7MWNvrlIahR76FdEunsArmKGx+5oAodiWNfvS0YGRN2?=
+ =?us-ascii?Q?VrwJ3wryf4khSFgTIn+gN6nhx0u6l5XkEYHm7FDjqJl4vRLw4hASIP8RPhdg?=
+ =?us-ascii?Q?FUVWaoCQo/loIiSItLdVI/vuuhQeMh4Pd3UBiEK+RdifW819zm9snPMqmXPd?=
+ =?us-ascii?Q?yzLK5bGg6d9o7ql2oRHHkDSuSxqkaRfTpIPOj+3Ik6+IdkEH819IP0T984MB?=
+ =?us-ascii?Q?GERjJw8I3qTw4+P9ABEaHpJZMCGPKunnLkCiBknbFemf3qrgbnlF4PYGUlEf?=
+ =?us-ascii?Q?R9s9oEj6fb7pdgt3Z7D/tAq4XuVinG6vE9c0bI6Oie9pipyRh4zv9StX+RUC?=
+ =?us-ascii?Q?RGoziCckT/sAPKLn5kmwdLJ2Bkrg6FP8q2mAIgX3tkXxcQyI5/yb17j9TwAC?=
+ =?us-ascii?Q?lpzSIu+TbmEYvn8q5IdYZyx5DES0g/s71DK8Ti7Ec6jOzGc6oio27eoJysym?=
+ =?us-ascii?Q?nGN83B0XBGN+5RqszR5hWf9HIdGLIWbj5T/HjUYiuiv9XOsIw9JalLguZMxu?=
+ =?us-ascii?Q?Hf0Ft6F9d+Wvak/bdzCaK099hIAZdCOQOMhLaduD5CPwfLnd28P1Bhq7q0oy?=
+ =?us-ascii?Q?zB5CNRS3xpulZ+kuvwZqEWJlgn3X7IkhLKPVXqqsSy7EdOFAsB5mpKbBM6jY?=
+ =?us-ascii?Q?xXn942Pbh5gEZhdr6pQyBJvhkJWKgRDJ2qcsJ9lk/aMqe9n2ldHihoCyfuvk?=
+ =?us-ascii?Q?LbSAMpXbaPP9O8ofI1/42MZWsfBTk9ZAceTNxZbfU7nYlIeRaEzyLAZLLkDf?=
+ =?us-ascii?Q?PugFFIpY5EA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ms6U7vBXPCNXfF0GBhVl67iuvMBy5svsyOMzkXNcqhzlYf1dmYfKq2Nmij66?=
+ =?us-ascii?Q?OVFGvrCOTzbOh059BMs8Tv9pRrZyWfT6AoFkl6pqlLn1AwuNLIUBcjypj9Si?=
+ =?us-ascii?Q?DisYDAzEuEmEY8ycUcNzX50mNwZqWctD3qkLmCe6DfDlcBmbBuzMI+ce+KUB?=
+ =?us-ascii?Q?6B2e7Wgunr8p4yJYBk5XBHGix/CkyA6NI+7rhX+6KxvyJcboBaP7kGqSLNmq?=
+ =?us-ascii?Q?+KxNz7lYKeI2HFVQ8imPYyMAANP6ep7ViJxkO7OUDseBi9qt/ce7kSCoalyF?=
+ =?us-ascii?Q?wo/ef9acXkJMbu5DDF0AXieNFw7wQYWAjfko1OFeF1fe/cQw0JoTSj5MZzhm?=
+ =?us-ascii?Q?LxPUPWHGEPd9ipfz3oTPSl5tb1ts4zqUOGB4W7PRmEsS1PQryPt1Auy+kCoo?=
+ =?us-ascii?Q?x5HrqWo3yCR6xYlpJ2CKzWgAzDzJFjn3lA4RRzZW/5Rmja+E8m57KY2u1CPX?=
+ =?us-ascii?Q?w00gf6QzDLL6kxLCEUGqHWvYlhF+TAVPT45UaBUe7+zAvpXZJWT4qK3BB+fu?=
+ =?us-ascii?Q?nsiuwGIKa+U+yHvfI/3QxGP1J5OWvjcX1f8OmTtQxj7heNGEf2nYwiVKqRwA?=
+ =?us-ascii?Q?zFpBrMRMlp4V2p+m7y4272Rvs+6mXdf35v1RIb1GwREMyrZXXTTEKFc/qesT?=
+ =?us-ascii?Q?/eyXLujUQ7citeil4d8XUsdbwnea7L8Ng5Lj35chGwPoAAU73YMaupxQ4DJV?=
+ =?us-ascii?Q?sDA3RpAfP+C/qKCvYjs+uDSQfg19c9GPIvAzL2mB5choh3ThGojNaTxt21wz?=
+ =?us-ascii?Q?2OWWSQbqxheAY2Ie/XZUrM+fulMsQgneFpJfX1uCK3BYY3REG8qiHcYQcIDv?=
+ =?us-ascii?Q?Mp/HyTJ+r5eeOqgN3rwUK2nEKoSXN6xcSN1K9PWZvCVVXw4D3bNH7L6s0+s9?=
+ =?us-ascii?Q?wkySC5pM60VQHd8f/+hCv+tlHvaP2MPRTKmhKAkbobGb4WhBzQqSYZA7TY73?=
+ =?us-ascii?Q?yukjLnK/vX0ZRyl/TVGMVuZ2lSdjNfFhBIQ7MG9eZi1o3TLQ4QDCFlR+ZiYT?=
+ =?us-ascii?Q?Dfnv3T2LSKCksXjW69M239HzwkibI36EpyYyjfzZLrrnBWMQbRVqNKj4oA56?=
+ =?us-ascii?Q?EYklt+EqszRlpS/LmjnVgif78n3Eb3RdRH8bYqx7oLD5mr01Hd6hGMo1fkhw?=
+ =?us-ascii?Q?ALOjdVyv93NltYqgqO/AWdryKewXkFSpcQUI8SbO4EAlSL57X/PVnw3ixwyE?=
+ =?us-ascii?Q?VnAcBOD10mUTQ4fztbJXcAmZWihBN+Dm1OKQmzHrXrOPblHtKgpos4Hcijne?=
+ =?us-ascii?Q?yGBu3B1ET17jPIbAMJ/YiMb0MS6Ajq4RYxkfYfklDymLw4v697LNdTEA/e8T?=
+ =?us-ascii?Q?S61phmSvM8ieJ7/mxeLujIRjQ+wkqDdszaaxQaOHVb9X/kh5Bzhcg3E1d+Yt?=
+ =?us-ascii?Q?vmZ0WOYbT7opDnmYKQryUIbKXFxeYevn7YRSnKElJmwTNScKbhq8DcsdNnkl?=
+ =?us-ascii?Q?exe1kSYhiadVK8Va5w7vBTB2ics02mUjfwdQQf2YkuOBJUcaaJFjCoPnyw/9?=
+ =?us-ascii?Q?ZZgPIjMlMGxv5RQJU1oOs/y+Q35UxqyCbBx7IXQBVCRn464QWGHBBiSMnUCU?=
+ =?us-ascii?Q?Wej8KLKb55TFSByZORY=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e3ba93d-4319-4e2a-c39d-08dddb3ce778
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 14:14:38.6057
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7kxcnpRJdzkjJSknvpZS0FJdfGyvwWOi0/OrxCvD+JZOt7jnM+9F/HzOjYt2sbRA
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4111
 
-On Thu Aug 14, 2025 at 3:54 PM CEST, Alexey Gladkov wrote:
-> On Thu, Aug 14, 2025 at 03:26:53PM +0200, Danilo Krummrich wrote:
->> On Thu Aug 14, 2025 at 3:07 PM CEST, Alexey Gladkov wrote:
->> > At this point, if a symbol is compiled as part of the kernel,
->> > information about which module the symbol belongs to is lost.
->> >
->> > To save this it is possible to add the module name to the alias name.
->> > It's not very pretty, but it's possible for now.
->> >
->> > Cc: Miguel Ojeda <ojeda@kernel.org>
->> > Cc: Andreas Hindborg <a.hindborg@kernel.org>
->> > Cc: Danilo Krummrich <dakr@kernel.org>
->> > Cc: Alex Gaynor <alex.gaynor@gmail.com>
->> > Cc: rust-for-linux@vger.kernel.org
->> > Signed-off-by: Alexey Gladkov <legion@kernel.org>
->> > ---
->> >  include/linux/module.h   | 14 +++++++++++++-
->> >  rust/kernel/device_id.rs |  8 ++++----
->> >  scripts/mod/file2alias.c | 18 ++++++++++++++----
->> >  3 files changed, 31 insertions(+), 9 deletions(-)
->> >
->> > diff --git a/include/linux/module.h b/include/linux/module.h
->> > index 3319a5269d28..e31ee29fac6b 100644
->> > --- a/include/linux/module.h
->> > +++ b/include/linux/module.h
->> > @@ -244,10 +244,22 @@ struct module_kobject *lookup_or_create_module_k=
-object(const char *name);
->> >  /* What your module does. */
->> >  #define MODULE_DESCRIPTION(_description) MODULE_INFO(description, _de=
-scription)
->> > =20
->> > +/*
->> > + * Format: __mod_device_table__kmod_<modname>__<type>__<name>
->> > + * Parts of the string `__kmod_` and `__` are used as delimiters when=
- parsing
->> > + * a symbol in file2alias.c
->> > + */
->> > +#define __mod_device_table(type, name)	\
->> > +	__PASTE(__mod_device_table__,	\
->> > +	__PASTE(__KBUILD_MODNAME,	\
->> > +	__PASTE(__,			\
->> > +	__PASTE(type,			\
->> > +	__PASTE(__, name)))))
->> > +
->> >  #ifdef MODULE
->> >  /* Creates an alias so file2alias.c can find device table. */
->> >  #define MODULE_DEVICE_TABLE(type, name)					\
->> > -static typeof(name) __mod_device_table__##type##__##name		\
->> > +static typeof(name) __mod_device_table(type, name)			\
->> >    __attribute__ ((used, alias(__stringify(name))))
->> >  #else  /* !MODULE */
->> >  #define MODULE_DEVICE_TABLE(type, name)
->> > diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
->> > index 70d57814ff79..62c42da12e9d 100644
->> > --- a/rust/kernel/device_id.rs
->> > +++ b/rust/kernel/device_id.rs
->> > @@ -195,10 +195,10 @@ macro_rules! module_device_table {
->> >      ($table_type: literal, $module_table_name:ident, $table_name:iden=
-t) =3D> {
->> >          #[rustfmt::skip]
->> >          #[export_name =3D
->> > -            concat!("__mod_device_table__", $table_type,
->> > -                    "__", module_path!(),
->> > -                    "_", line!(),
->> > -                    "_", stringify!($table_name))
->> > +            concat!("__mod_device_table__", line!(),
->>=20
->> Why do we have line!() between "__mod_device_table__" and "__kmod_", whi=
-le the
->> format is defined as "__mod_device_table__kmod_<modname>__<type>__<name>=
-" above?
->
-> The "__mod_device_table__" is used to filter symbols.
-> The meaning part starts after "__kmod_" part. After that, order becomes
-> important.
->
->> The previous logic was to create a unique name with
->> using "<module_path>_<line>_<table_name>" as "<name>". So, I think this =
-should
->> actually be:
->>=20
->> 	concat!("__mod_device_table__kmod_",
->> 		module_path!(),
->> 		"__", $table_type,
->> 		"__", stringify!($table_name),
->> 		"_", line!())
->>=20
->> rather than the below.
->
-> No. "stringify!($table_name)" should be the last thing in this string.
-> This is the a symbol name that will be searched for in the elf to generat=
-e
-> modalias.
+On Thu, Aug 14, 2025 at 04:31:06PM +0300, Leon Romanovsky wrote:
+> On Thu, Aug 14, 2025 at 09:44:48AM -0300, Jason Gunthorpe wrote:
+> > On Thu, Aug 14, 2025 at 03:35:06PM +0300, Leon Romanovsky wrote:
+> > > > Then check attrs here, not pfn_valid.
+> > > 
+> > > attrs are not available in kmsan_handle_dma(). I can add it if you prefer.
+> > 
+> > That makes more sense to the overall design. The comments I gave
+> > before were driving at a promise to never try to touch a struct page
+> > for ATTR_MMIO and think this should be comphrensive to never touching
+> > a struct page even if pfnvalid.
+> > 
+> > > > > So let's keep this patch as is.
+> > > > 
+> > > > Still need to fix the remarks you clipped, do not check PageHighMem
+> > > > just call kmap_local_pfn(). All thie PageHighMem stuff is new to this
+> > > > patch and should not be here, it is the wrong way to use highmem.
+> > > 
+> > > Sure, thanks
+> > 
+> > I am wondering if there is some reason it was written like this in the
+> > first place. Maybe we can't even do kmap here.. So perhaps if there is
+> > not a strong reason to change it just continue to check pagehighmem
+> > and fail.
+> > 
+> > if (!(attrs & ATTR_MMIO) && PageHighMem(phys_to_page(phys)))
+> >    return;
+> 
+> Does this version good enough? There is no need to call to
+> kmap_local_pfn() if we prevent PageHighMem pages.
 
-$table_name is not guaranteed to be unique for a certain module_path!(), he=
-nce
-we need line!() to guarantee uniqueness.
+Why make the rest of the changes though, isn't it just:
 
-The symbol name will be unique no matter where you place line!() of course,=
- but
-$table_name + line!() is the unique table name, which I think is what we wa=
-nt?
+        if (PageHighMem(page))
+                return;
 
->>=20
->> > +                    "__kmod_", module_path!(),
->> > +                    "__", $table_type,
->> > +                    "__", stringify!($table_name))
->> >          ]
->> >          static $module_table_name: [::core::mem::MaybeUninit<u8>; $ta=
-ble_name.raw_ids().size()] =3D
->> >              unsafe { ::core::mem::transmute_copy($table_name.raw_ids(=
-)) };
->>=20
->
-> --=20
-> Rgrds, legion
+Becomes:
 
+        if (attrs & ATTR_MMIO))
+                return;
+
+	page = phys_to_page(phys);
+	if (PageHighMem(page))
+                 return;
+
+Leave the rest as is?
+
+Jason
