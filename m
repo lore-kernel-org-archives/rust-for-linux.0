@@ -1,90 +1,76 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D333A2264B8;
-	Thu, 14 Aug 2025 15:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8BE2236F7;
+	Thu, 14 Aug 2025 15:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755185640; cv=none; b=Bba3bfArqTKPNpk0D1bzXiRTXN0sdT3eVZQVM3oqdpvZjqmYClWyf1+5VQcRKDqPuZWo9mNMSxbTa5d7056vL6WDCmwQamgs3h5k6hc8oD+m14j8e/U3pWd02lb9IQQdK9JD8h/8pjp4g2UhlQLmlhG+u5XDCqJw46W0lwPrgts=
+	t=1755185898; cv=none; b=Rpm6DdBBEV2mpzjw4UKyCz+m7oNoZNRW6an/LaEMNRDvo0Ba5HTCJ8FBjTu7cDnxjyqGUCBgb0vonxinTr55Qc2MVDeoS6o1PzM9Ge8xpbd4G7dvQkRlpOo6F5HfqCO7mowR7RZRQPKjS8MNMhrlgIRpsmrIq214aBzqBbwg5Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755185640; c=relaxed/simple;
-	bh=Nq6aUc1/B4cTBa0sp/QpHeGcEL/dEYhBVIwVBFy+pqg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YgqMiMoBLEYG7iFS9hLbBww8z+Se7YSEXCMJ7nHR84e1eiH4c998tYGnPVbZj+QJLnhiW7HgXwBv3jBOFNQxTdrghpp2qlr9NKz1ZiwPVbrNOn/4qP/y7/GHOuoGXpodD3fAIqJWiEj9tDJfo0jEKb3jSsZuYXGTzcMR5sqJDsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hKtoWLOL; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755185898; c=relaxed/simple;
+	bh=1LcIUzqAaW6zCjsY1yHCk7sVqaWkzG1WY7/GcG7KUa8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=WPunI2jNzRxww0oyZxJ0Qx5Ef1SXE6iHHloOKCmOcDGQWruzLgn2quWDswBWiUc8BgJ4z8WW7FaIyDDGqhnSa2J8lhO2/7Coq59kqrpNlYHaB1VU8W7fPkTLx+7U/I8iL8r6lMSGhDfRXtb9uSCSZ4cq4+DOELlqUeHkg82kimM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+GbxeHA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKtoWLOL"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-32326e25000so146270a91.2;
-        Thu, 14 Aug 2025 08:33:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755185638; x=1755790438; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nq6aUc1/B4cTBa0sp/QpHeGcEL/dEYhBVIwVBFy+pqg=;
-        b=hKtoWLOLs2kzVsLHTB1rNbT5u9g3GAZmj5e3UItkxm3vXVRXhY99PdazrLQtn1QiIl
-         voCa2dMAU/ovtU5teA725WLsZPXdZ3njQe8c8tJ6cOD0O9hiVBEmy33F7k9uIHM/XrKG
-         JlFTWzuk9KsbsCQ0haFKyUHWaL4CSN1WkYIgEQO9Rzzl0ywl6ov8x7wOazd3tzzgvzZ8
-         MY/vbcxrfQ7wFbm3HitcXq7jGFjWsQxWvBtTk8I3s3v6iEh4VkH6tXgRlRAOJz3F51FJ
-         wHs3LOt7tS5Q6Dj7z7OIR7+kNSwcN8H/Q81dIF+2YLdApLUvzp5rTdYkbACZbHibh+yA
-         qmlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755185638; x=1755790438;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Nq6aUc1/B4cTBa0sp/QpHeGcEL/dEYhBVIwVBFy+pqg=;
-        b=Fp8RDc9uouC5KyReRHh+gQarGI9SCEl+fQK+RSO0QpmWdLvUCLYG8dMFZ4WsIMJkCo
-         geljMMNaAhsDedyF8Z0q18Mv4y+L430s6BWf499Y/FUOI0y+QW+q/0lPQ034dzPrqLD2
-         VlS/6bw+R7BpV4L/N3WdNoIPsPiRVd7BOth7/yxFedqUjfOe+U/8CG3qXrEv4I4cXVcR
-         95UFCn4Fo40A53GKpOlcyFjZ7+ZI/Xthky7q/SvD/9IzzXYUVHr716GNA6ybenROAYcU
-         PEMXx0UH1M7iuofzCf92Xpicgcur/BXpIAJs47L9mBoop/Ww8eKiZDWBxRQnauYmyDw+
-         Uaiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBuKjxCz3GZ+2K8d9hGP9OFzZ4DngpDxNMJA/r8ahfV4bEdI5W81h1a+8t6iLyNkeyKyXsVcOGd1UFD9A=@vger.kernel.org, AJvYcCX0N9lnEA8qdDqPLuylDr9cipwyuYJPhtGNjdLazclr1cZsL/Bxcw2j/rp6UsYrMYPnHC+KI5QI4+/R4/9ILYc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytTsA0JmSFHT75dc6eRoHa1BfCSKBrcjWO/wdX5uxmMxKQAKbk
-	QRPiTADfMzeVIGP0ynWDtTuwHxSt+6ataPCNU7sFZ6IfxPYr5Y7Ss9rJGPKg7UtD5kXIpC9ioWc
-	VHFE/V4lP5Ue/+eZ9J3sOe7vCjh7VgVU=
-X-Gm-Gg: ASbGncsS+Cy/N5zGVeU/W9zUsOSIb/DPMsIMZKOhpgIdXPPDRFD9HDUdUe52ttHjb9y
-	2w/SbQ+URD0c1LJyK0lM2w31altYqnRXULHb2C/Gek73GX9drw0lCxgr5jFrgBssiqzVbuWhHAm
-	lBuujdp1eWxaMTo31UwfKLSwP2NfUA4ZUluW+V0z75ELj8pht6sYDbUS16PJgN59ZkKLnqTwpdh
-	gkc9AX2nbqVvHj1pAw=
-X-Google-Smtp-Source: AGHT+IExebqpquUbhbP79oNaoqhWawZvxeYfYRRjXoj1XNHbnsxMKW1hibJDfr5mk2Qen8wXb//p7fJ9VAKFesJ/+1I=
-X-Received: by 2002:a17:902:dac6:b0:240:2bc6:8ac4 with SMTP id
- d9443c01a7336-2430d0d2218mr57153305ad.1.1755185638075; Thu, 14 Aug 2025
- 08:33:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+GbxeHA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D77C4CEF6;
+	Thu, 14 Aug 2025 15:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755185898;
+	bh=1LcIUzqAaW6zCjsY1yHCk7sVqaWkzG1WY7/GcG7KUa8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=M+GbxeHA/fwPi9Spwcg37O0nsyMZvnG1O2nkPNnteb0lvsFUzl4A24FRFAFeIYOD5
+	 onpshTvk/UrsCJvSM4rJE3MdxlHkOx/hYMSU8T4GWiQiFqvjuHCFOuVrA4qnD3iJ47
+	 Q+L/SJkUdqNQtY/dm6OsMovrZhuu5UtWKK4ajSpj/CJyaLXdtBsmizajvNk5iec3d4
+	 KW8W5MwI7XGGvHBrD6I3m8zOZz0DvKc27o5OCD+QCniKM1WVDsgYyYoaAbKRS75gzF
+	 fjcSQlje2h5BlKXqkMGZVA+yIifx6/G3TvMbY3XrRc/AeABbQo1gE+PZg/XRuAunJf
+	 qOS9qCljx/IoA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250814093046.2071971-1-lossin@kernel.org> <20250814093046.2071971-8-lossin@kernel.org>
- <CAHC9VhQXOezJ2=B1BQOqLgfuzDJEVS5G_r9+_bQ+OUNTpjZCKw@mail.gmail.com> <CANiq72=vhPsGjSx9u0FvDa6uzMFkFQFP9qG+DhtZ_U5TyV=bJQ@mail.gmail.com>
-In-Reply-To: <CANiq72=vhPsGjSx9u0FvDa6uzMFkFQFP9qG+DhtZ_U5TyV=bJQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 14 Aug 2025 17:33:46 +0200
-X-Gm-Features: Ac12FXyvLo49VMmYiEU1CpyzrkHMikMWdnppn1qvjYsfqG-8BI26C6b0-0xA8JY
-Message-ID: <CANiq72k8kWHeBGLgHVE6vN36n6ashq-TVX3+h6WxLtc1jpUefQ@mail.gmail.com>
-Subject: Re: [PATCH v3 07/11] rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
-To: Paul Moore <paul@paul-moore.com>
-Cc: Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, Jocelyn Falempe <jfalempe@redhat.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 14 Aug 2025 17:38:13 +0200
+Message-Id: <DC29H09I86EP.1WC5FDOG2NMN9@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Fiona Behrens" <me@kloenk.dev>, "Jocelyn Falempe" <jfalempe@redhat.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 07/11] rust: security: replace `core::mem::zeroed`
+ with `pin_init::zeroed`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Paul Moore"
+ <paul@paul-moore.com>
+X-Mailer: aerc 0.20.1
+References: <20250814093046.2071971-1-lossin@kernel.org>
+ <20250814093046.2071971-8-lossin@kernel.org>
+ <CAHC9VhQXOezJ2=B1BQOqLgfuzDJEVS5G_r9+_bQ+OUNTpjZCKw@mail.gmail.com>
+ <CANiq72=vhPsGjSx9u0FvDa6uzMFkFQFP9qG+DhtZ_U5TyV=bJQ@mail.gmail.com>
+ <CANiq72k8kWHeBGLgHVE6vN36n6ashq-TVX3+h6WxLtc1jpUefQ@mail.gmail.com>
+In-Reply-To: <CANiq72k8kWHeBGLgHVE6vN36n6ashq-TVX3+h6WxLtc1jpUefQ@mail.gmail.com>
 
-On Thu, Aug 14, 2025 at 5:31=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu Aug 14, 2025 at 5:33 PM CEST, Miguel Ojeda wrote:
+> On Thu, Aug 14, 2025 at 5:31=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+>>
+>> I think the idea is to take all these through the Rust one with
 >
-> I think the idea is to take all these through the Rust one with
+> Or through the pin-init one, which gets pulled into the Rust one.
 
-Or through the pin-init one, which gets pulled into the Rust one.
+There are no pin-init changes in this patchset (in v2 there were, but I
+took them for v6.16), so I think it should go via the rust tree.
 
+We can of course wait with patches 3-11 until the next cycle and let
+maintainers pick them individually, but since they are so small, I think
+it's easier to just pick them all at once via the rust tree.
+
+---
 Cheers,
-Miguel
+Benno
