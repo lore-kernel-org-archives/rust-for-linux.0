@@ -1,60 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F021315A8;
-	Thu, 14 Aug 2025 00:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EEF2FF65F
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 04:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755129772; cv=none; b=CbJQXkwXORYRNtAt9vN8RlUTEpE9yiSIuZkCY9lA9ixq7Liv84Zy+Ho2/rYRIojiE7KxZKRL0AK52DSG6A/8Z3v6ABuvRrOKIYKWg84vY4NyqnD1q8NfSa5iivXz7F+LkWlPwy00DHgK9Z4uCFgagIgc/mJhGCF3m+gME9JGYSs=
+	t=1755144800; cv=none; b=l0EesKt3Tg6PX2+NFY3BzwEZIIKEIUq+bS3KnX7FvjF5IZmvzgzfdWTxH2dru9NzVhqlyfkZxb2RoWR16VxA8n/+vm/qeeddCYRXhyi0Xf+yruZbDJudez+cBLxpEpb78Dk1EfC/mUieTSAYYv/C1X3InMePypRefni1J0IW6Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755129772; c=relaxed/simple;
-	bh=pCkLqHJVxHIBrRg8IlFTsiErFNyOyReLeRZ6vWWKD4I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=d7NPR4+OE8ibDkoCDrhAO2eFxm5m/uu8dw76+uA6glmkzHfxUi6V8unmGdrk5szYyChSre0jT3JQx71cZ67HomZS3zsLc6DBONBjl6gfL4KIIeKb8uA4pg7w2+ZMIwOFEHec9/9krk3jyavoWf7cCn9aYcHYC95Qc271Ei+CpvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyC357Fm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755144800; c=relaxed/simple;
+	bh=VGzEBobUnqTenM6o2yCYtZykv7kCalxd6Xw2oMoXnPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aZrkJNLUn6f+Qveeh70gStjyvvT/Z820RLI2XgNz6q1OGjfkLk8Rg/jnyysd55pMUBQm9X4YFcW6yof8mVa5D7HDdIeVhi4U51wh3gbC0vNAAL9EXo6HxvgUkBNMdlyghdYRHOjQNqilOJZ6e2nrIxlnoH5s3C3RUu/fYAfmE68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=udFrMsi+; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyC357Fm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45F2C4CEEB;
-	Thu, 14 Aug 2025 00:02:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755129771;
-	bh=pCkLqHJVxHIBrRg8IlFTsiErFNyOyReLeRZ6vWWKD4I=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=kyC357FmR0TTltplZk1k6UAu4GhqHHtsX6n7LPo1VTykWNptk4PmoMO+j6qlfRCB1
-	 xm9i5xg8DYPxjN4PvRSKcDFnL9u4jYzYAfRDa7hjBQtXp+nESccR6wKX9dbBlHGpR6
-	 +snd0C1LEkLePNgZZjLsFfLXSBTcmv23ISn80Pl5CW6p4RJFvJg6FWNfTA5uGV2NUp
-	 hfzeKdYs3e/mfrN6jXekJV+LtC9lJueyAMOzAhUF22Org8WfZX5r3V7g6Rz8rAAQmV
-	 Rd3vhuuq16cCVzBTsTuSqYmyi5bdX7Pk7tHhC0eUQwqd9LH1i2sJtG+623FliaW0/z
-	 ZsBkdc9bOzIMg==
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="udFrMsi+"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-76e2eb3726cso345410b3a.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Aug 2025 21:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755144798; x=1755749598; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wzto4+R4SEpsXQvu35Am9g0bxExsmpRAPRKsrODRUCM=;
+        b=udFrMsi+sWQWpPTCVJQnbUBDRJ7SgIrcbPOqxQTZwc31tnNq/0cYHIgzzPz/HjOMvK
+         X6PE4Pj2ZdzANvP7pGRY+qxMaON5pgLsQJ6jo61lC8Ek4Z+68EAthLi+GCO8yCRRKJ/f
+         W00JfWphXoqqp7xKPlUP6VWgjOYSb+ipTlgRRhx8rDh8Q5oLj6gtRK7qNc72yInOWrHo
+         3ejEftkLGa/mcsilQpy3KpDyCseiPlwQmofsFm60sva6GIUvoPe1meTgmkfYsMz+0991
+         kzkT3cuhtvhuziJD+sJb1DE9hGIsjv7YiF14xclSSSedkK5uZT5ZxG2ElmVdhepYWFL7
+         wubg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755144798; x=1755749598;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wzto4+R4SEpsXQvu35Am9g0bxExsmpRAPRKsrODRUCM=;
+        b=cwYhsIxLZoH8dElIKZZp8LIXJByNnCg2NH+3zbP7RYxXRGE/bPGPrLWBne6RqguSyN
+         RIlFKw+rS0V7XUM+pWVQ0VBV2nuEOWee4thvSS8S2RnEkyhooMmevHLr/A2qy9rzplyP
+         k4uOD2QVzgiOGdyc+AQNEkGOCSGFX89w+3UfUEC2KfgSyrWtA6T9A0kSfrbjDBprp8n+
+         ecvIMCRixVREVfCX+lhWMAfkspVxL9kF8LOarn2hqdGGcCHwH+KJpeUDzK5hQ+Jzt1jC
+         wD5uvBM5pbdq7bbJtCMoh8H23OFcbKfeMrKk5vsgDhJZ5XvH+RkNYxzidsIOvWqFAHyU
+         suxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYzsILrMyekuQcccqQiu4m0j9gvQuU2h6oCzEbROJeER5yFZ4lH8DzCgbk/JmOEt74lmJzJ95wAfTfiKfKtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKlqroQg6nPo2S65nnTWYHwKgg6eP+OsFAJpxMgrBxQuFHoBe3
+	YaBiMGSrt82zWWxyMihxdx/CYmxc6D1lFVbxbBMM4PZMbfPdyZKOrvZfwd8WodSxKcM=
+X-Gm-Gg: ASbGncuUwP1hQq/zN2GLpijtcFtgRmRutfsIbw0SVn7SyZFYXUerm3W6T/VhuAI1lVu
+	MYW9TDHd6WH+C9fc0+BHZuRPXD6rfvUmMaMUoOHNABKBPjurk4kqF97LJ2XQumtz2NWkxyLUSjQ
+	gnGYkpywA+Xfc7DNBad5S/vrTTxh436fnNzooBS8Yafu2B3j3/ZApp+auJ8W+qYEG3ZB9FE1YfE
+	PKsWgshyaBZw0wz5WYSb7VuFfDUYy00QoI1ZAvvWzRawozSZv6JM0v12TX1Xb8dlpt5qWi4HjAq
+	YAT6ZnBIbKkbJQ+Vi6IfeopV/1RWEO/d8bm/v2c5ZMmfiGY0NO35hCLN/xzMKClEoDvskSDT86/
+	BgKrZJPU94KEO13cROs40B4Pm
+X-Google-Smtp-Source: AGHT+IHuZAqDG+bKwN4mmEbOegBcVFPvD6aKGH7LaHe89lphIokLJFFNQE++EiGJ4ANYP7KMAZ7a4Q==
+X-Received: by 2002:a05:6a00:9a7:b0:76b:e936:607 with SMTP id d2e1a72fcca58-76e2f9310f7mr2697735b3a.0.1755144798295;
+        Wed, 13 Aug 2025 21:13:18 -0700 (PDT)
+Received: from localhost ([122.172.87.165])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce6f474sm32881328b3a.4.2025.08.13.21.13.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 21:13:17 -0700 (PDT)
+Date: Thu, 14 Aug 2025 09:43:15 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: cpumask: rename CpumaskVar::as[_mut]_ref to
+ from_raw[_mut]
+Message-ID: <20250814041315.ywuxwp627jiphiqf@vireshk-i7>
+References: <20250813-cpumask-asref-v1-1-1242aa8e0cfc@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 14 Aug 2025 02:02:46 +0200
-Message-Id: <DC1PKRVW2XCS.1ZD5TWL9Q87HZ@kernel.org>
-To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] rust: devres: fix leaking call to devm_add_action()
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20250812130928.11075-1-dakr@kernel.org>
-In-Reply-To: <20250812130928.11075-1-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250813-cpumask-asref-v1-1-1242aa8e0cfc@google.com>
 
-On Tue Aug 12, 2025 at 3:09 PM CEST, Danilo Krummrich wrote:
-> When the data argument of Devres::new() is Err(), we leak the preceding
-> call to devm_add_action().
->
-> In order to fix this, call devm_add_action() in a unit type initializer i=
-n
-> try_pin_init!() after the initializers of all other fields.
->
-> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On 13-08-25, 07:54, Alice Ryhl wrote:
+> The prefix as_* shouldn't be used for constructors. For further
+> motivation, see commit 2f5606afa4c2 ("device: rust: rename
+> Device::as_ref() to Device::from_raw()").
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/cpufreq.rs | 2 +-
+>  rust/kernel/cpumask.rs | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
-Applied to driver-core-linus, thanks!
+Applied. Thanks.
+
+-- 
+viresh
