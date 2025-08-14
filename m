@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9602D2D63F3
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Aug 2025 09:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BAD2ECD31;
+	Thu, 14 Aug 2025 09:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755163864; cv=none; b=CpHTsCQRJ29gLKwHwBfwKk9dPFCEH4AzS5H9IV4LhzR6CReKF1TLzx4F4GpAWAzqDa5PeW/2TgTW3FAm1ZmJQca/DMKXJMRtce8gtKGHZ5OSqeYt488Rhr+F0HWGhm/HNLb+kIc3aKTIG1f0GfWszakxHqBZHVT0DSjw4L1zsvI=
+	t=1755163867; cv=none; b=hxjQQdylm/FSOxK4cxo84NCyA0lGpUgfvoFH06EzHP5mssH26j6nUdyTDR45QisdZQ2DxSj6FGzS9lyyAHqe5LvhC3GCd+cMuc4NkN6deh7zZlUi6wNAXrEm2euo8IoONy7PdNcOjUlWlxjkg0/y9LSwXGel1NeUfeQCEbrWWd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755163864; c=relaxed/simple;
-	bh=f6id25YC4lGznzgiZVbzrP1QefpG8xvL+XSLDZNSUmI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jlKxxIDwYiBHCSkmE0Bw2zLrL0Kf9QtCMOKM3cD4IA2aSSCSCsaYrcY4H3G7MDZU/EMBDLI5Y+yhevhKKkEGPJuzAeER/XOOPIhNdBeRlfWuUkBd0HzOF/qf3E0Wdlac+N+ikJhBrmgWB7ZxWyeWQdpniO0weSe7w5eKPqm5BRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWGijxr/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755163867; c=relaxed/simple;
+	bh=YVO3FzmwMn3oydZ+yVwPg+yyh7DVgHFfYq3vuvRJ5+c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jPMqgzK2F7YiI++WQzIfPy7AA67BPK0FIdyTXXgEl66ZOTSpfJN2sYOTVX9UdSGJfKaXwbMnoOhPiTkzVKLvxT2QgIUPBKuO7+r0R1JAwLdoaHKxmVLjcqw9dKoLl7Pf6J79sfsVLmVkBF/WfZTCCvYxx5qIv3PJvpAiKrsILe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MdXTfgv5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWGijxr/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D755EC4CEED;
-	Thu, 14 Aug 2025 09:31:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MdXTfgv5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E690BC4CEED;
+	Thu, 14 Aug 2025 09:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755163864;
-	bh=f6id25YC4lGznzgiZVbzrP1QefpG8xvL+XSLDZNSUmI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NWGijxr/Nuw6ubJcH8SetcHAoYbqQCf1fL70cdcrRC+FBpHDXpCG+NUoBYZzeDVzJ
-	 LhHWUNyfhE/sWt42Qc6Jza3zgqZ1Zu/xtS+sMHMfCfc6+oj79B3NL2ZMVT+wsKgbda
-	 2C9+QcoKwrU6x5QrhmdbN6hAwC4935nwIhNYanMsR0xvgAKtt2ZiHAXRXekbYULE+B
-	 pxoKZxPCxwKy8HpM3AUazweHtUDhnxJZwWclPQ/po5pObDc0+iVLO/Am+f/U4ByZFe
-	 1Jry7dOmsouFqvfRRUSJyBYH3BFVE5f5BzWyABhEIdvFaNGO+guvg6NtEUOhRWQIoS
-	 BH7E2XRHFKyHQ==
+	s=k20201202; t=1755163867;
+	bh=YVO3FzmwMn3oydZ+yVwPg+yyh7DVgHFfYq3vuvRJ5+c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MdXTfgv5LOM1OlFK+K5zyfLuI8mGHmgJiUZr6B9ijcxiG01igoc+C+Zyz64jL6LZ6
+	 BgKoJlBNBQIqAjSl4/2BdNkZKUDjjYJ3jjVuPAuajhXTIzXxXvtgsq/S8qZahUsrXG
+	 djHyhpJVplocYB+5mxkrgsAWdMRSDyuuNdOtyXTc8FQA984CPkyOQ6gHEqheEZJWlq
+	 IfpwFuxEL+w7eWAmsni9DdYhl+KF+kjuGiwaXL1LqnD0UA3WTr2Y4Dt2PNphT+n+/c
+	 YUv0HNyMGhmfF06WXSKvNFJa2EvttszlgsoQksZqkKbJt0jTynlkcsYMvWLJELgIsd
+	 eaFfHh2bz/OUQ==
 From: Benno Lossin <lossin@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -36,11 +37,14 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 00/11] `Zeroable` improvements & bindings integration
-Date: Thu, 14 Aug 2025 11:30:27 +0200
-Message-ID: <20250814093046.2071971-1-lossin@kernel.org>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 01/11] rust: add `pin-init` as a dependency to `bindings` and `uapi`
+Date: Thu, 14 Aug 2025 11:30:28 +0200
+Message-ID: <20250814093046.2071971-2-lossin@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250814093046.2071971-1-lossin@kernel.org>
+References: <20250814093046.2071971-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,75 +53,76 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This came from a discussion at [1]. And I added some more useful parts
-to the original idea.
+This allows `bindings` and `uapi` to implement `Zeroable` and use other
+items from pin-init.
 
-I'm not sure on the impact of build times and rust-analyzer. We're
-adding a derive macro to every struct and union emitted by bindgen.
-Building using my test-config took 27.7s before and 28.2s after this
-change, but those are only two runs on my machine with a very reduced
-config (that enables all Rust code that we have at the moment).
-
-Maybe we have to reevaluate this when more C code is scanned by bindgen.
-
-[1]: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/Zeroable.20trait.20for.20C.20structs/with/509711564
-
-Changelog
-=========
-* v3:
-  - removed already applied patches
-  - added more patches replacing usage of `mem::zeroed` and
-    `MaybeUninit::zeroed().assume_init()` with the new
-    `pin_init::zeroed`
-  - fix rusttest target
-* v2:
-  - added patches with more extensive pin-init changes to `Zeroable` &
-    related methods. for the upstream PR, see
-    https://github.com/Rust-for-Linux/pin-init/pull/56
-  - added patches replacing usage of `mem::zeroed` and
-    `MaybeUninit::zeroed().assume_init()` with the new
-    `pin_init::zeroed`
-  - fix rust-analyzer support 
-  - use import in `{uapi,bindings}/lib.rs` to avoid the `pin_init::`
-    prefix
-* v1: https://lore.kernel.org/all/20250520192307.259142-1-lossin@kernel.org
-
-Benno Lossin (11):
-  rust: add `pin-init` as a dependency to `bindings` and `uapi`
-  rust: derive `Zeroable` for all structs & unions generated by bindgen
-    where possible
-  rust: miscdevice: replace `MaybeUninit::zeroed().assume_init()` with
-    `pin_init::zeroed()`
-  rust: phy: replace `MaybeUninit::zeroed().assume_init()` with
-    `pin_init::zeroed()`
-  rust: block: replace `core::mem::zeroed` with `pin_init::zeroed`
-  rust: of: replace `core::mem::zeroed` with `pin_init::zeroed`
-  rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
-  rust: drm: replace `core::mem::zeroed` with `pin_init::zeroed`
-  rust: auxiliary: replace `core::mem::zeroed` with `pin_init::zeroed`
-  rust: acpi: replace `core::mem::zeroed` with `pin_init::zeroed`
-  rust: cpufreq: replace `MaybeUninit::zeroed().assume_init()` with
-    `pin_init::zeroed()`
-
+Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/Zeroable.20trait.20for.20C.20structs/near/510264158
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+---
  rust/Makefile                     | 14 ++++++++------
- rust/bindgen_parameters           |  4 ++++
- rust/bindings/lib.rs              |  8 ++++++++
- rust/kernel/acpi.rs               |  4 +---
- rust/kernel/auxiliary.rs          |  6 +-----
- rust/kernel/block/mq/gen_disk.rs  |  3 +--
- rust/kernel/block/mq/tag_set.rs   |  4 +---
- rust/kernel/cpufreq.rs            |  4 +---
- rust/kernel/drm/gem/mod.rs        |  4 +---
- rust/kernel/miscdevice.rs         |  8 +++-----
- rust/kernel/net/phy.rs            |  4 +---
- rust/kernel/of.rs                 |  4 +---
- rust/kernel/security.rs           |  3 +--
- rust/uapi/lib.rs                  |  2 ++
  scripts/generate_rust_analyzer.py |  4 ++--
- 15 files changed, 36 insertions(+), 40 deletions(-)
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+diff --git a/rust/Makefile b/rust/Makefile
+index 4263462b8470..09d4f389240a 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -184,12 +184,12 @@ rusttestlib-kernel: $(src)/kernel/lib.rs rusttestlib-bindings rusttestlib-uapi \
+     $(obj)/bindings.o FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+-rusttestlib-bindings: private rustc_target_flags = --extern ffi
+-rusttestlib-bindings: $(src)/bindings/lib.rs rusttestlib-ffi FORCE
++rusttestlib-bindings: private rustc_target_flags = --extern ffi --extern pin_init
++rusttestlib-bindings: $(src)/bindings/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+-rusttestlib-uapi: private rustc_target_flags = --extern ffi
+-rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi FORCE
++rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init
++rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+ quiet_cmd_rustdoc_test = RUSTDOC T $<
+@@ -521,17 +521,19 @@ $(obj)/ffi.o: private skip_gendwarfksyms = 1
+ $(obj)/ffi.o: $(src)/ffi.rs $(obj)/compiler_builtins.o FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+-$(obj)/bindings.o: private rustc_target_flags = --extern ffi
++$(obj)/bindings.o: private rustc_target_flags = --extern ffi --extern pin_init
+ $(obj)/bindings.o: $(src)/bindings/lib.rs \
+     $(obj)/ffi.o \
++    $(obj)/pin_init.o \
+     $(obj)/bindings/bindings_generated.rs \
+     $(obj)/bindings/bindings_helpers_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+-$(obj)/uapi.o: private rustc_target_flags = --extern ffi
++$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init
+ $(obj)/uapi.o: private skip_gendwarfksyms = 1
+ $(obj)/uapi.o: $(src)/uapi/lib.rs \
+     $(obj)/ffi.o \
++    $(obj)/pin_init.o \
+     $(obj)/uapi/uapi_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 7c3ea2b55041..fc27f0cca752 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -139,8 +139,8 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+             "exclude_dirs": [],
+         }
+ 
+-    append_crate_with_generated("bindings", ["core", "ffi"])
+-    append_crate_with_generated("uapi", ["core", "ffi"])
++    append_crate_with_generated("bindings", ["core", "ffi", "pin_init"])
++    append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
+     append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
+ 
+     def is_root_crate(build_file, target):
 -- 
 2.50.1
 
