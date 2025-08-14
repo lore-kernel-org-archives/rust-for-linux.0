@@ -1,118 +1,96 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDB9319865;
-	Thu, 14 Aug 2025 18:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED67226D1B;
+	Thu, 14 Aug 2025 18:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755197355; cv=none; b=Zquf0JOTXhUhirann9XQcYJwxWuO7UJ/j6yqT+MZv1nhyWtK9KWBGfYkLsX+oFKz8aZYdeTxRUOKCpEODbpWNAJ3MwUrVSX55eSdzsFhxrpXpCJIUITaiNMBhKvY6g3avqIYcURdmHuA0ZC1HE7xRwzK55DP7Bqv/1E2hU6k1T8=
+	t=1755197663; cv=none; b=hrbDuvGQSGh5D475s7jfg75fKBOze5pNX9zFA6qMZpDwHxdGmVghrHxHqz5FOB2qt0n11SDKK3YJ01lrVptzQlW4P4iKgUxOZ4ylkC63NgjJtmO5TuVjbxJ9rWONAcIT3LSYnK077SpXox2TzvQ4i9HHTzWWTBKWbQ28nJeA9v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755197355; c=relaxed/simple;
-	bh=nAnkdeH3APlj2U9iiAF7xZnRZxmcM+3jblEMOPSPbxk=;
+	s=arc-20240116; t=1755197663; c=relaxed/simple;
+	bh=OYZVGa1PYJPNGIjnnm7Kj/36+cnPl22d4hWZLZI5SBs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sBXVDEhT7P/hmXn0cWmWGbeindPl8FnYHmvhoPk5tgyv+Wcn4Va2LYCl1FWh3g8bUEb9vcnGzeVJrKdgPzFfsDrfU7yb/VaC6FvC+GRafRqgDxBPl3Fwr7ZKvAPNfuGwfvOqYqqrD0Fzwfj0HqIobvopYXrLvURIyZ0hIlotjBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E67syZkW; arc=none smtp.client-ip=209.85.214.174
+	 To:Cc:Content-Type; b=Y+TomC7vmG8Z0tSFS9FGciow1nhoQEU63YB2cif/S0WEcogczhsazlL3p2Tp+omK7vGHE5vIvQLRhMl+Km1ad/eDtuxS4nPPP/wAqRmk5nZA+qD3gXhPtM8ekL43TYXkpWue7IHjIrtdmnuRUEapgaThmxfebe6nL4K1vwWV/AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFz2Ma6e; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E67syZkW"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24457f44927so2157195ad.0;
-        Thu, 14 Aug 2025 11:49:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFz2Ma6e"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-32326e20aeeso250175a91.2;
+        Thu, 14 Aug 2025 11:54:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755197353; x=1755802153; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755197661; x=1755802461; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u4iaOrLK6Y8he5/xeu9+Cu/u9QRWTEOaplA8thVvuZI=;
-        b=E67syZkWTAbfpkUWkA96xa7fCdObTA4ViHrkwpLFaoWhvoCDKS4d1WBCQvPRLtJVgw
-         Q+/lnAEQd5P5Ee9YgLfuj9X35/A+Us/uJtLP+zip8oXuTXERH8Q2t0rhENFZdMi04cfE
-         0fqpXO0qaWHJE/6JT7xbBTou39ZbENvjU+eXZ13AdzDgDXTCopIzxgpKQtM6eO2ma0e7
-         cs1Wi1CvO4Al022E3X6ztUfAQjfwLZEOm094Gr7sbiIbTdiKYVtj2YF9VvI1i57mfn9w
-         o2S9MqnCBONCjND6f6kan93pomBarXM7hAZ0oYQX10F8eEoELp615yDPQcYRbIoPwWj5
-         LyWA==
+        bh=OYZVGa1PYJPNGIjnnm7Kj/36+cnPl22d4hWZLZI5SBs=;
+        b=gFz2Ma6eHVFcevxfE0/brh9YS3UALnfEV1rBhIC/erT7b0nkL+jw1OsCmuajCH0xU2
+         CagOymMfNsbXw5cX/F3/Nong4DNqCc799NHoPQSqqZnTwDjlHEkFr7jj0rFUw4k8atm9
+         nVxSTxDJakYkRmAp10ok6eLeyx4J/jzBhUgpbspctDvW0tsT2xo7fNLw2s0Yy1uu4YfN
+         0x+U/HJ3aZ0PaPoNwZtRYm/vTGOuO0Xa0wd0c8yzFJIoAbNGurcfbjFNkiRZfxuV1HTm
+         5wxa+LHGMClRCIyB9SHTo+NA8a5tO4WTUrlOSz0AFjpb0aHL8ca3UCNoEK1j1XtT1gc3
+         Dsmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755197353; x=1755802153;
+        d=1e100.net; s=20230601; t=1755197661; x=1755802461;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u4iaOrLK6Y8he5/xeu9+Cu/u9QRWTEOaplA8thVvuZI=;
-        b=ibcAMfj8TmZtX+JEUWATvdJOfdvYl2bVax6lvKQjDR8hO3XY/UtKmTROVI/GcvxoDr
-         P54nfZAB4pYrorjsYr+qsQ9yphLLVfCblJxunBp32ny0mkftyyCHzJ/b3CCKwztktvb+
-         0pxyuOHPiJ/wzLBOGNgxdeicyZrl7wqRwv8uqTLC6vZ1Hh/MU4c3KPROzNloQ24K2KgV
-         trB+pKmJkN8n+vO2K4cRYOrlDbI75ajuYs1bCIeKNzznx7alzFmZONkt09bR8bAVUS5f
-         0VFwjd4IZFXsgqtKKEJ4Y0obNJoYqy/2gjG8ykYUKGWL2jg4gYblDiJ0f9V8RiOIc57b
-         IkFg==
-X-Forwarded-Encrypted: i=1; AJvYcCWk/11Zw8B9n7yVjG6fCWpqn3E277kDNt/r2YZ8xWanFzZuGHQnI6dzUfZlV/Kt91IfKpSNbwyZhnHt80o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeF8RW3Sp8t4sUeH/FWAyGiey+U0lSywPdj3b961XEHDyMM989
-	R6qcOPsTDiQyk7KJzcIOaTj1YurhK6ATEypT40gBQadQw3ih78AQ7/hm563rCyBycJ8R1MFoovM
-	E/9jC5tUh4oJw1k7VnPiglBxBFSSA1dQ=
-X-Gm-Gg: ASbGncsIKcFKJPF8zciINwBX/k+CsD2KuS1IcNkstl+NS2W4R4u6TAXsFbRJqO8u/mG
-	F6+lcv9K06/QyO9DzYXafHkrw3UrljteIiWQnoas9vGZvpxX4PkoRUjxNxyLH/5ZFlTfDfD4WsP
-	Sk6ysE994iMYFCEkf3Z+ih9uIgaZIRlRrUerCg+xMrmo5ItkX7ia1dbgav+O5Xmu/b3DcIU0L3l
-	1p2WrCCixd8H2r8imI=
-X-Google-Smtp-Source: AGHT+IFZTXQ4KO+d2AI/L7tmBdshgN3ufVMuph7Z641B+fEhmaC3Za3g0GOPTHhNCubEPPasfSWLfm1uU+AD4uolt2s=
-X-Received: by 2002:a17:903:1c5:b0:240:8fd6:f798 with SMTP id
- d9443c01a7336-2445851909amr27534995ad.4.1755197353113; Thu, 14 Aug 2025
- 11:49:13 -0700 (PDT)
+        bh=OYZVGa1PYJPNGIjnnm7Kj/36+cnPl22d4hWZLZI5SBs=;
+        b=oy26eFcw851KMWiTVsiL/HKNzzSUszClbHtB9glRYKRkqPlhv/u2wjUY0eG6lin6qV
+         YE5S1qoQZxddlQvCxdmdyHoxaymx3FCWZjadcHZNTokJkI7js5FdwTJqHZW4IXFKdhKW
+         3azaV2txO+RkJTiHUq1YVYBr7Ba1gnjhOAIAbFHZ2bz7MqdieDa5QtrDsy4jM2Lcitm+
+         4+I/zhQeR6WuhEVI/QeumIPVUTMCroSZUo24RV9gsRjE8K5kSLwYJ6eLQtGjtVribt5D
+         EuP0VxZ3BwVq1DVrm0sUbNpe+olqD8sfKL/hn0XhPp8PRppq4c37pWgazV77WJdi+mVt
+         J+Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCWzsRFPccU7QPNfp3SSM96NGkNe9OW02aUgDnzSYhDkAgkIaXjDbEKqHcB9BiCvobmaii01KML0c+WAt+w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhUmtbN/r2lPmpHYlPvC1p7bF7XoP593T4I29cp9RWVgoZ5kUC
+	78oCkxbhdTgx1oJuQ4XYYmtIfEM2WoEYqSE2F3/R5ZEyeOlPojNVXu/qyLWBKN0rrvdSQfDAgul
+	A7aaVhdXu3qc4bOKNOEd+fmKkZbZ9/bQ=
+X-Gm-Gg: ASbGncu1j1kQsPsNXkn/72LfWamFoMMTjxJ6sUAskHCBEc9IXu8R+QojOfgPZNrKbuf
+	WyfE2RgiNUPQHgyKYcZyy1Bp++fCgBx4dTa8X3ZaGDDInsr+FrOuJHlZrZF58HgpPcWX0XnY0ef
+	+yaCw6VVFtwRtE8QOfPlH2ExzN7UmHaCOT7f9JhOAhZPr2IXKOd/eJ8MRuoW/+Pjhdk1EaNAB87
+	Pohqjup
+X-Google-Smtp-Source: AGHT+IG2OpBwgrzW1tGXTKHhCvFJxT6+QTACraQ+4La5od/G8sAeSk6s5/oSwHcphG/Rbx7PyRjjmu0zbq04Wz+pt1M=
+X-Received: by 2002:a17:902:e551:b0:240:8717:e393 with SMTP id
+ d9443c01a7336-2445855d35amr27380075ad.5.1755197660947; Thu, 14 Aug 2025
+ 11:54:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ec0dcd14-e974-43ff-b4f4-3dfe2f31a91c@t-8ch.de> <20250814162211.566168-2-areejhamid8560@gmail.com>
-In-Reply-To: <20250814162211.566168-2-areejhamid8560@gmail.com>
+References: <ec0dcd14-e974-43ff-b4f4-3dfe2f31a91c@t-8ch.de>
+ <20250814162211.566168-2-areejhamid8560@gmail.com> <CANiq72mbTqu8KuKn1uKM8czesrg+or-S3K9e_ohJz1b6kzdffw@mail.gmail.com>
+In-Reply-To: <CANiq72mbTqu8KuKn1uKM8czesrg+or-S3K9e_ohJz1b6kzdffw@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 14 Aug 2025 20:49:00 +0200
-X-Gm-Features: Ac12FXwYHuu9UlOPgQRW4suxB6h68H-iKwUS921ZWH_ISDelKyVsKoaH1ooqji4
-Message-ID: <CANiq72mbTqu8KuKn1uKM8czesrg+or-S3K9e_ohJz1b6kzdffw@mail.gmail.com>
+Date: Thu, 14 Aug 2025 20:54:08 +0200
+X-Gm-Features: Ac12FXxybBvTV1eECTHV-8gFuZ3Wi3EHZqw-1RbS55cKepkyOA4bq0h6O62VfBs
+Message-ID: <CANiq72k0-dggqh-z5JLhrUbuQf_RHCOCjd=iYF+Fv+wLT8=x0w@mail.gmail.com>
 Subject: Re: [PATCH v2] rust: lib: add if_cfg! macro for conditional compilation
 To: Areej Hamid <areejhamid8560@gmail.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
 	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@linaro.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, viresh.kumar@linaro.org, tamird@gmail.com, 
-	dingxiangfei2009@gmail.com, gregkh@linuxfoundation.org, 
-	thomas.weissschuh@domain.com
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	viresh.kumar@linaro.org, tamird@gmail.com, dingxiangfei2009@gmail.com, 
+	gregkh@linuxfoundation.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 14, 2025 at 6:25=E2=80=AFPM Areej Hamid <areejhamid8560@gmail.c=
-om> wrote:
+On Thu, Aug 14, 2025 at 8:49=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> +/// # Key difference from `cfg!()`
+> Finally, we may want to consider putting this into somewhere else,
+> rather than the root file of the crate.
 
-Please add an empty docs line after headers. Also before opening examples b=
-elow.
+By the way, there are some strange addresses in Cc: Thomas at domain
+dot com, Andreas at Linaro, etc.
 
-> +/// - `cfg!()` evaluates a configuration flag at compile time, but both =
-branches must be valid Rust code
+Where are you fetching those from? Please use the ones from the
+`MAINTAINERS` file.
 
-Please use intra-doc links wherever they may work. Also please end
-sentences with a period in docs and comments.
-
-> +/// - `if_cfg!()` compiles only the active branch, so the inactive branc=
-h can reference
-> +///   functions, types, or constants that may not exist under certain co=
-nfigurations
-
-Perhaps we could say "... branch can, for instance, reference ...", or
-that it is not type checked in general, i.e. more things than
-undefined items are allowed.
-
-> +/// // FOR CONFIG_64BIT
-
-I would skip this line.
-
-By the way, Tamir suggested in the linked Rust for Linux issue to
-match the name of the upstream one in case we want to migrate to the
-standard library one eventually. In the commit message, I would also
-mention this and link to the tracking issue that Trevor mentioned:
-https://github.com/rust-lang/rust/issues/115585.
-
-Finally, we may want to consider putting this into somewhere else,
-rather than the root file of the crate.
+Thanks!
 
 Cheers,
 Miguel
