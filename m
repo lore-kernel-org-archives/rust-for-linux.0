@@ -1,97 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38FD341AA;
-	Thu, 14 Aug 2025 04:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B85D15C158;
+	Thu, 14 Aug 2025 05:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755145728; cv=none; b=ILyWrk1t/ZqCQr4KORyZ5Do1t3bboca/dXmFNpd/RdsHKW802kL9zrZOuyHyOV6+8LCQ1CUhnSD99zFyc9zXOE7gqcsnXQ6rTHloucNs8WpxRPOszW7iPJmk3SKs8zm0mzVSWPTqk1XiBNsbHZK3KFMsRpYCz8LrDKKSgQOw83M=
+	t=1755148030; cv=none; b=L7KhqvObc+51OILXZU1pQovvOGZGpNDyXtPsYLx7zfoFgxaN25t94jwNA0J6jJuamOR7pWZr9tNadn1AAqgECinb7/n0OSK+AteFIBYEm0dSemodLDdp4DIlJJXLwrkDZ0naotMRK2SmWnGSEG6VoUfxedX/WpY+TwJ1td4In10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755145728; c=relaxed/simple;
-	bh=5ZcXwVynuXpUxiBWIA9PyMv6slGY9DtVqh77si6Mv1s=;
+	s=arc-20240116; t=1755148030; c=relaxed/simple;
+	bh=VztCtVb1F6J08m8kcczuqOBBAcn6HWfQArYFqR+enXQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pAvpHYgSnd/WZ2+EsLTvYXbfXNcgIHWxguMi4KWzxnpmn/lqB44J6KmiowrTMomG6d3OAuFu/NR3j7ONRDWxSIFVMGWKor/P5qbYLjY/YogjMeu0xms+08P77ECkma7Hz/57vPxWvCN7T6EKuwXnnAdWHLeDqcWKXkCzxldHlbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FAfElyII; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=bD8V7gWiC+pP7MjmeN1WNSwHqSF5ijlJ+1dh7zxKrHUnMkU+4exo58NdLeZOpVeRhn997h4vk4vUrZ9C1XOaUw9s3nlq8SweAxNselVy7jjwb8wGSIfIKw6i0TM9iXee5I2baSJ2Mt+SxgQxhzT38o0H4b16hgZnjExm0JjKGBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de; spf=pass smtp.mailfrom=t-8ch.de; dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b=Z6xPu47k; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-8ch.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FAfElyII"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06973C4CEEF;
-	Thu, 14 Aug 2025 04:28:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755145727;
-	bh=5ZcXwVynuXpUxiBWIA9PyMv6slGY9DtVqh77si6Mv1s=;
+	dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b="Z6xPu47k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+	t=1755148025; bh=VztCtVb1F6J08m8kcczuqOBBAcn6HWfQArYFqR+enXQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FAfElyIIXB6rR4DYvEuZk/N5cjcirZYUi/Ys5xcUFaFa4gzaYoFSAxubnJ3rStZ5s
-	 8rTEE4hgjJTjdAKpNDG8uKGv/e6yyIxyX+EgofIl7sVix3uCUeQsr0EZJzQhV/bdVK
-	 clLgQPW0pIaJ7s1Nwq7bQ0D2tUa1uAszoGd8h1qL3xOUeiXhiKPc4/ii9XS78fa5ST
-	 Iu8kdzggzIfBr+BUvAXNNwut7FfhbHWdTYn3Wc0YszNcV5ySZ1LF4Or2Pr3Ah/p1z1
-	 bWC8clBXS20ZfYSPLiku3YzUz8zqcUz8j3wlQgcW71UEwd3K4rJP6cg4YjWpPdyduN
-	 94FqqHy0nlA+g==
-Date: Thu, 14 Aug 2025 07:28:43 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: tpm2@lists.linux.dev, linux-integrity@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Josh Triplett <josh@joshtriplett.org>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: tpm2_protocol/tpm2sh
-Message-ID: <aJ1l-xZ6-UlIsX0L@kernel.org>
-References: <aJ1kNzDf-9r_16Cs@kernel.org>
+	b=Z6xPu47k6TbziQ1cHXsBO9JK7M/eMUFmb7dID/QrQty8SHOeEQaXa8cYvenR/qEdu
+	 ADWjkppBxpyNNwUb0epVQjdev1i7oitz9n52DalNZFGfr+ApJaHBLk7WqHdXaowjbP
+	 EnPTLFie6SAqkgtFt+YmfG5B0Mh4Cv0f+zMu0pIk=
+Date: Thu, 14 Aug 2025 07:07:05 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+To: Areej <areejhamid8560@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Tamir Duberstein <tamird@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>
+Subject: Re: [PATCH] rust: lib: add if_cfg! macro for conditional compilation
+Message-ID: <ec0dcd14-e974-43ff-b4f4-3dfe2f31a91c@t-8ch.de>
+References: <20250813203826.3145553-1-areejhamid8560@gmail.com>
+ <7cca1f5d-e214-481c-96a8-b841ad1d8fb9@t-8ch.de>
+ <CAMjM9+b60ate7cpHfm6uPHFauuYyPA1KcukqMgLjCQcC_zak+A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aJ1kNzDf-9r_16Cs@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMjM9+b60ate7cpHfm6uPHFauuYyPA1KcukqMgLjCQcC_zak+A@mail.gmail.com>
 
-On Thu, Aug 14, 2025 at 07:21:15AM +0300, Jarkko Sakkinen wrote:
-> Hi,
-> 
-> Crates for 0.5.4:
-> 
-> https://crates.io/crates/tpm2_protocol
-> https://crates.io/crates/tpm2sh
-> 
-> As I said earlier tpm2_protocol is no_std, zero 3rd party dependence
-> crate that does not require a memory allocator, and its first priority
-> driver for design choices has been Linux kernel. However, given the
-> design, it could even power the actual chip itself orchestrated by a
-> microcontroller.
-> 
-> It's unipolar TPM 2.0 protocol implementation, which can power anything
-> from to actual chips given ability to build and parse both commands and
-> responsese.
-> 
-> This mean in English that if you take e.g., a command byte stream, parse
-> it and feed that to the builder you will get the exact same bytestream.
-> The same principle applies responses.
-> 
-> For upcoming release the rest of the work is basically just populate
-> rest of the TCG spec, which is easy given the declarative domain
-> language designed with `macro_rules!` construct.
-> 
-> "A demo video":
-> 
-> https://social.kernel.org/notice/Ax9FRqKTBL69UYMIW8
-> 
-> Some things we could do given someone has some driver to do so, which
-> we could not realistically do with the pre-existing C driver:
-> 
-> 1. Super high-granularity configurable resource manager (perhaps with
->    eBPF filtering)
-> 2. Kernel driven vTPMs (as it is bidirectional).
-> 3. Perhaps even offer vTPM implementations also for CoC VMs.
-> 4. Not in kernel necessarily but if you have a keystore/crypto product
->    you can use it for building interoperability layer.
-> 5. Given extremely sophisticated building/parsing capabilities,
->    implementing e.g., a tailord remote attestation server becomes super
->    easy, given that server can use it (w/o TPM ofc) to to carve the data it
->    wants from the protocol shenanigans.
-> 
-> Can rarely say this but it's the first ever unipolar and across the
-> board role agnostic TPM2 protocol implementation - first of its kind
-> :-)
+Hi!
 
-****
+Please respond inline instead of top-posting.
 
-BR, Jarkko
+On 2025-08-14 05:22:51+0500, Areej wrote:
+> On Thu, 14 Aug 2025 at 01:59, Thomas Weißschuh <thomas@t-8ch.de> wrote:
+> 
+> > On 2025-08-14 01:38:26+0500, Areej wrote:
+> > > Add a new if_cfg! macro to simplify conditional compilation using
+> > > cfg attributes. This macro expands to paired #[cfg(cond)] and
+> > > #[cfg(not(cond))] blocks, allowing compile-time selection between
+> > > code branches in both expression and statement contexts.
+> > >
+> > > Suggested-by: Benno Lossin <lossin@kernel.org>
+> > > Link: https://github.com/Rust-for-Linux/linux/issues/1183
+> > > Signed-off-by: Areej Hamid <areejhamid8560@gmail.com>
+> > > ---
+> > >  rust/kernel/lib.rs | 37 +++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 37 insertions(+)
+> > >
+> > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > > index ed53169e795c..47e73949392d 100644
+> > > --- a/rust/kernel/lib.rs
+> > > +++ b/rust/kernel/lib.rs
+> > > @@ -294,6 +294,42 @@ macro_rules! asm {
+> > >      };
+> > >  }
+> > >
+> > > +/// Conditionally compiles and executes code based on a `#[cfg]`
+> > condition.
+> > > +///
+> > > +/// Expands to `#[cfg(cond)] { ... }` and `#[cfg(not(cond))] { ... }`,
+> > > +/// allowing conditional compilation in both expression and statement
+> > positions.
+> > > +///
+> > > +/// This macro is useful when both branches must be valid Rust code and
+> > the
+> > > +/// selection between them is done at compile time via a config option.
+> > > +/// # Examples
+> > > +/// ```
+> > > +/// # use kernel::if_cfg;
+> > > +/// // Select a value depending on CONFIG_64BIT.
+> > > +/// let x = if_cfg!(if CONFIG_64BIT {
+> > > +///     64
+> > > +/// } else {
+> > > +///     32
+> > > +/// });
+> >
+> > Isn't this the same as cfg!()?
+> >
+> > if cfg!(CONFIG_64BIT) {
+> >         64
+> > } else {
+> >         32
+> > }
+> >
+> > https://doc.rust-lang.org/std/macro.cfg.html
+
+> The key difference is that cfg!() requires both branches to contain valid,
+> compilable code, while if_cfg!() uses true conditional compilation via
+> #[cfg], so only the branch that matches the configuration is compiled. This
+> difference matters when different configurations enable/disable entire
+> subsystems, and functions or types may only exist under certain config
+> options. The if_cfg!() macro enables cleaner conditional compilation
+> without compilation errors from referencing code that isn’t included in the
+> current configuration.
+
+The docs for if_cfg!() also says that "both branches must be valid Rust code".
+And the example case would be better served by cfg!(). Can both the docs and
+example provide a clear distinction between the two?
+
+> > the
+> 
+> > > +///
+> > > +/// // `x` will be 64 if CONFIG_64BIT is enabled, otherwise 32.
+> > > +/// assert!(x == 64 || x == 32);
+> > > +/// ```
+> > > +#[macro_export]
+> > > +macro_rules! if_cfg {
+> > > +    (if $cond:tt { $($then:tt)* } else { $($else:tt)* }) => {{
+> > > +        #[cfg($cond)]
+> > > +        { $($then)* }
+> > > +        #[cfg(not($cond))]
+> > > +        { $($else)* }
+> > > +    }};
+> > > +    (if $cond:tt { $($then:tt)* }) => {{
+> > > +        #[cfg($cond)]
+> > > +        { $($then)* }
+> > > +        #[cfg(not($cond))]
+> > > +        { () }
+> > > +    }};
+> > > +}
+> > > +
+> > >  /// Gets the C string file name of a [`Location`].
+> > >  ///
+> > >  /// If `file_with_nul()` is not available, returns a string that warns
+> > about it.
+> > > @@ -337,3 +373,4 @@ pub fn file_from_location<'a>(loc: &'a
+> > core::panic::Location<'a>) -> &'a core::f
+> > >          c"<Location::file_with_nul() not supported>"
+> > >      }
+> > >  }
+> > > +
+> >
+> > Spurous whitespace change.
+> >
