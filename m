@@ -1,164 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C011DF24F
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 07:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB441862;
+	Fri, 15 Aug 2025 07:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755242944; cv=none; b=Z93o56imidKNodv9lIazM0QsgBJ8juQ+/LPooNis59hEXWMmzm0AZIxHiAMGdNW4BAfIZgnStSVXs+Hczoqt5XJ2togG6ovLmrGpUsfIsS0MYD0w9dFK5jUuV/imImV7hThxYZ1O8EVZ6PbFYaC5sne71AhomouoPnOKlfUkFLs=
+	t=1755243101; cv=none; b=HZKaveQzXqvcXLi7ky/Rw+KagyfXYdMChG5HLvx/zFcyjOxTi11o+cR8XRKloy9ftInsQrucF1NbsqznslgziBe1IJmL1zVv/VZObnVWqxUWRXvw+JoNIj8qjEs5MXWArwc+fdqK5ulLSFvWQ3+KeBNnNblJxSc/hbKBHSHALVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755242944; c=relaxed/simple;
-	bh=Sd3VPQiKfga6AjzXlYQ5uWGAwwjLJYkJTxxir73nSSw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=XUnaVusivjAJq38VwIH7ny9UvWbiERM8ocdCVkPgAQxAybpyioiKuyIbyc8++hFStmY0ZxyVCLex5BTTD3T/YMUlqg/owgBvOGZ5uDFos5NtGHaj2T5j0/4w6dDvmqj1Ysq6rzVIDZBdYrv4x1ZrXQIYDtHIQ5G298jslDC2BQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJYL7Zr5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755243101; c=relaxed/simple;
+	bh=pzI+PzwBdiJXG7Rnf/MUlf5BoxNaAVR/4KH77t5lHuM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=A5E/lZCmE7lLcrgUNx4+OZ3SkDHCXMW9SMaETg0T0gTqs3CT+rIprJyXYB+0kq1KOlzafQDrj+n82Vu6gyu1rwK48EG4x5CvCk6FFMIVd4zBxPZy9fqRpAJHzgJ27rP91D5JTx/l3aoSsxH/gC8VtWOaAxduQl1M6ZPY4Jq3yWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQWJKGP6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJYL7Zr5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA31C4CEEB;
-	Fri, 15 Aug 2025 07:29:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQWJKGP6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFDEC4CEEB;
+	Fri, 15 Aug 2025 07:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755242943;
-	bh=Sd3VPQiKfga6AjzXlYQ5uWGAwwjLJYkJTxxir73nSSw=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=IJYL7Zr5HL0UyGHeKHHDhZM0TJFW8ma3VmqZ171AQIJaUkt5nuDJEWFCJU03idgUL
-	 GUtwgiy3Fo6FJuQdmLbLGx/Fz9sbbds8tR1Rs0/qhd3yhQMO2qpZLj/uZVXsCoa3MW
-	 vxk7Mak8SF2DtekONHt+SdOV9RSXkh6G2TH8mC+HAn4FMaTxLyNYs+1PRu8iGjTuAC
-	 jyeDdrELC62U6ZA+Zj0n6r2obLRFinLznI5qLEHILs7rp4rGeYdqIY/nztpYCq4ZQc
-	 +baTs9jFDahqBJqvJXkxwi6FE6gilVnWePoQZu7MXwR21XcT8MqvGvPYktd/OuYNv8
-	 DEKFdl5vPXKdQ==
+	s=k20201202; t=1755243101;
+	bh=pzI+PzwBdiJXG7Rnf/MUlf5BoxNaAVR/4KH77t5lHuM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=oQWJKGP6gtCw1h1qH9RTOdClZX1YTDilo23ktLBDHUigtmARP4mX7tFmeptF0xHS6
+	 unKZbkhn3Ey3Mfj9uSR+ssvoXd/7C5hvBLxhhXo04fliJ948lpaFjS1QJHZWocWeBo
+	 NxLdjQo7+NyVc934wLn2hJnGcBKSLSElwNk/QBe4c8CxPQgPSCsJl3IeIQB9uocwt6
+	 yMGJCS+q7aGsmtvpsYvNIH9dq25oIDcs370kB95QNn+h15nxPC/SWtC512iFgTH+d2
+	 Bd5JdcqWL2F9GRfvIW2mkT7986By3+PPD35F9+rTEYsC2765NINY/BAvI0U67xJSOe
+	 l3FD4eQbBEDAw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 15 Aug 2025 09:30:47 +0200
+Subject: [PATCH v5 12/18] rust: block: add block related constants
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 15 Aug 2025 09:28:59 +0200
-Message-Id: <DC2TOYQG9QEI.2TZ4GFFZGF05W@kernel.org>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-Cc: "Simona Vetter" <simona.vetter@ffwll.ch>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v4 0/4] Untrusted Data API
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250814124424.516191-1-lossin@kernel.org>
- <2025081416-sufferer-economist-3f00@gregkh>
- <DC295B7454Y8.9RVKVMPORAZ9@kernel.org>
- <2025081448-creation-timid-b972@gregkh>
- <DC2BPSUKOWAX.2QTWBJM1ZQPJ3@kernel.org>
- <2025081435-broker-valium-7b22@gregkh>
-In-Reply-To: <2025081435-broker-valium-7b22@gregkh>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250815-rnull-up-v6-16-v5-12-581453124c15@kernel.org>
+References: <20250815-rnull-up-v6-16-v5-0-581453124c15@kernel.org>
+In-Reply-To: <20250815-rnull-up-v6-16-v5-0-581453124c15@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Jens Axboe <axboe@kernel.dk>, Breno Leitao <leitao@debian.org>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1050; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=pzI+PzwBdiJXG7Rnf/MUlf5BoxNaAVR/4KH77t5lHuM=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBonuI+NR1bm5f6cjdHO68QuIpWUgAQN2aK+HG51
+ YYTG3A+YBWJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaJ7iPgAKCRDhuBo+eShj
+ d51lEAC7gK4el8MDA3IF/dUMneYYCjOWN/qhhObe1yJ8CTdt16cTDagRa0ww86UJ6KXUvEUBG6J
+ 9hvJopnLvcVT2uGNLJ8NH5Z15ntMirhKW+dflkmPZM+nRSDk79fvsrGMerrJoK8hcGybBnleenc
+ A4jyFOvnq8MDqXAnRdxZ8c3vDplAALdhcBS0Vz0xcnkHxBOTXUyLR0K2jvXxKrqv9RQuKbtFc2l
+ VEAe+NCN1+9RtsZ0cWwdGBpLokAUV1u0loXjQSZI+yRyiDnUHt1bg/lMV4p11uLGsdNRKbO+kwW
+ usIGxdTCW8VtiNcHgFn3PkUqYWROGxE81iJCGD8IX+iV2zBmjDaOjtQ8U6VIMYaW5Bk/FqBVBzF
+ cU1gyr4C49QGJkjmtfIwa+5DTwWR7LrifMIcUgJMBSc5ZUKWAwRevdjQZSemJ/29o2kOSwXkQXU
+ NYCmKDMBsztu5EhK0VjtdS6RcovlBO1vJxmwaoCvrJYtcC+vyIh3naGzT39bHav6X9h8HpncIcR
+ pBGmABThZD51BgwSNJdlYtTU8+jElIY7IFNXy/lfVOOBFV2i7mg95YdLxt7c6n5FELoSfWYo5C/
+ FVoKQWowg7yLS7fT0i36tYi6JsbolEjCrULiO/h3PuIqM7Gun+up5C6vEVoVBIuSjiia7Th5GL9
+ if1hvdqt/BzIA3A==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Thu Aug 14, 2025 at 8:26 PM CEST, Greg KH wrote:
-> On Thu, Aug 14, 2025 at 07:23:45PM +0200, Benno Lossin wrote:
->> On Thu Aug 14, 2025 at 5:42 PM CEST, Greg KH wrote:
->> > On Thu, Aug 14, 2025 at 05:22:57PM +0200, Benno Lossin wrote:
->> >> On Thu Aug 14, 2025 at 4:37 PM CEST, Greg KH wrote:
->> >> > On Thu, Aug 14, 2025 at 02:44:12PM +0200, Benno Lossin wrote:
->> >> >> I didn't have too much time to spend on this API, so this is mostl=
-y a
->> >> >> resend of v3. There are some changes in the last commit, updating =
-to the
->> >> >> latest version of Alice's iov_iter patche series [1] & rebasing on=
- top
->> >> >> of v6.17-rc1.
->> >> >>=20
->> >> >> I think we should just merge the first two patches this cycle in o=
-rder
->> >> >> to get the initial, bare-bones API into the kernel and have people
->> >> >> experiment with it. The validation logic in the third patch still =
-needs
->> >> >> some work and I'd need to find some time to work on that (no idea =
-when I
->> >> >> find it though).
->> >> >
->> >> > Nice, thanks for reviving this!
->> >> >
->> >> > And we should at least add an example using it, otherwise it's not =
-going
->> >> > to help out much here.  Add it to the misc device driver api?
->> >>=20
->> >> You mean `rust/kernel/miscdevice.rs`? What parts of that API are
->> >> untrusted?=20
->> >
->> > mmap() is, but you can't do anything about that...
->>=20
->> Which parameter is untrusted there and why can't I do anything about it?
->
-> The whole memory range is untrusted as to what is written there, sorry,
-> it was a bad attempt at a joke, the kernel never gets a chance to know
-> what is happening.
+Add a few block subsystem constants to the rust `kernel::block` name space.
+This makes it easier to access the constants from rust code.
 
-Ahh that flew over my head :) So we'd either build `Untrusted` directly
-into the `VmaNew`/`VmaRef` abstractions -- or if there is a way to have
-a trusted `VmaNew`, we can wrap it in `mmap`.
-
->> > ioctl() is the callback that is taking untrusted data from userspace.
->> > That's one place we have had more kernel buffer overflows then I can
->> > count and ALWAYS needs to be properly verified before anything can be
->> > done with the data there.
->>=20
->> Are the `cmd` & `arg` parameters the untrusted part?
->
-> Yes, especially as `arg` is usually a pointer to "something".
->
->> If so we probably
->> should have a single parameter so users can verify them at the same
->> time. Or am I thinking of the wrong thing to verify? (`file` should be
->> already in kernel memory, right?)
->
-> Both are usually verified at different places, first `cmd` tells what
-> `arg` is going to be, and then the code goes off and parses whatever
-> `arg` points to (or contains for simple ioctls).
->
-> And for some, `arg` is just a place to write something back, so `arg`
-> needs no verification for them, it depends on what `cmd` is.
-
-I still think grouping them together makes sense, since in the
-validation function you'd want access to both, right? And these use
-cases seem perfect for enums:
-
-    enum MyIoctlArgs {
-        WriteFoo(UserPtr<Foo>),
-        VerifyBar(UserPtr<Bar>),
-        // ...
-    }
-
-And then in the validation function you can do:
-
-    const WRITE_FOO_CMD: u32 =3D ...;
-
-    fn validate(cmd: u32, arg: usize) -> Result<MyIoctlArgs> {
-        Ok(match cmd {
-            WRITE_FOO_CMD =3D> MyIoctlArgs::WriteFoo(UserPtr::from_addr(arg=
-)),
-            VERIFY_BAR_CMD =3D> MyIoctlArgs::VerifyBar(UserPtr::from_addr(a=
-rg)),
-            _ =3D> return Err(EINVAL),
-        })
-    }
-
-So when wrapping them together we could have:
-
-    pub struct IoctlArgs {
-        pub cmd: u32,
-        pub arg: usize,
-    }
-
-And then change the `MiscDevice::ioctl` function to:
-
-    fn ioctl(
-        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-        _file: &File,
-        _args: Untrusted<IoctlArgs>,
-    ) -> Result<isize>
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
-Cheers,
-Benno
+ rust/kernel/block.rs | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/rust/kernel/block.rs b/rust/kernel/block.rs
+index 150f710efe5b..32c8d865afb6 100644
+--- a/rust/kernel/block.rs
++++ b/rust/kernel/block.rs
+@@ -3,3 +3,16 @@
+ //! Types for working with the block layer.
+ 
+ pub mod mq;
++
++/// Bit mask for masking out [`SECTOR_SIZE`].
++pub const SECTOR_MASK: u32 = bindings::SECTOR_MASK;
++
++/// Sectors are size `1 << SECTOR_SHIFT`.
++pub const SECTOR_SHIFT: u32 = bindings::SECTOR_SHIFT;
++
++/// Size of a sector.
++pub const SECTOR_SIZE: u32 = bindings::SECTOR_SIZE;
++
++/// The difference between the size of a page and the size of a sector,
++/// expressed as a power of two.
++pub const PAGE_SECTORS_SHIFT: u32 = bindings::PAGE_SECTORS_SHIFT;
+
+-- 
+2.47.2
+
+
