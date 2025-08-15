@@ -1,85 +1,136 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF6D2D7D4D
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 17:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7275B304BC1;
+	Fri, 15 Aug 2025 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755277495; cv=none; b=jsyMUaGAAQ8mLypPjzL555B8xdfN6mzEcJsjb7b/GFFWySw8lGTmCLEAb6aHq6DbsEfZWuwRCIzUFig1C/wlcHG+jpR2rlsmEgDpnHe6z42zzkytGolcb36r/wucYTsYlGTa6Njilr5rbUSIyPlS9OsFtiE0qL1QrZBkP76zUwQ=
+	t=1755277870; cv=none; b=Igv+jVDsVMPLiXJGPu5ER2eDXsBUndAXWAe4xhQbYtDepfBlerDYA6Z2uKIkmCZC55b4Fb995an2pyQdtQg9ancdS83HPm8+v5KbFR+X35/0n9z+Gwys9y6vgFsvkZXIytxrGb6Wbrfu6m9JIQbpNtNDd52lcIxVnWSAmSugUuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755277495; c=relaxed/simple;
-	bh=pC5bLcdkEKEzk7/azGTu2LaNzgZom/vRH9DYIodWmmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AyDiPYEDF8FY1A8Tn3gtPZ+s+32Y7QGv3v0x8nx0RYOFcsWRhyQ4KO1Q/enAyyc3C+be1UNhGSyY/uiDRdiDs1r0VhIVpvIPa0v7u9Ibjic2MlhMY6IR1rqCjpbh+G7/+r6uSLZyXz1QGIqEOqPQhTePozjiZS6VNi7zJ4/gRTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiFBFTPY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755277870; c=relaxed/simple;
+	bh=CZCB9C4OC01lRaJnY1+mbzNcaU4SLBsIwe2LGd1+qkI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K1um+wnizT5k7ifQXetwh17qesnnCHJjSmVjVgpXgtg7svMgxSLSfUntiOCkyklaf1U//Ya2EDOueVR+I/aWiCecmoLMj40j9ca8c3zZYtYVbi8ZxI/bGmElDv2rRAaSNT2Ae6somA+dnu/3amXEuQxJcq4XmaQPSaCy5T/zXHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ck8DlEiw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiFBFTPY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B551C4CEEB;
-	Fri, 15 Aug 2025 17:04:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755277494;
-	bh=pC5bLcdkEKEzk7/azGTu2LaNzgZom/vRH9DYIodWmmw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fiFBFTPYfSmh3tnLkpQ3kyt+PCgpaitkZNHulfJDIdLPAFis9QHnpidcfdvNjncm+
-	 Vnqto/Z27umPQM5pj6CeLQgCtZLbBdX7sjGDI7PrLMGbw9Mkcsx69j+TScUWwm4l5A
-	 hMoE6Dh2SAg6tW8D4Lfftf/d7t3IG3m0dw3qIwkI=
-Date: Fri, 15 Aug 2025 19:04:40 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Igor Korotin <igor.korotin.linux@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
- abstractions
-Message-ID: <2025081514-filter-unfunded-e312@gregkh>
-References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154042.14327-1-igor.korotin.linux@gmail.com>
- <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org>
- <CAG7QV93KGmoJ6+if-ZuwBF91x0BVDUKbOegspk2MC8r9OjvA9g@mail.gmail.com>
- <909d0a86-16df-4469-aa13-1f248f0ce46c@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ck8DlEiw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D882C4CEEB;
+	Fri, 15 Aug 2025 17:11:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755277870;
+	bh=CZCB9C4OC01lRaJnY1+mbzNcaU4SLBsIwe2LGd1+qkI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ck8DlEiwIAMpZsKHxE9x2OD45YbpJgT7BAGZbyEnvLhafVZxG6grzCRsvDRnutSQq
+	 5dzApt+oMDlmQT6XLnHVmfU1339H1mQ62OGpYg+mA1uBy120koCBbLhLh9M6WORFbn
+	 KeQQBv0eEcOXpX33/RHflxAWkjXuVE18aMP2cr/qpdO6j9IrOhDJfcwoti1qWRstTY
+	 IxCu5hWynaJNlSOhDLk24ZeOtZ51xojdTRlSIZh1EOkaHCXZDaea0r2HxsCS40ANXL
+	 x7Tff1uwLiobSmOcQFHvo9q0LS6x/wrpIP0IwGw8LEpplstXPOUm7KaPyH1jSddTtr
+	 dI/gZ/ROgH71g==
+From: Danilo Krummrich <dakr@kernel.org>
+To: akpm@linux-foundation.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	abdiel.janulgue@gmail.com,
+	acourbot@nvidia.com,
+	jgg@ziepe.ca,
+	lyude@redhat.com,
+	robin.murphy@arm.com,
+	daniel.almeida@collabora.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 0/4] Rust infrastructure for sg_table and scatterlist
+Date: Fri, 15 Aug 2025 19:10:01 +0200
+Message-ID: <20250815171058.299270-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <909d0a86-16df-4469-aa13-1f248f0ce46c@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 15, 2025 at 06:03:32PM +0200, Danilo Krummrich wrote:
-> On 8/15/25 5:40 PM, Igor Korotin wrote:
-> > Hello Guys
-> > 
-> > Preparing v4, I keep thinking if for I2C I should rename `i2c::Device`
-> > to `i2c::I2cClient` or `i2c::Client`. The reason why I made it `Device`
-> > for the first iterations is so it would be the same code as for
-> > PCI/Platform code for example.
-> > But the original I2C C code has other terminology. Do you think it worth
-> > keeping it in the Rust code?
-> 
-> I think the reason I2C names this i2c_client and i2c_adapter is that technically
-> both are I2C devices, hence just i2c_device would have been ambiguous.
+This patch series provides abstractions for struct sg_table and struct
+scatterlist.
 
-Yes, when I did that code 20+ years ago, it was hard to pick out good
-names.  Also we were converting over from the existing non-driver-model
-i2c code, which had those names at the time, so we kept them as much as
-possible.
+Abdiel and me agreed for me to take over his previous iterations on this topic.
+I decided to send my patches as a new series rather than as a subsequent version
+of Abdiel's previous iterations, since the changes I made turned out to be much
+closer to a full rewrite.
 
-> What about i2c::ClientDevice and i2c::AdapterDevice?
+The most notable differences in design are:
 
-I would try to keep them matching the same as the C side, as
-i2c_client_device and i2c_adapter_device wouldn't make much sense there
-either.
+  - SGTable utilizes BorrowedPage, AsPageIter and VmallocPageIter from my patch
+    series in [1].
 
-thanks,
+  -  SGTable is a transparent wrapper over either struct Owned<P> (where P is
+     the provider of the backing pages) or struct Borrowed, which by itself is a
+     transparent wrapper over Opaque<bindings::sg_table>, i.e. either
+     SGTable<Owned<P>> or just SGTable (which is equivalent to
+     SGTable<Borrowed>.
 
-greg k-h
+     - `SGTable<Owned<P>>`: Represents a table whose resources are fully managed
+       by Rust. It takes ownership of a page provider `P`, allocates the
+       underlying `struct sg_table`, maps it for DMA, and handles all cleanup
+       automatically upon drop. The DMA mapping's lifetime is tied to the
+       associated device using `Devres`, ensuring it is correctly unmapped
+       before the device is unbound.
+
+     - `SGTable<Borrowed>` (or just `SGTable`): A zero-cost representation of an
+       externally managed `struct sg_table`. It is created from a raw pointer
+       using `SGTable::as_ref()` and provides a lifetime-bound reference
+       (`&'a SGTable`) for operations like iteration.
+
+     - As a consequence, a borrowed SG table can be created with
+       SGTable::as_ref(), which returns a &'a SGTable, just like similar
+       existing abstractions.
+
+       An owned SGTable is created with SGTable::new(), which returns an
+       impl PinInit<SGTable<Owned<P>>, Error>, such that it can be initialized
+       directly within existing private data memory allocations while providing
+       the required pin guarantees.
+
+  - SGTable<Owned<P>> uses an inner type Devres<DmaMapSgt> to ensure that the
+    DMA mapping can't out-live device unbind.
+
+  - SGTable<Owned<P>> uses pin-init for initialization.
+
+This patch series depends on [1] (branch containing the patches in [2]). A
+branch containing this series (including dependencies) can be found in [3];
+Abdiel's latest series can be found in [4].
+
+[1] https://lore.kernel.org/rust-for-linux/20250814093427.19629-1-dakr@kernel.org/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=page-iter
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=scatterlist
+[4] https://lore.kernel.org/lkml/20250718103359.1026240-1-abdiel.janulgue@gmail.com/
+
+Danilo Krummrich (4):
+  rust: dma: implement DataDirection
+  rust: scatterlist: Add type-state abstraction for sg_table
+  samples: rust: dma: add sample code for SGTable
+  MAINTAINERS: rust: dma: add scatterlist files
+
+ MAINTAINERS                     |   4 +-
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/scatterlist.c      |  24 ++
+ rust/kernel/dma.rs              |  41 +++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/scatterlist.rs      | 433 ++++++++++++++++++++++++++++++++
+ samples/rust/rust_dma.rs        |  35 ++-
+ 8 files changed, 530 insertions(+), 10 deletions(-)
+ create mode 100644 rust/helpers/scatterlist.c
+ create mode 100644 rust/kernel/scatterlist.rs
+
+
+base-commit: a66548bf306b60441ed2ea6b034a0cd69f464e74
+-- 
+2.50.1
+
