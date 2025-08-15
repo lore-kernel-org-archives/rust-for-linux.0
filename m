@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131023176EB;
-	Fri, 15 Aug 2025 18:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AE8256C88;
+	Fri, 15 Aug 2025 18:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755280912; cv=none; b=qpeMe0j+fhHJjwUxZJ6PXROhcD+6ChOxI5kY7BKLtp1gHg1O38TQ/znJ3NvgCC1HA7DcoF6czPmEyca1RhkTiZ4u1xwxjcvOBuMfNuk5oiwbUtpJS+6GdUwZl2VX5Ic6uLPyAMLK/xXJJGWt2GbQ7PR5zUkByCe/WYPclmWxtHg=
+	t=1755281271; cv=none; b=TTb2VqI29CjCuYw/F/6MvZaEA7PwJROo7pmD9GLPpPvmLUj49lEl9lrgBcqsJDADQAEniYdfK53zuAkRvJpDeK4BCNb+o04BRv8xw7xAZ0oIRvmMlP4stJVBmm7CUMt/67vtPTMGHlHBhczvzrFbZszW1aZ1sUGwSXt06Gq0J6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755280912; c=relaxed/simple;
-	bh=AFyYB0wpVMm3e8zRTQY3fAP9SvqL9JqCgXTigHPqAqY=;
+	s=arc-20240116; t=1755281271; c=relaxed/simple;
+	bh=MxlgQuGwyZk8QbcUKbfz0YUWxyR0dInwsN6Js2PxzWw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ADws9/9cesV09/TFp6LSNLrQE836zUsb2JStMAjnJSXtEGbLFPJIpfS8rb6dLulnOoV4acSiID1R3A1q4B3C75lA+riAFzkWIj1Md7LisrlsAsCibJiy4CPTopp14kCeBK6RkfgUpz/kXFs3EgRDpOQpCksgSDO+aisDLlBpkok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjvNWJqE; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=pG999PRwIp71A1rLIOso+yFDjnJHDx2xvPChcIIX94990OgRfMKz/qFk46FFk/s1RBe+O8yCrK406ol6LHKVs3ln+ARdr1TkBex2wODOj5BkzYCV5mCWZoz7SVjOy2k+NRExK47ObgfI4DH1GxdVd19+NUccfQr1p8zTGj5PGaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rawF6wLW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjvNWJqE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99146C4CEEB;
-	Fri, 15 Aug 2025 18:01:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rawF6wLW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96276C4CEEB;
+	Fri, 15 Aug 2025 18:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755280911;
-	bh=AFyYB0wpVMm3e8zRTQY3fAP9SvqL9JqCgXTigHPqAqY=;
+	s=k20201202; t=1755281270;
+	bh=MxlgQuGwyZk8QbcUKbfz0YUWxyR0dInwsN6Js2PxzWw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SjvNWJqE1dQmWUGZQGKJfIYZi8bWmh8qxwH+Hotz+VSBwrfLVcXOSy3IfKm0z+6O5
-	 Iz1mY7X1zO7NHlou5+U6l6cEqgrDJE1CuqW8eVgMjH9metAhf1nKQGKchvCMfTxYTW
-	 lgeSWLdabq8OMCWbAn5cmdS+IncPxe+96kpXzxLYT1UI6CZ558RMgBwj3+0H0nLirh
-	 b9C1o3jvTfoefycOGsYle14WOOPaikn4x2GbIhHecF2lj8tdKieT4o6x2hSMi7UzDr
-	 r/77nJr5IkLasMpJ4DWeHHzmGVJANwnE0FGnklUkg8icNO+kW6GNDEBpHSGLy+JFut
-	 x4cCjTZ7DLcBA==
-Message-ID: <b45acdf6-045c-4bec-972b-cfc11c77e87d@kernel.org>
-Date: Fri, 15 Aug 2025 20:01:47 +0200
+	b=rawF6wLWD9Ev8c8wzM1CbhmZ61vO7QC9HSxvDTYZybGx7Om1w32RCYws3MXjOjd4W
+	 Ek8zURlCmJ0nSjfgqosmvrTjWZEm2SWpdAex/iRIRB5yYhhO0GH6q+Sy01Kk4vXJrM
+	 MSrDUaAqTTC1wC8oxy2tGnz2wwk0/jKR6oL5+6BSHE36dkddDHMLoUPIbg91sa8nsg
+	 2bVMSITDKlAePRNYpf1HF+3bu5zySptTsoAbrjGoWlXmWIrIwA5z2BluzmQziPlqm4
+	 gnOWgoCuxztxifDd8hPona/lOq8rM/7ulonDG5VWu0sMaZ5mTB3HVrVVG4n1dpjqvW
+	 Lu/DizFLjD0/w==
+Message-ID: <bd2d3077-7855-4195-a34b-a9b1688b75dc@kernel.org>
+Date: Fri, 15 Aug 2025 20:07:45 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,27 +35,26 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/3] rust: make various `alloc` functions `const fn`
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, linux-kernel@vger.kernel.org
-References: <20250720094838.29530-1-work@onurozkan.dev>
+Subject: Re: [PATCH v3 1/1] rust: pci: use c_* types via kernel prelude
+To: herculoxz <abhinav.ogl@gmail.com>
+Cc: bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, linux-pci@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250812033101.5257-1-abhinav.ogl@gmail.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20250720094838.29530-1-work@onurozkan.dev>
+In-Reply-To: <20250812033101.5257-1-abhinav.ogl@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 7/20/25 11:48 AM, Onur Özkan wrote:
->    rust: make `allocator::aligned_size` a `const fn`
+On 8/12/25 5:31 AM, herculoxz wrote:
+> From: Abhinav Ananthu <abhinav.ogl@gmail.com>
+> 
+> Update PCI FFI callback signatures to use `c_` from the prelude,
+> instead of accessing it via `kernel::ffi::`.
+> 
+> Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
 
-I dropped this patch, since it would conflict with [1].
-
->    rust: make `ArrayLayout::new_unchecked` a `const fn`
->    rust: make `kvec::Vec` functions `const fn`
-
-Applied to alloc-next, thanks!
-
-[1] https://lore.kernel.org/all/20250731154919.4132-2-dakr@kernel.org/
+Applied to driver-core-testing, thanks!
