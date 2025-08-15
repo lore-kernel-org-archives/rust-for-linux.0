@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A331A1487D1;
-	Fri, 15 Aug 2025 20:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356374A00;
+	Fri, 15 Aug 2025 21:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755291319; cv=none; b=WRdl1I/3Tx7Y2yTC8WQpp+3MX/ltwDA+GnjuGEVzb/IYTSY5aoSiY6X5+ROIZXuuPeJnKZGYayGvS+igUpj2oiK7EVSVp+QELVsKJYh1Sh0DkkSGF2gRRMRMVw2ry2SID+2SDCf0CY6f0aZmCFDkuu+0xlnPpYWxpeUFIEdEnx0=
+	t=1755292749; cv=none; b=Pmye63jeOUzWGHGHB1Zs5HCVymlemL6lcwRr40X+fEDNIIamRHDmyOlyajcZ4gXCZJgUy+9ba59T67Am9CT/gj2Al+PSXm+LgZ5zAKGCShhfZlQbWmS3nHg71o5TkDgEDTFFoBT4BtnoTjvpPIHb8hhJvTGWZ3d1/Ep1Ix4BDks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755291319; c=relaxed/simple;
-	bh=mfsPXzN4ggnSZQUZHLOnuq0Jf6wKKVa1rBkrUF65quo=;
+	s=arc-20240116; t=1755292749; c=relaxed/simple;
+	bh=bhEvK5wK2YtXTqi0pcFGbwLRtRhDbn8qEwcWJyPDIl0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hAxAu0Vj71LxsDRWR0Huo2FzkZJbKLiw/VhepZX8NbNy6bteeJXLiFBr7vPOUbrm/kc/CvEJ8u/IKIZjynmSBzKfjuMTPOSKQ45k8qPmDNE4gDVdHYJAMXRCzXu1c+O7d9JE2NH7I+ffEdqu/VgMhepJ1IllM/kHja4b25FelhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYIPq1uv; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=BZf0nlrj7p7JF+M7RgVKdB2iri556WOgsOuuuGbXD7Ka0KTcA7dFxKYVl037JJzmNw/HHxESIAt6XRyS8R/2c5zVPJJZlG4H1kdlJnluXCxFKQVy4mhmNVU4E5zaBJ2fVfamFUZ5vke3O+jO6UNtj9jGEONai6VwGPQdJtKq+pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCEEO9d4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYIPq1uv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07403C4CEEB;
-	Fri, 15 Aug 2025 20:55:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCEEO9d4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EDBC4CEEB;
+	Fri, 15 Aug 2025 21:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755291319;
-	bh=mfsPXzN4ggnSZQUZHLOnuq0Jf6wKKVa1rBkrUF65quo=;
+	s=k20201202; t=1755292748;
+	bh=bhEvK5wK2YtXTqi0pcFGbwLRtRhDbn8qEwcWJyPDIl0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BYIPq1uvfFwKIZ++DYeuA6arNCyodKFjFQS7H0YFO8GfxqkcM0L2J3X9spos6mdmE
-	 Uv3MvQgPcpQaX1BYUb71Yb8qywPs0b5/xPQEHVRBzcnI7zsJ2AfzcSFt8XKo/J2yfu
-	 FIeUuIJTBrPxoM7WlFYu3pkRSnIihb8EhxFRi4Hw2amXiwwQpnDmQA57eiPXto1n0U
-	 ZF4UQo/FQuGZmHFI9XYcgV4eaQdTlsYXoGq7T5aLMOIAIE9ESp2Uyi5iuv5LqhCsew
-	 rgw6Gy5JliBEK4PB9HgSgl0LSeOm9bU2r9eK+OY2YnFkYAhqinRb5CkuKslhQLktlf
-	 ynEJd6JX9Az8A==
-Message-ID: <b1a87360-339b-4554-a429-c29980abc454@kernel.org>
-Date: Fri, 15 Aug 2025 22:55:14 +0200
+	b=OCEEO9d414p+6Udjxo+1FmsrM7oKnOJfVjQGPBeV6CGKLFNIaMSbQAR+hILUCH+Cg
+	 UnnE+YMqvTgcjPqSJOBLXF5ls7xoCn28hMAvea/nsHFahCND82tEL4asID8M/YsmIR
+	 F2BSoAY3rY3Ape6Mvh90d8hzr6ujzF43dswID1gJu5a0HlkxLmCArceaU275JJXaBQ
+	 Quh4o95q6sw8mrmt2pQQaxB+Xqc0TQ4vyOxsVZGeaJPi4cc/qPrS+uliMQ/0R3Bc68
+	 WUuWEIf+HKXxE1oY5YTgLC4MpsRloH73GHWFTTVmymW+M45xC1j0sY/ngj76qgbqAI
+	 SH0za9Qjh/Org==
+Message-ID: <1117b9e5-b46a-4661-bfe9-56ff844c1218@kernel.org>
+Date: Fri, 15 Aug 2025 23:19:03 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,34 +35,52 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: dma: Update ARef and AlwaysRefCounted imports from
- sync::aref
-To: Shankari Anand <shankari.ak0208@gmail.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg
- <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+Subject: Re: [PATCH] drm: nova-drm: fix 32-bit arm build
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Alex Gaynor <alex.gaynor@gmail.com>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250814104133.350093-1-shankari.ak0208@gmail.com>
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20250724165441.2105632-1-ojeda@kernel.org>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20250814104133.350093-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250724165441.2105632-1-ojeda@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 8/14/25 12:41 PM, Shankari Anand wrote:
-> Update call sites in the dma subsystem to import `ARef` and
-> `AlwaysRefCounted` from `sync::aref` instead of `types`.
+On 7/24/25 6:54 PM, Miguel Ojeda wrote:
+> In 32-bit arm, the build fails with:
 > 
-> This aligns with the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to sync.
+>      error[E0308]: mismatched types
+>        --> drivers/gpu/drm/nova/file.rs:42:28
+>         |
+>      42 |         getparam.set_value(value);
+>         |                  --------- ^^^^^ expected `u64`, found `u32`
+>         |                  |
+>         |                  arguments to this method are incorrect
+>         |
+>      note: method defined here
+>        --> drivers/gpu/drm/nova/uapi.rs:29:12
+>         |
+>      29 |     pub fn set_value(&self, v: u64) {
+>         |            ^^^^^^^^^        ------
+>      help: you can convert a `u32` to a `u64`
+>         |
+>      42 |         getparam.set_value(value.into());
+>         |                                 +++++++
 > 
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> The reason is that `Getparam::set_value` takes a `u64` (from the UAPI),
+> but `pci::Device::resource_len()` returns a `resource_size_t`, which is a
+> `phys_addr_t`, which may be 32- or 64-bit.
+> 
+> Thus add an `into()` call to support the 32-bit case, while allowing the
+> Clippy lint that complains in the 64-bit case where the type is the same.
+> 
+> Fixes: cdeaeb9dd762 ("drm: nova-drm: add initial driver skeleton")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to alloc-next, thanks!
+Applied to drm-misc-fixes, thanks!
