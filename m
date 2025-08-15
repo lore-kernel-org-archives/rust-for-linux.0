@@ -1,71 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AFF241103;
-	Fri, 15 Aug 2025 08:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C501347DD
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 08:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755245893; cv=none; b=ORFjvbOAn1HP3tS6nk/vtTLq5pVpTNgT3Y1nevsHzQcvIYoizlzeAmvRbxRCFn2u0AgKjEHmKX//9pxdiLJyTdEYkpbc6WIc6NJ4+kXNAgF41O5Y+RGCnfUVPtidOeXjPnMEDJaHhrjM/Q1l97Q3Io4qhohX62GQa2+1wC7kK78=
+	t=1755245943; cv=none; b=DmKIutJ4Rts/H4DdGzaKywIagMbVtMgQADpK8Xwjz+nrzLvqsoHrRyxWaJozB7vrnN3mu9jsm6H0BdXPd2XhCPMh3vDIcey206ExW5/e322/lZKk3Z4d1sxQvfxCs3JVVwX1QxA9Bf4FbuXwdtuRT/4K3fawHGtyZf5tJgYzvRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755245893; c=relaxed/simple;
-	bh=zcUsgqtwck0vJoyHH7aREYeOs6qKr1S6WoXjnCNIOGE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ODgPI9XIUTtTQREkxMKfUaLlGj6X6aBgjUDwpoFqywlasd6DYs9/d6hnowAJ09wIic40o1IjttAvBSwHQLJELv31Qh7TQLnAz0ZNxs9utlNRinFBqtKrskCyk8MsX48Of0y4Es57lzlfIZN5U6hUHSucxH7j63Zy9/uN2R4ETIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dsC81QYL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755245943; c=relaxed/simple;
+	bh=qYNnASJXGgxVvYIwlxVKql8fQDStNuzDeqooYI3aAFg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nJfMg40BDh9jxcyxPTC8zqsi3PynnSHIY6a0SH/gFVCrm5s5/qRfNmy7IUx/SKOqdoGHVkrK/50FkZl7yj8b7NJJm8m1VJjYCC4UYPvu63sJ4X2pL18QCjvjFBR0CdlzS2vKucgQ6ndFjEUaKecjkYgaQkWJVfM/npRDS4VrNWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wOSQ28Bo; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dsC81QYL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FF6C4CEF4;
-	Fri, 15 Aug 2025 08:18:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755245893;
-	bh=zcUsgqtwck0vJoyHH7aREYeOs6qKr1S6WoXjnCNIOGE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dsC81QYL0ftqjtmTLFFRkAED0Y+GmWSPJ2nPhHV+7xxDW6VQnY+05rakk3HGwauOT
-	 NM309QXfYjI0H/MT9PslfYMjmONfGVrNjLUe4RSngeiGZbi1Hcowt6+PDf/Vmwpd/X
-	 l1JgyxsGsjJkkxqk/mMgEifjaHv1T0aD0SUDqoCjbbOcffVhqcpQdRhlZhyx+mif3v
-	 VWUyrKSf8Rn+RDjnX/n3J6C2Asc4Fo/g6fzfPsgW7ye6yg5PI2nZWji7WxbBnlboVx
-	 jeGjmQaHkuIedOE4klFSn/LmcUwK6X8T+CcW4L/ohW6hEecH+0cSug3mD/ugK1lDTG
-	 bU4VcbGCoOuow==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, FUJITA
- Tomonori <fujita.tomonori@gmail.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Boqun Feng
- <boqun.feng@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v7 6/7] rust: time: Add Instant::from_nanos()
-In-Reply-To: <20250813224240.3799325-7-lyude@redhat.com>
-References: <20250813224240.3799325-1-lyude@redhat.com>
- <qhskgOLluo5Q7Ug_Uox4HQdV-bMNVmbCn6OwxFpTKviNdDjlLONxr9WcYXT5-kHQMCSV-lNIdDOxPvA246_zwA==@protonmail.internalid>
- <20250813224240.3799325-7-lyude@redhat.com>
-Date: Fri, 15 Aug 2025 10:11:19 +0200
-Message-ID: <87tt29dmxk.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wOSQ28Bo"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3b9dc5c288eso1246388f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 01:19:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755245940; x=1755850740; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=683V42xtEdd11uSq7e5NHFZBkZMDGTB8S0uZQebs/ak=;
+        b=wOSQ28Bo158IqBqy/pWlDlFsgtv9lfDvzorqDQKoth20vEcitXK+2wDnxfOALv7fHa
+         dUak24mcckjIEVFM9bPAPC022MTuZJ4EwkRnWUcpwZZT6OFgmlLjtuf6npzuc7nZwmE/
+         kQ7mwFi+d6erloD63Pe0pXsHkhftKzd+JYmu2JPW9WyOOO87valTu1DRAqvWUdTNO7hX
+         Dp5fSu8G1HNEmP/4D650Yo89oaUTs70BX9aAVdgZSe5lXVDC9GRrLGX25h2vOO7HU2eO
+         3YXDFHABpy/F4j0G47HQA4kcyAsWXL/7LP8QvJoMkWU3w2A14KcBj8YU0rojYWDpgkyC
+         Z4oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755245940; x=1755850740;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=683V42xtEdd11uSq7e5NHFZBkZMDGTB8S0uZQebs/ak=;
+        b=WVcur3UNtos112nnD0KLJgv5hzeM3AECmm31+7KF5h/tzIqElhsWPzA63xPEiUolpx
+         2FyRotY87zBT1kWLxTVhLEcM7oeR9PZzWmFoWOzovVM6uoSlJICf3pJa4ZoCotlNEDZt
+         m6DMIJmg96OKCzOYkXNZTU8ZAL3MCdNIfC2KYA1+Y2OUEBcJMcVNskvs4GvseV7vWDwT
+         aZw7nKkrxTqF9i85wek1pwLhUjb59KdWTVsNlMSg0J5J6CxgnpKDA5yAaGeUXiu7Nh3E
+         jHzYckuNvZrjH9B4zwDF4SqPSbKn7A5/EOZvL9bFTETwIE556vvR0Tv3BEGKGZLpoHy9
+         KYVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXd0swsTYIv3vetQOJj3n5Xa4JHRUYHTKT/wJpeaz/V12U4gfK/pLsnsXBk7762ZPG6CCr0mLPQctD7yCCnhw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgD7fNf708+nKPz3LF6Bk+h1V8GJQMZH7WWglN7/uEdXQa+m72
+	SsSp9/a9pDVc1OlTRlLmbsK4D7GceMbABT6oe0vvEh3csQX/R5U8YP76psm+Ypwp5BPtcHr39p1
+	lwm6tccSOFxvCW+3/hQ==
+X-Google-Smtp-Source: AGHT+IE+8bwfxGrPX5c+j72P+UldeW2lUoB6l/CiAAVFVMchFmuMTZGNT3nWFVg4Xnt+KARKO8gZ/bdkM0nin/4=
+X-Received: from wmsd12.prod.google.com ([2002:a05:600c:3acc:b0:459:eecf:e14e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:64e8:0:b0:3b7:89a2:bb8c with SMTP id ffacd0b85a97d-3bb671f5058mr803318f8f.16.1755245939593;
+ Fri, 15 Aug 2025 01:18:59 -0700 (PDT)
+Date: Fri, 15 Aug 2025 08:18:58 +0000
+In-Reply-To: <20250815-rnull-up-v6-16-v5-15-581453124c15@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20250815-rnull-up-v6-16-v5-0-581453124c15@kernel.org> <20250815-rnull-up-v6-16-v5-15-581453124c15@kernel.org>
+Message-ID: <aJ7tcmOHfFmHgrY9@google.com>
+Subject: Re: [PATCH v5 15/18] rust: block: add `GenDisk` private data support
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Breno Leitao <leitao@debian.org>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-"Lyude Paul" <lyude@redhat.com> writes:
+On Fri, Aug 15, 2025 at 09:30:50AM +0200, Andreas Hindborg wrote:
+> Allow users of the rust block device driver API to install private data in
+> the `GenDisk` structure.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> For implementing Rust bindings which can return a point in time.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>          self,
+>          name: fmt::Arguments<'_>,
+>          tagset: Arc<TagSet<T>>,
+> +        queue_data: T::QueueData,
+>      ) -> Result<GenDisk<T>> {
+> +        let data = queue_data.into_foreign();
+> +        let recover_data = ScopeGuard::new(|| {
+> +            // SAFETY: T::QueueData was created by the call to `into_foreign()` above
+> +            drop(unsafe { T::QueueData::from_foreign(data) });
+> +        });
+> +
+>          // SAFETY: `bindings::queue_limits` contain only fields that are valid when zeroed.
+>          let mut lim: bindings::queue_limits = unsafe { core::mem::zeroed() };
+>  
+> @@ -113,7 +121,7 @@ pub fn build<T: Operations>(
+>              bindings::__blk_mq_alloc_disk(
+>                  tagset.raw_tag_set(),
+>                  &mut lim,
+> -                core::ptr::null_mut(),
+> +                data.cast(),
 
+Is the cast necessary?
 
-Best regards,
-Andreas Hindborg
-
-
+Alice
