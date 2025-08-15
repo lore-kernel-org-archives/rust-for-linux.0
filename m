@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200CB23D7E3;
-	Fri, 15 Aug 2025 20:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A331A1487D1;
+	Fri, 15 Aug 2025 20:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755291151; cv=none; b=fHdBeAJjU7e8X6tO9sH7gy4qjWBGHXg0Yp6FxKjlH8PJSv4uGQ/Uq+yeFkZubxKuo+GN3cxo3zHxkVH20CCtiVsLswqymqFzLeJAilv+V87ygA0a7FVMC6rWxiiYScJAo+Y7LuYTvVKSQvPtZn2z4BTuzHa9IAieVHxU1AkF/n4=
+	t=1755291319; cv=none; b=WRdl1I/3Tx7Y2yTC8WQpp+3MX/ltwDA+GnjuGEVzb/IYTSY5aoSiY6X5+ROIZXuuPeJnKZGYayGvS+igUpj2oiK7EVSVp+QELVsKJYh1Sh0DkkSGF2gRRMRMVw2ry2SID+2SDCf0CY6f0aZmCFDkuu+0xlnPpYWxpeUFIEdEnx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755291151; c=relaxed/simple;
-	bh=eHAzQami6XAVAlrDUTRWmkOkyDvVH/c1wmYM49+rAbk=;
+	s=arc-20240116; t=1755291319; c=relaxed/simple;
+	bh=mfsPXzN4ggnSZQUZHLOnuq0Jf6wKKVa1rBkrUF65quo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BkcoEUbcBdoJWpOuM6tSg4pPwWWsnCfjCA4/Ym2wR4U6TY4uYcKMWaaTLJbFYwFtoAdfvW7h1qQENWyWBSCMFnsL903KHvz0WWWPhJm4doUU/oHechxHJkPE9IyMwwhW2N4eXtZ1rrB0fPWChw/Kos7fixrOpoip9ZjRIUOm48Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IurERnTR; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=hAxAu0Vj71LxsDRWR0Huo2FzkZJbKLiw/VhepZX8NbNy6bteeJXLiFBr7vPOUbrm/kc/CvEJ8u/IKIZjynmSBzKfjuMTPOSKQ45k8qPmDNE4gDVdHYJAMXRCzXu1c+O7d9JE2NH7I+ffEdqu/VgMhepJ1IllM/kHja4b25FelhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYIPq1uv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IurERnTR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61260C4CEEB;
-	Fri, 15 Aug 2025 20:52:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYIPq1uv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07403C4CEEB;
+	Fri, 15 Aug 2025 20:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755291151;
-	bh=eHAzQami6XAVAlrDUTRWmkOkyDvVH/c1wmYM49+rAbk=;
+	s=k20201202; t=1755291319;
+	bh=mfsPXzN4ggnSZQUZHLOnuq0Jf6wKKVa1rBkrUF65quo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IurERnTRzArysxbhxgERbhQomOm77YOzbaFypkjdMDLMetsgUI+ed5xb7WzZoR096
-	 2LWHR7IIYzZcY3eMDLCqaXWRNTm1p49uyXACH8Ap+Zgm8BKZEZibAMGqJ6Ta7nMCuj
-	 0cqLydND5agMIsuQ5PnebovhNercbi2YRzq+bxO6Be7arepRy5Wry/FGrfcDPiGGGq
-	 6q0ZtPotY6oJheD74apG6xTPsvrCqTL5mUdLusEh8HKcnYEFHJdg7Gft5LAkxBkBiN
-	 +mG/s1d7GEG0pqpNEoDM2sA4w8w0DKOMq1EtfkdzVUSxWVTsS666ssySXoMolBE3vP
-	 04ymJQonxHB4g==
-Message-ID: <160418e6-79eb-488b-a028-009ebdbe66f1@kernel.org>
-Date: Fri, 15 Aug 2025 22:52:25 +0200
+	b=BYIPq1uvfFwKIZ++DYeuA6arNCyodKFjFQS7H0YFO8GfxqkcM0L2J3X9spos6mdmE
+	 Uv3MvQgPcpQaX1BYUb71Yb8qywPs0b5/xPQEHVRBzcnI7zsJ2AfzcSFt8XKo/J2yfu
+	 FIeUuIJTBrPxoM7WlFYu3pkRSnIihb8EhxFRi4Hw2amXiwwQpnDmQA57eiPXto1n0U
+	 ZF4UQo/FQuGZmHFI9XYcgV4eaQdTlsYXoGq7T5aLMOIAIE9ESp2Uyi5iuv5LqhCsew
+	 rgw6Gy5JliBEK4PB9HgSgl0LSeOm9bU2r9eK+OY2YnFkYAhqinRb5CkuKslhQLktlf
+	 ynEJd6JX9Az8A==
+Message-ID: <b1a87360-339b-4554-a429-c29980abc454@kernel.org>
+Date: Fri, 15 Aug 2025 22:55:14 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,31 +35,28 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: driver-core: Update ARef and AlwaysRefCounted
- imports from sync::aref
+Subject: Re: [PATCH] rust: dma: Update ARef and AlwaysRefCounted imports from
+ sync::aref
 To: Shankari Anand <shankari.ak0208@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
  Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Leon Romanovsky <leon@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg
+ <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250814104615.355106-1-shankari.ak0208@gmail.com>
+References: <20250814104133.350093-1-shankari.ak0208@gmail.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20250814104615.355106-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250814104133.350093-1-shankari.ak0208@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 8/14/25 12:46 PM, Shankari Anand wrote:
-> Update call sites in the driver-core files and its related samples
-> to import `ARef` and `AlwaysRefCounted` from `sync::aref`
-> instead of `types`.
+On 8/14/25 12:41 PM, Shankari Anand wrote:
+> Update call sites in the dma subsystem to import `ARef` and
+> `AlwaysRefCounted` from `sync::aref` instead of `types`.
 > 
 > This aligns with the ongoing effort to move `ARef` and
 > `AlwaysRefCounted` to sync.
@@ -68,4 +65,4 @@ On 8/14/25 12:46 PM, Shankari Anand wrote:
 > Link: https://github.com/Rust-for-Linux/linux/issues/1173
 > Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 
-Applied to driver-core-testing, thanks!
+Applied to alloc-next, thanks!
