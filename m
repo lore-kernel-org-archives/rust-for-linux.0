@@ -1,67 +1,67 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A11E21CC44
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 15:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B5D21D3F4
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 15:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755270354; cv=none; b=IzU+0fPoeOKFKLx8RTvi2OAue1mhHgIjUHeHeVq1Lfy7O1TvMKMscgagyig4/FAuKHbgJyNqjVF8BgdaoqlaexB4BXl+CSnPDVZqn5JSOSyRFKtUO4UxPpkK+Qj+nWVwrS4DAsP0pLsBBRXP0E1n+Np+9slx142kkP4R+gs54Fg=
+	t=1755270455; cv=none; b=j0Af1yoZVhhzyMoW8k+Gnsu7NdTbKsst9V+XLIBntYxkXnrMu8OSIzcD4AeILtlyw7tV4bjy0TRCdXISZi834Hbn9LHwanfFgOGtevvO2dWTPnq2abjSRO8IqfaojMkP1jxmFScshhlViKeSmUIxIQ6e+37c+9yWeJJN2AL1ie0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755270354; c=relaxed/simple;
-	bh=wNfhEAk3rnqID1OBHwaELciuLi86NZwkA7swq1t5JdI=;
+	s=arc-20240116; t=1755270455; c=relaxed/simple;
+	bh=HPdnoqfMTW5K8PpSXd0uxj2ktrGo1NLLAxniXY1kt3g=;
 	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=rASAgkGpYOj0ADowST9EiSTsfR9p8um8MlOG3j7LN7PQ8lm0RO+8SCSmWYVN0Up2z07Y7NUvXyN3RX+bwaI9a5o6bWYnSGSEl28phL9illhlD+lxNLxM6KNUuuEeQbAIWWS/ZZlie8+Rwj9oZ1SaSmBH5qtux5ii0p5KWM5G2+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=mZKauASq; arc=none smtp.client-ip=209.85.215.179
+	 Content-Type; b=hkJ+LjICmItQpUVeJRLOc9+uA/gM+f9wa64gWVizIil36EUNfEAUyQmd8J0WfeQ3RtiP86xf6OWpG0/v+HNDnv9WC2XLURRqTp4HDyVCI8yO6ImWuUiX4Oh62N3GiPLBl89RlnC2leMkIijQoEUOtEmLMCbeEoUVMOmUtrF58JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=lUThUIem; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="mZKauASq"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b4717543ed9so1341357a12.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 08:05:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="lUThUIem"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-76e4f2e4c40so16288b3a.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 08:07:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1755270350; x=1755875150; darn=vger.kernel.org;
+        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1755270452; x=1755875252; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=38zqqxNHqbGz3C68JOy9Ugb8wAb711DWGVbxjNinx0U=;
-        b=mZKauASq6wZkezrwzg5EsqpZPzKSyUiLiawcT9BlsvW3YiILWWbdCLQfpTP13qY6fB
-         oZwx20nglnVNrDmmPfk4aePlJDu2TAg1mBu6EglTB/5H97T2cGuSu4PxV7HImr8TrepE
-         68t/id3y3tOVHNYVxVkwTaIc14VHd7H1o9mUsS4bzQlMJR/z7XxZmVnGsRHSebQYgnEV
-         rSZiKzLN5z5qnW2SjxlNV1Brx5GmqFnBIIZxMHmU2kyWh2/WybeT81JLEcA4kHv1QC8W
-         CS8Wu00IF1ktWN/Ff/zHUzMA0yvpQqSCuCbC8nUpYkKRabnJW3fuJQ0QupC66XAb6JiG
-         WqDw==
+        bh=EHLPRMwsFUXklJ+HOrV/DsMAdiggx2WSG2UfKCJiulY=;
+        b=lUThUIem/GAn1juJ789DpBzJqqOXtenJ8ovp+k0VW42tuXVED2iih61YudRRfo/koR
+         6XDQTwc0FvhEA8C+CGQIN7lv5nO0yaggRtbbI4fIbxVqIaklYdKSTivQb5gRgHtPuM6z
+         vQ++YMoCCotkEYF1eJPj+P/U4AvDX5UwDYrRHniU7nsHpONJGYJU5lssxyX4g6NYHApM
+         dpLdZHs7Y5L6mu/+7oT4WOSVm/SyJOMkwW7ZMqYbNRsgArNjotlaz28QE78DTskOmRuH
+         qglEE5IRztkbiqSHK1axpi1ik5vE7Z+Tu+l6kj7lNJ3QmiiL1viFjCCcfDfMnqTBBtKa
+         qFbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755270350; x=1755875150;
+        d=1e100.net; s=20230601; t=1755270452; x=1755875252;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=38zqqxNHqbGz3C68JOy9Ugb8wAb711DWGVbxjNinx0U=;
-        b=m/BxYeHjunjXAodd7Jioz/iS9plPoWmkKExroWa0UwlkNbPiESwDdBxIEV1VOCIzU/
-         6jrHYL3gZQaS5K19eumfc39sSHge8U5dXIL+jDzo+NePom5o/StwTgUySFcMzCAhdpVN
-         GSWTvBYqgmEjYoeO3JC8jAYP39PZN8D0Ucitjv7JuFOTrKs+TAJlS8dvU3sF02RqdkfT
-         cRDLkyl7Ko0Na7PNHDPA5LA5pl4x245ampxEwm5pK4iRVn1hcrJKmE3FZOPWQUmYhbaW
-         mAQscPc1bpnj4d6WIRbPh/caVboZxP74DOk4ep+zVOtv9bUYsanrGtnMlhrLjSE0TxKU
-         rblA==
-X-Forwarded-Encrypted: i=1; AJvYcCUb0C0DtBHZWdlPMoa3tDmCHisxQa1E9qtDyWmWsmvJocwBm3QvYMrv9Xgvrd3o8/IEInfh2Y+FcSogThj+Bg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqXIcSdGPS6gAJqUvqWHxZBiQaMqGRYDMYd1YSdYqXu6XGO3/e
-	SpSqP74cA8pGVZ+PQWdDX78qfwvlrdQW5ipkNFDn6NoZJIROevhvuXTjRjTa2to91oY=
-X-Gm-Gg: ASbGncsr/z13K3Hdug9h9cVg1s//XG+eIjT+KpqwTpiGhl6LqlbGMizoF5aXQGFhakq
-	4TWR15q9q0bAK2HFc4TsDXjLOErIT2WtZbLlyzd3EHghc9K5r39o23KND1+6F+6mk5vO+cIt3JW
-	kNL1bSDoHc/EGMCU/UB/9dpwKGRjCDkczX1gcs9r4CpJvJ/R+TiFiY6pBZcD0vto8ucjP7XQXJr
-	D65Rek6C8A62dm7yMs00EYCa5GQ+76GmEGcmBSvuByPt9+N009ugUqLKmUfycTyiuIp9/2pbEaM
-	YoK9o3Gy1b5mzh/8bQquzz/8vc+UZ+5jiZbQlBFsrRG+TEAQHMDPkCQIU/GWui95xUMSpeLNHyL
-	cd+KMQyQycASlAFk7MASnGtazH2NOjSkHg30=
-X-Google-Smtp-Source: AGHT+IG3gBMogdOr+spUGY65daTLUVfmz5lhgO/opdXo6UimhkccgL0C2Gx+F8DUbrOBq4AI/2z6Vg==
-X-Received: by 2002:a17:903:198c:b0:240:a222:230c with SMTP id d9443c01a7336-2446d5af743mr41307075ad.12.1755270349908;
-        Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
+        bh=EHLPRMwsFUXklJ+HOrV/DsMAdiggx2WSG2UfKCJiulY=;
+        b=BgkRvYeV/iJ7r4fY2nZQ5sxjeUH18aptZbrTlQ+VcSO2GV9VZoes2JEkosjHGei4wU
+         kefNTOLmA/HrZjLvNpi4CkHGaSgFS0mzdm94tc/GkfLdVNfAOohotbj1ujalw4ddwUk5
+         5I1g7nAAbldoKnlLX1ztpmj83N3R5igDXNe7tn6oBMXUj1yZrxLqyW5wiJ5KEyK8exp6
+         e5BRPEGJJtes0Q312BpEPOcIeX/ldCyF+qbbY1htOBnibBDZqVHjjRajwTBRq+4D1p0f
+         cjzzdrfoBcz966RzWfDOgEydhFjTG2A+q+CNBMj+oIqYszUgNq2Q1rESbK4Ax+Ond5ZO
+         nBbA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3zLCURH6dVpHje9ut1ByqdE+h16iPlidc9MDbg9+rtIysL/RJ8X6lySxMnDW7gvA9l94YzSH7OUpn6PN9ew==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOKxyIWEPRk+6wuiGuyIYBdqReHXiHjG64L/CJjk/tPJ5dnSEr
+	UMsDcj7sVmNCqCWRilaYFNIoduj0QKCUJso8iQQLXKKvWkDohg6GpsfliqF2ghGDtzY=
+X-Gm-Gg: ASbGncuOt3Db96Mc9SF8Drgsbjnx96zztENklmrX0XkqpowbgLYWv4/+tSoNm1jezH6
+	/4exve6QokYH/+sH9wzp6YN5HzTCTJTt1x0ttpH6QOZ5umHoxmsqElzC4neu83S2zUDEi/444zU
+	tEaP7X/Yw21PcPTj0CSScDwir6X5BzEbsp7NHD5LycgCOahfjmThmb2iEOLiC8ng3CzhzZeTlTU
+	9KU7aK4xhZ2zPryOgHy6Jy3jJdiR0R+mKc4xOun3fvBG5DZYiseIPqbe3ilfASeQgJkyZHuXUnk
+	CJSorfIkypntBKB0Bzqq5wVjzKaTaUQLg1ZdiFCWyc03mTzNXmHeXITGgzQIfj7MtrNjuR4Q+84
+	0620scYXYwd7/jT7TRZZ29wHbiWvXwZYw6IM=
+X-Google-Smtp-Source: AGHT+IHmxnV+YR9cR/LeaPBJErhvHjNkppxMDemXEcOX3MCe4Sp9OWex1hLOxvkMk2wkz7dST8S4eg==
+X-Received: by 2002:a05:6a00:4f96:b0:769:a6a2:fe1e with SMTP id d2e1a72fcca58-76e447e3389mr3104455b3a.11.1755270452302;
+        Fri, 15 Aug 2025 08:07:32 -0700 (PDT)
 Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2446cadf96fsm16286885ad.41.2025.08.15.08.05.48
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-76e4558bf19sm1309791b3a.99.2025.08.15.08.07.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
-Date: Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
-X-Google-Original-Date: Fri, 15 Aug 2025 08:05:47 PDT (-0700)
-Subject:     Re: [PATCH v4 06/24] riscv: elf: Move relocation constants to UAPI
-In-Reply-To: <20250812-vdso-absolute-reloc-v4-6-61a8b615e5ec@linutronix.de>
+        Fri, 15 Aug 2025 08:07:31 -0700 (PDT)
+Date: Fri, 15 Aug 2025 08:07:31 -0700 (PDT)
+X-Google-Original-Date: Fri, 15 Aug 2025 08:06:56 PDT (-0700)
+Subject:     Re: [PATCH v4 17/24] riscv: vdso: Deduplicate CFLAGS_REMOVE_* variables
+In-Reply-To: <20250812-vdso-absolute-reloc-v4-17-61a8b615e5ec@linutronix.de>
 CC: Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
   Alexandre Ghiti <alex@ghiti.fr>, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
   justinstitt@google.com, luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
@@ -81,7 +81,7 @@ CC: Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
   thomas.weissschuh@linutronix.de
 From: Palmer Dabbelt <palmer@dabbelt.com>
 To: thomas.weissschuh@linutronix.de
-Message-ID: <mhng-5B6E084E-60EE-440E-BFF9-5E81AAC9A473@Palmers-Mini.rwc.dabbelt.com>
+Message-ID: <mhng-540E0EE0-A9CF-4EE3-9E71-969B40D29C50@Palmers-Mini.rwc.dabbelt.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -91,19 +91,39 @@ Mime-Version: 1.0 (MHng)
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On Mon, 11 Aug 2025 22:44:19 PDT (-0700), thomas.weissschuh@linutronix.de wrote:
-> These constants are useful for cross-platform userspace, for example to
-> process ELF files during kernel cross-compilation.
->
-> Move them from the kernel-private architecture-specific header to the UAPI.
+On Mon, 11 Aug 2025 22:44:30 PDT (-0700), thomas.weissschuh@linutronix.de wrote:
+> All vDSO objects need the same treatment.
+> To make changes to both the list of objects and the list of removed flags
+> easier, introduce a helper variable.
 >
 > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Tested-by: Jan Stancek <jstancek@redhat.com>
 > ---
->  arch/riscv/include/uapi/asm/elf.h | 66 ---------------------------------------
->  include/uapi/linux/elf-r.h        | 66 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 66 insertions(+), 66 deletions(-)
+>  arch/riscv/kernel/vdso/Makefile | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+> index 9ebb5e590f93a3228c451dca58e6d5cfbbc03ff7..c19c3c76f7c9f6b2f7523a59269de3b683656323 100644
+> --- a/arch/riscv/kernel/vdso/Makefile
+> +++ b/arch/riscv/kernel/vdso/Makefile
+> @@ -49,9 +49,10 @@ CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
+>  endif
+>
+>  # Disable -pg to prevent insert call site
+> -CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> -CFLAGS_REMOVE_getrandom.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> -CFLAGS_REMOVE_hwprobe.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> +CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> +CFLAGS_REMOVE_vgettimeofday.o = $(CFLAGS_REMOVE_VDSO)
+> +CFLAGS_REMOVE_getrandom.o = $(CFLAGS_REMOVE_VDSO)
+> +CFLAGS_REMOVE_hwprobe.o = $(CFLAGS_REMOVE_VDSO)
+>
+>  # Force dependency
+>  $(obj)/vdso.o: $(obj)/vdso.so
 
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
 Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
 
-I'm going to assume you want to take these all together though some 
-other tree, thanks!
+Also assuming you want to take this with the others.
