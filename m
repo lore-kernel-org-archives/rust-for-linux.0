@@ -1,102 +1,75 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F702246BBA
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 08:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5491347DD;
+	Fri, 15 Aug 2025 08:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755245636; cv=none; b=djVOQopPqSS+3PSamBXaDc7EX0NRtbcScpUFacMcZycj2thU7L8AT9wcca0+BaqRhcv9hlE50sLOC1Stw/pGOf+d6oXE1gM/KaM3EzOiIxiLgSS4s/Z7cW7KZw/w78rZGajeCSuvqtk3PV9kTB/cExb4XIQzUGGAuKxLsAHCjtc=
+	t=1755245772; cv=none; b=MIRNrwPqkQY/I3/ag8iGGxFpAHWPo3jNeBV7BB9oKk1mAhae6M8EJsKYekuf2mQZsvMXS2FtWjfxWtFYJ8+MBV3+let8PeX4C74s/KTpAPMrZuMrnuwLicRdv2XHOlojJSpklE46ZEEBrc9NgPlkIZO6WLu8SH+I4ym3qLLo4Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755245636; c=relaxed/simple;
-	bh=hsWxra9q3X13ElQHCFuvspSvuybQPgvseoguKxJRnfI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uat5af/bi7KaLk7MM2Rf8jQ4hE30Awze+mcsXQVsYCm+NbW4J2P+RF/yeSV552nhr/+KsCYgV11MqOGs6ftwI9UJFYDhTWPfWwdWuqQKUgfkP06y5XHDt1oGvWyXjyvz676YiAUyTArxu1/eiZaBBPDDOJS65BsR8ffrfN+kPJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h+ipDgxR; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1755245772; c=relaxed/simple;
+	bh=EnBsv2KuM+YMlktAA95G+A/R+SrkNakjj0KT9Bb+uJ4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Oep0HDAOLM7UYzDQlPNzONDXkFnw5vWIi+9hBgIRsb6zyLk8q6SAeAQJoY9SSEQNHuGsly9SEuM9UzZPAga+UgZkOcudH+/tnOE04R1RJgBXX1Fj07a+X11isTJ6+v93Al1r904jhs1GagKzHpZihkYAjmhRSJf3nsCZGkfw4go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/rxpttw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h+ipDgxR"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45a1b05d3c4so10312955e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 01:13:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755245633; x=1755850433; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1f7kL6gjN2F1fV8ToMQJ5E9ndI3HLl8+wtRhuObA6Hg=;
-        b=h+ipDgxRlZFOuC5crkpbLUCBs4kCdB2Zk93699NsY7Gw7hnouJy8mhjo1pOCqrCX2p
-         Vfbz47YHDNTrve/nEel4bGlMxnnwucJrlGFbewY1JhnKLdi5ImEzxw6SfENPWwEoN7Mj
-         UNAvW2WP7uCtO8vgoplINBhqGxDFryd0+1kCAsYMioK8fz5+duVnmKYYewPmdsPSsvWx
-         bFyNHnKI1EnbCJr6OxMmHIT+7F28vdfXQsUdU43CNwTKpLR91PN9MUxPSnXQkrhEkO9l
-         HCdbki/3gHfxolyvFJhHSJFvHINF9S/hpQTp65SLFhRZMirJ9EUSoY3VdjLOSnDVBZkA
-         mbVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755245633; x=1755850433;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1f7kL6gjN2F1fV8ToMQJ5E9ndI3HLl8+wtRhuObA6Hg=;
-        b=NDYeGSaKMu88/vz4RUH5wdFHILgORzACKbs6zrTD+HSfyeN+T32Or8FLnDQ1sV32Ju
-         Bz18V3XOgybBfOY1LXJ5WplAhqsTn5vNslNIhyd9VddnsF8CtGPwMnYY+16pfdBIpDp8
-         sYoWAoW9xpSpwaxd6+Y7EdIZHkSvJsT1RRltyx6hHniabI6uZ9iWCrgxRIx6VzVg4+NF
-         ADS+pU/CyQ1u8/kx4qrsL0nsNLQSukIxCgFpeazBTgE6tVp7DH22mJRuJkk42lf4UpzM
-         Vl+Fyxo/MBiksCQzeeQpiaxjYgjqYuqA9sgtv7Rkl+SnWWynUn3Nf+pib6nDPyF+5R4M
-         F52g==
-X-Forwarded-Encrypted: i=1; AJvYcCUydZZ60339NKup4JYNmqhKQXNwztZvjwYZ5L6ABHGQj7B2hdVgKfcQSe5YdrU87eL+KxJyhiAA5PSlwpiuRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMAyG16jBTAYu+IAVrsg+TtK2nSQCMxhWct9NPQ4nZKh7uT4Uj
-	JDQTCRiGLvKZw9xUZYRJcZ5fJxrRTOuVc+1/OW253xece+PT9ocsAXgnaqdC+eylA5ijbpQkv4c
-	84dYILbrwJtOW7zDO9Q==
-X-Google-Smtp-Source: AGHT+IFYd17OhDNmiLfiosyGDGjCTy9zqn/5SXr3YlG4Wt+k4EHu0NIK+WLSW+zValRgSH9t7RLNNnppVYd95ao=
-X-Received: from wmbay33.prod.google.com ([2002:a05:600c:1e21:b0:458:bea8:57ef])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3596:b0:458:add2:d4b4 with SMTP id 5b1f17b1804b1-45a21803ebdmr11738045e9.12.1755245633160;
- Fri, 15 Aug 2025 01:13:53 -0700 (PDT)
-Date: Fri, 15 Aug 2025 08:13:52 +0000
-In-Reply-To: <20250815-rnull-up-v6-16-v5-7-581453124c15@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/rxpttw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2894C4CEEB;
+	Fri, 15 Aug 2025 08:16:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755245772;
+	bh=EnBsv2KuM+YMlktAA95G+A/R+SrkNakjj0KT9Bb+uJ4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=D/rxpttwz+g1Unn+2V6/KUOU8EsR5BR84ty+3QYkdWhpcq5u/LihO6st5oh4awFhB
+	 l2T2w9EseFxB4tpbvhxVviFJQhNd4+f6yGVHYnm4vfBUA5sBMPGm2YoDbq800DjZ5P
+	 DUDkN4VbIrYU7d83WRFT4/WGJrK9ILVDRn7AL/YKaPjKlUDBV7OljXN/Qbu9wsOOCh
+	 xxnoOgmAcPigkmiAnsBL8kjnaRJaDf2xVms+sTRuO7r8xElrwMuazofjetTYj03B9C
+	 WTkZ80nmmVt9ifAVbG+gEM4MNbTlSOuK2uVOkT0PZOpP6XOI93GB1aAysUu1/U/qja
+	 9fAhF2kuLnm9w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250815-rnull-up-v6-16-v5-0-581453124c15@kernel.org> <20250815-rnull-up-v6-16-v5-7-581453124c15@kernel.org>
-Message-ID: <aJ7sQF6ObVlwX3U0@google.com>
-Subject: Re: [PATCH v5 07/18] rust: configfs: re-export `configfs_attrs` from
- `configfs` module
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Breno Leitao <leitao@debian.org>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 15 Aug 2025 10:16:07 +0200
+Message-Id: <DC2UP1Q4D5L3.2SOGYHJGXPTWS@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@linaro.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
+ <viresh.kumar@linaro.org>, <tamird@gmail.com>,
+ <dingxiangfei2009@gmail.com>, <gregkh@linuxfoundation.org>,
+ <thomas.weissschuh@domain.com>
+Subject: Re: [PATCH v2] rust: lib: add if_cfg! macro for conditional
+ compilation
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Areej Hamid"
+ <areejhamid8560@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <ec0dcd14-e974-43ff-b4f4-3dfe2f31a91c@t-8ch.de>
+ <20250814162211.566168-2-areejhamid8560@gmail.com>
+ <CANiq72mbTqu8KuKn1uKM8czesrg+or-S3K9e_ohJz1b6kzdffw@mail.gmail.com>
+In-Reply-To: <CANiq72mbTqu8KuKn1uKM8czesrg+or-S3K9e_ohJz1b6kzdffw@mail.gmail.com>
 
-On Fri, Aug 15, 2025 at 09:30:42AM +0200, Andreas Hindborg wrote:
-> Re-export `configfs_attrs` from `configfs` module, so that users can import
-> the macro from the `configfs` module rather than the root of the `kernel`
-> crate.
-> 
-> Also update users to import from the new path.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Thu Aug 14, 2025 at 8:49 PM CEST, Miguel Ojeda wrote:
+> By the way, Tamir suggested in the linked Rust for Linux issue to
+> match the name of the upstream one in case we want to migrate to the
+> standard library one eventually. In the commit message, I would also
+> mention this and link to the tracking issue that Trevor mentioned:
+> https://github.com/rust-lang/rust/issues/115585.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Didn't we also want to vendor the `cfg-if` crate? Or am I missing
+something?
 
->  rust/kernel/configfs.rs       | 2 ++
->  samples/rust/rust_configfs.rs | 2 +-
->  2 files changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-> index 2736b798cdc6..0ca35ca8acb8 100644
-> --- a/rust/kernel/configfs.rs
-> +++ b/rust/kernel/configfs.rs
-> @@ -121,6 +121,8 @@
->  use core::cell::UnsafeCell;
->  use core::marker::PhantomData;
->  
-> +pub use crate::configfs_attrs;
+> Finally, we may want to consider putting this into somewhere else,
+> rather than the root file of the crate.
 
-In other re-exports of macros, we've placed it immediately after the
-macro_rules! declaration.
+Yeah, let's have it in a `cfg_if.rs` or whatever the macro will be
+called.
 
-Alice
+---
+Cheers,
+Benno
