@@ -1,312 +1,164 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C5C2BE65B;
-	Fri, 15 Aug 2025 05:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C011DF24F
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 07:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755235976; cv=none; b=IFRON3AQHjoICxcMXx1TBYFTy8b0+0DGg5+TyLMzD/z/FXLYQxvNi4t8YRVc9nBkPe1PpVhgM1IQ4DsSHMVVTVq1KAQh2BILGxowN2/gZ+ImN8WbTpGa8cfxD51BSsi5Q/7OzNRGwOm+cCOl7CMcmNiDQlZzOkrOmkGuxga/YU0=
+	t=1755242944; cv=none; b=Z93o56imidKNodv9lIazM0QsgBJ8juQ+/LPooNis59hEXWMmzm0AZIxHiAMGdNW4BAfIZgnStSVXs+Hczoqt5XJ2togG6ovLmrGpUsfIsS0MYD0w9dFK5jUuV/imImV7hThxYZ1O8EVZ6PbFYaC5sne71AhomouoPnOKlfUkFLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755235976; c=relaxed/simple;
-	bh=BQlAO40Fkf8jj/Luuxq4Hy8WbOuf4ZzAo8KvzU12f5o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TqavWEMIlqSjSOC/tMq4+7PkOs1/gpkgm0JB/mSn6gUTCVNaNCMoo1xEKKYqS+59kNuEWZtHlhUcGNFNJbTaje3dWxePTwdWGDPk9yJjZXh6W2avmM5gcvUSWhM2nPROPe6stvhYmxVGH6OPjMIbmpBtAOKgFZTMQGIZQO3XHpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M39SLHOE; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755242944; c=relaxed/simple;
+	bh=Sd3VPQiKfga6AjzXlYQ5uWGAwwjLJYkJTxxir73nSSw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=XUnaVusivjAJq38VwIH7ny9UvWbiERM8ocdCVkPgAQxAybpyioiKuyIbyc8++hFStmY0ZxyVCLex5BTTD3T/YMUlqg/owgBvOGZ5uDFos5NtGHaj2T5j0/4w6dDvmqj1Ysq6rzVIDZBdYrv4x1ZrXQIYDtHIQ5G298jslDC2BQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJYL7Zr5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M39SLHOE"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-76e2ea94c7dso2178910b3a.2;
-        Thu, 14 Aug 2025 22:32:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755235973; x=1755840773; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QTd2SnS44QbWRezmUmEtQLo0ES7cL0NdhN8U5PrZ/34=;
-        b=M39SLHOEIIf9JpZ1OFFToOnBh9PfbbAm1Zz+YLhalBzCJUcq5tI0XbTXLYmggUM0qS
-         H5eJgmgdofX51sdFDNoqnbdjFsZvqHCFgDNq4YiYEfxiDefLZvvab22+oBeaKZbdvL/3
-         MG3cKTRZv+MdJ3xoTnMWdnN+ZkOgBR7dCwJu9EZXJfhbevvemxzEcanHsBTIOsqkeT94
-         TAWUazgeA4M21zjUoI+mWyU8J//nFKoob64qYSq5xEmoO0TM+0UnP/R1EwH/yR+2maoS
-         S0Aa5mXz303DNyQGOKv5s4lgiZA78IT5XXgUhiqFNLDu5oaHmL6gbzoDbqFzwaJ4QbzQ
-         +m2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755235973; x=1755840773;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QTd2SnS44QbWRezmUmEtQLo0ES7cL0NdhN8U5PrZ/34=;
-        b=feu458C4YjbRz7UGFrmqZQQ488kMb6q6fqyCL7nkAOqGJV1/j3zZXOY18JaZiuBhob
-         a/PBYyBeeuGV6GM+n3Pto5hd8WJYXSXKlad+H60ctVG+8QB5a6MMtEtX9JAiqC9kzMYR
-         qw56fiwCkR0wME52IEt3cNQ1Got/XToH3Hqw4sWPRyGddziZGyStciw5Pz1HAvlIrC7+
-         TW2ryvlnhuyOSgsA3yYD2j+zyEVoXW/dmUtQgxMQrUzQ+YyRsxFZE3ODz8Z+n7tIx/xg
-         FtihFc8jfOmOcIZ6IaUh4+9tU1+RAJbmhjlf6s5ZWLDBHHG5PgeqKL2Q7KO0nyPCamsg
-         HSzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWJkgGHpZ3Pmv8TMgajWNTHCUHT/TMNYE7Lx0LfZAPTrk2SgsjkeS5pniz84w0Twf2Lyzptpdk4JTTIqeLM+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyewN7J4mwDf/IGU7x19yaDP6f1rSs+LzzWkoxPx4ZyGh4cTSqp
-	ndIXw1Mki4jI9JHERY0YGE3+IZUpVQWJSW/MKHB0mFu0IuPz3jRinL7w
-X-Gm-Gg: ASbGncuAm7HqdZUaLdA7q+D4L7hPIeFgESn15LmZx1xiGk0LU1ApCqKV01EZ0hd3bAt
-	3cq9KifjfE7F6AMUggSZ4hR9Hsxj7IxolAjRpyvHQ/P20lk6b+D1VsdmrWxYttccnE/+US0uglV
-	vrUb1FhaczY3D97tYO14WkdclraBT/HhyhHqU+Cg7bLkORT/2JSScP+vo5bdd+ppVH/15i1glvj
-	rucGXgG6J51y33B733hqI0mbn1ldonenpP2NnvAUEo21U+BN0YSn6mbT/BtJ+XmRhU4EVZoScnm
-	RyXQ6gsVJ/qzQRRd2eQR2ulVsrMu7APEbkYcJJ/pXt3T5Num89fOX/dxeMzKCe9HUU1SWymE9yQ
-	bZVhopUp070tZ6VA3wPZJ0/Yvn3tTEPqP2NPGBcRBuCc=
-X-Google-Smtp-Source: AGHT+IHuZOMmR+ZHN6RawSbyEcHlvGHloyTnjAjRuRVJt3T79TKeciymvac/iLTdRF79wIc9l0ITyA==
-X-Received: by 2002:a05:6a00:1acd:b0:748:e585:3c42 with SMTP id d2e1a72fcca58-76e447ab3b2mr978211b3a.15.1755235972528;
-        Thu, 14 Aug 2025 22:32:52 -0700 (PDT)
-Received: from localhost.localdomain ([112.149.32.52])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e4556692bsm335234b3a.61.2025.08.14.22.32.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 22:32:52 -0700 (PDT)
-From: Jesung Yang <y.j3ms.n@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org,
-	Jesung Yang <y.j3ms.n@gmail.com>
-Subject: [PATCH v2 5/5] rust: macros: add derive macro for `Into`
-Date: Fri, 15 Aug 2025 05:32:15 +0000
-Message-Id: <042f8ba119337b090e8774355fc77478d86ea8ef.1755235180.git.y.j3ms.n@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1755235180.git.y.j3ms.n@gmail.com>
-References: <cover.1755235180.git.y.j3ms.n@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJYL7Zr5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA31C4CEEB;
+	Fri, 15 Aug 2025 07:29:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755242943;
+	bh=Sd3VPQiKfga6AjzXlYQ5uWGAwwjLJYkJTxxir73nSSw=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=IJYL7Zr5HL0UyGHeKHHDhZM0TJFW8ma3VmqZ171AQIJaUkt5nuDJEWFCJU03idgUL
+	 GUtwgiy3Fo6FJuQdmLbLGx/Fz9sbbds8tR1Rs0/qhd3yhQMO2qpZLj/uZVXsCoa3MW
+	 vxk7Mak8SF2DtekONHt+SdOV9RSXkh6G2TH8mC+HAn4FMaTxLyNYs+1PRu8iGjTuAC
+	 jyeDdrELC62U6ZA+Zj0n6r2obLRFinLznI5qLEHILs7rp4rGeYdqIY/nztpYCq4ZQc
+	 +baTs9jFDahqBJqvJXkxwi6FE6gilVnWePoQZu7MXwR21XcT8MqvGvPYktd/OuYNv8
+	 DEKFdl5vPXKdQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 15 Aug 2025 09:28:59 +0200
+Message-Id: <DC2TOYQG9QEI.2TZ4GFFZGF05W@kernel.org>
+To: "Greg KH" <gregkh@linuxfoundation.org>
+Cc: "Simona Vetter" <simona.vetter@ffwll.ch>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v4 0/4] Untrusted Data API
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250814124424.516191-1-lossin@kernel.org>
+ <2025081416-sufferer-economist-3f00@gregkh>
+ <DC295B7454Y8.9RVKVMPORAZ9@kernel.org>
+ <2025081448-creation-timid-b972@gregkh>
+ <DC2BPSUKOWAX.2QTWBJM1ZQPJ3@kernel.org>
+ <2025081435-broker-valium-7b22@gregkh>
+In-Reply-To: <2025081435-broker-valium-7b22@gregkh>
 
-Introduce a procedural macro `Into` to automatically implement the
-`Into` trait for unit-only enums.
+On Thu Aug 14, 2025 at 8:26 PM CEST, Greg KH wrote:
+> On Thu, Aug 14, 2025 at 07:23:45PM +0200, Benno Lossin wrote:
+>> On Thu Aug 14, 2025 at 5:42 PM CEST, Greg KH wrote:
+>> > On Thu, Aug 14, 2025 at 05:22:57PM +0200, Benno Lossin wrote:
+>> >> On Thu Aug 14, 2025 at 4:37 PM CEST, Greg KH wrote:
+>> >> > On Thu, Aug 14, 2025 at 02:44:12PM +0200, Benno Lossin wrote:
+>> >> >> I didn't have too much time to spend on this API, so this is mostl=
+y a
+>> >> >> resend of v3. There are some changes in the last commit, updating =
+to the
+>> >> >> latest version of Alice's iov_iter patche series [1] & rebasing on=
+ top
+>> >> >> of v6.17-rc1.
+>> >> >>=20
+>> >> >> I think we should just merge the first two patches this cycle in o=
+rder
+>> >> >> to get the initial, bare-bones API into the kernel and have people
+>> >> >> experiment with it. The validation logic in the third patch still =
+needs
+>> >> >> some work and I'd need to find some time to work on that (no idea =
+when I
+>> >> >> find it though).
+>> >> >
+>> >> > Nice, thanks for reviving this!
+>> >> >
+>> >> > And we should at least add an example using it, otherwise it's not =
+going
+>> >> > to help out much here.  Add it to the misc device driver api?
+>> >>=20
+>> >> You mean `rust/kernel/miscdevice.rs`? What parts of that API are
+>> >> untrusted?=20
+>> >
+>> > mmap() is, but you can't do anything about that...
+>>=20
+>> Which parameter is untrusted there and why can't I do anything about it?
+>
+> The whole memory range is untrusted as to what is written there, sorry,
+> it was a bad attempt at a joke, the kernel never gets a chance to know
+> what is happening.
 
-This reduces boilerplate in cases where enum variants need to be
-interpreted as relevant numeric values. A concrete example can be
-found in nova-core, where the `register!()` macro requires enum types
-used within it to be convertible via `u32::from()` [1].
+Ahh that flew over my head :) So we'd either build `Untrusted` directly
+into the `VmaNew`/`VmaRef` abstractions -- or if there is a way to have
+a trusted `VmaNew`, we can wrap it in `mmap`.
 
-Note that the macro actually generates `From<E> for T` implementations,
-where `E` is an enum identifier and `T` is an arbitrary integer type.
-This automatically provides the corresponding `Into<T> for E`
-implementations through the blanket implementation.
+>> > ioctl() is the callback that is taking untrusted data from userspace.
+>> > That's one place we have had more kernel buffer overflows then I can
+>> > count and ALWAYS needs to be properly verified before anything can be
+>> > done with the data there.
+>>=20
+>> Are the `cmd` & `arg` parameters the untrusted part?
+>
+> Yes, especially as `arg` is usually a pointer to "something".
+>
+>> If so we probably
+>> should have a single parameter so users can verify them at the same
+>> time. Or am I thinking of the wrong thing to verify? (`file` should be
+>> already in kernel memory, right?)
+>
+> Both are usually verified at different places, first `cmd` tells what
+> `arg` is going to be, and then the code goes off and parses whatever
+> `arg` points to (or contains for simple ioctls).
+>
+> And for some, `arg` is just a place to write something back, so `arg`
+> needs no verification for them, it depends on what `cmd` is.
 
-Tested-by: Alexandre Courbot <acourbot@nvidia.com>
-Link: https://lore.kernel.org/rust-for-linux/20250624132337.2242-1-dakr@kernel.org/ [1]
-Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
+I still think grouping them together makes sense, since in the
+validation function you'd want access to both, right? And these use
+cases seem perfect for enums:
+
+    enum MyIoctlArgs {
+        WriteFoo(UserPtr<Foo>),
+        VerifyBar(UserPtr<Bar>),
+        // ...
+    }
+
+And then in the validation function you can do:
+
+    const WRITE_FOO_CMD: u32 =3D ...;
+
+    fn validate(cmd: u32, arg: usize) -> Result<MyIoctlArgs> {
+        Ok(match cmd {
+            WRITE_FOO_CMD =3D> MyIoctlArgs::WriteFoo(UserPtr::from_addr(arg=
+)),
+            VERIFY_BAR_CMD =3D> MyIoctlArgs::VerifyBar(UserPtr::from_addr(a=
+rg)),
+            _ =3D> return Err(EINVAL),
+        })
+    }
+
+So when wrapping them together we could have:
+
+    pub struct IoctlArgs {
+        pub cmd: u32,
+        pub arg: usize,
+    }
+
+And then change the `MiscDevice::ioctl` function to:
+
+    fn ioctl(
+        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+        _file: &File,
+        _args: Untrusted<IoctlArgs>,
+    ) -> Result<isize>
+
 ---
- rust/macros/convert.rs |  36 ++++++++++---
- rust/macros/lib.rs     | 115 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 145 insertions(+), 6 deletions(-)
-
-diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
-index 0084bc4308c1..a6ef67ba27c7 100644
---- a/rust/macros/convert.rs
-+++ b/rust/macros/convert.rs
-@@ -3,6 +3,12 @@
- use proc_macro::{token_stream, Delimiter, Ident, Span, TokenStream, TokenTree};
- use std::iter::Peekable;
- 
-+#[derive(Debug)]
-+enum DeriveTarget {
-+    TryFrom,
-+    Into,
-+}
-+
- #[derive(Debug)]
- struct TypeArgs {
-     helper: Vec<Ident>,
-@@ -13,13 +19,20 @@ struct TypeArgs {
-     "u8", "u16", "u32", "u64", "u128", "usize", "i8", "i16", "i32", "i64", "i128", "isize",
- ];
- 
-+pub(crate) fn derive_into(input: TokenStream) -> TokenStream {
-+    derive(input, DeriveTarget::Into)
-+}
-+
- pub(crate) fn derive_try_from(input: TokenStream) -> TokenStream {
--    derive(input)
-+    derive(input, DeriveTarget::TryFrom)
- }
- 
--fn derive(input: TokenStream) -> TokenStream {
--    let derive_target = "TryFrom";
--    let derive_helper = "try_from";
-+fn derive(input: TokenStream, target: DeriveTarget) -> TokenStream {
-+    type ImplFn = fn(&Ident, &Ident, &[Ident]) -> TokenStream;
-+    let (derive_target, derive_helper, impl_trait) = match target {
-+        DeriveTarget::TryFrom => ("TryFrom", "try_from", impl_try_from as ImplFn),
-+        DeriveTarget::Into => ("Into", "into", impl_into as ImplFn),
-+    };
- 
-     let mut tokens = input.into_iter().peekable();
- 
-@@ -85,12 +98,12 @@ fn derive(input: TokenStream) -> TokenStream {
-         let ty = type_args
-             .repr
-             .unwrap_or_else(|| Ident::new("isize", Span::mixed_site()));
--        impl_try_from(&ty, &enum_ident, &variants)
-+        impl_trait(&ty, &enum_ident, &variants)
-     } else {
-         let impls = type_args
-             .helper
-             .iter()
--            .map(|ty| impl_try_from(ty, &enum_ident, &variants));
-+            .map(|ty| impl_trait(ty, &enum_ident, &variants));
-         quote! { #(#impls)* }
-     }
- }
-@@ -335,3 +348,14 @@ fn try_from(#param: #ty) -> Result<Self, Self::Error> {
-         }
-     }
- }
-+
-+fn impl_into(ty: &Ident, enum_ident: &Ident, _: &[Ident]) -> TokenStream {
-+    quote! {
-+        #[automatically_derived]
-+        impl ::core::convert::From<#enum_ident> for #ty {
-+            fn from(value: #enum_ident) -> #ty {
-+                value as #ty
-+            }
-+        }
-+    }
-+}
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 569198f188f7..374c1bdb696a 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -427,6 +427,121 @@ pub fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     kunit::kunit_tests(attr, ts)
- }
- 
-+/// A derive macro for providing an impl of the [`Into`] trait.
-+///
-+/// This macro automatically derives [`Into`] trait for a given enum by generating
-+/// the relevant [`From`] implementation. Currently, it only supports [unit-only enum]s
-+/// without generic parameters.
-+///
-+/// [unit-only enum]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.unit-only
-+///
-+/// # Notes
-+///
-+/// Unlike its name suggests, the macro actually generates [`From`] implementations
-+/// which automatically provide corresponding [`Into`] implementations.
-+///
-+/// The macro uses the `into` custom attribute or `repr` attribute to generate [`From`]
-+/// implementations. `into` always takes precedence over `repr`.
-+///
-+/// # Caveats
-+///
-+/// Ensure that every integer type specified in `#[into(...)]` is large enough to cover
-+/// all enum discriminants. Otherwise, the internal `as` casts may overflow.
-+///
-+/// # Examples
-+///
-+/// ## Without Attributes
-+///
-+/// Since [the default `Rust` representation uses `isize` for the discriminant type][repr-rs],
-+/// the macro implements `From<Foo>` for `isize`:
-+///
-+/// [repr-rs]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.discriminant.repr-rust
-+///
-+/// ```rust
-+/// use kernel::macros::Into;
-+/// use kernel::prelude::*;
-+///
-+/// #[derive(Debug, Default, Into)]
-+/// enum Foo {
-+///     #[default]
-+///     A,
-+///     B = 0x17,
-+/// }
-+///
-+/// assert_eq!(0isize, Foo::A.into());
-+/// assert_eq!(0x17isize, Foo::B.into());
-+/// ```
-+///
-+/// ## With `#[repr(T)]`
-+///
-+/// The macro implements `From<Foo>` for `T`:
-+///
-+/// ```rust
-+/// use kernel::macros::Into;
-+/// use kernel::prelude::*;
-+///
-+/// #[derive(Debug, Default, Into)]
-+/// #[repr(u8)]
-+/// enum Foo {
-+///     #[default]
-+///     A,
-+///     B = 0x17,
-+/// }
-+///
-+/// assert_eq!(0u8, Foo::A.into());
-+/// assert_eq!(0x17u8, Foo::B.into());
-+/// ```
-+///
-+/// ## With `#[into(...)]`
-+///
-+/// The macro implements `From<Foo>` for each `T` specified in `#[into(...)]`,
-+/// which always overrides `#[repr(...)]`:
-+///
-+/// ```rust
-+/// use kernel::macros::Into;
-+/// use kernel::prelude::*;
-+///
-+/// #[derive(Debug, Default, Into)]
-+/// #[into(u8, u16)]
-+/// #[repr(u8)]
-+/// enum Foo {
-+///     #[default]
-+///     A,
-+///     B = 0x17,
-+/// }
-+///
-+/// assert_eq!(0u16, Foo::A.into());
-+/// assert_eq!(0x17u16, Foo::B.into());
-+/// ```
-+///
-+/// ## Unsupported Cases
-+///
-+/// The following examples do not compile:
-+///
-+/// ```compile_fail
-+/// # use kernel::macros::Into;
-+/// // Generic parameters are not allowed.
-+/// #[derive(Into)]
-+/// enum Foo<T> {
-+///     A,
-+/// }
-+///
-+/// // Tuple-like enums or struct-like enums are not allowed.
-+/// #[derive(Into)]
-+/// enum Bar {
-+///     A(u8),
-+///     B { inner: u8 },
-+/// }
-+///
-+/// // Structs are not allowed.
-+/// #[derive(Into)]
-+/// struct Baz(u8);
-+/// ```
-+#[proc_macro_derive(Into, attributes(into))]
-+pub fn derive_into(input: TokenStream) -> TokenStream {
-+    convert::derive_into(input)
-+}
-+
- /// A derive macro for generating an impl of the [`TryFrom`] trait.
- ///
- /// This macro automatically derives [`TryFrom`] trait for a given enum. Currently,
--- 
-2.39.5
-
+Cheers,
+Benno
