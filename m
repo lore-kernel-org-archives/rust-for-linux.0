@@ -1,83 +1,162 @@
 Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9634710E0
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 07:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E594A23CE
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 07:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755243366; cv=none; b=hqiAuXaiw9eOiUgF7bB12nyMN9a9XDZtkwFUDpIjPHnW0Yu1DDxZ4EAdhG/BZV5Stp1EDeuxim2Unsmw/3oYjLnF0eoh257WbuXdBd0x5RwbmhE+QHcrrYfVC1BnW5oR2+ZR27BXPvG2Jav97F116xHfzhKG+B6hCVI0pjOm0dc=
+	t=1755244647; cv=none; b=F+5XcC7nMFOSVKUNs5RFD/HBeTT4osFfLPnMY4SzmDOK+Oy9MP/svYk5JcP1KVeUJUn9J+m1PfhnwLw90tqfZ5Hixdw3gyaZ4aRUgRBsYOGD4mCvzP+lRchCkgiNW9bg7N1ekSNvqbNBlVGrlSJoz1V2m5IIM+CWQsEEOBkdz+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755243366; c=relaxed/simple;
-	bh=2vx85O0mzxhhNkXrIJNGjZCzhhkIcP50MP85vxAokyQ=;
+	s=arc-20240116; t=1755244647; c=relaxed/simple;
+	bh=S3PyHRya11+qZZoLBhC4j0hGymegURexx3ja0gfDP5k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l2JSMmGBtiSrcU+WuRW2nnZ4aQSrGfKhFT6tc+HWwARmsNLBNkBp+sAbs8XATr68VGfE+VDhIp4CRLoAYqjEvJ4nLFW7sDfYIbWJQreJ0WoN8nSVIs8nrCEHphNj99d4HhKr0Wvsh2XoAoUv6mmYmTzath2LbNk5xvlftESQVHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u/ZjZJ1A; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=X1V7T1pnszYtG82YgtBl3h0BvS3fZwVXpILO68q0iEpGSTuly3eKqc2D82HPmh0VqxBTzeslOBspYY0sBY8Qy4tld4dlcI+uWMC5d52as+bN2ZyHnnl3Mpal/SEvxfXa0UUk6cyLDnAGoGH4ma2euuNvS8Ws0JvHEDlWylbx52g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qj9AzmOc; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u/ZjZJ1A"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b9dc566cb4so998698f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 00:36:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qj9AzmOc"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b9e40ffdffso1387723f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 00:57:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755243363; x=1755848163; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755244644; x=1755849444; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pYBs1+R/Xgko10NxQQKr5iQnePPmuv/ASrejX1dg/pg=;
-        b=u/ZjZJ1AqSEwZD3D46eEQMTGOF5gUPz/cz220rSN6+cnjLp+ES5VyhPK13C+Cw/5/w
-         //GRfPQmmVlZK6U/Im6171bQ2qVDjAFdaNMjLeuqYjFUbk5FFF+CpEZo29nN2plPHslw
-         v/jSOEQigwgUaJiSzqpyyWl50Capdm9eL5eSibW1KQMwkWNxqxCI+//CBx/3CM9xEz8m
-         F7STnaXTQ0/SWaUAF5VNqJseY/V+DkE5aNmtnZwbZsIBjZL+j+xNphz0vazMUI/h8sXu
-         wb24x/GH26nEyWpgNigYWi9U1oYmddX6Fo7tsuZQtIxtDE32nZSakpFv7ym0ZAmDEbK0
-         vspg==
+        bh=JliYzecp+8vx7iCZ9GJLeCQ8PS5q6wpUw4vUME/s30E=;
+        b=qj9AzmOcz3WUQgVM4tdjs3eex1wsrDoeEJjNl3xnmVMPb08wEluHqA++N9Fe7RHUdB
+         QR0b4yXBfF5tJAYpDB6hsjyDuZf3pCQeYscuguRifQSaarqsHpJRBANyLjoEqyWUhgbR
+         lhZdNA9lHGeod6htN/XYU+av0ljusDFLNfNDPkOhYbxOyd7yuXTi1H85sB8WZ9ywbT2Y
+         d8KjLBdBQXU2+Q1xSHWszHt6DrKyKktAjc5IYK1sf9KBMd+f1e9/XEKCDpQTVK1Emlxs
+         ezwn/XtSjmuYQwV0zkwVOjcEZj2rdyf6u8O3OrJzggQhl0M30WNnABVso9ChiDg8rjlN
+         QGXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755243363; x=1755848163;
+        d=1e100.net; s=20230601; t=1755244644; x=1755849444;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pYBs1+R/Xgko10NxQQKr5iQnePPmuv/ASrejX1dg/pg=;
-        b=U0rlx9W4YlLMPm7CIV8N4JZiBe2sX8b0v1mMwsw1p3St2l3zmDkjCMJih3XKX0HRPL
-         Kf/ckLYOD1yvOF09nHLSWkaWvxqJirLXQ0NGCmvGpPyWZVt+Q4xCaB4N3t6ohoiZ8qAI
-         4Ln13UjTAlOveiNXofzMbsNeJh+oc679+5lUlgwkLyAIhJWmofUGrWvi8768pIjE+qMo
-         igYVEkneHeR7z95hE+yz393HGCPInZlAunnxGCgU+d7gnnmhUvRIzS//lH1VsH4Fh1eu
-         lUUlRe17/lTzSAESsyDpGiilYOQ/lJWN4N8HyJUc7j0anqYlZzFIAuAmd+cJr2XW78Hr
-         ycsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVyRGOOVZK1Zf1zgT0CBup+yCAQ9LdUO8i2MkEH8BEIqTPnbxAEjKY84wqcJmO4WIsqrk0IrPVVQ8cTxxO08Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCw3TCZJPfqvjfxZrvBI3EyjZ1uYL2/pTdmk+0lrcbxKJYRLpb
-	JYXVPn6DX+TaAcqOAPHPQKabIOUdqoTrU4Mcx2xBmdd9YlTxX+dZU/qjffjBfiD7IYQYgSQndNn
-	bbYCdQjALFfFeEAZlSw==
-X-Google-Smtp-Source: AGHT+IHBDq1WtZBwoI8rzXZ1kCUgf2Bvd1DyXmdA0qE8Mjfx4c20OyzYeCaxxVwQSMR/ezsfe21wZmOuLGg5yx0=
-X-Received: from wmbej3.prod.google.com ([2002:a05:600c:3e83:b0:458:bfa7:dd5b])
+        bh=JliYzecp+8vx7iCZ9GJLeCQ8PS5q6wpUw4vUME/s30E=;
+        b=TuFrU9G1vklYxKdHlTWNyd1BLH+vkCNel/odvk6RjnAyx3aODHf3nVtmWXPNWDQmRb
+         hZdUwvmNpP/pCOTtItArAbxwSVbS1bTJYqISDbBft5xVWrz0Ho3HNV23khlmv1Sn9HnN
+         KMyMPb5uPbvNUhM1Wicl/p2DK2FxyOUxIJxksJMNuSGXXLtsDNms8Vmn1ls5XnA+KKV1
+         ehp6epzg6WuxBTpC4rxfAgdP8ZzzPVh2sn5athmilmW3ooadWJ1buekMDbnjtv4K2TWj
+         5blxpkdomlfLW/+5S6KfuU7BHJgXOPQuX6xCS9oRtNtnzLkVNQmgEMUGiXJOZLi4xqqI
+         6sTg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZpXY956/W7YOBQLuW/J3V4PHFk6wtP+pYsPPgXhh8sn0W+4JB6o7vmh3ORqikYQDFrAxy0NRWrRVHdVzcvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzNaDzxCXmoi/moDFS0/OV61CVD5mCqN/VDqTiNLBTqmBCSh3M
+	sfwWycC+uMgqPZI16Au0Wc47Zr8N6DxG/bfbfpHo2EA5hkBoYoLsmT0QOGZwiPkWvVn04Siimhc
+	IqTuDKAYP3UawZr5A1A==
+X-Google-Smtp-Source: AGHT+IF4UAIGeGPcDCFJRIRqOWfB2t00wIC/GdVYBLo4fLARPgG9tdEIjrdMKNGCFc4KqwkU7tZqFWVeQcaemCw=
+X-Received: from wmbep25.prod.google.com ([2002:a05:600c:8419:b0:456:2003:32a5])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1881:b0:3b9:7bea:149e with SMTP id ffacd0b85a97d-3bb66567d08mr802380f8f.8.1755243362874;
- Fri, 15 Aug 2025 00:36:02 -0700 (PDT)
-Date: Fri, 15 Aug 2025 07:36:01 +0000
-In-Reply-To: <aJ4Y_DAZe__0EWEm@yury>
+ 2002:a5d:5850:0:b0:3a4:e68e:d33c with SMTP id ffacd0b85a97d-3bb693b1d7dmr874644f8f.47.1755244644250;
+ Fri, 15 Aug 2025 00:57:24 -0700 (PDT)
+Date: Fri, 15 Aug 2025 07:57:23 +0000
+In-Reply-To: <20250815-rnull-up-v6-16-v5-5-581453124c15@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250813153548.1650533-1-bqe@google.com> <aJ2Y21Yjs3a0CnAo@google.com>
- <aJ4Y_DAZe__0EWEm@yury>
-Message-ID: <aJ7jYdc2vWxw922t@google.com>
-Subject: Re: [PATCH v14 0/5] rust: adds Bitmap API, ID pool and bindings
+References: <20250815-rnull-up-v6-16-v5-0-581453124c15@kernel.org> <20250815-rnull-up-v6-16-v5-5-581453124c15@kernel.org>
+Message-ID: <aJ7oY9pxlrnfAv8s@google.com>
+Subject: Re: [PATCH v5 05/18] rust: str: introduce `kstrtobool` function
 From: Alice Ryhl <aliceryhl@google.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Carlos LLama <cmllamas@google.com>, 
-	Pekka Ristola <pekkarr@protonmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Breno Leitao <leitao@debian.org>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Aug 14, 2025 at 01:12:28PM -0400, Yury Norov wrote:
-> > Thanks a lot for doing this, Burak! I gave it a spin locally on
-> > v6.17-rc1, and it seems to work.
+On Fri, Aug 15, 2025 at 09:30:40AM +0200, Andreas Hindborg wrote:
+> Add a Rust wrapper for the kernel's `kstrtobool` function that converts
+> common user inputs into boolean values.
 > 
-> Does this mean Tested-by?
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/str.rs | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 58 insertions(+)
+> 
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index d8326f7bc9c1..5611f7846dc0 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -4,6 +4,7 @@
+>  
+>  use crate::{
+>      alloc::{flags::*, AllocError, KVec},
+> +    error::Result,
+>      fmt::{self, Write},
+>      prelude::*,
+>  };
+> @@ -920,6 +921,63 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
+>      }
+>  }
+>  
+> +/// Convert common user inputs into boolean values using the kernel's `kstrtobool` function.
+> +///
+> +/// This routine returns `Ok(bool)` if the first character is one of 'YyTt1NnFf0', or
+> +/// \[oO\]\[NnFf\] for "on" and "off". Otherwise it will return `Err(EINVAL)`.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// # use kernel::{c_str, str::kstrtobool};
+> +///
+> +/// // Lowercase
+> +/// assert_eq!(kstrtobool(c_str!("true")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("tr")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("t")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("twrong")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("false")), Ok(false));
+> +/// assert_eq!(kstrtobool(c_str!("f")), Ok(false));
+> +/// assert_eq!(kstrtobool(c_str!("yes")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("no")), Ok(false));
+> +/// assert_eq!(kstrtobool(c_str!("on")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("off")), Ok(false));
+> +///
+> +/// // Camel case
+> +/// assert_eq!(kstrtobool(c_str!("True")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("False")), Ok(false));
+> +/// assert_eq!(kstrtobool(c_str!("Yes")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("No")), Ok(false));
+> +/// assert_eq!(kstrtobool(c_str!("On")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("Off")), Ok(false));
+> +///
+> +/// // All caps
+> +/// assert_eq!(kstrtobool(c_str!("TRUE")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("FALSE")), Ok(false));
+> +/// assert_eq!(kstrtobool(c_str!("YES")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("NO")), Ok(false));
+> +/// assert_eq!(kstrtobool(c_str!("ON")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("OFF")), Ok(false));
+> +///
+> +/// // Numeric
+> +/// assert_eq!(kstrtobool(c_str!("1")), Ok(true));
+> +/// assert_eq!(kstrtobool(c_str!("0")), Ok(false));
+> +///
+> +/// // Invalid input
+> +/// assert_eq!(kstrtobool(c_str!("invalid")), Err(EINVAL));
+> +/// assert_eq!(kstrtobool(c_str!("2")), Err(EINVAL));
+> +/// ```
+> +pub fn kstrtobool(string: &CStr) -> Result<bool> {
+> +    let mut result: bool = false;
+> +
+> +    // SAFETY: `string` is a valid null-terminated C string, and `result` is a valid
+> +    // pointer to a bool that we own.
+> +    let ret =
+> +        unsafe { bindings::kstrtobool(string.as_char_ptr(), core::ptr::from_mut(&mut result)) };
 
-Tested-by: Alice Ryhl <aliceryhl@google.com>
+Using ptr::from_mut here seesm excessive IMO. I think that function
+makes sense when it replaces an explicit `as` cast, but now when it can
+be done by a coercion. This is perfectly readable:
+
+let ret = unsafe { bindings::kstrtobool(string.as_char_ptr(), &mut result) };
+
+Or if you insist, you could directly create a raw pointer:
+
+let ret = unsafe { bindings::kstrtobool(string.as_char_ptr(), &raw mut result) };
+
+Alice
