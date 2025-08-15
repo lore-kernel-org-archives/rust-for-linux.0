@@ -1,146 +1,164 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818E619E96D
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 13:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6E419004E
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 14:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755265907; cv=none; b=QCm9TKsauQ7w3cy1/xbaZ3ioDlKWGUwy4GMvLrOFC5PiULR7tj/gzCfGIFqp5HHCFoeXmdwsGfQV43ePgrvzKSsFmiDLYUOsbrxm3EWOrLwVKp7+qiE7G37yzh4xTc519HUTkZg5PgVlQng/J76Y1pEeo98mktS31Q84Wv6e5HU=
+	t=1755267603; cv=none; b=F9hZuRKeIAy4cII7PtPB4VztnYpI9s6NcStshAA4m8sO0fqjChOmiQcD4OcmcjSb8H9m1vFWxTz2Dtypt4RY29gDN/queLGYKN9Z7jIQiRxaBDvIIVEAyaUwVbwi10v6d9x8inCwIdCyXcieGI+HeahD/bgfajD+r0X6vRoeeg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755265907; c=relaxed/simple;
-	bh=py+vR187Mqp8I13kFA3nYONIl/30zwbVxkeEOKXSt8s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bm8iizgbeaGD2i0TdecWGXsBSc6SBemt7UYPWFruftVKEj3fKOynyj0u45kNCJfvSZAh4Gak6xAFQ0WPq5y9KPqBMDfp5qtDyfpgYa23lba0nfuqy9vlhFmBl5jUIcadwDONSL+Ef3A0UZDq+ickaBvGI8y/OfgE2442JA2nQMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HAcXOuqO; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1755267603; c=relaxed/simple;
+	bh=QGvfVWzHBTfWclAZOwAE767S8vMtX7qZcgo6CTnG7JQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NT/ZHB60coMFmsh4XFHMlXIz9b5FU2TfoDtQL8ifaAgkrK6DuSNZ5gb6JcwNLCu0OCjTgjYJgCYvM8SXdRzTcg+2bMslTw1WTHWXDh/O9ujVeT5GlH+r9cCwYhpM3N2QoNt4VdlHP9b2NIFZULFo2p6URhEBpO9fHeqKG9ditSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8Ch7K4p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HAcXOuqO"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45a1b065d59so10271945e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 06:51:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755265904; x=1755870704; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=093IlVQTdAFvs60Lglv1mh61RWoRsNADFmPT6VwOqcw=;
-        b=HAcXOuqOXn9qZ8CdlcIxvcb6NrliQ29xlXjO7356A6nxuDw9zUAahslqc1yZIq+mHi
-         S+r5yxS8rdY/B0fiRkBOcpYkIaRwT/R+Yyg1ZNg4YGAa+v5WLJh6+EXyl8X7UpwDw6SC
-         Fv8O7WdHMjdvCTHrrN5FXXpnHSZrl56QHRtDvmC2iD5Sm8gPFLnhHjxHDli6oEBVmKBz
-         WESG84K7LAsnDV3DAj4tF+Be6mdH3mwdOMamVP30t2rcUxpqiSdfsQ7sYBVCGxq9SJlu
-         PWU/szR3SGiDiOZ/9kOw6Or3lsS6UP1+FIBPI/HBxFIW05KA2Q0ruJ4QiNtxS3Lfn4Yc
-         kD6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755265904; x=1755870704;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=093IlVQTdAFvs60Lglv1mh61RWoRsNADFmPT6VwOqcw=;
-        b=fANASI6CP8cWwijVT3e9Sj+BctrZWaGch7/txlnZtRzjuHyl2UvM1Eg/G1XMEtIb8M
-         GvNEWRx0AqXoUZluLa+0AQ/A0ldU+hxxiHN9x11QFjkhkSWIaPugW6gmOyoXLbkOzsuk
-         CJOuD/6APTRO45WF528g9VPThUDpOvBxD7qVaKHQbO9Zaq8tbdfM6EK0JiT9jG7YaFY5
-         wBazo1gWCSI0hHd8+SQxYxTuIHx2P+y6oRCXFrBgLVXphjhu9SN5U78wlCheO3V/0Xyi
-         Dp4gMi0euJJL1KMm7S7T7R7X7RQobSBDMHtWASzFYyChft76PNUS4/NHheqaicRvRBd+
-         lQOg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYdS4b/LGHvkYi+muTS7rJK7RtOrtHoAca3oG3W7w7jVyXI2fe5URsmVFMQZZibqzqylRm9/AT81LF6CnasA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKcUyYAF2Y4oAsxDsCem5GTxXEeiGhyPj/xD3NkRQ2u5Bnz5f/
-	9aWX8h1uoHxpyuZ/qlgvzJMSPrbT7k+VKeMbHMsNdPala4NsTgi5j66U9ttLzDm1RkWJYrIqFJk
-	Mj1Oc/shgOQikihWljA4CFKQzam2PgfmZlai9X94f
-X-Gm-Gg: ASbGncsVGSySFkEH4ltTLwELfFfPfb/p0ZEDrnvF0oirnsWZtcCpO9GGkAllIGWTVyr
-	TxJN/h/Wdyus+LEZlXPYduCA+x/LlEZxe4PhK2tDYsvPet/eDkuPwyKklC/BRsvjPvnw4v290BE
-	Dg0DPy9whuz2o3qMgevRb6qxDz8/R/1OV9pEZxx/X0dgpCf0UGucfKn5uG54AbYZXB8lrSFNZe3
-	meHazJwG1UWZpbGwv4AvSFgVB7nZRDQQx7pbhUDpVG6UKlXWhjFGDA=
-X-Google-Smtp-Source: AGHT+IFv6jZ3CYzc8+DB8tcb3iOZ0eSeAMRULpcmDGXTdj1HKyqd8QladLBnI4IfXS+FlzQLbMsVXltn+AO6gJPqM/U=
-X-Received: by 2002:a05:6000:2481:b0:3b5:f93a:bcc with SMTP id
- ffacd0b85a97d-3bb68a17993mr1756183f8f.35.1755265903498; Fri, 15 Aug 2025
- 06:51:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8Ch7K4p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312FDC4CEEB;
+	Fri, 15 Aug 2025 14:20:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755267602;
+	bh=QGvfVWzHBTfWclAZOwAE767S8vMtX7qZcgo6CTnG7JQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m8Ch7K4pBSo4/wAFeU8fPu1WLQjON+WokTEDtb1er3MNag1VYOGS/rcvOAQ2cObXy
+	 6zgpXHn+rt0E1RRPv2LbjYyWg79Wmq85H+9kkUUomut9leR6fFizf7/hJL6Le5gIHc
+	 yEKOGihimj8Lqw/FJBtGVrfi38avAZvVRAEKwsM4=
+Date: Fri, 15 Aug 2025 16:19:59 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 0/4] Untrusted Data API
+Message-ID: <2025081505-facial-cyclic-af25@gregkh>
+References: <20250814124424.516191-1-lossin@kernel.org>
+ <2025081416-sufferer-economist-3f00@gregkh>
+ <DC295B7454Y8.9RVKVMPORAZ9@kernel.org>
+ <2025081448-creation-timid-b972@gregkh>
+ <DC2BPSUKOWAX.2QTWBJM1ZQPJ3@kernel.org>
+ <2025081435-broker-valium-7b22@gregkh>
+ <DC2TOYQG9QEI.2TZ4GFFZGF05W@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250716091158.812860-1-shankari.ak0208@gmail.com>
-In-Reply-To: <20250716091158.812860-1-shankari.ak0208@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 15 Aug 2025 15:51:31 +0200
-X-Gm-Features: Ac12FXzFwpjZfyVT_iQ3XLEvKiGOnwXqbtcp9YGn_MuwLv_LAEO4d7-XhWxUDaA
-Message-ID: <CAH5fLgiUfZG4e0k6ajkkKo+iaidWHu4dTRfBbgm4Y_CQPGLHpg@mail.gmail.com>
-Subject: Re: [PATCH 3/7] rust: mm: update ARef and AlwaysRefCounted imports
- from sync::aref
-To: Shankari Anand <shankari.ak0208@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DC2TOYQG9QEI.2TZ4GFFZGF05W@kernel.org>
 
-On Wed, Jul 16, 2025 at 11:16=E2=80=AFAM Shankari Anand
-<shankari.ak0208@gmail.com> wrote:
->
-> Update call sites in the mm subsystem to import `ARef` and
-> `AlwaysRefCounted` from `sync::aref` instead of `types`.
->
-> This aligns with the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to sync.
->
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+On Fri, Aug 15, 2025 at 09:28:59AM +0200, Benno Lossin wrote:
+> On Thu Aug 14, 2025 at 8:26 PM CEST, Greg KH wrote:
+> > On Thu, Aug 14, 2025 at 07:23:45PM +0200, Benno Lossin wrote:
+> >> On Thu Aug 14, 2025 at 5:42 PM CEST, Greg KH wrote:
+> >> > On Thu, Aug 14, 2025 at 05:22:57PM +0200, Benno Lossin wrote:
+> >> >> On Thu Aug 14, 2025 at 4:37 PM CEST, Greg KH wrote:
+> >> >> > On Thu, Aug 14, 2025 at 02:44:12PM +0200, Benno Lossin wrote:
+> >> >> >> I didn't have too much time to spend on this API, so this is mostly a
+> >> >> >> resend of v3. There are some changes in the last commit, updating to the
+> >> >> >> latest version of Alice's iov_iter patche series [1] & rebasing on top
+> >> >> >> of v6.17-rc1.
+> >> >> >> 
+> >> >> >> I think we should just merge the first two patches this cycle in order
+> >> >> >> to get the initial, bare-bones API into the kernel and have people
+> >> >> >> experiment with it. The validation logic in the third patch still needs
+> >> >> >> some work and I'd need to find some time to work on that (no idea when I
+> >> >> >> find it though).
+> >> >> >
+> >> >> > Nice, thanks for reviving this!
+> >> >> >
+> >> >> > And we should at least add an example using it, otherwise it's not going
+> >> >> > to help out much here.  Add it to the misc device driver api?
+> >> >> 
+> >> >> You mean `rust/kernel/miscdevice.rs`? What parts of that API are
+> >> >> untrusted? 
+> >> >
+> >> > mmap() is, but you can't do anything about that...
+> >> 
+> >> Which parameter is untrusted there and why can't I do anything about it?
+> >
+> > The whole memory range is untrusted as to what is written there, sorry,
+> > it was a bad attempt at a joke, the kernel never gets a chance to know
+> > what is happening.
+> 
+> Ahh that flew over my head :) So we'd either build `Untrusted` directly
+> into the `VmaNew`/`VmaRef` abstractions -- or if there is a way to have
+> a trusted `VmaNew`, we can wrap it in `mmap`.
 
-Andrew, would you be able to pick up this patch? Thanks!
+Nah, I wouldn't worry about that, mmap() doesn't seem to cause security
+issues as by definition it is just allowing userspace to read/write
+anything to that device or memory, and the kernel doesn't even see it.
+Because of that, the kernel can't really be "broken" with invalid data
+there (hardware can, of course, but that's userspace's fault the kernel
+is just setting up a pipe here.)
 
-Acked-by: Alice Ryhl <aliceryhl@google.com>
+> >> If so we probably
+> >> should have a single parameter so users can verify them at the same
+> >> time. Or am I thinking of the wrong thing to verify? (`file` should be
+> >> already in kernel memory, right?)
+> >
+> > Both are usually verified at different places, first `cmd` tells what
+> > `arg` is going to be, and then the code goes off and parses whatever
+> > `arg` points to (or contains for simple ioctls).
+> >
+> > And for some, `arg` is just a place to write something back, so `arg`
+> > needs no verification for them, it depends on what `cmd` is.
+> 
+> I still think grouping them together makes sense, since in the
+> validation function you'd want access to both, right? And these use
+> cases seem perfect for enums:
+> 
+>     enum MyIoctlArgs {
+>         WriteFoo(UserPtr<Foo>),
+>         VerifyBar(UserPtr<Bar>),
+>         // ...
+>     }
+> 
+> And then in the validation function you can do:
+> 
+>     const WRITE_FOO_CMD: u32 = ...;
+> 
+>     fn validate(cmd: u32, arg: usize) -> Result<MyIoctlArgs> {
+>         Ok(match cmd {
+>             WRITE_FOO_CMD => MyIoctlArgs::WriteFoo(UserPtr::from_addr(arg)),
+>             VERIFY_BAR_CMD => MyIoctlArgs::VerifyBar(UserPtr::from_addr(arg)),
+>             _ => return Err(EINVAL),
+>         })
+>     }
+> 
+> So when wrapping them together we could have:
+> 
+>     pub struct IoctlArgs {
+>         pub cmd: u32,
+>         pub arg: usize,
+>     }
+> 
+> And then change the `MiscDevice::ioctl` function to:
+> 
+>     fn ioctl(
+>         _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+>         _file: &File,
+>         _args: Untrusted<IoctlArgs>,
+>     ) -> Result<isize>
 
-> It part of a subsystem-wise split series, as suggested in:
-> https://lore.kernel.org/rust-for-linux/CANiq72=3DNSRMV_6UxXVgkebmWmbgN4i=
-=3DsfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
-> This split series is intended to ease review and subsystem-level maintena=
-nce.
->
-> The original moving patch is here:
-> https://lore.kernel.org/rust-for-linux/20250625111133.698481-1-shankari.a=
-k0208@gmail.com/
->
-> Gradually the re-export from types.rs will be eliminated in the
-> future cycle.
-> ---
->  rust/kernel/mm.rs             | 3 ++-
->  rust/kernel/mm/mmput_async.rs | 2 +-
->  2 files changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-> index 43f525c0d16c..4764d7b68f2a 100644
-> --- a/rust/kernel/mm.rs
-> +++ b/rust/kernel/mm.rs
-> @@ -13,7 +13,8 @@
->
->  use crate::{
->      bindings,
-> -    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
-> +    sync::aref::{ARef, AlwaysRefCounted},
-> +    types::{NotThreadSafe, Opaque},
->  };
->  use core::{ops::Deref, ptr::NonNull};
->
-> diff --git a/rust/kernel/mm/mmput_async.rs b/rust/kernel/mm/mmput_async.r=
-s
-> index 9289e05f7a67..b8d2f051225c 100644
-> --- a/rust/kernel/mm/mmput_async.rs
-> +++ b/rust/kernel/mm/mmput_async.rs
-> @@ -10,7 +10,7 @@
->  use crate::{
->      bindings,
->      mm::MmWithUser,
-> -    types::{ARef, AlwaysRefCounted},
-> +    sync::aref::{ARef, AlwaysRefCounted},
->  };
->  use core::{ops::Deref, ptr::NonNull};
->
-> --
-> 2.34.1
->
+I think the problem with this is you now end up with the "I verified
+this is ok, so now I will copy it" bug, where userspace will race with
+the kernel and modify the data after verification but before copying.
+
+Note, Windows is full of these types of bugs as they don't do a call to
+copy_from_user(), but usually just poke at the data directly.  Linux at
+least forces a copy_from_user() call, but it doesn't always work in that
+you still have to validate the data is correct and people forget.
+
+So as long as we can copy the data from userspace first, and then
+validate it, and keep that validated copy around to use, that's great.
+I can't really determine above if that is the case or not, sorry.
+
+thanks,
+
+greg k-h
