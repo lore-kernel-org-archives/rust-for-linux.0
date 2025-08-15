@@ -1,97 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC432206A7;
-	Fri, 15 Aug 2025 19:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200CB23D7E3;
+	Fri, 15 Aug 2025 20:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755285138; cv=none; b=fgElNJVGUvC2kwW17mxuHLciurujJjQ/fFFe56R7u+9qL6+cDoIOC9N+eQRfBTYiNyQukpiTFUErRdQtU8yloXQ+O9DNNCrSNaba1jY4+0xRSm6ZxXZJZs3q84iFggP7jELARlVWrzZeRaTDQHtqNZh/ZscrdMJJ00E6S8VJy5U=
+	t=1755291151; cv=none; b=fHdBeAJjU7e8X6tO9sH7gy4qjWBGHXg0Yp6FxKjlH8PJSv4uGQ/Uq+yeFkZubxKuo+GN3cxo3zHxkVH20CCtiVsLswqymqFzLeJAilv+V87ygA0a7FVMC6rWxiiYScJAo+Y7LuYTvVKSQvPtZn2z4BTuzHa9IAieVHxU1AkF/n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755285138; c=relaxed/simple;
-	bh=sgy3dyxSlAQCYlsjTTTaZzqp/r732Zhi3hClnc2d2XE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=fxCn5EacuDEsLpJGBfbJnXnfDbqNVm0KjAxlrscq8RD5UrKoNKNy2EP5ka6291bEUGWAmwJCa10q0lgonyZLQr9Y/C3tYsKJTZ5HO1OBtIGrxj42IY6KJVauGUs5Zw1+5EEHzFuIQ0cKJNkkkR16GC1rt07sx/ntTBl54HtO0CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J1Wf/ZXE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755291151; c=relaxed/simple;
+	bh=eHAzQami6XAVAlrDUTRWmkOkyDvVH/c1wmYM49+rAbk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BkcoEUbcBdoJWpOuM6tSg4pPwWWsnCfjCA4/Ym2wR4U6TY4uYcKMWaaTLJbFYwFtoAdfvW7h1qQENWyWBSCMFnsL903KHvz0WWWPhJm4doUU/oHechxHJkPE9IyMwwhW2N4eXtZ1rrB0fPWChw/Kos7fixrOpoip9ZjRIUOm48Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IurERnTR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J1Wf/ZXE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D19C4CEEB;
-	Fri, 15 Aug 2025 19:12:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IurERnTR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61260C4CEEB;
+	Fri, 15 Aug 2025 20:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755285137;
-	bh=sgy3dyxSlAQCYlsjTTTaZzqp/r732Zhi3hClnc2d2XE=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=J1Wf/ZXE40wrscHg3EpaIQ8FJkb+AASxnoDGlfqVtggrISCz/2BfEnDuXz/xyB0rh
-	 kWLqUhsR+UJnQ7Ss3blz44+txjRXf6UyRWci/7GWp57DFtS1SFGL72CtSpA+I3U52k
-	 iq3nhg/LDH/YXdRGwHizWq9eeAtayasNM9ke4nFtjKT3F0/eV43KqsII0XdFMM4+P/
-	 EPf8s71I0cVF51NBPJFjkFTjxdUStTXF8BaSNuHpmFKEg3wC9JfchE+OPzkajvReLt
-	 DB9nL1FIT/bAq3lDojypd+tbuPoqsIRjXMU6IYFhOY4mV52OEVQTX5ULiXUiDpOV2j
-	 OBzN56y9X0HWQ==
+	s=k20201202; t=1755291151;
+	bh=eHAzQami6XAVAlrDUTRWmkOkyDvVH/c1wmYM49+rAbk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IurERnTRzArysxbhxgERbhQomOm77YOzbaFypkjdMDLMetsgUI+ed5xb7WzZoR096
+	 2LWHR7IIYzZcY3eMDLCqaXWRNTm1p49uyXACH8Ap+Zgm8BKZEZibAMGqJ6Ta7nMCuj
+	 0cqLydND5agMIsuQ5PnebovhNercbi2YRzq+bxO6Be7arepRy5Wry/FGrfcDPiGGGq
+	 6q0ZtPotY6oJheD74apG6xTPsvrCqTL5mUdLusEh8HKcnYEFHJdg7Gft5LAkxBkBiN
+	 +mG/s1d7GEG0pqpNEoDM2sA4w8w0DKOMq1EtfkdzVUSxWVTsS666ssySXoMolBE3vP
+	 04ymJQonxHB4g==
+Message-ID: <160418e6-79eb-488b-a028-009ebdbe66f1@kernel.org>
+Date: Fri, 15 Aug 2025 22:52:25 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 15 Aug 2025 21:12:12 +0200
-Message-Id: <DC38NDRET9NB.31UDI8FHB7WAY@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 0/2] Take ARCH_KMALLOC_MINALIGN into account for
- build-time XArray check
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Matthew Wilcox" <willy@infradead.org>, "Tamir
- Duberstein" <tamird@gmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <linux-mm@kvack.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Andrew Morton"
- <akpm@linux-foundation.org>
-References: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
-In-Reply-To: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: driver-core: Update ARef and AlwaysRefCounted
+ imports from sync::aref
+To: Shankari Anand <shankari.ak0208@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Leon Romanovsky <leon@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250814104615.355106-1-shankari.ak0208@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250814104615.355106-1-shankari.ak0208@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon Aug 11, 2025 at 2:31 PM CEST, Alice Ryhl wrote:
-> Alice Ryhl (2):
->       rust: alloc: specify the minimum alignment of each allocator
+On 8/14/25 12:46 PM, Shankari Anand wrote:
+> Update call sites in the driver-core files and its related samples
+> to import `ARef` and `AlwaysRefCounted` from `sync::aref`
+> instead of `types`.
+> 
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
+> 
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 
-    [ Add helper for ARCH_KMALLOC_MINALIGN; remove cast to usize. - Danilo =
-]
-
->       rust: alloc: take the allocator into account for FOREIGN_ALIGN
-
-Applied to alloc-next, thanks!
-
---
-
-@Andrew: Just a heads-up, this has a minor conflict with your tree, which
-should also show up in linux-next soon.
-
-diff --cc rust/kernel/alloc.rs
-index b39c279236f5,907301334d8c..000000000000
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@@ -164,7 -137,15 +164,15 @@@ impl NumaNode
-  /// - Implementers must ensure that all trait functions abide by the guar=
-antees documented in the
-  ///   `# Guarantees` sections.
-  pub unsafe trait Allocator {
-+     /// The minimum alignment satisfied by all allocations from this allo=
-cator.
-+     ///
-+     /// # Guarantees
-+     ///
-+     /// Any pointer allocated by this allocator is guaranteed to be align=
-ed to `MIN_ALIGN` even if
-+     /// the requested layout has a smaller alignment.
-+     const MIN_ALIGN: usize;
-+
- -    /// Allocate memory based on `layout` and `flags`.
- +    /// Allocate memory based on `layout`, `flags` and `nid`.
-      ///
-      /// On success, returns a buffer represented as `NonNull<[u8]>` that =
-satisfies the layout
-      /// constraints (i.e. minimum size and alignment as specified by `lay=
-out`).
-
+Applied to driver-core-testing, thanks!
