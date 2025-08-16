@@ -1,110 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9371DC9B5;
-	Sat, 16 Aug 2025 19:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D7B6FC5;
+	Sat, 16 Aug 2025 20:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755372933; cv=none; b=raLVoWhdxVonuw9ukXlJDXh7PkWzFm/Wt5AOtOkMp60m6fiRwNHGkmRSgXhFeuGWW6qaT12SsLfV4b8F60oy3Ft8/GmG7GmlfuJ8gTs0ivhC+fEUlvCsxn7tFutOQK5GQDNWvZC0tlqOnlkL6T35dFjMT8TwQ+cu1pXiwFO1gNQ=
+	t=1755376846; cv=none; b=U62F8LlUi6viSzpYhelH06wN90QRPPiVSA+d9PITh3wiLzucPbJpHnVNZH7HL2sziwxqvs/eWwr+Zdx7ILb7Fg7aFo4ZTyKqD19gSpx9bL/gi03G2BeqE5XG3c1aU5KrwWXSB4+OHL9gIIAUpgvFEMJJtvDND7zHl03jjip+Ak4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755372933; c=relaxed/simple;
-	bh=WlPCp9fVlPwFTXS7XmQr33PixxriCbunSTJIpHN/Lvg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=TAC2P0+hl4fI2ViAjp/foTHWPljn6+3UTipkK4x+w6DjIEyC7psunzw+VATHyQoSNb9XV0Nb58eEvsZiAvf1FQExIoWjwWwmrl5U+EyR/Z8WP0YZR7gjRX4fRdWnFpgqiP+jsxuiDSSsakW+ajrUYglkaztTVnw3mbHSkbt1LB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LGP8DpDo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755376846; c=relaxed/simple;
+	bh=IUMxX3sYOrYawtqKndVXDzrs15CgPpGIL94PGhnnl5o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MNLAndgWCVfYrAw4TIVIGptNvTVatVkrR12YKKpyLyqQXx9wOuswkNn3JEfSy/nDWew1O12VheGTuW4jcylqLMgw2ZH1ZX3YcizsxI6hW8Zlb5YvAPdjKc5MJRcDlhZUdeos/0kVzONCL/gjiVzqZDvNUHjUozVHAoAyzXbzMvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AbwjQ0fb; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LGP8DpDo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0ADC4CEEF;
-	Sat, 16 Aug 2025 19:35:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755372933;
-	bh=WlPCp9fVlPwFTXS7XmQr33PixxriCbunSTJIpHN/Lvg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LGP8DpDoQHmXQZJhujUuaz5XK7bx94w3tlAszPyywczhD/Qlt7TI+nFQF9cJeMjmH
-	 qfIkSax1djg7lcCDwXQcycsuQ+a4n0yktlZVIU0c4aE+HBc3Qq+sA+UtvEdN98Oqed
-	 3HiWP0pgRV9vKXLVHAnZouzQAphHCPV83BnARNrKLvuBELFbZ6MnKb7FRecx3KNtuX
-	 FjAEJzY0Em5+8j0GVjV0jVtKnHmB5Tqp8F/e724kPixcMSmykK1dd6hIUF3jydOFVR
-	 yfY5vaTs7Nbonto/cUG+r/Ugp2BFvesaGJWeTuFIZ5vMOVR/r5d40HK8fYBE/nSrIg
-	 LFrfCO37hTrWA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AbwjQ0fb"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b471751142aso480599a12.2;
+        Sat, 16 Aug 2025 13:40:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755376845; x=1755981645; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NQJ4r+9HntyCspbZDSuL92d40bOt1SumIFreNDuCFew=;
+        b=AbwjQ0fb7ZXbtHLvcdMabYO90LYwHAuTuAR6ukyrCDrDqshzhgHLk2KUlo42fdqhyv
+         Ex+744AFbVUfyqJJPrQ8f9w/S/Nyr6Xc/yByOy/5lgeGtxrJ967MnRFo1h92F0i9wXyK
+         wRMvmaNE8WTv60A6TsMjuG5Np26TY5yQ9eXU/mVS79qWRw1e1YH8Ag86/dvC0tbXO9Pl
+         UcpCnUkPHfBBpiw9XgOscDtg4zQ9G72wy6jOpySnbzNK6P8TWTXnpQbFhCxSlvmYBDNc
+         DUJNTOgMAktvAG+SSekeCTXM7QkcId6QA3cBwxAeop0uKI1mEl3j53YlcOM0NQDxNd2n
+         1PPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755376845; x=1755981645;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NQJ4r+9HntyCspbZDSuL92d40bOt1SumIFreNDuCFew=;
+        b=ioiy6OjP/V0hhzoW3RLNv35oIgHvw76F/basvRhHOcaRxjRinptFi/g9WHLImwQlX4
+         rMauvcfZnv3BdUyd5WODety7EPBM59wgp9NrLpZz7NZSt/tDH+Xn9SXx/6+si8seD8Vq
+         jYHjATbQlbWka7f4pLgtmg1LOV3acwgoB0mIVBaPKnySeQjIO3gJD+A0L447I8lGbKyj
+         y7lXP7FndumeDD2lqOzSkQHISmsy7qJffjrFYmy1Q2vlXzu9y829qxpXdLJgk1OheFHV
+         eLJV98XzbFNRBrLQ2dDVZk0E0YaYt6k/eiAR3OQsLeAsNxe0hHY1exyyZUGOwxM848t+
+         G99w==
+X-Forwarded-Encrypted: i=1; AJvYcCUI85jlFRAJ0zHtkwwj/wwEnhlACLw1fuiOW+jVWsu6oXDn5In6MS7elIASiBrRlNVtMiDAWxe3FaNMjiOVHJw=@vger.kernel.org, AJvYcCUMUqR73gZsPrnQbSFbZIkOatF7Tz9hHlpZJEhpM02tpkK3fjzP/6yLWqdyNz21d8qwxhUkDb4ojCD198Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8pNx54TbckvLHxYQ/BGLDHmR8nhhTV78Z1uUYQficJNYEMyWB
+	a8Geot1W2klFriPOtYyo0z2VKx+wml7LiEMoXChk1gbwLd9QLr5uS0zNvfe23r25AW1s19vt2pT
+	bYKRW1PmFdQBvihCpYZUOvHBRIS4fq/A=
+X-Gm-Gg: ASbGncufjmfM4gBgT6zlLbR/CxgwTXuNkw4gy/2LNS+vfBmrZPLSkxsN/mt3U2jAGlG
+	Cf3Jt/h89pxODvFlRRKCe+eNdbMpz6ZF0SV/t5aCyaJ0X8lrXe/ZZddRFwciGNqmbrOqNvX2tdQ
+	3TAKF9OAkIsHkYBf3cWeUqkbb4svgdL21Qw6L+3/GxyDD1FGhvjB39Mz+XUF+oDwpax2t5CNwa6
+	h6UQUwJ9nmbaUPwKm7iGaG9EGlRqQ==
+X-Google-Smtp-Source: AGHT+IGLhy6XoHUsx4g+ZU/gF0IL5YIly3nhuQnXq2tLKmkb/hLfnaLNTwbpGNKpUiPVcLq/xiDrOcahf47iyFTm0jQ=
+X-Received: by 2002:a17:902:e541:b0:240:9dcd:94c0 with SMTP id
+ d9443c01a7336-2446d6f1c95mr43015575ad.2.1755376844509; Sat, 16 Aug 2025
+ 13:40:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250731154919.4132-1-dakr@kernel.org> <20250731154919.4132-2-dakr@kernel.org>
+In-Reply-To: <20250731154919.4132-2-dakr@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 16 Aug 2025 22:40:32 +0200
+X-Gm-Features: Ac12FXzilRpwWw4Jjl4--bVK8kvcLn9z3359KfqcqWlR9FQCLCDD3nR0rYIEH4E
+Message-ID: <CANiq72mUXy6AYkwCW_kO3ikjNBc5pLzXw0+fXFGmYum0tGmw1g@mail.gmail.com>
+Subject: Re: [PATCH 1/4] rust: alloc: replace aligned_size() with Kmalloc::aligned_layout()
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com, 
+	urezki@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: multipart/mixed; boundary="00000000000043baf4063c8185da"
+
+--00000000000043baf4063c8185da
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 16 Aug 2025 21:35:26 +0200
-Message-Id: <DC43RPUDBY6M.1TGSQKJV9BKSF@kernel.org>
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
- "Alan Stern" <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v8 6/9] rust: sync: atomic: Add the framework of
- arithmetic operations
-X-Mailer: aerc 0.20.1
-References: <20250719030827.61357-1-boqun.feng@gmail.com>
- <20250719030827.61357-7-boqun.feng@gmail.com>
- <DC0AKAL1LW84.MR2RFTMX1H61@kernel.org> <aKCtbSDuJNrtdLNp@tardis-2.local>
-In-Reply-To: <aKCtbSDuJNrtdLNp@tardis-2.local>
 
-On Sat Aug 16, 2025 at 6:10 PM CEST, Boqun Feng wrote:
-> On Tue, Aug 12, 2025 at 10:04:12AM +0200, Benno Lossin wrote:
->> On Sat Jul 19, 2025 at 5:08 AM CEST, Boqun Feng wrote:
->> > +/// Types that support atomic add operations.
->> > +///
->> > +/// # Safety
->> > +///
->> > +/// `wrapping_add` any value of type `Self::Repr::Delta` obtained by =
-[`Self::rhs_into_delta()`] to
->>=20
->> Can you add a normal comment TODO here:
->>=20
->>     // TODO: properly define `wrapping_add` in this context.
+On Thu, Jul 31, 2025 at 5:49=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
 >
-> Yeah, this sounds good to me. How do you propose we arrange the normal
-> comment with the doc comment, somthing like:
->
->     // TODO: properly define `wrapping_add` in this context.
->    =20
->     /// Types that support atomic add operations.
->     ///
->     /// # Safety
->     ///
->     /// `wrapping_add` any value of type `Self::Repr::Delta` obtained by =
-[`Self::rhs_into_delta()`] to
->     ...
->     pub unsafe trait AtomicAdd<...> {
->         ...
->     }
+> +impl Kmalloc {
+> +    /// Returns a [`Layout`] that makes [`Kmalloc`] fulfill the requeste=
+d size and alignment of
+> +    /// `layout`.
+> +    pub const fn aligned_layout(layout: Layout) -> Layout {
 
+I think this `const fn` here was removed when applying to make it work
+with older compilers, right?
 
-Inline maybe?
+I was fixing another `rusttest` thing and noticed while applying
+these. I had a patch to fix it, since we can actually just use the
+feature, and then I noticed it wasn't in the tree. Since I have it, I
+am attaching it for reference in case the now-stable feature is
+needed, e.g. if you want to make that `const fn` again.
 
-    /// Types that support atomic add operations.
-    ///
-    /// # Safety
-    ///
-    // TODO: properly define `wrapping_add` in this context:
-    /// `wrapping_add` any value of type `Self::Repr::Delta` obtained by [`=
-Self::rhs_into_delta()`] to
-    /// any value of type `Self::Repr` obtained through transmuting a value=
- of type `Self` to must
-    /// yield a value with a bit pattern also valid for `Self`.
-
----
 Cheers,
-Benno
+Miguel
+
+--00000000000043baf4063c8185da
+Content-Type: application/x-patch; 
+	name="0001-rust-kernel-use-const_alloc_layout-feature-to-fix-Ru.patch"
+Content-Disposition: attachment; 
+	filename="0001-rust-kernel-use-const_alloc_layout-feature-to-fix-Ru.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_meepsu9f0>
+X-Attachment-Id: f_meepsu9f0
+
+RnJvbSAzY2YyNGYwNTYxNGUzMzQ5M2JhMDg2YmFiMWYwMmY3MDFjODk0ODA3IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBNaWd1ZWwgT2plZGEgPG9qZWRhQGtlcm5lbC5vcmc+CkRhdGU6
+IFNhdCwgMTYgQXVnIDIwMjUgMjI6MjA6MjkgKzAyMDAKU3ViamVjdDogW05PVCBQQVRDSF0gcnVz
+dDoga2VybmVsOiB1c2UgYGNvbnN0X2FsbG9jX2xheW91dGAgZmVhdHVyZSB0byBmaXggUnVzdAog
+PCAxLjg1IGJ1aWxkcwoKQmVmb3JlIFJ1c3QgMS44NS4wIChyZWxlYXNlZCAyMDI1LTAyLTIwKSwg
+YHBhZF90b19hbGlnbmAgd2FzIG5vdCBhdmFpbGFibGUKaW4gY29uc3QgY29udGV4dHM6CgogICAg
+ZXJyb3I6IGBjb3JlOjphbGxvYzo6TGF5b3V0OjpwYWRfdG9fYWxpZ25gIGlzIG5vdCB5ZXQgc3Rh
+YmxlIGFzIGEgY29uc3QgZm4KICAgICAgIC0tPiBydXN0L2tlcm5lbC9hbGxvYy9hbGxvY2F0b3Iu
+cnM6MTIyOjkKICAgICAgICB8CiAgICAxMjIgfCAgICAgICAgIGxheW91dC5wYWRfdG9fYWxpZ24o
+KQogICAgICAgIHwgICAgICAgICBeXl5eXl5eXl5eXl5eXl5eXl5eXl4KICAgICAgICB8CiAgICAg
+ICAgPSBoZWxwOiBhZGQgYCMhW2ZlYXR1cmUoY29uc3RfYWxsb2NfbGF5b3V0KV1gIHRvIHRoZSBj
+cmF0ZSBhdHRyaWJ1dGVzIHRvIGVuYWJsZQoKU2luY2UgdGhlIGBjb25zdF9hbGxvY19sYXlvdXRg
+IGZlYXR1cmUgWzFdIGlzIGFscmVhZHkgc3RhYmxlIFsyXSBhbmQgaXMKYXZhaWxhYmxlIGluIG91
+ciBtaW5pbXVtIFJ1c3QgdmVyc2lvbiB0b28sIHNpbXBseSBhZGQgaXQgdG8gdGhlIGxpc3Qgb2YK
+dGhlIG9uZXMgd2UgdXNlLgoKTGluazogaHR0cHM6Ly9naXRodWIuY29tL3J1c3QtbGFuZy9ydXN0
+L2lzc3Vlcy82NzUyMSBbMV0KTGluazogaHR0cHM6Ly9naXRodWIuY29tL3J1c3QtbGFuZy9ydXN0
+L3B1bGwvMTM0NzY4IFsyXQpOb3QtRml4ZXMgKHBhdGNoIHdhcyBjaGFuZ2VkIG9uIGFwcGx5KTog
+ZmRlNTc4Yzg2MjgxICgicnVzdDogYWxsb2M6IHJlcGxhY2UgYWxpZ25lZF9zaXplKCkgd2l0aCBL
+bWFsbG9jOjphbGlnbmVkX2xheW91dCgpIikKTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcv
+cnVzdC1mb3ItbGludXgvMjAyNTA3MzExNTQ5MTkuNDEzMi0yLWRha3JAa2VybmVsLm9yZy8KU2ln
+bmVkLW9mZi1ieTogTWlndWVsIE9qZWRhIDxvamVkYUBrZXJuZWwub3JnPgotLS0KIHJ1c3Qva2Vy
+bmVsL2xpYi5ycyB8IDMgKysrCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspCgpkaWZm
+IC0tZ2l0IGEvcnVzdC9rZXJuZWwvbGliLnJzIGIvcnVzdC9rZXJuZWwvbGliLnJzCmluZGV4IGVk
+NTMxNjllNzk1Yy4uOTRkMTc0ZWQ3YjhiIDEwMDY0NAotLS0gYS9ydXN0L2tlcm5lbC9saWIucnMK
+KysrIGIvcnVzdC9rZXJuZWwvbGliLnJzCkBAIC0zMSw2ICszMSw5IEBACiAjIVtmZWF0dXJlKGNv
+bnN0X3B0cl93cml0ZSldCiAjIVtmZWF0dXJlKGNvbnN0X3JlZnNfdG9fY2VsbCldCiAvLworLy8g
+U3RhYmxlIHNpbmNlIFJ1c3QgMS44NS4wLgorIyFbZmVhdHVyZShjb25zdF9hbGxvY19sYXlvdXQp
+XQorLy8KIC8vIEV4cGVjdGVkIHRvIGJlY29tZSBzdGFibGUuCiAjIVtmZWF0dXJlKGFyYml0cmFy
+eV9zZWxmX3R5cGVzKV0KIC8vCi0tCjIuNTAuMQo=
+--00000000000043baf4063c8185da--
