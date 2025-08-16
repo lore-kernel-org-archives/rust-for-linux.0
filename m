@@ -1,213 +1,158 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FF41311AC;
-	Sat, 16 Aug 2025 01:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623331F460B
+	for <rust-for-linux@vger.kernel.org>; Sat, 16 Aug 2025 05:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755307714; cv=none; b=PrtUi2svk1ze783bwNrBVwJMGk3nYewTQAtMLwS1S/2HXpIxA0pY7qCma/kolR7mRh9quN5i/JKIS2pXxI9M8ajUkEwSpXvOr34KFEs0c2P1z/cKL29QQAVskgrjNPkcixlg0+AQQWEPdHb9olir1Ma2pU/VEmMZZtDfwRM3LiA=
+	t=1755323894; cv=none; b=fnxStqCMSeIMIZz0sW0+A0B8A8j8TH6YubTnjNQjs49VI3Sjnu1KOvYJQazksTCPuTjgMZpYZiuA46DaIE+iNUzU1zaDhEpgex2meebzj27ntC7vchdJx40wY/yRUBNwmEA43qM6Nw6SUl2OJFFgfZS5kKeAsVKdaoZic4wnP3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755307714; c=relaxed/simple;
-	bh=cL68yKgFih+YoDzXuN2geWynULDzFGUjryO4X7D/qn0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Bh1wuWAfHXXk3WDF6IRamfwFlrJ7tIbX9OBq4AV7rMR1XVEcqMjtvshfbY4iyTNUudvI3TGdSiHMpgTUaP52hbKwx1xYkyI1GFl0qg2WaCSYHUns04o3ATSPegLL1lOmB6LummUbrpNEjJI/IVANNMisXLP+/5NJIxt+9JcJLtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JnNX8cE6; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755323894; c=relaxed/simple;
+	bh=WAfkSZrl3calNt7Fy7Wn8M2gukVfDmNuTibUuqbnrMc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LIO5RDzso753IsVFMSYjwT4vPC8QIct1xbIyTXzIaqyJ3uATLs1ykaV62E8z9mCNDyA/WwXnuLq2A68a857XylWSRY+v+RCNx2CI5ENYRSQRa/w55rbyKUBIPX81xDiSqcKcpUwznVQ/ImDqkJRi0TqLY/ci3iafZhC4N4pCuA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=fPOD7PLz; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JnNX8cE6"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b4716f46a2eso1756422a12.0;
-        Fri, 15 Aug 2025 18:28:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="fPOD7PLz"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-244581caca6so19708685ad.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Aug 2025 22:58:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755307711; x=1755912511; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DcLbTgkOJ/gVwg1vh3eVTe4SEaylBKg4H4V6ioMpdtQ=;
-        b=JnNX8cE6hbJXRUOkGhoA0Tpqb1dgc2Mkp29J5TX6/e/ncKvj3oTBxpSRbI5bHTCpVe
-         kdiUOY9dzFnDJpDKx46LxyWVPSlfKGmVB6bcLTtAmkRsvIk6Je5w7KRA5nBU1qO3YJXt
-         g2PEOaw6NbA0aIUQ/A/UwsPEWmIOZe5RFzjpWNLe4CShU6Q6bGvzySphed7n/hZjJIdU
-         gYU6goKeUTGnlr20Lk5nA7ON8llyjyUBSoeX5q+jKCkmaSBaUNRmY5YvE/hAlUlZRUHp
-         4h4YsQEVLB/vOUmqpx4vfj/qtrTdc6Efb4aMutT5dQJrI8KbBj6m7pLxUtThNyVbgRVu
-         N4iw==
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1755323892; x=1755928692; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JQQQbraPh1krc8T4xvof89GHpnq76NDYsEq95LcPMgc=;
+        b=fPOD7PLzrPY/ypP07bwAJGN2Rg5dO6Eg7vHhBFFv7wqgSRCF1FfOcxUlAIBC6SKpyf
+         s0ONGCQNqVxi7D3iPm7DRX5kLFncPj8kdtXjepcPKJoJo5Oh6HAncxfMH/8EPPVjQ1iC
+         dYZxLfHLD8apoFK9IW9NX40BjkwkGLTkZpFoRLjQSX2Uen7JUTBxC7as2xIhJ4pQqv6P
+         nkvetoJG+OunXwR3dKafFAuKaHR5yHq+JIuruJcE+8aSha/JxDuuRmKuLdHnjXwP7Lx2
+         DeMJsHIGtPfrsZputJLjn9J7jX7CfPRD55JevYeuEYzznDfVldmDLE9onvxoRV9TFCM+
+         /LFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755307711; x=1755912511;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DcLbTgkOJ/gVwg1vh3eVTe4SEaylBKg4H4V6ioMpdtQ=;
-        b=CxwImTEaBkl3mqmEW/jBDZEdC9Tl9xJmMQ45Jvswv9dOG5xaPqLqYdPRU/C1suzs4E
-         PyT5BILbEZ5doX6A23MxyFqNQARI49Fh+VUG78y1iIJPueLueTRF7q7jyltlsEV+8lxc
-         /+FJJ3RAsohnVxECP7WOZqp+/zECjxIQgjZrPaHmUPOOzNv4hBijfog/ZeuKEjT+i5NO
-         tC+l5vHQUySZSLxhkL4pDe8q1ZNljXVL5jkOXZz/XDjm31BB+sKYHA9u3jUOBQIDY9LX
-         MNpK4GjBSHrfkn33KxHEux432XK5cyEX/8Shwr43O5E7+Fp+E8IJBMuPgQ3pUbKHfdES
-         Aojg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4jL+GdieYoZ3K08Q86fg3RKAh8bkwu+k0akJFBdOHQOm1Q+cnzjjad0JQA/SAhkZ72iuIJGk+Q1IEB7rW@vger.kernel.org, AJvYcCVlqVdIA7Rr25bA+KembH5BOTNYBYfffepIhMRJ9PP5anf7C/jo6G1YKHJM6rbnU8atF7VxShsDmJ8=@vger.kernel.org, AJvYcCWZALBr7xHcbALL2dKX10tnrrBqdqE+gBb00F0bIoEsoQQOYOjbu7BThtRstLrRUR2Ce1C5+h44z4sNO0tQNiU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAvGbe93TJCkErEQ7Bc4o6U2oPjxGGzt7Yg/MQrhcBY/uy4DgU
-	nd7ZaSvwucCE765Wp4zAFmn9BVuughNC5UCRf2kzU18ppdCzS6fP+w/h
-X-Gm-Gg: ASbGncsYebFp9Nz3Mi83SV5WbqCIw2/JPRBeEMz7bsORxtZCSsU4xecgIuhyVN8Odte
-	nrvIvUVqBLC+XmmnWhiqq8LmMOXWOXZH1y2nePQLqLB44Eq7zEKcW32hW8+cJSu9FbTYKLVl9rc
-	GAz1eWCSTn4ev4s8uRkeUcuQQg/DD8sKbIO5XU28URzrn57kjVq0+7OjqXhQDSU1IDSn4SUV95K
-	/FlcMsvNyyqm75UCSMuWW9p+bwqY36n5flqxYc6vLr8Csaq8otSnWL5/2h8NYA4dGJ0Ddp7Slg2
-	S//97CLdw2vkHTV+EAnVS4rMCAIh9RV0XrDD46nfygOXQGHV+dvIk2GR+xPNQ6mFCk6lrpRKLWS
-	rfYN13hjEYvG8T+i/GJnEn2au81hc8nhzDN6YrnV5PzeZymZq4tSXRQwD1U0UWCBSnHM2
-X-Google-Smtp-Source: AGHT+IFmuoEaAgmc+b55KXKn0mWdwufV7rUOybmN9i6VMPi1iQ0K4+L67TRNxK1sXLqxq/P0faU7dg==
-X-Received: by 2002:a17:903:1a43:b0:240:41a3:8e0d with SMTP id d9443c01a7336-2446d8b51f4mr49260615ad.36.1755307710724;
-        Fri, 15 Aug 2025 18:28:30 -0700 (PDT)
-Received: from [10.0.2.15] (KD106167137155.ppp-bb.dion.ne.jp. [106.167.137.155])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b472d5a7a40sm2354708a12.9.2025.08.15.18.28.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Aug 2025 18:28:30 -0700 (PDT)
-Message-ID: <9b3b0430-066f-486e-89cc-00e6f1f3b096@gmail.com>
-Date: Sat, 16 Aug 2025 10:16:01 +0900
+        d=1e100.net; s=20230601; t=1755323892; x=1755928692;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JQQQbraPh1krc8T4xvof89GHpnq76NDYsEq95LcPMgc=;
+        b=X8tBJ9YTV6gYMXSeSrhXtjrY5u9POU3RVb/+x+TaBTQFyxiX8pHB3yXLtD0VjXUsoJ
+         /+DbxVGISMwDi0xC46fT6UXKFk05DuOGbnkw0qMDFb/QGIxvyVRWvvwNXi8v0xoVzWMu
+         W6PE4wnYW3bdbbkDyZ8HaQHYJghcx3hHOBE+gqb4lFIntQ9Dos5zO1d675IsL8NR5LLJ
+         /+ROmC51mxvRka8YUgRPraxGhjWXQUmmYdpQXaPgz/8Kg6wLuRV/A4YnbxnTgKKOJ3oF
+         cyk6UJGALV/z/R9EbBXtp6bpMqSkHo2I6W5Q9+EJHliWdzizu8aKT8MZGxVbOXymZvou
+         +p5w==
+X-Gm-Message-State: AOJu0YzPIRaCag/jQV2Ggj4y/20uZye0T/kTL8SJzWqpP0BYUXGae5LQ
+	nFrmPuROUh0cepYNwZbH469l8lvxxFqfXUQpTZiXzLujLevURTgDHDBOHd+2HjHgwA==
+X-Gm-Gg: ASbGnctcPckr0Xco7CFG9EZEZov9jLxxknkB/vj12VsMVcSjU6Vcwt8HruPfI9m0LjQ
+	/9z9L0pmMhU4X3Hiq2Qdp6kP/XkYMTKjXPzG2kHyXVuHaG6dYDeuoh3LvhOexn2kboJUgbarT05
+	eo/QGoonMnphB/stkVIuTk4ZiUVmHM18LThS+iWbYQUpbmILqbZfIXRCIiAUdtMIBkDaMukVhXQ
+	mf29gy0F292k6V+HnCe1neS7F07ofYPbJTJuO3wbAW3favAeknmn9T9MLdBO9T3KZZYsJ6Rzyta
+	G+saz277lvaECgQDbIhU5mkVM4SxsyzFdaLQestt8uJ9cQqDY920XIFL0ST8BNM/kLjl3Yx1htq
+	YKi8pYGmqiilhw/SajB3NudVjahoN0RE=
+X-Google-Smtp-Source: AGHT+IEfcGoaS0z47ErwANHzyN1q4zk+dx8nklv25qpQwbTkNYvE5VjfNicbmC6/8HkAIj/0hpzxnA==
+X-Received: by 2002:a17:902:e848:b0:240:79d5:8dc7 with SMTP id d9443c01a7336-2446d90c649mr81275395ad.46.1755323892487;
+        Fri, 15 Aug 2025 22:58:12 -0700 (PDT)
+Received: from [192.168.1.9] ([2401:4900:8899:e205:7ddd:6d95:7c30:9bd3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446cb0a0a7sm28328245ad.65.2025.08.15.22.58.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 22:58:12 -0700 (PDT)
+From: Ayush Singh <ayush@beagleboard.org>
+Subject: [PATCH v2 0/2] rust: Add abstractions for applying devicetree
+ overlays
+Date: Sat, 16 Aug 2025 11:27:44 +0530
+Message-Id: <20250816-rust-overlay-abs-v2-0-48a2c8921df2@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: mchehab+huawei@kernel.org
-Cc: alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, corbet@lwn.net, gary@garyguo.net,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, tmgross@umich.edu,
- Akira Yokosawa <akiyks@gmail.com>
-References: <88a95c7f6996cafb247d6706060173b17a46d570.1755258303.git.mchehab+huawei@kernel.org>
-Subject: Re: [PATCH 04/11] scripts: sphinx-build-wrapper: add a wrapper for
- sphinx-build
-Content-Language: en-US
-From: Akira Yokosawa <akiyks@gmail.com>
-In-Reply-To: <88a95c7f6996cafb247d6706060173b17a46d570.1755258303.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANgdoGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDI1MDE0Nz3aLS4hLd/LLUopzESt3EpGJdY7PExGSLJEtzU6NEJaC2gqLUtMw
+ KsJHRsbW1ANfXOV5iAAAA
+X-Change-ID: 20250417-rust-overlay-abs-36aac8b9752a
+To: Jason Kridner <jkridner@beagleboard.org>, 
+ Deepak Khatri <lorforlinux@beagleboard.org>, 
+ Robert Nelson <robertcnelson@beagleboard.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Dhruva Gole <d-gole@ti.com>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Saravana Kannan <saravanak@google.com>, Benno Lossin <lossin@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1764; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=WAfkSZrl3calNt7Fy7Wn8M2gukVfDmNuTibUuqbnrMc=;
+ b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBooB3tEYbUFzz86LDTL4qa0gfYE0ANuYv2dMMbT
+ agA0/n+2vKJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCaKAd7QAKCRAFzvXHieVa
+ dJgTEACMp2wmStbeLFa+gRZ9GsLa/0vzPaHBLoQ73zT3id3laECBFj9cg7M7j7iPcZHCrHI84SR
+ v5KBxUcwd83Nb8pLJyzjnDIRYq09DqcJ7wvLS6oP6oHVgutUbYHC75ItV8BRlJMjpiE8jiHadTJ
+ TIOJm8IBT2BAv0TgzM+aD3VQMWR804rRFOPSViPX9OIYFM1OlJSjIn8tcKPWWOaSzpQgHwQo031
+ LKKfAFNLjZIy5cYKjITATY4U6XEav+odCb951ti5tDGRz312LZTEeaMVMLOUR3CJOHB/lvt4wW3
+ /KV57l4MaQC7aaNpGEnhl+HPbiPxaf+zs9WONu/9dZUj2bz+H7Y6NJjycWMNA91L/TqARvBVJ3D
+ T3JTQr/I46XzVrynAwTeuIVYX2nGeCrJXAksscKY5aR6NoQX0DxcPH2W8pvgXSZfCNWos4OoFJt
+ IrjGpfJriIrbu9WnI5jdYDxONpW8d9fwlpFiX7AvGGeb9ZsV7ajmGh9yuz3P3jpgSLzlyYHNUMH
+ PT8nhlnzYpuHyS6kBTHncGF6Sj4S5HaLUrLwsqxigw91BmuehphHhAyBARJ+2sJ59Px3MwXrdwL
+ Porunor0bDyucW4X537qB3OsC2U8LrMmatFLqX8miZfDhiFztI88BU1M1i5mQhyBjW6Wqdu+eLL
+ ISesOj9MJRvUKmA==
+X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
+ fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Hi Mauro,
+The following patch series adds abstractions required to apply
+devicetree overlays from Rust code. To see how the bindings look in
+usage, see my working tree [0] for a connector driver  I am working on.
 
-On Fri, 15 Aug 2025 13:50:32 +0200, Mauro Carvalho Chehab wrote:
-> There are too much magic inside docs Makefile to properly run
-> sphinx-build. Create an ancillary script that contains all
-> kernel-related sphinx-build call logic currently at Makefile.
-> 
-> Such script is designed to work both as an standalone command
-> and as part of a Makefile. As such, it properly handles POSIX
-> jobserver used by GNU make.
-> 
-> It should be noticed that, when running the script alone,
-> it will only take care of sphinx-build and cleandocs target.
-> As such:
-> 
-> - it won't run "make rustdoc";
-> - no extra checks.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  .pylintrc                    |   2 +-
->  scripts/sphinx-build-wrapper | 627 +++++++++++++++++++++++++++++++++++
->  2 files changed, 628 insertions(+), 1 deletion(-)
->  create mode 100755 scripts/sphinx-build-wrapper
-> 
+Open Questions
+***************
 
-[...]
+1. Removing overlay on drop
 
-> diff --git a/scripts/sphinx-build-wrapper b/scripts/sphinx-build-wrapper
-> new file mode 100755
-> index 000000000000..5c728956b53c
-> --- /dev/null
-> +++ b/scripts/sphinx-build-wrapper
-> @@ -0,0 +1,627 @@
+I my usecase (see [0]), I will only ever have 1 active overlay in the
+driver, which I will be removing dynamically. So removing overlay on
+drop works for it. But maybe there are some usecases I am missing.
 
-[...]
+2. Only enable bindings when CONFIG_OF_OVERLAY is set?
 
-> +    def handle_pdf(self, output_dirs):
-> +        """
-> +        Extra steps for PDF output.
-> +
-> +        As PDF is handled via a LaTeX output, after building the .tex file,
-> +        a new build is needed to create the PDF output from the latex
-> +        directory.
-> +        """
-> +        builds = {}
-> +        max_len = 0
-> +
-> +        for from_dir in output_dirs:
-> +            pdf_dir = os.path.join(from_dir, "../pdf")
-> +            os.makedirs(pdf_dir, exist_ok=True)
-> +
-> +            if self.latexmk_cmd:
-> +                latex_cmd = [self.latexmk_cmd, f"-{self.pdflatex}"]
-> +            else:
-> +                latex_cmd = [self.pdflatex]
-> +
-> +            latex_cmd.extend(shlex.split(self.latexopts))
-> +
-> +            tex_suffix = ".tex"
-> +
-> +            # Process each .tex file
-> +            has_tex = False
-> +            build_failed = False
-> +            with os.scandir(from_dir) as it:
-> +                for entry in it:
-> +                    if not entry.name.endswith(tex_suffix):
-> +                        continue
-> +
-> +                    name = entry.name[:-len(tex_suffix)]
-> +                    has_tex = True
-> +
-> +                    try:
-> +                        subprocess.run(latex_cmd + [entry.path],
-> +                                       cwd=from_dir, check=True)
+The kernel header currently seems to provide blank implementations of
+these methods when `CONFIG_OF_OVERLAY` is not enabled. But I am not sure
+what is rust-for-linux policy here.
 
-So, runs of latexmk (or xelatex) would be serialized, wouldn't they?
-That would be a *huge* performance regression when I say:
+Best Regards,
+Ayush Singh
 
-    "make -j10 -O pdfdocs"
+[0]: https://github.com/Ayush1325/linux/commits/beagle-cape-v2/
 
-Current Makefile delegates .tex --> .pdf part of pdfdocs to sub make
-of .../output/Makefile, which is generated on-the-fly by Sphinx's
-latex builder.  That "-j10 -O" flag is passed to the sub make.
+Changes in v2:
+- Rebase on next-20250814
+- Return error if buffer size too big instead of panic.
+- Update the reference driver link.
+- Use `to_of_node` on fwnode instead of getting of_node directly from
+  struct device.
+- Link to v1: https://lore.kernel.org/r/20250422-rust-overlay-abs-v1-0-85779c1b853d@beagleboard.org/
 
-Another issue is that you are not deny-listing variable Noto CJK
-fonts for latexmk/xelatex.  So this version of wrapper won't be able
-to build translations.pdf if you have such variable fonts installed.
-That failuer is not caught by your ad-hoc logic below.
+Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+---
+Ayush Singh (2):
+      rust: kernel: of: Add DeviceNode abstraction
+      rust: kernel: of: Add overlay id abstraction
 
-> +                    except subprocess.CalledProcessError:
-> +                        # LaTeX PDF error code is almost useless: it returns
-> +                        # error codes even when build succeeds but has warnings.
-> +                        pass
-> +
-> +                    # Instead of checking errors, let's do the next best thing:
-> +                    # check if the PDF file was actually created.
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/of.c               |  5 +++++
+ rust/kernel/device/property.rs  | 18 ++++++++++++++++
+ rust/kernel/of.rs               | 46 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 70 insertions(+)
+---
+base-commit: 931e46dcbc7e6035a90e9c4a27a84b660e083f0a
+change-id: 20250417-rust-overlay-abs-36aac8b9752a
 
-I've seen cases where a corrupt .pdf file is left after premature crashes
-of xdvipdfmx.  So, checking .pdf is not good enough for determining
-success/failure.
-
-One way to see if a .pdf file is properly formatted would be to run
-"pdffonts" against the resulting .pdf.
-
-For example, if I run "pdffonts translations.pdf" against the corrupted
-one, I get:
-
-   Syntax Error: Couldn't find trailer dictionary
-   Syntax Error: Couldn't find trailer dictionary
-   Syntax Error: Couldn't read xref table
-
-, with the exit code of 1.
-Against a successfully built translations.pdf, I get something like:
-
-name                                 type              encoding         emb sub uni object ID
------------------------------------- ----------------- ---------------- --- --- --- ---------
-JPRCQB+DejaVuSans-Bold               CID TrueType      Identity-H       yes yes yes      4  0
-QFNXFP+DejaVuSerif-Bold              CID TrueType      Identity-H       yes yes yes     13  0
-NMFBZR+NotoSerifCJKjp-Bold-Identity-H CID Type 0C       Identity-H       yes yes yes     15  0
-WYMCYC+NotoSansCJKjp-Black-Identity-H CID Type 0C       Identity-H       yes yes yes     32  0
-[...]
-
-So I have to say this version of your wrapper does not look quite
-ready to replace what you call "too much magic inside docs Makefile".
-
-Regards,
-Akira
+Best regards,
+-- 
+Ayush Singh <ayush@beagleboard.org>
 
