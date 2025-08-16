@@ -1,98 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CAA72614;
-	Sat, 16 Aug 2025 21:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88E91DD0D4;
+	Sat, 16 Aug 2025 22:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755380758; cv=none; b=pg7uKiJ0TZ0nbZnWllZO+vkFNZo8hW+QHDUJrJZaXP2xdz+uA/ItPsbe+cmeXjDTKfBOi00AyPgt2PqJcHCvMpGAB5rWdjJjsicoR4zsBo0lHpL79bQN6Wd5vpJPLHhYyr6gB62bPudFnNa70htjyLPTCO5xaI8PfepjT7O+dQg=
+	t=1755385156; cv=none; b=O3raW7CFxeB1M+SwyhkiNHZGZ3yDy23irFGmzvp5Un2PDSmzoXp/jUZxkjcD90yT7UAIu2AQGsjz+d/3mvbdtx9SdWdSarWvNQ+g64wismWwy2vl5B1mjpu437WAac8ehALgNnAzPpVqu1Rqi71L6/MZy4diOVqZqa3PBiZqr9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755380758; c=relaxed/simple;
-	bh=XNmCpz+qTJMlbgXL45hQVb6txNHF2K6d6OOnSyKNEJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fdzte8N4p8C2hNQb/5a7fu0gmMt5RMmIFLlT00JSfpyytrVH+2zradUmzG6dZAgOdGinGc9xNi8cieb0xfUTghMgkpBMVS8QmUc3alaOJYTF1Xc+7v7Oj7H+2cbZI1XV63F8rKGeIjRmyUgJ0RwGJ1BluE4+AXa3bB81L/53tKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/ihQXqu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755385156; c=relaxed/simple;
+	bh=qe6DNb5yjdnToiSTXiYyc0eMnncF7v9EWnoXVZEYaPc=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=RoUc1hcEVkejAwBl1AS0NzLrVcuPn7QX8S6SazlQSB1EaRApk9zQju7/llVqvq9DPN8bjvLVuqvHHHktsN8vNgY29Zt+TLoxOrdR8aXipLf26YWfG2vDsVsEs5ZN8LAi3QbefquZQcEUkqd1Y0BoNi9FvuFHqPhnsvpnoUXFBAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YFXKqEt2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/ihQXqu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19467C4CEEF;
-	Sat, 16 Aug 2025 21:45:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YFXKqEt2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEA1C4CEEF;
+	Sat, 16 Aug 2025 22:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755380758;
-	bh=XNmCpz+qTJMlbgXL45hQVb6txNHF2K6d6OOnSyKNEJ4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=R/ihQXqukr7zFynvfGMJ4P/UXlMNc99CBW1IlhNYLjmYRaRcuiQ4IuTZ4uAUVO0FQ
-	 sR6Vau+wX/tIipUixcji7Rg/0qrLE/6ahKyY4MLgA3sS3eAjdxaDG8RRG/4Rllczge
-	 0DZdr9INLpfThgbuTUoAOKjFiTZP/YE21vnO5gv0P8Gbz9wfvUQ8q8f3cnJnU56imq
-	 kpw4bTWqks/GOoNHQFsV2MqhkZABV7uLDLPqTUmEuQ0AFYPdLfgXoShZY1mK3GHlXI
-	 IM2q9q+i+RVZs+ATH9hlSJr17Ac0C+rRAb5OBh57lKZC6C+Wx4IW1TaavD8IK3RAdN
-	 ItpF/JgnKljYw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 6.17
-Date: Sat, 16 Aug 2025 23:45:34 +0200
-Message-ID: <20250816214534.2736622-1-ojeda@kernel.org>
+	s=k20201202; t=1755385156;
+	bh=qe6DNb5yjdnToiSTXiYyc0eMnncF7v9EWnoXVZEYaPc=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=YFXKqEt2T01KU5I68iljGFShwydYpaAYVAOlkeBVbKjrkzzM1bobGvz7AY8lRgAtR
+	 z7ok5/8to1uNC5BjSFUrth8LKSsZs2OGtKRRy3EjBcWO2++c0LKPFOh8SvHoN/chS2
+	 27oBPwio3WTZzUSgyV7jszB5U6cTGWx8UcP+ou9D9CTM5LMc0Gh7VehHxn9jU7FPwE
+	 TPVa+3Ci4DMxK4eR/x5i3ClyWyx1cj0FgBWVmJqmUSPAyl0ZuC/yGBfcqKiL89ww43
+	 iMQfwQhMEvGXWdLXsWQEwst0bVMD234Ioz3XWfjMA36WukF/NF72XLleMdOLJsVGhk
+	 keqjVQnuGC4rA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33EA939D0C3C;
+	Sat, 16 Aug 2025 22:59:28 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust fixes for 6.17
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20250816214534.2736622-1-ojeda@kernel.org>
+References: <20250816214534.2736622-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20250816214534.2736622-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.17
+X-PR-Tracked-Commit-Id: 252fea131e15aba2cd487119d1a8f546471199e2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 99bade344cfa1577c6dd658e10a3d64b119bddf4
+Message-Id: <175538516691.1570424.1799473356754517600.pr-tracker-bot@kernel.org>
+Date: Sat, 16 Aug 2025 22:59:26 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Linus,
+The pull request you sent on Sat, 16 Aug 2025 23:45:34 +0200:
 
-Please pull these fixes for Rust.
+> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.17
 
-They have been only three rounds in linux-next. They are not urgent so
-it would not hurt leaving them there for a few more days.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/99bade344cfa1577c6dd658e10a3d64b119bddf4
 
-I may have a few more later in the cycle.
+Thank you!
 
-No conflicts expected.
-
-Thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit 8f5ae30d69d7543eee0d70083daf4de8fe15d585:
-
-  Linux 6.17-rc1 (2025-08-10 19:41:16 +0300)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.17
-
-for you to fetch changes up to 252fea131e15aba2cd487119d1a8f546471199e2:
-
-  rust: kbuild: clean output before running `rustdoc` (2025-08-12 21:10:50 +0200)
-
-----------------------------------------------------------------
-Rust fixes for v6.17
-
-Toolchain and infrastructure:
-
-  - Workaround 'rustdoc' target modifiers bug in Rust >= 1.88.0. It will
-    be fixed in Rust 1.90.0 (expected 2025-09-18).
-
-  - Clean 'rustdoc' output before running it to avoid confusing the tool
-    when files from previous versions remain.
-
-----------------------------------------------------------------
-Miguel Ojeda (2):
-      rust: workaround `rustdoc` target modifiers bug
-      rust: kbuild: clean output before running `rustdoc`
-
- rust/Makefile | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
