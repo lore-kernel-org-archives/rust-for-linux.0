@@ -1,63 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88E91DD0D4;
-	Sat, 16 Aug 2025 22:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AF314E2E2;
+	Sat, 16 Aug 2025 23:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755385156; cv=none; b=O3raW7CFxeB1M+SwyhkiNHZGZ3yDy23irFGmzvp5Un2PDSmzoXp/jUZxkjcD90yT7UAIu2AQGsjz+d/3mvbdtx9SdWdSarWvNQ+g64wismWwy2vl5B1mjpu437WAac8ehALgNnAzPpVqu1Rqi71L6/MZy4diOVqZqa3PBiZqr9Y=
+	t=1755387470; cv=none; b=QBAXaMiCkBxdiIhnf/m9ZxYmI+y0/Ke3+bTF0NAqS9SVlWd6rxYsB09fC2Uj9NpL2QiHaWPPvF68BWCFUSe9qehGq1JgWhVA1RDurBTYti9YZXw4UWqlGp2XATt092ddE+aySACD1KtDqolaLsND9Q2rF0Jv/IyCDXbIIjOw+0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755385156; c=relaxed/simple;
-	bh=qe6DNb5yjdnToiSTXiYyc0eMnncF7v9EWnoXVZEYaPc=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=RoUc1hcEVkejAwBl1AS0NzLrVcuPn7QX8S6SazlQSB1EaRApk9zQju7/llVqvq9DPN8bjvLVuqvHHHktsN8vNgY29Zt+TLoxOrdR8aXipLf26YWfG2vDsVsEs5ZN8LAi3QbefquZQcEUkqd1Y0BoNi9FvuFHqPhnsvpnoUXFBAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YFXKqEt2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755387470; c=relaxed/simple;
+	bh=n0Ug3xm97yHJIp9hnivwulo49/WkJhxthMq+zEpRlDU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=geKRg4zQk+6i27I33CM6utbwFs//oLvxhMYBDnv63jfprkF9R7EU5MJlH7Je3dBaL7Df0PppXZUWP6n96TeiEbVsNuUv32DWNiUS5c0imK8PJvsFCm7OJ0WKGZoK7AqRhFzV42jM4+uvCKJtRpXD0VQmsxWzhLYALAFWQuQR+/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RjOTL/Cg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YFXKqEt2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEA1C4CEEF;
-	Sat, 16 Aug 2025 22:59:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RjOTL/Cg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F72BC4CEEF;
+	Sat, 16 Aug 2025 23:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755385156;
-	bh=qe6DNb5yjdnToiSTXiYyc0eMnncF7v9EWnoXVZEYaPc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=YFXKqEt2T01KU5I68iljGFShwydYpaAYVAOlkeBVbKjrkzzM1bobGvz7AY8lRgAtR
-	 z7ok5/8to1uNC5BjSFUrth8LKSsZs2OGtKRRy3EjBcWO2++c0LKPFOh8SvHoN/chS2
-	 27oBPwio3WTZzUSgyV7jszB5U6cTGWx8UcP+ou9D9CTM5LMc0Gh7VehHxn9jU7FPwE
-	 TPVa+3Ci4DMxK4eR/x5i3ClyWyx1cj0FgBWVmJqmUSPAyl0ZuC/yGBfcqKiL89ww43
-	 iMQfwQhMEvGXWdLXsWQEwst0bVMD234Ioz3XWfjMA36WukF/NF72XLleMdOLJsVGhk
-	 keqjVQnuGC4rA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33EA939D0C3C;
-	Sat, 16 Aug 2025 22:59:28 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 6.17
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20250816214534.2736622-1-ojeda@kernel.org>
-References: <20250816214534.2736622-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20250816214534.2736622-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.17
-X-PR-Tracked-Commit-Id: 252fea131e15aba2cd487119d1a8f546471199e2
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 99bade344cfa1577c6dd658e10a3d64b119bddf4
-Message-Id: <175538516691.1570424.1799473356754517600.pr-tracker-bot@kernel.org>
-Date: Sat, 16 Aug 2025 22:59:26 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=k20201202; t=1755387470;
+	bh=n0Ug3xm97yHJIp9hnivwulo49/WkJhxthMq+zEpRlDU=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=RjOTL/CgXh7QEa1CPQmdNA/AiakjbtR6aWhcRkgaaQzVSUnXZz50KwC4Pzxd1Z5XO
+	 wK5dacrWZGYi4ZtT5vxh1E/JeYxpAOmFohF2EZFtMsC1aSh99JT0JsEj/T46+JkHv5
+	 YqZc64DjrvIGBIlh4MupDoBC6upfUDjA522/e8wiZ7i+6rZapv0f8s0WX+X6nLTXPP
+	 +W0eZcUShOYnccB32zZ4fqV6CUF10GDk/bG1vP8Zr+FcxXpk4ITw1hP9edMtUH/kOH
+	 W6vVHgAJHuTK05j9ew3vZIvD/m4vA0QW37v8Yqs4FHVHKGkm8ITPu8Zt82pEL/5z1I
+	 hpJUho5enQAPw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 17 Aug 2025 01:37:44 +0200
+Message-Id: <DC48X8GV4JAW.1S68E9ZZHD9ZY@kernel.org>
+Subject: Re: [PATCH] rust: alloc: fix `rusttest` by providing
+ `Cmalloc::aligned_layout` too
+Cc: "Alex Gaynor" <alex.gaynor@gmail.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R .
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ <rust-for-linux@vger.kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
+To: "Miguel Ojeda" <ojeda@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250816204215.2719559-1-ojeda@kernel.org>
+In-Reply-To: <20250816204215.2719559-1-ojeda@kernel.org>
 
-The pull request you sent on Sat, 16 Aug 2025 23:45:34 +0200:
+On Sat Aug 16, 2025 at 10:42 PM CEST, Miguel Ojeda wrote:
+> Commit fde578c86281 ("rust: alloc: replace aligned_size() with
+> Kmalloc::aligned_layout()") provides a public `aligned_layout` function
+> in `Kamlloc`, but not in `Cmalloc`, and thus uses of it will trigger an
+> error in `rusttest`.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.17
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/99bade344cfa1577c6dd658e10a3d64b119bddf4
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Good catch, thanks! -- Applied to drm-misc-fixes.
