@@ -1,112 +1,131 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1331533D6;
-	Sun, 17 Aug 2025 17:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F4C15573A;
+	Sun, 17 Aug 2025 20:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755450225; cv=none; b=CmH5kqst6znUfWRgUGTP7IBdT5NvRPUUENyKnSJ+YdG6Wj9JuTLt3Kruwkp1m+vVFJsyL50TL97mCtDKKMNC95kN6Jm8tPVAiLZcJ3lcUwn5+hz+o3xiS1oTWHMUcaviUJ/93bfXZZ4DCQU0Doa7p2yXBDONMzPbhI7NlB4nfAY=
+	t=1755463369; cv=none; b=csxnHYwkml6rcR+0TnlhcSK7y4RtJJ7DVVRdgh/BMa4DUSVFu7HEyITixSeRX5AYbES1hgEj0E5ASWifIFAbO9YQpTzJvBL6qaEyrUoUMRdmfc7KXscV6HegDVZdpt6ZPUUNjRAVZ8JKhFBsRu3TRPnmJqV8R8hHuYFQ7Wplnxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755450225; c=relaxed/simple;
-	bh=Z4N7YBBSSZzNTU2zD/HGZfT/36C0b5v1Z5vHwSdAxmg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KFarHn4qysEFAKUypW7XxA3Bx8QFVbWFyGDoFwqh7tMmP/BG9OkASiVKEpDDEN/E9oGtxFsAo5eT/eS7YHQ8Qkr7C7+JJGTGWWSbrYcK0m9/H/ZMBnmWYIkabafC6PGEBKy9blds3Y4QsoDxY2P6vVrnYA8nxYP7K5+go4xpkUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I40uVsDd; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755463369; c=relaxed/simple;
+	bh=CBPiooAGnayv+SiYVUC1qFMqyOwK0GLToyiu0GtI0DY=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=iEPxBTNzhr2zEbSIVuRTLmpK0f+SxnB/+8hZ8i2CdN6+62Z6VS6HWxRj/WpJ7NVcJyZRLGZkAY5gdpQTjUORULPp6UxiD9JDJVzTVXooeDZCgDULsWKXu6I0TR/EePgeBJGV/sil5sQHbGt8u8DhrCgBDQplMvOXRolaABOqSKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvDKNSQ+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I40uVsDd"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-244581cd072so2915595ad.2;
-        Sun, 17 Aug 2025 10:03:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755450223; x=1756055023; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z4N7YBBSSZzNTU2zD/HGZfT/36C0b5v1Z5vHwSdAxmg=;
-        b=I40uVsDdVF5rfmYeHRXsG3lk79IdnVEpbR3WHvQ3rhrME5eOT+P/O+0EZGBQa/0Qc6
-         t60ytExJTbX725DuDyob1Se0tsvBmFZEOXTvuQrsyfWv+fRy6AzUWLrMXiyOaoBhsNNY
-         NbK/YXtRM8pqqPmrhoB0k6e4pG/5Or8HuNfKrcaoLE3KAXnYI9fn5DmaTozSfOPNgnow
-         74EO8kqojaufNf+3TYS0+8zlS46rPgeLE+PY+q4kKmWFrYZjXgcnIF4OvqtPi8hyFAcj
-         cHo9vq/7wterjuoQao1vNTpbqqisk4IJkEnU+1GxcIsnQ03vnBlmeUYaxdR9TQ+E6yXc
-         f8tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755450223; x=1756055023;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z4N7YBBSSZzNTU2zD/HGZfT/36C0b5v1Z5vHwSdAxmg=;
-        b=ub+IOpu3Dl46PBFugSlFV9Db3Xhh2JRniamPvFNNhyP0/TboQvDr3bPXFZHPjenRWD
-         dtm0ohIpfYN5e2k/k0v28MLdUlAcdPlfmxAVly126KT0kjioD+EOdeedWpyLAUw5+kQn
-         duSxS3CDMlKnRFicPS99/cFmaAg9Dpjn6fMIfpj3FifCFBalMxALm8pFV7AQ6oL+qfyX
-         NEsT1XdLLX4nVkSHWZYSrzj8uv8Om2JXmWUK7iUOP2tnyZPYzu2mR4K/0zA3UbAl4rtM
-         LKOAy3XnuGxomsSU11P6Q/uvS4pMb4KytLQeIrPOsoLuNNvgCNTo/FqH4Y5HOLd95bMd
-         TIKw==
-X-Forwarded-Encrypted: i=1; AJvYcCV088Rxnqf6ueDz7NxOwZAGvcw2kiGrLGoCwEpUDe74fWIo6Vp3xxnwrU1CFI6LYOhyrVibIkij3TX9wbg=@vger.kernel.org, AJvYcCVUWp2kIwmL9wVn2QkdEnhoKi6EmjCrn5ARa07wyc+By9tTHoiDzVHJjCrNyLmEDQ6Ft4dgmbIUusZmVMoPVbI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn0Xjb+L7jvbzpBK49VekmzKYgmTJhXMmn7pNQs3YMq81gRn8B
-	dovMpA/IVku22JsY5Kh0Gfwhc+ofTWIkPiPliKC67+qeIc+1bP8nQn2UaAN33O9CJwx4O2LIS9T
-	5sG6YXthgxxCXIjEcX8c1hIbS6lnKbt8=
-X-Gm-Gg: ASbGncs5bLTpLH0GmWIyxU6DBSHPuZDvz/P79aXDK1REdObOSeI7+k7QcT+NpTajdfG
-	ICkILHGyUXW6MGSliHsKMw9xS9TWOwgAEAlUGq49VYcSH7nHPab5IErKPMysUGketpVxrREhv7Q
-	hBonKuT6df77IK04yfqN3eDUk5h0wyhYch7Zmjle499CbRPR6yw1C3Xto00LtoXzSVCEo+DmVU+
-	hYwAVPM
-X-Google-Smtp-Source: AGHT+IFl+5E3gbiIXwNOLZ0ZIk7qldaCogEMXLZNAeNVsrRBmZHNmW+vv+tlRpUc1L8CpCng3OiKp/WTftzqec5IY0k=
-X-Received: by 2002:a17:902:d4c1:b0:234:df51:d190 with SMTP id
- d9443c01a7336-2446d756119mr64088915ad.4.1755450223123; Sun, 17 Aug 2025
- 10:03:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvDKNSQ+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D8FC4CEEB;
+	Sun, 17 Aug 2025 20:42:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755463369;
+	bh=CBPiooAGnayv+SiYVUC1qFMqyOwK0GLToyiu0GtI0DY=;
+	h=Date:From:To:Subject:From;
+	b=pvDKNSQ+VSMqZokMerEYMXZ8Y5pIgzOaIG8Vs4n87HYwX+2hNPsPTAPtTzYg6yx2S
+	 yA2TPObli6dTLIWDx5PbEIeiCFNrn5LeIusVLL+etm9TFQ1QORI7frBEN1vQWjv3wx
+	 8ir7e7oI4VFZFaNFdI+oEOiowE82DLsO6JTvYeUR4VNws64KfipjwKp5o/1mccttdi
+	 3o356ekEOFsAnzhCo4o+bTfEE1ONotXP7I4MKJ3pVD9YY4G6yvqnbNqKsykKhkIEKs
+	 ddZeOg3goC+T+rM+5/j6oSURv1stq/W2AFnTwRxYO2ivC5ucDejmijhvo+DXqdRxzd
+	 dgw1dTdGizQiA==
+Date: Sun, 17 Aug 2025 23:42:45 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: tpm2@lists.linux.dev, linux-integrity@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: tpm2_protocol / tpm2sh 0.6.1
+Message-ID: <aKI-xQsBNNvjeBSk@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250816122323.11657-1-shankari.ak0208@gmail.com>
-In-Reply-To: <20250816122323.11657-1-shankari.ak0208@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 17 Aug 2025 19:03:31 +0200
-X-Gm-Features: Ac12FXwOlEic4M18w1tw_6HpO5tbPUwKl3q-j4P_YB6oQ9WRk7qpXjv6HNo06e8
-Message-ID: <CANiq72kwTfO7tgCtBgWLP9K2EO9eqXRMV3-UzeVRAG+1__O9Aw@mail.gmail.com>
-Subject: Re: [PATCH] rust: pid_namespace: update AlwaysRefCounted imports from sync::aref
-To: Shankari Anand <shankari.ak0208@gmail.com>, Christian Brauner <brauner@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 16, 2025 at 2:23=E2=80=AFPM Shankari Anand
-<shankari.ak0208@gmail.com> wrote:
->
-> Update call sites in `pid_namespace.rs` to import
-> `AlwaysRefCounted` from `sync::aref` instead of `types`.
->
-> This aligns with the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to `sync`.
->
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-> ---
-> It part of a subsystem-wise split series, as suggested in:
-> https://lore.kernel.org/rust-for-linux/CANiq72=3DNSRMV_6UxXVgkebmWmbgN4i=
-=3DsfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
-> This split series is intended to ease review and subsystem-level maintena=
-nce.
->
-> The original moving patch is here: (commit 07dad44aa9a93)
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/?id=3D07dad44aa9a93b16af19e8609a10b241c352b440
->
-> Gradually the re-export from types.rs will be eliminated in the
-> future cycle.
+I tagged 0.6.0 release as I reached an important milestone i.e., now
+Box<dyn TpmObject> is doable meaning that tpm2_protocol is capable of
+dynamically interpreting on-wire TPM2 protocol traffic. It's proved by
+this test:
 
-Cc'ing Christian.
+https://github.com/puavo-org/tpm2_library/blob/main/tpm2sh/tests/dynamic.rs
 
-Thanks!
+This matters because it is the essence of being able to work as part
+of driver, TPM emulator/chip or resource manager implementation.
 
-Cheers,
-Miguel
+This has required really going through the whole implementation and
+deocoupling step by step the implementation from lifetime parameters
+and finally implementing 'core::any::Any'.
+
+Lot's of bugs have also been fixed in the protocol crate, tpm2sh crypto
+module etc. The TCG specification coverage has increased and it is only
+few dozen command/responses away from full TCG TPM 2.0 spec version 184
+coverage. Given the efficient macro system this is coverage shortage
+is mostly due lack of being more interested on more important matters.
+
+My demo for this version is the cool pretty printer in tpm2sh :-)
+
+~/work/github.com/jarkkojs/tpm2_library main
+❯ sudo RUST_LOG=trace target/debug/tpm2sh --log-format pretty start-session --session-type policy  > /dev/null
+2025-08-17T20:42:03.866947Z DEBUG cli::device: opening device_path=/dev/tpmrm0
+⠋ Waiting for TPM...                                                                                                                                                   2025-08-17T20:42:03.867174Z TRACE cli::device: TPM_CC_StartAuthSession
+2025-08-17T20:42:03.867205Z TRACE cli::device:   nonceCaller: (size=16) 0ce148fdde03544afc25024c9498ae48
+2025-08-17T20:42:03.867212Z TRACE cli::device:   encryptedSalt: (size=0) 
+2025-08-17T20:42:03.867217Z TRACE cli::device:   sessionType: Policy
+2025-08-17T20:42:03.867221Z TRACE cli::device:   symmetric: TPM_ALG_NULL
+2025-08-17T20:42:03.867225Z TRACE cli::device:   authHash: TPM_ALG_SHA256
+⠏ ✔ TPM operation complete.                                                                                                                                            2025-08-17T20:42:03.899508Z TRACE cli::device: Response (rc=TPM_RC_SUCCESS)
+2025-08-17T20:42:03.899563Z TRACE cli::device:   sessionHandle: 0x03000000
+2025-08-17T20:42:03.899603Z TRACE cli::device:   nonceTpm: (size=16) 77ad71b0272d4d4dee6eee843e84bde1
+
+~/work/github.com/jarkkojs/tpm2_library main
+❯ sudo RUST_LOG=trace target/debug/tpm2sh --log-format pretty algorithms > /dev/null
+2025-08-17T20:42:06.423983Z DEBUG cli::device: opening device_path=/dev/tpmrm0
+⠋ Waiting for TPM...                                                                                                                                                   2025-08-17T20:42:06.424174Z TRACE cli::device: TPM_CC_GetCapability
+2025-08-17T20:42:06.424185Z TRACE cli::device:   cap: TPM_CAP_ALGS
+2025-08-17T20:42:06.424193Z TRACE cli::device:   property: 0x00000000
+2025-08-17T20:42:06.424202Z TRACE cli::device:   propertyCount: 0x00000080
+⠏ ✔ TPM operation complete.                                                                                                                                            2025-08-17T20:42:06.428085Z TRACE cli::device: Response (rc=TPM_RC_SUCCESS)
+2025-08-17T20:42:06.428097Z TRACE cli::device:   moreData: TpmiYesNo(false)
+2025-08-17T20:42:06.428105Z TRACE cli::device:   capabilityData:
+2025-08-17T20:42:06.428111Z TRACE cli::device:     capability: TPM_CAP_ALGS
+2025-08-17T20:42:06.428118Z TRACE cli::device:     data: (count=19)
+2025-08-17T20:42:06.428127Z TRACE cli::device:       alg: TPM_ALG_RSA
+2025-08-17T20:42:06.428147Z TRACE cli::device:       algProperties: ASYMMETRIC | OBJECT (0x9)
+2025-08-17T20:42:06.428153Z TRACE cli::device:       alg: TPM_ALG_SHA1
+2025-08-17T20:42:06.428160Z TRACE cli::device:       algProperties: HASH (0x4)
+2025-08-17T20:42:06.428165Z TRACE cli::device:       alg: TPM_ALG_HMAC
+2025-08-17T20:42:06.428172Z TRACE cli::device:       algProperties: HASH | SIGNING (0x104)
+2025-08-17T20:42:06.428176Z TRACE cli::device:       alg: TPM_ALG_AES
+2025-08-17T20:42:06.428184Z TRACE cli::device:       algProperties: SYMMETRIC (0x2)
+2025-08-17T20:42:06.428189Z TRACE cli::device:       alg: TPM_ALG_KEYEDHASH
+2025-08-17T20:42:06.428196Z TRACE cli::device:       algProperties: HASH | OBJECT | SIGNING | ENCRYPTING (0x30c)
+2025-08-17T20:42:06.428204Z TRACE cli::device:       alg: TPM_ALG_XOR
+2025-08-17T20:42:06.428210Z TRACE cli::device:       algProperties: SYMMETRIC | HASH (0x6)
+2025-08-17T20:42:06.428215Z TRACE cli::device:       alg: TPM_ALG_SHA256
+2025-08-17T20:42:06.428223Z TRACE cli::device:       algProperties: HASH (0x4)
+2025-08-17T20:42:06.428229Z TRACE cli::device:       alg: TPM_ALG_RSASSA
+2025-08-17T20:42:06.428236Z TRACE cli::device:       algProperties: ASYMMETRIC | SIGNING (0x101)
+2025-08-17T20:42:06.428242Z TRACE cli::device:       alg: TPM_ALG_RSAES
+2025-08-17T20:42:06.428249Z TRACE cli::device:       algProperties: ASYMMETRIC | ENCRYPTING (0x201)
+2025-08-17T20:42:06.428255Z TRACE cli::device:       alg: TPM_ALG_RSAPSS
+2025-08-17T20:42:06.428262Z TRACE cli::device:       algProperties: ASYMMETRIC | SIGNING (0x101)
+2025-08-17T20:42:06.428267Z TRACE cli::device:       alg: TPM_ALG_OAEP
+2025-08-17T20:42:06.428275Z TRACE cli::device:       algProperties: ASYMMETRIC | ENCRYPTING (0x201)
+2025-08-17T20:42:06.428280Z TRACE cli::device:       alg: TPM_ALG_ECDSA
+2025-08-17T20:42:06.428287Z TRACE cli::device:       algProperties: ASYMMETRIC | SIGNING | METHOD (0x501)
+2025-08-17T20:42:06.428293Z TRACE cli::device:       alg: TPM_ALG_ECDH
+2025-08-17T20:42:06.428300Z TRACE cli::device:       algProperties: ASYMMETRIC | METHOD (0x401)
+2025-08-17T20:42:06.428305Z TRACE cli::device:       alg: TPM_ALG_ECDAA
+2025-08-17T20:42:06.428312Z TRACE cli::device:       algProperties: ASYMMETRIC | SIGNING (0x101)
+2025-08-17T20:42:06.428318Z TRACE cli::device:       alg: TPM_ALG_KDF1_SP800_56A
+2025-08-17T20:42:06.428325Z TRACE cli::device:       algProperties: HASH | METHOD (0x404)
+2025-08-17T20:42:06.428330Z TRACE cli::device:       alg: TPM_ALG_KDF1_SP800_108
+2025-08-17T20:42:06.428337Z TRACE cli::device:       algProperties: HASH | METHOD (0x404)
+2025-08-17T20:42:06.428343Z TRACE cli::device:       alg: TPM_ALG_ECC
+2025-08-17T20:42:06.428350Z TRACE cli::device:       algProperties: ASYMMETRIC | OBJECT (0x9)
+2025-08-17T20:42:06.428355Z TRACE cli::device:       alg: TPM_ALG_SYMCIPHER
+2025-08-17T20:42:06.428362Z TRACE cli::device:       algProperties: OBJECT (0x8)
+2025-08-17T20:42:06.428368Z TRACE cli::device:       alg: TPM_ALG_CFB
+2025-08-17T20:42:06.428375Z TRACE cli::device:       algProperties: SYMMETRIC | ENCRYPTING (0x202)
+
+BR, Jarkko
