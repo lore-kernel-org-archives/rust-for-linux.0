@@ -1,111 +1,94 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2ED72634;
-	Sun, 17 Aug 2025 16:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FFA29D26E;
+	Sun, 17 Aug 2025 16:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755448281; cv=none; b=pBRm3pFoCQY9OsrzyJTWlwERYQYa9Zkm+f3o2ftWquZf1gvboLqcnLkAvT+cvTItCaD3s9sqlK35fi8UudVk95WrxmKd0Mov/qA0vcfNFBCFoP4xsDkQsDkA8PbhoBM5QEJvrGraQv9VIW21+Ex7VN5DMcOKw3v3Rm9GWGeilfE=
+	t=1755449466; cv=none; b=OTVcHcllcyUuydL5dpaX6BavmFP0kbBDoC1fr97eS91SkqOL8FlnQT5UzemcPA8RQt+yJi9keO2f3rOYa0ZjMtQ6OR7Jr6awVWh08cTbChXrg138ZlW7ybDCJ9/i5BYBHUOOA6xWznHe30zHm1V6aoyouHYMtUm7PJidNO4mDuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755448281; c=relaxed/simple;
-	bh=kLFLEqW/OO6iFtOv4aQQMv287DbBHQu4/itQJciHqy4=;
+	s=arc-20240116; t=1755449466; c=relaxed/simple;
+	bh=2Torhm8j/fnoxbwE+NWjhqTB3RZLtvgEDzOeSV7FLLU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iox9H26pX/hAR2ql4GRZ8paI6voJng2oTXvVuA5Z107JdvKjDAjEq1MeCIwQ5XjAAjzknwsDsiaS7XxD+nJydv9BUvX3MPr0YGkuLogYkogFF4ZWG/QHH9gdYHq6qRyD06JGTDVncodHemQankh9fs1lsIEUtaeOV2EZIXYhGkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KoTRdFPW; arc=none smtp.client-ip=209.85.215.171
+	 To:Cc:Content-Type; b=TiCwOlsfo3d1LtFGW3BZDobo5NO3L5DS2u/a4iajwPM4X1d0SvEW9utVs8TysGKkUw0Bi6q+p7MQoJ0KxMxyjTTirT50w/GK0q7Ekftw6dlmtoU7mYkNF9tos6xszHwNipB6CdX41gL3dTZuGy2STkMfmvL4nS9G4YkIS+5vj8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bxrnZHJG; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KoTRdFPW"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b4717593371so508730a12.3;
-        Sun, 17 Aug 2025 09:31:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bxrnZHJG"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b47173edabaso729702a12.1;
+        Sun, 17 Aug 2025 09:51:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755448277; x=1756053077; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755449463; x=1756054263; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kLFLEqW/OO6iFtOv4aQQMv287DbBHQu4/itQJciHqy4=;
-        b=KoTRdFPWRAg27GLFE/h8nLtujeUq/xuvaNjdAtEIAzbZct9GOb5MITtnOxkN29mHTg
-         WylIKUzsCyDJgXFMW0lkKBGGxfzR4A+pnW0092zM+CTotV7wjH8/a8+X4j+LGRU2Xmvm
-         PvsbheOFVOtLuhkLGOrigLtDxYrdFM0/kBHK4bKcMqkY/RM6SXmPJbFnkRG7+nmGm6NQ
-         iK9xfhHOGSUpi6Gsafx2WJSlmEyVJubCLdadY1D1Mfap/wQIUOGfhfNDAjRm6p7Lwxqk
-         29Nh/aKgcgIq6Vn2e+UgihmJtjh0432VoZO96pN0VvTKjeHhfl5I24ONmH7sXc+1I/SS
-         dJqg==
+        bh=+k6KmSFypZBY0dtNH22itZ8Soth98wtIKSS3XFXDnQQ=;
+        b=bxrnZHJGDPP/UNA4Z4QPtxJZXgjbRLHkq3x/fnIx2+a8FYHPgm/0jyYF4fkAyWi/jd
+         7tMPjsAgjxXc/T3GitACFR1losDPcHorXQOJS9f5WJX2kGo93CZjpiJhFxfMwCeEpMpm
+         k1doi7kkL4CIg9VtJd2wOSWRchvssH8wmBBkTJR3rcuoxJ4nIAB9/piYW9K/qdKBRZvn
+         16sT6vNt/G+AKI44dmQL6qHWHo/F4/U/HSJLfL59iHi9BxZE8sY9Kc0JeJnzjwWIZjlT
+         eT9JzkZkZ4h9clqIRXNvo777w4NSitF/1xXQ0Xc5f9LIrqIX7IjOCxwcFxCuFcth/Ke9
+         FmRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755448277; x=1756053077;
+        d=1e100.net; s=20230601; t=1755449463; x=1756054263;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kLFLEqW/OO6iFtOv4aQQMv287DbBHQu4/itQJciHqy4=;
-        b=cMekrMXbGn4Exahso8448KlrWmrNtJXf56PMyUmB7Mgdzw2H44cZqtODrS4S+eFXJp
-         7XzdQlGLT0ckPmcePqsz0ECOObEgzq+IYo/mzSB5IEVCDgtHnvtqYtpDJhda63+94HLN
-         km5oURKNpoQAi9hW56R+FGFUoMNe+p7YCF3AUGZ6eBFcDO//D9hIHAGkpxfF6G95StGj
-         n5wfN452qzuWcB38Rdo45WsK7ubLrgsawTQOrToa0p/Dqt3VxJVWo6D5fj+4Enx7ML2a
-         DaUxR99Gk8dWFiqNW7Fap/Jaab3rNF9MCtyYpI71ErGPyI9CoxI9ByA2UXY1CjELwixa
-         zpIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9LIN0GgImpNZdi6JPQAXaUPhgjJKGyLw8PfEnl6S1+x2UzLES9nwsU7OUCJy2CbCJvkaL+dKEH/PnAVwc2Dg=@vger.kernel.org, AJvYcCVqqBHq2yQ77lu0keFPaiK/ITBNF4DugJPdWUl3NMJNJTwSDRfqr8pN0wxT4GSs6EyDKtVxYx5lioUU4/8x@vger.kernel.org, AJvYcCXqubv9wbYHaDrZLrZWMX2EBOJO6ujV/3hIjk0mXAeCYfm6DZxPVPh5onzoXZyjmVM+LrPRUz+oxmNCA7M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKeQQSANYppdfPuRnfqnit0dY/1xTpYyAM5egwunrxk3WmDZ1d
-	B++LrT3ub4chE+1rNPI/262aR0BafkhnJjnRJN7hBdcRgzIWAjaBBaqQovPKJOO6cfHxeHGf5w2
-	9K/jcbJaRKrcxmONieJlhNUtZ1VEUCtY=
-X-Gm-Gg: ASbGncs3mA+IZoc7XG1Vkmp2TzWGihArybWrujvuTHjmBZRQT6wnVFN/RO2OMy84uZM
-	YWXS2kSSwptouC17HwgQIIvMJmf7Pu9Ux07eya78Hv7eKI5vGkkHUFqcNW5TERuK184CnaEHb+H
-	KXNw9rZkLn/FNi/61sR7rNrGkdIAJmUWCqxw2wtlpHPluFwTDxP+1m3ZkG2kAb884OKbWtsIy/Y
-	DDvjbTw
-X-Google-Smtp-Source: AGHT+IFFesL79nGBzljk+GNIBmaSr5Ti7vlS1NqrpA13NwKdp6CIpy50L5E7ZQVUz/gfEPq3WyBh66i9w8ESZh9NVSk=
-X-Received: by 2002:a17:903:183:b0:242:fcfd:3f94 with SMTP id
- d9443c01a7336-2446da0fe10mr67054645ad.11.1755448277430; Sun, 17 Aug 2025
- 09:31:17 -0700 (PDT)
+        bh=+k6KmSFypZBY0dtNH22itZ8Soth98wtIKSS3XFXDnQQ=;
+        b=fgEfEPqKhhnK0WLXr3KuZ8rIRvsh6BhD99Q2vvYJkxvy7Y2YLMkNAB44CZPwS9yDJ0
+         koluFXtZXja767lX8hilR8ovEHOxZY0ZXifv15sAPU/EMqIPfwdm2PIEzyhCfSGSMS/3
+         RPhDCnev5Va1ZU7S/ycWxBhsNTNbFrBqUL4bTGMdYTce+84pVDOtM2oO6xkygspMdNQx
+         qPvFumR3X10QRtCSyJRauu7Cfg9jOmANh9QURXdnQdTqbK/adE1IFjIcRIDFsGuMBPiO
+         BIOyV8rGtHYQrG4IXUEO3i550PUVtRvzN5uYSDytGYFYvFoeC0cKh2FzuEb0/+AsEmo6
+         9rng==
+X-Forwarded-Encrypted: i=1; AJvYcCVfahqmaNR0ZJxSWLQ2nUBoPjVQY7ggc5on4UeMWp59pPfVf+thuU5vizBI9X6gDBCkW3qP2cNqupsn8XY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFv7Z4Qx5EdKoQTqsCxlNks1qUColLwY0bMIj6A9MWZgBOQa0I
+	A2c4uUQ6KAVtcT1xvRbBBKcwRnkXifG/aVw7kHgkOItqOdbDybJlTSACZ1zrlxwbi2DxurkDQQW
+	Ryub9NkBbZINNNty2FjL05fKP+QqiHMw=
+X-Gm-Gg: ASbGncvsYGiJgmhHxHc81WbWvzgNQ4kd3A8ttkmEUr7+4gpG20UOMmYWlU5lUw2a2D8
+	DGRhxqxtv5tFx+Zzz2btEwFoRtQ6ovtva2nSTsuuJ1Tq4iTws8KKWbpExVLJSkzTGch2xGRCDCL
+	DdoVnS3agbABtdnJA9/gLp7Xn0jmfDcq4KD9bxdcDwUGLEcQjZbyyqdxGjItR2AcYX3q9+ru4DS
+	bsML4Ev
+X-Google-Smtp-Source: AGHT+IHvPO86iKSOAT6sEgZ8UuwY5f1lQR549Xduu5efy+Zyn7wz0cQTBTPT2Fcj5wIilQpeTgfbk9tVnrcZdOsMYhk=
+X-Received: by 2002:a17:902:c40a:b0:240:764e:afab with SMTP id
+ d9443c01a7336-2446d8c5734mr66210215ad.6.1755449462640; Sun, 17 Aug 2025
+ 09:51:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250814-kbuild-werror-v2-0-c01e596309d2@linutronix.de> <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
-In-Reply-To: <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
+References: <20250720094838.29530-1-work@onurozkan.dev> <20250720094838.29530-2-work@onurozkan.dev>
+In-Reply-To: <20250720094838.29530-2-work@onurozkan.dev>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 17 Aug 2025 18:31:06 +0200
-X-Gm-Features: Ac12FXx8lU8m_BPaxFRjTbqDEK3t89iYkrpuhKf1HEFrkzIWKzMJ0u7O3KHo_Hw
-Message-ID: <CANiq72m+_QK1L2bnjs-oB9fmoGb-1jK3JvOsuH3nsWaPM0ExNg@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] kbuild: enable -Werror for hostprogs
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Sun, 17 Aug 2025 18:50:51 +0200
+X-Gm-Features: Ac12FXyPxlxZqF2l582qQyry0jz0PDhTOBsNJIRcPGSp62_ToacKTsNnDreLjNg
+Message-ID: <CANiq72==r0uDobx4vyRe76W+3R0XmZAqk25PCej7DwyOOXn17A@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] rust: make `allocator::aligned_size` a `const fn`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, dakr@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 14, 2025 at 12:15=E2=80=AFPM Thomas Wei=C3=9Fschuh
-<thomas.weissschuh@linutronix.de> wrote:
+On Sun, Jul 20, 2025 at 11:49=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.de=
+v> wrote:
 >
-> The hostprog compilers and linkers do not share the regular compiler flag=
-s,
-> so they are not affected by CONFIG_WERROR or W=3De. As hostprogs are used
-> during the bootstrap of the build, they can't depend on kconfig options.
+> Makes `allocator::aligned_size` a `const fn` to allow
+> compile-time evaluation.
 >
-> Enable -Werror unconditionally.
->
-> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
->
-> ---
-> For testing in -next, as discussed in
-> https://lore.kernel.org/lkml/20250812-kbuild-werror-v1-2-36c9ff653700@lin=
-utronix.de/
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 
-The discussion was on patch 0, i.e. the next message in Lore's tree
-view -- I would suggest adding it to the commit message for reference:
+For future reference: we wouldn't be able to enable it as-is without
+the unstable feature anyway (which Danilo noticed when applied his
+version of this) -- if it is needed in the future, the patch is at:
 
-Link: https://lore.kernel.org/rust-for-linux/CANiq72k-PdSH2BNgbq=3DX+FhpyEE=
-rifSCKfO5ObXz6bu9_J8+fA@mail.gmail.com/
-
-Anyway, since Nathan already applied it, and I see a couple patches on
-top, no big deal if it cannot be added.
-
-Thanks!
+    https://lore.kernel.org/all/CANiq72mUXy6AYkwCW_kO3ikjNBc5pLzXw0+fXFGmYu=
+m0tGmw1g@mail.gmail.com/
 
 Cheers,
 Miguel
