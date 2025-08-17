@@ -1,82 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-244102.protonmail.ch (mail-244102.protonmail.ch [109.224.244.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98692192F2;
-	Sat, 16 Aug 2025 23:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CF9126F0A
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Aug 2025 02:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755387888; cv=none; b=cG4nRZsGnIZaBx2V00yt1BFkmiYS3Hdq4yPmrgNnh+AdBiy8TrF9CPVu7It4nq9g8NJlQhsk1OKe76OHRm5iuZ0TSugx8wTIqz00pJNijrMo5hAy2l5csHHDNvH8YVQiH5Eveq9O4KgOw2Dv//jgBDfBFV8cL8MQzIW9eoFYPaA=
+	t=1755399340; cv=none; b=oEUsyxyzEbhBcH0AuoRGqL1ckgfm6ucja0U3v231OauyioO2xbRLkTr3ISBPdv7fhz2n7+rq71K0BajAGvKWlDczG2+WPtu13fhPW+TLUZrCdsDs1c3hBVAqdC4lIqBKvCMQ0Crw+Hu37hd/rbxBfaWOchS9Vjwtsy7Nm3ds9fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755387888; c=relaxed/simple;
-	bh=Y2IR6l2xgHEwLKnQTmYLs6uvEGbn+JQI/rGwjQ/51pw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=V8X/DW2QLzOHfBKnNtyeIFEbFJOURL/tsszxhREVcd073OK/556ABiFPz52naLHH5HPoZBToaKVWVShHUbVvl6ie87eEYkOUQ0ONeLYz1rUg5s4YUqBHUXh5Bu+LsFCxiXzyLNZX15Uzhd1LzZnauLAGo+mkdX944UM0PqLpnsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QlOSUaad; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755399340; c=relaxed/simple;
+	bh=xiHb5R2Xz2iisIz0D4Ww8xTzFkbohh3hOxPIBl+HOfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C7pqbaXXJs+7T/hTq3QkryFABj7ynBo2hX2DfEcZFWX/U46ZUkBA2SpPwJzv9Lc6E4oaORopKoDZlYuT0/c281anxba43yg0stulg2swE4ggFmWQpriaHWmkhiUjZSpABszonDssYFS9EQUMqD/Hyzr0iHPHQmbKjc4roYhBjnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=BA4K8ktN; arc=none smtp.client-ip=109.224.244.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QlOSUaad"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F91C4CEEF;
-	Sat, 16 Aug 2025 23:44:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755387887;
-	bh=Y2IR6l2xgHEwLKnQTmYLs6uvEGbn+JQI/rGwjQ/51pw=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=QlOSUaadKyFgKRVb2Cn92dQSeIR2FylNjXVpuV2hE1jnFOW0kDWQVOFWhhWJvkGsZ
-	 R8tQBGcrSZnsPNquiolfAslZiVBgKAbgIhFtt13sfsi4nwpT2WkpTC9NTNlBHRu1jo
-	 mEfCMqg/OmVMInxSFUV3DEgRTfe890VrWs8JPRC3ptYUsOT8i1QmDF3+IpvsEbWnB+
-	 a3s7F/vHEBz+u025pi+Mnsa2s+Croe+50shAWTIOpl9K665tkp0j2kUklxr2XJ3tCA
-	 4f8oEE1j6AqHqfxlPjIGZVC5mnEq2kaHEDFaAxCoKk7BJQ7ptNCZVRte+hXxeRPbZX
-	 v6ATu4mbrtvPw==
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="BA4K8ktN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
+	s=protonmail3; t=1755398901; x=1755658101;
+	bh=4f14UHlASZVUziWFh99eMbEfCZAlv2WbhRYGxjgiuL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=BA4K8ktN9i5BjeG7AC459t4GXzCSXO4vC75Horq/n5W5tPWHGp82zyk69DWbh5uPH
+	 jip6JjTvzvH6oB/PmUSFJrN6vtjixZuAA+jVE5QeLv+G2raH7Y+H6V3aQvs11Pt/3e
+	 fAEjRnR5VNRTJ0W6/XwmLLRpT+HoaQzlomAzaQ0rMuy783vo4C4iPY9JNHplTXmFCg
+	 53MSuiubawv5FDAHAyLayYz7H+Xz478WcN3iMUrZxljBe9tQVy5QViOfIb7z7mkFEq
+	 TOFBqeGfpJB9wYoNZBlHwGL5PqbYMjO6nWkXiEAhubATe666MKpbbcGz8WSfMHePeg
+	 MZTaZuAc1uu4A==
+X-Pm-Submission-Id: 4c4Kz75Lzpz1DDL2
+Date: Sun, 17 Aug 2025 02:48:17 +0000
+From: Elle Rhumsaa <elle@weathered-steel.dev>
+To: Shankari Anand <shankari.ak0208@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: drm: update ARef and AlwaysRefCounted imports from
+ sync::aref
+Message-ID: <aKFBdMOHxlvTOmPn@archiso>
+References: <20250815161706.1324860-1-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 17 Aug 2025 01:44:41 +0200
-Message-Id: <DC492K7AA12K.2K9H9SPMPI2Y8@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/4] rust: alloc: replace aligned_size() with
- Kmalloc::aligned_layout()
-Cc: <lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>,
- <Liam.Howlett@oracle.com>, <urezki@gmail.com>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
- <tzimmermann@suse.de>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-References: <20250731154919.4132-1-dakr@kernel.org>
- <20250731154919.4132-2-dakr@kernel.org>
- <CANiq72mUXy6AYkwCW_kO3ikjNBc5pLzXw0+fXFGmYum0tGmw1g@mail.gmail.com>
-In-Reply-To: <CANiq72mUXy6AYkwCW_kO3ikjNBc5pLzXw0+fXFGmYum0tGmw1g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250815161706.1324860-1-shankari.ak0208@gmail.com>
 
-On Sat Aug 16, 2025 at 10:40 PM CEST, Miguel Ojeda wrote:
-> On Thu, Jul 31, 2025 at 5:49=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
->>
->> +impl Kmalloc {
->> +    /// Returns a [`Layout`] that makes [`Kmalloc`] fulfill the request=
-ed size and alignment of
->> +    /// `layout`.
->> +    pub const fn aligned_layout(layout: Layout) -> Layout {
->
-> I think this `const fn` here was removed when applying to make it work
-> with older compilers, right?
+On Fri, Aug 15, 2025 at 09:47:06PM +0530, Shankari Anand wrote:
+> Update call sites in drm to import `ARef` and
+> `AlwaysRefCounted` from `sync::aref` instead of `types`.
+> 
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
+> 
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> ---
+> It part of a subsystem-wise split series, as suggested in:
+> https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
+> This split series is intended to ease review and subsystem-level maintenance.
+> 
+> The original moving patch is here: (commit 07dad44aa9a93)
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+> 
+> Gradually the re-export from types.rs will be eliminated in the
+> future cycle.
+> ---
+>  rust/kernel/drm/device.rs  | 3 ++-
+>  rust/kernel/drm/driver.rs  | 2 +-
+>  rust/kernel/drm/gem/mod.rs | 3 ++-
+>  3 files changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+> index 3bb7c83966cf..4a62f9fd88b7 100644
+> --- a/rust/kernel/drm/device.rs
+> +++ b/rust/kernel/drm/device.rs
+> @@ -10,7 +10,8 @@
+>      error::from_err_ptr,
+>      error::Result,
+>      prelude::*,
+> -    types::{ARef, AlwaysRefCounted, Opaque},
+> +    sync::aref::{ARef, AlwaysRefCounted},
+> +    types::Opaque,
+>  };
+>  use core::{mem, ops::Deref, ptr, ptr::NonNull};
+>  
+> diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
+> index fe7e8d06961a..8fefae41bcc6 100644
+> --- a/rust/kernel/drm/driver.rs
+> +++ b/rust/kernel/drm/driver.rs
+> @@ -8,7 +8,7 @@
+>      bindings, device, devres, drm,
+>      error::{to_result, Result},
+>      prelude::*,
+> -    types::ARef,
+> +    sync::aref::ARef,
+>  };
+>  use macros::vtable;
+>  
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index b71821cfb5ea..a822aedee949 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -10,7 +10,8 @@
+>      drm::driver::{AllocImpl, AllocOps},
+>      error::{to_result, Result},
+>      prelude::*,
+> -    types::{ARef, AlwaysRefCounted, Opaque},
+> +    sync::aref::{ARef, AlwaysRefCounted},
+> +    types::Opaque,
+>  };
+>  use core::{mem, ops::Deref, ptr::NonNull};
+> 
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> -- 
+> 2.34.1
 
-Yes, that's correct.
-
-> I was fixing another `rusttest` thing and noticed while applying
-> these. I had a patch to fix it, since we can actually just use the
-> feature, and then I noticed it wasn't in the tree. Since I have it, I
-> am attaching it for reference in case the now-stable feature is
-> needed, e.g. if you want to make that `const fn` again.
-
-I think it doesn't add much value for this to be a const function anyways, =
-but
-maybe it is more useful elsewhere? In that case, I think it also doesn't hu=
-rt
-to Kmalloc::aligned_layout() const again.
+Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
