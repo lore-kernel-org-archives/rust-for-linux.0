@@ -1,193 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27A4199931
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 Aug 2025 06:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0893718C011;
+	Sun, 17 Aug 2025 07:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755410413; cv=none; b=GFmcGEPM1KkuR4wnb8wkQ5+YGJ6O9gh29g7+sQZhwSOlFLe8LD2X9VrsNbpmycwcpZQBF4+QcrmVt0mh8WcvhPYBrVAHHwiZ6OqJFHwyvtCHr7Gjq+xJJ1Mj/vVm11iBWui5C5CT06B3FbKATUIR/ildx0DL907XLMON7MVvEDg=
+	t=1755415102; cv=none; b=I2WsJCmf3tr4zZ4qoJ489n65PydPbRU7dtBCKJde0hb65x6PbkUORkUsQ4NjM6qOcppMzXkgS6Kr11ppBXbfYA+7zP27hmMJ+9g1Cig/BjF94W9RyzQ0jbXPvPCy9Mcz70abIkW85nAh+Z/HBtN2b9hn/I071eU+O90l5lK0AMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755410413; c=relaxed/simple;
-	bh=EZ/OY9/PmCsYJzwheJnYYUJ7szKgYoULjAW1iX8SyHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bujgOOX3w+gbEkOzNzRuoXRde++0CLqkk2YUDaYIfgnHen0q5acMmXKcV2ulPEcW5FYLj0hRtrwgIaWm0ljq5yggqgH4ovOIq+eSOzU8a+DYZM6iKboJUY6EI7wV1Zl8jlircpo1cZuISqSivC6H+tNYVLLJcMrNBfm7Uu0ZQ3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yq/Sj56+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755415102; c=relaxed/simple;
+	bh=YYB5cQdBwmhnkPbs3DQCuTcXEQFORaxBGjppJecTYmY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=fQP+YMvc7sAjREW4w4iGvpQ1Ziu4I5efTbvH4VJXayNotTZQFVnmU8zLS69htSHD9oUgp3pYv/fi1QDATQe5532ZFCmsgebASWcUYyrqY45FiIwVFyNPgUoJpYDqNuYKTBZZ8dPuDlIRwJ1wd+jvS2xIm6WK8urmiXeHD2LJb3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QWu2cCZ+; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yq/Sj56+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C04C4CEEB;
-	Sun, 17 Aug 2025 06:00:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755410413;
-	bh=EZ/OY9/PmCsYJzwheJnYYUJ7szKgYoULjAW1iX8SyHo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yq/Sj56+aodXKdVkbmPoMpTrjRhrWbGlahXTvrzo4v1d7UnD/zr8Cu/XVi3/Jo3D1
-	 pJUZVPTSUqL7H1pnPQl/CYQhMRbxjmkQPto1I5KgFn6oktQREbUPqj8WNhZDjOs8Lz
-	 nVC83zwDm9ZqGiWdocS8XAFt714KgBLXssqZkcT4=
-Date: Sun, 17 Aug 2025 08:00:09 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 0/4] Untrusted Data API
-Message-ID: <2025081746-aspirate-diminish-29cd@gregkh>
-References: <20250814124424.516191-1-lossin@kernel.org>
- <2025081416-sufferer-economist-3f00@gregkh>
- <DC295B7454Y8.9RVKVMPORAZ9@kernel.org>
- <2025081448-creation-timid-b972@gregkh>
- <DC2BPSUKOWAX.2QTWBJM1ZQPJ3@kernel.org>
- <2025081435-broker-valium-7b22@gregkh>
- <DC2TOYQG9QEI.2TZ4GFFZGF05W@kernel.org>
- <2025081505-facial-cyclic-af25@gregkh>
- <DC3S011XG6ZJ.2LLG9DCOKD0Z5@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QWu2cCZ+"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-76e434a0118so1780272b3a.0;
+        Sun, 17 Aug 2025 00:18:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755415100; x=1756019900; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MfMC4arSp0JLKDKHa53x0AnEcCZLSQaZ5L9mSSYKNlo=;
+        b=QWu2cCZ+MbttSfY3UbJy9EqBqAz6NaWnbYoHtjVfAWv+OUaw3vpNr1K2ixQhGMz2HY
+         d67m1DaD4SKuyT1UXbI2uyXtNSqfDclAY6RXNFcHDtXhpSdEduXsNjnZLNRJnFHOE6V3
+         Z6LIqVgxL8mkujsIaNTvCu7c2byjzh0hKCZrEz0bGJ7vShKgU9e0btoH3Ewaf05UwI3N
+         AVmNmyJy0UWHvomQi7Lem2ntsq2ulcF/5QVg9x1s8beRBBcO9UdGLitNbWnBir6iLfdX
+         yiv3QI2jj/ybhfiQRO9jpHraPSLh9cN4NLo/Ze1gH8a+Tzjevo2wP8t/2L0ksGy+Nivd
+         PVRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755415100; x=1756019900;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MfMC4arSp0JLKDKHa53x0AnEcCZLSQaZ5L9mSSYKNlo=;
+        b=ThpNvCd/JY9tGqdasvpRCa1WwGAkAKzWDlyurlnv5FzB0G1weZZ8SuSuZgO4EhLsgP
+         wy/cUqlT9hVHR+2TxykQxSMQ7+k22rdCdvo5/N9S+DfIh7mVTTZP47INwJ79z46w5ouJ
+         F/PcXEYj8X1K7L+NqDt6lqPszy6mFACkt94tlmJLLRKfI8aXA0H5GbMOvPN/VSD+vPbf
+         3LjnBcDsw1llH2YrREYDD8dQZL4atLIl7uZco/sSQqmO+wdVkEv7tyYQvL1ERkhSu843
+         8nFNK6VAft4TBgHv+G2JZbxm7y8NRoZSrJS9ePfWOhv4WrbZppFUNSWs0Uba8Xn7yALH
+         zUlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXpD4PRqzIXAGTpyEF5DHxBuestlYCsC7iO9sxmjCoNTKE2+CKqYUEv6FEeOxdIWO1o9EtcdmQrQk7eGS0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+N4z7mXom9RsjyoW0scyddc8NGYZX9TYt+m+eDJqrhcqVuFbV
+	A83foSNDn3K1wdcaamGunRgZOxaCx3P22DA02nvrbCePB+nwyKNFQrcP
+X-Gm-Gg: ASbGncvp7pe2ExKcojb0pz/n6hyG67LrKm97SEU+PFeTf0tSRhV6iKbuNaWYoSGJruU
+	LjYRUZHvkDCU+2mdiXywu27s/m9UkrX/enIAY3D5FB8aK8823Y/Rf7C9NunOqEoLyT1E5lQAA6u
+	fxa1V+Vp+G970nvKU0jDmJasidNdw6HbmbD7NslnhwdNlyytn0b60vASbryXVSGXBbcvwPMIdQl
+	OYbnKsjurhccQiyOA2e4goTTahnESaHhoLI6QaNhT1jymTuvAiEEGKkC6rs1L7PuDwzBdHoWJ4F
+	4czV9V/FAzis9vNVYGu1SmUw6AYDIrH80G6rFUadpmiWcRAJzIWzOFUkwU1D9AvilLFrH0u+Jz+
+	JDuHdW33MH5UAoySAEUpAxKNzZ00rxhgolYMWdJFyPQbCqkcHiFz2paU4vJBphzVv8i3rrCMM2i
+	BFR4DGidehlOE=
+X-Google-Smtp-Source: AGHT+IGoK2G125/Gd07SfKiVd0IYtohQM2A/WcFW0fC/hyWR9+qft+w0WXzp4P+R55yWZYHcilLI6Q==
+X-Received: by 2002:a17:902:e751:b0:23f:e2e0:f89b with SMTP id d9443c01a7336-2446d5ba169mr100734275ad.3.1755415100120;
+        Sun, 17 Aug 2025 00:18:20 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d50f8ddsm49343985ad.89.2025.08.17.00.18.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Aug 2025 00:18:19 -0700 (PDT)
+Date: Sun, 17 Aug 2025 16:18:04 +0900 (JST)
+Message-Id: <20250817.161804.1331850210190243752.fujita.tomonori@gmail.com>
+To: lyude@redhat.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, a.hindborg@kernel.org, fujita.tomonori@gmail.com,
+ daniel.almeida@collabora.com, boqun.feng@gmail.com, frederic@kernel.org,
+ anna-maria@linutronix.de, jstultz@google.com, sboyd@kernel.org,
+ ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org
+Subject: Re: [PATCH v7 6/7] rust: time: Add Instant::from_nanos()
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250813224240.3799325-7-lyude@redhat.com>
+References: <20250813224240.3799325-1-lyude@redhat.com>
+	<20250813224240.3799325-7-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DC3S011XG6ZJ.2LLG9DCOKD0Z5@kernel.org>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 16, 2025 at 12:22:04PM +0200, Benno Lossin wrote:
-> On Fri Aug 15, 2025 at 4:19 PM CEST, Greg KH wrote:
-> > On Fri, Aug 15, 2025 at 09:28:59AM +0200, Benno Lossin wrote:
-> >> On Thu Aug 14, 2025 at 8:26 PM CEST, Greg KH wrote:
-> >> > On Thu, Aug 14, 2025 at 07:23:45PM +0200, Benno Lossin wrote:
-> >> >> On Thu Aug 14, 2025 at 5:42 PM CEST, Greg KH wrote:
-> >> >> > On Thu, Aug 14, 2025 at 05:22:57PM +0200, Benno Lossin wrote:
-> >> >> >> On Thu Aug 14, 2025 at 4:37 PM CEST, Greg KH wrote:
-> >> >> >> > On Thu, Aug 14, 2025 at 02:44:12PM +0200, Benno Lossin wrote:
-> >> >> >> >> I didn't have too much time to spend on this API, so this is mostly a
-> >> >> >> >> resend of v3. There are some changes in the last commit, updating to the
-> >> >> >> >> latest version of Alice's iov_iter patche series [1] & rebasing on top
-> >> >> >> >> of v6.17-rc1.
-> >> >> >> >> 
-> >> >> >> >> I think we should just merge the first two patches this cycle in order
-> >> >> >> >> to get the initial, bare-bones API into the kernel and have people
-> >> >> >> >> experiment with it. The validation logic in the third patch still needs
-> >> >> >> >> some work and I'd need to find some time to work on that (no idea when I
-> >> >> >> >> find it though).
-> >> >> >> >
-> >> >> >> > Nice, thanks for reviving this!
-> >> >> >> >
-> >> >> >> > And we should at least add an example using it, otherwise it's not going
-> >> >> >> > to help out much here.  Add it to the misc device driver api?
-> >> >> >> 
-> >> >> >> You mean `rust/kernel/miscdevice.rs`? What parts of that API are
-> >> >> >> untrusted? 
-> >> >> >
-> >> >> > mmap() is, but you can't do anything about that...
-> >> >> 
-> >> >> Which parameter is untrusted there and why can't I do anything about it?
-> >> >
-> >> > The whole memory range is untrusted as to what is written there, sorry,
-> >> > it was a bad attempt at a joke, the kernel never gets a chance to know
-> >> > what is happening.
-> >> 
-> >> Ahh that flew over my head :) So we'd either build `Untrusted` directly
-> >> into the `VmaNew`/`VmaRef` abstractions -- or if there is a way to have
-> >> a trusted `VmaNew`, we can wrap it in `mmap`.
-> >
-> > Nah, I wouldn't worry about that, mmap() doesn't seem to cause security
-> > issues as by definition it is just allowing userspace to read/write
-> > anything to that device or memory, and the kernel doesn't even see it.
-> > Because of that, the kernel can't really be "broken" with invalid data
-> > there (hardware can, of course, but that's userspace's fault the kernel
-> > is just setting up a pipe here.)
-> 
-> I'm guessing that the kernel doesn't usually read these? (if we don't
-> have a way to read them from the Rust side, we don't need `Untrusted`)
+On Wed, 13 Aug 2025 18:42:21 -0400
+Lyude Paul <lyude@redhat.com> wrote:
 
-Correct.
+> For implementing Rust bindings which can return a point in time.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> 
+> ---
+> V4:
+> * Turn from_nanos() into an unsafe function in order to ensure that we
+>   uphold the invariants of Instant
+> V5:
+> * Add debug_assert!() to from_nanos
+> 
+>  rust/kernel/time.rs | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+> 
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 64c8dcf548d63..75088d080b834 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -200,6 +200,29 @@ pub fn elapsed(&self) -> Delta {
+>      pub(crate) fn as_nanos(&self) -> i64 {
+>          self.inner
+>      }
+> +
+> +    /// Create an [`Instant`] from a time duration specified in nanoseconds without checking if it
+> +    /// is positive.
 
-> >> >> If so we probably
-> >> >> should have a single parameter so users can verify them at the same
-> >> >> time. Or am I thinking of the wrong thing to verify? (`file` should be
-> >> >> already in kernel memory, right?)
-> >> >
-> >> > Both are usually verified at different places, first `cmd` tells what
-> >> > `arg` is going to be, and then the code goes off and parses whatever
-> >> > `arg` points to (or contains for simple ioctls).
-> >> >
-> >> > And for some, `arg` is just a place to write something back, so `arg`
-> >> > needs no verification for them, it depends on what `cmd` is.
-> >> 
-> >> I still think grouping them together makes sense, since in the
-> >> validation function you'd want access to both, right? And these use
-> >> cases seem perfect for enums:
-> >> 
-> >>     enum MyIoctlArgs {
-> >>         WriteFoo(UserPtr<Foo>),
-> >>         VerifyBar(UserPtr<Bar>),
-> >>         // ...
-> >>     }
-> >> 
-> >> And then in the validation function you can do:
-> >> 
-> >>     const WRITE_FOO_CMD: u32 = ...;
-> >> 
-> >>     fn validate(cmd: u32, arg: usize) -> Result<MyIoctlArgs> {
-> >>         Ok(match cmd {
-> >>             WRITE_FOO_CMD => MyIoctlArgs::WriteFoo(UserPtr::from_addr(arg)),
-> >>             VERIFY_BAR_CMD => MyIoctlArgs::VerifyBar(UserPtr::from_addr(arg)),
-> >>             _ => return Err(EINVAL),
-> >>         })
-> >>     }
-> >> 
-> >> So when wrapping them together we could have:
-> >> 
-> >>     pub struct IoctlArgs {
-> >>         pub cmd: u32,
-> >>         pub arg: usize,
-> >>     }
-> >> 
-> >> And then change the `MiscDevice::ioctl` function to:
-> >> 
-> >>     fn ioctl(
-> >>         _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-> >>         _file: &File,
-> >>         _args: Untrusted<IoctlArgs>,
-> >>     ) -> Result<isize>
-> >
-> > I think the problem with this is you now end up with the "I verified
-> > this is ok, so now I will copy it" bug, where userspace will race with
-> > the kernel and modify the data after verification but before copying.
-> >
-> > Note, Windows is full of these types of bugs as they don't do a call to
-> > copy_from_user(), but usually just poke at the data directly.  Linux at
-> > least forces a copy_from_user() call, but it doesn't always work in that
-> > you still have to validate the data is correct and people forget.
-> >
-> > So as long as we can copy the data from userspace first, and then
-> > validate it, and keep that validated copy around to use, that's great.
-> > I can't really determine above if that is the case or not, sorry.
-> 
-> So if I understand the current API correctly, the `arg` and `cmd`
-> parameters are copied from userspace (or rather they are direct
-> parameters of the syscall), so you can't have the copy-after-validation
-> bug there. Then in the `ioctl` function one currently just looks at
-> `cmd` & then decides what to do with `arg`, possibly doing a
-> `copy_from_user`.
-> 
-> In my suggestion for the API, we just change the first part of the
-> current approach, combining the two parameters to `ioctl` into a single
-> struct & making people parse it using the untrusted API.
-> 
-> The API that protects you from the copy-after-validation bug is the
-> `UserPtr<T>` abstraction. And there I also will add the untrusted API.
-> For example the `UserPtr::read_all` function would become:
-> 
->     pub fn read_all<A: Allocator>(self, buf: &mut Untrusted<Vec<u8, A>>, flags: Flags) -> Result;
-> 
-> This means that you can only read the data into an `Untrusted<Vec<u8>>`
-> which ensures that the data is validated before use. This API also makes
-> it harder to have the copy-after-validation bug, since you have to
-> explicitly call `clone_reader`.
+Can we create Instant (a specific poin in time) from a time duraiton?
 
-Ok, that sounds good!
+The caller (the 7th patch) creates Instant from C side's Instant? 
+
+> +    /// # Panics
+> +    ///
+> +    /// On debug builds, this function will panic if `nanos` violates our safety contract.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller promises that `nanos` is in the range from 0 to `KTIME_MAX`.
+
+No conclusion has been made yet, but using a mathematical integer
+interval or a Rust range expression might be a better fit here:
+
+https://lore.kernel.org/lkml/87ms9ktoly.fsf@kernel.org/
+
+> +    #[expect(unused)]
+> +    #[inline]
+> +    pub(crate) unsafe fn from_nanos(nanos: i64) -> Self {
+
+If this function creates Instant from C side's Instant, from_ktime()
+might be better?
+
+
+> +        debug_assert!(nanos >= 0);
+> +
+> +        // INVARIANT: Our safety contract ensures that `nanos` is in the range from 0 to
+> +        // `KTIME_MAX`.
+> +        Self {
+> +            inner: nanos as bindings::ktime_t,
+> +            _c: PhantomData,
+> +        }
+> +    }
+>  }
+>  
+>  impl<C: ClockSource> core::ops::Sub for Instant<C> {
+> -- 
+> 2.50.0
+> 
+> 
