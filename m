@@ -1,156 +1,104 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0893718C011;
-	Sun, 17 Aug 2025 07:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9BF7081F
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Aug 2025 08:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755415102; cv=none; b=I2WsJCmf3tr4zZ4qoJ489n65PydPbRU7dtBCKJde0hb65x6PbkUORkUsQ4NjM6qOcppMzXkgS6Kr11ppBXbfYA+7zP27hmMJ+9g1Cig/BjF94W9RyzQ0jbXPvPCy9Mcz70abIkW85nAh+Z/HBtN2b9hn/I071eU+O90l5lK0AMc=
+	t=1755419588; cv=none; b=N7V8kMz8k0Yx27ZUdtCHqJZWr9I3tD4aj2BQcUcecX9Dc4RuYyB6CNOBLmzofC5pSvx0umOmgE6wO5bDdxcmXAcExE+mZ6UYtOrAMPbVAF53aRNCl4ByptIxf/TDhqq5AboNxuSVS53rxfrvs3FOaya+75rbkIWtU4QFb11gY6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755415102; c=relaxed/simple;
-	bh=YYB5cQdBwmhnkPbs3DQCuTcXEQFORaxBGjppJecTYmY=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=fQP+YMvc7sAjREW4w4iGvpQ1Ziu4I5efTbvH4VJXayNotTZQFVnmU8zLS69htSHD9oUgp3pYv/fi1QDATQe5532ZFCmsgebASWcUYyrqY45FiIwVFyNPgUoJpYDqNuYKTBZZ8dPuDlIRwJ1wd+jvS2xIm6WK8urmiXeHD2LJb3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QWu2cCZ+; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755419588; c=relaxed/simple;
+	bh=9F4kZCt6EM418SfE71rTAkC9O6+5xOXqnezhdzokRY8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ckIavdWXgBeecmN2trOL4gEykG31Ym8FJr/SjskoGd0qRDkEmfycpNedDnAJ2LE2JXU4j44piwGqvOdT3k+jmZVURPn9T7jQTVNLlKFlTgcgmCXbnTCsudLIuEZCFyoDNDAbwLECnxQv0LwVtG+YAD//EgRctJVniGmoeaQLoLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tHQ7wThX; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QWu2cCZ+"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-76e434a0118so1780272b3a.0;
-        Sun, 17 Aug 2025 00:18:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tHQ7wThX"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3b9e415a68fso3146046f8f.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 Aug 2025 01:33:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755415100; x=1756019900; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MfMC4arSp0JLKDKHa53x0AnEcCZLSQaZ5L9mSSYKNlo=;
-        b=QWu2cCZ+MbttSfY3UbJy9EqBqAz6NaWnbYoHtjVfAWv+OUaw3vpNr1K2ixQhGMz2HY
-         d67m1DaD4SKuyT1UXbI2uyXtNSqfDclAY6RXNFcHDtXhpSdEduXsNjnZLNRJnFHOE6V3
-         Z6LIqVgxL8mkujsIaNTvCu7c2byjzh0hKCZrEz0bGJ7vShKgU9e0btoH3Ewaf05UwI3N
-         AVmNmyJy0UWHvomQi7Lem2ntsq2ulcF/5QVg9x1s8beRBBcO9UdGLitNbWnBir6iLfdX
-         yiv3QI2jj/ybhfiQRO9jpHraPSLh9cN4NLo/Ze1gH8a+Tzjevo2wP8t/2L0ksGy+Nivd
-         PVRg==
+        d=google.com; s=20230601; t=1755419585; x=1756024385; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hTwTOtGwt6cJGY41AEmiyutI55TEpKyzi4qJ2ueIWhw=;
+        b=tHQ7wThX9HOw62audCRFxL49D6LCANf72ifESGU30yOkHmIZz/ZS16DPwJ3JFHBe0v
+         Xi5NDy3BSnH8QPEsA/57LoH0w3T+r2+74XxQynJQ8gpN7ivK5jCmNO2HP1Ggp+a9WKc+
+         pis3pdetw7I2THUeZe0k3k0dtcsR2FfSDt4vJ2ZqsXw0Weu/8R6uKsMIZfnzqbC4r7Ft
+         9r7vlyWFWD8R7sysk/8nwT8cHNR1VOrOdpyjQdxZ/4F3AmznRGmBQ9do2lIeeKA7f0f1
+         sTqbc3WDz73brb4OlNT9TVyfDeAF2euMjbHCLDchKVeo6o2682OWstbvpayNFFi9OFhr
+         8oWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755415100; x=1756019900;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MfMC4arSp0JLKDKHa53x0AnEcCZLSQaZ5L9mSSYKNlo=;
-        b=ThpNvCd/JY9tGqdasvpRCa1WwGAkAKzWDlyurlnv5FzB0G1weZZ8SuSuZgO4EhLsgP
-         wy/cUqlT9hVHR+2TxykQxSMQ7+k22rdCdvo5/N9S+DfIh7mVTTZP47INwJ79z46w5ouJ
-         F/PcXEYj8X1K7L+NqDt6lqPszy6mFACkt94tlmJLLRKfI8aXA0H5GbMOvPN/VSD+vPbf
-         3LjnBcDsw1llH2YrREYDD8dQZL4atLIl7uZco/sSQqmO+wdVkEv7tyYQvL1ERkhSu843
-         8nFNK6VAft4TBgHv+G2JZbxm7y8NRoZSrJS9ePfWOhv4WrbZppFUNSWs0Uba8Xn7yALH
-         zUlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpD4PRqzIXAGTpyEF5DHxBuestlYCsC7iO9sxmjCoNTKE2+CKqYUEv6FEeOxdIWO1o9EtcdmQrQk7eGS0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+N4z7mXom9RsjyoW0scyddc8NGYZX9TYt+m+eDJqrhcqVuFbV
-	A83foSNDn3K1wdcaamGunRgZOxaCx3P22DA02nvrbCePB+nwyKNFQrcP
-X-Gm-Gg: ASbGncvp7pe2ExKcojb0pz/n6hyG67LrKm97SEU+PFeTf0tSRhV6iKbuNaWYoSGJruU
-	LjYRUZHvkDCU+2mdiXywu27s/m9UkrX/enIAY3D5FB8aK8823Y/Rf7C9NunOqEoLyT1E5lQAA6u
-	fxa1V+Vp+G970nvKU0jDmJasidNdw6HbmbD7NslnhwdNlyytn0b60vASbryXVSGXBbcvwPMIdQl
-	OYbnKsjurhccQiyOA2e4goTTahnESaHhoLI6QaNhT1jymTuvAiEEGKkC6rs1L7PuDwzBdHoWJ4F
-	4czV9V/FAzis9vNVYGu1SmUw6AYDIrH80G6rFUadpmiWcRAJzIWzOFUkwU1D9AvilLFrH0u+Jz+
-	JDuHdW33MH5UAoySAEUpAxKNzZ00rxhgolYMWdJFyPQbCqkcHiFz2paU4vJBphzVv8i3rrCMM2i
-	BFR4DGidehlOE=
-X-Google-Smtp-Source: AGHT+IGoK2G125/Gd07SfKiVd0IYtohQM2A/WcFW0fC/hyWR9+qft+w0WXzp4P+R55yWZYHcilLI6Q==
-X-Received: by 2002:a17:902:e751:b0:23f:e2e0:f89b with SMTP id d9443c01a7336-2446d5ba169mr100734275ad.3.1755415100120;
-        Sun, 17 Aug 2025 00:18:20 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d50f8ddsm49343985ad.89.2025.08.17.00.18.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Aug 2025 00:18:19 -0700 (PDT)
-Date: Sun, 17 Aug 2025 16:18:04 +0900 (JST)
-Message-Id: <20250817.161804.1331850210190243752.fujita.tomonori@gmail.com>
-To: lyude@redhat.com
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, a.hindborg@kernel.org, fujita.tomonori@gmail.com,
- daniel.almeida@collabora.com, boqun.feng@gmail.com, frederic@kernel.org,
- anna-maria@linutronix.de, jstultz@google.com, sboyd@kernel.org,
- ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org
-Subject: Re: [PATCH v7 6/7] rust: time: Add Instant::from_nanos()
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20250813224240.3799325-7-lyude@redhat.com>
-References: <20250813224240.3799325-1-lyude@redhat.com>
-	<20250813224240.3799325-7-lyude@redhat.com>
+        d=1e100.net; s=20230601; t=1755419585; x=1756024385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hTwTOtGwt6cJGY41AEmiyutI55TEpKyzi4qJ2ueIWhw=;
+        b=QERg02gzR6MKUa3axzvmTCDKAC3iOhaqlybGumPV5twENhNs5lXv4dsDWpfv7E6vi4
+         cp4iYm3SLayjbd46WWf6+sriSDgKci2WdNA3a0i5VJcPlXd1+butmaMkmmukpQrcP+XT
+         a2TbwASW0SH/qdExHcmAVf3V64ULe0jv2nl4fOM0Ipd4lcoyKeLo4qAHXbvWaEh40m8m
+         cdN1OYCUuBBsfY5NI2uEsawx6+luO3MifQVAaN6UCEVLYdE26RPFroq7bee9hYAhk89p
+         NK5jRKFnS2CvFYI/CjvJXS9IhxEZWSKDbgGZ0HDBoJZ1mim08lx7csQzeoTCxNa70W4g
+         kd3w==
+X-Forwarded-Encrypted: i=1; AJvYcCVccmWOSiAwbdU8Qenx/SaPAn3CbeKseCzzmuOu/tjHT8OHOD4e1LrtkZl8tthiZVGYSLUUBri90OWc0u2nxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1e7kjL2g/jIf+5u7OyidtcZuY2IjpG8PQo9b8TB0119yCgTPl
+	e1MKxqfFxNtGv49TDihEcYmCnFJFJOy1n1CV4JCOMV4JQrYMrces7Zclgp7Y0TtzzqDGqNolHxk
+	rRLLRl5NziY/uqbip24eRv7dPp5D+fXGOOvKQWAPy
+X-Gm-Gg: ASbGncvBDArSgN4hNg1VHFcrg5Qlrmq77cOVkI7BqUSdoY+x5KRIDoGqkrNsYlOdkYC
+	u8pW0jtDyAyyqIZKEyIS9R23sfRV+eHMad6ArL83drxPIB8Sl8xoRpd1KdWdHLQVlFb0zWnGfAZ
+	62fklkZZ4/U+oKEvaCPgQQX30/u9cakFs5B0h6UCFmh/jqgG5q/MTu/VTR2ZU3nq7MB6MZUffRe
+	cubEPKb7tFLFsl2KuQqGfldnnaMWrhfBmlU
+X-Google-Smtp-Source: AGHT+IGoRb1xdrYrj6kHKejvqdDcCa7iTaEaP7TOTbmewwBY/XYltNC5+vB1zPlq8+D3PhMalwZdmY0KcTb1ScHU0tU=
+X-Received: by 2002:a05:6000:430b:b0:3b7:9589:1fd1 with SMTP id
+ ffacd0b85a97d-3bb68fdc587mr6365788f8f.44.1755419585362; Sun, 17 Aug 2025
+ 01:33:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20250816210214.2729269-1-ojeda@kernel.org>
+In-Reply-To: <20250816210214.2729269-1-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sun, 17 Aug 2025 10:32:53 +0200
+X-Gm-Features: Ac12FXzhd2iFnnKjyXBfrCIdB6O_r4X05qYMnlTOhhEd7NQgiE9g9rzOlA9OUao
+Message-ID: <CAH5fLggYHJg+PmLD=Fg2a=pO7JRmM+AqppwBqOBpp6+179YcVg@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: fix missing import needed for `rusttest`
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Vitaly Wool <vitaly.wool@konsulko.se>, 
+	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>, 
+	Uladzislau Rezki <urezki@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 13 Aug 2025 18:42:21 -0400
-Lyude Paul <lyude@redhat.com> wrote:
+On Sat, Aug 16, 2025 at 11:02=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
+>
+> There is a missing import of `NumaNode` that is used in the `rusttest`
+> target:
+>
+>     error[E0412]: cannot find type `NumaNode` in this scope
+>       --> rust/kernel/alloc/allocator_test.rs:43:15
+>        |
+>     43 |         _nid: NumaNode,
+>        |               ^^^^^^^^ not found in this scope
+>        |
+>     help: consider importing this struct
+>        |
+>     12 + use crate::alloc::NumaNode;
+>        |
+>
+> Thus fix it by adding it.
+>
+> Fixes: 8405eafa6e94 ("rust: add support for NUMA ids in allocations")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-> For implementing Rust bindings which can return a point in time.
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> 
-> ---
-> V4:
-> * Turn from_nanos() into an unsafe function in order to ensure that we
->   uphold the invariants of Instant
-> V5:
-> * Add debug_assert!() to from_nanos
-> 
->  rust/kernel/time.rs | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
-> 
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 64c8dcf548d63..75088d080b834 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -200,6 +200,29 @@ pub fn elapsed(&self) -> Delta {
->      pub(crate) fn as_nanos(&self) -> i64 {
->          self.inner
->      }
-> +
-> +    /// Create an [`Instant`] from a time duration specified in nanoseconds without checking if it
-> +    /// is positive.
-
-Can we create Instant (a specific poin in time) from a time duraiton?
-
-The caller (the 7th patch) creates Instant from C side's Instant? 
-
-> +    /// # Panics
-> +    ///
-> +    /// On debug builds, this function will panic if `nanos` violates our safety contract.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller promises that `nanos` is in the range from 0 to `KTIME_MAX`.
-
-No conclusion has been made yet, but using a mathematical integer
-interval or a Rust range expression might be a better fit here:
-
-https://lore.kernel.org/lkml/87ms9ktoly.fsf@kernel.org/
-
-> +    #[expect(unused)]
-> +    #[inline]
-> +    pub(crate) unsafe fn from_nanos(nanos: i64) -> Self {
-
-If this function creates Instant from C side's Instant, from_ktime()
-might be better?
-
-
-> +        debug_assert!(nanos >= 0);
-> +
-> +        // INVARIANT: Our safety contract ensures that `nanos` is in the range from 0 to
-> +        // `KTIME_MAX`.
-> +        Self {
-> +            inner: nanos as bindings::ktime_t,
-> +            _c: PhantomData,
-> +        }
-> +    }
->  }
->  
->  impl<C: ClockSource> core::ops::Sub for Instant<C> {
-> -- 
-> 2.50.0
-> 
-> 
+Acked-by: Alice Ryhl <aliceryhl@google.com>
