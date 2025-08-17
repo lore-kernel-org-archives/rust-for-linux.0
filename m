@@ -1,237 +1,120 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538622153D2;
-	Sun, 17 Aug 2025 04:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D701D88D0;
+	Sun, 17 Aug 2025 05:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755406119; cv=none; b=ZdfM1YEb3VIUqkCgp5YJVmu8pHA6wMAoweUwFwiiHGzlP7/DBsaBO/1iAalE/NcJG48MfRzvbT6CjwiNlMBmPkQBUDrx43awkNo1cjOb0QmRlxAzTurnEQTGCkr4Dt/bMhQkPhvWE6JJBHjVsXIQQyi1C2quYKGe+hp/HSIt2R8=
+	t=1755409847; cv=none; b=shY5X0htvwB+DfduJBe8mMFron2HM2/FQVkPWw5XMKGEalrTc5ihdpPifjrZ0wztWonTi2lWXpuhsKpqqLFhDRBGxopwYfpqKN5bSzt4jcbiZoANHBdWy9Xm3DzRAy/noA4LJH9FC1jyVFyfvx7bJw2OUDlnNcNZkXhuVRDjVkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755406119; c=relaxed/simple;
-	bh=OfUxQNP8egEuZF0aozRSs7eNFemq+iAsPOP/S6eHncs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kF2FO88/wlbXA8ATC0zgfNJIfWmphuf+v7LQHgg1h0h0HdIx2lpw00JkaRcS2b6ZFjcqxpEo7KeUX7oE6lLQSlGah9CnWSF3kXJ5bKD40vp2VYWut/jIW6sL+xoCgMW1CKDE5w9EeJ/7yrRTZsaF1lgETV09Q24LrTeHaQx7b7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mi8T00iU; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755409847; c=relaxed/simple;
+	bh=nyHY7omVt4L3NYX9AX1MTT90Ptj3gLdYmhit4iwSvbo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mIL2Jj5sCvahmmuhIdsGAbDsB/FJXHLLlh1J2a//XgDPgjeDZ7Z1xen5uIjz1LAdjcmyG2+mzlFIdOzZkzf6zVjToU6h3OvL7eQfyGqUwTm9w2iUxpzFDkDi8xFdGhsxFCP+/KWMSJsCVntwbFHoYqgzx1MJU3OjMW89q0yULFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PZsx3Ijk; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mi8T00iU"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b472da8ff0eso1219069a12.3;
-        Sat, 16 Aug 2025 21:48:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755406118; x=1756010918; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aEV5IZfQmSvRoL3MwRp7ZUYnDWVnp35CPvZMegD2V0g=;
-        b=mi8T00iU1Gm3JCHudNtLNzValjzbBxUEwXknSZ5B/jwWI88t/LZsN1rajl3Liek8P4
-         j8GLEYSDta6T7mqtKtDIGtMj1qY8yoWFbsvtXN/tuQUCae0uD5ExzAKG90z1NtcMqt8a
-         yMPxRfl+IaS3Ebf1cGII4mFt94+ER6GnjY7z1lEIa6DnwFv4t5eVVi7zMPEmIQ3724h0
-         K/KDxIvEQt8+hkFniAEvF2JkSWKHtGdKH3kV7XFAgQs+cYBVmvZg3m9GWBeENvG0DadY
-         JEUQtZZoQGaZ5K0Dyg9hUBQafPdl46gFwA+xsY1h/31bD6bKsoNDk0ayxk8WWa+bMGlc
-         CyMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755406118; x=1756010918;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aEV5IZfQmSvRoL3MwRp7ZUYnDWVnp35CPvZMegD2V0g=;
-        b=fWWGgwlORj5y3FD12vADiLmtPlCRvIbCjQctz5qu1W0cXeUMNWX5zB2VPwPKKZzFNo
-         yLD0NBDbVxRW3GyhdirFavRVVcJgRIe14NS+dxlEEQaaSeF4Ahl/OoMal6d5Hg86dumc
-         y7jxhHXgdmLrf2CJ8TvwrTHwXVEDbCt9zkF2uM7k8rpP1tU9xPlvkh5LlrkMC+03ZRsO
-         50RcIwlGB+6u+PqHbr/3rYfSIP0b6WujqtsdAjaC85+BBtKHgiHwASqc4hwn+qk9OQl5
-         z/ROT/QZ4k6p9vCRw/4R/JvYcZK9+Bz9MhdCJvyWY03U6ROg4gS9FIaBY8CpZkuqM4D0
-         2pyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUO4aARKrODTJwTy1vxLiioY8T6Zl9iAcseUajSP9ueevbZEF+3UkwTxizjpF8WNFDRrQuFhOi2FiowzfTsFpg=@vger.kernel.org, AJvYcCXHqBcMeimLfJp7pqy30TyT8h/ADCdQS7CG8X9tv1q+5nbocWYZzibIMNkZHe5HOwBy44o1gE2qUNaanB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPfLFXMqwTFg9+oAJvm93pn/40gl/SI9YjtJPCI0D2JdbXgs2K
-	q/b9GSz2KtdfXn1bXyr6M5LGg03X4O4Mbk5ithTJ8ncdr2wDNDIulhzV
-X-Gm-Gg: ASbGncsCOdgSiPsa9TeFjJiFVhIIG9Nr918WxuZF7COOHreiI0xMLMTjMAu2EFrXFqM
-	JMyTzFN91XKVO/g8G1LSDESa/dyq4KJCJFW7mfvzxp0wZEOyCcWzHfTWgyBYSpNl9uJ5sDwpbLo
-	psn272a7GEgXOmd5fAtG3UmltyIPk4S0WQHzz3szPenMHVhLX+GTiDZG8OWuuQSNZ768iPPGmuF
-	D1AtJD8/XP0q/u3KzRZ3weayuics+QG7gUHVkylDTRSiDB/e8UwwKnuzaseMKLZfl27Hh6h1Qz8
-	rJC2QAEH0i0y0DVimoSgctC801DQYZs7yyWIOfjAtGiODqz9LokkVsagAErrtJ8U8Bqj9gBpChU
-	pmKl45AGbn0S62lZznkV29NPdIwYLMBtGi0Sg+TRWvZQYm9kR+80S0FuUE6Ve29aE9G9JCAY=
-X-Google-Smtp-Source: AGHT+IF3mKlARKZlgu4rIfuZaOYHZe+PHuOmFUESxWQXKaN9Yfogir+setAFdgEpphUdZDi2/mDncA==
-X-Received: by 2002:a17:90b:4a10:b0:31e:8203:4b9d with SMTP id 98e67ed59e1d1-3234dc9ec09mr5767729a91.29.1755406117580;
-        Sat, 16 Aug 2025 21:48:37 -0700 (PDT)
-Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3234368aeadsm4740645a91.0.2025.08.16.21.48.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Aug 2025 21:48:37 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	ojeda@kernel.org
-Cc: aliceryhl@google.com,
-	anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	frederic@kernel.org,
-	gary@garyguo.net,
-	jstultz@google.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	sboyd@kernel.org,
-	tglx@linutronix.de,
-	tmgross@umich.edu,
-	acourbot@nvidia.com,
-	daniel.almeida@collabora.com,
-	Fiona Behrens <me@kloenk.dev>
-Subject: [PATCH v2 2/2] rust: Add read_poll_timeout functions
-Date: Sun, 17 Aug 2025 13:47:23 +0900
-Message-ID: <20250817044724.3528968-3-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250817044724.3528968-1-fujita.tomonori@gmail.com>
-References: <20250817044724.3528968-1-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PZsx3Ijk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755409846; x=1786945846;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nyHY7omVt4L3NYX9AX1MTT90Ptj3gLdYmhit4iwSvbo=;
+  b=PZsx3Ijk3hhAf3EbYu6gOQahLNy1ZSIxNwRka/YhL72zmkEqqeIUZQQI
+   sGmoKsHpt6Imgz8sNj231f2hPx41xfQj6zZ1ARP8CbT8jrbhFJo2/Lg57
+   fnyTGN4cHU3g7ojewo8JzMRKtOm1E2SqFQ6zHZuFceTreWg4dzBi0ewA+
+   vQOVdQ8u1UQ9C2884vis4MCLvnTu2HltxA0qk6yu5rtARgXkLTsLeHsUT
+   xW41UQVDPAfDQRtIoxABnUlIO0b2VoSI34FfxO/Yo8VMifLpkMnVreCZv
+   WQ9d9bsKoU+a5w/y69fM3vbnJQxd0dpXmtWdkx7qiGH11S3VQe6VIzqqv
+   A==;
+X-CSE-ConnectionGUID: waDkMputRQ+3W63kTCxlMg==
+X-CSE-MsgGUID: JDU2pCKtQFCCQIca264Urg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="57739989"
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
+   d="scan'208";a="57739989"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2025 22:50:45 -0700
+X-CSE-ConnectionGUID: m4cyg5rXRHmnAQLPkXCxVQ==
+X-CSE-MsgGUID: GN+H44+ORmSvjJ9NK+uWag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
+   d="scan'208";a="171757046"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa004.jf.intel.com with ESMTP; 16 Aug 2025 22:50:41 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1unWHt-000DNd-2i;
+	Sun, 17 Aug 2025 05:50:37 +0000
+Date: Sun, 17 Aug 2025 13:50:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ayush Singh <ayush@beagleboard.org>,
+	Jason Kridner <jkridner@beagleboard.org>,
+	Deepak Khatri <lorforlinux@beagleboard.org>,
+	Robert Nelson <robertcnelson@beagleboard.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Dhruva Gole <d-gole@ti.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Benno Lossin <lossin@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
+Subject: Re: [PATCH v2 2/2] rust: kernel: of: Add overlay id abstraction
+Message-ID: <202508171342.vNfvpebZ-lkp@intel.com>
+References: <20250816-rust-overlay-abs-v2-2-48a2c8921df2@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250816-rust-overlay-abs-v2-2-48a2c8921df2@beagleboard.org>
 
-Add read_poll_timeout function which poll periodically until a
-condition is met or a timeout is reached.
+Hi Ayush,
 
-The C's read_poll_timeout (include/linux/iopoll.h) is a complicated
-macro and a simple wrapper for Rust doesn't work. So this implements
-the same functionality in Rust.
+kernel test robot noticed the following build errors:
 
-The C version uses usleep_range() while the Rust version uses
-fsleep(), which uses the best sleep method so it works with spans that
-usleep_range() doesn't work nicely with.
+[auto build test ERROR on 931e46dcbc7e6035a90e9c4a27a84b660e083f0a]
 
-The sleep_before_read argument isn't supported since there is no user
-for now. It's rarely used in the C version.
+url:    https://github.com/intel-lab-lkp/linux/commits/Ayush-Singh/rust-kernel-of-Add-DeviceNode-abstraction/20250816-140122
+base:   931e46dcbc7e6035a90e9c4a27a84b660e083f0a
+patch link:    https://lore.kernel.org/r/20250816-rust-overlay-abs-v2-2-48a2c8921df2%40beagleboard.org
+patch subject: [PATCH v2 2/2] rust: kernel: of: Add overlay id abstraction
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250817/202508171342.vNfvpebZ-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250817/202508171342.vNfvpebZ-lkp@intel.com/reproduce)
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/io.rs      |  1 +
- rust/kernel/io/poll.rs | 96 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 97 insertions(+)
- create mode 100644 rust/kernel/io/poll.rs
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508171342.vNfvpebZ-lkp@intel.com/
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 03b467722b86..ee182b0b5452 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -8,6 +8,7 @@
- use crate::{bindings, build_assert, ffi::c_void};
- 
- pub mod mem;
-+pub mod poll;
- pub mod resource;
- 
- pub use resource::Resource;
-diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
-new file mode 100644
-index 000000000000..e6325725d5a3
---- /dev/null
-+++ b/rust/kernel/io/poll.rs
-@@ -0,0 +1,96 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! IO polling.
-+//!
-+//! C header: [`include/linux/iopoll.h`](srctree/include/linux/iopoll.h).
-+
-+use crate::{
-+    error::{code::*, Result},
-+    processor::cpu_relax,
-+    task::might_sleep,
-+    time::{delay::fsleep, Delta, Instant, Monotonic},
-+};
-+
-+/// Polls periodically until a condition is met or a timeout is reached.
-+///
-+/// The function repeatedly executes the given operation `op` closure and
-+/// checks its result using the condition closure `cond`.
-+///
-+/// If `cond` returns `true`, the function returns successfully with the result of `op`.
-+/// Otherwise, it waits for a duration specified by `sleep_delta`
-+/// before executing `op` again.
-+///
-+/// This process continues until either `cond` returns `true` or the timeout,
-+/// specified by `timeout_delta`, is reached. If `timeout_delta` is `None`,
-+/// polling continues indefinitely until `cond` evaluates to `true` or an error occurs.
-+///
-+/// This function can only be used in a nonatomic context.
-+///
-+/// # Examples
-+///
-+/// ```no_run
-+/// use kernel::io::{Io, poll::read_poll_timeout};
-+/// use kernel::time::Delta;
-+///
-+/// const HW_READY: u16 = 0x01;
-+///
-+/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result<()> {
-+///     match read_poll_timeout(
-+///         // The `op` closure reads the value of a specific status register.
-+///         || io.try_read16(0x1000),
-+///         // The `cond` closure takes a reference to the value returned by `op`
-+///         // and checks whether the hardware is ready.
-+///         |val: &u16| *val == HW_READY,
-+///         Delta::from_millis(50),
-+///         Delta::from_secs(3),
-+///     ) {
-+///         Ok(_) => {
-+///             // The hardware is ready. The returned value of the `op` closure
-+///             // isn't used.
-+///             Ok(())
-+///         }
-+///         Err(e) => Err(e),
-+///     }
-+/// }
-+/// ```
-+#[track_caller]
-+pub fn read_poll_timeout<Op, Cond, T>(
-+    mut op: Op,
-+    mut cond: Cond,
-+    sleep_delta: Delta,
-+    timeout_delta: Delta,
-+) -> Result<T>
-+where
-+    Op: FnMut() -> Result<T>,
-+    Cond: FnMut(&T) -> bool,
-+{
-+    let start: Instant<Monotonic> = Instant::now();
-+
-+    // Unlike the C version, we always call `might_sleep()` unconditionally,
-+    // as conditional calls are error-prone. We clearly separate
-+    // `read_poll_timeout()` and `read_poll_timeout_atomic()` to aid
-+    // tools like klint.
-+    might_sleep();
-+
-+    loop {
-+        let val = op()?;
-+        if cond(&val) {
-+            // Unlike the C version, we immediately return.
-+            // We know the condition is met so we don't need to check again.
-+            return Ok(val);
-+        }
-+
-+        if start.elapsed() > timeout_delta {
-+            // Unlike the C version, we immediately return.
-+            // We have just called `op()` so we don't need to call it again.
-+            return Err(ETIMEDOUT);
-+        }
-+
-+        if !sleep_delta.is_zero() {
-+            fsleep(sleep_delta);
-+        }
-+
-+        // fsleep() could be busy-wait loop so we always call cpu_relax().
-+        cpu_relax();
-+    }
-+}
+All errors (new ones prefixed by >>):
+
+>> error[E0425]: cannot find function `of_overlay_fdt_apply` in crate `bindings`
+   --> rust/kernel/of.rs:95:23
+   |
+   95 |             bindings::of_overlay_fdt_apply(
+   |                       ^^^^^^^^^^^^^^^^^^^^ not found in `bindings`
+--
+>> error[E0425]: cannot find function `of_overlay_remove` in crate `bindings`
+   --> rust/kernel/of.rs:109:28
+   |
+   109 |         unsafe { bindings::of_overlay_remove(&mut self.0) };
+   |                            ^^^^^^^^^^^^^^^^^ not found in `bindings`
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
