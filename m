@@ -1,76 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D701D88D0;
-	Sun, 17 Aug 2025 05:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27A4199931
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Aug 2025 06:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755409847; cv=none; b=shY5X0htvwB+DfduJBe8mMFron2HM2/FQVkPWw5XMKGEalrTc5ihdpPifjrZ0wztWonTi2lWXpuhsKpqqLFhDRBGxopwYfpqKN5bSzt4jcbiZoANHBdWy9Xm3DzRAy/noA4LJH9FC1jyVFyfvx7bJw2OUDlnNcNZkXhuVRDjVkU=
+	t=1755410413; cv=none; b=GFmcGEPM1KkuR4wnb8wkQ5+YGJ6O9gh29g7+sQZhwSOlFLe8LD2X9VrsNbpmycwcpZQBF4+QcrmVt0mh8WcvhPYBrVAHHwiZ6OqJFHwyvtCHr7Gjq+xJJ1Mj/vVm11iBWui5C5CT06B3FbKATUIR/ildx0DL907XLMON7MVvEDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755409847; c=relaxed/simple;
-	bh=nyHY7omVt4L3NYX9AX1MTT90Ptj3gLdYmhit4iwSvbo=;
+	s=arc-20240116; t=1755410413; c=relaxed/simple;
+	bh=EZ/OY9/PmCsYJzwheJnYYUJ7szKgYoULjAW1iX8SyHo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mIL2Jj5sCvahmmuhIdsGAbDsB/FJXHLLlh1J2a//XgDPgjeDZ7Z1xen5uIjz1LAdjcmyG2+mzlFIdOzZkzf6zVjToU6h3OvL7eQfyGqUwTm9w2iUxpzFDkDi8xFdGhsxFCP+/KWMSJsCVntwbFHoYqgzx1MJU3OjMW89q0yULFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PZsx3Ijk; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=bujgOOX3w+gbEkOzNzRuoXRde++0CLqkk2YUDaYIfgnHen0q5acMmXKcV2ulPEcW5FYLj0hRtrwgIaWm0ljq5yggqgH4ovOIq+eSOzU8a+DYZM6iKboJUY6EI7wV1Zl8jlircpo1cZuISqSivC6H+tNYVLLJcMrNBfm7Uu0ZQ3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yq/Sj56+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PZsx3Ijk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755409846; x=1786945846;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nyHY7omVt4L3NYX9AX1MTT90Ptj3gLdYmhit4iwSvbo=;
-  b=PZsx3Ijk3hhAf3EbYu6gOQahLNy1ZSIxNwRka/YhL72zmkEqqeIUZQQI
-   sGmoKsHpt6Imgz8sNj231f2hPx41xfQj6zZ1ARP8CbT8jrbhFJo2/Lg57
-   fnyTGN4cHU3g7ojewo8JzMRKtOm1E2SqFQ6zHZuFceTreWg4dzBi0ewA+
-   vQOVdQ8u1UQ9C2884vis4MCLvnTu2HltxA0qk6yu5rtARgXkLTsLeHsUT
-   xW41UQVDPAfDQRtIoxABnUlIO0b2VoSI34FfxO/Yo8VMifLpkMnVreCZv
-   WQ9d9bsKoU+a5w/y69fM3vbnJQxd0dpXmtWdkx7qiGH11S3VQe6VIzqqv
-   A==;
-X-CSE-ConnectionGUID: waDkMputRQ+3W63kTCxlMg==
-X-CSE-MsgGUID: JDU2pCKtQFCCQIca264Urg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="57739989"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="57739989"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2025 22:50:45 -0700
-X-CSE-ConnectionGUID: m4cyg5rXRHmnAQLPkXCxVQ==
-X-CSE-MsgGUID: GN+H44+ORmSvjJ9NK+uWag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="171757046"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 16 Aug 2025 22:50:41 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1unWHt-000DNd-2i;
-	Sun, 17 Aug 2025 05:50:37 +0000
-Date: Sun, 17 Aug 2025 13:50:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ayush Singh <ayush@beagleboard.org>,
-	Jason Kridner <jkridner@beagleboard.org>,
-	Deepak Khatri <lorforlinux@beagleboard.org>,
-	Robert Nelson <robertcnelson@beagleboard.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Dhruva Gole <d-gole@ti.com>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yq/Sj56+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C04C4CEEB;
+	Sun, 17 Aug 2025 06:00:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755410413;
+	bh=EZ/OY9/PmCsYJzwheJnYYUJ7szKgYoULjAW1iX8SyHo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Yq/Sj56+aodXKdVkbmPoMpTrjRhrWbGlahXTvrzo4v1d7UnD/zr8Cu/XVi3/Jo3D1
+	 pJUZVPTSUqL7H1pnPQl/CYQhMRbxjmkQPto1I5KgFn6oktQREbUPqj8WNhZDjOs8Lz
+	 nVC83zwDm9ZqGiWdocS8XAFt714KgBLXssqZkcT4=
+Date: Sun, 17 Aug 2025 08:00:09 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Benno Lossin <lossin@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
-Subject: Re: [PATCH v2 2/2] rust: kernel: of: Add overlay id abstraction
-Message-ID: <202508171342.vNfvpebZ-lkp@intel.com>
-References: <20250816-rust-overlay-abs-v2-2-48a2c8921df2@beagleboard.org>
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 0/4] Untrusted Data API
+Message-ID: <2025081746-aspirate-diminish-29cd@gregkh>
+References: <20250814124424.516191-1-lossin@kernel.org>
+ <2025081416-sufferer-economist-3f00@gregkh>
+ <DC295B7454Y8.9RVKVMPORAZ9@kernel.org>
+ <2025081448-creation-timid-b972@gregkh>
+ <DC2BPSUKOWAX.2QTWBJM1ZQPJ3@kernel.org>
+ <2025081435-broker-valium-7b22@gregkh>
+ <DC2TOYQG9QEI.2TZ4GFFZGF05W@kernel.org>
+ <2025081505-facial-cyclic-af25@gregkh>
+ <DC3S011XG6ZJ.2LLG9DCOKD0Z5@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -79,42 +52,142 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250816-rust-overlay-abs-v2-2-48a2c8921df2@beagleboard.org>
+In-Reply-To: <DC3S011XG6ZJ.2LLG9DCOKD0Z5@kernel.org>
 
-Hi Ayush,
+On Sat, Aug 16, 2025 at 12:22:04PM +0200, Benno Lossin wrote:
+> On Fri Aug 15, 2025 at 4:19 PM CEST, Greg KH wrote:
+> > On Fri, Aug 15, 2025 at 09:28:59AM +0200, Benno Lossin wrote:
+> >> On Thu Aug 14, 2025 at 8:26 PM CEST, Greg KH wrote:
+> >> > On Thu, Aug 14, 2025 at 07:23:45PM +0200, Benno Lossin wrote:
+> >> >> On Thu Aug 14, 2025 at 5:42 PM CEST, Greg KH wrote:
+> >> >> > On Thu, Aug 14, 2025 at 05:22:57PM +0200, Benno Lossin wrote:
+> >> >> >> On Thu Aug 14, 2025 at 4:37 PM CEST, Greg KH wrote:
+> >> >> >> > On Thu, Aug 14, 2025 at 02:44:12PM +0200, Benno Lossin wrote:
+> >> >> >> >> I didn't have too much time to spend on this API, so this is mostly a
+> >> >> >> >> resend of v3. There are some changes in the last commit, updating to the
+> >> >> >> >> latest version of Alice's iov_iter patche series [1] & rebasing on top
+> >> >> >> >> of v6.17-rc1.
+> >> >> >> >> 
+> >> >> >> >> I think we should just merge the first two patches this cycle in order
+> >> >> >> >> to get the initial, bare-bones API into the kernel and have people
+> >> >> >> >> experiment with it. The validation logic in the third patch still needs
+> >> >> >> >> some work and I'd need to find some time to work on that (no idea when I
+> >> >> >> >> find it though).
+> >> >> >> >
+> >> >> >> > Nice, thanks for reviving this!
+> >> >> >> >
+> >> >> >> > And we should at least add an example using it, otherwise it's not going
+> >> >> >> > to help out much here.  Add it to the misc device driver api?
+> >> >> >> 
+> >> >> >> You mean `rust/kernel/miscdevice.rs`? What parts of that API are
+> >> >> >> untrusted? 
+> >> >> >
+> >> >> > mmap() is, but you can't do anything about that...
+> >> >> 
+> >> >> Which parameter is untrusted there and why can't I do anything about it?
+> >> >
+> >> > The whole memory range is untrusted as to what is written there, sorry,
+> >> > it was a bad attempt at a joke, the kernel never gets a chance to know
+> >> > what is happening.
+> >> 
+> >> Ahh that flew over my head :) So we'd either build `Untrusted` directly
+> >> into the `VmaNew`/`VmaRef` abstractions -- or if there is a way to have
+> >> a trusted `VmaNew`, we can wrap it in `mmap`.
+> >
+> > Nah, I wouldn't worry about that, mmap() doesn't seem to cause security
+> > issues as by definition it is just allowing userspace to read/write
+> > anything to that device or memory, and the kernel doesn't even see it.
+> > Because of that, the kernel can't really be "broken" with invalid data
+> > there (hardware can, of course, but that's userspace's fault the kernel
+> > is just setting up a pipe here.)
+> 
+> I'm guessing that the kernel doesn't usually read these? (if we don't
+> have a way to read them from the Rust side, we don't need `Untrusted`)
 
-kernel test robot noticed the following build errors:
+Correct.
 
-[auto build test ERROR on 931e46dcbc7e6035a90e9c4a27a84b660e083f0a]
+> >> >> If so we probably
+> >> >> should have a single parameter so users can verify them at the same
+> >> >> time. Or am I thinking of the wrong thing to verify? (`file` should be
+> >> >> already in kernel memory, right?)
+> >> >
+> >> > Both are usually verified at different places, first `cmd` tells what
+> >> > `arg` is going to be, and then the code goes off and parses whatever
+> >> > `arg` points to (or contains for simple ioctls).
+> >> >
+> >> > And for some, `arg` is just a place to write something back, so `arg`
+> >> > needs no verification for them, it depends on what `cmd` is.
+> >> 
+> >> I still think grouping them together makes sense, since in the
+> >> validation function you'd want access to both, right? And these use
+> >> cases seem perfect for enums:
+> >> 
+> >>     enum MyIoctlArgs {
+> >>         WriteFoo(UserPtr<Foo>),
+> >>         VerifyBar(UserPtr<Bar>),
+> >>         // ...
+> >>     }
+> >> 
+> >> And then in the validation function you can do:
+> >> 
+> >>     const WRITE_FOO_CMD: u32 = ...;
+> >> 
+> >>     fn validate(cmd: u32, arg: usize) -> Result<MyIoctlArgs> {
+> >>         Ok(match cmd {
+> >>             WRITE_FOO_CMD => MyIoctlArgs::WriteFoo(UserPtr::from_addr(arg)),
+> >>             VERIFY_BAR_CMD => MyIoctlArgs::VerifyBar(UserPtr::from_addr(arg)),
+> >>             _ => return Err(EINVAL),
+> >>         })
+> >>     }
+> >> 
+> >> So when wrapping them together we could have:
+> >> 
+> >>     pub struct IoctlArgs {
+> >>         pub cmd: u32,
+> >>         pub arg: usize,
+> >>     }
+> >> 
+> >> And then change the `MiscDevice::ioctl` function to:
+> >> 
+> >>     fn ioctl(
+> >>         _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+> >>         _file: &File,
+> >>         _args: Untrusted<IoctlArgs>,
+> >>     ) -> Result<isize>
+> >
+> > I think the problem with this is you now end up with the "I verified
+> > this is ok, so now I will copy it" bug, where userspace will race with
+> > the kernel and modify the data after verification but before copying.
+> >
+> > Note, Windows is full of these types of bugs as they don't do a call to
+> > copy_from_user(), but usually just poke at the data directly.  Linux at
+> > least forces a copy_from_user() call, but it doesn't always work in that
+> > you still have to validate the data is correct and people forget.
+> >
+> > So as long as we can copy the data from userspace first, and then
+> > validate it, and keep that validated copy around to use, that's great.
+> > I can't really determine above if that is the case or not, sorry.
+> 
+> So if I understand the current API correctly, the `arg` and `cmd`
+> parameters are copied from userspace (or rather they are direct
+> parameters of the syscall), so you can't have the copy-after-validation
+> bug there. Then in the `ioctl` function one currently just looks at
+> `cmd` & then decides what to do with `arg`, possibly doing a
+> `copy_from_user`.
+> 
+> In my suggestion for the API, we just change the first part of the
+> current approach, combining the two parameters to `ioctl` into a single
+> struct & making people parse it using the untrusted API.
+> 
+> The API that protects you from the copy-after-validation bug is the
+> `UserPtr<T>` abstraction. And there I also will add the untrusted API.
+> For example the `UserPtr::read_all` function would become:
+> 
+>     pub fn read_all<A: Allocator>(self, buf: &mut Untrusted<Vec<u8, A>>, flags: Flags) -> Result;
+> 
+> This means that you can only read the data into an `Untrusted<Vec<u8>>`
+> which ensures that the data is validated before use. This API also makes
+> it harder to have the copy-after-validation bug, since you have to
+> explicitly call `clone_reader`.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ayush-Singh/rust-kernel-of-Add-DeviceNode-abstraction/20250816-140122
-base:   931e46dcbc7e6035a90e9c4a27a84b660e083f0a
-patch link:    https://lore.kernel.org/r/20250816-rust-overlay-abs-v2-2-48a2c8921df2%40beagleboard.org
-patch subject: [PATCH v2 2/2] rust: kernel: of: Add overlay id abstraction
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250817/202508171342.vNfvpebZ-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250817/202508171342.vNfvpebZ-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508171342.vNfvpebZ-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0425]: cannot find function `of_overlay_fdt_apply` in crate `bindings`
-   --> rust/kernel/of.rs:95:23
-   |
-   95 |             bindings::of_overlay_fdt_apply(
-   |                       ^^^^^^^^^^^^^^^^^^^^ not found in `bindings`
---
->> error[E0425]: cannot find function `of_overlay_remove` in crate `bindings`
-   --> rust/kernel/of.rs:109:28
-   |
-   109 |         unsafe { bindings::of_overlay_remove(&mut self.0) };
-   |                            ^^^^^^^^^^^^^^^^^ not found in `bindings`
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ok, that sounds good!
