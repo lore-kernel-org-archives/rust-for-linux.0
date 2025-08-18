@@ -1,165 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4533469EF;
-	Mon, 18 Aug 2025 16:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1CE32C300;
+	Mon, 18 Aug 2025 17:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755536295; cv=none; b=q8w0k+InnZ5W5gsD7P82Q1trH0Ilz0MScNBRjBszoxgpEmDQkOMFDjPjlfstLWraqfeKXnrNbOayqQCURcG2HQ7lkqh2vTBbcJZKosiybNP6Ow2hKpwiNtEYQdZO+vMt9YrbLBcw+ijrpSfXtWlRpBP0KaDfqR+pQmcyQ/o2pF4=
+	t=1755537834; cv=none; b=mw0c6RRmwes61JVGB1eU83XD0+MwMs1gh28hf6gpECYpXHbqNWtT3I/fVczMO6RjTH9XQ/IwAS9F3QN1obmAa1dbmgD1Syl+iI+JMy27djVvrc8ozRDA865ciSJP7u4vFN0iuX1h9W66DjmhzICxtNc/AoMDq0vOVVIz5Qgg3H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755536295; c=relaxed/simple;
-	bh=pWuSm8OMULuPDaXWOoarB+IRlnekDjxa7jgyfttfV58=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxtdM/+NDOiH0BepA6AJ1jG/aoymrzcJF9H/jd4WFsDib3Wpzmhdw1VrWwoPEeSO+csHP0MQScve9WCEOIH7KriBvXYmrzJNOtGeYEVRje2GOx/sXOga341/6SE62S6QK5D+3zTmojDrM4DoBhQrNg31xoiOQ3uX40dleVTL2/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLe5ivNV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755537834; c=relaxed/simple;
+	bh=m8EDhrRjAyOIaC+be7PBn8v9ntITM47BNpWt19+3H2c=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=u8QzGMXHiK2GTi2g7Uy5Xnc0wkWUuXs3j9xbYBLUfNNrQqJNgsaeoFxWt6644mKzz0t8y3j4417lOeuD5QfohhSo7VbqiwF7pggXQu4QrL2sfn+obw96wv69o/G9UdRB5AFZx0nyfsXTmeLHZGQRsz/vZv32bdQus2zpVIhmtIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKZJMs3M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLe5ivNV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FBBC4CEEB;
-	Mon, 18 Aug 2025 16:58:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKZJMs3M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B6BC4CEEB;
+	Mon, 18 Aug 2025 17:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755536295;
-	bh=pWuSm8OMULuPDaXWOoarB+IRlnekDjxa7jgyfttfV58=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLe5ivNV87Y7Sb5KhyYweHoF8xwm+lNFj9MTSmwC/CQKvLgzbFgc77mqcU5l0rlmH
-	 ZnjjXJa/45adVf4Vfpd9re8nLFmrxNj8ymSApNnnW5QqLikFI1QumrzSygT8sCRn3Y
-	 6b/NWS9N3v10VepyCNJtAwrbVcqVvBCaTS5XIW0p5HXCWSpHIjmQi4OdGOYfx03muY
-	 jL1H8tDK99Ojp9mEib0mLPLK6u9MUPUWzV58KAnIpPHvRlQcLh5aiVhwLp5EI8rRY4
-	 mt9MNqQ+D4XnShrx/TANmnhB28gXTljAGkdFR0k6oQnEf4/QV9SZvZTnul+cNEciVE
-	 m3nImo51rg0Vg==
-From: Alexey Gladkov <legion@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	Alexey Gladkov <legion@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v7 6/8] modpost: Add modname to mod_device_table alias
-Date: Mon, 18 Aug 2025 18:55:00 +0200
-Message-ID: <66785b63b47878446a15bcb14a9ef42dc3bda092.1755535876.git.legion@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755535876.git.legion@kernel.org>
-References: <cover.1755535876.git.legion@kernel.org>
+	s=k20201202; t=1755537833;
+	bh=m8EDhrRjAyOIaC+be7PBn8v9ntITM47BNpWt19+3H2c=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=NKZJMs3MHEICxiNfyDQFIsSTlsv5yfJJvspnFrR91Mi4g96H9w01WoHGOaMEdkRWT
+	 O8eHRoHanHY4jfp9bpkhO0THl6h7JnffH2aUkl0pASoCOQJWe6+eTlto1lpYx4tVYi
+	 q8KghmiLxaSa8eoP56Ftq9rmmlmINR0QO/5mWhHknnSb+0L69IKHn8v5r5TJmU5g9N
+	 olC6KI+h7CC4FtVepe5/ckFAClKHbZhyX4kGS4jTCKGLg3Hus6oPdG4xNwbpbb9+5y
+	 iC5i8ntf4jHQIDhbITz1wddG5Z0GGgTjTaKDRd0Xuhuf5bKFP1oR8AypwsHFqtKo+T
+	 1kFMLa3FmBFtQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 18 Aug 2025 19:23:48 +0200
+Message-Id: <DC5Q80UUHSUV.360VLIC6DYZ78@kernel.org>
+Subject: Re: [PATCH 1/4] rust: dma: implement DataDirection
+Cc: <akpm@linux-foundation.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>, <acourbot@nvidia.com>,
+ <jgg@ziepe.ca>, <lyude@redhat.com>, <robin.murphy@arm.com>,
+ <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250815171058.299270-1-dakr@kernel.org>
+ <20250815171058.299270-2-dakr@kernel.org> <aKLzrp0m00J6CCYz@google.com>
+ <DC5INEG2DXU5.DM4JIICEQ2PC@kernel.org> <aKMa7YzO-PwEv9AT@google.com>
+ <DC5KK67M752R.N9PX4LUG2F68@kernel.org>
+ <CAH5fLgi6OZaqjnDScDrJ3YjN2a8mJuPiO5MLPUqUWo62WkvvrA@mail.gmail.com>
+In-Reply-To: <CAH5fLgi6OZaqjnDScDrJ3YjN2a8mJuPiO5MLPUqUWo62WkvvrA@mail.gmail.com>
 
-At this point, if a symbol is compiled as part of the kernel,
-information about which module the symbol belongs to is lost.
+On Mon Aug 18, 2025 at 4:00 PM CEST, Alice Ryhl wrote:
+> In general, I think we want some sort of helper function to cast
+> between arbitrary integer types in const-evaluation that panics if the
+> cast is out of bounds. Both here and many other places.
 
-To save this it is possible to add the module name to the alias name.
-It's not very pretty, but it's possible for now.
-
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>
-Cc: rust-for-linux@vger.kernel.org
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
----
- include/linux/module.h   | 14 +++++++++++++-
- rust/kernel/device_id.rs |  8 ++++----
- scripts/mod/file2alias.c | 18 ++++++++++++++----
- 3 files changed, 31 insertions(+), 9 deletions(-)
-
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 3319a5269d286..e31ee29fac6b7 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -244,10 +244,22 @@ struct module_kobject *lookup_or_create_module_kobject(const char *name);
- /* What your module does. */
- #define MODULE_DESCRIPTION(_description) MODULE_INFO(description, _description)
- 
-+/*
-+ * Format: __mod_device_table__kmod_<modname>__<type>__<name>
-+ * Parts of the string `__kmod_` and `__` are used as delimiters when parsing
-+ * a symbol in file2alias.c
-+ */
-+#define __mod_device_table(type, name)	\
-+	__PASTE(__mod_device_table__,	\
-+	__PASTE(__KBUILD_MODNAME,	\
-+	__PASTE(__,			\
-+	__PASTE(type,			\
-+	__PASTE(__, name)))))
-+
- #ifdef MODULE
- /* Creates an alias so file2alias.c can find device table. */
- #define MODULE_DEVICE_TABLE(type, name)					\
--static typeof(name) __mod_device_table__##type##__##name		\
-+static typeof(name) __mod_device_table(type, name)			\
-   __attribute__ ((used, alias(__stringify(name))))
- #else  /* !MODULE */
- #define MODULE_DEVICE_TABLE(type, name)
-diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
-index 70d57814ff79b..62c42da12e9de 100644
---- a/rust/kernel/device_id.rs
-+++ b/rust/kernel/device_id.rs
-@@ -195,10 +195,10 @@ macro_rules! module_device_table {
-     ($table_type: literal, $module_table_name:ident, $table_name:ident) => {
-         #[rustfmt::skip]
-         #[export_name =
--            concat!("__mod_device_table__", $table_type,
--                    "__", module_path!(),
--                    "_", line!(),
--                    "_", stringify!($table_name))
-+            concat!("__mod_device_table__", line!(),
-+                    "__kmod_", module_path!(),
-+                    "__", $table_type,
-+                    "__", stringify!($table_name))
-         ]
-         static $module_table_name: [::core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
-             unsafe { ::core::mem::transmute_copy($table_name.raw_ids()) };
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 00586119a25b7..13021266a18f8 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -1476,8 +1476,8 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
- {
- 	void *symval;
- 	char *zeros = NULL;
--	const char *type, *name;
--	size_t typelen;
-+	const char *type, *name, *modname;
-+	size_t typelen, modnamelen;
- 	static const char *prefix = "__mod_device_table__";
- 
- 	/* We're looking for a section relative symbol */
-@@ -1488,10 +1488,20 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
- 	if (ELF_ST_TYPE(sym->st_info) != STT_OBJECT)
- 		return;
- 
--	/* All our symbols are of form __mod_device_table__<type>__<name>. */
-+	/* All our symbols are of form __mod_device_table__kmod_<modname>__<type>__<name>. */
- 	if (!strstarts(symname, prefix))
- 		return;
--	type = symname + strlen(prefix);
-+
-+	modname = strstr(symname, "__kmod_");
-+	if (!modname)
-+		return;
-+	modname += strlen("__kmod_");
-+
-+	type = strstr(modname, "__");
-+	if (!type)
-+		return;
-+	modnamelen = type - modname;
-+	type += strlen("__");
- 
- 	name = strstr(type, "__");
- 	if (!name)
--- 
-2.50.1
-
+What exactly do you have in mind?
