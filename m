@@ -1,111 +1,165 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE3F322C93;
-	Mon, 18 Aug 2025 16:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4533469EF;
+	Mon, 18 Aug 2025 16:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755533208; cv=none; b=niozqpDCejFzGV7iFhgkshWe1SDqCJtSEot8Ca2vq3FkKE9PVt2uX+7bhJHc2sPiUyulhXGLeMQD5SP0vq4kce5X8vjCFRfNJwS09zBOdSkzYPr8864X26GvlIxeDVY7WjdtJfuXvQmOIthK5RTjbMBx4uR7RFzwtvXt+Rmm/rk=
+	t=1755536295; cv=none; b=q8w0k+InnZ5W5gsD7P82Q1trH0Ilz0MScNBRjBszoxgpEmDQkOMFDjPjlfstLWraqfeKXnrNbOayqQCURcG2HQ7lkqh2vTBbcJZKosiybNP6Ow2hKpwiNtEYQdZO+vMt9YrbLBcw+ijrpSfXtWlRpBP0KaDfqR+pQmcyQ/o2pF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755533208; c=relaxed/simple;
-	bh=8v0DGj5nN7LXQV4s3kH37ZEpxqadMxuWtRA9XKaDv9Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=mKbauO4SyZTHlp4sCByrIhm+FUZV2ttSWKNFYiJ28SnvKii5fEYgetITU+5Svzh2KcBH51T958RPJNhJRNO3bopG8Z5Hv1j6VL5Wdmv0XkQdaHNScSYWDLi8VhQY7DcvNxrTrHFjumjPgPUH/tt1mAIEeQHbLc+QwGiYnlwmsqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLhkO/I5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755536295; c=relaxed/simple;
+	bh=pWuSm8OMULuPDaXWOoarB+IRlnekDjxa7jgyfttfV58=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rxtdM/+NDOiH0BepA6AJ1jG/aoymrzcJF9H/jd4WFsDib3Wpzmhdw1VrWwoPEeSO+csHP0MQScve9WCEOIH7KriBvXYmrzJNOtGeYEVRje2GOx/sXOga341/6SE62S6QK5D+3zTmojDrM4DoBhQrNg31xoiOQ3uX40dleVTL2/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLe5ivNV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLhkO/I5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06318C4CEEB;
-	Mon, 18 Aug 2025 16:06:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLe5ivNV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FBBC4CEEB;
+	Mon, 18 Aug 2025 16:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755533208;
-	bh=8v0DGj5nN7LXQV4s3kH37ZEpxqadMxuWtRA9XKaDv9Y=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=nLhkO/I5LOKz8LcXkJw6s406OXNSXyb2a8ICLRCrn0YxIbTmVUchl9L0VOnJ1hNzm
-	 h+UKxqH0PksQediircWskG1IV4nc3tC4Tiq4BRaP9Tvjg0OeTS0o4M4zg5HcNNp5el
-	 chwhjTzmvI//dfy5Y1A+B41xCDfte+A6e+4ZXH8JzMTLmI4PeWMWms3UvQsSrt+y36
-	 33dFrnFPfHFZiAHxD5NVSVt+sQCfUjJNcLOo1ChgIuHgJdaqVXo2oXSe3VmZKgbVEw
-	 SGqBH9NzwKYyGE/DWsLuRBEqnkmKRvE5bBj4HNMszv9S/0UdGUGbU8TZi/rQQGYQQk
-	 DMdojNV4K+e2w==
+	s=k20201202; t=1755536295;
+	bh=pWuSm8OMULuPDaXWOoarB+IRlnekDjxa7jgyfttfV58=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MLe5ivNV87Y7Sb5KhyYweHoF8xwm+lNFj9MTSmwC/CQKvLgzbFgc77mqcU5l0rlmH
+	 ZnjjXJa/45adVf4Vfpd9re8nLFmrxNj8ymSApNnnW5QqLikFI1QumrzSygT8sCRn3Y
+	 6b/NWS9N3v10VepyCNJtAwrbVcqVvBCaTS5XIW0p5HXCWSpHIjmQi4OdGOYfx03muY
+	 jL1H8tDK99Ojp9mEib0mLPLK6u9MUPUWzV58KAnIpPHvRlQcLh5aiVhwLp5EI8rRY4
+	 mt9MNqQ+D4XnShrx/TANmnhB28gXTljAGkdFR0k6oQnEf4/QV9SZvZTnul+cNEciVE
+	 m3nImo51rg0Vg==
+From: Alexey Gladkov <legion@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	Alexey Gladkov <legion@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v7 6/8] modpost: Add modname to mod_device_table alias
+Date: Mon, 18 Aug 2025 18:55:00 +0200
+Message-ID: <66785b63b47878446a15bcb14a9ef42dc3bda092.1755535876.git.legion@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1755535876.git.legion@kernel.org>
+References: <cover.1755535876.git.legion@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Aug 2025 18:06:42 +0200
-Message-Id: <DC5OKZHPTDWC.L6YD327Z0WJN@kernel.org>
-Subject: Re: [PATCH v2 3/3] rust: pci: provide access to PCI Vendor values
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
-To: "John Hubbard" <jhubbard@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250818013305.1089446-1-jhubbard@nvidia.com>
- <20250818013305.1089446-4-jhubbard@nvidia.com>
-In-Reply-To: <20250818013305.1089446-4-jhubbard@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon Aug 18, 2025 at 3:33 AM CEST, John Hubbard wrote:
-> +            /// Create a `Vendor` from the raw vendor ID value, or `None=
-` if the value doesn't
-> +            /// match any known vendor.
-> +            pub fn from_u32(value: u32) -> Option<Self> {
-> +                match value {
-> +                    $(x if x =3D=3D Self::$variant.0 =3D> Some(Self::$va=
-riant),)+
-> +                    _ =3D> None,
-> +                }
-> +            }
+At this point, if a symbol is compiled as part of the kernel,
+information about which module the symbol belongs to is lost.
 
-Same here, I think this should be `impl TryFrom<u32> for Vendor`.
+To save this it is possible to add the module name to the alias name.
+It's not very pretty, but it's possible for now.
 
-> +
-> +            /// Get the raw 16-bit vendor ID value.
-> +            pub const fn as_u32(self) -> u32 {
-> +                self.0
-> +            }
-> +        }
-> +    };
-> +}
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>
+Cc: rust-for-linux@vger.kernel.org
+Signed-off-by: Alexey Gladkov <legion@kernel.org>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+---
+ include/linux/module.h   | 14 +++++++++++++-
+ rust/kernel/device_id.rs |  8 ++++----
+ scripts/mod/file2alias.c | 18 ++++++++++++++----
+ 3 files changed, 31 insertions(+), 9 deletions(-)
 
->  /// An adapter for the registration of PCI drivers.
->  pub struct Adapter<T: Driver>(T);
-> =20
-> @@ -335,9 +656,9 @@ pub const fn from_class(class: u32, class_mask: u32) =
--> Self {
->      ///
->      /// This is more targeted than [`DeviceId::from_class`]: in addition=
- to matching by Vendor, it
->      /// also matches the PCI Class (up to the entire 24 bits, depending =
-on the mask).
-> -    pub const fn from_class_and_vendor(class: Class, class_mask: u32, ve=
-ndor: u32) -> Self {
-> +    pub const fn from_class_and_vendor(class: Class, class_mask: u32, ve=
-ndor: Vendor) -> Self {
->          Self(bindings::pci_device_id {
-> -            vendor,
-> +            vendor: vendor.as_u32(),
->              device: DeviceId::PCI_ANY_ID,
->              subvendor: DeviceId::PCI_ANY_ID,
->              subdevice: DeviceId::PCI_ANY_ID,
-> @@ -396,7 +717,7 @@ macro_rules! pci_device_table {
->  ///     <MyDriver as pci::Driver>::IdInfo,
->  ///     [
->  ///         (
-> -///             pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, b=
-indings::PCI_ANY_ID as u32),
-> +///             pci::DeviceId::from_id(pci::Vendor::REDHAT.as_u32(), bin=
-dings::PCI_ANY_ID as u32),
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 3319a5269d286..e31ee29fac6b7 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -244,10 +244,22 @@ struct module_kobject *lookup_or_create_module_kobject(const char *name);
+ /* What your module does. */
+ #define MODULE_DESCRIPTION(_description) MODULE_INFO(description, _description)
+ 
++/*
++ * Format: __mod_device_table__kmod_<modname>__<type>__<name>
++ * Parts of the string `__kmod_` and `__` are used as delimiters when parsing
++ * a symbol in file2alias.c
++ */
++#define __mod_device_table(type, name)	\
++	__PASTE(__mod_device_table__,	\
++	__PASTE(__KBUILD_MODNAME,	\
++	__PASTE(__,			\
++	__PASTE(type,			\
++	__PASTE(__, name)))))
++
+ #ifdef MODULE
+ /* Creates an alias so file2alias.c can find device table. */
+ #define MODULE_DEVICE_TABLE(type, name)					\
+-static typeof(name) __mod_device_table__##type##__##name		\
++static typeof(name) __mod_device_table(type, name)			\
+   __attribute__ ((used, alias(__stringify(name))))
+ #else  /* !MODULE */
+ #define MODULE_DEVICE_TABLE(type, name)
+diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
+index 70d57814ff79b..62c42da12e9de 100644
+--- a/rust/kernel/device_id.rs
++++ b/rust/kernel/device_id.rs
+@@ -195,10 +195,10 @@ macro_rules! module_device_table {
+     ($table_type: literal, $module_table_name:ident, $table_name:ident) => {
+         #[rustfmt::skip]
+         #[export_name =
+-            concat!("__mod_device_table__", $table_type,
+-                    "__", module_path!(),
+-                    "_", line!(),
+-                    "_", stringify!($table_name))
++            concat!("__mod_device_table__", line!(),
++                    "__kmod_", module_path!(),
++                    "__", $table_type,
++                    "__", stringify!($table_name))
+         ]
+         static $module_table_name: [::core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
+             unsafe { ::core::mem::transmute_copy($table_name.raw_ids()) };
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 00586119a25b7..13021266a18f8 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -1476,8 +1476,8 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
+ {
+ 	void *symval;
+ 	char *zeros = NULL;
+-	const char *type, *name;
+-	size_t typelen;
++	const char *type, *name, *modname;
++	size_t typelen, modnamelen;
+ 	static const char *prefix = "__mod_device_table__";
+ 
+ 	/* We're looking for a section relative symbol */
+@@ -1488,10 +1488,20 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
+ 	if (ELF_ST_TYPE(sym->st_info) != STT_OBJECT)
+ 		return;
+ 
+-	/* All our symbols are of form __mod_device_table__<type>__<name>. */
++	/* All our symbols are of form __mod_device_table__kmod_<modname>__<type>__<name>. */
+ 	if (!strstarts(symname, prefix))
+ 		return;
+-	type = symname + strlen(prefix);
++
++	modname = strstr(symname, "__kmod_");
++	if (!modname)
++		return;
++	modname += strlen("__kmod_");
++
++	type = strstr(modname, "__");
++	if (!type)
++		return;
++	modnamelen = type - modname;
++	type += strlen("__");
+ 
+ 	name = strstr(type, "__");
+ 	if (!name)
+-- 
+2.50.1
 
-We should change DeviceId::from_id() to consume a pci::Vendor value directl=
-y.
