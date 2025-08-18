@@ -1,157 +1,343 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA54A310640;
-	Mon, 18 Aug 2025 12:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8971E3074AE
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 13:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521860; cv=none; b=KCCkjDG7wGWH97s5/qagkGitEeV03KVOxMYlBcxJNd8izeWXtaZVa/2AfFeWjTlRiCJJdKyAaEUr1MSnGDAnUfmHUJUWANQMYznZT0EoRdPCPlvUSXqYzD/pISFVh+qOhTn3UkaRaYdLTl5nAdlL1JsgUlBdGBMi8Kr7mJl6Yno=
+	t=1755522256; cv=none; b=M4LZg7Z5nrPMagalUS51/ixoDfnFG39YvzREjuE1AnZqMfUO0g60qrrsTUzSXDz4fQz8H0pF9uAD6Q4oavgyFOYppC8n6M2/rTIAv3D7QSdRpTIWykItsj5oq8vosBnPAnn/q+1EogYTOKX00tW23TgaGYl1Z/NUJISaMSm6lto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521860; c=relaxed/simple;
-	bh=Rt8UoMe70JZeOm9tUAwEBVSkbYeeEkXxwDSun2NsHEM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=VD7tjYOrWD2C18rtUbymJjLY1TLKcR75q3nMVNjqx4wJ5WBCLZ2FiInWkU1+QGJSAW/HHFOK4XPc4FzpYppcQaA3hiNo0v7YeJo3GNTv7CyNh7L1EYyzWYxOE99RogLinPAGHohZZNVKARzoehFcO6SO0MtZXETkur0tzjJFeys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hul4eFcA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755522256; c=relaxed/simple;
+	bh=ovtw76AST8X0yEqX9EV8DDMSo4gT4mWdbUggDhpSdYM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jUtVumuFP7g8v5nDSrVnLn1qNTMsH8dhp6IMRM6TRR1ov53/HxFvqpO7kOmPaPQ6B/t/VUqRku0nTY81LrAEGVyWL1f8NyX64r2rybRUynvp/wJRe4mZbYl/tgawNqJb9DhCPpUPta2tP/AfaqAzU+OHgpE2ObwJeyb9H7NEYTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=C2R5O80o; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hul4eFcA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDE6C4CEEB;
-	Mon, 18 Aug 2025 12:57:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755521859;
-	bh=Rt8UoMe70JZeOm9tUAwEBVSkbYeeEkXxwDSun2NsHEM=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=hul4eFcAS0exbrLQ38PAHDxGynaey7H1D3DzNRd/bF1ABnDm26auaweJ5Pz51Puon
-	 wxnj7CFNblwDxdY/NZDtdTdlsZtBXy7hk9JVQ/GjxVzd26aMVvdtkZfMTDyeCoMiLa
-	 e4aNDnMsHeqPKuSMZIW9Qa0naynM0qXBIHvLgyYkclLbjtKimSYoUkpTQ410PB4p+Y
-	 waJvI+QBcy/HOTy7nq3vk8EEOHTgMgtfy7vRsyC1HMDO2H+EigVJUA7a53nceBXBLA
-	 ZZD1n9Kw7QxDeKGtbCr57fo1/fGEFR3Bn6MQpihqsiAccH4D6asxPc5ufgizCwvxUH
-	 +65RmwLAYs7Sw==
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="C2R5O80o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1755522250; x=1755781450;
+	bh=DZvjTHaI8k6zlVcmqY/Yl0UN/uJQddBW9hhcPGqy7lM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=C2R5O80oCDt8PRIygEWYCtwRxRXhs7JFy3JxROn8ajpuc394Abb+NMIZi4EIL4LPm
+	 9X2LfztlQkt58jXi/HoPonegblL5W7qOOJh6ffrx+7AVVHUBE598eFrdjiXcMj79g7
+	 aBQ7qye3x7vGAmmEROfRPT0H+Lqh1NCFoOW1ym+34KVqome82NsLAZPVA2DHvDiBL0
+	 RGDg9+hfUrwjbLVOvvQ2mkeLVkjp0GSxSxE1Ufa6sIui6JxDPFhYsqMst0siPoX1oL
+	 Y1aJmJMtamSvLoPOFeo7ZGUxEZKy0xkineJ/sDsgXn1PfM2liLePyqEz8dfTXCXDus
+	 xT5iRgxsbb7Fg==
+Date: Mon, 18 Aug 2025 13:04:02 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+Message-ID: <aKMkvHAfDozzDjkB@mango>
+In-Reply-To: <87o6scdchf.fsf@t14s.mail-host-address-is-not-set>
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <87o6scdchf.fsf@t14s.mail-host-address-is-not-set>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: be97ba88dc5725431ec7c2111e29f76722a0897b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Aug 2025 14:57:34 +0200
-Message-Id: <DC5KK67M752R.N9PX4LUG2F68@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/4] rust: dma: implement DataDirection
-Cc: <akpm@linux-foundation.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>, <acourbot@nvidia.com>,
- <jgg@ziepe.ca>, <lyude@redhat.com>, <robin.murphy@arm.com>,
- <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-References: <20250815171058.299270-1-dakr@kernel.org>
- <20250815171058.299270-2-dakr@kernel.org> <aKLzrp0m00J6CCYz@google.com>
- <DC5INEG2DXU5.DM4JIICEQ2PC@kernel.org> <aKMa7YzO-PwEv9AT@google.com>
-In-Reply-To: <aKMa7YzO-PwEv9AT@google.com>
 
-On Mon Aug 18, 2025 at 2:22 PM CEST, Alice Ryhl wrote:
-> On Mon, Aug 18, 2025 at 01:27:44PM +0200, Danilo Krummrich wrote:
->> On Mon Aug 18, 2025 at 11:34 AM CEST, Alice Ryhl wrote:
->> > On Fri, Aug 15, 2025 at 07:10:02PM +0200, Danilo Krummrich wrote:
->> >> Add the `DataDirection` struct, a newtype wrapper around the C
->> >> `enum dma_data_direction`.
->> >>=20
->> >> This provides a type-safe Rust interface for specifying the direction=
- of
->> >> DMA transfers.
->> >>=20
->> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->> >
->> >> +/// DMA data direction.
->> >> +///
->> >> +/// Corresponds to the C [`enum dma_data_direction`].
->> >> +///
->> >> +/// [`enum dma_data_direction`]: srctree/include/linux/dma-direction=
-.h
->> >> +#[derive(Copy, Clone, PartialEq, Eq)]
->> >> +pub struct DataDirection(bindings::dma_data_direction);
->> >
->> > Perhaps this should be a real Rust enum so that you can do an exhausti=
-ve
->> > match?
->>=20
->> 	/// DMA data direction.
->> 	///
->> 	/// Corresponds to the C [`enum dma_data_direction`].
->> 	///
->> 	/// [`enum dma_data_direction`]: srctree/include/linux/dma-direction.h
->> 	#[derive(Copy, Clone, PartialEq, Eq, Debug)]
->> 	#[repr(i32)]
->>=20
->> Does bindgen ever pick another type than i32 for C enums? If so, it'd be=
- a
->> downside that we'd have to mess with the type either in the `repr` or by=
- casting
->> the variants.
->>=20
->> 	pub enum DataDirection {
->> 	    /// The DMA mapping is for bidirectional data transfer.
->> 	    ///
->> 	    /// This is used when the buffer can be both read from and written =
-to by the device.
->> 	    /// The cache for the corresponding memory region is both flushed a=
-nd invalidated.
->> 	    Bidirectional =3D bindings::dma_data_direction_DMA_BIDIRECTIONAL,
->> =09
->> 	    /// The DMA mapping is for data transfer from memory to the device =
-(write).
->> 	    ///
->> 	    /// The CPU has prepared data in the buffer, and the device will re=
-ad it.
->> 	    /// The cache for the corresponding memory region is flushed.
->> 	    ToDevice =3D bindings::dma_data_direction_DMA_TO_DEVICE,
->> =09
->> 	    /// The DMA mapping is for data transfer from the device to memory =
-(read).
->> 	    ///
->> 	    /// The device will write data into the buffer for the CPU to read.
->> 	    /// The cache for the corresponding memory region is invalidated be=
-fore CPU access.
->> 	    FromDevice =3D bindings::dma_data_direction_DMA_FROM_DEVICE,
->> =09
->> 	    /// The DMA mapping is not for data transfer.
->> 	    ///
->> 	    /// This is primarily for debugging purposes. With this direction, =
-the DMA mapping API
->> 	    /// will not perform any cache coherency operations.
->> 	    None =3D bindings::dma_data_direction_DMA_NONE,
->> 	}
->> =09
->> 	impl From<DataDirection> for bindings::dma_data_direction {
->> 	    /// Returns the raw representation of [`enum dma_data_direction`].
->> 	    fn from(direction: DataDirection) -> Self {
->> 	        direction as Self
->> 	    }
->> 	}
+On 250818 1446, Andreas Hindborg wrote:
+> "Oliver Mangold" <oliver.mangold@pm.me> writes:
+>=20
+> > From: Asahi Lina <lina+kernel@asahilina.net>
+> >
+> > By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+> > (typically C FFI) type that *may* be owned by Rust, but need not be. Un=
+like
+> > `AlwaysRefCounted`, this mechanism expects the reference to be unique
+> > within Rust, and does not allow cloning.
+> >
+> > Conceptually, this is similar to a `KBox<T>`, except that it delegates
+> > resource management to the `T` instead of using a generic allocator.
+> >
+> > Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@=
+asahilina.net/
+> > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > [ om:
+> >   - split code into separate file and `pub use` it from types.rs
+> >   - make from_raw() and into_raw() public
+> >   - fixes to documentation and commit message
+> > ]
+> > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> > ---
+> >  rust/kernel/types.rs         |   7 +++
+> >  rust/kernel/types/ownable.rs | 134 +++++++++++++++++++++++++++++++++++=
+++++++++
+> >  2 files changed, 141 insertions(+)
+> >
+> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> > index 22985b6f69820d6df8ff3aae0bf815fad36a9d92..c12ff4d2a3f2d79b760c34c=
+0b84a51b507d0cfb1 100644
+> > --- a/rust/kernel/types.rs
+> > +++ b/rust/kernel/types.rs
+> > @@ -11,6 +11,9 @@
+> >  };
+> >  use pin_init::{PinInit, Zeroable};
+> >
+> > +pub mod ownable;
+> > +pub use ownable::{Ownable, OwnableMut, Owned};
+> > +
+> >  /// Used to transfer ownership to and from foreign (non-Rust) language=
+s.
+> >  ///
+> >  /// Ownership is transferred from Rust to a foreign language by callin=
+g [`Self::into_foreign`] and
+> > @@ -425,6 +428,10 @@ pub const fn raw_get(this: *const Self) -> *mut T =
+{
+> >  /// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) =
+to create reference-counted
+> >  /// instances of a type.
+> >  ///
+> > +/// Note: Implementing this trait allows types to be wrapped in an [`A=
+Ref<Self>`]. It requires an
+> > +/// internal reference count and provides only shared references. If u=
+nique references are required
+> > +/// [`Ownable`] should be implemented which allows types to be wrapped=
+ in an [`Owned<Self>`].
+> > +///
+> >  /// # Safety
+> >  ///
+> >  /// Implementers must ensure that increments to the reference count ke=
+ep the object alive in memory
+> > diff --git a/rust/kernel/types/ownable.rs b/rust/kernel/types/ownable.r=
+s
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..f4065a0d627a62d3ecb15ed=
+abf306e9b812556e1
+> > --- /dev/null
+> > +++ b/rust/kernel/types/ownable.rs
+> > @@ -0,0 +1,134 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Owned reference types.
+> > +
+> > +use core::{
+> > +    marker::PhantomData,
+> > +    mem::ManuallyDrop,
+> > +    ops::{Deref, DerefMut},
+> > +    ptr::NonNull,
+> > +};
+> > +
+> > +/// Types that may be owned by Rust code or borrowed, but have a lifet=
+ime managed by C code.
+> > +///
+> > +/// It allows such types to define their own custom destructor functio=
+n to be called when a
+> > +/// Rust-owned reference is dropped.
+> > +///
+> > +/// This is usually implemented by wrappers to existing structures on =
+the C side of the code.
+> > +///
+> > +/// Note: Implementing this trait allows types to be wrapped in an [`O=
+wned<Self>`]. This does not
+> > +/// provide reference counting but represents a unique, owned referenc=
+e. If reference counting is
+> > +/// required [`AlwaysRefCounted`](crate::types::AlwaysRefCounted) shou=
+ld be implemented which allows
+> > +/// types to be wrapped in an [`ARef<Self>`](crate::types::ARef).
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Implementers must ensure that:
+> > +/// - The [`release()`](Ownable::release) method leaves the underlying=
+ object in a state which the
+> > +///   kernel expects after ownership has been relinquished (i.e. no da=
+ngling references in the
+> > +///   kernel is case it frees the object, etc.).
+> > +pub unsafe trait Ownable {
+> > +    /// Releases the object (frees it or returns it to foreign ownersh=
+ip).
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// Callers must ensure that:
+> > +    /// - `this` points to a valid `Self`.
+> > +    /// - The object is no longer referenced after this call.
+> > +    unsafe fn release(this: NonNull<Self>);
+> > +}
+> > +
+> > +/// Type where [`Owned<Self>`] derefs to `&mut Self`.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Implementers must ensure that access to a `&mut T` is safe, implyi=
+ng that:
+> > +/// - It is safe to call [`core::mem::swap`] on the [`Ownable`]. This =
+excludes pinned types
+> > +///   (i.e. most kernel types).
+> > +/// - The kernel will never access the underlying object (excluding in=
+ternal mutability that follows
+> > +///   the usual rules) while Rust owns it.
+> > +pub unsafe trait OwnableMut: Ownable {}
+> > +
+> > +/// An owned reference to an ownable kernel object.
+> > +///
+> > +/// The object is automatically freed or released when an instance of =
+[`Owned`] is
+> > +/// dropped.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The pointer stored in `ptr` can be considered owned by the [`Owned=
+`] instance.
+> > +pub struct Owned<T: Ownable> {
+> > +    ptr: NonNull<T>,
+> > +    _p: PhantomData<T>,
+> > +}
+> > +
+> > +// SAFETY: It is safe to send `Owned<T>` to another thread when the un=
+derlying `T` is `Send` because
+> > +// it effectively means sending a `&mut T` (which is safe because `T` =
+is `Send`).
+> > +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
+> > +
+> > +// SAFETY: It is safe to send `&Owned<T>` to another thread when the u=
+nderlying `T` is `Sync`
+> > +// because it effectively means sharing `&T` (which is safe because `T=
+` is `Sync`).
+> > +unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
+> > +
+> > +impl<T: Ownable> Owned<T> {
+> > +    /// Creates a new instance of [`Owned`].
+> > +    ///
+> > +    /// It takes over ownership of the underlying object.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// Callers must ensure that:
+> > +    /// - Ownership of the underlying object can be transferred to the=
+ `Owned<T>` (i.e. operations
+> > +    ///   which require ownership will be safe).
+> > +    /// - No other Rust references to the underlying object exist. Thi=
+s implies that the underlying
+> > +    ///   object is not accessed through `ptr` anymore after the funct=
+ion call (at least until the
+> > +    ///   the `Owned<T>` is dropped).
+> > +    /// - The C code follows the usual shared reference requirements. =
+That is, the kernel will never
+> > +    ///   mutate or free the underlying object (excluding interior mut=
+ability that follows the usual
+> > +    ///   rules) while Rust owns it.
+> > +    /// - In case `T` implements [`OwnableMut`] the previous requireme=
+nt is extended from shared to
+> > +    ///   mutable reference requirements. That is, the kernel will not=
+ mutate or free the underlying
+> > +    ///   object and is okay with it being modified by Rust code.
+> > +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+> > +        // INVARIANT: The safety requirements guarantee that the new i=
+nstance now owns the
+> > +        // reference.
+> > +        Self {
+> > +            ptr,
+> > +            _p: PhantomData,
+> > +        }
+> > +    }
+> > +
+> > +    /// Consumes the [`Owned`], returning a raw pointer.
+> > +    ///
+> > +    /// This function does not actually relinquish ownership of the ob=
+ject. After calling this
+> > +    /// function, the caller is responsible for ownership previously m=
+anaged
+> > +    /// by the [`Owned`].
+> > +    pub fn into_raw(me: Self) -> NonNull<T> {
+> > +        ManuallyDrop::new(me).ptr
+> > +    }
+> > +}
+> > +
+> > +impl<T: Ownable> Deref for Owned<T> {
+> > +    type Target =3D T;
+> > +
+> > +    fn deref(&self) -> &Self::Target {
+> > +        // SAFETY: The type invariants guarantee that the object is va=
+lid.
+> > +        unsafe { self.ptr.as_ref() }
+> > +    }
+> > +}
+> > +
+> > +impl<T: OwnableMut> DerefMut for Owned<T> {
+> > +    fn deref_mut(&mut self) -> &mut Self::Target {
+> > +        // SAFETY: The type invariants guarantee that the object is va=
+lid, and that we can safely
+> > +        // return a mutable reference to it.
+> > +        unsafe { self.ptr.as_mut() }
+> > +    }
+> > +}
+>=20
+> I think someone mentioned this before, but handing out mutable
+> references can be a problem if `T: !Unpin`. For instance, we don't want
+> to hand out `&mut Page` in case of `Owned<Page>`.
 >
-> My suggestion is to cast on the Rust-side.
->
-> #[repr(whateveryouwant)]
 
-What's your suggestion for whateveryouwant?
+That was the reason, why `OwnableMut` was introduced in the first place.
+It's clear, I guess, that as-is it cannot be implemented on many classes.
 
-And I mean this in general, not only for this case of dma::DataDirection. I=
-f we
-pick u32 than things break if a negative enum variant is added on the C sid=
-e. If
-we pick i32, it can happen that we overflow.
+> Could we do something like this:
+>=20
+>   diff --git a/rust/kernel/types/ownable.rs b/rust/kernel/types/ownable.r=
+s
+>   index 29729dc10cb4..52d21e41c26b 100644
+>   --- a/rust/kernel/types/ownable.rs
+>   +++ b/rust/kernel/types/ownable.rs
+>   @@ -3,6 +3,7 @@
+>   //! Owned reference types.
+>=20
+>   use crate::{
+>   +    prelude::*,
+>       sync::aref::{ARef, RefCounted},
+>       types::ForeignOwnable,
+>   };
+>   @@ -112,6 +113,17 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+>       pub fn into_raw(me: Self) -> NonNull<T> {
+>           ManuallyDrop::new(me).ptr
+>       }
+>   +
+>   +    /// Get a pinned mutable reference to the data owned by this `Owne=
+d<T>`.
+>   +    pub fn get_pin_mut(&mut self) -> Pin<&mut T> {
+>   +        // SAFETY: The type invariants guarantee that the object is va=
+lid, and that we can safely
+>   +        // return a mutable reference to it.
+>   +        let unpinned =3D unsafe { self.ptr.as_mut() };
+>   +
+>   +        // SAFETY: We never hand out unpinned mutable references to th=
+e data in
+>   +        // `Self`, unless the contained type is `Unpin`.
+>   +        unsafe { Pin::new_unchecked(unpinned) }
+>   +    }
+>   }
+>=20
+>   impl<T: Ownable> Deref for Owned<T> {
+>   @@ -123,7 +135,7 @@ fn deref(&self) -> &Self::Target {
+>       }
+>   }
+>=20
+>   -impl<T: OwnableMut> DerefMut for Owned<T> {
+>   +impl<T: OwnableMut + Unpin> DerefMut for Owned<T> {
+>       fn deref_mut(&mut self) -> &mut Self::Target {
+>           // SAFETY: The type invariants guarantee that the object is val=
+id, and that we can safely
+>           // return a mutable reference to it.
+>=20
 
-> enum DataDirection {
->     Bidirectional =3D bindings::dma_data_direction_DMA_BIDIRECTIONAL as _=
-,
+Good question, I have been thinking about it, too. But it might
+be, that it isn't needed at all. As I understand, usually Rust wrappers
+are around non-movable C structs. Do we actually have a useful application
+for OwnableMut?
 
-We have a clippy lint that warns about `as _` casts, but I guess you meant
-`as whateveryouwant`. However, if bindgen picks whateveryouwant too, we als=
-o get
-a warning.
+Best,
 
-Ultimately, we'd need to suppress a warning.
+Oliver
 
-> }
