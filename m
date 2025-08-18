@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8291CAA85;
-	Mon, 18 Aug 2025 22:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A2E27A903;
+	Mon, 18 Aug 2025 22:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755554450; cv=none; b=FYBcwvEHrMwczxYW9rslOo+GDkBq2hc+85vZkAtM/OgpplmIO4Jt3ZQv+B68yYDJucKWOePQNtWOmOi3nN4QKK62AhUQU36NvUWH1FIRgn1/eGJwv1RhI6dzLh75QBcY2gY5GaUDVMAJMTDhTApkhIuClQ/LGkYL7oMU3+CqFxA=
+	t=1755554583; cv=none; b=GCRLAYkjly4KYslHZhWZK+V5o9K09bRZV4eB8l/CC4R9ugv/wE5COaLSyk1+7D8u1S8Zc9ankqlNRWEL7613TDdMUH5eUTGb5NDfwRqPtiePrcGuNCVlQacnfuqqCWBCfoAJZ54gHngyT8AGSEvvnThsXJOZeGGWYPTHz6HTvJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755554450; c=relaxed/simple;
-	bh=7xdRSu3yuYWbOst77dbEL+lRIYNYXotOyq5T3LRic/Q=;
+	s=arc-20240116; t=1755554583; c=relaxed/simple;
+	bh=y8ufLCIEHyBv54oAjiWlJZ7N3FAnkt/nbPctQS0m0iE=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=HDGioSeSfzhfPAIgLMczRUJIETngEh3lLKZ5rShA7w1CF7tGot8Y5cusO6qZcEhqv6CBil+Zv/28gD/zz4jb6VUX0dwHJurCC4n1vYCPXd4eglA+6XrIFE9WEFBMc5oh0fM2WTEZOv9NtxWjIhw4SAsQNU+ZLlT12ZDR8bqeT00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIsZmG9f; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=KpAQTMW0KH7Ni9ywxJRe+05W2zesDgI3BHImYH5oVYe0dUy2rA0peW+eLGfotZ9H/0MiICv08WfXBT9RjlHrYt09ZJffAhy5R9swYwgurXNee/GBUVsWUDfVcR8737HQa4KB06ED05Cx/aZDR3HQmFNPLV44+huRz/USqdDMyw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGcthFca; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIsZmG9f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA89CC4CEEB;
-	Mon, 18 Aug 2025 22:00:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGcthFca"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E68C4CEEB;
+	Mon, 18 Aug 2025 22:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755554450;
-	bh=7xdRSu3yuYWbOst77dbEL+lRIYNYXotOyq5T3LRic/Q=;
+	s=k20201202; t=1755554582;
+	bh=y8ufLCIEHyBv54oAjiWlJZ7N3FAnkt/nbPctQS0m0iE=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=aIsZmG9fAN2JECx9Ca0EZHLsviLPjxkHaChQMXolg3KUkQqdsDVE9iNe9iCco1Hy9
-	 44DKtbIAMM1hOQHRj1ZTWEb8iOX299ovtv3gzEtR2PFAgiNmIZB5RF6J3OLMr+BP1o
-	 68f37s13kj5dK1V2eNfAQxP26+90sW09OXWqpGDvtAnJ9Fn9TwGWkaqgDUVKOAXbGm
-	 z7DKW5lbVcol572FlPbCeQd8bXq03bXRfsj8HC6zZ6hKiiemqg7iBI2A5kpDYFbjiw
-	 Scv2Fgda/xRajRIe5XQxs+i3GI4qV1qEbNiPUh1ZdFFDZ4lLrozLqW7u7WkVJdXoY5
-	 Pj5gtZi5SgS+A==
+	b=vGcthFcanSkzBVs4NADi3ciBNIFn+QNsHQMXfZ0Sc2yi+Mnw6x/U9ZsBb7RBeCaXa
+	 RZZh8ccdUspHiNyQIcrZ4y6ZOWrstyweK7Byqg3vJ8jnH1JACQEXJVXuMRTsNt0ZfJ
+	 QAoOrgsSGYo2p2Ny9WPzV+r4hF236XQ4Hz1VUMBvYpO+eX1trWmhBytyrNXj5J4rHd
+	 zO8gFRuVjuYX6oaV9BvnlnpIuE46mLmSDLjHjIiIzP4WuwbvKmO4p2kjIzf1Xj4M8L
+	 VJxQoLf4JumhBK9fyqgPiNevljqwxkbelbLe5ZcBgtYu+HEAfu7hcA2dg7QV1pXMRs
+	 SgEc20a+ytjMw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,28 +34,29 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Aug 2025 00:00:45 +0200
-Message-Id: <DC5W42NRS92U.3DYP6CWWHWJSE@kernel.org>
+Date: Tue, 19 Aug 2025 00:02:58 +0200
+Message-Id: <DC5W5RHB4YJ7.3IB4SLUKYP5FP@kernel.org>
 Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
  "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: cred: update AlwaysRefCounted import to
- sync::aref
+ "Christian Brauner" <brauner@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: task: update ARef and AlwaysRefCounted imports
+ from sync::aref
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Shankari Anand" <shankari.ak0208@gmail.com>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250816114409.10107-1-shankari.ak0208@gmail.com>
-In-Reply-To: <20250816114409.10107-1-shankari.ak0208@gmail.com>
+References: <20250818132551.133410-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250818132551.133410-1-shankari.ak0208@gmail.com>
 
-On Sat Aug 16, 2025 at 1:44 PM CEST, Shankari Anand wrote:
-> Update the import of `AlwaysRefCounted` in `cred.rs` to use `sync::aref`
-> instead of `types`.
+On Mon Aug 18, 2025 at 3:25 PM CEST, Shankari Anand wrote:
+> Update call sites in `task.rs` to import `ARef` and
+> `AlwaysRefCounted` from `sync::aref` instead of `types`.
 >
-> This is part of the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to the `sync` module for better modularity.
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
 >
 > Suggested-by: Benno Lossin <lossin@kernel.org>
 > Link: https://github.com/Rust-for-Linux/linux/issues/1173
@@ -74,8 +75,8 @@ nce.
 > Gradually the re-export from types.rs will be eliminated in the
 > future cycle.
 > ---
->  rust/kernel/cred.rs | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
+>  rust/kernel/task.rs | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 
 Reviewed-by: Benno Lossin <lossin@kernel.org>
 
