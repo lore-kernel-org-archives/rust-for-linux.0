@@ -1,146 +1,288 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2040.outbound.protection.outlook.com [40.107.223.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EEF149E17
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 12:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755519729; cv=none; b=tkxbo5UwnIooTf+4cxofU66BuEVf3em/dD3TV8ceSyxeQYk/hcyqAv5woxG3uMvEHqz7Mcp1lOEeTv91xtVy6m4iHv8Q6iFESyPk/1LFZEjoppYwG7vme1bpTNJFHd2NFR6wj6IFSViJuDhdpFI0tPZL/4SBARPO1dldC5W8EsA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755519729; c=relaxed/simple;
-	bh=cqTl4aplCZAhfvMTAYxQgWLX24+AY2DS3jkPSxYCh0w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CvNp7l0hceUpBocdbCDsW0glFxxuI1klgRGp6WFCnaUPC1xrEn+oTJwkXGkvZSPWIG30tc7ji1OCXvemgxFphY7BUSWP7mBzh/p1Lx0U5l6i64Cfa2Qkt8vrZwKcKxmBygaU2VGXq6ztVMIspyXEwvJW25n44Z2TWMP8E4U/JS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PFzotM/c; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C965232039A;
+	Mon, 18 Aug 2025 12:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755519792; cv=fail; b=TInq8/lNxRyaOaXZvu3OBN4xnAR7ulf9DN3ATN3mm8lVRhYuN0BDYVc6lQCLff6QxY5pimDzWA7h3Vj/e0JH5HV/KmqXUbcfP/tkmk4rdNyMbCrFguE/yQm3TkHMJmmahY65V5J8VH4J3MQdaLgEDiTLZaCPac0uJLZffQp0RuI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755519792; c=relaxed/simple;
+	bh=ndRH8R+b/pS6IrW78qh2MenMS6dT7JFNSIwFcY60mQg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=lgs920eT/7L9JKPYhM6bhUWFzoGFcDCtPf3xECT5mDoo1VXQlLEr/vfQM8CsnA5YUkSeLiHuh2psTCiZGLuV6iL4A5KpPAuh3+Qan+bNroej3p/1+REg/ZmeqC8nVPN3R5Zn0ko9HSCRYHKOEsNgostCy1r14ARIHyI7MPzuRkU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XDiIKcA2; arc=fail smtp.client-ip=40.107.223.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PFzotM/c"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45a1b0d0feaso25072395e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 05:22:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755519726; x=1756124526; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7KPyv2P753aHaPOHsRGn7JU6dQ9BmzZp68I4rfEsvYs=;
-        b=PFzotM/cx0eTtWn4fXo0ATgX2g2Lzzb+V1OCQC0+d4iUAwxy8wvBEzxcvR9aFt9k7Z
-         VCQBEpg0RQFrH3bEfP358KSUGRpjNMyAjUtrbbMd1RqTJmGzVPCf/4+O4KntAwvhHLpV
-         jZUemWyw8QV0c5n9Zqhd/jwTt4fJlzFbBdSuBlI7kGPhIAtv19W3s1/IPw3f+A3h+B9k
-         Ua+IzhaN6ytIfqcDOl3JKtvlVBOZJmO1xSqRwXYveiI0PBwDPHXUT/ZxxHaEuCPwEdnC
-         mbUIPCnt+wVJtjSfuATZdyS+5Kna1ZdZmotaGe275tyt/qowFNS0A6sCAz4Hzaqo9yCR
-         0fUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755519726; x=1756124526;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7KPyv2P753aHaPOHsRGn7JU6dQ9BmzZp68I4rfEsvYs=;
-        b=R+9pJkeW2UzTySeHI+no/mEKHambzLYzyrOisQJm0kEV/0XszXw0cCVNZOG3sfanE5
-         a6KXGGyPhkFs/k+b6fijiqRhSJ+RsMOHm+1Y7QF3Q13vguZnQbgYH598ErnRftdBBDnq
-         SupnaCNS/AMLAji9fTCaKLDT3lCrccWl0hPcq9uetbVSBBmTKH/KoY+Y6oWkWNQ2pa+L
-         HTBbZ16DXqioLYyaYt4ts7dpqOHsvBU9O6Ez/ojds0sZkmp42GxVDclTAjnGx7MgEAZg
-         XRJoGGK4lNAXBrJEP3dTz72ju95Vas05e0pX/xwpraCJJychBsrVdOjOUlw5+fdmLVYI
-         FK0g==
-X-Forwarded-Encrypted: i=1; AJvYcCWCN6Zcz5ixHqrRsxspYmi7kvhuTr/mmU0C5hE/6otwlkAtA7pME5OAcGA1a6wOHsujRHIkqUebw48uz2i3jQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKUySZf6NF7kujO74hZe1NC5ZSxDVviJrLF+Xe+73Fg+w//D4X
-	QBZ91k0bzL9C/N7T5HFMXqH3A0oxG9c+pFMuvsqAVN87cObt/VJPuP2XZKIVJvjQiBQJ+/CPSFt
-	MufkFeU0PM/6a+ZRj/A==
-X-Google-Smtp-Source: AGHT+IG4FM5397nDPhVjvIlRnJqZUgtPPoauT5mGaElZpqnYjrLK7NJ+UmVfyO2OrX8B9zOJOjZZf21CiPTRiww=
-X-Received: from wmqb7.prod.google.com ([2002:a05:600c:4e07:b0:458:ba61:fc2e])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:354a:b0:458:bd2a:496f with SMTP id 5b1f17b1804b1-45a21844ba9mr9931235e9.21.1755519725846;
- Mon, 18 Aug 2025 05:22:05 -0700 (PDT)
-Date: Mon, 18 Aug 2025 12:22:05 +0000
-In-Reply-To: <DC5INEG2DXU5.DM4JIICEQ2PC@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XDiIKcA2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Lq1rWsUae8qRjidgSwh0vbK/Y7ZAw7azp2RrT2qKEpOinkqdPDIJteisKb1EgyvPbe1IDVl4uVsX7IeTvrFoFgF0fDQMoHFITRpyLNCTiNfyY5i5JoAZuaW1UvBZGoHI94jtG/qK1NXiVbldoIxOayk9dAITjje5q+MENsoHnaN4TBXcrxvvaAZfZxqsQq8d/SB0yHhqOVqWmUnV3NQWAP9LVkpm47saQrg40o87yO+2GIdnYTCUAlcNAYWqMRVysmY3LHfcKvz4jGPdmjVZq/37tlXRI5jf0+GCQSKAGqi8c53jPpI0jt6kdI+8cBw4jk3AWSyBi4CL4U3eEtektw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2V0cfEFVUxxUetCHuKsOovxC2r9sVdhNcTkS+/aIScs=;
+ b=hW2walgGNyFsWh9ODTF05b4zyKsQZoBxZJFbF+qI0qGTQAn0EHyl4mU9Moqw1O4LhUTdVU9mIWmrE9cjaTgAwLKCHHnd0z7DhgmzkBYSic9bAWVAlqDVYlBZd1Ed+m8YDrIyopGWw5Y4/jk/MocgDkGh3w7K2hRFlBGv6BbXOUyVH4mnoXNmgAQxcTYSE5EKhsRXtpqXNRS/0eV4S/M6EAVDy5Rly5Hu78ksT3k7jnDUDZo7yWbR+2gOjmC2bKYLAr2W+J8McNWZage6qvphkf6D1XZ34y5ZKDI78zqfaXDaDUrRWRnSxpkfROz2/POUdx2QivBI5eQTdvUAsd20Ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2V0cfEFVUxxUetCHuKsOovxC2r9sVdhNcTkS+/aIScs=;
+ b=XDiIKcA2qcyPjSybbV7CtaM3glUBtuKr5hiCp3skBM8RWLFabazRFjb7IDLzug/AeQUiK50t6jodLpU3QqAJINUGMINYD4q/E/5E6eGLV/esGQgXi6K01SWM57C31ptHB6y9qmB4X2D8Qq9tz5zI8P2pwSfCw0x/SJupwCnTQOOwrFuzFt6nDuIl9odkpl77fcXNNBXh2fK9tFIeXrPEpqGc9jYNX1gfsPnP9xyj50piOJFpqZ4yFTte3p68oCiG0NuyNHB2EYM8zwP66sFeWMpeLucBoRZCb/Tbh+h9fAsOyIlI56MTU+W2fBxOnOjQij49hqrjkATZf23put60XQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by CH3PR12MB8484.namprd12.prod.outlook.com (2603:10b6:610:158::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Mon, 18 Aug
+ 2025 12:23:05 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9031.023; Mon, 18 Aug 2025
+ 12:23:05 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 18 Aug 2025 21:23:01 +0900
+Message-Id: <DC5JTQ7VHA65.2SNDMXYIKB9GO@nvidia.com>
+Cc: "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <nouveau@lists.freedesktop.org>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] rust: pci: provide access to PCI Class,
+ subclass, implementation values
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250818013305.1089446-1-jhubbard@nvidia.com>
+ <20250818013305.1089446-2-jhubbard@nvidia.com>
+In-Reply-To: <20250818013305.1089446-2-jhubbard@nvidia.com>
+X-ClientProxiedBy: TYAPR01CA0020.jpnprd01.prod.outlook.com (2603:1096:404::32)
+ To CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250815171058.299270-1-dakr@kernel.org> <20250815171058.299270-2-dakr@kernel.org>
- <aKLzrp0m00J6CCYz@google.com> <DC5INEG2DXU5.DM4JIICEQ2PC@kernel.org>
-Message-ID: <aKMa7YzO-PwEv9AT@google.com>
-Subject: Re: [PATCH 1/4] rust: dma: implement DataDirection
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: akpm@linux-foundation.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	abdiel.janulgue@gmail.com, acourbot@nvidia.com, jgg@ziepe.ca, 
-	lyude@redhat.com, robin.murphy@arm.com, daniel.almeida@collabora.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH3PR12MB8484:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5977178c-c77d-4032-6bd1-08ddde51fb54
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NE1NemlRWmdZVk1TRUY1V0hDWWszYitGK1FQcjF5UURuY3VTTkdFd0M4dDYy?=
+ =?utf-8?B?NTlXREwxQnZSZHZMYWhKd09IM0VzTE5hT3dkbzFEM0lac2FydnEyY1M3UUV6?=
+ =?utf-8?B?cC9YK3ZrVDdqbUxVVmlJL1ZJcHNiZExqNmV0U0Q1Z3I3NmZDNVNXME9mRzVh?=
+ =?utf-8?B?eVpvbEFZQmJ1UDZGNWFHN2JPWXJMaThBdVNrdzB6QU5aRmN3SlBWT2hkanND?=
+ =?utf-8?B?WkhQc09rRjBWNjN4M0RHRnFpQXNGaEQ3UnNlSGw2ZDdMTkozeEpXWm13ZEVS?=
+ =?utf-8?B?aStxdE9FVjlKRCtZNXp0ZEZNVFY1YnBPTTNYNWtsTUlQVGNHKzR2a1orZ1dR?=
+ =?utf-8?B?RlNWQlRYWjMyL1JDYlF6RnBUY0J4amFLYVliVktXWUg4bTRDb2Y5c25WZkxX?=
+ =?utf-8?B?L1A2Y2xibCt4c1c1akJvWVBQbjloVXRRTVBVcTF1cVhLRjVLYUdTeFBrdG1B?=
+ =?utf-8?B?bUMrT0I1UjlQcWFGQ2FRMlJKOSt1bGV0cjFSRkdSVmRyVm5xdVdCWk5MVW1h?=
+ =?utf-8?B?emRpN1dhUVZQWlNhWERKNERvT1I1aFZqVjdIcVd2MjIvNDZsSnR2NmNSdTBs?=
+ =?utf-8?B?R2E2RjBUQlJ5NkJTWmo3S081aVFsZHZSR3dYaEkzUzBVZndaQ1BFRXNmTFk2?=
+ =?utf-8?B?dTJvblVaZzFpTERPMzJKQmZlZ0d6ajdoTjE0MUFncHJDNUZGRlRjazk2WkF0?=
+ =?utf-8?B?M1JZeHJOVDhlKzIyT1VnZGZvaTBaVlE1QWJCdzRlTDRoUmxYRmh5MzVWZ0FR?=
+ =?utf-8?B?TERnVmNqZUhESFE4Mk4yL2JNWHlra1cxTVExR1pySExBeVlPeEZjM2hNZ0Nv?=
+ =?utf-8?B?N1RiZUloWnVUcTZoUExLNlF3d2llREY3am1ncHdlZHBUdWtJTFBzR1dwcGlr?=
+ =?utf-8?B?VkhhOGVNVkVMQkpLSFB1cWZ3U2hvMFBNUTQ2V3pMZWxQdHpUdStGTTNzeDhB?=
+ =?utf-8?B?NGdQblhBazhIZk83OXBuV0JFM0drbitaZGZqeTBqcWNwYmpMTEFINXNvRFlT?=
+ =?utf-8?B?TDA5ZFBPeVl2UkcvZU1DVEJ1eTRDMS9YVlMrbTE2cHVjRmJXVmU4QW0xS3Vy?=
+ =?utf-8?B?VGkxRnBtbnl2dlBlQzNlRmgyTkRLWWt6My9mbmtBN0pHUDAxeHN5UU1pQTJ6?=
+ =?utf-8?B?a3l2NFRxcnUweWtwakMyOEdxSWpsQndWWUxUaXVHNVdadklFdjkrWXpNWGd1?=
+ =?utf-8?B?ay94djBLdmtSY2RUeldUOW1vOEd1Q245NzlGOWlsenlDV05EWXZvQmRIR2lD?=
+ =?utf-8?B?S0hrRFd0bWxBanRobTNEa2tFa3o1VXAxaHM4d1MrWjZXeCs0S3lhZ1pYY3B2?=
+ =?utf-8?B?c0ZBVDNONHZBM0svUjhjT1ZpdG5uS2xINzdQWjNnL2NjVGs2SCtRT0s2YStI?=
+ =?utf-8?B?WGcwRlpJMkdPaEZXdjUzL2dIcFFlbWZ3Z1dzazJ0RTZkc01IVDBqT2pSU0to?=
+ =?utf-8?B?bFNtQWFQYms5UzBNdUJqYURBMkNlTWpXaGk5aStxNGFQVXBiZCt0NUtKMFVz?=
+ =?utf-8?B?T3FLTE9BWEx3ZTlWTGtuU3lweVYxUHdDeTErcTB6Kzd5Mk5oL3ZCbjF2blBw?=
+ =?utf-8?B?S2t1Z3FlVUNjVGZ4Y2ZQNkdGQjFLZXRBNDAwc09YdDJURVFHNXAvaWF2dGV4?=
+ =?utf-8?B?aUxGeGoyWFlRNEd6TEUyMUpPZXg1TEZCZVlGMGVDKys5b2RiTStKK2FTNGM4?=
+ =?utf-8?B?RTNCOGxVenRFQmk0SkRrNUJsR09ZTXZiK1NkamFYb24rQUxlUjdjOWF5cmJM?=
+ =?utf-8?B?YmJ2UzlZbjZQOEFzeXA2am1YWitFQnM0NVY1S2Y5Vy9PYnY0eUgvUmZXMTJ2?=
+ =?utf-8?B?aTFIVVBSYmIzRXdIMzJFR3NNbXVYcEJ4dklxTzF4SHYraHJ4SjBDZWZSWWVB?=
+ =?utf-8?B?bGhXajhNckRoTjJwM2RrZDVTNmpwRWJjWnNmNTArdDVqVHZWZlBCVHJwbmNh?=
+ =?utf-8?Q?sgzhmvBMyvA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SWpaS0NUUC9SdnZUWEcwc2NRaTZEeisrVlNNZHdTbFFxZ1lJT0hKWUpjWVYx?=
+ =?utf-8?B?bkd3WWYxWFZQNG5XL0d3TzFuK01tYVVaKy9HamdlL01yN0VRSnVGUFNBYTlq?=
+ =?utf-8?B?NWh1YXN3YTQ0ZWNLeGVRd2ZNR1ZvMUtWRkREbXhRRGFEeDZEc0tiSldZVUdC?=
+ =?utf-8?B?NFZ2TWNOR3huRHA5TjRGancyM0xHeUFrbDJYbE1PN3AzQjg1TGVQeVc1bDBy?=
+ =?utf-8?B?S2RMRnFUbHN2ZGhmQlNJYUNiRE5VblRDZCtVTDZINXQ1OVNRU3FvaksvcXF0?=
+ =?utf-8?B?TnBGMFp6Q3VGNWxpd3luV0FTeVRwbUFkMkxxdk1pMlFsb2Q0R3N2a2ZtaDhZ?=
+ =?utf-8?B?ZVZQbzlmS2c2elVkeFc2M0dpUmJIbUZDNTVibm14cXNTN0ZLTW5CR0Z1L3Rl?=
+ =?utf-8?B?TDU5b29QWmgvN2h0ZDNXK01aYUJKdjZwOVFwSUI4SnIzalRGckhzK2JqbjRY?=
+ =?utf-8?B?WDhsVWg4V2RYMDFINjRCdldTeCtpZDQyc3FPYVFmWEZydEFiWmVYV0NWOVd2?=
+ =?utf-8?B?NGdwMlRMVlFFRm5VS2tKWWFDakRPNFZaVzBxQXkxMlNNQVFmZS9pTkhwZlBM?=
+ =?utf-8?B?ZUxpQ1VFNDdXWjJ2WVJRQlk0Y1duQ25BMC81eEJTbnBmalJpSkFMMktDMk1B?=
+ =?utf-8?B?VXkzOUptbWpVQXZPOVpMRTZHTHYrQ3pHNU1TNUUzV2RnV0FwWDNwZ3NYbVBn?=
+ =?utf-8?B?U0g5aEVnZXJIekN2aEVOcUc3ajJuekdGdlJLNXc4dHVHb3Q5WkYyVlR1QmhY?=
+ =?utf-8?B?NklYb05VMEc5NWdQdzgrL3l5ZjVMZUJmTkhyVks4b3UyVG9vTEhUVGNWWmI1?=
+ =?utf-8?B?Qzg5VmNLL0tPa3doemFYckV6L3ZFaFV2MVJzTjMrVzUxaVl5SDc5VVNQc1ZU?=
+ =?utf-8?B?SG5LUE85TGV0M2hNWEdPZmFvSTFqUkJham1OVnk5bmprbE4xaTgzTmtSVVVB?=
+ =?utf-8?B?WGwrOWFldXdieTNqTFhrSlJMZzFkRmcrUnlBbFVxM2hmNHJ5Sjl1RzZQVmVC?=
+ =?utf-8?B?aG9CUm5pLzdhVXFlMkNUSVY4bW02UDJndFVRVXM3Vk1YWTVXd0FsYTlsVWxn?=
+ =?utf-8?B?NFc1QVFkY0x4ZGEwZ3B0djlrNmxHN1lJMjc3WWVGZDBwckV4MnRQeTBJcTFI?=
+ =?utf-8?B?aHNkekx0Q2doS0wzdFpkdlBvWUdmcDV3TC82SDRxa3NEZzRrS0gvNnZCMHA1?=
+ =?utf-8?B?ekpsVlVqb1RJRG1zTDMrYXJ4TFVEeFRiM0l1Z2VyOHBheFdnR2lwYVlqNVFn?=
+ =?utf-8?B?WGNzNmF5UDVVRm51OTJHdytPd0tqNTd4K3lNWmQ2UGRnbzVXK0VJSDJOZXha?=
+ =?utf-8?B?QnJKVEtidEJrQndOSTZhc0lQRDM4UEllWDd1WDZsS2ZEVEJNekhpaHlaMTNG?=
+ =?utf-8?B?NnVRMmtIT2JjeHEwSzRzQXJ0WFVxTVlMdE1NODlvKyt1SXdDWUVHSUpSN050?=
+ =?utf-8?B?UktZWVdHd2docUpNQ2I4Yzc2UUVsQkhJVU5ZbkExbkNMK0pJTFRScGFsMzBi?=
+ =?utf-8?B?NVVJZ3R4UnVld3p3OEtMNmtlbVpnNVh3MHcwZWFENFhyQ3dUaitZNHlEUm9M?=
+ =?utf-8?B?QUJ4S1EzQmhTWndFaHh4M2xXd2h6dzR5SWx0SzZTYmdyZ2wrdmZIQ1dDZmx4?=
+ =?utf-8?B?ZjFTMWROdXUzL2dZNEp6MkdHc1ZYUnpac1JaVTE2MktBK3hFWEhKU2RhNUVi?=
+ =?utf-8?B?S2t4dGs1TlFOWlR1Yk9mL094OVVWSTIxTkd2U1IwOXVubEg5MDdYMFJ6YTRn?=
+ =?utf-8?B?dzg2OVNnZkxhQ3U0R0dUSTAwaG5RdUluSmdycmFEclRWWXJoZUY3Yi92RmdE?=
+ =?utf-8?B?ekhOaVBYY3MxcG9BbkdpYTBMK0xMRXRRWENHdGZQZVd6eFNwVmx3NjFYWTh4?=
+ =?utf-8?B?SzA4b3VHRHhGRkMxb1FacmlZcmZWem9CcFRiU3h2a3Mrd1V3UzUyNkpRV2Ji?=
+ =?utf-8?B?M2h3RGNKRWZpT2g2aEhGQmF6RXN6NTVYa3Z6ekhsa2NOdlgrNkl3RFYxZHhi?=
+ =?utf-8?B?d2NHUTYzekorZW9EZjFyblRMbFhDVStjbWhtRHBRR09NcW5HLzJsU0VsbU95?=
+ =?utf-8?B?RUdqZXpCUElxeVY2OFpUWjBzN1ZjRUYzUForSVdFSDlDUDJkc0NEZTdYRnB0?=
+ =?utf-8?B?WlhJOXI0WHNGNy9zR1RnL1QvcXJJQW8wY3c3RmdOOVljNC85L0RucjQ1UEpB?=
+ =?utf-8?Q?CL+XJT+mDPqEZxqLTafdmJ8lEGEKOq0SjW2QIxlgM2VJ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5977178c-c77d-4032-6bd1-08ddde51fb54
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 12:23:05.0221
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qE9CBgFdMwW5wVM7Jy6xzvwViiXiUisowdrqeJRQ7mSP3+z7YPTbJ6/2hrHupgAx69ogf1RHa5zPqxnVndziog==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8484
 
-On Mon, Aug 18, 2025 at 01:27:44PM +0200, Danilo Krummrich wrote:
-> On Mon Aug 18, 2025 at 11:34 AM CEST, Alice Ryhl wrote:
-> > On Fri, Aug 15, 2025 at 07:10:02PM +0200, Danilo Krummrich wrote:
-> >> Add the `DataDirection` struct, a newtype wrapper around the C
-> >> `enum dma_data_direction`.
-> >> 
-> >> This provides a type-safe Rust interface for specifying the direction of
-> >> DMA transfers.
-> >> 
-> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> >
-> >> +/// DMA data direction.
-> >> +///
-> >> +/// Corresponds to the C [`enum dma_data_direction`].
-> >> +///
-> >> +/// [`enum dma_data_direction`]: srctree/include/linux/dma-direction.h
-> >> +#[derive(Copy, Clone, PartialEq, Eq)]
-> >> +pub struct DataDirection(bindings::dma_data_direction);
-> >
-> > Perhaps this should be a real Rust enum so that you can do an exhaustive
-> > match?
-> 
-> 	/// DMA data direction.
-> 	///
-> 	/// Corresponds to the C [`enum dma_data_direction`].
-> 	///
-> 	/// [`enum dma_data_direction`]: srctree/include/linux/dma-direction.h
-> 	#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-> 	#[repr(i32)]
-> 
-> Does bindgen ever pick another type than i32 for C enums? If so, it'd be a
-> downside that we'd have to mess with the type either in the `repr` or by casting
-> the variants.
-> 
-> 	pub enum DataDirection {
-> 	    /// The DMA mapping is for bidirectional data transfer.
-> 	    ///
-> 	    /// This is used when the buffer can be both read from and written to by the device.
-> 	    /// The cache for the corresponding memory region is both flushed and invalidated.
-> 	    Bidirectional = bindings::dma_data_direction_DMA_BIDIRECTIONAL,
-> 	
-> 	    /// The DMA mapping is for data transfer from memory to the device (write).
-> 	    ///
-> 	    /// The CPU has prepared data in the buffer, and the device will read it.
-> 	    /// The cache for the corresponding memory region is flushed.
-> 	    ToDevice = bindings::dma_data_direction_DMA_TO_DEVICE,
-> 	
-> 	    /// The DMA mapping is for data transfer from the device to memory (read).
-> 	    ///
-> 	    /// The device will write data into the buffer for the CPU to read.
-> 	    /// The cache for the corresponding memory region is invalidated before CPU access.
-> 	    FromDevice = bindings::dma_data_direction_DMA_FROM_DEVICE,
-> 	
-> 	    /// The DMA mapping is not for data transfer.
-> 	    ///
-> 	    /// This is primarily for debugging purposes. With this direction, the DMA mapping API
-> 	    /// will not perform any cache coherency operations.
-> 	    None = bindings::dma_data_direction_DMA_NONE,
-> 	}
-> 	
-> 	impl From<DataDirection> for bindings::dma_data_direction {
-> 	    /// Returns the raw representation of [`enum dma_data_direction`].
-> 	    fn from(direction: DataDirection) -> Self {
-> 	        direction as Self
-> 	    }
-> 	}
+On Mon Aug 18, 2025 at 10:33 AM JST, John Hubbard wrote:
+> Allow callers to write Class::STORAGE_SCSI instead of
+> bindings::PCI_CLASS_STORAGE_SCSI, for example.
+>
+> New APIs:
+>     Class::STORAGE_SCSI, Class::NETWORK_ETHERNET, etc.
+>     Class::from_u32(), as_u32()
+>     Class::MASK_FULL, MASK_CLASS_SUBCLASS
+>     DeviceId::from_class_and_vendor()
+>     Device::class_code_raw(), class_enum()
+>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  rust/kernel/pci.rs | 202 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 202 insertions(+)
+>
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 887ee611b553..9caa1d342d52 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -23,6 +23,179 @@
+>  };
+>  use kernel::prelude::*;
+> =20
+> +macro_rules! define_all_pci_classes {
+> +    (
+> +        $($variant:ident =3D $binding:expr,)+
+> +    ) =3D> {
+> +        /// Converts a PCI class constant to 24-bit format.
+> +        ///
+> +        /// Many device drivers use only the upper 16 bits (base class a=
+nd subclass), but some
+> +        /// use the full 24 bits. In order to support both cases, store =
+the class code as a 24-bit
+> +        /// value, where 16-bit values are shifted up 8 bits.
+> +        const fn to_24bit_class(val: u32) -> u32 {
+> +            if val > 0xFFFF { val } else { val << 8 }
+> +        }
 
-My suggestion is to cast on the Rust-side.
+This convenience function doesn't look like it needs to be defined
+inside the macro.
 
-#[repr(whateveryouwant)]
-enum DataDirection {
-    Bidirectional = bindings::dma_data_direction_DMA_BIDIRECTIONAL as _,
-}
+> +
+> +        /// PCI device class codes.
+> +        ///
+> +        /// Each entry contains the full 24-bit PCI class code (base cla=
+ss in bits 23-16, subclass
+> +        /// in bits 15-8, programming interface in bits 7-0).
+> +        ///
+> +        #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +        #[repr(transparent)]
+> +        pub struct Class(u32);
+
+Same for this struct.
+
+> +
+> +        impl Class {
+> +            $(
+> +                #[allow(missing_docs)]
+> +                pub const $variant: Self =3D Self(to_24bit_class($bindin=
+g));
+> +            )+
+
+This obviously needs to be part of the macro...
+
+> +
+> +            /// Match the full class code.
+> +            pub const MASK_FULL: u32 =3D 0xffffff;
+> +
+> +            /// Match the upper 16 bits of the class code (base class an=
+d subclass only).
+> +            pub const MASK_CLASS_SUBCLASS: u32 =3D 0xffff00;
+
+But these two definitions (and `as_u32` below) can again be part of
+their own impl block outside of it.
+
+> +
+> +            /// Create a `Class` from the raw class code value, or `None=
+` if the value doesn't
+> +            /// match any known class.
+> +            pub fn from_u32(value: u32) -> Option<Self> {
+> +                match value {
+> +                    $(x if x =3D=3D Self::$variant.0 =3D> Some(Self::$va=
+riant),)+
+> +                    _ =3D> None,
+> +                }
+> +            }
+> +
+> +            /// Get the raw 24-bit class code value.
+> +            pub const fn as_u32(self) -> u32 {
+> +                self.0
+> +            }
+> +        }
+
+So I believe that if you move the declarations that do not depend on the
+macro parameters outside of if, the macro's body could be limited to the
+following:
+
+       impl Class {
+           $(
+               #[allow(missing_docs)]
+               pub const $variant: Self =3D Self(to_24bit_class($binding));
+           )+
+
+           /// Create a `Class` from the raw class code value, or `None` if=
+ the value doesn't
+           /// match any known class.
+           pub fn from_u32(value: u32) -> Option<Self> {
+               match value {
+                   $(x if x =3D=3D Self::$variant.0 =3D> Some(Self::$varian=
+t),)+
+                   _ =3D> None,
+               }
+           }
+
+Shorter macros are generally considered better. :)
