@@ -1,61 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1CE32C300;
-	Mon, 18 Aug 2025 17:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9442D2482;
+	Mon, 18 Aug 2025 17:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755537834; cv=none; b=mw0c6RRmwes61JVGB1eU83XD0+MwMs1gh28hf6gpECYpXHbqNWtT3I/fVczMO6RjTH9XQ/IwAS9F3QN1obmAa1dbmgD1Syl+iI+JMy27djVvrc8ozRDA865ciSJP7u4vFN0iuX1h9W66DjmhzICxtNc/AoMDq0vOVVIz5Qgg3H8=
+	t=1755539141; cv=none; b=JR4y92x1poeSZVj0HccyL+BP/c1K+heV4TPLHYpOFqfvSzQiJ40rtCHDVaqR46GK4KxSIanNdPd6m1QGPyF71G8KgvyoIRzkHCCkj7zfBo6v+MiRpHKrPNxuNjn4qOnN8LH7nTPFfEFg7tBwLSwVckPwPmRXoffcJNSO5u32BL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755537834; c=relaxed/simple;
-	bh=m8EDhrRjAyOIaC+be7PBn8v9ntITM47BNpWt19+3H2c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=u8QzGMXHiK2GTi2g7Uy5Xnc0wkWUuXs3j9xbYBLUfNNrQqJNgsaeoFxWt6644mKzz0t8y3j4417lOeuD5QfohhSo7VbqiwF7pggXQu4QrL2sfn+obw96wv69o/G9UdRB5AFZx0nyfsXTmeLHZGQRsz/vZv32bdQus2zpVIhmtIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKZJMs3M; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755539141; c=relaxed/simple;
+	bh=/0zTTKXt/OG6Gkqe1EYCJtKDJatQuVsFWZAA+MdLepc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G/9x0TYeJ0uuwA0Q3ANlA/mh13YBbES+GJdCixc8tdBubiN0EouBE9YZ8lFDW/Ef08HPhSjBpV4v+FEsGP6ZXzp5/E/3YoimVLlLwdDdPis9asP9pPymxFushfN2/41L3N1jiF5YL1sdqexf7LOrRAhYi13kCZGgrhe/SBbgf9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPqa6xHS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKZJMs3M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B6BC4CEEB;
-	Mon, 18 Aug 2025 17:23:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPqa6xHS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DE7C4CEEB;
+	Mon, 18 Aug 2025 17:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755537833;
-	bh=m8EDhrRjAyOIaC+be7PBn8v9ntITM47BNpWt19+3H2c=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=NKZJMs3MHEICxiNfyDQFIsSTlsv5yfJJvspnFrR91Mi4g96H9w01WoHGOaMEdkRWT
-	 O8eHRoHanHY4jfp9bpkhO0THl6h7JnffH2aUkl0pASoCOQJWe6+eTlto1lpYx4tVYi
-	 q8KghmiLxaSa8eoP56Ftq9rmmlmINR0QO/5mWhHknnSb+0L69IKHn8v5r5TJmU5g9N
-	 olC6KI+h7CC4FtVepe5/ckFAClKHbZhyX4kGS4jTCKGLg3Hus6oPdG4xNwbpbb9+5y
-	 iC5i8ntf4jHQIDhbITz1wddG5Z0GGgTjTaKDRd0Xuhuf5bKFP1oR8AypwsHFqtKo+T
-	 1kFMLa3FmBFtQ==
+	s=k20201202; t=1755539140;
+	bh=/0zTTKXt/OG6Gkqe1EYCJtKDJatQuVsFWZAA+MdLepc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LPqa6xHSGlQ4Bazqv87/s75htZcc9FLlrLVZy5XreGafx7G7mH42oTWY5wM/EsMlr
+	 zcQfGVLpNoZKwOuLEyIjpsynp2dFcFUryLRUe14luwdAFGMzmTPsDP8IiGXxsCyulw
+	 iJGrf0x5UzFuu25oH13HnsrgHd9Jxw+pkjGjfJJSU17gPwWdH07I/PDrlcDwW6EZTR
+	 Xi/T5IzdX4U8fnvC95CWm3fCvmOTxrhdDNQNK+nHAkWzk6FmwvSgGNx/xBagVkP6uP
+	 4+httNXVwQKbspa/BfGyeXFThMZKaBDDOTDt4aCOYcIjT0YxiDMObCuc9jj1uZSzBY
+	 DXtvEP50qt0Bg==
+Date: Mon, 18 Aug 2025 10:45:34 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 6/6] kbuild: enable -Werror for hostprogs
+Message-ID: <20250818174534.GA1261249@ax162>
+References: <20250814-kbuild-werror-v2-0-c01e596309d2@linutronix.de>
+ <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
+ <CANiq72m+_QK1L2bnjs-oB9fmoGb-1jK3JvOsuH3nsWaPM0ExNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Aug 2025 19:23:48 +0200
-Message-Id: <DC5Q80UUHSUV.360VLIC6DYZ78@kernel.org>
-Subject: Re: [PATCH 1/4] rust: dma: implement DataDirection
-Cc: <akpm@linux-foundation.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>, <acourbot@nvidia.com>,
- <jgg@ziepe.ca>, <lyude@redhat.com>, <robin.murphy@arm.com>,
- <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250815171058.299270-1-dakr@kernel.org>
- <20250815171058.299270-2-dakr@kernel.org> <aKLzrp0m00J6CCYz@google.com>
- <DC5INEG2DXU5.DM4JIICEQ2PC@kernel.org> <aKMa7YzO-PwEv9AT@google.com>
- <DC5KK67M752R.N9PX4LUG2F68@kernel.org>
- <CAH5fLgi6OZaqjnDScDrJ3YjN2a8mJuPiO5MLPUqUWo62WkvvrA@mail.gmail.com>
-In-Reply-To: <CAH5fLgi6OZaqjnDScDrJ3YjN2a8mJuPiO5MLPUqUWo62WkvvrA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72m+_QK1L2bnjs-oB9fmoGb-1jK3JvOsuH3nsWaPM0ExNg@mail.gmail.com>
 
-On Mon Aug 18, 2025 at 4:00 PM CEST, Alice Ryhl wrote:
-> In general, I think we want some sort of helper function to cast
-> between arbitrary integer types in const-evaluation that panics if the
-> cast is out of bounds. Both here and many other places.
+On Sun, Aug 17, 2025 at 06:31:06PM +0200, Miguel Ojeda wrote:
+> The discussion was on patch 0, i.e. the next message in Lore's tree
+> view -- I would suggest adding it to the commit message for reference:
+> 
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72k-PdSH2BNgbq=X+FhpyEErifSCKfO5ObXz6bu9_J8+fA@mail.gmail.com/
+> 
+> Anyway, since Nathan already applied it, and I see a couple patches on
+> top, no big deal if it cannot be added.
 
-What exactly do you have in mind?
+I dropped the top patch due to a build failure:
+
+https://lore.kernel.org/20250818140143.61b8c466@canb.auug.org.au/
+
+So I was okay with just rebasing the top commit to amend this one,
+especially when giving more context to the patch. Thanks for the
+suggestion!
+
+Cheers,
+Nathan
