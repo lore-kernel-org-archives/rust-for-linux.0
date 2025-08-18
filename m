@@ -1,308 +1,138 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389B120E6F3
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 05:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755493504; cv=none; b=ZWpR+tt77e1P5urQVlqDE/zAFILLkgZEkvSu+idjy5dqDRL1gpTljJMwnx7Ua+gqCtKOmQOVIHS6FXk1RK3vQ74QgfYJiRidUFvbZYOrG2jDeUhIrdcjVs8gRfi7esR8Qz31QcPrbUPf9xt+2/3l1i/h7Kd7Tki4OtiJHsh1Chg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755493504; c=relaxed/simple;
-	bh=/DmYjmisI82W7oOU0WG/oFyScvQj9SbpNE3Ii2+4Y84=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dlzbUPyW7JK1mxofm/15D6Iip3L+IwedUo4Y2zZWsC4tZdPGNvpYchx59y0svKR9pF8okEiOIzf26dZiJKCYU9IHIaplV7Idp1VM4r5ACQR1LioWRChjiVjHRQCxYFrqYOzUYwo40oXN37Euf/XlprqAtnN2i6kNBUQoizdkvU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=JXyeTlKg; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97517264602;
+	Mon, 18 Aug 2025 05:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755496315; cv=pass; b=GQ1TdjOYwcPXALguuEVItqo/RT6Y9LWOgoAWSQaKcv2ZXQZNN+PQfFLLfTvmbUuvaFb7pZeJ52Xt6yLfSo3bxbTivZAqljmzDBohk99mEVTKz+l7lvewuXSd395vgFn83JOUl9VRrfPLd4TL6eotqEzcnJkkc2TTTk8EQeAXZG4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755496315; c=relaxed/simple;
+	bh=h8xxOrjgpeHxkrnsKMrxDIvceyZJvMAn1wgc15ow78w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IBJ4J5YC5GGKjjbXg4cpvlPtKlIGW8XoVLqAaWnVpfhORzgNDUko9am5K20WLU3isv7MDEWaN5i+WxpYMJ1li7ZEmpL0Q8jI/STVDC6gRhqbbwonpBfPlJaEmFBaK5/xKHPi1OhLx80lwXVKl3IwW8NlcL5uxABzE73Asrjb5+c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=hRq/r5OQ; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="JXyeTlKg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1755493500; x=1755752700;
-	bh=UjQiz3Kpr7q5iwDraf2GEwSkdsiJM+pzbU3XsyPCAkY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=JXyeTlKgUx3F69ISeKbeN4vDDBjoqGIlMmfpHeI+DGc59x9fxaIwvwZHwSljNO+rV
-	 V3dXDfwIUIkOxnGPZDUMEDpuBjxflys4UkcG2p6UJl3j4nbvmoCGG8T7ncGWUnvkLv
-	 ns2oAH3Sf0/Aj0tv+OwCBPNeqO78ANrGakiggSKgu7+f6E8V1PxYFDrw0CpJkWqAYu
-	 oI+c7dYEwuyZLWaNj2TZP5ykHEaKm4H0rgNLmz2n7BK+XGlINS5eEMKbAqRuSYo14q
-	 Ez0WhZBofen8Dn3NBZXxAtsozfc15a8wxw4HWXQVrH8iujP3q/ohEN4Nis441bZBR5
-	 h4wUUJ+yk6uyg==
-Date: Mon, 18 Aug 2025 05:04:52 +0000
-To: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Subject: [RFC PATCH 3/3] rust: drm: Introduce a Connector abstraction
-Message-ID: <20250818050251.102399-5-sergeantsagara@protonmail.com>
-In-Reply-To: <20250818050251.102399-2-sergeantsagara@protonmail.com>
-References: <20250818050251.102399-2-sergeantsagara@protonmail.com>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: 1e0e52877b5d91260675001b225d770ecb49a434
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="hRq/r5OQ"
+ARC-Seal: i=1; a=rsa-sha256; t=1755496291; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=EalfFgJbPTX6n9LvtQECSDWpavt7WMReVhQUWI+2ZGawGUTVWnoBpZ7ZoYmdgsJsnJTpdulZHkE3NFDshmx6wDRPedh8zWoA08K7rJpPfXhscI7JoktJYEA6F5I3bxijFtFzy9MwjiIFzYcNFy+7y5ige6E2cNa868xLDfPTPWc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755496291; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=hR2ARozJLRgULsJvoiLBSidAtOxVnB3UNuqCLTscT/s=; 
+	b=IDUSDzwCBHU0Zy+M+gnX0MrPa73KE7QD2Kwbw27+Cyi5R8NChUhGR3hrp02Z8rQxr9dJB10BNrI9GGrp9wniojgms83gm+L3gXQstj87tfz21LxxGdNKh5e5ibXN8JQ2M4ehyXaV2nGW9ixyKvXTufDykdDhqpKO5OO4mJ2uueg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755496291;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=hR2ARozJLRgULsJvoiLBSidAtOxVnB3UNuqCLTscT/s=;
+	b=hRq/r5OQ8pybsV5Zav0YW3g6goRYPSr7F3kIT+ENl2y9VLd2wbO488+pwGC1Hucj
+	GCYX2oeA+KjiXazqpoYvNeS+MymuSQSeN0oXcLnWhIz7jIZSRruxTwljrkxNz18snQr
+	6mrNNpZfInqaUGbI6qoCcqRf6UYJXYiBYs1j+8DY=
+Received: by mx.zohomail.com with SMTPS id 1755496289543523.409879888822;
+	Sun, 17 Aug 2025 22:51:29 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH 0/7] rust: add initial v4l2 support
+Date: Mon, 18 Aug 2025 02:49:46 -0300
+Message-Id: <20250818-v4l2-v1-0-6887e772aac2@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPq+omgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDC0NT3TKTHCPdNPNECwNjC4vkNHMDJaDSgqLUtMwKsDHRsbW1AEHVOch
+ WAAAA
+X-Change-ID: 20250815-v4l2-f7a80388cf70
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ kernel@collabora.com, linux-media@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-This abstraction enables implementing new DRM connector APIs in Rust.
-Interfaces can be exported to both C and Rust consumers. The initial
-intention is to implement a new DRM connector level backlight API to handle
-multiple panels with backlight controls on a single system. Ideally,
-various functionalities exposed through DDC and USB Monitor Control Class
-will be plumbed through a Rust DRM Connector abstraction.
+Hi,
 
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Link: https://binary-eater.github.io/tags/usb-monitor-control/
+This topic has been discussed in the last two iterations of the Media
+Summit and it has been dormant since. In my humble opinion, and owing
+to all the progress that Rust in the kernel has seen since my last
+attempts ([0], [1]), it is time to try again.
+
+This series reduces the scope of the original attempt considerably. It
+adds APIs to register v4l2 and video devices, and just enough to process
+a single ioctl (VIDIOC_QUERYCAP), including basic support for v4l2_fh.
+It was tested with v4l2-ctl.
+
+It builds upon the platform work from Danilo and others in order to
+offer a concise, platform-based driver sample that is currently the only
+user of the abstractions. It draws from all the work done for DRM
+devices and others and uses patterns that are known to work for other
+subsystems.
+
+I hope that we can all agree that there is little that can go wrong
+here.
+
+I've also added a separate MAINTAINERS entry, as the topic of
+maintaining the Rust abstractions has been a major point of contention
+so far. Hopefully this settles this issue in a satisfactory way for all
+involved. In other words, no one is forced to contribute or alter their
+workflow in any way, while those that want to contribute are invited to
+do so. This approach has worked rather well so far.
+
+I've decided to work on this once more after being told by a few people
+that they would likely try to play with Rust v4l2 drivers if only they
+did not have to write all of the infrastructure themselves. This work
+(and subsequent patches) will pave the way for them.
+
+Note: this is v1 and I'm aware that there are a few checkpatch and doc
+issues which I will fix later.
+
+[0]: https://lore.kernel.org/rust-for-linux/20230406215615.122099-1-daniel.almeida@collabora.com/
+[1]: https://lore.kernel.org/rust-for-linux/20240227215146.46487-1-daniel.almeida@collabora.com/
+
 ---
- drivers/gpu/drm/drm_connector.c |   9 +++
- include/drm/drm_connector.h     |  20 +++++++
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/drm/connector.rs    | 103 ++++++++++++++++++++++++++++++++
- rust/kernel/drm/mod.rs          |   2 +
- 5 files changed, 135 insertions(+)
- create mode 100644 rust/kernel/drm/connector.rs
+Daniel Almeida (7):
+      rust: media: add the media module
+      rust: v4l2: add support for v4l2_device
+      rust: v4l2: add support for video device nodes
+      rust: v4l2: add support for v4l2 file handles
+      rust: v4l2: add device capabilities
+      rust: v4l2: add basic ioctl support
+      rust: samples: add the v4l2 sample driver
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connecto=
-r.c
-index 272d6254ea47..8e6a89ad736f 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -272,6 +272,10 @@ static int drm_connector_init_only(struct drm_device *=
-dev,
- =09=09goto out_put_type_id;
- =09}
-=20
-+=09ret =3D drm_connector_init_rust(connector);
-+=09if (ret)
-+=09=09goto out_put_name;
-+
- =09/* provide ddc symlink in sysfs */
- =09connector->ddc =3D ddc;
-=20
-@@ -317,6 +321,9 @@ static int drm_connector_init_only(struct drm_device *d=
-ev,
- =09}
-=20
- =09connector->debugfs_entry =3D NULL;
-+out_put_name:
-+=09if (ret)
-+=09=09kfree(connector->name);
- out_put_type_id:
- =09if (ret)
- =09=09ida_free(connector_ida, connector->connector_type_id);
-@@ -761,6 +768,8 @@ void drm_connector_cleanup(struct drm_connector *connec=
-tor)
- =09=09    DRM_CONNECTOR_REGISTERED))
- =09=09drm_connector_unregister(connector);
-=20
-+=09drm_connector_cleanup_rust(connector);
-+
- =09platform_device_unregister(connector->hdmi_audio.codec_pdev);
-=20
- =09if (connector->privacy_screen) {
-diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
-index 8f34f4b8183d..8e2a062a7151 100644
---- a/include/drm/drm_connector.h
-+++ b/include/drm/drm_connector.h
-@@ -2305,6 +2305,11 @@ struct drm_connector {
- =09 * @cec: CEC-related data.
- =09 */
- =09struct drm_connector_cec cec;
-+
-+=09/**
-+=09 * @rust: private data for Rust connector API.
-+=09 */
-+=09void *rust;
- };
-=20
- #define obj_to_connector(x) container_of(x, struct drm_connector, base)
-@@ -2346,6 +2351,21 @@ int drm_connector_attach_encoder(struct drm_connecto=
-r *connector,
-=20
- void drm_connector_cleanup(struct drm_connector *connector);
-=20
-+#if IS_ENABLED(CONFIG_RUST)
-+int drm_connector_init_rust(struct drm_connector *connector);
-+void drm_connector_cleanup_rust(struct drm_connector *connector);
-+#else
-+static inline int drm_connector_init_rust(struct drm_connector *connector)
-+{
-+=09return 0;
-+}
-+
-+static inline void drm_connector_cleanup_rust(struct drm_connector *connec=
-tor)
-+{
-+}
-+#endif
-+
-+
- static inline unsigned int drm_connector_index(const struct drm_connector =
-*connector)
- {
- =09return connector->index;
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helpe=
-r.h
-index 84d60635e8a9..c9d0d863c229 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -29,6 +29,7 @@
- #include <linux/hrtimer_types.h>
-=20
- #include <linux/acpi.h>
-+#include <drm/drm_connector.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_file.h>
-diff --git a/rust/kernel/drm/connector.rs b/rust/kernel/drm/connector.rs
-new file mode 100644
-index 000000000000..a65141478d73
---- /dev/null
-+++ b/rust/kernel/drm/connector.rs
-@@ -0,0 +1,103 @@
-+// SPDX-License-Identifier: GPL-2.0 OR MIT
-+
-+//! DRM connector.
-+//!
-+//! C header: [`include/drm/drm_connector.h`](srctree/include/drm/drm_conn=
-ector.h)
-+
-+use core::marker::PhantomPinned;
-+use kernel::prelude::*;
-+use kernel::types::{ForeignOwnable, Opaque};
-+
-+/// A DRM connector representation that extends `struct drm_connector`.
-+///
-+/// This connector implementation enables DRM connector API development in=
- Rust
-+/// and exposing said functionality to both C and Rust DRM consumers.
-+///
-+/// # Invariants
-+///
-+/// `raw_connector` is a valid pointer to a `struct drm_connector`.
-+///
-+/// [`struct drm_connector`]: srctree/include/drm/drm_connector.h
-+#[pin_data]
-+pub struct Connector {
-+    #[pin]
-+    raw_connector: Opaque<*mut bindings::drm_connector>,
-+    rust_only_attribute: bool,
-+
-+    /// A connector needs to be pinned since it is referred to using a raw
-+    /// pointer field `rust` in the C DRM `struct drm_connector` implement=
-ation.
-+    ///
-+    /// [`struct drm_connector`]: srctree/include/drm/drm_connector.h
-+    #[pin]
-+    _pin: PhantomPinned,
-+}
-+
-+/// C entry point for initializing the Rust extension for a DRM connector.
-+///
-+/// When a DRM connector is being initialized in the core C stack, the Rus=
-t
-+/// `Connector` extension needs to be allocated and initialized.
-+///
-+/// * `raw_connector`: A pointer to `struct drm_connector`, the C DRM conn=
-ector
-+///   implementation.
-+///
-+/// # Safety
-+///
-+/// * `raw_connector` must point to a valid, though partially initialized,
-+///   `struct drm_connector` where the `rust` field is not already initial=
-ized.
-+///
-+/// `raw_connector` must point to a valid `struct drm_connector` for the
-+/// duration of the function call.
-+///
-+/// [`struct drm_connector`]: srctree/include/drm/drm_connector.h
-+#[export]
-+pub unsafe extern "C" fn drm_connector_init_rust(
-+    raw_connector: *mut bindings::drm_connector,
-+) -> kernel::ffi::c_int {
-+    let connector =3D match KBox::pin_init(
-+        try_pin_init!(Connector{
-+            raw_connector <- Opaque::new(raw_connector),
-+            rust_only_attribute: true,
-+            _pin: PhantomPinned,
-+        }),
-+        GFP_KERNEL,
-+    ) {
-+        Ok(kbox) =3D> kbox,
-+        Err(_) =3D> return -ENOMEM.to_errno(),
-+    };
-+
-+    // Provide the C `struct drm_connector` instance a handle to the Rust
-+    // `drm::connector:Connector` implementation for Rust connector APIs a=
-nd the
-+    // `drm_connector_cleanup_rust` cleanup call.
-+    //
-+    // SAFETY: `raw_connector` is a valid pointer with a `rust` field that=
- does
-+    // not already point to an initialized `drm::connector::Connector`
-+    unsafe { (*raw_connector).rust =3D connector.into_foreign() };
-+
-+    0
-+}
-+
-+/// C entry point for tearing down the Rust extension for a DRM connector.
-+///
-+/// When a DRM connector is being cleaned up from the core C stack, the Ru=
-st
-+/// `Connector` extension instance needs to be dropped.
-+///
-+/// * `raw_connector`: A pointer to `struct drm_connector`, the C DRM conn=
-ector
-+///   implementation.
-+///
-+/// # Safety
-+///
-+/// * `raw_connector` must be valid and have the `rust` field initialized =
-by
-+///   `drm_connector_init_rust()`.
-+///
-+/// `raw_connector` must remain valid for the duration of the function cal=
-l and
-+/// the `rust` field must be preserved since the `drm_connector_init_rust(=
-)`
-+/// invocation.
-+///
-+/// [`struct drm_connector`]: srctree/include/drm/drm_connector.h
-+#[export]
-+pub unsafe extern "C" fn drm_connector_cleanup_rust(raw_connector: *mut bi=
-ndings::drm_connector) {
-+    // SAFETY: By the safety requirements of this function, the `rust` fie=
-ld of
-+    // `raw_connector`, a valid pointer, is initialized by the `into_forei=
-gn()`
-+    // call made by `drm_connector_init_rust()`.
-+    drop(unsafe { <Pin<KBox<Connector>>>::from_foreign((*raw_connector).ru=
-st) });
-+}
-diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-index 1b82b6945edf..826fbc4da450 100644
---- a/rust/kernel/drm/mod.rs
-+++ b/rust/kernel/drm/mod.rs
-@@ -2,12 +2,14 @@
-=20
- //! DRM subsystem abstractions.
-=20
-+pub mod connector;
- pub mod device;
- pub mod driver;
- pub mod file;
- pub mod gem;
- pub mod ioctl;
-=20
-+pub use self::connector::Connector;
- pub use self::device::Device;
- pub use self::driver::Driver;
- pub use self::driver::DriverInfo;
---=20
-2.49.0
+ MAINTAINERS                      |   8 ++
+ rust/bindings/bindings_helper.h  |   2 +
+ rust/helpers/helpers.c           |   1 +
+ rust/helpers/v4l2-device.c       |  30 +++++
+ rust/kernel/lib.rs               |   2 +
+ rust/kernel/media/mod.rs         |   9 ++
+ rust/kernel/media/v4l2/caps.rs   | 193 ++++++++++++++++++++++++++++
+ rust/kernel/media/v4l2/device.rs | 176 +++++++++++++++++++++++++
+ rust/kernel/media/v4l2/file.rs   | 164 ++++++++++++++++++++++++
+ rust/kernel/media/v4l2/ioctl.rs  |  92 +++++++++++++
+ rust/kernel/media/v4l2/mod.rs    |  20 +++
+ rust/kernel/media/v4l2/video.rs  | 269 +++++++++++++++++++++++++++++++++++++++
+ samples/rust/Kconfig             |  11 ++
+ samples/rust/Makefile            |   1 +
+ samples/rust/rust_driver_v4l2.rs | 145 +++++++++++++++++++++
+ 15 files changed, 1123 insertions(+)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250815-v4l2-f7a80388cf70
 
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
 
