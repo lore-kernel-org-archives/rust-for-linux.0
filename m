@@ -1,149 +1,262 @@
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686DD30FF2C;
-	Mon, 18 Aug 2025 11:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1956C261B9A;
+	Mon, 18 Aug 2025 11:17:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755515390; cv=none; b=k2xLDylEYPGzZ064oAthOu0lzDzs0DvJelurV9AI9aLFRWGQqUl3/jSPfUHRnC7kVkJCsSDyjKs0YW8/Rmu/T3MQPEaYPZWdRlIj8P4XKc8OTrBHR7yCFxPW7uIArvxLsUNNZc2lKoC5JIlF0NrQ4bEDDNL6bY/3YqSKq0GYcSM=
+	t=1755515821; cv=none; b=ErBuTRdEBHYr016eaoOKjYPmP6yMuZ9Fdc3HvtzLDmZGSRjjsRsyLobxGY1pV1tzguMkiDDlL/tT0PmDiMpeZSdxsjMIuA/2Dpiz+a5JEc0CVth+pJaTBG8eQTXPGbkhXHyjvZtH/r8QygBVNT2JwS6+x2+z7ubEFh3RqVLUAoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755515390; c=relaxed/simple;
-	bh=8n5GupCLEuhx0wtjQRIf7NvAN9ecBgE2Ji61GnGuu2M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O6aXxeu18vzKgfBRPnU2psbKySI2BdLTKPcb9apWr51dEs25rekevBhY9igyh5OLJJj7d81Jpt8JdoxYKcfndZ/ZysBfRldpFgiywclI/UiVrZvwkJRtmQg17AkOHpOgCkLtVyHhMitmtAckvx0mZJDsdEnkqxIw2tzUH64bd3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=GRpdzWov; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1755515821; c=relaxed/simple;
+	bh=WkHAJns6tF1KkG/V9oBkm2Zgo3xCoxSvv1aflMsfp58=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=BGzP2h9QtEyGuMpPNp320oSKz2hdevzdIMkZlBdrWcaQj+xMiOlv2nRVNYqm1UipRKCojVyVFaaaTgiRdnnwORkRS2mZ975hsqwsQgbpca35FCjx9EF1wxz+0sm0PgPqy3Z+W50mCexJ3ffeRK5k4rTWsFlf1t0Dso9ZKhaueCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+PU41tA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="GRpdzWov"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=SPFZYYIEmOz63qGUOuLkE8hJrm4tJL5wiFLVGzeYuqQ=; t=1755515388;
-	x=1755947388; b=GRpdzWovY5X9x/93oRjc2Pht2cb16SLaXo4MEqfGkzPWAp+OwPpU99BN2V6Bn
-	Y/iuJBKId/S9wfCkzlRiurUlg4f9IuuFnSzjTWMuVZVcZTVA2AbKi496M9ymL12x+LAGHc5AlHsQJ
-	0frklJBdzKYoq5LET5/5riLZpVxxIy1IvEMMNVjmqbvcn3Grzno7jo/nL5mUFyAPIv1RMrcEfrwTN
-	q+cgJPHyhl2hlTWELqHPaUwQkRlfUQoLQpguR+WKOKoMjve0xBh+FvVemHqNVBqYpJxtLfxhvoLcX
-	gmt8fbpAyiJDhVSiybUTMNKNRlFdwk3A/m5GyLaxQfTSmqD2AQ==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1unxjz-00BrQm-21;
-	Mon, 18 Aug 2025 13:09:27 +0200
-Message-ID: <8aa05f08-ef6e-4dfe-9453-beaab7b3cb98@leemhuis.info>
-Date: Mon, 18 Aug 2025 13:09:26 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+PU41tA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775FFC4CEED;
+	Mon, 18 Aug 2025 11:16:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755515820;
+	bh=WkHAJns6tF1KkG/V9oBkm2Zgo3xCoxSvv1aflMsfp58=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=m+PU41tA9jJENtv6T53vYovMPaf0OK4zfdnofMROtywcN2dGmCXkXDblz+Xg2mgVE
+	 fDF8tagDzkDgImIeq2MkC9MjOfRqMYIjcFo9Cmc2c47AFEqqzb4LYQqKgZ6mjGpbI9
+	 Ni11CoPWgPW0MKQl+cp6iwUiTOYIXzAIYA2v4Q8rd8h5ib2LrGCJ+BqeNRHfq6qqVV
+	 hqUBQ34ObAiS6oMsmhAqTqDwvkmWu78wttIyZH2N8ylMC40fKSmH+28rTgwPl9RuTG
+	 W+PGYkua2WYFGN/Sl563xaH9W3gr/Br/AzbCjlZeo4RV9B+5Yw0P0OJpjeLvigs3Ty
+	 vZ+AJqRjaqF+A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Take ARCH_KMALLOC_MINALIGN into account for
- build-time XArray check
-To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@gmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
- <DC38NDRET9NB.31UDI8FHB7WAY@kernel.org>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- xsFNBFJ4AQ0BEADCz16x4kl/YGBegAsYXJMjFRi3QOr2YMmcNuu1fdsi3XnM+xMRaukWby47
- JcsZYLDKRHTQ/Lalw9L1HI3NRwK+9ayjg31wFdekgsuPbu4x5RGDIfyNpd378Upa8SUmvHik
- apCnzsxPTEE4Z2KUxBIwTvg+snEjgZ03EIQEi5cKmnlaUynNqv3xaGstx5jMCEnR2X54rH8j
- QPvo2l5/79Po58f6DhxV2RrOrOjQIQcPZ6kUqwLi6EQOi92NS9Uy6jbZcrMqPIRqJZ/tTKIR
- OLWsEjNrc3PMcve+NmORiEgLFclN8kHbPl1tLo4M5jN9xmsa0OZv3M0katqW8kC1hzR7mhz+
- Rv4MgnbkPDDO086HjQBlS6Zzo49fQB2JErs5nZ0mwkqlETu6emhxneAMcc67+ZtTeUj54K2y
- Iu8kk6ghaUAfgMqkdIzeSfhO8eURMhvwzSpsqhUs7pIj4u0TPN8OFAvxE/3adoUwMaB+/plk
- sNe9RsHHPV+7LGADZ6OzOWWftk34QLTVTcz02bGyxLNIkhY+vIJpZWX9UrfGdHSiyYThHCIy
- /dLz95b9EG+1tbCIyNynr9TjIOmtLOk7ssB3kL3XQGgmdQ+rJ3zckJUQapLKP2YfBi+8P1iP
- rKkYtbWk0u/FmCbxcBA31KqXQZoR4cd1PJ1PDCe7/DxeoYMVuwARAQABzSdUaG9yc3RlbiBM
- ZWVtaHVpcyA8bGludXhAbGVlbWh1aXMuaW5mbz7CwZQEEwEKAD4CGwMFCwkIBwMFFQoJCAsF
- FgIDAQACHgECF4AWIQSoq8a+lZZX4oPULXVytubvTFg9LQUCX31PIwUJFmtPkwAKCRBytubv
- TFg9LWsyD/4t3g4i2YVp8RoKAcOut0AZ7/uLSqlm8Jcbb+LeeuzjY9T3mQ4ZX8cybc1jRlsL
- JMYL8GD3a53/+bXCDdk2HhQKUwBJ9PUDbfWa2E/pnqeJeX6naLn1LtMJ78G9gPeG81dX5Yq+
- g/2bLXyWefpejlaefaM0GviCt00kG4R/mJJpHPKIPxPbOPY2REzWPoHXJpi7vTOA2R8HrFg/
- QJbnA25W55DzoxlRb/nGZYG4iQ+2Eplkweq3s3tN88MxzNpsxZp475RmzgcmQpUtKND7Pw+8
- zTDPmEzkHcUChMEmrhgWc2OCuAu3/ezsw7RnWV0k9Pl5AGROaDqvARUtopQ3yEDAdV6eil2z
- TvbrokZQca2808v2rYO3TtvtRMtmW/M/yyR233G/JSNos4lODkCwd16GKjERYj+sJsW4/hoZ
- RQiJQBxjnYr+p26JEvghLE1BMnTK24i88Oo8v+AngR6JBxwH7wFuEIIuLCB9Aagb+TKsf+0c
- HbQaHZj+wSY5FwgKi6psJxvMxpRpLqPsgl+awFPHARktdPtMzSa+kWMhXC4rJahBC5eEjNmP
- i23DaFWm8BE9LNjdG8Yl5hl7Zx0mwtnQas7+z6XymGuhNXCOevXVEqm1E42fptYMNiANmrpA
- OKRF+BHOreakveezlpOz8OtUhsew9b/BsAHXBCEEOuuUg87BTQRSeAENARAAzu/3satWzly6
- +Lqi5dTFS9+hKvFMtdRb/vW4o9CQsMqL2BJGoE4uXvy3cancvcyodzTXCUxbesNP779JqeHy
- s7WkF2mtLVX2lnyXSUBm/ONwasuK7KLz8qusseUssvjJPDdw8mRLAWvjcsYsZ0qgIU6kBbvY
- ckUWkbJj/0kuQCmmulRMcaQRrRYrk7ZdUOjaYmjKR+UJHljxLgeregyiXulRJxCphP5migoy
- ioa1eset8iF9fhb+YWY16X1I3TnucVCiXixzxwn3uwiVGg28n+vdfZ5lackCOj6iK4+lfzld
- z4NfIXK+8/R1wD9yOj1rr3OsjDqOaugoMxgEFOiwhQDiJlRKVaDbfmC1G5N1YfQIn90znEYc
- M7+Sp8Rc5RUgN5yfuwyicifIJQCtiWgjF8ttcIEuKg0TmGb6HQHAtGaBXKyXGQulD1CmBHIW
- zg7bGge5R66hdbq1BiMX5Qdk/o3Sr2OLCrxWhqMdreJFLzboEc0S13BCxVglnPqdv5sd7veb
- 0az5LGS6zyVTdTbuPUu4C1ZbstPbuCBwSwe3ERpvpmdIzHtIK4G9iGIR3Seo0oWOzQvkFn8m
- 2k6H2/Delz9IcHEefSe5u0GjIA18bZEt7R2k8CMZ84vpyWOchgwXK2DNXAOzq4zwV8W4TiYi
- FiIVXfSj185vCpuE7j0ugp0AEQEAAcLBfAQYAQoAJgIbDBYhBKirxr6Vllfig9QtdXK25u9M
- WD0tBQJffU8wBQkWa0+jAAoJEHK25u9MWD0tv+0P/A47x8r+hekpuF2KvPpGi3M6rFpdPfeO
- RpIGkjQWk5M+oF0YH3vtb0+92J7LKfJwv7GIy2PZO2svVnIeCOvXzEM/7G1n5zmNMYGZkSyf
- x9dnNCjNl10CmuTYud7zsd3cXDku0T+Ow5Dhnk6l4bbJSYzFEbz3B8zMZGrs9EhqNzTLTZ8S
- Mznmtkxcbb3f/o5SW9NhH60mQ23bB3bBbX1wUQAmMjaDQ/Nt5oHWHN0/6wLyF4lStBGCKN9a
- TLp6E3100BuTCUCrQf9F3kB7BC92VHvobqYmvLTCTcbxFS4JNuT+ZyV+xR5JiV+2g2HwhxWW
- uC88BtriqL4atyvtuybQT+56IiiU2gszQ+oxR/1Aq+VZHdUeC6lijFiQblqV6EjenJu+pR9A
- 7EElGPPmYdO1WQbBrmuOrFuO6wQrbo0TbUiaxYWyoM9cA7v7eFyaxgwXBSWKbo/bcAAViqLW
- ysaCIZqWxrlhHWWmJMvowVMkB92uPVkxs5IMhSxHS4c2PfZ6D5kvrs3URvIc6zyOrgIaHNzR
- 8AF4PXWPAuZu1oaG/XKwzMqN/Y/AoxWrCFZNHE27E1RrMhDgmyzIzWQTffJsVPDMQqDfLBhV
- ic3b8Yec+Kn+ExIF5IuLfHkUgIUs83kDGGbV+wM8NtlGmCXmatyavUwNCXMsuI24HPl7gV2h n7RI
-In-Reply-To: <DC38NDRET9NB.31UDI8FHB7WAY@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1755515388;94df3ca1;
-X-HE-SMSGID: 1unxjz-00BrQm-21
+Date: Mon, 18 Aug 2025 13:16:55 +0200
+Message-Id: <DC5IF4AUVJP6.5B68OUOXQLCM@kernel.org>
+Subject: Re: [PATCH 2/4] rust: scatterlist: Add type-state abstraction for
+ sg_table
+Cc: <akpm@linux-foundation.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>, <acourbot@nvidia.com>,
+ <jgg@ziepe.ca>, <lyude@redhat.com>, <robin.murphy@arm.com>,
+ <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250815171058.299270-1-dakr@kernel.org>
+ <20250815171058.299270-3-dakr@kernel.org> <aKL338gQ7qPNKoBu@google.com>
+In-Reply-To: <aKL338gQ7qPNKoBu@google.com>
 
-On 15.08.25 21:12, Danilo Krummrich wrote:
-> On Mon Aug 11, 2025 at 2:31 PM CEST, Alice Ryhl wrote:
->> Alice Ryhl (2):
->>       rust: alloc: specify the minimum alignment of each allocator
-> 
->     [ Add helper for ARCH_KMALLOC_MINALIGN; remove cast to usize. - Danilo ]
-> 
->>       rust: alloc: take the allocator into account for FOREIGN_ALIGN
-> 
-> Applied to alloc-next, thanks!
+On Mon Aug 18, 2025 at 11:52 AM CEST, Alice Ryhl wrote:
+> On Fri, Aug 15, 2025 at 07:10:03PM +0200, Danilo Krummrich wrote:
+>> +/// A single entry in a scatter-gather list.
+>> +///
+>> +/// An `SGEntry` represents a single, physically contiguous segment of =
+memory that has been mapped
+>> +/// for DMA.
+>> +///
+>> +/// Instances of this struct are obtained by iterating over an [`SGTabl=
+e`]. Drivers do not create
+>> +/// or own [`SGEntry`] objects directly.
+>> +#[repr(transparent)]
+>> +pub struct SGEntry(Opaque<bindings::scatterlist>);
+>
+> Send/Sync?
 
-I had a build error with my daily linux-next builds for Fedora (using
-the Fedora rawhide config) on arm64 (ppc64le and x86_64 worked fine).
-From a quick look it seems it might be due to this series, which 
-turned up in -next today:
+I think SGEntry doesn't need it, but both would be valid.
 
-"""
-error[E0428]: the name `ARCH_KMALLOC_MINALIGN` is defined multiple times
-      --> /builddir/build/BUILD/kernel-6.17.0-build/kernel-next-20250818/linux-6.17.0-0.0.next.20250818.423.vanilla.fc44.aarch64/rust/bindings/bindings_generated.rs:134545:1
-       |
-9622   | pub const ARCH_KMALLOC_MINALIGN: u32 = 8;
-       | ----------------------------------------- previous definition of the value `ARCH_KMALLOC_MINALIGN` here
-...
-134545 | pub const ARCH_KMALLOC_MINALIGN: usize = 8;
-       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `ARCH_KMALLOC_MINALIGN` redefined here
-       |
-       = note: `ARCH_KMALLOC_MINALIGN` must be defined only once in the value namespace of this module
+For the other types, I simply forgot to impl Sync.
 
-error: aborting due to 1 previous error
+>> +    /// Returns the DMA address of this SG entry.
+>> +    ///
+>> +    /// This is the address that the device should use to access the me=
+mory segment.
+>> +    pub fn dma_address(&self) -> bindings::dma_addr_t {
+>
+> We might want a typedef on the Rust side for dma_addr_t, like we already
+> have for the phys_addr_t/resource_size_t.
 
-For more information about this error, try `rustc --explain E0428`.
-make[2]: *** [rust/Makefile:539: rust/bindings.o] Error 1
-make[1]: *** [/builddir/build/BUILD/kernel-6.17.0-build/kernel-next-20250818/linux-6.17.0-0.0.next.20250818.423.vanilla.fc44.aarch64/Makefile:1294: prepare] Error 2
-make: *** [Makefile:256: __sub-make] Error 2
-"""
+Yes, the idea was to add that with a subsequent patch, dma.rs already leaks
+bindings::dma_addr_t and I didn't want to mix up this series with this clea=
+nup.
 
-Full log:
-https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-rawhide-aarch64/09439461-next-next-all/builder-live.log.gz
+>> +        // SAFETY: `self.as_raw()` is a valid pointer to a `struct scat=
+terlist`.
+>> +        unsafe { bindings::sg_dma_address(self.as_raw()) }
+>> +    }
+>> +
+>> +    /// Returns the length of this SG entry in bytes.
+>> +    pub fn dma_len(&self) -> u32 {
+>
+> Is u32 really the right length type?
 
-Ciao, Thorsten
+The C type uses unsigned int unfortunately, and SG entries larger than u32
+probably don't make sense.
+
+Formally, bus addresses and hence this size, can exceed size_t. However, it
+obviously makes no sense for this to happen, so size_t would be a reasonabl=
+e
+choice. ressource_size_t would be resonable too.
+
+>> +/// # Invariants
+>> +///
+>> +/// `sgt` is a valid pointer to a `struct sg_table` for the entire life=
+time of an [`DmaMapSgt`].
+>
+> I think we probably want an invariant for why it's safe to call
+> dma_unmap_sgtable in Drop.
+
+I assume you're suggesting that the invariant should say that the SG table =
+is
+always mapped? And that we should add a safety requirement to DmaMapSgt::ne=
+w()
+that the caller must guarantee that the SG table is never unmapped other th=
+an by
+dropping DmaMapSgt?
+
+If so, that sounds reasonable.
+
+>> +struct DmaMapSgt {
+>> +    sgt: NonNull<bindings::sg_table>,
+>> +    dev: ARef<Device>,
+>> +    dir: dma::DataDirection,
+>> +}
+
+<snip>
+
+>> +impl RawSGTable {
+>> +    fn new(
+>> +        mut pages: KVec<*mut bindings::page>,
+>> +        size: usize,
+>> +        max_segment: u32,
+>> +        flags: alloc::Flags,
+>> +    ) -> impl PinInit<Self, Error> {
+>> +        try_pin_init!(Self {
+>> +            sgt <- Opaque::try_ffi_init(|slot: *mut bindings::sg_table|=
+ {
+>> +                // `sg_alloc_table_from_pages_segment()` expects at lea=
+st one page, otherwise it
+>> +                // produces a NPE.
+>> +                if pages.is_empty() {
+>> +                    return Err(EINVAL);
+>> +                }
+>> +
+>> +                // SAFETY:
+>> +                // - `slot` is a valid pointer to uninitialized memory.
+>> +                // - As by the check above, `pages` is not empty.
+>> +                error::to_result(unsafe {
+>> +                    bindings::sg_alloc_table_from_pages_segment(
+>> +                        slot,
+>> +                        pages.as_mut_ptr(),
+>> +                        pages.len().try_into()?,
+>
+> The `pages` vector is dropped immediately after this call to
+> sg_alloc_table_from_pages_segment. Is that ok?
+
+Yes, it's only needed during sg_alloc_table_from_pages_segment().
+
+> If it's ok, then I would change `pages` to `&[*mut page]` so that the
+> caller can manage the allocation of the array.
+
+We can immediately drop it after sg_alloc_table_from_pages_segmen(), so why=
+ do
+we want the caller to take care of the lifetime?
+
+>> +impl<P> Owned<P>
+>> +where
+>> +    for<'a> P: page::AsPageIter<Iter<'a> =3D VmallocPageIter<'a>> + 'st=
+atic,
+>
+> If you specifically require the iterator type to be VmallocPageIter,
+> then I would hard-code that in the trait instead of specifying it here.
+
+I do not follow, hard-code in which trait?
+
+> But I think you just want `P: AsPageIter`.
+
+Yeah, I thought for now it's probably good enough to require VmallocPageIte=
+r and
+revisit once we get more implementors of AsPageIter, but I think we can als=
+o do
+it right away.
+
+I think we'd need a trait PageIterator, which implements page_count(), sinc=
+e we
+technically can't rely on Iterator::size_hint(). Though, in this case I thi=
+nk we
+can also just make AsPageIter::Iter: ExactSizeIterator?
+
+>> +{
+>> +    fn new(
+>> +        dev: &Device<Bound>,
+>> +        mut pages: P,
+>> +        dir: dma::DataDirection,
+>> +        flags: alloc::Flags,
+>> +    ) -> Result<impl PinInit<Self, Error> + use<'_, P>> {
+>
+> We would probably want to move the logic into the initializer so that we
+> don't have the double Result here.
+
+That'd be nice, but I think it's not possible.
+
+We can't borrow from pages in the initializer closure while at the same tim=
+e
+store pages with another initializer, can we?
+
+Either way, it's not that big a deal I think, since this constructor is not
+exposed to the outside world. Which is also why it didn't bother me too muc=
+h.
+
+>> +        let page_iter =3D pages.page_iter();
+>> +        let size =3D page_iter.size();
+>> +
+>> +        let mut page_vec: KVec<*mut bindings::page> =3D
+>> +            KVec::with_capacity(page_iter.page_count(), flags)?;
+>> +
+>> +        for page in page_iter {
+>> +            page_vec.push(page.as_ptr(), flags)?;
+>> +        }
+>> +
+>> +        // `dma_max_mapping_size` returns `size_t`, but `sg_alloc_table=
+_from_pages_segment()` takes
+>> +        // an `unsigned int`.
+>> +        let max_segment =3D {
+>> +            // SAFETY: `dev.as_raw()` is a valid pointer to a `struct d=
+evice`.
+>> +            let size =3D unsafe { bindings::dma_max_mapping_size(dev.as=
+_raw()) };
+>> +            if size =3D=3D 0 {
+>> +                u32::MAX
+>> +            } else {
+>> +                size.min(u32::MAX as usize) as u32
+>
+> u32::try_from(size).unwrap_or(u32::MAX)
+>
+>> +            }
+>> +        };
+>> +
+>> +        Ok(try_pin_init!(&this in Self {
+>> +            sgt <- RawSGTable::new(page_vec, size, max_segment, flags),
+>> +            dma <- {
+>> +                // SAFETY: `this` is a valid pointer to uninitialized m=
+emory.
+>> +                let sgt =3D unsafe { &raw mut (*this.as_ptr()).sgt }.ca=
+st();
+>> +
+>> +                // SAFETY: `sgt` is guaranteed to be non-null.
+>> +                let sgt =3D unsafe { NonNull::new_unchecked(sgt) };
+>> +
+>> +                // SAFETY: It is guaranteed that the object returned by=
+ `DmaMapSgt::new` won't
+>> +                // out-live `sgt`.
+>> +                Devres::new(dev, unsafe { DmaMapSgt::new(sgt, dev, dir)=
+ })
+>> +            },
+>> +            _pages: pages,
+>> +        }))
+>> +    }
+>> +}
