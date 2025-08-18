@@ -1,105 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355CF32BF20
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 18:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5513314A5
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 18:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755540575; cv=none; b=gMuWH3DACoPYdvcbqyVx77udwsygVlS+jfzAVF48hwIFdmT7T+QaP8zU4mfLBD75UCq29D2m911ijlFLDik10SF+9CaP0lNmddnMN/fQpiexyqUpOfZkOUc5rJr1pMFOmC89jlNQbMJpccvoJw6lEjMo8zbJz9oOi22xFVfyMng=
+	t=1755542823; cv=none; b=dBzHatC9NXthAQmIu+r6StTcEYmpkFipdMpdeZqC+fsoHgZFS3++lq/jsIxrDKDcxOA85a4pjtFTcw4LROsZ0WhsFKv1wrzXCL9qWldsXHo8cSucBNRnMizY2Zdm6A+M6s+NnBtzGn6QqhN+94y646t3PWXqJ9pewpyybDHNVnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755540575; c=relaxed/simple;
-	bh=peVRwFkAy4cd93RYyjqqMQI+CX2IJLAUNljDQ1sWf2Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L/fuDjj37q7a6yeT1YBPee4cKRJnHTPH3VGVgbYsqbwq42dyjBmmF/Ib5XiyAozyi+KplbfIIjzWa/YF2hsZVNuAbmZTbfF2UFkSfNcoRkwGyimaSDpGLvkZfMXfmH0QTBz/XBmmFAofmUGKRWD9PYDsaZWwekMv25fFued6n1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8w4fxGe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755542823; c=relaxed/simple;
+	bh=3bIjF9BxojLYXU4GmDYtCEd68lCPChRFi2p4v+gwO18=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hqstsk0FHzODXVunaT30y3oHh651ANFsEejK8V8/fuIjbGsCKn35p127fpA7bXLzAYZeb0B4UeFv//BeHAGzHDU+0jtyMv2y1dhWQFMnz9KiRNcFz/srWl96VoEN/9NDtvKsQZH8dDA8VsCm9Hye9QLg8gkzhZP9Mt7CxwxSACQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HVfFq4xt; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8w4fxGe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1F6C4CEF1;
-	Mon, 18 Aug 2025 18:09:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755540575;
-	bh=peVRwFkAy4cd93RYyjqqMQI+CX2IJLAUNljDQ1sWf2Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=G8w4fxGeON7xzbM2S5DvVAZO9YhdnhUbyYeKhZxkXko7lGL1RH5A3Dlisc/1GpcgB
-	 rNgrW0rDLKxofXJj6LFAN/D5MN/jWGwSsP5QUyDnCT5KNHaG2QKduzOh9sqtxfA7TK
-	 3nNHRsRmPwDYnBNoEgZ4KBLKsy/nDQbBpPWgsTjG0VjlkAuBzHpxRTuTq6+7cS0z6S
-	 qlFHwpCpv8ZT79NEPKg5TIkYI/FUM6D7dDFRN8005kdgilU6PiONI+1a1QPgAGcW5g
-	 gLx/T1Ay2qh7XiXtEGYmf/hWmPPMmUKg8ysg1FZcWN4ZyMZTzXH+S3DwbpRmnTFTMd
-	 H25e1v5RvGYHA==
-From: Danilo Krummrich <dakr@kernel.org>
-To: lorenzo.stoakes@oracle.com,
-	vbabka@suse.cz,
-	Liam.Howlett@oracle.com,
-	urezki@gmail.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Thorsten Leemhuis <linux@leemhuis.info>
-Subject: [PATCH] rust: alloc: add ARCH_KMALLOC_MINALIGN to bindgen blocklist
-Date: Mon, 18 Aug 2025 20:08:48 +0200
-Message-ID: <20250818180923.192042-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HVfFq4xt"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3b9edf0e4efso3164474f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 11:47:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755542820; x=1756147620; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Me1o71bySPNE6ozhOT6isRZtcdCRFNLWJRygKFvabT4=;
+        b=HVfFq4xtJ4K4VWaP5miOoUTHnq4XeGBeZ3D6LN1fu7SyHQ12sNM3fROXrTONT+QtPt
+         mQ0wF7nf51D11vSrPLEBG6h8rVbBR/mgVDbwG5tkxCd6TAgEn7YX01YzCVSHC6gpF2vm
+         APr6gkxn7gagtxNfFU7G1UvhtscG6kKm6RAOyVKeiLNvHfXEVYcSpbFn6CI1IsaAKC/l
+         pXTEuzpHiXrh9J7FDbprtDb5lEcEmN5LuXvhzsFY2qb3aIZgRMXQ6Ndr1nqBtAv7s1+7
+         IUvXXNpJgjuV9ETZUXAh8efL089zj0Vt5AVdnorerJnlvEG9x9VmfJX4xt96MFwhf7Bq
+         D+nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755542820; x=1756147620;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Me1o71bySPNE6ozhOT6isRZtcdCRFNLWJRygKFvabT4=;
+        b=dW/vGUoQh14iEQRblasNA9dLB/wSaDrEi+xKZKOKXgOZjSpe/yr13QV04cQpDSsWUb
+         xmQ4OwsXboi0bpYKz9579Qt+QzRGEta1qioQOl4vDDTce0ZNHsruKDYCE6pBKwCdzVBu
+         HC74Fix3krDkRRSUKQsclD5Z5xipMyTpk5rpZ4v07fout2D/jVwnEtozYpu/s++grBrP
+         Gen+01vu18rdasZRXnhRnCrCwI2x3z9nIZLqWrfh6rqS2m96iL08xxQ7kTXGVBkJrmhg
+         oKOX+OgEzjKqpBWNbB6+ToVUFegGMgCWEnXIOCNS7g0JHsq7z5pp+oZz1kDqC1e3/qD2
+         CDug==
+X-Forwarded-Encrypted: i=1; AJvYcCXc/9oMaYk8AnNaP6JJbsH9M+TWPr217wFwgCforzvGPWSEDckAw858TLpCkwnEKNWMx1KUU9sNVw+87zfrDQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyfPC9v9qXYuTEKC4d9o9DKn4+uIdrBn6151DWG/pM9t7LhpGm
+	AtkpUwrYpgSLKRey+Wpl1qeVQL+l+Bxvs1Svup27cUHlLIZI1DZO7xmDOSoDFy1h3AGHMbr7RsR
+	JwzHyLUMl3pEgNzEKQvKb/SOmxZShoXd18etm3MSZ
+X-Gm-Gg: ASbGncvLcpQm+bPQRtdoKBe8imU3CGCebdGCfrQT8H3KWSnpwRARNzxrbYjOoEY48Rw
+	sOv1vAMnYsqSWkmOauom9UhE+uDrkPzGAmMf/hTN/O+7SkXaNJRvSNVl5BxL36hh0nFaNCOPP2n
+	vxq6aalrK4srPEDKik3UzDpsDkVxeH/EoqfPJG0QXYsS1t01o5Hzmt+aR2rEjBUZG6ug0I0TcbY
+	cXL44KLSDc76tNZzVo=
+X-Google-Smtp-Source: AGHT+IFLXetOVp8U2f0VHdoGA8Qd25eyC4/86+oKYuuZu1tnTogajoOeu9n4fKnmqFulipmTJwqdd/mlNYD6PV1NV2E=
+X-Received: by 2002:a5d:5d07:0:b0:3b7:9c28:f846 with SMTP id
+ ffacd0b85a97d-3bb68fdd74dmr10640572f8f.44.1755542819634; Mon, 18 Aug 2025
+ 11:46:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250818180923.192042-1-dakr@kernel.org>
+In-Reply-To: <20250818180923.192042-1-dakr@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 18 Aug 2025 20:46:47 +0200
+X-Gm-Features: Ac12FXz6gbvv-OYarFDJOsB6rcv3wq6rTkOI9n_bRh-TEbKfUIQz8PkeqvTnRj4
+Message-ID: <CAH5fLghXq++6MArtGjHjjP0=s4m9Faue9kokyN7sR4vuHGtrWQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: add ARCH_KMALLOC_MINALIGN to bindgen blocklist
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com, 
+	urezki@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
+	Thorsten Leemhuis <linux@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For some architectures, such as X86_64, ARCH_KMALLOC_MINALIGN is not
-resolvable for bindgen. E.g. due to being defined as
-__alignof__(unsigned long long).
+On Mon, Aug 18, 2025 at 8:09=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> For some architectures, such as X86_64, ARCH_KMALLOC_MINALIGN is not
+> resolvable for bindgen. E.g. due to being defined as
+> __alignof__(unsigned long long).
+>
+> Hence, we have to create a rust helper, i.e. let the C compiler evaluate
+> the expression and store it in a const.
+>
+> However, if for other architectures, such as arm64,
+> ARCH_KMALLOC_MINALIGN does evaluate to something that can be directly
+> processed by bindgen, we end up with multiple definitions of
+> ARCH_KMALLOC_MINALIGN in the generated bindings.
+>
+>         error[E0428]: the name `ARCH_KMALLOC_MINALIGN` is defined multipl=
+e times
+>               --> /builddir/build/BUILD/kernel-6.17.0-build/kernel-next-2=
+0250818/linux-6.17.0-0.0.next.20250818.423.vanilla.fc44.aarch64/rust/bindin=
+gs/bindings_generated.rs:134545:1
+>                |
+>         9622   | pub const ARCH_KMALLOC_MINALIGN: u32 =3D 8;
+>                | ----------------------------------------- previous defin=
+ition of the value `ARCH_KMALLOC_MINALIGN` here
+>         ...
+>         134545 | pub const ARCH_KMALLOC_MINALIGN: usize =3D 8;
+>                | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `ARCH_KMALLO=
+C_MINALIGN` redefined here
+>                |
+>                =3D note: `ARCH_KMALLOC_MINALIGN` must be defined only onc=
+e in the value namespace of this module
+>
+> To fix this up, add ARCH_KMALLOC_MINALIGN to the blocklist of bindgen,
+> such that we always only generate the symbol from the rust helper.
+>
+> Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+> Closes: https://lore.kernel.org/all/8aa05f08-ef6e-4dfe-9453-beaab7b3cb98@=
+leemhuis.info/
+> Fixes: 1b1a946dc2b5 ("rust: alloc: specify the minimum alignment of each =
+allocator")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Hence, we have to create a rust helper, i.e. let the C compiler evaluate
-the expression and store it in a const.
-
-However, if for other architectures, such as arm64,
-ARCH_KMALLOC_MINALIGN does evaluate to something that can be directly
-processed by bindgen, we end up with multiple definitions of
-ARCH_KMALLOC_MINALIGN in the generated bindings.
-
-	error[E0428]: the name `ARCH_KMALLOC_MINALIGN` is defined multiple times
-	      --> /builddir/build/BUILD/kernel-6.17.0-build/kernel-next-20250818/linux-6.17.0-0.0.next.20250818.423.vanilla.fc44.aarch64/rust/bindings/bindings_generated.rs:134545:1
-	       |
-	9622   | pub const ARCH_KMALLOC_MINALIGN: u32 = 8;
-	       | ----------------------------------------- previous definition of the value `ARCH_KMALLOC_MINALIGN` here
-	...
-	134545 | pub const ARCH_KMALLOC_MINALIGN: usize = 8;
-	       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `ARCH_KMALLOC_MINALIGN` redefined here
-	       |
-	       = note: `ARCH_KMALLOC_MINALIGN` must be defined only once in the value namespace of this module
-
-To fix this up, add ARCH_KMALLOC_MINALIGN to the blocklist of bindgen,
-such that we always only generate the symbol from the rust helper.
-
-Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
-Closes: https://lore.kernel.org/all/8aa05f08-ef6e-4dfe-9453-beaab7b3cb98@leemhuis.info/
-Fixes: 1b1a946dc2b5 ("rust: alloc: specify the minimum alignment of each allocator")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/bindgen_parameters | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index 0f96af8b9a7f..02b371b98b39 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -34,3 +34,4 @@
- # We use const helpers to aid bindgen, to avoid conflicts when constants are
- # recognized, block generation of the non-helper constants.
- --blocklist-item ARCH_SLAB_MINALIGN
-+--blocklist-item ARCH_KMALLOC_MINALIGN
-
-base-commit: 7e25d84f460c59322bf01dfeb1fb4745b488f714
--- 
-2.50.1
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
