@@ -1,64 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC7B32254C;
-	Mon, 18 Aug 2025 14:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A985535A2B9;
+	Mon, 18 Aug 2025 14:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526730; cv=none; b=NntUoVAZoRmmUyVWtuHfLVdnVp4VfkmGrEvhsIrpcaWPS4DM8k6jPhnOBckJo+kVaU2DGSTqkn11WQRvarUyRvpj1DMmETBLRIO5Go6DhB2HJoA0bCvj88TTUX6mN4AmbNAWuEzyXy2oRHunTrU8NM10SlQckEISmWRqI6VsNi4=
+	t=1755529065; cv=none; b=Hv9Gf6jhP7OU6ZgV64tS5Iezc7SuO5Y3AV+qVl/XH9N1O+PpJMkHPamKVK3ckFCuRo6TWoSsSg+afBgbvBx4ln0goYTd/60yhQeI0V/4IgGxcldHMcFviLwukSGaYaev2d+jCa2eSmT6HkYuQlJhvbmkyym5fkAB8Gb3o1Z35DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526730; c=relaxed/simple;
-	bh=ZxMFrqapvJ/C17PrCsjyTGRw+DxEIi+3UaqaeIQKDJ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DiZAhZAs2/hPxyPcsOXPkfmJRzvxqtGcY/YhIu2mwmY57dqHFy7Gq8pYxS4YqrrxZJx+e1fyitr+uJllOcAKqFJTlLhYn++Y2DQzV3LoP8/3JnRjwAVvDvE9Ovapp4ANyBJl4XmnKo6LrghUQBXxyxpXckZczRLw4AQifMZcM+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7DY+c2a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755529065; c=relaxed/simple;
+	bh=fxjpl7asl8KgiwlfZoIW1bbJhs+WMizR72o5Nm2FTt4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=m7eUY1Wb0xYrp+ITXgRs7bi1B/NL7J8KNVH4VF4GYbYN49xUz4FnpjDgoXkp+t3erLYIpFySj5V6kBT360YW7hlq9q8zmMQPu/KdLE56GKh4AuidaKfORUTbg8tUwcpxDLHHMGvvEve5OI+PtuW8OM3os0AsS7DfqJIuyh1PGi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o961xHW1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7DY+c2a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A886C4CEEB;
-	Mon, 18 Aug 2025 14:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526730;
-	bh=ZxMFrqapvJ/C17PrCsjyTGRw+DxEIi+3UaqaeIQKDJ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u7DY+c2aJpG9QTUCMtq5dyWRbJV5FzF3n5+sv278J3+rsGaDFLBhpsns06A9Hyz1/
-	 LB67UxWQsZmCuHKIBN40TXv0TecesdsiTqo936wkJCHFYK/urqVoPgQpq5O5dFwa8I
-	 TbxStWH2Peq26emSvQLVyxVUQEmZwNEhvsy/uI5E=
-Date: Mon, 18 Aug 2025 16:18:35 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Cc: arnd@arndb.de, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, lee@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH rust-next 0/2] Add llseek support to miscdevice and
- samples
-Message-ID: <2025081818-presume-coral-25c3@gregkh>
-References: <20250818135846.133722-1-ryasuoka@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o961xHW1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA8FC4CEEB;
+	Mon, 18 Aug 2025 14:57:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755529063;
+	bh=fxjpl7asl8KgiwlfZoIW1bbJhs+WMizR72o5Nm2FTt4=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=o961xHW1StP2YxwSH+foXj9a462Mbib7uaamtopiOykiFOo8Lqp488gNnQZiKVOra
+	 MM0uwwNLsx0nxoqW+9XrItJcOQShnLNMM5CnNYTmZ6qPu8lWkaMCIcYzh/E/r+CYzN
+	 mdOqIvq7SF83SDYQiHe33rkzRhC3h/y0kGHaCVMzVXawtgokZlj4DrARzFfVcMu85Y
+	 +/NWuIiWY7r52y57iLA8HnB7JsoGMmwdJ+EcUkLzV6LS+WN1qzAK9k7nzwy1dVoSrz
+	 U6N54yRdCXkvq0k5nchDsBqn3z00X7VeHgKxyBB7zrwuT3D6Z6rMKN4fXJOtQxO63F
+	 HRVE5SWhU0zTA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250818135846.133722-1-ryasuoka@redhat.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 18 Aug 2025 16:57:37 +0200
+Message-Id: <DC5N439ZNA6E.34LSQ3K5366P7@kernel.org>
+Subject: Re: [PATCH v2 1/3] rust: pci: provide access to PCI Class,
+ subclass, implementation values
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250818013305.1089446-1-jhubbard@nvidia.com>
+ <20250818013305.1089446-2-jhubbard@nvidia.com>
+In-Reply-To: <20250818013305.1089446-2-jhubbard@nvidia.com>
 
-On Mon, Aug 18, 2025 at 10:58:37PM +0900, Ryosuke Yasuoka wrote:
-> This patch series introduces support for the llseek file operation to
-> the Rust miscdevice abstraction.
-> 
-> The first patch, rust: miscdevice: add llseek support, extends the
-> MiscDevice trait with a new llseek method.
-> 
-> The second patch, rust: samples: miscdevice: add lseek samples, add a
-> simple example of how to use the new llseek feature. As currently the
-> MiscDevice trait does not support any read/write file operation yet, the
-> sample is fundamental one.
+On Mon Aug 18, 2025 at 3:33 AM CEST, John Hubbard wrote:
+> +            /// Create a `Class` from the raw class code value, or `None=
+` if the value doesn't
+> +            /// match any known class.
+> +            pub fn from_u32(value: u32) -> Option<Self> {
+> +                match value {
+> +                    $(x if x =3D=3D Self::$variant.0 =3D> Some(Self::$va=
+riant),)+
+> +                    _ =3D> None,
+> +                }
+> +            }
 
-As read/write isn't there yet, why is llseek needed just yet?
+Additional to the comments from Alex, I think one should be
+`impl TryFrom<u32> for Class`.
 
-thanks,
+> +
+> +    /// Create a new `pci::DeviceId` from a class number, mask, and spec=
+ific vendor.
+> +    ///
+> +    /// This is more targeted than [`DeviceId::from_class`]: in addition=
+ to matching by Vendor, it
+> +    /// also matches the PCI Class (up to the entire 24 bits, depending =
+on the mask).
+> +    pub const fn from_class_and_vendor(class: Class, class_mask: u32, ve=
+ndor: u32) -> Self {
+> +        Self(bindings::pci_device_id {
+> +            vendor,
+> +            device: DeviceId::PCI_ANY_ID,
+> +            subvendor: DeviceId::PCI_ANY_ID,
+> +            subdevice: DeviceId::PCI_ANY_ID,
+> +            class: class.as_u32(),
+> +            class_mask,
+> +            driver_data: 0,
+> +            override_only: 0,
+> +        })
+> +    }
+>  }
+> =20
+>  // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `pci_device=
+_id` and does not add
+> @@ -410,6 +600,18 @@ pub fn resource_len(&self, bar: u32) -> Result<bindi=
+ngs::resource_size_t> {
+>          // - by its type invariant `self.as_raw` is always a valid point=
+er to a `struct pci_dev`.
+>          Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_in=
+to()?) })
+>      }
+> +
+> +    /// Returns the full 24-bit PCI class code as stored in hardware.
+> +    /// This includes base class, subclass, and programming interface.
+> +    pub fn class_code_raw(&self) -> u32 {
+> +        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev=
+`.
+> +        unsafe { (*self.as_raw()).class }
+> +    }
+> +
+> +    /// Returns the PCI class as a `Class` struct, or `None` if the clas=
+s code is invalid.
+> +    pub fn class_enum(&self) -> Option<Class> {
+> +        Class::from_u32(self.class_code_raw())
+> +    }
 
-greg k-h
+I don't think we have struct pci_dev instances without a valid class code,
+can we? Maybe we should convert infallibly here.
