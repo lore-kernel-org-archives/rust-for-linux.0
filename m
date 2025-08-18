@@ -1,71 +1,71 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41D9221FCB;
-	Mon, 18 Aug 2025 08:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D34B2957CD;
+	Mon, 18 Aug 2025 08:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755504353; cv=none; b=oI5GHlx/gcRBHW/KtTQaca/Scr0aYJI0WIbeCNO56tDMIrR5mL4+k114wEXrREreVszUbFTf7n8/dmmhPM+kmVA3NZZdqw/rXyGDFN6lcoKqsAnp0UCh89BBy8RguZum2kMpNYrAHwhhmjFMMCbyXg2GIg0oZxZX1PyQ4zcWG9M=
+	t=1755504640; cv=none; b=cmGqzMMd4YFoJon4jDYS4SxFF+c0WRSj16Wpe9NXbQ/Lpmrv55J3OEXlqDPL9C/oOOBXooDCzJ0h7oPCglqaJR7/qRgTqmlK/8ohSyrgBFbRJISvZ2OZKtuWlppjWCmawevKfHXcrjhJqibLAQ93Y9PHUfX6v6aCorKAa5T5kOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755504353; c=relaxed/simple;
-	bh=OtmfUx3db96Xd2qxcVnGYo7dTnC4vwyK/S68IWM16KQ=;
+	s=arc-20240116; t=1755504640; c=relaxed/simple;
+	bh=ZUVvU1uBctCztzs2wNlnqspjnxE9qt7GG3hQrK/SzwQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jpZT5P+qy4i08+xBTNW91whwQyeeNObNpWMTBFCDQc/2qyeFdfPwcxQgxbThho7/WNv7iEjZYGTB1gfLyVq8SWeLtblI5rgIwFOtB97dcHxHb2J59AvwZx7G580I7YHTaEcWSQlDoUurtJtqKVm5zjrGesogu2Gj7IArDhHWSS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wsb1Om5g; arc=none smtp.client-ip=209.85.215.178
+	 To:Cc:Content-Type; b=Mz+eP8aF/qXGgCHHCkzNRUtGkUJo2UpxrMLgvsDU4/hIThrRxjn1v0Wwuy6zQJOySXhfuvpS+wbtfsOeYho7D6KTwpQkFphS/oFd4E9Z4T4p+S8d/x42dfPFq6lNQBFAPLlj4I3XUHpaNOC+In5GVRVRFQRD46ojBr6OnI13AOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gSOdD4+G; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wsb1Om5g"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b471751142aso705345a12.2;
-        Mon, 18 Aug 2025 01:05:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gSOdD4+G"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-244581eab34so6012635ad.2;
+        Mon, 18 Aug 2025 01:10:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755504351; x=1756109151; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755504636; x=1756109436; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OtmfUx3db96Xd2qxcVnGYo7dTnC4vwyK/S68IWM16KQ=;
-        b=Wsb1Om5g0Jrqee1DpiWyqUbGItO3ot1B/xGZD75wyi4ddeV43Uo7KYDv4g6DMfFci+
-         eCTNp4q9iig4bOBU0UimBOK1FJMWuLxJqm5azM1LS+DimhvKWSII135gpF7SqL0A1qAv
-         WL/BMArWxHd5gtpfFm7ZRQ6Z81Io6F3dVgFDFaS3c1Nzhcy46tM8qCXVHy4NYJMtZPhZ
-         eVAy4wJnVN5xmU5gfCI5IdVhKMMOYFdYlF74sfno97CqFcYy26OHaKklwyV23p1bzJMF
-         GH1Nh9yU8EZiilf7xKgShNM2cB/0KnMy9gg62b2Junmn8tSsxEtAO5lc/tcrNCac2c3s
-         DExA==
+        bh=ZUVvU1uBctCztzs2wNlnqspjnxE9qt7GG3hQrK/SzwQ=;
+        b=gSOdD4+G9mUNZRYpCuFyl7aKit1tYrbl9XQXUSHOmVcNe6fBJdJS+fmcH7v11+W6JU
+         M6rKJVYinnBH4/shA29lzdW1qwGh0JLlV4hlnrO/lL54XKyy+B3UxBa7Nl/hkBKzKb3S
+         MQZpJTVHo6km81nZ21tmBuP4esYk2Q7UdFrzY92RF2pQZhmWbva6HJuTst9guwBwmeMe
+         T1xVTjQeuL0bux116tnfoybesN0G9rwPi5IBr46epLkL+oT9zpwVBmae7KbWOsw1EU8I
+         ErlLnH8/SP/XBdvmVEnvUgI8N0YlFehWec26F/4/Z+Dtsntolei0EputZveGaCBkK1nj
+         Yx0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755504351; x=1756109151;
+        d=1e100.net; s=20230601; t=1755504636; x=1756109436;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OtmfUx3db96Xd2qxcVnGYo7dTnC4vwyK/S68IWM16KQ=;
-        b=BoXja8J4ZkiVet0i1smbKWKIrrXSBpHOuCo8xYyesF2QWeGgOhtklUM8qE549lFd8Q
-         e3pcusFJJUWcZ0iPyo6GWrdN+FFf0osWJXXB+QkFI5xBHDEoEKav2JBHH/XPmTY7dTK9
-         02SUt/dRwoYKSaYH41Lu9sJKG73PmR37WfPU5u3EvT3RjJxuygA1we4z46C2aJyboQYa
-         RBsKK5O2S/NEmoxVYsvlHLe6Nl70bhTOPfw06qkfHqLEjeTtklnkgvmzuG7hx/r3r04L
-         2vVx2Q9GRGpQxTe18h9AvbSiXf7TxKX1Mc+Ys64GzKfrvSoKK3muYpqgnvgSnt6fgUzl
-         LLfg==
-X-Forwarded-Encrypted: i=1; AJvYcCURIDyNTbTpMgx5sSoIL4vZbbEBERq7qbmQhoy2lWDRS9S+blEwPJF+yZ9WREIWAymyoGc4mb9+tDBRrVU=@vger.kernel.org, AJvYcCVJnh1dU24OxzARZdJ2QD/IB1bt/y1HDmSCgow1FfG8WlRqO0KNOIlW2y5w1NNcDpSj23utb2FJExXW80HNenU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPQnyw7zanQhV7angTrlQoQpIajXyCigx9XNcvT0WQTvcH+pYn
-	iGTapjnO111mRjCQ6BMLBWV53o5BbdXixatkR8ruo+Js+fIjf7XxEX2aglshjhgbnDV37+zpoHT
-	CrWxT2QSBIRlK+CxS9+nYuK/xN6dUhOM=
-X-Gm-Gg: ASbGncsQ/bPCn7fhMkaTai9tgkji1OEIlaLxnXDCUhgXFGnk/WGvjWRc3smveMKVbzg
-	6gD+5juoxDZ5W7kroybICyixZtGNzJnL2aGPf3v2cgbvyMmqiWAJufT920Ar9v+HC9uHxfgKewV
-	vHI1AW018I7HLhfit44Sf32Jnvhqw2Jd7vFsJ8s/DBwqo/E7V0M/r7E4eacYaRDc5/rWWTzXbzR
-	Gz0ktQVtEkVBnm+fVo=
-X-Google-Smtp-Source: AGHT+IFvqiKJcyIKJinseaEZIuhYIdgFe3QjepR4bsheIxYKsjBhizUomv5OcBW8nH7WOenfz5wdZwYRRVFGs2I1Tlw=
-X-Received: by 2002:a17:902:c952:b0:240:2bc6:8ac4 with SMTP id
- d9443c01a7336-2446d6f55f4mr73577185ad.1.1755504351110; Mon, 18 Aug 2025
- 01:05:51 -0700 (PDT)
+        bh=ZUVvU1uBctCztzs2wNlnqspjnxE9qt7GG3hQrK/SzwQ=;
+        b=fU47yFEiBZYIs8cvWZyUFq2MbMljHoOu0n2sxZpMXu6mhbZkROZGgl77w0Q0iVh2Vv
+         k47gihorp+a6tlLbMSxpWAOe3ppJ5CBVdqKuE6tSOSLGt3+m/PHrhpe/l7yV9pYf6DUK
+         2liMJNA27GHyD/RpHGp4Ldd+nsEO/9DdaAy9OtVq0YuPOg470pfAi8YB0nKGAkzrSOOh
+         VEQvJSRtJJzsZozp7+FSSk2+BnmEwU6NTIiMySXdu4CVK5U2XSmnKqYiSxUrFRPS4i5Y
+         pp05me6Z73c419cHZ8LxZscZFZE7erTTfPAVoXZjWxZmmmdHEoKLM0O+7+s5CoXn8xsp
+         qEZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFIk9QVw4Y1bd2ARpNcwnMuW3EVwvodX49a0FFn1NI//WKkzjGVF6TSdVnH1XzNUQaVSZcFy8JX4Cu+r3NCDM=@vger.kernel.org, AJvYcCX7nLljBDrssd1F2vHPn+KFfms9IvFJmFLpxlXPTi074i/K3XZ9+tJpIUvFsb1ZnB8AfFvJfczWJYakOsw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbFeNqjm0HJvrXFj5YaB4oA7FCF1nLB42PrYC6BtqHLwz8jBUU
+	k/Zl8rsCCMANufQpd3z9lhtWQl5DzOw4fsegFm8gI5MoIIv4EPVbgIbnAPkKQ8LN651NB+HnFVc
+	reY6vTH7EB5xC96aMm5kfTBQfhiJzcpA=
+X-Gm-Gg: ASbGnctsYwarI3ai7pOjKi4Ajo1fH+825iRWeorCdZ9UcWC2Auv29vckGp7FMx0EPsH
+	boQP2WU1ZVS/b8y9omZwFi+otOLRv+O1OsVASDo4NaJ0f03/RPTfpWlegrInEu6gzhfAY84CwJq
+	h9eBaDy5C7NkmXpiBiXHhiYWt6sZxbYTvYOwfeg95jXeQYCbOoNj9I5cP3+/WHbedh1tfmKS9TA
+	l46q67H
+X-Google-Smtp-Source: AGHT+IHIWHi8BRGRmQDJoZZenX8s7AKHn1BINGsP/5Vdw9GJZlNrhOwh2AgUjcAd0gxja+K05XVkwyo0OYIjZTkf6ew=
+X-Received: by 2002:a17:902:ecd0:b0:22e:62c3:8c5d with SMTP id
+ d9443c01a7336-2446d90cecemr68517795ad.8.1755504636400; Mon, 18 Aug 2025
+ 01:10:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250818012648.1841387-1-lingfuyi@126.com>
-In-Reply-To: <20250818012648.1841387-1-lingfuyi@126.com>
+References: <20250818012648.1841387-1-lingfuyi@126.com> <CANiq72mTDbosz6NjJax7Mam=RgjtrQXrtZfvawr9V1LO3FfMZw@mail.gmail.com>
+In-Reply-To: <CANiq72mTDbosz6NjJax7Mam=RgjtrQXrtZfvawr9V1LO3FfMZw@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 18 Aug 2025 10:05:39 +0200
-X-Gm-Features: Ac12FXwF3uFdFv38iyqaktwcfyH_EkLLmOSJw78IyannriaajRZHCyNK7g9KcEI
-Message-ID: <CANiq72mTDbosz6NjJax7Mam=RgjtrQXrtZfvawr9V1LO3FfMZw@mail.gmail.com>
+Date: Mon, 18 Aug 2025 10:10:25 +0200
+X-Gm-Features: Ac12FXzTHpEndOsM_99oC-Ic9CIub9LhGCmCElnk0Ji3DUGHPwjKJp-h8r2s0CM
+Message-ID: <CANiq72n3dFKiSiJd3ba-5-o1kMsSFJ6RSEJjto0eg-1s_zXr0w@mail.gmail.com>
 Subject: Re: [PATCH] rust: xarray: optimize lock functions with inline attribute
 To: lingfuyi@126.com
 Cc: Tamir Duberstein <tamird@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
@@ -78,19 +78,24 @@ Cc: Tamir Duberstein <tamird@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 18, 2025 at 3:27=E2=80=AFAM <lingfuyi@126.com> wrote:
+On Mon, Aug 18, 2025 at 10:05=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Signed-off-by: lingfuyi <lingfuyi@kylinos.cn>
+> The kernel requires using a "known identity" (typically meaning the
+> full/real name) -- please see
+> https://docs.kernel.org/process/submitting-patches.html#developer-s-certi=
+ficate-of-origin-1-1
+>
+> Also, please do not resend patches with the same title -- you should
+> increase the version number if you do so (or, in this case, if you
+> just wanted to Cc people, you can do that replying to the patch,
+> saying who you are Cc'ing).
 
-The kernel requires using a "known identity" (typically meaning the
-full/real name) -- please see
-https://docs.kernel.org/process/submitting-patches.html#developer-s-certifi=
-cate-of-origin-1-1
+By the way, the From header, generally, should match that too
+(otherwise the "From" line gets added in the body, here because you
+use a different domain).
 
-Also, please do not resend patches with the same title -- you should
-increase the version number if you do so (or, in this case, if you
-just wanted to Cc people, you can do that replying to the patch,
-saying who you are Cc'ing).
+Thanks!
 
 Cheers,
 Miguel
