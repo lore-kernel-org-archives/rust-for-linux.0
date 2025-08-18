@@ -1,204 +1,197 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481B9322A3D
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 13:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FA3334720
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 14:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525594; cv=none; b=QpKJFdmEZSSDPaNYgToVkrASItnp0fp+ENzY1egRy4rSIYrzNtIIbwOH5FEgzAY8W5WuEXz6aPkjtFmnBGcBoBcV8FyHDnILCdX3D/6XxuZ0SbzJRFAeJ5YVAa0+spq1iG7/4CStc+ViShnfSCWfX63wJUlXzGKp0kckjr6iJpg=
+	t=1755525644; cv=none; b=NxwBfzluaEUvk4d3LiC45oI87fr2WexOoD7DpeF1pmE59pIeZ8EMpOsoy84VUQosoltFVTy/AKQLOliKndoqhvvXbCI1eFwF4Y316fyeKUrQ0xdKBqSPphNE1QQXU+QFoB8I5cZHEtdkUt4vWe4pL5LpvUgTonkTRmNZpcvSQ28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525594; c=relaxed/simple;
-	bh=Y+NmXte2jVt9vIilx+qaBiTo6qTI0LRZmsoTSTKd/O4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=ZIXYB9kxptyro/gjOe9CCF2G/5xuNB3vL02rdgtW3OrXU2FFPri0RpJego7V5ZXJrN08ih7jv2LCOg2UAzzzypKH0SqQJYy/FSiORewD8YE5s7i/iGiZgCCDlxEZlS4jBnXgx/ssYUe7ouI7lgYvN150whTiEkwmHqnstCmcO/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CBM7Zax0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1755525644; c=relaxed/simple;
+	bh=j4dxZvMIsnu96pdNWhEO71lMIgFAwiyiGxghEdpT/Zk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kAd4UYd3g63TZk2zuBVDXj55pCoadHGhgRXx108XwhhJoS5ycMqWOvuPWd0DWUeZL6MUukdn6vE56u+pZ3YytnS0m8gv08r0fcag8DP5D96aJEt3AWJjXh/Yu1OxgO9AW5mpXlVGUDPdJgoL48fvIibtQLj1YeYi3i0hmEy/fB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dTNBT+M9; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CBM7Zax0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755525592;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8YMRGYhZCgVYyf6TKWipcOATVyFwuIq5BqY8EP2wiQo=;
-	b=CBM7Zax0fn2h533+A9GVFzw7XWWlTJJt5OpecVL/grUQUtuLfOuF7jsuflYXdh6srNfSAE
-	vXuDJCyNU3ks6sN3FD/U8b69eBoZP1/r+46DwNps6H0BTgiaGEXhWZcgd383VyqVT/39SY
-	RXvD2qVwuLy3vKSpFIdA1qF3aU0PBak=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-qSGsaoIZPPCjauNWmjPJZw-1; Mon, 18 Aug 2025 09:59:51 -0400
-X-MC-Unique: qSGsaoIZPPCjauNWmjPJZw-1
-X-Mimecast-MFC-AGG-ID: qSGsaoIZPPCjauNWmjPJZw_1755525590
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-32326e2506aso3959840a91.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 06:59:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dTNBT+M9"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45a1b00e4a1so27592265e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 07:00:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755525641; x=1756130441; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LERH+4S6MKDV2FjiZGpbA7HIp9naO0TKoXGRD11W5PI=;
+        b=dTNBT+M9K312JN42sf5sobs3RP90Iy4/NNZ9bGfqVxVyvsgnuS4LxlzOkNKtAuEba1
+         /wOs/j0Zl1nfT+A2X9YbyemRcx4PI/J0MnDIttQx4cJVtV4L56gPfPfRXwLhd3iMTkbn
+         o2CzriNzdU4UudJjKdPFliySxu8a/QI2WzGmiITv5uibToNOhCaifXO53RykUNRHTWB2
+         GiS7jDrzmAaZRfneFS7QHSM4n78pXFmuiv8P+hr7PNiZmwnP5lwiSDzLGpllK/28Qnt4
+         dc3x69ktW9++gjlggFwWv3I299oogYziJI9XN0qdmp1mSrmm7uJ0F5Okp83tF4Pk5Exi
+         dbIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755525590; x=1756130390;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1755525641; x=1756130441;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8YMRGYhZCgVYyf6TKWipcOATVyFwuIq5BqY8EP2wiQo=;
-        b=vtHPBKQijWZ5BXw2LLaED/ozKxP2//W4arjh3m/C/5VzVoAsjQg8ML9bUSaWaiGBGP
-         Pt6wB3d+F7H+7DL6Lv8buB+zsFfL6xKFSrBN/W/FNSUErULp83Blru/BtOCytET721Kk
-         nSFfPEOZrrjo2xn1xB7pLLcBgLlEnnzFyYprWyr83xAitECwdHHFAl1KT36y6PbEuTYi
-         NLIAAWB8GvllzeGzLVDmTASre9wQcKB08MuCCkaW3rdXRJsnjzGPe1EuNoTMzl06YyK9
-         lOp/CmDV6C9MQfsYb07ZJB2bwjDtLsYbvZQJvGZSeg/YvOCkXoSNvHYc3GJ47f+wBunx
-         Lehg==
-X-Forwarded-Encrypted: i=1; AJvYcCUuWwuOy7zpPtnzF1vgXPsYuB1BiQBv7NuqiYJNiF0vgkbvdg1COw+4sEPCmnbckze+KI75JJvMcf1cKAk62g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR2MVpc74lceawvc0ybLRTqgdhcRXT7t/lnHOVb1sQVZz/U5ge
-	I0SXoBgnV3PAe013MnR0qmEyd6aKgBoAmd+Gjj9J6iwg23AU5wK4Vjg6rQjJlzGvEQdgWgGraIQ
-	o5yj12RL95axM+5g7EO9UxTIOL17MdSJiaCjW8leq55OsrZiHJeeSvxTf/fiy0mYIfqZR
-X-Gm-Gg: ASbGncunC87+EAbizGa3AsHml3Vxe2ztpRG/68/bh68iqpKVZzM0GSiIsJ55gURDFtU
-	0/jzbCPizaSjPW6NSKXHOihbXaD7nPFmXPVc7TuZb3N7kGSQzj5stgfo2ALXLxH8uP4djDm7mP0
-	/wpgCqnTNKpS9rfWcVqwsfgL2mCoketUkVsAwgGhBAENOW47ZeeDF5kaXUk0ofC+Ijmpqj/5FZ5
-	Y2LRkBxPNl3pFaZq61Jwk0VA7fOlleR5NH6XCHgo+3StpglwOx338dGkEq1rDAYAf2EhZFiKuiD
-	eHScn/u0q8DzYconwXNTAqiXVZJxAtz4Xg==
-X-Received: by 2002:a17:90b:5303:b0:31f:1744:e7fd with SMTP id 98e67ed59e1d1-32342121790mr15990088a91.31.1755525589658;
-        Mon, 18 Aug 2025 06:59:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEu7vo2Z28+oGIgafdRKdRRdnXgn+83ZqnfwYDbcN4yit1cp5xdUDY79kWLpeCIOW3hf6Uyng==
-X-Received: by 2002:a17:90b:5303:b0:31f:1744:e7fd with SMTP id 98e67ed59e1d1-32342121790mr15990028a91.31.1755525589147;
-        Mon, 18 Aug 2025 06:59:49 -0700 (PDT)
-Received: from zeus ([2405:6580:83a0:7600:6e93:a15a:9134:ae1f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b472d60978fsm8269896a12.26.2025.08.18.06.59.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 06:59:48 -0700 (PDT)
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
-To: arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	lee@kernel.org
-Cc: Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH rust-next 2/2] rust: samples: miscdevice: add lseek samples
-Date: Mon, 18 Aug 2025 22:58:39 +0900
-Message-ID: <20250818135846.133722-3-ryasuoka@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818135846.133722-1-ryasuoka@redhat.com>
-References: <20250818135846.133722-1-ryasuoka@redhat.com>
+        bh=LERH+4S6MKDV2FjiZGpbA7HIp9naO0TKoXGRD11W5PI=;
+        b=R4oglKmW0jWMdugxI0FqRnWUFHSIWLm4ledQDKz43PhEJoXjKoikLa3Fs76S91V6yT
+         UZGwOABDZkYnLcjOBL8zZ//YE2Rq1HtWRPvpnQJW1PVcQWw4MvoxQ4gxeuoeDaPQK5Pf
+         rEG8X/31cV3Ry3vM7eqURJsufxzDm3m/vNDMLYURe9sjD+OvgF7+op8KtmI7anB72zUT
+         8sh7FeTaUiATVc9A+EC180WVJHAZhqsRh74Qkg/avyTIeEoZvBB0oTQlNGFqMiGGMynk
+         f+0kkx7SxPAYslPKExSPwjktBXFplAiGXy4WxgbGDsln/VQCeg0HzwGIPpeExhsLdMWJ
+         QdYA==
+X-Forwarded-Encrypted: i=1; AJvYcCXybFywbz4Re3vKjyA0poLueS11/D3sTOjixeJ0dOuY9mioFhxtvX+PBavEuIstKUnk3uhsnFXYz5XsTl0ByQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywl5fD9LkKKYiL68qerTRwPAAaf2Olx4rODjmuNo8vX36SuPltk
+	NynIGwOurZhg5Jbu5zvouzo9Vs1JBerLLEGf93n5b2lApZzmH3I8rrmtAlYQ9IFnzkOl/bJYqzE
+	ypR4jO+mLH5r2Ajqc3zgEnph2u8B3jxnlfKSUHg+C
+X-Gm-Gg: ASbGnctp8cHRHA9qmQLDCle05buuGGz3fBGHUmTYbn/mHXgjWwgMPS24h5H9JLOzqeQ
+	YxPCFVQ0SeNJFZeajJWiUfbgSobYcl5pB8gKLFnrrgLace/OUz/Wewc3JC+jk7lUORqusigMSov
+	mwSia91Z/eINDz2pjdqylKqnid6DCuBtU0MQU07Tkb+43L1vbQhY0GsCs1lWfiOptN/YPZP8C88
+	CUBh0JboLBsx6aw1TBQUEQSonoW4cKOEpmKW1Oi6SvkK6Tu
+X-Google-Smtp-Source: AGHT+IHx7KsKVi01XWbXuzwGL6RWiwHgwWOoLF/CZ/s4xxyQzI7mYIcDAffbw55tV9bAS1QQIs4V2clOdwTtPOHB+mU=
+X-Received: by 2002:a05:600c:b8d:b0:459:dfde:3324 with SMTP id
+ 5b1f17b1804b1-45a21857f09mr100132795e9.29.1755525640601; Mon, 18 Aug 2025
+ 07:00:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LKQiA-XeKMBzceyxa19bbLfBvXXVXsp2SQybq0qraTw_1755525590
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+References: <20250815171058.299270-1-dakr@kernel.org> <20250815171058.299270-2-dakr@kernel.org>
+ <aKLzrp0m00J6CCYz@google.com> <DC5INEG2DXU5.DM4JIICEQ2PC@kernel.org>
+ <aKMa7YzO-PwEv9AT@google.com> <DC5KK67M752R.N9PX4LUG2F68@kernel.org>
+In-Reply-To: <DC5KK67M752R.N9PX4LUG2F68@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 18 Aug 2025 16:00:27 +0200
+X-Gm-Features: Ac12FXw71lT-sa08Sow1dkhfN1gjNRFkyLNRIW7cb0GpdCcOBD3KYCaUW0zEc7Q
+Message-ID: <CAH5fLgi6OZaqjnDScDrJ3YjN2a8mJuPiO5MLPUqUWo62WkvvrA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] rust: dma: implement DataDirection
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: akpm@linux-foundation.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	abdiel.janulgue@gmail.com, acourbot@nvidia.com, jgg@ziepe.ca, 
+	lyude@redhat.com, robin.murphy@arm.com, daniel.almeida@collabora.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add lseek samples in Rust MiscDevice samples
+On Mon, Aug 18, 2025 at 2:57=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Mon Aug 18, 2025 at 2:22 PM CEST, Alice Ryhl wrote:
+> > On Mon, Aug 18, 2025 at 01:27:44PM +0200, Danilo Krummrich wrote:
+> >> On Mon Aug 18, 2025 at 11:34 AM CEST, Alice Ryhl wrote:
+> >> > On Fri, Aug 15, 2025 at 07:10:02PM +0200, Danilo Krummrich wrote:
+> >> >> Add the `DataDirection` struct, a newtype wrapper around the C
+> >> >> `enum dma_data_direction`.
+> >> >>
+> >> >> This provides a type-safe Rust interface for specifying the directi=
+on of
+> >> >> DMA transfers.
+> >> >>
+> >> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> >> >
+> >> >> +/// DMA data direction.
+> >> >> +///
+> >> >> +/// Corresponds to the C [`enum dma_data_direction`].
+> >> >> +///
+> >> >> +/// [`enum dma_data_direction`]: srctree/include/linux/dma-directi=
+on.h
+> >> >> +#[derive(Copy, Clone, PartialEq, Eq)]
+> >> >> +pub struct DataDirection(bindings::dma_data_direction);
+> >> >
+> >> > Perhaps this should be a real Rust enum so that you can do an exhaus=
+tive
+> >> > match?
+> >>
+> >>      /// DMA data direction.
+> >>      ///
+> >>      /// Corresponds to the C [`enum dma_data_direction`].
+> >>      ///
+> >>      /// [`enum dma_data_direction`]: srctree/include/linux/dma-direct=
+ion.h
+> >>      #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+> >>      #[repr(i32)]
+> >>
+> >> Does bindgen ever pick another type than i32 for C enums? If so, it'd =
+be a
+> >> downside that we'd have to mess with the type either in the `repr` or =
+by casting
+> >> the variants.
+> >>
+> >>      pub enum DataDirection {
+> >>          /// The DMA mapping is for bidirectional data transfer.
+> >>          ///
+> >>          /// This is used when the buffer can be both read from and wr=
+itten to by the device.
+> >>          /// The cache for the corresponding memory region is both flu=
+shed and invalidated.
+> >>          Bidirectional =3D bindings::dma_data_direction_DMA_BIDIRECTIO=
+NAL,
+> >>
+> >>          /// The DMA mapping is for data transfer from memory to the d=
+evice (write).
+> >>          ///
+> >>          /// The CPU has prepared data in the buffer, and the device w=
+ill read it.
+> >>          /// The cache for the corresponding memory region is flushed.
+> >>          ToDevice =3D bindings::dma_data_direction_DMA_TO_DEVICE,
+> >>
+> >>          /// The DMA mapping is for data transfer from the device to m=
+emory (read).
+> >>          ///
+> >>          /// The device will write data into the buffer for the CPU to=
+ read.
+> >>          /// The cache for the corresponding memory region is invalida=
+ted before CPU access.
+> >>          FromDevice =3D bindings::dma_data_direction_DMA_FROM_DEVICE,
+> >>
+> >>          /// The DMA mapping is not for data transfer.
+> >>          ///
+> >>          /// This is primarily for debugging purposes. With this direc=
+tion, the DMA mapping API
+> >>          /// will not perform any cache coherency operations.
+> >>          None =3D bindings::dma_data_direction_DMA_NONE,
+> >>      }
+> >>
+> >>      impl From<DataDirection> for bindings::dma_data_direction {
+> >>          /// Returns the raw representation of [`enum dma_data_directi=
+on`].
+> >>          fn from(direction: DataDirection) -> Self {
+> >>              direction as Self
+> >>          }
+> >>      }
+> >
+> > My suggestion is to cast on the Rust-side.
+> >
+> > #[repr(whateveryouwant)]
+>
+> What's your suggestion for whateveryouwant?
+>
+> And I mean this in general, not only for this case of dma::DataDirection.=
+ If we
+> pick u32 than things break if a negative enum variant is added on the C s=
+ide. If
+> we pick i32, it can happen that we overflow.
+>
+> > enum DataDirection {
+> >     Bidirectional =3D bindings::dma_data_direction_DMA_BIDIRECTIONAL as=
+ _,
+>
+> We have a clippy lint that warns about `as _` casts, but I guess you mean=
+t
+> `as whateveryouwant`. However, if bindgen picks whateveryouwant too, we a=
+lso get
+> a warning.
+>
+> Ultimately, we'd need to suppress a warning.
 
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
----
- samples/rust/rust_misc_device.rs | 68 ++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+In general, I think we want some sort of helper function to cast
+between arbitrary integer types in const-evaluation that panics if the
+cast is out of bounds. Both here and many other places.
 
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index e7ab77448f75..991a59a3ea16 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -86,6 +86,33 @@
- //!     return -1;
- //!   }
- //!
-+//!   // Set a file offset
-+//!   printf("Call lseek SEEK_SET\n");
-+//!   ret = lseek(fd, 10, SEEK_SET);
-+//!   if (ret == 10)
-+//!     printf("lseek: Succeed to SEEK_SET\n");
-+//!   else
-+//!     printf("lseek: Failed to SEEK_SET\n");
-+//!
-+//!   // Change the file offset from the initial value
-+//!   printf("Call lseek SEEK_CUR\n");
-+//!   ret = lseek(fd, 10, SEEK_CUR);
-+//!   if (ret == 20)
-+//!     printf("lseek: Succeed to SEEK_CUR\n");
-+//!   else
-+//!     printf("lseek: Failed to SEEK_CUR\n");
-+//!
-+//!   // i_size is 0. So the following task always should fail.
-+//!   printf("Call lseek SEEK_END\n");
-+//!   ret = lseek(fd, -10, SEEK_END);
-+//!   if (ret < 0)
-+//!     perror("lseek: Succeeded to fail - this was expected");
-+//!   else {
-+//!     printf("lseek: Failed to fail SEEK_END\n");
-+//!     close(fd);
-+//!     return -1;
-+//!   }
-+//!
- //!   // Close the device file
- //!   printf("Closing /dev/rust-misc-device\n");
- //!   close(fd);
-@@ -114,6 +141,10 @@
- const RUST_MISC_DEV_GET_VALUE: u32 = _IOR::<i32>('|' as u32, 0x81);
- const RUST_MISC_DEV_SET_VALUE: u32 = _IOW::<i32>('|' as u32, 0x82);
- 
-+const SEEK_SET: i32 = 0;
-+const SEEK_CUR: i32 = 1;
-+const SEEK_END: i32 = 2;
-+
- module! {
-     type: RustMiscDeviceModule,
-     name: "rust_misc_device",
-@@ -173,6 +204,43 @@ fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Se
-         )
-     }
- 
-+    fn llseek(me: Pin<&RustMiscDevice>, file: &File, offset: i64, whence: i32) -> Result<isize> {
-+        dev_info!(me.dev, "LLSEEK Rust Misc Device Sample\n");
-+        let pos: i64;
-+        let eof: i64;
-+
-+        // SAFETY:
-+        // * The file is valid for the duration of this call.
-+        // * f_inode must be valid while the file is valid.
-+        unsafe {
-+            pos = (*file.as_ptr()).f_pos;
-+            eof = (*(*file.as_ptr()).f_inode).i_size;
-+        }
-+
-+        let new_pos = match whence {
-+            SEEK_SET => offset,
-+            SEEK_CUR => pos + offset,
-+            SEEK_END => eof + offset,
-+            _ => {
-+                dev_err!(me.dev, "LLSEEK does not recognised: {}.\n", whence);
-+                return Err(EINVAL);
-+            }
-+        };
-+
-+        if new_pos < 0 {
-+            dev_err!(me.dev, "The file offset becomes negative: {}.\n", new_pos);
-+            return Err(EINVAL);
-+        }
-+
-+        // SAFETY: The file is valid for the duration of this call.
-+        let ret: isize = unsafe {
-+            (*file.as_ptr()).f_pos = new_pos;
-+            new_pos as isize
-+        };
-+
-+        Ok(ret)
-+    }
-+
-     fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result<isize> {
-         dev_info!(me.dev, "IOCTLing Rust Misc Device Sample\n");
- 
--- 
-2.50.1
-
+Alice
