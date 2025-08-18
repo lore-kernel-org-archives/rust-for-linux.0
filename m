@@ -1,86 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48163326D43
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 12:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DDE149E17
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 12:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755519522; cv=none; b=tpBj3lfQqDi34ISNQRnB4l2qcV+YlkIEGDfJ+/zoe5gwIm8E3NoVsG5JSR7ohza/Yvt4yNwyoDGaHGEpTN3Ofg3Uj8osRx/Qf0/aXWOZE6iwt19ZaJFiaqLKCDCOGiazw5P+m5Mohn4y0RBALa1+fbPpy+1wgWu5EoGM12i1nFo=
+	t=1755519622; cv=none; b=DpbH5wHoo2s0714B0sAgak+p2ch4cJtudttiotEemcweR66Hw9I9HcJMIelZZfwzo2hLy267GOQ81wrC+OEDmsZ46oWQ0NwHUcX1EeC0Zpt/TXGzg6ozkHtniNCxD6pogkmye2w9Hi6imF75hgMfg5Cd2ljwxY2nGHrAyHfSMuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755519522; c=relaxed/simple;
-	bh=ASFLcmiJk7xJ9bP+3ilUkY+IZE/yDU1+lpovQA/Jb5g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k/lhLTSOWVEHdyAuc5kKLQjJxD93Vw2ak2dbAUyOSTewpO7tuVn4yRT2RriwbxrRB4WT2ZcrTVNVxz6EQP8YoktWNbLDteNCTIHRpDFo6tb321VrMOsiRWCo8/8+dg10SdFIAW3qu0heMV9sF90C+xsVvdwuj9GuhmGpTwOEifw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODPymvq5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755519622; c=relaxed/simple;
+	bh=cD8CE/3bhnnbXlx5QfO6l/YUWH5jZa+hBHlWEOFlU4s=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LDZ34nNkbUT5AANHQPJiWS7plKaIkn/+wWDveHz6UnK9lwuDpypEXZi+Tr265qNl4gmsU/witB8SVLgOg/LTQKjTTJau91CAiGVp9JwjC0ocHpI+5DFOrMH0Ze1n1jSlENeZHIgE5d10kS3gIXXyRMV29IKCpH3oYTC3zt7iPcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4QmiyIlG; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODPymvq5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E887C4CEEB;
-	Mon, 18 Aug 2025 12:18:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755519521;
-	bh=ASFLcmiJk7xJ9bP+3ilUkY+IZE/yDU1+lpovQA/Jb5g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ODPymvq5w8C2MzaHXIN7CY1qjGIQVbhXPmmW8udvx019v8I52FeuGQ10B5kWYjW12
-	 M4b63gEpWIolzSN2o7rzUXrCGjrO9xfw5VuHU/3kfh3r0+26INlvUkiUHcvRMrNwBL
-	 rgcQKRf+b+PmQXTnuAsrbx1V5H2L82zbytUSCnKVpa70hkl3dS5cIGtP+Z61GvHvY5
-	 x/0AoIixWnWlYCY85bCwRVE5f8+Zc6Iow/atqpRp21Da9Qp4qiU59IVMjfr5cuwk6j
-	 pHuycXTsB2UPVhTMiLGT9AnBK54qqagUF+A9t7k0N75eyp6vbvxDbM+Ul7EvnqJx0b
-	 Blf9ig4q19/ng==
-Message-ID: <958ef505-8713-4f88-9f24-5971ce8a08ce@kernel.org>
-Date: Mon, 18 Aug 2025 14:18:36 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4QmiyIlG"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b9e4146aa2so2476573f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 05:20:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755519618; x=1756124418; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VXVEWh+UjIimvjXTo07gyoqfE3DCJt1vnCJfigFmAGs=;
+        b=4QmiyIlGrIOH1Vrmo4l+2yon7SAemGun/v7p3h5C7Y0e/XE7DprQQsABoe2v+SsQ0x
+         qtM1ObCTrn6iFvBmcsezI4bYMb6E0rYcOB5AUHlvr0fRtNUPFUW7NNdOpsTW4ZSq5OhV
+         VIpODr0JbhTJkZQbe4inUVoqU9MDFVbpPPrNOm0KadqBbjpyomMBsh8cpceJsCt32CSJ
+         znSk3TPvmzHuAmqQRo6FbDAk7+ang/2Fu6Ym5eIcNfGWVQ1fS5a2duVSIGgN8cvPd3UG
+         ZcKnGZ7h9zCC0V3oUeeVaxoLf/JkYEuSJdLSokH2uM0U0YkMveuhCAcU57WqpojuxHH5
+         HZbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755519618; x=1756124418;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VXVEWh+UjIimvjXTo07gyoqfE3DCJt1vnCJfigFmAGs=;
+        b=uk4BVXYuM1Ur0wAjnRb+dYASCvigV/856CMLVUwBnRXpFwRY0pH1OmgUY/+MqBLHQw
+         yOVxH+s9yFiWEpkq3NFK+ThdTcKnT0hZH1z0d9OU4y+LFqAIBZ50+RR14r+yv42FoidI
+         e0R4K3OgCYpjqVAFJn1I8O9wuP9e2s7FVPNFbwq7/hyyoXmdcGStYPS6HTOmBmqtKKgY
+         65ixw2C+9xUC6CgGPine2sjGGnFPnXPJ/S4G2YI5jJ8wBrTNBPCKtjqadXgKQ2sJqEjh
+         n53dWgn2B5VzTfyRP1yik1EjH2psTXrkXhjkHv4hWFdTSLa27ekENzqEIM3Sr1lMQcTC
+         igfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTeYZkX5+74bhEjIc+/ckff2+zAacu+bPrMkYwCHdNcFm1X/Lzk8DbnEgux7weN4sOTNO0i7gVc8d5aGAhaw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrK3LEURX1606VvZewUh+yV+IJ3NW4MEvBTsss7fQbvGSdXumD
+	vPgietYY0Q/B405xNIErSGM1IVIxwGANspCUU9EQ8tp8J2fcX8PkLvxpKilp0C3AITKbKty8I/m
+	q96sHCLqyLv4B9Uwbrg==
+X-Google-Smtp-Source: AGHT+IEsgbrPLrIZ6y0LhI19/RSkSmWScuqCJSGurfxV+xVh2HQWIDNMmSN339uuKUPu69gmGloLDhhGrdmggRk=
+X-Received: from wrus6.prod.google.com ([2002:a5d:6a86:0:b0:3b7:9669:4858])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:430e:b0:3ba:d257:b662 with SMTP id ffacd0b85a97d-3bb6710022cmr7713380f8f.18.1755519617861;
+ Mon, 18 Aug 2025 05:20:17 -0700 (PDT)
+Date: Mon, 18 Aug 2025 12:20:16 +0000
+In-Reply-To: <DC5INTQKY0EX.1T4HD6OU8C4PI@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/7] rust: page: define trait AsPageIter
+Mime-Version: 1.0
+References: <20250811213851.65644-1-christiansantoslima21@gmail.com>
+ <DC0INEKNZPSE.WLEQH24SLW1I@nvidia.com> <5204b598-7792-460b-bec2-e3a4a4c7e32d@gmail.com>
+ <DC5INTQKY0EX.1T4HD6OU8C4PI@nvidia.com>
+Message-ID: <aKMagEO9O6WNhIUK@google.com>
+Subject: Re: [PATCH v9] rust: transmute: Add methods for FromBytes trait
+From: Alice Ryhl <aliceryhl@google.com>
 To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com,
- urezki@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, abdiel.janulgue@gmail.com, rust-for-linux@vger.kernel.org
-References: <20250814093427.19629-1-dakr@kernel.org>
- <20250814093427.19629-5-dakr@kernel.org>
- <DC5JGQHBJ37U.3MFJ8XDQ3TVCN@nvidia.com>
- <4f97ce63-9e96-43ab-b3e1-20960bc2027e@kernel.org>
- <DC5JNG29SP9H.173LYQAFGZRWK@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DC5JNG29SP9H.173LYQAFGZRWK@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Cc: Christian <christiansantoslima21@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
+Content-Type: text/plain; charset="utf-8"
 
-On 8/18/25 2:14 PM, Alexandre Courbot wrote:
-> On Mon Aug 18, 2025 at 9:07 PM JST, Danilo Krummrich wrote:
->> On 8/18/25 2:06 PM, Alexandre Courbot wrote:
->>> On Thu Aug 14, 2025 at 6:33 PM JST, Danilo Krummrich wrote:
->>>> +/// Trait to be implemented by types, which provide an [`Iterator`] implementation of
->>>> +/// [`BorrowedPage`] items, such as [`VmallocPageIter`](kernel::alloc::allocator::VmallocPageIter).
->>>> +pub trait AsPageIter {
->>>> +    /// The [`Iterator`] type, e.g. [`VmallocPageIter`](kernel::alloc::allocator::VmallocPageIter).
->>>> +    type Iter<'a>: Iterator<Item = BorrowedPage<'a>>
->>>> +    where
->>>> +        Self: 'a;
->>>> +
->>>> +    /// Returns an [`Iterator`] of [`BorrowedPage`] items over all pages owned by `self`.
->>>
->>> This is almost obvious, but maybe specify that the pages must be
->>> returned in ascending mapping order?
->>
->> There is no requirement for AsPageIter that the pages need to be mapped in any
->> address space.
+On Mon, Aug 18, 2025 at 08:28:18PM +0900, Alexandre Courbot wrote:
+> On Wed Aug 13, 2025 at 3:00 AM JST, Christian wrote:
+> > Hi, Alexandre.
+> >
+> >> I mentioned it on v8 [1] and v7 [2], but the tests that break due to
+> >> this change need to be updated by this patch as well. This includes:
+> >>
+> >> * The doctests in `rust/kernel/dma.rs`,
+> >> * The `samples/rust/rust_dma.rs` sample,
+> >> * The example for `FromBytes` introduced by this patch which uses `?` without
+> >> defining a function.
+> >
+> > Sorry for my inattention, I'll fix this in the next version.
 > 
-> Yet, isn't the order of iteration important even if we don't intent to
-> map the pages?
+> Ah, as it turns out you might not need to.
+> 
+> We discussed this patch a bit during the DRM sync, and the consensus was
+> that it would probably be better to keep things a bit simpler for the
+> first version. The `FromBytesSized` trait in particular was not very
+> popular; a better long-term way to provide implementations for
+> `FromBytes` would be to use a derive macro, but that's out of scope for
+> now.
+> 
+> Instead, we agreed that the following would make a good first version:
+> 
+> - Make the `FromBytes` trait depend on `Sized`,
+> - Provide default implementations for `from_bytes` and `from_bytes_mut`
+>   directly in the `FromBytes` trait,
 
-Not as far as the AsPageIter trait is concerned, any additional guarantees are
-on AsPageIter::Iter.
+You can put the Sized requirement on the methods, rather than on the
+trait.
 
-If we find a specific classes of guarantees we want to provide, we should
-implement additional traits on specific AsPageIter::Iter types.
+trait FromBytes {
+    fn from_bytes(bytes: &[u8]) -> Option<&Self>
+    where
+        Self: Sized,
+    {
+        ...
+    }
+}
 
-This reminds me that I forgot to mention this in the context of why SGTable
-wants VmallocPageIter for now.
+> - No implementation for slices for now,
+> - Consequently, no user code will break due to the addition of the
+>   methods, which is a big plus.
+> 
+> The simpler version that would result from this covers all the immediate
+> use-cases and would be easier to merge, which will give us some time to
+> think about how to handle the non-sized use cases (probably via a derive
+> macro).
+> 
+> Do you think you could write the next version along these lines?
+> 
+> I feel like I misdirected you with the `FromBytesSized` trait, so please
+> accept my apologies for that.
