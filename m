@@ -1,148 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1E41E868;
-	Mon, 18 Aug 2025 21:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430E5254849
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 21:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755551039; cv=none; b=Qa8w1Py/wPTgSnjIG/a2R1gO2zCqD0IpF+ZZsFDrdm4SPyWCSQexXhtWzQ4SjZsJxPlvWf5mePKkTIKB3fMo9fO3LHcKXOZpAd3PcwrJodk2tvwtAxtBuWa+gPt0ffhZGawFcbrCBISAmHWbz2WlNe7NPCq/9upt7O37Og0Bb3Q=
+	t=1755552167; cv=none; b=AiLn25HFSD/dopJFdi+C/Lyb1BMr4mGLWFdS1B/0y5zUnML+ZpWfl4IAPWZa10ReF2XxciTMKp7CstEEqkA50E1dsECBFHy7ZlC3STLKxQuS375coodnO7RyEpub/5u8/vFZ7fAB+rOg7i4HpdKuRk2UMMpY9Zc7gJCk950jdJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755551039; c=relaxed/simple;
-	bh=btvZKybT7d1jpu02lvpOVxHne9dwrDNIeYligAnPnJ8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=JgPU41f6tKK7c73bG8nedsEGuOq5IAJmPqI9tQF0WNQyXnMtYjjDpvJ/xdSGdAYOfjxHT7RouklJ7ddkN9YRW7cDuv38D2iGgezMiuq+wqOGt/FVPwNog5O0iTQUqZZqs4ywn6RfJCidQ4QLGFOuFu1Y1IHPMVWxPbrov8rPWvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jeNO3M92; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755552167; c=relaxed/simple;
+	bh=SV0SovoncvtQUIWdiz5ZimeTSUpDBwkq5eqoPwW+Sy4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fSv2QFQWxu3JRINJbnPN7jQ9HJ1ya8IJnPTo7vxOCdEm8qVMdfr33NmPQs6YE3dh1UM6UjO5wINrJD49YRu/ivrdxMwZBhgZlQHU9SHoTO/tBG/8wsS4mKR7UrepW0mFYfCCza13oL5AorhC2DI4b98IDcz9ka6HZagAFW0ahBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=TYafCGnY; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jeNO3M92"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D64C4CEEB;
-	Mon, 18 Aug 2025 21:03:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755551038;
-	bh=btvZKybT7d1jpu02lvpOVxHne9dwrDNIeYligAnPnJ8=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=jeNO3M92hfVWyanIjhNQS9YJ6SXIZ0jeBTUsNv5b+OoN5gFcbndh0231FbcwpzfvY
-	 wXraXz3eDLauh0z/wE//yQCqzU9rID3vUk587q3ZT1+7JA5IoimTrEJLqc9hDRUXt4
-	 lef2lCV68yg07ZrqB/TzMhhZaE6h+F3QL1b98U7GuB7RW3miceLe9HTswx519dIe/o
-	 gJblTlrBfd2+RThfk5d2ffobxSADtT1goSdSDQbDVCQWTKH3DxadRN2lXt3p1/ozHm
-	 ndXJ73YR9rJb0g/78fNV8swNCIChnEjADFauj+ARwy6Z3TKuhy7bcZdJBA++RyOFLr
-	 +SrUJBNcQ5Nsw==
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="TYafCGnY"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76e2e613e90so3333209b3a.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 14:22:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1755552165; x=1756156965; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SV0SovoncvtQUIWdiz5ZimeTSUpDBwkq5eqoPwW+Sy4=;
+        b=TYafCGnYL/KXogHJLkvcXm3NOyc4KE4KkR2QZ513U1WcBGTJsFVPVFqNXzU4iWNMEc
+         lCTXxMJs869490o/wIGJbf9EaEGTBPAlSLzVELa+ipCNCswRw0WdOTNeRAKYq+iyfOb6
+         t3X0oqwGoxFYhGMHzngc8AERibyBQ1G8V3seOWdZ28MlPuMDY+xZWzLpPqSPLVOyKAsh
+         W2rnZyPDyANwOkC6E16dN+KRCAYh3IiaRJFVdVwgmGsmLL99mBMuq1Gc0thfhFnwvZpQ
+         rX/BaoZkYALKSugMMOhmAi3qxMxItSZlubNWQ+ayiMum/1jBT+twJ5kFb9tPJuKgVGP0
+         kdrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755552165; x=1756156965;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SV0SovoncvtQUIWdiz5ZimeTSUpDBwkq5eqoPwW+Sy4=;
+        b=CYI/wXA04YvSt4cpngxojvCEmHZRrPzqnt1/3NooZ5mGX/GgA3V4cYmWb9J4Z96kl2
+         5oq0bV2FurbcE/OjJ96SqKT5ddZT6oq9u4I58WyyOeedTlsncZBBe9XDeletQJ1gusIi
+         /AshmrhcHar72OEgzL5DAlmAYAtRx5FKRQu+ouUDw9GCvVeUR60MB0x81Sj3WXD6wjdW
+         31svDARgTgoCCENeInsjG1HA278bqA+HxynvDWmI5SpeyIURTP24GvewX4YcUgBJaVp8
+         zTn9S25AQzZbggQeIzOrauclTwwuSPNiGZpPut8zafaDfXCfyot7Gv+CIaV+DmuDjBTE
+         FThQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXgmBO/GS5h4wwRob3nP09czI0eJZvRIx1h+WPVbfzE14WplTQuQXdAwTsB/itAwnuDrQ6ySq/UGfgGw7Fn9A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzic6OkYXyn0UYqKNQOBzlh937UrBW0NVOY0H6dGhOZL7KiuZEk
+	370W9mo0B6OpI5GmFXj5O3pmBQgnddhrOp9N9z7ICtWxGPlgIOsY8kBkgSgMYIM+Ri5h1Sk/Y7Y
+	K81X42TTWH8TNy/TkUiAdbwMA+eaaJSZ/QXmZ/8+N
+X-Gm-Gg: ASbGncvUuHrcsFAl8ujHdgjq/Swzh3pIWa2CJxCKOMR/OulD2ooziR0xY6EftWXjmxx
+	QSvcdz1reaiLjQtLFY0Kd4+YYudIiJucQURz4caUdbHP4EdFh5VZIwQ5AmhiBApfoND7mPdHF5N
+	ahctnaFxGrzGdqDZXQehU1SNkXGgHdR/3kREbz5sBRS1UwCkfhPG6kEoILDTtOWFf5pHXcXXXym
+	lkgV4Y=
+X-Google-Smtp-Source: AGHT+IFrpf2SwebDg+GiltDgtPrrGLf0iUO2py4Zq3qOIraT9VCfP5Xv4Pr/eE1gzrWGIUk8h6MeQPTZ/yeBUsgJzAo=
+X-Received: by 2002:a05:6a21:3282:b0:22b:3da9:fb33 with SMTP id
+ adf61e73a8af0-2430d2fa39bmr98481637.12.1755552165437; Mon, 18 Aug 2025
+ 14:22:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250816114409.10107-1-shankari.ak0208@gmail.com> <aKKdULYbLFRMS9qe@mail.hallyn.com>
+In-Reply-To: <aKKdULYbLFRMS9qe@mail.hallyn.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 18 Aug 2025 17:22:33 -0400
+X-Gm-Features: Ac12FXwqH4hs8Wu1pRkY76N_A0MiHuz9hahX6-bMGzQ9hZA7cdN0mZsOzdI8Fsc
+Message-ID: <CAHC9VhRwpYx0jVybcAnGdm4AGDno-GwyCzZCS7U+56Fwu2tuCg@mail.gmail.com>
+Subject: Re: [PATCH] rust: cred: update AlwaysRefCounted import to sync::aref
+To: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Shankari Anand <shankari.ak0208@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	linux-security-module <linux-security-module@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Aug 2025 23:03:53 +0200
-Message-Id: <DC5UWIXHVAGI.1TTU2K9WIC1E9@kernel.org>
-Subject: Re: [PATCH 1/4] rust: dma: implement DataDirection
-Cc: <akpm@linux-foundation.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>, <acourbot@nvidia.com>,
- <jgg@ziepe.ca>, <lyude@redhat.com>, <robin.murphy@arm.com>,
- <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250815171058.299270-1-dakr@kernel.org>
- <20250815171058.299270-2-dakr@kernel.org> <aKLzrp0m00J6CCYz@google.com>
- <DC5INEG2DXU5.DM4JIICEQ2PC@kernel.org> <aKMa7YzO-PwEv9AT@google.com>
- <DC5KK67M752R.N9PX4LUG2F68@kernel.org>
- <CAH5fLgi6OZaqjnDScDrJ3YjN2a8mJuPiO5MLPUqUWo62WkvvrA@mail.gmail.com>
- <DC5Q80UUHSUV.360VLIC6DYZ78@kernel.org>
- <CAH5fLgjymw6Mr8qv8NDFA8hz+nfh3-B4XcZ_N-UAmJrc3Ug_QQ@mail.gmail.com>
-In-Reply-To: <CAH5fLgjymw6Mr8qv8NDFA8hz+nfh3-B4XcZ_N-UAmJrc3Ug_QQ@mail.gmail.com>
 
-On Mon Aug 18, 2025 at 8:47 PM CEST, Alice Ryhl wrote:
-> with no warnings and build-failure if out-of-bounds.
+On Sun, Aug 17, 2025 at 11:26=E2=80=AFPM Serge E. Hallyn <serge@hallyn.com>=
+ wrote:
+> On Sat, Aug 16, 2025 at 05:14:09PM +0530, Shankari Anand wrote:
+> > Update the import of `AlwaysRefCounted` in `cred.rs` to use `sync::aref=
+`
+> > instead of `types`.
+>
+> Thank you for forwarding, Miguel.
+>
+> As far as I can see from the included links, this looks good.
+>
+> > This is part of the ongoing effort to move `ARef` and
+> > `AlwaysRefCounted` to the `sync` module for better modularity.
+> >
+> > Suggested-by: Benno Lossin <lossin@kernel.org>
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> > Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+>
+> Acked-by: Serge Hallyn <serge@hallyn.com>
 
-+/// DMA data direction.
-+///
-+/// Corresponds to the C [`enum dma_data_direction`].
-+///
-+/// [`enum dma_data_direction`]: srctree/include/linux/dma-direction.h
-+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-+#[repr(u32)]
-+pub enum DataDirection {
-+    /// The DMA mapping is for bidirectional data transfer.
-+    ///
-+    /// This is used when the buffer can be both read from and written to =
-by the device.
-+    /// The cache for the corresponding memory region is both flushed and =
-invalidated.
-+    Bidirectional =3D Self::const_cast(bindings::dma_data_direction_DMA_BI=
-DIRECTIONAL),
-+
-+    /// The DMA mapping is for data transfer from memory to the device (wr=
-ite).
-+    ///
-+    /// The CPU has prepared data in the buffer, and the device will read =
-it.
-+    /// The cache for the corresponding memory region is flushed.
-+    ToDevice =3D Self::const_cast(bindings::dma_data_direction_DMA_TO_DEVI=
-CE),
-+
-+    /// The DMA mapping is for data transfer from the device to memory (re=
-ad).
-+    ///
-+    /// The device will write data into the buffer for the CPU to read.
-+    /// The cache for the corresponding memory region is invalidated befor=
-e CPU access.
-+    FromDevice =3D Self::const_cast(bindings::dma_data_direction_DMA_FROM_=
-DEVICE),
-+
-+    /// The DMA mapping is not for data transfer.
-+    ///
-+    /// This is primarily for debugging purposes. With this direction, the=
- DMA mapping API
-+    /// will not perform any cache coherency operations.
-+    None =3D Self::const_cast(bindings::dma_data_direction_DMA_NONE),
-+}
-+
-+impl DataDirection {
-+    /// Casts the bindgen-generated enum type to a `u32` at compile time.
-+    ///
-+    /// This function will cause a compile-time error if the underlying va=
-lue of the
-+    /// C enum is out of bounds for `u32`.
-+    const fn const_cast(val: bindings::dma_data_direction) -> u32 {
-+        // CAST: The C standard allows compilers to choose different integ=
-er types for enums.
-+        // To safely check the value, we cast it to a wide signed integer =
-type (`i128`)
-+        // which can hold any standard C integer enum type without truncat=
-ion.
-+        let wide_val =3D val as i128;
-+
-+        // Check if the value is outside the valid range for the target ty=
-pe `u32`.
-+        // CAST: `u32::MAX` is cast to `i128` to match the type of `wide_v=
-al` for the comparison.
-+        if wide_val < 0 || wide_val > u32::MAX as i128 {
-+            // Trigger a compile-time error in a const context.
-+            panic!("C enum value is out of bounds for the target type `u32=
-`.");
-+        }
-+
-+        // CAST: This cast is valid because the check above guarantees tha=
-t `wide_val`
-+        // is within the representable range of `u32`.
-+        wide_val as u32
-+    }
-+}
-+
-+impl From<DataDirection> for bindings::dma_data_direction {
-+    /// Returns the raw representation of [`enum dma_data_direction`].
-+    fn from(direction: DataDirection) -> Self {
-+        // CAST: `direction as u32` gets the underlying representation of =
-our `#[repr(u32)]` enum.
-+        // The subsequent cast to `Self` (the bindgen type) assumes the C =
-enum is compatible
-+        // with the enum variants of `DataDirection`, which is a valid ass=
-umption given our
-+        // compile-time checks.
-+        direction as u32 as Self
-+    }
-+}
+As mentioned previously, I'm still not well versed in Rust so as long
+as Serge is happy with it, I'm good with it too :)
+
+I'm guessing it probably makes sense to include rust/kernel/cred.rs in
+the creds MAINTAINERS section just as we did (or will do) with the LSM
+Rust shim?
+
+--=20
+paul-moore.com
