@@ -1,35 +1,47 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735C020322
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 01:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CED23505F;
+	Mon, 18 Aug 2025 01:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755479791; cv=none; b=hoVPGNVgl6IfSTI7R/R8wZZueOxQhbaf+tBcw3+p4YpGfgqhXsTVtVMfvFlfMD0y9tqwCI46p9itxEpBKuFhTNyvKjfIysRs4pjkIqgym/rRD4qGtR6ZXLyKl+Jgg1XLf7G2U1jYjot4vxIt1qg/RJbeB/OQUo8OwI5ySpDjwQY=
+	t=1755480471; cv=none; b=ZlBvOjoSNRKNdWr1Lro4vgCC6cqauyMl9LnOan9oeBifSzgKnQpYTREAcUn/g3iCoB+G56xDhEwj6Vl8UVgZBuAjQvb0ZHOhLqrF75a8hOEWGyhwL9HYig0JwC50269Q9n7PkvTl6D/6c70nrzXWROhPQ3+3ygctsgUlnA7mjEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755479791; c=relaxed/simple;
+	s=arc-20240116; t=1755480471; c=relaxed/simple;
 	bh=gMG8MJrWuk/qUqRkiJQCye5ZQGoAL+OWsy+X2CGo3U4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RnqQ4owEuYFSKx38W0kS/W+fn8rjyhyTGCVI0NCUiEsuFuUXoh89dsVcrWa1ZLnmoaWqVF5Cqtz3tqLF752nrmYIu7IvaQqmVsB4Roh87XfWHCbSIuPIQWq5TTdLbHup0saJgtz/IS7d3Cpi7EjFKyFVoMdbNRWD5z2JFYdXNDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=VER+fHUC; arc=none smtp.client-ip=117.135.210.9
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OAoB9On8Fp4N+DZ8TOUvnNiLJhUP7IzD6qdtXni6vpgr2BcCM93xt9WVt1jGOsY6ur+2vxdCw0C18OevK/dRmDryAXRfjN6b7o13xCeHrooX8iPC/pApGDdtKOfN8DMn9sZ8IsKAA8aU/7rEW1WU5i0haR+RHX1TgMjJ1Zg5txE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Pq+7/l0n; arc=none smtp.client-ip=220.197.31.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="VER+fHUC"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Pq+7/l0n"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
 	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=4Q
-	SZcLqtO/Xp+X7K7U2xBjh39ylCBB34t0ZX+reOtO4=; b=VER+fHUCvOwatYkRUq
-	e5/IrO0h1dcQyJfQssysPWbAlKNZ/j3iPi/H66cnVKFU2tuEgDIez7IdczjuQQrT
-	65vQWmJGUocqG8x3hUDXTnZ9GNyfp+EN12BJgvR/pFE+2ldBQaF6Ef77U0w9K8jP
-	aRq4JovbPkg8+HooEmWG9QMYw=
+	SZcLqtO/Xp+X7K7U2xBjh39ylCBB34t0ZX+reOtO4=; b=Pq+7/l0nJ1gOHLBj95
+	1jtLW5KYHhY8d3cJHUDYBodO4Ie8ah18lG8rnA343iQg8HPB/yq3YwI//yywajN6
+	rSk8DIaLgpP1zWdpgeV6L65wTsAdCBzdx1n6b0xdgmDX49gMhxR+0gSlv/Be6Td/
+	t6UST1pNKmNQNkdSX8ZJ9+rdc=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCkvCgCXP2vffqJoivKvBQ--.57607S2;
-	Mon, 18 Aug 2025 09:16:15 +0800 (CST)
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDXD+tbgaJoNfzABw--.47615S2;
+	Mon, 18 Aug 2025 09:26:51 +0800 (CST)
 From: lingfuyi@126.com
-To: rust-for-linux@vger.kernel.org
-Cc: lingfuyi <lingfuyi@kylinos.cn>
+To: Tamir Duberstein <tamird@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lingfuyi <lingfuyi@kylinos.cn>
 Subject: [PATCH] rust: xarray: optimize lock functions with inline attribute
-Date: Mon, 18 Aug 2025 01:16:12 +0000
-Message-Id: <20250818011612.1839789-1-lingfuyi@126.com>
+Date: Mon, 18 Aug 2025 01:26:48 +0000
+Message-Id: <20250818012648.1841387-1-lingfuyi@126.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -38,12 +50,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCkvCgCXP2vffqJoivKvBQ--.57607S2
+X-CM-TRANSID:_____wDXD+tbgaJoNfzABw--.47615S2
 X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw48AF1xJFykXrWfJF1rXrb_yoW8XF17pr
 	4DGr17CrW5XF40vw17X395Ga4rW3ySqr45Cr4rKw1Iv39xJF1qkr1Fqr1SvryqyanxAasI
 	vFyUuFn0vw4fuFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07USeHkUUUUU=
-X-CM-SenderInfo: polqwwxx1lqiyswou0bp/1tbiYA+tR2iiepRf+gAAsE
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZFxUUUUUU=
+X-CM-SenderInfo: polqwwxx1lqiyswou0bp/1tbirxmtR2iie-hvlQAAsv
 
 From: lingfuyi <lingfuyi@kylinos.cn>
 
