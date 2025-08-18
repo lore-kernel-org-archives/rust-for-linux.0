@@ -1,99 +1,110 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81C82BD586
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 07:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B7E23E358
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 08:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755503924; cv=none; b=iFDj2xLIlNjIgR9lNpy8xVecEd1SoCq7M98d/+QoD+XcGK8z9AvazejUqMavsN+3bccbCOSqyPBWgPmd69HoUQnp6VxcTa4syFWsYSO750raApNzsm+CtKutKcJGwTZv9+48B8Ln+Y3Redxf7OKPJk5dp1xFqHzwbzuIfQFuAVM=
+	t=1755504270; cv=none; b=JF3+ZwMXYSqwhSfD2HbeUnqKScjSKacKff6DWjEEwyJkcCcC4nlY8nrgZY/BJYKGJWP3JQML0chhx9L9Zou9wYUuE/D0jBYWXGI1Y7G/hWSEQ9ra9xp06UffTMfDD6dfKdcDdnTZnZwnMkFFkIxpHzJ5EKbJaxs8HMCUZ/2OqAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755503924; c=relaxed/simple;
-	bh=oKBzBkYjQ1AhCU9AulAtxppsQb1mgr8Yf0r+sRBOG1U=;
+	s=arc-20240116; t=1755504270; c=relaxed/simple;
+	bh=+ogGHNp5B2vuw8Sx3cR50dRQPqv7sPx9Uj4pSENJ8eI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ie6wZ6WZAp7fnZDM91ByX3huHCKRmAWm2NCUyJ/eeEXDv/2F9FKOa0yk28Dx+bAzOxOtnvIPA8ndW/FcybJSyAaOnmyPuQMz5CfgtFhfBkJMVu4IXCHiY9Hh3m40zR5EUxx5XC+jL/vF/O4HPmI5WyLfUqUrYRJErpZvdVAfOBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cSZYC2DX; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=N6ehkHc1CvvzF/24ZEB7aJZyqTxdHHTeltkf54mNBtPC3y/wT1oeBV4ktme/j2n9njqZHCgSAcAq/iMh8q0oAK5gX75MmmcQNijnBVcRVElRQQifRwXPz3aB6/ulufh0E/ATgQVG2BpxcrcIeGW5Fy32FFI15Ip5Xi2g9wvtsvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wkolqyu/; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cSZYC2DX"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-244581eab34so5995175ad.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 00:58:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wkolqyu/"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3b9e418ba08so2168854f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 01:04:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755503922; x=1756108722; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755504267; x=1756109067; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oKBzBkYjQ1AhCU9AulAtxppsQb1mgr8Yf0r+sRBOG1U=;
-        b=cSZYC2DXSo0N7OH4SU+GqwX3NOFW3cEVkuVDiab9QjDkwcQios1sMopYGJo3VK/F4E
-         bnYzClOUohvNIrwt3UOYrD9tSoMaQM3N4nHBYQdtP83CQItw2qS18fza8pEn4KsrOTLb
-         II/PTNeyLSSpewN2QSvzxzuMVM1QfCfxS/ECp9OjfbMTO+nAy1s8fanYJEWqfJKfYaxP
-         tWcoCGiszokEn3JNs7lVHhqvz7O988dPp/yXg25nqwo7Y1yu9zS3sjPR/2GxkGh7/4An
-         /V92q3UnVNkWSSd9+/KFftyTDwL7VhR5SU+YEq2BOgMcOg9D+utqkGjcoUwFcag1cwJu
-         gRCg==
+        bh=+ogGHNp5B2vuw8Sx3cR50dRQPqv7sPx9Uj4pSENJ8eI=;
+        b=Wkolqyu/+7gjEymkd5EfbpQ4sKgwlle1xv3Omwa66DAwGACFoxKiGJUKVYW4NYZayC
+         qMorlle65vAlRUZEKUdvpvA7H/9Q6qr/dwfMmii8HwZr2h9HHl/7579U5ZcBRXhxyO1w
+         YF4zkm+KCraamRZD+zrpvERZV50p3Wm5O62lJ9ycez6QjALqOnIu3i6v+0jGbUN7fMxh
+         U+NPEv9UQhlcR9xU/7CywN++1scd09szxSxH2vTTB9NkCuxrfMQMNucOhPQmC5iNeKZg
+         KQUve7M2X8B+BhwkfpYiae76YCcLxL+e0TMaI1Ycn3nf3a5wkFopn1ez8ibKsNBi9qyQ
+         9z6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755503922; x=1756108722;
+        d=1e100.net; s=20230601; t=1755504267; x=1756109067;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oKBzBkYjQ1AhCU9AulAtxppsQb1mgr8Yf0r+sRBOG1U=;
-        b=grfHltcqLgyFmkRD8Jiw3q8WumkmZDwpQyHmsdrPkzTyHqC/SDOIt3zBb5ULphEoYa
-         28Kl1Q9jSrJu+kUzBDPrChnaOibfr1eKpBjU059uMczlTflrN3oZjBId2fEEF2ouFuSv
-         Fmv3vx3n/CwciniRmvgwU5FRjVmFo9wcCNk6KESJN1ijiCqXEAb4LgVPD/gfWCuHIiqi
-         KHXlJPKxQEaiG/3S0h1Qt39BdfV/qaKCvlqK3nWQAMTW8e56VPGnQdQnpj+50CxLoYKI
-         Pqf+FEQ06PFetKh+XxPw77WufCWBRycdeotfv1+OX6ufHTyBCviIdv/75GK9q21ufaOA
-         pPOQ==
-X-Gm-Message-State: AOJu0YzCw+8TWOOuZU2TwADyJezlc+TIB8lJyx3ertsurcO6i8/ZmkCy
-	oEMjwEtvhLAXrz8Z/sSR2bN5nsBb51wNGxdQZCYRg2k4OsIaTpKBaOQpql9x8KyN4tckRzidYJo
-	hlC4FsyYuZ46pS+lcwoiF1oXtazDJgQs=
-X-Gm-Gg: ASbGnct8AzInpKwm/TJorTfE+37mukF8QT2GoJ11TViZRnLdkHjm0y2LSN8s9QIFUIH
-	PxH/FW4qYI42425pIphia2QxM1N+w/y902er0qkg5iQDux/vMa1WvBpn5UAeW0MDjAJMWSq+r3+
-	wE3KMxBh1lDwsu93ujNRV/gWsn1MHtfE7xwEoQqpYq+Ruk78ROnQSz9HmKoSz3CWgYPOsCZMreO
-	LrUC/vY
-X-Google-Smtp-Source: AGHT+IFxsuN8OTpCzaDIPZwNzASJSuMc5/zGYCAhP2DbEUgRVZJGqD55MUjWsyLjDAxtE6b6iZEErjTVe92wUYFy2QM=
-X-Received: by 2002:a17:902:db01:b0:240:8717:e393 with SMTP id
- d9443c01a7336-2446d78f982mr63555435ad.5.1755503921944; Mon, 18 Aug 2025
- 00:58:41 -0700 (PDT)
+        bh=+ogGHNp5B2vuw8Sx3cR50dRQPqv7sPx9Uj4pSENJ8eI=;
+        b=fG5RP4beDm84ZOAsNBJu9s5hAUC8oIZf2ywR805bTWkH/jNXeXA2QyrnXil0iTcoy6
+         p+T17saBrJ3PStSV+5sLtwAONoDfMt8ppu5npCDnfqAMq1zhOB/MENesysc9nlLr/Lcz
+         aD9l4voB166KI+ys4GUz+GwDOkZ/jlJwWZWWi2tMk+lpPvCJMQGDfIH87ZaM5cC97Mro
+         LA7Cxbl2wF6D25wBrCt/uzgYtjDc2fhdQwWM0u0k3h0rZuzGYdHWVZo3LazfFEZN98rz
+         /MfWapjI37YZyLXRv141KRHTTz4nbQN683MOplixGz6+9tRzEOUnOcdrb8KJlpcW5NRw
+         0PKA==
+X-Forwarded-Encrypted: i=1; AJvYcCXWLtFb3JafGhCOJZjqtBTotbsvOu0WKQg3tC/pqYG+dEetJJDrxM05a9QCi/8AgLGahnKlmeKUBpsCM7z14g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6h9+MABYlEgQSnB8TMrD+x9vXEQNDf7vhPbkkrkr2GHL6HxJt
+	FhKyDveWw5DkBNwgLHP5GumHvpe+yA7JOhBEDCW4wXAsK1SEI352HTO85537Kn07KOttupwWlAT
+	Y2Nz33Bw0Eu7jXruP8qJXcEsZQPmbZMlJWe30XTX5
+X-Gm-Gg: ASbGncuRKoSUkR/MxcsACBAaV/XEqBOeVE/rjFdkZdOm7plFi/6KzK/hmOsxNwf51l0
+	qTvHZonhk6mUXZ6+LO198WlnZfPYmrmZor3uiInj8oLGu0kd2q9vLWQMTX5qB1zw+87TVcjMgj7
+	6z6YvItehoGZLd4AkwSptI7L23IQit1Z8mQLSQmi3jmZLyYvj0Ruegx/oYVthYn/EDo6Xl7OvTW
+	HVaeBwQgluxUWXecjl4itwHnlqnv0emjrz6l/w34cKaHS5qBZQlKkJiw/Bu31+QWw==
+X-Google-Smtp-Source: AGHT+IH5aPA+4lsEWIpz23XPee5Gucilm6/jJy0D1IJSOLJ53lXfZLmhPLBb0e339QHvRNfI1jCf5ECE7BVeDepIOLQ=
+X-Received: by 2002:a5d:5849:0:b0:3b7:9d87:97c6 with SMTP id
+ ffacd0b85a97d-3bc6aa272aemr6301618f8f.44.1755504266794; Mon, 18 Aug 2025
+ 01:04:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250818050251.102399-2-sergeantsagara@protonmail.com> <20250818050251.102399-3-sergeantsagara@protonmail.com>
-In-Reply-To: <20250818050251.102399-3-sergeantsagara@protonmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 18 Aug 2025 09:58:29 +0200
-X-Gm-Features: Ac12FXxanJRySwES_5HkplIVAqFnzFgozCFj2ZARW4a7Hsql86-4Faz9Qh32TB0
-Message-ID: <CANiq72ns_17Z8=T7eTyquPG-x4WEZ8W4wa8nXBpMv04hKqD5oA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] rust: drm: fix C header references in doc comments
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+References: <20250818012648.1841387-1-lingfuyi@126.com>
+In-Reply-To: <20250818012648.1841387-1-lingfuyi@126.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 18 Aug 2025 10:04:11 +0200
+X-Gm-Features: Ac12FXzx_I9gusmbozL2_QUwPunlyuZ1-_AVDrLW-ZxrD10YAx95V3gJEW6eTDk
+Message-ID: <CAH5fLgh0OSDnVDwO1wY9kd3UjVqaYvk-jJA-nwiz2ghR0Yu3Zg@mail.gmail.com>
+Subject: Re: [PATCH] rust: xarray: optimize lock functions with inline attribute
+To: lingfuyi@126.com
+Cc: Tamir Duberstein <tamird@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lingfuyi <lingfuyi@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 18, 2025 at 7:04=E2=80=AFAM Rahul Rameshbabu
-<sergeantsagara@protonmail.com> wrote:
+On Mon, Aug 18, 2025 at 3:27=E2=80=AFAM <lingfuyi@126.com> wrote:
 >
-> The Rust DRM abstractions would incorrectly reference headers using the
-> non-existent path include/linux/drm. Correct the path to include/drm.
+> From: lingfuyi <lingfuyi@kylinos.cn>
 >
-> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-> Fixes: 9a69570682b1 ("rust: drm: ioctl: Add DRM ioctl abstraction")
-> Fixes: 07c9016085f9 ("rust: drm: add driver abstractions")
-> Fixes: 1e4b8896c0f3 ("rust: drm: add device abstraction")
-> Fixes: a98a73be9ee9 ("rust: drm: file: Add File abstraction")
-> Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
+> The XArray lock and try_lock functions are simple wrappers around
+> the C functions xa_lock and xa_trylock. These Rust functions don't
+> add significant logic beyond the unsafe FFI calls and safety guarantees.
+>
+> Mark them as inline to avoid unnecessary function call overhead in
+> hot paths where XArray locking is frequent, such as in page cache
+> operations and other kernel data structure management.
+>
+> This follows the same optimization pattern as other Rust kernel
+> modules where simple C function wrappers are marked inline to
+> improve performance.
+>
+> Signed-off-by: lingfuyi <lingfuyi@kylinos.cn>
 
-This is https://lore.kernel.org/rust-for-linux/20250730130716.3278285-3-oje=
-da@kernel.org/
+Thanks for the patch. Please see the Developer=E2=80=99s Certificate of Ori=
+gin 1.1
+https://docs.kernel.org/process/submitting-patches.html#developer-s-certifi=
+cate-of-origin-1-1
 
-Cheers,
-Miguel
+You need to use a known identity such as your real name to submit
+patches to the kernel. Anonymous contributions aren't possible.
+
+Also please include a version number in the email subject when sending
+a new version of a patch.
+
+Alice
