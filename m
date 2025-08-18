@@ -1,96 +1,95 @@
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1568828E00;
-	Mon, 18 Aug 2025 03:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.63.66.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155B725634
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 05:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755487930; cv=none; b=ElLb6To6gcRXlAd+PD/cVJwQc3kRcKGq/5sqH5yDvnW5ExTUnUVjKL7+K5YzXwh4/Fv3qtkUqqxTpaHVMAx+8MLZ3JlYQqYc7nLQfoAifXMMp4LJcL2h5iewef47lFNlOEkUJ+XEaPd5mQfaEGSZUdgPxthQExnzrffg/VnsMyY=
+	t=1755493475; cv=none; b=QTlrqnUvg8r44pYdXzyosznuiPeesW0ozuFYQJuSEJL9o1N+FXk4n6CA7fsJoHpObVhKnsSZlnNKl9OF/i5p8AQokcIiliu7AUB49c+ycozcB+hiu2yc/Ynll3Eiyok63+erIsAbKTkuo1/sw/vEnZiR0aYFcyO4WoqvVIRi6YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755487930; c=relaxed/simple;
-	bh=mzBwfg4WkelFbb+jD82bG2H3S3afJF2D7+6S4AMHaUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GWuiF2bMxeOIlUz3Bz7bwoRBZSCFncDY6EgTXSTeTc6S3ribepvIfqgGJhYB5jgtSxVfP7X/y8qELeeax8mhAMqnY8eQm2Vxv/kO9FU5thCcW6GQiiq83PiycuzJCRicCfoeRNywUqZeELgkwXEqLnPS2mJdmkvdquaOPS9/2EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com; spf=pass smtp.mailfrom=mail.hallyn.com; arc=none smtp.client-ip=178.63.66.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.hallyn.com
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-	id 1C372115; Sun, 17 Aug 2025 22:26:08 -0500 (CDT)
-Date: Sun, 17 Aug 2025 22:26:08 -0500
-From: "Serge E. Hallyn" <serge@hallyn.com>
-To: Shankari Anand <shankari.ak0208@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
-	linux-security-module <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH] rust: cred: update AlwaysRefCounted import to sync::aref
-Message-ID: <aKKdULYbLFRMS9qe@mail.hallyn.com>
-References: <20250816114409.10107-1-shankari.ak0208@gmail.com>
+	s=arc-20240116; t=1755493475; c=relaxed/simple;
+	bh=5DT0TTxnSJYWrXkBAaXqbdasxEPlE6BlNMTiaGo5PD0=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=erSsKKySDvTXfCFQRvSi2WRdGNsYY+xJqEzw1IHnfCY9hztWcY8s16HTlK35dqAso2b0e7q/ue5vfnzym4KXUjh62wisvYUbpNF4hcnRf6tagFHcLfuKbhNuq2vMiSjNACsAqAMcTpDWNV7Im+3YzUx92U6IhrItmsXDzGrHdsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=xI8Ts6V1; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="xI8Ts6V1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1755493464; x=1755752664;
+	bh=lNf04PH1oyVeq9ZzyB07yjbxbYxrle6upabdw3beabg=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=xI8Ts6V1NDi/iQcFH+kb9Mz22+mjdz964bhGaQumzePuxz78iZpxFem6hgltLwPtK
+	 s0Hc74e/p4fFY1IXbY6D3bBG92Qzep4Ps6NMMKbcONCRM1TKTPo9YbgQiB2hnXwOCO
+	 OTjbvHfAPW23k0jsvtN80wstMs77Rs+AWvifqqzMww7GVHfYClsr9jnzPCSrYxEyXZ
+	 qPcW3iQRYCZcZu1icKKAI3FjImJitvklcUrUW4X3tCLno35G/cB16tUZwu4CGlqFYM
+	 m2TxFpXrmU2fp6RTqOs6xgYWxu3+uotty5R6UCN8xZEWgh6B21kja6Jv8jl/lJyrNh
+	 nVieGxPDMfvmQ==
+Date: Mon, 18 Aug 2025 05:04:15 +0000
+To: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Subject: [RFC PATCH 0/3] Initial plumbing for implementing DRM connector APIs in Rust
+Message-ID: <20250818050251.102399-2-sergeantsagara@protonmail.com>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: f939127a71b651c6c0437cb2cc227612b69b9a0b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250816114409.10107-1-shankari.ak0208@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 16, 2025 at 05:14:09PM +0530, Shankari Anand wrote:
-> Update the import of `AlwaysRefCounted` in `cred.rs` to use `sync::aref`
-> instead of `types`.
+Hello,
 
-Thank you for forwarding, Miguel.
+I am working on a drm_connector scoped backlight API in Rust. I have been
+looking through Hans de Goede's previous efforts on this topic to help
+guide my design. My hope is to enable backlight control over external
+displays through DDC or USB Monitor Control Class while also supporting
+internal panels. In parallel, I would like to improve the driver
+probing/selection mechanism when there are different candidates for driving
+a backlight device. This initial RFC is mainly intended to sanity check
+that the plumbing I have chosen for extending the DRM connector
+functionality in Rust seems reasonable.
 
-As far as I can see from the included links, this looks good.
+I did toss in two doc comment cleanup patches in the mix. If these need to
+be re-sent individually or split due to the multiple Fixes: tags, do not
+hesitate to let me know.
 
-> This is part of the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to the `sync` module for better modularity.
-> 
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+Thanks,
+Rahul Rameshbabu
 
-Acked-by: Serge Hallyn <serge@hallyn.com>
+Link: https://lore.kernel.org/rust-for-linux/20250808061223.3770-1-sergeant=
+sagara@protonmail.com/
+Link: https://binary-eater.github.io/tags/usb-monitor-control/
+Link: https://lpc.events/event/16/contributions/1390/attachments/990/1916/k=
+ernel-recipes-backlight-2022-16x9.pdf
 
-> ---
-> It part of a subsystem-wise split series, as suggested in:
-> https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
-> This split series is intended to ease review and subsystem-level maintenance.
-> 
-> The original moving patch is here: (commit 07dad44aa9a93)
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
-> 
-> Gradually the re-export from types.rs will be eliminated in the
-> future cycle.
-> ---
->  rust/kernel/cred.rs | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
-> index 2599f01e8b28..4a2229542fb7 100644
-> --- a/rust/kernel/cred.rs
-> +++ b/rust/kernel/cred.rs
-> @@ -8,11 +8,7 @@
->  //!
->  //! Reference: <https://www.kernel.org/doc/html/latest/security/credentials.html>
->  
-> -use crate::{
-> -    bindings,
-> -    task::Kuid,
-> -    types::{AlwaysRefCounted, Opaque},
-> -};
-> +use crate::{bindings, sync::aref::AlwaysRefCounted, task::Kuid, types::Opaque};
->  
->  /// Wraps the kernel's `struct cred`.
->  ///
-> 
-> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-> -- 
-> 2.34.1
-> 
+Rahul Rameshbabu (3):
+  rust: drm: fix C header references in doc comments
+  rust: pci: fix incorrect platform references in doc comments
+  rust: drm: Introduce a Connector abstraction
+
+ drivers/gpu/drm/drm_connector.c |   9 +++
+ include/drm/drm_connector.h     |  20 +++++++
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/drm/connector.rs    | 103 ++++++++++++++++++++++++++++++++
+ rust/kernel/drm/device.rs       |   2 +-
+ rust/kernel/drm/driver.rs       |   2 +-
+ rust/kernel/drm/file.rs         |   2 +-
+ rust/kernel/drm/gem/mod.rs      |   2 +-
+ rust/kernel/drm/ioctl.rs        |   2 +-
+ rust/kernel/drm/mod.rs          |   2 +
+ rust/kernel/pci.rs              |   6 +-
+ 11 files changed, 143 insertions(+), 8 deletions(-)
+ create mode 100644 rust/kernel/drm/connector.rs
+
+
+base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
+--=20
+2.49.0
+
+
