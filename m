@@ -1,204 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2BB25D527;
-	Mon, 18 Aug 2025 09:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED0130E85B
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 09:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755509199; cv=none; b=IYohavx9dZY9yCUmyY6MzRkHNCkiFyrszw3KZmQ24BK3gLpeFAwmPoKk8sYRxW2jPbXpWW0nktvkFTiJ5QiOIJa1/96tDoYCdIqkt40+9pQ4gTFKnVfm3IO9NaD+0H0oyH543u3UFM9BWCvIOKr3qrr0cAe/UY2K/T1j+6QBNx0=
+	t=1755509682; cv=none; b=PElIB9bht4WwQVLKhevpk1yp44a3dYlXkWEqFqTRZcHu/RSCy8p5nAURyXxD8ATXtbGGLOBJpXXhJ8VhOHeF4ipsgVBu59LfRUUjCvEQLfn5aFdgcixnTFOSYuIZ5V31kS6hd22ofzITP5mlGpx5TI9u1xVuNjYsjj240Hu175w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755509199; c=relaxed/simple;
-	bh=xwaCdGIqBv3ZIaCKo+UTW/RslRxiy5n/C8Mi33WHmJo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=RnG474KFqXmTMjkZotbKi5E7FXAJZhZrYZtaqQzmoIcLyXXzIbO//i4n0IoK7Dk3fBdKQk5tKipSSFoqMDGoQcU84Uv+CaysGDqeth88R3ycK2V6n9u0msA22SMJrBY/Mxj65pBCxAEXtGebcFPUg+fh8l8lWjMlGUtIYC8Rjmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZHvCZFN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755509682; c=relaxed/simple;
+	bh=a+etiZYruUWbmNGIqX4kShOdCzW5WsCXUhUXSAJs36o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WQNP+bCsgcnx+iJB1teL9xLyzT11ED/qztNaTaxKl6LjPBfJJy2uengL0ITB3ksJgoqTXvkRGVhjVr+xYAlZvAQ331RHZ+nleuryeIsND/RqyAExrCG+SQeD7j3pajzr+5Rq+l0cfd27PPasBgjcMAnXEuWf2JvLFrYIZNZsATA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VfaYLBCi; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZHvCZFN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6658C4CEF1;
-	Mon, 18 Aug 2025 09:26:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755509196;
-	bh=xwaCdGIqBv3ZIaCKo+UTW/RslRxiy5n/C8Mi33WHmJo=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=mZHvCZFNs0FFE8bEjXjdTQN35k9IBTUhXjpU3XkKtLRtma4AbYpnbKRuDXWRbo6eY
-	 sxY9/VZKhOTXuRXZx3iWOfaQh95CKa1B3wSJSDl/0CuVk3jM5/OpQLLT1HpoftRKHl
-	 boyqNaTQjFSNVCgI+jphezovgBMpf/pwptgWIri/4MGea9giY57RGHbwn3PxXNRrfW
-	 5ofxbdLFvLsMGHP+CeIFxAVyz16k5IWPNT3lAKi1F0XOwS3gTd0FS8gNzTdUYPWJe/
-	 vW3qXYyhdMKhZtOHmcM1HlQyviK3n2C56YyMh6/2nz7UHXMzofJoQuEjROgb70pX9a
-	 SYHkef0boQPbg==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VfaYLBCi"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-618b3c75155so1853320a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 02:34:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755509679; x=1756114479; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fxScC+t6YfykJP91EppLJ4JtjaT1ZtIiluXFre5egrg=;
+        b=VfaYLBCir8mekvz2g+G00YfJznIK/wFdpyLmpmW2+e9iIbFle2bpp5YIVVQ6f+w/7D
+         4VXzxe52JW35Ukb+YEkvsnenjsLm/kUarO2Y/lWwVfRYSdKPteKjhH1tPzflc+48Er/I
+         +mRnuIPGAkf/nEWnb2k9gywqOstEPdD/LMEgql3PUngluoiA4VKER6xFj2lw/XVDhusR
+         1WtK8tJf0vJ0oJmxnpiXiK9x0ZQahzQa8pgf2C3SYue2xZXscc4hl7ncLHNjNQUip2jx
+         NZTe8SxdFTqGwFwKBfJnxk+IzvyiRSVN8vFDAKyOKGI7LiZfnCA51RbaX7m9c+6/YljS
+         BpCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755509679; x=1756114479;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fxScC+t6YfykJP91EppLJ4JtjaT1ZtIiluXFre5egrg=;
+        b=GqjBkdirbmZENaNsaPbp6pZ9vJfaBNi7xjsEg/kkOEKHPTGwmjElHxkwvZEdD2vVv0
+         iUEUMvPf4unaMiHOgkdMTqmchG2VKsVM4N2rEIsoY+2T6buwyvEb/hx4iAIFAMOV44rz
+         yONlFLq5T/oc5NNvwd1HfQX9op2rS5Iv+gbwvH0RCG/fZvJtiS66TCBah+8gQI9DBY8J
+         jA3NYBtxNu6gFvW1odq7FrVRN/bbXf3GtLHd1oy4WQ2Q0Ldys20dEOdTtmPon5EqoXYv
+         Edu8HNDI1Cs+j7Vd4dOaOORdiLFeEjYsuNLlmSVY6tCNdryHtA5uTHHK1X4XuApKUhMW
+         hWZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVsumPE9bEpUhVdyOvN54R9Na28TtjF96KQJY0dJ7Ldf5AdrZzfP4smTkGEb7m3HcxDpeJSse8batzL2X2k1Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz65CrtNfeMaKIzQWoJf9k+smlg4ITT7tUyYzOh1kWErIq9mD1q
+	oi4q2cmG8ukUsHMdDKPyGc7iUK81cMbIJpljYYuuOo29kufbegLItWfqlPM7KKINiXcG0qBAVpi
+	eJrMwL9qBplAxwcyC5w==
+X-Google-Smtp-Source: AGHT+IEs5GmDksLjwRu0yfO21DllPTLa9ydpvK+eEh0RR1vr1aoOT8dBMcP63FUYBNCBIYDIHGXp3QEgxo+FF7g=
+X-Received: from edad32.prod.google.com ([2002:a05:6402:4020:b0:618:7545:ce28])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:518f:b0:618:40ef:fa47 with SMTP id 4fb4d7f45d1cf-619b6f621c4mr6130226a12.1.1755509679511;
+ Mon, 18 Aug 2025 02:34:39 -0700 (PDT)
+Date: Mon, 18 Aug 2025 09:34:38 +0000
+In-Reply-To: <20250815171058.299270-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Aug 2025 11:26:32 +0200
-Message-Id: <DC5G2LJGBN3D.8JSJY9U25IAW@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 3/7] rust: v4l2: add support for video device nodes
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <kernel@collabora.com>,
- <linux-media@vger.kernel.org>
-References: <20250818-v4l2-v1-0-6887e772aac2@collabora.com>
- <20250818-v4l2-v1-3-6887e772aac2@collabora.com>
-In-Reply-To: <20250818-v4l2-v1-3-6887e772aac2@collabora.com>
+References: <20250815171058.299270-1-dakr@kernel.org> <20250815171058.299270-2-dakr@kernel.org>
+Message-ID: <aKLzrp0m00J6CCYz@google.com>
+Subject: Re: [PATCH 1/4] rust: dma: implement DataDirection
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: akpm@linux-foundation.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	abdiel.janulgue@gmail.com, acourbot@nvidia.com, jgg@ziepe.ca, 
+	lyude@redhat.com, robin.murphy@arm.com, daniel.almeida@collabora.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Aug 18, 2025 at 7:49 AM CEST, Daniel Almeida wrote:
-> Video device nodes back the actual /dev/videoX files. They expose a rich
-> ioctl interface for which we will soon add support for and allow for
-> modelling complex hardware through a topology of nodes, each modelling a
-> particular hardware function or component.
->
-> V4l2 drivers rely on video device nodes pretty extensively, so add a
-> minimal Rust abstraction for them. The abstraction currently does the
-> bare-minimum to let users register a V4L2 device node. It also
-> introduces the video::Driver trait that will be implemented by Rust v4l2
-> drivers. This trait will then be refined in future patches.
->
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> ---
->  rust/helpers/v4l2-device.c       |  16 +++
->  rust/kernel/media/v4l2/device.rs |   1 -
->  rust/kernel/media/v4l2/mod.rs    |   3 +
->  rust/kernel/media/v4l2/video.rs  | 251 +++++++++++++++++++++++++++++++++=
-++++++
->  4 files changed, 270 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/helpers/v4l2-device.c b/rust/helpers/v4l2-device.c
-> index d19b46e8283ce762b4259e3df5ecf8bb18e863e9..0ead52b9a1ccc0fbc4d7df635=
-78b334b17c05b70 100644
-> --- a/rust/helpers/v4l2-device.c
-> +++ b/rust/helpers/v4l2-device.c
-> @@ -6,3 +6,19 @@ void rust_helper_v4l2_device_get(struct v4l2_device *v4l=
-2_dev)
->  {
->      v4l2_device_get(v4l2_dev);
->  }
+On Fri, Aug 15, 2025 at 07:10:02PM +0200, Danilo Krummrich wrote:
+> Add the `DataDirection` struct, a newtype wrapper around the C
+> `enum dma_data_direction`.
+> 
+> This provides a type-safe Rust interface for specifying the direction of
+> DMA transfers.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+
+> +/// DMA data direction.
+> +///
+> +/// Corresponds to the C [`enum dma_data_direction`].
+> +///
+> +/// [`enum dma_data_direction`]: srctree/include/linux/dma-direction.h
+> +#[derive(Copy, Clone, PartialEq, Eq)]
+> +pub struct DataDirection(bindings::dma_data_direction);
+
+Perhaps this should be a real Rust enum so that you can do an exhaustive
+match?
+
+> +impl DataDirection {
+> +    /// The DMA mapping is for bidirectional data transfer.
+> +    ///
+> +    /// This is used when the buffer can be both read from and written to by the device.
+> +    /// The cache for the corresponding memory region is both flushed and invalidated.
+> +    pub const BIDIRECTIONAL: DataDirection =
+> +        DataDirection(bindings::dma_data_direction_DMA_BIDIRECTIONAL);
 > +
-> +void rust_helper_video_get(struct video_device *vdev)
-> +{
-> +    get_device(&vdev->dev);
-
-Rust helpers shouldn't encode semantics. I think you want to use video_get(=
-)
-instead.
-
-> +}
+> +    /// The DMA mapping is for data transfer from memory to the device (write).
+> +    ///
+> +    /// The CPU has prepared data in the buffer, and the device will read it.
+> +    /// The cache for the corresponding memory region is flushed.
+> +    pub const TO_DEVICE: DataDirection = DataDirection(bindings::dma_data_direction_DMA_TO_DEVICE);
 > +
-> +void rust_helper_video_put(struct video_device *vdev)
-> +{
-> +    put_device(&vdev->dev);
-
-video_put()
-
-> +/// Represents the registration of a V4L2 device node.
-> +pub struct Registration<T: Driver>(ARef<Device<T>>);
+> +    /// The DMA mapping is for data transfer from the device to memory (read).
+> +    ///
+> +    /// The device will write data into the buffer for the CPU to read.
+> +    /// The cache for the corresponding memory region is invalidated before CPU access.
+> +    pub const FROM_DEVICE: DataDirection =
+> +        DataDirection(bindings::dma_data_direction_DMA_FROM_DEVICE);
 > +
-> +impl<T: Driver> Registration<T> {
-> +    /// Returns a new `Registration` for the given device, which guarant=
-ees that
-> +    /// the underlying device node is properly initialized and registere=
-d, which
-> +    /// means that it can be safely used.
-> +    pub fn new(
-> +        dev: &v4l2::device::Device<T>,
-> +        data: impl PinInit<<T as Driver>::Data, Error>,
-> +        flags: alloc::Flags,
-> +    ) -> Result<Self> {
-
-Same comment regarding Device having its own constructor as for
-v4l::device::Registration. I don't see a reason why Registration::new() sho=
-uld
-serve as constructor for Device.
-
-Additionally, I think we should use devres::register() for the Registration=
-, such
-that you can provide &Device<Bound> cookies in the video callbacks / ioctls=
-.
-
-As far as I can see, video devices are synchronized when unregistered [1]
--- let's take advantage of that.
-
-We do the same thing in the PWM abstractions [2], which is a great optimiza=
-tion.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/drivers/media/v4l2-core/v4l2-dev.c?h=3Dv6.16#n1105
-[2] https://lore.kernel.org/linux-pwm/20250806-rust-next-pwm-working-fan-fo=
-r-sending-v13-3-690b669295b6@samsung.com/
-
-> +        let video_dev =3D try_pin_init!(Device {
-> +            inner <- Opaque::try_ffi_init(move |slot: *mut bindings::vid=
-eo_device| {
-> +                let opts: DeviceOptions<'_, T> =3D DeviceOptions {
-> +                    dev,
-> +                    _phantom: PhantomData
-> +                };
+> +    /// The DMA mapping is not for data transfer.
+> +    ///
+> +    /// This is primarily for debugging purposes. With this direction, the DMA mapping API
+> +    /// will not perform any cache coherency operations.
+> +    pub const NONE: DataDirection = DataDirection(bindings::dma_data_direction_DMA_NONE);
 > +
-> +                // SAFETY: `DeviceOptions::into_raw` produces a valid
-> +                // `bindings::video_device` that is ready for registrati=
-on.
-> +                unsafe { slot.write(opts.into_raw()) };
-> +
-> +
-> +                // SAFETY: It is OK to call this function on a zeroed
-> +                // `video_device` and a valid `v4l2::Device` reference.
-> +                to_result(unsafe { bindings::video_register_device(slot,=
- T::NODE_TYPE as c_uint, -1) })
-> +            }),
-> +            data <- data,
-> +        });
-> +
-> +        let video_dev =3D KBox::pin_init(video_dev, flags)?;
-> +
-> +        // SAFETY: We will be passing the ownership to ARef<T>, which tr=
-eats the
-> +        // underlying memory as pinned throughout its lifetime.
-> +        //
-> +        // This is true because:
-> +        //
-> +        // - ARef<T> does not expose a &mut T, so there is no way to mov=
-e the T
-> +        // (e.g.: via a `core::mem::swap` or similar).
-> +        // - ARef<T>'s member functions do not move the T either.
-> +        let ptr =3D KBox::into_raw(unsafe { Pin::into_inner_unchecked(vi=
-deo_dev) });
-> +
-> +        // SAFETY:
-> +        //
-> +        // - the refcount is one, and we are transfering the ownership o=
-f that
-> +        // increment to the ARef.
-> +        // - `ptr` is non-null as it came from `KBox::into_raw`, so it i=
-s safe
-> +        // to call `NonNulll::new_unchecked`.
-> +        Ok(Self(unsafe { ARef::from_raw(NonNull::new_unchecked(ptr)) }))
-> +    }
-> +
-> +    /// Returns a reference to the underlying video device.
-> +    pub fn device(&self) -> &video::Device<T> {
-> +        &self.0
+> +    /// Returns the raw representation of [`enum dma_data_direction`].
+> +    pub fn as_raw(self) -> bindings::dma_data_direction {
+> +        self.0
 > +    }
 > +}
-> +
-> +impl<T: Driver> Drop for Registration<T> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: `self.0` is a valid `video_device` that was registere=
-d in
-> +        // [`Registration::new`].
-> +        unsafe { bindings::video_unregister_device(self.0.as_raw()) };
-> +    }
-> +}
->
-> --=20
-> 2.50.1
-
