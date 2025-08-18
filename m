@@ -1,72 +1,72 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AF6367;
-	Mon, 18 Aug 2025 08:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6E2275AE2;
+	Mon, 18 Aug 2025 08:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755506721; cv=none; b=AwHQ5sTqrVIbDFW/dtaiqIT2limfy45dY+WHpyE0/KJ6t6VN0gCMaP+4R/LK3exDfuFqT9uWU+E7pNeWsHX+ZG7zGL2q5q45P2mbENLXxNCVop//YtG5zDksT2pWX+mSZ0VOu86Do72iMuKdHjoSH7i1wCmyu3vWsYTc70R1azk=
+	t=1755507382; cv=none; b=uJwCB0btLFvm/BkgLRn4cT8z4a2ptuNrALopKtlvdV7WILkqMt2oHH6X5wz87aPGfyktPWnZqR2N0Vw1stBwAxqnrtsSsEHLkvjFyO/UhOzxAvjvksuBqPmCWjmEhZ/MXAjSS2Ksi/Imbo6YDPCKjNKspqDanFsbz0MgpHdCWAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755506721; c=relaxed/simple;
-	bh=eTMlQMOS+21Z8HpGFVqnesRdJSLE70jGtQaiCJcm3rs=;
+	s=arc-20240116; t=1755507382; c=relaxed/simple;
+	bh=OL73hT3OhK99FPrkZtZUFj5a6fsQ+R9cHTctweIqbzU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V3LAT2CdRO6Cl1DuFBeuL15MIAzmqQKUgxVpAONr86T3pCqBxg7Hz9sYQNE/ilX+Y8s8UmzfnIz/Spd2OcuMRy9/D66ckeg6HsOe9XPBgvpqIWwJgboLR6KAcNxaUx2zqccGdHXlVQ51VlXuVHLU8kXX1GcZJZcF8PtIRL0YXCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JNYsLUe7; arc=none smtp.client-ip=209.85.216.50
+	 To:Cc:Content-Type; b=YZ/DbBaXlpmo5YNQzSQM84X7+0qPF4ugBq/ywQOuMwK07/45qy2vn4stPBEpH4LEVTiPCVSHDeDEuv2TW9n2rjYkgrTPG//DWq3d4CAcItcFrd1fg5InbypBuOBOIj4l9GP+JLZ++aBEBkUGS4QdlFEMeQOcML9Lx0RIb1D9R8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QkZUQE5R; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JNYsLUe7"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3234f8df749so186172a91.1;
-        Mon, 18 Aug 2025 01:45:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QkZUQE5R"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-244581cd020so4485745ad.2;
+        Mon, 18 Aug 2025 01:56:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755506719; x=1756111519; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755507380; x=1756112180; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eTMlQMOS+21Z8HpGFVqnesRdJSLE70jGtQaiCJcm3rs=;
-        b=JNYsLUe7OU1jL3ZLlqV3jZNWOS9K570Tmpj+7zJY0lmiIqUtjmgJgk4JpKojtOtbI0
-         8JFYPwV5DHs9rhLzxvYA76yWX2GXEo9lsVJEqhtkjhxo/s4E1PHVcWNhyZLVwlfAuibW
-         KeWuhozdIYIVJfT2kOAT2CyK0A0Qhkvb5KHEGJP1UQhTaauB3+hXkMQqzlcTD1maujaw
-         Lao3k+90lQgZP4jHNiPzl4eJoHp0jpF6/EmRcYEZso8TDf5D2ybH1jkiNHUkSYZwH4De
-         LihGzOBe8fJhqwpnotiKX54ieU8vUqbeGVFScZDYh6ioWtL/QYCHy6mrExT7Q122hytJ
-         cVVw==
+        bh=DLE/+OJq5D1tm8Ct611f+t2W20HfUpodMhEG1suL1rY=;
+        b=QkZUQE5R6axn0qMdngaC6mKR4/jnJEEq196LaQg0cyd/VBvtZ1zDGhRUcAks2kWaMI
+         CQ16xPB2CMlqAQo5m7uI86KP/jlHQPVUpHRCydNyvii15kFT5UC9hJsti/iZVEF3XOQ6
+         7Z4aVfsRqnGGSsMyGSxowgjVY2WGkHP90XHR1lrAB3hFjD1oGQfaVUzFfNZa15ZDAKgH
+         LG+NGYzQaGlE1Zr1piKIOxIjqUITt1Lq2jxtfXdTzql82WD7Ac4qfzM5Z0o4OeMT3Djk
+         9fRlxg5EaT54vR7Z+hYwp8x7WqI/5hGntq3ss87y8BpqW49NloomKTzkQtYpC/5uVVQF
+         sSbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755506719; x=1756111519;
+        d=1e100.net; s=20230601; t=1755507380; x=1756112180;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eTMlQMOS+21Z8HpGFVqnesRdJSLE70jGtQaiCJcm3rs=;
-        b=nk6qXZJWrTP3TDcq6JJVO4H8Rt9Z1012Ea+vIFw62moX5CT3X2I3PHLlMbq9SnDcTt
-         dw2ufJNBY9Grd8VbSoyW/cy6CXbVYAmuN0907fL9NhAZAGYWqkjOG7vT4Mit5q/Fu4Et
-         awMJ/1PYzaqSnj7zpgjXe8hs0gyJQla+odfYEeXycUpxa7GI2WdLEhmA6o46ePhvC9Qe
-         5zemC+2K36xKLIPIL0uWIUQ4WB/U5tNfZVoL3AfJbgfWq3qmQOl+ntVoIs1z2ljvVdUN
-         6spWgBloI//keU8gtRaG2ebnrSXvp9AZxnVHtkqzKUTdVJ9ySqDZf7ax/JtXPpo6yHpC
-         +KLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUlOuWwLnm0+f2WY9zjp3hp/2q8jR6fm+kE2AU0wwE99vjcuhq5HgT10eda/T390a3V2LRkUEGtyPeV5A4=@vger.kernel.org, AJvYcCW011IOpE77o45RxUSbbncknqXKr7Ql73qlipMZ5nPLE1H9NpNjbBxEYDQ7rVuwFxFNimzJid8DWSIOLX4=@vger.kernel.org, AJvYcCXvWstyE/ada2JescQG5rmN/T8kYlww8IscTJziTJKLaHZllh5/B01qzkzcmB6gj86c5Sqq574gcuDmqkpLj6Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhXSEOuMHbcT1AXMLvuBU+/5Yxa6MC24hQKiX1U+mfP7TpuSOI
-	JbJnWc3q2nvHhY3CNlsUFs9nO+UasSjc30RxBz7TuxeXlKoj5HZFwqCO7xcKdW7zmiStSVfoYeF
-	neII9eWXgNZIpuM6HXDDgZbWbTHuisxk=
-X-Gm-Gg: ASbGncs3ZZV6PZ5smzlohHTIw84KPclE+qsvw3EcUp0YC9MUZNtGNJBwCYrgderQeVZ
-	4KTkezq2nNxK8HIwiZM9GChUnTVbc8laBtr6k8M3VuODuHtm9/6/vL7UsooINkUraiUkUzKvRqU
-	u10QoX2x4WT90iAwRyMCWgnxMk2fVlpRSE41siDw13xfbPYNbX8QKBaMVXB/+SagJSy4gcOegx3
-	LUBU68l
-X-Google-Smtp-Source: AGHT+IFNI+s/vA9e9kA2OI42+j7AJF1zN8L4wf4YLxIkGEeFBObPtWb1SPQ+hFkMqlkjJZtzPlw+I/0+XvjWsCqH/is=
-X-Received: by 2002:a17:902:c403:b0:240:3c1d:cbe3 with SMTP id
- d9443c01a7336-2446d7435f1mr74886845ad.4.1755506719363; Mon, 18 Aug 2025
- 01:45:19 -0700 (PDT)
+        bh=DLE/+OJq5D1tm8Ct611f+t2W20HfUpodMhEG1suL1rY=;
+        b=kcp+yZccQQvhhamqseONie2xSnUYRAeNxDpS+tPxHPitNE5fpH4oa+k+1U56vyv2kJ
+         UXhel85MHXxXzDSHs9dvS5/oTrWYXrQswVyEfh9gvQ3xSnngksDlLFhR/CP7zvagf0mR
+         R+DOF02/NO/ZTmr1EmJs1FrvDnUU6LIJuUITJgn5d0FCKgmeKILUEapMd++urWeSnGBz
+         DahIXRLwFTGE6h1cTIcdAVAA7xm8RS2h9zh1TvxKaM0poqb9ld8pEOCSfIs8iZGyMsRV
+         HE4Vircl7ywDFlYztn3hPR7qiFCgfJ8NxdH062a8BVaJz94PTDCfIh4prsuxhjgdAzIJ
+         PGrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUA3cMlNACflyRhqFiA9KxlPGU3r94A4/EtBGyjNdlVKTfI/cJY6RNEmF3XJ+OYHEakHpW2xiKGaOG5DEI=@vger.kernel.org, AJvYcCVk28aW4Y0XWHgpocfhUKg+UlicV/mmWBt6iGMafq8tczpmOQYqDDnqNhiX5IiwhLAk+Y54xQO5kzWLF3Y=@vger.kernel.org, AJvYcCXX6t24ol5wi0Fca3Ztamgp0bLjAzPe5OPOvROwOxK71mdN42nWX+SdFurwX2CJWSqq3Hdkw/FmggFhC9VU1zY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzN6QWziUkBsu0eayZ+RBhY8dPljaDEV52iz1s5whhLbBl9vvpa
+	JTrcePQRdAib++3G8DIdHy7+OvxOP6467CK1oF/WJJGVD14tHiVqemTy2OxFEMb9PygeoWbdKdr
+	ROx7t7+N84E3wPZKONUNDErJGDSCsIvU=
+X-Gm-Gg: ASbGncurMSdLBWwnkO+sp12ZzqJ8432uSeMfYthM8ZqCCSBCzMq3Iu93rIynir2fKyv
+	vg68MZLwhCp1NXy4rBrUZBgkgKYmeVzMfdbvU3+OADFnYxwWkPTENAkMz+y0F8H9h9macQ1+sAS
+	dYFKRZdqo12VepmeHkN0KngLBAvRqo8d6L8l/dd16hZ4Kfkfwy0hsaQU8osWbJMspN2PVKmYilC
+	K4Mga5Dy/+CquVMYcc=
+X-Google-Smtp-Source: AGHT+IFnYq4DPCSrNjSV1bQaU/mo30fY9TxDpsI8Q97EthVdpqNPEah3SP/l+NrUPauakRSfT5X6gSl7cufAyXa+VXM=
+X-Received: by 2002:a17:902:c94c:b0:240:4cf6:b07b with SMTP id
+ d9443c01a7336-2446d948225mr80233615ad.9.1755507380351; Mon, 18 Aug 2025
+ 01:56:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250818-v4l2-v1-0-6887e772aac2@collabora.com>
-In-Reply-To: <20250818-v4l2-v1-0-6887e772aac2@collabora.com>
+References: <20250818-v4l2-v1-0-6887e772aac2@collabora.com> <20250818-v4l2-v1-1-6887e772aac2@collabora.com>
+In-Reply-To: <20250818-v4l2-v1-1-6887e772aac2@collabora.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 18 Aug 2025 10:45:08 +0200
-X-Gm-Features: Ac12FXxeBBKUuR4sn1tQTr7n-uoBqDuKaZSfjHUh45fnWMRKJekRjBF3tm2-ZC4
-Message-ID: <CANiq72=5847N+yV0APZPtO9fdR=U68RzFYgW2jgbZU-=xrXtfw@mail.gmail.com>
-Subject: Re: [PATCH 0/7] rust: add initial v4l2 support
+Date: Mon, 18 Aug 2025 10:56:08 +0200
+X-Gm-Features: Ac12FXwBBuluDOD_aLqqyhFrvJHlZY771s_SbG3fLmo_MmPXDyf6MPM071NFoCQ
+Message-ID: <CANiq72nE4gfek82PyOJKWD7Pq4mUWU-E=MFX8hw4LAQtQpr8yg@mail.gmail.com>
+Subject: Re: [PATCH 1/7] rust: media: add the media module
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -82,17 +82,55 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Aug 18, 2025 at 7:51=E2=80=AFAM Daniel Almeida
 <daniel.almeida@collabora.com> wrote:
 >
-> I've decided to work on this once more after being told by a few people
-> that they would likely try to play with Rust v4l2 drivers if only they
-> did not have to write all of the infrastructure themselves. This work
-> (and subsequent patches) will pave the way for them.
+>  MAINTAINERS              | 7 +++++++
 
-Glad to hear there is interest and to see you reviving this effort!
+I would suggest splitting this into its own patch, "MAINTAINERS: "
+prefix, so that it is more visible. The other bits can be moved to the
+first patch that adds the file -- it is what we usually do.
 
-(Mentioning who is interested, if it is public, would be nice)
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fe168477caa45799dfe07de2f54de6d6a1ce0615..6fc5d57950e474d73d5d65271=
+a0394efc5a8960b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15434,6 +15434,13 @@ F:     include/uapi/linux/uvcvideo.h
+>  F:     include/uapi/linux/v4l2-*
+>  F:     include/uapi/linux/videodev2.h
+>
+> +MEDIA RUST INFRASTRUCTURE
 
-I see the media list Cc'd, but this should likely be sent to the
-maintainers too.
+It may be good to match the parent entry/subsystem, e.g. with "
+[RUST]" at the end or whatever is the convention for the subsystem (if
+there is no convention, then " [RUST]" is what we have been normally
+doing).
+
+See e.g. "PCI SUBSYSTEM [RUST]".
+
+> +S:     Supported
+
+Very nice to see Collabora wants to support this!
+
+> +F:     rust/media
+
+rust/media/
+
+i.e. a trailing slash here is mandatory to include all files and subdirecto=
+ries.
+
+> +// SPDX-copyrightText: Copyright (C) 2025 Collabora Ltd.
+
+SPDX-FileCopyrightText?
+
+> +//! Reference: <https://www.kernel.org/doc/html/latest/driver-api/media/=
+index.html>
+
+docs.kernel.org are nicer links :)
+
+    https://docs.kernel.org/driver-api/media/index.html
+
+> \ No newline at end of file
+
+Normally there would be one.
 
 Thanks!
 
