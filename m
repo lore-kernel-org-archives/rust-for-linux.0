@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF785251793;
-	Tue, 19 Aug 2025 17:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB142FE06D;
+	Tue, 19 Aug 2025 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755623641; cv=none; b=VaAcyN8VzoI3nZh7+nEyl/2oO00+2jPaQ3P3V1VWTJDaVbsrByjCpfc8l9jupvdmhl6OY0mM+xdyQip7OCbrIuvuhD+gyBDIeZhBEaCWrv/8+dKAnS3k5cz5TjNsh5q2+rceVzuubMatOzKu7SYSSOovb1GvHClFqa5V91fgt8k=
+	t=1755623739; cv=none; b=lF8Ox5v8BJJPn9MJMel5vjNTJYvFhwFaI2+A/VnP0Wg6ZsAqroS1VHVWP6oeVDgwFo2qFvGhrAGVszc+LGNMVLWNxePcftmBTB7DVfD7gOTPNh+m6XEPNoeRJVB+fkJ4me1mxro72/o7lrrgS6Zhx+n1mMazP3v8DxDOeKpUbeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755623641; c=relaxed/simple;
-	bh=P8ypOkRbNuhXHWJoEf9Jdx/j5XBQWH+tFc/kF/oAtAI=;
+	s=arc-20240116; t=1755623739; c=relaxed/simple;
+	bh=iSvEjCCJIwfeL7uNmdhXw0eHuwz2naC+TZI5nIPrNmI=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=N+f9ZxJylnOo5UvGSGx9P2/5VPZt0y336QrPtc1TR+mZ8MJfe2ZrdCrN+K+hdCtYjPErVm92Iio0WCkbGwecz6eZeiyExQerlQLR4Def/TckVKA/lH2gkZ8Cdoaab0rRpzSc8Zc4DENtElydzxvuh4pKT3hzzO9GA467Au65ZqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIPr+3aM; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=la4Okhy0tsH7oRV6IAsLw9746N1pT16eRVe8Wfe4n4/J0KXUn4Y213DWmYPBzH3lb6ho0AjLxSoepL3yS5Pp9ql9svTL7pD5yE6yrLHC2oM0/jDqauOL3XJXreyb+WrT8JcvYleCp0GMnQ5OvpLQqfXBi2ICsbyQAPqAG95AZ6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPgkZMxc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIPr+3aM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D590CC4CEF1;
-	Tue, 19 Aug 2025 17:13:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPgkZMxc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227DCC4CEF1;
+	Tue, 19 Aug 2025 17:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755623641;
-	bh=P8ypOkRbNuhXHWJoEf9Jdx/j5XBQWH+tFc/kF/oAtAI=;
+	s=k20201202; t=1755623739;
+	bh=iSvEjCCJIwfeL7uNmdhXw0eHuwz2naC+TZI5nIPrNmI=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=aIPr+3aM7AnZKdlgQ4v2eVdq3QC7LBNbsEGAtj700GSmCoEIvZ7RMBBpOpfAkgtEb
-	 GE0m+Rnfoccu/OA2HhwUZ1PFQGaLQFA9/NML+UT2UyPzK9Qgk8YDQclQBJJ+0QAAS9
-	 k4t5wQpmZKl4lDHoEweZzb5ghJrrK+7r0nXz6NbAiYfgS4lL85Gl/XNCNj3V4YoXql
-	 eGQ4XyUEmkluebNft6HpsLcmePcO6FIdDfl1AwSmiwbl8nchTfRaYBNd7MrWlVl3bT
-	 w661rI73u5j17VtGS49Xo8Scxmg6dDYvsLMzq+olkCUA4lr6QDq8Zw7rof3bjrsz79
-	 LK/CgqawT0diw==
+	b=uPgkZMxcMHkGdwGG46fbtdE3QhkxGhZ5smU88cXKxZwo8I/r2zuGvRQulJdq2cLV7
+	 2HwS/Y8r11lGPdK+Lfa+E8ZhOSKyqzIQWYUZoAIXqy9lJhk7ztM5srVpaDpjrm9m1S
+	 Ni0Y/sjqq7PVGwzqQsNQUm/3IQOxDgEsvfjE8TmpZ3f3yiACa5mY4DoowNWnzUW1Xv
+	 nxsJdMK2acz/WsowiXvOxTOVeTZSP/3/ynG+cfcVgir74U2NDrNx6p1PnZykjCtQzZ
+	 7tj2dIS80syzdAhASqUlsq8clUZfAwS4QEEJi6hVbWIpzlc9SdbHWWyQsx0plZ2NsR
+	 0tATU0YaNa1Rg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Aug 2025 19:13:56 +0200
-Message-Id: <DC6KN0JN4X4D.1PHXPQ46O5J1Q@kernel.org>
+Date: Tue, 19 Aug 2025 19:15:34 +0200
+Message-Id: <DC6KO9DJG36S.TQRLQQGJKVON@kernel.org>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
@@ -48,102 +48,33 @@ To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Oliver Mangold"
  <oliver.mangold@pm.me>
 X-Mailer: aerc 0.20.1
 References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <87o6scdchf.fsf@t14s.mail-host-address-is-not-set> <aKMkvHAfDozzDjkB@mango> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org> <aKQT92ViZSL841rT@mango> <iQ0qeYmzFSlOQkNLti-a4Z6ItwaZgh3r8Pqdu5rSwYz4wUxAsKZJlGCrsVQ481Qkzc9EapD3bzKKtrsXVkwt2A==@protonmail.internalid> <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org> <87ldnfd766.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87ldnfd766.fsf@t14s.mail-host-address-is-not-set>
+ <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <87o6scdchf.fsf@t14s.mail-host-address-is-not-set> <aKMkvHAfDozzDjkB@mango> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org> <aKQT92ViZSL841rT@mango> <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org> <7ORM055ehFH_Z124bk1l8YRI5whcremycMy8JsSgzMf4rRdagKSDHSloL8sz3O8FmX3k9cni7TG2_EFLyInWbw==@protonmail.internalid> <aKQ5rHqxOBEI2n4w@mango> <87h5y3d6u8.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87h5y3d6u8.fsf@t14s.mail-host-address-is-not-set>
 
-On Tue Aug 19, 2025 at 10:53 AM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->> On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
->>> On 250819 0027, Benno Lossin wrote:
->>>> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
->>>> > On 250818 1446, Andreas Hindborg wrote:
->>>> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
->>>> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
->>>> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
->>>> >> > +        // SAFETY: The type invariants guarantee that the object=
- is valid, and that we can safely
->>>> >> > +        // return a mutable reference to it.
->>>> >> > +        unsafe { self.ptr.as_mut() }
->>>> >> > +    }
->>>> >> > +}
->>>> >>
->>>> >> I think someone mentioned this before, but handing out mutable
->>>> >> references can be a problem if `T: !Unpin`. For instance, we don't =
-want
->>>> >> to hand out `&mut Page` in case of `Owned<Page>`.
->>>> >>
->>>> >
->>>> > That was the reason, why `OwnableMut` was introduced in the first pl=
-ace.
->>>> > It's clear, I guess, that as-is it cannot be implemented on many cla=
-sses.
->>>>
->>>> Yeah the safety requirements ensure that you can't implement it on
->>>> `!Unpin` types.
->>>>
->>>> But I'm not sure it's useful then? As you said there aren't many types
->>>> that will implement the type then, so how about we change the meaning
->>>> and make it give out a pinned mutable reference instead?
->>>
->>> Making `deref_mut()` give out a pinned type won't work. The return type=
-s of
->>> deref() are required to match.
->>
->> I meant the changes that Andreas suggested.
+On Tue Aug 19, 2025 at 11:00 AM CEST, Andreas Hindborg wrote:
+> "Oliver Mangold" <oliver.mangold@pm.me> writes:
+>> You mean of `Ownable`, when `OwnableMut` is removed? Yes. A good questio=
+n
+>> in that context is, what it actually means to have an `&mut Opaque<T>`
+>> where `T` is `Unpin`. If that implies being allowed to obtain an `&mut T=
+`,
+>> it would we easy, I guess.
 >
-> Not sure what you are asking, but I need to assert exclusive access to
-> an `Page`. I could either get this by taking a `&mut Owned<Page>` or a
-> `Pin<&mut Page>`. I think the latter is more agnostic.
+> You should not be able to get a `&mut T` from a `&mut Opaque<T>`.
+> `Opaque` opts out of invariants that normally hold for rust references.
 
-The former isn't really correct? It's like having a `&mut Box<Page>`
-which is weird. I was saying we can have a `DerefMut` impl gated on `T:
-Unpin` and a `fn get_pin_mut(&mut self) -> Pin<&mut T>`.
+Yes, that function mustn't exist.
 
->>>> > Good question, I have been thinking about it, too. But it might
->>>> > be, that it isn't needed at all. As I understand, usually Rust wrapp=
-ers
->>>> > are around non-movable C structs. Do we actually have a useful appli=
-cation
->>>> > for OwnableMut?
->>>>
->>>> Also, do we even need two different traits? Which types would only
->>>> implement `Ownable` but not `OwnableMut`?
->>>
->>> I'm not 100% sure, but on a quick glance it looks indeed be safe to
->>> substitute `OwnableMut` by `Unpin`.
->>
->> We just have to change the safety requirements of `OwnableMut`.
+>> But what I am wondering is, if we actually want to start using `Pin`
+>> at all. Isn't `Opaque` currently used about everywhere pinning is needed=
+?
 >
-> `OwnableMut` already requires `Unpin`, it just does not say so directly:
->
->
-> /// - It is safe to call [`core::mem::swap`] on the [`Ownable`]. This exc=
-ludes pinned types
-> ///   (i.e. most kernel types).
->
-> We could remove this and then just add a trait bound on `Unpin`.
+> `Opaque` is `!Unpin`, but pinning guarantees does not come into effect
+> until we produce a `Pin<Opaque<T>>`.
 
-Oh I happened to not have read it that thoroughly then... I don't think
-it makes sense to have `OwnableMut` then. So I agree with your suggested
-change :)
-
->>> If we add `get_pin_mut(&mut self) -> Pin<&mut T>` as Andreas suggested,
->>> it would be possible to obtain an `&mut T` anyway, then, if T is `Unpin=
-`.
->>
->> Well the `DerefMut` impl still is convenient in the `Unpin` case.
->
-> `OwnableMut` is probably not that useful, since all the types we want to
-> implement `Ownable` for is `!Unpin`. We could remove it, but I felt it
-> was neat to add the `DerefMut` impl for `Unpin` types.
-
-But we don't need `OwnableMut` in that case?
-
-Let's just do the following if it makes sense:
-* remove `OwnableMut`
-* allow obtaining a `Pin<&mut T>` from `Owned<T>` via a `&mut self`
-  method (we need a new safety requirement for this on `Ownable`)
-* have the `DerefMut` impl require `T: Unpin`
+`Pin<Opaque<T>>` isn't really a thing. You still need a pointer
+indirection, so `Pin<P>` where `P: DerefMut<Target =3D Opaque<T>>` so for
+example `Pin<Box<Opaque<T>>>`.
 
 ---
 Cheers,
