@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37182550CA;
-	Tue, 19 Aug 2025 17:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B873E2FA0FF
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755626029; cv=none; b=WW0PmUaRRmExu8WOo05Urxj+B9+0iKMA1m9ypoxiiTFM4HUPdROF1dCSlPfijUIp14xZtQBZciG+55QL8Sj0somM8nF4hjUj7O+85ATKt2Z8o82OFQbgkxi4iOuzR9z7r04uzRzqwbnUSsLWoKHSOSpYQPggv1dIhB9CVU5dmNw=
+	t=1755626545; cv=none; b=POwJyhCFV963eIQfEpCd7EG3SNPV++9eDGmW1XmW9zykJ2EqkRBT9SLuWvWwpA5yhIaZA6SsBKvqoiF6PmtV2xuSz9XlolzsckiX2Pu/JU/WVqC0nkNraJrtNS6MQ3yb9VJvYuUY3gZazaWQeyZWRIooMqxBsnxCbTKticet1M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755626029; c=relaxed/simple;
-	bh=+xxXPwLoU0wjEb+mW+JP5nJ7ehtG5WJJ5v83QIHPAO4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=V462D7OF+an8Bh2fphhrItrpaIz2MfpxyxQMFQvHdqPL6g391v51lEh4AO472VVDHMoFBahJFzVFROMf6zE3E0AeeqsdKiq0lCyg3CZ5lpAxAvZB51dabz8Ns9T9n+LBkpB38Q3E2IPqzPkNcWKWaIyLE9ImsiAZ9He9LRJsqK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBr2viVC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755626545; c=relaxed/simple;
+	bh=ak2Xhr1RaizJ7hP18FRRrylp/o33W9xGB14X86TRAXA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ez/WjD6jHN+Q+yIkx+JP04Olam/rdphMqPfS4LM2NBas7ipEYnb8GmWsb2M3UCYXLR2Sv3QhxDNTy8PhNIkykKEoRgme3V48u2vS8bbIAk6l4jtITfKEQe3sPpthP2kuyAN5zalYQWXWM6Ml0vSm082YSftw7kmj4aVGx4Jp9j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XNCInYtI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBr2viVC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E635EC4CEF1;
-	Tue, 19 Aug 2025 17:53:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNCInYtI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E20C4CEF1;
+	Tue, 19 Aug 2025 18:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755626028;
-	bh=+xxXPwLoU0wjEb+mW+JP5nJ7ehtG5WJJ5v83QIHPAO4=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=bBr2viVC5Frwot+fUtbob4OA2U2Aso9ZG8T/EcSpgnZY7VzFOm3a3Op1M+G1KyN8S
-	 Qv6BturvImnj+cFCyEY6ZGp26VHFlVXVehSK1o6b99R1SGjncIjrwZIffIS/IVWgwi
-	 cHe9kWI6WMQHZE7DSpoJlRB3qUYV+Jc+xjucuRuL3fPPtcCbatAQAuTPCQ54FuBtWg
-	 leAPoS9xbbob+n4lhn6RxRfFn8KSIWwd9ipS4TV8S1ATe6oi3GAKuUAgTlA/bPNNjy
-	 ZNliXflbwJimCpVjXSw/FPAIiibCkdjhcDbbWiXhve2i7QJv6Cu1p4VN8jDny+LuaK
-	 SHrE4VDN3VPMg==
+	s=k20201202; t=1755626545;
+	bh=ak2Xhr1RaizJ7hP18FRRrylp/o33W9xGB14X86TRAXA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=XNCInYtId3bXC20r07LGhKSEb4Xo2g9bb+CKZRKeB/ncexFguTuv543XvoIFo3YHW
+	 mTn0eGDlXOsbD9ixI/YKztZGtPis3BdfO23DP6m8lkxlQtAI3X5sAjaQJqYWoHjvHz
+	 Jtem84nNJfAUIdsWw4/MosFCX7FAAX+d1r8UKJWiRrQOOskyOVeL+WuQH0f8YbqLdK
+	 Ki1AcOd7OCrRqOmgxqsjmQUgzqr09j2XM70Gy73jTi5ktnpJ4O3yphIFjxIeaLPmzu
+	 pn4nHycxW2kiAemfoATBI5owYG/ACr3g/3T8321lXKGJfvJov3muf5upZdIOeB9SJX
+	 rYaQWgIoFYLag==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,87 +34,58 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Aug 2025 19:53:44 +0200
-Message-Id: <DC6LHHC2RQAE.1D7LOPCF3IZNB@kernel.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Andrew
- Ballance" <andrewjballance@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <maple-tree@lists.infradead.org>,
- <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Date: Tue, 19 Aug 2025 20:02:20 +0200
+Message-Id: <DC6LO2MHWMQH.2L6R1C0PK0FPX@kernel.org>
+Subject: Re: [PATCH] rust: alloc: add ARCH_KMALLOC_MINALIGN to bindgen
+ blocklist
+Cc: <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>, "Thorsten
+ Leemhuis" <linux@leemhuis.info>
+To: <lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>,
+ <Liam.Howlett@oracle.com>, <urezki@gmail.com>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 5/5] rust: maple_tree: add MAINTAINERS entry
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-5-229b48657bab@google.com>
- <DC6DQKE6LVNQ.3BBD8WF8XGROO@kernel.org>
- <5ssx3vakl3enjeaygpxfqtb26ufehwfjvcwqfna4xbhc645xpj@lzuvaf3my3f6>
-In-Reply-To: <5ssx3vakl3enjeaygpxfqtb26ufehwfjvcwqfna4xbhc645xpj@lzuvaf3my3f6>
+References: <20250818180923.192042-1-dakr@kernel.org>
+In-Reply-To: <20250818180923.192042-1-dakr@kernel.org>
 
-On Tue Aug 19, 2025 at 3:36 PM CEST, Liam R. Howlett wrote:
-> * Danilo Krummrich <dakr@kernel.org> [250819 07:49]:
->> On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
->> > Similar to and just below the existing MAPLE TREE entry.
->> >
->> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->> > ---
->> > Liam: I'm not sure what you prefer for the MAINTAINERS entry, so let m=
-e
->> > know if you want anything changed. There are also a few other options,
->> > for example, I could just add the files under the existing MAPLE TREE
->> > entry? The get_maintainers script should still send any relevant patch=
-es
->> > my way because they also match the RUST entry that has a wildcard on t=
-he
->> > rust/ directory.
->>=20
->> From v1 [1]:
->>=20
->> 	>> We should have another section for the maple tree, since it's not ju=
-st
->> 	>> used for mm.  Your stated plan is to use it for GPU allocations and =
-the
->> 	>> code doesn't live in mm/, wdyt?
->> =09
->> 	> Sure, I can add a new section if you prefer that.
->>=20
->> Maple tree is already used outside of mm, e.g. for regmap stuff and I al=
-so use
->> it in nouveau. Hence, I read this as moving maple tree to e.g. lib/ adju=
-sting
->> the existing entry.
->>=20
->> I personally think that - of course unless the affected people prefer ot=
-herwise
->> - it is usually best to keep a single maintainers entry for the C and th=
-e Rust
->> code. Maybe Alice can simply be added to the existing maintainers entry?
->>=20
->> What do you think?
+On Mon Aug 18, 2025 at 8:08 PM CEST, Danilo Krummrich wrote:
+> For some architectures, such as X86_64, ARCH_KMALLOC_MINALIGN is not
+> resolvable for bindgen. E.g. due to being defined as
+> __alignof__(unsigned long long).
 >
-> I'm not sure what you mean by lib/ since the lib files are spread into
-> other entries by the looks of it?
+> Hence, we have to create a rust helper, i.e. let the C compiler evaluate
+> the expression and store it in a const.
+>
+> However, if for other architectures, such as arm64,
+> ARCH_KMALLOC_MINALIGN does evaluate to something that can be directly
+> processed by bindgen, we end up with multiple definitions of
+> ARCH_KMALLOC_MINALIGN in the generated bindings.
+>
+> 	error[E0428]: the name `ARCH_KMALLOC_MINALIGN` is defined multiple times
+> 	      --> /builddir/build/BUILD/kernel-6.17.0-build/kernel-next-20250818=
+/linux-6.17.0-0.0.next.20250818.423.vanilla.fc44.aarch64/rust/bindings/bind=
+ings_generated.rs:134545:1
+> 	       |
+> 	9622   | pub const ARCH_KMALLOC_MINALIGN: u32 =3D 8;
+> 	       | ----------------------------------------- previous definition o=
+f the value `ARCH_KMALLOC_MINALIGN` here
+> 	...
+> 	134545 | pub const ARCH_KMALLOC_MINALIGN: usize =3D 8;
+> 	       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `ARCH_KMALLOC_MINAL=
+IGN` redefined here
+> 	       |
+> 	       =3D note: `ARCH_KMALLOC_MINALIGN` must be defined only once in th=
+e value namespace of this module
+>
+> To fix this up, add ARCH_KMALLOC_MINALIGN to the blocklist of bindgen,
+> such that we always only generate the symbol from the rust helper.
+>
+> Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+> Closes: https://lore.kernel.org/all/8aa05f08-ef6e-4dfe-9453-beaab7b3cb98@=
+leemhuis.info/
+> Fixes: 1b1a946dc2b5 ("rust: alloc: specify the minimum alignment of each =
+allocator")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-I think I misunderstood your comment from [1] above, and, despite knowing
-better, mistakenly assumed otherwise -- just ignore this comment.
-
-> I'm okay with the entry below or adjusting the existing one.
-
-If you're both fine with either, I suggest to keep a single entry for both.
-
-In general I think it's better if we try to avoid to differentiate between =
-Rust
-and C code of a single subsystem (or component) maintenance wise unless the=
-re
-are specific reasons.
-
-Even though sometimes it's just a formality, I think it can help to bring p=
-eople
-together and learn from each other. There more good examples we can set up =
-for
-this, the better. :)
-
->> [1] https://lore.kernel.org/all/aJW3L3SEVUl_AVvN@google.com/
+Applied to alloc-next, thanks!
