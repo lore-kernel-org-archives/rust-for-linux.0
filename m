@@ -1,73 +1,71 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFF7253F39
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 23:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9BF258EE6
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 23:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755645162; cv=none; b=mCSo/1Zv5eUw6pDWkPGmT2r155TFA0dyfdfvdp6jeEpC3kY9plfJKulbGdlI42MOIMyXK3zcaJQQIFkByqMkAM17xpBeN7gA4TBo81zv+rNjWxSn6RZYKZPoQ3teFfhyTWduckloFOz2uk0m4hK2PxU+9VZGsZiWDV1aOnoLD7A=
+	t=1755645164; cv=none; b=XCGljPvGjx4yqTfWfBPvIWSkmlQfeqUA7Jid52FsHuYt0QmjFQ+4foihEav//ThI9dsi3voBMAnjQctzjmtqdcWLUN75PNPNINgsMVzQ7Y6uLezKNE0pP7jqdgG3RXyYDSoM8eu6EXG19XMJPI38jpfqitmQXcIooHU31zRZW50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755645162; c=relaxed/simple;
-	bh=tN2d0iBRLdibpnliXtRBHAo/6Jubq5ZEAkUJDcXTn1g=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=X3ksHBB1imdvFjrKh0HKcQCYjpNB19Tf9kknnRXP+YLimGkKIHTKUgFc9Y5GlDqqbq2lQMqYh8NjiuvIQr/hT6jFA1uQ+aHEIiz5kzi3zIMGDint2nbRQ8vTcMU+ALSQYlyO5EX46abklv7LVGbdX3/MZ8Bhg4XentbmFxMnEAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cGWWpkZo; arc=none smtp.client-ip=209.85.216.73
+	s=arc-20240116; t=1755645164; c=relaxed/simple;
+	bh=/sQtIBYFoOnpF5rNBeNufGj8k1f/8wsUIbzjXDdvRH4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Yv5s/nTFexhmcswjgZ6It/IKQ90oZzkt7Pr9rLMEmCJR4iEVca73oRAuIN7bjcWQKJXiJwvJ42/vQu+K0C78MyYNI1qrTQCP5JCKQv1ZV5JZ1bpYKl4vanqeZgAIKsEZOLJ+t7SDvU0JP3M2lBPE7uJ/3qB2nWNed48T+hI122A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eO4WyzMA; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cGWWpkZo"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32326e2506aso5472392a91.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 16:12:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eO4WyzMA"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b4761f281a8so507140a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 16:12:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755645160; x=1756249960; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cdkg5EdcS5JFoEk22pjb/uAdY4rj813xklyn1rTCstU=;
-        b=cGWWpkZoUFWvLPcIQXiNVMpV6IBHvfUCXobmTmA/fc7ngUnk20qlDUdoH44LgSz5p4
-         8MMaIdU3o+uSglXNvBukW9pVR4yCDTdy4B6goAn4i1jMVAsx48mz2M9teGAUgOsPMYzZ
-         dd9mUP398uvUYo77bHIV2J848BZ3YTbv3SIWHsz091GzPTGnHpjdFl2uqF0BoOSG96Sd
-         8q8FCZSm7wDh0eED8SpOcMChD5jlYhiTMIRgOnQ+QLQBWuI1WTMthFjNZk/D3tnjMRh+
-         dyIcdUP2uVqk3r+npMbOfb1cVLgwzSwRH8qT0IiUh3Zl/xcas6NTqkPMAyYZX7+xqPUb
-         s0gQ==
+        d=google.com; s=20230601; t=1755645161; x=1756249961; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UYRu41w7P7laHNqkDjkFmEfy6zg8q08IlScnpwVSpE8=;
+        b=eO4WyzMAWB7i5Xf8SGTwBo8mwGdG/ldrVqp/X5tqJe/zWqc55LVb1334zopivk5yCr
+         9q8+cWdK+ObZbyjCRrhwaPxBcK6eCFhMQfhcmvJ0COo78vNeMf1/ns82SIv50167t0OU
+         d7OFXf4gKJP/A/bKvLj22Hd2uiJntzBr9Emzfx84R2x8Jsi+e1+Ky80qgeRcPdUOwacz
+         5+CGR8xGDC3Oah8I7GG2xV+1roGaof+ilyl//jTkI24K32VY4T5hEfBnVXfJPCW4gwhk
+         JaRWe5PxGSqa72v/rncDQw47GJc0hwu3aM6Pp5c9ieRfKn4QZMS3mdthZIEUcQktSUGb
+         MlUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755645160; x=1756249960;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cdkg5EdcS5JFoEk22pjb/uAdY4rj813xklyn1rTCstU=;
-        b=pSlwNvbGsM1F3pF7MbRH9QiX8gx/ujDHwwXT4WW3nnF9wn5br5lCy63yzedMmsso0H
-         v4fJ+oIjHzWbxKLj/U/TOPOsxjO7EPHax/Y+wZIcZbRDGJrA9RHv4TlCJHCW4IiXJ5SC
-         EP22p5rca6isvMQ5ORBdT8+LtVv4ScXMbHsya6Eo/HBmW6dZRRjyTbP1p8ITqTpyJL8l
-         IkwBp2Vh6AzXRqyLmEINgD5533b04QNU7QnHM3+1K3ZWtBgpZSp9G5G9Yz11D6TnXoCk
-         jaCnj1OZny96uyvWf3RmVkcEKWcaw1MS5wE1GtCEAlKnsCPAETLeWQ6uyFj2V4ua6M/v
-         sE4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXeQbRkqqZKlkLzs5IKIn/jVib6EV+ht0TzkMkuKZMNu1Z1wwiV26VJf5GB9Y+W54/Q7Ci4SFK3iEkFtGtXkQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YywOKG1oWwHd6GWqWfO1y8j/UxdHYCWlRoOZhFpSu+vSUdI+kqU
-	Jy1ujHOEcW+oO/XQdSrEJiQBN1+k0oL1BmLUTmoSHlOikAjX7oTqHaiNLubT41uGejGpvgeDx9m
-	bIUVNouWxuQ==
-X-Google-Smtp-Source: AGHT+IHq2ZGydkxOCKDgPFbqm1zIYpEaeiSpOMHsq6YpiMIlZCQ0TjgGxP0laqAl+qv35spgDxGaYvXNFlyW
-X-Received: from pjbsj14.prod.google.com ([2002:a17:90b:2d8e:b0:31c:160d:e3be])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:fc4e:b0:312:f0d0:bb0
- with SMTP id 98e67ed59e1d1-324e13b08f2mr1319229a91.12.1755645159794; Tue, 19
- Aug 2025 16:12:39 -0700 (PDT)
-Date: Tue, 19 Aug 2025 23:12:31 +0000
+        d=1e100.net; s=20230601; t=1755645161; x=1756249961;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UYRu41w7P7laHNqkDjkFmEfy6zg8q08IlScnpwVSpE8=;
+        b=V6SSzNb76NfTc8Gflf8f4cYAupA0eiq66+zHBut0XUZtmUVI6AhxNnGAIkz/NWEu8Y
+         aeb21tFmsVFZ4TSgJ2zLs1y5TLMTl92UcB6Jay9CYiVgJXqllXrjL7k2PZwbypOHF9IO
+         TnmiNGFaIce69F1Hk6QLPAzm6dLBw75q554pCQ094TZAQzkadEG9lMgcQJp601BD/OWR
+         aDzWxYC9Q3T/PRgM7DuAdLC3Py2DeSzZfbLSj+Pwa3a/0jb0P1raf9qxUhmbV2XzU+hw
+         Sk9bpcS1/z3o0L26pI2n3NwNkEJYuijc66qvQHSsvto9z40WoGzeICZatJk4cWuIaaao
+         DJdw==
+X-Forwarded-Encrypted: i=1; AJvYcCWvHaXT6mFAdz+mm5dWEUVZOLQXempa1UWs1wmS5Zin9+Qz2gNDqA7o9IqPJ5eD3u5etViMCL+kQY28aNCmHg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywe///WtbKySiCmNn13IYidW/rYmR0n+81HrVXhVaxL4jYAG/rZ
+	nqFxvklXO5z8nBb+Kbh7TwMXR2L9N7/t1OurhuhgpsfS+wqRa/D9TNc4edyFtE25tcLr4WYM9vR
+	5AEeb2wrpRA==
+X-Google-Smtp-Source: AGHT+IH1pH191A63Rhbgyri0LWOTl9R3+yumdoXIlkp89Db8xkaKvpm7+k+4T2kqoW/nSRXKvxKrM/RTk/bE
+X-Received: from pjx7.prod.google.com ([2002:a17:90b:5687:b0:311:ef56:7694])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5405:b0:312:e8ed:758
+ with SMTP id 98e67ed59e1d1-324e12d6bffmr1005537a91.13.1755645161597; Tue, 19
+ Aug 2025 16:12:41 -0700 (PDT)
+Date: Tue, 19 Aug 2025 23:12:32 +0000
+In-Reply-To: <20250819-qcom-socinfo-v1-0-e8d32cc81270@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAOAEpWgC/03OvW7DMAwE4FcxOJeGqfhHFYKia7duHYoMsiw7B
- CKrEW2jQJB3r+pm6Hgk7sPdQHxiL2CKGyS/sXCcc6CnAtzZzpNHHnIGVamm0qTx6mJAiY7nMaJ
- rdF11VpN1LeTKV/Ijf+/cJ3y8vcPp75j8dc308vgEL2J32hTHh0yKDrqhsm3aukZCd04sC9tZ7
- LxEuXCwil6nYPlS5gkv8H+hKXalVhoH36/TKJhWWfDghsY9d77vBjIbVb+l3orHLAReTLG1JXW YnILT/f4DE+vhXw0BAAA=
-X-Change-Id: 20250818-qcom-socinfo-c58407a81ac6
+References: <20250819-qcom-socinfo-v1-0-e8d32cc81270@google.com>
 X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755645158; l=3040;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755645158; l=6997;
  i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=tN2d0iBRLdibpnliXtRBHAo/6Jubq5ZEAkUJDcXTn1g=; b=kHjUnWWjgWPHx9fl7xVzA9lXW44Bd5Jj9Mgqu0vko7qyFF1TuUS6i2e4U80e3b7iJYi2/KkcC
- pUlO1kN1ER0DfH9LEvxT5eT6DMjP+THQLAGaXeGShkrHo2CWdTGar79
+ bh=/sQtIBYFoOnpF5rNBeNufGj8k1f/8wsUIbzjXDdvRH4=; b=KBVrJ6ZJZK5H5PxPRzqmcbVwzyAJFZliSRPMJb0XsfWslq30dvXv5hue0VyqxvXmgtqKhB8iY
+ AEK0KdQs6uGBQyy9BH/Qm/dZI8q1zF7kOkHXyECwGNf9Utmj2U3QMMg
 X-Mailer: b4 0.14.2
-Message-ID: <20250819-qcom-socinfo-v1-0-e8d32cc81270@google.com>
-Subject: [PATCH WIP 0/5] qcom-socinfo Rust Implementation
+Message-ID: <20250819-qcom-socinfo-v1-1-e8d32cc81270@google.com>
+Subject: [PATCH WIP 1/5] rust: Add soc_device support
 From: Matthew Maurer <mmaurer@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -81,67 +79,200 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-THIS IS NOT A PROPOSAL TO LAND THIS SERIES
+Adds the ability to register SoC devices.
 
-This is a demonstration of implementing a real driver that uses DebugFS,
-primarily uploaded to serve as an example for API discussions on the
-DebugFS series [1].
-
-There are a number of rough edges (transmute, intra-module bindings) and
-un-landed abstractions (SoC registration, randomness), but the main
-purpose of this series is to look at sample usage of DebugFS in
-
-* driver/soc/qcom/socinfo_rust/socinfo_rust_scoped.rs
-* driver/soc/qcom/socinfo_rust/socinfo_rust_file.rs
-
-to show how this would look in the two different APIs.
-
-The example outputs byte-identical (as checked by recursive diff on
-debugfs mounts) DebugFS files to the existing C driver. A real rewrite
-would likely be simpler as it would be willing to not precisely mimic
-newline quirks, etc.
-
-[1] https://lore.kernel.org/all/20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com/
+(This will be sent upstream in a separate request, it's uploaded now as
+a dependency of the example driver.)
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
-Matthew Maurer (5):
-      rust: Add soc_device support
-      rust: transmute: Cleanup + Fixes
-      rust: Add support for feeding entropy to randomness pool
-      soc: qcom: socinfo: `File`-based example
-      soc: qcom: socinfo: `Scoped`-based example
+ MAINTAINERS                     |   1 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/soc.rs              | 137 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 141 insertions(+)
 
- MAINTAINERS                                        |   1 +
- drivers/soc/qcom/Kconfig                           |  12 +
- drivers/soc/qcom/Makefile                          |   2 +
- drivers/soc/qcom/smem.c                            |   9 +
- drivers/soc/qcom/socinfo_rust/bindings.rs          | 126 +++++
- drivers/soc/qcom/socinfo_rust/data.rs              | 387 +++++++++++++++
- drivers/soc/qcom/socinfo_rust/socinfo_rust_file.rs | 538 +++++++++++++++++++++
- .../soc/qcom/socinfo_rust/socinfo_rust_scoped.rs   | 367 ++++++++++++++
- rust/bindings/bindings_helper.h                    |   8 +
- rust/kernel/lib.rs                                 |   4 +
- rust/kernel/rand.rs                                |  14 +
- rust/kernel/soc.rs                                 | 137 ++++++
- rust/kernel/transmute.rs                           | 126 +++--
- 13 files changed, 1681 insertions(+), 50 deletions(-)
----
-base-commit: f3c5631f70e434e318c44001e2417d4770f06cd0
-change-id: 20250818-qcom-socinfo-c58407a81ac6
-prerequisite-message-id: <20250811213851.65644-1-christiansantoslima21@gmail.com>
-prerequisite-patch-id: 9448855f52cb137ad246ae5fde9eab12eac5da94
-prerequisite-change-id: 20250428-debugfs-rust-3cd5c97eb7d1:v10
-prerequisite-patch-id: 78c729bc8c164ce7a7c3ff841e720518a7f28c54
-prerequisite-patch-id: ca7c06b342af0d1f5b03f8907206f8b69a189c9b
-prerequisite-patch-id: f3e7541c4e907d874c8f303c2da14dd3aafe05f6
-prerequisite-patch-id: e892f83de14710bea11f042ed874c05ccb3bc972
-prerequisite-patch-id: ce8a5988c32a6491bc36e87fb33b2e9adf254db8
-prerequisite-patch-id: 0762df7763820dd608da15dfbd8b5309d7692aa9
-prerequisite-patch-id: 23da818045894ee8c6f2a7d8ade002ccfc96cc3a
-prerequisite-patch-id: 2bfdaa7c29838c44d80003c623067051617f2b5e
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2cbe890085dbb6a652623b38dd0eadeeaa127a94..e0ff2731f1c2ae4bb01d361e99c1f4517fbd45d5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7481,6 +7481,7 @@ F:	rust/kernel/devres.rs
+ F:	rust/kernel/driver.rs
+ F:	rust/kernel/faux.rs
+ F:	rust/kernel/platform.rs
++F:	rust/kernel/soc.rs
+ F:	samples/rust/rust_debugfs.rs
+ F:	samples/rust/rust_scoped_debugfs.rs
+ F:	samples/rust/rust_driver_platform.rs
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index e847820dc807fdda2d682d496a3c6361bb944c10..140e2f4e60c0b745ac5d5c7456d60af28e21f55a 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -72,6 +72,7 @@
+ #include <linux/sched.h>
+ #include <linux/security.h>
+ #include <linux/slab.h>
++#include <linux/sys_soc.h>
+ #include <linux/tracepoint.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 828620c8441566a638f31d03633fc1bf4c1bda85..045f1088938cf646519edea2102439402fb27660 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -117,6 +117,8 @@
+ pub mod security;
+ pub mod seq_file;
+ pub mod sizes;
++#[cfg(CONFIG_SOC_BUS)]
++pub mod soc;
+ mod static_assert;
+ #[doc(hidden)]
+ pub mod std_vendor;
+diff --git a/rust/kernel/soc.rs b/rust/kernel/soc.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..b8412751a5ca8839e588cf5bd52f2e6a7f33d457
+--- /dev/null
++++ b/rust/kernel/soc.rs
+@@ -0,0 +1,137 @@
++// SPDX-License-Identifier: GPL-2.0
++
++// Copyright (C) 2025 Google LLC.
++
++//! SoC Driver Abstraction
++//!
++//! C header: [`include/linux/sys_soc.h`](srctree/include/linux/sys_soc.h)
++
++use crate::bindings;
++use crate::error;
++use crate::prelude::*;
++use crate::str::CString;
++use core::marker::PhantomPinned;
++use core::ptr::addr_of;
++
++/// Attributes for a SoC device
++pub struct DeviceAttribute {
++    /// Machine
++    pub machine: Option<CString>,
++    /// Family
++    pub family: Option<CString>,
++    /// Revision
++    pub revision: Option<CString>,
++    /// Serial Number
++    pub serial_number: Option<CString>,
++    /// SoC ID
++    pub soc_id: Option<CString>,
++}
++
++// SAFETY: We provide no operations through `&BuiltDeviceAttribute`
++unsafe impl Sync for BuiltDeviceAttribute {}
++
++// SAFETY: All pointers are normal allocations, not thread-specific
++unsafe impl Send for BuiltDeviceAttribute {}
++
++#[pin_data]
++struct BuiltDeviceAttribute {
++    #[pin]
++    backing: DeviceAttribute,
++    inner: bindings::soc_device_attribute,
++    // Since `inner` has pointers to `backing`, we are !Unpin
++    #[pin]
++    _pin: PhantomPinned,
++}
++
++fn cstring_to_c(mcs: &Option<CString>) -> *const kernel::ffi::c_char {
++    mcs.as_ref()
++        .map(|cs| cs.as_char_ptr())
++        .unwrap_or(core::ptr::null())
++}
++
++impl BuiltDeviceAttribute {
++    fn as_mut_ptr(&self) -> *mut bindings::soc_device_attribute {
++        core::ptr::from_ref(&self.inner).cast_mut()
++    }
++}
++
++impl DeviceAttribute {
++    fn build(self) -> impl PinInit<BuiltDeviceAttribute> {
++        pin_init!(BuiltDeviceAttribute {
++            inner: bindings::soc_device_attribute {
++                machine: cstring_to_c(&self.machine),
++                family: cstring_to_c(&self.family),
++                revision: cstring_to_c(&self.revision),
++                serial_number: cstring_to_c(&self.serial_number),
++                soc_id: cstring_to_c(&self.soc_id),
++                data: core::ptr::null(),
++                custom_attr_group: core::ptr::null(),
++            },
++            backing: self,
++            _pin: PhantomPinned,
++        })
++    }
++}
++
++// SAFETY: We provide no operations through &Device
++unsafe impl Sync for Device {}
++
++// SAFETY: Device holds a pointer to a `soc_device`, which may be sent to any thread.
++unsafe impl Send for Device {}
++
++/// A registered soc device
++#[repr(transparent)]
++pub struct Device(*mut bindings::soc_device);
++
++impl Device {
++    /// # Safety
++    /// * `attr` must be pinned
++    /// * `attr` must be valid for reads during the function call
++    /// * If a device is returned (e.g. no error), `attr` must remain valid for reads until the
++    ///   returned `Device` is dropped.
++    unsafe fn register(attr: *const BuiltDeviceAttribute) -> Result<Device> {
++        let raw_soc =
++            // SAFETY: The struct provided through attr is backed by pinned data next to it, so as
++            // long as attr lives, the strings pointed to by the struct will too. By caller
++            // invariant, `attr` is pinned, so the pinned data won't move. By caller invariant,
++            // `attr` is valid during this call. If it returns a device, and so others may try to
++            // read this data, by caller invariant, `attr` won't be released until the device is.
++            error::from_err_ptr(unsafe { bindings::soc_device_register((*attr).as_mut_ptr()) })?;
++        Ok(Device(raw_soc))
++    }
++}
++
++#[pin_data(PinnedDrop)]
++/// Registration handle for your soc_dev. If you let it go out of scope, your soc_dev will be
++/// unregistered.
++pub struct DeviceRegistration {
++    #[pin]
++    attr: BuiltDeviceAttribute,
++    soc_dev: Device,
++    // Since Device transitively points to the contents of attr, we are !Unpin
++    #[pin]
++    _pin: PhantomPinned,
++}
++
++#[pinned_drop]
++impl PinnedDrop for DeviceRegistration {
++    fn drop(self: Pin<&mut Self>) {
++        // SAFETY: Device always contains a live pointer to a soc_device that can be unregistered
++        unsafe { bindings::soc_device_unregister(self.soc_dev.0) }
++    }
++}
++
++impl DeviceRegistration {
++    /// Register a new SoC device
++    pub fn register(attr: DeviceAttribute) -> impl PinInit<Self, Error> {
++        try_pin_init!(&this in Self {
++                    attr <- attr.build(),
++                    // SAFETY: We have already initialized attr, and we are inside PinInit and Self
++                    // is !Unpin, so attr won't be moved and is valid. If it returns success, attr
++                    // will not be dropped until after our `PinnedDrop` implementation runs, so the
++                    // device will be unregistered first.
++                    soc_dev: unsafe { Device::register(addr_of!((*this.as_ptr()).attr))? },
++                    _pin: PhantomPinned,
++        }? Error)
++    }
++}
 
-Best regards,
 -- 
-Matthew Maurer <mmaurer@google.com>
+2.51.0.rc1.167.g924127e9c0-goog
 
