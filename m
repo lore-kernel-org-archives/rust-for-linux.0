@@ -1,215 +1,124 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3105F334707
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 11:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1032232C323;
+	Tue, 19 Aug 2025 11:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755604129; cv=none; b=lf7vSlE1hQiW/E/kyzYHYA/AR5Ogj7EeIU/TSvL4RtNyaFpheDWKaQxPpW2XNHxUPnccQPkJ93wJDJKvHGDG4p+3Dzwm7bJ2ILb1npAdnzZvI8Xq20GFWlUeLDWMmVuUGpWnk55ZGN+DyRPtB1gtlfn345iG2HiuCXjPhlyDgmk=
+	t=1755604172; cv=none; b=CF8Yct6uOSM4HHmGWE7vLRwpCxbtI2KSsHYYBx/LGaqPczDA2gKp7G/Gxv2t6wHBojUX4H+NI6VcT2xVCtOq4sfi6EyRZz7Xgj30+26fAb/NvBRStBlu65SL6ZL87vsrrtA9+3HqaVkF6//oH82353IsB1f0GidmwcHT54bsxvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755604129; c=relaxed/simple;
-	bh=zuMsmj0homhy84JFEbF0ilrCnkcrjECzT0Zu5MB2jls=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=X02DywCW3Drrje0bRGWLVa1HCMUNDZ4x96oYgPwNM81O83eq9EMG+oNqrNzlw6omO5l1cGLCzxx6jNot1JeXpKeLYgRfegEZQeAnNi9j830U+IkyRyukoZu32UP3ookzan9JmDLsBYxyqFImMddVF8TfGCKwVnF4cOVGfribU4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jHDBjMSW; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1755604172; c=relaxed/simple;
+	bh=I9+81pArqE7MexOVxf+17csPrj9JT4C0Iku6aEw9/vc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=kgW0O48eEqo2cblhX6lHofs+vjzGgJvi0KIvVDhzIXwsEhWiTtBvBq+wvkEgyC7UYGC+hPjj0jdSCGHLRvg6A1W7TPalV9mYOUxt7Joy6qvu/O1tAy9qZkP03dO3BGXFOxHC0TYGXYlhFqtR5ey6lidJCA0BuRsCWBqQqFhfinA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0sgHGSs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jHDBjMSW"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45a1b0045a0so27083005e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 04:48:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755604125; x=1756208925; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xm4xJRYmVeBSPHc8/tB2tSVcBiRqjj3w8kENrdSBu8Y=;
-        b=jHDBjMSWr7nzfVJlO64TfL0BMBrnFQBaxQnhQul1zMu8bBnjvZosRsHWIHvJeJlJPn
-         XEjxliOX1eqie6753OlwhLriaFJQV1tjmOddGRLlea1guh0TQdokmddqpu0NEyHeyX0O
-         h2CXG3TjVfcH1RqHN1bsYL6aBAKfdazMQFLJ3iPqsPbeMd0y6VxH1R3J/DtTXfMMr7bx
-         PV3l30tAPshn4AVmf17XZDS8Zh6uAtXAU3jScVgC0GZpMHLKOCEb7fjcdOD0ClJ9lML9
-         A2GRrJ5c5uI3SzSwPBvpYfK60KuJ9K30rec76tbyy5L553W609MayV66YPXm7oktdJAz
-         /caA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755604125; x=1756208925;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xm4xJRYmVeBSPHc8/tB2tSVcBiRqjj3w8kENrdSBu8Y=;
-        b=P4T8H7MliJyJzy14L0mxnejsM7VmrB0sPHc4MvbLH8YagXGUYtbsWqjhGuHRgybrvG
-         tYhzFSQEQ8o56zzyoapJDXtwfQIxGDTn0xbQ/QI5qTabS3h0gRkUq0Wz6AeiyM/y2Duq
-         ME3HQU9S0JfYBU+1wFNFTKCS4ARKd/vuVIdzDp4/f5bZrHNRSBUfQ5dJpI8NYVm5f/2l
-         aH4dJbdjtGowofIUfgJ4zU6wNoEXDtS60qUK6cVz1l5eBAxx9vKYFlFsafZEC2vcb1zM
-         kqeuqNPWrkKzgWAvEcMLrKXcwUxF6pg3h1ocYhcoMUCZDyQqp8XaobzDVb0FWO5Hw7u7
-         VrQg==
-X-Forwarded-Encrypted: i=1; AJvYcCV0Utl1H5jvkmhe1ym/HMWAqvQUMtb8RxL5xYOjR01Rpm+qdbcvEvOAtG61Biea04p+9WtEPWa6iG0WccwxMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI5kroqjduDrYYjsDbu5OzE3g6GWhhDw6e2gQzIB5o8uJTq6dr
-	iAgS/pMt4C3RaQOufSMzQuQDJUG0JfuaOQXpjwZzzEJKYxwZLvnu1lbSb5THa2bsjSLLusOXJMo
-	b8EKuPcJ0hMveSqwSgA==
-X-Google-Smtp-Source: AGHT+IHnrHSocaWSpjt1yxbhJ1GhajeO+0CiIJnVE093eVsKYAGItQKwEix5fVfhaUcYBLTtnuXKKyhQz6Ga3Ow=
-X-Received: from wmbeq12.prod.google.com ([2002:a05:600c:848c:b0:459:db29:1efa])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4308:b0:3b9:12d5:168f with SMTP id ffacd0b85a97d-3c0ebbd2b48mr1481989f8f.30.1755604125197;
- Tue, 19 Aug 2025 04:48:45 -0700 (PDT)
-Date: Tue, 19 Aug 2025 11:48:44 +0000
-In-Reply-To: <20250814093427.19629-4-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0sgHGSs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC37FC4CEF1;
+	Tue, 19 Aug 2025 11:49:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755604171;
+	bh=I9+81pArqE7MexOVxf+17csPrj9JT4C0Iku6aEw9/vc=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=m0sgHGSs550VMnsNyZqMx1V/yqwEthhAqTI0c4BU9iqzQAn/yYFh37WhdrYb1R6PD
+	 G6KfDbtEiUmTqbWw2XwV8B2punfA8JIVR20RsugasPvzeTR6Gnr5Cz1Vfnc7HYUxpZ
+	 gqXqnu26hgcehsaYgVfz6M0eM/Jb5qeGw6RGKS+5ZVUXwUr6/5x14OC/X+G7dNyRLd
+	 xAEs2x+tgxEJldw9S4+lwxXta33mfrj5VfnHi/eB3/k1CnWVsRFBECzrOyoqfq8Sw7
+	 vCdGz7Wlo2s4BNSzeAcmLjHt9Rva0JCUNEmuypy3F2MCU8f0kIH9++3fvAHsEWQ2fg
+	 3ut3VeET5N5pw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250814093427.19629-1-dakr@kernel.org> <20250814093427.19629-4-dakr@kernel.org>
-Message-ID: <aKRknP8HT-BrPok4@google.com>
-Subject: Re: [PATCH v4 3/7] rust: alloc: implement VmallocPageIter
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com, 
-	urezki@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	abdiel.janulgue@gmail.com, acourbot@nvidia.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 19 Aug 2025 13:49:27 +0200
+Message-Id: <DC6DQKE6LVNQ.3BBD8WF8XGROO@kernel.org>
+Subject: Re: [PATCH v2 5/5] rust: maple_tree: add MAINTAINERS entry
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Andrew Ballance"
+ <andrewjballance@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <maple-tree@lists.infradead.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
+ <20250819-maple-tree-v2-5-229b48657bab@google.com>
+In-Reply-To: <20250819-maple-tree-v2-5-229b48657bab@google.com>
 
-On Thu, Aug 14, 2025 at 11:33:42AM +0200, Danilo Krummrich wrote:
-> Introduce the VmallocPageIter type; an instance of VmallocPageIter may
-> be exposed by owners of vmalloc allocations to provide borrowed access
-> to the backing pages of the vmalloc allocation.
-> 
-> For instance, this is useful to access and borrow the backing pages of
-> allocation primitives, such as Box and Vec, backing a scatterlist.
-> 
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
+> Similar to and just below the existing MAPLE TREE entry.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Liam: I'm not sure what you prefer for the MAINTAINERS entry, so let me
+> know if you want anything changed. There are also a few other options,
+> for example, I could just add the files under the existing MAPLE TREE
+> entry? The get_maintainers script should still send any relevant patches
+> my way because they also match the RUST entry that has a wildcard on the
+> rust/ directory.
 
-Some nits below, but:
+From v1 [1]:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+	>> We should have another section for the maple tree, since it's not just
+	>> used for mm.  Your stated plan is to use it for GPU allocations and the
+	>> code doesn't live in mm/, wdyt?
+=09
+	> Sure, I can add a new section if you prefer that.
 
->  rust/kernel/alloc/allocator.rs | 98 ++++++++++++++++++++++++++++++++++
->  1 file changed, 98 insertions(+)
-> 
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> index 2315f5063011..5cff3069bff4 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -10,6 +10,7 @@
->  
->  use super::Flags;
->  use core::alloc::Layout;
-> +use core::marker::PhantomData;
->  use core::ptr;
->  use core::ptr::NonNull;
->  
-> @@ -236,3 +237,100 @@ unsafe fn realloc(
->          unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags) }
->      }
->  }
-> +
-> +/// An [`Iterator`] of [`page::BorrowedPage`] items owned by a [`Vmalloc`] allocation.
-> +///
-> +/// # Guarantees
-> +///
-> +/// The pages iterated by the [`Iterator`] appear in the order as they are mapped in the CPU's
-> +/// virtual address space ascendingly.
-> +///
-> +/// # Invariants
-> +///
-> +/// - `buf` is a valid pointer to the beginning of a [`Vmalloc`] allocation.
-> +/// - `size` is the size of the [`Vmalloc`] allocation `buf` points to.
-> +pub struct VmallocPageIter<'a> {
-> +    /// The base address of the [`Vmalloc`] buffer.
-> +    buf: NonNull<u8>,
-> +    /// The size of the buffer pointed to by `buf` in bytes.
-> +    size: usize,
-> +    /// The current page index of the [`Iterator`].
-> +    index: usize,
-> +    _p: PhantomData<page::BorrowedPage<'a>>,
-> +}
-> +
-> +impl<'a> Iterator for VmallocPageIter<'a> {
-> +    type Item = page::BorrowedPage<'a>;
-> +
-> +    fn next(&mut self) -> Option<Self::Item> {
-> +        let offset = self.index.checked_mul(page::PAGE_SIZE)?;
-> +
-> +        // Even though `self.size()` may be smaller than `Self::page_count() * page::PAGE_SIZE`, it
-> +        // is always a number between `(Self::page_count() - 1) * page::PAGE_SIZE` and
-> +        // `Self::page_count() * page::PAGE_SIZE`, hence the check below is sufficient.
-> +        if offset < self.size() {
-> +            self.index += 1;
-> +        } else {
-> +            return None;
-> +        }
-> +
-> +        // TODO: Use `NonNull::add()` instead, once the minimum supported compiler version is
-> +        // bumped to 1.80 or later.
-> +        //
-> +        // SAFETY: `offset` is in the interval `[0, (self.page_count() - 1) * page::PAGE_SIZE]`,
-> +        // hence the resulting pointer is guaranteed to be within the same allocation.
-> +        let ptr = unsafe { self.buf.as_ptr().add(offset) };
-> +
-> +        // SAFETY: `ptr` is guaranteed to be non-null given that it is derived from `self.buf`.
-> +        let ptr = unsafe { NonNull::new_unchecked(ptr) };
-> +
-> +        // SAFETY:
-> +        // - `ptr` is a valid pointer to a `Vmalloc` allocation.
-> +        // - `ptr` is valid for the duration of `'a`.
-> +        Some(unsafe { Vmalloc::to_page(ptr) })
-> +    }
-> +
-> +    fn size_hint(&self) -> (usize, Option<usize>) {
-> +        let remaining = self.page_count().saturating_sub(self.index);
-> +
-> +        (remaining, Some(remaining))
-> +    }
-> +}
-> +
-> +impl<'a> VmallocPageIter<'a> {
-> +    /// Creates a new [`VmallocPageIter`] instance.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `buf` must be a pointer to the beginning of a [`Vmalloc`] allocation.
+Maple tree is already used outside of mm, e.g. for regmap stuff and I also =
+use
+it in nouveau. Hence, I read this as moving maple tree to e.g. lib/ adjusti=
+ng
+the existing entry.
 
-It has to be the beginning of the vmalloc allocation?
+I personally think that - of course unless the affected people prefer other=
+wise
+- it is usually best to keep a single maintainers entry for the C and the R=
+ust
+code. Maybe Alice can simply be added to the existing maintainers entry?
 
-> +    /// - `buf` points to must at least be valid for the lifetime of `'a`.
+What do you think?
 
-This grammar doesn't quite compute for me.
+[1] https://lore.kernel.org/all/aJW3L3SEVUl_AVvN@google.com/
 
-> +    /// - `size` must be the size of the [`Vmalloc`] allocation `buf` points to.
-> +    pub unsafe fn new(buf: NonNull<u8>, size: usize) -> Self {
-> +        // INVARIANT: `buf` is a valid pointer to the beginning of a `Vmalloc` allocation by the
-> +        // safety requirements of this function.
-> +        Self {
-> +            buf,
-> +            size,
-> +            index: 0,
-> +            _p: PhantomData,
-> +        }
-> +    }
+> Which tree does maple tree patches usually land through?
+>
+> Andrew Ballance: You mentioned being interested in being listed here as
+> well?
+> ---
+>  MAINTAINERS | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 26053163fe5aed2fc4b4e39d47062c93b873ac13..4a52d884e36eafe1c81922720=
+7123c51caf02ee5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -14674,6 +14674,16 @@ F:	lib/test_maple_tree.c
+>  F:	tools/testing/radix-tree/maple.c
+>  F:	tools/testing/shared/linux/maple_tree.h
+> =20
+> +MAPLE TREE [RUST]
+> +M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> +M:	Alice Ryhl <aliceryhl@google.com>
+> +L:	maple-tree@lists.infradead.org
+> +L:	linux-mm@kvack.org
+> +L:	rust-for-linux@vger.kernel.org
+> +S:	Supported
+> +F:	rust/helpers/maple_tree.c
+> +F:	rust/kernel/maple_tree.rs
 > +
-> +    /// Returns the base address of the backing [`Vmalloc`] allocation.
-> +    pub fn base_address(&self) -> NonNull<u8> {
-> +        self.buf
-> +    }
-> +
-> +    /// Returns the size of the backing [`Vmalloc`] allocation in bytes.
-> +    ///
-> +    /// Note that this is the size the [`Vmalloc`] allocation has been allocated with. Hence, this
-> +    /// number may be smaller than `[`Self::page_count`] * [`page::PAGE_SIZE`]`.
-> +    pub fn size(&self) -> usize {
+>  MARDUK (CREATOR CI40) DEVICE TREE SUPPORT
+>  M:	Rahul Bedarkar <rahulbedarkar89@gmail.com>
+>  L:	linux-mips@vger.kernel.org
+>
+> --=20
+> 2.51.0.rc1.167.g924127e9c0-goog
 
-How about #[inline] on all these?
-
-> +        self.size
-> +    }
-> +
-> +    /// Returns the number of pages owned by the backing [`Vmalloc`] allocation.
-> +    pub fn page_count(&self) -> usize {
-> +        self.size().div_ceil(page::PAGE_SIZE)
-> +    }
-> +}
-> -- 
-> 2.50.1
-> 
