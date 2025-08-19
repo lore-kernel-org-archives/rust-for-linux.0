@@ -1,221 +1,167 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2053.outbound.protection.outlook.com [40.107.220.53])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BED22F757;
-	Tue, 19 Aug 2025 18:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755627904; cv=fail; b=WekZQNvTVbO0P1NRohWiu5LPzB9u3iOdiq1sqEujhQzoZ+IJjrbPSTrYUQNhdYYQb8DQvHfa037t4Fgz/1g5MWnQwiQiU1nLgUcMla/ishgb7z6VaUmjrGUXDspmcJ7od8LBalxWRffuOB8egzcflIzBtPASNma0vgb8dSheypk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755627904; c=relaxed/simple;
-	bh=pCnoQkrNiX+/v4WWZxe18ZlChb7tW8nf9yOgR+AsEyw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ns/1zysaKN1B5gDySscVNifrAWJcU8h6tM2lyuCFL1YVZWQSFnJVMjlAtVHowKAPGuG7DV9cmufh+hmzJBE6g5yp2pRKt+urYBtVZGn5R+54rA9+qKgRxeg/fP71aZvx48GmEnIDvM2U4OqrEH+kAhU5aXd96hhyo9CKXQ3Ofps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=azTDeidC; arc=fail smtp.client-ip=40.107.220.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721E230F806;
+	Tue, 19 Aug 2025 18:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755628148; cv=none; b=SoZidyFrcQwmQNYqvk8JQRv9/ey8WwK6GRc5xwGTKoLw/OPD/ikvn4Y6425CdUsy69aPjH3QZ/W6tm879lkBTA+QHRUnd3dV5fuBxXrahxX0h8UkrmO40TazEdGKNJHNldV9NbIBtU60GjwtTDRYe4/tBdo+9Bx6bqS6jde9sls=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755628148; c=relaxed/simple;
+	bh=0PVyGpkvyeNsFdkiKWEVNDYAhc7GqDEfCv0tINKPntw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=uYR6nd9kN9h3I8Z35Wv4X5RzZIJF/sr+7daGRItQBAjBg2EuMI0/n3Hu09Fh4GR0q2q+0gaFJiftXkF5O9c2MCLfWSHVyH/kq6okD97f2ot9faremKVrpcol4VTcDOuNStUw2AADofyUz+L11rYiOscOiwhM2gB/q81wSnMJzg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rCgRNwsa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="azTDeidC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zIfx0aUCCmwWUm+H4nBS3oMsSIeF2MSsLRfJPRz17B3lkVwVNpwZRqDcQlgRs9FuKjQlQSHh+HZ/wLAUrlFwelBM3gHCprdsoVWmNoKX5VGmgkhmL83dd1v3F9yRbislhH8QAKqdvhXzUm/VgMT5/sQDkG2tmO3CMXiaDWwniMQHH03Gf8i+HPZilE3FrhJNPeLmH7pmejwChC1TJWAq5eVGKF6tvKAF5kxaN4HEeqke5Z+sMhN0yR8lfUzjNs709KryYgDFF99WMujFtJ4DqbYAojSyngpqLpCqb9E62PvSDWa7im3LkZko4I7QfnxxbpA6ReLQExddJqnwyWz2yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y6A2eokXr1XBlpOCZcS2fGD+F0Kh+MInrfGFrmCpDOY=;
- b=QWLROZ7RtMiN/OvcvA7vcmjCw+b6DcYplq5H8WWlzSZFSRrae8Fu02CdCsxto4goFX6UdKgn9rE/uVI0nz7zfCM6sl1pCzN/wZMDZGzpbzzIL1HCMdcw9THbu8+xlDjiuoZT6v060Sx0oseqLYS/eqzxvWufuiqGU8DIl+JBibrFloPqer2itfayoJFPUjvesDb9ia+qnqHhX3xeuTaepQrwChdLeqqGTNH67SOd2XFD1sb+FslFRoptdlRRQ1wTYGETTuyCus1Re6ZGl0iouuJXZ+tkafbZDptyiCWbIPuhg2N1ncvWXlrMsmD2pQQ3p9TQlW9AiMUzflgt1gUNHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y6A2eokXr1XBlpOCZcS2fGD+F0Kh+MInrfGFrmCpDOY=;
- b=azTDeidCZpEdN2eBsOv4I8GjzEy7qSO2b0TOfkcd80x+IAR3hdOZIcswZj4sb2j0ehDhF+wRdDzsbBQvD9pEMeG6hYnrZL0sW/r1UQ9yuUneBQR/6D0BtFF2+jYESK+Cv5//WPR6UvaRcwVKjkMfNgwHhTWXhW9qqd1CqUj7c0CKZDkTcO7xnNoEHnuaopnzVI36CPhlwbERV843+LlfLJXfU7/iBmc0LHzjafPWhQjfUERYfxE/94mAeiYs50XKOzbwQ2jneq/aajJESXn3/pWo6vqJrmKVCy9wrhNryLyvbh5Hwim9g/Hq1HAgsu9UGNS44vZ04PG+AFJTbTW1Vw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
- by PH7PR12MB6468.namprd12.prod.outlook.com (2603:10b6:510:1f4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Tue, 19 Aug
- 2025 18:25:00 +0000
-Received: from LV2PR12MB5968.namprd12.prod.outlook.com
- ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
- ([fe80::e6dd:1206:6677:f9c4%6]) with mapi id 15.20.9031.023; Tue, 19 Aug 2025
- 18:25:00 +0000
-Message-ID: <aaaead9a-05e4-4b2c-8a88-af9966cf2e7d@nvidia.com>
-Date: Tue, 19 Aug 2025 11:24:57 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] rust: pci: provide access to PCI Vendor values
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rCgRNwsa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B134DC16AAE;
+	Tue, 19 Aug 2025 18:29:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755628148;
+	bh=0PVyGpkvyeNsFdkiKWEVNDYAhc7GqDEfCv0tINKPntw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=rCgRNwsaes/rMHIcQXpV4dq32KlKygD0sbbGYUrwIllPKvFhBIub5GQzc6O03HXp6
+	 gPMvIHFmcDnta/NedoPWXMjrypjoMY/i0HzqvAUTDt4YGChtzr9bK5QqLK7t7KGvHp
+	 /EN36bfvPqrY4tPWXByleg6Q7A4Zt+EQ8v/B6X8qinZkVl6ZfFIo5qUILag27EZU20
+	 a+tWwLayRl9l37rjnOgzdsAYljQPL8+NxCZTmPpaOe8rGS5U9jE7ASh1y+gCRWvBP/
+	 9oUgD11MYCQhyCTXV+W86SSqm+kQBtc8sQEAEHAc0FzkNlNX+SEcpkeBukyO/waa/B
+	 O8msJYEAEMvcQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Benno Lossin <lossin@kernel.org>, Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- nouveau@lists.freedesktop.org, linux-pci@vger.kernel.org,
- rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <20250819031117.560568-1-jhubbard@nvidia.com>
- <20250819031117.560568-4-jhubbard@nvidia.com>
- <DC6AHIFTOH7O.1USOTN2YAHGF9@kernel.org>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DC6AHIFTOH7O.1USOTN2YAHGF9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR06CA0049.namprd06.prod.outlook.com
- (2603:10b6:a03:14b::26) To LV2PR12MB5968.namprd12.prod.outlook.com
- (2603:10b6:408:14f::7)
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor
+ Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+In-Reply-To: <DC6KN0JN4X4D.1PHXPQ46O5J1Q@kernel.org>
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+ <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid>
+ <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
+ <87o6scdchf.fsf@t14s.mail-host-address-is-not-set>
+ <aKMkvHAfDozzDjkB@mango> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org>
+ <aKQT92ViZSL841rT@mango>
+ <iQ0qeYmzFSlOQkNLti-a4Z6ItwaZgh3r8Pqdu5rSwYz4wUxAsKZJlGCrsVQ481Qkzc9EapD3bzKKtrsXVkwt2A==@protonmail.internalid>
+ <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org>
+ <87ldnfd766.fsf@t14s.mail-host-address-is-not-set>
+ <SrUs3F3lvGkO0K2cL7_oyXD0qqPQ2CXsCkNBQz5JQ2BozT8sCdqfzzZ1fLt2gyUUpLgLD5LC2jvbkd9ncNtvQg==@protonmail.internalid>
+ <DC6KN0JN4X4D.1PHXPQ46O5J1Q@kernel.org>
+Date: Tue, 19 Aug 2025 20:28:56 +0200
+Message-ID: <87bjobcgif.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|PH7PR12MB6468:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e6194a8-192e-44ec-3705-08dddf4db4fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VXNwZTBoeDdIa1orTHZMcUtnRVVpL3pSV1VVKzM1dW9TblVOR2tqVTBhdWhG?=
- =?utf-8?B?UG9PSmZFYTJIZEl4RnRCcFU2YVpqZ0t4RmhYRlRkb3dVMG5kL3orUDdNN3dX?=
- =?utf-8?B?bkNYUk93emVlUmNWZTFFTUtmMDhxSkNtR1I5WDhoejFqNUhrbFFzVVlnVFFn?=
- =?utf-8?B?RHlpTzZvOVZTdmFaVDJTOWNYZS9sM1FMZEpwcE5uNkRJM2YzNzcrVjNuMEtT?=
- =?utf-8?B?aDRwQ3o1RGRKTnpLbUVIMnRmY0QxM0hJRkhKUmpKOFV5Y0xXZmJ6M1RLdk9L?=
- =?utf-8?B?VWR5eGJYcnl2cjMvbmhzOXlEWmh2Z1E1dytSUlJXYkRYTmtUTEVESWxXbys5?=
- =?utf-8?B?NGRmZWh4OExmTUhzSlJQVjIvcCtIbThwNmpzYnFzWHBzTWJBK1FTUnllNHc0?=
- =?utf-8?B?eUhUMVFJYUJVcEpaZ0RsVFBxUGg1NnRxZ2xYeGw4Vmg1M0FWSm9yNmRpRitY?=
- =?utf-8?B?UUZqL29tWkZHT0pabUlYaS9XWkpOMzFmL0VSSXRPMmoxSzI4amxJZ000UWVl?=
- =?utf-8?B?UDJCUGZXMVVJR0lxOXNSclhvaG0xaUNndXVuVm5wc3RzMXNpY2ZWaUxsNGVN?=
- =?utf-8?B?bFZWVDUrcUhuQXBpb0dPMWgraUJGRHFvblRGcmVCaUZjWUxCenByUUZQUzVx?=
- =?utf-8?B?cThLelZCUTZJZ2ZDOFVQQkhEK2QweTF4Qk5zanRndzRNTGo1a2xMWW40OTZp?=
- =?utf-8?B?Vkx0c3JDZHNVWWl0NzhDRy9NSW84bU9yZFR3SVZRS2doYzM5K1pXWHhwMjdx?=
- =?utf-8?B?MldicE1mc2p5TWc4c1NFb2pocHJvcjRLMG9xWWhmYzgrR25hT0VSbjRmZ0Fw?=
- =?utf-8?B?WWNJOUNVZGtCcWN4OFFJTXB0Yy9uMEl6OU5MaG43eVN3NlRkY09wSGtPSHNs?=
- =?utf-8?B?eEM1alZJdDQzdGlnd1hLblpBR25mZ2gwdGdHdnlwL0JUem5uR1U3OUN0a0Rh?=
- =?utf-8?B?Q2lzZm1pQ0RCVEtpaFBTaHRQQTlsWERleE5halhNWTQycjlrSFdRR2o2Qm5S?=
- =?utf-8?B?WFg4elAyM25BNGwzbmxneGh2N1lEcFovUHRJUHhQYmdHbFBUbUNHbUpGa2Rm?=
- =?utf-8?B?RWk3bUE2NU52TStZTHVTRzR0YXZYbEdFMTQzNW8rU3BoUUdEeEo3OHFsbE5D?=
- =?utf-8?B?QmNmR0JlK3dyMkNYSUJ5U240blNJM0RjTG1sWGdGTzJFT0tVYWFkSEpYMC81?=
- =?utf-8?B?UXVxTUFNYW1lbXNLWlNnSnpyK1FRcG9kaEtqQ3huUEZUZUZNdVIrRDEwei9n?=
- =?utf-8?B?Y2R0bUxvU1BLT2hTQW8wZFpQeUFxelIzaFZnYmVRR1dOdzNhMWdDQkd1aXBU?=
- =?utf-8?B?TzlsQ1Yrc0s3WTZFYWNBMGN5TnZnUkJ5SWRkeUtqMDhuNnNhaW9mQ1d5TW9o?=
- =?utf-8?B?alpmYXhwMmphVW53bDZ0OHJRRlYrK21pUm9COHVqMXl5NmovMjlBOXJUeEh5?=
- =?utf-8?B?UG9Ia0Iya0FvdG5Rbys4M1F2dVNyYkJZUUlYWG1LWGZpN0lpZGt2aFVpNWFt?=
- =?utf-8?B?K3NTU2RDalgxcjM5QzZLbW9PY0Y4dmhPZFpYSFpmWCsrS1A0U05KUkNaREUy?=
- =?utf-8?B?SWZsNTltbTJpWlhYaFlaazNOdnhTNitBM25BSSs5RnpTZW1IMmZudkVCVUVs?=
- =?utf-8?B?WVcvZXhldnNsVXpLWFhtbHUveXFmRTI3NUlrUkhzUDl0TzBqaHJzbUU1ak45?=
- =?utf-8?B?SkVlRHZ6ME1TbWd0UzVseEhrQ25RNytxMWtQYVlidkM1SWw5TktGQmFtT254?=
- =?utf-8?B?YzQ0dlVZYVl1UUxxMnRSdU9MZG5MUkROVHNyc0svdUUxOWxBN1NHREFHeWVE?=
- =?utf-8?B?dkVhc0dKQmJKd21temZyallkdjh6RXhsODBFNDRGaEFDT1BLVmtXOVJCQVpr?=
- =?utf-8?B?YXpUM2JCTUxhSWNJc2MzYmcwNEJPQytuaE5XeXVuZ0IxUE9BTU1wMFAzZS8r?=
- =?utf-8?Q?YuWYtEbVTPk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eDZveWxhelFqNWo2UVdNcHd6c1B4dWZRR3BGN3F3MDEvdnNJUXJqd3RqWDFl?=
- =?utf-8?B?dzl2MUY1RXh3Q1pUY2tKOXhsQ1BoOVZPNXU2ZmhaYTRURUdVZnR6VmxNVlJY?=
- =?utf-8?B?R2hJak0rY2Fyay92UkNJMjh2dGdzYkFHenRneWNiV2EvL0NINHdLZmN0K2x5?=
- =?utf-8?B?WWJ1My8wbnVtTEhISVhETWQ5RlB2Z3RsYXZlSWsrT1hKdEx1NzVpQ2p3R05S?=
- =?utf-8?B?eUtzaGxQU21LUzJybW1UN3hkb2ZtQVBVN2xQN3U0cEs1aDNPNkhQVGxFSFBW?=
- =?utf-8?B?Vjh2blQzWVFmUHQ4QXpOQVNIa2Z2VVZHUVFXdTQ3bnZHTVBCWE9wRFkyZ3Yy?=
- =?utf-8?B?c1VveHNqWllicUxiNXd1WVNJR2IvNjhndDI3WTlDTGhVQnZvbnk4cllDeEFO?=
- =?utf-8?B?SndPNVhSamJhZW13RFA2MmJENWhsV0dmbDU4N0VhZXBhYlBtWTdhdk53cDlu?=
- =?utf-8?B?eXV0UTBhMk5oZjFZUi9RR1JHZlhnenNaZ21FVEFqYXdHdWdEWkpZRTFobHd5?=
- =?utf-8?B?WjJwd1VFeUk3SXVFVjZWWG93a0FtU2VZY2lmSnJRTHRKdHlvdVoxY1A5NkJ6?=
- =?utf-8?B?NHp5b1lpNzl3SGt2aGFuUmFxeFE4dHJ5bllsZ0NXWXI4VjBEdXBjd25YU3BM?=
- =?utf-8?B?OTVRRThWUzNJOXBVdDNqSDBJMk5pRkRaeC81Y1ZWSEFFdWpsUUVFQmR4RWF2?=
- =?utf-8?B?K1QzZzlBa3VEYVJuOGRRaWZBdTMrMjR1ZE5uVkdJaENaRFI2V0NDWWEwbmpw?=
- =?utf-8?B?NC9Za2lXWm53dVdGUWhubkhwcGxac29LZituWVd3cUVzZURialh5bUlBQ2JJ?=
- =?utf-8?B?Y0NDYUxTNTF5UkZQRFFPdy9jZ1hQQ05jdzltSytvMUlXQmQ3ZHFVRTNmM2Er?=
- =?utf-8?B?WHorK2JKQjZsb0o1MXlxRjBuN2swaHNEbEUwclIzWkF1OXp6VFluZGJwMkRs?=
- =?utf-8?B?S0VoV0xhMjFRMndLMEpNSmlhZGFmbFdpelhHalZmWWF4MXBheVR1Z2RnOWdV?=
- =?utf-8?B?eldPWjZPbmZoZXk0N0Z0WTNKelNBT1lOUFpLWWpsb2dCNnMxQkJML0pmM1M5?=
- =?utf-8?B?TXhOakxzeHh5YlhpRkwzR29VL2xaQzhnRHhjd2E5eGJWMHc0SmlMMkVybW0z?=
- =?utf-8?B?L3FmcEFrNlZaZkdzemV6S0g3MFZFSjJHSEQ4VU5GOVpYdjdKeU1HYTF4ZUho?=
- =?utf-8?B?R0RLKzZoWDBWMFpqSVBaU2o1TDc5Ulp3N3NhUVRDWEdjZll1c2xVMEJQeGda?=
- =?utf-8?B?b0hPWEFnMEdaUUFzZnBBcVhMVTZVSzVKTDZETFRNejBYMk9JYkpsTkp5T2tk?=
- =?utf-8?B?dWNxYnVsUUs4eUxNd2pvRjBTeHpJK0treHJDcUFSOU02aTBkSlU2U2FIS1FH?=
- =?utf-8?B?ak1NTWdPUHhNblhrTUI3SXBFZm5PY1N4VklITXB3RG5CcDhOdW1vTXlZdWRV?=
- =?utf-8?B?Qm9mYzIvRzA2QXh0NlJWOTNmdXQyMCtOenltOHhXS1BGaDUzeHBSVWV3Y3h3?=
- =?utf-8?B?N3B4SzhWUFAzeVU2YVkxQVQ1QlZMdmtzZjg5RmNvWTZac1pQY2VESmF1UEZM?=
- =?utf-8?B?OHhOcndKejd6Uk05SFZtMXdZUS9HU01Zbm9EWmxsZXZPem1EL2NzL0hrSjh0?=
- =?utf-8?B?TjgwcElISE5GbjY4dlU5V3RzMFFxQUloMHpXRnVEcGhEcGwyQ2VYRWlTbk9p?=
- =?utf-8?B?UUhKeU50Z3VjRFRZMWFuVVdIM2I4SzAycVdTaklnaTlzQmR5Vit4eGd0Zm5P?=
- =?utf-8?B?ZnIrNm03STdCZXlCdXFaYmROMnhWL0VUbzYzUXRwUVBuODZnWUpQd2VYRmZL?=
- =?utf-8?B?M0R4aVhXNk5rajY0d1VMK0JvQm1YalBNK3Nid2Jna2lNakhnUWJ0cnRaZTVx?=
- =?utf-8?B?cVVDaVZ3ZXROUWNWUEVRQlp5SUF1T3FBZytMY1hyTXhDMmZ3NTJscHRJU2Fl?=
- =?utf-8?B?b0RWdjNUUExSR3VZaDcwZ2VNbVRnbGZXb1AzR2pqdkxTY3FkY2xGZ0d1RkFI?=
- =?utf-8?B?M2cxRDVjc0JjQ0JIc05HWTV6MEFXa2FTYXhFeTNHeUhVZU13U0JmY0lKdkJB?=
- =?utf-8?B?NjhMN3djT0dkWkxvUnBKT0F4WnlMZ2s1R0RKTmlibXpIU2g4SE5iRndZeW5D?=
- =?utf-8?B?bDNFQ3o1dC92TDR2Vk9tSDFubCtja1BScEVwVVVybnhJc04xTXkrM3ZSeXdu?=
- =?utf-8?B?cEE9PQ==?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e6194a8-192e-44ec-3705-08dddf4db4fd
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 18:25:00.0577
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UD/c63d0ZliqYan5CId3WBgX7F4PC2wdyzIGAsSeMRJdOfnBEuv+6M/9f4znYIMBdVvcXx+WiJQKT3T50ml8JA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6468
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 8/19/25 2:16 AM, Danilo Krummrich wrote:
-> On Tue Aug 19, 2025 at 5:11 AM CEST, John Hubbard wrote:
->> +/// PCI vendor IDs.
->> +///
->> +/// Each entry contains the 16-bit PCI vendor ID as assigned by the PCI SIG.
->> +///
->> +/// # Examples
->> +///
->> +/// ```
->> +/// # use kernel::{device::Core, pci::{self, Vendor}, prelude::*};
->> +/// fn probe_device(pdev: &pci::Device<Core>) -> Result<()> {
->> +///     // Validate vendor ID
->> +///     let vendor = Vendor::try_from(pdev.vendor_id() as u32)?;
-> 
-> Why not change vendor_id() to return a Vendor instance directly?
+"Benno Lossin" <lossin@kernel.org> writes:
 
-Yes, will do.
+> On Tue Aug 19, 2025 at 10:53 AM CEST, Andreas Hindborg wrote:
+>> "Benno Lossin" <lossin@kernel.org> writes:
+>>> On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
+>>>> On 250819 0027, Benno Lossin wrote:
+>>>>> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
+>>>>> > On 250818 1446, Andreas Hindborg wrote:
+>>>>> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
+>>>>> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
+>>>>> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
+>>>>> >> > +        // SAFETY: The type invariants guarantee that the objec=
+t is valid, and that we can safely
+>>>>> >> > +        // return a mutable reference to it.
+>>>>> >> > +        unsafe { self.ptr.as_mut() }
+>>>>> >> > +    }
+>>>>> >> > +}
+>>>>> >>
+>>>>> >> I think someone mentioned this before, but handing out mutable
+>>>>> >> references can be a problem if `T: !Unpin`. For instance, we don't=
+ want
+>>>>> >> to hand out `&mut Page` in case of `Owned<Page>`.
+>>>>> >>
+>>>>> >
+>>>>> > That was the reason, why `OwnableMut` was introduced in the first p=
+lace.
+>>>>> > It's clear, I guess, that as-is it cannot be implemented on many cl=
+asses.
+>>>>>
+>>>>> Yeah the safety requirements ensure that you can't implement it on
+>>>>> `!Unpin` types.
+>>>>>
+>>>>> But I'm not sure it's useful then? As you said there aren't many types
+>>>>> that will implement the type then, so how about we change the meaning
+>>>>> and make it give out a pinned mutable reference instead?
+>>>>
+>>>> Making `deref_mut()` give out a pinned type won't work. The return typ=
+es of
+>>>> deref() are required to match.
+>>>
+>>> I meant the changes that Andreas suggested.
+>>
+>> Not sure what you are asking, but I need to assert exclusive access to
+>> an `Page`. I could either get this by taking a `&mut Owned<Page>` or a
+>> `Pin<&mut Page>`. I think the latter is more agnostic.
+>
+> The former isn't really correct? It's like having a `&mut Box<Page>`
+> which is weird. I was saying we can have a `DerefMut` impl gated on `T:
+> Unpin` and a `fn get_pin_mut(&mut self) -> Pin<&mut T>`.
+>
+>>>>> > Good question, I have been thinking about it, too. But it might
+>>>>> > be, that it isn't needed at all. As I understand, usually Rust wrap=
+pers
+>>>>> > are around non-movable C structs. Do we actually have a useful appl=
+ication
+>>>>> > for OwnableMut?
+>>>>>
+>>>>> Also, do we even need two different traits? Which types would only
+>>>>> implement `Ownable` but not `OwnableMut`?
+>>>>
+>>>> I'm not 100% sure, but on a quick glance it looks indeed be safe to
+>>>> substitute `OwnableMut` by `Unpin`.
+>>>
+>>> We just have to change the safety requirements of `OwnableMut`.
+>>
+>> `OwnableMut` already requires `Unpin`, it just does not say so directly:
+>>
+>>
+>> /// - It is safe to call [`core::mem::swap`] on the [`Ownable`]. This ex=
+cludes pinned types
+>> ///   (i.e. most kernel types).
+>>
+>> We could remove this and then just add a trait bound on `Unpin`.
+>
+> Oh I happened to not have read it that thoroughly then... I don't think
+> it makes sense to have `OwnableMut` then. So I agree with your suggested
+> change :)
+>
+>>>> If we add `get_pin_mut(&mut self) -> Pin<&mut T>` as Andreas suggested,
+>>>> it would be possible to obtain an `&mut T` anyway, then, if T is `Unpi=
+n`.
+>>>
+>>> Well the `DerefMut` impl still is convenient in the `Unpin` case.
+>>
+>> `OwnableMut` is probably not that useful, since all the types we want to
+>> implement `Ownable` for is `!Unpin`. We could remove it, but I felt it
+>> was neat to add the `DerefMut` impl for `Unpin` types.
+>
+> But we don't need `OwnableMut` in that case?
 
-> 
->> +///     dev_info!(
->> +///         pdev.as_ref(),
->> +///         "Detected vendor ID: (0x{:04x})\n",
->> +///         vendor.as_u32()
->> +///     );
->> +///     Ok(())
->> +/// }
->> +/// ```
->> +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
->> +#[repr(transparent)]
->> +pub struct Vendor(u32);
-> 
-> [ Vendor impl and lots of ids... ]
-> 
-> Same as for Class; probably better to move it to its own module.
-> 
-> We could also move both Class and Vendor into a single module, e.g. id.rs and
-> keep the module prefix. This would have the advantage that we could have
-> pci::id::Class, pci::id::Vendor and pci::id::Device (which, eventually, we want
-> as well), without getting a name conflict with pci::Device.
+Right, we can directly limit the `DerefMut` impl.
 
-id.rs does provide a nice naming situation, I'll do that.
+>
+> Let's just do the following if it makes sense:
+> * remove `OwnableMut`
+> * allow obtaining a `Pin<&mut T>` from `Owned<T>` via a `&mut self`
+>   method (we need a new safety requirement for this on `Ownable`)
+> * have the `DerefMut` impl require `T: Unpin`
 
-Thanks for the reviews again!
+Sounds good to me =F0=9F=91=8D
 
 
-thanks,
--- 
-John Hubbard
+Best regards,
+Andreas Hindborg
+
 
