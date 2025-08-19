@@ -1,175 +1,182 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A55D32BF3C
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 12:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755607656; cv=pass; b=SrNik1mxPoubgrfanzvykpI276606GWCf9gPBeJE0+RW5QUfdwOcTrQD1CaAaa6cDfPQTvMoy+zPb6D6wuC4EAYT0jlPJQ7+nWtjUBZblxiCi12kZTyE8Y1GfMzeHsLI5TjYLwmkEHPi8gTUBOeffplq9mEQfRvuZjsLgf87Fok=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755607656; c=relaxed/simple;
-	bh=MvwQDykEH4wdC5Ltg0yyHd5+ufRMRdNmM/iwhglKpKw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qx4V+7JkizpwY5dtiw8tCjRiemqRrQv352M1i3wyWuo0e6COI0GBCFng8vzpYKf+JMw8lhJtTFRs9G1GLK7YjnZR+iXb88Ru8OAXC9JPEEmXoXEyJSeLkoXGS8IRd8G1563HOqQ1IgQAsFWQxZoxVOboBgwaWaoOTsrUXnpa82w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WGxGBoKv; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A1933EB09;
+	Tue, 19 Aug 2025 12:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755608306; cv=none; b=JZvOh8iAsQgfupqsXvyg1wNqB/FpCDPw4F53irZ20L8O+kGpEm84k4duCJOYc3w5SRcqubm+B6TcmeBTa3vgSVoVZVnF4CIoybKCX0a7OELLvZCRLH9UZjJ54awXmUYVu9bRcZ8rPt85WluBn5cttJJDeq+JxtVaHfhJEYr/VgM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755608306; c=relaxed/simple;
+	bh=4DO3dYAOM5pTDmnI1hLhVydMIin2dEAMrChEU5JifQg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=Q+LyDRwo4C9QW44RkNnhdM3klNzsSCtPYrN6nXDRygu/E6N2KpVTwL4bZBWCOmshQTV1Q7RllECQ51BeyPQwAkPfr15f+mqtXtnDjLicr8dhPjP/6Gc8A8pcQp2yVsYY+XHonF5PYyhNq5IMBN1vcdbLGCYfBKIGNT315XiW00U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dx8gHTLS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WGxGBoKv"
-ARC-Seal: i=1; a=rsa-sha256; t=1755607620; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=SqJ7uQzNvllR+qwcgGdj6EvIz0ocYPhNDhsexi0NLgaMFkzAe+E5JKImwS3tbndXlKCT6GPq2FnRWPW1rGfr80lb6dze8+0sqkuZimvEpFtTDGaPFaWSUD/+egvDVcH0VuRM1ouEZNGlAV+48wmQDfpNmDGwUvkxk1/oBxHKn3Q=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755607620; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=XlKkqw00qXcQFQQtQ7O90qVVORR1lxsaHMIrqpqnL48=; 
-	b=Dnam3eQ+f01lyOFy6qMgT0I/Ld+Ecog+8d4/6/CbqZET57d7tc0xPTCi+HgPLvlVf84UJmF16niZxVe/NmKRKRIDz3Vto4NMvd7xL6C7CWILtm2MjiRvRfT84uJ0gXKWqQFCgRzhjWzdnvIv1bbxdm9PlUA1ZCD/N37i47f5FbM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755607620;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=XlKkqw00qXcQFQQtQ7O90qVVORR1lxsaHMIrqpqnL48=;
-	b=WGxGBoKvPCKC+PlOvVW2BTUFFtsjlUf66NjPGfJA5IUmcL/xYgK7RUWlRVtmbUwa
-	QeY9rlbvCC/0hj4k6LGTWD6urkBLIwjInd+4EtAxiBF7+8VnkMdHumEz8H8aA8P1O0G
-	gEMohBfCJGr7iNMnzG5WFsuSGWXREAs4Nu2Y6K5M=
-Received: by mx.zohomail.com with SMTPS id 175560761810520.37760305370307;
-	Tue, 19 Aug 2025 05:46:58 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dx8gHTLS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242C1C113D0;
+	Tue, 19 Aug 2025 12:58:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755608306;
+	bh=4DO3dYAOM5pTDmnI1hLhVydMIin2dEAMrChEU5JifQg=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=dx8gHTLSmdApS+hHpltE88MUhCsHHt1MRH532v/ggxPXGNIWWPmnn/3FfBveGOq6f
+	 JNIkdDaQIkQsMJi2L69hCyXyNHHN8R9TDex52yYrRJXhJdMZhAVyjs44KO41Uoe8SK
+	 8iQee498MjVKFcn9D1BfY2h0vS3w+Ar1QPSHP4C9qbXOaL4gEOkj+cSd8O4ZEUH6qL
+	 WAodkhxeNDPDG8QfzZlB3YpxYg7f8dQCBSis9kxUWCGoxdxZ6PF9uhJDxjrcp1vvj5
+	 Jx4D6THiLj0HdWuh3yV1AWKjldwyz6Ucb6daPp0csYFXX/cwOFID+p3qGED2qE7CGX
+	 lLmEip0Lu/Cug==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v4 2/7] rust: alloc: vmalloc: implement Vmalloc::to_page()
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250814093427.19629-3-dakr@kernel.org>
-Date: Tue, 19 Aug 2025 09:46:41 -0300
-Cc: lorenzo.stoakes@oracle.com,
- vbabka@suse.cz,
- Liam.Howlett@oracle.com,
- urezki@gmail.com,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- abdiel.janulgue@gmail.com,
- acourbot@nvidia.com,
- rust-for-linux@vger.kernel.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <7710597B-64CF-45EE-8755-0DCCF88AD69F@collabora.com>
-References: <20250814093427.19629-1-dakr@kernel.org>
- <20250814093427.19629-3-dakr@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 19 Aug 2025 14:58:21 +0200
+Message-Id: <DC6F7BN2L19O.1APQU9KWZV7H5@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 2/5] rust: maple_tree: add MapleTree
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Andrew Ballance"
+ <andrewjballance@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <maple-tree@lists.infradead.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
+ <20250819-maple-tree-v2-2-229b48657bab@google.com>
+ <DC6DC244ZIUL.304JSP7JFDE9Z@kernel.org> <aKRx8xsY8CpzbeEm@google.com>
+In-Reply-To: <aKRx8xsY8CpzbeEm@google.com>
 
+On Tue Aug 19, 2025 at 2:45 PM CEST, Alice Ryhl wrote:
+> On Tue, Aug 19, 2025 at 01:30:30PM +0200, Danilo Krummrich wrote:
+>> On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
+>> > diff --git a/MAINTAINERS b/MAINTAINERS
+>> > index fe168477caa45799dfe07de2f54de6d6a1ce0615..26053163fe5aed2fc4b4e3=
+9d47062c93b873ac13 100644
+>> > --- a/MAINTAINERS
+>> > +++ b/MAINTAINERS
+>> > @@ -16250,7 +16250,9 @@ L:	rust-for-linux@vger.kernel.org
+>> >  S:	Maintained
+>> >  W:	http://www.linux-mm.org
+>> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>> > +F:	rust/helpers/maple_tree.c
+>> >  F:	rust/helpers/mm.c
+>> > +F:	rust/kernel/maple_tree.rs
+>> >  F:	rust/kernel/mm.rs
+>> >  F:	rust/kernel/mm/
+>>=20
+>> A later patch adds a separate entry; is this intended?
+>
+> Ah, no, this isn't intended.
+>
+>> > +impl<T: ForeignOwnable> MapleTree<T> {
+>> > +    /// Create a new maple tree.
+>> > +    ///
+>> > +    /// The tree will use the regular implementation with a higher br=
+anching factor.
+>>=20
+>> What do you mean with "regular implementation" and what is "a higher bra=
+nching
+>> factor" in this context?
+>>=20
+>> Do you mean that the maple tree has a higher branching factor than a reg=
+ular RB
+>> tree, or something else?
+>
+> This is compared to the alloc variant of the maple tree from the last
+> patch in this series.
 
+I think it'd be good to mention this. You could add the corresponding comme=
+nt
+and link when you introduce the type in the subsequent patch.
 
-> On 14 Aug 2025, at 06:33, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> Implement an abstraction of vmalloc_to_page() for subsequent use in =
-the
-> AsPageIter implementation of VBox and VVec.
->=20
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-> rust/kernel/alloc/allocator.rs | 49 ++++++++++++++++++++++++++++++++++
-> 1 file changed, 49 insertions(+)
->=20
-> diff --git a/rust/kernel/alloc/allocator.rs =
-b/rust/kernel/alloc/allocator.rs
-> index aa2dfa9dca4c..2315f5063011 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -15,6 +15,7 @@
->=20
-> use crate::alloc::{AllocError, Allocator};
-> use crate::bindings;
-> +use crate::page;
-> use crate::pr_warn;
->=20
-> /// The contiguous kernel allocator.
-> @@ -140,6 +141,54 @@ unsafe fn realloc(
->     }
-> }
->=20
-> +impl Vmalloc {
-> +    /// Convert a pointer to a [`Vmalloc`] allocation to a =
-[`page::BorrowedPage`].
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// # use core::ptr::{NonNull, from_mut};
-> +    /// # use kernel::{page, prelude::*};
-> +    /// use kernel::alloc::allocator::Vmalloc;
-> +    ///
-> +    /// let mut vbox =3D VBox::<[u8; =
-page::PAGE_SIZE]>::new_uninit(GFP_KERNEL)?;
-> +    ///
-> +    /// {
-> +    ///     // SAFETY: By the type invariant of `Box` the inner =
-pointer of `vbox` is non-null.
-> +    ///     let ptr =3D unsafe { NonNull::new_unchecked(from_mut(&mut =
-*vbox)) };
-> +    ///
-> +    ///     // SAFETY:
-> +    ///     // `ptr` is a valid pointer to a `Vmalloc` allocation.
-> +    ///     // `ptr` is valid for the entire lifetime of `page`.
-> +    ///     let page =3D unsafe { Vmalloc::to_page(ptr.cast()) };
-> +    ///
-> +    ///     // SAFETY: There is no concurrent read or write to the =
-same page.
-> +    ///     unsafe { page.fill_zero_raw(0, page::PAGE_SIZE)? };
-> +    /// }
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `ptr` must be a valid pointer to a [`Vmalloc`] allocation.
-> +    /// - `ptr` must remain valid for the entire duration of `'a`.
-> +    pub unsafe fn to_page<'a>(ptr: NonNull<u8>) -> =
-page::BorrowedPage<'a> {
-> +        // SAFETY: `ptr` is a valid pointer to `Vmalloc` memory.
-> +        let page =3D unsafe { =
-bindings::vmalloc_to_page(ptr.as_ptr().cast()) };
-> +
-> +        // SAFETY: `vmalloc_to_page` returns a valid pointer to a =
-`struct page` for a valid pointer
-> +        // to `Vmalloc` memory.
-> +        let page =3D unsafe { NonNull::new_unchecked(page) };
-> +
-> +        // SAFETY:
-> +        // - `page` is a valid pointer to a `struct page`, given that =
-by the safety requirements of
-> +        //   this function `ptr` is a valid pointer to a `Vmalloc` =
-allocation.
-> +        // - By the safety requirements of this function `ptr` is =
-valid for the entire lifetime of
-> +        //   `'a`.
-> +        unsafe { page::BorrowedPage::from_raw(page) }
-> +    }
-> +}
-> +
-> // SAFETY: `realloc` delegates to `ReallocFunc::call`, which =
-guarantees that
-> // - memory remains valid until it is explicitly freed,
-> // - passing a pointer to a valid memory allocation is OK,
-> --=20
-> 2.50.1
->=20
->=20
+>> > +    #[inline]
+>> > +    pub fn new() -> impl PinInit<Self> {
+>> > +        pin_init!(MapleTree {
+>> > +            // SAFETY: This initializes a maple tree into a pinned sl=
+ot. The maple tree will be
+>> > +            // destroyed in Drop before the memory location becomes i=
+nvalid.
+>> > +            tree <- Opaque::ffi_init(|slot| unsafe { bindings::mt_ini=
+t_flags(slot, 0) }),
+>> > +            _p: PhantomData,
+>> > +        })
+>> > +    }
+>> > +
+>> > +    /// Insert the value at the given index.
+>> > +    ///
+>> > +    /// If the maple tree already contains a range using the given in=
+dex, then this call will fail.
+>>=20
+>> Maybe add an error section for this?
+>>=20
+>> > +    ///
+>> > +    /// # Examples
+>> > +    ///
+>> > +    /// ```
+>> > +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
+>> > +    ///
+>> > +    /// let tree =3D KBox::pin_init(MapleTree::<KBox<i32>>::new(), GF=
+P_KERNEL)?;
+>> > +    ///
+>> > +    /// let ten =3D KBox::new(10, GFP_KERNEL)?;
+>> > +    /// let twenty =3D KBox::new(20, GFP_KERNEL)?;
+>> > +    /// let the_answer =3D KBox::new(42, GFP_KERNEL)?;
+>> > +    ///
+>> > +    /// // These calls will succeed.
+>> > +    /// tree.insert(100, ten, GFP_KERNEL)?;
+>> > +    /// tree.insert(101, twenty, GFP_KERNEL)?;
+>> > +    ///
+>> > +    /// // This will fail because the index is already in use.
+>> > +    /// assert_eq!(
+>> > +    ///     tree.insert(100, the_answer, GFP_KERNEL).unwrap_err().cau=
+se,
+>>=20
+>> A lot of the examples, including the ones in subsequent patches contain =
+variants
+>> of unwrap().
+>>=20
+>> I think we should avoid this and instead handle errors gracefully -- eve=
+n if it
+>> bloats the examples a bit.
+>>=20
+>> My concern is that it otherwise creates the impression that using unwrap=
+() is a
+>> reasonable thing to do.
+>>=20
+>> Especially for people new to the kernel or Rust (or both) it might not b=
+e
+>> obvious that unwrap() is equivalent to
+>>=20
+>> 	if (!ret)
+>> 		do_something();
+>> 	else
+>> 		panic();
+>>=20
+>> or the fact that this is something we should only do as absolute last re=
+sort.
+>
+> How would you write it? The way you write it in normal code is an
+> if/else where you handle both cases, but that doesn't map nicely.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+I'd just
+
+	assert!(tree.insert(100, the_answer, GFP_KERNEL).is_err());
+
+and if you want to test that the error you'd expect is actually returned, I=
+'d
+suggest a regular kunit test, rather than a doc-test.
+
+I think doc-tests should mostly illustrate idiomatic usage, especially now =
+that
+we have good and easily accessible kunit support.
+
+I say "mostly" because I think tests to the degree of where they stay withi=
+n
+reasonable bounds of illustrating idiomatic usage are fine of course.
