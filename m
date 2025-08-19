@@ -1,114 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4CE31159B;
-	Tue, 19 Aug 2025 08:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DDC3115A7
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 08:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755591983; cv=none; b=S8FSYeS1bkNPD21FibsiSBGc/JP3yntBXRAMpYGrRiQJE9ZGw5vy2gF31pSVm8VChyBUfcKUAxo/wL9W1rkiRfBiwrySgmA9LMnhaK7OBEHi8q0tDdckIwizhznP5XKWkPBSZDCdxiY/tlZjQm6q2cDKbgcwQR8rD4BaU4U9iFo=
+	t=1755592842; cv=none; b=Nmjm2PqQ1WXR/3I7zuQkmITjAhLT3/zeqLpnF8tWW1bMUvFZZh8Do7lqkUNSGY+ryshC8Fwh/xcGFFv37h5mVvYrirmiipsMxFjdaG6D7yA1TtB+GRzGwrXT/cGEjGSzYe+Q1MdkD1gewuT7zznjnp3jDSvrvgDaES07Vx+3S3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755591983; c=relaxed/simple;
-	bh=vQ+nNmzZIwCCcruO5mhWZDGl2dFxcQpyDW7zj1Vna9k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=IlO1xM1TZNCEcvqobVMknhZRnCGFznU5mqa6tqoLv03kuJZuZtCe60dDGU0gmj2oQngkOBA58/htZkJx4qsqqcEpD2WDwXUkDYlztdMRl6ksIrpNF0dny+I3JnC8hSI14zJX9G6ahW/mJ7aVe10QmZ6Nt/zpyWeXQ2+2YbAO1ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGO/xRX7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755592842; c=relaxed/simple;
+	bh=s4rCdNrJl4PbZFUL3SQdLxne9G64dePB0cGlGicB9/0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=RAgB5TNgWQQLY75jJ3lzYKxszXFr3VTbraKmb7sGqHhDwPo3/KLVtEx5P6b7SW4LPbw8/y5V8v/G2HREcyzbfV1rl7sFtMIkOeKkENXzCGSkUkI9lA/YH8a7yIPICNtnmwTK6SZ/gQgBrjqtMD/ivczcMr1JEpXCQtqdtNT1804=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RS0bKH9J; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nGO/xRX7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02C4C4CEF1;
-	Tue, 19 Aug 2025 08:26:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755591983;
-	bh=vQ+nNmzZIwCCcruO5mhWZDGl2dFxcQpyDW7zj1Vna9k=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nGO/xRX7gaU2h4dh6kCXpKk6SCrkqbUZNmCKvELs9XmHIKzDx1fhDay3XqAgkblSP
-	 QOEsjGgbwLtd0R0xekm3DKZLHr1ZV2YnjwCcQXG9qDBIazyFWmoAuf3it8vLZENQMD
-	 Md8SkoJNHj4U+nxT7zb5SHtjKKhjDMjQKZb8ufeG8Nh+bHdTUNjjchZBGE1Q+F1BJ+
-	 H14yENllyW4fmE7XZNEGJNERXFvPqaZa5A4O4iwk1pWVq0hQRUuPVBfCKJ6wnjgyKc
-	 X6/LC3plB3P9lQOiKulWgN63DtSmhospy/7Ch7mgnhX3mRqwennjlY32uKBSaCwnjc
-	 FomXaJzBIp10g==
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RS0bKH9J"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b47475cf8eeso1165678a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 01:40:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755592840; x=1756197640; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fOvEbU0Cnc0FjNAEZg7vmgeVRfzmShXkhUtYM2eUAbM=;
+        b=RS0bKH9JwTp4NOYDbvLcuQAXEuro4ovoSLC0dfi/6W2kyEufHBw1EFh83wvL0PAXTS
+         tt8KUdOhe6G09a/F+EBJ40jx22AiMiDn14nUmebvCSDugwk1xNlgwFER/gaGJ6E5JgKZ
+         WIL2E/4hFeICmZqBx6H4I+0d1NNbd1yarUof7T/Z/9/qo9VIqaoIjlycw1BJ24oDcHzF
+         eZ4gOHfyQW6Cs7QJuuDC5TG6YcpWeOCLCaJLEgJQm6q83VFrXm+v+plD1e9QwPen4SV1
+         mPLy7kbAIzxqqjJiEC1MLycIY/mjdU/QvyJ4/tAysXwXxJRYH3vhsIwmMtY3u/41kZ4/
+         WOsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755592840; x=1756197640;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fOvEbU0Cnc0FjNAEZg7vmgeVRfzmShXkhUtYM2eUAbM=;
+        b=MzGIKTPcoduo9ABRlnNvmi1W/nAANC0nsnH1mP9Qasv90SKpHFTK3+wQycVjLzB91u
+         rQQ3xMTSqblIQW/yrdATpRJS6ZUp3k5F0AK9n2koG8hVu0Fv5CDJVbCxbOPCMC0hPxxo
+         5v5Si0zUTeU7O44EcWfcd+KNDhDOlLI6VkSC9dm3AwGBAh7/nBGWXtH9PSZM9MGay6ra
+         hJE6MJnItM5IeBBZq1uOeGHQO2VC2zsvnfozVUGRm0GTqU6imn0zsmJTPv3nGjKaPjiL
+         0OEQ/FGHBO6XTuRdrSyHjij8PUFFSh1DjZd0HB379m/mszjx9PGHIWU2Luwuos536LIT
+         aadA==
+X-Forwarded-Encrypted: i=1; AJvYcCVYk3M9gzP2asGPYT26DaitTjV6MN/bso6N+NXwRqlYsRgeYN0LyZMqe3mVg9KxH9IRoGRYRcA9r8gG8K6dwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYbJFcQOKfNMcvX3sR+iyAvSygXIkmUpH5bpLvu74NqBED0mlK
+	EG1wOW4U89kBlepHtBayBMH8cd7rZ2cAZw2YbmKUYMOma6QK+GqPsO81Dd5eN31Z47Mp5lX61gW
+	Q3xrwMjpS5llWR5Z/Dfk2oNAvaRGYMlnfiG6HMB6mxUyF9G7cHn3P9Gw=
+X-Gm-Gg: ASbGncs22Jb1gKDq42kkNvApSBllW4OmFhkUXeZa3rBVz2BEMmUAObsixxgeyDdAIcC
+	YJGDDAZeTGj595gjJSFCyyDxtaEpGu7Is0dEfSJH2zuN8dKHDqBwJJHK4DJAEBjrDfHmEa99WVm
+	b4tK3WKD1pgKgs//KSBXKD3whQY7jQdgcUW1mJL+8dH/BkqAZRwiuq9M3qM9eaoVLPapuxc8avG
+	QcWl+BLfUm28W619J5Ldtx5eoydEcGqtOupDUmRD/ppoaD9wA==
+X-Google-Smtp-Source: AGHT+IEGGBLrKnJA5rKPO3tG/2IpmKWfgJNSJRlHDGAPjusotj2Hf8o9mNnZTQtC90ugTktRZGVV8VN9rh1Puc8/i0A=
+X-Received: by 2002:a17:903:1ce:b0:23f:cd6e:8d0f with SMTP id
+ d9443c01a7336-245e02d83f7mr22374655ad.13.1755592839617; Tue, 19 Aug 2025
+ 01:40:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Aug 2025 10:26:19 +0200
-Message-Id: <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org>
-Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Asahi Lina"
- <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Oliver Mangold" <oliver.mangold@pm.me>
-X-Mailer: aerc 0.20.1
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <87o6scdchf.fsf@t14s.mail-host-address-is-not-set> <aKMkvHAfDozzDjkB@mango> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org> <aKQT92ViZSL841rT@mango>
-In-Reply-To: <aKQT92ViZSL841rT@mango>
+MIME-Version: 1.0
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 19 Aug 2025 14:10:27 +0530
+X-Gm-Features: Ac12FXwQ9ahb2ew69m1KVEd7V2w8TSXSPCLlnKGNCFNH7jf-h193q59E6JrscyY
+Message-ID: <CA+G9fYv+gELzgcL4y8rOQbTxv2Y2JQTFhNkgUcLbzPJ_yDTziA@mail.gmail.com>
+Subject: next-20250818: rust: `ARCH_KMALLOC_MINALIGN` is defined multiple times
+To: open list <linux-kernel@vger.kernel.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	Linux Regressions <regressions@lists.linux.dev>, rust-for-linux@vger.kernel.org, 
+	clang-built-linux <llvm@lists.linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, wedsonaf@gmail.com, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Ben Copeland <benjamin.copeland@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
-> On 250819 0027, Benno Lossin wrote:
->> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
->> > On 250818 1446, Andreas Hindborg wrote:
->> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
->> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
->> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
->> >> > +        // SAFETY: The type invariants guarantee that the object i=
-s valid, and that we can safely
->> >> > +        // return a mutable reference to it.
->> >> > +        unsafe { self.ptr.as_mut() }
->> >> > +    }
->> >> > +}
->> >>
->> >> I think someone mentioned this before, but handing out mutable
->> >> references can be a problem if `T: !Unpin`. For instance, we don't wa=
-nt
->> >> to hand out `&mut Page` in case of `Owned<Page>`.
->> >>
->> >
->> > That was the reason, why `OwnableMut` was introduced in the first plac=
-e.
->> > It's clear, I guess, that as-is it cannot be implemented on many class=
-es.
->>=20
->> Yeah the safety requirements ensure that you can't implement it on
->> `!Unpin` types.
->>=20
->> But I'm not sure it's useful then? As you said there aren't many types
->> that will implement the type then, so how about we change the meaning
->> and make it give out a pinned mutable reference instead?
->
-> Making `deref_mut()` give out a pinned type won't work. The return types =
-of
-> deref() are required to match.
+Build regressions were detected on multiple architectures (arm, arm64,
+riscv) with the Linux next-20250818 tag when building with Rust-enabled
+configurations (rust-gcc and rust-clang) from selftests/rust/config.
 
-I meant the changes that Andreas suggested.
+Duplicate definition of ARCH_KMALLOC_MINALIGN in Rust bindings is
+causing build failures across affected toolchains.
 
->> > Good question, I have been thinking about it, too. But it might
->> > be, that it isn't needed at all. As I understand, usually Rust wrapper=
-s
->> > are around non-movable C structs. Do we actually have a useful applica=
-tion
->> > for OwnableMut?
->>=20
->> Also, do we even need two different traits? Which types would only
->> implement `Ownable` but not `OwnableMut`?
->
-> I'm not 100% sure, but on a quick glance it looks indeed be safe to
-> substitute `OwnableMut` by `Unpin`.
+First seen on next-20250818
+Good: next-20250815
+Bad: next-20250818 and next-20250819
 
-We just have to change the safety requirements of `OwnableMut`.
+Regression Analysis:
+- New regression? yes
+- Reproducibility? yes
 
-> If we add `get_pin_mut(&mut self) -> Pin<&mut T>` as Andreas suggested,
-> it would be possible to obtain an `&mut T` anyway, then, if T is `Unpin`.
+* arm, build
+  - rustclang-lkftconfig-kselftest
+  - rustgcc-lkftconfig-kselftest
 
-Well the `DerefMut` impl still is convenient in the `Unpin` case.
+* arm64, build
+  - rustclang-lkftconfig-kselftest
+  - rustgcc-lkftconfig-kselftest
 
----
-Cheers,
-Benno
+* riscv, build
+  - rustclang-nightly-lkftconfig-kselftest
+
+Boot regression: next-20250818 arm arm64 riscv rust
+`ARCH_KMALLOC_MINALIGN` is defined multiple times
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build log
+error[E0428]: the name `ARCH_KMALLOC_MINALIGN` is defined multiple times
+      --> /home/tuxbuild/.cache/tuxmake/builds/1/build/rust/bindings/bindings_generated.rs:125708:1
+       |
+5305   | pub const ARCH_KMALLOC_MINALIGN: u32 = 8;
+       | ----------------------------------------- previous definition
+of the value `ARCH_KMALLOC_MINALIGN` here
+...
+125708 | pub const ARCH_KMALLOC_MINALIGN: usize = 8;
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+`ARCH_KMALLOC_MINALIGN` redefined here
+       |
+       = note: `ARCH_KMALLOC_MINALIGN` must be defined only once in
+the value namespace of this module
+
+error: aborting due to 1 previous error
+
+Please refer the full build log information in the below links.
+
+## Source
+* Kernel version: 6.17.0-rc2
+* Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
+* Git describe: next-20250818
+* Git commit: 3ac864c2d9bb8608ee236e89bf561811613abfce
+* Architectures: arm arm64 riscv
+* Toolchains: rust-gcc-13, rust-clang-20
+* Kconfigs: defconfig+rust
+
+## Build
+* Build log: https://qa-reports.linaro.org/api/testruns/29578517/log_file/
+* Build details 1:
+https://regressions.linaro.org/lkft/linux-next-master/next-20250818/build/rustgcc-lkftconfig-kselftest/
+* Build details 2:
+https://regressions.linaro.org/lkft/linux-next-master/next-20250818/build/rustclang-lkftconfig-kselftest/
+* Build details 3:
+https://regressions.linaro.org/lkft/linux-next-master/next-20250818/build/rustclang-nightly-lkftconfig-kselftest/
+* Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/builds/31RcUoS2AqZLljDCs480MNNEyxJ
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/31RcUoS2AqZLljDCs480MNNEyxJ/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/31RcUoS2AqZLljDCs480MNNEyxJ/config
+
+--
+Linaro LKFT
+https://lkft.linaro.org
