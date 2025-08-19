@@ -1,84 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79157219A81;
-	Tue, 19 Aug 2025 19:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0869308F02
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 19:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755633506; cv=none; b=JwsKf8qwwVmugXroJ69KSsFRGUV4gQ75750/Fw7ZKAdee0ggrvfP+CbF9a+9pX1rEulL9euOeMvLhvpLin6xh6vNgEpGcEaK1rCYqwIiPINLnZUpqSnmNkg6KqVAmQ/3SU5vlGbhojh/Ls4FxnOCHt8ugMvx9vNloDx3PvlrvAU=
+	t=1755633535; cv=none; b=OtijeiWqBOJpIebEUnvd9T+qG5O7sgiUnE2IJx67FVwpYoyOr5WoE4+EKVWTYulz8RBKpD2EVB/aucbn+Qde8Ch2FGl0FNcJZZmUquUeFdFIxCPM06AaCGEblKW48rcrJ0YBMXEKKwiA/9P3/KZP65HdnrNRpxP+pDuoofv9lyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755633506; c=relaxed/simple;
-	bh=nA9A0H3LrJ78fHP6AI7J40nKWuK6fskQEP9rQ9tJOXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fWc2HsYxf7v7mr+pa8zxCVP63CH6CLv534WNQt4ReyblVd1umjW9JsSwSDmcxzIidq3Q4UP5Njhuk0B+3ZUSLEaRncX7D5kZdphZjlOWJE9vjJzvijutNqbftAGrWiOykLcJlXyHgza4XeU41lY+xmuoMuBI3IsM0Spu5qBeMtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3cV0Sxj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755633535; c=relaxed/simple;
+	bh=J61fvA2iXrVD21XQbkzqcjs16RvBAtSpF1+CPDgbUSM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=AGEVNAT1AlC85rIx7NLW8OqURZXqhbp4AbCVptbdtlr7nnMZgQuFmOP18GmHw5FPL99W3mGQ0m7KtnDqwb3vox6SagvtABn5ktYarMTKO7QDnlm+UPydLGZXUYExvTfgO97oyyPN32tnKNPnmruIT3DtNWFpeMLx8q0xrtr8htc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=YIIGyeGz; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3cV0Sxj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D9EC4CEF1;
-	Tue, 19 Aug 2025 19:58:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755633506;
-	bh=nA9A0H3LrJ78fHP6AI7J40nKWuK6fskQEP9rQ9tJOXc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z3cV0SxjdjsbyAxLQAHXL9YQoVkd3oE/w0tg8f+/28wYPFIcCuOtf+n31sKJ+LyN1
-	 6N7biz9o/yCuPtFBnn8ELyTNlP5RA151eN7wKi8pNSNB92o83ezmb7znz1ImNM7cWr
-	 xClDJ2+EAIi/fyYTQNzUsM/2eAKArOgzFRoBwUKtf83SqZF5p6itYTMDZFBizPzyOj
-	 cmndtkVjtFJFxZFPGtELV1/fpgrqmBEwX35+EsRatiowr0CXr7OcQuw39qyPoRCSeg
-	 uQXDSW9Z/GPeI4IjUnpByoqXUrISGom24QKuNeZMIoK+/Modr6dLR2faOTSocU7qPz
-	 FiaHtir3WFZ4Q==
-Date: Tue, 19 Aug 2025 13:58:22 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 16/16] nvme-pci: unmap MMIO pages with appropriate
- interface
-Message-ID: <aKTXXv7kE0pGGn_8@kbusch-mbp>
-References: <cover.1755624249.git.leon@kernel.org>
- <545fffb8c364f36102919a5a1d57137731409f3c.1755624249.git.leon@kernel.org>
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="YIIGyeGz"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7e864c4615aso27191185a.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 12:58:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1755633532; x=1756238332; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3AATlN4RjaPp/BmcCfGWuwT6L7Llca35dlDVr1vzeUY=;
+        b=YIIGyeGz1AtwTIZiKarDMEPmjtovwYhK/873tcZgXim/asOsAQlP+j/flYdRoJ359S
+         AoDASHrIBsNT+t9kIFJUTnIJfJEagtmpNt7PGkDyc1WAuLOwqSD3djGlUPnn0SbOOr5h
+         ye3zWFpjqKb8kJyavGVIAfFcNjdrs1OAHNLQ+uGJ+FfM8Za/fGWuWiKtAvWJEAZvdIGj
+         oSRqjEPqfQ4ROgak9shnGQBlHNPfH6U9xI+0VTyZF586sdB4LRyOI09guab6Hmu3ZN81
+         dwe7xE85tltOedcmCCS70yJNMPjSKG7mxWuoJzejkhUIR5ohdAodci50MhO1Lu/jqU9U
+         3SIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755633532; x=1756238332;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3AATlN4RjaPp/BmcCfGWuwT6L7Llca35dlDVr1vzeUY=;
+        b=g5QvLtYVQU7D/XAFvgj8K58HlAICeROGxoKder2K+C91ixxuGwGizoAYVTuckAQIpY
+         l75JHHZAg6ZCpJbzNLQjRMHuUysylCcYEvuQSxLo2eyjWPOQ8IwTlfXsKesUoT1LKdEw
+         2S/gRysPesYZw3K81K0ZiSdjtYwYsqw08PCCfc3rZUkh2zDM50nY0AHXnvnRA9Slw8+o
+         /f1uKsL8+w80w9pJ1XvsY68gjMhvfObUZPOEpzWZb+8UoMOIKzvciAdKbw4ln4r1FUOn
+         AWONubPVKh4gxPiz8m1JliH7FwUV+YL47D0txs0G00azkJanVwkIaAf/Wwsf5OstFK5x
+         plSA==
+X-Forwarded-Encrypted: i=1; AJvYcCUk+3RYHj7qwkN1sNVPB0ODRT86hnhwQg1F14RY3JrtOwoKXQ5LKRhjJYDcECZco99Qg4aPcHrNdZt1AzYGbA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPh8YshFN30WNZaPOeYwuVx3mDAAwEbs4iZyELElYsu1v76AcE
+	Udt8kSWQQJw1oDlq/CehCI1MazenWTi0cYV5HmUrb2dn7aZangezHpRK6LqBo4C2iA==
+X-Gm-Gg: ASbGncuIKMBCQjQhdO9xMfGA95N1DWPQNA4eJeA9+FzkrAsPM1yilqQI96KMaFi+vbs
+	ZyFlxe/hsJUx1cCibttJPG8nIn77FJ7uo092yqN9bahLiv/PUgLZ+dQUH8te0dxlicLAPwzD8rs
+	1Y2OcnMn5WzHlgk+OAx8ghM2dTVZ5dFZo36/pzkL83mcHH6hzJlyRjy7X12L5upHDg8KWQ/5W+i
+	M0dfC3fgqiI7MfrboUo58dXuKV/e5wzRBUbjoDwL3y4U8xeEen1Wdno0ytAa4OD2efTaPsogp1O
+	RbpDsAB6Ux8Zs4TWFuiPhh7FmztIEA2uTbJRbNWCMiyJS8NDm6SEb9WH6pFVrtKLOmvN5dTPJ6p
+	FVhPa9Tow8jUTA+Fpqss6ULkkEQDRbeoTdyBhEjyB12NOtlXBbt/pgawWm5OsPdKQvSye
+X-Google-Smtp-Source: AGHT+IFS/QUC45IHhF9aldAbHK+T9irz6orjXWT+YBOPHvacTzA0aofgYRnmI0pzG7KLS05TpCkK9g==
+X-Received: by 2002:a05:620a:28c9:b0:7e8:38c1:eeaf with SMTP id af79cd13be357-7e9fc756801mr76873185a.14.1755633532343;
+        Tue, 19 Aug 2025 12:58:52 -0700 (PDT)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7e87e1c14aesm808639285a.69.2025.08.19.12.58.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 12:58:51 -0700 (PDT)
+From: Paul Moore <paul@paul-moore.com>
+To: linux-security-module@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: add the associated Rust helper to the CREDENTIALS section
+Date: Tue, 19 Aug 2025 15:58:42 -0400
+Message-ID: <20250819195841.238246-2-paul@paul-moore.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <545fffb8c364f36102919a5a1d57137731409f3c.1755624249.git.leon@kernel.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=508; i=paul@paul-moore.com; h=from:subject; bh=J61fvA2iXrVD21XQbkzqcjs16RvBAtSpF1+CPDgbUSM=; b=owEBbQKS/ZANAwAKAeog8tqXN4lzAcsmYgBopNdxPv64wRiqm1kKy+qoA+I9VL9oXEvM8RhQG naTYdrLipSJAjMEAAEKAB0WIQRLQqjPB/KZ1VSXfu/qIPLalzeJcwUCaKTXcQAKCRDqIPLalzeJ c2y4EACUy2EFUOmCE0x9xyuv0x6l+B0eLdeH5jKYhKmmvmbU2Jd3xttE1SP1bzmub4NBENH6Mjz FqEGdIMfQJpV5zjgp5Ammxgxeh6KJ2W/CrrHXgklSOeFvXUWNFmrLTJUqHvQ4zhF+UIPAOD+NB2 tlVTxLLsmtHFRbv8oGMfBUN4P8JtbdPTRxsTgvgupFXQlOXxD+6cGdSb653WvWP2FDqnDpnzz+8 +Eh9O+iX22PI6Jj20HYXSBWlbpu6XMJXL0XGvIiZhaiM+gSsiWB1vgTWtfJ4GZqPAjeGEYO66Fe Q6uDJ7kU43YYJ7PQkq194+CONUTD6eaq2kSlS7+imM6VpRHjSsCaAcZkA6g72KhYtdheWN6CuVD o2iCF0drLiYuYJIZwf754TkkZ5pyQl0r/RnOdNVfWsNOOmxFJ5e09c4BXlH7isL7VIs0QhbyHEY SfsFEeTqttQOzOJ6J8TuErZaAprFwL5u8yfjOqrubwRRcbXJEhL+ikK432gX94b0X99PgnfsvDv 5+4CZdmQeRYykm4aPfueQXg5qBls/6vq2A9y80pAXP3kHYtIuvSwttYLhFt6tso8PlEqsQTygQR jidbxqhYEf39vah32q0manJUBA5Onu5mXx/6Gni6YmHxRfIj8KVk8lUuICfP7LaZRaKdmYRfxX3 DzLDd5aWOhDejxw==
+X-Developer-Key: i=paul@paul-moore.com; a=openpgp; fpr=7100AADFAE6E6E940D2E0AD655E45A5AE8CA7C8A
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 19, 2025 at 08:37:00PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Block layer maps MMIO memory through dma_map_phys() interface
-> with help of DMA_ATTR_MMIO attribute. There is a need to unmap
-> that memory with the appropriate unmap function, something which
-> wasn't possible before adding new REQ attribute to block layer in
-> previous patch.
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-Looks good.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d61f7246e5bf..0ee0098f2df8 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6484,6 +6484,7 @@ S:	Supported
+ T:	git https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm.git
+ F:	include/linux/cred.h
+ F:	kernel/cred.c
++F:	rust/kernel/cred.rs
+ F:	Documentation/security/credentials.rst
+ 
+ INTEL CRPS COMMON REDUNDANT PSU DRIVER
+-- 
+2.50.1
 
-Reviewed-by: Keith Busch <kbusch@kernel.org>
