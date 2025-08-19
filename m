@@ -1,26 +1,29 @@
-Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch [109.224.244.21])
+Received: from mail-10625.protonmail.ch (mail-10625.protonmail.ch [79.135.106.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E066C134CF
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 00:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9434134CF;
+	Tue, 19 Aug 2025 00:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755563926; cv=none; b=gEh0zVFSYLaGUVuPy/ALy/6/RzHpUtF+PDZuzUDCTXis2u323XSKWiOnQriGZu9mDfpenbWb4cje8nOU/uBud0c/XutFBP3sZxWGIKYNVcJr+ZquH6fVv/e8tDl1G9pVQ7fIBDhpi5KQzZPzyBK7q0EEnHbH7H+ERdYokMbTqzU=
+	t=1755563940; cv=none; b=NayAb6VWxGCZ5uWSy4J3oFsxq7lUFYN9ppBYw3wUak7BenGGdWKZ3RxFhblMIhfoJzaV1EZfZNAgetSAN4PdCUuJVEsQ62Z9341tPI+cnuGwOGuI6TXc9n7l5N3uYQVrp40n5/SXgE1uBdVleZM5SeWP+QBfmhmc3MGTsX1x0nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755563926; c=relaxed/simple;
-	bh=YFzXcKV/w1yhU4pUEc9voqHHxolgp/fNB+Mx1i03H+4=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=gsgO+hZTJc6r2yOvTRCnCg7VOgimJFkAJPzzj3hag613n7j6G6SHqEEPjktQa+Qu7yVI7q4U2v0/dicmYQT+VqeTJfPZWANY66yvfjh2vbU6knanQGrgdWcEA9gZyHgjOPhL8mg4Lezd3qRrv3zS3+P6+apdEWIKhhJb5zziiX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=antoniohickey.com; arc=none smtp.client-ip=109.224.244.21
+	s=arc-20240116; t=1755563940; c=relaxed/simple;
+	bh=NRxoU38+Hiaf1dltMuIgYCLU/GXOZnll4JAjoFDng6U=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QAtwER/iQUYI2VAAwz4XejxvFtpze5t/JQkJ9Vmas0o6S6JW/r8oe5bqzZSUBC7VgILE0jhtDG8dHigdqC29NnZdOLtKUchzSKz+/Gdk9f/8QLVNr4UQUeKBwjWmdlWovDT2Koc9DTORDoCJ0S8FdXFHF7awE2qnfz848p7Fyvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=antoniohickey.com; arc=none smtp.client-ip=79.135.106.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antoniohickey.com
-Date: Tue, 19 Aug 2025 00:38:35 +0000
+Date: Tue, 19 Aug 2025 00:38:46 +0000
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 From: Antonio Hickey <contact@antoniohickey.com>
-Cc: Antonio Hickey <contact@antoniohickey.com>, Daniel Cote <danielstonecote@gmail.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
-Subject: [PATCH v5 0/2] rust: `overflow_assert!` macro
-Message-ID: <20250819003824.23019-1-contact@antoniohickey.com>
+Cc: Antonio Hickey <contact@antoniohickey.com>, Daniel Cote <danielstonecote@gmail.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [PATCH v5 1/2] rust: kernel: create `overflow_assert!` macro
+Message-ID: <20250819003824.23019-2-contact@antoniohickey.com>
+In-Reply-To: <20250819003824.23019-1-contact@antoniohickey.com>
+References: <20250819003824.23019-1-contact@antoniohickey.com>
 Feedback-ID: 144211621:user:proton
-X-Pm-Message-ID: 999e1707ce361b2cdd4ad3f982965ae01793a304
+X-Pm-Message-ID: cd317eeb7309b27fe90dba0dd6b44e21b212765f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -30,61 +33,89 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-This patch set introduces a macro for overflow assertions, the use of
-this macro will avoid local `#ifdef`s by encapsulating the conditional
-behavior to the macro. In addition this macro also allows us to document
-the intent of the assertion more clearly.
+This commit creates a macro for overflow assertions, the use of this
+macro will avoid local `#ifdef`s by encapsulating the conditional
+behavior (like `#[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]`) to the macro.
 
-Changes in v5:
-- Refactored the `overflow_assert!` macro  to forward all tokens
-  to the `assert!`, allowing full message formatting and parity
-  with `debug_assert!`.
-- Improved the documentation of the `overflow_assert!` macro.
-- Updated example use patch to also use a custom message.
-- Link to v4: https://lore.kernel.org/all/20250629024310.97937-1-contact@an=
-toniohickey.com/
+In addition this macro allows us to document the intent of the assertion
+more clearly.
 
-Changes in v4:
-- Added the ability for callers to supply a custom message to the
-  overflow assertion.
-- Small change to verbage in documentation.=20
-- Link to v3: https://lore.kernel.org/all/20250621230231.100181-1-contact@a=
-ntoniohickey.com/
-
-Changes in v3:
-- Made the `overflow_assert!` macro take in expressions instead of
-  values.
-- Fixed path in macro to fully qualify.
-- Refactor macro to make the conditional compilation as local as
-  possible.
-- Refactor macro to utilize the `cfg!` macro like the standard library
-  does to reduce boilerplate.
-- Added an example use case of the `overflow_assert!` macro
-- Link to v2: https://lore.kernel.org/rust-for-linux/20250504165612.86459-1=
--contact@antoniohickey.com/
-
-Changes in v2:
-- Fixed example doc comment so it doesn't panic.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20250504164349.84149-1=
--contact@antoniohickey.com/
-
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1159
 Co-developed-by: Daniel Cote <danielstonecote@gmail.com>
 Signed-off-by: Daniel Cote <danielstonecote@gmail.com>
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
-Cc: Tamir Duberstein <tamird@gmail.com>
-
-Antonio Hickey (2):
-  rust: kernel: create `overflow_assert!` macro
-  rust: uaccess: refactor to use `overflow_assert!`
-
+Link: https://github.com/Rust-for-Linux/linux/issues/1159
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+---
  rust/kernel/lib.rs             |  1 +
  rust/kernel/overflow_assert.rs | 44 ++++++++++++++++++++++++++++++++++
- rust/kernel/uaccess.rs         |  4 ++--
- 3 files changed, 47 insertions(+), 2 deletions(-)
+ 2 files changed, 45 insertions(+)
  create mode 100644 rust/kernel/overflow_assert.rs
 
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ed53169e795c..901e54a509a3 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -103,6 +103,7 @@
+ pub mod of;
+ #[cfg(CONFIG_PM_OPP)]
+ pub mod opp;
++pub mod overflow_assert;
+ pub mod page;
+ #[cfg(CONFIG_PCI)]
+ pub mod pci;
+diff --git a/rust/kernel/overflow_assert.rs b/rust/kernel/overflow_assert.r=
+s
+new file mode 100644
+index 000000000000..f3de3b1b2cf3
+--- /dev/null
++++ b/rust/kernel/overflow_assert.rs
+@@ -0,0 +1,44 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Overflow assertion.
++
++/// Asserts that a boolean expression is `true` at runtime.
++///
++/// This will invoke the [`panic!`] macro if the provided
++/// expression cannot be evaluated to `true` at runtime.
++///
++/// This macro only has effect when `CONFIG_RUST_OVERFLOW_CHECKS`
++/// is enabled, otherwise it expands to a no-op.
++///
++/// This assertion is intended only for extra validation within
++/// builds and environments where panics are acceptable. **Do not
++/// rely on `overflow_assert!` for checks that must *always* execute**
++/// (e.g. to prevent undefined behavior, perform access checks, etc).
++///
++/// # Examples
++///
++/// Basic boolean condition:
++///
++/// ```
++/// let a: u32 =3D 10;
++/// let b: u32 =3D 5;
++/// overflow_assert!(a >=3D b);
++/// ```
++///
++/// A guard before doing a size computation that could overflow:
++/// ```
++/// fn reserve_for_concat(curr: usize, to_add: usize, cap: usize) {
++///     // If enabled, catch obvious overflow logic errors early:
++///     overflow_assert!(curr <=3D cap, "curr=3D{} > cap=3D{}", curr, cap)=
+;
++///     overflow_assert!(to_add <=3D cap - curr, "would exceed cap: {}+{} =
+> {}", curr, to_add, cap);
++///     // ... then proceed to grow/append
++/// }
++/// ```
++#[macro_export]
++macro_rules! overflow_assert {
++    ($($arg:tt)*) =3D> {
++        if cfg!(CONFIG_RUST_OVERFLOW_CHECKS) {
++            ::core::assert!($($arg)*);
++        }
++    };
++}
 --=20
 2.50.1
 
