@@ -1,302 +1,213 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDF72522B1;
-	Tue, 19 Aug 2025 17:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755624427; cv=pass; b=KErF4FibUB4tXpAfrL+lto64cPLlbp11kgKpoI+/eKSJrFViIb2Bm7w+43IQ6tNumW/NDqMWgkLsNcH0wkR2Y3o0qRULdUAkP0kCifAp0rF0th0CTAejv65z2Iv6lXnGzY/1NxoAuKVpukvvLdfi9PNs1rp+Y2Zn4fQBNaMXt+k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755624427; c=relaxed/simple;
-	bh=Yd6wysuwSEFFqEVhAD3ASUwXX+3QlMfF9x1DDIvThzk=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=rRrqR5wG7YPDTMiMHJtqqEZlvGAu44hHv550xyJM9aVEyNxYvZdGgKyz8am+R/x46Lx0ctsF+opNAicZc0pCMbIaBS0Dfq/xBM6sc7Cb1uB4PlTxq7TNZ4YHHARrQSuASImHjI3GyHoBgdUQU/IjDBux7j2gpQGJkkfNtWbIlq4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CTwX9Kel; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C62D30C34A;
+	Tue, 19 Aug 2025 17:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755625043; cv=none; b=BQxfAUl3W+pQts8W9Jwwj7GhcyHU6X65/nx2V5x3E3HzSvFJYlBkOYqc/p2Q137qZp2RcXaTnYySCl1yimWkG2fNWrA56ZAdm3sZzwYBaQMR3k8c5wX2N9qUwNDiX0xlhiuOqdlXxF7uhY2iaYGo7ux87SnVkmHaESDvgkeAp4M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755625043; c=relaxed/simple;
+	bh=PY9smWWJ4JNRFUAjSvtMNJOBqFCsxBLYO5QlYdxwbLE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=umX8jVGp7/E2+tpGM2gpWxcMNSg5QW4LmweGw0NcjakrwkKY3jZrhZpihd93io4U1OdzrRfC9dIfA5Cs3ttGhbcunFw3RL2s2K7MC9pufBQTLSoQOgOYFowvNwptObpR4VOW2UGzBE7OoZi/71pV8xJ0K2BVbn0+pwSHb++ZpAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nt8pdRow; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CTwX9Kel"
-ARC-Seal: i=1; a=rsa-sha256; t=1755624405; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=S3IN3aAcDmZSX5XOn9zI9nGzhg0I/Q6/Ek2j0VqeNO90wCJwgLI/8Kmf1fbhM8NinSd7H7tpxeW4Ox5GI4tCNaZFyZCjvd8YSkY3/UWoDrwKFO2k2KMej1R9sxA1xke1dxiZxwMq7N6KOZwyg0VYwqNKp2lRKASf1TS1ZOn/QhM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755624405; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=8H1AUhw82rUJaLdt3KIbuTGoRdsNV4lrOzkPBNCmH6I=; 
-	b=Z459QXTRQXKo9OCgocRgUVLzuf5jrme69cqD5Rt9dZKS0U+0jsG5cIKVetM0yDzC2dG7q3olhwIRfqplAhDB8tAGCZYqA0rixlspOs/U6JqMvgCsXh+NHIsnkLPjrbLZsVMPp/xDA08NGhr6z/MdtWfjysjm8nHO0Ttg0WILO5s=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755624404;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=8H1AUhw82rUJaLdt3KIbuTGoRdsNV4lrOzkPBNCmH6I=;
-	b=CTwX9KelRwjpfOCA9ymNYTj688Rs3a3fGi5JrdcbKu5QN8OOnUk188KPa86dEeAG
-	fF6+YEEMeAtWqvxN7ajveOZzxuKpeA9gWqismV6vBq2cFNhYct44BsAz+5qSO6jLw4r
-	Om79WYA+LJgDsZ3qxgFt85KxNUsMxdUuWMiMrmIY=
-Received: by mx.zohomail.com with SMTPS id 1755624402429375.09727788227974;
-	Tue, 19 Aug 2025 10:26:42 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nt8pdRow"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7B6C113D0;
+	Tue, 19 Aug 2025 17:37:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755625042;
+	bh=PY9smWWJ4JNRFUAjSvtMNJOBqFCsxBLYO5QlYdxwbLE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nt8pdRowHseoXvExKasdI0tEDbHSrgizbMB2qlH1aCU/xuu2CZSaOV8+REt27f9GO
+	 87AyElpEj/wX92YaeYkB2ZUeSYzFX7ugQoGONRfzj6gLwHZfXjbZvX+XecnRMSzKxt
+	 XWFXqQ7FRrUCmWN75OAdzO2Bw50CvLG0hQxnk0yj1TPViX5VQGWTcqYi++OUdBQ/MI
+	 77ZymbBVIJT1fBt6mwrJPXADDaD1SHQ2OEMF2BgRWv5a+KqnO7FRcxsxJl834mNp8D
+	 2IaJ0ZC7YC5w/kVg1P0H0R1EvS8ZJSRiF91vJogJyrKxdQR7Akp5/4TKu+iWzc343Q
+	 0jqutLlV5YsRQ==
+From: Leon Romanovsky <leon@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev,
+	Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com,
+	Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev,
+	Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: [PATCH v4 00/16] dma-mapping: migrate to physical address-based API
+Date: Tue, 19 Aug 2025 20:36:44 +0300
+Message-ID: <cover.1755624249.git.leon@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v2 4/5] rust: maple_tree: add MapleTreeAlloc
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250819-maple-tree-v2-4-229b48657bab@google.com>
-Date: Tue, 19 Aug 2025 14:26:25 -0300
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Andrew Ballance <andrewjballance@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- linux-kernel@vger.kernel.org,
- maple-tree@lists.infradead.org,
- rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D5983002-4D45-4C39-BA70-9A7A7A7D0FB4@collabora.com>
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-4-229b48657bab@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+Changelog:
+v4:
+ * Fixed kbuild error with mismatch in kmsan function declaration due to
+   rebase error.
+v3: https://lore.kernel.org/all/cover.1755193625.git.leon@kernel.org
+ * Fixed typo in "cacheable" word
+ * Simplified kmsan patch a lot to be simple argument refactoring
+v2: https://lore.kernel.org/all/cover.1755153054.git.leon@kernel.org
+ * Used commit messages and cover letter from Jason
+ * Moved setting IOMMU_MMIO flag to dma_info_to_prot function
+ * Micro-optimized the code
+ * Rebased code on v6.17-rc1
+v1: https://lore.kernel.org/all/cover.1754292567.git.leon@kernel.org
+ * Added new DMA_ATTR_MMIO attribute to indicate
+   PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
+ * Rewrote dma_map_* functions to use thus new attribute
+v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
+------------------------------------------------------------------------
 
+This series refactors the DMA mapping to use physical addresses
+as the primary interface instead of page+offset parameters. This
+change aligns the DMA API with the underlying hardware reality where
+DMA operations work with physical addresses, not page structures.
 
-> On 19 Aug 2025, at 07:34, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> To support allocation trees, we introduce a new type MapleTreeAlloc =
-for
-> the case where the tree is created using MT_FLAGS_ALLOC_RANGE. To =
-ensure
-> that you can only call mtree_alloc_range on an allocation tree, we
-> restrict thta method to the new MapleTreeAlloc type. However, all
-> methods on MapleTree remain accessible to MapleTreeAlloc as allocation
-> trees can use the other methods without issues.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> rust/kernel/maple_tree.rs | 158 =
-++++++++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 158 insertions(+)
->=20
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> index =
-17e4d8586ebad56aee87a97befdfec5741f147de..1a32960e6e721ca32ca45d8bb63fcffe=
-deae3424 100644
-> --- a/rust/kernel/maple_tree.rs
-> +++ b/rust/kernel/maple_tree.rs
-> @@ -33,6 +33,26 @@ pub struct MapleTree<T: ForeignOwnable> {
->     _p: PhantomData<T>,
-> }
->=20
-> +/// A maple tree with `MT_FLAGS_ALLOC_RANGE` set.
-> +///
-> +/// All methods on [`MapleTree`] are also accessible on this type.
-> +#[pin_data]
-> +#[repr(transparent)]
-> +pub struct MapleTreeAlloc<T: ForeignOwnable> {
-> +    #[pin]
-> +    tree: MapleTree<T>,
-> +}
-> +
-> +// Make MapleTree methods usable on MapleTreeAlloc.
-> +impl<T: ForeignOwnable> core::ops::Deref for MapleTreeAlloc<T> {
-> +    type Target =3D MapleTree<T>;
-> +
-> +    #[inline]
-> +    fn deref(&self) -> &MapleTree<T> {
-> +        &self.tree
-> +    }
-> +}
-> +
-> /// A helper type used for navigating a [`MapleTree`].
-> ///
-> /// # Invariants
-> @@ -364,6 +384,107 @@ pub fn load(&mut self, index: usize) -> =
-Option<T::BorrowedMut<'_>> {
->     }
-> }
->=20
-> +impl<T: ForeignOwnable> MapleTreeAlloc<T> {
-> +    /// Create a new allocation tree.
-> +    pub fn new() -> impl PinInit<Self> {
-> +        let tree =3D pin_init!(MapleTree {
-> +            // SAFETY: This initializes a maple tree into a pinned =
-slot. The maple tree will be
-> +            // destroyed in Drop before the memory location becomes =
-invalid.
-> +            tree <- Opaque::ffi_init(|slot| unsafe {
-> +                bindings::mt_init_flags(slot, =
-bindings::MT_FLAGS_ALLOC_RANGE)
-> +            }),
-> +            _p: PhantomData,
-> +        });
-> +
-> +        pin_init!(MapleTreeAlloc { tree <- tree })
-> +    }
-> +
-> +    /// Insert an entry with the given size somewhere in the given =
-range.
-> +    ///
-> +    /// The maple tree will search for a location in the given range =
-where there is space to insert
-> +    /// the new range. If there is not enough available space, then =
-an error will be returned.
-> +    ///
-> +    /// The index of the new range is returned.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::maple_tree::{MapleTreeAlloc, AllocErrorKind};
-> +    ///
-> +    /// let tree =3D =
-KBox::pin_init(MapleTreeAlloc::<KBox<i32>>::new(), GFP_KERNEL)?;
-> +    ///
-> +    /// let ten =3D KBox::new(10, GFP_KERNEL)?;
-> +    /// let twenty =3D KBox::new(20, GFP_KERNEL)?;
-> +    /// let thirty =3D KBox::new(30, GFP_KERNEL)?;
-> +    /// let hundred =3D KBox::new(100, GFP_KERNEL)?;
-> +    ///
-> +    /// // Allocate three ranges.
-> +    /// let idx1 =3D tree.alloc_range(100, ten, ..1000, GFP_KERNEL)?;
-> +    /// let idx2 =3D tree.alloc_range(100, twenty, ..1000, =
-GFP_KERNEL)?;
-> +    /// let idx3 =3D tree.alloc_range(100, thirty, ..1000, =
-GFP_KERNEL)?;
-> +    ///
-> +    /// assert_eq!(idx1, 0);
-> +    /// assert_eq!(idx2, 100);
-> +    /// assert_eq!(idx3, 200);
-> +    ///
-> +    /// // This will fail because the remaining space is too small.
-> +    /// assert_eq!(
-> +    ///     tree.alloc_range(800, hundred, ..1000, =
-GFP_KERNEL).unwrap_err().cause,
-> +    ///     AllocErrorKind::Busy,
-> +    /// );
-> +    /// # Ok::<_, Error>(())
-> +    /// ```
-> +    pub fn alloc_range<R>(
-> +        &self,
-> +        size: usize,
-> +        value: T,
-> +        range: R,
-> +        gfp: Flags,
-> +    ) -> Result<usize, AllocError<T>>
-> +    where
-> +        R: RangeBounds<usize>,
-> +    {
-> +        let Some((min, max)) =3D to_maple_range(range) else {
+The series maintains export symbol backward compatibility by keeping
+the old page-based API as wrapper functions around the new physical
+address-based implementations.
 
-Ok, I see that the returned range can mean multiple things, depending on
-context. Fine, you can disregard my previous comment about this =
-function.
+This series refactors the DMA mapping API to provide a phys_addr_t
+based, and struct-page free, external API that can handle all the
+mapping cases we want in modern systems:
 
-> +            return Err(AllocError {
-> +                value,
-> +                cause: AllocErrorKind::InvalidRequest,
-> +            });
-> +        };
-> +
-> +        let ptr =3D T::into_foreign(value);
-> +        let mut index =3D 0;
-> +
-> +        // SAFETY: The tree is valid, and we are passing a pointer to =
-an owned instance of `T`.
-> +        let res =3D to_result(unsafe {
-> +            bindings::mtree_alloc_range(
-> +                self.tree.tree.get(),
-> +                &mut index,
-> +                ptr,
-> +                size,
-> +                min,
-> +                max,
-> +                gfp.as_raw(),
-> +            )
-> +        });
-> +
-> +        if let Err(err) =3D res {
-> +            // SAFETY: As `mtree_alloc_range` failed, it is safe to =
-take back ownership.
-> +            let value =3D unsafe { T::from_foreign(ptr) };
-> +
-> +            let cause =3D if err =3D=3D ENOMEM {
-> +                AllocErrorKind::AllocError(kernel::alloc::AllocError)
-> +            } else if err =3D=3D EBUSY {
-> +                AllocErrorKind::Busy
-> +            } else {
-> +                AllocErrorKind::InvalidRequest
-> +            };
-> +            Err(AllocError { value, cause })
-> +        } else {
-> +            Ok(index)
-> +        }
-> +    }
-> +}
-> +
-> impl<'tree, T: ForeignOwnable> MaState<'tree, T> {
->     /// Initialize a new `MaState` with the given tree.
->     ///
-> @@ -480,3 +601,40 @@ fn from(insert_err: InsertError<T>) -> Error {
->         Error::from(insert_err.cause)
->     }
-> }
-> +
-> +/// Error type for failure to insert a new value.
-> +pub struct AllocError<T> {
-> +    /// The value that could not be inserted.
-> +    pub value: T,
-> +    /// The reason for the failure to insert.
-> +    pub cause: AllocErrorKind,
-> +}
-> +
-> +/// The reason for the failure to insert.
-> +#[derive(PartialEq, Eq, Copy, Clone)]
-> +pub enum AllocErrorKind {
-> +    /// There is not enough space for the requested allocation.
-> +    Busy,
-> +    /// Failure to allocate memory.
-> +    AllocError(kernel::alloc::AllocError),
-> +    /// The insertion request was invalid.
-> +    InvalidRequest,
-> +}
-> +
-> +impl From<AllocErrorKind> for Error {
-> +    #[inline]
-> +    fn from(kind: AllocErrorKind) -> Error {
-> +        match kind {
-> +            AllocErrorKind::Busy =3D> EBUSY,
-> +            AllocErrorKind::AllocError(kernel::alloc::AllocError) =3D> =
-ENOMEM,
-> +            AllocErrorKind::InvalidRequest =3D> EINVAL,
-> +        }
-> +    }
-> +}
-> +
-> +impl<T> From<AllocError<T>> for Error {
-> +    #[inline]
-> +    fn from(insert_err: AllocError<T>) -> Error {
-> +        Error::from(insert_err.cause)
-> +    }
-> +}
->=20
-> --=20
-> 2.51.0.rc1.167.g924127e9c0-goog
->=20
->=20
+ - struct page based cachable DRAM
+ - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cachable
+   MMIO
+ - struct page-less PCI peer to peer non-cachable MMIO
+ - struct page-less "resource" MMIO
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Overall this gets much closer to Matthew's long term wish for
+struct-pageless IO to cachable DRAM. The remaining primary work would
+be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
+phys_addr_t without a struct page.
+
+The general design is to remove struct page usage entirely from the
+DMA API inner layers. For flows that need to have a KVA for the
+physical address they can use kmap_local_pfn() or phys_to_virt(). This
+isolates the struct page requirements to MM code only. Long term all
+removals of struct page usage are supporting Matthew's memdesc
+project which seeks to substantially transform how struct page works.
+
+Instead make the DMA API internals work on phys_addr_t. Internally
+there are still dedicated 'page' and 'resource' flows, except they are
+now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
+flows use the same phys_addr_t.
+
+When DMA_ATTR_MMIO is specified things work similar to the existing
+'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
+pfn_valid(), etc are never called on the phys_addr_t. This requires
+rejecting any configuration that would need swiotlb. CPU cache
+flushing is not required, and avoided, as ATTR_MMIO also indicates the
+address have no cachable mappings. This effectively removes any
+DMA API side requirement to have struct page when DMA_ATTR_MMIO is
+used.
+
+In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
+except on the common path of no cache flush, no swiotlb it never
+touches a struct page. When cache flushing or swiotlb copying
+kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
+usage. This was already the case on the unmap side, now the map side
+is symmetric.
+
+Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
+must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
+path must also set it. This corrects some existing bugs where iommu
+mappings for P2P MMIO were improperly marked IOMMU_CACHE.
+
+Since ATTR_MMIO is made to work with all the existing DMA map entry
+points, particularly dma_iova_link(), this finally allows a way to use
+the new DMA API to map PCI P2P MMIO without creating struct page. The
+VFIO DMABUF series demonstrates how this works. This is intended to
+replace the incorrect driver use of dma_map_resource() on PCI BAR
+addresses.
+
+This series does the core code and modern flows. A followup series
+will give the same treatment to the legacy dma_ops implementation.
+
+Thanks
+
+Leon Romanovsky (16):
+  dma-mapping: introduce new DMA attribute to indicate MMIO memory
+  iommu/dma: implement DMA_ATTR_MMIO for dma_iova_link().
+  dma-debug: refactor to use physical addresses for page mapping
+  dma-mapping: rename trace_dma_*map_page to trace_dma_*map_phys
+  iommu/dma: rename iommu_dma_*map_page to iommu_dma_*map_phys
+  iommu/dma: extend iommu_dma_*map_phys API to handle MMIO memory
+  dma-mapping: convert dma_direct_*map_page to be phys_addr_t based
+  kmsan: convert kmsan_handle_dma to use physical addresses
+  dma-mapping: handle MMIO flow in dma_map|unmap_page
+  xen: swiotlb: Open code map_resource callback
+  dma-mapping: export new dma_*map_phys() interface
+  mm/hmm: migrate to physical address-based DMA mapping API
+  mm/hmm: properly take MMIO path
+  block-dma: migrate to dma_map_phys instead of map_page
+  block-dma: properly take MMIO path
+  nvme-pci: unmap MMIO pages with appropriate interface
+
+ Documentation/core-api/dma-api.rst        |   4 +-
+ Documentation/core-api/dma-attributes.rst |  18 ++++
+ arch/powerpc/kernel/dma-iommu.c           |   4 +-
+ block/blk-mq-dma.c                        |  15 ++-
+ drivers/iommu/dma-iommu.c                 |  61 +++++------
+ drivers/nvme/host/pci.c                   |  18 +++-
+ drivers/virtio/virtio_ring.c              |   4 +-
+ drivers/xen/swiotlb-xen.c                 |  21 +++-
+ include/linux/blk-mq-dma.h                |   6 +-
+ include/linux/blk_types.h                 |   2 +
+ include/linux/dma-direct.h                |   2 -
+ include/linux/dma-map-ops.h               |   8 +-
+ include/linux/dma-mapping.h               |  33 ++++++
+ include/linux/iommu-dma.h                 |  11 +-
+ include/linux/kmsan.h                     |   9 +-
+ include/trace/events/dma.h                |   9 +-
+ kernel/dma/debug.c                        |  71 ++++---------
+ kernel/dma/debug.h                        |  37 ++-----
+ kernel/dma/direct.c                       |  22 +---
+ kernel/dma/direct.h                       |  52 ++++++----
+ kernel/dma/mapping.c                      | 117 +++++++++++++---------
+ kernel/dma/ops_helpers.c                  |   6 +-
+ mm/hmm.c                                  |  19 ++--
+ mm/kmsan/hooks.c                          |   5 +-
+ rust/kernel/dma.rs                        |   3 +
+ tools/virtio/linux/kmsan.h                |   2 +-
+ 26 files changed, 305 insertions(+), 254 deletions(-)
+
+-- 
+2.50.1
 
