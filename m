@@ -1,26 +1,26 @@
 Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch [109.224.244.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAB74A06
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 00:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E066C134CF
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 00:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755563836; cv=none; b=j+he2bQhC6eJN+B3grmovZx0xWqz8Wr+mUhlwdsmUn0CuZcDojHLD4CgTVwKDiNkbXvAlEFecBAGC2wHV6D+jnLU6LwiKY1mr05EKe8ztfAMMVgXk1IrU4vvSBTYiEjO22XE48+JhUn09kWDVb9O7nfCLvq6jWpXfFasWxCXZu4=
+	t=1755563926; cv=none; b=gEh0zVFSYLaGUVuPy/ALy/6/RzHpUtF+PDZuzUDCTXis2u323XSKWiOnQriGZu9mDfpenbWb4cje8nOU/uBud0c/XutFBP3sZxWGIKYNVcJr+ZquH6fVv/e8tDl1G9pVQ7fIBDhpi5KQzZPzyBK7q0EEnHbH7H+ERdYokMbTqzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755563836; c=relaxed/simple;
+	s=arc-20240116; t=1755563926; c=relaxed/simple;
 	bh=YFzXcKV/w1yhU4pUEc9voqHHxolgp/fNB+Mx1i03H+4=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Z4k4T6hb90XtkN4MqnF7ae3PCUJvVr9uDUbKpzuIFO0qLia/fCNOI7bss2hbFHjqWAklOqSflo6XeaaHEQSdFQ6VHhpyOLiNqCkP0W73HqXauq3d71p2Gt2CLVwsAw52U6+1TXGIl65RVc+xXFT8pinnBmCfV1LmJiP+8Ny4z4c=
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=gsgO+hZTJc6r2yOvTRCnCg7VOgimJFkAJPzzj3hag613n7j6G6SHqEEPjktQa+Qu7yVI7q4U2v0/dicmYQT+VqeTJfPZWANY66yvfjh2vbU6knanQGrgdWcEA9gZyHgjOPhL8mg4Lezd3qRrv3zS3+P6+apdEWIKhhJb5zziiX4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=antoniohickey.com; arc=none smtp.client-ip=109.224.244.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antoniohickey.com
-Date: Tue, 19 Aug 2025 00:36:59 +0000
+Date: Tue, 19 Aug 2025 00:38:35 +0000
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 From: Antonio Hickey <contact@antoniohickey.com>
 Cc: Antonio Hickey <contact@antoniohickey.com>, Daniel Cote <danielstonecote@gmail.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
-Subject: [PATCH v4 0/2] rust: `overflow_assert!` macro
-Message-ID: <20250819003653.22701-1-contact@antoniohickey.com>
+Subject: [PATCH v5 0/2] rust: `overflow_assert!` macro
+Message-ID: <20250819003824.23019-1-contact@antoniohickey.com>
 Feedback-ID: 144211621:user:proton
-X-Pm-Message-ID: 3d561044359b84de35818b3a348faf0c11ec4e26
+X-Pm-Message-ID: 999e1707ce361b2cdd4ad3f982965ae01793a304
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
