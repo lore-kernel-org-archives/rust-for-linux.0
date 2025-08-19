@@ -1,74 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2511FC0ED;
-	Tue, 19 Aug 2025 12:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED59E2C11F2
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 12:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755605605; cv=none; b=iqiWVdfX5gHItbo8AbMkPN1jpH5uIYpEMOPSOCgfjKVn427e0o21/pSFOy+p+QIizhkJ2SYDhjpVh61SrAc/PDlHREYBzGbEql+Kb8ZG9u89TSKQmgJXN8zuG62YPGdZNWxnx0rKZ99GtOFoEJxnd+k2iuzKx29izo5/IGmMpr8=
+	t=1755607316; cv=none; b=BnFzMFIQ6dD60BjX2Y7+Rkp9XOxBCL0xzdaUIx88gnq/CA1oK/RluNnDCCTGMpj0OK9ZxXf5AbDyjByqz04q7OlXm/WzHPGNk14MeRwCdlniawpLtMll+6Wej0JevH7aOjaaZyqjoYYMU5d9rgKHl2BB10lvFnLWzB/SDUsDUcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755605605; c=relaxed/simple;
-	bh=bfDp6DDwN4oC84InlHWHPzRfbM00dU9tDtuPm6ARsyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pqop/GV4oHOuateBHScvLwmV/gy7BriXf5Xl5Yarrf6ZEEpbekAny3QiObF79qxUY3JqGTx1c+PIicajRTFG3VPwMKj+y6RIdlWGjJ8MyiUJoSvw8SVqN+PI/pPXgfzDb4jppB7g/Qfzwe1Sf1ndTfXpZ++ydpdXQGrCJ4gmOYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzMgeixh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755607316; c=relaxed/simple;
+	bh=2oNXOoxywYfVBFFbPZ7hZAbK09R5OqnjTJGfv1ceELQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qal5rrp8zUtWSthQ5lzTaxZt1hKMXGKPHaqkhj2oN1MU5Ify4WYnj9cpi/tpV+svcNt04o732+zJ9tjWk10f2cv1DtQLpHFVsBc+FSjkY+rqfMZ6M6MhMe+TmFbMe/8xVA3kr0vf4lV+SrI0dY9IWUMkrdEUDGF5OyE7jZ62ySQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zesjhzVD; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzMgeixh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D05C4CEF1;
-	Tue, 19 Aug 2025 12:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755605604;
-	bh=bfDp6DDwN4oC84InlHWHPzRfbM00dU9tDtuPm6ARsyc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CzMgeixhYPgaUygiMLZJJmEWPg5hFHXeWanI6rFuTS7WIwI2n3E7FAA8VLFLZcM33
-	 P9DEKqp0CcqCG5ePu+GeUxQpHRl0fhaeVf4v7UNV42I43RBCIZXUpc/ILio2JuUsUW
-	 GLaBpGF2FtdUcKnE84xv6sDrJb/yukXKRQ8VEACg=
-Date: Tue, 19 Aug 2025 14:13:21 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: miscdevice: update ARef import to sync::aref
-Message-ID: <2025081911-shudder-overlabor-6e92@gregkh>
-References: <20250818132806.134248-1-shankari.ak0208@gmail.com>
- <aKRlqA_Xa3S4_P1a@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zesjhzVD"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3bb2fb3a489so2383754f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 05:41:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755607313; x=1756212113; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jZPu71v4iJrj40UYhCf2EubxUaw6sgyARKI4hkp1H/4=;
+        b=zesjhzVDWBfqUr6mtGxBhk2nDVrSj3y/LqNH5RHdUiuqLyUvCKA0PMn7muc+v4K+/0
+         rV69pTnM7S5jWJPcBGQSk/I/kGgR0WYlulhCZ/Fo8kMem+Fv16wyVB428XHJBwbzwpR7
+         Uo3a3mqU2PiNJ/BuN41m6QT/xatJ8aDr8OL8553m5L8NiBOVT+fQrOsc6CQaf55RjKG2
+         938p2eRN9Ay4u7AbpH6ce2RUHjojXrPVxD38arADQWPC//WGGbqqdopASNvvj1ZG4mDA
+         GS1FsV5btfjI6ba9YZOuNZyKlqKT+GZGBUg/WbdmF06wyNcYmPgWGzhK5v0Oc8+XZxBM
+         7Yfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755607313; x=1756212113;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jZPu71v4iJrj40UYhCf2EubxUaw6sgyARKI4hkp1H/4=;
+        b=ubgkz4jOynjsxXil50ughJR+yolzMGIQfz8t/TSIRKd5ugLDshVHl4B9uY5D2rrAYb
+         l+bsL/YzIcsvL2dLtRwY0YHgQVEa5YPeztgcdzUeTql2XTDbpXe13C3It4uyw6K91Xu0
+         HWQ58aJxVa5HnnCFasz596iZo8boM/12t6ZPCv69kSWQ0mUfpgI3Rg1J8buG4Cs7L8Fx
+         4cJP/yLXakzjhwkgE4Im73wCP6zSxhHdnrGrJ5ElmE31n41zOlfmrhVpX1xvaGmy+lFv
+         Ue/GDQbC0gBhUyukMDdZ3ykaBtkXhrQ8We2HzUdxWJEB/RXe9tmwfTr3LFyO+Rbqr3W/
+         Y6Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCVqXP98FhNI7UDZ3ftzYBaPto3Hg9cNQfeyFW8yCtxAfWVVXDKr5m7Zx24iEo8JA2w3niVQDLD4nMTcdT6dbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/XbtzEIPN6/gc1zOvB7o3BWXFH2ch6KoJbS3qux+v1Xxn8FaS
+	ZSd2ZF6xl1YOrm1B2l/KcEvv1zbwtYuPcs6EQBCYjmIomSWau0Sn6s4K7v+SUh4OtGB1ssKpwn8
+	/tSEbvL4d4OEtXQ/abg==
+X-Google-Smtp-Source: AGHT+IG4HvCG6xMAP0kc+KeWFDcdVkf0VrlLc9RsRO55bsIjMgWKuo8r9NDS3JOpE0Jihm8a/GII747UxtSnXhc=
+X-Received: from wrbee4.prod.google.com ([2002:a05:6000:2104:b0:3b8:e8d5:b8d4])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2d08:b0:3b9:14f2:7eed with SMTP id ffacd0b85a97d-3c0ecc315fbmr1499787f8f.56.1755607313087;
+ Tue, 19 Aug 2025 05:41:53 -0700 (PDT)
+Date: Tue, 19 Aug 2025 12:41:52 +0000
+In-Reply-To: <20250819-maple-tree-v2-1-229b48657bab@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aKRlqA_Xa3S4_P1a@google.com>
+Mime-Version: 1.0
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com> <20250819-maple-tree-v2-1-229b48657bab@google.com>
+Message-ID: <aKRxEEy5ln8qcGGI@google.com>
+Subject: Re: [PATCH v2 1/5] maple_tree: remove lockdep_map_p typedef
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Aug 19, 2025 at 11:53:12AM +0000, Alice Ryhl wrote:
-> On Mon, Aug 18, 2025 at 06:58:06PM +0530, Shankari Anand wrote:
-> > Update the import of `ARef` in misc_device sample to use
-> > `sync::aref` instead of `types`.
-> > 
-> > This is part of the ongoing effort to move `ARef` and
-> > `AlwaysRefCounted` to the `sync` module for better modularity
-> > and type organization.
-> > 
-> > Suggested-by: Benno Lossin <lossin@kernel.org>
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> > Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+On Tue, Aug 19, 2025 at 10:34:42AM +0000, Alice Ryhl wrote:
+> Having the ma_external_lock field exist when CONFIG_LOCKDEP=n isn't used
+> anywhere, so just get rid of it. This also avoids generating a typedef
+> called lockdep_map_p that could overlap with typedefs in other header
+> files.
 > 
-> Greg, I believe this should go through miscdevice. It's not going
-> through a shared tree.
+> With this change, bindgen will generate better definitions for this
+> union, which makes it nicer to use from Rust. This avoids a cast in the
+> Rust abstractions for the maple tree, ensuring that Rust's type checker
+> will notice at build-time if ma_lock is changed from spinlock_t to
+> something else.
 > 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-It's already queued up in my char-misc tree, thanks :)
+Ah ... this didn't work. There's still a configuration where I get the
+error:
 
-greg k-h
+ERROR:root:error[E0308]: mismatched types
+   --> ../rust/kernel/maple_tree.rs:256:18
+    |
+254 |     fn ma_lock(&self) -> *mut bindings::spinlock_t {
+    |                          ------------------------- expected `*mut bindings::spinlock` because of return type
+255 |         // SAFETY: This pointer offset operation stays in-bounds.
+256 |         unsafe { &raw mut (*self.tree.get()).__bindgen_anon_1.ma_lock }
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut spinlock`, found `*mut __BindgenUnionField<spinlock>`
+    |                                                                               
+    = note: expected raw pointer `*mut bindings::spinlock`
+               found raw pointer `*mut bindings::__BindgenUnionField<bindings::spinlock>`
+
+Alice
