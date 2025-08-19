@@ -1,123 +1,114 @@
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0721990C7
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 06:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4CE31159B;
+	Tue, 19 Aug 2025 08:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755586728; cv=none; b=CDiJ9BA1bYkSPKzrqGLzu/aUqRjiGruT738r344/eMLv5n+qD8vakAi1olYq4SvNZGhnb2v8KgC1iuSusWcvRr2FLAYiFD1Zc+TQh1IqOKg25jx0Xu8SOpm+ck8GPAS3VUcLr6EofAo+tjToJoySm0H7Q+vF/ftQuRl22S3EdGg=
+	t=1755591983; cv=none; b=S8FSYeS1bkNPD21FibsiSBGc/JP3yntBXRAMpYGrRiQJE9ZGw5vy2gF31pSVm8VChyBUfcKUAxo/wL9W1rkiRfBiwrySgmA9LMnhaK7OBEHi8q0tDdckIwizhznP5XKWkPBSZDCdxiY/tlZjQm6q2cDKbgcwQR8rD4BaU4U9iFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755586728; c=relaxed/simple;
-	bh=A5ksU6bunwl0XFvy24lZ4Gc8nlgMJJPSdDv6bGsXT3c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kY07h8xNZWhPm6znGXkvHaa3z7ZGD5v4S5Tg8j0Tb6y0LzazQAOejvvojgaB5BunaxwB/u0SZ5IrmDvq8niZ1oUwGuI722stmzaJmyeu6+mPZQsbMfgcFPU2AnxY2E0isbfqlNiDaF8bjVNvhdtWB46Jd+bgduBjFoANXOdROLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=L7OvbqE9; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1755591983; c=relaxed/simple;
+	bh=vQ+nNmzZIwCCcruO5mhWZDGl2dFxcQpyDW7zj1Vna9k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=IlO1xM1TZNCEcvqobVMknhZRnCGFznU5mqa6tqoLv03kuJZuZtCe60dDGU0gmj2oQngkOBA58/htZkJx4qsqqcEpD2WDwXUkDYlztdMRl6ksIrpNF0dny+I3JnC8hSI14zJX9G6ahW/mJ7aVe10QmZ6Nt/zpyWeXQ2+2YbAO1ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGO/xRX7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="L7OvbqE9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=kq5SBlKMmDuDBO8loOgdkG/hYJi5QFPMID/GAlamcS8=; t=1755586726;
-	x=1756018726; b=L7OvbqE9SkBBsfAajD883FY+7Y92E1j3/n97Et69FmJvz4A7Cf6+iz4wo52+g
-	GR4MGdmdjiVSc4eg6HK1UlYYHSmGgzsPh35h0Mui2tBUFeIULN9+ao+VwidnUAdWhQ6o07sqjnHVP
-	uoSF2j/N5iYNHRkzqkg24JB2Ii47htsK9s6hl0JorYgOJgyDXR+cNSXG6b/GzC24EK79/zEh4km+1
-	QpwjW79fVBGL6MqENr/0tbHNOyl15vqgEHsOuAwDVnKtHYskzJkG3fHmZFHe5w/rT0SVx+bUTdBn6
-	KHwXxsSCY1haLjLHqzazzaAyce6btTJ1cCuVgh9ZrOTNiDk3SA==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1uoGIo-00Fy46-2t;
-	Tue, 19 Aug 2025 08:58:39 +0200
-Message-ID: <9967d026-1566-4a6a-aa1f-c3d5833bb172@leemhuis.info>
-Date: Tue, 19 Aug 2025 08:58:37 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nGO/xRX7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02C4C4CEF1;
+	Tue, 19 Aug 2025 08:26:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755591983;
+	bh=vQ+nNmzZIwCCcruO5mhWZDGl2dFxcQpyDW7zj1Vna9k=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=nGO/xRX7gaU2h4dh6kCXpKk6SCrkqbUZNmCKvELs9XmHIKzDx1fhDay3XqAgkblSP
+	 QOEsjGgbwLtd0R0xekm3DKZLHr1ZV2YnjwCcQXG9qDBIazyFWmoAuf3it8vLZENQMD
+	 Md8SkoJNHj4U+nxT7zb5SHtjKKhjDMjQKZb8ufeG8Nh+bHdTUNjjchZBGE1Q+F1BJ+
+	 H14yENllyW4fmE7XZNEGJNERXFvPqaZa5A4O4iwk1pWVq0hQRUuPVBfCKJ6wnjgyKc
+	 X6/LC3plB3P9lQOiKulWgN63DtSmhospy/7Ch7mgnhX3mRqwennjlY32uKBSaCwnjc
+	 FomXaJzBIp10g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: alloc: add ARCH_KMALLOC_MINALIGN to bindgen
- blocklist
-To: Danilo Krummrich <dakr@kernel.org>, lorenzo.stoakes@oracle.com,
- vbabka@suse.cz, Liam.Howlett@oracle.com, urezki@gmail.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu
-Cc: rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-References: <20250818180923.192042-1-dakr@kernel.org>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- xsFNBFJ4AQ0BEADCz16x4kl/YGBegAsYXJMjFRi3QOr2YMmcNuu1fdsi3XnM+xMRaukWby47
- JcsZYLDKRHTQ/Lalw9L1HI3NRwK+9ayjg31wFdekgsuPbu4x5RGDIfyNpd378Upa8SUmvHik
- apCnzsxPTEE4Z2KUxBIwTvg+snEjgZ03EIQEi5cKmnlaUynNqv3xaGstx5jMCEnR2X54rH8j
- QPvo2l5/79Po58f6DhxV2RrOrOjQIQcPZ6kUqwLi6EQOi92NS9Uy6jbZcrMqPIRqJZ/tTKIR
- OLWsEjNrc3PMcve+NmORiEgLFclN8kHbPl1tLo4M5jN9xmsa0OZv3M0katqW8kC1hzR7mhz+
- Rv4MgnbkPDDO086HjQBlS6Zzo49fQB2JErs5nZ0mwkqlETu6emhxneAMcc67+ZtTeUj54K2y
- Iu8kk6ghaUAfgMqkdIzeSfhO8eURMhvwzSpsqhUs7pIj4u0TPN8OFAvxE/3adoUwMaB+/plk
- sNe9RsHHPV+7LGADZ6OzOWWftk34QLTVTcz02bGyxLNIkhY+vIJpZWX9UrfGdHSiyYThHCIy
- /dLz95b9EG+1tbCIyNynr9TjIOmtLOk7ssB3kL3XQGgmdQ+rJ3zckJUQapLKP2YfBi+8P1iP
- rKkYtbWk0u/FmCbxcBA31KqXQZoR4cd1PJ1PDCe7/DxeoYMVuwARAQABzSdUaG9yc3RlbiBM
- ZWVtaHVpcyA8bGludXhAbGVlbWh1aXMuaW5mbz7CwZQEEwEKAD4CGwMFCwkIBwMFFQoJCAsF
- FgIDAQACHgECF4AWIQSoq8a+lZZX4oPULXVytubvTFg9LQUCX31PIwUJFmtPkwAKCRBytubv
- TFg9LWsyD/4t3g4i2YVp8RoKAcOut0AZ7/uLSqlm8Jcbb+LeeuzjY9T3mQ4ZX8cybc1jRlsL
- JMYL8GD3a53/+bXCDdk2HhQKUwBJ9PUDbfWa2E/pnqeJeX6naLn1LtMJ78G9gPeG81dX5Yq+
- g/2bLXyWefpejlaefaM0GviCt00kG4R/mJJpHPKIPxPbOPY2REzWPoHXJpi7vTOA2R8HrFg/
- QJbnA25W55DzoxlRb/nGZYG4iQ+2Eplkweq3s3tN88MxzNpsxZp475RmzgcmQpUtKND7Pw+8
- zTDPmEzkHcUChMEmrhgWc2OCuAu3/ezsw7RnWV0k9Pl5AGROaDqvARUtopQ3yEDAdV6eil2z
- TvbrokZQca2808v2rYO3TtvtRMtmW/M/yyR233G/JSNos4lODkCwd16GKjERYj+sJsW4/hoZ
- RQiJQBxjnYr+p26JEvghLE1BMnTK24i88Oo8v+AngR6JBxwH7wFuEIIuLCB9Aagb+TKsf+0c
- HbQaHZj+wSY5FwgKi6psJxvMxpRpLqPsgl+awFPHARktdPtMzSa+kWMhXC4rJahBC5eEjNmP
- i23DaFWm8BE9LNjdG8Yl5hl7Zx0mwtnQas7+z6XymGuhNXCOevXVEqm1E42fptYMNiANmrpA
- OKRF+BHOreakveezlpOz8OtUhsew9b/BsAHXBCEEOuuUg87BTQRSeAENARAAzu/3satWzly6
- +Lqi5dTFS9+hKvFMtdRb/vW4o9CQsMqL2BJGoE4uXvy3cancvcyodzTXCUxbesNP779JqeHy
- s7WkF2mtLVX2lnyXSUBm/ONwasuK7KLz8qusseUssvjJPDdw8mRLAWvjcsYsZ0qgIU6kBbvY
- ckUWkbJj/0kuQCmmulRMcaQRrRYrk7ZdUOjaYmjKR+UJHljxLgeregyiXulRJxCphP5migoy
- ioa1eset8iF9fhb+YWY16X1I3TnucVCiXixzxwn3uwiVGg28n+vdfZ5lackCOj6iK4+lfzld
- z4NfIXK+8/R1wD9yOj1rr3OsjDqOaugoMxgEFOiwhQDiJlRKVaDbfmC1G5N1YfQIn90znEYc
- M7+Sp8Rc5RUgN5yfuwyicifIJQCtiWgjF8ttcIEuKg0TmGb6HQHAtGaBXKyXGQulD1CmBHIW
- zg7bGge5R66hdbq1BiMX5Qdk/o3Sr2OLCrxWhqMdreJFLzboEc0S13BCxVglnPqdv5sd7veb
- 0az5LGS6zyVTdTbuPUu4C1ZbstPbuCBwSwe3ERpvpmdIzHtIK4G9iGIR3Seo0oWOzQvkFn8m
- 2k6H2/Delz9IcHEefSe5u0GjIA18bZEt7R2k8CMZ84vpyWOchgwXK2DNXAOzq4zwV8W4TiYi
- FiIVXfSj185vCpuE7j0ugp0AEQEAAcLBfAQYAQoAJgIbDBYhBKirxr6Vllfig9QtdXK25u9M
- WD0tBQJffU8wBQkWa0+jAAoJEHK25u9MWD0tv+0P/A47x8r+hekpuF2KvPpGi3M6rFpdPfeO
- RpIGkjQWk5M+oF0YH3vtb0+92J7LKfJwv7GIy2PZO2svVnIeCOvXzEM/7G1n5zmNMYGZkSyf
- x9dnNCjNl10CmuTYud7zsd3cXDku0T+Ow5Dhnk6l4bbJSYzFEbz3B8zMZGrs9EhqNzTLTZ8S
- Mznmtkxcbb3f/o5SW9NhH60mQ23bB3bBbX1wUQAmMjaDQ/Nt5oHWHN0/6wLyF4lStBGCKN9a
- TLp6E3100BuTCUCrQf9F3kB7BC92VHvobqYmvLTCTcbxFS4JNuT+ZyV+xR5JiV+2g2HwhxWW
- uC88BtriqL4atyvtuybQT+56IiiU2gszQ+oxR/1Aq+VZHdUeC6lijFiQblqV6EjenJu+pR9A
- 7EElGPPmYdO1WQbBrmuOrFuO6wQrbo0TbUiaxYWyoM9cA7v7eFyaxgwXBSWKbo/bcAAViqLW
- ysaCIZqWxrlhHWWmJMvowVMkB92uPVkxs5IMhSxHS4c2PfZ6D5kvrs3URvIc6zyOrgIaHNzR
- 8AF4PXWPAuZu1oaG/XKwzMqN/Y/AoxWrCFZNHE27E1RrMhDgmyzIzWQTffJsVPDMQqDfLBhV
- ic3b8Yec+Kn+ExIF5IuLfHkUgIUs83kDGGbV+wM8NtlGmCXmatyavUwNCXMsuI24HPl7gV2h n7RI
-In-Reply-To: <20250818180923.192042-1-dakr@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1755586726;2f49bf7c;
-X-HE-SMSGID: 1uoGIo-00Fy46-2t
+Date: Tue, 19 Aug 2025 10:26:19 +0200
+Message-Id: <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org>
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Asahi Lina"
+ <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Oliver Mangold" <oliver.mangold@pm.me>
+X-Mailer: aerc 0.20.1
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+ <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <87o6scdchf.fsf@t14s.mail-host-address-is-not-set> <aKMkvHAfDozzDjkB@mango> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org> <aKQT92ViZSL841rT@mango>
+In-Reply-To: <aKQT92ViZSL841rT@mango>
 
-On 18.08.25 20:08, Danilo Krummrich wrote:
-> For some architectures, such as X86_64, ARCH_KMALLOC_MINALIGN is not
-> resolvable for bindgen. E.g. due to being defined as
-> __alignof__(unsigned long long).
-> 
-> Hence, we have to create a rust helper, i.e. let the C compiler evaluate
-> the expression and store it in a const.
-> 
-> However, if for other architectures, such as arm64,
-> ARCH_KMALLOC_MINALIGN does evaluate to something that can be directly
-> processed by bindgen, we end up with multiple definitions of
-> ARCH_KMALLOC_MINALIGN in the generated bindings.
-> [...]
+On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
+> On 250819 0027, Benno Lossin wrote:
+>> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
+>> > On 250818 1446, Andreas Hindborg wrote:
+>> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
+>> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
+>> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
+>> >> > +        // SAFETY: The type invariants guarantee that the object i=
+s valid, and that we can safely
+>> >> > +        // return a mutable reference to it.
+>> >> > +        unsafe { self.ptr.as_mut() }
+>> >> > +    }
+>> >> > +}
+>> >>
+>> >> I think someone mentioned this before, but handing out mutable
+>> >> references can be a problem if `T: !Unpin`. For instance, we don't wa=
+nt
+>> >> to hand out `&mut Page` in case of `Owned<Page>`.
+>> >>
+>> >
+>> > That was the reason, why `OwnableMut` was introduced in the first plac=
+e.
+>> > It's clear, I guess, that as-is it cannot be implemented on many class=
+es.
+>>=20
+>> Yeah the safety requirements ensure that you can't implement it on
+>> `!Unpin` types.
+>>=20
+>> But I'm not sure it's useful then? As you said there aren't many types
+>> that will implement the type then, so how about we change the meaning
+>> and make it give out a pinned mutable reference instead?
+>
+> Making `deref_mut()` give out a pinned type won't work. The return types =
+of
+> deref() are required to match.
 
-Thx, applied it on today's -next and everything went smoothly:
+I meant the changes that Andreas suggested.
 
-Tested-by: Thorsten Leemhuis <linux@leemhuis.info>
+>> > Good question, I have been thinking about it, too. But it might
+>> > be, that it isn't needed at all. As I understand, usually Rust wrapper=
+s
+>> > are around non-movable C structs. Do we actually have a useful applica=
+tion
+>> > for OwnableMut?
+>>=20
+>> Also, do we even need two different traits? Which types would only
+>> implement `Ownable` but not `OwnableMut`?
+>
+> I'm not 100% sure, but on a quick glance it looks indeed be safe to
+> substitute `OwnableMut` by `Unpin`.
 
-Ciao, Thorsten
+We just have to change the safety requirements of `OwnableMut`.
 
+> If we add `get_pin_mut(&mut self) -> Pin<&mut T>` as Andreas suggested,
+> it would be possible to obtain an `&mut T` anyway, then, if T is `Unpin`.
 
+Well the `DerefMut` impl still is convenient in the `Unpin` case.
+
+---
+Cheers,
+Benno
