@@ -1,124 +1,133 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C879125D202
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 08:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFD121ABBB;
+	Tue, 19 Aug 2025 08:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755593149; cv=none; b=kHNERspTJn2dOc09ibEMA/a5JiorZKpCIfwhlrtqENTpWa80dOJ9M4RevLy2GpVheqs46wja0l6xqu1zMtreJ7vqkzVaz+XXvDjUiSoT8RnapEIO5ywePjd2eLdTSKULoQL9txw9f1qTUcJUrwoXZPoz//slr6sc7r6XO+uYkcI=
+	t=1755593597; cv=none; b=D2egx55mfBTITAhcN1FncXWVIVXqB7eYWBJjaRjstLrQ758/XkElCEno7EDIEp8xRhaOpJ77HqMbxhZmmigqzFUQrqULxlmq7L486KSERMugW28Ia51LBZSyA7qPI1qVVYqw8QJqSYx5DR9S5ZaHkXUhDfe02AYbmv6Cvbt2Ws4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755593149; c=relaxed/simple;
-	bh=QCQ4VLkSYWBqqnAcjBhTIVS85lKDu260mnaEea+LbfQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KEfN4RT/mfpnHMlKh56Cla7RYyXnMyNJpmA5cpYobTSMnEGa5AAuOVlv6v/ZjOepiKo8KYEBqFMx0jSLrwouMYg5OemcERa9raN5mkUhRmrky8r1/ITzXIbyE2LNOABRZFPXgnyxoDg34DR0KCgMECpLh0aW+bOqQKikTokWICU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=p0XoHSCj; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1755593597; c=relaxed/simple;
+	bh=96qLS02pIAXRjyx2OB/KMcSVqS25OHmsXS08TCX2//0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XBvKYX4v+NRKz4KYQLffLZsQN5/SezunbocLtTyv+VOweSNejRuWF35C4f9RVw+0rRzHzFYzGAG7ZtU12wVp0IpHijnhCMAHN8HULoIpbPVCQOYl3BHVlfvKCPkD8ksyd+ny52yk7IPp97p/mMkySZA6v2eg5SmqkYv/7V91cIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeLCtlwM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="p0XoHSCj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1755593144; x=1755852344;
-	bh=Lqk/Lq78mdoheCSk5SMpLjr23GDoE0vleFgdSoHUaXk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=p0XoHSCjEUv3NE3LVuk+SNrvT7r70oXMqqcfe9Z5XAzNvPel2i6G7qxyldQKdZSVi
-	 YibwPoeHhcji9n5toGFwEbhZIYNAV53n1Hcz7H+gA2ktGXFi2nbNlfV+qXUbiKQnqH
-	 YuTvxgi3Vl4oLXsSorChLPZfHFE3o7BczLgFdOxA0o7qMdrkaGfrGY4xZnOE96sI6u
-	 XoU3jgxbb5fM6MsEeAdCvz/JDNkVhYZE/MQOEbqAYsS7NF6mp2ofmT/j93DaT6P//W
-	 xkgGl/Yr0NwZOKSS7Jp1GuNDl6/8i+eKxbeeQvIeU39BLL3WsF41n1jQ6EBY8PodyO
-	 dJFLe2S3xfNQQ==
-Date: Tue, 19 Aug 2025 08:45:38 +0000
-To: Benno Lossin <lossin@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeLCtlwM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEF6C4CEF1;
+	Tue, 19 Aug 2025 08:53:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755593596;
+	bh=96qLS02pIAXRjyx2OB/KMcSVqS25OHmsXS08TCX2//0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=UeLCtlwMcBwbyEOix+qMDU6FnGYOeP56No5L9qGxEJWugXJMn2npm6qwfv9XjzGrc
+	 MZgktJTOSK4JyXCuXuwN6bHNgV5K7a5urzlGvNTJq21YOwr9T72NUknOQOgiv8+zFF
+	 kcR9LsRdDUjgaJKDYGXsSCZt6SN/WUa3+sGF4yivBoy6r4Fwwmzop0ggBeOtetrx0N
+	 SrbM5Vr47Oye+RL1TLvg4UcDevdZCA6I3AjnFG9GUYRj/uwoc+R+TdP0sPdyFq5JGm
+	 5kznRinmoLrLE8CfNht2teFwepXIGfOE7DczknkJ9Rb98AXt+VmsGqVWGAe2EIr/dO
+	 q9TOWnTi7MZZA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Benno Lossin <lossin@kernel.org>, Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-Message-ID: <aKQ5rHqxOBEI2n4w@mango>
 In-Reply-To: <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org>
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <87o6scdchf.fsf@t14s.mail-host-address-is-not-set> <aKMkvHAfDozzDjkB@mango> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org> <aKQT92ViZSL841rT@mango> <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 8ad0d1d446a53bbd25e128fc86bc75f98cc760fb
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+ <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid>
+ <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
+ <87o6scdchf.fsf@t14s.mail-host-address-is-not-set>
+ <aKMkvHAfDozzDjkB@mango> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org>
+ <aKQT92ViZSL841rT@mango>
+ <iQ0qeYmzFSlOQkNLti-a4Z6ItwaZgh3r8Pqdu5rSwYz4wUxAsKZJlGCrsVQ481Qkzc9EapD3bzKKtrsXVkwt2A==@protonmail.internalid>
+ <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org>
+Date: Tue, 19 Aug 2025 10:53:05 +0200
+Message-ID: <87ldnfd766.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On 250819 1026, Benno Lossin wrote:
+"Benno Lossin" <lossin@kernel.org> writes:
+
 > On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
-> > On 250819 0027, Benno Lossin wrote:
-> >> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
-> >> > On 250818 1446, Andreas Hindborg wrote:
-> >> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
-> >> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
-> >> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
-> >> >> > +        // SAFETY: The type invariants guarantee that the object=
- is valid, and that we can safely
-> >> >> > +        // return a mutable reference to it.
-> >> >> > +        unsafe { self.ptr.as_mut() }
-> >> >> > +    }
-> >> >> > +}
-> >> >>
-> >> >> I think someone mentioned this before, but handing out mutable
-> >> >> references can be a problem if `T: !Unpin`. For instance, we don't =
-want
-> >> >> to hand out `&mut Page` in case of `Owned<Page>`.
-> >> >>
-> >> >
-> >> > That was the reason, why `OwnableMut` was introduced in the first pl=
-ace.
-> >> > It's clear, I guess, that as-is it cannot be implemented on many cla=
-sses.
-> >>
-> >> Yeah the safety requirements ensure that you can't implement it on
-> >> `!Unpin` types.
-> >>
-> >> But I'm not sure it's useful then? As you said there aren't many types
-> >> that will implement the type then, so how about we change the meaning
-> >> and make it give out a pinned mutable reference instead?
-> >
-> > Making `deref_mut()` give out a pinned type won't work. The return type=
-s of
-> > deref() are required to match.
->=20
+>> On 250819 0027, Benno Lossin wrote:
+>>> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
+>>> > On 250818 1446, Andreas Hindborg wrote:
+>>> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
+>>> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
+>>> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
+>>> >> > +        // SAFETY: The type invariants guarantee that the object is valid, and that we can safely
+>>> >> > +        // return a mutable reference to it.
+>>> >> > +        unsafe { self.ptr.as_mut() }
+>>> >> > +    }
+>>> >> > +}
+>>> >>
+>>> >> I think someone mentioned this before, but handing out mutable
+>>> >> references can be a problem if `T: !Unpin`. For instance, we don't want
+>>> >> to hand out `&mut Page` in case of `Owned<Page>`.
+>>> >>
+>>> >
+>>> > That was the reason, why `OwnableMut` was introduced in the first place.
+>>> > It's clear, I guess, that as-is it cannot be implemented on many classes.
+>>>
+>>> Yeah the safety requirements ensure that you can't implement it on
+>>> `!Unpin` types.
+>>>
+>>> But I'm not sure it's useful then? As you said there aren't many types
+>>> that will implement the type then, so how about we change the meaning
+>>> and make it give out a pinned mutable reference instead?
+>>
+>> Making `deref_mut()` give out a pinned type won't work. The return types of
+>> deref() are required to match.
+>
 > I meant the changes that Andreas suggested.
->=20
-> >> > Good question, I have been thinking about it, too. But it might
-> >> > be, that it isn't needed at all. As I understand, usually Rust wrapp=
-ers
-> >> > are around non-movable C structs. Do we actually have a useful appli=
-cation
-> >> > for OwnableMut?
-> >>
-> >> Also, do we even need two different traits? Which types would only
-> >> implement `Ownable` but not `OwnableMut`?
-> >
-> > I'm not 100% sure, but on a quick glance it looks indeed be safe to
-> > substitute `OwnableMut` by `Unpin`.
->=20
+
+Not sure what you are asking, but I need to assert exclusive access to
+an `Page`. I could either get this by taking a `&mut Owned<Page>` or a
+`Pin<&mut Page>`. I think the latter is more agnostic.
+
+>
+>>> > Good question, I have been thinking about it, too. But it might
+>>> > be, that it isn't needed at all. As I understand, usually Rust wrappers
+>>> > are around non-movable C structs. Do we actually have a useful application
+>>> > for OwnableMut?
+>>>
+>>> Also, do we even need two different traits? Which types would only
+>>> implement `Ownable` but not `OwnableMut`?
+>>
+>> I'm not 100% sure, but on a quick glance it looks indeed be safe to
+>> substitute `OwnableMut` by `Unpin`.
+>
 > We just have to change the safety requirements of `OwnableMut`.
 
-You mean of `Ownable`, when `OwnableMut` is removed? Yes. A good question
-in that context is, what it actually means to have an `&mut Opaque<T>`
-where `T` is `Unpin`. If that implies being allowed to obtain an `&mut T`,
-it would we easy, I guess.
+`OwnableMut` already requires `Unpin`, it just does not say so directly:
 
-> > If we add `get_pin_mut(&mut self) -> Pin<&mut T>` as Andreas suggested,
-> > it would be possible to obtain an `&mut T` anyway, then, if T is `Unpin=
-`.
->=20
+
+/// - It is safe to call [`core::mem::swap`] on the [`Ownable`]. This excludes pinned types
+///   (i.e. most kernel types).
+
+We could remove this and then just add a trait bound on `Unpin`.
+
+>
+>> If we add `get_pin_mut(&mut self) -> Pin<&mut T>` as Andreas suggested,
+>> it would be possible to obtain an `&mut T` anyway, then, if T is `Unpin`.
+>
 > Well the `DerefMut` impl still is convenient in the `Unpin` case.
 
-I agree. What I meant is, it could not introduce an extra safety
-requirement having it, if that indirect method can be used anyway.
+`OwnableMut` is probably not that useful, since all the types we want to
+implement `Ownable` for is `!Unpin`. We could remove it, but I felt it
+was neat to add the `DerefMut` impl for `Unpin` types.
 
-But what I am wondering is, if we actually want to start using `Pin`
-at all. Isn't `Opaque` currently used about everywhere pinning is needed?
 
-Best,
+Best regards,
+Andreas Hindborg
 
-Oliver
+
 
