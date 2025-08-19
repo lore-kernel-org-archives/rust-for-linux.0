@@ -1,501 +1,225 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C91D274B30
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 23:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CB72550CD
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 23:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755645171; cv=none; b=rtbImwppKPDmyiv/s+ZTAd4FdVEcdpFUNqu4miQIzll/vtRaawKkgaN+EebIiyR4VQ2Co++7R72nqz8E0YE6PTkEqIMtv7NpVB0U2dhK5CZ57CeQHAcKpZN5ft+yDMy99xv3eM6lFq7UCQvllwD+T/Q9tBh5qOSdUHJy9tLC/Ow=
+	t=1755645297; cv=none; b=XMN89rUC/CcctJnxt2xGpUGHz/Yhcac70rEFZgcyOBYP0AiVYAvQTU0gmPjhX3x4/XWKWt4cQmiMvMztdgkYMAHvBOy8zShcLbXBIGuiyTJlriapYF9f+nygoWAMRdw2Wq8YE+1RhqRnMyZggGSmDKCEt33l3/vdbj5BZCQNofQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755645171; c=relaxed/simple;
-	bh=7eKYiaufNGwLTTAPneefnNQO9hw86a6+BTDqQ54HWO4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oQCx1/TGWsgYAUqdCnaO4Zoo/uoLtUC4WajxBjzsOzjFm1jS4Zzqc/wzsY9HTTo7fn6PKl9z0ZkUCOQibXq1OFzDdhGQO5fcQPrVUm66wXBJPsllQXMqLXn3N3BG8gdU8YUPmong7+U35jiDEEUoQFf9NlEqLEHHkO7qZWuZxU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jL8Xmjqd; arc=none smtp.client-ip=209.85.215.201
+	s=arc-20240116; t=1755645297; c=relaxed/simple;
+	bh=JtcDbRrByYBzzFUFrg65H4Zj55y3Ey33CzZgyUfMhhg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f6a9nkbgOSxHNGx+ba29wkCCsb6vLNsNHePgAw6/QNjKUe7j+KjD12zC75p6x6OeBi1WHCGXEcLAYtlzZExPErAketMSLW0ygwUa6LNgFEvHFHDrXI7frkD/00RwGi3YOD+kaNWn+TDzOCv3L3+a/1kcHEMUzptFvDMd4IRBQmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KwB21sgr; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jL8Xmjqd"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b471757d82fso4641359a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 16:12:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KwB21sgr"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-61a207a248cso6774a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 16:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755645169; x=1756249969; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vIkRKJVVbXpIA0Q8Uz/N+8okJDygRUzTlMPl28XgWG0=;
-        b=jL8XmjqdsSAxSHTNgPd6bWG2WcV6w837Aq4EyfkYf2EtGrCWFrFHrvHh5AoY1D0Wbk
-         FkTeIDOe8F85ZY35sWPkm61n0iwQ2OfDO+RkUgmxA+fIy/2rzLD01xKwBiHtsczxU2eu
-         CZg7MazwEmpRtLJ+KurWCVw8BDR+4JmPQZOTkvZVO4vfuXbksZAjhfzh5CrsZojvJ7G6
-         yuVqk07eYGXDcM0aj5PSNMysuFilG/K4xyso3Kk54qEofzl7Ywca2X4XwjDVoU/SZDsb
-         pMBTzNsah9dpUF210aL3GsZNc5FuVJxZ4lxGclwfNZcWtmqn2q+yf/cJPPs6e4CS9tsB
-         BC6w==
+        d=google.com; s=20230601; t=1755645293; x=1756250093; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O1KzXEFU36I9rZwWKO00Kwp1smdA7LETmuPE20PF8Lo=;
+        b=KwB21sgr/t96MmFe+AsYpaS8q4EqvJTe1DGFAjHSrhOuPQNXeK4dnuQcob55aVNREq
+         Nl8JEEKc+ha4qW5NQm4y2OfWIoEQaVC4aQ4CkGUh5dYKhkiDptEDgSqqafMoTvzOvbkP
+         Ne0nCIeQzXKprZSB2nvu7d9Un5OFtWsbEbJ07nAos5DabWkxmcdUI1t8+5RZCRnMpQX3
+         eRMRnYLv/VBUhUzPzxG2UX4tWR/hdayCChK9FK48bOxl+WodK4C/BCBzmSuP/XCngg0s
+         d0rcAuyiEMSEuTr9NzFUKQ4ED6PF/u8Wn7f8w15guQR1y0Q21RlJ+WUCfJQk+diVdzqU
+         NbQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755645169; x=1756249969;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vIkRKJVVbXpIA0Q8Uz/N+8okJDygRUzTlMPl28XgWG0=;
-        b=FU5bA1X40/PAIwADcnjWvHb8hC5pm4u8QTRGc6Lzv0VCtAuKVW/rTDyObMg6sPv0uo
-         3hZXHqBMm2LDYWZHGx0BKT1lZ5diSzrSaW+VI8JltMD1gnxlw7hT4gRaze0XwPWAON3I
-         nKGCFv9HOlDXbpJlxnapAR2HuyMa4HID9lBgGIzd0X00ZLrUqMHduuN5CYoCV8iSiIA6
-         X3gDPNHX6uGguU6EX1XubgofCltesu67Ji75+nybQcwjWsHXQmHZGYFrUsfF+CBUv/4J
-         JR0FYa+Vz+yOmR0J7FRRxHqsfNvWmp3Jssgdn/tvZGV2F1VVChcMmMUWw5MtGsk926K0
-         Ifcg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2C71WgmlZoUCtoivnrGoq86SmVLDnj8O8NluCe/nf3VDRN1lsL0zGlw+mM+lNsxI9e8VaoT+3RDhkcLKDPQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2kW4dVpHJhe/aKljPBTE/BGE4bJ9ehx/iv1JW8BpavkklIyez
-	SZlm3iU118HFKSc6g+xfkpMUYisirThDapzdwHBusD2v8k/21KLFqwdFpj4MC/xU+avy79cwtr1
-	yOo2WlaFmbw==
-X-Google-Smtp-Source: AGHT+IH37StamLcK4PUuMQX1SIjU099+9OwF+NOr0jmIc/CH8Ekd7AK6CCkeKjzT4mOsz+mtgz8B98L2ho60
-X-Received: from plbjb20.prod.google.com ([2002:a17:903:2594:b0:23f:8c3f:e0fc])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:124f:b0:242:9aaa:1351
- with SMTP id d9443c01a7336-245ef141014mr8892105ad.13.1755645168739; Tue, 19
- Aug 2025 16:12:48 -0700 (PDT)
-Date: Tue, 19 Aug 2025 23:12:36 +0000
-In-Reply-To: <20250819-qcom-socinfo-v1-0-e8d32cc81270@google.com>
+        d=1e100.net; s=20230601; t=1755645293; x=1756250093;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O1KzXEFU36I9rZwWKO00Kwp1smdA7LETmuPE20PF8Lo=;
+        b=bfuuPpdHbGuB36zLgtfBMRaT3ofsYnvnpN424EDKk4I1itKCmGh2p8hLqS4FgXi1yX
+         A890/8wgfwqqOvj1KBnhldJedAE3a3kr59bpXTtvipYS3mdS52uZHH7AN3dl21WKYGRP
+         XzmEJ6jX3Qb8GSbMDFgls4dzTQOh4JEiFOAt0IF8Tf6y3xoKIpbFWnZfxuGvxlU0gp7e
+         Z6dBS6II/igMiiuzmnyWePZ8kjUVPNwe66WkxwTLJs9WhfBptbCEBYvuEYYLDt01K74l
+         I3CtsPnyvHRa8t3Kqqx8n2TyldeWb73nCeu7m2hH/EP9myUxaeCde8uGjs6+0G3RLBF9
+         N6dA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlIe9FPJUs9ebQ9KteeVarWstFEwgbh9rqEPqxPVvyUildFJ+matYor6/O3gXoGnLDkhXkq5Diw28DGZkIIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxIeqDbZNxZ8CyFUZtuNmc6LS3H8Irlxbd14OVnfNMPwU+vz3Q
+	ySu/kUAtMZ8swfYStQYM+CVePCp0K5bWvrQ6YCs+AFtIIvSrswpZG3v278doW0+pYcC2K6qHPvO
+	nm0tkFkIpcqBnPW7y+ok8CTdG5uYCWLjD8YQEj4rM
+X-Gm-Gg: ASbGncs15NqVonJROnMqrh7jEZIHQar7E31TxWMbLyyJFuYAa0dMpe9WPWXyigvdMPt
+	Ge9wuOUJOr77LRu3wCidZRiqYL/3jnjGD0tUrXI9PzfpsaFTsOy8OTfJGKsUMyzMrjRMCMEiI3g
+	T3QmgWCdGjLX07wmYqnNBO8a1Ld8d8KUrtojUG313B7KumFsj7oILN8S0cv+s4vJLE2sZbmLBZC
+	NUmodv8WV3JpNldwi0RT1VqH2nVU2qqU2BQDenP+LM40A8zlgneWM4=
+X-Google-Smtp-Source: AGHT+IE9+sILVkUZSvOYtaQzfkl/5qf3a+gVtvWGoaWDpub9OOBogM4coMZW3hcKQwCZPhnV66ZcDGaVLU8L+UcyDrA=
+X-Received: by 2002:a50:d5cb:0:b0:61a:1922:32ac with SMTP id
+ 4fb4d7f45d1cf-61a98064733mr29569a12.0.1755645292365; Tue, 19 Aug 2025
+ 16:14:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250819-qcom-socinfo-v1-0-e8d32cc81270@google.com>
-X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755645158; l=15022;
- i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=7eKYiaufNGwLTTAPneefnNQO9hw86a6+BTDqQ54HWO4=; b=NiDQ5GqxoZBbHYIMb/oLre/hEihqmcraM0PQ3RDaFPDPPTmbHiIpBrroSwh8XhC+eB2i0GGqR
- zfh/Zbvnp1CCbgUxvJi2qkix0T1sP3dgYMe4jf8nNXzg8M9rv78qHvF
-X-Mailer: b4 0.14.2
-Message-ID: <20250819-qcom-socinfo-v1-5-e8d32cc81270@google.com>
-Subject: [PATCH WIP 5/5] soc: qcom: socinfo: `Scoped`-based example
+MIME-Version: 1.0
+References: <20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com>
+In-Reply-To: <20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com>
 From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 19 Aug 2025 16:14:40 -0700
+X-Gm-Features: Ac12FXwVWMdTN3oKDSjvFJoOvP3iXIsVXz9GbuFWc5q48MsfxuOMWB0kWK8AyIo
+Message-ID: <CAGSQo03RGzmP2diL-vvLDZHduu=d4oFy8X46Fc8vg0SzE-XfDw@mail.gmail.com>
+Subject: Re: [PATCH v10 0/7] rust: DebugFS Bindings
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>, 
-	Dirk Beheme <dirk.behme@de.bosch.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Benno Lossin <lossin@kernel.org>, Dirk Beheme <dirk.behme@de.bosch.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Re-implements qcom-socinfo driver in Rust, using `Scoped`-based DebugFS
-bindings.
+On Tue, Aug 19, 2025 at 3:53=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
+ wrote:
+>
+> This series provides safe DebugFS bindings for Rust, with sample
+> modules using them.
+>
+> Shortly after this is sent, you will see a real driver WIP using this
+> implenting the qcom socinfo driver.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- drivers/soc/qcom/Makefile                          |   1 +
- drivers/soc/qcom/smem.c                            |   7 +-
- .../soc/qcom/socinfo_rust/socinfo_rust_scoped.rs   | 367 +++++++++++++++++++++
- 3 files changed, 374 insertions(+), 1 deletion(-)
+Now mailed. [1]
 
-diff --git a/drivers/soc/qcom/Makefile b/drivers/soc/qcom/Makefile
-index 6453a4f4f7da89d4e1677ad8f75257e94cec90f4..ab76fc1d6ae10bef74adbc1489518379b7d5c00b 100644
---- a/drivers/soc/qcom/Makefile
-+++ b/drivers/soc/qcom/Makefile
-@@ -41,3 +41,4 @@ obj-$(CONFIG_QCOM_INLINE_CRYPTO_ENGINE)	+= qcom_ice.o
- obj-$(CONFIG_QCOM_PBS) +=	qcom-pbs.o
- obj-$(CONFIG_QCOM_UBWC_CONFIG) += ubwc_config.o
- obj-$(CONFIG_QCOM_SOCINFO_RUST) += socinfo_rust/socinfo_rust_file.o
-+obj-$(CONFIG_QCOM_SOCINFO_RUST) += socinfo_rust/socinfo_rust_scoped.o
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index 5279db46a1e0dd7b2994b79d131367175e35290f..6810f0cdd37d7f393977ffeae5836f47132988c7 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -1230,13 +1230,18 @@ static int qcom_smem_probe(struct platform_device *pdev)
- 
- 	__smem = smem;
- 
--	// TODO don't double load, this is just to diff the debugfs
-+	// TODO don't triple load, this is just to diff the debugfs
- 	smem->socinfo = platform_device_register_data(&pdev->dev, "qcom-socinfo",
- 						      PLATFORM_DEVID_NONE, NULL, 0);
- 	// TODO MODULE_ALIAS
- 	smem->socinfo = platform_device_register_data(&pdev->dev, "qcom_socinfo_driver_file_rust",
- 						      PLATFORM_DEVID_NONE, NULL,
- 						      0);
-+	// TODO MODULE_ALIAS
-+	smem->socinfo = platform_device_register_data(&pdev->dev, "qcom_socinfo_driver_scoped_rust",
-+						      PLATFORM_DEVID_NONE, NULL,
-+						      0);
-+
- 	if (IS_ERR(smem->socinfo))
- 		dev_dbg(&pdev->dev, "failed to register socinfo device\n");
- 
-diff --git a/drivers/soc/qcom/socinfo_rust/socinfo_rust_scoped.rs b/drivers/soc/qcom/socinfo_rust/socinfo_rust_scoped.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..845e91560a7879d4cf13c6b62fd9ad8a15c79826
---- /dev/null
-+++ b/drivers/soc/qcom/socinfo_rust/socinfo_rust_scoped.rs
-@@ -0,0 +1,367 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2025 Google LLC.
-+
-+//! Re-implementation of Qualcomm's Socinfo driver in Rust
-+use core::convert::From;
-+use core::fmt;
-+use core::fmt::{Debug, Formatter};
-+use kernel::c_str;
-+use kernel::debugfs::{Render, Scope, ScopedDir};
-+use kernel::device::Core;
-+use kernel::module_platform_driver;
-+use kernel::platform::{self, Device};
-+use kernel::prelude::*;
-+use kernel::soc;
-+use kernel::str::CString;
-+
-+mod bindings;
-+mod data;
-+
-+use bindings::{qcom_smem_get, ImageVersion, ImageVersions, PmicArray, PmicEntry, RawSocInfo};
-+use data::{IMAGE_NAMES, PMIC_MODELS, SOC_IDS};
-+
-+module_platform_driver! {
-+    type: QcomSocInfo,
-+    name: "qcom_socinfo_driver_scoped_rust",
-+    authors: ["Matthew Maurer"],
-+    description: "Rust re-implementation of Qualcomm's Socinfo driver",
-+    license: "GPL",
-+}
-+
-+#[pin_data]
-+struct QcomSocInfo {
-+    #[pin]
-+    registration: soc::DeviceRegistration,
-+    #[pin]
-+    params: Scope<Params>,
-+}
-+
-+#[derive(Default)]
-+#[repr(transparent)]
-+struct PmicModel(u32);
-+
-+impl From<u32> for PmicModel {
-+    fn from(x: u32) -> Self {
-+        Self(x)
-+    }
-+}
-+
-+impl Debug for PmicModel {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-+        let model = SocInfo::version_split(self.0).1;
-+        if let Some(Some(model)) = PMIC_MODELS.get(model as usize) {
-+            write!(f, "{model}")
-+        } else {
-+            write!(f, "unknown ({})", model)
-+        }
-+    }
-+}
-+
-+#[derive(Default)]
-+#[repr(transparent)]
-+struct PmicDieRev(u32);
-+
-+impl From<u32> for PmicDieRev {
-+    fn from(x: u32) -> Self {
-+        Self(x)
-+    }
-+}
-+
-+impl Debug for PmicDieRev {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-+        let (major, minor) = SocInfo::version_split(self.0);
-+        write!(f, "{major}.{minor}")
-+    }
-+}
-+
-+impl Render for PmicArray {
-+    fn render(&self, f: &mut Formatter<'_>) -> fmt::Result {
-+        for pmic_entry in self.0 {
-+            let (die_rev_major, die_rev_minor) =
-+                SocInfo::version_split(u32::from_le(pmic_entry.die_rev));
-+            let model_idx = SocInfo::version_split(pmic_entry.model).1 as usize;
-+            if let Some(Some(model)) = PMIC_MODELS.get(model_idx) {
-+                writeln!(f, "{model} {die_rev_major}.{die_rev_minor}")?
-+            } else {
-+                writeln!(f, "unknown ({})", pmic_entry.model)?
-+            }
-+        }
-+        Ok(())
-+    }
-+}
-+
-+#[derive(Default)]
-+struct Params {
-+    info_fmt: u32,
-+    build_id: [u8; 32],
-+    raw_version: Option<u32>,
-+    hardware_platform: Option<u32>,
-+    platform_version: Option<u32>,
-+    accessory_chip: Option<u32>,
-+    hardware_platform_subtype: Option<u32>,
-+    pmic_model: Option<PmicModel>,
-+    pmic_die_rev: Option<PmicDieRev>,
-+    foundry_id: Option<u32>,
-+    pmic_model_array: Option<PmicArray>,
-+    chip_family: Option<u32>,       // x32
-+    raw_device_family: Option<u32>, // x32
-+    raw_device_number: Option<u32>, // x32
-+    nproduct_id: Option<u32>,
-+    chip_id: Option<[u8; 32]>,
-+    num_clusters: Option<u32>,
-+    ncluster_array_offset: Option<u32>,
-+    num_subset_parts: Option<u32>,
-+    nsubset_parts_array_offset: Option<u32>,
-+    nmodem_supported: Option<u32>,
-+    feature_code: Option<u32>,
-+    pcode: Option<u32>,
-+    oem_variant: Option<u32>,
-+    boot_core: Option<u32>,
-+    boot_cluster: Option<u32>,
-+    num_func_clusters: Option<u32>,
-+    versions: Option<ImageVersions>,
-+}
-+
-+#[derive(Copy, Clone)]
-+struct SocInfo<'a> {
-+    soc_info: RawSocInfo,
-+    soc_info_mem: &'a [u8],
-+    version_mem: &'a [u8],
-+}
-+
-+impl<'a> SocInfo<'a> {
-+    fn from_mem(soc_info_mem: &'a [u8], version_mem: &'a [u8]) -> Self {
-+        Self {
-+            soc_info: RawSocInfo::from_partial_bytes(soc_info_mem),
-+            soc_info_mem,
-+            version_mem,
-+        }
-+    }
-+    fn id(&self) -> u32 {
-+        u32::from_le(self.soc_info.id)
-+    }
-+    fn version_split(ver: u32) -> (u16, u16) {
-+        let major = (ver >> 16) as u16;
-+        let minor = (ver & 0xFFFF) as u16;
-+        (major, minor)
-+    }
-+    fn version_fuse(major: u16, minor: u16) -> u32 {
-+        (u32::from(major) << 16) | u32::from(minor)
-+    }
-+    fn version(&self) -> (u16, u16) {
-+        Self::version_split(self.soc_info.ver)
-+    }
-+    fn serial(&self) -> u32 {
-+        u32::from_le(self.soc_info.id)
-+    }
-+    fn machine(&self) -> Result<Option<CString>> {
-+        for soc in SOC_IDS {
-+            if soc.id == self.id() {
-+                return Ok(Some(soc.name.to_cstring()?));
-+            }
-+        }
-+        Ok(None)
-+    }
-+    fn device_attribute(&self) -> Result<soc::DeviceAttribute> {
-+        Ok(soc::DeviceAttribute {
-+            family: Some(c_str!("Snapdragon").to_cstring()?),
-+            machine: self.machine()?,
-+            revision: Some(CString::try_from_fmt(fmt!(
-+                "{}.{}",
-+                self.version().0,
-+                self.version().1
-+            ))?),
-+            serial_number: Some(CString::try_from_fmt(fmt!("{}", self.serial()))?),
-+            soc_id: Some(CString::try_from_fmt(fmt!("{}", self.id()))?),
-+        })
-+    }
-+}
-+
-+macro_rules! u32_le_versioned {
-+    { $params:expr, $self:ident,
-+        [ $( { $major:expr, $minor:expr, { $( $dst:ident: $src:ident ),* } } ),*  ] } => {$(
-+        if $params.info_fmt >= SocInfo::version_fuse($major, $minor) {
-+            $( $params.$dst = Some(u32::from_le($self.soc_info.$src).into()) );*
-+        }
-+    )*}
-+}
-+
-+impl SocInfo<'static> {
-+    fn build_params(&self) -> Result<Params> {
-+        let mut params = Params {
-+            build_id: self.soc_info.build_id,
-+            info_fmt: u32::from_le(self.soc_info.fmt),
-+            ..Default::default()
-+        };
-+        u32_le_versioned! { params, self, [
-+            {0, 2, { raw_version: raw_ver }},
-+            {0, 3, { hardware_platform: hw_plat }},
-+            {0, 4, { platform_version: plat_ver }},
-+            {0, 5, { accessory_chip: accessory_chip }},
-+            {0, 6, { hardware_platform_subtype: hw_plat_subtype }},
-+            {0, 7, { pmic_model: pmic_model, pmic_die_rev: pmic_die_rev }},
-+            {0, 9, { foundry_id: foundry_id }},
-+            {0, 12, {
-+                chip_family: chip_family,
-+                raw_device_family: raw_device_family,
-+                raw_device_number: raw_device_num
-+            }},
-+            {0, 13, { nproduct_id: nproduct_id }},
-+            {0, 14, {
-+                num_clusters: num_clusters,
-+                ncluster_array_offset: ncluster_array_offset,
-+                num_subset_parts: num_subset_parts,
-+                nsubset_parts_array_offset: nsubset_parts_array_offset
-+            }},
-+            {0, 15, { nmodem_supported: nmodem_supported }},
-+            {0, 16, { feature_code: feature_code, pcode: pcode }},
-+            {0, 17, { oem_variant: oem_variant }},
-+            {0, 19, {
-+                boot_core: boot_core,
-+                boot_cluster: boot_cluster,
-+                num_func_clusters: num_func_clusters
-+            }}
-+        ]};
-+        if params.info_fmt >= SocInfo::version_fuse(0, 11) {
-+            let offset = u32::from_le(self.soc_info.pmic_array_offset) as usize;
-+            let num_pmics = u32::from_le(self.soc_info.num_pmics) as usize;
-+            let size = num_pmics * core::mem::size_of::<PmicEntry>();
-+            params.pmic_model_array =
-+                PmicArray::from_bytes(&self.soc_info_mem[offset..offset + size]);
-+        }
-+        if params.info_fmt >= SocInfo::version_fuse(0, 13) {
-+            params.chip_id = Some(self.soc_info.chip_id);
-+        }
-+        params.versions = ImageVersions::from_bytes(self.version_mem);
-+        Ok(params)
-+    }
-+}
-+
-+macro_rules! value_attrs {
-+    ($builder:ident, $params:ident, @) => {};
-+    ($builder:ident, $params:ident, @ $s:ident $($rest:tt)*) => {
-+        if let Some(v) = $params.$s.as_ref() {
-+            $builder.read_only_file(c_str!(stringify!($s)), v);
-+        }
-+        value_attrs!($builder, $params, @ $($rest)*)
-+    };
-+    ($builder:ident, $params:ident, @ {$s:ident, $cb:expr} $($rest:tt)*) => {
-+        if let Some(v) = $params.$s.as_ref() {
-+            $builder.read_callback_file(c_str!(stringify!($s)), v, $cb);
-+        }
-+        value_attrs!($builder, $params, @ $($rest)*)
-+    };
-+    ($builder:ident, $params:ident, {$($items:tt),*}) => {
-+        value_attrs!($builder, $params, @ $($items)*)
-+    };
-+}
-+
-+fn no_quirk<const SIZE: usize>(buf: &[u8; SIZE], f: &mut Formatter<'_>) -> fmt::Result {
-+    if buf[0] == 0 {
-+        writeln!(f)
-+    } else {
-+        nul_array(buf, f)
-+    }
-+}
-+
-+fn nul_array<const SIZE: usize>(buf: &[u8; SIZE], f: &mut Formatter<'_>) -> fmt::Result {
-+    if let Some(end) = buf.iter().position(|x| *x == 0) {
-+        if end == 0 {
-+            // Match original driver quirk - empty strings don't have a trailing newline
-+            return Ok(());
-+        }
-+        let Ok(c_str) = CStr::from_bytes_with_nul(&buf[0..=end]) else {
-+            pr_warn!("Creating CStr from bytes with known first NUL failed?");
-+            return Ok(());
-+        };
-+        writeln!(f, "{c_str}")
-+    } else {
-+        writeln!(f, "Missing NUL: {buf:?}")
-+    }
-+}
-+
-+impl ImageVersion {
-+    fn build_debugfs<'a>(&'a self, dir: &ScopedDir<'a, '_>, image_name: &CStr) {
-+        let subdir = dir.dir(image_name);
-+        subdir.read_callback_file(c_str!("name"), &self.name, &nul_array);
-+        subdir.read_callback_file(c_str!("variant"), &self.variant, &nul_array);
-+        subdir.read_callback_file(c_str!("oem"), &self.oem, &nul_array);
-+    }
-+}
-+
-+fn hex(x: &u32, f: &mut Formatter<'_>) -> fmt::Result {
-+    writeln!(f, "{x:#010x}")
-+}
-+
-+impl Params {
-+    fn build_debugfs<'data>(&'data self, dir: &ScopedDir<'data, '_>) {
-+        dir.read_callback_file(c_str!("info_fmt"), &self.info_fmt, &hex);
-+        dir.read_callback_file(c_str!("build_id"), &self.build_id, &no_quirk);
-+        value_attrs!(dir, self, {
-+            raw_version,
-+            hardware_platform,
-+            platform_version,
-+            accessory_chip,
-+            hardware_platform_subtype,
-+            {raw_device_number, &hex},
-+            {raw_device_family, &hex},
-+            {chip_family, &hex},
-+            {chip_id, &nul_array},
-+            nproduct_id,
-+            nsubset_parts_array_offset,
-+            num_subset_parts,
-+            ncluster_array_offset,
-+            num_clusters,
-+            nmodem_supported,
-+            pcode,
-+            feature_code,
-+            oem_variant,
-+            boot_core,
-+            boot_cluster,
-+            num_func_clusters,
-+            foundry_id,
-+            pmic_model,
-+            pmic_die_rev,
-+            pmic_model_array
-+        });
-+        if let Some(versions) = self.versions.as_ref() {
-+            for (image_name, idx) in IMAGE_NAMES {
-+                if let Some(version) = versions.0.get(*idx) {
-+                    version.build_debugfs(dir, image_name);
-+                }
-+            }
-+        }
-+    }
-+}
-+
-+impl platform::Driver for QcomSocInfo {
-+    type IdInfo = ();
-+    const OF_ID_TABLE: Option<kernel::of::IdTable<Self::IdInfo>> = None;
-+    fn probe(_dev: &Device<Core>, _id_info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>> {
-+        let soc_info_mem = qcom_smem_get(
-+            kernel::bindings::QCOM_SMEM_HOST_ANY,
-+            kernel::bindings::SMEM_HW_SW_BUILD_ID,
-+        )?;
-+        let version_mem = qcom_smem_get(
-+            kernel::bindings::QCOM_SMEM_HOST_ANY,
-+            bindings::SMEM_IMAGE_VERSION_TABLE,
-+        )?;
-+        let info = SocInfo::from_mem(soc_info_mem, version_mem);
-+        let backing = info.build_params()?;
-+        let soc_info = KBox::pin_init(
-+            try_pin_init!(
-+                    Self {
-+                        registration <- soc::DeviceRegistration::register(info.device_attribute()?),
-+                        params <- Scope::dir(backing, c_str!("qcom_socinfo_rs_scoped"),
-+                                             Params::build_debugfs),
-+                    }
-+            ),
-+            GFP_KERNEL,
-+        )?;
-+
-+        kernel::rand::add_device_randomness(soc_info_mem);
-+
-+        Ok(soc_info)
-+    }
-+}
+[1] https://lore.kernel.org/all/20250819-qcom-socinfo-v1-0-e8d32cc81270@goo=
+gle.com/
 
--- 
-2.51.0.rc1.167.g924127e9c0-goog
-
+>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> ---
+> Changes in v10:
+> - Introduced Scoped to show how either a File or Dir can be bound to
+>   data
+> - Remove use of `use<>` for MSRV compatibility
+> - Added Write support
+> - Added more complex sample driver using scoped interface
+> - Updated original sample driver to use writes to drive mutation
+> - Added `FileOps<T>` (only for DebugFS, not a kernel-wide abstraction)
+>   to decrease needed `unsafe` for keeping vtables paired to types.
+> - Centralized `dentry` lifecycle management to `entry.rs`.
+> - Link to v9: https://lore.kernel.org/r/20250709-debugfs-rust-v9-0-92b9ea=
+b5a951@google.com
+>
+> Changes in v9:
+> - Switched to `PinInit` backing instead of `ForeignOwnable`
+> - Changed sample to be a platform driver
+> - Exported a static property
+> - Demonstrated runtime mutation in platform driver (`inc_counter`)
+> - Demonstrated how driver code would interact with data structures
+>   exported through DebugFS (`Wrapper`)
+> - Link to v8: https://lore.kernel.org/r/20250627-debugfs-rust-v8-0-c6526e=
+413d40@google.com
+>
+> Changes in v8:
+> - Switched from casts to `core::from_{ref, mut}` in type change
+> - Link to v7: https://lore.kernel.org/r/20250624-debugfs-rust-v7-0-9c8835=
+a7a20f@google.com
+>
+> Changes in v7:
+> - Rewrote `entry::Entry` -> `Entry`
+> - Use `c_int` and `c_void` from kernel prelude rather than core
+> - Removed unnecessary `display_open` cast
+> - Switched from `Deref` + an explicit box to `ForeignOwnable` for
+>   attaching owned data.
+> - Made `&'static` and `&'static mut` implement `ForeignOwnable`
+> - Swapped "driver" to "module" in sample code
+> - Link to v6: https://lore.kernel.org/r/20250618-debugfs-rust-v6-0-72cae2=
+11b133@google.com
+>
+> Changes in v6:
+> - Replaced explicit lifetimes with children keeping their parents alive.
+> - Added support for attaching owned data.
+> - Removed recomendation to only keep root handles and handles you want
+>   to delete around.
+> - Refactored some code into separate files to improve clarity.
+> - Link to v5: https://lore.kernel.org/r/20250505-debugfs-rust-v5-0-3e93ce=
+7bb76e@google.com
+>
+> Changes in v5:
+> - Made Dir + File wrappers around Entry
+> - All functions return owning handles. To discard without drop, use
+>   `forget`. To keep a handle without drop, use `ManuallyDrop`.
+> - Fixed bugs around `not(CONFIG_DEBUG_FS)`
+> - Removed unnecessary `addr_of!`
+> - Link to v4: https://lore.kernel.org/r/20250502-debugfs-rust-v4-0-788a9c=
+6c2e77@google.com
+>
+> Changes in v4:
+> - Remove SubDir, replace with type-level constant.
+> - Add lifetime to Dir to prevent subdirectories and files from outliving
+>   their parents and triggering an Oops when accessed.
+> - Split unsafe blocks with two calls into two blocks
+> - Access `private` field through direct pointer dereference, avoiding
+>   creation of a reference to it.
+> - Notably not changed - owning/non-owning handle defaults. The best read
+>   I had from the thread was to continue with this mode, but I'm willing
+>   to change if need be.
+> - Comment changes
+>   - More comment markdown
+>   - Remove scopes from examples
+>   - Put `as_ptr` properties into a `# Guarantees` section.
+> - Link to v3: https://lore.kernel.org/r/20250501-debugfs-rust-v3-0-850869=
+fab672@google.com
+>
+> Changes in v3:
+> - Split `Dir` into `Dir`/`SubDir`/`File` to improve API.
+> - Add "." to end of all comments.
+> - Convert INVARIANT to # Invariants on types.
+> - Add backticks everywhere I found variables/types in my comments.
+> - Promoted invariant comment to doc comment.
+> - Extended sample commenting to make it clearer what is happening.
+> - Link to v2: https://lore.kernel.org/r/20250430-debugfs-rust-v2-0-2e8d39=
+85812b@google.com
+>
+> Changes in v2:
+> - Drop support for builder / pinned bindings in initial series
+> - Remove `ARef` usage to abstract the dentry nature of handles
+> - Remove error handling to discourage users from caring whether DebugFS
+>   is enabled.
+> - Support CONFIG_DEBUG_FS=3Dn while leaving the API available
+> - Fixed mistaken decimal/octal mixup
+> - Doc/comment cleanup
+> - Link to v1: https://lore.kernel.org/r/20250429-debugfs-rust-v1-0-6b6e7c=
+b7929f@google.com
+>
+> ---
+> Matthew Maurer (7):
+>       rust: debugfs: Add initial support for directories
+>       rust: debugfs: Add support for read-only files
+>       rust: debugfs: Add support for writable files
+>       rust: debugfs: Add support for callback-based files
+>       samples: rust: Add debugfs sample driver
+>       rust: debugfs: Add support for scoped directories
+>       samples: rust: Add scoped debugfs sample driver
+>
+>  MAINTAINERS                              |   4 +
+>  rust/bindings/bindings_helper.h          |   1 +
+>  rust/kernel/debugfs.rs                   | 613 +++++++++++++++++++++++++=
+++++++
+>  rust/kernel/debugfs/callback_adapters.rs | 122 ++++++
+>  rust/kernel/debugfs/entry.rs             | 164 +++++++++
+>  rust/kernel/debugfs/file_ops.rs          | 246 +++++++++++++
+>  rust/kernel/debugfs/traits.rs            |  97 +++++
+>  rust/kernel/lib.rs                       |   1 +
+>  samples/rust/Kconfig                     |  22 ++
+>  samples/rust/Makefile                    |   2 +
+>  samples/rust/rust_debugfs.rs             | 151 ++++++++
+>  samples/rust/rust_scoped_debugfs.rs      | 134 +++++++
+>  12 files changed, 1557 insertions(+)
+> ---
+> base-commit: f3c5631f70e434e318c44001e2417d4770f06cd0
+> change-id: 20250428-debugfs-rust-3cd5c97eb7d1
+>
+> Best regards,
+> --
+> Matthew Maurer <mmaurer@google.com>
+>
