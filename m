@@ -1,95 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCC531A04E;
-	Tue, 19 Aug 2025 09:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF931A050;
+	Tue, 19 Aug 2025 09:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755595000; cv=none; b=M4dq+/QPSOzwvYJohnBbnWZn8sSQSDb1ZttrFcIYM/EoVspwDqLaq6DkP1De2ZWjHOOv42rSVjskH8iPgFxYeyruLanu4oxfyxGehcJKfIbByrqjq+zfdu4NecJPXyofm236AM2T1xSd+eNhRb+vCn+69cSMZw7eQZGQhEazEQc=
+	t=1755596985; cv=none; b=gZ8oiSym8y5wajuybvG+7VfSOc+JNHIDy0wQPX6qKOUf+hY9X2+ykqLg4maqbqPzMphq+IDpi932houkICbpc2L0IhHN7vD5cYoXWzGtVEdPDfRxutQd6a/ZDaOhFTT4f0V46DI3RtSEJTSad1kEEEbk++jnJxXwAS55esXtEbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755595000; c=relaxed/simple;
-	bh=pBfQ1Kjl7wTAxur8QpXNGs9LaE42NaS0o3uiaMX/tdo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=czbugdmcuVw0i73l/N4+5F2ECiuLckiA8flrFLL+21KxxscIAfE/y0oz5k7aHRDU4gGsoRC19bI0QfD6amhT5nD4m5+wbCXN/n5ZUGWroruFqVHckU9LHejY9ixpYrAkYKClf+B2xJADA9MLwH73nc+mvz4LDy1N4YMI1LiaEF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIZ/ATd4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755596985; c=relaxed/simple;
+	bh=IlqIpp8MpUu0vYy8DXHMU1oG1mnGHnpG0dLeYYfYdGE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jjnZsJig18e04LT8C8CsV1LVRshfldZQcCCPtxUrj3zG0mJTlT2Ys05zsd03p4kpBaOeE1BbbEDFbQwTRXnGCZ+S4+zwlm+wTwOKmVk1+NFBwj9OTSuy8I+BLEd80c0VWv74zrNQdl9OxNGmU4BZ+VTBRr0SWO2A4fNCv9JCDpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OX3AhFBl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIZ/ATd4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34472C4CEF1;
-	Tue, 19 Aug 2025 09:16:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OX3AhFBl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5EFC4CEF1;
+	Tue, 19 Aug 2025 09:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755595000;
-	bh=pBfQ1Kjl7wTAxur8QpXNGs9LaE42NaS0o3uiaMX/tdo=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=EIZ/ATd4bWFl/l1pWl/sIIjoiI2AJ62g/WRMndIRddH98fNEsu/1HQW9JfERdoJx8
-	 OeenBcjwGoM34bQqvMJrEVLTfxvOir58YaFtPNji0/sCOSJom3BIEk6VajzVdUlcIv
-	 j7w2l7WeCtt/z52Q4tiqEXmqHYBYn1O8r0oNZZZz9sfxFuAdnGYojNClAxTKnyKuR8
-	 gaUp8QHnPlUuGDuap3u4dJ2bC0oCplQ/p8ogWE5LTtYUsPR1kdLXf0rnCVDPvzRzyj
-	 K+3aMsfMWLEzJM8thChlUtsVhUTQJwvZ7i9/qjJ9MXE1x7sZLF9QC/6hGNBar/DiuO
-	 jBfhshsKtT+zQ==
+	s=k20201202; t=1755596984;
+	bh=IlqIpp8MpUu0vYy8DXHMU1oG1mnGHnpG0dLeYYfYdGE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OX3AhFBlkS+2yzlToaBiERG4qTUH64LNT7IIb0kZbMBBew5dijFKFKDVJXukUHfaX
+	 L3gKKSADvu3NrGYNsFQzggx2lEGezl6zkHLj/mkOthwXJYJXCfoZn+SFgnEanfZg1T
+	 rkIiijCqPgGuHmay68CQwPVpNUeH2kSoJRJM1XHajBfq2cp2NKMvt8H5fhDOxs+ail
+	 n7hOIZryUFW3Y4u9ZY9QIzwHuRpuSmcezUSvke6LyTDvENrlmr6FDhJTsjIZZaDGjI
+	 7VCZFzONlAdJxWdPRQ9Jb/DkCcrMcOzs6gPcFyR/019tscaerLpIK4R7ghQLYQxt9E
+	 pkJlBnLoWMwaQ==
+Message-ID: <a327ff52-c37d-4f51-8d19-d6b1cc858d79@kernel.org>
+Date: Tue, 19 Aug 2025 11:49:39 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Aug 2025 11:16:34 +0200
-Message-Id: <DC6AHIFTOH7O.1USOTN2YAHGF9@kernel.org>
-Subject: Re: [PATCH v3 3/3] rust: pci: provide access to PCI Vendor values
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
-To: "John Hubbard" <jhubbard@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250819031117.560568-1-jhubbard@nvidia.com>
- <20250819031117.560568-4-jhubbard@nvidia.com>
-In-Reply-To: <20250819031117.560568-4-jhubbard@nvidia.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/2] rust: transmute: add `as_bytes(_mut)` methods for
+ `AsBytes` trait
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg
+ <a.hindborg@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ "Christian S. Lima" <christiansantoslima21@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250801-as_bytes-v5-0-975f87d5dc85@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250801-as_bytes-v5-0-975f87d5dc85@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue Aug 19, 2025 at 5:11 AM CEST, John Hubbard wrote:
-> +/// PCI vendor IDs.
-> +///
-> +/// Each entry contains the 16-bit PCI vendor ID as assigned by the PCI =
-SIG.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// # use kernel::{device::Core, pci::{self, Vendor}, prelude::*};
-> +/// fn probe_device(pdev: &pci::Device<Core>) -> Result<()> {
-> +///     // Validate vendor ID
-> +///     let vendor =3D Vendor::try_from(pdev.vendor_id() as u32)?;
+On 8/1/25 3:24 PM, Alexandre Courbot wrote:
+> This is the sister patch of [1], providing an `as_bytes` method for
+> `AsBytes`, and an `as_bytes_mut` accessor for types also implementing
+> `FromBytes`.
+> 
+> It is going to be used in Nova, but should also be universally useful -
+> if anything, it felt a bit strange that `AsBytes` did not provide this
+> so far.
 
-Why not change vendor_id() to return a Vendor instance directly?
-
-> +///     dev_info!(
-> +///         pdev.as_ref(),
-> +///         "Detected vendor ID: (0x{:04x})\n",
-> +///         vendor.as_u32()
-> +///     );
-> +///     Ok(())
-> +/// }
-> +/// ```
-> +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-> +#[repr(transparent)]
-> +pub struct Vendor(u32);
-
-[ Vendor impl and lots of ids... ]
-
-Same as for Class; probably better to move it to its own module.
-
-We could also move both Class and Vendor into a single module, e.g. id.rs a=
-nd
-keep the module prefix. This would have the advantage that we could have
-pci::id::Class, pci::id::Vendor and pci::id::Device (which, eventually, we =
-want
-as well), without getting a name conflict with pci::Device.
+Miguel, any concerns taking this through the nova tree?
