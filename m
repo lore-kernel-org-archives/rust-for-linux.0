@@ -1,141 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB3430F520;
-	Tue, 19 Aug 2025 17:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37182550CA;
+	Tue, 19 Aug 2025 17:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755625141; cv=none; b=kAixRL4my1nXHgx4h17OkFiaciHjmCGgLreyvxQVsp7kO+LmVicMLl+uQkEpbnHo/O0yS0ZPt+aKBEJGIyW/ldkFir4wA3C96azFsdHfEruphTX+8ofj8cKNRFkaGJoUs1ByCz4a4yTNAb2+20aIZrJc+m4vkFgXe8w2Sv2Xt5g=
+	t=1755626029; cv=none; b=WW0PmUaRRmExu8WOo05Urxj+B9+0iKMA1m9ypoxiiTFM4HUPdROF1dCSlPfijUIp14xZtQBZciG+55QL8Sj0somM8nF4hjUj7O+85ATKt2Z8o82OFQbgkxi4iOuzR9z7r04uzRzqwbnUSsLWoKHSOSpYQPggv1dIhB9CVU5dmNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755625141; c=relaxed/simple;
-	bh=shzOb9LxCd4j9ffIAYJARd3Ll/bIHN63Rdsm8jF6HN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=li0Za4uyQ1tRHewOlMQfUPuJnpj4SP03LGx95e8pS0bf5vc9USfxR30f4RbLCaG7i6WpqJqQJr647uHv1wtIrYafFjGsgwcOIwQw5iZ2XfCkjgNvWqWR5vV3zvSkJHc90m4vGxV607ft0z3NZp/IE7Hfhja8OC1b6rFiTowvLqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hP0G8Q00; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755626029; c=relaxed/simple;
+	bh=+xxXPwLoU0wjEb+mW+JP5nJ7ehtG5WJJ5v83QIHPAO4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=V462D7OF+an8Bh2fphhrItrpaIz2MfpxyxQMFQvHdqPL6g391v51lEh4AO472VVDHMoFBahJFzVFROMf6zE3E0AeeqsdKiq0lCyg3CZ5lpAxAvZB51dabz8Ns9T9n+LBkpB38Q3E2IPqzPkNcWKWaIyLE9ImsiAZ9He9LRJsqK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBr2viVC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hP0G8Q00"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44ECC113D0;
-	Tue, 19 Aug 2025 17:38:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBr2viVC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E635EC4CEF1;
+	Tue, 19 Aug 2025 17:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755625141;
-	bh=shzOb9LxCd4j9ffIAYJARd3Ll/bIHN63Rdsm8jF6HN0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hP0G8Q00yNTh5FfM8EvmXjWXPCW1VAkoQrIqWO2opf8nY5Pp8kyRoAQ5sJbskFxHe
-	 Dpw2oE6bb6R9DP3zDSAoqrpgkr4LknFTjksf2ZVtrQBA00wb60mjNgoeDWPO1iTMvR
-	 mOZkqJAPBVE7i3vpf3SqAKzTQw9K5Rc7DptngH5viddKvezFNMaYxTj51UPsnXjIa2
-	 zH66GE5Ky5jjWEuNnqpxi+DfDo3WTnC7VWe1CnDp489D3vz6rDN4s4/RlMVvekkmmH
-	 q8YXIBSj9tnBwBYbvKw41cRhfgSA56D3XB40ha8nKdeMey7WqJRapAA4sbPWPZyDe2
-	 vdbwCoOpeQYmA==
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com,
-	Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v4 16/16] nvme-pci: unmap MMIO pages with appropriate interface
-Date: Tue, 19 Aug 2025 20:37:00 +0300
-Message-ID: <545fffb8c364f36102919a5a1d57137731409f3c.1755624249.git.leon@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755624249.git.leon@kernel.org>
-References: <cover.1755624249.git.leon@kernel.org>
+	s=k20201202; t=1755626028;
+	bh=+xxXPwLoU0wjEb+mW+JP5nJ7ehtG5WJJ5v83QIHPAO4=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=bBr2viVC5Frwot+fUtbob4OA2U2Aso9ZG8T/EcSpgnZY7VzFOm3a3Op1M+G1KyN8S
+	 Qv6BturvImnj+cFCyEY6ZGp26VHFlVXVehSK1o6b99R1SGjncIjrwZIffIS/IVWgwi
+	 cHe9kWI6WMQHZE7DSpoJlRB3qUYV+Jc+xjucuRuL3fPPtcCbatAQAuTPCQ54FuBtWg
+	 leAPoS9xbbob+n4lhn6RxRfFn8KSIWwd9ipS4TV8S1ATe6oi3GAKuUAgTlA/bPNNjy
+	 ZNliXflbwJimCpVjXSw/FPAIiibCkdjhcDbbWiXhve2i7QJv6Cu1p4VN8jDny+LuaK
+	 SHrE4VDN3VPMg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 19 Aug 2025 19:53:44 +0200
+Message-Id: <DC6LHHC2RQAE.1D7LOPCF3IZNB@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Andrew
+ Ballance" <andrewjballance@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <maple-tree@lists.infradead.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 5/5] rust: maple_tree: add MAINTAINERS entry
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
+ <20250819-maple-tree-v2-5-229b48657bab@google.com>
+ <DC6DQKE6LVNQ.3BBD8WF8XGROO@kernel.org>
+ <5ssx3vakl3enjeaygpxfqtb26ufehwfjvcwqfna4xbhc645xpj@lzuvaf3my3f6>
+In-Reply-To: <5ssx3vakl3enjeaygpxfqtb26ufehwfjvcwqfna4xbhc645xpj@lzuvaf3my3f6>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+On Tue Aug 19, 2025 at 3:36 PM CEST, Liam R. Howlett wrote:
+> * Danilo Krummrich <dakr@kernel.org> [250819 07:49]:
+>> On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
+>> > Similar to and just below the existing MAPLE TREE entry.
+>> >
+>> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>> > ---
+>> > Liam: I'm not sure what you prefer for the MAINTAINERS entry, so let m=
+e
+>> > know if you want anything changed. There are also a few other options,
+>> > for example, I could just add the files under the existing MAPLE TREE
+>> > entry? The get_maintainers script should still send any relevant patch=
+es
+>> > my way because they also match the RUST entry that has a wildcard on t=
+he
+>> > rust/ directory.
+>>=20
+>> From v1 [1]:
+>>=20
+>> 	>> We should have another section for the maple tree, since it's not ju=
+st
+>> 	>> used for mm.  Your stated plan is to use it for GPU allocations and =
+the
+>> 	>> code doesn't live in mm/, wdyt?
+>> =09
+>> 	> Sure, I can add a new section if you prefer that.
+>>=20
+>> Maple tree is already used outside of mm, e.g. for regmap stuff and I al=
+so use
+>> it in nouveau. Hence, I read this as moving maple tree to e.g. lib/ adju=
+sting
+>> the existing entry.
+>>=20
+>> I personally think that - of course unless the affected people prefer ot=
+herwise
+>> - it is usually best to keep a single maintainers entry for the C and th=
+e Rust
+>> code. Maybe Alice can simply be added to the existing maintainers entry?
+>>=20
+>> What do you think?
+>
+> I'm not sure what you mean by lib/ since the lib files are spread into
+> other entries by the looks of it?
 
-Block layer maps MMIO memory through dma_map_phys() interface
-with help of DMA_ATTR_MMIO attribute. There is a need to unmap
-that memory with the appropriate unmap function, something which
-wasn't possible before adding new REQ attribute to block layer in
-previous patch.
+I think I misunderstood your comment from [1] above, and, despite knowing
+better, mistakenly assumed otherwise -- just ignore this comment.
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/nvme/host/pci.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+> I'm okay with the entry below or adjusting the existing one.
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 2c6d9506b172..f8ecc0e0f576 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -682,11 +682,15 @@ static void nvme_free_prps(struct request *req)
- {
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
- 	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
-+	unsigned int attrs = 0;
- 	unsigned int i;
- 
-+	if (req->cmd_flags & REQ_MMIO)
-+		attrs = DMA_ATTR_MMIO;
-+
- 	for (i = 0; i < iod->nr_dma_vecs; i++)
--		dma_unmap_page(nvmeq->dev->dev, iod->dma_vecs[i].addr,
--				iod->dma_vecs[i].len, rq_dma_dir(req));
-+		dma_unmap_phys(nvmeq->dev->dev, iod->dma_vecs[i].addr,
-+				iod->dma_vecs[i].len, rq_dma_dir(req), attrs);
- 	mempool_free(iod->dma_vecs, nvmeq->dev->dmavec_mempool);
- }
- 
-@@ -699,15 +703,19 @@ static void nvme_free_sgls(struct request *req)
- 	unsigned int sqe_dma_len = le32_to_cpu(iod->cmd.common.dptr.sgl.length);
- 	struct nvme_sgl_desc *sg_list = iod->descriptors[0];
- 	enum dma_data_direction dir = rq_dma_dir(req);
-+	unsigned int attrs = 0;
-+
-+	if (req->cmd_flags & REQ_MMIO)
-+		attrs = DMA_ATTR_MMIO;
- 
- 	if (iod->nr_descriptors) {
- 		unsigned int nr_entries = sqe_dma_len / sizeof(*sg_list), i;
- 
- 		for (i = 0; i < nr_entries; i++)
--			dma_unmap_page(dma_dev, le64_to_cpu(sg_list[i].addr),
--				le32_to_cpu(sg_list[i].length), dir);
-+			dma_unmap_phys(dma_dev, le64_to_cpu(sg_list[i].addr),
-+				le32_to_cpu(sg_list[i].length), dir, attrs);
- 	} else {
--		dma_unmap_page(dma_dev, sqe_dma_addr, sqe_dma_len, dir);
-+		dma_unmap_phys(dma_dev, sqe_dma_addr, sqe_dma_len, dir, attrs);
- 	}
- }
- 
--- 
-2.50.1
+If you're both fine with either, I suggest to keep a single entry for both.
 
+In general I think it's better if we try to avoid to differentiate between =
+Rust
+and C code of a single subsystem (or component) maintenance wise unless the=
+re
+are specific reasons.
+
+Even though sometimes it's just a formality, I think it can help to bring p=
+eople
+together and learn from each other. There more good examples we can set up =
+for
+this, the better. :)
+
+>> [1] https://lore.kernel.org/all/aJW3L3SEVUl_AVvN@google.com/
