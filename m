@@ -1,36 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D739221F1A;
-	Tue, 19 Aug 2025 11:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE32B284887;
+	Tue, 19 Aug 2025 11:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755601751; cv=none; b=Fg5gqaO4mnpm3TOMf8RgJ/xZJNTzJ8bQv+6Od4h40AJzN8bFVMRbJN4LVHYuq9Jzk3z+jPdITYNTejwXTPQp5gi967aOcMz7rqVHCmMdq3GP0DXXXZNicS9CSmVE1+0dq5O3iQgGK9a/RfYBS7KdLyb7wfskMXalbHgOAG0mNPA=
+	t=1755602733; cv=none; b=eKzeM3OsVCrIwPxXZpuWeJ8WTajudO4cRG7P+wNEAHbdlww4UqAp6rGmQQfAuzWi+qjKpwxmNZJsWRy6XpxvWIg/4PUkBphntPnOqPhUyTWS38nYMFNaKu8xemNKlRNz1DOaWUnMwaZFFGBBal52UNpCUiJ5msn9XeDt47KFp1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755601751; c=relaxed/simple;
-	bh=8NtuBq063GO60AEo105UcaVtSomxlnSvCNm3SCOj9DA=;
+	s=arc-20240116; t=1755602733; c=relaxed/simple;
+	bh=HIXNH+k5AYwL7MBbX/jTRB7KMiNH0ypU7X81zMRc7/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fHZxj4O/L/ucc7pimB1rLTSzDvbTqx1SKlJ3NLxqdOlOaDwuJZh5h8YSePwfDCHMETowQfQt4XsMRycvURdB8AI0V0rrc6rqhHr0OrE0l68P1wcsxG7DJod24YD96JkJL/8n0nHkdWGJsvmUTrrlUHCoHxvxnqF4yA7O+uqi4cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjHkBGli; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=r0YUNXh14tpd/Co5/ecU/xs8Xibe5FjZdU3XQOP6h/4uJDvp/SQ/fy253Z+JeViFtQ4cAnlS0QtJy0OUTHGfZXqWxv8vLAODhyNBQPd6CqEWruelr1WSBUp+wo2VNSlR8RP9vRIx0LzArZxG3aMb3e7m+E0sa1V3LRKHhByEdnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOJZXM7Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjHkBGli"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACA1C4CEF1;
-	Tue, 19 Aug 2025 11:09:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOJZXM7Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9357C4CEF1;
+	Tue, 19 Aug 2025 11:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755601751;
-	bh=8NtuBq063GO60AEo105UcaVtSomxlnSvCNm3SCOj9DA=;
+	s=k20201202; t=1755602733;
+	bh=HIXNH+k5AYwL7MBbX/jTRB7KMiNH0ypU7X81zMRc7/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjHkBGliNAw+fv3Zw/Vf3HhL0XDYo9Kttfc5flpuX9j84WieGUeTyQhxZmekxA8CR
-	 FRjJ1JNtS/hwR6dMXAgZH6qY/502YzMyOs1q+00f5KsSadBGWiyCwK7hp3i6NK1XBv
-	 UUBm1+cB0Ac8B9iHZk3KvDSOhcFBpKsskL8FvM3s4nbCTN615IWFf3Ffwtg6TOjL7j
-	 gS6/cN54RAN1JNyWQ2dcEOOX/pG2LM7TXi4XSPt3XqOZGeByIGOFGSOFofh+N1YxjC
-	 mA/6eWnOA4dPl1urW6Nql6Xi5/7iHG4q8M5DIElaEvQsBpL4GB11LdURAJQ1Rq41Qh
-	 6sK8j24ibt9ow==
+	b=KOJZXM7QOyUckMMZmhpT7H577pr6tIlsT6NJwblLGkvhIxsGflcWGEtn1ChoCRiIK
+	 GuuK9Lr1DcjyAT840Lsg9QDcE+cI90V60ounOKRCfjcj3WHDmzNNdhVhIfSmPxn1hh
+	 9FhYEFOpEWnhEuj7XGto3aU3zRyqMMmh+a2sm7dKNDpeQuNguZVE4Y7t/UG+Jnyxza
+	 j3limtbV/E8fNTIiGtiL1vSIBts167rAw+hHPx0cfqsLwdzyKjNNXquxwnkGhSO4d3
+	 mwhlA0FiNSnG3XLKZVVJ3bbE37oGAAuih9BPNTwqWK7bQCPTc0jvijTbLyEUgL2MQW
+	 qwOetGRKhSGyQ==
 From: Christian Brauner <brauner@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Shankari Anand <shankari.ak0208@gmail.com>
+To: Shankari Anand <shankari.ak0208@gmail.com>
 Cc: Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
@@ -39,14 +38,17 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: pid_namespace: update AlwaysRefCounted imports from sync::aref
-Date: Tue, 19 Aug 2025 13:09:03 +0200
-Message-ID: <20250819-pulsschlag-panne-96f1798c7fc0@brauner>
+Subject: Re: [PATCH RESEND] rust: fs: update ARef and AlwaysRefCounted imports from sync::aref
+Date: Tue, 19 Aug 2025 13:25:18 +0200
+Message-ID: <20250819-abgegangen-verfassen-0324c7d8909a@brauner>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250816122323.11657-1-shankari.ak0208@gmail.com>
-References: <20250816122323.11657-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250814100101.304408-1-shankari.ak0208@gmail.com>
+References: <20250814100101.304408-1-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,16 +56,16 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1079; i=brauner@kernel.org; h=from:subject:message-id; bh=8NtuBq063GO60AEo105UcaVtSomxlnSvCNm3SCOj9DA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQsiQ6IqPyU/FMjuuHS39NdRZ8Z10hczfIKk36m8i0ka N7umSKnO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZyipnhf1xqlR5n81Xxglzt TlufWX5rZvjwxPt1R+SIsNgqcvtKMjI8lbDUvtykdevRrdw/dwvcsqZ8nKF+X/7jNGvtOfenLQ7 gAAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1084; i=brauner@kernel.org; h=from:subject:message-id; bh=HIXNH+k5AYwL7MBbX/jTRB7KMiNH0ypU7X81zMRc7/E=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQsiVeLMPNXa1AQvnLBYtGnzMPxUyW9OZe8iC4xPPlmD 89hif1uHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPZOYHhf+63qVc8HyTfeGOu Yjvrt+8qsY5P81Ne3ntwQ/pSZNSqKW8ZGaa5+hXc3WUatuen765K3cwJz1aEpLyQDKs0dT8d3p3 0kAEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On Sat, 16 Aug 2025 17:53:23 +0530, Shankari Anand wrote:
-> Update call sites in `pid_namespace.rs` to import
+On Thu, 14 Aug 2025 15:31:01 +0530, Shankari Anand wrote:
+> Update call sites in the fs subsystem to import `ARef` and
 > `AlwaysRefCounted` from `sync::aref` instead of `types`.
 > 
 > This aligns with the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to `sync`.
+> `AlwaysRefCounted` to sync.
 > 
 > 
 > [...]
@@ -83,5 +85,5 @@ trailer updates or similar. If in doubt, please check the listed branch.
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
 branch: vfs-6.18.rust
 
-[1/1] rust: pid_namespace: update AlwaysRefCounted imports from sync::aref
-      https://git.kernel.org/vfs/vfs/c/bba954120642
+[1/1] rust: fs: update ARef and AlwaysRefCounted imports from sync::aref
+      https://git.kernel.org/vfs/vfs/c/eed8e4c07d85
