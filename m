@@ -1,93 +1,93 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EAB6318121
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 09:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D121C2836A4
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 09:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755594249; cv=none; b=QU6INJRpAYOqy7DY7jhZpS8HeHMDqLHEzBY/WlErznpxBWaicb0qXbKc5xJHt52+37/zZ70eW/9c6qhNBjSQFqCdYV+0X7w+IOZg8zvEPDW4D6qiZS8N36UBJZBFyin3bXr13v58sIwM0+XdGmEE3tlcepj+pMx16nQc0TGnjyY=
+	t=1755594403; cv=none; b=SoC4bLU/dhyzW34g6pjX8qfeNIyNRQQ1O8plBB0J7EbAXIX5VmK9G+I+N0+diyPFDXfAJANhUqujuusE8YNDy+xXZajdLV51VebKwzZFzjaswuACOreOR9cZ9kttmsKe5BcmLIzMAHeUK7/NkDIlWxBHvw7bgsL7BU+iKgzgZqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755594249; c=relaxed/simple;
-	bh=j1702PwtMzDQe5/1lQ6DecIyL64vgc8wHTrATNQRhR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lRhtCc2Udj1sA0YdXVQIY4Syft7XAtRPuC+fErF3i9atM55nQOEtraBkuIaOP9wgnD2E7Z/BMVMGFffGSsYdjnWe4fXf2s4Dwb4H2pUgk9K0NYfeiFxJL8s7XqzIiiDWYbewWjI9Ws1hayRbhH763ayrmIR+R5srpYVcOKRwSEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RO36CdV0; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1755594403; c=relaxed/simple;
+	bh=GzTH2CWb9On4DhbDRVtbvg50ym9AgWV65w7+T69rKmg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MEV57fewJOUu2T/KAYSMNStf0XGsCRpszPvaKrXY4VuaskU4o2SP7jpEsiNWLN59wLDqmPWf9H/cN+rDx+kbRGm8oRoTFWgMl97MKq2gZsUtz+9qv7bvcVN3Do/gC7C0I3s5WafA7nl2I8tfYezCBjArnXIOVaLm336baphpBfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTqx1gZX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RO36CdV0"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45a1b05d252so35403425e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 02:04:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755594246; x=1756199046; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rw4/SYfYTbVLI+W3vVMq9GPldn1oSL4x6P0EM98hAz4=;
-        b=RO36CdV04gbgt/gqerVwSTjPhjte3Q9sqG0/tPnAjaRQ6tphy9EyGH5C21NZudgBny
-         HaniA+8LnyAYnmqplQ/7RkhOJTbN4r3ffFh0Dy5HNk9Dv4VdfY138UYaIStE/7e4iaDc
-         7t96nII9LWMjtS7rIea1bS+e4yry/McaAjJM5pyLIzOsBwffWMnCNsIw0fwxWs53CKsS
-         ofg3BSTxkXubERr/rD9LjamKMdy9DLj4ABmzBd9IR/xJlmGEE4HrOrOz0ULRqSrk3qwa
-         vx5uUgdwxT84wxqf6A/g6VDUJC2Sr/MCh/2TvRK9HQebf7YW8DVFg3bZgwUMVWW4Vy7x
-         8LBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755594246; x=1756199046;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rw4/SYfYTbVLI+W3vVMq9GPldn1oSL4x6P0EM98hAz4=;
-        b=HhCSqSleQTRnE3zAGf/zQJvMeZheaxx+ChnkeWQVEXDuqnjVl2XlJKOAI2+ACe7AD8
-         jviI/8VG2PszvA31OOwHguR4O1sy5yF2lgra06hEGV/rrpWDlEL+wepsCB95tTVmE9Y3
-         sNjb6/y65XWtV8vJWLSkOlZZtT+XO3FbQ+4pWvHd1dc9sD73/DsgDznM6b6f6iAdG5VC
-         VAC227Iq8IEcXNf5wezuKeO3uL+VPFSzZPa5sUUJj0msrq85QhQS/ORRuIOOu9V/Ixz0
-         +swSrEDWwRVgDeU7mbujP5JfvzJegZ86hUnJH2yb6ZyWTtX3/rLQzgR80NI+0wwADV8A
-         al4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXmP1E1P2bxhEA60KN+MCiv/Z30jHrgow2pSxbRgi5ihEk8OcmUINX5rhdsq2h/raQKYYU5U5meoMAo+uTS4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKlNbtFrhfxcUasY0FDbLsatqBKrF07V14y+U7PudWKaIRLHku
-	E7cvDNqgfk7g7aYsxepXdOF8/IiQ7PxspQnRWDG368FtlqHpfC569Dv0U2zPQMFF8nEXzHRsa8P
-	sSmeZ+Wrut1b2Z2ekuB/rIBY8Wv2EqjBzO9hMWpfP
-X-Gm-Gg: ASbGncsD9ym1nn8pRh1jnYd6uUFfCrt0/qiiGasQorFDK+BC5ZtbYfGokSLh1rMksKH
-	3mkrZ8oK3By3qySX1/7OQKoS4RrOWIoSkSOd8/9Ezt/i11IMtQd03Ze+SSfqA1mnVFpR5gXeuaL
-	doDrw2KyKCZwn3Q3pgUDPmO6NE1es/9RdwqruhLN5Bca/MyWrhMGpCaDThcqqZ5PpkX9FIe5cg0
-	qrsrNRiAI0TMjrU6lNELlcxtOmeHX+VVVznyek55NjwisFCLQ4OGcHmYuranD2YHQ==
-X-Google-Smtp-Source: AGHT+IHdcHy27qthc6ylIMnNVnNh5YNWX6Vrep+6osB8MyR7vljR5PzozjKPhzxheJhAHt+ndRzWPDYEnKmFRRYqYiI=
-X-Received: by 2002:a05:600c:3585:b0:458:bc2c:b2ed with SMTP id
- 5b1f17b1804b1-45b43db65f9mr12911025e9.7.1755594246118; Tue, 19 Aug 2025
- 02:04:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTqx1gZX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E94AC4CEF1;
+	Tue, 19 Aug 2025 09:06:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755594403;
+	bh=GzTH2CWb9On4DhbDRVtbvg50ym9AgWV65w7+T69rKmg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YTqx1gZXaylHz3EiNSkbLZlEa6mRbni6ZHYS3cE0QhR0qcfYV5lgvTs6UwCu9g7Xy
+	 gJMdH6ETy0478//DPHL+8e+Hs4hdFlobYZNSix007I7ZbxXiGxXk9kUBg0/NlTQmay
+	 UMDYlhItXG3Om7HIHNmhZckymB06d+cN1PcpV6TWJL/ZPD+wQPpTikP1KAiH0faXUO
+	 Ujl8efElB//svHZY6P4VjI30P/uPF7MKqxBfY5mqdWX+kqs6IbS98XPqOL4GxdJrpi
+	 dZVSY+7CkRuY8xWoSLEbFi/ytDwD1bsFKl/jvvru5kWsl7YPkZzM+cDUdk6GzVL6mf
+	 aqs2P+Vftj6dQ==
+Date: Tue, 19 Aug 2025 11:06:40 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [RFC PATCH 0/3] Initial plumbing for implementing DRM connector
+ APIs in Rust
+Message-ID: <g5n4vx5hkreacrtjrbzsefnctvki6d7oh7qyjrb6wtqvzp7adl@rzmxiyblpnsz>
+References: <20250818050251.102399-2-sergeantsagara@protonmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250813-iov-iter-v4-0-c4f1932b05ef@google.com> <DC19CXUEORB7.241EQY0IXV7WD@kernel.org>
-In-Reply-To: <DC19CXUEORB7.241EQY0IXV7WD@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 19 Aug 2025 11:03:54 +0200
-X-Gm-Features: Ac12FXzqmfWcGjpWA2_Z1mE6xkkkJkyW-2offzZARxXIQ07VSGbaL_je_9ZDZC4
-Message-ID: <CAH5fLgggp0Nkdcuwv6HTZBo=92xCJt=8JfSVvmy2SRR_e9kSFQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/4] Rust support for `struct iov_iter`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Benno Lossin <lossin@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="rqlr5pzjvbwfohde"
+Content-Disposition: inline
+In-Reply-To: <20250818050251.102399-2-sergeantsagara@protonmail.com>
 
-On Wed, Aug 13, 2025 at 1:20=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Wed Aug 13, 2025 at 10:27 AM CEST, Alice Ryhl wrote:
-> >  rust/kernel/iov.rs               | 311 +++++++++++++++++++++++++++++++=
-++++++++
->
-> Does this need an entry in MAINTAINERS?
 
-I think it goes together with the existing uaccess.rs file. We don't
-currently have an entry for it. I guess one could be added.
+--rqlr5pzjvbwfohde
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [RFC PATCH 0/3] Initial plumbing for implementing DRM connector
+ APIs in Rust
+MIME-Version: 1.0
 
-Alice
+Hi Rahul,
+
+On Mon, Aug 18, 2025 at 05:04:15AM +0000, Rahul Rameshbabu wrote:
+> I am working on a drm_connector scoped backlight API in Rust. I have been
+> looking through Hans de Goede's previous efforts on this topic to help
+> guide my design. My hope is to enable backlight control over external
+> displays through DDC or USB Monitor Control Class while also supporting
+> internal panels. In parallel, I would like to improve the driver
+> probing/selection mechanism when there are different candidates for driving
+> a backlight device. This initial RFC is mainly intended to sanity check
+> that the plumbing I have chosen for extending the DRM connector
+> functionality in Rust seems reasonable.
+
+It's a great goal, and I had that same discussion with Hans recently
+too, but I can't find the link between backling/DDC CI, and Rust. Can
+you elaborate?
+
+Maxime
+
+--rqlr5pzjvbwfohde
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaKQ+nwAKCRAnX84Zoj2+
+dtm2AYDVQ35Eu8ffKbg1cayeMAq4RljdgTI+K4MjL/eXmTxoU4R3bUX1JJ2XL4wB
+lCVy/VsBgLpG1jLb5sYJdf/FlkiKubkQxE4qnr4m8Dqm6qG+b2ljFC89ZT3kX5xD
+gl3A6DJ5zA==
+=1fQH
+-----END PGP SIGNATURE-----
+
+--rqlr5pzjvbwfohde--
