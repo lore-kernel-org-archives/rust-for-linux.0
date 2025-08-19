@@ -1,91 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21FB28504F;
-	Tue, 19 Aug 2025 17:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755623890; cv=none; b=d/BqYmQzC5AbBqAHaevzv4ro6vFAG8qs85WshxLg7QegSTfAGLhdAOk4VNScor5cs2ZaNhDt/rESy3QTj99Y213aTw2cnr9mgip8j29Bq/sfrPi2HUmhO1b0ok1ZEQCG4Sl77+dRD0hJhkjt6MKtxxopBpUhcBfobHOVoL2o/50=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755623890; c=relaxed/simple;
-	bh=tqGC5+6p0FosnS3CJFmcEsP5jw9irXYLL7GUFPYGMME=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=PHYPvyQBt/G07oe6M765DCLbqLlePfmWo/eX98F6zSNQ52QxWy8WBYENBocTW3emW1vDTEpNtRtnmvIsb+XuVaXSln52jXENiCZr+6s5lJHJEevSAFkBZ/M8QMyfr5OPI4HrKDmsSEWMFdF1M2OLTS3W3D7mPOoo9RWSpqatwXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+wvYJZY; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB36301499;
+	Tue, 19 Aug 2025 17:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755624194; cv=pass; b=kTFTObLiZCQ3ooG+EN3D+VF8sQq7fLu1S1+KH5R7ctqm66FlIzhjq8Nh7hSZkjOwu+iZw0Xjb2GABiRLB1I0g/N+isgyBh3DHWXqiSlWHJ2ibD6ONzIdP0rRPdoRj2k0rA4J9GcHTOqIZCaLWnzDsU0QgdqNUQHXXjXMMdldwb0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755624194; c=relaxed/simple;
+	bh=CnOw8YxNadoZJ5HjZs0vKB0Rw/Cr6t8fF/7WPy3K+/k=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=N7SFiVEDdQd83tkqEBxgsYQ8oM2KZb9UeH4L6hpqVDK7GVjtYeFdAh+geH3wJyhI0Tt9WNeawvCWhzG8UJhK1HF6R3shkOIDKmaUu1OIpfnVDm7MCP//V8udSAMeH2MqQs5h2BNGjRDC2X4IXagjaq149hg6gOKxL9IjITQkN28=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=R99CMyST; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+wvYJZY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247C3C4CEF1;
-	Tue, 19 Aug 2025 17:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755623890;
-	bh=tqGC5+6p0FosnS3CJFmcEsP5jw9irXYLL7GUFPYGMME=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=M+wvYJZYPgO9MAXtUQRoQX/UQeCRvr3rSjaxHGJ0zvbIeJvjkS2FmPZWZHFN/+jBq
-	 3XzWdchIPvMn2R3Lm7bFUG21DhExUpg7mLZPIxYwwmbEQdlhdpgmG8R2VaQa0KOVLn
-	 MCggChlqrxl1vizUzWN2pdnBhspI2R8Y+o8hJVlzFupp78nKznTYNTHC46yZ/2sXVl
-	 a+AY2h6ezhTQmg31QzayjL3NGezCu8890D6l/R+BkHNU8FnigijCROhlY7mADdmXPa
-	 wum/bKqCwBUU2vUKPCWkFkKr2Grku1EUmVnuAY76RPZCdtqbnA4kPbLvurrq4KKJ1Q
-	 BMckMymKaG+qg==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="R99CMyST"
+ARC-Seal: i=1; a=rsa-sha256; t=1755624170; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=dB17iMupUftJlAcD6wb2PYq6XfkpeMPwyMGY1qBl7HKmzi6bPP4WdbqZdDrdUqiNBPlnFm9Pl4Bx6hpzVYPSjmQJcadJsyuCBF43wmhPveoypjdIHSdU24NIxdcxf+U6JgVDIh0H+rI+5oeoSSlzoBFb6pc7CJlRIzYaoY9sTPU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755624170; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=IEcw8YukMBSRSfgVR4aQ1OUUrw+SZjoWnTgXZ8LvAnk=; 
+	b=YF6Bk7Mt0+IE4c/6EOfrbjtV9WoESHNBs6d/lcbYDKg/5tCV3GN5oTTcLE7nLh1wtfXxYJkIK9aJa3Rck2u/0SktWBY375oS6HlFjYiXtYnRXVI+K7XzBkQnPUi+e5czCsUOYQEr40gOMgOIKQ6Ajb/Xuru6ko3O7ongv5Fpbjg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755624170;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=IEcw8YukMBSRSfgVR4aQ1OUUrw+SZjoWnTgXZ8LvAnk=;
+	b=R99CMySTuMb2AjbZ8UU/ldDlpGDB519kO1Tx6MgrQf2pZ6ewYD8pepJvEypBDOaC
+	I5piGs1GE+5VAntotzPQdWYwNnbpiGjtMBKyLiakrpgMwfbaaD5OEKsBfZnp74OJkIv
+	QPFbDqVLh/ZsRmcNYtTAgJd1LZWO2suYfpdJBe+M=
+Received: by mx.zohomail.com with SMTPS id 1755624168270959.8687296541492;
+	Tue, 19 Aug 2025 10:22:48 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 3/5] rust: maple_tree: add MapleTree::lock() and load()
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <38B2DEA2-774D-45B5-8923-C5330B975FB9@collabora.com>
+Date: Tue, 19 Aug 2025 14:22:31 -0300
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Andrew Ballance <andrewjballance@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ maple-tree@lists.infradead.org,
+ rust-for-linux@vger.kernel.org,
+ linux-mm@kvack.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Aug 2025 19:18:05 +0200
-Message-Id: <DC6KQ6LWY3C5.3OSHWTFYM0CDO@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <linux-pm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: opp: update ARef and AlwaysRefCounted imports
- from sync::aref
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Shankari Anand" <shankari.ak0208@gmail.com>, "Viresh Kumar"
- <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen Boyd"
- <sboyd@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250815174521.1413560-1-shankari.ak0208@gmail.com>
-In-Reply-To: <20250815174521.1413560-1-shankari.ak0208@gmail.com>
+Message-Id: <2E3FBB87-EFCE-425E-8ED8-6EE0EF19C6F2@collabora.com>
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
+ <20250819-maple-tree-v2-3-229b48657bab@google.com>
+ <38B2DEA2-774D-45B5-8923-C5330B975FB9@collabora.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Fri Aug 15, 2025 at 7:45 PM CEST, Shankari Anand wrote:
-> Update call sites in `opp.rs` to import ARef and
-> AlwaysRefCounted from sync::aref instead of types.
->
-> This aligns with the ongoing effort to move ARef and
-> AlwaysRefCounted to sync.
->
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-> ---
-> Changelog:
-> v1 - v2 -> Fixed mistake in the commit message
->
-> Patch description:
-> It part of a subsystem-wise split series, as suggested in:
-> https://lore.kernel.org/rust-for-linux/CANiq72=3DNSRMV_6UxXVgkebmWmbgN4i=
-=3DsfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
-> This split series is intended to ease review and subsystem-level maintena=
-nce.
->
-> The original moving patch is here: (commit 07dad44aa9a93)
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/?id=3D07dad44aa9a93b16af19e8609a10b241c352b440
->
-> Gradually the re-export from types.rs will be eliminated in the
-> future cycle.
-> ---
->  rust/kernel/opp.rs | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
+Ah, something else,
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+[=E2=80=A6]
 
----
-Cheers,
-Benno
+>> +    /// Load the value at the given index.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// Read the value while holding the spinlock.
+>> +    ///
+>> +    /// ```
+>> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
+>> +    ///
+>> +    /// let tree =3D KBox::pin_init(MapleTree::<KBox<i32>>::new(), =
+GFP_KERNEL)?;
+>> +    ///
+>> +    /// let ten =3D KBox::new(10, GFP_KERNEL)?;
+>> +    /// let twenty =3D KBox::new(20, GFP_KERNEL)?;
+>> +    /// tree.insert(100, ten, GFP_KERNEL)?;
+>> +    /// tree.insert(200, twenty, GFP_KERNEL)?;
+>> +    ///
+>> +    /// let mut lock =3D tree.lock();
+>> +    /// assert_eq!(lock.load(100), Some(&mut 10));
+>> +    /// assert_eq!(lock.load(200), Some(&mut 20));
+>> +    /// assert_eq!(lock.load(300), None);
+>> +    /// # Ok::<_, Error>(())
+>> +    /// ```
+>> +    ///
+>> +    /// Increment refcount while holding spinlock and read =
+afterwards.
+
+This sentence can be improved.
+
