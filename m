@@ -1,152 +1,248 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010037.outbound.protection.outlook.com [52.101.69.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A428C27B347
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 05:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755580712; cv=none; b=Yc42SKH9yC/owFZ7NGhPJnz3cxKnZBtp4tMjjas15wcUt8anYsSY6Xf7Ditlb17SWWmw5+RZutOP5FDF0LYEvsTgM2yyfWD+1N0TucYS41uvZBk6ngxBg5Y3WkFYWvsqSgm3VG6+VtTsmYTa4UD5z1/9GlzQqNIQkgvdxRfT94g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755580712; c=relaxed/simple;
-	bh=zdaBsgQUjZK5jZdjOTjQs2N2yClZHeBLvycKAPOGO88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=tNbbI1CweYmZubGDAD4NYi7R6FlBON2r8kidQCEkD26YJsF9gv1b+TJPjXko8R4KVscjEQM6smNi6FOJwa9r3MywvKnKQFJP+u+wFppjGoP/fQZD+WSGzace2n5QpIyQL01kCpIiORhaFrtGg+voNoNpQg6M895tlnXLx78YILU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eIZIaQrM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEC1225390;
+	Tue, 19 Aug 2025 05:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755582763; cv=fail; b=Dqa7jdN6HMNwTZIaj0X4rpkG4wTMJ5zdwGpgk32d/FS7dYwzA8oD1bFhdKmHPqlWsROzkx4v7OCgR5XPZQKTp+0sPPlPUdb8aQ5flPNoGZJ06nQyYKcW4X0V7ZV0EOkjpyYuef/j3kUHqcmyxex5BKy6LQ/h+pnAOEuFjdW5pvg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755582763; c=relaxed/simple;
+	bh=VapXdJBYEyAcMKDIjks0vKNNNWEMjHVPGGMzfeYb7n4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NPQrXPNGEGtzaGsbD3nehP9GtU6F5eFjgoGwUh/e1ejkJPrbTHWWEy3Y3RMFrrunmQAP5W35X41oW6CbP3EhaxDLndoUQpLuD9bf0kVY1rz6VqFfJO5g9WvVn+EixtwAsRympHfvw1G61eMQlNhFICMLjhm4lJjrd8jGYa1fJmk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=N3HE1RoS; arc=fail smtp.client-ip=52.101.69.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eIZIaQrM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755580709;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yjX13QutZXnn1qKaednamt5UGEEWdjs4CWpwGUcPMo8=;
-	b=eIZIaQrMaavJR9//oRxZTO4YcELBID1CcqXvxCb8WsS9i/6DQNp6fZWh9gq/5CUuuAFsYT
-	YTEcIEfS8ETECUnWoSfYV12G8weqmGmlJwemKdNryF70qSqlB552CFmBNx72+cGFz24upQ
-	AhCBqAtGIhV4EA60myWmGV7ZbCK97A8=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-kiyweT20PXeOKky0nxA62g-1; Tue, 19 Aug 2025 01:18:28 -0400
-X-MC-Unique: kiyweT20PXeOKky0nxA62g-1
-X-Mimecast-MFC-AGG-ID: kiyweT20PXeOKky0nxA62g_1755580707
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-323266d8396so4506376a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Aug 2025 22:18:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755580706; x=1756185506;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yjX13QutZXnn1qKaednamt5UGEEWdjs4CWpwGUcPMo8=;
-        b=M0Eubf8M62PfAsQ6q3HOSw+1CgYCapj48CRcRojvuvKKGIj3fjPnf33GGX0KDxt7fR
-         8xcOQK0wLoYzqn5cZcOBqCdR7fwSBkporgIs/mgkPvJGZf2X49TIs2VIxwupuxQVdqey
-         sXI1ZWAViep22Tb/mXO8Cgo6PM6ZHsw7wAYX6SRLwEdGW/sGIylPB+5A0H/cEjyeyys2
-         A3l6s1aNvgWCTr//m68UzPLYoVJIvhnHzxU7/o0cYyEq2F3zeiWfIk/73mT0pFOkyasN
-         pCP7re7PkfBJxmJbqwuBqnGoN4iELOxCeI3QPt0e61ZWi0RGUf9y/6PR8WHoklibRv2C
-         0g+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWQEoxM3y9DRUH0hupY9D9mhCzykbMDALa26FKJVC5nzsYleSQCfNXpuulbfo4Vcphc8Lpn1sMZvB79cJQqxg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvRxUM9aJgNB2ychBGWrxE3gL2QaHqoOWpKbN2l5blhxL3HIt0
-	hzR+Z/4eJ4j7+wOnHfEfQqlPCgGqqo+1XH62VTl0Fm7nDVmZnmLEdwjZFW/1rkD9fYVN5urCn+h
-	0f9oo53rv2KfYFgVDP+3CkJ5FCh9qgonHTjVwGRvZtuMxkJ0oZUK+Ppzxd9QImQEkUNqaHnrz4A
-	rpyAA=
-X-Gm-Gg: ASbGnctRaZeYGXOr0M5XeWKUfttcoESc5LdhLS6w7xENZmIDBlE7sRPrfzX6HTepUlc
-	I9jCsI02ghAl+/zKJVUDvZ8NnzYQsgz/kLkvdqSt42fX/Qyx9ZjH8toJvIaE2SmXKixmP/QQTWy
-	m2608vo0QhUAjaxr6QbDRTsohovbgLAVpQUkrT7T1c0UcX/xIvmNqGiPBqpN3ouUj58VlWnm+kH
-	6oYPuIURx3Hh5lc0Bv84qCHmQE0W7RikBcWIqQdRtgDvIgTzo8kyx+ubYZkrwnUC1S1dilEU11N
-	x8rixOReSvsOTCRS+31WbLW/rBVYzS00WQ==
-X-Received: by 2002:a17:90b:52d0:b0:321:1df6:97d3 with SMTP id 98e67ed59e1d1-32476a48131mr1753868a91.4.1755580706521;
-        Mon, 18 Aug 2025 22:18:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKQtlvFs2YJ0QWir1GcVeLXlcL3oZn+i/4CwJGWIsBulVTOobg5SCDLAg5vIPERbvvmwB86A==
-X-Received: by 2002:a17:90b:52d0:b0:321:1df6:97d3 with SMTP id 98e67ed59e1d1-32476a48131mr1753837a91.4.1755580706064;
-        Mon, 18 Aug 2025 22:18:26 -0700 (PDT)
-Received: from zeus ([2405:6580:83a0:7600:6e93:a15a:9134:ae1f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-324d32e2b53sm367456a91.8.2025.08.18.22.18.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 22:18:25 -0700 (PDT)
-Date: Tue, 19 Aug 2025 14:18:20 +0900
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: arnd@arndb.de, gregkh@linuxfoundation.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
-	lee@kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH rust-next 2/2] rust: samples: miscdevice: add lseek
- samples
-Message-ID: <aKQJHOKOFn8i_F9Y@zeus>
-References: <20250818135846.133722-1-ryasuoka@redhat.com>
- <20250818135846.133722-3-ryasuoka@redhat.com>
- <DC5W7UQHOJSG.310L4WJ0AKZFE@kernel.org>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="N3HE1RoS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PIeyEoJsdjpo7VrpyTEwzQ/VDeFFBLamktXhHLeon6gSZDMMD3MDScxdxHFbYXsdpukMqP0YW3VLc//zkmPFfDnV+vx2rv+D5fqJZRZP81ZtCNdYkMUEa+EbT/ZrMHF3kFQy550KSHOVlAPV0keJxs64L2wujwbOszrTo7/WF5z8+v0ZYY4vp9sJNC9gTWVAbHAEV72j3at5K87nPbKO28wwYQTulNOIDv4iuJoAQuMiTYZJBxPv1I/VTNczgWzSIdm2Bz/dhtZxAmsla4zf0gqIsxGJcrQHpkRjcCCSqgV0NcmebBdnkLMU61GYtB/JeHf0KcAkmQnn+FmC1ZHXdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NHpUSsTnHqAict/pKHkctdMw8++RG7fIDARYo5lFmdw=;
+ b=VmTQDliXBFAzZFsd9NwF07MdFmj97L/JJm92/ozVCvCTFakSCNtmAUJYMZOWo405pPjR5pgDCCiYS+/88up+kQoKrCeQB5avd3ixcBrm8PM+RqlW9fkwe824zycbePO5KcokrzLcVFgYVC37KQ54tNMwnTtDdlsXnUo+fW2wyVch9J0ETszsJrk1Cai3h5KsKLrZCZLtTZMQ+kUiXliMiGAV7Lyd0gpkOc44zYXndjb9IOjXdvAEGE/IkU99Ob/sGAHdG78pWK+Y2bFyfmMaCIBpixjAjYdfxch9FpxE2hhaVqVHdD6OQay0Y/jrkKZnzTyz3zOIcMyq1L2zH7Kfwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=google.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NHpUSsTnHqAict/pKHkctdMw8++RG7fIDARYo5lFmdw=;
+ b=N3HE1RoSINTKVHbljNFCcIRV/MGHhnYYAd/ezU3iIfe8Tt5MZTWlrxMLuBK5Z0EkgkYlbi6sD/zhI4rS03NU2C3EeIwi0Xrd+XBjo1Rivl0c/CCv+MGVFU22wJR+6topnbxDAQ/eBWkB7JsOsLz4gOERHpZ4TwiWSkZ+zUuhMeSXvtqbkS5labjxwMRO7lYfvt6eHKH9cLtNFimEM1vO3MhL3NaZ4DgqWQC92jp9EAsosumgMxaWizjmmwRY5puapB5SH0io8DnaodkedN+1ciiZ1HAxs3RJvuOkDfpAjbODFlyNa61MWF4kiy742O5OycVFLpdDwqipHR1YSRc0/A==
+Received: from DB7PR05CA0043.eurprd05.prod.outlook.com (2603:10a6:10:2e::20)
+ by AM7PR10MB3875.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:17b::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.14; Tue, 19 Aug
+ 2025 05:51:44 +0000
+Received: from DB1PEPF000509EE.eurprd03.prod.outlook.com
+ (2603:10a6:10:2e:cafe::f0) by DB7PR05CA0043.outlook.office365.com
+ (2603:10a6:10:2e::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.22 via Frontend Transport; Tue,
+ 19 Aug 2025 05:51:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ DB1PEPF000509EE.mail.protection.outlook.com (10.167.242.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9052.8 via Frontend Transport; Tue, 19 Aug 2025 05:51:44 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Tue, 19 Aug
+ 2025 07:51:43 +0200
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by
+ SI-EXCAS2001.de.bosch.com (10.139.217.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.58; Tue, 19 Aug 2025 07:51:43 +0200
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 19 Aug
+ 2025 07:51:42 +0200
+Message-ID: <2a0f2965-af37-4ffe-8806-3bb469361b1d@de.bosch.com>
+Date: Tue, 19 Aug 2025 07:51:35 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <DC5W7UQHOJSG.310L4WJ0AKZFE@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: yED5InDVzJHCUL6WUt1z8UBcHr3i2ayf2eXtxayblmE_1755580707
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v9 3/5] rust: debugfs: Support `PinInit` backing for
+ `File`s.
+To: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Sami
+ Tolvanen" <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, "Benno
+ Lossin" <lossin@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+References: <20250709-debugfs-rust-v9-0-92b9eab5a951@google.com>
+ <20250709-debugfs-rust-v9-3-92b9eab5a951@google.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20250709-debugfs-rust-v9-3-92b9eab5a951@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509EE:EE_|AM7PR10MB3875:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f484411-1836-46ed-706e-08dddee47a88
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|7416014|1800799024|376014|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RWZGV0l4aEJaalAybjJTQlQvOXZOQUJNbVZtc01xeVEvMnRpMmkyUG5EbzRy?=
+ =?utf-8?B?Ujg0ZXRaYXY5RzFRSFdCZG5mVVh2WTk5UDlmNGJnK1dVMkJ1a2s3OVVreUd6?=
+ =?utf-8?B?aGJOaEViWFdaMjVIaldKb0tHTTdMeEZNSER3U05LajVkMXliM2lkTFloaHpp?=
+ =?utf-8?B?WVlOaVJKcDY0ODlBUnZPZy9Uam1ScWpUY2lnNU84T0dFcFlQU2JxTE9zOEhi?=
+ =?utf-8?B?UDFPY3RkV2tMWElHczRwWGw0QnBFamJoTnhMQXhyTlZSV041bE1RczRndTNF?=
+ =?utf-8?B?S3ZQb21ETzFFMjhUTCtRV04yN0oyN2Ywa1NoeUNqdU12NmxCSFpHSXoxNFlp?=
+ =?utf-8?B?R2QvSlpqMXhPQVBSWjdwTlhIRFZXNEJiMGplWE51aHdkN2hoSjlrc3hQZUdV?=
+ =?utf-8?B?eU54aXJPN2pOVGkzU2VubHIzVG1TOGNGTy9IZis5NUVvZldlaWg0RmZ1cVUr?=
+ =?utf-8?B?TkRxMTJ1YVFlM0gwYjhobUI1bnlKTXVqai9ubGpSRGNNZFJhMVQySytpN2x0?=
+ =?utf-8?B?WXBvc3R2Ny9QUlBYMGJlVFlLdks3a2twa214UzlMMFd1dmVUOWNSR1ZGOVho?=
+ =?utf-8?B?a0g5ejEzb3J6aXR0TEZGU1AzeXcvcjRmYTl5SUtHbEJvcUc0QXhqS3Fhb1lr?=
+ =?utf-8?B?NEFCWExjSGJ2ZTd0dC9GVzV4d2NLUUVsbFhDMjRoeGhYOURsYXFibkhKTk41?=
+ =?utf-8?B?U0xjaktSSnlpdkZDZXZ1bTFCZUgyeHlnbTRJeGtzd1JWaGFtRXhTYWdicEFQ?=
+ =?utf-8?B?eW14L2ZtY1VNYjZqVVRiaGFOSFAwRFRucmErN3VhQ29tTzRONDZtMHZNQ3VP?=
+ =?utf-8?B?enE3YklLcTVuclJBQ2w1MUxXb2FMLzMzRVlIM0EzRElJYWt3bjdJcFFTSEV3?=
+ =?utf-8?B?dElqZnFYQ0ZjNEI2dWJTa3NUdE5kNGhEd3ZRRy9hM3ZERmxtV1RTTG9XT1Z3?=
+ =?utf-8?B?VTEyallEK2creFMwUFl4OXpBN1dTemcvZUEzUUdNd3p3OGpGb3pJY200dnZS?=
+ =?utf-8?B?MnpMN0J0eUFWK1NVYm4zQ1pjWjhFbVh0SXA1VnV3QnVMZXY4MXRjT084TXlv?=
+ =?utf-8?B?c3VrMmNLUWs5aDBwQ1BaWXdyZThDd003VklFY0J3MmhaYVBVemhuTkg1dklQ?=
+ =?utf-8?B?dHYrUEZtWFYwQmh5MjJnam9iSGh2VDFvUEdid2tBcEhCOWFxeC9QY3BUd1Fw?=
+ =?utf-8?B?RlQzSW8zTUNMcFIzRW1kaTdpN280ZUhralFvU3VFZmhYc2F0M2hJVnRHclp5?=
+ =?utf-8?B?S0lLUnZRTFhNd2pWRkRsNHdQTTNnWks2Yk05eEUzK3NDM01xVjRuNUNURFFW?=
+ =?utf-8?B?WXFqQ082TUlicFVJYWMxdjRxcmVDR2dWWkxEWlZLRnZITGt4Mytva3BBVGcv?=
+ =?utf-8?B?TTQ5am9QRk1DNFRBY0ZvSzhJQncyMWg3VUFOMGE5RmlKL0dTdlRPRTlvY3lq?=
+ =?utf-8?B?S2kzR1BnRnlwNnBqOXBxTUQrT0NMaERMTitLbEdjZVN2YXIveFNlYTF3Y2VP?=
+ =?utf-8?B?R1B1UnF4bnF0NFZNVzdscjNIbmZFSTJXaTFVOWx2U0JGOUxSU3gycHN4Z1o2?=
+ =?utf-8?B?Z2dsbzVpSlFlc3NSVGFtM1IzVHhmL1MwbURjZFdoUUtyVlZvbFVvVS9Hb2cx?=
+ =?utf-8?B?M2JmSXl3SHZXV21oSTdJM0J5YlNKODVyR0lRM1p2aVltdlA4VzN4YWZGb0dN?=
+ =?utf-8?B?dnZDZ2QvZGVsRkY1Y1Z5cjk5Y1NZNEwxTzg2eHAzeE8vd1FVVG4wREd6Zm1Y?=
+ =?utf-8?B?ZEZqd2xWbjczVEFiTytMU0JRNXppMCtVUlQvQnNoREF3UDlyZmE1QjZEUXZs?=
+ =?utf-8?B?K0ZOTVloeWxWY1R6UnQvSUFtaUc1akZpMFhYVVI4ZzZKZGhGc24vS3VPbWFy?=
+ =?utf-8?B?ZGg4cUloNm5ybUpIckdSOGNndVZ6U3Z5K2MyUi9qeko4K2ZxbkgxdTNLWHVh?=
+ =?utf-8?B?R3BZN3hHbHVxWUdjRkUrRzNzVGN6Q1QzZkFIbWR4ek9FY3BOUFdzc1ZRZ0h0?=
+ =?utf-8?Q?InsnJlofzSf9fD8T01rCzMWrdcx2dQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(7416014)(1800799024)(376014)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 05:51:44.5091
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f484411-1836-46ed-706e-08dddee47a88
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509EE.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3875
 
-On Tue, Aug 19, 2025 at 12:05:41AM +0200, Benno Lossin wrote:
-> On Mon Aug 18, 2025 at 3:58 PM CEST, Ryosuke Yasuoka wrote:
-> > +    fn llseek(me: Pin<&RustMiscDevice>, file: &File, offset: i64, whence: i32) -> Result<isize> {
-> > +        dev_info!(me.dev, "LLSEEK Rust Misc Device Sample\n");
-> > +        let pos: i64;
-> > +        let eof: i64;
-> > +
-> > +        // SAFETY:
-> > +        // * The file is valid for the duration of this call.
-> > +        // * f_inode must be valid while the file is valid.
-> > +        unsafe {
-> > +            pos = (*file.as_ptr()).f_pos;
-> > +            eof = (*(*file.as_ptr()).f_inode).i_size;
-> > +        }
+Hi Matthew,
+
+On 09/07/2025 21:09, Matthew Maurer wrote:
+> This allows `File`s to own their data, allowing DebugFS files to be
+> managed in sync with the data that backs them. Because DebugFS files are
+> intended to actually own data and provide access, `File`s still maintain
+> the same lifecycle for provided data when `CONFIG_DEBUG_FS` is disabled.
 > 
-> Please include abstractions for writing & reading the file position
-> instead of using `unsafe`.
-
-OK. I believe I probably need to modify on the kernel:fs::file::File to
-add abstraction for writing & reading. I'll re-consider and send them in
-v2 patch.
-
-Thank you very much for your comment.
-
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 > ---
-> Cheers,
-> Benno
+>  rust/kernel/debugfs.rs | 149 ++++++++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 117 insertions(+), 32 deletions(-)
 > 
-> > +
-> > +        let new_pos = match whence {
-> > +            SEEK_SET => offset,
-> > +            SEEK_CUR => pos + offset,
-> > +            SEEK_END => eof + offset,
-> > +            _ => {
-> > +                dev_err!(me.dev, "LLSEEK does not recognised: {}.\n", whence);
-> > +                return Err(EINVAL);
-> > +            }
-> > +        };
-> > +
-> > +        if new_pos < 0 {
-> > +            dev_err!(me.dev, "The file offset becomes negative: {}.\n", new_pos);
-> > +            return Err(EINVAL);
-> > +        }
-> > +
-> > +        // SAFETY: The file is valid for the duration of this call.
-> > +        let ret: isize = unsafe {
-> > +            (*file.as_ptr()).f_pos = new_pos;
-> > +            new_pos as isize
-> > +        };
-> > +
-> > +        Ok(ret)
-> > +    }
-> > +
-> >      fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result<isize> {
-> >          dev_info!(me.dev, "IOCTLing Rust Misc Device Sample\n");
-> >  
-> 
+> diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
+> index e5b6497d1deb67671d22ffd90cd5baa855bb9257..a1a84dd309216f455ae8fe3d3c0fd00f957f82a9 100644
+> --- a/rust/kernel/debugfs.rs
+> +++ b/rust/kernel/debugfs.rs
+> @@ -5,12 +5,13 @@
+>  //!
+>  //! C header: [`include/linux/debugfs.h`](srctree/include/linux/debugfs.h)
+>  
+> -#[cfg(CONFIG_DEBUG_FS)]
+> -use crate::prelude::GFP_KERNEL;
+> +use crate::prelude::*;
+>  use crate::str::CStr;
+>  #[cfg(CONFIG_DEBUG_FS)]
+>  use crate::sync::Arc;
+>  use core::fmt::Display;
+> +use core::marker::PhantomPinned;
+> +use core::ops::Deref;
+>  
+>  #[cfg(CONFIG_DEBUG_FS)]
+>  mod display_file;
+> @@ -63,40 +64,78 @@ fn create(_name: &CStr, _parent: Option<&Dir>) -> Self {
+>      }
+>  
+>      #[cfg(CONFIG_DEBUG_FS)]
+> -    fn create_file<T: Display + Sized + Sync>(&self, name: &CStr, data: &'static T) -> File {
+> -        let Some(parent) = &self.0 else {
+> -            return File {
+> +    /// Creates a DebugFS file which will own the data produced by the initializer provided in
+> +    /// `data`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The provided vtable must be appropriate for implementing a seq_file if provided
+> +    /// with a private data pointer which provides shared access to a `T`.
+> +    unsafe fn create_file<'a, T: Sync, E, TI: PinInit<T, E>>(
+> +        &self,
+> +        name: &'a CStr,
+> +        data: TI,
+> +        vtable: &'static bindings::file_operations,
+> +    ) -> impl PinInit<File<T>, E> + use<'_, 'a, T, E, TI> {
+
+Rebasing my test code from an older version of this series to this v9
+(this is the most recent one?) here in rust/kernel/debugfs.rs and in
+samples/rust/rust_debugfs.rs I get errors for each place where
+'use<...>' is used:
+
+error[E0658]: precise captures on `impl Trait` are experimental
+  --> rust/kernel/debugfs.rs:81:37
+   |
+81 |     ) -> impl PinInit<File<T>, E> + use<'_, 'a, T, E, TI> {
+   |                                     ^^^
+   |
+   = note: see issue #123432
+<https://github.com/rust-lang/rust/issues/123432> for more information
+   = help: add `#![feature(precise_capturing)]` to the crate attributes
+to enable
+   = note: this compiler was built on 2024-09-04; consider upgrading it
+if it is out of date
+
+rustc is
+
+rustc 1.81.0 (eeb90cda1 2024-09-04)
+
+I tried to work around this by adding
+
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -36,6 +36,9 @@
+ //
+ // To be determined.
+ #![feature(used_with_arg)]
++
++#![feature(precise_capturing)]
++
+
+This seems to help for rust/kernel/debugfs.rs but not for
+samples/rust/rust_debugfs.rs.
+
+Any hint?
+
+Best regards
+
+Dirk
 
