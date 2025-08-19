@@ -1,143 +1,141 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21D833CE83
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 20:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7F22853F1;
+	Tue, 19 Aug 2025 20:53:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755634473; cv=none; b=ey+YQ9zW4Ql4TpOPF89G/7VgRolMj6ub6IntyAnjcAWQpSU7d3PBkOo3O9UIW+ui3hewxTUhurSRvX2rMpm/nGMPoIjzPJLv7Q+W2vmuP6xhaC8nAOOPbug84J2QWRtegY2W/3bskvshtriyGQ6iWA1h7lVxlqh7VqISjKNTUZk=
+	t=1755636804; cv=none; b=NXIFpRnXKX1WtmLCfX55Sw5ZRhP9QGw2gWKxnWVXW1SxoyQXX0cZafY5Av9/MbefCAlXt6YqsA4wUUfJK6CmV0vdMy2TMNcA2i1GzWiJXlqubmoOUPi+zHpHf3jg03KrOD5ERO9wGbjt+jVfEa3PtfQcDnG4G0YKiKRFX0Uom0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755634473; c=relaxed/simple;
-	bh=tG2lfCHLE8ygsJSIY3ueBGnk3/tzTKsqBPW8KH5mg8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9omf+2ynBuuBp8XZ380q0TjL2UcLvfZghWx9+Kpq6mKiPQZVW6RnQRLRqx2301Swc82vwdY2d+sSdMc26zv3yIBJUoe09nhlnCQtI46+PFzqLtlX4LjKlAiflI0UqqyWnbO9R1pmiouyUls3PoM1bvjI8xQTqRiVBx718zjmVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=heNQByn7; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1755636804; c=relaxed/simple;
+	bh=VpY1fE+yc5JDErEIErkymNTIteIxfr4IdhobTC8yv/0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mKYmo/tHxt6Oy6XzfguQ5Lf2KK1f7NO0EGqCBAYNejWRZD/QLdhkbEOHvGRqV4HlyX+EUVcCXq1fenHGpnp1+2cuW2fkByT+/kY4PlKMrjuWe2RaQrkF0H51y3UUd334luu16870M4jRXbhJn4aBcFiUZaEN2S2kys63Zkila5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aSBJiGbt; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="heNQByn7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755634470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lJQRnLhxJvgIUuT5kaM/ex8erJ3gbHp4ky93mdCcTI8=;
-	b=heNQByn7pjNXkuc/CPVIRFZl1NiQfqk/JuKFVvQ7rEGhVJ3XKbL6I2li1A3U9fh+J003lU
-	CLEC5Z0X+cxI0arkxYcsPSXAVrwGHJPhsiMz7QDYTXF518uZIE07Z9LT/F6EU9i5FlJv+I
-	jH/262vB4cNDHsWpWVeWWoeeqzG3yss=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-D206bQRpNWWyQE_HTr6LpQ-1; Tue,
- 19 Aug 2025 16:14:26 -0400
-X-MC-Unique: D206bQRpNWWyQE_HTr6LpQ-1
-X-Mimecast-MFC-AGG-ID: D206bQRpNWWyQE_HTr6LpQ_1755634464
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 50177180048E;
-	Tue, 19 Aug 2025 20:14:24 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.81.238])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E196A19560B0;
-	Tue, 19 Aug 2025 20:14:20 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v8 7/7] rust: hrtimer: Add HrTimer::expires()
-Date: Tue, 19 Aug 2025 16:05:58 -0400
-Message-ID: <20250819201334.545001-8-lyude@redhat.com>
-In-Reply-To: <20250819201334.545001-1-lyude@redhat.com>
-References: <20250819201334.545001-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aSBJiGbt"
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-435de801abeso2123709b6e.3;
+        Tue, 19 Aug 2025 13:53:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755636801; x=1756241601; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cccifdKxwgVIxGkwbmtQ1TWALCMGZnlgxiuGwopgW2o=;
+        b=aSBJiGbtxApBbJsL3EsLS20B5dPaqnJACepJeQMPESX3v5qargN1g5LD/rFNrk7RIM
+         RbuCTQlESmQmZcoSbNAlCLAu3UCHukRN++jsvO1FlKa7SLC7AzLJgVbsMyH94hcZZD8h
+         qIKdSV6EIZ8/txljzN9tNdbjVmiGarkVi71ZXkHen34xREovC5x2rIcWmzoj/93jou35
+         Cm6dwYxXX13WHY4p2rdTOPg6BH6zEMFvCA/NxbOje0glsPNF9/RyKxTkiTmLTjM/uZP/
+         /yzc+yaG7h/KtnPmsLioyXXdtKkseVQvyU87CmzAgngxYMpR5mo9nBy57FKriyiK4AX4
+         ogyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755636801; x=1756241601;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cccifdKxwgVIxGkwbmtQ1TWALCMGZnlgxiuGwopgW2o=;
+        b=qgsHHkS30PpYHfuk/I8GsjPsCMQuG3CkxIWG409QmVt1SrE+M2p6o3b1y+HDH4n1Gl
+         ek6oVSpB7uTkvvK8vViSdUItCiwm7z7EFjPqMH5eXJkG+SvJ4DN0nRl38d8bVizQSrUp
+         3vsIRmOhpPnT50vNevIMRngl/DWX6DVkrr+VXiaZB5WeIFLtCKItQAv47P4V1iHV3Jl0
+         YWQbY97F6DkLt3w8KZpfZT6GXZaQocmUtcp1/4bMKCMm9DEUe1k5wNy3pNbI9NQI8Kjb
+         aWGzY3vThmxGQWZ1tsIop5gv9fi7cLg8A+WbSjO4wylflaluJaJ0HPU+tbWOqDK9zVCN
+         dalw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQtelsvDkPJxkNq2K8GZ7sCZ5qyVUKWshK6qG86LGaQvXG3JPI6BaoJWHYzdSX1CrdzUyZAAF+6Lymtv4=@vger.kernel.org, AJvYcCXNYhaxQZ/xma1H6cDRVSZc+2DswTEc5EuCxPICnkOfy4Nyrg7cZcvtMjHlRzJN7n3+aWgU38suKiebpOdHuLc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwngU/bdv26jos2KTjeLdJDkh5efszZqjSvGriGhuS5Ac3L0YxH
+	1T9SGbskhsOCg4eAHoG9TJTi/XAww0UrsTxmnH63nRJJslNFPfQRP6QT
+X-Gm-Gg: ASbGncvgHliQne+zdJmXpueJIE2mc5zUjaycyjg6H4xaT7je6mxNFF20eGYrlaQ8Z5b
+	EcfF2rZN64Ppw3pBnszAM1zjHr4qBWI5NmUInb6vU4cVaLTpz6MUf91jTOHRJlAKD6qcRdWP38w
+	oISLCeGDjVUQ+JpCBZzGvFEJKi2X2ZJk9Q3nXIqunmzrl2TQI+JX4aqw0fO7nfQ8p18tAKBqL+t
+	cMMxmJLbiC8022cVm1HzleWD3O3/Wg8JzYrZrgclR9WtUifuQqkLBxSD0gIeelPspREBUiQ1GIs
+	9ImGC66ds/Ns96i6WnuPh2lY0h5JtgDHBy/2/RM97ol+DCtQe/nbgsrRoJ+fi5Z+M5TyfUcI2TX
+	jqTG5dWuOcDVWAgYbjHsO3U5zgUDTg63SVsuSeHDjB1tKFmaHKdAh+N+lc6gr/Dm4IM2RTQ==
+X-Google-Smtp-Source: AGHT+IFQLVe/eYDYQgpfKh6ZkPeTyExiDauVdsWHpI+hmDZYMy7Hx6bM1cNBtQ69VAPnx0ro0riEjw==
+X-Received: by 2002:a05:6808:190a:b0:40c:7996:73e3 with SMTP id 5614622812f47-437720d8318mr245421b6e.28.1755636800587;
+        Tue, 19 Aug 2025 13:53:20 -0700 (PDT)
+Received: from [192.168.86.39] (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-435ed0fd6b5sm2480745b6e.5.2025.08.19.13.53.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 13:53:20 -0700 (PDT)
+Message-ID: <0d4bd6c7-4611-4b7a-bc07-8b18336e74ab@gmail.com>
+Date: Tue, 19 Aug 2025 15:53:15 -0500
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/5] rust: maple_tree: add MAINTAINERS entry
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
+ rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
+ <20250819-maple-tree-v2-5-229b48657bab@google.com>
+Content-Language: en-US
+From: Andrew Ballance <andrewjballance@gmail.com>
+In-Reply-To: <20250819-maple-tree-v2-5-229b48657bab@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add a simple callback for retrieving the current expiry time for an
-HrTimer. In rvkms, we use the HrTimer expiry value in order to calculate
-the approximate vblank timestamp during each emulated vblank interrupt.
+On 8/19/25 5:34 AM, Alice Ryhl wrote:
+> Similar to and just below the existing MAPLE TREE entry.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Liam: I'm not sure what you prefer for the MAINTAINERS entry, so let me
+> know if you want anything changed. There are also a few other options,
+> for example, I could just add the files under the existing MAPLE TREE
+> entry? The get_maintainers script should still send any relevant patches
+> my way because they also match the RUST entry that has a wildcard on the
+> rust/ directory.
+> 
+> Which tree does maple tree patches usually land through?
+> 
+> Andrew Ballance: You mentioned being interested in being listed here as
+> well?
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+Yes, please add me as a maintainer.
 
----
-V8:
-* Fix bogus safety comment I noticed after Fujita's comments. In expires()
-  we're not guaranteed to get a non-negative ktime_t because of ktime_t
-  itself, we're guaranteed to get one because a negative expiration time
-  for a timer doesn't make sense.
+In regards to the discussion about the maintainers entry,
+personally I would prefer that the entries for the rust and
+c were separate, just like the version in this patch.
 
- rust/kernel/time.rs         |  1 -
- rust/kernel/time/hrtimer.rs | 23 +++++++++++++++++++++++
- 2 files changed, 23 insertions(+), 1 deletion(-)
+> ---
+>   MAINTAINERS | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 26053163fe5aed2fc4b4e39d47062c93b873ac13..4a52d884e36eafe1c819227207123c51caf02ee5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -14674,6 +14674,16 @@ F:	lib/test_maple_tree.c
+>   F:	tools/testing/radix-tree/maple.c
+>   F:	tools/testing/shared/linux/maple_tree.h
+>   
+> +MAPLE TREE [RUST]
+> +M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> +M:	Alice Ryhl <aliceryhl@google.com>
+> +L:	maple-tree@lists.infradead.org
+> +L:	linux-mm@kvack.org
+> +L:	rust-for-linux@vger.kernel.org
+> +S:	Supported
+> +F:	rust/helpers/maple_tree.c
+> +F:	rust/kernel/maple_tree.rs
+> +
+>   MARDUK (CREATOR CI40) DEVICE TREE SUPPORT
+>   M:	Rahul Bedarkar <rahulbedarkar89@gmail.com>
+>   L:	linux-mips@vger.kernel.org
+> 
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 5c40ebe096357..30f0086c2408f 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -211,7 +211,6 @@ pub(crate) fn as_nanos(&self) -> i64 {
-     /// # Safety
-     ///
-     /// The caller promises that `nanos` is in the range from 0 to `KTIME_MAX`.
--    #[expect(unused)]
-     #[inline]
-     pub(crate) unsafe fn from_ktime(ktime: bindings::ktime_t) -> Self {
-         debug_assert!(ktime >= 0);
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index e0d78a8859903..856d2d929a008 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -223,6 +223,29 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
-     {
-         self.forward(HrTimerInstant::<T>::now(), interval)
-     }
-+
-+    /// Return the time expiry for this [`HrTimer`].
-+    ///
-+    /// This value should only be used as a snapshot, as the actual expiry time could change after
-+    /// this function is called.
-+    pub fn expires(&self) -> HrTimerInstant<T>
-+    where
-+        T: HasHrTimer<T>,
-+    {
-+        // SAFETY: `self` is an immutable reference and thus always points to a valid `HrTimer`.
-+        let c_timer_ptr = unsafe { HrTimer::raw_get(self) };
-+
-+        // SAFETY:
-+        // - Timers cannot have negative ktime_t values as their expiration time.
-+        // - There's no actual locking here, a racy read is fine and expected
-+        unsafe {
-+            Instant::from_ktime(
-+                // This `read_volatile` is intended to correspond to a READ_ONCE call.
-+                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
-+                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
-+            )
-+        }
-+    }
- }
- 
- /// Implemented by pointer types that point to structs that contain a [`HrTimer`].
--- 
-2.50.0
+Best Regards,
+Andrew Ballance
 
