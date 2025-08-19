@@ -1,295 +1,152 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136CF275B12
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 22:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB6C2512DE;
+	Tue, 19 Aug 2025 23:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755644039; cv=none; b=eua1CVNHLlJwr8EM4xPo2acRduIF6uMKSwcv2J+fnZmzlYRUd38bBBsfFJikHwbaWuvo58FUAUi+DagNlLU6zkiY3CBhBpMTd+hjDgxzhS84/szhu7xW/NFNZs0m3KNNCdvjdWADVwkL9BzSGyqtcEl9FH9bxe0+Go0S/DKmRf8=
+	t=1755644861; cv=none; b=PAcEyvSi7uB6XrwmZF2khLOsc0OU9CqlbVst0KE/Nu1HYW59qs7+m+143DOlxubSOhiYAnuE792oUaE3OZgPX4moN8JMEor8oMnR7VxWyGKBw2BulDtOXir3bnC2qXYjmws/1b6P2x7eOHY3SpFucGrQGDxuIfp1wADWNCNDJSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755644039; c=relaxed/simple;
-	bh=guKkQWk0Wjy3KEPKk9viQ+9k5JCWYAdpW0xugQqvnfY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BQpmipT+uJR+P4GNYCNfho8v3dyc1QiZULWq4iRyNx2i3u8JtWNc5u0pvxiblCZ2fmbZpqEDr3RA0HLoKz4pbHsbNeSWifIRrEQcN1xvwj0VRV3ssFF7XGa3ZKlQ1y/3ickG6JDL87F1du+Cw0BkDNe9zHVhlylaIHauO0w0K28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ASAlEIyU; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+	s=arc-20240116; t=1755644861; c=relaxed/simple;
+	bh=kP5KICDjVGFTguWffLhUXR9fkMg2CHShAjqdqroa9jQ=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=qjelY/ad8zSL1dN3NzOjrr6DeWzX+vQfQmqrA6PyZwHgq1i/ihC379z0nQPNZJrDwiYTEHOWw6vUjzYMzKewelfNXzhrZN1AIp0V0r4NhLeFnCfh7KeXpqbhQKvYO7AhPWBZq/XHZmcGCPZ3XkZ2+zHvdT28q5UlHhZTBbrXd/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fS1mNJkK; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ASAlEIyU"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-244581187c6so67062445ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 15:53:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fS1mNJkK"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2430c5b1b32so2579685ad.1;
+        Tue, 19 Aug 2025 16:07:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755644037; x=1756248837; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a5b7ATtWYbDHgkSUGYgdvos0SG8tLhPoIOBmVwWuj9Y=;
-        b=ASAlEIyUnCLLf1PdGwc8unmgxoZTmAKjkPoesAbEh6nuTIdtOEWE+yh9UI4x39fXsi
-         0OBCY44Jbq7OVVc/8t4WawYDsmc3t0teh/M9n4wa/IbxwTXwkAILEdhSe8FtBI9TKkGo
-         DLfoiOgLEtHHyCjHcBZ+ePXbPgdbpZihr7sgg3ZLjShFtZnZeUH+6mABn02WHJ3l8wwp
-         z2k68cw2bCyYncdUydU9CCg84uuLoDO1U5cBJ15jhn/cS33yOkNfOLBm7WyhqkSy0PD2
-         VMKbHsT9lYvWnt0/ol0I+XZSTKB/pIxEJqiuT07jP0z+WrmLRZlTPhhEmMeQg2oNApAp
-         Dyzg==
+        d=gmail.com; s=20230601; t=1755644858; x=1756249658; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GYVG8v8pdpVSBv9zxjqFObiIPrbN0RlS5lG6lYDp9ig=;
+        b=fS1mNJkKXbb9w2nS+NgxRVlwae1C5YPenSqzaSw51ESirrRjGQW8Vlra/XcWx7nSDN
+         EoY6q7oDNK9W52qrr0x11m4rDFRl8tqVqu7kg08+WHEM7GgYdSYKcxHE3UKCtuk+w3f0
+         47vFHcTCJieon3dLe3o3oEPFINj4Q16PEyW5qPPs07mwy/hBqhx3WHaYW+7jwdZlHu+h
+         Boc8LC80E6samNBnVVyVKvGr03WV5qDU7XCzthrT3b5jdl/KEQrb6GcCd2ZPwb5Msn39
+         b7042xOlK5Wjvuap5nMJUFJJtxoN9HI5Ojhf4U2KNp+ugL9TtlMxZGxIQlyfl3Rwvytd
+         eGNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755644037; x=1756248837;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a5b7ATtWYbDHgkSUGYgdvos0SG8tLhPoIOBmVwWuj9Y=;
-        b=UJZ7IpyVdvRDqSF/x0/gk6mDoG5Zx5Xtqgy3PDj+vL58YuM1tVfSZkrfwsdmLX5+gZ
-         oTw+ZAOb828rSiVSdu9z5EWT/Cr56TR9zd5qCk3NubhdWB/cvXmqUnSuQ8yYOCMh9Gid
-         gNfZRanrp32E4V00mnCKIcu0Tq8iXSnS/FQ23jL+f9VzxDVLwYLEcGSF2P3jmKiB1sA+
-         L3yy8PgTiaup3ykPEGhJnfyupbcpI0zKNbpBGijsbNZBsLWnax2W7gCxIkQSOhVhJg3P
-         eo5bcgLNhGcxvu+JxNCk54pjaFU+2OLrTN0M2ghy91D54E0vBU9Jm8sUimtm7swy+4HZ
-         AoFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXltENXRff+ceLiKCawEC4habzwEyxEg8nxalqdi5D7eJ8NF1BA/jyvhL33R5760xZQM8ICYYfLDkSXqMl7Ng==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3rt9hxVwTKsSfIUDYOXsyqroyLkEErGna9+RpQcZ3enyQxB8v
-	iiF0vDO89bxUgbsFPZwqikd2dn7xnADpNJ56hU0QEnVjBxl+GSvdKzj5TkaP346Rgd+6kX6+OQV
-	aG9DRbY7n/Q==
-X-Google-Smtp-Source: AGHT+IFVb5OKS4efQ9HXGY/B21B3D+QSi9OXzLMr7CD2GATBbB4apepGntwqOQXPMO28tpHljh4Xa0qkb3DQ
-X-Received: from pjbsd14.prod.google.com ([2002:a17:90b:514e:b0:321:78e7:57fb])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:181:b0:242:89fd:48cc
- with SMTP id d9443c01a7336-245ef25b64fmr6737275ad.50.1755644037264; Tue, 19
- Aug 2025 15:53:57 -0700 (PDT)
-Date: Tue, 19 Aug 2025 22:53:42 +0000
-In-Reply-To: <20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com>
+        d=1e100.net; s=20230601; t=1755644858; x=1756249658;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GYVG8v8pdpVSBv9zxjqFObiIPrbN0RlS5lG6lYDp9ig=;
+        b=MVYJCvhphqQZokirImqX+xcrXwYzzpzFlcgeLNI0LvDVVEdkcLXAN8LK0Al9i77KNg
+         1KnUBNYt4uQ3HS1CQo98a01JYPFa4OIN68HWBNb+PX0ZxslTNDoJyXwQzO/iZwmRtvcF
+         uFeTiZp91oT7xKy3Uog5rrU6wTnOr5zEWUb7IvnoI+1drGaRM/DoaL5ge0yVhvuS1WLo
+         OK8+gIRcPcvKqMRcaWnMyCxKSnMUw5We0b7AGgvkHH+vgq7z7mUexTgh579wBe8LU3Ij
+         sJejFQl5Ut5BojI053lZfILj0aOu2BF5lqaGmJISz3Qp+2W9z/Uo/YDjThR6Nzqo7mIq
+         RHTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQJKUyem3MlKC6oXsf5JVxrIndUdRwOmvC+q6YvIEKIHFeZkVPX8botw3vFY1cHrEjnovr22Hr8Z2TOik=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0yPC+ep3Vvic0hm6Q4rQLZk97RlFIalqL2Z2hEhNRVSQ/+S2+
+	Ughco1JYfmhO2tc9tiyI9N/heEXXRljUexjDaBzAtbQkbuh3lNPSZtuV
+X-Gm-Gg: ASbGncsapKpUFBzB5wQdgxU5iExhET8Ak0sbAYt6WLGzgzh1YilalgffB6cqaNu0yzJ
+	T8wMK4qN+RfdwC7CPKzuCjw1cT7QfYLcUb18ZA6KLSH63NBop0SbR0VGCSGCfPXFct0EOHF/BjB
+	RxbyV2zqE8ohvUsqts9dd3gf2HvQn1qDv+2qCyseEPHGvN+4WzVVaCN27jZOU/FB/sGI32T0Wqm
+	hKe8x9amQdbl73UGks1nhFB7fueJWgU3mFZG2Us9d/2H0uiHGESHig6MAJ8LfIR30qg0b0TCnM5
+	407t6wxOcfqOgzEayIAMgeycvMeHlf9GY54dupNptSBTbwhn/jkmdCcXoE862yy21kMA2fq/Emr
+	G/ytR6MHnsrg33hdZ9a8X9FqwuODttkw1xGkHsmBZQX42fgT3grR+C73MN7U2M8Squc3vA1IaYo
+	kY
+X-Google-Smtp-Source: AGHT+IHKPAN+5QZ7+r8J44EHgjvyKpIvsgvKxfwIW7WnWeJZXqrUiD+Qt2lLAzbIqo7kjb4T6teTcA==
+X-Received: by 2002:a17:903:38c5:b0:242:5f6c:6b4e with SMTP id d9443c01a7336-245ee00e635mr12745435ad.7.1755644858260;
+        Tue, 19 Aug 2025 16:07:38 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed375db3sm8080465ad.59.2025.08.19.16.07.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 16:07:37 -0700 (PDT)
+Date: Wed, 20 Aug 2025 08:07:21 +0900 (JST)
+Message-Id: <20250820.080721.742789396303033039.fujita.tomonori@gmail.com>
+To: lyude@redhat.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, a.hindborg@kernel.org, fujita.tomonori@gmail.com,
+ boqun.feng@gmail.com, frederic@kernel.org, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org
+Subject: Re: [PATCH v8 6/7] rust: time: Add Instant::from_ktime()
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250819201334.545001-7-lyude@redhat.com>
+References: <20250819201334.545001-1-lyude@redhat.com>
+	<20250819201334.545001-7-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com>
-X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755644022; l=7159;
- i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=guKkQWk0Wjy3KEPKk9viQ+9k5JCWYAdpW0xugQqvnfY=; b=jk2cW46gmwo95KDYJcb0fC6ITVr/buzZ/KWUWFbtmsVlvWaZf4/5notCvfPMHxcEaU2Dy7/jh
- xeX1m3sFYeVCA0qaSM/V9ZmV08MirTHBWdmuAqEztjgQZag7PvA4CCb
-X-Mailer: b4 0.14.2
-Message-ID: <20250819-debugfs-rust-v10-7-86e20f3cf3bb@google.com>
-Subject: [PATCH v10 7/7] samples: rust: Add scoped debugfs sample driver
-From: Matthew Maurer <mmaurer@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>, 
-	Dirk Beheme <dirk.behme@de.bosch.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Adds a new sample driver `rust_scoped_debugfs` that demonstrates the
-use of the scoped debugfs APIs.
+On Tue, 19 Aug 2025 16:05:57 -0400
+Lyude Paul <lyude@redhat.com> wrote:
 
-The driver creates a `control` directory with two write-only files,
-`create` and `remove`. Writing a name and a series of numbers to
-`create` will create a new subdirectory under a `dynamic` directory.
-This new subdirectory will contain files that expose the numbers as
-atomic values.
+> For implementing Rust bindings which can return a point in time.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> 
+> ---
+> V4:
+> * Turn from_nanos() into an unsafe function in order to ensure that we
+>   uphold the invariants of Instant
+> V5:
+> * Add debug_assert!() to from_nanos
+> V8:
+> * Change name of function from Instant::from_nanos() to
+>   Instant::from_ktime()
+> 
+>  rust/kernel/time.rs | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
 
-Writing a name to `remove` will remove the corresponding subdirectory
-from the `dynamic` directory.
+Thanks!
 
-This sample serves as an example of how to use the `debugfs::Scope`
-and `debugfs::ScopedDir` APIs to create and manage debugfs entries
-that are tied to the lifetime of a data structure.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- MAINTAINERS                         |   1 +
- samples/rust/Kconfig                |  11 +++
- samples/rust/Makefile               |   1 +
- samples/rust/rust_scoped_debugfs.rs | 134 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 147 insertions(+)
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 64c8dcf548d63..5c40ebe096357 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -200,6 +200,29 @@ pub fn elapsed(&self) -> Delta {
+>      pub(crate) fn as_nanos(&self) -> i64 {
+>          self.inner
+>      }
+> +
+> +    /// Create an [`Instant`] from a `ktime_t` without checking if it is non-negative.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// On debug builds, this function will panic if `nanos` is not in the range from 0 to
+> +    /// `KTIME_MAX`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller promises that `nanos` is in the range from 0 to `KTIME_MAX`.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b6db584a33dd7ee39de3fdd0085d2bd7b7bef0e..2cbe890085dbb6a652623b38dd0eadeeaa127a94 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7482,6 +7482,7 @@ F:	rust/kernel/driver.rs
- F:	rust/kernel/faux.rs
- F:	rust/kernel/platform.rs
- F:	samples/rust/rust_debugfs.rs
-+F:	samples/rust/rust_scoped_debugfs.rs
- F:	samples/rust/rust_driver_platform.rs
- F:	samples/rust/rust_driver_faux.rs
- 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 01101db41ae31b08a86d048cdd27da8ef9bb23a2..3372935519d658529ee7ba25fb2c3fff6adae8c4 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -73,6 +73,17 @@ config SAMPLE_RUST_DEBUGFS
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_SCOPED_DEBUGFS
-+	tristate "Scoped DebugFS Test Module"
-+	depends on DEBUG_FS
-+	help
-+	  This option builds the Rust Scoped DebugFS Test module sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_scoped_debugfs.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_DRIVER_PCI
- 	tristate "PCI Driver"
- 	depends on PCI
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 61276222a99f8cc6d7f84c26d0533b30815ebadd..de10b7f4db3996dc57be813ceb076d050ad8f65a 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
- obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
- obj-$(CONFIG_SAMPLE_RUST_DEBUGFS)		+= rust_debugfs.o
-+obj-$(CONFIG_SAMPLE_RUST_SCOPED_DEBUGFS)	+= rust_scoped_debugfs.o
- obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
-diff --git a/samples/rust/rust_scoped_debugfs.rs b/samples/rust/rust_scoped_debugfs.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..7c34cab62a2753d1ede3a1334be1fb13ddce780c
---- /dev/null
-+++ b/samples/rust/rust_scoped_debugfs.rs
-@@ -0,0 +1,134 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2025 Google LLC.
-+
-+//! Sample DebugFS exporting platform driver that demonstrates the use of
-+//! `Scope::dir` to create a variety of files without the need to separately
-+//! track them all.
-+
-+use core::sync::atomic::AtomicUsize;
-+use kernel::debugfs::{Dir, Scope};
-+use kernel::prelude::*;
-+use kernel::sync::Mutex;
-+use kernel::{c_str, new_mutex, str::CString};
-+
-+module! {
-+    type: RustScopedDebugFs,
-+    name: "rust_scoped_debugfs",
-+    authors: ["Matthew Maurer"],
-+    description: "Rust Scoped DebugFS usage sample",
-+    license: "GPL",
-+}
-+
-+fn remove_file_write(
-+    mod_data: &ModuleData,
-+    reader: &mut kernel::uaccess::UserSliceReader,
-+) -> Result<()> {
-+    let mut buf = [0u8; 128];
-+    if reader.len() >= buf.len() {
-+        return Err(EINVAL);
-+    }
-+    let n = reader.len();
-+    reader.read_slice(&mut buf[..n])?;
-+
-+    let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?.trim();
-+    let nul_idx = s.len();
-+    buf[nul_idx] = 0;
-+    let to_remove = CStr::from_bytes_with_nul(&buf[..nul_idx + 1]).map_err(|_| EINVAL)?;
-+    mod_data
-+        .devices
-+        .lock()
-+        .retain(|device| device.name.as_bytes() != to_remove.as_bytes());
-+    Ok(())
-+}
-+
-+fn create_file_write(
-+    mod_data: &ModuleData,
-+    reader: &mut kernel::uaccess::UserSliceReader,
-+) -> Result<()> {
-+    let mut buf = [0u8; 128];
-+    if reader.len() > buf.len() {
-+        return Err(EINVAL);
-+    }
-+    let n = reader.len();
-+    reader.read_slice(&mut buf[..n])?;
-+
-+    let mut nums = KVec::new();
-+
-+    let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?.trim();
-+    let mut items = s.split_whitespace();
-+    let name_str = items.next().ok_or(EINVAL)?;
-+    let name = CString::try_from_fmt(fmt!("{name_str}"))?;
-+    let file_name = CString::try_from_fmt(fmt!("{name_str}"))?;
-+    for sub in items {
-+        nums.push(
-+            AtomicUsize::new(sub.parse().map_err(|_| EINVAL)?),
-+            GFP_KERNEL,
-+        )?;
-+    }
-+
-+    let scope = KBox::pin_init(
-+        mod_data
-+            .device_dir
-+            .scope(DeviceData { name, nums }, &file_name, |dev_data, dir| {
-+                for (idx, val) in dev_data.nums.iter().enumerate() {
-+                    let Ok(name) = CString::try_from_fmt(fmt!("{idx}")) else {
-+                        return;
-+                    };
-+                    dir.read_write_file(&name, val);
-+                }
-+            }),
-+        GFP_KERNEL,
-+    )?;
-+    (*mod_data.devices.lock()).push(scope, GFP_KERNEL)?;
-+
-+    Ok(())
-+}
-+
-+struct RustScopedDebugFs {
-+    _data: Pin<KBox<Scope<ModuleData>>>,
-+}
-+
-+#[pin_data]
-+struct ModuleData {
-+    device_dir: Dir,
-+    #[pin]
-+    devices: Mutex<KVec<Pin<KBox<Scope<DeviceData>>>>>,
-+}
-+
-+impl ModuleData {
-+    fn init(device_dir: Dir) -> impl PinInit<Self> {
-+        pin_init! {
-+            Self {
-+                device_dir: device_dir,
-+                devices <- new_mutex!(KVec::new())
-+            }
-+        }
-+    }
-+}
-+
-+struct DeviceData {
-+    name: CString,
-+    nums: KVec<AtomicUsize>,
-+}
-+
-+fn init_control(base_dir: &Dir, dyn_dirs: Dir) -> impl PinInit<Scope<ModuleData>> + '_ {
-+    base_dir.scope(
-+        ModuleData::init(dyn_dirs),
-+        c_str!("control"),
-+        |data, dir| {
-+            dir.write_only_callback_file(c_str!("create"), data, &create_file_write);
-+            dir.write_only_callback_file(c_str!("remove"), data, &remove_file_write);
-+        },
-+    )
-+}
-+
-+impl kernel::Module for RustScopedDebugFs {
-+    fn init(_module: &'static kernel::ThisModule) -> Result<Self, Error> {
-+        let base_dir = Dir::new(c_str!("rust_scoped_debugfs"));
-+        let dyn_dirs = base_dir.subdir(c_str!("dynamic"));
-+        Ok(Self {
-+            _data: KBox::pin_init(init_control(&base_dir, dyn_dirs), GFP_KERNEL)?,
-+        })
-+    }
-+}
+The comment looks outdated. 'ktime'?
 
--- 
-2.51.0.rc1.167.g924127e9c0-goog
 
+> +    #[expect(unused)]
+> +    #[inline]
+> +    pub(crate) unsafe fn from_ktime(ktime: bindings::ktime_t) -> Self {
+> +        debug_assert!(ktime >= 0);
+> +
+> +        // INVARIANT: Our safety contract ensures that `nanos` is in the range from 0 to
+
+Ditto.
+
+> +        // `KTIME_MAX`.
+> +        Self {
+> +            inner: ktime,
+> +            _c: PhantomData,
+> +        }
+> +    }
+>  }
+>  
+>  impl<C: ClockSource> core::ops::Sub for Instant<C> {
+> -- 
+> 2.50.0
+> 
+> 
