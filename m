@@ -1,65 +1,65 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01F92848A0
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 11:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052E3326D47
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 11:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755604241; cv=none; b=CyrYOGGRoCY4LBghD0JLYI9k6mShsPM5HmjauN+r6QcYjAnM0ws5msfep4KqTHoN/VQYah2ROOvejOMk3gDLdZ4HvJ750TIgOJDtFLUzIk4ajFO29k1wRukZFiKYy1lOoM0tgoTHYg4bYPm/C1D27l6B5vKKKCmp5oxqAtQzZc8=
+	t=1755604269; cv=none; b=IwsxS3kl5IKyC63sp16Y9kywGsWCkk1FUVL4PryYh88ce7YxtpUmlBusqodHMkhdyYeHQCZrmQmudslB+vrJ3ghje2561NHQK36NRidllEPQIMRQ73qvIDzuNb9RuCzQG78E4cCOE/rc9QKUFZYNYApqzQL82JTH3IjuJKIKkkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755604241; c=relaxed/simple;
-	bh=AUpv+m1dcO5CZLWME2QWpV1jpQqhANr314Wu2jPcXZU=;
+	s=arc-20240116; t=1755604269; c=relaxed/simple;
+	bh=SfDdyjlluv0yY0VZ8kuECbGE7PSrMfznf9LOp7Vjx94=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Z65bsjccrPPnwyV61Rw+kUwKylT0q4Y7SV8i4Vw7Bvijg7dhGM/D7BxqTAsujwo+Q+s58wHaL5z70MxFItfIeOZVBm/utBWGJLRS08rWYF+PBOkkgUaVx+7p4a55hLGqJpgSJ5cgI5LvU3WZy9g9ymAt6DcVE/OymBixOF+ZJfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gR9EbmCn; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=d39AyJZvWeudULMv21ffKpWu4lsiHM+RAqRMYMk4rFznNcaydi4BJHmJFGalz4G+w+/K9Iiwji93rt4DUWSLjlIMcBIWWckBfpe/3e7xE+9MECWgA8GE0p+twYBp2+njL/jXu+JszmkYCSv61RNQhONL4h5GiHVigkSDHRqpTWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WHCmZAlr; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gR9EbmCn"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3b9dc5c2820so1701088f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 04:50:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WHCmZAlr"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b9dc5c2c7dso2853867f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 04:51:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755604237; x=1756209037; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755604266; x=1756209066; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=139i8fuqQbvWA9gb1dt8i7/1+y2qllGv+j4E78aWcOE=;
-        b=gR9EbmCnlUcPHpFHXtaUJtHqVswlu+JX2C/9qD/brCKdI972JvxFxNaOeGLyBUwlYJ
-         LbWbc+cM20SO7Xy2Djw6ZcmUabmxrPx18IZLngn+Hr/NQs4BJkMTONIdzN8BbnEZbYzz
-         SRClwEdx7IOXSJ7mZzcZoa2w5XRleLFOrjrmZlL3O4Hfx+q2MdiK/195IRyJf6hUVpz3
-         j5GONCN6LZyoeMgglIKgF/qMO3e8icVWdRo/Tsxo9S+6LlMJ6atq4pzzt7THKyKjNZ3V
-         ZFtS+SL4+oxgb3EmzdvwqMDzV8jB0bzr9aZXYlrp9idxcA7/iOaMLg/+Fzfb+VkUnOT9
-         sxXQ==
+        bh=XqVhSoJAwWQ9PlLC7tWLb3xzHxheK2QrN5GzzirIqUY=;
+        b=WHCmZAlrGBjf0tf2YoNiCxiB/mcQfuuKg4YLEan1ryayZQYF4GlmIsIXubEXtCKMrV
+         9LWhVH+BihfOgjCAcnx/RnViHRf6znODZzCDT2KF9eHjq7rf94Kof/Ycm1mdD7Q+aNUa
+         PZ9vW0XGFucSCBa2lw1EWWb83ZSUw3IeMR6cnmrG6PbVEGN7DTbU7Z9NyhzoMeuxqJjZ
+         6HopHxjmTH2ws5FYU6kOLSjvFjUun+KMBmyyJu3WuI2gTir20H4HIwC2lGRtpCDvQmM9
+         I5qld7SUbB5QJlgEAWrO0zEkNeY9uwC2UDErJBYLz99gbcMiBeZc2Ct7VQ5Ijx6RIoEU
+         0wuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755604237; x=1756209037;
+        d=1e100.net; s=20230601; t=1755604266; x=1756209066;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=139i8fuqQbvWA9gb1dt8i7/1+y2qllGv+j4E78aWcOE=;
-        b=DTlEtPVpezHcD2Vm+of6GloO5yygHsP1tblL8vFZNoKtWu0dkmc3O3B9RUaxSFO9lt
-         kJQKxOW2+AhdcKyArn/RA+xUnP4jCuP2adKNGEPwiwn9dBK01x/GwWFDv+HRLt6V7GTY
-         uS01hhnC+bIzpt0OF2AV/pX6ZOTcyRDiJrRmSjRbvqSOyDYZbfpaqXsUVPCF0E9WCVh+
-         wt9g0fkNzPzP4H30okVChbO7ojHJDKMYhjlBeWipEniF8ELUH4bCLIlyRs5a3QzTLwrR
-         DKFwhNQ/2r6x8VMMmDnTkS2/QJpSP+49v9eXfSB2e3WpqBOWUU7SAV7czjkqAWSw5Drz
-         xFTw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGUdJ25MqoogQpWbYXPQL8cu68y5NnLVj0V+Kh4aRUIq0fYCYM+nmf2tIMth1hmaKUMRBT2/bO86YlKo4NWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5pTUncv+nSjMwg4vjcmPFJJoY0ow+MrouaxqEjA2LMwVWSaCT
-	Xb8RAVCHO7sm9CaYdxMl1O1XZ/1TzWT9C+1jm6yi/YSlviMv7BiqBm/2VA8sP6HWU1cGzP/yETu
-	atwgISqwTlIxkQqU//g==
-X-Google-Smtp-Source: AGHT+IFyQ/MlIocqdKkq6JGM0lJ32Q73uxXWn2pcBc2ZZTuIJCuc9gDzxSavZupQz2qSc40aMt7nUjUsT4JcXbs=
-X-Received: from wrxq11.prod.google.com ([2002:a05:6000:cb:b0:3b8:d680:e6de])
+        bh=XqVhSoJAwWQ9PlLC7tWLb3xzHxheK2QrN5GzzirIqUY=;
+        b=MokW177tAsEgjA+xYOZebPBaBCba7riMT0oLqDAYAcAtqziW8PlSTY5F9OPvMW2BQX
+         Tyq9kWDsTT3/TrKtXeNZUEOZruj1EG7BfUpxcDykW8Kbn/Cl62UwNTW0JhzCqLsaUQsl
+         2xg6+X2EEnI5Nt5RlRIZvx4N5sbhwnSE++FlnnnPPYPi+1sJTp0My6ajvXRcxLbKQIgj
+         8Z+TfoPY9PI2vywCJMqJSh6PqrqH1f07nI1R1EOM+DzyVz7PiFVC0gxdnfoVHZ8g8ku0
+         TVFmFK0VdXeN0ojQwSdlVlo9B4sbu7yipJF+RGH75EfODUFHmGEJUZh1kBf3sz54pJsB
+         mZwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqQ8j+/AljZ5CcfLSixcEttd9pxObBB6TOrilYW21BUJaw/UqAINEsjziulp5i67KDyHdSe8lUBGY2rhKU0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqAkC8DJS2x2EsGu4jcnBQ1d3Wc2uvV8rJQYQyeYHZc/tWrRvQ
+	o1Q1DZHhrf863UBaWRhZLtUIm9117PPHxH6V5sEikm2IxpTkBCQB1EQW4alRJRw/RSH0K1Omu5S
+	x3tkzwiTl+xSPU0NGYQ==
+X-Google-Smtp-Source: AGHT+IEP02KVT0HIELaiflNJvm9S4H5NPInQIDYzCdSqmY0+/ndVW3FnLNyjDTb08gA7GWX/CmGWsVZG9szhCGI=
+X-Received: from wrsv12.prod.google.com ([2002:a5d:4a4c:0:b0:3bb:722c:f2e2])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2302:b0:3a5:3b03:3bc6 with SMTP id ffacd0b85a97d-3c0eb41e06amr1602331f8f.28.1755604237085;
- Tue, 19 Aug 2025 04:50:37 -0700 (PDT)
-Date: Tue, 19 Aug 2025 11:50:36 +0000
-In-Reply-To: <20250814093427.19629-6-dakr@kernel.org>
+ 2002:a05:6000:402b:b0:3b7:8146:4640 with SMTP id ffacd0b85a97d-3c0ed6c4b68mr1987780f8f.56.1755604266349;
+ Tue, 19 Aug 2025 04:51:06 -0700 (PDT)
+Date: Tue, 19 Aug 2025 11:51:05 +0000
+In-Reply-To: <20250814093427.19629-8-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250814093427.19629-1-dakr@kernel.org> <20250814093427.19629-6-dakr@kernel.org>
-Message-ID: <aKRlDPozTqtJL556@google.com>
-Subject: Re: [PATCH v4 5/7] rust: alloc: kbox: implement AsPageIter for VBox
+References: <20250814093427.19629-1-dakr@kernel.org> <20250814093427.19629-8-dakr@kernel.org>
+Message-ID: <aKRlKTLFjaRDZZZ9@google.com>
+Subject: Re: [PATCH v4 7/7] rust: alloc: kvec: implement AsPageIter for VVec
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com, 
@@ -70,84 +70,11 @@ Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com,
 	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Aug 14, 2025 at 11:33:44AM +0200, Danilo Krummrich wrote:
-> Implement AsPageIter for VBox; this allows to iterate and borrow the
-> backing pages of a VBox. This, for instance, is useful in combination
-> with VBox backing a scatterlist.
+On Thu, Aug 14, 2025 at 11:33:46AM +0200, Danilo Krummrich wrote:
+> Implement AsPageIter for VVec; this allows to iterate and borrow the
+> backing pages of a VVec. This, for instance, is useful in combination
+> with VVec backing a scatterlist.
 > 
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-> ---
->  rust/kernel/alloc/kbox.rs | 40 ++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 39 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index 856d05aa60f1..6c2ed6adeb89 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -3,7 +3,7 @@
->  //! Implementation of [`Box`].
->  
->  #[allow(unused_imports)] // Used in doc comments.
-> -use super::allocator::{KVmalloc, Kmalloc, Vmalloc};
-> +use super::allocator::{KVmalloc, Kmalloc, Vmalloc, VmallocPageIter};
->  use super::{AllocError, Allocator, Flags};
->  use core::alloc::Layout;
->  use core::borrow::{Borrow, BorrowMut};
-> @@ -18,6 +18,7 @@
->  
->  use crate::ffi::c_void;
->  use crate::init::InPlaceInit;
-> +use crate::page::AsPageIter;
->  use crate::types::ForeignOwnable;
->  use pin_init::{InPlaceWrite, Init, PinInit, ZeroableOption};
->  
-> @@ -598,3 +599,40 @@ fn drop(&mut self) {
->          unsafe { A::free(self.0.cast(), layout) };
->      }
->  }
-> +
-> +/// # Examples
-> +///
-> +/// ```
-> +/// # use kernel::prelude::*;
-> +/// use kernel::alloc::allocator::VmallocPageIter;
-> +/// use kernel::page::{AsPageIter, PAGE_SIZE};
-> +///
-> +/// let mut vbox = VBox::new((), GFP_KERNEL)?;
-> +///
-> +/// assert!(vbox.page_iter().next().is_none());
-> +///
-> +/// let mut vbox = VBox::<[u8; PAGE_SIZE]>::new_uninit(GFP_KERNEL)?;
-> +///
-> +/// let page = vbox.page_iter().next().expect("At least one page should be available.\n");
-> +///
-> +/// // SAFETY: There is no concurrent read or write to the same page.
-> +/// unsafe { page.fill_zero_raw(0, PAGE_SIZE)? };
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +impl<T> AsPageIter for VBox<T> {
-> +    type Iter<'a>
-> +        = VmallocPageIter<'a>
-> +    where
-> +        T: 'a;
-
-Are you sure you ran rustfmt on this?
-
-> +
-> +    fn page_iter(&mut self) -> Self::Iter<'_> {
-> +        let ptr = self.0.cast();
-> +        let size = size_of::<T>();
-> +
-> +        // SAFETY:
-> +        // - `ptr` is a valid pointer to the beginning of a `Vmalloc` allocation.
-> +        // - `ptr` is guaranteed to be valid for the lifetime of `'a`.
-> +        // - `size` is the size of the `Vmalloc` allocation `ptr` points to.
-> +        unsafe { VmallocPageIter::new(ptr, size) }
-> +    }
-> +}
-> -- 
-> 2.50.1
-> 
