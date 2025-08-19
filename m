@@ -1,111 +1,142 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55EC1F9F70;
-	Tue, 19 Aug 2025 14:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F8F1F4181
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 14:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755612061; cv=none; b=DIy2BVH6cIFjtWgHD9gLXjXWS6b5x+PV1NK+ZBRTqcwc5d/euw3dUwhyto0gVREIh0yFPLpgxugmbLUpHuc5aVkWeQRYnsDHlardyrn5PSx9NWPvOeMKeO/uTNaRB9aqDQx/ZnDxIJwMUPyGsZP9mEdTtHLzwSeBeX+8LxaWth4=
+	t=1755612774; cv=none; b=Uh+4IcAJ5H9+NlMkAhpuLW9QI4+l4FwzkFH9b7YvjRKTk3Mn+cZJMXvSNOD0zgP3F3k1xYVBBfuVErxmP3yCkwEL0bGcKk2GE/pry3JGbd6WhQ7dBz4DCf7heFVGLJUBMSDJvP3y49I7T/q25pHAKhWN6MizOG3I99hmDsl2pbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755612061; c=relaxed/simple;
-	bh=ha4t6RRIk6XpkYKIpDFUbToR4GM8kq4XAbtG+yoAZGk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S1ydCru2uPQLgRynnuVcYcNhFVavP6tmLT+tMuqmfyiHIIqHTYUg2k5tXqEmK4NiE9lmHpoGKaRx2f1M1td3bXcNiiGWUKqDIrEDp2lJXuEXW2OmB+d9v6MLAlyMnSBoPCHP4vQII8FcxLUGDl/uqu7Gm9MfgqHvmtmZhjrso24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nh2dMWgb; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755612774; c=relaxed/simple;
+	bh=3V0z30hzXwF9h8gKVpXsVSnFi0/6IwWc5rnalb0g0aA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=Zc6cDFM0smDxGV4njm9bLcE4xdMEazMSeoFk7JUZswWsg/gJaWfVJLPBtJkUzvMD7wATzxHQ7uMnAF4REE59EHBbDGyuIuC2diyHDuswY9NPFWiUXUupuZW2zTWNv82+rDpX7glM+aCAHYt+7mzajtu0Ac7dGEzzneAWzxBjLlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iqzjPnh0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nh2dMWgb"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2445806ca1aso8743895ad.1;
-        Tue, 19 Aug 2025 07:00:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755612059; x=1756216859; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=50WBtMPwvOw9oYEsHnoDkF8zoLwvDN0HfFQfOPg/bdE=;
-        b=nh2dMWgbCDu5AGJ5xW/9cG4QrklpAoGC1S3SdMLEwfs9g7Nox+KouDbsffmfLailTw
-         LQ+yx7DmexZnBFGbao+S40IUIj3FE09PBldBcmPee7MBphBd9Bvb9Std0rOI2HJL8MYU
-         cTMMf+YZdtiKYqkV/6qD38lzxlJZi6E6amOScO7/kuKvwonvZ2iVEfoQFqAVprkJJBVC
-         4fbKn1ywqED/837t/g3OXpWJEQtAW9T5bt/VFDVVKvLMfo37gGWygs/zd9zIxeg0puvi
-         w6VcEDtRy9zyQq/ewz6H+38TPqIv3LHJHDw3SQiae4RjHqF5a6bu2U9u/k51iDTInWce
-         vwuw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iqzjPnh0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755612772;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1Tz22iSKZ8PdzAiXkoimq0HOH4BrSK4mX11OZtBTSdo=;
+	b=iqzjPnh0fIm02kwjczO3YOUnoQhtD5xGqIOIGRFboVF+YMJxmS0MihPw68h364yBwGNPsX
+	2j3swRIjM67WMdGEeNs5zNVPAlcqBOyJlgPecq8OfC3HeigitW0eJQbbzpZj9rsUEnLcm5
+	OFh8NSl8/pLkDZETC6qIWM9cuIiQXOw=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-372-lfw6F4pyM_OYxtxnila3Dg-1; Tue, 19 Aug 2025 10:12:50 -0400
+X-MC-Unique: lfw6F4pyM_OYxtxnila3Dg-1
+X-Mimecast-MFC-AGG-ID: lfw6F4pyM_OYxtxnila3Dg_1755612770
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-32326e46a20so10152984a91.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 07:12:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755612059; x=1756216859;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=50WBtMPwvOw9oYEsHnoDkF8zoLwvDN0HfFQfOPg/bdE=;
-        b=CDPLTqTz+5ryZwP4rmR/RlV6QSOAV2qS1OZPsbfpCmHO2Qeyar1jTp0PB/Cko8LhWB
-         woa1vN1ntSf8I9MiDVIy+qc4gam0lfhuoGmaWhJFLT3UQpzo9DMWF6nLF55aaZQyUJXr
-         e8BmJZJN6jIc/wQk3DqlwrWyDH4eQO70u7tsqAtco0VqnL3cV0ufbhNsKtFrqxAY+82A
-         AwJwFlDyamT0NrJb5cDUG/Db2PK2R+bBhdYCs+rQYPuamSbDOzwX3INlL4quhetMxvXF
-         f7eSjrXcoH+qQBtVAKc3JJgichVN4UQgZKOZubUIEgQ/s2zHQ+tGZIMZl0qYMQHx2x6d
-         nj4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUzq952JYccvwR6Q7b1p1YJdiStIYPuiw2WYAjwqGyYU07geVM0u/Lai3zOZA3sFey+dh7M9Cwl9Q3ivBYtBUE=@vger.kernel.org, AJvYcCVaobag3aOyiGVRig/1mP9o2LVV4pWPNcQK0oTHKBGRkuIZYTlxPj/Mnbx71W0+rRVwFiCT7z2U98eIQsJbI3A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTLwRG2avELWhUqcA7rsNWEZyqZ3eZvXvDwe4qPJVeIMLvSI7G
-	6BEPyOJOtOVacK8894j86+kfvEPZjQBLBlW9A0BdFYYabx/EfGJZ2SCcY3emeMyRC58sg3zhi96
-	LapXKLB1X6daPPRl0+9LRQCsbVRFl4Ps=
-X-Gm-Gg: ASbGncublnRTzT5d0thur2zLC7iytXaNAfkvTEkbUiGuY+dJS0WEUiCzP5lTLXw3ZM/
-	vFjn6s+iiPjzmqCAhz9a/+iHeyW2lbdgFQzLyHiGtXo2p0GlHsycKODV5kCP3D2VuklcH9UfYVu
-	pLOzyQO7cb+wQV9nRC3DiehZhI0d/HQDe0ChowZ8PR32b1tA1MX3CI7R8KkyTUfRHQKFuOkrsug
-	MsFp+Fn
-X-Google-Smtp-Source: AGHT+IFGLtNsuaHcZ9bLDDqN7J8ChtiAW1fZ0dZtuV570UBvC/PTJYsyK7ZfZ8g0ZH1WGMch8OcgtZ3J7WCfv1Mzp/4=
-X-Received: by 2002:a17:902:f547:b0:240:1879:c2fd with SMTP id
- d9443c01a7336-245e02ba0ecmr19746985ad.2.1755612057723; Tue, 19 Aug 2025
- 07:00:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755612770; x=1756217570;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1Tz22iSKZ8PdzAiXkoimq0HOH4BrSK4mX11OZtBTSdo=;
+        b=XFfsFmwSce4C/+3hkfOpT0/oqIsgDbRk3h1zPVu3ckb7HtYdcu0NMR1439gm2WAKFy
+         gflP9bMje/6MaqFXjclE5c54jfgrP+cNg2IMfPfyDuAHmaye8GzM+KBoPWqy06Ci5Qeg
+         +Ji6c2SKXlHZYlqxyAyzibgBIH4WbfiwXH8NG2w6/0NlJxb8zO9BrrSu8VPG0QLszwCW
+         fFsCrmKEq5CmApQa/Ma69PiMv3I1BiSRLxxoM2gSUIYHCtsiIf/oSWHZljGP3+gmNuWc
+         UOVw8laqWSbFpfV22SvwrxE43y5Jx7vMysB+BzggX1/UYTTlB8tgVdxginZcN2/j7Dyp
+         AHyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWcCfYUL62aw2yT4OhM0q+6MKUpcDnEQyBgtnbuUZxrsqO0j6KRI98BUzfkr3S1c5VfiPhB14Zkn/ebE6FYDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YydDxzrpgAFYU9k9Svl7FBPblyYxMtiBGCx6AIoT+rcgpivLk0H
+	OPBTfbgCipUAMVSYvxOkh8Wx/2lldoJT3Yx4hNz9lzQRtE2L+MNAmWYaOB8avcE0rcElb8WydWq
+	POZUievleX6vQvd1Bmqx0W7LIPUYJjzYBF/SAaF2Rt6MrFEAUr0SoO0uhoD7fcivFomfJ
+X-Gm-Gg: ASbGncvSOzrbnwqTvFv4ZYApt0O5kETUuB/rn+MXACSthl7KoR/HZ77LOxvaaKASFXy
+	JpD96rp5E2c2akCrgfs1z42ECrwpcZrVOFYm70MCWEcsZwUC26nHalKIN6lv7//oXcR+ls3IsZC
+	1rq7O1Ovy5vOeKGg/fJn1Me+1P3Aha37mT0OR+GciIy2kPYEtKikwwuIVu5980wLqVSIMabJPvn
+	hiJVCWAOZMD5Ss2MG2fRN1/7WZzK+ujUdpW5r9cEm7JhnNyyLkZw3FOgvgGLX8H0yogh9iDNhRs
+	qe6gn9Jb50MtEkV7MGEKk3Fupe/V4q3ETA==
+X-Received: by 2002:a17:90b:5584:b0:312:1d2d:18e2 with SMTP id 98e67ed59e1d1-32476a6ae7amr3859390a91.20.1755612769630;
+        Tue, 19 Aug 2025 07:12:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPs2vzC4ASGHRd46PAct74FDOC62VGMtvuVe07NVQb4zpn+49Mi8TM8sz/fOnZED0AyqwrmA==
+X-Received: by 2002:a17:90b:5584:b0:312:1d2d:18e2 with SMTP id 98e67ed59e1d1-32476a6ae7amr3859353a91.20.1755612769094;
+        Tue, 19 Aug 2025 07:12:49 -0700 (PDT)
+Received: from zeus ([2405:6580:83a0:7600:6e93:a15a:9134:ae1f])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d0d1714sm2699391b3a.15.2025.08.19.07.12.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 07:12:48 -0700 (PDT)
+Date: Tue, 19 Aug 2025 23:12:43 +0900
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: arnd@arndb.de, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, dakr@kernel.org, lee@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH rust-next 1/2] rust: miscdevice: add llseek support
+Message-ID: <aKSGW1SXcYleSdph@zeus>
+References: <20250818135846.133722-1-ryasuoka@redhat.com>
+ <20250818135846.133722-2-ryasuoka@redhat.com>
+ <2025081836-unbraided-justness-4b43@gregkh>
+ <aKQHQ4av5ZqfQ8Q1@zeus>
+ <2025081935-railcar-playing-eb9d@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+G9fYv+gELzgcL4y8rOQbTxv2Y2JQTFhNkgUcLbzPJ_yDTziA@mail.gmail.com>
-In-Reply-To: <CA+G9fYv+gELzgcL4y8rOQbTxv2Y2JQTFhNkgUcLbzPJ_yDTziA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 19 Aug 2025 16:00:44 +0200
-X-Gm-Features: Ac12FXxTFIhGwb8CqneZObiwy9IEE8bW5R6jDoBMnubJoMsWPuCWTeTncYkgRXU
-Message-ID: <CANiq72k-Z9=EVVXgJp1OuKwSbQ3qq723B0F2PaPzRD4P+QEQ=A@mail.gmail.com>
-Subject: Re: next-20250818: rust: `ARCH_KMALLOC_MINALIGN` is defined multiple times
-To: Naresh Kamboju <naresh.kamboju@linaro.org>, Thorsten Leemhuis <linux@leemhuis.info>, 
-	Danilo Krummrich <dakr@kernel.org>
-Cc: open list <linux-kernel@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Linux Regressions <regressions@lists.linux.dev>, rust-for-linux@vger.kernel.org, 
-	clang-built-linux <llvm@lists.linux.dev>, Miguel Ojeda <ojeda@kernel.org>, wedsonaf@gmail.com, 
-	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2025081935-railcar-playing-eb9d@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: xPHKgxUWydEcomfm6XWT_K22TMc9yv7OQjp5BYQKbls_1755612770
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Tue, Aug 19, 2025 at 10:40=E2=80=AFAM Naresh Kamboju
-<naresh.kamboju@linaro.org> wrote:
->
-> Build regressions were detected on multiple architectures (arm, arm64,
-> riscv) with the Linux next-20250818 tag when building with Rust-enabled
-> configurations (rust-gcc and rust-clang) from selftests/rust/config.
->
-> Duplicate definition of ARCH_KMALLOC_MINALIGN in Rust bindings is
-> causing build failures across affected toolchains.
+On Tue, Aug 19, 2025 at 08:04:32AM +0200, Greg KH wrote:
+> On Tue, Aug 19, 2025 at 02:10:27PM +0900, Ryosuke Yasuoka wrote:
+> > On Mon, Aug 18, 2025 at 04:17:40PM +0200, Greg KH wrote:
+> > > On Mon, Aug 18, 2025 at 10:58:38PM +0900, Ryosuke Yasuoka wrote:
+> > > > Add the ability to write a file_operations->llseek hook in Rust when
+> > > > using the miscdevice abstraction.
+> > > > 
+> > > > Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+> > > > ---
+> > > >  rust/kernel/miscdevice.rs | 36 ++++++++++++++++++++++++++++++++++++
+> > > >  1 file changed, 36 insertions(+)
+> > > 
+> > > What misc device driver needs any real llseek function?  The ones I see
+> > > in the tree are only using generic_llseek or noop_llseek.
+> > > 
+> > > Do you have a specific misc driver that you want to write in rust that
+> > > needs this call?
+> > 
+> > No, I'm not actually writing a practical misc driver. I'm just creating
+> > a toy misc driver to use for testing.
+> > 
+> > In my toy driver, I need read, write, lseek, and ioctl to verify the
+> > basic functionality of the device driver. I saw the Jones and Alice were
+> > already working on read/write functions [1] and I believe they will
+> > propose their patch soon. So I propose implementing lseek which
+> > anyone does not work on currently. This is the background of my patch.
+> > 
+> > As you mentioned, lseek by itself probably doesn't have much meaning.
+> > Should I wait for their read/write implementation to be finalized before
+> > proceeding this?
+> > 
+> > [1] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.E2.9C.94.20Miscdevice.20read.2Fwrite.20abstraction.3F/with/497953296
+> 
+> Yes, that would probably be best, because as-is, this patch can not
+> really do anything :(
+> 
+> Also, we really want an in-tree user for the new functionality (not just
+> in the sample driver), if at all possible going forward.
 
-Thanks a lot Naresh, this was reported already by Thorsten and me yesterday=
-:
+Got it. I'll try to include an in-tree user for it next time.
 
-    https://lore.kernel.org/rust-for-linux/8aa05f08-ef6e-4dfe-9453-beaab7b3=
-cb98@leemhuis.info/
+Thank you.
+Ryosuke
 
-A patch from Danilo is in flight to fix it:
+> thanks,
+> 
+> greg k-h
+> 
 
-    https://lore.kernel.org/rust-for-linux/20250818180923.192042-1-dakr@ker=
-nel.org/
-
-If you could test it, that would be great. I assume Danilo will apply
-the patch on top of alloc-next, since the issue is just inside that
-branch that goes into linux-next.
-
-Thanks!
-
-Cheers,
-Miguel
