@@ -1,167 +1,249 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721E230F806;
-	Tue, 19 Aug 2025 18:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755628148; cv=none; b=SoZidyFrcQwmQNYqvk8JQRv9/ey8WwK6GRc5xwGTKoLw/OPD/ikvn4Y6425CdUsy69aPjH3QZ/W6tm879lkBTA+QHRUnd3dV5fuBxXrahxX0h8UkrmO40TazEdGKNJHNldV9NbIBtU60GjwtTDRYe4/tBdo+9Bx6bqS6jde9sls=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755628148; c=relaxed/simple;
-	bh=0PVyGpkvyeNsFdkiKWEVNDYAhc7GqDEfCv0tINKPntw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uYR6nd9kN9h3I8Z35Wv4X5RzZIJF/sr+7daGRItQBAjBg2EuMI0/n3Hu09Fh4GR0q2q+0gaFJiftXkF5O9c2MCLfWSHVyH/kq6okD97f2ot9faremKVrpcol4VTcDOuNStUw2AADofyUz+L11rYiOscOiwhM2gB/q81wSnMJzg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rCgRNwsa; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740181CA84;
+	Tue, 19 Aug 2025 18:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755628315; cv=pass; b=GsmgIfkRRUkmp+H1Yqo7kiGrIjJicjKt6JOskiTAsFt3b4iZRl5Nr7cOLsZtsqFd+zqi4IoY20qkK/gjMxNtEb24Uxy5+yYxBn9XdTmHAVeAy5rZHF0m2BIOFFR2um1YLdQ81ICzZg3gocu846/g2GXh14/VvGqJr/i6G8LLDj0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755628315; c=relaxed/simple;
+	bh=I0Kw8IxK5dkRiyBU0gUnD8C43XziqbuK6UpcH5DdK1w=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=jR8R3nMx5giOVlSSQzahh6lWDmmzZIPB/Dy2WzxBR0FzDVOf/oPjLjFthC+A2xNWAhUouloHVgxM+sizLh4ijwC2/qLZOOTWo2qMgUlYP3eM7EJDDUC6gsP+3JwqVDu2LxmbdW4jCzjuDg6NmmVrXOmEomFwQhZ8wH5LUQjMPGc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WnMr3qbo; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rCgRNwsa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B134DC16AAE;
-	Tue, 19 Aug 2025 18:29:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755628148;
-	bh=0PVyGpkvyeNsFdkiKWEVNDYAhc7GqDEfCv0tINKPntw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rCgRNwsaes/rMHIcQXpV4dq32KlKygD0sbbGYUrwIllPKvFhBIub5GQzc6O03HXp6
-	 gPMvIHFmcDnta/NedoPWXMjrypjoMY/i0HzqvAUTDt4YGChtzr9bK5QqLK7t7KGvHp
-	 /EN36bfvPqrY4tPWXByleg6Q7A4Zt+EQ8v/B6X8qinZkVl6ZfFIo5qUILag27EZU20
-	 a+tWwLayRl9l37rjnOgzdsAYljQPL8+NxCZTmPpaOe8rGS5U9jE7ASh1y+gCRWvBP/
-	 9oUgD11MYCQhyCTXV+W86SSqm+kQBtc8sQEAEHAc0FzkNlNX+SEcpkeBukyO/waa/B
-	 O8msJYEAEMvcQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Benno Lossin <lossin@kernel.org>, Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Trevor
- Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-In-Reply-To: <DC6KN0JN4X4D.1PHXPQ46O5J1Q@kernel.org>
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <2OkNj7ab-vTaPaqMj_KRpIjaKTWgOW-F9Cn-CxnR12E6Dwg4lnjr6fx1vkjnoTx0boUeReeIVDbSyVFBWlYx7g==@protonmail.internalid>
- <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
- <87o6scdchf.fsf@t14s.mail-host-address-is-not-set>
- <aKMkvHAfDozzDjkB@mango> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org>
- <aKQT92ViZSL841rT@mango>
- <iQ0qeYmzFSlOQkNLti-a4Z6ItwaZgh3r8Pqdu5rSwYz4wUxAsKZJlGCrsVQ481Qkzc9EapD3bzKKtrsXVkwt2A==@protonmail.internalid>
- <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org>
- <87ldnfd766.fsf@t14s.mail-host-address-is-not-set>
- <SrUs3F3lvGkO0K2cL7_oyXD0qqPQ2CXsCkNBQz5JQ2BozT8sCdqfzzZ1fLt2gyUUpLgLD5LC2jvbkd9ncNtvQg==@protonmail.internalid>
- <DC6KN0JN4X4D.1PHXPQ46O5J1Q@kernel.org>
-Date: Tue, 19 Aug 2025 20:28:56 +0200
-Message-ID: <87bjobcgif.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WnMr3qbo"
+ARC-Seal: i=1; a=rsa-sha256; t=1755628271; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DYtA8vPZazJR+33rl8FWHHI6w0O/6vYgkJ1YXY/fsF1q7wjpuKfUOtyP3JC6Iy1QaaP8lZtK3RmDoRNomlnY9hHT32AzNkgEWwbQu8eZc33I7Rn6IIQEUm1WRjf/0SbvfbBwKJreagm8DbFiO6NrWR2yZ3GT1YqOtfPpCr90WYQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755628271; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GQLyOLdjCY2K7z1TP24thZJaGt6jgbP9deQnONx51zA=; 
+	b=TzphuIPaB83MhpiHhRLNzMBTSQ7nP7aTrFtGpcr4ILAgiAuUZhKAmtsmvEYZWNmtfI22PKhydlQVqj2/ff6TIw/F8Jw/rz0IZ+yBKPKXTiXBpfOhvd09TtlFX9zBx/dhFoIM2Fb43ofGPgziWHMbSn2S2aopIQ+1oVAyWXwCC/A=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755628271;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=GQLyOLdjCY2K7z1TP24thZJaGt6jgbP9deQnONx51zA=;
+	b=WnMr3qboBMJmh6KLzd5XJbbj5y60zxl3z7D+8RIJtbFo8jgkuKBO5uSeyONs9eCS
+	SnTRFBlvP/xjN2Qr5b+Yz2xk4k5dYXyH5N0gkWperMDtFrsb5L1MiZsUMbsSl6KOb0k
+	bp7dNhWRsNYniBpwKKpbj9Atzs4wF6Y4C4dsonxc=
+Received: by mx.zohomail.com with SMTPS id 1755628269942511.43717673607466;
+	Tue, 19 Aug 2025 11:31:09 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 2/2] rust: Add read_poll_timeout functions
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250817044724.3528968-3-fujita.tomonori@gmail.com>
+Date: Tue, 19 Aug 2025 15:30:51 -0300
+Cc: a.hindborg@kernel.org,
+ alex.gaynor@gmail.com,
+ ojeda@kernel.org,
+ aliceryhl@google.com,
+ anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com,
+ boqun.feng@gmail.com,
+ dakr@kernel.org,
+ frederic@kernel.org,
+ gary@garyguo.net,
+ jstultz@google.com,
+ linux-kernel@vger.kernel.org,
+ lossin@kernel.org,
+ lyude@redhat.com,
+ rust-for-linux@vger.kernel.org,
+ sboyd@kernel.org,
+ tglx@linutronix.de,
+ tmgross@umich.edu,
+ acourbot@nvidia.com,
+ Fiona Behrens <me@kloenk.dev>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <F512B17D-5C07-4C10-9710-E2467D21BA80@collabora.com>
+References: <20250817044724.3528968-1-fujita.tomonori@gmail.com>
+ <20250817044724.3528968-3-fujita.tomonori@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-"Benno Lossin" <lossin@kernel.org> writes:
+Hi Fujita,
 
-> On Tue Aug 19, 2025 at 10:53 AM CEST, Andreas Hindborg wrote:
->> "Benno Lossin" <lossin@kernel.org> writes:
->>> On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
->>>> On 250819 0027, Benno Lossin wrote:
->>>>> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
->>>>> > On 250818 1446, Andreas Hindborg wrote:
->>>>> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
->>>>> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
->>>>> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
->>>>> >> > +        // SAFETY: The type invariants guarantee that the objec=
-t is valid, and that we can safely
->>>>> >> > +        // return a mutable reference to it.
->>>>> >> > +        unsafe { self.ptr.as_mut() }
->>>>> >> > +    }
->>>>> >> > +}
->>>>> >>
->>>>> >> I think someone mentioned this before, but handing out mutable
->>>>> >> references can be a problem if `T: !Unpin`. For instance, we don't=
- want
->>>>> >> to hand out `&mut Page` in case of `Owned<Page>`.
->>>>> >>
->>>>> >
->>>>> > That was the reason, why `OwnableMut` was introduced in the first p=
-lace.
->>>>> > It's clear, I guess, that as-is it cannot be implemented on many cl=
-asses.
->>>>>
->>>>> Yeah the safety requirements ensure that you can't implement it on
->>>>> `!Unpin` types.
->>>>>
->>>>> But I'm not sure it's useful then? As you said there aren't many types
->>>>> that will implement the type then, so how about we change the meaning
->>>>> and make it give out a pinned mutable reference instead?
->>>>
->>>> Making `deref_mut()` give out a pinned type won't work. The return typ=
-es of
->>>> deref() are required to match.
->>>
->>> I meant the changes that Andreas suggested.
->>
->> Not sure what you are asking, but I need to assert exclusive access to
->> an `Page`. I could either get this by taking a `&mut Owned<Page>` or a
->> `Pin<&mut Page>`. I think the latter is more agnostic.
->
-> The former isn't really correct? It's like having a `&mut Box<Page>`
-> which is weird. I was saying we can have a `DerefMut` impl gated on `T:
-> Unpin` and a `fn get_pin_mut(&mut self) -> Pin<&mut T>`.
->
->>>>> > Good question, I have been thinking about it, too. But it might
->>>>> > be, that it isn't needed at all. As I understand, usually Rust wrap=
-pers
->>>>> > are around non-movable C structs. Do we actually have a useful appl=
-ication
->>>>> > for OwnableMut?
->>>>>
->>>>> Also, do we even need two different traits? Which types would only
->>>>> implement `Ownable` but not `OwnableMut`?
->>>>
->>>> I'm not 100% sure, but on a quick glance it looks indeed be safe to
->>>> substitute `OwnableMut` by `Unpin`.
->>>
->>> We just have to change the safety requirements of `OwnableMut`.
->>
->> `OwnableMut` already requires `Unpin`, it just does not say so directly:
->>
->>
->> /// - It is safe to call [`core::mem::swap`] on the [`Ownable`]. This ex=
-cludes pinned types
->> ///   (i.e. most kernel types).
->>
->> We could remove this and then just add a trait bound on `Unpin`.
->
-> Oh I happened to not have read it that thoroughly then... I don't think
-> it makes sense to have `OwnableMut` then. So I agree with your suggested
-> change :)
->
->>>> If we add `get_pin_mut(&mut self) -> Pin<&mut T>` as Andreas suggested,
->>>> it would be possible to obtain an `&mut T` anyway, then, if T is `Unpi=
-n`.
->>>
->>> Well the `DerefMut` impl still is convenient in the `Unpin` case.
->>
->> `OwnableMut` is probably not that useful, since all the types we want to
->> implement `Ownable` for is `!Unpin`. We could remove it, but I felt it
->> was neat to add the `DerefMut` impl for `Unpin` types.
->
-> But we don't need `OwnableMut` in that case?
+> On 17 Aug 2025, at 01:47, FUJITA Tomonori <fujita.tomonori@gmail.com> =
+wrote:
+>=20
+> Add read_poll_timeout function which poll periodically until a
+> condition is met or a timeout is reached.
+>=20
+> The C's read_poll_timeout (include/linux/iopoll.h) is a complicated
+> macro and a simple wrapper for Rust doesn't work. So this implements
+> the same functionality in Rust.
+>=20
+> The C version uses usleep_range() while the Rust version uses
+> fsleep(), which uses the best sleep method so it works with spans that
+> usleep_range() doesn't work nicely with.
+>=20
+> The sleep_before_read argument isn't supported since there is no user
+> for now. It's rarely used in the C version.
+>=20
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+> rust/kernel/io.rs      |  1 +
+> rust/kernel/io/poll.rs | 96 ++++++++++++++++++++++++++++++++++++++++++
+> 2 files changed, 97 insertions(+)
+> create mode 100644 rust/kernel/io/poll.rs
+>=20
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index 03b467722b86..ee182b0b5452 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -8,6 +8,7 @@
+> use crate::{bindings, build_assert, ffi::c_void};
+>=20
+> pub mod mem;
+> +pub mod poll;
+> pub mod resource;
+>=20
+> pub use resource::Resource;
+> diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
+> new file mode 100644
+> index 000000000000..e6325725d5a3
+> --- /dev/null
+> +++ b/rust/kernel/io/poll.rs
+> @@ -0,0 +1,96 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! IO polling.
+> +//!
+> +//! C header: =
+[`include/linux/iopoll.h`](srctree/include/linux/iopoll.h).
+> +
+> +use crate::{
+> +    error::{code::*, Result},
+> +    processor::cpu_relax,
+> +    task::might_sleep,
+> +    time::{delay::fsleep, Delta, Instant, Monotonic},
+> +};
+> +
+> +/// Polls periodically until a condition is met or a timeout is =
+reached.
+> +///
+> +/// The function repeatedly executes the given operation `op` closure =
+and
+> +/// checks its result using the condition closure `cond`.
+> +///
+> +/// If `cond` returns `true`, the function returns successfully with =
+the result of `op`.
+> +/// Otherwise, it waits for a duration specified by `sleep_delta`
+> +/// before executing `op` again.
+> +///
+> +/// This process continues until either `cond` returns `true` or the =
+timeout,
+> +/// specified by `timeout_delta`, is reached. If `timeout_delta` is =
+`None`,
+> +/// polling continues indefinitely until `cond` evaluates to `true` =
+or an error occurs.
+> +///
+> +/// This function can only be used in a nonatomic context.
+> +///
+> +/// # Examples
+> +///
+> +/// ```no_run
+> +/// use kernel::io::{Io, poll::read_poll_timeout};
+> +/// use kernel::time::Delta;
+> +///
+> +/// const HW_READY: u16 =3D 0x01;
+> +///
+> +/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> =
+Result<()> {
+> +///     match read_poll_timeout(
+> +///         // The `op` closure reads the value of a specific status =
+register.
+> +///         || io.try_read16(0x1000),
+> +///         // The `cond` closure takes a reference to the value =
+returned by `op`
+> +///         // and checks whether the hardware is ready.
+> +///         |val: &u16| *val =3D=3D HW_READY,
+> +///         Delta::from_millis(50),
+> +///         Delta::from_secs(3),
+> +///     ) {
+> +///         Ok(_) =3D> {
+> +///             // The hardware is ready. The returned value of the =
+`op` closure
+> +///             // isn't used.
+> +///             Ok(())
+> +///         }
+> +///         Err(e) =3D> Err(e),
+> +///     }
+> +/// }
+> +/// ```
+> +#[track_caller]
+> +pub fn read_poll_timeout<Op, Cond, T>(
+> +    mut op: Op,
+> +    mut cond: Cond,
+> +    sleep_delta: Delta,
+> +    timeout_delta: Delta,
+> +) -> Result<T>
+> +where
+> +    Op: FnMut() -> Result<T>,
+> +    Cond: FnMut(&T) -> bool,
+> +{
+> +    let start: Instant<Monotonic> =3D Instant::now();
+> +
+> +    // Unlike the C version, we always call `might_sleep()` =
+unconditionally,
+> +    // as conditional calls are error-prone. We clearly separate
+> +    // `read_poll_timeout()` and `read_poll_timeout_atomic()` to aid
+> +    // tools like klint.
+> +    might_sleep();
+> +
+> +    loop {
+> +        let val =3D op()?;
+> +        if cond(&val) {
+> +            // Unlike the C version, we immediately return.
+> +            // We know the condition is met so we don't need to check =
+again.
+> +            return Ok(val);
+> +        }
+> +
+> +        if start.elapsed() > timeout_delta {
+> +            // Unlike the C version, we immediately return.
+> +            // We have just called `op()` so we don't need to call it =
+again.
+> +            return Err(ETIMEDOUT);
+> +        }
+> +
+> +        if !sleep_delta.is_zero() {
+> +            fsleep(sleep_delta);
+> +        }
+> +
+> +        // fsleep() could be busy-wait loop so we always call =
+cpu_relax().
+> +        cpu_relax();
+> +    }
+> +}
+> --=20
+> 2.43.0
+>=20
+>=20
 
-Right, we can directly limit the `DerefMut` impl.
+Thanks for working on this. Definitely going to be needed by a lot of =
+drivers.
 
->
-> Let's just do the following if it makes sense:
-> * remove `OwnableMut`
-> * allow obtaining a `Pin<&mut T>` from `Owned<T>` via a `&mut self`
->   method (we need a new safety requirement for this on `Ownable`)
-> * have the `DerefMut` impl require `T: Unpin`
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Sounds good to me =F0=9F=91=8D
-
-
-Best regards,
-Andreas Hindborg
-
+How is the atomic version going to look like? The same, except for
+might_sleep() and without the sleep_delta argument?
 
