@@ -1,171 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9934427B35B;
-	Wed, 20 Aug 2025 18:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143F1202980;
+	Wed, 20 Aug 2025 20:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755716356; cv=none; b=GIzHu/PV3UeLLrUqyK8vDfndOjvL0vIFmfH1C66v36WzHLCSaTDPRLpyGiaPDx7cPhea2LSe6XQo5tit1GQeLjiTLmYNGQXw+XzfP9r0tK2EtFMOQuKZ6nc+eDchqmODBzAn9gJaxsAevcOTnKG9uL1dyJKS099HTiE2tUBIeck=
+	t=1755722000; cv=none; b=lEz3SfVaDDLvqMx59jM2KwQXFjS96RESIaDyxKWDuys+Ocmd6pPkYEOT3/VEogTYp8Nd2QoNA9uGmXrB1KvDHV+CJXyq/winsJW6Zp/VWJjjwQ6ZKEf5zTMWKnfoVc1pC2XasrIvSc93Q/6wyjF9vJ/eicAZZNzo/4aj/WHZtSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755716356; c=relaxed/simple;
-	bh=CezPrAIoYxQAq1w4qs6jLz8EbsggwyPEkuIv5Xfh7VY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Ma+ultHcO6pFzrnw3Y5GokRS/+NiXXqSW1tOLOteme92BzmU8HWWVjxTtzc6CIJu8VYC8W5sI3OqWAeu/4Rx7sNSsvbxmmUBRnqOnVRHhjpUbNg1tJumuE0c5c31oFPrkSpUmbzl3bVOPSMdGzJaTVC66HQvHCTzjRrd6UInT00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uXaZsWC3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755722000; c=relaxed/simple;
+	bh=IIqfESwQuJxaUjaRPHDf7MRAkvBWGcGv7IVn3inZCvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bFYGtl0n6wdRRtmJS+AWtll5orxIHq6cgX+AhO0Owl74Twu0q1HdGF7FF9UV2jjuGN3O3JkJCBfC6mD6g68u+PihI0eqgQ214J7ChPlSp5FMXlS+NKvicegz4moCZ27WajY59ws//Xh+tSnB/HMwnL3Jh68wqrSa9cvf/zQp0K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=FMcI4mfX; arc=none smtp.client-ip=185.70.43.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uXaZsWC3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0007C4CEE7;
-	Wed, 20 Aug 2025 18:59:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755716356;
-	bh=CezPrAIoYxQAq1w4qs6jLz8EbsggwyPEkuIv5Xfh7VY=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=uXaZsWC3qhB9P7j6bM8pNuf5Z7bUmN0DHACBRexJxlk1KBasBBS5EuzJC9hu2buN/
-	 vWIgSBNkZ2i4FXIHzDx/AWZz0idpzCLzElnzBWhc0KT3YLWO0u4rM6E5NDRPkdea9l
-	 Q4Kz5bTYEaHeYs8RcFRTTd7rtUc9zxaCyzf6eGnwgW3KQ82x+vtI0f/ij9cf819eUR
-	 VLQrafiT1XhbfBTV6m0CL47WEoFX1NFUdoL9JzPNtEPvaooaGRKqzQ01eqxIsCY3hV
-	 9ZfnjjYfIAX9+NBwU4HHKHr/ZScQ667DRDdYhpoHtQ3LEZhpKfTDFNg8HrUmluDCrM
-	 mBkaLYPu60brg==
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="FMcI4mfX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
+	s=protonmail3; t=1755721995; x=1755981195;
+	bh=t7NXEEuVH/wrVVp48tGTzSJA0b9aGiHDJRGZakt3E5E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=FMcI4mfXJHsguwdIMwtmxDEsuImO9BKJY1sTBvFWRZA8yZrY6Kgbq0nhIkluiecMy
+	 BkPqodDUdDqZ6Mh1og6ovUQ2SjBhcshD01eYmtcwRiUhZrRCpgb2t9pky3woeyUVTh
+	 6CeHQXAEjtIVgllaM1rRFlCJzbFtCVIBERIyal/YhR0p1XXN4tTmaWJ0qmuD6tP6Ua
+	 uW82YfbpsCWg2ppoMyavvHRP/mcs91bzWD8g3dW3qg04pIuNK1Aed5mkrA1EqK3HXA
+	 AkhrgcQ81t2xssUOH+6aNVboWNRk26I4rJw0/QDdFpJDfBYOpch1cSSvZqbnklLw24
+	 S64ApfpVDUw0w==
+X-Pm-Submission-Id: 4c6dST1yHnz2ScP7
+Date: Wed, 20 Aug 2025 20:30:57 +0000
+From: Elle Rhumsaa <elle@weathered-steel.dev>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Drew Fustini <fustini@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v14 1/7] pwm: Export `pwmchip_release` for external use
+Message-ID: <aKYwgQBt62PyCEd9@archiso>
+References: <20250820-rust-next-pwm-working-fan-for-sending-v14-0-df2191621429@samsung.com>
+ <CGME20250820083541eucas1p2ad7d78418576b8bc8cbddd8efe83bbe9@eucas1p2.samsung.com>
+ <20250820-rust-next-pwm-working-fan-for-sending-v14-1-df2191621429@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 Aug 2025 20:59:10 +0200
-Message-Id: <DC7HI4RCMJWG.12GHJUGAYZ3TA@kernel.org>
-Subject: Re: [PATCH 2/4] rust: scatterlist: Add type-state abstraction for
- sg_table
-Cc: <akpm@linux-foundation.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>,
- <acourbot@nvidia.com>, <jgg@ziepe.ca>, <lyude@redhat.com>,
- <robin.murphy@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250815171058.299270-1-dakr@kernel.org>
- <20250815171058.299270-3-dakr@kernel.org>
- <70E4B722-E1A0-4D5C-A60B-24F8CD5C247D@collabora.com>
-In-Reply-To: <70E4B722-E1A0-4D5C-A60B-24F8CD5C247D@collabora.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250820-rust-next-pwm-working-fan-for-sending-v14-1-df2191621429@samsung.com>
 
-On Wed Aug 20, 2025 at 7:08 PM CEST, Daniel Almeida wrote:
->> +/// A scatter-gather table.
->> +///
->> +/// This struct is a wrapper around the kernel's `struct sg_table`. It =
-manages a list of DMA-mapped
->> +/// memory segments that can be passed to a device for I/O operations.
->> +///
->> +/// The generic parameter `T` is used as a type state to distinguish be=
-tween owned and borrowed
->> +/// tables.
->> +///
->> +///  - [`SGTable<Owned>`]: An owned table created and managed entirely =
-by Rust code. It handles
->> +///    allocation, DMA mapping, and cleanup of all associated resources=
-. See [`SGTable::new`].
->> +///  - [`SGTable<Borrowed>`} (or simply [`SGTable`]): Represents a tabl=
-e whose lifetime is managed
->> +///    externally. It can be used safely via a borrowed reference `&'a =
-SGTable`, where `'a` is the
->> +///    external lifetime.
->> +///
->> +/// All [`SGTable`] variants can be iterated over the individual [`SGEn=
-try`]s.
->> +#[repr(transparent)]
->> +#[pin_data]
->> +pub struct SGTable<T: private::Sealed =3D Borrowed> {
->
-> Am I the only one that think we should have an actual trait here instead =
-of
-> using private::Sealed directly?
+On Wed, Aug 20, 2025 at 10:35:36AM +0200, Michal Wilczynski wrote:
+> The upcoming Rust abstraction layer for the PWM subsystem uses a custom
+> `dev->release` handler to safely manage the lifetime of its driver
+> data.
+> 
+> To prevent leaking the memory of the `struct pwm_chip` (allocated by
+> `pwmchip_alloc`), this custom handler must also call the original
+> `pwmchip_release` function to complete the cleanup.
+> 
+> Make `pwmchip_release` a global, exported function so that it can be
+> called from the Rust FFI bridge. This involves removing the `static`
+> keyword, adding a prototype to the public header, and exporting the
+> symbol.
+> 
+> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+> ---
+>  drivers/pwm/core.c  | 3 ++-
+>  include/linux/pwm.h | 6 ++++++
+>  2 files changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+> index 0d66376a83ec350e0c3718959f4d794efd71595a..a33da3dff608fdff91251e5fd07b0dbd295be022 100644
+> --- a/drivers/pwm/core.c
+> +++ b/drivers/pwm/core.c
+> @@ -1600,12 +1600,13 @@ void pwmchip_put(struct pwm_chip *chip)
+>  }
+>  EXPORT_SYMBOL_GPL(pwmchip_put);
+>  
+> -static void pwmchip_release(struct device *pwmchip_dev)
+> +void pwmchip_release(struct device *pwmchip_dev)
+>  {
+>  	struct pwm_chip *chip = pwmchip_from_dev(pwmchip_dev);
+>  
+>  	kfree(chip);
+>  }
+> +EXPORT_SYMBOL_GPL(pwmchip_release);
+>  
+>  struct pwm_chip *pwmchip_alloc(struct device *parent, unsigned int npwm, size_t sizeof_priv)
+>  {
+> diff --git a/include/linux/pwm.h b/include/linux/pwm.h
+> index 8cafc483db53addf95591d1ac74287532c0fa0ee..d86061024b52172edf3845bf9252a966f120e365 100644
+> --- a/include/linux/pwm.h
+> +++ b/include/linux/pwm.h
+> @@ -485,6 +485,12 @@ int __pwmchip_add(struct pwm_chip *chip, struct module *owner);
+>  #define pwmchip_add(chip) __pwmchip_add(chip, THIS_MODULE)
+>  void pwmchip_remove(struct pwm_chip *chip);
+>  
+> +/*
+> + * For FFI wrapper use only:
+> + * The Rust PWM abstraction needs this to properly free the pwm_chip.
+> + */
+> +void pwmchip_release(struct device *dev);
+> +
+>  int __devm_pwmchip_add(struct device *dev, struct pwm_chip *chip, struct module *owner);
+>  #define devm_pwmchip_add(dev, chip) __devm_pwmchip_add(dev, chip, THIS_MODULE)
+>  
+> 
+> -- 
+> 2.34.1
 
-I don't know. :)
-
-I think this case perfectly fits the Sealed pattern. There isn't any semant=
-ics
-behind that, other than "we want that only the sealed ones work".
-
->
->> +    #[pin]
->> +    inner: T,
->> +}
->> +
->> +impl SGTable {
->> +    /// Creates a borrowed `&'a SGTable` from a raw `struct sg_table` p=
-ointer.
->> +    ///
->> +    /// This allows safe access to an `sg_table` that is managed elsewh=
-ere (for example, in C code).
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// Callers must ensure that the `struct sg_table` pointed to by `p=
-tr` is valid for the entire
->> +    /// lifetime of `'a`.
->> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::sg_table) -> &'a Self =
-{
->> +        // SAFETY: The safety requirements of this function guarantee t=
-hat `ptr` is a valid pointer
->> +        // to a `struct sg_table` for the duration of `'a`.
->> +        unsafe { &*ptr.cast() }
->> +    }
->> +
->> +    fn as_raw(&self) -> *mut bindings::sg_table {
->> +        self.inner.0.get()
->> +    }
->> +
->> +    fn as_iter(&self) -> SGTableIter<'_> {
->
-> Perhaps just "iter()=E2=80=9D ?
-
-No strong opinition, I'm fine with either.
-
->
->> +        // SAFETY: `self.as_raw()` is a valid pointer to a `struct sg_t=
-able`.
->> +        let ptr =3D unsafe { (*self.as_raw()).sgl };
->> +
->> +        // SAFETY: `ptr` is guaranteed to be a valid pointer to a `stru=
-ct scatterlist`.
->> +        let pos =3D Some(unsafe { SGEntry::as_ref(ptr) });
->> +
->> +        SGTableIter { pos }
->> +    }
->> +}
->> +
->> +/// # Invariants
->> +///
->> +/// `sgt` is a valid pointer to a `struct sg_table` for the entire life=
-time of an [`DmaMapSgt`].
->> +struct DmaMapSgt {
->
-> This is private, but some extra docs here wouldn=E2=80=99t hurt?
-
-The type just represents the DMA mapping state of the SGT, i.e. exists
-corresponds to is mapped, is dropped corresponds to is unmapped.
-
-I can probably add a few lines if it helps.
-
->> +impl<P> Owned<P>
->> +where
->> +    for<'a> P: page::AsPageIter<Iter<'a> =3D VmallocPageIter<'a>> + 'st=
-atic,
->> +{
->> +    fn new(
->> +        dev: &Device<Bound>,
->> +        mut pages: P,
->> +        dir: dma::DataDirection,
->> +        flags: alloc::Flags,
->> +    ) -> Result<impl PinInit<Self, Error> + use<'_, P>> {
->
-> I confess I have no idea what =E2=80=9Cuse<=E2=80=98_, P>=E2=80=9D is.
-
-It's a feature called #![feature(precise_capturing)], which, unfortunately,=
- does
-not exist in 1.78, so I removed this syntax in v2. Luckly, we don't actuall=
-y
-need it in this case.
+Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
