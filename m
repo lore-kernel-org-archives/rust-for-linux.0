@@ -1,175 +1,92 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D57239E80
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 08:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3DB2D8789
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 08:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755677301; cv=none; b=HbmS4eu0RF8w2rpxz/JggDMCSOnwABebfU4qipVtLWfCTOYJrWydjHeRDizCSv/uNPBYeadZ4MGVbbwpVtUK/cGYOh2ZEUZ+bG//HJwLH+cF9+4tqojzXxynMLhNGd+wJ3sErd7MPHd/VhlriQ7HuMMSXgA6FYGOUsKh52vcmG8=
+	t=1755678536; cv=none; b=TETgIDLtjU9w/1ixIhbT4QfJqNEWOJ9dl1PggctJyKQExh4JqRCCHUTl+Z5qWZ5Nv/NcAzJK8xwxVMBFalL46Yg1QrlR8azeWn4SASEeo4r/9OLe1rthZiDJsVoElktcVFQLy7zSIWegTvmBLcYu+eKasWShB9SSy9m1WsA9v70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755677301; c=relaxed/simple;
-	bh=2EJSvZbjSRzNHDgXR3JjSAwDNIG4vN1cc20X51nEG1A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nZXgzt9Q8qFoQ+HXauCAJ+FQtLKWvYZh7mQgplPDw75dUkEh8j996bIvFSqbLnmlbCBrq8Qg9W9tjqzM4xfzXXFcHzExz4ZoCFI4uCX2xX2EsKqFfcwcJk+MDzJ7CHv2Du9DAJzqLkpEu55r2JiumQKBDFdLqJQX4s/hRuH/ooM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=o/qUFlY4; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=0YAzHvzo; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1755678536; c=relaxed/simple;
+	bh=zF0KJzDGb4FVwJYN7hE92OHSrRFWAOyPof8nv4wkan0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BsMUEyrKGtsQAwzlz40z/8oGTKskDgOrKw/XHYOIAaDlXrLo3l6TVRRd4x85yDBf86MJ8thZI7jM383k4bvp7ibbjkjCFJ5rXeqCjVaQCB4N0txjUZkH/2Ai8Z4xCCdao3v/s4b5c7m6cLHQ2BP1jkgqx+Yjy5fF/XR7HehOjKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fdUab7eR; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="o/qUFlY4";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="0YAzHvzo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1755677228; x=1756282028;
-	d=konsulko.se; s=rsa1;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=zazq+xpd/5Ix+0vU7i93pKaNq42ZWNyXDMOGX6w1bAk=;
-	b=o/qUFlY4DQKwCEGDIZnf5XfKmLvu9Bhv83z3jkQ4MGAuiyw5DaV3qMlphdtl6WDHjF3NuisuRZSJ2
-	 NhCgUufdI/aM36wp+QzQjIWCYQLP29khvmwu3/lTN/TXoGASv0rthhKu+58y5CVNHKRvCGeytnR7Yc
-	 QhjtMg/Hbq6Qr9+0x39G7tCfIhnLhOId6kLv+IjMapebq3T6XYvhwRfvERqJ01wSk7J2DxNZYneKu0
-	 19DIgTKPJB61noOQ4zb01IXQBgbkX3/5bRryEi3fbjJ45vI9J+GwIcjunEu/TdfnCCPElO2bPbF6MR
-	 CabEsS9EsYS4GQkCPmO9d7OfOJqV6Ig==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1755677228; x=1756282028;
-	d=konsulko.se; s=ed1;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=zazq+xpd/5Ix+0vU7i93pKaNq42ZWNyXDMOGX6w1bAk=;
-	b=0YAzHvzoxaaB10wyKnkAqVDm45YhNm3GRK2oVNkPLNKmLNx/6HTxjX8LGL3K1Z/J8JIxpMmCWEDMs
-	 7A64+RyCw==
-X-HalOne-ID: a97dbf3f-7d9c-11f0-8ed5-4f541c8bf1cc
-Received: from [192.168.10.245] (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay3.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id a97dbf3f-7d9c-11f0-8ed5-4f541c8bf1cc;
-	Wed, 20 Aug 2025 08:07:07 +0000 (UTC)
-Message-ID: <3e922cc6-6d27-49ad-9719-5662c6102b6b@konsulko.se>
-Date: Wed, 20 Aug 2025 10:07:06 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fdUab7eR"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3c380aa19c1so205532f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 01:28:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755678533; x=1756283333; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xc1tKyYSTPJPxeU53+y1RcwFkYkWpuTBa3RAA51ynQg=;
+        b=fdUab7eRZrBgOuepxSVALOxiDozd3rsCAUwlR6Tr8Oh3+cWlB2Qa6rjlOmxExNZnh0
+         37iQay8ASNrTqd2X6Qg5TY8aBr55JA057jlWROUztQ+yuQ5wWBD1xUAOaTjy+UB/gaRs
+         41RJg5vofWpOA5G+1jvmW74gLQ7p3YjbP9smNI7WpGlpJ/cjz42aU06wxndr0t/6dQKi
+         DXGbJKz1uDPabg8eHmpf6m4+CR+ODIrc98ZFfkbqOL+r0wkEWEuqw6g5B+D4/HnyBFA5
+         0vO3SDbY7DsTrBG5NTWoN87KhhjuKSAzEAxF+pQEQSzFq0yY7uwGZPfCWDrb/bSQUNmw
+         nFYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755678533; x=1756283333;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xc1tKyYSTPJPxeU53+y1RcwFkYkWpuTBa3RAA51ynQg=;
+        b=kEMKVNAUgjoKQP2xMsUTD7kxsn0WQQ4Ld0Sq9gFQ/o0PqnnPWnCOledRagcjsMfhdz
+         lxYslCES+TpQL3IKR/+/MtV3EAUFKs/4sjzzkW8Qwpea+TKdI6XJh4h+WLgb7EB1/Jrh
+         pc9Y7jqQe/iAoHxPN/0M7UDbqXCBF1Bi893Zu/DsgHxK1KbgV4xt6b9L0Os6svsdDHbW
+         hIfijv3IgFA+0HNAFNmGg4kB52VBB9cm3p4UnMt6ShITvn/ZciNHbA/hYur31xT4rIIk
+         wcBS/IQwPK3DYUpJ9xYcp4IIghQVvN4TsALSPTTveaFurJaqAOqg3a6x/fZQfPsJ4UhI
+         wWEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMCrhiWUarvHMqa4h8GPPydom1fv6vni0b33GJuFpU0IVsYENgJudXWVFwC7p8m1pNj4mjSn2jhO/4NZdWhw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzf5GPxFwALgkXYspoTHscq7OMLtfXDJdmX49edtWheDFNOlAJd
+	R+Zx4aVGZ0WRxh9p74f3i1erX26M4XLr586tlYuzZzOiL9ZB9YdU/80Xql0skqC6OSjd81duhOn
+	ep0PM7IFaK33Qk3gwsw==
+X-Google-Smtp-Source: AGHT+IFAyzNnBS6IDJSFSMEJ/UC4rW4CUjOyxVXmLmSBHEX87SDM2/8LeBdUjyimto1XFzjeWwzfcrQ1TRzdQh4=
+X-Received: from wrs12.prod.google.com ([2002:a05:6000:64c:b0:3b8:e341:aea3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:5f8b:0:b0:3b4:9721:2b13 with SMTP id ffacd0b85a97d-3c32ca06babmr1467563f8f.14.1755678533695;
+ Wed, 20 Aug 2025 01:28:53 -0700 (PDT)
+Date: Wed, 20 Aug 2025 08:28:52 +0000
+In-Reply-To: <20250819195841.238246-2-paul@paul-moore.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] rust: alloc: implement Box::pin_slice()
-To: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>
-References: <20250811101456.2901694-1-vitaly.wool@konsulko.se>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <20250811101456.2901694-1-vitaly.wool@konsulko.se>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250819195841.238246-2-paul@paul-moore.com>
+Message-ID: <aKWHRADe-EmKumGJ@google.com>
+Subject: Re: [PATCH] MAINTAINERS: add the associated Rust helper to the
+ CREDENTIALS section
+From: Alice Ryhl <aliceryhl@google.com>
+To: Paul Moore <paul@paul-moore.com>
+Cc: linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-
-
-On 8/11/25 12:14, Vitaly Wool wrote:
-> From: Alice Ryhl <aliceryhl@google.com>
-> 
-> Add a new constructor to Box to facilitate Box creation from a pinned
-> slice of elements. This allows to efficiently allocate memory for e.g.
-> slices of structrures containing spinlocks or mutexes. Such slices may
-> be used in kmemcache like or zpool API implementations.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-
- From what I could see, there were no objections to this one. Danilo, 
-would you be up for picking it or is there something missing about it still?
-
-Thanks,
-Vitaly
-
+On Tue, Aug 19, 2025 at 03:58:42PM -0400, Paul Moore wrote:
+> Signed-off-by: Paul Moore <paul@paul-moore.com>
 > ---
->   rust/kernel/alloc/kbox.rs | 72 +++++++++++++++++++++++++++++++++++++++
->   1 file changed, 72 insertions(+)
-> 
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index 1fef9beb57c8..ea9b08e3f8ea 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -290,6 +290,78 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, A>>, AllocError>
->           Ok(Self::new(x, flags)?.into())
->       }
->   
-> +    /// Construct a pinned slice of elements `Pin<Box<[T], A>>`.
-> +    ///
-> +    /// This is a convenient means for creation of e.g. slices of structrures containing spinlocks
-> +    /// or mutexes.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::sync::{new_spinlock, SpinLock};
-> +    ///
-> +    /// struct Inner {
-> +    ///     a: u32,
-> +    ///     b: u32,
-> +    /// }
-> +    /// #[pin_data]
-> +    /// struct Example {
-> +    ///     c: u32,
-> +    ///     #[pin]
-> +    ///     d: SpinLock<Inner>,
-> +    /// }
-> +    ///
-> +    /// impl Example {
-> +    ///     fn new() -> impl PinInit<Self, Error> {
-> +    ///         try_pin_init!(Self {
-> +    ///             c: 10,
-> +    ///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
-> +    ///         })
-> +    ///     }
-> +    /// }
-> +    /// // Allocate a boxed slice of 10 `Example`s.
-> +    /// let s = KBox::pin_slice(
-> +    ///     | _i | Example::new(),
-> +    ///     10,
-> +    ///     GFP_KERNEL
-> +    /// )?;
-> +    /// assert_eq!(s[5].c, 10);
-> +    /// assert_eq!(s[3].d.lock().a, 20);
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn pin_slice<Func, Item, E>(
-> +        mut init: Func,
-> +        len: usize,
-> +        flags: Flags,
-> +    ) -> Result<Pin<Box<[T], A>>, E>
-> +    where
-> +        Func: FnMut(usize) -> Item,
-> +        Item: PinInit<T, E>,
-> +        E: From<AllocError>,
-> +    {
-> +        let mut buffer = super::Vec::<T, A>::with_capacity(len, flags)?;
-> +        for i in 0..len {
-> +            let ptr = buffer.spare_capacity_mut().as_mut_ptr().cast();
-> +            // SAFETY:
-> +            // - `ptr` is a valid pointer to uninitialized memory.
-> +            // - `ptr` is not used if an error is returned.
-> +            // - `ptr` won't be moved until it is dropped, i.e. it is pinned.
-> +            unsafe { init(i).__pinned_init(ptr)? };
-> +
-> +            // SAFETY:
-> +            // - `i + 1 <= len`, hence we don't exceed the capacity, due to the call to
-> +            // `with_capacity()` above
-> +            // - the new value at index buffer.len() + 1 is the only element being added here, and
-> +            // it has been initialized above by `init(i).__pinned_init(ptr)`
-> +            unsafe { buffer.inc_len(1) };
-> +        }
-> +        let (ptr, _, _) = buffer.into_raw_parts();
-> +        let slice = core::ptr::slice_from_raw_parts_mut(ptr, len);
-> +        // SAFETY: `slice` points to an allocation allocated with `A` (`buffer`) and holds a valid
-> +        // `[T]`
-> +        Ok(Pin::from(unsafe { Box::from_raw(slice) }))
-> +    }
-> +
->       /// Convert a [`Box<T,A>`] to a [`Pin<Box<T,A>>`]. If `T` does not implement
->       /// [`Unpin`], then `x` will be pinned in memory and can't be moved.
->       pub fn into_pin(this: Self) -> Pin<Self> {
 
+Acked-by: Alice Ryhl <aliceryhl@google.com>
+
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d61f7246e5bf..0ee0098f2df8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -6484,6 +6484,7 @@ S:	Supported
+>  T:	git https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm.git
+>  F:	include/linux/cred.h
+>  F:	kernel/cred.c
+> +F:	rust/kernel/cred.rs
+>  F:	Documentation/security/credentials.rst
+>  
+>  INTEL CRPS COMMON REDUNDANT PSU DRIVER
+> -- 
+> 2.50.1
+> 
