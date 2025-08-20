@@ -1,119 +1,128 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4692D877F
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 07:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A77625CC69;
+	Wed, 20 Aug 2025 07:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755675795; cv=none; b=gbpNx/R6cUvmxyTQn+t52meKKTw2BdmykO1b5D4nELiJ3XkcHKTvxiEuG3y7zdo7+sI8CwW27dvaYc4m87QfeB2MpMcxRcIRRxOXMU3PSj0YIWnCfPNo4sdQHGlYxdZ8CS2Myg2wdsaY5820k8EY+Sa+S/hegbMCCm7ku1yQTuI=
+	t=1755676001; cv=none; b=ujF23/WQAm0bHW4XWeBF+F8IQjIe8mDAWCwiq8FcUwgHJAANsKTUHEPeD1yD0DY9RfpNZebRddOQmlHowzqud+y4AlddiaB+mDvwL51igFxaX5KjFopS76xPoG/WLI1Qts5LHxYHevdQOkZWtrW9j5R/JB6/+h+RWfMwKtufFdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755675795; c=relaxed/simple;
-	bh=4auqw/phu6z/jlypeBfepV0a/baTEw5ESZBSdVZ5xz8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i+d5W1OG0aDSjGjp60jXMBvGrhSgQC3EHjTzOKH9nQnkpBwusPYNCwwPn9aLlq77Fj0FEgmJsb20vZzv5HYGjTdURtSuv5fgcj3aiXz07fuJKkJSG2eJUoLAtp7lxDKMEqqOTrufqBSISWy64Mga1wsAOhjAgZ8/k5asIICtyJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=D3lAeHTV; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1755676001; c=relaxed/simple;
+	bh=/d+nzmqa3GrcS9yIDbuUTomM4wonirDo/873n5JZLEM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=o0U/uJ+ud5HPOX1Xghz4hWD8z1S49W9i0ANo7LLtb4yN8xrjwF6ru/8nBM0LcGhMYUBCzErxSn5wykbLpJDkp68WF0QuhbC8n7EDyJIZop98flh7kGepjzwhYe5ASxqNBqLoPVEn4SWtLUu5WAAxE8EEgamjMdeAxAixFmgtmwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TalHjjCd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="D3lAeHTV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1755675790; x=1755934990;
-	bh=ed6yVSBNvc+WLbrEvk5vB+fyF1kLBiK/kk3SPf6wWiA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=D3lAeHTVgunKA9ZeLRagKntCYGciZ3iMzY2SHP+HB07/ukNbdiKENFhlTGf7DMvZn
-	 irbU84G04jviMnosqvqU8r14Gy/7iNZ1nBA1/oq0domkLjA1FgEjeepFWZEKdl+zx5
-	 2xe39k/sHAZeTtDNQjMDXrmuq6q7p8QQPTU0zc3stU/HmeyUzjtrY0bH0J8/e3mcyi
-	 SoNglKogqgoAPfo4+lfZfxMr4gGejiBvXEKRfaf+PLEnJZimNTeXhfiq80Zlgimo8w
-	 ylnf31yTnvvEP28+4Ac9/sEUv38Sp7qTXu6yLPeXy2LRbfNrZMtmwklurdxs6sFz7T
-	 OY41UhEd67mVA==
-Date: Wed, 20 Aug 2025 07:43:07 +0000
-To: Benno Lossin <lossin@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-Message-ID: <aKV8h6i5vmiD0gHj@mango>
-In-Reply-To: <DC732XTLKE1U.244I3Q2DR8JNK@kernel.org>
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org> <aKQT92ViZSL841rT@mango> <iQ0qeYmzFSlOQkNLti-a4Z6ItwaZgh3r8Pqdu5rSwYz4wUxAsKZJlGCrsVQ481Qkzc9EapD3bzKKtrsXVkwt2A==@protonmail.internalid> <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org> <87ldnfd766.fsf@t14s.mail-host-address-is-not-set> <DC6KN0JN4X4D.1PHXPQ46O5J1Q@kernel.org> <aKVlA1Ctya6f2Nzc@mango> <DC732XTLKE1U.244I3Q2DR8JNK@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 7497ccf72aa2a36754b18fa9a79b3a05554b78ca
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TalHjjCd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96231C4CEEB;
+	Wed, 20 Aug 2025 07:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755676001;
+	bh=/d+nzmqa3GrcS9yIDbuUTomM4wonirDo/873n5JZLEM=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=TalHjjCd+xYNjCIlwcsGkWCSdMq798ryu0cFLn/Axti3UKahw7NTHtiHxEB9XskhM
+	 MtqRQhsgjYZJuRGsh2M880+ymLfANytkvdCS6TxZIiLxUzW6mepvukeW6mJvfXGSuz
+	 vm2jBUaV+AD4Y11b6i4I5nMjb1ccn1ed3xgLEN+32xNt/j1zROsTD3wpWLFqBpaMku
+	 ac3BH01T6i350N6rIXhnEAdS+9yogzxu6jKi+uwEUT9jOove37NY8eNcvxmflBdQKh
+	 DI2tHNaTu2kBUmQ1/RsdxCRzA9esCm4ipePoDo+jFCpF5Lg+rwBIwk6QH3Ku5fqKcS
+	 dOcJhqKaMZz3g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 20 Aug 2025 09:46:35 +0200
+Message-Id: <DC73760NQA0X.29E82RNZCV3FS@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Dirk Beheme" <dirk.behme@de.bosch.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v10 5/7] samples: rust: Add debugfs sample driver
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Matthew Maurer" <mmaurer@google.com>, "Danilo Krummrich"
+ <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com>
+ <20250819-debugfs-rust-v10-5-86e20f3cf3bb@google.com>
+ <DC6U02DZSX1W.1SXD7XQTNHXQL@kernel.org>
+ <CAGSQo02f6FOZ6fujzUhJEbysDpuASJf+4NBfqj0NGHKy7GQ7Yw@mail.gmail.com>
+In-Reply-To: <CAGSQo02f6FOZ6fujzUhJEbysDpuASJf+4NBfqj0NGHKy7GQ7Yw@mail.gmail.com>
 
-On 250820 0941, Benno Lossin wrote:
-> On Wed Aug 20, 2025 at 8:02 AM CEST, Oliver Mangold wrote:
-> > On 250819 1913, Benno Lossin wrote:
-> >> On Tue Aug 19, 2025 at 10:53 AM CEST, Andreas Hindborg wrote:
-> >> > "Benno Lossin" <lossin@kernel.org> writes:
-> >> >> On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
-> >> >>> On 250819 0027, Benno Lossin wrote:
-> >> >>>> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
-> >> >>>> > On 250818 1446, Andreas Hindborg wrote:
-> >> >>>> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
-> >> >>>> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
-> >> >>>> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
-> >> >>>> >> > +        // SAFETY: The type invariants guarantee that the o=
-bject is valid, and that we can safely
-> >> >>>> >> > +        // return a mutable reference to it.
-> >> >>>> >> > +        unsafe { self.ptr.as_mut() }
-> >> >>>> >> > +    }
-> >> >>>> >> > +}
-> >> >>>> >>
-> >> >>>> >> I think someone mentioned this before, but handing out mutable
-> >> >>>> >> references can be a problem if `T: !Unpin`. For instance, we d=
-on't want
-> >> >>>> >> to hand out `&mut Page` in case of `Owned<Page>`.
-> >> >>>> >>
-> >> >>>> >
-> >> >>>> > That was the reason, why `OwnableMut` was introduced in the fir=
-st place.
-> >> >>>> > It's clear, I guess, that as-is it cannot be implemented on man=
-y classes.
-> >> >>>>
-> >> >>>> Yeah the safety requirements ensure that you can't implement it o=
-n
-> >> >>>> `!Unpin` types.
-> >> >>>>
-> >> >>>> But I'm not sure it's useful then? As you said there aren't many =
-types
-> >> >>>> that will implement the type then, so how about we change the mea=
-ning
-> >> >>>> and make it give out a pinned mutable reference instead?
-> >> >>>
-> >> >>> Making `deref_mut()` give out a pinned type won't work. The return=
- types of
-> >> >>> deref() are required to match.
-> >> >>
-> >> >> I meant the changes that Andreas suggested.
-> >> >
-> >> > Not sure what you are asking, but I need to assert exclusive access =
-to
-> >> > an `Page`. I could either get this by taking a `&mut Owned<Page>` or=
- a
-> >> > `Pin<&mut Page>`. I think the latter is more agnostic.
-> >>
-> >> The former isn't really correct? It's like having a `&mut Box<Page>`
-> >> which is weird. I was saying we can have a `DerefMut` impl gated on `T=
-:
-> >> Unpin` and a `fn get_pin_mut(&mut self) -> Pin<&mut T>`.
-> >
-> > Yes. I think `Page` is the wrong example, as it already has owned seman=
-tics
-> > and does its own cleanup. Wrapping it in an Owned would be redundant.
->=20
-> After we have these owned patches, we are going to change `Page` to
-> `Opaque<bindings::page>`.
+On Wed Aug 20, 2025 at 2:40 AM CEST, Matthew Maurer wrote:
+> On Tue, Aug 19, 2025 at 5:34=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+>>
+>> On Wed Aug 20, 2025 at 12:53 AM CEST, Matthew Maurer wrote:
+>> > Adds a new sample driver that demonstrates the debugfs APIs.
+>> >
+>> > The driver creates a directory in debugfs and populates it with a few
+>> > files:
+>> > - A read-only file that displays a fwnode property.
+>> > - A read-write file that exposes an atomic counter.
+>> > - A read-write file that exposes a custom struct.
+>> >
+>> > This sample serves as a basic example of how to use the `debugfs::Dir`
+>> > and `debugfs::File` APIs to create and manage debugfs entries.
+>> >
+>> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
+>>
+>> This is a great example, thanks! I really like how the API turned out.
+>>
+>> When it comes to the newly added Scope API - and I assume this does not =
+come at
+>> a surprise - I have some concerns.
+>
+> Yes, I expected this to be the case, but inspired by some of the
+> comments about wanting to just create files off fields and forget
+> about them, I wanted to take one more crack at it.
+>
+>>
+>> But first, thanks a lot for posting the socinfo driver in both variants,=
+ with
+>> and without the Scope API.
+>>
+>> I had a brief look at both of those and I can see why you want this.
+>>
+>> With the Scope thing you can indeed write things a bit more compressed (=
+I think
+>> in the patches the differences looks quite a bit bigger than it actually=
+ is,
+>> because the scope-based one uses quite some code from the file-based one=
+).
+>>
+>> I think the downsides are mainly:
+>>
+>>   - The degree of complexity added for a rather specific use-case, that =
+is also
+>>     perfectly representable with the file-based API.
+> I don't *think* this is just for this use case - if I just wanted to
+> improve the DebugFS use case, I'd mostly be looking at additional code
+> for `pin-init` (adding an `Option` placement + a few ergonomic
 
-Ah, okay. Makes sense, I guess.
+`Option` is currently not possible to support, since we can't set solely
+the discriminant (it must always be a write to the entire enum, thus
+requiring a move), see [1].
 
-Best,
+[1]: https://github.com/Rust-for-Linux/pin-init/issues/59
 
-Oliver
+> improvements to `pin_init` would slim off a large chunk of the code).
 
+I'd be interested in what kinds of improvements you need, maybe they are
+simple enough to just include :)
+
+---
+Cheers,
+Benno
+
+> The idea here was that a file might not always directly correspond to
+> a field in a data structure, and the `File` API forces it to be one.
+> We could decide that forcing every file to be a data structure field
+> is a good idea, but I'm not certain it is.
