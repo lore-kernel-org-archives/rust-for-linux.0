@@ -1,122 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75B319F464;
-	Wed, 20 Aug 2025 10:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86912E2DF6;
+	Wed, 20 Aug 2025 10:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755687080; cv=none; b=OxEZs8Tu5bdzMt90PW0BgD1TuQBdTDh317PVvtBVq81gGcISw8nQjlVgdw6ctmqMJeIGUXMPcTMvJ9mEDGlLd1RMcnuw6iJ1fFiBM7Ve9ZmZd5ANJh7IEbsXB5RFKLPFF+c2sSPEaif09C4r2/nTEbkGz+NAuCR2KvbD2tv3S0Y=
+	t=1755687350; cv=none; b=eO4xStmM4yrUc9pn87y/nqK0kG+HOTRILPuwMh90JDddZu6irvbxvCPWb+m95+vqstruR214kz8T00lcn8ct5pfn1RUwdG1fGEW10BJ6WYWmEoasEFdxryW5eJ1ta54TpMtdu542eBqlSdwlygnTGzbsl3REYXaTO41JRha1Taw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755687080; c=relaxed/simple;
-	bh=ftbWhPhTq0/pc2ywQ/3r5J1AkPH0jYGq+ptt1+mIhBs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jRk2h20mD8GdE3Y4WwBaDPo0dYyWasV1ob9k9lg/6UXQEnA5C+aCehP3XK4giRnhhf3ySUXugmTSY/9pV3EpqFdAxWQBpazau1y+wSrAmSl4fYzxy9NrH84oxiw2crnrM8ZGuMzVu77N+qJEXjEyDuYbKfZ/RIJvimHO+HCt+54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqJ76beM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755687350; c=relaxed/simple;
+	bh=217B9hy9pihDYkabeC50zl1Fz58tNd7lSsJGgFAvhas=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=uLwXK6di1DUFDhRsCjzgIFvzQXdhc7NSqxAhNrlC9nSz4isZA5r015Nrvk7yEpdnRFWG+j/dkB1LsbTZ2JqYutRWjjCqvrQ71zumBqVDs8Y71a8IcgEFtl+Cx+z5sHeS0xi8zgNN6NiKJHsz3ZDr081lQ5e+bpelFwi5JVh6gRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R+8tucjU; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqJ76beM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC86C4CEED;
-	Wed, 20 Aug 2025 10:51:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755687080;
-	bh=ftbWhPhTq0/pc2ywQ/3r5J1AkPH0jYGq+ptt1+mIhBs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=nqJ76beMYiRpjoyvlQeZ6dc3cSkWRnEc4ZZ5xiokGOVHnZSQBW6SjieH3ISBkk+uk
-	 s506k4mrJW4FMT7+NvRKP4DdFTG9uRfJQytOq50mmtOAd6ukL4DtliCtvEv7650xWA
-	 Z67zU3KxQKvAJ/JK5A0mgp82UrActZansn1Uk3CD5TjruyLeFuu/TXwYdjlhDtMnRm
-	 NnG2bBuJ+Sj/GYHlm1mc7I0PthfE4jKKtKqIdfZg1Cbra2LeC9qJnACC5LgJY9W390
-	 BXSx83r8vuW6sfcKaZIfGnwamOd4JcXpzSOburokesg5KbpjqJdozKBBLHMGTVhgIp
-	 MlD/7rqxCiryA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Oliver Mangold <oliver.mangold@pm.me>, Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-In-Reply-To: <aKV8h6i5vmiD0gHj@mango>
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org> <aKQT92ViZSL841rT@mango>
- <iQ0qeYmzFSlOQkNLti-a4Z6ItwaZgh3r8Pqdu5rSwYz4wUxAsKZJlGCrsVQ481Qkzc9EapD3bzKKtrsXVkwt2A==@protonmail.internalid>
- <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org>
- <87ldnfd766.fsf@t14s.mail-host-address-is-not-set>
- <DC6KN0JN4X4D.1PHXPQ46O5J1Q@kernel.org> <aKVlA1Ctya6f2Nzc@mango>
- <DC732XTLKE1U.244I3Q2DR8JNK@kernel.org>
- <M3562k-1Geu1ikj3nWnLQ_kh6D2zoY-27s8hhs3MbpECSjG3nY4gzKWlLqcKmODxp-LK_9v1KzVAPDRJuURxhA==@protonmail.internalid>
- <aKV8h6i5vmiD0gHj@mango>
-Date: Wed, 20 Aug 2025 12:51:12 +0200
-Message-ID: <875xeicllr.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R+8tucjU"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b471740e488so5844081a12.1;
+        Wed, 20 Aug 2025 03:55:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755687348; x=1756292148; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MgJJpH6iTUOWXc1A5qBQjc73BKP4uJ5CGPZRjUlQ9+E=;
+        b=R+8tucjU+wX07+xJS1YmrX/syXzuMHYqyf8NtKkwvx+JkZeLMNMc6r2qgpMaJGu7rS
+         EZvta7R2g62Z7RtUUT1UiuTYimXsUvIBvT9QrH6xnH6ZFl1gSQ0uxKGF/WkRUm2cJ7ca
+         fYyMvxf5y2Xl4ZfJNXeZdChLd37/3bfQ47MEuiI+GmFIt9EmBsgqswU6m9GMqfAD6xWs
+         KALkF05xdMJlEKpopbl2LFgb+DUXWxKjcMTVKajEhDTZBbamfNe5937JdxABikL7atbV
+         tFYWaxIbDgx6kIiIsn4k42rGUqFLi+IftzviDuMlUYuAgd0FhS9eDeGBPglawAARkCxa
+         iYOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755687348; x=1756292148;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MgJJpH6iTUOWXc1A5qBQjc73BKP4uJ5CGPZRjUlQ9+E=;
+        b=JCJzvVbscdp1V0Bsh783grAM80aYGQKINRrypgetxLizwaN+d+73rNvA0W1hXE9jEF
+         OrmC47cWQTuyGkdpvejixZxueELx0LT6NHC77KISoqgtCgyTtMbtK2wh/vtFu6PuHZAP
+         GHpIJbinB2M6G6H+rxN1IHpqFZIYzkkQsFQAEfsSUPFhvqUVnVzMNC4ccW3j730c8PSp
+         2oC8hsKlclPIQeapa0sthHqeX8fht1fXraV3bFMCs9y5hRetZhjQBT80DHgBVSlDISd1
+         01jfxUdw3kbaCABN+LNwhQGAJVMKrZ/lSyqls2p/hVR2E1WRqvBFqnrfcNXWR0zOGbaG
+         Iitg==
+X-Forwarded-Encrypted: i=1; AJvYcCVrC2H2noW6AwxiSSPsbHB+884Ts5h2ku6V5vlZDxpwBG7oGWLwRUCD0T4mvbfwDipgtomKTMgzdo8n0n4=@vger.kernel.org, AJvYcCWDpo3ODZxBLFUwW7+ftwnjTRz1Fpy83lgeMdHUX7/1kSphYJ4W++pfAkoeusVefoI906boU4SW8g0D1c1kdzY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv6/IRlwX2RnM/tnmYpNWOQXirAuV8G3OAmHQtF0MGKp394Bdw
+	FipGqtTW+YWdyLY2z5thDOtV6XEnIndL8KSSiNT50P8KTA766jvyKUnL
+X-Gm-Gg: ASbGncuzdYCbOlpr/eXyvSukwXZ1FihihkDClGqolJfNqqjReKpaMJ0r1cyAsZyIbgS
+	C4lQgLBUiP9fhG3EWMBVx28rvPv2rqX02bH/4UT7nKoYmY2flkmkPoBVZUvXpOLbA+eKCQ+2tEr
+	GxRgmCOmZQiA0W5gHEETZ0MjMU01kDh5711dJM2Xd1RLrhfS4pZBGj8E2rgL6FQ2Lcd8CKe98vp
+	mOHtMTe22PuZSPQ6NKkJXk5/Ae3h6mkmOmwyBjPrFARt3QnEiim7F1MNGiLzm4oxoSCfsXTg8QQ
+	Di/0SIP2kAxeTBIEd7canTb1xGCRZP9/FtPwyQNEYdykuk1Va0GIjLRd/Lt8xi1NFbp7rl8E2gC
+	Aj+3ivz46NbVHBQYCQcTYI1pUxLB8jxyBqtiA
+X-Google-Smtp-Source: AGHT+IEtfLVZNVwl0IyUvIn4BlCmewakgSbKBlPGLB79Pdi84ShdWnG4i5K2D0eZ+0OG3JW7Ij6kuA==
+X-Received: by 2002:a17:903:2352:b0:240:8ec:fe2 with SMTP id d9443c01a7336-245ef0fe508mr29453655ad.4.1755687347892;
+        Wed, 20 Aug 2025 03:55:47 -0700 (PDT)
+Received: from shankari-IdeaPad.. ([103.24.60.31])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4764090714sm1946300a12.32.2025.08.20.03.55.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Aug 2025 03:55:47 -0700 (PDT)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jan Kara <jack@suse.cz>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH RESEND] rust: fs: update ARef and AlwaysRefCounted imports from sync::aref
+Date: Wed, 20 Aug 2025 16:25:36 +0530
+Message-Id: <20250820105536.8086-1-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250819-blinken-boykott-624b88ca7f02@brauner>
+References: <20250819-blinken-boykott-624b88ca7f02@brauner>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Oliver Mangold" <oliver.mangold@pm.me> writes:
+On Tue, Aug 19, 2025 at 01:26:11PM +0200, Christian Brauner wrote:
+> On Thu, Aug 14, 2025 at 03:31:01PM +0530, Shankari Anand wrote:
+> > Update call sites in the fs subsystem to import `ARef` and
+> > `AlwaysRefCounted` from `sync::aref` instead of `types`.
+> > 
+> > This aligns with the ongoing effort to move `ARef` and
+> > `AlwaysRefCounted` to sync.
+> > 
+> > Suggested-by: Benno Lossin <lossin@kernel.org>
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> > Acked-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> > ---
+> > It part of a subsystem-wise split series, as suggested in:
+> > https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
+> > This split series is intended to ease review and subsystem-level maintenance.
+> > 
+> > The original moving patch is here: (commit 07dad44aa9a93)
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+> > 
+> > Gradually the re-export from types.rs will be eliminated in the
+> > future cycle.
+> > 
+> > (Carry-forwarded acked-by tag and added Christian and Alexander as recipient)
+> > ---
+> 
+> I think it would be nice if we could get all fs related patches sent to
+> fsdevel so list-only subscribers get them. :)
+> 
 
-> On 250820 0941, Benno Lossin wrote:
->> On Wed Aug 20, 2025 at 8:02 AM CEST, Oliver Mangold wrote:
->> > On 250819 1913, Benno Lossin wrote:
->> >> On Tue Aug 19, 2025 at 10:53 AM CEST, Andreas Hindborg wrote:
->> >> > "Benno Lossin" <lossin@kernel.org> writes:
->> >> >> On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
->> >> >>> On 250819 0027, Benno Lossin wrote:
->> >> >>>> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
->> >> >>>> > On 250818 1446, Andreas Hindborg wrote:
->> >> >>>> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
->> >> >>>> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
->> >> >>>> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
->> >> >>>> >> > +        // SAFETY: The type invariants guarantee that the object is valid, and that we can safely
->> >> >>>> >> > +        // return a mutable reference to it.
->> >> >>>> >> > +        unsafe { self.ptr.as_mut() }
->> >> >>>> >> > +    }
->> >> >>>> >> > +}
->> >> >>>> >>
->> >> >>>> >> I think someone mentioned this before, but handing out mutable
->> >> >>>> >> references can be a problem if `T: !Unpin`. For instance, we don't want
->> >> >>>> >> to hand out `&mut Page` in case of `Owned<Page>`.
->> >> >>>> >>
->> >> >>>> >
->> >> >>>> > That was the reason, why `OwnableMut` was introduced in the first place.
->> >> >>>> > It's clear, I guess, that as-is it cannot be implemented on many classes.
->> >> >>>>
->> >> >>>> Yeah the safety requirements ensure that you can't implement it on
->> >> >>>> `!Unpin` types.
->> >> >>>>
->> >> >>>> But I'm not sure it's useful then? As you said there aren't many types
->> >> >>>> that will implement the type then, so how about we change the meaning
->> >> >>>> and make it give out a pinned mutable reference instead?
->> >> >>>
->> >> >>> Making `deref_mut()` give out a pinned type won't work. The return types of
->> >> >>> deref() are required to match.
->> >> >>
->> >> >> I meant the changes that Andreas suggested.
->> >> >
->> >> > Not sure what you are asking, but I need to assert exclusive access to
->> >> > an `Page`. I could either get this by taking a `&mut Owned<Page>` or a
->> >> > `Pin<&mut Page>`. I think the latter is more agnostic.
->> >>
->> >> The former isn't really correct? It's like having a `&mut Box<Page>`
->> >> which is weird. I was saying we can have a `DerefMut` impl gated on `T:
->> >> Unpin` and a `fn get_pin_mut(&mut self) -> Pin<&mut T>`.
->> >
->> > Yes. I think `Page` is the wrong example, as it already has owned semantics
->> > and does its own cleanup. Wrapping it in an Owned would be redundant.
->>
->> After we have these owned patches, we are going to change `Page` to
->> `Opaque<bindings::page>`.
->
-> Ah, okay. Makes sense, I guess.
+Sure, I'll take care next time. Thanks for pointing out!
 
-I applied Linas patch with this change to my tree [1].
-
-Best regards,
-Andreas Hindborg
-
-
-[1] https://lore.kernel.org/all/20250202-rust-page-v1-2-e3170d7fe55e@asahilina.net/
-
-
+Regards,
+Shankari
