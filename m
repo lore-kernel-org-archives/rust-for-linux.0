@@ -1,148 +1,186 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDF02D47F2;
-	Wed, 20 Aug 2025 11:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113FA23909F;
+	Wed, 20 Aug 2025 11:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755688315; cv=none; b=lBQNb7etOgVpjQtmlj5PxHV/jS2kZMoobci18BdRM7WYED7prQKonkTjLXqbqr65ZIgYOOuJm70gw7oYRGvTPRWbqG6PC29NWhqCJT2SKcbDrV0CeNzzYrIV4dbPerJ/tA1+L7SuTJpKnzAF/KNBTNEpJoYzOZJNDj7CPMCKVCg=
+	t=1755688709; cv=none; b=kRVcwlJe9EDCuw9qVFuEvpHLLtHJ/Xo+9Ctkth8M+rMeJ2MDU4EQTNNdYfLS2x5D8/B1r7GRk2Aiu2aNKrBYDqHDrFvMtZPcGoBAeygbfkpouk24sNztWZ07wQeOf+Gf3G4jGqqWaHfIas+HQppz+Iu87rjMyyD6rVz9uVvv9nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755688315; c=relaxed/simple;
-	bh=8ldqBdkFdM1w1dqFgmfPDteMDbpSSPRdNIj1VewVOYk=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=YeSgwFXwu6YuXlls5Shsch4t7DiLn/JCjj8lRGLbHXhLoKpnu40mlrUh/ztcpUn0h68HVBlZthMfrq6E/s9PjFCM7sQ/ZwsrNLf2g5E7bnBK0MmV1U3qCwH5qEeNZHdKKsc4I6bCL3KHyFNlhz45ZOwTMRQrNEfTefi//qKZ83M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jLBhEeLx; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755688709; c=relaxed/simple;
+	bh=NvKhqfHAjC7nxN4srjgB/PPxA3etfbhzLv69VOVPOKA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=OvdWTeOFpWmkFuOHoQK4lyiPDyTFq8nZZF4EH3UNsTdDpZR/Og8+9fpciM/xFZkIGwgWmYiXxPiGi35P7Snr+B1oY1jd90vUDdVQpj7iiQThqxdoTciEYH9NoOdZH37aVVY9qkHE7+gkiVNuHpvBy0Cw8ynFs4Vwl1feYcF96LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+c6f9wv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jLBhEeLx"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76e93370ab8so498565b3a.1;
-        Wed, 20 Aug 2025 04:11:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755688313; x=1756293113; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8ldqBdkFdM1w1dqFgmfPDteMDbpSSPRdNIj1VewVOYk=;
-        b=jLBhEeLxQdk9dKmeCjMyxBUS3bJ2jfAc3uHC76t17gLKvlx8WmFWpjgvVnSiN0SLNS
-         z8aaaLRY89kkrqXp2+zqkzdooHtG0s8GXTk4dLmmdK05vrQX41X+b4rwtZnIzBgZoP/M
-         ka1eq80DItVTPcXykpmwyBl3dUelwmYeLQlzv/xETYdm6tqK/K5pFvxw1mISR2eKCbdL
-         w/2EGNVLLkbraJs+SCYhJbYWhCrMo9pF+NPdbG6Z7PRoH+NknKFt/iEgSYMgRIrTi2h4
-         4iMGrXKXA0px2OfT/aw3R2naasZBYw6W6T1fD2MKakjNtvEk/4hMbFj+fGSj125ObjH/
-         wZ9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755688313; x=1756293113;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8ldqBdkFdM1w1dqFgmfPDteMDbpSSPRdNIj1VewVOYk=;
-        b=E2JAikg/0eZ43E3Wzng9OQsX115Ro8EncD8S8888CnwHGeyoacmDSHZQWDyAHTHRFH
-         U88WLSwHImrW6wvBVAQ+7r85PuJLNWlMIasHmAE3BWFHli0i2zz2cqYmGnSxurHlcwo5
-         4Qh2VlRRuAO+Piu3CE4B9PxUSlUTh0j5Tek35nvwrSxsrIFmFiHZndgja9Cf5dl6ecdG
-         N32sHzs3V0PxUmuIhkDLU9rvjAsVRLyBY+JgxLorQ7xTII3EpEiu6lJz+6eVxSCaKzrI
-         a645w+ykRgUCVPFZBbdgpdCHSvjAn9Ti/Lt0Kdr0/N61H+MYdsOqueyXf3iFszNtWGto
-         6K+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU6viMYHJ+f0hppf/8NuhqkGGvVsx6jgFdRfdLX2Y/lzqwT1KtI9pZp5bm5zOCJJe9wk1tvyF/bjx4meFQ=@vger.kernel.org, AJvYcCUQUqCqqZ8pfG5QbM4ISPmtGkrW870RhLBQOPONN83YDxwM031HJOB5IMMk6he4BINiBVll19aMSKHmO1PXQ+w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+4O5A6LDPCZ5jTTfmn/DDiFukuwlvz0hOcuaOxeuSb6FFP9PQ
-	ah5y9khkF7rfQ/4YWD2WfaUM7magTb4shgFYpB28FNoqvYa3yuZL7eyH
-X-Gm-Gg: ASbGncuOYJlRx5ctRLaJM4agHcd2YFN0+OkoWyoOGCY/F7f0ogs98A0KBRsIKmNI6Pg
-	XzO3c4+logEXmYuPt56LYcmv7vVUoLq/HM/GU6YHa5OgxrB8ExurPqIQNlLf20BmJPIoy+yt2R8
-	AIBE/EhJE+eIXMRVi4blli8tnTuJZehnB8hCsQwHPtehtcsrxccpGtGzKVUt29F72oHwOCxs6u8
-	ais8oO/KkCv3eIJB1CdNfVK96MyqqDp3Q2KnvgwN9F72G74bCAYDPxax+hLyqEJZiiCV8N7yG+7
-	j9DiMiSkKY4Lgsy4Z0kPbe8IivX0RP7kQZ41LXcyE6OsIBC6bS+sCd6+Np1eGzvD/S4rkB/xRHA
-	Ymkn3krsll68X/AMex1DDl6UIte2Ll5/yP1BrEjlsZgMThG3BvEn0SnPBdXnA8G98eYXMsiwneC
-	/6
-X-Google-Smtp-Source: AGHT+IHS+uX8Lb3LRD4/8MFkf0JISSu19nYG/H2AX0qvShvcoRrChOmid88P7jHQPVgCwCeiHRbL9g==
-X-Received: by 2002:a05:6a20:3ca7:b0:232:22a4:bd2b with SMTP id adf61e73a8af0-2431b93a316mr4270565637.33.1755688312725;
-        Wed, 20 Aug 2025 04:11:52 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b47640908d9sm1993021a12.29.2025.08.20.04.11.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 04:11:52 -0700 (PDT)
-Date: Wed, 20 Aug 2025 20:11:39 +0900 (JST)
-Message-Id: <20250820.201139.2145357080225408024.fujita.tomonori@gmail.com>
-To: acourbot@nvidia.com
-Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org,
- alex.gaynor@gmail.com, ojeda@kernel.org, aliceryhl@google.com,
- anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- dakr@kernel.org, frederic@kernel.org, gary@garyguo.net,
- jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org,
- lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org,
- tglx@linutronix.de, tmgross@umich.edu, daniel.almeida@collabora.com,
- me@kloenk.dev
-Subject: Re: [PATCH v2 2/2] rust: Add read_poll_timeout functions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <DC5ZPDQADDJT.32SFK2OHDRGTG@nvidia.com>
-References: <20250817044724.3528968-1-fujita.tomonori@gmail.com>
-	<20250817044724.3528968-3-fujita.tomonori@gmail.com>
-	<DC5ZPDQADDJT.32SFK2OHDRGTG@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+c6f9wv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D925C4CEEB;
+	Wed, 20 Aug 2025 11:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755688708;
+	bh=NvKhqfHAjC7nxN4srjgB/PPxA3etfbhzLv69VOVPOKA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=j+c6f9wvQwsckWE4213N/FIFio0R3U3278n1yw8riaV8XMnaYGLGdoxefVtOkrFMS
+	 vXn/Q+ukin9JH+3jKvILqVQeba6kwSB5woWp05xEtWysf1puQDnonLq8Ct4dReKyCa
+	 nRSmhZPVT0Z95FeeARd++Wv1WPPLU/W1CFZWUehCJBdOgYEgExzjFcTKr036SNgPUn
+	 TuH6ck7UUMIzZsj0CdxgCrnEw2XRcxk8cyt98gEuzFGIGO9CMIeHqKwRIw8Ug1BTeK
+	 7dd4MBMzVvWabZP1rtovHfDU4+lR0aUpzFuFt3xneVd93sgcKYE1YzzxAOkxTCYsLZ
+	 2oqRJ+TxWEzqQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-7
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 20 Aug 2025 13:18:23 +0200
+Message-Id: <DC77PBXCZP32.1FJ6BGM9YV27H@kernel.org>
+Subject: Re: [PATCH] rust: zpool: add abstraction for zpool drivers
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
+ Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
+ <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
+ <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Vitaly Wool" <vitaly.wool@konsulko.se>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250820091543.4165305-1-vitaly.wool@konsulko.se>
+ <DC76DSYUY978.3NR8S2K13I9RX@kernel.org>
+ <C642BA32-4EA5-4843-9625-5DBF40A42C6C@konsulko.se>
+In-Reply-To: <C642BA32-4EA5-4843-9625-5DBF40A42C6C@konsulko.se>
 
-T24gVHVlLCAxOSBBdWcgMjAyNSAwOTo0OTozOCArMDkwMA0KIkFsZXhhbmRyZSBDb3VyYm90IiA8
-YWNvdXJib3RAbnZpZGlhLmNvbT4gd3JvdGU6DQoNCj4gT24gU3VuIEF1ZyAxNywgMjAyNSBhdCAx
-OjQ3IFBNIEpTVCwgRlVKSVRBIFRvbW9ub3JpIHdyb3RlOg0KPj4gQWRkIHJlYWRfcG9sbF90aW1l
-b3V0IGZ1bmN0aW9uIHdoaWNoIHBvbGwgcGVyaW9kaWNhbGx5IHVudGlsIGENCj4+IGNvbmRpdGlv
-biBpcyBtZXQgb3IgYSB0aW1lb3V0IGlzIHJlYWNoZWQuDQo+Pg0KPj4gVGhlIEMncyByZWFkX3Bv
-bGxfdGltZW91dCAoaW5jbHVkZS9saW51eC9pb3BvbGwuaCkgaXMgYSBjb21wbGljYXRlZA0KPj4g
-bWFjcm8gYW5kIGEgc2ltcGxlIHdyYXBwZXIgZm9yIFJ1c3QgZG9lc24ndCB3b3JrLiBTbyB0aGlz
-IGltcGxlbWVudHMNCj4+IHRoZSBzYW1lIGZ1bmN0aW9uYWxpdHkgaW4gUnVzdC4NCj4+DQo+PiBU
-aGUgQyB2ZXJzaW9uIHVzZXMgdXNsZWVwX3JhbmdlKCkgd2hpbGUgdGhlIFJ1c3QgdmVyc2lvbiB1
-c2VzDQo+PiBmc2xlZXAoKSwgd2hpY2ggdXNlcyB0aGUgYmVzdCBzbGVlcCBtZXRob2Qgc28gaXQg
-d29ya3Mgd2l0aCBzcGFucyB0aGF0DQo+PiB1c2xlZXBfcmFuZ2UoKSBkb2Vzbid0IHdvcmsgbmlj
-ZWx5IHdpdGguDQo+Pg0KPj4gVGhlIHNsZWVwX2JlZm9yZV9yZWFkIGFyZ3VtZW50IGlzbid0IHN1
-cHBvcnRlZCBzaW5jZSB0aGVyZSBpcyBubyB1c2VyDQo+PiBmb3Igbm93LiBJdCdzIHJhcmVseSB1
-c2VkIGluIHRoZSBDIHZlcnNpb24uDQo+Pg0KPj4gUmV2aWV3ZWQtYnk6IEFuZHJlYXMgSGluZGJv
-cmcgPGEuaGluZGJvcmdAa2VybmVsLm9yZz4NCj4+IFJldmlld2VkLWJ5OiBGaW9uYSBCZWhyZW5z
-IDxtZUBrbG9lbmsuZGV2Pg0KPj4gVGVzdGVkLWJ5OiBEYW5pZWwgQWxtZWlkYSA8ZGFuaWVsLmFs
-bWVpZGFAY29sbGFib3JhLmNvbT4NCj4+IFNpZ25lZC1vZmYtYnk6IEZVSklUQSBUb21vbm9yaSA8
-ZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNvbT4NCj4gDQo+IFRlc3RlZCB0aGlzIHdpdGggbm92YS1j
-b3JlLCBhbmQgaXQgc2VlbXMgdG8gd29yayBmaW5lIQ0KPiANCj4gUmV2aWV3ZWQtYnk6IEFsZXhh
-bmRyZSBDb3VyYm90IDxhY291cmJvdEBudmlkaWEuY29tPg0KPiBUZXN0ZWQtYnk6IEFsZXhhbmRy
-ZSBDb3VyYm90IDxhY291cmJvdEBudmlkaWEuY29tPg0KDQpUaGFua3MhDQoNCj4gSnVzdCBvbmUg
-bGFzdCBjb21tZW50IGFib3V0IHRoZSBkb2N1bWVudGF0aW9uIGJlbG93Lg0KPiANCj4gPHNuaXA+
-DQo+PiArLy8vIFBvbGxzIHBlcmlvZGljYWxseSB1bnRpbCBhIGNvbmRpdGlvbiBpcyBtZXQgb3Ig
-YSB0aW1lb3V0IGlzIHJlYWNoZWQuDQo+PiArLy8vDQo+PiArLy8vIFRoZSBmdW5jdGlvbiByZXBl
-YXRlZGx5IGV4ZWN1dGVzIHRoZSBnaXZlbiBvcGVyYXRpb24gYG9wYCBjbG9zdXJlIGFuZA0KPj4g
-Ky8vLyBjaGVja3MgaXRzIHJlc3VsdCB1c2luZyB0aGUgY29uZGl0aW9uIGNsb3N1cmUgYGNvbmRg
-Lg0KPj4gKy8vLw0KPj4gKy8vLyBJZiBgY29uZGAgcmV0dXJucyBgdHJ1ZWAsIHRoZSBmdW5jdGlv
-biByZXR1cm5zIHN1Y2Nlc3NmdWxseSB3aXRoIHRoZSByZXN1bHQgb2YgYG9wYC4NCj4+ICsvLy8g
-T3RoZXJ3aXNlLCBpdCB3YWl0cyBmb3IgYSBkdXJhdGlvbiBzcGVjaWZpZWQgYnkgYHNsZWVwX2Rl
-bHRhYA0KPj4gKy8vLyBiZWZvcmUgZXhlY3V0aW5nIGBvcGAgYWdhaW4uDQo+PiArLy8vDQo+PiAr
-Ly8vIFRoaXMgcHJvY2VzcyBjb250aW51ZXMgdW50aWwgZWl0aGVyIGBjb25kYCByZXR1cm5zIGB0
-cnVlYCBvciB0aGUgdGltZW91dCwNCj4+ICsvLy8gc3BlY2lmaWVkIGJ5IGB0aW1lb3V0X2RlbHRh
-YCwgaXMgcmVhY2hlZC4gSWYgYHRpbWVvdXRfZGVsdGFgIGlzIGBOb25lYCwNCj4gDQo+IEZvciBw
-cmVjaXNpb246ICJUaGlzIHByb2Nlc3MgY29udGludWVzIHVudGlsIGVpdGhlciBgb3BgIHJldHVy
-bnMgYW5kDQo+IGVycm9yLCBgY29uZGAgcmV0dXJucyBgdHJ1ZWAsIG9yIHRoZSB0aW1lb3V0IHNw
-ZWNpZmllZCBieQ0KPiBgdGltZW91dF9kZWx0YWAgaXMgcmVhY2hlZC4iDQoNCkluZGVlZCwgYG9w
-YCBzaG91bGQgYmUgbWVudGlvbmVkIGhlcmUuDQoNCkkgdGhpbmsgaXQgc2hvdWxkIGJlICJvcCBy
-ZXR1cm5zIGFuIGVycm9yIiwgbm90ICJvcCByZXR1cm5zIGFuZCBlcnJvciIsDQpyaWdodD8NCg0K
-VGhlcmUgYXJlIHRocmVlIGFsdGVybmF0aXZlcywgc28gSaJkIHJlbW92ZSAiZWl0aGVyIi4gVGhl
-IHNlbnRlbmNlDQp3b3VsZCBiZToNCg0KVGhpcyBwcm9jZXNzIGNvbnRpbnVlcyB1bnRpbCBlaXRo
-ZXIgYG9wYCByZXR1cm5zIGFuIGVycm9yLCBgY29uZGANCnJldHVybnMgYHRydWVgLCBvciB0aGUg
-dGltZW91dCBzcGVjaWZpZWQgYnkgYHRpbWVvdXRfZGVsdGFgIGlzDQpyZWFjaGVkLg0KDQpJIGp1
-c3QgcmVhbGl6ZWQgdGhhdCAiSWYgYHRpbWVvdXRfZGVsdGFgIGlzIGBOb25lYCwiIGNvbW1lbnQg
-aXMgb3V0ZGF0ZWQuIEknbGwgdXBkYXRlLg0KDQoNCj4+ICsvLy8gcG9sbGluZyBjb250aW51ZXMg
-aW5kZWZpbml0ZWx5IHVudGlsIGBjb25kYCBldmFsdWF0ZXMgdG8gYHRydWVgIG9yIGFuIGVycm9y
-IG9jY3Vycy4NCj4+ICsvLy8NCj4+ICsvLy8gVGhpcyBmdW5jdGlvbiBjYW4gb25seSBiZSB1c2Vk
-IGluIGEgbm9uYXRvbWljIGNvbnRleHQuDQo+IA0KPiBIZXJlIEknZCBhZGQgYW4gZXJyb3JzIHNl
-Y3Rpb246DQo+IA0KPiAjIEVycm9ycw0KPiANCj4gSWYgYG9wYCByZXR1cm5zIGFuIGVycm9yLCB0
-aGVuIHRoYXQgZXJyb3IgaXMgcmV0dXJuZWQgZGlyZWN0bHkuDQo+IA0KPiBJZiB0aGUgdGltZW91
-dCBzcGVjaWZpZWQgYnkgYHRpbWVvdXRfZGVsdGFgIGlzIHJlYWNoZWQsIHRoZW4NCj4gYEVycihF
-VElNRURPVVQpYCBpcyByZXR1cm5lZC4NCg0KVGhhbmtzLCBsb29rcyBuaWNlLiBJJ2xsIGFkZCBp
-dC4NCg0KDQo+PiArICAgIGxvb3Agew0KPj4gKyAgICAgICAgbGV0IHZhbCA9IG9wKCk/Ow0KPj4g
-KyAgICAgICAgaWYgY29uZCgmdmFsKSB7DQo+PiArICAgICAgICAgICAgLy8gVW5saWtlIHRoZSBD
-IHZlcnNpb24sIHdlIGltbWVkaWF0ZWx5IHJldHVybi4NCj4+ICsgICAgICAgICAgICAvLyBXZSBr
-bm93IHRoZSBjb25kaXRpb24gaXMgbWV0IHNvIHdlIGRvbid0IG5lZWQgdG8gY2hlY2sgYWdhaW4u
-DQo+IA0KPiBuaXQ6IHRoaXMgY29tbWVudCBsb29rcyBzdXBlcmZsdW91cyB0byBtZSwgdGhpcyBp
-cyBhIGRpZmZlcmVudA0KPiBpbXBsZW1lbnRhdGlvbiBmcm9tIHRoZSBDIHZlcnNpb24gYW55d2F5
-Lg0KDQpBIHByZXZpb3VzIHJldmlldyBtZW50aW9uZWQgdGhhdCwgc2luY2UgdGhpcyBmdW5jdGlv
-biBzaGFyZXMgdGhlIHNhbWUNCm5hbWUgYXMgdGhlIEMgdmVyc2lvbiwgaXQncyBnb29kIHRvIG1h
-a2UgdGhlIGRpZmZlcmVudCBiZWhhdmlvcg0KZXhwbGljaXQuIEl0IG1heSBiZSBhIGJpdCByZWR1
-bmRhbnQsIGJ1dCBJJ2QgcHJlZmVyIHRvIGtlZXAgaXQuDQo=
+On Wed Aug 20, 2025 at 12:44 PM CEST, Vitaly Wool wrote:
+>> On Aug 20, 2025, at 12:16=E2=80=AFPM, Danilo Krummrich <dakr@kernel.org>=
+ wrote:
+>>> +/// zpool API
+>>=20
+>> It would be nice to have some more documentation on this trait, includin=
+g a
+>> doc-test illustrating some example usage.
+>>=20
+>>> +pub trait Zpool {
+>>> +    /// Opaque Rust representation of `struct zpool`.
+>>> +    type Pool: ForeignOwnable;
+>>=20
+>> Something that embedds a struct zpool, such as struct zswap_pool? If so,=
+ isn't
+>> this type simply Self?
+>
+> I think ForeignOwnable provides a good representation of 'struct zpool=E2=
+=80=99 and it=E2=80=99s convenient to borrow it, as done later in the patch=
+.
+
+ForeignOwnable is not a representation for a specific type, but rather some=
+thing
+that originates from the Rust side and is owned by the C side. But that's n=
+ot
+the case here.
+
+Regarding the "convenient to borrow" part, why can't Zpool::create() return
+Result<Self> and e.g. malloc be defined as
+
+	fn malloc(
+	   &self,
+	   size: usize,
+	   gfp: Flags,
+	   nid: NumaNode,
+	) -> Result<usize>;
+
+i.e. why does it need to be ForeignOwnable in the semantic sense of the tra=
+it?
+
+>>> +    /// Make all the necessary preparations for the caller to be able =
+to read from the object
+>>> +    /// represented by `handle` and return a valid pointer to the `han=
+dle` memory to be read.
+>>> +    fn read_begin(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, =
+handle: usize)
+>>> +        -> *mut c_void;
+>>=20
+>> Why does this return a raw pointer? I think this needs a proper type
+>> representation.
+>
+> The zpool API wants a raw pointer here so I decided not to overcomplicate=
+ it. I thought of using NonNull<[u8]> but it doesn=E2=80=99t seem to be a g=
+ood fit. We=E2=80=99re basically returning a pointer to a place in memory w=
+hich is guaranteed to be allocated and owned by us, but it is a raw pointer=
+ at the end of the day. What would you recommend here instead?
+
+I don't know the exact semantics behind read_begin(), but we should at leas=
+t
+encapsulate the pointer into a new type and restrict its lifetime to the
+validity of the encapsulated pointer, such that it can't be used in the wro=
+ng
+way.
+
+More general, if we don't cover such things and use raw pointers for conven=
+ience
+instead, we may not provide enough of a benefit compared to what we can do =
+in
+a C API.
+
+>>> +
+>>> +    /// Finish reading from a previously allocated `handle`. `handle_m=
+em` must be the pointer
+>>> +    /// previously returned by `read_begin`.
+>>> +    fn read_end(
+>>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>>> +        handle: usize,
+>>> +        handle_mem: *mut c_void,
+>>> +    );
+>>=20
+>> Same here...
+>>=20
+>>> +
+>>> +    /// Write to the object represented by a previously allocated `han=
+dle`. `handle_mem` points
+>>> +    /// to the memory to copy data from, and `mem_len` defines the len=
+gth of the data block to
+>>> +    /// be copied.
+>>> +    fn write(
+>>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>>> +        handle: usize,
+>>> +        handle_mem: *mut c_void,
+>>=20
+>> ...and here.
+>>=20
+>>> +        mem_len: usize,
+>>> +    );
+>>> +
+>>> +    /// Get the number of pages used by the `pool`.
+>>> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>)=
+ -> u64;
+>>> +}
+>>> +
+>>> +/// Zpool driver registration trait.
+>>> +pub trait Registration {
+>>=20
+>> I think you should use the kernel::driver::Registration instead, it's
+>> specifically for the purpose you defined this trait and ZpoolDriver for.
+>>=20
+>> As for the C callbacks, they should go into the Adapter type (which impl=
+ements
+>> kernel::driver::RegistrationOps) directly, they don't need to be in a tr=
+ait.
+>>=20
+>> This way a new Zpool Registration is created with:
+>>=20
+>> driver::Registration<zpool::Adapter>::new()
+>>=20
+>> This also allows you to take advantage of the module_driver!() macro to =
+provide
+>> your own module_zpool_driver!() macro.
+>
+> There was once a problem with that but I don=E2=80=99t remember what the =
+problem was :) I=E2=80=99ll try that one more time, thanks.
+
+I'm pretty sure this should work out well (just like it does for driver
+registrations such as PCI, platform, auxiliary, I2C, etc.). However, if you=
+ run
+into issues, please let me know, I'm happy to help out resolving them.
