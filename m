@@ -1,144 +1,98 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B4B2DFA2B;
-	Wed, 20 Aug 2025 11:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB7A2E5B2E;
+	Wed, 20 Aug 2025 11:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755689341; cv=none; b=SkFFpiwvrckTjVQFAt3sU5g9GVDVtv48vLPP4A307hkYrauy7MNXbUef4ueor0MDZX5C5Mw/A2W58Fd5n5sWx3/2w2RWIE2/vE1iImf1S7bV+2Lf/OoZiBjdxmWwyr7Fu1rV7c/DJpAylcBWspPlfZeIJknwrpP7v6RG/pPCxmw=
+	t=1755690694; cv=none; b=W8AnvO/ndxCd8ivuqaWUGEzUI96Odj54SwRExRdGc9VKqffIu6tgIBLtSQd7yEyjqRYMnrdHvf8eoewfzCdkUhthJcuVvLWuXDwI0G1kGRi+0rb4ovwlBW+O5ueGnrHNt8H51oTHsP3EV0+pnevBoWDlWRjuJGr/bxIz+vXM3/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755689341; c=relaxed/simple;
-	bh=KMwQZgWhhj9gd29/Q7w168KxOrHurfNtkfHhLeePnCk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CTk0OqDHRR4muYMd+Sq2bS0NH5BAZJu1+Xwi2H7BxwRNJjtOUSrUfq7eFdhesIGmW6gqHBI5EBQ+dnwwd8WKNm0XdWQPi0oZJU26JHSSHJc8yRsvo42LpZSIUNHNZslGnAe+3jpKqDLbm1Vno5xv0xQ7hqD1cqtCwXLT/m/sVPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gSnAjuA+; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755690694; c=relaxed/simple;
+	bh=BCf4oy3QiJQA2+jBC9hoGaSkFNSQT5YL981+qIDojUw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=Rw30W/rDmB1JaDziCkkV/MHVuVV/8Be9mjA0KIj/5OtXtnbC8d4e/PQ1CXZlUTbneQRQHxQuuQ4h8aPnUaHYXnxRuwX761PohMfkfi62MRixZUFJ3osuXzSq3qJ84sA2tdFVH1Or7JELAcb+SD5iYihD6l+i7thd/5wD/OiTGVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvF3LCgn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gSnAjuA+"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-32326e8005bso6381365a91.3;
-        Wed, 20 Aug 2025 04:29:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755689339; x=1756294139; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOnk2+rOYpz7eECwYsk6p5gDf1G+hGGjc9uxMwX3oe4=;
-        b=gSnAjuA+Z70UryvhN3vtdJT5DJlJCEJp+oKB9joOPwpWJ3H5hosY2Zx/W+Lj9/xa6p
-         8I8u9vUc0Q6Pl6lGZxn8RXRl92NrvddLunGClURlvn75JwIgzq9dwJmDtMAiIe+UkgeU
-         KSW/orjMVZmEO+ZNFYxm3PDoK+vUxARgzStTA3/3bOfttgs0Hq/GE1p0JmrWNaMOF1K2
-         W7RQc3TIbAW1th+Gijiici+ZNeKosEy+2CIwDEdfsyWjmqPoet//38zcMCtsQ05gM8VU
-         u/nHDJvQBxNFhIWStuY8+vTANudoHbbAfDa3dHwgmTLG4+3O6tYTotZJXSndjfg1zLnQ
-         ze+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755689339; x=1756294139;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zOnk2+rOYpz7eECwYsk6p5gDf1G+hGGjc9uxMwX3oe4=;
-        b=vkZyO1JHwelPUTiwcqim2xpcxpVmVBMTjKbOgk5YGrI1caluHe7uUnayqkTorF/6GA
-         NB6DoLRhom+/GmIa62gqG47cmg2DMGrvRUsv8lBUeyPaJqdPYaN/qV0SAxaq8+QQB+oq
-         w0gH0VBAFO7qCvpNoA9XGKrK3JGllws1Pjje2U9OFBVbsfXvIojMRrE9iVn3BnQgDr0F
-         xOc6zHlXjw/INbo2fMRji0LPl+OaLOUH3H3EPp8peFE16FQXClYefgHSm2cIkahu+HLm
-         Utp8J5xY9yxtTXWZpgiC2Sa3rWNEhewGDoYO5xSWl24/MTh8p7eXHfT+zC4aJm9RGZKQ
-         6ZAA==
-X-Forwarded-Encrypted: i=1; AJvYcCUESjzuJUWYuS38DkfcnM/YBe74Ovdlom78NXTvThBGHEZQMSDmiQqnWM4Z/Ky4tnmtn8S6kW7xDd9scp5HYSE=@vger.kernel.org, AJvYcCW/q/r7JRVcRaOhTyMRgFchbwEpuuyru0a5AFFtcQhKgCxK4QHF6GjTwp+QOi2uRhcpgHOIc2V8S7EZljA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDGUcjCXH40+SRgm17gI5TWS2oVJNxG1BegQlVz9GcslswLxlY
-	hy77bIVrdVKxDFbxln9n1Wt3scSpdCic46Y7Oxmh297tAXleXeEJYl4c
-X-Gm-Gg: ASbGncsnp0giotcnL7MOTgc7mFYEBmjWZJ8X00w8jcDXEN6p7qNBVVLs6BpLOwH7lny
-	A9jgvPCuEcYUxtweUQl8OcBxPJ/xSen4vQ3dLm/6UdfnFTxA9O0SlDXF5AAty9ka/Yzvy1xTMFv
-	lp9debO+jbTIfhlacmjBY13ue1vKjKhORvMWryXBo2EfTg8jbow0y/lCPhLlOG7oh/6+DUTZdd/
-	Wab64M3uNdq5HUSOn+CsfMWUixLTmTGgJ/d+QNkWydqvjjihQPASw7igPrRvBZReO8KaYwit64V
-	OIG7d1XZQofE9dA0VDbsLuLJv8pwChOE6JdqmoAKpbqJW2rIaNGd10OP+ay6x8WhydtJRevQXeQ
-	H6KihwXwm5yVMgiT6lwT8b1Ewo0NvTyTRiIacdqNOsNXOyqY=
-X-Google-Smtp-Source: AGHT+IHC1KRrmEby70STQpwjwfXQJpf3nJ6cbTi+qa72osCtJ7TF9Egj/X+S+o+F/xIiixul1wuoNw==
-X-Received: by 2002:a17:90b:514c:b0:311:da03:3437 with SMTP id 98e67ed59e1d1-324e1463fb6mr3542427a91.27.1755689339366;
-        Wed, 20 Aug 2025 04:28:59 -0700 (PDT)
-Received: from shankari-IdeaPad.. ([103.24.60.31])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b47640d509bsm2114621a12.55.2025.08.20.04.28.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 04:28:58 -0700 (PDT)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH] rust: nova-core: Update ARef imports from sync::aref
-Date: Wed, 20 Aug 2025 16:58:46 +0530
-Message-Id: <20250820112846.9665-1-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvF3LCgn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE17C116C6;
+	Wed, 20 Aug 2025 11:51:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755690693;
+	bh=BCf4oy3QiJQA2+jBC9hoGaSkFNSQT5YL981+qIDojUw=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=LvF3LCgnY/GRzggNVn5MVRpF1l34cVed2W+D2xfBDGpoIIexSuXLQevyOV7UgyVTI
+	 SSY6cRe0xJB9Ervp6COFmHDzciYoopkjK8pMYIeSo9EpH1t+/mayrtByB0a44selC9
+	 m2ukkfuvJHwj/C2d7hykXlCBl8gH6YPRt1nyv4XDU0ACgqkdkVwz7kmPdQl2kvphvg
+	 jKDwz0dpEIYqBajdusZCBBDY93HkU5XWg0dK7aXd1FGaf7177lzRi/9RTmgz18Wwxq
+	 bJTB0aKFDe7rTll7wUDQ08DEPSxJylSUdriCHKm1wIQ0X4A5Fs3NgMTQ1G6xDpp7V1
+	 tktYKZr0xTy/w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 20 Aug 2025 13:51:28 +0200
+Message-Id: <DC78ENI8QVIO.1AU7LK858YKTM@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v4 1/3] rust: pci: provide access to PCI Class and
+ Class-related items
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+References: <20250820030859.6446-1-jhubbard@nvidia.com>
+ <20250820030859.6446-2-jhubbard@nvidia.com>
+In-Reply-To: <20250820030859.6446-2-jhubbard@nvidia.com>
 
-Update call sites in nova-core to import `ARef`
-from `sync::aref` instead of `types`.
+On Wed Aug 20, 2025 at 5:08 AM CEST, John Hubbard wrote:
+> Allow callers to write Class::STORAGE_SCSI instead of
+> bindings::PCI_CLASS_STORAGE_SCSI, for example.
+>
+> New APIs:
+>     Class::STORAGE_SCSI, Class::NETWORK_ETHERNET, etc.
+>     Class::as_raw()
+>     Class: TryFrom<u32> for Class
+>     ClassMask: Full, ClassSubclass
+>     DeviceId::from_class_and_vendor()
+>     Device::pci_class()
+>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> +    /// Returns the PCI class as a `Class` struct.
+> +    /// Returns an error if the class code is not recognized.
+> +    pub fn pci_class(&self) -> Result<Class> {
+> +        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev=
+`.
+> +        Class::new(unsafe { (*self.as_raw()).class })
+> +    }
 
-This aligns with the ongoing effort to move `ARef` and
-`AlwaysRefCounted` to sync.
+I think all this turned out very nice!
 
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1173
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
----
-It part of a subsystem-wise split series, as suggested in:
-https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
-This split series is intended to ease review and subsystem-level maintenance.
+One thing to reconsider would be whether we really want this to be fallible=
+.
 
-The original moving patch is here: (commit 07dad44aa9a93)
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+It's probably better to define a pci::Class::UNKNOWN and implement
 
-Gradually the re-export from types.rs will be eliminated in the
-future cycle.
----
- drivers/gpu/nova-core/falcon.rs | 2 +-
- drivers/gpu/nova-core/fb.rs     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+	impl From<u32> for Class {
+	    fn from(value: u32) -> Self {
+	        match value {
+	            $(x if x =3D=3D Self::$variant.0 =3D> Self::$variant,)+
+	            _ =3D> Self::UNKNOWN,
+	        }
+	    }
+	}
 
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index d235a6f9efca..645e65175cb6 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -7,8 +7,8 @@
- use kernel::bindings;
- use kernel::device;
- use kernel::prelude::*;
-+use kernel::sync::aref::ARef;
- use kernel::time::Delta;
--use kernel::types::ARef;
- 
- use crate::dma::DmaObject;
- use crate::driver::Bar0;
-diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
-index 4a702525fff4..68559902ae78 100644
---- a/drivers/gpu/nova-core/fb.rs
-+++ b/drivers/gpu/nova-core/fb.rs
-@@ -4,7 +4,7 @@
- 
- use kernel::prelude::*;
- use kernel::sizes::*;
--use kernel::types::ARef;
-+use kernel::sync::aref::ARef;
- use kernel::{dev_warn, device};
- 
- use crate::dma::DmaObject;
-
-base-commit: 3ac864c2d9bb8608ee236e89bf561811613abfce
--- 
-2.34.1
-
+instead.
