@@ -1,76 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9447821323C;
-	Wed, 20 Aug 2025 13:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B503203B5
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 14:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755698205; cv=none; b=YjlzgNBWQfrZOCqmXwe4fNsyB+1tc1mhbC9Cv5e5qAiFOP8BCqLcxB66j/AaL33QREq90Y09gkSIVbcMF63DCw7NE+f+6t2QZEkg/Wiu0Xr/fY5ugOvZO6fhpbKe+srqz+gZuAfR6Zddd/4X5aDzaHLLc2oGZEsJNIaEQjzfmT0=
+	t=1755701685; cv=none; b=OheC/+OO3uWlkIBKk8YF/ddSb4JukDhiiMzE9YcqCOcqJXA7xpyT76zWPDC0SQBWweEj9Idx3Yoiix5Rxn2UY8wwlpYibAnegkw4KeoiF09qd59tY11EVDr4TIVQ3xEE+H78euGRclDhUdhVRkFr+RPa+ltGiirODkGs32qhxN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755698205; c=relaxed/simple;
-	bh=piG/FiXhKiIArdVeFb0mh1k61fHGLdZsqcNNViU3X6g=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=MOFQveTGKCvbPw/8HQmhIL4HSzD3SWGWzPs5NII2nQT8qdGCN+U7QwGvmrmf0y8Po9Dv1bpl+9/BLGGr2lS6afgeDKt+8O45CF+vYQD5ZTqorcxodHYfC/mZ8dHOCFg2+NduHBCjbW8qIpED7wVzVBBF7giPoYihlu9TMkvt7AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gS3i7LWA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755701685; c=relaxed/simple;
+	bh=CmaXhcClyXaHryH353w70ckYW/lIC/QWJ7meZuU37B0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ggXDJXbjYfsmaG2xqd+6mx+t24VKqJBpXhJZTSdyqz6eWFO3O5JdLSEj3bNDHtDDBki/B/flw6oeUJ24b4SZNfIJl3M1yqR2owziZ/cU9XTpP2ZyTsST74E+CrV4w3wLTuuqs2OYWnvEnRH9en8IdvL28TpBA4XEiywRsptmANY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyW/7Sz0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gS3i7LWA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40983C4CEE7;
-	Wed, 20 Aug 2025 13:56:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyW/7Sz0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09DDC4CEEB;
+	Wed, 20 Aug 2025 14:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755698205;
-	bh=piG/FiXhKiIArdVeFb0mh1k61fHGLdZsqcNNViU3X6g=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=gS3i7LWAe4EDXHuyD1/rYg1XqTVyLXT3pgtCd561jjf0M2wttckn8jFw7K1ssw01P
-	 OYwpupj11qtsNrN7p+yNHNIvFuXz6aPnHOWDi9xiA+GoGfVq7tESKMibmKim8JoEzX
-	 Q71d2WCaMAcPkQT90pVBimjKVPqecbTPqfFKlDz6rn5nraPOc2j6uVsZq4PwE3L09Q
-	 HYc5MHkC07RR2yQ0EGghcVSF2RuUPATiv06yz9TPVzC7cSpOVVddod+EWVQbtUmFlH
-	 XgUl3b7fqocDKrKRXHvp5ph1kXZ1wegx4Z9KMlg+d7U4409OrkpHd4Sql6aXsci0lj
-	 iKsFtV/oUeQXA==
+	s=k20201202; t=1755701685;
+	bh=CmaXhcClyXaHryH353w70ckYW/lIC/QWJ7meZuU37B0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UyW/7Sz0m7jRCv7NKWhFEdjvWo7+6XRJ/e2a4gTrAK99/xl1u1uho9QqcP9cMP6Ld
+	 mJS3QzBvcV4ae6KPcxqczKkledALhbcbt6RRNziWoxtcTCNafSo4JjXHb9Cs0quVTV
+	 7/ma1cqE5WwHakY3rNGjNR+O6cbE+xEmSdi39zng0WDl1aAvSUPzueUqqBJQOuxc9V
+	 FdgYAxT8BU8CIbtLACTqEhP5fJ9pif/dafbSLsIjQQOFZ5PaiRPbp8ZpWetB18fdrk
+	 uKEeII0juOZGhstq80Bd9kRBdggUO6vkbpxagUiKGtiON5oxLmCo4i6kRb6r/XKjt/
+	 d+kdnLOb1Mtog==
+From: Danilo Krummrich <dakr@kernel.org>
+To: lorenzo.stoakes@oracle.com,
+	vbabka@suse.cz,
+	Liam.Howlett@oracle.com,
+	urezki@gmail.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	abdiel.janulgue@gmail.com,
+	acourbot@nvidia.com
+Cc: rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v5 0/7] BorrowedPage, AsPageIter and VmallocPageIter
+Date: Wed, 20 Aug 2025 16:53:36 +0200
+Message-ID: <20250820145434.94745-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 Aug 2025 15:56:39 +0200
-Message-Id: <DC7B2I88PS4K.TJAD25XWXK9K@kernel.org>
-Subject: Re: [PATCH v4 2/3] gpu: nova-core: avoid probing
- non-display/compute PCI functions
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250820030859.6446-1-jhubbard@nvidia.com>
- <20250820030859.6446-3-jhubbard@nvidia.com>
- <DC7AZL4OWXTY.2F7TRSCZYNK6S@nvidia.com>
-In-Reply-To: <DC7AZL4OWXTY.2F7TRSCZYNK6S@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed Aug 20, 2025 at 3:52 PM CEST, Alexandre Courbot wrote:
-> This is making use of `from_class_and_vendor`, which is modified in the
-> next patch, requiring to modify this part of the file again. How about
-> switching this patch with 3/3 so we only modify the nova-core code once?
+This patch series implements the BorrowedPage type, the AsPageIter trait and
+VmallocPageIter type.
 
-I think that makes sense.
+AsPageIter can be implemented by any type that owns pages to allow users to
+borrow them through a generic interface.
 
-> I also wonder if we want to merge 1/3 and (the current) 3/3, since 1/3
-> alone leaves `from_class_and_vendor` into some intermediate state that
-> nobody will ever get a chance to use anyway, and one doesn't really make
-> sense without the other. WDYT?
+For instance, this is useful to access and borrow the backing pages of
+allocation primitives, such as Box and Vec, backing a scatterlist.
 
-Let's not merge them please, the intermediate state is not that bad, curren=
-tly
-we deal with raw integers for representing vendor IDs as well. So, patch 1 =
-is an
-improvement even by itself.
+Hence, implement AsPageIter for VBox and VVec.
+
+Additionally, implement Vmalloc::to_page() and ArrayLayout::size(), which are
+dependencies of the above.
+
+Changes in v5:
+  - Avoid repetition in commit message of "rust: alloc: implement
+    VmallocPageIter".
+  - Change invariants of VmallocPageIter to:
+    - `buf` is a valid and [`page::PAGE_SIZE`] aligned pointer into a
+      [`Vmalloc`] allocation.
+    - `size` is the number of bytes from `buf` until the end of the [`Vmalloc`]
+      allocation `buf` points to.
+  - Inline some methods of VmallocPageIter.
+
+Changes in v4:
+  - Rename IntoPageIter into AsPageIter.
+  - Put lifetime on AsPageIter::Iter instead of AsPageIter itself.
+  - Implement size_hint() for VmallocPageIter.
+  - Use PhantomData<page::BorrowedPage<'a>> instead of PhantomData<&'a u8>.
+
+Changes in v3:
+  - Generalize the previous PageOwner impl of VBox and VVec in VmallocPageIter.
+  - Correspondingly, replace PageOwner with IntoPageIter.
+
+Changes in v2:
+  - BorrowedPage
+    - Add link to Ownable
+    - Use borrow_page() in the example
+  - Add PageOwner, Vmalloc::to_page(), ArrayLayout, VBox, VVec patches.
+
+Danilo Krummrich (7):
+  rust: page: implement BorrowedPage
+  rust: alloc: vmalloc: implement Vmalloc::to_page()
+  rust: alloc: implement VmallocPageIter
+  rust: page: define trait AsPageIter
+  rust: alloc: kbox: implement AsPageIter for VBox
+  rust: alloc: layout: implement ArrayLayout::size()
+  rust: alloc: kvec: implement AsPageIter for VVec
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/alloc/allocator.rs  | 152 ++++++++++++++++++++++++++++++++
+ rust/kernel/alloc/kbox.rs       |  40 ++++++++-
+ rust/kernel/alloc/kvec.rs       |  40 ++++++++-
+ rust/kernel/alloc/layout.rs     |   5 ++
+ rust/kernel/page.rs             |  87 +++++++++++++++++-
+ 6 files changed, 322 insertions(+), 3 deletions(-)
+
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+-- 
+2.50.1
+
