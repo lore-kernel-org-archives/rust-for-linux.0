@@ -1,46 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBF62DD608;
-	Wed, 20 Aug 2025 23:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1921E491B;
+	Wed, 20 Aug 2025 23:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755732320; cv=none; b=rF7TK2lFSuYNW/vSg3QBvK/8rRD1pRfxr6g3rtHRm88opzo5FH0hhGxNvyOptjoAZOx5ZV33/s9Je9VY6P+SI4GzAskOJxbKzIp4UI0lGpFyNuM0QnZc06XlLV2F3Zc9QHhOsXUcjrzb6vKuC/H9Zh/sOb6UEtQE4ycj8Si75hw=
+	t=1755732569; cv=none; b=YEaVeR6YMIy4nQjs/BO0qsOA9GGyBx1CAtxEhudLd9RdFPBz2IUFZXoX2H6qY6OYNoIMPhVznXy4R7DiX+s905PSy16tzqY1p6lSo7jpiMlLCN6qfcDmn6n1QG5p6lFqzOfGfZH9O4KUWV46bjnMJohiSZtc2B1szZ7yWREu1OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755732320; c=relaxed/simple;
-	bh=i6WrTgez3RWzxsAhDu16ux8CIUtq8CDIDqrNRvCflSk=;
+	s=arc-20240116; t=1755732569; c=relaxed/simple;
+	bh=m2IaG1MY/+xH+rg0uCa+LUQv8zbg5WaY0KTukcGLEDI=;
 	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=LKZeVKL6IG+TdkFeEYTl7acrByZO5ZhPqCYKAyxoEvobVWMmmZ1xzIFCAf5wSQVJEmTNYCXC8C8kZm+wT3Qsq7HdNGfkCx5fiN4Ibyim8SVOziBI1k0kmskjqO8Tp1Dj7dcv1NxcEpXIXJKnDwDFsw0YggUyoWez4jCAo4UUNn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xp/Kg4l+; arc=none smtp.client-ip=10.30.226.201
+	 Mime-Version:Content-Type; b=RkZuPSiy94L+NMKNTbMgbHCIWQiRuPA2osdnwVceb5/JQOhN5nz0QFiE0qRA6YvcMV5hJTWA5H3lxnTPsuWA9BqerSWB8Yc8N/GWkOkC1H/MWp/wX2t2GDO2BQ7f40wzN6JapvP7L/+XctvME3p2HxMT7xHyPZlYPA4cPrHc4V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vFHtrR7Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xp/Kg4l+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61FCC4CEE7;
-	Wed, 20 Aug 2025 23:25:18 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vFHtrR7Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6B3C4CEE7;
+	Wed, 20 Aug 2025 23:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755732319;
-	bh=i6WrTgez3RWzxsAhDu16ux8CIUtq8CDIDqrNRvCflSk=;
+	s=korg; t=1755732569;
+	bh=m2IaG1MY/+xH+rg0uCa+LUQv8zbg5WaY0KTukcGLEDI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=xp/Kg4l+YkggT2CnSvl09KsaqWZOIBHk3besNL8+S4+rqVNqDnJPuynHQHWipsJ/s
-	 fqyM1+Md598/f0gDLKHsJaL1SrgTXUTSRFTusvTW/90L39iLxaV5jBi7REbrsDVBr9
-	 3kgPxigkF2E7j/0JFCZ0qtLyvcLBKZQlw5dZ5UYw=
-Date: Wed, 20 Aug 2025 16:25:18 -0700
+	b=vFHtrR7Y5KroDJGCDi51bt71NRLurSsxOIIDM6sO5c8GU7/Q0AngyIg8cbtiA4CVE
+	 fkeVumBm5YkU/2HVuIrhotROZ4hi9PyEoiCUlkFDf/3kgcSvPsp2oefxafa6t/etmc
+	 3xtP/tcFRWpZUzFOyqrpnDW3r0USND7XQKXfA3l8=
+Date: Wed, 20 Aug 2025 16:29:27 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH 3/7] rust: mm: update ARef and AlwaysRefCounted imports
- from sync::aref
-Message-Id: <20250820162518.7dd218ef331618bea11e9c2b@linux-foundation.org>
-In-Reply-To: <CAH5fLgiUfZG4e0k6ajkkKo+iaidWHu4dTRfBbgm4Y_CQPGLHpg@mail.gmail.com>
-References: <20250716091158.812860-1-shankari.ak0208@gmail.com>
-	<CAH5fLgiUfZG4e0k6ajkkKo+iaidWHu4dTRfBbgm4Y_CQPGLHpg@mail.gmail.com>
+To: Baptiste Lepers <baptiste.lepers@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun
+ Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jann Horn
+ <jannh@google.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: mm: Mark VmaNew as transparent
+Message-Id: <20250820162927.34201cfb395ec7319b15920a@linux-foundation.org>
+In-Reply-To: <20250812132712.61007-1-baptiste.lepers@gmail.com>
+References: <20250812132712.61007-1-baptiste.lepers@gmail.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -48,29 +46,31 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 15 Aug 2025 15:51:31 +0200 Alice Ryhl <aliceryhl@google.com> wrote:
+On Tue, 12 Aug 2025 15:26:56 +0200 Baptiste Lepers <baptiste.lepers@gmail.com> wrote:
 
-> On Wed, Jul 16, 2025 at 11:16 AM Shankari Anand
-> <shankari.ak0208@gmail.com> wrote:
-> >
-> > Update call sites in the mm subsystem to import `ARef` and
-> > `AlwaysRefCounted` from `sync::aref` instead of `types`.
-> >
-> > This aligns with the ongoing effort to move `ARef` and
-> > `AlwaysRefCounted` to sync.
-> >
-> > Suggested-by: Benno Lossin <lossin@kernel.org>
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> > Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> Unsafe code in VmaNew's methods assumes that the type has the same
+> layout as the inner `bindings::vm_area_struct`. This is not guaranteed by
+> the default struct representation in Rust, but requires specifying the
+> `transparent` representation.
 > 
-> Andrew, would you be able to pick up this patch? Thanks!
+> ...
+>
+> +++ b/rust/kernel/mm/virt.rs
+> @@ -209,6 +209,7 @@ pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result {
+>  ///
+>  /// For the duration of 'a, the referenced vma must be undergoing initialization in an
+>  /// `f_ops->mmap()` hook.
+> +#[repr(transparent)]
+>  pub struct VmaNew {
+>      vma: VmaRef,
+>  }
 
-I prefer not to grab a single patch from the middle of a series, so
-please add
+Alice suggests that I add a cc:stable to this.  But I see nothing in
+the changelog which explains why we're proposing a backport.
 
-	Acked-by: Andrew Morton <akpm@linux-foundation.org>
+So please send us a description of the userspace-visible runtime
+impact of this flaw and I'll paste it into the changelog, thanks.
 
-and merge this alongside the remainder of that series, thanks.
