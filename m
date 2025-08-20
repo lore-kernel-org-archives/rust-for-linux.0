@@ -1,211 +1,117 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686542C234C;
-	Wed, 20 Aug 2025 06:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A795256D;
+	Wed, 20 Aug 2025 07:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755672344; cv=none; b=Na+d7644hpAKaR/7uZCZ4q18MiQ9kiuW6jtJiknEVta5YSkUuBC3mPTlYJz2CZxp1gZiRpIu6/hfTKNKpe6Hny7ip/XlcVxOWoth1RQLRzzwt/DeUV0RGJao2OBPISwI7fXLZJSGTQ4wL1UJPjTS5adCptOT11Mn3tOWgqnCjxE=
+	t=1755675669; cv=none; b=QIKc1ccHur7VkJkJ/obnMlKB8a28OyfqIbTDv1aqFcZtks9qSRX/Y3sag/J0P4IF/taQ5nges0qbnHbxzgoMx0j1KraDzvrg5Lk5FODPiO9OcEZU2CeFSpLAVynD6vtvttqhuaovlZfsAITyFj2BRTmdRGV+6b5sxK8SvedPSWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755672344; c=relaxed/simple;
-	bh=nR2Hrc41c8xWrHe2oOf5LZz68hESHYJ8vCJDWjKNb0k=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=VepXuCBZuiP+r1LuIft6sgq6ADnehsLLZWOKA7Jfq/0O1Gi6p9wdy4JjA0NLs1KHAOajK6eXzEw0N6azEFCLSN+zDodzGbMLwiSSrHpVSIClAqnG56uc6qUq/tem3Q+GfZvk+txoCLCNWJUwfT2UnFSCGa8VdYlxn77qEw0fjoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LqdvX2OB; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755675669; c=relaxed/simple;
+	bh=7582QjSZOJKaR7M/xNgEU/LanovGbAq371XLoEphlcs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Hji7q2tVipupmyEjDwdF2styEDXtpjg47cFajE32c7MuT19WpwhEusa9+YF+6kqfu3rE/nnviz2TzQ+cgOdUuedJ/ayFTtxph8GbvTtn1ZKhJLvENAPV+dh9a2hREhIRPMX9/6txFiAkJsnk1ke3HfOLWyG0cuuF9eslLLO5fA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H3nWiMlm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LqdvX2OB"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76e2eb20a64so6631513b3a.3;
-        Tue, 19 Aug 2025 23:45:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755672341; x=1756277141; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MPiJLSCgC1DMhujN/OzW2TN7b5V4r8bSTL9sA1is1v8=;
-        b=LqdvX2OBaGYWJOBtiJPE5gOPOiiKWiPSYVKSddEyNdMZ9DB3rVuO46YSSi4G1rTwZ2
-         SrPgiIaFlxPYPwMMrdOz1k9pE1Afu9St/552d1ObayAe3Ykuj/bBQHl55dR6d4e0Oxl4
-         /qqTGRSkfIby1PfcS27nGcuH3Wp98IJOOS4no587JadaFgZySxE/XUsLhtiNUUobyKyy
-         ytG+As2bS5x4LXURIEEjHnNtbksvbfNZL/vCNkIrwPeo72xIGryOms/4vxkUULIT3UoV
-         TeVSOHoh1sMifTtgEdQpsqKqWjC4/3pbx0mwoyzZ40VDxOnxt0TKO9bxwuu1wmIPqJcp
-         a83A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755672341; x=1756277141;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MPiJLSCgC1DMhujN/OzW2TN7b5V4r8bSTL9sA1is1v8=;
-        b=WzZmLjXeBiKJdRx/adPXlYJ0YZq3lZCyBG2VFEfw6kDJLsVwt5IIxboxyvQ9KXMDi/
-         DnIlarqE1YNkHyl2pGInYH2R79N5+v8Wo1xzPNKrNS7icuE90p5YdKQx1wfDhD3q9cER
-         xD9BFNyBSYLDcQmPIP6ON3m6ft8WQBDQysXsU9le/ELnrou0tH5Md1gq227Z6AfWI4l0
-         FCMctyPGh34FcUK9+PAh3j4oOF3BwMCHGI6yLiD6SlxTIMrF7xVLndLa0jF2YvMx2zVT
-         ShjUM425yRF7ynK/KUBdnBQI2yuYIE9go3Pjy32ExbL24LlxuJtguZneBsGh8AVeW4Bb
-         Hcdg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVkV6HV/CPxxk7gpwQWi52FAC7OLZ+M/XUggGNKWlSpAwTLxCcO8nBQLrVpskMTUcg5w+DW56gU2MVL9IurSM=@vger.kernel.org, AJvYcCXtPdt4hq9jXNpi7nxJfRzZVMRSCw2pxb7xS1P6OCldY59Vp9yM3ByYlS8RF4qkPsO/Im7v2ZVr3RnsiMY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJM1IYFNxLObwBwzh/13dYKAxG5JoTYv9t48X4JbtCK8iyZF31
-	QQfUG7xBELSpME7C52XbMBCFqTm/YqRN+Pvh2N8IrNXI/vp1iU1NkTVF
-X-Gm-Gg: ASbGncvDIhhQMh9zyVAm4afxrP0kFbOdn1tsBQ5JwHBHiEdNGZZ2fohckzPB6GVP+jM
-	o8pacKDEGxNCipbCsrzsLAC/+wpDmdYsTMweqFHAbhTSlRDVyoBQeCcIOUAAlQ9yrq2V54AkQt4
-	dxrnPIvLQYPa+KBHWMU5/CHHYFapcuQ8j0QWrBSKa6voc+GwEE75m6vwI99vChlnbH2DGiPSKdd
-	iu9o1qauRyVa84LcX7ow2HXTdh8He6gZbzfCg6aKivn2MF1lzmZmXNLAzU7uWZWdD+zwFhkQlcX
-	iKPhEHfL8rWvHCx3PstFBXD/ZQxonzVpVmxRkWdngsRSNs3AeDrScgypMEbOxGD1QmDqH8M1mm4
-	m+wdKRKvuGII9PjrNDodVZtBFWH33hE5XobHBJYZPx398wPk9SDm+yQzWhXErKc732zaY6buni2
-	p7
-X-Google-Smtp-Source: AGHT+IFJzA1JUDQ4vIWdw9Z344y34xguQUz4Ttl7I3nyfCY3WaAqxvcI6hzA1WTQgnrT+yFtxqydhw==
-X-Received: by 2002:a05:6a00:3cce:b0:75f:9622:4ec4 with SMTP id d2e1a72fcca58-76e8dd29291mr2186855b3a.20.1755672341410;
-        Tue, 19 Aug 2025 23:45:41 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7f0b4f34sm4162323b3a.92.2025.08.19.23.45.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 23:45:40 -0700 (PDT)
-Date: Wed, 20 Aug 2025 15:45:35 +0900 (JST)
-Message-Id: <20250820.154535.2021779027770226518.fujita.tomonori@gmail.com>
-To: daniel.almeida@collabora.com
-Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org,
- alex.gaynor@gmail.com, ojeda@kernel.org, aliceryhl@google.com,
- anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- dakr@kernel.org, frederic@kernel.org, gary@garyguo.net,
- jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org,
- lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org,
- tglx@linutronix.de, tmgross@umich.edu, acourbot@nvidia.com, me@kloenk.dev
-Subject: Re: [PATCH v2 2/2] rust: Add read_poll_timeout functions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <F512B17D-5C07-4C10-9710-E2467D21BA80@collabora.com>
-References: <20250817044724.3528968-1-fujita.tomonori@gmail.com>
-	<20250817044724.3528968-3-fujita.tomonori@gmail.com>
-	<F512B17D-5C07-4C10-9710-E2467D21BA80@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H3nWiMlm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45B5C4CEEB;
+	Wed, 20 Aug 2025 07:41:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755675668;
+	bh=7582QjSZOJKaR7M/xNgEU/LanovGbAq371XLoEphlcs=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=H3nWiMlmZJ3jBrqvP26L4C7TPuPcvRrudx9gI3EokQkeZEZEuYj+9VJdF5CCr2o+H
+	 Km1kui60TeBW2izEOvAJFeDmEej16wBtXUsCPwkN1avQgZgdaqg8/LtDjPoEVi7d3F
+	 iYr/4yvEKL9zKzm7yIDZ46VuppC4WeG4q1nQZVsGo7n8QLCh3dKQtE8I/PCJbmmUl8
+	 vkmqFV5SY+9Mz6omYiw4wJ8BFTTwe9hK0zDN8433HdJ5fiYWe3jsINXxiJOZU7944v
+	 iVbSCQtFfDLMVR08P5gXinjKtPJrPedeEY0ju23saz25/Nzr2Ycy1k+ZTrZW88unMS
+	 mOXUR1UUroWPw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 20 Aug 2025 09:41:04 +0200
+Message-Id: <DC732XTLKE1U.244I3Q2DR8JNK@kernel.org>
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Asahi Lina"
+ <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Oliver Mangold" <oliver.mangold@pm.me>
+X-Mailer: aerc 0.20.1
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+ <87o6scdchf.fsf@t14s.mail-host-address-is-not-set> <aKMkvHAfDozzDjkB@mango>
+ <DC5WOFIKX7VQ.30UNUNE37LOO5@kernel.org> <aKQT92ViZSL841rT@mango>
+ <iQ0qeYmzFSlOQkNLti-a4Z6ItwaZgh3r8Pqdu5rSwYz4wUxAsKZJlGCrsVQ481Qkzc9EapD3bzKKtrsXVkwt2A==@protonmail.internalid> <DC69F17AFLB2.1KZ8JJUIH2CSP@kernel.org> <87ldnfd766.fsf@t14s.mail-host-address-is-not-set> <DC6KN0JN4X4D.1PHXPQ46O5J1Q@kernel.org> <aKVlA1Ctya6f2Nzc@mango>
+In-Reply-To: <aKVlA1Ctya6f2Nzc@mango>
 
-On Tue, 19 Aug 2025 15:30:51 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+On Wed Aug 20, 2025 at 8:02 AM CEST, Oliver Mangold wrote:
+> On 250819 1913, Benno Lossin wrote:
+>> On Tue Aug 19, 2025 at 10:53 AM CEST, Andreas Hindborg wrote:
+>> > "Benno Lossin" <lossin@kernel.org> writes:
+>> >> On Tue Aug 19, 2025 at 8:04 AM CEST, Oliver Mangold wrote:
+>> >>> On 250819 0027, Benno Lossin wrote:
+>> >>>> On Mon Aug 18, 2025 at 3:04 PM CEST, Oliver Mangold wrote:
+>> >>>> > On 250818 1446, Andreas Hindborg wrote:
+>> >>>> >> "Oliver Mangold" <oliver.mangold@pm.me> writes:
+>> >>>> >> > +impl<T: OwnableMut> DerefMut for Owned<T> {
+>> >>>> >> > +    fn deref_mut(&mut self) -> &mut Self::Target {
+>> >>>> >> > +        // SAFETY: The type invariants guarantee that the obj=
+ect is valid, and that we can safely
+>> >>>> >> > +        // return a mutable reference to it.
+>> >>>> >> > +        unsafe { self.ptr.as_mut() }
+>> >>>> >> > +    }
+>> >>>> >> > +}
+>> >>>> >>
+>> >>>> >> I think someone mentioned this before, but handing out mutable
+>> >>>> >> references can be a problem if `T: !Unpin`. For instance, we don=
+'t want
+>> >>>> >> to hand out `&mut Page` in case of `Owned<Page>`.
+>> >>>> >>
+>> >>>> >
+>> >>>> > That was the reason, why `OwnableMut` was introduced in the first=
+ place.
+>> >>>> > It's clear, I guess, that as-is it cannot be implemented on many =
+classes.
+>> >>>>
+>> >>>> Yeah the safety requirements ensure that you can't implement it on
+>> >>>> `!Unpin` types.
+>> >>>>
+>> >>>> But I'm not sure it's useful then? As you said there aren't many ty=
+pes
+>> >>>> that will implement the type then, so how about we change the meani=
+ng
+>> >>>> and make it give out a pinned mutable reference instead?
+>> >>>
+>> >>> Making `deref_mut()` give out a pinned type won't work. The return t=
+ypes of
+>> >>> deref() are required to match.
+>> >>
+>> >> I meant the changes that Andreas suggested.
+>> >
+>> > Not sure what you are asking, but I need to assert exclusive access to
+>> > an `Page`. I could either get this by taking a `&mut Owned<Page>` or a
+>> > `Pin<&mut Page>`. I think the latter is more agnostic.
+>>=20
+>> The former isn't really correct? It's like having a `&mut Box<Page>`
+>> which is weird. I was saying we can have a `DerefMut` impl gated on `T:
+>> Unpin` and a `fn get_pin_mut(&mut self) -> Pin<&mut T>`.
+>
+> Yes. I think `Page` is the wrong example, as it already has owned semanti=
+cs
+> and does its own cleanup. Wrapping it in an Owned would be redundant.
 
-> Thanks for working on this. Definitely going to be needed by a lot of drivers.
-> 
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+After we have these owned patches, we are going to change `Page` to
+`Opaque<bindings::page>`.
 
-Thanks!
-
-> How is the atomic version going to look like? The same, except for
-> might_sleep() and without the sleep_delta argument?
-
-If we follow the C implementation, it will be different; C's
-read_poll_atomic doesn't use ktime to calculate a timeout.
-
-It would look like the following. I think that the read_poll_timeout
-patchset is almost complete so I'll send the
-read_poll_timeout_atomic() patchset shortly.
-
-diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
-index e6325725d5a3..dc4f1ecdf31f 100644
---- a/rust/kernel/io/poll.rs
-+++ b/rust/kernel/io/poll.rs
-@@ -8,7 +8,10 @@
-     error::{code::*, Result},
-     processor::cpu_relax,
-     task::might_sleep,
--    time::{delay::fsleep, Delta, Instant, Monotonic},
-+    time::{
-+        delay::{fsleep, udelay},
-+        Delta, Instant, Monotonic,
-+    },
- };
- 
- /// Polls periodically until a condition is met or a timeout is reached.
-@@ -94,3 +97,86 @@ pub fn read_poll_timeout<Op, Cond, T>(
-         cpu_relax();
-     }
- }
-+
-+/// Polls periodically until a condition is met or a timeout is reached.
-+///
-+/// The function repeatedly executes the given operation `op` closure and
-+/// checks its result using the condition closure `cond`.
-+///
-+/// If `cond` returns `true`, the function returns successfully with the result of `op`.
-+/// Otherwise, it performs a busy wait for a duration specified by `delay_delta`
-+/// before executing `op` again.
-+///
-+/// This process continues until either `cond` returns `true` or the timeout,
-+/// specified by `timeout_delta`, is reached. If `timeout_delta` is `None`,
-+/// polling continues indefinitely until `cond` evaluates to `true` or an error occurs.
-+///
-+/// # Examples
-+///
-+/// ```no_run
-+/// use kernel::io::{Io, poll::read_poll_timeout_atomic};
-+/// use kernel::time::Delta;
-+///
-+/// const HW_READY: u16 = 0x01;
-+///
-+/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result<()> {
-+///     match read_poll_timeout_atomic(
-+///         // The `op` closure reads the value of a specific status register.
-+///         || io.try_read16(0x1000),
-+///         // The `cond` closure takes a reference to the value returned by `op`
-+///         // and checks whether the hardware is ready.
-+///         |val: &u16| *val == HW_READY,
-+///         Delta::from_micros(50),
-+///         Delta::from_micros(300),
-+///     ) {
-+///         Ok(_) => {
-+///             // The hardware is ready. The returned value of the `op` closure
-+///             // isn't used.
-+///             Ok(())
-+///         }
-+///         Err(e) => Err(e),
-+///     }
-+/// }
-+/// ```
-+pub fn read_poll_timeout_atomic<Op, Cond, T>(
-+    mut op: Op,
-+    mut cond: Cond,
-+    delay_delta: Delta,
-+    timeout_delta: Delta,
-+) -> Result<T>
-+where
-+    Op: FnMut() -> Result<T>,
-+    Cond: FnMut(&T) -> bool,
-+{
-+    let mut left_ns = timeout_delta.as_nanos();
-+    let delay_ns = delay_delta.as_nanos();
-+
-+    let timeout_is_zero = timeout_delta.is_zero();
-+
-+    loop {
-+        let val = op()?;
-+        if cond(&val) {
-+            // Unlike the C version, we immediately return.
-+            // We know the condition is met so we don't need to check again.
-+            return Ok(val);
-+        }
-+
-+        if !timeout_is_zero && left_ns < 0 {
-+            // Unlike the C version, we immediately return.
-+            // We have just called `op()` so we don't need to call it again.
-+            return Err(ETIMEDOUT);
-+        }
-+
-+        if !delay_delta.is_zero() {
-+            udelay(delay_delta);
-+            if !timeout_is_zero {
-+                left_ns -= delay_ns;
-+            }
-+        }
-+
-+        cpu_relax();
-+        if !timeout_is_zero {
-+            left_ns -= 1;
-+        }
-+    }
-+}
--- 
-2.43.0
-
+---
+Cheers,
+Benno
