@@ -1,41 +1,57 @@
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60920212D7C
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 03:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AF7221FDC
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 03:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755660873; cv=none; b=Vo381HjC3WGP/llanGtzUmxVPN1c9ZRQgoHT3UGD9lHWZIXLWa29eFbZJtBwX5Eu+cACDUDfDZ9z5sqk2/lfLZ0abOFIRPv6BXzaYFWZ5uXYdjlrnTJPkhrsTScEONxuy/Xhj7py18PHTtFyOMmAAtuDOwuNH6ZyywqxSYHuD9A=
+	t=1755661707; cv=none; b=iEw/Y73YdArSi8XsUODlap3yeThV0+LisBDJNKJz/qz9HDpkoL3AzaGhQ8yFdODyKnmH1AY1oSL3iCsZJHfSwFCeHOkQxLpx1EK4P2RvoCvLzzsE0uAH31qp3WP4QuDqXsCeK0rMfrsXqqRSsp7qmyNGCRreQMp8oCAh2tssI5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755660873; c=relaxed/simple;
-	bh=uVhm0RvIO2OzpquVTR5HsGomMVy3gjsdRKTHZttcAs0=;
+	s=arc-20240116; t=1755661707; c=relaxed/simple;
+	bh=CZ6lWXfVYCM7xAdBsZGzRttG9D2KjVHw0YsHg56QY7E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JB1u5rXZ2ZJBW8b3StC2IG12hCwLynfPsYBCx4hYx8M7Zp/onehL6Yceg+oGm2w/z9fgyT4Z6mLiXzLs7U1sWTwV0p6ixS9D91RPYrTtg2XNVgHBFpmzgL9KNbB0XpNbzm1buQrfUu8GgjPb16ySJmkD4S/FpkLY4QGHqlGgBUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=Vfp7iuEJ; arc=none smtp.client-ip=85.9.206.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=kPALcziVuNBpvQQ/W1RJ+DRmgG76Cj2h0iZRs9EIRd7sFoJ4nf+Mc4CFeE9JZvPCgCe9L+KFO+nLhSohkDmboNZCqWGP+ugqiM0x5/Jd3LQD6fEiwEX6H1y0IlT9rxNFkTnEe5CRo2iQ8PbNE3jkwxCi1GHX+xryoMGKY2x6Oeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=GpcTHbhN; arc=none smtp.client-ip=185.70.43.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="Vfp7iuEJ"
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="GpcTHbhN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
-	s=protonmail3; t=1755660859; x=1755920059;
-	bh=/YIFJFklxH+6ol1HZ2gE+lsHjt5zHKu7+jvozM/clDQ=;
+	s=protonmail3; t=1755661696; x=1755920896;
+	bh=qIDOe0QSvA2p3uohZj2DaxRg0Kq5ls/HnNnWTRUdDrE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Vfp7iuEJAtByNtdW8KHmQqlwVytaVwaQeLXH4BsDYzwiKMvFkVixll+mtxtC3lSSw
-	 5T/D5jYyquE9g/+EnFOaSKqN6FLuqzikgW4jNnP1HwTIufbSOJi9rhL4zVzcYEbgWo
-	 twn9TR8HVhpRlwvpwQcJmgddbiqOa6mjCuewhuGQmLYZcUmClHjSKakMtJS5zWrhRb
-	 a1mZTNaeMrYN9nGpVbkXzX+E3nRcgyunz0seISvcPgtQ4UfvyeaR41UsEHVq3JadgP
-	 RU+7h0RFLyDQOZ9MyZuMXUVYouOc4YsxHTnpAOousHAXjSXKAMPF+07s3HMuodgSSe
-	 T5vYTmBtHWIPg==
-X-Pm-Submission-Id: 4c6Brn6WS7z1DDWj
-Date: Wed, 20 Aug 2025 03:33:52 +0000
+	b=GpcTHbhNWGLmNYiGuteRHZmUj5G+dd1Oq4feazckGhttqPzBF61QGT1JPM8xnbdqV
+	 yI7TaX8pdW568cSuRPacdBrmD3AC6m+lFkniTBRjyxdB2oGvwjHBdCAEMGllqxVpTt
+	 GGTVHGM1GA6nCliN7hNViwLzKZ5etZY2bCJo0lw8IPG7eNHz8WIUFxroz0XqYZX8Tk
+	 +PhbOXC0Fg9fRlg/jDK6dMpv5ta7Kr3iARTVNVKUcdZoCq0Cq7wC7a0nvGAZk4pPHB
+	 MfBr4LJicXSUjn7FsAu3B3tm7eYbhy0JJJwJgUsrUwh1B7wcyPC0YiOsy4b/AUNtfV
+	 zKDH6EGUx+huQ==
+X-Pm-Submission-Id: 4c6C8s63rSz2Sccc
+Date: Wed, 20 Aug 2025 03:48:10 +0000
 From: Elle Rhumsaa <elle@weathered-steel.dev>
-To: lingfuyi@126.com
-Cc: rust-for-linux@vger.kernel.org, lingfuyi <lingfuyi@kylinos.cn>
-Subject: Re: [PATCH] rust: xarray: optimize lock functions with inline
- attribute
-Message-ID: <aKVBx2HWamyG0SeD@archiso>
-References: <20250818011612.1839789-1-lingfuyi@126.com>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	nouveau@lists.freedesktop.org, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] rust: pci: provide access to PCI Class, subclass,
+ implementation values
+Message-ID: <aKVFVO3wbzClcLwg@archiso>
+References: <20250818013305.1089446-1-jhubbard@nvidia.com>
+ <20250818013305.1089446-2-jhubbard@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,49 +60,143 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250818011612.1839789-1-lingfuyi@126.com>
+In-Reply-To: <20250818013305.1089446-2-jhubbard@nvidia.com>
 
-On Mon, Aug 18, 2025 at 01:16:12AM +0000, lingfuyi@126.com wrote:
-> From: lingfuyi <lingfuyi@kylinos.cn>
+On Sun, Aug 17, 2025 at 06:33:03PM -0700, John Hubbard wrote:
+> Allow callers to write Class::STORAGE_SCSI instead of
+> bindings::PCI_CLASS_STORAGE_SCSI, for example.
 > 
-> The XArray lock and try_lock functions are simple wrappers around
-> the C functions xa_lock and xa_trylock. These Rust functions don't
-> add significant logic beyond the unsafe FFI calls and safety guarantees.
+> New APIs:
+>     Class::STORAGE_SCSI, Class::NETWORK_ETHERNET, etc.
+>     Class::from_u32(), as_u32()
+>     Class::MASK_FULL, MASK_CLASS_SUBCLASS
+>     DeviceId::from_class_and_vendor()
+>     Device::class_code_raw(), class_enum()
 > 
-> Mark them as inline to avoid unnecessary function call overhead in
-> hot paths where XArray locking is frequent, such as in page cache
-> operations and other kernel data structure management.
-> 
-> This follows the same optimization pattern as other Rust kernel
-> modules where simple C function wrappers are marked inline to
-> improve performance.
-> 
-> Signed-off-by: lingfuyi <lingfuyi@kylinos.cn>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 > ---
->  rust/kernel/xarray.rs | 2 ++
->  1 file changed, 2 insertions(+)
+>  rust/kernel/pci.rs | 202 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 202 insertions(+)
 > 
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index a49d6db28845..c96589f92927 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -119,6 +119,7 @@ fn iter(&self) -> impl Iterator<Item = NonNull<c_void>> + '_ {
->      }
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 887ee611b553..9caa1d342d52 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -23,6 +23,179 @@
+>  };
+>  use kernel::prelude::*;
 >  
->      /// Attempts to lock the [`XArray`] for exclusive access.
-> +    #[inline]
->      pub fn try_lock(&self) -> Option<Guard<'_, T>> {
->          // SAFETY: `self.xa` is always valid by the type invariant.
->          if (unsafe { bindings::xa_trylock(self.xa.get()) } != 0) {
-> @@ -132,6 +133,7 @@ pub fn try_lock(&self) -> Option<Guard<'_, T>> {
->      }
+> +macro_rules! define_all_pci_classes {
+> +    (
+> +        $($variant:ident = $binding:expr,)+
+> +    ) => {
+> +        /// Converts a PCI class constant to 24-bit format.
+> +        ///
+> +        /// Many device drivers use only the upper 16 bits (base class and subclass), but some
+> +        /// use the full 24 bits. In order to support both cases, store the class code as a 24-bit
+> +        /// value, where 16-bit values are shifted up 8 bits.
+> +        const fn to_24bit_class(val: u32) -> u32 {
+> +            if val > 0xFFFF { val } else { val << 8 }
+> +        }
+> +
+> +        /// PCI device class codes.
+> +        ///
+> +        /// Each entry contains the full 24-bit PCI class code (base class in bits 23-16, subclass
+> +        /// in bits 15-8, programming interface in bits 7-0).
+> +        ///
+> +        #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +        #[repr(transparent)]
+> +        pub struct Class(u32);
+> +
+> +        impl Class {
+> +            $(
+> +                #[allow(missing_docs)]
+> +                pub const $variant: Self = Self(to_24bit_class($binding));
+> +            )+
+> +
+> +            /// Match the full class code.
+> +            pub const MASK_FULL: u32 = 0xffffff;
+> +
+> +            /// Match the upper 16 bits of the class code (base class and subclass only).
+> +            pub const MASK_CLASS_SUBCLASS: u32 = 0xffff00;
+> +
+> +            /// Create a `Class` from the raw class code value, or `None` if the value doesn't
+> +            /// match any known class.
+> +            pub fn from_u32(value: u32) -> Option<Self> {
+> +                match value {
+> +                    $(x if x == Self::$variant.0 => Some(Self::$variant),)+
+> +                    _ => None,
+> +                }
+> +            }
+> +
+> +            /// Get the raw 24-bit class code value.
+> +            pub const fn as_u32(self) -> u32 {
+> +                self.0
+> +            }
+> +        }
+> +    };
+> +}
+> +
+> +define_all_pci_classes! {
+> +    NOT_DEFINED                = bindings::PCI_CLASS_NOT_DEFINED,                // 0x000000
+> +
+> +    ...
+> +
+> +    OTHERS                     = bindings::PCI_CLASS_OTHERS,                     // 0xff0000
+> +}
+> +
+>  /// An adapter for the registration of PCI drivers.
+>  pub struct Adapter<T: Driver>(T);
 >  
->      /// Locks the [`XArray`] for exclusive access.
-> +    #[inline]
->      pub fn lock(&self) -> Guard<'_, T> {
->          // SAFETY: `self.xa` is always valid by the type invariant.
->          unsafe { bindings::xa_lock(self.xa.get()) };
+> @@ -157,6 +330,23 @@ pub const fn from_class(class: u32, class_mask: u32) -> Self {
+>              override_only: 0,
+>          })
+>      }
+> +
+> +    /// Create a new `pci::DeviceId` from a class number, mask, and specific vendor.
+> +    ///
+> +    /// This is more targeted than [`DeviceId::from_class`]: in addition to matching by Vendor, it
+> +    /// also matches the PCI Class (up to the entire 24 bits, depending on the mask).
+> +    pub const fn from_class_and_vendor(class: Class, class_mask: u32, vendor: u32) -> Self {
+> +        Self(bindings::pci_device_id {
+> +            vendor,
+> +            device: DeviceId::PCI_ANY_ID,
+> +            subvendor: DeviceId::PCI_ANY_ID,
+> +            subdevice: DeviceId::PCI_ANY_ID,
+> +            class: class.as_u32(),
+> +            class_mask,
+> +            driver_data: 0,
+> +            override_only: 0,
+> +        })
+> +    }
+>  }
+>  
+>  // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `pci_device_id` and does not add
+> @@ -410,6 +600,18 @@ pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
+>          // - by its type invariant `self.as_raw` is always a valid pointer to a `struct pci_dev`.
+>          Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_into()?) })
+>      }
+> +
+> +    /// Returns the full 24-bit PCI class code as stored in hardware.
+> +    /// This includes base class, subclass, and programming interface.
+> +    pub fn class_code_raw(&self) -> u32 {
+> +        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
+> +        unsafe { (*self.as_raw()).class }
+> +    }
+> +
+> +    /// Returns the PCI class as a `Class` struct, or `None` if the class code is invalid.
+> +    pub fn class_enum(&self) -> Option<Class> {
+> +        Class::from_u32(self.class_code_raw())
+> +    }
+>  }
+>  
+>  impl Device<device::Bound> {
 > -- 
-> 2.34.1
+> 2.50.1
+
+All of the functions could probably be `#[inline]`ed, though I'm not
+sure how much it affects the `const` functions, since they're already
+evaluated at compile-time.
 
 Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
