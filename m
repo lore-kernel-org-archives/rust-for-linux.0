@@ -1,85 +1,112 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E591D5ACE
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 23:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1E44A1E;
+	Wed, 20 Aug 2025 00:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755645794; cv=none; b=i1jjrWAwRbSMm1naBOMfDU8LQpXCrwiP7TXwFDj5ddBImTaKYwK7n+AxC/TDVb0lDb8ZzBZsrUpJQXI/9dotNNM8smAFzBMAbSHuHiFMcvsJVowezxoc7cUJ05TKvMvUK6kWmsFmJa30a6rRyJJpou3lOEcaZnycfqJavpd+ZUo=
+	t=1755648795; cv=none; b=qRyVKIdq59lo0eRjGEW73nCfCDp2EjV463a68b3qf9JUKunYpNm5B8/6mmGy0FL+TZETZO3RNOBKYblFOMYGZv1EdIS1vUwhErqlebQNyP6juRQQzUIPD8eo5wUpLLRe+Rxvuum4fTN/AjeUpKG/BSH/3o2RKi9yuAIN2UxGDI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755645794; c=relaxed/simple;
-	bh=FgXbsPON8BjVPusem9QjMh23k1yZqq1A6IIZikaB0S4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Swm3azVtHj0v/Fc7MRQ32fJGhC5xADj97v3woZpANfD6n+fijI4quis5slbfoGFYsh7tnvUILvndK5a0mP58Pzg//WUMEma/2QsPyQoCvTZVQUHHwVkWZ3ZbQuNfdgM5LNpV+LGySDxtWwZirFd39LpyH9O891R36FkvHQxrK/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tMin5XGl; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1755648795; c=relaxed/simple;
+	bh=gy5IplXc0FL96Ro3IuiifdRSkX7mIGM+aCqIxPwusL0=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=XrObL9tfY8hraFLipn8M66Rfsmd2Cf5StmKfxypfYaims2pQfOt5vbzlyi6MXNFNLipo1Bnkltgs3YFkCVlkm3/QtYaQSDPJ7wGZHPMTT9QacwvDLpInpjUdZLTiqbhFAXu4USfDVX8Ql9FWK1AuN7gZFlrBD84ohxD9mpcUn6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDcRuxwG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tMin5XGl"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-618076fd48bso1646a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 16:23:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755645791; x=1756250591; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FgXbsPON8BjVPusem9QjMh23k1yZqq1A6IIZikaB0S4=;
-        b=tMin5XGlhL3bce/Ermqmj7VllDam3ypeLqlKtip+T1O51UFcplboDAKUiqRm15uIW6
-         6n1Wp4Hy8BfPevM/KyWhcNpKLlIqMF2EjCfYNa6hP7rhYuNz9zXWqPPs5uKWx+7dYTfq
-         mPBdHKn7ceVw1Pzl/pW+INxVvi3bAvykG7zSDG4bgN1ilCUXDbFCJ4vnyHt2mdMsMqCc
-         FW1GWbYCOJY9kmZBdmoB1cOmcE2ZuVs3Utme1Hk6Q/ConSuYc436HRF24xfEd2JCWj8p
-         zCi9oZyjboULKQwSGHu3WPprBupT1TNggSJOOJwHZA4wWufr6MF2QUQsiRsj98Yil2cj
-         lzNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755645791; x=1756250591;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FgXbsPON8BjVPusem9QjMh23k1yZqq1A6IIZikaB0S4=;
-        b=eEuGWYN/MHHmSoJXjazgtozHDfnTZI2tj4cBY/MdtN/iBsr0yClZvSMbaCBDeuNuPp
-         MPCk2VNiEJKG6Hoozr8tmf6UR+Yi/dmHMkorn2AZJ3chn2C+W6KSBFEmFa+wlhfLXtDr
-         XDeO/WFdzGLLJV7bzVHMa3LzOXCFP8PfhQqOfVGkH297lri+6EQ94I7qAs7uTHXEdl7/
-         oZY14azlOtKrKYbZq0jCFXmWxvl/nZUM2ES/dDENnk55nLrHmWmZUpBFxwtgfAip05fD
-         6BQ1MgNTYARsYumOTGGlnbuc4nxOiSSTcSdy+/FNwlHREC4b1d27qTGNedllUdZCL4/L
-         6vJw==
-X-Forwarded-Encrypted: i=1; AJvYcCXMl3E8diNfOnq84jNZrH6IpfnWhIWMY8LUi0mKuCnmve+z1ZLctlJKQBnKq3R5cZ1xtRF5XEHccCwzCMFg4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD+6h6nbAWd2Lq5aJW9bXe3mqnYdqHmzeVQ2PnUrMxoF74V8Cw
-	s8D6N69pTvN/F4g4tZVR+hTD47g2i6GJjHU+F8MW7hXpVCVKbXKfuHiqPTBXiJLJfXMP6QcMim4
-	BPRAzJGHwO4I+4/EYOQx5RGjCbOq3BLb36M+79dYJ
-X-Gm-Gg: ASbGncuJEAt6+eaAA7Ro39/iQl1ElIeTf/q8hiXWtfKHwlpTxD1fqjHMTgoUWreVX0n
-	n1flGFSMBlQSV6jkUn8tNVuzyHAaqlkBGxh4rgJOwDmWAI5GC6BESliort4Dm5iXN9P2HDhCU+V
-	8/sauJozHV60bmPHSIMwpbwuWb1Oeyo1HgpeOZ0OcrRczJZUnx2CPFZSv2InGFMamFMQSfeJa0H
-	oS7ga0Kts2Z1ef+F2kp73hiQFKA4R7kgEQoSJ5wUuN4
-X-Google-Smtp-Source: AGHT+IFSCLPVTfsBiaf24hTwkehzYNAWh1etb+0SGuEqrrfRehL7fLOqvcwLgHZ2cPcFG59kqvBg4cby0Sli6tYfTVc=
-X-Received: by 2002:a05:6402:2089:b0:618:a73b:9cfe with SMTP id
- 4fb4d7f45d1cf-61a9b2acd4bmr26165a12.3.1755645790860; Tue, 19 Aug 2025
- 16:23:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDcRuxwG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219FDC4CEF1;
+	Wed, 20 Aug 2025 00:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755648794;
+	bh=gy5IplXc0FL96Ro3IuiifdRSkX7mIGM+aCqIxPwusL0=;
+	h=Date:From:To:Subject:From;
+	b=XDcRuxwGHqSj3D5V/kZDqFdRPgGU2IcxLRMia/pub7NEm+BEoknWc4bRqu5EUkH6R
+	 OfajYIR8xQ+Md6Jbd9wMp7LrvbM+fG/mI3KYXYhuwpnpr2oH25P5GAvAP+aG53U4FU
+	 f2mYclR8HIr9pd1KQoiGEK3px/I9BQz4l+uVz4ABcHIejEoG3cm08ATJvYLLZBi5/V
+	 mX+3pTBadgkNR8fY4XTwwL4QkBVnspN4N34L8uwOYDiwOP+YPnnlOnftQZTRlIbPcf
+	 iA24uMthtLxEOqb/jzr7k3ZFT30/BvfNE8Qaw/wjfObZo+91A5os4BEqJ/4TL65RF3
+	 1q6ILR0m8DBbw==
+Date: Wed, 20 Aug 2025 03:13:11 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: tpm2@lists.linux.dev, linux-integrity@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: tpm2_protocol / tpm2sh 0.9.0
+Message-ID: <aKUTF6lu5JetDJxX@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709-debugfs-rust-v9-0-92b9eab5a951@google.com>
- <20250709-debugfs-rust-v9-3-92b9eab5a951@google.com> <2a0f2965-af37-4ffe-8806-3bb469361b1d@de.bosch.com>
- <CAGSQo03meaA2fmoHqxdcVSXrKdE7yTTK0JfWH28mHZ=0kWoTzA@mail.gmail.com> <CANiq72ks-B--6UxO-VsPAvvqpKap7G7rSHxJs5gam0hjWB+vOg@mail.gmail.com>
-In-Reply-To: <CANiq72ks-B--6UxO-VsPAvvqpKap7G7rSHxJs5gam0hjWB+vOg@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Tue, 19 Aug 2025 16:22:58 -0700
-X-Gm-Features: Ac12FXyOMFlmQPAe103eecrycpXODR3C_02-CqxCcXGkK8czg1euU5bo8OQ405k
-Message-ID: <CAGSQo02NP0bBSuPWUXkhz0gh9y5A=X16UkCQb40DTJ6Qkm8avg@mail.gmail.com>
-Subject: Re: [PATCH v9 3/5] rust: debugfs: Support `PinInit` backing for `File`s.
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-This is resolved in V10 [1], just sent.
+Hi
 
-[1] https://lore.kernel.org/all/CAGSQo03RGzmP2diL-vvLDZHduu=d4oFy8X46Fc8vg0SzE-XfDw@mail.gmail.com/
+0.9.0 is the first "feature complete" version of tpm2_protocol except
+couple of minor glitches.
+
+Errata:
+
+    1. SetCapability due this remark below table 137 in the Structures
+       specification:
+    
+       "The TPMU_SET_CAPABILITIES Structure may be defined by a TCG Registry."
+    
+    2. No TPM_CC_MAC defined as its code conflicts with TPM_CC_HMAC reasoned
+       with the most illogical reasoning ever in the end of section 5.2 of
+       Structures specification:
+    
+       "A TPM can implement either TPM2_HMAC()/TPM2_HMAC_Start() or
+       TPM2_MAC()/TPM2_MAC_Start() but not both, as they have the same command
+       code and there is no way to distinguish them. A TPM that supports
+       TPM2_MAC()/TPM2_MAC_Start() will support any code that was written to
+       use TPM2_HMAC()/TPM2_HMAC_Start(), but a TPM that supports
+       TPM2_HMAC()/TPM2_HMAC_Start() will not support a MAC based on symmetric
+       block ciphers."
+    
+       I.e. reasoning that tells no reasons for overriding a CC, which here
+       is the problem, not the "xor relationship" between these commands.
+       Neither all other commands work on all TPMs but still they don't
+       share the same magic cookie.
+
+I started this project originally in 2024 then I got quickly stuck.
+After one year of processing how to do it the result is no_std, zero
+dependency crate, which does not require memory allocator. It can
+empower both chips, clients, emulators and operating systems. Even tho
+most of the code was written in three weeks (11K of 12K for both
+protocol and client) the ideas have been developing for a long time.
+
+Next steps are of course slimming up and tightening the implementation
+as there must be extra fat scattered here and there, and fix the bugs.
+Response handling has a few scoped rough edges that I will look into
+first. I think also (and have experience on the topic further to
+back it up) that this after maturizing is the solution also for
+Linux kernel.
+
+Unlike other TPM2 tools and alike tpm2sh is not designed for human
+readable output but instead a programming interface for bash and
+similar (e.g. it could be used to enhance tools like 'pass') but
+I've developed a human solution i.e. "print-stack" command so it
+is the demo for this release:
+
+❯ sudo ./target/debug/tpm2sh create-primary --alg rsa:2048:sha256 | sudo ./target/debug/tpm2sh pcr-read "sha256:0" | sudo ./target/debug/tpm2sh print-stack
+
+⠦ Waiting for TPM...
+⠏ ✔ TPM operation complete.                                                                                      Type: pcr-values
+  Update Counter: 86
+  Bank (sha256):
+    PCR 0: b9a5bf5fc2ffbca9b75f75567c84d1f660d4a77d1413f7a4b15de162cd27e6f0
+Type: context
+  Context:
+    Sequence: 0x8b
+    Saved Handle: 0x80000000
+    Hierarchy: TPM_RH_OWNER
+
+Now it's time to a short break (ignored other life to get this
+vomitted out) ... :-)
+
+BR, Jarkko
+
+
