@@ -1,94 +1,280 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7462DCF5B
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 10:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AFE2459D4;
+	Wed, 20 Aug 2025 10:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755684127; cv=none; b=dnKMKIr8fOPaGIkjjZfe2YZInf1NDkE4cvY2+t5MvlSYAvSo8Up7Ga3xWOm8B04FCmwLsIxCAtuo54TP/ba4zXdT7CWxp2Zt4obvnRURMZQVhItFeD6Kj23YOl6aJWWN6u1C0oPUpJh15Edox2bqJk2aXr8eBLxAfpAGGKGOqvg=
+	t=1755684985; cv=none; b=hFaHVg7q+c8NU/TM7UkcgMtX9svqmR6cDUTzRlzuhj3gRMk35EO9SrHZQlrlresXEcmNoMiGwTmev7jz6LtNMHXEs7OB4X5nukR28CgF6wRhY1r9tbLdbnZaIo2tGAyDfLQ0pI3/1E/PNMJf8MsGrj2jIR3wbAhprMYgbGrTEoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755684127; c=relaxed/simple;
-	bh=EghTE8Su2wFNb2wdtd4lL0HzIsRAjeS4B7EszInp8NE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RGRxBKOAwgyMNILxHueUCTWCitDgcI2VmBjfwF+YMXtcxHNAavYj5gQhPsBoPwZMp943jystPF+Xb3WPd146mfw/Gr+cAooLtyQu1Js6xtw6XnpsLEHW1+4DIduNZusgQ8iwhx5sfaW1hCfTd4QtW8cX/6H7es0bVF7KHvoAuL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B6zW90U6; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1755684985; c=relaxed/simple;
+	bh=XzpGJTqPVcOFUMqIMIlLu/4sIUSnKk+XD+8t8pnJ85U=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=A7LQFaJVrMz6kC5xlezdHQO4YyhZpvqrJWyKfYfqXpZcUbhhv/WoVEE4cMnbHzNlHoAkzCIwDC9Ld52Ww3pOohdKaAQU2+yBPagvnoqiVOXfIjhrN4xx156sqS1LE0SvKbF7koqXgeQKzr/j/uq9K+mgd7u31GsYzLlFv/MPJTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DhaTPXI8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B6zW90U6"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45a1b0015aaso24432555e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 03:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755684124; x=1756288924; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pmKl7AjHxkBuQuyGuqlxx6fNULDA0e2THQiTh0AAAP8=;
-        b=B6zW90U6cnZLa6ehjXWwd+/Qy8TDCC722KOfiLcR/hJ4mNgTIjwbBdeyHnvNtwAyZs
-         UCL2SK0GP98XdSe190f03Ir5akRh4EN3poJoJDpluCYAaaVjZBBMCo3kBv6aTkhpP3l0
-         y1A0YMl8cRG0ft9PN31xE1YYIh0mo+Ddedoqe83v+y8wd3SCa5YwqEWrLz5IV2JfF5CC
-         yn1KWr5ghR5j5frFLBal2TO5Q2a51mLzaz8xS4RcxIVeL8OJ44QcV6sd0aeB1ijZzGj7
-         0nc5DkPlB3r/SvQQOFK3eEtPz2K21IhUaQHL7qn4QPCkjLYdQFVy6fU6nUs/j7ogFgTW
-         ptxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755684124; x=1756288924;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pmKl7AjHxkBuQuyGuqlxx6fNULDA0e2THQiTh0AAAP8=;
-        b=RycaslZcUzw8oQ3n+wslX08sNJ7ecn2RrNe9hQso1jmZMfh0NBo8irMNTMjdL8CNE9
-         yqSXyZ3/CV0RKoenYmgH29hQeIhm0FRzIfA2mJ0jOEoOK4gh5OI4e6HuxvMkfV12IXcF
-         1atp1Ar1wNe3yuzGFvcIKGWLYda92/LaO4dLmdmP/+obY92rOON2oRTL1RJdbmMoXB9f
-         tIg5XaIn1NOjFlMKVTPKM69anjTsIG2Jl1ofbNnuIhqAW5u82k8hJ0khz2KhUP9deKni
-         dGyMB1KV/WXxKwnMoav6F1RFAek9EiBIhHeU5gUgB23+9wIBYO+Du+flQlVBtV/5x/XC
-         g9LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVWHDm0mZG6eZkxXxl218q0a/d5smkRQ832t06aRz5XwokPFL7NGPNO3+BHRnj0lWl9A4twzWlbPJu4eHikUA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLjP5vP3ofXrbuAcux/tK+6cgFYOWZ5lEPOrpq3f1yccpXms+5
-	7SaTR7jYj5OFaiAJA15AhTHmjNfS4ViK0l/7zL16edMOxTCWzfjF5ZcnXDsKx0Sth7uywW0HiiZ
-	iM/YzZaUXOsXwetWzeQ==
-X-Google-Smtp-Source: AGHT+IHeALkRz3Zj+iokcWQaLB6L1xFUH2I9sMR2ETzQnsbNqXkbGU/GtzFELzc07d5ahDJazaxqo/s2yy0QlCw=
-X-Received: from wmbes27.prod.google.com ([2002:a05:600c:811b:b0:456:2003:32a5])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:468c:b0:456:8eb:a36a with SMTP id 5b1f17b1804b1-45b479b77fdmr13646495e9.13.1755684124107;
- Wed, 20 Aug 2025 03:02:04 -0700 (PDT)
-Date: Wed, 20 Aug 2025 10:02:03 +0000
-In-Reply-To: <20250817044724.3528968-3-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DhaTPXI8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49561C4CEEB;
+	Wed, 20 Aug 2025 10:16:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755684985;
+	bh=XzpGJTqPVcOFUMqIMIlLu/4sIUSnKk+XD+8t8pnJ85U=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=DhaTPXI8AFgELTg78k1LUty/cXh66N97H/gR9L42Ak9QJ29mB3qnyWoZycO/twy4R
+	 NcLenIqirpvssRdFKaoZRuQCjcr9HyPd206BovO//gZhThDSPgmoXlNAWN1OMhGAfE
+	 utJK7wnAjwA3WPcx26TVP8ZcDJF3Nv4IBpfVeZ3j5mhOmBNAYkPD9wfSCs8R9VlHJJ
+	 h+Fyjdwo6VYSRZZ0hhUaZGjWBguhA3nQjdeWV3B3+6HCTv29vKpxRX2DrvR6gddoC5
+	 nllKvmYOeH1bvHZTL6kR2yJd6TpEY0Sxdhiuhp30QsrzvonqtBruOrJyYvsjxE8c7J
+	 qrPR5q1lovOnw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250817044724.3528968-1-fujita.tomonori@gmail.com> <20250817044724.3528968-3-fujita.tomonori@gmail.com>
-Message-ID: <aKWdG6ad5e_B_flD@google.com>
-Subject: Re: [PATCH v2 2/2] rust: Add read_poll_timeout functions
-From: Alice Ryhl <aliceryhl@google.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, ojeda@kernel.org, 
-	anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	tmgross@umich.edu, acourbot@nvidia.com, daniel.almeida@collabora.com, 
-	Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 20 Aug 2025 12:16:19 +0200
+Message-Id: <DC76DSYUY978.3NR8S2K13I9RX@kernel.org>
+Subject: Re: [PATCH] rust: zpool: add abstraction for zpool drivers
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
+ Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
+ <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
+ <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Vitaly Wool" <vitaly.wool@konsulko.se>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250820091543.4165305-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250820091543.4165305-1-vitaly.wool@konsulko.se>
 
-On Sun, Aug 17, 2025 at 01:47:23PM +0900, FUJITA Tomonori wrote:
-> Add read_poll_timeout function which poll periodically until a
-> condition is met or a timeout is reached.
-> 
-> The C's read_poll_timeout (include/linux/iopoll.h) is a complicated
-> macro and a simple wrapper for Rust doesn't work. So this implements
-> the same functionality in Rust.
-> 
-> The C version uses usleep_range() while the Rust version uses
-> fsleep(), which uses the best sleep method so it works with spans that
-> usleep_range() doesn't work nicely with.
-> 
-> The sleep_before_read argument isn't supported since there is no user
-> for now. It's rarely used in the C version.
-> 
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Reviewed-by: Fiona Behrens <me@kloenk.dev>
-> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Wed Aug 20, 2025 at 11:15 AM CEST, Vitaly Wool wrote:
+> Zpool is a common frontend for memory storage pool implementations.
+> These pools are typically used to store compressed memory objects,
+> e. g. for Zswap, the lightweight compressed cache for swap pages.
+>
+> This patch provides the interface to use Zpool in Rust kernel code,
+> thus enabling Rust implementations of Zpool allocators for Zswap.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Do you work on such a user? Do you have code using this API already?
+
+More specifically, do you plan to re-implement Zswap in Rust?
+
+> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+
+If Alice contributed to the patch you may want to add a Co-developed-by: ta=
+g,
+otherwise this doesn't need her SoB.
+
+> +/// zpool API
+
+It would be nice to have some more documentation on this trait, including a
+doc-test illustrating some example usage.
+
+> +pub trait Zpool {
+> +    /// Opaque Rust representation of `struct zpool`.
+> +    type Pool: ForeignOwnable;
+
+Something that embedds a struct zpool, such as struct zswap_pool? If so, is=
+n't
+this type simply Self?
+
+> +
+> +    /// Create a pool.
+> +    fn create(name: *const c_uchar, gfp: Flags) -> Result<Self::Pool>;
+
+This shouldn't be a raw pointer, but rather &CStr.
+
+> +
+> +    /// Destroy the pool.
+> +    fn destroy(pool: Self::Pool);
+> +
+> +    /// Allocate an object of size `size` using GFP flags `gfp` from the=
+ pool `pool`, wuth the
+> +    /// preferred NUMA node `nid`. If the allocation is successful, an o=
+paque handle is returned.
+> +    fn malloc(
+> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
+> +        size: usize,
+> +        gfp: Flags,
+> +        nid: NumaNode,
+> +    ) -> Result<usize>;
+> +
+> +    /// Free a previously allocated from the `pool` object, represented =
+by `handle`.
+> +    fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: =
+usize);
+> +
+> +    /// Make all the necessary preparations for the caller to be able to=
+ read from the object
+> +    /// represented by `handle` and return a valid pointer to the `handl=
+e` memory to be read.
+> +    fn read_begin(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, ha=
+ndle: usize)
+> +        -> *mut c_void;
+
+Why does this return a raw pointer? I think this needs a proper type
+representation.
+
+> +
+> +    /// Finish reading from a previously allocated `handle`. `handle_mem=
+` must be the pointer
+> +    /// previously returned by `read_begin`.
+> +    fn read_end(
+> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+> +        handle: usize,
+> +        handle_mem: *mut c_void,
+> +    );
+
+Same here...
+
+> +
+> +    /// Write to the object represented by a previously allocated `handl=
+e`. `handle_mem` points
+> +    /// to the memory to copy data from, and `mem_len` defines the lengt=
+h of the data block to
+> +    /// be copied.
+> +    fn write(
+> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+> +        handle: usize,
+> +        handle_mem: *mut c_void,
+
+...and here.
+
+> +        mem_len: usize,
+> +    );
+> +
+> +    /// Get the number of pages used by the `pool`.
+> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -=
+> u64;
+> +}
+> +
+> +/// Zpool driver registration trait.
+> +pub trait Registration {
+
+I think you should use the kernel::driver::Registration instead, it's
+specifically for the purpose you defined this trait and ZpoolDriver for.
+
+As for the C callbacks, they should go into the Adapter type (which impleme=
+nts
+kernel::driver::RegistrationOps) directly, they don't need to be in a trait=
+.
+
+This way a new Zpool Registration is created with:
+
+	driver::Registration<zpool::Adapter>::new()
+
+This also allows you to take advantage of the module_driver!() macro to pro=
+vide
+your own module_zpool_driver!() macro.
+
+> +    /// Register a zpool driver.
+> +    fn register(&self, name: &'static CStr, module: &'static ThisModule)=
+ -> Result;
+> +
+> +    /// Pool creation callback.
+> +    extern "C" fn _create(name: *const c_uchar, gfp: u32) -> *mut c_void=
+;
+> +
+> +    /// Pool destruction callback.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
+ zpool`.
+> +    unsafe extern "C" fn _destroy(pool: *mut c_void);
+> +
+> +    /// Callback for object allocation in the pool.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
+ zpool` and that `handle`
+> +    /// is a valid pointer to usize.
+> +    unsafe extern "C" fn _malloc(
+> +        pool: *mut c_void,
+> +        size: usize,
+> +        gfp: u32,
+> +        handle: *mut usize,
+> +        nid: c_int,
+> +    ) -> c_int;
+> +
+> +    /// Callback for object release.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
+ zpool`.
+> +    unsafe extern "C" fn _free(pool: *mut c_void, handle: usize);
+> +
+> +    /// Callback to prepare the object for reading.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
+ zpool`.
+> +    unsafe extern "C" fn _obj_read_begin(
+> +        pool: *mut c_void,
+> +        handle: usize,
+> +        local_copy: *mut c_void,
+> +    ) -> *mut c_void;
+> +
+> +    /// Callback to signal the end of reading from an object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
+ zpool`.
+> +    unsafe extern "C" fn _obj_read_end(pool: *mut c_void, handle: usize,=
+ handle_mem: *mut c_void);
+> +
+> +    /// Callback for writing to an object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
+ zpool`.
+> +    unsafe extern "C" fn _obj_write(
+> +        pool: *mut c_void,
+> +        handle: usize,
+> +        handle_mem: *mut c_void,
+> +        mem_len: usize,
+> +    );
+> +
+> +    /// Callback to return the number of pages in the pool.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
+ zpool`.
+> +    unsafe extern "C" fn _total_pages(pool: *mut c_void) -> u64;
+> +}
+> +
+> +/// Zpool driver structure.
+> +pub struct ZpoolDriver<T: Zpool> {
+> +    inner: Opaque<bindings::zpool_driver>,
+
+I think this needs pin-init, another reason to use kernel::driver::Registra=
+tion
+instead. :)
+
+> +
+> +    /// Zpool callback functions that a zpool driver must provide
+> +    pub callbacks: T,
+> +}
+> +
+> +impl<T: Zpool> Clone for ZpoolDriver<T> {
+> +    fn clone(&self) -> Self {
+> +        todo!()
+> +    }
+> +}
+
+Cloning the driver structure? Why? Please also consider that struct zpool_d=
+river
+needs to be pinned.
