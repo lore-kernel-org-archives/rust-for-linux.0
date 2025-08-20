@@ -1,34 +1,34 @@
-Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
+Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AF7221FDC
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 03:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756D01C862E;
+	Wed, 20 Aug 2025 03:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755661707; cv=none; b=iEw/Y73YdArSi8XsUODlap3yeThV0+LisBDJNKJz/qz9HDpkoL3AzaGhQ8yFdODyKnmH1AY1oSL3iCsZJHfSwFCeHOkQxLpx1EK4P2RvoCvLzzsE0uAH31qp3WP4QuDqXsCeK0rMfrsXqqRSsp7qmyNGCRreQMp8oCAh2tssI5U=
+	t=1755661859; cv=none; b=HxrgeQslzpyNFA25eawIMVhoCf4SeE9bO8kWEmbYG6ZYpe2xHmdpgG5DNLCWI1jjGQqehDD5IbnxY9DBTJ3XUxaKuI9yBFh2eOt7Sd2BP3OGVJos5wlVpTMR/T0V5WKEuhLnr2r5ro5I7bdsNzcuVKvL/qnwT8wz886dgENuG7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755661707; c=relaxed/simple;
-	bh=CZ6lWXfVYCM7xAdBsZGzRttG9D2KjVHw0YsHg56QY7E=;
+	s=arc-20240116; t=1755661859; c=relaxed/simple;
+	bh=CWLihZiq5DZ+BtWOx3p4ga02FpdbSI3rbYrSMDo+0Ms=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kPALcziVuNBpvQQ/W1RJ+DRmgG76Cj2h0iZRs9EIRd7sFoJ4nf+Mc4CFeE9JZvPCgCe9L+KFO+nLhSohkDmboNZCqWGP+ugqiM0x5/Jd3LQD6fEiwEX6H1y0IlT9rxNFkTnEe5CRo2iQ8PbNE3jkwxCi1GHX+xryoMGKY2x6Oeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=GpcTHbhN; arc=none smtp.client-ip=185.70.43.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=XseMTjiiWY/NaTYL95zQnS0omuMZkIq1n/RejpxIAIfxjgbEIf19SjfUlQ0R2G0jneQzm6gdFPKhy39IBQlxa+3R0ay8Bb9Vg3F74PLWD+1JfgxRxIQZCM+mKG9AxSofjBoatnjeJTNNF6jwIHjuQiwRwydfB0URwUIE6s1VMGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=iN4wyHl4; arc=none smtp.client-ip=185.70.43.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="GpcTHbhN"
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="iN4wyHl4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
-	s=protonmail3; t=1755661696; x=1755920896;
-	bh=qIDOe0QSvA2p3uohZj2DaxRg0Kq5ls/HnNnWTRUdDrE=;
+	s=protonmail3; t=1755661849; x=1755921049;
+	bh=Pcc0kL2+l9Pmm6KFyVG73R66uWz7dqU0MavY6sZy6d0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=GpcTHbhNWGLmNYiGuteRHZmUj5G+dd1Oq4feazckGhttqPzBF61QGT1JPM8xnbdqV
-	 yI7TaX8pdW568cSuRPacdBrmD3AC6m+lFkniTBRjyxdB2oGvwjHBdCAEMGllqxVpTt
-	 GGTVHGM1GA6nCliN7hNViwLzKZ5etZY2bCJo0lw8IPG7eNHz8WIUFxroz0XqYZX8Tk
-	 +PhbOXC0Fg9fRlg/jDK6dMpv5ta7Kr3iARTVNVKUcdZoCq0Cq7wC7a0nvGAZk4pPHB
-	 MfBr4LJicXSUjn7FsAu3B3tm7eYbhy0JJJwJgUsrUwh1B7wcyPC0YiOsy4b/AUNtfV
-	 zKDH6EGUx+huQ==
-X-Pm-Submission-Id: 4c6C8s63rSz2Sccc
-Date: Wed, 20 Aug 2025 03:48:10 +0000
+	b=iN4wyHl49SXYoo53Uk5Gv10Pdv8gmbqWjP6t/XOahDK1Zd5b8JnMiAEZDhzcMfjXU
+	 q2bW3kwrjQuPCaWTe/Rj5BHmxIiOB3yoXdgIh1Wu8sZ4tFT/1MK8+rxphnvzt97bLT
+	 tX+lzE8NJDfAr7kc209VeF0V9HEwanB9bHCMiiYZdvIwGoyB4BtLZCqTy0gn0cITxg
+	 lQ8tyIBL3cR7NgQ4x+hh0XhvauDMHZfnb/ekYLaSmkYGVij4p3dylQIGM+4now+Qlu
+	 8JJmsdLsWFO2GNM7Nr60E+dEnEFRH1tPUO2p3jnGCPTZqByGRBdrJme312MutMMi7m
+	 NqG6apNiGXStg==
+X-Pm-Submission-Id: 4c6CCq1vDSz1DDrj
+Date: Wed, 20 Aug 2025 03:50:44 +0000
 From: Elle Rhumsaa <elle@weathered-steel.dev>
 To: John Hubbard <jhubbard@nvidia.com>
 Cc: Danilo Krummrich <dakr@kernel.org>,
@@ -47,11 +47,11 @@ Cc: Danilo Krummrich <dakr@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	nouveau@lists.freedesktop.org, linux-pci@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] rust: pci: provide access to PCI Class, subclass,
- implementation values
-Message-ID: <aKVFVO3wbzClcLwg@archiso>
+Subject: Re: [PATCH v2 2/3] gpu: nova-core: avoid probing non-display/compute
+ PCI functions
+Message-ID: <aKVGFC4UVpjyAXWO@archiso>
 References: <20250818013305.1089446-1-jhubbard@nvidia.com>
- <20250818013305.1089446-2-jhubbard@nvidia.com>
+ <20250818013305.1089446-3-jhubbard@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,143 +60,75 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250818013305.1089446-2-jhubbard@nvidia.com>
+In-Reply-To: <20250818013305.1089446-3-jhubbard@nvidia.com>
 
-On Sun, Aug 17, 2025 at 06:33:03PM -0700, John Hubbard wrote:
-> Allow callers to write Class::STORAGE_SCSI instead of
-> bindings::PCI_CLASS_STORAGE_SCSI, for example.
+On Sun, Aug 17, 2025 at 06:33:04PM -0700, John Hubbard wrote:
+> NovaCore has so far been too imprecise about figuring out if .probe()
+> has found a supported PCI PF (Physical Function). By that I mean:
+> .probe() sets up BAR0 (which involves a lot of very careful devres and
+> Device<Bound> details behind the scenes). And then if it is dealing with
+> a non-supported device such as the .1 audio PF on many GPUs, it fails
+> out due to an unexpected BAR0 size. We have been fortunate that the BAR0
+> sizes are different.
 > 
-> New APIs:
->     Class::STORAGE_SCSI, Class::NETWORK_ETHERNET, etc.
->     Class::from_u32(), as_u32()
->     Class::MASK_FULL, MASK_CLASS_SUBCLASS
->     DeviceId::from_class_and_vendor()
->     Device::class_code_raw(), class_enum()
+> Really, we should be filtering on PCI class ID instead. These days I
+> think we can confidently pick out Nova's supported PF's via PCI class
+> ID. And if not, then we'll revisit.
+> 
+> The approach here is to filter on "Display VGA" or "Display 3D", which
+> is how PCI class IDs express "this is a modern GPU's PF".
 > 
 > Cc: Danilo Krummrich <dakr@kernel.org>
 > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 > ---
->  rust/kernel/pci.rs | 202 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 202 insertions(+)
+>  drivers/gpu/nova-core/driver.rs | 27 ++++++++++++++++++++++-----
+>  1 file changed, 22 insertions(+), 5 deletions(-)
 > 
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index 887ee611b553..9caa1d342d52 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -23,6 +23,179 @@
->  };
->  use kernel::prelude::*;
+> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+> index 274989ea1fb4..4ec5b861a345 100644
+> --- a/drivers/gpu/nova-core/driver.rs
+> +++ b/drivers/gpu/nova-core/driver.rs
+> @@ -1,6 +1,8 @@
+>  // SPDX-License-Identifier: GPL-2.0
 >  
-> +macro_rules! define_all_pci_classes {
-> +    (
-> +        $($variant:ident = $binding:expr,)+
-> +    ) => {
-> +        /// Converts a PCI class constant to 24-bit format.
-> +        ///
-> +        /// Many device drivers use only the upper 16 bits (base class and subclass), but some
-> +        /// use the full 24 bits. In order to support both cases, store the class code as a 24-bit
-> +        /// value, where 16-bit values are shifted up 8 bits.
-> +        const fn to_24bit_class(val: u32) -> u32 {
-> +            if val > 0xFFFF { val } else { val << 8 }
-> +        }
-> +
-> +        /// PCI device class codes.
-> +        ///
-> +        /// Each entry contains the full 24-bit PCI class code (base class in bits 23-16, subclass
-> +        /// in bits 15-8, programming interface in bits 7-0).
-> +        ///
-> +        #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-> +        #[repr(transparent)]
-> +        pub struct Class(u32);
-> +
-> +        impl Class {
-> +            $(
-> +                #[allow(missing_docs)]
-> +                pub const $variant: Self = Self(to_24bit_class($binding));
-> +            )+
-> +
-> +            /// Match the full class code.
-> +            pub const MASK_FULL: u32 = 0xffffff;
-> +
-> +            /// Match the upper 16 bits of the class code (base class and subclass only).
-> +            pub const MASK_CLASS_SUBCLASS: u32 = 0xffff00;
-> +
-> +            /// Create a `Class` from the raw class code value, or `None` if the value doesn't
-> +            /// match any known class.
-> +            pub fn from_u32(value: u32) -> Option<Self> {
-> +                match value {
-> +                    $(x if x == Self::$variant.0 => Some(Self::$variant),)+
-> +                    _ => None,
-> +                }
-> +            }
-> +
-> +            /// Get the raw 24-bit class code value.
-> +            pub const fn as_u32(self) -> u32 {
-> +                self.0
-> +            }
-> +        }
-> +    };
-> +}
-> +
-> +define_all_pci_classes! {
-> +    NOT_DEFINED                = bindings::PCI_CLASS_NOT_DEFINED,                // 0x000000
-> +
-> +    ...
-> +
-> +    OTHERS                     = bindings::PCI_CLASS_OTHERS,                     // 0xff0000
-> +}
-> +
->  /// An adapter for the registration of PCI drivers.
->  pub struct Adapter<T: Driver>(T);
+> -use kernel::{auxiliary, bindings, c_str, device::Core, pci, prelude::*, sizes::SZ_16M, sync::Arc};
+> +use kernel::{
+> +    auxiliary, bindings, c_str, device::Core, pci, pci::Class, prelude::*, sizes::SZ_16M, sync::Arc,
+> +};
 >  
-> @@ -157,6 +330,23 @@ pub const fn from_class(class: u32, class_mask: u32) -> Self {
->              override_only: 0,
->          })
->      }
-> +
-> +    /// Create a new `pci::DeviceId` from a class number, mask, and specific vendor.
-> +    ///
-> +    /// This is more targeted than [`DeviceId::from_class`]: in addition to matching by Vendor, it
-> +    /// also matches the PCI Class (up to the entire 24 bits, depending on the mask).
-> +    pub const fn from_class_and_vendor(class: Class, class_mask: u32, vendor: u32) -> Self {
-> +        Self(bindings::pci_device_id {
-> +            vendor,
-> +            device: DeviceId::PCI_ANY_ID,
-> +            subvendor: DeviceId::PCI_ANY_ID,
-> +            subdevice: DeviceId::PCI_ANY_ID,
-> +            class: class.as_u32(),
-> +            class_mask,
-> +            driver_data: 0,
-> +            override_only: 0,
-> +        })
-> +    }
->  }
+>  use crate::gpu::Gpu;
 >  
->  // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `pci_device_id` and does not add
-> @@ -410,6 +600,18 @@ pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
->          // - by its type invariant `self.as_raw` is always a valid pointer to a `struct pci_dev`.
->          Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_into()?) })
->      }
-> +
-> +    /// Returns the full 24-bit PCI class code as stored in hardware.
-> +    /// This includes base class, subclass, and programming interface.
-> +    pub fn class_code_raw(&self) -> u32 {
-> +        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
-> +        unsafe { (*self.as_raw()).class }
-> +    }
-> +
-> +    /// Returns the PCI class as a `Class` struct, or `None` if the class code is invalid.
-> +    pub fn class_enum(&self) -> Option<Class> {
-> +        Class::from_u32(self.class_code_raw())
-> +    }
->  }
+> @@ -18,10 +20,25 @@ pub(crate) struct NovaCore {
+>      PCI_TABLE,
+>      MODULE_PCI_TABLE,
+>      <NovaCore as pci::Driver>::IdInfo,
+> -    [(
+> -        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_NVIDIA, bindings::PCI_ANY_ID as u32),
+> -        ()
+> -    )]
+> +    [
+> +        // Modern NVIDIA GPUs will show up as either VGA or 3D controllers.
+> +        (
+> +            pci::DeviceId::from_class_and_vendor(
+> +                Class::DISPLAY_VGA,
+> +                Class::MASK_CLASS_SUBCLASS,
+> +                bindings::PCI_VENDOR_ID_NVIDIA
+> +            ),
+> +            ()
+> +        ),
+> +        (
+> +            pci::DeviceId::from_class_and_vendor(
+> +                Class::DISPLAY_3D,
+> +                Class::MASK_CLASS_SUBCLASS,
+> +                bindings::PCI_VENDOR_ID_NVIDIA
+> +            ),
+> +            ()
+> +        ),
+> +    ]
+>  );
 >  
->  impl Device<device::Bound> {
+>  impl pci::Driver for NovaCore {
 > -- 
 > 2.50.1
-
-All of the functions could probably be `#[inline]`ed, though I'm not
-sure how much it affects the `const` functions, since they're already
-evaluated at compile-time.
 
 Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
