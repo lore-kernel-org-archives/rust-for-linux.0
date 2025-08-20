@@ -1,76 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1921E491B;
-	Wed, 20 Aug 2025 23:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD642DE702;
+	Wed, 20 Aug 2025 23:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755732569; cv=none; b=YEaVeR6YMIy4nQjs/BO0qsOA9GGyBx1CAtxEhudLd9RdFPBz2IUFZXoX2H6qY6OYNoIMPhVznXy4R7DiX+s905PSy16tzqY1p6lSo7jpiMlLCN6qfcDmn6n1QG5p6lFqzOfGfZH9O4KUWV46bjnMJohiSZtc2B1szZ7yWREu1OY=
+	t=1755733128; cv=none; b=NyTocBucg8cxTiYXj/6L3mLzsG0hTAtpLVDim55CaHDEkTSVJCNdqLNXCVA0z8lVr7Ifnuh4b470j0XABHW751IfKn/xY5i0HBdHGtEpZK9qW4WV+AjJYWovMud+/2rJA+lrOijTw68AY8cC1zDuLkD92MXeNp3HN9e/9VQIGr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755732569; c=relaxed/simple;
-	bh=m2IaG1MY/+xH+rg0uCa+LUQv8zbg5WaY0KTukcGLEDI=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=RkZuPSiy94L+NMKNTbMgbHCIWQiRuPA2osdnwVceb5/JQOhN5nz0QFiE0qRA6YvcMV5hJTWA5H3lxnTPsuWA9BqerSWB8Yc8N/GWkOkC1H/MWp/wX2t2GDO2BQ7f40wzN6JapvP7L/+XctvME3p2HxMT7xHyPZlYPA4cPrHc4V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vFHtrR7Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755733128; c=relaxed/simple;
+	bh=XjKLPIJpPl8XNfbf0L8f2m+lNzBLHaWsnTNgo9GwnVE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fjgenLhOrW9TXo6PW0a8SDF/Uj3As7MHoYN1vaSjEVzWSBK/Nh/g5ylSWSVsuOpD0qskK7BGludFp+Tk1mpV5AtTET4Qmz38FMC/KVbe6RFmi+ymMjAENj7jd9uOaLjN48ue99PYcCmRrkXsY64DRXjmwReiGcJVj0PrrwPgA3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZxPOTpZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vFHtrR7Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6B3C4CEE7;
-	Wed, 20 Aug 2025 23:29:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755732569;
-	bh=m2IaG1MY/+xH+rg0uCa+LUQv8zbg5WaY0KTukcGLEDI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vFHtrR7Y5KroDJGCDi51bt71NRLurSsxOIIDM6sO5c8GU7/Q0AngyIg8cbtiA4CVE
-	 fkeVumBm5YkU/2HVuIrhotROZ4hi9PyEoiCUlkFDf/3kgcSvPsp2oefxafa6t/etmc
-	 3xtP/tcFRWpZUzFOyqrpnDW3r0USND7XQKXfA3l8=
-Date: Wed, 20 Aug 2025 16:29:27 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Baptiste Lepers <baptiste.lepers@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jann Horn
- <jannh@google.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: mm: Mark VmaNew as transparent
-Message-Id: <20250820162927.34201cfb395ec7319b15920a@linux-foundation.org>
-In-Reply-To: <20250812132712.61007-1-baptiste.lepers@gmail.com>
-References: <20250812132712.61007-1-baptiste.lepers@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZxPOTpZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9F2C4CEE7;
+	Wed, 20 Aug 2025 23:38:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755733128;
+	bh=XjKLPIJpPl8XNfbf0L8f2m+lNzBLHaWsnTNgo9GwnVE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BZxPOTpZJxvSFocTM9w9CIuObkM0bYYsWS2CYPaNUfIdG/Nd4Wl83e2ZR0kkxFnTi
+	 c7uydLc9kmaKJEjtXr7XDmtoyQvgvdq85Cg/1+JJLBrmrQpkYApdgUq/zYXKwlqIt3
+	 IDtxr17v74sWirsYaxBQD/Mn3mPcR4G6sTd5YStRpcTDEM96R7n8hEtKmePi49Wm+6
+	 niLG1HW6pYuMQpjdprMHzF349b6YN1QTUdWZtEBYpIFLQHQL5xxLw1jLBZ2wFzyz8+
+	 DuKKYLT/OglbAp6R0R4yVFQb1BOTyNBlGjkQ9pQVdCsJ7Wou2EhhHhjoFEE0tzKFh4
+	 QyOkYh4V8KykA==
+Message-ID: <e2bb7c12-235c-4b2b-823a-363d22c6a13e@kernel.org>
+Date: Thu, 21 Aug 2025 01:38:43 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/7] rust: mm: update ARef and AlwaysRefCounted imports
+ from sync::aref
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Shankari Anand <shankari.ak0208@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>
+References: <20250716091158.812860-1-shankari.ak0208@gmail.com>
+ <CAH5fLgiUfZG4e0k6ajkkKo+iaidWHu4dTRfBbgm4Y_CQPGLHpg@mail.gmail.com>
+ <20250820162518.7dd218ef331618bea11e9c2b@linux-foundation.org>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250820162518.7dd218ef331618bea11e9c2b@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 12 Aug 2025 15:26:56 +0200 Baptiste Lepers <baptiste.lepers@gmail.com> wrote:
-
-> Unsafe code in VmaNew's methods assumes that the type has the same
-> layout as the inner `bindings::vm_area_struct`. This is not guaranteed by
-> the default struct representation in Rust, but requires specifying the
-> `transparent` representation.
+On 8/21/25 1:25 AM, Andrew Morton wrote:
+> On Fri, 15 Aug 2025 15:51:31 +0200 Alice Ryhl <aliceryhl@google.com> wrote:
 > 
-> ...
->
-> +++ b/rust/kernel/mm/virt.rs
-> @@ -209,6 +209,7 @@ pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result {
->  ///
->  /// For the duration of 'a, the referenced vma must be undergoing initialization in an
->  /// `f_ops->mmap()` hook.
-> +#[repr(transparent)]
->  pub struct VmaNew {
->      vma: VmaRef,
->  }
+>> On Wed, Jul 16, 2025 at 11:16 AM Shankari Anand
+>> <shankari.ak0208@gmail.com> wrote:
+>>>
+>>> Update call sites in the mm subsystem to import `ARef` and
+>>> `AlwaysRefCounted` from `sync::aref` instead of `types`.
+>>>
+>>> This aligns with the ongoing effort to move `ARef` and
+>>> `AlwaysRefCounted` to sync.
+>>>
+>>> Suggested-by: Benno Lossin <lossin@kernel.org>
+>>> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+>>> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+>>
+>> Andrew, would you be able to pick up this patch? Thanks!
+> 
+> I prefer not to grab a single patch from the middle of a series, so
+> please add
+> 
+> 	Acked-by: Andrew Morton <akpm@linux-foundation.org>
+> 
+> and merge this alongside the remainder of that series, thanks.
 
-Alice suggests that I add a cc:stable to this.  But I see nothing in
-the changelog which explains why we're proposing a backport.
+This patch was sent standalone. The reason for the "3/7" suffix is that the
+author wasn't aware that this should be avoided for independent patches.
 
-So please send us a description of the userspace-visible runtime
-impact of this flaw and I'll paste it into the changelog, thanks.
-
+It was previously part of a treewide series, where the treewide changes have
+been decided to do in multiple cycles instead, such that each subsystem can pick
+up the corresponding patches.
