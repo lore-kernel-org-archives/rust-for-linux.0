@@ -1,56 +1,79 @@
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA0735950
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 03:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8626C194C86
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 04:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755662077; cv=none; b=HVv5urparbjS+OVCJMAV0tiKdAUDactRllBC8N4PsB92erx7YcIVRL1MGoBAAyRNMHOYsOTqBXPeHrPhotl0AvT2wKCdcrpBk/Ad9HRUivmeeWYvbo6DNh6QEUPCAORCVwRr3SpSxx1oUQK/r5OQw1gB2AmeOh2Mb8kczpyKMlQ=
+	t=1755662936; cv=none; b=GVTKWLeF1uJ1u1FFoTALQLlYJvTZacenSaXnPGlrK8re6GuLVY4ulbAeNwXWmEEFMifqwa3yJwp5kN7WRxuzb9UKijLUEKqn7+l3fD3dr/xqRkHk3WJcW52IWRIhOtQ8rXZHmFPV9atsnkXGguiJb/JFjJlFDhS5ODlApey1Ros=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755662077; c=relaxed/simple;
-	bh=g1pY+oTA/VB2PMvfPvT2uWU3P9c5/FMXs5is+w88jjo=;
+	s=arc-20240116; t=1755662936; c=relaxed/simple;
+	bh=cZveZFpGt+kr4tv2eYJJ27WLY1j1jY8DTi+7Kle+qvw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dfkk2QLVkLRX+/PaF3jHA9GKQHcXdUFETifV3A5NDp7UVzqQlmftt7GIHhXrrNebughmQGK+2bicN2J30gV1ecGFiemcNNd/UtbD6CekLXiuj+aOvCjLzL+x/8YuXPf8Jj6C269EOzMFeU7wH/T4+csP5nj3BTZfAAghDW+9nzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=dG/wmGlY; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=rFTZH4Hp8jGpMfDPrZs4nRcl0xsNSnE09lr7/wQbh0shHLkc2OP4lQkWztkGLTYkG21xxCg1B340EPZm+Dlw6brSB2FRIrhtJV6Z4E2VebtINouaBdkO8CeV3uM5pOQzAj4h52nJqfWs5Qs8jzxTCSqgbGfLKoQ48jX0qXqB5n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qJ/cKPFg; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="dG/wmGlY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
-	s=protonmail3; t=1755662064; x=1755921264;
-	bh=u6ikxkS64lhp8sngIBbUYJt8706AhSAaRomGOcSzkzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=dG/wmGlYlNursxRLrOfoH3+niP5sdBh+c2yOxdDEgu3o+ct95yfcwnV2xxYp0gFHv
-	 ojY/g+Oqdaj7g7aBPV22mUJUFYqHqBPYlj1xTcYhfQOkrG9vLiQDuHR3wzavwxqtx6
-	 HjERxwRCh0259Lq2cmBHd9OdLfA7pK7/Ja5xzeybdGr+fV9zBjk4tejieXmXgstabF
-	 TaSUQO56APnq4KF4FQBr8yERtDFaLULO+MoAtHUhSQb3hFjw50O6Fy+MzfesIoJPRc
-	 ChrmJ6zHVfvC5pk3tq0JcDsn70zSQjgM8A3MLWr8T4farCOcjjCyTeEWDNrwLHC0Ta
-	 vMglScuZvt3ow==
-X-Pm-Submission-Id: 4c6CHy1kjtz2ScPN
-Date: Wed, 20 Aug 2025 03:54:19 +0000
-From: Elle Rhumsaa <elle@weathered-steel.dev>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qJ/cKPFg"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-76e43ee62b8so3143808b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Aug 2025 21:08:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755662934; x=1756267734; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cPsQnvqMxASRCLEED9v2AlwRctOJ3ys4veuU6QCCD08=;
+        b=qJ/cKPFgpAXS9ZiWLtrN8INgphQIH1VdvCzxui+0j0qRopuKCQf0gD4ZLRUNjm5CK3
+         vfnOKvdn1YA90LV6pvFOmlukMkTxL30aFW1AR1nlS7NQ6+MQp6TC0kiJdKjO8NL3PfTd
+         wDFCuqhLZTHeMQsJ0DUMjte9QC0CbCR7id0nmy7xNxQGYmUCdbcfE/N+fcptAswBy1qO
+         NDK6BlyTS7BQdSoUA2eEXgAd4ruL18R4eQX8/DPHxopJWjJbIlq/40z5BcWuiWYyC3UA
+         wZBInK8ovPjghbp2rrlBgWmtULMjD2uTBVgRffjd/5erKnLcLobXQftI5mtcrknICdPZ
+         sypA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755662934; x=1756267734;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cPsQnvqMxASRCLEED9v2AlwRctOJ3ys4veuU6QCCD08=;
+        b=fzNgCScKVlGErwaLRq8I/pwlM0nk23cscP5Cpc3XCGL6N4+FqYmz8B8HWay41+2Hbv
+         7+NTZydiqXETAQ90PhrOBh3Z09HfIbCEvbJooSpeM9ekvRIVVP337qSOAftIq9Tg2hlM
+         IW3cC6IF58bsR8eGOqRqY0yk6m9Vx6yQpMvRgdPro2qc2eFw6o+3YctH2pP07FFo5y8h
+         ZDUrSvUS4kDvfMsqERIHyo55j4rOxQEmaNomgUyu0Ot/PmUdoQBL7TrwihQLJm5J+HG+
+         +jzHWdNoLgnLYm78wKcL5bavQ/nqOY2qKTI5IM+JbJZDXC++32bYZELuNuJjHBzPJQq4
+         eDAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjNQ8E5vdZ4b89iE9wya6xg56pzgaOtGZTHXT6z0p4qeDcQV7n0gyHDZBcYhR0TzGXvfR6fHrFe7fICKc1Qw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOVcewZKPtBaCC0PDWuYeBD6ELlMKqxsn9SNLuG2w+ToKiIrIe
+	6ODLSoUEm00s/fwvIPX/z/E03S6LeQzlV39oypXIYrnm93YHJY21BDBvIEcZRLIliEM=
+X-Gm-Gg: ASbGncsHEBajShOYUTR+vnpGTXSpZst9ssczVNaV82f2xEecQoyY4opBx+YI1FYmDKO
+	R6Y6SNE9XutPWAJLEMSYT1kis7nDaDTxJocAMm8rpVnoJ6a+TTNoQd4g/6IcsLC1H26UbwIP7Cx
+	n65K4usyFRpsImMXlJ8WfRyMG3uY2R318QLmbXQ+mLuuJXJd2hKqrJ3WYHhpUgnWKDfaky1ZFR6
+	eup/MNeVr529Xce1RFIrbZ5wio6IAGFlHnN98M6TocZ4/iI3qJI80JDzj1oSZmsk4gYW4vpftnL
+	6xxQivG1xTTSr4H/+QzLDmqm9FkgQq4nbMjKpvF1HpiEUQjzXJ/U4hqd9sulg5qw7OfZApCR0Rx
+	O5TvrnnUue/bBINbsTeZhmzG1
+X-Google-Smtp-Source: AGHT+IFu5A5bISXV8FB/K461gR7zbA9roHVXBQ8EWpE6xiSbYT5Vb03ik3iZvJ80WNqy9YA5A69QJg==
+X-Received: by 2002:a05:6a00:3e0f:b0:76b:ef0e:4912 with SMTP id d2e1a72fcca58-76e8dd0a9b6mr1753204b3a.20.1755662933893;
+        Tue, 19 Aug 2025 21:08:53 -0700 (PDT)
+Received: from localhost ([122.172.87.165])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e82d18cecsm3264977b3a.95.2025.08.19.21.08.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 21:08:53 -0700 (PDT)
+Date: Wed, 20 Aug 2025 09:38:51 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Shankari Anand <shankari.ak0208@gmail.com>
+Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	nouveau@lists.freedesktop.org, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] rust: pci: provide access to PCI Vendor values
-Message-ID: <aKVG67rgURYVk8y3@archiso>
-References: <20250818013305.1089446-1-jhubbard@nvidia.com>
- <20250818013305.1089446-4-jhubbard@nvidia.com>
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: opp: update ARef and AlwaysRefCounted imports
+ from sync::aref
+Message-ID: <20250820040851.nn3ysfyurc4ukqg3@vireshk-i7>
+References: <20250815174521.1413560-1-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,213 +82,20 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250818013305.1089446-4-jhubbard@nvidia.com>
+In-Reply-To: <20250815174521.1413560-1-shankari.ak0208@gmail.com>
 
-On Sun, Aug 17, 2025 at 06:33:05PM -0700, John Hubbard wrote:
-> This allows callers to write Vendor::SOME_COMPANY instead of
-> bindings::PCI_VENDOR_ID_SOME_COMPANY.
+On 15-08-25, 23:15, Shankari Anand wrote:
+> Update call sites in `opp.rs` to import ARef and
+> AlwaysRefCounted from sync::aref instead of types.
 > 
-> It also allows removing "use kernel::bindings" entirely from most of
-> the affected files here.
+> This aligns with the ongoing effort to move ARef and
+> AlwaysRefCounted to sync.
 > 
-> Apply this to the various Rust for Linux callers who were previously
-> using bindings::PCI_VENDOR_ID_*.
-> 
-> New APIs:
->     Vendor::SOME_COMPANY
->     Vendor::from_u32(), as_u32()
->     DeviceId::from_class_and_vendor() now takes Vendor type
-> 
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  drivers/gpu/nova-core/driver.rs       |  12 +-
->  rust/kernel/pci.rs                    | 327 +++++++++++++++++++++++++-
->  samples/rust/rust_dma.rs              |   3 +-
->  samples/rust/rust_driver_auxiliary.rs |   4 +-
->  samples/rust/rust_driver_pci.rs       |   4 +-
->  5 files changed, 338 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-> index 4ec5b861a345..d0272289f863 100644
-> --- a/drivers/gpu/nova-core/driver.rs
-> +++ b/drivers/gpu/nova-core/driver.rs
-> @@ -1,7 +1,13 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
->  use kernel::{
-> -    auxiliary, bindings, c_str, device::Core, pci, pci::Class, prelude::*, sizes::SZ_16M, sync::Arc,
-> +    auxiliary, c_str,
-> +    device::Core,
-> +    pci,
-> +    pci::{Class, Vendor},
-> +    prelude::*,
-> +    sizes::SZ_16M,
-> +    sync::Arc,
->  };
->  
->  use crate::gpu::Gpu;
-> @@ -26,7 +32,7 @@ pub(crate) struct NovaCore {
->              pci::DeviceId::from_class_and_vendor(
->                  Class::DISPLAY_VGA,
->                  Class::MASK_CLASS_SUBCLASS,
-> -                bindings::PCI_VENDOR_ID_NVIDIA
-> +                Vendor::NVIDIA
->              ),
->              ()
->          ),
-> @@ -34,7 +40,7 @@ pub(crate) struct NovaCore {
->              pci::DeviceId::from_class_and_vendor(
->                  Class::DISPLAY_3D,
->                  Class::MASK_CLASS_SUBCLASS,
-> -                bindings::PCI_VENDOR_ID_NVIDIA
-> +                Vendor::NVIDIA
->              ),
->              ()
->          ),
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index 9caa1d342d52..7a42b91ad873 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -196,6 +196,327 @@ pub const fn as_u32(self) -> u32 {
->      OTHERS                     = bindings::PCI_CLASS_OTHERS,                     // 0xff0000
->  }
->  
-> +macro_rules! define_all_pci_vendors {
-> +    (
-> +        $($variant:ident = $binding:expr,)+
-> +    ) => {
-> +        /// PCI vendor IDs.
-> +        ///
-> +        /// Each entry contains the 16-bit PCI vendor ID as assigned by the PCI SIG.
-> +        /// These IDs uniquely identify the manufacturer of a PCI device.
-> +        /// All values are derived from kernel constants.
-> +        #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-> +        #[repr(transparent)]
-> +        pub struct Vendor(u32);
-> +
-> +        impl Vendor {
-> +            // Associated constants derived from kernel bindings
-> +            $(
-> +                #[allow(missing_docs)]
-> +                pub const $variant: Self = Self($binding);
-> +            )+
-> +
-> +            /// Create a `Vendor` from the raw vendor ID value, or `None` if the value doesn't
-> +            /// match any known vendor.
-> +            pub fn from_u32(value: u32) -> Option<Self> {
-> +                match value {
-> +                    $(x if x == Self::$variant.0 => Some(Self::$variant),)+
-> +                    _ => None,
-> +                }
-> +            }
-> +
-> +            /// Get the raw 16-bit vendor ID value.
-> +            pub const fn as_u32(self) -> u32 {
-> +                self.0
-> +            }
-> +        }
-> +    };
-> +}
-> +
-> +define_all_pci_vendors! {
-> +    PCI_SIG                  = bindings::PCI_VENDOR_ID_PCI_SIG,                  // 0x0001
-> +
-> +    ...
-> +
-> +    NCUBE                    = bindings::PCI_VENDOR_ID_NCUBE,                    // 0x10ff
-> +}
-> +
->  /// An adapter for the registration of PCI drivers.
->  pub struct Adapter<T: Driver>(T);
->  
-> @@ -335,9 +656,9 @@ pub const fn from_class(class: u32, class_mask: u32) -> Self {
->      ///
->      /// This is more targeted than [`DeviceId::from_class`]: in addition to matching by Vendor, it
->      /// also matches the PCI Class (up to the entire 24 bits, depending on the mask).
-> -    pub const fn from_class_and_vendor(class: Class, class_mask: u32, vendor: u32) -> Self {
-> +    pub const fn from_class_and_vendor(class: Class, class_mask: u32, vendor: Vendor) -> Self {
->          Self(bindings::pci_device_id {
-> -            vendor,
-> +            vendor: vendor.as_u32(),
->              device: DeviceId::PCI_ANY_ID,
->              subvendor: DeviceId::PCI_ANY_ID,
->              subdevice: DeviceId::PCI_ANY_ID,
-> @@ -396,7 +717,7 @@ macro_rules! pci_device_table {
->  ///     <MyDriver as pci::Driver>::IdInfo,
->  ///     [
->  ///         (
-> -///             pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, bindings::PCI_ANY_ID as u32),
-> +///             pci::DeviceId::from_id(pci::Vendor::REDHAT.as_u32(), bindings::PCI_ANY_ID as u32),
->  ///             (),
->  ///         )
->  ///     ]
-> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
-> index c5e7cce68654..520c59b930dc 100644
-> --- a/samples/rust/rust_dma.rs
-> +++ b/samples/rust/rust_dma.rs
-> @@ -5,7 +5,6 @@
->  //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
->  
->  use kernel::{
-> -    bindings,
->      device::Core,
->      dma::{CoherentAllocation, Device, DmaMask},
->      pci,
-> @@ -46,7 +45,7 @@ unsafe impl kernel::transmute::FromBytes for MyStruct {}
->      MODULE_PCI_TABLE,
->      <DmaSampleDriver as pci::Driver>::IdInfo,
->      [(
-> -        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
-> +        pci::DeviceId::from_id(pci::Vendor::REDHAT.as_u32(), 0x5),
->          ()
->      )]
->  );
-> diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
-> index f2a820683fc3..d8470e4bf88b 100644
-> --- a/samples/rust/rust_driver_auxiliary.rs
-> +++ b/samples/rust/rust_driver_auxiliary.rs
-> @@ -5,7 +5,7 @@
->  //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
->  
->  use kernel::{
-> -    auxiliary, bindings, c_str, device::Core, driver, error::Error, pci, prelude::*, InPlaceModule,
-> +    auxiliary, c_str, device::Core, driver, error::Error, pci, prelude::*, InPlaceModule,
->  };
->  
->  use pin_init::PinInit;
-> @@ -51,7 +51,7 @@ struct ParentDriver {
->      MODULE_PCI_TABLE,
->      <ParentDriver as pci::Driver>::IdInfo,
->      [(
-> -        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
-> +        pci::DeviceId::from_id(pci::Vendor::REDHAT.as_u32(), 0x5),
->          ()
->      )]
->  );
-> diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-> index 606946ff4d7f..a3a7a0837961 100644
-> --- a/samples/rust/rust_driver_pci.rs
-> +++ b/samples/rust/rust_driver_pci.rs
-> @@ -4,7 +4,7 @@
->  //!
->  //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
->  
-> -use kernel::{bindings, c_str, device::Core, devres::Devres, pci, prelude::*, types::ARef};
-> +use kernel::{c_str, device::Core, devres::Devres, pci, prelude::*, types::ARef};
->  
->  struct Regs;
->  
-> @@ -38,7 +38,7 @@ struct SampleDriver {
->      MODULE_PCI_TABLE,
->      <SampleDriver as pci::Driver>::IdInfo,
->      [(
-> -        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
-> +        pci::DeviceId::from_id(pci::Vendor::REDHAT.as_u32(), 0x5),
->          TestIndex::NO_EVENTFD
->      )]
->  );
-> -- 
-> 2.50.1
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 
-Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
+Applied. Thanks.
+
+-- 
+viresh
