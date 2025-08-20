@@ -1,76 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C9621ABB0;
-	Wed, 20 Aug 2025 12:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755694619; cv=none; b=nvcHGymKRpeQX+29CoufUhamoY74MekDBfTQNk/bY65DdMjDNELTjW/kB+3Uy8ZY7o2VZ5HvypnXJRNNDbZxzYWViH16fOVmGPc6JY7IRrjb26GnvoT9ffbG0UlLUHHwiMy1TUEKWGgCeLo8Gz9+Ry3sV37JmymHkP4vYVjIRNo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755694619; c=relaxed/simple;
-	bh=WUtS7YH/SFTY41jyLTuZUHacFQDyALN4XUUiWqnxkf0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ZK+rm4nvGAPS+eej94MD6QvRjfqVDttAGEzw05lQ4OlGO7e5rqkI8XyDe9dWoOt29bTUeeja7jk4L+UObjdXmapxMkRXdtAx2JmPBcrKRsvYiJSYX2SjGSLbmuPNumA4QfsRI+s0xijaptTEsLVq3IyTAVT/5DSCbdhGH3Zq2BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uBQfWlXE; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7D831CA59;
+	Wed, 20 Aug 2025 13:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755695919; cv=pass; b=WwVjRCFQclcFSfTvXFq8n7ctRKyoecCVhzy16sN3znIY4QrKiziwosH5tY4xC0vnxYBaY4/lDzbjcdB+fkJg+vPnc9eIrwrtSFRAxo/xxGJFw5VJCh5vKXXr3U34qk7NQ5e/YyYAPBfs+sa8PJWfb6VLGBKQ/WN5KhmCnh9KPUg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755695919; c=relaxed/simple;
+	bh=frt5KZGMpNc9RTPB+XpfdVGQov7vhfrWJBllvqHsGTg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=BhowfHdsQzjsAKrb+nwN1B7O1E9OwXYol1DsQXsUOFAOlJ0+0AtPsoiJOOh4o5aeQyv9XHFIrTg5oSqxghMETGqxyo4/CmLWsHlWyV1PlFSE/NHesz7Q1DN+pZPG7+Y+Of9NReyy2BqOOpo31M9BElxhy1HtRnL6IRLPIctBH7g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=E0YPuvzV; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uBQfWlXE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EB6C4CEEB;
-	Wed, 20 Aug 2025 12:56:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755694617;
-	bh=WUtS7YH/SFTY41jyLTuZUHacFQDyALN4XUUiWqnxkf0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=uBQfWlXE6egP51AfpugeaQe+SRkMjqQaTFBS08ZywfPjrF2ejzmvwEvs6wLFBj+Iv
-	 cKynCShXKVxGNHaslpmbD8mq9Q//X/eXIcouF/4iHgK9Bo2V+XmCwlVTj6B3DHHCP4
-	 YOsfgu5Hoi30iGRZZpYbwsOqNcHeKPNg67BEn3BcSUNyTq0tCIu/bqnMLQMTddeumP
-	 OIZqcgRzqcEswUlLJRWRiw6EVcCZ/59IJjSQau1Xvj/O7KfEw4TWsvIWAdjwc88GTl
-	 nUttOPV0065mEh9WQ80pjADloLlb3iGegfP1dOwaRtyET+k3MIUpkYIGTGQdiJjU6M
-	 PoQ5b8m+BoCTQ==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="E0YPuvzV"
+ARC-Seal: i=1; a=rsa-sha256; t=1755695895; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=d8ylaho56bpW/bUGWgLu8sCBoXQQeEwxvuuIFu0j1newVzMHNn0RXmRcCAE9jGt0LpGPTBmjXeOWwebQl2KtF8AftahoT8QOh/TPlxyVdCS5R/pcX1LEEH5Z9bq1nAiFu7pLX7vY2FL1SkULMTNHNcVVqagbyzSIEt4kQLa5Vm4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755695895; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=HIzJQLFg94r0N33A3IhRbNr3hlEkNsrOX22DxXcUn/c=; 
+	b=mw9AT+TA8Hh5CgQBdpsPXV+daWY69MSw69/Xzd3GCmEb7+NVNtK2E7znY4l1JQRWgxgJN7qml5imkToUihU00JBViInsbqWgWvK7dCO8BSPKaSj4o6Oy9jW5I9Tp1q/EG8zflNBkdqlyOFieloRCaj/GvdY184MaLZQjqkyGgfE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755695895;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=HIzJQLFg94r0N33A3IhRbNr3hlEkNsrOX22DxXcUn/c=;
+	b=E0YPuvzVDnaZHVB6bSBlktJX+8DznmdQ57D5OAOiKlXhPOW9EEuNk1VYfiUatgsv
+	P8SnnHfjjjeR6ERyh5KhQCZ+/TbxIywGIZxEW5b+uEyH92CO26bY+GWjYQGw7L+5wGk
+	sq1CV9wdg1AdWnHHyEupAhvE84pSslCUJMUnx24k=
+Received: by mx.zohomail.com with SMTPS id 1755695893238551.6073039074761;
+	Wed, 20 Aug 2025 06:18:13 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 1/4] rust: dma: implement DataDirection
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DC5UWIXHVAGI.1TTU2K9WIC1E9@kernel.org>
+Date: Wed, 20 Aug 2025 10:17:54 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ akpm@linux-foundation.org,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ lossin@kernel.org,
+ a.hindborg@kernel.org,
+ tmgross@umich.edu,
+ abdiel.janulgue@gmail.com,
+ acourbot@nvidia.com,
+ jgg@ziepe.ca,
+ lyude@redhat.com,
+ robin.murphy@arm.com,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 Aug 2025 14:56:52 +0200
-Message-Id: <DC79SQDWVVMI.3A6WCE173M511@kernel.org>
-Subject: Re: [PATCH v3] rust: alloc: implement Box::pin_slice()
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250811101456.2901694-1-vitaly.wool@konsulko.se>
- <3e922cc6-6d27-49ad-9719-5662c6102b6b@konsulko.se>
-In-Reply-To: <3e922cc6-6d27-49ad-9719-5662c6102b6b@konsulko.se>
+Message-Id: <99CFF9D2-962E-4322-BCFD-273485DBAF62@collabora.com>
+References: <20250815171058.299270-1-dakr@kernel.org>
+ <20250815171058.299270-2-dakr@kernel.org> <aKLzrp0m00J6CCYz@google.com>
+ <DC5INEG2DXU5.DM4JIICEQ2PC@kernel.org> <aKMa7YzO-PwEv9AT@google.com>
+ <DC5KK67M752R.N9PX4LUG2F68@kernel.org>
+ <CAH5fLgi6OZaqjnDScDrJ3YjN2a8mJuPiO5MLPUqUWo62WkvvrA@mail.gmail.com>
+ <DC5Q80UUHSUV.360VLIC6DYZ78@kernel.org>
+ <CAH5fLgjymw6Mr8qv8NDFA8hz+nfh3-B4XcZ_N-UAmJrc3Ug_QQ@mail.gmail.com>
+ <DC5UWIXHVAGI.1TTU2K9WIC1E9@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Wed Aug 20, 2025 at 10:07 AM CEST, Vitaly Wool wrote:
-> On 8/11/25 12:14, Vitaly Wool wrote:
->> From: Alice Ryhl <aliceryhl@google.com>
->>=20
->> Add a new constructor to Box to facilitate Box creation from a pinned
->> slice of elements. This allows to efficiently allocate memory for e.g.
->> slices of structrures containing spinlocks or mutexes. Such slices may
->> be used in kmemcache like or zpool API implementations.
->>=20
->> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
->
->  From what I could see, there were no objections to this one. Danilo,=20
-> would you be up for picking it or is there something missing about it sti=
-ll?
 
-This looks good now.
 
-There's a few minor nits, e.g. it'd be nice to have an  empty line between
-struct definitions in the example and sentences ending with a period. But I=
- can
-fix those up on apply.
+> On 18 Aug 2025, at 18:03, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Mon Aug 18, 2025 at 8:47 PM CEST, Alice Ryhl wrote:
+>> with no warnings and build-failure if out-of-bounds.
+>=20
+> +/// DMA data direction.
+> +///
+> +/// Corresponds to the C [`enum dma_data_direction`].
+> +///
+> +/// [`enum dma_data_direction`]: =
+srctree/include/linux/dma-direction.h
+> +#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+> +#[repr(u32)]
+> +pub enum DataDirection {
+> +    /// The DMA mapping is for bidirectional data transfer.
+> +    ///
+> +    /// This is used when the buffer can be both read from and =
+written to by the device.
+> +    /// The cache for the corresponding memory region is both flushed =
+and invalidated.
+> +    Bidirectional =3D =
+Self::const_cast(bindings::dma_data_direction_DMA_BIDIRECTIONAL),
+> +
+> +    /// The DMA mapping is for data transfer from memory to the =
+device (write).
+> +    ///
+> +    /// The CPU has prepared data in the buffer, and the device will =
+read it.
+> +    /// The cache for the corresponding memory region is flushed.
+> +    ToDevice =3D =
+Self::const_cast(bindings::dma_data_direction_DMA_TO_DEVICE),
+> +
+> +    /// The DMA mapping is for data transfer from the device to =
+memory (read).
+> +    ///
+> +    /// The device will write data into the buffer for the CPU to =
+read.
+> +    /// The cache for the corresponding memory region is invalidated =
+before CPU access.
+> +    FromDevice =3D =
+Self::const_cast(bindings::dma_data_direction_DMA_FROM_DEVICE),
+> +
+> +    /// The DMA mapping is not for data transfer.
+> +    ///
+> +    /// This is primarily for debugging purposes. With this =
+direction, the DMA mapping API
+> +    /// will not perform any cache coherency operations.
+> +    None =3D Self::const_cast(bindings::dma_data_direction_DMA_NONE),
+> +}
+> +
+> +impl DataDirection {
+> +    /// Casts the bindgen-generated enum type to a `u32` at compile =
+time.
+> +    ///
+> +    /// This function will cause a compile-time error if the =
+underlying value of the
+> +    /// C enum is out of bounds for `u32`.
+> +    const fn const_cast(val: bindings::dma_data_direction) -> u32 {
+
+This should be its own generic helper for similar enums, IMHO
+
+> +        // CAST: The C standard allows compilers to choose different =
+integer types for enums.
+> +        // To safely check the value, we cast it to a wide signed =
+integer type (`i128`)
+> +        // which can hold any standard C integer enum type without =
+truncation.
+> +        let wide_val =3D val as i128;
+> +
+> +        // Check if the value is outside the valid range for the =
+target type `u32`.
+> +        // CAST: `u32::MAX` is cast to `i128` to match the type of =
+`wide_val` for the comparison.
+> +        if wide_val < 0 || wide_val > u32::MAX as i128 {
+> +            // Trigger a compile-time error in a const context.
+> +            panic!("C enum value is out of bounds for the target type =
+`u32`.");
+> +        }
+> +
+> +        // CAST: This cast is valid because the check above =
+guarantees that `wide_val`
+> +        // is within the representable range of `u32`.
+> +        wide_val as u32
+> +    }
+> +}
+> +
+> +impl From<DataDirection> for bindings::dma_data_direction {
+> +    /// Returns the raw representation of [`enum =
+dma_data_direction`].
+> +    fn from(direction: DataDirection) -> Self {
+> +        // CAST: `direction as u32` gets the underlying =
+representation of our `#[repr(u32)]` enum.
+> +        // The subsequent cast to `Self` (the bindgen type) assumes =
+the C enum is compatible
+> +        // with the enum variants of `DataDirection`, which is a =
+valid assumption given our
+> +        // compile-time checks.
+> +        direction as u32 as Self
+> +    }
+> +}
+
