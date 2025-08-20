@@ -1,73 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C1C142E83;
-	Wed, 20 Aug 2025 00:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968B035336C;
+	Wed, 20 Aug 2025 00:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755649683; cv=none; b=FDuXu4lrrAfiqo+bAEtXJc3RsAu354vG8bwG/8uLXEkqIoEdbebwq5cDzcoUVoDRRINa2ipONQzJuEiKdMCFVEcDmD7utItnqBcvDIFwfNe41G+8WkLijUdecXL2V4qYkaeS9vxdhSP97htGFYjYl88gpfmkw0hXMqaKyhLGF44=
+	t=1755650054; cv=none; b=BreVpqnCQEQR/fACrwBxvUoQqkJ4CHL+uga8ijcdUmvhZJKgu4LmjIcC7Uj9shfCI3TGc9aGuuLhrOXIDCsSWHLSb/HumA/WZOXqyRzkxuzSAnD+FGTN0oH/sJa7a/Xcie3kqqJAhUaqglASw54C+uE1qgbJAfcUmnBN7jjYytA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755649683; c=relaxed/simple;
-	bh=XeskXZIky+PEIWlOP96HY9yCogbLgJ4FHj85WL9QYx0=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nKGMy4JT+TdhuDhEv3Cc8sMzWsgpYBD7ozlxp2udGcD7oTa+leqRjNtuAAgU8L1AJdW0a+NBLsKkop9xrymkZgeMZTNEKEfjkbwzQFOBehJOB2nXJROX3KAlxe/KW3Z1OqSJluC1vmpMTeqeUUHeL4OQwptQL/32/YXZqkKFomY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UE2NF5ae; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755650054; c=relaxed/simple;
+	bh=JAI+oYkdbTIFn8JsqjU/opW6sYv/yyl6y9q76TmwkxQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=W/MYuxV/GQKUKlDPHNkcPUeBQryED0bpmiG7K1NwkK7PtzBuG284Zct55+XNQD4gX9t36Q/TXExysWa6Z9UcTRWL7hTZ/FdqaxNOSgZsgkpfDDAvPgKiqhCk/72gSvZWAZtEJTg4N//RMZvHFeW/IkzofLI0+8dq6niya3m1AlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joIF5yeQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UE2NF5ae"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B244DC4CEF1;
-	Wed, 20 Aug 2025 00:28:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joIF5yeQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FFFC4CEF1;
+	Wed, 20 Aug 2025 00:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755649683;
-	bh=XeskXZIky+PEIWlOP96HY9yCogbLgJ4FHj85WL9QYx0=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=UE2NF5aevfeuz7ZZAxgLfrI0fIYfSacTIW0+LHXfuH1xVyqjcteo643jzIldn2Z1K
-	 qAVXmQ4H+Xfjk+u60XCFJI2lG/O+afXd7+DMuT3+I6uwEbrUwOHmg7miRuWVtTnCmU
-	 aHVjdlRteuPPLdB3UCkCWlWMmdUM5KowDbmYpu1x/L3WM0vtWk+aK+xWUvXVp73gnk
-	 YqiVhRvsF2NMu/UPoBevaOKOg6BdEA/WivVlpB263xcdrkLVYkxYeorMNZ8RVJwENk
-	 CmXzqAYwFysj61JUOtSfzkZe23lB2dMdZkSkL5Roci0MBfkWwJfelO3Hjvi615qXrp
-	 ULbfWxmr13Ozg==
-Date: Wed, 20 Aug 2025 03:27:59 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: tpm2@lists.linux.dev, linux-integrity@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: tpm2_protocol / tpm2sh 0.9.0
-Message-ID: <aKUWj-QCsMUnysme@kernel.org>
-References: <aKUTF6lu5JetDJxX@kernel.org>
+	s=k20201202; t=1755650054;
+	bh=JAI+oYkdbTIFn8JsqjU/opW6sYv/yyl6y9q76TmwkxQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=joIF5yeQMxdAwvFbojfpO5WzAKLrlTIFhUXiHjKaZwUIXQzvvrELiXa2mcFqvaQ19
+	 acpb04faE+MKfSIgNl+zM01YV7MplxCAQLMxjFhcVimrkRM0cBYHwJV9zdXCeg3AAd
+	 LfdJG4zchqLMGvIJsGldZXtW9mVJZNjs8XOXoXja7R3j2PUAca+0IYRaWJmJ1w07fx
+	 4pGSviBW6kIpNZ/I5TesMvZ58jrih8zZ7+WTv3TNsVKjrJY0vkcjYJoDiFQlp0HdPf
+	 6Hk6QobI1kDRXcz2lySI09f3VIyou8/WhH64VM6XtsCwcOUO0q6mQvcSdX+5gm29wS
+	 weHGuvofWRQwA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aKUTF6lu5JetDJxX@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 20 Aug 2025 02:34:09 +0200
+Message-Id: <DC6U02DZSX1W.1SXD7XQTNHXQL@kernel.org>
+Subject: Re: [PATCH v10 5/7] samples: rust: Add debugfs sample driver
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
+ <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Matthew Maurer" <mmaurer@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com>
+ <20250819-debugfs-rust-v10-5-86e20f3cf3bb@google.com>
+In-Reply-To: <20250819-debugfs-rust-v10-5-86e20f3cf3bb@google.com>
 
-On Wed, Aug 20, 2025 at 03:13:11AM +0300, Jarkko Sakkinen wrote:
-> I started this project originally in 2024 then I got quickly stuck.
-> After one year of processing how to do it the result is no_std, zero
-> dependency crate, which does not require memory allocator. It can
-> empower both chips, clients, emulators and operating systems. Even tho
-> most of the code was written in three weeks (11K of 12K for both
-> protocol and client) the ideas have been developing for a long time.
+On Wed Aug 20, 2025 at 12:53 AM CEST, Matthew Maurer wrote:
+> Adds a new sample driver that demonstrates the debugfs APIs.
+>
+> The driver creates a directory in debugfs and populates it with a few
+> files:
+> - A read-only file that displays a fwnode property.
+> - A read-write file that exposes an atomic counter.
+> - A read-write file that exposes a custom struct.
+>
+> This sample serves as a basic example of how to use the `debugfs::Dir`
+> and `debugfs::File` APIs to create and manage debugfs entries.
+>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-Also tpm2_protocol byte granular precision in its understanding of the
-protocol.
+This is a great example, thanks! I really like how the API turned out.
 
-We don't need to validate anymore just length or trivial metrics like
-that. The power of Rust here is really that we can structurally say
-what "is" and what "is not".
+When it comes to the newly added Scope API - and I assume this does not com=
+e at
+a surprise - I have some concerns.
 
-It's not just a security property. It increases the overall stability
-of the system. One particular benefit that it gives for kernel hacking
-is the ability in some cases to differentiate the stimulus of a bug
-between kernel, hardware and firmware.
+But first, thanks a lot for posting the socinfo driver in both variants, wi=
+th
+and without the Scope API.
 
-My crate takes byte granularity seriously. E.g. day ago I noticed
-that spec had enums with signed discriminants, which I hadn't paid
-attention but compiler reminded  me of that by complaining that
-building and parsing traits were not available for 'i8' :-) (it
-event has separate building and parsing traits for u8).
+I had a brief look at both of those and I can see why you want this.
 
-BR, Jarkko
+With the Scope thing you can indeed write things a bit more compressed (I t=
+hink
+in the patches the differences looks quite a bit bigger than it actually is=
+,
+because the scope-based one uses quite some code from the file-based one).
 
+I think the downsides are mainly:
+
+  - The degree of complexity added for a rather specific use-case, that is =
+also
+    perfectly representable with the file-based API.
+
+  - It makes it convinient to expose multiple fields grouped under the same=
+ lock
+    as separate files, which design wise we shouln't encourage for the reas=
+ons
+    we discussed in v8.
+
+I think for the sake of getting this series merged, which I would really lo=
+ve to
+see, I think we should focus on the file-based API first. Once we got this
+landed I think we can still revisit the Scope idea and have some more discu=
+ssion
+about it.
+
+I will have a more detailed look tomorrow (at least for the patches 1-5).
+
+Thanks again for working on this!
+
+- Danilo
