@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B503203B5
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 14:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB773203B5
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Aug 2025 14:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755701685; cv=none; b=OheC/+OO3uWlkIBKk8YF/ddSb4JukDhiiMzE9YcqCOcqJXA7xpyT76zWPDC0SQBWweEj9Idx3Yoiix5Rxn2UY8wwlpYibAnegkw4KeoiF09qd59tY11EVDr4TIVQ3xEE+H78euGRclDhUdhVRkFr+RPa+ltGiirODkGs32qhxN4=
+	t=1755701689; cv=none; b=Hv681CQFp0chG9Y8l7wGkySFUtygRb/Siu4mz+IXYAd+3sy9n6DehjjpeWQkvFQB+gqDuRAJUiu/ZgvtAKf6ECSuR20OvN3JkuRZwk9yy+wBEic3+XFJxNipXfEHWioHxTpzetYiJNTvNJN8kDbM2PT7kfpnwwdDqrECZ8P1JsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755701685; c=relaxed/simple;
-	bh=CmaXhcClyXaHryH353w70ckYW/lIC/QWJ7meZuU37B0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ggXDJXbjYfsmaG2xqd+6mx+t24VKqJBpXhJZTSdyqz6eWFO3O5JdLSEj3bNDHtDDBki/B/flw6oeUJ24b4SZNfIJl3M1yqR2owziZ/cU9XTpP2ZyTsST74E+CrV4w3wLTuuqs2OYWnvEnRH9en8IdvL28TpBA4XEiywRsptmANY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyW/7Sz0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755701689; c=relaxed/simple;
+	bh=51U1+IPqj7qy0zi9GKydtMOcQnA8NAToBoDcCVpQyHE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dks9OnOS+0IsCYTtBzNVOSt144aA0Fs73fKHH79U+aIipdzJ6hVWDE6KXHYOyPBorHhVmuzrpi76CAoOisJ3tbjCIQZQMrxERtEU4NUSPQF7QyFyf1b+/03WV0teIkvAG/sxnlqI5pOeza0MpctRSEPUBuv0Xo24JgiIlsaAh04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ec1i5y0n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyW/7Sz0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09DDC4CEEB;
-	Wed, 20 Aug 2025 14:54:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ec1i5y0n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62947C116B1;
+	Wed, 20 Aug 2025 14:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755701685;
-	bh=CmaXhcClyXaHryH353w70ckYW/lIC/QWJ7meZuU37B0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UyW/7Sz0m7jRCv7NKWhFEdjvWo7+6XRJ/e2a4gTrAK99/xl1u1uho9QqcP9cMP6Ld
-	 mJS3QzBvcV4ae6KPcxqczKkledALhbcbt6RRNziWoxtcTCNafSo4JjXHb9Cs0quVTV
-	 7/ma1cqE5WwHakY3rNGjNR+O6cbE+xEmSdi39zng0WDl1aAvSUPzueUqqBJQOuxc9V
-	 FdgYAxT8BU8CIbtLACTqEhP5fJ9pif/dafbSLsIjQQOFZ5PaiRPbp8ZpWetB18fdrk
-	 uKEeII0juOZGhstq80Bd9kRBdggUO6vkbpxagUiKGtiON5oxLmCo4i6kRb6r/XKjt/
-	 d+kdnLOb1Mtog==
+	s=k20201202; t=1755701688;
+	bh=51U1+IPqj7qy0zi9GKydtMOcQnA8NAToBoDcCVpQyHE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ec1i5y0ngOvwvuPu02k8Kapn84qWXtD9RF9Tk2T/PgvA1OuVcK9MtDL84FlZsVH6q
+	 4HTRznsNb62EPTxKAmiz64jLK78+FlsIzuUd0uTAUgHyaCInbzp9fRt+RTC7THNnMZ
+	 ud7ZDRP8RD9owj+S34n64b8tU8OzQpP7xLAMCK/1GNsIuTVsjAataxvLh2vDQ1bFv7
+	 2oEV9fflEMalLcjciMNo++AdJi320iLrtssVjHhhI9FuHUf6J+aXUwRnJ6lb67+58H
+	 AXH5wua/5CHmLgk1TL/jHcGam3J1ATlXvYk0pVLarW/9hEJLxSvqjs6GmPn8gf4fkc
+	 TFMN3Z7dtZXvg==
 From: Danilo Krummrich <dakr@kernel.org>
 To: lorenzo.stoakes@oracle.com,
 	vbabka@suse.cz,
@@ -42,11 +43,14 @@ To: lorenzo.stoakes@oracle.com,
 	abdiel.janulgue@gmail.com,
 	acourbot@nvidia.com
 Cc: rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v5 0/7] BorrowedPage, AsPageIter and VmallocPageIter
-Date: Wed, 20 Aug 2025 16:53:36 +0200
-Message-ID: <20250820145434.94745-1-dakr@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v5 1/7] rust: page: implement BorrowedPage
+Date: Wed, 20 Aug 2025 16:53:37 +0200
+Message-ID: <20250820145434.94745-2-dakr@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250820145434.94745-1-dakr@kernel.org>
+References: <20250820145434.94745-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,65 +59,132 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series implements the BorrowedPage type, the AsPageIter trait and
-VmallocPageIter type.
+Currently, a Page always owns the underlying struct page.
 
-AsPageIter can be implemented by any type that owns pages to allow users to
-borrow them through a generic interface.
+However, sometimes a struct page may be owned by some other entity, e.g.
+a vmalloc allocation.
 
-For instance, this is useful to access and borrow the backing pages of
-allocation primitives, such as Box and Vec, backing a scatterlist.
+Hence, introduce BorrowedPage to support such cases, until the Ownable
+solution [1] lands.
 
-Hence, implement AsPageIter for VBox and VVec.
+This is required by the scatterlist abstractions.
 
-Additionally, implement Vmalloc::to_page() and ArrayLayout::size(), which are
-dependencies of the above.
+Acked-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Tested-by: Alexandre Courbot <acourbot@nvidia.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Link: https://lore.kernel.org/rust-for-linux/ZnCzLIly3DRK2eab@boqun-archlinux/ [1]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/page.rs             | 75 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 75 insertions(+), 1 deletion(-)
 
-Changes in v5:
-  - Avoid repetition in commit message of "rust: alloc: implement
-    VmallocPageIter".
-  - Change invariants of VmallocPageIter to:
-    - `buf` is a valid and [`page::PAGE_SIZE`] aligned pointer into a
-      [`Vmalloc`] allocation.
-    - `size` is the number of bytes from `buf` until the end of the [`Vmalloc`]
-      allocation `buf` points to.
-  - Inline some methods of VmallocPageIter.
-
-Changes in v4:
-  - Rename IntoPageIter into AsPageIter.
-  - Put lifetime on AsPageIter::Iter instead of AsPageIter itself.
-  - Implement size_hint() for VmallocPageIter.
-  - Use PhantomData<page::BorrowedPage<'a>> instead of PhantomData<&'a u8>.
-
-Changes in v3:
-  - Generalize the previous PageOwner impl of VBox and VVec in VmallocPageIter.
-  - Correspondingly, replace PageOwner with IntoPageIter.
-
-Changes in v2:
-  - BorrowedPage
-    - Add link to Ownable
-    - Use borrow_page() in the example
-  - Add PageOwner, Vmalloc::to_page(), ArrayLayout, VBox, VVec patches.
-
-Danilo Krummrich (7):
-  rust: page: implement BorrowedPage
-  rust: alloc: vmalloc: implement Vmalloc::to_page()
-  rust: alloc: implement VmallocPageIter
-  rust: page: define trait AsPageIter
-  rust: alloc: kbox: implement AsPageIter for VBox
-  rust: alloc: layout: implement ArrayLayout::size()
-  rust: alloc: kvec: implement AsPageIter for VVec
-
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/alloc/allocator.rs  | 152 ++++++++++++++++++++++++++++++++
- rust/kernel/alloc/kbox.rs       |  40 ++++++++-
- rust/kernel/alloc/kvec.rs       |  40 ++++++++-
- rust/kernel/alloc/layout.rs     |   5 ++
- rust/kernel/page.rs             |  87 +++++++++++++++++-
- 6 files changed, 322 insertions(+), 3 deletions(-)
-
-
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 84d60635e8a9..0e140e07758b 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -57,6 +57,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/jump_label.h>
+ #include <linux/mdio.h>
++#include <linux/mm.h>
+ #include <linux/miscdevice.h>
+ #include <linux/of_device.h>
+ #include <linux/pci.h>
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 7c1b17246ed5..631718a6ad7d 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -9,7 +9,12 @@
+     error::Result,
+     uaccess::UserSliceReader,
+ };
+-use core::ptr::{self, NonNull};
++use core::{
++    marker::PhantomData,
++    mem::ManuallyDrop,
++    ops::Deref,
++    ptr::{self, NonNull},
++};
+ 
+ /// A bitwise shift for the page size.
+ pub const PAGE_SHIFT: usize = bindings::PAGE_SHIFT as usize;
+@@ -30,6 +35,74 @@ pub const fn page_align(addr: usize) -> usize {
+     (addr + (PAGE_SIZE - 1)) & PAGE_MASK
+ }
+ 
++/// Representation of a non-owning reference to a [`Page`].
++///
++/// This type provides a borrowed version of a [`Page`] that is owned by some other entity, e.g. a
++/// [`Vmalloc`] allocation such as [`VBox`].
++///
++/// # Example
++///
++/// ```
++/// # use kernel::{bindings, prelude::*};
++/// use kernel::page::{BorrowedPage, Page, PAGE_SIZE};
++/// # use core::{mem::MaybeUninit, ptr, ptr::NonNull };
++///
++/// fn borrow_page<'a>(vbox: &'a mut VBox<MaybeUninit<[u8; PAGE_SIZE]>>) -> BorrowedPage<'a> {
++///     let ptr = ptr::from_ref(&**vbox);
++///
++///     // SAFETY: `ptr` is a valid pointer to `Vmalloc` memory.
++///     let page = unsafe { bindings::vmalloc_to_page(ptr.cast()) };
++///
++///     // SAFETY: `vmalloc_to_page` returns a valid pointer to a `struct page` for a valid
++///     // pointer to `Vmalloc` memory.
++///     let page = unsafe { NonNull::new_unchecked(page) };
++///
++///     // SAFETY:
++///     // - `self.0` is a valid pointer to a `struct page`.
++///     // - `self.0` is valid for the entire lifetime of `self`.
++///     unsafe { BorrowedPage::from_raw(page) }
++/// }
++///
++/// let mut vbox = VBox::<[u8; PAGE_SIZE]>::new_uninit(GFP_KERNEL)?;
++/// let page = borrow_page(&mut vbox);
++///
++/// // SAFETY: There is no concurrent read or write to this page.
++/// unsafe { page.fill_zero_raw(0, PAGE_SIZE)? };
++/// # Ok::<(), Error>(())
++/// ```
++///
++/// # Invariants
++///
++/// The borrowed underlying pointer to a `struct page` is valid for the entire lifetime `'a`.
++///
++/// [`VBox`]: kernel::alloc::VBox
++/// [`Vmalloc`]: kernel::alloc::allocator::Vmalloc
++pub struct BorrowedPage<'a>(ManuallyDrop<Page>, PhantomData<&'a Page>);
++
++impl<'a> BorrowedPage<'a> {
++    /// Constructs a [`BorrowedPage`] from a raw pointer to a `struct page`.
++    ///
++    /// # Safety
++    ///
++    /// - `ptr` must point to a valid `bindings::page`.
++    /// - `ptr` must remain valid for the entire lifetime `'a`.
++    pub unsafe fn from_raw(ptr: NonNull<bindings::page>) -> Self {
++        let page = Page { page: ptr };
++
++        // INVARIANT: The safety requirements guarantee that `ptr` is valid for the entire lifetime
++        // `'a`.
++        Self(ManuallyDrop::new(page), PhantomData)
++    }
++}
++
++impl<'a> Deref for BorrowedPage<'a> {
++    type Target = Page;
++
++    fn deref(&self) -> &Self::Target {
++        &self.0
++    }
++}
++
+ /// A pointer to a page that owns the page allocation.
+ ///
+ /// # Invariants
 -- 
 2.50.1
 
