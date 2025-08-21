@@ -1,134 +1,105 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8794E34F48E
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Aug 2025 19:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EC92DF71C;
+	Thu, 21 Aug 2025 19:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755804846; cv=none; b=hvooSWz5Gl/Q3irmWMayGZBahk6Xew5PPFaGZHxxfZ8AIIsmbfEsleCAFBiPm2/5topochdoVO9aGWaH/y38tuKn7rmq1u4Aj3WRkMLyI2J5qZ54y85h2dp4O8Obk+OVMLhXnpgVhIRepk984kpsast7KbsHHklsVO7FtKGiPag=
+	t=1755804987; cv=none; b=sIU9jWFUrhV1p+0QYd/wtcRo2XOuARITI/cI8QdXp2BnsRsoNH9BKkrdyWgiNtzYfRlbrxnMrj7n1cEwTau6ZDTTDny/a/0ddLPLLZmAEG5ZAosa2AAawna8MZX8fcy27rKE9kSBDGwmEeyDVA7N7y8Y2iHYM3C9l5oM53WxUNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755804846; c=relaxed/simple;
-	bh=K2qBsorQEBvmC0Ja7J3lU2rWa8SBiQv3NtEmDxn8U8k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIoZ8RvavzGGT4ygQmRAMbutce5sfA/38kqaCF1kFOnjTV7hd+j/X3USpR5psjIgRoUGaY+ar6JY71aLya254whpzWSy+TTQ8CvUXh+VUojszBSiNGgua8DN3+psDI2aHMD1Lgiw2AHy0Mai04eTbAg/vrGhjhKx0UhE1QFWH7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dfGHNBO/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1755804987; c=relaxed/simple;
+	bh=uHcy2AviljsxLllJ3OPGmlhzgQEqdyQntMpt5D8c29U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gUySWPo1uBnKbs5CqjidSRiWLcB+5o3aIInQ8tlhNfaNIV53KXSJ35Wl6w+Nj/M2+HrMnu8EMgv8MOExlaumUmi2v+u3aZcgPksHzKfDAhrCsbwDV+1eDEcdNPcj7qNgiikv2loJdIlkgoDAaNBp5oUbDjUCziL7kxOIdAHzs6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=fj06HT0d; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dfGHNBO/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755804843;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bMX2qgtksfDBWFPpJzJWDTU+6VclykynBnjwOSTYNM4=;
-	b=dfGHNBO/nQHy5sXLXvjP7tJeJI3ne6mkWYijp/TyOu6urazK8lusvuvt+jRrdMz2gF+N7f
-	iON0vFQMLzOqpY77SqBUkKkIXWx/tyJtO1j4lEovuH26ny6bhernF3432QpCptlP8FxVHl
-	x7uD+hRy+VztGrTO+0vVZ4mknfN8zfQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-hgEenq9HOryXMqQ2m8SYZQ-1; Thu,
- 21 Aug 2025 15:33:57 -0400
-X-MC-Unique: hgEenq9HOryXMqQ2m8SYZQ-1
-X-Mimecast-MFC-AGG-ID: hgEenq9HOryXMqQ2m8SYZQ_1755804830
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="fj06HT0d"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net E418940AD5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1755804985; bh=pmY6KG+wTzJ4LEBx4m1XWQJtkWHMxxgvsD7nwMl8SYQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fj06HT0d89qImOAXo2ani3JiR3pwXraPM90AW8x5eBBe06pZLslh/l+Dy/mosefIZ
+	 KUNfFJuD85Srygk0zFJFWEUF0aLMZv5Dc3lE+ygdvu/qLQQ+L/ezSqndfEs2QIzMMO
+	 JnS5r+qmyqe0vjCcKpytc3hBr/q49ZSVLfSN6qIJAzCoEuS9AgbPwJiR40UWbzfUrR
+	 2gZ8jieG/K2QGowQSYwZIwpkylpTZ3cQkRDizGd6mGSCKRjgggxghAhiA4bJ2PgUJb
+	 1B50cqbzdWrtEZ5swW7IH2dio9/CcRlVSfncaKFcgsJrNxPWxIjb/Hhp2lU9N8VOC9
+	 C8y1dNTHIWmqw==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6AB3A1956087;
-	Thu, 21 Aug 2025 19:33:50 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.89.200])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CB2D91955F24;
-	Thu, 21 Aug 2025 19:33:46 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: 
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org (open list:DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v9 6/7] rust: time: Add Instant::from_ktime()
-Date: Thu, 21 Aug 2025 15:32:46 -0400
-Message-ID: <20250821193259.964504-7-lyude@redhat.com>
-In-Reply-To: <20250821193259.964504-1-lyude@redhat.com>
-References: <20250821193259.964504-1-lyude@redhat.com>
+	by ms.lwn.net (Postfix) with ESMTPSA id E418940AD5;
+	Thu, 21 Aug 2025 19:36:24 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Linux Doc Mailing
+ List <linux-doc@vger.kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Mauro Carvalho Chehab
+ <mchehab+huawei@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Alice
+ Ryhl <aliceryhl@google.com>, Andreas Hindborg <mchehab+huawei@kernel.org>,
+ Benno Lossin <mchehab+huawei@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, Danilo Krummrich <mchehab+huawei@kernel.org>, Gary
+ Guo <gary@garyguo.net>, Miguel Ojeda <mchehab+huawei@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 04/11] scripts: sphinx-build-wrapper: add a wrapper for
+ sphinx-build
+In-Reply-To: <88a95c7f6996cafb247d6706060173b17a46d570.1755258303.git.mchehab+huawei@kernel.org>
+References: <cover.1755258303.git.mchehab+huawei@kernel.org>
+ <88a95c7f6996cafb247d6706060173b17a46d570.1755258303.git.mchehab+huawei@kernel.org>
+Date: Thu, 21 Aug 2025 13:36:24 -0600
+Message-ID: <87v7mg5ux3.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain
 
-For implementing Rust bindings which can return a point in time.
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+> There are too much magic inside docs Makefile to properly run
+> sphinx-build. Create an ancillary script that contains all
+> kernel-related sphinx-build call logic currently at Makefile.
 
----
-V4:
-* Turn from_nanos() into an unsafe function in order to ensure that we
-  uphold the invariants of Instant
-V5:
-* Add debug_assert!() to from_nanos
-V8:
-* Change name of function from Instant::from_nanos() to
-  Instant::from_ktime()
-V9:
-* Fix outdated comments in from_ktime (nanos -> ktime)
+So I am just now looking at the script and seeking to understand it, but
+one thing has jumped at me that I wanted to toss out there...
 
- rust/kernel/time.rs | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+> +# Minimal supported Python version needed by Sphinx and its extensions
+> +MIN_PYTHON_VERSION = parse_version("3.7")
+> +
+> +# Default value for --venv parameter
+> +VENV_DEFAULT = "sphinx_latest"
+> +
+> +# List of make targets and its corresponding builder and output directory
+> +TARGETS = {
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 64c8dcf548d63..874a1023dcdf9 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -200,6 +200,29 @@ pub fn elapsed(&self) -> Delta {
-     pub(crate) fn as_nanos(&self) -> i64 {
-         self.inner
-     }
-+
-+    /// Create an [`Instant`] from a `ktime_t` without checking if it is non-negative.
-+    ///
-+    /// # Panics
-+    ///
-+    /// On debug builds, this function will panic if `ktime` is not in the range from 0 to
-+    /// `KTIME_MAX`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller promises that `ktime` is in the range from 0 to `KTIME_MAX`.
-+    #[expect(unused)]
-+    #[inline]
-+    pub(crate) unsafe fn from_ktime(ktime: bindings::ktime_t) -> Self {
-+        debug_assert!(ktime >= 0);
-+
-+        // INVARIANT: Our safety contract ensures that `ktime` is in the range from 0 to
-+        // `KTIME_MAX`.
-+        Self {
-+            inner: ktime,
-+            _c: PhantomData,
-+        }
-+    }
- }
- 
- impl<C: ClockSource> core::ops::Sub for Instant<C> {
--- 
-2.50.0
+We don't at this point have a formal coding standard for Python code,
+but I do think that we should, to the extent possible, stick to the
+rules that have been established for C code.  One thing I would really
+like to see is in the comment style; our rules want:
 
+    /*
+     * ...C comments spread out with the markers on separate lines
+     * like this...
+     */
+
+so can we do something similar for Python?
+
+    #
+    # Markers above and below
+    #
+
+I will confess that this matches my personal subject preference, but it
+also brings us closer to what our C code looks like.
+
+(I don't know that I would push to redo everything to match that style,
+but instead to move that way going forward).
+
+Thanks,
+
+jon
