@@ -1,275 +1,135 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2062.outbound.protection.outlook.com [40.107.101.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECAB2C2372;
-	Thu, 21 Aug 2025 04:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755751790; cv=fail; b=N0eMzF3eIiqTi3+/A33OLuBYvwsYDZp0S37PySFoD3FnVtGk1iv08zjnpMjxQ/ehK+6LLIiQcc/qAX9cKeIpTQbdV0VKhW86RsmdYCHPAKRG1vFfooxaA2PFFv7KAWWisw/IIlcw1hiLDAKbJBwu8v/LKgMP+vmLl7yvow09pls=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755751790; c=relaxed/simple;
-	bh=6dw5xxVc/YknyEwq0BSwo5G9sDDkQMLUGPocE0TDVW0=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=q60pReEXnMebn819myMdwNMs8ssrGHSBnQC+aiVdaBV4bcOUv013g+6uI4jefi1Axwc/sJVaBnyBkvTY5G2cwGJSFGCR9nV1XGtnh1BGjQwyjvgbm4F8ZFWwk/b072DfhAkCR21YyaHFH8Vx/1uQulhXDWypkp8WlwzLi8+SKfY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hYHZvP1L; arc=fail smtp.client-ip=40.107.101.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E612EB5CC;
+	Thu, 21 Aug 2025 08:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755764224; cv=none; b=beqeqj5JNj6ZsMrpANutEy9MJuR5v64bHky4XifJCC1lgJkWx3IY7TW4l4enH/XzEcYFVa9IaBCNCRDlGQ2ogKLZo/oG3GyGpwmTkVY1Gfng+dG8bWKim1wylw7VNdGfk/IdyiuRj3OKkC/PSJXbHx0g71vO6Uh6EdcQ/eBxoWc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755764224; c=relaxed/simple;
+	bh=pCs2a5GtHIUVqWsvAf6JbIDTiB41Hz/jWLA7wnaYB14=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q+YLi+wlh3SJeyA0HwY2XmlhO+hSAbwPSKA/8yZPdYp9y4JzB48y+wECewKC2V0RTTlMcYUC/ZtprHKs1W2wgsjoxZoOpBNZpiBgJVZT7jw6RrCH6UgtvunQpTF7p5hTRkRp5xB2jM+sdHvYfRCZwyuFKT2IjS4MZva77YIBtuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7Rz1CGb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hYHZvP1L"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wv51CEA1H0J4R08CuNTFQdFJ6/bVjlLYNeqJ24la5u94Qi8Rn+WFC0uGnqOd9zvYQAnmMZ7fIN2/CT4JwfSbK/bXC70i09pr47dKUHO1iubss2uXdvaBWWtkGcOkL3h06CZFm0NTE2TaJtLmMscxu9uSksj0/+LF3o77BuHviS+UsdtJPtDCyXSuH/RB2rFagM4ctG4bPCMpQnx69cN9X3ClDX3yZw64lIoQUFSCFz8fwB3GWr51ARCJTmqu8ktA+HvK9qeRyKZwphRhUvLM46NXYr0TG3nbvv/ubJ6B7cuYHXglv11HA3/u6oIv8aBsXzHUdoJ2VqSMEq5emVF9EQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yCCLTvcOu0+kDB3C5rLZPeBjiwpKAHsSig9hBnUSeZ8=;
- b=QAxOem0/pq8vwhFlysSgDFYccaoeJZsbZ8HO7xGpZx+XaVQOrOoA4lkqEUcHwhapmFznLEoHW7T+EkIdDgnZGKwi+tPR0+OO9DzNMNZL+Xn+9ntOcjwuxkZF9iOwj+IsbxO+UfFxCvVWUpfLmU5cL2B7fafPO0aICIdkgHTitYerxTnv7fIf6i53pUYvSzVI2gYGfCCh5qROwdizzl7R0vftFJ1SeBYa7a1ZMJckR7u4vH68cl8bbZYvOEQvZvfqApe6i9AO0K+HKGQyH9snTu+by4xKCpEcBkCcL4Mc0PZE0aVusS5mB9/iJHLv1vOPMkiB7uVnqmxfNDOjWi7pRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yCCLTvcOu0+kDB3C5rLZPeBjiwpKAHsSig9hBnUSeZ8=;
- b=hYHZvP1L8Lk+moXICpBKOxL3rk0Yo9a0lxbJGzKBTYFSD5YHwbUl/ExSgS1NlWSHfcsuM2g74elmnBTbwCzDvZ8mIS7bBvjVn5JSdQkN//aidx9RP4qIiEj9wA28dHb0DYhda+ye1GiJwKbTeIXIrKUGtwxtXcKRBi5+BTGf5AO7nXbNo/ZC5SAaLTw0lp4FjQQ02fY/5Y5eulX4jVBe3D6BIGgSLO1AGz/RiPoy1tMJ+5zOdcH4MdJ0H0pc/UvzqbMt06S5FPQT4J32SjH2lUqFDX3sWUDa65GhNDjqPukadOHQ5sarPxY7GjxrcRfv6OQfv72KFpb7Jq7G4o/KUA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH7PR12MB9126.namprd12.prod.outlook.com (2603:10b6:510:2f0::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Thu, 21 Aug
- 2025 04:49:46 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9031.023; Thu, 21 Aug 2025
- 04:49:45 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Thu, 21 Aug 2025 13:49:32 +0900
-Subject: [PATCH v2] gpu: nova-core: falcon: align DMA transfers to 256
- bytes
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250821-falcondma_256b-v2-1-83e8647a24b5@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAFulpmgC/3WMQQrCMBBFr1JmbaQJRlNX3kOKpMmMHbCJJBKUk
- rsbu5e/eh/eWyFjYsxw7lZIWDhzDA3UrgM323BHwb4xqF7p3vRGkH24GPxib0ofJ6FpMlYZ9Op
- 0gCY9ExK/t+B1bDxzfsX02fpF/t6/qSJFm6ZBSm8GIn8JhT3bvYsLjLXWL4yBrIatAAAA
-X-Change-ID: 20250808-falcondma_256b-5fb8a28ed274
-To: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: TYCPR01CA0176.jpnprd01.prod.outlook.com
- (2603:1096:400:2b2::18) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7Rz1CGb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F032C4CEED;
+	Thu, 21 Aug 2025 08:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755764224;
+	bh=pCs2a5GtHIUVqWsvAf6JbIDTiB41Hz/jWLA7wnaYB14=;
+	h=From:To:Cc:Subject:Date:From;
+	b=k7Rz1CGbqlTAdaRCI72izKdN48N5xxD+9hPKBsJpD4AOKeaHyx8wkhLe1FLGypxsz
+	 TKJlTJPc2ngIpap1JM6HttsPDDrxWhQRbLW9tq6DOCiKjIsQaNd2U5F75Ww4ts+5XL
+	 14XxrLyZfbuGJBPREYO9vXC3z5Dzi5CE+I+MNrNd0iFC4haHGMGGWDkzhPjKxzRJSx
+	 esZIMmQlFhfNHaTLnDkTW9tqOZNStnc3mLQ4O77UbvW17orF5gJmu1QgPGEBNA9zso
+	 XjxGx525edh/DsKXwmM+cyfQIKJUxND2tc8+OeDFE1FQM+Ir6oC4z4Riz9VUjAFkez
+	 KyyzsIkFlO9+g==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1up0Tm-0000000BLg2-2IUN;
+	Thu, 21 Aug 2025 10:17:02 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <mchehab+huawei@kernel.org>,
+	Benno Lossin <mchehab+huawei@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <mchehab+huawei@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <mchehab+huawei@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	bpf@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 00/14] Fix PDF doc builds on major distros
+Date: Thu, 21 Aug 2025 10:16:36 +0200
+Message-ID: <cover.1755763127.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH7PR12MB9126:EE_
-X-MS-Office365-Filtering-Correlation-Id: eada7c04-9824-4ab8-c229-08dde06e266b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?c3RxYWhzN0JMU3ZGTG1PVkJVaG1scDFPdjkyQmJ0RjlVd01kMUM5NS9yZytQ?=
- =?utf-8?B?dHEwTVA0c3F1WHNXeFV2ajZLbDI1b1BNc2JkSnROV09tdy9hL0lFVkp4REI5?=
- =?utf-8?B?Uy9iaFNraDlCU1pSZC9nUGVYN21XOUozY043aGtPb05YOHFMSHgvc0pRY0Zh?=
- =?utf-8?B?dG82RzdVTy9DSzlxRlQxTUZrd28wL1dSK1BkcWoyM21VWkNJcExRTlJ3dyt3?=
- =?utf-8?B?cUFXT1NtSjhUTVhGU1lwRkxNbklrdnZCRUNIV2hQODlIR29lMDE1dktCN2pY?=
- =?utf-8?B?dk9YN3lSRnBpd0JMR0NNQnE2eWdsOHVyVXpuTFAxbURKVklITmJwRTBjVjV5?=
- =?utf-8?B?MHBYSGdXVzhVQmR0U3ZueGF2M0tzOUtVK0JycU1xdzV1Z3FobGJLZ0ZKeVk5?=
- =?utf-8?B?b3JaTE9UNXpMeUJ3bzRrOGYxWGtYL3A1RU9oUXRaK2FSRGJ6TE9GVVJkMXpZ?=
- =?utf-8?B?eG12SGRsL2k1UFZZb2ttNEpXVjZZWXZhRlg1WEFsTW14a0twb3hTRUZlWFly?=
- =?utf-8?B?eUxkN2g0ZDJOUk91Z3FYdFNmZGRsL0RRTnBlYzlRem9ZSzVxR3gzbk1lYnN3?=
- =?utf-8?B?eVo5SDZoRUt2UEpFcFBUSERMVmk5cFY3dHR0UTlEUVpzdmVmOEhZNStiSDYv?=
- =?utf-8?B?MlBZYzZDbnkyZmZXTGV0cjVVUVZBelhXbjJFMWJzSTZVRzVSUkJDVzd3Tllq?=
- =?utf-8?B?enBSWElnbVM0VitkeDNYUkR4by8xU0VkRUF3eEZZbStaREs3WGJ3UWFERzNl?=
- =?utf-8?B?Ym1pUk1QTGt4b0l3b0ZnZVJRcW52c2dRYk1ZSFJNYUkzWkVtYlNBclBMcmsw?=
- =?utf-8?B?NlJEQ2tSN0FZYXg5NWdPdzEzd2RzREVzdFdGYUhUc0xkTFlOaE0xcEhWbFV2?=
- =?utf-8?B?YXhKci9wQ1ZBNjFiZmR5WlRwekdxRzNJOHVWZzdrbmRxWnBLV1RnaURwTkF5?=
- =?utf-8?B?akliV2RKREFianpQYU1yVEFvb2NQQ3M1N01xTGNhMGx4aGw4Y2FKSStYQWRx?=
- =?utf-8?B?bXdXMnc1MkRYdjJWS3pEdEUvUm1XRmI2Ym5PUjBuWURCRHd6WGN4UVVDZjF5?=
- =?utf-8?B?eVVqV0U3Z0FCbFp5R0Rna2RCVmV5RExuTFNTa3hYNzhGZDhEeDY2WnJBTStJ?=
- =?utf-8?B?QnpIb1IvWjlGYUMxdnEreUlhZDFiTlh5L3BKOExmbnNmYmJNUE1GazVPRkUz?=
- =?utf-8?B?dzVqQ214NlZaWjRZUXIvY3JKSVdhalFkbGVqOWRua0hVMjJJc0I4aEtpRVp4?=
- =?utf-8?B?N015ZkkyR2pKbld1KzZJenN3dGg5SXhjd003bm9sTE4rT2NZVk5OcElFQVNK?=
- =?utf-8?B?cEppRlY4cndVRFFma0QybTQ1MmRQMFhDYjcrQmZNaGkwWm0vaXdMSTFlRUlR?=
- =?utf-8?B?UzhoWVVwUFJzbE8vc3Jwck5namd3RUdGVUVET0ZxeXBRSm04eEs1bnZ1ZEND?=
- =?utf-8?B?MlZiemJpczhOQTF4MC9xZHFhMWNTTGRCMWlZcGs1dE42UzBGWEZnVSswYVE2?=
- =?utf-8?B?QVFobUZScURoakppWGk0WG9sRldscTRDRE9wVFVLYVdreStwM3hJaW40UlVH?=
- =?utf-8?B?b1lhNTBQWmFvSkpHdXRKNDJObzF0TGhDblYxeTk0Uzdqc1ZrNGFxSGhHK3V3?=
- =?utf-8?B?NHpUKzNrdmNXRUlBdXV4bk9SVnc3VFpkV01Wbm9HQ2NjSDZMSHcrazRjVFZp?=
- =?utf-8?B?eitsbFpUTmN4ejYzSnFxV1JkdXpVL3l3MXBTeEFDMENuTDMzNFNIT3k4TUZI?=
- =?utf-8?B?QmQyOVArSE5EU0tvaFBjaG9XYVJpekFiWVRKT0NEWWQ5UUtBU2xDcno2MXda?=
- =?utf-8?B?a2xGZUFzczVkY2l2TE9pT25OUkxSc3VEN0tsWnl2RVByWGRLQnR4L3Q5M3h1?=
- =?utf-8?B?d2NFUFJKOWJoZW8xSElGaGxRVWlRYnNyVWx4TzlCR2VSUko0dWJMNkRmUUJS?=
- =?utf-8?Q?ec30yBS1+C0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MmhDRmNPVjQwSkQvaWtwbURySTBUY3RTbTFhN2gvTEZ4ZUZ1emJKY1oxak9j?=
- =?utf-8?B?TTM1dzNZcjQ1K3ZtMEJhYTMzai8xdnhhMUNrZWhUZy9qWUZLNnIyVU5zRTMv?=
- =?utf-8?B?TFlZQ0FBTDlSMnRaZFUyYVJiUU0zNFVmRlhITk5EdGdjdUR2VTJvWkg0U245?=
- =?utf-8?B?N3pjWWV6Z1R0Y2k2cVE5SEZnZ29udXlMUXZxTW9mWlh0bVZhSTFRZkFDZHVK?=
- =?utf-8?B?WkJ3dUo3NEZkVWQzVmhweXZEWEd3cEJpaHYrVU96Mk5LaFA4YVRTSFZUL1hR?=
- =?utf-8?B?UlY2d2VGNXBPak1hVCtFVVdzQ2QrNXE3Vnh1UzhoVStvNXNnem10blF5Qzl2?=
- =?utf-8?B?UnR3M2lxajAwcU9iQ2JsTWk3K0V5dkpKSnpGRkVGNFpTelZzbmdyN2lMVXZr?=
- =?utf-8?B?dExIMkljNE1Sd0plTmllWDJoSlpWZmxoSjlkb2U3NjM1VmxiOURYK3A2RWVR?=
- =?utf-8?B?TUtucE1NRGNJVTl2Nk9KUFJBTHR3SXlCeVZIU0RtYnpoQm9KNU4wVUZZSlN4?=
- =?utf-8?B?V1A1dVo1N3ZTdGllU1pUQkRvTzNVdUl0OHhlYkpGWFgrUXlBUFZqL2p1RDJl?=
- =?utf-8?B?bXFwdHdaMnJKUTlnQ3NBTFZJZ0tjTTFvR1UvVy8rK1hPcnhzd2FvZmlUY1I0?=
- =?utf-8?B?aktPQnExVHhibjhOcXEyNklmWUJNKzVGZnJMa09tVzNGR2I2SFVOL2NHMlhX?=
- =?utf-8?B?WjRLNjMzYlNVZlBiWDhCbW1HTTVEbkhGUndEMjF4UU13WTlLV3lhYWx6ZVVr?=
- =?utf-8?B?K1RYRmpkaks0bW5vQkxkY1h3a1pjK2pPdWhJQWV5S3R4WVhIdmpHNUJyc1Bt?=
- =?utf-8?B?SWZiQ2QyV0hJV1lWazZTUnhCSW5qb0pHc0lSZ1lRVTBmVTgxdmV0V1d0ZzBI?=
- =?utf-8?B?d1NxN1k5RFUwRmx1WEg4b1Z0Ui84V3hOOVgyVkRHTnpWL1Y4MGY4RG0yUFR5?=
- =?utf-8?B?UW5uVEFEYndmU0dDVm1SdFNwR3pXeHl3KzVPUXpEZHhDQUZLSFU0WUF5dlIw?=
- =?utf-8?B?cHMrU251ZmRYaWQ3WHhQOVZPVGhBNU5HbDNrRXhzaHB5S3k5UjlkZTlGZHpN?=
- =?utf-8?B?UFY4MU9qd040Z2UrUnRseXJlKy9zcStkUkpEOXlzTENHbjJ5UGZhd3Z3c1Bp?=
- =?utf-8?B?MW5Db1BwWWFNaUVxZFZpM2E0SHdpaCs1WlUrOXZ1MXdTK0xYZzd5aHB2NCsr?=
- =?utf-8?B?emoycFVCRjhRMlBnTnVldVAyOWg0MTFpaGVoYXQ2ZEdwUEpTcE1BMzJYRkNY?=
- =?utf-8?B?ako0THVMWEd1MFVVM3E3Y0JoKzRUZms0bEE3bnlrV0R3TVA5bEZtTGY4RzdZ?=
- =?utf-8?B?ODQ1V0pqYWh5YjdtM09CZFpCN284Q01JaUM2aWxPUDlMUzBEL0ExQmo5aVRV?=
- =?utf-8?B?K3JLOXA2RCsxQ2VGSW9UWVZYb0FrZ3BpTzlEQitwZk5PSlRTbmNaZFp4RlJi?=
- =?utf-8?B?S2FOK2ozTWpVcE1BUGc2VjcxalBzL3NyT0d5WkVmazVkSis0UTZyQmVCbFhT?=
- =?utf-8?B?R3hFN1BmOFRzQTRJdXE1Z1BsVkp4RENqYjdIQzVKMndheFlCN0w1ejM5MndD?=
- =?utf-8?B?WUpMYys1OVpwWHRHdE5tTEhIaWs5S29rOS9vY1g4MExueFhPQUNzb1lWdzlp?=
- =?utf-8?B?bkRMQXZvcVRhY2hRTUNsUXg1c2crcXY1emhxSzVSd0FKN2tqQWJsT3hXOVRH?=
- =?utf-8?B?Q2t0WTAvbStSV0g2UjExem54ODFxOUp5S29kS09RVHNMNU9OK1FKcWN4b2Vo?=
- =?utf-8?B?WE8vZUU2Umw2K0pkUndEWUVwS1Q5cG5JVTFERU1Mb0FSQ2R4QVkwcE0wb1N6?=
- =?utf-8?B?clZteS9KenlxZEtnYXZIWnpoK0N0RmZqZlQ1YWp6U1J6Lytpem9mR3ZpbmlW?=
- =?utf-8?B?aXd4YStLeDBlTDBLNUUzTFN2VTRBbjRsSmJqUFdXZHRGeCtBTlFRengxV3o5?=
- =?utf-8?B?YmtwTXZSUjFoSFQ1Y1E5SXhIZ2cyY2pIV2tROGZRWGJpWGtsUlhiMFQ0dFVv?=
- =?utf-8?B?Rk1LZmxRMDFyb3JxalphYS9Vd0Z5eDRzVHdoTkVnWnFZYUhpRW1wRncvTEcx?=
- =?utf-8?B?bHJRVUZ0ajBJQ1JjY210WisvYzZ6YW43c3lka0ptK2dCM29acEdFYWFPb1hZ?=
- =?utf-8?B?dzhVS1dPK0EvY2tBWFY3SzZ6M1lSZVVESGpEamMwRC8rcE84dDVLWTg1S0pR?=
- =?utf-8?Q?upsj8L0EAlEohoCIgii5nEiiuVi1jjsvGtEDnn2H6Aqz?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eada7c04-9824-4ab8-c229-08dde06e266b
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 04:49:45.3797
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hzS4COnUnQBBnm8Y1UMMhVglHZhWEHluJ4tt4kh3PbU9+LEwt8nHMtCg+dohVVV1PQzkiFBZ+0I5ezVFRgc2Ag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9126
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Falcon DMA transfers are done in 256 bytes increments, and the method
-responsible for initiating the transfer checked that the required length
-was indeed a multiple of 256. While correct, this also requires callers
-to specifically account for this limitation of DMA transfers, and we had
-for instance the fwsec code performing a seemingly arbitrary (and
-potentially overflowing) upwards alignment of the DMEM load size to
-match this requirement.
+Hi Jon,
 
-Let's move that alignment into the loading code itself instead: since it
-is working in terms of number of transfers, we can turn this upwards
-alignment into a non-overflowing operation, and check that the requested
-transfer remains into the limits of the DMA object. This also allows us
-to remove a DMA-specific constant in the fwsec code.
+Here it is the second version of the PDF series. I opted to split one of
+the patches in 3, to have a clearer changelog and description.
 
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
-This came up as I was writing the next iteration of the `Alignment`
-patchset: the alignment operation done in `fwsec.rs` would have required
-an unsightly unwrap, so let's fix it beforehand.
----
-Changes in v2:
-- Remove `unsafe` block by checking transfer bounds ourselves.
-- Link to v1: https://lore.kernel.org/r/20250808-falcondma_256b-v1-1-15f911d89ffd@nvidia.com
----
- drivers/gpu/nova-core/falcon.rs         | 31 ++++++++++++++++++++++---------
- drivers/gpu/nova-core/firmware/fwsec.rs |  9 +--------
- 2 files changed, 23 insertions(+), 17 deletions(-)
+Also, archlinux LXC image download started working again, so I added
+an extra patch addressing texlive packae dependencies.
 
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index d235a6f9efca452cc46e2d13c61789eb00252de2..c71c1cb4144200a612cc6bd615ccc5d13192a209 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -463,14 +463,27 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
-             );
-             return Err(EINVAL);
-         }
--        if load_offsets.len % DMA_LEN > 0 {
--            dev_err!(
--                self.dev,
--                "DMA transfer length must be a multiple of {}",
--                DMA_LEN
--            );
--            return Err(EINVAL);
--        }
-+
-+        // DMA transfers can only be done in units of 256 bytes. Compute how many such transfers we
-+        // need to perform.
-+        let num_transfers = load_offsets.len.div_ceil(DMA_LEN);
-+
-+        // Check that the area we are about to transfer is within the bounds of the DMA object.
-+        // Upper limit of transfer is `(num_transfers * DMA_LEN) + load_offsets.src_start`.
-+        match num_transfers
-+            .checked_mul(DMA_LEN)
-+            .and_then(|size| size.checked_add(load_offsets.src_start))
-+        {
-+            None => {
-+                dev_err!(self.dev, "DMA transfer length overflow");
-+                return Err(EOVERFLOW);
-+            }
-+            Some(upper_bound) if upper_bound as usize > fw.size() => {
-+                dev_err!(self.dev, "DMA transfer goes beyond range of DMA object");
-+                return Err(EINVAL);
-+            }
-+            Some(_) => (),
-+        };
- 
-         // Set up the base source DMA address.
- 
-@@ -486,7 +499,7 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
-             .set_imem(target_mem == FalconMem::Imem)
-             .set_sec(if sec { 1 } else { 0 });
- 
--        for pos in (0..load_offsets.len).step_by(DMA_LEN as usize) {
-+        for pos in (0..num_transfers).map(|i| i * DMA_LEN) {
-             // Perform a transfer of size `DMA_LEN`.
-             regs::NV_PFALCON_FALCON_DMATRFMOFFS::default()
-                 .set_offs(load_offsets.dst_start + pos)
-diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
-index 0dff3cfa90afee0cd4c3348023c8bfd7edccdb29..47f5e4524072888cc3f89520ff4beea766071958 100644
---- a/drivers/gpu/nova-core/firmware/fwsec.rs
-+++ b/drivers/gpu/nova-core/firmware/fwsec.rs
-@@ -202,9 +202,6 @@ pub(crate) struct FwsecFirmware {
-     ucode: FirmwareDmaObject<Self, Signed>,
- }
- 
--// We need to load full DMEM pages.
--const DMEM_LOAD_SIZE_ALIGN: u32 = 256;
--
- impl FalconLoadParams for FwsecFirmware {
-     fn imem_load_params(&self) -> FalconLoadTarget {
-         FalconLoadTarget {
-@@ -218,11 +215,7 @@ fn dmem_load_params(&self) -> FalconLoadTarget {
-         FalconLoadTarget {
-             src_start: self.desc.imem_load_size,
-             dst_start: self.desc.dmem_phys_base,
--            // TODO[NUMM]: replace with `align_up` once it lands.
--            len: self
--                .desc
--                .dmem_load_size
--                .next_multiple_of(DMEM_LOAD_SIZE_ALIGN),
-+            len: self.desc.dmem_load_size,
-         }
-     }
- 
+This series is taking me a way more time than antecipated.
+
+This series as 3 goals:
+
+1. Fix a pre-Sphinx 1.7 PDF variable that got renamed, but
+   our Makefile still uses the old one that is not supported
+   since Sphinx 1.7;
+
+2. Fix broken or incomplete texlive dependencies on several
+   distros;
+
+4. "modernize" conf.py to solve font conflicts related to UTF-8
+   and non-UTF fonts from [T1]{fontenc}  LaTeX package.
+
+   Using fontenc with xelatex is problematic, as documented at
+
+	https://www.sphinx-doc.org/en/master/latex.html
+
+Please notice that:
+
+- It doesn't pretend to fix all  PDF issues. It focus only at the
+  above;
+- there are still distros where PDF builds fail either partially
+  or as a hole. On my checks, those are due to problematic
+  texlive packages shipped on such distros;
+- it doesn't touch/address/alter anyhing related to kfigure.py.
+  as such, it doesn't touch/change/improve/drop anything with
+  regards ImageMagick and/or Inkscape.
+
+I think we need a separate series addressing kfigure.py:
+it currently breaks if either input or output has a char > 127,
+meaning that PDF output there may eventually break.
 
 ---
-base-commit: 0988099646cfc6c72a4448cad39d4ee22ad457a7
-change-id: 20250808-falcondma_256b-5fb8a28ed274
+v2:
+  - one of the conf.py packages were split to help reviewers
+    to check the actual changes;
+  - added an extra sphinx-pre-install patch for ArchLinux.
 
-Best regards,
+Mauro Carvalho Chehab (14):
+  docs: Makefile: Fix LaTeX paper size settings
+  docs: conf.py: better handle latex documents
+  docs: conf.py: fix doc name with SPHINXDIRS
+  docs: conf.py: rename some vars at latex_documents logic
+  docs: conf.py: use dedent and r-strings for LaTeX macros
+  docs: conf.py: fix some troubles for LaTeX output
+  docs: conf.py: extra cleanups and fixes
+  scripts: sphinx-pre-install: fix PDF build issues on Ubuntu
+  scripts: sphinx-pre-install: add missing gentoo pdf dependencies
+  scripts: sphinx-pre-install: fix PDF dependencies for openSuse
+  scripts: sphinx-pre-install: fix dependencies for OpenMandriva
+  scripts: sphinx-pre-install: fix pdf dependencies for Mageia 9
+  scripts: sphinx-pre-install: fix PDF dependencies for gentoo
+  scripts/sphinx-pre-install: fix Archlinux PDF dependencies
+
+ Documentation/Makefile     |   4 +-
+ Documentation/conf.py      | 106 ++++++++++++++++++++++---------------
+ scripts/sphinx-pre-install |  46 ++++++++++++----
+ 3 files changed, 101 insertions(+), 55 deletions(-)
+
 -- 
-Alexandre Courbot <acourbot@nvidia.com>
+2.50.1
+
 
