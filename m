@@ -1,103 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4DA7263A;
-	Thu, 21 Aug 2025 14:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B605620B812;
+	Thu, 21 Aug 2025 14:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755786765; cv=none; b=VVRttp4HWFOLx6tMoGbMrJiv0T9h50YsVbAg4ie9qaWLhROFaf7e6LZf0UD+XAR2a3ygiKfzCyDMVoZGgGttisuEcNcFlNy88+IE2RNMkWcG7hy91ovwwsyQAnDZP1gir1WjKHRoboJfLJ/7eUIyyomSwoqz20Xkb/pXzd6d/50=
+	t=1755787107; cv=none; b=VpGcdZY3pnhTTq+P/lnEx7GpOd1+v23gGtclbvwKd7qguif4u9UMvNIBM9Yk12P/K6wZ7jKdkZo9lLx9jnOZXFGPPLBjorYD/AVyFe51WbaEbNCHNFy4+JRTxSsd2YrBkgLgFrtFZpQnBJjhuzmNEitD0nBIlX/PjMUwjnWhc50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755786765; c=relaxed/simple;
-	bh=OcH92vAjTX0+vo5BSHLDcFy1Wdx4BKrILtb6alAg2ws=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=dMqzMCU+Uoqormu5Prj6+No81FPftTM81S9F5uW1FgjzGOn4i4IJvJMf7cVWxMIBykd1kvwkT62CGuF0QtGEaIFtvSEuGXb5RSxUSZSu7pM86lYdIyHkcOqUA2q+u1Uuwu6s2Y/np6tgfLXmAqRj1c8ZZo96cjPiGcBJbYU2BiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LC7F2tmG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755787107; c=relaxed/simple;
+	bh=j6SR07+FNvyjby3yOkFywyZQUFe0avGy4QyHwKilEek=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NGSYfN0BfX5q76YyCvyyeUwEcFgoITooruM0pHbNr1k2d9pcyCWHML2Kw/8iGIB/1qGg75TdLOxX2GAnDaOd1jIRhM7gOECtoN33QXOtxbc7jLAzusQCqvebWUX0GhFohs7lEbDxGVle3gqECfG43U/STIUsoxYzIIRIPBHGvLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MxDwEjST; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LC7F2tmG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E21C4CEEB;
-	Thu, 21 Aug 2025 14:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755786765;
-	bh=OcH92vAjTX0+vo5BSHLDcFy1Wdx4BKrILtb6alAg2ws=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=LC7F2tmGYn/sJkAKGyEaQ5akRdZS8hmzcoB1z+V8Vy3Jduel7MgAM8YiuTjwxVA5c
-	 UL5w/1VDFi2AKRlgnhbg6yCU3QjbhkyBLyr1SnkWut2usA3FoKIBHZZoELQdeyIbDf
-	 x/9x1HboPymNqvzNvkLb5wZ/Dof8lPnv9+9orc+CuKq2PJya+0wDaxS+viBn0vzZm4
-	 ZtGTBTVbg4EF3m8LhVwTNnb2YebjfTtfV4WguUOHJ0IADl/6VQ7moTcSb3Sqx4oN4Y
-	 QTOpO4MYs6ikMQcxsc9F032OYRrRZi+OBJl1gs3JcKQmhPyMB66pW9Pf89C/0QhJij
-	 lpkKytxdldIcw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MxDwEjST"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-244580692f3so1711385ad.1;
+        Thu, 21 Aug 2025 07:38:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755787105; x=1756391905; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j6SR07+FNvyjby3yOkFywyZQUFe0avGy4QyHwKilEek=;
+        b=MxDwEjSTmJvL6FxbCc2MUloZLd+VKGpLFgfRmQc1EVacj8iw6M3oXeUH5N5tdRqCOV
+         GKjWg8pIqFmtnXRp4uqS02eiD7ulqjD7p1mxcTWLSNV9Y2ymSTBrBrqyj2FxCGyVbKnp
+         qbp5Q0W4aMqQ2dNGFo5up6KF77aAh5mar5LZnee3n5We3Gvrgy/pTwPuCEQjHIFG07+y
+         YsHHWxMZRf9l8lsUzXCx0mpijZzlI8h2GbrIsecEaCQHBPlEk3T1QzZxxK9tlx7TuWDs
+         YqY2Y31skhY7G5XltYteDx0U21kf1R9OTu4rG1A+nXz8yYMx4Y2cgqn8gV2zDNdcEyq5
+         yQUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755787105; x=1756391905;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j6SR07+FNvyjby3yOkFywyZQUFe0avGy4QyHwKilEek=;
+        b=Dwhg3jaulIIrnxLa9iqwRfmAYyd6D7EyHvJZl/Vnu+Tj6eG8zFqlbN6mZQOg1MefwR
+         84vmVM89t3T1kgMkwpGX79PjUTNqLi6K7RalWNYfHYXnQrTzL3uFnsIHZZJAUnqmXqa+
+         DgAeFCPvW1V6eM64FeeQgvcKpQ7kMcGuczwgo/lMW/gzUUbz7Qpq0o+lrNsuDQiUV3Sp
+         Kafafx7P1eu2Dv+aWfpQrWpZGAmL0fAkxRXap03go4swfl/ohjQIMJLK2mZ+ZsSNQDc7
+         LB0A0DdaPEJ7sxYYEwQm1sh/ypJmc4zSrspJFxiMCEAXyMLfdZePI6mxw06Q0VrW9E4P
+         wXAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFj1Ya/RayeK+atmg+i8qW4vlQUWQFbUklfXxMcb7RoJvLibvaLVbuzA95sygsvdcVJ88aJYPIa3zoPNVnFZQ=@vger.kernel.org, AJvYcCWepBG6VK2qH3cY16gLHS0n7OdRuhXITC4WkGwHOb2roes1AU7abLbU1ArsfvpDxWC6HR09cd9cD4Xqy4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyjd4OHAUmY0EkKR/rXT4nWPdi6vsCgwMoMicJdegFMgKhUUhCu
+	WRxk2FkYclvvcMDuAq/Bgr2R3/Yu6XqUObIADvtVU3DsVgVoCDWW9nDV6ncaMHNiYeT5vl8Ahqy
+	Q6FBF4khkDeuY8sA2w651kKuSzG7Pj3A=
+X-Gm-Gg: ASbGncv2WtUufRluWcpCNkNEcx+4VsMfvQKBFLdtqGhy2f2SIPLk3CCtHzG4jWS8CJ3
+	aeZrYSWZv9ChA1rBRDldnC8Ndg5ap5/wtWmnXtAb9dDh0fsMrYjQLnYcbll2+gcIVPSCeHQ436h
+	lr/Eu5ah6dPlV+FzDG8Vkk2juuJvJ7XS2wZU779ltlV91Mq/zJ9evm3gTmYrtnBt0mxHqONkn1E
+	nXQA9MRc2tXEW2+ScY=
+X-Google-Smtp-Source: AGHT+IFvIy0w7nqqtZUq95cgQU513UjHBm36ov9+ngxcr7lKlYZgOk09StKiwpgqlqXJTbb0brCgqCXfTMi948QbG6s=
+X-Received: by 2002:a17:902:ec86:b0:240:5c13:979a with SMTP id
+ d9443c01a7336-245ff8dfd49mr18001875ad.9.1755787105051; Thu, 21 Aug 2025
+ 07:38:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250801-as_bytes-v5-0-975f87d5dc85@nvidia.com> <a327ff52-c37d-4f51-8d19-d6b1cc858d79@kernel.org>
+In-Reply-To: <a327ff52-c37d-4f51-8d19-d6b1cc858d79@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 21 Aug 2025 16:38:12 +0200
+X-Gm-Features: Ac12FXz8tvKXmVDnFo3sdZL1sJ3U_Iys5NupU5DoCVWGtpQ1aojoeg6mQN7Ha4I
+Message-ID: <CANiq72=LhwvvsN4A1F+3CffTF59=Gpq-B0hzQOszMPhTVo0hug@mail.gmail.com>
+Subject: Re: [PATCH v5 0/2] rust: transmute: add `as_bytes(_mut)` methods for
+ `AsBytes` trait
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, "Christian S. Lima" <christiansantoslima21@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Aug 2025 16:32:39 +0200
-Message-Id: <DC86GM7VK8PH.QYLPP2SLYM3M@kernel.org>
-Subject: Re: [PATCH v2] rust: zpool: add abstraction for zpool drivers
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
- <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
- <linux-mm@kvack.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250821111718.512936-1-vitaly.wool@konsulko.se>
- <DC83A2M3G8EH.12FRM3C05ABCR@kernel.org>
- <DC83WSYHY3K1.1D3XEES0BIKGS@kernel.org>
- <27139676-8470-4067-b259-f01022751bbc@konsulko.se>
-In-Reply-To: <27139676-8470-4067-b259-f01022751bbc@konsulko.se>
 
-On Thu Aug 21, 2025 at 4:15 PM CEST, Vitaly Wool wrote:
+On Tue, Aug 19, 2025 at 11:49=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
->
-> On 8/21/25 14:32, Danilo Krummrich wrote:
->> On Thu Aug 21, 2025 at 2:03 PM CEST, Danilo Krummrich wrote:
->>> On Thu Aug 21, 2025 at 1:17 PM CEST, Vitaly Wool wrote:
->>>> +    /// preferred NUMA node `nid`. If the allocation is successful, a=
-n opaque handle is returned.
->>>> +    fn malloc(
->>>> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
->>>> +        size: usize,
->>>> +        gfp: Flags,
->>>> +        nid: NumaNode,
->>>> +    ) -> Result<usize>;
->>>
->>> I still think we need a proper type representation of a zpool handle th=
-at
->>> guarantees validity and manages its lifetime.
->>>
->>> For instance, what prevents a caller from calling write() with a random=
- handle?
->>>
->>> Looking at zsmalloc(), if I call write() with a random number, I will m=
-ost
->>> likely oops the kernel. This is not acceptable for safe APIs.
->>>
->>> Alternatively, all those trait functions have to be unsafe, which would=
- be very
->>> unfortunate.
->>=20
->> I just noticed that I confused something here. :)
->>=20
->> So, for the backend driver this trait is obviously fine, since you have =
-to implement
->> the C ops -- sorry for the confusion.
->>=20
->> However, you still have to mark all functions except alloc() and total_p=
-ages()
->> as unsafe and document and justify the corresponding safety requirements=
-.
->
-> How is destroy() different from alloc() in terms of safety? I believe=20
-> it's only free, read_{begin|end}, write that should be marked as unsafe.
+> Miguel, any concerns taking this through the nova tree?
 
-destroy() should be fine.
+If it is needed for something this same cycle in Nova, then please go ahead=
+:
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks!
+
+Cheers,
+Miguel
