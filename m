@@ -1,219 +1,178 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2043.outbound.protection.outlook.com [40.107.223.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3ECD26E70D;
-	Thu, 21 Aug 2025 04:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755749058; cv=none; b=BmZVEXubY+S4mtoR416QOolKfCXaBJDgtY45StbSJ0yvuxi1JR01VO2wSL/hxM/E05c4nd/C9I+KrfdusaRiSjdlvSM8M+uhBZCQpP6T63qMyn4l1JOJwV0W4I2y2LmPxeTOC1glDz3Isxl5hoiIXIjcaj4ZHFoaH/8qTGJgUBM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755749058; c=relaxed/simple;
-	bh=oZrbey5yx5uEbRq203YjlNLnmKksdSRfJ5gsdDLrF5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDA40CNWJ5lxvhRnaWeMBDU7YqeguUVqJw8yPKYwc1o9/H6tZXenlIWOBzw4HR9qSTBHccIfjTQ43WiwEPKqFM+m1t8wWm4QKxWIl8UFxa3CbuuiP3j1P5edz5UEUpI0ypcmyAOHDVxYtADWJG7U9FzZSX2/BqbCWWD3KXG4y0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4muNqPI; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1C927A465;
+	Thu, 21 Aug 2025 04:28:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755750524; cv=fail; b=o0rlt8K2DLkCS9VIPMfuqZWGZcwfOGT7EnLi91ihqC5S9xC6OdeXJ9+YG7ZzQKPaE8MycZjN3UoyIPb8Il1661/s2YU8REEPIkni3afG3/dl+2W5UqlvHKc15oW24mXdBypx3M5MP59VNOkV0K5mOrXfFdOsxya8FKdNlCBIkHM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755750524; c=relaxed/simple;
+	bh=PSEJgh++TnIXBwfYjkaplRFV+K6ikzqNqIvC7no/8/8=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=Gb/FZ3F79CEtEQW8reLChrda67/ZiLSRjf8/wX0Vjevxgzcdm9e5VnF70N71KaY0/aHyUhBu37DvCvXdfiBRAnAPs4oxuYS8m6w8N/cRbjjvJRRGXMuBIbAWPnB4l7svsJOr8s+SjmIoj0coXItRzAmOUCSmD+COCYBoN9/r3CQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H3gBclg8; arc=fail smtp.client-ip=40.107.223.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4muNqPI"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76e93370ab8so626450b3a.1;
-        Wed, 20 Aug 2025 21:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755749056; x=1756353856; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A2CqWIv3qh+ScjnQTvA5REeLwnT0B8P9nNd5NsH69v4=;
-        b=b4muNqPIOiBam3t7NzPnQmsOKm7WWFadI6Mo6FzNIKn0bRnW3BL2xr5wjMTLdTsiJg
-         dkGiJTmMi7m9orbL5k1GU+qktsaJY7ffKzE49EYhs0ql3K4APeJji5RRjJIxIAG244Pe
-         rM2Mqcg+8q6ifVa7u0qK3z9GBa+PRaC1HCmCRR6HYu4eQBv1KDJ+nTSxyCld7pGg05fm
-         kjOnZTu6dqMx9oleVzGRtYY/yh8zPPTytcUKG7UkHjlDHoNVYoJhhNNUPjv0Bp8eDKL4
-         x6EfmkNTymkO6e7nNY0gEu6HMKoiJQJJNGAACfGIfbHdMbAK1TvpjWNQ6Pi6Wga2EE4U
-         OU2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755749056; x=1756353856;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A2CqWIv3qh+ScjnQTvA5REeLwnT0B8P9nNd5NsH69v4=;
-        b=EccCnZbj0BVAo/ZTJR34EZ5eeFKlH2XtcHeWoIRCi/pOICb4vuUxweaFIgMjD8pnHu
-         4/c/f/UrfEwg32VvJ13f81JL4tyAClIc43rJoTz73bAgeD29VPzSI5E+8zobygqjNYdB
-         J6JiPpj+F88yusV+tihFlimRkveMiHp3ljkkp1c86MPZvvaicZlArhEaEQjnYx1tPa2s
-         eNCL58LyUssZ5Vb5o0ixOY/fjUYurvZ2dSuthcI4sSpcswDEi0/bGkOHbz1TPgb5WhOW
-         KpLiP4IXwDPnpumX+27acEaC7qBF+VsTVlrvTcxMzMXDovivhs09ZkPzRQxy2AkFfDN/
-         HUTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVybRVEp+AQQFCgKmS6Op+uPhmSl/w794XXF72EUxVVi8tFXftrVhQgxSpiULL+DYXCneMhJLtRV4d/HWQ=@vger.kernel.org, AJvYcCX3gsBnlXwb++FP1K9bPiWzRCMbIO9IsszAGmDJao3wJRtFV70Dog99bQNeCOW9ldvx+O+CIjCrpCNlisrnLjE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzhAFMUEyr10v53IeOAdn4cP39Ineeuz/RSibYfcxTth7m07c6
-	593/7ftkhV3HENcoGTBGNgdllct2acZ7BeFyzD3E2+QB3JS51tIK5mU6
-X-Gm-Gg: ASbGncsPhld+QCTbqL2mgUii0be0GSCNi3ulEHyEyI2LY7mXjjcFurwsQcpetNcYLLj
-	Oe/cccS++PCTyejIVH1155T1BPE1tfhTTgg7pvrLJCM33w+osqEBRlVEHS6QnB1SGMwmKn3Lk2/
-	YUnPN5sS1zjusEbekba7qFHkWJxopFtkY9GJDkl0GGkrE0wIXmBUqamAxwCBrPW0pOE5qv2Gy9q
-	scGEikAIv+iy3rFxa5sP+pqSoeYJrDLvfMabJyDgHtf9OuLxnCBxR4P9VIZX652Mnfob42De5xg
-	mBbvooJ9OiirwqCRwSDEWEdFYdn+s+oqKhlw3oojpdGI4zWEhjCxwMBNBtPVX4584yGXWYkcwR8
-	XATW+J2cPEUTura19uSYpykUdJDlgF2CCwFuaFGh9csSaR7a1G1tLBSzatfl+Ha45EepV3WRrZ8
-	AqdL1I/g==
-X-Google-Smtp-Source: AGHT+IEBfOJPnqgYMjq415no3AtOarEE5p+Rcwd8wZf+szgzK1jEJbd2gn6h5ZkuPh7tbclLp/2K/w==
-X-Received: by 2002:a05:6a00:1302:b0:76b:d746:733a with SMTP id d2e1a72fcca58-76ea31e3adbmr1412349b3a.21.1755749055698;
-        Wed, 20 Aug 2025 21:04:15 -0700 (PDT)
-Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7f0b4f0esm6538714b3a.90.2025.08.20.21.04.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 21:04:15 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	ojeda@kernel.org
-Cc: aliceryhl@google.com,
-	anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	frederic@kernel.org,
-	gary@garyguo.net,
-	jstultz@google.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	sboyd@kernel.org,
-	tglx@linutronix.de,
-	tmgross@umich.edu,
-	acourbot@nvidia.com,
-	daniel.almeida@collabora.com
-Subject: [PATCH v1 2/2] rust: Add read_poll_timeout_atomic function
-Date: Thu, 21 Aug 2025 12:57:10 +0900
-Message-ID: <20250821035710.3692455-3-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250821035710.3692455-1-fujita.tomonori@gmail.com>
-References: <20250821035710.3692455-1-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H3gBclg8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=meZ0jkEDzrQx97daJwmxM/WFJtcBnBh18/34yOOwcI4dkYTZtw9ACu+ueal2E0XSAoqN7WhUvFMMJOBH7tJksPz7aMHsnJQaM2yNYeBiB6jW22HIAtI5pKJIq808JwDnVTHgbPkxvc1JmvMMIhrfNYMJcI3Kv7OPWP41/za0QXmBSG/iwyl1WnUjB6retbjdxQUUOlWj6EFKdFAkiBetPp9gEIzdsMiQ27tg1LkztWeQRnDEMUZo0LZoikVTRhZOIPjVtmMRhtEOeem0yaS3PpmOwj/ug6TkCYKeD+6KjMJspiPBxqGB5JMLj1H7iO6Lr8wfSrkqs+kBGDRYqy57rA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PSEJgh++TnIXBwfYjkaplRFV+K6ikzqNqIvC7no/8/8=;
+ b=Vg9hdlZgbxlk+ISX/8Ven3Jpmhe25DhfqEXKlPgv3fQvChqiCsZib9B56b8fuu0qQdzg/LrwhOP1tEp8M4mUotveLBJDG7YnyGJcUA7njGpZq1Ot1lKD2C/PkrgjQfcCvLF8qffCddhsvE0JG9VZ53OyylgNDvm5rdXGMSt5t2Nk8PiMsemLd1CgONE3iPhhid99KTjoF9/VQudKMyN8feauo1we7coMXm3pW6bRB7fjSBwin/i2OBnYSHcPgH3jN8MhqJ2vNB+8sZRIyZqNDrbSXSQcgLoAPgS0ECkraFMb8FMhmMUZmCr21RfJ0TQUTjrREoaklOtOGzZlQmBw1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PSEJgh++TnIXBwfYjkaplRFV+K6ikzqNqIvC7no/8/8=;
+ b=H3gBclg8aPCTigRMvaMa1VCYQxwufUeStNgD7jHjZZX63oh+IkJcP0wSDdoWc4v8eIFhA0+efIeE0qpMBDnbMffN2tTB1K7cfqJEnUPT2UZvXHZ2Gh816J4CrlEQJ/awd/gf9uTeFJMi8CKMxpBMIgmb32chDSarjuUCzXoecsWJBiW3KU6nmoM92Q1aJOjHwl4IuQF81D832RcKOVI+ABR7g/Ibzzl3nOMmasZDwpTS1b3m6tGxj75/R1m63cMUy545wuw7/7gHAw68k+9wgAS44sZx6cPAq6Ty2h/oCR0XIfkG8Mi9+Hz/wWmCrdjvzN/ouEKCGQCSuUR58t3mag==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN0PR12MB6032.namprd12.prod.outlook.com (2603:10b6:208:3cc::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.21; Thu, 21 Aug
+ 2025 04:28:40 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9031.023; Thu, 21 Aug 2025
+ 04:28:39 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 21 Aug 2025 13:28:36 +0900
+Message-Id: <DC7TM44KSWRV.NOS616JX1X61@nvidia.com>
+To: "Shankari Anand" <shankari.ak0208@gmail.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust: nova-core: Update ARef imports from sync::aref
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250820112846.9665-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250820112846.9665-1-shankari.ak0208@gmail.com>
+X-ClientProxiedBy: TYCP286CA0261.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:455::12) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN0PR12MB6032:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b494f14-f67a-497b-804e-08dde06b33f4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MmFLTTVqbVAwbS9DaFYzOFNFdUpQRXVFeVIzWEhxVm5XNS9pbzMvMk9vclZw?=
+ =?utf-8?B?c01kK0hiVkZjNFRXUUdOME1BWHNhejVIeFRtTUF2VHVuNW9UYXRxbXg3TWlz?=
+ =?utf-8?B?WDZEc3ZVSHRuUzdlNEUzKys4TzRJVHFHR2c3d2tIZ2lEYXlESU5DNWZzZFYr?=
+ =?utf-8?B?ZWZnRWlrdVkrOEhMNjFKdEZJTVdvcW96WWRPa0RlTmFkYVArZlNkcjh3UzNZ?=
+ =?utf-8?B?UDN6SmhCYUNsL25XcWRiS0ZRTjdNU21CZHUzaWlrd2drYk10Y2VuQkV1c1FY?=
+ =?utf-8?B?dnNNRXMzT1Zxd2JqUERhelAzVjVRQ0xwYytPMU5EOWxueGprZVR3aVg3ZkYz?=
+ =?utf-8?B?QjJxOGZJVDJsdFN2OXJQWE1iWElla2Fkd1pxVGxLNlpNS1RhVHpDNHl0N21X?=
+ =?utf-8?B?MEczN05KWjJIVlZuNVVxTHBSc0hlSDZHMFk4R2t3enFnMmhwUVJ4Y21kMkxx?=
+ =?utf-8?B?R3B0QUN0NzRWai9kSjFpN3BWWFlhT05tSlNtZGs3VE9hcUlRZmlWU2ovSW1K?=
+ =?utf-8?B?OGE1Q3dxV0IyRTZVUGJiNUNKUWt4eUp1NDQ2b1hTVUk2OEJLMURIMXpJUWtR?=
+ =?utf-8?B?Y0pEdVlpTjVUSGhTMXpUVWxqaTNlM0NmRHhxemg4ZjlBc1djYVFLYjRTMmhx?=
+ =?utf-8?B?TFBKVFV1RUNWTUVPQkp1SVFtZThtYm1DWkhMV2dXenZsYlljdVpDWXowMG5U?=
+ =?utf-8?B?T09YdjdnUmlPQ0FPdGVaS3Y1NGRMNXUrZEY3VmJrV09OUDZXYzBCWFh3YUw4?=
+ =?utf-8?B?Vi9QSlU0WmhrdENScUhzc01lL2Q5R0tzUWw1Y2lXeU9VbmtpRDd4S2Q2d1c5?=
+ =?utf-8?B?YithaHpmVStCSVhGRHdGaC9zYjBIZFliMGxpUnpsOU5VR2tEWFFCMGs1bEph?=
+ =?utf-8?B?dzE4RStlUzBQaUN0ODZWZC91ekwrVEY1T1Q3TVMvaUZ2Uzl6NWI0djNNb0JP?=
+ =?utf-8?B?R2N0VWVScWttT0U0M0pHbllhV1JWcGowUWVveFBaT3FtbjlGc0dNRWR0K3N6?=
+ =?utf-8?B?QytLNkMrZXd6aUxXVENQd21yTWswQmtCNU5zUnNwQUU3Rjk3QjBGNThXYWNy?=
+ =?utf-8?B?RzZKa1p2d1oxNVNZaG5oZU4rRGdqazNPMzZxZC9naWIzaUZuclFUNjNjbnR1?=
+ =?utf-8?B?Nng4aFc4d0RSaHJ6cFVqTWxPNWF2MGlod1B2cHlQRUpGTUpkZzJ5SldqQU1i?=
+ =?utf-8?B?SzQ3NktXYkl1c2lQcHhYbG5BZHhOSS9mRDEvdEJvY3pYNHhWeG9kT2N3VGc2?=
+ =?utf-8?B?UFYySVlyYXRrWFpZWjhYQ2s0VWpkQnZtTVlkTHZ3R1hvU2d3VlBWbWNuNlJn?=
+ =?utf-8?B?ZzlrNDFPM0MvNXRGdTFsK0JDN1BTNFk0ZlMrTmphZE1BbzIrVHF2dmJNRnJ6?=
+ =?utf-8?B?eTl2TlhyWFo3bC9YOWpTaTJGTHJFYmNRa2sxSkZTWlgrQXVobVN5Qzh2R3h3?=
+ =?utf-8?B?R2tIWlJ5S0w5SWRSWW9peWtFR2FoN3dhazJmYXFTUU5ZVGVEa044bC8vYVM5?=
+ =?utf-8?B?NzFlWDl6VnovUkM1UGFPNUc4T3pYWFFzZkJUS2RSd0pYMnlLK2RXbEM0YzZa?=
+ =?utf-8?B?ZW1ENVdBZk44eGF4KzRlWk5wcHJ0cUdacmlkajMycFBBWGFsNk5SVU9KZGJJ?=
+ =?utf-8?B?VW9CWHZrN2hIbHdZNmtIMnZoUGZoTUdJanlYZXdXNG90Q0NHNWJ2TFdWbVRN?=
+ =?utf-8?B?OEpDOUhSK29ZcXhJYkV1VnBhZFE1ekY5Ynd3UThJM3lxNjAzUVlpY3NvM2tn?=
+ =?utf-8?B?RlBpdkNqSkh2QjQ2bGVSNVpxWjZJSVJ4dVVvSE5xZXE3YVFVbjRsVmc2cncr?=
+ =?utf-8?B?NVhKMWNGUHB1SjVnZGI4eHViZDhVdm8rdHcvU1FDQmZOeGtUcW9FMWFxRlVl?=
+ =?utf-8?B?dDFIRnRDL2F1UlZFYlZNZVhpVXZkdFloL2VIT1dhcnhHd3BZTnkvR2NYNTdJ?=
+ =?utf-8?Q?6L6BFBDwsIU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YVdHbkMyZWx3UStuYysrVjlIQVlMNi9uSXN2eWc1RkVzamRhMVhyUUwyWU1L?=
+ =?utf-8?B?L1dtVHQ0RnA3ekZzclQ2TmlJQmR4enFLeDJpWHFHKzFRTi9KemYzSmRob0tL?=
+ =?utf-8?B?dm05eFFlOFNZdzdPb1VUaHYyTFAzdzFRSGVieWdwZ0ovOFlNYy9GVXFZL3Jv?=
+ =?utf-8?B?UkRqdFBRcGlHdm5aSk9hTlo0RTlCS1ZiTmY4RmFWNXBQcVRrSldEbHlwNEwy?=
+ =?utf-8?B?Q2JuQlpKZHcxUlhCNUY2bkhoVFl0OGRvTGRMdlM2c2kwd295V0dUblQ5ZHZj?=
+ =?utf-8?B?Q29vd25rcGdvNzVvZm8yemRRUWp0ZnMzMkR6SnVISzNBL0RHL1dPQWpQVnd5?=
+ =?utf-8?B?dHdxRm1IWmxFd3hNWTJDNGhuRmdFd2ZNdWpQVGExaCtTM1B3dmNOQjNnYlVQ?=
+ =?utf-8?B?em9tZEtkVDhtOWdJOXlMMjNOeVVkSXcrQXBOTFZGWklDaGFCMWI0c1hYYlBr?=
+ =?utf-8?B?RkNIckNrMkVnY3VBMGhQRUtMSk5NWm5EdUhaOXJ6UHp0WFlWK2RPMWM1RmVG?=
+ =?utf-8?B?dm0zdTNTYi9EYTlpQXk3ZWhiY2R3K0Jtc0pPc0hNRStTL3dnMjFQSUwrQjNI?=
+ =?utf-8?B?RzV1UEpQTkRNMFdVNWloakU1NlI1bnl4aWl5RHUzUjNGeTdDV3h4VEQrZTNq?=
+ =?utf-8?B?Uk5mbjNiaUxYSFNPZjgzdUQydmcyQlBiaFhhbmZsUFphbHY3eks4T2RMSDNK?=
+ =?utf-8?B?bG1vWjFwMnlLUFd3cEhBaThFaENJVVc4KzdSYzZtaGwxSlkvUjk5eFlYekhq?=
+ =?utf-8?B?NDY3L204M25rRzRuOUNRSHVPOGFnYklXOEQyeWhxdVpISDNmNCtMTWFWSzY5?=
+ =?utf-8?B?ZjUxdldyWXFIM0tRVXE5UGFmTzZhK3VaNThlT2ViVlhUWmdaU3FUelRMalV3?=
+ =?utf-8?B?ZGlzamdGRm0vVW10SnNQSHhxdE9waUVhbDNCZjIwS0ViNlY5Z0E4VUtpVkJG?=
+ =?utf-8?B?K3E0VHR1S1RyQitaZWM1blhIUGwwVzBwSmpmZjBvRnhRb2JUN1FNNGdZaTYv?=
+ =?utf-8?B?dGRIY2JyQ1BVSUJHOW9tV3Iraks0U2tPV2tKbUxMZUNyRktVLzBSRUthVjV5?=
+ =?utf-8?B?MWJMUjFhTEpaSnE5ek5teHlSbDZEdzcvem1MK004OUZoRGdkNm8rTGRIRm8r?=
+ =?utf-8?B?TXNUZjJLbTBLWHoxbm9SNU1mbFpaaURaRUhkOGc1ZFl6NStOUHFFaWVIWmVo?=
+ =?utf-8?B?WXgrdVY2TmFIWnRpZ1FEN0syaTlSdElrb0RpOGxVb05QV1IyR1REc1F0OVd0?=
+ =?utf-8?B?WnVvUTQrZ0Jmd3Fsb2w3ZUF0a0Y1VkhBd0dGU3c2YTN4VUdhNmRlOTRHdmVy?=
+ =?utf-8?B?cnhBL2YvcHRyVlI0Z0o5eE5pZGdjVlUrL2NrWGxJRWxPYnNFaERiRzRIUHNG?=
+ =?utf-8?B?VDIvbWJITjlHMU01TndDaURRQzZSVWNUZTZZSit3Vjgxc0RtWmFMQ21CQUtQ?=
+ =?utf-8?B?OS9wQ29XRklIMjZHNFc2cXlJWWFiM2lVa2k4bjFEbWdMbW5yV0FRZk9idmo2?=
+ =?utf-8?B?d01DaVh5NkVWeWJTQndYU1hXV3o0WVRKdGN2WEFzQUJFb29ReEV1MXZ5K3FM?=
+ =?utf-8?B?bVptOXZuMXFsbG94Snc3U216cXNYdFBueVBUenYzUVQrTDQ1VjVzSEg2T1ZH?=
+ =?utf-8?B?Z1ZvWkkwejFtL0RCdHJGWVpWNVhZY1lHUHRmMkdIZ0RvQXhHbUN2cXV0bHRl?=
+ =?utf-8?B?aVJpU2FjWmFaM285dnQ1RVJkVmRLUWttSlNkdWxmYUI3Sk82QUk0MFdKZnpN?=
+ =?utf-8?B?N3pKOEFROXlMM1oxc1I2a2ZrS09Sd05sNGFwU2ZXWTUwRVdQMTgrYjIzRytl?=
+ =?utf-8?B?MXJJeUlqR2V5bGJrcE5oMEhJRXh2RXptbHBMZy9sa21qajlHKzdKb1hYSm1M?=
+ =?utf-8?B?bDBrZGt4Q3JoYjQ3ZjBVSk9temk2dk9teVVVMXFaQVRKa1phTHlRT0dWSHQz?=
+ =?utf-8?B?NTJQU010UXBNTnNlUkRGVzBrT2VQMjA0WUxnTWNObU9wRlkrMS83UDFlYzJs?=
+ =?utf-8?B?UDJReG81NHVLc1NvN2tNaGxzakZTRzdsQTdSTElLdGVJN2xES0gwKzhkemNy?=
+ =?utf-8?B?dEJNczdsVkJ6S2lBeWtzcnUzNW5sNExzRlJCYUY3TjJIcVcxSEk4ajdjNnl2?=
+ =?utf-8?B?dFppcC9uK1RlVnpuR1JmVERxMVpTVkY0V3gzcks2NmpRUDlzWFFrQmt4OG1W?=
+ =?utf-8?Q?CHxwNAdFOZb4NHJgv1JUysAcsexrBgBZNI5dLziQud51?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b494f14-f67a-497b-804e-08dde06b33f4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 04:28:39.7738
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xfl3rY/dA4QmHxmTbq9XP/k32peIcsMyD+ZdserQeRCefXS9raoEQohQUMX26Y123H+KLr+9EUeMhMP9LP7MKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6032
 
-Add read_poll_timeout_atomic function which polls periodically until a
-condition is met, an error occurs, or the timeout is reached.
+On Wed Aug 20, 2025 at 8:28 PM JST, Shankari Anand wrote:
+> Update call sites in nova-core to import `ARef`
+> from `sync::aref` instead of `types`.
+>
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
+>
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 
-The C's read_poll_timeout_atomic (include/linux/iopoll.h) is a
-complicated macro and a simple wrapper for Rust doesn't work. So this
-implements the same functionality in Rust.
-
-The delay_before_read argument isn't supported since there is no user
-for now. It's rarely used in the C version.
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/io/poll.rs | 90 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 89 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
-index 7af1934e397a..71c2c0e0d8b4 100644
---- a/rust/kernel/io/poll.rs
-+++ b/rust/kernel/io/poll.rs
-@@ -8,7 +8,10 @@
-     error::{code::*, Result},
-     processor::cpu_relax,
-     task::might_sleep,
--    time::{delay::fsleep, Delta, Instant, Monotonic},
-+    time::{
-+        delay::{fsleep, udelay},
-+        Delta, Instant, Monotonic,
-+    },
- };
- 
- /// Polls periodically until a condition is met, an error occurs,
-@@ -102,3 +105,88 @@ pub fn read_poll_timeout<Op, Cond, T>(
-         cpu_relax();
-     }
- }
-+
-+/// Polls periodically until a condition is met, an error occurs,
-+/// or the timeout is reached.
-+///
-+/// The function repeatedly executes the given operation `op` closure and
-+/// checks its result using the condition closure `cond`.
-+///
-+/// If `cond` returns `true`, the function returns successfully with the result of `op`.
-+/// Otherwise, it performs a busy wait for a duration specified by `delay_delta`
-+/// before executing `op` again.
-+///
-+/// This process continues until either `op` returns an error, `cond`
-+/// returns `true`, or the timeout specified by `timeout_delta` is
-+/// reached.
-+///
-+/// # Errors
-+///
-+/// If `op` returns an error, then that error is returned directly.
-+///
-+/// If the timeout specified by `timeout_delta` is reached, then
-+/// `Err(ETIMEDOUT)` is returned.
-+///
-+/// # Examples
-+///
-+/// ```no_run
-+/// use kernel::io::{Io, poll::read_poll_timeout_atomic};
-+/// use kernel::time::Delta;
-+///
-+/// const HW_READY: u16 = 0x01;
-+///
-+/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result<()> {
-+///     match read_poll_timeout_atomic(
-+///         // The `op` closure reads the value of a specific status register.
-+///         || io.try_read16(0x1000),
-+///         // The `cond` closure takes a reference to the value returned by `op`
-+///         // and checks whether the hardware is ready.
-+///         |val: &u16| *val == HW_READY,
-+///         Delta::from_micros(50),
-+///         Delta::from_micros(300),
-+///     ) {
-+///         Ok(_) => {
-+///             // The hardware is ready. The returned value of the `op` closure
-+///             // isn't used.
-+///             Ok(())
-+///         }
-+///         Err(e) => Err(e),
-+///     }
-+/// }
-+/// ```
-+pub fn read_poll_timeout_atomic<Op, Cond, T>(
-+    mut op: Op,
-+    mut cond: Cond,
-+    delay_delta: Delta,
-+    timeout_delta: Delta,
-+) -> Result<T>
-+where
-+    Op: FnMut() -> Result<T>,
-+    Cond: FnMut(&T) -> bool,
-+{
-+    let mut left_ns = timeout_delta.as_nanos();
-+    let delay_ns = delay_delta.as_nanos();
-+
-+    loop {
-+        let val = op()?;
-+        if cond(&val) {
-+            // Unlike the C version, we immediately return.
-+            // We know the condition is met so we don't need to check again.
-+            return Ok(val);
-+        }
-+
-+        if left_ns < 0 {
-+            // Unlike the C version, we immediately return.
-+            // We have just called `op()` so we don't need to call it again.
-+            return Err(ETIMEDOUT);
-+        }
-+
-+        if !delay_delta.is_zero() {
-+            udelay(delay_delta);
-+            left_ns -= delay_ns;
-+        }
-+
-+        cpu_relax();
-+        left_ns -= 1;
-+    }
-+}
--- 
-2.43.0
-
+Thanks! I will push this into nova-next shortly.
