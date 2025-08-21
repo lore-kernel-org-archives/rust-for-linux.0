@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E612EB5CC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18FF2EB86D;
 	Thu, 21 Aug 2025 08:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755764224; cv=none; b=beqeqj5JNj6ZsMrpANutEy9MJuR5v64bHky4XifJCC1lgJkWx3IY7TW4l4enH/XzEcYFVa9IaBCNCRDlGQ2ogKLZo/oG3GyGpwmTkVY1Gfng+dG8bWKim1wylw7VNdGfk/IdyiuRj3OKkC/PSJXbHx0g71vO6Uh6EdcQ/eBxoWc=
+	t=1755764225; cv=none; b=Mr7uTKEYOrvzCS5OHhXT+cyDeZo8aOzq2HxoqYGb1Cb8k1bi5k3nUfSU+QkrQEmVWyQRVj/ea7q60WfmsLiHQlek7SICrO3VIrZdC0wCcY0iJG9+fc4i/E6NqMbDqR0NYDG6VfpM8cKgxknx8QiF6eCKrpKli9By1Wrze7oLxug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755764224; c=relaxed/simple;
-	bh=pCs2a5GtHIUVqWsvAf6JbIDTiB41Hz/jWLA7wnaYB14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q+YLi+wlh3SJeyA0HwY2XmlhO+hSAbwPSKA/8yZPdYp9y4JzB48y+wECewKC2V0RTTlMcYUC/ZtprHKs1W2wgsjoxZoOpBNZpiBgJVZT7jw6RrCH6UgtvunQpTF7p5hTRkRp5xB2jM+sdHvYfRCZwyuFKT2IjS4MZva77YIBtuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7Rz1CGb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755764225; c=relaxed/simple;
+	bh=+/6Ro+Dnlq3YRqR0pERxWJ2pVEtF9E0U8Tw5zszBXiA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rmiNaVb4t8aJpwqE0kAVNl4kwB8L3suZId5iK2x0sXAHLaadMdUVg+6LoWt4ySH3ztYilwRb7JF+vinUehMkvwYZ97wj52kPRqFJzGEdgZb38kMhThGHUqfTPg2qC+2g8nif4S+Aihg6FessTOBqzzocUteQcjM7AIm188XbcOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bES3ep9F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7Rz1CGb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F032C4CEED;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bES3ep9F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9624EC2BCB0;
 	Thu, 21 Aug 2025 08:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1755764224;
-	bh=pCs2a5GtHIUVqWsvAf6JbIDTiB41Hz/jWLA7wnaYB14=;
-	h=From:To:Cc:Subject:Date:From;
-	b=k7Rz1CGbqlTAdaRCI72izKdN48N5xxD+9hPKBsJpD4AOKeaHyx8wkhLe1FLGypxsz
-	 TKJlTJPc2ngIpap1JM6HttsPDDrxWhQRbLW9tq6DOCiKjIsQaNd2U5F75Ww4ts+5XL
-	 14XxrLyZfbuGJBPREYO9vXC3z5Dzi5CE+I+MNrNd0iFC4haHGMGGWDkzhPjKxzRJSx
-	 esZIMmQlFhfNHaTLnDkTW9tqOZNStnc3mLQ4O77UbvW17orF5gJmu1QgPGEBNA9zso
-	 XjxGx525edh/DsKXwmM+cyfQIKJUxND2tc8+OeDFE1FQM+Ir6oC4z4Riz9VUjAFkez
-	 KyyzsIkFlO9+g==
+	bh=+/6Ro+Dnlq3YRqR0pERxWJ2pVEtF9E0U8Tw5zszBXiA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bES3ep9FYW91fF8p09vin8yjcaW8j7l/TMDDOwbBWw1s0mHeLJJtfVcP5Aequutfz
+	 bIgtVKPPBJlofG6piPB3dlN6F/ozQ0k7g/n+Bk+fXHPyV6MQrx0yGnWJu55kIk1Zsw
+	 CAFrlzdWeFWjXD4yVace8qT7Eit4ua0ZDmEl9rNTfzMIyudIpy/1GAQ8GxmfgcvohS
+	 kcMQMUQ40eAcOrTB5/box3+oyiJAlDswgpp5c70hG0Qa9r3dx8/hdoNrSRieYy9Jpj
+	 fwST0vnJyD6YEUG1iaVezTUOZoMHC8cqhHDa1JjzmZXciBicmzY7WgnuUNC3PG/v2T
+	 XucUL8or9N7Mw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1up0Tm-0000000BLg2-2IUN;
+	id 1up0Tm-0000000BLgn-3eQQ;
 	Thu, 21 Aug 2025 10:17:02 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Andreas Hindborg <mchehab+huawei@kernel.org>,
@@ -46,90 +46,127 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Miguel Ojeda <mchehab+huawei@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 00/14] Fix PDF doc builds on major distros
-Date: Thu, 21 Aug 2025 10:16:36 +0200
-Message-ID: <cover.1755763127.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v2 12/14] scripts: sphinx-pre-install: fix pdf dependencies for Mageia 9
+Date: Thu, 21 Aug 2025 10:16:48 +0200
+Message-ID: <bd6e03c79b890ad0168493cdb4cdaf610bbc8c45.1755763127.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1755763127.git.mchehab+huawei@kernel.org>
+References: <cover.1755763127.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Hi Jon,
+On Mageia 9, two packages are missing. Add them.
 
-Here it is the second version of the PDF series. I opted to split one of
-the patches in 3, to have a clearer changelog and description.
+With that, all PDF packages now build:
 
-Also, archlinux LXC image download started working again, so I added
-an extra patch addressing texlive packae dependencies.
+Mageia 9:
+---------
+    PASSED: OS detection: Mageia 9
+    PASSED: System packages: Packages installed
+    PASSED: Sphinx on venv: Sphinx Sphinx 8.1.3
+    PASSED: Sphinx package: Sphinx Sphinx 6.1.3
+    PASSED: Clean documentation: Build time: 0:00, return code: 0
+    PASSED: Build HTML documentation: Build time: 5:17, return code: 0
+    PASSED: Build PDF documentation: Build time: 14:28, return code: 0
 
-This series is taking me a way more time than antecipated.
+  PDF docs:
+  ---------
+      PASSED: dev-tools: pdf/dev-tools.pdf
+      PASSED: tools: pdf/tools.pdf
+      PASSED: filesystems: pdf/filesystems.pdf
+      PASSED: w1: pdf/w1.pdf
+      PASSED: maintainer: pdf/maintainer.pdf
+      PASSED: process: pdf/process.pdf
+      PASSED: isdn: pdf/isdn.pdf
+      PASSED: fault-injection: pdf/fault-injection.pdf
+      PASSED: iio: pdf/iio.pdf
+      PASSED: scheduler: pdf/scheduler.pdf
+      PASSED: staging: pdf/staging.pdf
+      PASSED: fpga: pdf/fpga.pdf
+      PASSED: power: pdf/power.pdf
+      PASSED: leds: pdf/leds.pdf
+      PASSED: edac: pdf/edac.pdf
+      PASSED: PCI: pdf/PCI.pdf
+      PASSED: firmware-guide: pdf/firmware-guide.pdf
+      PASSED: cpu-freq: pdf/cpu-freq.pdf
+      PASSED: mhi: pdf/mhi.pdf
+      PASSED: wmi: pdf/wmi.pdf
+      PASSED: timers: pdf/timers.pdf
+      PASSED: accel: pdf/accel.pdf
+      PASSED: hid: pdf/hid.pdf
+      PASSED: userspace-api: pdf/userspace-api.pdf
+      PASSED: spi: pdf/spi.pdf
+      PASSED: networking: pdf/networking.pdf
+      PASSED: virt: pdf/virt.pdf
+      PASSED: nvme: pdf/nvme.pdf
+      PASSED: translations: pdf/translations.pdf
+      PASSED: input: pdf/input.pdf
+      PASSED: tee: pdf/tee.pdf
+      PASSED: doc-guide: pdf/doc-guide.pdf
+      PASSED: cdrom: pdf/cdrom.pdf
+      PASSED: gpu: pdf/gpu.pdf
+      PASSED: i2c: pdf/i2c.pdf
+      PASSED: RCU: pdf/RCU.pdf
+      PASSED: watchdog: pdf/watchdog.pdf
+      PASSED: usb: pdf/usb.pdf
+      PASSED: rust: pdf/rust.pdf
+      PASSED: crypto: pdf/crypto.pdf
+      PASSED: kbuild: pdf/kbuild.pdf
+      PASSED: livepatch: pdf/livepatch.pdf
+      PASSED: mm: pdf/mm.pdf
+      PASSED: locking: pdf/locking.pdf
+      PASSED: infiniband: pdf/infiniband.pdf
+      PASSED: driver-api: pdf/driver-api.pdf
+      PASSED: bpf: pdf/bpf.pdf
+      PASSED: devicetree: pdf/devicetree.pdf
+      PASSED: block: pdf/block.pdf
+      PASSED: target: pdf/target.pdf
+      PASSED: arch: pdf/arch.pdf
+      PASSED: pcmcia: pdf/pcmcia.pdf
+      PASSED: scsi: pdf/scsi.pdf
+      PASSED: netlabel: pdf/netlabel.pdf
+      PASSED: sound: pdf/sound.pdf
+      PASSED: security: pdf/security.pdf
+      PASSED: accounting: pdf/accounting.pdf
+      PASSED: admin-guide: pdf/admin-guide.pdf
+      PASSED: core-api: pdf/core-api.pdf
+      PASSED: fb: pdf/fb.pdf
+      PASSED: peci: pdf/peci.pdf
+      PASSED: trace: pdf/trace.pdf
+      PASSED: misc-devices: pdf/misc-devices.pdf
+      PASSED: kernel-hacking: pdf/kernel-hacking.pdf
+      PASSED: hwmon: pdf/hwmon.pdf
 
-This series as 3 goals:
+Summary
+=======
+  PASSED - Mageia 9 (7 tests)
 
-1. Fix a pre-Sphinx 1.7 PDF variable that got renamed, but
-   our Makefile still uses the old one that is not supported
-   since Sphinx 1.7;
-
-2. Fix broken or incomplete texlive dependencies on several
-   distros;
-
-4. "modernize" conf.py to solve font conflicts related to UTF-8
-   and non-UTF fonts from [T1]{fontenc}  LaTeX package.
-
-   Using fontenc with xelatex is problematic, as documented at
-
-	https://www.sphinx-doc.org/en/master/latex.html
-
-Please notice that:
-
-- It doesn't pretend to fix all  PDF issues. It focus only at the
-  above;
-- there are still distros where PDF builds fail either partially
-  or as a hole. On my checks, those are due to problematic
-  texlive packages shipped on such distros;
-- it doesn't touch/address/alter anyhing related to kfigure.py.
-  as such, it doesn't touch/change/improve/drop anything with
-  regards ImageMagick and/or Inkscape.
-
-I think we need a separate series addressing kfigure.py:
-it currently breaks if either input or output has a char > 127,
-meaning that PDF output there may eventually break.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
-v2:
-  - one of the conf.py packages were split to help reviewers
-    to check the actual changes;
-  - added an extra sphinx-pre-install patch for ArchLinux.
+ scripts/sphinx-pre-install | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Mauro Carvalho Chehab (14):
-  docs: Makefile: Fix LaTeX paper size settings
-  docs: conf.py: better handle latex documents
-  docs: conf.py: fix doc name with SPHINXDIRS
-  docs: conf.py: rename some vars at latex_documents logic
-  docs: conf.py: use dedent and r-strings for LaTeX macros
-  docs: conf.py: fix some troubles for LaTeX output
-  docs: conf.py: extra cleanups and fixes
-  scripts: sphinx-pre-install: fix PDF build issues on Ubuntu
-  scripts: sphinx-pre-install: add missing gentoo pdf dependencies
-  scripts: sphinx-pre-install: fix PDF dependencies for openSuse
-  scripts: sphinx-pre-install: fix dependencies for OpenMandriva
-  scripts: sphinx-pre-install: fix pdf dependencies for Mageia 9
-  scripts: sphinx-pre-install: fix PDF dependencies for gentoo
-  scripts/sphinx-pre-install: fix Archlinux PDF dependencies
-
- Documentation/Makefile     |   4 +-
- Documentation/conf.py      | 106 ++++++++++++++++++++++---------------
- scripts/sphinx-pre-install |  46 ++++++++++++----
- 3 files changed, 101 insertions(+), 55 deletions(-)
-
+diff --git a/scripts/sphinx-pre-install b/scripts/sphinx-pre-install
+index 224db3af17db..758a84ae6347 100755
+--- a/scripts/sphinx-pre-install
++++ b/scripts/sphinx-pre-install
+@@ -979,6 +979,8 @@ class SphinxDependencyChecker(MissingCheckers):
+ 
+         tex_pkgs = [
+             "texlive-fontsextra",
++            "texlive-fonts-asian",
++            "fonts-ttf-dejavu",
+         ]
+ 
+         if re.search(r"OpenMandriva", self.system_release):
 -- 
 2.50.1
-
 
