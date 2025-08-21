@@ -1,97 +1,124 @@
-Received: from forward201a.mail.yandex.net (forward201a.mail.yandex.net [178.154.239.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB602D3A9E;
-	Thu, 21 Aug 2025 09:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008352BDC33
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Aug 2025 09:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755768376; cv=none; b=kfb9sp/bpCSRAAD7Dfk2L7zkG8dMLOeeAaxMS+lK2he4l3l31TN3iJwS55QNTJERJpzi9uFat/J/fsJXLO0lmjoG4bwKDIsONYlXtV45SO4spInWkGjCvwwcarvvGm+C89BukxCMlEf5s410MbD76iVTDTlwdDA5lCSPYUyi6mM=
+	t=1755769527; cv=none; b=bxONshmJwJrhpOBNlfuMtaZWLBTweGV6n3VLLlCdZ0Q8cSFGW08aZfTK+dt9Yi1EvRJCC4poF2HO1fVXnSOURQOWMnr+RIQBR/QIcFwc63qq9t3GfFN6ybP6veGgzLyEN//NI1XuSoMnSFhbb1Bv4GnTYblDPzJOENZkUlZs+Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755768376; c=relaxed/simple;
-	bh=xiJVt3b12bT+770SFlGTWOwSte6zn4uAo5bc51xuing=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HGvf/WvyzTyiRslA6ZLE28KgqRqHAgUTjG4tD+Dit2MToJ4TLvBiohs9cz0EOGl29KPGRK7WVWGJOE9/cUimsduqK0IXsSf42r2L0fvdYWOjGIBS3JPsqtv/wecYNOqzDCiHYtyfsyJWOocqpVJy6PrTHJyoozdtenvmJwzromI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=M6KDZyOs; arc=none smtp.client-ip=178.154.239.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1755769527; c=relaxed/simple;
+	bh=+KxGB/dKJ4pb+tY+o0803YJCfK/BgA6DR2F3Eml0X7A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LxGXb8i36NjL00jhad0HmiVuUg7q/SDhZkHVKsct5lDKwiAHqOJXVQGSCqfTBgshxXwhTqal9yTFU24TvZluif8jdQXbnHCc2Pj6eQu/hlD41Lz00DPtFTXHFPfp9jcwpPB3HTC17y0oqTFsh436K3UUhqRi/2iQ6pX5K8m/bh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I3M3RD8T; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="M6KDZyOs"
-Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
-	by forward201a.mail.yandex.net (Yandex) with ESMTPS id 0970085534;
-	Thu, 21 Aug 2025 12:19:56 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:b18d:0:640:3620:0])
-	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 7B4088043E;
-	Thu, 21 Aug 2025 12:19:48 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id eJP0bXHMY8c0-3urUempZ;
-	Thu, 21 Aug 2025 12:19:47 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1755767987;
-	bh=Ikr3sVoeYdCUnHYmqqED/eeVXLZZxsJi2mOKPrxTZwo=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=M6KDZyOsFs/LgHt4k3ZPsXIEP2c3Quo/+zgW/hGb2M1EUcC55GW6VbF9mVi/RfXlt
-	 3LhuA0bcQ/pIC0ca82DsLQMKOV2oFPWWAX1P5rTIadquYP2Q54JW2VJc4ZBdAXvUz0
-	 lhlVBg5991mXTNYbnaBboH4nEHYJpnDLjeLvSfVk=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	tamird@gmail.com,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH] rust: uaccess: use to_result for error handling
-Date: Thu, 21 Aug 2025 12:19:39 +0300
-Message-ID: <20250821091939.14019-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I3M3RD8T"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3b916fda762so832731f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Aug 2025 02:45:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755769524; x=1756374324; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DYYHIISUuCy2JfQNPh+L51Upj+t6+AJZfjbcWAfxVxk=;
+        b=I3M3RD8TSi3NMGsheq8q8Al1puWs9W3t63Cl27Arf3dNwQQK7GtaduGQHEgt46YDHA
+         9xX2hfIVjXngTseehuNGZXp/YdgMu0LqXBlPnhTjC86+YgeYVagMBlN+TE+kuqJRUc8X
+         RZiqkhmEncZI4RXf/JJhyKtjselwx3Mp6QouNAKanbKdjW0obSzF+fgHhM6hA89Ve9kz
+         8cKjc1olS1rjL4Xf6Bg0Az1pwlSrdL1zPeUQutMY32mie5u0pcRQ6V0wiJ1mhkts3LgU
+         oqBvGQ8x9VO9Knd7DJBpcRoIzL9vFu1lxeskCVJjNtTJnoZWWOgA+Md7FU42U7sigwOc
+         HOcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755769524; x=1756374324;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DYYHIISUuCy2JfQNPh+L51Upj+t6+AJZfjbcWAfxVxk=;
+        b=Y+56vFISJEnFADl+IkNba8jvzUd/gOGkiJn01meKY4+rsnOq933KQBdhI0DAFHgsQF
+         UzEuBd2fWMigJRymApM+A5XuTCWlGAArOyOnHEt7L0nZK4y8ofcI+hAvY1J6DXEN7lq1
+         vEc801GsZi8vzMWL4a81vukLo1M0k1iR2KQM2YwH/3bGlC3tS6YnCKD/e5EE4fBrqlaN
+         pqpBT+uH19OY08/C5eJ89BcBtXJhEeHDv0Wqb4hLYvdg9UkIIy0ZFvnQBdKPaFm7Ak8d
+         tQsG3AMaTRGVu4azTlJwpcCGEUgmOtMpp64mksRsJfcXJmDr/GTVpzvzNJ+a6JvcuYcG
+         iHAg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9hWa8tGUz08d0JirRZ/1a3Nq947XW0D4WopgxMzUeBI9rQvbPQha/LykKFNk10Y0Ze1Q6ZwaWb3zdOmNvtg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoI8samXU5WlPbSjBN4taDKb3yQS13djewyUk+uzwCHTb7+s6u
+	Da83BPTgt54h8bfaSvVnPYP9VxSQSUNXe922tiFQiP9J3iIY4I3SVl7PF1lzleOLJ0GZRPi3UV3
+	H4JxhTTfDxrb6nesKJJ+Cwao6Z4a8xAVs3vc57pyh
+X-Gm-Gg: ASbGncvJfKul2IgL0JfNopxf1N8CWB0Va5PWC6bCLHesKutBJehLndcebEkJqqdrvtr
+	y7YHgdzJQBTCzEvVzvDLPsQRr/VdBfKRaNDzdZiM3CjOi/U6VC+EUkbjbx/uvAgrTjFqqws1kTE
+	3oPNEz9gOdwRXbUCb9Jqldw3XSHnoKIe7UOX7xudIMJNWhrYF8LvgHtKqmdhFJX63Fx6z46vEhN
+	HHXVI4+P6dGStUXpezbEBtspQ+hrWHkdoO+itm/+ia9
+X-Google-Smtp-Source: AGHT+IGn/wQOgVGJFmdB5PCUsV9/j1HIemTZs47Lm99Ax8kZZi+0rJsXvH9qzrIslE8FnssJag3hkMGPPm2tMopx1XE=
+X-Received: by 2002:adf:a19c:0:b0:3a4:e231:8632 with SMTP id
+ ffacd0b85a97d-3c4b4c0f1c4mr1130278f8f.12.1755769523630; Thu, 21 Aug 2025
+ 02:45:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250812132712.61007-1-baptiste.lepers@gmail.com> <20250820162927.34201cfb395ec7319b15920a@linux-foundation.org>
+In-Reply-To: <20250820162927.34201cfb395ec7319b15920a@linux-foundation.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 21 Aug 2025 11:45:11 +0200
+X-Gm-Features: Ac12FXwc6xuQOhVNEpGEy9nGpcxRQ0IxCgJJo1p3FE9jDQG2LnUgqbP8cpbBPG0
+Message-ID: <CAH5fLghx7K1fsdx15VsaTT1i3DRQD8zH2Yd-sEwumiByefTVAQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: mm: Mark VmaNew as transparent
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baptiste Lepers <baptiste.lepers@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Simplifies error handling by replacing the manual check
-of the return value with the `to_result` helper.
+On Thu, Aug 21, 2025 at 1:29=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Tue, 12 Aug 2025 15:26:56 +0200 Baptiste Lepers <baptiste.lepers@gmail=
+.com> wrote:
+>
+> > Unsafe code in VmaNew's methods assumes that the type has the same
+> > layout as the inner `bindings::vm_area_struct`. This is not guaranteed =
+by
+> > the default struct representation in Rust, but requires specifying the
+> > `transparent` representation.
+> >
+> > ...
+> >
+> > +++ b/rust/kernel/mm/virt.rs
+> > @@ -209,6 +209,7 @@ pub fn vm_insert_page(&self, address: usize, page: =
+&Page) -> Result {
+> >  ///
+> >  /// For the duration of 'a, the referenced vma must be undergoing init=
+ialization in an
+> >  /// `f_ops->mmap()` hook.
+> > +#[repr(transparent)]
+> >  pub struct VmaNew {
+> >      vma: VmaRef,
+> >  }
+>
+> Alice suggests that I add a cc:stable to this.  But I see nothing in
+> the changelog which explains why we're proposing a backport.
+>
+> So please send us a description of the userspace-visible runtime
+> impact of this flaw and I'll paste it into the changelog, thanks.
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/uaccess.rs | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+I don't think it has any userspace-visible runtime impact. But I've
+seen many things get backported when they are incorrect even if it
+works in practice, so that is why I suggested to backport it anyway.
 
-diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-index a8fb4764185a..9992eece2694 100644
---- a/rust/kernel/uaccess.rs
-+++ b/rust/kernel/uaccess.rs
-@@ -7,7 +7,7 @@
- use crate::{
-     alloc::{Allocator, Flags},
-     bindings,
--    error::Result,
-+    error::{to_result, Result},
-     ffi::{c_char, c_void},
-     prelude::*,
-     transmute::{AsBytes, FromBytes},
-@@ -495,9 +495,7 @@ fn raw_strncpy_from_user(dst: &mut [MaybeUninit<u8>], src: UserPtr) -> Result<us
-         )
-     };
+The annotation makes it so that VmaNew is guaranteed to have the same
+layout and ABI as struct vm_area_struct, which is required for
+correctness. Without the annotation, rustc doesn't *guarantee* that
+the layout/ABI is identical, but in this case, they are identical in
+practice even if the annotation is missing.
 
--    if res < 0 {
--        return Err(Error::from_errno(res as i32));
--    }
-+    to_result(res as i32)?;
-
-     #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
-     assert!(res <= len);
---
-2.50.0
-
+Alice
