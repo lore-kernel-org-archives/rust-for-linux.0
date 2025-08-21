@@ -1,111 +1,129 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7000636299B;
-	Thu, 21 Aug 2025 20:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4442E2D480B
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Aug 2025 22:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755807492; cv=none; b=gdfrCusXrlqhlKHfxGLY8y8tD9zLerYJoeE5sKRp8xIuMILY/baJSixlEmPTP8uwzc8/9yS983VyhbT49xNOqqbDVeBfCzsascgKD/iZ9tZEzO6Nq1RJ13gEsfJbU5FRP400aaGLhRMLxLNBdr0c67WW8NxmZ1FmYvYPVDWhBgw=
+	t=1755815746; cv=none; b=nwUmKVghOKy3K78cEV9vY2OMRAHX+qFAVPuZXSg/tV0bniPdbv+VcSW6GRI0Cs+ps9LIieZeW3Z7En9XfPXApg+PEZFdM5X1RlFuFAZ1oV3Mj2Oun+N03Y83XjVZ6TIc/uiV/4ctQsW9/cZIJ5s9++b57bh2GcKuhncFWr03dYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755807492; c=relaxed/simple;
-	bh=c8DsSrJaMnEWoX23jkNnLC7l/EoU9r/NMUCpOmQwdx8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=g3rb9lVLrW7wWi09HIy7UlCpLTYeF+pIL8GE4oHPgZiHeVv2XaJnndNRl6dDtZCpT/3BFn6CZrbZKGneqHcTD0RX/+VQNh1hovtd1X/2phLDIyhs/gtFmluxZSxrq6MDJ8CsOj6SxYt8FfNz6U9MQp6KOsrdZSFY9JIjQCdxrLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=R7ga1qJb; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1755815746; c=relaxed/simple;
+	bh=FkxrYII2TEEj7Hu4cK1rRwgXY6zqhrRnMGhlROYpvDo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=R56VKtpY15qN2tNptllJm7/1Y3HDqTr723UFnbCB9cqkMJSv6xBx5Ogg7MIquTtCrxBofuqah4Cn5kqQsfvRYPWVz/xTGbeiDvbHqjnyoyrWjveJ+7VEHPnx8PFe1UwdzjrdBnES8LuQddv0y8FnjdKMTD0HGHXsVjSmVhcmwNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=EchqXJId; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="R7ga1qJb"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 3A66D40AD5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1755807489; bh=L1y7dswyjIEQ5uiwA4dVswHTuGstruSKu9IMPlOfEdg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=R7ga1qJb4qvrSTghd1VS8VQ13x9q94khWTr4AC2roiKr6XmBfxQaqq1reRUxSOAIo
-	 mvdP619YphXUm8uDkEQwrCYhnzlNH9HwIV92EI3LfFuTdgiiiICBqbJmnDNpzMQV3o
-	 KkxrAKbGzs4HNRdQnTpARqr1jyGbfgQhyt2sNdbS8B+YZzl0oyHp1bKEhGyvzxIPuv
-	 YBpvEZfToIIlGjhcJO0IIMBN3RCfGTnAzzMryrQu+KUFrFc6Gv/r8Jty4vGs3fTA4B
-	 oIXTE0yAMuq6QmO9Phv0+H5zcs0kuqBaLTmn5eT+qgqHIckF33NgYviWRxlhhqoYY0
-	 OmRbTtLmoyuYA==
-Received: from localhost (unknown [IPv6:2601:280:4600:2da9::824])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 3A66D40AD5;
-	Thu, 21 Aug 2025 20:18:09 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 04/11] scripts: sphinx-build-wrapper: add a wrapper for
- sphinx-build
-In-Reply-To: <20250821214308.08835b9f@foz.lan>
-References: <cover.1755258303.git.mchehab+huawei@kernel.org>
- <88a95c7f6996cafb247d6706060173b17a46d570.1755258303.git.mchehab+huawei@kernel.org>
- <87v7mg5ux3.fsf@trenco.lwn.net> <20250821214308.08835b9f@foz.lan>
-Date: Thu, 21 Aug 2025 14:18:08 -0600
-Message-ID: <87bjo8qvi7.fsf@trenco.lwn.net>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="EchqXJId"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250821223541euoutp015e377d972005047177fed28904c694af~d6R0w1mJ31258912589euoutp01P
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Aug 2025 22:35:41 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250821223541euoutp015e377d972005047177fed28904c694af~d6R0w1mJ31258912589euoutp01P
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1755815741;
+	bh=3i+hbzU8RFcDzVjqMTUidVYvZwJLP627miUufKiWjKc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=EchqXJIdjhi1/Rw0fXBY4CmZy/EKm7bSiCYPGO6TfZECD3oYg/iML48fWFfMqa3I7
+	 t2wIHPc19loWlcJZJcWdc/4W1E7qVDkq6Nq5nGrRRsmjeCZS1vxbybhe+tp0+ol05T
+	 dxyzlS99qMR05oryn84X5fjsF8q8XCW5bIWMish4=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250821223540eucas1p2887283df2fcd024bb24a0034bebb99ce~d6Rzr2R6r0984009840eucas1p2k;
+	Thu, 21 Aug 2025 22:35:40 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250821223539eusmtip2f1a4ec8a2273c2e74d641e183d0914e9~d6RynamBV3047330473eusmtip2H;
+	Thu, 21 Aug 2025 22:35:38 +0000 (GMT)
+Message-ID: <78ffebda-744b-4a1b-9676-82f46c2d29d1@samsung.com>
+Date: Fri, 22 Aug 2025 00:35:38 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 3/7] rust: pwm: Add complete abstraction layer
+To: Elle Rhumsaa <elle@weathered-steel.dev>
+Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Guo Ren
+	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
+	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, Benno
+	Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
+	Drew Fustini <fustini@kernel.org>, Daniel Almeida
+	<daniel.almeida@collabora.com>, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <aKY58dUO0RsoOqGb@archiso>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250821223540eucas1p2887283df2fcd024bb24a0034bebb99ce
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250820083544eucas1p233f8b8f7d1c0b59acededa3572d632aa
+X-EPHeader: CA
+X-CMS-RootMailID: 20250820083544eucas1p233f8b8f7d1c0b59acededa3572d632aa
+References: <20250820-rust-next-pwm-working-fan-for-sending-v14-0-df2191621429@samsung.com>
+	<CGME20250820083544eucas1p233f8b8f7d1c0b59acededa3572d632aa@eucas1p2.samsung.com>
+	<20250820-rust-next-pwm-working-fan-for-sending-v14-3-df2191621429@samsung.com>
+	<aKY58dUO0RsoOqGb@archiso>
 
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-> Em Thu, 21 Aug 2025 13:36:24 -0600
-> Jonathan Corbet <corbet@lwn.net> escreveu:
->
->> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
->> 
->> > There are too much magic inside docs Makefile to properly run
->> > sphinx-build. Create an ancillary script that contains all
->> > kernel-related sphinx-build call logic currently at Makefile.  
->> 
->> So I am just now looking at the script and seeking to understand it, but
->> one thing has jumped at me that I wanted to toss out there...
->> 
->> > +# Minimal supported Python version needed by Sphinx and its extensions
->> > +MIN_PYTHON_VERSION = parse_version("3.7")
->> > +
->> > +# Default value for --venv parameter
->> > +VENV_DEFAULT = "sphinx_latest"
->> > +
->> > +# List of make targets and its corresponding builder and output directory
->> > +TARGETS = {  
->> 
->> We don't at this point have a formal coding standard for Python code,
->> but I do think that we should, to the extent possible, stick to the
->> rules that have been established for C code.  One thing I would really
->> like to see is in the comment style; our rules want:
->> 
->>     /*
->>      * ...C comments spread out with the markers on separate lines
->>      * like this...
->>      */
->> 
->> so can we do something similar for Python?
->> 
->>     #
->>     # Markers above and below
->>     #
->> 
->> I will confess that this matches my personal subject preference, but it
->> also brings us closer to what our C code looks like.
->
-> Fine for me. Can I do such changes on a patch at the end of the series
-> to prevent rebase conflicts?
 
-Yes, of course - and I don't think we have to fix everything right away
-either.  We already have plenty of inconsistent stuff, we can deal with
-it in the usual manner, cleaning it up when we're in the neighborhood
-anyway.
+On 8/20/25 23:11, Elle Rhumsaa wrote:
 
-Thanks,
+>> +/// Wrapper for a PWM device [`struct pwm_device`](srctree/include/linux/pwm.h).
+>> +#[repr(transparent)]
+>> +pub struct Device(Opaque<bindings::pwm_device>);
+>> +
+>> +impl Device {
+>> +    /// Creates a reference to a [`Device`] from a valid C pointer.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
+>> +    /// returned [`Device`] reference.
+>> +    pub(crate) unsafe fn from_raw<'a>(ptr: *mut bindings::pwm_device) -> &'a Self {
+>> +        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
+>> +        // `Device` type being transparent makes the cast ok.
+>> +        unsafe { &*ptr.cast::<Self>() }
+>> +    }
+> 
+> This looks like the only constructor for `Device`, and it has restricted
+> visibility.
+> 
+> Would it be helpful to provide a doc-test here to show intended usage?
+> 
+> After looking at the C code, it looks like the raw `pwm_device` pointer
+> is extracted from a `device` struct, or stored in an array of
+> `pwm_device` pointers.
+> 
+> Is the intent that the `pwm_device` will always be allocated from C
+> code? For example, is a `pub fn new() -> &'a Self`-style constructor
+> not possible/desired?
+> 
 
-jon
+You're correct the intent is for pwm_device to be allocated and managed
+by the C core. The Rust code only ever receives a raw pointer to an
+existing device during callbacks.
+
+For this reason, a public new() constructor isn't appropriate, and the
+from_raw function is pub(crate) for use only by the FFI adapter. A
+doc-test is also impractical since we can't create a valid pwm_device in
+a test environment.
+
+> Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
+> 
+
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
