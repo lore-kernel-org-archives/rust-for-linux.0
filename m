@@ -1,95 +1,105 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5072E2EED
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 05:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE452E888B
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 07:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755842035; cv=none; b=WEgGXArg6IpKdWzsDrOEb54X6fr6hYlLQhq3uqp+MEZNWBIdqOgX4KUNnABIjehakltBUKYxOhnzq3ut/N6Vy6+1EtRtzWm1odaNsRr7WAFjbMPxqh+KeNVNYX2aJwFwVU8695BYIwvpG3Cxcw9rX3N98vYKxUTO5E9mTFdXOJk=
+	t=1755848691; cv=none; b=OrLvS0oP1GOrh5Y+R6VYUcVKZf0NUvDstJB9T4f2DdBKEYUk8vRy5c74Qa0/1ZfU6d3Q5q/0h3yRGKrIm2CpbTjqxW0lyCLOz6Pwou+xIpauMXDc9PDAMjxH4MThU9nAmKOsvtaCKynzv0w3QknQCYM/RBSsDhQpu80d1m6tDXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755842035; c=relaxed/simple;
-	bh=4wc7/VqmVDfbilpC+4CI5l9qIomR32O2gKFjfvsNibE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E3/W3NBDa7Vvhb9B3I7T82wGvfAWHicUo/zJdEFEjKWdfbZC4MYG68FOp2Ppn9RbaHjn4S0i/EPE1zW6fhLNb9gaPaYfFa2pFDtzx+51G7E0pldi2AnPeIyCt20y56EkYT1mKMNwIrcgzkPdu0sSQuxiZ3QnAdKJ7IadypMFqdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NHnbbGFB; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1755848691; c=relaxed/simple;
+	bh=faSEfiTpREL/ys4OdLzvhf7bAeARCS9tt3rUMIAif24=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b3jUdHnEGkF/FlMLk2hkpAVZ7EPNROdsk/1R5XQwi77FrK5ohHWcTT0xypCBxlQO73eiwAFjTjt6oiwL5fKCx9fhiEkTqzuDFjWE/9UFxhLHmgyteW4EyOgPww4r1cH3//Zeji5sWtXqT06RFGINWoVIvl8oMfG9kbJ0wADiReo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gEAf/wWt; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NHnbbGFB"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24456ce0b96so18355435ad.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Aug 2025 22:53:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gEAf/wWt"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45a1b004a31so12437745e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 00:44:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755842033; x=1756446833; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lRfMPsVFFjc7ryDHEvdpPmW3OI/EuSPBqar4AEujing=;
-        b=NHnbbGFBgQIZrMexdm3Z4j+W+4QwNcCd/G32h07PtVrBS2ffFgtJa2FOCy84oXI9sM
-         +jAldJjA6bAuNTJxc5J3B9xiKrYV4DRt7oegzLz+k+BbnQQXEqblyqOx5uOngtyIu8K9
-         YZ2531sH2I0DEqTk/CWAPpk4DIqc/ij641PI+WOEseouwcyf/EU1nAwrKQLIRXI4es0F
-         0XpXQUetUGxAjCitGp0a+ZZPKvsTBVvw9dP6NWsVLlIBk5vnGca4b5fr/rTAebBZhesi
-         Z511LgOVKS2CjISXrNH40I9iiMqyf3nVkHVQVGmHPbKiloBC+BL7FezIEXd/i64pAZfz
-         9ZcQ==
+        d=google.com; s=20230601; t=1755848688; x=1756453488; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g2G2vICsXO8f0ArDyQQPFAnFMYMmrHOiPk4MQY+POTA=;
+        b=gEAf/wWta32pNHA4IE8oJ00dAqxUG/ZYX8oqYITQ/rJmDtVfB+/QzVWStHoch1KGLL
+         c4MuTqszr8Zim4FHilnzmT/TpoclBVb9a+MJ1LHPhZ4fQ/ijNPo3DcnjBvK9SjKYQ4FF
+         5UeTKO+Eae8qMyHnERnqlRxouJRYjPUt16z2TOWVWHFzTspCKGeeF86ZT9OW9MK9Pql1
+         BcfwrdnwcEfX2xz0rQKvkt5OMQVW2pKfE0DcdCBnES+VVRUGO17SV8TDXL/aqdS7NXWD
+         GUWjvLU8XNgSl42EL26SU4cNgwBv2aUk+sMh9CCePrTVaBcMIyk9LETgPVAf108Mr722
+         9EXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755842033; x=1756446833;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lRfMPsVFFjc7ryDHEvdpPmW3OI/EuSPBqar4AEujing=;
-        b=Hn/v4xyE+JLoCtdUo5/gIkxHzuGcA09T1iuKcniLUyT4pjB+0FlSj73yORaQ/zo3dW
-         lCP+GGBjKk6GmPRJEmNCjvB9+zW95k2w0wNgVviscVpmLNL3EhWJK54Irco86gqIvczr
-         mfYsaiUknZ7kdVRa+1y9iHXhg9C8OXnMNyC34bToB0jzh8VuQ/BumS81yQF+3lYsJVWN
-         gtc47so6TpWnvEKljsb7l3TCiQBtgwwdZhVDe9FBMQo+DtB0FDJFYDoGhrvhIUxLERYX
-         X2v5KK958J3HnEbm3jEiFPxCBDP83+vzTvEJ6Y/bIXvGYsuPzW1aYTUTfG7rv3Tcv1gX
-         p0Tw==
-X-Gm-Message-State: AOJu0Ywz4LNlhK8deTtF0fpAk88iM3Ndspvg5d2H51xpM0icahDR4erp
-	pNre63p7LIoxSaqKpN3AnHdFM+FUYB6m/nk+bVDp25TCEWe1lWPFV9GH7gPs04Tj8Os=
-X-Gm-Gg: ASbGncttjenYbinw2akYBYFJ3juiZzhbpPTbw1dvL5CvmhxML7weeX57690WzLaFqf4
-	jNDNo6KcxxYpWqgDp7MZS23FX3riP+l/Z/Ut8GeHJZK+RGQx1Sp4u/kU/hADrGLYREXciVvudIH
-	do15LeU1q3x7QeBCr+U/tuI+63nIdd32nfMTZHcULPYNpCkJg0G+IhW6HkHvtLfKPDFuKW6rMz1
-	yvqNZg0MgnQ1ap1ue6TlatiU006vBUGvB3rMwtEXqPcc1rQzzaYRYLqfev/7uG2ljKVv8Szf/r0
-	W3r5JIZyCEtAlovWJWCJbAiwU2KW2IdD2hNNGPH2DB4qdNrgKAyqDMohjJbxVNJjF9k9mnbj6ip
-	YxlyGnHVrsFza6PNBuTrVtXJF
-X-Google-Smtp-Source: AGHT+IGDUhRl59xu9W6ouXglnOGMNfVPExl8Z8m2MHMr5khzXc/sDm3TLhU4hJY5umoiXpIgj2VCDw==
-X-Received: by 2002:a17:902:e888:b0:240:4d19:8774 with SMTP id d9443c01a7336-24633d6a31amr21624495ad.24.1755842033049;
-        Thu, 21 Aug 2025 22:53:53 -0700 (PDT)
-Received: from localhost ([122.172.87.165])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed51b3d3sm72222245ad.147.2025.08.21.22.53.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 22:53:52 -0700 (PDT)
-Date: Fri, 22 Aug 2025 11:23:49 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, vireshk@kernel.org, nm@ti.com,
-	sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: opp: use to_result for error handling
-Message-ID: <20250822055349.6brvcxtljkz2k6p7@vireshk-i7>
-References: <20250821091606.7470-1-work@onurozkan.dev>
+        d=1e100.net; s=20230601; t=1755848688; x=1756453488;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g2G2vICsXO8f0ArDyQQPFAnFMYMmrHOiPk4MQY+POTA=;
+        b=sxyTx6EVeM/M9dXG6fOcUCeM+I60gaRKKUztjaX0hLxYWLQ4J/kWGnS/6cucngongh
+         I2CjDIkrd8BBlMljTnNo+ovErfC/BEC9lm2E9E7PlXDCxtrdvAABDeEaTauVEp14XJNF
+         rsuynTSbCKa9vPbM7LACZi3c62Np10n4ZGvfzPyAZAYkALhhRF+FxJGB2bEZftZMFg74
+         aaBvAQGQxJvcmU/VUuFwn3EuJGjbTtUFG2QOvV0m01KJrkZkzKWlFcN1RFxE9/uQolbk
+         mcGbMnLv0nIPYb/IhXxCiMMAF2eVZAqZkapDbKb4CACJLejeNdaYoSriuz9G/AJQber/
+         +Siw==
+X-Gm-Message-State: AOJu0YyzLchhSqgEGUEqguGbHnEfDdO58Z9OrkDxB1bVveQSJwcXg+9h
+	pjwQqMGtXMLFh4tcBhcTh47ILlwFpmAq6jV+4hBPWmLs0yohd9sil+w6uMdLHczBwoWQOM4hnLS
+	n3bs0W5V++pkzoCaCUxuaq0yC/xw9u5f5uQ7aEFiJ
+X-Gm-Gg: ASbGncuUYUjz9qyABl+aCWhyVeg6frRvMCdwuYSwPonLOGsq29XD/fyO4Ry4QFG5bKF
+	vOdxtGhK0woSTaqQyv/hnEYZNjvb9KEtB+/3H1YuNTtVQxELDkDjcNl0d2J4h0qSm3KFRKv66Ha
+	ino1+eJjFnLbam3HIT4G1/g2x+JXXxY+9fIJ+TEfcj98f9Cj3iJxTxrOj6APQ3zJNFjVuOFUkP9
+	Y9dYT9yRIIM7jo1oW/AjbxPGGvD64qTPKR1P+HW2a3GKrPrET1HfTXodCW12OQUKkq+gfZR9VqE
+X-Google-Smtp-Source: AGHT+IEoadB/lkuSJqNlo/SILQdpicC+7QYyIGD5rL1L8rNRHfY2sXck2SdaIgLT0kyeAavUOWBzZ7civMIWG5FymAw=
+X-Received: by 2002:a05:6000:420f:b0:3b7:8c98:2f4c with SMTP id
+ ffacd0b85a97d-3c5dcdfd718mr1520148f8f.33.1755848688089; Fri, 22 Aug 2025
+ 00:44:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250821091606.7470-1-work@onurozkan.dev>
+References: <20250822041313.1410510-1-apopple@nvidia.com>
+In-Reply-To: <20250822041313.1410510-1-apopple@nvidia.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 22 Aug 2025 09:44:36 +0200
+X-Gm-Features: Ac12FXz0SxebOQqcLm-97q0sd3X8rsVm5aDZCUPIyZPEj1aHLk_XWZ8qmb8qzgM
+Message-ID: <CAH5fLgiYy-9DfjL+0NoYzwD=8tTSBrFMhJveZktRncJE9czkrA@mail.gmail.com>
+Subject: Re: [PATCH] rust: Update PCI resource_start()/len() to return ResourceSize
+To: Alistair Popple <apopple@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 21-08-25, 12:16, Onur Özkan wrote:
-> Simplifies error handling by replacing the manual check
-> of the return value with the `to_result` helper.
-> 
-> Signed-off-by: Onur Özkan <work@onurozkan.dev>
-> ---
->  rust/kernel/opp.rs | 16 +++++-----------
->  1 file changed, 5 insertions(+), 11 deletions(-)
+On Fri, Aug 22, 2025 at 6:13=E2=80=AFAM Alistair Popple <apopple@nvidia.com=
+> wrote:
+>
+> It's nicer to return native Rust types rather than the FFI bindings to a
+> type so update the PCI resource bindings to return ResourceSize.
+>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
 
-Applied. Thanks.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
--- 
-viresh
+>  rust/kernel/pci.rs | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index cae4e274f7766..ef949ff10a10a 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -10,7 +10,7 @@
+>      devres::Devres,
+>      driver,
+>      error::{from_result, to_result, Result},
+> -    io::{Io, IoRaw},
+> +    io::{resource::ResourceSize, Io, IoRaw},
+
+Maybe we want ResourceSize re-exported from kernel::io to make this simpler=
+?
+
+Alice
