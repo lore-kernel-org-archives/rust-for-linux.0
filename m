@@ -1,107 +1,104 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4FE1BFE00;
-	Fri, 22 Aug 2025 09:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A463F2E3AE2;
+	Fri, 22 Aug 2025 10:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755856552; cv=none; b=Fgzhqe6ElfxwEJHsY8O6Si2py5uVdwHdKjjFRTlmViuydQ9/jpLajY4i5jcaD8uEDmP3w8BqoqlNkMoDo1IqF9Eoro7zUHJWL0kgYgNtgPC5j2ZZI+tfeZP2n3bD9/mH4zMBtNSU7egCv9Lo1PWU442Xg/tBJAtH6DEjEs5ONpo=
+	t=1755858340; cv=none; b=h8PO75r9JU5QPab5kbOGtZ9Ps7KQTkg2+o/9wgsC1aYvyNjgafn4w01g2ImDdIW/GFxjQ2D6wvnNkqDLuMmUpCxPHy7OXOHAOCpwtg7XvCiPJT8XZqNZsBnM9Xq33UEsUGjidEZAhQhlNit0iidqzj+xI4bsb56MoszTJpr1gSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755856552; c=relaxed/simple;
-	bh=wDBEFLPmjwZ34IQiVCdIlZcm6IWKZupOgrJpMtnNCHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nWvdz8zjYtirom0diw/deYc7ays0SaXUuJpK+wtp0vw0+DkGmlu8Ez3nRIClJtrmsRSycokmmpgaQAhzAZ3SN1sqSSaOJkQXoZnN0wCqygCEJjDrWkpnVsTbMvKozbqyhh9mnVn9lA3ct0hDGbIAmpuKdYsrx5GSVFhWEdJ19rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=iR6M0zai; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1755858340; c=relaxed/simple;
+	bh=3eipDB3UV6BUjIS7lwaxbO4H/ODhWWsXLvXxzUmsIok=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=XMTw9nrYrrUOQ2coG3CRtVXxs6TUvNFNKgdnSoiGM6eN8La4m0Dg2FASdhuuxO9o8F3r8Of3MBmlNKx7wTieL6dF2GKacfnvaMSmUZVGRqxsNvcqkBhCefUkn4wnTCRzC3m0YOKaDlzaNVw35dBNXyQc3Pu4U6DjF0yFkyplLH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQbflZrs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="iR6M0zai"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1755856548;
-	bh=wDBEFLPmjwZ34IQiVCdIlZcm6IWKZupOgrJpMtnNCHw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iR6M0zaiYMA2yFuALx82u4oDmOKHGSeEiIhs1GHiUYYJLl7nht3XMF+wws8gbctsH
-	 ACcPY4iR09B18G6iNAP2inGyRxrD6LDxe8NLjau3ZTjRfNdCBomeQezyOqiNwKkhlK
-	 JG96pLqUosQ62t1qgM1RWyOBSZg3dgxWwyde6XFuIwnrR7+xM2B8gOG03Awrv46Pej
-	 4olr90PnPypIbb/fF9ka1mSJ+ywWLUpqZV+0SYopofXo5d/UqquFYNFU+xzeTiDG25
-	 ZRYHaIXYyrQRdeSGDQT9KWiPeznzrNOkzRyIJnCcvQSYEtxYQcJwiOs6ecdrph4Q4x
-	 PDCAZJW1/nP3Q==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id CEFB517E0C54;
-	Fri, 22 Aug 2025 11:55:47 +0200 (CEST)
-Date: Fri, 22 Aug 2025 11:55:43 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Danilo Krummrich
- <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Steven
- Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, Rob Clark
- <robin.clark@oss.qualcomm.com>, Rob Herring <robh@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] gpuvm: remove gem.gpuva.lock_dep_map
-Message-ID: <20250822115543.62094f53@fedora>
-In-Reply-To: <20250822-gpuva-mutex-in-gem-v2-3-c41a10d1d3b9@google.com>
-References: <20250822-gpuva-mutex-in-gem-v2-0-c41a10d1d3b9@google.com>
-	<20250822-gpuva-mutex-in-gem-v2-3-c41a10d1d3b9@google.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQbflZrs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38943C4CEED;
+	Fri, 22 Aug 2025 10:25:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755858340;
+	bh=3eipDB3UV6BUjIS7lwaxbO4H/ODhWWsXLvXxzUmsIok=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=UQbflZrsG0DI7acJsysqxKhAY1Uk8uHRpKNB/krK9xE4EsrpRHE2XkzEb8WCPhzxq
+	 S/5Y337V2804diMfBItjtmYaf9kLOg4kzmjPbKG2Didug9Nc80LfTfrvf/HeyYTbGI
+	 qaIYqxUyEXWkA+tLt2nPe+cv1e5QmR4gfcqoukn77oCm+1r6sRzGYLqKqJQ0kYpf3W
+	 +RYm+S85PVZozgJP4BJZTtUqVWMp115+fZrFkU5IpeX1QX9c9JhdFRgfo9pa9LMPnU
+	 V7ECy9n5/OmLzymQTwuSz747J6gO3w37KK4OUOPV3Z9O+T1mkczAicLBTI2nyg8fOJ
+	 1L1w6jkslUZiw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 Aug 2025 12:25:34 +0200
+Message-Id: <DC8VTZ5OZY42.1OCS3QJHZGPAK@kernel.org>
+Subject: Re: [PATCH v2 3/3] gpuvm: remove gem.gpuva.lock_dep_map
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Boris
+ Brezillon" <boris.brezillon@collabora.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Steven Price" <steven.price@arm.com>,
+ "Liviu Dudau" <liviu.dudau@arm.com>, "Rob Clark"
+ <robin.clark@oss.qualcomm.com>, "Rob Herring" <robh@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250822-gpuva-mutex-in-gem-v2-0-c41a10d1d3b9@google.com>
+ <20250822-gpuva-mutex-in-gem-v2-3-c41a10d1d3b9@google.com>
+In-Reply-To: <20250822-gpuva-mutex-in-gem-v2-3-c41a10d1d3b9@google.com>
 
-On Fri, 22 Aug 2025 09:28:26 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
-> index 5934d8dc267a65aaf62d2d025869221cd110b325..85a25bbb387c4590678e4ba243b51acd94b008ed 100644
-> --- a/include/drm/drm_gem.h
-> +++ b/include/drm/drm_gem.h
-> @@ -402,17 +402,22 @@ struct drm_gem_object {
->  	 *
->  	 * Provides the list of GPU VAs attached to this GEM object.
->  	 *
-> -	 * Drivers should lock list accesses with the GEMs &dma_resv lock
-> -	 * (&drm_gem_object.resv) or a custom lock if one is provided. The
-> -	 * mutex inside this struct may be used as the custom lock.
-> +	 * When DRM_GPUVM_IMMEDIATE_MODE is set, this list is protected by the
-> +	 * mutex. Otherwise, the list is protected by the GEMs &dma_resv lock.
-> +	 *
-> +	 * Note that all entries in this list must agree on whether
-> +	 * DRM_GPUVM_IMMEDIATE_MODE is set.
+On Fri Aug 22, 2025 at 11:28 AM CEST, Alice Ryhl wrote:
+> diff --git a/include/drm/drm_gpuvm.h b/include/drm/drm_gpuvm.h
+> index 4a22b9d848f7b3d5710ca554f5b01556abf95985..598ba376b9430cdd4ab7bacdc=
+15de031a887cf71 100644
+> --- a/include/drm/drm_gpuvm.h
+> +++ b/include/drm/drm_gpuvm.h
+> @@ -196,10 +196,20 @@ enum drm_gpuvm_flags {
 >  	 */
->  	struct {
->  		struct list_head list;
->  
-> +		/**
-> +		 * @gpuva.lock: Only used when DRM_GPUVM_IMMEDIATE_MODE is set.
-> +		 * It should be safe to take this mutex during the fence
-> +		 * signalling path, so do not allocate memory while holding
-> +		 * this lock.
-> +		 */
+>  	DRM_GPUVM_RESV_PROTECTED =3D BIT(0),
+> =20
+> +	/**
+> +	 * @DRM_GPUVM_IMMEDIATE_MODE: use the locking scheme that makes it safe
+> +	 * to modify the GPUVM during the fence signalling path
 
-To follow-up on my comment on patch 1: this makes
-drm_gem_object::gpuva::list the only field to not have a proper doc.
-This patch is
+I think this isn't entirely true yet or at least can be ambiguous for now,
+because it doesn't prevent users from having DRM_GPUVM_RESV_PROTECTED set, =
+which
+requires the DMA resv lock to destroy a struct drm_gpuvm_bo, which may happ=
+en
+from drm_gpuva_unlink().
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+So, for now, until we have the deferred drop idea in place, it also
+requires DRM_GPUVM_RESV_PROTECTED to not be set.
 
-regardless.
+(Eventually, we of course want both to be represented as a single flag, suc=
+h
+that it becomes an either or.)
 
-Thanks,
+I also wouldn't say "makes it safe to", but rather "makes it possible to
+safely". We have no control over what the users do with the mutex. :)
 
-Boris
+NIT: missing period
+
+> +	 *
+> +	 * When set, gpuva.lock is used to protect gpuva.list in all GEM
+> +	 * objects associated with this GPUVM. Otherwise, the GEMs dma-resv is
+> +	 * used.
+> +	 */
+> +	DRM_GPUVM_IMMEDIATE_MODE =3D BIT(1),
+> +
+>  	/**
+>  	 * @DRM_GPUVM_USERBITS: user defined bits
+>  	 */
+> -	DRM_GPUVM_USERBITS =3D BIT(1),
+> +	DRM_GPUVM_USERBITS =3D BIT(2),
+>  };
