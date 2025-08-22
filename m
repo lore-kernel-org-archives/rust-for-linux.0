@@ -1,345 +1,255 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2060.outbound.protection.outlook.com [40.107.243.60])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23CC2356CE;
-	Fri, 22 Aug 2025 02:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755828252; cv=fail; b=aSwvFFoOGRBFIWVafhCf2ewZPWkduejtrAGhFPukRUa29YKWqk46h03+Ghv8fkchZTRBwLOMH8sl0yEmR2ycBwgC8CHBbVfHrGpaBYP9WMpv7MvLwEqMdhK++d6laEM2JjE/Zc5DPls7Ir8Y7PLj0X4aldNl30tAdZO/7Jd09rM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755828252; c=relaxed/simple;
-	bh=5AJeXBRDTlAoDMPi6jWxbZaK57UqYzS/zbVFqJ3zQGU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CZDKETUc9RnoOvdB7wzo4dpfm6bvHsW1PT1fbmynuqVJi0TfuHtKsyXLrjQF7dg/pl7hBEan81YGDWtsSxhQ33xRwTZr5/9Wg/y8mT1YIYqVX6fNdBHke22DS8yFJu+xE7K1yd2QxZg9iVdBP2Mo5Oo7Ql8M+7A9vb8NFvMdaEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=f8Y17+YF; arc=fail smtp.client-ip=40.107.243.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C241D90DF;
+	Fri, 22 Aug 2025 02:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755828415; cv=none; b=am1J6cWxjg6nHgmeZLutcq3tRhaCfbi/O5qTM2R1lR2TNxOZ2Xph/IdTWS84NbKh7NbnZk6aV+NGVNavjPmSIFdaI4U8wPHmBARDiHOrjTJih2n3zplTy1pGOUA6kBT6VnYDpWFrnHQqnkWVam9WLUt+atYSEU/8u2jrDRe0fHU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755828415; c=relaxed/simple;
+	bh=tadX5fun3sS111NNjkdLAHXaqFbfGvQfjJ8uKRlqs9A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CXzMDFn2JHqhM1K01u/CATqTnXVTS0c7mcVeEhqI9bSVXotev9EPZjGbj8smky+lBkVoN8CYKsncLR8F4mLz9oDjrUaMzPCeyuk/1MSVWlUdOLLWyZPm7Uet8DxjqHVAv2Bp+zQFU8ej8MfBJarUqy5bn28+leLCZAqZmXmKoOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JU/gMn37; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="f8Y17+YF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DCC/KFcKdfw86AS1/HVVfkJnqNl79M5r8z9PpOp8bYgSpCSZSJ8RvZ+OSEwjbM+tHO/WsPwvz6U39oCSTtl5gIKg8jomP4zWWaiJy8e65oJ0TXOSEvDb6PQ7ireRL8vUzkb2no61i4Uzsj2Kbag6U1cfcVCWfmHNayEnENvswKYK2Et7P7hOPvb0Kxgr09KLINt9iCG3vh52VM5nVdnzpGnSVJuGcjXZrfHDqIqsUHjihRlxbBpv+4gJW9ZhVLWAQJDy/FrYlCzKPfa/2ld7R4/0II1phdCuB2/9E8DbBC5UmRXDw9fFPmzH5oW+/NVeAQclzr7NKoM0IHYLkubFRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HwprLk1/bgQy2DkCRo6s7iZqGCW0Vu6JYpizHHK5xFk=;
- b=UJ8uwWkR+ksfatO7vcujJCBtenloIHozqKwRIoIE6VJkMFv40/nXxNxekBMeRNKhZK7ReuLUxp/tzfJChW0ZvLm1ylfJmkb2NnthGgl6SXLhLcJHcN7W/GKayuhVeI9rdjrkvGNjS93aZH+5yEm45elW/6QdC54b6SUMirNakKqUiRwQ13oIzI4K+2y5zENnM4xFC6sHyRyleTdVoL9ZZfmRQi9y4TgMvQ+wwF5q9hPN39pSNK7pELSSIsXkCAsxcPrlPnv4h0eKFVWtrpyEXi0mwygOnvJa0t/EgGslYfet3mD8y4D4N0YqnWL5+Wv4NWd8wA1C+kV8ykAZsz6qIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HwprLk1/bgQy2DkCRo6s7iZqGCW0Vu6JYpizHHK5xFk=;
- b=f8Y17+YFMW22tIykZYVQxZc5qXyMzdnpJ27STKmHRT0IzjL6JN7I+WyEMfAWfsCG8xlnb55ovPeE4gMEBJ0mJVuYPNnHk4wEj2cWV+aj++F7EFf5rzlnRuX/U6sclEukvC4dv5VvB80S3pykLeNKFgzsp+96PXr2soRJakVCSnAQfsLt2ohODdJ/9Y/IGkApp+5Q5HIg2m2y2T/L5hLG0yKMdTQGo3B8vJuMcfJzGfHlfOdSh70jgqU2EQWv1TpT7Sct+FTIPzSf6dSVmLdCUWzcUo90yeUeXoOpV3c0EqjhqG4Xqf/7HJss41KDHFrwe+YleWeHUHelE8ZKQ40jqg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
- by PH0PR12MB7907.namprd12.prod.outlook.com (2603:10b6:510:28d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.15; Fri, 22 Aug
- 2025 02:04:05 +0000
-Received: from LV2PR12MB5968.namprd12.prod.outlook.com
- ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
- ([fe80::e6dd:1206:6677:f9c4%6]) with mapi id 15.20.9031.023; Fri, 22 Aug 2025
- 02:04:05 +0000
-From: John Hubbard <jhubbard@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	nouveau@lists.freedesktop.org,
-	linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Elle Rhumsaa <elle@weathered-steel.dev>
-Subject: [PATCH v6 5/5] rust: pci: use pci::Vendor instead of bindings::PCI_VENDOR_ID_*
-Date: Thu, 21 Aug 2025 19:03:54 -0700
-Message-ID: <20250822020354.357406-6-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250822020354.357406-1-jhubbard@nvidia.com>
-References: <20250822020354.357406-1-jhubbard@nvidia.com>
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0137.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::22) To LV2PR12MB5968.namprd12.prod.outlook.com
- (2603:10b6:408:14f::7)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JU/gMn37"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40231C4CEEB;
+	Fri, 22 Aug 2025 02:06:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755828414;
+	bh=tadX5fun3sS111NNjkdLAHXaqFbfGvQfjJ8uKRlqs9A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JU/gMn37onvXHWyoKAM9uBFclvr+uf+OT2MGsP25CrX6jxmdkdW1srBwe1CDaq4su
+	 Aew4LRJ/396aRnL9mSlcjcHRoNiomDAFVeqmwkYHIEiZisvaAhQaJBf1VdIsXlc4ES
+	 WqKT75WuNEHGvImgPi276LdrX1x8xf2ALWGYsXYHM3ffpKdC7i+B53OtPBF53R44nC
+	 5xf77gEy5uoaes2+OJ32IRzZ4PwfzaJXUHtW8yJ6Li3ZqxO2FhLXGeLHVNZ0f7KD7p
+	 lD4wZfcLyR4X832XrrM0nB5hWZusJba5NwCidb+qy50yVvgdEwSjt1+fhj9YTOQiem
+	 5gXC9I2wqgssw==
+Date: Fri, 22 Aug 2025 04:06:45 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, =?UTF-8?B?QmrDtnJu?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 04/11] scripts: sphinx-build-wrapper: add a wrapper for
+ sphinx-build
+Message-ID: <20250822040645.75d5faf4@foz.lan>
+In-Reply-To: <87plco5tb9.fsf@trenco.lwn.net>
+References: <cover.1755258303.git.mchehab+huawei@kernel.org>
+	<88a95c7f6996cafb247d6706060173b17a46d570.1755258303.git.mchehab+huawei@kernel.org>
+	<87plco5tb9.fsf@trenco.lwn.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|PH0PR12MB7907:EE_
-X-MS-Office365-Filtering-Correlation-Id: b71fc90c-5fc9-4957-785f-08dde1202c59
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?mqSwt8qyIJB419ek0XGhNXXwrtaG0gKhqMjVCLj9dWPvoNjNr8d32ocwLvYG?=
- =?us-ascii?Q?RKiZMoBpneHye7FU3b7b4WZ+lRQ9hAsqGio56NaOj3adI8mSVisLoaRNX13h?=
- =?us-ascii?Q?LSqoWc2wlc0FGaAal9utb2gBB5lBANg6aa6r/D8kVEZk8eMtNjBPuH038crS?=
- =?us-ascii?Q?7bmvgnPU4lc21mExUgqjQNBAK0vo2+B/GPBVym3WmLyJrOEKzYPLzxbX7B1p?=
- =?us-ascii?Q?yCK2gzqRIKnqRfusAjKxKv++zvxP/PVtmhv/fwb8kITQfMO/Fs9jsS/S1IpM?=
- =?us-ascii?Q?IluwB0/les2i944SByKLWvFnYgH1CX/+ECokHYHVbCXlB1WGhj0zj0/1juSH?=
- =?us-ascii?Q?8/gE3rYhb/RBkLv2Br3Gyzrh2wJzsEfQx3xRJZd+goLGrpncte4kequxKHxC?=
- =?us-ascii?Q?8aghB42TcmyN55Cf8WV3DxnQyT4b60N++v9ggmM/XkTN7Db2tYbtcL4/jMn5?=
- =?us-ascii?Q?WX4bPmofPZpsOOFOaIXxguplGQGhEdXz40OnHvcawZQJFNQj01Qp4EB614Rz?=
- =?us-ascii?Q?XKRkLv9hjXBA2ZhzBpo9bQghMVNsxnEkaF6i5RRhyS0+g9CGHvNinnldb1UC?=
- =?us-ascii?Q?ZTTbCgO9dco0KDUZa2DVv+WOliF5y6ZiFRS2/RBpUuI1/EXUf1LlPcDK8shL?=
- =?us-ascii?Q?MS6GlMHaTd4wDG9WxGmHlXYf6T3cE1oLZe6Cibd6dD0aC8ahnain6pkjoj9N?=
- =?us-ascii?Q?KMg1OAnLzkj8m0Xz/QJwj+vEqZg3ljeS4s9cllZS8z/tHa2s3ST/6p3NAypT?=
- =?us-ascii?Q?1Zl4ijLP6qCttt9ZQxR38x5dBvyj8eJn3zqolQY16kPYJz3ScNYIKB37sIIV?=
- =?us-ascii?Q?FceyFzkCXNu28vUl2BSUy5LdpmY6mT1kFfmDUgiApHC0GNVWdD7Gj17GYi8I?=
- =?us-ascii?Q?2u4KfVh7WiKFbp8TB10C0dBccIz0L4BYrKOyBb73huM5k12WUv49VlXnndxO?=
- =?us-ascii?Q?qjwgVcu0czirzTcCnZ8/YnOe294jpag9y+RRT46SQbADhESmgAL3RbOBxWWu?=
- =?us-ascii?Q?yowo/fsWBylZYbiKttM9bcGGnmJdF/H/+tVFb5OP8B0EMz0WJqn/2o9isXXI?=
- =?us-ascii?Q?/xUYLaSD8CM/vptPPLFX/+juN7bp/R13R8K9LCGCHm7EZzzmnxhQ1+XrpWVi?=
- =?us-ascii?Q?WD31o0wO2b2SJIArgt30ptCHzylhnavAzwa+mN3J76NIY/EsQc4Xd4dR8+Pm?=
- =?us-ascii?Q?aLnHSZ7TTvhCiYtdbO9LV1Bn4YziAVREIqpnGD19OUfS1o/V2eTJHbDo9wRX?=
- =?us-ascii?Q?EsRbECmYkr75VdGfb1eAfle63+dwoNe9bWQhbhPyjd0Vr1z7jNsWIdTBGezI?=
- =?us-ascii?Q?BQja4Ux6Fv6wvKKjmypDQTTCXlEcY77EzS23KAAyWIgMeHXQXSW9ZiJ9Dq3E?=
- =?us-ascii?Q?gm2Kx5yaP7vyBtcn9SumxqVAM3xIPjpQJ8Hvimhuvmks3XERi6qiBHl3fjg4?=
- =?us-ascii?Q?Re+x3u42Kso=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DZihcJsOaxBcxGqYyqn3cg8YVgZJbr9Wu4ceKxJtExyhP6ivxLjbStcO4IYc?=
- =?us-ascii?Q?Gi5lQFmhNNkD6J7XJoZxAUPvRA0vx31esIc/+sHCtgyMhr0EJx5FXMRFWDEI?=
- =?us-ascii?Q?5TzxV9VlhqEIFs1Jq3rX72UZa0oIQI4vCo3LV7dHwlPqdwkCwQ03A5910ZiH?=
- =?us-ascii?Q?uWtDEN/npcmQiLkzJQjq1wvYmmGj8U2kAA8ZRQkoFo6/GuabRiIYyuulb6sv?=
- =?us-ascii?Q?QxwUh8tAtExcyke6TU+/+kUmbKbLkExZL0DnZJx10QSto/2HGWeAC+SvFpZ3?=
- =?us-ascii?Q?oJtMpYLc8c4cm8u4aaJHNgrU6FNEVWM5RhKAUOezaLBCuoHO3J49zFVMP9pL?=
- =?us-ascii?Q?jPvG46ZEOhAtXqGFB3XuDLKe8rmxNjYggqpUIaFUkmEYK1OKBOZHludoWimy?=
- =?us-ascii?Q?ze/vy4dX+XpE6mCatc3EmpNo8YzxxHqGWLFvtRXXKiWeH+3WAzWveBm2YfOL?=
- =?us-ascii?Q?nAnCiF3nTIypjNe7teJMawENigvoF8XS9w65oiHyd16N5NfQOesHc1QxxFkY?=
- =?us-ascii?Q?FX12+bcBRIBnJBRDtIoeRyrRFf+fRMn6P0tqFB686rOL3KAj9HpAhuloMgqM?=
- =?us-ascii?Q?l3ssO5N5Cop4SgXZmdaGrEG5XgYZL08ixyiphBcGvP/KZzpjpjLlkBmPNlkn?=
- =?us-ascii?Q?/Cl9szINLRa7c5IKbzEsSmjhEfbkBGZYlXtd33LeK2ctJP1Ci2MnqabO+J3o?=
- =?us-ascii?Q?WTKy0dy0T9d93VqpkdLzLgn2lyddAFDQCHkFaohmGdomqoW9zcOQAyhSMUQr?=
- =?us-ascii?Q?7Rr31MeJdCh1KgabuY2PMjzALLhCLTe3CAU982fu0iZu1cmMdLqIl9oJbd6N?=
- =?us-ascii?Q?dopIoU6voITp0r04LYLZ6roFyp87Rgwbtq11KnhCxrvJUFmRyZhuGiKesGK+?=
- =?us-ascii?Q?fb6aierDE/aGFJ9E42g4Y/c5Wsdz93dArt8D6iiEqxKExQnLvulDNm4RLBZi?=
- =?us-ascii?Q?IUo4nBxVP/Q9lgZp0f01cRHab+W4lIZxxG+X/IkzzwScR1tNohTAzYsRNZ/A?=
- =?us-ascii?Q?drJVkDUicT5EzgjWolF9aGDxY8CnLHNnIMTq2m30LUKQeSlZUfkst0hV1SqM?=
- =?us-ascii?Q?PxIYZFdbJJEntSyM7o1qz0n8NOg1O1KEFvEmChtLMon1xJYHf86L+b+xGryy?=
- =?us-ascii?Q?rzyJUZ4snsN0OUkEUPdzZftZTCNZTfhbwQOngm9odR9niqp/41IqPVLpFBXz?=
- =?us-ascii?Q?EN7zLF4nmdifGzHwTDyv4/1DGKxJc4KZlhPFN+2g0CueVdRrLEGyAvHXMCnF?=
- =?us-ascii?Q?/nzwhInXmW8WABokpO6vcHPJYrtIfLDrXAJIfBbD/Wbi5zi8jZpghTfjGKUU?=
- =?us-ascii?Q?smAD19+IznV7npBGoGLmcYfJqvUC7JKBdHrnqVEzeO4Vq9EJ+a/iisz+XshI?=
- =?us-ascii?Q?40AYQMUEQ81XGj7wdzpl7U3mEICBnXLIT4VVE6orTYhlHz+ZRKmAAnvweDEE?=
- =?us-ascii?Q?gv//naC20qqESm7uGBAmUFOeqgRmWpz6k+2Z33zkLGKTClhkdNnYfXq0APyK?=
- =?us-ascii?Q?sPGo3o7EKx2XQ7aFmj4h/ROk8iie+2l+GHtc+MhBoXMd2Xfp4pg1CnxWCzml?=
- =?us-ascii?Q?30cAM8IzOso5DI9s0rYdavxd2/n4MHrHwOs+cRr0?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b71fc90c-5fc9-4957-785f-08dde1202c59
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 02:04:05.7327
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BUWqCtMJS9IVHiB1sQUZWLaifIptgzfZGLQyGCoMARR8pxc2TqJf83s7suKyycHyIk6ubiYgZM714dmkT7qkCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7907
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Change Device::vendor_id() to return a Vendor type, and change
-DeviceId::from_id() to accept a Vendor type.
+Em Thu, 21 Aug 2025 14:11:06 -0600
+Jonathan Corbet <corbet@lwn.net> escreveu:
 
-Use the new pci::Vendor in the various Rust for Linux callers who were
-previously using bindings::PCI_VENDOR_ID_*.
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+> 
+> > There are too much magic inside docs Makefile to properly run
+> > sphinx-build. Create an ancillary script that contains all
+> > kernel-related sphinx-build call logic currently at Makefile.
+> >
+> > Such script is designed to work both as an standalone command
+> > and as part of a Makefile. As such, it properly handles POSIX
+> > jobserver used by GNU make.
+> >
+> > It should be noticed that, when running the script alone,
+> > it will only take care of sphinx-build and cleandocs target.
+> > As such:
+> >
+> > - it won't run "make rustdoc";
+> > - no extra checks.
+> >
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > ---
+> >  .pylintrc                    |   2 +-
+> >  scripts/sphinx-build-wrapper | 627 +++++++++++++++++++++++++++++++++++
+> >  2 files changed, 628 insertions(+), 1 deletion(-)
+> >  create mode 100755 scripts/sphinx-build-wrapper  
+> 
+> As a whole I like the idea of this - I would rather be reading code in
+> Python than in makefilese.  But I have some overall notes...
+> 
+> I am a bit dismayed by the size of it; this is many times the amount of
+> code it allows us to remove from the makefile.  Perhaps there's nothing
+> to be done for that, but ...
 
-Doing so also allows removing "use kernel::bindings" entirely from most
-of the affected files here.
+True:
 
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Elle Rhumsaa <elle@weathered-steel.dev>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- rust/kernel/pci.rs                    | 15 ++++++++-------
- rust/kernel/pci/id.rs                 |  5 ++---
- samples/rust/rust_dma.rs              |  6 +-----
- samples/rust/rust_driver_auxiliary.rs | 12 +++++-------
- samples/rust/rust_driver_pci.rs       |  9 +++++----
- 5 files changed, 21 insertions(+), 26 deletions(-)
+ 7 files changed, 922 insertions(+), 200 deletions(-)
 
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 504593c882c9..0ef8754f83e5 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -132,10 +132,10 @@ impl DeviceId {
- 
-     /// Equivalent to C's `PCI_DEVICE` macro.
-     ///
--    /// Create a new `pci::DeviceId` from a vendor and device ID number.
--    pub const fn from_id(vendor: u32, device: u32) -> Self {
-+    /// Create a new `pci::DeviceId` from a vendor and device ID.
-+    pub const fn from_id(vendor: Vendor, device: u32) -> Self {
-         Self(bindings::pci_device_id {
--            vendor,
-+            vendor: vendor.as_raw(),
-             device,
-             subvendor: DeviceId::PCI_ANY_ID,
-             subdevice: DeviceId::PCI_ANY_ID,
-@@ -231,7 +231,7 @@ macro_rules! pci_device_table {
- ///     <MyDriver as pci::Driver>::IdInfo,
- ///     [
- ///         (
--///             pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, bindings::PCI_ANY_ID as u32),
-+///             pci::DeviceId::from_id(pci::Vendor::REDHAT, bindings::PCI_ANY_ID as u32),
- ///             (),
- ///         )
- ///     ]
-@@ -412,10 +412,11 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
- }
- 
- impl Device {
--    /// Returns the PCI vendor ID.
--    pub fn vendor_id(&self) -> u16 {
-+    /// Returns the PCI vendor ID as a validated Vendor.
-+    pub fn vendor_id(&self) -> Vendor {
-         // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
--        unsafe { (*self.as_raw()).vendor }
-+        let vendor_id = unsafe { (*self.as_raw()).vendor };
-+        Vendor::new(u32::from(vendor_id))
-     }
- 
-     /// Returns the PCI device ID.
-diff --git a/rust/kernel/pci/id.rs b/rust/kernel/pci/id.rs
-index dd91e25a6890..2e4c7edc48a4 100644
---- a/rust/kernel/pci/id.rs
-+++ b/rust/kernel/pci/id.rs
-@@ -124,9 +124,8 @@ fn try_from(value: u32) -> Result<Self, Self::Error> {
- /// ```
- /// # use kernel::{device::Core, pci::{self, Vendor}, prelude::*};
- /// fn log_device_info(pdev: &pci::Device<Core>) -> Result<()> {
--///     // Get the raw PCI vendor ID and convert to Vendor
--///     let vendor_id = pdev.vendor_id();
--///     let vendor = Vendor::new(vendor_id.into());
-+///     // Get the validated PCI vendor ID
-+///     let vendor = pdev.vendor_id();
- ///     dev_info!(
- ///         pdev.as_ref(),
- ///         "Device: Vendor={}, Device=0x{:x}\n",
-diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
-index c5e7cce68654..f3385c4a7e5b 100644
---- a/samples/rust/rust_dma.rs
-+++ b/samples/rust/rust_dma.rs
-@@ -5,7 +5,6 @@
- //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
- 
- use kernel::{
--    bindings,
-     device::Core,
-     dma::{CoherentAllocation, Device, DmaMask},
-     pci,
-@@ -45,10 +44,7 @@ unsafe impl kernel::transmute::FromBytes for MyStruct {}
-     PCI_TABLE,
-     MODULE_PCI_TABLE,
-     <DmaSampleDriver as pci::Driver>::IdInfo,
--    [(
--        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
--        ()
--    )]
-+    [(pci::DeviceId::from_id(pci::Vendor::REDHAT, 0x5), ())]
- );
- 
- impl pci::Driver for DmaSampleDriver {
-diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
-index f2a820683fc3..55ece336ee45 100644
---- a/samples/rust/rust_driver_auxiliary.rs
-+++ b/samples/rust/rust_driver_auxiliary.rs
-@@ -5,7 +5,7 @@
- //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
- 
- use kernel::{
--    auxiliary, bindings, c_str, device::Core, driver, error::Error, pci, prelude::*, InPlaceModule,
-+    auxiliary, c_str, device::Core, driver, error::Error, pci, prelude::*, InPlaceModule,
- };
- 
- use pin_init::PinInit;
-@@ -50,10 +50,7 @@ struct ParentDriver {
-     PCI_TABLE,
-     MODULE_PCI_TABLE,
-     <ParentDriver as pci::Driver>::IdInfo,
--    [(
--        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
--        ()
--    )]
-+    [(pci::DeviceId::from_id(pci::Vendor::REDHAT, 0x5), ())]
- );
- 
- impl pci::Driver for ParentDriver {
-@@ -81,11 +78,12 @@ fn connect(adev: &auxiliary::Device) -> Result<()> {
-         let parent = adev.parent().ok_or(EINVAL)?;
-         let pdev: &pci::Device = parent.try_into()?;
- 
-+        let vendor = pdev.vendor_id();
-         dev_info!(
-             adev.as_ref(),
--            "Connect auxiliary {} with parent: VendorID={:#x}, DeviceID={:#x}\n",
-+            "Connect auxiliary {} with parent: VendorID={}, DeviceID={:#x}\n",
-             adev.id(),
--            pdev.vendor_id(),
-+            vendor,
-             pdev.device_id()
-         );
- 
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-index 606946ff4d7f..f3819ac4bad6 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -4,7 +4,7 @@
- //!
- //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
- 
--use kernel::{bindings, c_str, device::Core, devres::Devres, pci, prelude::*, types::ARef};
-+use kernel::{c_str, device::Core, devres::Devres, pci, prelude::*, types::ARef};
- 
- struct Regs;
- 
-@@ -38,7 +38,7 @@ struct SampleDriver {
-     MODULE_PCI_TABLE,
-     <SampleDriver as pci::Driver>::IdInfo,
-     [(
--        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
-+        pci::DeviceId::from_id(pci::Vendor::REDHAT, 0x5),
-         TestIndex::NO_EVENTFD
-     )]
- );
-@@ -66,10 +66,11 @@ impl pci::Driver for SampleDriver {
-     const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
- 
-     fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-+        let vendor = pdev.vendor_id();
-         dev_dbg!(
-             pdev.as_ref(),
--            "Probe Rust PCI driver sample (PCI ID: 0x{:x}, 0x{:x}).\n",
--            pdev.vendor_id(),
-+            "Probe Rust PCI driver sample (PCI ID: {}, 0x{:x}).\n",
-+            vendor,
-             pdev.device_id()
-         );
- 
--- 
-2.50.1
+Yet, a lot of them are blank lines, comments, docstrings and 
+argparse. Also, there are some improvements on it, like the PDF
+build error handling logic (more below).
 
+One of the things I wanted to do is precisely better describe
+what it does. The Makefile has lots of magic and complex macros
+that, even the ones that wrote it have headaches trying to understand
+after some time not looking on it.
+
+Also, part of it will be dropped at the next patch series when
+we will get rid of userspace-api/media/Makefile:
+
+	$ git diff 182fa089db0b..parse_headers scripts/sphinx-build-wrapper|diffstat -p1 
+	 scripts/sphinx-build-wrapper |   48 ---------------------
+	 1 file changed, 48 deletions(-)
+
+I guess there are some space to clean it up a little bit, for instance
+getting rid of most of the env vars and passing them as command
+line only. Yet, I opted to be a bit conservative at the cleanups at the
+env vars to reduce the risk of breaking something.
+
+> Is there value in the SphinxBuilder class?  Just because you can create
+> classes in Python doesn't mean that you have to; I'm not sure why you
+> would create one here rather than just doing it all at the module level.
+
+On Python, I prefer using classes, as:
+
+1. I don't like passing lots of arguments to functions;
+2. Python doesn't have struct. The closest concept of struct in Python
+   is a data class;
+3. Classes help to avoid global vars. In this specific case, the size of 
+   its data "struct" (e.g. class variables) is not small, as it has to
+   parse lots of environment vars, and several of those are used on
+   multiple places.
+
+> Is the "search for a newer Python" code really going to be useful for
+> anybody? 
+
+Well, I could have written it in shell script or Perl ;-)
+
+Seriously, the rationale was not to search for a newer Python code, but
+instead, to have a place were it is easier to understand what's
+going on and adjust to our actual needs.
+
+I actually started it because of the pdfdocs check: doing make
+pdfdocs currently will return an error code when building docs
+no matter what. Fixing it inside the Makefile would be doable, but
+complex and would likely require an script anyway (or a script-like
+code embedded on it).
+
+Now, instead of adding yet another hack there, why not do it
+right?
+
+> It seems like a lot of work (and code) to try to quietly patch
+> things up for somebody who has some sort of a strange setup.
+
+My idea was not to support some strange setup, but to I had a few
+goals. Mainly:
+
+1. to have the simplest possible Makefile without loosing anything;
+2. to be able to call the script directly, as it helps debugging;
+3. to remove that ugly for sphinx-build call macro logic inside
+   Makefile, with is hard to understand and even harder to touch;
+4. to fix a known bug with the current approach with regards
+   to PDF build: no matter if PDF build succeeded or not, it
+   always return an error code;
+5. to have a summary of the PDF build. Even with latexmk, the
+   PDF build is a way too noisy, being hard to check what broke
+   and what succeeded.
+6. to make easier to build PDFs in interactive mode (I added this
+   later at the development cycle).
+
+-
+
+For the future, if time permits, there are two possible improvements
+
+a) I'd like to change the way SPHINXDIRS work. Right now, it is a very
+   dirty hack, that makes sphinx-build becalled several times (one for
+   each dir), and breaks cross-references.
+
+   I'd like to be able to allow building multiple dirs at the
+  same time, with a proper index between them.
+
+b) By having this in python, we can do other cleanups like:
+
+   - instance convert sphinx-pre-install into a class, calling
+     it directly there;
+   - pick the logic inside conf.py that handles SPHINXDIRS and
+     latex documents.
+
+In summary, the advantage is that it is a lot easier to fine tune
+the script in the proper way than to add more hacks to docs Makefile.
+
+> Please, no "except Exception:"  (or the equivalent bare "except:").
+
+Ok.
+
+> That bit of locale tweaking shows up in enough places that it should
+> maybe go into a little helper module rather than being repeatedly
+> open-coded?
+
+Do you mean this?
+
+        # The sphinx-build tool has a bug: internally, it tries to set
+        # locale with locale.setlocale(locale.LC_ALL, ''). This causes a
+        # crash if language is not set. Detect and fix it.
+        try:
+            locale.setlocale(locale.LC_ALL, '')
+        except Exception:		# I'll replace it with locale.Error
+            self.env["LC_ALL"] = "C"
+            self.env["LANG"] = "C"
+
+This was also added later, to fix a current Sphinx (or Python?) bug.
+
+Try to run sphinx-build on a Debian-based or Gentoo distro without 
+setting any locale (which is the default after installing them):
+
+	# sphinx-build --help
+	Traceback (most recent call last):
+	  File "/usr/bin/sphinx-build", line 8, in <module>
+	    sys.exit(main())
+	             ~~~~^^
+	  File "/usr/lib/python3/dist-packages/sphinx/cmd/build.py", line 546, in main
+	    locale.setlocale(locale.LC_ALL, '')
+	    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+	  File "/usr/lib/python3.13/locale.py", line 615, in setlocale
+	    return _setlocale(category, locale)
+	locale.Error: unsupported locale setting
+
+	# LC_ALL=C sphinx-build --help
+	usage: sphinx-build [OPTIONS] SOURCEDIR OUTPUTDIR [FILENAMES...]
+	...
+
+
+Well, sphinx-build will crash even if called with "--help". Btw, 
+spinx-build is following Python recommendation of using '':
+	https://docs.python.org/3/library/locale.html#locale.setlocale
+
+Ok, we could drop that, but on the other hand it is just 5 LOC.
+(actually it can be 4 LOC, as self.env["LANG"] = "C" is not really needed 
+to avoid the crash).
+
+One thing I'm in doubt is with regards to --venv command line argument.
+It could be dropped, or it could be auto-detected. The code is also
+small, and IMHO it could help for the ones using venv:
+
+        # If venv parameter is specified, run Sphinx from venv
+        if venv:
+            bin_dir = os.path.join(venv, "bin")
+            if os.path.isfile(os.path.join(bin_dir, "activate")):
+                # "activate" virtual env
+                self.env["PATH"] = bin_dir + ":" + self.env["PATH"]
+                self.env["VIRTUAL_ENV"] = venv
+                if "PYTHONHOME" in self.env:
+                    del self.env["PYTHONHOME"]
+                print(f"Setting venv to {venv}")
+            else:
+                sys.exit(f"Venv {venv} not found.")
+
+Btw, this is the kind of code that makes sense to be inside some
+library.
+
+Thanks,
+Mauro
