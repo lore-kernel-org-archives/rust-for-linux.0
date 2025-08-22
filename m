@@ -1,279 +1,224 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9E2307AEF;
-	Fri, 22 Aug 2025 13:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A632FDC31;
+	Fri, 22 Aug 2025 14:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755870919; cv=none; b=ZnksKxdmC9ujUsGJHGWH9VRTRZeVjvHp0ARzzuYnLEYvwrhYywu08zq876m8E8/d9szSX/SbGWv3u4Np20rP4NZ6JEyxXl0lYpgQQDKV2pOSq6JGl4j7BtU2qiKsyyJCOcypxHpyYWbTGRhhg4ZeapMxkNwStMn53Nw0fKwgJkU=
+	t=1755872028; cv=none; b=aJu7TQtkE1cyCNnfRhc7OXygY8iTzzfnx3b9ymmwwu1leEvQOwv6hZDqX8bY8zpzbvXscUsnQrQZ5ekEz7+7YMpd4y66dxXd91lUCW6ZghocmVcRWChuveUlzyOjPvLTYcutjxmX9+PFGvdSN09gVlYEp6dJvIk320CYA+nsu/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755870919; c=relaxed/simple;
-	bh=hbDP41EtQ/FUPUSL8pbgPa2jVAAbBlM0004U5mA0n7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jXvoDy7GCmCMcMfCFeYxKeRrTJHmmjLKhqJ8hhxSYgToKu7JYMWcfsCw3S0RXqdb/HiDt6l2e9BKtTWEsZiYPh4QICn5oo138stBIXpVqbrGPUiZ9LQP8ftSh1UUJxJj7vExXlhKn6kOtE70o6grJ+dtmi9xo/1OXAiAm803x9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YHQ8ESyY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755872028; c=relaxed/simple;
+	bh=gkGj9UWuXL3nI8EdViAz29uJOXaZrL/MrAfy4WjmCY0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=mclWDG6bI9WnjwR/5masamHdhicQzPyZ/SwZxVaiQ4AjiS/YTWrBqvrC/Z4tirI/aeB0kWsUNsUQGfvzGA8kBtv/+kwj+1s3xUTXZ9QO1Jq1O+TV4q0TM8LjoXqRcdRKsf92LwTAiyPKEzL2h9JgmKNfnitI+dGxiAcJR99fpe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IpLlZ7W+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YHQ8ESyY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D04C4CEED;
-	Fri, 22 Aug 2025 13:55:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IpLlZ7W+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21D3C4CEED;
+	Fri, 22 Aug 2025 14:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755870918;
-	bh=hbDP41EtQ/FUPUSL8pbgPa2jVAAbBlM0004U5mA0n7Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YHQ8ESyYL6LoahS5ivoKDB7vgSysNu5b4+OWH1ry+juiqSZUfXAPuCmE4Jr1TX/Xe
-	 r3j/9TGds9LdGpA0DQ7+D83GRDMblI6fA5bixuSX9ZBL3NFesbWKqztag2eNXuLZCy
-	 ZohfZNa9BiooCo5MLIIm5da0bZcI/0uFrx9P5ialMl9li4xDeAsdUr+KY3vTPGooud
-	 Gy/Mp4d1aTwvBgwUMaVAyqc+7qYt1STx5BC85T/yKp82GxcZOSJHrgWs5Q94m6Mp1h
-	 VjhX/KVXKsWiQlSDUrd6tn3iCIxLXZvlukdLEciXgoVEO0S1l6gRcYAVh40t3+ZGMr
-	 Z1X30fnYDMCoA==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1upSEe-0000000CBJt-2vWe;
-	Fri, 22 Aug 2025 15:55:16 +0200
-Date: Fri, 22 Aug 2025 15:55:16 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 04/11] scripts: sphinx-build-wrapper: add a wrapper for
- sphinx-build
-Message-ID: <hjooonedrtoykg6qgg7kvat2ovtv6dtr3ulih6nowkds4teyuc@khetujrxwugv>
-References: <cover.1755258303.git.mchehab+huawei@kernel.org>
- <88a95c7f6996cafb247d6706060173b17a46d570.1755258303.git.mchehab+huawei@kernel.org>
- <87plco5tb9.fsf@trenco.lwn.net>
- <20250822040645.75d5faf4@foz.lan>
+	s=k20201202; t=1755872028;
+	bh=gkGj9UWuXL3nI8EdViAz29uJOXaZrL/MrAfy4WjmCY0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=IpLlZ7W+4YplB3G6RYJsjQrmGAPRW4BoWjqVQnLVt9SLvkUQIF/pdGgfpjiGHpoOM
+	 Rdnt1feqFSB2rtl8OV5EWZGTwC4xWZZsjkS6Y/QiHDaGS0wubFduuk9Ws1HU9/slul
+	 0ijRMtxTR+ufUZDtwrErlJ+Nv9MC6tawd/MYXVOgLnEvRBCKxjb8jiOHzQ64IbBRwJ
+	 CY+MrI6afrAZV5LuFF8dpBQ0duWEHvS3LU1G4akTzBuI4PRBOdQf5gqwO0lEGMZJD0
+	 jfGCg2A51/fJMCEs2Yt6owosiulzUFE2FIwdwDKNqJXuElWVptbFe52TuPo2wrRqCO
+	 JSZ9H4H1Rz/JQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822040645.75d5faf4@foz.lan>
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 Aug 2025 16:13:43 +0200
+Message-Id: <DC90ONOZLKAZ.35P6HOCCAIPW1@kernel.org>
+Subject: Re: [PATCH v3] rust: zpool: add abstraction for zpool drivers
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
+ Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
+ <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
+ <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Vitaly Wool" <vitaly.wool@konsulko.se>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250822133935.674282-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250822133935.674282-1-vitaly.wool@konsulko.se>
 
-On Fri, Aug 22, 2025 at 04:06:45AM +0200, Mauro Carvalho Chehab wrote:
-> Em Thu, 21 Aug 2025 14:11:06 -0600
-> Jonathan Corbet <corbet@lwn.net> escreveu:
-> 
-> > Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
-> > 
-> > > There are too much magic inside docs Makefile to properly run
-> > > sphinx-build. Create an ancillary script that contains all
-> > > kernel-related sphinx-build call logic currently at Makefile.
-> > >
-> > > Such script is designed to work both as an standalone command
-> > > and as part of a Makefile. As such, it properly handles POSIX
-> > > jobserver used by GNU make.
-> > >
-> > > It should be noticed that, when running the script alone,
-> > > it will only take care of sphinx-build and cleandocs target.
-> > > As such:
-> > >
-> > > - it won't run "make rustdoc";
-> > > - no extra checks.
-> > >
-> > > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> > > ---
-> > >  .pylintrc                    |   2 +-
-> > >  scripts/sphinx-build-wrapper | 627 +++++++++++++++++++++++++++++++++++
-> > >  2 files changed, 628 insertions(+), 1 deletion(-)
-> > >  create mode 100755 scripts/sphinx-build-wrapper  
-> > 
-> > As a whole I like the idea of this - I would rather be reading code in
-> > Python than in makefilese.  But I have some overall notes...
-> > 
-> > I am a bit dismayed by the size of it; this is many times the amount of
-> > code it allows us to remove from the makefile.  Perhaps there's nothing
-> > to be done for that, but ...
-> 
-> True:
-> 
->  7 files changed, 922 insertions(+), 200 deletions(-)
-> 
-> Yet, a lot of them are blank lines, comments, docstrings and 
-> argparse. Also, there are some improvements on it, like the PDF
-> build error handling logic (more below).
-> 
-> One of the things I wanted to do is precisely better describe
-> what it does. The Makefile has lots of magic and complex macros
-> that, even the ones that wrote it have headaches trying to understand
-> after some time not looking on it.
-> 
-> Also, part of it will be dropped at the next patch series when
-> we will get rid of userspace-api/media/Makefile:
-> 
-> 	$ git diff 182fa089db0b..parse_headers scripts/sphinx-build-wrapper|diffstat -p1 
-> 	 scripts/sphinx-build-wrapper |   48 ---------------------
-> 	 1 file changed, 48 deletions(-)
+On Fri Aug 22, 2025 at 3:39 PM CEST, Vitaly Wool wrote:
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index b39c279236f5..0fec5337908c 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -41,6 +41,11 @@
+>  pub struct Flags(u32);
+> =20
+>  impl Flags {
+> +    /// Create from the raw representation
+> +    pub fn new(f: u32) -> Self {
+> +        Self(f)
+> +    }
 
-After sleeping on it, IMO the best would be if we change the order:
-Let's place the series related to parse-headers.pl/kernel-images.py
-first. 
+I didn't notice this change before.
 
-Then, on this series, I can suppress the code that has support for
-the media build Makefile (reducing those 48 lines), making the
-patches cleaner.
+This function should be crate private, called from_raw() and document that =
+the
+given value must be a valid combination of GFP flags.
 
-I'll also change this series to place the new wrapper under
-tools/docs, splitting part of it on a library. The final code
-will be bigger due to the library, but it will become more
-modular and with a cleaner implementation.
+Please also make the addition of alloc::Flags::from_raw() a separate patch.
 
-> 
-> I guess there are some space to clean it up a little bit, for instance
-> getting rid of most of the env vars and passing them as command
-> line only. Yet, I opted to be a bit conservative at the cleanups at the
-> env vars to reduce the risk of breaking something.
-> 
-> > Is there value in the SphinxBuilder class?  Just because you can create
-> > classes in Python doesn't mean that you have to; I'm not sure why you
-> > would create one here rather than just doing it all at the module level.
-> 
-> On Python, I prefer using classes, as:
-> 
-> 1. I don't like passing lots of arguments to functions;
-> 2. Python doesn't have struct. The closest concept of struct in Python
->    is a data class;
-> 3. Classes help to avoid global vars. In this specific case, the size of 
->    its data "struct" (e.g. class variables) is not small, as it has to
->    parse lots of environment vars, and several of those are used on
->    multiple places.
-> 
-> > Is the "search for a newer Python" code really going to be useful for
-> > anybody? 
-> 
-> Well, I could have written it in shell script or Perl ;-)
-> 
-> Seriously, the rationale was not to search for a newer Python code, but
-> instead, to have a place were it is easier to understand what's
-> going on and adjust to our actual needs.
-> 
-> I actually started it because of the pdfdocs check: doing make
-> pdfdocs currently will return an error code when building docs
-> no matter what. Fixing it inside the Makefile would be doable, but
-> complex and would likely require an script anyway (or a script-like
-> code embedded on it).
-> 
-> Now, instead of adding yet another hack there, why not do it
-> right?
-> 
-> > It seems like a lot of work (and code) to try to quietly patch
-> > things up for somebody who has some sort of a strange setup.
-> 
-> My idea was not to support some strange setup, but to I had a few
-> goals. Mainly:
-> 
-> 1. to have the simplest possible Makefile without loosing anything;
-> 2. to be able to call the script directly, as it helps debugging;
-> 3. to remove that ugly for sphinx-build call macro logic inside
->    Makefile, with is hard to understand and even harder to touch;
-> 4. to fix a known bug with the current approach with regards
->    to PDF build: no matter if PDF build succeeded or not, it
->    always return an error code;
-> 5. to have a summary of the PDF build. Even with latexmk, the
->    PDF build is a way too noisy, being hard to check what broke
->    and what succeeded.
-> 6. to make easier to build PDFs in interactive mode (I added this
->    later at the development cycle).
-> 
-> -
-> 
-> For the future, if time permits, there are two possible improvements
-> 
-> a) I'd like to change the way SPHINXDIRS work. Right now, it is a very
->    dirty hack, that makes sphinx-build becalled several times (one for
->    each dir), and breaks cross-references.
-> 
->    I'd like to be able to allow building multiple dirs at the
->   same time, with a proper index between them.
-> 
-> b) By having this in python, we can do other cleanups like:
-> 
->    - instance convert sphinx-pre-install into a class, calling
->      it directly there;
->    - pick the logic inside conf.py that handles SPHINXDIRS and
->      latex documents.
-> 
-> In summary, the advantage is that it is a lot easier to fine tune
-> the script in the proper way than to add more hacks to docs Makefile.
-> 
-> > Please, no "except Exception:"  (or the equivalent bare "except:").
-> 
-> Ok.
-> 
-> > That bit of locale tweaking shows up in enough places that it should
-> > maybe go into a little helper module rather than being repeatedly
-> > open-coded?
-> 
-> Do you mean this?
-> 
->         # The sphinx-build tool has a bug: internally, it tries to set
->         # locale with locale.setlocale(locale.LC_ALL, ''). This causes a
->         # crash if language is not set. Detect and fix it.
->         try:
->             locale.setlocale(locale.LC_ALL, '')
->         except Exception:		# I'll replace it with locale.Error
->             self.env["LC_ALL"] = "C"
->             self.env["LANG"] = "C"
-> 
-> This was also added later, to fix a current Sphinx (or Python?) bug.
-> 
-> Try to run sphinx-build on a Debian-based or Gentoo distro without 
-> setting any locale (which is the default after installing them):
-> 
-> 	# sphinx-build --help
-> 	Traceback (most recent call last):
-> 	  File "/usr/bin/sphinx-build", line 8, in <module>
-> 	    sys.exit(main())
-> 	             ~~~~^^
-> 	  File "/usr/lib/python3/dist-packages/sphinx/cmd/build.py", line 546, in main
-> 	    locale.setlocale(locale.LC_ALL, '')
-> 	    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
-> 	  File "/usr/lib/python3.13/locale.py", line 615, in setlocale
-> 	    return _setlocale(category, locale)
-> 	locale.Error: unsupported locale setting
-> 
-> 	# LC_ALL=C sphinx-build --help
-> 	usage: sphinx-build [OPTIONS] SOURCEDIR OUTPUTDIR [FILENAMES...]
-> 	...
-> 
-> 
-> Well, sphinx-build will crash even if called with "--help". Btw, 
-> spinx-build is following Python recommendation of using '':
-> 	https://docs.python.org/3/library/locale.html#locale.setlocale
-> 
-> Ok, we could drop that, but on the other hand it is just 5 LOC.
-> (actually it can be 4 LOC, as self.env["LANG"] = "C" is not really needed 
-> to avoid the crash).
-> 
-> One thing I'm in doubt is with regards to --venv command line argument.
-> It could be dropped, or it could be auto-detected. The code is also
-> small, and IMHO it could help for the ones using venv:
-> 
->         # If venv parameter is specified, run Sphinx from venv
->         if venv:
->             bin_dir = os.path.join(venv, "bin")
->             if os.path.isfile(os.path.join(bin_dir, "activate")):
->                 # "activate" virtual env
->                 self.env["PATH"] = bin_dir + ":" + self.env["PATH"]
->                 self.env["VIRTUAL_ENV"] = venv
->                 if "PYTHONHOME" in self.env:
->                     del self.env["PYTHONHOME"]
->                 print(f"Setting venv to {venv}")
->             else:
->                 sys.exit(f"Venv {venv} not found.")
-> 
-> Btw, this is the kind of code that makes sense to be inside some
-> library.
-> 
-> Thanks,
-> Mauro
+> +/// # Example
+> +///
+> +/// A zpool driver implementation which does nothing but prints pool nam=
+e on its creation and
+> +/// destruction, and panics if zswap tries to actually read from a pool'=
+s alleged object.
+> +///
+> +/// ```
+> +/// use core::ptr::NonNull;
+> +/// use kernel::alloc::{Flags, KBox, NumaNode};
+> +/// use kernel::zpool::*;
+> +///
+> +/// struct MyZpool {
+> +///     name: &'static CStr,
+> +/// }
+> +///
+> +/// struct MyZpoolDriver;
+> +///
+> +/// impl ZpoolDriver for MyZpoolDriver {
+> +///     type Pool =3D KBox<MyZpool>;
+> +///
+> +///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpoo=
+l>> {
+> +///         let myPool =3D MyZpool { name };
+> +///         let mut pool =3D KBox::new(myPool, gfp)?;
 
--- 
-Thanks,
-Mauro
+Why mutable?
+
+> +///
+> +///         pr_info!("Created pool {}\n", pool.name);
+
+I think this print is unnecessary.
+
+> +///         Ok(pool)
+> +///     }
+
+Please add empty lines between functions.
+
+> +///     fn destroy(p: KBox<MyZpool>) {
+> +///         let pool =3D KBox::into_inner(p);
+
+Why the call to into_inner()? What do we get from moving the value?
+
+> +///         pr_info!("Removed pool {}\n", pool.name);
+
+Same as above, I think the print is unnecessary.
+
+> +///     }
+> +///     fn malloc(_pool: &mut MyZpool, _size: usize, _gfp: Flags, _nid: =
+NumaNode) -> Result<usize> {
+> +///         Ok(0) // TODO
+> +///     }
+> +///     unsafe fn free(_pool: &MyZpool, _handle: usize) {
+> +///         // TODO
+
+I'm not sure the TODO comments add any value.
+
+> +///     }
+> +///     unsafe fn read_begin(_pool: &MyZpool, _handle: usize) -> NonNull=
+<u8> {
+> +///         panic!("read_begin not implemented\n"); // TODO
+
+Please don't use panic!() here, we only ever panic the kernel when there is=
+ no
+other way to prevent undefined bahvior, i.e. as a last resort.
+
+I know it's just an example and it's not even run, but it might trick peopl=
+e
+into thinking that is is OK, given that it is an example.
+
+> +///     }
+> +///     unsafe fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem:=
+ NonNull<u8>) {}
+> +///     unsafe fn write(_p: &MyZpool, _h: usize, _handle_mem: NonNull<u8=
+>, _mem_len: usize) {}
+> +///     fn total_pages(_pool: &MyZpool) -> u64 { 0 }
+> +/// }
+
+Overall, I feel like the example doesn't add much value as it is. I think i=
+t
+would be better to provide a real example that actually implements the
+callbacks.
+
+What about doing adding the most simple implementation using a plain VVec f=
+or
+backing the pool? This way we can even run the example. :)
+
+> +/// ```
+> +pub trait ZpoolDriver {
+> +    /// Opaque Rust representation of `struct zpool`.
+> +    type Pool: ForeignOwnable;
+> +
+> +    /// Create a pool.
+> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
+> +
+> +    /// Destroy the pool.
+> +    fn destroy(pool: Self::Pool);
+> +
+> +    /// Allocate an object of size `size` using GFP flags `gfp` from the=
+ pool `pool`, with the
+
+I think you can just write "Allocate an object of `size` bytes from `pool`"=
+,
+which should sound a bit more organic.
+
+> +    /// preferred NUMA node `nid`. If the allocation is successful, an o=
+paque handle is returned.
+> +    fn malloc(
+> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
+> +        size: usize,
+> +        gfp: Flags,
+> +        nid: NumaNode,
+> +    ) -> Result<usize>;
+> +
+> +    /// Free a previously allocated from the `pool` object, represented =
+by `handle`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `handle` should be a valid handle previously returned by `mall=
+oc`
+
+"must be"; please also add a period at the end of a sentences (applies to t=
+he
+whole patch).
+
+> +    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, h=
+andle: usize);
+> +
+> +    /// Make all the necessary preparations for the caller to be able to=
+ read from the object
+> +    /// represented by `handle` and return a valid pointer to the `handl=
+e` memory to be read.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `handle` should be a valid handle previously returned by `mall=
+oc`
+
+A handle that has been given to free() already cannot be used here anymore.
+However, as by your safety documentation this would be valid.
+
+More generally, for the safety documentation I recommend having a look at t=
+he
+documentation of the Allocator trait [1].
+
+[1] https://rust.docs.kernel.org/src/kernel/alloc.rs.html#139-216
