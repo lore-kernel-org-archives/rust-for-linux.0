@@ -1,119 +1,93 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0084AEC2;
-	Fri, 22 Aug 2025 05:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210272E285E
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 05:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755839985; cv=none; b=Ze+8rpe9Z/ZThC5JJidZLWq9oTdTJxKbDODd+PWp2kkuVSCh4bDDpUuW+bGHWXg3x+AZ0xiVAfy9oPCPcx6j8e6rMCs3JQvXDT5IL6SvUjSGXpaHIAsmcU5eYMAMvDADqsHX+xCveqXijV++ifBOlrP5No7ynia085phmtuPXXE=
+	t=1755841958; cv=none; b=hQK26CedzNnDgj76lezbjY/jyOWNHULFZMXaSpmbxpW/H1a+J7GZ8GDItEQhjn6F9w2eUBqL53Zkx54GzvNRZouhC+jEbea9Wbx5YFcb9OPFLXEGtx5vnAQfgKgJNSt8gl87gr2xPYdFDQqcTn+JTWDjed3ymUIvZr9+ZyQqv98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755839985; c=relaxed/simple;
-	bh=yDltWIurWHSj98BfITo9fI6oEAxULSFiwhBkEYZybB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u9o6aVUwbKUmUNYGlfORMEMC/YTKIx86OUarcRXsR6OeOBoyMkYbPDLwDm3158Uj1yAZIpiJ3fRU1JS+/w/E/RAWVesVebBvAP0OuiGdB8wG+TWEaKhbD0lc2GHdErmUfwhohewWlAZ3xLJqSHNbR13qDZdJt4+NbGuE/hNW7vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=comBnp5l; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1755841958; c=relaxed/simple;
+	bh=7uX8JWTac+f6ksh/wu4QfEa5tteH904VkAXQGClcFe4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h1LIJ2jpKVu86O7cO/SWcbV3tx2JkR+ELZlQuCD3lNb8FStzaNz9rAEUO7pUD/bpenYWKhFv1ASXvIX1/u2mfZB7VqIcVwL+jexcXe0n2UeD974k9two8bh1MbJT1APCOQfxnzEWuDxegS4cZWv6tb6lP21lsdaa01QO81KaTs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZCvJBf5H; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="comBnp5l"
-Received: from mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:1f21:0:640:a2e6:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 9FFA980F75;
-	Fri, 22 Aug 2025 08:13:50 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kDML0F8Mn8c0-YATuAjhl;
-	Fri, 22 Aug 2025 08:13:49 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1755839630;
-	bh=vXSYq5gxkBuW0CJdxd13UHRDVKuqteSU5VS1DhuTh94=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=comBnp5l+KTUZWjLohAMmx23tCbrutpzp/+LisNRGjWxlhFVY+yxsIa2JUQtiGBdB
-	 js9UO9O7yB1nlW5u8niU12o4WKhUl5fVNLttepGasnPhKGiCwdHYzbB9syZSaiGQwn
-	 TKiUKP4AllJM2i8ITcu04RRJHgXTDIYOS2AHmN2s=
-Authentication-Results: mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Fri, 22 Aug 2025 08:13:43 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Viresh Kumar <viresh.kumar@linaro.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZCvJBf5H"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-76e2ea79219so2145495b3a.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Aug 2025 22:52:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755841956; x=1756446756; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YovWw4m77QAU1eZq6mNcpwZ3XWg61x3JgwqV7QjcnZU=;
+        b=ZCvJBf5HSr33KUAxPzvWxalVdOcbjDmhI82eR08WZiDG8/Fd36sdv25cFcCu8lGJcT
+         VLKkaCj/PPUX0nYm3uvzjT9LwouuUusb8R5QiEAHOREAww67piw1LPSGhCd7Ze5w662y
+         gF3ZC57qBTQyVZWMn5GsOT84dbhwOQmRugboLw7xcHzQXESxhNEZYUeYEz3zEpyFz5LR
+         1z892wHx3qTT0EUq6rGZFWPx8An20n3iSa/5R8svtl4++LWyK0bHvfOEXkQs52NMdWBz
+         GxYV06tlhSrsU9veg/5bAJHpI1P6Mq3y5lQpXop7BAvE+d3HfX012Sgs2W+0sl65KcIq
+         bvRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755841956; x=1756446756;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YovWw4m77QAU1eZq6mNcpwZ3XWg61x3JgwqV7QjcnZU=;
+        b=EXZJ/7+Vul7dQMwYGIW/NJyO9cgZciWjRCQErcNsxmDfPKOURA3ry7L03z4RvlCc4Q
+         cimK5x0+ZxrsMcJlalNGAMPBZxCHI7pt9o27drQyEwVQ56EUTAlqLD9bBeWQ+CaViCk3
+         04CIMDaWCoSNOmlJE1skeg7af3vgo9N/qC9n7xRlic13xj5hg9SUqDj9OxNu4qc9qlmo
+         PLJ0dqyC16isp4zPny1VRHG9mZWgZv1Wyvipf74zhb2wyfm9CySckC0XtCuImReUyGKS
+         TFmhCq4ZlvOH3wRqFWtPTciC871gSQOAtgETf9LemynJa2C9GQ3Kj5gFv/AfZxEJc+ob
+         f0Jw==
+X-Gm-Message-State: AOJu0YwAwThaXVJzf1zIeQ2sjgggUk1kyzh39jk3e5dG9E3+t/gge5+C
+	Jj0LWanq8RlEybb0uaPd6mpwfan6K27chQdvxaMwzd+chYGbjTYckqENK9i1gZfB+oRNMw4Ytyg
+	NxOYH
+X-Gm-Gg: ASbGncu+Oh7scYjj4pq/pmgqxxd2IK2sqs9DMnGbf0PEGmmWYoJZTM38qMWJoVihPI0
+	sbcLheN0Yj2l8e4r/gj/gq3JMIqeeJvWXyC9t+x8XkEtnSFmXpP45C8g8gmn/se6yGRsot/sA1d
+	Adm0pUq93A+Y/YaKrQRZTzwSUbK1zox+aiUnxFSjwnkY8K4JC88qbb9J2Q0x+Y/FXM7+tBED/iv
+	nkKhbnCp1wc8Jtj5LGbRYnMGKgad8tgKNQXPu9K6RBXxsY3wL6lhUGpuzr/itlt8a76FLnCblV8
+	IWKO7/jPRfuGaxEm5kFI9bONMTeCzfNCbafkxjeGwT5uMrhMH9QH92E9KcTDy7fiI+XrvEH1Gw3
+	s5YFzIK6RHcMckmWj/cymAfBeUAAVEGNTiSg=
+X-Google-Smtp-Source: AGHT+IERMmQ5QIMLdzGNTUZWTWABVarbRh+hsNdg9Eto0PuDHGxQR+AsczHzwOmYsK59MW3cwZ9ykw==
+X-Received: by 2002:a05:6a21:3299:b0:232:fcfc:7209 with SMTP id adf61e73a8af0-24340e197afmr2543328637.35.1755841956381;
+        Thu, 21 Aug 2025 22:52:36 -0700 (PDT)
+Received: from localhost ([122.172.87.165])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77037ae065dsm199357b3a.4.2025.08.21.22.52.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Aug 2025 22:52:35 -0700 (PDT)
+Date: Fri, 22 Aug 2025 11:22:33 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
 Cc: rust-for-linux@vger.kernel.org, vireshk@kernel.org, nm@ti.com,
- sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org
+	sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, dakr@kernel.org, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] rust: opp: use to_result for error handling
-Message-ID: <20250822081343.4041a3d5@nimda.home>
-In-Reply-To: <20250821092137.wttiixhiidt27hnq@vireshk-i7>
+Message-ID: <20250822055233.otexzvta35jjnqrb@vireshk-i7>
 References: <20250821091606.7470-1-work@onurozkan.dev>
-	<20250821092137.wttiixhiidt27hnq@vireshk-i7>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+ <20250821092137.wttiixhiidt27hnq@vireshk-i7>
+ <20250822081343.4041a3d5@nimda.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250822081343.4041a3d5@nimda.home>
 
-On Thu, 21 Aug 2025 14:51:37 +0530
-Viresh Kumar <viresh.kumar@linaro.org> wrote:
+On 22-08-25, 08:13, Onur Özkan wrote:
+> `ret` is returned at the end unlike other `to_result` usages in other
+> functions.
 
-> On 21-08-25, 12:16, Onur =C3=96zkan wrote:
-> > Simplifies error handling by replacing the manual check
-> > of the return value with the `to_result` helper.
-> >=20
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/opp.rs | 16 +++++-----------
-> >  1 file changed, 5 insertions(+), 11 deletions(-)
-> >=20
-> > diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-> > index 08126035d2c6..9d79c2816af5 100644
-> > --- a/rust/kernel/opp.rs
-> > +++ b/rust/kernel/opp.rs
-> > @@ -12,7 +12,7 @@
-> >      clk::Hertz,
-> >      cpumask::{Cpumask, CpumaskVar},
-> >      device::Device,
-> > -    error::{code::*, from_err_ptr, from_result, to_result, Error,
-> > Result, VTABLE_DEFAULT_ERROR},
-> > +    error::{code::*, from_err_ptr, from_result, to_result, Result,
-> > VTABLE_DEFAULT_ERROR}, ffi::c_ulong,
-> >      prelude::*,
-> >      str::CString,
-> > @@ -500,11 +500,8 @@ pub fn set(self, dev: &Device) ->
-> > Result<ConfigToken> { // requirements. The OPP core guarantees not
-> > to access fields of [`Config`] after this call // and so we don't
-> > need to save a copy of them for future use. let ret =3D unsafe {
-> > bindings::dev_pm_opp_set_config(dev.as_raw(), &mut config) };
-> > -        if ret < 0 {
-> > -            Err(Error::from_errno(ret))
-> > -        } else {
-> > -            Ok(ConfigToken(ret))
-> > -        }
-> > +
-> > +        to_result(ret).map(|()| ConfigToken(ret))
-> >      }
-> >=20
-> >      /// Config's clk callback.
-> > @@ -713,11 +710,8 @@ pub fn opp_count(&self) -> Result<u32> {
-> >          // SAFETY: The requirements are satisfied by the existence
-> > of [`Device`] and its safety // requirements.
-> >          let ret =3D unsafe {
-> > bindings::dev_pm_opp_get_opp_count(self.dev.as_raw()) };
-> > -        if ret < 0 {
-> > -            Err(Error::from_errno(ret))
-> > -        } else {
-> > -            Ok(ret as u32)
-> > -        }
-> > +
-> > +        to_result(ret).map(|()| ret as u32)
-> >      }
->=20
-> I would get rid of `ret` as well in both the cases, like it is done by
-> other users of `to_result()`.
->=20
+Ahh, I missed that to_result() doesn't return `ret` at all.
 
-`ret` is returned at the end unlike other `to_result` usages in other
-functions.
-
--Onur
+-- 
+viresh
