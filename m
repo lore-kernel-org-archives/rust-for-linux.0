@@ -1,243 +1,481 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2066.outbound.protection.outlook.com [40.107.223.66])
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B515119AD90;
-	Fri, 22 Aug 2025 13:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755869480; cv=fail; b=UdViKUj15Mg+I+HfLDnzC8MNs/wSnR4imzpD+9hsrcqjeX8t6CgP0tr6+oWI0m1cvDRGB2+dleXjsonQBc0gwFTuBUaPTGqz/6vkpMQhpwz/VLjHiCtuXw44my/PEljX2AshO2fdEThb1/kbEcyj2Cr5hZaKPa/1RI/Q8vLaKGU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755869480; c=relaxed/simple;
-	bh=M75aoKJMckEA5T91MePMvXpF8qKsDBOX8XGinGhzl6g=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=bMbrz8dKY6wab8daNU7DaIMo1x64ANsPU6L0Bv8zxC01up6TTuFIgRTJE0T9l9Fj3Stq4B3GQm0qVD+ts3vB50E5hd3N5gwRO6BXK8hsCNZFZq2eRQ4KGaYdySfkOQX7UgLyQNjvLBOn6Xj+R4P4gqMDvOsOfhORbA5oznt0ILk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dE0U/0T+; arc=fail smtp.client-ip=40.107.223.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF57304BBF
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 13:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755869998; cv=none; b=eFrOiysbMTwojvPMw/LJkFlqzB+p6aHD8M4pSL0x+Y+bBLMGBJbUMgHP9mVfjrDqWyO3szkwvzEQ80Z3XaLc5PLzE3jxTa4z8rt+uMT326nTDvQdPB/wEHUvuYCfoxUNYNMXOmXjonEM9qCRBCazaaYzpL59QSm0fmh/Ef/f4mY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755869998; c=relaxed/simple;
+	bh=r7y9V/aThHGuftYoaaduGPHNdWN8qOaN/EHkSnKBUoU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nfxuI9PubeHlIe6mD8TLVqNnrAcTLb0BYa4O5cAbW+AP/UTpgf62MS8uFy6W6roc4tWbu8Sw01MXxgl2Ze1Xrnd060Rqo9sWOQfPnngOuh7ThCSgTprWMh/xFKvWzfXEVQQQQ+n/zmbB3FjiVWF81v7IOeaCYd/DyIfKx1cIGd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=GecjSJE6; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=OUb4g+Kc; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dE0U/0T+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I3TegLzjNmXi53nHaactJyYQdLUdMZCBsIhjQIL9PajsfRBlfUfAd4WolVC/6XnrgIwbsLCF5N6uSoi8LlfR7YUgftPIoxhppf+T/hVRWGbeaMONsdOjG7wRCmsqBUksVuZ4Szzwywoa1mSoESuWAUPomdUJjXg7b4yxYbuMAb6EloyN7/mQoJb07K23MSsK1VYOYu4CluYrUO/yrYW/xTg0d72XfASksbajVXtRkXP6PQvW6ZBzlfOb65zefP5lKM51+hjFm36C9u7jCbihmsMLJ6oqoviuX19bYZ9Jt7D/oTcdlzY/H5drFUDrjgBKmp7vianLPYKXt0a1PTOR2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wsXVHVaS2IYJbqjfkarH3Wge3T9QZ/XRBMhu01biN9U=;
- b=MpnrLfagLYwzrqkIZafc/gk1BkgreyA+g+lSI6vLUgUMCAtDJ3J/cEUluKW+eT9osuvr9L/ooEoWKcypeFGyM4iQrvf7qt3VlvcT4c0NqMnPoW9evuj194EidoyLtBaNMfukYNeR8Z/YyKT7N91NR2oXZ+BmKvzDazf/+c+Pe3BKSf+LB43ZXVHR6Zzm4I+LQoKNV9ve0fkWL3IBmT2olCrmVzNSPyuD7sP2sxTUdXREAgKLCck8yQVjD1cVpWZimjkpH8V+TW3bq2AsoTQ05Wcl/wq8pb8ws4qtHPyRryPaK+aJVV/tRqgmemtry4LhYszGpYN9fjUagC7D40RkQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wsXVHVaS2IYJbqjfkarH3Wge3T9QZ/XRBMhu01biN9U=;
- b=dE0U/0T+elevB06XiiBVdp1AgAINZ1Z1jjJGca6mmI3yeJmHsFeQ9GUbGDo4OM1RIw4HZyaMzPWQ7fEQScHgsFr+WZfC6ymHc5Aa1TVoKGJ2wb8vtyJCWYwl0U9UTWU+VVBekmCzdlpjb6146M+soVDdxJyFwBIM5LRscZ9xEG6Di6Sbur7TuM3p3hzc/5EsD153EOIc0XWn7pOwjjUnEPvYYi77YshO9gsoeeCLiNaJ7fRAQYlUfSDzVb0q2R7FI9PRC1ydX1dWHuNpQDziz9zY4yf2qhWpT+7HWpbjVJ4V4m90zoElyUiYu4z60YRMoqphkI4ZaoSCPPpxeqHqjw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA0PR12MB7721.namprd12.prod.outlook.com (2603:10b6:208:433::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Fri, 22 Aug
- 2025 13:31:15 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9052.014; Fri, 22 Aug 2025
- 13:31:15 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 Aug 2025 22:31:12 +0900
-Message-Id: <DC8ZS3RPS2W2.1D6MXZ28MP73K@nvidia.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 0/5] Rust infrastructure for sg_table and scatterlist
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, <akpm@linux-foundation.org>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <abdiel.janulgue@gmail.com>, <jgg@ziepe.ca>, <lyude@redhat.com>,
- <robin.murphy@arm.com>, <daniel.almeida@collabora.com>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250820165431.170195-1-dakr@kernel.org>
-In-Reply-To: <20250820165431.170195-1-dakr@kernel.org>
-X-ClientProxiedBy: TY2PR06CA0004.apcprd06.prod.outlook.com
- (2603:1096:404:42::16) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="GecjSJE6";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="OUb4g+Kc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1755869986; x=1756474786;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=RF+nHIv2P+5gWVjUKLJEAmRaVE8S3qtIpyyvl43WTUk=;
+	b=GecjSJE6ihwd08HHVByNwFjFCufAyUE5yITB4DgrB4j/yhC0RcJWAYJBkNc4zOvIveBH9LGwFY53o
+	 ssApNTW9uRADuviceu2n2JP72GwcNJgWXACMRKweLditlKrMXzKMzRdw1hxYnHO6iq+RmM5PN9oIL/
+	 jydXwUwixyr/3hWS2HFIsEAVflOuKIq+Ks92Pij5SXB9nUYCTwQZTrnp53VVxtzU50ztzUbfspdpeb
+	 JB2SjvVTWX0ir8JP3r2FrmQl8R138RHxr3L9GEASOJypabYGPH8edlFkfA2T8Wo4+TtWuxxcd9QNQ6
+	 /iwWRzxzQ3yUoIH4P0+XQRRCeGb7ycw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1755869986; x=1756474786;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=RF+nHIv2P+5gWVjUKLJEAmRaVE8S3qtIpyyvl43WTUk=;
+	b=OUb4g+Kc3kD7jgCHwdRs5Ymngu1vOyLbBtt89xnQSm6ym1uPFb1C48yaBpV9e5UYqDZKLU//IAACE
+	 SjKp4LYDw==
+X-HalOne-ID: 759e0b94-7f5d-11f0-bde3-494313b7f784
+Received: from slottsdator.home (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
+	by mailrelay6.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 759e0b94-7f5d-11f0-bde3-494313b7f784;
+	Fri, 22 Aug 2025 13:39:45 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	linux-mm@kvack.org,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v3] rust: zpool: add abstraction for zpool drivers
+Date: Fri, 22 Aug 2025 15:39:35 +0200
+Message-Id: <20250822133935.674282-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA0PR12MB7721:EE_
-X-MS-Office365-Filtering-Correlation-Id: db57d6ad-f19b-4fdd-f944-08dde1802aff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|376014|7416014|366016|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VmZ0QmROYmxYRS9nSnZhalNHUWN0NWFVUmRVOXgyeldGcDJlbVhqbDM5RTdT?=
- =?utf-8?B?dHRJRjBVeHJ4bnRPbHNRazZiSWt2ekljNEg0a2ZBVStuS0JrSkFCY1BzeDV2?=
- =?utf-8?B?WTZ4N1N3WE4zR2NmR3g0enZ1NkxTWkJ3TXRJdkRIQlpVNmVuTXZVQjhsQkhS?=
- =?utf-8?B?eld2bGRzU1ZFQzFvVHZyY0tRMnNadWJlY0J3MG1Pa280L2ltRzY4RHcyRGt1?=
- =?utf-8?B?MFdCeGtYRmJyZTBYNnlXUW5lbEhjbVhqVU8wKzJBd1czOXpZUk9qWlp4dzhv?=
- =?utf-8?B?YStsZUdWMnp1NTNlb1RBQVc1NmNGNysyUVArV3FyLy9RNm92OVU0VlpSVU8z?=
- =?utf-8?B?c3JKaWJsTUpFa1Q2RFVYcTI1RlBWcjhPYWd5NUxLbmhPRDZmWS91NGdhdVh1?=
- =?utf-8?B?bFpoTjFzU2hIcnRIWWRiNisvcGRtZXQ2b295L3B6dVErM3F6dWZCNDF5dkh5?=
- =?utf-8?B?aXJYaG1oSFRlUG9WekNMQXp6SUduZjY5ZkNIOHR5QmpDRUJIbElMKzBnSEZ5?=
- =?utf-8?B?c3hBaS9CV2pCN2R2bmJQR1pzd2xYZlpWOElMNGdqd0JXYzhrRWZuRk9hUW5u?=
- =?utf-8?B?MWtXeUg5eWJZUXhROWgwbFV0eTVkYXZhM3V5TkgyWmZObUdaWE1ZN0RpQlph?=
- =?utf-8?B?WStuNCtmazhTbTJVbnZqb2paTWZYd2s4Vlp5bm9JbjNxclVVV2RCVXVOeUtR?=
- =?utf-8?B?V09Kd0hPNlkyM1h1SjlMS2xNME9samZCdUxIRmNDYXdKTnUwbTZuSGlYUGl2?=
- =?utf-8?B?djNIeVJUQ1BIaWN6QkdvV3VtOHRqQWozMFMzc2R6MnBERGFNREx1U1U1Z3Bw?=
- =?utf-8?B?YlpRZVhaZXo5TTZVdmgxazhBa2tqR3FuRjBaR3YvY2Z2ZHNYTjZDMFp0d1Z6?=
- =?utf-8?B?eFo4MWdqQ0FJdFFhSFp0VzkvQk5TSXBNejBpS1laV25kS2FScEMwWHkrZmpw?=
- =?utf-8?B?OXlQOThINlJZVjNTa2ZXQkFGN3BHcldicWRwVytDaFB3eFhha0xjNjZvdFJo?=
- =?utf-8?B?QU84d1VacVd1SFJscG1UVVFXNjBJbDlLeFhSUE9veTVPYmVyMzNXMS9DaFg3?=
- =?utf-8?B?YjV0K0E0UzRGcXV4VW5ORTdwUXdBZTdrYW9yUXovLzhtNCttV20zL3pUckQ4?=
- =?utf-8?B?UUFjSlQycWFVVmhWVnBPbDRKTm8vRkFBVG1Fc3NOdjcxSnRucFRDVjNLOWRi?=
- =?utf-8?B?bU9hYkJHNkNOVEcxY3RRZTUxOWo1Qi90YVAwTVlFN3U5Qk1VVlhndWpnL3dz?=
- =?utf-8?B?Wm5BcDk2eEtvZzlGMTQveFFLRHYyWU84S2Uzait3enhsUHA5M1FuYWo4cit2?=
- =?utf-8?B?OTVSMjVybDk4NkNlOWVPVWhDd2VTUFZpclppNHByUmRZL09IKzYxZU5MbHNu?=
- =?utf-8?B?cVcwUElRQm9QQUZIT1FiSUd1clBNWjJIMzhRS2F5dStmcXNlNmxCZktib291?=
- =?utf-8?B?UHQrbzU4L1d2NzNqR2s4WnJ6d0YzWUkyR3FNUW5FY3M4TUkySFlyNkd2bWFK?=
- =?utf-8?B?dWVrcVJNWVdrbWczZ1ZCL0RPNlJjQmRoM3RWZHJVOVNjZ0doUFRBZCtCWlFx?=
- =?utf-8?B?NVd4cEFMdUhlREMxYWdKeDgyWGEzZ0FTdGJraFRZWHA5UW9ZNEltU1AvbDJM?=
- =?utf-8?B?aHRzMHZQYW1JZWx1WjJERG1TSGtMOU0xTHZIVGxRTEZ6Rlo3d2h6UDI1a2lu?=
- =?utf-8?B?QVBuTU83YW9FZ0lrSUZoeExsUEVoOW1uU01ueGF3VFQ4WWdiZWg0eWpaWUEr?=
- =?utf-8?B?R3UrcSs3ZG90aXdyMXhFSzBnOW1UaDJoalhOSlEwc1E1UldjSEtvNGdiSG9u?=
- =?utf-8?B?RnVWb3dVYjdUTDZsZG5VaFZISVBGcEwwZkt5YzBCR1R3NzFSS0twWG40eFU0?=
- =?utf-8?B?M0swdDVVazEwVzFNRWlpSS96ZXlUYVlrcG1wd1lrbGFGQnpoeW9kQ2NKK09y?=
- =?utf-8?B?cVpkMVlYelpQMW1Neitaa2poM1ZCbXl4MHN4eGIyRzArY3FueUVKTWJZYXpo?=
- =?utf-8?Q?/ZDnLPcNYIkZyHfQEkyHj8KBjWHtn8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(7416014)(366016)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Ylk0dm5kZmx6Z2t5eXpOTmI3Mm1JRG05VmlTZFNXY2kwV1Jjb1Z3WE81d1gr?=
- =?utf-8?B?U1BuR3JXWDdpbU9LK3UwTG5PT3BDLy92amxzMnRwVWdHYTYxMnFDWmxlaWpz?=
- =?utf-8?B?ajdzOFNzVHBxSTNMSHRPNWdqSFJyeTVzUWdnMTd1eTFYWklpL1FaaTRZZnlz?=
- =?utf-8?B?QmdqdTJyaVAxeUtYZ0ZheE1FQmVLVlc5TEFpdkxWV2t1SFZQeHJrQ0wybm5H?=
- =?utf-8?B?TnBRT21mUVNISmcwcVF2cXBTUFFLZmxoMytIblYrOFRmZU9xM09tS1QzRjFY?=
- =?utf-8?B?ZW5CMFphbktkWmhWbjMwcHExV21aT29ZTFQ1RlR5RHlSVm5rRjNuZkc5cGwz?=
- =?utf-8?B?cWZYRWYyLzltWHJCSEV0c0thUW9uSXF4elBOdm9PMndlSHIxWG9HK2d1MmxD?=
- =?utf-8?B?TUkrWDdtcVdFZXdDSEdpNG9kZVRLS3pmQlQrSytnODdUcXJsNkVGWS8zMjRv?=
- =?utf-8?B?ZFovV0RDbUhNd0lzOWI4Q1FFUFlQMTlIdG16cXVUc2tvRXprek1vNS9iVHpI?=
- =?utf-8?B?R1QvTkZMcTRVVm9yTDNpb2JNMm1KWUM1Q1QvZnZQUUsvUW1UaXN6MlJSNHJm?=
- =?utf-8?B?RzJCVEJ1cGgyM2w0eWZaNFBWUGpLaUUrdzV3L05nYk55dTN6K3kvTGVTNGxC?=
- =?utf-8?B?TTdRM0s0OGc4UTdyOXhwS2xmTnhiK0hJbHNQQXpCdnM3VUdyTHBLMk1wWFk0?=
- =?utf-8?B?SjVRbTdma0NaVEtlV2JoVTVnRytRWHFCN2JlVjd0VEd2Sjd3MFB0ZnZhUWlG?=
- =?utf-8?B?QWhWaW5WZzBmYlVVMlZud3pzVjZlUmZIT3o2aUU0OEhhVEpkblhnV3hVbXVV?=
- =?utf-8?B?Uk9QcDF0TERObVByMitQTEd5MmE5cDZPcmE4Y3VZaXpIWkUrMTM5ak1jaHZu?=
- =?utf-8?B?NitMSTdEUUYwOTAvTTE0Ris1K3hqeGlLbGNXL1dQQW1ENzFLeEpOTkpUOUg0?=
- =?utf-8?B?MHJ4R0wyRmFmK0tyYkZESm4yMjZRY3g5c3B6QnZhUlJzYmFRZytaYXFZSjV3?=
- =?utf-8?B?K1Q2bXBDVldCTHBObTZVbVF3Umk2S3BtVC80bVVFZVhRR1RWK2FQaHhjK1ZS?=
- =?utf-8?B?Njc2THJKcExDaDJRazFETkpwRFFNeHhvOHBqZ2cyTTlxWWpWbUl5aEhISThi?=
- =?utf-8?B?TUxKb1NDQ1Z0T21MbFQwNk8vMkhEMkJ4NXM1Q21WVTJGT2ljT05kYVFSUmgv?=
- =?utf-8?B?RFczT3JRaThUenBSd2ttZURIZE82eVFPcWJhUVkrUFBiQzhZdVNxclpabGdi?=
- =?utf-8?B?ZkhTRE1LY2ZhbHBRTFhNOWFRLzBPcnlvWWdkdkZLSnU0MUVSaUxHSERMUXgy?=
- =?utf-8?B?aWdYMmJUNUh3WklvTWZwZGJjRyt2R3M5MGF0R2tLZDdwZkhnNHovVjhNZytm?=
- =?utf-8?B?amlMMC9zNTRicE1ESlhUSUJNaXkrdVplQUhuaWl6eFh1YnRqZE0vZTZtM25X?=
- =?utf-8?B?RG1EZnhDd2dZUFRHSUU0SlF0M284REJKNWhMZ3ZMZ1JSWDZFVm11cEZuZ240?=
- =?utf-8?B?eTNZRDdDUlJQckQzSFZjdEFoSkJGNzlVZzZMTmJhS0M3Mkxva0NudGJJUHVD?=
- =?utf-8?B?RUd1ZitvSTdsN1FvaUpQSHErRDZ1M05MbGkrUFVyUVFjV1JyM2xHWHo0Y2Ru?=
- =?utf-8?B?eXJkZXFJT1V5dzZzVFEvVlIvODVrRVVqUkd5WkR4UHBsd1RFUE9jSkRPSUlv?=
- =?utf-8?B?NHIxd1kxR0hjV3JILzdSaDRWQkZ2MnNSSlYrdC9TZG5PNTh0WFZidkRONTJn?=
- =?utf-8?B?am9VbVpyQjhWMElvWUI1SndZdWNLU2FJNUdvS3AyZjhWSjZ0SGYwcitLMXFy?=
- =?utf-8?B?WXo4Ym9IblhtNmdQYXNkcGllSTBOakRGc0N2aTFYRllRcXhNbkxaZlN4NWVs?=
- =?utf-8?B?RzJNbEE0b0xLOG5wbXBGQXNxWG5xRFI1NmhCMU1JeVVjRDlmRmp4L0dGOVhp?=
- =?utf-8?B?V0UyS2RXeXc0Y1JtbmNXOG9MekQ4cnovZXl6U0p1b3MraC9pdWR4VjhFODlN?=
- =?utf-8?B?RHpKUXZUeWdzY1hhd1ppZi9ETEs4aS8rWFBCaU5ScjNQalpXcUZMSTY0K0d0?=
- =?utf-8?B?RHpjVlorR2NMa2duQjd3TTdxbXJXekFtRk5JMzU5dFpNMVFPUXFualRjRHpm?=
- =?utf-8?B?UU5HOTFjTzJLWTVFS1ZKb2JxK0Q4R3lrY2JuK0kva3FSeXlLY3JKUWQ0a3h6?=
- =?utf-8?Q?xlTT9zLCdiW+XwB0Np+/Jbw4O4Kt5pl3xnPx49robUFH?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db57d6ad-f19b-4fdd-f944-08dde1802aff
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 13:31:15.2243
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8dE5lYVvkHCk4a7KkEp07UjWEVffuhwi1+abVOXhyI7jPxTrO61s+C+tA1q0qmJ7Rz9QlNPLVcEpmrSLGD2VLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7721
+Content-Transfer-Encoding: 8bit
 
-On Thu Aug 21, 2025 at 1:52 AM JST, Danilo Krummrich wrote:
-> This patch series provides abstractions for struct sg_table and struct
-> scatterlist.
->
-> Abdiel and me agreed for me to take over his previous iterations on this =
-topic.
-> I decided to send my patches as a new series rather than as a subsequent =
-version
-> of Abdiel's previous iterations, since the changes I made turned out to b=
-e much
-> closer to a full rewrite.
->
-> The most notable differences in design are:
->
->   - SGTable utilizes BorrowedPage, AsPageIter and VmallocPageIter from my=
- patch
->     series in [1].
->
->   -  SGTable is a transparent wrapper over either struct Owned<P> (where =
-P is
->      the provider of the backing pages) or struct Borrowed, which by itse=
-lf is a
->      transparent wrapper over Opaque<bindings::sg_table>, i.e. either
->      SGTable<Owned<P>> or just SGTable (which is equivalent to
->      SGTable<Borrowed>.
->
->      - `SGTable<Owned<P>>`: Represents a table whose resources are fully =
-managed
->        by Rust. It takes ownership of a page provider `P`, allocates the
->        underlying `struct sg_table`, maps it for DMA, and handles all cle=
-anup
->        automatically upon drop. The DMA mapping's lifetime is tied to the
->        associated device using `Devres`, ensuring it is correctly unmappe=
-d
->        before the device is unbound.
->
->      - `SGTable<Borrowed>` (or just `SGTable`): A zero-cost representatio=
-n of an
->        externally managed `struct sg_table`. It is created from a raw poi=
-nter
->        using `SGTable::as_ref()` and provides a lifetime-bound reference
->        (`&'a SGTable`) for operations like iteration.
->
->      - As a consequence, a borrowed SG table can be created with
->        SGTable::as_ref(), which returns a &'a SGTable, just like similar
->        existing abstractions.
->
->        An owned SGTable is created with SGTable::new(), which returns an
->        impl PinInit<SGTable<Owned<P>>, Error>, such that it can be initia=
-lized
->        directly within existing private data memory allocations while pro=
-viding
->        the required pin guarantees.
->
->   - SGTable<Owned<P>> uses an inner type Devres<DmaMapSgt> to ensure that=
- the
->     DMA mapping can't out-live device unbind.
->
->   - SGTable<Owned<P>> uses pin-init for initialization.
->
-> This patch series depends on [1] (branch containing the patches in [2]). =
-A
-> branch containing this series (including dependencies) can be found in [3=
-];
-> Abdiel's latest series can be found in [4].
->
-> [1] https://lore.kernel.org/rust-for-linux/20250820145434.94745-1-dakr@ke=
-rnel.org/
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=
-=3Dpage-iter
-> [3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=
-=3Dscatterlist
-> [4] https://lore.kernel.org/lkml/20250718103359.1026240-1-abdiel.janulgue=
-@gmail.com/
+Zpool is a common frontend for memory storage pool implementations.
+These pools are typically used to store compressed memory objects,
+e. g. for Zswap, the lightweight compressed cache for swap pages.
 
-I am going to do a full review of this revision over the weekend, but I
-have already successfully used it in nova-core to boot the GSP. Thus,
+This patch provides the interface to use Zpool in Rust kernel code,
+thus enabling Rust implementations of Zpool allocators for Zswap.
 
-Tested-by: Alexandre Courbot <acourbot@nvidia.com>
+Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+---
+Changelog:
+v1 -> v2:
+* reworked to stick to the existing Rust driver infrastructure
+* removed raw pointers from the Rust API
+v2 -> v3:
+* detailed safety requirements for unsafe API functions
+* removed unwrap()
+* some typo corrections
+---
+ MAINTAINERS                     |   1 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/zpool.c            |   8 +
+ rust/kernel/alloc.rs            |   5 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/zpool.rs            | 291 ++++++++++++++++++++++++++++++++
+ 7 files changed, 309 insertions(+)
+ create mode 100644 rust/helpers/zpool.c
+ create mode 100644 rust/kernel/zpool.rs
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b6f7c6939ff8..aa6815763246 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -27870,6 +27870,7 @@ F:	include/linux/zpool.h
+ F:	include/linux/zswap.h
+ F:	mm/zpool.c
+ F:	mm/zswap.c
++F:	rust/kernel/zpool.rs
+ F:	tools/testing/selftests/cgroup/test_zswap.c
+ 
+ SENARYTECH AUDIO CODEC DRIVER
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 84d60635e8a9..f0c4c454882b 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -75,6 +75,7 @@
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+ #include <linux/xarray.h>
++#include <linux/zpool.h>
+ #include <trace/events/rust_sample.h>
+ 
+ #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 7cf7fe95e41d..e1a7556cc700 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -51,3 +51,4 @@
+ #include "wait.c"
+ #include "workqueue.c"
+ #include "xarray.c"
++#include "zpool.c"
+diff --git a/rust/helpers/zpool.c b/rust/helpers/zpool.c
+new file mode 100644
+index 000000000000..762977aca46b
+--- /dev/null
++++ b/rust/helpers/zpool.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0'
++
++#include <linux/zpool.h>
++
++void rust_helper_zpool_register_driver(struct zpool_driver *driver)
++{
++	zpool_register_driver(driver);
++}
+diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+index b39c279236f5..0fec5337908c 100644
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -41,6 +41,11 @@
+ pub struct Flags(u32);
+ 
+ impl Flags {
++    /// Create from the raw representation
++    pub fn new(f: u32) -> Self {
++        Self(f)
++    }
++
+     /// Get the raw representation of this flag.
+     pub(crate) fn as_raw(self) -> u32 {
+         self.0
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ed53169e795c..165d52feeea4 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -129,6 +129,8 @@
+ pub mod uaccess;
+ pub mod workqueue;
+ pub mod xarray;
++#[cfg(CONFIG_ZPOOL)]
++pub mod zpool;
+ 
+ #[doc(hidden)]
+ pub use bindings;
+diff --git a/rust/kernel/zpool.rs b/rust/kernel/zpool.rs
+new file mode 100644
+index 000000000000..8b7249956b61
+--- /dev/null
++++ b/rust/kernel/zpool.rs
+@@ -0,0 +1,291 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use crate::{
++    bindings,
++    error::{from_result, Result},
++    kernel::alloc::Flags,
++    str::CStr,
++    types::{ForeignOwnable, Opaque},
++};
++use core::ffi::{c_int, c_uchar, c_void};
++use core::ptr::{null_mut, NonNull};
++use kernel::alloc::NumaNode;
++use kernel::driver;
++use kernel::ThisModule;
++
++/// Zpool API.
++///
++/// The [`ZpoolDriver`] trait serves as an interface for Zpool drivers implemented in Rust.
++/// Such drivers implement memory storage pools in accordance with the zpool API.
++///
++/// # Example
++///
++/// A zpool driver implementation which does nothing but prints pool name on its creation and
++/// destruction, and panics if zswap tries to actually read from a pool's alleged object.
++///
++/// ```
++/// use core::ptr::NonNull;
++/// use kernel::alloc::{Flags, KBox, NumaNode};
++/// use kernel::zpool::*;
++///
++/// struct MyZpool {
++///     name: &'static CStr,
++/// }
++///
++/// struct MyZpoolDriver;
++///
++/// impl ZpoolDriver for MyZpoolDriver {
++///     type Pool = KBox<MyZpool>;
++///
++///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpool>> {
++///         let myPool = MyZpool { name };
++///         let mut pool = KBox::new(myPool, gfp)?;
++///
++///         pr_info!("Created pool {}\n", pool.name);
++///         Ok(pool)
++///     }
++///     fn destroy(p: KBox<MyZpool>) {
++///         let pool = KBox::into_inner(p);
++///         pr_info!("Removed pool {}\n", pool.name);
++///     }
++///     fn malloc(_pool: &mut MyZpool, _size: usize, _gfp: Flags, _nid: NumaNode) -> Result<usize> {
++///         Ok(0) // TODO
++///     }
++///     unsafe fn free(_pool: &MyZpool, _handle: usize) {
++///         // TODO
++///     }
++///     unsafe fn read_begin(_pool: &MyZpool, _handle: usize) -> NonNull<u8> {
++///         panic!("read_begin not implemented\n"); // TODO
++///     }
++///     unsafe fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem: NonNull<u8>) {}
++///     unsafe fn write(_p: &MyZpool, _h: usize, _handle_mem: NonNull<u8>, _mem_len: usize) {}
++///     fn total_pages(_pool: &MyZpool) -> u64 { 0 }
++/// }
++/// ```
++pub trait ZpoolDriver {
++    /// Opaque Rust representation of `struct zpool`.
++    type Pool: ForeignOwnable;
++
++    /// Create a pool.
++    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
++
++    /// Destroy the pool.
++    fn destroy(pool: Self::Pool);
++
++    /// Allocate an object of size `size` using GFP flags `gfp` from the pool `pool`, with the
++    /// preferred NUMA node `nid`. If the allocation is successful, an opaque handle is returned.
++    fn malloc(
++        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
++        size: usize,
++        gfp: Flags,
++        nid: NumaNode,
++    ) -> Result<usize>;
++
++    /// Free a previously allocated from the `pool` object, represented by `handle`.
++    ///
++    /// # Safety
++    ///
++    /// - `handle` should be a valid handle previously returned by `malloc`
++    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: usize);
++
++    /// Make all the necessary preparations for the caller to be able to read from the object
++    /// represented by `handle` and return a valid pointer to the `handle` memory to be read.
++    ///
++    /// # Safety
++    ///
++    /// - `handle` should be a valid handle previously returned by `malloc`
++    unsafe fn read_begin(
++        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
++        handle: usize,
++    ) -> NonNull<u8>;
++
++    /// Finish reading from a previously allocated `handle`. `handle_mem` must be the pointer
++    /// previously returned by `read_begin`.
++    ///
++    /// # Safety
++    ///
++    /// - `handle` should be a valid handle previously returned by `malloc`
++    /// - `handle_mem` should be the pointer previously returned by `read_begin`
++    unsafe fn read_end(
++        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
++        handle: usize,
++        handle_mem: NonNull<u8>,
++    );
++
++    /// Write to the object represented by a previously allocated `handle`. `handle_mem` points
++    /// to the memory to copy data from, and `mem_len` defines the length of the data block to
++    /// be copied.
++    ///
++    /// # Safety
++    ///
++    /// - `handle` should be a valid handle previously returned by `malloc`
++    /// - `handle_mem` should be a valid pointer to an allocated memory area
++    /// - `handle_mem` + `mem_len` should not point outside the allocated memory area
++    unsafe fn write(
++        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
++        handle: usize,
++        handle_mem: NonNull<u8>,
++        mem_len: usize,
++    );
++
++    /// Get the number of pages used by the `pool`.
++    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -> u64;
++}
++
++/// An "adapter" for the registration of zpool drivers.
++pub struct Adapter<T: ZpoolDriver>(T);
++
++impl<T: ZpoolDriver> Adapter<T> {
++    extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void {
++        // SAFETY: the memory pointed to by name is guaranteed by zpool to be a valid string
++        let pool = unsafe { T::create(CStr::from_char_ptr(name), Flags::new(gfp)) };
++        match pool {
++            Err(_) => null_mut(),
++            Ok(p) => T::Pool::into_foreign(p),
++        }
++    }
++    extern "C" fn destroy_(pool: *mut c_void) {
++        // SAFETY: The pointer originates from an `into_foreign` call.
++        T::destroy(unsafe { T::Pool::from_foreign(pool) })
++    }
++    extern "C" fn malloc_(
++        pool: *mut c_void,
++        size: usize,
++        gfp: u32,
++        handle: *mut usize,
++        nid: c_int,
++    ) -> c_int {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow_mut(pool) };
++
++        from_result(|| {
++            let real_nid = match nid {
++                bindings::NUMA_NO_NODE => NumaNode::NO_NODE,
++                _ => NumaNode::new(nid)?,
++            };
++            let h = T::malloc(pool, size, Flags::new(gfp), real_nid)?;
++            // SAFETY: handle is guaranteed to be a valid pointer by zpool
++            unsafe { *handle = h };
++            Ok(0)
++        })
++    }
++    extern "C" fn free_(pool: *mut c_void, handle: usize) {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++
++        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
++        // allocated by `malloc`.
++        unsafe { T::free(pool, handle) }
++    }
++    extern "C" fn obj_read_begin_(
++        pool: *mut c_void,
++        handle: usize,
++        _local_copy: *mut c_void,
++    ) -> *mut c_void {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++
++        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
++        // allocated by `malloc`.
++        let non_null_ptr = unsafe { T::read_begin(pool, handle) };
++        non_null_ptr.as_ptr().cast()
++    }
++    extern "C" fn obj_read_end_(pool: *mut c_void, handle: usize, handle_mem: *mut c_void) {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++
++        // SAFETY: handle_mem is guaranteed to be non-null by the caller (zswap)
++        let handle_mem_ptr = unsafe { NonNull::new_unchecked(handle_mem.cast()) };
++
++        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
++        // allocated by `malloc`.
++        unsafe { T::read_end(pool, handle, handle_mem_ptr) }
++    }
++    extern "C" fn obj_write_(
++        pool: *mut c_void,
++        handle: usize,
++        handle_mem: *mut c_void,
++        mem_len: usize,
++    ) {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++
++        // SAFETY: handle_mem is guaranteed to be non-null by the caller (zswap)
++        let handle_mem_ptr = unsafe { NonNull::new_unchecked(handle_mem.cast()) };
++
++        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
++        // allocated by `malloc`.
++        unsafe {
++            T::write(pool, handle, handle_mem_ptr, mem_len);
++        }
++    }
++    extern "C" fn total_pages_(pool: *mut c_void) -> u64 {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++        T::total_pages(pool)
++    }
++}
++
++// SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid
++// because preceding call to `register` never fails for zpool.
++unsafe impl<T: ZpoolDriver + 'static> driver::RegistrationOps for Adapter<T> {
++    type RegType = bindings::zpool_driver;
++
++    unsafe fn register(
++        pdrv: &Opaque<Self::RegType>,
++        name: &'static CStr,
++        _module: &'static ThisModule,
++    ) -> Result {
++        // SAFETY: It's safe to set the fields of `struct zpool_driver` on initialization.
++        unsafe {
++            (*(pdrv.get())).type_ = name.as_char_ptr().cast_mut();
++            (*(pdrv.get())).create = Some(Self::create_);
++            (*(pdrv.get())).destroy = Some(Self::destroy_);
++            (*(pdrv.get())).malloc = Some(Self::malloc_);
++            (*(pdrv.get())).free = Some(Self::free_);
++            (*(pdrv.get())).obj_read_begin = Some(Self::obj_read_begin_);
++            (*(pdrv.get())).obj_read_end = Some(Self::obj_read_end_);
++            (*(pdrv.get())).obj_write = Some(Self::obj_write_);
++            (*(pdrv.get())).total_pages = Some(Self::total_pages_);
++
++            bindings::zpool_register_driver(pdrv.get());
++        }
++        Ok(())
++    }
++    unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
++        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
++        unsafe { bindings::zpool_unregister_driver(pdrv.get()) };
++    }
++}
++
++/// Declares a kernel module that exposes a zpool driver (i. e. an implementation of the zpool API)
++///
++/// # Examples
++///
++///```ignore
++/// kernel::module_zpool_driver! {
++///     type: MyDriver,
++///     name: "Module name",
++///     authors: ["Author name"],
++///     description: "Description",
++///     license: "GPL",
++/// }
++///```
++#[macro_export]
++macro_rules! module_zpool_driver {
++($($f:tt)*) => {
++    $crate::module_driver!(<T>, $crate::zpool::Adapter<T>, { $($f)* });
++};
++}
+-- 
+2.39.2
+
