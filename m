@@ -1,180 +1,167 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CED926B769;
-	Fri, 22 Aug 2025 20:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E856C3376AD;
+	Fri, 22 Aug 2025 21:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755896253; cv=none; b=c4wBnC7Bgi0LOEUTbYkA0RWRUnaR1U7GOZcauFC7cU3jGZbdTo7X46d+zVCd//q2j+diQ6mOubndrmYzsiPuqSsoaSslwaXb4FiFDo9VbOyhOZxfeKppk45i8nERaXVEydHZjl4Pz7uy8PEbXjlIzVCmJwVnHKtI2lUCDXdM84s=
+	t=1755897760; cv=none; b=eOGUVLEUq7arfxhiE9xU7B5TlaLOm6enqeUiirmkUX5tKyEIDleEq5vEG1grdMFgHWWRw8jbqoDv6WV6uQlg3HwJTnui4yhxmIkt69xHP8vuewfOwJkmAimgpnxK1JLXeairCDjR0xtTDuOAa/r0PvH0aILQP+XAaHvp09BlIK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755896253; c=relaxed/simple;
-	bh=14XhsQrbEN4zzhiuR/pCIlhHg7HQuzkEZ5hQIhvjoIw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NuD2T9YNO0qWcd8h88KXO3QQ/rAE0stKJ2WUuo8Eo3xVudG25Iv7SRcRSi3Ut6+fg0CPlIKwaiuxQaps2t5LB8fRygG5liIcQg+AKu+D+uCBCHbbgaw1oAUfbhRu3kkVv7WRzvOzcWDYYbxprX0AB8JADEdJDIMPAWZ5MpIGG2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KivwAIW1; arc=none smtp.client-ip=209.85.215.179
+	s=arc-20240116; t=1755897760; c=relaxed/simple;
+	bh=aCSTjYr12dUYeLAkvTB+CfsEAse/ghwdrgANbodpUOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q4My3g3FMu06mEFNbaWEMJ1u5SG3Ro6kmIiYG9X/7ZmGTizWpJ3S8VGs4qwml8s5j0QmKp/nkQGEiN00zmE+s7Ym/0MICaQFqd8fZ/VOI/Ha/zYam+/HaVR/OzCtN9tx40MyI1ThdpCP9RRPUHh5WYXZFEg+aW+p/caFBbvuVhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hp/8NIYX; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KivwAIW1"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b49ca2ad5cbso471040a12.3;
-        Fri, 22 Aug 2025 13:57:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hp/8NIYX"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-246163711caso2893915ad.3;
+        Fri, 22 Aug 2025 14:22:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755896251; x=1756501051; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wbZ1//2JmMwYJVuvT0Hn389ATZ5istA3tT8xqeblszY=;
-        b=KivwAIW1q1F18YUrLlFbmDS0gbZrXU6otVJlcyXGnHLTWIjmhxOYxgLDJthbORYRpF
-         60f/yd3LVaFaFwkEg2SWuD4uPPDUivsWEj1CK1DA0vM+yfJF51i+WI/S8sANNKD3so66
-         mAwhgSvG0LoE1ckYyE9cwx8NN1Ii+DehJQQUosl9LfAeWgQ+eTqfR/HTO4HQRumZ87QR
-         RU7H4WRpuBalZ0yZYpvnXvC5EbbAB0/r+768+VUViLMoFyQWWl8sePDtG6mEXBqD7dTE
-         t84MUxo4fFIRHwHvoNEomoNGZAloUwAY+QoqALNnXI78zYobmVDoLIt0UpMIcwY8LU5k
-         9hrQ==
+        d=gmail.com; s=20230601; t=1755897756; x=1756502556; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yzhtckg+e3wTvW8hXR7uEUObm+QutKm6afWZX0VLa3w=;
+        b=hp/8NIYX0LSm/cPgmotR69L3lNwRvPkspQqKmMULaSCqLlbXSQm5mdmsvPWV+6tqly
+         9VBFL+CNEt6wBu5Q8VFsLSHpPYYWXN/XA6w+6k0UNRykDoXbDnDGC97xvUg4XCcPUUu7
+         OTZZaiTipzGIO2buHvGS3PoFXM8YwatI266XA5uF8K+luWnZy1apUssClOfSI8OMZuRE
+         wMNOYzMhTBNS7PQc4B5sXuxi17CZYH1HZOZMi6t8k6oc9L2GAxp553i6D82CBa0iAmc+
+         kxAusA+zqFkD4Zm+C+HkHZ4wUAmxdlHWOb9lKWKYz8w0sMXdf+a+3qH3uWvCZ3AvSB2k
+         FUHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755896251; x=1756501051;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wbZ1//2JmMwYJVuvT0Hn389ATZ5istA3tT8xqeblszY=;
-        b=Xqgqx+YXAG3fSFSFqmbMvHGU/77OuWa2xf+dZFRmhK1QKrhLwP1LcBieIAxfqKr9EJ
-         ksQIU+scEiHxCROosc08UmipF50LIpJ9SOl2aP0iG53SQk8QIYizXkvOfhNYFuKm7D+H
-         Bk8icQ8XZNgp8c3HDxu3dgSX4k2EshtUUhSXfUO4poa4eTRKFGmxeCCO4hsSlaZ4hWNW
-         h4R58qiQYUxO1u9LNcxn/W4xC4oX6QB/VUJcLvGeuFTfAIoG7QmGHZk+3i+Xy4t5m2+G
-         cuVVXXu8s7JEq4D1J796LRwDPqBGLK69ub5kkGSGmzQ42WQS0KAK5a5GoWSlzc9Cy+1n
-         Y2kw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUI8MJuOBapeli4/YHcP3BFJ8Q9F63OMKasoQWKgKx8CNFBtueZgG6gSIgNAy7tOKLtRGhbp+q6pduylqRpRc=@vger.kernel.org, AJvYcCVb57vphxhc4vp0pTYYRhEVGbuDVSm8s+9PiV46sWqEVT4VojmMeJPX81n7nEToSnfmRPhJm8gVKBQDzVk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRsIj5JT1s3PKnfLGE9qF1Zk3BRE5znYzMHNBSmFTiqpflO8bW
-	XF58+TwtbUiBtM01rlT2v0Us1I9M7hqqAaFEdovHeOFWY5pkzA9DZQrVIsqMIQ==
-X-Gm-Gg: ASbGncs6ioJcV3BeDcP0T4uaE/Hsm0zAe+b78cLtoPf2nDlw3HubOd5FjuKZw3zVres
-	UBcHRq3fexQtmxp546ioIz3K1kbOst/vuU01JusAM9Qoarpv2FQm9uPwTaBxn7h6+8px4Jhy/Sk
-	InlJsQnKJIgUV8HXisYFBFHN+ItbgfnLXsDz5QYPaSbXuJV3ZFkmYgqATMWM2ITcHJlgALDWKkm
-	6Lt+TivzoQZem2rozptTJjPfZOHwxyHV5ntXO7fVA+10i2FhX4/qUWcGLdIgwztqzOVkb8zhv20
-	0B84OLJymAj1FhEwZDKUyOfWcuqlEhSyDMeKdhowOwZPXIABjush5d6QCpHLV/C8P7h8R2LhmM5
-	Hb93DxvKlOcAqYkHd9IEiMGS3pfiZ7sgwkr1Jj5GA
-X-Google-Smtp-Source: AGHT+IF3gu7QwavhV35H3JedPIGxgv+IFtChTc3NBhgdLKasp1r3tjgOw7IQZIVeYMn1rFjSczn/Kg==
-X-Received: by 2002:a17:903:1251:b0:234:a139:11fb with SMTP id d9443c01a7336-2462ee88d12mr55214805ad.27.1755896250743;
-        Fri, 22 Aug 2025 13:57:30 -0700 (PDT)
-Received: from fedora ([2804:1e68:8a01:bad6:43b9:5e8c:2d41:3a46])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-770401b01b2sm725228b3a.64.2025.08.22.13.57.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Aug 2025 13:57:30 -0700 (PDT)
-From: Sami Daniel <samidanielpersonal@gmail.com>
-To: ojeda@kernel.org
-Cc: alex.gaynor@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sami Daniel <samidanielpersonal@gmail.com>
-Subject: [PATCH] rust: Improve CStr UTF-8 conversion methods
-Date: Fri, 22 Aug 2025 17:57:13 -0300
-Message-ID: <20250822205715.83437-1-samidanielpersonal@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1755897756; x=1756502556;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Yzhtckg+e3wTvW8hXR7uEUObm+QutKm6afWZX0VLa3w=;
+        b=OXRsWiE6gSv0P+cB2ioJgDRCu4u4p1LhFp1UdVl2yn9209bIyS9Yh5AIcNzKbdVqJd
+         ORfFV/mzPF2Rwb2VN7GdaWVNLO8ag+bRF07EgiJd/iHtsdS9VBGctpOHbTmkU86ELeQf
+         aiB4ZMKRAnsqU9+K1hrTqmLzYbyQzQFEm1C0yDkDXy/t06tGVl7fH1rni30GwMCVxBK1
+         w/oF5M1oGVob1BqvLEoKWE7oqcZVtG1zGjq7DoWhlWYw2VDfGZr5pHkVlfgeqsSwsO+N
+         lCuzsnMfXLD55LZCE4G1v6pZ6JMnzAQKmN9Q79nXFWl3zklHLAqlKf/AcHCP8GXeiSa6
+         1alA==
+X-Forwarded-Encrypted: i=1; AJvYcCWMHTg7QbRJf5LolcyZFFYEuFU7gHhSdyCiPzXz6gREA1nL9Ld5YWTffOF6oSvDVU+JGoSuC/UD2ofa2yU=@vger.kernel.org, AJvYcCX20D/pr08alVtLt72Q0biLJWOk6/bs7zYtEkhpB/lgLLjh33TeqdfO0NeHuWYCINpbIIHshMAPKrah1s+BuLY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQKtGPlL2hpvvyrxIXDUjfk2WetPmTVwVYDYWX/BwG8Z0LNKgz
+	1vjLWeX6Oz3nhC9i6VAMQ/zJuIc/tPSEhOTXc0jvA5udiX5uXR9mo+HmZl49FafBeCZZSKn7T/7
+	mCJX6sPYlIfio+Y5i3RbbyuU0xKeZZKY=
+X-Gm-Gg: ASbGncv/C69cHkDY7UokEC9ZgkpW2/9lZyDxzIRrlaA8NPX5kQenbk48SH5Cpm636i4
+	7/Ziw6EGSgBNvP4g/KMeg3Vo7o3JBJhZhFxxC6W45QavxgN50Uk9MHuOz/lpDEKblWQn7DH8Zev
+	E4H3ZiqRtY8tUnmgkSw8cs8hjwTw/MiGg0dy7Bqvti70bf0VM9qPvaeXpuICW3WuE1din/lSI5a
+	cD/dLOtU5CKn2P46xW9W48GiI8u9Fd/VVQqxFX7vKrbLFRZPeonnUE/WDjOJZSRp1MorLXHnoT5
+	jrAF/Twata6gaKRAOuUpqkG2Tw==
+X-Google-Smtp-Source: AGHT+IHpTLoLMzrhDTM+fR6j+pavoy2bgPuI5ZiAywuOKGqjCTxDu61UbwRm7ObkpkhJJWbvMkHdh7mew6/Pb/9sLu0=
+X-Received: by 2002:a17:902:c402:b0:246:7702:dfd9 with SMTP id
+ d9443c01a7336-2467702f08cmr1356055ad.6.1755897756025; Fri, 22 Aug 2025
+ 14:22:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
+ <20250819-maple-tree-v2-2-229b48657bab@google.com> <DC6DC244ZIUL.304JSP7JFDE9Z@kernel.org>
+ <aKRx8xsY8CpzbeEm@google.com> <DC6F7BN2L19O.1APQU9KWZV7H5@kernel.org>
+ <CANiq72=xdryEKzo73-1vaBqGNNme2kRU0atP5PYOnOOXjNxZZg@mail.gmail.com>
+ <DC8WOHIEAHQD.21VWTH8VI8QG5@kernel.org> <CANiq72=ZZ7+tMi_XsRKunGAqm_v+kehFqzpEMMqm2qcTvzA9Mw@mail.gmail.com>
+ <DC8XIFWZN1SE.ZZP90D2N843X@kernel.org>
+In-Reply-To: <DC8XIFWZN1SE.ZZP90D2N843X@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 22 Aug 2025 23:22:24 +0200
+X-Gm-Features: Ac12FXzfzYShObxnsby6Cr2atstzxQL8aJjurXwQXu6DbRAE7q9OgPyAk8odYRk
+Message-ID: <CANiq72nJiJ4K6jy17x-YRYnJpjqTnohYWvoFrLkYQp0X4tLL=w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] rust: maple_tree: add MapleTree
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add safe conversion from CStr to &str with UTF-8 validation.
+On Fri, Aug 22, 2025 at 1:44=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> Why not? I mean, the above is cleaner and more idiomatic with or without =
+the
+> lint enabled. As mentioned, it's even the showcase that has been picked f=
+or the
+> documentation of Result::is_err_and().
 
-- Returns Result<&str, Utf8Error> for safe conversion
-- Complements existing str methods on str.rs
+Is it idiomatic, though? The example you mention comes from the method
+itself, which is of course the obvious use case for the method, but it
+doesn't imply other ways are now not idiomatic anymore or that people
+have stopped using `assert_eq!` or `unwrap_err()`.
 
-Signed-off-by: Sami Daniel <samidanielpersonal@gmail.com>
----
- rust/kernel/str.rs | 72 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 72 insertions(+)
+It has just been 2 years in Rust, after all. And, from a quick grep in
+the Rust repo, it doesn't seem they have migrated what they had to the
+new one in that time.
 
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 6c892550c0ba..ef94a0b2acf7 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -384,6 +384,34 @@ pub unsafe fn as_str_unchecked(&self) -> &str {
-         unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
-     }
- 
-+    /// Convert this [`CStr`] into a [`&str`], checking for valid UTF-8.
-+    ///
-+    /// This function validates that the [`CStr`] contains valid UTF-8 data
-+    /// and returns the corresponding [`&str`] slice. If the contents are not
-+    /// valid UTF-8, it returns an error.
-+    ///
-+    /// This is the safe alternative to [`as_str_unchecked`].
-+    ///
-+    /// [`as_str_unchecked`]: #method.as_str_unchecked
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::c_str;
-+    /// # use kernel::str::CStr;
-+    /// let valid_utf8 = c_str!("ツ");
-+    /// assert_eq!(valid_utf8.as_str().unwrap(), "ツ");
-+    ///
-+    /// // This would fail for invalid UTF-8
-+    /// let bytes = b"\xc3\x28\0";
-+    /// let invalid_cstr = CStr::from_bytes_with_nul(bytes).unwrap();
-+    /// assert!(invalid_cstr.as_str().is_err());
-+    /// ```
-+    #[inline]
-+    pub fn as_str(&self) -> Result<&str, core::str::Utf8Error> {
-+        core::str::from_utf8(self.as_bytes())
-+    }
-+
-     /// Convert this [`CStr`] into a [`CString`] by allocating memory and
-     /// copying over the string data.
-     pub fn to_cstring(&self) -> Result<CString, AllocError> {
-@@ -654,6 +682,50 @@ fn test_cstr_as_str_unchecked() -> Result {
-         Ok(())
-     }
- 
-+    #[test]
-+    fn test_cstr_as_str_valid_utf8() -> Result {
-+        let valid_bytes = b"\xf0\x9f\xa6\x80\0";
-+        let cstr = CStr::from_bytes_with_nul(valid_bytes)?;
-+        let result = cstr.as_str();
-+        assert!(result.is_ok());
-+        assert_eq!(result.unwrap(), "🦀");
-+
-+        let ascii_bytes = b"hello, world!\0";
-+        let ascii_cstr = CStr::from_bytes_with_nul(ascii_bytes)?;
-+        let ascii_result = ascii_cstr.as_str();
-+        assert!(ascii_result.is_ok());
-+        assert_eq!(ascii_result.unwrap(), "hello, world!");
-+
-+        let empty_bytes = b"\0";
-+        let empty_cstr = CStr::from_bytes_with_nul(empty_bytes)?;
-+        let empty_result = empty_cstr.as_str();
-+        assert!(empty_result.is_ok());
-+        assert_eq!(empty_result.unwrap(), "");
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_cstr_as_str_invalid_utf8() -> Result {
-+        let bad_bytes = b"\xc3\x28\0";
-+        let bad_cstr = CStr::from_bytes_with_nul(bad_bytes)?;
-+        let result = bad_cstr.as_str();
-+        assert!(result.is_err());
-+
-+        let bad_bytes2 = b"\xf0\x28\x8c\x28\0";
-+        let bad_cstr2 = CStr::from_bytes_with_nul(bad_bytes2)?;
-+        let result2 = bad_cstr2.as_str();
-+        assert!(result2.is_err());
-+
-+        // Test with incomplete UTF-8 sequence
-+        let incomplete_bytes = b"\xf0\x9f\0";
-+        let incomplete_cstr = CStr::from_bytes_with_nul(incomplete_bytes)?;
-+        let incomplete_result = incomplete_cstr.as_str();
-+        assert!(incomplete_result.is_err());
-+
-+        Ok(())
-+    }
-+
-     #[test]
-     fn test_cstr_display() -> Result {
-         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0")?;
--- 
-2.50.1
+Also, do we expect to use that method in normal code, and not just
+within asserts? We haven't used it yet
 
+As for being clearer, what we want to assert is that the cause is a
+given one, so `assert_eq!` seems like a natural choice (and it isn't a
+case like `is_none()` where there is an advantage). Plus it means it
+is able to show both sides if it fails. So it is not a clear win-win
+in my eyes.
+
+> But especially people new to the kernel starting to write Rust drivers ma=
+y not
+> even be aware of this fact. If they see some unwrap_err() calls in exampl=
+es they
+> might not even thing about it a lot before starting to use them, e.g. bec=
+ause
+> they're used to it from userspace projects anyways.
+
+We still have the issue that they will see the `assert!` anyway and
+thus can easily think panics are OK. I understand what you are saying:
+you want to minimize those cases anyway.
+
+> I think we should do this; I really think otherwise we gonna see a lot of=
+ them
+> once we get more drivers. It's just too convinient. :)
+
+A potential middle ground is to apply the lint in normal code, but not
+in examples.
+
+Or, even better, we can actually only allow it within `assert!`s,
+since it is a custom macro I wrote for KUnit and not the real one,
+i.e. enforcing what I suggested above [1].
+
+Another one is a lint that just affects `unwrap()` and not
+`unwrap_err()` -- I think the Clippy one doesn't allow it now, but we
+could request it. It could be combined with the above so that only
+`unwrap_err()` is allowed within `assert!`s.
+
+We could also go the C way, warning in `checkpatch.pl` about it like
+it does `BUG_ON`.
+
+What I like about the Clippy approach is that it can be locally `expect`ed.
+
+Cheers,
+Miguel
+
+[1]
+
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 41efd87595d6..86ea37319f7b 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -160,6 +160,7 @@ unsafe impl Sync for UnaryAssert {}
+ #[macro_export]
+ macro_rules! kunit_assert_eq {
+     ($name:literal, $file:literal, $diff:expr, $left:expr,
+$right:expr $(,)?) =3D> {{
++        #![allow(clippy::unwrap_used)]
+         // For the moment, we just forward to the expression assert
+because, for binary asserts,
+         // KUnit supports only a few types (e.g. integers).
+         $crate::kunit_assert!($name, $file, $diff, $left =3D=3D $right);
