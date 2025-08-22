@@ -1,212 +1,279 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2059.outbound.protection.outlook.com [40.107.93.59])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C421303C91;
-	Fri, 22 Aug 2025 13:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755870608; cv=fail; b=rZ9YgnBOVeEQuohww8eCYgp90imyyw33Enzdb9am8iFvgL36x8N5z2V0w0+Tt5Efxf4wJiqcWtMZpZWi7l4nUGodpUCfNJid8i+ja3sDvIyjc9v4rNx1y/ZatlPucJnhlzG2pRmH/OQKmIYymY4PXiLEAANM3NLU1cdLRNm1yb4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755870608; c=relaxed/simple;
-	bh=5/FQRtGwUA6D0O7glFMiTbJrENbZy34hOL29vBNXNFg=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=VGUP5y0w7hQjQd7xHSnXsyBlAwMCjUcsFHCWQ93yGo47GLV6L6rPo5ALz7ySomFzOK2346fVeIFd4Xzg0iAMxDoCQy6lj3N962h/lbjFMIoMveQKub+/IzWOliVisvkC0ihDjWPgKmXWHwkPf3B0QCLNuMGT+7Ctbu9kgWMMA8Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gk9aNMdI; arc=fail smtp.client-ip=40.107.93.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9E2307AEF;
+	Fri, 22 Aug 2025 13:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755870919; cv=none; b=ZnksKxdmC9ujUsGJHGWH9VRTRZeVjvHp0ARzzuYnLEYvwrhYywu08zq876m8E8/d9szSX/SbGWv3u4Np20rP4NZ6JEyxXl0lYpgQQDKV2pOSq6JGl4j7BtU2qiKsyyJCOcypxHpyYWbTGRhhg4ZeapMxkNwStMn53Nw0fKwgJkU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755870919; c=relaxed/simple;
+	bh=hbDP41EtQ/FUPUSL8pbgPa2jVAAbBlM0004U5mA0n7Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jXvoDy7GCmCMcMfCFeYxKeRrTJHmmjLKhqJ8hhxSYgToKu7JYMWcfsCw3S0RXqdb/HiDt6l2e9BKtTWEsZiYPh4QICn5oo138stBIXpVqbrGPUiZ9LQP8ftSh1UUJxJj7vExXlhKn6kOtE70o6grJ+dtmi9xo/1OXAiAm803x9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YHQ8ESyY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gk9aNMdI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ff392zxeYjK6BYIQRemFCSVJPWn6KhfA8c2i8rZLT7elujUsXQdqFI4hvc1vxWVE8KJXUINnMz+82yM82052+JPnqnhF19brHTR1jCqc3X4cIDbX6X7XVh0oN/mKGsitMQFdsfoLPLkRIrc1hwzuxi3asRI04hvQoq0KZ1urZDolv+wkJPpxs6e4CmcK5yYekFyzySTovDMs0A+Y4Csy2+doixyLVNigPhvIQ9JwjShvAJR0dHIsfGg6FM+T64Kuv09+zUgMspQ78hvrz1u0bfZOYFCfvlamJms3nr4/K2qCkEyDXtqavprxaEfeMJtfqa2UsJTlJ29FEtaaqfBdCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GdQCVxU2i7sH66CI2ACnh0DdaQTWeyVNGvE2TyOP378=;
- b=as0he2IaDhw/So2ZBctQ05MfJtdh4CyE+1qi0cCMFZW1xjuXj5LawuQg5JL6a2PHzdOQeXz+YNFsuhuWSath3DGg6hXmkbq3rPGZuYNPi+IYuxGcJy//cCQhggzjueVlCvBe2MVokyySzBhoit9pE7inRysvfiiKDQZS5i6QssWNJX+UxK6IADwI4gmmU/UZdkfFS5FK4+rtQ91mCNG7AGB75kBsrUCSkH3XDmenkyWK9svjpt1DLkcWuyUpWAB3cHBDFmuee4nLnynQkWdgJZ2u+KQ6dPC3u9jWRYZvzEb9FYxjc381z7qMSiP0JjbImcPPVKPsDLWT4hiSECABsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GdQCVxU2i7sH66CI2ACnh0DdaQTWeyVNGvE2TyOP378=;
- b=gk9aNMdIWWbrZ/Iw4y3spZkS/9Vdv8pr/Mu6l9mmNWqTi42SWJdmau2QQ5DJ9Hrav0d35CFEE1jCMrr6yKxSkFRdHy4GqKE7aRXp8u5ZlBst/m1KAVUL1HutdFFwaw/sE/W5xKqd4KUBLlT7j9OCTc4Y/vH5ACtEN4rgwKWRE1t9+tvvAdnFkrQOhxSHL7jDq0ATvcecGA+mDgKR2W7JXA1wPwUZ1EoyO5M6Q6z3L89BEOR7H4idG/ZNxMs0evRUg+W7itePUV1Kq3ZBTdsy4mQPxtcmHsRPlXNr16v0FI5lEN4z1p574qrIAlA+oOq/do6wG3t8GUivU9nYZNuz0Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DS0PR12MB6416.namprd12.prod.outlook.com (2603:10b6:8:cb::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9052.18; Fri, 22 Aug 2025 13:50:01 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9052.014; Fri, 22 Aug 2025
- 13:50:01 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 Aug 2025 22:49:57 +0900
-Message-Id: <DC906GRT9ESF.2ZV7RUZR0XZEK@nvidia.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Christian" <christiansantoslima21@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <~lkcamp/patches@lists.sr.ht>,
- <richard120310@gmail.com>
-Subject: Re: [PATCH v9] rust: transmute: Add methods for FromBytes trait
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250811213851.65644-1-christiansantoslima21@gmail.com>
- <DC0INEKNZPSE.WLEQH24SLW1I@nvidia.com>
- <5204b598-7792-460b-bec2-e3a4a4c7e32d@gmail.com>
- <DC5INTQKY0EX.1T4HD6OU8C4PI@nvidia.com>
- <CABm2a9cyvsXd1OS+tvDoDDEfMgBOJeetBVQU0x3m5E1vV1CApw@mail.gmail.com>
- <DC828042PKDV.16NDVKIGBNTJH@nvidia.com>
- <CANiq72kDUK0nScg+nK-M2U=MmxTmhayyRUv7n4E3UMQHr8RLQg@mail.gmail.com>
- <DC8MK2TAQ5D7.GHE5F2OREOD7@nvidia.com>
- <CANiq72mWYBAQYj_kWc+6XxrPVzguOd1vUB9f5JXzYdNx9EoXyw@mail.gmail.com>
-In-Reply-To: <CANiq72mWYBAQYj_kWc+6XxrPVzguOd1vUB9f5JXzYdNx9EoXyw@mail.gmail.com>
-X-ClientProxiedBy: OSTP286CA0039.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:224::14) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YHQ8ESyY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D04C4CEED;
+	Fri, 22 Aug 2025 13:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755870918;
+	bh=hbDP41EtQ/FUPUSL8pbgPa2jVAAbBlM0004U5mA0n7Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YHQ8ESyYL6LoahS5ivoKDB7vgSysNu5b4+OWH1ry+juiqSZUfXAPuCmE4Jr1TX/Xe
+	 r3j/9TGds9LdGpA0DQ7+D83GRDMblI6fA5bixuSX9ZBL3NFesbWKqztag2eNXuLZCy
+	 ZohfZNa9BiooCo5MLIIm5da0bZcI/0uFrx9P5ialMl9li4xDeAsdUr+KY3vTPGooud
+	 Gy/Mp4d1aTwvBgwUMaVAyqc+7qYt1STx5BC85T/yKp82GxcZOSJHrgWs5Q94m6Mp1h
+	 VjhX/KVXKsWiQlSDUrd6tn3iCIxLXZvlukdLEciXgoVEO0S1l6gRcYAVh40t3+ZGMr
+	 Z1X30fnYDMCoA==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1upSEe-0000000CBJt-2vWe;
+	Fri, 22 Aug 2025 15:55:16 +0200
+Date: Fri, 22 Aug 2025 15:55:16 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 04/11] scripts: sphinx-build-wrapper: add a wrapper for
+ sphinx-build
+Message-ID: <hjooonedrtoykg6qgg7kvat2ovtv6dtr3ulih6nowkds4teyuc@khetujrxwugv>
+References: <cover.1755258303.git.mchehab+huawei@kernel.org>
+ <88a95c7f6996cafb247d6706060173b17a46d570.1755258303.git.mchehab+huawei@kernel.org>
+ <87plco5tb9.fsf@trenco.lwn.net>
+ <20250822040645.75d5faf4@foz.lan>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS0PR12MB6416:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91888381-1f33-4c05-e760-08dde182ca28
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TllPelZJSWpuSUhEcWU5bFQwS1pqd1hXRXp1Qzh5WTl0NzQrUDg2VDVHWU02?=
- =?utf-8?B?L2p3ODRjVS9BamIzYzBiYzM3VjFxcGp5bDQ0TEVWMkI3MXZ1TElySDFBZ1Fh?=
- =?utf-8?B?L1FyZExrc0gzbmxYT1RVM1NhSnVvbTY5SFlqUUZxZ2NXYkNrWXM1N2I0L1JB?=
- =?utf-8?B?bDZDcmZtbHI5U2FIM3dVWHp2akRMc0JNaXlhblZ5bTJqT1hxNi9wSE9mcTVB?=
- =?utf-8?B?WDIyL2VzK2ZJWmdzQ29nbWNxbThvdmZ5QUhvdldRL0JQcXlsc0MrQ2twZ1Ux?=
- =?utf-8?B?N1NYYjVpdUdISjZiTEVtY1ZmN0huRXFiZ1pTZjUxODVGWWVFTjN2MDBkeHU1?=
- =?utf-8?B?dG53YmxOT0doMUFrUmdRWGEzOXBXOW9nUVVlZnRDaG5FdXgrT0lUWVg3ZEZW?=
- =?utf-8?B?b1dRTGU4Y2NqM1NlelFJaEw4VHpXNERJaitBTHBZaWFkOGZSVVpTVnVFTnUr?=
- =?utf-8?B?N0E1Z1RZZU9PemZmY1ByaE4zMkdaQnNoenFWL1hIM1JnanVpZjZpL3hSOFJT?=
- =?utf-8?B?aTlOUlU4M0xmR2JVZS9RRHdta0RZbU5hanV0NHRabURYMFZxZHg4U3dOWHJp?=
- =?utf-8?B?QmtwczF3T09abWVrUjdOankrZWpUNEZkZkFUZ0p6RjhFL24yV1ErcGk1R29P?=
- =?utf-8?B?bU02Y3ZoTzVvcjJycmloOU9CWVRiT3doTlhnRE5LWWpnZFNJYVdOZUpQWm5B?=
- =?utf-8?B?L3RkbnF1V2ZHbjlSeElTbktETTFvQjE0d292dlhMVjJWZUpONHM4eStaZ3Qv?=
- =?utf-8?B?V01uV3dtak9OU0xiMHZkVzgwbTBxdnlaMGtMdVplM3Ryd0RweHgwbndvSDZF?=
- =?utf-8?B?RzhtVmJidnJRaFJQNzF6cmVMRHNJY3Z6S0pLSkF1ZzBBMWJxWDFoc29CeVJq?=
- =?utf-8?B?U3RWUjNHdWRnRjRYazgyV0dJUzhZSEtIVHRhY3UzVzEveXhjMFdaVFNtbWtC?=
- =?utf-8?B?VER3cTF4UDV0TGphaEhhNFdzeUdiUW41ekxMRTk3V1pEWm5BUlFKSE1hOVdi?=
- =?utf-8?B?d0paWkZ0M1lMMUlFd21NbHlyMi8vWDQvbFpNQm5sSnF6MjVhNmU2QXJ5dWky?=
- =?utf-8?B?SEJxdjlHc21PeHdhVytZeEZndU5LZHFicEVlLytvSHMxcXhuSmNlMmY5cU9s?=
- =?utf-8?B?ejJOK2Jtdlk5Q2RlM3FoMDBlQmFTYTZ5ME12VDhCeXZsZWowTFRWajE0NWRq?=
- =?utf-8?B?RzR3S2UyOVBmUkw2d1V6bDkzb1FETG5ucHdiZTlkV08xVDFhMHVnZlZFbTNO?=
- =?utf-8?B?RVRsL3pQL0tMaGhkNHhHU0RlYnRCOWRkQjByZmwyY014a1YrOWtLMkxheEtj?=
- =?utf-8?B?bDlkMkpCWjlMZzNENzltUGJBVzBUU1ZQeDZ1L3ZXbWtOemppM0l3d3NKZWlI?=
- =?utf-8?B?UXU2MHBlTU11VVVabnlSamtuVlV1TzU5dWtVckc1YmUrNmVTN2tRYVVvTm14?=
- =?utf-8?B?N3Bxd2VkRkVIdHRJa0QycEQxYjhsb1M5eVA0Q2pLL0RKRGhuM0V4Q1JKS0R1?=
- =?utf-8?B?QzBxem1zSHhUMk52ZnRDem5lZXVEVFdJbnJSRGUzR1VkMjQ4SGsvTUkyU2RJ?=
- =?utf-8?B?RlVhR3NPVjYydjNjYTQ2empyRmtTejFtdS9tYnFIT29MbHRYaFV2RjM1a3RT?=
- =?utf-8?B?NGVKanJTT0h3MUdzdDJlcEJNekROVWI3c0JrZnQwR2xLKyt5dkpCZmUzUnNX?=
- =?utf-8?B?MGNkVWRlZzk1amtYc1ZrY0pKRzZVSDBhUUJubTUzWitlMVRjOXh0MEFCSUVj?=
- =?utf-8?B?T0R2ek9aY1VJb3h3NEFrdkIvK3hsSVVtYWxybXJreGpoR3M3TDRoOHpXaWpE?=
- =?utf-8?B?c3d3L21CTGw1K1VELzZZNnhFMUdwZ2Izb3BPRzA5NldnOFl0WUZBMzk3RkV3?=
- =?utf-8?B?N0FqVVFpUEtSSngrSVVUK045cXhmRUI5eFh6VlBZMnNCL2ZXTWpwVUZzTEw3?=
- =?utf-8?Q?ULXfC+suoY0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWdOQXd1SU5MNUZTYmtZSGowMHQ0dXBRQVNHVXFTZW9DRmdUdGkxOHhYb3JX?=
- =?utf-8?B?R3BGWjQwZVA4N3pwdm1vdHlON0JySS85L1lKNFVQeGRPakw4VVFzNjdLLzZS?=
- =?utf-8?B?M0lpV3UvWXRpajYxVUZkUFV0ajhHSFl4VDdTbWoxSEk4eFUrZno0ZGRIN1Ji?=
- =?utf-8?B?cnFzZ1Z4OTBseFBsUHM0M1pXV2lUa3paZGFsNEVEZVN3VHF1OEVLdmpZYlE1?=
- =?utf-8?B?L3ZYbW5oK05UWHp2NGdmclZKS3NYSE9uQ2M1QW9rWnU1T09wdkp1RVdpR2Ux?=
- =?utf-8?B?M2dMQmdsYU1GMkQyRktUZlFEaDdyNklaT20wLzhUUGdDbzVTRy9WQ2NKZU5v?=
- =?utf-8?B?K0Q2dnpXTUxaVUsxaXNKU3hoeEY3NGJ2S0lOblJzbUFDL0xFQmxVYmFOVW5k?=
- =?utf-8?B?TThlTGhUR0NZZ0Q5eFVrWlAyMEVobUJ5VEljYzhxNytJL0JXbzNqQVBXazFR?=
- =?utf-8?B?anFuYVVXeVFvcm85dWlXNTYrYU9tVGZlZ3l1eThOc1Avejk0a0ZrSDcxNzhV?=
- =?utf-8?B?VG50dnVNUmZGbHZqditMUkVCbjdYWDhLamRWOGJCYWZqS3RWK0d6ZUZjckli?=
- =?utf-8?B?R09sZ2NwcTBhYnhKRy85WXNkQjFNRmRBZGdqWFlqVnZHUEtXVnloR01kcUZj?=
- =?utf-8?B?cUw0YVNEZ0JrSzVDb05xbEt5bXNBb09PRkxQbVZMQmxBczVCYS9xR0lyVjkx?=
- =?utf-8?B?WFJ0YTFxdEVjTXdPQzJ4NkpZa0YzdERMc1lhU0Fab0Y3ZkFQMDVjblZPVGpM?=
- =?utf-8?B?czA5bHhkbC8zZWx1TVhzdlJpdElqQ2Z6ZnRLWDJ5UG9La2VtUHRockM5U3hr?=
- =?utf-8?B?OW92ZTk1bnF4V2JNV1lMOHdUMldvd1lqOU03NCtteXNodTdoaGZmWmwzSncr?=
- =?utf-8?B?c3IwbnAySjB2YnpQTDRIRGw5VGdrcUoxbW94eTJnWFFuL3FnaFJoT2w1amV0?=
- =?utf-8?B?N3FTWnpES3FzR2pZb1RxUHNRSHBLMktiK25tUUJxVnVoNkg3eWE0YjlKaGNK?=
- =?utf-8?B?T1YvNFFmR1lod2svQ0pLTHFPZnhwaWhMNmZTNm9Dc1hEZ1ZQbCt0Y1RGVXFP?=
- =?utf-8?B?bVFhVEdzYldZNWxiSkM1VktrTXFvNCsrMDdId0VQTDYxdUE5NjJmdG1NZ25p?=
- =?utf-8?B?bnJIMVZFeENHT2hjc09zZkJqY3NEVDVGTDNWZWJqVDZQZlg3WTNoWS9mN3lp?=
- =?utf-8?B?T0pDZ2xTZmw2VlZaL25zdkhjakNiNzk5VmluSGVUd1BWcHJYdUtjN2V6UERi?=
- =?utf-8?B?SjMzVDBsblhpOXRRV3ZXOUxGTjdDUUQyNWtHQjdBTWMwTkl4aVFCOG9zbm5K?=
- =?utf-8?B?UzJFbjNiM212WWVNdTltVWtoK0dSR2RLNEZXb3gxZ0xJUEZjVVZaWWI1TEJQ?=
- =?utf-8?B?NkNQWFNYVGZGdlJRaWVBWWNWTFI4aDdTOTlWR2Ezd1Q1UVBWZ2hLL1JyVkRi?=
- =?utf-8?B?YjA4ZS9WR1ZMaG13a3B4Q0dvOVAwV3VoMXR6WFNBbktoMnRibW5sVHQ1RzM1?=
- =?utf-8?B?VWNlSFprNUhZdDBKdGQ1VUx3a0Y5ZWVqRlJicUUyMWxzWG93YmpMSEIvSWRK?=
- =?utf-8?B?MzhMZnNIelRHU3plM2lWWHRnN2ljTm4vRndvZ2NFbHdtNzFWcUY4aGM2ekhD?=
- =?utf-8?B?VDJYeUhMbHQxTjc1UWpuM0EyQ0drb1R6RmdaaW11ZmJXN1NqNG9ramtRVFRV?=
- =?utf-8?B?TDBMaDUxVVdhR25SamttQnhMelpCWTNITElXN0Z5REFPNWhEVFNZMHNjdUlB?=
- =?utf-8?B?Qis2WnVOeFQ5UTM4ckkrOGNSYlZHQWNHeDRKWGpjd1BvRS9nTFFhOXJmeVhr?=
- =?utf-8?B?WUE0U1IxODIvK0I4bS9TdGlIdk1SYmR3R1QyK0s2RHdaM2paMEdHOGsyOUFp?=
- =?utf-8?B?enVTQmFFK1JJeDk4SEt0OHQ3b3NOV0Y3YUhKdWxKdCtRbUI3aHE3MVA3bWMr?=
- =?utf-8?B?TUMvU0VjNFF5RHQ2VTJmaUNENG00bElNUFY1eVg5V1RGc2Q0UndmMzRjMUVJ?=
- =?utf-8?B?UVl4WkplTlpkYTlSR21DRDBUMzdYN2NqWlJZcTJDa3Q4WmVzZ1hNYjhZMU0w?=
- =?utf-8?B?WC9DUkw0ZVUrbFNoS0ZrRDZPeUM2SHNXdlhSZUloSittZVJlTCsxUnJ1VVdF?=
- =?utf-8?B?ektsZVBDRkcyMnVCbWgxUGNQZ2ZybGlZQUpFWENIZGF2U3B2YkdMOUxuS1NO?=
- =?utf-8?Q?MMbAwlqD1beKMbMDlrGXb4eq9CksZT8DUPgyPpG17XJk?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91888381-1f33-4c05-e760-08dde182ca28
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 13:50:01.1945
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LVkSmRf3376BKUZMeMNtBBIGyks/Dx6h24NCcYU/ksUOD3m3TW1vkDS/ScaeSi1fBswtPzkTzanLRrI4NI1Yaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6416
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822040645.75d5faf4@foz.lan>
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On Fri Aug 22, 2025 at 5:07 PM JST, Miguel Ojeda wrote:
-> On Fri, Aug 22, 2025 at 5:10=E2=80=AFAM Alexandre Courbot <acourbot@nvidi=
-a.com> wrote:
->>
->> The methods making use of this feature are definitely usable by other
->> crates, and can also be inlined by the compiler. Would that be a
->> problem?
->
-> No, that is fine.
+On Fri, Aug 22, 2025 at 04:06:45AM +0200, Mauro Carvalho Chehab wrote:
+> Em Thu, 21 Aug 2025 14:11:06 -0600
+> Jonathan Corbet <corbet@lwn.net> escreveu:
+> 
+> > Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+> > 
+> > > There are too much magic inside docs Makefile to properly run
+> > > sphinx-build. Create an ancillary script that contains all
+> > > kernel-related sphinx-build call logic currently at Makefile.
+> > >
+> > > Such script is designed to work both as an standalone command
+> > > and as part of a Makefile. As such, it properly handles POSIX
+> > > jobserver used by GNU make.
+> > >
+> > > It should be noticed that, when running the script alone,
+> > > it will only take care of sphinx-build and cleandocs target.
+> > > As such:
+> > >
+> > > - it won't run "make rustdoc";
+> > > - no extra checks.
+> > >
+> > > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > > ---
+> > >  .pylintrc                    |   2 +-
+> > >  scripts/sphinx-build-wrapper | 627 +++++++++++++++++++++++++++++++++++
+> > >  2 files changed, 628 insertions(+), 1 deletion(-)
+> > >  create mode 100755 scripts/sphinx-build-wrapper  
+> > 
+> > As a whole I like the idea of this - I would rather be reading code in
+> > Python than in makefilese.  But I have some overall notes...
+> > 
+> > I am a bit dismayed by the size of it; this is many times the amount of
+> > code it allows us to remove from the makefile.  Perhaps there's nothing
+> > to be done for that, but ...
+> 
+> True:
+> 
+>  7 files changed, 922 insertions(+), 200 deletions(-)
+> 
+> Yet, a lot of them are blank lines, comments, docstrings and 
+> argparse. Also, there are some improvements on it, like the PDF
+> build error handling logic (more below).
+> 
+> One of the things I wanted to do is precisely better describe
+> what it does. The Makefile has lots of magic and complex macros
+> that, even the ones that wrote it have headaches trying to understand
+> after some time not looking on it.
+> 
+> Also, part of it will be dropped at the next patch series when
+> we will get rid of userspace-api/media/Makefile:
+> 
+> 	$ git diff 182fa089db0b..parse_headers scripts/sphinx-build-wrapper|diffstat -p1 
+> 	 scripts/sphinx-build-wrapper |   48 ---------------------
+> 	 1 file changed, 48 deletions(-)
 
-Strangely though, even after enabling the feature, I am still occasionally =
-getting this warning:
+After sleeping on it, IMO the best would be if we change the order:
+Let's place the series related to parse-headers.pl/kernel-images.py
+first. 
 
-  CLIPPY L rust/kernel.o
-warning: current MSRV (Minimum Supported Rust Version) is `1.78.0` but this=
- item is stable since `1.79.0`
-  --> rust/kernel/transmute.rs:39:45
-   |
-39 |         if bytes.len() =3D=3D size && slice_ptr.is_aligned() {
-   |                                             ^^^^^^^^^^^^
-   |
-   =3D help: for further information visit https://rust-lang.github.io/rust=
--clippy/master/index.html#incompatible_msrv
-   =3D note: `-W clippy::incompatible-msrv` implied by `-W clippy::all`
-   =3D help: to override `-W clippy::all` add `#[allow(clippy::incompatible=
-_msrv)]`
+Then, on this series, I can suppress the code that has support for
+the media build Makefile (reducing those 48 lines), making the
+patches cleaner.
 
-warning: current MSRV (Minimum Supported Rust Version) is `1.78.0` but this=
- item is stable since `1.79.0`
-  --> rust/kernel/transmute.rs:57:45
-   |
-57 |         if bytes.len() =3D=3D size && slice_ptr.is_aligned() {
-   |                                             ^^^^^^^^^^^^
-   |
-   =3D help: for further information visit https://rust-lang.github.io/rust=
--clippy/master/index.html#incompatible_msrv
+I'll also change this series to place the new wrapper under
+tools/docs, splitting part of it on a library. The final code
+will be bigger due to the library, but it will become more
+modular and with a cleaner implementation.
 
-warning: 2 warnings emitted
+> 
+> I guess there are some space to clean it up a little bit, for instance
+> getting rid of most of the env vars and passing them as command
+> line only. Yet, I opted to be a bit conservative at the cleanups at the
+> env vars to reduce the risk of breaking something.
+> 
+> > Is there value in the SphinxBuilder class?  Just because you can create
+> > classes in Python doesn't mean that you have to; I'm not sure why you
+> > would create one here rather than just doing it all at the module level.
+> 
+> On Python, I prefer using classes, as:
+> 
+> 1. I don't like passing lots of arguments to functions;
+> 2. Python doesn't have struct. The closest concept of struct in Python
+>    is a data class;
+> 3. Classes help to avoid global vars. In this specific case, the size of 
+>    its data "struct" (e.g. class variables) is not small, as it has to
+>    parse lots of environment vars, and several of those are used on
+>    multiple places.
+> 
+> > Is the "search for a newer Python" code really going to be useful for
+> > anybody? 
+> 
+> Well, I could have written it in shell script or Perl ;-)
+> 
+> Seriously, the rationale was not to search for a newer Python code, but
+> instead, to have a place were it is easier to understand what's
+> going on and adjust to our actual needs.
+> 
+> I actually started it because of the pdfdocs check: doing make
+> pdfdocs currently will return an error code when building docs
+> no matter what. Fixing it inside the Makefile would be doable, but
+> complex and would likely require an script anyway (or a script-like
+> code embedded on it).
+> 
+> Now, instead of adding yet another hack there, why not do it
+> right?
+> 
+> > It seems like a lot of work (and code) to try to quietly patch
+> > things up for somebody who has some sort of a strange setup.
+> 
+> My idea was not to support some strange setup, but to I had a few
+> goals. Mainly:
+> 
+> 1. to have the simplest possible Makefile without loosing anything;
+> 2. to be able to call the script directly, as it helps debugging;
+> 3. to remove that ugly for sphinx-build call macro logic inside
+>    Makefile, with is hard to understand and even harder to touch;
+> 4. to fix a known bug with the current approach with regards
+>    to PDF build: no matter if PDF build succeeded or not, it
+>    always return an error code;
+> 5. to have a summary of the PDF build. Even with latexmk, the
+>    PDF build is a way too noisy, being hard to check what broke
+>    and what succeeded.
+> 6. to make easier to build PDFs in interactive mode (I added this
+>    later at the development cycle).
+> 
+> -
+> 
+> For the future, if time permits, there are two possible improvements
+> 
+> a) I'd like to change the way SPHINXDIRS work. Right now, it is a very
+>    dirty hack, that makes sphinx-build becalled several times (one for
+>    each dir), and breaks cross-references.
+> 
+>    I'd like to be able to allow building multiple dirs at the
+>   same time, with a proper index between them.
+> 
+> b) By having this in python, we can do other cleanups like:
+> 
+>    - instance convert sphinx-pre-install into a class, calling
+>      it directly there;
+>    - pick the logic inside conf.py that handles SPHINXDIRS and
+>      latex documents.
+> 
+> In summary, the advantage is that it is a lot easier to fine tune
+> the script in the proper way than to add more hacks to docs Makefile.
+> 
+> > Please, no "except Exception:"  (or the equivalent bare "except:").
+> 
+> Ok.
+> 
+> > That bit of locale tweaking shows up in enough places that it should
+> > maybe go into a little helper module rather than being repeatedly
+> > open-coded?
+> 
+> Do you mean this?
+> 
+>         # The sphinx-build tool has a bug: internally, it tries to set
+>         # locale with locale.setlocale(locale.LC_ALL, ''). This causes a
+>         # crash if language is not set. Detect and fix it.
+>         try:
+>             locale.setlocale(locale.LC_ALL, '')
+>         except Exception:		# I'll replace it with locale.Error
+>             self.env["LC_ALL"] = "C"
+>             self.env["LANG"] = "C"
+> 
+> This was also added later, to fix a current Sphinx (or Python?) bug.
+> 
+> Try to run sphinx-build on a Debian-based or Gentoo distro without 
+> setting any locale (which is the default after installing them):
+> 
+> 	# sphinx-build --help
+> 	Traceback (most recent call last):
+> 	  File "/usr/bin/sphinx-build", line 8, in <module>
+> 	    sys.exit(main())
+> 	             ~~~~^^
+> 	  File "/usr/lib/python3/dist-packages/sphinx/cmd/build.py", line 546, in main
+> 	    locale.setlocale(locale.LC_ALL, '')
+> 	    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+> 	  File "/usr/lib/python3.13/locale.py", line 615, in setlocale
+> 	    return _setlocale(category, locale)
+> 	locale.Error: unsupported locale setting
+> 
+> 	# LC_ALL=C sphinx-build --help
+> 	usage: sphinx-build [OPTIONS] SOURCEDIR OUTPUTDIR [FILENAMES...]
+> 	...
+> 
+> 
+> Well, sphinx-build will crash even if called with "--help". Btw, 
+> spinx-build is following Python recommendation of using '':
+> 	https://docs.python.org/3/library/locale.html#locale.setlocale
+> 
+> Ok, we could drop that, but on the other hand it is just 5 LOC.
+> (actually it can be 4 LOC, as self.env["LANG"] = "C" is not really needed 
+> to avoid the crash).
+> 
+> One thing I'm in doubt is with regards to --venv command line argument.
+> It could be dropped, or it could be auto-detected. The code is also
+> small, and IMHO it could help for the ones using venv:
+> 
+>         # If venv parameter is specified, run Sphinx from venv
+>         if venv:
+>             bin_dir = os.path.join(venv, "bin")
+>             if os.path.isfile(os.path.join(bin_dir, "activate")):
+>                 # "activate" virtual env
+>                 self.env["PATH"] = bin_dir + ":" + self.env["PATH"]
+>                 self.env["VIRTUAL_ENV"] = venv
+>                 if "PYTHONHOME" in self.env:
+>                     del self.env["PYTHONHOME"]
+>                 print(f"Setting venv to {venv}")
+>             else:
+>                 sys.exit(f"Venv {venv} not found.")
+> 
+> Btw, this is the kind of code that makes sense to be inside some
+> library.
+> 
+> Thanks,
+> Mauro
 
+-- 
+Thanks,
+Mauro
