@@ -1,104 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A463F2E3AE2;
-	Fri, 22 Aug 2025 10:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8C442048;
+	Fri, 22 Aug 2025 10:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755858340; cv=none; b=h8PO75r9JU5QPab5kbOGtZ9Ps7KQTkg2+o/9wgsC1aYvyNjgafn4w01g2ImDdIW/GFxjQ2D6wvnNkqDLuMmUpCxPHy7OXOHAOCpwtg7XvCiPJT8XZqNZsBnM9Xq33UEsUGjidEZAhQhlNit0iidqzj+xI4bsb56MoszTJpr1gSw=
+	t=1755858901; cv=none; b=ITBCRZHG7cHVcZUbCE4MG9a5qcg2c+JECFIjDFeIH3T0s6/Cu2uFj/Q9AG72yoyQ6+KE1btB2zcOLq0GCnSwh0mw1jueRCxlisRSIDw6CD9+CuZWCfzUcHPWWFK34bqI78EiPYaB0HNxnfwNNAbN+nzhCtwZKT3biFSO/mn7gIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755858340; c=relaxed/simple;
-	bh=3eipDB3UV6BUjIS7lwaxbO4H/ODhWWsXLvXxzUmsIok=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=XMTw9nrYrrUOQ2coG3CRtVXxs6TUvNFNKgdnSoiGM6eN8La4m0Dg2FASdhuuxO9o8F3r8Of3MBmlNKx7wTieL6dF2GKacfnvaMSmUZVGRqxsNvcqkBhCefUkn4wnTCRzC3m0YOKaDlzaNVw35dBNXyQc3Pu4U6DjF0yFkyplLH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQbflZrs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755858901; c=relaxed/simple;
+	bh=Rf77/8QVQr7SUI15Gjp+gkc1tKp9nlY1mX2ozE8DsfA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JkOLzQrehCqnFb0HBL3TMDb8CWlSMJdeL9a4UHVOE0iI8oNOHe3uTfeqeCTH4ks/rAlwhPFiOTV3DIsbdqDrn0Ui2WOOaKWBwyeHTRBg2BbxTV5I7EdQwLAn5Z6dGd3H76Vtj6lM4jpLWg8DaSaUFAqcrE12GvZNvHey1WdtMOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8khcRQX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQbflZrs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38943C4CEED;
-	Fri, 22 Aug 2025 10:25:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8khcRQX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4972BC4CEED;
+	Fri, 22 Aug 2025 10:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755858340;
-	bh=3eipDB3UV6BUjIS7lwaxbO4H/ODhWWsXLvXxzUmsIok=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=UQbflZrsG0DI7acJsysqxKhAY1Uk8uHRpKNB/krK9xE4EsrpRHE2XkzEb8WCPhzxq
-	 S/5Y337V2804diMfBItjtmYaf9kLOg4kzmjPbKG2Didug9Nc80LfTfrvf/HeyYTbGI
-	 qaIYqxUyEXWkA+tLt2nPe+cv1e5QmR4gfcqoukn77oCm+1r6sRzGYLqKqJQ0kYpf3W
-	 +RYm+S85PVZozgJP4BJZTtUqVWMp115+fZrFkU5IpeX1QX9c9JhdFRgfo9pa9LMPnU
-	 V7ECy9n5/OmLzymQTwuSz747J6gO3w37KK4OUOPV3Z9O+T1mkczAicLBTI2nyg8fOJ
-	 1L1w6jkslUZiw==
+	s=k20201202; t=1755858900;
+	bh=Rf77/8QVQr7SUI15Gjp+gkc1tKp9nlY1mX2ozE8DsfA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i8khcRQX9yWtpHDK3aCyE6vVz2Wv8bghpHqb/kxSR2bkV5yTUU/0FtxWVXpY7/IN6
+	 y5OTmQ0N22DcxDpL0Vbcy7HHA0y+9SpkQkVoKG5WL/sz2NVmIjS3MaWQ0GdeAImKQx
+	 QrZwxi1oCxdXG3zWOaAHEy+L+AktuCJwjMEmqDtdLlte02vKvoD7ZNI/SafQ92RtUm
+	 gv0VvA5sk2I/y6O2ylDC+NOQ63pXz1AP/WJPN0diFwX6TpDSNzQukal5+3qCUtMePC
+	 0B+95pMMcnYRWuVDPSGXGlWKBgBv3TIGSIkudBD5VpfZG7+tXZ+kg5dG4WLPOLiTnC
+	 mBOyAOmQbRpyg==
+Date: Fri, 22 Aug 2025 12:34:54 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: file: use to_result for error handling
+Message-ID: <20250822-worte-aufmerksam-5e985c84515c@brauner>
+References: <20250821091001.28563-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 Aug 2025 12:25:34 +0200
-Message-Id: <DC8VTZ5OZY42.1OCS3QJHZGPAK@kernel.org>
-Subject: Re: [PATCH v2 3/3] gpuvm: remove gem.gpuva.lock_dep_map
-Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Boris
- Brezillon" <boris.brezillon@collabora.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Steven Price" <steven.price@arm.com>,
- "Liviu Dudau" <liviu.dudau@arm.com>, "Rob Clark"
- <robin.clark@oss.qualcomm.com>, "Rob Herring" <robh@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250822-gpuva-mutex-in-gem-v2-0-c41a10d1d3b9@google.com>
- <20250822-gpuva-mutex-in-gem-v2-3-c41a10d1d3b9@google.com>
-In-Reply-To: <20250822-gpuva-mutex-in-gem-v2-3-c41a10d1d3b9@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250821091001.28563-1-work@onurozkan.dev>
 
-On Fri Aug 22, 2025 at 11:28 AM CEST, Alice Ryhl wrote:
-> diff --git a/include/drm/drm_gpuvm.h b/include/drm/drm_gpuvm.h
-> index 4a22b9d848f7b3d5710ca554f5b01556abf95985..598ba376b9430cdd4ab7bacdc=
-15de031a887cf71 100644
-> --- a/include/drm/drm_gpuvm.h
-> +++ b/include/drm/drm_gpuvm.h
-> @@ -196,10 +196,20 @@ enum drm_gpuvm_flags {
->  	 */
->  	DRM_GPUVM_RESV_PROTECTED =3D BIT(0),
-> =20
-> +	/**
-> +	 * @DRM_GPUVM_IMMEDIATE_MODE: use the locking scheme that makes it safe
-> +	 * to modify the GPUVM during the fence signalling path
+On Thu, Aug 21, 2025 at 12:10:01PM +0300, Onur Özkan wrote:
+> Simplifies error handling by replacing the manual check
+> of the return value with the `to_result` helper.
+> 
+> Signed-off-by: Onur Özkan <work@onurozkan.dev>
+> ---
 
-I think this isn't entirely true yet or at least can be ambiguous for now,
-because it doesn't prevent users from having DRM_GPUVM_RESV_PROTECTED set, =
-which
-requires the DMA resv lock to destroy a struct drm_gpuvm_bo, which may happ=
-en
-from drm_gpuva_unlink().
-
-So, for now, until we have the deferred drop idea in place, it also
-requires DRM_GPUVM_RESV_PROTECTED to not be set.
-
-(Eventually, we of course want both to be represented as a single flag, suc=
-h
-that it becomes an either or.)
-
-I also wouldn't say "makes it safe to", but rather "makes it possible to
-safely". We have no control over what the users do with the mutex. :)
-
-NIT: missing period
-
-> +	 *
-> +	 * When set, gpuva.lock is used to protect gpuva.list in all GEM
-> +	 * objects associated with this GPUVM. Otherwise, the GEMs dma-resv is
-> +	 * used.
-> +	 */
-> +	DRM_GPUVM_IMMEDIATE_MODE =3D BIT(1),
-> +
->  	/**
->  	 * @DRM_GPUVM_USERBITS: user defined bits
->  	 */
-> -	DRM_GPUVM_USERBITS =3D BIT(1),
-> +	DRM_GPUVM_USERBITS =3D BIT(2),
->  };
+Applied, thanks!
