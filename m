@@ -1,47 +1,49 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
+Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72784289367;
-	Fri, 22 Aug 2025 05:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0084AEC2;
+	Fri, 22 Aug 2025 05:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755839347; cv=none; b=DFcJIKh9YOTrZp5HHrUhWgGkouxww+ccgj2ikoZ2xpSmrcmive4QH2czAACSlM7lwWozwb5A5K8UjOpVCT4bDa28topllbKLDsN1/hQhen7hU9sR/isq3gGEXLiPbC7B5q+WhuY6W4DB/yEJGCQE237pRUwUQgr3o8qo121v/Ik=
+	t=1755839985; cv=none; b=Ze+8rpe9Z/ZThC5JJidZLWq9oTdTJxKbDODd+PWp2kkuVSCh4bDDpUuW+bGHWXg3x+AZ0xiVAfy9oPCPcx6j8e6rMCs3JQvXDT5IL6SvUjSGXpaHIAsmcU5eYMAMvDADqsHX+xCveqXijV++ifBOlrP5No7ynia085phmtuPXXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755839347; c=relaxed/simple;
-	bh=B7makR98zXZWe0FoOZrqaG6g0cXGEp9K5AWHAIBJ5+A=;
+	s=arc-20240116; t=1755839985; c=relaxed/simple;
+	bh=yDltWIurWHSj98BfITo9fI6oEAxULSFiwhBkEYZybB0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l5C1KuX1pmYwRCaYXW5X4gqCUfdCJ8jEtc86Zw6vRDifpqHzc16sAN8iiGkBeYtNOJmJ+vWNZFm81GcWo0wUhdDJcFaA3EsBCN62CzOiAUNoqBteCQ9Pnj+FcB3ZO4GuB474kK+zG3vuoXNofNeaqwkfiKu8LYzM19fs9YcOJxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=ILlcBO6U; arc=none smtp.client-ip=178.154.239.210
+	 MIME-Version:Content-Type; b=u9o6aVUwbKUmUNYGlfORMEMC/YTKIx86OUarcRXsR6OeOBoyMkYbPDLwDm3158Uj1yAZIpiJ3fRU1JS+/w/E/RAWVesVebBvAP0OuiGdB8wG+TWEaKhbD0lc2GHdErmUfwhohewWlAZ3xLJqSHNbR13qDZdJt4+NbGuE/hNW7vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=comBnp5l; arc=none smtp.client-ip=178.154.239.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="ILlcBO6U"
-Received: from mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:4f41:0:640:844:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 6FEC0C1175;
-	Fri, 22 Aug 2025 08:02:58 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id s2M8Ax6LvSw0-rfS34ftp;
-	Fri, 22 Aug 2025 08:02:57 +0300
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="comBnp5l"
+Received: from mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:1f21:0:640:a2e6:0])
+	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 9FFA980F75;
+	Fri, 22 Aug 2025 08:13:50 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kDML0F8Mn8c0-YATuAjhl;
+	Fri, 22 Aug 2025 08:13:49 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1755838977;
-	bh=78DwEG1kk2vp5xo827tUVblTtqo8Jep6l9HkGmdTeIM=;
+	s=mail; t=1755839630;
+	bh=vXSYq5gxkBuW0CJdxd13UHRDVKuqteSU5VS1DhuTh94=;
 	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=ILlcBO6UaC3X2gkSfh43bDuc1Ks/8D36oksGYJoDcOYKP1Kdn1aXeGlPEjsETIUaa
-	 2he68JoFuo//8LoGAd0iNN6ZEhanHZdLWLydoALifZdr+MZSg8Nh4DAbpL6AzDwefM
-	 Rz5iqZf8qMDcr1Gm+zqp+x/GEbMf24ez0IgVATN0=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Fri, 22 Aug 2025 08:02:52 +0300
+	b=comBnp5l+KTUZWjLohAMmx23tCbrutpzp/+LisNRGjWxlhFVY+yxsIa2JUQtiGBdB
+	 js9UO9O7yB1nlW5u8niU12o4WKhUl5fVNLttepGasnPhKGiCwdHYzbB9syZSaiGQwn
+	 TKiUKP4AllJM2i8ITcu04RRJHgXTDIYOS2AHmN2s=
+Authentication-Results: mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Fri, 22 Aug 2025 08:13:43 +0300
 From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: rust-for-linux@vger.kernel.org, vireshk@kernel.org, nm@ti.com,
+ sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
  boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
- dakr@kernel.org, tamird@gmail.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: uaccess: use to_result for error handling
-Message-ID: <20250822080252.773d6f54@nimda.home>
-In-Reply-To: <CAH5fLggt4YJe93xo9KTr=hTQoj28=jjJtaxo=gFmnTbWmm8SRg@mail.gmail.com>
-References: <20250821091939.14019-1-work@onurozkan.dev>
-	<CAH5fLggt4YJe93xo9KTr=hTQoj28=jjJtaxo=gFmnTbWmm8SRg@mail.gmail.com>
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: opp: use to_result for error handling
+Message-ID: <20250822081343.4041a3d5@nimda.home>
+In-Reply-To: <20250821092137.wttiixhiidt27hnq@vireshk-i7>
+References: <20250821091606.7470-1-work@onurozkan.dev>
+	<20250821092137.wttiixhiidt27hnq@vireshk-i7>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -52,54 +54,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 21 Aug 2025 13:04:18 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Thu, 21 Aug 2025 14:51:37 +0530
+Viresh Kumar <viresh.kumar@linaro.org> wrote:
 
-> On Thu, Aug 21, 2025 at 11:19=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.=
-dev>
-> wrote:
-> >
+> On 21-08-25, 12:16, Onur =C3=96zkan wrote:
 > > Simplifies error handling by replacing the manual check
 > > of the return value with the `to_result` helper.
-> >
+> >=20
 > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 > > ---
-> >  rust/kernel/uaccess.rs | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> > index a8fb4764185a..9992eece2694 100644
-> > --- a/rust/kernel/uaccess.rs
-> > +++ b/rust/kernel/uaccess.rs
-> > @@ -7,7 +7,7 @@
-> >  use crate::{
-> >      alloc::{Allocator, Flags},
-> >      bindings,
-> > -    error::Result,
-> > +    error::{to_result, Result},
-> >      ffi::{c_char, c_void},
+> >  rust/kernel/opp.rs | 16 +++++-----------
+> >  1 file changed, 5 insertions(+), 11 deletions(-)
+> >=20
+> > diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+> > index 08126035d2c6..9d79c2816af5 100644
+> > --- a/rust/kernel/opp.rs
+> > +++ b/rust/kernel/opp.rs
+> > @@ -12,7 +12,7 @@
+> >      clk::Hertz,
+> >      cpumask::{Cpumask, CpumaskVar},
+> >      device::Device,
+> > -    error::{code::*, from_err_ptr, from_result, to_result, Error,
+> > Result, VTABLE_DEFAULT_ERROR},
+> > +    error::{code::*, from_err_ptr, from_result, to_result, Result,
+> > VTABLE_DEFAULT_ERROR}, ffi::c_ulong,
 > >      prelude::*,
-> >      transmute::{AsBytes, FromBytes},
-> > @@ -495,9 +495,7 @@ fn raw_strncpy_from_user(dst: &mut
-> > [MaybeUninit<u8>], src: UserPtr) -> Result<us )
-> >      };
-> >
-> > -    if res < 0 {
-> > -        return Err(Error::from_errno(res as i32));
-> > -    }
-> > +    to_result(res as i32)?;
+> >      str::CString,
+> > @@ -500,11 +500,8 @@ pub fn set(self, dev: &Device) ->
+> > Result<ConfigToken> { // requirements. The OPP core guarantees not
+> > to access fields of [`Config`] after this call // and so we don't
+> > need to save a copy of them for future use. let ret =3D unsafe {
+> > bindings::dev_pm_opp_set_config(dev.as_raw(), &mut config) };
+> > -        if ret < 0 {
+> > -            Err(Error::from_errno(ret))
+> > -        } else {
+> > -            Ok(ConfigToken(ret))
+> > -        }
+> > +
+> > +        to_result(ret).map(|()| ConfigToken(ret))
+> >      }
+> >=20
+> >      /// Config's clk callback.
+> > @@ -713,11 +710,8 @@ pub fn opp_count(&self) -> Result<u32> {
+> >          // SAFETY: The requirements are satisfied by the existence
+> > of [`Device`] and its safety // requirements.
+> >          let ret =3D unsafe {
+> > bindings::dev_pm_opp_get_opp_count(self.dev.as_raw()) };
+> > -        if ret < 0 {
+> > -            Err(Error::from_errno(ret))
+> > -        } else {
+> > -            Ok(ret as u32)
+> > -        }
+> > +
+> > +        to_result(ret).map(|()| ret as u32)
+> >      }
 >=20
-> This is wrong. The type of `res` is isize, and casting a positive
-> isize to i32 can result in a negative number and incorrectly trigger
-> this error. For example: 2147483650i64 as i32 is -2147483646.
+> I would get rid of `ret` as well in both the cases, like it is done by
+> other users of `to_result()`.
 >=20
-> Alice
 
-Nice catch. I could use `try_into().unwrap_or(0)` but that feels a bit
-iffy since it would silently avoid the error if `isize` happens to be
-much smaller than what `i32` can handle (though I am not sure if it's
-possible in practice in the kernel codebase). Let's just ignore this
-patch.
+`ret` is returned at the end unlike other `to_result` usages in other
+functions.
 
-Thanks,
-Onur
+-Onur
