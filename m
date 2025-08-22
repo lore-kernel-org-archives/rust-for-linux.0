@@ -1,58 +1,60 @@
 Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D952E2FD7B0
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 12:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A260A2FDC2E
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 12:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755867396; cv=none; b=jAoDt/9O6H2ZquCDfZsUOSdTqXWVPDw/TtYzZX2ukJpwq1lnd0iUmftlZ/m1MHG2/HuecgBFQYVsLl4HGZPhFeurzEDP0jSZaahnLzUJKf+a0vfJ7XFU6SMeol45Zn8sIp1cWJuRnFs9HfgZejHOrplXc6Xev9fE2UgjdKLu2NM=
+	t=1755867399; cv=none; b=RRx3pvVZ7RCcYg2+97lyGhHj4jQaGlZB6wgvXPLzsdF4hFgQqGqByOmNZoPAHpGUT++G1kegf4UJFROk/HttISwMXamLpk8GlxM9FS0N+4Y58YaS6yfJ7839VwDAMNNSID/4U8jhzMIlTa1gMLimLis3m8ON2X/2SEWtlaM1/j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755867396; c=relaxed/simple;
-	bh=1nMyaUUKEGhRekyXqu7nR9wX+y2S3pEaBQ1AynCB5Zk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BNlAUGxLGnvK7nfi8K5+xkqB08EL7akZQdjcoiAg3zt2W76vZnvqpjINku+G98IPQ+Ry2W8M9u87LqjG7W/duRjMsSdxxsbV5pEXCxv+MwgC3FF2/KlpVvorvzFlnOiIr1j/Si3hOsqvaFDeFCEdpksdUS+t0CMmpMDDoSgPyoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=ZzQQgW7o; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1755867399; c=relaxed/simple;
+	bh=2p8LG69KmCVA8ZLTUV6rgT5Wy5/pv1AhMG9wpLxMJIE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=paMuQboToiCTehdtkx32ow8/5QVjPQys91X4pMyY88ZkjNNKC0jD14oqckT+B8cg23aOUlV/CXfczQn62NmRkBO30flhFfKI+/eQkb8whLp+UhGHpRou0owZhl0rNjpefHLkD9wXs1XTQ8e5gbXezYEwPNV48QRz0Stx6X8q7Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=QAuNGGSP; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="ZzQQgW7o"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-77033293ed8so487417b3a.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 05:56:34 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="QAuNGGSP"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-76e2ea94c7cso1955104b3a.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 05:56:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1755867394; x=1756472194; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3ulg0un0kO+mVAmR2axpKOfpFutSEzipFHqPMKIsEvs=;
-        b=ZzQQgW7oQPnYixcBvC2h4bSfNcIR6EmiPzhx2M/88XBXHwz1nLDIPwkzO1fIkGEJRM
-         hUk0+E49Ar3BdBbWfxZmANP7xzqjvYWT5b10Jd9aIwknhC7bEgZ8Ap1lT9wZ1tzZTudk
-         eaLYji/nzEcXMqRqyJ3MmtNbPkfxWg4q1509g=
+        d=furiosa.ai; s=google; t=1755867398; x=1756472198; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p8fwNJeHNHWIWunBevE6xxfqz+V4AStymQDWUp+Nzso=;
+        b=QAuNGGSP0ojjaY4qas+ib2P3xKaP0KlZxo0Mkc7/aOaHvUbtVAKBQTEKEYP6WUZf2U
+         5zE61e8nwoVb6zR9o2wvyoaWdvf0vnzk6Wl+EXSsbV7+y207FcKbqAXhMcx2jXURHEMy
+         3dDiFoAFGabwz9w8srf+x7zObFXNYgcQwfIWk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755867394; x=1756472194;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3ulg0un0kO+mVAmR2axpKOfpFutSEzipFHqPMKIsEvs=;
-        b=VatPrks22+bQ+aJtun6kddRcISsJwB3fhswqFoQ9U7dhoqO007eBsA1Ya4LV0I7SnZ
-         o+9iG5uAbQrc2zzzuE3yVl8A6UXQgqbpFxoI1KzMWyq420/ywga+rMyqF//V7ODs95qR
-         uMjyg6yg6BJFD9ISiBZAdjZuiKGTfRQbXS9sqLShUZGLDFYVoRTAAZqEGHrlfhIdVrqh
-         lqMLoH5GaMLd7COIqAdm6S14h2M01N54K3o1/2mQNbdjqxldHN+a/xOesBXZ6eF3sqiJ
-         HBVzUvoIuwOuSItG9Y5894ZG+kmA43CppiERwjH0on8iw5s7096d7AeyrSyi7dnBFOlH
-         jNPg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGvSkYLcbN1gjtoBGoHEsXxSXhgq9f8CkKR4nB/vZWqIvDY1uiTjjfEpbjRUEQUNCIid/4wjd7aZkZbFfxKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKgx+LSaPEv30hSfvLoZZsfGifAWMKNkzV6gR402skfboZZYmJ
-	L4yg4FHedaPtIv5f3mr6DrgJkV0X08sL9a3zTQqd8O/4CSgG+N+FJM19DQSGarysiC8=
-X-Gm-Gg: ASbGncsMMJJwPAnUIh+HNMnJix0Fmsgdlss0404I3wbdntLns+m/xMRdBIS75KJyRcc
-	hn7LrnMhJMBHExovGse0RzUZjrEe1qJzEnDp39uFK/W9ESLXjjbhnMO25rKa6MpMb4o+inHFnUh
-	e9feoPUSSvRPzh0MYx82csQmsAXRgn+r8jjLT8odA6KIEK+BVXXoBtsQPa1G+qSCPlEx8T/x4N4
-	9KNUVpKJ30ScV0smlYjXjxHxFyaK/ojfpJCv2jyr0zbFjUFuD0btjibdO7aT66z2hinHIbPEmRk
-	6Vn9y/DM9bzynyLe/hbnK8vhcirTe1YbCIs//nNwvQf2icBuafq1AAKc1cbxYrW2+mu+MelXtRP
-	Up3PYD3XcKshceZRzAa7kkXlasDYKjnIGfNsKjtr6nLvJH6Tuv6Fphs8d7/jwKgOxyNRmdlyX
-X-Google-Smtp-Source: AGHT+IEp+IhiJ5Y2qqThOY6Kgaz/N52FJgbWJaI5kfueM3u9gCmUlUWDGA1cE7aiJXWfaowDUnBfRg==
-X-Received: by 2002:a05:6a21:33a2:b0:23f:3f96:ea1d with SMTP id adf61e73a8af0-24340d77b55mr4754737637.29.1755867394083;
-        Fri, 22 Aug 2025 05:56:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755867398; x=1756472198;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p8fwNJeHNHWIWunBevE6xxfqz+V4AStymQDWUp+Nzso=;
+        b=Cr/XPBtPDNewefkllkylut4go11/qE82PReaDvc4U9VJ21Zkzvjf7cUJsm55Yl9NXc
+         h82ffHPgVFOj/iI0Cvg4zh0syY96FsX+RtXFIq4oZRiw+bVlwFRVs3GFu8BXCGIOl8SU
+         fo2CCNDcJtku32u6haGEo/Z/xuZmRQw74yAGmCkotgrB41Y6aNwSSFy0Oc1MVogX7XlZ
+         IZqsR3m54e+81lIKkawFruSpCt1NbbknmyUw4xKVNvh08byo3zwuTN2avCsH1l+ZxO5C
+         9is/xGyx9N3fc1sgQQ016c5gvPhV2AMw4PFdX+nyX++AcIXvw4cEVUrwFtGRo8fCSXPf
+         hN7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXOWmCV6cqlYzdv3jvDPq/nP0s8cSB40wtsPLQePbOOYiBhNZNBBYtO9Xg5Xdql9VK6NoQcWNaJSPSiKfrbkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiebuzyltPnm9d9AgYf4Mt9GZiWHfs9/UlTRcIctGQKSkeGNo3
+	tDLkKXfJv4JyAcgTblT56OzsfoqRqGPVJ1kzkaPmoMfKPz6E9ra8BVY63buObpDa3R4=
+X-Gm-Gg: ASbGncsscK3LKtxCyJbIZnbAe8O3g7A6S5/I7kMTTl//p4fp/CRoZcx+yNKFNgfPJBz
+	eNysoEwcOkigNKmFFCVo7PkuD8rNggUcBmNxFf3e2UcorDpOTk4Ahbhxc9Nv0JMOON+6s8AnIbg
+	Jw87N0hX2HhIsdkFEaf8BY5WB1VRZfoZI+ljtfeECCDq4/XfQXg1DDI5wagPfe6b3q9h2vUMQDM
+	qiHiPpYqmTg7Ppr2dGDmtKHWBf/IMKBTwU31AIhTPoaJ99Ru8ca3Lmuivz9ZPUKNzUnCH9Vtbgu
+	xwq2yN89qTuMCw+pTXsDRBBgmNst7FAG1g3Hnbolq1oek1aK/1lpcW0kiJD9luydy/Olmr86hZG
+	d4w60qAAn3diaosIsfiTZXerd/i+7yjPFidx4Y8+5m/N0bhOFuMqA4HbuxuiXfianhBb/I23j
+X-Google-Smtp-Source: AGHT+IHDhJuu9+cO4uxsw6AoUa51QjPpNUdCs5GI2HWZsOmJ82BW0DSG2NIaLQoRPu3I8EhQjTg/gQ==
+X-Received: by 2002:a05:6a20:430d:b0:23d:9cca:e710 with SMTP id adf61e73a8af0-24340de334bmr4095404637.44.1755867397819;
+        Fri, 22 Aug 2025 05:56:37 -0700 (PDT)
 Received: from sidong.sidong.yang.office.furiosa.vpn ([175.195.128.78])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4764003537sm7194544a12.25.2025.08.22.05.56.30
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4764003537sm7194544a12.25.2025.08.22.05.56.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Aug 2025 05:56:33 -0700 (PDT)
+        Fri, 22 Aug 2025 05:56:37 -0700 (PDT)
 From: Sidong Yang <sidong.yang@furiosa.ai>
 To: Jens Axboe <axboe@kernel.dk>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
@@ -65,10 +67,12 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	io-uring@vger.kernel.org,
 	Sidong Yang <sidong.yang@furiosa.ai>
-Subject: [RFC PATCH v3 0/5] rust: miscdevice: abstraction for uring_cmd
-Date: Fri, 22 Aug 2025 12:55:50 +0000
-Message-ID: <20250822125555.8620-1-sidong.yang@furiosa.ai>
+Subject: [RFC PATCH v3 1/5] rust: bindings: add io_uring headers in bindings_helper.h
+Date: Fri, 22 Aug 2025 12:55:51 +0000
+Message-ID: <20250822125555.8620-2-sidong.yang@furiosa.ai>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250822125555.8620-1-sidong.yang@furiosa.ai>
+References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -77,63 +81,27 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series implements the groundwork for using io-uring cmd
-interface in rust miscdevice.
+This patch adds two headers io_uring.h io_uring/cmd.h in bindings_helper
+for implementing rust io_uring abstraction.
 
- 1. Io-uring headers for bindings
-    We needs additional headers for implementing rust abstraction.
+Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+---
+ rust/bindings/bindings_helper.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
- 2. zero-init pdu in io_uring_cmd
-    We need to initialize pdu for avoiding UB when reading pdu in rust.
-
- 3. Core abstractions
-    Provides 2 core struct for abstraction. One is for io_uring_cmd and
-    another is for io_uring_sqe.
-
- 4. Method for MiscDevice
-    MiscDevice has some method for `file_operations`. This patch adds a
-    method `uring_cmd` which could be used in miscdevice driver.
-
- 5. uring_cmd interface for MiscDevice sample
-    Added sample code for using new interface for `MiscDevice::uring_cmd()`
-
-Together, these 5 patches.
-
- - io-uring headers for bindings
- - zero-init pdu in io_uring_cmd
- - abstraction types for io-uring interface
- - add uring_cmd method for miscdevice
- - sample that implements uring_cmd method
-
-Changelog:
-v2:
-* use pinned &mut for IoUringCmd
-* add missing safety comments
-* use write_volatile for read uring_cmd in sample
-
-v3:
-* fixes various comments including safety related ones.
-* zero-init pdu in io_uring_cmd
-* use `read_pdu`/`write_pdu` with `AsBytes`/`FromBytes` for pdu
-* `IoUringSqe::cmd_data` checkes opcode and returns `FromBytes`
-* use `_IOR`/`_IOW` macros for cmd_op in sample
-
-Sidong Yang (5):
-  rust: bindings: add io_uring headers in bindings_helper.h
-  io_uring/cmd: zero-init pdu in io_uring_cmd_prep() to avoid UB
-  rust: io_uring: introduce rust abstraction for io-uring cmd
-  rust: miscdevice: Add `uring_cmd` support
-  samples: rust: Add `uring_cmd` example to `rust_misc_device`
-
- io_uring/uring_cmd.c             |   1 +
- rust/bindings/bindings_helper.h  |   2 +
- rust/kernel/io_uring.rs          | 306 +++++++++++++++++++++++++++++++
- rust/kernel/lib.rs               |   1 +
- rust/kernel/miscdevice.rs        |  53 +++++-
- samples/rust/rust_misc_device.rs |  27 +++
- 6 files changed, 389 insertions(+), 1 deletion(-)
- create mode 100644 rust/kernel/io_uring.rs
-
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 84d60635e8a9..96beaea73755 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -75,6 +75,8 @@
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+ #include <linux/xarray.h>
++#include <linux/io_uring.h>
++#include <linux/io_uring/cmd.h>
+ #include <trace/events/rust_sample.h>
+ 
+ #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
 -- 
 2.43.0
 
