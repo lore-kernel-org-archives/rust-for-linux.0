@@ -1,85 +1,97 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B22257820
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 07:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A210248867;
+	Fri, 22 Aug 2025 08:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755849542; cv=none; b=E3TfXIAiREVbDW5jyUDvus8tKwxlVw2SU9psnRYTTyQ4MkiHUOswLsKPUY06hPUCQzxYXiPoDKsD4t+yJwMCmrDKA6b8SyXf0oWtQgzyjcEzJUf/RvYHTfvA2UgXJhFj4nghJODBy8TF5VgpvE/5cx6Yzd+x86NvLy32ybFkmAY=
+	t=1755850085; cv=none; b=i7Ey4M5QolyqtZ2B5W5GnlfTHpnr7/LLe4QGWXbgAx6hNOrFZMvT0LGzWhYK0CmiIc8tsELLt5K3jarvnFHQQonr4824VBN/2j6oPgtfDKKqFm1oP8TPuKAJY3ONHi8fbHQ+opcoIsK5eAssEvkmkd3Ldg6hwfFuJ4js0MBl0Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755849542; c=relaxed/simple;
-	bh=ZSQnUiBY+QjVWejECl7qq5B/ncsHvvBk+pJI9WWhJ14=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=af3d+I5y5PuFxdyKERL6IR8DI9Og1QOxAPbeIoys2hG62I8NoUESjuxhB/fUGjJFE7u/6byERInCRxDgRqdgxbGHo4Sdf6Y+fjQaehVi1M8GIniPKluD9Zoh+sCYZ/8DQrk0YBX2/LseZADP5lgqK3rjaGbCW5dc7+0RyQuSSH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ePcWKAly; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1755850085; c=relaxed/simple;
+	bh=lq/cU+eoWOE/sdQ7KpO7knU5EeiYpBjsnA6Xx0gMHBY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ajJEYoUL6jTSI+VgWWuAf5a2yGxGRtcjofoNhjEV1QnFvh2tejO4rpKVzDKrDlJ/7oFb+6T4E66e4DWL+BSXNB7i3cy0/jaxweot3JO3LVpgmGYYU7hT/hd8mQoVXMf/GjXZ0FJ26gU9SzZkkMQJnj+DpWYcd0K5H/hX9YVkZC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sn3OR8ti; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ePcWKAly"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3c630eea496so216700f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 00:59:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sn3OR8ti"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-244581eab34so3710935ad.2;
+        Fri, 22 Aug 2025 01:08:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755849539; x=1756454339; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OcR2vTnWvdHWsTxe8C4S1nf6KTHkxOneetmft7WPD4M=;
-        b=ePcWKAlyd6NH3t/t6bnD3PFKLfRGfImvC3RUidWoW9fND1QrccadYRUIFhBvLuUrPi
-         1z0Ue9GfuDy/KNWa8BEoiGFtvFqNmhEUTY9y+D3PzJ74RWauKyeLYfeewp5qzsNRZUqS
-         bIdUQ0XcJoKixgiwfNliuylJPblnZOj3Dy/V7TKxxV+DwnPDjZiB5faMhOALFsCcJHV6
-         4C5ffRZULjmQoWVOnbYds4qrLrkNJD/ifxpbbDbUDF5Rprija7rTnCwHUjJbYV0eI7Sm
-         IJYiApmAZveZKooYwPjEpg1f3A2poSM8EDp8a6T3nmpL5tNLqJpnPe3IhNtbDYhcO6aq
-         v2sQ==
+        d=gmail.com; s=20230601; t=1755850083; x=1756454883; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lq/cU+eoWOE/sdQ7KpO7knU5EeiYpBjsnA6Xx0gMHBY=;
+        b=Sn3OR8ti3JZ0XiuWH+QI6vM6RlCL5uuYDPl+po6m/uxzFEdpbA7gO/rbz7igxdj1mm
+         jP0sBolV/oKpOeAwxAhcLuWpZAHwrH/oF516360tCXR3mbTlfKG3pZ9KcVguqsRE4i9L
+         yDIioGqB9iFV4wjDcpe7JZyfDmbQ0sjBGdm9Ee2NNiP7a0F3vEAIu9skXyZZjxAGF0TC
+         JjPIdRlvDMRIMYFVVszasZkvbsog/8Bt84viGnI3qfXw/OLYRUmsvnIybttgXm4TT28T
+         V0pJS9nKTMkpTk8jvQb2s2Y2YEQ3BDa20sg8jqi8+H5J9Tu0N4Nro3jIBP49pLUZNK2X
+         123g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755849539; x=1756454339;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OcR2vTnWvdHWsTxe8C4S1nf6KTHkxOneetmft7WPD4M=;
-        b=WDRicsm/RJ2+2ol2G41kc+a/jhvP2ovCSR++BwN8/JwGUKALE+cjtUAVJgKfYCFD4Q
-         B49ECA7vUohu0bQYGAQiu6Ca1Fj+YJoM+TJRdmJtZXqW1cN3K4O7Ikg3dNRKP8po6j4k
-         I4pkemFCKucrItW5X0CGfHupiJHcXNh0+8LYU+1gnq6Xv7sZG6ztov40fvztE4lZtnVr
-         G1KNuD6v4UUgkIrnnBRmKf7eme5TERhpBlaYKoCMJ9W93RrEnLv63vaKM72CxYt+mw2R
-         tHYTsQi+7ZiC60psW1UZVlqii15wC+IltMmjeAP3Al9tKo2zMVLgcDJAhmucuXty8BNn
-         vA5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWfXP/I2Ozt9FP99slrYx/+HNJ/71gMdidoPo2EMrq3ZoznA74Xw4O123InWRkRX8vQsCpWu8DM35pLzqnJ7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIzLhPTTFN0DxHtLI8tKasGunLKIeRNG+DU6eL4BTB0SpkTc22
-	BM90rz9cUTtPzsuZt9bswseR1WFo7Xh66j2H0IoQNbqwXaT6pqf0c3iNMP9Vr17hTLcHgQwDpSJ
-	fCkMUPjJEaAWE1um95w==
-X-Google-Smtp-Source: AGHT+IHHa6Gwb6EMwcReUb8w20SMBOY8HUqXKfoIIJGVFOjuon7/sYmIEhsZh0RUa04bS92rGVC4oCZ2kKrrErU=
-X-Received: from wmbdv11.prod.google.com ([2002:a05:600c:620b:b0:459:dac7:4ea6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2583:b0:3b8:d893:524c with SMTP id ffacd0b85a97d-3c5dcdfb74cmr1360982f8f.53.1755849539448;
- Fri, 22 Aug 2025 00:58:59 -0700 (PDT)
-Date: Fri, 22 Aug 2025 07:58:58 +0000
-In-Reply-To: <20250821-num-v4-1-1f3a425d7244@nvidia.com>
+        d=1e100.net; s=20230601; t=1755850083; x=1756454883;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lq/cU+eoWOE/sdQ7KpO7knU5EeiYpBjsnA6Xx0gMHBY=;
+        b=eV0K6ijDcULUmV64sDUfJilE5a5d8/QhTUrlBDBGfQd28GP9HXGO2j0eQX5fCAkRjK
+         6aZcg/3DTHIvZ1DMTynJYSFq3unWlve/WWGOQSdC4/IH7qCrfzgiwe5kwdY12qChuftN
+         oTUVr8MTI68fWkJDRjKz2Dleve2tCdredg8UFwj1kvGAHWHIgOsJuiA4isP0wAYt1ypB
+         zATnDTAO7AumGnBTZXp8VQGG6hLcG+JH5IMxp4kp5XQq7txj17/RR6yt5sIhKsbs533V
+         zWx5FaQ0xKu3w9d0IZBXztdo2/0VnsIFAG0OWP1+0IXz4yaeDCMxLa/2ruLy3/oaB7qp
+         NGAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWS2pSsm8wOJa14g7FJaHAk97tPUOPl3AzH1YdBYlxekVpZFyFl39rEmeRAy+k++y+3emdKYvjLUDNOaAk/+xg=@vger.kernel.org, AJvYcCXRaUYGcwzxP9COw9x53ghkHH5PHpQhu322IKBSH4FuiOLhIcHv+fL5CZmBIj2VwH5BrY4EvRUxQqnRBKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUhEOv2fbKhxHPUm6Xz+dgMEoeYV9bvakJtg3wJE1V4Np/UEp/
+	m1DwTiyx7o2WzPNdogA7cAEO2PYcIs4sDOf4gM2Qyz6Akxa6wI2RWyNQgxPjUvM7M7vi/4f4Cwb
+	x7Nqrkgk4B9FvSjj9fQQnrQDfnU9duJg=
+X-Gm-Gg: ASbGncs8mff6xOvvSiN5u88VovGtrPVec3lo4oR2o77pge1OlF9q1uTnGQUTe9/zYUM
+	6dT6fdCZLO5adU4whKkTTIKfZpk83JlbgHXDGbdod97K0k4MGJD/uauuwdQtLqBEovg1ZvcTc4B
+	laIo9H++FPuT9EQUdAF5+suAtSneLScmagRzlC0M65hfy5XH+IEXIv+DwUElX3oHEpVZCVQVl7D
+	jlXt/W+gx/YV8JQ45mTpQKTMSonfjGZYVSh5VNuM2MsxH7UD4wjqDp7sRVlZDiibTcyusBVJjUB
+	qhOiFvn4qoerDbJnpGtpYjm34w==
+X-Google-Smtp-Source: AGHT+IGeowWPQoQbdovHnOpwzIkuEDwyZJGkAAUZvngmY93YjTMRs33AqqIxgCLByzPbtKA23dwrGNrrN7J62DCUbNM=
+X-Received: by 2002:a17:902:f682:b0:240:1879:c2fd with SMTP id
+ d9443c01a7336-2462edd76b2mr16991645ad.2.1755850083518; Fri, 22 Aug 2025
+ 01:08:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250821-num-v4-0-1f3a425d7244@nvidia.com> <20250821-num-v4-1-1f3a425d7244@nvidia.com>
-Message-ID: <aKgjQq9tfRuCq-cr@google.com>
-Subject: Re: [PATCH v4 1/2] rust: add `Alignment` type
-From: Alice Ryhl <aliceryhl@google.com>
+MIME-Version: 1.0
+References: <20250811213851.65644-1-christiansantoslima21@gmail.com>
+ <DC0INEKNZPSE.WLEQH24SLW1I@nvidia.com> <5204b598-7792-460b-bec2-e3a4a4c7e32d@gmail.com>
+ <DC5INTQKY0EX.1T4HD6OU8C4PI@nvidia.com> <CABm2a9cyvsXd1OS+tvDoDDEfMgBOJeetBVQU0x3m5E1vV1CApw@mail.gmail.com>
+ <DC828042PKDV.16NDVKIGBNTJH@nvidia.com> <CANiq72kDUK0nScg+nK-M2U=MmxTmhayyRUv7n4E3UMQHr8RLQg@mail.gmail.com>
+ <DC8MK2TAQ5D7.GHE5F2OREOD7@nvidia.com>
+In-Reply-To: <DC8MK2TAQ5D7.GHE5F2OREOD7@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 22 Aug 2025 10:07:50 +0200
+X-Gm-Features: Ac12FXz73QnSgmeYZL6x5-ZlcFIy811Pu9i7jylnOGmmXV8QOjuXHFfTdZu_eFA
+Message-ID: <CANiq72mWYBAQYj_kWc+6XxrPVzguOd1vUB9f5JXzYdNx9EoXyw@mail.gmail.com>
+Subject: Re: [PATCH v9] rust: transmute: Add methods for FromBytes trait
 To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
+Cc: Christian <christiansantoslima21@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 21, 2025 at 09:42:17PM +0900, Alexandre Courbot wrote:
-> Alignment operations are very common in the kernel. Since they are
-> always performed using a power-of-two value, enforcing this invariant
-> through a dedicated type leads to fewer bugs and can improve the
-> generated code.
-> 
-> Introduce the `Alignment` type, inspired by the nightly Rust type of the
-> same name and providing the same interface, and a new `Alignable` trait
-> allowing unsigned integers to be aligned up or down.
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+On Fri, Aug 22, 2025 at 5:10=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
+>
+> The methods making use of this feature are definitely usable by other
+> crates, and can also be inlined by the compiler. Would that be a
+> problem?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+No, that is fine.
+
+Cheers,
+Miguel
