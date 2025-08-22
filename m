@@ -1,105 +1,139 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE452E888B
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 07:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27026283C9D
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 07:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755848691; cv=none; b=OrLvS0oP1GOrh5Y+R6VYUcVKZf0NUvDstJB9T4f2DdBKEYUk8vRy5c74Qa0/1ZfU6d3Q5q/0h3yRGKrIm2CpbTjqxW0lyCLOz6Pwou+xIpauMXDc9PDAMjxH4MThU9nAmKOsvtaCKynzv0w3QknQCYM/RBSsDhQpu80d1m6tDXk=
+	t=1755848793; cv=none; b=sK120oRctCm7RkMnHNWZ49R/piQaXVGqrGKE6IV2MTu/VnrJEwhSBbzKGdd+fyD9B2vQK17lxeV07q6ky8qvFAcMDg83/EwbZm3Ufxo7b9DStlP9tsJ88KqRBzGgu9Y1k7F301FO1VIbG5yAm5bcQYsHT1sSCf0/soEoocCrkaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755848691; c=relaxed/simple;
-	bh=faSEfiTpREL/ys4OdLzvhf7bAeARCS9tt3rUMIAif24=;
+	s=arc-20240116; t=1755848793; c=relaxed/simple;
+	bh=V+y/12bmCVEdEzySarnT8TDFKs7NTABXDxXLLo+kWhE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b3jUdHnEGkF/FlMLk2hkpAVZ7EPNROdsk/1R5XQwi77FrK5ohHWcTT0xypCBxlQO73eiwAFjTjt6oiwL5fKCx9fhiEkTqzuDFjWE/9UFxhLHmgyteW4EyOgPww4r1cH3//Zeji5sWtXqT06RFGINWoVIvl8oMfG9kbJ0wADiReo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gEAf/wWt; arc=none smtp.client-ip=209.85.128.52
+	 To:Cc:Content-Type; b=sWXJY9jgEXkuj+S5HwrLnD4Igj12w+2opm4RsDTIEHszFqVjQB0cDOI+mATplL6uk5u8o0qV9RvL+mnuIZ726MKyd5AtCF4sjMKL9E1F2E2LiFZTxCeMYG23SYpIWqPgq0VdAXbhx9gr8l7bo1wIRsWgLpMlyrJTFlnFMtkMthU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sZbNPx43; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gEAf/wWt"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45a1b004a31so12437745e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 00:44:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sZbNPx43"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45a1b065d58so14835435e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 00:46:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755848688; x=1756453488; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755848788; x=1756453588; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g2G2vICsXO8f0ArDyQQPFAnFMYMmrHOiPk4MQY+POTA=;
-        b=gEAf/wWta32pNHA4IE8oJ00dAqxUG/ZYX8oqYITQ/rJmDtVfB+/QzVWStHoch1KGLL
-         c4MuTqszr8Zim4FHilnzmT/TpoclBVb9a+MJ1LHPhZ4fQ/ijNPo3DcnjBvK9SjKYQ4FF
-         5UeTKO+Eae8qMyHnERnqlRxouJRYjPUt16z2TOWVWHFzTspCKGeeF86ZT9OW9MK9Pql1
-         BcfwrdnwcEfX2xz0rQKvkt5OMQVW2pKfE0DcdCBnES+VVRUGO17SV8TDXL/aqdS7NXWD
-         GUWjvLU8XNgSl42EL26SU4cNgwBv2aUk+sMh9CCePrTVaBcMIyk9LETgPVAf108Mr722
-         9EXQ==
+        bh=5YemliuHyBp0gvdTdDd76NLCLOXa02us54ebhu4Bbrk=;
+        b=sZbNPx43YMboO6zGn9z3YeLGmCFsyhGegMdhVlJuvA+boHK4G+yPQR1xZc4baXD9qk
+         8iqg4qXJ8ld0ex2gSSKdTdMRG9tFsSVboW2iiim/L5fdAhdIwQLO3IYODD5RRtNX8ee4
+         0hGbou0VU7wMIzAL6aCQ4fEZNlVqxGFmNYeKTG47vicaPCpmpE8tnHICNK8KZQMCk63B
+         LrGRPcEmJ3QgTbj0cMat6GSEWU2xBR2BbvQ9V7R2cHwpGqmlhsABcacaYMzUmhHfU3lS
+         P5MqBksOoBkMGTI7uPahsVLghJbKZGxgl700PXJpCIrEiry0d8uTFRuhNqrdYLy7otoo
+         5slw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755848688; x=1756453488;
+        d=1e100.net; s=20230601; t=1755848788; x=1756453588;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g2G2vICsXO8f0ArDyQQPFAnFMYMmrHOiPk4MQY+POTA=;
-        b=sxyTx6EVeM/M9dXG6fOcUCeM+I60gaRKKUztjaX0hLxYWLQ4J/kWGnS/6cucngongh
-         I2CjDIkrd8BBlMljTnNo+ovErfC/BEC9lm2E9E7PlXDCxtrdvAABDeEaTauVEp14XJNF
-         rsuynTSbCKa9vPbM7LACZi3c62Np10n4ZGvfzPyAZAYkALhhRF+FxJGB2bEZftZMFg74
-         aaBvAQGQxJvcmU/VUuFwn3EuJGjbTtUFG2QOvV0m01KJrkZkzKWlFcN1RFxE9/uQolbk
-         mcGbMnLv0nIPYb/IhXxCiMMAF2eVZAqZkapDbKb4CACJLejeNdaYoSriuz9G/AJQber/
-         +Siw==
-X-Gm-Message-State: AOJu0YyzLchhSqgEGUEqguGbHnEfDdO58Z9OrkDxB1bVveQSJwcXg+9h
-	pjwQqMGtXMLFh4tcBhcTh47ILlwFpmAq6jV+4hBPWmLs0yohd9sil+w6uMdLHczBwoWQOM4hnLS
-	n3bs0W5V++pkzoCaCUxuaq0yC/xw9u5f5uQ7aEFiJ
-X-Gm-Gg: ASbGncuUYUjz9qyABl+aCWhyVeg6frRvMCdwuYSwPonLOGsq29XD/fyO4Ry4QFG5bKF
-	vOdxtGhK0woSTaqQyv/hnEYZNjvb9KEtB+/3H1YuNTtVQxELDkDjcNl0d2J4h0qSm3KFRKv66Ha
-	ino1+eJjFnLbam3HIT4G1/g2x+JXXxY+9fIJ+TEfcj98f9Cj3iJxTxrOj6APQ3zJNFjVuOFUkP9
-	Y9dYT9yRIIM7jo1oW/AjbxPGGvD64qTPKR1P+HW2a3GKrPrET1HfTXodCW12OQUKkq+gfZR9VqE
-X-Google-Smtp-Source: AGHT+IEoadB/lkuSJqNlo/SILQdpicC+7QYyIGD5rL1L8rNRHfY2sXck2SdaIgLT0kyeAavUOWBzZ7civMIWG5FymAw=
-X-Received: by 2002:a05:6000:420f:b0:3b7:8c98:2f4c with SMTP id
- ffacd0b85a97d-3c5dcdfd718mr1520148f8f.33.1755848688089; Fri, 22 Aug 2025
- 00:44:48 -0700 (PDT)
+        bh=5YemliuHyBp0gvdTdDd76NLCLOXa02us54ebhu4Bbrk=;
+        b=EaBdrflOGwdMlOosUW2Bpx4EGGRWkd359I45koJIAE2eL9jQDSEnSYbqhceTXecRlJ
+         cInGJ1MqySh6HOeAPR5DsHbYAwwsMwovswTCBv6H66zo5LZlqPXGOYeC49M2eQGOvsfF
+         RObJNT8OUA2tV7H2WokLo+0Toyjjy+gVq1/wj8cjoUPxjLX/BSKkHkXgE8W70lBMmbGF
+         Qa7+zgfv5qKWjkSnAi+QgNQio9dgbvbmvAtcDx9SRFoBwDQSQRER6i1/CWc6pebsXnfZ
+         dA2fdmTKNAfPdUcZpBBh31UWMgyvusc2YBlFF0ThwNytrbsZTkKFFOulGoBEKsZ+bNWT
+         8f0g==
+X-Forwarded-Encrypted: i=1; AJvYcCUlM2rklQKTkmKseKrszztgXP+lpclT951TZ0DV8AEgwxPkhOOmZ7exvhS0owFVEy6JJQJ105/ItT8uiAyApA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGsKh/rl0vGiMWRWBKOB3cFIJCOh2zGNYbJ18IaJiByhD4pKAB
+	LdCfJ8sn0mWWzTfW9G8Dftmyqj2jJgZ9hNkg+OR8+1PQVw6Q1tQzd3Wus0G/ObiTqt9i5h2ztEt
+	R3JrY0S53OTOOfO3HOSUQxw2pV0ON403ollR+TB9K
+X-Gm-Gg: ASbGnctPer9hMo/AnJM3d+qFbCGXWSmJi1bHwas0k9b9swdZDrd/tH9EF3iP004hAe/
+	HNLYKhS6dEu7ZpOeRZIlTX9qFQLdkY0wkCIr7mjQwS/MzWJIW32M2ksggrGdlQNAbnnaFrNMIB9
+	fncLOHP7sz/Y/Tr5LxPjPDf0aDWBTyx5s0non9isnjvuG1hOYDELdm+7ZtLZ8Yto40d5auxbN4d
+	7+MWlBsB4I6Wq3BNQUpKCEDmUXG6Ji6KEy303ssD3Qlu18Inc25ekAWW7kL+J8oBjubACSAWpLK
+X-Google-Smtp-Source: AGHT+IEl2XpR4GD0AcM3PV0w3+9+iurmsg+S83Mh1YS4hRyFfQy7CFdHopm4vAXAHb9ywoT72IWHsvSnmLYcnOWUXxM=
+X-Received: by 2002:a05:600c:4e8c:b0:456:1ac8:cace with SMTP id
+ 5b1f17b1804b1-45b5179e7e8mr15262675e9.12.1755848788250; Fri, 22 Aug 2025
+ 00:46:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250822041313.1410510-1-apopple@nvidia.com>
-In-Reply-To: <20250822041313.1410510-1-apopple@nvidia.com>
+References: <20250821193259.964504-1-lyude@redhat.com> <20250821193259.964504-7-lyude@redhat.com>
+In-Reply-To: <20250821193259.964504-7-lyude@redhat.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 22 Aug 2025 09:44:36 +0200
-X-Gm-Features: Ac12FXz0SxebOQqcLm-97q0sd3X8rsVm5aDZCUPIyZPEj1aHLk_XWZ8qmb8qzgM
-Message-ID: <CAH5fLgiYy-9DfjL+0NoYzwD=8tTSBrFMhJveZktRncJE9czkrA@mail.gmail.com>
-Subject: Re: [PATCH] rust: Update PCI resource_start()/len() to return ResourceSize
-To: Alistair Popple <apopple@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Date: Fri, 22 Aug 2025 09:46:15 +0200
+X-Gm-Features: Ac12FXxz1OPWMgKtoRfP1tPNgTj_X4Rl-KjHLxrj8UR8juldOTLwAUm0J19o1kw
+Message-ID: <CAH5fLgggbF2KWHazQ9rDeyVEjxg4LipfXA1qepPAhkkaHD4Mxw@mail.gmail.com>
+Subject: Re: [PATCH v9 6/7] rust: time: Add Instant::from_ktime()
+To: Lyude Paul <lyude@redhat.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, 
+	"open list:DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 22, 2025 at 6:13=E2=80=AFAM Alistair Popple <apopple@nvidia.com=
-> wrote:
+On Thu, Aug 21, 2025 at 9:34=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrote=
+:
 >
-> It's nicer to return native Rust types rather than the FFI bindings to a
-> type so update the PCI resource bindings to return ResourceSize.
+> For implementing Rust bindings which can return a point in time.
 >
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
->  rust/kernel/pci.rs | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> V4:
+> * Turn from_nanos() into an unsafe function in order to ensure that we
+>   uphold the invariants of Instant
+> V5:
+> * Add debug_assert!() to from_nanos
+> V8:
+> * Change name of function from Instant::from_nanos() to
+>   Instant::from_ktime()
+> V9:
+> * Fix outdated comments in from_ktime (nanos -> ktime)
 >
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index cae4e274f7766..ef949ff10a10a 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -10,7 +10,7 @@
->      devres::Devres,
->      driver,
->      error::{from_result, to_result, Result},
-> -    io::{Io, IoRaw},
-> +    io::{resource::ResourceSize, Io, IoRaw},
+>  rust/kernel/time.rs | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+>
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 64c8dcf548d63..874a1023dcdf9 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -200,6 +200,29 @@ pub fn elapsed(&self) -> Delta {
+>      pub(crate) fn as_nanos(&self) -> i64 {
+>          self.inner
+>      }
+> +
+> +    /// Create an [`Instant`] from a `ktime_t` without checking if it is=
+ non-negative.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// On debug builds, this function will panic if `ktime` is not in t=
+he range from 0 to
+> +    /// `KTIME_MAX`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller promises that `ktime` is in the range from 0 to `KTIM=
+E_MAX`.
+> +    #[expect(unused)]
 
-Maybe we want ResourceSize re-exported from kernel::io to make this simpler=
-?
+I would consider just making it pub to avoid the need for this expect.
+
+> +    #[inline]
+> +    pub(crate) unsafe fn from_ktime(ktime: bindings::ktime_t) -> Self {
+> +        debug_assert!(ktime >=3D 0);
+
+If you're going to have a debug assertion, perhaps it would make sense
+to check both bounds?
 
 Alice
