@@ -1,139 +1,85 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27026283C9D
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 07:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B22257820
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 07:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755848793; cv=none; b=sK120oRctCm7RkMnHNWZ49R/piQaXVGqrGKE6IV2MTu/VnrJEwhSBbzKGdd+fyD9B2vQK17lxeV07q6ky8qvFAcMDg83/EwbZm3Ufxo7b9DStlP9tsJ88KqRBzGgu9Y1k7F301FO1VIbG5yAm5bcQYsHT1sSCf0/soEoocCrkaY=
+	t=1755849542; cv=none; b=E3TfXIAiREVbDW5jyUDvus8tKwxlVw2SU9psnRYTTyQ4MkiHUOswLsKPUY06hPUCQzxYXiPoDKsD4t+yJwMCmrDKA6b8SyXf0oWtQgzyjcEzJUf/RvYHTfvA2UgXJhFj4nghJODBy8TF5VgpvE/5cx6Yzd+x86NvLy32ybFkmAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755848793; c=relaxed/simple;
-	bh=V+y/12bmCVEdEzySarnT8TDFKs7NTABXDxXLLo+kWhE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sWXJY9jgEXkuj+S5HwrLnD4Igj12w+2opm4RsDTIEHszFqVjQB0cDOI+mATplL6uk5u8o0qV9RvL+mnuIZ726MKyd5AtCF4sjMKL9E1F2E2LiFZTxCeMYG23SYpIWqPgq0VdAXbhx9gr8l7bo1wIRsWgLpMlyrJTFlnFMtkMthU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sZbNPx43; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1755849542; c=relaxed/simple;
+	bh=ZSQnUiBY+QjVWejECl7qq5B/ncsHvvBk+pJI9WWhJ14=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=af3d+I5y5PuFxdyKERL6IR8DI9Og1QOxAPbeIoys2hG62I8NoUESjuxhB/fUGjJFE7u/6byERInCRxDgRqdgxbGHo4Sdf6Y+fjQaehVi1M8GIniPKluD9Zoh+sCYZ/8DQrk0YBX2/LseZADP5lgqK3rjaGbCW5dc7+0RyQuSSH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ePcWKAly; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sZbNPx43"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45a1b065d58so14835435e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 00:46:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ePcWKAly"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3c630eea496so216700f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 22 Aug 2025 00:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755848788; x=1756453588; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5YemliuHyBp0gvdTdDd76NLCLOXa02us54ebhu4Bbrk=;
-        b=sZbNPx43YMboO6zGn9z3YeLGmCFsyhGegMdhVlJuvA+boHK4G+yPQR1xZc4baXD9qk
-         8iqg4qXJ8ld0ex2gSSKdTdMRG9tFsSVboW2iiim/L5fdAhdIwQLO3IYODD5RRtNX8ee4
-         0hGbou0VU7wMIzAL6aCQ4fEZNlVqxGFmNYeKTG47vicaPCpmpE8tnHICNK8KZQMCk63B
-         LrGRPcEmJ3QgTbj0cMat6GSEWU2xBR2BbvQ9V7R2cHwpGqmlhsABcacaYMzUmhHfU3lS
-         P5MqBksOoBkMGTI7uPahsVLghJbKZGxgl700PXJpCIrEiry0d8uTFRuhNqrdYLy7otoo
-         5slw==
+        d=google.com; s=20230601; t=1755849539; x=1756454339; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OcR2vTnWvdHWsTxe8C4S1nf6KTHkxOneetmft7WPD4M=;
+        b=ePcWKAlyd6NH3t/t6bnD3PFKLfRGfImvC3RUidWoW9fND1QrccadYRUIFhBvLuUrPi
+         1z0Ue9GfuDy/KNWa8BEoiGFtvFqNmhEUTY9y+D3PzJ74RWauKyeLYfeewp5qzsNRZUqS
+         bIdUQ0XcJoKixgiwfNliuylJPblnZOj3Dy/V7TKxxV+DwnPDjZiB5faMhOALFsCcJHV6
+         4C5ffRZULjmQoWVOnbYds4qrLrkNJD/ifxpbbDbUDF5Rprija7rTnCwHUjJbYV0eI7Sm
+         IJYiApmAZveZKooYwPjEpg1f3A2poSM8EDp8a6T3nmpL5tNLqJpnPe3IhNtbDYhcO6aq
+         v2sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755848788; x=1756453588;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5YemliuHyBp0gvdTdDd76NLCLOXa02us54ebhu4Bbrk=;
-        b=EaBdrflOGwdMlOosUW2Bpx4EGGRWkd359I45koJIAE2eL9jQDSEnSYbqhceTXecRlJ
-         cInGJ1MqySh6HOeAPR5DsHbYAwwsMwovswTCBv6H66zo5LZlqPXGOYeC49M2eQGOvsfF
-         RObJNT8OUA2tV7H2WokLo+0Toyjjy+gVq1/wj8cjoUPxjLX/BSKkHkXgE8W70lBMmbGF
-         Qa7+zgfv5qKWjkSnAi+QgNQio9dgbvbmvAtcDx9SRFoBwDQSQRER6i1/CWc6pebsXnfZ
-         dA2fdmTKNAfPdUcZpBBh31UWMgyvusc2YBlFF0ThwNytrbsZTkKFFOulGoBEKsZ+bNWT
-         8f0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUlM2rklQKTkmKseKrszztgXP+lpclT951TZ0DV8AEgwxPkhOOmZ7exvhS0owFVEy6JJQJ105/ItT8uiAyApA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGsKh/rl0vGiMWRWBKOB3cFIJCOh2zGNYbJ18IaJiByhD4pKAB
-	LdCfJ8sn0mWWzTfW9G8Dftmyqj2jJgZ9hNkg+OR8+1PQVw6Q1tQzd3Wus0G/ObiTqt9i5h2ztEt
-	R3JrY0S53OTOOfO3HOSUQxw2pV0ON403ollR+TB9K
-X-Gm-Gg: ASbGnctPer9hMo/AnJM3d+qFbCGXWSmJi1bHwas0k9b9swdZDrd/tH9EF3iP004hAe/
-	HNLYKhS6dEu7ZpOeRZIlTX9qFQLdkY0wkCIr7mjQwS/MzWJIW32M2ksggrGdlQNAbnnaFrNMIB9
-	fncLOHP7sz/Y/Tr5LxPjPDf0aDWBTyx5s0non9isnjvuG1hOYDELdm+7ZtLZ8Yto40d5auxbN4d
-	7+MWlBsB4I6Wq3BNQUpKCEDmUXG6Ji6KEy303ssD3Qlu18Inc25ekAWW7kL+J8oBjubACSAWpLK
-X-Google-Smtp-Source: AGHT+IEl2XpR4GD0AcM3PV0w3+9+iurmsg+S83Mh1YS4hRyFfQy7CFdHopm4vAXAHb9ywoT72IWHsvSnmLYcnOWUXxM=
-X-Received: by 2002:a05:600c:4e8c:b0:456:1ac8:cace with SMTP id
- 5b1f17b1804b1-45b5179e7e8mr15262675e9.12.1755848788250; Fri, 22 Aug 2025
- 00:46:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755849539; x=1756454339;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OcR2vTnWvdHWsTxe8C4S1nf6KTHkxOneetmft7WPD4M=;
+        b=WDRicsm/RJ2+2ol2G41kc+a/jhvP2ovCSR++BwN8/JwGUKALE+cjtUAVJgKfYCFD4Q
+         B49ECA7vUohu0bQYGAQiu6Ca1Fj+YJoM+TJRdmJtZXqW1cN3K4O7Ikg3dNRKP8po6j4k
+         I4pkemFCKucrItW5X0CGfHupiJHcXNh0+8LYU+1gnq6Xv7sZG6ztov40fvztE4lZtnVr
+         G1KNuD6v4UUgkIrnnBRmKf7eme5TERhpBlaYKoCMJ9W93RrEnLv63vaKM72CxYt+mw2R
+         tHYTsQi+7ZiC60psW1UZVlqii15wC+IltMmjeAP3Al9tKo2zMVLgcDJAhmucuXty8BNn
+         vA5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWfXP/I2Ozt9FP99slrYx/+HNJ/71gMdidoPo2EMrq3ZoznA74Xw4O123InWRkRX8vQsCpWu8DM35pLzqnJ7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIzLhPTTFN0DxHtLI8tKasGunLKIeRNG+DU6eL4BTB0SpkTc22
+	BM90rz9cUTtPzsuZt9bswseR1WFo7Xh66j2H0IoQNbqwXaT6pqf0c3iNMP9Vr17hTLcHgQwDpSJ
+	fCkMUPjJEaAWE1um95w==
+X-Google-Smtp-Source: AGHT+IHHa6Gwb6EMwcReUb8w20SMBOY8HUqXKfoIIJGVFOjuon7/sYmIEhsZh0RUa04bS92rGVC4oCZ2kKrrErU=
+X-Received: from wmbdv11.prod.google.com ([2002:a05:600c:620b:b0:459:dac7:4ea6])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2583:b0:3b8:d893:524c with SMTP id ffacd0b85a97d-3c5dcdfb74cmr1360982f8f.53.1755849539448;
+ Fri, 22 Aug 2025 00:58:59 -0700 (PDT)
+Date: Fri, 22 Aug 2025 07:58:58 +0000
+In-Reply-To: <20250821-num-v4-1-1f3a425d7244@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250821193259.964504-1-lyude@redhat.com> <20250821193259.964504-7-lyude@redhat.com>
-In-Reply-To: <20250821193259.964504-7-lyude@redhat.com>
+Mime-Version: 1.0
+References: <20250821-num-v4-0-1f3a425d7244@nvidia.com> <20250821-num-v4-1-1f3a425d7244@nvidia.com>
+Message-ID: <aKgjQq9tfRuCq-cr@google.com>
+Subject: Re: [PATCH v4 1/2] rust: add `Alignment` type
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 22 Aug 2025 09:46:15 +0200
-X-Gm-Features: Ac12FXxz1OPWMgKtoRfP1tPNgTj_X4Rl-KjHLxrj8UR8juldOTLwAUm0J19o1kw
-Message-ID: <CAH5fLgggbF2KWHazQ9rDeyVEjxg4LipfXA1qepPAhkkaHD4Mxw@mail.gmail.com>
-Subject: Re: [PATCH v9 6/7] rust: time: Add Instant::from_ktime()
-To: Lyude Paul <lyude@redhat.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, 
-	"open list:DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Aug 21, 2025 at 9:34=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrote=
-:
->
-> For implementing Rust bindings which can return a point in time.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+On Thu, Aug 21, 2025 at 09:42:17PM +0900, Alexandre Courbot wrote:
+> Alignment operations are very common in the kernel. Since they are
+> always performed using a power-of-two value, enforcing this invariant
+> through a dedicated type leads to fewer bugs and can improve the
+> generated code.
+> 
+> Introduce the `Alignment` type, inspired by the nightly Rust type of the
+> same name and providing the same interface, and a new `Alignable` trait
+> allowing unsigned integers to be aligned up or down.
+> 
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-> V4:
-> * Turn from_nanos() into an unsafe function in order to ensure that we
->   uphold the invariants of Instant
-> V5:
-> * Add debug_assert!() to from_nanos
-> V8:
-> * Change name of function from Instant::from_nanos() to
->   Instant::from_ktime()
-> V9:
-> * Fix outdated comments in from_ktime (nanos -> ktime)
->
->  rust/kernel/time.rs | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
->
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 64c8dcf548d63..874a1023dcdf9 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -200,6 +200,29 @@ pub fn elapsed(&self) -> Delta {
->      pub(crate) fn as_nanos(&self) -> i64 {
->          self.inner
->      }
-> +
-> +    /// Create an [`Instant`] from a `ktime_t` without checking if it is=
- non-negative.
-> +    ///
-> +    /// # Panics
-> +    ///
-> +    /// On debug builds, this function will panic if `ktime` is not in t=
-he range from 0 to
-> +    /// `KTIME_MAX`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller promises that `ktime` is in the range from 0 to `KTIM=
-E_MAX`.
-> +    #[expect(unused)]
-
-I would consider just making it pub to avoid the need for this expect.
-
-> +    #[inline]
-> +    pub(crate) unsafe fn from_ktime(ktime: bindings::ktime_t) -> Self {
-> +        debug_assert!(ktime >=3D 0);
-
-If you're going to have a debug assertion, perhaps it would make sense
-to check both bounds?
-
-Alice
