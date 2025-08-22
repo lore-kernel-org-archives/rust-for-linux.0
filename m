@@ -1,128 +1,109 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48618238149;
-	Fri, 22 Aug 2025 15:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755877445; cv=pass; b=ufCmrM1o2Nrk+2GJZvH0fcjjU7p7d/UQD35nZNP+omzBMClbu4YlbRs6j2LA5ghvInqwhKYkB0iTbz9UKJJUgdeOj+2zhmH9db888MK2DE2C/RaaKIPUNvfXIRkCsxrvp/ZUY35mthpKy85I67LCPzNpHp1JbppTK3KI3KNVikY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755877445; c=relaxed/simple;
-	bh=o9nh+d9r/zyynTtqiHYBqtVMaB6vk5fmJd0JfpRsFsc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=h2gUioa2At5MY+AuPKGxf3HkvHRsuzGj31NAVznPWuT41vPeSwIKg5BYLrfbZ1MBk+Qz7A81miSejXvrkzTNcPBKPWZ0LU4H8dOYjApY7vNTg9zsV6oKIixCh8n5CBxQIQDLzKpHR03skydvEt8I7Zk6pNBfTZ2Pft94Hm2U5x4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YMa17ozj; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3AD28726F;
+	Fri, 22 Aug 2025 20:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755893323; cv=none; b=bsQf/ZufDmKl3NGnxURY/a9H2yz+aBiu1WgSukmnWUTfBpqx1ZpaLMr4sr/6VN5so+GqZ2RtYABcvh/U9P1iO9wrz6P9jn9SdnqOeTfYE5PAXufAm6B93+DV4sV8ZSNpTlGSadkEfr6aUuUWd75Szcwozs5Zbfa3OCRrMmorOgA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755893323; c=relaxed/simple;
+	bh=kcWH8At3XsuwMQuBllx2sYdu3LXXHPZRwLzgueFcJj8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Yvp+hTAB7c9ArGoEH/m6nubQ1zFmfmDKDsnZxZB+TCFzVKHvjhE+RvmCflbn4mN2QBGvk6ZRNgd29ZosXNXNaeyPQ4MD30Eni5CzBnNRAPNH1cQ1XppEvIotMCVvlGzWKyWvElpIBPJQyr8rafP7qv5DH/63wEaMmxt0Npzwzuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzFBg8ph; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YMa17ozj"
-ARC-Seal: i=1; a=rsa-sha256; t=1755877419; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZLj7PhIDrAAGOK1HcqBj9174GgMM/NrCu6pQaUWEjDkYCAZp695q5c8s1daNnGtmuURLWDDhWlDI4av0pMsHSHjbKyM6fOHLKVAU55ZZPvuX5EKAjqn2NJ5GzWq00vJ3lElwJaP2MyNxe8BBBkDmBAKZj62D9uAmDzCTvmZupZo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755877419; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=PqUCUnihyJxvxzkXqOwwRycVnt4eGXHpARTB8PXlkd4=; 
-	b=mAMf1ce8SjIPMNcV5WrE8n0Ibe3VOjJ/uZQPwKKQHqlZ7Fx7pe/GY4z3Euvyko5RJwQ4lGM8YVNBg8w/W7fwzioLwFxzjd2ToXYc2tiVxTTlYNzwDsScnvjqCNZidh4iYwFApWn6pr6bSsBhlrrvSGY3BeLliCSIrTSFxUYStSY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755877419;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=PqUCUnihyJxvxzkXqOwwRycVnt4eGXHpARTB8PXlkd4=;
-	b=YMa17ozjFiGBqdgmByRQBEdRvbipYETo7tl/7XaV71HtPJuo8CaITtsujNXWGT5M
-	H3GTjeeKeRO0LsrtSTXp8UM6dNUbV8JEo4dyzbYqMCfkGhPtQxtn+DZ/88xRGcmueax
-	6yOhHWhelQ067nk++opz3l5/UeeYYB6lRxlkSrdI=
-Received: by mx.zohomail.com with SMTPS id 175587741672544.27711383068004;
-	Fri, 22 Aug 2025 08:43:36 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzFBg8ph"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-77030079854so139323b3a.2;
+        Fri, 22 Aug 2025 13:08:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755893321; x=1756498121; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A64V3WFx8DOv57ADN25EluBt/3jj5eOB8nLgBpqNI3A=;
+        b=dzFBg8pheKdu1s9VvFhrgAQVq3gnlQ1VDfVXO7AAWxiyLCpJCe+pqBi78BFBVKzfZi
+         IAnSVqNaYCGzsKG9FsBtXqtr7PFS0lyMZO5KOyEZp9/woQg3qRU5npRBAYRYSiWYM87K
+         kQoRYtow8cBdQ8+jUjwLVEBX+liEaSWAvYHSJzzZrGQCVT2FcTUffeDbLXfIJ5Uzzv+R
+         w8nYDDB7daamPgionrBpL1jB8WdfTdapbqdirpftVSJMiWVFGJh6MSBoy/kiV9PF0WQI
+         j5MUWxvo2YJzqypdXD02CQD2d+4HiqwWZ5EvCqrW0DVEQC7FDuXbrCiY7iJ58dpnCTAj
+         LO+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755893321; x=1756498121;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A64V3WFx8DOv57ADN25EluBt/3jj5eOB8nLgBpqNI3A=;
+        b=n8Oq1hCDA1+3ldYWMhDunhkYROyDwFWGEelD1tm87C3YuTdo3I9ARmUPm3+OVekFsk
+         j4+f4jW1DAuMRoL40J8xFXgf0e0D3by0tn2hcmvsgl/GL6Qg6M+2l2WhHW3lvj343Pi/
+         QTTgsP3KIaWjo4/zSKxkowA+zYTFenws9DcHiW0w8IeSvO+M3vwFO3SURB2BNnFcUux0
+         WKEMx3zPODCxMd9IVnF6DK2/rnW3SRf+QbR7wbqerrn+WqjKMZxi/odWqM6+WeuUKmuW
+         0J2r8JTSiltE0Z4ROTVQisibB5uSJ+P5++iGPTR1zM2oK+jWyEsrBNEfQTWewOH1c6jA
+         SFTw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMCSEHLji13TFo0leHdwKl/pdMJHPQ68G4YSAUuAk7+41FyP/D5YIft371FOyLoer72B+AJLtsQBOAYJQ=@vger.kernel.org, AJvYcCX7Dt12PqeN6xD8qne477csrOEG58MTPB8Fm6+MVtdFnRK8lCPgw8Gp8PhvFwmB5m6392j2hvuw5FhGVcF0Ugw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYixHsCKXWiK1z20PfSJPBb0pPKmQmJTo/2YpG7b+Uh65PFMgZ
+	pRAz6yB6qRjkyfk5gIjynTNf7sudYQtU8AcgXJ+3U+PkVAN6be3QASCXZwgGz9Cmm7CNR/9G2M4
+	5mdYrbq/wkXw0OUpePCXjBhBxXGz/ihU=
+X-Gm-Gg: ASbGncs1qFvtvDIxf1ZicpZQdhPU0Zruc8b75amPN9IPWeGwQ3B5UI2NtkK/B081l+b
+	BQaA6Jkfozxjl/tbomllSSGSz6iZ+LVbaa8nbCZ7f44mTHWkDjrnnQwC6vWtdiDDY6KHBJ/IKVb
+	5auh8jwbQ77/2uyg79mX5Y6HasgC5gUn26Kt7nHSBPk/SKs1aA+Y6RYjpz+SVZhJ/n5RBO0+91z
+	13eME2L7emuZAkg5ADkl8Gzq4AIPNrl2lxFu3VpApWlRxD2Jv8vF8sbBcRgoqbUJ00po72FYSqb
+	9YYeD4DjadfLssyzzWreEBtq4w==
+X-Google-Smtp-Source: AGHT+IGDXUpwhHcoqNE2jOVISXRAz6TT/o/sRxggefFveEMIvbakTVfQ+++qCEzLjfyaGrE3/h7nj7fv7zOiG/JZC+w=
+X-Received: by 2002:a17:902:e78f:b0:240:4d65:508f with SMTP id
+ d9443c01a7336-2462ef99564mr28783925ad.6.1755893321256; Fri, 22 Aug 2025
+ 13:08:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v2 3/5] rust: maple_tree: add MapleTree::lock() and load()
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <mrc7a7s7g4ylxvxfezwx3rf7ry7sng4adn64i443aikpjfz5ik@jq4co7zq7ryq>
-Date: Fri, 22 Aug 2025 12:43:20 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Andrew Ballance <andrewjballance@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- linux-kernel@vger.kernel.org,
- maple-tree@lists.infradead.org,
- rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org
+MIME-Version: 1.0
+References: <20250811213851.65644-1-christiansantoslima21@gmail.com>
+ <DC0INEKNZPSE.WLEQH24SLW1I@nvidia.com> <5204b598-7792-460b-bec2-e3a4a4c7e32d@gmail.com>
+ <DC5INTQKY0EX.1T4HD6OU8C4PI@nvidia.com> <CABm2a9cyvsXd1OS+tvDoDDEfMgBOJeetBVQU0x3m5E1vV1CApw@mail.gmail.com>
+ <DC828042PKDV.16NDVKIGBNTJH@nvidia.com> <CANiq72kDUK0nScg+nK-M2U=MmxTmhayyRUv7n4E3UMQHr8RLQg@mail.gmail.com>
+ <DC8MK2TAQ5D7.GHE5F2OREOD7@nvidia.com> <CANiq72mWYBAQYj_kWc+6XxrPVzguOd1vUB9f5JXzYdNx9EoXyw@mail.gmail.com>
+ <DC906GRT9ESF.2ZV7RUZR0XZEK@nvidia.com>
+In-Reply-To: <DC906GRT9ESF.2ZV7RUZR0XZEK@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 22 Aug 2025 22:08:29 +0200
+X-Gm-Features: Ac12FXxiBkhuswwDZMdnMbgm7l8Q0QI9OycBEp6n-ZH1Po5dOnIygeQLegcv8wU
+Message-ID: <CANiq72k4qgwDrAUmJWb1=P5HHZzKRoWQjVUuu=k9f5vMd5AUuw@mail.gmail.com>
+Subject: Re: [PATCH v9] rust: transmute: Add methods for FromBytes trait
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Christian <christiansantoslima21@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <FD22178C-8BCE-478B-8A2A-12FEFFA8DFC3@collabora.com>
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-3-229b48657bab@google.com>
- <38B2DEA2-774D-45B5-8923-C5330B975FB9@collabora.com>
- <mrc7a7s7g4ylxvxfezwx3rf7ry7sng4adn64i443aikpjfz5ik@jq4co7zq7ryq>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
-Hi Liam,
+On Fri, Aug 22, 2025 at 3:50=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
+>
+> Strangely though, even after enabling the feature, I am still occasionall=
+y getting this warning:
+>
+>   CLIPPY L rust/kernel.o
+> warning: current MSRV (Minimum Supported Rust Version) is `1.78.0` but th=
+is item is stable since `1.79.0`
 
-[=E2=80=A6]
+Yeah, that one is a downside of the MSRV config -- please just allow it loc=
+ally.
 
->>=20
->>> +    ///
->>> +    /// # Examples
->>> +    ///
->>> +    /// Iterate the maple tree.
->>> +    ///
->>> +    /// ```
->>> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
->>> +    /// use kernel::sync::Arc;
->>> +    ///
->>> +    /// let tree =3D KBox::pin_init(MapleTree::<Arc<i32>>::new(), =
-GFP_KERNEL)?;
->>> +    ///
->>> +    /// let ten =3D Arc::new(10, GFP_KERNEL)?;
->>> +    /// let twenty =3D Arc::new(20, GFP_KERNEL)?;
->>> +    /// tree.insert(100, ten, GFP_KERNEL)?;
->>> +    /// tree.insert(200, twenty, GFP_KERNEL)?;
->>> +    ///
->>> +    /// let mut ma_lock =3D tree.lock();
->>> +    /// let mut iter =3D ma_lock.ma_state(0, usize::MAX);
->>> +    ///
->>> +    /// assert_eq!(*iter.mas_find(usize::MAX).unwrap(), 10);
->>> +    /// assert_eq!(*iter.mas_find(usize::MAX).unwrap(), 20);
->>> +    /// assert!(iter.mas_find(usize::MAX).is_none());
->>> +    /// # Ok::<_, Error>(())
->>> +    /// ```
->>> +    #[inline]
->>> +    pub fn mas_find(&mut self, max: usize) -> =
-Option<T::BorrowedMut<'_>> {
->>=20
->> Should we drop the =E2=80=9Cmas=E2=80=9D prefix here? I think that =
-=E2=80=9Cfind()=E2=80=9D is fine.
->=20
-> The maple tree has two interfaces, the advanced one which starts with
-> mas_ and the simple on that uses mt_.  This is probably why the mas_ =
-is
-> here?
->=20
+I hope we don't need more than a couple of those (we only had a case
+elsewhere so far), and we will increase the minimum in the coming
+months, so e.g. this one would go away. If it becomes too painful, I
+will just disable it temporarily.
 
-Yeah but we should probably not expose this nomenclature directly in =
-Rust, or
-at least not in the function name itself. Perhaps we can implement the =
-mt_* API
-as a separate type, with its own find() function?
+Thanks!
 
-=E2=80=94 Daniel
-
-
+Cheers,
+Miguel
