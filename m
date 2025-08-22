@@ -1,224 +1,183 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A632FDC31;
-	Fri, 22 Aug 2025 14:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60314308F17;
+	Fri, 22 Aug 2025 14:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755872028; cv=none; b=aJu7TQtkE1cyCNnfRhc7OXygY8iTzzfnx3b9ymmwwu1leEvQOwv6hZDqX8bY8zpzbvXscUsnQrQZ5ekEz7+7YMpd4y66dxXd91lUCW6ZghocmVcRWChuveUlzyOjPvLTYcutjxmX9+PFGvdSN09gVlYEp6dJvIk320CYA+nsu/Q=
+	t=1755872388; cv=none; b=Vvay/nQoI6xtySJtTSLKtD5s6mBELcvkDFs+bBGMFkC/oGD0CMOLcMiyhw7LNJx3/wIaclVbqP93lfE++GuVJjOVgbbnw6GubGGu1qpho25E4GqRtc9VdhAuQqZlwj4k2btnqummzqnrwYgQkfryLedOeWFu9B8LjAhdH1M3F3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755872028; c=relaxed/simple;
-	bh=gkGj9UWuXL3nI8EdViAz29uJOXaZrL/MrAfy4WjmCY0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=mclWDG6bI9WnjwR/5masamHdhicQzPyZ/SwZxVaiQ4AjiS/YTWrBqvrC/Z4tirI/aeB0kWsUNsUQGfvzGA8kBtv/+kwj+1s3xUTXZ9QO1Jq1O+TV4q0TM8LjoXqRcdRKsf92LwTAiyPKEzL2h9JgmKNfnitI+dGxiAcJR99fpe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IpLlZ7W+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755872388; c=relaxed/simple;
+	bh=pSYdMcus0LPCr9HogH6HkcL5YxbX5KWhzFdqlhGcbmI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q6IWiJ4Sw+qScBI/nhnplEpxLh8zrEWUxEyYcKoUChoJd8RJJOdA+TLpAhaiqVSdMao9DzA4w+dkdeV83gp9Qt/nvYjyTKA7f8AfD5nXxu8VlBE17t5s/wJCvKl4OegThpFPrxUk26Na99Vidme0vg3EwiZ+RYjdnPQwLGui/zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uC7AEXE3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IpLlZ7W+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21D3C4CEED;
-	Fri, 22 Aug 2025 14:13:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uC7AEXE3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8DEC116B1;
+	Fri, 22 Aug 2025 14:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755872028;
-	bh=gkGj9UWuXL3nI8EdViAz29uJOXaZrL/MrAfy4WjmCY0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=IpLlZ7W+4YplB3G6RYJsjQrmGAPRW4BoWjqVQnLVt9SLvkUQIF/pdGgfpjiGHpoOM
-	 Rdnt1feqFSB2rtl8OV5EWZGTwC4xWZZsjkS6Y/QiHDaGS0wubFduuk9Ws1HU9/slul
-	 0ijRMtxTR+ufUZDtwrErlJ+Nv9MC6tawd/MYXVOgLnEvRBCKxjb8jiOHzQ64IbBRwJ
-	 CY+MrI6afrAZV5LuFF8dpBQ0duWEHvS3LU1G4akTzBuI4PRBOdQf5gqwO0lEGMZJD0
-	 jfGCg2A51/fJMCEs2Yt6owosiulzUFE2FIwdwDKNqJXuElWVptbFe52TuPo2wrRqCO
-	 JSZ9H4H1Rz/JQ==
+	s=k20201202; t=1755872388;
+	bh=pSYdMcus0LPCr9HogH6HkcL5YxbX5KWhzFdqlhGcbmI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uC7AEXE3+SwOLKHHd/wbeW8x2JVxV6NK2Ub6v++0euDxAh4oNSN31LmoC1NlKAlQW
+	 ywYsuakEjDbrZEo6GG03meJsLEq3ENrZ8+bwgUqIR0F0VQfG1z4c3osvR1qQyCpXNM
+	 1aJpSQGXDKJij64PdbwTsAmME36to5mqr7kFVKzwJCFZByY8QK6Bnn2CQ8oMtFxIcB
+	 d9bEdmyPnwYZMTpVgknuhCLuBsFlq1rrNke+h0v0gJl9MHRLA/CR1F3Que/4GCVXBh
+	 b14SVQT3G2zwOX7yLdMyuOXR5yMORnRVaeBM6hMK/M/RGgCEjBdtQGhc/x19A9v3aH
+	 Ej5O0H6GgHDMQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1upScM-0000000CCqq-0RR1;
+	Fri, 22 Aug 2025 16:19:46 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <mchehab+huawei@kernel.org>,
+	Benno Lossin <mchehab+huawei@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <mchehab+huawei@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <mchehab+huawei@kernel.org>,
+	Sean Young <sean@mess.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-media@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 00/24] better handle media headers
+Date: Fri, 22 Aug 2025 16:19:12 +0200
+Message-ID: <cover.1755872208.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 Aug 2025 16:13:43 +0200
-Message-Id: <DC90ONOZLKAZ.35P6HOCCAIPW1@kernel.org>
-Subject: Re: [PATCH v3] rust: zpool: add abstraction for zpool drivers
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
- <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
- <linux-mm@kvack.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250822133935.674282-1-vitaly.wool@konsulko.se>
-In-Reply-To: <20250822133935.674282-1-vitaly.wool@konsulko.se>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On Fri Aug 22, 2025 at 3:39 PM CEST, Vitaly Wool wrote:
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index b39c279236f5..0fec5337908c 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -41,6 +41,11 @@
->  pub struct Flags(u32);
-> =20
->  impl Flags {
-> +    /// Create from the raw representation
-> +    pub fn new(f: u32) -> Self {
-> +        Self(f)
-> +    }
+Hi Jon,
 
-I didn't notice this change before.
+Sorry for resending this big series. The content is almost identical
+to the first version, but this one can be applied directly on the top
+of docs/next, without requiring the sphinx-build-wrapper series.
 
-This function should be crate private, called from_raw() and document that =
-the
-given value must be a valid combination of GFP flags.
+I'm opting for this approach, in order to avoid adding 42 lines to
+sphinx-build-wrapper just to be removed at the v1 of this series.
 
-Please also make the addition of alloc::Flags::from_raw() a separate patch.
+-
 
-> +/// # Example
-> +///
-> +/// A zpool driver implementation which does nothing but prints pool nam=
-e on its creation and
-> +/// destruction, and panics if zswap tries to actually read from a pool'=
-s alleged object.
-> +///
-> +/// ```
-> +/// use core::ptr::NonNull;
-> +/// use kernel::alloc::{Flags, KBox, NumaNode};
-> +/// use kernel::zpool::*;
-> +///
-> +/// struct MyZpool {
-> +///     name: &'static CStr,
-> +/// }
-> +///
-> +/// struct MyZpoolDriver;
-> +///
-> +/// impl ZpoolDriver for MyZpoolDriver {
-> +///     type Pool =3D KBox<MyZpool>;
-> +///
-> +///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpoo=
-l>> {
-> +///         let myPool =3D MyZpool { name };
-> +///         let mut pool =3D KBox::new(myPool, gfp)?;
+The goal of this series is to drop one of the most ancient and ugliest
+hack from the documentation build system. Before migrating to Sphinx,
+the media subsystem already had a very comprehensive uAPI book, together
+with a build time system to detect and point for any documentation gaps.
 
-Why mutable?
+When migrating to Sphinx, we ported the logic to a Perl script
+(parse-headers.pl) and Markus came up with a Sphinx extension
+(kernel_include.py). We also added some files to control how parse-headers
+produce results, and a Makefile.
 
-> +///
-> +///         pr_info!("Created pool {}\n", pool.name);
+At the initial Sphinx versions (1.4.1 if I recall correctly), when
+a new symbol is added to videodev2.h, a new warning were
+produced at documentatiion time, it the patchset didn't have
+the corresponding documentation path.
 
-I think this print is unnecessary.
+While kernel-include is generic, the only user at the moment is the media
+subsystem.
 
-> +///         Ok(pool)
-> +///     }
+This series gets rid of the Python script, replacing it by a command
+line script and a class. The parse header class can optionally be used by
+kernel-include to produce an enriched code that will contain cross-references.
 
-Please add empty lines between functions.
+As the other conversions, it starts with a bug-compatible version of
+parse-headers, but the subsequent patches add more functionalities and
+fix bugs.
 
-> +///     fn destroy(p: KBox<MyZpool>) {
-> +///         let pool =3D KBox::into_inner(p);
+It should be noticed that modern of Sphinx disabled the cross-reference
+warnings. So, at the next series, I'll be re-adding it in a controlled way
+(e.g. just for the references from kernel-include that has an special
+argument).
 
-Why the call to into_inner()? What do we get from moving the value?
+The script also supports now generating a "toc" output, which will be used
+at the next series.
 
-> +///         pr_info!("Removed pool {}\n", pool.name);
+-
 
-Same as above, I think the print is unnecessary.
+v2:
+   - makes it indepentent of sphinx-build-wrapper patch series.
 
-> +///     }
-> +///     fn malloc(_pool: &mut MyZpool, _size: usize, _gfp: Flags, _nid: =
-NumaNode) -> Result<usize> {
-> +///         Ok(0) // TODO
-> +///     }
-> +///     unsafe fn free(_pool: &MyZpool, _handle: usize) {
-> +///         // TODO
+Mauro Carvalho Chehab (24):
+  docs: parse-headers.pl: improve its debug output format
+  docs: parse-headers.py: convert parse-headers.pl
+  docs: parse-headers.py: improve --help logic
+  docs: parse-headers.py: better handle @var arguments
+  docs: parse-headers.py: simplify the rules for hashes
+  tools: docs: parse-headers.py: move it from sphinx dir
+  tools: docs: parse_data_structs.py: add methods to return output
+  MAINTAINERS: add files from tools/docs to documentation entry
+  docs: uapi: media: Makefile: use parse-headers.py
+  docs: kernel_include.py: Update its coding style
+  docs: kernel_include.py: allow cross-reference generation
+  docs: kernel_include.py: generate warnings for broken refs
+  docs: kernel_include.py: move rawtext logic to separate functions
+  docs: kernel_include.py: move range logic to a separate function
+  docs: kernel_include.py: remove range restriction for gen docs
+  docs: kernel_include.py: move code and literal functions
+  docs: kernel_include.py: add support to generate a TOC table
+  docs: kernel_include.py: append line numbers to better report errors
+  docs: kernel_include.py: move apply_range() and add a docstring
+  docs: kernel_include.py: remove line numbers from parsed-literal
+  docs: kernel_include.py: remove Include class inheritance
+  docs: kernel_include.py: document all supported parameters
+  scripts: sphinx-build-wrapper: get rid of uapi/media Makefile
+  docs: sphinx: drop parse-headers.pl
 
-I'm not sure the TODO comments add any value.
+ .pylintrc                                     |   2 +-
+ Documentation/Makefile                        |   3 +-
+ Documentation/sphinx/kernel_include.py        | 519 +++++++++----
+ Documentation/sphinx/parse-headers.pl         | 404 ----------
+ Documentation/userspace-api/media/Makefile    |  64 --
+ .../userspace-api/media/cec/cec-header.rst    |   5 +-
+ .../media/{ => cec}/cec.h.rst.exceptions      |   0
+ .../media/{ => dvb}/ca.h.rst.exceptions       |   0
+ .../media/{ => dvb}/dmx.h.rst.exceptions      |   0
+ .../media/{ => dvb}/frontend.h.rst.exceptions |   0
+ .../userspace-api/media/dvb/headers.rst       |  17 +-
+ .../media/{ => dvb}/net.h.rst.exceptions      |   0
+ .../media/mediactl/media-header.rst           |   5 +-
+ .../{ => mediactl}/media.h.rst.exceptions     |   0
+ .../userspace-api/media/rc/lirc-header.rst    |   4 +-
+ .../media/{ => rc}/lirc.h.rst.exceptions      |   0
+ .../userspace-api/media/v4l/videodev.rst      |   4 +-
+ .../{ => v4l}/videodev2.h.rst.exceptions      |   0
+ MAINTAINERS                                   |   1 +
+ scripts/sphinx-build-wrapper                  | 719 ++++++++++++++++++
+ tools/docs/lib/__init__.py                    |   0
+ tools/docs/lib/enrich_formatter.py            |  70 ++
+ tools/docs/lib/parse_data_structs.py          | 452 +++++++++++
+ tools/docs/parse-headers.py                   |  60 ++
+ 24 files changed, 1704 insertions(+), 625 deletions(-)
+ delete mode 100755 Documentation/sphinx/parse-headers.pl
+ delete mode 100644 Documentation/userspace-api/media/Makefile
+ rename Documentation/userspace-api/media/{ => cec}/cec.h.rst.exceptions (100%)
+ rename Documentation/userspace-api/media/{ => dvb}/ca.h.rst.exceptions (100%)
+ rename Documentation/userspace-api/media/{ => dvb}/dmx.h.rst.exceptions (100%)
+ rename Documentation/userspace-api/media/{ => dvb}/frontend.h.rst.exceptions (100%)
+ rename Documentation/userspace-api/media/{ => dvb}/net.h.rst.exceptions (100%)
+ rename Documentation/userspace-api/media/{ => mediactl}/media.h.rst.exceptions (100%)
+ rename Documentation/userspace-api/media/{ => rc}/lirc.h.rst.exceptions (100%)
+ rename Documentation/userspace-api/media/{ => v4l}/videodev2.h.rst.exceptions (100%)
+ create mode 100755 scripts/sphinx-build-wrapper
+ create mode 100644 tools/docs/lib/__init__.py
+ create mode 100644 tools/docs/lib/enrich_formatter.py
+ create mode 100755 tools/docs/lib/parse_data_structs.py
+ create mode 100755 tools/docs/parse-headers.py
 
-> +///     }
-> +///     unsafe fn read_begin(_pool: &MyZpool, _handle: usize) -> NonNull=
-<u8> {
-> +///         panic!("read_begin not implemented\n"); // TODO
+-- 
+2.50.1
 
-Please don't use panic!() here, we only ever panic the kernel when there is=
- no
-other way to prevent undefined bahvior, i.e. as a last resort.
-
-I know it's just an example and it's not even run, but it might trick peopl=
-e
-into thinking that is is OK, given that it is an example.
-
-> +///     }
-> +///     unsafe fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem:=
- NonNull<u8>) {}
-> +///     unsafe fn write(_p: &MyZpool, _h: usize, _handle_mem: NonNull<u8=
->, _mem_len: usize) {}
-> +///     fn total_pages(_pool: &MyZpool) -> u64 { 0 }
-> +/// }
-
-Overall, I feel like the example doesn't add much value as it is. I think i=
-t
-would be better to provide a real example that actually implements the
-callbacks.
-
-What about doing adding the most simple implementation using a plain VVec f=
-or
-backing the pool? This way we can even run the example. :)
-
-> +/// ```
-> +pub trait ZpoolDriver {
-> +    /// Opaque Rust representation of `struct zpool`.
-> +    type Pool: ForeignOwnable;
-> +
-> +    /// Create a pool.
-> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
-> +
-> +    /// Destroy the pool.
-> +    fn destroy(pool: Self::Pool);
-> +
-> +    /// Allocate an object of size `size` using GFP flags `gfp` from the=
- pool `pool`, with the
-
-I think you can just write "Allocate an object of `size` bytes from `pool`"=
-,
-which should sound a bit more organic.
-
-> +    /// preferred NUMA node `nid`. If the allocation is successful, an o=
-paque handle is returned.
-> +    fn malloc(
-> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
-> +        size: usize,
-> +        gfp: Flags,
-> +        nid: NumaNode,
-> +    ) -> Result<usize>;
-> +
-> +    /// Free a previously allocated from the `pool` object, represented =
-by `handle`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `handle` should be a valid handle previously returned by `mall=
-oc`
-
-"must be"; please also add a period at the end of a sentences (applies to t=
-he
-whole patch).
-
-> +    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, h=
-andle: usize);
-> +
-> +    /// Make all the necessary preparations for the caller to be able to=
- read from the object
-> +    /// represented by `handle` and return a valid pointer to the `handl=
-e` memory to be read.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `handle` should be a valid handle previously returned by `mall=
-oc`
-
-A handle that has been given to free() already cannot be used here anymore.
-However, as by your safety documentation this would be valid.
-
-More generally, for the safety documentation I recommend having a look at t=
-he
-documentation of the Allocator trait [1].
-
-[1] https://rust.docs.kernel.org/src/kernel/alloc.rs.html#139-216
