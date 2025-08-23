@@ -1,130 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC581A9FA7;
-	Fri, 22 Aug 2025 21:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5154C23BF96
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Aug 2025 10:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755899390; cv=none; b=jnFFUDlyslcOwGGpBpfXol+CJ7dKRqmx6Dm1BlsGblGv+nhB/1vT90+bYkZa2ghHedqGA8CWEWXDYMS4OdgGegtRCObdw+Yr0U9QOSjZ//hOLGcCn6i7KYP+RgLWRV/v4g5EfFkJHLWaSi25R6pgG+FQSLeDMSIZ0e/SflEswNk=
+	t=1755944042; cv=none; b=BlVIVQ9GR6gaJY1lNtm0Mdw2zF8gboEY/XDrt4cjsu/SmpE4tPPT8mbeOMSjh6L+VaAfvkGHq9DkyQJb84192c/oEPICa8Z32SnmPbPzw+6lz1Pl7E/VSIZj0EglUNht5bO4b6IHqsE2/lrKOrXWsgVepmxDXPTMAT/coHz7Jbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755899390; c=relaxed/simple;
-	bh=wXrPR1g3JpzZb33O4hssEbGQZzGeBolfT7rXw5mzIzE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=RkEKFdWEH2KPURfoC1x7lk9cSB9pFeFeu/ofBKSaZyiPk/LZ36VvSwhvL8mSDi/ScsryeC4bDYZMc5U6v5tUU/ZEVboaGpobEtw9gTNbNooi9DUSXMlnkp8vU8/yZTStzVd77RvIxiwgHm4q08nM6ahLH3TtyWO3CcW2GXZQAQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hO65IyFw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755944042; c=relaxed/simple;
+	bh=YNJerp8gGwn9w8snONcQXKLQmew4f9EERAWetb2IHcQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=qdI5Xo7F1GRHtLj1Z55TYhkiGQlBP7NaAp7AB3IQM7Qzk0WY84x+9sOsydb8x/jiO4kekQUU4lhfge5kUsJZs95sbNmx/y6Q05J9XaUzActxI8TeIvB9aXpbUBDVzSczGJPgFXQv+QA7g3XHhLeuIrANYEGLAXYP9t8NoXvgfLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=qZ2mfZxl; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hO65IyFw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E199FC4CEED;
-	Fri, 22 Aug 2025 21:49:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755899390;
-	bh=wXrPR1g3JpzZb33O4hssEbGQZzGeBolfT7rXw5mzIzE=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=hO65IyFwXuDZm/j1t+2HMXodd8geddF/a5rOL79Hyx9QgKrmUzsYjy8eXDjz3bhZm
-	 BXUW9EvwA3AE9inv5x2cBSgCEdXw1Qikj/DCqrnSXqaPj6bndG8GdhOOOhgUlSaWUm
-	 +bMvTZzULtWXqBFHDsdqwtz5tMQQMfvAx8mGZgrNY5tH2yOj44VY89IxZ+iofv29FA
-	 sD/93HtObxM/3ltOyXIeoEbPtRXEG2pTp1+WY0VGnrtUqLmNVzdqd/j1XDTsdKsUFB
-	 C5WBeVGq/hy4r2SYe5bqet6os814yqiR1kA0YbHnqYYwXyQeJy+DsRJmgq3C99cTjt
-	 fd1MK3ZNpVtlg==
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="qZ2mfZxl"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250823101350euoutp014ab0afb3cf3bf81e984fa238461920c5~eXcrLqXk91280312803euoutp019
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Aug 2025 10:13:50 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250823101350euoutp014ab0afb3cf3bf81e984fa238461920c5~eXcrLqXk91280312803euoutp019
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1755944030;
+	bh=qltGmFZ1SyA2K1lCnBKFEXirABeylZVSgPO87C54S8o=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=qZ2mfZxlunMbEi21nVsR9wiuo5tfKAO2P/WFOeySBnWBUqPcAYK55g6Wa5BjbCLrP
+	 Wzjygko6mkq8k+FqkkUhts9cB+cjvlccwGwZySQKMPLg0Gz6O52uxUtY9AXxv9m7LU
+	 +kR1gXVLqKEA3kIhX+lr8uxgKT99kY9NoMt693Xk=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250823101349eucas1p12d4a24393d204c8b65adaf2cebbc9b9c~eXcqRcCWE2895128951eucas1p10;
+	Sat, 23 Aug 2025 10:13:49 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250823101348eusmtip1788ff78e85d2824cf82721f8c28a7d70~eXcpHT5a71950219502eusmtip1X;
+	Sat, 23 Aug 2025 10:13:48 +0000 (GMT)
+Message-ID: <3aa6f79e-2ebf-4aff-a23c-7e79929a85f9@samsung.com>
+Date: Sat, 23 Aug 2025 12:13:47 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 Aug 2025 23:49:45 +0200
-Message-Id: <DC9ADTLUFTUC.8OVFMY20FXLF@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 2/5] rust: maple_tree: add MapleTree
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Andrew Ballance" <andrewjballance@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <maple-tree@lists.infradead.org>, <rust-for-linux@vger.kernel.org>,
- <linux-mm@kvack.org>
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-2-229b48657bab@google.com>
- <DC6DC244ZIUL.304JSP7JFDE9Z@kernel.org> <aKRx8xsY8CpzbeEm@google.com>
- <DC6F7BN2L19O.1APQU9KWZV7H5@kernel.org>
- <CANiq72=xdryEKzo73-1vaBqGNNme2kRU0atP5PYOnOOXjNxZZg@mail.gmail.com>
- <DC8WOHIEAHQD.21VWTH8VI8QG5@kernel.org>
- <CANiq72=ZZ7+tMi_XsRKunGAqm_v+kehFqzpEMMqm2qcTvzA9Mw@mail.gmail.com>
- <DC8XIFWZN1SE.ZZP90D2N843X@kernel.org>
- <CANiq72nJiJ4K6jy17x-YRYnJpjqTnohYWvoFrLkYQp0X4tLL=w@mail.gmail.com>
-In-Reply-To: <CANiq72nJiJ4K6jy17x-YRYnJpjqTnohYWvoFrLkYQp0X4tLL=w@mail.gmail.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 7/7] riscv: dts: thead: Add PWM fan and thermal
+ control
+To: Drew Fustini <fustini@kernel.org>
+Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Guo Ren
+	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
+	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, Benno
+	Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <aKjXzyyYd9QneIKf@x1>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250823101349eucas1p12d4a24393d204c8b65adaf2cebbc9b9c
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250820083548eucas1p2a40775d53dfd9f8608671cc20003fd7d
+X-EPHeader: CA
+X-CMS-RootMailID: 20250820083548eucas1p2a40775d53dfd9f8608671cc20003fd7d
+References: <20250820-rust-next-pwm-working-fan-for-sending-v14-0-df2191621429@samsung.com>
+	<CGME20250820083548eucas1p2a40775d53dfd9f8608671cc20003fd7d@eucas1p2.samsung.com>
+	<20250820-rust-next-pwm-working-fan-for-sending-v14-7-df2191621429@samsung.com>
+	<aKjXzyyYd9QneIKf@x1>
 
-On Fri Aug 22, 2025 at 11:22 PM CEST, Miguel Ojeda wrote:
-> As for being clearer, what we want to assert is that the cause is a
-> given one, so `assert_eq!` seems like a natural choice (and it isn't a
-> case like `is_none()` where there is an advantage). Plus it means it
-> is able to show both sides if it fails. So it is not a clear win-win
-> in my eyes.
 
-As for
 
-	assert_eq!(foo().unwrap_err().kind(), ErrorKind::NotFound);
+On 8/22/25 22:49, Drew Fustini wrote:
+> On Wed, Aug 20, 2025 at 10:35:42AM +0200, Michal Wilczynski wrote:
+>> Add Device Tree nodes to enable a PWM controlled fan and it's associated
+>> thermal management for the Lichee Pi 4A board.
+>>
+>> This enables temperature-controlled active cooling for the Lichee Pi 4A
+>> board based on SoC temperature.
+>>
+>> Reviewed-by: Drew Fustini <fustini@kernel.org>
+>> Tested-by: Drew Fustini <fustini@kernel.org>
+>> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+>> ---
+>>  arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts | 67 +++++++++++++++++++++++
+>>  1 file changed, 67 insertions(+)
+> 
+> Do you think it makes sense to coordinate this with the "Initial thermal
+> management for Lichee Pi 4A board" series [1] from Icenowy?
 
-vs.
+Hi,
+It seems to me like using the HW PWM is just a better solution for
+driving the fans. However as pointed in the discussion currently Rust
+requires LLVM, so people compiling with gcc will not be able to compile
+the driver for some time until the gcc support becomes better.
 
-	assert!(foo().is_err_and(|e| x.kind() =3D=3D ErrorKind::NotFound));
+I think there is a way to express in Device Tree the fallback logic -
+if Rust not available then use SW PWM. So I guess the pragmatic way to
+go is to merge SW PWM temporary fix first, and later when gcc becomes
+better at compiling Rust patch it up to use HW PWM instead.
 
-the only thing I can think of is that the former fails differently for when
-foo() is Ok() vs. the error kind does not match. I assume that's what you m=
-ean?
+> 
+> Thanks,
+> Drew
+> 
+> [1] https://lore.kernel.org/linux-riscv/20250816093209.2600355-1-uwu@icenowy.me/
+> 
 
-If so, I agree it's indeed a downside.
-
->> But especially people new to the kernel starting to write Rust drivers m=
-ay not
->> even be aware of this fact. If they see some unwrap_err() calls in examp=
-les they
->> might not even thing about it a lot before starting to use them, e.g. be=
-cause
->> they're used to it from userspace projects anyways.
->
-> We still have the issue that they will see the `assert!` anyway and
-> thus can easily think panics are OK. I understand what you are saying:
-> you want to minimize those cases anyway.
-
-Yeah, exactly. Another reason I'm less concernt about the assert!() is that=
- I
-think it's generally more more associated with test cases than unwrap(). Bu=
-t
-this one might also be just my perception. :)
-
->> I think we should do this; I really think otherwise we gonna see a lot o=
-f them
->> once we get more drivers. It's just too convinient. :)
->
-> A potential middle ground is to apply the lint in normal code, but not
-> in examples.
->
-> Or, even better, we can actually only allow it within `assert!`s,
-> since it is a custom macro I wrote for KUnit and not the real one,
-> i.e. enforcing what I suggested above [1].
-
-I think this would be a great solution; thanks for pointing this out.
-
-> Another one is a lint that just affects `unwrap()` and not
-> `unwrap_err()` -- I think the Clippy one doesn't allow it now, but we
-> could request it. It could be combined with the above so that only
-> `unwrap_err()` is allowed within `assert!`s.
->
-> We could also go the C way, warning in `checkpatch.pl` about it like
-> it does `BUG_ON`.
-
-I think your suggestion above is perfect, whereas I think this one is likel=
-y to
-still slip through.
-
-> What I like about the Clippy approach is that it can be locally `expect`e=
-d.
-
-Agreed!
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
