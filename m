@@ -1,69 +1,179 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C96C155C97;
-	Sat, 23 Aug 2025 14:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1622E1FF1A1;
+	Sat, 23 Aug 2025 23:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755961053; cv=none; b=Q6Mt2sLnVD8sgD6uZhN4Of5WerZcn3X/V56k20VtnKArwP+9LLGdg4ZGcR+GVILOTHS95owMnb8Arqx7LCY1tCaTGICQbygm86/KtltAkkBPOot8xhW5hel25yZVrDh6t5BPGKzERDw04ZsdX5c0Oo5bR3ohLG0/cnLZ0r8tolA=
+	t=1755990384; cv=none; b=QU533S62sUZ7t4jhstw0sOqtzB9MrjmcNRlOekKDmULMon8iZcWQsV2vQNuojR1Kj+FQ0K1S53yAqbKl9IxLrtraDpoHf3hZXy97TR2QB8ne/VQcXSRtFdlmIl3oZda069CbtFmSexrtO4T0gG1gPjWh6tjuibs35zJCI90MfJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755961053; c=relaxed/simple;
-	bh=HJ8X7i1qzTJWC6Tli88d5d588o1VeDqhwG52uj/Cx8M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=LV2GQW6amUV1X+oQqot/Iz+R34QO0REdsYthomHf5AepJNTrP5KBl4osi2rJqolC5UzQSz8kPlKWdf0HZ65EzUihUpwgDwsoJCZioKbS+uSxhuby4GB/UQr4cEBdkTHbIWjBZzTHHAswzFatRPS/TDnBEtgNO+WqgEMbHgySE/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pcE5YBrR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755990384; c=relaxed/simple;
+	bh=AtNuZIyC+WM8Uejm4XIR9s6u0eRHoFr1u0k/qJFj+sQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J3qBQu+vWsdpZ9P8G/wGhE3Ro7l1b5y+oV2V3LPpuvgrjd/jrxYZm+4ofUd5Et/OH7KDxvJeGkcHoX1e635KWKItGvtxa9DcuAdKPkhPDtPY3lnII8+MdsdFb+4Chks9ogD7ENEJxQjc7PT6YICLfe03Rc5A66/GT89eoXhRU98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJ47lETS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pcE5YBrR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5C8C4CEE7;
-	Sat, 23 Aug 2025 14:57:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJ47lETS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECA0C4CEE7;
+	Sat, 23 Aug 2025 23:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755961051;
-	bh=HJ8X7i1qzTJWC6Tli88d5d588o1VeDqhwG52uj/Cx8M=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=pcE5YBrRvba+U6qYlsvx+lAxqVazuJjhdrAxn/kW76YRfrtQzDVj8Qfw8m3NvuigF
-	 7+CaSISGK1yGLXlGH17cxqFpNQ/Jvyp95NF2jxSAq7GZksyTqiomyDEGnDm/MB31qL
-	 ZVI0oq0UMnsYFL3evDQnpwg8PMz9ibhTgpEQfFpmtY0FImHZ00RVR3ZA1C2+o2jtjf
-	 sxQVLv83qov2sGDGFNec3pMJlCias4zS9eDqZeQCWNdWyHLWHPXf7HPpr3sJbwhJFn
-	 wXlbfwlnCWBi+/cHim5hlOV/QrS9RRzs+DkRakD9uRih/a5S6HNkBfHajINCljcj/8
-	 apYErnoWZMiBg==
+	s=k20201202; t=1755990383;
+	bh=AtNuZIyC+WM8Uejm4XIR9s6u0eRHoFr1u0k/qJFj+sQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eJ47lETSSLNwwdiJAzQZiEZ80HMk/Jzmnz5UB7u22YX+gn6yzxmhRVvSI/3rFQs/s
+	 nCMwT+gilxrxhei2/kYUjJeW4BMm2g5QiLJnvljq/Xwv42Azk34MDfDJlGVdqG2MUP
+	 +WNIPJFPKeHNBaXzwuLL4jRcYV3oVqga92cmned/1p7hVfUCank9Asqkzz79nugFkc
+	 /1Ab21pFiUSnRoeAoYfPu0BAkE1C4+MqVesn1jTmpoiodSDhqwWKH+B4nTy5oVBY10
+	 6ddyw0iqMg6UVPw/RTQv62MM4JlW7WkQuwAiTZVq20F+HyJKvuZd9CuQiE9Su/n4aT
+	 E8XQRrBkZY5wg==
+Date: Sun, 24 Aug 2025 02:06:20 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, linux-integrity@vger.kernel.org
+Subject: Re: Using Rust on non-Rust side of kernel
+Message-ID: <aKpJbIEZss_l-8wb@kernel.org>
+References: <aKmyg0auI8jHuAmZ@kernel.org>
+ <BE42A51A-60C4-4E79-8459-CADEAB8DC3BA@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 23 Aug 2025 16:57:26 +0200
-Message-Id: <DC9W8OMI5UT6.3RPWM2I4K10BS@kernel.org>
-Subject: Re: [PATCH v2 3/5] rust: scatterlist: Add type-state abstraction
- for sg_table
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, <akpm@linux-foundation.org>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <abdiel.janulgue@gmail.com>, <lyude@redhat.com>, <robin.murphy@arm.com>,
- <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Jason Gunthorpe" <jgg@ziepe.ca>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250820165431.170195-1-dakr@kernel.org>
- <20250820165431.170195-4-dakr@kernel.org>
- <DC9U87GQ7ONZ.1489DEN1PPUAC@nvidia.com> <20250823143211.GB1121521@ziepe.ca>
-In-Reply-To: <20250823143211.GB1121521@ziepe.ca>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BE42A51A-60C4-4E79-8459-CADEAB8DC3BA@collabora.com>
 
-On Sat Aug 23, 2025 at 4:32 PM CEST, Jason Gunthorpe wrote:
-> Correct, this is misusing the API, and I don't know if the lengths are
-> even guarenteed to be zero.
+Hi,
 
-Hopefully it is. Otherwise, it's not only the documentation if sg_dma_addre=
-ss()
-being wrong, but also a few drivers and maybe iommu_dma_unmap_sg(). However=
-,
-since it's a specific implementation of the API, it might be correct relyin=
-g on
-the sg_dma_len() =3D=3D 0 check.
+Would it be possible to response in plain text?
 
-In any case, I think we can just use the nents field of struct sg_table, ju=
-st
-like for_each_sgtable_dma_sg() does.
+BR, Jarkko
+
+On Sat, Aug 23, 2025 at 11:38:00AM -0300, Daniel Almeida wrote:
+> Hi Jarkko,
+> 
+> I must admit that I had a hard time understanding what you’re trying to say.
+> 
+> 
+>     On 23 Aug 2025, at 09:22, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> 
+> 
+>     On Sat, Aug 23, 2025 at 03:12:48PM +0300, Jarkko Sakkinen wrote:
+> 
+>         Hi
+> 
+>        
+> 
+>         As of today can we possibly do this:
+> 
+>        
+> 
+>         1. drivers/char/tpm (C code)
+> 
+>         2. drivers/char/tpm/protocol (imported tpm2_protocol)
+> 
+>        
+> 
+> 
+> What do you mean?
+> 
+> 
+>         ?
+> 
+>        
+> 
+>         And then build FFI from C to Rust for building commands that we need
+> 
+>         today etc.
+> 
+>        
+> 
+>         There's one particular challenge where this could help: early boot code
+> 
+>         for D-RTM (i.e., Trenchboot) as given my crate is just a thing in stack
+> 
+>         with no deps, it could be linked also to that payload.
+> 
+>        
+> 
+>         This would be much better integration step for TPM2 than having a
+> 
+>         separate driver on Rust side. We could start with tpm2-cmd1/cmd2, then
+> 
+>         move on to tpm2-space.c i.e. get all structural processing inside Rust.
+> 
+> 
+> Can you expand on what these cmds are?
+> 
+> 
+>        
+> 
+>         tpm2_protocol is light on definitions and should not need any kernel
+> 
+>         specific Rust shenanigans.
+> 
+> 
+> You mean the Rust abstractions?
+> 
+> 
+>        
+> 
+>         Consider it as value like integer but just a bit more complex internaal
+> 
+>         represention but in the end it is just a value on stack.
+> 
+> 
+> Not sure what you mean here either.
+> 
+> 
+>        
+> 
+>         My goal with tpm2_protocol is to have ACPICA alike model of imports as
+> 
+>         the crate is driven by TCG spec updates and it is very likely to be
+> 
+>         also used by TPM-RS (also via import style process).
+> 
+>    
+>     The source code since 0.10.0 version has been relocated here:
+>    
+>     https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/tpm2-protocol.git
+>    
+>     The representation of commands and responses defined is pretty well
+>     high-lighted by
+>    
+>     https://bsky.app/profile/jarkk0.bsky.social/post/3lx2n2uvxos2h
+>    
+>     I'm also working on a test that measures the estimated compile time
+>     size and realized run-time size (suggested by Philip Tricca) so that
+>     we know where we are at on stack usage.
+>    
+>     I've started to optimize it after development phase with some
+>     low-hanging fruit cut already in 0.10.0 but this work is barely
+>     starting [1].
+>    
+>     There's also a kselftest compatible test that can be run with
+>     "make test" in the repo using only rustc (build + run circa
+>     2 seconds on my laptop).
+>    
+>     [1] https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/
+>     tpm2-protocol.git/commit/?id=cd6641bf9e8c8fde8726bece9eb6cdc630d893c2
+>    
+>     BR, Jarkko
+> 
+> 
+> 
+> 
+> My somewhat limited understanding here is that you’re trying to implement Rust
+> code that can be called from the rest of the kernel, but that otherwise doesn’t
+> depend on it? 
+> 
+> 
+> If so, I did try something similar [0]. Perhaps this is useful to you and is
+> somewhat applicable to your use case as well?
+> 
+> [0]: https://lwn.net/Articles/970565/
+> 
+> 
