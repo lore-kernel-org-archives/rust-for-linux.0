@@ -1,51 +1,51 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2084.outbound.protection.outlook.com [40.107.236.84])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2052.outbound.protection.outlook.com [40.107.100.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2396C1D555;
-	Sat, 23 Aug 2025 13:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805E81A9F82;
+	Sat, 23 Aug 2025 13:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755955376; cv=fail; b=ocnyy6hC7UTOFvf4SLhITADqQtbIC0EALhjBhPDZgLKfwJYQiyv1sRn6K0RjC/TUuBOcaJczzZEnXTz5WcwG2PyrEwZvAgtXUq85+qS9NXmBgqY5ZF1MfGvQLdwSVPQ3U2V8nCxxLvxUbcnAu3e8JW7LFlkLsOoe5zAPI33LcTg=
+	t=1755956869; cv=fail; b=XgPMIBXyEG+QORaugM/CepFjD+Lpz3IdW7uilyd5KUo2A+Si73nisWirEHdgum+PV4Cen+8dONP2DQ/rAcXs02D9KP7DqHLBWztrUtFo0wqReG8wkYdnYHyNWSvmTFuAKANA2CA8rHF/hTRlWc+RMt6+Y6MYWjexTajGaGVKCw4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755955376; c=relaxed/simple;
-	bh=qSTfRnGETxydqTp00QgU9dvVWJcw/S5aVdQBHg8Uo0g=;
+	s=arc-20240116; t=1755956869; c=relaxed/simple;
+	bh=3E43DWUqTV6PRCeDS4M0pPC0Ws7nqifGui159qQX+B8=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=c9CC1ubxn2H0tMFhSJ+3iN/L9wwnNqEGR1VxfBSHfUDiKYHwhXk5d82q5nH43h+OAm/+hB3Foo0xlY710ZngixzEf+pGVTbA2DayicSZVMeTy+eLiCfFXnnFhVu9T+9+5hIU75Ec85OCf/SDQ3dOURepMcJpmPwrhM4D+FOpMPA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Su0r0GV0; arc=fail smtp.client-ip=40.107.236.84
+	 In-Reply-To:MIME-Version; b=GhGCo/M+aExZixWdTtKI/vhpF8wHImse2E5U3IhzevSl/7jYennDS5BY2hUd4ZzV2YKmlCwWp3NZuuyuIvJn5O1OxZ3gHsQlF/lxe6eMpXa7AqNmGM2oGpDTkJYluPfEZmfufvo5m9XzTRvKTdDXe/zzvrFtqcG4yCuOsnkmFcs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VLopo18q; arc=fail smtp.client-ip=40.107.100.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Su0r0GV0"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VLopo18q"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VHNWILfjjPqhIafGE8K+fRxDoyDxGnTpSHOVXAhBFdLMy8tsUpgcNTnffGfsEcl7cpBdfZAz9qRMFTgUecSNVqVh/yrjtifOARa3KLMirDj1TLqHfXOBiaV8ghuwdUskeumKIXUi9rDId6TJbxEjLm2tuTgZIjZ8Nxu3M5azhCzNpu4D814DOaf33ntg5mDqDFupT6gM4ipF8Wu93MvZT+v1aY0+YLAyWBAHKuUgA7u4jftuRpvQRdRWrK6d+elIPiXGSSxoBFxc69gOEh2tcwUU1cJNC0HO9wCU93d19FJJ1bwrg9E2elE662+pAIjsK63uNdG21qnGLJZDGO56TQ==
+ b=LdsY+EYZqFdzinPq2hbfB19XKFSkiYq+z3bc68jc6Vj7Z0yBz2suWfvUQx73DSfPmY4MJfJt20FdQQK628sYp4JVJnyaL6VdxcPbSoy/SyFjuSIQZ/BTUXfKIoExCvgq/qiMjNDdrQMtmDa5EKN8prOtwZNqAZnhhP5gf5XUTq5b0MJdAzSnECC4riYtNSiDCAayAxRTSd17lvZkuQeJVYYTxGJvcxI9aN2O8SA4/Pq8FZB+GmcIcrYU9PIgW0evfogr8l1n1vBrvRGWByG/fQEzrHv3pFB8TpIMbHQ6vplyrjmQ+MNn6Lx5L7IXG+qufW3A0dl1WJArg+3Dyt/Z/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u1P8Qv1cl5jQ9Ry7WCJlXhrk7dZ924oKf/gsPLHXAYE=;
- b=ZB8plo4wdX/wb1iQq2xALVKSyfCqBEr+pd2XgVBogYbnASPnUjm+vApgUBLIdD3tCmnn1Rei1clsXifXcuIlm0OBN+F0nFMp0WBr2cCVhyAXJTvINNoIpu+Uo5cq+YdB8NTUlhd4UhHO+al2vnacrJmQfgTF1WY7hSTvrtsalwcy4D6JIMpKTb+b2tew9hNPSZZ9/ylYIYbVNsZu1razAV3VtK1wRTXdbHaGeQdVaJIrAmgRAet67AJSpHQiX4rAqUVr0QBfJkGVaVEpcmZ9a7tFeJcHS1tHEevQUAQXPsV3nDMO1oU3HdRq4691Bem5PqhaXWgjAwjnkrmJ+wJRrA==
+ bh=3E43DWUqTV6PRCeDS4M0pPC0Ws7nqifGui159qQX+B8=;
+ b=NOB6P7dL0ChljRjxGYdbUeQMXHMMH8+9MOHQX3sHWjWac28aGzoiY9HQmqcq7PyVjwqwhz9eIkVjRe3jXUQ5te1ZlqhEkYq+cpWMgtBGEWRp7AQ6YzWIMN3UCh2Fap5sYPCAUKZNxwyEBAb8sq6h5bAVYtSWywTYBC4R7ckh4Wp4pi1vaF0en77LxBbbY9vGEJjj6DZhv6RA5zMfAFzU0MtbYC6pu8G5oaq+tyCs16hiJfJFR31kSL+WliHAjCFEGtyrRshvHX4Q+RGRosljF2xWshBFmjOaxgLVcu909HmaPpK9ZcavuDfuB7YKxPAom8ieeEXgrs3tNLz8muQUpQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u1P8Qv1cl5jQ9Ry7WCJlXhrk7dZ924oKf/gsPLHXAYE=;
- b=Su0r0GV0h1bQW1Y25bSAVlvkqIrBwXgFW3E8SHELmZautnLHDmFSOQ8KUDPHfuognUqifQYN1vXLTwJzoVqLYUxWvwUpqMWCOKTxf8vKNgbzI/59/GoQk/GgBq/i1cz4BZGB7zeOCesyCklbBFh2lUU2BbB42OKXl12R58u8q48u9PH+CQiJJgusniYUXbvBC3aWGsi3arWttdWXWQiJUB9SwmMU7ad12MKbSK4xEkfFOIp6R9qEDdKmtEzpDhMLIa3OYXJvRTzzoCPb0CNAi71QvX8WSZp/yxmF+8M00kV8VPPnlA9FLB1LOfaLMAG4GVJOUM58KXFBM6qSAxbIcQ==
+ bh=3E43DWUqTV6PRCeDS4M0pPC0Ws7nqifGui159qQX+B8=;
+ b=VLopo18qYXXP4iYxlx5IYnKyq7A1dbNtgoY8zh/cvD3u6Ry7w4e6bXANmyg6vlHmFkOIkvtBXdQB0f06r8Rvp4uxRhKpz3Is/d9m6maya1GtSA0SKttzVcXdULhz7lVQybhZjiN7PpJAq4Ugc7BYLOxwpUMa9m1pcQ2iUAZmKFxpjLtVFrO56KoQrP6xFuYp7JnhIm+z/I0wyr5tXaQbfayweJh3v17xk4KLQ+j8c1BlKcnEQZ2OKD04ro8ywpX+YvM9+tmvg0KTnI8VyGDinhHsMCvA2Ymf7Ke7dr/gmHXRNm4uii4/mi9oRPzcYpFKGkr+Yu0gP2bA0qLQ0GPrgw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DM6PR12MB4105.namprd12.prod.outlook.com (2603:10b6:5:217::18) with
+ by SA3PR12MB7998.namprd12.prod.outlook.com (2603:10b6:806:320::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.18; Sat, 23 Aug
- 2025 13:22:51 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Sat, 23 Aug
+ 2025 13:47:41 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9052.014; Sat, 23 Aug 2025
- 13:22:51 +0000
+ 13:47:40 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 23 Aug 2025 22:22:47 +0900
-Message-Id: <DC9U87GQ7ONZ.1489DEN1PPUAC@nvidia.com>
+Date: Sat, 23 Aug 2025 22:47:37 +0900
+Message-Id: <DC9UR87GP16E.2K9E9SSTHEBRB@nvidia.com>
 Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v2 3/5] rust: scatterlist: Add type-state abstraction
  for sg_table
@@ -60,8 +60,8 @@ X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
 References: <20250820165431.170195-1-dakr@kernel.org>
  <20250820165431.170195-4-dakr@kernel.org>
 In-Reply-To: <20250820165431.170195-4-dakr@kernel.org>
-X-ClientProxiedBy: TYCP286CA0039.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:29d::13) To CH2PR12MB3990.namprd12.prod.outlook.com
+X-ClientProxiedBy: TYAPR01CA0132.jpnprd01.prod.outlook.com
+ (2603:1096:404:2d::24) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -70,99 +70,101 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM6PR12MB4105:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32f1a7fb-4eaa-4642-a2dd-08dde24828aa
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA3PR12MB7998:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57b745ef-6b93-45fd-2bd4-08dde24ba0eb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003|7053199007|921020;
+	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NGo3MG5HdU1lZUJTS0F2Wm1tV3J4RFV2d2thOVNqVzNwdk1rR0ZtcHZ0TSta?=
- =?utf-8?B?c29OOUxab0kxbis0c1JsSTBvRFkwU2FZMGw3b21DRi9kRGs4YnBqbkt0TTBh?=
- =?utf-8?B?WTVKWEZLV0xybkpIU0NKUU13aVl2OW1nYS9xSzNPZThyZmJHY3g3ZkZCVXpk?=
- =?utf-8?B?czAyVVRQWVBlMnF4WHYxUXl1a3lCeUVFalNmZjFzaW5NTlFHUTRBa0dWdXl2?=
- =?utf-8?B?ejYyM3BKSFI0TTFwYzJGOWxzOVAxcHo4c05ydGtDWW9WdW54RmlwcGFZQjAy?=
- =?utf-8?B?b285MlRsWjh5M0t2U2w1Qkg0akRFTnF0RzhRTWpzRHBTbXNrY05aU05PanpH?=
- =?utf-8?B?WnIxeFVLSjU5NUdWbDFyeTJCY3RySGozM0RmVEJRekZrQXQyU1BYQzhOYnB5?=
- =?utf-8?B?QTdBRXNReWFBcHVRS2VJbmhwVEw0azRGd0hScGJzdWphUEJtTHF4SnFxQUdP?=
- =?utf-8?B?Vmo5MnBmaW4xV2h2cFZjeXM1K1ByMWhIaDVpY3JDVEcwRmlMUnJhd1JxYjhp?=
- =?utf-8?B?V2lQRmlTQkxRcmdwMHNzb2lOZGF2cUM5MU5nc2QzVTBDeTFXN3FzbDRIcXRX?=
- =?utf-8?B?ekFQb1hEbEZlV1lLNTYwa3dUdnBPbVFLZVArSVY4aUw2aW5DWkV5NHo3Ni9G?=
- =?utf-8?B?SXUzK2hOcHA5aUU3UEc3ZzFXK0xFcmJzejRkeEhIS0UyUStyWTR2ZW9OYWxG?=
- =?utf-8?B?c3htN0JncE1kTkFwWUcvK0t5UUUwa2lXNmNPV2tDMDg4a1FES2J2TzlsNUo1?=
- =?utf-8?B?bVZnNmNadlZuWWtNc0wwQ3ZZTDgrK2I4bkd5SisrVkk4Q0V0S01hSUVteERj?=
- =?utf-8?B?TGN5ejVOWjBPUWluaEdHQW1vU0g0K0ZSQmFNeTR0bjYrYUxNUGtZMnY4Sk1J?=
- =?utf-8?B?eDlXMFNHR2Z3RzdPbnpBNWo3bVZFRkhBdnc5aEpHbWEvTnQxajhNc3cycXZm?=
- =?utf-8?B?L3UxVXFmZGFhV0FycDNwWHp4aVdDUzdaS3c4eFpUeXI5d2xua0VsOW8xTFp5?=
- =?utf-8?B?QmlUWTQ4UXJIaElLTmxuajAyOG9VVFFPT3poR1ZpNmtnT2Uybzd3UnRjWStD?=
- =?utf-8?B?Tk9STkU2bXdjQ1RhZlNnM0NvWXBjcmdwaitQSThqSFVkMGR5Yi9wQ2hSc2d3?=
- =?utf-8?B?eWtsTVNIb01HVTMvOWVpMEF1aEdvaEx2Q0tUallXWXZMNFZtN0kxbEo2cGVX?=
- =?utf-8?B?eEN5dEpiZ0tYQ0N1d2NNbElMa0M3Qk1qUFlqbExyNUxpbUM1di96WUMvcEx6?=
- =?utf-8?B?c0ZJc0VsSnFIeTU4TXhGcnVuYmdJc3pJWkNXcVI3cjRDbDUrMDJUYXVyVUlS?=
- =?utf-8?B?QVhBWmE1Y1FmL2dwcDJ1clZieU9CWFhMTzNoZmZuV0hLdlFnbHhLc3krc3k5?=
- =?utf-8?B?K3NHeGhvUmI4ZWxDN2pjUHB0VW5HTjQ1eDNTUGRyWWk3MDNwM0VUd0lOeWEz?=
- =?utf-8?B?YmdTWjVhazBOcGUwUVVVb2VrK3VhcEJFQk5XQlRqOHRiSEVlNlBtMlE1ejlU?=
- =?utf-8?B?NnRtUlVraUZ5Q3ZET1JacmxZL3B5eGo2RW9zelZuSitFcmZMTjdrUFFtYVh2?=
- =?utf-8?B?Yk1BNnIwN0J1Zy9vbWFHQnRscGd5aFRPRG92S2xnaWxJWTYxYTRLTWJXZnVV?=
- =?utf-8?B?djFCVUxyUGZBa0h2TXcxL0F3V1JCMm1VRVg4eUlWV21oeDJMaU0zYTQ5TUov?=
- =?utf-8?B?MDd5K1dVa2QxNUJYV1JPM0xOc3Fodkl0ZzJoZWFQTFZkejhRbzUwOUNGQW8z?=
- =?utf-8?B?MmkzdGNDVnZvNTJaV1lhaDg3SXhlUGxGYlVYVzVMM0J1YUxuZnlQWnAxL3Nu?=
- =?utf-8?B?aEFlRk5CZ2ZBNXdpRENxNkJxM2FweGc2dEdDVG1YMUExZ2dsWDVPcERoM1FW?=
- =?utf-8?B?OHV0N0NoTjBSVDFMTUdjWTYyYXlQK2lCY2JweC9oUTEzU00vbjVZQ3ptK0NO?=
- =?utf-8?B?RXo1VldOWlF6RHduZ1MvMUpwU0NNNmhkSitqbGRtc1M5Rk5mSWNpayt6S3Vv?=
- =?utf-8?B?bDlvamxGQmZnPT0=?=
+	=?utf-8?B?NitZbi9FNHBqTm00Y2VsZWhRRkJWejVINFMzZlNxajFOZHUvNTV4RHdyYlZT?=
+ =?utf-8?B?cFVoUU1LRytxaGZRSTUxZFh6MzF4SUhPQUtHS0tlU3BGM0FEcjgvT0c0ek0z?=
+ =?utf-8?B?bHZZVmt2czZCN2lMcVNLTWFxVHp0bW81V0pTeStiVmJIdkxPU0dYVkc3aWNE?=
+ =?utf-8?B?aTV4eGFLTE53RGlHVDZUT3B1T3dKVk9PVDc3VlZ4Mnp6RkpZR2NVUkVueng4?=
+ =?utf-8?B?ZDREblNWeXB4S2VmVXBBUUdrYzJ3U1Y1TUJCSTRkSFNIM21YVktFd1BMaU5Y?=
+ =?utf-8?B?b3F2ajU4QVU1TGluaXE2Y211TmY1bVp4Z2tMYVJEMXFLbTBYTlUwZTFJN2F5?=
+ =?utf-8?B?N1dYUnRjdEdhYXNFZndPanBWNkNVRlpTRk9lR1Z2cEV0QS8vOGQzN05idzh4?=
+ =?utf-8?B?TFpzdFh0ekVtRlVlN2Ftc3FHeklPVjJ1VjBHSVB2bWVKQjhYYWVVeGF3Rity?=
+ =?utf-8?B?ZHBkV1podjkxRVJDVFJPY0E3UmlYdEZPd2REOXBQR0pXK2ZEdDQzZE9XSGdT?=
+ =?utf-8?B?TlJYSkgyelBVcG5DZnpXTi94ZlhnODZmaEVYbVp3VUhxVkN4ekFlR25oSStn?=
+ =?utf-8?B?dC84S1JURmY5WkdVY0ViOXBaYVk3dHVwbHlnYkF2QUtybEtHMkhxUFhxUFBL?=
+ =?utf-8?B?OGNDUHh2K0pnbzRrUTYrUkREa0loQXBnOG9aclhUM0szUnBIWVFoeW95ZHhQ?=
+ =?utf-8?B?cVlXbENKSU1vVk5jdzM2aXIyVVNNaldpaGRKdFlHTEdjV2UwNHZxdUdiK0wy?=
+ =?utf-8?B?aGxCanF1YllmWm95VE5sUDhlaDNqR2hyRlBXYytyY3N4WkovZnRMeXNGR1dW?=
+ =?utf-8?B?Wkdtdk1NVXRYSDdEVWZuNWJKcUR6Nk1IMXNlNHhmd0NQV1FVUWFzWUgzRHlx?=
+ =?utf-8?B?Y0I0bS9vTWt1cDMvV3FFckwrdnNZKzNEOWRDREtHd3hKSi81UWx3Z0pzeG16?=
+ =?utf-8?B?M001bndTNEY5QmJ2ZWo4VW5QQVlxMXh5SnVralJNejBHaXZPRHErUDl5VTdq?=
+ =?utf-8?B?NDFlNHRJLzNqWkpEaVNjcnMvQ0lOOE1xTTk0cUg1UFZIUi96RFdvVmk1SnNL?=
+ =?utf-8?B?Z3NZUGxqdjcrSSs1RVArelF5Z1dKaDdIa1BzWUF3WkVFUlF1RU1oQ0NCZzlV?=
+ =?utf-8?B?Slh3clNaNmpWVzRRbDVLb2FML1ZHQmIwODU0bXh1cEl5STRSNXRBeHQ1RGhQ?=
+ =?utf-8?B?RkpFWk1RdCtra1JjRWNsdWFUaXdNSk1NYmh5cTZuYy9aUnM5TThDNER5MXFq?=
+ =?utf-8?B?V3ByaGI4eFptWTJST2pLbm9pL1hwblNNM1o0QmsrY3R6blE0M0wvaVNDRWV4?=
+ =?utf-8?B?MVRHTWtwbXFKbThzclJ5OVJoOXBsRjNReFFXK0EyVVBnQmswZVl1Ri9WeFFT?=
+ =?utf-8?B?NFBzUGVxUXBRSHlLQ20zZlVydlNPd2E2V09iMFM5dlUxMGRDWnZkenJSVGYz?=
+ =?utf-8?B?Zm04ZVVtSWtTZjVaKzhEQVEvZ1k1ejJnQjNpU3g0L3I2SEJRS1p2ckt1bU82?=
+ =?utf-8?B?eHVkc3RLNW0rWTJpSUV1MWI3VjJETnJFMk9XRVhwdGZBZ3BlaDAySzBpYmdq?=
+ =?utf-8?B?WXhlc1dQQ3NPZjN1STZlT1J6cFFTQUVMTVQxTXVVMUlpeFJyZ04xYmxwemNh?=
+ =?utf-8?B?dE5kd0Z0aStJczBjbVF5OHR0YkxjaUhWVExpK203dTcxb2JBYi9qL3c1Y2dG?=
+ =?utf-8?B?L3B2Wmp3d0I0RWZJNEdUdXFVc2pPVDlJSFNvdytLbDZlQU53VzFDM1Fod0xr?=
+ =?utf-8?B?emxWVEdJYTFYQUdsZmV0NFdOSkNwMkxqV3l0N205NThDZjNSbm1LVWowSHAx?=
+ =?utf-8?B?K3F3Y1BhdXZQZHJMRW9henU4K0JodGtrazB1dWNFN3BHYTNTRkdaN3JYb0Ji?=
+ =?utf-8?B?aXlLUkhVUjhhL3NVQWxYa3NXUS9wZzBHZUcyU0svTGs0UjJDTnExTGlyd1Fw?=
+ =?utf-8?B?R0U0Y1liTFJpS0UvczNIdHBuTkoycVZBNk9XQW1rR3RxelAzdm5IcjhTSFQ1?=
+ =?utf-8?B?RjdSTFphWVJ3PT0=?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003)(7053199007)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Sm1vNWJZVndBODhGUzE4T09KbjFRdEhBUGZ0VDk1VmZnemJ6VjJUUm0yN3pK?=
- =?utf-8?B?a1czUDFMR2gvSDA0cGJQZ3NrK2JTL2xpcWZPZlN4N1NZQzFnTjNRZzVoWEs2?=
- =?utf-8?B?WVA2VDJnMHlOVmdtcmlIRHJ3R2JaZFVXcjkvb1VuK2JsSXVCMmpLUXBjdTNq?=
- =?utf-8?B?YlZHU1M2bzRBL1drLzR3Wlorck5yMVJhNWppMS83aHdjQ0haUThhb2VGREFa?=
- =?utf-8?B?UUhRTTc4RkdFNTJHdUs3dzMvalVmbGpodDk1RUZHMGRWUHl2bk1QN2trTVZN?=
- =?utf-8?B?dTRaeW9RRUJtQ1hYOUdSS2FHUjYzZGZuSlA4QjMwaVdYWWdtTVNnV1djdHhW?=
- =?utf-8?B?QTZZZ3J4KzJtd28wZGdVdDJ0aWtKS01FYmcwckdxZkdPVlhyR2srZGZvYWxZ?=
- =?utf-8?B?ZDhqUkM5T0pLWFY0Y2FVL2RqTi83S0M2VnlvVm04V3FtSngrVm1LaXJ0enVl?=
- =?utf-8?B?MU9uTVluVVhIWXVpYVAvMVJSUEFvVmtzWUJtMlV6UEJDZG9CWitIT245UWpL?=
- =?utf-8?B?ZTdROTNEUW13dlM5WU1raTlIL0hTV3BhcWFmTUdRU2NJSmowS2pubWdaSmlY?=
- =?utf-8?B?c2J4eHVkK3h3UktZN0g2bmIvNkEzNWFIMEM1S3JOZWtpZytrRGZ5cjB1NUM0?=
- =?utf-8?B?cDRVZVIxU2M5SWtmSjhwQWU1VjR3Wkx3R1BzQVR5NTJ5MzQ2Y2xEYmxsOWl2?=
- =?utf-8?B?eU5wU2NTWmpYcXAzQTdJYjl5T3B2NFlKSStQQmRTVEk4Q3ZsVEw4SWNCR3Ix?=
- =?utf-8?B?OG1zMVNGak1BWUxLRXVtZFRlMlVHMEg3Q2ZwUVNwY1VDVk9TNnJxWjc0TXZQ?=
- =?utf-8?B?T3d5Ni9aZFM5cXc3Z1V3WDVpaVdTeXk5REVqTEVQSllSTm82eDhUaHZ6Y293?=
- =?utf-8?B?elY3TGNXVmR4TU03NE1vengxdDRKNUhUUHBFWTdsT0lVMTIrcmJkRlJNRWZr?=
- =?utf-8?B?QU5LY1JWU1c0S1k3MHV5Rmtncms4V1l2eW1rQkxkZkduTWthdFJ1eVR4QjVt?=
- =?utf-8?B?dTQ3WCsrM0Y4U0RjYkRVejF3bWdOdHhLUUpJenNjbWZrMU5aaWxEZEpZQjdy?=
- =?utf-8?B?dHVXamtSOVdiZC9nVi9HOGtaaDFUNUdLVmVBVzFsNzRWSnZSOWo3QW1xTXEr?=
- =?utf-8?B?bzhRS3dTVVI5L0N1UWRlM3Q4MitOdktPOEthRHphcWlSeDdFRlhGQytYdElN?=
- =?utf-8?B?VWYydEo5N2I2Z25BaXR1WHZpbjN5c3VVWnJKZmc3cTBFeGIvbWhRWTA5Y3I1?=
- =?utf-8?B?TTNtdGNxMlVaVW5hNmI3VkVFRlpDUHQzQ21qZC9Bb1VSaE1MUlV2MkU3OUlw?=
- =?utf-8?B?ODJjWXFNSUt4bzdrRWluN0dLWTdDMVZ0cGZpeEN3Qi9EMHAvQnUvWm5VQzlv?=
- =?utf-8?B?N0RuR1dwUkFMbi95QWk0Y2lGYW5lNm1FTVFXTVBXWkJ0RXRrS29aUnRrY25G?=
- =?utf-8?B?OFBQc013ZTF5VVg3ZFhBemdNOFN3Lzh6QWpvOFhjZ1JZM3QrL003ZEkzaFNL?=
- =?utf-8?B?aUdhMWxvd0hlR3FOdTFuWkZ3SnpiMjZZdXlSUzN0TjJmUkFWQnNadWprYUNC?=
- =?utf-8?B?eTJINVVabnY2MHFYVlJldEtvRlg5K3lxK2Jwbk1uR3ZQNW9Wc3J6Nk41eXp2?=
- =?utf-8?B?OEM0TnhFYWVnZWh6by9Tbm1ocHlmL3lObEtZdWQ1RkVJMlNadVhvMTFOQkkx?=
- =?utf-8?B?WHV2T25TR3dGT2pwZ0kxYmtrSGlxcmlCN1BKelBBbGsvVUJOT1dHVG1EZGNQ?=
- =?utf-8?B?UWtLc25RVTAzOGtBaFhpbmx6MWE5Y0szdEJEQjAyUzhGSEIzQ3ZVQUtNanBt?=
- =?utf-8?B?OGxQc1JqZ2p4Yi9jbkdkTDN4V2cvZHR4TkxvL3h2QzBtOEVudzR4Yzl4NkVn?=
- =?utf-8?B?SEU2TGZpazFVQnVDZkIyU29zOXlYOFEwRTBKdkxzcCtBR0Z2MXNZVExSMXlY?=
- =?utf-8?B?MTBpL1RhRDIzVEJUVmJjR3lQaFdYRUJhRXFlLzhORThDMzNwbEhIL21sT2V2?=
- =?utf-8?B?cTZvOFltallTamNhd2VvRWxLdGhpamRWRnVDeEprTjNKNGpxTEFXZnhJUDUv?=
- =?utf-8?B?MlgvVnhLQjJtK2h2VEUyT3dEMldTNUcxeENmZVExbVAvYnZhLzNMbGt0L052?=
- =?utf-8?B?S2NmK0dQeVFvcTl3Nm9VTFEyYXNVSjFLTCtHV3I0TCtZMmhNVUdNS3ViMmFQ?=
- =?utf-8?Q?fMa1R4DBMbeha/rCdeKXqJj+l7bKJYnWhFKYJhY8wSNK?=
+	=?utf-8?B?WmNDZHRaakJzNzhPNWxvMStERndYOG1mSkQ2Q28rRjhWa2l5RUZjNWVsNUJF?=
+ =?utf-8?B?MWYrUnBtN3pxWk1QYzJLVmFJMk5palkrVndxMjdiZG9BNUdOT29xNUpic3lS?=
+ =?utf-8?B?NVhwVG1XcWl5K0VFc1QrL0x4djhJZEpYVVRRMTRIZHROZXJvbjQ1T0VrS3hQ?=
+ =?utf-8?B?ci9abXdBMDdYaDdGRVBNOEtXUC9BVUhZeW1WYWtKV2oxZ0E5OG9jRE5Lak9R?=
+ =?utf-8?B?VDdUVXZwc2lCRktNWG1vakx0Nm90MlVJQU0yZW9tUndseENYbkJxVkhhUWo2?=
+ =?utf-8?B?bzhjYjBFbWFqNVdxVzV0eUZtL21PVTc4dnphTWtRdmR1alJRNksyaDAzWHdv?=
+ =?utf-8?B?NjNkV0hwZHQ2Y2ZHOVhGT2pWcVdxRjROVWRIYVM0eEpweVRNN1BhVU4zRit2?=
+ =?utf-8?B?VzYzRHM4cU9DQkV0b0RvbjNScWgwd3pZQ2dHenVxaHZKT0ZHY2RBYlNlZndV?=
+ =?utf-8?B?ZnFadXJqV3cxNXRzeXBvbmE4N0xmWnBHbVdENk5hNDdWVlQxK2dBdzBSRDBy?=
+ =?utf-8?B?Y01CTkhTRjVyRm93cnoxTTlaMTNDeXVOdTBvOWhsZVdJVW42RWQ2b1NVc1Q1?=
+ =?utf-8?B?UnNFTVZCcExMZG8rYUVmZHQ2VnRZcFEzSVVwQ0VkRm9VZXJBaEVqZ3pTcGkx?=
+ =?utf-8?B?a3dZVHFxK3V5SkIvTWNjNFFCRnRFMVdyLytYWFNWRW1BOWZobUdzNlcrbXFP?=
+ =?utf-8?B?T092eGlBdk93ZGVnZkJxTTNxeU1wMEROSnBMemRDQzU3SEpRVGZSaUorb0k5?=
+ =?utf-8?B?SEZZZFdWSjVxRmk3WVNCRGNybWlYakRZbkpQV3RaRlRxd2M5RDlxdEJ4THNv?=
+ =?utf-8?B?SksyUU5NWVM3eGZhL2NsSFBsMWRCejFyeExFQUs3c0JlblQ4Nm1CQll2QTM3?=
+ =?utf-8?B?eFNkQ0ZvQUsrREpEK3Z0d1BIbzFGbTZwNFBxQnNmMmk5ajcwWkVQWGR5OWp2?=
+ =?utf-8?B?T3IrUlhrcStrT0NtTXg0dlkxcUhEREh4TWwvNWw1eGEyR2NqZGo3MnpJYkNa?=
+ =?utf-8?B?MklhbWZpa25LNUg5bVVwRHordVU2MTVJcUhmZExlbnhHREhlVFIwWDE2ZnJ1?=
+ =?utf-8?B?U2NvWDNGVVpkVUhYdXJPdVdDZHpoVUxNSWltVHFpeTJER3RZaXFya1ByM3VO?=
+ =?utf-8?B?YlR0ZmFRVm9uTG84ZlFuRmpSUHhsYzE2K09OWGMvUnhoTXdlRW1tckhwOFJW?=
+ =?utf-8?B?S1V0R2xRaFdRSEJVaGRZOG51ZHVpdmUxNG1XV2FLNkJmOVRKY3dESzM2bWVr?=
+ =?utf-8?B?cEx6MnNHMFA4bHFPMG04dWR6ZzMyeUJCU1pzdXljc1EwczZZSUx2Y080ZzQx?=
+ =?utf-8?B?RkY5ajBCVVdGd0FFdnN0a0s2ZTBLZEg5YytwSmxOWTk4VjQ1YjZUZ0dKeEYv?=
+ =?utf-8?B?QWZhK1dTcWRoNUFaVGxMWFlweXZUbDIvVVJIUXFnR0M1Q2I2RHEwZ3NmNytY?=
+ =?utf-8?B?bytUYU1tays4YkVlNy96ZnFsa2JYWnJpdWVINWJLdnVRNi8wRmNrTDArV1pU?=
+ =?utf-8?B?OXk3YUZmMTh0VmxhSFVSZnoxSXV1c3YrcDJucG1Ld25hNTJRci8xQ2Vxczdy?=
+ =?utf-8?B?dHRZNzczNjY1Nm1DQm54NTNpVUQwaDRnRWxGbS9ocmRjSFFtY2FYVFpYNW9O?=
+ =?utf-8?B?N05tSnF0UzRpbExUOE1RbDNNeDFNR3BUNTBJQUMrMys0OUovVGRRdUJ1VWlo?=
+ =?utf-8?B?TDlQNEdRZ2R6MzhVelZ5WDBUZXVLSjU5alpiRkxKQW1OOU4rRXZEaUJlYlI0?=
+ =?utf-8?B?Tm1qSnJMM3pRazdPVjBWekxDYkcvT292blBMakJQQ25nZ1lzRmoxVSt2UCs1?=
+ =?utf-8?B?clBuN29tUytycllYUW1tZkxxZTFBNVdvRm9CR3M2eUh5c2RRUUtyQmZCeVRy?=
+ =?utf-8?B?UnN2VHNPYmFSVitLUkFZTEpHTlZzNjlUZ2hSdUFQMGtpVStuRHh0ajNva0RB?=
+ =?utf-8?B?MU03RG8zT0ZudHdWQkpZWjY1Q3lMdDUzVGNuazZLc0FKSUNCK2dlMWdtdDRY?=
+ =?utf-8?B?ajE5ei9MbWhjVnZQbnMzamx4Q1JPS2R2ZEpFdDV2OXM3d0pGc2VOZlE1Z2s4?=
+ =?utf-8?B?cU1BQ2dMY3BHU21Ib3RnSkpFNXNZbWpac1UvZWozQmJHd3Z0OHIrZTFuczVy?=
+ =?utf-8?B?U2FDeDJRSjRGU2gzcGJKZFJ4ZWNLbjVJRkowMVJPM0EwM3dzTkZGVURJanJi?=
+ =?utf-8?Q?L0YP+P263mbFiqW3VwJV5VVKviOSXHRZWlpsTOk3Iy8T?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32f1a7fb-4eaa-4642-a2dd-08dde24828aa
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57b745ef-6b93-45fd-2bd4-08dde24ba0eb
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2025 13:22:51.0253
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2025 13:47:40.7950
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6k26k+39ucczQ8rwJOZgObfG5wEqODEIriPzVy5I40fPrYRDwhQn+/l+2dvIE42UVlTqAwil8q4sCfhl2+xkDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4105
+X-MS-Exchange-CrossTenant-UserPrincipalName: jOHbntfF0YsUqsIXt2l0epWeMV9hOzDIREZa/Mtk874nXAvaOJGtpzF/x0TkYVXWeRUgC+Layrj4clB4a/5gpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7998
+
+Oops, forgot to mention a couple more things:
 
 On Thu Aug 21, 2025 at 1:52 AM JST, Danilo Krummrich wrote:
 > Add a safe Rust abstraction for the kernel's scatter-gather list
@@ -170,189 +172,14 @@ On Thu Aug 21, 2025 at 1:52 AM JST, Danilo Krummrich wrote:
 >
 > This commit introduces `SGTable<T>`, a wrapper that uses a type-state
 > pattern to provide compile-time guarantees about ownership and lifetime.
->
-> The abstraction provides two primary states:
-> - `SGTable<Owned<P>>`: Represents a table whose resources are fully
->   managed by Rust. It takes ownership of a page provider `P`, allocates
->   the underlying `struct sg_table`, maps it for DMA, and handles all
->   cleanup automatically upon drop. The DMA mapping's lifetime is tied to
->   the associated device using `Devres`, ensuring it is correctly unmapped
->   before the device is unbound.
-> - `SGTable<Borrowed>` (or just `SGTable`): A zero-cost representation of
->   an externally managed `struct sg_table`. It is created from a raw
->   pointer using `SGTable::as_ref()` and provides a lifetime-bound
->   reference (`&'a SGTable`) for operations like iteration.
->
-> The API exposes a safe iterator that yields `&SGEntry` references,
-> allowing drivers to easily access the DMA address and length of each
-> segment in the list.
->
-> Co-developed-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
 
-<snip>
-> +impl SGEntry {
-> +    /// Convert a raw `struct scatterlist *` to a `&'a SGEntry`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that the `struct scatterlist` pointed to by =
-`ptr` is valid for the
-> +    /// lifetime `'a`.
-> +    #[inline]
-> +    unsafe fn from_raw<'a>(ptr: *mut bindings::scatterlist) -> &'a Self =
-{
-> +        // SAFETY: The safety requirements of this function guarantee th=
-at `ptr` is a valid pointer
+Is this actually a typestate? From my understanding, the typestate
+pattern implies transitions from one state to the other (such as
+Unmapped -> Mapped), but in this version there are no such transitions
+(the previous ones had, though). We are just using a generic parameter,
+so mentioning typestate sounds a bit misleading to me.
 
-nit: "guarantees".
-
-<snip>
-> +impl SGTable {
-> +    /// Creates a borrowed `&'a SGTable` from a raw `struct sg_table` po=
-inter.
-> +    ///
-> +    /// This allows safe access to an `sg_table` that is managed elsewhe=
-re (for example, in C code).
-
-nit: "to a".
-
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that:
-> +    ///
-> +    /// - the `struct sg_table` pointed to by `ptr` is valid for the ent=
-ire lifetime of `'a`,
-> +    /// - the data behind `ptr` is not modified concurrently for the dur=
-ation of `'a`.
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::sg_table) -> &'a Self=
- {
-> +        // SAFETY: The safety requirements of this function guarantee th=
-at `ptr` is a valid pointer
-> +        // to a `struct sg_table` for the duration of `'a`.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    #[inline]
-> +    fn as_raw(&self) -> *mut bindings::sg_table {
-> +        self.inner.0.get()
-> +    }
-> +
-> +    fn as_iter(&self) -> SGTableIter<'_> {
-> +        // SAFETY: `self.as_raw()` is a valid pointer to a `struct sg_ta=
-ble`.
-> +        let ptr =3D unsafe { (*self.as_raw()).sgl };
-> +
-> +        // SAFETY: `ptr` is guaranteed to be a valid pointer to a `struc=
-t scatterlist`.
-> +        let pos =3D Some(unsafe { SGEntry::from_raw(ptr) });
-> +
-> +        SGTableIter { pos }
-> +    }
-> +}
-> +
-> +/// # Invariants
-> +///
-> +/// - `sgt` is a valid pointer to a `struct sg_table` for the entire lif=
-etime of an [`DmaMapSgt`].
-
-nit: "of the".
-
-> +/// - `sgt` is always DMA mapped.
-> +struct DmaMapSgt {
-
-Minor point: I'd call this structure `DmaMappedSgt` to highlight the
-fact that it is actively mapped. Or alternatively document it and its
-members so that fact is clear.
-
-<snip>
-> +impl<'a> IntoIterator for &'a SGTable {
-> +    type Item =3D &'a SGEntry;
-> +    type IntoIter =3D SGTableIter<'a>;
-> +
-> +    #[inline]
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        self.as_iter()
-> +    }
-> +}
-
-While using this for Nova, I found it a bit unnatural having to call
-`into_iter` on references intead of just having an `iter` method.
-`into_iter` sounds like the passed object is consumed, while it is
-actually its (copied) reference that is. Why not have a regular `iter`
-method on `SGTable`? Actually we do have one, but it is called `as_iter`
-and is private for some reason. :)
-
-> +
-> +/// An [`Iterator`] over the [`SGEntry`] items of an [`SGTable`].
-> +pub struct SGTableIter<'a> {
-> +    pos: Option<&'a SGEntry>,
-> +}
-> +
-> +impl<'a> Iterator for SGTableIter<'a> {
-> +    type Item =3D &'a SGEntry;
-> +
-> +    fn next(&mut self) -> Option<Self::Item> {
-> +        let entry =3D self.pos?;
-> +
-> +        // SAFETY: `entry.as_raw()` is a valid pointer to a `struct scat=
-terlist`.
-> +        let next =3D unsafe { bindings::sg_next(entry.as_raw()) };
-> +
-> +        self.pos =3D (!next.is_null()).then(|| {
-> +            // SAFETY: If `next` is not NULL, `sg_next()` guarantees to =
-return a valid pointer to
-> +            // the next `struct scatterlist`.
-> +            unsafe { SGEntry::from_raw(next) }
-> +        });
-
-This might be missing a stop condition.
-
-For reasons I am not completely clear about, the number of mapped
-segments on the device side can be smaller than the number of
-scatterlists provided by the sg_table. This is highlighted by the
-documentation for `dma_map_sg_attrs` [1] ("Returns the number of mapped
-entries (which can be less than nents) on success") and `sg_dma_address`
-[2] ("You should only work with the number of sg entries dma_map_sg
-returns, or alternatively stop on the first sg_dma_len(sg) which is 0.")
-
-`dma_map_sgtable` stores the result of `dma_map_sg_attrs` into its
-`nents` member, and makes use of it in its iterator macros. See how the
-"regular" iterator and the "DMA" ones differ in their stop condition:
-
-/*
- * Loop over each sg element in the given sg_table object.
- */
-#define for_each_sgtable_sg(sgt, sg, i)		\
-	for_each_sg((sgt)->sgl, sg, (sgt)->orig_nents, i)
-
-and
-
-/*
- * Loop over each sg element in the given *DMA mapped* sg_table object.
- * Please use sg_dma_address(sg) and sg_dma_len(sg) to extract DMA addresse=
-s
- * of the each element.
- */
-#define for_each_sgtable_dma_sg(sgt, sg, i)	\
-	for_each_sg((sgt)->sgl, sg, (sgt)->nents, i)
-
-The DMA variant being the only one valid for accessing the DMA address
-and DMA length (the C does not enforce this however).
-
-So only calling `sg_next` until we reach the end of the list carries the
-risk that we iterate on more items than we should, with the extra ones
-having their length at 0 (which is likely to be a no-op, but is still
-incorrect or at the very least inefficient). We can avoid this by either
-storing the value of `nents` in the iterator, or, (which might be
-simpler) follow the advice given by the documentation of
-`sg_dma_address` and also stop if the DMA length of the next one is
-zero.
-
-[1] https://elixir.bootlin.com/linux/v6.16/source/kernel/dma/mapping.c#L233
-[2] https://elixir.bootlin.com/linux/v6.16/source/include/linux/scatterlist=
-.h#L31
+Another random thought, in the owned case, do we want to provide an
+accessor to the provider of the backing pages? Or do we expect the
+caller to take dispositions to keep such a reference if they need to
+access the backing buffer post-mapping?
