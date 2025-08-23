@@ -1,490 +1,358 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2084.outbound.protection.outlook.com [40.107.236.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC1B273F9
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Aug 2025 13:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755954329; cv=none; b=BPyCqIZJ+bdwdDKymAc0KASEQd1Tq5OOhKEUKhWS0tk9yM/75eRqalEvUS2PuVnB8XJhg21wlEK3sJMkUqmSkJX4LFIfQoao8ibVW6tVj4MLyigpAboXA38wcf8VE3RQzR+wnXJ4Txg+TH8J3o9tG4HBlw3mBSPlFfaFUK32Vmg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755954329; c=relaxed/simple;
-	bh=AXPIszivA5La82EVZ3/J4qPYV3v2i3n8Ugozpq0Uro4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZWsrC2CNURipznCuO0b9wRjSLaKb1VNff7t88i4WfX39W5d0sF4ZOwgahCZ4lv+jB06qYw+DIF475naeADcygA0yMVbgOBckCcNqXStXc8YygK0BW3y9BPNGvqrIEseDJuLlAWLGprhpBIwXPZvH5ZfLE0Foh4tDk4CKcM3rxwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=CV1GjsN3; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=4MlzM4RZ; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2396C1D555;
+	Sat, 23 Aug 2025 13:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755955376; cv=fail; b=ocnyy6hC7UTOFvf4SLhITADqQtbIC0EALhjBhPDZgLKfwJYQiyv1sRn6K0RjC/TUuBOcaJczzZEnXTz5WcwG2PyrEwZvAgtXUq85+qS9NXmBgqY5ZF1MfGvQLdwSVPQ3U2V8nCxxLvxUbcnAu3e8JW7LFlkLsOoe5zAPI33LcTg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755955376; c=relaxed/simple;
+	bh=qSTfRnGETxydqTp00QgU9dvVWJcw/S5aVdQBHg8Uo0g=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=c9CC1ubxn2H0tMFhSJ+3iN/L9wwnNqEGR1VxfBSHfUDiKYHwhXk5d82q5nH43h+OAm/+hB3Foo0xlY710ZngixzEf+pGVTbA2DayicSZVMeTy+eLiCfFXnnFhVu9T+9+5hIU75Ec85OCf/SDQ3dOURepMcJpmPwrhM4D+FOpMPA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Su0r0GV0; arc=fail smtp.client-ip=40.107.236.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="CV1GjsN3";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="4MlzM4RZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1755954325; x=1756559125;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=4zGvXg1y9SeBU8cgWL0AlC/yfYR8vXIZN9LtkXhZ8Ok=;
-	b=CV1GjsN3b5xy3YI/43j9ZjytkE1raoLzfZNC1TIME1ThhM+SWwHGu9eV0FBfichq+lGzZ5qqHqTJs
-	 raUdb3v4IXdvXw3wbbbKWwpmAKLaxThvzpVgK5KpnwmEqGBdHClnr+cV3eoMVertf740YS42HzVZ45
-	 S0gW4lJgMvQn19/DI2sXLzL2H4H1ZYquhPpFHgsJ7xgz6t3Cqf5y/2UZOvw1mxUEDv6pRoa4poz8K0
-	 9AnHyZb+NYvb2AAz098VQlbbZt1XbazRTdjVez/BKb8PUPkngufuya1htfbwr8xDvsGihlICPJfTk8
-	 MW5XJ+8vHaNGBkQa4pYBLp8pclM5nSQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1755954325; x=1756559125;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=4zGvXg1y9SeBU8cgWL0AlC/yfYR8vXIZN9LtkXhZ8Ok=;
-	b=4MlzM4RZrXxUG481LKKRCLRGkLxIqshj4V5NmZ3QCHTz0014KncuBdjbSnOPovxTU54ykFO8xhUek
-	 khqbS0LAA==
-X-HalOne-ID: d42fd706-8021-11f0-b365-4f541c8bf1cc
-Received: from localhost.localdomain (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay3.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id d42fd706-8021-11f0-b365-4f541c8bf1cc;
-	Sat, 23 Aug 2025 13:05:24 +0000 (UTC)
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	linux-mm@kvack.org,
-	Vitaly Wool <vitaly.wool@konsulko.se>
-Subject: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
-Date: Sat, 23 Aug 2025 15:05:22 +0200
-Message-Id: <20250823130522.867263-1-vitaly.wool@konsulko.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250823130420.867133-1-vitaly.wool@konsulko.se>
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Su0r0GV0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VHNWILfjjPqhIafGE8K+fRxDoyDxGnTpSHOVXAhBFdLMy8tsUpgcNTnffGfsEcl7cpBdfZAz9qRMFTgUecSNVqVh/yrjtifOARa3KLMirDj1TLqHfXOBiaV8ghuwdUskeumKIXUi9rDId6TJbxEjLm2tuTgZIjZ8Nxu3M5azhCzNpu4D814DOaf33ntg5mDqDFupT6gM4ipF8Wu93MvZT+v1aY0+YLAyWBAHKuUgA7u4jftuRpvQRdRWrK6d+elIPiXGSSxoBFxc69gOEh2tcwUU1cJNC0HO9wCU93d19FJJ1bwrg9E2elE662+pAIjsK63uNdG21qnGLJZDGO56TQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u1P8Qv1cl5jQ9Ry7WCJlXhrk7dZ924oKf/gsPLHXAYE=;
+ b=ZB8plo4wdX/wb1iQq2xALVKSyfCqBEr+pd2XgVBogYbnASPnUjm+vApgUBLIdD3tCmnn1Rei1clsXifXcuIlm0OBN+F0nFMp0WBr2cCVhyAXJTvINNoIpu+Uo5cq+YdB8NTUlhd4UhHO+al2vnacrJmQfgTF1WY7hSTvrtsalwcy4D6JIMpKTb+b2tew9hNPSZZ9/ylYIYbVNsZu1razAV3VtK1wRTXdbHaGeQdVaJIrAmgRAet67AJSpHQiX4rAqUVr0QBfJkGVaVEpcmZ9a7tFeJcHS1tHEevQUAQXPsV3nDMO1oU3HdRq4691Bem5PqhaXWgjAwjnkrmJ+wJRrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u1P8Qv1cl5jQ9Ry7WCJlXhrk7dZ924oKf/gsPLHXAYE=;
+ b=Su0r0GV0h1bQW1Y25bSAVlvkqIrBwXgFW3E8SHELmZautnLHDmFSOQ8KUDPHfuognUqifQYN1vXLTwJzoVqLYUxWvwUpqMWCOKTxf8vKNgbzI/59/GoQk/GgBq/i1cz4BZGB7zeOCesyCklbBFh2lUU2BbB42OKXl12R58u8q48u9PH+CQiJJgusniYUXbvBC3aWGsi3arWttdWXWQiJUB9SwmMU7ad12MKbSK4xEkfFOIp6R9qEDdKmtEzpDhMLIa3OYXJvRTzzoCPb0CNAi71QvX8WSZp/yxmF+8M00kV8VPPnlA9FLB1LOfaLMAG4GVJOUM58KXFBM6qSAxbIcQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DM6PR12MB4105.namprd12.prod.outlook.com (2603:10b6:5:217::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.18; Sat, 23 Aug
+ 2025 13:22:51 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9052.014; Sat, 23 Aug 2025
+ 13:22:51 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 23 Aug 2025 22:22:47 +0900
+Message-Id: <DC9U87GQ7ONZ.1489DEN1PPUAC@nvidia.com>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 3/5] rust: scatterlist: Add type-state abstraction
+ for sg_table
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, <akpm@linux-foundation.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <abdiel.janulgue@gmail.com>, <jgg@ziepe.ca>, <lyude@redhat.com>,
+ <robin.murphy@arm.com>, <daniel.almeida@collabora.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250820165431.170195-1-dakr@kernel.org>
+ <20250820165431.170195-4-dakr@kernel.org>
+In-Reply-To: <20250820165431.170195-4-dakr@kernel.org>
+X-ClientProxiedBy: TYCP286CA0039.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29d::13) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM6PR12MB4105:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32f1a7fb-4eaa-4642-a2dd-08dde24828aa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NGo3MG5HdU1lZUJTS0F2Wm1tV3J4RFV2d2thOVNqVzNwdk1rR0ZtcHZ0TSta?=
+ =?utf-8?B?c29OOUxab0kxbis0c1JsSTBvRFkwU2FZMGw3b21DRi9kRGs4YnBqbkt0TTBh?=
+ =?utf-8?B?WTVKWEZLV0xybkpIU0NKUU13aVl2OW1nYS9xSzNPZThyZmJHY3g3ZkZCVXpk?=
+ =?utf-8?B?czAyVVRQWVBlMnF4WHYxUXl1a3lCeUVFalNmZjFzaW5NTlFHUTRBa0dWdXl2?=
+ =?utf-8?B?ejYyM3BKSFI0TTFwYzJGOWxzOVAxcHo4c05ydGtDWW9WdW54RmlwcGFZQjAy?=
+ =?utf-8?B?b285MlRsWjh5M0t2U2w1Qkg0akRFTnF0RzhRTWpzRHBTbXNrY05aU05PanpH?=
+ =?utf-8?B?WnIxeFVLSjU5NUdWbDFyeTJCY3RySGozM0RmVEJRekZrQXQyU1BYQzhOYnB5?=
+ =?utf-8?B?QTdBRXNReWFBcHVRS2VJbmhwVEw0azRGd0hScGJzdWphUEJtTHF4SnFxQUdP?=
+ =?utf-8?B?Vmo5MnBmaW4xV2h2cFZjeXM1K1ByMWhIaDVpY3JDVEcwRmlMUnJhd1JxYjhp?=
+ =?utf-8?B?V2lQRmlTQkxRcmdwMHNzb2lOZGF2cUM5MU5nc2QzVTBDeTFXN3FzbDRIcXRX?=
+ =?utf-8?B?ekFQb1hEbEZlV1lLNTYwa3dUdnBPbVFLZVArSVY4aUw2aW5DWkV5NHo3Ni9G?=
+ =?utf-8?B?SXUzK2hOcHA5aUU3UEc3ZzFXK0xFcmJzejRkeEhIS0UyUStyWTR2ZW9OYWxG?=
+ =?utf-8?B?c3htN0JncE1kTkFwWUcvK0t5UUUwa2lXNmNPV2tDMDg4a1FES2J2TzlsNUo1?=
+ =?utf-8?B?bVZnNmNadlZuWWtNc0wwQ3ZZTDgrK2I4bkd5SisrVkk4Q0V0S01hSUVteERj?=
+ =?utf-8?B?TGN5ejVOWjBPUWluaEdHQW1vU0g0K0ZSQmFNeTR0bjYrYUxNUGtZMnY4Sk1J?=
+ =?utf-8?B?eDlXMFNHR2Z3RzdPbnpBNWo3bVZFRkhBdnc5aEpHbWEvTnQxajhNc3cycXZm?=
+ =?utf-8?B?L3UxVXFmZGFhV0FycDNwWHp4aVdDUzdaS3c4eFpUeXI5d2xua0VsOW8xTFp5?=
+ =?utf-8?B?QmlUWTQ4UXJIaElLTmxuajAyOG9VVFFPT3poR1ZpNmtnT2Uybzd3UnRjWStD?=
+ =?utf-8?B?Tk9STkU2bXdjQ1RhZlNnM0NvWXBjcmdwaitQSThqSFVkMGR5Yi9wQ2hSc2d3?=
+ =?utf-8?B?eWtsTVNIb01HVTMvOWVpMEF1aEdvaEx2Q0tUallXWXZMNFZtN0kxbEo2cGVX?=
+ =?utf-8?B?eEN5dEpiZ0tYQ0N1d2NNbElMa0M3Qk1qUFlqbExyNUxpbUM1di96WUMvcEx6?=
+ =?utf-8?B?c0ZJc0VsSnFIeTU4TXhGcnVuYmdJc3pJWkNXcVI3cjRDbDUrMDJUYXVyVUlS?=
+ =?utf-8?B?QVhBWmE1Y1FmL2dwcDJ1clZieU9CWFhMTzNoZmZuV0hLdlFnbHhLc3krc3k5?=
+ =?utf-8?B?K3NHeGhvUmI4ZWxDN2pjUHB0VW5HTjQ1eDNTUGRyWWk3MDNwM0VUd0lOeWEz?=
+ =?utf-8?B?YmdTWjVhazBOcGUwUVVVb2VrK3VhcEJFQk5XQlRqOHRiSEVlNlBtMlE1ejlU?=
+ =?utf-8?B?NnRtUlVraUZ5Q3ZET1JacmxZL3B5eGo2RW9zelZuSitFcmZMTjdrUFFtYVh2?=
+ =?utf-8?B?Yk1BNnIwN0J1Zy9vbWFHQnRscGd5aFRPRG92S2xnaWxJWTYxYTRLTWJXZnVV?=
+ =?utf-8?B?djFCVUxyUGZBa0h2TXcxL0F3V1JCMm1VRVg4eUlWV21oeDJMaU0zYTQ5TUov?=
+ =?utf-8?B?MDd5K1dVa2QxNUJYV1JPM0xOc3Fodkl0ZzJoZWFQTFZkejhRbzUwOUNGQW8z?=
+ =?utf-8?B?MmkzdGNDVnZvNTJaV1lhaDg3SXhlUGxGYlVYVzVMM0J1YUxuZnlQWnAxL3Nu?=
+ =?utf-8?B?aEFlRk5CZ2ZBNXdpRENxNkJxM2FweGc2dEdDVG1YMUExZ2dsWDVPcERoM1FW?=
+ =?utf-8?B?OHV0N0NoTjBSVDFMTUdjWTYyYXlQK2lCY2JweC9oUTEzU00vbjVZQ3ptK0NO?=
+ =?utf-8?B?RXo1VldOWlF6RHduZ1MvMUpwU0NNNmhkSitqbGRtc1M5Rk5mSWNpayt6S3Vv?=
+ =?utf-8?B?bDlvamxGQmZnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Sm1vNWJZVndBODhGUzE4T09KbjFRdEhBUGZ0VDk1VmZnemJ6VjJUUm0yN3pK?=
+ =?utf-8?B?a1czUDFMR2gvSDA0cGJQZ3NrK2JTL2xpcWZPZlN4N1NZQzFnTjNRZzVoWEs2?=
+ =?utf-8?B?WVA2VDJnMHlOVmdtcmlIRHJ3R2JaZFVXcjkvb1VuK2JsSXVCMmpLUXBjdTNq?=
+ =?utf-8?B?YlZHU1M2bzRBL1drLzR3Wlorck5yMVJhNWppMS83aHdjQ0haUThhb2VGREFa?=
+ =?utf-8?B?UUhRTTc4RkdFNTJHdUs3dzMvalVmbGpodDk1RUZHMGRWUHl2bk1QN2trTVZN?=
+ =?utf-8?B?dTRaeW9RRUJtQ1hYOUdSS2FHUjYzZGZuSlA4QjMwaVdYWWdtTVNnV1djdHhW?=
+ =?utf-8?B?QTZZZ3J4KzJtd28wZGdVdDJ0aWtKS01FYmcwckdxZkdPVlhyR2srZGZvYWxZ?=
+ =?utf-8?B?ZDhqUkM5T0pLWFY0Y2FVL2RqTi83S0M2VnlvVm04V3FtSngrVm1LaXJ0enVl?=
+ =?utf-8?B?MU9uTVluVVhIWXVpYVAvMVJSUEFvVmtzWUJtMlV6UEJDZG9CWitIT245UWpL?=
+ =?utf-8?B?ZTdROTNEUW13dlM5WU1raTlIL0hTV3BhcWFmTUdRU2NJSmowS2pubWdaSmlY?=
+ =?utf-8?B?c2J4eHVkK3h3UktZN0g2bmIvNkEzNWFIMEM1S3JOZWtpZytrRGZ5cjB1NUM0?=
+ =?utf-8?B?cDRVZVIxU2M5SWtmSjhwQWU1VjR3Wkx3R1BzQVR5NTJ5MzQ2Y2xEYmxsOWl2?=
+ =?utf-8?B?eU5wU2NTWmpYcXAzQTdJYjl5T3B2NFlKSStQQmRTVEk4Q3ZsVEw4SWNCR3Ix?=
+ =?utf-8?B?OG1zMVNGak1BWUxLRXVtZFRlMlVHMEg3Q2ZwUVNwY1VDVk9TNnJxWjc0TXZQ?=
+ =?utf-8?B?T3d5Ni9aZFM5cXc3Z1V3WDVpaVdTeXk5REVqTEVQSllSTm82eDhUaHZ6Y293?=
+ =?utf-8?B?elY3TGNXVmR4TU03NE1vengxdDRKNUhUUHBFWTdsT0lVMTIrcmJkRlJNRWZr?=
+ =?utf-8?B?QU5LY1JWU1c0S1k3MHV5Rmtncms4V1l2eW1rQkxkZkduTWthdFJ1eVR4QjVt?=
+ =?utf-8?B?dTQ3WCsrM0Y4U0RjYkRVejF3bWdOdHhLUUpJenNjbWZrMU5aaWxEZEpZQjdy?=
+ =?utf-8?B?dHVXamtSOVdiZC9nVi9HOGtaaDFUNUdLVmVBVzFsNzRWSnZSOWo3QW1xTXEr?=
+ =?utf-8?B?bzhRS3dTVVI5L0N1UWRlM3Q4MitOdktPOEthRHphcWlSeDdFRlhGQytYdElN?=
+ =?utf-8?B?VWYydEo5N2I2Z25BaXR1WHZpbjN5c3VVWnJKZmc3cTBFeGIvbWhRWTA5Y3I1?=
+ =?utf-8?B?TTNtdGNxMlVaVW5hNmI3VkVFRlpDUHQzQ21qZC9Bb1VSaE1MUlV2MkU3OUlw?=
+ =?utf-8?B?ODJjWXFNSUt4bzdrRWluN0dLWTdDMVZ0cGZpeEN3Qi9EMHAvQnUvWm5VQzlv?=
+ =?utf-8?B?N0RuR1dwUkFMbi95QWk0Y2lGYW5lNm1FTVFXTVBXWkJ0RXRrS29aUnRrY25G?=
+ =?utf-8?B?OFBQc013ZTF5VVg3ZFhBemdNOFN3Lzh6QWpvOFhjZ1JZM3QrL003ZEkzaFNL?=
+ =?utf-8?B?aUdhMWxvd0hlR3FOdTFuWkZ3SnpiMjZZdXlSUzN0TjJmUkFWQnNadWprYUNC?=
+ =?utf-8?B?eTJINVVabnY2MHFYVlJldEtvRlg5K3lxK2Jwbk1uR3ZQNW9Wc3J6Nk41eXp2?=
+ =?utf-8?B?OEM0TnhFYWVnZWh6by9Tbm1ocHlmL3lObEtZdWQ1RkVJMlNadVhvMTFOQkkx?=
+ =?utf-8?B?WHV2T25TR3dGT2pwZ0kxYmtrSGlxcmlCN1BKelBBbGsvVUJOT1dHVG1EZGNQ?=
+ =?utf-8?B?UWtLc25RVTAzOGtBaFhpbmx6MWE5Y0szdEJEQjAyUzhGSEIzQ3ZVQUtNanBt?=
+ =?utf-8?B?OGxQc1JqZ2p4Yi9jbkdkTDN4V2cvZHR4TkxvL3h2QzBtOEVudzR4Yzl4NkVn?=
+ =?utf-8?B?SEU2TGZpazFVQnVDZkIyU29zOXlYOFEwRTBKdkxzcCtBR0Z2MXNZVExSMXlY?=
+ =?utf-8?B?MTBpL1RhRDIzVEJUVmJjR3lQaFdYRUJhRXFlLzhORThDMzNwbEhIL21sT2V2?=
+ =?utf-8?B?cTZvOFltallTamNhd2VvRWxLdGhpamRWRnVDeEprTjNKNGpxTEFXZnhJUDUv?=
+ =?utf-8?B?MlgvVnhLQjJtK2h2VEUyT3dEMldTNUcxeENmZVExbVAvYnZhLzNMbGt0L052?=
+ =?utf-8?B?S2NmK0dQeVFvcTl3Nm9VTFEyYXNVSjFLTCtHV3I0TCtZMmhNVUdNS3ViMmFQ?=
+ =?utf-8?Q?fMa1R4DBMbeha/rCdeKXqJj+l7bKJYnWhFKYJhY8wSNK?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32f1a7fb-4eaa-4642-a2dd-08dde24828aa
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2025 13:22:51.0253
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6k26k+39ucczQ8rwJOZgObfG5wEqODEIriPzVy5I40fPrYRDwhQn+/l+2dvIE42UVlTqAwil8q4sCfhl2+xkDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4105
 
-Zpool is a common frontend for memory storage pool implementations.
-These pools are typically used to store compressed memory objects,
-e. g. for Zswap, the lightweight compressed cache for swap pages.
+On Thu Aug 21, 2025 at 1:52 AM JST, Danilo Krummrich wrote:
+> Add a safe Rust abstraction for the kernel's scatter-gather list
+> facilities (`struct scatterlist` and `struct sg_table`).
+>
+> This commit introduces `SGTable<T>`, a wrapper that uses a type-state
+> pattern to provide compile-time guarantees about ownership and lifetime.
+>
+> The abstraction provides two primary states:
+> - `SGTable<Owned<P>>`: Represents a table whose resources are fully
+>   managed by Rust. It takes ownership of a page provider `P`, allocates
+>   the underlying `struct sg_table`, maps it for DMA, and handles all
+>   cleanup automatically upon drop. The DMA mapping's lifetime is tied to
+>   the associated device using `Devres`, ensuring it is correctly unmapped
+>   before the device is unbound.
+> - `SGTable<Borrowed>` (or just `SGTable`): A zero-cost representation of
+>   an externally managed `struct sg_table`. It is created from a raw
+>   pointer using `SGTable::as_ref()` and provides a lifetime-bound
+>   reference (`&'a SGTable`) for operations like iteration.
+>
+> The API exposes a safe iterator that yields `&SGEntry` references,
+> allowing drivers to easily access the DMA address and length of each
+> segment in the list.
+>
+> Co-developed-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
 
-This patch provides the interface to use Zpool in Rust kernel code,
-thus enabling Rust implementations of Zpool allocators for Zswap.
+<snip>
+> +impl SGEntry {
+> +    /// Convert a raw `struct scatterlist *` to a `&'a SGEntry`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the `struct scatterlist` pointed to by =
+`ptr` is valid for the
+> +    /// lifetime `'a`.
+> +    #[inline]
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::scatterlist) -> &'a Self =
+{
+> +        // SAFETY: The safety requirements of this function guarantee th=
+at `ptr` is a valid pointer
 
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
----
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/helpers.c          |   1 +
- rust/helpers/zpool.c            |   6 +
- rust/kernel/lib.rs              |   2 +
- rust/kernel/zpool.rs            | 338 ++++++++++++++++++++++++++++++++
- 5 files changed, 348 insertions(+)
- create mode 100644 rust/helpers/zpool.c
- create mode 100644 rust/kernel/zpool.rs
+nit: "guarantees".
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 84d60635e8a9..f0c4c454882b 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -75,6 +75,7 @@
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- #include <linux/xarray.h>
-+#include <linux/zpool.h>
- #include <trace/events/rust_sample.h>
- 
- #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 7cf7fe95e41d..e1a7556cc700 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -51,3 +51,4 @@
- #include "wait.c"
- #include "workqueue.c"
- #include "xarray.c"
-+#include "zpool.c"
-diff --git a/rust/helpers/zpool.c b/rust/helpers/zpool.c
-new file mode 100644
-index 000000000000..71ba173f917a
---- /dev/null
-+++ b/rust/helpers/zpool.c
-@@ -0,0 +1,6 @@
-+#include <linux/zpool.h>
-+
-+void rust_helper_zpool_register_driver(struct zpool_driver *driver)
-+{
-+	zpool_register_driver(driver);
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index ed53169e795c..165d52feeea4 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -129,6 +129,8 @@
- pub mod uaccess;
- pub mod workqueue;
- pub mod xarray;
-+#[cfg(CONFIG_ZPOOL)]
-+pub mod zpool;
- 
- #[doc(hidden)]
- pub use bindings;
-diff --git a/rust/kernel/zpool.rs b/rust/kernel/zpool.rs
-new file mode 100644
-index 000000000000..88b863b71c8d
---- /dev/null
-+++ b/rust/kernel/zpool.rs
-@@ -0,0 +1,338 @@
-+use crate::{
-+    bindings,
-+    error::{from_result, Result},
-+    kernel::alloc::Flags,
-+    str::CStr,
-+    types::{ForeignOwnable, Opaque},
-+};
-+use core::ffi::{c_int, c_uchar, c_void};
-+use core::ptr::{null_mut, NonNull};
-+use kernel::alloc::NumaNode;
-+use kernel::driver;
-+use kernel::ThisModule;
-+
-+/// Zpool API.
-+///
-+/// The [`ZpoolDriver`] trait serves as an interface for Zpool drivers implemented in Rust.
-+/// Such drivers implement memory storage pools in accordance with the zpool API.
-+///
-+/// # Example
-+///
-+/// A zpool driver implementation which uses KVec of 2**n sizes, n = 6, 7, ..., PAGE_SHIFT.
-+/// Every zpool object is packed into a KVec that is sufficiently large, and n (the
-+/// denominator) is saved in the least significant bits of the handle, which is guaranteed
-+/// to be at least 2**6 aligned by kmalloc.
-+///
-+/// ```
-+/// use core::ptr::{NonNull, copy_nonoverlapping};
-+/// use core::sync::atomic::{AtomicU64, Ordering};
-+/// use kernel::alloc::{Flags, KBox, KVec, NumaNode};
-+/// use kernel::page::PAGE_SHIFT;
-+/// use kernel::prelude::EINVAL;
-+/// use kernel::zpool::*;
-+///
-+/// struct MyZpool {
-+///     name: &'static CStr,
-+///     bytes_used: AtomicU64,
-+/// }
-+///
-+/// struct MyZpoolDriver;
-+///
-+/// impl ZpoolDriver for MyZpoolDriver {
-+///     type Pool = KBox<MyZpool>;
-+///
-+///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpool>> {
-+///         let my_pool = MyZpool { name, bytes_used: AtomicU64::new(0) };
-+///         let pool = KBox::new(my_pool, gfp)?;
-+///
-+///         Ok(pool)
-+///     }
-+///
-+///     fn destroy(p: KBox<MyZpool>) {
-+///         drop(p);
-+///     }
-+///
-+///     fn malloc(pool: &mut MyZpool, size: usize, gfp: Flags, _nid: NumaNode) -> Result<usize> {
-+///         let mut pow: usize = 0;
-+///         for n in 6..=PAGE_SHIFT {
-+///             if size <= 1 << n {
-+///                 pow = n;
-+///                 break;
-+///             }
-+///         }
-+///         match pow {
-+///             0 => Err(EINVAL),
-+///             _ => {
-+///                 let vec = KVec::<u64>::with_capacity(1 << (pow - 3), gfp)?;
-+///                 let (ptr, _len, _cap) = vec.into_raw_parts();
-+///                 pool.bytes_used.fetch_add(1 << pow, Ordering::Relaxed);
-+///                 Ok(ptr as usize | (pow - 6))
-+///             }
-+///         }
-+///     }
-+///
-+///     unsafe fn free(pool: &MyZpool, handle: usize) {
-+///         let n = (handle & 0x3F) + 3;
-+///         let uptr = handle & !0x3F;
-+///
-+///         // SAFETY:
-+///         // - uptr comes from handle which points to the KVec allocation from `alloc`.
-+///         // - size == capacity and is coming from the first 6 bits of handle.
-+///         let vec = unsafe { KVec::<u64>::from_raw_parts(uptr as *mut u64, 1 << n, 1 << n) };
-+///         drop(vec);
-+///         pool.bytes_used.fetch_sub(1 << (n + 3), Ordering::Relaxed);
-+///     }
-+///
-+///     unsafe fn read_begin(_pool: &MyZpool, handle: usize) -> NonNull<u8> {
-+///         let uptr = handle & !0x3F;
-+///         // SAFETY: uptr points to a memory area allocated by KVec
-+///         unsafe { NonNull::new_unchecked(uptr as *mut u8) }
-+///     }
-+///
-+///     unsafe fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem: NonNull<u8>) {}
-+///
-+///     unsafe fn write(_p: &MyZpool, handle: usize, handle_mem: NonNull<u8>, mem_len: usize) {
-+///         let uptr = handle & !0x3F;
-+///         // SAFETY: handle_mem is a valid non-null pointer provided by zpool, uptr points to
-+///         // a KVec allocated in `malloc` and is therefore also valid.
-+///         unsafe {
-+///             copy_nonoverlapping(handle_mem.as_ptr().cast(), uptr as *mut c_void, mem_len)
-+///         };
-+///     }
-+///
-+///     fn total_pages(pool: &MyZpool) -> u64 {
-+///         pool.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
-+///     }
-+/// }
-+/// ```
-+///
-+pub trait ZpoolDriver {
-+    /// Opaque Rust representation of `struct zpool`.
-+    type Pool: ForeignOwnable;
-+
-+    /// Create a pool.
-+    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
-+
-+    /// Destroy the pool.
-+    fn destroy(pool: Self::Pool);
-+
-+    /// Allocate an object of size `size` bytes from `pool`, with the allocation flags `gfp` and
-+    /// preferred NUMA node `nid`. If the allocation is successful, an opaque handle is returned.
-+    fn malloc(
-+        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
-+        size: usize,
-+        gfp: Flags,
-+        nid: NumaNode,
-+    ) -> Result<usize>;
-+
-+    /// Free a previously allocated from the `pool` object, represented by `handle`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// - `handle` must be a valid handle previously returned by `malloc`.
-+    /// - `handle` must not be used any more after the call to `free`.
-+    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: usize);
-+
-+    /// Make all the necessary preparations for the caller to be able to read from the object
-+    /// represented by `handle` and return a valid pointer to the `handle` memory to be read.
-+    ///
-+    /// # Safety
-+    ///
-+    /// - `handle` must be a valid handle previously returned by `malloc`.
-+    /// - `read_end` with the same `handle` must be called for each `read_begin`.
-+    unsafe fn read_begin(
-+        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
-+        handle: usize,
-+    ) -> NonNull<u8>;
-+
-+    /// Finish reading from a previously allocated `handle`. `handle_mem` must be the pointer
-+    /// previously returned by `read_begin`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// - `handle` must be a valid handle previously returned by `malloc`.
-+    /// - `handle_mem` must be the pointer previously returned by `read_begin`.
-+    unsafe fn read_end(
-+        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
-+        handle: usize,
-+        handle_mem: NonNull<u8>,
-+    );
-+
-+    /// Write to the object represented by a previously allocated `handle`. `handle_mem` points
-+    /// to the memory to copy data from, and `mem_len` defines the length of the data block to
-+    /// be copied.
-+    ///
-+    /// # Safety
-+    ///
-+    /// - `handle` must be a valid handle previously returned by `malloc`.
-+    /// - `handle_mem` must be a valid pointer to an allocated memory area.
-+    /// - `handle_mem` + `mem_len` must not point outside the allocated memory area.
-+    unsafe fn write(
-+        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
-+        handle: usize,
-+        handle_mem: NonNull<u8>,
-+        mem_len: usize,
-+    );
-+
-+    /// Get the number of pages used by the `pool`.
-+    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -> u64;
-+}
-+
-+/// An "adapter" for the registration of zpool drivers.
-+pub struct Adapter<T: ZpoolDriver>(T);
-+
-+impl<T: ZpoolDriver> Adapter<T> {
-+    extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void {
-+        // SAFETY: the memory pointed to by name is guaranteed by zpool to be a valid string
-+        let pool = unsafe { T::create(CStr::from_char_ptr(name), Flags::from_raw(gfp)) };
-+        match pool {
-+            Err(_) => null_mut(),
-+            Ok(p) => T::Pool::into_foreign(p),
-+        }
-+    }
-+    extern "C" fn destroy_(pool: *mut c_void) {
-+        // SAFETY: The pointer originates from an `into_foreign` call.
-+        T::destroy(unsafe { T::Pool::from_foreign(pool) })
-+    }
-+    extern "C" fn malloc_(
-+        pool: *mut c_void,
-+        size: usize,
-+        gfp: u32,
-+        handle: *mut usize,
-+        nid: c_int,
-+    ) -> c_int {
-+        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
-+        // `from_foreign`, then that happens in `_destroy` which will not be called during this
-+        // method.
-+        let pool = unsafe { T::Pool::borrow_mut(pool) };
-+
-+        from_result(|| {
-+            let real_nid = match nid {
-+                bindings::NUMA_NO_NODE => NumaNode::NO_NODE,
-+                _ => NumaNode::new(nid)?,
-+            };
-+            let h = T::malloc(pool, size, Flags::from_raw(gfp), real_nid)?;
-+            // SAFETY: handle is guaranteed to be a valid pointer by zpool.
-+            unsafe { *handle = h };
-+            Ok(0)
-+        })
-+    }
-+    extern "C" fn free_(pool: *mut c_void, handle: usize) {
-+        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
-+        // `from_foreign`, then that happens in `_destroy` which will not be called during this
-+        // method.
-+        let pool = unsafe { T::Pool::borrow(pool) };
-+
-+        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
-+        // allocated by `malloc`.
-+        unsafe { T::free(pool, handle) }
-+    }
-+    extern "C" fn obj_read_begin_(
-+        pool: *mut c_void,
-+        handle: usize,
-+        _local_copy: *mut c_void,
-+    ) -> *mut c_void {
-+        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
-+        // `from_foreign`, then that happens in `_destroy` which will not be called during this
-+        // method.
-+        let pool = unsafe { T::Pool::borrow(pool) };
-+
-+        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
-+        // allocated by `malloc`.
-+        let non_null_ptr = unsafe { T::read_begin(pool, handle) };
-+        non_null_ptr.as_ptr().cast()
-+    }
-+    extern "C" fn obj_read_end_(pool: *mut c_void, handle: usize, handle_mem: *mut c_void) {
-+        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
-+        // `from_foreign`, then that happens in `_destroy` which will not be called during this
-+        // method.
-+        let pool = unsafe { T::Pool::borrow(pool) };
-+
-+        // SAFETY: handle_mem is guaranteed to be non-null by the caller (zswap)
-+        let handle_mem_ptr = unsafe { NonNull::new_unchecked(handle_mem.cast()) };
-+
-+        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
-+        // allocated by `malloc`.
-+        unsafe { T::read_end(pool, handle, handle_mem_ptr) }
-+    }
-+    extern "C" fn obj_write_(
-+        pool: *mut c_void,
-+        handle: usize,
-+        handle_mem: *mut c_void,
-+        mem_len: usize,
-+    ) {
-+        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
-+        // `from_foreign`, then that happens in `_destroy` which will not be called during this
-+        // method.
-+        let pool = unsafe { T::Pool::borrow(pool) };
-+
-+        // SAFETY: handle_mem is guaranteed to be non-null by the caller (zswap)
-+        let handle_mem_ptr = unsafe { NonNull::new_unchecked(handle_mem.cast()) };
-+
-+        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
-+        // allocated by `malloc`.
-+        unsafe {
-+            T::write(pool, handle, handle_mem_ptr, mem_len);
-+        }
-+    }
-+    extern "C" fn total_pages_(pool: *mut c_void) -> u64 {
-+        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
-+        // `from_foreign`, then that happens in `_destroy` which will not be called during this
-+        // method.
-+        let pool = unsafe { T::Pool::borrow(pool) };
-+        T::total_pages(pool)
-+    }
-+}
-+
-+// SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid
-+// because preceding call to `register` never fails for zpool.
-+unsafe impl<T: ZpoolDriver + 'static> driver::RegistrationOps for Adapter<T> {
-+    type RegType = bindings::zpool_driver;
-+
-+    unsafe fn register(
-+        pdrv: &Opaque<Self::RegType>,
-+        name: &'static CStr,
-+        _module: &'static ThisModule,
-+    ) -> Result {
-+        // SAFETY: It's safe to set the fields of `struct zpool_driver` on initialization.
-+        unsafe {
-+            (*(pdrv.get())).type_ = name.as_char_ptr().cast_mut();
-+            (*(pdrv.get())).create = Some(Self::create_);
-+            (*(pdrv.get())).destroy = Some(Self::destroy_);
-+            (*(pdrv.get())).malloc = Some(Self::malloc_);
-+            (*(pdrv.get())).free = Some(Self::free_);
-+            (*(pdrv.get())).obj_read_begin = Some(Self::obj_read_begin_);
-+            (*(pdrv.get())).obj_read_end = Some(Self::obj_read_end_);
-+            (*(pdrv.get())).obj_write = Some(Self::obj_write_);
-+            (*(pdrv.get())).total_pages = Some(Self::total_pages_);
-+
-+            bindings::zpool_register_driver(pdrv.get());
-+        }
-+        Ok(())
-+    }
-+    unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
-+        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
-+        unsafe { bindings::zpool_unregister_driver(pdrv.get()) };
-+    }
-+}
-+
-+/// Declares a kernel module that exposes a zpool driver (i. e. an implementation of the zpool
-+/// API).
-+///
-+/// # Examples
-+///
-+///```ignore
-+/// kernel::module_zpool_driver! {
-+///     type: MyDriver,
-+///     name: "Module name",
-+///     authors: ["Author name"],
-+///     description: "Description",
-+///     license: "GPL",
-+/// }
-+///```
-+#[macro_export]
-+macro_rules! module_zpool_driver {
-+($($f:tt)*) => {
-+    $crate::module_driver!(<T>, $crate::zpool::Adapter<T>, { $($f)* });
-+};
-+}
--- 
-2.39.2
+<snip>
+> +impl SGTable {
+> +    /// Creates a borrowed `&'a SGTable` from a raw `struct sg_table` po=
+inter.
+> +    ///
+> +    /// This allows safe access to an `sg_table` that is managed elsewhe=
+re (for example, in C code).
 
+nit: "to a".
+
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that:
+> +    ///
+> +    /// - the `struct sg_table` pointed to by `ptr` is valid for the ent=
+ire lifetime of `'a`,
+> +    /// - the data behind `ptr` is not modified concurrently for the dur=
+ation of `'a`.
+> +    #[inline]
+> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::sg_table) -> &'a Self=
+ {
+> +        // SAFETY: The safety requirements of this function guarantee th=
+at `ptr` is a valid pointer
+> +        // to a `struct sg_table` for the duration of `'a`.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    #[inline]
+> +    fn as_raw(&self) -> *mut bindings::sg_table {
+> +        self.inner.0.get()
+> +    }
+> +
+> +    fn as_iter(&self) -> SGTableIter<'_> {
+> +        // SAFETY: `self.as_raw()` is a valid pointer to a `struct sg_ta=
+ble`.
+> +        let ptr =3D unsafe { (*self.as_raw()).sgl };
+> +
+> +        // SAFETY: `ptr` is guaranteed to be a valid pointer to a `struc=
+t scatterlist`.
+> +        let pos =3D Some(unsafe { SGEntry::from_raw(ptr) });
+> +
+> +        SGTableIter { pos }
+> +    }
+> +}
+> +
+> +/// # Invariants
+> +///
+> +/// - `sgt` is a valid pointer to a `struct sg_table` for the entire lif=
+etime of an [`DmaMapSgt`].
+
+nit: "of the".
+
+> +/// - `sgt` is always DMA mapped.
+> +struct DmaMapSgt {
+
+Minor point: I'd call this structure `DmaMappedSgt` to highlight the
+fact that it is actively mapped. Or alternatively document it and its
+members so that fact is clear.
+
+<snip>
+> +impl<'a> IntoIterator for &'a SGTable {
+> +    type Item =3D &'a SGEntry;
+> +    type IntoIter =3D SGTableIter<'a>;
+> +
+> +    #[inline]
+> +    fn into_iter(self) -> Self::IntoIter {
+> +        self.as_iter()
+> +    }
+> +}
+
+While using this for Nova, I found it a bit unnatural having to call
+`into_iter` on references intead of just having an `iter` method.
+`into_iter` sounds like the passed object is consumed, while it is
+actually its (copied) reference that is. Why not have a regular `iter`
+method on `SGTable`? Actually we do have one, but it is called `as_iter`
+and is private for some reason. :)
+
+> +
+> +/// An [`Iterator`] over the [`SGEntry`] items of an [`SGTable`].
+> +pub struct SGTableIter<'a> {
+> +    pos: Option<&'a SGEntry>,
+> +}
+> +
+> +impl<'a> Iterator for SGTableIter<'a> {
+> +    type Item =3D &'a SGEntry;
+> +
+> +    fn next(&mut self) -> Option<Self::Item> {
+> +        let entry =3D self.pos?;
+> +
+> +        // SAFETY: `entry.as_raw()` is a valid pointer to a `struct scat=
+terlist`.
+> +        let next =3D unsafe { bindings::sg_next(entry.as_raw()) };
+> +
+> +        self.pos =3D (!next.is_null()).then(|| {
+> +            // SAFETY: If `next` is not NULL, `sg_next()` guarantees to =
+return a valid pointer to
+> +            // the next `struct scatterlist`.
+> +            unsafe { SGEntry::from_raw(next) }
+> +        });
+
+This might be missing a stop condition.
+
+For reasons I am not completely clear about, the number of mapped
+segments on the device side can be smaller than the number of
+scatterlists provided by the sg_table. This is highlighted by the
+documentation for `dma_map_sg_attrs` [1] ("Returns the number of mapped
+entries (which can be less than nents) on success") and `sg_dma_address`
+[2] ("You should only work with the number of sg entries dma_map_sg
+returns, or alternatively stop on the first sg_dma_len(sg) which is 0.")
+
+`dma_map_sgtable` stores the result of `dma_map_sg_attrs` into its
+`nents` member, and makes use of it in its iterator macros. See how the
+"regular" iterator and the "DMA" ones differ in their stop condition:
+
+/*
+ * Loop over each sg element in the given sg_table object.
+ */
+#define for_each_sgtable_sg(sgt, sg, i)		\
+	for_each_sg((sgt)->sgl, sg, (sgt)->orig_nents, i)
+
+and
+
+/*
+ * Loop over each sg element in the given *DMA mapped* sg_table object.
+ * Please use sg_dma_address(sg) and sg_dma_len(sg) to extract DMA addresse=
+s
+ * of the each element.
+ */
+#define for_each_sgtable_dma_sg(sgt, sg, i)	\
+	for_each_sg((sgt)->sgl, sg, (sgt)->nents, i)
+
+The DMA variant being the only one valid for accessing the DMA address
+and DMA length (the C does not enforce this however).
+
+So only calling `sg_next` until we reach the end of the list carries the
+risk that we iterate on more items than we should, with the extra ones
+having their length at 0 (which is likely to be a no-op, but is still
+incorrect or at the very least inefficient). We can avoid this by either
+storing the value of `nents` in the iterator, or, (which might be
+simpler) follow the advice given by the documentation of
+`sg_dma_address` and also stop if the DMA length of the next one is
+zero.
+
+[1] https://elixir.bootlin.com/linux/v6.16/source/kernel/dma/mapping.c#L233
+[2] https://elixir.bootlin.com/linux/v6.16/source/include/linux/scatterlist=
+.h#L31
