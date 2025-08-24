@@ -1,133 +1,76 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1CC27D782
-	for <rust-for-linux@vger.kernel.org>; Sun, 24 Aug 2025 12:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727BB253944
+	for <rust-for-linux@vger.kernel.org>; Sun, 24 Aug 2025 13:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756039002; cv=none; b=I+HsAMGMtnHohDu+PG8NUWsvWHMZi0gQv29Ja+cKMIUs96o4wSl/drEHN5bvYlBTvqoVgEnEJG7zRE1ydAXrGBG7D5LIIstLwP7DirIV6Q/eLECApRh9AkEjJA6WnPh5wtKTm+q/Pp06QQ6wsKXimDFH1PK/v/61sTbmGC30Ngs=
+	t=1756040706; cv=none; b=r5c745unKn1V02LVdp1sVjIzIA6WgHdNiwEEpEKrP4vhoVtIMCOqFuTi8OrERK5hel/M8YDqAPParOGMNzPBu+DXzXh93arZl6TN0D+yqt5C0dzyD81ViPAVmmWgTMnVTlakUd+bLpNb9DznqZTyATUJECnfHwhaB9BzG1EEABo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756039002; c=relaxed/simple;
-	bh=FPVMCIoNdsRqqHXS6DrQM4fUzctcxByTeW0rhgQG3vc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dt22bjjhOmZbmh6luxjU4n7bBZJebRPgwDZrXtQxffbgblBtVjuOTUIrYEDB3cKEaUIT8Qt/tnwVRDQAOR4tlLx2lDB6U5lTo9a/j13xNlKEconnxtoaisRCUTY2QOKAuz6xyVQGm0LMK8pZkvv7Q4HUHvpchPS030lZ16dC8VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GZTbDK8b; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1756040706; c=relaxed/simple;
+	bh=W5xOQKuMNnSf7+aFccIF+sA9AEbiG2iUEybWWHNvCk4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Eb4AMeDhWDlKLFL+o7W2TgBjf0VIaGPBUaj10ky34kIdajOMyd2gjG0lyPalRqdk/odZ4RqlpB9tO7qbxQ09svdzOlHWrgjZutWitqmguGlyF3aesBD1kMFcL4SXrHHZbwCOE6RpKsM23ERvzDU5ZVS09USx2M0UBevI+5zAa0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vL767a0O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GZTbDK8b"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3c68ac7e238so897004f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 24 Aug 2025 05:36:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756038998; x=1756643798; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S1rvfNHN5EBKyNOHUU8ULCvyPiJC4yatsNx2Khd/v5w=;
-        b=GZTbDK8bx81VfZVzL/Y87nudTS0C5otKqH7Am3jG52z7KYAg7s6kQzW/fYj4D5fEE2
-         JP8fKVArGzQGAIDTVCFF5U3Hpq+Z3n2zF7U9iIj1NPA7Hd2HAEvdfuVyv+XXEuyipvBc
-         6xjysZ2u0a2+ABdQXveyAmXQCQdR1i8aAZFEKhz6WjBMD6d3HY+iO8vbKjCXvOxxDffk
-         9VDeOyVLiwvEvRaK5DndRVZJuzG+IOZfdYegT4AwRmZj/Bt6VsGAi5wcMNr4l8qfyFQO
-         eIytMbCJRlsSSqVJHrflHSk2kBDKmt2Tjci+ggUBZFFI9yNM6aHV3crWIEbGzK1MTVe7
-         WMUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756038998; x=1756643798;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S1rvfNHN5EBKyNOHUU8ULCvyPiJC4yatsNx2Khd/v5w=;
-        b=MiJXCdbbQFQriLTsNR+/+B2/1iNMccmACawhR7ptyw9+LYuufU3NyyFSlhCTBdMqmF
-         2Ppv14MwAVOsNt+TTwiztekbHacjrOv8z8nnUmGSYZeLksS/NMUgPgPuro8xU4cA6t2d
-         PIvb9ifjJPzxy9UsxWF81BtoZNFvqwiLTSxD8u5FUbj0WE9Ho1aKJ3FIAaLF8W/O9JTJ
-         1pIWsP+yd0TKSgUMkicu0RB2HL4eNY3WjS7w7V3/Ki25O3Tvfe2GPYGQs8JUSuzN/g77
-         GaNPE+AEa7DrYPKZz2ii655xWlRRmvOyNeKybviujgMR6vQmjyIsItY6Yyr3P+FInzgX
-         SZ2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUXPNMZlioE3ZCy6PgJQhNilTnMsKPo/MgLQMZX9JHQSEOTb0TDGJZfJPlyu/RxMuwZoqBk2Ix93ay32H81ag==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlQsRiCd8/2NFMvyfdkFDqGCTm64HwtoPEPcY7JQFuEPjxiHao
-	R4qeApRJ0lDbkNBFptjWUodfx7OdZCxBAaggo+Si9dEV2YUoJvevPx7/2ljtTus0tbM8NXqCKec
-	9UILLuWvApQkTbYFFBtkMfqb10HCdRuHX+RgMmvx7
-X-Gm-Gg: ASbGncv2Ni/GWA2E1NrcLannHPTBy3R5PgLLF/NYpmGOl9k62kv4uk4tjhUY18ej7YJ
-	X02DfHT2V1iAquHo/XV15aBBRR22cAIrHIWehrhYG9G2NAXohVKAxQfbmPSACTXjVwLgSyr1lbz
-	yw1Mp/5RdgpwU3AFs3WadeZQwQHeN/Wv0i0Q5ks3Vj2w8fFtCcjptj7E5si7LdbAuJXQiG/+pcI
-	8o6uNs/rEUMnjLul4ymYgBiZPIw1P7OhlYAFTS7ZidJW0w=
-X-Google-Smtp-Source: AGHT+IGAL5ULN6cDtVMn93M/6ltr7rdoUlydoLJ5qmCG4isos1KCUAU1xW3/q5G82kK7ZLVPIwo+5OAa2y0XrKB//9s=
-X-Received: by 2002:a5d:64ec:0:b0:3a6:d95e:f38c with SMTP id
- ffacd0b85a97d-3c5dd8aa9e5mr6585495f8f.33.1756038997507; Sun, 24 Aug 2025
- 05:36:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vL767a0O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F53C4CEEB;
+	Sun, 24 Aug 2025 13:05:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756040705;
+	bh=W5xOQKuMNnSf7+aFccIF+sA9AEbiG2iUEybWWHNvCk4=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=vL767a0OPT/0ICHw30ZcuWNYyRmxXsJnKrCo6leec5cPZPTC7AYgYzNhY5nAQCNGT
+	 nqMR/jf0EuvJbaSeheX2vIGOY+rTAq2pyoO4D1blCxrHMmaCcubYMQEM8SX52ekfl1
+	 1CdtRKw2FUlPujy92LLQe1fg3bguJRf1GvLez5LdOR4ucJkxTNLChTVY3gqHU9MKvO
+	 6dqVq0XOTRinTPQQveASgmnLxmvV6RWwsm5i07QqGypsHKsaksYR1HKy/DsvYXVpvA
+	 kUvbEqm7DPh12hhTXvoigsKDmlKdK9GJ9Udccc8Frss6fKQnZro2ceARBq9z+ZzEnT
+	 wKiEo7rgjppFw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250824120656.208978-1-dakr@kernel.org>
-In-Reply-To: <20250824120656.208978-1-dakr@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sun, 24 Aug 2025 14:36:25 +0200
-X-Gm-Features: Ac12FXy27UlG8cvRS22_xj_eY3EZjdfdCW0w79oJGZ1pNncxo0nvIdODvAPLrn0
-Message-ID: <CAH5fLgjkqcyzoZD7PP2i4g4r2uqpdbDKVW5hLfm6c9ysbxkPuw@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: add missing trait item MIN_ALIGN to Cmalloc
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com, 
-	urezki@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 24 Aug 2025 15:04:58 +0200
+Message-Id: <DCAOH44U57K3.2CVDYWF8MJBWL@kernel.org>
+Subject: Re: [PATCH] rust: alloc: add missing trait item MIN_ALIGN to
+ Cmalloc
+Cc: <lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>,
+ <Liam.Howlett@oracle.com>, <urezki@gmail.com>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-mm@kvack.org>, "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250824120656.208978-1-dakr@kernel.org>
+ <CAH5fLgjkqcyzoZD7PP2i4g4r2uqpdbDKVW5hLfm6c9ysbxkPuw@mail.gmail.com>
+In-Reply-To: <CAH5fLgjkqcyzoZD7PP2i4g4r2uqpdbDKVW5hLfm6c9ysbxkPuw@mail.gmail.com>
 
-On Sun, Aug 24, 2025 at 2:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Sun Aug 24, 2025 at 2:36 PM CEST, Alice Ryhl wrote:
+> On Sun, Aug 24, 2025 at 2:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+>> +    const MIN_ALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN;
 >
-> Cmalloc is missing the trait item MIN_ALIGN introduced by commit
-> 1b1a946dc2b5 ("rust: alloc: specify the minimum alignment of each
-> allocator"), causing the following error on the `rusttest` make target.
->
->         error[E0046]: not all trait items implemented, missing: `MIN_ALIG=
-N`
->            --> rust/kernel/alloc/allocator_test.rs:37:1
->             |
->         37  | unsafe impl Allocator for Cmalloc {
->             | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `MIN_ALIGN` in im=
-plementation
->             |
->            ::: rust/kernel/alloc.rs:146:5
->             |
->         146 |     const MIN_ALIGN: usize;
->             |     ---------------------- `MIN_ALIGN` from trait
->
-> Implement MIN_ALIGN for Cmalloc to fix this.
->
-> Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Closes: https://lore.kernel.org/all/CANiq72k0FSBTB2yOjiAy9PnAuyM=3D-PHxL3=
-uQQ_Cv+zwswnr_bA@mail.gmail.com/
-> Fixes: 1b1a946dc2b5 ("rust: alloc: specify the minimum alignment of each =
-allocator")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Is this the right value for normal malloc?
 
-Thanks for taking of it. Assuming a satisfactory answer to the quesiton bel=
-ow:
+Heh! ARCH_KMALLOC_MINALIGN should be correct, because the Cmalloc implement=
+ation
+should (ideally) enforce a minimum alignment of ARCH_KMALLOC_MINALIGN for
+compatibility reasons.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+However, double checking the existing code, it doesn't. Hence, the correct =
+value
+must either be
 
-> ---
->  rust/kernel/alloc/allocator_test.rs | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allo=
-cator_test.rs
-> index a3074480bd8d..0d3c78ddcd69 100644
-> --- a/rust/kernel/alloc/allocator_test.rs
-> +++ b/rust/kernel/alloc/allocator_test.rs
-> @@ -35,6 +35,8 @@
->  // - passing a pointer to a valid memory allocation created by this `All=
-ocator` is always OK,
->  // - `realloc` provides the guarantees as provided in the `# Guarantees`=
- section.
->  unsafe impl Allocator for Cmalloc {
-> +    const MIN_ALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN;
+	const MIN_ALIGN: usize =3D align_of::<crate::ffi::c_ulonglong>();
 
-Is this the right value for normal malloc?
+instead. Or, we have to actually enforce ARCH_KMALLOC_MINALIGN.
 
-Alice
+Given that this fix is only for within the -rc cycles, i.e. we will remove
+allocator_test.rs before the MIN_ALIGN stuff ever hits an actual release, j=
+ust
+using align_of::<crate::ffi::c_ulonglong>() should be fine.
