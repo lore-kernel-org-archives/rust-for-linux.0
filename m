@@ -1,114 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAF42741DA;
-	Mon, 25 Aug 2025 19:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCB1286416;
+	Mon, 25 Aug 2025 19:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756150970; cv=none; b=IiPp2htwd18IzejwdFvt/5Bam32Pp30Yto0yl5FSJtTssqfrGicKOLyfsmfvpDFgwvJkamJRrVE1EIyziSv05qurF2XqWTmXTx6DQyK7YoGVFgrA2HMcnsUicRxggkX/7LJ1O0qDpttTjDiXX2lQMOOX0O9R2Yd7zzIyK3S8TKY=
+	t=1756151511; cv=none; b=hJGLFn4vMk5pi0zie52KvromISZ0gkKFoPEszn0ctzgujf3JF2g6LUYLVSc2g82TLedb3Ch+LYxTaWOlf28F2Fjk8ICmjiEHQLgFE2ulfmHyH6XAmWNFrhDnHGNaFONJwqrwZ3LCVEnN5HtjO+994Mp4+YWrFj2kVFIvhpt60C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756150970; c=relaxed/simple;
-	bh=go2OdVXB1EMo9PkYI2ISajD9aSoOPe0O0f/6XmQjQ8s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DTTS7RUrjmuDhvm2hzrdFVRdPhWFAHwklbPIaQdG8yd/3oos5OVue2oFEFEi5E2qdlj+4//GjCS0XeaWFgCTGRVQz9BJgH2AxQdU0yu0HjSE9d+6preE48Jz1yKCszXtbo+zGM4MRyYWb9tfpOwX2JYgEjqNPaQjnZskEFpMPiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dzd4WqTC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756151511; c=relaxed/simple;
+	bh=Tbekkw7TMt9u3kn+5isYgrjUu2QkneexMVEHiIjInEk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lZOElb+pLVrmOQZhOYHfyBYhCYuWGEvMNRfNfT8dkP8mgpnLLBG+Wo76aZP2EVNHq1MmYxAk70eeprr6eK8vf/v8dq3hCG9MMDifTIvLOFPdSjmTzeuyJjC6JYtv7Ex5OviBQLzJNRNtLZhAjm1aRfq+9Eehwx1FjMmSj2wBcok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iqu9+aje; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dzd4WqTC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6DEC4CEED;
-	Mon, 25 Aug 2025 19:42:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756150969;
-	bh=go2OdVXB1EMo9PkYI2ISajD9aSoOPe0O0f/6XmQjQ8s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dzd4WqTCN/FcCmw9/aI3pQWl8IoGkIATIMqw2BQE9UkxsYk3bis7zt+dWV54EKdYX
-	 92Ho/MJklHyw3QRal+SuTEIqivjI6lQ8fDoA4Bb05DJFVTOs4g6VPlJFGKBCWpNlJ9
-	 dsK8SbyWlEFgOMTOyJLbE/OtLiJy3mhexbzpMo6G4wSgN9a/Rzj1QD+UZQtG7yNsSp
-	 7Fn6VLJSyFARAdViOFGORarNALHpOH6dzFGuY8f6gonmxXm8Q9srJ/lfFA8dDSyllH
-	 cGhMNEV5p/cBrW2WDeaNpVQkvWNbsKzLXL0690An4jXjPvRqNyHEvlB7h+q1hVPlaN
-	 tLlDMTXdvAVxw==
-Date: Mon, 25 Aug 2025 22:42:45 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jonathan McDowell <noodles@earth.li>
-Cc: rust-for-linux@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: Re: Using Rust on non-Rust side of kernel
-Message-ID: <aKy8tWxTiK90iyLi@kernel.org>
-References: <aKmwPFb4cCk_E-ob@kernel.org>
- <aKxRVlyNXUGBwJ2L@earth.li>
- <aKy5z74FE4paL7za@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iqu9+aje"
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-89253c47a1dso70547241.2;
+        Mon, 25 Aug 2025 12:51:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756151509; x=1756756309; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IEDELcR4+2gugMjD8gvEqiydtOPSltlnlrJMBKC18Z8=;
+        b=Iqu9+ajeyRIEfFaUK0e1kfyIycwVUDNhhaCjvaDcZtfM5qFWQkDEKzzRVrghGtH9un
+         LvBwT1N5c1WWrh7Ex/KzTJIiCpuQQwKhCr4tKU9ZM3Ioa7OWvGDeQWGpcLrODlBcPG+N
+         r07DqweyQSNjEkGd8JSOfVH8u5yIHbxuSm9UGCvqqE9Qf6qlyiv4zhR+JzSk8ROORh34
+         Weupw5lqDhNGd5XwzvV/g/n0uEwMn8Li2mi9Aef4BjDGOcesBd8b7ePxiF5TsiVLNB7h
+         Lgj4GrVyVMouL0BwGZXy5/qppYdycmmsi8Km+WZDX9tjTweLdXcoxvIbBAA+z49nCJoo
+         ILWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756151509; x=1756756309;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IEDELcR4+2gugMjD8gvEqiydtOPSltlnlrJMBKC18Z8=;
+        b=lrZVrPibE9kwHQmscw3nXfmhWq9WTwKkydrIEo3blaxXaoARqL/H1QOwVy4MU/EgR5
+         la+UClcW2FoTSbPHI6T67EGrDnv/agXFV9gzPsKww2KW5zWTC7fbkefzbjNi5+JIctxY
+         NDsmO2LDN1vLrQJRkkVhmslZEEv4LKSIK8hv/wRfdX+QdlCVnV77nuhaOxP7iVGAmVYa
+         p1Dgl+9SI30ukqZKvTprmRJIkkiFFgudHlY/dmBDaa93ST3gC4LH0JjOjO6m1jzFPWJt
+         wFL2U2ejEoTK/NGIcWh2h4iK8p2slqxwg1fi2wD/zFh5HyTzVm0ZvFJkmytPK8I2fcvu
+         qtpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDU4rULHjD7QXDwk4P5u0IBZC6Zj1wEdLrhyss3LlWuJoecm5f9X3nuqL+lhSjoQifFQj3IofbJJq3g80=@vger.kernel.org, AJvYcCWmOHoeYFx3p7hg8QIuFhIDd/DekyNaGOJW1ke1FXgUpXYFBNg05y53oALa3UOLx21rDIOgLFu8JzON9b4yXTQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws1Ji7WF19KbZXSoDDh/e2AWmFbhy/AVZeHCtkJzZbVbBwgwwx
+	4+WcCBtV7oPhtubvsKRu4JPoFkO1YTfFisTcon+NrqUa9LHXZGZuaJf8IlkJ1Plyt3XRJQGi3hL
+	Wfm797Sq8WkR/IK6na0ge4OWv9t344xs=
+X-Gm-Gg: ASbGnctyd28DvJOvTOpLaQx+nxZhn4ZmY+SdX1m2f98h9LJR7IX2bQ0zR1iCfuGnhVr
+	XZLu0r/5rzWyIUEyuw51puP7TVNMmao3lmVCH4FLJ1oI9oYhYRsokvGWd/DejMbuL9ycL3GJglS
+	kW9zN2Vx965j9hXrqnDex2SCywRaBGfpH33y8fr5QBsN5H1Kz++kzNPzzDr1mFFE3672533qE3o
+	kYdtW7w
+X-Google-Smtp-Source: AGHT+IEqVXcLtquCPMTIQMLE4clg2U+3am94kIJBsnXi8tqVuvRxUpdOXLDTUAIgK4BjgVt9/Iy2WyLgr7mF5yEPgAU=
+X-Received: by 2002:a05:6102:f8f:b0:50f:781b:8258 with SMTP id
+ ada2fe7eead31-51d0c8bf7e8mr1678568137.2.1756151508935; Mon, 25 Aug 2025
+ 12:51:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aKy5z74FE4paL7za@kernel.org>
+References: <20250824213134.27079-1-christiansantoslima21@gmail.com> <CANiq72kGh2PS-c1n2Q1g0t24J-b3ctB0kN3GK8RDXhtQMGAtTA@mail.gmail.com>
+In-Reply-To: <CANiq72kGh2PS-c1n2Q1g0t24J-b3ctB0kN3GK8RDXhtQMGAtTA@mail.gmail.com>
+From: Christian <christiansantoslima21@gmail.com>
+Date: Mon, 25 Aug 2025 16:51:36 -0300
+X-Gm-Features: Ac12FXwu9LcJjoNvnxXdyiQaZ_NOlzExZp03So8KpAhADq5bhvgQ8CMBUKHoO7o
+Message-ID: <CABm2a9fQOMvg4Yjqz2-ba=1HwdXiu_Ep=Jsqz--69Vpec+iRXw@mail.gmail.com>
+Subject: Re: [PATCH v10] rust: transmute: Add methods for FromBytes trait
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 25, 2025 at 10:30:27PM +0300, Jarkko Sakkinen wrote:
-> On Mon, Aug 25, 2025 at 01:04:38PM +0100, Jonathan McDowell wrote:
-> > On Sat, Aug 23, 2025 at 03:12:44PM +0300, Jarkko Sakkinen wrote:
-> > 
-> > > My goal with tpm2_protocol is to have ACPICA alike model of imports as
-> > > the crate is driven by TCG spec updates and it is very likely to be
-> > > also used by TPM-RS (also via import style process).
-> > 
-> > I'm not entirely clear on what your plan is for this / the existing TPM
-> > drivers in the kernel? I assume it's to eventually remove some of the C code
-> > in favour of the Rust implementation, but I'm missing exactly how that's
-> > expected to work.
-> 
-> There's no plan of doing anything at this point. This is more like doing
-> early research for the following questions:
-> 
-> 1. If this comes up in form or another, what are the directions of freedom.
-> 2. What could be in general done in Rust that could potentially extend
->    the capabilities of e.g. /dev/tpmrm0 (which could be entirely
->    different device).
-> 3. There has not been any discussion from my part of removing and/or
->    repealing and replacing any of the C driver code.
-> 
-> It's a bit odd position IMHO to not prepare for future outcomes. Even
-> without kernel context, for the TPM marshalling/unmarshalling there does
-> not exist decent implementation as of today in *any language*.
-> 
-> There's been way too many unprepared situations of C-to-Rust
-> transformations, and learning lessons from that, I think it was the
-> priority to implement the protocol part so that it has enough time to
-> mature when the day might come.
-> 
-> > 
-> > (Given I've spent a bunch of time this year tracking down various edge case
-> > issues in the TPM code that have been causing failures in our fleet I'm
-> > understandably wary of a replacement of the core code. *It* might be a
-> > perfect spec implementation, but hardware rarely is.)
-> 
-> I think this is somewhat unconstructive comment. How do you implement
-> against anything if you don't follow the spec and later on fix the
-> incosistencies?
-> 
-> I have not observed high stream of marshalling and unmarshalling
-> associated bugs or other issues.
-> 
-> Also if you make obnoxious arguments like that please also underline
-> how implementation A is worse at dealing possible inconsistencies
-> than implementation B. Otherwise, you're only spreading FUD.
+Hi, Miguel.
 
-My claim is that more high granularity marshaller and unmarshaller is
-actually better at both catching and scoping incosistencies, and thus
-it speeds up resolving bugs in that code and/or create workaround and
-quirks. What is your argument?
 
-My pure guess is that the comment was that Google's device does not have
-TPM2_ContextSave. How that does trip marshaller and/or unmarshaller
-if a command or response does not exist?
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1119
+> > Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
+>
+> Please add a link to the original suggestion if possible. If it is the
+> link above, then the tags should be in the opposite order.
+>
+> Did Benno and Alexandre both suggest it?
 
-This goes beyond the topic but I want again underline that:
+Benno suggested the link to github in the issue there. Alexandre
+helped in most of the design. It was a mistake by my part not to
+specify that. Even if it's good, put you too as suggested-by, because
+the idea of using `is_aligned` was yours. Maybe Alexandre can put it
+there?
 
-1. /dev/tpmrm0 has existed since 2017.
-2. Is used by many tools, such as systemd.
-3. Google has failed so far to provide a change (within almost
-   nine year time period) to Linux kernel that would
-   disable /dev/tpmrm0 to any of their hardware.
+If I understand correctly, should be:
 
-BR, Jarkko
+Suggested-by: Benno Lossin <benno.lossin@proton.me>,
+Link: https://github.com/Rust-for-Linux/linux/issues/1119
+
+Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
+Link: https://lore.kernel.org/rust-for-linux/DC5INTQKY0EX.1T4HD6OU8C4PI@nvidia.com/
+
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/rust-for-linux/CANiq72mnxRquFmjoJemb=3LSq+ZdUfs9J+HXTwM6AavprsVNUg@mail.gmail.com/
+
+> > +/// fn test() -> Option<()> {
+> > +///    let raw = [1, 2, 3, 4];
+> > +///
+> > +///    let result = u32::from_bytes(&raw)?;
+> > +///
+> > +///    #[cfg(target_endian = "little")]
+> > +///    assert_eq!(*result, 0x4030201);
+> > +///
+> > +///    #[cfg(target_endian = "big")]
+> > +///    assert_eq!(*result, 0x1020304);
+> > +///
+> > +///    Some(())
+> > +/// }
+>
+> Should the function be called? Otherwise, we are only build-testing this.
+>
+> Should we just remove the function and to it directly at the top-level?
+
+I think just calling `test()` is good, but it's an aesthetic preference.
+
+Thanks,
+Christian
