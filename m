@@ -1,62 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438CD1448D5;
-	Mon, 25 Aug 2025 20:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1BEDDAB;
+	Mon, 25 Aug 2025 20:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756153977; cv=none; b=ZAiz+ih2wCuhaf01zlqLaM7gHBbYo39G96qoHtvsSzbf3TdB45MvykuY4nu74Dkv7mnS30zby4lr7SCsqtHY3gBxVoZHSI1S1NVybMlHLQS5t0qbFZhGwIwvgumnWroBb7jULyFjjgbGtZmLOwb19By7ZwB2/Y17wduQ6ICKv9w=
+	t=1756154977; cv=none; b=eQc5o4BS070dsq16063SIPgdPBE5pob2snl7oVsRYyXfTZ/YCHNX1JOIoW5BcfysfRwWFYHBnWfNDHRgCvg3QtTx7i7mRh+0WM+XGUimZZpZqjsmx1wuOafJ+XvJXCKllCuwudQxuam/SGuCsPYLv/8lf09WaMMxbLtl5qmLND0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756153977; c=relaxed/simple;
-	bh=X+BeSsnNepBHHiG0qeK6h8b40M+NE10H+0lFLAU9+20=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b4VM1pvTjcP3bDAET9yXBQGiCqT0dKdbwUnyhCubIggwOse2lFLWj+psybb5US0+WRm4jVG5AAk6yIX8+srEoGbFS8lNF+0U4eJnQG81C14n0n/ozGSfSVaiOuU352ISoLtW3iAE3+9rq0eXIaKCyT544kHRymb68HeivdcHsxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stu/4udB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756154977; c=relaxed/simple;
+	bh=lfQ3Sx0ChDYUCraVA7DOv+MmxiNhx8zbUKzH+AEUEYA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=So0VSZaieEiGYhUyAfdl9i9C26B79JH/KVVwlpgQOxnkvfOsD+cwdE3gRf4AI0292CYYgmmpId0NxIOqywcFgo4eYN8q0V73HdqRLqMCIUdpxVXbRQkZpLCYY39yd4hBBcRJE3wO1gyuq0JMnMwQ2IgnXrmPu3mv8cau7Gk7ldc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUGMML64; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stu/4udB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D85BC4CEED;
-	Mon, 25 Aug 2025 20:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756153976;
-	bh=X+BeSsnNepBHHiG0qeK6h8b40M+NE10H+0lFLAU9+20=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=stu/4udB3Bbh4bhwr3h1+9UkJo/ithOIbIJ0ZP3JDG92ntDneuAjPLC1uSPEqVR4U
-	 0DFOAgPc+qd4NUSk3lpa8IkJpz45oCYMAqFU98FBwBd03ztpsG7DoAfyF3yU5U5G3h
-	 Z6XZY2fcbgIHWzC2oKLY6WGOs5MwJUCHXx3OcQcs=
-Date: Mon, 25 Aug 2025 22:32:53 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 0/2] rust: usb: add initial USB abstractions
-Message-ID: <2025082505-outsource-boxer-69ac@gregkh>
-References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FUGMML64"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30860C4CEED;
+	Mon, 25 Aug 2025 20:49:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756154975;
+	bh=lfQ3Sx0ChDYUCraVA7DOv+MmxiNhx8zbUKzH+AEUEYA=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=FUGMML64tNEXag+bV1SOBjlKU7UPDgtS2WtS/70r75bdfkZI3P62/8iZLJJkVL5Gn
+	 sOXc7kAaNx3wKASAjcisGE3UHjZL2wsQKxH0x2b6fjHqE+y4bBL+ocVb6x8gt+O5+D
+	 i1UXN3OivVflrV/X0y+SL4wuzpW+AzHxmGvNygOWJv/hGYuL0XPONspc1a2go6BRKt
+	 ufKKOyRs4yGB0OWtoflT+E9ii7nc9YwC7djooPX/e4YZHZi6DMAgHU0MZd9yGqIspW
+	 eaOVQTV+yJJxw50LC1h7B3ECyxEFN7adbxfeSZGOyvoJDgfxuN83/f1rA510H4Gj0P
+	 YJT2XyK13+Pdw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 25 Aug 2025 22:49:31 +0200
+Message-Id: <DCBSZC9IDT4L.SPHF4KVM5KEW@kernel.org>
+Subject: Re: [PATCH 1/2] rust: usb: add basic USB abstractions
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-usb@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
+ <20250825-b4-usb-v1-1-7aa024de7ae8@collabora.com>
+In-Reply-To: <20250825-b4-usb-v1-1-7aa024de7ae8@collabora.com>
 
-On Mon, Aug 25, 2025 at 03:18:04PM -0300, Daniel Almeida wrote:
-> This adds initial support for USB Rust drivers, not only because I see a
-> widespread use of module_usb_driver() in media (which is a subsystem I
-> aim to support) but also because I want to learn about USB in general
-> and this is a nice opportunity to start doing so.
+On Mon Aug 25, 2025 at 8:18 PM CEST, Daniel Almeida wrote:
+> +impl DeviceId {
+> +    /// Equivalent to C's `USB_DEVICE` macro.
+> +    pub const fn from_id(vendor: u16, product: u16) -> Self {
+> +        Self(bindings::usb_device_id {
+> +            match_flags: bindings::USB_DEVICE_ID_MATCH_DEVICE as u16,
+> +            idVendor: vendor,
+> +            idProduct: product,
+> +            // SAFETY: It is safe to use all zeroes for the other fields=
+ of `usb_device_id`.
+> +            ..unsafe { MaybeUninit::zeroed().assume_init() }
 
-Oh wow, I wasn't expecting this, nice!
+You can avoid this usage of `unsafe` with this patch series:
 
-I'm at a conference all this week so I can't review this just yet, give
-me a week please.  But I am happy to see this happen, thanks for doing
-it.
+    https://lore.kernel.org/all/20250814093046.2071971-1-lossin@kernel.org
 
-greg k-h
+I'd like to avoid introducing any new one of these.
+
+---
+Cheers,
+Benno
+
+> +        })
+> +    }
