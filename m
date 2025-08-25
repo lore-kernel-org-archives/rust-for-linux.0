@@ -1,103 +1,156 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A523594F;
-	Mon, 25 Aug 2025 12:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C76DEEBD;
+	Mon, 25 Aug 2025 13:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756126030; cv=none; b=tPk4OgrNL7sGbMf/PBB+lCZK9bRuKrQPHsXjdcjphgfRpuLUyR8cvgx/SaBs9E+4D4CG0V0tGD/EHIe+/448E2oeJWSjU0wm5r/s+C4Zhly+latAOVJctn7YqDrKmonmpS6N8LtIIizyM0L8dzO0R+9Gh8yhpbycGqnLjsACWBE=
+	t=1756128351; cv=none; b=NzH4z5/V/Wf5iox5o9S4czKmDVONel8PgZBgM+FhAwRuPRKtFGsg0qQJKmR71AjdwkSWF1XI6kucNvI37Af6oOAetjahu5PKbKEcbqJZfqhOkb7LlXUHu5egUv2wwsuIarLc+E/ht7f58hrjSOq1vgd+5OdYn1M/bmB2NiIpM3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756126030; c=relaxed/simple;
-	bh=HGYdcWZgKIhpwHPJu1s1DccprdUr4BAstL5WhCEEtgA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=M+P1fejZ8qZk/QSn48RJzbJtCcFXSYRTjJvqbNY2cw9QDyg0RA4kCrw6Z3Di3DCYDRLF7NtAVtDvAhsP2jOBw/4AELO5CTBTzps2FrYy0mOObbieGmF4VGN4fZOQCfzASxnWDlsZ/VUtXxtWDrAdqrkikJz9lg9DoJnMCtu4PHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRcvpEov; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756128351; c=relaxed/simple;
+	bh=kTLOg8ZWto7m4mLxe3AMRggh4mVgO3Q/TaPM5uD+Fa4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ACKIvHdPssDR4TKnWXQUiWWZPEcFjgAw9KW1lbtWcp+7K6HSkgf5ds3rIx+O+Wb6Dv2ePSB9SZyZZaxlvg6fxOCBiF8EAob1x2vdo2IaKkv73G4cX7H8ZoWBdjK20+lMm25LQLci8HgC2Z/eBlly/P0YNG/V+06fNAzHpCXw7MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRS8/5RB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRcvpEov"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274E8C4CEED;
-	Mon, 25 Aug 2025 12:47:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRS8/5RB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3730DC4CEED;
+	Mon, 25 Aug 2025 13:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756126030;
-	bh=HGYdcWZgKIhpwHPJu1s1DccprdUr4BAstL5WhCEEtgA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=iRcvpEovPSlpoqn7pESiOIcG3vbOMQiFFi1c8JCLsHmBfd6BEtH34oKXORDpzEap7
-	 iVZo+N5qdpf27netp92LZjqDWI37lW63fnddViaI9g8LrpQM4UnNLiag6AXyge8K/U
-	 9whieV9UY0RBha9YdcRDO8wT8JxKzGWovanQrG5w/C0SwmNesXwbp4cJvPCsviK+JG
-	 7kUgRtSSWDx9LBHmmXLuKhqGx4e/CDyikC8nFOQ8E6jOSxjoJ1EfTAmKnKLiv+wQ7r
-	 +u90sKqjqdFI0C9Dk9NNTB7/e9/yt8NV2TDzAs1uhbzgCmIaZRJt1laYh1Df4YzaUZ
-	 flKsi2/aiyZ/A==
+	s=k20201202; t=1756128350;
+	bh=kTLOg8ZWto7m4mLxe3AMRggh4mVgO3Q/TaPM5uD+Fa4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eRS8/5RBrkmW1JVlyTssz8GFTmNDzM5Cfat2ufG9o4tAdw8dHVJ2YeBtwmNb/j8Ab
+	 GawlVhwR4vXYIY3QrF+b8wuwqoq/cdNDMIbnHi97Ya/FItCXFqppqWH5ybHlsQs/KV
+	 VHACZPA9epVDycTbA6G2GiuHY71vQEekp+59zUE6kwgPGBCGxO9qf4vMfYLAUJrZct
+	 6s33uiHJ5AsErD49EjQAtChFTbm6ACI71R5ICsgtrmW0iEV8G2KlTugQDV1XRr595w
+	 nlTi1iRSggXkZMUS4WMxFWQdow1jsF0qyPvVyyG+NMsL7JhJU1A/1SbwM/uAhOs2Ev
+	 e+MjmDn9c3PHA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: akpm@linux-foundation.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	abdiel.janulgue@gmail.com,
+	acourbot@nvidia.com,
+	jgg@ziepe.ca,
+	lyude@redhat.com,
+	robin.murphy@arm.com,
+	daniel.almeida@collabora.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v3 0/5] Rust infrastructure for sg_table and scatterlist
+Date: Mon, 25 Aug 2025 15:24:39 +0200
+Message-ID: <20250825132539.122412-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 25 Aug 2025 14:47:04 +0200
-Message-Id: <DCBIPY9UJTT4.ETBXLTRGJWHO@kernel.org>
-Subject: Re: [PATCH v6 2/5] rust: pci: provide access to PCI Vendor values
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>,
- "Elle Rhumsaa" <elle@weathered-steel.dev>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250822020354.357406-1-jhubbard@nvidia.com>
- <20250822020354.357406-3-jhubbard@nvidia.com>
- <DCBIF83RP6G8.1B97Z24RQ0T24@nvidia.com>
-In-Reply-To: <DCBIF83RP6G8.1B97Z24RQ0T24@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon Aug 25, 2025 at 2:33 PM CEST, Alexandre Courbot wrote:
->> +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
->> +#[repr(transparent)]
->> +pub struct Vendor(u32);
->> +
->> +macro_rules! define_all_pci_vendors {
->> +    (
->> +        $($variant:ident =3D $binding:expr,)+
->> +    ) =3D> {
->> +
->> +        impl Vendor {
->> +            $(
->> +                #[allow(missing_docs)]
->> +                pub const $variant: Self =3D Self($binding as u32);
->> +            )+
->> +        }
->> +
->> +        /// Convert a raw 16-bit vendor ID to a `Vendor`.
->> +        impl From<u32> for Vendor {
->> +            fn from(value: u32) -> Self {
->> +                match value {
->> +                    $(x if x =3D=3D Self::$variant.0 =3D> Self::$varian=
-t,)+
->> +                    _ =3D> Self::UNKNOWN,
->> +                }
->> +            }
->
-> Naive question from someone with a device tree background and almost no
-> PCI experience: one consequence of using `From` here is that if I create
-> an non-registered Vendor value (e.g. `let vendor =3D
-> Vendor::from(0xf0f0)`), then do `vendor.as_raw()`, I won't get the value
-> passed initially but the one for `UNKNOWN`, e.g. `0xffff`. Are we ok
-> with this?
+This patch series provides abstractions for struct sg_table and struct
+scatterlist.
 
-I think that's fine, since we shouldn't actually hit this. Drivers should o=
-nly
-ever use the pre-defined constants of Vendor; consequently the
-Device::vendor_id() can't return UNKNOWN either.
+Abdiel and me agreed for me to take over his previous iterations on this topic.
+I decided to send my patches as a new series rather than as a subsequent version
+of Abdiel's previous iterations, since the changes I made turned out to be much
+closer to a full rewrite.
 
-So, I think the From impl is not ideal, since we can't limit its visibility=
-. In
-order to improve this, I suggest to use Vendor::new() directly in the macro=
-, and
-make Vendor::new() private. The same goes for Class, I guess.
+The most notable differences in design are:
+
+  - SGTable utilizes BorrowedPage, AsPageIter and VmallocPageIter from my patch
+    series in [1].
+
+  -  SGTable is a transparent wrapper over either struct Owned<P> (where P is
+     the provider of the backing pages) or struct Borrowed, which by itself is a
+     transparent wrapper over Opaque<bindings::sg_table>, i.e. either
+     SGTable<Owned<P>> or just SGTable (which is equivalent to
+     SGTable<Borrowed>.
+
+     - `SGTable<Owned<P>>`: Represents a table whose resources are fully managed
+       by Rust. It takes ownership of a page provider `P`, allocates the
+       underlying `struct sg_table`, maps it for DMA, and handles all cleanup
+       automatically upon drop. The DMA mapping's lifetime is tied to the
+       associated device using `Devres`, ensuring it is correctly unmapped
+       before the device is unbound.
+
+     - `SGTable<Borrowed>` (or just `SGTable`): A zero-cost representation of an
+       externally managed `struct sg_table`. It is created from a raw pointer
+       using `SGTable::from_raw()` and provides a lifetime-bound reference
+       (`&'a SGTable`) for operations like iteration.
+
+     - As a consequence, a borrowed SG table can be created with
+       SGTable::from_raw(), which returns a &'a SGTable, just like similar
+       existing abstractions.
+
+       An owned SGTable is created with SGTable::new(), which returns an
+       impl PinInit<SGTable<Owned<P>>, Error>, such that it can be initialized
+       directly within existing private data memory allocations while providing
+       the required pin guarantees.
+
+  - SGTable<Owned<P>> uses an inner type Devres<DmaMapSgt> to ensure that the
+    DMA mapping can't out-live device unbind.
+
+  - SGTable<Owned<P>> uses pin-init for initialization.
+
+This patch series depends on [1] (branch containing the patches in [2]). A
+branch containing this series (including dependencies) can be found in [3];
+Abdiel's latest series can be found in [4].
+
+[1] https://lore.kernel.org/rust-for-linux/20250820145434.94745-1-dakr@kernel.org/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=page-iter
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=scatterlist
+[4] https://lore.kernel.org/lkml/20250718103359.1026240-1-abdiel.janulgue@gmail.com/
+
+Changes in v3:
+  - Beautify max_segment assignment code.
+  - Rename DmaMapSg to DmaMappedSg and improve documentation.
+  - Rename SGTable::as_iter() into SGTable::iter() and remove IntoIterator impl.
+  - Consider struct sg_table::nents in SGTable::iter() and SGTableIter<'_>.
+
+Changes in v2:
+  - Switch to an enum impl for DmaDirection utilizing compile time boundary
+    checks.
+  - Add missing Send/ Sync impls.
+  - Rename as_ref() to from_raw().
+  - Add a bunch of inline annotations.
+  - Add a patch to introduce a typedef for dma_addr_t.
+  - Let dma_len() return ResourceSize.
+  - Add addional invariant to DmaMapSgt.
+  - In RawSGTable::new(), pass pages as mutable slice reference.
+  - Avoid casts when deriving max_segment in Owned::new().
+
+Danilo Krummrich (5):
+  rust: dma: implement DataDirection
+  rust: dma: add type alias for bindings::dma_addr_t
+  rust: scatterlist: Add abstraction for sg_table
+  samples: rust: dma: add sample code for SGTable
+  MAINTAINERS: rust: dma: add scatterlist files
+
+ MAINTAINERS                     |   4 +-
+ drivers/gpu/nova-core/falcon.rs |   4 +-
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/scatterlist.c      |  24 ++
+ rust/kernel/dma.rs              |  86 +++++-
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/scatterlist.rs      | 483 ++++++++++++++++++++++++++++++++
+ samples/rust/rust_dma.rs        |  35 ++-
+ 9 files changed, 623 insertions(+), 16 deletions(-)
+ create mode 100644 rust/helpers/scatterlist.c
+ create mode 100644 rust/kernel/scatterlist.rs
+
+
+base-commit: 27941214d368f3c17ed26a72662fc453bcc81b9d
+-- 
+2.51.0
+
