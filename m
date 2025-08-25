@@ -1,249 +1,79 @@
-Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD331A9FA4
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Aug 2025 23:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2575981720;
+	Mon, 25 Aug 2025 23:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756164041; cv=none; b=uP2bTgHJ53C7oxS9CpKg+sjf0J/WN7KFPShx2v5hV8ydpKTt4911PlnD2/xTypoCr4UUFv7zadWOckPrtOusbTnWc45hd2+pnXBzCWu9uWwyOdm7P5XRoMa/hSYBOQpk5qEE0+C8oJwOaI0pqwEAfn+xSXeTBaekhAdhyTYn21w=
+	t=1756164214; cv=none; b=UeNvmQPRt68ZupEY46tTh4Vb4JkBjANEtcIGljfEkdcjMXj04LPdZCrSGTyM94drjUhLS4zw5MhZxiNpRl1GUz8YnDMB82dt8A0I7sarqEvEN4jO0/Xqp9N3VBgpCUpWQxeBhvp/rj/llFbqycyKWWr1glDDUhqgN5EAjEF407o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756164041; c=relaxed/simple;
-	bh=gbTmdVfYx6WD/wWYJEFXu2sOB9/ZLFj1eXj5NVqzxQQ=;
+	s=arc-20240116; t=1756164214; c=relaxed/simple;
+	bh=RJ44myUrtV49DCfufmFqtuY55fThe5kSESQUBhgI+MQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jcle+vY3T2wEVgrzZ2AShucAWW9BydWoaCbucxF1HkHH1EYEJRiwVR9nKuZ3bxpbs0aQAUIlIPD0zsD2bEoHPri+RGuQ3ii/dPyJKM7dAsmUzURu9Nn1tG8bUqyIAhCMAnMMi1iqsB/GSuMg4zrW+ezuQdnNjfbPYw7YYkOyKv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=Kw7HvHkO; arc=none smtp.client-ip=185.70.43.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=KOTvw35UP6EZn7QH7agFXFAXV8aTr2uHF0y5wqUKZadtOLdhy7HZAG/ZEMx4ldUo0drso8wX08dm154sqm/5jY9kpZTaIJjZaYMDoK7frRwRFICc1Bky5BeVl28bGJI8vEliiSiESAEinSG7WuC9ILPDgZI0zhADhuG2fkN7iyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=snd25aNS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="Kw7HvHkO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
-	s=protonmail3; t=1756164027; x=1756423227;
-	bh=dbfxHDr+4prCVmBev/sJiog2Lc66l2bjBKk57p6NvnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Kw7HvHkOW/t/7aBcbbaxEWgJIAosTbK9FiF/6CDyQESX2BXBlTRAFBUsx8tZMfYAr
-	 db6I272BNYVLGhyhLUyUt86/sxo7RmXvwpjm8C+Jjkr6JyInW0/IQOAJVfpeF90Zzj
-	 5+nWo4hHFKRADJMvcZTjlkhAKamuNUw58vSUs7fVOJwNUZ+ypNoX6ybtgrOTqt75Yx
-	 yea2VWK69D3FhqUjpwyABmkcfz2XUDQq1VoKse3WnJus3t53cG1bvF/aEuAhTVNkiR
-	 BfCPH2IfwZzREM40vUa2Qc7C0DylCv6VtERKOBfbExqguu0BHpwvtB36zuKpOjPWJ6
-	 8cI9ZlrrjiWNA==
-X-Pm-Submission-Id: 4c9mx60wYnz1DDLJ
-Date: Mon, 25 Aug 2025 23:20:22 +0000
-From: Elle Rhumsaa <elle@weathered-steel.dev>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
- structs
-Message-ID: <aKzvpFf9PkTHYNet@archiso>
-References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="snd25aNS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8E1C4CEED;
+	Mon, 25 Aug 2025 23:23:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756164213;
+	bh=RJ44myUrtV49DCfufmFqtuY55fThe5kSESQUBhgI+MQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=snd25aNSGxrLMF3XW2GHwyq2A7TcN9WuzpvJ3STZYJmvwlVJaKyt36HiVxjoUIURU
+	 Yx9yFj1OktBbt1ol6YgWODIU6IRf5LAqFoBwjpNrJyB4X2sQ+CgWhZt9/VPFOVRVQf
+	 CfZ5uHEM8H5S0tWmMUYDl4SD7sizIFAr4DY3YNhMpYJ2A8Z5aDaCYRcoOJ2HNMwEpx
+	 I85/302xRILcmaoRExleq1Ui9LO1olzxBCjvQvzZ3EhrLcPARrwM3PK45reBbN7TtC
+	 LHrVfyAyStKQ0UFs69xOj8yZaKoCxDKsfbScTPDBIljtvjDuXP8vk7bkh/MyUMKZCG
+	 A+ZTRwybSvuFQ==
+Date: Tue, 26 Aug 2025 02:23:29 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Jonathan McDowell <noodles@earth.li>
+Cc: rust-for-linux@vger.kernel.org, linux-integrity@vger.kernel.org
+Subject: Re: Using Rust on non-Rust side of kernel
+Message-ID: <aKzwcWKftTL0DLG3@kernel.org>
+References: <aKmwPFb4cCk_E-ob@kernel.org>
+ <aKxRVlyNXUGBwJ2L@earth.li>
+ <aKy5z74FE4paL7za@kernel.org>
+ <aKy8tWxTiK90iyLi@kernel.org>
+ <aKzj44NBShpMXFA0@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250824135954.2243774-1-joelagnelf@nvidia.com>
+In-Reply-To: <aKzj44NBShpMXFA0@kernel.org>
 
-On Sun, Aug 24, 2025 at 09:59:52AM -0400, Joel Fernandes wrote:
-> Add a minimal bitfield library for defining in Rust structures (called
-> bitstruct), similar in concept to bit fields in C structs. This will be used
-> for defining page table entries and other structures in nova-core.
-> 
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> ---
->  drivers/gpu/nova-core/bitstruct.rs | 149 +++++++++++++++++++++++++++++
->  drivers/gpu/nova-core/nova_core.rs |   1 +
->  2 files changed, 150 insertions(+)
->  create mode 100644 drivers/gpu/nova-core/bitstruct.rs
-> 
-> diff --git a/drivers/gpu/nova-core/bitstruct.rs b/drivers/gpu/nova-core/bitstruct.rs
-> new file mode 100644
-> index 000000000000..661a75da0a9c
-> --- /dev/null
-> +++ b/drivers/gpu/nova-core/bitstruct.rs
-> @@ -0,0 +1,149 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +//
-> +// bitstruct.rs — C-style library for bitfield-packed Rust structures
-> +//
-> +// A library that provides support for defining bit fields in Rust
-> +// structures to circumvent lack of native language support for this.
-> +//
-> +// Similar usage syntax to the register! macro.
-> +
-> +use kernel::prelude::*;
-> +
-> +/// Macro for defining bitfield-packed structures in Rust.
-> +/// The size of the underlying storage type is specified with #[repr(TYPE)].
-> +///
-> +/// # Example (just for illustration)
-> +/// ```rust
-> +/// bitstruct! {
-> +///     #[repr(u64)]
-> +///     pub struct PageTableEntry {
-> +///         0:0       present     as bool,
-> +///         1:1       writable    as bool,
-> +///         11:9      available   as u8,
-> +///         51:12     pfn         as u64,
-> +///         62:52     available2  as u16,
-> +///         63:63     nx          as bool,
-> +///     }
-> +/// }
-> +/// ```
-> +///
-> +/// This generates a struct with methods:
-> +/// - Constructor: `default()` sets all bits to zero.
-> +/// - Field accessors: `present()`, `pfn()`, etc.
-> +/// - Field setters: `set_present()`, `set_pfn()`, etc.
-> +/// - Builder methods: `with_present()`, `with_pfn()`, etc.
-> +/// - Raw conversion: `from_raw()`, `into_raw()`
-> +#[allow(unused_macros)]
-> +macro_rules! bitstruct {
-> +    (
-> +        #[repr($storage:ty)]
-> +        $vis:vis struct $name:ident {
-> +            $(
-> +                $hi:literal : $lo:literal $field:ident as $field_type:tt
-> +            ),* $(,)?
-> +        }
-> +    ) => {
-> +        #[repr(transparent)]
-> +        #[derive(Copy, Clone, Default)]
-> +        $vis struct $name($storage);
-> +
-> +        impl $name {
-> +            /// Create from raw value
-> +            #[inline(always)]
-> +            $vis const fn from_raw(val: $storage) -> Self {
-> +                Self(val)
-> +            }
-> +
-> +            /// Get raw value
-> +            #[inline(always)]
-> +            $vis const fn into_raw(self) -> $storage {
-> +                self.0
-> +            }
-> +        }
-> +
-> +        impl core::fmt::Debug for $name {
-> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-> +                write!(f, "{}({:#x})", stringify!($name), self.0)
-> +            }
-> +        }
-> +
-> +        // Generate all field methods
-> +        $(
-> +            bitstruct_field_impl!($vis, $name, $storage, $hi, $lo, $field as $field_type);
-> +        )*
-> +    };
-> +}
-> +
-> +/// Helper to calculate mask for bit fields
-> +#[allow(unused_macros)]
-> +macro_rules! bitstruct_mask {
-> +    ($hi:literal, $lo:literal, $storage:ty) => {{
-> +        let width = ($hi - $lo + 1) as usize;
-> +        let storage_bits = 8 * core::mem::size_of::<$storage>();
-> +        if width >= storage_bits {
-> +            <$storage>::MAX
-> +        } else {
-> +            ((1 as $storage) << width) - 1
-> +        }
-> +    }};
-> +}
-> +
-> +#[allow(unused_macros)]
-> +macro_rules! bitstruct_field_impl {
-> +    ($vis:vis, $struct_name:ident, $storage:ty, $hi:literal, $lo:literal, $field:ident as $field_type:tt) => {
-> +        impl $struct_name {
-> +            #[inline(always)]
-> +            $vis const fn $field(&self) -> $field_type {
-> +                let field_val = (self.0 >> $lo) & bitstruct_mask!($hi, $lo, $storage);
-> +                bitstruct_cast_value!(field_val, $field_type)
-> +            }
-> +        }
-> +        bitstruct_make_setters!($vis, $struct_name, $storage, $hi, $lo, $field, $field_type);
-> +    };
-> +}
-> +
-> +/// Helper macro to convert extracted value to target type
-> +///
-> +/// Special handling for bool types is required because the `as` keyword
-> +/// cannot be used to convert to bool in Rust. For bool fields, we check
-> +/// if the extracted value is non-zero. For all other types, we use the
-> +/// standard `as` conversion.
-> +#[allow(unused_macros)]
-> +macro_rules! bitstruct_cast_value {
-> +    ($field_val:expr, bool) => {
-> +        $field_val != 0
-> +    };
-> +    ($field_val:expr, $field_type:tt) => {
-> +        $field_val as $field_type
-> +    };
-> +}
-> +
-> +#[allow(unused_macros)]
-> +macro_rules! bitstruct_write_bits {
-> +    ($raw:expr, $hi:literal, $lo:literal, $val:expr, $storage:ty) => {{
-> +        let mask = bitstruct_mask!($hi, $lo, $storage);
-> +        ($raw & !(mask << $lo)) | ((($val as $storage) & mask) << $lo)
-> +    }};
-> +}
-> +
-> +#[allow(unused_macros)]
-> +macro_rules! bitstruct_make_setters {
-> +    ($vis:vis, $struct_name:ident, $storage:ty, $hi:literal, $lo:literal, $field:ident, $field_type:tt) => {
-> +        ::kernel::macros::paste! {
-> +            impl $struct_name {
-> +                #[inline(always)]
-> +                #[allow(dead_code)]
-> +                $vis fn [<set_ $field>](&mut self, val: $field_type) {
-> +                    self.0 = bitstruct_write_bits!(self.0, $hi, $lo, val, $storage);
-> +                }
-> +
-> +                #[inline(always)]
-> +                #[allow(dead_code)]
-> +                $vis const fn [<with_ $field>](mut self, val: $field_type) -> Self {
-> +                    self.0 = bitstruct_write_bits!(self.0, $hi, $lo, val, $storage);
-> +                    self
-> +                }
-> +            }
-> +        }
-> +    };
-> +}
+On Tue, Aug 26, 2025 at 01:29:59AM +0300, Jarkko Sakkinen wrote:
+> I am going to most likely make experiments with kernel and most
+> definitely make "tpmtrace" (a tool that hooks to BPF ring buffer and
+> pretty prints the protocol in real-time, it's dead easy to do now).
+> Finally (as I've said before) it would be quite unproductive to create a
+> design that does not upscale to let's say to an attestation server
+> (which would use this to parse e.g. quotes) or downscale to a chip.
 
-This is awesome. Is there a place for this to live outside of
-`nova-core`? I would think this would be extremely useful as a general
-helper for bitfield struct definitions.
+Considering existing TPM C driver, Linux keyring (from trusted keys
+angle and likely in future from imported asymmetric keys angle) and
+security stuff overall in kernel, this work really can fuel up both
+developer and debuging experience. I.e. my motivation is really 180
+degrees opposite than deleting anything :-) [maybe that's why I got a
+bit upset]
 
-> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-> index cb2bbb30cba1..54505cad4a73 100644
-> --- a/drivers/gpu/nova-core/nova_core.rs
-> +++ b/drivers/gpu/nova-core/nova_core.rs
-> @@ -2,6 +2,7 @@
->  
->  //! Nova Core GPU Driver
->  
-> +mod bitstruct;
->  mod dma;
->  mod driver;
->  mod falcon;
-> -- 
-> 2.34.1
+And doing tools like tpmtrace will quickly level up the feasibility in
+production through stress testing in the field. And as I improve tpm2sh
+(which I don't yet recommend anyone to use, it's so far just quickly
+upgraded to test the protocol changes, I'm now stabilizing it ) we can
+better evaluate different choices given better toolkit that will
+consequently reduce the number of wrong decisions.
 
-Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
+Like in pretty basic kernel testing it's not too feasible to package
+something tpm2-tools to an image that you build (I do full rootfs
+per kernel patch when testing) but something like tpm2sh and in
+future tpmtrace are much more nicer blobs given how rust ELF images
+are constructed and linked. Downscaling of the stack  has been 
+a QA issue for ages now.
+
+BR, Jarkko
