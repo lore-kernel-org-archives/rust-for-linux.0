@@ -1,275 +1,137 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFA77260B;
-	Sun, 24 Aug 2025 21:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A4019D071;
+	Mon, 25 Aug 2025 04:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756071103; cv=none; b=RFs02IWYHfg/ppv0bzH2pU5F9r1g7uGVg0x5g34aIskzGii6BdmWZ6+3c8s27F/t2ilwA7fc3sY1LJ/tT6u8y0pIk6JHxRCFcmWkQfVrvJ9F0U6TWSh7erQXP7LekxfHWcYq/WJxjnKKzhatc7SHQSVNtkpXMfHlUjFOd0aGi0I=
+	t=1756095269; cv=none; b=iDjdPjHZWM8n1lQKLo5RJZHWEwIw9Y3+5ACbM6hVZplJQ5o9AW0t/K/swiKSqEswH7MVNzbtITlO1fykRA1ITXW89ToHa+HwaIBdYwSXw1jMxLa/pz0BLrUW2rrz0QGST2pE/Wm8kYuTD6otvNZzsAdV4ZnkAdFpfx/ct2QPCFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756071103; c=relaxed/simple;
-	bh=F9yFl3/yyh9Zm/zqTQgfBmpg4rLUQ2M2weCf5bkKHgE=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=GbVp8PEhl7k2nxiuw1PhKlzXswxNNKRkSHLD35k5pnZcWs1nbKSkP+7PDlTxWoA/+TYTHzFv4M84Hjhub2vUxLUQhEKcbTFUJgrkKmweq2H6roOIrix7nBqSd1zdSfdhzZ/G0DPCyVyXCl6w9HUhuxcX8zIFkTocBKvKuVVXAc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OW/ZRQ56; arc=none smtp.client-ip=209.85.214.179
+	s=arc-20240116; t=1756095269; c=relaxed/simple;
+	bh=kTyTKmt4u14/pDZRnlHuTpZoQm276cUnBsIckpPWGrs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z2UYswgbruNevgWsoONZ/Mcg21AaKSdAnYyJGs067pdlGRd6uutsqwkAKw/nb83HxmYFoL7v/XTwagGOxcX01EA80GvsEUeYzcccROcnD+pl6tDAOXNMRCwK2g4FaLprY69KHZi4jaV5Tu2Ol0n9sePMijHErW4z3CYL7Jb4tnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9RS0hjZ; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OW/ZRQ56"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2445813f6d1so4523165ad.2;
-        Sun, 24 Aug 2025 14:31:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9RS0hjZ"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b297962b24so39755231cf.2;
+        Sun, 24 Aug 2025 21:14:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756071100; x=1756675900; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0DwaHwUdPr8TDfZjAVd0Bexa5dawkDBS2ttG8T/Unbw=;
-        b=OW/ZRQ56DeIIQDl1F28Sv3L8VvziTCH9R/XFYoVtbycoy19qlOUD2UWjKU4KedvVTB
-         S8DfPYv/pbo97yzcgq/mtHbQzGOevVY6vcNm83hCOOQY4L/MFi9IpqeB9X9Ce0w8HkVT
-         2b2LYVaWa0YFzVw6GE3rjCWJpcR6ZxgfmppI6dYXf3WeTU6JFhJOe4xi3YhNL8R4kfCS
-         G5nLuWAbs1UMcpZlmdY73TZRqxh3CSnCXhoCeS297vaQsmIfM1wffAMq3M1pBB5Maus6
-         SlVBG3yfPqGlth8EXssN+TAei1r6mtrfVLtJIAhL1g48bNDifl0HmYBNTbIi0Ii8mxS2
-         lh9Q==
+        d=gmail.com; s=20230601; t=1756095267; x=1756700067; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JOh2zrgwMM7O3l0xhloYC/6+a1bBMnQHqCxm2UGL5BM=;
+        b=N9RS0hjZamktinXyqd9A74VjT7+G25q2sJBiGMb2NbIYMyPobfgrEmz19YpxaK+MQ7
+         oDGc1BVp24yhrANxFBE8vdA0nCJTtMuhn0tsz3kK3v0ChT7hapXb8TFkgxGFmKyPwcyd
+         yOywaKrfRIASUHZRczibNsuC7IC/hPKEOn6odQKoSvRRmTil3UBN71SpGmeakjAf226r
+         KtULFDu3YVqLGHFrGF6dfCWj6JymCv+Mr66ZFPJR+GQhx9VC4WZkTuYguLvgcZyb+VPJ
+         QceQuES12/lXWOK8LeoFdrPdRMcHQcD/Rb6c00rCFWxPPBvesgCVk7jpZLV1EhbsXZwT
+         VPWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756071100; x=1756675900;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0DwaHwUdPr8TDfZjAVd0Bexa5dawkDBS2ttG8T/Unbw=;
-        b=Ugr/5Yc6D53oh11USIT/FcXMKkHypIzmHfxgukEzh89bEb8Wx/aSl0DF0+NRb1/gct
-         +PLkMHnus8Z+L5Wft4q0Yrsf7Zuhn0csywJJPCneI9/XxwruB8RQej7q2pC9tmv42IKr
-         TLEdcs/aRGvbIffeZSrQv9Yfvt/1J2WY3u3TSmZTwaSXZ/msZ1GsnPZNIt35JG0NLzN8
-         bOB0mIkRnoaaAbRghBCDjd30kGsY9O44Tb+MvGRD8ybE0oTokvKB2GVHJm/H1aZ1pTmW
-         pyyKOPTJpk22Yp17/TnNxMKytW9E/3bLqnHkUy+dfxae3jRCizfCTbf5FD2vtSvYKWhc
-         V5GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVU7TH4pjJSlwLPLuK4JumM2ULg3Nf4KwDBHjzGiCt7jBARbjUU4ly/SMFlL1jFH58M/vHhZlPTBpt1Va0=@vger.kernel.org, AJvYcCWAYmbOUleZoP42+934NLLsk3/SfmNHDG+cU9Js8baK5xbcXpuQ+x/Vlefw9LEuUfsYB6C30VLK/5cfWvmd+Ow=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwsCqDA5M4Z5zNSAdrtWakxSyKVQLGQfgbFq3cUcLOjg1xvvuP
-	yHhEy2Q+NdqCbZRgfjaMDcfEU1q42ZjThTwhKqL8Vrt+UqgijtueN6zGw+FhGA==
-X-Gm-Gg: ASbGncueazBPs5W626lHLl0aUxrv6dkNttN98ePcNIqKl8X6VcSRKsY0Qw8dq3bboe0
-	Q9O/TjTo8fpPW0xOUWI6Pz0mQK0H0Me6vgYpBfwZnhcWTTOZd+WzjUZDKevL4uKlHd3SyAQocx2
-	6Mg4U7VsWuTFOWB0SMxYNbXEhPQ3ezo0Ffs29vRXcKojWUkuypx2bunMhNxkB669kL1NE3bgV4a
-	1hs0QmhmJ1TAwkVLuzy7gPnQ8WMYG66NxXtRK6u/9bek77SNNb44l/Fpp6X9ShukabSPhqMx09P
-	Zmcyxfk0zznk1XI4stfVwR8mOsXPiY4ZQg0E4IO7zOFzSPouo2E4VnbMbtrxvqz/47ZCbkDD3hJ
-	JidaxFMd2UEZg4FqSPGJgX3Iz1axFs9s=
-X-Google-Smtp-Source: AGHT+IH7tCu9yFZmbMyyJ8xAiGghDt1M8iA4Q10uIbKeX068ctixxz94pqL+04tE41TjN+5Vh2nRhQ==
-X-Received: by 2002:a17:903:124c:b0:245:f85c:8c6f with SMTP id d9443c01a7336-2462ee8b1eemr67253035ad.3.1756071100300;
-        Sun, 24 Aug 2025 14:31:40 -0700 (PDT)
-Received: from debian ([138.94.103.170])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466887fc80sm50430825ad.124.2025.08.24.14.31.36
+        d=1e100.net; s=20230601; t=1756095267; x=1756700067;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JOh2zrgwMM7O3l0xhloYC/6+a1bBMnQHqCxm2UGL5BM=;
+        b=J+OpdF82WhfrUiuEUOei402e/2lythDoAko7z8yg65HxKAz9LWGajNfBmy8ozL28oP
+         aebCLgWKKhHQYVROPOO+9ryVFwRrYdGxSRY9S/iC74AHR+WxxfizQ2mV9spwZ0z+F4gs
+         sa2AyZ39q2R+NFBW0KApNqLubOIEO5yFmjeNC0WtJM/G9fUbS6Be+dRAnd6k+rNoerrJ
+         8/MwSQYdzaSgOY+QsNw3f5dcE81PStZbvKWc/wMBMkeWSWsSJvSe6QdIz3GKyJgCUll7
+         rG7TxPPzMXkdRzX6paNQe+iqYBS4m8oiEB8Q3XqBCb8IPo6XrUUsZmV1dM7wkh0OaDcZ
+         1Acw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyxm/N43kIm7JzJu5F61CjQIHxq7g9szjBGifqncfRyLRyJfTbLS4ehBryGfx/qSf04OmlsnQ8y/cTDsqqBg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdgCu4/QwG6ZfZer2P+zXIBpT+ts3Hd3X8dAEuE3lRYPGQwptg
+	neBgygxBVCsvV12zsPSNAp7KSB3l+6NOgxzDB/pQIZ/OD92FZ8x6jd1w
+X-Gm-Gg: ASbGncuBvQaZN9DSiG4h/WEZok1vSi/WlFdk6eMHRWgw6MEVzGTjwDjLHjphswcFZ1W
+	thm3LTJEV4JgtsMJGU0j7fV6g6M7jmJVZq81QxWHmAY0hOaiLjrF6Fqw14VcPpXmp7+BH8hJ6v6
+	1No8iqMhcUqZMh0AA7v3LrZ0QWAUiy+q8HJaPOyCw5BMBy5N7rodCfcEzEGBRu///NhhT0X6OpX
+	EaraKWt5nG50xdaly/6+2y4QG7muC0r6sUEqyyk4bM2HAh3um8dHrmzoKDwEqfRFoVnkpcUfQ3h
+	di4WpVqC9xI/eEBLrTD5NKy8ISz0tuxa25Ym+SNGGnRSrcQ71aqyCIzS5YfwepEzwkJE4/rCPWd
+	MDqcWVO/runlPWxg4XeLygP7RnlYF+OpV6sbDBRpH3qHMHIwkkigQjl5sCnaUCAPQNE1qXw8rVz
+	EfjxQ5Jr70fIs98b4fv54WsHY=
+X-Google-Smtp-Source: AGHT+IHTpmBSdC9OospIa44n4b+nt4viPlNUNTHKQNuykbjihG/uNqp4xTDAwFri6VpVN5FwW8kVWg==
+X-Received: by 2002:a05:622a:1ba3:b0:4ab:42a5:7f1b with SMTP id d75a77b69052e-4b2aab04a8fmr128331761cf.47.1756095266463;
+        Sun, 24 Aug 2025 21:14:26 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ebede53d5esm403947485a.24.2025.08.24.21.14.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Aug 2025 14:31:39 -0700 (PDT)
-From: "Christian S. Lima" <christiansantoslima21@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
+        Sun, 24 Aug 2025 21:14:26 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7B0E5F40066;
+	Mon, 25 Aug 2025 00:14:25 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 25 Aug 2025 00:14:25 -0400
+X-ME-Sender: <xms:IeOraAqVH0xHpIKyWQ3ybJ_Kshjv0YpB6lPdCifKz6WF4djBaEhJ8w>
+    <xme:IeOraEVYpeMnNsdmg52cN7iFAaw0sI7AL_f9UYJro-7w4mfeat8HJMwc_x0CyISKF
+    9HfAjhXBt2RnPrzJA>
+X-ME-Received: <xmr:IeOraG99wwM06ImfE2hoTc02kCFVMNREZV0BhweHSpTD0gaOJmzB0g1oZNwAs36khWqjtyp_FUJGf2Zt3rAcgpVBMPXMGvcf>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujedugeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehjohgvlhgrghhnvghlfhesnhhvihguihgrrdgtohhmpdhrtghpthhtoheplh
+    hinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    uggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrtghouhhrsghothesnhhvih
+    guihgrrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgt
+    phhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtohepohhjvggurgeskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdr
+    tghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:IeOraEbbrZyUqYjMScyfJ-LJA6t6Jpt2QYEsAKW25DbudEMMkMtWEw>
+    <xmx:IeOraGfX6oGaAe0wjNwJ0xqGCfMSc8fGy_Kg_CoQSICGyB3WSSZnfw>
+    <xmx:IeOraGpiQj177fPWnyMZxuOOBmK9PRMdHc_MfV5WShnqpgIFs8JBqA>
+    <xmx:IeOraFDXdSn8FLG6f3J8YLE8iwP_27ELJNiNLIQbiNBmU1oACjQzIw>
+    <xmx:IeOraMWaGOO-91bFCJRNYaTjfXFvjB-Vitnlz9G1q4h7zE3vFnHmo3_A>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 Aug 2025 00:14:24 -0400 (EDT)
+Date: Sun, 24 Aug 2025 21:14:24 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	~lkcamp/patches@lists.sr.ht,
-	richard120310@gmail.com
-Subject: [PATCH v10] rust: transmute: Add methods for FromBytes trait
-Date: Sun, 24 Aug 2025 18:31:33 -0300
-Message-ID: <20250824213134.27079-1-christiansantoslima21@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>, nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
+ structs
+Message-ID: <aKvjIM39f1oGyn23@tardis-2.local>
+References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250824135954.2243774-1-joelagnelf@nvidia.com>
 
-The two methods added take a slice of bytes and return those bytes in
-a specific type. These methods are useful when we need to transform
-the stream of bytes into specific type.
+On Sun, Aug 24, 2025 at 09:59:52AM -0400, Joel Fernandes wrote:
+> Add a minimal bitfield library for defining in Rust structures (called
+> bitstruct), similar in concept to bit fields in C structs. This will be used
+> for defining page table entries and other structures in nova-core.
+> 
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 
-Since the `is_aligned` method for pointer types has been stabilized in
-`1.79` version and is being used in this patch. I'm enabling the
-feature. In this case, using this method is useful to check the
-alignment and avoid a giant boilerplate, such as `(foo.as_ptr() as
-usize) % core::mem::align_of::<T>() == 0`.
+FWIW, Joel, I only received patch 1/2.
 
-Even enabling in `rust/kernel/lib.rs` when compiling with `make LLVM=1
-CLIPPY=1` a warning is issued, so in order to compile, it was used
-locally the `#[allow(clippy::incompatible_msrv)]`.
+Regards,
+Boqun
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1119
-Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
-Signed-off-by: Christian S. Lima <christiansantoslima21@gmail.com>
----
-Changes in v2:
-- Rollback the implementation for the macro in the repository and implement
-  methods in trait
-- Link to v2: https://lore.kernel.org/rust-for-linux/20241012070121.110481-1-christiansantoslima21@gmail.com/
-
-Changes in v3:
-- Fix grammar errors
-- Remove repeated tests
-- Fix alignment errors
-- Fix tests not building
-- Link to v3: https://lore.kernel.org/rust-for-linux/20241109055442.85190-1-christiansantoslima21@gmail.com/
-
-Changes in v4:
-- Removed core::simd::ToBytes
-- Changed trait and methods to safe Add
-- Result<&Self, Error> in order to make safe methods
-- Link to v4: https://lore.kernel.org/rust-for-linux/20250314034910.134463-1-christiansantoslima21@gmail.com/
-
-Changes in v5:
-- Changed from Result to Option
-- Removed commentaries
-- Returned trait impl to unsafe
-- Link to v5: https://lore.kernel.org/rust-for-linux/20250320014041.101470-1-christiansantoslima21@gmail.com/
-
-Changes in v6:
-- Add endianess check to doc test and use match to check
-success case
-- Reformulated safety comments
-- Link to v6: https://lore.kernel.org/rust-for-linux/20250330234039.29814-1-christiansantoslima21@gmail.com/
-
-Changes in v7:
-- Add alignment check
-- Link to v7: https://lore.kernel.org/rust-for-linux/20250615072042.133290-1-christiansantoslima21@gmail.com/
-
-Changes in v8:
-- Add the new FromBytesSized trait
-- Change the implementation of FromBytes trait methods
-- Move the cast to pointer earlier and use `is_aligned()` instead manual
-alignment check
-- Link to v8: https://lore.kernel.org/rust-for-linux/20250624042802.105623-1-christiansantoslima21@gmail.com/
-
-Changes in v9:
-- Improve code comments and remove confusing parts.
-- Add a build_assert in the conversion of type `[T]` to check for elements
-inside the slice.
-- Count the elements in the `[T]` conversion instead of using byte
-count.
-- Link to v9: https://lore.kernel.org/rust-for-linux/20250811213851.65644-1-christiansantoslima21@gmail.com/#t
-
-Changes in v10:
-- Remove `FromBytesSized` trait
-- Remove implementation for slice types
-- Fix doctest not compiling because `?` operator outside a function
-that return `Option<()>`
-- Make `FromBytes` trait depend on `Sized`
-- Add `is_aligned` as feature
----
- rust/kernel/lib.rs       |  1 +
- rust/kernel/transmute.rs | 69 ++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 68 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index ed53169e795c..c859a8984bae 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -18,6 +18,7 @@
- //
- // Stable since Rust 1.79.0.
- #![feature(inline_const)]
-+#![feature(pointer_is_aligned)]
- //
- // Stable since Rust 1.81.0.
- #![feature(lint_reasons)]
-diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-index 1c7d43771a37..7493b84b5474 100644
---- a/rust/kernel/transmute.rs
-+++ b/rust/kernel/transmute.rs
-@@ -2,6 +2,8 @@
- 
- //! Traits for transmuting types.
- 
-+use core::mem::size_of;
-+
- /// Types for which any bit pattern is valid.
- ///
- /// Not all types are valid for all values. For example, a `bool` must be either zero or one, so
-@@ -9,10 +11,74 @@
- ///
- /// It's okay for the type to have padding, as initializing those bytes has no effect.
- ///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::transmute::FromBytes;
-+///
-+/// fn test() -> Option<()> {
-+///    let raw = [1, 2, 3, 4];
-+///
-+///    let result = u32::from_bytes(&raw)?;
-+///
-+///    #[cfg(target_endian = "little")]
-+///    assert_eq!(*result, 0x4030201);
-+///
-+///    #[cfg(target_endian = "big")]
-+///    assert_eq!(*result, 0x1020304);
-+///
-+///    Some(())
-+/// }
-+/// ```
-+///
- /// # Safety
- ///
- /// All bit-patterns must be valid for this type. This type must not have interior mutability.
--pub unsafe trait FromBytes {}
-+pub unsafe trait FromBytes {
-+    /// Converts a slice of bytes to a reference to `Self`.
-+    ///
-+    /// When the reference is properly aligned and the size of slice is equal to that of `T`
-+    /// and is different from zero.
-+    ///
-+    /// In another case, it will return `None`.
-+    #[allow(clippy::incompatible_msrv)]
-+    fn from_bytes(bytes: &[u8]) -> Option<&Self>
-+    where
-+        Self: Sized,
-+    {
-+        let slice_ptr = bytes.as_ptr().cast::<Self>();
-+        let size = size_of::<Self>();
-+        if bytes.len() == size && slice_ptr.is_aligned() {
-+            // SAFETY: Checking for size and alignment ensure
-+            // that the conversion to a type is valid
-+            unsafe { Some(&*slice_ptr) }
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Converts a mutable slice of bytes to a reference to `Self`
-+    ///
-+    /// When the reference is properly aligned and the size of slice
-+    /// is equal to that of `T`and is different from zero.
-+    ///
-+    /// In another case, it will return `None`.
-+    #[allow(clippy::incompatible_msrv)]
-+    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
-+    where
-+        Self: AsBytes + Sized,
-+    {
-+        let slice_ptr = bytes.as_mut_ptr().cast::<Self>();
-+        let size = size_of::<Self>();
-+        if bytes.len() == size && slice_ptr.is_aligned() {
-+            // SAFETY: Checking for size and alignment ensure
-+            // that the conversion to a type is valid
-+            unsafe { Some(&mut *slice_ptr) }
-+        } else {
-+            None
-+        }
-+    }
-+}
- 
- macro_rules! impl_frombytes {
-     ($($({$($generics:tt)*})? $t:ty, )*) => {
-@@ -28,7 +94,6 @@ macro_rules! impl_frombytes {
- 
-     // SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
-     // patterns are also acceptable for arrays of that type.
--    {<T: FromBytes>} [T],
-     {<T: FromBytes, const N: usize>} [T; N],
- }
- 
--- 
-2.50.1
-
+[..]
