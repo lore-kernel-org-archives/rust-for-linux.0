@@ -1,187 +1,137 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2085.outbound.protection.outlook.com [40.107.93.85])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9BE2FE578;
-	Mon, 25 Aug 2025 15:45:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756136719; cv=fail; b=QpGysxNa7w6AaFZ5wYFaVHsvxrlpO6LLSs4cOzdJN/DQvodEqBN7zJ1J++isrgytt7VrEct1h17gaWQ1QFuPhp8lXftKaw4dWVmPoVEl5xV9Feo2Tt5+xRYIOmX5GZIFiL6onCufgj9oe+wmbWjblqYSMwCBgN1JT1BiAvHIK88=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756136719; c=relaxed/simple;
-	bh=uhMWPhsPzCRNvhiJ+xrUF1kZmLnFGH1OG0aoieJZ/fE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UC4gnq1+t8b3U1La51fB7vZfUJLrb3e5aFmlX+CKXNW23qbFmWi6K0uDqWE9wLXg2a4IZqAusOPdR1Qn3O1a3MnnM2PV6KkZGokPNnA5t2djdr5hrhtEeX2Oop9CVsaT1mEbzUEr/auCkW9JIOwzFnKqwJgWAPBi5f+dM3uT2b4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uaSlHOL3; arc=fail smtp.client-ip=40.107.93.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF4A2FE06F;
+	Mon, 25 Aug 2025 16:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756139449; cv=none; b=oVMQ5naWEA1JNmosYQJpZJcBwEdKFnOPcATtpkmvBkQpNmzMPs5Fhc+D6RcvXzOsUalxo7WrPW67orN9VkMR1xebfGR5FEAGYWu++50yiVd8iAbSw3jkPKJdRCPVFtYLOGSDKdzU6so+/ypwX38LujMorL3ypPQcazWYihF7S7o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756139449; c=relaxed/simple;
+	bh=vVMKlKNXIWqTUAgQ0OfDfdnw/Qqi34KoxBHr44+YOAg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hIuMldPTm4PC/kEWUS+CunwJ+hLc7aVRFYN8cv294AYcG0xYJjAsw0XhC3eWewdpbmwMDzmSEFh3U7eAVFlbvXJXnuQDsu7ilqGmEegxpO22guNjG/p9nLGI6y2V9VzkUdYeIRWfk+BEPZwbQu/BU1uZf6JzA2mcLqk0SNLkKIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1yQLSey; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uaSlHOL3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DmFgOfgbVgvqc7aZTIelBQ0Itm2WOh79YK1PswSCOkbbOWRcvEsWPxfPWEVM2wCveQhxRgO6xVnzFqwhPw66R5j3+S9IiyiJHVmbV2Umh7/zUmlq5rOxl46kUFjo7nFo85W0/q8QbrkoAJ3LcmtA23rPEAkeEBxKKIthpFrQKahEmRz54MiT4ii96RlPtpgZy7Y21884RzLZd/idIspN3YE9iwvoOZtkKG+qgwlzQ2MLzkFggnYiE6ZlkPmLCZ7ssUIZg539m9zT16XsmDBwS74Zui2uJdpFKdtghUE5ymc2SRpRpD0i81kH4ERpg9+GBSWw0VwyOIinuQ4sBzwV3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uhMWPhsPzCRNvhiJ+xrUF1kZmLnFGH1OG0aoieJZ/fE=;
- b=ivrLOPSKClmWR4S1iAUfiQKgpHzfEpBVatyeTTBBf4fTfpvO1ZTuD/Ify2l1wp8KPfbjD73lXq09t7H6aBVYG4iVQ2z6jvrfVIZFFQbJ3GkuwWZyCu6DlxYXeTHq+2C4hU83armrZIa8G4X5fI4zATfHQBkmFNp5mXjTSL+NcX8ucjJF6DQFu4KhxhSb6DB1shp53P2sSizPpYf6aGssADIKjEJ5c17zfLorpRl3znH77QAxC/KUEUTztWYG/Mmp5pVU7dRktTuUpASRUA2wQfWGppJGvzMJnPGkcDNA3t+OduO1gMuxwA06dHibd4AFwIy5I3twLeW8nALcq3yF+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uhMWPhsPzCRNvhiJ+xrUF1kZmLnFGH1OG0aoieJZ/fE=;
- b=uaSlHOL3scYoA9Zydu7MB9ddkDlie6gC8rw1gOR7qPnO2nz5PvgRJGEK9I43UPOT6sm0heHjZRKmFLJMMMMr3K0+FbwjhzFijvh5U5fI02PGYYlYQ4k+miDkA7QrTQCrLj550mi0YjuEg6853BI44HEAeELpjtbENvdU64nePw+j+gjCT4Qse6qRRAgrtRq4X61dYveD7nzkICPiAVmabcDWibtNLnKWH3P4coPDcOuhc3YxwR04bTdGMw+lWZG8vTmOnfpZfFywLvK2ETwIZoGC7q0/aKb47y++nAnJ1rvVAf3HZ5JKqZbHp7tu4C4XKQ2tA2ydPDx6BC8YryXW3Q==
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
- by SJ1PR12MB6075.namprd12.prod.outlook.com (2603:10b6:a03:45e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.19; Mon, 25 Aug
- 2025 15:45:13 +0000
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56]) by CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56%6]) with mapi id 15.20.9052.021; Mon, 25 Aug 2025
- 15:45:13 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>, "lossin@kernel.org"
-	<lossin@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
-	"boqun.feng@gmail.com" <boqun.feng@gmail.com>, "a.hindborg@kernel.org"
-	<a.hindborg@kernel.org>, "simona@ffwll.ch" <simona@ffwll.ch>,
-	"tmgross@umich.edu" <tmgross@umich.edu>, "alex.gaynor@gmail.com"
-	<alex.gaynor@gmail.com>, "tzimmermann@suse.de" <tzimmermann@suse.de>,
-	"mripard@kernel.org" <mripard@kernel.org>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "airlied@gmail.com"
-	<airlied@gmail.com>, "aliceryhl@google.com" <aliceryhl@google.com>,
-	"gary@garyguo.net" <gary@garyguo.net>, "dakr@kernel.org" <dakr@kernel.org>
-CC: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 4/5] gpu: nova-core: firmware: process the GSP bootloader
-Thread-Topic: [PATCH 4/5] gpu: nova-core: firmware: process the GSP bootloader
-Thread-Index: AQHcE2MBPfCDFt57G0GMlQTP8sKZUbRzh7YA
-Date: Mon, 25 Aug 2025 15:45:13 +0000
-Message-ID: <0263077d24090821ab3b035a9940cd7f9a7001f7.camel@nvidia.com>
-References: <20250822-nova_firmware-v1-0-ff5633679460@nvidia.com>
-	 <20250822-nova_firmware-v1-4-ff5633679460@nvidia.com>
-In-Reply-To: <20250822-nova_firmware-v1-4-ff5633679460@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|SJ1PR12MB6075:EE_
-x-ms-office365-filtering-correlation-id: b1caab51-b494-4f75-450d-08dde3ee617a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?WjFRT0d5MVQ3ZVBDSTRFeTN3ZWh6Q3ZvdjlrVkpKKzR2Z09qcFFLdCsyNjdm?=
- =?utf-8?B?YnRTZVp0N0lRVDRHYmZ2dHdRaFhxQ3hLSGd3YlRwUW1veUEzbmlWTVZ0VFNO?=
- =?utf-8?B?V2ZRdTZ0NmltWXJtOTk5cS96ZmE4T0ZYbW93MVhvOG5QK2N6cG4vRjJKbUht?=
- =?utf-8?B?YWpiT3ltVXhpMkJTcFBrM2xQK2JvYmlNclJpV0NwZXpyN0orcjNkTVJJcUZH?=
- =?utf-8?B?QUNYZzA4dFd6bTF3Q3hUQzFpdVkwR2R6SGZkSDFqWk0yMithOHZDbE5oZlF1?=
- =?utf-8?B?MVFTemM2M1NVbWgvWUEwbFZhckhydlBRYkk5eXErRnpDNVhMa3drbUYyVVBI?=
- =?utf-8?B?R1p3Y0pQTDVwK2VzWTFJZEdyb05BVHZCblRIYXdFc083K3hvUXNseFpMeTdX?=
- =?utf-8?B?MDdHNFJGSys2TE10YmFYVzVORHdhSXFzaXBzTXdEMDB5Q1JVMEx3Nk1VUi9X?=
- =?utf-8?B?eGhJSUN4NDNxTGg0NDR4SzZCZnVJYm5kTnJyZUhaNmhWaWdEb3BIUVMvT0RP?=
- =?utf-8?B?cVc0MDNCQnBxL3ZQb2xWb3BZRjJzMnFVYlN0aXVYZVJaOWZ6YzR2cUlmOURS?=
- =?utf-8?B?Njd5MWxNclZjb3dtYnlLRjJ1REN1Y2VXNTZFUWd2UUp2S3hpK0VCNFZnamNV?=
- =?utf-8?B?Ty9XblpNWUJrV3ZnQzlhM0tUVG5iZGc2OWtPVVpIRXYzcmZLai9LS0d3Tm1y?=
- =?utf-8?B?QW01ejQxZmM5VG1oRE5DcHRXeEl1UFEzc1Y1Zy83emNmS2xXZGg4LzdpVldT?=
- =?utf-8?B?dU1kcmVsaUFFcEw3N1ZmREplK05RUDBuMjRwRDhER1UvQ0NSSW5XdVRiQTlt?=
- =?utf-8?B?MjNTYWlOYU1XNGc2elZleHVIQXh4ZTJuRGVwaXNJVlVEVERRbUkrMWZ5ODIx?=
- =?utf-8?B?VEdDbytscFNNdHlhZ0g1MXJLS3NpZzkxSUtKa2FCdFg1VldkV3g0RHNCSjJu?=
- =?utf-8?B?UHVobjFScHQ2K0RJaXNJR3RnMlJlcjB2QUpNVzU2OXNQY0xqc3NTMWQ0WVpj?=
- =?utf-8?B?UUh2R0FaZTkvcVhuMlZHZEt5ZXplNFU2ZjNKR2NJa0o3dHVVeGhuaDB1WVVX?=
- =?utf-8?B?cDFwWm5NSlQ5UjB2elhsNHBSeWh0K3h3enkxSW5xQjY5aDVQQVJ1TkFNa0Qy?=
- =?utf-8?B?T3NaOVZFb0ZvZStWRTQ1Tk50YTRpRFhpTVhtRmNyR1d5OFYwakFKY0hPTGpu?=
- =?utf-8?B?MUFCZmJRZmRBejk2QWg4MTU4bWpTbzAzblNDZFVNSTljcjd3MjRVUjUyZ3ZU?=
- =?utf-8?B?OFRBMk9kcUUvVnBaaGZWNVFqYVdrR1BGTGhHV01SNnVQeUdjWWdIUmFWZFdY?=
- =?utf-8?B?eGhqVFFMV1AwN29PZmdrUWpmaU92ekl1bjVZajlEMFJWbm51YUltcDZoM3NF?=
- =?utf-8?B?WFdnR1NzanY4VGcwSnE1bVVXYWpZQ3ZpQXVyU3BxUGgyNlBnVjlkcFFvTldZ?=
- =?utf-8?B?V2t2TTVPSXVTTUtTcnluVktObEZrdHp4YTBKZlQvQ2hvTlo2Y1ppVGorVzBk?=
- =?utf-8?B?YmVwUEFxSDIyeVZsWVMySVN6RmJBQnNkbllMSUdCSW83K2ZIL3JmWFFKaGo5?=
- =?utf-8?B?aHJpVldhZ1EzNE5tb2wxVzVVSzYxUnh4ZUkzUmpLL0U2Y21LeUdCdTBQcVdU?=
- =?utf-8?B?L2ZVSGQwTmZsUWt3QXRUdkFvbXFJNUcyK3k0YTBRaGpCaDZRY01kTzYwamdL?=
- =?utf-8?B?Yng3Q0FteDVoWjkvSTNMZnFIMkZZdGRkNHBKVENOOXZBZjh0UHlqWFQ0akFs?=
- =?utf-8?B?YWNqVTFQZndVT1hBRkdGZzkycXl5UENjallScHlRWjFGVjNWSHd1RkNTTEY2?=
- =?utf-8?Q?/7gZ2Ia4UVj+XApIobSmcC5N+KngwrvUa8TeQ=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?RmNGdnRHOG1za01YeEFDQmVQdHBvd2dMTmN1TDlhdE1hVk80K3B0dW02OGwz?=
- =?utf-8?B?R2tFUEFjQ29BWC9QbGNvK2R5QlJ2QXJMRjFtUEhYZTZNUFJxbm0rVm9vNXF4?=
- =?utf-8?B?aTRxcjZ6aHFEOHVTSmdPd1JoNDZBRXVKU3I5dFdhYTI5MHBSMndKRkNiWlMw?=
- =?utf-8?B?cmV2Y256NGdwSlJBWTZkdldjbDdRMjFxN0dORlF1S3plZ0pBa2F2SXNjaGdT?=
- =?utf-8?B?M0wvaEpBMnAyOWM3WXdDajlpU2lRRzc2WTNITFVMYTZvVDIyMzNVbnBSbllO?=
- =?utf-8?B?MWExaFYwVncyK3lIaXRsZDl6K0ZLMGlQT3hGWmtoVTl1QzRWalRJZlhXMGhI?=
- =?utf-8?B?WkVOZ01WT0NmVTdYelczb1prUVZ4UGxyb2Q3MU1jOHN6RmVNcTZSd1lRT0N6?=
- =?utf-8?B?UE5zeE4vc0NUM3ZhUHhjc3JSOTNZY3NQWERHMFRqN0xvMUg3TERuOFh3eS9v?=
- =?utf-8?B?bDRPY2Rndk9XZzVlcFBIMlQ1ejV0SG9ZbGZQT1R6T3lsSm1zUm1EVkR4akNu?=
- =?utf-8?B?anp6UncwTjRCV0ViRldRN1FwRGk1SFBZVkNLTGh1ZnFhdlA4T0NocWhiRCtp?=
- =?utf-8?B?Zi80bWNaK3F1d3ozcHZKdmtYVGdmRDEwVGhIejF5ZjhmTlpCY1lQZlBDMzBm?=
- =?utf-8?B?cjQrVU1FMXVBZE9pRmlDTkp2Uk5lN3NNQjZqeVNDWTVKOW5Hb2l0Ly91czB5?=
- =?utf-8?B?K09KVFJiY00vVTcrQ3lNaVZRMGhGRmt2MFJkc0FwWlNlVzRnK3d3dldmQlBy?=
- =?utf-8?B?OTRwOUpQRndyUEhPZm9UM0RxYTRnN0RRUDNVWVJ4c1p4SUtLN3NkbEQyMTZz?=
- =?utf-8?B?eHN6citINUtYNFE1VmViQ09YaUhjWERXL0FNY1FQdkZRK1lMcW4rNkZWbmZy?=
- =?utf-8?B?eUpNbjYyRUxad2lrUDdhR0RnLzRWTDI2L0J2U0prNjcwMzdPbVY3Qzh2SHZa?=
- =?utf-8?B?blY4ZnY3eXVFaGpWeFJBaFJEVWxEUVo5dXk5MUs4T29FbVo1bkFRRWdhRnEr?=
- =?utf-8?B?eEo5UlFQelFnUlZSanRTemwzOFlIcDZHS2c5UXNiRVhYZ242L2pOc1hCbUFE?=
- =?utf-8?B?aHRtcEcrRzZoU0YzL0JHMTdlTkpTOVpiRzJ1cm0xemRMd25sWHhGYWViSG5H?=
- =?utf-8?B?MzVPM1J1M3Y0dlMzaVBKRXFpdjZld1hKbHVrL0dOeEczelhKTjR5QXlCRE5j?=
- =?utf-8?B?ckd6ZU5jUTk3RnUrMVVUdmFFNWZHamhOQjdnZWFmR0U3NWE5enZyeEhNRXNN?=
- =?utf-8?B?bkc5dDJXazE5MTZ0ZVU2RjRzSHhqRDR6VG5ab1BOTlp5anNQSkFTeHhnVFhV?=
- =?utf-8?B?RDZ0U08rY2hLUWM3amUvLzNYRlVCTjNXcGhLVmY0RFZoTlVrYmc4VDZhN0hG?=
- =?utf-8?B?UFhNd1I4c1pteW1KRy9PMGl3dGM2VDIrdXltd1RpWEZXc3hrL2lESEd3eHMx?=
- =?utf-8?B?TWpkMk1DMUVsaGcvTHZYOWxUUlhUSHFibnhpSkFSY1ZZQVpMSFNZMW5KS2NO?=
- =?utf-8?B?amFmM2Y4TnMzNDZad0FEbjdLMWk5cC92ZVEvN2ozOEpjL1ZINW96ZXBGNXVJ?=
- =?utf-8?B?UUJUQXQ1YStaTFdTYnpJL1pFa2xoOHBLYjJZaWl2Q1k2OG9HbXl1eHFCN3RW?=
- =?utf-8?B?cHFUd1RCWEptdFJMSzg5S2pLd2wrZVJmSnp6ODk5ZXFuTFBScjBPdDJBVzhS?=
- =?utf-8?B?SmNMbGR5Rit4R3RRY2NwZi8xdmFZUUUxMmZiZndZNzQ4QnFzOHhEbENDcWNv?=
- =?utf-8?B?SC9QOHJzMWV5VDRISGpXU0FnVmlOMWNGSjZnWHNHaHY5d3JaQlNSbEZEWHlP?=
- =?utf-8?B?MGZsN2FvZjFjcUxDSDk4WWUwTmhrdzZNeGEwU3IwSk5ZM2ZGRUtOQi9ESlZL?=
- =?utf-8?B?TFN0RnFjMW5VYjBlaFVYc2hrSEZqOHlxWk1QUlFQMktFVTE4OUlwYVZXYVVM?=
- =?utf-8?B?YTh1MzAzeG05V2hZbDFOUkxUdHNmOXFGRGpuaWxDbHM3RWlpOHViSFlqYnVo?=
- =?utf-8?B?WGE0V09sT1dobXRuRlQ3Y1ZQbTlkaFBPKzFqaWVoRk9HTXhrRnNBSUZXYytI?=
- =?utf-8?B?WkNIOVRLY241WWRpMHlkQm5nOFlBZEFJMWlwWC9HL2dNSGkrOFNuTkltZldN?=
- =?utf-8?Q?wnRBJSr18oYsgenOABhmotdJi?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <CEC145C2EDE66C4CACFF5DB0A73F6EEB@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1yQLSey"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CF1C19423;
+	Mon, 25 Aug 2025 16:30:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756139449;
+	bh=vVMKlKNXIWqTUAgQ0OfDfdnw/Qqi34KoxBHr44+YOAg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=a1yQLSeyANUJuVo8YWqNlpBfRTt5qnxjqggmvRgb82T8792MEf77ABh9ZN8SiYPNP
+	 M8+pUVcLK/yA4NEdeiu5ScLrAp9GvbGRSJ6zgx9KbxFIlONn/G0EG9eLFOV9ApuczI
+	 +n3RHjbtGTFbIdiaLv9a6HkdH3U7hrYIRtxzs4M2Mc6aGaYpYUbG2NlbAu7S5VVwiw
+	 ezRCNTzR89dj6gsRJTPP/Zm/70e8lVTD1bBbQTk/dgK0fd9VF3dA4SWpF0WX/OtV9I
+	 W4naQnz2qNJZJv3vw3Me9pduqpg6PZFeCZq7LpFz4p1jWhgUF8ymeiPQSKd1S/w24H
+	 uGCaVsmzG/n1g==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1uqa5n-0000000HALF-0aIB;
+	Mon, 25 Aug 2025 18:30:47 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <mchehab+huawei@kernel.org>,
+	Benno Lossin <mchehab+huawei@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <mchehab+huawei@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <mchehab+huawei@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 00/13] Split sphinx call logic from docs Makefile
+Date: Mon, 25 Aug 2025 18:30:27 +0200
+Message-ID: <cover.1756138805.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1caab51-b494-4f75-450d-08dde3ee617a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Aug 2025 15:45:13.3463
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5tgnYdTUSboe81cq9Q/1+TuurtMeKe9qpobLPbY0Ez4euZ1OzvuLm/7puxFVsRzySweC8Vb9P0y9iTk2naKhHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6075
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-T24gRnJpLCAyMDI1LTA4LTIyIGF0IDIxOjQ3ICswOTAwLCBBbGV4YW5kcmUgQ291cmJvdCB3cm90
-ZToNCj4gVGhlIEdTUCBib290bG9hZGVyIGlzIGEgc21hbGwgUklTQy1WIGZpcm13YXJlIHRoYXQg
-aXMgbG9hZGVkIGJ5IEJvb3Rlcg0KPiBvbnRvIHRoZSBHU1AgY29yZSBhbmQgaXMgaW4gY2hhcmdl
-IG9mIGxvYWRpbmcsIHZhbGlkYXRpbmcsIGFuZCBzdGFydGluZw0KPiB0aGUgYWN0dWFsIEdTUCBm
-aXJtd2FyZS4NCj4gDQo+IEl0IGlzIGEgcmVndWxhciBiaW5hcnkgZmlybXdhcmUgZmlsZSBjb250
-YWluaW5nIGEgc3BlY2lmaWMgaGVhZGVyLg0KPiBDcmVhdGUgYSB0eXBlIGhvbGRpbmcgdGhlIERN
-QS1tYXBwZWQgZmlybXdhcmUgYXMgd2VsbCBhcyB1c2VmdWwNCj4gaW5mb3JtYXRpb24gZXh0cmFj
-dGVkIGZyb20gdGhlIGhlYWRlciwgYW5kIGhvb2sgaXQgaW50byBvdXIgZmlybXdhcmUNCj4gc3Ry
-dWN0dXJlIGZvciBsYXRlciB1c2UuDQoNCi4uLg0KDQo+ICsgICAgLy8vIEdTUCBib290bG9hZGVy
-LCB2ZXJpZmllcyB0aGUgR1NQIGZpcm13YXJlIGJlZm9yZSBsb2FkaW5nIGFuZCBydW5uaW5nIGl0
-Lg0KPiArICAgIGJvb3Rsb2FkZXI6IFJpc2N2RmlybXdhcmUsDQoNCkNhbiB5b3UgcGxlYXNlIHJl
-bmFtZSB0aGlzIHRvICJnc3BfYm9vdGxvYWRlciIsIHNvIHRoYXQgaW4gdGhlIGZ1dHVyZSwgaXQg
-Y2FuIGJlIGRpZmZlcmVudGlhdGVkIGZyb20NCnRoZSAiZ2VuZXJpYyBib290bG9hZGVyIiB0aGF0
-IGlzIG5lZWRlZCB0byBsb2FkIEZXU0VDIG9uIFR1cmluZz8NCg==
+Hi Jon,
+
+This series does a major cleanup at docs Makefile by moving the
+actual doc build logic to a helper script (scripts/sphinx-build-wrapper).
+
+Such script was written in a way that it can be called either
+directly or via a makefile. When running via makefile, it will
+use GNU jobserver to ensure that, when sphinx-build is
+called, the number of jobs will match at most what it is
+specified by the "-j" parameter.
+
+The first 3 patches do a cleanup at scripts/jobserver-exec
+and moves the actual code to a library. Such library is used
+by both the jobserver-exec command line and by sphinx-build-wrappper.
+
+The change also gets rid of parallel-wrapper.sh, whose
+functions are now part of the wrapper code.
+
+This series is now on top of:
+	https://lore.kernel.org/linux-doc/0ad4fefca2855603c66d513474a687058e780931@intel.com/
+
+As I'm expecting that the oner one (although it is bigger)
+won't cause too much noise, as it impacts only the media builds,
+and remove a hack that would otherwise require some code here.
+
+While version 2 has the same features and almost the same code,
+I did some changes to make easier to review:
+
+- there's no generic exception handler anymore;
+- it moves sphinx-pre-install to tools/docs;
+- the logic which ensures a minimal Python version got moved
+  to a library, which is now used by both pre-install and wrapper;
+- The first wrapper (05/13) doesn't contain comments (except for
+  shebang and SPDX). The goal is to help showing the size increase
+  when moving from Makefile to Python. Some file increase is
+  unavoidable, as Makefile is more compact: no includes, multple
+  statements per line, no argparse, etc;
+- The second patch adds docstrings and comments. It has almost
+  the same size of the code itself;
+- I moved the venv logic to a third wrapper patch;
+- I fixed an issue at the paraller build logic;
+- There are no generic except blocks anymore.
+
+Mauro Carvalho Chehab (13):
+  scripts/jobserver-exec: move the code to a class
+  scripts/jobserver-exec: move its class to the lib directory
+  scripts/jobserver-exec: add a help message
+  scripts: sphinx-pre-install: move it to tools/docs
+  tools/docs: sphinx-pre-install: move Python version handling to lib
+  tools/docs: sphinx-build-wrapper: add a wrapper for sphinx-build
+  tools/docs: sphinx-build-wrapper: add comments and blank lines
+  tools/docs: sphinx-build-wrapper: add support to run inside venv
+  docs: parallel-wrapper.sh: remove script
+  docs: Makefile: document latex/PDF PAPER= parameter
+  tools/docs: sphinx-build-wrapper: add an argument for LaTeX
+    interactive mode
+  tools/docs,scripts: sphinx-*: prevent sphinx-build crashes
+  tools/docs: sphinx-build-wrapper: allow building PDF files in parallel
+
+ Documentation/Makefile                     | 133 +----
+ Documentation/sphinx/parallel-wrapper.sh   |  33 --
+ scripts/jobserver-exec                     |  88 +--
+ scripts/lib/jobserver.py                   | 149 +++++
+ tools/docs/lib/python_version.py           | 133 +++++
+ tools/docs/sphinx-build-wrapper            | 660 +++++++++++++++++++++
+ {scripts => tools/docs}/sphinx-pre-install | 134 +----
+ 7 files changed, 1022 insertions(+), 308 deletions(-)
+ delete mode 100644 Documentation/sphinx/parallel-wrapper.sh
+ create mode 100755 scripts/lib/jobserver.py
+ create mode 100644 tools/docs/lib/python_version.py
+ create mode 100755 tools/docs/sphinx-build-wrapper
+ rename {scripts => tools/docs}/sphinx-pre-install (93%)
+
+-- 
+2.51.0
+
