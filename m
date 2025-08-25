@@ -1,89 +1,249 @@
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5476F244663
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Aug 2025 22:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD331A9FA4
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Aug 2025 23:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756162666; cv=none; b=K9Briu5UOAVbQ3uFAFr4B/hjvaserx2Q4o34Brk7rnNBHdt1wWPz5gkc3THiwshoMJqvtfLn/uyNFJOmiaxcxJbZpKthJYZXnbfPy5YFqjLuNpozjb8IWxPd4aFVcQ9dfpZMXNw9ToZRQOGCA85YgXY61qCrSQjZ9y710Z2AnRc=
+	t=1756164041; cv=none; b=uP2bTgHJ53C7oxS9CpKg+sjf0J/WN7KFPShx2v5hV8ydpKTt4911PlnD2/xTypoCr4UUFv7zadWOckPrtOusbTnWc45hd2+pnXBzCWu9uWwyOdm7P5XRoMa/hSYBOQpk5qEE0+C8oJwOaI0pqwEAfn+xSXeTBaekhAdhyTYn21w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756162666; c=relaxed/simple;
-	bh=k6CXn/IUYlwjU1mZtJc9lxFjypMrLSwhiknLwvu+nv8=;
+	s=arc-20240116; t=1756164041; c=relaxed/simple;
+	bh=gbTmdVfYx6WD/wWYJEFXu2sOB9/ZLFj1eXj5NVqzxQQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hWuriVNuArk+k1FOPruGT2jwAMFR8fxtfG3ScZaUIrW4g7jWwKrZs0U4pD0ykgb2y8bpumQsftuO9JWJUKoKkOx+HOhwswVr6y0D5U9ROrM82K4TAUhJpg/9O4de+7I+LVMXI0JZJgzMCsXwmiO87cD9n9qFyuzrWthqKQZC6CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=Fl/ynRlI; arc=none smtp.client-ip=109.224.244.107
+	 Content-Type:Content-Disposition:In-Reply-To; b=jcle+vY3T2wEVgrzZ2AShucAWW9BydWoaCbucxF1HkHH1EYEJRiwVR9nKuZ3bxpbs0aQAUIlIPD0zsD2bEoHPri+RGuQ3ii/dPyJKM7dAsmUzURu9Nn1tG8bUqyIAhCMAnMMi1iqsB/GSuMg4zrW+ezuQdnNjfbPYw7YYkOyKv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=Kw7HvHkO; arc=none smtp.client-ip=185.70.43.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="Fl/ynRlI"
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="Kw7HvHkO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
-	s=protonmail3; t=1756162661; x=1756421861;
-	bh=vu75YEXvimcJ8M7zeA0lHn5w01NrEWPJKFgrd8A1RLI=;
+	s=protonmail3; t=1756164027; x=1756423227;
+	bh=dbfxHDr+4prCVmBev/sJiog2Lc66l2bjBKk57p6NvnI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Fl/ynRlIhd0FmHjA3hrav+sCIaFxEFAcogm91AM2bH0A+LebNabi19EhKjwEZZAqT
-	 oyqV7J2T8fZZm0YUCdXjtcBlxJ5sRkjD/hspiF5w8PBNfYadRqY9VlvzCn598vH+3B
-	 1CFhAdNBJscHem/ze8se6gjovExwr78Xh47yY/Qr6nUYvVLBI/FuX0v+kT67Goka/s
-	 jBcFY0sMPh5N14PCGMUo2AuBNVyg/lJ6jYcttymmRVksA1PhJU3BVnInIRDJJbElPu
-	 opQPCXAEE0/Fyg2xRv0E1zRdpsRkAgXn8/NK8cuWXMRpcdGgD+zz95QTVdLRCNqD0B
-	 /EAukiP+WlUMA==
-X-Pm-Submission-Id: 4c9mQq0mdPz1DF4C
-Date: Mon, 25 Aug 2025 22:57:36 +0000
+	b=Kw7HvHkOW/t/7aBcbbaxEWgJIAosTbK9FiF/6CDyQESX2BXBlTRAFBUsx8tZMfYAr
+	 db6I272BNYVLGhyhLUyUt86/sxo7RmXvwpjm8C+Jjkr6JyInW0/IQOAJVfpeF90Zzj
+	 5+nWo4hHFKRADJMvcZTjlkhAKamuNUw58vSUs7fVOJwNUZ+ypNoX6ybtgrOTqt75Yx
+	 yea2VWK69D3FhqUjpwyABmkcfz2XUDQq1VoKse3WnJus3t53cG1bvF/aEuAhTVNkiR
+	 BfCPH2IfwZzREM40vUa2Qc7C0DylCv6VtERKOBfbExqguu0BHpwvtB36zuKpOjPWJ6
+	 8cI9ZlrrjiWNA==
+X-Pm-Submission-Id: 4c9mx60wYnz1DDLJ
+Date: Mon, 25 Aug 2025 23:20:22 +0000
 From: Elle Rhumsaa <elle@weathered-steel.dev>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, tamird@gmail.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: uaccess: use to_result for error handling
-Message-ID: <aKzqYDfsZNQmvmUw@archiso>
-References: <20250821091939.14019-1-work@onurozkan.dev>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>, nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
+ structs
+Message-ID: <aKzvpFf9PkTHYNet@archiso>
+References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250821091939.14019-1-work@onurozkan.dev>
+In-Reply-To: <20250824135954.2243774-1-joelagnelf@nvidia.com>
 
-On Thu, Aug 21, 2025 at 12:19:39PM +0300, Onur Özkan wrote:
-> Simplifies error handling by replacing the manual check
-> of the return value with the `to_result` helper.
+On Sun, Aug 24, 2025 at 09:59:52AM -0400, Joel Fernandes wrote:
+> Add a minimal bitfield library for defining in Rust structures (called
+> bitstruct), similar in concept to bit fields in C structs. This will be used
+> for defining page table entries and other structures in nova-core.
 > 
-> Signed-off-by: Onur Özkan <work@onurozkan.dev>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 > ---
->  rust/kernel/uaccess.rs | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  drivers/gpu/nova-core/bitstruct.rs | 149 +++++++++++++++++++++++++++++
+>  drivers/gpu/nova-core/nova_core.rs |   1 +
+>  2 files changed, 150 insertions(+)
+>  create mode 100644 drivers/gpu/nova-core/bitstruct.rs
 > 
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index a8fb4764185a..9992eece2694 100644
-> --- a/rust/kernel/uaccess.rs
-> +++ b/rust/kernel/uaccess.rs
-> @@ -7,7 +7,7 @@
->  use crate::{
->      alloc::{Allocator, Flags},
->      bindings,
-> -    error::Result,
-> +    error::{to_result, Result},
->      ffi::{c_char, c_void},
->      prelude::*,
->      transmute::{AsBytes, FromBytes},
-> @@ -495,9 +495,7 @@ fn raw_strncpy_from_user(dst: &mut [MaybeUninit<u8>], src: UserPtr) -> Result<us
->          )
->      };
-> 
-> -    if res < 0 {
-> -        return Err(Error::from_errno(res as i32));
-> -    }
-> +    to_result(res as i32)?;
-> 
->      #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
->      assert!(res <= len);
-> --
-> 2.50.0
+> diff --git a/drivers/gpu/nova-core/bitstruct.rs b/drivers/gpu/nova-core/bitstruct.rs
+> new file mode 100644
+> index 000000000000..661a75da0a9c
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/bitstruct.rs
+> @@ -0,0 +1,149 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//
+> +// bitstruct.rs â€” C-style library for bitfield-packed Rust structures
+> +//
+> +// A library that provides support for defining bit fields in Rust
+> +// structures to circumvent lack of native language support for this.
+> +//
+> +// Similar usage syntax to the register! macro.
+> +
+> +use kernel::prelude::*;
+> +
+> +/// Macro for defining bitfield-packed structures in Rust.
+> +/// The size of the underlying storage type is specified with #[repr(TYPE)].
+> +///
+> +/// # Example (just for illustration)
+> +/// ```rust
+> +/// bitstruct! {
+> +///     #[repr(u64)]
+> +///     pub struct PageTableEntry {
+> +///         0:0       present     as bool,
+> +///         1:1       writable    as bool,
+> +///         11:9      available   as u8,
+> +///         51:12     pfn         as u64,
+> +///         62:52     available2  as u16,
+> +///         63:63     nx          as bool,
+> +///     }
+> +/// }
+> +/// ```
+> +///
+> +/// This generates a struct with methods:
+> +/// - Constructor: `default()` sets all bits to zero.
+> +/// - Field accessors: `present()`, `pfn()`, etc.
+> +/// - Field setters: `set_present()`, `set_pfn()`, etc.
+> +/// - Builder methods: `with_present()`, `with_pfn()`, etc.
+> +/// - Raw conversion: `from_raw()`, `into_raw()`
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct {
+> +    (
+> +        #[repr($storage:ty)]
+> +        $vis:vis struct $name:ident {
+> +            $(
+> +                $hi:literal : $lo:literal $field:ident as $field_type:tt
+> +            ),* $(,)?
+> +        }
+> +    ) => {
+> +        #[repr(transparent)]
+> +        #[derive(Copy, Clone, Default)]
+> +        $vis struct $name($storage);
+> +
+> +        impl $name {
+> +            /// Create from raw value
+> +            #[inline(always)]
+> +            $vis const fn from_raw(val: $storage) -> Self {
+> +                Self(val)
+> +            }
+> +
+> +            /// Get raw value
+> +            #[inline(always)]
+> +            $vis const fn into_raw(self) -> $storage {
+> +                self.0
+> +            }
+> +        }
+> +
+> +        impl core::fmt::Debug for $name {
+> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+> +                write!(f, "{}({:#x})", stringify!($name), self.0)
+> +            }
+> +        }
+> +
+> +        // Generate all field methods
+> +        $(
+> +            bitstruct_field_impl!($vis, $name, $storage, $hi, $lo, $field as $field_type);
+> +        )*
+> +    };
+> +}
+> +
+> +/// Helper to calculate mask for bit fields
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_mask {
+> +    ($hi:literal, $lo:literal, $storage:ty) => {{
+> +        let width = ($hi - $lo + 1) as usize;
+> +        let storage_bits = 8 * core::mem::size_of::<$storage>();
+> +        if width >= storage_bits {
+> +            <$storage>::MAX
+> +        } else {
+> +            ((1 as $storage) << width) - 1
+> +        }
+> +    }};
+> +}
+> +
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_field_impl {
+> +    ($vis:vis, $struct_name:ident, $storage:ty, $hi:literal, $lo:literal, $field:ident as $field_type:tt) => {
+> +        impl $struct_name {
+> +            #[inline(always)]
+> +            $vis const fn $field(&self) -> $field_type {
+> +                let field_val = (self.0 >> $lo) & bitstruct_mask!($hi, $lo, $storage);
+> +                bitstruct_cast_value!(field_val, $field_type)
+> +            }
+> +        }
+> +        bitstruct_make_setters!($vis, $struct_name, $storage, $hi, $lo, $field, $field_type);
+> +    };
+> +}
+> +
+> +/// Helper macro to convert extracted value to target type
+> +///
+> +/// Special handling for bool types is required because the `as` keyword
+> +/// cannot be used to convert to bool in Rust. For bool fields, we check
+> +/// if the extracted value is non-zero. For all other types, we use the
+> +/// standard `as` conversion.
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_cast_value {
+> +    ($field_val:expr, bool) => {
+> +        $field_val != 0
+> +    };
+> +    ($field_val:expr, $field_type:tt) => {
+> +        $field_val as $field_type
+> +    };
+> +}
+> +
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_write_bits {
+> +    ($raw:expr, $hi:literal, $lo:literal, $val:expr, $storage:ty) => {{
+> +        let mask = bitstruct_mask!($hi, $lo, $storage);
+> +        ($raw & !(mask << $lo)) | ((($val as $storage) & mask) << $lo)
+> +    }};
+> +}
+> +
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_make_setters {
+> +    ($vis:vis, $struct_name:ident, $storage:ty, $hi:literal, $lo:literal, $field:ident, $field_type:tt) => {
+> +        ::kernel::macros::paste! {
+> +            impl $struct_name {
+> +                #[inline(always)]
+> +                #[allow(dead_code)]
+> +                $vis fn [<set_ $field>](&mut self, val: $field_type) {
+> +                    self.0 = bitstruct_write_bits!(self.0, $hi, $lo, val, $storage);
+> +                }
+> +
+> +                #[inline(always)]
+> +                #[allow(dead_code)]
+> +                $vis const fn [<with_ $field>](mut self, val: $field_type) -> Self {
+> +                    self.0 = bitstruct_write_bits!(self.0, $hi, $lo, val, $storage);
+> +                    self
+> +                }
+> +            }
+> +        }
+> +    };
+> +}
+
+This is awesome. Is there a place for this to live outside of
+`nova-core`? I would think this would be extremely useful as a general
+helper for bitfield struct definitions.
+
+> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+> index cb2bbb30cba1..54505cad4a73 100644
+> --- a/drivers/gpu/nova-core/nova_core.rs
+> +++ b/drivers/gpu/nova-core/nova_core.rs
+> @@ -2,6 +2,7 @@
+>  
+>  //! Nova Core GPU Driver
+>  
+> +mod bitstruct;
+>  mod dma;
+>  mod driver;
+>  mod falcon;
+> -- 
+> 2.34.1
 
 Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
