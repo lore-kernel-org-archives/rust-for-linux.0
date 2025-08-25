@@ -1,240 +1,137 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2082.outbound.protection.outlook.com [40.107.243.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A4518B12;
-	Mon, 25 Aug 2025 12:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756124258; cv=fail; b=ejrt1y1cOWMS6EZ33PvsCzWX7KAsY1oPbbWmAQFQQMM1rHgXpqDJ4lZeNHI/4BtVS2OEe6KpPtPPWSoozRNzNoPgfyrLD1tUvU9p3Akn3LJquf7xa/dFVF8/CRlacat+0znN0K/qPjTKIaaIcL/AJHX2IVpXac0z4Z1WyyVBNq0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756124258; c=relaxed/simple;
-	bh=P+rpuDFqO13V57O0rDYJ+AuE47/3iKtD2MtjNJeH4xA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=i5O57Ko5Ic0eOVhnAeWMGoUAX1eBX42pAV4ICbMzcQpbD24391b7pxGCMt3ZGQ2nfVui79Z//+twlZoQxYTNcqRvul/jXo7oVllkEJH2ejoXOxuqBcE9324NaoN60kjbejyVb4emcWmeTgqGCnYs7rQmvNOU0zvF1YZfP5zCU7w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nABiCtNM; arc=fail smtp.client-ip=40.107.243.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1493D288D6
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Aug 2025 12:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756125019; cv=none; b=AjwF1mUx/xSckZLDGb/VRs4Tq9UWeBpifri8CFwkP1bJcNxyRyuObEgDl8XzLFtquU81o0ePBMdxsQgFdSJtHTt1xcue/eQuPQc/QDahqGSLzFesdoQ3IL+MTmKltJ26qHZTcC2DY0m0RiNnETr2J5CtFERw8U6ZVn/J7LoWg6U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756125019; c=relaxed/simple;
+	bh=zns+KohtBJoI91qRRuLq011AG8NdO6t1QfjmI9CqelI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tSqwOO+a2l1HYyBSIvtphCL6+RW+oincGhfMB/JHpmgDTmU3HT1HGmwW+XClvDKk4X1z9kgPIRdQBSpNKwuAgTk03IHbEpj6YZPo5NRGwrcLUbkXVtf2MBrn9lIrYNpAtWKjyagaraBwULTauOqYzOPZUcutG1wjKEIhxI+4lNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZS9wJZSt; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nABiCtNM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EJB2uFYS2+5A31tWHc0tpd4LMatlwxbSDKE1OXmp7nENfow956HaNf0Uwy4UWMwB2A6kzfM+YQorXvC9YosKi85tDnb1FK719zR6h22iXzZTKIguQ8/F6nUB8yQkWxv2ZOXmwpnRY4F/EczDVYkg1dvIPW0LUw+ay9yYF1JNOVSrtqT7oW4WNK+gPdD+E2UMSMxOXG4VRLvVkMWma96++3XkKpgWUe1Lzk3jvbnLXl4y+g2BS1/QqaH8c9hbGyer/Yfn5mHVSwehL2oZBOgrtCX2m1PPwLSGuRxotqiC8iwkpxc0c3QNXharIKkw9qqE+hFcx/8Ie1Rvr9RHVyNUzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+s445BdfOYbZ072yjEZ8y0bAb/7I6ffuCGrZDBLIJlk=;
- b=KIjCl5ZDYukIPr53/hPJNTCtrbNjpzTI+SULoLL7BOyz/yyMay7SCkWVjjGujfMC2YwdxmA0BvhYfo0hUKYB5X2oLwnBDMnD7qzotJYG+tcgFDogJpfHY+36dfWvaJ58UXlrQ8XS7P2WjQ2Zwd10GB7TxncqpGjvkwmg7D3nEQ16gu6mEtLdcKtfVGYr6Cs8wnHZWIuolmXM0+gKCVEjSOypqR2z56BcryLE7Zsz2kIoQ5qD9X4KsnHh5nLtY/EV2xrKQMLiwcrm0o7kDdzHcakHL0sGBrr/v1KRNMwIQ4XEujBBRhPby083vWvc2XZbsnbh38O3wX4JiAdXLSOXGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+s445BdfOYbZ072yjEZ8y0bAb/7I6ffuCGrZDBLIJlk=;
- b=nABiCtNMv/K7VIkFA7JkRbwggtqgn9pJ44M2AX9exIlGkQCoaD9GMGV4SosENcgMqjXJh2aHUWJ2mrSAV8ILHzmejjHB55m0qi8Gs15GYu+LBpz/s6dZ516pE/XF3/XtOtw3VKnOZTO55+0cbpcX2n1t7t+kNbD8IAvgkXe//ex9+eLzgl7SSeQPAx+Zy2+FgvYRcunGwxDbOrtXI2r93BA/n65IN3v8FJvCVn86kZPzOppfH0Ml9T5lLVlyL/qxenQuR/kXu0tx5oUoU35MJmtjjPZBStMcb/Q7GVqqD/7VSJEwF1u2NtO6JuW+5WMrJuMkCnuyabkwtbHJZjiDbw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA0PR12MB7074.namprd12.prod.outlook.com (2603:10b6:806:2d5::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Mon, 25 Aug
- 2025 12:17:31 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9052.019; Mon, 25 Aug 2025
- 12:17:31 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 25 Aug 2025 21:17:28 +0900
-Message-Id: <DCBI3A82MOFN.3R7O7I6U6D7LN@nvidia.com>
-Cc: "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <nouveau@lists.freedesktop.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>
-Subject: Re: [PATCH v6 1/5] rust: pci: provide access to PCI Class and
- Class-related items
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250822020354.357406-1-jhubbard@nvidia.com>
- <20250822020354.357406-2-jhubbard@nvidia.com>
-In-Reply-To: <20250822020354.357406-2-jhubbard@nvidia.com>
-X-ClientProxiedBy: TYCP301CA0027.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:381::9) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZS9wJZSt"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3c68ee43c76so2082656f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Aug 2025 05:30:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756125016; x=1756729816; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SLj1YIFjwaRAHRpa3eawEDP1UKRYIus63pdnhlf7p74=;
+        b=ZS9wJZStYb8R5YypRuhS/fSOz6BA6nGlpoaHjtmUcGWetoA46kzb7SaiMACzoNtrwj
+         KMtITdu4cSbpy/Lh3GBpCXddyc+zrXizP+PY0LpjdULHfu/vu0/RqYy+mmgeepJhya3+
+         nf+OwfxJ2Nr4Y53zuQLCESH6d5qMmW+Q/Dny5StagAVotBHRkB7JFeJsOe8eRIIWhIVr
+         bKCqkFLrGs5eh1NfjP02Cca7pXeWM2cN9xqeLL9E69OuFJk1ibJgd2zFLmW29kJryMfN
+         GpgatWqIXF8xKv7hVaTNs1ki3QDuvLbVKvgwOu8flAxP+sUUsNdvVVbG2cYjfqlHSYSZ
+         Osbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756125016; x=1756729816;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SLj1YIFjwaRAHRpa3eawEDP1UKRYIus63pdnhlf7p74=;
+        b=xAMrA69JzqOK5NpZZHSgSYL09exaZmL65gX/qs21GOmsp2P+P2bOMHXx/roPWcoj5w
+         ykYGwV2MF+dKpA+nZJskMU4dsZNCpoxv9abBvwOsV1Hg5ilz8Pu0dfZkCDIeyp1DrSHG
+         4z/YmhPSsLOBta53ktcUOCsTEuKfpCsBD8eEo31fS/NZxjKv/wbUhViItvGwcyvMzBen
+         +Bbo0Isr33nV6LghYffM5xgnzn4za7DWxAIc9HtHdNpjylaEWFMF7aWA27zRwCEZyozP
+         BFFZJbQ03paCns+e0kWp0kWrVI4f5yswOBhLxBW0+PFOU0dx9AX6d7V55IMbyBF0n5nh
+         75vQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXU+oKa7+CzzcypZyBnHVbL3+5Pd1Q9ecG+dPeDjW2508bxE70am+cxicM3VV3s3NpSnBWh0vbnB52SvoPOJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuaKPmsIG1tvGWqoPffzxWCXN1Aj8cOcVCxJA9WAn4ViTIU8qc
+	DM4eVw+lCa5/27SS2iauXv3MXDITikDrUNeDNolbSu9YV4VSArsnPc8EEi45ao3mplgnZOKw4ZT
+	RU6N9tPM0Bhp2TtvKgw==
+X-Google-Smtp-Source: AGHT+IGfNfFcJqlPPh2CO3TEuFlkWXy0Jp7NPDl4lcwbEkAaO8Ya/l16lBvI3Ir5wd+v5zFUtMC7R0Fb1fNxLXs=
+X-Received: from wrbeh5.prod.google.com ([2002:a05:6000:4105:b0:3c9:38ca:2c34])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:5887:0:b0:3b7:78c8:9392 with SMTP id ffacd0b85a97d-3c5daa2b898mr7662572f8f.19.1756125016321;
+ Mon, 25 Aug 2025 05:30:16 -0700 (PDT)
+Date: Mon, 25 Aug 2025 12:30:15 +0000
+In-Reply-To: <5ssx3vakl3enjeaygpxfqtb26ufehwfjvcwqfna4xbhc645xpj@lzuvaf3my3f6>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA0PR12MB7074:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f4e7837-ed0d-4f29-0ef1-08dde3d15d42
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|10070799003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q3I0VWx4VzZXY3U5bVBOT0RwblYyc0FOWXNwdkUwSGlLZXdHWVpCTmljZk1x?=
- =?utf-8?B?b0hLaThKV0VvZXV3YTc0K2EzTFdPbDNXU0ZiRU1UTDltMXl2YzQ0bFgzNTd6?=
- =?utf-8?B?aWE2ci9SRVFqeldQL0Z5V01OcFZkVlpES3Zmek9oaWh3djBxM2VJWDRvdFZt?=
- =?utf-8?B?UXg0RGkyQk4yVzAvUXBEVEJTVFMrUkVGcDFjMjlIenQ3c2VFeXZtenljNFh2?=
- =?utf-8?B?WlhrWXN3Nlp3UFVBZjZmZE03RDZkNWI4VlJFVjNybmZzV2JoUjF0U21KUFBt?=
- =?utf-8?B?YnRNTTc1anpLbGhqR1hIUk91UjNTS1RsWit3ZzRTa1J5YTdGRytDZm9QeC85?=
- =?utf-8?B?d3R6VmtHZXh4VW1tdUJRR2VFQ0dCc2lkZHBvS3RXdGFNdnFhVnlQVE92Q1gw?=
- =?utf-8?B?cm5YeHI4NVY5UlJIcThzcmlDS0poZWw3MzloMmw0QWdoQ2Y5OU9TdzhVbld4?=
- =?utf-8?B?MFR4d3NLUjMxYkQwdDlpaHR5WnFiWGVRMlFrTmkrTEhINU9kOEg1UnVOemls?=
- =?utf-8?B?YWFETHFET1FidThnSXN0OUlDT0tyTTBLdmxhcG9mdjJXaEd2YkVTelI5TFhw?=
- =?utf-8?B?RHNSL2tpeHltR25TNUNLS0xGWXB1ZU5OQ1pxVFFlZ012bTg5Tk1QZ3NRekt4?=
- =?utf-8?B?c252bEFKZHRHa2VnRWlBTlljTlk3K2FUcWk5RjVMYTVZMFpXZllvM2lIa2wx?=
- =?utf-8?B?L1NWVWV0cUNNaS8xZVpHQnlHMTk4L2RucFIwYi9JejJqVnhQMlI3dUEvdGIv?=
- =?utf-8?B?d25uazhGTlM4TTlLSWRtcFgxOGcxM251YnRjUi83TmgwK3lXcXR5cE0wanRl?=
- =?utf-8?B?QXFsV3o2bzlEL3YrZUlSMFFBRXF1UXpnZ0JVekRRK0hQS0diQ0hwTi9NVnZt?=
- =?utf-8?B?UjUrSVM0VUp3MGUwNjAwYzg3V0ZGV2NNb0h6aEN6b0hNdmJtQnYrd2FtRUdn?=
- =?utf-8?B?Q0E0dm8rbkthbmt1UXIxOEl2ZVh2bStQZXJadTc3SXJZR0IvYkg1ZyswT0xh?=
- =?utf-8?B?ZUFpc0pKR2ppYkRpTGlhMWdhNU8xVkV4ZWlBcVVZOWNmTFFvbWpUaFdHMjJ6?=
- =?utf-8?B?V0VqcktZZE5wTk1UeFhkQWdtMlQwK3NFUUFROTgrMEVxc3UzZ09ISlR2SE1r?=
- =?utf-8?B?ZEV3NEl5WWsvUlRCSmRIOE0vWStnT3Z0bDd0bTdEcno5YXV3cktsdW01a2dq?=
- =?utf-8?B?MWJlZ2gzK3RBYzZjYkN2TFRQSjArZUF1bG92eFprc01oOGQ1WUp3ME5nQTFD?=
- =?utf-8?B?bStkVlh1bDFXUVlkWEo2ek9NVEVlaEp0MjZKT1pCOHR0blVnQS9HS3h2ek56?=
- =?utf-8?B?SEcyRmU3U2gyZis3ZEJTWm5GN0xEVWR4KzBwZUMwYUZxOWk5N0xlVmNSUkJj?=
- =?utf-8?B?R1pNOERLeGZLZzR4K24yUWdNY0JJVUt5dHBnVzJyOVBNYUVUdWlzT3JLQmpw?=
- =?utf-8?B?SE45MXFpNHpiYVE4dkJOSGZFR1JNcXJQbHZWdVVGdnczMkcrMXY2ZzJidEk3?=
- =?utf-8?B?TUNmMUd3ZGMvMTd3OS8zcUFTK29UWllVV2tCdlU1MUxaK0VqRUVwOXdzcGd5?=
- =?utf-8?B?V1pob1dFczJ0OHh6WjlIWWRQN2tPM2p1VjRlV2I4SENLQnZQZzdvOVNGOWM0?=
- =?utf-8?B?cnN2bFZQcWRQVXhUbVNIaFNhdFN1aDdjd2pQQmQ3VXdSSFBCQ1Jja29zdmQz?=
- =?utf-8?B?Q2ZJUHVvdC91Mm5NZWJ5RUdoelYrdjF3Yis0cE15Q1l3dmsvSnFaVFhUcTFl?=
- =?utf-8?B?U1JoMzc2YjM3cG11dFJJakxOSG11ZU94VzJvUDF6UmpYSDdQVWFrdlg1RzEy?=
- =?utf-8?B?TkxyYU8wN2dUR0dZVUw1WnlwMTRXOVBTTGx2RWZYa3F5R09MemkvTDZUdlJp?=
- =?utf-8?B?eUtqZU56b1V4LysxU2JpcjFBbjl2c0tZb3ppNCtLRnVGS29ha2dVN3dnSGRL?=
- =?utf-8?Q?RftKHmH0h1I=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(10070799003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d2M5ak1qQmkvdGc0clZGQXpRdHJJRVlNZXJUMjFEaGJQV2xpaEltNGlQNHBV?=
- =?utf-8?B?ajhsTUNaQTg2d1FkUENVWDlITlFvMGNzYmtQbEZPb0NpNkVjOTBRekVZUnlR?=
- =?utf-8?B?aUZSUlNPRXdtZlpKN0JpZ1p3ckR1RGNKZzR0OC9oYmpKeit3Z3FWOG5wQzdy?=
- =?utf-8?B?QnpVSXZVaUhRd2k0dlYrbXN4YVJiQ3dkdU1xVk81WUt4UHlwZ0RubUR5Rmk4?=
- =?utf-8?B?dDNJRmlxVFpRL3hBeUUvUWM0dy9DT0kyNzc5Q1VyL2RpbTNXQ1FOV1VLZWVr?=
- =?utf-8?B?MXlKQldWRjczclUwK0RHS1YxVVVYMFNDTHhwbXpobDlCRkw2Z2R1K205d0Iv?=
- =?utf-8?B?ckVPK0ZzUHlHeVNYNGxieWpNN1EvblFqZFJjTzJNMUo4TmREdVJtMVowNXA4?=
- =?utf-8?B?MXJueVJKbEx5T0hFSXExVVZ4dDB6azlMeHRjMmdUeUdRQlk1NzlWNC9jc2d5?=
- =?utf-8?B?QUZROExSVVBxT2hHb1lUeTBiSkd2WWJnMXpXRHFSSXZiajIzNW9sNXZNQlE3?=
- =?utf-8?B?MTBRa1VvRXEyM1VSNDFScHgvc0tDbWl0U08rbnVONEpqOTRNejNROFJmaHZN?=
- =?utf-8?B?TXl1OGZCcEp4bU11R0hzTzJiZzFBeTBodVpodnd1Vnp4TUp4WXpDYVBOdkdN?=
- =?utf-8?B?MldhM1BtVExZQnN6b1RaTlk0cDFXUUJORERGWUN5Q1FlYWpVeUVYSloyaFFQ?=
- =?utf-8?B?SWFnRUFBdjRJL3IyeEZFUmFPMVpiVXhrVU44SjQxV2dLd2dVUjV0Y3JZYlhU?=
- =?utf-8?B?c3M0S0F5cEI4N3RqV3YzdHh5WFZ2RHVJVmVGWFFCK09EVDJGY2NwR3FXVWJF?=
- =?utf-8?B?WDlaOHRsc050R1h3M0szWTlIRURSc1laWTFLVjJqbVJESERMTGdTeGZMRGZF?=
- =?utf-8?B?UmttNHZjZWNURkNBMnREbGZDcW9Rb1NKVWdSWWkrOTY5VnhLSzByTWlmOU8w?=
- =?utf-8?B?U2VzVitZdGt4Z1dEWmRlWkhPMXp0N0NXZWcxRGRHbmd3ZHNFNXJDL2NUb3J5?=
- =?utf-8?B?ejBKWTVNbUZKOGo5a3ErMzNhRTlmQ0FVcHB5YW40K3NzdDU5M3A1N3lBdkNm?=
- =?utf-8?B?b252U1lTRzlzTWdWb2JZRkkyelBubUtobGJHVStXNVo5UEdidFFBVkhVRkJn?=
- =?utf-8?B?YTlNd2NPU3FOVWpoc0EweTNXeDRxcFhCRFNUSW83dE5DMTNycWVpOG9Bc3BU?=
- =?utf-8?B?TVg5NVZzL1lOanBoUTRFUHF1blA4Q3l6eVd6V2NoVy9YVTRBOWR6RGRmbFpQ?=
- =?utf-8?B?aEcvWDFiT1lPTXF4NzhISjd2LzlHcFFqK25qVzk4N1ZQOFY1NlNOWjRrKzlU?=
- =?utf-8?B?dVVqNVZCRXAxUUErTFFsQ0JTUExtUWZ0TEJIZXlLcERyNm81L1ZpZncwbjY2?=
- =?utf-8?B?SWpUMFFwc1J1NmtQTjlaQ3dVWURSNHBqS2t5UDFua05wYlIvaktIZTczTTdw?=
- =?utf-8?B?OW9qdjJDZnlsY2VVZTIwUHlnZnU0QUYxbEl5M1BpUlVXZjEwbjN0VVQzNkNj?=
- =?utf-8?B?Y3gxRDllN1gzc0h5OTdENi9iZldoaW5pNkozMkpRenRnOCtJcjR4ZnJvOE1z?=
- =?utf-8?B?YUJZYTVPRUEvZGwrNU1FS25KNGFzb08rK0djUGJVd0tJbkF6OWcyNzFUYkQ3?=
- =?utf-8?B?RlNoaG0xcld6bkdjUDVSZXpIOW1IcjVvWUJlZ3ViNEp6L0tOTFJkM3BzUjMr?=
- =?utf-8?B?RUxwbDZ3V0RRSFI4NDVvZXczRDRJdGl2R0dMRlEzM284ZjI2TFo0ZXM1L1RZ?=
- =?utf-8?B?ODRYYUtDdzZoQ2FiYlExRjhEYjB5OUxpMXJ1Tk5BRlBVVHpxdDVaSEpVN2wy?=
- =?utf-8?B?Mi9ZUVlGUkR1dWJFUGdmZmlaOHBhaUxQb1d6VVJsMDBDZGVqN3YxUUVNZXhi?=
- =?utf-8?B?UUlTQlhtWlFHdlQ5V09MUHpNSDBJS2N2S0sxeEJPSGJZY2RIQ09kMWpVYk8w?=
- =?utf-8?B?TWpzTTdxOGw0cldLNGN2MHN4SXdMQWp5NUlvRGVhTFZmaW1SS0VTLzdQaU5B?=
- =?utf-8?B?bXAvV0ZQbVNRcjdacHdxSnNCNGRDZXBEZHducGdiWHYxaUdLMlJFd2pzTUMv?=
- =?utf-8?B?V0FnVytRUGNPM3R4UVdQRnp1bURsYWdkYStlalE0YjUyc3lML3NTUU1YSndp?=
- =?utf-8?B?ZERFbTNrazh3NGhMUWQ1Z09kUzJYRGZPQzdnejZqRmQrV08vSWs4RDRCNXE2?=
- =?utf-8?Q?4s6+DodGl4b67M6dJzHyFr2nl1bLItOzq3A0HpEjx9M8?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f4e7837-ed0d-4f29-0ef1-08dde3d15d42
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 12:17:31.1565
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aUA/MGZiFGgUK1OlARuDxX55ob7EDapmBwL0xniT8wLf3AKZqA+fCzOBZ9+sllxLycyM/Fpcdd3smoE9aFf5uA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7074
+Mime-Version: 1.0
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
+ <20250819-maple-tree-v2-5-229b48657bab@google.com> <DC6DQKE6LVNQ.3BBD8WF8XGROO@kernel.org>
+ <5ssx3vakl3enjeaygpxfqtb26ufehwfjvcwqfna4xbhc645xpj@lzuvaf3my3f6>
+Message-ID: <aKxXV5BgpW9Gzw-v@google.com>
+Subject: Re: [PATCH v2 5/5] rust: maple_tree: add MAINTAINERS entry
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Ballance <andrewjballance@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 
-Hi John,
+On Tue, Aug 19, 2025 at 09:36:10AM -0400, Liam R. Howlett wrote:
+> * Danilo Krummrich <dakr@kernel.org> [250819 07:49]:
+> > On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
+> > > Similar to and just below the existing MAPLE TREE entry.
+> > >
+> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > ---
+> > > Liam: I'm not sure what you prefer for the MAINTAINERS entry, so let me
+> > > know if you want anything changed. There are also a few other options,
+> > > for example, I could just add the files under the existing MAPLE TREE
+> > > entry? The get_maintainers script should still send any relevant patches
+> > > my way because they also match the RUST entry that has a wildcard on the
+> > > rust/ directory.
+> > 
+> > From v1 [1]:
+> > 
+> > 	>> We should have another section for the maple tree, since it's not just
+> > 	>> used for mm.  Your stated plan is to use it for GPU allocations and the
+> > 	>> code doesn't live in mm/, wdyt?
+> > 	
+> > 	> Sure, I can add a new section if you prefer that.
+> > 
+> > Maple tree is already used outside of mm, e.g. for regmap stuff and I also use
+> > it in nouveau. Hence, I read this as moving maple tree to e.g. lib/ adjusting
+> > the existing entry.
+> > 
+> > I personally think that - of course unless the affected people prefer otherwise
+> > - it is usually best to keep a single maintainers entry for the C and the Rust
+> > code. Maybe Alice can simply be added to the existing maintainers entry?
+> > 
+> > What do you think?
+> 
+> I'm not sure what you mean by lib/ since the lib files are spread into
+> other entries by the looks of it?
+> 
+> I'm okay with the entry below or adjusting the existing one.
 
-On Fri Aug 22, 2025 at 11:03 AM JST, John Hubbard wrote:
-> Allow callers to write Class::STORAGE_SCSI instead of
-> bindings::PCI_CLASS_STORAGE_SCSI, for example.
->
-> New APIs:
->     Class::STORAGE_SCSI, Class::NETWORK_ETHERNET, etc.
->     Class::as_raw()
->     Class: From<u32> for Class
->     ClassMask: Full, ClassSubclass
->     Device::pci_class()
->
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Alexandre Courbot <acourbot@nvidia.com>
-> Cc: Elle Rhumsaa <elle@weathered-steel.dev>
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+In that case, I suggest we do this:
 
-Just one question about the 16 and 24 bit representations below.
+ MAPLE TREE
+ M:	Liam R. Howlett <Liam.Howlett@oracle.com>
++R:	Alice Ryhl <aliceryhl@google.com>
++R:	Andrew Ballance <andrewjballance@gmail.com>
+ L:	maple-tree@lists.infradead.org
+ L:	linux-mm@kvack.org
+ S:	Supported
+ F:	Documentation/core-api/maple_tree.rst
+ F:	include/linux/maple_tree.h
+ F:	include/trace/events/maple_tree.h
+ F:	lib/maple_tree.c
+ F:	lib/test_maple_tree.c
++F:	rust/helpers/maple_tree.c
++F:	rust/kernel/maple_tree.rs
+ F:	tools/testing/radix-tree/maple.c
+ F:	tools/testing/shared/linux/maple_tree.h
 
-<snip>
-> +macro_rules! define_all_pci_classes {
-> +    (
-> +        $($variant:ident =3D $binding:expr,)+
-> +    ) =3D> {
-> +
-> +        impl Class {
-> +            $(
-> +                #[allow(missing_docs)]
-> +                pub const $variant: Self =3D Self(Self::to_24bit_class($=
-binding));
-> +            )+
-> +        }
-> +
-> +        /// Convert a raw 24-bit class code value to a `Class`.
-> +        impl From<u32> for Class {
-> +            fn from(value: u32) -> Self {
-> +                match value {
-> +                    $(x if x =3D=3D Self::$variant.0 =3D> Self::$variant=
-,)+
-> +                    _ =3D> Self::UNKNOWN,
-> +                }
-> +            }
+Optionally we could add (RUST) similar to the LOCKING PRIMITIVES
+maintainers entry.
 
-Should we normalize `value` to 24 bits (i.e. call `to_24bit_class`)
-before doing the match? The constants we compare against are all
-normalized, but if we pass a 16-bit class to this method the result will
-be `UNKNOWN`, unless I missed something.
+Thoughts?
 
-Being able to store a class as either a 16-bit or 24-bit representation
-in the same type also opens the door to bugs, which we can avoid if we
-always normalize to 24-bit and make the class/subclass representation
-accessible through a convenience method only.
-
-> +        }
-> +    };
-> +}
-> +
-> +/// Once constructed, a `Class` contains a valid PCI Class code.
-> +impl Class {
-> +    /// Create a new Class from a raw 24-bit class code.
-> +    pub fn new(class_code: u32) -> Self {
-> +        Self::from(class_code)
-> +    }
-
-Do we need a `new` method when the `From` implementation does exactly
-the same thing and has the same signature?
-
+Alice
