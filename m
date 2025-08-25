@@ -1,97 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AD0274FDE;
-	Mon, 25 Aug 2025 13:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FA5393DCB;
+	Mon, 25 Aug 2025 14:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756128370; cv=none; b=K87sszUygQmUs4c1wIRx1O17Y+M7gUT8fXziHRs4AEvA0hqnl8CP4UGhMTIFXPtCGgraK62Z5Yxm1caEf1nILQErqmt1j6ZUVZCzLPMaxFNPXC0/v/kMsDLFaZJ1ekuyH6ohB8t73sWT+t4Gqev5wdn3wgx+kHPyY1/mhuu9hoo=
+	t=1756132306; cv=none; b=cAwQeCvv4gRi1GEKc/jaZocclc+6Sdsc5LGKJ8z3eN5Ya5cnRo48Gs4OXq7MrHU5zIVGavyGY8k6vL5K880GHE/753Xlt3CSOwa6/5bntu8+cNRzo1GGa7bHPI0mFqgiF3MnvhlPzB+mgRNVpC/rXdOO2NUk1fPwSy+kEwFyPpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756128370; c=relaxed/simple;
-	bh=E4wCK0TZxjppsY8JGUrvDL9UhfW0ST7KROT2/IHhT2o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIMflJh/36F7kFlHHSWkK0YhzTI7L4ics3xRXN56SuygSj5/K9zyaZOF5Gybv19ZoDkHy9go4V4UTxEwG8Fp1XekYbS5GKYTRTkun3lG/wGbz2QaTNUm8GWEY9gtQ4ssnYRhYhLGqC3MtN/BQwS7QSasmK8agppAWwkPal/7yvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THoeUpgC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756132306; c=relaxed/simple;
+	bh=9NI4GU1BAOwqa1sVUTZsj4DQO6EVHr2Y6HgJsrFNfSo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=H3HAwkAl5n53bxT/SEm+7PMqrLkzH5uVu02NWcKdCqSa+FwTYrdeGKHBbExnk4XJ4r/EPtFmqq/2O2N+mhKcooY0tJI9ZBBkTy9cPQvP994TpVncN9KnseVsKuuCaJKEXrUbJUCH+vTB3GKyiJ/dG+sWrW0QSFJnAsBsdJv/Ge4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LxVDzLGz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THoeUpgC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255D9C116C6;
-	Mon, 25 Aug 2025 13:26:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LxVDzLGz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4DFC4CEED;
+	Mon, 25 Aug 2025 14:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756128369;
-	bh=E4wCK0TZxjppsY8JGUrvDL9UhfW0ST7KROT2/IHhT2o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THoeUpgC3Ho2A4YS5B5v7efx2bFN5X2GlW/nKbGKeIQdK8C/FBG4pkdLT+76z/hIB
-	 I4SX31T4vAr5GpDpsyMN9avkznyKCAKl3mQXEDVTam6YXGb1oqpqRzbOXwTJI8chQr
-	 v08XVmJqNN/6w89n1Q7xWUR8C/3B5a/TsvOKkoe8cjHEIvPIJNxuR2dsnbTcJsL129
-	 zcL/LN9UHyctZ+POfEQMr/QWh20rrzDMoclSLNxvZexRyGHo0Hio23DSAe0e6X54Jm
-	 l6zgeLR1Y5rc+SUPn5hvNuFek5lK3zbWCP9h0VdsUdODHLlPmzOilw3jUSia16s7IZ
-	 RfNahSmH8uggw==
-From: Danilo Krummrich <dakr@kernel.org>
-To: akpm@linux-foundation.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	abdiel.janulgue@gmail.com,
-	acourbot@nvidia.com,
-	jgg@ziepe.ca,
-	lyude@redhat.com,
-	robin.murphy@arm.com,
-	daniel.almeida@collabora.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v3 5/5] MAINTAINERS: rust: dma: add scatterlist files
-Date: Mon, 25 Aug 2025 15:24:44 +0200
-Message-ID: <20250825132539.122412-6-dakr@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250825132539.122412-1-dakr@kernel.org>
-References: <20250825132539.122412-1-dakr@kernel.org>
+	s=k20201202; t=1756132306;
+	bh=9NI4GU1BAOwqa1sVUTZsj4DQO6EVHr2Y6HgJsrFNfSo=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=LxVDzLGzWvSKzQ7TbZlFBaxzBIkD0TTtWkG57wrT0mxO94XElAT3ktHg7SZPKqg5v
+	 owdTC9haicF42q6DOEYzUSQElWnExS2eSw0gA/rhdV7M0d5dQt6O3q601QiI4hAg5z
+	 6QJrpmF5Uao5F4bmno6L/m4Pg3vTeCXrm7n9GPK3dMniW6U5fFXijVv11W7+KEtuK/
+	 TH8qrsAPagmTNZVlziEDNi5dbnKKKi8LP16+LM3n91/QNnzoYw0hPClR9+qlD0efQN
+	 to6YYb/dPHXzDI0Gm43kKXAxNtfvHCs8aapQY3w8S1tCbnVmlQ85dxKqYfHfcv1cG7
+	 OVzTo6Fbk7LpQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 25 Aug 2025 16:31:41 +0200
+Message-Id: <DCBKY1SJY43S.UM6L2B8AQHOX@kernel.org>
+Subject: Re: [PATCH] rust: kernel: remove support for unused host `#[test]`s
+Cc: "Alex Gaynor" <alex.gaynor@gmail.com>, "Brendan Higgins"
+ <brendan.higgins@linux.dev>, "David Gow" <davidgow@google.com>, "Masahiro
+ Yamada" <masahiroy@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>, "Rae
+ Moar" <rmoar@google.com>, <linux-kselftest@vger.kernel.org>,
+ <kunit-dev@googlegroups.com>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Nicolas Schier" <nicolas@fjasle.eu>, <linux-kbuild@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
+To: "Miguel Ojeda" <ojeda@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250726180750.2735836-1-ojeda@kernel.org>
+In-Reply-To: <20250726180750.2735836-1-ojeda@kernel.org>
 
-Rename the "DMA MAPPING HELPERS DEVICE DRIVER API [RUST]" maintainers
-entry to "DMA MAPPING & SCATTERLIST API [RUST]" and add the
-corresponding scatterlist files.
+On Sat Jul 26, 2025 at 8:07 PM CEST, Miguel Ojeda wrote:
+> Since commit 028df914e546 ("rust: str: convert `rusttest` tests into
+> KUnit"), we do not have anymore host `#[test]`s that run in the host.
+>
+> Moreover, we do not plan to add any new ones -- tests should generally
+> run within KUnit, since there they are built the same way the kernel
+> does. While we may want to have some way to define tests that can also
+> be run outside the kernel, we still want to test within the kernel too
+> [1], and thus would likely use a custom syntax anyway to define them.
+>
+> Thus simplify the `rusttest` target by removing support for host
+> `#[test]`s for the `kernel` crate.
+>
+> This still maintains the support for the `macros` crate, even though we
+> do not have any such tests there.
+>
+> Link: https://lore.kernel.org/rust-for-linux/CABVgOS=3DAKHSfifp0S68K3jgNZ=
+AkALBr=3D7iFb=3DniryG5WDxjSrg@mail.gmail.com/ [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fe168477caa4..65f676b2c304 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7238,7 +7238,7 @@ F:	include/linux/dma-mapping.h
- F:	include/linux/swiotlb.h
- F:	kernel/dma/
- 
--DMA MAPPING HELPERS DEVICE DRIVER API [RUST]
-+DMA MAPPING & SCATTERLIST API [RUST]
- M:	Abdiel Janulgue <abdiel.janulgue@gmail.com>
- M:	Danilo Krummrich <dakr@kernel.org>
- R:	Daniel Almeida <daniel.almeida@collabora.com>
-@@ -7249,7 +7249,9 @@ S:	Supported
- W:	https://rust-for-linux.com
- T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
- F:	rust/helpers/dma.c
-+F:	rust/helpers/scatterlist.c
- F:	rust/kernel/dma.rs
-+F:	rust/kernel/scatterlist.rs
- F:	samples/rust/rust_dma.rs
- 
- DMA-BUF HEAPS FRAMEWORK
--- 
-2.51.0
-
+Applied to alloc-next, thanks!
