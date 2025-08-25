@@ -1,74 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CD52FB612;
-	Mon, 25 Aug 2025 14:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A95EAD21;
+	Mon, 25 Aug 2025 14:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756132338; cv=none; b=H3VsLOiphIZytEgDa7GbF2uO1Vh4WQd1HwnW3jopU3TAl9OVepDGf7isg18iAmGKR39/xQ8lUEx6t3ozBfM4q9rTqg56o3qS19b9ZtgSAVhyiAaXN9kDEuN365JaIP40p3gIYvi65XtlFhvaRoO8OGOtKUElQc+X8yQdoaBb4FI=
+	t=1756133519; cv=none; b=Mv8YKeDS4jR05vneHVV5+33EAYg1OwUaiIZ3QwyTo5PKZPYXD8DlqSU6AEu8AscH+9tstuf0/Ok9pMXfOz0vAtzwb0fnx6jIQEKPQfeYJWC+fkUt+gCdMrKY7A85fjJfeuh6XXabViy3MwiCRCaDWsbxvxo9vufoSNd0YQgrdNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756132338; c=relaxed/simple;
-	bh=CejHFcCg/LceUsBinXTS0yUNDRyULV0yXMik1KYc3wI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Gj5pFw5ivUo2seNKB5VeTQ3A6PmtzHqWokC4pdbp6JPkKNJmrJQxdQ/XBwI3LSp93R8euol6HA24XyJjf2WPyeSDhu9S1GvkSDS/xwsz4fi5gkj+ZIzsauyCKYS1li6/q7RXObudzWxfm9ll9U5kx5sjeBvNZVl7ZWj+WFHHykY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mi1ZBg76; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756133519; c=relaxed/simple;
+	bh=0AHdAFoo9NUnBLi2yL1Hkt16S3TnM8kkEFOt08Qqdi0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=biY+wBCYmaYpEGCBKyeMKwlBBbdthmT2lv4NVDn3gyNvNy/FlpythGkZ4/hFCit2uXDhrg7Q8UcdnUrmhQfu4MVmPRxFBugR/H71HaAguOagubmRWa0A5JuAgnlcNQPeXAeJXUBrlqMCKAeDasOYBO+QnNhFrBjIx4GkPf97rR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mQK7cYNX; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mi1ZBg76"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AFEC4CEED;
-	Mon, 25 Aug 2025 14:32:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756132337;
-	bh=CejHFcCg/LceUsBinXTS0yUNDRyULV0yXMik1KYc3wI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=Mi1ZBg76BnCpTIJKzcwRhlWqHfGjH8eO/CxJSUTZQgVuTvHx6vc4kmZn+p7yyC52d
-	 iaRBRnmceMHsJvk9QwxZA9rL5bsRuGpq9T3MClPIhynv0Y/nY52E4N4PcES3wKvIVg
-	 ErI9xuDteuK810aB6fODg8LCxtV44fBJ0FSHJmQ5O2K+jxvtAjd8yBTEw/TNkW7Q83
-	 o1+FxQcEJ13fHbZoD5nUna85KSy9C9RqVD2C90qaRHGc1JXNHlyXEbisv5shWGGcFR
-	 oU+GaVtxfcuTpahV9X48X6hh0OejyVbASPCKRuSDfRSgPVmCLwZlr9FwX+Gvwq3XWo
-	 xV5PUisYjMwGQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mQK7cYNX"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24602f6d8b6so8240835ad.1;
+        Mon, 25 Aug 2025 07:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756133518; x=1756738318; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2BqZleZrrFxOteURMhxhHqzZKHhKVUcc/Y6rTQqNU24=;
+        b=mQK7cYNXXPSQK3cnKWWLSL60t2v3GzdZsVMqyH+puMON3RCCpyQJSOC1qTuEBtLZsd
+         JPlOVxsvtBTB7o6Xlmh+5bRQtPODaYNFWmxOWiDW8gIHuLv/GU5TCKVks0Php73Qbvy/
+         maq1zJhPBeoF1xEWRh5wTIwZBgK8e6dSNaTiu6quI+1dVN//00WSab1RhnA4Wry0c5A7
+         eofY8amOZzVs1pFlcI7yCk93aTFgwX35Zbyoo35YYlbpBGpXF/krhsZG1Jc4HplwRUQt
+         TWvqZwbdNvkCSPk4wCZE+sQ0G1hGtd2MkKR6WW5xcSR7tEAgyLhaM6VAet3J0a/jtHJe
+         Z3BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756133518; x=1756738318;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2BqZleZrrFxOteURMhxhHqzZKHhKVUcc/Y6rTQqNU24=;
+        b=r5z3gOgjcT1IcWNId8PsaJ72d4bH3wRpnHUdwyzgw5gacG6UCUtYSDnB5gmjDaahxc
+         Gwcu+w1CS8HxmZT1iTDDS4bFMa5jLg9ZdtRpye4ZCowy4PWi8jXp4eCScPVy+ysDP3hA
+         w6L+asuvanqQHPQ2Dn17FvmQ0Yi+A2tN4fDUGtNQ5gU+2v5+NmFyGjcO41TXCdgUxKJv
+         VzpR1z6C0lM8s61Ap+RIqL3UYyQ260kY2tZSrQCG4AFBucjULhyTsyXx+Kfw9B6d4DNh
+         6fdgrBTdPwGx8P5vPfsAVlP8ChgNmGepyEvtCzhjejS4OBl+vMBzjHfYVII7BGpZHYx2
+         8l5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVqlnxaKG1fKXmdkQuvZgv4PRu53wzeXrq7IjY0JSN+LVVKv3AN1J2RwvLtP90/zqsZ6iYUS+m2It2KlBs=@vger.kernel.org, AJvYcCXXljh3uBWNX/6Btq8/RwXxyhx3n2Rq6XMciQk4vum6UHWfRd6VRKS0tOs5IhjQlbcv081iriTelUfq3FJESXo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyds0VUNrJELPDJlWalfK5Wr0AKVxyxinsYW9pHi+sOcJbfTgUn
+	4eYhTfBXKxRlkvlhwKF1JbqNJnu6Gvfs2xwBj6x2SNlnSPf8Eix3rKAH3LzR0yRUrOdpYmzZKIh
+	beW8nhrufHAG5h6QsGGZlHCmi9I6nA8A=
+X-Gm-Gg: ASbGncu5ykYMa+nW/B8TS9+5/zpdbT8PdEytl/Mg4wuq3gVGT2s839AFy334SVyikpv
+	PigHu9r06IAfe0q67wQUMDZgipZOOwOf+qN+XbYtqWYNKtRuE/msTQiumSQAdhktLcL3mYd8zsC
+	uBvRcA8JLoKbCdM9alFXEzqUyWCGr5oKK4lil/0/BOcVHViNjXsMm0+fKCQ3ALxW/Xo2Idc2QEF
+	03WchFtAdycZjJH07F+DI6tphoUpjjlKmmFDITCtEeBQQEwwGv5zuG/4xLpqtKQo35+z0VkvZmp
+	4D6kndVYZv+QBLGp9wqtpwmqGA==
+X-Google-Smtp-Source: AGHT+IHrHEtDFdZXx6OwpKEsX6eFTavEPg2U8G81wkwJbHp6xnJPfhKKEMwEDrqZpeVIjWOqmLeKxFAdl5tu053jfl8=
+X-Received: by 2002:a17:902:e74b:b0:246:ed8f:c63e with SMTP id
+ d9443c01a7336-246ed8fc9fbmr14687675ad.0.1756133517444; Mon, 25 Aug 2025
+ 07:51:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250824213134.27079-1-christiansantoslima21@gmail.com>
+In-Reply-To: <20250824213134.27079-1-christiansantoslima21@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 25 Aug 2025 16:51:45 +0200
+X-Gm-Features: Ac12FXw8VAm1i2zud1eI5ub7qZLi4BK_xQJ9EuI65TDWsEAtHaZNbetakPRSfis
+Message-ID: <CANiq72kGh2PS-c1n2Q1g0t24J-b3ctB0kN3GK8RDXhtQMGAtTA@mail.gmail.com>
+Subject: Re: [PATCH v10] rust: transmute: Add methods for FromBytes trait
+To: "Christian S. Lima" <christiansantoslima21@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 25 Aug 2025 16:32:12 +0200
-Message-Id: <DCBKYG65XMBV.1E287MARVTUP2@kernel.org>
-Subject: Re: [PATCH] rust: alloc: remove `allocator_test`
-Cc: "Alex Gaynor" <alex.gaynor@gmail.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R .
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- <rust-for-linux@vger.kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <patches@lists.linux.dev>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250816211900.2731720-1-ojeda@kernel.org>
-In-Reply-To: <20250816211900.2731720-1-ojeda@kernel.org>
 
-On Sat Aug 16, 2025 at 11:19 PM CEST, Miguel Ojeda wrote:
-> Given we do not have tests that rely on it anymore, remove
-> `allocator_test`, which simplifies the complexity of the build.
+On Sun, Aug 24, 2025 at 11:31=E2=80=AFPM Christian S. Lima
+<christiansantoslima21@gmail.com> wrote:
 >
-> In particular, it avoids potential issues with `rusttest`, such as the
-> one fixed at [1], where a public function was added to `Kmalloc` and
-> used elsewhere, but it was not added to `Cmalloc`; or trivial issues
-> like a missing import [2] due to not many people testing that target.
->
-> The only downside is that we cannot use it in the `macros`' crate
-> examples anymore, but we did not feel a need for that so far, and anyway
-> we could support that by running those within the kernel too, which we
-> may do regardless.
->
-> Link: https://lore.kernel.org/rust-for-linux/20250816204215.2719559-1-oje=
-da@kernel.org/ [1]
-> Link: https://lore.kernel.org/rust-for-linux/20250816210214.2729269-1-oje=
-da@kernel.org/ [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Since the `is_aligned` method for pointer types has been stabilized in
+> `1.79` version and is being used in this patch. I'm enabling the
+> feature.
 
-Applied to alloc-next, thanks!
+Period -> comma? No need to backquote version numbers.
+
+> Even enabling in `rust/kernel/lib.rs` when compiling with `make LLVM=3D1
+> CLIPPY=3D1` a warning is issued, so in order to compile, it was used
+> locally the `#[allow(clippy::incompatible_msrv)]`.
+
+I would perhaps try to reword this a bit.
+
+> Link: https://github.com/Rust-for-Linux/linux/issues/1119
+> Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
+
+Please add a link to the original suggestion if possible. If it is the
+link above, then the tags should be in the opposite order.
+
+Did Benno and Alexandre both suggest it?
+
+> +/// fn test() -> Option<()> {
+> +///    let raw =3D [1, 2, 3, 4];
+> +///
+> +///    let result =3D u32::from_bytes(&raw)?;
+> +///
+> +///    #[cfg(target_endian =3D "little")]
+> +///    assert_eq!(*result, 0x4030201);
+> +///
+> +///    #[cfg(target_endian =3D "big")]
+> +///    assert_eq!(*result, 0x1020304);
+> +///
+> +///    Some(())
+> +/// }
+
+Should the function be called? Otherwise, we are only build-testing this.
+
+Should we just remove the function and to it directly at the top-level?
+
+> +    /// Converts a slice of bytes to a reference to `Self`.
+
+An intra-doc link may work here.
+
+> +    /// In another case, it will return `None`.
+
+Ditto (also elsewhere).
+
+I would perhaps just say "Otherwise," to simplify.
+
+> +    #[allow(clippy::incompatible_msrv)]
+
+If this can be made more local, then please do so; otherwise, no big deal.
+
+> +            // SAFETY: Checking for size and alignment ensure
+> +            // that the conversion to a type is valid
+
+Period at the end. I would probably say "Size and alignment were just
+checked, thus ...".
+
+> +    /// Converts a mutable slice of bytes to a reference to `Self`
+
+Period at the end, intra-doc link if possible (ditto elsewhere).
+
+> +    /// When the reference is properly aligned and the size of slice
+> +    /// is equal to that of `T`and is different from zero.
+
+Missing space after `T`.
+
+These are all mostly nits that I sometimes fixed on-apply, for
+Alexandre in case it helps, i.e. no need to send a new version if it
+is getting applied already.
+
+The actually-run-the-test is probably the most important one.
+
+Thanks!
+
+Cheers,
+Miguel
