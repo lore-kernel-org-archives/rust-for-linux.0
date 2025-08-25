@@ -1,73 +1,103 @@
-Received: from the.earth.li (the.earth.li [93.93.131.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771F510E9;
-	Mon, 25 Aug 2025 12:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A523594F;
+	Mon, 25 Aug 2025 12:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756125745; cv=none; b=BTr9WXDc2xgyn74PQfy5Wix6UZ/orykpnYzq7AqrBp9VlK0qUUUIlY0R/J4SZO1prdACxHoVssQpBwyME+SA3Sc5ucDpMrpisNkpYYwNyxPkXlS2W5v2S7HiaCFZaRhH+4w+P6x2epuu2GMb/RFohD5PrL6c18MJnxxkPWYOAz0=
+	t=1756126030; cv=none; b=tPk4OgrNL7sGbMf/PBB+lCZK9bRuKrQPHsXjdcjphgfRpuLUyR8cvgx/SaBs9E+4D4CG0V0tGD/EHIe+/448E2oeJWSjU0wm5r/s+C4Zhly+latAOVJctn7YqDrKmonmpS6N8LtIIizyM0L8dzO0R+9Gh8yhpbycGqnLjsACWBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756125745; c=relaxed/simple;
-	bh=HOhpbajuKvguEPDvQEWxA6zlRHv42ZpA5+blMxf+57o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XLNpk3RUw2WA0iSEM7BRIC2fKcR71TamF7PnU5u6zTpnZzz/MJZq4YFSz/7rfqd6ph7nhDhpCIQS1tFWoogakRvckOzByqHJj+olDYqqPKsr1P6NOLHKOM4j+OlzIL6l/0bLsALS2E5gmCC95omhRF+r7zo9cF2DOLtIHdsFDwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=PkZC0qH4; arc=none smtp.client-ip=93.93.131.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
+	s=arc-20240116; t=1756126030; c=relaxed/simple;
+	bh=HGYdcWZgKIhpwHPJu1s1DccprdUr4BAstL5WhCEEtgA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=M+P1fejZ8qZk/QSn48RJzbJtCcFXSYRTjJvqbNY2cw9QDyg0RA4kCrw6Z3Di3DCYDRLF7NtAVtDvAhsP2jOBw/4AELO5CTBTzps2FrYy0mOObbieGmF4VGN4fZOQCfzASxnWDlsZ/VUtXxtWDrAdqrkikJz9lg9DoJnMCtu4PHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRcvpEov; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b="PkZC0qH4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
-	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
-	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=mmQMqsoRaSMciWcQ3pQ53yTe9q/g/gqBue99YjtGUAc=; b=PkZC0qH4+KmGmZeIErWu+uYrqx
-	YDH1RCtqSDFR2nsbDaLNqGZj9G/mz6BbzkeqZGxLjSnt/78VCTjBlHKb+WCqsuXRUx4p6x1xJjqdB
-	rEUkFK6cOMgjo6btHexIr9Pio4RaZ3G9fYB/ZP0QVDZw8i8yAvlGE4kKM9jQiJVl56xkUzmp7A++2
-	zGtxyxJY2gQF7xLLdyiDK9YHEr6VxEwxYYB9ubR/lvmfERid02tZyXkhJK8OpPk0OJUYVUmrRzum2
-	LKX4ozqwwBABMCFc9EHcHv1CMVgoenTo1jLqfeWTLIZQQTy5OozAINzF1Gokdbqnr0hsul/+UEyiY
-	0qmJ6FcA==;
-Received: from noodles by the.earth.li with local (Exim 4.96)
-	(envelope-from <noodles@earth.li>)
-	id 1uqVwE-00E3hr-0x;
-	Mon, 25 Aug 2025 13:04:38 +0100
-Date: Mon, 25 Aug 2025 13:04:38 +0100
-From: Jonathan McDowell <noodles@earth.li>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: Re: Using Rust on non-Rust side of kernel
-Message-ID: <aKxRVlyNXUGBwJ2L@earth.li>
-References: <aKmwPFb4cCk_E-ob@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRcvpEov"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274E8C4CEED;
+	Mon, 25 Aug 2025 12:47:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756126030;
+	bh=HGYdcWZgKIhpwHPJu1s1DccprdUr4BAstL5WhCEEtgA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=iRcvpEovPSlpoqn7pESiOIcG3vbOMQiFFi1c8JCLsHmBfd6BEtH34oKXORDpzEap7
+	 iVZo+N5qdpf27netp92LZjqDWI37lW63fnddViaI9g8LrpQM4UnNLiag6AXyge8K/U
+	 9whieV9UY0RBha9YdcRDO8wT8JxKzGWovanQrG5w/C0SwmNesXwbp4cJvPCsviK+JG
+	 7kUgRtSSWDx9LBHmmXLuKhqGx4e/CDyikC8nFOQ8E6jOSxjoJ1EfTAmKnKLiv+wQ7r
+	 +u90sKqjqdFI0C9Dk9NNTB7/e9/yt8NV2TDzAs1uhbzgCmIaZRJt1laYh1Df4YzaUZ
+	 flKsi2/aiyZ/A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aKmwPFb4cCk_E-ob@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 25 Aug 2025 14:47:04 +0200
+Message-Id: <DCBIPY9UJTT4.ETBXLTRGJWHO@kernel.org>
+Subject: Re: [PATCH v6 2/5] rust: pci: provide access to PCI Vendor values
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>,
+ "Elle Rhumsaa" <elle@weathered-steel.dev>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250822020354.357406-1-jhubbard@nvidia.com>
+ <20250822020354.357406-3-jhubbard@nvidia.com>
+ <DCBIF83RP6G8.1B97Z24RQ0T24@nvidia.com>
+In-Reply-To: <DCBIF83RP6G8.1B97Z24RQ0T24@nvidia.com>
 
-On Sat, Aug 23, 2025 at 03:12:44PM +0300, Jarkko Sakkinen wrote:
+On Mon Aug 25, 2025 at 2:33 PM CEST, Alexandre Courbot wrote:
+>> +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+>> +#[repr(transparent)]
+>> +pub struct Vendor(u32);
+>> +
+>> +macro_rules! define_all_pci_vendors {
+>> +    (
+>> +        $($variant:ident =3D $binding:expr,)+
+>> +    ) =3D> {
+>> +
+>> +        impl Vendor {
+>> +            $(
+>> +                #[allow(missing_docs)]
+>> +                pub const $variant: Self =3D Self($binding as u32);
+>> +            )+
+>> +        }
+>> +
+>> +        /// Convert a raw 16-bit vendor ID to a `Vendor`.
+>> +        impl From<u32> for Vendor {
+>> +            fn from(value: u32) -> Self {
+>> +                match value {
+>> +                    $(x if x =3D=3D Self::$variant.0 =3D> Self::$varian=
+t,)+
+>> +                    _ =3D> Self::UNKNOWN,
+>> +                }
+>> +            }
+>
+> Naive question from someone with a device tree background and almost no
+> PCI experience: one consequence of using `From` here is that if I create
+> an non-registered Vendor value (e.g. `let vendor =3D
+> Vendor::from(0xf0f0)`), then do `vendor.as_raw()`, I won't get the value
+> passed initially but the one for `UNKNOWN`, e.g. `0xffff`. Are we ok
+> with this?
 
->My goal with tpm2_protocol is to have ACPICA alike model of imports as
->the crate is driven by TCG spec updates and it is very likely to be
->also used by TPM-RS (also via import style process).
+I think that's fine, since we shouldn't actually hit this. Drivers should o=
+nly
+ever use the pre-defined constants of Vendor; consequently the
+Device::vendor_id() can't return UNKNOWN either.
 
-I'm not entirely clear on what your plan is for this / the existing TPM 
-drivers in the kernel? I assume it's to eventually remove some of the C 
-code in favour of the Rust implementation, but I'm missing exactly how 
-that's expected to work.
-
-(Given I've spent a bunch of time this year tracking down various edge 
-case issues in the TPM code that have been causing failures in our 
-fleet I'm understandably wary of a replacement of the core code. *It* 
-might be a perfect spec implementation, but hardware rarely is.)
-
-J.
-
--- 
-/-\                             |    It's deja-vu all over again.
-|@/  Debian GNU/Linux Developer |
-\-                              |
+So, I think the From impl is not ideal, since we can't limit its visibility=
+. In
+order to improve this, I suggest to use Vendor::new() directly in the macro=
+, and
+make Vendor::new() private. The same goes for Class, I guess.
