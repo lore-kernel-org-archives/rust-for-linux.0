@@ -1,263 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C9030CD90;
-	Tue, 26 Aug 2025 19:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756237110; cv=none; b=RmYo0TLr6zle+I4QPaD24xcGJa7tWXz6axoWQ41kyeTnP+N49mZrsHffmcNninKDMAvrpC9Y5A7lM5DzaC64Ikl9tlZWWip+bvvCsGxG5rmZrJML2YWgxWOiItjXkJkhfEbjnaPksbucPu9r65Ku+ImKKT6OZE8EcKiXlCwdS2Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756237110; c=relaxed/simple;
-	bh=JkRiOtOD7nGfvS/xJ8iPjBNLupvw+//rIPPlnv3yBhI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=SdZsjCKJlNJGMrREKBDG9j40c97CpYuHW+sDuft/+vrJHEsY7hgPQAozK3DVIyoD/dnLpR1LXrdS3qRhvf6O9EKwGqqNJ1Z0BLSR6DTp4mqIW2ojwVot7VBT1+5Buxv5xD1Pq24B7VOMTMrYzBSQ2OWxhmLbyaxVjcRTqZxX1ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hR71Wcf/; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012F330CD8E;
+	Tue, 26 Aug 2025 19:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756238376; cv=pass; b=Rhg8O+zN/qskSzHAU6J/YRMGbXFkNUlRooJvT5QY6tFV1k9/dW1CaTmTfFrr7HDBk4IO31X2/C/yzzQdGaZEoHdW8llNBE7c9q9AAMLxAcas2ZXz0GWwfWLioPntbmFQCbn6dR5pe3hSfcVA0eiQuUN21pY1ctX0SqfLALBuk7k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756238376; c=relaxed/simple;
+	bh=v+qAZpdjFRISbvl6fEV1upnhfsGMwsUi78VSqgFIzo0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=k2h0b2OkLbRrHSlkrGwBUr/gIUtpjzgLc3zxgvrBOxaIvXHmIiLxK3dQZ9EaVjSAkx6QyP8SDJC2X+unisoBUxuR2oqYyeqx8xKu/j72vTEdB5UVdxsQawg4RgMjek+X7y4/SpnrpNZ3spOxQJGsJaUXz7cbuDjKOHtkV51JDqk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YVj0IAHB; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hR71Wcf/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED26C4CEF4;
-	Tue, 26 Aug 2025 19:38:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756237110;
-	bh=JkRiOtOD7nGfvS/xJ8iPjBNLupvw+//rIPPlnv3yBhI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=hR71Wcf/qyjAkX7u5xmk53i1oIq+P8FdYMnnENZYj6GVEYLe5jzgF/1FeLLyVll9Q
-	 L4Gyi/VIzwuI6FRU5JEy6AoGZooxIPgD4mmtDkZ3EXDkjTyybJ/9STiZJCYI+Mw3dQ
-	 f/syNHRRmzJsOwm3jLHeRYp9m5uprAG3Sby+xchkVWpAx/sTHTZYcwM4hb7NpiH9LO
-	 ZBnxfza6cM2NjBoe4FV7GoRx690xbsdugI9dSVCbDS8N0hVIeJPUjFHuXII5998iKq
-	 rMQ90SEomTkrWT8Mf+eLHLlRKt3NIMfFgpXRaqVnYpZbKu80hmZjUw1Nm8/OyfRFel
-	 aatNUzbLLBEJw==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YVj0IAHB"
+ARC-Seal: i=1; a=rsa-sha256; t=1756238346; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=VRSWjwP51+Z0Y+5sf9M6tlQX18Gr0SdG8w+GNaY8ZjSWp6Cjea/Ucv32OiPesPkOmbiSkPR5rw9s3B1jPrbmnL2bY4RKiKlutFf3mNh3LAXCOmRCRNjzFAYcH9aSSqnvfvx+96UIQm65ESUJeMe4FfVIbpFZ5OA9NtWW+6WprUs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756238346; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=v+qAZpdjFRISbvl6fEV1upnhfsGMwsUi78VSqgFIzo0=; 
+	b=fed0xhGzNgMdmwbYAADg0IM0CiaztmZO/JktpcPB9KvW97LJLIdb6KkiuKtdcdBxZOn7RrkZSXlCtqsGtOCVbG/S/19dnbkWryDvsIxkNT0Gs8+UPEXVQo2TpxKZKxDwiCjoIsB4Y2Ho6I3yUe3Q8A0IUoslHa76us6JT3uHbhk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756238346;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=v+qAZpdjFRISbvl6fEV1upnhfsGMwsUi78VSqgFIzo0=;
+	b=YVj0IAHBOiH1Zgh7Ra7DokFIYZqeXyiK4AbcIJFoo0hu35jJKx4tpB8J0PxWFtzE
+	OGM4P2d2y8LgeX40oqP/f33btMXfjDDAID5JNmM8efPk84+zByOPqsFGRmGHW+aPvOf
+	Np4HTHFqibwa11sInXKemgrUMWWOve+FiOuB94/4=
+Received: by mx.zohomail.com with SMTPS id 1756238344788630.6595842451526;
+	Tue, 26 Aug 2025 12:59:04 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v3 2/5] rust: dma: add type alias for bindings::dma_addr_t
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DCCJG1V40J97.1FQA6ZV5JE6RK@kernel.org>
+Date: Tue, 26 Aug 2025 16:58:48 -0300
+Cc: akpm@linux-foundation.org,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ lossin@kernel.org,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ abdiel.janulgue@gmail.com,
+ acourbot@nvidia.com,
+ jgg@ziepe.ca,
+ lyude@redhat.com,
+ robin.murphy@arm.com,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 26 Aug 2025 21:38:25 +0200
-Message-Id: <DCCM3G61QPMD.2R4QDAG1U7NCQ@kernel.org>
-Subject: Re: [PATCH v10 3/7] rust: debugfs: Add support for writable files
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
- <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Matthew Maurer" <mmaurer@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com>
- <20250819-debugfs-rust-v10-3-86e20f3cf3bb@google.com>
-In-Reply-To: <20250819-debugfs-rust-v10-3-86e20f3cf3bb@google.com>
+Message-Id: <3CC4D02A-9A15-4F98-8DB1-97B457C18E95@collabora.com>
+References: <20250825132539.122412-1-dakr@kernel.org>
+ <20250825132539.122412-3-dakr@kernel.org>
+ <CE0E1F73-69CE-4629-979E-9AE5B6AB055E@collabora.com>
+ <DCCJG1V40J97.1FQA6ZV5JE6RK@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Wed Aug 20, 2025 at 12:53 AM CEST, Matthew Maurer wrote:
-> +    /// Creates a read-write file in this directory.
-> +    ///
-> +    /// Reading the file uses the [`Render`] implementation.
-> +    /// Writing to the file uses the [`UpdateFromSlice`] implementation.
-> +    pub fn read_write_file<
-> +        'a,
-> +        T: Render + UpdateFromSlice + Send + Sync + 'static,
-> +        E: 'a,
-> +        TI: PinInit<T, E> + 'a,
 
-Same comments as in the previous patch, I think using a where clause is a b=
-it
-cleaner, even though with this formatting it'd be fine too, but this is not
-guaranteed.
 
-> +    >(
-> +        &'a self,
-> +        name: &'a CStr,
-> +        data: TI,
+> On 26 Aug 2025, at 14:33, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Tue Aug 26, 2025 at 7:15 PM CEST, Daniel Almeida wrote:
+>> Hmm, I wonder if this shouldn=E2=80=99t be its own type, instead of =
+an alias. This
+>> will be handy if we want to enforce that a given address is, in fact, =
+a bus
+>> address.
+>=20
+> I'm not sure I understand the idea. How can a new type compared to a =
+type alias
+> help to guarantee that a DMA address is also a bus address?
+>=20
+> This depends on whether there is an IOMMU, etc.
 
-impl PinInit<T, E> + 'a
 
-> +    ) -> impl PinInit<File<T>, E> + 'a {
-> +        let file_ops =3D &<T as ReadWriteFile<_>>::FILE_OPS;
-> +        self.create_file(name, data, file_ops)
-> +    }
+I was referring to the term "bus address" as used here [0].
 
-> +fn update<T: UpdateFromSlice + Sync>(data: &T, buf: *const c_char, count=
-: usize) -> isize {
-> +    let mut reader =3D UserSlice::new(UserPtr::from_ptr(buf as *mut c_vo=
-id), count).reader();
+My understanding has always been that a dma_addr_t is a bus address =
+regardless
+of whether the system has an iommu? If there's no IOMMU then we there's =
+a 1:1
+correspondence but this doesn't invalidate the use of the term? i.e.: =
+it's still
+an address that can be directly accessed by a hardware device.
 
-This naming is pretty close to what I was about to propose for the UpdateFr=
-omSlice
-trait. :)
+In any case, this is a bit orthogonal to the point I was trying to make, =
+my bad
+for not expressing it better.
 
-Given that I proposed debugfs::Writer instead of debugfs::Render, I think w=
-e
-should just rename debugfs::UpdateFromSlice to debugfs::Reader.
+What I mean is, by using a separate type, i.e.:
 
-> +
-> +    if let Err(e) =3D data.update_from_slice(&mut reader) {
-> +        return e.to_errno() as isize;
-> +    }
-> +
-> +    count as isize
-> +}
+DmaAddress(bindings::dma_addr_t)
 
-<snip>
+we now ensure that one cannot pass a random u32/u64 value where a =
+DmaAddress is
+expected. It's a bit like the __iomem or __user C annotation, but =
+actually
+enforced by the type system.
 
-> +/// # Safety
-> +///
-> +/// `inode` must be a valid pointer to an `inode` struct.
-> +/// `file` must be a valid pointer to a `file` struct.
-> +unsafe extern "C" fn write_only_open(
-> +    inode: *mut bindings::inode,
-> +    file: *mut bindings::file,
-> +) -> c_int {
-> +    // SAFETY: The caller ensures that `inode` and `file` are valid poin=
-ters.
-> +    unsafe {
-> +        (*file).private_data =3D (*inode).i_private;
-> +    }
+In fact, this is something that was recently done in uaccess.rs, IIRC.
 
-NIT: If you move the semicolon at the end of the unsafe block it goes into =
-a
-single line.
 
-> +    0
-> +}
-
-<snip>
-
-> +impl<T: UpdateFromSlice + Sync> WriteFile<T> for T {
-> +    const FILE_OPS: FileOps<T> =3D {
-> +        let operations =3D bindings::file_operations {
-> +            open: Some(write_only_open),
-> +            write: Some(write_only_write::<T>),
-> +            llseek: Some(bindings::noop_llseek),
-> +            // SAFETY: `file_operations` supports zeroes in all fields.
-> +            ..unsafe { core::mem::zeroed() }
-> +        };
-> +        // SAFETY:
-> +        // * `write_only_open` populates the file private data with the =
-inode private data
-> +        // * `write_only_write`'s only requirement is that the private d=
-ata of the file point to
-> +        //   a `T` and be legal to convert to a shared reference, which =
-`write_only_open`
-> +        //   satisfies.
-> +        unsafe { FileOps::new(operations, 0o200) }
-
-I think it'd be nice to have an abstraction for file modes, but this can be=
- done
-separately.
-
-> +    };
-> +}
-> diff --git a/rust/kernel/debugfs/traits.rs b/rust/kernel/debugfs/traits.r=
-s
-> index 2939e18e3dda39571cd7255505e5f605f0e3d154..d64638898faaa1a6a9898c374=
-b8c1114993376c9 100644
-> --- a/rust/kernel/debugfs/traits.rs
-> +++ b/rust/kernel/debugfs/traits.rs
-> @@ -3,8 +3,15 @@
-> =20
->  //! Traits for rendering or updating values exported to DebugFS.
-> =20
-> +use crate::prelude::*;
->  use crate::sync::Mutex;
-> +use crate::uaccess::UserSliceReader;
->  use core::fmt::{self, Debug, Formatter};
-> +use core::str::FromStr;
-> +use core::sync::atomic::{
-> +    AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicU16, A=
-tomicU32, AtomicU64,
-> +    AtomicU8, AtomicUsize, Ordering,
-> +};
-> =20
->  /// A trait for types that can be rendered into a string.
->  ///
-> @@ -26,3 +33,65 @@ fn render(&self, f: &mut Formatter<'_>) -> fmt::Result=
- {
->          writeln!(f, "{self:?}")
->      }
->  }
-> +
-> +/// A trait for types that can be updated from a user slice.
-> +///
-> +/// This works similarly to `FromStr`, but operates on a `UserSliceReade=
-r` rather than a &str.
-> +///
-> +/// It is automatically implemented for all atomic integers, or any type=
- that implements `FromStr`
-> +/// wrapped in a `Mutex`.
-> +pub trait UpdateFromSlice {
-
-As mentioned above, I think we should name this Reader and the Render thing
-Writer.
-
-> +    /// Updates the value from the given user slice.
-> +    fn update_from_slice(&self, reader: &mut UserSliceReader) -> Result<=
-()>;
-
-read_from_slice()?
-
-> +}
-> +
-> +impl<T: FromStr> UpdateFromSlice for Mutex<T> {
-> +    fn update_from_slice(&self, reader: &mut UserSliceReader) -> Result<=
-()> {
-> +        let mut buf =3D [0u8; 128];
-> +        if reader.len() > buf.len() {
-> +            return Err(EINVAL);
-> +        }
-> +        let n =3D reader.len();
-> +        reader.read_slice(&mut buf[..n])?;
-> +
-> +        let s =3D core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?;
-> +        let val =3D s.trim().parse::<T>().map_err(|_| EINVAL)?;
-> +        *self.lock() =3D val;
-> +        Ok(())
-> +    }
-> +}
-> +
-> +macro_rules! impl_update_from_slice_for_atomic {
-> +    ($(($atomic_type:ty, $int_type:ty)),*) =3D> {
-> +        $(
-> +            impl UpdateFromSlice for $atomic_type {
-> +                fn update_from_slice(&self, reader: &mut UserSliceReader=
-) -> Result<()> {
-> +                    let mut buf =3D [0u8; 21]; // Enough for a 64-bit nu=
-mber.
-> +                    if reader.len() > buf.len() {
-> +                        return Err(EINVAL);
-> +                    }
-> +                    let n =3D reader.len();
-> +                    reader.read_slice(&mut buf[..n])?;
-> +
-> +                    let s =3D core::str::from_utf8(&buf[..n]).map_err(|_=
-| EINVAL)?;
-> +                    let val =3D s.trim().parse::<$int_type>().map_err(|_=
-| EINVAL)?;
-> +                    self.store(val, Ordering::Relaxed);
-> +                    Ok(())
-> +                }
-> +            }
-> +        )*
-> +    };
-> +}
-> +
-> +impl_update_from_slice_for_atomic!(
-> +    (AtomicI16, i16),
-> +    (AtomicI32, i32),
-> +    (AtomicI64, i64),
-> +    (AtomicI8, i8),
-> +    (AtomicIsize, isize),
-> +    (AtomicU16, u16),
-> +    (AtomicU32, u32),
-> +    (AtomicU64, u64),
-> +    (AtomicU8, u8),
-> +    (AtomicUsize, usize)
-> +);
->
-> --=20
-> 2.51.0.rc1.167.g924127e9c0-goog
-
+[0]: =
+https://docs.kernel.org/core-api/dma-api-howto.html#cpu-and-dma-addresses=
