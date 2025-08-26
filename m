@@ -1,131 +1,89 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995602E1F04;
-	Tue, 26 Aug 2025 17:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756227638; cv=pass; b=j49sE+Q66m3TCGrZwa9aJM0LyUKChtDcXRZjZR7DWY8RDNl5r7rSfyw0q9YJQb9EmaBDPoxKDwX7Esd+IB04AmO36WwljtG+IS4Uw/TGPQHQg9NFvQ512UVBgS3Hi1tVCA2uxihFwXEU6lPYzlU6Hz6R8xpq8IN3/T49aMnSMKE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756227638; c=relaxed/simple;
-	bh=TIjhL3/glWuWkmNxgtVTJrNVg8H0+2TwA+mzFnGvXEM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=S2C5DozqqmcPrXwBBGB87DMtDiHDWce/68Aq2nCz5+e3QYrAjNKmBmPxFnnrHnu5Hq0FefdlGLjG4/iR4QL/xsER5aiRLnM1sr9qteZ891P4z4b3OHlrubwCqvb5CpaGH6WAzV1+M9Oz8JrQQyymRaMzc7lUubHn4A84zrfz/sQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=EaynqJiN; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A1C85C4A;
+	Tue, 26 Aug 2025 17:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756227736; cv=none; b=RNFBcYCLinawZrg+FQnmHksmORHxLPuAXyAqBfBmlLSuCnttsbq6qvI19QwIM1OD+/v1JCyVgKBHK3e7MTtA9p111j2ai3dOne8LZ4L0lOg/px5zyT2qfJOdWDOfz/v25+3lVzpk8nyaflfdK/t5bY22d0tOf6MkAzQ4oYN+iIo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756227736; c=relaxed/simple;
+	bh=uWeuDAsfN/tp/nC929ZRBzcYdfCHEc7ZuZPZ1yV5eY0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=hQjZ2vawh1ZvNYiw2T8vdpKhw3pMQZHSDFYVUroqlNTN/akIuEVspdp6vV+BweS05HjMJYkUX5eaotf9gs2LORx2nCfqKUGHsODxrv89SkFPhdzsMyxn1qmmxFp8Mf8BTlI1mMTVCwRfy1m+pmVdFomvrzOJYHsJ1bwA7pubKjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bXN0ec99; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="EaynqJiN"
-ARC-Seal: i=1; a=rsa-sha256; t=1756227605; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=GU+wWCA06Ef0XAbyP8Qi2VkUWgOfhkU/ED3asqzVhn46EVNT3M/1QsK9nHR2mS/O8s5l0QJKKZuZ6U1Z5Kf9KrEKd54SkBjh+xDsY5mPFKSYWUWJWWLYig/blPlZ79px4YP/jn2zGSfhiAIRQ3kwGKktlZvn0I5Xzy5oHe5z3zs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756227605; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=8kaOWCQOS7mBDgpB8EtQMMvOlmhHeTGUBybC70QWiIU=; 
-	b=dKrJT1Nsl/dfcp/epgAChL4Xf78pm8U1u1GrYkWUkQokhl1IhZB7UQw8mpH/qic43f1hUxGsaZgpVU1WExVllWxO70Uob4zgfO6SiX0ayHgytYC9we+pg6ZylEFrGylC/Wfyn9iyJyu1DlVCTm8lx3bp2ZeTFwO10SviNUFpmVw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756227605;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=8kaOWCQOS7mBDgpB8EtQMMvOlmhHeTGUBybC70QWiIU=;
-	b=EaynqJiNEQOxh4k0NKESxZmDo1+dztGMraiiXBH2LlfPlmx2ZuGtDKFBzamCN5iq
-	MUZMCdU3LmmjL4IEaalQv8gztvhRN7xSut1w4wIqZ22u5YwG6EyZS3XaoMQ+ZLSLCH/
-	/ibO/88AnTpyM4nueIl0hAraRU2yjCidSz6fDJH8=
-Received: by mx.zohomail.com with SMTPS id 1756227603732130.95087999284272;
-	Tue, 26 Aug 2025 10:00:03 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXN0ec99"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAC6C4CEF1;
+	Tue, 26 Aug 2025 17:02:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756227736;
+	bh=uWeuDAsfN/tp/nC929ZRBzcYdfCHEc7ZuZPZ1yV5eY0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=bXN0ec99osLJTD0La+KFz2H/LAu9VqjB86wvXoLkYi0oO78srlCdGJ6THvwBpcJiS
+	 uS2N3Pg4ZD3rCoXJ2Uom4gS3jKW4OTBJEqDbUBZ6EQ2gLqTfR6Lk4lc5Czj5SkRY6H
+	 TBsdFEmRkgBzRCLJIeTfftdemdx0kTf7PRKYE+rcPBVthqLxEJ9lCUtJvR5xz50l27
+	 Vq+C6NqeLh9H0odHmOsELFteGd2s0ITr+U5E3MRXF/ZP5bPBj9qBrUW2L9EqMvSIg7
+	 XloGwx945bV5uJMzXcBpJ1lHueC31w9felQ42/P3evBksWBxx7lbsXm4NKdVIh0K1j
+	 zmoMRkLm0UjEA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v1 2/2] rust: Add read_poll_timeout_atomic function
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DCCF63BESWQ9.9LC8MZK7NG1Y@kernel.org>
-Date: Tue, 26 Aug 2025 13:59:46 -0300
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
- a.hindborg@kernel.org,
- alex.gaynor@gmail.com,
- ojeda@kernel.org,
- aliceryhl@google.com,
- anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com,
- frederic@kernel.org,
- gary@garyguo.net,
- jstultz@google.com,
- linux-kernel@vger.kernel.org,
- lossin@kernel.org,
- lyude@redhat.com,
- rust-for-linux@vger.kernel.org,
- sboyd@kernel.org,
- tglx@linutronix.de,
- tmgross@umich.edu,
- acourbot@nvidia.com
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <33725E09-3994-4306-AD4F-4A0253261DE1@collabora.com>
-References: <20250821035710.3692455-1-fujita.tomonori@gmail.com>
- <20250821035710.3692455-3-fujita.tomonori@gmail.com>
- <DCCF63BESWQ9.9LC8MZK7NG1Y@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 Aug 2025 19:02:10 +0200
+Message-Id: <DCCIRTHGQFNX.1M8GXO4TYA7DF@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, "Uladzislau Rezki" <urezki@gmail.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
+ Roy Baron" <bjorn3_gh@protonmail.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed" <yosry.ahmed@linux.dev>, "Nhat
+ Pham" <nphamcs@gmail.com>, <linux-mm@kvack.org>
+Subject: Re: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Vitaly Wool" <vitaly.wool@konsulko.se>,
+ <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
+ <20250823130522.867263-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250823130522.867263-1-vitaly.wool@konsulko.se>
 
+On Sat Aug 23, 2025 at 3:05 PM CEST, Vitaly Wool wrote:
+> +pub trait ZpoolDriver {
+> +    /// Opaque Rust representation of `struct zpool`.
+> +    type Pool: ForeignOwnable;
 
+I think this is the same question that Danilo asked a few versions ago,
+but why do we need this? Why can't we just use `Self` instead?
 
-> On 26 Aug 2025, at 11:12, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> On Thu Aug 21, 2025 at 5:57 AM CEST, FUJITA Tomonori wrote:
->> +pub fn read_poll_timeout_atomic<Op, Cond, T>(
->> +    mut op: Op,
->> +    mut cond: Cond,
->> +    delay_delta: Delta,
->> +    timeout_delta: Delta,
->> +) -> Result<T>
->> +where
->> +    Op: FnMut() -> Result<T>,
->> +    Cond: FnMut(&T) -> bool,
->> +{
->> +    let mut left_ns =3D timeout_delta.as_nanos();
->> +    let delay_ns =3D delay_delta.as_nanos();
->> +
->> +    loop {
->> +        let val =3D op()?;
->> +        if cond(&val) {
->> +            // Unlike the C version, we immediately return.
->> +            // We know the condition is met so we don't need to =
-check again.
->> +            return Ok(val);
->> +        }
->> +
->> +        if left_ns < 0 {
->> +            // Unlike the C version, we immediately return.
->> +            // We have just called `op()` so we don't need to call =
-it again.
->> +            return Err(ETIMEDOUT);
->> +        }
->> +
->> +        if !delay_delta.is_zero() {
->> +            udelay(delay_delta);
->> +            left_ns -=3D delay_ns;
->> +        }
->> +
->> +        cpu_relax();
->> +        left_ns -=3D 1;
->=20
-> How do we know that each iteration costs 1ns? To make it even more =
-obvious, we
-> don't control the implementation of cond(). Shouldn't we use ktime for =
-this?
+> +
+> +    /// Create a pool.
+> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
+> +
+> +    /// Destroy the pool.
+> +    fn destroy(pool: Self::Pool);
 
-I don=E2=80=99t think ktime can be used from an atomic context?
+This should just be done via the normal `Drop` trait?
 
-=E2=80=94 Daniel
+---
+Cheers,
+Benno
 
-
-
+> +
+> +    /// Allocate an object of size `size` bytes from `pool`, with the al=
+location flags `gfp` and
+> +    /// preferred NUMA node `nid`. If the allocation is successful, an o=
+paque handle is returned.
+> +    fn malloc(
+> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
+> +        size: usize,
+> +        gfp: Flags,
+> +        nid: NumaNode,
+> +    ) -> Result<usize>;
