@@ -1,85 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F672264B8;
-	Tue, 26 Aug 2025 09:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11884309DB0;
+	Tue, 26 Aug 2025 09:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756199621; cv=none; b=FKrtLooxJSId+4+HvE0jnH6RBmtmdaxj9U7J2098Kxr2+IzfzXi7gEPF7Ud3hTnAmPOge+ze5FLleld6ftLEqmUQaWa0h4380QzY7EM44fL0LJhI6ThDytE0BXjldJVcUlOTBh8tE5FvJKhdCGIsBhvrAFffy+GOOLmBQILjW4A=
+	t=1756200383; cv=none; b=Z4sFZzgD8HuhnEp6wxb9F9nwbNJSmaW/Tn17pQ1FYmPXMMQymisBy6xIY3Ls+BRVMO8geJWjO3k+xp6/wJ8dLOcEggX7WDKusXNb48ssyrNr9x4E6X6TwSDDJJJXpwZECg5bPkjv0zhHIrxjBDUqnGwUj8KlkfYJlTvUOq9agjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756199621; c=relaxed/simple;
-	bh=wIiQ7TffapU2rCFO6zjBA1TstT51WxaPWa/EGr2UdQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nqGvLeWU4YbyvfoHKH1Kf0Yf+JmpwclO8JNoYz9gLgc7+zKsT1eIeIu2K7zNzVyKNXJ3ZbPgIO0JQ/OiDAF4Srxkh6gUu5hxsoM5/dHfRGLvqIwSniu7I6kgBFQF1uA0NHyNq/0FWl4/OXL+mqrsP/Us/S1IUVaibui4v9c+vtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JlZsQp6s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756200383; c=relaxed/simple;
+	bh=Bkt8fJuWzROj7pPEelF2AAHUdhHQsBURguKd2y6Qf50=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=A+q0UGYuVhB56uBttW5E12UTGFuRlaGkdLiQ21awkyWV7xBHt5tYIhISat3hoNfY4vdLcgeWHjqlBOeZQ/ezrMUR2IJVE9BiGtFquVeFZdFmEFL2ftF6bRVJPWm7uSEyL9z1s5zXNHwMbE0YkcMziQJ7KPPI2cdTXjFWxuqh9dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WcSqqbhV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JlZsQp6s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F255C4CEF4;
-	Tue, 26 Aug 2025 09:13:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WcSqqbhV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3A7C4CEF4;
+	Tue, 26 Aug 2025 09:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756199620;
-	bh=wIiQ7TffapU2rCFO6zjBA1TstT51WxaPWa/EGr2UdQE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JlZsQp6s0QNwctC4r38S74yzlxLtnCYwGT4dYECETFr+a2cL6DaMoMpa6xrQeuiXF
-	 E8ACEVo7EltMlCiYKqWNQtp3w2EM/iGEzrhR2exTfNVTep3jlzvmqdr971lgFILqSI
-	 6Ndr1bH2GrCcgUeAKiS7NKO0rNzmBe3A5mTNi6fUlQaxLpLMzEpYP47ZVlcfMU9X/W
-	 Um5vNrMfaORiMoyjZiJj1gzXc0KQ7A47Ld2Kt0maa/8CLlfhQpXqmp0O7eESSA9ENm
-	 x/MNQQA9ZJhUC2GtUOkO6JJqXSs35X5Yj9DE5Kn1vJhxBfopdYiIZGbTUUfKO3jKQ9
-	 OkCTdV3UDmZRA==
-Date: Tue, 26 Aug 2025 12:13:37 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jonathan McDowell <noodles@earth.li>
-Cc: rust-for-linux@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: Re: Using Rust on non-Rust side of kernel
-Message-ID: <aK16wbmeKjq_1RLO@kernel.org>
-References: <aKmwPFb4cCk_E-ob@kernel.org>
- <aKxRVlyNXUGBwJ2L@earth.li>
- <aKy5z74FE4paL7za@kernel.org>
- <aK1xvMTqoq-6JyHm@earth.li>
- <aK12y2NuBmA4SfyM@kernel.org>
+	s=k20201202; t=1756200381;
+	bh=Bkt8fJuWzROj7pPEelF2AAHUdhHQsBURguKd2y6Qf50=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=WcSqqbhVLuzmRaJP1n8QJOC4xhWTw0aD50ie0WLIEDq/MzDwD6QiqwqIlumcpfJwQ
+	 lqNGtS3ekBLw8dd8BSQL5i5H0p7XMJrnkDK/QlHWeqS8JP/UbI3cpUnPLgP5XzSC69
+	 bMNCbLV8jkkbSk2DL1+934X++jb+knndKUGdPiw/98AtF+JuBYYaAiNzRa7NbF1QZw
+	 tauMUIJPSvOb+3pOS05KEhlwyX1edI9GGJcrOhCtaXvRm0YAaeU1SsM7ITYoYJNZmn
+	 Lbc+gLyBqBxw2dbrt6MlcbllY0/UL4HT9qSkeZNWa15ve8ZTRW5C1pHXZZEOpcXHhX
+	 7e315v8aUh/2g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, FUJITA
+ Tomonori <fujita.tomonori@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, John
+ Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v3 2/2] rust: time: Implement basic arithmetic
+ operations for Delta
+In-Reply-To: <20250820203704.731588-3-lyude@redhat.com>
+References: <20250820203704.731588-1-lyude@redhat.com>
+ <s9fREpnlAH3Va4eMIXOjl8RlMjCout3IAKF0312rfm4wug7MABy8q5aZPAdCMRL-LmMmuB-vcAcMRpLcz-MrNQ==@protonmail.internalid>
+ <20250820203704.731588-3-lyude@redhat.com>
+Date: Tue, 26 Aug 2025 11:26:07 +0200
+Message-ID: <875xeawi1c.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aK12y2NuBmA4SfyM@kernel.org>
+Content-Type: text/plain
 
-On Tue, Aug 26, 2025 at 11:56:48AM +0300, Jarkko Sakkinen wrote:
-> On Tue, Aug 26, 2025 at 09:35:08AM +0100, Jonathan McDowell wrote:
-> > d4640c394f23 tpm: Check for completion after timeout
-> > 2f661f71fda1 tpm: tis: Double the timeout B to 4s
-> > 1dbf74e00a5f tpm: End any active auth session before shutdown
-> > de9e33df7762 tpm, tpm_tis: Workaround failed command reception on Infineon devices
-> > 7146dffa875c tpm, tpm_tis: Fix timeout handling when waiting for TPM status
-> > e3aaebcbb7c6 tpm: Clean up TPM space after command failure
-> 
-> I think we're in the same line here really :-) And apologies for
-> over-reacting, I definitely went over the top!
-> 
-> I did the marshaller/unmarshaller exactly for Rust TPM driver only in
-> the sense that if I got a patch set on my table doing that, it would be
-> the part which is complex enough that I would actually be in trouble.
-> So consider it like "years ahead preparation".
+"Lyude Paul" <lyude@redhat.com> writes:
 
-As per having e.g. C driver with some Rust in and all sort of ways to
-integrate Rust code etc. I definitely want to experiment with that type
-of stuff in experimental branches. It's single best way to learn stuff
-to do integrations (factors better than "how to program") at least for
-me. Kernel dev is all about how sandboxes are created and not so
-much how to program kernel (IMHO).
+> While rvkms is only going to be using a few of these, since Deltas are
+> basically the same as i64 it's easy enough to just implement all of the
+> basic arithmetic operations for Delta types.
+>
+> Keep in mind there's one quirk here - the kernel has no support for
+> i64 % i64 on 32 bit platforms, the closest we have is i64 % i32 through
+> div_s64_rem(). So, instead of implementing ops::Rem or ops::RemAssign we
+> simply provide Delta::rem_nanos().
+>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-> 
-> I quickly went through your list as a reality check if I have blind
-> spot but for the most part it is "business as usual" type of stuff,
-> some to change done many years ago (at least as old as tpmrm0).
-> 
-> Obvious exception to the rule are bugs related to HMAC encryption
-> to which I think we have now a resolution.
-> 
-> BR, Jarkko
-> 
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-BR, Jarkko
+
+Best regards,
+Andreas Hindborg
+
+
+
