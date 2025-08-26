@@ -1,41 +1,41 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2AB288C25;
-	Tue, 26 Aug 2025 17:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D4E269AFB;
+	Tue, 26 Aug 2025 17:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756230350; cv=pass; b=U4wPqh64vOJPGILxce7chvbb2cHKERKcyd48gR0Ox7n5R7c+8G1MM9b1amoJCsVZ8ZCnEUEO5VuOlIMIW2GTp624lVZGjVJc3atlHfNOQRkkBy3i5XSzQCyNAmMR+sLyXdEZSLUGCqjOxhWZLtGoTr2mJaHJix7TEXmb4wwxCHI=
+	t=1756230430; cv=pass; b=bk4bqVT5ZQcVREnmANz9uwG610bhGjmCiYdzmfhigpTVxSfgozVIqoROXdmt74K5ET2VIT7+XWh/iKW2oJrX5Al8dBx5g3yHCCrifeX7miklqLTQYfoQYb+/rxakWX9zcwq3r7QwhucV74I4j4jurTTDvU7N9hkysatARK3ySGo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756230350; c=relaxed/simple;
-	bh=MjkT73njIoYLHYxZ/ah9madqXUjB5QIg4OTz+jKaasc=;
+	s=arc-20240116; t=1756230430; c=relaxed/simple;
+	bh=JjCgSmucIFiQfoUaMJX25rcAluJyAEBBe/rn5XMOCas=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=YKkRqC7bVFMu4vO+C/XXFY3Gh6PcCqNkBwQ8vLctNRmzi3RrVpvhQXi8xebBEFTQC0m3MJQ1/2GFn1eXDZ7rarXP4kya/9HPSLeKwmJ5RQRAkkRAb0Fu4e+hba/BhFNlZ4foyYyPghL4WyivT+BhOKsM/0+jZcZsUFrqTO9oPA4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=PyyRfr+W; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=sMYhrk/qhnEEOo8pkesCxFWzTrSzugnfNQ8VT8K9JHLGGYNS7mSWH1i9dp5uwNNoUTcvGpjUfoDCBR7vd9RQkBmQ1X00NKE1KHOWng4RZ1nkCN85u4677VzBNTbX6gukc9TEvHTRuR3CTBKEAiPzXGNaU2SM7fQk0uegZdV+Vno=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TvsgFoRu; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="PyyRfr+W"
-ARC-Seal: i=1; a=rsa-sha256; t=1756230330; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TvsgFoRu"
+ARC-Seal: i=1; a=rsa-sha256; t=1756230410; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=PIiZwFCGOnznmCn+lk3Q7dGKMjlW15ywnH+FCv64vir95en3voy2g8vtWKRnDQI++eMD+CrxP+LvxOMbr7ceFokkukYG4d4mZWXIvyhd5K6E5XGk2z9Dj4sCLPnMAJiPciikbaZGJTSQ5ccGOMtcNys3tC94zdhk6dVnR37l/oY=
+	b=Cuu3XgiW71R5vGVtMTrAV11SLDMms5/KDjwkzlJEPG4mR1/bkH9GKpI9ctJKb8iGYDfnKGZqn4qzmohiTM2+80U8Q5YUeAfnga8ZC+bH3ElzkwOq0EA6eb8N0g94tzkmOrWkCqoeqeazolfIxKRl8QjfaeHHPEP0vJtv+/VVn48=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756230330; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=MjkT73njIoYLHYxZ/ah9madqXUjB5QIg4OTz+jKaasc=; 
-	b=btoKdqEfDmWn2zNIbOqbAA973deNcrmgnzeepx5lRv7H9EBEKi+kzKatabjHBK1LU/3LUfHZrS3hckb4yY0QmIRDTNv8QX2xx6N0/RyQEKi7Ul4Elz4p7laNDFOu5tKJq993gfMtZrQSCd++91mGxcy3tUU+dKRQvvWJs7DUscw=
+	t=1756230410; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=bQqm5EKAB0xZdSbsy5P+qCPeygkLJAl+EXVWYSBGNIM=; 
+	b=WJR5QJziJTfk4a65So35ivfXLUtbe+oBn67v46TrH0NWWCkzTfkCHWGkkZjvEeq/zJu0rkTIUS/kEY8/ZBTx71g4Ue8L7vBWcodLpCnjd3bjJ+B/ZXtt86qDWMCczFHynubU9V0/iQ3h83dJ4HEDI2YSfLFUjYnf13dRyy/9stQ=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756230330;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756230410;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=MjkT73njIoYLHYxZ/ah9madqXUjB5QIg4OTz+jKaasc=;
-	b=PyyRfr+WQ4gUpFFiSUS5ExuVhaROugTYoiN2ARlV1YtR3sFwlGRS1pLcsMcKUMrb
-	3TXwLBhnh21lIoOvrCsYdrVVvZQtQQ3eztkHMdUHetQUCzRkGCGrjQ6KOHguBGwXxxS
-	YrDQn1o4wyakI4LnxntUiNrrqbq7Bk7TKrYXktJI=
-Received: by mx.zohomail.com with SMTPS id 1756230328084762.8686626892185;
-	Tue, 26 Aug 2025 10:45:28 -0700 (PDT)
+	bh=bQqm5EKAB0xZdSbsy5P+qCPeygkLJAl+EXVWYSBGNIM=;
+	b=TvsgFoRuQxXxMIflZqF6OrvS7ntPwWmt8aJIzNRhHdeoh1LZx5PVE4GKyORsnI2O
+	DVpsi36GISbA8n+LCZdsSqat5n72Dn93gZo0UOC94MdlWq2yFA0sLysQfWeLTVthVe0
+	ctQvca7r635Ju+iqSiWqOa8xbNTEpDCvmR2PjjoM=
+Received: by mx.zohomail.com with SMTPS id 1756230408153544.1999054284919;
+	Tue, 26 Aug 2025 10:46:48 -0700 (PDT)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,12 +44,11 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 3/5] rust: scatterlist: Add abstraction for sg_table
+Subject: Re: [PATCH v3 4/5] samples: rust: dma: add sample code for SGTable
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DCCGKLKK0D08.1VOAVWOJIXIIO@kernel.org>
-Date: Tue, 26 Aug 2025 14:45:10 -0300
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
- akpm@linux-foundation.org,
+In-Reply-To: <20250825132539.122412-5-dakr@kernel.org>
+Date: Tue, 26 Aug 2025 14:46:31 -0300
+Cc: akpm@linux-foundation.org,
  ojeda@kernel.org,
  alex.gaynor@gmail.com,
  boqun.feng@gmail.com,
@@ -60,41 +59,117 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>,
  aliceryhl@google.com,
  tmgross@umich.edu,
  abdiel.janulgue@gmail.com,
+ acourbot@nvidia.com,
  jgg@ziepe.ca,
  lyude@redhat.com,
  robin.murphy@arm.com,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <CA71DB2B-B87C-428A-A128-5B95DB6AFCE0@collabora.com>
+Message-Id: <A8A69C22-632D-4E89-AAAA-1891DFA11416@collabora.com>
 References: <20250825132539.122412-1-dakr@kernel.org>
- <20250825132539.122412-4-dakr@kernel.org>
- <DCCFOGR3BPVC.3OW6B74N372MB@nvidia.com>
- <DCCGKLKK0D08.1VOAVWOJIXIIO@kernel.org>
+ <20250825132539.122412-5-dakr@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
 
->=20
->> <snip>
->>> +#[repr(transparent)]
->>> +#[pin_data(PinnedDrop)]
->>> +struct RawSGTable {
->>=20
->> Even if this is for internal use, I think a short comment explaining
->> what this is for, and why it needs to be pinned (pointed to by =
-devres)
->=20
-> That's not the reason this structure needs to be pinned. This is the =
-reason for
-> Devres itself needs to be pinned.
->=20
-> In fact, I think RawSGTable by itself does not need to be pinned.
->=20
->> would be helpful to people looking at this code.
 
+> On 25 Aug 2025, at 10:24, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> Add sample code for allocating and mapping a scatter-gather table
+> (`SGTable`).
+>=20
+> Co-developed-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+> samples/rust/rust_dma.rs | 35 ++++++++++++++++++++++++++---------
+> 1 file changed, 26 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+> index c5e7cce68654..04007e29fd85 100644
+> --- a/samples/rust/rust_dma.rs
+> +++ b/samples/rust/rust_dma.rs
+> @@ -7,15 +7,19 @@
+> use kernel::{
+>     bindings,
+>     device::Core,
+> -    dma::{CoherentAllocation, Device, DmaMask},
+> -    pci,
+> +    dma::{CoherentAllocation, DataDirection, Device, DmaMask},
+> +    page, pci,
+>     prelude::*,
+> +    scatterlist::{Owned, SGTable},
+>     types::ARef,
+> };
+>=20
+> +#[pin_data(PinnedDrop)]
+> struct DmaSampleDriver {
+>     pdev: ARef<pci::Device>,
+>     ca: CoherentAllocation<MyStruct>,
+> +    #[pin]
+> +    sgt: SGTable<Owned<VVec<u8>>>,
+> }
+>=20
+> const TEST_VALUES: [(u32, u32); 5] =3D [
+> @@ -70,21 +74,30 @@ fn probe(pdev: &pci::Device<Core>, _info: =
+&Self::IdInfo) -> Result<Pin<KBox<Self
+>             kernel::dma_write!(ca[i] =3D MyStruct::new(value.0, =
+value.1))?;
+>         }
+>=20
+> -        let drvdata =3D KBox::new(
+> -            Self {
+> +        let size =3D 4 * page::PAGE_SIZE;
+> +        let pages =3D VVec::with_capacity(size, GFP_KERNEL)?;
+> +
+> +        let sgt =3D SGTable::new(pdev.as_ref(), pages, =
+DataDirection::ToDevice, GFP_KERNEL);
+> +
+> +        let drvdata =3D KBox::pin_init(
+> +            try_pin_init!(Self {
+>                 pdev: pdev.into(),
+>                 ca,
+> -            },
+> +                sgt <- sgt,
+> +            }),
+>             GFP_KERNEL,
+>         )?;
+>=20
+> -        Ok(drvdata.into())
+> +        Ok(drvdata)
+>     }
+> }
+>=20
+> -impl Drop for DmaSampleDriver {
+> -    fn drop(&mut self) {
+> -        dev_info!(self.pdev.as_ref(), "Unload DMA test driver.\n");
+> +#[pinned_drop]
+> +impl PinnedDrop for DmaSampleDriver {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        let dev =3D self.pdev.as_ref();
+> +
+> +        dev_info!(dev, "Unload DMA test driver.\n");
+>=20
+>         for (i, value) in TEST_VALUES.into_iter().enumerate() {
+>             let val0 =3D kernel::dma_read!(self.ca[i].h);
+> @@ -99,6 +112,10 @@ fn drop(&mut self) {
+>                 assert_eq!(val1, value.1);
+>             }
+>         }
+> +
+> +        for (i, entry) in self.sgt.iter().enumerate() {
+> +            dev_info!(dev, "Entry[{}]: DMA address: {:#x}", i, =
+entry.dma_address());
+> +        }
+>     }
+> }
+>=20
+> --=20
+> 2.51.0
+>=20
+>=20
 
-+1 on having some docs for this type, even though it is private.
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-This will be helpful for people working on this code in the future.=
