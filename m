@@ -1,73 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7AF1F0E55;
-	Tue, 26 Aug 2025 08:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9D028D8ED;
+	Tue, 26 Aug 2025 08:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756197940; cv=none; b=ODQ2+/x7sGyFFPS9fMJbSu62nytVB5d8d7H8by2tXXpLZnlwVmMuBYoW0gOhR9a41aRzV1AOE3HOWLwmoGLGdmWBHWRztDI0xK6t3xdOvdSnQqHrjWLa6Y4JkRR67c5EeBnkdma3HUm2UlHR6xKlkHOTMyEpykeuspLA2lTSzqo=
+	t=1756198608; cv=none; b=gvZwQdZBNQIwHWnozLCl+Ae+3pUq1tv8hXJeGxF55dqitCQpYB7VOWU9uv7Um1KYHuRaH8roe8cjn5Worhg4EMLbbJpg7dclmaewPbeg1Mvmy+RAE3RsO5bx/mSoHIsmubbSHhP5QF84J8cgy5edkMsgfYwrYRFHDSye303JWvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756197940; c=relaxed/simple;
-	bh=RBnl58A5TRIsTpWbH75eLIzXRC1KN59+1EZ3+wPeIcw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jl6ghPde42MDekIT5uQUny6+J5rVMYB4wfOpmpEAaxNe+t4rZMXEUceVVLNn09r8xRD+BP3AFlaxPJLuG3365/g/RrLDSB+OFaIrvyYEuLDm7swi8T+grt/CeD3jh6AI8Fm5URsEnDYcImbFnM5DLCvnucTN08gE3KBm0j1adqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JjIXOxw/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756198608; c=relaxed/simple;
+	bh=lLjMwJkGmZO68L19BUCN997mBt9nhLyxSUYQQYo4S+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MBaGIDHcaoyfQEqeqZgW08V/k4Er9k4av0/vDODTTppuquSeWc3wo12m/aTwD7/r7NMoTw/7WyQG0js30uK0/0Nt2y6BMJSsVaQ76Ny4eadxT60ngDopiNKhFi5siBWFMO6YLtdVmWRE0LyVCZ0DdRiE6VJ3qmotPTXs/liBCx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+sH2ZvP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JjIXOxw/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3C9C116C6;
-	Tue, 26 Aug 2025 08:45:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+sH2ZvP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C411C4CEF1;
+	Tue, 26 Aug 2025 08:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756197939;
-	bh=RBnl58A5TRIsTpWbH75eLIzXRC1KN59+1EZ3+wPeIcw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=JjIXOxw/QxrVJvgMc0gGXsyTFywRZuSxwAxYsEFLVhflFoyG0PAM0EheCyZR+V3Vq
-	 4LW0fiUXAaUe6b6aFqCy5lcJpNfRMi1SR2SWZv2z8HLQRxHjUQICPi5HjgT23+xdga
-	 RwKNAZeevaZbj8C0zskGtEHTz4GTV4Rufrw5/RmSTaunPkYSNiyulN7mqo5gHmcMLN
-	 YCD2nUr0oOIz3Mtonfi8h1IpdaRSnAncfqR24d1GkAIJ3Z74sQaDbaXjOxugZ9aPcX
-	 fDUIR8qz/nyVQ3Pw1FPPL14lYgKptKW7wf7Pe4XOWhxj/R842ACZY6LcEjeRgLhxLd
-	 WasVNRy1Ee/bw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, Stephen Boyd
- <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 7/7] rust: hrtimer: Add HrTimer::expires()
-In-Reply-To: <20250821193259.964504-8-lyude@redhat.com>
-References: <20250821193259.964504-1-lyude@redhat.com>
- <NIpGrltySo0vppvE0Z80S3xXLtyrcjxuE2fjMitgnJRkZLGGAPM4uCL8YcByJwodSs99TnNIT2hDDMUgpZHzGg==@protonmail.internalid>
- <20250821193259.964504-8-lyude@redhat.com>
-Date: Tue, 26 Aug 2025 10:43:31 +0200
-Message-ID: <87h5xuwk0c.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1756198607;
+	bh=lLjMwJkGmZO68L19BUCN997mBt9nhLyxSUYQQYo4S+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B+sH2ZvPy6MdSEvlwqC5tqOWYIQg3Oe2+Uvhl5a/93n/1rv10OwifYZGmA5LpIsQa
+	 LdBf7GMGSR8hWXbFLw2F/wS+X1c8RfBWaGwhR2OVU77st4n/EKr+m95UmHRidYPBGW
+	 uM/z3MW+JrH0Y7O1Hnsq9jmuL4Pzk8No43CD1kVUujxffV5y6mKWjwncIhGxM3Tm+v
+	 2/DN/xDaHfz/7vY7cO0hyjH9qLdunYAvO+cE/SpOlRoo+iu3R2EB46yRlDaeHntpb0
+	 zQim+QS1Y94eNAaUmruMlUNhKsohVZ3tPDxjpqmKCF5Rdu1q9OOQydQvHX/oLDuRWx
+	 zjOVX5hjYlkdg==
+Date: Tue, 26 Aug 2025 11:56:43 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Jonathan McDowell <noodles@earth.li>
+Cc: rust-for-linux@vger.kernel.org, linux-integrity@vger.kernel.org
+Subject: Re: Using Rust on non-Rust side of kernel
+Message-ID: <aK12y2NuBmA4SfyM@kernel.org>
+References: <aKmwPFb4cCk_E-ob@kernel.org>
+ <aKxRVlyNXUGBwJ2L@earth.li>
+ <aKy5z74FE4paL7za@kernel.org>
+ <aK1xvMTqoq-6JyHm@earth.li>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aK1xvMTqoq-6JyHm@earth.li>
 
-"Lyude Paul" <lyude@redhat.com> writes:
+On Tue, Aug 26, 2025 at 09:35:08AM +0100, Jonathan McDowell wrote:
+> d4640c394f23 tpm: Check for completion after timeout
+> 2f661f71fda1 tpm: tis: Double the timeout B to 4s
+> 1dbf74e00a5f tpm: End any active auth session before shutdown
+> de9e33df7762 tpm, tpm_tis: Workaround failed command reception on Infineon devices
+> 7146dffa875c tpm, tpm_tis: Fix timeout handling when waiting for TPM status
+> e3aaebcbb7c6 tpm: Clean up TPM space after command failure
 
-> Add a simple callback for retrieving the current expiry time for an
-> HrTimer. In rvkms, we use the HrTimer expiry value in order to calculate
-> the approximate vblank timestamp during each emulated vblank interrupt.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+I think we're in the same line here really :-) And apologies for
+over-reacting, I definitely went over the top!
 
+I did the marshaller/unmarshaller exactly for Rust TPM driver only in
+the sense that if I got a patch set on my table doing that, it would be
+the part which is complex enough that I would actually be in trouble.
+So consider it like "years ahead preparation".
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+I quickly went through your list as a reality check if I have blind
+spot but for the most part it is "business as usual" type of stuff,
+some to change done many years ago (at least as old as tpmrm0).
 
+Obvious exception to the rule are bugs related to HMAC encryption
+to which I think we have now a resolution.
 
-Best regards,
-Andreas Hindborg
-
-
+BR, Jarkko
 
