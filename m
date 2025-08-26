@@ -1,90 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD0A2D46A1;
-	Tue, 26 Aug 2025 06:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2B52F8BC4;
+	Tue, 26 Aug 2025 08:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756191051; cv=none; b=Hi2pDD7XQNAAZCHo7S4fZKmNO1yEkciD8lEKte+GDWJ7yz+yc/UY1gNhNQe/wiI+HEPWTGd2DPbt0UHjr/7mhYwJiEm7/sDhbj2lPjGthoP/rEI9XyPmbNsZsqgC1r8+fr3BaoCeQK4JBY0fH4UXwL3Ty9da4qcU+hsypofFxBk=
+	t=1756196466; cv=none; b=uhxFOHNnWUFF98ey7pMd1rR3a/3dM1pUz8AhvbV4saHKd/qt+/IkpUlHiNrDVcjhpPRtscTqZejRomzmyMWq74ZIDTpWWuIO2FbPdB/ZHAteXdRAlQFTctaWTQPfJR9bnFQznKiy/OdqYQsxhDaYFD9XozL+FVFrNUG27TeOBGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756191051; c=relaxed/simple;
-	bh=1xqeDYgOtN+fbXijQEv4PbpP6hYNVxHLpg1R+RFdHeI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=cGFgH5hAtqA4MXzCx7qfMyNwMrUNQL3JQ3MvyTFyMVWCohpKUeuEWzS3W3v3JIZXmUGopMGmY4NtGHZQ2PMWK9bYdOJYkCziHMyuID4oIBnQGgAVZOc6PVnMBBxAYK1xz/yGP4eG7VmgjKycYmu4K3BkCdXdzmugqDjkEDPKs1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzpMLnWb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756196466; c=relaxed/simple;
+	bh=VHtPe5jrCC23n5pXuxslMt4jtqxbQWQxIqRz+ykRYqc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=CmsQiHQqfdjAYwK9c2zYYb39QTJEqFv4BPkujdaBGLyjvKbDsO3oeHfDzepl/nZeDGcSkz/Df8A0nQdgSwH6w1yhGiCr3qBjPHKn2Mz83HanwZpjp1rXszxi/xDTeI9VqUEYwKj2kosxaHrEfjtGKSEMdCcN5gbysTYKxrNy+uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGNy944t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzpMLnWb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9575CC113D0;
-	Tue, 26 Aug 2025 06:50:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGNy944t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7165C4CEF4;
+	Tue, 26 Aug 2025 08:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756191050;
-	bh=1xqeDYgOtN+fbXijQEv4PbpP6hYNVxHLpg1R+RFdHeI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nzpMLnWbauEU7SotKMMyLUpd3pb8yLKUsQQ6QzFGIhe0slqdK5StmXwcvMGahXpMH
-	 T3z4uv/lxeTVe7IugmiuLHN9yO9N245LfmyppLRxbFb+iBSbc2DPZcjY2IqLHspHhx
-	 Z7f7F4afPGlSIB+5CX9FIVoQhkUyOdQGzaH8nZFch0ep23IG5E/W4dCThTOUhxE2Qh
-	 q2aWse04Appmzg4evMjmXe2uKEE0plfKASV86Sswdld5526BZFIspskidlbGCiPNRQ
-	 XI44B5kgo+JlbHm8kdjcPSRWODCKfh3yDCDy1mc0xQsK7PWNu5dAN5Dr5pGkOTIrVv
-	 W66NR3+ZeCxqA==
+	s=k20201202; t=1756196466;
+	bh=VHtPe5jrCC23n5pXuxslMt4jtqxbQWQxIqRz+ykRYqc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=HGNy944tw/PICNv7AoXNC0FsSXtnZbGeCHi9OGTo65v0cSjqyPCJx3jLvlCbJC7v8
+	 t4MwE8i7uS6CF3XbGr5hixkiJlbkQiwADfNjAs6Pm3F34BK69ETVkMjoV1Ns/A7FKM
+	 F9j9sN4hqXU728ujPag2Ie5fT3+CesjF0QFkNIVYpr4IhXkJJa4d2WKACWXN6FZI2n
+	 A0hPWPxEqf2WsC1/7UznfsDWq8q22LhPh9R934ft07dZj+PdxKSKUkCapVqd3HFjmX
+	 SCCk8uImjWjfu37uk8vo6BB4kNd3WhqLT6oHpIUqVpAXsGqs4EFzRtD80QuV7ZMk0/
+	 lA1futi7WAQRQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, Stephen Boyd
+ <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, "open
+ list:DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]"
+ <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v9 6/7] rust: time: Add Instant::from_ktime()
+In-Reply-To: <CAH5fLgggbF2KWHazQ9rDeyVEjxg4LipfXA1qepPAhkkaHD4Mxw@mail.gmail.com>
+References: <20250821193259.964504-1-lyude@redhat.com>
+ <20250821193259.964504-7-lyude@redhat.com>
+ <9xg5ZgDe4l4OXDVVwdu6JhDCXp6ox0Xzh4q2NU-SbGcTRu--I6ik0F0jtI_s46L6ieRFIpXWw8mkjNFiHAsOKQ==@protonmail.internalid>
+ <CAH5fLgggbF2KWHazQ9rDeyVEjxg4LipfXA1qepPAhkkaHD4Mxw@mail.gmail.com>
+Date: Tue, 26 Aug 2025 10:20:56 +0200
+Message-ID: <87jz2qwl1z.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 26 Aug 2025 08:50:44 +0200
-Message-Id: <DCC5RO5OQV3D.1I9HSU3SFE46Y@kernel.org>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v2 1/8] rust: transmute: add `from_bytes_copy` method to
- `FromBytes` trait
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>
-X-Mailer: aerc 0.20.1
-References: <20250826-nova_firmware-v2-0-93566252fe3a@nvidia.com>
- <20250826-nova_firmware-v2-1-93566252fe3a@nvidia.com>
-In-Reply-To: <20250826-nova_firmware-v2-1-93566252fe3a@nvidia.com>
 
-On Tue Aug 26, 2025 at 6:07 AM CEST, Alexandre Courbot wrote:
-> `FromBytes::from_bytes` comes with a few practical limitations:
+"Alice Ryhl" <aliceryhl@google.com> writes:
+
+> On Thu, Aug 21, 2025 at 9:34=E2=80=AFPM Lyude Paul <lyude@redhat.com> wro=
+te:
+>>
+
+<cut>
+
 >
-> - It requires the bytes slice to have the same alignment as the returned
->   type, which might not be guaranteed in the case of a byte stream,
-> - It returns a reference, requiring the returned type to implement
->   `Clone` if one wants to keep the value for longer than the lifetime of
->   the slice.
-
-I think that any `Sized` type that can implement `FromBytes` also can
-implement `Copy`, so I don't feel like the last point is a strong one.
-But the unaligned byte stream is motivation enough :)
-
-> To overcome these when needed, add a `from_bytes_copy` with a default
-> implementation in the trait. `from_bytes_copy` returns an owned value
-> that is populated using an unaligned read, removing the lifetime
-> constraint and making it usable even on non-aligned byte slices.
+>> +    #[inline]
+>> +    pub(crate) unsafe fn from_ktime(ktime: bindings::ktime_t) -> Self {
+>> +        debug_assert!(ktime >=3D 0);
 >
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> If you're going to have a debug assertion, perhaps it would make sense
+> to check both bounds?
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+The upper bound is bindings::ktime_t::MAX, so it would be a useless check.
 
----
-Cheers,
-Benno
 
-> ---
->  rust/kernel/transmute.rs | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+Best regards,
+Andreas Hindborg
+
+
+
+
+
