@@ -1,100 +1,113 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305151A00F0;
-	Tue, 26 Aug 2025 12:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627BE307491
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Aug 2025 13:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213153; cv=none; b=iTNo3V9leDLTm2GB4ElYAAVJ8ELC+6KftTlkduNDO5UhsQLdo2W8DwHlYk/Kn4xaP88znet1yU1NNmM2jlpJGq5majsofe3Tnw5A0xwQ51rO1Zp3BHE9iYdyvvvxrmclYb8f1XCiecpOCjOP7qNR/Fj5/mwW2HXQFATypSZXsX0=
+	t=1756215810; cv=none; b=Vf5K8Hrqw2NS7fJqCrqIWixdO0V+DcaTK0b8VVbJqDQV0VJYwbCxKPipJEtwVq72uffHumYw8Vv9tox1RZrKL6baGVUgnQWkwsQFdtKgI2CjYji+9IJMAZxnOTRKHaTEVfo6pX8F/kXfwYjiyk7fbF2R5DJWD2HcxnUGz+QzS7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213153; c=relaxed/simple;
-	bh=Xv5u9IFdfv4uunaUPbO7ghmuRT2sHv7+Ljf/inGsMdo=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=TRmdoGmi7tgdeWm3MGUWGrHVbQV7vx9Qi6J1AcPGB8zPvVeSXvFiGGB8ZHKhhpGL0g2VeBGbOtWOzU0kpySoZT0x2JmdtFqub7JM+DTCP1nYlMTXRGJ+zF98ewHIcQHhymqqQiXUPIUSR/oDvVaB61ZWq4Btqi7OvWvtJT4S/is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NndXInUV; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756215810; c=relaxed/simple;
+	bh=NErWfNr60CGvNKZamAWAKiWya2kYPp3d/wXEQeWhqfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VP//jhf6ZTkin81IJV0O0MPyfviXHmzH6hLM9EuoWGiBMzcohPYsw0haxf0MTrwp8N7kWMfbzVahxnAuU+7tWgB7gzvIBlB863RZNX6Gu5E3dSsfmHHJHlvZX2JsSPLHYiBNzcykYj2dBFwpJF0MGIizMe8zIFEmefBtjzGgpr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OC9sOJQN; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NndXInUV"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-771fa8e4190so355405b3a.1;
-        Tue, 26 Aug 2025 05:59:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756213151; x=1756817951; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l5yWTd5+6nk0AnDl19DQFpHF+OyM78NTkMn6cQGhR6U=;
-        b=NndXInUVL1SlsoJhG5m573uHwCQ6OAdcFis3DKUVz9OcSnsHzae0LXeDY2Mz94rJv9
-         t7QO/grWp/HjH+RfoPPRZl4JJYxQthefwLK27HgQnO/zFZwhVTD1/ddwkf/Z9FYofImi
-         BgAKdzw+doA5emFogE+cdbxZ7Pp7HLTLlWevsjxx+4wPj9OaLDxd2cuuxlKBBa70DA4a
-         lV5YAZbukblupKsx0Su6POet3iOkrc2K9Vnv5Eqc5e/YUOJNIkHCwHpn//RRyQOTneFm
-         104qn8JRY+H5RHXEi+X+JGrjf2JsaquqXJ+o8E+2WXjWK4mxmZxdK638+5k4caB7XB74
-         ZfjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756213151; x=1756817951;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=l5yWTd5+6nk0AnDl19DQFpHF+OyM78NTkMn6cQGhR6U=;
-        b=jtSHlTwmD9/ehoe9llSj40NfzulzHaKpyhK8Qu4EV2kKJpDo5VLBeUFl5/VQJCZm/f
-         5db5HOAA6OnmkWMryz1CfhEWMNAaEmuY2NFgZWUuksCFxs20S5mbFoqHfL/YVZ6vQWQB
-         wyG2UThHv82zvzBIfDWSjORM3Ewg9XGNdBzFq0Y6MSnTFSYRr5tgzWZ5FaCCPLxvIm6O
-         ntnjoRocUS/VCl/OldBPitQLiHsweIZjg1uT60yZmEVjsbPhUABGwJMoGnZP1DVjOWTy
-         aUcKs2+vlVPyEnlkWxk9k/9KeBeU7/ahQMl4Ry/rV7dNB8NKDRwDayq+AWtYwqBc136Q
-         bXtw==
-X-Forwarded-Encrypted: i=1; AJvYcCWAe4981tHHn/pEIRjgWW0Xt78RMpfnrkSmrVNzqNgFjmu/WyjVkpHZB40cAjDTiVbhwAg1NkpgI95imiI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4//TSt14398vwu9Dch/SyIRGgG02y5tBHPuoADCzUpj+R+2xU
-	lrb198a3m+KfXAO72Aq27M8o8UdQr74C9A47wAgqVT8jmM+ZGHU5aN2c
-X-Gm-Gg: ASbGncuh7ivTnKlpp5PlpIshJnRamFvRPoQi/FhtJZ2mIvFPAF+reUufB9YQ2ASsgUH
-	XZDHcDhzoWUvHUbcQo0kd4etoverwlzfjf8QiJFKa+HmJvvte3+DvroEQx+/EquUSICMtd3R50h
-	W+qZY5m6g5RXcw/h4Ash86HBKj9Hozk5V5XW4h/V9fae1XYDd2jpKHyB7qZR4xVmqWoNbdWDJRa
-	V9eKtPMO0AGD4Umrmt0XmU3bvf41qj1KhjDK64sORRjRNt5yhXhtuzbLhqcbLUAlcxYAV7OY9Ej
-	p6Z2RY6XpCQ0VIjQC7icOLm6a+I9p6fs+rApF3EcpBY8DRmx/vP+zVb1SlY3hOyr3yjHxZ8uZfE
-	jCIbr0txZimG5+Y8xKY70f7kAdqwNj4BDP873VUutIQpGkC7B9fSI2nqO8HafxkarMmWt3yHES0
-	mUhgWGnl4qXfI=
-X-Google-Smtp-Source: AGHT+IH5m9fLpKTtFaUY48mP9ZWh24oMPu7CKYn5nEdScs5xyF43lIdEXcCnAT9AnCSG61kSfLfMwQ==
-X-Received: by 2002:a17:902:c94c:b0:246:1c6a:7026 with SMTP id d9443c01a7336-2462ef5fceemr219257345ad.40.1756213151434;
-        Tue, 26 Aug 2025 05:59:11 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24884a629fcsm4751305ad.19.2025.08.26.05.59.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 05:59:10 -0700 (PDT)
-Date: Tue, 26 Aug 2025 21:58:58 +0900 (JST)
-Message-Id: <20250826.215858.1769736032643857907.fujita.tomonori@gmail.com>
-To: lyude@redhat.com
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, a.hindborg@kernel.org, fujita.tomonori@gmail.com,
- boqun.feng@gmail.com, frederic@kernel.org, anna-maria@linutronix.de,
- jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org
-Subject: Re: [PATCH v3 2/2] rust: time: Implement basic arithmetic
- operations for Delta
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20250820203704.731588-3-lyude@redhat.com>
-References: <20250820203704.731588-1-lyude@redhat.com>
-	<20250820203704.731588-3-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OC9sOJQN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756215808; x=1787751808;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NErWfNr60CGvNKZamAWAKiWya2kYPp3d/wXEQeWhqfI=;
+  b=OC9sOJQNv/QblUiC7kD0Pz21VETQTIBXvA9lelwOzkBQWoLkD5xuaf4y
+   hMd5jWHvsBp4W2Qp/vyPql1Ro+a0Dvwcqa0fsYL4Pywx/h7E0Idmi0KPY
+   jnyYkjeJU1m2YVQvr9vd/Wxb9k+xbxJxgsrFI9VSJK/JyMa03fXBj4vrf
+   SESFjbGwMWoEFtJWOchpth2mRLA6ZLVjxDF2VI2bz8Wmu3n0ZVmqCL1RC
+   kzGWiqUBIYVRZTLhZwToID1xPngoHhQD+DBxudoUbwbNZ5vsheTOGPBD9
+   FmbRXuNxnYLRzBMVQ1MS0nUSouuS3NOAhqCPi3ys0kbr0SQDbNUsaAbX4
+   A==;
+X-CSE-ConnectionGUID: Due98+eFSAy1QF+7sTdPtQ==
+X-CSE-MsgGUID: EPTS2iJIRK+81u67FsSY0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58369491"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="58369491"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 06:43:27 -0700
+X-CSE-ConnectionGUID: cKGDnZhnTk2ffagtjTUoQg==
+X-CSE-MsgGUID: PBAuvIT2Tu+wh6ivVtdWtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="200470962"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 26 Aug 2025 06:43:24 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uqtxJ-000QNf-1G;
+	Tue, 26 Aug 2025 13:43:21 +0000
+Date: Tue, 26 Aug 2025 21:42:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Gent Binaku <binakugent@gmail.com>, rust-for-linux@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gent Binaku <binakugent@gmail.com>
+Subject: Re: [PATCH] Rust associative function
+Message-ID: <202508262139.1Dvu37Cy-lkp@intel.com>
+References: <20250820210225.124288-1-binakugent@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250820210225.124288-1-binakugent@gmail.com>
 
-On Wed, 20 Aug 2025 16:26:44 -0400
-Lyude Paul <lyude@redhat.com> wrote:
+Hi Gent,
 
-> While rvkms is only going to be using a few of these, since Deltas are
-> basically the same as i64 it's easy enough to just implement all of the
-> basic arithmetic operations for Delta types.
-> 
-> Keep in mind there's one quirk here - the kernel has no support for
-> i64 % i64 on 32 bit platforms, the closest we have is i64 % i32 through
-> div_s64_rem(). So, instead of implementing ops::Rem or ops::RemAssign we
-> simply provide Delta::rem_nanos().
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+kernel test robot noticed the following build errors:
 
-Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on driver-core/driver-core-linus akpm-mm/mm-everything linus/master v6.17-rc3]
+[cannot apply to driver-core/driver-core-testing driver-core/driver-core-next next-20250825]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Gent-Binaku/Rust-associative-function/20250821-050335
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20250820210225.124288-1-binakugent%40gmail.com
+patch subject: [PATCH] Rust associative function
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250826/202508262139.1Dvu37Cy-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250826/202508262139.1Dvu37Cy-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508262139.1Dvu37Cy-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0185]: method `inc_ref` has a `&self` declaration in the impl, but not in the trait
+   --> rust/doctests_kernel_generated.rs:10624:5
+   |
+   10624 |     fn inc_ref(&self) {}
+   |     ^^^^^^^^^^^^^^^^^ `&self` used in impl
+   |
+   = note: `inc_ref` from trait: `fn(&Self)`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
