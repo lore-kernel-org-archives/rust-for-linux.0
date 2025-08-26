@@ -1,241 +1,107 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DF63568EC;
-	Tue, 26 Aug 2025 14:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218544; cv=pass; b=VlL4yYihsdyGQVhwXHBUN5RqejJ3pYRGpbJ1vNB9vzU4heBK0btg/kpVM20bEKxuEYjGfLpnHddsa3MLunhj9LyqUhdqvmrEBGhiuL9VaQK74JFuJcvJAD4svSIA/K62D2WhW/NpNYK+DUlTu9rlgcCKGuctd+g2rXnWpoBGoZY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218544; c=relaxed/simple;
-	bh=adRn9/Uca2BKbogSg1i9nz85G64qzgQBOG9jC9aGPzs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=uFFOeSGgjIOQ/bodu+gduvHsTI8eirV7w+hoaJrvinXGjjRe31908j3k+UDUQy//poScdwTpCrY4ydzcZjIC0QrtT79E7Y0PtBfOFqowCaeaBV6mfVFxX22X2Ale0MtUEcJsjRfUbzcVWbVJI02+mYkCv1cglUD8MlWF8aXGK+0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LVW10R6m; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D403034A325;
+	Tue, 26 Aug 2025 14:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756218749; cv=none; b=pAewHko31SoLZfQVAyNvj5xkmwrITUeAvvPKdUTspeayIaCZ7M+xpY83XdYM9HVEVf3PoQNobRnXYnCXon1C8VNQ1TeMAIC+JlXjm3gabUxtzHw7v9dPMufq0EiPrNoShhRFC7ZOY7REB1LC26O2PqkEbK28ZysWOunjSUxBqKQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756218749; c=relaxed/simple;
+	bh=TRwosFDSgyXJuaLmOPY/+OlOBUOdfMGyuGs6N08ZWLk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=IDMYf7IFBN+FI96Lo1Lo9wREqCGeM3Os58VvvMWNnkbP87nOZESEtwcrvvHM+kGickg6tPclrYJjNVAa7ov3do4sW0MqF+gvPMKCHbpUxUHogVI5f3NfMFNUba6B0DO7IWfZ74C3hH6gBzM5PD4qiTg6/geh7iesjGFA2qb3TKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPGD+DZU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LVW10R6m"
-ARC-Seal: i=1; a=rsa-sha256; t=1756218522; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=BjFdXrcJIl95Ug2AaJX8bY/6vOiLaCyNKuE7TBLRVdMv5uu2uu8uao0gewWunbzgjE4GdYAoqmzY6yEEzVzoKAB3zd2qJ1CEIlMGyZQLB59auonX0jlyy7VPz0PDqCfMGHJWTd0Kn8S9ESoQyjhkp/cSOzp2F6uXwD0D672Uh4g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756218522; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dYW6VqjJB15mX/lK13ugJyD8uSJtaR/HOtz8vNCXuNU=; 
-	b=Uw6FsFvGKPfW+j/NpF86iIcIyUE/y5N4AdClLs41TXVkr/kEosHvciLN1I+k95rUHeFD3elC2Tw/DxMj8uiae2U2hiUrFjnuMGvZ1eOL1zflcfKG9QH7L6LkNni9G20zrR9Krjxc6R9jHxUcx0SLI4vI3F+VMiuHOuizP5zgreY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756218522;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=dYW6VqjJB15mX/lK13ugJyD8uSJtaR/HOtz8vNCXuNU=;
-	b=LVW10R6mVRr/15Z2qPidNNMIHoTXJwIk66kjGiA1SSi+/C4cye5ylDB5OBOUFd/D
-	ylPVtR3LkXcnAj18kwY5imBEXiytwEro4prMAGwLnav5PKVThlan7Ry+mEXyEVQd5W2
-	fK15OmHsCHbcImBWYefKZdhcL5KoWhnqYHwYF9lg=
-Received: by mx.zohomail.com with SMTPS id 175621851964057.89311874075952;
-	Tue, 26 Aug 2025 07:28:39 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPGD+DZU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AC4C4CEF1;
+	Tue, 26 Aug 2025 14:32:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756218749;
+	bh=TRwosFDSgyXJuaLmOPY/+OlOBUOdfMGyuGs6N08ZWLk=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=KPGD+DZUAyvngYsHdhvkfS3MAbNCZ2g9dExE0HS72vQ6bUXrOrH4HMom4a79ILxc/
+	 EFHtmU2R1ukz5EoZzocODFt6I7KDeUS0qCE2lrBn7nC2ctsrWT11pYZgaelmwhRP6N
+	 wbwiM14FkRmzOWaloMUnrTq5HZOraK/znRuGVCfP2LJ3dLzeEz3Ap3e1SBqOAkW2U/
+	 JalR8Ll4cOiOtIUaypRv61E7xxspthk+sXfuJDTlA2LDSts6zGzV3teyDkQ9L8Jx5b
+	 taDo2u88gcPVqsxGCby+b1ITA6n/ebhN8eXOdTMpaJIO7LvQajsKqfNVeAOcamFvvh
+	 aTxOi8o4swJkQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 2/2] rust: time: Implement basic arithmetic operations
- for Delta
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250820203704.731588-3-lyude@redhat.com>
-Date: Tue, 26 Aug 2025 11:28:23 -0300
-Cc: rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>,
- John Stultz <jstultz@google.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <485A6C23-9E6A-45C6-8F3F-377E538F052E@collabora.com>
-References: <20250820203704.731588-1-lyude@redhat.com>
- <20250820203704.731588-3-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 Aug 2025 16:32:24 +0200
+Message-Id: <DCCFL57R0B4B.D289IWKTOTOE@kernel.org>
+Cc: <akpm@linux-foundation.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>, <acourbot@nvidia.com>,
+ <jgg@ziepe.ca>, <lyude@redhat.com>, <robin.murphy@arm.com>,
+ <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 3/5] rust: scatterlist: Add abstraction for sg_table
+References: <20250825132539.122412-1-dakr@kernel.org>
+ <20250825132539.122412-4-dakr@kernel.org> <aK3BsV_s-xMQLF4d@google.com>
+In-Reply-To: <aK3BsV_s-xMQLF4d@google.com>
 
+On Tue Aug 26, 2025 at 4:16 PM CEST, Alice Ryhl wrote:
+> On Mon, Aug 25, 2025 at 03:24:42PM +0200, Danilo Krummrich wrote:
+> Overall LGTM. With comments addressed:
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>
+>> +impl RawSGTable {
+>> +    fn new(
+>> +        pages: &mut [*mut bindings::page],
+>
+> This should probably be unsafe due to the raw pointer. Or could we pass
+> any pointer here?
 
+Good catch, we should indeed make this unsafe and add the corresponding saf=
+ety
+requirements:
 
-> On 20 Aug 2025, at 17:26, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> While rvkms is only going to be using a few of these, since Deltas are
-> basically the same as i64 it's easy enough to just implement all of =
-the
-> basic arithmetic operations for Delta types.
->=20
-> Keep in mind there's one quirk here - the kernel has no support for
-> i64 % i64 on 32 bit platforms, the closest we have is i64 % i32 =
-through
-> div_s64_rem(). So, instead of implementing ops::Rem or ops::RemAssign =
-we
-> simply provide Delta::rem_nanos().
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
->=20
-> ---
-> V2:
-> * Don't forget to make sure that we inline all of these
-> * Drop ops::Rem and ops::RemAssign implementations for Delta, replace =
-with
->  Delta::rem_nanos() instead. It turns out that there's actually no way =
-to
->  perform i64 % i64 on 32 bit platforms in the kernel at the moment, =
-the
->  closest that we have is div_s64_rem() which only allows a 32 bit =
-divisor.
-> * Actually use the kernel arithmetic helpers for division/remainders =
-so
->  that this code works on both 32 and 64 bit platforms.
-> V3:
-> * Change the output type for Div to i64, drop DivAssign
-> * Change Mul/MulAssign to accept i64, not another Delta
-> * Fix parameter name in rem_nanos (ns -> dividend)
->=20
-> rust/kernel/time.rs | 98 +++++++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 98 insertions(+)
->=20
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 4bd7a8a009f3e..e64c5b13152dd 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -265,6 +265,78 @@ pub struct Delta {
->     nanos: i64,
-> }
->=20
-> +impl ops::Add for Delta {
-> +    type Output =3D Self;
-> +
-> +    #[inline]
-> +    fn add(self, rhs: Self) -> Self {
-> +        Self {
-> +            nanos: self.nanos + rhs.nanos,
-> +        }
-> +    }
-> +}
-> +
-> +impl ops::AddAssign for Delta {
-> +    #[inline]
-> +    fn add_assign(&mut self, rhs: Self) {
-> +        self.nanos +=3D rhs.nanos;
-> +    }
-> +}
-> +
-> +impl ops::Sub for Delta {
-> +    type Output =3D Self;
-> +
-> +    #[inline]
-> +    fn sub(self, rhs: Self) -> Self::Output {
-> +        Self {
-> +            nanos: self.nanos - rhs.nanos,
-> +        }
-> +    }
-> +}
-> +
-> +impl ops::SubAssign for Delta {
-> +    #[inline]
-> +    fn sub_assign(&mut self, rhs: Self) {
-> +        self.nanos -=3D rhs.nanos;
-> +    }
-> +}
-> +
-> +impl ops::Mul<i64> for Delta {
-> +    type Output =3D Self;
-> +
-> +    #[inline]
-> +    fn mul(self, rhs: i64) -> Self::Output {
-> +        Self {
-> +            nanos: self.nanos * rhs,
-> +        }
-> +    }
-> +}
-> +
-> +impl ops::MulAssign<i64> for Delta {
-> +    #[inline]
-> +    fn mul_assign(&mut self, rhs: i64) {
-> +        self.nanos *=3D rhs;
-> +    }
-> +}
-> +
-> +impl ops::Div for Delta {
-> +    type Output =3D i64;
-> +
-> +    #[inline]
-> +    fn div(self, rhs: Self) -> Self::Output {
-> +        #[cfg(CONFIG_64BIT)]
-> +        {
-> +            self.nanos / rhs.nanos
-> +        }
-> +
-> +        #[cfg(not(CONFIG_64BIT))]
-> +        {
-> +            // SAFETY: This function is always safe to call =
-regardless of the input values
-> +            unsafe { bindings::div64_s64(self.nanos, rhs.nanos) }
-> +        }
-> +    }
-> +}
-> +
-> impl Delta {
->     /// A span of time equal to zero.
->     pub const ZERO: Self =3D Self { nanos: 0 };
-> @@ -353,4 +425,30 @@ pub fn as_millis(self) -> i64 {
->             bindings::ktime_to_ms(self.as_nanos())
->         }
->     }
-> +
-> +    /// Return `self % dividend` where `dividend` is in nanoseconds.
-> +    ///
-> +    /// The kernel doesn't have any emulation for `s64 % s64` on 32 =
-bit platforms, so this is
-> +    /// limited to 32 bit dividends.
-> +    #[inline]
-> +    pub fn rem_nanos(self, dividend: i32) -> Self {
-> +        #[cfg(CONFIG_64BIT)]
-> +        {
-> +            Self {
-> +                nanos: self.as_nanos() % i64::from(dividend),
-> +            }
-> +        }
-> +
-> +        #[cfg(not(CONFIG_64BIT))]
-> +        {
-> +            let mut rem =3D 0;
-> +
-> +            // SAFETY: `rem` is in the stack, so we can always =
-provide a valid pointer to it.
-> +            unsafe { bindings::div_s64_rem(self.as_nanos(), dividend, =
-&mut rem) };
-> +
-> +            Self {
-> +                nanos: i64::from(rem),
-> +            }
-> +        }
-> +    }
-> }
-> --=20
-> 2.50.0
->=20
->=20
+diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+index e76e5c2cbdc7..a562c0360842 100644
+--- a/rust/kernel/scatterlist.rs
++++ b/rust/kernel/scatterlist.rs
+@@ -251,7 +251,12 @@ unsafe impl Send for RawSGTable {}
+ unsafe impl Sync for RawSGTable {}
+=20
+ impl RawSGTable {
+-    fn new(
++    /// # Safety
++    ///
++    /// - `pages` must be a slice of valid `struct page *`.
++    /// - The pages pointed to by `pages` must remain valid for the entire=
+ lifetime of the returned
++    ///   [`RawSGTable`].
++    unsafe fn new(
+         pages: &mut [*mut bindings::page],
+         size: usize,
+         max_segment: u32,
+@@ -355,7 +360,11 @@ fn new(
+         };
+=20
+         Ok(try_pin_init!(&this in Self {
+-            sgt <- RawSGTable::new(&mut page_vec, size, max_segment, flags=
+),
++            // SAFETY:
++            // - `page_vec` is a `KVec` of valid `struct page *` obtained =
+from `pages`.
++            // - The pages contained in `pages` remain valid for the entir=
+e lifetime of the
++            //   `RawSGTable`.
++            sgt <- unsafe { RawSGTable::new(&mut page_vec, size, max_segme=
+nt, flags) },
+             dma <- {
+                 // SAFETY: `this` is a valid pointer to uninitialized memo=
+ry.
+                 let sgt =3D unsafe { &raw mut (*this.as_ptr()).sgt }.cast(=
+);
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
