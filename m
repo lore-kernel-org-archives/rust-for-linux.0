@@ -1,41 +1,41 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012F330CD8E;
-	Tue, 26 Aug 2025 19:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4F419FA8D;
+	Tue, 26 Aug 2025 20:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756238376; cv=pass; b=Rhg8O+zN/qskSzHAU6J/YRMGbXFkNUlRooJvT5QY6tFV1k9/dW1CaTmTfFrr7HDBk4IO31X2/C/yzzQdGaZEoHdW8llNBE7c9q9AAMLxAcas2ZXz0GWwfWLioPntbmFQCbn6dR5pe3hSfcVA0eiQuUN21pY1ctX0SqfLALBuk7k=
+	t=1756239454; cv=pass; b=FgM8vJjLi34TpheJfcrcLklkNBjnMe0w2iYVN/E831179E+cuUUz/0n0RzEjs/bXp9QWsw1z28iEV3Eb2PRqCk2m09ferf+f+GNtKFZvjUyF95ythCObP3WC1HJ1AhvPm6ArCu1xbN22hPCUL3DOAy1IDzJ8C32VLszoKYb58bE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756238376; c=relaxed/simple;
-	bh=v+qAZpdjFRISbvl6fEV1upnhfsGMwsUi78VSqgFIzo0=;
+	s=arc-20240116; t=1756239454; c=relaxed/simple;
+	bh=jW8LrzyBg/k0qFrop6gT7MK52/NnKrIw90gZXeUxmvM=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=k2h0b2OkLbRrHSlkrGwBUr/gIUtpjzgLc3zxgvrBOxaIvXHmIiLxK3dQZ9EaVjSAkx6QyP8SDJC2X+unisoBUxuR2oqYyeqx8xKu/j72vTEdB5UVdxsQawg4RgMjek+X7y4/SpnrpNZ3spOxQJGsJaUXz7cbuDjKOHtkV51JDqk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YVj0IAHB; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=jNvOoSybpeZVz3nzUWq7n6WwZ5AkAThQTsJhpU1RyA/i0v0ZfKeJVxZ29HzkQ4WLQ0kxj2GNo2zP6RsBA/2/76csaGSDC0MWyT48YmS9N/eW+EwkzpWJouU3Kbf/4B+LWXrLZCuoenb/pIES4OPG+dENp9RiF3DnwoLTaN2imBM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=U8nHMPYh; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YVj0IAHB"
-ARC-Seal: i=1; a=rsa-sha256; t=1756238346; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="U8nHMPYh"
+ARC-Seal: i=1; a=rsa-sha256; t=1756239434; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=VRSWjwP51+Z0Y+5sf9M6tlQX18Gr0SdG8w+GNaY8ZjSWp6Cjea/Ucv32OiPesPkOmbiSkPR5rw9s3B1jPrbmnL2bY4RKiKlutFf3mNh3LAXCOmRCRNjzFAYcH9aSSqnvfvx+96UIQm65ESUJeMe4FfVIbpFZ5OA9NtWW+6WprUs=
+	b=YugFtM2JJiFzCuIHiQhSgpOSEGM8E1q9IUyMuv5TS2XpDpWWfR4U8xRDGUg2r6VfxzPkwBq9JjvKHsd/Ls6MMjGOPGfYPrqKFuvXByrbtxi7USkW516KHFb+NBoYJqfDe3XPxCSixlEd5azMQ68Azqf6zqgL5s8AUIFNwpMmg4U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756238346; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=v+qAZpdjFRISbvl6fEV1upnhfsGMwsUi78VSqgFIzo0=; 
-	b=fed0xhGzNgMdmwbYAADg0IM0CiaztmZO/JktpcPB9KvW97LJLIdb6KkiuKtdcdBxZOn7RrkZSXlCtqsGtOCVbG/S/19dnbkWryDvsIxkNT0Gs8+UPEXVQo2TpxKZKxDwiCjoIsB4Y2Ho6I3yUe3Q8A0IUoslHa76us6JT3uHbhk=
+	t=1756239434; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=kWFMjU3KD3nyj2cVdJLZORbF6zEso+XDHCk9O/tM7C8=; 
+	b=ZAqODN8e8GzKQXZ167VeKE4nne+YVBkfP85ou0c2RC2nDFrb9W6QpG9zp2ZGbASmmzZNp7G9UebpXqqU5wxQA3lBMJoXfbT3VJH43k0QY6kesRwezgPu4Gp9My8oVBQ5VMGP0g6XqE4Al74b0LWaq2qAbRJA2bfwm731bWPkMQ0=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756238346;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756239434;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=v+qAZpdjFRISbvl6fEV1upnhfsGMwsUi78VSqgFIzo0=;
-	b=YVj0IAHBOiH1Zgh7Ra7DokFIYZqeXyiK4AbcIJFoo0hu35jJKx4tpB8J0PxWFtzE
-	OGM4P2d2y8LgeX40oqP/f33btMXfjDDAID5JNmM8efPk84+zByOPqsFGRmGHW+aPvOf
-	Np4HTHFqibwa11sInXKemgrUMWWOve+FiOuB94/4=
-Received: by mx.zohomail.com with SMTPS id 1756238344788630.6595842451526;
-	Tue, 26 Aug 2025 12:59:04 -0700 (PDT)
+	bh=kWFMjU3KD3nyj2cVdJLZORbF6zEso+XDHCk9O/tM7C8=;
+	b=U8nHMPYhsWFura+Og5fw4lFOtznzCIhUiLQhBmnDR90cVeYMFB7bj8XLFMdDqWBb
+	e9ZrKarjfZLuJla3mwdx3DnZuF+Kt0WVfnce3SoXSogHZgIgfOKbN3OPFmnzp04h+ba
+	jNc8uQqvH1v0Jpn5aEJaMCQfmYwTOlDBlGhpCEEI=
+Received: by mx.zohomail.com with SMTPS id 1756239432857500.3997770708535;
+	Tue, 26 Aug 2025 13:17:12 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,10 +44,10 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 2/5] rust: dma: add type alias for bindings::dma_addr_t
+Subject: Re: [PATCH v3 3/5] rust: scatterlist: Add abstraction for sg_table
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DCCJG1V40J97.1FQA6ZV5JE6RK@kernel.org>
-Date: Tue, 26 Aug 2025 16:58:48 -0300
+In-Reply-To: <DCCLKO6HTCM8.YR8VE8PAXQTM@kernel.org>
+Date: Tue, 26 Aug 2025 17:16:56 -0300
 Cc: akpm@linux-foundation.org,
  ojeda@kernel.org,
  alex.gaynor@gmail.com,
@@ -66,59 +66,90 @@ Cc: akpm@linux-foundation.org,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3CC4D02A-9A15-4F98-8DB1-97B457C18E95@collabora.com>
+Message-Id: <3BD5A415-CD19-4B8E-A2A3-78F60FCC863A@collabora.com>
 References: <20250825132539.122412-1-dakr@kernel.org>
- <20250825132539.122412-3-dakr@kernel.org>
- <CE0E1F73-69CE-4629-979E-9AE5B6AB055E@collabora.com>
- <DCCJG1V40J97.1FQA6ZV5JE6RK@kernel.org>
+ <20250825132539.122412-4-dakr@kernel.org>
+ <6625A8C0-33B2-4AFC-984B-130F8E06113D@collabora.com>
+ <DCCLKO6HTCM8.YR8VE8PAXQTM@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
 
 
-> On 26 Aug 2025, at 14:33, Danilo Krummrich <dakr@kernel.org> wrote:
+> On 26 Aug 2025, at 16:13, Danilo Krummrich <dakr@kernel.org> wrote:
 >=20
-> On Tue Aug 26, 2025 at 7:15 PM CEST, Daniel Almeida wrote:
->> Hmm, I wonder if this shouldn=E2=80=99t be its own type, instead of =
-an alias. This
->> will be handy if we want to enforce that a given address is, in fact, =
-a bus
->> address.
+> On Tue Aug 26, 2025 at 7:40 PM CEST, Daniel Almeida wrote:
+>>> On 25 Aug 2025, at 10:24, Danilo Krummrich <dakr@kernel.org> wrote:
+>>> +=09
+>>> +unsafe impl Sync for SGEntry {}
+>>=20
+>> IMHO all safety comments for Sync must mention how it=E2=80=99s ok to =
+send &T to
+>> another thread for a given T.
 >=20
-> I'm not sure I understand the idea. How can a new type compared to a =
-type alias
-> help to guarantee that a DMA address is also a bus address?
+> When we say "`T` can be accessed concurrently." it means that it is =
+valid for
+> multiple &T to be accessed concurrently from different tasks.
 >=20
-> This depends on whether there is an IOMMU, etc.
+> I.e. what we care about in this case is interior mutability, where we =
+can have
+> three cases:
+>=20
+>  (1) There is no interior mutability, hence the type is Sync.
+>=20
+>  (2) There is interior mutability, but there's also internal =
+mechanisms taking
+>      care of data races, hence the type is Sync.
+>=20
+>  (3) There is interior mutability and nothing prevents data races, =
+hence the
+>      type is not Sync.
+>=20
+> I feel like only case (2) really needs justification, because it needs =
+to
+> explain how those "internal mechanisms" work.
+>=20
+> Those abstractions do not have any interior mutability, hence I think =
+what we
+> have is enough. Does that make sense?
 
+I think we're both saying the same thing, but the wording I suggested is =
+more
+straight-forward IMHO because:
 
-I was referring to the term "bus address" as used here [0].
+a) Being able to send a &T safely is the definition of Sync,
+b) When you say:
 
-My understanding has always been that a dma_addr_t is a bus address =
-regardless
-of whether the system has an iommu? If there's no IOMMU then we there's =
-a 1:1
-correspondence but this doesn't invalidate the use of the term? i.e.: =
-it's still
-an address that can be directly accessed by a hardware device.
+> "When we say "`T` can be accessed concurrently." it means that it is =
+valid
+> for multiple &T to be accessed concurrently from different tasks.
 
-In any case, this is a bit orthogonal to the point I was trying to make, =
-my bad
-for not expressing it better.
+I think it _implies_ that it is valid for multiple &T to be accessed
+concurrently from different tasks, and that it's therefore safe to send =
+a &T to
+another task, but it doesn't spell it out. It's up to readers to then =
+make that
+logical connection themselves.
 
-What I mean is, by using a separate type, i.e.:
+While I do agree that only 2) actually demands a more elaborate =
+justification,
+it's simpler to just rephrase the current safety comment with:
 
-DmaAddress(bindings::dma_addr_t)
+// SAFETY: `SGEntry` has no interior mutability, so it is safe to send a =
+shared
+// reference to other tasks.
 
-we now ensure that one cannot pass a random u32/u64 value where a =
-DmaAddress is
-expected. It's a bit like the __iomem or __user C annotation, but =
-actually
-enforced by the type system.
+or, more verbosely:
 
-In fact, this is something that was recently done in uaccess.rs, IIRC.
+// SAFETY: It is not possible to mutate a `SGEntry` through a shared =
+reference,
+// so it is safe to send a &SGEntry to another task.
 
+Or any variation of the wording above.
 
-[0]: =
-https://docs.kernel.org/core-api/dma-api-howto.html#cpu-and-dma-addresses=
+In any case, I agree that this is splitting hairs a bit and I have =
+nothing
+against keeping it as-is, I just thought it be a tad clearer :)
+
+=E2=80=94 Daniel=
