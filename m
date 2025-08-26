@@ -1,107 +1,168 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0E3184540
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Aug 2025 12:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212308; cv=none; b=pkoylHRZC3QuZrHvNrDPG8UBFHZ1m1SpUzpBduZGzpiLGPEKSAqphT1k1uy4AVbhlaQExtTFle9Q2vEc+I6JOwvE3J5ZAXuamXt5+NVthrjQ4bvS/Hy/oN8iWA0aOG5U8gq2RuhbP2h3Z46MAAkSGMR631sYBe6bgRnb6v8FBqQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212308; c=relaxed/simple;
-	bh=kHskFBa2oIcEMKYovfY+fi3L1IR64RfvAYRX9xZO5xI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nxqv0SqtmaGm0ZkmPOG35YTOoruR85VV52fIeHxY0+qjTSprnPXQYoxA6qA2fuRPw0mP+gEVun9KxvxwTg9Z4cDRu1qKfZbF3OLz36sbQDWyd1u/B679a3x2wHwWSodPA2R/1O5NjphyuU9lifFx3khG4KXVrjXGJjXlZwsTGFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=YbdKvJb9; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC01C393DE4;
+	Tue, 26 Aug 2025 12:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756212327; cv=pass; b=KGVFxDGcMzNmKsBWZaRSVwUxVJTHp6kH3P1ThKpw0ZoLiqqU5LIwgix5+fPMyFjcptkvx2/sJUHX3UfAJ/z1RFsGZGkXfYUH5Tm9r/JJkNoYE10VpFk9ZXPeWL1NAlsDUaVLwcVGMVa5JpWMfCpo/Dpjb/9qfS++HWxcnpVM25w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756212327; c=relaxed/simple;
+	bh=cgXyt5xfXl8QW+Mtjr8ObjvNPMTWMv9d8Y9vFFrlEVU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Qa1WQnu8odTbxQLMdu6jPAm8vGgQfbn/mQpJPQToUJJFvxH9caSaGJr6bA6vF+3Ydms32ab53m0ATIpeTj7/ZTLKd0eOa6PY3sNAvl2XjcX8+pUHHsNndoIGr6gQy10M+1Vct7CqJriFPPz8CcDCFfYYJX9xjWVrSZALtVJ+lxE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=h85PR4zs; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="YbdKvJb9"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45a286135c8so33291825e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Aug 2025 05:45:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1756212304; x=1756817104; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G2JcBs+CganwEkX4OprqHJ8amoc/Ho1q+lauapGtfgE=;
-        b=YbdKvJb9kdo4HGFDLjUv9uEgtJAwSzzK08EOwJ1stZaA6hi2VdfabkSJP+Ed3yNz0p
-         kTzacvmmaSp9hgRBOrPz8vk5M7EB7f53qE506XbBsVtDMEOt0A5oobdBAKxVblvlegpl
-         0K/C3EFRQE7Wd5Vs53J20cQABeouvaFHa8CKtl0yyQ60NcdFawOCAtmPkbQi71U9nRIQ
-         d6qZDd9wiqfTfwnkNofmbe/KWoVwq09f17L67oNDugqCfAr0kVf1/rm2FdbSGr32z5BY
-         ssnMBltX4kXXyGaR7G1itHkCL0LBErRC2oz9/uvGUF+KuDkLPGqIb8e6LdGWbpGM5jH0
-         xsvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756212304; x=1756817104;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G2JcBs+CganwEkX4OprqHJ8amoc/Ho1q+lauapGtfgE=;
-        b=qO5Iu+iUeLBZH8Qgs1JlZDBaGOi3hrmj9RjjV7ZVdZTy7kyTvh8ChQsyOo1ktbkB67
-         rYxqdpZbF64c6hhOGIwmUqlHf5BZf3nnLva8qZ4H7T9naw8hO+rS0HKqZ87xbLKNYmdD
-         GL1SQkq41LXpjNNqJ/8sCc0o1EisLUneKko4OFI2EqZsLwFp9oYGgVCssJuOH/xvnBKW
-         zes2YBcJcHrxD0OcQ56DqO8nUyr8/H8a3bxSFKqAl0pje7VvonuqztVkJcz4DwQN3pJv
-         /LSrncpPHB9E0YMukZySdpHihycyc3yLyHtS48WHF+RT38dIv0FcINbBxrpsrd8EfVzp
-         EBig==
-X-Gm-Message-State: AOJu0YxAKXWC2HSHQa96+G5SCxymr+Z6ronS7qbAA/0EDoNTCVOmrrXM
-	k8u1A7GPTXL8fQ40p1k2Lsf3Mgv+2bRr8Ysx6KQKffjz9D8kvJnNzTppQGX6FwxjNa8=
-X-Gm-Gg: ASbGncsHdzwzvfvkkVxpGNR0uMAUdgMogv/1fVugLx6Ur2glwLgW9SuDBmuLGVjw8x4
-	7wbzQ3laOSfJCCZ0+s6gec1MnEVTvcKufiFGtmPCcqDfE6ly8hVgb4fYJZsf+iqPKkrEDAxbWM5
-	HzTHKSIKqXsZm8bqyU1m5eaWMAqA25rzXAG1Z8RHO3qlB5v6NVg5QSvXaSC6+Vvks/rRFCAxOo2
-	2y9OZeakQhq/uOH9xDsbAUwEmgLuKfUfhOhw0OiNpTthgFSWcGf4zXPRn/gfgbSIGlHUFgcvTHd
-	Q+X0O9GrOT0g9dQ+yvGq18HZWcNsEndXHeKqcUn3xLHicOfmH73fEKMvaAPbmCd7Tmm/gnJ3kcJ
-	Pzjf0
-X-Google-Smtp-Source: AGHT+IFW3ZA3OI4upIPp4NoeCf9FPmFZqJS7Agu5/RUEZiautDlaOmJQu85kPRquLo9rwsyVAOkzbQ==
-X-Received: by 2002:a05:600c:c0d9:b0:459:dbc2:201e with SMTP id 5b1f17b1804b1-45b6870dda4mr7526655e9.9.1756212304089;
-        Tue, 26 Aug 2025 05:45:04 -0700 (PDT)
-Received: from localhost ([2620:10d:c092:600::1:a584])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c70b634943sm15982302f8f.0.2025.08.26.05.45.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 05:45:03 -0700 (PDT)
-Date: Tue, 26 Aug 2025 14:44:54 +0200
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 0/2] rust: zpool: add abstraction for zpool drivers
-Message-ID: <20250826124454.GA1502@cmpxchg.org>
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="h85PR4zs"
+ARC-Seal: i=1; a=rsa-sha256; t=1756212289; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=faDuxUNFrtHNdCsA5rWdmOrAB5cZFaCeDiDvVWlgpUU7/wLujOdg95JxMvzTWueR5bGzaCEUblVGBPI2Izf5HTUM7gu2ebOIB6CFCYOMPvk4vYkt2kwjiWv5/exN1lTH1J9ybDimu1uRjyD29MM5xvBIxvtE331yujMg2ZzJutU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756212289; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Md+QcIwMiOUfkxOiluRJOn1bJ+/RWxPtO7PViPrVhfc=; 
+	b=Yf/xgXxcDKo2nTN4Ak21t4XYKX/vYNP2AW4HsptaeiUm8ZYOVp2CxMXzE6vv7JopdXNe0Xrh857fvWywvuwuF8mtPb2oYAOkJseiURYYVdKtfQwnj4Mi3+bLzba13PE1IYOphFxZQB/l8u1cyZlH4PrygNVOccUbNVvAEctwaWo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756212289;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=Md+QcIwMiOUfkxOiluRJOn1bJ+/RWxPtO7PViPrVhfc=;
+	b=h85PR4zsNTuWyosBbM2yCk2yIV+WgQERUHyFPfMMZpmriLrOpl6z9qQ5zRcu9l2Z
+	FHA0aBLs3AorXdawVveH1X1gAjQF+6zAGvah7gulR0xgISFeQsJDkX848geTnLT/z0a
+	DU2h9TmZLRiLP4BoI8EctkcFUFRkjFfYtd596yGk=
+Received: by mx.zohomail.com with SMTPS id 1756212285951853.8496760532269;
+	Tue, 26 Aug 2025 05:44:45 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250823130420.867133-1-vitaly.wool@konsulko.se>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v1 1/2] rust: add udelay() function
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250821035710.3692455-2-fujita.tomonori@gmail.com>
+Date: Tue, 26 Aug 2025 09:44:27 -0300
+Cc: a.hindborg@kernel.org,
+ alex.gaynor@gmail.com,
+ ojeda@kernel.org,
+ aliceryhl@google.com,
+ anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com,
+ boqun.feng@gmail.com,
+ dakr@kernel.org,
+ frederic@kernel.org,
+ gary@garyguo.net,
+ jstultz@google.com,
+ linux-kernel@vger.kernel.org,
+ lossin@kernel.org,
+ lyude@redhat.com,
+ rust-for-linux@vger.kernel.org,
+ sboyd@kernel.org,
+ tglx@linutronix.de,
+ tmgross@umich.edu,
+ acourbot@nvidia.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <793E15AB-D69C-49F5-823E-A57F343BA3F4@collabora.com>
+References: <20250821035710.3692455-1-fujita.tomonori@gmail.com>
+ <20250821035710.3692455-2-fujita.tomonori@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Sat, Aug 23, 2025 at 03:04:19PM +0200, Vitaly Wool wrote:
-> Zpool is a common frontend for memory storage pool implementations.
-> These pools are typically used to store compressed memory objects,
-> e. g. for Zswap, the lightweight compressed cache for swap pages.
-> 
-> This patch provides the interface to use Zpool in Rust kernel code,
-> thus enabling Rust implementations of Zpool allocators for Zswap.
+Hi Fujita,
 
-The zpool indirection is on its way out.
+> On 21 Aug 2025, at 00:57, FUJITA Tomonori <fujita.tomonori@gmail.com> =
+wrote:
+>=20
+> Add udelay() function, inserts a delay based on microseconds with busy
+> waiting, in preparation for supporting read_poll_timeout_atomic().
+>=20
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+> rust/helpers/time.c       |  5 +++++
+> rust/kernel/time/delay.rs | 34 ++++++++++++++++++++++++++++++++++
+> 2 files changed, 39 insertions(+)
+>=20
+> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
+> index a318e9fa4408..67a36ccc3ec4 100644
+> --- a/rust/helpers/time.c
+> +++ b/rust/helpers/time.c
+> @@ -33,3 +33,8 @@ s64 rust_helper_ktime_to_ms(const ktime_t kt)
+> {
+> return ktime_to_ms(kt);
+> }
+> +
+> +void rust_helper_udelay(unsigned long usec)
+> +{
+> + udelay(usec);
+> +}
+> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
+> index eb8838da62bc..baae3238d419 100644
+> --- a/rust/kernel/time/delay.rs
+> +++ b/rust/kernel/time/delay.rs
+> @@ -47,3 +47,37 @@ pub fn fsleep(delta: Delta) {
+>         bindings::fsleep(delta.as_micros_ceil() as c_ulong)
+>     }
+> }
+> +
+> +/// Inserts a delay based on microseconds with busy waiting.
+> +///
+> +/// Equivalent to the C side [`udelay()`], which delays in =
+microseconds.
+> +///
+> +/// `delta` must be within `[0, `MAX_UDELAY_MS`]` in milliseconds;
+> +/// otherwise, it is erroneous behavior. That is, it is considered a =
+bug to
+> +/// call this function with an out-of-range value, in which case the =
+function
+> +/// will insert a delay for at least the maximum value in the range =
+and
+> +/// may warn in the future.
+> +///
+> +/// The behavior above differs from the C side [`udelay()`] for which =
+out-of-range
+> +/// values could lead to an overflow and unexpected behavior.
+> +///
+> +/// [`udelay()`]: =
+https://docs.kernel.org/timers/delay_sleep_functions.html#c.udelay
+> +pub fn udelay(delta: Delta) {
+> +    const MAX_UDELAY_DELTA: Delta =3D =
+Delta::from_millis(bindings::MAX_UDELAY_MS as i64);
 
-When you submitted an alternate allocator backend recently, the
-resounding feedback from the zswap maintainers was that improvements
-should happen to zsmalloc incrementally. It is a lot of code and has a
-lot of features that go beyond allocation strategy. We do not want to
-fork it and fragment this space again with niche, incomplete backends.
+We should perhaps add a build_assert here to make sure this cast is =
+always valid?
 
-It's frustrating that you not only ignored this, but then went ahead
-and made other people invest their time and effort into this as well.
+> +
+> +    let delta =3D if =
+(Delta::ZERO..=3DMAX_UDELAY_DELTA).contains(&delta) {
+> +        delta
+> +    } else {
+> +        // TODO: Add WARN_ONCE() when it's supported.
+> +        MAX_UDELAY_DELTA
+> +    };
+> +
+> +    // SAFETY: It is always safe to call `udelay()` with any =
+duration.
+> +    unsafe {
+> +        // Convert the duration to microseconds and round up to =
+preserve
+> +        // the guarantee; `udelay()` inserts a delay for at least
+> +        // the provided duration, but that it may delay for longer
+> +        // under some circumstances.
+> +        bindings::udelay(delta.as_micros_ceil() as c_ulong)
+> +    }
+> +}
+> --=20
+> 2.43.0
+>=20
+>=20
+
+With the change you suggested for the safety comment in udelay:
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
