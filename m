@@ -1,95 +1,224 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EB133A00A
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Aug 2025 13:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216696; cv=none; b=fGGNDIxODV1ENR8Nh0eRci5e2aFNhH9KmjfrXn8/uErzy6kr02Dt0qo1nCXEJHCoK4VlOoZtq50hmbSx04HFDF9bAK4t5bvm7YwqQigD8F0ggGKbIS9kiZtoiL5WJ2rLWK5Q7BrXUgv0yZcKoFVfk74ZDEsf42sMU8DPs4kAWmw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216696; c=relaxed/simple;
-	bh=F/fAPnfHxUemRrZHN9zWvSIFmtxgD0s1aIaOJ66WCvQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JMQJxrafY9EkuHLY0OmQySG5pf+4DPL+4SCmdSSRiqJ7EjZEKEYUtxZBQJSQ2xPscqWEQpqrRBH2ocq9dlEFD8nzvP5F7r8kwzBrdWbGo4DvP8sLpU0nKirL3wJM1zQpXJ59dPHCFGTkFgLTZVdVh28sZMOJ+Qv5y8q7xl+kmkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RGCQsClm; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB81D42AA4;
+	Tue, 26 Aug 2025 14:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756216991; cv=pass; b=d1YRjdIU1M+2DZ3DTWYDXaR0mHqA22eNydtyZp4pU7cQuiIhO8NRoDSNT24gUkfSu+D2kvWauxfiINc/0RdPzdizecxX1gyLHZAU5aaB9OJ4bTgzLyudP2rOwiGYDyo1qRj0yjTv/Av9jTXAzZ48C9X3KUw2VkdGPlrqeNCCpYg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756216991; c=relaxed/simple;
+	bh=WRs+H/ZDZ7RF8LCx5HAeOLIeMI7rMqwACtNhjQyBFy8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=jvFfKcsunMoFWpQ2mg13nND/GTaIGxsENSUhArE4t7l0EhKFS0PoxKPzAIDzOWfNk3x7293nF+Ux7iLekeu91ZzMViKwVDv0Luyep+Ce9QpInHsLgrNYJ+8MFFLkEfE8TNUNhscnSWbUSMzRTC+pfJ9xGmQYoONyXb8/YuqykgQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=MUC/6APP; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RGCQsClm"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3c79f0a606fso1862861f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Aug 2025 06:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756216693; x=1756821493; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F/fAPnfHxUemRrZHN9zWvSIFmtxgD0s1aIaOJ66WCvQ=;
-        b=RGCQsClmP4mM9OBBB9U3mt19EDLwls+80WqGnM/+Qv7ZiKe1Lq1+k4yIXNvMs8QTIx
-         lO2h4hpiUhkIbhihjizj1YJshZTei2xQoysWMtAsJPyXZP0vF5kCXQULc+BLbeFjikeM
-         a1YGGJy3kKrMJC5DzzerJEcqMAIY+QXItMkYdla35XfVpt587pbewhj6iasRAFPJt5KP
-         353bac/ZRNiwEXaCX3aIUHV0nZgFGHSCZwYM1pXqH7dYNzCGKihNEhAgZHlgSe69Xvm+
-         fj9cg+rD6AQFyqX8TWgORZIj40EB0Vq++FoE9FvrQKadbicvs0V9CI8p0QGV1CaIuQIp
-         1DCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756216693; x=1756821493;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F/fAPnfHxUemRrZHN9zWvSIFmtxgD0s1aIaOJ66WCvQ=;
-        b=Lg30HEnOsJ2af+tqERnuCxZNHmfYvgTROHwiG87LdM/HZomAANA/6e+fMLnZx6Z7pv
-         0wnuRuWSaQmPY9TfHbFyJupsw3g41VQxLKyvjAMZ6dN+d+zG3sIc6gZHKO7J6hSbOlrA
-         d1q+8zjD+6esSRurBq7DoYmie39QJJIG1qZbS9Gbq3uHsx+Mb2/9jIXO3e9r9qaEkyHq
-         hhuyFt9j5pf8E/ii+mLD4VNbMrBRQvjgoAIfNQfTE2dN5wF8VlpCqzJRWZY1PTZqmvGZ
-         xFdEKidrpgo9WJn2fJ0ooIVNecZkfzwGsr4+Ymzs+wDRl5ZwK0ClUR0KI8FO8mgqs79l
-         ol0A==
-X-Forwarded-Encrypted: i=1; AJvYcCWEPyPCA34YhBnxUpxQ1Mutylnc+/63HJ9UBCBEfZL1ehVn7yRNDmdVgTlRTLgMw5PUNby4WWSncAX8Oe8HnA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWH2SXB01YHAq5HOBywSInKNMFBh85CdcLfZbyEMllYMJPNsuu
-	v2d2C8E75vjsB4UM7pjXGyOIFqH7+EEi9sfwe7X4eOHXtq79zv36WrqlV6JlGGdi53splCgLiwq
-	ebkAAwL9MMkjEZplUXuOFQEA/vUXcxWz2p9fDVEvK
-X-Gm-Gg: ASbGncvq/0h0A6MejGp9kNxZ22avgL2QUQ5I6ITM3Y9lL20bdMQmNumIcTaV0EoamL6
-	3VHMNEnEi93pOwDgefEvpK9PO4dgSAfgRHLHoM3w/4ntzCluOIA/gNVKEzp8rFaHnyqOxevuJ2/
-	Yc2i18MP07ZHM6oG4f4cdLA7CZACjpDAtDwKW4iuDgMkpnkU7gy/yZp7mEq0eTtL2+jT8h9LdZN
-	KjFcfRnKZinlBtnIgJyELmr5Vy+FbP22IJUH17IcvAPT4ALovzjxcN5fYD7vs8L+xpeRQPAcBQ=
-X-Google-Smtp-Source: AGHT+IHRgvzTO5clOrALiSfYSq6INd4bC5T/yqjf+veSVOxDpuDbA4FBiVt0kYdgDa/qqkni21+SFeOOi9dYSd3GzS8=
-X-Received: by 2002:a5d:64ec:0:b0:3a6:d95e:f38c with SMTP id
- ffacd0b85a97d-3c5dd8aa9e5mr11922498f8f.33.1756216693355; Tue, 26 Aug 2025
- 06:58:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="MUC/6APP"
+ARC-Seal: i=1; a=rsa-sha256; t=1756216958; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=J525pvSSKsN56zFByOecX5BW6kWLHaPiqF1ow4O4jg5o4nhCx7fgBrOdBRNYvp9tST398ERkPJbSV0PGgMrjy1Wh1DTfbLGzujtUtJfzcMT5+15OPmNDt4bz1tKBROf4ni08/604KYqCGyouYjLVVeHdCSOh002nYw8sduPYzpw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756216958; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=sqaWaCnnpnMBYwoyb7ocXao7tag5iNejWCovrwIbQ5Q=; 
+	b=aEjxgMe4Eum8bv+tJPoDSK/RAFM9DKLnM+AOrNkIfzf+t5m2p4PUfwrLYETo4VlXAdOdJuSbl/UF58CzgSjoQJ7MMBpFni1FajVGHOPUo06UUZM8hx8dLRkk0OIE8UNasmGpVf59HkytM3Pp9FC0ees7BX571RZQPMY7LZvtzEc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756216958;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=sqaWaCnnpnMBYwoyb7ocXao7tag5iNejWCovrwIbQ5Q=;
+	b=MUC/6APPEdO0+79lZN1QDND6jQhXZ7A6jxCl0Y+N03w30ta77IwQ3j2UZISvg8qj
+	GU5YvXeVRdtYM/eGQ2ij+iWeIIJM1+sSxa8oKzOBaksQd3jgoFuNXfRNzYiBAeJ7d4n
+	KDinCmuBz38xeyFoHCL5+G/NmtjBGLN5O9bT4xlU=
+Received: by mx.zohomail.com with SMTPS id 1756216956393166.230791136005;
+	Tue, 26 Aug 2025 07:02:36 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250813153548.1650533-1-bqe@google.com> <aJ2Y21Yjs3a0CnAo@google.com>
- <aJ4Y_DAZe__0EWEm@yury>
-In-Reply-To: <aJ4Y_DAZe__0EWEm@yury>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 26 Aug 2025 15:58:01 +0200
-X-Gm-Features: Ac12FXxekRc_zLGFS3Qk-92ThB02sZE2hj5xq7cHAtlXq8wdo0Ut_NCfgzEs07k
-Message-ID: <CAH5fLgid9fF2fb06No9zmeQfru_nQicaM_9bb+DWe3zsOwm_cA@mail.gmail.com>
-Subject: Re: [PATCH v14 0/5] rust: adds Bitmap API, ID pool and bindings
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v1 2/2] rust: Add read_poll_timeout_atomic function
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250821035710.3692455-3-fujita.tomonori@gmail.com>
+Date: Tue, 26 Aug 2025 11:02:18 -0300
+Cc: a.hindborg@kernel.org,
+ alex.gaynor@gmail.com,
+ ojeda@kernel.org,
+ aliceryhl@google.com,
+ anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com,
+ boqun.feng@gmail.com,
+ dakr@kernel.org,
+ frederic@kernel.org,
+ gary@garyguo.net,
+ jstultz@google.com,
+ linux-kernel@vger.kernel.org,
+ lossin@kernel.org,
+ lyude@redhat.com,
+ rust-for-linux@vger.kernel.org,
+ sboyd@kernel.org,
+ tglx@linutronix.de,
+ tmgross@umich.edu,
+ acourbot@nvidia.com
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <5C851069-5E1E-4DE9-9E1F-0DF2C86C266C@collabora.com>
+References: <20250821035710.3692455-1-fujita.tomonori@gmail.com>
+ <20250821035710.3692455-3-fujita.tomonori@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Thu, Aug 14, 2025 at 7:12=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
-rote:
->
-> > Thanks a lot for doing this, Burak! I gave it a spin locally on
-> > v6.17-rc1, and it seems to work.
->
-> Does this mean Tested-by?
+Hi Fujita,
 
-Just to confirm, is the plan that you will pick this up through your tree?
+> On 21 Aug 2025, at 00:57, FUJITA Tomonori <fujita.tomonori@gmail.com> =
+wrote:
+>=20
+> Add read_poll_timeout_atomic function which polls periodically until a
+> condition is met, an error occurs, or the timeout is reached.
+>=20
+> The C's read_poll_timeout_atomic (include/linux/iopoll.h) is a
+> complicated macro and a simple wrapper for Rust doesn't work. So this
+> implements the same functionality in Rust.
+>=20
+> The delay_before_read argument isn't supported since there is no user
+> for now. It's rarely used in the C version.
+>=20
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+> rust/kernel/io/poll.rs | 90 +++++++++++++++++++++++++++++++++++++++++-
+> 1 file changed, 89 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
+> index 7af1934e397a..71c2c0e0d8b4 100644
+> --- a/rust/kernel/io/poll.rs
+> +++ b/rust/kernel/io/poll.rs
+> @@ -8,7 +8,10 @@
+>     error::{code::*, Result},
+>     processor::cpu_relax,
+>     task::might_sleep,
+> -    time::{delay::fsleep, Delta, Instant, Monotonic},
+> +    time::{
+> +        delay::{fsleep, udelay},
+> +        Delta, Instant, Monotonic,
+> +    },
+> };
+>=20
+> /// Polls periodically until a condition is met, an error occurs,
+> @@ -102,3 +105,88 @@ pub fn read_poll_timeout<Op, Cond, T>(
+>         cpu_relax();
+>     }
+> }
+> +
+> +/// Polls periodically until a condition is met, an error occurs,
+> +/// or the timeout is reached.
+> +///
+> +/// The function repeatedly executes the given operation `op` closure =
+and
+> +/// checks its result using the condition closure `cond`.
+> +///
+> +/// If `cond` returns `true`, the function returns successfully with =
+the result of `op`.
+> +/// Otherwise, it performs a busy wait for a duration specified by =
+`delay_delta`
+> +/// before executing `op` again.
+> +///
+> +/// This process continues until either `op` returns an error, `cond`
+> +/// returns `true`, or the timeout specified by `timeout_delta` is
+> +/// reached.
+> +///
+> +/// # Errors
+> +///
+> +/// If `op` returns an error, then that error is returned directly.
+> +///
+> +/// If the timeout specified by `timeout_delta` is reached, then
+> +/// `Err(ETIMEDOUT)` is returned.
+> +///
+> +/// # Examples
+> +///
+> +/// ```no_run
+> +/// use kernel::io::{Io, poll::read_poll_timeout_atomic};
+> +/// use kernel::time::Delta;
+> +///
+> +/// const HW_READY: u16 =3D 0x01;
+> +///
+> +/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> =
+Result<()> {
 
-Alice
+Just =E2=80=9CResult=E2=80=9D.
+
+> +///     match read_poll_timeout_atomic(
+> +///         // The `op` closure reads the value of a specific status =
+register.
+> +///         || io.try_read16(0x1000),
+> +///         // The `cond` closure takes a reference to the value =
+returned by `op`
+> +///         // and checks whether the hardware is ready.
+> +///         |val: &u16| *val =3D=3D HW_READY,
+> +///         Delta::from_micros(50),
+> +///         Delta::from_micros(300),
+> +///     ) {
+> +///         Ok(_) =3D> {
+> +///             // The hardware is ready. The returned value of the =
+`op` closure
+> +///             // isn't used.
+> +///             Ok(())
+> +///         }
+> +///         Err(e) =3D> Err(e),
+> +///     }
+> +/// }
+> +/// ```
+> +pub fn read_poll_timeout_atomic<Op, Cond, T>(
+> +    mut op: Op,
+> +    mut cond: Cond,
+> +    delay_delta: Delta,
+> +    timeout_delta: Delta,
+> +) -> Result<T>
+> +where
+> +    Op: FnMut() -> Result<T>,
+> +    Cond: FnMut(&T) -> bool,
+> +{
+> +    let mut left_ns =3D timeout_delta.as_nanos();
+> +    let delay_ns =3D delay_delta.as_nanos();
+> +
+> +    loop {
+> +        let val =3D op()?;
+> +        if cond(&val) {
+> +            // Unlike the C version, we immediately return.
+> +            // We know the condition is met so we don't need to check =
+again.
+> +            return Ok(val);
+> +        }
+> +
+> +        if left_ns < 0 {
+> +            // Unlike the C version, we immediately return.
+> +            // We have just called `op()` so we don't need to call it =
+again.
+> +            return Err(ETIMEDOUT);
+> +        }
+> +
+> +        if !delay_delta.is_zero() {
+> +            udelay(delay_delta);
+> +            left_ns -=3D delay_ns;
+> +        }
+> +
+> +        cpu_relax();
+> +        left_ns -=3D 1;
+
+A comment on the line above would be nice.
+
+Also, is timeout_delta =3D=3D 0 an intended use-case?
+
+> +    }
+> +}
+> --=20
+> 2.43.0
+>=20
+>=20
+
