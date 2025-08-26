@@ -1,141 +1,70 @@
-Received: from the.earth.li (the.earth.li [93.93.131.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D83B2857E9;
-	Tue, 26 Aug 2025 08:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEA628371;
+	Tue, 26 Aug 2025 08:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756197313; cv=none; b=aEZbg+14VYW2+IW9iSD5MM3ig9uHYzuJCm68DTpQQUe/tSFQIzUEwGI8u4aQGh3AI8aQg3b9V6boX+R82cT8rgOuSwqURPcJHq8vTBl6cmxBK4xU7/GVp9tYwd9f16DqfzhbLallVUE4UITX+Eird9H6eeyrtlQnoNh4iX3L3v0=
+	t=1756197935; cv=none; b=J8y9yLFw7Kgi8+e6fbysvpu2Qu6dFj95rMZYqevXEUx03i79t6/uNsPpk5CsAutcxZ0zs1aJrEiFBud2xhTLxXZWghyMpRixgACs+5oCQfC1QUoWmrfooeP/cByZSkClAiPh82JmuTsKIUlWGV97C9dNJfQ2zTE+WyjZrkKaa4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756197313; c=relaxed/simple;
-	bh=Z/LB1M/2VX7KqJrgprVj6tKUWP9E0EA908mu2BjbDTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fdHBTKUpV6TUeghab8dU4SjZhM+EuvZXHhrF0mPqS8ZcXw9Wx0mv/QghLX/IiExCNMLjO6ipjwAOsw7mje4CiwiVyh5MnM/FYjAzmoNJ8xg+2/0EmEocSonnU0T3VBgYyiJBL0Tt05rYfDEK349QVwTos785gIwHvi333SoZ6ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=OK3Ewd5w; arc=none smtp.client-ip=93.93.131.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
+	s=arc-20240116; t=1756197935; c=relaxed/simple;
+	bh=R61IV7cr8iemY0WmVZFNaI72L7yRCaCDEndX4PJJX4o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JY2mNo/XyADDBFO1R8u1pEsdRUYXHQmvlRi6o/BfMvB4d16lO+L5/U8QhOUsqUQdU0rwKqn9AOEkwvg7om+dTe1t27XBQffemZU3RecIAh1TYBpfaDkpNNqn0Usrh/bQVK+SLZLRwKLsBCoe12IBkS75ywqrZZie4plAhqv/weM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XJqd/1g/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b="OK3Ewd5w"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
-	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
-	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=C/eQL7etAvfhe8pmbZCTySyBXYWaoKqCDA6fW77TpVI=; b=OK3Ewd5w/fEuKZMVjES/EH9cKF
-	GTEXGRhREqUvtw0N5NjD7BRPRgeHipOESB8SkbYZ2EqOj2sRzGTSgMlDG69PryOMQzYugCA6nkOfQ
-	pSL+u1eYfkNcxiimAdHU6cThL5Hr0hDj+BeMztWmE76LbmILFDLkpWsYhDvGnjhrPJXmPb0+7rohO
-	AHppgo8LAESfR0o62xzEXWny6HX9l20ORTEl079aeCK9fQeRn/vvato/GH5CJy2FFBl6Pn3pYGntN
-	6hTQZdneQ3EKSvfq0jFTTvwZxchpqFVzsuKUXZB/scbATrOB82Sh0M5adyR4c7XOSJiIoZnMAIjyU
-	QrPpzORg==;
-Received: from noodles by the.earth.li with local (Exim 4.96)
-	(envelope-from <noodles@earth.li>)
-	id 1uqp92-00FYom-0f;
-	Tue, 26 Aug 2025 09:35:08 +0100
-Date: Tue, 26 Aug 2025 09:35:08 +0100
-From: Jonathan McDowell <noodles@earth.li>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: Re: Using Rust on non-Rust side of kernel
-Message-ID: <aK1xvMTqoq-6JyHm@earth.li>
-References: <aKmwPFb4cCk_E-ob@kernel.org>
- <aKxRVlyNXUGBwJ2L@earth.li>
- <aKy5z74FE4paL7za@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJqd/1g/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8A3C4CEF1;
+	Tue, 26 Aug 2025 08:45:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756197934;
+	bh=R61IV7cr8iemY0WmVZFNaI72L7yRCaCDEndX4PJJX4o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XJqd/1g//QkT8Kcrss0aQKr7e7WhueGPxMYqpq0m28+qpECgW5dWUVv38P6MkTpdU
+	 TTUwQSTuerXMp/OROCW3oAydI72idALLn6VwINczBc/wsWUXNClqQ5BrOUXlnZsI+i
+	 YdOiBDQzmQlNUqNiZ1zKxkbrLnmKVTQfNzGK/e1bNmuKV2Vu4pfSv3e4Xv1qnGTrBq
+	 5Sa8T4zkLeiKuf0pSYKb3mos8GFJ9+nBp5cJGDEHEqGbk1AX9A4dHPMvfcSASc0iG/
+	 +k6B0NXY2LYJzzk9u7HwzdkMMloFQs1a/PACdIl20/+qRVlH6z4d9hjYBu8YQSbsWj
+	 8NGLvAORyo9xw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, Stephen Boyd
+ <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 6/7] rust: time: Add Instant::from_ktime()
+In-Reply-To: <20250821193259.964504-7-lyude@redhat.com>
+References: <20250821193259.964504-1-lyude@redhat.com>
+ <M47gPhUazwIKesVp75-tAKbSWHdW3SXDqgWhliRKQWUcAvrD6fM_qhNIsWuQx5YH4h4KBwZ1-RK2ZsKwBHyATA==@protonmail.internalid>
+ <20250821193259.964504-7-lyude@redhat.com>
+Date: Tue, 26 Aug 2025 10:45:18 +0200
+Message-ID: <87ecsywjxd.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aKy5z74FE4paL7za@kernel.org>
+Content-Type: text/plain
 
-(I've seen your later mails, but I think this is the right one for me to 
-respond to around what my concerns are.)
+"Lyude Paul" <lyude@redhat.com> writes:
 
-On Mon, Aug 25, 2025 at 10:30:23PM +0300, Jarkko Sakkinen wrote:
->On Mon, Aug 25, 2025 at 01:04:38PM +0100, Jonathan McDowell wrote:
->> On Sat, Aug 23, 2025 at 03:12:44PM +0300, Jarkko Sakkinen wrote:
->>
->> > My goal with tpm2_protocol is to have ACPICA alike model of imports as
->> > the crate is driven by TCG spec updates and it is very likely to be
->> > also used by TPM-RS (also via import style process).
->>
->> I'm not entirely clear on what your plan is for this / the existing TPM
->> drivers in the kernel? I assume it's to eventually remove some of the C code
->> in favour of the Rust implementation, but I'm missing exactly how that's
->> expected to work.
+> For implementing Rust bindings which can return a point in time.
 >
->There's no plan of doing anything at this point. This is more like doing
->early research for the following questions:
->
->1. If this comes up in form or another, what are the directions of freedom.
->2. What could be in general done in Rust that could potentially extend
->   the capabilities of e.g. /dev/tpmrm0 (which could be entirely
->   different device).
->3. There has not been any discussion from my part of removing and/or
->   repealing and replacing any of the C driver code.
->
->It's a bit odd position IMHO to not prepare for future outcomes. Even
->without kernel context, for the TPM marshalling/unmarshalling there does
->not exist decent implementation as of today in *any language*.
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-I'm not saying we shouldn't prepare for future outcomes. It sounds like 
-you're focusing on the marshalling/unmarshalling piece with Rust, rather 
-than expecting to replace the entire of drivers/char/tpm/ so that 
-worries me less.
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
->> (Given I've spent a bunch of time this year tracking down various edge case
->> issues in the TPM code that have been causing failures in our fleet I'm
->> understandably wary of a replacement of the core code. *It* might be a
->> perfect spec implementation, but hardware rarely is.)
->
->I think this is somewhat unconstructive comment. How do you implement
->against anything if you don't follow the spec and later on fix the
->incosistencies?
->
->I have not observed high stream of marshalling and unmarshalling
->associated bugs or other issues.
->
->Also if you make obnoxious arguments like that please also underline
->how implementation A is worse at dealing possible inconsistencies
->than implementation B. Otherwise, you're only spreading FUD.
 
-I think you're confusing my concerns with concerns others have about 
-/dev/tpmrm0. I'm not overly worried about that. I suspect there might be 
-some cleanups that can be done, but we use it as our resource broker and 
-I don't believe it to be the root cause of any of the issues we have 
-seen.
+Best regards,
+Andreas Hindborg
 
-If you're focused on marshalling + unmarshalling then I don't recall 
-seeing issues there. What I'm thinking of more are the workarounds for 
-firmware issues, or the subtle timing bugs that have sat in the kernel 
-for a number of revisions before they've been tracked down and resolved.  
-I'm not intending to be obnoxious; these are not fundamental design 
-issues, just code fixes that have hardened the driver over time. If we 
-were talking about ripping everything out then my concern would be we'd 
-have to do all this battle hardening over again, no matter what our best 
-efforts. i.e. we've already done some work fixing the inconsistencies, 
-let's make sure we don't lose that.
 
-Examples of the sorts of fixes I'm thinking about:
 
-d4640c394f23 tpm: Check for completion after timeout
-2f661f71fda1 tpm: tis: Double the timeout B to 4s
-1dbf74e00a5f tpm: End any active auth session before shutdown
-de9e33df7762 tpm, tpm_tis: Workaround failed command reception on Infineon devices
-7146dffa875c tpm, tpm_tis: Fix timeout handling when waiting for TPM status
-e3aaebcbb7c6 tpm: Clean up TPM space after command failure
-
-(I've also got another issue I'm currently trying to work through but 
-I'm pretty sure it's a firmware bug and until I nail it down fully with 
-a reproducible test I can't determine if there's a suitable kernel 
-workaround, or it _needs_ a firmware upgrade.)
-
-J.
-
--- 
-Web [    101 things you can't have too much of : 22 - Friends.     ]
-site: https:// [                                          ]      Made by
-www.earth.li/~noodles/  [                      ]         HuggieTag 0.0.24
