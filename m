@@ -1,116 +1,155 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888291FDE19
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Aug 2025 14:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB481CD1F;
+	Tue, 26 Aug 2025 15:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756220223; cv=none; b=F2i6R2tLMnqaSY1nlhK9WNBk8GgnUMN4E0iElszFXN5aAisro2Z06lO7C6zv8/eSjEaCxH8cItwDoE4Xrnp13JGoEK/+iro4gPxKgWXm0KZDqcL4afslaT8OGMBCVfzR8l4lKMlgNWHHTGlL0GlfVD4v2r6x0MJ3pRhf/2flfGU=
+	t=1756221529; cv=none; b=IxNmYmfMBHgU7cRW7y4WdI3rxeupP0mtIHUCkNYzF5efl60DzmZyybm67EFlkTwW28+GZlBBiZAoLuIm4W4GjGphpsBHCUVy8bAH3BrSF6t10lz0QrM8bteLRgnk3B2GAGRZE08PqOjwPAXYKwmvbPQ8OtNVrA24EbY4Zf6D86Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756220223; c=relaxed/simple;
-	bh=QauaDj0jCrgvgctb9q1Ow+lVmL4ZP34xzKj7rrO7Uk8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ua1OZRUylDaRqmgSwOBKs34NgH2SZg5qCrDgWjxsMwqtVmsMpJq1qb+Wbi9rkyuv4O7bVsARtJUNNDifOj+tK4hz54HSb6o4HcGchmD8AQ+WcOJ4R39m/EVYu/k+yNgL7HlN9DG9Mg8Y7W9NctRBimrIoBzDsOhIJM3nEZEzlhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=eGzcwv8F; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=QM5zKPtG; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1756221529; c=relaxed/simple;
+	bh=ED8pKdDXE217xxU3fmpfNjr6cCJ+skFHmQ/en4RjX/8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=a5s8J+N3SZiAT4aWL6FAycnFHcUMEBA5LIet82O8n3KVJmmgQk51QJ4UZTKyKzHNUZ+ZajNRWCvHo2KPawTMVjh0UqYNSroJPsB3YDFTOKPVt+xVsRU/dm0vYxklydn6h0ZIL1smoWUqZpAGrrJCpneQawhS+U0yqEgr0dAkPOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KKHxkfAU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="eGzcwv8F";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="QM5zKPtG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756220213; x=1756825013;
-	d=konsulko.se; s=rsa2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=QauaDj0jCrgvgctb9q1Ow+lVmL4ZP34xzKj7rrO7Uk8=;
-	b=eGzcwv8Fu8Bjldc3VG5ugIT20ar78EMccNQF820p2u+pKzVdhMqP6kmp7uvDz8P+X23EFKvbMCjwx
-	 th9wfzycYtQcB4V2Iup8Nitds9zLRN6j6hBKmdPUA7unIKadP0lLVk+Wr5lTqLubRwMpnVwDLnIv9q
-	 5sDTvzc2iA2+HSM6glAOZcHteSaIYN8eHuutH+U2bpVkGPpZNbR6EG9bmZsKlR5HXInoC3FjDuZIIR
-	 XUnhGdsNn6NFKufvFe6Ry41NQJZUx+OuwFzHFitjfFKMH4yoNmx7zxf+m9oozSzQPVvZv+BBnk/W8V
-	 eRKcwMYDZBixt4242xU/3HzTdtVINFA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756220213; x=1756825013;
-	d=konsulko.se; s=ed2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=QauaDj0jCrgvgctb9q1Ow+lVmL4ZP34xzKj7rrO7Uk8=;
-	b=QM5zKPtGz1LsmXfWiCV4vIplJh/aFZ3MfOhmPm/fpzEd02l+vkvHnXH+NFd5WmFimc7D91ALZGU4o
-	 79rWK1HBQ==
-X-HalOne-ID: e4e2ffef-828c-11f0-b5cb-d510462faafc
-Received: from smtpclient.apple (unknown [195.250.75.242])
-	by mailrelay4.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id e4e2ffef-828c-11f0-b5cb-d510462faafc;
-	Tue, 26 Aug 2025 14:56:52 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKHxkfAU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6785CC4CEF1;
+	Tue, 26 Aug 2025 15:18:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756221528;
+	bh=ED8pKdDXE217xxU3fmpfNjr6cCJ+skFHmQ/en4RjX/8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=KKHxkfAU6pnL5cCCL8F13/K9/I3uvus2+zFBLIsKtRncCreaIV9cJTR6OdtCeLUkW
+	 nrDT1Awf3qQQuqZAUg4pOKn4CihD0PljlCTW3MAbE+C7ZRIItbtvQ2i7t/r0AKJV3G
+	 sv6cxSpVhjvt6I0klBlWhJV6TO74dAG85BjmViM+B0sPX6AWt5BxoeFrPiufsrCHvA
+	 oJGz1aX8TN7NIp8sUlHUCPzkc/bCN88gW8spmijSdGmBXsGtWNE9DzLiZweFZ1O0nl
+	 VkgAraEwpb9x9YXC1INjoKgDEZL7dqJ5cNhK30tEWvIZHl6U3d3tZ5s+kQFFH2EOXt
+	 i8O+ng8XQszrQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH v4 0/2] rust: zpool: add abstraction for zpool drivers
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <20250826124454.GA1502@cmpxchg.org>
-Date: Tue, 26 Aug 2025 16:56:46 +0200
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Yosry Ahmed <yosry.ahmed@linux.dev>,
- Nhat Pham <nphamcs@gmail.com>,
- linux-mm@kvack.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <CB3E7E9C-2192-4C60-B79A-932AD6CB005A@konsulko.se>
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250826124454.GA1502@cmpxchg.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 Aug 2025 17:18:42 +0200
+Message-Id: <DCCGKLKK0D08.1VOAVWOJIXIIO@kernel.org>
+Subject: Re: [PATCH v3 3/5] rust: scatterlist: Add abstraction for sg_table
+Cc: <akpm@linux-foundation.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>,
+ <jgg@ziepe.ca>, <lyude@redhat.com>, <robin.murphy@arm.com>,
+ <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250825132539.122412-1-dakr@kernel.org>
+ <20250825132539.122412-4-dakr@kernel.org>
+ <DCCFOGR3BPVC.3OW6B74N372MB@nvidia.com>
+In-Reply-To: <DCCFOGR3BPVC.3OW6B74N372MB@nvidia.com>
 
+On Tue Aug 26, 2025 at 4:36 PM CEST, Alexandre Courbot wrote:
+> On Mon Aug 25, 2025 at 10:24 PM JST, Danilo Krummrich wrote:
+>> Add a safe Rust abstraction for the kernel's scatter-gather list
+>> facilities (`struct scatterlist` and `struct sg_table`).
+>>
+>> This commit introduces `SGTable<T>`, a wrapper that uses a generic
+>> parameter to provide compile-time guarantees about ownership and lifetim=
+e.
+>>
+>> The abstraction provides two primary states:
+>> - `SGTable<Owned<P>>`: Represents a table whose resources are fully
+>>   managed by Rust. It takes ownership of a page provider `P`, allocates
+>>   the underlying `struct sg_table`, maps it for DMA, and handles all
+>>   cleanup automatically upon drop. The DMA mapping's lifetime is tied to
+>>   the associated device using `Devres`, ensuring it is correctly unmappe=
+d
+>>   before the device is unbound.
+>> - `SGTable<Borrowed>` (or just `SGTable`): A zero-cost representation of
+>>   an externally managed `struct sg_table`. It is created from a raw
+>>   pointer using `SGTable::as_ref()` and provides a lifetime-bound
+>>   reference (`&'a SGTable`) for operations like iteration.
+>>
+>> The API exposes a safe iterator that yields `&SGEntry` references,
+>> allowing drivers to easily access the DMA address and length of each
+>> segment in the list.
+>>
+>> Co-developed-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>
+> A few minor things below, but:
+>
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+>
+> Used successfully on nova-core:
+>
+> Tested-by: Alexandre Courbot <acourbot@nvidia.com>
 
+Thanks for re-testing!
 
-> On Aug 26, 2025, at 2:44 PM, Johannes Weiner <hannes@cmpxchg.org> =
-wrote:
->=20
-> On Sat, Aug 23, 2025 at 03:04:19PM +0200, Vitaly Wool wrote:
->> Zpool is a common frontend for memory storage pool implementations.
->> These pools are typically used to store compressed memory objects,
->> e. g. for Zswap, the lightweight compressed cache for swap pages.
->>=20
->> This patch provides the interface to use Zpool in Rust kernel code,
->> thus enabling Rust implementations of Zpool allocators for Zswap.
->=20
-> The zpool indirection is on its way out.
->=20
-> When you submitted an alternate allocator backend recently, the
-> resounding feedback from the zswap maintainers was that improvements
-> should happen to zsmalloc incrementally. It is a lot of code and has a
-> lot of features that go beyond allocation strategy. We do not want to
-> fork it and fragment this space again with niche, incomplete backends.
->=20
-> It's frustrating that you not only ignored this, but then went ahead
-> and made other people invest their time and effort into this as well.
->=20
+> I still see mentions of "type state" in the code (and the commit
+> message), is this on purpose? I still think this is a misleading use of
+> the term, but your call.
 
-I don=E2=80=99t think we have a consensus on that.
+I think I changed everything in the commit message, but there are indeed tw=
+o or
+three mentions in the code still.
 
-And zblock is, after some additional improvements, just better than =
-zsmalloc in all meaningful aspects, let alone the simplicity. It is fas =
-easier to implement in Rust than zsmalloc, too. Besides, zram is a good =
-candidate to be rewritten in Rust as well and after that is done, zblock =
-will be even safer and faster. So while not being =E2=80=9Cincomplete", =
-it=E2=80=99s zsmalloc that is becoming a niche backend moving forward, =
-and I would argue that it could make more sense to eventually obsolete =
-*it* rather than the zpool API.
+I'm happy to replace them with "generic parameter", but I do not agree that=
+ the
+term "type state" is misleading.
 
-~Vitaly=
+It may not be the classical typestate pattern, yet we are representing two
+distinct states of a type.
+
+> <snip>
+>> +impl SGEntry {
+>> +    /// Convert a raw `struct scatterlist *` to a `&'a SGEntry`.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// Callers must ensure that the `struct scatterlist` pointed to by=
+ `ptr` is valid for the
+>> +    /// lifetime `'a`.
+>
+> Shouldn't the scatterlist also have valid a dma_address and dma_len?
+
+I don't think this is safety relevant from the perspective of Rust.
+
+Also note that if we want to provide this guarantee, we need the caller to
+provide the &Device<Bound> in SGTable::iter() the SGTable has been created =
+with.
+
+For the Owned generic parameter this is easy, for the Borrowed one we have =
+no
+way to ensure that the &Device<Bound> matches the device the SGTable has be=
+en
+mapped for.
+
+However, I don't think we have to provide this guarantee, since at this poi=
+nt
+all device resources (such as I/O memory) have been revoked from the driver
+already. So, effectively, even if a driver would attempt to program invalid=
+ DMA
+addresses, the driver would be uncapable of doing so anyways.
+
+> <snip>
+>> +#[repr(transparent)]
+>> +#[pin_data(PinnedDrop)]
+>> +struct RawSGTable {
+>
+> Even if this is for internal use, I think a short comment explaining
+> what this is for, and why it needs to be pinned (pointed to by devres)
+
+That's not the reason this structure needs to be pinned. This is the reason=
+ for
+Devres itself needs to be pinned.
+
+In fact, I think RawSGTable by itself does not need to be pinned.
+
+> would be helpful to people looking at this code.
+
