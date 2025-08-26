@@ -1,73 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9D028D8ED;
-	Tue, 26 Aug 2025 08:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778E93090E6;
+	Tue, 26 Aug 2025 09:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756198608; cv=none; b=gvZwQdZBNQIwHWnozLCl+Ae+3pUq1tv8hXJeGxF55dqitCQpYB7VOWU9uv7Um1KYHuRaH8roe8cjn5Worhg4EMLbbJpg7dclmaewPbeg1Mvmy+RAE3RsO5bx/mSoHIsmubbSHhP5QF84J8cgy5edkMsgfYwrYRFHDSye303JWvU=
+	t=1756199266; cv=none; b=F0YXs3439C0iQrl/A18gY5QdcMhZx57FSM4TkhNmTrAMkIh0Yl3slnLEZeg/NoS0IAZG4RW1xPf8RzUamaPiK65lEvC8WvoeicF9Bt2EBNpvK2nnFx99FYpKUmbbEuh3oj2T2W3s1jRXZt6LIsURx+6+fEYhpSx3d2hr8OO6/7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756198608; c=relaxed/simple;
-	bh=lLjMwJkGmZO68L19BUCN997mBt9nhLyxSUYQQYo4S+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MBaGIDHcaoyfQEqeqZgW08V/k4Er9k4av0/vDODTTppuquSeWc3wo12m/aTwD7/r7NMoTw/7WyQG0js30uK0/0Nt2y6BMJSsVaQ76Ny4eadxT60ngDopiNKhFi5siBWFMO6YLtdVmWRE0LyVCZ0DdRiE6VJ3qmotPTXs/liBCx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+sH2ZvP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756199266; c=relaxed/simple;
+	bh=nzBzxwGce3XN2nG/onW7E89qvRfgd9avb1fan3ulgHU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m0+pq+7ymYtzz+r6HPZ8jnkON3wvpbZLItPS1NIr0G+VWWEHpdJkFMDBHN5jgjrTwv9Rkm3X7A/RWocvYjzYq7hd/SaNk4Qf5elWBZdJJ8dkC8wrPJxkDT6vMOICUcCDitmdg4ZWogs3SiFEt2fv5n8eHmMjHxkePH6uly8svvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H7GGlgEd; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+sH2ZvP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C411C4CEF1;
-	Tue, 26 Aug 2025 08:56:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756198607;
-	bh=lLjMwJkGmZO68L19BUCN997mBt9nhLyxSUYQQYo4S+Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B+sH2ZvPy6MdSEvlwqC5tqOWYIQg3Oe2+Uvhl5a/93n/1rv10OwifYZGmA5LpIsQa
-	 LdBf7GMGSR8hWXbFLw2F/wS+X1c8RfBWaGwhR2OVU77st4n/EKr+m95UmHRidYPBGW
-	 uM/z3MW+JrH0Y7O1Hnsq9jmuL4Pzk8No43CD1kVUujxffV5y6mKWjwncIhGxM3Tm+v
-	 2/DN/xDaHfz/7vY7cO0hyjH9qLdunYAvO+cE/SpOlRoo+iu3R2EB46yRlDaeHntpb0
-	 zQim+QS1Y94eNAaUmruMlUNhKsohVZ3tPDxjpqmKCF5Rdu1q9OOQydQvHX/oLDuRWx
-	 zjOVX5hjYlkdg==
-Date: Tue, 26 Aug 2025 11:56:43 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jonathan McDowell <noodles@earth.li>
-Cc: rust-for-linux@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: Re: Using Rust on non-Rust side of kernel
-Message-ID: <aK12y2NuBmA4SfyM@kernel.org>
-References: <aKmwPFb4cCk_E-ob@kernel.org>
- <aKxRVlyNXUGBwJ2L@earth.li>
- <aKy5z74FE4paL7za@kernel.org>
- <aK1xvMTqoq-6JyHm@earth.li>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H7GGlgEd"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24602f6d8b6so9749405ad.1;
+        Tue, 26 Aug 2025 02:07:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756199264; x=1756804064; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nzBzxwGce3XN2nG/onW7E89qvRfgd9avb1fan3ulgHU=;
+        b=H7GGlgEdhHPH+L7D8gGfhsFLO27OTmW1ZuTX9M+CcwPRmUSDDlZhiHvmeqxSJQS+q4
+         sMbwK2y3tF2nfXH4nGsmlG0MJbch0F73XWDn4oHiEDMXbj6bR3F6WFc7Wo7btbk+rEH5
+         ksRZkmzb5JKJZZCOuEMyncv2cjlMJE7llWeusD4Ldak8n6oPxWmVN3lQsw8ni1O+qEMJ
+         y24UQ+fjbRfEzSwqwsYDSRmepapaClBzB98fapxWDxwillAU6itUVIGCLdX4/VRzz0Kd
+         YMA6nnHOw0K6sLUXeMzxC5sLh8vWcBrmrbJePAYTRiUeZcotP9S8ovx4KD0HY7kJKqcV
+         KUiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756199264; x=1756804064;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nzBzxwGce3XN2nG/onW7E89qvRfgd9avb1fan3ulgHU=;
+        b=XiJ4yUelA1rmNY9X7yTwKdkoL296AZe5Xa6X5i7gKasGQUJtTxVxulVpgipO5DS3yg
+         lXTTMPRwFZniRkF7vmcqTbCNjA3nDSpgqCEwVepiYM18+qi+CwjYXYl18vA1zEfCZ+ar
+         VGkOdBbX4ix5r8HyYWEHagc+JlcQqfSa4zqrff/t9hEXDCFEsM7HpdVQ6nqr9bEErGNA
+         YAr0e2T5OspH2jXaB4bYC6fWdINo2BiXqGbImsfCZWicpFWUP2j/xCxXAvb+1Rxz700R
+         fHBXEd1jMKya1ppXkRwVNpiaLoRvO0rX8jGNWB/7QOaMN4Av/00X2pnVGTSWf1u07UvO
+         nzHw==
+X-Forwarded-Encrypted: i=1; AJvYcCUe8AmCGyGj5l4kGqE4MOWtf4TJ73naCMnz47EPkNdeYVLD3xT+W/Ncvp1aAdSWv7LTD2AOrCXvTQshuwNFPYQ=@vger.kernel.org, AJvYcCWTqEsm5VBtZBWI4uq6m9P0Q3Y1lDVG5LGdxJl1kL/39Hb6IgTect98dZd/7u158wCUnc5/kdQWxvXCnLg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLB2cdv6nXaCPtugubQHEk3kkFYzkBpCH/GQcbUnoab2dIMyFR
+	DWv6IG6mm7goeOeF2ou/ilnM/tDJIYvTGA2oF+faJYi6FuOZzSbgaPOOZj5AqatVenB01Xsl1zm
+	zW+nUfT767rc0Y0zvwTH+yiObnuVDzYL9MVBAyFQ=
+X-Gm-Gg: ASbGncvcSjIgJSOyzU8hmWGqO6Rfn/JO0n1p0waXvLd+GOQkO5rTuIu1f4PP4FtQpBM
+	N8iDcEUOEgBIbN0gZ186AWiaO3wFd1rGXgHzVyCXvFdxovIY/a9QPaAWhKAu4MgmbUaWapP6rT/
+	7eYgqXHlYXiAsz+AsjpbN1Ag18mgDXQzgzv1VP/kRMoj3Ij51Ugm629iroue6SatQRSl8nl3p7u
+	zlAwCK4Giv9ceYqvFbhlisWy0RpF/fChhFtwTAeDbgk9VtOmuy9H1YPw/Y3gRlU0lxyKwjJk6Bu
+	ZWQTovDZnWlFgNfhLxeD0yYNYJJoYfOfK+cM
+X-Google-Smtp-Source: AGHT+IHviai/aWVF6O8hw3ma3Jen/05CjxVkJXrFc/5hzBHEyqZ24YiwmmlLkeIBg3c0OJIEgOO+JqtK29ZKuIznp+c=
+X-Received: by 2002:a17:902:f711:b0:246:5d07:842f with SMTP id
+ d9443c01a7336-2465d078881mr91958675ad.1.1756199263652; Tue, 26 Aug 2025
+ 02:07:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aK1xvMTqoq-6JyHm@earth.li>
+References: <20250818191034.523381-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250818191034.523381-1-shankari.ak0208@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 26 Aug 2025 11:07:31 +0200
+X-Gm-Features: Ac12FXyJt0_-wAJkRr09YlZ4FwZ2WYoXHlCeUZO0L7ocM5ipSnRCeofa7oCofl8
+Message-ID: <CANiq72ktk6yR7vw7FRKFxEA8Zhc6MA6+EoBGnfQ=wL_t=n4D4w@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: Update ARef and AlwaysRefCounted imports from sync::aref
+To: Shankari Anand <shankari.ak0208@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 26, 2025 at 09:35:08AM +0100, Jonathan McDowell wrote:
-> d4640c394f23 tpm: Check for completion after timeout
-> 2f661f71fda1 tpm: tis: Double the timeout B to 4s
-> 1dbf74e00a5f tpm: End any active auth session before shutdown
-> de9e33df7762 tpm, tpm_tis: Workaround failed command reception on Infineon devices
-> 7146dffa875c tpm, tpm_tis: Fix timeout handling when waiting for TPM status
-> e3aaebcbb7c6 tpm: Clean up TPM space after command failure
+On Mon, Aug 18, 2025 at 9:11=E2=80=AFPM Shankari Anand
+<shankari.ak0208@gmail.com> wrote:
+>
+> Fixes: 07dad44aa9a93 ("rust: kernel: move ARef and AlwaysRefCounted to sy=
+nc::aref")
 
-I think we're in the same line here really :-) And apologies for
-over-reacting, I definitely went over the top!
+> Apologies, I had missed out on changing the in-file reference call for th=
+e modules. This should fix that.
 
-I did the marshaller/unmarshaller exactly for Rust TPM driver only in
-the sense that if I got a patch set on my table doing that, it would be
-the part which is complex enough that I would actually be in trouble.
-So consider it like "years ahead preparation".
+I am not sure if this should count as a fix -- it could have easily
+been an intentional, second patch on top of the move, so that the move
+is minimal to avoid modifying the lines at the same time, which is
+something we typically do/want. :)
 
-I quickly went through your list as a reality check if I have blind
-spot but for the most part it is "business as usual" type of stuff,
-some to change done many years ago (at least as old as tpmrm0).
+Thanks!
 
-Obvious exception to the rule are bugs related to HMAC encryption
-to which I think we have now a resolution.
-
-BR, Jarkko
-
+Cheers,
+Miguel
