@@ -1,198 +1,105 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD39131A57E;
-	Tue, 26 Aug 2025 17:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756228546; cv=pass; b=NXXya4rrT6TSn4+MxK7asXVacPGPLC4IxVxeB9vTOoLHhArPHvzhaHwmEqu2hZqK4TSF4QpsvBvpsGBQUICx6MpxQBdjJTryDwTHWTYTh85fQ4APVrEBEBjifpw/UODDCyTiu7xVQUp2iL9RaPy+IsUjydKHcLcATNcpAhHKEVw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756228546; c=relaxed/simple;
-	bh=Sh+NjZ/naDny50Zx1WTfa2bQtHKOXqvls5rGtFfGOvM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=R4V2PQG77ew9fi3awFHEkOnugMsjff5Z16WoXILfx9S8qLgCRsO4jB6WoQUuHsvg7fI2j54EpNTYihTSJlpgn2S5b90BjFp/gl8uYwMeNOZF3KGEpHBQGU4hFrsXXyFHiScJWN3GgysITUODzQFmPdzRd4fULMUr9oraHXR96vM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CiuFKZ5F; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD8B2E5427;
+	Tue, 26 Aug 2025 17:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756228549; cv=none; b=U5wiw/XnD+Yb4d9tSAt4Aban2yuAdyp8UWexqxsUnTwsDfTxm5A43f/cC24P07EYnUDlTiY0+jDdrnHJPFQD+vxCXkB75dYJ2nKTLPtd2oNb1GqiYjqXVlsH8REUYlEb4axr8+9BRiHB2SPmhI2by7cdhAHhyTQ5HuD6kTk832w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756228549; c=relaxed/simple;
+	bh=+J2sm8Wfnzuu5W2LwGGyp/gjdjZIffji7KNXYV+Y3+4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=KOY3/yX3Uc1cErgDRmbiQkpecVKKMEL+TfbH4NwFSWleuHZuC4+88ti8urtiYLPQwkWs3/lUCGksKNLKaAGhQOCTImveFbFX0k2rJVMMY6csLLpts+zgwlY4nOy8S9akRPSz6vkaJtCZfdQTzNygvawOeReR/JRl66XPqxP8tgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2s8CHas; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CiuFKZ5F"
-ARC-Seal: i=1; a=rsa-sha256; t=1756228522; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=mwK/2GGoOJgAgdZvaQMbTQJ8JOcHU+9ve3483/xga58I9kA8ElTFVrSeb+X6UlkxULWBfy9ghr+bZuhgQHjJbNjamDG6NRR0HyC/x8bZlBTRL1vrBWYyxFKXTDKhY2H27oUXikifQC7t88qT3uoFckdATgsOpxC3fwBN2iTOWb4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756228522; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=uqKDFBZpg+VErHO5pz8rIuMWqciIibMM6p45aamN6os=; 
-	b=aETwDiLyAj1DHegJySS0wtZViiHF9OK1fDf4kI3DXkrtv524kZ2eVqO80sC7rM2MAt/HPll1llkyXIMcmFoUxpT6BA2H9E8LEzF3VB7dKi9rMEshQEBjHwAPY68bdFoo9/xUgXlY2BvxlYi0Rh+CNlQl082qAjKX+jwaFg7QCU8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756228522;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=uqKDFBZpg+VErHO5pz8rIuMWqciIibMM6p45aamN6os=;
-	b=CiuFKZ5FErTaHkeIKfM8s7uY5siI/lsg8SG6lYbQ339Uid4yapmNVfmikpuzGhh+
-	c7+CZXo2QRv/wytp+CfLJO+ITxhe5++umkl0pNLIcVDGwejwJGirFDl2psXwXRjbOSW
-	qDYt8hJ9df4TQu2nHAvYZWl+8v7+SgI+wb7IUwkM=
-Received: by mx.zohomail.com with SMTPS id 1756228521125889.7134116417392;
-	Tue, 26 Aug 2025 10:15:21 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2s8CHas"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB86AC4CEF1;
+	Tue, 26 Aug 2025 17:15:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756228548;
+	bh=+J2sm8Wfnzuu5W2LwGGyp/gjdjZIffji7KNXYV+Y3+4=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=R2s8CHas6PRQM6p0vftWzEnynwFtgViezQjZ5P9IBT8L+i1l16qqCax31RmDYOBVc
+	 IpYyB13k5JbiEHrQJ46rVocIMT9wIV+ooNIW4GxqSEZcb/SWmNbYMTNNVWDBe7a5Of
+	 t5PbAWqNiHJEvM+UHcjfF1Nge2/07UzRv3wov9eucYs/QZsKL6t7jb0SzAcolnQWJv
+	 F8wS8JYhaDjEr0KJpKcXrf1itXJm2XBZFLEFiV57fDjNgqP/1Vdvt3hw9mgXL70/I/
+	 ErIaU72ex/i0GULUXNfHW2kncS+olY4d8rrMxNTUHi22Ok4FTgyO5/asjvJnv3tG39
+	 8sf4tRIfqmWmQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 2/5] rust: dma: add type alias for bindings::dma_addr_t
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250825132539.122412-3-dakr@kernel.org>
-Date: Tue, 26 Aug 2025 14:15:04 -0300
-Cc: akpm@linux-foundation.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- abdiel.janulgue@gmail.com,
- acourbot@nvidia.com,
- jgg@ziepe.ca,
- lyude@redhat.com,
- robin.murphy@arm.com,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <CE0E1F73-69CE-4629-979E-9AE5B6AB055E@collabora.com>
-References: <20250825132539.122412-1-dakr@kernel.org>
- <20250825132539.122412-3-dakr@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 Aug 2025 19:15:42 +0200
+Message-Id: <DCCJ26K4TBEG.5HLYXY68Y6QJ@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v1 2/2] rust: Add read_poll_timeout_atomic function
+Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <a.hindborg@kernel.org>,
+ <alex.gaynor@gmail.com>, <ojeda@kernel.org>, <aliceryhl@google.com>,
+ <anna-maria@linutronix.de>, <bjorn3_gh@protonmail.com>,
+ <boqun.feng@gmail.com>, <frederic@kernel.org>, <gary@garyguo.net>,
+ <jstultz@google.com>, <linux-kernel@vger.kernel.org>, <lossin@kernel.org>,
+ <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>, <sboyd@kernel.org>,
+ <tglx@linutronix.de>, <tmgross@umich.edu>, <acourbot@nvidia.com>
+References: <20250821035710.3692455-1-fujita.tomonori@gmail.com>
+ <20250821035710.3692455-3-fujita.tomonori@gmail.com>
+ <DCCF63BESWQ9.9LC8MZK7NG1Y@kernel.org>
+ <33725E09-3994-4306-AD4F-4A0253261DE1@collabora.com>
+In-Reply-To: <33725E09-3994-4306-AD4F-4A0253261DE1@collabora.com>
 
+On Tue Aug 26, 2025 at 6:59 PM CEST, Daniel Almeida wrote:
+>
+>
+>> On 26 Aug 2025, at 11:12, Danilo Krummrich <dakr@kernel.org> wrote:
+>>=20
+>> On Thu Aug 21, 2025 at 5:57 AM CEST, FUJITA Tomonori wrote:
+>>> +pub fn read_poll_timeout_atomic<Op, Cond, T>(
+>>> +    mut op: Op,
+>>> +    mut cond: Cond,
+>>> +    delay_delta: Delta,
+>>> +    timeout_delta: Delta,
+>>> +) -> Result<T>
+>>> +where
+>>> +    Op: FnMut() -> Result<T>,
+>>> +    Cond: FnMut(&T) -> bool,
+>>> +{
+>>> +    let mut left_ns =3D timeout_delta.as_nanos();
+>>> +    let delay_ns =3D delay_delta.as_nanos();
+>>> +
+>>> +    loop {
+>>> +        let val =3D op()?;
+>>> +        if cond(&val) {
+>>> +            // Unlike the C version, we immediately return.
+>>> +            // We know the condition is met so we don't need to check =
+again.
+>>> +            return Ok(val);
+>>> +        }
+>>> +
+>>> +        if left_ns < 0 {
+>>> +            // Unlike the C version, we immediately return.
+>>> +            // We have just called `op()` so we don't need to call it =
+again.
+>>> +            return Err(ETIMEDOUT);
+>>> +        }
+>>> +
+>>> +        if !delay_delta.is_zero() {
+>>> +            udelay(delay_delta);
+>>> +            left_ns -=3D delay_ns;
+>>> +        }
+>>> +
+>>> +        cpu_relax();
+>>> +        left_ns -=3D 1;
+>>=20
+>> How do we know that each iteration costs 1ns? To make it even more obvio=
+us, we
+>> don't control the implementation of cond(). Shouldn't we use ktime for t=
+his?
+>
+> I don=E2=80=99t think ktime can be used from an atomic context?
 
-
-> On 25 Aug 2025, at 10:24, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> Add a type alias for bindings::dma_addr_t (DmaAddress), such that we =
-do
-> not have to access bindings directly.
->=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-> drivers/gpu/nova-core/falcon.rs |  4 ++--
-> rust/kernel/dma.rs              | 18 ++++++++++++++----
-> 2 files changed, 16 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/gpu/nova-core/falcon.rs =
-b/drivers/gpu/nova-core/falcon.rs
-> index 50437c67c14a..aa36ed8c04ed 100644
-> --- a/drivers/gpu/nova-core/falcon.rs
-> +++ b/drivers/gpu/nova-core/falcon.rs
-> @@ -4,8 +4,8 @@
->=20
-> use core::ops::Deref;
-> use hal::FalconHal;
-> -use kernel::bindings;
-> use kernel::device;
-> +use kernel::dma::DmaAddress;
-> use kernel::prelude::*;
-> use kernel::time::Delta;
-> use kernel::types::ARef;
-> @@ -443,7 +443,7 @@ fn dma_wr<F: FalconFirmware<Target =3D E>>(
->                 fw.dma_handle_with_offset(load_offsets.src_start as =
-usize)?,
->             ),
->         };
-> -        if dma_start % bindings::dma_addr_t::from(DMA_LEN) > 0 {
-> +        if dma_start % DmaAddress::from(DMA_LEN) > 0 {
->             dev_err!(
->                 self.dev,
->                 "DMA transfer start addresses must be a multiple of =
-{}",
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index 27b25f041f32..b2a6282876da 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -13,6 +13,16 @@
->     types::ARef,
-> };
->=20
-> +/// DMA address type.
-> +///
-> +/// Represents a bus address used for Direct Memory Access (DMA) =
-operations.
-> +///
-> +/// This is an alias of the kernel's `dma_addr_t`, which may be `u32` =
-or `u64` depending on
-> +/// `CONFIG_ARCH_DMA_ADDR_T_64BIT`.
-> +///
-> +/// Note that this may be `u64` even on 32-bit architectures.
-> +pub type DmaAddress =3D bindings::dma_addr_t;
-> +
-> /// Trait to be implemented by DMA capable bus devices.
-> ///
-> /// The [`dma::Device`](Device) trait should be implemented by bus =
-specific device representations,
-> @@ -343,7 +353,7 @@ fn from(direction: DataDirection) -> Self {
-> // entire `CoherentAllocation` including the allocated memory itself.
-> pub struct CoherentAllocation<T: AsBytes + FromBytes> {
->     dev: ARef<device::Device>,
-> -    dma_handle: bindings::dma_addr_t,
-> +    dma_handle: DmaAddress,
->     count: usize,
->     cpu_addr: *mut T,
->     dma_attrs: Attrs,
-> @@ -444,7 +454,7 @@ pub fn start_ptr_mut(&mut self) -> *mut T {
->=20
->     /// Returns a DMA handle which may be given to the device as the =
-DMA address base of
->     /// the region.
-> -    pub fn dma_handle(&self) -> bindings::dma_addr_t {
-> +    pub fn dma_handle(&self) -> DmaAddress {
->         self.dma_handle
->     }
->=20
-> @@ -452,13 +462,13 @@ pub fn dma_handle(&self) -> bindings::dma_addr_t =
-{
->     /// device as the DMA address base of the region.
->     ///
->     /// Returns `EINVAL` if `offset` is not within the bounds of the =
-allocation.
-> -    pub fn dma_handle_with_offset(&self, offset: usize) -> =
-Result<bindings::dma_addr_t> {
-> +    pub fn dma_handle_with_offset(&self, offset: usize) -> =
-Result<DmaAddress> {
->         if offset >=3D self.count {
->             Err(EINVAL)
->         } else {
->             // INVARIANT: The type invariant of `Self` guarantees that =
-`size_of::<T> * count` fits
->             // into a `usize`, and `offset` is inferior to `count`.
-> -            Ok(self.dma_handle + (offset * core::mem::size_of::<T>()) =
-as bindings::dma_addr_t)
-> +            Ok(self.dma_handle + (offset * core::mem::size_of::<T>()) =
-as DmaAddress)
->         }
->     }
->=20
-> --=20
-> 2.51.0
->=20
-
-Hmm, I wonder if this shouldn=E2=80=99t be its own type, instead of an =
-alias. This
-will be handy if we want to enforce that a given address is, in fact, a =
-bus
-address.
-
-In any case, this can be a separate patch. This one is good.
-
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+There's no problem calling things like ktime_get() from atomic context.
