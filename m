@@ -1,41 +1,41 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71767273810;
-	Tue, 26 Aug 2025 17:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2AB288C25;
+	Tue, 26 Aug 2025 17:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756230140; cv=pass; b=uN0YXtiK0Emo+L7JBtITHOfak6l9VgZBTFPz73LWhHz2P84YZpkb0C4HEUUpWbbG81ZcvC1OE0SEQjzJk7uwiUqYzGYdJ7HFeUKJy1sjo3l36cim+xc8GaCmEuWpwcphxvC7OMOJuvjchVOrWsKzFJ0rRLuibZ3Jcu1v9XNAPqU=
+	t=1756230350; cv=pass; b=U4wPqh64vOJPGILxce7chvbb2cHKERKcyd48gR0Ox7n5R7c+8G1MM9b1amoJCsVZ8ZCnEUEO5VuOlIMIW2GTp624lVZGjVJc3atlHfNOQRkkBy3i5XSzQCyNAmMR+sLyXdEZSLUGCqjOxhWZLtGoTr2mJaHJix7TEXmb4wwxCHI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756230140; c=relaxed/simple;
-	bh=SKa6oB+xZENU1ER26ztNgtC5zGJI5gY3JHY5TsSDDTs=;
+	s=arc-20240116; t=1756230350; c=relaxed/simple;
+	bh=MjkT73njIoYLHYxZ/ah9madqXUjB5QIg4OTz+jKaasc=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=B2D0yh5jB2QRkwBfN1NCCqOlVqVgR3TLkEDZ3Q1dprhZ30xEVHbyTtv1VyKlK22Nhv6rLN8Tk232m6oLCMCkxshSH74V62rRzh411GmqZxsD4PWajj6bC+sUddKc4pyNUKTX48eOHRfbj4UvsUyQz21hvElEIvtZxudxyARX9Wg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=XyZ5kdkL; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=YKkRqC7bVFMu4vO+C/XXFY3Gh6PcCqNkBwQ8vLctNRmzi3RrVpvhQXi8xebBEFTQC0m3MJQ1/2GFn1eXDZ7rarXP4kya/9HPSLeKwmJ5RQRAkkRAb0Fu4e+hba/BhFNlZ4foyYyPghL4WyivT+BhOKsM/0+jZcZsUFrqTO9oPA4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=PyyRfr+W; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="XyZ5kdkL"
-ARC-Seal: i=1; a=rsa-sha256; t=1756230120; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="PyyRfr+W"
+ARC-Seal: i=1; a=rsa-sha256; t=1756230330; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=MbCLR1N4T7xxHhjrV8fss6M5bmbFo3z4XgCfqouyEh9gVoantbMMcOqTQAhtbn49PY/jwCGLp4myHyzKdKBxdhaLZ9vkELDkihRkpEka+8AJqtZu8j3iWMPlbB/Mo0hcrxnuvzC9UiM/kQMTGqp8DNTyUWhxDeqRsi53Pf++1nw=
+	b=PIiZwFCGOnznmCn+lk3Q7dGKMjlW15ywnH+FCv64vir95en3voy2g8vtWKRnDQI++eMD+CrxP+LvxOMbr7ceFokkukYG4d4mZWXIvyhd5K6E5XGk2z9Dj4sCLPnMAJiPciikbaZGJTSQ5ccGOMtcNys3tC94zdhk6dVnR37l/oY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756230120; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SK8f+GG2IKB3kWovus7R8gqvSJJ5ghEPh02buSFYcBs=; 
-	b=oGMOv7X6xkMCttZ8Id39EO9kdAHm7vTLO/lPodSRb+n8P9xRtpzkmhSOy/tOrQ/TBFcf4FGeKk1JUTMbjo1F/mBJKwSuA/0TTFREUlxTeuc4mTCUqnLkpbafN4nMVE+bFmIPjGPIq/rMZ946f7M+DQq1nIGuJqaZm5rmWGSmX9Q=
+	t=1756230330; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=MjkT73njIoYLHYxZ/ah9madqXUjB5QIg4OTz+jKaasc=; 
+	b=btoKdqEfDmWn2zNIbOqbAA973deNcrmgnzeepx5lRv7H9EBEKi+kzKatabjHBK1LU/3LUfHZrS3hckb4yY0QmIRDTNv8QX2xx6N0/RyQEKi7Ul4Elz4p7laNDFOu5tKJq993gfMtZrQSCd++91mGxcy3tUU+dKRQvvWJs7DUscw=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756230120;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756230330;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=SK8f+GG2IKB3kWovus7R8gqvSJJ5ghEPh02buSFYcBs=;
-	b=XyZ5kdkLbxt9k5kI4kLuev94pk7VygW1xlLf1/9dREhh+fWcRpnY0hMCRWASiZvW
-	4DJePATnF/JTgkTCGMC2RIxzlUxoVvbpN1a0uAi7NMFOXtBVuotf6gYZxj+lZoQLkfi
-	kB61A/b4Jn9J6PiR28Ig2VUM28J27PqYh7zm4l8g=
-Received: by mx.zohomail.com with SMTPS id 1756230118134842.9731315739924;
-	Tue, 26 Aug 2025 10:41:58 -0700 (PDT)
+	bh=MjkT73njIoYLHYxZ/ah9madqXUjB5QIg4OTz+jKaasc=;
+	b=PyyRfr+WQ4gUpFFiSUS5ExuVhaROugTYoiN2ARlV1YtR3sFwlGRS1pLcsMcKUMrb
+	3TXwLBhnh21lIoOvrCsYdrVVvZQtQQ3eztkHMdUHetQUCzRkGCGrjQ6KOHguBGwXxxS
+	YrDQn1o4wyakI4LnxntUiNrrqbq7Bk7TKrYXktJI=
+Received: by mx.zohomail.com with SMTPS id 1756230328084762.8686626892185;
+	Tue, 26 Aug 2025 10:45:28 -0700 (PDT)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -46,9 +46,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
 Subject: Re: [PATCH v3 3/5] rust: scatterlist: Add abstraction for sg_table
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DCCFL57R0B4B.D289IWKTOTOE@kernel.org>
-Date: Tue, 26 Aug 2025 14:41:43 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
+In-Reply-To: <DCCGKLKK0D08.1VOAVWOJIXIIO@kernel.org>
+Date: Tue, 26 Aug 2025 14:45:10 -0300
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
  akpm@linux-foundation.org,
  ojeda@kernel.org,
  alex.gaynor@gmail.com,
@@ -57,84 +57,44 @@ Cc: Alice Ryhl <aliceryhl@google.com>,
  bjorn3_gh@protonmail.com,
  lossin@kernel.org,
  a.hindborg@kernel.org,
+ aliceryhl@google.com,
  tmgross@umich.edu,
  abdiel.janulgue@gmail.com,
- acourbot@nvidia.com,
  jgg@ziepe.ca,
  lyude@redhat.com,
  robin.murphy@arm.com,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <7DF83F8C-C036-4E0B-BADF-E915CCA0702C@collabora.com>
+Message-Id: <CA71DB2B-B87C-428A-A128-5B95DB6AFCE0@collabora.com>
 References: <20250825132539.122412-1-dakr@kernel.org>
- <20250825132539.122412-4-dakr@kernel.org> <aK3BsV_s-xMQLF4d@google.com>
- <DCCFL57R0B4B.D289IWKTOTOE@kernel.org>
+ <20250825132539.122412-4-dakr@kernel.org>
+ <DCCFOGR3BPVC.3OW6B74N372MB@nvidia.com>
+ <DCCGKLKK0D08.1VOAVWOJIXIIO@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
 
-
-> On 26 Aug 2025, at 11:32, Danilo Krummrich <dakr@kernel.org> wrote:
 >=20
-> On Tue Aug 26, 2025 at 4:16 PM CEST, Alice Ryhl wrote:
->> On Mon, Aug 25, 2025 at 03:24:42PM +0200, Danilo Krummrich wrote:
->> Overall LGTM. With comments addressed:
->> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> <snip>
+>>> +#[repr(transparent)]
+>>> +#[pin_data(PinnedDrop)]
+>>> +struct RawSGTable {
 >>=20
->>> +impl RawSGTable {
->>> +    fn new(
->>> +        pages: &mut [*mut bindings::page],
->>=20
->> This should probably be unsafe due to the raw pointer. Or could we =
-pass
->> any pointer here?
+>> Even if this is for internal use, I think a short comment explaining
+>> what this is for, and why it needs to be pinned (pointed to by =
+devres)
 >=20
-> Good catch, we should indeed make this unsafe and add the =
-corresponding safety
-> requirements:
+> That's not the reason this structure needs to be pinned. This is the =
+reason for
+> Devres itself needs to be pinned.
 >=20
-> diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
-> index e76e5c2cbdc7..a562c0360842 100644
-> --- a/rust/kernel/scatterlist.rs
-> +++ b/rust/kernel/scatterlist.rs
-> @@ -251,7 +251,12 @@ unsafe impl Send for RawSGTable {}
-> unsafe impl Sync for RawSGTable {}
+> In fact, I think RawSGTable by itself does not need to be pinned.
 >=20
-> impl RawSGTable {
-> -    fn new(
-> +    /// # Safety
-> +    ///
-> +    /// - `pages` must be a slice of valid `struct page *`.
-> +    /// - The pages pointed to by `pages` must remain valid for the =
-entire lifetime of the returned
-> +    ///   [`RawSGTable`].
-> +    unsafe fn new(
->         pages: &mut [*mut bindings::page],
->         size: usize,
->         max_segment: u32,
-> @@ -355,7 +360,11 @@ fn new(
->         };
->=20
->         Ok(try_pin_init!(&this in Self {
-> -            sgt <- RawSGTable::new(&mut page_vec, size, max_segment, =
-flags),
-> +            // SAFETY:
-> +            // - `page_vec` is a `KVec` of valid `struct page *` =
-obtained from `pages`.
-> +            // - The pages contained in `pages` remain valid for the =
-entire lifetime of the
-> +            //   `RawSGTable`.
-> +            sgt <- unsafe { RawSGTable::new(&mut page_vec, size, =
-max_segment, flags) },
->             dma <- {
->                 // SAFETY: `this` is a valid pointer to uninitialized =
-memory.
->                 let sgt =3D unsafe { &raw mut (*this.as_ptr()).sgt =
-}.cast();
->=20
->=20
+>> would be helpful to people looking at this code.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
++1 on having some docs for this type, even though it is private.
+
+This will be helpful for people working on this code in the future.=
