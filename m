@@ -1,400 +1,229 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2088.outbound.protection.outlook.com [40.107.236.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC51227817F
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 20:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756327402; cv=none; b=L1IqCp91orOS79gDWdywR0RPvw/b7soboKnLnFI9jVEzZAflc2g+BGY8Q+aXDG03+JuwP/vuSr1/ehguYv6DkcSwWsCDHxZKxSWQWtGSNTdMiMl4bvpXQ4D/nZ4JtwbFwPqBMNzfKgPYbcUOSi8mHPR4KK29DAKVC7OcKsjNmEk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756327402; c=relaxed/simple;
-	bh=dyDMF/cwAIlIm+AcMnZv4Sla5VsVuVdxhN/jaefnoPk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mzVNrneK8r8xGRcKfXUGJfBJ3RbKigsb8F51U89u7W+PyDs3XtXsIAc8TXdH4OQY7PizudtuRyQxx7fszQKEpvOiO1np28glHUh9X6I8D01SKbX8KKzDXhoIYZFSVaQ1skfEggxlBJrEYPIbOfaD2WQHoWdtEBgvF4j+ZbixO2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=TphgsXag; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Wm1fK3fX; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A8D30CDB2;
+	Wed, 27 Aug 2025 21:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.88
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756331444; cv=fail; b=FPsJIeaM1uVbmPYzxwgH9+JeLokmxDuRPGfRy+E9QMbwQnu2qKUPQhgiC3VqW55e88Dhmc72fx8IP8xn5lcRc3jV5HNqaEr7mFrj+I9xaWUPKe5aDxt6I9zY10y2dH7qHaXyMzW5wTbt86lwqyu1khCQHFAnUYDpenS1oHEsYSE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756331444; c=relaxed/simple;
+	bh=qoJzUOw1GBRF6hqMhrvOxTSJF1UOoqQPA4O7gUXZ7RA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=pe8h6iGptGcga0szVmwNabvmnOApykgNwO75PR2kxEEISHTymjxv7Z2x2hTY8mPEw2Rd4ueT5ImUC/rXM5xn2fhoBlLL8pxq2SWXK11glpJc4nxE+MWXHYGvdGfmpRmWeoNG8TRecF7KEuHTc8liZQxNKPJLm9I83kC6w09hhsw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Cw46WkoZ; arc=fail smtp.client-ip=40.107.236.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="TphgsXag";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Wm1fK3fX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756327390; x=1756932190;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=AZedlH50mveQm2l1NixYwK48/IUW8iWvnLQXSAqCWOg=;
-	b=TphgsXagp7bCIZd+a5snmButOT3yQ+6eUJLXHxZqVi8DLmgofwRs8ISwr1NZIJgBYw06F6pOm+S0E
-	 mJ0qDPiG4JM5tMXTkYGvwnGNsT55dLUGVHG8rqddcMPLSxdsLNopFm+YDic040yp7j7jkqkKxyTEza
-	 o+OxM8lqQalVEiq8PHMqEP3cyETwi+vLkdN+Vzdolwhdi0NH0IScAGhHtY+v8edZOOWB6/OfdQ8b4V
-	 CLuzIkynoVK+Sr1Jo0JNoqn8DVtkGytxVaZwafKSfYLGdGCOLPMW7hlqkp2o5oEeDbtVQnAzG0hm5k
-	 dhoeSA+nDnpyNV4MmTNaZGNCtte1wKg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756327390; x=1756932190;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=AZedlH50mveQm2l1NixYwK48/IUW8iWvnLQXSAqCWOg=;
-	b=Wm1fK3fXzdlOu2kYnKQmwUzwQK82UNEkNswgPKQLzA8bS9slQQm19yNcCVdxG4mAGwdlu6d8Mah5H
-	 lp+PFfRBQ==
-X-HalOne-ID: 70387192-8386-11f0-bb7c-fb5fec76084d
-Received: from [192.168.10.245] (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay3.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id 70387192-8386-11f0-bb7c-fb5fec76084d;
-	Wed, 27 Aug 2025 20:43:09 +0000 (UTC)
-Message-ID: <b1509e7f-4817-4466-bd2b-c083f024c0d4@konsulko.se>
-Date: Wed, 27 Aug 2025 22:43:09 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Cw46WkoZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=onMvJipcaXExdbkxkyW4jg12rs4EXWXtjKL4ZZ8EGWJrLEUoftVjKp4oo67B3Ar+ZwfrjM8yn4STYNmHhNp+AlcFTNh1w+LgMiOhegqNDYlFWEoiWfrhQ1ghF1ra/SZ4iGsf/RtXAlpKfGRZ7t3w95guv6TJ9kwO3/O+S3u4B4GOAbjYTo9OZI8fw0kA0ILzm8HTB79fHlimz6JUwftvrKeD+1aBU9S+VrjWBWPO6BtrRm8Bwq7f6m5UG6o76InYYAQwZ20TLS/hPNDHau1h+n8ZrwzFaEpxoObrkeFziPoVmDu0nk1Cn66jw0BS+YpD8UCO1f8XskAB+j/4idTi1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j0g0q1sXumief/L9QPtC5xF+UOAFqyxR/uj7CZYXVCM=;
+ b=ksOJ7FGpY7akZXgP9RkMOWascdpplxBFLYT8VPbvYgA9J5tw+YNjYe0UH5CwV8LABUBCu2qHnXHikh1nJhI8Cnk6eI+pzXzFxDx+Mizw9NDAYHBgQ8dEYLDw9ShVbIZ7ayP3/ZHDvUGrnYSEQEQFpPOLejldR9eORwYGxuhDoaskTkwPrPjmNf2EKRKLrhZB2h1qOkLbzqJl31K06atxpcopd+wJVV+QWcMtKm45yJ+nSg5Q/0IfWLd5UWMrQS3lZQ+8OZlmfJ23m5mtBt3koI7AdebWGeJtcDyZ4mgMlBUbLXy26AEbmXrATe0UA5BQybtfHgE0LBffgCEKv/XvJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j0g0q1sXumief/L9QPtC5xF+UOAFqyxR/uj7CZYXVCM=;
+ b=Cw46WkoZDaWPcs9Y85/aiMpBH0q/ro6jmU9WFD8pgHYu7WStD1K12ZaOlMelEXmWZ27xdEVNRsilppBQ8baA9jOeIDrIYxApvI1gLFhG5J6BfJw+sgvdlGmepf4gdWtzqNZ1wjixhNutax0w4yMIveOIExsVnuyVMha1ZiviNjt9HM14XVUybdu86qgwkDA6X6BGDyzCx5nJ+pbwOawl/HdugKWBgIWLqHWYhIlR68nOJxEvmnBK/3e388IiwjYWCTZRJvkPmAa6nu2qVwgMyiOHW8pkyDRLTgGD096MTeQel+Tpy1zNBAIQwOpEbVzu2a1hhxnPTrsizv3A6IP9rQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
+ by DS7PR12MB9041.namprd12.prod.outlook.com (2603:10b6:8:ea::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Wed, 27 Aug
+ 2025 21:50:39 +0000
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4%6]) with mapi id 15.20.9073.010; Wed, 27 Aug 2025
+ 21:50:39 +0000
+Message-ID: <2532f8a1-83ba-4f72-aae7-9d810eda417a@nvidia.com>
+Date: Wed, 27 Aug 2025 14:50:36 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/8] gpu: nova-core: firmware: add support for common
+ firmware header
+To: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Alistair Popple <apopple@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+References: <20250826-nova_firmware-v2-0-93566252fe3a@nvidia.com>
+ <20250826-nova_firmware-v2-2-93566252fe3a@nvidia.com>
+ <9adb92d4-6063-4032-bf76-f98dcfe2c824@nvidia.com>
+ <DCD2VJ1WJW2O.VM7E4PD3DFYO@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DCD2VJ1WJW2O.VM7E4PD3DFYO@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0038.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::13) To LV2PR12MB5968.namprd12.prod.outlook.com
+ (2603:10b6:408:14f::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Johannes Weiner <hannes@cmpxchg.org>,
- Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
- linux-mm@kvack.org
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250823130522.867263-1-vitaly.wool@konsulko.se>
- <DCCCRYEUVJWZ.2AUDA0DXK0XSF@kernel.org>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <DCCCRYEUVJWZ.2AUDA0DXK0XSF@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|DS7PR12MB9041:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5ca10de-7e2d-457f-d247-08dde5b3c339
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?V0pDTENxd3VjY0RtR0Q2L1ovWk9QdUVtbDdHakRleWpKSXNackFKZitxRFlY?=
+ =?utf-8?B?RiswUk9wSElLdnlPc0ZVMkd0MjlKNUtKY0pTc0FpRnp1THc5OGhJQzhVeTRp?=
+ =?utf-8?B?RWc0UzErVWNxcXh4TXFpMWRUcGpTV1Bnc1VkN3BYOTlMSWkzV2QwYS9IVTJl?=
+ =?utf-8?B?TnB6S3FRV0hta2ZSSjl6Rk9ZeUxvak9mWUwvNm1JNmxRcHpnVHp1OWJvcGJ1?=
+ =?utf-8?B?dE5UMVVxYjlpOGFhYlZYcHNnZHhqN2xzRGwzY1hjQ0g1TVRpY2FKaHkvbzBp?=
+ =?utf-8?B?b09ES00rYlFwaHVjdTJ4eVp1cEtGSHBNN2hGSHZZcnBMbzBVMXVWMkxUUU15?=
+ =?utf-8?B?WUdvekpzSmNEMmp3Q09tcXNyeTVXM0FwbGdKcXplR09NNnhzc1BxN3NXbDlS?=
+ =?utf-8?B?ZWhzZ3NSc0wxT01ZSUoyRmt1TTkzNGI2SUllSGxNdWZRRDhiblN1ZHdLcGN6?=
+ =?utf-8?B?WjFJeVQ0TFc4andYV05HWkY0NmtQSWtQbEtrRzlVMHBjb0dQbUE3cTZKZVVM?=
+ =?utf-8?B?M2ZBTXdLUTdVcmFjeVBmbU1UM09CQWU1NlpoenVpUnQ3WDdtQnBGQnk5MEs4?=
+ =?utf-8?B?WWY5bnFSZGNNS3dCMlJQamhQZjYrcDVYaDRMWklBbTM5QnpYWXVCaW8yY0xQ?=
+ =?utf-8?B?N1dFWUUyTVlURTFnVmRqUnFxMG1DNWVtcklHVm5uMjBLeFdEK3FRZ09wSmdJ?=
+ =?utf-8?B?enFsZVJDYW5SSkdDLzkyV0xxa0Vpa0dmT0gvTFJOdHZiOWhSbllnbGtocFNJ?=
+ =?utf-8?B?bXNQZDhrWVl5NWZReEhzdFRwSWw3dnZvM3hpMi9SZktISHVldDlmQkt5ZW52?=
+ =?utf-8?B?dzA2NTlOU3A4R29Mck9PUEYzK0JzMlpFSVBkWVkzeEt3MVArMnRLMFJnMHgr?=
+ =?utf-8?B?RWdMVlY4RElwbm83S3ZBZmRwTzNtWnhTd0pkU2xPc3VueUZUbTBENW1QQmxO?=
+ =?utf-8?B?ZzR0dEt3bUlaNFFoaW92RnR0TkZ2UU1ITTVPQ2VaRndkM1NKWVNyUkRPa2pn?=
+ =?utf-8?B?QnllbWNBYytRZW9TOWwzNG96VjlKNTZNc21VdTF6ZFNycU5ZbTRiUE0wQ2s1?=
+ =?utf-8?B?eFJwbzhCdFVoTGx3eHNrblJYeDNDZjJKS0RiTFF5UlVnT0doQyt2QnFUaS9y?=
+ =?utf-8?B?VElnK2t1Mm9rc2o4cjB6enM5ejZ2RWc2NGtBYzRGL2lMeWtTRUtHbGFtRzhE?=
+ =?utf-8?B?RlJSTVAvWW9RbUtETnI5b0ExcnovcStDV1JRVVF6NEhPRkYxWi9VeHBBZjhX?=
+ =?utf-8?B?aWZ2TVlwUkM0YW84VEIvT2QyamNhZjZJL2N1MWpOSGUvb3pyaC9LN2xQSDNG?=
+ =?utf-8?B?UHZmVlBFVnBMQTMvcEhCbEFwaHNramJzWHZ4aDJGNWM3QXk2RU1Oc2dkVUwy?=
+ =?utf-8?B?QXlXUEpkNHU5QmxPbFljaGhwRWtXanlUUTBycTcvSzd6ODVVRTFsNmt6eWZr?=
+ =?utf-8?B?ZDVCQzlTZ0NSTjNkeks3K1pCQ0FkMnkzVnFxS3lraDdLaXhXejRxUUR6THFu?=
+ =?utf-8?B?VFBSY0xKWGtJRXVaQ0ppOUtiaFhKS0lCdCs0TDloRnY2bjBYM2MwTW5tbHB5?=
+ =?utf-8?B?enlOYk9SRzBqV0IrTk5FWGEzcGJQQ3Z5ZkxZd09BWmYxQ3FrYm1HamVLVXNN?=
+ =?utf-8?B?M0lYbGYxcXQ0KzJtWHlFeEVYeHBUQWZ3RkRUTjN4a09KUGVOMXoyVXZBNThD?=
+ =?utf-8?B?Y0t6WituNFhVaVd3TFJhcys3YjFkTXg0amxHekxxcWNuVzB0bnNmSGJ1TzFq?=
+ =?utf-8?B?WnJOREgzLzgyYXNBSHVtQTZSYmxtQ0E0VXFpN2NIT1hIakptbUc4NkQyWWZr?=
+ =?utf-8?B?TGlIdXBnaFQ1NXlPR1pPVFJVWWJDZHpiYmFoWlRWRnE2cFo4a0dLVlJTQVE3?=
+ =?utf-8?B?b0s0Rm9jN1laQURWOU1lZStOQW9VRFNTWDZIbVE0Z1NKVlNBemxhYXVNVG5U?=
+ =?utf-8?B?Q2w5TE5qMUM5MG9CS0FabWNCeGo5UHNNWVFJdHZlVjlTeDVQMmNHNitqNXpx?=
+ =?utf-8?B?ZitSelY3dXp3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dXcrcGlrQ2gzdEg1dFNOcFZwZWRTcVRNSmlHNXhPQi9PQzZFR1FKSE9iQi9p?=
+ =?utf-8?B?eGpzWm1xaTFpSmYrR2Q2c2hySWFiSld1dTVvWS9GZXUvNG9XMEV5ZWZUcVN2?=
+ =?utf-8?B?SHRMdHY1YVBsRW1tUjJ4UEpiQW1nU0d6eXRBS2F5R1pad0FXNXVVNnlSTGxR?=
+ =?utf-8?B?Wjh2T1pFQ3A1NTdSS2orR2MxMEI5THRNb2ZmUTAra3NBNGp3VmhoeHM5MUdU?=
+ =?utf-8?B?S3poSjM2OUptdnpCSjVtdWMyUFdRd1ZFaDdXRC9KVGZ3Rk5uQytWVHJYUkFZ?=
+ =?utf-8?B?S2VpR1BQNFFDY09sVHVOSWJpNXRSZXBNY0ZKOWhSb2s3a1VQOGppNkZ0eE0x?=
+ =?utf-8?B?dFhINVdiTS82MW5yVjg4a3NuY1pIZll3YVFQWjNEQVJqVTIwMS9xM3k2K0ZO?=
+ =?utf-8?B?bFg3azRBMnFlcTliN3VYdUlyb29FclZOV1VZeXUwS0VBY3FlU1hpUEVVMVZv?=
+ =?utf-8?B?bDNZSExDbUhRWlRjQzBHcHZld0tGUHVXSkdmRG5TMkM0SUJVTitjSFB2K3h1?=
+ =?utf-8?B?UVI5WjJpVTZLdkVqWjhmRXUxKy9BQjUzYnlabE9FSWs3bHJFM2hHMG9hcFZD?=
+ =?utf-8?B?UkpkYXl6ZzVyK2p2OStybS9tdFFyN0VaUVJhU2tTZkEvN1V2NmJLWktxeEQ4?=
+ =?utf-8?B?aGtoQWgwVkI1c0RDbnpLQ0RWTE5wVkFCSDBRNFdqazBDcmMwTnBldUJzVXR0?=
+ =?utf-8?B?Sm9wZ2VHWSt5dXpFZ3JlZjRkQk9rc3ljT1hVcVhaWnZrdjgxM1U5MVZNNW1D?=
+ =?utf-8?B?R2haK0V6czlPZk1nbDlxc21Jb01wbEluSTZPSVBuVFRHVUJHc3pONVg3NW8v?=
+ =?utf-8?B?REJMNWFIRmxOS01hM1BOb3hKbTRUK1FNTXZwZGhMd3JZa2FXYytna1lTOHFu?=
+ =?utf-8?B?U0UyZFZGSU50TXlaUHg4RFR6cG1zazBZazZBQWZaV3ZxM3F6amZkZTd4aHhR?=
+ =?utf-8?B?SzF1b3FWWHJUbmo5alRvZjF5OGJuaVRCS3hKVEQwT3pmdHh1bjhzazdXWUZP?=
+ =?utf-8?B?Rkd0NGtkcXdVUW5WdFJDUnQyRURJa1d0ZGEzSXN6WURDQTNaK0Z2WHZVZjU0?=
+ =?utf-8?B?clFDUXhFZEJmMS9nbWRTU1Z1bVZibDlsZnI4NmpVcjBuNUFuMWQ4SURJdFhQ?=
+ =?utf-8?B?SUFrTFdjdXBpSmdRQ05jWHlSajhmM2xScG9LQXQzRitMdVh6SnlpcEN6YVlP?=
+ =?utf-8?B?OFNZWnM4Y1pjL2g3ZUljNUliU0c1ZEJqQko2TE5xdjh1eW1tNUROV0ViSDN6?=
+ =?utf-8?B?THliZkRwbmpsSVFRdlVQS3k4MTRseG9TZUtyY0VvejRSbzJMVXdzeUhsa0xM?=
+ =?utf-8?B?ZnRsM3pLN3pOZFBqNmZuVnFMUHNmZTB4Zmw3VXpKcWRWVWhqeEl2VldRRWQ1?=
+ =?utf-8?B?YVhIVS8yT1JGb01jSS9PYjAvVXIwbFc4REJUa2VhVE9heGZFOVJsczJYdzVB?=
+ =?utf-8?B?c2JTRzBicFpVR2pTTHp5VkZQQ0Jobm1xMXdXYUNNSjRzRzF3YUVDTGdLR0ZB?=
+ =?utf-8?B?a1FsZVZjS3ZsdUh1bXM1enU1ZWtuem41M0F5VC83MUFwYVNiYS9hZTl0UWJa?=
+ =?utf-8?B?eEh6OEFNVmVmNUdBOCsrVW9VM3VWWGU3WXZORkNmL0NvZ1ppSG56TmxwMm5Y?=
+ =?utf-8?B?T1ZRYksyQTVDV3d4WWg4SDJJYXNCNHJva1dpTkZ1WnNCd004SWFlWWpMMGdV?=
+ =?utf-8?B?VzM1T25xbEZlWVBmaU5id2N6MDhoM3dqMW8xVU5hUXpmbXRhZmVmMzhVQ2s1?=
+ =?utf-8?B?WU5GM3VzYjRMRkk2ZVZZYTQzcTdPNGl2Wk5xeFRUQm92eFp0bjR6MnJtNWJw?=
+ =?utf-8?B?NGphWHAxbGFZZE9WeHdTbHJPcTYzZDVXM1hvQ0JxYlFrTHovRzNtWWJpMW1E?=
+ =?utf-8?B?MHY2WEZqV3VqR1YwYW5Lc2dKRU9rdDc5S09laHJSOHRtV0VuV3U2V1YrV1o5?=
+ =?utf-8?B?bG9aZHlId01iL2w5ZjZrOS93SjF5UFdGYU83ZktyWGk4VWRFSU0zc1pqcDJL?=
+ =?utf-8?B?ZnVjUEdSUUFBemZ2Lyt4ZWk2dmVMdXVlY1Q2QXZrZzFTZ2RORzNMclBJSnRq?=
+ =?utf-8?B?YWJtUDFmZ3ZYeEZyKzdxYlI5UEtsdGk4RWg5TnVKTVBzNk10QXNJendITnhC?=
+ =?utf-8?Q?dKbK5zyva6Zg1A/xLLqaeFw7q?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5ca10de-7e2d-457f-d247-08dde5b3c339
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 21:50:39.6073
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SpXEJVsOJzhiE5Bj+cRHdxdUP8PoP8USFarLiLnB/3rkahac+T70ma2ZsYdWLfu8MDR+YXoBqtxC84LMGzT8HA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9041
 
+On 8/27/25 1:47 AM, Alexandre Courbot wrote:
+> On Wed Aug 27, 2025 at 10:34 AM JST, John Hubbard wrote:
+> <snip>
+>>> +    /// Returns the data payload of the firmware, or `None` if the data range is out of bounds of
+>>> +    /// the firmware image.
+>>> +    fn data(&self) -> Option<&[u8]> {
+>>> +        let fw_start = self.hdr.data_offset as usize;
+>>> +        let fw_size = self.hdr.data_size as usize;
+>>> +
+>>> +        self.fw.get(fw_start..fw_start + fw_size)
+>>
+>> This worries me a bit, because we never checked that these bounds
+>> are reasonable: within the range of the firmware, and not overflowing
+>> (.checked_add() for example), that sort of thing.
+>>
+>> Thoughts?
+> 
+> `get` returns `None` if the requested slice is out of bounds, so there
+> should be no risk of panicking here.
 
+I was wondering about the bounds themselves, though. Couldn't they
+be wrong? (Do we care?)
 
-On 8/26/25 14:20, Danilo Krummrich wrote:
-> On Sat Aug 23, 2025 at 3:05 PM CEST, Vitaly Wool wrote:
->> +/// Zpool API.
->> +///
->> +/// The [`ZpoolDriver`] trait serves as an interface for Zpool drivers implemented in Rust.
->> +/// Such drivers implement memory storage pools in accordance with the zpool API.
->> +///
->> +/// # Example
->> +///
->> +/// A zpool driver implementation which uses KVec of 2**n sizes, n = 6, 7, ..., PAGE_SHIFT.
->> +/// Every zpool object is packed into a KVec that is sufficiently large, and n (the
->> +/// denominator) is saved in the least significant bits of the handle, which is guaranteed
->> +/// to be at least 2**6 aligned by kmalloc.
->> +///
->> +/// ```
->> +/// use core::ptr::{NonNull, copy_nonoverlapping};
->> +/// use core::sync::atomic::{AtomicU64, Ordering};
->> +/// use kernel::alloc::{Flags, KBox, KVec, NumaNode};
->> +/// use kernel::page::PAGE_SHIFT;
->> +/// use kernel::prelude::EINVAL;
->> +/// use kernel::zpool::*;
->> +///
->> +/// struct MyZpool {
->> +///     name: &'static CStr,
->> +///     bytes_used: AtomicU64,
->> +/// }
->> +///
->> +/// struct MyZpoolDriver;
->> +///
->> +/// impl ZpoolDriver for MyZpoolDriver {
->> +///     type Pool = KBox<MyZpool>;
->> +///
->> +///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpool>> {
->> +///         let my_pool = MyZpool { name, bytes_used: AtomicU64::new(0) };
->> +///         let pool = KBox::new(my_pool, gfp)?;
->> +///
->> +///         Ok(pool)
->> +///     }
->> +///
->> +///     fn destroy(p: KBox<MyZpool>) {
->> +///         drop(p);
->> +///     }
->> +///
->> +///     fn malloc(pool: &mut MyZpool, size: usize, gfp: Flags, _nid: NumaNode) -> Result<usize> {
->> +///         let mut pow: usize = 0;
->> +///         for n in 6..=PAGE_SHIFT {
->> +///             if size <= 1 << n {
->> +///                 pow = n;
->> +///                 break;
->> +///             }
->> +///         }
 > 
-> Why not just use next_power_of_two()? I think the same logic could also be
-> achieved with
+> However, `fw_start + fw_size` can panic in debug configuration if it
+> overflows. In a release build I believe it will just happily wrap, and
+> `get` should consequently return `None` at the invalid range... Although
+> we can also get unlucky and produce a valid, yet incorrect, one.
 > 
-> 	size.next_power_of_two().trailing_zeros().max(6).min(PAGE_SHIFT)
+> This is actually something I've been thinking about while writing this
+> series and could not really decide upon: how to deal with operands and
+> functions in Rust that can potentially panic. Using `checked` operands
+> everywhere is a bit tedious, and even with great care there is no way to
+> guarantee that no panic occurs in a given function.
 
-It indeed can, thanks :)
+Yes, .checked_add() all over the place is just awful, would like to 
+avoid that for sure.
 
->> +///         match pow {
->> +///             0 => Err(EINVAL),
->> +///             _ => {
->> +///                 let vec = KVec::<u64>::with_capacity(1 << (pow - 3), gfp)?;
 > 
-> Why use u64 and 1 << (pow - 3), rather than simply u8 and 1 << pow?
+> Panics are a big no-no in the kernel, yet I don't feel like we have the
+> proper tools to ensure they do not happen.
 > 
-> (Btw. you could also just use VBox<u8; PAGE_SIZE>::new_uninit() for all
-> allocations to keep the example simple.)
+> User-space has some crates like `no_panic`, but even these feel more
+> like hacks than anything else. Something at the compiler level would be
+> nice.
+> 
+> Maybe that would be a good discussion topic for the Plumber
+> Microconference?
 
-Right, that fixation on u64 doesn't help at all here.
+Yes. And maybe even for Kangrejos.
 
->> +///                 let (ptr, _len, _cap) = vec.into_raw_parts();
->> +///                 pool.bytes_used.fetch_add(1 << pow, Ordering::Relaxed);
->> +///                 Ok(ptr as usize | (pow - 6))
->> +///             }
->> +///         }
->> +///     }
->> +///
->> +///     unsafe fn free(pool: &MyZpool, handle: usize) {
->> +///         let n = (handle & 0x3F) + 3;
->> +///         let uptr = handle & !0x3F;
->> +///
->> +///         // SAFETY:
->> +///         // - uptr comes from handle which points to the KVec allocation from `alloc`.
-> 
-> That's not true, you modified the pointer you got from KVec. Please explain why
-> it is always safe to use lower 6 bits for something else.
-> 
-> What does "`alloc`" refer to?
+thanks,
+-- 
+John Hubbard
 
-It refers to the alloc function we implement in this toy backend for 
-ZpoolDriver trait.
-
-> NIT: `uptr`, `KVec`
-> 
->> +///         // - size == capacity and is coming from the first 6 bits of handle.
->> +///         let vec = unsafe { KVec::<u64>::from_raw_parts(uptr as *mut u64, 1 << n, 1 << n) };
-> 
-> Why do you set the length (not the capacity) of the Vector to 1 << n? I think
-> technically it doesn't matter, but you should explain that in the safety
-> comment.
-
-Would the following work: "we know the capacity of this vector and it is 
-1 << n, we set the length to the same value to be deterministic, but the 
-actual length of vec doesn't matter because we're dropping it right here 
-anyway"?
-
->> +///         drop(vec);
->> +///         pool.bytes_used.fetch_sub(1 << (n + 3), Ordering::Relaxed);
->> +///     }
->> +///
->> +///     unsafe fn read_begin(_pool: &MyZpool, handle: usize) -> NonNull<u8> {
->> +///         let uptr = handle & !0x3F;
->> +///         // SAFETY: uptr points to a memory area allocated by KVec
-> 
-> Please use markdown and end sentences with a period. (Applies to the entire
-> file.)
-> 
->> +///         unsafe { NonNull::new_unchecked(uptr as *mut u8) }
->> +///     }
->> +///
->> +///     unsafe fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem: NonNull<u8>) {}
->> +///
->> +///     unsafe fn write(_p: &MyZpool, handle: usize, handle_mem: NonNull<u8>, mem_len: usize) {
->> +///         let uptr = handle & !0x3F;
->> +///         // SAFETY: handle_mem is a valid non-null pointer provided by zpool, uptr points to
->> +///         // a KVec allocated in `malloc` and is therefore also valid.
->> +///         unsafe {
->> +///             copy_nonoverlapping(handle_mem.as_ptr().cast(), uptr as *mut c_void, mem_len)
->> +///         };
->> +///     }
->> +///
->> +///     fn total_pages(pool: &MyZpool) -> u64 {
->> +///         pool.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
-> 
-> I'm not sure what the semantic of this function is; the documentation says
-> "Get the number of pages used by the `pool`".
-> 
-> However, given that you give out allocations from a kmalloc() bucket in
-> malloc(), this pool might be backed by more pages than what you calculate here.
-
-Well, maybe I need to add an explicit comment about it here, but the 
-idea is that with the SLUB allocator, you have kmalloc-64, kmalloc-128, 
-kmalloc-256 etc. caches which will be used to manage requests for up to 
-64, 128, 256, ... bytes respectively, and in that case the calculations 
-are correct. FWIW I smoke tested this allocator and the actual numbers 
-seem to be consistent with these calculations.
-
-> So, what is done here is calculating the number of pages you could fill with
-> the memory that is kept around, but not the number of backing pages you consume
-> memory from.
-> 
-> Using VBox<u8; PAGE_SIZE>::new_uninit() for all allocations might simplify this.
-> 
->> +///     }
->> +/// }
->> +/// ```
->> +///
->> +pub trait ZpoolDriver {
->> +    /// Opaque Rust representation of `struct zpool`.
->> +    type Pool: ForeignOwnable;
->> +
->> +    /// Create a pool.
->> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
->> +
->> +    /// Destroy the pool.
->> +    fn destroy(pool: Self::Pool);
->> +
->> +    /// Allocate an object of size `size` bytes from `pool`, with the allocation flags `gfp` and
-> 
-> "of `size` bytes"
-> 
->> +    /// preferred NUMA node `nid`. If the allocation is successful, an opaque handle is returned.
->> +    fn malloc(
->> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
->> +        size: usize,
->> +        gfp: Flags,
->> +        nid: NumaNode,
->> +    ) -> Result<usize>;
->> +
->> +    /// Free a previously allocated from the `pool` object, represented by `handle`.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `handle` must be a valid handle previously returned by `malloc`.
->> +    /// - `handle` must not be used any more after the call to `free`.
->> +    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: usize);
->> +
->> +    /// Make all the necessary preparations for the caller to be able to read from the object
->> +    /// represented by `handle` and return a valid pointer to the `handle` memory to be read.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `handle` must be a valid handle previously returned by `malloc`.
->> +    /// - `read_end` with the same `handle` must be called for each `read_begin`.
-> 
-> What can potentially happen if we don't? I.e. how is this different from
-> malloc()?
-
-Here the idea is that if read_begin() has some sort of extra mapping 
-involved (like, doing kmap_atomic() on some weird memory address) for 
-the caller to be able to read directly from the returned pointer, 
-read_end() must clean that mapping up.
-
->> +    unsafe fn read_begin(
->> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
->> +        handle: usize,
->> +    ) -> NonNull<u8>;
->> +
->> +    /// Finish reading from a previously allocated `handle`. `handle_mem` must be the pointer
->> +    /// previously returned by `read_begin`.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `handle` must be a valid handle previously returned by `malloc`.
->> +    /// - `handle_mem` must be the pointer previously returned by `read_begin`.
->> +    unsafe fn read_end(
->> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
->> +        handle: usize,
->> +        handle_mem: NonNull<u8>,
->> +    );
->> +
->> +    /// Write to the object represented by a previously allocated `handle`. `handle_mem` points
->> +    /// to the memory to copy data from, and `mem_len` defines the length of the data block to
->> +    /// be copied.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `handle` must be a valid handle previously returned by `malloc`.
->> +    /// - `handle_mem` must be a valid pointer to an allocated memory area.
-> 
-> "must be a valid pointer into the allocated memory aread represented by
-> `handle`"
-> 
->> +    /// - `handle_mem` + `mem_len` must not point outside the allocated memory area.
->> +    unsafe fn write(
->> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
->> +        handle: usize,
->> +        handle_mem: NonNull<u8>,
->> +        mem_len: usize,
->> +    );
->> +
->> +    /// Get the number of pages used by the `pool`.
->> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -> u64;
->> +}
->> +
->> +/// An "adapter" for the registration of zpool drivers.
->> +pub struct Adapter<T: ZpoolDriver>(T);
->> +
->> +impl<T: ZpoolDriver> Adapter<T> {
->> +    extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void {
->> +        // SAFETY: the memory pointed to by name is guaranteed by zpool to be a valid string
-> 
-> What about the lifetime of the string? In the abstraction you assume 'static,
-> how is this guaranteed?
-
-Actually it isn't, thanks for finding this.
-
->> +        let pool = unsafe { T::create(CStr::from_char_ptr(name), Flags::from_raw(gfp)) };
->> +        match pool {
->> +            Err(_) => null_mut(),
->> +            Ok(p) => T::Pool::into_foreign(p),
->> +        }
->> +    }
-> 
-> Please add an empty line in between function definitions.
-> 
->> +    extern "C" fn destroy_(pool: *mut c_void) {
->> +        // SAFETY: The pointer originates from an `into_foreign` call.
->> +        T::destroy(unsafe { T::Pool::from_foreign(pool) })
->> +    }
->> +    extern "C" fn malloc_(
->> +        pool: *mut c_void,
->> +        size: usize,
->> +        gfp: u32,
->> +        handle: *mut usize,
->> +        nid: c_int,
->> +    ) -> c_int {
->> +        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
->> +        // `from_foreign`, then that happens in `_destroy` which will not be called during this
->> +        // method.
->> +        let pool = unsafe { T::Pool::borrow_mut(pool) };
-> 
-> Wait, can't this happen concurrently to all the other functions that borrow the
-> pool? This would be undefined behavior, no?
-
-Theoretically, yes, but since pool is actually Box<T>, it's only the 
-inner T that is mutable.
-
-Anyway, the only reason for malloc() to require a mutable reference is 
-that the backend implementation *may* use RBTree::cursor_lower_bound() 
-which requires a mutable reference of the tree.
-
-Would it be okay if I
-* change the Zpool API so that malloc takes an immutable reference
-* extend the RBTree API with a cursor_lower_bound analog which doesn't 
-require a mutable tree?
-
->> +        from_result(|| {
->> +            let real_nid = match nid {
->> +                bindings::NUMA_NO_NODE => NumaNode::NO_NODE,
->> +                _ => NumaNode::new(nid)?,
->> +            };
->> +            let h = T::malloc(pool, size, Flags::from_raw(gfp), real_nid)?;
->> +            // SAFETY: handle is guaranteed to be a valid pointer by zpool.
->> +            unsafe { *handle = h };
->> +            Ok(0)
->> +        })
->> +    }
->> +    extern "C" fn free_(pool: *mut c_void, handle: usize) {
->> +        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
->> +        // `from_foreign`, then that happens in `_destroy` which will not be called during this
->> +        // method.
->> +        let pool = unsafe { T::Pool::borrow(pool) };
->> +
->> +        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
-> 
-> Why does this mention zwap here and in the other functions below?
-
-Should have been "(e. g. zswap)".
-
->> +        // allocated by `malloc`.
->> +        unsafe { T::free(pool, handle) }
->> +    }
-> 
