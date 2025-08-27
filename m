@@ -1,742 +1,400 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82EB1DE4CA;
-	Wed, 27 Aug 2025 20:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756327312; cv=pass; b=dI+WANQNtIu15lN6liwNKwSGTP/2u0Nd5fwBms9lGFL8aj12tR17bW0PjnPwEVafe9Q9C/ejy5WnBFvPVqt3SbEcpnL7V/pbbb/0r8TjzxqOHZJUpdw+W8gQhzAlGmQ0pntwr6EDPuYADBXKqcnwcNdixhFBs/gswXppZBM4Eng=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756327312; c=relaxed/simple;
-	bh=AAbWlI+fVcNf245EchlXIdUhWf3zE9NOC3Rv4By1WiE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Cs9yX9kBm5uYIoUpwYhUVgQ90cUBzCSOcfAQvS2S9L7s2CCTP6I5GtmidMLhMiOPScih9VBf71kjk0UEDpHWN3+qCIfj2ZhReF70jYFODzVcRyUecSx5AT08+bZK1igEGB7/toG6GsY13Sa0GjB1532SgsDG7XW3JEvlb9JrU5I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UfEyxg4D; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC51227817F
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 20:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756327402; cv=none; b=L1IqCp91orOS79gDWdywR0RPvw/b7soboKnLnFI9jVEzZAflc2g+BGY8Q+aXDG03+JuwP/vuSr1/ehguYv6DkcSwWsCDHxZKxSWQWtGSNTdMiMl4bvpXQ4D/nZ4JtwbFwPqBMNzfKgPYbcUOSi8mHPR4KK29DAKVC7OcKsjNmEk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756327402; c=relaxed/simple;
+	bh=dyDMF/cwAIlIm+AcMnZv4Sla5VsVuVdxhN/jaefnoPk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mzVNrneK8r8xGRcKfXUGJfBJ3RbKigsb8F51U89u7W+PyDs3XtXsIAc8TXdH4OQY7PizudtuRyQxx7fszQKEpvOiO1np28glHUh9X6I8D01SKbX8KKzDXhoIYZFSVaQ1skfEggxlBJrEYPIbOfaD2WQHoWdtEBgvF4j+ZbixO2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=TphgsXag; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Wm1fK3fX; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UfEyxg4D"
-ARC-Seal: i=1; a=rsa-sha256; t=1756327294; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=JTHWYYS9oIbP0QhXcNxXBj5jk2dy0D/6YCrTJUNIcp0HiZrsieosK9UkFBONgPwl1/q2ZZBa+mXnqKT12s9IhTJtWffPvApX2qVyVgLBYg4sohTagyWqVFaCV/244Z3wd04DlASxR4wOXasrhQH6KUt+a9smqrdXykaf0EPBc+M=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756327294; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=eOYQVW7gHFiStIKVWbs6rHPJJ18hdXIIhJXvCnzDhh8=; 
-	b=lLMFReCT1mfTXXZOVYD5BHc73epFgvnLu2hKJSI10nGq1RF2TS0+AIbV3xviFyh1CJg4iiyR/WCBOJZHx5laPLFnkygM++DpggGs54iAc2msRdZAjSEC7don5rbdH7G6G6RMA1ywLQkFL2zKKZJsXIxJw2fjeOhj36eiH7o0tnY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756327294;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=eOYQVW7gHFiStIKVWbs6rHPJJ18hdXIIhJXvCnzDhh8=;
-	b=UfEyxg4DI7IqRWhw8uVCFiaYlGTmbaussrWAOdwohNDBnB5DUsMiLFISGJJoIyMa
-	8b5b9vIVxTeSKDUKWXYlWcaI8TvTpEFBdcd4IM40Q7kxtaH1CCh6W9VZ+09DWeHhKUz
-	nvJAuyWLvQcAg+40HrLXtxdYAzAfIuyVr7tmZYDc=
-Received: by mx.zohomail.com with SMTPS id 1756327291209106.7581479016601;
-	Wed, 27 Aug 2025 13:41:31 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="TphgsXag";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Wm1fK3fX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756327390; x=1756932190;
+	d=konsulko.se; s=rsa2;
+	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
+	 subject:mime-version:date:message-id:from;
+	bh=AZedlH50mveQm2l1NixYwK48/IUW8iWvnLQXSAqCWOg=;
+	b=TphgsXagp7bCIZd+a5snmButOT3yQ+6eUJLXHxZqVi8DLmgofwRs8ISwr1NZIJgBYw06F6pOm+S0E
+	 mJ0qDPiG4JM5tMXTkYGvwnGNsT55dLUGVHG8rqddcMPLSxdsLNopFm+YDic040yp7j7jkqkKxyTEza
+	 o+OxM8lqQalVEiq8PHMqEP3cyETwi+vLkdN+Vzdolwhdi0NH0IScAGhHtY+v8edZOOWB6/OfdQ8b4V
+	 CLuzIkynoVK+Sr1Jo0JNoqn8DVtkGytxVaZwafKSfYLGdGCOLPMW7hlqkp2o5oEeDbtVQnAzG0hm5k
+	 dhoeSA+nDnpyNV4MmTNaZGNCtte1wKg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756327390; x=1756932190;
+	d=konsulko.se; s=ed2;
+	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
+	 subject:mime-version:date:message-id:from;
+	bh=AZedlH50mveQm2l1NixYwK48/IUW8iWvnLQXSAqCWOg=;
+	b=Wm1fK3fXzdlOu2kYnKQmwUzwQK82UNEkNswgPKQLzA8bS9slQQm19yNcCVdxG4mAGwdlu6d8Mah5H
+	 lp+PFfRBQ==
+X-HalOne-ID: 70387192-8386-11f0-bb7c-fb5fec76084d
+Received: from [192.168.10.245] (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
+	by mailrelay3.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 70387192-8386-11f0-bb7c-fb5fec76084d;
+	Wed, 27 Aug 2025 20:43:09 +0000 (UTC)
+Message-ID: <b1509e7f-4817-4466-bd2b-c083f024c0d4@konsulko.se>
+Date: Wed, 27 Aug 2025 22:43:09 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [RFC PATCH v3 3/5] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250822125555.8620-4-sidong.yang@furiosa.ai>
-Date: Wed, 27 Aug 2025 17:41:15 -0300
-Cc: Jens Axboe <axboe@kernel.dk>,
- Caleb Sander Mateos <csander@purestorage.com>,
- Benno Lossin <lossin@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <713667D6-8001-408D-819D-E9326FC3AFD5@collabora.com>
-References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
- <20250822125555.8620-4-sidong.yang@furiosa.ai>
-To: Sidong Yang <sidong.yang@furiosa.ai>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
-
-Hi Sidong,
-
-> On 22 Aug 2025, at 09:55, Sidong Yang <sidong.yang@furiosa.ai> wrote:
->=20
-> Implment the io-uring abstractions needed for miscdevicecs and other
-> char devices that have io-uring command interface.
-
-Can you expand on this last part?
-
->=20
-> * `io_uring::IoUringCmd` : Rust abstraction for `io_uring_cmd` which
->  will be used as arg for `MiscDevice::uring_cmd()`. And driver can get
->  `cmd_op` sent from userspace. Also it has `flags` which includes =
-option
->  that is reissued.
->=20
-
-This is a bit hard to parse.
-
-> * `io_uring::IoUringSqe` : Rust abstraction for `io_uring_sqe` which
->  could be get from `IoUringCmd::sqe()` and driver could get `cmd_data`
->  from userspace. Also `IoUringSqe` has more data like opcode could be =
-used in
->  driver.
-
-Same here.
-
->=20
-> Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
-> ---
-> rust/kernel/io_uring.rs | 306 ++++++++++++++++++++++++++++++++++++++++
-> rust/kernel/lib.rs      |   1 +
-> 2 files changed, 307 insertions(+)
-> create mode 100644 rust/kernel/io_uring.rs
->=20
-> diff --git a/rust/kernel/io_uring.rs b/rust/kernel/io_uring.rs
-> new file mode 100644
-> index 000000000000..61e88bdf4e42
-> --- /dev/null
-> +++ b/rust/kernel/io_uring.rs
-> @@ -0,0 +1,306 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// SPDX-FileCopyrightText: (C) 2025 Furiosa AI
-> +
-> +//! Abstractions for io-uring.
-> +//!
-> +//! This module provides types for implements io-uring interface for =
-char device.
-
-This is also hard to parse.
-
-> +//!
-> +//!
-> +//! C headers: =
-[`include/linux/io_uring/cmd.h`](srctree/include/linux/io_uring/cmd.h) =
-and
-> +//! =
-[`include/linux/io_uring/io_uring.h`](srctree/include/linux/io_uring/io_ur=
-ing.h)
-> +
-> +use core::{mem::MaybeUninit, pin::Pin};
-> +
-> +use crate::error::from_result;
-> +use crate::transmute::{AsBytes, FromBytes};
-> +use crate::{fs::File, types::Opaque};
-> +
-> +use crate::prelude::*;
-> +
-> +/// io-uring opcode
-
-/// `IoUring` opcodes.
-
-Notice:
-
-a) The capitalization,
-b) The use of backticks,
-c) The period in the end.
-
-This is an ongoing effort to keep the docs tidy :)
-
-> +pub mod opcode {
-> +    /// opcode for uring cmd
-> +    pub const URING_CMD: u32 =3D =
-bindings::io_uring_op_IORING_OP_URING_CMD;
-> +}
-
-Should this be its own type? This way we can use the type system to =
-enforce
-that only valid opcodes are used where an opcode is expected.
-
-> +
-> +/// A Rust abstraction for the Linux kernel's `io_uring_cmd` =
-structure.
-
-/// A Rust abstraction for `io_uring_cmd`.
-
-> +///
-> +/// This structure is a safe, opaque wrapper around the raw C =
-`io_uring_cmd`
-> +/// binding from the Linux kernel. It represents a command structure =
-used
-> +/// in io_uring operations within the kernel.
-
-This code will also be part of the kernel, so mentioning =E2=80=9Cthe =
-Linux kernel=E2=80=9D is superfluous.
-
-> +/// This type is used internally by the io_uring subsystem to manage
-> +/// asynchronous I/O commands.
-> +///
-> +/// This type should not be constructed or manipulated directly by
-> +/// kernel module developers.
-
-=E2=80=9C=E2=80=A6by drivers=E2=80=9D.
-
-> +///
-> +/// # INVARIANT
-
-/// # Invariants
-
-> +/// - `self.inner` always points to a valid, live =
-`bindings::io_uring_cmd`.
-
-Blank here
-
-> +#[repr(transparent)]
-> +pub struct IoUringCmd {
-> +    /// An opaque wrapper containing the actual `io_uring_cmd` data.
-> +    inner: Opaque<bindings::io_uring_cmd>,
-> +}
-> +
-> +impl IoUringCmd {
-> +    /// Returns the cmd_op with associated with the `io_uring_cmd`.
-
-This sentence does not parse very well.
-
-> +    #[inline]
-> +    pub fn cmd_op(&self) -> u32 {
-> +        // SAFETY: `self.inner` is guaranteed by the type invariant =
-to point
-> +        // to a live `io_uring_cmd`, so dereferencing is safe.
-> +        unsafe { (*self.inner.get()).cmd_op }
-
-Perhaps add an as_raw() method so this becomes:
-
-unsafe {*self.as_raw()}.cmd_op
-
-> +    }
-> +
-> +    /// Returns the flags with associated with the `io_uring_cmd`.
-
-With the command, or something like that. The user doesn=E2=80=99t see =
-the raw
-bindings::io_uring_cmd so we shouldn=E2=80=99t be mentioning it if we =
-can help it.
-
-> +    #[inline]
-> +    pub fn flags(&self) -> u32 {
-> +        // SAFETY: `self.inner` is guaranteed by the type invariant =
-to point
-> +        // to a live `io_uring_cmd`, so dereferencing is safe.
-> +        unsafe { (*self.inner.get()).flags }
-> +    }
-> +
-> +    /// Reads protocol data unit as `T` that impl `FromBytes` from =
-uring cmd
-
-This sentence does not parse very well.
-
-> +    ///
-> +    /// Fails with [`EFAULT`] if size of `T` is bigger than pdu size.
-
-/// # Errors
-
-> +    #[inline]
-> +    pub fn read_pdu<T: FromBytes>(&self) -> Result<T> {
-
-This takes &self,
-
-> +        // SAFETY: `self.inner` is guaranteed by the type invariant =
-to point
-> +        // to a live `io_uring_cmd`, so dereferencing is safe.
-> +        let inner =3D unsafe { &mut *self.inner.get() };
-
-But this creates a &mut to self.inner using unsafe code. Avoid doing =
-this in
-general. All of a sudden your type is not thread-safe anymore.
-
-If you need to mutate &self here, then take &mut self as an argument.
-
-> +
-> +        let len =3D size_of::<T>();
-> +        if len > inner.pdu.len() {
-> +            return Err(EFAULT);
-
-EFAULT? How about EINVAL?
-
-> +        }
-> +
-> +        let mut out: MaybeUninit<T> =3D MaybeUninit::uninit();
-> +        let ptr =3D &raw mut inner.pdu as *const c_void;
-> +
-> +        // SAFETY:
-> +        // * The `ptr` is valid pointer from `self.inner` that is =
-guaranteed by type invariant.
-> +        // * The `out` is valid pointer that points `T` which impls =
-`FromBytes` and checked
-> +        //   size of `T` is smaller than pdu size.
-> +        unsafe {
-> +            core::ptr::copy_nonoverlapping(ptr, =
-out.as_mut_ptr().cast::<c_void>(), len);
-
-I don=E2=80=99t think you need to manually specify c_void here.
-
-Benno, can=E2=80=99t we use core::mem::zeroed() or something like that =
-to avoid this unsafe?
-
-The input was zeroed in prep() and the output can just be a zeroed T on =
-the
-stack, unless I missed something?
-
-> +        }
-> +
-> +        // SAFETY: The read above has initialized all bytes in `out`, =
-and since `T` implements
-> +        // `FromBytes`, any bit-pattern is a valid value for this =
-type.
-> +        Ok(unsafe { out.assume_init() })
-> +    }
-> +
-> +    /// Writes the provided `value` to `pdu` in uring_cmd `self`
-
-Writes the provided `value` to `pdu`.
-
-> +    ///
-
-/// # Errors
-///
-
-> +    /// Fails with [`EFAULT`] if size of `T` is bigger than pdu size.
-
-> +    #[inline]
-> +    pub fn write_pdu<T: AsBytes>(&mut self, value: &T) -> Result<()> =
-{
-> +        // SAFETY: `self.inner` is guaranteed by the type invariant =
-to point
-> +        // to a live `io_uring_cmd`, so dereferencing is safe.
-> +        let inner =3D unsafe { &mut *self.inner.get() };
-> +
-> +        let len =3D size_of::<T>();
-> +        if len > inner.pdu.len() {
-> +            return Err(EFAULT);
-> +        }
-> +
-> +        let src =3D (value as *const T).cast::<c_void>();
-
-as_ptr().cast()
-
-> +        let dst =3D &raw mut inner.pdu as *mut c_void;
-
-(&raw mut inner.pdu).cast()
-
-> +
-> +        // SAFETY:
-> +        // * The `src` is points valid memory that is guaranteed by =
-`T` impls `AsBytes`
-> +        // * The `dst` is valid. It's from `self.inner` that is =
-guaranteed by type invariant.
-> +        // * It's safe to copy because size of `T` is no more than =
-len of pdu.
-> +        unsafe {
-> +            core::ptr::copy_nonoverlapping(src, dst, len);
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +
-> +    /// Constructs a new [`IoUringCmd`] from a raw `io_uring_cmd`
-
-Missing period.
-
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must guarantee that:
-> +    /// - `ptr` is non-null, properly aligned, and points to a valid
-> +    ///   `bindings::io_uring_cmd`.
-
-Blanks for every bullet point, please.
-
-> +    /// - The pointed-to memory remains initialized and valid for the =
-entire
-> +    ///   lifetime `'a` of the returned reference.
-> +    /// - While the returned `Pin<&'a mut IoUringCmd>` is alive, the =
-underlying
-> +    ///   object is **not moved** (pinning requirement).
-
-They can=E2=80=99t move an !Unpin type in safe code.
-
-> +    /// - **Aliasing rules:** the returned `&mut` has **exclusive** =
-access to the same
-> +    ///   object for its entire lifetime:
-
-You really don=E2=80=99t need to emphasize these.
-
-> +    ///   - No other `&mut` **or** `&` references to the same =
-`io_uring_cmd` may be
-> +    ///     alive at the same time.
-
-This and the point above are identical.
-
-> +    ///   - There must be no concurrent reads/writes through raw =
-pointers, FFI, or
-> +    ///     other kernel paths to the same object during this =
-lifetime.
-
-This and the first point say the same thing.
-
-> +    ///   - If the object can be touched from other contexts (e.g. =
-IRQ/another CPU),
-> +    ///     the caller must provide synchronization to uphold this =
-exclusivity.
-
-I am not sure what you mean.
-> +    /// - This function relies on `IoUringCmd` being =
-`repr(transparent)` over
-> +    ///   `bindings::io_uring_cmd` so the cast preserves layout.
-
-This is not a safety requirement.
-
-Just adapt the requirements from other instances of from_raw(), they all
-convert a *mut T to a &T so the safety requirements are similar.
-
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::io_uring_cmd) -> =
-Pin<&'a mut IoUringCmd> {
-
-Why is this pub? Sounds like a massive footgun? This should be private =
-or at
-best pub(crate).
-
-
-> +        // SAFETY:
-> +        // * The caller guarantees that the pointer is not dangling =
-and stays
-> +        //   valid for the duration of 'a.
-> +        // * The cast is okay because `IoUringCmd` is =
-`repr(transparent)` and
-> +        //   has the same memory layout as `bindings::io_uring_cmd`.
-> +        // * The returned `Pin` ensures that the object cannot be =
-moved, which
-> +        //   is required because the kernel may hold pointers to this =
-memory
-> +        //   location and moving it would invalidate those pointers.
-
-> +        unsafe { Pin::new_unchecked(&mut *ptr.cast()) }
-> +    }
-> +
-> +    /// Returns the file that referenced by uring cmd self.
-> +    #[inline]
-> +    pub fn file(&self) -> &File {
-> +        // SAFETY: `self.inner` is guaranteed by the type invariant =
-to point
-> +        // to a live `io_uring_cmd`, so dereferencing is safe.
-> +        let file =3D unsafe { (*self.inner.get()).file };
-> +
-> +        // SAFETY:
-> +        // * The `file` points valid file.
-
-Why?
-
-> +        // * refcount is positive after submission queue entry =
-issued.
-> +        // * There is no active fdget_pos region on the file on this =
-thread.
-> +        unsafe { File::from_raw_file(file) }
-> +    }
-> +
-> +    /// Returns an reference to the [`IoUringSqe`] associated with =
-this command.
-
-s/an/a
-
-> +    #[inline]
-> +    pub fn sqe(&self) -> &IoUringSqe {
-> +        // SAFETY: `self.inner` is guaranteed by the type invariant =
-to point
-> +        // to a live `io_uring_cmd`, so dereferencing is safe.
-> +        let sqe =3D unsafe { (*self.inner.get()).sqe };
-> +        // SAFETY: The call guarantees that the `sqe` points valid =
-io_uring_sqe.
-
-What do you mean by =E2=80=9Cthe call guarantees=E2=80=9D ?
-
-> +        unsafe { IoUringSqe::from_raw(sqe) }
-> +    }
-> +
-> +    /// Completes an this [`IoUringCmd`] request that was previously =
-queued.
-
-This sentence does not parse very well.
-
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - This function must be called **only** for a command whose =
-`uring_cmd`
-
-Please no emphasis.
-
-> +    ///   handler previously returned **`-EIOCBQUEUED`** to io_uring.
-
-To what? Are you referring to a Rust type, or to the C part of the =
-kernel?
-
-> +    ///
-> +    /// # Parameters
-> +    ///
-> +    /// - `ret`: Result to return to userspace.
-> +    /// - `res2`: Extra for big completion queue entry =
-`IORING_SETUP_CQE32`.
-
-This sentence does not parse very well. Also, can you rename this?
-
-> +    /// - `issue_flags`: Flags associated with this request, =
-typically the same
-> +    ///   as those passed to the `uring_cmd` handler.
-> +    #[inline]
-> +    pub fn done(self: Pin<&mut IoUringCmd>, ret: Result<i32>, res2: =
-u64, issue_flags: u32) {
-> +        let ret =3D from_result(|| ret) as isize;
-
-What does this do?
-
-> +        // SAFETY: The call guarantees that `self.inner` is not =
-dangling and stays valid
-
-What do you mean =E2=80=9Cthe call=E2=80=9D ?
-
-> +        unsafe {
-> +            bindings::io_uring_cmd_done(self.inner.get(), ret, res2, =
-issue_flags);
-> +        }
-> +    }
-> +}
-> +
-> +/// A Rust abstraction for the Linux kernel's `io_uring_sqe` =
-structure.
-
-Please don=E2=80=99t mention the words =E2=80=9CLinux kernel=E2=80=9D =
-here either.
-
-> +///
-> +/// This structure is a safe, opaque wrapper around the raw C =
-[`io_uring_sqe`](srctree/include/uapi/linux/io_uring.h)
-
-This line needs to be wrapped.
-
-> +/// binding from the Linux kernel. It represents a Submission Queue =
-Entry
-
-Can you link somewhere here? Perhaps there=E2=80=99s docs for =
-=E2=80=9CSubmission Queue
-Entry=E2=80=9D.
-
-> +/// used in io_uring operations within the kernel.
-> +///
-> +/// # Type Safety
-> +///
-> +/// The `#[repr(transparent)]` attribute ensures that this wrapper =
-has
-> +/// the same memory layout as the underlying `io_uring_sqe` =
-structure,
-> +/// allowing it to be safely transmuted between the two =
-representations.
-
-This is an invariant, please move it there.
-
-> +///
-> +/// # Fields
-> +///
-> +/// * `inner` - An opaque wrapper containing the actual =
-`io_uring_sqe` data.
-> +///             The `Opaque` type prevents direct access to the =
-internal
-> +///             structure fields, ensuring memory safety and =
-encapsulation.
-
-Inline docs please.
-
-> +///
-> +/// # Usage
-
-I don=E2=80=99t think we specifically need to mention =E2=80=9C# =
-Usage=E2=80=9D.
-
-> +///
-> +/// This type represents a submission queue entry that describes an =
-I/O
-
-You can start with =E2=80=9CRepresents a=E2=80=A6=E2=80=9D. No need to =
-say =E2=80=9Cthis type=E2=80=9D here.
-
-> +/// operation to be executed by the io_uring subsystem. It contains
-> +/// information such as the operation type, file descriptor, buffer
-> +/// pointers, and other operation-specific data.
-> +///
-> +/// Users can obtain this type from [`IoUringCmd::sqe()`] method, =
-which
-> +/// extracts the submission queue entry associated with a command.
-> +///
-> +/// This type should not be constructed or manipulated directly by
-> +/// kernel module developers.
-
-By drivers.
-
-> +///
-> +/// # INVARIANT
-
-/// # Invariants
-
-> +/// - `self.inner` always points to a valid, live =
-`bindings::io_uring_sqe`.
-> +#[repr(transparent)]
-> +pub struct IoUringSqe {
-> +    inner: Opaque<bindings::io_uring_sqe>,
-> +}
-> +
-> +impl IoUringSqe {
-> +    /// Reads and interprets the `cmd` field of an =
-`bindings::io_uring_sqe` as a value of type `T`.
-> +    ///
-> +    /// # Safety & Invariants
-
-Safety section for a safe function.
-
-> +    /// - Construction of `T` is delegated to `FromBytes`, which =
-guarantees that `T` has no
-> +    ///   invalid bit patterns and can be safely reconstructed from =
-raw bytes.
-> +    /// - **Limitation:** This implementation does not support =
-`IORING_SETUP_SQE128` (larger SQE entries).
-
-Please no emphasis.
-
-
-> +    ///   Only the standard `io_uring_sqe` layout is handled here.
-> +    ///
-> +    /// # Errors
-
-Blank here.
-
-> +    /// * Returns `EINVAL` if the `self` does not hold a =
-`opcode::URING_CMD`.
-> +    /// * Returns `EFAULT` if the command buffer is smaller than the =
-requested type `T`.
-> +    ///
-> +    /// # Returns
-
-I don=E2=80=99t think we need a specific section for this. Just write =
-this in
-normal prose please.
-
-
-> +    /// * On success, returns a `T` deserialized from the `cmd`.
-> +    /// * On failure, returns an appropriate error as described =
-above.
-> +    pub fn cmd_data<T: FromBytes>(&self) -> Result<T> {
-> +        // SAFETY: `self.inner` guaranteed by the type invariant to =
-point
-> +        // to a live `io_uring_sqe`, so dereferencing is safe.
-> +        let sqe =3D unsafe { &*self.inner.get() };
-> +
-> +        if u32::from(sqe.opcode) !=3D opcode::URING_CMD {
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        // SAFETY: Accessing the `sqe.cmd` union field is safe =
-because we've
-> +        // verified that `sqe.opcode =3D=3D IORING_OP_URING_CMD`, =
-which guarantees
-> +        // that this union variant is initialized and valid.
-> +        let cmd =3D unsafe { sqe.__bindgen_anon_6.cmd.as_ref() };
-> +        let cmd_len =3D =
-size_of_val(&sqe.__bindgen_anon_6.bindgen_union_field);
-> +
-> +        if cmd_len < size_of::<T>() {
-> +            return Err(EFAULT);
-
-EINVAL
-
-> +        }
-> +
-> +        let cmd_ptr =3D cmd.as_ptr() as *mut T;
-
-cast()
-
-> +
-> +        // SAFETY: `cmd_ptr` is valid from `self.inner` which is =
-guaranteed by
-> +        // type variant. And also it points to initialized `T` from =
-userspace.
-
-=E2=80=9CInvariant=E2=80=9D.
-
-=E2=80=9C[=E2=80=A6] an initialized T=E2=80=9D.
-
-
-> +        let ret =3D unsafe { core::ptr::read_unaligned(cmd_ptr) };
-> +
-> +        Ok(ret)
-> +    }
-> +
-> +    /// Constructs a new `IoUringSqe` from a raw `io_uring_sqe`.
-
-[`IoUringSqe`].
-
-Please build the docs and make sure all your docs look nice.
-
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must guarantee that:
-> +    /// - `ptr` is non-null, properly aligned, and points to a valid =
-initialized
-> +    ///   `bindings::io_uring_sqe`.
-> +    /// - The pointed-to memory remains valid (not freed or =
-repurposed) for the
-> +    ///   entire lifetime `'a` of the returned reference.
-> +    /// - **Aliasing rules (for `&T`):** while the returned `&'a =
-IoUringSqe` is
-> +    ///   alive, there must be **no mutable access** to the same =
-object through any
-> +    ///   path (no `&mut`, no raw-pointer writes, no =
-FFI/IRQ/other-CPU writers).
-> +    ///   Multiple `&` is fine **only if all of them are read-only** =
-for the entire
-> +    ///   overlapping lifetime.
-> +    /// - This relies on `IoUringSqe` being `repr(transparent)` over
-> +    ///   `bindings::io_uring_sqe`, so the cast preserves layout.
-
-Please rewrite this entire section given the feedback I gave higher up =
-in this
-patch.
-
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(ptr: *const bindings::io_uring_sqe) -> =
-&'a IoUringSqe {
-
-Private or pub(crate) at best.
-
-> +        // SAFETY: The caller guarantees that the pointer is not =
-dangling and stays valid for the
-> +        // duration of 'a. The cast is okay because `IoUringSqe` is =
-`repr(transparent)` and has the
-> +        // same memory layout as `bindings::io_uring_sqe`.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index ed53169e795c..d38cf7137401 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -91,6 +91,7 @@
-> pub mod fs;
-> pub mod init;
-> pub mod io;
-> +pub mod io_uring;
-> pub mod ioctl;
-> pub mod jump_label;
-> #[cfg(CONFIG_KUNIT)]
-> --=20
-> 2.43.0
->=20
-
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Johannes Weiner <hannes@cmpxchg.org>,
+ Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
+ linux-mm@kvack.org
+References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
+ <20250823130522.867263-1-vitaly.wool@konsulko.se>
+ <DCCCRYEUVJWZ.2AUDA0DXK0XSF@kernel.org>
+Content-Language: en-US
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <DCCCRYEUVJWZ.2AUDA0DXK0XSF@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+
+
+On 8/26/25 14:20, Danilo Krummrich wrote:
+> On Sat Aug 23, 2025 at 3:05 PM CEST, Vitaly Wool wrote:
+>> +/// Zpool API.
+>> +///
+>> +/// The [`ZpoolDriver`] trait serves as an interface for Zpool drivers implemented in Rust.
+>> +/// Such drivers implement memory storage pools in accordance with the zpool API.
+>> +///
+>> +/// # Example
+>> +///
+>> +/// A zpool driver implementation which uses KVec of 2**n sizes, n = 6, 7, ..., PAGE_SHIFT.
+>> +/// Every zpool object is packed into a KVec that is sufficiently large, and n (the
+>> +/// denominator) is saved in the least significant bits of the handle, which is guaranteed
+>> +/// to be at least 2**6 aligned by kmalloc.
+>> +///
+>> +/// ```
+>> +/// use core::ptr::{NonNull, copy_nonoverlapping};
+>> +/// use core::sync::atomic::{AtomicU64, Ordering};
+>> +/// use kernel::alloc::{Flags, KBox, KVec, NumaNode};
+>> +/// use kernel::page::PAGE_SHIFT;
+>> +/// use kernel::prelude::EINVAL;
+>> +/// use kernel::zpool::*;
+>> +///
+>> +/// struct MyZpool {
+>> +///     name: &'static CStr,
+>> +///     bytes_used: AtomicU64,
+>> +/// }
+>> +///
+>> +/// struct MyZpoolDriver;
+>> +///
+>> +/// impl ZpoolDriver for MyZpoolDriver {
+>> +///     type Pool = KBox<MyZpool>;
+>> +///
+>> +///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpool>> {
+>> +///         let my_pool = MyZpool { name, bytes_used: AtomicU64::new(0) };
+>> +///         let pool = KBox::new(my_pool, gfp)?;
+>> +///
+>> +///         Ok(pool)
+>> +///     }
+>> +///
+>> +///     fn destroy(p: KBox<MyZpool>) {
+>> +///         drop(p);
+>> +///     }
+>> +///
+>> +///     fn malloc(pool: &mut MyZpool, size: usize, gfp: Flags, _nid: NumaNode) -> Result<usize> {
+>> +///         let mut pow: usize = 0;
+>> +///         for n in 6..=PAGE_SHIFT {
+>> +///             if size <= 1 << n {
+>> +///                 pow = n;
+>> +///                 break;
+>> +///             }
+>> +///         }
+> 
+> Why not just use next_power_of_two()? I think the same logic could also be
+> achieved with
+> 
+> 	size.next_power_of_two().trailing_zeros().max(6).min(PAGE_SHIFT)
+
+It indeed can, thanks :)
+
+>> +///         match pow {
+>> +///             0 => Err(EINVAL),
+>> +///             _ => {
+>> +///                 let vec = KVec::<u64>::with_capacity(1 << (pow - 3), gfp)?;
+> 
+> Why use u64 and 1 << (pow - 3), rather than simply u8 and 1 << pow?
+> 
+> (Btw. you could also just use VBox<u8; PAGE_SIZE>::new_uninit() for all
+> allocations to keep the example simple.)
+
+Right, that fixation on u64 doesn't help at all here.
+
+>> +///                 let (ptr, _len, _cap) = vec.into_raw_parts();
+>> +///                 pool.bytes_used.fetch_add(1 << pow, Ordering::Relaxed);
+>> +///                 Ok(ptr as usize | (pow - 6))
+>> +///             }
+>> +///         }
+>> +///     }
+>> +///
+>> +///     unsafe fn free(pool: &MyZpool, handle: usize) {
+>> +///         let n = (handle & 0x3F) + 3;
+>> +///         let uptr = handle & !0x3F;
+>> +///
+>> +///         // SAFETY:
+>> +///         // - uptr comes from handle which points to the KVec allocation from `alloc`.
+> 
+> That's not true, you modified the pointer you got from KVec. Please explain why
+> it is always safe to use lower 6 bits for something else.
+> 
+> What does "`alloc`" refer to?
+
+It refers to the alloc function we implement in this toy backend for 
+ZpoolDriver trait.
+
+> NIT: `uptr`, `KVec`
+> 
+>> +///         // - size == capacity and is coming from the first 6 bits of handle.
+>> +///         let vec = unsafe { KVec::<u64>::from_raw_parts(uptr as *mut u64, 1 << n, 1 << n) };
+> 
+> Why do you set the length (not the capacity) of the Vector to 1 << n? I think
+> technically it doesn't matter, but you should explain that in the safety
+> comment.
+
+Would the following work: "we know the capacity of this vector and it is 
+1 << n, we set the length to the same value to be deterministic, but the 
+actual length of vec doesn't matter because we're dropping it right here 
+anyway"?
+
+>> +///         drop(vec);
+>> +///         pool.bytes_used.fetch_sub(1 << (n + 3), Ordering::Relaxed);
+>> +///     }
+>> +///
+>> +///     unsafe fn read_begin(_pool: &MyZpool, handle: usize) -> NonNull<u8> {
+>> +///         let uptr = handle & !0x3F;
+>> +///         // SAFETY: uptr points to a memory area allocated by KVec
+> 
+> Please use markdown and end sentences with a period. (Applies to the entire
+> file.)
+> 
+>> +///         unsafe { NonNull::new_unchecked(uptr as *mut u8) }
+>> +///     }
+>> +///
+>> +///     unsafe fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem: NonNull<u8>) {}
+>> +///
+>> +///     unsafe fn write(_p: &MyZpool, handle: usize, handle_mem: NonNull<u8>, mem_len: usize) {
+>> +///         let uptr = handle & !0x3F;
+>> +///         // SAFETY: handle_mem is a valid non-null pointer provided by zpool, uptr points to
+>> +///         // a KVec allocated in `malloc` and is therefore also valid.
+>> +///         unsafe {
+>> +///             copy_nonoverlapping(handle_mem.as_ptr().cast(), uptr as *mut c_void, mem_len)
+>> +///         };
+>> +///     }
+>> +///
+>> +///     fn total_pages(pool: &MyZpool) -> u64 {
+>> +///         pool.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
+> 
+> I'm not sure what the semantic of this function is; the documentation says
+> "Get the number of pages used by the `pool`".
+> 
+> However, given that you give out allocations from a kmalloc() bucket in
+> malloc(), this pool might be backed by more pages than what you calculate here.
+
+Well, maybe I need to add an explicit comment about it here, but the 
+idea is that with the SLUB allocator, you have kmalloc-64, kmalloc-128, 
+kmalloc-256 etc. caches which will be used to manage requests for up to 
+64, 128, 256, ... bytes respectively, and in that case the calculations 
+are correct. FWIW I smoke tested this allocator and the actual numbers 
+seem to be consistent with these calculations.
+
+> So, what is done here is calculating the number of pages you could fill with
+> the memory that is kept around, but not the number of backing pages you consume
+> memory from.
+> 
+> Using VBox<u8; PAGE_SIZE>::new_uninit() for all allocations might simplify this.
+> 
+>> +///     }
+>> +/// }
+>> +/// ```
+>> +///
+>> +pub trait ZpoolDriver {
+>> +    /// Opaque Rust representation of `struct zpool`.
+>> +    type Pool: ForeignOwnable;
+>> +
+>> +    /// Create a pool.
+>> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
+>> +
+>> +    /// Destroy the pool.
+>> +    fn destroy(pool: Self::Pool);
+>> +
+>> +    /// Allocate an object of size `size` bytes from `pool`, with the allocation flags `gfp` and
+> 
+> "of `size` bytes"
+> 
+>> +    /// preferred NUMA node `nid`. If the allocation is successful, an opaque handle is returned.
+>> +    fn malloc(
+>> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
+>> +        size: usize,
+>> +        gfp: Flags,
+>> +        nid: NumaNode,
+>> +    ) -> Result<usize>;
+>> +
+>> +    /// Free a previously allocated from the `pool` object, represented by `handle`.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `handle` must be a valid handle previously returned by `malloc`.
+>> +    /// - `handle` must not be used any more after the call to `free`.
+>> +    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: usize);
+>> +
+>> +    /// Make all the necessary preparations for the caller to be able to read from the object
+>> +    /// represented by `handle` and return a valid pointer to the `handle` memory to be read.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `handle` must be a valid handle previously returned by `malloc`.
+>> +    /// - `read_end` with the same `handle` must be called for each `read_begin`.
+> 
+> What can potentially happen if we don't? I.e. how is this different from
+> malloc()?
+
+Here the idea is that if read_begin() has some sort of extra mapping 
+involved (like, doing kmap_atomic() on some weird memory address) for 
+the caller to be able to read directly from the returned pointer, 
+read_end() must clean that mapping up.
+
+>> +    unsafe fn read_begin(
+>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>> +        handle: usize,
+>> +    ) -> NonNull<u8>;
+>> +
+>> +    /// Finish reading from a previously allocated `handle`. `handle_mem` must be the pointer
+>> +    /// previously returned by `read_begin`.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `handle` must be a valid handle previously returned by `malloc`.
+>> +    /// - `handle_mem` must be the pointer previously returned by `read_begin`.
+>> +    unsafe fn read_end(
+>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>> +        handle: usize,
+>> +        handle_mem: NonNull<u8>,
+>> +    );
+>> +
+>> +    /// Write to the object represented by a previously allocated `handle`. `handle_mem` points
+>> +    /// to the memory to copy data from, and `mem_len` defines the length of the data block to
+>> +    /// be copied.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `handle` must be a valid handle previously returned by `malloc`.
+>> +    /// - `handle_mem` must be a valid pointer to an allocated memory area.
+> 
+> "must be a valid pointer into the allocated memory aread represented by
+> `handle`"
+> 
+>> +    /// - `handle_mem` + `mem_len` must not point outside the allocated memory area.
+>> +    unsafe fn write(
+>> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+>> +        handle: usize,
+>> +        handle_mem: NonNull<u8>,
+>> +        mem_len: usize,
+>> +    );
+>> +
+>> +    /// Get the number of pages used by the `pool`.
+>> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -> u64;
+>> +}
+>> +
+>> +/// An "adapter" for the registration of zpool drivers.
+>> +pub struct Adapter<T: ZpoolDriver>(T);
+>> +
+>> +impl<T: ZpoolDriver> Adapter<T> {
+>> +    extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void {
+>> +        // SAFETY: the memory pointed to by name is guaranteed by zpool to be a valid string
+> 
+> What about the lifetime of the string? In the abstraction you assume 'static,
+> how is this guaranteed?
+
+Actually it isn't, thanks for finding this.
+
+>> +        let pool = unsafe { T::create(CStr::from_char_ptr(name), Flags::from_raw(gfp)) };
+>> +        match pool {
+>> +            Err(_) => null_mut(),
+>> +            Ok(p) => T::Pool::into_foreign(p),
+>> +        }
+>> +    }
+> 
+> Please add an empty line in between function definitions.
+> 
+>> +    extern "C" fn destroy_(pool: *mut c_void) {
+>> +        // SAFETY: The pointer originates from an `into_foreign` call.
+>> +        T::destroy(unsafe { T::Pool::from_foreign(pool) })
+>> +    }
+>> +    extern "C" fn malloc_(
+>> +        pool: *mut c_void,
+>> +        size: usize,
+>> +        gfp: u32,
+>> +        handle: *mut usize,
+>> +        nid: c_int,
+>> +    ) -> c_int {
+>> +        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
+>> +        // `from_foreign`, then that happens in `_destroy` which will not be called during this
+>> +        // method.
+>> +        let pool = unsafe { T::Pool::borrow_mut(pool) };
+> 
+> Wait, can't this happen concurrently to all the other functions that borrow the
+> pool? This would be undefined behavior, no?
+
+Theoretically, yes, but since pool is actually Box<T>, it's only the 
+inner T that is mutable.
+
+Anyway, the only reason for malloc() to require a mutable reference is 
+that the backend implementation *may* use RBTree::cursor_lower_bound() 
+which requires a mutable reference of the tree.
+
+Would it be okay if I
+* change the Zpool API so that malloc takes an immutable reference
+* extend the RBTree API with a cursor_lower_bound analog which doesn't 
+require a mutable tree?
+
+>> +        from_result(|| {
+>> +            let real_nid = match nid {
+>> +                bindings::NUMA_NO_NODE => NumaNode::NO_NODE,
+>> +                _ => NumaNode::new(nid)?,
+>> +            };
+>> +            let h = T::malloc(pool, size, Flags::from_raw(gfp), real_nid)?;
+>> +            // SAFETY: handle is guaranteed to be a valid pointer by zpool.
+>> +            unsafe { *handle = h };
+>> +            Ok(0)
+>> +        })
+>> +    }
+>> +    extern "C" fn free_(pool: *mut c_void, handle: usize) {
+>> +        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
+>> +        // `from_foreign`, then that happens in `_destroy` which will not be called during this
+>> +        // method.
+>> +        let pool = unsafe { T::Pool::borrow(pool) };
+>> +
+>> +        // SAFETY: the caller (zswap) guarantees that `handle` is a valid handle previously
+> 
+> Why does this mention zwap here and in the other functions below?
+
+Should have been "(e. g. zswap)".
+
+>> +        // allocated by `malloc`.
+>> +        unsafe { T::free(pool, handle) }
+>> +    }
+> 
