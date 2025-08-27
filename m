@@ -1,116 +1,171 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5C1303CA8;
-	Wed, 27 Aug 2025 12:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756297543; cv=pass; b=Sb6TuX6SY8bQTEIXuIU7/zM5Bk/aHk6bDo/tMc9TnXg3mTh/Eb0jZY400xr6vw7c3Bu07BcepgeJBFD8aS+DeqhI5SrKo0O0d5Dw1eH2vKFNL3Vm65pUf64h0o3uVCn+wBO6GXfYgfk8xJ8bWXBnDYPCzbZfUi4s9N3xKHUsMLA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756297543; c=relaxed/simple;
-	bh=C4+vc/rI27ADAlxP0+hNA33yvt2az3LH6R0xRiNv94I=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=T6a/rTmTdLWuYUpjBoN8yjm7UYqyZF/S23iYvGnTEGKeMfIbr9KN4Okkw3O1mwCkMtAmufoKKA9tF+pBMFtoAj+EBpOHgNyaG5EjVW+IpFFu4+MQQ10MvtbQqnfzIgVdHzH7/zbnAuAUhAOLDLT8KCvDPMs1ZBn90/0Hqv1EOcg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=hiLQ73mD; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258292F49F7;
+	Wed, 27 Aug 2025 12:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756298183; cv=none; b=lTzeiJth/lE8YO08ssMCbODNfU/RCpqGIcF+I0VBYaUMBL3YwBjDzCXbqbPUeigcrqeDm0JrFjJ72sC3e4PHbVz+JwEIDIBvb3U5o5B/I6kLU4JQsVqj1e+zv7unQNW+QjuyEjKECoG7b32T59n0kfsah9VjzL+LR0F5RVD0UTQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756298183; c=relaxed/simple;
+	bh=gMawlR1wd4qJw3Yw0u+8/0DluANiBkZNo7MJA2X0QhI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=FZTWUso2YX2nrmgJGbZwsn8QxTwLWnNTFlhU6Dnp+mlkGcgiECNRh9f+FVa77sCMoPvG6Pl3T90vGElHU7evJazd7dFeLfSDN8albmCaSFiE6TsiW3QczKLqF08G1A97vkqIRO/MiuFf/VCuXItbRD6afAR3fkLD842QZpv14S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBu5KrX0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="hiLQ73mD"
-ARC-Seal: i=1; a=rsa-sha256; t=1756297524; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=aY6oSfgPN9mYAxX76fKjCykaf/85KK42O2x8A7NmUOwFZ5XrkeuDW4xPxg6J7hDHlxbhokpmc9Ju+vTbHwrhr/qb5lb15n7vsVJ0vTkJIo7l2eGAVAJ4l9C/X0cjbiQhvogCyGAY5YAm/20prm5oXik1SHctZPlyh5Sjn/72Kck=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756297524; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yTHr4GuvJ82yATxlRHsTWsU3wlSxy8CyHreP2Xc96ik=; 
-	b=G6er20C5i/y88T6Jm6yHNWSo0HXDUoQtOqla5+w0oGRCr4KpXYkbINwZgjmA4PtLpRbjDZbgOdYMiCd/6f29kPbyNEXhZLepLFqvOg1f9two/l/vMixtMpRD1x82MdOWL51ZpyWCPtW1dtNn/CZYQGWtB3mp2fpEQ6keEdYTHEc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756297524;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=yTHr4GuvJ82yATxlRHsTWsU3wlSxy8CyHreP2Xc96ik=;
-	b=hiLQ73mD5BMf4IdM7C8tyqsYK7iW2pP/SHcW+WL15lmyg77hiz05skCXgsHnBMZF
-	df+oUaenfvjutDu+bIIUjFV2mo+gHYXYPdNUELmBJNP3r3osXvPRQraMbrrNB0EY+HW
-	CwXOC8axaeIa/wxShU+GZ2/MwoE99t/CWz6mSy+k=
-Received: by mx.zohomail.com with SMTPS id 1756297521363698.2551424341978;
-	Wed, 27 Aug 2025 05:25:21 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hBu5KrX0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FACC4CEEB;
+	Wed, 27 Aug 2025 12:36:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756298182;
+	bh=gMawlR1wd4qJw3Yw0u+8/0DluANiBkZNo7MJA2X0QhI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=hBu5KrX02FvSF9qmFmCqLiUHIdPLM1OOEAduDXvSMZNA7+HrO+JWQc6/AwecHcHlZ
+	 d5x/h/uO0DUD/DazaFemT/Sih0jmA37a72uEbtgAjxAz+XdD2dQOTjsJmBXwYD2xns
+	 iI2IxoG1VpDThAuTtqYAfA7tMJQDeD7IAWuU2l/uEWS0s5SYBqL6/q+fJMqJcIohF2
+	 yr4g480FPavSunfjsa+vLe3FcrWwyJtOiXXkAFMt2tLRgk7wnRoWswMJ/BtOHS9rft
+	 xrl5+KdN6t7PIhw/VKSCfqKitlTwbTC5TGcHNOfLpIiGQIRfBCWer+EvSsYhT1Iq00
+	 8TR2ORbxrpzbg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 01/18] rust: str: normalize imports in `str.rs`
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250822-rnull-up-v6-16-v6-1-ec65006e2f07@kernel.org>
-Date: Wed, 27 Aug 2025 09:25:04 -0300
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Jens Axboe <axboe@kernel.dk>,
- Breno Leitao <leitao@debian.org>,
- linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <D9BA84D8-51D8-4473-8FF0-9FBD4BF58F81@collabora.com>
-References: <20250822-rnull-up-v6-16-v6-0-ec65006e2f07@kernel.org>
- <20250822-rnull-up-v6-16-v6-1-ec65006e2f07@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 27 Aug 2025 14:36:16 +0200
+Message-Id: <DCD7QRZ3L781.PSUM0WWF5UDD@kernel.org>
+Subject: Re: [PATCH v1 2/2] rust: Add read_poll_timeout_atomic function
+Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <a.hindborg@kernel.org>,
+ <alex.gaynor@gmail.com>, <ojeda@kernel.org>, <aliceryhl@google.com>,
+ <anna-maria@linutronix.de>, <bjorn3_gh@protonmail.com>,
+ <boqun.feng@gmail.com>, <frederic@kernel.org>, <gary@garyguo.net>,
+ <jstultz@google.com>, <linux-kernel@vger.kernel.org>, <lossin@kernel.org>,
+ <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>, <sboyd@kernel.org>,
+ <tglx@linutronix.de>, <tmgross@umich.edu>, <acourbot@nvidia.com>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250821035710.3692455-1-fujita.tomonori@gmail.com>
+ <20250821035710.3692455-3-fujita.tomonori@gmail.com>
+ <DCCF63BESWQ9.9LC8MZK7NG1Y@kernel.org>
+ <20250827.091427.1081669324737480994.fujita.tomonori@gmail.com>
+ <DCD35NEEPLYB.2PBCLR8FWFGKD@kernel.org>
+ <DCD51BP7YXJV.3BLY6YJKGC58W@kernel.org>
+ <D8CE958C-508F-4A09-96BA-985B5A7C2BA7@collabora.com>
+ <DCD7DP6A72A8.2HAYR7K7Z14UO@kernel.org>
+ <3E41A50E-3D33-4B66-AEBB-91870298137D@collabora.com>
+In-Reply-To: <3E41A50E-3D33-4B66-AEBB-91870298137D@collabora.com>
 
+On Wed Aug 27, 2025 at 2:22 PM CEST, Daniel Almeida wrote:
+>
+>
+>> On 27 Aug 2025, at 09:19, Danilo Krummrich <dakr@kernel.org> wrote:
+>>=20
+>> On Wed Aug 27, 2025 at 2:14 PM CEST, Daniel Almeida wrote:
+>>> Hi Danilo,
+>>>=20
+>>> [=E2=80=A6}
+>>>=20
+>>>>=20
+>>>> Actually, let me put it in other words:
+>>>>=20
+>>>> let val =3D read_poll_timeout_atomic(
+>>>>    || {
+>>>>        // Fetch the offset to read from from the HW.
+>>>>        let offset =3D io.read32(0x1000);
+>>>>=20
+>>>>        // HW needs a break for some odd reason.
+>>>>        udelay(100);
+>
+> Why would we have a delay here? Can=E2=80=99t this be broken into two cal=
+ls to
+> read_poll_timeout_atomic()? That would be equivalent to what you wrote
+> IIUC.
 
+I'm sure this can somehow be written otherwise as well. But that's not the
+point, the point is that this looks like perfectly valid code from a users
+perspective.
 
-> On 22 Aug 2025, at 09:14, Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> 
-> Clean up imports in `str.rs`. This makes future code manipulation more
-> manageable.
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> rust/kernel/str.rs | 9 +++++----
-> 1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 6c892550c0ba..082790b7a621 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -2,12 +2,13 @@
-> 
-> //! String representations.
-> 
-> -use crate::alloc::{flags::*, AllocError, KVec};
-> -use crate::fmt::{self, Write};
-> +use crate::{
-> +    alloc::{flags::*, AllocError, KVec},
-> +    fmt::{self, Write},
-> +    prelude::*,
-> +};
-> use core::ops::{self, Deref, DerefMut, Index};
-> 
-> -use crate::prelude::*;
-> -
-> /// Byte string without UTF-8 validity guarantee.
-> #[repr(transparent)]
-> pub struct BStr([u8]);
-> 
-> -- 
-> 2.47.2
-> 
-> 
-> 
+>>>>=20
+>>>>        // Read the actual value.
+>>>>        io.try_read32(offset)
+>>>>    },
+>>>>    |val: &u32| *val =3D=3D HW_READY,
+>>>>    Delta::from_micros(0),      // No delay, keep spinning.
+>>>>    Delta::from_millis(10),     // Timeout after 10ms.
+>>>> )?;
+>>>>=20
+>>>> Seems like a fairly reasonable usage without knowing the implementatio=
+n details
+>>>> of read_poll_timeout_atomic(), right?
+>>>>=20
+>>>> Except that if the hardware does not become ready, this will spin for =
+16.67
+>>>> *minutes* -- in atomic context. Instead of the 10ms the user would exp=
+ect.
+>
+> This is where you lost me. Where does the 16.67 come from?
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Ah, I see -- let me explain:
+
+Internally read_poll_timeout_atomic() would convert the timeout (10ms) into=
+ ns
+(let's call it nanos). Then, it would decrement nanos in every iteration of=
+ the
+internal loop, based on the (wrong) assumption that every loop takes exactl=
+y
+1ns.
+
+However, since the user executes udelay(100), which is perfectly valid from=
+ the
+users perspective, in the Op closure, every loop iteration takes at least 1=
+00us
+instead.
+
+So, the actual timeout calculates as follows.
+
+	Timeout: 10ms =3D 10.000us =3D 10.000.000ns
+
+In every iteration this number is decremented by one, hence 10.000.000
+iterations.
+
+	100us * 10.000.000 iterations =3D 16.67 minutes
+
+So, the issue really is that we're not measuring time, but the number of
+iterations if delay_delta =3D=3D 0.
+
+As delay_delta grows the relative eror becomes smaller, yet this is far fro=
+m
+sane behavior.
+
+>>>>=20
+>>>> This would be way less error prone if we do not provide a timeout valu=
+e, but a
+>>>> retry count.
+>>>>=20
+>>>>> Instead, I think it makes much more sense to provide a retry count as=
+ function
+>>>>> argument, such that the user can specify "I want a dealy of 100us, tr=
+y it 100
+>>>>> times".
+>>>>>=20
+>>>>> This way it is transparent to the caller that the timeout may be sign=
+ificantly
+>>>>> more than 10ms depending on the user's implementation.
+>>>>>=20
+>>>>> As for doing this in C vs Rust: I don't think things have to align in=
+ every
+>>>>> implementation detail. If we can improve things on the Rust side from=
+ the
+>>>>> get-go, we should not stop ourselves from doing so, just because a si=
+milar C
+>>>>> implementation is hard to refactor, due to having a lot of users alre=
+ady.
+>>>=20
+>>> I must say I do not follow. Can you expand yet some more on this?
+>>=20
+>> Sure, but it would help if you could clarify which aspect you want me to=
+ expand
+>> on. :)
 
