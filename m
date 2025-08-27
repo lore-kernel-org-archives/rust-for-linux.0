@@ -1,342 +1,219 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020121.outbound.protection.outlook.com [52.101.195.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BE9279798;
-	Wed, 27 Aug 2025 19:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F301B2641E3;
+	Wed, 27 Aug 2025 19:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.121
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756323592; cv=pass; b=GpZAxpblnidsq5dOEBav/NcC+XXYn+zwqbPvXoS4d5voaay5vdGqrDMC79Hg6tyln+8C1qLfJGL6x65CiH0gtCzEBCHfJp84QLdVokdGPzawWKnEw/fisXHslpzH2WqQ7u0+alMyhHH7S0e1VtmtoZrGzaxNMA7crp17c/xAh2E=
+	t=1756324156; cv=fail; b=TlW9hQAIgtbNbqOAwDN07YdEG/bUM8Tqr1y9HTZc6TsohxHU5TAfq3TdYEpg8zkB1Nsd3sR6WgETJSJ8sGEF6wM8BPSqXTT3f5hg3zgH5TbE6YVavXxMa8yuu0XMS6JQnPIfGnMHQh7Dw05u2u0SdjR257UTBaqmT9TeSe+Nrk8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756323592; c=relaxed/simple;
-	bh=bhJGLOzcqCXeL1f+PbZNg5CJwwNVYLKvEfjnOQw8x/k=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Y4yYLPFSIoKI0hwM44yb/TsU3BDGGFShVzUd/hVq1Pe3H97qACnyYtaicpPz3OyOuuSvi5CzJsovC34FeUznKdFX6SZWqodiyaLeEY0nS1veXz3P1unZbD80CoxIaNfq/FWSGw4G4K1lKwyBZg44F4zw0Lgq7mBjhLyexSKfOJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=eP94gNjW; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1756324156; c=relaxed/simple;
+	bh=lOulybJf3l5U6hGYFEqUvoM+uxz3A/mFHvBgsAMxlXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GB+cRGjYl0WU5/9swlnf2uZIfCyB4tdeibJ4QcWu3Cz/TOJu52FCpEfymMsUxYmOOnW4rKNz9QeUVqWdgdO8Kcq+7Auf/2vnJCVb3buyVaHH5AqXmRUY2Rb+YNvOBQhkJy6mVkKjoYl5V8eYVmY4O5D3t1ZqOx75CXD4mZ5qbe4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ybAP3xO/; arc=fail smtp.client-ip=52.101.195.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="eP94gNjW"
-ARC-Seal: i=1; a=rsa-sha256; t=1756323554; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=BjVD3vQBXkxIog1obtJpk2QOGYeHCPsjVUJte3k4LAS02jN43Roe30qKzepkZ4RXwiI0xBQ1I/znxSGEOeCQQMqX1qSf/4Ic8kVOzhpya+ebjd8GMFjJXaP8VzamxgLNcoyua9fhed+CPrKVMv8tB25uE0J7nLZV8TqplA8oXPw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756323554; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=oVevfbBofNCl0bqpIo8jxzoWwPB9gpvBbBKAzwe387U=; 
-	b=MY/Lf+z/wq0h3uXZoGjYoor4FB7dT5ESlIgVTO/BMDf6GP5CGSHxMnOaJ2Y/goJ2/TfKZx1uuSV68N5pT8npxA2tnm1yQDdTNmPeSu7E0OwfuypM8s4oqwhkYjxTnMn3MwY4KGLcxFmYAcBuwde78P2HaaxPQ1ki+r6tQkqUl+4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756323554;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=oVevfbBofNCl0bqpIo8jxzoWwPB9gpvBbBKAzwe387U=;
-	b=eP94gNjWEqCTxRQXHUgUmhlX+3ghHUyLM6L+BPVzEehb11shXPJP70sW5QSKeFmu
-	seoEeCftFG2tJ0qPpo5T6l9VJsn4MexCJfEPNvyFIKlx6Irli6/bF7U/EMcEtO+2eBr
-	8pqlIEo4c3iNhBv4SPu8kcq52+oLZ1sr/S9lKVdI=
-Received: by mx.zohomail.com with SMTPS id 1756323544718753.0565349742627;
-	Wed, 27 Aug 2025 12:39:04 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ybAP3xO/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RV704T/x8JoyhLQ3Pdq1s6Euh7cc+CIHV7qFL3HZN2TNJkULjmycrW9t+D6KfIeGkq+QB8V6UqCxAVrh3Sa8ycgBHMM3P9MZqAPRp2EUmmO9oCusYlaNi7RjUTWfSg4jHVpOe4DEgM7Mae7RMwstl3gdVxWjLoteTwkUsAXTic6+GD8PHNH1ThSNKuv1ZAez3nuIGAGsvDw0p+FtTKa9USQgZRHcpF8pVqh7QHR5ZSjzTMzQr8ujUdkAs1QW/LxxqujvRdtgqRhbuIpRpIji3P5ZKfzZWQ9shONiabeeNUQGICBgHfXQxEm/TEgENi6rbSWtgUK3UlGIGUnAC66m6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PBRFDsp7tTQ3ldJRsPpzp7WtZ9hwtW050eQAY3G5hQk=;
+ b=Dr+0wIwR+ddRmhtL+gbKUmlWZW65bj3TnkfyPdm3llUn6pmrjJeWSzwOmLVJMXBg0Jq49lwweBBF5VTtfHSWNXiIH5Z+4VlQL6SBoBiv58ZXEuFmLQcrvUglsKDrKSDWZeDowCyhZ3peHmscPMrtj1OgrEDIGVdMta+QdK7vTnGyw4B1eszC6m4Lh1j4l3wFhlYqdcU21JvyHU464YRjmVXPagUKWwnmEdO5zU3n80JwyQvBWsrKUBPnoFKMU5Xdgu79SbfVerHzCMCSa/gokRZhAE4GoQuYUnAeMtgl6mYUaMp7VUkQiZwSaBrWSZigxVNZz0G2Bg8ULWd1QWdaLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PBRFDsp7tTQ3ldJRsPpzp7WtZ9hwtW050eQAY3G5hQk=;
+ b=ybAP3xO/fV7BRZl3pTjBnjcW7R/tBBXTZtKLkdxErfli4FqO9INoZvEXR4X15Poa2S1OnhxX/YwljPMcgECFEALnovbZjKw3l0jBwl+6vaLQ5sytDfgOBgrMC/VYqbw0f4Xykjcv1jJE2/6Hq+Q6UU0HMizeOI1qCd5u5kGM8GA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWLP265MB6035.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d1::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.15; Wed, 27 Aug
+ 2025 19:49:09 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.9052.019; Wed, 27 Aug 2025
+ 19:49:09 +0000
+Date: Wed, 27 Aug 2025 20:49:01 +0100
+From: Gary Guo <gary@garyguo.net>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Gary Guo" <gary@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Tamir Duberstein"
+ <tamird@gmail.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Lyude Paul" <lyude@redhat.com>, "Wedson Almeida
+ Filho" <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ <rust-for-linux@vger.kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 1/5] rust: implement `kernel::sync::Refcount`
+Message-ID: <20250827204901.75a47868.gary@garyguo.net>
+In-Reply-To: <DC0AOTWSN7X8.2ZCPAFGHB9XJ@kernel.org>
+References: <20250723233312.3304339-1-gary@kernel.org>
+	<20250723233312.3304339-2-gary@kernel.org>
+	<DC0AOTWSN7X8.2ZCPAFGHB9XJ@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO6P123CA0038.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:2fe::15) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v4 3/3] samples: rust: add Rust I2C sample driver
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250820152347.1815097-1-igor.korotin.linux@gmail.com>
-Date: Wed, 27 Aug 2025 16:38:46 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Hung <alex.hung@amd.com>,
- Tamir Duberstein <tamird@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-i2c@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C5AFA553-6EB1-453E-B396-DD19139E7228@collabora.com>
-References: <20250820151427.1812482-1-igor.korotin.linux@gmail.com>
- <20250820152347.1815097-1-igor.korotin.linux@gmail.com>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB6035:EE_
+X-MS-Office365-Filtering-Correlation-Id: e508de8a-003f-4cfb-508f-08dde5a2c9d8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|10070799003|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?wVJBxHsCet3g+LC9LvtFq5fnxWg5UGXYn7+SAIOPeKG+qeE/z4wN89pI41SA?=
+ =?us-ascii?Q?SO7nNY8nbWJWh5xH4HXLydbK07JvkRgv13Hh6/ds8QH/JyvJkYyhn/gg4mCY?=
+ =?us-ascii?Q?18WLrp4hOotVQW2xx2y/BAmrD+iEK9+RTvG1JU7SXPZ1QlmUmh5zlzkMAgMN?=
+ =?us-ascii?Q?cAAGVebKmYzJWw6HZ7Zr4gxDl8l8uKrQ1KuCGA2QIrypF+GRstDgjuwB14QV?=
+ =?us-ascii?Q?KNYJ+bzeTbrI/+WqrJJ7fxIqUqTXYb7NEXLyT1WPz0/Ws6N4Y6PSzHyGSfSe?=
+ =?us-ascii?Q?LgbwjzA2lpp1Zq0pIFYlQGpCBE5R8EjA/xRaqgLLexsnQvEbvyFUBrqS2gES?=
+ =?us-ascii?Q?hwW7KftE98OjaY7x4Hxr5TqLSR2C9tsDv88s93BzBNR1pYfXIJcJXh42exSZ?=
+ =?us-ascii?Q?UcUGXga8aybe7x/0Bz9Wqh8RZ/J7geVzwyB/8ClBuJZaX5P7p2GU02R0bg7A?=
+ =?us-ascii?Q?xtVPueTCH5QiiTuB1JzR2Mvza+RyGybdeHt45xNUqJy3oLtG9BJx6S1yBVlv?=
+ =?us-ascii?Q?gbp2UHIEV/evHNhOa5bnjPd6oapBEWhFUmhFx8ADZfqzs3LuK/96ZYQJUeYv?=
+ =?us-ascii?Q?WnOwFGYA+tMEqDZiIZX258skq89qan3IkDBKNYEd3PIciUzFOThJux6NvQw0?=
+ =?us-ascii?Q?jrjNOVOeiEvtHBKfWRp/kRUObndzJDChlLscLhpfFji7H33VmgG4K/4NYRmu?=
+ =?us-ascii?Q?Z/dj/L/lIcYIMs4GIkujWuzMlNhKESivCX+cgHNLZAC4r0NhG4mlz1qki51M?=
+ =?us-ascii?Q?jKFCKXAqmxTTVJcjmjYm0pW2DEKUfQY2Smzc8LRHGsoJI0RYU6J4lzR57Duv?=
+ =?us-ascii?Q?UvmWTrVhPfJZs3Q5hCr/UXnMP3vlyyvS6WH6ZS3FDF42p7/eNjqfAVbvctmt?=
+ =?us-ascii?Q?dHmsYaHjy8a1bMlC09U1RZEqOKyIQWn9OqV/rf2At28+Aqc7P6rrsZv7wleg?=
+ =?us-ascii?Q?FhPXcnZj6Y8sTh3PX4HtjblUCrfjvDYnG96oUydTJVMF1trpF2MNJ4MdNalu?=
+ =?us-ascii?Q?ZvBaN/OUp41/cu6XxVxVbNOCxEjEj8HMGevPQZjaCLYdy496eiC3J/Uzk3s0?=
+ =?us-ascii?Q?WWGg4nE0d+S76w8pR2D/VIytS5Tu5lVUNDwe6TAGpznhPhqC/fmNS2Wc7Vmq?=
+ =?us-ascii?Q?MITsSNyvyz82s1IcIDTsjISyBZXLr0X5aU368Xe219gzGDAbbPDI3VLJX7mW?=
+ =?us-ascii?Q?xPXGA18BMLRSat1o1ToNjY4Vk0/8tqgLQgmvCCTNIFmNvWMkeb6G6a6qFGwD?=
+ =?us-ascii?Q?QmjdYY1/FjvXB42ajVbitxbAfXSD4t4TYXOEeEDxTlU/YeJgQ63quWBNgeAs?=
+ =?us-ascii?Q?YHeFCJYqzAJzQZb0z1a2XbCXEW8OxfUajOB8v5iN48lfsAtz7rBks1lYlbGb?=
+ =?us-ascii?Q?gp9d6muBYBKdm5ditwB3RiLb1B9PSlW2j5dStH2wIlw5E02YVnMPgbUqacB9?=
+ =?us-ascii?Q?1LFQRA18kVU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(10070799003)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?I9IElDUDLpaxAC6JN6TyVTWO48Un7P0Ton8W1/zGNA9PwLB1b3BG107ys2lR?=
+ =?us-ascii?Q?esJjE/l6n8sGpyMofeR7MI7KM8XFqMBD1bFgtwphtZxTWwTpaz3VbUKSvQGg?=
+ =?us-ascii?Q?WWCQu8N6Y9+wGXnoPnHTCiGvfNlogleBaVuxKUp6U9L/XD1Okz5iVUxuZWqG?=
+ =?us-ascii?Q?+6ATa9rk2vWElQEaHNzLP0AoxhdpsUHVllJhE2V4Y8O3XiQyAXXXYgQSufEb?=
+ =?us-ascii?Q?GoXK6fU2EKhSyWaUme6d7HALORtjDrH+k1n+rmtIVb4+L10IQEMBUTmlBREh?=
+ =?us-ascii?Q?Q3O3XZ4tMN7IBTDcnZZgwSkF/Ejq75WCGsZ2jQAn/jldt9AZ/Ezc6lCkNbC+?=
+ =?us-ascii?Q?FGzejaf8kSyoPVQXb25G7PQg5XXJz7pLoe5D5GViV+A+gQtPuN79mBEbuZKI?=
+ =?us-ascii?Q?fVFvRkfRJS4M6Z4ktTyVd3C+sXlsAb/hfr1TzDSzKBH2v2AleoZ5n6cB1iNX?=
+ =?us-ascii?Q?+N0oAh5zAS626MqmFQ6SP9y+CRCHpKCnw65vRryu/Ww5m6sF+/48c4/fnPOz?=
+ =?us-ascii?Q?Ae6j915eDuC+wNfKvSjWCHJ3IjifassFo8vhT7cSCJAbgbh1EzZkoJhcURYH?=
+ =?us-ascii?Q?AIQKhB8j2vIdkCpWLF8biREacQIhJ6RWLKWE54isSRZqfWlUpYcv5MdbjWuh?=
+ =?us-ascii?Q?CNc/twS7VeCfeUFZUIEQhoFKZo5PPaaFRCLwrEDGZNIttXmci9qGkXJ8eUBT?=
+ =?us-ascii?Q?I8pxMmxBmn/+qL/s8f1+ydBGY/ShRttfaOhIx7cnmadGJkFykx6yCplbIOTP?=
+ =?us-ascii?Q?LJUlNJvBShN90m5QuCJ5ymUSWxHeFTjKXEAQrvMDF06SnF0Kj6FPzvbF7yhD?=
+ =?us-ascii?Q?rX6bz9Y2f9QS31+SNCihiY30oNNXpWp8zXh1FaP1Ocj/ePjvuD74buyuyCl7?=
+ =?us-ascii?Q?FbeL6ZOucaAJ3fsTLziwSx7OUvXP5bjhL1lVPZqtj4psvvwjEJz06ITlIL7U?=
+ =?us-ascii?Q?rA1w5yypFNVV9ns4AyGQ0zKQI3FdbLjAcajzwPZPBW58C/Yn/AvY3Ai7aLAC?=
+ =?us-ascii?Q?cUsbsXZzOsNtyLcIOYrDSQIRSQrlw8Yjln06SGqaywcwib71eBMfCPa3YI+R?=
+ =?us-ascii?Q?ERgSqXuItKAdIE05nI4RHba19LwiCCRb3CMrJhhiwSGQ3midm7oXQyR+QfP7?=
+ =?us-ascii?Q?MF87DHRut3LyhL1HvlQkTLAZsY9gRv+H0NHn6E2n8U9tx1Enw9YlWqOaxrnk?=
+ =?us-ascii?Q?XnWrNJzgVuRjPLN9CVpmvOmYifnZ7JBi8g3pe/4RQlM4E7mljJkdsax7AtYe?=
+ =?us-ascii?Q?mQtPZw7/BBwicnkaRooj5JGTz8i+TLfLkLRqY3K5MVxpnKKriI20cZWTie7M?=
+ =?us-ascii?Q?0o2SJ+NAhZjxPU1lEdnrtJry5eTDJ2MwycJUcDnfjt+Qc00ug2iizqCpxM4H?=
+ =?us-ascii?Q?c+SrMsiyrkxfLiOgxqZG86Kwh8uifYiHYfmBZkrHk/SzkpiXsKcfXcX4T7Yj?=
+ =?us-ascii?Q?kR3wdel1GeBF5fQUPRAOPrbcUL4ai+kFNSbdtSRjkbj6rqr0lRA2rK0NZxNJ?=
+ =?us-ascii?Q?8RVAENOU7a2Ge75oErtZz3lPSNIJ7K6QdYaVwXSQafbni4EZXZXN+DKwNB2d?=
+ =?us-ascii?Q?aI0Wy/RlPJfL80d0eIZd8veaHzeamYRgKRsNB1yqcF7Xko6JqM/feplCSVkP?=
+ =?us-ascii?Q?1g=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: e508de8a-003f-4cfb-508f-08dde5a2c9d8
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 19:49:09.1959
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8sMeMvKAMvcnHmUNL94B+vldjs6rTQhCGYP0gY9BlstZs3/sQZuaOZ7QqbAbFJTXHT4Sl0uMAdD89VPX0AWNmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6035
 
-Hi Igor,
+On Tue, 12 Aug 2025 10:10:08 +0200
+"Benno Lossin" <lossin@kernel.org> wrote:
 
-> On 20 Aug 2025, at 12:23, Igor Korotin <igor.korotin.linux@gmail.com> =
-wrote:
->=20
-> Add a new `rust_driver_i2c` sample, showing how to create a new
-> i2c client using `i2c::Registration` and bind a driver to it
-> via legacy I2C-ID table.
->=20
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+> On Thu Jul 24, 2025 at 1:32 AM CEST, Gary Guo wrote:
+> > From: Gary Guo <gary@garyguo.net>
+> >
+> > This is a wrapping layer of `include/linux/refcount.h`. Currently the
+> > kernel refcount has already been used in `Arc`, however it calls into
+> > FFI directly.
+> >
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> > Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> > Signed-off-by: Gary Guo <gary@garyguo.net>  
+> 
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> 
+> > ---
+> >  rust/helpers/refcount.c      | 10 ++++
+> >  rust/kernel/sync.rs          |  2 +
+> >  rust/kernel/sync/refcount.rs | 98 ++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 110 insertions(+)
+> >  create mode 100644 rust/kernel/sync/refcount.rs  
+> 
+> > +    #[inline]
+> > +    fn as_ptr(&self) -> *mut bindings::refcount_t {  
+> 
+> I think we should make this `pub(crate)` from the get-go.
+
+I think it's probably fine as is. I think this method won't be useful
+outside this module unless people add a `from_ptr` later. But I'm also
+fine changing this.
+
+Best,
+Gary
+
+> 
+> > +        self.0.get()
+> > +    }
+> > +  
+> 
+> > +    /// Decrement a refcount and test if it is 0.
+> > +    ///
+> > +    /// It will `WARN` on underflow and fail to decrement when saturated.
+> > +    ///
+> > +    /// Provides release memory ordering, such that prior loads and stores are done
+> > +    /// before, and provides an acquire ordering on success such that memory deallocation
+> > +    /// must come after.
+> > +    ///
+> > +    /// Returns true if the resulting refcount is 0, false otherwise.
+> > +    ///
+> > +    /// # Notes
+> > +    ///
+> > +    /// A common pattern of using `Refcount` is to free memory when the reference count reaches
+> > +    /// zero. This means that the reference to `Refcount` could become invalid after calling this
+> > +    /// function. This is fine as long as the reference to `Refcount` is no longer used when this
+> > +    /// function returns `false`. It is not necessary to use raw pointers in this scenario, see
+> > +    /// https://github.com/rust-lang/rust/issues/55005.  
+> 
+> Missing `<>` around link.
+> 
 > ---
-> MAINTAINERS                     |   1 +
-> samples/rust/Kconfig            |  11 +++
-> samples/rust/Makefile           |   1 +
-> samples/rust/rust_driver_i2c.rs | 128 ++++++++++++++++++++++++++++++++
-> 4 files changed, 141 insertions(+)
-> create mode 100644 samples/rust/rust_driver_i2c.rs
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c44c7ac317b1..2654a7ea0c80 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11523,6 +11523,7 @@ R: Daniel Almeida =
-<daniel.almeida@collabora.com>
-> L: rust-for-linux@vger.kernel.org
-> S: Maintained
-> F: rust/kernel/i2c.rs
-> +F: samples/rust/rust_driver_i2c.rs
->=20
-> I2C SUBSYSTEM HOST DRIVERS
-> M: Andi Shyti <andi.shyti@kernel.org>
-> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> index 7f7371a004ee..28dae070b365 100644
-> --- a/samples/rust/Kconfig
-> +++ b/samples/rust/Kconfig
-> @@ -62,6 +62,17 @@ config SAMPLE_RUST_DMA
->=20
->  If unsure, say N.
->=20
-> +config SAMPLE_RUST_DRIVER_I2C
-> + tristate "I2C Driver"
-> + depends on I2C=3Dy
-> + help
-> +  This option builds the Rust I2C driver sample.
-> +
-> +  To compile this as a module, choose M here:
-> +  the module will be called rust_driver_i2c.
-> +
-> +  If unsure, say N.
-> +
-> config SAMPLE_RUST_DRIVER_PCI
-> tristate "PCI Driver"
-> depends on PCI
-> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> index bd2faad63b4f..141d8f078248 100644
-> --- a/samples/rust/Makefile
-> +++ b/samples/rust/Makefile
-> @@ -5,6 +5,7 @@ obj-$(CONFIG_SAMPLE_RUST_MINIMAL) +=3D rust_minimal.o
-> obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE) +=3D rust_misc_device.o
-> obj-$(CONFIG_SAMPLE_RUST_PRINT) +=3D rust_print.o
-> obj-$(CONFIG_SAMPLE_RUST_DMA) +=3D rust_dma.o
-> +obj-$(CONFIG_SAMPLE_RUST_DRIVER_I2C) +=3D rust_driver_i2c.o
-> obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI) +=3D rust_driver_pci.o
-> obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM) +=3D rust_driver_platform.o
-> obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX) +=3D rust_driver_faux.o
-> diff --git a/samples/rust/rust_driver_i2c.rs =
-b/samples/rust/rust_driver_i2c.rs
-> new file mode 100644
-> index 000000000000..6dfc299d5aea
-> --- /dev/null
-> +++ b/samples/rust/rust_driver_i2c.rs
-> @@ -0,0 +1,128 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Rust I2C driver sample.
-> +//!
-> +//! This module shows how to:
-> +//!
-> +//! 1. Manually create an `i2c_client` at address =
-`SAMPLE_I2C_CLIENT_ADDR`
-> +//!    on the adapter with index `SAMPLE_I2C_ADAPTER_INDEX`.
-
-Blank here.
-
-> +//! 2. Register a matching Rust-based I2C driver for that client.
-> +//!
-> +//! # Requirements
-> +//!
-> +//! - The target system must expose an I2C adapter at index
-> +//!   `SAMPLE_I2C_ADAPTER_INDEX`.
-
-Blank here
-
-> +//! - To emulate an adapter for testing, you can load the
-> +//!   `i2c-stub` kernel module with an option `chip_addr`
-> +//!   For example for this sample driver to emulate an I2C device =
-with
-> +//!   an address 0x30 you can use:
-> +//!      `modprobe i2c-stub chip_addr=3D0x30`
-> +//!
-> +
-> +use kernel::{
-> +    acpi, c_str,
-> +    device::{Core, Normal},
-> +    i2c, of,
-> +    prelude::*,
-> +    types::ARef,
-> +};
-> +
-> +const SAMPLE_I2C_CLIENT_ADDR: u16 =3D 0x30;
-> +const SAMPLE_I2C_ADAPTER_INDEX: i32 =3D 0;
-> +const BOARD_INFO: i2c::I2cBoardInfo =3D
-> +    i2c::I2cBoardInfo::new(c_str!("rust_driver_i2c"), =
-SAMPLE_I2C_CLIENT_ADDR);
-> +
-> +struct SampleDriver {
-> +    pdev: ARef<i2c::I2cClient>,
-
-FYI: the pdev nomenclature is still here.
-
-> +}
-> +
-> +kernel::acpi_device_table! {
-> +    ACPI_TABLE,
-> +    MODULE_ACPI_TABLE,
-> +    <SampleDriver as i2c::Driver>::IdInfo,
-> +    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), 0)]
-> +}
-> +
-> +kernel::i2c_device_table! {
-> +    I2C_TABLE,
-> +    MODULE_I2C_TABLE,
-> +    <SampleDriver as i2c::Driver>::IdInfo,
-> +    [(i2c::DeviceId::new(c_str!("rust_driver_i2c")), 0)]
-> +}
-> +
-> +kernel::of_device_table! {
-> +    OF_TABLE,
-> +    MODULE_OF_TABLE,
-> +    <SampleDriver as i2c::Driver>::IdInfo,
-> +    [(of::DeviceId::new(c_str!("test,rust_driver_i2c")), 0)]
-> +}
-> +
-> +impl i2c::Driver for SampleDriver {
-> +    type IdInfo =3D u32;
-> +
-> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> =3D =
-Some(&ACPI_TABLE);
-> +    const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> =3D =
-Some(&I2C_TABLE);
-> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D =
-Some(&OF_TABLE);
-> +
-> +    fn probe(pdev: &i2c::I2cClient<Core>, info: =
-Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>> {
-> +        let dev =3D pdev.as_ref();
-> +
-> +        dev_dbg!(dev, "Probe Rust I2C driver sample.\n");
-> +
-> +        if let Some(info) =3D info {
-> +            dev_info!(dev, "Probed with info: '{}'.\n", info);
-> +        }
-> +
-> +        let drvdata =3D KBox::new(Self { pdev: pdev.into() }, =
-GFP_KERNEL)?;
-> +
-> +        Ok(drvdata.into())
-> +    }
-> +
-> +    fn shutdown(pdev: &i2c::I2cClient<Core>) {
-> +        dev_dbg!(pdev.as_ref(), "Shutdown Rust I2C driver =
-sample.\n");
-
-This should probably be dev_info!()
-
-I know that in general people want drivers to be quiet but:
-
-a) this a sample driver that is probably the only way to test the =
-abstractions
-for the time being, so we must know whether probe() and shudown() are =
-working
-by inspecting these traces.
-
-b) Unless something changed recently, there is no way to get dev_dbg() =
-to print
-in Rust for now, as there is no support for dynamic debug. Andrew was =
-working
-on it recently [0], but I don't think the patch was accepted yet.
-
-> +    }
-> +}
-> +
-> +impl Drop for SampleDriver {
-> +    fn drop(&mut self) {
-> +        dev_dbg!(self.pdev.as_ref(), "Remove Rust I2C driver =
-sample.\n");
-> +    }
-> +}
-> +
-> +// NOTE: The code below is expanded macro module_i2c_driver. It is =
-not used here
-> +//       because we need to manually create an I2C client in =
-`init()`. The macro
-> +//       hides `init()`, so to demo client creation on adapter =
-SAMPLE_I2C_ADAPTER_INDEX
-> +//       we expand it by hand.
-> +type Ops<T> =3D kernel::i2c::Adapter<T>;
-
-I am not sure I understand. How is a type alias related to =
-module_i2c_driver at
-all?
-
-Do all drivers need to introduce the alias above?
-
-> +
-> +#[pin_data]
-> +struct DriverModule {
-> +    #[pin]
-> +    _driver: kernel::driver::Registration<Ops<SampleDriver>>,
-> +    _reg: i2c::Registration,
-> +}
-
-I was expecting this to be ARef of something, most likely I2cClient?
-
-This is where my knowledge of i2c drivers start to fall short, but =
-others will
-probably chime in :)
-
-> +
-> +impl kernel::InPlaceModule for DriverModule {
-> +    fn init(
-> +        module: &'static kernel::ThisModule,
-> +    ) -> impl ::pin_init::PinInit<Self, kernel::error::Error> {
-> +        kernel::try_pin_init!(Self {
-> +            _reg <- {
-> +                let adapter =3D =
-i2c::I2cAdapter::<Normal>::get(SAMPLE_I2C_ADAPTER_INDEX)?;
-> +
-> +                i2c::Registration::new(adapter, &BOARD_INFO)
-> +            },
-> +            _driver <- kernel::driver::Registration::new(
-> +                 <Self as kernel::ModuleMetadata>::NAME, module
-> +            ),
-> +        })
-> +    }
-> +}
-> +
-> +kernel::prelude::module! {
-> +    type: DriverModule,
-> +    name: "rust_driver_i2c",
-> +    authors: ["Igor Korotin"],
-> +    description: "Rust I2C driver",
-> +    license: "GPL v2",
-> +}
-> --=20
-> 2.43.0
->=20
->=20
-
-[0]: =
-https://lore.kernel.org/rust-for-linux/20250611202952.1670168-1-andrewjbal=
-lance@gmail.com/
+> Cheers,
+> Benno
 
