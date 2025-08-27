@@ -1,132 +1,128 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085B03176E8
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 13:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C0735206D
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 13:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756301764; cv=none; b=WsGW4+lx1M6i8J+3wFvuSkuikdnW0tDij2VJtz6M7dYYtkzMQJxiMXJcada8P2w7lE/m9P2QbYEWoioHObB6/NgD6HvZaTMUDcBDfC3AJTM6W6Hs52+xElgp0LdBpFToo2rYVPBPXFuhYAq/401wcGr+XnhAyVTxDr9q5UYmjus=
+	t=1756301930; cv=none; b=ckZh3YexgR6fbIjQP8sHxMSQzp891xVMyIUM/aB+9J8FaiL4YEEM/lTR2bKqaIJiL2QdlzWvoTryG78A4qj+jAfDLC7ADDukC0kiwdveW41EJmPV9lR5OP8hnzCSGDOuRs8tSVtXOW/m7JKBCkqCXf+O3jBiFzy+E5jlzlwHupA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756301764; c=relaxed/simple;
-	bh=4kF4Capffi4pJAT/zuXl0ulNWRdXVyQ2+t47laUeFWo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AOQkncm9N4d9BJJxMUF3rV550YIngL7dehKNx8AT05My90/hX/t6JTF6gVc3ouQA2y3O6PGEck/ttCHjqLUkCYdQRiWkcSFqpheNo++CN++Bfm6GJo3NnORC1bP5qeIh9mCUWOPlcaFYg3XqoP70s3qxORNgpEMJXYdpTCOwZgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F18HWOZd; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1756301930; c=relaxed/simple;
+	bh=T4Kk9hg7k6nwC121hIRmflX4axzXFxAKRAccn6Kat2w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QMApNgPA2jbNl6icwxfogCIfV29PtjC3qOsqNb1+yTbvqLnu67SmibdXxOCmq5lSRcdB0MkKQW+dW99ZWZbtmZGqGz3vfgQIlOUo7fnQl5GI2sHcwOKs/iV4eoaraGyNxSF5PtON79MOnbfIEHCMBHncCf2bOXb0bFyVpF1o+n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BaN3rQo+; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F18HWOZd"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45a1b0c82eeso58739265e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 06:36:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BaN3rQo+"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3c75de76caaso1845710f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 06:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756301761; x=1756906561; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eGOmUMQiFrZLOh8vf9B0X5R9r/nRdm1RYB7hggPhOyQ=;
-        b=F18HWOZdH+5aoLwsePksmFGCL9i//vEzWvSyav6Ms6GnjHlJzAJIiIsd+0LZ5y8VnE
-         7CJNprlgcig+TFqBl6JTJSeZCwwvY+g6h/K3VdeXmfZMzksTQypcjt8V7/+m+G7HHCKD
-         A3u87t2HWnWqcZWi1obGF4E629sFDEzVeJht5+RAsDRHrmo4mhEZ7KTfE7JDXSDVRpHE
-         xjgQEagmdGW9kS8hA5F/HGWzcrixL+cNvVk2mZtqcVDjAItu0uBFQTV+OvR+GK8MSq+n
-         rrhFVvt4rVEzY3d6aMI5FoZAfbfOkVcH/pcZJeChTFSYMX1vk3WdLOW5Cclg8ezfZpsq
-         4Y2g==
+        d=google.com; s=20230601; t=1756301927; x=1756906727; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ReergRz91VYiD0psPGfUqTceP1iKvfFRvJIV10khnlI=;
+        b=BaN3rQo+awLbHi6djetfwJ+VnnWzLLysehipFjdW+ADBNcoe3pWWHCEHfvxCkU7Btg
+         8U5dRWaX2d0Dnry0agbQ0KnoUYYxeIzRupEOhCLe6kvCBulXDAwyw0d4eioHhQCXQpkk
+         6oKsdZb8Rxkqe51WVLGVygir6e6tHFAueAhls2ZobCvkK6745tXygGRrn9ujujxEuwnL
+         vbT+ksmR33hE9YnrBnQLhlLFwFqS/aULLnTmszPy/3lm/BqvaHbxlsnojQfV9sG+oW0F
+         7dMJD653m7CSZn5JCnDGY+a4fT9njBkjSAQuE46RXKBSX/BwklvK5Ty7EYLQp9/szd9J
+         ZUWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756301761; x=1756906561;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eGOmUMQiFrZLOh8vf9B0X5R9r/nRdm1RYB7hggPhOyQ=;
-        b=WXAnRoPGQuVZNuQGv3r730YJqkaCZ4SU/B0HC1064ZGGOGznoIdFyvvbrcNYV6NQuV
-         uOLURvNubR1QsS9C2OyYezn5Sb1fBG37niaOR1GIYWUq5gQ/fJ9sX+ICVD9SislUVqvt
-         07nybfWCym3Y7HSEzxioQCQgQEao4QxBIwtr5e/wH7hfYUbb7m0qv1TGmRbrADYo0bvF
-         N8Hz++pf8wtw9ODpAApebDNB5tIrgqAxbOBRk7kHjYAKrWedGNgMtbR/BIilqTugMuw4
-         kFVyjQSNad2M5mY8uwCX/gKb2s2hfrkf3JZPfI8I+M1oAVA4t6AEl53q5CRMWfyEfKKK
-         a3Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBB7UDq9mSm70TJ4Rsji00RSCDTP1ybAGBzLfXVXOuzOghftWnOwc4B9duvoPP5k/WJmsEJJd5j0sGv+oY4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAvY8W0SL1G+3LdxlXtBe5vXoaC+qBtTJjQAaIP3FNCLCZNIjg
-	LtpEG/oAXmf9IiluCL6Pzm7MJa2yAX8yScKBdjfTQaf7bBODl0OMwuGHHEtEHjEAupZmJ5UscfQ
-	0wtm/3TBg6h5Vr+fbJrsUMy2iRFkdlOrQ0m7jzFae
-X-Gm-Gg: ASbGncvN9NM/4JG4Klgt6lI+SZVICYGc1UMAN/w8CGhSCYizlq/Wb0y2N+5cHWbaqQp
-	H55HMDc+CRsVINsGrlof3tjfhUKMbLVI3i2zEmx5gmYJLQlxws1y17s1BZg2br0RzxCz6L6R8j5
-	8/SWJrHT3N+qFikqJ4dMsm98aC5+tDvt0ailHU2f6vKzcvfj7dxS3baHOLYf+Leus4L1jdUMtNy
-	UVIJeC1dFe/hC95cPQalMbYpMFrDeZEGzh/ihtbkQfODMg=
-X-Google-Smtp-Source: AGHT+IHjHJmGD5DH9knJOvdRvJjpphE0DRT+0QgA7e0zgvj/m6tmppysdXDHMexnnD+ApseovkD6UD97qJ9iYad+xmk=
-X-Received: by 2002:a5d:5f8d:0:b0:3c8:89e9:6ab3 with SMTP id
- ffacd0b85a97d-3c889e96d40mr10372677f8f.46.1756301761013; Wed, 27 Aug 2025
- 06:36:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756301927; x=1756906727;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ReergRz91VYiD0psPGfUqTceP1iKvfFRvJIV10khnlI=;
+        b=FU1zdJ0cKh7z4CK2j3xI6PtH70N3WTsmtTyDIIY9AX47Ho5p4LtGsZlp0DMgBicgU+
+         +0gLhvP+8vkC+s8kc1H1kI6dXZ8i9IaJr/JPz0z4jfNB9Y2Hv/GgLYETvEFcv59mvp1H
+         aCIBveVsX69w7znCNbyPl5QMnalXBYaaXmzVf9+lLCqqFG5hbEJorZUGuxBISVnL3y/S
+         D1eL25gIyJXENHDSZhmlnQiAojbwqrAL9NyVi3lCFzhsYm8ACBiAJlLVu+hiUFqwMDaP
+         IeKz2adoJwiimqcvwtEJEmm1JxPs2NQVCa4ZFx6dFTNnA6NgVbHTjigPX0SVx+miLMO5
+         ZJPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwBdKBgRGsULYuCVyJEt4G/XDBPgdQTB3jjYMmpRjBGefFdeP1E4lGvCcDniPKEBXzSD0UHqeAIcQpkr5IkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlEs7aD6Y9bi071Bhu5oQeHVqzlgfiIroJjyQGv7+XOe1ZzOuK
+	rbPut0A3xIxlW8VJ2swEi0WlrLGsCldOzv+EpryACp1BYjlEtTMqiGYIxwXtIweoYIVesBA2j+s
+	gIbMirgE+oUnBIEJ7ow==
+X-Google-Smtp-Source: AGHT+IGDR/KKmo+S77dpLzFH/5ksImWOImV2ATqsae8Vpzppb4G/We+eedfsA/IVYVa1fkU/sTJDsVbNv2iumkE=
+X-Received: from wmbdt7.prod.google.com ([2002:a05:600c:6307:b0:459:df20:248e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:420d:b0:3c8:e9d3:c380 with SMTP id ffacd0b85a97d-3c8e9d3d035mr9768151f8f.0.1756301926661;
+ Wed, 27 Aug 2025 06:38:46 -0700 (PDT)
+Date: Wed, 27 Aug 2025 13:38:36 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250822-gpuva-mutex-in-gem-v2-0-c41a10d1d3b9@google.com>
- <20250822-gpuva-mutex-in-gem-v2-3-c41a10d1d3b9@google.com> <DC8VTZ5OZY42.1OCS3QJHZGPAK@kernel.org>
-In-Reply-To: <DC8VTZ5OZY42.1OCS3QJHZGPAK@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFwKr2gC/33NSw6CMBCA4auQrh3TBy9deQ/jorRDaSKUtNBgC
+ He3sNLEuPwnM9+sJKC3GMg1W4nHaIN1Qwpxyojq5GAQrE5NOOUFrVkOZpyjhH6ecAE7gMEeZEl
+ r2QiRY8FIOhw9tnY50PsjdWfD5Pzr+BHZPv3LRQYUMG2opsVSV9XNOGeeeFauJ7sX+YfB+U+DJ 0PlTDKqmRbN5cvYtu0No2drIfkAAAA=
+X-Change-Id: 20250814-gpuva-mutex-in-gem-a608ab334e51
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1355; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=T4Kk9hg7k6nwC121hIRmflX4axzXFxAKRAccn6Kat2w=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBorwpfI6fZ1Q+VznBKbZhsynvbCV9QJCFz4ab1e
+ we4fTxdqyGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaK8KXwAKCRAEWL7uWMY5
+ RqI0D/9lXu1uJWu6+0Enpnp9JmQ1MzDX/FOFXYDJEa+jdrDhWIQj5H91zbkjIrhcpmO2eKoIgjR
+ OUxOX0st5kQXKD21DCKJXUWh0lyn7DT/6yiWRC1xjLro7xiUd2RXDWu6TlbIoVIkYAfXMhaNyOf
+ E3T3u3WbsW14M++h1pEl0IGOvPm7/24F4KwUlgEMUUbl6EdJLKQzf0vQenjwVSw8sTVuJ5SjupH
+ R5YnOoZWC+rUTDAiqdeQ4534INCopUh8Sg7BdugkVGuITub4UncURL1R60cIsjWckoYou9L7L2j
+ rTZw3BzldQ2crlaOEeiXmugYudWxsMez+JVEK/SUS1TFPP2sZuVjLLHSnkhU0g4KagwleTClrNY
+ pM0zeqkb6lZcPkOKAvehAMtZc+YFqNn8nDC/qzpoW5TP2Pd3XY9K/ub1B2gbgMMQHSmGhMbJTqs
+ p9L+swwuntKUVc9o7zn4ds+cSl1h7bqzxaAK9suEIaJDkHJOxvPErLK3+f20EjjRC79yJ//U18F
+ yYiLzydHoE1YSR4gWVmvxxC8P/fUv2U69VZ+5ckSxwDzvSj1T4mQILaNgXWzbEAOKBaLNOkIGVY
+ 6X7k5/lxwVBofFI7HEpsyVaydIR+UOhRLlILIR5rKrF8e0XKK30dEW8ZshYMW4rRUoswZr5q4Lm moY/XiZMetGkcoA==
+X-Mailer: b4 0.14.2
+Message-ID: <20250827-gpuva-mutex-in-gem-v3-0-bd89f5a82c0d@google.com>
+Subject: [PATCH v3 0/3] Add mutex to drm_gem_object.gpuva list
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 27 Aug 2025 15:35:48 +0200
-X-Gm-Features: Ac12FXxAkj8iFKvJ5DYueBHinszRbjebva-Cfx5kFVxyDxjx17skWDdJUMDf4aA
-Message-ID: <CAH5fLghHYguGp=0OkL11u27x_K7x+xhd1QhQZoub-dQ1QbZpfA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] gpuvm: remove gem.gpuva.lock_dep_map
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
 	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Boris Brezillon <boris.brezillon@collabora.com>, 
 	Daniel Almeida <daniel.almeida@collabora.com>, Steven Price <steven.price@arm.com>, 
 	Liviu Dudau <liviu.dudau@arm.com>, Rob Clark <robin.clark@oss.qualcomm.com>, 
-	Rob Herring <robh@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	Rob Herring <robh@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Aug 22, 2025 at 12:25=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->
-> On Fri Aug 22, 2025 at 11:28 AM CEST, Alice Ryhl wrote:
-> > diff --git a/include/drm/drm_gpuvm.h b/include/drm/drm_gpuvm.h
-> > index 4a22b9d848f7b3d5710ca554f5b01556abf95985..598ba376b9430cdd4ab7bac=
-dc15de031a887cf71 100644
-> > --- a/include/drm/drm_gpuvm.h
-> > +++ b/include/drm/drm_gpuvm.h
-> > @@ -196,10 +196,20 @@ enum drm_gpuvm_flags {
-> >        */
-> >       DRM_GPUVM_RESV_PROTECTED =3D BIT(0),
-> >
-> > +     /**
-> > +      * @DRM_GPUVM_IMMEDIATE_MODE: use the locking scheme that makes i=
-t safe
-> > +      * to modify the GPUVM during the fence signalling path
->
-> I think this isn't entirely true yet or at least can be ambiguous for now=
-,
-> because it doesn't prevent users from having DRM_GPUVM_RESV_PROTECTED set=
-, which
-> requires the DMA resv lock to destroy a struct drm_gpuvm_bo, which may ha=
-ppen
-> from drm_gpuva_unlink().
->
-> So, for now, until we have the deferred drop idea in place, it also
-> requires DRM_GPUVM_RESV_PROTECTED to not be set.
->
-> (Eventually, we of course want both to be represented as a single flag, s=
-uch
-> that it becomes an either or.)
+See the first patch for motivation.
 
-I'm going to introduce "designed for" in the wording to address this.
-I don't think we need to say that you are required to only pick one of
-DRM_GPUVM_RESV_PROTECTED or this flag, since you can use both if you
-manually postpone vm_bo cleanup. Let's just not elaborate on that
-here.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Documentation improvements in patch 1 and 3. 
+- No code changes.
+- Link to v2: https://lore.kernel.org/r/20250822-gpuva-mutex-in-gem-v2-0-c41a10d1d3b9@google.com
 
-> I also wouldn't say "makes it safe to", but rather "makes it possible to
-> safely". We have no control over what the users do with the mutex. :)
->
-> NIT: missing period
+Changes in v2:
+- Move the mutex_destroy() call to drm_gem_private_object_fini()
+- Add a third patch to get rid of the lockdep map.
+- Link to v1: https://lore.kernel.org/r/20250814-gpuva-mutex-in-gem-v1-0-e202cbfe6d77@google.com
 
-I didn't put a period for consistency. Nothing else has a period in
-the summary sentence at the top of the doc-comment.
+---
+Alice Ryhl (3):
+      drm_gem: add mutex to drm_gem_object.gpuva
+      panthor: use drm_gem_object.gpuva.lock instead of gpuva_list_lock
+      gpuvm: remove gem.gpuva.lock_dep_map
 
-Alice
+ drivers/gpu/drm/drm_gem.c             |  2 ++
+ drivers/gpu/drm/drm_gpuvm.c           | 30 ++++++++++-----------
+ drivers/gpu/drm/panthor/panthor_gem.c |  3 ---
+ drivers/gpu/drm/panthor/panthor_gem.h | 12 ---------
+ drivers/gpu/drm/panthor/panthor_mmu.c | 21 ++++++++-------
+ include/drm/drm_gem.h                 | 51 ++++++++++++++++++-----------------
+ include/drm/drm_gpuvm.h               | 30 ++++++++++++++++++---
+ 7 files changed, 80 insertions(+), 69 deletions(-)
+---
+base-commit: 3f13bcc886fc034113cb75cb32b8d9db1216b846
+change-id: 20250814-gpuva-mutex-in-gem-a608ab334e51
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
