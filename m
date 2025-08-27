@@ -1,169 +1,143 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B51302760;
-	Wed, 27 Aug 2025 13:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756299795; cv=pass; b=dZlM0VrWXZtz0hcy5SS10JprLqi3JaMZOTsPByenkSbamWOs77OLxrJjHo3HRjVwrEeRr/nlGgwvOz4psb4Q/egv646nr6wf9o/r/SdlT7WL+6SgBgV1jRImyzFRgF9D+tkWka9FDmzMyNTVPmWpovZ9r+/PvKqEDZ4rNZ4Q5xo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756299795; c=relaxed/simple;
-	bh=cE6hyLFmrH6jjJyToAUXyVeW+z60z7Zgr6CnYsE7u0E=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=J5EREN6YW7Aq8+xywVa5WWtLIJJPHat29SI1iarszomWGkSRmuzsS/hsNj/LbajIl2PdKaJ/CMXUDtSOF8g1uQxYZkLo/w/FY4GmduklemBmRFB/PLtMY9bn2640Dv2pdRLzMHLdR6yHfotZbhVN7ctp/t5MBcboTDMf0L+qvBk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CslwVnhF; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C185B2D0C7E
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 13:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756300038; cv=none; b=HJ8lKTGd9dfwNKkqMBhBnA51s1lwIeCzV50I8RoQjDLwEt0vFqcGxLqWl2CpTw4v7bpXDNejnM9qKY/S3g60OrUuuEXjy6UimLvOgk3Y1PwmfQkmCOz6WqSrLiWVtrNgsZJvG1yKGql+Edyb4izzgZtB1FkhAC8NX4tHOYP5dFQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756300038; c=relaxed/simple;
+	bh=r46sxghsdUJZJ6GLwvQoKgsx8dPdky40SaTysjkFops=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YYITGUOIoQH9bVWQKhWfXoi9srzHvg/ragFWKFppIWtzH/HJPXO6wnQJe2s+lXxoqwtyt/MWPfbv7AZu+G8zRnSUfsfxKWEtw+xyv99gGfzDYUf4AqG3nR1R1ExBrAbuA1yB61NVxQlMV4A3i6w/YmLIlnVJH0ciXulr7Lnin7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=Tvr0mgAA; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CslwVnhF"
-ARC-Seal: i=1; a=rsa-sha256; t=1756299775; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=BExQClGzndmlQKTCBnyz+1S0/ZEzYWm/AJJod51VKiUhg1X+nkC/oluNU36oYkHwSAy/vxuw40F6k+fDQ5BJHxn5qMJqOel1TCNDhdCL9xPpWYbi5aN8DqeIwjA/q0v5moheWOj98+KzYvJ2Mu+KrkJGf+NwQhLaO6aj3T/DCbQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756299775; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=bF7pQBFY7CqIgY8f35aNdCRUmkVlp59evzsupE6bLEM=; 
-	b=S48DMefZQ0TkOyLb/199DbWj8GB8vQ2raf75ZCoj6OulfgtfKtWFqLfLZ4Wm/pO3JFT3SONmV9VbvRsS/lnv8XkYiVSlBJvSC/5xnCOl7ts6DDCDxRboZYa/OhyYGWQFMW2742iLY/nwSODLiLTg3BuWBcvRRb9lQP0+OJKXl5w=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756299775;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=bF7pQBFY7CqIgY8f35aNdCRUmkVlp59evzsupE6bLEM=;
-	b=CslwVnhFWFsXgAlrEq2ctLnxCqzWKx6WJVr/6KzDS539x3UMYIOPjwMQHCKhtvuo
-	k6QsUY2WMcPot2T+HHwwrghXvp7dcgmxwLjVFD5GoUHhC8EvsJvKJ9+M3hwDJtDyZnX
-	9e0v57HXvXMU86x8s3k3orNpS2/4N3M+/akJPGLg=
-Received: by mx.zohomail.com with SMTPS id 1756299774531372.8098676556684;
-	Wed, 27 Aug 2025 06:02:54 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="Tvr0mgAA"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45a1abf5466so5938535e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 06:07:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1756300034; x=1756904834; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=dF5o810a7PTnN/8SbUBia77j9hgRZWPVI3vIEvBDyv8=;
+        b=Tvr0mgAAOsPnBkFSDunMF0Mv2nZW974WfrdBZjZpk7KsAARyzF5igmsZqaVcboL1pA
+         dpqvKZrZI7KSfdyVjSZir97vfyU8+Wi4LsgXQwBX9afwVlAj3Zl+9U94VoB6p3/eLv1t
+         /z3IUAt7049ce12gYG01Tyu4QtlY49TRi0LiAR6bWR4Ue+s6eG+Lk2p2QOms+fPvLU1x
+         VYr7fnWprmEKCfmk0pzkHwvbslN748dEP2Ucv5lua8HTkj4jQ78tPYPMn7IdiXWPFXzB
+         KW4cM/zrP1cRQ7yzQwVmGXQU0nPX2hwP2isXP/mxxmUiww+3YaFfZewDdoRRC5oFR62P
+         /cWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756300034; x=1756904834;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dF5o810a7PTnN/8SbUBia77j9hgRZWPVI3vIEvBDyv8=;
+        b=dwLkGSWvy9e4+0c4FWUcfPOSu/ALXtm8cmc9inzHvj+7OA3szh/AfZws9Q9VWzIMk2
+         iZBpJHVhFZqrriawPk5b8wCzyNlisllvS7aVUMtfPk26NVDoJPVBqK986vGqh8lUUKzB
+         MI9fmFuuxef7rjW5yvRHifU8S6GZ9rKvuxGMsQzeB1dN2+rGEMIVYdEdizPUuWRcbfNy
+         Gg+2UF9nXXxPW6GIVa5h8g/DNydfVaUoNdnhdZ1p2Kq/sqmroua4p4DhCuqXIUsjfGbh
+         vnYgZiVb41jPXcPCLIMkJdRxQfhmUbzbHPs5Et2V2aLb2iA8pU4YvQpKqqxkEPCYeWIh
+         wHrg==
+X-Gm-Message-State: AOJu0YwyIMIZXyde2LkyXp7o9cDz21jFIKFzDmjWl1N3XKIY7/cdJJkr
+	OwQiGSR/ZM+Mbgq41EG9guYmdbOXtDYw9HToTLOJ6v0v0vi7lh/0Hfx7vHKJnXMoX1Q=
+X-Gm-Gg: ASbGncsc32zy4Siqts78onJfuGEP1R/4LFfO7Fado+AjgfjV3LgJbO84PA0EEwXdaq2
+	LMywX5n6VUZdLXcTMzKUTSTr7vvtqAdogEptenmG/aQEBRh+jumL6/hvBfzUTw1+p3C0JOvVaA2
+	DEOl5GyjRW/totv9pz5orwDIPfnYpxWW7NhvpekA4kUgQRYOy/P07uIyD9hwc6Bx6n5ObHtkam5
+	IioBQwG9WRkHM6S+Z0/ARyn0CAR+LsSAw8vso2EOn7U/P74iQEqf+68z9cqCqlGQzA5xoL16lRC
+	YkmJ9S8tXMOd8ocAsgX1j/Ue2LCv2oljOV8Bto1MTRN2ya22ufSg3gQkAKKa0uxNFCYBn1MafED
+	DDr2MAnZ85Yj6aC4=
+X-Google-Smtp-Source: AGHT+IHP5mFK9hwcrvF5KKKcJ/uDrEKW0UmrkI7N5sUM5zs07mDFAfytcdN1ohOxsnSGj6LjjgrjMA==
+X-Received: by 2002:a05:600c:1ca6:b0:456:2139:456a with SMTP id 5b1f17b1804b1-45b697f4b48mr42946795e9.15.1756300033643;
+        Wed, 27 Aug 2025 06:07:13 -0700 (PDT)
+Received: from localhost ([2620:10d:c092:600::1:9e53])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c70e4ba1eesm21772390f8f.2.2025.08.27.06.07.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 06:07:12 -0700 (PDT)
+Date: Wed, 27 Aug 2025 14:07:05 +0100
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: rust-for-linux <rust-for-linux@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/2] rust: zpool: add abstraction for zpool drivers
+Message-ID: <20250827130705.GA7480@cmpxchg.org>
+References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
+ <20250826124454.GA1502@cmpxchg.org>
+ <CB3E7E9C-2192-4C60-B79A-932AD6CB005A@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 04/18] rust: str: introduce `NullTerminatedFormatter`
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250822-rnull-up-v6-16-v6-4-ec65006e2f07@kernel.org>
-Date: Wed, 27 Aug 2025 10:02:38 -0300
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Jens Axboe <axboe@kernel.dk>,
- Breno Leitao <leitao@debian.org>,
- linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2C9D54CC-F931-41C9-967C-14EA375F9F2A@collabora.com>
-References: <20250822-rnull-up-v6-16-v6-0-ec65006e2f07@kernel.org>
- <20250822-rnull-up-v6-16-v6-4-ec65006e2f07@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CB3E7E9C-2192-4C60-B79A-932AD6CB005A@konsulko.se>
 
+On Tue, Aug 26, 2025 at 04:56:46PM +0200, Vitaly Wool wrote:
+> 
+> 
+> > On Aug 26, 2025, at 2:44 PM, Johannes Weiner <hannes@cmpxchg.org> wrote:
+> > 
+> > On Sat, Aug 23, 2025 at 03:04:19PM +0200, Vitaly Wool wrote:
+> >> Zpool is a common frontend for memory storage pool implementations.
+> >> These pools are typically used to store compressed memory objects,
+> >> e. g. for Zswap, the lightweight compressed cache for swap pages.
+> >> 
+> >> This patch provides the interface to use Zpool in Rust kernel code,
+> >> thus enabling Rust implementations of Zpool allocators for Zswap.
+> > 
+> > The zpool indirection is on its way out.
+> > 
+> > When you submitted an alternate allocator backend recently, the
+> > resounding feedback from the zswap maintainers was that improvements
+> > should happen to zsmalloc incrementally. It is a lot of code and has a
+> > lot of features that go beyond allocation strategy. We do not want to
+> > fork it and fragment this space again with niche, incomplete backends.
+> > 
+> > It's frustrating that you not only ignored this, but then went ahead
+> > and made other people invest their time and effort into this as well.
+> > 
+> 
+> I don’t think we have a consensus on that.
+> 
+> And zblock is, after some additional improvements, just better than
+> zsmalloc in all meaningful aspects, let alone the simplicity. It is
+> fas easier to implement in Rust than zsmalloc, too. Besides, zram is
+> a good candidate to be rewritten in Rust as well and after that is
+> done, zblock will be even safer and faster. So while not being
+> “incomplete", it’s zsmalloc that is becoming a niche backend moving
+> forward, and I would argue that it could make more sense to
+> eventually obsolete *it* rather than the zpool API.
 
+That's your opinion, and I disagree with all of these claims. I would
+also be surprised if you found much alignment on this with the other
+folks who develop and use these features on a daily basis.
 
-> On 22 Aug 2025, at 09:14, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
->=20
-> Add `NullTerminatedFormatter`, a formatter that writes a null =
-terminated
-> string to an array or slice buffer. Because this type needs to manage =
-the
-> trailing null marker, the existing formatters cannot be used to =
-implement
-> this type.
->=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> rust/kernel/str.rs | 49 =
-+++++++++++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 49 insertions(+)
->=20
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 46cdc85dad63..d8326f7bc9c1 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -871,6 +871,55 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
->     }
-> }
->=20
-> +/// A mutable reference to a byte buffer where a string can be =
-written into.
-> +///
-> +/// The buffer will be automatically null terminated after the last =
-written character.
-> +///
-> +/// # Invariants
-> +///
-> +/// * The first byte of `buffer` is always zero.
-> +/// * The length of `buffer` is at least 1.
-> +pub(crate) struct NullTerminatedFormatter<'a> {
-> +    buffer: &'a mut [u8],
-> +}
-> +
-> +impl<'a> NullTerminatedFormatter<'a> {
-> +    /// Create a new [`Self`] instance.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn new(buffer: &'a mut [u8]) -> =
-Option<NullTerminatedFormatter<'a>> {
-> +        *(buffer.first_mut()?) =3D 0;
-> +
-> +        // INVARIANT:
-> +        //  - We wrote zero to the first byte above.
-> +        //  - If buffer was not at least length 1, =
-`buffer.first_mut()` would return None.
-> +        Some(Self { buffer })
-> +    }
-> +}
-> +
-> +impl Write for NullTerminatedFormatter<'_> {
-> +    fn write_str(&mut self, s: &str) -> fmt::Result {
-> +        let bytes =3D s.as_bytes();
-> +        let len =3D bytes.len();
-> +
-> +        // We want space for a zero. By type invariant, buffer length =
-is always at least 1, so no
-> +        // underflow.
-> +        if len > self.buffer.len() - 1 {
-> +            return Err(fmt::Error);
-> +        }
-> +
-> +        let buffer =3D core::mem::take(&mut self.buffer);
-> +        // We break the zero start invariant for a short while.
-> +        buffer[..len].copy_from_slice(bytes);
-> +        // INVARIANT: We checked above that buffer will have size at =
-least 1 after this assignment.
-> +        self.buffer =3D &mut buffer[len..];
-> +
-> +        // INVARIANT: We write zero to the first byte of the buffer.
-> +        self.buffer[0] =3D 0;
-> +
-> +        Ok(())
-> +    }
-> +}
-> +
-> /// An owned string that is guaranteed to have exactly one `NUL` byte, =
-which is at the end.
-> ///
-> /// Used for interoperability with kernel APIs that take C strings.
->=20
-> --=20
-> 2.47.2
->=20
->=20
->=20
+That being said, by all means, you can propose alternate
+allocators. But you don't need the zpool API for that. Just provide
+alternate implementations of the "zs_*" API and make it compile-time
+selectable.
 
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
+As it stands, it's hard to justify the almost 700 lines of code to
+support *runtime-switching* of zswap backends when there is only one
+backend in-tree (and even you suggest there should only be one, albeit
+a different one).
