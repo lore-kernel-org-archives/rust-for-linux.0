@@ -1,114 +1,141 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9942FE598
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 06:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D31312820
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 06:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756276492; cv=none; b=Gg5tOEk2+U62s7jv4svhyZp5bSL+001bKycPt4VROXJOz4ohw8kJOWMwt0yMycAbUP5HgEm6oIWyTqSFZ+SadA9YcAsacewCYOMF8S/rJ/90qWvM/aNfN8SVCGT4K32o5Q92wVJK+p9dEOJeqSITHjTTqZABvN5udX+9WwQmFWQ=
+	t=1756277881; cv=none; b=EQXORGRGptiiuMehgU7+7IZRSbicSiSUYVN/y9eWzl5Dp4pLgYK+rbFdc4onFjrr/uuzQ9Z4cbRbKrzTR4G1ZZDJweDHVmu+SmddI9EX03MzeD8VU57zKXh7hTFAjz7A0ZDHN2mwLFss/+ROQpMrmJAsr6KhS66fFLF+eiBsT3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756276492; c=relaxed/simple;
-	bh=pCyH8a8IPF53a4+xGnuijfrRt1r9Qpf/OOe8y/sPNKU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vAfQSdyG8HKZ4r3kU/XXF7i+WEzMXxAQgS9OnvFIlvP1pYj2+DxxEnJ4ddpyJ/GsCM9pxBfyvMBJnxrwWrU7bPiLBg8pyG5/4+u9ahZJyLVRRqzMSD6OVuifAk0R/bUvCAIfVukzdBmLC/GFwwelWqH1/peiCrUJR6F3UFdUemY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MYM86aQG; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1756277881; c=relaxed/simple;
+	bh=sXsa2oI+PlHDQ0E3S4V/J4UomuoV9FI2vgAus9rYLN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C/pdW7KltCv0+zLsPoWn0IhKbun30I6FWye0dRoM6xZ21x6rBKI768nM7bchNjEV1LeczOKv41KRFKxNdsAYRExcKNa+CF8e9uB0UX1g0ByZoKed0SDjeIPUkFbQ1/kjmuyPwZEPuMbC5VaOVbooLQx8vCS9jy7trdZcRhWN6EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IE9INoh0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MYM86aQG"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3c7aa4ce823so2359079f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Aug 2025 23:34:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756276488; x=1756881288; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pCyH8a8IPF53a4+xGnuijfrRt1r9Qpf/OOe8y/sPNKU=;
-        b=MYM86aQGmDiGJ1DSGwjfiaAG4hzrMe3wCquaVneCOVhvAVRZqvgHFil+F9z4jKOXjH
-         /Ada35TI9RtLSjgsKiDYFj+4CFkczGhMALb7o23Cr2xC2vjy1pRYiOUkp5A909DYrE6l
-         aDdozVWZdOJnmz+hpClXSWiGoxt8yP+LWUwIZIGqiwYgDIVKwL7Bfq0hxygsEx8JbEXx
-         El++JPwU4w5gWVxl2mzIjpoVjL/u6RVMn04PD3wJctAyIqqdEAxU/TgWUEH4uvP7IY5o
-         Ss3qdyRhjY+yEO57Ftm2nKOWzkJPFbJ5sAavV20iVtRB5gwOHK8IcLQTvUd6vVoYyrSb
-         Xrkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756276488; x=1756881288;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pCyH8a8IPF53a4+xGnuijfrRt1r9Qpf/OOe8y/sPNKU=;
-        b=anZu240hQ7rQkVERSQ4mhlwfJUuKIhfy0YHPn6/KxVuROgSb45s2nKViGNXzFjo24E
-         DZQnXcoz06UcsdadkOvhSXJFQBmd4kOOckogFJ8UZDfHgydpMQvhJv54jIV7wZfPGdkE
-         VQqNWQOtD1cSB+bH/ivrysHEX8IrVwx6OakhdZRJTwVN/IxncrZHUczYVBdYMJMCf4Nv
-         S/PEqQgX1xBBeLmjj9wnFb0TLr3cZI+F8rnYeIrbF6EdU5n/CQNlgUm/HOE3wJzjeVYD
-         A2JuswPMeC0mqZcuqnFgJBZxJEHhTNzEE+3ViAUBAxPOmo2UQ40ONmayi9NClbBeAAwN
-         xlRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVO6n4cnZ6K/zw0zrk2Tcm2oC5WhdBtkzUNJOnPYWnPzgzU5FarqVdH+24Uwx6LDvBZKu1pjovT89D0/6hsPQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YySHht0pX5i2d/+dFF+ILp5V1S+4MJlHgSyVPa+oXGxNaSEpUVx
-	pRuf/+NA2Jsnvcb+F7y1BeWv7ZO42QASEWsTa0jnv6ii2YBzgnb875/iIk2Au2qAj0DVOjWvfqo
-	eS9dl9f1jynfPmUwyEAJTVHA7uFjS/XcIMgVs/J87
-X-Gm-Gg: ASbGncvlnvkZh61IoRrsfFsBAcHbIoS+uVvXz1SmSOVYRpCPfmrGVsV4q9RNVqkWljI
-	72yxfDbFGHwO8PTJXR68+hjFYaiHkOT6MtWCjWnFiJJObrZTLLiFGbfSGCQdhoU4fNwOOKzfCtF
-	x+/KYNcBCZU6jWGOYCsZfoG/rS33TQ/IozeFK7Tbidzol5w7l++w3hJl2Yxq/RnvBtoUzH9v+6r
-	8OzyyNVjeDx3ZjZjinNI5wIG43TlXdFSYAw01JFS4vuqbZeuSDVO/qT06AoigxkXmJtW1w0/C4u
-	YQQwHq0PpI8=
-X-Google-Smtp-Source: AGHT+IHRMHJeg+OlS34CwVPeTSsJ6oKbe0SYtoe+2fYCZi20TFk6OnqX47DgEgm12EW1OVuqdS5DyjJt1m7YfsCFUbE=
-X-Received: by 2002:a05:6000:4021:b0:3c9:2a0:1a9d with SMTP id
- ffacd0b85a97d-3c902a01d54mr8204739f8f.33.1756276488229; Tue, 26 Aug 2025
- 23:34:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IE9INoh0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F645C4CEEB;
+	Wed, 27 Aug 2025 06:58:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756277881;
+	bh=sXsa2oI+PlHDQ0E3S4V/J4UomuoV9FI2vgAus9rYLN0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IE9INoh0Gk49HFNzEGbz3xB0zhwAvgcuslU3sWsUO8PI4xE1SlT+MoWepGTJ1rjT7
+	 dspA0kdDFWkTkvCIVp7D/NphCmD8QmrkeZtqMUN+mLrLDP0dUu2Emvz2uzjAw+wLzj
+	 NQDr0QVN1TEPa4ZwWK8mRwEYMhpko8jTz7ItPukkCAJjfVLvgG/nL/0+WOwgNjyvyH
+	 woYa1QsSOiSQhnTkjTr0yeamTGe39p962uQCgyg0DX/whytYWKXy57ccOreKfBR8pL
+	 S+g8PlQ7xk564/7qeUJRBMZqN1y2KY5DJHA3H15/oCOoWnfQ59cNAkzeaiA4a0CDu7
+	 Z+i33KAbEOdEA==
+Date: Wed, 27 Aug 2025 08:57:58 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [RFC PATCH 0/3] Initial plumbing for implementing DRM connector
+ APIs in Rust
+Message-ID: <20250827-cherubic-tapir-of-wind-5cf0c4@houat>
+References: <20250818050251.102399-2-sergeantsagara@protonmail.com>
+ <g5n4vx5hkreacrtjrbzsefnctvki6d7oh7qyjrb6wtqvzp7adl@rzmxiyblpnsz>
+ <87ect61txs.fsf@protonmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250813153548.1650533-1-bqe@google.com> <aJ2Y21Yjs3a0CnAo@google.com>
- <aJ4Y_DAZe__0EWEm@yury> <CAH5fLgid9fF2fb06No9zmeQfru_nQicaM_9bb+DWe3zsOwm_cA@mail.gmail.com>
- <aK5KJDSDKiOsQ4gN@yury>
-In-Reply-To: <aK5KJDSDKiOsQ4gN@yury>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 27 Aug 2025 08:34:34 +0200
-X-Gm-Features: Ac12FXyexUrBaVTscx3URjfoCL-mSxtGR999p3jbzclq_r2ZesgUeNBJDls89MY
-Message-ID: <CAH5fLgg0BXtbqR2Yw4xxsU4MWmiM0kz9CGCjm=HytAgQog4aoQ@mail.gmail.com>
-Subject: Re: [PATCH v14 0/5] rust: adds Bitmap API, ID pool and bindings
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="mqb3omvpumyphrna"
+Content-Disposition: inline
+In-Reply-To: <87ect61txs.fsf@protonmail.com>
+
+
+--mqb3omvpumyphrna
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC PATCH 0/3] Initial plumbing for implementing DRM connector
+ APIs in Rust
+MIME-Version: 1.0
 
-On Wed, Aug 27, 2025 at 1:58=E2=80=AFAM Yury Norov <yury.norov@gmail.com> w=
-rote:
->
-> On Tue, Aug 26, 2025 at 03:58:01PM +0200, Alice Ryhl wrote:
-> > On Thu, Aug 14, 2025 at 7:12=E2=80=AFPM Yury Norov <yury.norov@gmail.co=
-m> wrote:
-> > >
-> > > > Thanks a lot for doing this, Burak! I gave it a spin locally on
-> > > > v6.17-rc1, and it seems to work.
-> > >
-> > > Does this mean Tested-by?
+Hi Rahul,
+
+On Wed, Aug 20, 2025 at 04:46:52AM +0000, Rahul Rameshbabu wrote:
+> On Tue, 19 Aug, 2025 11:06:40 +0200 "Maxime Ripard" <mripard@kernel.org> =
+wrote:
+> > Hi Rahul,
 > >
-> > Just to confirm, is the plan that you will pick this up through your tr=
-ee?
->
-> Yes I will.
->
-> This series is very related to bitmaps, so I think my branch is the right
-> place to move it. Let's wait for a few more weeks. If no any objections,
-> I'll apply it.
+> > On Mon, Aug 18, 2025 at 05:04:15AM +0000, Rahul Rameshbabu wrote:
+> >> I am working on a drm_connector scoped backlight API in Rust. I have b=
+een
+> >> looking through Hans de Goede's previous efforts on this topic to help
+> >> guide my design. My hope is to enable backlight control over external
+> >> displays through DDC or USB Monitor Control Class while also supporting
+> >> internal panels. In parallel, I would like to improve the driver
+> >> probing/selection mechanism when there are different candidates for dr=
+iving
+> >> a backlight device. This initial RFC is mainly intended to sanity check
+> >> that the plumbing I have chosen for extending the DRM connector
+> >> functionality in Rust seems reasonable.
+> >
+> > It's a great goal, and I had that same discussion with Hans recently
+> > too, but I can't find the link between backling/DDC CI, and Rust. Can
+> > you elaborate?
+>=20
+> Hi Maxime,
+>=20
+> Sure, let me elaborate on this. You are right that plumbing DDC
+> CI/backlight support at the DRM connector level does not need to be
+> implemented in Rust.
+>=20
+> If we look at Hans's proposal, the suggested phase 2 was to add a
+> drm_connector helper function for plumbing a pointer to the backlight
+> device implementation. I had some model differences with regards to how
+> the API would look like, mostly stemming from concerns about providing
+> better runtime overriding of the acpi_video_get_backlight_type based
+> backlight selection. However, I am aligned with the direction of scoping
+> at the drm_connector level. I basically was interested in implementing
+> this helper functionality in Rust instead of C, which is where Rust came
+> into play.
+>=20
+> I was also interested in declaring and attaching a drm_property in Rust
+> for controlling properties such as backlight rather than updating the
+> drm_connector declaration in C as an experiment.
+>=20
+> Let me know if you feel like this work would be better off as a C
+> implementation. I can also send out a detailed architecture proposal to
+> the mailing list if that would help.
+>=20
+> Link: https://lore.freedesktop.org/wayland-devel/0d188965-d809-81b5-74ce-=
+7d30c49fee2d@redhat.com/
 
-I agree. Thanks a lot!
+Thanks for the explanation.
 
-> Everyone, please send your tags if you had chance to test and/or review
-> this series, especially the rust part.
->
-> Thanks,
-> Yury
+I'm not sure Rust is at the point where we can use it for the framework.
+If we want to make this work useful, we have to make it consistent and
+usable across all drivers, but we do have drivers for architectures that
+aren't supported by Rust yet (let alone tier 1).
+
+So it feels to me that it would be a bit premature for that work to be
+in Rust. If you do want to use it from a Rust driver though, feel free
+to write bindings for it, that would be a great addition.
+
+Maxime
+
+--mqb3omvpumyphrna
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaK6sdQAKCRAnX84Zoj2+
+dj2cAX0Q1S8INc2x2nOiw7Gdav5R8o0AlpqTSpNcuNO30kyg2DhhTEB+HnHezeiz
+CW/FxoABfA4rE4Zkatie8ypmj+RpipQq3PL9ndTZUqJxICSQjW8zsi6jroNZl8SC
+Hy0JDUs7Kg==
+=qJ/e
+-----END PGP SIGNATURE-----
+
+--mqb3omvpumyphrna--
