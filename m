@@ -1,177 +1,169 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5CE2BD5B0;
-	Wed, 27 Aug 2025 13:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756300282; cv=pass; b=YdfTmoBu4AGerFHPygiZsFiTvlLBrCPcUzqMcxasTUAtqr9KPsZE6xp6Qa3EFpK3j/v93hiF3rL1ba25dleuGb17xjiQpFm/GdaudxkWENKsFiJLZ/Fvz1FWSBkSqsVycZLocynl/6ACNGWg7drBCeHvJRSsr9pWPKVCTfkx0BU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756300282; c=relaxed/simple;
-	bh=Yvmv4LbBWz5GniQhQN1h1ApaRtyRX5BoN3NMWW/xzwk=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=g7RkllFL0vfQjPQfdt6n8LzaXAEu65aKK/1+sGAikeWWqLmTMopydEgOA/MnPSRaqS7TMIHa3803rK7CUl3NAVxWsmLXJw4K/3/PcBRsrHXBKDE3K2oVNs0EOHYT37DF75+RH9Rm0LCDw9e5fWxGZB2OoMbUW6TOjZVgaEDVJAw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=arVqRPe2; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51092BD5B0
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 13:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756300345; cv=none; b=rRczhgOz+eHAJ2RPIOyEffro1ijePX8fsJ2o12225m7DwosqzpKdt/pcWDIdR+Sj34POjbyI0bVnA40uOnqOGxw7tjRh0CfjATcwSLqA64bhIixAseNIat0uQUehG1IiVdMDm+yJc1IYNsnifOiQC048aFChNDD3fQYiV+7UDbQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756300345; c=relaxed/simple;
+	bh=wWgdQ19EGsKqy61U2HJjYn18KusjjHaNd+N0E7bCBB8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Hnp6H2hxEr2zZpsX4VDeNCJKK/5UKocsbP/quVA8cHpvILbfAmShYUyZ4lPj8/n2Bib1lyznWLPIP/v4ZO+XUyUBMWbLC5vBWaHmDV9u+OGI5Ms0o5kP8rRRF0gqlsf9rS0ZP7DtlsssdFUpSnuZlXhVx24nTBpLWaDFRsXQxbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KRLt6OIO; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="arVqRPe2"
-ARC-Seal: i=1; a=rsa-sha256; t=1756300260; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=UlzUuCrKnOgVIkRfgBTpU9ZUn+PClJ7hsW0Rwx4mrCONVALOllpUe2DgJmG1AZhdarF4ThRKSgnoLHILI/xEilGMpUjWJw6OvDTRejUF+OgDIS8yQcAMIvAsfTNE6stcUVnXi8j3t/qOcYFbGIrZiUZ1M4aP7S5Ah7MmAImU1Gw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756300260; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HK0ZqpOuG/yp/CXp5WnROsRN8hQcZfbbwtHP9VHBdLU=; 
-	b=kKYVZynYuYwH0ATJIQ3EJKriIVS4MGPnTZeO1e8PD1FqJBPKNv+pAjkHHZQk056dH7OwViK7UpnwDCtrHizBJnH+h7749GXcaVZA4mPcrUq8sueZAqy2G75L3BeLwHtO8uA2j7ggBqZbNoOg2rLbs7BsYf2ilckB4N6Txs+c0OE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756300260;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=HK0ZqpOuG/yp/CXp5WnROsRN8hQcZfbbwtHP9VHBdLU=;
-	b=arVqRPe27KqFgAgW/mFu8S59xCGpz8nf+al9MJ7+2+nw1RHPyzXqqqrVCD9SfZy5
-	7Zl5aswT6nS5qxZB1d6TrFLQjtdsRJOXGfnD3KWcRz1Q0ud1oMsICbDoyxt2UVfZFO8
-	KvewZvGlpakCQeFZTbRV2X4I6Ayo3usZ5HpaU5P8=
-Received: by mx.zohomail.com with SMTPS id 1756300258363744.5903240691605;
-	Wed, 27 Aug 2025 06:10:58 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KRLt6OIO"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45a1b0bd6a9so37874355e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 06:12:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756300342; x=1756905142; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=M/qj0KIxW19sF8WYNMWnzatZZJgCn+BfMx+Tm/YHX/8=;
+        b=KRLt6OIOKjVIGyZQ7m5KeZcI0LlIyNdTvaOctPE8K4201YDfdM0e6d9ZutFbzZO7wQ
+         A+8ViBNWAve1NlVxTcT8KeBBGNEAfRMZRd9DETYmUxgqOfzPtOQjKMQowSr1+t8x1y8h
+         qVec1l+F7Jl5BOnEodFlCmjkCmatPwjOwiv55oW5aKA8A9EfC5WkiKYYnK1zCJbBWAy3
+         LeLLZNjhNXcYTlcWh2V07KTWKsld17XQ2+CYHdv3t9QEV80HabFMSnHTBf6ndAa2swoR
+         O778ojvFelWds2Mj6S9OwlP+20tSnSc3QY9GiibvyMHRroyqAr9f8cNW1ZJPMTPuMi1n
+         DD4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756300342; x=1756905142;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M/qj0KIxW19sF8WYNMWnzatZZJgCn+BfMx+Tm/YHX/8=;
+        b=LzQuHEtjMpiVOhmcLFuSNbuuM8PbwQOeCVYE98bIKDZV3mJA15uXOlo9NuBXvboEB8
+         wP5i+83vbs1cFR4CY20HurwWs8b8Nv+08k2w/6RCDivxfWVj6IW5rdUbj4sJ4zKeOXHZ
+         unmETqa6d78KF/RfuLbCT+n7UVzBXUwDeXd2XOBFEPNWMyt4Jv19r/HwyjIBKggMq+Ce
+         OoF099/fmGHGJAyu7jzmGo8HhrbyDn0FJELChyq34Ole+JnOM7ZztsTTpzVWqxeELGqA
+         wbomkKuCUDVmemTGRVM90WRIqzjItSDmkrKMiIMZd5N9xe+uVebJaPhCLZmwNsd+EDQn
+         YmuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXjq/oGyH/IewjyqSdJ4RGtDJzebu5mx7t3lfXvu14Mw6wWaSGu6Q+yvIdx3z1rvOcGhCaOrDxeVmsirMOEKQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwLvH+MXqXapVsN14X3BRM3w1/jQNzGh6jQ4R9MzXH2VuIkhLZ
+	nAjKRWyk3CVkS0lVjrkdZXtsSqwd0ID0X1ECWbDvc4zqw9kk8Wy6IOW97L/sSZP5FcHInTaYsBi
+	I8F3p2oCcPlk6Wy55MQ==
+X-Google-Smtp-Source: AGHT+IHVNAAr6r5+Sc9GkH6RCMEf2jv4KsDL+gLsBCc26wh6BssKXaIo+LMJNL2lUuU+ghV6Ys4ZoghECk17F8E=
+X-Received: from wmbip38.prod.google.com ([2002:a05:600c:a6a6:b0:458:c0b7:b936])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4450:b0:45b:74fc:d6ec with SMTP id 5b1f17b1804b1-45b74fcd8a2mr4734675e9.8.1756300341900;
+ Wed, 27 Aug 2025 06:12:21 -0700 (PDT)
+Date: Wed, 27 Aug 2025 13:12:16 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 05/18] rust: str: introduce `kstrtobool` function
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250822-rnull-up-v6-16-v6-5-ec65006e2f07@kernel.org>
-Date: Wed, 27 Aug 2025 10:10:42 -0300
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Jens Axboe <axboe@kernel.dk>,
- Breno Leitao <leitao@debian.org>,
- linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A97ECEE6-25A7-45ED-8547-527AC4362BA6@collabora.com>
-References: <20250822-rnull-up-v6-16-v6-0-ec65006e2f07@kernel.org>
- <20250822-rnull-up-v6-16-v6-5-ec65006e2f07@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAC8Er2gC/x3MQQqAIBBA0avErBNMjKKrRIjpWANh4UQE4t2Tl
+ m/xfwbGRMgwNRkSPsR0xoqubcDtNm4oyFeDkqqXoxpEoAONZeMM30ms2mt0VjvUEmpzJQz0/r9 5KeUD8izZol8AAAA=
+X-Change-Id: 20250827-file_as_c_str-b4d4eca4ce40
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2971; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=wWgdQ19EGsKqy61U2HJjYn18KusjjHaNd+N0E7bCBB8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBorwQ0SweBT52ZKqzEy9Ic1TSli1rd7xjmeOxZ3
+ Rtip6cBfIyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaK8ENAAKCRAEWL7uWMY5
+ Ri5BD/43dy44+pzK34gqb4BEHKa+p5nEaIqfUjGDWTJ6fRUk/Pjh+T9olj2AMAaORkQLqDRX78r
+ MZsHcy0h358g7XLoTGnYQZwdjAwXSmYP+Hgsdn9Pu3MbeAD0okEhqBKblDzXtgQ539YOJJL3SA3
+ WF/YPsNjQe5f240BvOvbuxnusXAYtxihSq/dDrNISqYvBU/ksQ3EM9Hm+wiO6umm6f+BwLRNNaA
+ mSbwAZUp7TH4Pv/wXiG9sdwUAeqjVewLuTbdMH9Gg+7DgddtEr2zlahpkoKFp1XpGRGlXxHJ/TM
+ tJz41EPpdS430qOohanPKm+kIuKzD9+ovJEXgMxLZWGnyLg2akmVUhwMt0qKh9RojNy8toKRKnR
+ 2rY6fbPU1PHkdyrYQJT9AOuS65Yne1iAM4wK5ud4A/e0LsS8mTZpeM5QztG3kV2vpFVPY14NK36
+ FHXA9PM1QVb0rhlz81MVM7RFZs/P4dKiAuJQPpOfaAgoaTUeZjKKrLgGYf7J4yKt4mPfngCD/hs
+ sDLruYFuakvq90/VNzz0w1sK0TqQQ8PARlUFNkvIFiObIRBLu2016Okm9Aw1/voSjHfK+Q5ogOt
+ nD9xFCh0LSn9GP8/m3i5Qg3qHRkH3z2XbSI57Ez+9LlJ4OILPwdO/hDGWnOW4SjN6AsDeEqNB8n 8DXSb/0ZjdPOfjQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20250827-file_as_c_str-v1-1-d3f5a3916a9c@google.com>
+Subject: [PATCH] rust: use the new name Location::file_as_c_str() in rustc 1.91.0+
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+As part of the stabilization of Location::file_with_nul(), it was
+brought up that the with_nul() suffix usually means something else in
+Rust APIs, so the API is being renamed prior to stabilization. Thus,
+adjust Linux to use the new name on new rustc versions.
 
+Link: https://www.github.com/rust-lang/rust/pull/145928 [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+This hasn't been merged upstream yet. It shouldn't be merged until that
+happens.
+---
+ init/Kconfig       |  3 +++
+ rust/kernel/lib.rs | 15 +++++++++------
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-> On 22 Aug 2025, at 09:14, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
->=20
-> Add a Rust wrapper for the kernel's `kstrtobool` function that =
-converts
-> common user inputs into boolean values.
->=20
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> rust/kernel/str.rs | 57 =
-++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 57 insertions(+)
->=20
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index d8326f7bc9c1..d070c0bd86c3 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -4,6 +4,7 @@
->=20
-> use crate::{
->     alloc::{flags::*, AllocError, KVec},
-> +    error::Result,
->     fmt::{self, Write},
->     prelude::*,
-> };
-> @@ -920,6 +921,62 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
->     }
-> }
->=20
-> +/// Convert common user inputs into boolean values using the kernel's =
-`kstrtobool` function.
-> +///
-> +/// This routine returns `Ok(bool)` if the first character is one of =
-'YyTt1NnFf0', or
-> +/// \[oO\]\[NnFf\] for "on" and "off". Otherwise it will return =
-`Err(EINVAL)`.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// # use kernel::{c_str, str::kstrtobool};
-> +///
-> +/// // Lowercase
-> +/// assert_eq!(kstrtobool(c_str!("true")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("tr")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("t")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("twrong")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("false")), Ok(false));
-> +/// assert_eq!(kstrtobool(c_str!("f")), Ok(false));
-> +/// assert_eq!(kstrtobool(c_str!("yes")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("no")), Ok(false));
-> +/// assert_eq!(kstrtobool(c_str!("on")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("off")), Ok(false));
-> +///
-> +/// // Camel case
-> +/// assert_eq!(kstrtobool(c_str!("True")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("False")), Ok(false));
-> +/// assert_eq!(kstrtobool(c_str!("Yes")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("No")), Ok(false));
-> +/// assert_eq!(kstrtobool(c_str!("On")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("Off")), Ok(false));
-> +///
-> +/// // All caps
-> +/// assert_eq!(kstrtobool(c_str!("TRUE")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("FALSE")), Ok(false));
-> +/// assert_eq!(kstrtobool(c_str!("YES")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("NO")), Ok(false));
-> +/// assert_eq!(kstrtobool(c_str!("ON")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("OFF")), Ok(false));
-> +///
-> +/// // Numeric
-> +/// assert_eq!(kstrtobool(c_str!("1")), Ok(true));
-> +/// assert_eq!(kstrtobool(c_str!("0")), Ok(false));
-> +///
-> +/// // Invalid input
-> +/// assert_eq!(kstrtobool(c_str!("invalid")), Err(EINVAL));
-> +/// assert_eq!(kstrtobool(c_str!("2")), Err(EINVAL));
-> +/// ```
-> +pub fn kstrtobool(string: &CStr) -> Result<bool> {
-> +    let mut result: bool =3D false;
-> +
-> +    // SAFETY: `string` is a valid null-terminated C string, and =
-`result` is a valid
-> +    // pointer to a bool that we own.
-> +    let ret =3D unsafe { bindings::kstrtobool(string.as_char_ptr(), =
-&mut result) };
-> +
-> +    kernel::error::to_result(ret).map(|()| result)
-> +}
-> +
-> /// An owned string that is guaranteed to have exactly one `NUL` byte, =
-which is at the end.
-> ///
-> /// Used for interoperability with kernel APIs that take C strings.
->=20
-> --=20
-> 2.47.2
->=20
->=20
->=20
+diff --git a/init/Kconfig b/init/Kconfig
+index 83632025121937527523f5977a493bd3ae24ed9f..e7459cbea6ca800e56a1e54423e399b689557885 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -145,6 +145,9 @@ config RUSTC_HAS_UNNECESSARY_TRANSMUTES
+ config RUSTC_HAS_FILE_WITH_NUL
+ 	def_bool RUSTC_VERSION >= 108900
+ 
++config RUSTC_HAS_FILE_AS_C_STR
++	def_bool RUSTC_VERSION >= 109100
++
+ config PAHOLE_VERSION
+ 	int
+ 	default $(shell,$(srctree)/scripts/pahole-version.sh $(PAHOLE))
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ed53169e795c0badf548025a57f946fa18bc73e3..604069b1bd5c373d2ad8419872a358a8d01d0bb5 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -296,7 +296,7 @@ macro_rules! asm {
+ 
+ /// Gets the C string file name of a [`Location`].
+ ///
+-/// If `file_with_nul()` is not available, returns a string that warns about it.
++/// If `Location::file_as_c_str()` is not available, returns a string that warns about it.
+ ///
+ /// [`Location`]: core::panic::Location
+ ///
+@@ -310,8 +310,8 @@ macro_rules! asm {
+ ///     let caller = core::panic::Location::caller();
+ ///
+ ///     // Output:
+-///     // - A path like "rust/kernel/example.rs" if file_with_nul() is available.
+-///     // - "<Location::file_with_nul() not supported>" otherwise.
++///     // - A path like "rust/kernel/example.rs" if `file_as_c_str()` is available.
++///     // - "<Location::file_as_c_str() not supported>" otherwise.
+ ///     let caller_file = file_from_location(caller);
+ ///
+ ///     // Prints out the message with caller's file name.
+@@ -326,14 +326,17 @@ macro_rules! asm {
+ /// ```
+ #[inline]
+ pub fn file_from_location<'a>(loc: &'a core::panic::Location<'a>) -> &'a core::ffi::CStr {
+-    #[cfg(CONFIG_RUSTC_HAS_FILE_WITH_NUL)]
++    #[cfg(CONFIG_RUSTC_HAS_FILE_AS_C_STR)]
++    {
++        loc.file_as_c_str()
++    }
++    #[cfg(all(CONFIG_RUSTC_HAS_FILE_WITH_NUL, not(CONFIG_RUSTC_HAS_FILE_AS_C_STR)))]
+     {
+         loc.file_with_nul()
+     }
+-
+     #[cfg(not(CONFIG_RUSTC_HAS_FILE_WITH_NUL))]
+     {
+         let _ = loc;
+-        c"<Location::file_with_nul() not supported>"
++        c"<Location::file_as_c_str() not supported>"
+     }
+ }
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
+change-id: 20250827-file_as_c_str-b4d4eca4ce40
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
