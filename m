@@ -1,115 +1,203 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A25277C81;
-	Wed, 27 Aug 2025 04:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEEE2DCF5F;
+	Wed, 27 Aug 2025 06:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756269160; cv=none; b=bCu8WeqGUpuFOONhnMR31666qUGEAr/2o1jAvY/eLZr49nyMAi2Q045oOeXd6/F3G/1bOC1Y8CTeN/gvdIHomY9oA6lsR34C4VemqE//T0C1wnUTXf/oTlkzCVRIRZ9CP8geDIdPKkjLhISYxVlDmPxB0YBR09CMeI1EIE24TDk=
+	t=1756274425; cv=none; b=HSmekQTMTk1cgNzBiRgjfyW0gs5jLAhaep2Xza2cnXyA5r/9de7r2C1OHxbkxYoPNtNrpy+xNmX8DjS0kL8gbBINnthkpXiyomn7A6ARp/H50YeWY8VbMBQ00Sd/mZAN3vEleAjpHmTk7vLFI672eK7fxdZn8qPjVsqa89KR67Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756269160; c=relaxed/simple;
-	bh=wLfoNCHQ065c+E5KCkrQ+BEavCx+WUP32Ro2DHf9B2w=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=sC/VMZB6CtOOu49h8+QN/h/QJwBXXQuGHO2nXvYyLPbYx5LyMBAABtWuzAqAFDjGkQtWgPNsgJqLPm/9e5wcKOD3fbUNlwlgXNraXxOscQ26TNHefQJlSuh0UNR9VNhRH8Eml9f3LBFGnV/cAojHbjv8oCZHhUWe9gpz5xQ7m0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MOW4ztdf; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1756274425; c=relaxed/simple;
+	bh=3/XDT/Wjm/E0x/KfIBkufkuKiKbnqCecNkQYBevU9WE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NMGsrYHJmjiXSdhhU0gYsSKQafxH9iWNz2p0sAgWDbjxGuhHX/0zGS3FNJWlucMWoGXLf3YgqebFFqWE/x6I1MjEZXdia0cM5lTQefk+5/SaIpbC1jO+WjhYTqcds2T1tkg9af2MKPB85W1SAEoIE+u1URwlJEI9VcddT7gKEOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fDtRTav1; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MOW4ztdf"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-76e6cbb991aso5571290b3a.1;
-        Tue, 26 Aug 2025 21:32:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fDtRTav1"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-61c266e81caso5666936a12.3;
+        Tue, 26 Aug 2025 23:00:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756269159; x=1756873959; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wLfoNCHQ065c+E5KCkrQ+BEavCx+WUP32Ro2DHf9B2w=;
-        b=MOW4ztdfvBG8Bhd1aEIwsDZF+BQGloMmKNHtjEY69N5v4+PY85UMDloSVmxCxsQ+gS
-         RDJDN95WHDZkjwnhUV4VahsnNVEYR3zgJ2CufWOfhXhepLYshgU+fUISKoe2EYR19A/t
-         QddYDJDjRq43PyFf55SWyaHolhLoNypEnyZo4iMAbIX3lWCDxwF1nqbuPrTpGHJPZ1F4
-         WJv8Hw+TPEE4yFQPUYGpKio5S2CHhjYibAopM9DFmNRlMzJoTu8wmcNYhRN0im5gVby2
-         42x0NmCHqfBxxn1JkoktwHrR5/MqdaFZfAXz1uj+0b2m+gTzEWMqHS+kVX/dAYvVD+Iz
-         Nb7g==
+        d=gmail.com; s=20230601; t=1756274421; x=1756879221; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xnAvNpYK/d4feWDnZ2eneoT0hUG01qbZEZ4vonbJ2yA=;
+        b=fDtRTav1R+U+5atNflJUkr4wbYk7ghh846ZRzZwwy5KOiUG05580eb8rIxhNHC2Nrx
+         PzLqpQ7w7bze05XCTTtfzIgkuTsVN/O2pJOnUKX0DvCcxMINuxpAIIQInC3T3FRIN2sZ
+         JeftxJ8psMRwuU9do8SBh8lBlDrx5CSZAgNj607SWUgxpGV88PvD/E6OXYZDxf+Y8yZ6
+         C5nwVZhvM4gZ5RdlGSklw1r/ujJmwxlAKlLTAy3Lc9zXtnmAQbpjpuYNBFGT+Rhv8OSE
+         g5/mfV0Jv5mE8GdflO3GzyvuCQZhnYzu8eRnsf947OmuMxkZ9uJtvqxIiV/mivNUdEBg
+         ON1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756269159; x=1756873959;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wLfoNCHQ065c+E5KCkrQ+BEavCx+WUP32Ro2DHf9B2w=;
-        b=skpAUtYYVKCNBYNHj9m0/lhZGYLG9ngvDfsZ4zCUuld65df6Tu+9xRpT1aoUJsiagF
-         nt3yu7McY/0hnYsT0ce5ZctXJ+QnVDxV82Z+wyQueqk+bJhUx7Ii7xgeTbwJnSQKfJJ1
-         /NJ/oQmQUVWVqSLBZ6K3pjIP4c/axUyf/MOuxa4L5HRxVZqIvASCmiWe+CNWFtIPdDfT
-         xp5flZL1Qo0yM7dx/i+J4QLBQc5bBnBPh07aRANKAcQOQTVnyoeH84gO2tKRnLIVO9Jw
-         No2CCADEE08xhkKKhWWwbNeiWm0S07hcNM6x6Q9WLvAUJnm8NtHYCJZiN2thiZooSTal
-         ZvsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU307/547TPDQFUjeJ7z6m7jUmWRYGQLhachXiR1tCaAAnjxXh7A3lEDqmmxPJryRuG45ggO5teU//2dhA=@vger.kernel.org, AJvYcCUyaRt3kN4104a95hG4as5h6Q820lhLV+OecqiSZCOR6TQjCpIWdMPEDcWc5HIzad0SSNVnQW/jJWuJAhuVDmY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlM/FJifsIBuaW2el1TsbHhQF04mX6YrdbeaphlhzsS9wP5W5K
-	KS1IeLcjnksNTFfIU2WAnE7fm/jZ/GolvG2NSYrjONG1XcLb2XmqUcWm
-X-Gm-Gg: ASbGncuULRM5JDlRWEhK6KJ+z2TKdP+a5HgGGyjXq9LsNlPdtdWS6W4WNPFR6q5QqT6
-	WZhLHV96w87dUNVtEfZYZRIteN7U/dgm0sANbKLaUaUVJW/w5tJSJ0yCkcPqSB8vWIcGYrR+YfM
-	BUYah9kKCwgYkRNKPkfJP/nnQ5MC8fcibncpzxieIhTA98nAy5QlODO7//VTL0RFLCZr+YT01/1
-	m5XwNdhKCUrLoEUnJz3zHv8yOFN2p6jJvuxLAUsJWsDoHKShQQD7Gxb1cC32nX/8Fy1YfrxcPU0
-	9AlNT6lJ8WE3FVpMiVF46gOntIxF7ojckSerEqbmhuIgxNIGOanr5aT0ZshhAJFmTOgMhx+xiBA
-	Eou+K4Rq0gxcXDd3FYTbQvitaLwk2lNLo87SuPTMZacUe95fZ5iJLBumntMudvIemZn1TDHvJ5w
-	H/
-X-Google-Smtp-Source: AGHT+IG6HNsdYadtNr45WiB26DRF77FzbloROp3qetHYX8fk/Hbkl3188y+tLhYXfggD6GzvWCH6hg==
-X-Received: by 2002:a05:6a20:a985:b0:243:9d79:d88a with SMTP id adf61e73a8af0-2439d79da49mr1277794637.20.1756269158586;
-        Tue, 26 Aug 2025 21:32:38 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-771e814cbccsm6485423b3a.35.2025.08.26.21.32.34
+        d=1e100.net; s=20230601; t=1756274421; x=1756879221;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xnAvNpYK/d4feWDnZ2eneoT0hUG01qbZEZ4vonbJ2yA=;
+        b=kbaRR4a36PDsjC6u01zZ3PjPGCA8WKDTzgKeeCoCpK1n4lWWoY10UZpe9q7pKs1rZI
+         PQxAj9ykNqcr5ILkzoWt16aUJnIUgDHr2YE8oC1Q4HYVd5cs4STYB0Oc/VxCpFmB8U4g
+         NdHtdib61QP+5creHR2zBkFqWUAmGNPR4WSGFVzbg4+cQ6e1iIDY443AiJj+7vgZsPY6
+         mJ/Rw5hYEqX8AL4yQvbL/aM5feOBEML4eeTq4466YDRPdaljvBI9ItSJTmqKqDCSzpB0
+         OyQGKBNe+K+bLNBsHB/Apzwm1qFHa5lUA1wXCDAFxuPx34IHn8XPvpkQLTFPMponqudK
+         Pa9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV9bW3FPWYPNw0NZJsAb9t0wd3KiDgr4aFM7VVJPbVmO8IY0rjn8rAJrs5+RY3cUTN7EN5QhX+Qdo79HSs=@vger.kernel.org, AJvYcCWzrXMp5z3Io96rKg6IEV+iqh9WcAYh9aex5D0w8ezrOAVSq/biTkp80eJ0wfhlx/Em8x0aoZ/0n8a4y4q2RiI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywm5ggFMyYEZZyvp3kPmhJvUaQXxSwlASHm4MSTYRr8LJwylH1F
+	oZ2vplXa1nz3Oe+34NxOhJdclNFAufywnQhJTmWGWgiMlN9Liy0l/D5N
+X-Gm-Gg: ASbGnctHyQoxogAOOlvk82NKPAchqYh0a91YEOcaJYc40xuZR8D3eTYcjfsGsvV7y+5
+	tFXTswIZu5NN/PEhybGtZ8GS7zySKtBipo2UXTuKdgKnwDh+bsQQk//yL/6Pw40vz80wFQLxA2f
+	lNyHp15/so2f1y+ZVlm9uOS/NS2U4RooHzdY57jpr5FxaCvDOuHy40Jy/7/rUKd2lGS7+Qzakep
+	xn7YYccteNTPkHERFrWC0x1O/gFeiHT2Lc2Y17m3gkUItexWXUjG0pXozyRQBQLyqRQhdILWyL5
+	Y7LZz2Fxdqi9dava9qkxoit8tXxwAzWRBI5CnuV/nJfLl9m9d18VYKELG64Kcknw4M13a1AdnEe
+	nSK8kZCUn/Tf0kRzc/As=
+X-Google-Smtp-Source: AGHT+IHeJPxAMlja2fxC0b7zCt8jkHNyZHTw3nPVvmyHgSGyqgPyTjCqRmiVKVLVdeCAgfsqswhpBA==
+X-Received: by 2002:a17:907:72d2:b0:af9:8c20:145b with SMTP id a640c23a62f3a-afe28f7622amr1756774366b.10.1756274421038;
+        Tue, 26 Aug 2025 23:00:21 -0700 (PDT)
+Received: from fedora ([2405:201:5501:40b7:23f2:cb46:b049:a045])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afeae4ca4bdsm287129866b.5.2025.08.26.23.00.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 21:32:37 -0700 (PDT)
-Date: Wed, 27 Aug 2025 13:32:22 +0900 (JST)
-Message-Id: <20250827.133222.2149987174177655942.fujita.tomonori@gmail.com>
-To: daniel.almeida@collabora.com
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, ojeda@kernel.org,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org,
- gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org,
- lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org,
- sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
- acourbot@nvidia.com
-Subject: Re: [PATCH v1 2/2] rust: Add read_poll_timeout_atomic function
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20250827.093559.1495790445785541454.fujita.tomonori@gmail.com>
-References: <20250821035710.3692455-3-fujita.tomonori@gmail.com>
-	<5C851069-5E1E-4DE9-9E1F-0DF2C86C266C@collabora.com>
-	<20250827.093559.1495790445785541454.fujita.tomonori@gmail.com>
+        Tue, 26 Aug 2025 23:00:20 -0700 (PDT)
+From: Ritvik Gupta <ritvikfoss@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: skhan@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [RESEND PATCH v5] rust: kernel: introduce `unsafe_precondition_assert!` macro
+Date: Wed, 27 Aug 2025 11:30:08 +0530
+Message-ID: <20250827060013.6874-1-ritvikfoss@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-7
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-T24gV2VkLCAyNyBBdWcgMjAyNSAwOTozNTo1OSArMDkwMCAoSlNUKQ0KRlVKSVRBIFRvbW9ub3Jp
-IDxmdWppdGEudG9tb25vcmlAZ21haWwuY29tPiB3cm90ZToNCg0KPj4+ICtwdWIgZm4gcmVhZF9w
-b2xsX3RpbWVvdXRfYXRvbWljPE9wLCBDb25kLCBUPigNCj4+PiArICAgIG11dCBvcDogT3AsDQo+
-Pj4gKyAgICBtdXQgY29uZDogQ29uZCwNCj4+PiArICAgIGRlbGF5X2RlbHRhOiBEZWx0YSwNCj4+
-PiArICAgIHRpbWVvdXRfZGVsdGE6IERlbHRhLA0KPj4+ICspIC0+IFJlc3VsdDxUPg0KPj4+ICt3
-aGVyZQ0KPj4+ICsgICAgT3A6IEZuTXV0KCkgLT4gUmVzdWx0PFQ+LA0KPj4+ICsgICAgQ29uZDog
-Rm5NdXQoJlQpIC0+IGJvb2wsDQo+Pj4gK3sNCj4+PiArICAgIGxldCBtdXQgbGVmdF9ucyA9IHRp
-bWVvdXRfZGVsdGEuYXNfbmFub3MoKTsNCj4+PiArICAgIGxldCBkZWxheV9ucyA9IGRlbGF5X2Rl
-bHRhLmFzX25hbm9zKCk7DQo+Pj4gKw0KPj4+ICsgICAgbG9vcCB7DQo+Pj4gKyAgICAgICAgbGV0
-IHZhbCA9IG9wKCk/Ow0KPj4+ICsgICAgICAgIGlmIGNvbmQoJnZhbCkgew0KPj4+ICsgICAgICAg
-ICAgICAvLyBVbmxpa2UgdGhlIEMgdmVyc2lvbiwgd2UgaW1tZWRpYXRlbHkgcmV0dXJuLg0KPj4+
-ICsgICAgICAgICAgICAvLyBXZSBrbm93IHRoZSBjb25kaXRpb24gaXMgbWV0IHNvIHdlIGRvbid0
-IG5lZWQgdG8gY2hlY2sgYWdhaW4uDQo+Pj4gKyAgICAgICAgICAgIHJldHVybiBPayh2YWwpOw0K
-Pj4+ICsgICAgICAgIH0NCj4+PiArDQo+Pj4gKyAgICAgICAgaWYgbGVmdF9ucyA8IDAgew0KPj4+
-ICsgICAgICAgICAgICAvLyBVbmxpa2UgdGhlIEMgdmVyc2lvbiwgd2UgaW1tZWRpYXRlbHkgcmV0
-dXJuLg0KPj4+ICsgICAgICAgICAgICAvLyBXZSBoYXZlIGp1c3QgY2FsbGVkIGBvcCgpYCBzbyB3
-ZSBkb24ndCBuZWVkIHRvIGNhbGwgaXQgYWdhaW4uDQo+Pj4gKyAgICAgICAgICAgIHJldHVybiBF
-cnIoRVRJTUVET1VUKTsNCj4+PiArICAgICAgICB9DQo+Pj4gKw0KPj4+ICsgICAgICAgIGlmICFk
-ZWxheV9kZWx0YS5pc196ZXJvKCkgew0KPj4+ICsgICAgICAgICAgICB1ZGVsYXkoZGVsYXlfZGVs
-dGEpOw0KPj4+ICsgICAgICAgICAgICBsZWZ0X25zIC09IGRlbGF5X25zOw0KPj4+ICsgICAgICAg
-IH0NCj4+PiArDQo+Pj4gKyAgICAgICAgY3B1X3JlbGF4KCk7DQo+Pj4gKyAgICAgICAgbGVmdF9u
-cyAtPSAxOw0KPj4gDQo+PiBBIGNvbW1lbnQgb24gdGhlIGxpbmUgYWJvdmUgd291bGQgYmUgbmlj
-ZS4NCj4gDQo+IEFzIEkgd3JvdGUgaW4gYW5vdGhlciBlbWFpbCwgdGhlIEMgdmVyc2lvbiB3YXMg
-Y2hhbmdlZCB0byBhdm9pZCB1c2luZw0KPiBrdGltZSwgYW5kIHRoYXSicyB3aGVuIHRoZSBjb2Rl
-IGFib3ZlIHdhcyBhZGRlZC4gSSBhc3N1bWUgdGhlIGRlbGF5IGlzDQo+IGNvbnNpZGVyZWQgYXMg
-MW5zIGFzIGEgY29tcHJvbWlzZSBiZWNhdXNlIGt0aW1lIGNhbqJ0IGJlIHVzZWQuDQo+IA0KPiBN
-YXliZSB0aGlzIGNvbW1lbnQgc2hvdWxkIGJlIGFkZGVkIHRvIHRoZSBDIHZlcnNpb24gaW5zdGVh
-ZD8NCg0KSSBtZWFudCB0aGF0IGlmIHdlIGFkZCBhIGNvbW1lbnQgaGVyZSwgbWF5YmUgaXQgc2hv
-dWxkIGJlIGFkZGVkIHRvIHRoZQ0KQyB2ZXJzaW9uLg0K
+Introduce a new `safety` module containing `unsafe_precondition_assert!`
+macro. It is a wrapper around `debug_assert!`, intended for validating
+pre-conditions of unsafe function.
+
+When `CONFIG_RUST_DEBUG_ASSERTIONS` flag is enabled, this macro performs
+runtime checks to ensure that the preconditions for unsafe function hold.
+Otherwise, the macro is a no-op.
+
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1162
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/topic/.60unsafe_precondition_assert.60.20macro/with/528457452
+Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
+---
+
+Changes in v5:
+ - Change doc example
+ - Use re-exported `kernel::prelude::fmt!` instead of `core::format_args!`
+ - Link to v4: https://lore.kernel.org/rust-for-linux/20250808192005.209188-1-ritvikfoss@gmail.com/
+
+Changes in v4:
+ - Change doc example
+ - Add `no_run` attribute to the doc example
+ - Link to v3: https://lore.kernel.org/rust-for-linux/20250731111234.28602-1-ritvikfoss@gmail.com/
+
+Changes in v3:
+ - Change doc example
+ - Link to v2: https://lore.kernel.org/all/20250730181420.6979b4f1@eugeo/T/#m9cd35a8fc02a18bd03934c7ecdcffe8667b5fbbd
+
+Changes in v2:
+ - Wrap `debug_assert!` internally instead of using `pr_err!` with `assert!` + `cfg!(debug_assertions)
+ - Print “unsafe precondition(s) violated” only on assertion failure (no longer always printed)
+ - Use `# Safety` section instead of comment in the example
+ - Rename module-level doc
+ - Link to v1: https://lore.kernel.org/rust-for-linux/20250716045957.39732-1-ritvikfoss@gmail.com/
+
+---
+ rust/kernel/lib.rs    |  1 +
+ rust/kernel/safety.rs | 54 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
+ create mode 100644 rust/kernel/safety.rs
+
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ed53169e795c..5eb301685ce8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -113,6 +113,7 @@
+ pub mod rbtree;
+ pub mod regulator;
+ pub mod revocable;
++pub mod safety;
+ pub mod security;
+ pub mod seq_file;
+ pub mod sizes;
+diff --git a/rust/kernel/safety.rs b/rust/kernel/safety.rs
+new file mode 100644
+index 000000000000..e78d49e3e7c8
+--- /dev/null
++++ b/rust/kernel/safety.rs
+@@ -0,0 +1,54 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Safety related APIs.
++
++/// Checks that preconditions of an unsafe function are followed.
++///
++/// The check is enabled at runtime if debug assertions (`CONFIG_RUST_DEBUG_ASSERTIONS`)
++/// are enabled. Otherwise, this macro is no-op.
++///
++/// # Examples
++///
++/// ```no_run
++/// use kernel::unsafe_precondition_assert;
++///
++/// struct RawBuffer<T: Copy, const N: usize> {
++///     data: [T; N],
++/// }
++///
++/// impl<T: Copy, const N: usize> RawBuffer<T, N> {
++///     /// # Safety
++///     ///
++///     /// The caller must ensure that `index` is less than `N`
++///     unsafe fn set_unchecked(&mut self, index: usize, value: T) {
++///         unsafe_precondition_assert!(
++///             index < N,
++///             "RawBuffer::set_unchecked requires index ({}) < N ({})",
++///             index,
++///             N,
++///         );
++///
++///         // SAFETY: By the safety requirements of this function, `index` is valid
++///         unsafe {
++///             *self.data.get_unchecked_mut(index) = value;
++///         }
++///     }
++/// }
++/// ```
++///
++/// # Panics
++///
++/// Panics if the expression is evaluated to `false` at runtime.
++#[macro_export]
++macro_rules! unsafe_precondition_assert {
++    ($cond:expr $(,)?) => {
++        $crate::unsafe_precondition_assert!(@inner $cond, ::core::stringify!($cond))
++    };
++
++    ($cond:expr, $($arg:tt)+) => {
++        $crate::unsafe_precondition_assert!(@inner $cond, $crate::prelude::fmt!($($arg)+))
++    };
++
++    (@inner $cond:expr, $msg:expr) => {
++        ::core::debug_assert!($cond, "unsafe precondition(s) violated: {}", $msg) };
++}
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+-- 
+2.50.1
+
