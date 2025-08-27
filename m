@@ -1,395 +1,167 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6FA35690E
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 13:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756301936; cv=none; b=oDl7EgOpn75CzKqeKVMtOsya/DsQX3eoUH0RwHetHx8zqwdmHQ/vhpSbh4wXiRBVRo2xVDAOR1EXf/xviQXWIkPH+vZQ6jSuC0/CZOFZKfvKQcIo12JcAoYz6RSTsFAz++PVHmB1lR4rbAO773SQLjOkuetJ5jpl+tnI83u99L8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756301936; c=relaxed/simple;
-	bh=0L5MN7VLrW13EBhcSJi1X2pbD/XrBvsXZWa3W9t+9eA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EKgavO1OW9WGJakwoqZddYLKobka9xu4iaZ5EWNFlZl4ttvP+CKnHgi49SsARoULPCjntvnouAjiaYFhKkzbJ+zyOMXarqqEjxmHILjG0hGxgrLR2pZCILSUYZm2pSNJIzt0OE614+E3C1sOW5jClKGDOnycuAKppLq2RrmNqhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OkKj6aAB; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A388C3009FA;
+	Wed, 27 Aug 2025 13:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756302424; cv=pass; b=cwZ3n5W/Kh8EgvX4qGZrE2+9fFYzBGKW1isG74Ed9md5ZvseVbazl1iOgkGAGVIsbj6rFpWiUctdB0HC//WlxkurEpurO+a3I5n/MpdLA81/YLYWrZ1zloDTMoHw5oLfMOKo3ir08M6plJ4LMKih1zvTmtqmuzra11Vd9ypAY2E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756302424; c=relaxed/simple;
+	bh=4F4PSpfzqc4T3sl1FWdLl5F4O54g0Xgbs8dayq40s2k=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Ww2w7cYuOBtc+Lwb0QNzIZwOF7AqGEey4b/CSwkGo5PQdysYUTLaB3kRqu9XQZ/lsV2L0gCYstuUkDC83o3QhgU4lQ3opAqXqcHFRMfFJQqlAE9NRg3xTus1XEm3tA6Lqj+851ax0kxSV//WQZA+DAdih9IJCUN/gFH23Hk3pnI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=C1+9CW5p; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OkKj6aAB"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45a1b05d8d0so48033925e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 Aug 2025 06:38:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756301931; x=1756906731; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5NR1f1V0qJQoAZC32JpbQQDn0jnSX+Eb3gQ3cjs7iX0=;
-        b=OkKj6aAB029wP8lPWo79mlb2JyBH5hQyxQBSf19s2XKJ4bshaEbol4TVRYBMO1AYFY
-         d7SGkk5EbgQXKTaqxdJbER9yPt3RDThzgqFz+Bu2sRDbC1w4CiVrGLu2UK1RsVT9yQZc
-         TThZUqyMm1Bix43v0T65Mcpy1MI8tjE6W7A59FTDxBgT09+bocQFlganGzjz/XGc+dox
-         oZd+uk7l0LFJ0DqReq8oENPK0WzoH1wLNpsOZXxUJ74+UcU02CbsmyEW0B5wqu+aj32C
-         kr6iWcEVzJP9scn5S2M7vnMM40BB+chCI1/0lls1c2WQ171+a8yZSYMeWtAAaml7jrFb
-         9Gxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756301931; x=1756906731;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5NR1f1V0qJQoAZC32JpbQQDn0jnSX+Eb3gQ3cjs7iX0=;
-        b=jdWEXQzvx4TfU0G9KqExhXlSpzxTv5BquUfpxnqRFowRghojlRfcKg1vGad3fbwIFI
-         nxg9CNfjKmhcwiZYb3hVUgNxUQQVAIU/I8eHBmcdbvqQ6R55ty3XDIw+UO7Gt8kXGK/G
-         szb6C1T09kOerfRmaNaVfJL4h7aVq1cn9H8C1bM5W9rkY5VTbtMjYSxQouC6VaTnpWaX
-         rIPrZ37bYd4tI4ZQBw1zeIT/xyH9gaV3CPtgMYJw9eH9qp9nZitBqbTv8G1HlJ9lvmW2
-         Rb2Z5j5aflPYepdHy0uSJlboq2nQzvPmrWUYWQa6dp0eMmLFq4k/Hi7eCczsgNz/5WIU
-         oBTA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+W/jN8s270/MBqgnbLwNRXk88hJ0JSWPpcYbqEVGH4r9P6HjXs4zYwBRpLB382CI+fWqGytHrp4HzdKsxMg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHe48zlCWiuHzcMUVqLV39RQMGw9Mm0RxYPv6QXjWTJqMcQiKF
-	//sgpAfvkO5h/ypPg77m6b0PIjYf6Jg0HiP+FyoMzsinnS0S1EGe7dWMcLyo/ugctINGO3/MNfc
-	5XR7t5573EVLYDo0HIQ==
-X-Google-Smtp-Source: AGHT+IFafGlP8UFqOxDnT4Yuf1Es+Hvy3FyMKmTpfS06X1hgk36wVUBbP6/S61siqr7xDliXKPIBZu+fKI/tOkQ=
-X-Received: from wmbea5.prod.google.com ([2002:a05:600c:6745:b0:45b:4777:8063])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b23:b0:45b:47e1:f600 with SMTP id 5b1f17b1804b1-45b517dc59bmr170516715e9.36.1756301930996;
- Wed, 27 Aug 2025 06:38:50 -0700 (PDT)
-Date: Wed, 27 Aug 2025 13:38:39 +0000
-In-Reply-To: <20250827-gpuva-mutex-in-gem-v3-0-bd89f5a82c0d@google.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="C1+9CW5p"
+ARC-Seal: i=1; a=rsa-sha256; t=1756302399; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=D/zawCSW5Xvy+e1Qi5+0Zh3LTohvB2uDyw3SRcnLfYOwfgiAniJdb1zbO5ix2b3Lesj67sTv0KN+YmYQJUwwVnp07/FV8OLcchgIRHqdeICWEJYC2ZhOyv5NmyHIEr3lngCIw1kR/kD9ohbpJ23ByMU9bcl572OgxGTxCsSyfMU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756302399; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=z3hQA04U/NsIOTB7Ljgoe9/oGh3W8wlbOOT2f7+/2+s=; 
+	b=O8fDZZKxGRr7i+mxUhWplOWxOJMQIVjMl44P5L0cz7JLsxe4iw8S3zv5yv21VDusYca7T08Y33aEPO8e9jvaEH1eQnA9ErThJrhonkbWlQBKFapfrmf55Kg+QgTJwNswjwTsdunB826tElFOyzuvzGFP7oqn/B+nd7Nz/KdG/2c=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756302399;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=z3hQA04U/NsIOTB7Ljgoe9/oGh3W8wlbOOT2f7+/2+s=;
+	b=C1+9CW5pT3qSVbF7XGhxN6gtZDzloNcg6g7kq7Zwod5jQQ+DnitiKLuJMhmTyrnf
+	RZ0HShPHaSsYP+/GLaLLj2/HhyiuxPzx1NGuSRw/+NwTDhF+9BRd/yF48CS2psVRwaJ
+	fWcsYhZaP7mLpw1+Uc1b/376jGNZEqUXEyR8+7r8=
+Received: by mx.zohomail.com with SMTPS id 1756302395027874.0815258877969;
+	Wed, 27 Aug 2025 06:46:35 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250827-gpuva-mutex-in-gem-v3-0-bd89f5a82c0d@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12017; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=0L5MN7VLrW13EBhcSJi1X2pbD/XrBvsXZWa3W9t+9eA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBorwplYbAcdiliRpBBT2QIxKVqMqUGR0RUIpvla
- 8hVDTugYNSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaK8KZQAKCRAEWL7uWMY5
- Rqr4D/9MGT4tqnMGQjdUfHmVfVdREPNuTUPIZSoetgv8+tMy2zoPRVzB7MC+qiaH14b6g8rWz8p
- lTm7bPzCsw8/PEq+VQtQPhUnQEiOelg50xefigjWY6PC1+NPKSqZSXLJ9wIRxGJWZ3xes0yHe6F
- u9fJjBYyE1SSpC3ZrCaxsRyVVRis3+mW+LqbdeCdHZ1EV4hdOOMLfbhcHyFdEOkvWrF2LAyfzok
- bkz1SqJ3gCNl01D0mhidXbRtMjXURqR/4OVxHh4weI+dH1eR3+X7dYyD2B/XZDOnnfjpwKj26eA
- 4sJXLTwd/NhzAd7UO/9zNv20ijg6c5X7ristIWhOfznBYbFB+TKCbh5YAv5gbxg411vWDv4f8Vg
- Gg2ZAVodpk6+uQgzjoUWd3ttXxdcdhxI7zFSzf7nG0cXBNQfFcNwEfnv2SgLvGi7nI9hzYR2t4a
- sVseb6Ds8zSenQBX1YEvD4T7m2TbiZaVrJB+kOo0k0oE8XC2PbGKkU3C+4Lxe8eqH0tFGIWqStl
- VfhiIVYZQ7KeNzf1Ad0nKmoBRuMnN6R5016QsboI4NIlHYRvjOHezZ+fkrs7umQj2OV4RlpEtQ8
- DY5+EfJRbURVze+UTXwAHn8L4qziXGIo8dvX9hL3UlW8dkRM2iGEfnR/GdqO+nMW10H66Ymaq+k u/RowLSTFcUbIUA==
-X-Mailer: b4 0.14.2
-Message-ID: <20250827-gpuva-mutex-in-gem-v3-3-bd89f5a82c0d@google.com>
-Subject: [PATCH v3 3/3] gpuvm: remove gem.gpuva.lock_dep_map
-From: Alice Ryhl <aliceryhl@google.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Danilo Krummrich <dakr@kernel.org>, Boris Brezillon <boris.brezillon@collabora.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Rob Clark <robin.clark@oss.qualcomm.com>, 
-	Rob Herring <robh@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 06/18] rust: str: add `bytes_to_bool` helper function
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250822-rnull-up-v6-16-v6-6-ec65006e2f07@kernel.org>
+Date: Wed, 27 Aug 2025 10:46:18 -0300
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>,
+ Breno Leitao <leitao@debian.org>,
+ linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <60D09FDF-D1EB-46A0-8F76-13F98BE9C518@collabora.com>
+References: <20250822-rnull-up-v6-16-v6-0-ec65006e2f07@kernel.org>
+ <20250822-rnull-up-v6-16-v6-6-ec65006e2f07@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Since all users of gem.gpuva.lock_dep_map now rely on the mutex directly
-in gpuva, we may remove it. Whether the mutex is used is now tracked by
-a flag in gpuvm rather than by whether lock_dep_map is null.
 
-Note that a GEM object may not be pushed to multiple gpuvms that
-disagree on the value of this new flag. But that's okay because a single
-driver should use the same locking scheme everywhere, and a GEM object
-is driver specific (when a GEM is exported with prime, a new GEM object
-instance is created from the backing dma-buf).
 
-The flag is present even with CONFIG_LOCKDEP=n because the intent is
-that the flag will also cause vm_bo cleanup to become deferred. However,
-that will happen in a follow-up patch.
+> On 22 Aug 2025, at 09:14, Andreas Hindborg <a.hindborg@kernel.org> =
+wrote:
+>=20
+> Add a convenience function to convert byte slices to boolean values by
+> wrapping them in a null-terminated C string and delegating to the
+> existing `kstrtobool` function. Only considers the first two bytes of
+> the input slice, following the kernel's boolean parsing semantics.
+>=20
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+> rust/kernel/str.rs | 35 +++++++++++++++++++++++++++++------
+> 1 file changed, 29 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index d070c0bd86c3..b185262b4851 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -921,6 +921,20 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
+>     }
+> }
+>=20
+> +/// # Safety
+> +///
+> +/// - `string` must point to a null terminated string that is valid =
+for read.
+> +unsafe fn kstrtobool_raw(string: *const u8) -> Result<bool> {
+> +    let mut result: bool =3D false;
+> +
+> +    // SAFETY:
+> +    // - By function safety requirement, `string` is a valid =
+null-terminated string.
+> +    // - `result` is a valid `bool` that we own.
+> +    let ret =3D unsafe { bindings::kstrtobool(string, &mut result) };
+> +
+> +    kernel::error::to_result(ret).map(|()| result)
+> +}
+> +
+> /// Convert common user inputs into boolean values using the kernel's =
+`kstrtobool` function.
+> ///
+> /// This routine returns `Ok(bool)` if the first character is one of =
+'YyTt1NnFf0', or
+> @@ -968,13 +982,22 @@ fn write_str(&mut self, s: &str) -> fmt::Result =
+{
+> /// assert_eq!(kstrtobool(c_str!("2")), Err(EINVAL));
+> /// ```
+> pub fn kstrtobool(string: &CStr) -> Result<bool> {
+> -    let mut result: bool =3D false;
+> -
+> -    // SAFETY: `string` is a valid null-terminated C string, and =
+`result` is a valid
+> -    // pointer to a bool that we own.
+> -    let ret =3D unsafe { bindings::kstrtobool(string.as_char_ptr(), =
+&mut result) };
+> +    // SAFETY:
+> +    // - The pointer returned by `CStr::as_char_ptr` is guaranteed to =
+be
+> +    //   null terminated.
+> +    // - `string` is live and thus the string is valid for read.
+> +    unsafe { kstrtobool_raw(string.as_char_ptr()) }
+> +}
+>=20
+> -    kernel::error::to_result(ret).map(|()| result)
+> +/// Convert `&[u8]` to `bool` by deferring to =
+[`kernel::str::kstrtobool`].
+> +///
+> +/// Only considers at most the first two bytes of `bytes`.
+> +pub fn kstrtobool_bytes(bytes: &[u8]) -> Result<bool> {
+> +    // `ktostrbool` only considers the first two bytes of the input.
+> +    let stack_string =3D [*bytes.first().unwrap_or(&0), =
+*bytes.get(1).unwrap_or(&0), 0];
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/gpu/drm/drm_gpuvm.c           | 30 ++++++++++++-------------
- drivers/gpu/drm/panthor/panthor_gem.c |  1 -
- drivers/gpu/drm/panthor/panthor_mmu.c |  5 +++--
- include/drm/drm_gem.h                 | 41 +++++++++++++----------------------
- include/drm/drm_gpuvm.h               | 30 ++++++++++++++++++++++---
- 5 files changed, 59 insertions(+), 48 deletions(-)
+Can=E2=80=99t this be CStr::from_bytes_with_nul() ?
 
-diff --git a/drivers/gpu/drm/drm_gpuvm.c b/drivers/gpu/drm/drm_gpuvm.c
-index d6bea8a4fffd7613fb9b9ed5c795df373da2e7b6..78a1a4f095095e9379bdf604d583f6c8b9863ccb 100644
---- a/drivers/gpu/drm/drm_gpuvm.c
-+++ b/drivers/gpu/drm/drm_gpuvm.c
-@@ -497,8 +497,7 @@
-  * DRM GPUVM also does not take care of the locking of the backing
-  * &drm_gem_object buffers GPU VA lists and &drm_gpuvm_bo abstractions by
-  * itself; drivers are responsible to enforce mutual exclusion using either the
-- * GEMs dma_resv lock or alternatively a driver specific external lock. For the
-- * latter see also drm_gem_gpuva_set_lock().
-+ * GEMs dma_resv lock or the GEMs gpuva.lock mutex.
-  *
-  * However, DRM GPUVM contains lockdep checks to ensure callers of its API hold
-  * the corresponding lock whenever the &drm_gem_objects GPU VA list is accessed
-@@ -1582,7 +1581,7 @@ drm_gpuvm_bo_destroy(struct kref *kref)
- 	drm_gpuvm_bo_list_del(vm_bo, extobj, lock);
- 	drm_gpuvm_bo_list_del(vm_bo, evict, lock);
- 
--	drm_gem_gpuva_assert_lock_held(obj);
-+	drm_gem_gpuva_assert_lock_held(gpuvm, obj);
- 	list_del(&vm_bo->list.entry.gem);
- 
- 	if (ops && ops->vm_bo_free)
-@@ -1603,7 +1602,8 @@ drm_gpuvm_bo_destroy(struct kref *kref)
-  * If the reference count drops to zero, the &gpuvm_bo is destroyed, which
-  * includes removing it from the GEMs gpuva list. Hence, if a call to this
-  * function can potentially let the reference count drop to zero the caller must
-- * hold the dma-resv or driver specific GEM gpuva lock.
-+ * hold the lock that the GEM uses for its gpuva list (either the GEM's
-+ * dma-resv or gpuva.lock mutex).
-  *
-  * This function may only be called from non-atomic context.
-  *
-@@ -1627,7 +1627,7 @@ __drm_gpuvm_bo_find(struct drm_gpuvm *gpuvm,
- {
- 	struct drm_gpuvm_bo *vm_bo;
- 
--	drm_gem_gpuva_assert_lock_held(obj);
-+	drm_gem_gpuva_assert_lock_held(gpuvm, obj);
- 	drm_gem_for_each_gpuvm_bo(vm_bo, obj)
- 		if (vm_bo->vm == gpuvm)
- 			return vm_bo;
-@@ -1686,7 +1686,7 @@ drm_gpuvm_bo_obtain(struct drm_gpuvm *gpuvm,
- 	if (!vm_bo)
- 		return ERR_PTR(-ENOMEM);
- 
--	drm_gem_gpuva_assert_lock_held(obj);
-+	drm_gem_gpuva_assert_lock_held(gpuvm, obj);
- 	list_add_tail(&vm_bo->list.entry.gem, &obj->gpuva.list);
- 
- 	return vm_bo;
-@@ -1722,7 +1722,7 @@ drm_gpuvm_bo_obtain_prealloc(struct drm_gpuvm_bo *__vm_bo)
- 		return vm_bo;
- 	}
- 
--	drm_gem_gpuva_assert_lock_held(obj);
-+	drm_gem_gpuva_assert_lock_held(gpuvm, obj);
- 	list_add_tail(&__vm_bo->list.entry.gem, &obj->gpuva.list);
- 
- 	return __vm_bo;
-@@ -1894,8 +1894,7 @@ EXPORT_SYMBOL_GPL(drm_gpuva_remove);
-  * reference of the latter is taken.
-  *
-  * This function expects the caller to protect the GEM's GPUVA list against
-- * concurrent access using either the GEMs dma_resv lock or a driver specific
-- * lock set through drm_gem_gpuva_set_lock().
-+ * concurrent access using either the GEM's dma-resv or gpuva.lock mutex.
-  */
- void
- drm_gpuva_link(struct drm_gpuva *va, struct drm_gpuvm_bo *vm_bo)
-@@ -1910,7 +1909,7 @@ drm_gpuva_link(struct drm_gpuva *va, struct drm_gpuvm_bo *vm_bo)
- 
- 	va->vm_bo = drm_gpuvm_bo_get(vm_bo);
- 
--	drm_gem_gpuva_assert_lock_held(obj);
-+	drm_gem_gpuva_assert_lock_held(gpuvm, obj);
- 	list_add_tail(&va->gem.entry, &vm_bo->list.gpuva);
- }
- EXPORT_SYMBOL_GPL(drm_gpuva_link);
-@@ -1930,8 +1929,7 @@ EXPORT_SYMBOL_GPL(drm_gpuva_link);
-  * the latter is dropped.
-  *
-  * This function expects the caller to protect the GEM's GPUVA list against
-- * concurrent access using either the GEMs dma_resv lock or a driver specific
-- * lock set through drm_gem_gpuva_set_lock().
-+ * concurrent access using either the GEM's dma-resv or gpuva.lock mutex.
-  */
- void
- drm_gpuva_unlink(struct drm_gpuva *va)
-@@ -1942,7 +1940,7 @@ drm_gpuva_unlink(struct drm_gpuva *va)
- 	if (unlikely(!obj))
- 		return;
- 
--	drm_gem_gpuva_assert_lock_held(obj);
-+	drm_gem_gpuva_assert_lock_held(va->vm, obj);
- 	list_del_init(&va->gem.entry);
- 
- 	va->vm_bo = NULL;
-@@ -2943,8 +2941,8 @@ EXPORT_SYMBOL_GPL(drm_gpuvm_prefetch_ops_create);
-  * After the caller finished processing the returned &drm_gpuva_ops, they must
-  * be freed with &drm_gpuva_ops_free.
-  *
-- * It is the callers responsibility to protect the GEMs GPUVA list against
-- * concurrent access using the GEMs dma_resv lock.
-+ * This function expects the caller to protect the GEM's GPUVA list against
-+ * concurrent access using either the GEM's dma-resv or gpuva.lock mutex.
-  *
-  * Returns: a pointer to the &drm_gpuva_ops on success, an ERR_PTR on failure
-  */
-@@ -2956,7 +2954,7 @@ drm_gpuvm_bo_unmap_ops_create(struct drm_gpuvm_bo *vm_bo)
- 	struct drm_gpuva *va;
- 	int ret;
- 
--	drm_gem_gpuva_assert_lock_held(vm_bo->obj);
-+	drm_gem_gpuva_assert_lock_held(vm_bo->vm, vm_bo->obj);
- 
- 	ops = kzalloc(sizeof(*ops), GFP_KERNEL);
- 	if (!ops)
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index c654a3377903cf7e067becdb481fb14895a4eaa5..156c7a0b62a231219645095d6012a5b108130bbc 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -245,7 +245,6 @@ struct drm_gem_object *panthor_gem_create_object(struct drm_device *ddev, size_t
- 
- 	obj->base.base.funcs = &panthor_gem_funcs;
- 	obj->base.map_wc = !ptdev->coherent;
--	drm_gem_gpuva_set_lock(&obj->base.base, &obj->base.base.gpuva.lock);
- 	mutex_init(&obj->label.lock);
- 
- 	panthor_gem_debugfs_bo_init(obj);
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index 2881942ab5115686803fb9d9036bc059d56b7fa3..ee9e94448b76ffd31a97d82a857fa925c4cf0cb5 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -2420,8 +2420,9 @@ panthor_vm_create(struct panthor_device *ptdev, bool for_mcu,
- 	 * to be handled the same way user VMAs are.
- 	 */
- 	drm_gpuvm_init(&vm->base, for_mcu ? "panthor-MCU-VM" : "panthor-GPU-VM",
--		       DRM_GPUVM_RESV_PROTECTED, &ptdev->base, dummy_gem,
--		       min_va, va_range, 0, 0, &panthor_gpuvm_ops);
-+		       DRM_GPUVM_RESV_PROTECTED | DRM_GPUVM_IMMEDIATE_MODE,
-+		       &ptdev->base, dummy_gem, min_va, va_range, 0, 0,
-+		       &panthor_gpuvm_ops);
- 	drm_gem_object_put(dummy_gem);
- 	return vm;
- 
-diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
-index a995c0c1b63c5946b1659cec08c360a5bb9e9fba..f197ed6b3dfa91b8e44c5fa8cc308c7a09b0fb3b 100644
---- a/include/drm/drm_gem.h
-+++ b/include/drm/drm_gem.h
-@@ -399,6 +399,12 @@ struct drm_gem_object {
- 
- 	/**
- 	 * @gpuva: Fields used by GPUVM to manage mappings pointing to this GEM object.
-+	 *
-+	 * When DRM_GPUVM_IMMEDIATE_MODE is set, this list is protected by the
-+	 * mutex. Otherwise, the list is protected by the GEMs &dma_resv lock.
-+	 *
-+	 * Note that all entries in this list must agree on whether
-+	 * DRM_GPUVM_IMMEDIATE_MODE is set.
- 	 */
- 	struct {
- 		/**
-@@ -412,17 +418,14 @@ struct drm_gem_object {
- 
- 		/**
- 		 * @gpuva.lock: lock protecting access to &drm_gem_object.gpuva.list
--		 * when the resv lock can't be used.
-+		 * when DRM_GPUVM_IMMEDIATE_MODE is used.
- 		 *
--		 * Should only be used when the VM is being modified in a fence
--		 * signalling path, otherwise you should use &drm_gem_object.resv to
--		 * protect accesses to &drm_gem_object.gpuva.list.
-+		 * Only used when DRM_GPUVM_IMMEDIATE_MODE is set. It should be
-+		 * safe to take this mutex during the fence signalling path, so
-+		 * do not allocate memory while holding this lock. Otherwise,
-+		 * the &dma_resv lock should be used.
- 		 */
- 		struct mutex lock;
--
--#ifdef CONFIG_LOCKDEP
--		struct lockdep_map *lock_dep_map;
--#endif
- 	} gpuva;
- 
- 	/**
-@@ -607,26 +610,12 @@ static inline bool drm_gem_is_imported(const struct drm_gem_object *obj)
- }
- 
- #ifdef CONFIG_LOCKDEP
--/**
-- * drm_gem_gpuva_set_lock() - Set the lock protecting accesses to the gpuva list.
-- * @obj: the &drm_gem_object
-- * @lock: the lock used to protect the gpuva list. The locking primitive
-- * must contain a dep_map field.
-- *
-- * Call this if you're not proctecting access to the gpuva list with the
-- * dma-resv lock, but with a custom lock.
-- */
--#define drm_gem_gpuva_set_lock(obj, lock) \
--	if (!WARN((obj)->gpuva.lock_dep_map, \
--		  "GEM GPUVA lock should be set only once.")) \
--		(obj)->gpuva.lock_dep_map = &(lock)->dep_map
--#define drm_gem_gpuva_assert_lock_held(obj) \
--	lockdep_assert((obj)->gpuva.lock_dep_map ? \
--		       lock_is_held((obj)->gpuva.lock_dep_map) : \
-+#define drm_gem_gpuva_assert_lock_held(gpuvm, obj) \
-+	lockdep_assert(drm_gpuvm_immediate_mode(gpuvm) ? \
-+		       lock_is_held(&(obj)->gpuva.lock.dep_map) : \
- 		       dma_resv_held((obj)->resv))
- #else
--#define drm_gem_gpuva_set_lock(obj, lock) do {} while (0)
--#define drm_gem_gpuva_assert_lock_held(obj) do {} while (0)
-+#define drm_gem_gpuva_assert_lock_held(gpuvm, obj) do {} while (0)
- #endif
- 
- /**
-diff --git a/include/drm/drm_gpuvm.h b/include/drm/drm_gpuvm.h
-index 4a22b9d848f7b3d5710ca554f5b01556abf95985..727b8f336fad0d853998e4379cbd374155468e18 100644
---- a/include/drm/drm_gpuvm.h
-+++ b/include/drm/drm_gpuvm.h
-@@ -196,10 +196,20 @@ enum drm_gpuvm_flags {
- 	 */
- 	DRM_GPUVM_RESV_PROTECTED = BIT(0),
- 
-+	/**
-+	 * @DRM_GPUVM_IMMEDIATE_MODE: use the locking scheme for GEMs designed
-+	 * for modifying the GPUVM during the fence signalling path
-+	 *
-+	 * When set, gpuva.lock is used to protect gpuva.list in all GEM
-+	 * objects associated with this GPUVM. Otherwise, the GEMs dma-resv is
-+	 * used.
-+	 */
-+	DRM_GPUVM_IMMEDIATE_MODE = BIT(1),
-+
- 	/**
- 	 * @DRM_GPUVM_USERBITS: user defined bits
- 	 */
--	DRM_GPUVM_USERBITS = BIT(1),
-+	DRM_GPUVM_USERBITS = BIT(2),
- };
- 
- /**
-@@ -369,6 +379,19 @@ drm_gpuvm_resv_protected(struct drm_gpuvm *gpuvm)
- 	return gpuvm->flags & DRM_GPUVM_RESV_PROTECTED;
- }
- 
-+/**
-+ * drm_gpuvm_immediate_mode() - indicates whether &DRM_GPUVM_IMMEDIATE_MODE is
-+ * set
-+ * @gpuvm: the &drm_gpuvm
-+ *
-+ * Returns: true if &DRM_GPUVM_IMMEDIATE_MODE is set, false otherwise.
-+ */
-+static inline bool
-+drm_gpuvm_immediate_mode(struct drm_gpuvm *gpuvm)
-+{
-+	return gpuvm->flags & DRM_GPUVM_IMMEDIATE_MODE;
-+}
-+
- /**
-  * drm_gpuvm_resv() - returns the &drm_gpuvm's &dma_resv
-  * @gpuvm__: the &drm_gpuvm
-@@ -742,9 +765,10 @@ drm_gpuvm_bo_gem_evict(struct drm_gem_object *obj, bool evict)
- {
- 	struct drm_gpuvm_bo *vm_bo;
- 
--	drm_gem_gpuva_assert_lock_held(obj);
--	drm_gem_for_each_gpuvm_bo(vm_bo, obj)
-+	drm_gem_for_each_gpuvm_bo(vm_bo, obj) {
-+		drm_gem_gpuva_assert_lock_held(vm_bo->vm, obj);
- 		drm_gpuvm_bo_evict(vm_bo, evict);
-+	}
- }
- 
- void drm_gpuvm_bo_extobj_add(struct drm_gpuvm_bo *vm_bo);
+This means that kstrtobool_raw could take a &CStr directly and thus not =
+be unsafe IIUC?
 
--- 
-2.51.0.261.g7ce5a0a67e-goog
+> +    // SAFETY: `stack_string` is null terminated and it is live on =
+the stack so
+> +    // it is valid for read.
+> +    unsafe { kstrtobool_raw(stack_string.as_ptr()) }
+> }
+>=20
+> /// An owned string that is guaranteed to have exactly one `NUL` byte, =
+which is at the end.
+>=20
+> --=20
+> 2.47.2
+>=20
+>=20
+>=20
+
 
