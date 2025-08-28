@@ -1,159 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9C33081AF
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 Aug 2025 10:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433A330BBAA;
+	Thu, 28 Aug 2025 10:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756375538; cv=none; b=V2016Dy/JLS54EOzPLD1cqF9I5Il4AWoZUKKKHAwYzSx0aprpW2EWibz3iSoBuair1x5SxvDP+ZlZqePTXKCS9DOyYZM10vc6/hmogmhNzdadGuJ9qV4wiP0IBS4z6OG1A7/5DTtmjdKw5Ltgx6UjtsK+2igY3RlQLBk9DQSfNM=
+	t=1756376136; cv=none; b=j2Al4meJrQa6TdBlkzOy+wNb85IZMvSMp6IBm42kF2rg21X5L7+t5RAhH/Jbl6M+0Vb88H9c5+T3i73Cb2GMyL7+/Ggjoe7FMjtMDIyqg/ebDrVpI1llyjt1dXdOk+FbXEUw4ydqU4ixlUn2CIkqfuwCtxg5//CU3cHxyDmdT5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756375538; c=relaxed/simple;
-	bh=Ku1yzjDdHS56Wo0QHQg7lQzpp+LhHdoBvhe979tiHU8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pBWxDYqgF2EueJjnAERwVwjoQWT670UENalbROv9K+CRjUuQYZTr4Afm14/Ye09sjukdqI1+3CiBZhAAmG9Y6hM/2oPh3mVf/3diKMzfpm2d9JfOdYtVDiFz1qZTKD5/9lcBAq1eFmQ13Wym6wol9kqCFIOPjaG49D0jGah9NX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bIM/bUJB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1756376136; c=relaxed/simple;
+	bh=QHy9i2efZ8tkwqxNRH6HBfyzmqhrQcjUYGnuYwTPd4I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IHELo3rZ1U8OeD2sKeH+AErEvlxmsB3fRICbem9Dpyu9Vyghr4WDs5jFJaegIetScg07C6dI80FAglBPSe8Dd7F2bcM9H9A0vyTXJg2L7Pgy7zr//XIJvKAkkxCiIUuwcer3ED34zwRQ7gSfjrVl00OVGWhT/uNYAa05AD/u6pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ANDEJsC5; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bIM/bUJB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756375535;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iOWLjvSk+7GndF8AQckdONEc6IGjNeDFaijnw8WVqT8=;
-	b=bIM/bUJBXKoE1HL0Rp5rU+MKuFMFaIJmSWpoZeF7hmv6yFglnOWkyY0K5rxT3VMLOlaaJr
-	aa0G0kmtbs5ZAVdal4AGrTdrGg98PQeD1FXmMxPWKX/o9p6nSnPeddGmFsDt+UMrO1tLgL
-	iIcA3zK85lAknD48x4o9y2zWqWzpsxE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-ortSZ0rXOL2G-MSw2cSS7w-1; Thu,
- 28 Aug 2025 06:05:32 -0400
-X-MC-Unique: ortSZ0rXOL2G-MSw2cSS7w-1
-X-Mimecast-MFC-AGG-ID: ortSZ0rXOL2G-MSw2cSS7w_1756375530
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 914CF1956086;
-	Thu, 28 Aug 2025 10:05:30 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.22])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EC38519560B4;
-	Thu, 28 Aug 2025 10:05:21 +0000 (UTC)
-Date: Thu, 28 Aug 2025 18:05:16 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Sidong Yang <sidong.yang@furiosa.ai>, Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [RFC PATCH v3 3/5] rust: io_uring: introduce rust abstraction
- for io-uring cmd
-Message-ID: <aLAp3OUhsxUEsEWT@fedora>
-References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
- <20250822125555.8620-4-sidong.yang@furiosa.ai>
- <aK-kd3GBhxOzt_mA@fedora>
- <DCDVRPJKZBC3.31KGTGS90WUUA@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ANDEJsC5"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-24896af0650so1427065ad.3;
+        Thu, 28 Aug 2025 03:15:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756376134; x=1756980934; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JiVOZjj5dX5ezdymB5W797ap7j6lkwqulyL8xQVxYMA=;
+        b=ANDEJsC5f8NWTGg8rriIigAnZDWwmpj27IrG2vpNSEI2xCLd89gQtzAEDmySaE8plv
+         dbVQ6OAL9nCnja43zdgmWdEDoFQJLOfYb6PG86ulZwjT5pBlrb60gvYPmgcMSnPJV7eA
+         ltjQdHH61oCmc/xd+IYXczp/p5HMxfip72XLVz4i27zPkz+DYsnDQEEb610YCBv6GWNt
+         wCV/yw4qhFRbPs/lksKGQdj7UCsMrShF0UVkec7ySB2WIO60nxW1MiefeFIW3hhelOIQ
+         6aUJRDvE9Jq71yIu2QPsjxi1atmQLbpuYbug5pLeoe0wWz1tjo+kWazoil7q4F9+EyQz
+         kOJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756376134; x=1756980934;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JiVOZjj5dX5ezdymB5W797ap7j6lkwqulyL8xQVxYMA=;
+        b=pwqjkWj/E+vE4nVojbm9hHSRQivHNWwIrG5kmgM9btpok8dBvE8DcL5nu5HXWxsPRY
+         HZrawznhdl175Izied7mr4kmbggYJk9UNivr+l/kz54BR2ugjvJI7w/5d5RjqtuXGkpE
+         HufFKd6XPqyRNq+HqAcJpuOAbyjO30d8r/WXxTIkxo02lXJ07AfLg763nKgIpmM4vEjM
+         K24AvXHZDUom9f7imZVTDACjEoe3qbd4aCzRBAD0XI7KrgXTLJBYzobO5vp5sLfZZUd6
+         eGUzoIZVtiO9Sfd5K2/Fy0o7/Hc7q2fJl4/nP9DV2HZ95uDlkmOhVY/qy0hgp1AOwgVZ
+         hH1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVxDuAIu+BlwRJl2QVaGrffr/euMOiU0a0OJQR2NR7Un7yCsf0h57yoZJYPqnrEy0Gw55SLqlA4UvBQQS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQapCLzhkWPZam9vjLrgAIDYCuT6Uh7AQsuoNC/SmZZvoJNeUS
+	+dn2v1qTkNAMZPgFrnIBn1f7WVLpl21/MailkwKEjl6cU2g/W64mIyG3JVQKQuUXn1xxzqj/f+E
+	vcLVBxAjaXjh5iupCxDD+F8U07Ue9BY4=
+X-Gm-Gg: ASbGncuw/fvZfaN2fWcutr2fI0pip2sEZouvhwTngId6UWVh65whFrwIvxKONSf2v0U
+	X6Kx8bm7YEa9khyeNQGmRb6vbZnWTecZAbnNe5jbszISSN6Vw8Cb8LDdWuz5MvKKFh8hVkLtUH/
+	Z/j3L0jr0BG/3sLqdB6Q5BeqWtwtDdgBD1zTRjo+VcyxPhGx+z0w1aBxRX4xB4tZlZ/VvtsRSUU
+	P5fvhoulpQDDjvqvTVHUUb0XihCZHv2ZG08m4GfRVKxyJzdRNf3rxCwwtFoA0pn0rkMe0+xWCGv
+	4R/Qo4WWUF6rUWAYDraLWkuFO5makxELPj36
+X-Google-Smtp-Source: AGHT+IExt0H24cYfDNYRK7VV1Kg5o3DmULfVx2WtpxMereez+JEW+sM1Ye6VbJM8ljuSOWPtoVblQ8wfMuLOg8pnybU=
+X-Received: by 2002:a17:902:fd0e:b0:242:d237:a8da with SMTP id
+ d9443c01a7336-2462eea895fmr116993385ad.5.1756376134541; Thu, 28 Aug 2025
+ 03:15:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCDVRPJKZBC3.31KGTGS90WUUA@kernel.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+References: <20250821090720.23939-1-work@onurozkan.dev>
+In-Reply-To: <20250821090720.23939-1-work@onurozkan.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 28 Aug 2025 12:15:20 +0200
+X-Gm-Features: Ac12FXyVsdEDADN8qh-rg_GIvdEzdptyAbwPlz4I2qAbcyrPd-Z_H1M6KVwvdIk
+Message-ID: <CANiq72kM0X3fGNvD2WKBUHxg=fau+m6dqz+gq5rPyzax_3-ZVw@mail.gmail.com>
+Subject: Re: [PATCH] rust: regulator: use `to_result` for error handling
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, lgirdwood@gmail.com, broonie@kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 28, 2025 at 09:25:56AM +0200, Benno Lossin wrote:
-> On Thu Aug 28, 2025 at 2:36 AM CEST, Ming Lei wrote:
-> > On Fri, Aug 22, 2025 at 12:55:53PM +0000, Sidong Yang wrote:
-> >> +    /// Reads protocol data unit as `T` that impl `FromBytes` from uring cmd
-> >> +    ///
-> >> +    /// Fails with [`EFAULT`] if size of `T` is bigger than pdu size.
-> >> +    #[inline]
-> >> +    pub fn read_pdu<T: FromBytes>(&self) -> Result<T> {
-> >> +        // SAFETY: `self.inner` is guaranteed by the type invariant to point
-> >> +        // to a live `io_uring_cmd`, so dereferencing is safe.
-> >> +        let inner = unsafe { &mut *self.inner.get() };
-> >> +
-> >> +        let len = size_of::<T>();
-> >> +        if len > inner.pdu.len() {
-> >> +            return Err(EFAULT);
-> >> +        }
-> >> +
-> >> +        let mut out: MaybeUninit<T> = MaybeUninit::uninit();
-> >> +        let ptr = &raw mut inner.pdu as *const c_void;
-> >> +
-> >> +        // SAFETY:
-> >> +        // * The `ptr` is valid pointer from `self.inner` that is guaranteed by type invariant.
-> >> +        // * The `out` is valid pointer that points `T` which impls `FromBytes` and checked
-> >> +        //   size of `T` is smaller than pdu size.
-> >> +        unsafe {
-> >> +            core::ptr::copy_nonoverlapping(ptr, out.as_mut_ptr().cast::<c_void>(), len);
-> >> +        }
-> >> +
-> >> +        // SAFETY: The read above has initialized all bytes in `out`, and since `T` implements
-> >> +        // `FromBytes`, any bit-pattern is a valid value for this type.
-> >> +        Ok(unsafe { out.assume_init() })
-> >> +    }
-> >> +
-> >> +    /// Writes the provided `value` to `pdu` in uring_cmd `self`
-> >> +    ///
-> >> +    /// Fails with [`EFAULT`] if size of `T` is bigger than pdu size.
-> >> +    #[inline]
-> >> +    pub fn write_pdu<T: AsBytes>(&mut self, value: &T) -> Result<()> {
-> >> +        // SAFETY: `self.inner` is guaranteed by the type invariant to point
-> >> +        // to a live `io_uring_cmd`, so dereferencing is safe.
-> >> +        let inner = unsafe { &mut *self.inner.get() };
-> >> +
-> >> +        let len = size_of::<T>();
-> >> +        if len > inner.pdu.len() {
-> >> +            return Err(EFAULT);
-> >> +        }
-> >> +
-> >> +        let src = (value as *const T).cast::<c_void>();
-> >> +        let dst = &raw mut inner.pdu as *mut c_void;
-> >> +
-> >> +        // SAFETY:
-> >> +        // * The `src` is points valid memory that is guaranteed by `T` impls `AsBytes`
-> >> +        // * The `dst` is valid. It's from `self.inner` that is guaranteed by type invariant.
-> >> +        // * It's safe to copy because size of `T` is no more than len of pdu.
-> >> +        unsafe {
-> >> +            core::ptr::copy_nonoverlapping(src, dst, len);
-> >> +        }
-> >> +
-> >> +        Ok(())
-> >> +    }
-> >
-> > pdu is part of IoUringCmd, which is live in the whole uring_cmd lifetime. But
-> > both read_pdu()/write_pdu() needs copy to read or write any byte in the pdu, which
-> > is slow and hard to use, it could be more efficient to add two methods to return
-> > Result<&T> and Result<mut &T> for user to manipulate uring_cmd's pdu.
-> 
-> That can also be useful, but you do need to ensure that the pdu is
-> aligned to at least the required alignment of `T` for this to be sound.
+On Thu, Aug 21, 2025 at 11:08=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.de=
+v> wrote:
+>
+> -        if voltage < 0 {
+> -            Err(kernel::error::Error::from_errno(voltage))
+> -        } else {
+> -            Ok(Voltage::from_microvolts(voltage))
+> -        }
+> +
+> +        to_result(voltage).map(|()| Voltage::from_microvolts(voltage))
 
-Yes, `IoUringCmd` is actually one C struct, so `T` is supposed to be `#[repr(C)]`
-too, and the usage should be just like what io_uring_cmd_to_pdu() provides.
+No big deal either way, but our usual idiom for this so far is:
 
-> I also don't follow your argument that reading & writing the pdu is
-> slow.
+    to_result(voltage)?;
+    Ok(Voltage::from_microvolts(voltage))
 
-Please look at how pdu is used in existing C users, such as, the tag field of
-`pdu` can be read/write directly via:
+which, in a way, uses early return to put the happy path in a less
+indented / more visible place.
 
-	`io_uring_cmd_to_pdu(ioucmd, struct ublk_uring_cmd_pdu)->tag`
+(I noticed a few similar patches lately)
 
-but read_pdu()/write_pdu() needs whole 32bytes copy for read/write any
-single field.
-
-User may only need to store single byte data in pdu...
-
-Thanks,
-Ming
-
+Cheers,
+Miguel
