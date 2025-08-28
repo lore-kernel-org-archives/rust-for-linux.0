@@ -1,139 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F6E2877E2;
-	Thu, 28 Aug 2025 07:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6D9283C90;
+	Thu, 28 Aug 2025 08:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756365960; cv=none; b=AMKqoNWKh4WQ+/sr5pCSNtgcjjqzehZmpkQw8SzF6deWXkFqPDjLf/zptE3M3zaDWLaQfjuqwDVx/YRY+k0dlgaxvbwwlGr1QOhP/xQaivGPDSWilCRkzOMzjPqi7CRXaIxB/AikmyaWUKZm4GcnwVWQGkthwMV2R+GHxQqWmfA=
+	t=1756369787; cv=none; b=uSGQDJTiq0dEKTGiB0wot0BdbgSEghF7ltp/FU/QMIOLKCKN1qaUzTBt2Xwo8MnnBeSU3dIByin9EuHCitZ0ifLqNBYB+GmZebAPib+a2pcvKidE2sj+y/jV71t61IsO03wRr5FvTKEZiU7RBoY536/rcYF1lr8QI3x5xXG7578=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756365960; c=relaxed/simple;
-	bh=2BRwtGaDZ/6Km5UhK2qGK47+lM1iCESKOunbULBWRtk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=exNbtV3jASM+Eb9ZMHMh0NxXiCHq3CK4Efdi2xahSq5xukDI+Ta1fkHqoacHShVq5O6SSuBa2CEIKBN0gEiY4jtpns4rBcHrM+kMOrC4R42ZbGW6uE/GCbvdRaIetxIRyi5tyeyAgF2zAxcUpQEtlQJ6QPyQY/WQEn6H4n/K7Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGY/4w04; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756369787; c=relaxed/simple;
+	bh=1b9KEpONUPclk3sil0nM+e0EgJNpZUYT12fVrFlVNao=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QeDrQLNqytxWUx4XH+Cwz2c4Hex943AArttUhttU/RgA4XL+mzKMmaapBe1mFpfeFaeAsQ5Clu0dC0i/ZtmJ8cZAszhjSYi4FgUFoPEssJOyvwVUjCrJ4vHEC43rPS/jJ9Fkyr5C3SbpgsjupzmskLFjhGXelamW+zYU/rXFhEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJb8ipEP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGY/4w04"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F754C4CEEB;
-	Thu, 28 Aug 2025 07:25:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJb8ipEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A41C4CEEB;
+	Thu, 28 Aug 2025 08:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756365960;
-	bh=2BRwtGaDZ/6Km5UhK2qGK47+lM1iCESKOunbULBWRtk=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=XGY/4w04AxdmWRUziN0qjr1ZicsrOZFbfNTMFu54+Tta8pvvQLQFGnifdQmgWDRhn
-	 5QewdC/u4PqZPmxavJ6LnkWMTwDoqPjw2L+8rLKXWMAS3v+UJKMw7JYMtlHjCIATNi
-	 wC/nbK02Menz8rZm7LtB6aSTAEgZngLZ0mKtL26Spire86NWqXpq1mUjmwodyCLsoC
-	 cZ84LyUoNZh1hPg+lAvSka87xmafwc/nHZbdl9BF4/PtJ9x3Pz04+qz1Q2ZIscisc1
-	 6+r+x7TzyA/iTpj1yyIkPbxHazFsrtHOWWWc6bswy+NYK3MqkTzfACEbja6+Nlo1X5
-	 dNyZwsZaQvmxQ==
+	s=k20201202; t=1756369787;
+	bh=1b9KEpONUPclk3sil0nM+e0EgJNpZUYT12fVrFlVNao=;
+	h=Date:From:To:Cc:Subject:From;
+	b=NJb8ipEP58MO5LIoQxx5NEeGKrxZJHiThpc6mTpMrta0icNggjPBEwnHbklSoDrKZ
+	 lxPjDrnl853pLsk5QuyeYsGMlHLiBc8ehbb4yw5wOV5rsH3T7vmn61pHWWUTW7G0uY
+	 4ks1fTxWMlLkfWGL+zUCkPSsk6g9I7/iPeeRVFIHSGSZtgmNrhqDc3hWWTDTTrwSPM
+	 dOnotwoYhl9hucKunzoyUSMsV3Qnor84QB9eifHIyDrEIU5DrwXvF4jEIox+WddiRh
+	 JRlkKewWBGxWmd7g/ubV5rdCVD5PvdPJEa6RpY/iTr8b/ZEyq+aX4Z63svWX3dnGjX
+	 nky+TxeRizURA==
+Date: Thu, 28 Aug 2025 11:29:43 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: tpm-protocol@lists.linux.dev
+Cc: tpm2@lists.linux.dev, linux-integrity@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: tpm2-protocol: mailing list for patches and discussion
+Message-ID: <aLATd85uZQGfMfrP@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 28 Aug 2025 09:25:56 +0200
-Message-Id: <DCDVRPJKZBC3.31KGTGS90WUUA@kernel.org>
-Cc: "Jens Axboe" <axboe@kernel.dk>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Caleb Sander Mateos"
- <csander@purestorage.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Arnd
- Bergmann" <arnd@arndb.de>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <io-uring@vger.kernel.org>
-Subject: Re: [RFC PATCH v3 3/5] rust: io_uring: introduce rust abstraction
- for io-uring cmd
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Ming Lei" <ming.lei@redhat.com>, "Sidong Yang" <sidong.yang@furiosa.ai>
-X-Mailer: aerc 0.20.1
-References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
- <20250822125555.8620-4-sidong.yang@furiosa.ai> <aK-kd3GBhxOzt_mA@fedora>
-In-Reply-To: <aK-kd3GBhxOzt_mA@fedora>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Thu Aug 28, 2025 at 2:36 AM CEST, Ming Lei wrote:
-> On Fri, Aug 22, 2025 at 12:55:53PM +0000, Sidong Yang wrote:
->> +    /// Reads protocol data unit as `T` that impl `FromBytes` from urin=
-g cmd
->> +    ///
->> +    /// Fails with [`EFAULT`] if size of `T` is bigger than pdu size.
->> +    #[inline]
->> +    pub fn read_pdu<T: FromBytes>(&self) -> Result<T> {
->> +        // SAFETY: `self.inner` is guaranteed by the type invariant to =
-point
->> +        // to a live `io_uring_cmd`, so dereferencing is safe.
->> +        let inner =3D unsafe { &mut *self.inner.get() };
->> +
->> +        let len =3D size_of::<T>();
->> +        if len > inner.pdu.len() {
->> +            return Err(EFAULT);
->> +        }
->> +
->> +        let mut out: MaybeUninit<T> =3D MaybeUninit::uninit();
->> +        let ptr =3D &raw mut inner.pdu as *const c_void;
->> +
->> +        // SAFETY:
->> +        // * The `ptr` is valid pointer from `self.inner` that is guara=
-nteed by type invariant.
->> +        // * The `out` is valid pointer that points `T` which impls `Fr=
-omBytes` and checked
->> +        //   size of `T` is smaller than pdu size.
->> +        unsafe {
->> +            core::ptr::copy_nonoverlapping(ptr, out.as_mut_ptr().cast::=
-<c_void>(), len);
->> +        }
->> +
->> +        // SAFETY: The read above has initialized all bytes in `out`, a=
-nd since `T` implements
->> +        // `FromBytes`, any bit-pattern is a valid value for this type.
->> +        Ok(unsafe { out.assume_init() })
->> +    }
->> +
->> +    /// Writes the provided `value` to `pdu` in uring_cmd `self`
->> +    ///
->> +    /// Fails with [`EFAULT`] if size of `T` is bigger than pdu size.
->> +    #[inline]
->> +    pub fn write_pdu<T: AsBytes>(&mut self, value: &T) -> Result<()> {
->> +        // SAFETY: `self.inner` is guaranteed by the type invariant to =
-point
->> +        // to a live `io_uring_cmd`, so dereferencing is safe.
->> +        let inner =3D unsafe { &mut *self.inner.get() };
->> +
->> +        let len =3D size_of::<T>();
->> +        if len > inner.pdu.len() {
->> +            return Err(EFAULT);
->> +        }
->> +
->> +        let src =3D (value as *const T).cast::<c_void>();
->> +        let dst =3D &raw mut inner.pdu as *mut c_void;
->> +
->> +        // SAFETY:
->> +        // * The `src` is points valid memory that is guaranteed by `T`=
- impls `AsBytes`
->> +        // * The `dst` is valid. It's from `self.inner` that is guarant=
-eed by type invariant.
->> +        // * It's safe to copy because size of `T` is no more than len =
-of pdu.
->> +        unsafe {
->> +            core::ptr::copy_nonoverlapping(src, dst, len);
->> +        }
->> +
->> +        Ok(())
->> +    }
->
-> pdu is part of IoUringCmd, which is live in the whole uring_cmd lifetime.=
- But
-> both read_pdu()/write_pdu() needs copy to read or write any byte in the p=
-du, which
-> is slow and hard to use, it could be more efficient to add two methods to=
- return
-> Result<&T> and Result<mut &T> for user to manipulate uring_cmd's pdu.
+I have ML now: https://lore.kernel.org/tpm-protocol/
 
-That can also be useful, but you do need to ensure that the pdu is
-aligned to at least the required alignment of `T` for this to be sound.
-I also don't follow your argument that reading & writing the pdu is
-slow.
+Patches and discussion: tpm-protocol@lists.linux.dev
 
----
-Cheers,
-Benno
+More information: 
+https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/tpm2-protocol.git/tree/README.md
+
+BR, Jarkko
