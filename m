@@ -1,190 +1,257 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2061.outbound.protection.outlook.com [40.107.220.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CDE72605;
-	Thu, 28 Aug 2025 19:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756408711; cv=fail; b=Yo8V4EbjumiZHJGC2re6tPKb0S85RWOILutRC5EcKb31Pf6z5v2WoRU16nIEBqPbX1a9d+ppsSqMVrygUF9M6BrDcsxtZTa09UrbsurmrOKPfmCihctLCriTEnduBc2KH5H2s668OMNlzpfXScdxucCte9iOXErXFKnxZ3MtMpQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756408711; c=relaxed/simple;
-	bh=LoAmG/om83XCXi8TmcM8YrBfOx9AuXa3K93aWxnPNeU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rWnbWAeQdOSONPR9t1VaGHL6+rxcC3YPQjB52tqLlwWMbyIVnXZQW/WNLmcZaxU3+ZX/PBGTl7sm+CeDUZ4Ob7B8/UJc3dZ+hwOzK0pm+36B5KV5q6HtojDIHtxCrFStYokb6Sjwd+UrVUQ1iJvnnCWzf8tVKH5GiLR9/hWNpVQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kUdpqfjk; arc=fail smtp.client-ip=40.107.220.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBCD21FF4A;
+	Thu, 28 Aug 2025 19:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756409046; cv=none; b=hHomrNN634gL82ey7pTwDiC5o4SPhdlYuxa2K7kw4eoQscR3MbyGsYmYtIca5Vy+CpM8fkBfrfCwC0Yw7CTKDw//4mbXJ9B0BZQgi+L/22VK92ti5nzKJLrqtoow8hfMWtvp4cgUVzxCmxifclXvqDoJkB+O/JmcSBtgDt1d8+k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756409046; c=relaxed/simple;
+	bh=kj+qLm0IXzBNLGOLwFFX+4io3j7Sj5+HCcStzPHPSGs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=TIT050hmgCyCpQihvPC36pNWcueuSJL3MkQDzOzkGBjgtF1TIgfD11XTVHgT2wX5eozt3LJmYnBHUSV1nfC3Ud0fBSCZKB05cVxMJ5ZGuTZcVguYer77XPtLGlyNGeBDQu0pKiXnLpNhrRT3rNsVkio18S2Aqm1riZMiaFj7FXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hNdgAhox; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kUdpqfjk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ewH2ieH5LDzBiW3oheyBFwIa/Nafy26BsTHhGXxP7b7oUC14NAtvTcoMrcTe/vUn3asLXce8N7ZgywJeBWvbYuqtVhk8LHfBS14S/3ApUUQJAoxzcMIrv8UGGtdiXt3PIk/3AK/ZM4b5WUg1vPLXt3REDtkapOr6yV0q9GHLjiDEwejVKMtAM8sCsEsUEZaOUMdDzDbYSynev5JwfpIiOHFliZ8E1Kj4H3F5xp17cI49SV1htvUuGW/AhcQDyAI1yR84Rqn4omafTb3RS/siwn/lNZSgQuBICE7YiCC8yAT2+LanLJ9QQMZaqoDD1GDDVWm5JZtJMKigGAA+ULBaCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0mgqg7jv533EByceZHfSmVEnFe8pbA07e3o/tOscS54=;
- b=X/7wBUXT89nTZbGqbEYuSk7vOfv4nCYGYmap/KinegRe3Rv421Q/5BOmPy1DsUX0ZMSRf3qBc/2fdRB4g5y2NI0ZqHw6QonCPIyyX4MxS+WNjkPC/5Fl9cQSPlRvR79DQiBitxLE8WWHv9XhLh1j62d+C5QYAn/gPMP4q/r891Hz9nq5CTkNmLvbgqbNqYa5pPcpKPxYz3gti1wcdWoKNPULQC9cVGv8fEDezkmtBEEqpkNkFKnX1dLkuLj4JGL3RvjXYwfiAQJ8od2bpzAzM/jexnkcb8vdnV3vc1qP6FoP7NAOGAUE2wylRptmaubaFD9o5RL3yCfElffu0CDaHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0mgqg7jv533EByceZHfSmVEnFe8pbA07e3o/tOscS54=;
- b=kUdpqfjkBAAzbDQlcZiiGcpXo63H4J3J9+CzG2+Xga9Htp8ts7ArC9Y2EWbyVIS/qoB79IfgnGIjx5a6i4+tmEiazA2Fu6pJBAzOnUlSa0u1Kh+Q//uaCcyEP4ls0FzPtcTj0ueU9TmeqdlDwub7dKj0la+hnE9M1h5Ak/JedTvr9gn3+OlAlBbYoN2H+zfe9cy94i1N8ly6wn/50oJhuaodMzAoqqsDasPpKPmlo+jDM25MPDmIfQJj0AzqUXYWyp3uE1bB4g590sct6itCmwvzPWxI8Bg2EET6RcFx1UsO3t2+JXlNMUEgIXGjh3QVW3C3jRnly/oP3k3zjZ8QXQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DM6PR12MB4483.namprd12.prod.outlook.com (2603:10b6:5:2a2::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.16; Thu, 28 Aug
- 2025 19:18:22 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
- 19:18:21 +0000
-Date: Thu, 28 Aug 2025 16:18:20 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Leon Romanovsky <leon@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
-Message-ID: <20250828191820.GH7333@nvidia.com>
-References: <cover.1755624249.git.leon@kernel.org>
- <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
- <aLBzeMNT3WOrjprC@kbusch-mbp>
- <20250828165427.GB10073@unreal>
- <aLCOqIaoaKUEOdeh@kbusch-mbp>
- <20250828184115.GE7333@nvidia.com>
- <aLCpqI-VQ7KeB6DL@kbusch-mbp>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLCpqI-VQ7KeB6DL@kbusch-mbp>
-X-ClientProxiedBy: YT3PR01CA0075.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:84::15) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hNdgAhox"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9843FC4CEF4;
+	Thu, 28 Aug 2025 19:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756409046;
+	bh=kj+qLm0IXzBNLGOLwFFX+4io3j7Sj5+HCcStzPHPSGs=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=hNdgAhoxWwknjnIsOl6bj/01t3BMYMxbdCsAMIsJZjJo0JjARFbexVpIEGRnSPY/F
+	 /r9ZjrUUNZ5y49NVQTcwAZrB1imTan3iXHIlnm3NFs03jeJkEZO31u+xWQVLAXG1/D
+	 ov8tyFg6exfTDdOp70wNjoPqHDN6DK/PsXdm5pGmlZOxafH9LQYNVOLFM7+C5+OdKI
+	 nc9WYr+26ERVttMoHozmm8iQXvQgWsQJXjyrhSVHX6aIv5GQsSrReRg9+MlZdAEseS
+	 vpTslNNMrKuuMhE+3t/vY/YXSjQhvW34o1g+JMo2KR26LqJMN3MbiUxpS+7M1lkqtM
+	 VD4GJ72nvi6Gw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DM6PR12MB4483:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52013604-2e30-48de-7d56-08dde667a72b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tkzamAbH5/chdWZm3ke+JvfeqA3hIcFqXbx+r0hKEizINFNE62neCHrkqAKo?=
- =?us-ascii?Q?GQw1qGDwSs3TS+26QCrA6PZpWQTzbU7LKQ83Uk3UlOHPCCU5xsrzJujNvddd?=
- =?us-ascii?Q?OehQwAUTsfK303zab5MCQrE09VBsGUPilNO3T1aJNCEGxeTULuJSZ++yxYJl?=
- =?us-ascii?Q?FlgvgSF4OFzaaJgeeBlol1BfkrZ6JutsedecnGm4fadF5v5qKcKkWiSbYaJZ?=
- =?us-ascii?Q?Q7KjhQ6iuhaaGW/HzzlIcBryVYIb0zhXbiWM4yz4pdVBAHmsOWn6fPztT2xI?=
- =?us-ascii?Q?CgRX34Dd+L7XXIfkzThN7GixgLCdVKm/6H9auCcYq/eKzShWVUTsPEydphF0?=
- =?us-ascii?Q?hEK3AkzSkOoGpwwvg0FLHnLPk0TD00/jZFYa3uDjrMy5OulejmplpaRvV4V6?=
- =?us-ascii?Q?1NbZOuS4LbRXHz00PF7LNPB4tvbLwjY3oMDtREd6DhcoP/FkIIGOzeePZqqG?=
- =?us-ascii?Q?WkkGYvEVecOnHOOSSoW3JNtWVbVy4dGBpVsFLSE2uKt1GcFUimdOxlgnSWCT?=
- =?us-ascii?Q?n1sEZlVQvw0hj9aWIErVnvFGFktiZpBDhCD2fu3frqGLedE3pDmml7cC+ReI?=
- =?us-ascii?Q?cMsV0hImSgwvs8E/AnS50UBlUAyolgVsq6eH5ZH1jJOUragJUXshbOpfXba5?=
- =?us-ascii?Q?cPQhE4fwX4mLT7FjuHd84RtUJREUcfXJWWyXODHoCb1YzVEB0tBhPKDwq7cp?=
- =?us-ascii?Q?bySTSPdaFAusmpRom51YWvAmn6Hp/6NrJxjapCZW1yJrpVK+BMVN8gxGE5Cc?=
- =?us-ascii?Q?DZyKydvUnj16k6RLTbxAd1leamkUiJZDWOxq05NnolwwWkxjmqjFEu8F9P/D?=
- =?us-ascii?Q?cvMezD4FVJXuY8ceXcbif3j0PMPr3UQ7Eb1Rww7DEshvjDp7lq0FVtGrmYyx?=
- =?us-ascii?Q?Sc0Zw4f3m+YzB/F+367AXTigA5Te45yigKc+JeHBCMBmoxnKTLDaBZNr1sqA?=
- =?us-ascii?Q?ZmXloRKJjUp3ynhRIVRkYhTwGxSnnJdciu9/ZTrcceii17N/AEDJHfIKbOLT?=
- =?us-ascii?Q?/Hb9jteFnXzwUZmvAVv+0RB9OI+llcTWo9WTcTQ0e1eVKPAEJHe6Q/XtWOkc?=
- =?us-ascii?Q?OeEcZpGJdgTn/n84ku29rld2xou+WiWBYXA/H3vsJ1OTobb8aiJwPwbPxGtD?=
- =?us-ascii?Q?yaAffWzTS9fNe4HpURb4JmcRYfadnPNLI1BKTRyB3MspRKVn5YNcrYJpsdzB?=
- =?us-ascii?Q?6RXZrdUiV1cE4+kPAYl/AZ5U4TGPKYv46MdftVKtqd7hjHbCc1iMk6Q3PZ7C?=
- =?us-ascii?Q?E16vp2SHCkKZhX0qaRcMz7wlPlC2FtYSSrXBmsyKzcKZJLsu35FPtenmIy79?=
- =?us-ascii?Q?sE/+9vfZTDd5IuPwUz2p8tCwsmScDWcRlJ9fgzWu3Z6D/chLmAqP8VgcK8nw?=
- =?us-ascii?Q?G0RW1qpUFifPjZx5cixCprrw5GfKMKhHdzQbEFARFE5AhBor5h9+bECVAmYX?=
- =?us-ascii?Q?o5aUVOB9LeQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5ky7gd8aT6zgXZ3S9u2dQ9wfKPLFRzCut7RGugI01Pf4Eog4OrfHb36oULUM?=
- =?us-ascii?Q?lQvuNDmGms0FsQm7SQAbJXvnFC2FBGxUqSisCJWTxG1ACYv3V0xKN0dTF7SE?=
- =?us-ascii?Q?yZQUEEGvX5PoOXyQz2eNsEDzmPQObvhzReHlm0bxhkUjW56bHpTHH7EwuKBO?=
- =?us-ascii?Q?1/FD2o5bTIp/+kHebgvLj9elgC54ARBPQVtbai5ZtYiSiOOvGRzeSOfC+FtM?=
- =?us-ascii?Q?sQif8EXHeXuZlAXZ53QAbPOs8Xl11PauIjy0sbinkp+ArJVGXqXqQmd1zeCb?=
- =?us-ascii?Q?aXLppKpxeIoNIJR++6stE6QMJdsPMPgHyaQoSSUPKImjqz80YZi2wVie0n36?=
- =?us-ascii?Q?ZakI0sqTWwh5Rkjou+uZG6R2ADTmM48hr/zKeFcIl1Z7cYLpGMfccJWUKxXU?=
- =?us-ascii?Q?ZKQk44HnnxbvyW57MXYfjwxhrjSUmIRVldoky0tEKDSJfzTLziPOy3V5OyYi?=
- =?us-ascii?Q?sXOVBCWqmMb55IAzG5VxU90BGilWh4lthyWGVDyN4c+JJpn/DzUNkbIgOEt5?=
- =?us-ascii?Q?wtmLF6Mt+eoEZ5njkBtUAbfPU44Iwat3iOLVTJIVf/WS5gwHMC5EoOHv5H97?=
- =?us-ascii?Q?gUB9BJfHfcY6sDZw6mXn857jfuIABDcet8nLyDqr18sdyk764gI31BdGI4NV?=
- =?us-ascii?Q?oVBrIahCpllgByOuio4OUUlrjXx6LrGXn22qthTjwS2vnK36xgjlfurJKFoy?=
- =?us-ascii?Q?+yOdBxt5KD2hw8/SdbYNDXrsZkF/SynBCKk8fHB9K5nBDDP/evgule554rpj?=
- =?us-ascii?Q?3sMnqD5o78y7mOIP9EUfi4YsWNAhib6Pb9LoBFt5ChmCISM9//zhPKSil2Ux?=
- =?us-ascii?Q?smPk9BeuFpSkfasaiNlnuJ/5NkmprQafGR0xa44/6Q40vIKgDIzWsFKSDd6+?=
- =?us-ascii?Q?oO6J1DfbJz7fGz2bwXX0/GqrLCuVj9V0oowgXGDa5aCN0S3DFSGmc2EkQxfl?=
- =?us-ascii?Q?UllYeNA7AM+ttA0/FbHgkD7h9actDtyrlsBNKtBS1L/JfLRTUlNGBbj4XHVU?=
- =?us-ascii?Q?9u1l4DuMFLq3GivCBp1rZOd2os/O4iAvukZ422zqAuYLSQu8BSExUTOEvtiR?=
- =?us-ascii?Q?39g9mSg3Z535dtWBdo4nP32e4AHmvrQe2SLI/1Zz0FD2CbGwSGZuW0DtQM+A?=
- =?us-ascii?Q?frdJNMjWVCbo7AxfwIFSPhy5G3IOVygXoRBQ4V04M0wfBpTVJ4KqK3pgULAQ?=
- =?us-ascii?Q?0CL7r6hi5Fl0+yoNYyD1Ohwow+fi/3TGY8RJtNHC9AetvMra5ckKM6cRuotU?=
- =?us-ascii?Q?wLKR80vFplmKVrRTjgMQCVUSMQ5eTRZ1qaPH3k8Up+5Hx0c+oSmZCcN7tQOY?=
- =?us-ascii?Q?2/cN3Gj6XPil0H1Ik+KhKjq0rJ9o49M7L9fITJUQ31uMPDEn3Ymg5H5Z+YLl?=
- =?us-ascii?Q?PvRGSfqJwpB3FJmweuifLM1Ek+W5g4JGeM0xcWzd5hCEZHYIGbt4JuyRm2Rb?=
- =?us-ascii?Q?84vjpS3yma0Dv0io44RAe1eO3CHnVzinSkzulYRLZvA7PgTCrAG+JR18Tgtb?=
- =?us-ascii?Q?/xJj0RtMfBIYhpyZblffBKIRpMl7noh10yYTlcjabPOIoXVPPHSpPkM6n+R4?=
- =?us-ascii?Q?vIw0P2IDKKahN6lpEoM=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52013604-2e30-48de-7d56-08dde667a72b
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 19:18:21.9042
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hHBOMGpozkeIevL9wLHwQhy2eRzFmZhbRTFbZweAUasp+caHeKpopNq0/07EWPc1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4483
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 28 Aug 2025 21:24:02 +0200
+Message-Id: <DCEB1J2P3MZS.3IGXEYP0MAC5H@kernel.org>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Miguel Ojeda" <ojeda@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: gpu: nova-core: arm32 build errors
+References: <20250828160247.37492-1-ojeda@kernel.org>
+ <b680c343-ba97-4eb4-b426-56e318dce492@kernel.org>
+In-Reply-To: <b680c343-ba97-4eb4-b426-56e318dce492@kernel.org>
 
-On Thu, Aug 28, 2025 at 01:10:32PM -0600, Keith Busch wrote:
-> On Thu, Aug 28, 2025 at 03:41:15PM -0300, Jason Gunthorpe wrote:
-> > On Thu, Aug 28, 2025 at 11:15:20AM -0600, Keith Busch wrote:
-> > > 
-> > > I don't think that was ever the case. Metadata is allocated
-> > > independently of the data payload, usually by the kernel in
-> > > bio_integrity_prep() just before dispatching the request. The bio may
-> > > have a p2p data payload, but the integrity metadata is just a kmalloc
-> > > buf in that path.
-> > 
-> > Then you should do two dma mapping operations today, that is how the
-> > API was built. You shouldn't mix P2P and non P2P within a single
-> > operation right now..
-> 
-> Data and metadata are mapped as separate operations. They're just
-> different parts of one blk-mq request.
+On Thu Aug 28, 2025 at 7:54 PM CEST, Danilo Krummrich wrote:
+> On 8/28/25 6:02 PM, Miguel Ojeda wrote:
+>> Similar to another one I sent, I hope it helps -- it may be useful to ma=
+ke it
+>> build in 32-bit as a test for those kinds of platforms.
+>
+> Agreed.
 
-In that case the new bit leon proposes should only be used for the
-unmap of the data pages and the metadata unmap should always be
-unmapped as CPU?
+Maybe I spoke too soon, it's actually pretty painful to keep 32-bit
+compatibility, even though it would be nice for testing purposes.
 
-Jason
+I'll paste the diff to fix it below, I think that makes it obvious why I sa=
+y
+that.
+
+Instead, we should really just depend on CONFIG_64BIT (which implies
+ARCH_DMA_ADDR_T_64BIT).
+
+--
+
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon=
+.rs
+index 50437c67c14a..e6a22834e317 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -466,7 +466,7 @@ fn dma_wr<F: FalconFirmware<Target =3D E>>(
+             .set_base((dma_start >> 8) as u32)
+             .write(bar, E::BASE);
+         regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+-            .set_base((dma_start >> 40) as u16)
++            .set_base((dma_start.checked_shr(40).unwrap_or(0)) as u16)
+             .write(bar, E::BASE);
+
+         let cmd =3D regs::NV_PFALCON_FALCON_DMATRFCMD::default()
+diff --git a/drivers/gpu/nova-core/fb/hal.rs b/drivers/gpu/nova-core/fb/hal=
+.rs
+index 2f914948bb9a..710491ee445a 100644
+--- a/drivers/gpu/nova-core/fb/hal.rs
++++ b/drivers/gpu/nova-core/fb/hal.rs
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+
++use kernel::bindings::dma_addr_t as DmaAddress;
+ use kernel::prelude::*;
+
+ use crate::driver::Bar0;
+@@ -11,12 +12,12 @@
+
+ pub(crate) trait FbHal {
+     /// Returns the address of the currently-registered sysmem flush page.
+-    fn read_sysmem_flush_page(&self, bar: &Bar0) -> u64;
++    fn read_sysmem_flush_page(&self, bar: &Bar0) -> DmaAddress;
+
+     /// Register `addr` as the address of the sysmem flush page.
+     ///
+     /// This might fail if the address is too large for the receiving regi=
+ster.
+-    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: u64) -> Result;
++    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: DmaAddress) -> Res=
+ult;
+
+     /// Returns `true` is display is supported.
+     fn supports_display(&self, bar: &Bar0) -> bool;
+diff --git a/drivers/gpu/nova-core/fb/hal/ga100.rs b/drivers/gpu/nova-core/=
+fb/hal/ga100.rs
+index 871c42bf033a..c4ae172b4ed4 100644
+--- a/drivers/gpu/nova-core/fb/hal/ga100.rs
++++ b/drivers/gpu/nova-core/fb/hal/ga100.rs
+@@ -2,6 +2,7 @@
+
+ struct Ga100;
+
++use kernel::bindings::dma_addr_t as DmaAddress;
+ use kernel::prelude::*;
+
+ use crate::driver::Bar0;
+@@ -10,13 +11,22 @@
+
+ use super::tu102::FLUSH_SYSMEM_ADDR_SHIFT;
+
+-pub(super) fn read_sysmem_flush_page_ga100(bar: &Bar0) -> u64 {
+-    u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08()) =
+<< FLUSH_SYSMEM_ADDR_SHIFT
++pub(super) fn read_sysmem_flush_page_ga100(bar: &Bar0) -> DmaAddress {
++    let addr =3D u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).=
+adr_39_08())
++        << FLUSH_SYSMEM_ADDR_SHIFT
+         | u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::read(bar).adr_=
+63_40())
+-            << FLUSH_SYSMEM_ADDR_SHIFT_HI
++            << FLUSH_SYSMEM_ADDR_SHIFT_HI;
++
++    addr.try_into().unwrap_or_else(|_| {
++        kernel::warn_on!(true);
++
++        0
++    })
+ }
+
+-pub(super) fn write_sysmem_flush_page_ga100(bar: &Bar0, addr: u64) {
++pub(super) fn write_sysmem_flush_page_ga100(bar: &Bar0, addr: DmaAddress) =
+{
++    let addr =3D Into::<u64>::into(addr);
++
+     regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::default()
+         .set_adr_63_40((addr >> FLUSH_SYSMEM_ADDR_SHIFT_HI) as u32)
+         .write(bar);
+@@ -34,11 +44,11 @@ pub(super) fn display_enabled_ga100(bar: &Bar0) -> bool=
+ {
+ const FLUSH_SYSMEM_ADDR_SHIFT_HI: u32 =3D 40;
+
+ impl FbHal for Ga100 {
+-    fn read_sysmem_flush_page(&self, bar: &Bar0) -> u64 {
++    fn read_sysmem_flush_page(&self, bar: &Bar0) -> DmaAddress {
+         read_sysmem_flush_page_ga100(bar)
+     }
+
+-    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: u64) -> Result {
++    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: DmaAddress) -> Res=
+ult {
+         write_sysmem_flush_page_ga100(bar, addr);
+
+         Ok(())
+diff --git a/drivers/gpu/nova-core/fb/hal/ga102.rs b/drivers/gpu/nova-core/=
+fb/hal/ga102.rs
+index a73b77e39715..271dfd522b3c 100644
+--- a/drivers/gpu/nova-core/fb/hal/ga102.rs
++++ b/drivers/gpu/nova-core/fb/hal/ga102.rs
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+
++use kernel::bindings::dma_addr_t as DmaAddress;
+ use kernel::prelude::*;
+
+ use crate::driver::Bar0;
+@@ -13,11 +14,11 @@ fn vidmem_size_ga102(bar: &Bar0) -> u64 {
+ struct Ga102;
+
+ impl FbHal for Ga102 {
+-    fn read_sysmem_flush_page(&self, bar: &Bar0) -> u64 {
++    fn read_sysmem_flush_page(&self, bar: &Bar0) -> DmaAddress {
+         super::ga100::read_sysmem_flush_page_ga100(bar)
+     }
+
+-    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: u64) -> Result {
++    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: DmaAddress) -> Res=
+ult {
+         super::ga100::write_sysmem_flush_page_ga100(bar, addr);
+
+         Ok(())
+diff --git a/drivers/gpu/nova-core/fb/hal/tu102.rs b/drivers/gpu/nova-core/=
+fb/hal/tu102.rs
+index b022c781caf4..157342411596 100644
+--- a/drivers/gpu/nova-core/fb/hal/tu102.rs
++++ b/drivers/gpu/nova-core/fb/hal/tu102.rs
+@@ -3,17 +3,28 @@
+ use crate::driver::Bar0;
+ use crate::fb::hal::FbHal;
+ use crate::regs;
++
++use kernel::bindings::dma_addr_t as DmaAddress;
+ use kernel::prelude::*;
+
+ /// Shift applied to the sysmem address before it is written into `NV_PFB_=
+NISO_FLUSH_SYSMEM_ADDR`,
+ /// to be used by HALs.
+ pub(super) const FLUSH_SYSMEM_ADDR_SHIFT: u32 =3D 8;
+
+-pub(super) fn read_sysmem_flush_page_gm107(bar: &Bar0) -> u64 {
+-    u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08()) =
+<< FLUSH_SYSMEM_ADDR_SHIFT
++pub(super) fn read_sysmem_flush_page_gm107(bar: &Bar0) -> DmaAddress {
++    let addr =3D u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).=
+adr_39_08())
++        << FLUSH_SYSMEM_ADDR_SHIFT;
++
++    addr.try_into().unwrap_or_else(|_| {
++        kernel::warn_on!(true);
++
++        0
++    })
+ }
+
+-pub(super) fn write_sysmem_flush_page_gm107(bar: &Bar0, addr: u64) -> Resu=
+lt {
++pub(super) fn write_sysmem_flush_page_gm107(bar: &Bar0, addr: DmaAddress) =
+-> Result {
++    let addr =3D Into::<u64>::into(addr);
++
+     // Check that the address doesn't overflow the receiving 32-bit regist=
+er.
+     if addr >> (u32::BITS + FLUSH_SYSMEM_ADDR_SHIFT) =3D=3D 0 {
+         regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
+@@ -37,11 +48,11 @@ pub(super) fn vidmem_size_gp102(bar: &Bar0) -> u64 {
+ struct Tu102;
+
+ impl FbHal for Tu102 {
+-    fn read_sysmem_flush_page(&self, bar: &Bar0) -> u64 {
++    fn read_sysmem_flush_page(&self, bar: &Bar0) -> DmaAddress {
+         read_sysmem_flush_page_gm107(bar)
+     }
+
+-    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: u64) -> Result {
++    fn write_sysmem_flush_page(&self, bar: &Bar0, addr: DmaAddress) -> Res=
+ult {
+         write_sysmem_flush_page_gm107(bar, addr)
+     }
+
