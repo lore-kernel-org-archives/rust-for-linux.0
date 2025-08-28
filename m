@@ -1,94 +1,70 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4212B309DC1;
-	Thu, 28 Aug 2025 10:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43919DF58;
+	Thu, 28 Aug 2025 10:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756376366; cv=none; b=TKZlBr4hjse2XiLoUta4Yfp8RXFTyWp5DkhykqQxsERXxXOO9NhWMHzVS3TAWmqIGGbcUUcnmSt0JTeuhmHtSECQ1HsDbmGO19aaUQyYPy7RF5iaEqX4oY3v0ux3tawBGk9zsdCbo65Vir0gLm1PjQXMWZaZtz0apC4IBAlPRDI=
+	t=1756377769; cv=none; b=ZCcwcvwuYhFerfzhkzor6FP1KGl2FeeZYn9FgUAz0c+WAaAK/4VWBdhcEZ7jDBn5nqmhvWixEAUAmtKDTZXzwgMT7TuxMygD3xlTOIQKkLqAgGg6d3UHAuLn3I9YauQTf2EE6DFb3cPoMbV7xZ4v2b247/m8CwJTKWRmEkQZpg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756376366; c=relaxed/simple;
-	bh=uCQsYzGHM8gdZUV2vcR2ZjpT4tC/WRO5wHruBh+dFIA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CXEtvBPbQ2XwdegD5AQMnDQ7f54d5WPpGD9rnVyulVwbtBshizpyh3dE5TjWK00W/NmEjphPD2FmzRbrGqWOBxhSUVRowEoXZXIeWj6kgboTzz+2Lg6+TpBFGkBo5D0YQutoWCuB6eu+REWl7NRTYa9KfUA1Yok2S5dtB2KDIRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FNKDVS+n; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756377769; c=relaxed/simple;
+	bh=ypxh1ppNtcbAwO5q5dht/FXyUWQup2iODRBHMyFnsuI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IfwLDixdWTW869/bnkwKm8VcM3jPvsxVjV/1r8joQKj0RMKmm1cpOAeICqONcK5FY/PXi8XFkxnvOIYg1HtsiC0owEcAYCzkav/tX5FLj9RViHUgh74pTey+Ygk2PRTZNrspULJeglkuXzvtWcvbBbWWtQFBIflCXiCMZ8T9z7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pBQ20whM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FNKDVS+n"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24498e93b8fso1065215ad.3;
-        Thu, 28 Aug 2025 03:19:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756376364; x=1756981164; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uCQsYzGHM8gdZUV2vcR2ZjpT4tC/WRO5wHruBh+dFIA=;
-        b=FNKDVS+nPMZHa/Oql5Wo/vGiSMb9wSz0DvTBTSs46QugJhf3KnTl4cXFT9W7ZtLt3M
-         0riwxTq5OEIgPHf7QD5H2AZepRkAyBou+kQ/hb+LG1RxbNz6B36o7zlUdxPInGu3sfH9
-         KoycYVaab60M5ZYQwcYHWtn2i7L4SE6xkAjzUchPGcXtYxOK6LPm9gm3fVYvLPUkxy81
-         qLor3bUk4Arw4S25FbHaAzGgEIiGSErYK39fTCqgXJXBGJyP9nyIc8WCygXg6P79s2dU
-         vo+CFJt8aPW+xA4R5gUQKn+SumHs/YsDYml+D52H/obhTaJMCVzPf/+7m5l2cKDR6NRi
-         1mFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756376364; x=1756981164;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uCQsYzGHM8gdZUV2vcR2ZjpT4tC/WRO5wHruBh+dFIA=;
-        b=RjriO80Ic5RXRpz9+cflJJlt0/L+LeKn1Th7Lj7MAD/o4yAWUa5mgL+uyuCmmHmzg3
-         1Kq6nBOaLk6PbmqJTYY2C+Hw/BNVk9r0jskw4Xep/a12FzJVOFhx/qHCahY+rq/bv68o
-         /lbYoIXRG1na6BeE86D4y8NgHUV/2w2it64peB23a3aZgErO9EFa7kAAAJNLyQRqLOGm
-         L6yn3MI0iZq1i2BLjxiPRUcVJ2KsSp0C205YyWTPFjev7XbgPlfTVT6KKRot8n5bOxBA
-         OwDqZ1sshZSRGzSgdMLj466cRLbgtmFqjWSmDWqf66Lf8HZkWdIPRUsa+9vvH0esvjeW
-         90ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQE3QhybFKRXD9rsmKaGPYm606uu9Vo6khS96L6DeVNOEQr5aw6IBrDbLpzPS4RY2VoLRHZO7kIB7Vjgk=@vger.kernel.org, AJvYcCW2u/gpxlAJHTEUyk3Z4MMxJjD/77gLBvL0mMcTfm7eYzE4BBr6I1fV9N1goZIsufAcMqeP+x+GbiQFD2VSX14=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHb9Ch6hqZ+d5emfOHT83hFsOBwp1GcX5jXGRYYtSAUO4SQuBe
-	+GbLn45nrJi0gFUUv4fonMJdxc7+LSO8VsrKvVrxjfbSMvU8Kra1rZrxX3UrznKqUIWw1YD5OtS
-	bWuEh4FVeq9jqqSMlYwDMEbHjXW3P058=
-X-Gm-Gg: ASbGnctFAP2QoNfcl2MsC/x8DMZhgYwXgauquHMtUzqxlZ9JiXfU2oR2WIpo7nwovii
-	3Blyir7metnC12BuoR8YeLhVnHVrAtJ9FwowJgzu/xguHp/koQMRJRnJOumVD0GZTWyHzVqkium
-	T0wLEPZYHhIwHUcPbB9W/oeWGm0KR/HSzP3Li95c7q9rwvoGC5SRxoA56x03XFSBcCyYi+y4GWc
-	9tpYGk0FxenLaoztv+pnYOYHP6IRbMtjJgh6PuIyiN13eyVPpec299Ssi+EQ5lr7lXWRDGNY4Ef
-	1OY1BtFshUHJH39ESm1/TBwkUw==
-X-Google-Smtp-Source: AGHT+IHStlNBUV5wN3/j5DMOSMvcwNA0pDIUVAyHi9rF6MBo+5uBvp71X1ELOl1V1keODdFaDMBr/v72/qVV8RfW4m4=
-X-Received: by 2002:a17:902:db0b:b0:248:be7f:d3f8 with SMTP id
- d9443c01a7336-248be7fd4f2mr29581305ad.9.1756376364111; Thu, 28 Aug 2025
- 03:19:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pBQ20whM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C3AC4CEEB;
+	Thu, 28 Aug 2025 10:42:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756377768;
+	bh=ypxh1ppNtcbAwO5q5dht/FXyUWQup2iODRBHMyFnsuI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pBQ20whM5pgyxCfxv7buCvl7QI+5Bl+QJZKLx5VW7m9hrqs/hGicgawAEvLDFRFXR
+	 2QDYiLzeYdcgx4Hl+QWtpLaHiN0GbRxcKZW1+asbca55p+EfcJhHONly/GvpJ91x44
+	 AHx2+kKUp+6R/sQOuO5evCtMlkj7RShI0TmLToz5ShRjsjCF7Dz0wa5ezmr6Kj/Qc5
+	 VeFYW2NFj/5IZJJwtIeIAC0WGiANCKzT+NzrmweEHyVHbPCmZX5jvEYWOGIIMveXrl
+	 GkoqVdjPPsRROrUqkivc92g5pHwTWnrrtuQ/+Q8H9XUYRqgm+al18HKfQ0e798mSWx
+	 51fw3Z8fW0Ndw==
+Message-ID: <3fabc3b4-a592-419e-a3f1-b13c40f3644e@kernel.org>
+Date: Thu, 28 Aug 2025 12:42:42 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250825132539.122412-1-dakr@kernel.org> <20250825132539.122412-6-dakr@kernel.org>
-In-Reply-To: <20250825132539.122412-6-dakr@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 28 Aug 2025 12:19:10 +0200
-X-Gm-Features: Ac12FXw8EPqq8u93pnznOiOBpC6DEMbBYvNWDBItfM_jVmf6g0VPq_ATHlPnoOI
-Message-ID: <CANiq72knRW2VDdX68cCb5vBJpyVRtB62oB5e7YKZKPc_zHygQQ@mail.gmail.com>
-Subject: Re: [PATCH v3 5/5] MAINTAINERS: rust: dma: add scatterlist files
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: akpm@linux-foundation.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, abdiel.janulgue@gmail.com, acourbot@nvidia.com, 
-	jgg@ziepe.ca, lyude@redhat.com, robin.murphy@arm.com, 
-	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] Add mutex to drm_gem_object.gpuva list
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Rob Clark <robin.clark@oss.qualcomm.com>, Rob Herring <robh@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20250827-gpuva-mutex-in-gem-v3-0-bd89f5a82c0d@google.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250827-gpuva-mutex-in-gem-v3-0-bd89f5a82c0d@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 25, 2025 at 3:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> Rename the "DMA MAPPING HELPERS DEVICE DRIVER API [RUST]" maintainers
-> entry to "DMA MAPPING & SCATTERLIST API [RUST]" and add the
-> corresponding scatterlist files.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On 8/27/25 3:38 PM, Alice Ryhl wrote:
+> Alice Ryhl (3):
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Applied to drm-misc-next, thanks!
 
-Cheers,
-Miguel
+>        drm_gem: add mutex to drm_gem_object.gpuva
+>        panthor: use drm_gem_object.gpuva.lock instead of gpuva_list_lock
+>        gpuvm: remove gem.gpuva.lock_dep_map
+
+     [ Use lockdep_is_held() instead of lock_is_held(). - Danilo ]
+
