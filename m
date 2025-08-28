@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE97E2D46C0;
-	Thu, 28 Aug 2025 07:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEB6285C8F;
+	Thu, 28 Aug 2025 07:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756365261; cv=none; b=DCkfAFozAtyaY5OOb8gs914Ymqo9zHpK4El2b/TYYoRxR0Q1+LWlDVbpv/nytlB/yxt111RhbyaxGw+rJv4RBASy3jtHcmkIHJSKTAlfIw/8KNfoPkfFbayjVO50FCfYO+Vp6UyStepHhU0NWQ20TQF/3ljAV9f8Xs8TqzLniLk=
+	t=1756365526; cv=none; b=WtvOIalSdLr4EusTzxtmJoQ83Wg5G38Gs9QG7R553shhRW8y4G6wFHoU4N5PkM+wYHGbVp3CH7Bnp1B12iNZBdwOPU59gLt9Arn5bmQDS4eTBEzuu6+4OJnq1aNCyPjdbGdsINIDSY+jB77UsTfkcWkbxyJoLdPn0bVnGFGfDNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756365261; c=relaxed/simple;
-	bh=y2E6jAgZ1n8UgRxjbTT0G+yEp9u8bfmkdgducgSp1d0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=RFdgHWFrn56gq9JPv6LZWFWnNKsZWMLhTWKKm1xM2HHg/pCkHbdOa2z6NYyRkYycWWa9WH1zvh5MBXOfxuWEHAd5NPLNm1tQ8nRSMIDhuky5oQWQXLEoW3msO/Y6DMTO9D+c7hImylUns7JOjB+FCKPdy6AuKsLrE27WRK0YY5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnbCebaW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756365526; c=relaxed/simple;
+	bh=cA5MEAXP03zgaSoPxfhsQEUE2K98DB+Y39M3JJff4ZE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=SmuZn4O9ScyIPqcCXqyPO4V3VFELplF0pKJjVTBS/UbNUOZ0oykIqjrmxYAk11cMPUrPmmlADvbJakCp5tK+pDK9SUA2BtKFoxc+0RTFUdmFVhpUb8MCmK6oY3EkUphLM9l/dB0adwGkTpA/qab6t7AEF/ItTYUvkjgTyiQL5jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRN/lRAy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnbCebaW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC691C4CEEB;
-	Thu, 28 Aug 2025 07:14:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRN/lRAy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206CFC4CEF4;
+	Thu, 28 Aug 2025 07:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756365259;
-	bh=y2E6jAgZ1n8UgRxjbTT0G+yEp9u8bfmkdgducgSp1d0=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=hnbCebaW+/ZLccWHgtmbMBfUty5cPnUOU61XOUviSlYcgKcJWP2w5mPHSKuR8506E
-	 L7/GFGB7h1F5DvmwfHGHiGnMWwDvjXQ//Skzo75bYoAT+I7TFxP5y/M/p9P6pK4una
-	 PZf86pEZZZIbrkZB5V32KUrREe4/8VLl6MisvX7/CYjkbJjTfyOBR3glAYCuChBSsn
-	 N6fbUSv9iz+Z+FVi/ahE+E5o7L2wfZMq1VGByHcKCzQ2LvtK07YsjucUtj7/wAAJSw
-	 /+qzg+v4+1FL0QtPe/SF3UexJjGjcdAi3bysML6W7q3q2n8bp1eZeVAEaFIWaGlnqv
-	 Pl+ItArZnHVDw==
+	s=k20201202; t=1756365525;
+	bh=cA5MEAXP03zgaSoPxfhsQEUE2K98DB+Y39M3JJff4ZE=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=nRN/lRAyvpRJH454PxRYY42feW1jFX7UY6o9HXLD3ibezaBcrl7ViwrsPZySLqk1q
+	 jSDVpUv7F3QCGFGjQyZsPZwshYrFkfDBN/CP99fx3eTc/kJP2hVThBF+JQtShFeaf1
+	 TM8FM/qu426/8PAZtk2prUMcl4R2rmhS9O0EK2jPtyELmrq9iDuu4NMCtYqBp67mnn
+	 INi9cRwtl0/zwqwRWdXgX98UhuLSEvqzIz619FN1Cjma8+GVd3zKpFzwBRE05ahzDG
+	 876/psvv67SgRkv4TQEJX9VkhlqrV04Mizhrh9jfPVzXKpv/ukczRAT/B2QrEDmdqh
+	 /Ti2rXxvLqE3Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,44 +34,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 28 Aug 2025 09:14:14 +0200
-Message-Id: <DCDVIR91LFHQ.1C87G5A0OBJ39@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Jesung Yang" <y.j3ms.n@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
-Subject: Re: [PATCH v2 2/5] rust: macros: extend custom `quote!()` macro
+Date: Thu, 28 Aug 2025 09:18:40 +0200
+Message-Id: <DCDVM56I5WPT.2L24NI3SBBIHU@kernel.org>
+Subject: Re: [PATCH v5 4/5] rust: block: convert `block::mq` to use
+ `Refcount`
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Gary Guo" <gary@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Tamir Duberstein"
+ <tamird@gmail.com>, "Francesco Zardi" <frazar00@gmail.com>, "Antonio
+ Hickey" <contact@antoniohickey.com>, <rust-for-linux@vger.kernel.org>,
+ "David Gow" <davidgow@google.com>, <linux-block@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.20.1
-References: <cover.1755235180.git.y.j3ms.n@gmail.com>
- <948a28f26a0e9924d82eb1d8d377e3ddc7335b24.1755235180.git.y.j3ms.n@gmail.com> <CAH5fLgjyd7zNqLFT4T0_=tzcPFyw9xwZX+QTA8ShBxZ_Fa6o6Q@mail.gmail.com>
-In-Reply-To: <CAH5fLgjyd7zNqLFT4T0_=tzcPFyw9xwZX+QTA8ShBxZ_Fa6o6Q@mail.gmail.com>
+References: <20250723233312.3304339-1-gary@kernel.org>
+ <20250723233312.3304339-5-gary@kernel.org>
+ <DC0AUNNAKGJI.4KX0TW6LG83Y@kernel.org>
+ <20250827205121.59e4cc32.gary@garyguo.net>
+In-Reply-To: <20250827205121.59e4cc32.gary@garyguo.net>
 
-On Thu Aug 28, 2025 at 8:39 AM CEST, Alice Ryhl wrote:
-> On Fri, Aug 15, 2025 at 7:32=E2=80=AFAM Jesung Yang <y.j3ms.n@gmail.com> =
-wrote:
->> +    (@proc $v:ident $span:ident =3D=3D $($tt:tt)*) =3D> {
->> +        $v.push(::proc_macro::TokenTree::Punct(
->> +                ::proc_macro::Punct::new('=3D', ::proc_macro::Spacing::=
-Joint)
->> +        ));
->> +        $v.push(::proc_macro::TokenTree::Punct(
->> +                ::proc_macro::Punct::new('=3D', ::proc_macro::Spacing::=
-Alone)
->> +        ));
->> +        quote_spanned!(@proc $v $span $($tt)*);
+On Wed Aug 27, 2025 at 9:51 PM CEST, Gary Guo wrote:
+> On Tue, 12 Aug 2025 10:17:44 +0200
+> "Benno Lossin" <lossin@kernel.org> wrote:
+>> On Thu Jul 24, 2025 at 1:32 AM CEST, Gary Guo wrote:
+>> > @@ -34,6 +36,18 @@ fn as_ptr(&self) -> *mut bindings::refcount_t {
+>> >          self.0.get()
+>> >      }
+>> > =20
+>> > +    /// Get the underlying atomic counter that backs the refcount.
+>> > +    ///
+>> > +    /// NOTE: This will be changed to LKMM atomic in the future. =20
+>>=20
+>> Can we discourage using this function a bit more in the docs? At least
+>> point people to try other ways before reaching for this, since it allows
+>> overflowing & doesn't warn on saturate etc.
 >
-> Not a blocker, but if the way to implement this one is to push =3D
-> twice, then I think the pattern should just be a single =3D and then you
-> push a =3D once. The pattern can match twice to handle =3D=3D.
+> Would this additional doc comment be good enough for you?
+>
+> /// NOTE: usage of this function is discouraged unless there is no way
+> /// to achieve the desired result using APIs in `refcount.h`. If an API
+> /// in `refcount.h` does not currently contain a binding, please
+> /// consider adding a binding for it instead.
 
-You can't do that, since the first one needs the `Joint` spacing and the
-second one the `Alone` one. `=3D=3D` also is a single token in macro input,
-so matching only on `=3D` doesn't work.
+I'd like to stress that the atomic doesn't have the same protections as
+the refcount type, how about:
+
+    /// NOTE: usage of this function is discouraged as it can circumvent th=
+e protections offered by
+    /// `refcount.h`. If there is no way to achieve the result using APIs i=
+n `refcount.h`, then this
+    /// function can be used. Otherwise consider adding a binding for the r=
+equired API.
 
 ---
 Cheers,
