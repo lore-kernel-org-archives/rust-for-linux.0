@@ -1,145 +1,344 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2048.outbound.protection.outlook.com [40.107.237.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACA91A3178
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 Aug 2025 00:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756342116; cv=none; b=n6pjr9/qdhW5T1mgnAU1m6qVfumf0g5S53WcMBhXpf6MAy7pSB2ZzbjEuUBq6Bl5Vy4SegpMDTtndFF784Q90vDw+ZzsFFNp8qS2U+7qBOn8+LeF8PA81BRQ23X2CNLQC7D01AktbMA3azFq/8hoMgi+J7vQq6RwTnWikkvH00U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756342116; c=relaxed/simple;
-	bh=jPOIqbaX5otSp3WzbbT+2/pxImfuTWJ2OFYKS4TvNE8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BKez6G32+WovV2AHsExxwLwYUm28Inw+3K5fPwbqVPzLTZzuQO5DlarYaphrMqbGvTnHVYz0fKgaocWRVEEDWCfzsnBB7CiGctePH3+PbcdNv6Irmj/kvKagzvGl8RVZM1YS1xovi+yzdefk0hBf6VioSnXarh3StnwxEhU7kn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KGKDi6fw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEBB1AAE17;
+	Thu, 28 Aug 2025 03:09:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756350599; cv=fail; b=K64t3o/7tU0b0ioYWZJ2O8X5HYLU5bwQm5lIim8TtCDsx7mqejGRyzcfueH1hHF7V193OTP1tYsrmtpAx9bVL7+DK9ChX+Ciep8SKlApeHtAhLBK7nWj+0R0OdQdsr1CIRz74lIUBIkTTylJlUcM8Su+//YdP70JrH2aiJSm1bY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756350599; c=relaxed/simple;
+	bh=/4urinDjFkml03xCrt/JMF5sCVYowt+yq9Zf5BMBKVk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=QkSv1Rp5Dllb6jQrpaLNMO/Qb0C7OFQUfV4c5L+qbUcHLiS08uHDnz0id+M6UIRkFz+D9evUA1h0/tAZX+k6az+vbJcYGsg5dlA6mQeTWgNUcScHqhu0DjLAuAlh1hBBiP5WJ7Z+WzahVVjIECaq8ZAtR+ptWkLmTViVkMpVpiM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LDd6hMhT; arc=fail smtp.client-ip=40.107.237.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KGKDi6fw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756342113;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NH9M6qZ2J3KuMglksIXSkpXqc4X5PSXSXDDN9tN7Sr0=;
-	b=KGKDi6fwuAksl3fOcwn5hijBc3wshfnJftJSyd3msl/9WNgzoJelMuXIYGeruUNKx4M6f4
-	DkPHOYNI5M9AxwszUU+J2FPvihJ1FDI7g3BVd57nnjArbOZfe++Zg7dKMx8Ync8zph+EeT
-	BNGjAJLY82WpHwHKy2VDz5Kqp5h5DY8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-CQAOlXZZMKejLbKb2rtedw-1; Wed,
- 27 Aug 2025 20:48:30 -0400
-X-MC-Unique: CQAOlXZZMKejLbKb2rtedw-1
-X-Mimecast-MFC-AGG-ID: CQAOlXZZMKejLbKb2rtedw_1756342108
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C46591956087;
-	Thu, 28 Aug 2025 00:48:27 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.22])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B89B180028A;
-	Thu, 28 Aug 2025 00:48:20 +0000 (UTC)
-Date: Thu, 28 Aug 2025 08:48:16 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Sidong Yang <sidong.yang@furiosa.ai>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [RFC PATCH v3 5/5] samples: rust: Add `uring_cmd` example to
- `rust_misc_device`
-Message-ID: <aK-nUJqy3HSTT71R@fedora>
-References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
- <20250822125555.8620-6-sidong.yang@furiosa.ai>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LDd6hMhT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wCCHigbv4tPNWVWFVe/gt3m2ljZDsl2zeVDmUuvzI5aV2C+OXpnJYPZ5I5hI71RAl7yrHG3bBcIoOOwch1/JvCIHuZuQYNhZRODgiRst/uoosy5y/xk4E+K/yW9fqzFkOX92fJoXZOzNGZcOBR6x/s2rUF2hHkW7vNAWLfIQDjQqE/QEgoLC/HtulraySoPEDinlSBjZ8X5u/VSbSo8FFzVhk5x8rMQddgZPf2Yw7NyM5MAMg+319KdGxeUKmnmbUhG8VTWpT77vMMeh7LpIR1Y+PckbqWHzgqwxyCg0B9QVwac5sXxddokP9rlAfrQDDJCkiKZTfUQ1aubETR43Wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LIGiGK9zk7N3JZB3cSVCWBPo1qfB+KQXbhgDFM5o4bY=;
+ b=NjHWB1xhgRSI80X2JtiBjNpXrZTUxazBlVCBxtcPkfurihXS4YJUUSiR54xlcXKVEzBdaKTs+YB60aR2Dx3Hm28CU5dMtOx106zNOzk5slvs/rw9vRSqy72jRHshdvS6CN/UBScQS2xSSqgUwwpWR3UapoIZ8XnpWC0WDp+PQxQE4qLsbupQGjZv7cxqxG2Qs5EwSCOsgyL2QY3XfKXIRN4mVx7ALJmrErQHc/lVbR7JgRSWSoFKJkVZHiJIpIH55aEVT6N0qYRmmrb+F7kbHN6ZxRaG30gBKQhV3o0k6ooHSvxek/ZjES+ffPKGYTs4a7CTqZoyxbWhYjCEHjNO2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LIGiGK9zk7N3JZB3cSVCWBPo1qfB+KQXbhgDFM5o4bY=;
+ b=LDd6hMhTdkG6tAKBBalS+sAkQZc5Gj0FDVG+k4uOcoaUYYA93/xIUVjbx/AqAkZS8QvqIT3r+u/PIGnzAzIOE7lVCibru/c4CdaEYHb8EWiJJgRoTna125XQ9cIZGvgB0FNLDtvFbSaVlzd0OnwsCv1Qpshrf0oSXn1ctLgptOj7wMwbLEM9XDKzv9KdoDVNB2mqTTibafEjftEnmm8CNbLV+PiCFv0SGbPw1bWFKtDCtMfeeM4btVIHCoztMRqfEqjo87J8/q94BKKmsXwcsjfjKoQUr3h232GRfzVq+h05P1HOoWE02KzOv8QzpxRXFJ2TXF0qJZZuk8P931mEpA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
+ by DM4PR12MB7718.namprd12.prod.outlook.com (2603:10b6:8:102::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Thu, 28 Aug
+ 2025 03:09:53 +0000
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4%6]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
+ 03:09:53 +0000
+Message-ID: <8cb256a0-bf25-4d14-8847-9c5e8f02533a@nvidia.com>
+Date: Wed, 27 Aug 2025 20:09:50 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/8] gpu: nova-core: firmware: process the GSP
+ bootloader
+To: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Alistair Popple <apopple@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+References: <20250826-nova_firmware-v2-0-93566252fe3a@nvidia.com>
+ <20250826-nova_firmware-v2-4-93566252fe3a@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20250826-nova_firmware-v2-4-93566252fe3a@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR01CA0048.prod.exchangelabs.com (2603:10b6:a03:94::25)
+ To LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822125555.8620-6-sidong.yang@furiosa.ai>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|DM4PR12MB7718:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53675d96-4bb4-4bb7-4bae-08dde5e05c05
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?d1R1MWluY3ZYS1NZN1pzYkVMd0FpNkR4U3dwS2VDNklFMEhFUzUvaXVNK25y?=
+ =?utf-8?B?cEN2aVhndjFqL1VZajRRa3o4Mng0d3FPSCtySFc3ekp1c2F5aGxMQ1M1WXA4?=
+ =?utf-8?B?S1VHV0dZRFBWMDZ1VTgvNkFkVFRzc1VPYWdYRE1sR1lVc3VKSTVJbXdpRlBN?=
+ =?utf-8?B?VG9DT3E5Y01iZUdpaGJyaWRYOEFQNmZ4M3Z2cTBIRTlPMWhPb1FVaGlKaXZs?=
+ =?utf-8?B?MDdlSElBcHFNelJCVnp1YkU4aTJ2NjVHMWU0cmw4V1paQTA1aFpqUlhNQjg2?=
+ =?utf-8?B?bEpDNzhleUl1cXFhNTYwMFI5RHhsemJzd1d2a1ZmVUUzT0d4Sjl5TWRSWWNs?=
+ =?utf-8?B?Sis0V3hSTGc4TGkya1hid0lJMnBUSDJOQ3UxSzExMlMxbmV4Wm1aKy90MlU5?=
+ =?utf-8?B?SUFiQ0t0eW14eGxRS3RDMnpWUjljT25ldHhMR0ZZWFphd0NkR0o3VmFkUmlD?=
+ =?utf-8?B?S0JzbXNZVy9ka1gzRnRaaWFXZkdPNHF1NzdVb0lYc0RGaHlZcGluRnJibThY?=
+ =?utf-8?B?N1cyUlVFZFEyVUY2T0YySFNNUUxsMjQ3T3RuWnBZR01CMmpHZGF5dFFlQ3pr?=
+ =?utf-8?B?cDA1RGt4ckNydU9ITU9ma1FXZzhPWUVOQXluOE5WcU1xN3dEaEd4SzJSVUtr?=
+ =?utf-8?B?WDk4ZHduTWlqbGVzR1BvRkNDdkNQc1FadGNEeXlUZGV3SzFUUERkNnNHUWFD?=
+ =?utf-8?B?Si9QSGVoM2NTRjgyTUlJcm9Falhkb1Fqb1FpWFJRdnBKdUpqNDZUWVdlUVR5?=
+ =?utf-8?B?Vk9ZUC8xNk5lR1NQdFp1a3Zweks1ZG9iOEhpejI4dHp4bXZub2FzUEMwT1lq?=
+ =?utf-8?B?amJHYm1KWGZDd21CeGJWamgwQjB6Q3JsaGdqamNnQnVha01ueUxoSHdiN0Nm?=
+ =?utf-8?B?WDd5clIwM0dzNnZoYkVUTVpqaEVRejMrV0Q0L0RDZ3AxcUZSMmtFMFVtRUtk?=
+ =?utf-8?B?WnRaQW0zOVJtWlFJamxGVEtpS2dOTVU0N0tJYVRDRWhNblE5UjFaakU5aDU2?=
+ =?utf-8?B?RHMrU2luNjZiRzBmbnVTWXJoaVdyaUc5V3hjZjc2U1NQQmFYMTFlQnh3Y2Ru?=
+ =?utf-8?B?emJnMytCS3dzZGo2NFNlcmh2Q0RhQWdtQjduLzA0VHk2SWdIVlhjUDB5b29W?=
+ =?utf-8?B?RmlNcEpTY3ZMTkd5Wk5Ob3BVTEZkeHFLRE1JMVZ3b2J5eDlsK2hyeWJna28y?=
+ =?utf-8?B?WkM4NUYycitvcGxpenEwOU4zSGRjaGZNc2paV2g2bGgvVEtQK1hZUVVieWU4?=
+ =?utf-8?B?ZHZ2UEE4dnJmbnpteWYvamcxRThVbGlOcDVWYzRFWmZSSTJVeDNlTDlOb1VY?=
+ =?utf-8?B?VnpUdjdpaDEyKzBTNUhoV1ZGYVVTaXNzUm15K2RXRnBlc0xCOG1hNlR5d1Q1?=
+ =?utf-8?B?Y1V2cWZGS0ZTR2FJVm5EclA1bDJndUk0d2w5VXZRQlhteC9qQmdHcXJYK1VU?=
+ =?utf-8?B?NUNYWjZTZlRpUktFMFBWc2VUaFJGQXRnNGdkRjJiNW9COTJuRzZvaERuMHIv?=
+ =?utf-8?B?aWtRN0REaFk4eUlkVnZnUis3bkF5QmFlR21oR0NaSTRFc0NRYVcrUURtQ1pa?=
+ =?utf-8?B?Z1oyd0xVRkZGeHViTWFJcllTS0wzdjNvZm5ONTg3a0hvSnBEb1p0TU9aQ09O?=
+ =?utf-8?B?dXBFUzRwb0FLVzVydEFxd0lmMngvdVZ5eGNHWE9iSVdkaldWaTB6UnN1eWQ0?=
+ =?utf-8?B?YkxoSGZuc3JOMkJucTJVVC9qeTdDZVdXaWptNGtqL2p0NzFaRGZvMHdtU3cw?=
+ =?utf-8?B?RkhOa2dSQ3BZM0RUcmNVU0JuUHVFTU12VHRtVmFMOHlIZ2FETzBLV3ZTcWlL?=
+ =?utf-8?B?R2xFSnNlZ1hySzF0cFcyOHNFbzhwQk9UZnY2MlNsVitQbHo2U2VuRHZ1bTdm?=
+ =?utf-8?B?MXFjSHlRaG95N1VRYVBiVGlrVlVsbUd5UVhhSDlBdVlJZHRaM3ZKOUc3TEFT?=
+ =?utf-8?B?TnVBWnovQWxkMjQycUZkUkovczh4TzdvR1RoNmoyYUZuSVV3Q25nUW5UZnVP?=
+ =?utf-8?B?ZXR6NU5vNGVRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Tm9KWlNvWlBxVEZ2SGpRSE1oS3MwdjhOUG9GaXhJZndFNm1SZzdxdVB4OHU4?=
+ =?utf-8?B?TkZxY1JkME5CVmtiYjlIQmRlL0hjdFNSYnIxb1kzVFdTeWdhalRWcmxyVkJR?=
+ =?utf-8?B?c0s4c3VLWHg0MnoxSWJLaDhub3FPeUE3eUtDVmRJYjJSWVNqTitLamUyeGY0?=
+ =?utf-8?B?VW5QeWJGOVNSb016RFRlSGxKU01lMzEyVXBlWmRBWG8yYUxyZ3F6UUVXUitZ?=
+ =?utf-8?B?ZGF5TzJsNGZrSHh6Z2J4eE9QWFMvVXNLQkNtQlBuT0RCWWhpSjNNeTg4Y2pp?=
+ =?utf-8?B?NzFTK00zb1ZnSE9MdzYrZURnRWhYMXcxWXJuVGl2aWEzelhmRWVBT1h6c2pK?=
+ =?utf-8?B?TjFJUmFkRnIvemNzRWdMOCtLRWtrWTR0azNYemZVZmhzQisycld5eE15QWhw?=
+ =?utf-8?B?bzI2anMvdEx0L0h5SmpVaEl1OWtldk8vVkYzMlhHRGkvUFV4elhjcXRNc1NO?=
+ =?utf-8?B?VFFuNDUzbW1aaXJLdnhCbks0MmYzWU9BUnJpWDRYWjdORFRhVDNKSERFNC9D?=
+ =?utf-8?B?SnBkQkhHU3ErT01adWM4cDgzaUFDQUxRZFR5VTRNUTBHVWZ5Rmg5WGVzd1py?=
+ =?utf-8?B?aDBFZWpvb1VNelRBaCtlaGhORm5JbVkrRjJ0YllVZUJsVHhrTEZOa3NUVXIy?=
+ =?utf-8?B?aVZKWS83SUt0UXQ3eDFpZmlTQmQ1YmxVNEIxS3J5bjRFd1BCNjB1ZmU4ZnIy?=
+ =?utf-8?B?aTBFL2E3UnJuc0paSUpQYktRNHF0bTIyb215MFlmYm16M2pvVFFWYyt0VWlT?=
+ =?utf-8?B?VmcydWdxMDd3TUU0QTAzVUxBNWJ3UW5vT05pamhYbXRTQUpNbjBlRUhTV1dv?=
+ =?utf-8?B?RkJmYm02N2FEYThmdVZ2WTFadFFOS1BHTlRKSjZDOFZib09VaUNXNDFJTGk0?=
+ =?utf-8?B?MXVPc0dRS0t6RGxtdEdCL0lOd1RyNE9MOVNyVzBYVnNHbVR3R3NaUFRSeGFy?=
+ =?utf-8?B?dFRFQ2VOamRLdEEybTRvamZvbmRQY0diWU50YjF0QXpaeDRtSWhKODRVQWpP?=
+ =?utf-8?B?WVJsaXNjKzFuSWxYb1R6ODZiTnd6L3dLNHEzaGZ0YWpuQUhZVVgyRTBQU05s?=
+ =?utf-8?B?dHlpdzQ3WG0yU2xqdEVJN2QwTVRzaTJ1b2gwcmNXWUFpMmRLbVZwRnhZc04x?=
+ =?utf-8?B?TndGRXBqUHQrVmZHTnc1MEFidy80SUN1aTV4QkZxR09lTTJIa050Nm5vN3ZS?=
+ =?utf-8?B?UENTeGpJWkcvakhvc0sxa0dHTE5NZUFIcEVZdzM3SjJWN3Q0bktVOFg1NWox?=
+ =?utf-8?B?RkxKclF3SkVOMnVYY3VvRFMvM2lyRDV4Z0kzVW9jc3dJNmh5Y3pFbjFtYXov?=
+ =?utf-8?B?aEJYTzcyZklhZEpqSmRtNmZTL2VQZ2d3RWFOWEZ3UUh2VTE0MFVvUDM4aTFu?=
+ =?utf-8?B?UkQ0QU45YjRBeDk5UnJYMHE0Zlc0dThybkh5NGxBT3VSYitxb1NqdzRYbmtw?=
+ =?utf-8?B?Z053VFRrVWpOdGp5RFNZMzlwUGUxTS93SmdNek1Sa3J4MTlyK1BlTmhsRnJZ?=
+ =?utf-8?B?b0lNcnA1aXNmdXlZWWFDMUhqV0pUbmc1RDRYdEJnamRlV3ZGckhHV2ZrMXNE?=
+ =?utf-8?B?U0ZRajZtVnJIaHc5bTF5ZHlleWVVQjJ6MCt4V2pRemhBVkFadys5T2lvbDJw?=
+ =?utf-8?B?MGV3aUV5endyK0R5UXlrUGg5QUlQMUI5TjFUSGVTaUplNEtNcElxaG1xZVdh?=
+ =?utf-8?B?WXZqUkxkek53QVRudXltNHUzRFRPMnBob0FtM2lMbWQwenZQVmNua09OVUZU?=
+ =?utf-8?B?c1AxWWxNd3crUnlOSE1KWitPekpjM0JZdGZ1emVwVnFSdVRRZDNGdjJQd09j?=
+ =?utf-8?B?SkpQa0FROURJRndKeStxNFhBVmJiTkdrM2VJUFZIcjZKM2FVS3MrZVFJZVcv?=
+ =?utf-8?B?TWlpZTF0ZFlnYVV1VXRNVG1zZWNHZkhaU0diQTYra0xNeDFnNUZJbFFDcjJi?=
+ =?utf-8?B?UnNqWVBGakFQN3Njak5qWU0vc29TeHEzOGVMWEdUWWc3NUFmRVpRcWFXK0ho?=
+ =?utf-8?B?RjE0WWx6N3FmenlvM2NwTldwSUJ0LzBGNlE2a2VKcDBNczhHZjhiYzMxYmVF?=
+ =?utf-8?B?a3hDR3hMSmY5eGpEcFJlRExadFdUKzJjOE04VFF0RUlDenl5R0xzZ3pHL3Z3?=
+ =?utf-8?Q?nexigjWae+Yv7YxJ9/JvM9wYq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53675d96-4bb4-4bb7-4bae-08dde5e05c05
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 03:09:53.7703
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZKiiHC7s/XUJ8xPkekrjrc1dUsMUzlPADN2p3/gY/XzG6fs4SM/om+BWRDP9UErlgbrHOnFrmL5eKDgtgM3dNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7718
 
-On Fri, Aug 22, 2025 at 12:55:55PM +0000, Sidong Yang wrote:
-> This patch extends the `rust_misc_device` sample to demonstrate how to
-> use the `uring_cmd` interface for asynchronous device operations.
+On 8/25/25 9:07 PM, Alexandre Courbot wrote:
+> The GSP bootloader is a small RISC-V firmware that is loaded by Booter
+> onto the GSP core and is in charge of loading, validating, and starting
+> the actual GSP firmware.
 > 
-> The new implementation handles two `uring_cmd` operations:
+> It is a regular binary firmware file containing a specific header.
+> Create a type holding the DMA-mapped firmware as well as useful
+> information extracted from the header, and hook it into our firmware
+> structure for later use.
 > 
-> *   `RUST_MISC_DEV_URING_CMD_SET_VALUE`: Sets a value in the device.
-> *   `RUST_MISC_DEV_URING_CMD_GET_VALUE`: Gets a value from the device.
-> 
-> To use this new functionality, users can submit `IORING_OP_URING_CMD`
-> operations to the `rust_misc_device` character device.
-> 
-> Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 > ---
->  samples/rust/rust_misc_device.rs | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
+>  drivers/gpu/nova-core/firmware.rs       |  7 ++-
+>  drivers/gpu/nova-core/firmware/riscv.rs | 89 +++++++++++++++++++++++++++++++++
+>  2 files changed, 94 insertions(+), 2 deletions(-)
 > 
-> diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-> index e7ab77448f75..1f25d2b1f4d8 100644
-> --- a/samples/rust/rust_misc_device.rs
-> +++ b/samples/rust/rust_misc_device.rs
-> @@ -101,6 +101,7 @@
->      c_str,
->      device::Device,
->      fs::File,
-> +    io_uring::IoUringCmd,
->      ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
->      miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
->      new_mutex,
-> @@ -114,6 +115,9 @@
->  const RUST_MISC_DEV_GET_VALUE: u32 = _IOR::<i32>('|' as u32, 0x81);
->  const RUST_MISC_DEV_SET_VALUE: u32 = _IOW::<i32>('|' as u32, 0x82);
+
+I've once again failed to find any problems with the code itself, and
+have instead listed one or two trivial documentation suggestions, 
+below. :)
+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+
+
+> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
+> index be190af1e11aec26c18c85324a185d135a16eabe..9bee0e0a0ab99d10be7e56d366970fdf4c813fc4 100644
+> --- a/drivers/gpu/nova-core/firmware.rs
+> +++ b/drivers/gpu/nova-core/firmware.rs
+> @@ -12,6 +12,7 @@
+>  use kernel::prelude::*;
+>  use kernel::str::CString;
+>  use kernel::transmute::FromBytes;
+> +use riscv::RiscvFirmware;
 >  
-> +const RUST_MISC_DEV_URING_CMD_SET_VALUE: u32 = _IOR::<i32>('|' as u32, 0x83);
-> +const RUST_MISC_DEV_URING_CMD_GET_VALUE: u32 = _IOW::<i32>('|' as u32, 0x84);
-> +
->  module! {
->      type: RustMiscDeviceModule,
->      name: "rust_misc_device",
-> @@ -192,6 +196,29 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
+>  use crate::dma::DmaObject;
+>  use crate::driver::Bar0;
+> @@ -22,6 +23,7 @@
 >  
->          Ok(0)
->      }
-> +
-> +    fn uring_cmd(
-> +        me: Pin<&RustMiscDevice>,
-> +        io_uring_cmd: Pin<&mut IoUringCmd>,
-> +        _issue_flags: u32,
-> +    ) -> Result<i32> {
-> +        dev_info!(me.dev, "UringCmd Rust Misc Device Sample\n");
-> +
-> +        let cmd = io_uring_cmd.cmd_op();
-> +        let addr: usize = io_uring_cmd.sqe().cmd_data()?;
-> +        let user_ptr = UserPtr::from_addr(addr);
-> +        let user_slice = UserSlice::new(user_ptr, 8);
-> +
-> +        match cmd {
-> +            RUST_MISC_DEV_URING_CMD_SET_VALUE => me.set_value(user_slice.reader())?,
-> +            RUST_MISC_DEV_URING_CMD_GET_VALUE => me.get_value(user_slice.writer())?,
-> +            _ => {
-> +                dev_err!(me.dev, "-> uring_cmd not recognised: {}\n", cmd);
-> +                return Err(ENOTTY);
-> +            }
-> +        };
-> +        Ok(0)
-> +    }
+>  pub(crate) mod booter;
+>  pub(crate) mod fwsec;
+> +pub(crate) mod riscv;
+>  
+>  pub(crate) const FIRMWARE_VERSION: &str = "535.113.01";
+>  
+> @@ -32,7 +34,8 @@ pub(crate) struct Firmware {
+>      booter_loader: BooterFirmware,
+>      /// Runs on the sec2 falcon engine to stop and unload a running GSP firmware.
+>      booter_unloader: BooterFirmware,
+> -    bootloader: firmware::Firmware,
+> +    /// GSP bootloader, verifies the GSP firmware before loading and running it.
+> +    gsp_bootloader: RiscvFirmware,
+>      gsp: firmware::Firmware,
 >  }
+>  
+> @@ -58,7 +61,7 @@ pub(crate) fn new(
+>                  .and_then(|fw| BooterFirmware::new(dev, &fw, sec2, bar))?,
+>              booter_unloader: request("booter_unload")
+>                  .and_then(|fw| BooterFirmware::new(dev, &fw, sec2, bar))?,
+> -            bootloader: request("bootloader")?,
+> +            gsp_bootloader: request("bootloader").and_then(|fw| RiscvFirmware::new(dev, &fw))?,
+>              gsp: request("gsp")?,
+>          })
+>      }
+> diff --git a/drivers/gpu/nova-core/firmware/riscv.rs b/drivers/gpu/nova-core/firmware/riscv.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..926883230f2fe4e3327713e28b7fae31ebee60bb
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/firmware/riscv.rs
+> @@ -0,0 +1,89 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Support for firmware binaries designed to run on a RISC-V cores. Such firmwares have a
 
-I'd suggest to cover most of methods added in patch 2, so that any kernel
-side change can be verified easily.
+typo: s/cores/core/
 
+Also, as long as we're here: "Such firmwares" is understandable, but
+"Such firmware files" is better.
 
-Thanks,
-Ming
+> +//! dedicated header.
+> +
+> +use kernel::device;
+> +use kernel::firmware::Firmware;
+> +use kernel::prelude::*;
+> +use kernel::transmute::FromBytes;
+> +
+> +use crate::dma::DmaObject;
+> +use crate::firmware::BinFirmware;
+> +
+> +/// Descriptor for microcode running on a RISC-V core.
+> +#[repr(C)]
+> +#[derive(Debug)]
+> +struct RmRiscvUCodeDesc {
+> +    version: u32,
+> +    bootloader_offset: u32,
+> +    bootloader_size: u32,
+> +    bootloader_param_offset: u32,
+> +    bootloader_param_size: u32,
+> +    riscv_elf_offset: u32,
+> +    riscv_elf_size: u32,
+> +    app_version: u32,
+> +    manifest_offset: u32,
+> +    manifest_size: u32,
+> +    monitor_data_offset: u32,
+> +    monitor_data_size: u32,
+> +    monitor_code_offset: u32,
+> +    monitor_code_size: u32,
+> +}
+> +
+> +// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+> +unsafe impl FromBytes for RmRiscvUCodeDesc {}
+> +
+> +impl RmRiscvUCodeDesc {
+> +    /// Interprets the header of `bin_fw` as a [`RmRiscvUCodeDesc`] and returns it.
+> +    ///
+> +    /// Fails if the header pointed at by `bin_fw` is not within the bounds of the firmware image.
+> +    fn new(bin_fw: &BinFirmware<'_>) -> Result<Self> {
+> +        let offset = bin_fw.hdr.header_offset as usize;
+> +
+> +        bin_fw
+> +            .fw
+> +            .get(offset..offset + size_of::<Self>())
+> +            .and_then(Self::from_bytes_copy)
+> +            .ok_or(EINVAL)
+> +    }
+> +}
+> +
+> +/// A parsed firmware for a RISC-V core, ready to be loaded and run.
+> +#[expect(unused)]
+> +pub(crate) struct RiscvFirmware {
+> +    /// Offset at which the code starts in the firmware image.
+> +    code_offset: u32,
+> +    /// Offset at which the data starts in the firmware image.
+> +    data_offset: u32,
+> +    /// Offset at which the manifest starts in the firmware image.
+> +    manifest_offset: u32,
+> +    /// Application version.
+> +    app_version: u32,
+> +    /// Device-mapped firmware image.
+> +    ucode: DmaObject,
+> +}
+> +
+> +impl RiscvFirmware {
+> +    // Parses the RISC-V firmware image contained in `fw`.
+
+Should this be a "///" comment?
+
+> +    pub(crate) fn new(dev: &device::Device<device::Bound>, fw: &Firmware) -> Result<Self> {
+> +        let bin_fw = BinFirmware::new(fw)?;
+> +
+> +        let riscv_desc = RmRiscvUCodeDesc::new(&bin_fw)?;
+> +
+> +        let ucode = {
+> +            let start = bin_fw.hdr.data_offset as usize;
+> +            let len = bin_fw.hdr.data_size as usize;
+> +
+> +            DmaObject::from_data(dev, fw.data().get(start..start + len).ok_or(EINVAL)?)?
+> +        };
+> +
+> +        Ok(Self {
+> +            ucode,
+> +            code_offset: riscv_desc.monitor_code_offset,
+> +            data_offset: riscv_desc.monitor_data_offset,
+> +            manifest_offset: riscv_desc.manifest_offset,
+> +            app_version: riscv_desc.app_version,
+> +        })
+> +    }
+> +}
+> 
+
+thanks,
+-- 
+John Hubbard
 
