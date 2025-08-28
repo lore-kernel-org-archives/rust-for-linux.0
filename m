@@ -1,71 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9484621CA0D;
-	Thu, 28 Aug 2025 20:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756413883; cv=none; b=ZYlKSKFt5Vu6k9iHwES9MHqxMiXdMWYqJUf28berVd73aRTLfizVk6klnsxrEnJFUSXU8rzLHGsm4byJbX8x6dbC6FydIGFhR7L7yuWTIk90apWrwyPFNuj6qZuoDgoo/wWuHyFThfJtUGgBx+HqJF/OkisFmA9jz8CdlJ5oM0o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756413883; c=relaxed/simple;
-	bh=c89mH4stV6Zw6WSUN9mFaTaOy7zgcpvR4oJ9c7bESJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bWtOUhx5zFav1PKTiiKaXFzhbgNU47h1Tx2R87y51Huq7rXgy4gHctvJX/VCfQu2gfQrktx6cWP3C6jX9jlqp8Wl6K65Nlkd7u6/oPR7I8qG8fwmtvOjUkeGvvUzDqKAZkFan+tCapsB+b+qQy7pUspe5byKeTUpDjvUmI4CVPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCkXWO2J; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC21728B7DE;
+	Thu, 28 Aug 2025 20:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756414394; cv=pass; b=GIlr6nSKJrzs+6FuB7X/gmYI+f3A5NexmhD9X+UQADmuNfkbxI8ZAcGpithRS+DRMB1hzXDjTEYCLYvHk5PMUCTIXK5muCb957lBChXHd2OaRXbBTxlWB7ZD/fG9wPrKgfdYCzxHzw3WTmH6m4oDLqgCbNRCdRAV78lDv9tcKQk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756414394; c=relaxed/simple;
+	bh=vDunwPYJgo4ywCXcXrQF7egra/P6DcOk4+niTP6ZbJA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ke5NiHUgCRVsrTJs/h1Gk1RwrAkld+ldoby1NxOOzaU0D0d2hFxY+pZxPx6DCNRXXGGA8d7EODo+U8jy8oG4gQYfCWbfEdpPtr+7aM4fvV7luCa0VRMyRKyTYUxHXKv0P+m51z437pLyBZUzsePEYagr35X+JNuGNhMVP8pABUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=JyEQ7a43; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCkXWO2J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E175BC4CEEB;
-	Thu, 28 Aug 2025 20:44:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756413883;
-	bh=c89mH4stV6Zw6WSUN9mFaTaOy7zgcpvR4oJ9c7bESJI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tCkXWO2J3IewsQYx55BhxEF7giI4rYr6qrTJLCIFVVrshlB1bWXdQlsi8RicotIKS
-	 hUHU+S9ffKyJmwgkscaccilQ/WW1mCTanW44QGMapvpzgWz7Oci7qoxw4iySgcbujm
-	 WoI3AkcwBVA2+owQxnMSQlc5kKc36eZTkrN7Z6LQ=
-Date: Thu, 28 Aug 2025 16:44:41 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Alistair Popple <apopple@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 0/8] gpu: nova-core: process and prepare more
- firmwares to boot GSP
-Message-ID: <20250828-precise-python-of-witchcraft-9d9a8c@lemur>
-References: <20250826-nova_firmware-v2-0-93566252fe3a@nvidia.com>
- <dc18894e-09d3-4088-9be0-22c2070b61f4@nvidia.com>
- <DCD2P4ORDLYV.2NSHXI305AF2E@nvidia.com>
- <79c7d5b5-5fe0-4306-b8c4-3c91758a4c00@nvidia.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="JyEQ7a43"
+ARC-Seal: i=1; a=rsa-sha256; t=1756414368; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=KnHGhlddVHc+Ul0o/4/sVcxB5ADdTKVy/09RbIUd/xtYjoM6WLzdl3nZ30Z3Oq/Q7LekSfkk+3c5tQLLy7HCBZsUoA6eCU5nXraz9ZlcM33Fay1hdB0dOIM2wu7upaciGqBKXVf+kebZVLm7yciKzJEgBQJBoW0oDej71RzSUqI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756414368; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lTmcpQUvJeTYz+ofWSSP4Sk1n42n24d3ktOgHwMIRiU=; 
+	b=m+uw8gjSMXxIvFrbP3NUQoKAeop+JHkc/z3y+B95FPwHpxFB4sDD4yuU0FP4wcni2ULlJyCfC2nFYtJNkCiBuiYoRmphK7+wLJnPw3WvR1eCNPyehpX7qqnnxbx7voY3WHxRYQx1dT8zDpn9Nhjh4OVbLNlxoVHulYOeBtZVQIs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756414368;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=lTmcpQUvJeTYz+ofWSSP4Sk1n42n24d3ktOgHwMIRiU=;
+	b=JyEQ7a432mWg8+iRcIt+9NeY5TIVb8+I6u4ZNj8C/RXpLSMVcd9R893OKayv5Nos
+	dyL3RdUYinmGVlR3vubCr5KCflmqa+yJQWINYaIyRvC1B0LLyBcWn75d3h7/xAzqCcx
+	CPqrJx2fl59OxC3FPmDyAbxOcxuE0DsK4RErQxJo=
+Received: by mx.zohomail.com with SMTPS id 1756414365050778.3062359015115;
+	Thu, 28 Aug 2025 13:52:45 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v2 0/3] Groundwork for Lock<T> when T is pinned
+Date: Thu, 28 Aug 2025 17:52:16 -0300
+Message-Id: <20250828-lock-t-when-t-is-pinned-v2-0-b067c4b93fd6@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <79c7d5b5-5fe0-4306-b8c4-3c91758a4c00@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIDBsGgC/x2M0QpAQBAAf0X7bOtaJ/Er8sBZbLR0J9Tl312ep
+ nmYiRDYCwdosgieLwmyaxLKM3BLrzOjjMmBDJWmKgxuu1vxxHthTZCAh6jyiFSTrWxpbO8GSPX
+ heZLnP7fd+37OtDfhaQAAAA==
+X-Change-ID: 20250730-lock-t-when-t-is-pinned-292474504acb
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Wed, Aug 27, 2025 at 02:56:26PM -0700, John Hubbard wrote:
-> > Right, b4 is supposed to be able to help with this as well, but indeed a
-> 
-> It really doesn't quite, though.
-> 
-> It is true that "base" (git format-patch --base) helps "b4 am" set things
-> up, but then a subsequent "git am" fails due to missing prerequisites.
-> 
-> b4 isn't set up to go retrieve those, on its own anyway.
+It's currently impossible to have a pinned struct within the Lock<T> type.
+This is problematic, because drivers might want to do this for various
+reasons, specially as they grow in complexity.
 
-Sure it is. :)
+A trivial example is:
 
-Try `b4 shazam -H` on this series.
+struct Foo {
+  #[pin]
+  bar: Mutex<Bar>,
+  #[pin]
+  p: PhantomPinned,
+}
 
--K
+struct Bar {
+  #[pin]
+  baz: Mutex<Baz>,
+  #[pin]
+  p: PhantomPinned,
+}
+
+Note that Bar is pinned, so having it in a Mutex makes it impossible to
+instantiate a Foo that pins the Bar in bar. This is specially undesirable,
+since Foo is already pinned, and thus, it could trivially enforce that its
+bar field is pinned as well.
+
+This can be trivially solved by using Pin<KBox<Bar>> instead of
+structurally pinning, at the cost of an extra (completely unneeded)
+allocation and ugly syntax.
+
+This series lays out the groundwork to make the above possible without any
+extra allocations.
+
+- Patch 1 constrains the DerefMut implementation for safety reasons
+- Patch 2 structurally pins the 'data' field in Lock<T>
+- Patch 3 adds an accessor to retrieve a Pin<&mut T>
+
+Note that this is just the beginning of the work needed to make a Pin<&mut
+T> actually useful due to pin projections being currently unsupported.
+
+In other words, it is currently impossible (even with the current patch) to
+do this:
+
+let mut data: MutexGuard<'_, Data> = mutex.lock();
+let mut data: Pin<&mut Data> = data.as_mut();
+let foo = &mut data.foo; // <- won't compile
+
+The above is something that Benno is working on.
+
+Thanks Boqun, Benno and the rest of the team for brainstorming the issue
+and for and laying out a series of steps to implement a solution.
+
+Changes in v2:
+
+- Rebased on v6.17-rc3
+- Collected tags
+- Swap the order between patches 1 and 2
+- Mention that it's easier to go through DerefMut if T:Unpin in patch 3
+- Un-indent the example in patch 3, also make it prettier by adding
+  links
+- Link to v1: https://lore.kernel.org/rust-for-linux/20250730-lock-t-when-t-is-pinned-v1-0-1b97d5f28aa2@collabora.com/
+
+---
+Daniel Almeida (3):
+      rust: lock: guard: add T: Unpin bound to DerefMut
+      rust: lock: pin the inner data
+      rust: lock: add a Pin<&mut T> accessor
+
+ rust/kernel/sync/lock.rs        | 41 +++++++++++++++++++++++++++++++++++++----
+ rust/kernel/sync/lock/global.rs |  5 ++++-
+ 2 files changed, 41 insertions(+), 5 deletions(-)
+---
+base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+change-id: 20250730-lock-t-when-t-is-pinned-292474504acb
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
