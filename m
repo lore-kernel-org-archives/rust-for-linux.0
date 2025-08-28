@@ -1,195 +1,163 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2089.outbound.protection.outlook.com [40.107.95.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894B3311956;
-	Thu, 28 Aug 2025 13:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756387654; cv=fail; b=egmh+Qu3MZtDGx378uLI5sEwZucju8KFN8PWXEZaBZnTXc9d9TJG5dVnDEAkrBXqGqQSfnWVx8zQCwP1p2bvh1O13uSfmo3gIsliGLuGrWeWwYeV9QsDzC5ETb8JBt7hWlsgH/k1Zm2zjpZfFiYlwAcaIOAQJ3pEqh9sCD1YcAg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756387654; c=relaxed/simple;
-	bh=ahKQ2IzOnuBznkyk9phoKIwW/MKwqsv+Jir0FY225k0=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=Uw08VDjSVtz7EJaAEYQR+Eg2A3XBLfFCb8erDzrMxC9RkA5wa+KCL0chpvklAvAlYdqs3mYPZTKprDMFL+HVLOOIYckV6Fnqf6OxBlFl0YNBl31jLonDApv3TkM/+elzo7oN8ATb4b0HhcVUWucTm9MGmLHGjmQxidlrkvXmGI4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZF7BC+fs; arc=fail smtp.client-ip=40.107.95.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29DC1A5B8B;
+	Thu, 28 Aug 2025 13:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756388016; cv=none; b=EMCOx4GoV9v4ecIWlkOfsRbUesjET6Sn19WaaVSGgLL3YswmDfa7o0fEHglWP4svDT5QddpLLJ7ShlxlPtS9dpZxyF7Scqi9mCZRtBo2ISalTOgsr/+cZQRwbbJylL0l/t0qkQP1LJzFDYMpMcsjaiV1fXY6vD1egfpixQPsSCo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756388016; c=relaxed/simple;
+	bh=ga4Ux0R5ONIeG/iiK0Aw2LdpzlpRzO8yJNQLxCZ/VX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oz7tDntxHm7d0Nt6Wg9Wzq6daTh54FICJj9oOYvvrB5tgGGjDKPY5YuvFQypNaChgjxC+5qe2O6SaFMBL8apIqNpJg4l5Qg/m7n2bJrhnC47mEl3d91VXY6cexROfX7VaK/RyIjbjBqHWmZoQOqf981glxs7S/mpovQIA/mxTjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdV7FcHT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZF7BC+fs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lHrx7HwNP6k2dKcbltcve6sL1xCRv0F32jcZucEvYXx3Xlh7qaKXxmGIVsM+SC9d8VmbJ9sl/+kfglDX2afQuZmRzlMXfzagRECc5MZZz2RkiCkzAqhUo2hxLq0hVsHUXPl3ac6eNNXwpQBYxzOhDgxmbXwYbz3BJyViD2VWD/0B6aNMwni+YfFuBN5ivxH6EMCoFDyeQUC8RbSiRi00FYsVEZSu/7h+sHNg8Ykz/kJCcYFTUchAUmU/BAzadaIPfB4pLLBIt5wiYobVNpj+Eg4CsWWV0nYC52S22NpLssxtkNxQKzHU0OMi4GO+3V5rNmbxGhdDQI+t6CPj1+jS+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hn1RqVbd5A80yUwXM2k7pu1W6s2oqMOpLDXKb8ouRck=;
- b=tslH2NnmvOzD29sF3NY7eSD28sGen+R0LLVkwJ8miyYGgpqWke34A3fg8Xced5IGo+QSL09s02SKRmczk8JlYIBhWzz1YaqwWSXMoTcBsKlNHWAb62TWgOewAqjztupP9iLamCLI0Z3PRKKPXwtStAf/P8GabEQrFXMsA7uajTODJpHPRHcabnvdFkJ/LRrwRChEarIl65rFJG2vitXmYNSmRuEyR8c0YEQOc77+Hel+LrM5dMJodP0bXVSBHvC12gmG0rd/0mqQqM7iD91AhCNvlBKpsP07sofW6ni5h9gr2lGe6UlFCct5+HeLyU1/6RyvEM1Ilfeh2Su7+vkmoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hn1RqVbd5A80yUwXM2k7pu1W6s2oqMOpLDXKb8ouRck=;
- b=ZF7BC+fsMYibXfE06aU2QzTjS85enbdAEbqvZimayGVhRC/KJR4r/+0dUdi3TLn5Eddm1qSX00zslrm0M9UcjLRV1I1v2gpIevugibYB7f2ZiCzMD0Yzo8kIQWolrRwICZfZxrMeQ30/hpwzFCGrXHIxKAqvc7Shy+VItgANXYvdesfr4fCDNmjGGEY1oEsfyqueI1YEoq5+t2/OzsMTopNbgvb6BN1XCf2tRWKQ9wrru80xil2kUaWjeOFRyMw+c+hsn7cJ3ZSz+ayyzUXXuWmms61746bnpreIcBKzzOzfV8ucePsEBfTGO4BN8jdMiEyuMR6WDilBG0jCCVpS2A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by LV8PR12MB9359.namprd12.prod.outlook.com (2603:10b6:408:1fe::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Thu, 28 Aug
- 2025 13:27:24 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9052.019; Thu, 28 Aug 2025
- 13:27:24 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 28 Aug 2025 22:27:21 +0900
-Message-Id: <DCE3GFGMZ01P.267QJWUCG4JMQ@nvidia.com>
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-Cc: "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <nouveau@lists.freedesktop.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>
-Subject: Re: [PATCH v7 0/6] rust, nova-core: PCI Class, Vendor support
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250826231224.1241349-1-jhubbard@nvidia.com>
-In-Reply-To: <20250826231224.1241349-1-jhubbard@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0349.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:7c::18) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdV7FcHT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C453FC4CEEB;
+	Thu, 28 Aug 2025 13:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756388015;
+	bh=ga4Ux0R5ONIeG/iiK0Aw2LdpzlpRzO8yJNQLxCZ/VX4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cdV7FcHTSbpvmJ1DOJ24V71SFT9yAokqO9bn8hX1RfuY753PHzgShqwSDvdzxmCsa
+	 CSF8Xi3dfq1y9wcn9jJ6ZNjzZF4+BpaH9q5GTmZEG1LQYFsyPFHqkfukoiZy2zImEE
+	 pFFH8+GauwaFMVZ8CvYi0n8u0JOp+/cdkpDbSFZxYA0NTTqyXlPLBdEQVlOQDcapGE
+	 H85CZfI/LkxLThKqtAd0X4hHYuRgec5g3JJ9D+wFoo7q9wD/L3LYVl6a7jYgImxYeP
+	 Nh2AusuS9e0YBvtIMGgdEopZWNIE7m6dVWMAJGFPsVto0K7dJVU59Tp3YH+CEAuaky
+	 95OSN13vHxy4Q==
+From: Danilo Krummrich <dakr@kernel.org>
+To: akpm@linux-foundation.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	abdiel.janulgue@gmail.com,
+	acourbot@nvidia.com,
+	jgg@ziepe.ca,
+	lyude@redhat.com,
+	robin.murphy@arm.com,
+	daniel.almeida@collabora.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v4 0/5] Rust infrastructure for sg_table and scatterlist
+Date: Thu, 28 Aug 2025 15:32:13 +0200
+Message-ID: <20250828133323.53311-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|LV8PR12MB9359:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71d07c13-7377-420e-f41f-08dde636a004
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VEdyS2RjSldjM2J1amk5MjBXaGU0amhpc2ppc2w0OG5tZlZlU2NSVkdZVitW?=
- =?utf-8?B?UjRFYmhHVllJa3k0RFBtNXhHbUt2RWlRbVJFN3A3TEZEcXZBYTUvYWIxMDJ1?=
- =?utf-8?B?QXJUcHdnalBlS21wamhUVFZXcStScWRUbStYdHZoT3ZqOTFLSTNoaVpGMmlz?=
- =?utf-8?B?SzRQbjVtU2JPTUZZR3BET29JcDBpaTJtaHdNcjRLcXkwZDU2NEtpQUE0MjQv?=
- =?utf-8?B?b1dBZ2ZoaVQ2L0Q3M1QwVm56YzcyR2xHblZWMVlLMzFSamRYTzk1Y0hNdzdK?=
- =?utf-8?B?cmZCNUpkQWF1OFdIcHZIVnpqMjFCc2hoUjYweUIwYVZtS21PaERLZHFEb2JY?=
- =?utf-8?B?ZVVNenpQZ1RxQ2c4bmUyT0ZJRlZmL09ydGFZM3JsU011U09zRWg3cUczdStW?=
- =?utf-8?B?UXRyUzVSNzlmMzloZXA4cUNkOVlkcWVreVBVVUp3R2M2RnBmcUxNN2R1ZWo2?=
- =?utf-8?B?TVlRUUNsb2RaalNENTcvUTBra3NXNjdsVHVLVkU3c2xWdDg5aWpZek1Fb2M5?=
- =?utf-8?B?MW9MdzRvcWM1c04yeHYwREhlaFNnbGJvdzRLN0xWSGVVRk5sMUUwV3BHTisz?=
- =?utf-8?B?Ny9Ic01SRnhsT3pzTld4aHM3dHZsUVZ0SlNaK0xacm5OR3RzU2J6TXBhcDVl?=
- =?utf-8?B?d2NwdTZneXdUMVNyNjFyTGVhZkJiUGhQVmZDOWxTdXRsSGU3RVY4M2VqY2Np?=
- =?utf-8?B?Tlp1ZWp0dTZVWFJ1MFQ4eDF6R0RIVVc5Q0p0OGRERXhDRjJIMlZFeUxLKzRj?=
- =?utf-8?B?OHVhVnlvVWp2Zkc5R0ptbjV5dnpUaDN3M29uRE5iSDd1dzk5RFlXazB4UGRR?=
- =?utf-8?B?cmhkMVVDWG1CU0tQeFB1a09tdXNIV0s3MFNET2JzdGhXOFhzejdEVmpzNHBv?=
- =?utf-8?B?RmdwRjFuR3NBRzVyeVh1OFVpQUNzRXpsbEw5MHNtQVU1ZVFCSVZZa3cxYzY3?=
- =?utf-8?B?VDR5dzQwQnQ1U3ZFZW5wZFI4SENURkRxQ1dzV2d4RnRHZy9VeTltWWxBejJt?=
- =?utf-8?B?WE1SU3ZDS0hWNC9KMlRqOFVVeHdQRi9oUW02WjZkZ3QyRWVsanFLNXBSaWlB?=
- =?utf-8?B?SDZjQ25uTzB2TDBiYmNPODg3R3EyTXpSeU81bGJ2dmVvSVRIcU1MaGJkM2ZK?=
- =?utf-8?B?dWcwYlRXV3h6VGZCNWJRWTRBMzRkR0xPZ2tZdjBpSW5UbUF2VkV4ZVZMMmhj?=
- =?utf-8?B?NTVreG42VFpJenFxUXlvZlZJVmVPYUlMaFBGb2pMOHRrUFZaQXUxZ2hmTzFa?=
- =?utf-8?B?VkxVUXJlZyt4bnlTSTQ3L2tWWWNwR0pwYlN5YStFNld2bnNOeGp5NkpWK29v?=
- =?utf-8?B?SUl5VGtPSEZ1U05KVFk4UXhDYWVTUnNQR04wckJGVlg2eU1MMlNEN2ROdVNr?=
- =?utf-8?B?cW1yUVQ1MXIxekY3aU1LejJHd0Q2L2s5QlN3dG5PREU0dG1wQ1pxWXd5TzFk?=
- =?utf-8?B?bUhOcElmQis2REx1ZDBkRlFoNDhqTXExa2RXa2F6SnFyRTNMdWM1YnBacTVw?=
- =?utf-8?B?R0JVeHdiakNacmpEdWFYWHUzalNtTm45dm1QaUdnaW5qbjYrRkNCRERseXoy?=
- =?utf-8?B?ejRHZXdLK25XWVBPS1hCaGhvWmM0L3c4OGM3djJPNGpZSksxc3Fqd2sxTmZB?=
- =?utf-8?B?djlRWXI3RU1JdjZZZXFRQU1MUjk4WndvRmlYamg0KzVMQTNMelFPdjR1aXdi?=
- =?utf-8?B?Z3l5RHZLbHg4MC9teHk5RDBUbHh4U2xEdzA0M0V5TDF2ZDIxdDdCaEdRYnJF?=
- =?utf-8?B?YzIzT3RZQzg3bDhUS0lJcE9qZE5aN2RaQjhkNlN5UmhFZVBGMXZaMkpCMkhi?=
- =?utf-8?B?QVhvK016NjgvQjVBYllKb1pTYkJTTG1WR2VENWdCTGVqcjFjZ3EzZkdFRXBr?=
- =?utf-8?B?WGRrTG44V0VmVEsybDhPV09BQlZMUkgvem5aaWJuK0k1NDdrZGZqTUs1NDhO?=
- =?utf-8?Q?43zRpOOBWyY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWxQNDR1ZVpMUlA3WFBEQ01iNzhzQktwcWY0QUFuRnRrN0VLUHAxSnpRYk9S?=
- =?utf-8?B?T0VMUjM3ZmVzZlRtRWxQV0cyUTFGQ1FJZlEyY3RteVg5VjNuczdsRyt4elV4?=
- =?utf-8?B?TTJHWXhmZGFmazZGWG1EQ2tLNW5aR2FzQXd6SWlRT2dzUFRWZy9DS1JhOWJH?=
- =?utf-8?B?ZnFqUVpoT3U3OVBtRTVZVW5ERkpGRmRJL01oMmNtclFwMzFMTTVrYmllK2R4?=
- =?utf-8?B?UHoveUoycVBrY0duVWp5YTcxNUNhd08xZ0JRaFFDaGUvVG56bFo2RTJZVHUv?=
- =?utf-8?B?VFVOL1Z2SWJTZk5rZzRWVVAzN1JXd3NUMytZUjY3eU53YnRWQlRub2xKeklK?=
- =?utf-8?B?anQ2WU00ZlhRd0lpRmVwVFZjZXQ2b205MCtncXZtOTI2TFcrd252a0M3b00v?=
- =?utf-8?B?cUh6UXJEdytIWUZSaUZMbGYrN3FuUVdvaWxKODBPQlFzOExXa0cwckVMME9m?=
- =?utf-8?B?TWpWM3J6cURJc0NLR3Q3VVlZNkwyTXFQVTB5MTRRaVRnYXhoaW4zZFFPWXl4?=
- =?utf-8?B?c1RJUmxRbTVLWDE4eXdJaWFBc2h0cW5USGJnb2dpVU1aVW10eDFHckhSUEdn?=
- =?utf-8?B?UFdBV1QrVzVpQ0ZBRGdCZDJKSkZ3bjhRbHRWbFlBb2hEUmY2VXBZUmJlUDVn?=
- =?utf-8?B?WHhTVlRkUThnVm1EaVUxQlJDMEZLY1J5bWNTQ0dNdUdrRzRWZVlXV1ZkV3BQ?=
- =?utf-8?B?d2VCVHBucVN4WnMzMUlKNVQ5NnBFa1A5eWNzUHBqbUsxbUdzWjlVU01KS1I0?=
- =?utf-8?B?Q0dBNDB2R0RCWEtzQVVwT0JYREFKNHRIR0xTVExsY0UyaGtqOXJBK3UxbU1P?=
- =?utf-8?B?VHZpZGlDSG5zbjV6TjVZcEdBbHROV3dIZ2hJd0lTSWpOU2lLditrNzRDSzVV?=
- =?utf-8?B?UnlYWW1vWnp1UC9JcTlWbndNL1pLNTErSE1NS1Q4M2VNQlBaMmJ6a3lRQUg3?=
- =?utf-8?B?SDlWRUx5dnZsTVVxZEpiOHZ2QUtXK2xKdndiOUpIQ2E3NnhxMkZoTm02MWlj?=
- =?utf-8?B?LzhjNTEzNGJtWk1XNmhMcWNKVXJDUjArRG5jS3Awdjl1eUwyS2s1MnYxQmtm?=
- =?utf-8?B?TnVlcGxqN3RPYnRrSHU5VS9CRkJCWE5zcGxoaU4xRXd3aEZQSWVNRVFneE95?=
- =?utf-8?B?Yml2TGIzOFplU0U4SUhBaUpzRGYvQ0FhbHJzSzMvNGhGZVNYZDNXN25MTUda?=
- =?utf-8?B?Ri9rTGJxU29JQzR4bGpWK2tOMVAyQ09HRFlCRjlmUkJtT0J3OVlGdUdYS1FJ?=
- =?utf-8?B?bXppbGRhOWtNUGxsdjhjaFVvTVBFWmt3YVhPMkVrSFZjaGkwWGVJYldsYXI3?=
- =?utf-8?B?d3FYbGYwbVFPR0QwbFp3eDM0VmxhVktYYUpmSVY1UUdBbExSd2RCSisyQytP?=
- =?utf-8?B?ek4xNkN6OTJ0S3lMLzdERWdvMlM4L1laRWZaWkM5QmxYMk5PVnF4QVdzNEVv?=
- =?utf-8?B?R2xtOHZBT0FhY2hnelAxanRZbHhyWm0vdkk0VVdWbnMrWldPRm0zN21QVnhQ?=
- =?utf-8?B?QVNodnRhaE1OeGJLMkJ0bGgveXRrNEtGREdhUFg5R05abk0rWGhWSkRBTldL?=
- =?utf-8?B?L3JtdWdnZERMSFRuU2FnQm5JQ1ZURzkvQnE3LzQzZUtNKzEvbTVMU0ZPcWVr?=
- =?utf-8?B?RkorR2Q3Ky94ZUpWa1ZmTEFkVmlrN1NMalVlM0JCRVdvWWRSVVRMZmF3T1da?=
- =?utf-8?B?NnJLRjRZN0U5QXZCajFqcjEyZ25vK1NDVnpUcHFkUUZLUllHZ0dpckhqNlFr?=
- =?utf-8?B?WWZIazU0NzdWaEthL2UraTR4Q0pibUdHV1FZODFDL0ptUEIzaDJxMnlHdzBp?=
- =?utf-8?B?V1NaWitldmVodmFzZXNuYjFTazFCSmFHWDRoQ1E2U2ZhNzJpVWxWVzNoTkVY?=
- =?utf-8?B?UlZQeEdsWXFhV1NqQkplSFBSY1B1L3dUTzZPd3VQMEE2NTZQRmRCRThLT3Jy?=
- =?utf-8?B?VlQzRUNWZ0VlTGMrM3ZUQUVOSEk5em55S1BwdXpHZXNhSGNLbUY0RHYxcEtX?=
- =?utf-8?B?Z1F6M2ticTRaV05PbTRTdWpscUdyZHpXaXZPQjJIckZ2VjVyRG9RU0FuSWhS?=
- =?utf-8?B?R1RQRi9UTDR0dy9vNlVEZGlwMFZIL0hEQ290R2ZPNVFuVmpGRXppZEVEVE9o?=
- =?utf-8?B?U1phT2hnNjZNVHJuQlpkM1lhNVdvMm1KYldOL2lpclArQTVWR2V4OU4vTFBh?=
- =?utf-8?Q?fL49nv9QkvmJuYuzT/w6MUOlrItYbrGt6hofglC+gFnQ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71d07c13-7377-420e-f41f-08dde636a004
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 13:27:24.7987
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RvXpJgXGqe1q/iLCcNe6Hk+9FAEH7oWDJ9NnVbuivPDHyEjudvqyVdYr6WrIyQ1wPl5S5U+Cf42Aa8ELqjJ9YQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9359
+Content-Transfer-Encoding: 8bit
 
-On Wed Aug 27, 2025 at 8:12 AM JST, John Hubbard wrote:
-> Changes since v6:
->
-> * Applied changes from Danilo's and Alex's and Elle's reviews (thanks!):
->     * Rebased onto driver-core-next, which is here:
->           https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-c=
-ore.git
->     * Changed pci::Vendor to be a u16, instead of a u32.
->     * Inlined all of the tiniest functions.
->     * Changed from Class/Vendor new(), to from_raw().
->     * Made from_raw() only accessible to super, which in this case is
->       the pci module.
->     * Restored infallible operations. That causes Alex's request for the
->       following reasonable behavior to work once again:
->
->           from_raw(0x10de).as_raw() =3D=3D 0x10de
->
->     * Added a new patch, to inline the remaining PCI operations. This
->       provides consistent inline choices throughout pci.rs.
+This patch series provides abstractions for struct sg_table and struct
+scatterlist.
 
-I am far from a PCI expert, but regardless of bus considerations the
-code appears to make sense to me (particularly since it removes some
-uses of the `bindings` module!). Thus, and FWIW,
+Abdiel and me agreed for me to take over his previous iterations on this topic.
+I decided to send my patches as a new series rather than as a subsequent version
+of Abdiel's previous iterations, since the changes I made turned out to be much
+closer to a full rewrite.
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+The most notable differences in design are:
+
+  - SGTable utilizes BorrowedPage, AsPageIter and VmallocPageIter from my patch
+    series in [1].
+
+  -  SGTable is a transparent wrapper over either struct Owned<P> (where P is
+     the provider of the backing pages) or struct Borrowed, which by itself is a
+     transparent wrapper over Opaque<bindings::sg_table>, i.e. either
+     SGTable<Owned<P>> or just SGTable (which is equivalent to
+     SGTable<Borrowed>.
+
+     - `SGTable<Owned<P>>`: Represents a table whose resources are fully managed
+       by Rust. It takes ownership of a page provider `P`, allocates the
+       underlying `struct sg_table`, maps it for DMA, and handles all cleanup
+       automatically upon drop. The DMA mapping's lifetime is tied to the
+       associated device using `Devres`, ensuring it is correctly unmapped
+       before the device is unbound.
+
+     - `SGTable<Borrowed>` (or just `SGTable`): A zero-cost representation of an
+       externally managed `struct sg_table`. It is created from a raw pointer
+       using `SGTable::from_raw()` and provides a lifetime-bound reference
+       (`&'a SGTable`) for operations like iteration.
+
+     - As a consequence, a borrowed SG table can be created with
+       SGTable::from_raw(), which returns a &'a SGTable, just like similar
+       existing abstractions.
+
+       An owned SGTable is created with SGTable::new(), which returns an
+       impl PinInit<SGTable<Owned<P>>, Error>, such that it can be initialized
+       directly within existing private data memory allocations while providing
+       the required pin guarantees.
+
+  - SGTable<Owned<P>> uses an inner type Devres<DmaMapSgt> to ensure that the
+    DMA mapping can't out-live device unbind.
+
+  - SGTable<Owned<P>> uses pin-init for initialization.
+
+This patch series depends on [1] (branch containing the patches in [2]). A
+branch containing this series (including dependencies) can be found in [3];
+Abdiel's latest series can be found in [4].
+
+[1] https://lore.kernel.org/rust-for-linux/20250820145434.94745-1-dakr@kernel.org/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=page-iter
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=scatterlist
+[4] https://lore.kernel.org/lkml/20250718103359.1026240-1-abdiel.janulgue@gmail.com/
+
+Changes in v4:
+  - Replace "type state" leftovers.
+  - Add a brief explanation to RawSGTable.
+  - Mention "no interior mutability" in Sync safety comments.
+  - Add safety requirement to RawSGTable::new().
+  - Don't use pin-init for RawSGTable itself.
+
+Changes in v3:
+  - Beautify max_segment assignment code.
+  - Rename DmaMapSg to DmaMappedSg and improve documentation.
+  - Rename SGTable::as_iter() into SGTable::iter() and remove IntoIterator impl.
+  - Consider struct sg_table::nents in SGTable::iter() and SGTableIter<'_>.
+
+Changes in v2:
+  - Switch to an enum impl for DmaDirection utilizing compile time boundary
+    checks.
+  - Add missing Send/ Sync impls.
+  - Rename as_ref() to from_raw().
+  - Add a bunch of inline annotations.
+  - Add a patch to introduce a typedef for dma_addr_t.
+  - Let dma_len() return ResourceSize.
+  - Add addional invariant to DmaMapSgt.
+  - In RawSGTable::new(), pass pages as mutable slice reference.
+  - Avoid casts when deriving max_segment in Owned::new().
+
+Danilo Krummrich (5):
+  rust: dma: implement DataDirection
+  rust: dma: add type alias for bindings::dma_addr_t
+  rust: scatterlist: Add abstraction for sg_table
+  samples: rust: dma: add sample code for SGTable
+  MAINTAINERS: rust: dma: add scatterlist files
+
+ MAINTAINERS                     |   4 +-
+ drivers/gpu/nova-core/falcon.rs |   4 +-
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/scatterlist.c      |  24 ++
+ rust/kernel/dma.rs              |  86 +++++-
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/scatterlist.rs      | 491 ++++++++++++++++++++++++++++++++
+ samples/rust/rust_dma.rs        |  35 ++-
+ 9 files changed, 631 insertions(+), 16 deletions(-)
+ create mode 100644 rust/helpers/scatterlist.c
+ create mode 100644 rust/kernel/scatterlist.rs
+
+
+base-commit: 27941214d368f3c17ed26a72662fc453bcc81b9d
+-- 
+2.51.0
+
