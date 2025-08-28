@@ -1,173 +1,89 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A543431E3;
-	Thu, 28 Aug 2025 19:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD27265CA8;
+	Thu, 28 Aug 2025 19:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756407668; cv=none; b=s5q/jRQp7LLKmJjGMq51vdMBVd7wgHsDXOX3y3RyJcnmBSK8GFf7EzufGfSylF4fDlHT3eOiuE428fPaEg6WygM1Zqj13KLgL3DP2r97M5SXZXk/1aH68UwhvX5LEhZdXin892IJTF3W0ktAw34hanKqK+X4HJz46B13pUdIaVI=
+	t=1756408237; cv=none; b=mmh9V6JlSlJi1aXieXOne1CQ0XvgZMs7Dx5RGiWNMzdRYmamd2DvCi/Rz1PsdVIdAbchFlfmNIZGFpO0dWPgjmRmgg2Dgta9MuEppo+3bGB1e3cv3PRRWSYOzd5eLe9g9xd17GCV47giWPE0/yXuAZWW6ml+cL4QONi8JhPXBGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756407668; c=relaxed/simple;
-	bh=E3oVGdPxyaJFgaTqf2y8btrQgXMEMCM/zUm8ETp1y5c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JIp/rBzbGngawNhVqToFHYPBI74CbmFUxRWh4bp2RrwL40coaN5mA7cIpc+QCU5XZxuUgUrrANMbxvdA5Bs6Nn3c+K/3Jx9hXZKpcQyMPdlE3Hk4w8c2Q/ANG6V8AxLREluXmo70UoVVnTPsv2cOExS+COVqSwhoDN1QtC48JCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aa082iQd; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756408237; c=relaxed/simple;
+	bh=nTTeahhIb0FZNTHkQNMJBnWQfHnp2aJ+r4oH3UJmf9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S3bZyEF1JCSvrvS+iHBmIOfk6p6uSQbtcmwHZDC+Dh2SpNPOKKPYv1pBDhYTDTPh4LpEUBFEwfyMvvs/XaY1qkm1+Yq+Gfh9hL6NwAQdwuZFFlW0i9ecc/5um2RK5ynTk6xiDDmhPWT4Yhj3UDepRUeujJ0T3GD0HpzxmMS7ZVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kiAyKBDP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aa082iQd"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-32783de3e87so1355578a91.0;
-        Thu, 28 Aug 2025 12:01:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756407665; x=1757012465; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PofwN+sl6dw2dDWCuPOORWJpa23jS48M28BtJ3SIOeU=;
-        b=aa082iQdXbXlU8y2SKgpyUO7arztkbj6ukbBvWkbqus/rKXYcMm1mz/NqSATwizwUy
-         G7dGJ6lJvQdjOOdDd5qRZLFng5fQKJTBIncHNrzIPnxcnSg1So5fJkMhHlsAxXQZLqc7
-         gbefAUc/8jH1d+dhcHPHOe4ScCUtQ/+XSivakZ5YO6UlRQKyX3pS59b3hZ4F6prZVgSh
-         T/p773XFEi62RO3zn6aC356JVIJfkGPLY7yZFuvVQ6aqhG5eGKJX7KbYkp1TDczYlZ7C
-         vIHLQtW5k9aXYqvh/MmNGYrEpYrXCMrwqyF8bmBHxuG/8U2GHP0FTqv+6d0G2XqUQxNO
-         iG0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756407665; x=1757012465;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PofwN+sl6dw2dDWCuPOORWJpa23jS48M28BtJ3SIOeU=;
-        b=kaDvyF7BE8GuN6T2CbgESh+PcSn9lVLhrSK6gT+ar0WPIljLeEhEW6nHYUxZh95e99
-         3EUUK6oPzDF1Cco+OJqIL91aIRySZs9ZBRRvahnk2vbb+HVvbuk6uswDZ3z0aB6wW7VO
-         ff5zScn4G5HIt2/w/Xx8ZIL1kntBpxXVQVKlCf0GrdPfq9AOdQH+WqH9swXIsL3IhMch
-         IXW6xLgNQ9i3/v9/fNfPo1iKeDY44lSuTLXI6in8SOHbsO2IUT1Pak6XD5++WOrZ01oZ
-         39HbJGIWFKTtcdgxCfMfqsjVZ/HKY4GYS0YZZ0iYJGiL7SziRVnku6eX93FdlA7MQ0Ug
-         cOOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUT9su3dRvy3sgQu6mrODPdul5ex0pjntb8+1y0fr0Fqx5frgJzr485WpleEjBGFQSO491VdL+o5UbsGdM=@vger.kernel.org, AJvYcCVIVfflyDUchTVJtcCJQfITHIjkMY1ug1DMWalHWtBaTKuL/uQN+hvqDEJJOyV4DVWvK+42rTR1x4fyD1fH31Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyk5NHap/GWT2P1DUbXJbV5AvP2H7Ei64gqEWTnWvzvPBQ93Ex7
-	ifCg7qPO8zI0yx7YrOsxQFxlJgJSTzVWJQUiT7taI2/D4Vchvhn8FzOdRZ1pXSux
-X-Gm-Gg: ASbGncv5BcT21VyQMVdvJh2lLX+wBnT6VtYM29A0tMaSfGNNItQ4db4F8fZUc1GaHBX
-	10wz3FHQHWpxRQXTMAa4+lvkQdFEZL4O9QXZIGNWUDEV5qPT/4eAbw9XByFPjCfoVxg8mOPc3rH
-	V+C15EQrayi5sa5kIwDidx61fk+JPP6IIXiTX2xakazzSKxzykK61bURJQ2OF0GntrOsE/vWttX
-	rRVuAZGaEgMKBVP5pU9TDvmLsHG6dzlhdoqJIvIV2QiRRINJ94evnpw6RIorDJKsREPvuw3uBHD
-	4LrZM58ODBkcCtcFAOMJKh6kTq1Fknu8Uv3RqmnB/eXpVDxyGVGf2XPNm1bj/geBhMupna5LeKA
-	CIJlIZLZmddiekyaM4fBOUdrDP5ywRBKY07GvXsCS+KGfxuYwsxukGdSa
-X-Google-Smtp-Source: AGHT+IFS3JVNNhR3zNJyk8gBLIrCVFra0me8HIrQNR73Yc/VuaZrqjY1lLTK7uNwZToUsptvYvMAug==
-X-Received: by 2002:a17:90b:52cc:b0:327:d4e9:c4ea with SMTP id 98e67ed59e1d1-327d4e9c960mr1680821a91.4.1756407664152;
-        Thu, 28 Aug 2025 12:01:04 -0700 (PDT)
-Received: from mitchelllevy.localdomain ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327da8e5ad5sm405729a91.18.2025.08.28.12.01.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 12:01:03 -0700 (PDT)
-From: Mitchell Levy <levymitchell0@gmail.com>
-Date: Thu, 28 Aug 2025 12:00:14 -0700
-Subject: [PATCH v3 7/7] rust: percpu: cache per-CPU pointers in the dynamic
- case
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kiAyKBDP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBADC4CEEB;
+	Thu, 28 Aug 2025 19:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756408236;
+	bh=nTTeahhIb0FZNTHkQNMJBnWQfHnp2aJ+r4oH3UJmf9I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kiAyKBDPTCAig6cfYhRFzVMlXt8gF/BgqIWlzfngucl4yl5Wcl8PEMxeGxZyn4feY
+	 9QNbLauol7wPo69EnbsJUOvYSMo6YfZ3+owIkOs7tkWX5BPwXZEGC9l2iz9VL73nWJ
+	 LMeYGO+x9LIMWkAgoCM0LVxjf0/nrBlT574LedC07bLp9s3BQzVau6M5uUSf07U/m8
+	 vqELaFQz9N5nFU8S5MsiAq/DKmR1fhhzHyINYKZV0xBuVLm5Y0saWfzSXpuLfpmwbf
+	 9eS/h5nEcBCqmS1GS4AcOq4YDto3/XpsP6UcVeqRbKR8yG+flv5A1aPbY1iMmgWmoI
+	 HI/G0rHOVaaNA==
+Date: Thu, 28 Aug 2025 13:10:32 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
+Message-ID: <aLCpqI-VQ7KeB6DL@kbusch-mbp>
+References: <cover.1755624249.git.leon@kernel.org>
+ <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
+ <aLBzeMNT3WOrjprC@kbusch-mbp>
+ <20250828165427.GB10073@unreal>
+ <aLCOqIaoaKUEOdeh@kbusch-mbp>
+ <20250828184115.GE7333@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250828-rust-percpu-v3-7-4dd92e1e7904@gmail.com>
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
-In-Reply-To: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
- Christoph Lameter <cl@linux.com>, Danilo Krummrich <dakr@kernel.org>, 
- Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
- Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
- Mitchell Levy <levymitchell0@gmail.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756407651; l=3005;
- i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
- bh=E3oVGdPxyaJFgaTqf2y8btrQgXMEMCM/zUm8ETp1y5c=;
- b=EzwFDp+SiJdNfpKZyQsIfCPW4wWXpRD3O7suWpzgYPTt0ZCT0wH9WnekbdPgj5jQlRyhAXkKS
- RUSwrYD8Pa1BCS54cUq+TOw4bSu3hPrC3vCTdt3FbdvBg5XQJzJ5KH3
-X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
- pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828184115.GE7333@nvidia.com>
 
-Currently, the creation of a `PerCpuNumeric` requires a memory read via
-the `Arc` managing the dynamic allocation. While the compiler might be
-clever enough to consolidate these reads in some cases, the read must
-happen *somewhere*, which, when we're concerning ourselves with
-individual instructions, is a very high burden.
+On Thu, Aug 28, 2025 at 03:41:15PM -0300, Jason Gunthorpe wrote:
+> On Thu, Aug 28, 2025 at 11:15:20AM -0600, Keith Busch wrote:
+> > 
+> > I don't think that was ever the case. Metadata is allocated
+> > independently of the data payload, usually by the kernel in
+> > bio_integrity_prep() just before dispatching the request. The bio may
+> > have a p2p data payload, but the integrity metadata is just a kmalloc
+> > buf in that path.
+> 
+> Then you should do two dma mapping operations today, that is how the
+> API was built. You shouldn't mix P2P and non P2P within a single
+> operation right now..
 
-Instead, cache the `PerCpuPointer` inside the `DynamicPerCpu` structure;
-then, the `Arc` is used solely to manage the allocation.
-
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
----
- rust/kernel/percpu/dynamic.rs | 8 ++++++--
- rust/kernel/percpu/numeric.rs | 4 ++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/rust/kernel/percpu/dynamic.rs b/rust/kernel/percpu/dynamic.rs
-index aad08e4b4251..8683e94bcd9f 100644
---- a/rust/kernel/percpu/dynamic.rs
-+++ b/rust/kernel/percpu/dynamic.rs
-@@ -58,7 +58,10 @@ fn drop(&mut self) {
- pub struct DynamicPerCpu<T> {
-     // INVARIANT: The memory location in each CPU's per-CPU area pointed at by `alloc.0` has been
-     // initialized.
-+    // INVARIANT: `ptr` is the per-CPU pointer managed by `alloc`, which does not change for the
-+    // lifetime of `self`.
-     pub(super) alloc: Arc<PerCpuAllocation<T>>,
-+    pub(super) ptr: PerCpuPtr<T>,
- }
- 
- impl<T: Zeroable> DynamicPerCpu<T> {
-@@ -70,9 +73,10 @@ impl<T: Zeroable> DynamicPerCpu<T> {
-     pub fn new_zero(flags: Flags) -> Option<Self> {
-         let alloc: PerCpuAllocation<T> = PerCpuAllocation::new_zero()?;
- 
-+        let ptr = alloc.0;
-         let arc = Arc::new(alloc, flags).ok()?;
- 
--        Some(Self { alloc: arc })
-+        Some(Self { alloc: arc, ptr })
-     }
- }
- 
-@@ -102,7 +106,7 @@ pub fn new_with(val: T, flags: Flags) -> Option<Self> {
- 
-         let arc = Arc::new(alloc, flags).ok()?;
- 
--        Some(Self { alloc: arc })
-+        Some(Self { alloc: arc, ptr })
-     }
- }
- 
-diff --git a/rust/kernel/percpu/numeric.rs b/rust/kernel/percpu/numeric.rs
-index 4de93f653f0e..3412c2de85fd 100644
---- a/rust/kernel/percpu/numeric.rs
-+++ b/rust/kernel/percpu/numeric.rs
-@@ -20,7 +20,7 @@ impl DynamicPerCpu<$ty> {
-             pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
-                 // The invariant is satisfied because `DynamicPerCpu`'s invariant guarantees that
-                 // this pointer is valid and initialized on all CPUs.
--                PerCpuNumeric { ptr: &self.alloc.0 }
-+                PerCpuNumeric { ptr: &self.ptr }
-             }
-         }
-         impl StaticPerCpu<$ty> {
-@@ -71,7 +71,7 @@ impl DynamicPerCpu<$ty> {
-             pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
-                 // The invariant is satisfied because `DynamicPerCpu`'s invariant guarantees that
-                 // this pointer is valid and initialized on all CPUs.
--                PerCpuNumeric { ptr: &self.alloc.0 }
-+                PerCpuNumeric { ptr: &self.ptr }
-             }
-         }
-         impl StaticPerCpu<$ty> {
-
--- 
-2.34.1
-
+Data and metadata are mapped as separate operations. They're just
+different parts of one blk-mq request.
