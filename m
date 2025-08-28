@@ -1,66 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D3027E079;
-	Thu, 28 Aug 2025 19:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9484621CA0D;
+	Thu, 28 Aug 2025 20:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756411108; cv=none; b=pQrcaHXYP6vtATT8WeZt99vEPOTxHem18SKO5IO1Vvf19LPW3VfuLBOUpJmGFnN3wzLspmQFs582qqRX4vZuh7KCqac71jp2a3X5TQtkn71e84aqkT7Rl630k1pOxpzs/m/J4ywl0JCaeEj+RVu9dMa56egzdHiRKWXnY3pLPsQ=
+	t=1756413883; cv=none; b=ZYlKSKFt5Vu6k9iHwES9MHqxMiXdMWYqJUf28berVd73aRTLfizVk6klnsxrEnJFUSXU8rzLHGsm4byJbX8x6dbC6FydIGFhR7L7yuWTIk90apWrwyPFNuj6qZuoDgoo/wWuHyFThfJtUGgBx+HqJF/OkisFmA9jz8CdlJ5oM0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756411108; c=relaxed/simple;
-	bh=IL8Nv0+2v6BSx6uhM82XpLiqmPiQ1BQkBmIbIkgLXl4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=kdF8oUsraQI8cVUF90TaqHXI1MyNgJW6zv6wuMviBoMBjtm8D8MQqNgQ19kZ3He85udxc5U+Jf73ta+I3vuE9LKNyAOP1QBpaEIc4LmIxnpTTGfswZGppnataFe0u/+BKsTafPmD6yzor3SpCdysiHpyI+6IBIS/OO4+EIn/DGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cKjABHhx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756413883; c=relaxed/simple;
+	bh=c89mH4stV6Zw6WSUN9mFaTaOy7zgcpvR4oJ9c7bESJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bWtOUhx5zFav1PKTiiKaXFzhbgNU47h1Tx2R87y51Huq7rXgy4gHctvJX/VCfQu2gfQrktx6cWP3C6jX9jlqp8Wl6K65Nlkd7u6/oPR7I8qG8fwmtvOjUkeGvvUzDqKAZkFan+tCapsB+b+qQy7pUspe5byKeTUpDjvUmI4CVPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCkXWO2J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cKjABHhx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5731C4CEF7;
-	Thu, 28 Aug 2025 19:58:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756411108;
-	bh=IL8Nv0+2v6BSx6uhM82XpLiqmPiQ1BQkBmIbIkgLXl4=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=cKjABHhxolhzTGSSpNq1eYlRFx+H7KaAJg3QnbcmxcjlZ/duIZZwMsINKl1ILSAwf
-	 kPCWJIrAitgZ9rkN5q87G/ri+v+1hFJCAcvrThE6O02+qmujSwT5mqgjvW2Ni+8iaz
-	 Ha8CFx+mLcC5VHXI4suEsokteE8Os6sIbwpn3FoIRFZ0KuftbW7R0S63LGFdamlX/v
-	 DDMoiYviTag98LgPBcAYBzdUFd2OGrjs9WnPdWXy7n5lhLP/JizMRw7dvwDpJ8GxUw
-	 Giaffrbm0eMpxb/rDlzu2eXaZlKp3qPBL/Qs3i4LnetJdRKdxN6hFX0h1VedUOQtOn
-	 KYsC63miJm3ig==
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCkXWO2J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E175BC4CEEB;
+	Thu, 28 Aug 2025 20:44:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1756413883;
+	bh=c89mH4stV6Zw6WSUN9mFaTaOy7zgcpvR4oJ9c7bESJI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tCkXWO2J3IewsQYx55BhxEF7giI4rYr6qrTJLCIFVVrshlB1bWXdQlsi8RicotIKS
+	 hUHU+S9ffKyJmwgkscaccilQ/WW1mCTanW44QGMapvpzgWz7Oci7qoxw4iySgcbujm
+	 WoI3AkcwBVA2+owQxnMSQlc5kKc36eZTkrN7Z6LQ=
+Date: Thu, 28 Aug 2025 16:44:41 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Alistair Popple <apopple@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 0/8] gpu: nova-core: process and prepare more
+ firmwares to boot GSP
+Message-ID: <20250828-precise-python-of-witchcraft-9d9a8c@lemur>
+References: <20250826-nova_firmware-v2-0-93566252fe3a@nvidia.com>
+ <dc18894e-09d3-4088-9be0-22c2070b61f4@nvidia.com>
+ <DCD2P4ORDLYV.2NSHXI305AF2E@nvidia.com>
+ <79c7d5b5-5fe0-4306-b8c4-3c91758a4c00@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 28 Aug 2025 21:58:25 +0200
-Message-Id: <DCEBRUJ383TE.R6W8YCRNZP1O@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: gpu: nova-core: arm32 build errors
-References: <20250828160247.37492-1-ojeda@kernel.org>
- <b680c343-ba97-4eb4-b426-56e318dce492@kernel.org>
- <DCEB1J2P3MZS.3IGXEYP0MAC5H@kernel.org>
- <CANiq72mkPqFnb4ztiCokE6+ntVSmgOTgERshg-4SMmLboFOqNg@mail.gmail.com>
- <CANiq72=6Ji97UW96V-VjjbRG=ouGeHA7QXpP2gBOJYFx=oJ19w@mail.gmail.com>
-In-Reply-To: <CANiq72=6Ji97UW96V-VjjbRG=ouGeHA7QXpP2gBOJYFx=oJ19w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <79c7d5b5-5fe0-4306-b8c4-3c91758a4c00@nvidia.com>
 
-On Thu Aug 28, 2025 at 9:36 PM CEST, Miguel Ojeda wrote:
-> On Thu, Aug 28, 2025 at 9:31=E2=80=AFPM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
->>
->> and a `DmaAddress`
->> newtype, not just a typedef, could perhaps be nice anyway?
->
-> The one from your linked patch is not a newtype though, so I guess
-> there is a reason for that.
+On Wed, Aug 27, 2025 at 02:56:26PM -0700, John Hubbard wrote:
+> > Right, b4 is supposed to be able to help with this as well, but indeed a
+> 
+> It really doesn't quite, though.
+> 
+> It is true that "base" (git format-patch --base) helps "b4 am" set things
+> up, but then a subsequent "git am" fails due to missing prerequisites.
+> 
+> b4 isn't set up to go retrieve those, on its own anyway.
 
-No specific reason, I didn't see a lot of value in a newtype in the first
-place, depending on you answer in the other thread, may we just found some
-value. :)
+Sure it is. :)
+
+Try `b4 shazam -H` on this series.
+
+-K
