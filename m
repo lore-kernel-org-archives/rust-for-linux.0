@@ -1,111 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56272340D90;
-	Thu, 28 Aug 2025 17:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E862326D53;
+	Thu, 28 Aug 2025 17:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756401325; cv=none; b=HjTueI1GQffMoqMsbKBaacZXY+wB6ruHntr5Jy31qu1wWQN8Z/SN9HY0XipUxo86Y40rqOM3+1C88EyfZ4MeOJvTHbO4R8fbst95nG2jmyrDjPYM8/ayFPdPfIsi1e++IaQdMPiw0cpTVm8Kes5RBcl7/UKNohC/LxTDr5XYRKo=
+	t=1756403689; cv=none; b=XPpgPbTXExm9GfYs2rZOLap28hjIYfpjinif56W0JB0kJBSYi2mD+wNRPxuqnJIBmrihHSYFgwZ99PauWQw2vGHX1gnJkkw4F+RMRtqP7JuRDxIzRz1w2X7+C3wUF0uR7N4b/26bk6GF4vzPTHuh9pJzRxnWYvMH4mnTdUxGwjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756401325; c=relaxed/simple;
-	bh=ou3iD8shgadPVxQRtF41FaHPfXiCub7fMhAggBLVXMc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CIK1BTXrRUzIbeO8wFyOuRuBiD4ndwXhbtS+o9mCWHAKjuJkjWoM9BLrVjoqHm6iODw67pBqn6VPkXymOXOivAFl8E7dbE5J7W0Qy5C2oJxYWzHyMOAJh87t6trgYWvLxC1BHhID6z3PXChBEh9iTC14EKEiOJP1zYGmTP2Sif0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fnmNyIm6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756403689; c=relaxed/simple;
+	bh=fXyx8Pll8ccq5rpjbXHi8sH3cIXWDiQ3zBdWjHcYL8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EFF+tMfaX96Gt2KOViUFo8fRoI2cTFKyqXj1PiaKLD50TyD0vJHZDZcxqQfJAGD76ulS8PtDh4M/hxt+Q9C8FNeH+9PxJFz4lbCQORF10dpNKMUUiFaslA1/scYzhYCchBNzGwbLAZMhXepIEdclq0rB+qZ3uAtBfduoahet0Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXpaF4Cz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fnmNyIm6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A72BC4CEF4;
-	Thu, 28 Aug 2025 17:15:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXpaF4Cz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B120C4CEEB;
+	Thu, 28 Aug 2025 17:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756401324;
-	bh=ou3iD8shgadPVxQRtF41FaHPfXiCub7fMhAggBLVXMc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fnmNyIm6kveacQ6zFjHwSr/ld+cbNXoqmfCrawHp1gvsXVCDDljqqxTV+b1zApRgH
-	 5lcwKbYEv5XvzJ74pZRRlHz4xMMdbU2hypSAtpXWfDMqRVbb/qc2SqQSSCNqbZ1peQ
-	 BdR01HGV590kQ600i1NoQpXCyGOYKnHeIsk3mGhcH3PGq+tQybbYkfchgS5mr5H49F
-	 IvJGdW2sSi79scStsbkC/ihQucpNHR67O3EvTjBCfBwOnwU2YHvQc3Mh/Yo09lKjUz
-	 oioVDuGo8iH8GapTPxpdVPh2h5wOe61XtWreqwSjOT2z6hU8npwTgtY7JSO24epBr/
-	 2W6Y4P8WQ/UJw==
-Date: Thu, 28 Aug 2025 11:15:20 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
-Message-ID: <aLCOqIaoaKUEOdeh@kbusch-mbp>
-References: <cover.1755624249.git.leon@kernel.org>
- <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
- <aLBzeMNT3WOrjprC@kbusch-mbp>
- <20250828165427.GB10073@unreal>
+	s=k20201202; t=1756403688;
+	bh=fXyx8Pll8ccq5rpjbXHi8sH3cIXWDiQ3zBdWjHcYL8A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WXpaF4CziRCP+Rh7Bl80Zgk1i0cXE1XWeYg15HHqz4rBJlAoqYpfxYR8A9luRIyga
+	 tnRie2b0VdCjL0OYA5jZl0+UTRzNBXMdZhTDre/z0O9d1k1ioYs0bjBpEYYKMg/7HF
+	 Sb4Ze43i/MsGpUL304Yo/WINc3kk7YBHDRUysiT3Q3XSpv0+HPe/gaSATKu0IK7FRm
+	 icykPGFepL8RILrEQYtO5fXMESLEsKktO3m8OfWZnw/4TLtUiPthvVRuIpIvRbIMHT
+	 9mPxDd5TTiCsbgIm35KKe8KINE8C8Kdkhv2dqUcfd/Qb/6ZeOv2gNhMhZyatqvyS0a
+	 BMhheT5RctHcg==
+Message-ID: <b680c343-ba97-4eb4-b426-56e318dce492@kernel.org>
+Date: Thu, 28 Aug 2025 19:54:45 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250828165427.GB10073@unreal>
+User-Agent: Mozilla Thunderbird
+Subject: Re: gpu: nova-core: arm32 build errors
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250828160247.37492-1-ojeda@kernel.org>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250828160247.37492-1-ojeda@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 28, 2025 at 07:54:27PM +0300, Leon Romanovsky wrote:
-> On Thu, Aug 28, 2025 at 09:19:20AM -0600, Keith Busch wrote:
-> > On Tue, Aug 19, 2025 at 08:36:59PM +0300, Leon Romanovsky wrote:
-> > > diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
-> > > index 09b99d52fd36..283058bcb5b1 100644
-> > > --- a/include/linux/blk_types.h
-> > > +++ b/include/linux/blk_types.h
-> > > @@ -387,6 +387,7 @@ enum req_flag_bits {
-> > >  	__REQ_FS_PRIVATE,	/* for file system (submitter) use */
-> > >  	__REQ_ATOMIC,		/* for atomic write operations */
-> > >  	__REQ_P2PDMA,		/* contains P2P DMA pages */
-> > > +	__REQ_MMIO,		/* contains MMIO memory */
-> > >  	/*
-> > >  	 * Command specific flags, keep last:
-> > >  	 */
-> > > @@ -420,6 +421,7 @@ enum req_flag_bits {
-> > >  #define REQ_FS_PRIVATE	(__force blk_opf_t)(1ULL << __REQ_FS_PRIVATE)
-> > >  #define REQ_ATOMIC	(__force blk_opf_t)(1ULL << __REQ_ATOMIC)
-> > >  #define REQ_P2PDMA	(__force blk_opf_t)(1ULL << __REQ_P2PDMA)
-> > > +#define REQ_MMIO	(__force blk_opf_t)(1ULL << __REQ_MMIO)
-> > 
-> > Now that my integrity metadata DMA series is staged, I don't think we
-> > can use REQ flags like this because data and metadata may have different
-> > mapping types. I think we should add a flags field to the dma_iova_state
-> > instead.
+Hi Miguel,
+
+Thanks for reporting!
+
+On 8/28/25 6:02 PM, Miguel Ojeda wrote:
+> Hi Danilo et al.,
 > 
-> Before integrity metadata code was merged, the assumption was that request is
-> only one type or p2p or host. Is it still holding now?
+> In Linus' tree and -next, for an arm32 LLVM defconfig plus Rust build, I see:
+> 
+>      error[E0308]: mismatched types
+>        --> drivers/gpu/nova-core/fb.rs:49:59
+>         |
+>      49 |         hal::fb_hal(chipset).write_sysmem_flush_page(bar, page.dma_handle())?;
+>         |                              -----------------------      ^^^^^^^^^^^^^^^^^ expected `u64`, found `u32`
+>         |                              |
+>         |                              arguments to this method are incorrect
+>         |
+>      note: method defined here
+>        --> drivers/gpu/nova-core/fb/hal.rs:19:8
+>         |
+>      19 |     fn write_sysmem_flush_page(&self, bar: &Bar0, addr: u64) -> Result;
+>         |        ^^^^^^^^^^^^^^^^^^^^^^^
+>      help: you can convert a `u32` to a `u64`
+>         |
+>      49 |         hal::fb_hal(chipset).write_sysmem_flush_page(bar, page.dma_handle().into())?;
+>         |                                                                            +++++++
+> 
+> 
+>      error[E0308]: mismatched types
+>        --> drivers/gpu/nova-core/fb.rs:65:47
+>         |
+>      65 |         if hal.read_sysmem_flush_page(bar) == self.page.dma_handle() {
+>         |            -------------------------------    ^^^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `u32`
+>         |            |
+>         |            expected because this is `u64`
+>         |
+>      help: you can convert a `u32` to a `u64`
+>         |
+>      65 |         if hal.read_sysmem_flush_page(bar) == self.page.dma_handle().into() {
 
-I don't think that was ever the case. Metadata is allocated
-independently of the data payload, usually by the kernel in
-bio_integrity_prep() just before dispatching the request. The bio may
-have a p2p data payload, but the integrity metadata is just a kmalloc
-buf in that path.
+I think those should just use the DMA address type introduced in [1].
+Unfortunately, for a fix we have to stick to bindings::dma_addr_t.
 
-> And we can't store in dma_iova_state() as HMM/RDMA code works in page-based
-> granularity and one dma_iova_state() can mix different types.
+[1] https://lore.kernel.org/lkml/20250828133323.53311-3-dakr@kernel.org/
 
-I see.
+>         |                                                                     +++++++
+> 
+> 
+>      error: this arithmetic operation will overflow
+>         --> drivers/gpu/nova-core/falcon.rs:469:23
+>          |
+>      469 |             .set_base((dma_start >> 40) as u16)
+>          |                       ^^^^^^^^^^^^^^^^^ attempt to shift right by `40_i32`, which would overflow
+>          |
+>          = note: `#[deny(arithmetic_overflow)]` on by default
+
+Should probably just be
+
+	val.checked_shr(shift).unwrap_or(0)
+
+I'll send a patch to fix this up.
+
+> Similar to another one I sent, I hope it helps -- it may be useful to make it
+> build in 32-bit as a test for those kinds of platforms.
+
+Agreed.
+
+Thanks,
+Danilo
