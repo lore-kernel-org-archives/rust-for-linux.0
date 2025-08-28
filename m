@@ -1,99 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0E830F7EA;
-	Thu, 28 Aug 2025 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D19634A31D;
+	Thu, 28 Aug 2025 14:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756389555; cv=none; b=IomWvVFFSFFNNgAeVtr1unIic16t1zQaV3bpQuTbT1WLchD7tilOWfa7B16iMVUGYj6WbplLJhg9pIC+BDtaYiGNdFv9uu+pKfNq3CsOY1PIP0YJRKnFJ9C1XEuVkhlKrCNmIgNSKfXu6xOT4rVmvyfgr+DrZspl4dOIzN4mE1U=
+	t=1756389765; cv=none; b=XYaWgbgXyhOpF7qqSkvMHrId/vNIQL3EfvOWQOu9CbVhDXfmyoFINenK00np0Qk2TXnbi/1i4YBOFvGOzn1ts3269dlgztbLSsHaFeL1F67OQmlA7pMjrpdWFZS232qIl6FZ6zjkZH5vIt8MsYDSMMNB8ud283TAVEvlPgtIlmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756389555; c=relaxed/simple;
-	bh=WEtI0/FN3xpSJ6agHNJuplApkchRGtOGLb1rARd7JN4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gFCnYbwmqjTvxpeYYAYTSUVC2QAVaTeBSAbvb182dmOkG3ZyPxgCANJ005c80CFNjUtxwyyrNOTr7tWUYnylYipQltckN8pXf/MiF5dRuo4OubBvZiSTVNCa6KYhOzwGXoEsb8Mh3aMGt2N1W8bZVfhWONvVPPBWJb1QDCDhmU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hk71lSfC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756389765; c=relaxed/simple;
+	bh=wvZUR1kXkXm/C/ySMaGvGbZUESL+TLpkEANKBKV+oQw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=F1+6flgHR9ozkKCaOfj8PYiNF1mfE46n/1TTfcFWJvNfsORUcxAyPkZsMoyaUjFW2bQROPWxtQWqwuyre/p65+mzAus5CEJumXLbaH66fqR1Ku2wTYs4XZrL/rlQIH51jQJmCsFZIxyGQWmLZa50r2hpKHLjMv0V4e1cvU6W36c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqjpdjZ9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hk71lSfC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDDFC4CEED;
-	Thu, 28 Aug 2025 13:59:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqjpdjZ9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA216C4CEF5;
+	Thu, 28 Aug 2025 14:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756389555;
-	bh=WEtI0/FN3xpSJ6agHNJuplApkchRGtOGLb1rARd7JN4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Hk71lSfCh0+8Gp8mDS+rJtbB16TzpROCk59jFIJkk8xGS3HPEjWs7IyU+hvCHsDyX
-	 3WXeUuz+1EJlJfLab3Hoz3YfNT7H4smxqUWZEMhb4wkPS8aQlUhYLfVxbKLFQp7Nhw
-	 exXrt10hund93QkYlyiCZ6bEK++oMBaRJtZ392vGe7x9IpNoJlbYSH5GTsK4jQ5Owz
-	 5GdfouP7S1kClIv/VeZv7H6WCLAa9eAudFg45QTbKm8TBPqUPZkhZpJ0waSFaxGOet
-	 RijKqRrBTkbT5vOT8Mp8SDuWvwhxEdPGvthIyALhqiG1yNbtaDZlYn94J8ioQ23jW7
-	 jRzI8aXCNxLYg==
-Message-ID: <4b525afa-1031-4f99-a1ab-e89af77616eb@kernel.org>
-Date: Thu, 28 Aug 2025 15:59:09 +0200
+	s=k20201202; t=1756389764;
+	bh=wvZUR1kXkXm/C/ySMaGvGbZUESL+TLpkEANKBKV+oQw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=eqjpdjZ9mJxt6BAIT8sdnHDawZxdxwbM7I7b/0zbR4pnZaEf05UAZDSxBCAKJb5+G
+	 Xz6+sc0NBbU3TRs4puFNXxCiV9QPz9wv3IgWl6DE8JUuq2EjXC77+hUBgTMLKFhZz1
+	 +snYxc8bXBE1d4wigv5LjIBDXtB7zhZHB7tZsdShdxOLUIcfs5XRaUhwQ0Id/oUTXx
+	 /7DohtQo1b/13QmYl0731Sob+ETEi06T1JaJEu68nw4L1g7GPqmSp8rokJsVLsrO5C
+	 uH5PRrnifk8oYBxM5E+W3zoRDBMTx08gI6DGQkTgICG+u97w9qYeTplbM2mj/Jp7mw
+	 QXkpahHhYFO3Q==
+From: Mark Brown <broonie@kernel.org>
+To: rust-for-linux@vger.kernel.org, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: lgirdwood@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+ tmgross@umich.edu, dakr@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250821090720.23939-1-work@onurozkan.dev>
+References: <20250821090720.23939-1-work@onurozkan.dev>
+Subject: Re: [PATCH] rust: regulator: use `to_result` for error handling
+Message-Id: <175638976137.317252.6588079114930725416.b4-ty@kernel.org>
+Date: Thu, 28 Aug 2025 16:02:41 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/6] rust: pci: use pci::Vendor instead of
- bindings::PCI_VENDOR_ID_*
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>, Joel Fernandes
- <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- nouveau@lists.freedesktop.org, linux-pci@vger.kernel.org,
- rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Elle Rhumsaa <elle@weathered-steel.dev>
-References: <20250826231224.1241349-1-jhubbard@nvidia.com>
- <20250826231224.1241349-6-jhubbard@nvidia.com>
- <DCE3EV79EX7N.DCIT9JWFGXGG@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DCE3EV79EX7N.DCIT9JWFGXGG@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-a9b2a
 
-On 8/28/25 3:25 PM, Alexandre Courbot wrote:
-> On Wed Aug 27, 2025 at 8:12 AM JST, John Hubbard wrote:
-> <snip>
->> diff --git a/rust/kernel/pci/id.rs b/rust/kernel/pci/id.rs
->> index 4b0ad8d4edc6..fd7a789e3015 100644
->> --- a/rust/kernel/pci/id.rs
->> +++ b/rust/kernel/pci/id.rs
->> @@ -118,15 +118,14 @@ fn try_from(value: u32) -> Result<Self, Self::Error> {
->>   /// ```
->>   /// # use kernel::{device::Core, pci::{self, Vendor}, prelude::*};
->>   /// fn log_device_info(pdev: &pci::Device<Core>) -> Result<()> {
->> -///     // Compare raw vendor ID with known vendor constant
->> -///     let vendor_id = pdev.vendor_id();
->> -///     if vendor_id == Vendor::NVIDIA.as_raw() {
->> -///         dev_info!(
->> -///             pdev.as_ref(),
->> -///             "Found NVIDIA device: 0x{:x}\n",
->> -///             pdev.device_id()
->> -///         );
->> -///     }
->> +///     // Get the validated PCI vendor ID
->> +///     let vendor = pdev.vendor_id();
->> +///     dev_info!(
->> +///         pdev.as_ref(),
->> +///         "Device: Vendor={}, Device=0x{:x}\n",
->> +///         vendor,
->> +///         pdev.device_id()
->> +///     );
+On Thu, 21 Aug 2025 12:07:20 +0300, Onur Özkan wrote:
+> Simplifies error handling by replacing the manual check
+> of the return value with the `to_result` helper.
 > 
-> Why not use this new example starting from patch 2, which introduced the
-> previous code that this patch removes?
+> 
 
-I think that's because in v2 vendor_id() still returns the raw value. I think it
-makes a little more sense if this patch simply introduces the example as an
-example for vendor_id() itself.
+Applied to
 
-I think struct Vendor does not necessarily need an example by itself.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+
+Thanks!
+
+[1/1] rust: regulator: use `to_result` for error handling
+      commit: e2ab5f600bb01d3625d667d97b3eb7538e388336
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
