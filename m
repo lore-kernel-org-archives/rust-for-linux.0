@@ -1,108 +1,106 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7925930F937
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 Aug 2025 13:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231A0311597;
+	Thu, 28 Aug 2025 13:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756386366; cv=none; b=lmzqKrLmzGIn18V+T4KWIMBRTlwjDxHe79jjWTR7E0SCGX+P4WQe8fiwR1FzTQP8A8Jw06UXj48ssjcrTT8lq6jvoyP14IBb6nKQ40LGyczgsvsPoSLfKJnvARgdCFyRlYWyGmenVEKXChqE1v36f0FvxIKjKR2w76H/26nWC0o=
+	t=1756386708; cv=none; b=jr2FN6wD4e+b4X9TL9P7kawrNWNmC3Q+8E6mCDQ+K+Apb/Zez3dQam6v5RiqRjBM0nDLdxWHnF9gjevpIbR3fzRfxbjL83QfpejT9UAKOP5/cPu+blS3CkvkHaXhjt9E/xtgWM+Tma+0QmemhTtgl9vA157l23MwL6npwr/U8Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756386366; c=relaxed/simple;
-	bh=Hjgvl7t3N4uxdg+VbGK4c3KB1Vgb26p6IUDC/BXZ9bA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j7YwvngL0zgVKPeWZOPNPeO7hOhCSY/Nb+KiX41rvhM9quXkvfu/gTDPLsOOq5kHQggwrO+zIZbsQF4oRG9mwd+zLzcZAMhu+SEq8z2ZyHPPda8SoHsfgnKM8soaCsELuebuLGRKV6CO5kbju2Duar19iFrKU9JFgSbC2VjOPp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NOWP2W1a; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1756386708; c=relaxed/simple;
+	bh=7vtdkKKXemcTSIP8EypgaGa8rfk8ybUyyAZvh5aVdwM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=jch/Dz9Gdjb6gyQShVeJDQ4g8YkydbDHwXQs9ZBgD89U3R7hInRxCWr8a3tYd+lGHpnV+3axR79TPYBAcJY6nB6S1pzRlf6nPgDDPzczwo1+Rd+2FsjMVWjsHZwxwaYYSMUWz8mPt4EtA4krTbTofc7wGMfelqhTvpPHwbhcmDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EJyenKxe; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NOWP2W1a"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-771e15ce64eso756035b3a.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 Aug 2025 06:06:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EJyenKxe"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-771eecebb09so1293898b3a.3;
+        Thu, 28 Aug 2025 06:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756386364; x=1756991164; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dEg72LM7YmmLe/X9iW3od6t+U8qtbnknaRFc97jQIUM=;
-        b=NOWP2W1aIoUpJHmT/oS8pr05zrI0tG3rCgqCcycFfnToXluWIRz1zLY6IJm2jkk+8v
-         QEriiyHIc21IPmX85Onvzer0FaQBWscmUFPYmT3odB+loMJY/1ThGuW6K+zQY6p7qEvt
-         DYpI3txbEu95L2ODb8jm9twujLr/hJ2VfD8JfSOiCSdfAMDgb8eDsdpWqJod3SpiMytu
-         zwDPB2pc/epHSD8dTpDM5I/hwxa30HfnA2PpCg62pfQYjE22hyVkaLE2k9kAaAfQdX2r
-         NlJXao8IbYGZcUf/F42YVktaFV0srowHziZAAvzn1Tg/T7Ddf0TjxRLleXhgdX5G2q8B
-         Bhhw==
+        d=gmail.com; s=20230601; t=1756386706; x=1756991506; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mixQJA5VNMzhDOPVkzxwybu9+hBFZg9B1OsbT8DsCaI=;
+        b=EJyenKxeBItdGumfcB/WStSM60FGZn0rGfTrlqrAPvdxhhv3wdf/pBs6FJCYrx2ZHu
+         vIIe4lJVRALJubDlAIDT7P5HVbb2zDIexyAugQpd20kpkVE+Zh/RyX7VtqUJNtO5J8fg
+         5ujtyncql6X91Am7EgGAbdPtWdX+c5fEKq6IOE8qTQYFwedcehj1vzBdU9zdDAiFrff4
+         YhU2xKk5iNaGCi0cefws4TkF2uNYp+FKgQzRgzO6O9bpF7snJ9TK5eFbWW4XQ1EQQXbs
+         p5aY/frL1zqaFv+0QB5NXUOmOvHF7y80Bv+cYF/Lt6mbsRzu22dpT8u2IlibvhoFYy7F
+         uHqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756386364; x=1756991164;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dEg72LM7YmmLe/X9iW3od6t+U8qtbnknaRFc97jQIUM=;
-        b=vB8sfUOPyMv4sJ0UJ4IcnH/4vsBjcq2Xgr/cYOWjH2gi6tKyV80uNyCKL13jBg95is
-         mqxuTA01EWvINesuUtZgtD8vTNS5oJOJN3JGbpzq6lOrwJh07bDFVPO9q4AUWn+nyHFp
-         JG8NRd8GddYOyt6t98o9LNz5cmdNoPcB/8fE84sbXJwNUf21Zz8/U0IEmA5/ZNCQPxVn
-         xCiCZu7jWU/LfrGgh1SVFMHkLUtFkvrac3Lo+ZLaVqK/z+7Y+DWHpDQfv0nHe8gqHJG4
-         oPNloFklCfeHaiHtCo2mW7iIDowX3PvLtSu6E/Fvg+vbzPnXKpg2j8dvhK42AFa+sbf/
-         SqCw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtBs1W5onl6yW3kvPRn5KS+QvnFidO+iJNMG7DcgX8QLMc0sg03ScjaupEsaq3/Xc5CwPrsfl8imnTHtxvCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD+GkCjqaaBUfd5sUX38AYL4PBh5SngzX0QnVVWjgSUFXrOvUr
-	XSWMuTiGd2VrUyHhcaaKkl9QjLmxaGPuhyADAWJvJX8DGjK4/HpYkMmUsUNEWnqmbjIdnJHe5hH
-	mLIwNFA9Uwgs9fSKKD7GeS8oF76slDe0c+4Ti2cVh
-X-Gm-Gg: ASbGncsvjtME+/7s6cjYqur5IBleaoNlc7U7hDsu34WDxRFtXLJchx1aWAlhoMIFtME
-	n8Pe4knmUS+dVQOxYIlwbh9mueD7gkkp91vgFnma2roc/PdlwUR+bt1Z0aW7plT2DGgdoBzHtch
-	3Ue+rbgTJlyJkm0qTnyHMJ4PHduxp1bIbOMf9OPT/WP9VTTp5Ti5Bqu/tdvT6iNVDDx+f8NJKBW
-	RBxdjyzhpTsl1zr3F9j62vr0m1Iwz57eDPIadY9wyw9QU5y1lb7YNMB5/06OjXI2zcTgrU381k=
-X-Google-Smtp-Source: AGHT+IEijpLfmDUkI2YRHjD1JTnwxBU7IhvhlzVkA/BtS2G2IpI0QWOacCq7I9/JLZl5QwxZz27rxdhYKViR835y/Ls=
-X-Received: by 2002:a17:902:da4b:b0:248:f30e:6a10 with SMTP id
- d9443c01a7336-248f30e6dcbmr10418755ad.35.1756386363491; Thu, 28 Aug 2025
- 06:06:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756386706; x=1756991506;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mixQJA5VNMzhDOPVkzxwybu9+hBFZg9B1OsbT8DsCaI=;
+        b=k4k9hVqkK9g394xCwTYinasYyCo9QADay3EwlSfonxKcJE0daQBVZi9dyw3ofSX1u3
+         6RtLPFzJjKwnuPwocVkLeOHWfZ9L5E63twXaWo8OM/gjhH7Lfm9iDZURmWv5OdA1yqv0
+         b5dyTH525EDdqjBMMuZe0MCiipoy60aGviR8UMScfFp95Ljj9CmjuShfpn2iTAp+wPUd
+         z74G877UkCKRb9GN15waZiX3jV/EGDbzmJOM/7Cjyf/bHMpMoTo4gt33YaivR4up1xi6
+         7MlgMxscoXD3MkRTcDXBRz85mJEM+U8Bgh2TjcFnGHXXw+L1uVIRYoC14eDxQIDSyLwv
+         gnzg==
+X-Forwarded-Encrypted: i=1; AJvYcCW5hlaqXbBRSl3UDMFtxwALaofo0FKi18LcKzvr8R0zEYw4zggXbELe+HrVpgqyMgHsFYOF39HvPKby5I9Bvls=@vger.kernel.org, AJvYcCW9rba80/YqBsy4vUdNLFHkfNV/au1zlP0XatOFcTeGLn09eQ61azfSRueVts2RVSIILWrhJ9lx6wzEZtQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPSa87ftwLOMoprIPymfWLpsvJoJ8uFt3t8k/U9TRDodKXm0iJ
+	e7McoJkNALCojIwoD5OXBCE6a0BjRw4zXNR2XC00CsNfVeXKi0joJIl2
+X-Gm-Gg: ASbGncsnnBIP6Ba0r83fqPJfc+1knE+bjo5NQxJwgq5GSLqQ4kl1oG6+sxOeoeJlKU8
+	pvXTwE2D/zVpwDyXISD/RT5Esmx3U7nfQ+fHQl21p4Ai2xhdJB17fk5Phl8FP2Vclr0x/tEHEti
+	TIDY23wy5axPeBaeVeU1p6FCVeI3BOeyhWi64c0SxNYOIcI/q3ZtSWDf5IcsMbCr4RZWR70IGD4
+	k/xEXEeZuwmZrOwM/mtth+Nz+5LLbn4Zs4MQuZ9agcVWnSmzM6LNH7SD5c0MY2N4EfrELX23SZx
+	EHKccE6E/wzs5wpZco029AuKNugzCwgZcIya2rQgGZ+ehr1oD85sG0cHQrmVufi92XM0KG25uKH
+	AuBrPUZ5d9eHnRApIDfAoIyMabV0iDndQT87WfFRNM/V6As6GNmu1jA==
+X-Google-Smtp-Source: AGHT+IFbLkRYD7C99OX7/11odZX+OlwwmyhMZTL0Kf7v08V38rOYw5nOv4LsyruTNAx2C/YzX1+1tw==
+X-Received: by 2002:a05:6a00:3911:b0:736:5664:53f3 with SMTP id d2e1a72fcca58-7702faafa61mr30644246b3a.15.1756386706235;
+        Thu, 28 Aug 2025 06:11:46 -0700 (PDT)
+Received: from shankari-IdeaPad.. ([2409:408c:8287:494b:7e30:8fca:150a:443a])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77054bb0c46sm13245004b3a.41.2025.08.28.06.11.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 06:11:45 -0700 (PDT)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH] rust: sync: Update ARef and AlwaysRefCounted imports from sync::aref
+Date: Thu, 28 Aug 2025 18:41:35 +0530
+Message-Id: <20250828131135.125303-1-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1755235180.git.y.j3ms.n@gmail.com> <948a28f26a0e9924d82eb1d8d377e3ddc7335b24.1755235180.git.y.j3ms.n@gmail.com>
- <CAH5fLgjyd7zNqLFT4T0_=tzcPFyw9xwZX+QTA8ShBxZ_Fa6o6Q@mail.gmail.com> <DCDVIR91LFHQ.1C87G5A0OBJ39@kernel.org>
-In-Reply-To: <DCDVIR91LFHQ.1C87G5A0OBJ39@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 28 Aug 2025 15:05:48 +0200
-X-Gm-Features: Ac12FXwH4U9kGaajYn8SjgOofY0bZTg3SyJryTzi3q7AIGGDgeurcC2n44p8_rs
-Message-ID: <CAH5fLgjDwayRzHXS2Dp6ztURBvnv3md3_jnzyL0ZmBQzTnH7gA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] rust: macros: extend custom `quote!()` macro
-To: Benno Lossin <lossin@kernel.org>
-Cc: Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 28, 2025 at 9:14=E2=80=AFAM Benno Lossin <lossin@kernel.org> wr=
-ote:
->
-> On Thu Aug 28, 2025 at 8:39 AM CEST, Alice Ryhl wrote:
-> > On Fri, Aug 15, 2025 at 7:32=E2=80=AFAM Jesung Yang <y.j3ms.n@gmail.com=
-> wrote:
-> >> +    (@proc $v:ident $span:ident =3D=3D $($tt:tt)*) =3D> {
-> >> +        $v.push(::proc_macro::TokenTree::Punct(
-> >> +                ::proc_macro::Punct::new('=3D', ::proc_macro::Spacing=
-::Joint)
-> >> +        ));
-> >> +        $v.push(::proc_macro::TokenTree::Punct(
-> >> +                ::proc_macro::Punct::new('=3D', ::proc_macro::Spacing=
-::Alone)
-> >> +        ));
-> >> +        quote_spanned!(@proc $v $span $($tt)*);
+On Tue, Aug 26, 2025 at 11:07:31AM +0200, Miguel Ojeda wrote:
+> On Mon, Aug 18, 2025 at 9:11 PM Shankari Anand
+> <shankari.ak0208@gmail.com> wrote:
 > >
-> > Not a blocker, but if the way to implement this one is to push =3D
-> > twice, then I think the pattern should just be a single =3D and then yo=
-u
-> > push a =3D once. The pattern can match twice to handle =3D=3D.
->
-> You can't do that, since the first one needs the `Joint` spacing and the
-> second one the `Alone` one. `=3D=3D` also is a single token in macro inpu=
-t,
-> so matching only on `=3D` doesn't work.
+> > Fixes: 07dad44aa9a93 ("rust: kernel: move ARef and AlwaysRefCounted to sync::aref")
+> 
+> > Apologies, I had missed out on changing the in-file reference call for the modules. This should fix that.
+> 
+> I am not sure if this should count as a fix -- it could have easily
+> been an intentional, second patch on top of the move, so that the move
+> is minimal to avoid modifying the lines at the same time, which is
+> something we typically do/want. :)
+> 
+> Thanks!
 
-Ah, ok. LGTM then.
+Hey, yep I agree. So should I drop the Fixes tag?
+ 
+> Cheers,
+> Miguel
+
+Regards,
+Shankari
