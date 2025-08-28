@@ -1,129 +1,124 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB32A2BF000;
-	Thu, 28 Aug 2025 20:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756414398; cv=pass; b=q+UtJkfPTWlDvXJ3JTGNamJxkwa9ZpZ/LxlXdLEAnfBMfkkIMcN52tqGzhWkvQ5M2KF93RTPg79xDkH0b848iCgbYu9VRoXvwbRmBAhJdRlgWImJU/6CU1m3jt3VghPp9dliprBgfLAL9+0AaDLk5GN9PIIE7LlOaLUqRrG8pPc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756414398; c=relaxed/simple;
-	bh=GTVuonu0/uE2rIWB+P+bMJZTKdHKPh2gT6A2Rhl0a/U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nlm2WAkswU2PuzRLnNvruqNkiZ60HrgD7Xq2B5WQUxSCddiXZeoVibBGXQQCeIp39CYmilDpFUJ8hz6vWQACj0QUY3YZWJS4KwzqgFNLAedWqFQjWXQFww9RIU9TpT9VkPjP8iy48pjuJ3UBJ22Zx2gnovHRtN5pr8vrvSJl4BI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=isl68s1V; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07495223DDD;
+	Thu, 28 Aug 2025 20:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756414482; cv=none; b=o27mp3fSJ7+lhArDJEfixvWqnu9kJ5R28lVrlDvH5JnANODNuOHJ/M8XqMstnx3+u7pZ09TapZXqOdJpdkOR5T+LhptjT0sYmKFj2SghSndic4OvAu3iQRpmXCXvWU9Acc9htSde+FBaZ8KHpptfWaSIYLELYRkPj2lqQwZy7ys=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756414482; c=relaxed/simple;
+	bh=G+6sPUUIFuKNkRdpDGh7oyzJRLExx6mM3Rr0TsrNav4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UJW2k16/lx3tF73mcM3NJo3nTqKqXeeoz6Un3pBSVZoeHksTZ5pOD27trkunvUBkmh6qw6Q/bF+ky/y2+I71iVzUPmp3NAov6uJ9KwqqYGjzoInKW/Afx/l0OsyPCJ77N1t+HjnMXmCm9JqIwj7KxhqAFsS7UA3p8s55i2f0I70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCjN9TPm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="isl68s1V"
-ARC-Seal: i=1; a=rsa-sha256; t=1756414380; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=R40GSdGmB3SzvxgafPwPNlHufS5jrO0hltIGELYl0aIA85yALWxm78OOO3IisRbHWtmIwUe6iV+OIsh3ts8WksBRzD0avd5aOo//VZCl8wD6gaHTHSTEhz9mttiX1V9Mxq2bSMPHqrSCgiowMhad6bxoSGP34fAshGXH6FYoovQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756414380; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Z4SAoqxRMjjOfknNP5rCeR0jEaPb2gogwRcBkklwXRs=; 
-	b=jNiX7y78xR815pcI1c2c1R+hy4OiTyOm81hJ7FEYHmalSeomVX/067C8BrDRz4xz621tZGW9xsAq1IYkLqRxG/rAm/LAoNHx32MWFuFwk6SeHGY5I5Uf5XkytGtCisO1T8b1AyTLqP3S8mionmjSrea+xxHE4I9qknlOArGpF2M=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756414380;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=Z4SAoqxRMjjOfknNP5rCeR0jEaPb2gogwRcBkklwXRs=;
-	b=isl68s1VfEPGznUqx9LvUWD6Pd7C4R4lBSV0m5j40c1ozTCOXebcUfI7qgswHWfk
-	BDDwcXPOpTADUXW+gd07WxdcvlZfcmgT0QClE4Sd9VlFLq933CCu3EyMAc+MlLAjsqZ
-	OJUciCmm8AsAsZs2zc+z+kzoRSBD1wzUh+di3o1Y=
-Received: by mx.zohomail.com with SMTPS id 1756414378215841.1326014020718;
-	Thu, 28 Aug 2025 13:52:58 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Thu, 28 Aug 2025 17:52:19 -0300
-Subject: [PATCH v2 3/3] rust: lock: add a Pin<&mut T> accessor
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCjN9TPm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF632C4CEEB;
+	Thu, 28 Aug 2025 20:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756414481;
+	bh=G+6sPUUIFuKNkRdpDGh7oyzJRLExx6mM3Rr0TsrNav4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sCjN9TPmsmkv2CErZmw7eY4jhfo/PPQcCij3sdHoAaturic23UjSbV5/eD841QBrO
+	 q5lqa5UXldETsQDMVxoOfW90mr401cd2aNU4qwzO6IO/5MHaurrX5r01OojjZShQEf
+	 15Kqtld44h3aDOleBeJLOpcwjkQTTYAEhyrx8SC3goTrfnxyjVjHpigzIsE/EQK5r7
+	 FqO3qkArHFFA2cKutZwYB5+zz+dbLtckQEfa3MaBKs+Sg/PNA0jXRALMJBXOlqNLWJ
+	 BYklmKx3JSZ1NevsWbUBFS2Jp771ITiW6KubcU3EOHWT7p/JyrZiu2Mj04cW80QHY7
+	 3fGPgcRndIPdQ==
+Date: Thu, 28 Aug 2025 14:54:35 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
+Message-ID: <aLDCC4rXcIKF8sRg@kbusch-mbp>
+References: <cover.1755624249.git.leon@kernel.org>
+ <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
+ <aLBzeMNT3WOrjprC@kbusch-mbp>
+ <20250828165427.GB10073@unreal>
+ <aLCOqIaoaKUEOdeh@kbusch-mbp>
+ <20250828184115.GE7333@nvidia.com>
+ <aLCpqI-VQ7KeB6DL@kbusch-mbp>
+ <20250828191820.GH7333@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250828-lock-t-when-t-is-pinned-v2-3-b067c4b93fd6@collabora.com>
-References: <20250828-lock-t-when-t-is-pinned-v2-0-b067c4b93fd6@collabora.com>
-In-Reply-To: <20250828-lock-t-when-t-is-pinned-v2-0-b067c4b93fd6@collabora.com>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828191820.GH7333@nvidia.com>
 
-In order for callers to be able to access the inner T safely if T: !Unpin,
-there needs to be a way to get a Pin<&mut T>. Add this accessor and a
-corresponding example to tell users how it works.
+On Thu, Aug 28, 2025 at 04:18:20PM -0300, Jason Gunthorpe wrote:
+> On Thu, Aug 28, 2025 at 01:10:32PM -0600, Keith Busch wrote:
+> > 
+> > Data and metadata are mapped as separate operations. They're just
+> > different parts of one blk-mq request.
+> 
+> In that case the new bit leon proposes should only be used for the
+> unmap of the data pages and the metadata unmap should always be
+> unmapped as CPU?
 
-This is not useful on its own for now, because we do not support pin
-projections yet. This means that the following is not going to compile:
+The common path uses host allocated memory to attach integrity metadata,
+but that isn't the only path. A user can attach their own metadata with
+nvme passthrough or the recent io_uring application metadata, and that
+could have been allocated from anywhere.
 
-    let mut data: MutexGuard<'_, Data> = mutex.lock();
-    let mut data: Pin<&mut Data> = data.as_mut();
-    let foo = &mut data.foo;
+In truth though, I hadn't tried p2p metadata before today, and it looks
+like bio_integrity_map_user() is missing the P2P extraction flags to
+make that work. Just added this patch below, now I can set p2p or host
+memory independently for data and integrity payloads:
 
-A future patch can enable the behavior above by implementing support for
-pin projections. Said patch is in the works already and will possibly
-land on 6.18.
-
-Link: https://github.com/Rust-for-Linux/linux/issues/1181
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- rust/kernel/sync/lock.rs | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 9242790d15dbf65d66518d060a8a777aac558cfc..7191804a244da05db74294fdec598f1a4732682c 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -245,6 +245,31 @@ pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index 6b077ca937f6b..cf45603e378d5 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -265,6 +265,7 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
+ 	unsigned int align = blk_lim_dma_alignment_and_pad(&q->limits);
+ 	struct page *stack_pages[UIO_FASTIOV], **pages = stack_pages;
+ 	struct bio_vec stack_vec[UIO_FASTIOV], *bvec = stack_vec;
++	iov_iter_extraction_t extraction_flags = 0;
+ 	size_t offset, bytes = iter->count;
+ 	unsigned int nr_bvecs;
+ 	int ret, nr_vecs;
+@@ -286,7 +287,12 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
+ 	}
  
-         cb()
-     }
+ 	copy = !iov_iter_is_aligned(iter, align, align);
+-	ret = iov_iter_extract_pages(iter, &pages, bytes, nr_vecs, 0, &offset);
 +
-+    /// Returns a pinned mutable reference to the protected data.
-+    ///
-+    /// The guard implements [`DerefMut`] when `T: Unpin`, so for [`Unpin`]
-+    /// types [`DerefMut`] should be used instead of this function.
-+    ///
-+    /// [`DerefMut`]: core::ops::DerefMut
-+    /// [`Unpin`]: core::marker::Unpin
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::sync::{Mutex, MutexGuard};
-+    /// # use core::pin::Pin;
-+    /// struct Data;
-+    ///
-+    /// fn example(mutex: &Mutex<Data>) {
-+    ///   let mut data: MutexGuard<'_, Data> = mutex.lock();
-+    ///   let mut data: Pin<&mut Data> = data.as_mut();
-+    ///  }
-+    /// ```
-+    pub fn as_mut(&mut self) -> Pin<&mut T> {
-+        // SAFETY: `self.lock.data` is structurally pinned.
-+        unsafe { Pin::new_unchecked(&mut *self.lock.data.get()) }
-+    }
- }
++	if (blk_queue_pci_p2pdma(q))
++		extraction_flags |= ITER_ALLOW_P2PDMA;
++
++	ret = iov_iter_extract_pages(iter, &pages, bytes, nr_vecs,
++					extraction_flags, &offset);
+ 	if (unlikely(ret < 0))
+ 		goto free_bvec;
  
- impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
-
--- 
-2.50.1
-
+--
