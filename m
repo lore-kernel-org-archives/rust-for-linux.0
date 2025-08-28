@@ -1,90 +1,123 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EF3270568;
-	Thu, 28 Aug 2025 19:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016781D6188;
+	Thu, 28 Aug 2025 19:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756409783; cv=none; b=L5RFr02qAM6w/qlV8Gs+a0fiWPPKBA7L0Ve0UB4MHpFrTBArXxKEiOB18gMnobJ8e09HuzIKiO1JstCjYlo0NSMR3BTSzXaxSw8JV40P5gs6HTTsL61Vo4CAW20ZXwLqfEHPOV00mcG4p7cANmj24fU3J+MWHbl+aGxmntny+cg=
+	t=1756411041; cv=none; b=rd7W/j4bcjkzbtGfmK5Hxbua1BpxaIfxUtM3+/XhLos//vAgVQLEYzQ0ZLAVithjn4OjfeSQXcK5FTXJEUEFajG2f3oTqCvazvlrM6azJ9AKWx8ojKRn6ICSuisjcmOXIwhCanCpHKVQMrmamw1AYz3zCh/ZzYqyPBgxPR/N9Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756409783; c=relaxed/simple;
-	bh=FPYnbt4z9PqW8+XCueL8f6hyeaxZluayQKz6AjJWREU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YKKqfz3HYQvMkMGGvtl+6p5xcgfzEhkZjaM6GlqF+AVBlXUqv9hpzK1xe+kOHly+keDCIOzihzPosROygoVUeV3liHjBbT0VhsMu1xIpRIbCFS42oearoHVIDuYHy1B62BPPps7n335pLntUvNrgMGYDaIQlio/f3R7E+MujvVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mYv8ov/P; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756411041; c=relaxed/simple;
+	bh=J9p1+SFkJ1DD0HNbdzfpG7QiXzTQqNC+170Di7UX3P8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=tbPqo8wVaD25LKwPHo9pbFhrPDOqk9Cnu6D3I0lK1zudAVzyUWcBJnJg6NSFDr0HdTeypRQeTkctp66amMyjyp1ihDBQNAeR8/sOOhVOtGQuKkn2RBMYy11iv6I0DtnFC9o88tZObsgBloeuhqM8C4P6yknCqE3YGUl0tSVsR0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNzv9GTB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mYv8ov/P"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-24602f6d8b6so2666445ad.1;
-        Thu, 28 Aug 2025 12:36:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756409780; x=1757014580; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FPYnbt4z9PqW8+XCueL8f6hyeaxZluayQKz6AjJWREU=;
-        b=mYv8ov/PADjXvjt50W9sAxKjulxhZJ0tsDx4+N5TOsHnSLaJBy21VnFrv3OGIBvX59
-         NdA+s0ccebpNxML4/5QzqBtd/RITvQWFXG1emUYnnzmp3ZvMHfPuEOlU3euSwXVOoAFu
-         nyhAepLUTdFsQp7qMVpf/26fY6BqHwJbGVDrFwC5MFA20hN3meize3+3HA7lMVkPbjCa
-         EacvfF2BInv8r38V+HjLNhNaKMIlo2E5ymICxuyeCIJ6UwsE8aouZZbZ3JK3Rdd/QsUj
-         h78dt9VB0nD8S86GcRrdqAn78ptigncxfIIyIveB8/Pi9yGLk/VbdcPTxfHmAR0usOtf
-         BKfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756409780; x=1757014580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FPYnbt4z9PqW8+XCueL8f6hyeaxZluayQKz6AjJWREU=;
-        b=PV5725kxbHZZVMzPAcHYavpQPEgU4QJPikVamUbcI2WvyYiIoFLd+Nt5qelbDAcB/p
-         phTPGmcZqajqSQEAUhpYaxk2Lq4x8dQjXxuc7dlZKod80v2TmDEflwdcopCNL4QHd9AW
-         rtSxGzXp04Bi5nDdQi5L3lzP/QdHIDLuDGvtKMST9JEcBvt3EURevbc+TMfrHA1/jNb6
-         qKdc0YoxcnHXSZ6g+s2sInu9wUgANrIxqgPhjBfdJROs20c7gyqooahpli0UotMmZTOa
-         2c0z9ps9L8YwnJOzE8L8U7RRxY/bV62h2Xsvho0sEvhi79MZ63yFmHLZsn8ErHBWfW1S
-         yqHw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPm97hxEBspj7aqjgpxg81/KAvNN5JLbDpcBhvU+f7tSwpKVO9VFEtNuvk7QxPl8zfTMf1/zypprwnLKU=@vger.kernel.org, AJvYcCWBFVJyEjbwdt3CovTNxP4LRCgI+KS5SvnYbV0dJAjTZWUN6j0n/xACrXcVlTbyXZ+bPiG+ond1Emq30LmmacU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzO2sezbkO2KScGX3VVkj1WnbgjCCNyfUypEL6PpRcbl7ce2Ij
-	3KykFxrncZ0qVy44ayjgK812oZL1AJi6n0BDn2O3jSpi4MJWnNfzMFMDJRhznU3+YtbHhJCv9ea
-	vt2+RUwaqOt/9/vjUzlyg1cWyEC33eAo=
-X-Gm-Gg: ASbGnct/XmETJsJTyUJNBXBfc1Ls21C1m0IEJHNIyIymy+gFYbgsS4gnMQoV2q39VZZ
-	D8oVUJM9XQa1Geo3O+gx2e6hLDlU8FyX5eAtF16hczgqFMjUDxUTMxDHmkI7cv0h+4lxKo4laY7
-	c16a1bQBeV2GhJnfyUqRP4zkE+DM3Sn/J3fcSgPnUrtX/lkRJESDh2RpM7hwTckRG60/wyYuEek
-	/DzL3vVwQmjYqehWJCAvB9Dz/IMQ7IB8+eqImnNxE/3pko6IOk3hIfBcR10XAKCJKP65zY5cOGo
-	BKief1lg0hmevcYdch2sOCMTxQ==
-X-Google-Smtp-Source: AGHT+IHfdoPvT3BCCGLuczSe9PPNY89s467ywbu87kEOVFUaRViMez0tWnQkPG3jel8d8TX57n3a2PCq5DJC/O1xUEM=
-X-Received: by 2002:a17:902:da8b:b0:246:b41d:252e with SMTP id
- d9443c01a7336-246b42c6bbamr143309125ad.2.1756409780124; Thu, 28 Aug 2025
- 12:36:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNzv9GTB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA52C4CEEB;
+	Thu, 28 Aug 2025 19:57:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756411040;
+	bh=J9p1+SFkJ1DD0HNbdzfpG7QiXzTQqNC+170Di7UX3P8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=kNzv9GTBNQw2jmLbuHmLZwNm2lSRbeCVYQ8MZyO7IT4qf+br2F68+vMxaR6PNdrzP
+	 1X8X0YEiamcGhGG5GXHBcCW2ncGrs7CQPvsiFVeqoty2ZhrZWX6KKUqTb1euHHcpFK
+	 hvNF9FUDlhjdu6iXqa9yuH3uvKsCEtzjc6vevSa33siMTlemYmawxKt9LWn88KvvST
+	 I/UmSsYXKQ0d3l3m9a00ZXevKDezOezVyGqdrNfZ+QsbxdznbjMk4PejknKbcxmI6g
+	 c5/Sn98//btbhZVl+z/Mn6tPawLn61Rp78bs0COCJhcQuX/9Bciwn3q+DOYVwvDRPM
+	 ZuEU5ofQTpT/g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250828160247.37492-1-ojeda@kernel.org> <b680c343-ba97-4eb4-b426-56e318dce492@kernel.org>
- <DCEB1J2P3MZS.3IGXEYP0MAC5H@kernel.org> <CANiq72mkPqFnb4ztiCokE6+ntVSmgOTgERshg-4SMmLboFOqNg@mail.gmail.com>
-In-Reply-To: <CANiq72mkPqFnb4ztiCokE6+ntVSmgOTgERshg-4SMmLboFOqNg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 28 Aug 2025 21:36:05 +0200
-X-Gm-Features: Ac12FXw2hLVUgBSwSS2yfSEkQm89avb4BuFIG4x_TILvdztH4UADYAvwE3UX24Q
-Message-ID: <CANiq72=6Ji97UW96V-VjjbRG=ouGeHA7QXpP2gBOJYFx=oJ19w@mail.gmail.com>
-Subject: Re: gpu: nova-core: arm32 build errors
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 28 Aug 2025 21:57:16 +0200
+Message-Id: <DCEBQZ7WA1KI.1G8TNWH32QWG@kernel.org>
+Subject: Re: gpu: nova-core: arm32 build errors
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250828160247.37492-1-ojeda@kernel.org>
+ <b680c343-ba97-4eb4-b426-56e318dce492@kernel.org>
+ <DCEB1J2P3MZS.3IGXEYP0MAC5H@kernel.org>
+ <CANiq72mkPqFnb4ztiCokE6+ntVSmgOTgERshg-4SMmLboFOqNg@mail.gmail.com>
+In-Reply-To: <CANiq72mkPqFnb4ztiCokE6+ntVSmgOTgERshg-4SMmLboFOqNg@mail.gmail.com>
 
-On Thu, Aug 28, 2025 at 9:31=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu Aug 28, 2025 at 9:31 PM CEST, Miguel Ojeda wrote:
+> On Thu, Aug 28, 2025 at 9:24=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+>>
+>> Maybe I spoke too soon, it's actually pretty painful to keep 32-bit
+>> compatibility, even though it would be nice for testing purposes.
+>>
+>> I'll paste the diff to fix it below, I think that makes it obvious why I=
+ say
+>> that.
+>>
+>> Instead, we should really just depend on CONFIG_64BIT (which implies
+>> ARCH_DMA_ADDR_T_64BIT).
 >
-> and a `DmaAddress`
-> newtype, not just a typedef, could perhaps be nice anyway?
+> Yeah, it isn't great.
+>
+> If it were just that, maybe it it is worth it (and a `DmaAddress`
+> newtype, not just a typedef, could perhaps be nice anyway?)
 
-The one from your linked patch is not a newtype though, so I guess
-there is a reason for that.
+What do you have in mind what the newtype can do?
 
-Cheers,
-Miguel
+I assume the idea is to make it provide methods {to,from}_u64, where to_u64=
+()
+has to be fallible? This would be an improvement, but not really solve the =
+issue
+entirely.
+
+The annoying part really is
+
+	pub(super) fn read_sysmem_flush_page_ga100(bar: &Bar0) -> DmaAddress {
+	    let addr =3D u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).=
+adr_39_08())
+	        << FLUSH_SYSMEM_ADDR_SHIFT
+	        | u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::read(bar).adr_=
+63_40())
+	            << FLUSH_SYSMEM_ADDR_SHIFT_HI;
+=09
+	    addr.try_into().unwrap_or_else(|_| {
+	        kernel::warn_on!(true);
+=09
+	        0
+	    })
+	}
+
+i.e. when we read a u64 from registers, but we know that what we've orignal=
+ly
+written there is a DmaAddress, so we can assume that a cast to DmaAddress i=
+s
+fine.
+
+But this really depends on driver specific semantics.
+
+> but if
+> you think it will become increasingly painful later, then it may be
+> best to focus on what matters.
+
+We'll have a couple more such cases for sure; I think being able to assume =
+that
+DmaAddress is always 64-bit will result in simpler and less distracting cod=
+e.
+
+But if we can come up with a good idea to deal with this with a DmaAddress =
+type;
+I'm open to that.
+
+> It is unlikely there is going to be actual users on a 32-bit platform, ri=
+ght?
+
+Yeah, I doubt that someone could think it's a great idea to run a Turing+ G=
+PU on
+some 32-bit machine.
