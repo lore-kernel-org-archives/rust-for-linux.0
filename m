@@ -1,87 +1,216 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2040.outbound.protection.outlook.com [40.107.244.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35173043B7;
-	Fri, 29 Aug 2025 16:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC4220E029;
+	Fri, 29 Aug 2025 17:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756483928; cv=pass; b=jRJKWdasuVBMjf+ei9qe+lQQiG4PJ0heFK1Uf1LdojJwTvwHDdw9YzN0YKFsh/7lf6gvl/8P7EyNhV9hRaETIqjbW9J2JrWvL5PbBbjO2KbMLlJXRbgxty3bPTTeNjUTcqBFCBKynqjdaZfUQfNrQgU7stk6gHVPLd88xb33Zck=
+	t=1756488803; cv=fail; b=ZB2WSg0VCwFFtiQoLGdwpXYxIAVTxMO7eB9AcPR1PzQ8R7nraBsXnE7qnOviHX3xLJ+k+g242SnBJmrO/wPnUWGwk6sy605hKo0uCusG1nprGLs2Lfy9+8GxfCAMtOfaYKPjCN6StGt6/0qRN0Hds9jtkKp1p8yF7yzzM3UmFXU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756483928; c=relaxed/simple;
-	bh=sNZzeBv7GmmAKJ+KJKP+vXL/ceDc5cVah5m6u5INbt0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=l2DWqBX0jdx9k0hqidbDlifdJrg+JX1DQrl5hVumdCeRY0wsK9mMM9iw7B6NNU2wBUa+Ml3FVsapdOrXdbwBWjjukSgqsXURTert9dkB1WYX8WKaxrrborp3yYGE1iehWo5Ksl8vHnt6Fjz/B4btrsxKnQT4uASmlk5iNu6x9Qs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TiLt8z/J; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1756488803; c=relaxed/simple;
+	bh=+wqp79+RH8rk920TBfoffslz/0qTMm16fYKsfGfavBo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=YAbu8pa6spkHMm/jV77lCfEEBnQILv9osm5LqkziJmtXkFPxszXlPgV1+T4Y8BPxX7czAPqO+KR2Gfmi5jLr0D4gbVtoG1vFdGOHfnosduQgM6XYs4QyRIOtZw3aFthe/RFRS+ZQjgnP2cMdzPthQjyd6Ft7oTQOa2u3KpLjkJM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=juYwDz2f; arc=fail smtp.client-ip=40.107.244.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TiLt8z/J"
-ARC-Seal: i=1; a=rsa-sha256; t=1756483913; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=lJQ1bBNnbt7CJ00Qvccdp6zMxQmHrocNAGyyA8i6q/29mELnGoiJCf6YZjW4imOtIf+zUEsxvU8QQr9eIajgyMWxUYbZFPg+Z3tJmfiFEDNmXg0tX7eVwNvjt9095D69x9/LAq4Im48w/kz3Ts/6Cwz+rVIfiLVFxHHw0IpKfnI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756483913; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=XZngc+3mvJ49Q5Ax2kQP9dlPZisbvVLik+5WLuCV0y8=; 
-	b=SW5d0DbNMRIun8qkfqyz3BobSQTb3ZfEBZdqZVNNtIBYDc/+2QrWECXCN7jk3md4zHz20FnLHpC3Jl4TqlpGyWMPSbZEDT2V8HjYXdi3Nm1H0Pwofg7CYY/cBR0LOD0O/iau7EYmlorvjuPXYbWLsuh6gw8TkYeDdekNwFlW7kg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756483913;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=XZngc+3mvJ49Q5Ax2kQP9dlPZisbvVLik+5WLuCV0y8=;
-	b=TiLt8z/JfeB5N2MfzNDd4uYlfXo9pezYiw7J8lME8up6WYQE2ewoPLyaUHR9MYj6
-	q/q5bDUR9D9p8Q8QsK7LTnlacJlzZYR47MtJ4ZyvFOa6mKSJ4Kh8LAlm6nGjQoSdPCK
-	Wjpb94nhZt95flvrKMLxq/O+R17rOyb6B/XkU6uM=
-Received: by mx.zohomail.com with SMTPS id 1756483911261511.1260565301486;
-	Fri, 29 Aug 2025 09:11:51 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="juYwDz2f"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sae6PMe8Hi0YooCwgU17nGLkFiRbawUqCRQClGTU0gHMWmeGn+XXmas4uANnNw8rdI3JUXbdmDTciJu5B8eAdVG1WxIUKvBREgH/vgH9R++XDMvotra1FvmffbCuy+B3wHIa2nncnN3sgGB9t0Ke5TCSj5PlvUP1vTa7n85fDUyBZp9mU50PcKHRLrnqwC2OS4dst8521akgNgvLaTUk567hU1BPe6B2Bp1afggEjWDeVu5DpSP9MGm9dcL0qBHlk1/Piaw4RqkIZ/TFskruGMBkgb1rhXJPpfiDWwVPyYjhgypAV2mxHR60zPwjU0dibuNhOndw8h89WNuXaSU0GQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ko1i08RAeEtmju59nU6VKPaJ1hyomCZ7ywI8UD6a89s=;
+ b=E9Nm4yF1g6E0KbMzOOQKZjeU5z1qKtqpop4FE2IZjIC/GgOn/HykTEJMzN8WBl3qOS9PXACRfZQmCBCBXf4dCirl9PG428IZh0hfe5Wp8fGK0ChzvbwDlTg6iHCPG6XnYNFxXjDioOH3GphwNHWisLd6gnwh7uEzUwwYSalG9KRMF9A0jqC1/00dB53y8+W2DVMMvrdbTY/gyf6B/bMkUH0KTgQohL590kJgqb/3HNz50DivPjE71Kcw4tJQ3hWmkUPdVgtFNxm/XqmLXExzFwGp32j/enqT+iOOs2AMiE4pHIW5vR1feLikO9DWKwXd5t6FWqOqKp47MhXy0x/JSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ko1i08RAeEtmju59nU6VKPaJ1hyomCZ7ywI8UD6a89s=;
+ b=juYwDz2f3aJjLVQJMqwa1UxJAFS5sFC02gQA5nATwIxHDTfb/B3mc/TZHz66AZZj1qJPdjPQT3mAuJYEvAeuRKNSTdV9eBperlv9s/uv6fc/50QyRAjLQH8/skFQoPOHHYR7phDIGmJFyYAa2X6Y2B/eZvvB1FLiNl9MldyZGsTOIHHAI8SzLIX8fE18I5J7OrwGnLzrWvQzE3WW2uE0251XwWH7NaQgkscfoOQSAb/3trKcszht1Wl1vmid/d3J99jpYBLoF7DAqcHISDnBlJ63JHOKb2stiHmLdCAe04ockNE90FJn4gs6wzn/MwU2lFLPk0DnWu6JDjPpsZ/j6g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by IA1PR12MB6017.namprd12.prod.outlook.com (2603:10b6:208:3d7::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.22; Fri, 29 Aug
+ 2025 17:33:07 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9052.017; Fri, 29 Aug 2025
+ 17:33:06 +0000
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	dakr@kernel.org,
+	acourbot@nvidia.com
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	joel@joelfernandes.org,
+	nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 00/17] nova-core: Complete GSP boot and begin RPC communication
+Date: Fri, 29 Aug 2025 13:32:37 -0400
+Message-Id: <20250829173254.2068763-1-joelagnelf@nvidia.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BLAPR03CA0094.namprd03.prod.outlook.com
+ (2603:10b6:208:32a::9) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [RFC PATCH v3 3/5] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aLHKvjBZYJk2Ci34@sidongui-MacBookPro.local>
-Date: Fri, 29 Aug 2025 13:11:35 -0300
-Cc: Jens Axboe <axboe@kernel.dk>,
- Caleb Sander Mateos <csander@purestorage.com>,
- Benno Lossin <lossin@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B0A69ADA-8186-4BCF-9C8C-F49F1D49D603@collabora.com>
-References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
- <20250822125555.8620-4-sidong.yang@furiosa.ai>
- <713667D6-8001-408D-819D-E9326FC3AFD5@collabora.com>
- <aLHKvjBZYJk2Ci34@sidongui-MacBookPro.local>
-To: Sidong Yang <sidong.yang@furiosa.ai>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|IA1PR12MB6017:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c0570b6-8986-4473-5a94-08dde7221d4d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?FQhoPJv+Rc+qBZJLtbmLW0DYb31gyAlBxj9ulRIuKy0oCDXuhMiItrVSffPT?=
+ =?us-ascii?Q?keB27AXMKS34v/0EoR00TjheytYB9uEuBOD2GjJLxwUODRikOPzZCgBgFFqj?=
+ =?us-ascii?Q?ofs2OPPCTuf+sHFo8lBPfOR7bUhBrzjdRUdYvxbkA/UigzAdyIMXptpUgYMR?=
+ =?us-ascii?Q?ybTjHrj7oxAabP6uJCZ4LuU0dqtZZPcxxzmpy42jK6N7ZKGGo9lISSSzK2SP?=
+ =?us-ascii?Q?VMe6oCg704xhsan6YN8agJOVldOUp8KUIQa2a8c8ZEYZ7zraofpz+7ycwvrZ?=
+ =?us-ascii?Q?Sb5xaZzXYTdYQQ0WU+n4N8Cmes63i3QprCCMX/tuLkTSEONVT0M/Xun9Dt+B?=
+ =?us-ascii?Q?z4H5RMyBxj1OMHo10llDNIoK1sWYbSOJ01NdrnB2n54cOSEiqYbHssiU6Qnh?=
+ =?us-ascii?Q?uJW3BsQvU0Q3zl9Je/CgaMUnRidM/I86HWb9HWSPxKG718RvdIRyPdPvM4/C?=
+ =?us-ascii?Q?OdKc1rU8nDhkiw/GyEmR9q8aHl/UghqlJJGgs02VKabSQd5j/7WpHgY+z8z6?=
+ =?us-ascii?Q?eBOzEDIexVtuXYa/+NKNBjMT3Oa8MDxcb6cEnzfwV4D4DW4xb6iqresGWXW1?=
+ =?us-ascii?Q?kC/KsRFdu8o2W2mHV6hKtg5TWOBUKwlMccmKJW5t1KU6veq3vuFMLX4vxomr?=
+ =?us-ascii?Q?o7cFbJ4jFqZEUQiBB9cvHZWhAiaLEvuyu5BpCE5aOkYPn4oYPU+6gwahyQcW?=
+ =?us-ascii?Q?pKvZeaqlA2QSWhL4fZQIpKHy3yHbRmy4yxfdQGNwl3FNkvSCma+fBYbp30Gk?=
+ =?us-ascii?Q?dBk/SmalmpRF/LB5yS0VFncRzNAt9lkZAvhvoO9Ng2ZoshwzHiG1ZlMVZCmg?=
+ =?us-ascii?Q?Oh9M+Z4FpYVdjbSSnj4R2uPsoiJFTW5lN60giVcl7aozkraNSXyf401Ca8eD?=
+ =?us-ascii?Q?q3vqVA4KliUPnTWRT8ZdcLb30IQqLDBCJBJ+jKfzL5vLVac0AufX+IM2/3Nv?=
+ =?us-ascii?Q?f+TC/Ampbc2hnL7H7fmPRMNQaZaRqPlxY6f4z4f5GPh2kV9QSy/bOQcjOn0o?=
+ =?us-ascii?Q?mGk6NuU8BD30gPXuxrrheK12/y7NC4/mYFunulwz/tzYY1g8Zt1ka9wW8NuJ?=
+ =?us-ascii?Q?QGAi3bKjJDCjBj0f6S5V0sBCBFoa+O2SUTXkSaOnCOhP88sHDHyO3xwhf8Hs?=
+ =?us-ascii?Q?Cb2YOZkNWTYVaGQ3WG+d9+b53CQ873T600vZWduXRtJgxglKgIi/DYJ/JQ+G?=
+ =?us-ascii?Q?nsvOq9MwujYW63z61abnT7V8COcmx7plksLDR/p+xByB9oLB160mSqu9+Ej9?=
+ =?us-ascii?Q?jaHLoWxvqIMgeNM+uMrtmBhDVrLRtsfPGpcE8ilccyl9IE/QMeMcujzp2uLy?=
+ =?us-ascii?Q?jLhnWX+qP/rhXGFB2FUjp+72muZeobYN02D8nBgC/1WAUrxBJq8SnhtN1zUu?=
+ =?us-ascii?Q?OV0ev3T1h6uB2KZuA8kIJGJlMOjNHS4VXghF3yY8XZ5xCNcBbW3jb5VPIOqT?=
+ =?us-ascii?Q?bBgDTcB/uIY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?yL74pTiv4aKNlTIm6KMaa+cdG8dt26OCkNj/876Ab0fxu51qIHTmQMGm8DfD?=
+ =?us-ascii?Q?0DftDXHWPcCh/yFUm0hjgK1AMXFQoBnjpphVvWRijKWhWKGN6tFTjV6/nK/0?=
+ =?us-ascii?Q?GWNgZxzQyPCo6xKW5OBxlaaJ7rtzrtE/OoayunrySGJBF54THkW/uQxx4hx9?=
+ =?us-ascii?Q?OABK5jsf04p5Tgl8gUMTvLuQfV+PU6ru1DbqrDKRd32FKXCdmBsU4VP4VkJT?=
+ =?us-ascii?Q?mdNI6dBUIykiuEWGlbdLLqEaB9zDnVzGuggPQ9osrRYQX+NxCBA/HlQOM2ob?=
+ =?us-ascii?Q?LajL/BwCkuzkWu8ik85tkIXt7D8hNdmcr0zSajFrbfQPKUcMgQ4IySnvoDRz?=
+ =?us-ascii?Q?tBKRWxP+J3DIvokwka2zaTkkokp5yzE3+HzoG+saoS/IHtKJy8QNccBBwNEI?=
+ =?us-ascii?Q?YSGG/g8HzR1XGtdhZbQ+9fuNh8KCjjXyqPxM+fi3frFR1EOHhbjEm+Vq3ZHB?=
+ =?us-ascii?Q?8i0oJ1sJr/XLsfGIazEOhNFQZDDDFTqeatV4tqcbDhu/9nBJa4yCZlL8xP0g?=
+ =?us-ascii?Q?Z5IGxisHe0oiZm4wsgE6H5pDfSY+2ktiiPOjGWnPmgAkCIcZKSllquQDQfPw?=
+ =?us-ascii?Q?Cl0YdJT7ZHG9jx1aJwwrOuEFFFcy4kMOVAt7ZFN4KSab6v8KmqTe0P378o1P?=
+ =?us-ascii?Q?4moVu4Adet6obPsRusMstdahBkr+uebiKN2tspLUU2tvTe2ws9SBiM9uv99D?=
+ =?us-ascii?Q?RhGy+WyKpc0aOzetFipVvBDM3dwkmjdiWY0sXNa9IzgGMKltC8tGNmtyisdr?=
+ =?us-ascii?Q?ths414XsJhXegJt0YYGb+MFSu3HnAgiouE6l1ucPHPMIOq9pnzWXd3olqnk0?=
+ =?us-ascii?Q?YtDluAzpoOH3GapY6VHBpmlzdJ2aFUM/yFRiBukyLBGj6CcU3d6vce2U+uW2?=
+ =?us-ascii?Q?R6v0HGch4I69mEAlrZjBJfth3sDCuNsZnfTic9uLzFraFenlNCsgH1uj2nhv?=
+ =?us-ascii?Q?qNjjlQGXmAx/WUOLx2SRH3FdMuTavAA4GJkjXzn91vVP0ZpF38+neIdOv064?=
+ =?us-ascii?Q?c21fM/QPckz2bnsW281xCuj8/mZkjDH6KfYQHGAGFm9ageokcN5TC96kZhFC?=
+ =?us-ascii?Q?lNo61fZilkWaw/KuZg8cVZAZ4tFOndtLRXf3lutSCj3BG48uHPam3dROWDgA?=
+ =?us-ascii?Q?t1htL6LjfO5QcgcYJdtTVvdGJ0WvSBGDG840cwcya8t8RJiRHsHT8e66KEta?=
+ =?us-ascii?Q?hzxRTzUzfeNoNqfVGyqqi+9ecQ6vU3nm3J5euUDFIxT4ZCfWIAJjslxlwgFi?=
+ =?us-ascii?Q?2ZB+KrOXtI9F4Soy4Rcum5R0bpYX5wQtNj/qMzLIyS8Nb+y5IHb085Y4PCgq?=
+ =?us-ascii?Q?DcR7KFx+jvTcYhgBzMHXgPshqOFb5c5P5y1+x5hi6FR0EGsXf8aYOybkuSwA?=
+ =?us-ascii?Q?fdLs/kknOk4Dsy7+ZtHkZWg2MxYhnVrLSCzxkqLgT1ZVfJlen+ibeDCnHDbu?=
+ =?us-ascii?Q?btWfFN9edZmz2vz0yUwseRGndQAy2mAZTzO6eW4W/yvUoi1I04O7unuzi58B?=
+ =?us-ascii?Q?p99OcTBn+Q8kLsWT9kI+X1YVlgrqC7EMuZkL+u1cRZNj38Aen4R1bmfkAUBq?=
+ =?us-ascii?Q?uBiz2XxBQUsBkmtfXG37VfE81j9KytsInixw+CXq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c0570b6-8986-4473-5a94-08dde7221d4d
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 17:33:06.4552
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8xkNEeHk75/wHRXNq3yW6b/FgCDk2/Pgb0P7wSwVttV7vSaKDoQ6kB6ZU2KiFrI9KdurjWpOKJQZJ4cB6zLx9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6017
 
-[=E2=80=A6]
+This series builds on top of Alistair's series [1] to complete the GSP boot
+process and get us to a point of making the GSP actual responding with useful
+command responses (GspStaticInfo command successfully gets us useful
+information about the GPU). The main addition is the sequencer required
+to boot pre-Hopper Nvidia GPUs (tested on Ampere GA102).
 
->>=20
->>> +    #[inline]
->>> +    pub unsafe fn from_raw<'a>(ptr: *const bindings::io_uring_sqe) =
--> &'a IoUringSqe {
->>=20
->> Private or pub(crate) at best.
->=20
-> Okay. pub(crate)
+A full tree including the prerequisites for this patch series is available at the tag:
+https://git.kernel.org/pub/scm/linux/kernel/git/jfern/linux.git/tag/?h=nova/upstream-submit-8.29.2025-v5
 
-Try to make things private and reach for pub(crate) here only when =
-it=E2=80=99s actually needed.
+Alex's series Alistair based [1] off of is at [2].
 
-=E2=80=94 Daniel
+[1] https://lore.kernel.org/all/20250827082015.959430-1-apopple@nvidia.com/
+[2] https://lore.kernel.org/rust-for-linux/dc18894e-09d3-4088-9be0-22c2070b61f4@nvidia.com/T/
 
+Alistair Popple (2):
+  gpu: nova-core: gsp: Wait for gsp initialisation to complete
+  gpu: nova-core: Add get_gsp_info() command
+
+Joel Fernandes (11):
+  nova-core: falcon: Move waiting until halted to a helper
+  nova-core: falcon: Move start functionality into separate helper
+  nova-core: falcon: Move mbox functionalities into helper
+  nova-core: falcon: Move dma_reset functionality into helper
+  nova-core: gsp: Add support for checking if GSP reloaded
+  nova-core: Add bindings required by GSP sequencer
+  nova-core: Implement the GSP sequencer
+  nova-core: sequencer: Add register opcodes
+  nova-core: sequencer: Add delay opcode support
+  nova-core: sequencer: Implement basic core operations
+  nova-core: sequencer: Implement core resume operation
+
+John Hubbard (4):
+  nova-core: clear MBOX0 before waiting for scrubber completion
+  nova-core: Ada: basic GPU identification
+  nova-core: remove an unnecessary register read: HWCFG1
+  nova-core: remove unnecessary need_riscv, bar parameters
+
+ drivers/gpu/nova-core/falcon.rs               | 137 +++---
+ drivers/gpu/nova-core/falcon/gsp.rs           |  16 +
+ drivers/gpu/nova-core/falcon/hal.rs           |   2 +-
+ drivers/gpu/nova-core/firmware.rs             |   1 +
+ drivers/gpu/nova-core/gpu.rs                  |  34 +-
+ drivers/gpu/nova-core/gsp.rs                  |   2 +
+ drivers/gpu/nova-core/gsp/cmdq.rs             |   4 -
+ drivers/gpu/nova-core/gsp/commands.rs         |  83 +++-
+ drivers/gpu/nova-core/gsp/sequencer.rs        | 431 ++++++++++++++++++
+ drivers/gpu/nova-core/nvfw.rs                 |  26 ++
+ .../gpu/nova-core/nvfw/r570_144_bindings.rs   | 247 ++++++++++
+ drivers/gpu/nova-core/regs.rs                 |   6 +
+ drivers/gpu/nova-core/sbuffer.rs              |   1 -
+ drivers/gpu/nova-core/util.rs                 |  15 +
+ 14 files changed, 930 insertions(+), 75 deletions(-)
+ create mode 100644 drivers/gpu/nova-core/gsp/sequencer.rs
+
+-- 
+2.34.1
 
