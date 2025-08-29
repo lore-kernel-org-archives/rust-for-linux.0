@@ -1,50 +1,58 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFF82797B1
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 22:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737B92797B1
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 22:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756507295; cv=none; b=CAoC2AiNqtkBivwkyuOAIj3gqXaGb4SaiwwNa9x4H2j/0LJ0l1VdKoQ92WVrBgSwQAAPodGM8gfXlJVx/NmLe0qfZZyWucBVl7+3G45yi/LWZZYxbCtNzMVQGvwY3sL46PklWJ+KUV5d+HWBS6OgG+1AzH/Isv4LHz6U6s/2D/Y=
+	t=1756507321; cv=none; b=ecW0D/c5/fZOANouj7dNW8fvnDveJDuuHbYd/5WL4gccbo8CYJd60pZyMXpJBYN4hErtCFlIjhdUMCXMEfWUKimNV0NZdAlbtrUzZXYYyVE+sqy7GrrkF8VdET53HGwqjUIPajO7eKBm+NWrPriz0Q+ZdJywNudgjftGHA2Knu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756507295; c=relaxed/simple;
-	bh=6jmjllIyqomnIpWnvWAsI1K5fkbt90GrHSwhn6JmYCE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OHp2d7Fv8iOBptI5OXpklZysf4xRekHw3Y4pAubbxq92mb8nhd3dfsyHE3ZzwtCfcukS7Tcbz6ekD/4w6iimdxu2vXJKDKhqcdoLMAZo3RmKz+hib2cxc2I8WaiOoe3oFriFb5CcRJXWOp45ZPTBQChKMQKMmpm/ei+h/40HMJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BcwZ0xXj; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1756507321; c=relaxed/simple;
+	bh=OE1X0P/a5ccHP7szvuz/09fZvwZpoEOQ/1G2+CUnG6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B7B0HG1iWrm4CL8P2lXIHTBMyib0O7K1+z8l8kIRx6QoCDv3RuIiLn7IdHZMXZc7DctNQ4cJGJIJjU22SG5HVPSPvt5oMhmRErWQzJg3+gFFT5JyvJ4CNG/awzoM7FpoYbd+BJGkddenx7VVcLfxnqeegHGbPmFuIccU4h3UQdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ad/tT2w1; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BcwZ0xXj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ad/tT2w1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756507293;
+	s=mimecast20190719; t=1756507318;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tgn5qYQScec3mupnI3D3axlii7zkUPK1g6wgPdQSWcY=;
-	b=BcwZ0xXj3F36zN2jukK1elvUFhEp9ramDB2JNHsLpvwbYcNhnV4g9+o8Qlyov2+rd3qAsC
-	h76LfJryDmKSKqeuZyRagX34+EW+9I6wtbGIx2733mNtiz58lMhcl47RQg5d7zOI7wFGaT
-	ZREorT6nddA4M4SrkEhKp0q6PFHnO7I=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OTgut8Xsr5lgOiY155i03UDPgzXuKzvVXZDRWRhboac=;
+	b=Ad/tT2w1l89bTtpnmhlNZuKcO8bYYmwsWBM8RmULmglemacf4/IYvjHo2Fxq3STFH5tAlw
+	nYycykOK7A40XTDPu2XsTFOGgXfU8dqc0hgncwAtBZgX1r8R41Wg7HciTLdRCTWK1q0BtT
+	edIA9g2aGOp3IdwwxjEXSQWJo7dVK/k=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-3dw07UJoO_-yDWLVlt_gtw-1; Fri,
- 29 Aug 2025 18:41:29 -0400
-X-MC-Unique: 3dw07UJoO_-yDWLVlt_gtw-1
-X-Mimecast-MFC-AGG-ID: 3dw07UJoO_-yDWLVlt_gtw_1756507287
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-P12YGXJQMBCF1DKRJ4vo8A-1; Fri,
+ 29 Aug 2025 18:41:54 -0400
+X-MC-Unique: P12YGXJQMBCF1DKRJ4vo8A-1
+X-Mimecast-MFC-AGG-ID: P12YGXJQMBCF1DKRJ4vo8A_1756507311
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 40A2319560B2;
-	Fri, 29 Aug 2025 22:41:27 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 37C6E1956089;
+	Fri, 29 Aug 2025 22:41:51 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.80.78])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 559311800447;
-	Fri, 29 Aug 2025 22:41:23 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DD07E18003FC;
+	Fri, 29 Aug 2025 22:41:46 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
@@ -53,85 +61,54 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	linux-media@vger.kernel.org (open list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b),
-	linaro-mm-sig@lists.linaro.org (moderated list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b)
-Subject: [PATCH v3 00/14] Rust abstractions for shmem-backed GEM objects
-Date: Fri, 29 Aug 2025 18:35:15 -0400
-Message-ID: <20250829224116.477990-1-lyude@redhat.com>
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Asahi Lina <lina+kernel@asahilina.net>
+Subject: [PATCH v3 03/14] rust: drm: gem: Drop Object::SIZE
+Date: Fri, 29 Aug 2025 18:35:18 -0400
+Message-ID: <20250829224116.477990-4-lyude@redhat.com>
+In-Reply-To: <20250829224116.477990-1-lyude@redhat.com>
+References: <20250829224116.477990-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-This is the next version of the shmem backed GEM objects series
-originally from Asahi, previously posted by Daniel Almeida. Along with
-bindings for shmem backed GEM objects.
+Drive-by fix, it doesn't seem like anything actually uses this constant
+anymore.
 
-This applies on top of Danilo and Abdiel's sgtable patches:
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/drm/gem/mod.rs | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-https://lkml.org/lkml/2025/8/28/1018
-
-Asahi Lina (2):
-  rust: helpers: Add bindings/wrappers for dma_resv_lock
-  rust: drm: gem: shmem: Add DRM shmem helper abstraction
-
-Lyude Paul (12):
-  rust: drm: gem: Simplify use of generics
-  rust: drm: gem: Add DriverFile type alias
-  rust: drm: gem: Drop Object::SIZE
-  rust: drm: gem: Support driver-private GEM object types
-  rust: drm: gem: Add raw_dma_resv() function
-  drm/gem/shmem: Extract drm_gem_shmem_init() from
-    drm_gem_shmem_create()
-  drm/gem/shmem: Extract drm_gem_shmem_release() from
-    drm_gem_shmem_free()
-  rust: gem: Introduce DriverObject::Args
-  rust: drm: gem: Introduce SGTableRef
-  rust: Add dma_buf stub bindings
-  rust: drm: gem: Add export() callback
-  rust: drm: gem: Add BaseObject::prime_export()
-
- drivers/gpu/drm/drm_gem_shmem_helper.c |  98 +++++--
- drivers/gpu/drm/nova/driver.rs         |   8 +-
- drivers/gpu/drm/nova/gem.rs            |  15 +-
- include/drm/drm_gem_shmem_helper.h     |   2 +
- rust/bindings/bindings_helper.h        |   3 +
- rust/helpers/dma-resv.c                |  13 +
- rust/helpers/drm.c                     |  48 +++-
- rust/helpers/helpers.c                 |   1 +
- rust/kernel/dma_buf.rs                 |  39 +++
- rust/kernel/drm/device.rs              |  17 +-
- rust/kernel/drm/driver.rs              |   5 +-
- rust/kernel/drm/gem/mod.rs             | 274 +++++++++++++++----
- rust/kernel/drm/gem/shmem.rs           | 365 +++++++++++++++++++++++++
- rust/kernel/lib.rs                     |   1 +
- 14 files changed, 783 insertions(+), 106 deletions(-)
- create mode 100644 rust/helpers/dma-resv.c
- create mode 100644 rust/kernel/dma_buf.rs
- create mode 100644 rust/kernel/drm/gem/shmem.rs
-
-
-base-commit: 09f90256e8902793f594517ef440698585eb3595
-prerequisite-patch-id: 0e1b1f9a665317ff569a37df6ff49cd1880b04f8
-prerequisite-patch-id: 178b864e6d1b88ee299dcc05d1a7a4c89ec7ed51
-prerequisite-patch-id: 7f72c4bfd0e5f50b6d2f8ce96751782894a3ba81
-prerequisite-patch-id: 62fa6de7d3ae99dc54c092087bd716e6749545fd
-prerequisite-patch-id: 3d14d56ca93b0831837aa26b802100a250adeac6
-prerequisite-patch-id: 7a12f4b0e7588874ce589b41b70671dc261b9468
-prerequisite-patch-id: c44763ec35c4e4431e769df088b98424cbddf7df
-prerequisite-patch-id: a9e008c179b1c2fbe76654a191e5018880383d49
-prerequisite-patch-id: 1e9ce500ce25188c575be608cd39e15a59836f83
-prerequisite-patch-id: 39ca3a210a6c365434924c07a0c98a074eb73b97
-prerequisite-patch-id: a747e05834cdb8b8f727e1f7c8b110c636cadab8
-prerequisite-patch-id: 24833689bdecd3fc7a604e13bfe203ccd2fca6f0
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index 80940ed11368d..b27b9fbf28bbb 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -12,7 +12,7 @@
+     prelude::*,
+     types::{ARef, AlwaysRefCounted, Opaque},
+ };
+-use core::{mem, ops::Deref, ptr::NonNull};
++use core::{ops::Deref, ptr::NonNull};
+ 
+ /// A type alias for retrieving a [`Driver`]s [`DriverFile`] implementation from its
+ /// [`DriverObject`] implementation.
+@@ -197,9 +197,6 @@ pub struct Object<T: DriverObject + Send + Sync> {
+ }
+ 
+ impl<T: DriverObject> Object<T> {
+-    /// The size of this object's structure.
+-    pub const SIZE: usize = mem::size_of::<Self>();
+-
+     const OBJECT_FUNCS: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
+         free: Some(Self::free_callback),
+         open: Some(open_callback::<T>),
 -- 
 2.50.0
 
