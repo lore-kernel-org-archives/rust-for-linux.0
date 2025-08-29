@@ -1,107 +1,275 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011048.outbound.protection.outlook.com [40.107.130.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E171DFE22
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 05:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756444814; cv=none; b=clLA22qUyLzQuKKJ0S6kSGvIBhp8o3YYhkAKZSWn3fAHivImKwRBLshE/eBCbNysqmN+PcJNNTS4DnaBZ+N39niX+57QejBzKPaEO2KhHA0ASDZK/RzsDVGkCwjJnrVE/8AufBFa0wtMpOutumcFa5swc75o1uFQtwM+yqAh5AA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756444814; c=relaxed/simple;
-	bh=1Zqk+4vnIkwWqVkrcUdNeo1ti71o+27E8x4Bps+lroU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ab107dlTGXqnYhJqpPu7qO1zhCxGD4D1MncONIaQDS7nmZ+uqzLRIQPIT3OS7nd0r6hVNYau+IWIkdGyiBAVjClZIMwrI4z4svdLCQZOeYrWcTgbkgOw5u0/c3hMailtskmlbmLyXUlx9ZdZjJmnhZmHk1gtuIOLmA8TMQ72WC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KRushieB; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAECD8488;
+	Fri, 29 Aug 2025 05:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756445016; cv=fail; b=jd3snpWp4dwOwSifDbX/E5wAmSrlPGGUemysO+DB7kZQG/+hbbfwcM0/GdH6AvNzWvHvsWYzgOYBIitJLALiTu/e5xkmQ8Nuf0YrxIkfm+Qe/gv/9dfsr0fonUTBWWeYz4/nbHLM9ftCydRYI9jSjfmSGgEJ79TfMgCRxNZ9BFI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756445016; c=relaxed/simple;
+	bh=GdpLZIbcTH7C61ISYZXbRyUwAF36ob0iu72wmiuVj9Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uiJxk4W/Ua4ty30+98KJ9ka9g5GAasGG2ALAPEJ1Gr5QToVWkTleizG0cnYiM1pj3Or4gZ/EjtYoHgiWY24Xbgp1QBuXUKUuGH1txhU+NNUTef9I/JzvdEfJBxf8+JxUBfzlde0I4hkEYm2F7DFRC1LYcWieZRti/YHRxVEm2yo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=mVXkouDg; arc=fail smtp.client-ip=40.107.130.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KRushieB"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-76e4f2e4c40so1590975b3a.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 Aug 2025 22:20:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756444812; x=1757049612; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JvfbFYwUN2Wv0aTFajklPrgWujcFzYTBTym5k6QlzSg=;
-        b=KRushieBvuQ2YCbTp1mphqQqsbg79KPUVp7r6NeFCAGtZ7JngH+R+Yno+n36tX+Tyu
-         4NIjqboAJOpgmzlV2iD8ge9KDzcNQqK8E4G1weM5vOtAtbPfm4Ckwl4n6o6DsM84X5uc
-         4qOK6JRE7dGcA8R7JxKEqFXtcAWh2MHl4w9R2f2NYkbTMsMYhAN5FChx3P3RTjfkuU3G
-         V3DhIuIKqP+EkwphVK3cHQE1CoNnu3RtoJvOBQ2QaM4XUDd96/9KCaBYQn8Nhvvbvi6R
-         qM3dMrkw5Y9yN/IPgYM+am49SywlxHHCSKcvDHXV7jL8MSxkrJqh+aWTwcs+dGlaa4VO
-         84tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756444812; x=1757049612;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JvfbFYwUN2Wv0aTFajklPrgWujcFzYTBTym5k6QlzSg=;
-        b=UI75x5AAfvJZDrGaLd2m8gqVnI4re/IyZOEcoc7W2UYaYek+knVYNswogrd8LqSta2
-         uzTz3Qk8DwoW2OzixQGW3pi6iWibSi9pAturHGi8c8GLmmrm8Ohk7BD70m/nLtPXeHza
-         1zB600ijb0ewHZuu5nSKl1AuRmaYsg86YDazkVgKc5W3L9B/BjIxN2e73HRs+qIKofmw
-         h68en+Q3q2MinBoWAFUwKSYXd415fLt9ee9f03MJaUlFVZY5FQK5kx4wnKexal/d/nh+
-         ND0ZE0sw90wtvCjr2HU7kB8zJJsfBzYq09Myq5x3btmYvMEmXDMayb4WYt2nBY9euPJC
-         3pbw==
-X-Forwarded-Encrypted: i=1; AJvYcCU956nrvfQzoyhUP8QZLlpB+dyxiExKAEtrg7EBuQBIsJQsmuwSF96i7l7+MFEUUJpxquDQerYWHpGaWZlo6A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5PD8SlKU9/uxyelUYNMivlkG6zd8F0RCx59ngpVTMjs/w7EMp
-	mNWkz1u7e0S6uAxFQiFVbTx51zBP+9KPvK0GMiEdVA3NcxGg5PN6I0f3wAIn+YpFMLk=
-X-Gm-Gg: ASbGncvMH4WhrF6zCKxAgVGC69AGBlUY/LKio9k+AV6rz0mX72pN8nk0n0b003tMXy5
-	QElKYk8bOJHGNLXfONw1nTp1NBZaXWETgICObGw0m01t+rfAMhuAel1bScM/CLyv82kJfp97qPi
-	XTrFuqxK/CGzsDTahyiunibvSwOpUIh4wbnBRMcaENW5J77ieLSRKWETqf7DytVkB6QXWN7B1cZ
-	wibtJ+wwwJ/Tut1f8rM0T7WrubHzTwXgcPgjbwyVykv+oXYCwm6+lLRogO7wKUa/urRL/BwSyiO
-	mLRwq4to3tA+FY/MoUVrRiqJ1D8o9SdKrW+qj8p3QORThAutLN7VYipz5MSk1ktiN1EDKxXmkvD
-	8/iRFPdn1ue0kdIjjJF2sa/9YBqftFUfhpZ0=
-X-Google-Smtp-Source: AGHT+IF9rXnIKgqvJMpaMTUtFPVV7KQF3OFqGDqAWPTMUUDPlHpYvFwpf3iklNWoMxNux/mqBvASRw==
-X-Received: by 2002:a05:6a20:7286:b0:243:ae10:2433 with SMTP id adf61e73a8af0-243ae1026c0mr8924481637.40.1756444812495;
-        Thu, 28 Aug 2025 22:20:12 -0700 (PDT)
-Received: from localhost ([122.172.87.165])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd308f90dsm1046614a12.40.2025.08.28.22.20.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 22:20:11 -0700 (PDT)
-Date: Fri, 29 Aug 2025 10:50:09 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Mitchell Levy <levymitchell0@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>,
-	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 4/7] rust: cpumask: Add getters for globally defined
- cpumasks
-Message-ID: <20250829052009.glitgqzv22zf7c4a@vireshk-i7>
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-4-4dd92e1e7904@gmail.com>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="mVXkouDg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=paMrYwPzH/ntjk1SSIXtyvBM5+pgl38O/cCPJwR639ZdjkKNDMTQZ7WpvJ2ge+5RtgSjJ5N+QXhMLYQC6dGmOxLBDTdkwbMcy/eqEKUZQs1pAKqM8AKwnKnjj+pg+ThqizfMfj1NV6+5uGdh8Ed+gwTvRVc1If32nk6SJDPYNfU57mxiYt1QepfJj1mlhyK/h295x4xCk2YbvDDl4D2wMP8iTrpFx+Nv5J00DEV4Cpn+YHiqxpp4FEe+swH+4MBK6W3Hgf5wL4kK31iLpPcqLRoagH1IAjSryVJkyjWYduF6mMVoQZSt5s6u/8KkaUDjjINrNAy5RR3R0PiD2XOrpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zbafPJKMVvVNF6mGPxz90vKugrWDeM09lxYHmXDFOUw=;
+ b=PXTcTMmIn5OEAK8k8Y+xIHXrM3vdnvyLU3042jsmCIJK3yBdrjDspPyF+j1g8WWw+AkWSea59FBe4/HXnmNKHhD32xXVvWxmcHyolOZeW8D6VdzPOilEVD0MXHil7HMmPtMvJBUOREFhilOIlIP/btIoWNHIdzVdcXxnxBybiBMGqPiMQ7lXkV3nrVBor5O5W/1FUzfvqd0Qudve7RFyfZsbEdj/4pNJN8y/HG1uZcA4cI5Zntz5gO7aVY0kY3f2+JUggRfKdBKST5d2IWM+h78EABq45Cs36kLx8fjNwXFh9bXQ/e6Zyip4QKIHoE+Bqar4idVlogI6WMc25S9teg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zbafPJKMVvVNF6mGPxz90vKugrWDeM09lxYHmXDFOUw=;
+ b=mVXkouDgKd7AXFdyPK4su0PmHVmhon+SkGfvwfFbFm4Cpej/PImcL3DrdZ05D/bFvkDVWh89NAPCSWalEBZCHHp9ezUoq81k+kBGOZji3wpuLYVkJSAg5rDiQ/zhXmkJ4G1Exqp2rp1NsnSi7RHB0WZOzMeaZSzq/yTnaRAkaT+3qdK4xb8rDdyIkdppJcOprTtxVAIeI/Nu9YIxGz8SEgKUEEloewTPaLR2Re/78tCmbHkcU4+CZwwanrLccq6EelKCLHzEDyMyQavD/J3t7NobFQht0AnEyjKHIU1PZ78LP+C4NsbEZR8ihh7vpL+NpUEdIvxMcDYvU2IAo8xaTw==
+Received: from DU2PR04CA0284.eurprd04.prod.outlook.com (2603:10a6:10:28c::19)
+ by AM7PR10MB3761.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:175::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.14; Fri, 29 Aug
+ 2025 05:23:30 +0000
+Received: from DU6PEPF00009528.eurprd02.prod.outlook.com
+ (2603:10a6:10:28c:cafe::b4) by DU2PR04CA0284.outlook.office365.com
+ (2603:10a6:10:28c::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.17 via Frontend Transport; Fri,
+ 29 Aug 2025 05:23:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ DU6PEPF00009528.mail.protection.outlook.com (10.167.8.9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9073.11 via Frontend Transport; Fri, 29 Aug 2025 05:23:29 +0000
+Received: from FE-EXCAS2001.de.bosch.com (10.139.217.200) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Fri, 29 Aug
+ 2025 07:23:16 +0200
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by
+ FE-EXCAS2001.de.bosch.com (10.139.217.200) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.58; Fri, 29 Aug 2025 07:23:16 +0200
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 29 Aug
+ 2025 07:23:16 +0200
+Message-ID: <80b7923e-78a0-4de6-bf95-ad7b45171a40@de.bosch.com>
+Date: Fri, 29 Aug 2025 07:23:08 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250828-rust-percpu-v3-4-4dd92e1e7904@gmail.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v4 2/4] rust: create basic untrusted data API
+To: Benno Lossin <lossin@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg
+	<a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross
+	<tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
+	<wedsonaf@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, "Tamir
+ Duberstein" <tamird@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	Greg KH <gregkh@linuxfoundation.org>
+CC: Benno Lossin <benno.lossin@proton.me>, <linux-kernel@vger.kernel.org>,
+	<rust-for-linux@vger.kernel.org>
+References: <20250814124424.516191-1-lossin@kernel.org>
+ <20250814124424.516191-3-lossin@kernel.org>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20250814124424.516191-3-lossin@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU6PEPF00009528:EE_|AM7PR10MB3761:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0aee4391-499f-40ef-237b-08dde6bc308c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014|7416014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZWVPdmQxVjA0b2F3cEFERTRBQTJZOUMyT1JwRUZuNzQ1dklzUjFBN0xuVTEx?=
+ =?utf-8?B?eHozZDQ2THgyTFRRZ1FSdEpIYks2dmdSaXkzSzcwYkp5WXI3MFZ0YkRldFdP?=
+ =?utf-8?B?ME1aOUtpUFdRNExlS2VxNjVmdXQ3ZEthZGRwTjlCczFGcG1ZUVRxeHhoQnVC?=
+ =?utf-8?B?YWNVb2hxMlU2Mm5pTEUzZkJBWUlNcWhMQklTSTVKU2p2U0R2NjI1SjhUcVJR?=
+ =?utf-8?B?UWhqUzlZcnhVVDRKVEJTbjZBdFY5b0g5QXNYT0dVSXN3YWZWeGhvTVVZOTBs?=
+ =?utf-8?B?MDlGOWlFTkRMU3RFdnpPVWd6YnhhdTdoMWd4cTJEYnJzVGNKWTU1aWVQTnRi?=
+ =?utf-8?B?UDY3dTIveXVCRWEzQVlFSVhWUFJEYXlRZTRIdzlYcmJtazR4TXFnWmxwYXFq?=
+ =?utf-8?B?SUhnQjYxa293NEFTZHFteGcrR2RUdzZta1dWS013TGNaTWRTN09sT0lCREdE?=
+ =?utf-8?B?emJDeXErMW1pdnBPMnRTd2Z5cW5aOFV2VlduV1d2bS9SVzlQQU5oL2JZZDBO?=
+ =?utf-8?B?Z3FudXNkVUVabU96NEt6c1o3TFdTekNLVjRaWnpYekFRNnBBdWJMd0Jac3lU?=
+ =?utf-8?B?d0xySGI5WEVUS1dZaVI1L280R3FaeXpveTVvM3lhVTJKVVQ1M25oWUZkRU1E?=
+ =?utf-8?B?L1pCb05LSEFublVGQWVwbUJZY1JOMjUwa241Qm5NN3NidkFLcHVSaElveCtw?=
+ =?utf-8?B?QkRRN0d3KzVRKy8xdXU5V0pwM3pIM3hrbCtKZDdMbmV0bXlrOHZkZVNpK3Na?=
+ =?utf-8?B?dUQ0ZUdFTnk2Z0xKeHF6VnU4bHIxQWhuYmVRUVFSMGF6U2VabWRVbWRERDhx?=
+ =?utf-8?B?Zy9BSnJmYXZOcXIwZVBBamNheHlxbTZ0TW42dzQ3eGdseHBYWVd5T0RrYTJw?=
+ =?utf-8?B?U01xTU8ySmJXVzRnaEk5NVRHM1RleG5RSGd5OTU4WnZsZlI2MEtSNlYvN0Jt?=
+ =?utf-8?B?TVhGUkc1STZTRERQRXVSMzFnaW95UzY3enA2K2g0UmdHYnpMYzNBUGh4VU5m?=
+ =?utf-8?B?ZXZmSDNQcHExMTlzYzJNeFBmM3AvUTNxTnpwVmFocFNXbGFXZFIvWXF2SHF4?=
+ =?utf-8?B?dGpzYUcrME5UOGpuRUwzeUhaUnVFWTR1NFBtNVFYSzc1eGV2R2pSSHlwT3pp?=
+ =?utf-8?B?d2FUOEswZFpJMkxSTGIrNXlreC93cWFmQ0NtQ1hwK0V0YVNyT1RvcktSaStV?=
+ =?utf-8?B?SndaTnpDMmE4bVBjQkFUVjdoTlo2MHVuQUsrNGZIVWJkQlMvK1c1UG1QSHJM?=
+ =?utf-8?B?SXR5dllmNWhhQzRGN2Rsd0k2MFpEMUtBRkFtS3JZb1lBZDVmV0gxd1dGQTNo?=
+ =?utf-8?B?d0RxTGxxZENSWmx6eWJxS0V3ek4ya0EyZ2VhSVNlVXFJYVpFT0hvUExlVHhR?=
+ =?utf-8?B?TDVkN0NIL1ZwdnZoRmtaMnRnYlVBNUhCUVp3SjZFM2VUOVFDejhWaTcvdWdz?=
+ =?utf-8?B?bXFPMW5vYmFkTmcwdmJoRzBjQ2h2ck5rMGcvRVRQNEJWdjl0YXNlZ3ZiMENL?=
+ =?utf-8?B?YlNHY1ppeG1MZTlXODRpbEpmS1orYWdnWTA1eCtEZXFSMTBiQnJscmFBRElT?=
+ =?utf-8?B?VmQzcDVsWUZXOTQyVkF2YUx5UXgwSVAyWlQ1d2ZWVzF0Zm5GbUowZTdrNTVK?=
+ =?utf-8?B?TVdPY1hKOGVKTlEzQ0VNMWhKWkVJNjBtekR1Z0xwamVSTGFSUFAyOHNudUhG?=
+ =?utf-8?B?dVJ5Z0dpZW5hVE1MdXBDMkJUa0VwMUtTUVFYckdtRDlZV2xmdmVkY2FMejIr?=
+ =?utf-8?B?cG5wOU9UOUpMMmtjMWV5R1J0YjBZa1VWakloUVZ2eEcwZTdwQ042aFdSd2Vk?=
+ =?utf-8?B?cS9LUVpPeVBUZGFWTTd2L1A4TlJ1TzdWWlJtblZMem9XSWptS0FMQnRnSjNB?=
+ =?utf-8?B?U2FSYVIvOHdvRy9NMitCVnp3cnlKdkRTY21hRENlcGNxT1VmMW1RME5LcGln?=
+ =?utf-8?B?OGdiaEp1ajh2NzgvUHBxdk5hVm9CYTU2VTZ2WWxuN0NnZjErN1NLQ0E5b1pC?=
+ =?utf-8?B?dkpuWVl3SlZSMFgzaS8rRHBoTFpMM2xzcmtDamg1YitjWUVsUTRTSHV3a3BY?=
+ =?utf-8?B?TUE2NzhMTXpPNm44N1VKTUk2Uk5FdFM5UkhLdz09?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 05:23:29.8240
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0aee4391-499f-40ef-237b-08dde6bc308c
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF00009528.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3761
 
-On 28-08-25, 12:00, Mitchell Levy wrote:
-> Add getters for the global cpumasks documented in
-> `include/linux/cpumask.h`, specifically:
-> - cpu_possible_mask
-> - cpu_online_mask
-> - cpu_enabled_mask
-> - cpu_present_mask
-> - cpu_active_mask
+Hi Benno,
+
+two minor comments:
+
+On 14/08/2025 14:44, Benno Lossin wrote:
+> From: Benno Lossin <benno.lossin@proton.me>
 > 
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> When the kernel receives external data (e.g. from userspace), it usually
+> is a very bad idea to directly use the data for logic decision in the
+> kernel. For this reason, such data should be explicitly marked and
+> validated before making decision based on its value.
+> 
+> The `Untrusted<T>` wrapper type marks a value of type `T` as untrusted.
+> The particular meaning of "untrusted" highly depends on the type `T`.
+> For example `T = u8` ensures that the value of the byte cannot be
+> retrieved. However, `T = [u8]` still allows to access the length of the
+> slice. Similarly, `T = KVec<U>` allows modifications.
+> 
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 > ---
->  rust/kernel/cpumask.rs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
+>  rust/kernel/lib.rs      |   1 +
+>  rust/kernel/validate.rs | 142 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 143 insertions(+)
+>  create mode 100644 rust/kernel/validate.rs
+> 
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 99dbb7b2812e..f9dcf079b903 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -128,6 +128,7 @@
+>  pub mod transmute;
+>  pub mod types;
+>  pub mod uaccess;
+> +pub mod validate;
+>  pub mod workqueue;
+>  pub mod xarray;
+>  
+> diff --git a/rust/kernel/validate.rs b/rust/kernel/validate.rs
+> new file mode 100644
+> index 000000000000..1f75ccb79532
+> --- /dev/null
+> +++ b/rust/kernel/validate.rs
+> @@ -0,0 +1,142 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Untrusted data API.
+> +//!
+> +//! # Overview
+> +//!
+> +//! Untrusted data is marked using the [`Untrusted<T>`] type. See [Rationale](#rationale) for the
+> +//! reasons to mark untrusted data throughout the kernel. It is a totally opaque wrapper, it is not
+> +//! possible to read the data inside.
+> +//!
+> +//! APIs that write back into userspace usually allow writing untrusted bytes directly, allowing
+> +//! direct copying of untrusted user data back into userspace without validation.
+> +//!
+> +//! # Rationale
+> +//!
+> +//! When reading data from an untrusted source, it must be validated before it can be used for
+> +//! **logic**. For example, this is a very bad idea:
+> +//!
+> +//! ```
+> +//! # fn read_bytes_from_network() -> KBox<[u8]> {
+> +//! #     Box::new([1, 0], kernel::alloc::flags::GFP_KERNEL).unwrap()
+> +//! # }
+> +//! let bytes: KBox<[u8]> = read_bytes_from_network();
+> +//! let data_index = bytes[0];
+> +//! let data = bytes[usize::from(data_index)];
+> +//! ```
+> +//!
+> +//! While this will not lead to a memory violation (because the array index checks the bounds), it
+> +//! might result in a kernel panic. For this reason, all untrusted data must be wrapped in
+> +//! [`Untrusted<T>`]. This type only allows validating the data or passing it along, since copying
+> +//! data from userspace back into userspace is allowed for untrusted data.
+> +
+> +use core::ops::{Deref, DerefMut};
+> +
+> +use crate::{
+> +    alloc::{Allocator, Vec},
+> +    transmute::{cast_slice, cast_slice_mut},
+> +};
+> +
+> +/// Untrusted data of type `T`.
+> +///
+> +/// Data coming from userspace is considered untrusted and should be marked by this type.
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
--- 
-viresh
+Regarding "data coming from userspace": It's not limited to userspace,
+no? In the example above you use "read from network". I like the wording
+from the commit message more: "external data (e.g. from userspace)". Or
+"untrusted source".
+
+
+> +///
+> +/// The particular meaning of [`Untrusted<T>`] depends heavily on the type `T`. For example,
+> +/// `&Untrusted<[u8]>` is a reference to an untrusted slice. But the length is not considered
+> +/// untrusted, as it would otherwise violate normal Rust rules. For this reason, one can easily
+> +/// convert that reference to `&[Untrusted<u8>]`. Another such example is `Untrusted<KVec<T>>`, it
+> +/// derefs to `KVec<Untrusted<T>>`. Raw bytes however do not behave in this way, `Untrusted<u8>` is
+> +/// totally opaque.
+> +///
+> +/// # Usage in API Design
+> +///
+> +/// The exact location where to put [`Untrusted`] depends on the kind of API. When asking for an
+> +/// untrusted input value, or buffer to write to, always move the [`Untrusted`] wrapper as far
+> +/// inwards as possible:
+> +///
+> +/// ```ignore
+> +/// // use this
+> +/// pub fn read_from_userspace(buf: &mut [Untrusted<u8>]) { todo!() }
+> +///
+> +/// // and not this
+> +/// pub fn read_from_userspace(buf: &mut Untrusted<[u8]>) { todo!() }
+> +/// ```
+> +///
+> +/// The reason for this is that `&mut Untrusted<[u8]>` can beconverted into `&mut [Untrusted<u8>]`
+
+
+Missing space? "be converted"
+
+Thanks!
+
+Dirk
