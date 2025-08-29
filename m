@@ -1,57 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61ED42D9ED7
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 22:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C201C2D879E
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 22:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756507383; cv=none; b=Eb5x8lbrZRDQVewW3uL3OEFk6DUY5tgHjSyOq/uhoSUyelr/SpEEo1UyIoFjn/Y9V/pEu/p3nIi4jEXUtAte2+PLLEHrxbo4STMDz+LTsBubTkTWc7eh6YQfXI8Unmal8KVnJmFnVRmPq4FQSjUq6Jh/uH0m+ac1KJ3d7htSnDw=
+	t=1756507390; cv=none; b=YI6GHDE5sicA1i7fqEilQbf81zNjNd79d4ASKHfpVy3OOJaQwNJVB+m2OOslxiT6cIq8ZKIotyq+v9j08nvG5Ys7xwWeWZm4PXH8xY4Sf5rKUOzdu3jyVhfVh7bcs1zaX07fFFB9RTEkeiTXb8VjvBXums56PVbsPUZlrdEqq7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756507383; c=relaxed/simple;
-	bh=J4kt0AH42ZTONC28Th1Okh8r1ILQmR1UJzSCMd6Q6e8=;
+	s=arc-20240116; t=1756507390; c=relaxed/simple;
+	bh=TAHkk+DHc4JvZqTuooUCu7rvxP0alLpYlxkiJmeOPBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYDEgnjBlBVEP4Ot1mBOuaifvM4A5IsXOpAIZMDT9whG8notzyUlTW8aB40D48FE6f80tDCAtO9RuF9LXlvccge9BVs2WJNUGmsUy5ZB3C+CI4I6fJHwV6TsvUHjYbkumJFk9iSkM/NxYNoSCPa1v3K+Fdu07q3gBHk7dgVPax8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZGCpEY7/; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=BytHkBFhg/a7dArizUdsLdXvMzfMU/kPIvvrKZKuETTMpx0/HzwGQBIdgYt/Yzt0ZlnNpBBbZDCTr/OpuJWQ3hn6Ev9LUKwfIx0TPTJSJrjKxc1xb57WsOVi3ygUFtPpJXymbdoo3wwGzPhL3AE7dG0XaCvboRHeAqcJlAu0ztE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BoUtK6qP; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZGCpEY7/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BoUtK6qP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756507380;
+	s=mimecast20190719; t=1756507387;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ze5i6Pi0AsJ8OZnGY1zOw/cDXaH5xQ4ENMo0wMvIxrk=;
-	b=ZGCpEY7/5rzCYb6s6CWtJdTb/Yt5e8fCFDa0Huw/gVBm2mYrBoSueFci4pnpkLX7KgF0u1
-	t3izcTaeWqVbHtW3DGTTMsnOZXfCMiUSzCvsRQC6PMUTQHhQjAruMSkcLPxIgh6THV7909
-	508APAwhRDRyhlZShmhPDPQ21sWOEaY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	bh=S2F8pTf5YP3aNkFLN54qB5DgCyFojIIWqrlzr2JxhFU=;
+	b=BoUtK6qPIQn8zZB1AP1QH3LNSjlLko18K/g35ecbJzlYb8p2iXLMe/QREEJfmAenzVu3uJ
+	jzlaNsk4prfcIHOBEScjJR6UILnuGF6IGiGe/O469saLQZGKxn61202fCT6jGY4BbSDQeZ
+	NyjyxeYbP4XwYRA2oeBU0Sv+vt9l5ro=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-I9enlBaGM4CVqSLLlPdsZg-1; Fri,
- 29 Aug 2025 18:42:57 -0400
-X-MC-Unique: I9enlBaGM4CVqSLLlPdsZg-1
-X-Mimecast-MFC-AGG-ID: I9enlBaGM4CVqSLLlPdsZg_1756507373
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-396-sNZ_ShMXOKG6hwSDIMw1iQ-1; Fri,
+ 29 Aug 2025 18:43:03 -0400
+X-MC-Unique: sNZ_ShMXOKG6hwSDIMw1iQ-1
+X-Mimecast-MFC-AGG-ID: sNZ_ShMXOKG6hwSDIMw1iQ_1756507381
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4D75719560AD;
-	Fri, 29 Aug 2025 22:42:53 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D1D6E195604F;
+	Fri, 29 Aug 2025 22:43:00 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.80.78])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E951E18003FC;
-	Fri, 29 Aug 2025 22:42:48 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DFF3E1800280;
+	Fri, 29 Aug 2025 22:42:55 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
+Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
@@ -61,11 +56,18 @@ Cc: David Airlie <airlied@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Asahi Lina <lina+kernel@asahilina.net>
-Subject: [PATCH v3 11/14] rust: drm: gem: Introduce SGTableRef
-Date: Fri, 29 Aug 2025 18:35:26 -0400
-Message-ID: <20250829224116.477990-12-lyude@redhat.com>
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	linux-media@vger.kernel.org (open list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b),
+	linaro-mm-sig@lists.linaro.org (moderated list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b)
+Subject: [PATCH v3 12/14] rust: Add dma_buf stub bindings
+Date: Fri, 29 Aug 2025 18:35:27 -0400
+Message-ID: <20250829224116.477990-13-lyude@redhat.com>
 In-Reply-To: <20250829224116.477990-1-lyude@redhat.com>
 References: <20250829224116.477990-1-lyude@redhat.com>
 Precedence: bulk
@@ -77,98 +79,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Currently we expose the ability to retrieve an SGTable for an shmem gem
-object using gem::shmem::Object::<T>::sg_table(). However, this only gives us a
-borrowed reference. This being said - retrieving an SGTable is a fallible
-operation, and as such it's reasonable that a driver may want to hold
-onto an SGTable for longer then a reference would allow in order to avoid
-having to deal with fallibility every time they want to access the SGTable.
-One such driver with this usecase is the Asahi driver.
-
-So to support this, let's introduce SGTableRef - which both holds a
-pointer to the SGTable and a reference to its respective GEM object in
-order to keep the GEM object alive for as long as the SGTableRef. The
-type can be used identically to a normal SGTable.
+In order to implement the gem export callback, we need a type to represent
+struct dma_buf. So - this commit introduces a set of stub bindings for
+dma_buf. These bindings provide a ref-counted DmaBuf object, but don't
+currently implement any functionality for using the DmaBuf.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 ---
 V3:
-* Rename OwnedSGTable to SGTableRef. Since the current version of the
-  SGTable abstractions now has a `Owned` and `Borrowed` variant, I think
-  renaming this to SGTableRef makes things less confusing.
-  We do however, keep the name of owned_sg_table() as-is.
+* Rename as_ref() to from_raw()
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/drm/gem/shmem.rs | 50 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ rust/kernel/dma_buf.rs | 40 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs     |  1 +
+ 2 files changed, 41 insertions(+)
+ create mode 100644 rust/kernel/dma_buf.rs
 
-diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-index 6a8a392c3691b..1437cda27a22c 100644
---- a/rust/kernel/drm/gem/shmem.rs
-+++ b/rust/kernel/drm/gem/shmem.rs
-@@ -178,6 +178,22 @@ pub fn sg_table(&self) -> Result<&scatterlist::SGTable> {
-         Ok(unsafe { scatterlist::SGTable::from_raw(sgt) })
-     }
- 
-+    /// Creates (if necessary) and returns an owned reference to a scatter-gather table of DMA pages
-+    /// for this object.
-+    ///
-+    /// This is the same as [`sg_table`](Self::sg_table), except that it instead returns a
-+    /// [`OwnedSGTable`] which holds a reference to the associated gem object.
-+    ///
-+    /// This will pin the object in memory.
-+    pub fn owned_sg_table(&self) -> Result<SGTableRef<T>> {
-+        Ok(SGTableRef {
-+            sgt: self.sg_table()?.into(),
-+            // INVARIANT: We take an owned refcount to `self` here, ensuring that `sgt` remains
-+            // valid for as long as this `OwnedSGTable`.
-+            _owner: self.into(),
-+        })
-+    }
+diff --git a/rust/kernel/dma_buf.rs b/rust/kernel/dma_buf.rs
+new file mode 100644
+index 0000000000000..a66829afcd129
+--- /dev/null
++++ b/rust/kernel/dma_buf.rs
+@@ -0,0 +1,40 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-     /// Creates and returns a virtual kernel memory mapping for this object.
-     pub fn vmap(&self) -> Result<VMap<T>> {
-         let mut map: MaybeUninit<bindings::iosys_map> = MaybeUninit::uninit();
-@@ -309,3 +325,37 @@ fn drop(&mut self) {
- unsafe impl<T: DriverObject> Send for VMap<T> {}
- /// SAFETY: `iosys_map` objects are safe to send across threads.
- unsafe impl<T: DriverObject> Sync for VMap<T> {}
++//! DMA buffer API
++//!
++//! C header: [`include/linux/dma-buf.h`](srctree/include/linux/dma-buf.h)
 +
-+/// An owned reference to a scatter-gather table of DMA address spans for a GEM shmem object.
-+///
-+/// This object holds an owned reference to the underlying GEM shmem object, ensuring that the
-+/// [`SGTable`] referenced by `SGTableRef` remains valid for the lifetime of this object.
++use bindings;
++use kernel::types::*;
++
++/// A DMA buffer object.
 +///
 +/// # Invariants
 +///
-+/// - `sgt` is kept alive by `_owner`, ensuring it remains valid for as long as `Self`.
-+/// - `sgt` corresponds to the owned object in `_owner`.
-+/// - This object is only exposed in situations where we know the underlying `SGTable` will not be
-+///   modified for the lifetime of this object.
-+///
-+/// [`SGTable`]: scatterlist::SGTable
-+pub struct SGTableRef<T: DriverObject> {
-+    sgt: NonNull<scatterlist::SGTable>,
-+    _owner: ARef<Object<T>>,
-+}
++/// The data layout of this type is equivalent to that of `struct dma_buf`.
++#[repr(transparent)]
++pub struct DmaBuf(Opaque<bindings::dma_buf>);
 +
-+// SAFETY: This object is only exposed in situations where we know the underlying `SGTable` will not
-+// be modified for the lifetime of this object.
-+unsafe impl<T: DriverObject> Send for SGTableRef<T> {}
-+// SAFETY: This object is only exposed in situations where we know the underlying `SGTable` will not
-+// be modified for the lifetime of this object.
-+unsafe impl<T: DriverObject> Sync for SGTableRef<T> {}
++// SAFETY: `struct dma_buf` is thread-safe
++unsafe impl Send for DmaBuf {}
++// SAFETY: `struct dma_buf` is thread-safe
++unsafe impl Sync for DmaBuf {}
 +
-+impl<T: DriverObject> Deref for SGTableRef<T> {
-+    type Target = scatterlist::SGTable;
++#[expect(unused)]
++impl DmaBuf {
++    /// Convert from a `*mut bindings::dma_buf` to a [`DmaBuf`].
++    ///
++    /// # Safety
++    ///
++    /// The caller guarantees that `self_ptr` points to a valid initialized `struct dma_buf` for the
++    /// duration of the lifetime of `'a`, and promises to not violate rust's data aliasing rules
++    /// using the reference provided by this function.
++    pub(crate) unsafe fn from_raw<'a>(self_ptr: *mut bindings::dma_buf) -> &'a Self {
++        // SAFETY: Our data layout is equivalent to `dma_buf` .
++        unsafe { &*self_ptr.cast() }
++    }
 +
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: Creating an immutable reference to this is safe via our type invariants.
-+        unsafe { self.sgt.as_ref() }
++    pub(crate) fn as_raw(&self) -> *mut bindings::dma_buf {
++        self.0.get()
 +    }
 +}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index fcffc3988a903..59242d83efe21 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -81,6 +81,7 @@
+ pub mod device_id;
+ pub mod devres;
+ pub mod dma;
++pub mod dma_buf;
+ pub mod driver;
+ #[cfg(CONFIG_DRM = "y")]
+ pub mod drm;
 -- 
 2.50.0
 
