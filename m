@@ -1,98 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8C91F8BA6;
-	Fri, 29 Aug 2025 19:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756497482; cv=none; b=t0gqDnhHLeKLwGA1QOY26BlCt6EyeG9juZZL99AiLf7s8hj5VWg4z25+KjodhPdmh/lj+yEcN2/boHnI2CliVc7Pmk5yQiHCzYwKhaUIZsyK/seGXRHNSVaItDYIIVpOrr5c+HDI6obKz792SrzRYuAqSK4RLxI8Gzc2mFsz+d8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756497482; c=relaxed/simple;
-	bh=Q0kzLsEA0EB/XYFScsmr4iZcUDAd2NYoZW7jd7rkEcA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cSzS03R4DTrV1VVO+2DmEjEj6S40AyFGQmBupDI0NZoQuNL2wOeRZNOtodSvbrZ1YfVj4k2uMobbIvnWLZ8nfK5k1gq1EwB9nmVcFU9aM8qdv0smFj7JMWkBO9d1jzAZh3IjOzoAd8xW4EdvjMTfoP6RkisnVDwYkDsfM4r1WUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlSw3ZzH; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C671EEA49;
+	Fri, 29 Aug 2025 21:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756501939; cv=pass; b=AAbAwT8TGPwuFhk64o6YIarkx9bnqAu+R5bahiz4bW8xFZ6n+4T+/smt+kL4yqB12LPR0G7JAwCjvxTRHapHZnVwRuWSRGptKF45pKjiRgjr4oNatb1TPNyfsi6g1KDltTy0Hf4kg626jkBGr7GqV8Z1uBxGYJFrW3Yl41P2tbU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756501939; c=relaxed/simple;
+	bh=CalVgdht99frysxKPEikzeuMUQwNVyVgH+qjUjFlnVk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HARQNX4vFKCVqoKgfNl/YXXCXQV4WXve81ZbPOopFLgOAtp0gjJUcRym3Hlf4j4DaaCOzgeuobwO16tLV7LvcuflijkYeMURrvhX9aa2eBecynOWtnnqPwBQ+EQdNr48grwL4nq/WPmKKbxSGCjdfyTJ1o/1SeyY3FNG28wnVS4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bjGPdFGc; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlSw3ZzH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8345C4CEF0;
-	Fri, 29 Aug 2025 19:57:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756497480;
-	bh=Q0kzLsEA0EB/XYFScsmr4iZcUDAd2NYoZW7jd7rkEcA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FlSw3ZzHTEBaOgjVyVG7F5oZ9Yh7cRYazSb45eZlboWephwGO+HBtL6cyexaSEvIS
-	 ha/duZq9C1YxIQmGhhZF3XagGwsCZIufb69u+1Up8PLmWfx2nIz2XvcbR7te9/6giv
-	 kn6yLvuLw8zC5eSg15l9xC2fAAjUDFwk3JlNXvZdD9zZK4GigcKOZZBRBmtSMCOhtU
-	 FRjSNgVL2q5FXXo1QzgKi8A9kueMz9dbVMDCY7GUuGKjbDO3OyreZQDI0wkGcOic9K
-	 YjNxjvH18rfQ3mbt05dMHtwLPhPTOLmrx6Pnk1j4KCYDkueuZOKQrKdj47UbPD+U/X
-	 Vxe4WNMAQCGtQ==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] rust: device: fix unresolved link to drm::Device
-Date: Fri, 29 Aug 2025 21:57:42 +0200
-Message-ID: <20250829195745.31174-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bjGPdFGc"
+ARC-Seal: i=1; a=rsa-sha256; t=1756501919; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=KLopBJ52jFL9I9ecFlnrZPQvavdJ7Y6mbo3kkxcqD+bI9dPkB+DevNnzP7cJCfyuMm1JpxEkgeDnNicuA5AfO+1Q0AlJUAhZomb7wRJTeUTWqEO9HB6amPrvyj1wrD1SpzTdWRXqCDHTQC+fZelOxChm3oCnzE4c8FEI21e6UZk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756501919; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=3wDH47CXsckGLlcFF3qPTlFrFpWfpYkVkmMdGsazJNU=; 
+	b=Rj8C0ye4FCILA37cxISZZVZ1u0wJct7PEuHc5Jqcr4FStqz70qpDlk/9R5O8Yw9fisc4EjTluRc/tvYRLsLkWN/xDJYGGKprj/LANuHe2eOEijeUZ9KPonJ1G3KxPqFQGYcRM4/ST4PzGhMAwq6+E6NnpLCvOJz9264t3rVTJ2o=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756501918;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=3wDH47CXsckGLlcFF3qPTlFrFpWfpYkVkmMdGsazJNU=;
+	b=bjGPdFGc0nEB0iBtaFk14ChkUhx3scqlL2APvYI64P/L2mMTHKg7AH3X8Vz5zctJ
+	Zu7XtPAyhCcH0f2Xs3+0i9Fn5haeMcroEytExzezD9QJaqMB9Cuwf2Ut5Hkx/kVW+Uf
+	ScBle+xy9cVRYreGS/Q/zHS3VPlzXlBh+faDvNZk=
+Received: by mx.zohomail.com with SMTPS id 1756501916159253.46296982869592;
+	Fri, 29 Aug 2025 14:11:56 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH 0/2] rust: regulator: improve the ergonomics of Rust
+ regulators
+Date: Fri, 29 Aug 2025 18:11:30 -0300
+Message-Id: <20250829-regulator-remove-dynamic-v1-0-deb59205e8e9@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIIXsmgC/x2MQQqAIBAAvxJ7TlChsL4SHcw2WyiNtaKI/p50m
+ znMPJCQCRO0xQOMJyWKIYsqC3CzDR4FjdlBS11JoxvB6I/F7pEzrfFEMd7BruTEpGw9GCedGiT
+ kfGOc6PrXXf++H3iLgs9qAAAA
+X-Change-ID: 20250829-regulator-remove-dynamic-f1a6b8c0c1b0
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-drm::Device is only available when CONFIG_DRM=y, which we have to
-consider for intra-doc links, otherwise the rustdoc make target produces
-the following warning.
+This small series comes after some extensive discussion on a few minor
+changes that can improve the current Rust regulator API.
 
->> warning: unresolved link to `kernel::drm::Device`
-   --> rust/kernel/device.rs:154:22
-   |
-   154 | /// [`drm::Device`]: kernel::drm::Device
-   |                      ^^^^^^^^^^^^^^^^^^^ no item named `drm` in module `kernel`
-   |
-   = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
+Patch 1 removes Regulator<Dynamic>, as we have now established that
+there is no usecase that can't use the safer Regulator<Enabled> and
+Regulator<Disabled> APIs instead.
 
-Fix this by making the intra-doc link conditional on CONFIG_DRM being enabled.
+Patch 2 makes "devm_regulator_enable_get" and
+"devm_regulator_enable_get_optional" available in Rust. This comes after
+realizing that a lot of drivers simply care about whether regulators are
+enabled for as long as the device is bound.
 
-Fixes: d6e26c1ae4a6 ("device: rust: expand documentation for Device")
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508261644.9LclwUgt-lkp@intel.com/
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- rust/kernel/device.rs | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Daniel Almeida (2):
+      rust: regulator: remove Regulator<Dynamic>
+      rust: regulator: add devm_regulator_get_enable API
 
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 5902b3714a16..a1db49eb159a 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -138,7 +138,9 @@
- /// }
- /// ```
- ///
--/// An example for a class device implementation is [`drm::Device`].
-+/// An example for a class device implementation is
-+#[cfg_attr(CONFIG_DRM = "y", doc = "[`drm::Device`](kernel::drm::Device).")]
-+#[cfg_attr(not(CONFIG_DRM = "y"), doc = "`drm::Device`.")]
- ///
- /// # Invariants
- ///
-@@ -151,7 +153,6 @@
- /// dropped from any thread.
- ///
- /// [`AlwaysRefCounted`]: kernel::types::AlwaysRefCounted
--/// [`drm::Device`]: kernel::drm::Device
- /// [`impl_device_context_deref`]: kernel::impl_device_context_deref
- /// [`pci::Device`]: kernel::pci::Device
- /// [`platform::Device`]: kernel::platform::Device
-
+ rust/helpers/regulator.c |  10 ++++
+ rust/kernel/regulator.rs | 130 +++++++++++++++--------------------------------
+ 2 files changed, 52 insertions(+), 88 deletions(-)
+---
 base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+change-id: 20250829-regulator-remove-dynamic-f1a6b8c0c1b0
+
+Best regards,
 -- 
-2.51.0
+Daniel Almeida <daniel.almeida@collabora.com>
 
