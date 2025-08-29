@@ -1,56 +1,57 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2969D2D4801
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 22:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CA22DA76F
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 22:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756507478; cv=none; b=sS2iWvYpGSHzCnJfuRM1ycATsoAJO3CWM21w1tTiohwk3/bDYGwtp5Sjre7baOoAue6XfYIRKWB5svCt1Zw49URznH3HzPj0EgL8Ch+nxaanAlXqrV7BwLsFfZanailNHOoWpUEFRVCT0g5jlH1m0coLOtU2gjM1TxEZd7L2b7Y=
+	t=1756507611; cv=none; b=sjNZh8NETYddGF6uLkcV/XJBztJVx9f9mg2jbO8Q2I7grqw6zRLLXowyPkR+eHg5uKCa2fhStrMcoJLd+KuBe95AfPKeBOtLqxVHIy5W9AK8GeeUNilFrxYiZ5LRBLBybq51WwCN1atsBNyIOy/kWUu4FUPh+3Daq3bpOysYYJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756507478; c=relaxed/simple;
-	bh=kzqGDyWPM45AEnQWZknAN3s48rr9rv65Xi6dreboiSs=;
+	s=arc-20240116; t=1756507611; c=relaxed/simple;
+	bh=93D01/9MGYeQxAYQMPpZbkr8XEKJoXkgMJrGZe51BZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ErhOm1zdXK3BnpPKDxFLlCKlV+wH3BP7Jhh6+YC0bPmrefMy6RkaZeA2l0hWee8sE7gML9Ib+1vjphiktzmK8eWyWAbW1tVC01Q0Lrrmt3p9Fv9GTIn+UU+l0p5bpsrM3HTQp6rzwaZ6ja2E5js2RBeUkcjJoQDjYCRz480y9LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jPALiSAq; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=MiGJHu5FJOmUZExEDx04drf1cMTcD2g+JtyIdmHzD67ZEopZNj7KbKzwGuD9/SAyK4HlMSKIvfuS5Za1dnuInus2UrqhDVzMCGLRIxguvu5utkdotJjrDMaqg8GMlXNcHHtOpCSz9a4zG2Ab6amKSSEwlOOCA64v1IoTy34bGzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TK8v+lHH; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jPALiSAq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TK8v+lHH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756507475;
+	s=mimecast20190719; t=1756507608;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+gdTOKk1/eH4mNU8bIQIDKd1Df4IdxKppBOHckOsbo8=;
-	b=jPALiSAqKLGT9obtJrJyItZO4oAceohYf0h8pmwU+5/spabj0ENEtz1TWyWcLHqx2gxf4+
-	oQdxXfjUeZLXG1Q/Vizz8qgB5KFdFhezQgD46KH8/tt2I0sYmsL2oU/RVQeWWaaVHy52Cl
-	oGooIOG2qd3uYwa+joDm/uirt/QA0ws=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=s8i4OdfWtC0nfVa/WzC9Lo9f419vHR68HZ0XadmVT3A=;
+	b=TK8v+lHHvVAVuGs+v6Ckwove/eTqeVDlIzxfXj4cI1I0FRwNwUJIU8QE3481DdwVAdCOLq
+	GCUC0e7Uv/6yO1n8445/TEqox0QHEOU64vmvo/hNq6GAWwddEZ4NHBSogFSUd7wQBTAcNf
+	ZBZoEdazhEGqbQwh7dGBHRkGfaw6j5U=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-161-ZGNqGcuWNoi4PuuZYo_gnw-1; Fri,
- 29 Aug 2025 18:41:46 -0400
-X-MC-Unique: ZGNqGcuWNoi4PuuZYo_gnw-1
-X-Mimecast-MFC-AGG-ID: ZGNqGcuWNoi4PuuZYo_gnw_1756507304
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-__9KvojgM4m79NeVznTVwA-1; Fri,
+ 29 Aug 2025 18:41:38 -0400
+X-MC-Unique: __9KvojgM4m79NeVznTVwA-1
+X-Mimecast-MFC-AGG-ID: __9KvojgM4m79NeVznTVwA_1756507296
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B77E519560A6;
-	Fri, 29 Aug 2025 22:41:43 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 88AEE19560B5;
+	Fri, 29 Aug 2025 22:41:35 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.80.78])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1D2DC1800280;
-	Fri, 29 Aug 2025 22:41:38 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B89961800447;
+	Fri, 29 Aug 2025 22:41:30 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
+Cc: Danilo Krummrich <dakr@kernel.org>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -60,12 +61,12 @@ Cc: David Airlie <airlied@gmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Asahi Lina <lina+kernel@asahilina.net>
-Subject: [PATCH v3 02/14] rust: drm: gem: Add DriverFile type alias
-Date: Fri, 29 Aug 2025 18:35:17 -0400
-Message-ID: <20250829224116.477990-3-lyude@redhat.com>
+	Asahi Lina <lina+kernel@asahilina.net>,
+	nouveau@lists.freedesktop.org (open list:DRM DRIVER FOR NVIDIA GPUS [RUST])
+Subject: [PATCH v3 01/14] rust: drm: gem: Simplify use of generics
+Date: Fri, 29 Aug 2025 18:35:16 -0400
+Message-ID: <20250829224116.477990-2-lyude@redhat.com>
 In-Reply-To: <20250829224116.477990-1-lyude@redhat.com>
 References: <20250829224116.477990-1-lyude@redhat.com>
 Precedence: bulk
@@ -74,82 +75,295 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Just to reduce the clutter with the File<…> types in gem.rs.
+Now that my rust skills have been honed, I noticed that there's a lot of
+generics in our gem bindings that don't actually need to be here. Currently
+the hierarchy of traits in our gem bindings looks like this:
+
+  * Drivers implement:
+    * BaseDriverObject<T: DriverObject> (has the callbacks)
+    * DriverObject (has the drm::Driver type)
+  * Crate implements:
+    * IntoGEMObject for Object<T> where T: DriverObject
+      Handles conversion to/from raw object pointers
+    * BaseObject for T where T: IntoGEMObject
+      Provides methods common to all gem interfaces
+
+  Also of note, this leaves us with two different drm::Driver associated
+  types:
+    * DriverObject::Driver
+    * IntoGEMObject::Driver
+
+I'm not entirely sure of the original intent here unfortunately (if anyone
+is, please let me know!), but my guess is that the idea would be that some
+objects can implement IntoGEMObject using a different ::Driver than
+DriverObject - presumably to enable the usage of gem objects from different
+drivers. A reasonable usecase of course.
+
+However - if I'm not mistaken, I don't think that this is actually how
+things would go in practice. Driver implementations are of course
+implemented by their associated drivers, and generally drivers are not
+linked to each-other when building the kernel. Which is to say that even in
+a situation where we would theoretically deal with gem objects from another
+driver, we still wouldn't have access to its drm::driver::Driver
+implementation. It's more likely we would simply want a variant of gem
+objects in such a situation that have no association with a
+drm::driver::Driver type.
+
+Taking that into consideration, we can assume the following:
+* Anything that implements BaseDriverObject will implement DriverObject
+  In other words, all BaseDriverObjects indirectly have an associated
+  ::Driver type - so the two traits can be combined into one with no
+  generics.
+* Not everything that implements IntoGEMObject will have an associated
+  ::Driver, and that's OK.
+
+And with this, we now can do quite a bit of cleanup with the use of
+generics here. As such, this commit:
+
+* Removes the generics on BaseDriverObject
+* Moves DriverObject::Driver into BaseDriverObject
+* Removes DriverObject
+* Removes IntoGEMObject::Driver
+* Add AllocImpl::Driver, which we can use as a binding to figure out the
+  correct File type for BaseObject
+
+Leaving us with a simpler trait hierarchy that now looks like this:
+
+  * Drivers implement: BaseDriverObject
+  * Crate implements:
+    * IntoGEMObject for Object<T> where T: DriverObject
+    * BaseObject for T where T: IntoGEMObject
+
+Which makes the code a lot easier to understand and build on :).
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 ---
+V2:
+* Don't refer to Object<T> in callbacks, as this would result in drivers
+  getting the wrong gem object type for shmem gem objects once we add
+  support for those. Instead, we'll just add a type alias to clean this
+  part up.
 V3:
-* Rename ObjectFile to DriverFile
+* Fix nova compilation
+* Also, add an associated driver type to AllocImpl - as we still need the
+  current driver accessible from BaseObject so that we can use the driver's
+  various associated types, like File
+V4:
+* Add missing Object = Self constraint to type bounds for create_handle,
+  lookup_handle. I forgot that if drivers can have private gem objects with
+  a different data layout, we can only guarantee gem objects with handles
+  are of the same gem object type as the main one in use by the driver.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/drm/gem/mod.rs | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/nova/gem.rs |  8 ++--
+ rust/kernel/drm/driver.rs   |  3 ++
+ rust/kernel/drm/gem/mod.rs  | 77 ++++++++++++++++---------------------
+ 3 files changed, 40 insertions(+), 48 deletions(-)
 
+diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
+index cd82773dab92c..2760ba4f3450b 100644
+--- a/drivers/gpu/drm/nova/gem.rs
++++ b/drivers/gpu/drm/nova/gem.rs
+@@ -16,16 +16,14 @@
+ #[pin_data]
+ pub(crate) struct NovaObject {}
+ 
+-impl gem::BaseDriverObject<gem::Object<NovaObject>> for NovaObject {
++impl gem::DriverObject for NovaObject {
++    type Driver = NovaDriver;
++
+     fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, Error> {
+         try_pin_init!(NovaObject {})
+     }
+ }
+ 
+-impl gem::DriverObject for NovaObject {
+-    type Driver = NovaDriver;
+-}
+-
+ impl NovaObject {
+     /// Create a new DRM GEM object.
+     pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self>>> {
+diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
+index fe7e8d06961aa..dae0f4d1bbe3c 100644
+--- a/rust/kernel/drm/driver.rs
++++ b/rust/kernel/drm/driver.rs
+@@ -86,6 +86,9 @@ pub struct AllocOps {
+ 
+ /// Trait for memory manager implementations. Implemented internally.
+ pub trait AllocImpl: super::private::Sealed + drm::gem::IntoGEMObject {
++    /// The [`Driver`] implementation for this [`AllocImpl`].
++    type Driver: drm::Driver;
++
+     /// The C callback operations for this memory manager.
+     const ALLOC_OPS: AllocOps;
+ }
 diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 31c5799d995c5..80940ed11368d 100644
+index b71821cfb5eaa..31c5799d995c5 100644
 --- a/rust/kernel/drm/gem/mod.rs
 +++ b/rust/kernel/drm/gem/mod.rs
-@@ -14,6 +14,13 @@
- };
+@@ -15,31 +15,31 @@
  use core::{mem, ops::Deref, ptr::NonNull};
  
-+/// A type alias for retrieving a [`Driver`]s [`DriverFile`] implementation from its
-+/// [`DriverObject`] implementation.
-+///
-+/// [`Driver`]: drm::Driver
-+/// [`DriverFile`]: drm::file::DriverFile
-+pub type DriverFile<T> = drm::File<<<T as DriverObject>::Driver as drm::Driver>::File>;
-+
  /// GEM object functions, which must be implemented by drivers.
- pub trait DriverObject: Sync + Send + Sized {
-     /// Parent `Driver` for this object.
-@@ -23,19 +30,12 @@ pub trait DriverObject: Sync + Send + Sized {
-     fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl PinInit<Self, Error>;
+-pub trait BaseDriverObject<T: BaseObject>: Sync + Send + Sized {
++pub trait DriverObject: Sync + Send + Sized {
++    /// Parent `Driver` for this object.
++    type Driver: drm::Driver;
++
+     /// Create a new driver data object for a GEM object of a given size.
+-    fn new(dev: &drm::Device<T::Driver>, size: usize) -> impl PinInit<Self, Error>;
++    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl PinInit<Self, Error>;
  
      /// Open a new handle to an existing object, associated with a File.
--    fn open(
--        _obj: &<Self::Driver as drm::Driver>::Object,
--        _file: &drm::File<<Self::Driver as drm::Driver>::File>,
--    ) -> Result {
-+    fn open(_obj: &<Self::Driver as drm::Driver>::Object, _file: &DriverFile<Self>) -> Result {
+     fn open(
+-        _obj: &<<T as IntoGEMObject>::Driver as drm::Driver>::Object,
+-        _file: &drm::File<<<T as IntoGEMObject>::Driver as drm::Driver>::File>,
++        _obj: &<Self::Driver as drm::Driver>::Object,
++        _file: &drm::File<<Self::Driver as drm::Driver>::File>,
+     ) -> Result {
          Ok(())
      }
  
      /// Close a handle to an existing object, associated with a File.
--    fn close(
--        _obj: &<Self::Driver as drm::Driver>::Object,
--        _file: &drm::File<<Self::Driver as drm::Driver>::File>,
--    ) {
--    }
-+    fn close(_obj: &<Self::Driver as drm::Driver>::Object, _file: &DriverFile<Self>) {}
+     fn close(
+-        _obj: &<<T as IntoGEMObject>::Driver as drm::Driver>::Object,
+-        _file: &drm::File<<<T as IntoGEMObject>::Driver as drm::Driver>::File>,
++        _obj: &<Self::Driver as drm::Driver>::Object,
++        _file: &drm::File<<Self::Driver as drm::Driver>::File>,
+     ) {
+     }
  }
  
  /// Trait that represents a GEM object subtype
-@@ -79,7 +79,8 @@ extern "C" fn open_callback<T: DriverObject>(
+ pub trait IntoGEMObject: Sized + super::private::Sealed + AlwaysRefCounted {
+-    /// Owning driver for this type
+-    type Driver: drm::Driver;
+-
+     /// Returns a reference to the raw `drm_gem_object` structure, which must be valid as long as
+     /// this owning object is valid.
+     fn as_raw(&self) -> *mut bindings::drm_gem_object;
+@@ -74,25 +74,15 @@ unsafe fn dec_ref(obj: NonNull<Self>) {
+     }
+ }
+ 
+-/// Trait which must be implemented by drivers using base GEM objects.
+-pub trait DriverObject: BaseDriverObject<Object<Self>> {
+-    /// Parent `Driver` for this object.
+-    type Driver: drm::Driver;
+-}
+-
+-extern "C" fn open_callback<T: BaseDriverObject<U>, U: BaseObject>(
++extern "C" fn open_callback<T: DriverObject>(
+     raw_obj: *mut bindings::drm_gem_object,
      raw_file: *mut bindings::drm_file,
  ) -> core::ffi::c_int {
      // SAFETY: `open_callback` is only ever called with a valid pointer to a `struct drm_file`.
--    let file = unsafe { drm::File::<<T::Driver as drm::Driver>::File>::from_raw(raw_file) };
-+    let file = unsafe { DriverFile::<T>::from_raw(raw_file) };
-+
-     // SAFETY: `open_callback` is specified in the AllocOps structure for `DriverObject<T>`,
-     // ensuring that `raw_obj` is contained within a `DriverObject<T>`
-     let obj = unsafe { <<T::Driver as drm::Driver>::Object as IntoGEMObject>::from_raw(raw_obj) };
-@@ -95,7 +96,7 @@ extern "C" fn close_callback<T: DriverObject>(
+-    let file = unsafe {
+-        drm::File::<<<U as IntoGEMObject>::Driver as drm::Driver>::File>::from_raw(raw_file)
+-    };
+-    // SAFETY: `open_callback` is specified in the AllocOps structure for `Object<T>`, ensuring that
+-    // `raw_obj` is indeed contained within a `Object<T>`.
+-    let obj = unsafe {
+-        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::from_raw(raw_obj)
+-    };
++    let file = unsafe { drm::File::<<T::Driver as drm::Driver>::File>::from_raw(raw_file) };
++    // SAFETY: `open_callback` is specified in the AllocOps structure for `DriverObject<T>`,
++    // ensuring that `raw_obj` is contained within a `DriverObject<T>`
++    let obj = unsafe { <<T::Driver as drm::Driver>::Object as IntoGEMObject>::from_raw(raw_obj) };
+ 
+     match T::open(obj, file) {
+         Err(e) => e.to_errno(),
+@@ -100,26 +90,21 @@ extern "C" fn open_callback<T: BaseDriverObject<U>, U: BaseObject>(
+     }
+ }
+ 
+-extern "C" fn close_callback<T: BaseDriverObject<U>, U: BaseObject>(
++extern "C" fn close_callback<T: DriverObject>(
+     raw_obj: *mut bindings::drm_gem_object,
      raw_file: *mut bindings::drm_file,
  ) {
      // SAFETY: `open_callback` is only ever called with a valid pointer to a `struct drm_file`.
--    let file = unsafe { drm::File::<<T::Driver as drm::Driver>::File>::from_raw(raw_file) };
-+    let file = unsafe { DriverFile::<T>::from_raw(raw_file) };
- 
+-    let file = unsafe {
+-        drm::File::<<<U as IntoGEMObject>::Driver as drm::Driver>::File>::from_raw(raw_file)
+-    };
++    let file = unsafe { drm::File::<<T::Driver as drm::Driver>::File>::from_raw(raw_file) };
++
      // SAFETY: `close_callback` is specified in the AllocOps structure for `Object<T>`, ensuring
      // that `raw_obj` is indeed contained within a `Object<T>`.
+-    let obj = unsafe {
+-        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::from_raw(raw_obj)
+-    };
++    let obj = unsafe { <<T::Driver as drm::Driver>::Object as IntoGEMObject>::from_raw(raw_obj) };
+ 
+     T::close(obj, file);
+ }
+ 
+ impl<T: DriverObject> IntoGEMObject for Object<T> {
+-    type Driver = T::Driver;
+-
+     fn as_raw(&self) -> *mut bindings::drm_gem_object {
+         self.obj.get()
+     }
+@@ -141,10 +126,12 @@ fn size(&self) -> usize {
+ 
+     /// Creates a new handle for the object associated with a given `File`
+     /// (or returns an existing one).
+-    fn create_handle(
+-        &self,
+-        file: &drm::File<<<Self as IntoGEMObject>::Driver as drm::Driver>::File>,
+-    ) -> Result<u32> {
++    fn create_handle<D, F>(&self, file: &drm::File<F>) -> Result<u32>
++    where
++        Self: AllocImpl<Driver = D>,
++        D: drm::Driver<Object = Self, File = F>,
++        F: drm::file::DriverFile,
++    {
+         let mut handle: u32 = 0;
+         // SAFETY: The arguments are all valid per the type invariants.
+         to_result(unsafe {
+@@ -154,10 +141,12 @@ fn create_handle(
+     }
+ 
+     /// Looks up an object by its handle for a given `File`.
+-    fn lookup_handle(
+-        file: &drm::File<<<Self as IntoGEMObject>::Driver as drm::Driver>::File>,
+-        handle: u32,
+-    ) -> Result<ARef<Self>> {
++    fn lookup_handle<D, F>(file: &drm::File<F>, handle: u32) -> Result<ARef<Self>>
++    where
++        Self: AllocImpl<Driver = D>,
++        D: drm::Driver<Object = Self, File = F>,
++        F: drm::file::DriverFile,
++    {
+         // SAFETY: The arguments are all valid per the type invariants.
+         let ptr = unsafe { bindings::drm_gem_object_lookup(file.as_raw().cast(), handle) };
+         if ptr.is_null() {
+@@ -212,8 +201,8 @@ impl<T: DriverObject> Object<T> {
+ 
+     const OBJECT_FUNCS: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
+         free: Some(Self::free_callback),
+-        open: Some(open_callback::<T, Object<T>>),
+-        close: Some(close_callback::<T, Object<T>>),
++        open: Some(open_callback::<T>),
++        close: Some(close_callback::<T>),
+         print_info: None,
+         export: None,
+         pin: None,
+@@ -296,6 +285,8 @@ fn deref(&self) -> &Self::Target {
+ }
+ 
+ impl<T: DriverObject> AllocImpl for Object<T> {
++    type Driver = T::Driver;
++
+     const ALLOC_OPS: AllocOps = AllocOps {
+         gem_create_object: None,
+         prime_handle_to_fd: None,
 -- 
 2.50.0
 
