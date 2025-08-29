@@ -1,410 +1,793 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2072.outbound.protection.outlook.com [40.107.92.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE80831CA77;
-	Fri, 29 Aug 2025 13:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756475022; cv=fail; b=T70Th9QdVIqO3xKHhjzWzI+KMBMHmJIPnKouYbfNF/pSgcEPKtv+vFALRtGVMMr5n+FHAOxWJGmwXHH63zupxRsFxk5h7iMr8ZGhUSDGv9JlImsrg0zsxgf9U5ZmGJGn25hqqrsApPsInh4zp6ggk0nMLQgufX54KmWjd6Q+LrE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756475022; c=relaxed/simple;
-	bh=CFInNoKxIwfCIDayJ9t1J/GJ0MShxVMYVL9BI7gj598=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=iPSqZAYwzGdZ1b1n+0cQxoZtl5gu5CRsFDrBdZ67Eq2UU/c3NGBboUJS9XGxgHfcFlNgHaqImB4ORt1f0RVJlbWbA+wOyJQqIN9UjYFRJfxA7r4rnA+2gYqa1xKYdhhIOsguBKVnMkqiIoMbQjhI48DzXZ1+w9AqZ5Uaja4qoEY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=niM/T1EI; arc=fail smtp.client-ip=40.107.92.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29D718871F
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 15:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756482258; cv=none; b=T9rEc2ag1I0f82x2fTOKFFW0AxwxEHzGrThRaUGZ7FR2txFOIpa7geAtSjxSRgkS/9HDV4uu8POhTWvjj+DcWy046Bfp7G8BSMMxN2CA1GumCzdFP3ZKofdFLLYe+rAvCO++M+AlJyQjlZUc2tJ2K9M+BEECOD9leJQ1eQEvuT0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756482258; c=relaxed/simple;
+	bh=dzUCZV7EfvG6O5WqSP1LF2/kmG1ldMeG1vNhlS8dvBQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VCZHTrKv01BaXPClh4XioSLvxrN/XY2jFQddpJd2qNw4YUtFcqIBikapAjObhpraXutcLMf9gHyZyd7nHqN0YiWsNg+W8o45WnfSST5DFDQutVVrkmWZtyUr9+fkJs1o2XF/vu8+H0QA5wjSyZbeBJ0YuH/uALEr8OoFG+taWoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=emrsUv2Z; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="niM/T1EI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CSszUsXJTYEdl8r9ELoCQVv1utFXnnFTZJ8tEQ+x5mINKlguN/0rKpx/+3PvtjORFAI4bR/iEbC0SUq9/A9g4pMclRVruRET3IbWJIhgjpsKrKzJUxu6rLOho9QkFJ9cGO2BzE8cPaZWDoe0i8gzz4eqm3ldtJQLJOQipWWqp6Ipf5yCrKgFFvGVfxu4g7gYSWC80H7AfaBVR3VUy181a7ak3D30QdwKIh8nj237G4U4/8z5tHn0R+78rxQ3KXfm3bqqhOBIUZjuNMSqryWVXBMysr6VZW5FryaMCCtMYN5cYqfImQrxYFyV2oTTNCQe9ZBY/TR8rNTyLhyNBQ+S7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A+iGB511p+qY9kZH6k4iL//cr2XMHhjqejlvumrpCaE=;
- b=vQtx/9DKeeeV3CtXMeW3EI7BINTFk6ugNlmnSUgVwao8h1r/0FsWRdBnl8DBrUSxfiSxobDYkblVzaQFURKvjf8SJcAxb6AZtBx2g1ksefYgvTobdYv30Gv7wA7WLTN8ldohIPsw1pN2KnWT0ntt06mW+GMBKiHbVSBdoPzQ9qScqJJs7a010vetArxxO9dYJU/8E8W5SIJl1x9mHiu0rI1xcDBk8D5FE80AU5IzceX2CeTB3zi0Ox6TqoANSxs+NXwPwtdGTMd767NhEWVvYLv6VSx83cpaRqlaq5hVRJF17czxL+JGqkfcK7ICxzLTOwbb2Rbch8FpIYovOMN63g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A+iGB511p+qY9kZH6k4iL//cr2XMHhjqejlvumrpCaE=;
- b=niM/T1EIWuBWbLjSgzrAMvKTkeyK2huoP3S/xF1XuIcQ5C/645wz/yo2vAQfBOe7axVA8W+BLrgSYlOTs/hFgCvCiI3DIn4Awta1lBzQCWLVtAc9KyKRW6rPrA3MruZlvLu+X2Yqm6ZHLVtym8Ly6niwV85x8dbAiTM313io/scT9S4sttcay7IttzlfXHT7VjcnJJPfXBeyWGMyVpW47Ky/TXpzKLcg8cTL6rWAZvtDsA/B5Crgyc/FvD3m45PLZnUGt+K6al4+fQ36q6PtvNIUnV5M8rXlLRjxigLRbvvbJWpof+tSPrvBP4gTla8WqlFbK9oXiWQEfyMyAAeukQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by IA4PR12MB9809.namprd12.prod.outlook.com (2603:10b6:208:54f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.15; Fri, 29 Aug
- 2025 13:43:33 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9052.017; Fri, 29 Aug 2025
- 13:43:33 +0000
-Date: Fri, 29 Aug 2025 09:43:32 -0400
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] gpu: nova-core: vbios: store reference to Device
- where relevant
-Message-ID: <20250829134332.GA1832912@joelbox2>
-References: <20250808-vbios_device-v1-0-834bbbab6471@nvidia.com>
- <20250808-vbios_device-v1-2-834bbbab6471@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250808-vbios_device-v1-2-834bbbab6471@nvidia.com>
-X-ClientProxiedBy: BN0PR07CA0012.namprd07.prod.outlook.com
- (2603:10b6:408:141::34) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="emrsUv2Z"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7722bcb989aso803059b3a.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 29 Aug 2025 08:44:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=furiosa.ai; s=google; t=1756482255; x=1757087055; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IGgCLabLukJXDx5jPLPH/OkDjgmbhWChjc+3HfEzLxo=;
+        b=emrsUv2Zk10o9fR9J4J1IUe3GMr9IKDqB47OJ1KtLzpLRidZnzfIbXOodE56CBjZbB
+         RtufVJU7vmpTTlIlMorS+Rakft8sIJ5+Vl/7iHO5qEpvODz5wHCsCBjg9Fg0UG5eSxie
+         Kgxo51oCzQYfc2lD/gIt0bTUzMJFudd9JE0yk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756482255; x=1757087055;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IGgCLabLukJXDx5jPLPH/OkDjgmbhWChjc+3HfEzLxo=;
+        b=VfqDa85g2Bre8kg5jQUYjNSXkcKqmpHqJduffweAZfc5c1l2qwwHywieR57yQJHAzz
+         2Hpia8yPSfUspXYscyYGIx63iOdoQFI5jR40Prpc+yWyButr6OdmBvWxNI+iXVhte/WE
+         Jna0ux8sIE3DmSuc8e1vx6aSQIQ/v1Ym3a7B4L2/I2uVH0WnLs4kkhcw4S0quLF5UH6m
+         JfKaadkuGaQKRmSNbZEG8V6tVwMxqdEtI/WlA1oypdgX7gecWn4Ai/EKyQf71VRNBUM8
+         Ta41Nj2hHDGW5Ae8H7s38ChmAw+N44UFsoGJAiPNnCOVcJSmgIZeW/2znyizoZFtg+LG
+         XIeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIYPhKrEs/I2haBldB+cAaai/bqzFYv+YA8bVleE8Jzfp16UCK+ODx7C/aPIvcSPPiXZbmdX7zjW1Lb+INNw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEHDRdh9bViVg4nBtc+Rprq9EWVUDOCIY2f6ICpY4/wrAJ8Ohi
+	+JGDdebCh9l5GGyiBlaeF3gNsDfQ1p0gnuT7OeB1BvRgGI8rWqT7dKjM2WyPiZxx+Rg=
+X-Gm-Gg: ASbGncsasg39Qkc0twW5z+qYHYQnVRfmvgzSfqwchfkdr+0QNY+QzGqHUP/x7p5WUlJ
+	3MW5WP4dw+VwGwiuRTZVw4hYio8/mSUeMKh0VyAJHekmfMS9VWC1IB4HkGxrx1234FWiSucqBxv
+	cAVENM7zh9VULxwfudyDDKnXq5noqprS7i1Iexnxypo2qQqZV/TI6cNQn4ms0LqLSKL0IH6Tv7m
+	tyQVNVbGF2yg+/X5lsnYYqN28NJPdSmNu/WDQBBJTVOHmAHg8wRCAC1xhDIq1d6sXOyGIGIKEtY
+	w3FBdorZE05oEjDMH7YGoeNPxfokZbwNECtoMzojVRZohCccabuuVjVWKs3DzOfVxPRcVFKM/ZO
+	aQh3pfXPRJBp+b/V/7/Yxel34rIEF4IfsGeI8v8ZtiVjv/Qxs+mEjCg==
+X-Google-Smtp-Source: AGHT+IGaq6k4lNErHErQqWD+mWP7WxXWvWnbaRafxAC530vNF00FhKoZR4PvVdmxZbYzQpYp8hF5UQ==
+X-Received: by 2002:a17:903:19e4:b0:248:d674:2b5 with SMTP id d9443c01a7336-248d674035cmr106623825ad.18.1756482254689;
+        Fri, 29 Aug 2025 08:44:14 -0700 (PDT)
+Received: from sidongui-MacBookPro.local ([61.83.209.48])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-249144837fcsm19800355ad.15.2025.08.29.08.44.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Aug 2025 08:44:14 -0700 (PDT)
+Date: Sat, 30 Aug 2025 00:43:58 +0900
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org
+Subject: Re: [RFC PATCH v3 3/5] rust: io_uring: introduce rust abstraction
+ for io-uring cmd
+Message-ID: <aLHKvjBZYJk2Ci34@sidongui-MacBookPro.local>
+References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
+ <20250822125555.8620-4-sidong.yang@furiosa.ai>
+ <713667D6-8001-408D-819D-E9326FC3AFD5@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|IA4PR12MB9809:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1badb384-e6b5-463f-601c-08dde7020c2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pmHzLHeBNw51JNd0U7mQ5dvJ/Kz5e7tR+9eTzQ3s9E8N9+Flr68J5KH7QOiD?=
- =?us-ascii?Q?RH+XZ5EpVWxCYHa7S4k9vC+n+bn/AOAusE8J8aa9l+Bozl2xNyK5T9cVsMAW?=
- =?us-ascii?Q?JVMDgycErCAEGUgwTRW+6q1/K0upQO5+RqFnEdcIETVgeeAz5CJiuu7BmPH+?=
- =?us-ascii?Q?MDQH551YyABxuVmrn2HWLDvY/AI5C4PB4ZurqIaq0c8Nt07Y5nas/NWnyz+W?=
- =?us-ascii?Q?FsQqr/P/HL9a7Ky15ajOUvxMQ52lY04NS1ALF8yQ0ojaShLnpdB5Kp3JT+/J?=
- =?us-ascii?Q?a3R0jPItg+Qy16LyReAf047XoMx9CM0PRHKxDTIGe2bH7wSy94S4jl+JEpzs?=
- =?us-ascii?Q?c9fcARfXjTWUwo6N8t3vgZ6AQKMgwHBeruh7O0aR3r9xWuIHJzTpSZNY3bnw?=
- =?us-ascii?Q?bCQJEi5+uZNK/Hx16i+iEMbHqQXex4Fb/mk1et2yuC63XvOu+YhlA8F7c5qN?=
- =?us-ascii?Q?W6yq4Aa65eNaPqAXDFlc751LnrcorEYqzYNNXBjH2WjF0zbLkF4uJ6mdomex?=
- =?us-ascii?Q?BczqyuUiG09Moo/nGKeeegGeVJypQBz4c3qLzQu7i3m1HiPmIKVUeV6nK1QK?=
- =?us-ascii?Q?jEshC7bHyrRXQndTF9SGT79XU8j6MlVtSk0btIqEsJa0dujW1OQKrRTcgmu/?=
- =?us-ascii?Q?dK+GSfGtJ4SA10n8mHnMux9qM0BaRrV5oKfWXHXL2DlTTNfVXUs7hodoTc8u?=
- =?us-ascii?Q?9IMf5rQKrY/FReCyGm9ISFsKTz3BBuEXXUAf+MnGa89IEhKlwP0SCiz2w56M?=
- =?us-ascii?Q?mnYjQrRfNwsi+XsnD8IHHIGRa8pq9Q1StStxUBNFxH0F2295xnyp8oJgX6dZ?=
- =?us-ascii?Q?P+GbzxJkBi/g94oV0kZOfOMbOe38HdHI7MSJUuNvnzHkB5IeQUkRf3jcQhZK?=
- =?us-ascii?Q?VShbm09IXTZc2StmHz0FunQhwAj9rOIFtjA+mhiCVbCYbPBrYzQAKwtJVXko?=
- =?us-ascii?Q?2WYty9chZAyCuv6TI1EeDkH0Cv1EKResRp3K0Lckxkez7KX8Nr0WxzBbsBNC?=
- =?us-ascii?Q?dL7CuUkSYfji5EI/pKwbnih56/3pjN3KYLZFiqvYumK+GsXfMkl+ojIqZJc8?=
- =?us-ascii?Q?HuNVr4jw/qosu5jCDbNejC3piSClqthzFE52tvEqIFX82/9uXH3j4yzREuJv?=
- =?us-ascii?Q?2oPJfJW6o34C+IXPF/em75rZlvWYUzQJHfx6ow5jFkKC7XA+iWj7WRwZvhZD?=
- =?us-ascii?Q?q3wlnwf4swT1ZWxJq/2E5i6J+hC7eQDKh7bVSwQeduc79+wscq2Q752hqJew?=
- =?us-ascii?Q?3kqM7Q+MgD9MOCTxQsclZE9fLWzr7gaI5HLyHf0iTUgQ6RmHzmObvLrgKeku?=
- =?us-ascii?Q?zCxW/w7lRUd9+XBReQQT+9lF/Fae8+Ecg7YIye6VQBsDgn/vQi+oKpj6Bn4B?=
- =?us-ascii?Q?fo0BPFQdQZjUP46JjGdIpwycMRS2TZ4ztWqja7gLIBEOw+rQoA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KWt1mYjvvrBu4u2M25bayYMH9w5eBRQzIt8KemFuwS3FLnwmPVnRZh61EM8X?=
- =?us-ascii?Q?wkRuJUj4eH+oTD3ydfDZoMbPP+n1FyNCgqPQk/824m2oN+cXBOWHIYSXGGXK?=
- =?us-ascii?Q?UAnoWbZTXpXjwpcTYQA/FeXU3ohUXDWblfdjGACofJMPXCWmmd2SgrJfQE4V?=
- =?us-ascii?Q?odzlW5agheNZs1XM/OKdxslFofwH+owil94NrPiAGPOr1pazCCEk7bo1BL67?=
- =?us-ascii?Q?5oZ+9cU6P4STb7qxzN9XQhnVj69VDPsCWnM6Ej19wELZgnkTq3HCZA078Gqv?=
- =?us-ascii?Q?RkgELIgiXLQ5tdDf9neW80KWZEPzTnktwPYI8JYgCRx+T7ZSm+Qu+zqqUGbV?=
- =?us-ascii?Q?fUnNDXTTgs8R8NdcSe5uAi28RKrWRdwaKhKK7A/uSMHMRPQ1xMNIXdUTEOVo?=
- =?us-ascii?Q?vQGooTMezfn7sFjwzHKoRy1JV+aLn7rPbU6wohnqAuBOTze5DcDs0m4+MSX3?=
- =?us-ascii?Q?Rn7y2sqRotasnP3jH3gbCnIdp27AcU0/2Sfv54oo0VyDlGTZc31Arn+grhCd?=
- =?us-ascii?Q?arpMqxutzUcAWGiIDu8DwHpfmfsbcVBiPCCUvz+a0qwA691aRwPKmBPl/Hb7?=
- =?us-ascii?Q?a03ul/w2BaoRKywU0mUQg0VAdO4PXhsKOdIUv12S6EBNnw0agBoXwexmvk4n?=
- =?us-ascii?Q?GI5fW4Q5F93o0J9LKdE1NY3lgYsk9EO8Ug77KjxnOD3AltFRzjARy+U46Mnn?=
- =?us-ascii?Q?LStGolbZFEyWeSGQ+rPiUIdIPn7sWDPTtC7Rfp38OYIY+Lez9/hErf/J35ui?=
- =?us-ascii?Q?reAs1kOHrAP9q4Tn4IVPSmQ8XLD4kyI+WS/TciVr4jA5FXtAVoe3sHQTsOom?=
- =?us-ascii?Q?xiwqUsPBQj2emWINuhTCZArs4+0+KP+UyAUHxhFZNv/dadxrIlfWT3FOP34m?=
- =?us-ascii?Q?mGOBsCS+Daoh+5z4UyPA52kjMLNkuLaFgLQYwMT5WuPnb39f4UEZYFAI5Of0?=
- =?us-ascii?Q?mL3hqZLwq5WkQTyleK4wa6m1R3qdJrrVsZvCYRzspsvs0FdIqcyueQXyVkaD?=
- =?us-ascii?Q?laOaqRH2b8CLivVEHfcT6GJqkqXRZpD3OShu1Kcxq/dAnX6gVZkck21ptMxz?=
- =?us-ascii?Q?NM6Og4SFJfcHDxj4p9fpgTYb3yK7BJLwzqVE3tqq0cklGEOas18X22f3bF6L?=
- =?us-ascii?Q?4cZEI9hF5/ru1vOK7JgD2nGCaSDOcZ2pF3S2qFGyBYEgP3t4GqMdGDGoriE8?=
- =?us-ascii?Q?WI8UFCGiJSu4Y7XxSUL9yzGeMJxfRyNMkXXEBd28nnY2qDDnXKfjGrHQsQmP?=
- =?us-ascii?Q?z5SrX88TcA0FQ/XCjBRrtbpXNaZLDEmLCV9J+uPbHDrxZR04AugiEKNtnjdI?=
- =?us-ascii?Q?n/0XCNtTaMyCqQy+gzlsxy27oai0YE1jJTMpEcSjZ+FoAlUBLeutWdLJXBWD?=
- =?us-ascii?Q?2S+kAloDic0le+xZ0K99547SVyPiTb9AGjxeSoVIrTAoPTX2EoXqsw5s0nw2?=
- =?us-ascii?Q?7LcTj6PNWwp4zAhMksO7/Gqflsp7AUzZh08rHWb1IyMVVzVCtJNiYRr5um5M?=
- =?us-ascii?Q?vhEAguJfOw/R8iOg/yFAm+eLyD+nJRDiL/JduREY8mDxPGTXbkZI1LoC9Mvo?=
- =?us-ascii?Q?QEs0Nli3GhdR7Su47t56MK6OC6oMduKAXLgA+uJO?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1badb384-e6b5-463f-601c-08dde7020c2c
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 13:43:33.8354
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nWQ54GuUOz4uJOfrCBmnBEchnlpxMl9aHrXQqOoamIVc1JCGsh1mltvEo8als3XJV+VhLgUOhgGDE2yaJORs7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9809
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <713667D6-8001-408D-819D-E9326FC3AFD5@collabora.com>
 
-On Fri, Aug 08, 2025 at 11:46:42AM +0900, Alexandre Courbot wrote:
-> Now that the vbios code uses a non-bound `Device` instance, store an
-> `ARef` to it at construction time so we can use it for logging without
-> having to carry an extra argument on every method for that sole purpose.
+On Wed, Aug 27, 2025 at 05:41:15PM -0300, Daniel Almeida wrote:
+
+Hi Daniel,
+
+> Hi Sidong,
 > 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-
-thanks,
-
- - Joel
-
-> ---
->  drivers/gpu/nova-core/firmware/fwsec.rs |  8 ++--
->  drivers/gpu/nova-core/vbios.rs          | 69 ++++++++++++++++++++-------------
->  2 files changed, 46 insertions(+), 31 deletions(-)
+> > On 22 Aug 2025, at 09:55, Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> > 
+> > Implment the io-uring abstractions needed for miscdevicecs and other
+> > char devices that have io-uring command interface.
 > 
-> diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
-> index 0dff3cfa90afee0cd4c3348023c8bfd7edccdb29..d9b9d1f92880cbcd36dac84b9e86a84e6465cf5d 100644
-> --- a/drivers/gpu/nova-core/firmware/fwsec.rs
-> +++ b/drivers/gpu/nova-core/firmware/fwsec.rs
-> @@ -253,8 +253,8 @@ impl FalconFirmware for FwsecFirmware {
->  
->  impl FirmwareDmaObject<FwsecFirmware, Unsigned> {
->      fn new_fwsec(dev: &Device<device::Bound>, bios: &Vbios, cmd: FwsecCommand) -> Result<Self> {
-> -        let desc = bios.fwsec_image().header(dev)?;
-> -        let ucode = bios.fwsec_image().ucode(dev, desc)?;
-> +        let desc = bios.fwsec_image().header()?;
-> +        let ucode = bios.fwsec_image().ucode(desc)?;
->          let mut dma_object = DmaObject::from_data(dev, ucode)?;
->  
->          let hdr_offset = (desc.imem_load_size + desc.interface_offset) as usize;
-> @@ -343,7 +343,7 @@ pub(crate) fn new(
->          let ucode_dma = FirmwareDmaObject::<Self, _>::new_fwsec(dev, bios, cmd)?;
->  
->          // Patch signature if needed.
-> -        let desc = bios.fwsec_image().header(dev)?;
-> +        let desc = bios.fwsec_image().header()?;
->          let ucode_signed = if desc.signature_count != 0 {
->              let sig_base_img = (desc.imem_load_size + desc.pkc_data_offset) as usize;
->              let desc_sig_versions = u32::from(desc.signature_versions);
-> @@ -382,7 +382,7 @@ pub(crate) fn new(
->              dev_dbg!(dev, "patching signature with index {}\n", signature_idx);
->              let signature = bios
->                  .fwsec_image()
-> -                .sigs(dev, desc)
-> +                .sigs(desc)
->                  .and_then(|sigs| sigs.get(signature_idx).ok_or(EINVAL))?;
->  
->              ucode_dma.patch_signature(signature, sig_base_img)?
-> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-> index b5564b4d3e4758e77178aa403635e4780f0378cc..6fc06b1b83655a7dec00308880dbdfc32d7105ce 100644
-> --- a/drivers/gpu/nova-core/vbios.rs
-> +++ b/drivers/gpu/nova-core/vbios.rs
-> @@ -9,6 +9,7 @@
->  use kernel::device;
->  use kernel::error::Result;
->  use kernel::prelude::*;
-> +use kernel::types::ARef;
->  
->  /// The offset of the VBIOS ROM in the BAR0 space.
->  const ROM_OFFSET: usize = 0x300000;
-> @@ -230,10 +231,10 @@ pub(crate) fn new(dev: &device::Device, bar0: &Bar0) -> Result<Vbios> {
->              (second_fwsec_image, first_fwsec_image, pci_at_image)
->          {
->              second
-> -                .setup_falcon_data(dev, &pci_at, &first)
-> +                .setup_falcon_data(&pci_at, &first)
->                  .inspect_err(|e| dev_err!(dev, "Falcon data setup failed: {:?}\n", e))?;
->              Ok(Vbios {
-> -                fwsec_image: second.build(dev)?,
-> +                fwsec_image: second.build()?,
->              })
->          } else {
->              dev_err!(
-> @@ -742,9 +743,10 @@ fn try_from(base: BiosImageBase) -> Result<Self> {
->  ///
->  /// Each BiosImage type has a BiosImageBase type along with other image-specific fields. Note that
->  /// Rust favors composition of types over inheritance.
-> -#[derive(Debug)]
->  #[expect(dead_code)]
->  struct BiosImageBase {
-> +    /// Used for logging.
-> +    dev: ARef<device::Device>,
->      /// PCI ROM Expansion Header
->      rom_header: PciRomHeader,
->      /// PCI Data Structure
-> @@ -801,6 +803,7 @@ fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
->          data_copy.extend_from_slice(data, GFP_KERNEL)?;
->  
->          Ok(BiosImageBase {
-> +            dev: dev.into(),
->              rom_header,
->              pcir,
->              npde,
-> @@ -836,7 +839,7 @@ fn get_bit_token(&self, token_id: u8) -> Result<BitToken> {
->      ///
->      /// This is just a 4 byte structure that contains a pointer to the Falcon data in the FWSEC
->      /// image.
-> -    fn falcon_data_ptr(&self, dev: &device::Device) -> Result<u32> {
-> +    fn falcon_data_ptr(&self) -> Result<u32> {
->          let token = self.get_bit_token(BIT_TOKEN_ID_FALCON_DATA)?;
->  
->          // Make sure we don't go out of bounds
-> @@ -847,14 +850,14 @@ fn falcon_data_ptr(&self, dev: &device::Device) -> Result<u32> {
->          // read the 4 bytes at the offset specified in the token
->          let offset = token.data_offset as usize;
->          let bytes: [u8; 4] = self.base.data[offset..offset + 4].try_into().map_err(|_| {
-> -            dev_err!(dev, "Failed to convert data slice to array");
-> +            dev_err!(self.base.dev, "Failed to convert data slice to array");
->              EINVAL
->          })?;
->  
->          let data_ptr = u32::from_le_bytes(bytes);
->  
->          if (data_ptr as usize) < self.base.data.len() {
-> -            dev_err!(dev, "Falcon data pointer out of bounds\n");
-> +            dev_err!(self.base.dev, "Falcon data pointer out of bounds\n");
->              return Err(EINVAL);
->          }
->  
-> @@ -978,11 +981,10 @@ fn find_entry_by_type(&self, entry_type: u8) -> Result<PmuLookupTableEntry> {
->  impl FwSecBiosBuilder {
->      fn setup_falcon_data(
->          &mut self,
-> -        dev: &device::Device,
->          pci_at_image: &PciAtBiosImage,
->          first_fwsec: &FwSecBiosBuilder,
->      ) -> Result {
-> -        let mut offset = pci_at_image.falcon_data_ptr(dev)? as usize;
-> +        let mut offset = pci_at_image.falcon_data_ptr()? as usize;
->          let mut pmu_in_first_fwsec = false;
->  
->          // The falcon data pointer assumes that the PciAt and FWSEC images
-> @@ -1005,10 +1007,15 @@ fn setup_falcon_data(
->          self.falcon_data_offset = Some(offset);
->  
->          if pmu_in_first_fwsec {
-> -            self.pmu_lookup_table =
-> -                Some(PmuLookupTable::new(dev, &first_fwsec.base.data[offset..])?);
-> +            self.pmu_lookup_table = Some(PmuLookupTable::new(
-> +                &self.base.dev,
-> +                &first_fwsec.base.data[offset..],
-> +            )?);
->          } else {
-> -            self.pmu_lookup_table = Some(PmuLookupTable::new(dev, &self.base.data[offset..])?);
-> +            self.pmu_lookup_table = Some(PmuLookupTable::new(
-> +                &self.base.dev,
-> +                &self.base.data[offset..],
-> +            )?);
->          }
->  
->          match self
-> @@ -1021,14 +1028,18 @@ fn setup_falcon_data(
->                  let mut ucode_offset = entry.data as usize;
->                  ucode_offset -= pci_at_image.base.data.len();
->                  if ucode_offset < first_fwsec.base.data.len() {
-> -                    dev_err!(dev, "Falcon Ucode offset not in second Fwsec.\n");
-> +                    dev_err!(self.base.dev, "Falcon Ucode offset not in second Fwsec.\n");
->                      return Err(EINVAL);
->                  }
->                  ucode_offset -= first_fwsec.base.data.len();
->                  self.falcon_ucode_offset = Some(ucode_offset);
->              }
->              Err(e) => {
-> -                dev_err!(dev, "PmuLookupTableEntry not found, error: {:?}\n", e);
-> +                dev_err!(
-> +                    self.base.dev,
-> +                    "PmuLookupTableEntry not found, error: {:?}\n",
-> +                    e
-> +                );
->                  return Err(EINVAL);
->              }
->          }
-> @@ -1036,7 +1047,7 @@ fn setup_falcon_data(
->      }
->  
->      /// Build the final FwSecBiosImage from this builder
-> -    fn build(self, dev: &device::Device) -> Result<FwSecBiosImage> {
-> +    fn build(self) -> Result<FwSecBiosImage> {
->          let ret = FwSecBiosImage {
->              base: self.base,
->              falcon_ucode_offset: self.falcon_ucode_offset.ok_or(EINVAL)?,
-> @@ -1044,8 +1055,8 @@ fn build(self, dev: &device::Device) -> Result<FwSecBiosImage> {
->  
->          if cfg!(debug_assertions) {
->              // Print the desc header for debugging
-> -            let desc = ret.header(dev)?;
-> -            dev_dbg!(dev, "PmuLookupTableEntry desc: {:#?}\n", desc);
-> +            let desc = ret.header()?;
-> +            dev_dbg!(ret.base.dev, "PmuLookupTableEntry desc: {:#?}\n", desc);
->          }
->  
->          Ok(ret)
-> @@ -1054,13 +1065,16 @@ fn build(self, dev: &device::Device) -> Result<FwSecBiosImage> {
->  
->  impl FwSecBiosImage {
->      /// Get the FwSec header ([`FalconUCodeDescV3`]).
-> -    pub(crate) fn header(&self, dev: &device::Device) -> Result<&FalconUCodeDescV3> {
-> +    pub(crate) fn header(&self) -> Result<&FalconUCodeDescV3> {
->          // Get the falcon ucode offset that was found in setup_falcon_data.
->          let falcon_ucode_offset = self.falcon_ucode_offset;
->  
->          // Make sure the offset is within the data bounds.
->          if falcon_ucode_offset + core::mem::size_of::<FalconUCodeDescV3>() > self.base.data.len() {
-> -            dev_err!(dev, "fwsec-frts header not contained within BIOS bounds\n");
-> +            dev_err!(
-> +                self.base.dev,
-> +                "fwsec-frts header not contained within BIOS bounds\n"
-> +            );
->              return Err(ERANGE);
->          }
->  
-> @@ -1072,7 +1086,7 @@ pub(crate) fn header(&self, dev: &device::Device) -> Result<&FalconUCodeDescV3>
->          let ver = (hdr & 0xff00) >> 8;
->  
->          if ver != 3 {
-> -            dev_err!(dev, "invalid fwsec firmware version: {:?}\n", ver);
-> +            dev_err!(self.base.dev, "invalid fwsec firmware version: {:?}\n", ver);
->              return Err(EINVAL);
->          }
->  
-> @@ -1092,7 +1106,7 @@ pub(crate) fn header(&self, dev: &device::Device) -> Result<&FalconUCodeDescV3>
->      }
->  
->      /// Get the ucode data as a byte slice
-> -    pub(crate) fn ucode(&self, dev: &device::Device, desc: &FalconUCodeDescV3) -> Result<&[u8]> {
-> +    pub(crate) fn ucode(&self, desc: &FalconUCodeDescV3) -> Result<&[u8]> {
->          let falcon_ucode_offset = self.falcon_ucode_offset;
->  
->          // The ucode data follows the descriptor.
-> @@ -1104,15 +1118,16 @@ pub(crate) fn ucode(&self, dev: &device::Device, desc: &FalconUCodeDescV3) -> Re
->              .data
->              .get(ucode_data_offset..ucode_data_offset + size)
->              .ok_or(ERANGE)
-> -            .inspect_err(|_| dev_err!(dev, "fwsec ucode data not contained within BIOS bounds\n"))
-> +            .inspect_err(|_| {
-> +                dev_err!(
-> +                    self.base.dev,
-> +                    "fwsec ucode data not contained within BIOS bounds\n"
-> +                )
-> +            })
->      }
->  
->      /// Get the signatures as a byte slice
-> -    pub(crate) fn sigs(
-> -        &self,
-> -        dev: &device::Device,
-> -        desc: &FalconUCodeDescV3,
-> -    ) -> Result<&[Bcrt30Rsa3kSignature]> {
-> +    pub(crate) fn sigs(&self, desc: &FalconUCodeDescV3) -> Result<&[Bcrt30Rsa3kSignature]> {
->          // The signatures data follows the descriptor.
->          let sigs_data_offset = self.falcon_ucode_offset + core::mem::size_of::<FalconUCodeDescV3>();
->          let sigs_size =
-> @@ -1121,7 +1136,7 @@ pub(crate) fn sigs(
->          // Make sure the data is within bounds.
->          if sigs_data_offset + sigs_size > self.base.data.len() {
->              dev_err!(
-> -                dev,
-> +                self.base.dev,
->                  "fwsec signatures data not contained within BIOS bounds\n"
->              );
->              return Err(ERANGE);
+> Can you expand on this last part?
+
+Sure. 
 > 
-> -- 
-> 2.50.1
+> > 
+> > * `io_uring::IoUringCmd` : Rust abstraction for `io_uring_cmd` which
+> >  will be used as arg for `MiscDevice::uring_cmd()`. And driver can get
+> >  `cmd_op` sent from userspace. Also it has `flags` which includes option
+> >  that is reissued.
+> > 
 > 
+> This is a bit hard to parse.
+
+I'll fix this.
+> 
+> > * `io_uring::IoUringSqe` : Rust abstraction for `io_uring_sqe` which
+> >  could be get from `IoUringCmd::sqe()` and driver could get `cmd_data`
+> >  from userspace. Also `IoUringSqe` has more data like opcode could be used in
+> >  driver.
+> 
+> Same here.
+
+Same here.
+> 
+> > 
+> > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> > ---
+> > rust/kernel/io_uring.rs | 306 ++++++++++++++++++++++++++++++++++++++++
+> > rust/kernel/lib.rs      |   1 +
+> > 2 files changed, 307 insertions(+)
+> > create mode 100644 rust/kernel/io_uring.rs
+> > 
+> > diff --git a/rust/kernel/io_uring.rs b/rust/kernel/io_uring.rs
+> > new file mode 100644
+> > index 000000000000..61e88bdf4e42
+> > --- /dev/null
+> > +++ b/rust/kernel/io_uring.rs
+> > @@ -0,0 +1,306 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +// SPDX-FileCopyrightText: (C) 2025 Furiosa AI
+> > +
+> > +//! Abstractions for io-uring.
+> > +//!
+> > +//! This module provides types for implements io-uring interface for char device.
+> 
+> This is also hard to parse.
+
+I'll fix this.
+> 
+> > +//!
+> > +//!
+> > +//! C headers: [`include/linux/io_uring/cmd.h`](srctree/include/linux/io_uring/cmd.h) and
+> > +//! [`include/linux/io_uring/io_uring.h`](srctree/include/linux/io_uring/io_uring.h)
+> > +
+> > +use core::{mem::MaybeUninit, pin::Pin};
+> > +
+> > +use crate::error::from_result;
+> > +use crate::transmute::{AsBytes, FromBytes};
+> > +use crate::{fs::File, types::Opaque};
+> > +
+> > +use crate::prelude::*;
+> > +
+> > +/// io-uring opcode
+> 
+> /// `IoUring` opcodes.
+> 
+> Notice:
+> 
+> a) The capitalization,
+> b) The use of backticks,
+> c) The period in the end.
+> 
+> This is an ongoing effort to keep the docs tidy :)
+
+Thanks :)
+> 
+> > +pub mod opcode {
+> > +    /// opcode for uring cmd
+> > +    pub const URING_CMD: u32 = bindings::io_uring_op_IORING_OP_URING_CMD;
+> > +}
+> 
+> Should this be its own type? This way we can use the type system to enforce
+> that only valid opcodes are used where an opcode is expected.
+
+Sure. How about a transparent struct like below.
+
+#[repr(transparent)]
+pub struct Opcode(u32);
+
+impl Opcode {
+    pub const URING_CMD: Self =
+        Self(bindings::io_uring_op_IORING_OP_URING_CMD as u32);
+}
+
+> 
+> > +
+> > +/// A Rust abstraction for the Linux kernel's `io_uring_cmd` structure.
+> 
+> /// A Rust abstraction for `io_uring_cmd`.
+
+Okay, I'll fixed all comments mentioning "Linux kernel".
+> 
+> > +///
+> > +/// This structure is a safe, opaque wrapper around the raw C `io_uring_cmd`
+> > +/// binding from the Linux kernel. It represents a command structure used
+> > +/// in io_uring operations within the kernel.
+> 
+> This code will also be part of the kernel, so mentioning "the Linux kernel" is superfluous.
+
+Thanks.
+> 
+> > +/// This type is used internally by the io_uring subsystem to manage
+> > +/// asynchronous I/O commands.
+> > +///
+> > +/// This type should not be constructed or manipulated directly by
+> > +/// kernel module developers.
+> 
+> "...by drivers".
+
+Thanks.
+> 
+> > +///
+> > +/// # INVARIANT
+> 
+> /// # Invariants
+
+Thanks.
+> 
+> > +/// - `self.inner` always points to a valid, live `bindings::io_uring_cmd`.
+> 
+> Blank here
+
+Thanks.
+> 
+> > +#[repr(transparent)]
+> > +pub struct IoUringCmd {
+> > +    /// An opaque wrapper containing the actual `io_uring_cmd` data.
+> > +    inner: Opaque<bindings::io_uring_cmd>,
+> > +}
+> > +
+> > +impl IoUringCmd {
+> > +    /// Returns the cmd_op with associated with the `io_uring_cmd`.
+> 
+> This sentence does not parse very well.
+
+I'll fix this. Like you said, it's better to not to mention the c structure.
+> 
+> > +    #[inline]
+> > +    pub fn cmd_op(&self) -> u32 {
+> > +        // SAFETY: `self.inner` is guaranteed by the type invariant to point
+> > +        // to a live `io_uring_cmd`, so dereferencing is safe.
+> > +        unsafe { (*self.inner.get()).cmd_op }
+> 
+> Perhaps add an as_raw() method so this becomes:
+> 
+> unsafe {*self.as_raw()}.cmd_op
+
+Agreed. Also it would return the Opcode type than u32.
+> 
+> > +    }
+> > +
+> > +    /// Returns the flags with associated with the `io_uring_cmd`.
+> 
+> With the command, or something like that. The user doesn´t see the raw
+> bindings::io_uring_cmd so we shouldn´t be mentioning it if we can help it.
+
+Agreed. I'll try to fix this without mentioning the io_uring_cmd.
+> 
+> > +    #[inline]
+> > +    pub fn flags(&self) -> u32 {
+> > +        // SAFETY: `self.inner` is guaranteed by the type invariant to point
+> > +        // to a live `io_uring_cmd`, so dereferencing is safe.
+> > +        unsafe { (*self.inner.get()).flags }
+> > +    }
+> > +
+> > +    /// Reads protocol data unit as `T` that impl `FromBytes` from uring cmd
+> 
+> This sentence does not parse very well.
+
+I'll fix this.
+> 
+> > +    ///
+> > +    /// Fails with [`EFAULT`] if size of `T` is bigger than pdu size.
+> 
+> /// # Errors
+
+Thanks.
+> 
+> > +    #[inline]
+> > +    pub fn read_pdu<T: FromBytes>(&self) -> Result<T> {
+> 
+> This takes &self,
+> 
+> > +        // SAFETY: `self.inner` is guaranteed by the type invariant to point
+> > +        // to a live `io_uring_cmd`, so dereferencing is safe.
+> > +        let inner = unsafe { &mut *self.inner.get() };
+> 
+> But this creates a &mut to self.inner using unsafe code. Avoid doing this in
+> general. All of a sudden your type is not thread-safe anymore.
+> 
+> If you need to mutate &self here, then take &mut self as an argument.
+> 
+> > +
+> > +        let len = size_of::<T>();
+> > +        if len > inner.pdu.len() {
+> > +            return Err(EFAULT);
+> 
+> EFAULT? How about EINVAL?
+
+Good.
+> 
+> > +        }
+> > +
+> > +        let mut out: MaybeUninit<T> = MaybeUninit::uninit();
+> > +        let ptr = &raw mut inner.pdu as *const c_void;
+> > +
+> > +        // SAFETY:
+> > +        // * The `ptr` is valid pointer from `self.inner` that is guaranteed by type invariant.
+> > +        // * The `out` is valid pointer that points `T` which impls `FromBytes` and checked
+> > +        //   size of `T` is smaller than pdu size.
+> > +        unsafe {
+> > +            core::ptr::copy_nonoverlapping(ptr, out.as_mut_ptr().cast::<c_void>(), len);
+> 
+> I don´t think you need to manually specify c_void here.
+> 
+> Benno, can´t we use core::mem::zeroed() or something like that to avoid this unsafe?
+> 
+> The input was zeroed in prep() and the output can just be a zeroed T on the
+> stack, unless I missed something?
+> 
+> > +        }
+> > +
+> > +        // SAFETY: The read above has initialized all bytes in `out`, and since `T` implements
+> > +        // `FromBytes`, any bit-pattern is a valid value for this type.
+> > +        Ok(unsafe { out.assume_init() })
+> > +    }
+> > +
+> > +    /// Writes the provided `value` to `pdu` in uring_cmd `self`
+> 
+> Writes the provided `value` to `pdu`.
+
+Thanks.
+> 
+> > +    ///
+> 
+> /// # Errors
+> ///
+
+Thanks.
+> 
+> > +    /// Fails with [`EFAULT`] if size of `T` is bigger than pdu size.
+> 
+> > +    #[inline]
+> > +    pub fn write_pdu<T: AsBytes>(&mut self, value: &T) -> Result<()> {
+> > +        // SAFETY: `self.inner` is guaranteed by the type invariant to point
+> > +        // to a live `io_uring_cmd`, so dereferencing is safe.
+> > +        let inner = unsafe { &mut *self.inner.get() };
+> > +
+> > +        let len = size_of::<T>();
+> > +        if len > inner.pdu.len() {
+> > +            return Err(EFAULT);
+> > +        }
+> > +
+> > +        let src = (value as *const T).cast::<c_void>();
+> 
+> as_ptr().cast()
+> 
+> > +        let dst = &raw mut inner.pdu as *mut c_void;
+> 
+> (&raw mut inner.pdu).cast()
+> 
+
+Thanks.
+> > +
+> > +        // SAFETY:
+> > +        // * The `src` is points valid memory that is guaranteed by `T` impls `AsBytes`
+> > +        // * The `dst` is valid. It's from `self.inner` that is guaranteed by type invariant.
+> > +        // * It's safe to copy because size of `T` is no more than len of pdu.
+> > +        unsafe {
+> > +            core::ptr::copy_nonoverlapping(src, dst, len);
+> > +        }
+> > +
+> > +        Ok(())
+> > +    }
+> > +
+> > +    /// Constructs a new [`IoUringCmd`] from a raw `io_uring_cmd`
+> 
+> Missing period.
+
+Thanks.
+> 
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The caller must guarantee that:
+> > +    /// - `ptr` is non-null, properly aligned, and points to a valid
+> > +    ///   `bindings::io_uring_cmd`.
+> 
+> Blanks for every bullet point, please.
+
+Thanks.
+> 
+> > +    /// - The pointed-to memory remains initialized and valid for the entire
+> > +    ///   lifetime `'a` of the returned reference.
+> > +    /// - While the returned `Pin<&'a mut IoUringCmd>` is alive, the underlying
+> > +    ///   object is **not moved** (pinning requirement).
+> 
+> They can´t move an !Unpin type in safe code.
+
+Okay, this could be removed.
+> 
+> > +    /// - **Aliasing rules:** the returned `&mut` has **exclusive** access to the same
+> > +    ///   object for its entire lifetime:
+> 
+> You really don´t need to emphasize these.
+
+Okay.
+> 
+> > +    ///   - No other `&mut` **or** `&` references to the same `io_uring_cmd` may be
+> > +    ///     alive at the same time.
+> 
+> This and the point above are identical.
+
+It would be removed.
+> 
+> > +    ///   - There must be no concurrent reads/writes through raw pointers, FFI, or
+> > +    ///     other kernel paths to the same object during this lifetime.
+> 
+> This and the first point say the same thing.
+> 
+> > +    ///   - If the object can be touched from other contexts (e.g. IRQ/another CPU),
+> > +    ///     the caller must provide synchronization to uphold this exclusivity.
+> 
+> I am not sure what you mean.
+> > +    /// - This function relies on `IoUringCmd` being `repr(transparent)` over
+> > +    ///   `bindings::io_uring_cmd` so the cast preserves layout.
+> 
+> This is not a safety requirement.
+> 
+> Just adapt the requirements from other instances of from_raw(), they all
+> convert a *mut T to a &T so the safety requirements are similar.
+> 
+
+Okay, This safety comments are too redundant. I'll rewrite this. Thanks.
+> > +    #[inline]
+> > +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::io_uring_cmd) -> Pin<&'a mut IoUringCmd> {
+> 
+> Why is this pub? Sounds like a massive footgun? This should be private or at
+> best pub(crate).
+
+Because from_raw() would be used in miscdevice. pub(crate) will be okay.
+> 
+> 
+> > +        // SAFETY:
+> > +        // * The caller guarantees that the pointer is not dangling and stays
+> > +        //   valid for the duration of 'a.
+> > +        // * The cast is okay because `IoUringCmd` is `repr(transparent)` and
+> > +        //   has the same memory layout as `bindings::io_uring_cmd`.
+> > +        // * The returned `Pin` ensures that the object cannot be moved, which
+> > +        //   is required because the kernel may hold pointers to this memory
+> > +        //   location and moving it would invalidate those pointers.
+> 
+> > +        unsafe { Pin::new_unchecked(&mut *ptr.cast()) }
+> > +    }
+> > +
+> > +    /// Returns the file that referenced by uring cmd self.
+> > +    #[inline]
+> > +    pub fn file(&self) -> &File {
+> > +        // SAFETY: `self.inner` is guaranteed by the type invariant to point
+> > +        // to a live `io_uring_cmd`, so dereferencing is safe.
+> > +        let file = unsafe { (*self.inner.get()).file };
+> > +
+> > +        // SAFETY:
+> > +        // * The `file` points valid file.
+> 
+> Why?
+
+`file` is from `self.inner` which is guranteed by the type invariant. I missed the
+comment.
+> 
+> > +        // * refcount is positive after submission queue entry issued.
+> > +        // * There is no active fdget_pos region on the file on this thread.
+> > +        unsafe { File::from_raw_file(file) }
+> > +    }
+> > +
+> > +    /// Returns an reference to the [`IoUringSqe`] associated with this command.
+> 
+> s/an/a
+
+Thanks.
+
+> 
+> > +    #[inline]
+> > +    pub fn sqe(&self) -> &IoUringSqe {
+> > +        // SAFETY: `self.inner` is guaranteed by the type invariant to point
+> > +        // to a live `io_uring_cmd`, so dereferencing is safe.
+> > +        let sqe = unsafe { (*self.inner.get()).sqe };
+> > +        // SAFETY: The call guarantees that the `sqe` points valid io_uring_sqe.
+> 
+> What do you mean by "the call guarantees" ?
+
+It's just miss. This should be "This call is guaranteed to be safe because...". 
+> 
+> > +        unsafe { IoUringSqe::from_raw(sqe) }
+> > +    }
+> > +
+> > +    /// Completes an this [`IoUringCmd`] request that was previously queued.
+> 
+> This sentence does not parse very well.
+
+I'll fix this. Thanks.
+> 
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// - This function must be called **only** for a command whose `uring_cmd`
+> 
+> Please no emphasis.
+
+Thanks.
+> 
+> > +    ///   handler previously returned **`-EIOCBQUEUED`** to io_uring.
+> 
+> To what? Are you referring to a Rust type, or to the C part of the kernel?
+
+I referred C type but it's better to use Rust return type.
+> 
+> > +    ///
+> > +    /// # Parameters
+> > +    ///
+> > +    /// - `ret`: Result to return to userspace.
+> > +    /// - `res2`: Extra for big completion queue entry `IORING_SETUP_CQE32`.
+> 
+> This sentence does not parse very well. Also, can you rename this?
+
+Okay.
+> 
+> > +    /// - `issue_flags`: Flags associated with this request, typically the same
+> > +    ///   as those passed to the `uring_cmd` handler.
+> > +    #[inline]
+> > +    pub fn done(self: Pin<&mut IoUringCmd>, ret: Result<i32>, res2: u64, issue_flags: u32) {
+> > +        let ret = from_result(|| ret) as isize;
+> 
+> What does this do?
+
+It casts Result<i32> to isize. `bindings::io_uring_cmd_done` receives `isize`.
+I wanted that `ret` would be `Result` than just i32. `ret` should be just isize?
+
+> 
+> > +        // SAFETY: The call guarantees that `self.inner` is not dangling and stays valid
+> 
+> What do you mean "the call" ?
+
+Sorry, "This call is guruanteed to be safe ..."
+> 
+> > +        unsafe {
+> > +            bindings::io_uring_cmd_done(self.inner.get(), ret, res2, issue_flags);
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +/// A Rust abstraction for the Linux kernel's `io_uring_sqe` structure.
+> 
+> Please don´t mention the words "Linux kernel" here either.
+
+Yes.
+> 
+> > +///
+> > +/// This structure is a safe, opaque wrapper around the raw C [`io_uring_sqe`](srctree/include/uapi/linux/io_uring.h)
+> 
+> This line needs to be wrapped.
+
+Okay.
+> 
+> > +/// binding from the Linux kernel. It represents a Submission Queue Entry
+> 
+> Can you link somewhere here? Perhaps there´s docs for "Submission Queue
+> Entry".
+
+Okay I'll find it.
+> 
+> > +/// used in io_uring operations within the kernel.
+> > +///
+> > +/// # Type Safety
+> > +///
+> > +/// The `#[repr(transparent)]` attribute ensures that this wrapper has
+> > +/// the same memory layout as the underlying `io_uring_sqe` structure,
+> > +/// allowing it to be safely transmuted between the two representations.
+> 
+> This is an invariant, please move it there.
+
+Thanks.
+> 
+> > +///
+> > +/// # Fields
+> > +///
+> > +/// * `inner` - An opaque wrapper containing the actual `io_uring_sqe` data.
+> > +///             The `Opaque` type prevents direct access to the internal
+> > +///             structure fields, ensuring memory safety and encapsulation.
+> 
+> Inline docs please.
+
+Okay.
+> 
+> > +///
+> > +/// # Usage
+> 
+> I don´t think we specifically need to mention "# Usage".
+
+Okay it would be deleted.
+> 
+> > +///
+> > +/// This type represents a submission queue entry that describes an I/O
+> 
+> You can start with "Represents a...". No need to say "this type" here.
+
+Thanks.
+> 
+> > +/// operation to be executed by the io_uring subsystem. It contains
+> > +/// information such as the operation type, file descriptor, buffer
+> > +/// pointers, and other operation-specific data.
+> > +///
+> > +/// Users can obtain this type from [`IoUringCmd::sqe()`] method, which
+> > +/// extracts the submission queue entry associated with a command.
+> > +///
+> > +/// This type should not be constructed or manipulated directly by
+> > +/// kernel module developers.
+> 
+> By drivers.
+
+Thanks.
+
+> 
+> > +///
+> > +/// # INVARIANT
+> 
+> /// # Invariants
+
+Thanks.
+> 
+> > +/// - `self.inner` always points to a valid, live `bindings::io_uring_sqe`.
+> > +#[repr(transparent)]
+> > +pub struct IoUringSqe {
+> > +    inner: Opaque<bindings::io_uring_sqe>,
+> > +}
+> > +
+> > +impl IoUringSqe {
+> > +    /// Reads and interprets the `cmd` field of an `bindings::io_uring_sqe` as a value of type `T`.
+> > +    ///
+> > +    /// # Safety & Invariants
+> 
+> Safety section for a safe function.
+
+Thanks.
+> 
+> > +    /// - Construction of `T` is delegated to `FromBytes`, which guarantees that `T` has no
+> > +    ///   invalid bit patterns and can be safely reconstructed from raw bytes.
+> > +    /// - **Limitation:** This implementation does not support `IORING_SETUP_SQE128` (larger SQE entries).
+> 
+> Please no emphasis.
+
+Okay.
+> 
+> 
+> > +    ///   Only the standard `io_uring_sqe` layout is handled here.
+> > +    ///
+> > +    /// # Errors
+> 
+> Blank here.
+
+Thanks.
+> 
+> > +    /// * Returns `EINVAL` if the `self` does not hold a `opcode::URING_CMD`.
+> > +    /// * Returns `EFAULT` if the command buffer is smaller than the requested type `T`.
+> > +    ///
+> > +    /// # Returns
+> 
+> I don´t think we need a specific section for this. Just write this in
+> normal prose please.
+
+Okay.
+> 
+> 
+> > +    /// * On success, returns a `T` deserialized from the `cmd`.
+> > +    /// * On failure, returns an appropriate error as described above.
+> > +    pub fn cmd_data<T: FromBytes>(&self) -> Result<T> {
+> > +        // SAFETY: `self.inner` guaranteed by the type invariant to point
+> > +        // to a live `io_uring_sqe`, so dereferencing is safe.
+> > +        let sqe = unsafe { &*self.inner.get() };
+> > +
+> > +        if u32::from(sqe.opcode) != opcode::URING_CMD {
+> > +            return Err(EINVAL);
+> > +        }
+> > +
+> > +        // SAFETY: Accessing the `sqe.cmd` union field is safe because we've
+> > +        // verified that `sqe.opcode == IORING_OP_URING_CMD`, which guarantees
+> > +        // that this union variant is initialized and valid.
+> > +        let cmd = unsafe { sqe.__bindgen_anon_6.cmd.as_ref() };
+> > +        let cmd_len = size_of_val(&sqe.__bindgen_anon_6.bindgen_union_field);
+> > +
+> > +        if cmd_len < size_of::<T>() {
+> > +            return Err(EFAULT);
+> 
+> EINVAL
+
+Thanks.
+> 
+> > +        }
+> > +
+> > +        let cmd_ptr = cmd.as_ptr() as *mut T;
+> 
+> cast()
+
+Thanks.
+> 
+> > +
+> > +        // SAFETY: `cmd_ptr` is valid from `self.inner` which is guaranteed by
+> > +        // type variant. And also it points to initialized `T` from userspace.
+> 
+> "Invariant".
+
+Thanks!
+> 
+> "[...] an initialized T".
+
+Thanks.
+> 
+> 
+> > +        let ret = unsafe { core::ptr::read_unaligned(cmd_ptr) };
+> > +
+> > +        Ok(ret)
+> > +    }
+> > +
+> > +    /// Constructs a new `IoUringSqe` from a raw `io_uring_sqe`.
+> 
+> [`IoUringSqe`].
+> 
+> Please build the docs and make sure all your docs look nice.
+
+Okay, I'll review comments by docs.
+> 
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The caller must guarantee that:
+> > +    /// - `ptr` is non-null, properly aligned, and points to a valid initialized
+> > +    ///   `bindings::io_uring_sqe`.
+> > +    /// - The pointed-to memory remains valid (not freed or repurposed) for the
+> > +    ///   entire lifetime `'a` of the returned reference.
+> > +    /// - **Aliasing rules (for `&T`):** while the returned `&'a IoUringSqe` is
+> > +    ///   alive, there must be **no mutable access** to the same object through any
+> > +    ///   path (no `&mut`, no raw-pointer writes, no FFI/IRQ/other-CPU writers).
+> > +    ///   Multiple `&` is fine **only if all of them are read-only** for the entire
+> > +    ///   overlapping lifetime.
+> > +    /// - This relies on `IoUringSqe` being `repr(transparent)` over
+> > +    ///   `bindings::io_uring_sqe`, so the cast preserves layout.
+> 
+> Please rewrite this entire section given the feedback I gave higher up in this
+> patch.
+
+Okay. I'll rewrite this.
+> 
+> > +    #[inline]
+> > +    pub unsafe fn from_raw<'a>(ptr: *const bindings::io_uring_sqe) -> &'a IoUringSqe {
+> 
+> Private or pub(crate) at best.
+
+Okay. pub(crate)
+> 
+> > +        // SAFETY: The caller guarantees that the pointer is not dangling and stays valid for the
+> > +        // duration of 'a. The cast is okay because `IoUringSqe` is `repr(transparent)` and has the
+> > +        // same memory layout as `bindings::io_uring_sqe`.
+> > +        unsafe { &*ptr.cast() }
+> > +    }
+> > +}
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index ed53169e795c..d38cf7137401 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -91,6 +91,7 @@
+> > pub mod fs;
+> > pub mod init;
+> > pub mod io;
+> > +pub mod io_uring;
+> > pub mod ioctl;
+> > pub mod jump_label;
+> > #[cfg(CONFIG_KUNIT)]
+> > -- 
+> > 2.43.0
+> > 
+> 
+
+Thanks for detailed review!
+I'll revise the comments overall.
+Also there would be new type for opcode.
+
+Thanks,
+Sidong
