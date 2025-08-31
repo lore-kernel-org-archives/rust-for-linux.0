@@ -1,139 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6593257845;
-	Sun, 31 Aug 2025 13:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134A4224AF3;
+	Sun, 31 Aug 2025 21:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756645976; cv=none; b=QRzp0i+kcNgZ47JcW5NjL9aqSe1PfLlkTHRNPEhV53fkaq1SRcpYAEtp8UTIIk2WHx6UoO1/lEznvNd/Q9MkOSl5Syt2Z59a4bIBJzJamDiIRi0dvxOsKNZ5DSGtjxFbL0PmKu6RgQUiOMISVwYu4X42tFm9mpAgVHj8haIplWs=
+	t=1756676399; cv=none; b=FsonE2jRJumTbT+zXWJU2/cFBig34N4JUb4g4Blig2h2tnCSg2cIpwbP+jL/92mMZW4KzNsqr1u2z5k46jzOfBFjvuhyEvbOd72atzR7DdfIe5t5ByAOVE2N9TGTsEWwWFXhrjv9zq9GDnLhsV0DtO7l+4Qi/DuUP/ZS9IGWR6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756645976; c=relaxed/simple;
-	bh=SVfffytdJ7l+FJFH+NQ2fAYz/jln+XvhXnCAv4vVciA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mgVzYVgVV0a50cguRnBjMpk0rWqmBnYI9ly+aegefDLM5gbBix+8QByEcn7D+tvkT8kWgd8McPFGvYvbdFmEungfSVsQgOVwMU74/cw5B1Op5bNPF2D6Gcqept5LmyxHZFTIOLh6JBebz8ST2271kH5qupwLWBnI9OftPmnOC74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMN3gtSJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756676399; c=relaxed/simple;
+	bh=HXK1mxtvnM+f5NSrDg17S6f0AjUq3s2kPy4/VmXyLPI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=accYmeuK7JyCX8lYGVjPOygEcX+7Yl+8zut3YvXjRJBty/OS+8ONVdgI+dZTJ9fOlvoAZJ3Knb9Ca3IywYjpkrw+VFvzgdhGMuvvE6D1qywcPozK/ONl3pb41ioW2W27sK5MLPBXWM5GbHJmlHDDQH8CH8hA0rUCf16BLSz7Yrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jyuHAnBM; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMN3gtSJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2B1C4CEED;
-	Sun, 31 Aug 2025 13:12:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756645976;
-	bh=SVfffytdJ7l+FJFH+NQ2fAYz/jln+XvhXnCAv4vVciA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WMN3gtSJVf7yZJvH25PHoup176xzR4iH45PFd5WTaZl3P3yIlcpIRkfu5U3ulpn36
-	 IKubxjRKitiVH7tEFGk0EvSWGehRo+3Ze6ErmIyU4uPo4HQlYX4MxtypCD8fFWeHBM
-	 x5lx5bK4qJ+D+MLZSAMBnr8/dS6PtN2tAd1/pTiMLV/guQAHue805z1yqYSMaGWuq1
-	 Airln6Bzle28Ohk7U9LgDEafLkaTwO2O0iuzeLmhUWu5F6SgZbC5gh8KCCHy3wqp2C
-	 Hcv7g6EwqE5WnoDtEeiWuc9ndJyrHz9MWyHpBWe4DPcTvzNQTROEZWINBtgECoxCxA
-	 rqMaDKHjRKGlQ==
-Date: Sun, 31 Aug 2025 16:12:50 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 09/16] dma-mapping: handle MMIO flow in
- dma_map|unmap_page
-Message-ID: <20250831131250.GC10073@unreal>
-References: <cover.1755624249.git.leon@kernel.org>
- <ba5b6525bb8d49ca356a299aa63b0a495d3c74ca.1755624249.git.leon@kernel.org>
- <20250828151730.GH9469@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jyuHAnBM"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24602f6d8b6so9065305ad.1;
+        Sun, 31 Aug 2025 14:39:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756676397; x=1757281197; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Edmamns6ZCKkIL1JrUvunq2gZzEQTzybUOvV7LUz7LQ=;
+        b=jyuHAnBMAjOckOM/Dbk1iGskJMzSpuxA83NngsAq3ntjBbHL2MMk3lABwsRIKD244Z
+         D4Vt3xbp4VM38bKm4U5RlI+kZRTZtOMweP/6AtjSy0oyuGqxHhJ2ICf5i9R8AJfYd39w
+         l/bbRQzxagpyjYpNCa8OmjNvWyzJI/PXYJkaLeR0P8dtZDAdvBUScdSzkVG/bLEGA4k1
+         JuwVW8LG2TZJpKIVUVUdYfcZIR7jynVYp3S194RhYuFACiUKIq6DVch+2HshOrRvDpcf
+         c3WZWm8dbR7PUmnYkJ2ENtwmFdmfN5atsjeJ/bihLRQv9XecFkjenkwBzL8aS8sWBiVj
+         qc8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756676397; x=1757281197;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Edmamns6ZCKkIL1JrUvunq2gZzEQTzybUOvV7LUz7LQ=;
+        b=INxXr/xngtLce7XbZNYY85TcrEhcKQK0rsT4xkz6hrEzoal1WWEaD+4jJppHESvqB2
+         LteWp6nwuPS33fmxGXFLDJoeg1YCkitkYSvUGW7prz9NmFW/iAhZnOJrRKkZ1wlP+iAn
+         U+4Wiwekp8j5R0Vts9bK0owsaiSjhpHQF1znKtsIcJURcajShsCMvbti7PqzLUmEmWw1
+         uQ4JCB7nrQ1l95LtoeiszNiMkzRySjwCm6JrgZgZJmrtbZKj3nOM4e2u2xd0bBq5OwUf
+         uM0acrQf843wXNElyZ8Z0gR98kX/U16vrXwDQ6V4SKlpnWJ9pFApj6K8wdcjsIarqsGu
+         IMoA==
+X-Forwarded-Encrypted: i=1; AJvYcCUweNsM8TZsFH9/y7NUKHcT90ePWozXiTSzShXGadWItFAqLKlqH9VzpfjjsLG/tQ79RbFCGokSgoUfTVVlksk=@vger.kernel.org, AJvYcCV0wGTOAopasjnpBjB+w8peMaQfzDwVegltQm1PH+opxHV8AjzzVP4GTv/QWCs5ztHQkozq0GUj3WCs0kk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNqVzMOyxHUXrwIylqIunOCoXaYbNr1GdCMZlSN6bXmQvZqxzo
+	V1vn9aqhiWcuGcvzIVPMYcPsAx6lOc44BejPEYm/eEQWHRJkeU8OWnZA7Ot+Tm+qy8ZbtUp0niC
+	PRPMeEopYCx2xb2En3WaalblLAq22KFyKt/QVAn6yfg==
+X-Gm-Gg: ASbGncvglbYm38s879fAt7YgyVdKEhv+d+3qwhGgiJaE5CfZ2lODlSBdTAPc9DNZ9F2
+	9IRMnOIO40Sk/edP2/p0rFIvsdwmbv/HpXiZleGEUSVCrhE5mE06+7L1KMRJ1tFoIKMktaykrF1
+	tBs9uBFqXatpe79OtE8rEYSeJH9r8B3hWZhxsP7AR1MyMT0p1+CO2PfiMHH/X108jYCdPfR8ATr
+	0zUu5xsmxwPMxi13rP82yLBRVDVKMTFRJjS4+fopnN8VSzjKMLtryo7SgY3YLrj1N0lgoB77p73
+	Lfmtgg36+7K5zCeXJdhbEeHr7g==
+X-Google-Smtp-Source: AGHT+IFU7QKb5d4h5yBn51TloshpbzipGmSxJWSZMaQZRvQ7NIn0gMWe/YXpQtEM+jJ3sF0J9U4BnEqP4qnffgmHT8M=
+X-Received: by 2002:a17:903:186:b0:248:9afa:7bc3 with SMTP id
+ d9443c01a7336-2491f246dc8mr55338015ad.8.1756676397269; Sun, 31 Aug 2025
+ 14:39:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250828151730.GH9469@nvidia.com>
+References: <20250827-file_as_c_str-v1-1-d3f5a3916a9c@google.com>
+In-Reply-To: <20250827-file_as_c_str-v1-1-d3f5a3916a9c@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 31 Aug 2025 23:39:45 +0200
+X-Gm-Features: Ac12FXwi68ejMP6rZlbFWj5czPxYgWpEG1TbtHfL7vIuuMitNsE9sZ_OM8stz0Q
+Message-ID: <CANiq72=8cu5+d8K7DBM1-o3t6auQmd_qq9FxiDKemqwWynWx=w@mail.gmail.com>
+Subject: Re: [PATCH] rust: use the new name Location::file_as_c_str() in rustc 1.91.0+
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 28, 2025 at 12:17:30PM -0300, Jason Gunthorpe wrote:
-> On Tue, Aug 19, 2025 at 08:36:53PM +0300, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Extend base DMA page API to handle MMIO flow and follow
-> > existing dma_map_resource() implementation to rely on dma_map_direct()
-> > only to take DMA direct path.
-> 
-> I would reword this a little bit too
-> 
-> dma-mapping: implement DMA_ATTR_MMIO for dma_(un)map_page_attrs()
-> 
-> Make dma_map_page_attrs() and dma_map_page_attrs() respect
-> DMA_ATTR_MMIO.
-> 
-> DMA_ATR_MMIO makes the functions behave the same as dma_(un)map_resource():
->  - No swiotlb is possible
->  - Legacy dma_ops arches use ops->map_resource()
->  - No kmsan
->  - No arch_dma_map_phys_direct()
-> 
-> The prior patches have made the internl funtions called here support
-> DMA_ATTR_MMIO.
-> 
-> This is also preparation for turning dma_map_resource() into an inline
-> calling dma_map_phys(DMA_ATTR_MMIO) to consolidate the flows.
-> 
-> > @@ -166,14 +167,25 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
-> >  		return DMA_MAPPING_ERROR;
-> >  
-> >  	if (dma_map_direct(dev, ops) ||
-> > -	    arch_dma_map_phys_direct(dev, phys + size))
-> > +	    (!is_mmio && arch_dma_map_phys_direct(dev, phys + size)))
-> >  		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
-> 
-> PPC is the only user of arch_dma_map_phys_direct() and it looks like
-> it should be called on MMIO memory. Seems like another inconsistency
-> with map_resource. I'd leave it like the above though for this series.
-> 
-> >  	else if (use_dma_iommu(dev))
-> >  		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
-> > -	else
-> > +	else if (is_mmio) {
-> > +		if (!ops->map_resource)
-> > +			return DMA_MAPPING_ERROR;
-> 
-> Probably written like:
-> 
-> 		if (ops->map_resource)
-> 			addr = ops->map_resource(dev, phys, size, dir, attrs);
-> 		else
-> 			addr = DMA_MAPPING_ERROR;
+On Wed, Aug 27, 2025 at 3:12=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> As part of the stabilization of Location::file_with_nul(), it was
+> brought up that the with_nul() suffix usually means something else in
+> Rust APIs, so the API is being renamed prior to stabilization. Thus,
+> adjust Linux to use the new name on new rustc versions.
+>
+> Link: https://www.github.com/rust-lang/rust/pull/145928 [1]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I'm big fan of "if (!ops->map_resource)" coding style and prefer to keep it.
+Applied to `rust-fixes` -- thanks everyone!
 
-> 
-> As I think some of the design here is to run the trace even on the
-> failure path?
+    [ Kept `cfg` separation. Reworded slightly. - Miguel ]
 
-Yes, this is how it worked before.
-
-> 
-> Otherwise looks OK
-> 
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> 
-> Jason
+Cheers,
+Miguel
