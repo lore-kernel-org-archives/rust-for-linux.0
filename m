@@ -1,96 +1,104 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134A4224AF3;
-	Sun, 31 Aug 2025 21:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772E9E573;
+	Sun, 31 Aug 2025 21:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756676399; cv=none; b=FsonE2jRJumTbT+zXWJU2/cFBig34N4JUb4g4Blig2h2tnCSg2cIpwbP+jL/92mMZW4KzNsqr1u2z5k46jzOfBFjvuhyEvbOd72atzR7DdfIe5t5ByAOVE2N9TGTsEWwWFXhrjv9zq9GDnLhsV0DtO7l+4Qi/DuUP/ZS9IGWR6w=
+	t=1756676695; cv=none; b=afYG/K8WbGZP3byg10gSWImUO9jDPRgDD2ZIGmaR5f6fFL64TrAMDE23R8UHRM0BM0KEsxo1N9sXsrZ1jEX37i9xFJxBdb89n/lCJ0BJU7455aCqOsA/l0xNH0UrB2L3qxGCyyXFs0ZgvMlYkBKLdc1wdD9hX0TYSjwFOMKQ4sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756676399; c=relaxed/simple;
-	bh=HXK1mxtvnM+f5NSrDg17S6f0AjUq3s2kPy4/VmXyLPI=;
+	s=arc-20240116; t=1756676695; c=relaxed/simple;
+	bh=ATlX29eggwecSHBFWVx+XL5nfZNPfYyOe/RUNhsSQVE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=accYmeuK7JyCX8lYGVjPOygEcX+7Yl+8zut3YvXjRJBty/OS+8ONVdgI+dZTJ9fOlvoAZJ3Knb9Ca3IywYjpkrw+VFvzgdhGMuvvE6D1qywcPozK/ONl3pb41ioW2W27sK5MLPBXWM5GbHJmlHDDQH8CH8hA0rUCf16BLSz7Yrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jyuHAnBM; arc=none smtp.client-ip=209.85.214.179
+	 To:Cc:Content-Type; b=ZhuEJItRER8oWL8yslrrM2tAt9CiO4zJl6tyeTq5zsW4zRhfBioRWN4WYCL5Br6MYHwQh0uYbnlmSHSUBzOg54nvXVISo/3zxh1GJuFMwPPVOzxMo6IHIBfrTm1kFJxevry+GR8ESvY8RgeEKH6Gz+4myEhgofCKuZt4PmpcemU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XmOvrJl5; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jyuHAnBM"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24602f6d8b6so9065305ad.1;
-        Sun, 31 Aug 2025 14:39:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XmOvrJl5"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24adcc94338so646275ad.2;
+        Sun, 31 Aug 2025 14:44:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756676397; x=1757281197; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756676693; x=1757281493; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Edmamns6ZCKkIL1JrUvunq2gZzEQTzybUOvV7LUz7LQ=;
-        b=jyuHAnBMAjOckOM/Dbk1iGskJMzSpuxA83NngsAq3ntjBbHL2MMk3lABwsRIKD244Z
-         D4Vt3xbp4VM38bKm4U5RlI+kZRTZtOMweP/6AtjSy0oyuGqxHhJ2ICf5i9R8AJfYd39w
-         l/bbRQzxagpyjYpNCa8OmjNvWyzJI/PXYJkaLeR0P8dtZDAdvBUScdSzkVG/bLEGA4k1
-         JuwVW8LG2TZJpKIVUVUdYfcZIR7jynVYp3S194RhYuFACiUKIq6DVch+2HshOrRvDpcf
-         c3WZWm8dbR7PUmnYkJ2ENtwmFdmfN5atsjeJ/bihLRQv9XecFkjenkwBzL8aS8sWBiVj
-         qc8A==
+        bh=ATlX29eggwecSHBFWVx+XL5nfZNPfYyOe/RUNhsSQVE=;
+        b=XmOvrJl5xcvvpkLDwr+Nur2ZE78vmT6uYFmS0q4hLy0ygE7tuowmNdA5jw0fzzt0Uc
+         bFx0y1sdvCTGmT6+AI4JhwJfqP+CwzGt9TxWL9R5GQCypwz51SdYWNPeLd+ilvbboAc3
+         rrYIComN/NJ46zsFhRpqKveZRD2uuyr30TdtCL0K9cmaSNadRP+DVscLIJRX9ac7cNNU
+         cHSf9ZDd0I3LL9vKdnfNGI25km/i3XtsiQd1UrH/okKnOZ4Y5BfWxdsG1FCLSmWJM+77
+         qDx2X82HyjOmK2muY52QItEs9BnUcRKNHz4Xif8+NV4O1tmegCVSS1PkPoGs5UUJws5K
+         1Oag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756676397; x=1757281197;
+        d=1e100.net; s=20230601; t=1756676693; x=1757281493;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Edmamns6ZCKkIL1JrUvunq2gZzEQTzybUOvV7LUz7LQ=;
-        b=INxXr/xngtLce7XbZNYY85TcrEhcKQK0rsT4xkz6hrEzoal1WWEaD+4jJppHESvqB2
-         LteWp6nwuPS33fmxGXFLDJoeg1YCkitkYSvUGW7prz9NmFW/iAhZnOJrRKkZ1wlP+iAn
-         U+4Wiwekp8j5R0Vts9bK0owsaiSjhpHQF1znKtsIcJURcajShsCMvbti7PqzLUmEmWw1
-         uQ4JCB7nrQ1l95LtoeiszNiMkzRySjwCm6JrgZgZJmrtbZKj3nOM4e2u2xd0bBq5OwUf
-         uM0acrQf843wXNElyZ8Z0gR98kX/U16vrXwDQ6V4SKlpnWJ9pFApj6K8wdcjsIarqsGu
-         IMoA==
-X-Forwarded-Encrypted: i=1; AJvYcCUweNsM8TZsFH9/y7NUKHcT90ePWozXiTSzShXGadWItFAqLKlqH9VzpfjjsLG/tQ79RbFCGokSgoUfTVVlksk=@vger.kernel.org, AJvYcCV0wGTOAopasjnpBjB+w8peMaQfzDwVegltQm1PH+opxHV8AjzzVP4GTv/QWCs5ztHQkozq0GUj3WCs0kk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNqVzMOyxHUXrwIylqIunOCoXaYbNr1GdCMZlSN6bXmQvZqxzo
-	V1vn9aqhiWcuGcvzIVPMYcPsAx6lOc44BejPEYm/eEQWHRJkeU8OWnZA7Ot+Tm+qy8ZbtUp0niC
-	PRPMeEopYCx2xb2En3WaalblLAq22KFyKt/QVAn6yfg==
-X-Gm-Gg: ASbGncvglbYm38s879fAt7YgyVdKEhv+d+3qwhGgiJaE5CfZ2lODlSBdTAPc9DNZ9F2
-	9IRMnOIO40Sk/edP2/p0rFIvsdwmbv/HpXiZleGEUSVCrhE5mE06+7L1KMRJ1tFoIKMktaykrF1
-	tBs9uBFqXatpe79OtE8rEYSeJH9r8B3hWZhxsP7AR1MyMT0p1+CO2PfiMHH/X108jYCdPfR8ATr
-	0zUu5xsmxwPMxi13rP82yLBRVDVKMTFRJjS4+fopnN8VSzjKMLtryo7SgY3YLrj1N0lgoB77p73
-	Lfmtgg36+7K5zCeXJdhbEeHr7g==
-X-Google-Smtp-Source: AGHT+IFU7QKb5d4h5yBn51TloshpbzipGmSxJWSZMaQZRvQ7NIn0gMWe/YXpQtEM+jJ3sF0J9U4BnEqP4qnffgmHT8M=
-X-Received: by 2002:a17:903:186:b0:248:9afa:7bc3 with SMTP id
- d9443c01a7336-2491f246dc8mr55338015ad.8.1756676397269; Sun, 31 Aug 2025
- 14:39:57 -0700 (PDT)
+        bh=ATlX29eggwecSHBFWVx+XL5nfZNPfYyOe/RUNhsSQVE=;
+        b=Vcjux8LLIw+cnwvOW5dbS30WbTqUTLBIVBjax1dvKDbvcqTS7Ik4OQCJXj2CzB9X9N
+         uIdMPJ2ybPIPDCOBZp1cbrhcUtc5G/HnxLNiMHsKTTX5FAvAshj6pGW3Xey89PzcJICF
+         ADKAtOyF+NQL/VXumlB8510wzye0nNtSNqFOiyUlrJ5eEHd6RJnVH0COtxbLBAfhp/Rs
+         pQE0EReiZhnLkuHnzc9jnaNEK5CGBJdidpEIiHpXvjzn/Mm1sDGG7yhomVAwdAdbQOsh
+         RTFHabcVnKpUZWVRhvlLt1CJdo+/quiuAAotQdlTYsrcKqGMcuTmr3Fqil7gVVXUTAOB
+         RnYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVn2eDU4lBI0rVAXZCcx4n+FFrEkdDPUcpfLhyREMT7XOib9zsa00Y3IXA8r5YdIZ9O1J0oy4wLEjZqOLs=@vger.kernel.org, AJvYcCWs4nnfbBczU8j5Kv2P1YGqkMyO9gDHZMg0ori6vbqvw44f13b6jYLL6Szo+So08vjftLKf4/BSb9CUOw7GLbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzpw3DqxDLpVuWI/PK4VMDrPTooM/FCA4dBazCawQHgxL8ckkZp
+	AdyW1R7VqOSW1v7JNdpONc7Z85BTEehqz1k7eQMQ+XLNyc3ZlrUGW534BSo/pgsaAQovYn8Qzwf
+	BOQIy/MRgTK041x7/jmlmHLWU2ZPTdD4=
+X-Gm-Gg: ASbGnctZnDl0+jMNrL6w9/6sZld/ixhvpB0paQ4n2NpUq/+HartGaFF1Tw+NOUIUXCk
+	w4qTLCsfG1aqyP38Mm146EihZotHSATx0L2gdLKykoZNN0WB0aEgxI+HLh6YL6EfE++dWIlFVJc
+	v8Ad4/vqmeWdLCgsfKcSd55juy5JXIXalcCPuadKYFGstX0Xtnb0u3nvro/moROGJ+l15v09bIq
+	bRIp6vwk9x0dyHqIer3Pfa4q54qgc0HYgxIRZ70TsrM1WkxvsDTCIb0yDLkPN1bcKC799RL+X32
+	JP/Db7bepylWIfNOm3RkZCpHNQ==
+X-Google-Smtp-Source: AGHT+IHn8X2bk0G5dh7IMtbUmjvB3ATMrDad+r+JYlgB/nrfuB8xgJXEqdwDFEde9aacqWBGOAXr0FBhUY9DnbpUeos=
+X-Received: by 2002:a17:90b:4c4a:b0:327:e781:3d37 with SMTP id
+ 98e67ed59e1d1-327f5be1809mr6603432a91.6.1756676692690; Sun, 31 Aug 2025
+ 14:44:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250827-file_as_c_str-v1-1-d3f5a3916a9c@google.com>
-In-Reply-To: <20250827-file_as_c_str-v1-1-d3f5a3916a9c@google.com>
+References: <20250829195525.721664-1-ojeda@kernel.org>
+In-Reply-To: <20250829195525.721664-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 31 Aug 2025 23:39:45 +0200
-X-Gm-Features: Ac12FXwi68ejMP6rZlbFWj5czPxYgWpEG1TbtHfL7vIuuMitNsE9sZ_OM8stz0Q
-Message-ID: <CANiq72=8cu5+d8K7DBM1-o3t6auQmd_qq9FxiDKemqwWynWx=w@mail.gmail.com>
-Subject: Re: [PATCH] rust: use the new name Location::file_as_c_str() in rustc 1.91.0+
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Sun, 31 Aug 2025 23:44:40 +0200
+X-Gm-Features: Ac12FXyChBItJccN3j0dFvHJBmKuYD7SYQmA2dMr5jm5bR3YjQ5JkmRcM0hMeJw
+Message-ID: <CANiq72=yJzJTP54WSmp2d0_Ox32KzE9WCDX1-e37GC3b2Mu5Dg@mail.gmail.com>
+Subject: Re: [PATCH] rust: support Rust >= 1.91.0 target spec
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Waffle Maybe <waffle.lapkin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 27, 2025 at 3:12=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Fri, Aug 29, 2025 at 9:55=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> As part of the stabilization of Location::file_with_nul(), it was
-> brought up that the with_nul() suffix usually means something else in
-> Rust APIs, so the API is being renamed prior to stabilization. Thus,
-> adjust Linux to use the new name on new rustc versions.
+> Starting with Rust 1.91.0 (expected 2025-10-30), the target spec format
+> has changed the type of the `target-pointer-width` key from string
+> to integer [1].
 >
-> Link: https://www.github.com/rust-lang/rust/pull/145928 [1]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Thus conditionally use one or the other depending on the version.
+>
+> Cc: Waffle Maybe <waffle.lapkin@gmail.com>
+> Link: https://github.com/rust-lang/rust/pull/144443 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> Conditional to the PR getting merged.
 
-Applied to `rust-fixes` -- thanks everyone!
+The PR landed, so applied to `rust-fixes`.
 
-    [ Kept `cfg` separation. Reworded slightly. - Miguel ]
+I may be able to take tags tomorrow, so those are welcome of course
+(thanks in advance!), although it is already getting tested in the
+Rust CI, so it should be pretty safe.
 
 Cheers,
 Miguel
