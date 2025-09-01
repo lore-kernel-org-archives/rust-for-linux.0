@@ -1,187 +1,112 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821B62D5943;
-	Mon,  1 Sep 2025 15:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756741145; cv=pass; b=YsVEgegHGf2tTZ8rItSHMzhBgGDDlY/Pu51GeiSfOcPcDcE3DcTe4AuXNjyBx409dggEpkoKwgPciOMTPZkPXQ4dQJY+eO6YYWjGtO7FLqL4TpbY9+bqA80n2TJyI/Ml/nKs5yNPGAI1epZUIBaUjc0mMafJswA4Hu3ac9oled0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756741145; c=relaxed/simple;
-	bh=oXtRpDppDRhZDsD0K+kzBYFVF9cg3cSo5ZL0eZ6RV3s=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=eqMi1Vdf4p3fnlAp2DsY1XPpX6YI9Og0haG8QCkUVUOjTR0K3jTyxEHJ3kkl56BjjWC2nWxb3rWYOujfYbLhNvTk/fD2lH3x3Yii1ogI/N0Bpwt+70L8KZxLHvfCjfCfMw4vLH5p2zDw2OkyVJU1bAWlkHScd06+NMG8odnEFEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=KpZcuocW; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB8E314B82;
+	Mon,  1 Sep 2025 17:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756747192; cv=none; b=u5mQIj+cYNrtjbCQCIOnDiVxUQiPHe+h3Pf44uLNtxdgdVXHHm/cDmCgkb4heH67uDRFZ97lJNA8PySlgB9k5p19DH68LvB0N5PraYEkSMwu190YN5qdVJTeq4N3ts19w+BvrH2nVbOTu8o2Qa2SspJATki/ogRwktnwLeRs3KA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756747192; c=relaxed/simple;
+	bh=uttqUOM4t100YESwxVDANiQ5D5iHIkjc4YpoaCEcEOQ=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=cljFOqpHPRTgmk+4iDQb5q0eL4B1j6HscHUM9FPDQSee2ULCBzhfuMEIdmdKvr2ZudiAcR6cW8kTW0ldkjI8a296sCkg7pdT+fK02/1YMLgPbbQfikYO281gLK/QCtoBr15rdP6uhsAAnZT1xJE4EXjamU3uQF3PZhYcxGfQHUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NfNy/ozD; arc=none smtp.client-ip=209.85.219.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="KpZcuocW"
-ARC-Seal: i=1; a=rsa-sha256; t=1756741050; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=kGhneXmVXbR6/QfsJolRQDGhH48dehg/RmylKlOpuadFuZqXRIumn7Xv80GYgFFh0b/6jK3bB/ekrBS2G4mSfmY9iMgv322T9v5txORynQMxx0X46CLIIoK8pHC+QegFmusBjENR9XXeZE4tnOl9gWw8wOHYP58FWrdj+QiB7s8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756741050; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=J7yNOxJZhdfDkiP8jJZkUqR/tXFBeS7v4u5qWtcTUEY=; 
-	b=HKAhVfOrzmyG5XLUQ0XJDV2MtCbypoEuvWQWY+4NYyRmjaGKyeTifj/bPLLX8bmvIZKDhUGFeg2WbHsPoVCZGnSlHKMXEcPfpJKAb9IKt0AyLiSDomNzAjHJv53687X5IbVHZ3uidTVBhE7jwpE1ZtE3g9oC6jH5huf3Zc6r4vc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756741050;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=J7yNOxJZhdfDkiP8jJZkUqR/tXFBeS7v4u5qWtcTUEY=;
-	b=KpZcuocWTgw2nu+e2eochKKy2UEKN00BFb65rWUcDTSr5jeUUSquOBYJE7KGwZhM
-	Du2wepEg4XMQswrwUOSyodSxJZmSMkC/3Fj6W7Q971Q2DctqMVxLFIAFD6k3f8mo44G
-	HIfJx04iViT7NFpPXe1vmybQo3Urk5qkptmsUQgg=
-Received: by mx.zohomail.com with SMTPS id 1756741048112173.95372647627437;
-	Mon, 1 Sep 2025 08:37:28 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NfNy/ozD"
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e97021a3695so3412446276.3;
+        Mon, 01 Sep 2025 10:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756747190; x=1757351990; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MCdLhHwAOZzd1sHfXyw7j9lNMlwcIlkxo40u1/PlOt8=;
+        b=NfNy/ozD2LrjyWD/nr9UKpp4B7gY7QA8pb70xeJUm7syjcS1I2bo1B9QmuIo7fOXvQ
+         JSzF/WJGdTlelsfJmeLMHfNJ0TH2V5VDWD44PUndblF/aE4HqLFVxdXpfkDA923rIf7c
+         6Gvxeb9IO3Tsnp3I6gdpgx1RUBQFRfqnTznwJXnPZ78giFCcQL+w/qiUpxRY4lKZMPGD
+         S5fQfZhs3/5g1yCO5gejRCnI/cOuzOxkqFslAoMUL4OIeHEsDqHXeJxWhgel4+nTsy1F
+         htwzIxocIpJVxANKSmhZdHfGA58DjS8kByCQch6BxSP8UX7PnMt6VCx6UDiOP73fjCle
+         ArWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756747190; x=1757351990;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MCdLhHwAOZzd1sHfXyw7j9lNMlwcIlkxo40u1/PlOt8=;
+        b=Avk3Ala8VkywBgWiSWR42Bd5COr8fkJaZOuiowQtEikc8dxVnaTQnYAfxVrLUhw9ZB
+         YlewbAidOG09Exz9gG8vwmaJJMe7cwHXuejTAGjtUG2GDYNAzzAzFxUyNDWC0VYY0iFx
+         IfxaYUpF8jBE6krIQkF8sIpdpMvLRhMkIiP7jhf/PuW03SDUL9MBCB9rsEdT08YWk5rv
+         ZvWQb+5u1r80ENbfyOwV7mtP4IQczwjTCEW8ZRhBRHoV39d37YBcJXqI2K9HZ6Jpq2YY
+         vU7ewnApKxXJh1ie3GN4hzVDbhegSWkCtGGOeVHqWffnKBCGgwEJlGiPsFLkgQLkm+4A
+         cjjA==
+X-Forwarded-Encrypted: i=1; AJvYcCWLgtoQ0dv6xYO71H1hMnrlSFm6vNWdVmWSGreq590b1ZncbSzfDkPpOu5OLc2DBDRkl9PjBQbJ08aLuKa0D2U=@vger.kernel.org, AJvYcCWc68nIhXy5qKPlFSUTp/O6LUn9KZXxmUeBCwow22geAarIGsdxAfpdL/L9qK1n9PFjbGCZFTXMYMuz02Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy75bdKxMY8uUEghhhprFJM+eda7cNltgbytrq6MX5Gx6M0jIZx
+	z0G3Ua/2f2F8l+xkoVEaZENWjM3L+Ym7CrDQ7nwpa4L9RCAvTAGo7VUW
+X-Gm-Gg: ASbGncvmslEHbOgmW5Y+l5XRd09yZQa2kUyHNVnHLTmOsbTbv9VPF5JeCzDfK0MC28T
+	+oiizJDrgWI+TBfdgXzHMsNO9BedaStzV5Gj2DFn5f18uxmT4I9s64j9oMMxbHGjReDb6eWgjm/
+	Z4ogsTW/Q6sTl3oj0mo6s1BQwxpPR653E1pHz9knzNpecuD+TcjBqKgvYdmBCo6Z7EAbbTzqUCn
+	W9uKg77Z3cGhQKSXduKPriddwaQ+VzeusYbA0HaGaOyLHl/z+V2KUjsZEMZom/B+VCDffKEcKbX
+	iDigR5JJTVgahwpV9z+BnXlBUx8ROgkVb9Ad3LPpIkiPwtH7CGlPm8cR2XPCk7X4ugfH7Yy4nO+
+	iekOUttXPE1lhj0kSKPm+HULB7H4sGLs92lfKfE+JyLD3OwuJrUlU
+X-Google-Smtp-Source: AGHT+IEZ8EMPkHUraaN8N2Ftj2JKXXwZhHK6AIOPsA7PriSSOqQ557kpQqGWlv3cm91Il3PyctomLQ==
+X-Received: by 2002:a05:6902:1204:b0:e96:dc00:300f with SMTP id 3f1490d57ef6-e98a581bf26mr7108819276.30.1756747189693;
+        Mon, 01 Sep 2025 10:19:49 -0700 (PDT)
+Received: from [192.168.1.209] (74.211.99.176.16clouds.com. [74.211.99.176])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e98ac466a13sm2171372276.14.2025.09.01.10.19.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 10:19:49 -0700 (PDT)
+From: Asuna <spriteovo@gmail.com>
+X-Google-Original-From: Asuna <SpriteOvO@gmail.com>
+Message-ID: <b1734c45-42ec-46c7-9d4c-2677044aacab@gmail.com>
+Date: Tue, 2 Sep 2025 01:19:42 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 01/14] rust: drm: gem: Simplify use of generics
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250829224116.477990-2-lyude@redhat.com>
-Date: Mon, 1 Sep 2025 12:37:10 -0300
-Cc: dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Asahi Lina <lina+kernel@asahilina.net>,
- "open list:DRM DRIVER FOR NVIDIA GPUS [RUST]" <nouveau@lists.freedesktop.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C036DE82-747A-4DCE-845F-CE832DA8991A@collabora.com>
-References: <20250829224116.477990-1-lyude@redhat.com>
- <20250829224116.477990-2-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: RISC-V: Re-enable GCC+Rust builds
+To: Conor Dooley <conor@kernel.org>
+Cc: Jason Montleon <jmontleo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <68496eed-b5a4-4739-8d84-dcc428a08e20@gmail.com>
+ <20250830-cheesy-prone-ee5fae406c22@spud>
+ <20250901-lasso-kabob-de32b8fcede8@spud>
+Content-Language: en-US
+In-Reply-To: <20250901-lasso-kabob-de32b8fcede8@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Lyude, thanks a lot for working on this! :)
+> For example, there's a check in the riscv Kconfig menu to see if 
+> stack-protector-guard=tls can be used via a cc-option check. If that 
+> check passes with gcc as the compiler that option will be passed to 
+> the rust side of the build, where llvm might not support it.
+If I understand correctly, the `-mstack-protector-guard` option is 
+already always filtered out by `bindgen_skip_c_flags` in 
+`rust/Makefile`, regardless of architecture. Therefore, we don't need to 
+do anything more, right?
 
-> On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> Now that my rust skills have been honed, I noticed that there's a lot =
-of
-> generics in our gem bindings that don't actually need to be here. =
-Currently
-> the hierarchy of traits in our gem bindings looks like this:
->=20
->  * Drivers implement:
->    * BaseDriverObject<T: DriverObject> (has the callbacks)
->    * DriverObject (has the drm::Driver type)
->  * Crate implements:
->    * IntoGEMObject for Object<T> where T: DriverObject
->      Handles conversion to/from raw object pointers
->    * BaseObject for T where T: IntoGEMObject
->      Provides methods common to all gem interfaces
->=20
->  Also of note, this leaves us with two different drm::Driver =
-associated
->  types:
->    * DriverObject::Driver
->    * IntoGEMObject::Driver
->=20
-> I'm not entirely sure of the original intent here unfortunately (if =
-anyone
-> is, please let me know!), but my guess is that the idea would be that =
-some
-> objects can implement IntoGEMObject using a different ::Driver than
-> DriverObject - presumably to enable the usage of gem objects from =
-different
-> drivers. A reasonable usecase of course.
->=20
-> However - if I'm not mistaken, I don't think that this is actually how
-> things would go in practice. Driver implementations are of course
-> implemented by their associated drivers, and generally drivers are not
-> linked to each-other when building the kernel. Which is to say that =
-even in
-> a situation where we would theoretically deal with gem objects from =
-another
-> driver, we still wouldn't have access to its drm::driver::Driver
-> implementation. It's more likely we would simply want a variant of gem
-> objects in such a situation that have no association with a
-> drm::driver::Driver type.
->=20
-> Taking that into consideration, we can assume the following:
-> * Anything that implements BaseDriverObject will implement =
-DriverObject
->  In other words, all BaseDriverObjects indirectly have an associated
->  ::Driver type - so the two traits can be combined into one with no
->  generics.
-> * Not everything that implements IntoGEMObject will have an associated
->  ::Driver, and that's OK.
->=20
-> And with this, we now can do quite a bit of cleanup with the use of
-> generics here. As such, this commit:
->=20
-> * Removes the generics on BaseDriverObject
-> * Moves DriverObject::Driver into BaseDriverObject
-> * Removes DriverObject
-> * Removes IntoGEMObject::Driver
-> * Add AllocImpl::Driver, which we can use as a binding to figure out =
-the
->  correct File type for BaseObject
->=20
-> Leaving us with a simpler trait hierarchy that now looks like this:
->=20
->  * Drivers implement: BaseDriverObject
->  * Crate implements:
->    * IntoGEMObject for Object<T> where T: DriverObject
->    * BaseObject for T where T: IntoGEMObject
->=20
-> Which makes the code a lot easier to understand and build on :).
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
->=20
-> ---
-> V2:
-> * Don't refer to Object<T> in callbacks, as this would result in =
-drivers
->  getting the wrong gem object type for shmem gem objects once we add
->  support for those. Instead, we'll just add a type alias to clean this
->  part up.
-> V3:
-> * Fix nova compilation
-> * Also, add an associated driver type to AllocImpl - as we still need =
-the
->  current driver accessible from BaseObject so that we can use the =
-driver's
->  various associated types, like File
-> V4:
+> Similarly, turning on an extension like Zacas via a cc-option check 
+> could pass for gcc but not be usable when passed to the rust side, 
+> causing errors.
+That makes sense. I might need to check the version of libclang for each 
+extension that passes the cc-option check for GCC to ensure it supports 
+them.
 
-?
-
-This is v3. Can you clarify this before we go further? :)
-
-> * Add missing Object =3D Self constraint to type bounds for =
-create_handle,
->  lookup_handle. I forgot that if drivers can have private gem objects =
-with
->  a different data layout, we can only guarantee gem objects with =
-handles
->  are of the same gem object type as the main one in use by the driver.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-
-=E2=80=94 Daniel
-
+> These sorts of things should be prevented via Kconfig, not show up as 
+> confusing build errors.
+I'm working on a patch, and intend to output an error message in 
+`arch/riscv/Makefile` then exit 1 when detecting an incompatible 
+gcc+libclang mix in use.
