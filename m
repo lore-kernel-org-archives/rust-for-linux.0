@@ -1,285 +1,381 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2049.outbound.protection.outlook.com [40.107.102.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A071825F96D;
-	Mon,  1 Sep 2025 07:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756710673; cv=fail; b=t3J67WjMAFw/9pSR3GhCbHuCQlX3ZuBxANTczbxwoIINe05zZ/Xq8AILsMjz2xxVNbAeYcGesuBBKSsBWSrym1AG22FTR51WYpDwZnhgfOFx/5TPEFGWttewbouRK6g1J+mDCCXZ6L+PZqGPCiJh+cqSMdlgD0GEQ21J7d/sYvg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756710673; c=relaxed/simple;
-	bh=cU0NQIXNGZ3nxySchizYKtW9a6Z3uweHJwUnyy1Dipk=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=TYmTC48CRLsq+XWEdkos1sNRCxdu4kGHux4wbNlNjfKa78x2r9fc6/E1//i6lIpFqIH0Jj5jZsHZ5aKIsq4w5bTJS4MKy7sqAli+i5PzfzIcftxdZ9Bgm2hIoo2D7KmASQfbfZQvwcrM83YyZZyPbe40wvrqjQfR/uWVrJdGfEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dq0v2mN3; arc=fail smtp.client-ip=40.107.102.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F674268C40;
+	Mon,  1 Sep 2025 08:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756715189; cv=none; b=kpP6oZHhQxP8C4c8atO8aId+pWuBz5Kl7FCYV1A+9+5dBo7GL+3FTjAutPa31bc+b3MeC3KZZcUr3qI73l0SaY6zMW5W0BjMe7X21cd4MtQOgsrFWJhRv6uR7L0RSo3o280MKo0SGUgyVGDIX8BatXRSo8BFVIhuZJOFjj4U+YI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756715189; c=relaxed/simple;
+	bh=EL4g7ElDYnH0F+Q3iJ4AYSfurnJ+CMkjA+k87gJVbts=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jKMarC9FphxXB/Hm8v+P7ulee+hamS88v8XG/XvGIK2lsaX6flVQ9JlA8DqnB9Hh6PKxmASnxQtKMi1nvXxEPjU0crFwXoVbT599NDEJlsksMbU3BN8kE2n0PUHErAY+GktF3sgWgCjKQ5l3vNhOTGeCSveQCFal8vep2I+VTLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tO8xilVM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dq0v2mN3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LsN8EYlj4jzfAwU3+ibyA9WsthMYFsWC6+PFp+4So1rcvOP2WBMxU8vAXHFMw9CN6w5XfHTLFXNIiG+OTvhMw9t730JUWN2B0gsLSwXGgAheq8WIs+8K/qE0/tNeJCqPRQJYUkXEbPWZoszzA5Tp5yU/DypwjAPwHwO7M6k2DziIs9y9nN6WBZoPDN0NQV3zoODQrGeLovzQdYxaR66haBQr2JE1QfI/P+tXPl+oNgULvY94W65N6rAgpRS1WOIjFzqPhgNyXgNg94EEQGrNg90/Xl/PTl5VD3ViZEnQrxUO6bInlcAPxptPSLm6QDZdI2K+kNxb1EM8H2B02gXocg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vpVlHThswQ0YpCl7XuUxwDTNnM0LOvEiEdqtMB5YglE=;
- b=J7ZTEt7iH4Y8ISxBzNjWRE2/deQphaWJjDyb7qwiw1Tdbg9lzy5ALU1TK70GzY/1QfXnnbacqKqVCHKRSSB7v8VsFbxGBkIuclqolkKO99pmAMIM7mTAZimKzoxk00szvKANxpW7Jd8XXlHcW6G8rT2s1q9h2/QftmPP+CVxQuj/jS2beStCjAf1epouL02gd+gTFdW/IwXglqhR56WnZ9OtjB8/wTEzq00Sar5CNvWE6WGWU/aUiVNO2uRwdKn5CS/Xr74qa3+HU4bPcVEjnn22ovIG98bBB0cxqMA7RcX7cMhEDBvtBCFVNaooaNmrl+1jv+5FdEXP8sgAERtLIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vpVlHThswQ0YpCl7XuUxwDTNnM0LOvEiEdqtMB5YglE=;
- b=dq0v2mN3jozuh0GMAYtsIgKXSB9zX4QLXUCrv0oPQNpS3OpnEGj1x+Zam7ulZ9VF8VaEMFY1c2f1turgxHvcfYOmmRmpCFRsVxXm8vmGTDn2LpTKDh4m5Gv88dyKhvaREEzbN5ghqkJCxRM8lkenEHIvjZRA5n//MQY2j2QZqJnCkbaeVtvyCvQVnPysjHCBI7QBLF49kx5SiP65gmIPo+mWSovYdcNhFw7Adrq4RcWvdLk+rwf6dG69G/JQT/UmcU3S2uB/kx2h3VUoGTYTcrF0EpWfyXXxR2hbBOuBbBCe0OQmhnEn+wgCvep6wXDSXgklY9LHEQollFe1k/6kbg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH8PR12MB6841.namprd12.prod.outlook.com (2603:10b6:510:1c8::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.22; Mon, 1 Sep
- 2025 07:11:08 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%3]) with mapi id 15.20.9052.019; Mon, 1 Sep 2025
- 07:11:07 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Sep 2025 16:11:03 +0900
-Message-Id: <DCH9YHZ4ZCC7.36PEB9YXWP0E6@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v2 5/8] gpu: nova-core: firmware: process and prepare
- the GSP firmware
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250826-nova_firmware-v2-0-93566252fe3a@nvidia.com>
- <20250826-nova_firmware-v2-5-93566252fe3a@nvidia.com>
- <5338bd30-f3ed-42c7-af0e-77c3ef7d675d@kernel.org>
- <DCEVAXNB3EL9.YFTIP5RQCTUW@nvidia.com>
- <e249a1d1-f1fb-4818-b9d6-e0b5c17c61a5@kernel.org>
-In-Reply-To: <e249a1d1-f1fb-4818-b9d6-e0b5c17c61a5@kernel.org>
-X-ClientProxiedBy: TYWPR01CA0046.jpnprd01.prod.outlook.com
- (2603:1096:400:17f::10) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tO8xilVM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1322FC4CEF0;
+	Mon,  1 Sep 2025 08:26:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756715189;
+	bh=EL4g7ElDYnH0F+Q3iJ4AYSfurnJ+CMkjA+k87gJVbts=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=tO8xilVMw7lUa77DfE6iZLZuWSdvykZbvV0b46eo+vFIv4ADFZeUsvn6D08GYqW4r
+	 Y3vBNgC0WTvezBQM8mg3BCYBsUkU4Yn1RF/4loRN798rKzEz6rnclMQbiln5vHWE3P
+	 +1FOyYy9bqCsCTqtJXRE//T9+RXT7i8W3iHmN54j+11xAVW4hw8PMBFJRbqopg2KOW
+	 bn8y5DIv0xGEGaZrMrjI6Otys/hLXcfejeD+aW6oOy7zzVqlWjquP5J/JXpdYd8/Df
+	 gcNVC2yEOp6HmB4FpAKt28V0/ZJt9NaGS7Cm7bJQRsiN1ER8bbKuoD8/eMUwnLNtjm
+	 5fHX6b3v+ksWQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, Breno Leitao
+ <leitao@debian.org>, linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 15/18] rust: block: add `GenDisk` private data support
+In-Reply-To: <F5F77953-D3B2-4A03-BEFF-D937A01A645E@collabora.com>
+References: <20250822-rnull-up-v6-16-v6-0-ec65006e2f07@kernel.org>
+ <20250822-rnull-up-v6-16-v6-15-ec65006e2f07@kernel.org>
+ <_8F464g73UiE3RDovzsbrDnz23OqxIFm-aco6DaaWbByhY4AcIn09hOKnGQ6sKJlSENjAFr3yEeDKC7dQDWbeg==@protonmail.internalid>
+ <F5F77953-D3B2-4A03-BEFF-D937A01A645E@collabora.com>
+Date: Mon, 01 Sep 2025 10:21:31 +0200
+Message-ID: <87v7m2h9bo.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH8PR12MB6841:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1df2f4f3-de3b-4c50-11b9-08dde926b8c2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VGJzN3IyaitzT0FDUGFDNGQ4YWdUazBLL01BOUd0Ymc1QjJmMFdPTk9yekFB?=
- =?utf-8?B?WlpoVkp2ZldPK2lwdElta0tqQjZBY1BaR2FSaU13cjgxdWs4Q3l1eDN2MHE3?=
- =?utf-8?B?c1llMGlVVkJwTzh2MStuVnNCSkZ5OFhYbkpqejV4M1NTTmZlTnAvbWM1VUQr?=
- =?utf-8?B?OUlFM001MUdWVUUvY2Vzc3pjL0JVcW80bmpZUlpBQzdjdE5VWVpEMWp3V2hw?=
- =?utf-8?B?TDNpMmRkM3hZZWNTd0VNZDBQNXBEM3o3NEd2aEZDVUYxek9XYlF5WTZqZ0pY?=
- =?utf-8?B?bmJFNG5WRm14RjZVSG1SeDlLOFdWQy9KQ3NIUUZpcXh6RmtuQTFJNGpOZDJo?=
- =?utf-8?B?ZE5BRS9jaDhBK3V0WHRBMzUrOGdXdzdyckVoT0M3ZHFzcU9hbHV2THRkS3hx?=
- =?utf-8?B?NXR4UkYwallHVmIyOG9TL0hKTFZsVFVocmt2ZkVLSkxoUmdSek1QT0RBWDg1?=
- =?utf-8?B?YlNoU3dNMCtWU1lPUHNwT2hNYkNTUzJ3RDJnNXpFdzQ5VWlmdTQ4S1prd3Z1?=
- =?utf-8?B?K1U3Y0F4WW1Qdk13VGlocE1sdXZ2UGlVR2JVTjFqeElDZU05RGxOY2lWVXhF?=
- =?utf-8?B?WEVIUWkyU3lGcHVGcGM0REZpQmwwaHJ0eUIxanp6cVpEcTFkbU90UzNoUHNH?=
- =?utf-8?B?dGk3R0NHWVRMZnZHL3B6TU14TjVmT3A0ZndoWDROUmxPQ3Y2QkpIRmExdFdr?=
- =?utf-8?B?UkZ5RU53QUV6bklUOGRIYU04dHI5cm5tQmJ5MU40dys1Rnd2Z3FDMFlRZy9Q?=
- =?utf-8?B?Tytpbkl2VktteVRkQjdHRWlHZldTaXQ4dWxPQjZpWEtUc0lZVWhrTHlXVDZJ?=
- =?utf-8?B?TDFGRE56RFRYVDM0bXdVRFhEczJXdmlubTdQT2Faajc4UUZjQXRndFVXNFBE?=
- =?utf-8?B?VVo1TTFuU0hNWTV5QVVFNUJUNmtCVXMxWU9zRXRQKzVqRWxaMmw2KzgwdEx6?=
- =?utf-8?B?ZW1hbkpUTEZBSTNZV1JuaXd2UnpzNFVOS0k0b0hvaHBnTFFZVW9Kb1c4czZJ?=
- =?utf-8?B?TmVtNEY4UVhwMkx0QVNCV3dOM0kxZWdiVm9IR1ZGMGZYN25HRlBxTjdmQUVE?=
- =?utf-8?B?UG16dWF1Q3BjeHNlbWZCZ2Q2eE1CWnZ2NWwxRkkwSWhmYVk5WUpCVGFReGRP?=
- =?utf-8?B?c3JkS0FtSXlGQVhsZWRRUzNzelQ0YnlQVTRiTUZjano0cE5OUzN3RjRvcEhU?=
- =?utf-8?B?b1hSdlVpTXBKMW1XNkNQVlVmbHZtVHlhV1pmd1ZPenRhSG16L24rNFlkZ1Rm?=
- =?utf-8?B?VlRhV3ozdzlxdUNiUUl1ZG80WUh1cW10L20zVEp6bUZSMkNrK09pM1g5Q0h6?=
- =?utf-8?B?VTk3UWpKUW9HcU5WY1lja3RMZG52ZFZIaUdaK29RU1JsVHdoOGUxRWc2Vmdl?=
- =?utf-8?B?ZnY5RWF0N1FsbjZTcTdpM2RucFJNYkkwRVBITGpqaXBWTkNnL2g4Q3hnWGZO?=
- =?utf-8?B?NGE0d3lpbmFjdTZycytqWjhoaWw0b3hvQUhBeVo4cnpWd0tYc2RzVzRCZzRh?=
- =?utf-8?B?eWpTZ25uSFVVUGJhZCtVU0UvNEdLUlNWT210SGxEOXEweXdDQ0RJeURlbWVn?=
- =?utf-8?B?VmkvdW9KVEVlaHFETzFNc0I2RHR0aTNwSy9USDhCZnVDVHA4TndMS1VJSHQr?=
- =?utf-8?B?NzBuMHFSN1h0ek1uVzdlc2h3OWswN3FNNHFoMXFQZHBJcU1hOW5KU2NJZEZa?=
- =?utf-8?B?WlFLRkJqRFIvZ2svdVhJVFppeXV1aFBIbnV6MmRyeC9vQllsbVEvYmlxUnJF?=
- =?utf-8?B?NXBIVytRdmZGanFaQm55bXBVa2FYbjdqV3AwSDBNMFZRMDdKNDNkTmh3SFhY?=
- =?utf-8?B?YmVib1JaV1B1Q3JJWStGTTQ0ZUJxWS9HaEd0cjZiRGh5TDdlb0I5MUxvYmEr?=
- =?utf-8?B?enNMZzRTN1o1bmthVnk2MkVsaU1tNTEyWkV0ZHFsUW0rbmJBNFN6Y0NGYnBJ?=
- =?utf-8?Q?kjK5CyP/f6k=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NS9ma29oTHdBZmRPY082ZjhTYTNCODNFbncrTVowTHJUVVI0SC93QWcrYjNY?=
- =?utf-8?B?TVVOZFE3VmUxMUoveU54ejFqUFNEQ0lwRHVqeHdFRFJQVE80c21NWkMyMVN1?=
- =?utf-8?B?Nmh3RFhYYzFGbDhMTUhrWXN2WllYYzB3NDQwY2l1NWVadGc1cmxaUSt5d0ZS?=
- =?utf-8?B?UmU5Z21GYS9ScjdyVnFuak9vSUx2NTdZeW5BTnorSm5JaWtOZ25CaW9ucFhP?=
- =?utf-8?B?d2Q3dkRBTXBTRkRuSDY4UzRqRE14dkx1R1dxUklXb3JybXFpdzJlNDhkOGtw?=
- =?utf-8?B?YjZnbXlib3kwd1kwc0ZHQ2UvUlVaVE9lS0M3NytuYUdORzBZMDhiT1l0MWdu?=
- =?utf-8?B?VzNNNmxGMUxJSTREQjBkUkttUHRXeTl5Q0VnNGMyYVNxUzJrL0crYVRvOGFB?=
- =?utf-8?B?dTNzMjc0cHRIaE1xckhEWXlzRzliM2FGTXFxYVJCd1NNQUdlTTVOLzhTck91?=
- =?utf-8?B?T2JmeG9JMDJzVWtZVlFUbS9sUWVJWHd0QUhNWGJPZDVHcWtKL0JzMlp2K0Y3?=
- =?utf-8?B?emFWcUJjZGFUSDkzT1F6WmN3L0I4QjBWdGxxVC9lTXJKREZzbE82ZHpvRHhC?=
- =?utf-8?B?MmlZM2kvQjA2RTRibkN3L2RlSkFYaWQvSGthdHMwL2tudmRTMmM4d2lETUhW?=
- =?utf-8?B?eE1rS3N6SHMyT0cyeFFZbmd1Um9NSU84YlBDYUoweHhPVWJLbW9GRVdjZnJs?=
- =?utf-8?B?S2l1RC9VQW4vaFlydVdxamdzNzVndU9WMEVQYlg4bmNRZURXVVA5MWdUd0lY?=
- =?utf-8?B?SUZ1Nmo4N2ozdEViWlZRbnNhV1RxZ01BdkdGa00xS05FaWl2TWxsaEpFeGo1?=
- =?utf-8?B?bUdGeWxlMFhRdnphTnlkMTlXM0VDVlFEV1FXVTJ2MUFCZGFORFZrbHN3RkNq?=
- =?utf-8?B?YXE0WksrN0hLMU11UUpvT3RIbDJRT3RZTVBoUXBtaThINGtxeEdOTGNERGxm?=
- =?utf-8?B?ODJRamdxQzNwS1EzeUFqaWJpOTJTRndubDVvdk1McHc3dEZya1JZYWpVWmpF?=
- =?utf-8?B?Z3p3VmlzYXFwZGt3bG1jY2pWL0x3OFNWYWNQUFpHQ3lxMklma3ozMFlWUDZU?=
- =?utf-8?B?SktDazJZdFh3T3RmN0luYWxzeFVUeE5uMWZraGZ3Y0Y3NllCTURmZEFGekFR?=
- =?utf-8?B?MjA4ZjUvVE11SmZocGN0UVJZMkxPbUpZbjFxUkNuRkJ5N0lqQWFCUzBDUURs?=
- =?utf-8?B?R1diNTgvZTcyNGdUeVI2T3ZhMHZac1I3cWdiaE5JeW9SSm9VeTN5QW1jTXR3?=
- =?utf-8?B?blF4K1pMMUcrMTRmOGJJS0o2Mnp0Z3NRV3lWcFVmZ3c0S21WaTF5R3RpQnQ4?=
- =?utf-8?B?Ukd6alA1NzJYeFJrOGd3T1BNZm5DT0RDL010R3hOYkVNRFVrVERCQVlsYVRk?=
- =?utf-8?B?M290T1JHYWtWd0wzL0x2VGVMRmJ6NnFneDFFWC96T3RoTjkzTVA5Y3ZkT01N?=
- =?utf-8?B?RmJQbHpKTTRyRVVNaEhNMTI4cWt6bDNQWFpYWEUzek5MQTBJaWFxVXRta3I3?=
- =?utf-8?B?d1MwWTNGOXdNdllRS1NwV3Z0eWJjNlora2lNdHBoSDZVc20xL0MwR1dRbGh4?=
- =?utf-8?B?UC92OXZZcXAvRXVEMEszNkVBTHZqZlI0WlNvWFFlQWlNU0NuZjh5M256UGpB?=
- =?utf-8?B?VFBsZ0pJcUV5SlU0VXV0MG1nblhrUlA1KzNpYzhvMXJ5VGNzblJGcll0UG1k?=
- =?utf-8?B?RENKcGJrTndEYzF4RnZjcnRQV2Jra0E3MjRvaUF2dENIUzBab2NrSE80NTNh?=
- =?utf-8?B?cTREcjBjaUJMYmJ3eXl3bTFjdWM5WmVzcTVTZE44SC9jaGFDaER4bXlUcHZv?=
- =?utf-8?B?Y212aWdEK0dTTFBybzBPdmowVmhlc3VLOHFFV2JXSU9iRWVHUTFvVm5YYTF6?=
- =?utf-8?B?S0JpZ1RQdFo5aWZDemRYdkdpbXkwQjdMaWxmNWRzcHp1ZzBYRnBVQmx3L0xW?=
- =?utf-8?B?cUEwWnJhVXU1QnVDV1p5UmI1RXNFU2N2UUd6Z2YyM0xxdC92ZDlhbWhHc1pQ?=
- =?utf-8?B?VGdsakxPclNtNlVxRVRNRU5lRmtoYmticEt6cU8za0tmeUlUVG9GSkw4a2ln?=
- =?utf-8?B?dkFGWi9pcm54U1Mvckg4dDEyMklzaWcxNmd2U1dmNWlHQUlheDY2M2RWVGxI?=
- =?utf-8?B?V2c0Qm51bHBKelVXcWRnSXIvNkxEbTlRTG9ocjdDN2NlSkZHUmNZNHhsR3R2?=
- =?utf-8?Q?BDkxhpvifee0X25sXbMmwcjcEb3n+xY8CDzv7gbXjUde?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1df2f4f3-de3b-4c50-11b9-08dde926b8c2
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 07:11:07.6468
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O/ryeHELaKhFTJoglgpm1ELFRsVvIjuuIHt1zGtqQ3yZVzoUL8hkrqCcSOPeBvrEb1TXdhXY2YW/K/bYSkZDMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6841
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat Aug 30, 2025 at 9:56 PM JST, Danilo Krummrich wrote:
-> On 8/29/25 1:16 PM, Alexandre Courbot wrote:
->> On Thu Aug 28, 2025 at 8:27 PM JST, Danilo Krummrich wrote:
->>> On 8/26/25 6:07 AM, Alexandre Courbot wrote:
->>>>    /// Structure encapsulating the firmware blobs required for the GPU=
- to operate.
->>>>    #[expect(dead_code)]
->>>>    pub(crate) struct Firmware {
->>>> @@ -36,7 +123,10 @@ pub(crate) struct Firmware {
->>>>        booter_unloader: BooterFirmware,
->>>>        /// GSP bootloader, verifies the GSP firmware before loading an=
-d running it.
->>>>        gsp_bootloader: RiscvFirmware,
->>>> -    gsp: firmware::Firmware,
->>>> +    /// GSP firmware.
->>>> +    gsp: Pin<KBox<GspFirmware>>,
->>>
->>> Is there a reason why we don't just propagate it through struct Gpu, wh=
-ich uses
->>> pin-init already?
->>>
->>> You can make Firmware pin_data too and then everything is within the si=
-ngle
->>> allocation of struct Gpu.
->
-> Thanks a lot for the write-up below!
->
->> I tried doing that at first, and hit the problem that the `impl PinInit`
->> returned by `GspFirmware::new` borrows a reference to the GSP firmware
->> binary loaded by `Firmware::new` - when `Firmware::new` returns, the
->> firmware gets freed, and the borrow checker complains.
->>=20
->> We could move the GSP firmware loading code into the `pin_init!` of
->> `Firmware::new`, but now we hit another problem: in `Gpu::new` the
->> following code is executed:
->>=20
->>      FbLayout::new(chipset, bar, &fw.gsp_bootloader, &fw.gsp)?
->>=20
->> which requires the `Firmware` instance, which doesn't exist yet as the
->> `Gpu` object isn't initialized until the end of the method.
->>=20
->> So we could move `FbLayout`, and everything else created by `Gpu::new`
->> to become members of the `Gpu` instance. It does make sense actually:
->> this `new` method is doing a lot of stuff, such as running FRTS, and
->> with Alistair's series it even runs Booter, the sequencer and so on.
->> Maybe we should move all firmware execution to a separate method that is
->> called by `probe` after the `Gpu` is constructed, as right now the `Gpu`
->> constructor looks like it does a bit more than it should.
->
-> Absolutely, executing the firmware should be a separate method. Having it=
- in the
-> constructor makes things more difficult.
->> ... but even when doing that, `Firmware::new` and `FbLayout::new` still
->> require a reference to the `Bar`, and... you get the idea. :)
->
-> Lifetime wise this should be fine, the &Bar out-lives the constructor, si=
-nce
-> it's lifetime is bound to the &Device<Bound> which lives for the entire d=
-uration
-> of probe().
+"Daniel Almeida" <daniel.almeida@collabora.com> writes:
 
-The &Bar is actually obtained inside the constructor (which is passed
-the `Arc<Devres<Bar0>>`), so I don't think that would even work without
-more clever tricks. :)
-
->> So I don't think the current design allows us to do that easily or at
->> all, and even if it does, it will be at a significant cost in code
->> clarity. There is also the fact that I am considering making the
->> firmware member of `Gpu` a trait object: the boot sequence is so
->> different between pre and post-Hopper that I don't think it makes sense
->> to share the same `Firmware` structure between the two. I would rather
->> see `Firmware` as an opaque trait object, which provides high-level
->> methods such as "start GSP" behind which the specifics of each GPU
->> family are hidden. If we go with this design, `Firmware` will become a
->> trait object and so cannot be pinned into `Gpu`.
->>=20
->> This doesn't change my observation that `Gpu::new` should not IMHO do
->> steps like booting the GSP - it should just acquire the resources it
->> needs, return the pinned GPU object, and then `probe` can continue the
->> boot sequence. Having the GPU object pinned and constructed early
->> simplifies things quite a bit as the more we progress with boot, the
->> harder it becomes to construct everything in place (and the `PinInit`
->> closure also becomes more and more complex).
->>=20
->> I'm still laying down the general design, but I'm pretty convinced that
->> having `Firmware` as a trait object is the right way to abstract the
->> differences between GPU families.
+>> On 22 Aug 2025, at 09:14, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>
+>> Allow users of the rust block device driver API to install private data =
+in
+>> the `GenDisk` structure.
+>>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>> drivers/block/rnull/rnull.rs       |  8 ++++---
+>> rust/kernel/block/mq.rs            |  7 +++---
+>> rust/kernel/block/mq/gen_disk.rs   | 32 ++++++++++++++++++++++----
+>> rust/kernel/block/mq/operations.rs | 46 ++++++++++++++++++++++++++++++--=
+------
+>> 4 files changed, 74 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+>> index 8690ff5f974f..8255236bc550 100644
+>> --- a/drivers/block/rnull/rnull.rs
+>> +++ b/drivers/block/rnull/rnull.rs
+>> @@ -61,14 +61,16 @@ fn new(
+>>             .logical_block_size(block_size)?
+>>             .physical_block_size(block_size)?
+>>             .rotational(rotational)
+>> -            .build(fmt!("{}", name.to_str()?), tagset)
+>> +            .build(fmt!("{}", name.to_str()?), tagset, ())
+>>     }
+>> }
+>>
+>> #[vtable]
+>> impl Operations for NullBlkDevice {
+>> +    type QueueData =3D ();
+>> +
+>>     #[inline(always)]
+>> -    fn queue_rq(rq: ARef<mq::Request<Self>>, _is_last: bool) -> Result {
+>> +    fn queue_rq(_queue_data: (), rq: ARef<mq::Request<Self>>, _is_last:=
+ bool) -> Result {
+>>         mq::Request::end_ok(rq)
+>>             .map_err(|_e| kernel::error::code::EIO)
+>>             // We take no refcounts on the request, so we expect to be a=
+ble to
+>> @@ -79,5 +81,5 @@ fn queue_rq(rq: ARef<mq::Request<Self>>, _is_last: boo=
+l) -> Result {
+>>         Ok(())
+>>     }
+>>
+>> -    fn commit_rqs() {}
+>> +    fn commit_rqs(_queue_data: ()) {}
+>> }
+>> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+>> index 98fa0d6bc8f7..6e546f4f3d1c 100644
+>> --- a/rust/kernel/block/mq.rs
+>> +++ b/rust/kernel/block/mq.rs
+>> @@ -69,20 +69,21 @@
+>> //!
+>> //! #[vtable]
+>> //! impl Operations for MyBlkDevice {
+>> +//!     type QueueData =3D ();
+>> //!
+>> -//!     fn queue_rq(rq: ARef<Request<Self>>, _is_last: bool) -> Result {
+>> +//!     fn queue_rq(_queue_data: (), rq: ARef<Request<Self>>, _is_last:=
+ bool) -> Result {
+>> //!         Request::end_ok(rq);
+>> //!         Ok(())
+>> //!     }
+>> //!
+>> -//!     fn commit_rqs() {}
+>> +//!     fn commit_rqs(_queue_data: ()) {}
+>> //! }
+>> //!
+>> //! let tagset: Arc<TagSet<MyBlkDevice>> =3D
+>> //!     Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
+>> //! let mut disk =3D gen_disk::GenDiskBuilder::new()
+>> //!     .capacity_sectors(4096)
+>> -//!     .build(format_args!("myblk"), tagset)?;
+>> +//!     .build(format_args!("myblk"), tagset, ())?;
+>> //!
+>> //! # Ok::<(), kernel::error::Error>(())
+>> //! ```
+>> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen=
+_disk.rs
+>> index 6b1b846874db..46ec80269970 100644
+>> --- a/rust/kernel/block/mq/gen_disk.rs
+>> +++ b/rust/kernel/block/mq/gen_disk.rs
+>> @@ -13,6 +13,7 @@
+>>     static_lock_class,
+>>     str::NullTerminatedFormatter,
+>>     sync::Arc,
+>> +    types::{ForeignOwnable, ScopeGuard},
+>> };
+>> use core::fmt::{self, Write};
+>>
+>> @@ -98,7 +99,14 @@ pub fn build<T: Operations>(
+>>         self,
+>>         name: fmt::Arguments<'_>,
+>>         tagset: Arc<TagSet<T>>,
+>> +        queue_data: T::QueueData,
+>>     ) -> Result<GenDisk<T>> {
+>> +        let data =3D queue_data.into_foreign();
+>> +        let recover_data =3D ScopeGuard::new(|| {
+>> +            // SAFETY: T::QueueData was created by the call to `into_fo=
+reign()` above
+>> +            drop(unsafe { T::QueueData::from_foreign(data) });
+>> +        });
+>> +
+>>         // SAFETY: `bindings::queue_limits` contain only fields that are=
+ valid when zeroed.
+>>         let mut lim: bindings::queue_limits =3D unsafe { core::mem::zero=
+ed() };
+>>
+>> @@ -113,7 +121,7 @@ pub fn build<T: Operations>(
+>>             bindings::__blk_mq_alloc_disk(
+>>                 tagset.raw_tag_set(),
+>>                 &mut lim,
+>> -                core::ptr::null_mut(),
+>> +                data,
+>>                 static_lock_class!().as_ptr(),
+>>             )
+>>         })?;
+>> @@ -167,8 +175,12 @@ pub fn build<T: Operations>(
+>>             },
+>>         )?;
+>>
+>> +        recover_data.dismiss();
+>> +
+>>         // INVARIANT: `gendisk` was initialized above.
+>>         // INVARIANT: `gendisk` was added to the VFS via `device_add_dis=
+k` above.
+>> +        // INVARIANT: `gendisk.queue.queue_data` is set to `data` in th=
+e call to
+>> +        // `__blk_mq_alloc_disk` above.
+>>         Ok(GenDisk {
+>>             _tagset: tagset,
+>>             gendisk,
+>> @@ -180,9 +192,10 @@ pub fn build<T: Operations>(
+>> ///
+>> /// # Invariants
+>> ///
+>> -/// - `gendisk` must always point to an initialized and valid `struct g=
+endisk`.
+>> -/// - `gendisk` was added to the VFS through a call to
+>> -///   `bindings::device_add_disk`.
+>> +///  - `gendisk` must always point to an initialized and valid `struct =
+gendisk`.
+>> +///  - `gendisk` was added to the VFS through a call to
+>> +///    `bindings::device_add_disk`.
+>> +///  - `self.gendisk.queue.queuedata` is initialized by a call to `Fore=
+ignOwnable::into_foreign`.
+>> pub struct GenDisk<T: Operations> {
+>>     _tagset: Arc<TagSet<T>>,
+>>     gendisk: *mut bindings::gendisk,
+>> @@ -194,9 +207,20 @@ unsafe impl<T: Operations + Send> Send for GenDisk<=
+T> {}
+>>
+>> impl<T: Operations> Drop for GenDisk<T> {
+>>     fn drop(&mut self) {
+>> +        // SAFETY: By type invariant of `Self`, `self.gendisk` points t=
+o a valid
+>> +        // and initialized instance of `struct gendisk`, and, `queuedat=
+a` was
+>> +        // initialized with the result of a call to
+>> +        // `ForeignOwnable::into_foreign`.
+>> +        let queue_data =3D unsafe { (*(*self.gendisk).queue).queuedata =
+};
+>> +
+>>         // SAFETY: By type invariant, `self.gendisk` points to a valid a=
+nd
+>>         // initialized instance of `struct gendisk`, and it was previous=
+ly added
+>>         // to the VFS.
+>>         unsafe { bindings::del_gendisk(self.gendisk) };
+>> +
+>> +        // SAFETY: `queue.queuedata` was created by `GenDiskBuilder::bu=
+ild` with
+>> +        // a call to `ForeignOwnable::into_foreign` to create `queuedat=
+a`.
+>> +        // `ForeignOwnable::from_foreign` is only called here.
+>> +        drop(unsafe { T::QueueData::from_foreign(queue_data) });
+>>     }
+>> }
+>> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/o=
+perations.rs
+>> index c2b98f507bcb..6fb256f55acc 100644
+>> --- a/rust/kernel/block/mq/operations.rs
+>> +++ b/rust/kernel/block/mq/operations.rs
+>> @@ -6,14 +6,15 @@
+>>
+>> use crate::{
+>>     bindings,
+>> -    block::mq::request::RequestDataWrapper,
+>> -    block::mq::Request,
+>> +    block::mq::{request::RequestDataWrapper, Request},
+>>     error::{from_result, Result},
+>>     prelude::*,
+>> -    types::ARef,
+>> +    types::{ARef, ForeignOwnable},
+>> };
+>> use core::{marker::PhantomData, sync::atomic::AtomicU64, sync::atomic::O=
+rdering};
+>>
+>> +type ForeignBorrowed<'a, T> =3D <T as ForeignOwnable>::Borrowed<'a>;
+>> +
+>> /// Implement this trait to interface blk-mq as block devices.
+>> ///
+>> /// To implement a block device driver, implement this trait as describe=
+d in the
+>> @@ -26,12 +27,20 @@
+>> /// [module level documentation]: kernel::block::mq
+>> #[macros::vtable]
+>> pub trait Operations: Sized {
+>> +    /// Data associated with the `struct request_queue` that is allocat=
+ed for
+>> +    /// the `GenDisk` associated with this `Operations` implementation.
+>> +    type QueueData: ForeignOwnable;
+>> +
+>>     /// Called by the kernel to queue a request with the driver. If `is_=
+last` is
+>>     /// `false`, the driver is allowed to defer committing the request.
+>> -    fn queue_rq(rq: ARef<Request<Self>>, is_last: bool) -> Result;
+>> +    fn queue_rq(
+>> +        queue_data: ForeignBorrowed<'_, Self::QueueData>,
+>> +        rq: ARef<Request<Self>>,
+>> +        is_last: bool,
+>> +    ) -> Result;
+>>
+>>     /// Called by the kernel to indicate that queued requests should be =
+submitted.
+>> -    fn commit_rqs();
+>> +    fn commit_rqs(queue_data: ForeignBorrowed<'_, Self::QueueData>);
+>>
+>>     /// Called by the kernel to poll the device for completed requests. =
+Only
+>>     /// used for poll queues.
+>> @@ -70,7 +79,7 @@ impl<T: Operations> OperationsVTable<T> {
+>>     ///   promise to not access the request until the driver calls
+>>     ///   `bindings::blk_mq_end_request` for the request.
+>>     unsafe extern "C" fn queue_rq_callback(
+>> -        _hctx: *mut bindings::blk_mq_hw_ctx,
+>> +        hctx: *mut bindings::blk_mq_hw_ctx,
+>>         bd: *const bindings::blk_mq_queue_data,
+>>     ) -> bindings::blk_status_t {
+>>         // SAFETY: `bd.rq` is valid as required by the safety requiremen=
+t for
+>> @@ -88,10 +97,20 @@ impl<T: Operations> OperationsVTable<T> {
+>>         //    reference counted by `ARef` until then.
+>>         let rq =3D unsafe { Request::aref_from_raw((*bd).rq) };
+>>
+>> +        // SAFETY: `hctx` is valid as required by this function.
+>> +        let queue_data =3D unsafe { (*(*hctx).queue).queuedata };
+>> +
+>> +        // SAFETY: `queue.queuedata` was created by `GenDisk::try_new()=
+` with a
 >
-> Makes sense, it's fine with me to keep this in its separate allocation fo=
-r the
-> purpose of making Firmware an opaque trait object, which sounds reasonabl=
-e.
+> isn=E2=80=99t this set on build() ?
+
+Yes, you are right. Refactoring happened.
+
 >
-> But we should really properly separate construction of the GPU structure =
-from
-> firmware boot code execution as you say. And actually move the constructi=
-on of
-> the GPU object into try_pin_init!().
+>> +        // call to `ForeignOwnable::into_pointer()` to create `queuedat=
+a`.
+>
+> into_pointer() ?
 
-Yes, and I'm glad you agree with this idea as the current design of
-putting everything inside the GPU is a bit limiting.
+Should be `into_foreign`, will fix.
 
-Regarding the firmware, I also think this should undergo a redesign -
-right now we are putting unrelated stuff inside the `Firmware`
-structure, and this won't scale well when we start supporting Hopper+
-which use a very different way to start the GSP.
+>
+>> +        // `ForeignOwnable::from_foreign()` is only called when the tag=
+set is
+>> +        // dropped, which happens after we are dropped.
+>> +        let queue_data =3D unsafe { T::QueueData::borrow(queue_data) };
+>> +
+>>         // SAFETY: We have exclusive access and we just set the refcount=
+ above.
+>>         unsafe { Request::start_unchecked(&rq) };
+>>
+>>         let ret =3D T::queue_rq(
+>> +            queue_data,
+>>             rq,
+>>             // SAFETY: `bd` is valid as required by the safety requireme=
+nt for
+>>             // this function.
+>> @@ -110,9 +129,18 @@ impl<T: Operations> OperationsVTable<T> {
+>>     ///
+>>     /// # Safety
+>>     ///
+>> -    /// This function may only be called by blk-mq C infrastructure.
+>> -    unsafe extern "C" fn commit_rqs_callback(_hctx: *mut bindings::blk_=
+mq_hw_ctx) {
+>> -        T::commit_rqs()
+>> +    /// This function may only be called by blk-mq C infrastructure. Th=
+e caller
+>> +    /// must ensure that `hctx` is valid.
+>> +    unsafe extern "C" fn commit_rqs_callback(hctx: *mut bindings::blk_m=
+q_hw_ctx) {
+>> +        // SAFETY: `hctx` is valid as required by this function.
+>> +        let queue_data =3D unsafe { (*(*hctx).queue).queuedata };
+>> +
+>> +        // SAFETY: `queue.queuedata` was created by `GenDisk::try_new()=
+` with a
+>> +        // call to `ForeignOwnable::into_pointer()` to create `queuedat=
+a`.
+>
+> into_foreign()?
 
-I'll give more details in my review of Alistair's series, and hopefully
-send a v3 with some of these ideas implemented soon.
+Yep, thanks.
+
+>
+>> +        // `ForeignOwnable::from_foreign()` is only called when the tag=
+set is
+>> +        // dropped, which happens after we are dropped.
+>> +        let queue_data =3D unsafe { T::QueueData::borrow(queue_data) };
+>> +        T::commit_rqs(queue_data)
+>>     }
+>>
+>>     /// This function is called by the C kernel. It is not currently
+>>
+>> --
+>> 2.47.2
+>>
+>>
+>>
+>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
