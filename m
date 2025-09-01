@@ -1,132 +1,283 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7258B3376BA;
-	Mon,  1 Sep 2025 14:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756735717; cv=none; b=j0+0+ZmMrzCs7c/TVxHm62gpYqkX5RP7Bi8GUM/sAksrYx8qrnynDU4r8NdJ/blwWFSp2xvsNvBLiG8MwP2C5sB0pqA0LDTdRaNETV0g9Iht4zDjWqSKWy8SRXSOtbPSfgtRAzppm0mcaUHvFMf6zW3gr4ujtNVyJ/eZ8HYpRKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756735717; c=relaxed/simple;
-	bh=OzrZGhKo/ziOjxea3LbChAg6YdR7N5Q5yFK9R2DNJh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m564PD2cuS+lTfnt3H2ygooOkTciVQOVd4X3hMLcqP/AbMGO9cXNuWprqzviaD3nKWyT4bOuWzdYIaRTlLmAr0wYx22TGGqrVtl+Tr90LnK67hXxdpTqGDOSrG+YYbpJFtenQQvvfAH/8rA77OHMXVXNKuflCxBwkVRNqvZThQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F36Mm7TA; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35942F49EE;
+	Mon,  1 Sep 2025 14:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756736707; cv=pass; b=D3mSN2o/py6DFxLfRofAp3cwkc6Ca3pyyD6IfA37tcM3e3BdyW4xwIKhIT1+bF81G1PCzk2JGMHyv6/t9PcOTyxy2s6M8IXQRbM3YjU72v/X1w2CETU2Ss066vITaDb8Tmii0oHWG5E77CZC8ghOJtyzejmCuDMBhw3Cb3GG+FI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756736707; c=relaxed/simple;
+	bh=vuDGbWqm/9R0IuGxg+X+dpyc5ApWMnq2yOclMM/FivU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ICRGpq9T7BC6zPqoTzJ8CLV0knOvssov9ot9HJCzGZmdtvF81awpozL75ILvCsMPF8wI8KVRYhLzfCz5EdJ7Ige5215FnyfVLWPiKNl0j6eU+cKgllc5eff8Uucmei0bo8/LpAuGPfp5CEsDhtxEwrH3/Hsci5h1unBtiSlOOYM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Y6gX0L/q; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F36Mm7TA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7648BC4CEF0;
-	Mon,  1 Sep 2025 14:08:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756735716;
-	bh=OzrZGhKo/ziOjxea3LbChAg6YdR7N5Q5yFK9R2DNJh4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F36Mm7TAG2ZXqQS5iz0To3BlcsCl3TjF2sTAsYJb1ofTvk6fKWhIqUkPGqY8bvxwe
-	 0pa/3fgbu7dNrXFPkHyvqO9BXvhqfgvmvhiAsMyYFMTy7WyN418oHko3iuJbgypFE4
-	 FogGFZaNorIQlh5buUNME03E1M/zzshJ6tS41bflbC+eocpkm9f6kazHPowy1R6SeU
-	 PLq4BkXJxy+yzMWRkltpXs2zqBrUsFOXCRiJaeh0FF/1SmrHv6/tQKt9v8ZIg7XuLC
-	 ZvFRI9lr/m+RjO71djzSSwGhgqrSYPVsIcaSaXSWIm/U9Jrc3KeWeiscsxwArnI9tF
-	 7/6QlalL2NScA==
-Date: Mon, 1 Sep 2025 15:08:31 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Asuna Yang <spriteovo@gmail.com>
-Cc: Jason Montleon <jmontleo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: RISC-V: Re-enable GCC+Rust builds
-Message-ID: <20250901-lasso-kabob-de32b8fcede8@spud>
-References: <68496eed-b5a4-4739-8d84-dcc428a08e20@gmail.com>
- <20250830-cheesy-prone-ee5fae406c22@spud>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Y6gX0L/q"
+ARC-Seal: i=1; a=rsa-sha256; t=1756736683; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZOsYZVzca7zCva+XosLo++okG+IJSbfsTFLNqsKr6pi1sd5Jxa7YmrHniSOVewp2oMbh1hqD3+Pos1R+zxQnS5Dr4hUs6lHIYRe89PCxqBup5dn6bokSN8kW+oA2+BzJXwF9NmPdVORkb0395cJKjk9NQ04x4xnguJHXTBzQ6rg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756736683; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=W9FCfUG14h2oKCNBF9TsJGENC4lLTZfUyNoDD35vGNw=; 
+	b=BLS6zkLKnABRpdHAbXCwhOHDMZMab6Fq8fzxCSZr2dIY8L3YxtzD5Dqy4K4b4pFviAw0KGl4FsPhv8X0RKG8UBRUhsnTnDIOVyaVG95LoLV9OxjwmRtHhW8qpf5FSuw7hS+VVBeR76sEVYoQ/NtGLBGQWScAcwWlNAVoKptu94Y=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756736683;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=W9FCfUG14h2oKCNBF9TsJGENC4lLTZfUyNoDD35vGNw=;
+	b=Y6gX0L/qMhN+HAwqWwxOG9cYN7F1EMSbg4gbVdlOT0Mxk3ooSgm4/yvEp30LjNLH
+	PiZkZNQvidOXgLT/ge7LPNJkoJuekxsWIhsY38hVH+c5r8t3mDWHYB9JhDxzgioYBMo
+	wJQfX2PCI0S7GTQvRGu/aiyXhvPrZz34wTDoGf10=
+Received: by mx.zohomail.com with SMTPS id 1756736681642725.040873569627;
+	Mon, 1 Sep 2025 07:24:41 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OdIo6g+XUcHBw6vM"
-Content-Disposition: inline
-In-Reply-To: <20250830-cheesy-prone-ee5fae406c22@spud>
-
-
---OdIo6g+XUcHBw6vM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 17/18] rust: block: add remote completion to `Request`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <877bymidos.fsf@t14s.mail-host-address-is-not-set>
+Date: Mon, 1 Sep 2025 11:24:24 -0300
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>,
+ Breno Leitao <leitao@debian.org>,
+ linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <532104CE-269D-4C38-A248-AF6417C4151F@collabora.com>
+References: <20250822-rnull-up-v6-16-v6-0-ec65006e2f07@kernel.org>
+ <20250822-rnull-up-v6-16-v6-17-ec65006e2f07@kernel.org>
+ <R-quyDdhLT8rgM7vBTBx_6hUbT6VXlKvJ0ueHYeoye0JcLGz6WqNuPJQGEn3yBbnokSWZaUWbsLlh-bVJQeSpQ==@protonmail.internalid>
+ <680BB9D0-3720-44EC-A25D-83806F635D8D@collabora.com>
+ <877bymidos.fsf@t14s.mail-host-address-is-not-set>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Sat, Aug 30, 2025 at 07:17:48PM +0100, Conor Dooley wrote:
-> On Sat, Aug 30, 2025 at 01:00:56PM +0800, Asuna Yang wrote:
-> > I noticed that GCC+Rust builds for RISC-V were disabled about a year ag=
-o, as
-> > discussed in
-> > https://lore.kernel.org/all/20240917000848.720765-1-jmontleo@redhat.com/
-> >=20
-> > I'm a bit lost here. What are the main obstacles to re-enabling GCC bui=
-lds
-> > now?
-> >=20
-> > Conor said:
-> > > Okay. Short term then is deny gcc + rust, longer term is allow it wit=
-h the
-> > same caveats as the aforementioned mixed stuff.
-> > "the same caveats" means detecting what specifically?
+
+
+> On 29 Aug 2025, at 08:12, Andreas Hindborg <a.hindborg@kernel.org> =
+wrote:
 >=20
-> There's "code" in the riscv Kconfig/Makefile that makes sure that the
-> assembler has the same understanding of what extensions are enabled as
-> the compiler. This is done by detecting which version of the tools are
-> in use, and adjusting march etc as a result. See
-> TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI for an example. When I wrote the
-> comment you're citing, there was no "off the shelf" way to figure out
-> the version of libclang in use to ensure that it has the same
-> understanding of -march as the version of gcc being used on the c side
-> does. For clang build, it's not a concern since it's almost certainly
-> the exact same as the compiler building the c side.
+> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
 >=20
-> > We have a RISC-V PWM driver being written in Rust. Currently, GCC being
-> > disabled for building the kernel with Rust for RISC-V is the primary bl=
-ocker
-> > for including these drivers in RISC-V distros. Therefore, I'd like to p=
-ush
-> > forward and contribute to the re-enabling of GCC builds. Is there a more
-> > detailed direction on what I can do here?
+>> Hi Andreas,
+>>=20
+>>> On 22 Aug 2025, at 09:14, Andreas Hindborg <a.hindborg@kernel.org> =
+wrote:
+>>>=20
+>>> Allow users of rust block device driver API to schedule completion =
+of
+>>> requests via `blk_mq_complete_request_remote`.
+>>>=20
+>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>> ---
+>>> drivers/block/rnull/rnull.rs       |  9 +++++++++
+>>> rust/kernel/block/mq.rs            |  6 ++++++
+>>> rust/kernel/block/mq/operations.rs | 19 +++++++++++++++----
+>>> rust/kernel/block/mq/request.rs    | 17 +++++++++++++++++
+>>> 4 files changed, 47 insertions(+), 4 deletions(-)
+>>>=20
+>>> diff --git a/drivers/block/rnull/rnull.rs =
+b/drivers/block/rnull/rnull.rs
+>>> index 8255236bc550..a19c55717c4f 100644
+>>> --- a/drivers/block/rnull/rnull.rs
+>>> +++ b/drivers/block/rnull/rnull.rs
+>>> @@ -82,4 +82,13 @@ fn queue_rq(_queue_data: (), rq: =
+ARef<mq::Request<Self>>, _is_last: bool) -> Res
+>>>    }
+>>>=20
+>>>    fn commit_rqs(_queue_data: ()) {}
+>>> +
+>>> +    fn complete(rq: ARef<mq::Request<Self>>) {
+>>> +        mq::Request::end_ok(rq)
+>>> +            .map_err(|_e| kernel::error::code::EIO)
+>>> +            // We take no refcounts on the request, so we expect to =
+be able to
+>>> +            // end the request. The request reference must be =
+unique at this
+>>> +            // point, and so `end_ok` cannot fail.
+>>> +            .expect("Fatal error - expected to be able to end =
+request");
+>>> +    }
+>>> }
+>>> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+>>> index 6e546f4f3d1c..c0ec06b84355 100644
+>>> --- a/rust/kernel/block/mq.rs
+>>> +++ b/rust/kernel/block/mq.rs
+>>> @@ -77,6 +77,12 @@
+>>> //!     }
+>>> //!
+>>> //!     fn commit_rqs(_queue_data: ()) {}
+>>> +//!
+>>> +//!     fn complete(rq: ARef<Request<Self>>) {
+>>> +//!         Request::end_ok(rq)
+>>> +//!             .map_err(|_e| kernel::error::code::EIO)
+>>> +//!             .expect("Fatal error - expected to be able to end =
+request");
+>>> +//!     }
+>>> //! }
+>>> //!
+>>> //! let tagset: Arc<TagSet<MyBlkDevice>> =3D
+>>> diff --git a/rust/kernel/block/mq/operations.rs =
+b/rust/kernel/block/mq/operations.rs
+>>> index 6fb256f55acc..0fece577de7c 100644
+>>> --- a/rust/kernel/block/mq/operations.rs
+>>> +++ b/rust/kernel/block/mq/operations.rs
+>>> @@ -42,6 +42,9 @@ fn queue_rq(
+>>>    /// Called by the kernel to indicate that queued requests should =
+be submitted.
+>>>    fn commit_rqs(queue_data: ForeignBorrowed<'_, Self::QueueData>);
+>>>=20
+>>> +    /// Called by the kernel when the request is completed.
+>>> +    fn complete(rq: ARef<Request<Self>>);
+>>> +
+>>>    /// Called by the kernel to poll the device for completed =
+requests. Only
+>>>    /// used for poll queues.
+>>>    fn poll() -> bool {
+>>> @@ -143,13 +146,21 @@ impl<T: Operations> OperationsVTable<T> {
+>>>        T::commit_rqs(queue_data)
+>>>    }
+>>>=20
+>>> -    /// This function is called by the C kernel. It is not =
+currently
+>>> -    /// implemented, and there is no way to exercise this code =
+path.
+>>> +    /// This function is called by the C kernel. A pointer to this =
+function is
+>>> +    /// installed in the `blk_mq_ops` vtable for the driver.
+>>>    ///
+>>>    /// # Safety
+>>>    ///
+>>> -    /// This function may only be called by blk-mq C =
+infrastructure.
+>>> -    unsafe extern "C" fn complete_callback(_rq: *mut =
+bindings::request) {}
+>>> +    /// This function may only be called by blk-mq C =
+infrastructure. `rq` must
+>>> +    /// point to a valid request that has been marked as completed. =
+The pointee
+>>> +    /// of `rq` must be valid for write for the duration of this =
+function.
+>>> +    unsafe extern "C" fn complete_callback(rq: *mut =
+bindings::request) {
+>>> +        // SAFETY: This function can only be dispatched through
+>>> +        // `Request::complete`. We leaked a refcount then which we =
+pick back up
+>>> +        // now.
+>>> +        let aref =3D unsafe { Request::aref_from_raw(rq) };
+>>> +        T::complete(aref);
+>>> +    }
+>>>=20
+>>>    /// This function is called by the C kernel. A pointer to this =
+function is
+>>>    /// installed in the `blk_mq_ops` vtable for the driver.
+>>> diff --git a/rust/kernel/block/mq/request.rs =
+b/rust/kernel/block/mq/request.rs
+>>> index 3848cfe63f77..f7f757f7459f 100644
+>>> --- a/rust/kernel/block/mq/request.rs
+>>> +++ b/rust/kernel/block/mq/request.rs
+>>> @@ -135,6 +135,23 @@ pub fn end_ok(this: ARef<Self>) -> Result<(), =
+ARef<Self>> {
+>>>        Ok(())
+>>>    }
+>>>=20
+>>> +    /// Complete the request by scheduling `Operations::complete` =
+for
+>>> +    /// execution.
+>>> +    ///
+>>> +    /// The function may be scheduled locally, via SoftIRQ or =
+remotely via IPMI.
+>>> +    /// See `blk_mq_complete_request_remote` in [`blk-mq.c`] for =
+details.
+>>> +    ///
+>>> +    /// [`blk-mq.c`]: srctree/block/blk-mq.c
+>>> +    pub fn complete(this: ARef<Self>) {
+>>> +        let ptr =3D =
+ARef::into_raw(this).cast::<bindings::request>().as_ptr();
+>>> +        // SAFETY: By type invariant, `self.0` is a valid `struct =
+request`
+>>> +        if !unsafe { bindings::blk_mq_complete_request_remote(ptr) =
+} {
+>>> +            // SAFETY: We released a refcount above that we can =
+reclaim here.
+>>> +            let this =3D unsafe { Request::aref_from_raw(ptr) };
+>>> +            T::complete(this);
+>>> +        }
+>>> +    }
+>>> +
+>>>    /// Return a pointer to the [`RequestDataWrapper`] stored in the =
+private area
+>>>    /// of the request structure.
+>>>    ///
+>>>=20
+>>> --
+>>> 2.47.2
+>>>=20
+>>>=20
+>>=20
+>> I had another look here. While I do trust your reasoning, perhaps we =
+should
+>> remove the call to expect()?
+>>=20
+>> If it is not called ever as you said, great, removing the expect() =
+will not
+>> change the code behavior. If it is, be it because of some minor =
+oversight or
+>> unexpected condition, we should produce some error output instead of =
+crashing
+>> the kernel. Maybe we should use a warn() here instead? Or maybe =
+dev/pr_err as
+>> applicable?
 >=20
-> Add the version of libclang as a Kconfig symbol, so that the kernel's
-> build system can ensure that both sides are built using the same
-> configuration. Off the top of my head, using a pre-17 libclang with a
-> new gcc would require having zicsr in -march for the c side and it
-> removed for rust. It's been a while (1 year+) since I fiddled with this
-> though, so my recollection there could well be inaccurate.
+> I think for the example, I would like to keep the `expect`. For
+> demonstration purposes.
 
-Hmm, while I think of it, there's some other things that are problematic
-that are not currently checked but would have to be. For example,
-there's a check in the riscv Kconfig menu to see if
-stack-protector-guard=3Dtls can be used via a cc-option check. If that
-check passes with gcc as the compiler that option will be passed to the
-rust side of the build, where llvm might not support it.
-Similarly, turning on an extension like Zacas via a cc-option check could
-pass for gcc but not be usable when passed to the rust side, causing
-errors. These sorts of things should be prevented via Kconfig, not show
-up as confusing build errors.
+I think examples is definitely one place we don=E2=80=99t want to teach =
+people to
+use unwrap and expect because that will kill the system IIUC.
+
+>=20
+> We could do `warn!` instead for the rnull driver I guess. But the IO
+> queue that would hit this code would start to hang pretty fast, since =
+no
+> IO would complete. I don't think the kernel can recover from this =
+hang.
+>=20
+
+No I/O would complete for that device, but that doesn't mean that the =
+system is
+unusable IIUC, specially if other devices are available?
+
+>=20
+> Best regards,
+> Andreas Hindborg
+
+In any case, perhaps this is only my opinion and others may see this
+differently, so I won't complain if you want to keep it.
 
 
---OdIo6g+XUcHBw6vM
-Content-Type: application/pgp-signature; name="signature.asc"
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaLWo3AAKCRB4tDGHoIJi
-0uC6AQCE+OLBYrLOFf+asyXURIHL6RWs7lgeAYlu+2yTHkHJ4gD+PaXpb+dmGhrF
-EJv4oLQmRVAC2xUCUy+a0Iy+/t+IRgc=
-=tQwP
------END PGP SIGNATURE-----
-
---OdIo6g+XUcHBw6vM--
