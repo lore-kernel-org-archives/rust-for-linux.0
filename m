@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A053431EF;
-	Mon,  1 Sep 2025 14:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2BA2DF13E;
+	Mon,  1 Sep 2025 15:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756737758; cv=none; b=njP9veTf0V5Hw0q1O5ITxzRScTJm9uR0L1zoKIqfHhphnG5LWFcMl9GIa3lQ4ttpO4DBeg2Lxr/XPFrsXNgnkNL6TXvqPFw/o4TUyFJNeMLXMNXiHSpdU6xYj6UGotEmBExbNs35/CZdEeafWwp8Jv0YzVdOjrilNwHkuElQzcs=
+	t=1756740838; cv=none; b=rw/XL+bt3mshpZ6a+jmP5wWknhIvzVjPymvM/VIwIJ/10TKWdY6VMuNFm0QLPFs6rmXyAYc20JcVY1ELpkb88biMKy3xrO42ko06bBzhmee5E6qFUJhiYt5YxW0+dNMaYAsX1k4py7X5/BffAGFLnxhsLH7IubULSnVfuGgFTYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756737758; c=relaxed/simple;
+	s=arc-20240116; t=1756740838; c=relaxed/simple;
 	bh=GXdIZYgZXOUywbntK26Nh9NT9EDQqDYFjNsBclOQiSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TSTb8hnsJeENDJMwvilrZ9nrFp9ySYV92cdGFM0T8d/HoP/Ytq5vVQ0LOdt573a3oeu3BuzbaaLCXON9KK91ALP0KOhNp98uWqJTuDNefJ10s9MK3ww9GkRkNuQRz0MxQ46epd42772kRkFANxepu6xvkD+hx/OCnVfpWOjK/O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FyITw5k8; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:MIME-Version; b=XnwuO+02xm7NxMdQm+0qxskg8TGF0+WBAMzzWsahbTwDzlX/dbjm1fPdw5IUPQrT6kgjsJ/GXPT9P6Qwpr/TfSzB5703nWOvEG5PEkvN+TkRXnqlgKJcq5sHMtq+ajdcBKOq+b+5JmzkYgkjrm0E3+JrAXWzh57X/yZywRR1j4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/Tsb84l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FyITw5k8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6610EC4CEFC;
-	Mon,  1 Sep 2025 14:42:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/Tsb84l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A8BC4CEFE;
+	Mon,  1 Sep 2025 15:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756737757;
+	s=k20201202; t=1756740837;
 	bh=GXdIZYgZXOUywbntK26Nh9NT9EDQqDYFjNsBclOQiSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FyITw5k8sv2hC88ynb8tvJfbvdN4RyCh19hRfyPRTqPIuuDry2j6CQSoj8sEpPT7B
-	 lBTqWqlOkrE8O590Yc1A6eyTW5X/8XJtt3pDLRSQsraFlQWA/dcXCq/CQUZmIZNWTG
-	 jA0M3IvLx45aAC8DStdXMXwKG/YSJxp9w02FqfmKfgbk1LcmjHjY3sWQXOOfL+gXDq
-	 pvnCCaZT8k9dtOFNtvmW1YQEDDQ1l4vGjNpRbhmxNWhGlKPwcbZYhma6zT4A7SQ+64
-	 idwBKkESUM9J3oq+UoWBctA4z1xPjNHiyfFszv5jwbzM6z02Eko96jeUpJte8ITa5E
-	 A5p0bAZcfuB/Q==
+	b=P/Tsb84lGs1zicOFn3LPU6mPGVEiQ01aT7bn3Tezq4VjYxFDZQ16BDSUEv6w9S87q
+	 1OfrcyaNe4XG9mq6ZDiIFPTX2olpXuGvs+d8JJFpD4Bc4L5m9cMUC38g6wGdjtYCw7
+	 EZHutCWNSH3BHCGmHC6F53EZRfPz9/1l7/5w2aMKOa9nNG7axYkpGpxGMxiEmSO7it
+	 L/R+zGwjmdDrXKZ6bN9OmeaJLfqrmyC5o3KBYCVecSqbL/lQAMohMDlLShWeUyCxW5
+	 QHvbhHgePJIoVZT537U1N+HSxUkQaVMJnEl6z9Nvx0o3v+mDJeq3WEgDahDT7kQhgo
+	 7NfEnD/BoC+vA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1ut5jv-00000003G3Y-2jQ9;
-	Mon, 01 Sep 2025 16:42:35 +0200
+	id 1ut6Xb-00000003HM2-2t6m;
+	Mon, 01 Sep 2025 17:33:55 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>
@@ -47,13 +47,13 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 07/15] tools/docs: sphinx-build-wrapper: add comments and
-  blank lines
-Date: Mon,  1 Sep 2025 16:42:23 +0200
-Message-ID: <9669d75bf1b5406772192e0d7a96a20a2cde9e00.1756737440.git.mchehab+huawei@kernel.org>
+Subject: [PATCH RESEND v3 07/15] tools/docs: sphinx-build-wrapper: add
+  comments and blank lines
+Date: Mon,  1 Sep 2025 17:33:42 +0200
+Message-ID: <9669d75bf1b5406772192e0d7a96a20a2cde9e00.1756740314.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1756737440.git.mchehab+huawei@kernel.org>
-References: <cover.1756737440.git.mchehab+huawei@kernel.org>
+In-Reply-To: <cover.1756740314.git.mchehab+huawei@kernel.org>
+References: <cover.1756740314.git.mchehab+huawei@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
