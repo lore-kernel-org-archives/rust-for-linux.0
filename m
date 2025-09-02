@@ -1,155 +1,648 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39AD20485B
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Sep 2025 15:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2825F2DFF1D;
+	Tue,  2 Sep 2025 15:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756826187; cv=none; b=nw3g0H7vzdwDtDthok+GviSL3wvSRBxw8MYlWRj69T4wKTsJIIR10rNZMp0PbYypVR6pRU+NlEWtt1N2Bk2b1//vy40kvdIYRRyBFckKoabKRq1s3rBLTp4hQbQB1+zYD8VsXi5eQ9FAhB9XgawjSorL2+WXuttRvsBeY7iNzAE=
+	t=1756826267; cv=none; b=qwJhb/IDUfHCmqYKKLIQzp3p2a5Lvk4ygqnp93A6aYxX+3EyX4rCoHCYggdq+aor1t1kbEPiG/eKQ6bynPuHUSEq6GxVDl9w+vCwDV/cXc1h5zXbJcZ+zdEHXkGi6BPcY/rqXn+TWrp23hq/oQyCAf2aLLJSMzijFroUVFk1WO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756826187; c=relaxed/simple;
-	bh=Hvb4wccZRjNtKraptVsMtyIUp9QMrQzrtgemNpw46AY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=evO+3VXNHqFotRaau5nOXvx9Zjuna9ZVEUvp+9PWJoHYM3QikW38pq1KBK0lxiQZ7mq6vhP2yAl53WGMvF5fbAUrmBoMT85/XrzFJL3Dp11yCnyDia11Vw+UUfmcA/7R3FDfKU65UhxJ4PBP9gdZjqigj261x9jj6bKQ18s0CtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Jrv1bsXb; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=x1Ao2l9M; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Jrv1bsXb";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="x1Ao2l9M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756826176; x=1757430976;
-	d=konsulko.se; s=rsa2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=Hvb4wccZRjNtKraptVsMtyIUp9QMrQzrtgemNpw46AY=;
-	b=Jrv1bsXbUJ3THtZIWGG7MUC8qs9VZN1GXubux7akLZ7yM53era3Gm0J2xz0qd9OVfPa/ykNkS6Fuc
-	 oPOQvpgirLiWArshd4UMzz9cn0gXx+UM3EGNXhk2aMt1xNwLyb0+KsshlZIrAIYAFwjpzZGgU6Jhi7
-	 bU4FiLCQ0Xu1U8kMQe4fkSq0K/gcjWFdOQ1GVNf+/b6tM19XRT3vVqm9z17vMTAoD8IjKjVzVUbokR
-	 nVtMswwp5YoDk0aAlIjMvYQgqtOQsmoD7KFnBefSCG//Za6lRRUptkuqDrtcsdYzZIIEoorykdsj1f
-	 7aJQXsOEKzjO7vPVqWfKVXWZyfAex8g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756826176; x=1757430976;
-	d=konsulko.se; s=ed2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=Hvb4wccZRjNtKraptVsMtyIUp9QMrQzrtgemNpw46AY=;
-	b=x1Ao2l9Mpv6jH+md0cd2Tv3zs7yF71gVyD2DYoFgxhSRGM0NUPo8yudV9jEg3qQTwRBxz6n/F6lJ7
-	 JdB3PTGCw==
-X-HalOne-ID: c33fefa2-880f-11f0-81fc-f78b1f841584
-Received: from smtpclient.apple (host-95-203-10-34.mobileonline.telia.com [95.203.10.34])
-	by mailrelay1.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id c33fefa2-880f-11f0-81fc-f78b1f841584;
-	Tue, 02 Sep 2025 15:16:15 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1756826267; c=relaxed/simple;
+	bh=WgdB258Q/WlHl6eb0Ees0zjvf976DJmdBFKIriZe+CA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=suCoGPyFhxIx9QvrFItYx8T6vMiPmDP8UbATwWd+RrFPmxMSLps1K3H7ReY4cJ1mutLstRTjR0qoDQ3vWJbt02ZvSCQT2s0i5WfvnUdB88gZPloqMOzRDKd6a6ZoWvkZ1ZDmIKoPRKmyFeKMyzsFCSQTtll3o9dKIT7bus2/2Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B71E826BE;
+	Tue,  2 Sep 2025 08:17:34 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DED553F694;
+	Tue,  2 Sep 2025 08:17:36 -0700 (PDT)
+Date: Tue, 2 Sep 2025 17:17:14 +0200
+From: Beata Michalska <beata.michalska@arm.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: akpm@linux-foundation.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, abdiel.janulgue@gmail.com, acourbot@nvidia.com,
+	jgg@ziepe.ca, lyude@redhat.com, robin.murphy@arm.com,
+	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/5] rust: scatterlist: Add abstraction for sg_table
+Message-ID: <aLcKeqK-ilWIJbvF@arm.com>
+References: <20250828133323.53311-1-dakr@kernel.org>
+ <20250828133323.53311-4-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v4 0/2] rust: zpool: add abstraction for zpool drivers
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <20250827130705.GA7480@cmpxchg.org>
-Date: Tue, 2 Sep 2025 17:16:04 +0200
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Yosry Ahmed <yosry.ahmed@linux.dev>,
- Nhat Pham <nphamcs@gmail.com>,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <47BCEE04-1759-4242-BF5F-727E2C2E0772@konsulko.se>
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250826124454.GA1502@cmpxchg.org>
- <CB3E7E9C-2192-4C60-B79A-932AD6CB005A@konsulko.se>
- <20250827130705.GA7480@cmpxchg.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-X-Mailer: Apple Mail (2.3826.200.121)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828133323.53311-4-dakr@kernel.org>
 
+On Thu, Aug 28, 2025 at 03:32:16PM +0200, Danilo Krummrich wrote:
+> Add a safe Rust abstraction for the kernel's scatter-gather list
+> facilities (`struct scatterlist` and `struct sg_table`).
+> 
+> This commit introduces `SGTable<T>`, a wrapper that uses a generic
+> parameter to provide compile-time guarantees about ownership and lifetime.
+> 
+> The abstraction provides two primary states:
+> - `SGTable<Owned<P>>`: Represents a table whose resources are fully
+>   managed by Rust. It takes ownership of a page provider `P`, allocates
+>   the underlying `struct sg_table`, maps it for DMA, and handles all
+>   cleanup automatically upon drop. The DMA mapping's lifetime is tied to
+>   the associated device using `Devres`, ensuring it is correctly unmapped
+>   before the device is unbound.
+> - `SGTable<Borrowed>` (or just `SGTable`): A zero-cost representation of
+>   an externally managed `struct sg_table`. It is created from a raw
+>   pointer using `SGTable::from_raw()` and provides a lifetime-bound
+>   reference (`&'a SGTable`) for operations like iteration.
+> 
+> The API exposes a safe iterator that yields `&SGEntry` references,
+> allowing drivers to easily access the DMA address and length of each
+> segment in the list.
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Tested-by: Alexandre Courbot <acourbot@nvidia.com>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Lyude Paul <lyude@redhat.com>
+> Co-developed-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/helpers/helpers.c     |   1 +
+>  rust/helpers/scatterlist.c |  24 ++
+>  rust/kernel/lib.rs         |   1 +
+>  rust/kernel/scatterlist.rs | 491 +++++++++++++++++++++++++++++++++++++
+>  4 files changed, 517 insertions(+)
+>  create mode 100644 rust/helpers/scatterlist.c
+>  create mode 100644 rust/kernel/scatterlist.rs
+> 
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 7cf7fe95e41d..e94542bf6ea7 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -39,6 +39,7 @@
+>  #include "rcu.c"
+>  #include "refcount.c"
+>  #include "regulator.c"
+> +#include "scatterlist.c"
+>  #include "security.c"
+>  #include "signal.c"
+>  #include "slab.c"
+> diff --git a/rust/helpers/scatterlist.c b/rust/helpers/scatterlist.c
+> new file mode 100644
+> index 000000000000..80c956ee09ab
+> --- /dev/null
+> +++ b/rust/helpers/scatterlist.c
+> @@ -0,0 +1,24 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/dma-direction.h>
+> +
+> +dma_addr_t rust_helper_sg_dma_address(struct scatterlist *sg)
+> +{
+> +	return sg_dma_address(sg);
+> +}
+> +
+> +unsigned int rust_helper_sg_dma_len(struct scatterlist *sg)
+> +{
+> +	return sg_dma_len(sg);
+> +}
+> +
+> +struct scatterlist *rust_helper_sg_next(struct scatterlist *sg)
+> +{
+> +	return sg_next(sg);
+> +}
+> +
+> +void rust_helper_dma_unmap_sgtable(struct device *dev, struct sg_table *sgt,
+> +				   enum dma_data_direction dir, unsigned long attrs)
+> +{
+> +	return dma_unmap_sgtable(dev, sgt, dir, attrs);
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index ed53169e795c..55acbc893736 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -113,6 +113,7 @@
+>  pub mod rbtree;
+>  pub mod regulator;
+>  pub mod revocable;
+> +pub mod scatterlist;
+>  pub mod security;
+>  pub mod seq_file;
+>  pub mod sizes;
+> diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+> new file mode 100644
+> index 000000000000..9709dff60b5a
+> --- /dev/null
+> +++ b/rust/kernel/scatterlist.rs
+> @@ -0,0 +1,491 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions for scatter-gather lists.
+> +//!
+> +//! C header: [`include/linux/scatterlist.h`](srctree/include/linux/scatterlist.h)
+> +//!
+> +//! Scatter-gather (SG) I/O is a memory access technique that allows devices to perform DMA
+> +//! operations on data buffers that are not physically contiguous in memory. It works by creating a
+> +//! "scatter-gather list", an array where each entry specifies the address and length of a
+> +//! physically contiguous memory segment.
+> +//!
+> +//! The device's DMA controller can then read this list and process the segments sequentially as
+> +//! part of one logical I/O request. This avoids the need for a single, large, physically contiguous
+> +//! memory buffer, which can be difficult or impossible to allocate.
+> +//!
+> +//! This module provides safe Rust abstractions over the kernel's `struct scatterlist` and
+> +//! `struct sg_table` types.
+> +//!
+> +//! The main entry point is the [`SGTable`] type, which represents a complete scatter-gather table.
+> +//! It can be either:
+> +//!
+> +//! - An owned table ([`SGTable<Owned<P>>`]), created from a Rust memory buffer (e.g., [`VVec`]).
+> +//!   This type manages the allocation of the `struct sg_table`, the DMA mapping of the buffer, and
+> +//!   the automatic cleanup of all resources.
+> +//! - A borrowed reference (&[`SGTable`]), which provides safe, read-only access to a table that was
+> +//!   allocated by other (e.g., C) code.
+> +//!
+> +//! Individual entries in the table are represented by [`SGEntry`], which can be accessed by
+> +//! iterating over an [`SGTable`].
+> +
+> +use crate::{
+> +    alloc,
+> +    alloc::allocator::VmallocPageIter,
+> +    bindings,
+> +    device::{Bound, Device},
+> +    devres::Devres,
+> +    dma, error,
+> +    io::resource::ResourceSize,
+> +    page,
+> +    prelude::*,
+> +    types::{ARef, Opaque},
+> +};
+> +use core::{ops::Deref, ptr::NonNull};
+> +
+> +/// A single entry in a scatter-gather list.
+> +///
+> +/// An `SGEntry` represents a single, physically contiguous segment of memory that has been mapped
+> +/// for DMA.
+> +///
+> +/// Instances of this struct are obtained by iterating over an [`SGTable`]. Drivers do not create
+> +/// or own [`SGEntry`] objects directly.
+> +#[repr(transparent)]
+> +pub struct SGEntry(Opaque<bindings::scatterlist>);
+> +
+> +// SAFETY: `SGEntry` can be sent to any task.
+> +unsafe impl Send for SGEntry {}
+> +
+> +// SAFETY: `SGEntry` has no interior mutability and can be accessed concurrently.
+> +unsafe impl Sync for SGEntry {}
+> +
+> +impl SGEntry {
+> +    /// Convert a raw `struct scatterlist *` to a `&'a SGEntry`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the `struct scatterlist` pointed to by `ptr` is valid for the
+> +    /// lifetime `'a`.
+> +    #[inline]
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::scatterlist) -> &'a Self {
+> +        // SAFETY: The safety requirements of this function guarantee that `ptr` is a valid pointer
+> +        // to a `struct scatterlist` for the duration of `'a`.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// Obtain the raw `struct scatterlist *`.
+> +    #[inline]
+> +    fn as_raw(&self) -> *mut bindings::scatterlist {
+> +        self.0.get()
+> +    }
+> +
+> +    /// Returns the DMA address of this SG entry.
+> +    ///
+> +    /// This is the address that the device should use to access the memory segment.
+> +    #[inline]
+> +    pub fn dma_address(&self) -> dma::DmaAddress {
+> +        // SAFETY: `self.as_raw()` is a valid pointer to a `struct scatterlist`.
+> +        unsafe { bindings::sg_dma_address(self.as_raw()) }
+> +    }
+> +
+> +    /// Returns the length of this SG entry in bytes.
+> +    #[inline]
+> +    pub fn dma_len(&self) -> ResourceSize {
+> +        #[allow(clippy::useless_conversion)]
+> +        // SAFETY: `self.as_raw()` is a valid pointer to a `struct scatterlist`.
+> +        unsafe { bindings::sg_dma_len(self.as_raw()) }.into()
+> +    }
+> +}
+> +
+> +/// The borrowed generic type of an [`SGTable`], representing a borrowed or externally managed
+> +/// table.
+> +#[repr(transparent)]
+> +pub struct Borrowed(Opaque<bindings::sg_table>);
+> +
+> +// SAFETY: `Borrowed` can be sent to any task.
+> +unsafe impl Send for Borrowed {}
+> +
+> +// SAFETY: `Borrowed` has no interior mutability and can be accessed concurrently.
+> +unsafe impl Sync for Borrowed {}
+> +
+> +/// A scatter-gather table.
+> +///
+> +/// This struct is a wrapper around the kernel's `struct sg_table`. It manages a list of DMA-mapped
+> +/// memory segments that can be passed to a device for I/O operations.
+> +///
+> +/// The generic parameter `T` is used as a generic type to distinguish between owned and borrowed
+> +/// tables.
+> +///
+> +///  - [`SGTable<Owned>`]: An owned table created and managed entirely by Rust code. It handles
+> +///    allocation, DMA mapping, and cleanup of all associated resources. See [`SGTable::new`].
+> +///  - [`SGTable<Borrowed>`} (or simply [`SGTable`]): Represents a table whose lifetime is managed
+> +///    externally. It can be used safely via a borrowed reference `&'a SGTable`, where `'a` is the
+> +///    external lifetime.
+> +///
+> +/// All [`SGTable`] variants can be iterated over the individual [`SGEntry`]s.
+> +#[repr(transparent)]
+> +#[pin_data]
+> +pub struct SGTable<T: private::Sealed = Borrowed> {
+> +    #[pin]
+> +    inner: T,
+> +}
+> +
+> +impl SGTable {
+> +    /// Creates a borrowed `&'a SGTable` from a raw `struct sg_table` pointer.
+> +    ///
+> +    /// This allows safe access to an `sg_table` that is managed elsewhere (for example, in C code).
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that:
+> +    ///
+> +    /// - the `struct sg_table` pointed to by `ptr` is valid for the entire lifetime of `'a`,
+> +    /// - the data behind `ptr` is not modified concurrently for the duration of `'a`.
+> +    #[inline]
+> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::sg_table) -> &'a Self {
+> +        // SAFETY: The safety requirements of this function guarantee that `ptr` is a valid pointer
+> +        // to a `struct sg_table` for the duration of `'a`.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    #[inline]
+> +    fn as_raw(&self) -> *mut bindings::sg_table {
+> +        self.inner.0.get()
+> +    }
+> +
+> +    /// Returns an [`SGTableIter`] bound to the lifetime of `self`.
+> +    pub fn iter(&self) -> SGTableIter<'_> {
+> +        // SAFETY: `self.as_raw()` is a valid pointer to a `struct sg_table`.
+> +        let nents = unsafe { (*self.as_raw()).nents };
+> +
+> +        let pos = if nents > 0 {
+> +            // SAFETY: `self.as_raw()` is a valid pointer to a `struct sg_table`.
+> +            let ptr = unsafe { (*self.as_raw()).sgl };
+> +
+> +            // SAFETY: `ptr` is guaranteed to be a valid pointer to a `struct scatterlist`.
+> +            Some(unsafe { SGEntry::from_raw(ptr) })
+> +        } else {
+> +            None
+> +        };
+> +
+> +        SGTableIter { pos, nents }
+> +    }
+> +}
+> +
+> +/// Represents the DMA mapping state of a `struct sg_table`.
+> +///
+> +/// This is used as an inner type of [`Owned`] to manage the DMA mapping lifecycle.
+> +///
+> +/// # Invariants
+> +///
+> +/// - `sgt` is a valid pointer to a `struct sg_table` for the entire lifetime of the
+> +///   [`DmaMappedSgt`].
+> +/// - `sgt` is always DMA mapped.
+> +struct DmaMappedSgt {
+> +    sgt: NonNull<bindings::sg_table>,
+> +    dev: ARef<Device>,
+> +    dir: dma::DataDirection,
+> +}
+> +
+> +// SAFETY: `DmaMappedSgt` can be sent to any task.
+> +unsafe impl Send for DmaMappedSgt {}
+> +
+> +// SAFETY: `DmaMappedSgt` has no interior mutability and can be accessed concurrently.
+> +unsafe impl Sync for DmaMappedSgt {}
+> +
+> +impl DmaMappedSgt {
+> +    /// # Safety
+> +    ///
+> +    /// - `sgt` must be a valid pointer to a `struct sg_table` for the entire lifetime of the
+> +    ///   returned [`DmaMappedSgt`].
+> +    /// - The caller must guarantee that `sgt` remains DMA mapped for the entire lifetime of
+> +    ///   [`DmaMappedSgt`].
+> +    unsafe fn new(
+> +        sgt: NonNull<bindings::sg_table>,
+> +        dev: &Device<Bound>,
+> +        dir: dma::DataDirection,
+> +    ) -> Result<Self> {
+> +        // SAFETY:
+> +        // - `dev.as_raw()` is a valid pointer to a `struct device`, which is guaranteed to be
+> +        //   bound to a driver for the duration of this call.
+> +        // - `sgt` is a valid pointer to a `struct sg_table`.
+> +        error::to_result(unsafe {
+> +            bindings::dma_map_sgtable(dev.as_raw(), sgt.as_ptr(), dir.into(), 0)
+> +        })?;
+> +
+> +        // INVARIANT: By the safety requirements of this function it is guaranteed that `sgt` is
+> +        // valid for the entire lifetime of this object instance.
+> +        Ok(Self {
+> +            sgt,
+> +            dev: dev.into(),
+> +            dir,
+> +        })
+> +    }
+> +}
+> +
+> +impl Drop for DmaMappedSgt {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY:
+> +        // - `self.dev.as_raw()` is a pointer to a valid `struct device`.
+> +        // - `self.dev` is the same device the mapping has been created for in `Self::new()`.
+> +        // - `self.sgt.as_ptr()` is a valid pointer to a `struct sg_table` by the type invariants
+> +        //   of `Self`.
+> +        // - `self.dir` is the same `dma::DataDirection` the mapping has been created with in
+> +        //   `Self::new()`.
+> +        unsafe {
+> +            bindings::dma_unmap_sgtable(self.dev.as_raw(), self.sgt.as_ptr(), self.dir.into(), 0)
+> +        };
+> +    }
+> +}
+> +
+> +/// A transparent wrapper around a `struct sg_table`.
+> +///
+> +/// While we could also create the `struct sg_table` in the constructor of [`Owned`], we can't tear
+> +/// down the `struct sg_table` in [`Owned::drop`]; the drop order in [`Owned`] matters.
+> +#[repr(transparent)]
+> +struct RawSGTable(Opaque<bindings::sg_table>);
+> +
+> +// SAFETY: `RawSGTable` can be sent to any task.
+> +unsafe impl Send for RawSGTable {}
+> +
+> +// SAFETY: `RawSGTable` has no interior mutability and can be accessed concurrently.
+> +unsafe impl Sync for RawSGTable {}
+> +
+> +impl RawSGTable {
+> +    /// # Safety
+> +    ///
+> +    /// - `pages` must be a slice of valid `struct page *`.
+> +    /// - The pages pointed to by `pages` must remain valid for the entire lifetime of the returned
+> +    ///   [`RawSGTable`].
+> +    unsafe fn new(
+> +        pages: &mut [*mut bindings::page],
+> +        size: usize,
+> +        max_segment: u32,
+> +        flags: alloc::Flags,
+> +    ) -> Result<Self> {
+> +        // `sg_alloc_table_from_pages_segment()` expects at least one page, otherwise it
+> +        // produces a NPE.
+> +        if pages.is_empty() {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let sgt = Opaque::zeroed();
+> +        // SAFETY:
+> +        // - `sgt.get()` is a valid pointer to uninitialized memory.
+> +        // - As by the check above, `pages` is not empty.
+> +        error::to_result(unsafe {
+> +            bindings::sg_alloc_table_from_pages_segment(
+> +                sgt.get(),
+> +                pages.as_mut_ptr(),
+> +                pages.len().try_into()?,
+> +                0,
+> +                size,
+> +                max_segment,
+> +                flags.as_raw(),
+> +            )
+> +        })?;
+> +
+> +        Ok(Self(sgt))
+> +    }
+> +
+> +    #[inline]
+> +    fn as_raw(&self) -> *mut bindings::sg_table {
+> +        self.0.get()
+> +    }
+> +}
+> +
+> +impl Drop for RawSGTable {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY: `sgt` is a valid and initialized `struct sg_table`.
+> +        unsafe { bindings::sg_free_table(self.0.get()) };
+> +    }
+> +}
+> +
+> +/// The [`Owned`] generic type of an [`SGTable`].
+> +///
+> +/// A [`SGTable<Owned>`] signifies that the [`SGTable`] owns all associated resources:
+> +///
+> +/// - The backing memory pages.
+> +/// - The `struct sg_table` allocation (`sgt`).
+> +/// - The DMA mapping, managed through a [`Devres`]-managed `DmaMappedSgt`.
+> +///
+> +/// Users interact with this type through the [`SGTable`] handle and do not need to manage
+> +/// [`Owned`] directly.
+> +#[pin_data]
+> +pub struct Owned<P> {
+> +    // Note: The drop order is relevant; we first have to unmap the `struct sg_table`, then free the
+> +    // `struct sg_table` and finally free the backing pages.
+> +    #[pin]
+> +    dma: Devres<DmaMappedSgt>,
+> +    sgt: RawSGTable,
+> +    _pages: P,
+> +}
+> +
+> +// SAFETY: `Owned` can be sent to any task if `P` can be send to any task.
+> +unsafe impl<P: Send> Send for Owned<P> {}
+> +
+> +// SAFETY: `Owned` has no interior mutability and can be accessed concurrently if `P` can be
+> +// accessed concurrently.
+> +unsafe impl<P: Sync> Sync for Owned<P> {}
+> +
+> +impl<P> Owned<P>
+> +where
+> +    for<'a> P: page::AsPageIter<Iter<'a> = VmallocPageIter<'a>> + 'static,
+> +{
+> +    fn new(
+> +        dev: &Device<Bound>,
+> +        mut pages: P,
+> +        dir: dma::DataDirection,
+> +        flags: alloc::Flags,
+> +    ) -> Result<impl PinInit<Self, Error> + '_> {
+> +        let page_iter = pages.page_iter();
+> +        let size = page_iter.size();
+> +
+> +        let mut page_vec: KVec<*mut bindings::page> =
+> +            KVec::with_capacity(page_iter.page_count(), flags)?;
+> +
+> +        for page in page_iter {
+> +            page_vec.push(page.as_ptr(), flags)?;
+> +        }
+> +
+> +        // `dma_max_mapping_size` returns `size_t`, but `sg_alloc_table_from_pages_segment()` takes
+> +        // an `unsigned int`.
+> +        //
+> +        // SAFETY: `dev.as_raw()` is a valid pointer to a `struct device`.
+> +        let max_segment = match unsafe { bindings::dma_max_mapping_size(dev.as_raw()) } {
+> +            0 => u32::MAX,
+> +            max_segment => u32::try_from(max_segment).unwrap_or(u32::MAX),
+> +        };
+> +
+> +        Ok(try_pin_init!(&this in Self {
+> +            // SAFETY:
+> +            // - `page_vec` is a `KVec` of valid `struct page *` obtained from `pages`.
+> +            // - The pages contained in `pages` remain valid for the entire lifetime of the
+> +            //   `RawSGTable`.
+> +            sgt: unsafe { RawSGTable::new(&mut page_vec, size, max_segment, flags) }?,
+> +            dma <- {
+> +                // SAFETY: `this` is a valid pointer to uninitialized memory.
+> +                let sgt = unsafe { &raw mut (*this.as_ptr()).sgt }.cast();
+> +
+> +                // SAFETY: `sgt` is guaranteed to be non-null.
+> +                let sgt = unsafe { NonNull::new_unchecked(sgt) };
+> +
+> +                // SAFETY:
+> +                // - It is guaranteed that the object returned by `DmaMappedSgt::new` won't out-live
+> +                //   `sgt`.
+> +                // - `sgt` is never DMA unmapped manually.
+> +                Devres::new(dev, unsafe { DmaMappedSgt::new(sgt, dev, dir) })
+> +            },
+> +            _pages: pages,
+> +        }))
+> +    }
+> +}
+> +
+> +impl<P> SGTable<Owned<P>>
+> +where
+> +    for<'a> P: page::AsPageIter<Iter<'a> = VmallocPageIter<'a>> + 'static,
+> +{
+> +    /// Allocates a new scatter-gather table from the given pages and maps it for DMA.
+> +    ///
+> +    /// This constructor creates a new [`SGTable<Owned>`] that takes ownership of `P`.
+> +    /// It allocates a `struct sg_table`, populates it with entries corresponding to the physical
+> +    /// pages of `P`, and maps the table for DMA with the specified [`Device`] and
+> +    /// [`dma::DataDirection`].
+> +    ///
+> +    /// The DMA mapping is managed through [`Devres`], ensuring that the DMA mapping is unmapped
+> +    /// once the associated [`Device`] is unbound, or when the [`SGTable<Owned>`] is dropped.
+> +    ///
+> +    /// # Parameters
+> +    ///
+> +    /// * `dev`: The [`Device`] that will be performing the DMA.
+> +    /// * `pages`: The entity providing the backing pages. It must implement [`page::AsPageIter`].
+> +    ///   The ownership of this entity is moved into the new [`SGTable<Owned>`].
+> +    /// * `dir`: The [`dma::DataDirection`] of the DMA transfer.
+> +    /// * `flags`: Allocation flags for internal allocations (e.g., [`GFP_KERNEL`]).
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::{
+> +    ///     device::{Bound, Device},
+> +    ///     dma, page,
+> +    ///     prelude::*,
+> +    ///     scatterlist::{SGTable, Owned},
+> +    /// };
+> +    ///
+> +    /// fn test(dev: &Device<Bound>) -> Result {
+> +    ///     let size = 4 * page::PAGE_SIZE;
+> +    ///     let pages = VVec::<u8>::with_capacity(size, GFP_KERNEL)?;
+> +    ///
+> +    ///     let sgt = KBox::pin_init(SGTable::new(
+> +    ///         dev,
+> +    ///         pages,
+> +    ///         dma::DataDirection::ToDevice,
+> +    ///         GFP_KERNEL,
+> +    ///     ), GFP_KERNEL)?;
+> +    ///
+> +    ///     Ok(())
+> +    /// }
+> +    /// ```
+> +    pub fn new(
+> +        dev: &Device<Bound>,
+> +        pages: P,
+> +        dir: dma::DataDirection,
+> +        flags: alloc::Flags,
+> +    ) -> impl PinInit<Self, Error> + '_ {
+> +        try_pin_init!(Self {
+> +            inner <- Owned::new(dev, pages, dir, flags)?
+> +        })
+> +    }
+> +}
+> +
+> +impl<P> Deref for SGTable<Owned<P>> {
+> +    type Target = SGTable;
+> +
+> +    #[inline]
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY:
+> +        // - `self.inner.sgt.as_raw()` is a valid pointer to a `struct sg_table` for the entire
+> +        //   lifetime of `self`.
+> +        // - The backing `struct sg_table` is not modified for the entire lifetime of `self`.
+> +        unsafe { SGTable::from_raw(self.inner.sgt.as_raw()) }
+> +    }
+> +}
+> +
+> +mod private {
+> +    pub trait Sealed {}
+> +
+> +    impl Sealed for super::Borrowed {}
+> +    impl<P> Sealed for super::Owned<P> {}
+> +}
+> +
+> +/// An [`Iterator`] over the DMA mapped [`SGEntry`] items of an [`SGTable`].
+> +///
+> +/// Note that the existence of an [`SGTableIter`] does not guarantee that the [`SGEntry`] items
+> +/// actually remain DMA mapped; they are prone to be unmapped on device unbind.
+> +pub struct SGTableIter<'a> {
+> +    pos: Option<&'a SGEntry>,
+> +    /// The number of DMA mapped entries in a `struct sg_table`.
+> +    nents: c_uint,
+> +}
+> +
+> +impl<'a> Iterator for SGTableIter<'a> {
+> +    type Item = &'a SGEntry;
+> +
+> +    fn next(&mut self) -> Option<Self::Item> {
+> +        let entry = self.pos?;
+> +        self.nents = self.nents.saturating_sub(1);
+> +
+> +        // SAFETY: `entry.as_raw()` is a valid pointer to a `struct scatterlist`.
+> +        let next = unsafe { bindings::sg_next(entry.as_raw()) };
+> +
+> +        self.pos = (!next.is_null() && self.nents > 0).then(|| {
+> +            // SAFETY: If `next` is not NULL, `sg_next()` guarantees to return a valid pointer to
+> +            // the next `struct scatterlist`.
+> +            unsafe { SGEntry::from_raw(next) }
+> +        });
+> +
+> +        Some(entry)
+> +    }
+> +}
+> -- 
+> 2.51.0
 
+Verified on Tyr, which is relying on `SGTable<Borrowed>`.
+(that implies limited scope of testing as far as Tyr is being concerned).
 
-> On Aug 27, 2025, at 3:07=E2=80=AFPM, Johannes Weiner =
-<hannes@cmpxchg.org> wrote:
->=20
-> On Tue, Aug 26, 2025 at 04:56:46PM +0200, Vitaly Wool wrote:
->>=20
->>=20
->>> On Aug 26, 2025, at 2:44 PM, Johannes Weiner <hannes@cmpxchg.org> =
-wrote:
->>>=20
->>> On Sat, Aug 23, 2025 at 03:04:19PM +0200, Vitaly Wool wrote:
->>>> Zpool is a common frontend for memory storage pool implementations.
->>>> These pools are typically used to store compressed memory objects,
->>>> e. g. for Zswap, the lightweight compressed cache for swap pages.
->>>>=20
->>>> This patch provides the interface to use Zpool in Rust kernel code,
->>>> thus enabling Rust implementations of Zpool allocators for Zswap.
->>>=20
->>> The zpool indirection is on its way out.
->>>=20
->>> When you submitted an alternate allocator backend recently, the
->>> resounding feedback from the zswap maintainers was that improvements
->>> should happen to zsmalloc incrementally. It is a lot of code and has =
-a
->>> lot of features that go beyond allocation strategy. We do not want =
-to
->>> fork it and fragment this space again with niche, incomplete =
-backends.
->>>=20
->>> It's frustrating that you not only ignored this, but then went ahead
->>> and made other people invest their time and effort into this as =
-well.
->>>=20
->>=20
->> I don=E2=80=99t think we have a consensus on that.
->>=20
->> And zblock is, after some additional improvements, just better than
->> zsmalloc in all meaningful aspects, let alone the simplicity. It is
->> fas easier to implement in Rust than zsmalloc, too. Besides, zram is
->> a good candidate to be rewritten in Rust as well and after that is
->> done, zblock will be even safer and faster. So while not being
->> =E2=80=9Cincomplete", it=E2=80=99s zsmalloc that is becoming a niche =
-backend moving
->> forward, and I would argue that it could make more sense to
->> eventually obsolete *it* rather than the zpool API.
->=20
-> That's your opinion, and I disagree with all of these claims. I would
-> also be surprised if you found much alignment on this with the other
-> folks who develop and use these features on a daily basis.
+Thank you for the patches!
 
-By features you mean zsmalloc? I certainly respect the effort put in it =
-but if not for it being rather sluggish and error prone in non-4K page =
-environments, we=E2=80=99d not come up with zblock.
-
-> That being said, by all means, you can propose alternate
-> allocators. But you don't need the zpool API for that. Just provide
-> alternate implementations of the "zs_*" API and make it compile-time
-> selectable.
->=20
-zpool API is neutral and well-defined, I don=E2=80=99t see *any* good =
-reason for it to be phased out.
-
-> As it stands, it's hard to justify the almost 700 lines of code to
-> support *runtime-switching* of zswap backends when there is only one
-> backend in-tree (and even you suggest there should only be one, albeit
-> a different one).
-
-No, I don=E2=80=99t. What I said was that zsmalloc was arguably becoming =
-a niche allocator. And the point here is, the toy allocator written in =
-Rust (just as an example of how zpool API could be used) shows in some =
-tests similar results to zsmalloc both performance and compression =
-density wise.=20
-
+---
+BR
+Beata
+> 
+> 
