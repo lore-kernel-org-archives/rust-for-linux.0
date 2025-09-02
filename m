@@ -1,113 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D1D26C3A5;
-	Tue,  2 Sep 2025 19:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9CA2253EB;
+	Tue,  2 Sep 2025 20:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756842799; cv=none; b=sGlse85mCSsK/UHwWeA9ZV4rXdk5oiFXhpE3YlZHiChb8h26y9HE1TwIzkH21bBzQLD7x9mnUJ+DZWkeSiHQncpmFuTrJoRWovk7q6wjmKRCvLXYD1LRnhNSNg7/QUTpa/i9uIxEBKKzTAtUBgoBBmm3UuxijER+H3kpWAU8EWg=
+	t=1756846201; cv=none; b=slgvV5gKliqHcAHj5xNr/iXHKxF0MH//InFClCSsqW4OtFmhcc9zMSdavtYh4+zZ9b8CeZ3E50mx8vhGYZvOTEpdLngrdqHPhYue5e9Jg5YM4zTFaQheLN2DRFJyQZUrAPn9KsPG3ztpKN7LcxvBa8XlzIKTciUhpG3a4b1rho8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756842799; c=relaxed/simple;
-	bh=EES9E4p0II9pKq1UKkB0kITaMd3S6hMDx8aHEP9YBYM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=qKSJukQF5H7st5IMVtCO/uYTjw2TxzQozhpmiQytKtIKEYe4D9FrN/0KocvnGF2Cwf1f9RfCa636omUIpjhOzT75/H1/CCERtJs9kkRrIFPMxWXNs9bxTDpTph1iAWvVIUE+yZ64scLEs8IwFc/JM4pTOqo0ckqDJD8Q+C56vtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCW3q19f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756846201; c=relaxed/simple;
+	bh=h9YG598jez9xHSTtoGC3TbdsaCDXkMcOLxofIDRanhw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=LB/bJb6+jMiGxTatRYRdw5WhH11CwgG0T6mTmZ2mHrocQ8a4QSGmZN4LYTjmb/fRdN4OuO0SGRPKVkM/nvLkb/i+gcmZbhWkZg9RfbWbxVLMnAVy2izv3HdC5pu7vUXksHsBntmufIe+fZVQEm063gp6j2K4mCqOgK6nZXa4iE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=TCSDXZF2; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCW3q19f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAF6C4CEED;
-	Tue,  2 Sep 2025 19:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756842798;
-	bh=EES9E4p0II9pKq1UKkB0kITaMd3S6hMDx8aHEP9YBYM=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=CCW3q19f1yy6u796iT5OMmZJMQLz+bWmn4U6nlUY7VzI2NWzyHxVfjszhxKJ93DmH
-	 ci8C/CpnQ5DDiJLgd0Q82xyrht1moay6Tn+b29iioYmVATBhO3UiDJ+yRVSBkmhSf/
-	 aNcG9zBu6bQpx7D4GL+hFKD50p6ue0RUxM8Rb6uTuLTDRT2adLnXhJQqRTIyl+md46
-	 ybLvLczL+ZeDR5e0Nb3f/1QyIQVX6Ow4VY5+gMGwOpbCvMS98XakCbuSiB4zsFDg+m
-	 kQFCbyjmGMUl+xAnJ/J4IBXXqtBKmBXqZn8emdVArub4WIhnBs/xk5elo0IQ/kz/+u
-	 lmO2IXDyaNg2Q==
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="TCSDXZF2"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250902204951euoutp019772216366e471dce5ab670ff270a1c3~hkk2PqBI40583005830euoutp01b;
+	Tue,  2 Sep 2025 20:49:51 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250902204951euoutp019772216366e471dce5ab670ff270a1c3~hkk2PqBI40583005830euoutp01b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756846191;
+	bh=cns0fXIAbt1EqvizSg/wAnSv3SWVs6AXpQ/9VbxT1xc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=TCSDXZF2Z62YcDiWqMDDa7Dv+pRBN+EUSjgrFZ1mzkO8tak0poyAI0nhbznKNDhqf
+	 D8kNvQjhwMLyfbECL2R2+e0uzHGZze/5arbNIj/FB7PwNbK4vxp5cjSUYa4Wb+jDZr
+	 M4rtfp2Rgp2ma7OWloLOB4f81ua8G4Rw/nxkJvc0=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250902204950eucas1p1185c6ab6c55958183bb0c347b0396b5b~hkk1r34Tc3157531575eucas1p1q;
+	Tue,  2 Sep 2025 20:49:50 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250902204948eusmtip14b51a6d907c8deca19aa6660d162e2c8~hkkz6C6Li1369313693eusmtip1I;
+	Tue,  2 Sep 2025 20:49:48 +0000 (GMT)
+Message-ID: <2d8e67b2-4ab2-4c1f-9ef3-470810f99d07@samsung.com>
+Date: Tue, 2 Sep 2025 22:49:48 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 02 Sep 2025 21:53:12 +0200
-Message-Id: <DCIKSL18GE9A.2R4BAGR56YVPF@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 02/11] gpu: nova-core: move GSP boot code out of
- `Gpu` constructor
-References: <20250902-nova_firmware-v3-0-56854d9c5398@nvidia.com>
- <20250902-nova_firmware-v3-2-56854d9c5398@nvidia.com>
-In-Reply-To: <20250902-nova_firmware-v3-2-56854d9c5398@nvidia.com>
+MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v4 14/16] block-dma: migrate to dma_map_phys instead of
+ map_page
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Alexander Potapenko
+	<glider@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, Danilo
+	Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, Jason Wang
+	<jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
+	<joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Juergen Gross
+	<jgross@suse.com>, kasan-dev@googlegroups.com, Keith Busch
+	<kbusch@kernel.org>, linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Michael
+	Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Miguel
+	Ojeda <ojeda@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	rust-for-linux@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>, Stefano
+	Stabellini <sstabellini@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <22b824931bc8ba090979ab902e4c1c2ec8327b65.1755624249.git.leon@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250902204950eucas1p1185c6ab6c55958183bb0c347b0396b5b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250819173845eucas1p221cd6842839f5e7130f131cd341df566
+X-EPHeader: CA
+X-CMS-RootMailID: 20250819173845eucas1p221cd6842839f5e7130f131cd341df566
+References: <cover.1755624249.git.leon@kernel.org>
+	<CGME20250819173845eucas1p221cd6842839f5e7130f131cd341df566@eucas1p2.samsung.com>
+	<22b824931bc8ba090979ab902e4c1c2ec8327b65.1755624249.git.leon@kernel.org>
 
-On Tue Sep 2, 2025 at 4:31 PM CEST, Alexandre Courbot wrote:
-> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driv=
-er.rs
-> index 274989ea1fb4a5e3e6678a08920ddc76d2809ab2..1062014c0a488e959379f009c=
-2e8029ffaa1e2f8 100644
-> --- a/drivers/gpu/nova-core/driver.rs
-> +++ b/drivers/gpu/nova-core/driver.rs
-> @@ -6,6 +6,8 @@
-> =20
->  #[pin_data]
->  pub(crate) struct NovaCore {
-> +    // Placeholder for the real `Gsp` object once it is built.
-> +    pub(crate) gsp: (),
->      #[pin]
->      pub(crate) gpu: Gpu,
->      _reg: auxiliary::Registration,
-> @@ -40,8 +42,14 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInf=
-o) -> Result<Pin<KBox<Self
->          )?;
-> =20
->          let this =3D KBox::pin_init(
-> -            try_pin_init!(Self {
-> +            try_pin_init!(&this in Self {
->                  gpu <- Gpu::new(pdev, bar)?,
-> +                gsp <- {
-> +                    // SAFETY: `this.gpu` is initialized to a valid valu=
-e.
-> +                    let gpu =3D unsafe { &(*this.as_ptr()).gpu };
-> +
-> +                    gpu.start_gsp(pdev)?
-> +                },
+On 19.08.2025 19:36, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+>
+> After introduction of dma_map_phys(), there is no need to convert
+> from physical address to struct page in order to map page. So let's
+> use it directly.
+>
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>   block/blk-mq-dma.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
+> index ad283017caef..37e2142be4f7 100644
+> --- a/block/blk-mq-dma.c
+> +++ b/block/blk-mq-dma.c
+> @@ -87,8 +87,8 @@ static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
+>   static bool blk_dma_map_direct(struct request *req, struct device *dma_dev,
+>   		struct blk_dma_iter *iter, struct phys_vec *vec)
+>   {
+> -	iter->addr = dma_map_page(dma_dev, phys_to_page(vec->paddr),
+> -			offset_in_page(vec->paddr), vec->len, rq_dma_dir(req));
+> +	iter->addr = dma_map_phys(dma_dev, vec->paddr, vec->len,
+> +			rq_dma_dir(req), 0);
+>   	if (dma_mapping_error(dma_dev, iter->addr)) {
+>   		iter->status = BLK_STS_RESOURCE;
+>   		return false;
 
-Please use pin_chain() [1] for this.
+I wonder where is the corresponding dma_unmap_page() call and its change 
+to dma_unmap_phys()...
 
-More in general, unsafe code should be the absolute last resort. If we add =
-new
-unsafe code I'd love to see a comment justifying why there's no other way t=
-han
-using unsafe code for this, as we agreed in [2].
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-I did a quick grep on this series and I see 21 occurrences of "unsafe", if =
-I
-substract the ones for annotations and for FromBytes impls, it's still 9 ne=
-w
-ones. :(
-
-Do we really need all of them?
-
-Otherwise, I really like this, it's a great improvement over initializing
-everything into the Gpu struct -- thanks for the refactoring!
-
-[1] https://rust.docs.kernel.org/kernel/prelude/trait.PinInit.html#method.p=
-in_chain
-[2] https://docs.kernel.org/gpu/nova/guidelines.html#language
