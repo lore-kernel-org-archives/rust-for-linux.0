@@ -1,212 +1,144 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A48A283CBE
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Sep 2025 11:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F1C2F548D;
+	Tue,  2 Sep 2025 11:25:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756811924; cv=none; b=p21VIx3QoF7tsKZH/ZfX45rKg+Qj82EjfvSRdEgH6y6ODDriPy95MJ1k3yPgAI07EKYx9cXl5QJ7+QXGyDGyhmDli6leV6adVvm2Zl19NSf5juG/LQL3Au8zpArCIf6yywRRpXRIDbTU0TI9IUNnQzUlsDt2F9arQUr0IKHmg14=
+	t=1756812341; cv=none; b=t3wtR7DLhwh342LgoTRXgBuz5sJGnJP61PUs4kF2GUcwO9unJ7dxZkj5EPhwMNDsTZIqjLiXrFfaYp0Ua/AJdo63uiaZIcrhsec4hY21NI9YE7P7rxCip64z/JsYnCSuuFtkdO/fEC1J76N0W6n61uPVLH+FBboECPEetRiNxLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756811924; c=relaxed/simple;
-	bh=gGRmi9BKNmESEIGIYdP+7B9F6iwTVze0fleAiVXwmco=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qu/+WyTDNGqzNPJdeiEfksFownAUH7EWHh5dY3vcT0S/2Gf4wwRIL/pPIDE576WdPyluS3/Jftpop5ChTRKqTVmmAIKcKxoe0AaKBRro4VtUqoggG1gjKUh/Ws4uvPiumBehtYq0tkYwQeSj88ynm0JPho92T8LgaEJZWT9fVGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=Fk7PXV/v; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	s=arc-20240116; t=1756812341; c=relaxed/simple;
+	bh=KgkXvq/Kwm0i59OA/L9F82jp/XH8ItOhe4rUC1nXarM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pL5PpoiO6WBr7DQFxWXLVKKvWFtPisz1ktb/oxDDkv4DJN536vqYzWclCQNpVARF1qCQxhx5ekQ9F9ulascUM0bLGkhAn2uoYehSMCun4371C4VWK7lGRo/j7hW2jXkMQRe+2qAzMU2iTmhqume6H+yv+T0rN5so5dECWh9rRrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m0y4y5mT; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="Fk7PXV/v"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-772488c78bcso2415232b3a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Sep 2025 04:18:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1756811921; x=1757416721; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0nWMjohz4DV5AHDo374fac7S+dpBXMCA8tWWrP1vlQY=;
-        b=Fk7PXV/v32yuwhr9INs8+JHQ3Oqp02NdzJUbhj55qZ0WolrgyfZ9WIdkdEw5KtFuwt
-         cBxlXyP4BZMjcMzbkaZinfN3lNVI8JDs1gRZiSvpLr9jz3GAZAyMjoKSNEGPFmKuds7o
-         yYhobuESqB5vjhrSS2MA6SJJ0+sLjkxLt4Vu8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756811921; x=1757416721;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0nWMjohz4DV5AHDo374fac7S+dpBXMCA8tWWrP1vlQY=;
-        b=HY2nDUQrjFI1DSXftoClUbdl7JOLwAbEbEx0St7c9bmsXYqenUVr6Hn1Spx0sX+HyP
-         13ohK75i2MbWLnMj7SASH6ervg9IJjnT5hh7T5YuCJiYwMS4bxT+CuQoo8dFQJ3jiNjw
-         rR4camYU6XE3zCvircUqPLq/3y34lN54HnQ4Wu71k4bvR32KdfNFMhPIbBEy7HXlDnBZ
-         JrISyqTc0os2BSVdKxgsZ7p0EhOugAz/kDfczeId86UEfpBllbcT1yLL0meG8DUpocKf
-         jF69ytqusDHaN4d62JxED0yeo8xvtoBK92rcg+d+caCAmoJsqkYfXKduNvLUeRXhdsaM
-         IJZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXll+/MvzAkcZUVeZ8VDDhYPRZv1PcqV18gQJP66xxLZSslw1TWdkA6W0xjCYbj9AcyD7l3FDoJS82t6CE39g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9NgBNagNj0aCN/8a6N5WyDrAZxL6ppLba5GxrYHhMdxFVz6na
-	fT2/rWx1tBt1Z8qHhcaLSZCyzM3HjBR6pTyjBuMTpyau9lmIDwbxqsShUw/QdFOHRUmin7KG29g
-	+1ZzXtxQ=
-X-Gm-Gg: ASbGncv/8W74BJ+Sjup3+Gy7oq/VXxDzYq+RxdUkD2FJGr2ElopQUUR87mECAG2s6Cy
-	DKxDT2lISlKDSC2hQthPMjuoVLr4w0HlRVZ/veoDmlo19eHZxXP58G8nuT202TqYE3zKbQt5hAm
-	ZUhiFa7iQGpQr0njdxyegePaN20TBzJOJ1PiQQN+viXqG/CXjg7tsCuZxFH2wPJV8rvxXak9XB9
-	sZX1WTiUDESNP9XDNuPyvECm30Rulz2xKn85dBYuTncVKCe0CMk/2C5AqxExbNJfqwABvSpbDrd
-	nQunesCyr6N0JCMEUEFwghYrWVUHBpo+ouF2sFrPuHSpR7vO8EVWjcP5fU6PqzZmgyZaAhC6vJp
-	yE8vRnVk08mmXP9AvdwyjAXshx9Oi2vwXGzfWLj3P0RCzi2yLQ8x2wLwysGWwHerq
-X-Google-Smtp-Source: AGHT+IE+I2Gk8VSrnS6eFFPIKGMhJEZoHV5J500ITPlIHjfERnr0mfn/YxRU4ImwyNpSqSmp4jInyg==
-X-Received: by 2002:a05:6a20:6a27:b0:246:17b:3577 with SMTP id adf61e73a8af0-246017b37d1mr908910637.58.1756811921381;
-        Tue, 02 Sep 2025 04:18:41 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a26bc9csm13471707b3a.18.2025.09.02.04.18.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 04:18:41 -0700 (PDT)
-Date: Tue, 2 Sep 2025 20:18:35 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Caleb Sander Mateos <csander@purestorage.com>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [RFC PATCH v3 4/5] rust: miscdevice: Add `uring_cmd` support
-Message-ID: <aLbSi5-a67i78BHl@sidongui-MacBookPro.local>
-References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
- <20250822125555.8620-5-sidong.yang@furiosa.ai>
- <CADUfDZoDvAp1yqFyB_SQiynqQfOQPkO_mnQ_pWAXpZJESecFFw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m0y4y5mT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756812340; x=1788348340;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=KgkXvq/Kwm0i59OA/L9F82jp/XH8ItOhe4rUC1nXarM=;
+  b=m0y4y5mT9X1/J3anNIZONf3AuTYMkiWOAXTVNzekm3G7Dtxn3w9Q+zS3
+   tHAg6R3vupfGNrJbDxdXXCNZGz9mxaZbT2b2ZAvXqozKNklYmh2/wNj2e
+   qqdNVukuKTNnUY0RJHhFV3bPNw+gtch4Vkt2dC04aQ3nkf7V9IhWa7+Fy
+   XM/hlU/akT+S3JY85fcN622ofs8ycw8y4h3n7dL3goc256N7TWG43NQIe
+   30eBDaRlYJO8FOlXp7Mo3oEHZYGaEya90KOK0ueI/mX6gnj/LVn/Fsr5Z
+   ubG5bFNAad2hVUamPgcqksK/CadEARxTmmYPBKGLqPpDcbnQzHfIey70V
+   w==;
+X-CSE-ConnectionGUID: 07pfb5KqTnqHzcJZQU7P4w==
+X-CSE-MsgGUID: uti9Bm6DRaeitoW8mrdlAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="59191169"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="59191169"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 04:25:38 -0700
+X-CSE-ConnectionGUID: gLaloIneSDWCu+PFy+wPpw==
+X-CSE-MsgGUID: SHdFKG38T/ipttA3hiX0eA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="176567428"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.246.193])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 04:25:34 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Danilo Krummrich <dakr@kernel.org>, aliceryhl@google.com,
+ airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, acourbot@nvidia.com,
+ daniel.almeida@collabora.com
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Danilo
+ Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: Add drm-rust tree for Rust DRM drivers and
+ infrastructure
+In-Reply-To: <20250901202850.208116-1-dakr@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250901202850.208116-1-dakr@kernel.org>
+Date: Tue, 02 Sep 2025 14:25:30 +0300
+Message-ID: <d27ffc705bd1ea3925084bb53ac3b0dd57e4b1e2@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADUfDZoDvAp1yqFyB_SQiynqQfOQPkO_mnQ_pWAXpZJESecFFw@mail.gmail.com>
+Content-Type: text/plain
 
-On Mon, Sep 01, 2025 at 06:12:44PM -0700, Caleb Sander Mateos wrote:
-> On Fri, Aug 22, 2025 at 5:56 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >
-> > This patch introduces support for `uring_cmd` to the `miscdevice`
-> > framework. This is achieved by adding a new `uring_cmd` method to the
-> > `MiscDevice` trait and wiring it up to the corresponding
-> > `file_operations` entry.
-> >
-> > The `uring_cmd` function provides a mechanism for `io_uring` to issue
-> > commands to a device driver.
-> >
-> > The new `uring_cmd` method takes the device, an `IoUringCmd` object,
-> > and issue flags as arguments. The `IoUringCmd` object is a safe Rust
-> > abstraction around the raw `io_uring_cmd` struct.
-> >
-> > To enable `uring_cmd` for a specific misc device, the `HAS_URING_CMD`
-> > constant must be set to `true` in the `MiscDevice` implementation.
-> >
-> > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
-> > ---
-> >  rust/kernel/miscdevice.rs | 53 ++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 52 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> > index 6373fe183b27..fcef579218ba 100644
-> > --- a/rust/kernel/miscdevice.rs
-> > +++ b/rust/kernel/miscdevice.rs
-> > @@ -11,9 +11,10 @@
-> >  use crate::{
-> >      bindings,
-> >      device::Device,
-> > -    error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-> > +    error::{from_result, to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-> >      ffi::{c_int, c_long, c_uint, c_ulong},
-> >      fs::File,
-> > +    io_uring::IoUringCmd,
-> >      mm::virt::VmaNew,
-> >      prelude::*,
-> >      seq_file::SeqFile,
-> > @@ -180,6 +181,21 @@ fn show_fdinfo(
-> >      ) {
-> >          build_error!(VTABLE_DEFAULT_ERROR)
-> >      }
-> > +
-> > +    /// Handler for uring_cmd.
-> > +    ///
-> > +    /// This function is invoked when userspace process submits an uring_cmd op
-> > +    /// on io-uring submission queue. The `device` is borrowed instance defined
-> > +    /// by `Ptr`. The `io_uring_cmd` would be used for get arguments cmd_op, sqe,
-> > +    /// cmd_data. The `issue_flags` is the flags includes options for uring_cmd.
-> > +    /// The options are listed in `kernel::io_uring::cmd_flags`.
-> > +    fn uring_cmd(
-> > +        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-> > +        _io_uring_cmd: Pin<&mut IoUringCmd>,
-> 
-> Passing the IoUringCmd by reference doesn't allow the uring_cmd()
-> implementation to store it beyond the function return. That precludes
-> any asynchronous uring_cmd() implementation, which is kind of the
-> whole point of uring_cmd. I think uring_cmd() needs to transfer
-> ownership of the IoUringCmd so the implementation can complete it
-> asynchronously.
+On Mon, 01 Sep 2025, Danilo Krummrich <dakr@kernel.org> wrote:
+> Multiple DRM Rust drivers (e.g. nova-core, nova-drm, Tyr, rvkms) are in
+> development, with at least Nova and (soon) Tyr already upstream. Having a
+> shared tree will ease and accelerate development, since all drivers can
+> consume new infrastructure in the same release cycle.
+>
+> This includes infrastructure shared with other subsystem trees (e.g. Rust
+> or driver-core). By consolidating in drm-rust, we avoid adding extra
+> burden to drm-misc maintainers, e.g. dealing with cross-tree topic
+> branches.
+>
+> The drm-misc tree is not a good fit for this stage of development, since
+> its documented scope is small drivers with occasional large series.
+>
+> Rust drivers in development upstream, however, regularly involve large
+> patch series, new infrastructure, and shared topic branches, which may
+> not align well with drm-misc at this stage.
+>
+> The drm-rust tree may not be a permanent solution. Once the core Rust,
+> DRM, and KMS infrastructure have stabilized, drivers and infrastructure
+> changes are expected to transition into drm-misc or standalone driver
+> trees respectively. Until then, drm-rust provides a dedicated place to
+> coordinate development without disrupting existing workflows too much.
+>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-I didn't know that I can take IoUringCmd ownership and calling done(). 
-In C implementation, is it safe to call `io_uring_cmd_done()` in any context?
+FWIW,
 
-> 
-> Best,
-> Caleb
-> 
-> > +        _issue_flags: u32,
-> > +    ) -> Result<i32> {
-> > +        build_error!(VTABLE_DEFAULT_ERROR)
-> > +    }
-> >  }
-> >
-> >  /// A vtable for the file operations of a Rust miscdevice.
-> > @@ -337,6 +353,36 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-> >          T::show_fdinfo(device, m, file);
-> >      }
-> >
-> > +    /// # Safety
-> > +    ///
-> > +    /// The caller must ensure that:
-> > +    /// - The pointer `ioucmd` is not null and points to a valid `bindings::io_uring_cmd`.
-> > +    unsafe extern "C" fn uring_cmd(
-> > +        ioucmd: *mut bindings::io_uring_cmd,
-> > +        issue_flags: ffi::c_uint,
-> > +    ) -> c_int {
-> > +        // SAFETY: `file` referenced by `ioucmd` is valid pointer. It's assigned in
-> > +        // uring cmd preparation. So dereferencing is safe.
-> > +        let raw_file = unsafe { (*ioucmd).file };
-> > +
-> > +        // SAFETY: `private_data` is guaranteed that it has valid pointer after
-> > +        // this file opened. So dereferencing is safe.
-> > +        let private = unsafe { (*raw_file).private_data }.cast();
-> > +
-> > +        // SAFETY: `ioucmd` is not null and points to valid memory `bindings::io_uring_cmd`
-> > +        // and the memory pointed by `ioucmd` is valid and will not be moved or
-> > +        // freed for the lifetime of returned value `ioucmd`
-> > +        let ioucmd = unsafe { IoUringCmd::from_raw(ioucmd) };
-> > +
-> > +        // SAFETY: This call is safe because `private` is returned by
-> > +        // `into_foreign` in [`open`]. And it's guaranteed
-> > +        // that `from_foreign` is called by [`release`] after the end of
-> > +        // the lifetime of `device`
-> > +        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-> > +
-> > +        from_result(|| T::uring_cmd(device, ioucmd, issue_flags))
-> > +    }
-> > +
-> >      const VTABLE: bindings::file_operations = bindings::file_operations {
-> >          open: Some(Self::open),
-> >          release: Some(Self::release),
-> > @@ -359,6 +405,11 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-> >          } else {
-> >              None
-> >          },
-> > +        uring_cmd: if T::HAS_URING_CMD {
-> > +            Some(Self::uring_cmd)
-> > +        } else {
-> > +            None
-> > +        },
-> >          // SAFETY: All zeros is a valid value for `bindings::file_operations`.
-> >          ..unsafe { MaybeUninit::zeroed().assume_init() }
-> >      };
-> > --
-> > 2.43.0
-> >
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+
+> ---
+>  MAINTAINERS | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fe168477caa4..1cd6597c7f1d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8079,7 +8079,6 @@ F:	Documentation/devicetree/bindings/gpu/
+>  F:	Documentation/gpu/
+>  F:	drivers/gpu/drm/
+>  F:	drivers/gpu/vga/
+> -F:	rust/kernel/drm/
+>  F:	include/drm/drm
+>  F:	include/linux/vga*
+>  F:	include/uapi/drm/
+> @@ -8096,6 +8095,16 @@ X:	drivers/gpu/drm/radeon/
+>  X:	drivers/gpu/drm/tegra/
+>  X:	drivers/gpu/drm/xe/
+>  
+> +DRM DRIVERS AND COMMON INFRASTRUCTURE [RUST]
+> +M:	Danilo Krummrich <dakr@kernel.org>
+> +M:	Alice Ryhl <aliceryhl@google.com>
+> +S:	Supported
+> +W:	https://drm.pages.freedesktop.org/maintainer-tools/drm-rust.html
+> +T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git
+> +F:	drivers/gpu/drm/nova/
+> +F:	drivers/gpu/nova-core/
+> +F:	rust/kernel/drm/
+> +
+>  DRM DRIVERS FOR ALLWINNER A10
+>  M:	Maxime Ripard <mripard@kernel.org>
+>  M:	Chen-Yu Tsai <wens@csie.org>
+>
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+
+-- 
+Jani Nikula, Intel
