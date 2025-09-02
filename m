@@ -1,222 +1,145 @@
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8757C338F22;
-	Tue,  2 Sep 2025 16:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F44A306D35;
+	Tue,  2 Sep 2025 17:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756832375; cv=none; b=ZnZrJeQ9AL0F34t3+iCmyrGtIBLYxOadalJljkRwBQ6w5qTcbht9lXY2wVo8WTcxNAEizwIcHUz/BTiDSo2FmzSLWcQi3eGrwKA94jhuyBRT5ce5hAtN64typA8GzUQHObpcqRsxOcM+crbxQRowdMLsUvj3qtKSpSLDvw5AKHg=
+	t=1756834831; cv=none; b=NyrtMl3+N313+bBlBC7C06duYLPsNAhax/TgB6MeqlqEUjMKevXLpDWSKLDEn0+8wKXG7voISHA9/o0U4T2kr4qnHTEyL5gTF2gvkeevjRDEhF+J0TUbkpE2dmEjFdepPChePynDS1LG85CHgo0NtSbmrb9WJl4uo7LNeoTStAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756832375; c=relaxed/simple;
-	bh=qFnTN56sB7klTE/kTUgYsnLu/b/+XZos+9jGaW7e2nc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BeXKXBaUQl9jV8+h0xjZ5siuB/7T00TNhKGVarITesChmfqS3BaGYsRB/L4LS2o0vTC8/EtwLy1DlCUkWK4gaCbfmA/HSQhjMRGlCGpQAw7LRIGeq9t0KQ4djf7fTFnc3t7S7EIZRz0Rfz/lqa5zJxQURBn9h3MnTqYolEh7i4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=lFhvMuUn; arc=none smtp.client-ip=178.154.239.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1756834831; c=relaxed/simple;
+	bh=8DlnXpYC+KIZ90R/hZ53tbMz4E6ISDH9xSdqxhlTqg8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cwpqdt7fztMWgSYiNE0FFDbzDlQ8T5UfAeRIp3QMOLnQkDEG3C3vAalSDhIj33Qe+eXLj6YILXjSHZuCwZpWph4/prIHTSW1ePZEUvxj0okxRH9H1OI7FqAwwm7RKDbfbVlcWAcizkg4gfCNQ7eerSWdYXoGIPznF7A5mSIF5H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uj8MCz2z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="lFhvMuUn"
-Received: from mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:571a:0:640:23e3:0])
-	by forward500a.mail.yandex.net (Yandex) with ESMTPS id BF93D81022;
-	Tue, 02 Sep 2025 19:53:34 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id SriSpSnM4qM0-TBd5IlpC;
-	Tue, 02 Sep 2025 19:53:33 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1756832013;
-	bh=xa7umx4Lfjhq/cyvWV7Gk2Jm4uEENeyJxqeKfOkYBA8=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=lFhvMuUn47FkuNTCEr3SnWpEOHS9SXg7MF92lxirfOfNllxTb8I+0+5t47mnqdiwu
-	 eipCbokzD8pKz7tbUDGt08wfifVDUkzA4vIVviVdovbFA9hnmxhb9qEYd0JDrQpAIe
-	 hK9rC3WldTAJL7rVRUBPox4aErrG/BOwDZOZRCZk=
-Authentication-Results: mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 2 Sep 2025 19:53:28 +0300
-From: Onur <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Benno Lossin <lossin@kernel.org>, Lyude Paul <lyude@redhat.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, mingo@redhat.com,
- will@kernel.org, longman@redhat.com, felipe_life@live.com,
- daniel@sedlak.dev, bjorn3_gh@protonmail.com
-Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
-Message-ID: <20250902195328.6293b5d4@nimda.home>
-In-Reply-To: <182E916F-3B59-4721-B415-81C3CF175DA7@collabora.com>
-References: <20250621184454.8354-1-work@onurozkan.dev>
-	<20250724165351.509cff53@nimda.home>
-	<ec32fc5f5a8658c084f96540bd41f5462fa5c182.camel@gmail.com>
-	<20250806085702.5bf600a3@nimda.home>
-	<539d3e0da773c32a42b4ab5c9d4aa90383481ff6.camel@redhat.com>
-	<DBVLEGFYBWKE.2RW8J853CJHTY@kernel.org>
-	<20250814141302.1eabda12@nimda.home>
-	<76D4D052-79B6-4D3F-AAA1-164FF7A41284@collabora.com>
-	<20250814185622.468aad30@nimda.home>
-	<182E916F-3B59-4721-B415-81C3CF175DA7@collabora.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uj8MCz2z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE72C4CEED;
+	Tue,  2 Sep 2025 17:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756834831;
+	bh=8DlnXpYC+KIZ90R/hZ53tbMz4E6ISDH9xSdqxhlTqg8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Uj8MCz2zItGENmC9fV9rdh/pUQ1kyrq4/Ra946iRMQZ4OqYW5EdZVv2o39TzHklvb
+	 HnlyUjKdnmHWuNyBPIgYOSIBmkxRnDbi7yId/pfjSSx3ab18neq6CTZnwETdKpngaO
+	 zUIs9RPzjt2FNkcOHYVCwSH42cPqcU809XylqR8Y0/MRskmbtXeHPAoVzmFYpyLRqZ
+	 uujNzqJqryKVsrUZSBDSezEpQzymB/Ff9B8PE2voHFfubwHJT2cYkUE2JzFp9W3m+y
+	 ZyQ1UgMFRuQNHWBIGRHmoWxuP407aDXyKGI98Mp+h30oJ0j8Q8yPDSrg1iY3+o6w4g
+	 dwVZY8w3sLS0Q==
+Date: Tue, 2 Sep 2025 19:40:27 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: aliceryhl@google.com, airlied@gmail.com, simona@ffwll.ch, 
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, acourbot@nvidia.com, 
+	daniel.almeida@collabora.com, nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: Add drm-rust tree for Rust DRM drivers and
+ infrastructure
+Message-ID: <humoafx7njwhvdwarelew2bwyl34q3ls5vbrkj6psfukoroni5@z7ap6mc4lj3k>
+References: <20250901202850.208116-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="eikyndkyyww5vqd6"
+Content-Disposition: inline
+In-Reply-To: <20250901202850.208116-1-dakr@kernel.org>
+
+
+--eikyndkyyww5vqd6
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] MAINTAINERS: Add drm-rust tree for Rust DRM drivers and
+ infrastructure
+MIME-Version: 1.0
 
-On Thu, 14 Aug 2025 15:22:57 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
-
+On Mon, Sep 01, 2025 at 10:26:39PM +0200, Danilo Krummrich wrote:
+> Multiple DRM Rust drivers (e.g. nova-core, nova-drm, Tyr, rvkms) are in
+> development, with at least Nova and (soon) Tyr already upstream. Having a
+> shared tree will ease and accelerate development, since all drivers can
+> consume new infrastructure in the same release cycle.
 >=20
-> Hi Onur,
+> This includes infrastructure shared with other subsystem trees (e.g. Rust
+> or driver-core). By consolidating in drm-rust, we avoid adding extra
+> burden to drm-misc maintainers, e.g. dealing with cross-tree topic
+> branches.
 >=20
-> > On 14 Aug 2025, at 12:56, Onur <work@onurozkan.dev> wrote:
-> >=20
-> > On Thu, 14 Aug 2025 09:38:38 -0300
-> > Daniel Almeida <daniel.almeida@collabora.com> wrote:
-> >=20
-> >> Hi Onur,
-> >>=20
-> >>> On 14 Aug 2025, at 08:13, Onur =C3=96zkan <work@onurozkan.dev> wrote:
-> >>>=20
-> >>> Hi all,
-> >>>=20
-> >>> I have been brainstorming on the auto-unlocking (on dynamic number
-> >>> of mutexes) idea we have been discussing for some time.
-> >>>=20
-> >>> There is a challange with how we handle lock guards and my current
-> >>> thought is to remove direct data dereferencing from guards.
-> >>> Instead, data access would only be possible through a fallible
-> >>> method (e.g., `try_get`). If the guard is no longer valid, this
-> >>> method would fail to not allow data-accessing after auto-unlock.
-> >>>=20
-> >>> In practice, it would work like this:
-> >>>=20
-> >>> let a_guard =3D ctx.lock(mutex_a)?;
-> >>> let b_guard =3D ctx.lock(mutex_b)?;
-> >>>=20
-> >>> // Suppose user tries to lock `mutex_c` without aborting the
-> >>> // entire function (for some reason). This means that even on
-> >>> // failure, `a_guard` and `b_guard` will still be accessible.
-> >>> if let Ok(c_guard) =3D ctx.lock(mutex_c) {
-> >>>    // ...some logic
-> >>> }
-> >>>=20
-> >>> let a_data =3D a_guard.try_get()?;
-> >>> let b_data =3D b_guard.try_get()?;
-> >>=20
-> >> Can you add more code here? How is this going to look like with the
-> >> two closures we=E2=80=99ve been discussing?
-> >=20
-> > Didn't we said that tuple-based closures are not sufficient when
-> > dealing with a dynamic number of locks (ref [1]) and ww_mutex is
-> > mostly used with dynamic locks? I thought implementing that
-> > approach is not worth it (at least for now) because of that.
-> >=20
-> > [1]:
-> > https://lore.kernel.org/all/DBS8REY5E82S.3937FAHS25ANA@kernel.org
-> >=20
-> > Regards,
-> > Onur
+> The drm-misc tree is not a good fit for this stage of development, since
+> its documented scope is small drivers with occasional large series.
 >=20
+> Rust drivers in development upstream, however, regularly involve large
+> patch series, new infrastructure, and shared topic branches, which may
+> not align well with drm-misc at this stage.
 >=20
+> The drm-rust tree may not be a permanent solution. Once the core Rust,
+> DRM, and KMS infrastructure have stabilized, drivers and infrastructure
+> changes are expected to transition into drm-misc or standalone driver
+> trees respectively. Until then, drm-rust provides a dedicated place to
+> coordinate development without disrupting existing workflows too much.
 >=20
-> I am referring to this [0]. See the discussion and itemized list at
-> the end.
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  MAINTAINERS | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 >=20
-> To recap, I am proposing a separate type that is similar to drm_exec,
-> and that implements this:
->=20
-> ```
-> a) run a user closure where the user can indicate which ww_mutexes
-> they want to lock b) keep track of the objects above
-> c) keep track of whether a contention happened
-> d) rollback if a contention happened, releasing all locks
-> e) rerun the user closure from a clean slate after rolling back
-> f) run a separate user closure whenever we know that all objects have
-> been locked. ```
->=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fe168477caa4..1cd6597c7f1d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8079,7 +8079,6 @@ F:	Documentation/devicetree/bindings/gpu/
+>  F:	Documentation/gpu/
+>  F:	drivers/gpu/drm/
+>  F:	drivers/gpu/vga/
+> -F:	rust/kernel/drm/
+>  F:	include/drm/drm
+>  F:	include/linux/vga*
+>  F:	include/uapi/drm/
+> @@ -8096,6 +8095,16 @@ X:	drivers/gpu/drm/radeon/
+>  X:	drivers/gpu/drm/tegra/
+>  X:	drivers/gpu/drm/xe/
+> =20
+> +DRM DRIVERS AND COMMON INFRASTRUCTURE [RUST]
+> +M:	Danilo Krummrich <dakr@kernel.org>
+> +M:	Alice Ryhl <aliceryhl@google.com>
+> +S:	Supported
+> +W:	https://drm.pages.freedesktop.org/maintainer-tools/drm-rust.html
+> +T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git
+> +F:	drivers/gpu/drm/nova/
+> +F:	drivers/gpu/nova-core/
+> +F:	rust/kernel/drm/
+> +
 
-Finally, I was able to allocate some time to work on this week. The
-implementation covers all the items you listed above.
+Would it make sense to add the drm-misc maintainers as reviewers for the
+bindings?
 
-I am sharing some of the unit tests from my work. My intention is to
-demonstrate the user API and I would like your feedback on whether
-anything should be changed before I send the v6 patch.
+Either way,
 
-    #[test]
-    fn test_with_different_input_type() -> Result {
-        stack_pin_init!(let class =3D
-    WwClass::new_wound_wait(c_str!("lock_all_ok")));
+Acked-by: Maxime Ripard <mripard@kernel.org>
 
-        let mu1 =3D Arc::pin_init(WwMutex::new(1, &class), GFP_KERNEL)?;
-        let mu2 =3D Arc::pin_init(WwMutex::new("hello", &class),
-        GFP_KERNEL)?;
+Maxime
 
-        lock_all(
-            &class,
-            |ctx| {
-                ctx.lock(&mu1)?;
-                ctx.lock(&mu2)?;
-                Ok(())
-            },
-            |ctx| {
-                ctx.with_locked(&mu1, |v| assert_eq!(*v, 1))?;
-                ctx.with_locked(&mu2, |v| assert_eq!(*v, "hello"))?;
-                Ok(())
-            },
-        )?;
+--eikyndkyyww5vqd6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-        Ok(())
-    }
+-----BEGIN PGP SIGNATURE-----
 
-    #[test]
-    fn test_lock_all_retries_on_deadlock() -> Result {
-        stack_pin_init!(let class =3D
-    WwClass::new_wound_wait(c_str!("lock_all_retry")));
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaLcsCgAKCRAnX84Zoj2+
+diUfAYCICnzUOeZAXgLDM24mxtd9WwQGTfjRMWXnN6NZg83KmAmJsj1/c3t0jBWF
+9uQfGBkBf29ImuGgjfzhJp075EPXs6d9v5wSW4gfEAyyTPWZPraqjxliL6JU+je0
+iWsShiuugg==
+=RhRF
+-----END PGP SIGNATURE-----
 
-        let mu =3D Arc::pin_init(WwMutex::new(99, &class), GFP_KERNEL)?;
-        let mut first_try =3D true;
-
-        let res =3D lock_all(
-            &class,
-            |ctx| {
-                if first_try {
-                    first_try =3D false;
-                    // simulate deadlock on first attempt
-                    return Err(EDEADLK);
-                }
-                ctx.lock(&mu)
-            },
-            |ctx| {
-                ctx.with_locked(&mu, |v| {
-                    *v +=3D 1;
-                    *v
-                })
-            },
-        )?;
-
-        assert_eq!(res, 100);
-        Ok(())
-    }
-
-    #[test]
-    fn test_with_locked_on_unlocked_mutex() -> Result {
-        stack_pin_init!(let class =3D
-    WwClass::new_wound_wait(c_str!("with_unlocked_mutex")));
-
-        let mu =3D Arc::pin_init(WwMutex::new(5, &class), GFP_KERNEL)?;
-
-        let mut ctx =3D ExecContext::new(&class)?;
-
-        let ecode =3D ctx.with_locked(&mu, |_v| {}).unwrap_err();
-        assert_eq!(EINVAL, ecode);
-
-        Ok(())
-    }
-
-
-Please let me know if this looks fine in terms of user API so
-I can make any necessary adjustments before sending v6.
-
-Regards,
-Onur
+--eikyndkyyww5vqd6--
