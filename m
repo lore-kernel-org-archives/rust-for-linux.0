@@ -1,114 +1,113 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AA7198A11;
-	Tue,  2 Sep 2025 19:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756842088; cv=pass; b=FcUP59+DGCu/B5+fF0uj9lHmq7I2VZdQ20TH1473dUlgNSXkjiOcA40VrVw0lM9QOCwMH+0mDW57NijzvC9EX6VfDPd0YvqoUNVI5w6SBcgW4WdJxVl145vYWsMdx6yzTqZQKxDPgyzbJ//Umlye1Yk556+9RqPRM1nyWvyuqJo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756842088; c=relaxed/simple;
-	bh=9KUiVlHOSx3yLQtBjqIEEn8A6eLglGZix9UneSF8ZFo=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=LjyzLTWahXFBAq6ZTmiEPvp1l7upiugSKDW9TwCCYI5ovWV+pDgPxVOohRBQ6yYkMRVah7UHgEccduaHaFvt9IqNrosJnGpVOZHDmSwB/gIoGTU87N0BP3y6GzqgFLqNBQ+79vJu8BmvZXNpOlZ9wdQC5nCfUFNaX/Epes/OqLs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=VDlptCP2; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D1D26C3A5;
+	Tue,  2 Sep 2025 19:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756842799; cv=none; b=sGlse85mCSsK/UHwWeA9ZV4rXdk5oiFXhpE3YlZHiChb8h26y9HE1TwIzkH21bBzQLD7x9mnUJ+DZWkeSiHQncpmFuTrJoRWovk7q6wjmKRCvLXYD1LRnhNSNg7/QUTpa/i9uIxEBKKzTAtUBgoBBmm3UuxijER+H3kpWAU8EWg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756842799; c=relaxed/simple;
+	bh=EES9E4p0II9pKq1UKkB0kITaMd3S6hMDx8aHEP9YBYM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=qKSJukQF5H7st5IMVtCO/uYTjw2TxzQozhpmiQytKtIKEYe4D9FrN/0KocvnGF2Cwf1f9RfCa636omUIpjhOzT75/H1/CCERtJs9kkRrIFPMxWXNs9bxTDpTph1iAWvVIUE+yZ64scLEs8IwFc/JM4pTOqo0ckqDJD8Q+C56vtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCW3q19f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="VDlptCP2"
-ARC-Seal: i=1; a=rsa-sha256; t=1756842064; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=UHvzHgVFpRNKwZW6xC3IYWq3/z1MAQ+WGRwP83cnUgUArqIimwAZXtbUBFa3e1kfr4XvsNx6YvUvuD5UFGrcSCS7/hx1ZKWMNKk+h73Le0QfwhAEpglvarnvqLzCDcICbaOrtVFeD+NbDQIYvNbXGUZLUrBI73IGAIOmdmfFBU0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756842064; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9KUiVlHOSx3yLQtBjqIEEn8A6eLglGZix9UneSF8ZFo=; 
-	b=URq60oLY7951Lx9OjIWl1GVh3uQYNQwZ/3I6cteQKzWKdE4BBTKFB8OExO08zASrEcO3hUk2OwV3l/TAQ0NBXrOZTd3j+WNrncBnqCn9eIqGDw8SyTjy8D9FuWlWb1ACfmutJ6sz5TplSfI5lfasNU5eWP3czJvxtcU7Y5Qmto8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756842064;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=9KUiVlHOSx3yLQtBjqIEEn8A6eLglGZix9UneSF8ZFo=;
-	b=VDlptCP2gcaFGw4epeQDpIxmm1hV7gbUHrrpW2N3yLLYYR8cl/h4N6EcjivXbGhl
-	fp4B7F2ccRpo52GKB92eZ36LugVEgUkBN0DeL56lqoFJuskFEEMd/q9iyW0a2S6gVJF
-	vd4uTh2j9NzvxdDoo7mN1XhVs9E5kt1eTQT5fZ58=
-Received: by mx.zohomail.com with SMTPS id 1756842062765279.12565293887326;
-	Tue, 2 Sep 2025 12:41:02 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCW3q19f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAF6C4CEED;
+	Tue,  2 Sep 2025 19:53:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756842798;
+	bh=EES9E4p0II9pKq1UKkB0kITaMd3S6hMDx8aHEP9YBYM=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=CCW3q19f1yy6u796iT5OMmZJMQLz+bWmn4U6nlUY7VzI2NWzyHxVfjszhxKJ93DmH
+	 ci8C/CpnQ5DDiJLgd0Q82xyrht1moay6Tn+b29iioYmVATBhO3UiDJ+yRVSBkmhSf/
+	 aNcG9zBu6bQpx7D4GL+hFKD50p6ue0RUxM8Rb6uTuLTDRT2adLnXhJQqRTIyl+md46
+	 ybLvLczL+ZeDR5e0Nb3f/1QyIQVX6Ow4VY5+gMGwOpbCvMS98XakCbuSiB4zsFDg+m
+	 kQFCbyjmGMUl+xAnJ/J4IBXXqtBKmBXqZn8emdVArub4WIhnBs/xk5elo0IQ/kz/+u
+	 lmO2IXDyaNg2Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v7 00/17] rnull: add configfs, remote completion to rnull
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250902-rnull-up-v6-16-v7-0-b5212cc89b98@kernel.org>
-Date: Tue, 2 Sep 2025 16:40:46 -0300
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Jens Axboe <axboe@kernel.dk>,
- Breno Leitao <leitao@debian.org>,
- linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <6A619CD0-4B72-433D-97D9-CBA8AC37DB01@collabora.com>
-References: <20250902-rnull-up-v6-16-v7-0-b5212cc89b98@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 02 Sep 2025 21:53:12 +0200
+Message-Id: <DCIKSL18GE9A.2R4BAGR56YVPF@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 02/11] gpu: nova-core: move GSP boot code out of
+ `Gpu` constructor
+References: <20250902-nova_firmware-v3-0-56854d9c5398@nvidia.com>
+ <20250902-nova_firmware-v3-2-56854d9c5398@nvidia.com>
+In-Reply-To: <20250902-nova_firmware-v3-2-56854d9c5398@nvidia.com>
 
-Hi Andreas,
+On Tue Sep 2, 2025 at 4:31 PM CEST, Alexandre Courbot wrote:
+> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driv=
+er.rs
+> index 274989ea1fb4a5e3e6678a08920ddc76d2809ab2..1062014c0a488e959379f009c=
+2e8029ffaa1e2f8 100644
+> --- a/drivers/gpu/nova-core/driver.rs
+> +++ b/drivers/gpu/nova-core/driver.rs
+> @@ -6,6 +6,8 @@
+> =20
+>  #[pin_data]
+>  pub(crate) struct NovaCore {
+> +    // Placeholder for the real `Gsp` object once it is built.
+> +    pub(crate) gsp: (),
+>      #[pin]
+>      pub(crate) gpu: Gpu,
+>      _reg: auxiliary::Registration,
+> @@ -40,8 +42,14 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInf=
+o) -> Result<Pin<KBox<Self
+>          )?;
+> =20
+>          let this =3D KBox::pin_init(
+> -            try_pin_init!(Self {
+> +            try_pin_init!(&this in Self {
+>                  gpu <- Gpu::new(pdev, bar)?,
+> +                gsp <- {
+> +                    // SAFETY: `this.gpu` is initialized to a valid valu=
+e.
+> +                    let gpu =3D unsafe { &(*this.as_ptr()).gpu };
+> +
+> +                    gpu.start_gsp(pdev)?
+> +                },
 
-> On 2 Sep 2025, at 06:54, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
->=20
-> This series adds configuration via configfs and remote completion to
-> the rnull driver. The series also includes a set of changes to the
-> rust block device driver API: a few cleanup patches, and a few =
-features
-> supporting the rnull changes.
->=20
-> The series removes the raw buffer formatting logic from =
-`kernel::block`
-> and improves the logic available in `kernel::string` to support the =
-same
-> use as the removed logic.
->=20
-> This series is a smaller subset of the patches available in the
-> downstream rnull tree. I hope to minimize the delta between upstream
-> and downstream over the next few kernel releases.
->=20
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> Changes in v7:
-> - Fix name of `kstrtobool_bytes` in commit message of patch 06/18.
-> - Fix stale safety comments in patch 15/18.
-> - Refactor `kstrtobool_raw` for readability.
-> - Link to v6: =
-https://lore.kernel.org/r/20250822-rnull-up-v6-16-v6-0-ec65006e2f07@kernel=
-.org
->=20
+Please use pin_chain() [1] for this.
 
-You told me that some of my tags were not picked up by accident?
+More in general, unsafe code should be the absolute last resort. If we add =
+new
+unsafe code I'd love to see a comment justifying why there's no other way t=
+han
+using unsafe code for this, as we agreed in [2].
 
-I checked again and all patches seem to have my rb tag. In any case,
+I did a quick grep on this series and I see 21 occurrences of "unsafe", if =
+I
+substract the ones for annotations and for FromBytes impls, it's still 9 ne=
+w
+ones. :(
 
-For the series:
+Do we really need all of them?
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Otherwise, I really like this, it's a great improvement over initializing
+everything into the Gpu struct -- thanks for the refactoring!
 
-This should be enough for "b4 trailers" to pick this up.
-
-=E2=80=94 Daniel=
+[1] https://rust.docs.kernel.org/kernel/prelude/trait.PinInit.html#method.p=
+in_chain
+[2] https://docs.kernel.org/gpu/nova/guidelines.html#language
