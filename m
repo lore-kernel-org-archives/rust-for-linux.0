@@ -1,172 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ACF2EA752;
-	Tue,  2 Sep 2025 09:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1639120297E
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Sep 2025 09:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756805368; cv=none; b=Q6WMOEeD6y+arGDVORm7WMLYL4ENPKCgrYPOzabU+hWv+b9NCHGJYKCJw3QOFYdW1oQg18GWKQ3dkPLUzOiInyuCQGKaRqK/yK99ksG4FJc6COd7tNCMl2DJt2iWd8mB4fvVXp5u4wdUxYDFwdg7bMdnAAXnwTZYmGfgfzlcQFE=
+	t=1756805392; cv=none; b=oxcqFC/Tq2KVMRyck7RDpmKJkFGPuej72Wb3AWpTswLfue4DkSJ+/L2oW4zmgZMXJuHPlpRN3iiZUu0e4857OpkDSs1w0kPY/I2kuUlxm0xzq1bmjcL168USxl/x7Fk8GYoqD8803YHzW356Sa2Dlfparip9LfRcNH1hekIhB/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756805368; c=relaxed/simple;
-	bh=DnDVES5Jg8WrIGoMPMfvxV9Wox20mcRcpnotwmcTmTg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cl/RiZ9ijahTcajwKGCIZfExpXV6TvnYLlwdzy4BJpce8I/yT5OxmTF3NeOPt06VK0lZO6PuJtKnMPKHPiYlWvgD5sAXfQjmPFApplRXhssy5UVP6mmdlSGzltoP8qN8crLO00QrukyGw9gbcXLX5Z12qVJWk9fwb+Ll9Ffurnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u+YP0LKc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756805392; c=relaxed/simple;
+	bh=aSwRzij5ZlHF6dj34bVAepPPm830Dt9vwoxlXSQayqI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=msxG8wyUTgOCOJPQIZiLRRLhKjyyUQdj3ebuhUE6ENMARZ9YPAHsRmBgbgRSh6m6VA/CXOpvB9uRrdViev/JVNE78id5sJgMtP/m7JGfZOT4pETnXoihwnPeNEsgumMi0pz2k1KNSWDTNJjkOEd1O4GUP7VInmgGganl9WdGhJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RdDNLQKx; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u+YP0LKc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793FEC4CEED;
-	Tue,  2 Sep 2025 09:29:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756805367;
-	bh=DnDVES5Jg8WrIGoMPMfvxV9Wox20mcRcpnotwmcTmTg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u+YP0LKc7Ca9KSEGyhHI9LWKXOpYxDkmlx+xi/d94i28PXwnbkADYdG/kMj0eiK5B
-	 zd/GooYAccyXKqdo2LtN0swNMmhiizGQIgjHrkSZ2IAXK/1jBPSRk3StbcZycbdrVP
-	 g5quZtmGQMVEWVOV9clnOLPmMIcFNqak1dVeFhnzWaY1VIAyIlM9TCnw1bUSOb10fT
-	 eYPBFQEGyOkOZzS7K5YPtS3dmkawe2LLvJU33SWPAwVjDdMQDDLsS8LD6Qfe4rZdHI
-	 wki/IP/V+av0oWZTHcazqMPHDSPlXAIhw9qhWxKa10uhggFEbKZZEF+GYaHO+zcGYb
-	 634HFrNZvr1dg==
-Date: Tue, 2 Sep 2025 12:29:20 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <20250902092920.GE10073@unreal>
-References: <cover.1755624249.git.leon@kernel.org>
- <CGME20250828115738eucas1p24f3c17326b318c95a5569a2c9651ff92@eucas1p2.samsung.com>
- <20250828115729.GA10073@unreal>
- <26bd901a-0812-492d-9736-4a7bb2e6d6b4@samsung.com>
- <20250901222302.GA186519@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RdDNLQKx"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45b7f0d1449so19651245e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Sep 2025 02:29:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756805389; x=1757410189; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ilhr5uRoEss7UzbcIUdCo6dlFgB5H7QW/rpXDXEsD9o=;
+        b=RdDNLQKxH/DDwC6pDwJkhV7xDAVo1y+kxm2k9K04v5rjH+gK2MzGOcFy/PYv8xUayT
+         2fAXYYvjbL/KYMmuHoDjbIWIVe1vEgh07dBnU5nVRQ2PiU+/btv9pmxxkvOAb+lh4M15
+         vRhF97b2JH9bUtsJa3N4gGHd+AFo5klbM8bdjLa5+5U20ymeNdJdoWxytijzNSSFZ8Ij
+         8o0Fz94V8dYC5/h4Ey84MV0gvl2gcHjndc5jrO0LJscKr71N7dqpT5u7FqBERAadox6Z
+         M61k6sccHjwjBZbaKCQ1042W6p3iZFcKGjve1GZlFmhQlqfZrik4+Pz+KNv1tjPkWGVy
+         DZig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756805389; x=1757410189;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ilhr5uRoEss7UzbcIUdCo6dlFgB5H7QW/rpXDXEsD9o=;
+        b=drhpCtw+2Gd8XIvBBMQgwD8oW02FkX0tlnRF3+hiIeerOB1SfSeTXf39UyGI4ayYft
+         8k8UcCg1FWFueyz0gbdutSuqhm+qAN3vJaHOMU/2jN1gmJH04gBw7anW0/02IJj9ataY
+         PfW5bZFnHGFgXkaXkzauHpt5ErKTF1636NGESGfivikItCKXdHttvT6jL0GqAUROCze2
+         iRio/TcNkFx1x4FJKaNe4/0jeJTOjdIiFZ90vjsZxBZ9Yk+IgJe6ks5iySTANGB75ZTh
+         XtfZUsV7rytLSAzFU+ws8/oo7A+PKC9H2r05mvlNgNnA8KjrjUtyOdRq3iziBCWPKMXq
+         +Ozg==
+X-Forwarded-Encrypted: i=1; AJvYcCXndAHAD+qzgZ2DsJlhHopp0ShwdcGpJn7tiKvV41QXLDHaeqNnA2VS2uwe8HCxTYxtvE9KAPXQOvZMTLnMYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS9poooPWhU96TDYpy7QdJ/A/W29xhdBjdjT8op74xs+FCo6Vx
+	JWH+JF3QGoRJwcee3YxxqTmZf9btgT+oo0+aiz8rfBcxaCuQUid1Gu9Orrnb/ydYe4L/8UYBnbw
+	4cWUpBxwi/15JriT1MQ==
+X-Google-Smtp-Source: AGHT+IHeLI2nodfDj5qJHvTiRllvehJ/MUiJeuPZV1+kGBPWE3ADfWl0z8j5DiTZcUKyiqlu28fYRfF0Q9XKcAE=
+X-Received: from wmpv24.prod.google.com ([2002:a05:600c:4d98:b0:45b:97e5:47d7])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:46c8:b0:45b:80ab:3359 with SMTP id 5b1f17b1804b1-45b8549c269mr88432255e9.0.1756805389426;
+ Tue, 02 Sep 2025 02:29:49 -0700 (PDT)
+Date: Tue, 2 Sep 2025 09:29:48 +0000
+In-Reply-To: <20250902090638.785-1-trev@trevrosa.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250901222302.GA186519@nvidia.com>
+Mime-Version: 1.0
+References: <20250902090638.785-1-trev@trevrosa.dev>
+Message-ID: <aLa5DIMV-ADsw2c6@google.com>
+Subject: Re: [PATCH v2] rust: aref: make `AlwaysRefCounted::inc_ref` an
+ associated function
+From: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Chan <trev@trevrosa.dev>
+Cc: alex.gaynor@gmail.com, ojeda@kernel.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, 
+	vireshk@kernel.org, nm@ti.com, sboyd@kernel.org, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org, david.m.ertman@intel.com, 
+	ira.weiny@intel.com, leon@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, bhelgaas@google.com, kwilczynski@kernel.org, 
+	jack@suse.cz
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Sep 01, 2025 at 07:23:02PM -0300, Jason Gunthorpe wrote:
-> On Mon, Sep 01, 2025 at 11:47:59PM +0200, Marek Szyprowski wrote:
-> > I would like to give those patches a try in linux-next, but in meantime 
-> > I tested it on my test farm and found a regression in dma_map_resource() 
-> > handling. Namely the dma_map_resource() is no longer possible with size 
-> > not aligned to kmalloc()'ed buffer, as dma_direct_map_phys() calls 
-> > dma_kmalloc_needs_bounce(),
+On Tue, Sep 02, 2025 at 05:06:38PM +0800, Trevor Chan wrote:
+> `AlwaysRefCounted::inc_ref` is a function that shouldn't be called lightly.
 > 
-> Hmm, it's this bit:
+> To prevent accidentally calling it, `inc_ref` is now changed to be an
+> associated function.
 > 
-> 	capable = dma_capable(dev, dma_addr, size, !(attrs & DMA_ATTR_MMIO));
-> 	if (unlikely(!capable) || dma_kmalloc_needs_bounce(dev, size, dir)) {
-> 		if (is_swiotlb_active(dev) && !(attrs & DMA_ATTR_MMIO))
-> 			return swiotlb_map(dev, phys, size, dir, attrs);
+> Modifies all `AlwaysRefCounted` implementors to work with this change.
 > 
-> 		goto err_overflow;
-> 	}
-> 
-> We shouldn't be checking dma_kmalloc_needs_bounce() on mmio as there
-> is no cache flushing so the "dma safe alignment" for non-coherent DMA
-> does not apply.
-> 
-> Like you say looks good to me, and more of the surrouding code can be
-> pulled in too, no sense in repeating the boolean logic:
-> 
-> 	if (attrs & DMA_ATTR_MMIO) {
-> 		dma_addr = phys;
-> 		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
-> 			goto err_overflow;
-> 	} else {
-> 		dma_addr = phys_to_dma(dev, phys);
-> 		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1177
+> Signed-off-by: Trevor Chan <trev@trevrosa.dev>
 
-I tried to reuse same code as much as possible :(
+One nit below, but:
 
-> 		    dma_kmalloc_needs_bounce(dev, size, dir)) {
-> 			if (is_swiotlb_active(dev))
-> 				return swiotlb_map(dev, phys, size, dir, attrs);
-> 
-> 			goto err_overflow;
-> 		}
-> 		if (!dev_is_dma_coherent(dev) &&
-> 		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
-> 			arch_sync_dma_for_device(phys, size, dir);
-> 	}
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Like Jason wrote, but in diff format:
+> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+> index dbd77bb68617..3a3d5052786c 100644
+> --- a/rust/kernel/sync/aref.rs
+> +++ b/rust/kernel/sync/aref.rs
+> @@ -24,7 +24,9 @@
+>  /// alive.)
+>  pub unsafe trait AlwaysRefCounted {
+>      /// Increments the reference count on the object.
+> -    fn inc_ref(&self);
+> +    ///
+> +    /// This function should not be called lightly.
+> +    fn inc_ref(obj: &Self);
+>  
+>      /// Decrements the reference count on the object.
+>      ///
+> @@ -103,7 +105,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+>      ///
+>      /// # // SAFETY: TODO.
+>      /// unsafe impl AlwaysRefCounted for Empty {
+> -    ///     fn inc_ref(&self) {}
+> +    ///     fn inc_ref(obj: &Self) {}
+>      ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
 
-diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
-index 92dbadcd3b2f..3f4792910604 100644
---- a/kernel/dma/direct.h
-+++ b/kernel/dma/direct.h
-@@ -85,7 +85,6 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
-                unsigned long attrs)
- {
-        dma_addr_t dma_addr;
--       bool capable;
+We probably want _obj for inc_ref like we have for dec_ref.
 
-        if (is_swiotlb_force_bounce(dev)) {
-                if (attrs & DMA_ATTR_MMIO)
-@@ -94,17 +93,19 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
-                return swiotlb_map(dev, phys, size, dir, attrs);
-        }
-
--       if (attrs & DMA_ATTR_MMIO)
-+       if (attrs & DMA_ATTR_MMIO) {
-                dma_addr = phys;
--       else
-+               if (unlikely(dma_capable(dev, dma_addr, size, false)))
-+                       goto err_overflow;
-+       } else {
-                dma_addr = phys_to_dma(dev, phys);
-+               if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
-+                   dma_kmalloc_needs_bounce(dev, size, dir)) {
-+                       if (is_swiotlb_active(dev))
-+                               return swiotlb_map(dev, phys, size, dir, attrs);
-
--       capable = dma_capable(dev, dma_addr, size, !(attrs & DMA_ATTR_MMIO));
--       if (unlikely(!capable) || dma_kmalloc_needs_bounce(dev, size, dir)) {
--               if (is_swiotlb_active(dev) && !(attrs & DMA_ATTR_MMIO))
--                       return swiotlb_map(dev, phys, size, dir, attrs);
--
--               goto err_overflow;
-+                       goto err_overflow;
-+               }
-        }
-
-        if (!dev_is_dma_coherent(dev) &&
-
-
-I created new tag with fixed code.
-https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/tag/?h=dma-phys-Sep-2
-
-Thanks
-
-> 
-> Jason
+Alice
