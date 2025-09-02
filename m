@@ -1,190 +1,248 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CA22F0C62;
-	Tue,  2 Sep 2025 09:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3A62EA49D;
+	Tue,  2 Sep 2025 10:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756807002; cv=none; b=fRmq7Mucg3UCQnEiiXeHtheNZTcrYI0RtEvmzBX50fiABWfbspHMoLut5MohYAcK/NmIUyuxmNh2YjeScG/+DGgm27D0kriPlOLpXsxCba8OX/vo8xPOkYiQ4VHSIqCmRJxUBbqQoNb6eSLuVYx6sLXxJ+tCPe1dS0uGjW/Te6Y=
+	t=1756807939; cv=none; b=HG+w0xAZ5paa/VIoS3rYQAYZiSoskUKGQK5VysEczTqNlGgxnVp2OF9VpXu29AvTxvVcR98E6JzWqSi2e4U6mRgTl8BDfWLn0nsu2+JNnsq/oyPVaY6tYB46aqP/nX9aeyH/7qCdqHY0a7Bd3HXMBPxczd5gM9DAHGqJWjjygJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756807002; c=relaxed/simple;
-	bh=ZIg/RXaSX38pfYsocsCL9XpLI7wCfaehuexl1zdhPPk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MMTqsRXiJCifCbq6/kx4AsgFxyTzjVsC8ap+DzXs4tAuguPeo/B8UnR4/+KklFGu790dUjYOWxNpnKMejtsU3A+4yP/Bk4ayjw7o6mnw6mn2qocmgjk1QHTZLxfFG/oOdVYFGnl6egkU4ayqAUjZzzp+PzcpyOBvocySTEvk0ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GOSlGZiE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756807939; c=relaxed/simple;
+	bh=dLzEaqaX+WltyZNFo8+JxunBRV1p0dzHnmT+/Qzfz8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PMyFmBEOWGwauDvdY6H9ZaJPy02gYsqoRCADz4V2/4slLKGxAI4r3yP9AmJLSb6ZTYzlvJl0NH13/DhALnbnCHmwgT+n1dJYWVctCbKGOzr0buLR6IUdQHkcogZoJMVQLnJLnhkp4lh9OcoVPUWmAWOotA62T1HUvEQgnnbpHNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0iq12Hp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GOSlGZiE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AF6C4CEED;
-	Tue,  2 Sep 2025 09:56:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0iq12Hp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4683CC4CEED;
+	Tue,  2 Sep 2025 10:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756807002;
-	bh=ZIg/RXaSX38pfYsocsCL9XpLI7wCfaehuexl1zdhPPk=;
-	h=From:Subject:Date:To:Cc:From;
-	b=GOSlGZiE7o31BUuqFS7rkczKZoofLfhWRimO4sJl/kpaGUP+3T0vpT4CjTE1RPvWO
-	 xLD6YTM7EfJcc5+my+LIjQ1ZpHgqlQJWCMM2+hym42sMbtRopeH4KMdOKs4yVNW6pd
-	 dV4EuqZnzvsDo85lBw0ong3Eut06b8xRC/ymChSV8FnliWKmTx3vqNWpe67HNr3iXB
-	 SxHQuUKb2FsYZ+KTKDxM1JJCdT88Yjk286++I0QZB1Ei0HfkatjAma0PBSRz3gIV24
-	 yGyW8r7WnNy0FiEri3NLw0c4AxUnoeq/IVfu+FXjz98TYIi+eW4zjydcbWB4ckGALm
-	 jj4yzzFqN7uTw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH v7 00/17] rnull: add configfs, remote completion to rnull
-Date: Tue, 02 Sep 2025 11:54:54 +0200
-Message-Id: <20250902-rnull-up-v6-16-v7-0-b5212cc89b98@kernel.org>
+	s=k20201202; t=1756807938;
+	bh=dLzEaqaX+WltyZNFo8+JxunBRV1p0dzHnmT+/Qzfz8o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m0iq12HpLoyS1ZEAT5vmL19wjDENpOw9N5G0QDaXoQdlEofns52lh6RpdN50jPO1R
+	 ak9cN19qpcWOmfzidBioNz9i37LW2qVyAl5dWev8b84X8BSTgtW0ZMyF4wiZ0tODeg
+	 37l1Sep25jEgdMGQHpabFabtdhE+lwhO6o+Di9dJo0ZG6t2jmNfUBKH7M7uB3jFB6O
+	 5WZHS1PcaoBBHqm/0SYq7KvP1gHczRkZMPdsjuqXzDgfe9gJm7j7lDhlRX90wmt6SW
+	 SYOkHuV3FfBoVusXPqpobYqfqcRCBx/iMgfB9zkd2PB0fxpTLlrUzxcn+6lXr5mQOi
+	 N9IrNKtKmu07w==
+Date: Tue, 2 Sep 2025 11:12:11 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+	Matthew Maurer <mmaurer@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
+Message-ID: <20250902-crablike-bountiful-eb1c127f024a@spud>
+References: <20250408220311.1033475-1-ojeda@kernel.org>
+ <20250901-shrimp-define-9d99cc2a012a@spud>
+ <aLaq6TpUtLkqHg_o@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAO6+tmgC/3XNTWrDMBCG4asErauiGf06q94jdGHJo0TU2EFuR
- Erw3StnExfR5TvwfPNgC+VECzseHixTSUuapxr27cDCpZ/OxNNQm6FALQwYnqfbOPLblRfDa3q
- lLRC6SESsomummO7PwdNn7Utavuf889wvsF3/nSrABe8VGOcdWePx44vyROP7nM9s2yr48la4x
- uPmfSeDiFFh5xsvdx6g8bJ62aNBrwg7hMarl3eAjVfV0+AEDIP0vQ6N13uvG6+r1w6UloAqgG6
- 82Xls/5vtfzBaCEMYhf3j13X9BaJWa6DtAQAA
-X-Change-ID: 20250616-rnull-up-v6-16-b4571e28feee
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Jens Axboe <axboe@kernel.dk>, Breno Leitao <leitao@debian.org>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5615; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=ZIg/RXaSX38pfYsocsCL9XpLI7wCfaehuexl1zdhPPk=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBotr72mAEdsU5cWlpDhDaCO76VNOzhMmYjcVHNl
- bE5+4XH5pOJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaLa+9gAKCRDhuBo+eShj
- d8RWEACfHD7M4V3R9NoQVa5IU/PHsZO7DdspH2wvZauK/FQPaQV87SORsNIx2V8VKCv5PDQdg4F
- 3OXiILlBNNYrw0GgOF+Zc8SxFC4Z+PCmqVOshx8RM12/mDA69pzrUHtSHVtN71LTP7nS2sjV6RD
- AXBM3jf2T7HTHYS/AFCUvZQtUDvUeoVQhiSd77sWkuAyrKYYukbrA+DBhHmuYyGmIhyBfbIXRoR
- HRWCJYK4R9obeRg3ji9ziscOxu8rBgiCZ0F3jbLcGruMnm0DScXa+BxalwLOKUQEHtKzv7HcZtH
- 7grMs+d1geIqNYtzOVkAiMzwoz/9ZjdRJV1KPwJoXnY49occcDil6tgtE6vgNhSDvJnO1+8qv9N
- drMw2fI480+BVnQVqDhNkaNhyItTVFTGS0qkJ60E5iMh2AVqXkoP7buGB2Mgwzcr2zZZe2tug9M
- Th3a6xXkQi7xRbcQv2Rcf0WdWZahJkR+35nUhSbIE9s5ie5MNomRg3PENSA9BtdtkDXauoQmGaJ
- qqb2qKmzVrcRf08u9hy0OKgu4/rSNtpsFmfJdPBhaoJ3WUWbAd20BRuOAnLmlgNALsdkI8JPKBw
- xn2JejBmflfn/ysfah3n0gixYDAYaoWV6n/eIEM0SCIDoLhJfOqUnsukysbHoLenNmBHumm8xA+
- P+b6T5MMjb7+Ogw==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-
-This series adds configuration via configfs and remote completion to
-the rnull driver. The series also includes a set of changes to the
-rust block device driver API: a few cleanup patches, and a few features
-supporting the rnull changes.
-
-The series removes the raw buffer formatting logic from `kernel::block`
-and improves the logic available in `kernel::string` to support the same
-use as the removed logic.
-
-This series is a smaller subset of the patches available in the
-downstream rnull tree. I hope to minimize the delta between upstream
-and downstream over the next few kernel releases.
-
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v7:
-- Fix name of `kstrtobool_bytes` in commit message of patch 06/18.
-- Fix stale safety comments in patch 15/18.
-- Refactor `kstrtobool_raw` for readability.
-- Link to v6: https://lore.kernel.org/r/20250822-rnull-up-v6-16-v6-0-ec65006e2f07@kernel.org
-
-Changes in v6:
-- Move re-export of `configfs_attrs` next to macro.
-- Use implicit coersion to pointer in `kstrtobool`.
-- Change the name of `bool_to_bytes` to `kstrtobool_bytes` and improve the implementation.
-- Remove a useless pointer cast in "rust: block: add `GenDisk` private data support".
-- Get `GFP_KERNEL` from the prelude in "rnull: enable configuration via `configfs`".
-- Rebased on v6.17-rc2.
-- Link to v5: https://lore.kernel.org/r/20250815-rnull-up-v6-16-v5-0-581453124c15@kernel.org
-
-Changes in v5:
-- Re-export `configfs_attrs` from the `configfs` module.
-- Remove transient stray dead code `NullTerminatedFormatter::from_array`.
-- Use `kstrtobool` when parsing boolean values through configfs.
-- Remove a stray space in `pin_init!` macro invocation.
-- Remove useless calls to `ptr::cast` when retrieving `queue_data`.
-- Rearrange positioning of safety comments.
-- Link to v4: https://lore.kernel.org/r/20250812-rnull-up-v6-16-v4-0-ed801dd3ba5c@kernel.org
-
-Changes in v4:
-- Rebase on v6.17-rc1
-- Merge patches that expose `str::{Formatter, RawFormatter}` publicly.
-- Remove `NullTerminatedFormatter::from_array`.
-- Change signature of `Formatter::new`.
-- Change invariant wording for `NullTerminatedFormatter`.
-- Add missing period in comment for `SECTOR_MASK`.
-- Rephrase docstring for PAGE_SECTORS_SHIFT.
-- Use `write_str` rather than `write_fmt` where applicable.
-- Improve boolean parsing in rnull configfs interface.
-- Be explicit when intentionally dropping data (GenDisk::drop).
-- Add minimum size invariant to `NullTerminatedFormatter`.
-- Import `EINVAL` from the prelude.
-- Link to v3: https://lore.kernel.org/r/20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org
-
-Changes in v3:
-- Rename `NullBorrowFormatter` as `NullTerminatedFormatter`.
-- Remove `pos` from `NullBorrowFormatter`.
-- Call into `Self::new` in `NullBorrowFormatter::from_array`.
-- Use `Option` return type in `NullBorrowFormatter::from_array`
-- Use `Option` return type in `NullBorrowFormatter::new`.
-- Remove `BorrowFormatter` and update `Formatter` with a generic lifetime.
-- Split visibility change of `str::Formatter` into separate patch.
-- Link to v2: https://lore.kernel.org/r/20250708-rnull-up-v6-16-v2-0-ab93c0ff429b@kernel.org
-
-Changes in v2:
-- Rework formatter logic. Add two new formatters that write to slices,
-  one of which adds a trailing null byte.
-- Reorder and split patches so that changes are more clear.
-- Fix a typo in soft-irq patch summary.
-- Link to v1: https://lore.kernel.org/r/20250616-rnull-up-v6-16-v1-0-a4168b8e76b2@kernel.org
-
----
-Andreas Hindborg (17):
-      rust: str: normalize imports in `str.rs`
-      rust: str: allow `str::Formatter` to format into `&mut [u8]`.
-      rust: str: expose `str::{Formatter, RawFormatter}` publicly.
-      rust: str: introduce `NullTerminatedFormatter`
-      rust: str: introduce `kstrtobool` function
-      rust: configfs: re-export `configfs_attrs` from `configfs` module
-      rust: block: normalize imports for `gen_disk.rs`
-      rust: block: use `NullTerminatedFormatter`
-      rust: block: remove `RawWriter`
-      rust: block: remove trait bound from `mq::Request` definition
-      rust: block: add block related constants
-      rnull: move driver to separate directory
-      rnull: enable configuration via `configfs`
-      rust: block: add `GenDisk` private data support
-      rust: block: mq: fix spelling in a safety comment
-      rust: block: add remote completion to `Request`
-      rnull: add soft-irq completion support
-
- MAINTAINERS                        |   2 +-
- drivers/block/Kconfig              |  10 +-
- drivers/block/Makefile             |   4 +-
- drivers/block/rnull.rs             |  80 -----------
- drivers/block/rnull/Kconfig        |  13 ++
- drivers/block/rnull/Makefile       |   3 +
- drivers/block/rnull/configfs.rs    | 262 +++++++++++++++++++++++++++++++++++++
- drivers/block/rnull/rnull.rs       | 104 +++++++++++++++
- rust/kernel/block.rs               |  13 ++
- rust/kernel/block/mq.rs            |  14 +-
- rust/kernel/block/mq/gen_disk.rs   |  54 ++++++--
- rust/kernel/block/mq/operations.rs |  65 +++++++--
- rust/kernel/block/mq/raw_writer.rs |  55 --------
- rust/kernel/block/mq/request.rs    |  21 ++-
- rust/kernel/configfs.rs            |   2 +
- rust/kernel/str.rs                 | 162 +++++++++++++++++++++--
- samples/rust/rust_configfs.rs      |   2 +-
- 17 files changed, 674 insertions(+), 192 deletions(-)
----
-base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
-change-id: 20250616-rnull-up-v6-16-b4571e28feee
-
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="H+VzOpbPUpNEExps"
+Content-Disposition: inline
+In-Reply-To: <aLaq6TpUtLkqHg_o@google.com>
 
 
+--H+VzOpbPUpNEExps
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 02, 2025 at 08:29:29AM +0000, Alice Ryhl wrote:
+> On Mon, Sep 01, 2025 at 06:45:54PM +0100, Conor Dooley wrote:
+> > Yo,
+> >=20
+> > On Wed, Apr 09, 2025 at 12:03:11AM +0200, Miguel Ojeda wrote:
+> > > If KASAN is enabled, and one runs in a clean repository e.g.:
+> > >=20
+> > >     make LLVM=3D1 prepare
+> > >     make LLVM=3D1 prepare
+> > >=20
+> > > Then the Rust code gets rebuilt, which should not happen.
+> > >=20
+> > > The reason is some of the LLVM KASAN `rustc` flags are added in the
+> > > second run:
+> > >=20
+> > >     -Cllvm-args=3D-asan-instrumentation-with-call-threshold=3D10000
+> > >     -Cllvm-args=3D-asan-stack=3D0
+> > >     -Cllvm-args=3D-asan-globals=3D1
+> > >     -Cllvm-args=3D-asan-kernel-mem-intrinsic-prefix=3D1
+> > >=20
+> > > Further runs do not rebuild Rust because the flags do not change anym=
+ore.
+> > >=20
+> > > Rebuilding like that in the second run is bad, even if this just happ=
+ens
+> > > with KASAN enabled, but missing flags in the first one is even worse.
+> > >=20
+> > > The root issue is that we pass, for some architectures and for the mo=
+ment,
+> > > a generated `target.json` file. That file is not ready by the time `r=
+ustc`
+> > > gets called for the flag test, and thus the flag test fails just beca=
+use
+> > > the file is not available, e.g.:
+> > >=20
+> > >     $ ... --target=3D./scripts/target.json ... -Cllvm-args=3D...
+> > >     error: target file "./scripts/target.json" does not exist
+> > >=20
+> > > There are a few approaches we could take here to solve this. For inst=
+ance,
+> > > we could ensure that every time that the config is rebuilt, we regene=
+rate
+> > > the file and recompute the flags. Or we could use the LLVM version to
+> > > check for these flags, instead of testing the flag (which may have ot=
+her
+> > > advantages, such as allowing us to detect renames on the LLVM side).
+> > >=20
+> > > However, it may be easier than that: `rustc` is aware of the `-Cllvm-=
+args`
+> > > regardless of the `--target` (e.g. I checked that the list printed
+> > > is the same, plus that I can check for these flags even if I pass
+> > > a completely unrelated target), and thus we can just eliminate the
+> > > dependency completely.
+> > >=20
+> > > Thus filter out the target.
+> >=20
+> >=20
+> >=20
+> >=20
+> > > This does mean that `rustc-option` cannot be used to test a flag that
+> > > requires the right target, but we don't have other users yet, it is a
+> > > minimal change and we want to get rid of custom targets in the future.
+> >=20
+> > Hmm, while this might be true, I think it should not actually have been
+> > true. Commit ca627e636551e ("rust: cfi: add support for CFI_CLANG with =
+Rust")
+> > added a cc-option check to the rust kconfig symbol, checking if the c
+> > compiler supports the integer normalisations stuff:
+> > 	depends on !CFI_CLANG || RUSTC_VERSION >=3D 107900 && $(cc-option,-fsa=
+nitize=3Dkcfi -fsanitize-cfi-icall-experimental-normalize-integers)
+> > and also sets the relevant options in the makefile:
+> > 	ifdef CONFIG_RUST
+> > 	       # Always pass -Zsanitizer-cfi-normalize-integers as CONFIG_RUST=
+ selects
+> > 	       # CONFIG_CFI_ICALL_NORMALIZE_INTEGERS.
+> > 	       RUSTC_FLAGS_CFI   :=3D -Zsanitizer=3Dkcfi -Zsanitizer-cfi-norma=
+lize-integers
+> > 	       KBUILD_RUSTFLAGS +=3D $(RUSTC_FLAGS_CFI)
+> > 	       export RUSTC_FLAGS_CFI
+> > 	endif
+> > but it should also have added a rustc-option check as, unfortunately,
+> > support for kcfi in rustc is target specific. This results in build
+> > breakages where the arch supports CFI_CLANG and RUST, but the target in
+> > use does not have the kcfi flag set.
+> > I attempted to fix this by adding:
+> > 	diff --git a/arch/Kconfig b/arch/Kconfig
+> > 	index d1b4ffd6e0856..235709fb75152 100644
+> > 	--- a/arch/Kconfig
+> > 	+++ b/arch/Kconfig
+> > 	@@ -916,6 +916,7 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+> > 	 config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
+> > 	        def_bool y
+> > 	        depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+> > 	+       depends on $(rustc-option,-C panic=3Dabort -Zsanitizer=3Dkcfi =
+-Zsanitizer-cfi-normalize-integers)
+> > 	        depends on RUSTC_VERSION >=3D 107900
+> > 	        # With GCOV/KASAN we need this fix: https://github.com/rust-la=
+ng/rust/pull/129373
+> > 	        depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=
+=3D 108200) || \
+> > but of course this does not work for cross compilation, as you're
+> > stripping the target information out and so the check passes on my host
+> > even though my intended
+> > RUSTC_BOOTSTRAP=3D1 rustc -C panic=3Dabort -Zsanitizer=3Dkcfi -Zsanitiz=
+er-cfi-normalize-integers -Ctarget-cpu=3Dgeneric-rv64 --target=3Driscv64ima=
+c-unknown-none-elf
+> > is a failure.
+> >=20
+> > I dunno too much about rustc itself, but I suspect that adding kcfi to
+> > the target there is a "free" win, but that'll take time to trickle down
+> > and the minimum version rustc version for the kernel isn't going to have
+> > that.
+> >=20
+> > I'm not really sure what your target.json suggestion below is, so just
+> > reporting so that someone that understands the alternative solutions can
+> > fix this.
+>=20
+> Probably right now we have to do this cfg by
+>=20
+> 	depends on CONFIG_ARM
+
+It's valid on x86 too, right?
+
+>=20
+> to prevent riscv if rustc has the missing setting
+> set on riscv. Once we add it to riscv, we change it to
+>=20
+> 	depends on CONFIG_ARM || (RUSTC_VERSION >=3D ??? || CONFIG_RISCV)
+
+I kinda shied away from something like this since there was already a
+cc-option on the other half and checking different versions per arch
+becomes a mess - but yeah it kinda is a no-brainer to do it here when
+rustc-option is kinda broken.
+
+I guess the temporary fix is then:
+
+config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
+	def_bool y
+	depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+	depends on ARM64 || x86_64
+	depends on RUSTC_VERSION >=3D 107900
+	# With GCOV/KASAN we need this fix: https://github.com/rust-lang/rust/pull=
+/129373
+	depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=3D 108200) |=
+| \
+		(!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
+
+because there's no 32-bit target with SanitizerSet::KCFI in rustc either
+AFAICT. Then later on it'd become more like:
+
+config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
+	def_bool y
+	depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+	depends on RISCV || ((ARM64 || x86_64) && RUSTC_VERSION >=3D 107900)
+	depends on (ARM64 || x86_64) || (RISCV && RUSTC_VERSION >=3D 999999)
+	# With GCOV/KASAN we need this fix: https://github.com/rust-lang/rust/pull=
+/129373
+	depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=3D 108200) |=
+| \
+		(!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
+
+but that exact sort of mess is what becomes unwieldy fast since that
+doesn't even cover 32-bit arm.
+
+
+--H+VzOpbPUpNEExps
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaLbC+wAKCRB4tDGHoIJi
+0hjyAP9tByKVI1IGeavixZ01MOC4OXttf2BTFfivcgVEZF5lAAEA27I7Tv1B7oFK
+OTlynfN6TLIg3kRbEhZ4XzMKZVeSLgU=
+=lQ9s
+-----END PGP SIGNATURE-----
+
+--H+VzOpbPUpNEExps--
