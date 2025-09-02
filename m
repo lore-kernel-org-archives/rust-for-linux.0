@@ -1,149 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84ECF2F548B;
-	Tue,  2 Sep 2025 11:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A48A283CBE
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Sep 2025 11:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756811499; cv=none; b=acbnqLU1wYQsWjEZughEMnKFxEiLJUCHiNesmfFAMsbW20ukA+6FGW8uCnG9vUXPiYhorS7h/lxNMjeCWfsS+WD0P4K5KEWK19x3Stu+sIT4pZBuJg/TTgl0mrFZpDQJRhC9o4rADacAybSsxpGzEsa8XSTR/W9j7kfbg+EV2pk=
+	t=1756811924; cv=none; b=p21VIx3QoF7tsKZH/ZfX45rKg+Qj82EjfvSRdEgH6y6ODDriPy95MJ1k3yPgAI07EKYx9cXl5QJ7+QXGyDGyhmDli6leV6adVvm2Zl19NSf5juG/LQL3Au8zpArCIf6yywRRpXRIDbTU0TI9IUNnQzUlsDt2F9arQUr0IKHmg14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756811499; c=relaxed/simple;
-	bh=A6KhCJ395Or5FmdWt/mYNJIsJqCm7U8UgQjPe9weUwo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=mIqjA1NvXDlApzYY7+MoGZXpzwBAe+FmXUSR/AiYjaXoSWlZwB18ZRkWqUuGFLje6d79jEaNSKm7Xfxm2T1c9llkifGqbtYA6gsKNUa+kTxpLmef2DFN4ZU/+2iMNI9xq3UITnivPN6FM7TAyo5z/BnSO2afF6DQE6FVmI218Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rYavVE/P; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756811924; c=relaxed/simple;
+	bh=gGRmi9BKNmESEIGIYdP+7B9F6iwTVze0fleAiVXwmco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qu/+WyTDNGqzNPJdeiEfksFownAUH7EWHh5dY3vcT0S/2Gf4wwRIL/pPIDE576WdPyluS3/Jftpop5ChTRKqTVmmAIKcKxoe0AaKBRro4VtUqoggG1gjKUh/Ws4uvPiumBehtYq0tkYwQeSj88ynm0JPho92T8LgaEJZWT9fVGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=Fk7PXV/v; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rYavVE/P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E85C4CEED;
-	Tue,  2 Sep 2025 11:11:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756811499;
-	bh=A6KhCJ395Or5FmdWt/mYNJIsJqCm7U8UgQjPe9weUwo=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=rYavVE/PST1Yvw0ov1oKe28tkI5gMp3dyFBqNCSnxWZi5nky6cEnugdhye3a3lUa0
-	 ZYN6rdZCfC0BpAdxFfa4Fa6zUTjTCpl8e3aEld22fJgs2dKhvkig+zgs2vs7qr2K4I
-	 1I5jH/xlmbrVw0j8gTxHP2s3b0sLbDjqZXdlDfGYJWpxhCJTAQbjyXdyAXRVCYZhlj
-	 3sZdLoUM03ZtCovFl5mjRBqQGyQh6a8CTDA2A6/nPbM/1RlyDkHOXeKtPpp99RzOM7
-	 q3vdbWqdKYEKjillL4WzP8L6t4W03McQDWXIhArIgNaneTFt1Lft6OX5mxFztfWLPg
-	 eqnM/pHDWvhRA==
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="Fk7PXV/v"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-772488c78bcso2415232b3a.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Sep 2025 04:18:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=furiosa.ai; s=google; t=1756811921; x=1757416721; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0nWMjohz4DV5AHDo374fac7S+dpBXMCA8tWWrP1vlQY=;
+        b=Fk7PXV/v32yuwhr9INs8+JHQ3Oqp02NdzJUbhj55qZ0WolrgyfZ9WIdkdEw5KtFuwt
+         cBxlXyP4BZMjcMzbkaZinfN3lNVI8JDs1gRZiSvpLr9jz3GAZAyMjoKSNEGPFmKuds7o
+         yYhobuESqB5vjhrSS2MA6SJJ0+sLjkxLt4Vu8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756811921; x=1757416721;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0nWMjohz4DV5AHDo374fac7S+dpBXMCA8tWWrP1vlQY=;
+        b=HY2nDUQrjFI1DSXftoClUbdl7JOLwAbEbEx0St7c9bmsXYqenUVr6Hn1Spx0sX+HyP
+         13ohK75i2MbWLnMj7SASH6ervg9IJjnT5hh7T5YuCJiYwMS4bxT+CuQoo8dFQJ3jiNjw
+         rR4camYU6XE3zCvircUqPLq/3y34lN54HnQ4Wu71k4bvR32KdfNFMhPIbBEy7HXlDnBZ
+         JrISyqTc0os2BSVdKxgsZ7p0EhOugAz/kDfczeId86UEfpBllbcT1yLL0meG8DUpocKf
+         jF69ytqusDHaN4d62JxED0yeo8xvtoBK92rcg+d+caCAmoJsqkYfXKduNvLUeRXhdsaM
+         IJZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXll+/MvzAkcZUVeZ8VDDhYPRZv1PcqV18gQJP66xxLZSslw1TWdkA6W0xjCYbj9AcyD7l3FDoJS82t6CE39g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9NgBNagNj0aCN/8a6N5WyDrAZxL6ppLba5GxrYHhMdxFVz6na
+	fT2/rWx1tBt1Z8qHhcaLSZCyzM3HjBR6pTyjBuMTpyau9lmIDwbxqsShUw/QdFOHRUmin7KG29g
+	+1ZzXtxQ=
+X-Gm-Gg: ASbGncv/8W74BJ+Sjup3+Gy7oq/VXxDzYq+RxdUkD2FJGr2ElopQUUR87mECAG2s6Cy
+	DKxDT2lISlKDSC2hQthPMjuoVLr4w0HlRVZ/veoDmlo19eHZxXP58G8nuT202TqYE3zKbQt5hAm
+	ZUhiFa7iQGpQr0njdxyegePaN20TBzJOJ1PiQQN+viXqG/CXjg7tsCuZxFH2wPJV8rvxXak9XB9
+	sZX1WTiUDESNP9XDNuPyvECm30Rulz2xKn85dBYuTncVKCe0CMk/2C5AqxExbNJfqwABvSpbDrd
+	nQunesCyr6N0JCMEUEFwghYrWVUHBpo+ouF2sFrPuHSpR7vO8EVWjcP5fU6PqzZmgyZaAhC6vJp
+	yE8vRnVk08mmXP9AvdwyjAXshx9Oi2vwXGzfWLj3P0RCzi2yLQ8x2wLwysGWwHerq
+X-Google-Smtp-Source: AGHT+IE+I2Gk8VSrnS6eFFPIKGMhJEZoHV5J500ITPlIHjfERnr0mfn/YxRU4ImwyNpSqSmp4jInyg==
+X-Received: by 2002:a05:6a20:6a27:b0:246:17b:3577 with SMTP id adf61e73a8af0-246017b37d1mr908910637.58.1756811921381;
+        Tue, 02 Sep 2025 04:18:41 -0700 (PDT)
+Received: from sidongui-MacBookPro.local ([61.83.209.48])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a26bc9csm13471707b3a.18.2025.09.02.04.18.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 04:18:41 -0700 (PDT)
+Date: Tue, 2 Sep 2025 20:18:35 +0900
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Caleb Sander Mateos <csander@purestorage.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org
+Subject: Re: [RFC PATCH v3 4/5] rust: miscdevice: Add `uring_cmd` support
+Message-ID: <aLbSi5-a67i78BHl@sidongui-MacBookPro.local>
+References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
+ <20250822125555.8620-5-sidong.yang@furiosa.ai>
+ <CADUfDZoDvAp1yqFyB_SQiynqQfOQPkO_mnQ_pWAXpZJESecFFw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 02 Sep 2025 13:11:34 +0200
-Message-Id: <DCI9P6V88RHN.BX0BQWFDA8DO@kernel.org>
-Subject: Re: [PATCH v3 1/3] rust: maple_tree: add MapleTree
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Andrew Ballance"
- <andrewjballance@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <maple-tree@lists.infradead.org>,
- <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250902-maple-tree-v3-0-fb5c8958fb1e@google.com>
- <20250902-maple-tree-v3-1-fb5c8958fb1e@google.com>
- <DCI6XGR65KH9.27TWYVKNZNGHV@kernel.org> <aLa4rNojDIeShIrw@google.com>
-In-Reply-To: <aLa4rNojDIeShIrw@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADUfDZoDvAp1yqFyB_SQiynqQfOQPkO_mnQ_pWAXpZJESecFFw@mail.gmail.com>
 
-On Tue Sep 2, 2025 at 11:28 AM CEST, Alice Ryhl wrote:
-> On Tue, Sep 02, 2025 at 11:01:19AM +0200, Danilo Krummrich wrote:
->> On Tue Sep 2, 2025 at 10:35 AM CEST, Alice Ryhl wrote:
->> > The maple tree will be used in the Tyr driver to allocate and keep tra=
-ck
->> > of GPU allocations created internally (i.e. not by userspace). It will
->> > likely also be used in the Nova driver eventually.
->> >
->> > This adds the simplest methods for additional and removal that do not
->> > require any special care with respect to concurrency.
->> >
->> > This implementation is based on the RFC by Andrew but with significant
->> > changes to simplify the implementation.
->> >
->> > Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
->> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
->> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->>=20
->> One nit below, otherwise:
->>=20
->> 	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
->
-> Thanks!
->
->> > +    pub fn insert_range<R>(&self, range: R, value: T, gfp: Flags) -> =
-Result<(), InsertError<T>>
->> > +    where
->> > +        R: RangeBounds<usize>,
->> > +    {
->> > +        let Some((first, last)) =3D to_maple_range(range) else {
->> > +            return Err(InsertError {
->> > +                value,
->> > +                cause: InsertErrorKind::InvalidRequest,
->> > +            });
->> > +        };
->> > +
->> > +        let ptr =3D T::into_foreign(value);
->> > +
->> > +        // SAFETY: The tree is valid, and we are passing a pointer to=
- an owned instance of `T`.
->> > +        let res =3D to_result(unsafe {
->> > +            bindings::mtree_insert_range(self.tree.get(), first, last=
-, ptr, gfp.as_raw())
->> > +        });
->> > +
->> > +        if let Err(err) =3D res {
->> > +            // SAFETY: As `mtree_insert_range` failed, it is safe to =
-take back ownership.
->> > +            let value =3D unsafe { T::from_foreign(ptr) };
->> > +
->> > +            let cause =3D if err =3D=3D ENOMEM {
->> > +                InsertErrorKind::AllocError(kernel::alloc::AllocError=
-)
->> > +            } else if err =3D=3D EEXIST {
->> > +                InsertErrorKind::Occupied
->> > +            } else {
->> > +                InsertErrorKind::InvalidRequest
->> > +            };
->> > +            Err(InsertError { value, cause })
->> > +        } else {
->> > +            Ok(())
->> > +        }
->> > +    }
->>=20
->> 	// SAFETY: The tree is valid, and we are passing a pointer to an owned =
-instance of `T`.
->> 	to_result(unsafe {
->> 	    bindings::mtree_insert_range(self.tree.get(), first, last, ptr, gfp=
-.as_raw())
->> 	}).map_err(|err| {
->> 	    // SAFETY: As `mtree_insert_range` failed, it is safe to take back =
-ownership.
->> 	    let value =3D unsafe { T::from_foreign(ptr) };
->> =09
->> 	    let cause =3D if err =3D=3D ENOMEM {
->> 	        InsertErrorKind::AllocError(kernel::alloc::AllocError)
->> 	    } else if err =3D=3D EEXIST {
->> 	        InsertErrorKind::Occupied
->> 	    } else {
->> 	        InsertErrorKind::InvalidRequest
->> 	    };
->> 	    Err(InsertError { value, cause })
->> 	})
->>=20
->> I think that's a bit cleaner than the above (not compile tested).
->
-> I don't love it. How about a match instead of if/else?
+On Mon, Sep 01, 2025 at 06:12:44PM -0700, Caleb Sander Mateos wrote:
+> On Fri, Aug 22, 2025 at 5:56 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> >
+> > This patch introduces support for `uring_cmd` to the `miscdevice`
+> > framework. This is achieved by adding a new `uring_cmd` method to the
+> > `MiscDevice` trait and wiring it up to the corresponding
+> > `file_operations` entry.
+> >
+> > The `uring_cmd` function provides a mechanism for `io_uring` to issue
+> > commands to a device driver.
+> >
+> > The new `uring_cmd` method takes the device, an `IoUringCmd` object,
+> > and issue flags as arguments. The `IoUringCmd` object is a safe Rust
+> > abstraction around the raw `io_uring_cmd` struct.
+> >
+> > To enable `uring_cmd` for a specific misc device, the `HAS_URING_CMD`
+> > constant must be set to `true` in the `MiscDevice` implementation.
+> >
+> > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> > ---
+> >  rust/kernel/miscdevice.rs | 53 ++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 52 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+> > index 6373fe183b27..fcef579218ba 100644
+> > --- a/rust/kernel/miscdevice.rs
+> > +++ b/rust/kernel/miscdevice.rs
+> > @@ -11,9 +11,10 @@
+> >  use crate::{
+> >      bindings,
+> >      device::Device,
+> > -    error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+> > +    error::{from_result, to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+> >      ffi::{c_int, c_long, c_uint, c_ulong},
+> >      fs::File,
+> > +    io_uring::IoUringCmd,
+> >      mm::virt::VmaNew,
+> >      prelude::*,
+> >      seq_file::SeqFile,
+> > @@ -180,6 +181,21 @@ fn show_fdinfo(
+> >      ) {
+> >          build_error!(VTABLE_DEFAULT_ERROR)
+> >      }
+> > +
+> > +    /// Handler for uring_cmd.
+> > +    ///
+> > +    /// This function is invoked when userspace process submits an uring_cmd op
+> > +    /// on io-uring submission queue. The `device` is borrowed instance defined
+> > +    /// by `Ptr`. The `io_uring_cmd` would be used for get arguments cmd_op, sqe,
+> > +    /// cmd_data. The `issue_flags` is the flags includes options for uring_cmd.
+> > +    /// The options are listed in `kernel::io_uring::cmd_flags`.
+> > +    fn uring_cmd(
+> > +        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+> > +        _io_uring_cmd: Pin<&mut IoUringCmd>,
+> 
+> Passing the IoUringCmd by reference doesn't allow the uring_cmd()
+> implementation to store it beyond the function return. That precludes
+> any asynchronous uring_cmd() implementation, which is kind of the
+> whole point of uring_cmd. I think uring_cmd() needs to transfer
+> ownership of the IoUringCmd so the implementation can complete it
+> asynchronously.
 
-I think if you don't like map_err(), the if/else is fine to keep as is.
+I didn't know that I can take IoUringCmd ownership and calling done(). 
+In C implementation, is it safe to call `io_uring_cmd_done()` in any context?
 
-Personally, I prefer map_err() over any "manual matching" in this case; it =
-gets
-us rid of `ref`, making to_result().map_err() a single statement returning
-exactly what we expect. It makes it more self-contained.
+> 
+> Best,
+> Caleb
+> 
+> > +        _issue_flags: u32,
+> > +    ) -> Result<i32> {
+> > +        build_error!(VTABLE_DEFAULT_ERROR)
+> > +    }
+> >  }
+> >
+> >  /// A vtable for the file operations of a Rust miscdevice.
+> > @@ -337,6 +353,36 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+> >          T::show_fdinfo(device, m, file);
+> >      }
+> >
+> > +    /// # Safety
+> > +    ///
+> > +    /// The caller must ensure that:
+> > +    /// - The pointer `ioucmd` is not null and points to a valid `bindings::io_uring_cmd`.
+> > +    unsafe extern "C" fn uring_cmd(
+> > +        ioucmd: *mut bindings::io_uring_cmd,
+> > +        issue_flags: ffi::c_uint,
+> > +    ) -> c_int {
+> > +        // SAFETY: `file` referenced by `ioucmd` is valid pointer. It's assigned in
+> > +        // uring cmd preparation. So dereferencing is safe.
+> > +        let raw_file = unsafe { (*ioucmd).file };
+> > +
+> > +        // SAFETY: `private_data` is guaranteed that it has valid pointer after
+> > +        // this file opened. So dereferencing is safe.
+> > +        let private = unsafe { (*raw_file).private_data }.cast();
+> > +
+> > +        // SAFETY: `ioucmd` is not null and points to valid memory `bindings::io_uring_cmd`
+> > +        // and the memory pointed by `ioucmd` is valid and will not be moved or
+> > +        // freed for the lifetime of returned value `ioucmd`
+> > +        let ioucmd = unsafe { IoUringCmd::from_raw(ioucmd) };
+> > +
+> > +        // SAFETY: This call is safe because `private` is returned by
+> > +        // `into_foreign` in [`open`]. And it's guaranteed
+> > +        // that `from_foreign` is called by [`release`] after the end of
+> > +        // the lifetime of `device`
+> > +        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
+> > +
+> > +        from_result(|| T::uring_cmd(device, ioucmd, issue_flags))
+> > +    }
+> > +
+> >      const VTABLE: bindings::file_operations = bindings::file_operations {
+> >          open: Some(Self::open),
+> >          release: Some(Self::release),
+> > @@ -359,6 +405,11 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+> >          } else {
+> >              None
+> >          },
+> > +        uring_cmd: if T::HAS_URING_CMD {
+> > +            Some(Self::uring_cmd)
+> > +        } else {
+> > +            None
+> > +        },
+> >          // SAFETY: All zeros is a valid value for `bindings::file_operations`.
+> >          ..unsafe { MaybeUninit::zeroed().assume_init() }
+> >      };
+> > --
+> > 2.43.0
+> >
