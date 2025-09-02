@@ -1,170 +1,87 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732924414;
-	Tue,  2 Sep 2025 02:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CBD2E7BAD
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Sep 2025 07:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756779513; cv=none; b=KFAld2ahQzSZce0k0rFCckP7BEtHZrIgJfDUX5L41n8jyGLWPW6tbqHbOP12maAuqtje+CnGSlyEXHg3uVkv+9qxjl1J2gByv53WBEJPy+ClJIQb2e8UmPfNZTbKLjDt4zWZnLo3scu4JMWBuzynvOmUPlWRTKeitFPeKkjEtic=
+	t=1756799614; cv=none; b=AiWEQ96zPKSHkIJNsjOdFbQQ3zOwnpZ/0Exl1AowDutpSEQrpLvcMz7PsP7EFeLoH4XkFbK9JnwxLnxO54AywoaT0U/PQKz7N/YVgx+jSlo5h8z3WHGKv0xe6O4vwzt6jaUJdYB0/+2TY8T8t1s10aGknftKqMAVT/jtB4Dy4ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756779513; c=relaxed/simple;
-	bh=jWj77n90lpscowBKxGnKxCSWqltp4ZyNo+bBpxvz3sQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JvTLNH5Vl5OFHrSn+cYwyW0XZO1kreZ8xcdWIHazCe66iZiBHvxulRhx5XrWbI6yUBqJSakShmW91f9+5FiCz0rgKMtEje5Npjlt5rR+lRDUIc8JutJGMXWKtDYkemvinud3R2rrVDAh/viM7nBOEVqf+rZLDK67/LRtlviC08U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jdlHmDdd; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756799614; c=relaxed/simple;
+	bh=L8ue9J2vi2pjgMfgSyWzh7k6KFpTN86oCkpQ3AgDGUY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=i28KBqRWB+GuL5/aM5KEoxEXrXLoTsptjjLAaDIwQY3GRpOH6FF7n+SIW+6OlUboJViQAq6IWuLoWOvKpDkolVth98RGH7nPr5kynwdkAQBDoo7zQhL9RqDVQ+gFuRMtRt6xnM49n6oZm7kRGCDXiNNcIf4O2vzYGnjlWIOUpAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zKWMr3Ns; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jdlHmDdd"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-70dfa0a9701so50934866d6.2;
-        Mon, 01 Sep 2025 19:18:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zKWMr3Ns"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45b80aecb97so33849035e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Sep 2025 00:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756779511; x=1757384311; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UWBJ11Qq2wI4UtNYw2ns787DwY45sHPfRhY5E7/GIKg=;
-        b=jdlHmDdd0pjGUuSFsUhb1Ff9PJZLkfybLQeBLUkaFHpyvt9FsfTC8WXIbk/OL20183
-         He7QRLEBufHB6D5gPlVm0tWSQNaSWWMLKldXZdgxRIGVoxMrfs3PYhT21YbNHeAN68Wb
-         +50FbeMxHl0TcVdE4S2HH5jtSgaUO12o3WuWTs/Ee4EdbSOqmulk6ZE74jBMUjD2QfKD
-         MaPplKyQN7JUwcytTKizWrxS/96SjvELvhWHQuRx44XMWJUJ2apGJUS4keb5uwt4PSCY
-         HrJI+bW+qyUN7uLJv5DlMSsYchagsjYAZlZQkMRqzti54839cATWmCRqymVRPfjpDrGe
-         lwjg==
+        d=google.com; s=20230601; t=1756799611; x=1757404411; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UX/i8pzWZiHBkXFSxW4oFkcmw7w7tGzt3veZuRyONCs=;
+        b=zKWMr3NsG5/3GCK4a6V+eO2BtvQxlaXT5jCUGBvD5595zQFfb+SDuXlBJkjiY79uAZ
+         v53TI8QI8PEDgCAtP4Sqj3GvkoeAops2H2OGr7hD9uMmpC5TMWFjCqmZqOi5zoWpwkcu
+         a8foElgB9dQ6SCtv31Jpt70UPWVJM53ALHWIDFic4JVLnLVcSFyv125DoXdsWRVUto3C
+         q1Ux+7GyZ1xxs7g2t+UZIgk/XWBpIk/QbpIAC2BtEiPZAnuag5FOM9njJiaIvfeRXjof
+         fTOMgrtoPuPUpadTGjNj2ypO3pd2qghndtCsgY5p8iMGXmSql58n2zB4EBQ5wACq2HcI
+         oSdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756779511; x=1757384311;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UWBJ11Qq2wI4UtNYw2ns787DwY45sHPfRhY5E7/GIKg=;
-        b=AOO8LK1/lMdwufp1GIO4UFMxlfc8BEeGbThasavDLRCqB9ovMSvzEWXe59y9e/4neb
-         DpPO7OjgvyRLz5FNRTVKeXfH8HKH6pTHn7sadvjwbx893MiI5trUSFYw1AcbVxmGuJ4a
-         NgDbHURBo994NksLERRuH3K9uy3h4omozZLFV4Xe1ELfk9OfMp5pwkjTaGuSuuymJjIE
-         ZTZCDidGHiLhfndYA/aKCDh5Dj8DizgCdLrIH0CYhcxoaIkSdp1dwmWhMmBVsZToJ0CL
-         k76jKtrCbp38dj5m1advdq9UbBivmUdcP05Q+lHHW2E3I38sQaCsJcwKNck7XyxUoKkj
-         fTHA==
-X-Forwarded-Encrypted: i=1; AJvYcCU301uqu1MdMLICjSc1kQYFmVuWQihBAFvAL0OtE8DAQ3anNG/JFZ/qZTvajjbBG0V6SKI6RRMhTiDDRtV6vCQ=@vger.kernel.org, AJvYcCUnbo+n0LNSQo+KyU/vzU3LUGHzrum6VaOyFeW1Ayn2mNuB3WMCPL6dFZk4D2YxWWsnyuiPS125J943sFq+@vger.kernel.org, AJvYcCXYPGEwijfcE6FyZ698F4oeaQ2aRbzUztSiLOzvr1ka802HofXbxnLfF0eDiBtbn0NoQUCCuOu3SHXubg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YymVVQM66HBo93YYNFF4Jn02s0q7Qokt0defF5W4nOhT04r7obL
-	Gsp5dA7QbAguk6p0yccRHlhWIi/A2OPMJtXcOusE35fixBi+boaK5xYe
-X-Gm-Gg: ASbGnctysCZ71dr3hM9bQgnTN7hTcZO6hNQr0VcJTyp4eQeLsBCxW80K9Z7BcdGsP53
-	ef5RZImdX+tlo/4YQgP4gntYYeWXLAlG/w9yT4d0VzCkJHLbIbYyMayPsVcmhT13Q6hfk2SlEG2
-	llQ3B5vEjO6zpyOfOLrGwFj8G7F0OYZxB4kIpywAfY0QA/9QB1VEhVXcC60euoMc4p4J/ctAPaf
-	1EywSikweLTuJ9H7e6SQ4ix8xX75Olbs82ZZDUUXdJ95XM5Te65APdKQStrPUhQJ+svW9gQMiVz
-	sT/YAXmveY+2XkUP5LElP2sKn7wxKKikWSP/IKjJS3WO2mQNjz0pIqBtO8AE7s/IGDWVV3AF9fb
-	VPshaGPR77A7dT1K1Bvl80tN/GrX2v2/E+zGA5JVrPKeFYIB9IKmC6wgQmcx32/o/PC6d1owv3v
-	9jcR8KPjebibpLEk2mRQYxegE=
-X-Google-Smtp-Source: AGHT+IG6behPS/qlT6YHslNmsEgfGWxFdm9Wdo1jFvdwOEInGgJroYZc+1zppQUWObXRDWoWBR3kkQ==
-X-Received: by 2002:a05:6214:c4f:b0:713:8ede:6143 with SMTP id 6a1803df08f44-7138ede838dmr82846946d6.39.1756779511019;
-        Mon, 01 Sep 2025 19:18:31 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-720ada83b25sm4354766d6.27.2025.09.01.19.18.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 19:18:30 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DAACAF40066;
-	Mon,  1 Sep 2025 22:18:29 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 01 Sep 2025 22:18:29 -0400
-X-ME-Sender: <xms:9VO2aEww9VI41cJQVBm7aX72hP0vx3zTOCKuu7wTz1Mxg8QJTIHI-w>
-    <xme:9VO2aOv5oxMejQ0wU7QI-tHsP6xf_313EET_Nhsr9IAkZDLcm6V-uWCBynpmqxxeq
-    FgA6-gT0MniimtGtg>
-X-ME-Received: <xmr:9VO2aD0_DahIfT-FIbpPACdjcLEgVRqD_igdAByZbKhwse_iwMbhM8X1k_Puabh5PHR6xtZOY0YEiNan9BuvHagm4nGN0-4E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleefkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
-    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghgrrhihse
-    hgrghrhihguhhordhnvghtpdhrtghpthhtohepghgrrhihsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgi
-    drghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhes
-    phhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtgho
-    mhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:9VO2aK7IaiUmU6tIPyLw9Udp70s0onsFCmygs1-yJIxA8WfZRmDrvg>
-    <xmx:9VO2aFN3_WAm99DwRrG_RwUY4WAVLUedsZ8_i0JldkC4ee_QC3p0zw>
-    <xmx:9VO2aOFk05rsPrn33QqccGDD8t3Uwc_xOuRamn55BJbFRBjXQDT_pw>
-    <xmx:9VO2aJ3By6C7U50F4sCStNGdvj5miFB0j-angsniLUubhUzlJFfidg>
-    <xmx:9VO2aFEblm-SL7iYjIk3JSsRFU8PJngeVXxP_TCH2LiYwTMeuGb03vyE>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 1 Sep 2025 22:18:29 -0400 (EDT)
-Date: Mon, 1 Sep 2025 19:18:28 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Gary Guo <gary@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Francesco Zardi <frazar00@gmail.com>,
-	Antonio Hickey <contact@antoniohickey.com>,
-	rust-for-linux@vger.kernel.org, David Gow <davidgow@google.com>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 4/5] rust: block: convert `block::mq` to use `Refcount`
-Message-ID: <aLZT9PQQyREAZuCm@tardis-2.local>
-References: <20250723233312.3304339-1-gary@kernel.org>
- <20250723233312.3304339-5-gary@kernel.org>
- <DC0AUNNAKGJI.4KX0TW6LG83Y@kernel.org>
- <20250827205121.59e4cc32.gary@garyguo.net>
- <DCDVM56I5WPT.2L24NI3SBBIHU@kernel.org>
+        d=1e100.net; s=20230601; t=1756799611; x=1757404411;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UX/i8pzWZiHBkXFSxW4oFkcmw7w7tGzt3veZuRyONCs=;
+        b=bJrkvwNClm4x6UQX+T2L7Gf9XD5p+TsM6QJj8IkqLZuYbCgmvYlufTQFg70rzrLF+k
+         SJXcz6GXcHwihKYtz7hFUBLQFZ1kjOxtIhzk3OdfYmSBvGpsTBTsh9wZ503ndv9zxHoi
+         aqgQLMT4eGgtNdt+3+UlM6IjwO/fxZAuCbgXos4mto2y5qMV2MfmXr2s+WJm3SQu3dGF
+         n18nQROERS6KnDP/vrSVy++82S3pEEQ/QwNzACH2r8B6Bp6nDZ574/nVm2icS07lycj/
+         ahL2cELiiLFpH0ub4F6Z0Zi7kTUn98XR16yWqgDENPFZZ21fxYItWJ4LHOVUOkoekDUL
+         sbzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvDIr7diY92fh+Fz2JKktmrX1WzGoJYA/Ohc0UgxC5KEuWSA/ZevrdIH0q83V43IsFO7jgTOfXBZUWL4t1aw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGTK1qO4WgDhyPa/juZMBB4AaNwB3Iuqm8Ylx69kKlgNerUVtY
+	o7rDyJUhSypm91nc69pV4Q/4MVU7ywl2yy24s/fR6msWeYS2lX/FbWC4xQVrzEGbZzk49ux9TT/
+	SA92i6OYp/+oXKUKY9A==
+X-Google-Smtp-Source: AGHT+IHRufGwFNMIvt/T3xJQqvQe4WFWXNq8a8WfNU6rCVwIEubSuGF/2DraRjnBtfk32fnbTi4quo01Nalys2o=
+X-Received: from wmsp6.prod.google.com ([2002:a05:600c:1d86:b0:45b:9a77:6f95])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3145:b0:45b:7aae:7a92 with SMTP id 5b1f17b1804b1-45b85570838mr83318775e9.21.1756799610677;
+ Tue, 02 Sep 2025 00:53:30 -0700 (PDT)
+Date: Tue, 2 Sep 2025 07:53:29 +0000
+In-Reply-To: <20250829-regulator-remove-dynamic-v1-1-deb59205e8e9@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCDVM56I5WPT.2L24NI3SBBIHU@kernel.org>
+Mime-Version: 1.0
+References: <20250829-regulator-remove-dynamic-v1-0-deb59205e8e9@collabora.com>
+ <20250829-regulator-remove-dynamic-v1-1-deb59205e8e9@collabora.com>
+Message-ID: <aLaieVp1U9JTTjP4@google.com>
+Subject: Re: [PATCH 1/2] rust: regulator: remove Regulator<Dynamic>
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Aug 28, 2025 at 09:18:40AM +0200, Benno Lossin wrote:
-> On Wed Aug 27, 2025 at 9:51 PM CEST, Gary Guo wrote:
-> > On Tue, 12 Aug 2025 10:17:44 +0200
-> > "Benno Lossin" <lossin@kernel.org> wrote:
-> >> On Thu Jul 24, 2025 at 1:32 AM CEST, Gary Guo wrote:
-> >> > @@ -34,6 +36,18 @@ fn as_ptr(&self) -> *mut bindings::refcount_t {
-> >> >          self.0.get()
-> >> >      }
-> >> >  
-> >> > +    /// Get the underlying atomic counter that backs the refcount.
-> >> > +    ///
-> >> > +    /// NOTE: This will be changed to LKMM atomic in the future.  
-> >> 
-> >> Can we discourage using this function a bit more in the docs? At least
-> >> point people to try other ways before reaching for this, since it allows
-> >> overflowing & doesn't warn on saturate etc.
-> >
-> > Would this additional doc comment be good enough for you?
-> >
-> > /// NOTE: usage of this function is discouraged unless there is no way
-> > /// to achieve the desired result using APIs in `refcount.h`. If an API
-> > /// in `refcount.h` does not currently contain a binding, please
-> > /// consider adding a binding for it instead.
+On Fri, Aug 29, 2025 at 06:11:31PM -0300, Daniel Almeida wrote:
+> After some experimenting and further discussion, it is starting to look
+> like Regulator<Dynamic> might be a footgun. It turns out that one can
+> get the same behavior by correctly using just Regulator<Enabled> and
+> Regulator<Disabled>, so there is no need to directly expose the manual
+> refcounting ability of Regulator<Dynamic> to clients.
 > 
-> I'd like to stress that the atomic doesn't have the same protections as
-> the refcount type, how about:
+> Remove it while we do not have any other users.
 > 
->     /// NOTE: usage of this function is discouraged as it can circumvent the protections offered by
->     /// `refcount.h`. If there is no way to achieve the result using APIs in `refcount.h`, then this
->     /// function can be used. Otherwise consider adding a binding for the required API.
-> 
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Looks good to me. I will apply this and some adjustment against my
-atomic patchset, and queue this whole series for v6.18, thanks!
-
-Regards,
-Boqun
-
-> ---
-> Cheers,
-> Benno
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
