@@ -1,115 +1,222 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F77826C384;
-	Tue,  2 Sep 2025 16:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8757C338F22;
+	Tue,  2 Sep 2025 16:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756830954; cv=none; b=YFn1ymJuJvzc8otYHTdBiZxBk4KrrWBfMa8cPqM45Yl1gi0NniORJFQj8W0abhFTNiGljGDgYs92nSxxsQ7NYCUXmGEciOjOVzgL7Ip1jI5NUKWhIKZciUqkis551CpoljC76XPuv5te9IilzRv0/2VGwLX/D23+O0M7F/rz7a0=
+	t=1756832375; cv=none; b=ZnZrJeQ9AL0F34t3+iCmyrGtIBLYxOadalJljkRwBQ6w5qTcbht9lXY2wVo8WTcxNAEizwIcHUz/BTiDSo2FmzSLWcQi3eGrwKA94jhuyBRT5ce5hAtN64typA8GzUQHObpcqRsxOcM+crbxQRowdMLsUvj3qtKSpSLDvw5AKHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756830954; c=relaxed/simple;
-	bh=4dMCQTY93FDdn7ueR8Z2tcJ3/CtiSsSmu2HzPGOu/Z0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XBa9bnlWl7GguzsSLZW7929djLaS00vjpAjBkAmW40npqnkEE5CHxaWsUWyT+KVxu+pPYS6yVN9BuIIijhDvnIDH7QJIRvVbMiX85y29ZS/PuiSy9+xEE72mZR890rdGX1Mnjcrvi+nNU7oLo9GJqd5/S8rWc76KENhkfkFKsBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rBh3Pmjc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756832375; c=relaxed/simple;
+	bh=qFnTN56sB7klTE/kTUgYsnLu/b/+XZos+9jGaW7e2nc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BeXKXBaUQl9jV8+h0xjZ5siuB/7T00TNhKGVarITesChmfqS3BaGYsRB/L4LS2o0vTC8/EtwLy1DlCUkWK4gaCbfmA/HSQhjMRGlCGpQAw7LRIGeq9t0KQ4djf7fTFnc3t7S7EIZRz0Rfz/lqa5zJxQURBn9h3MnTqYolEh7i4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=lFhvMuUn; arc=none smtp.client-ip=178.154.239.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rBh3Pmjc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCAEC4CEED;
-	Tue,  2 Sep 2025 16:35:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756830953;
-	bh=4dMCQTY93FDdn7ueR8Z2tcJ3/CtiSsSmu2HzPGOu/Z0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rBh3PmjcZuIEgrrElADaHH9xJIJUAI1t9Bk6cyJMewu7XYbg9zA1CaeEmGz+qtipd
-	 RNZlDjYi9KPC1zeQmwvRiKQ8lTfNaWlsrpU1KAMRZ4bkm1CNWp0GThlUm/fPJ8U/ef
-	 BsSPjZ1RB9m39VEWZ4BLO9AY5iwrokcWvaXLikixJk/aFZQ5m862kOg7s1ObYyK6g6
-	 EspIHiAp48J/5ZfpEPhy4pBonJx2/4kS1dkbMYn8Rpkrefk9HQgD9anbm/tEvFk3Kf
-	 ToZn5hB0Td9dLq/xAf91vB6dxGJ6qZ1Lpo5HXftZQx7mW0G3lXFmW78zg2tCUW3ZU6
-	 DNLjadeOIt0DQ==
-Date: Tue, 2 Sep 2025 17:35:46 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-	Matthew Maurer <mmaurer@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
-Message-ID: <20250902-gown-relapse-8fd3978c1ea0@spud>
-References: <20250408220311.1033475-1-ojeda@kernel.org>
- <20250901-shrimp-define-9d99cc2a012a@spud>
- <aLaq6TpUtLkqHg_o@google.com>
- <20250902-crablike-bountiful-eb1c127f024a@spud>
- <CAH5fLggmXaa9JJ-yGdyH06Um8FopvYh97=rANLcoLc+60_HGqA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="lFhvMuUn"
+Received: from mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:571a:0:640:23e3:0])
+	by forward500a.mail.yandex.net (Yandex) with ESMTPS id BF93D81022;
+	Tue, 02 Sep 2025 19:53:34 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id SriSpSnM4qM0-TBd5IlpC;
+	Tue, 02 Sep 2025 19:53:33 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1756832013;
+	bh=xa7umx4Lfjhq/cyvWV7Gk2Jm4uEENeyJxqeKfOkYBA8=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=lFhvMuUn47FkuNTCEr3SnWpEOHS9SXg7MF92lxirfOfNllxTb8I+0+5t47mnqdiwu
+	 eipCbokzD8pKz7tbUDGt08wfifVDUkzA4vIVviVdovbFA9hnmxhb9qEYd0JDrQpAIe
+	 hK9rC3WldTAJL7rVRUBPox4aErrG/BOwDZOZRCZk=
+Authentication-Results: mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 2 Sep 2025 19:53:28 +0300
+From: Onur <work@onurozkan.dev>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Benno Lossin <lossin@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, mingo@redhat.com,
+ will@kernel.org, longman@redhat.com, felipe_life@live.com,
+ daniel@sedlak.dev, bjorn3_gh@protonmail.com
+Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
+Message-ID: <20250902195328.6293b5d4@nimda.home>
+In-Reply-To: <182E916F-3B59-4721-B415-81C3CF175DA7@collabora.com>
+References: <20250621184454.8354-1-work@onurozkan.dev>
+	<20250724165351.509cff53@nimda.home>
+	<ec32fc5f5a8658c084f96540bd41f5462fa5c182.camel@gmail.com>
+	<20250806085702.5bf600a3@nimda.home>
+	<539d3e0da773c32a42b4ab5c9d4aa90383481ff6.camel@redhat.com>
+	<DBVLEGFYBWKE.2RW8J853CJHTY@kernel.org>
+	<20250814141302.1eabda12@nimda.home>
+	<76D4D052-79B6-4D3F-AAA1-164FF7A41284@collabora.com>
+	<20250814185622.468aad30@nimda.home>
+	<182E916F-3B59-4721-B415-81C3CF175DA7@collabora.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4EeWks93mszFnPWF"
-Content-Disposition: inline
-In-Reply-To: <CAH5fLggmXaa9JJ-yGdyH06Um8FopvYh97=rANLcoLc+60_HGqA@mail.gmail.com>
-
-
---4EeWks93mszFnPWF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-> > AFAICT. Then later on it'd become more like:
-> >
-> > config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
-> >         def_bool y
-> >         depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
-> >         depends on RISCV || ((ARM64 || x86_64) && RUSTC_VERSION >=3D 10=
-7900)
-> >         depends on (ARM64 || x86_64) || (RISCV && RUSTC_VERSION >=3D 99=
-9999)
-> >         # With GCOV/KASAN we need this fix: https://github.com/rust-lan=
-g/rust/pull/129373
-> >         depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=
-=3D 108200) || \
-> >                 (!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
-> >
-> > but that exact sort of mess is what becomes unwieldy fast since that
-> > doesn't even cover 32-bit arm.
+On Thu, 14 Aug 2025 15:22:57 -0300
+Daniel Almeida <daniel.almeida@collabora.com> wrote:
+
 >=20
-> I think a better way of writing it is like this:
+> Hi Onur,
 >=20
-> depends on ARCH1 || ARCH2 || ARCH3
-> depends on !ARCH1 || RUSTC_VERSION >=3D 000000
-> depends on !ARCH2 || RUSTC_VERSION >=3D 000000
-> depends on !ARCH3 || RUSTC_VERSION >=3D 000000
+> > On 14 Aug 2025, at 12:56, Onur <work@onurozkan.dev> wrote:
+> >=20
+> > On Thu, 14 Aug 2025 09:38:38 -0300
+> > Daniel Almeida <daniel.almeida@collabora.com> wrote:
+> >=20
+> >> Hi Onur,
+> >>=20
+> >>> On 14 Aug 2025, at 08:13, Onur =C3=96zkan <work@onurozkan.dev> wrote:
+> >>>=20
+> >>> Hi all,
+> >>>=20
+> >>> I have been brainstorming on the auto-unlocking (on dynamic number
+> >>> of mutexes) idea we have been discussing for some time.
+> >>>=20
+> >>> There is a challange with how we handle lock guards and my current
+> >>> thought is to remove direct data dereferencing from guards.
+> >>> Instead, data access would only be possible through a fallible
+> >>> method (e.g., `try_get`). If the guard is no longer valid, this
+> >>> method would fail to not allow data-accessing after auto-unlock.
+> >>>=20
+> >>> In practice, it would work like this:
+> >>>=20
+> >>> let a_guard =3D ctx.lock(mutex_a)?;
+> >>> let b_guard =3D ctx.lock(mutex_b)?;
+> >>>=20
+> >>> // Suppose user tries to lock `mutex_c` without aborting the
+> >>> // entire function (for some reason). This means that even on
+> >>> // failure, `a_guard` and `b_guard` will still be accessible.
+> >>> if let Ok(c_guard) =3D ctx.lock(mutex_c) {
+> >>>    // ...some logic
+> >>> }
+> >>>=20
+> >>> let a_data =3D a_guard.try_get()?;
+> >>> let b_data =3D b_guard.try_get()?;
+> >>=20
+> >> Can you add more code here? How is this going to look like with the
+> >> two closures we=E2=80=99ve been discussing?
+> >=20
+> > Didn't we said that tuple-based closures are not sufficient when
+> > dealing with a dynamic number of locks (ref [1]) and ww_mutex is
+> > mostly used with dynamic locks? I thought implementing that
+> > approach is not worth it (at least for now) because of that.
+> >=20
+> > [1]:
+> > https://lore.kernel.org/all/DBS8REY5E82S.3937FAHS25ANA@kernel.org
+> >=20
+> > Regards,
+> > Onur
+>=20
+>=20
+>=20
+> I am referring to this [0]. See the discussion and itemized list at
+> the end.
+>=20
+> To recap, I am proposing a separate type that is similar to drm_exec,
+> and that implements this:
+>=20
+> ```
+> a) run a user closure where the user can indicate which ww_mutexes
+> they want to lock b) keep track of the objects above
+> c) keep track of whether a contention happened
+> d) rollback if a contention happened, releasing all locks
+> e) rerun the user closure from a clean slate after rolling back
+> f) run a separate user closure whenever we know that all objects have
+> been locked. ```
+>=20
+
+Finally, I was able to allocate some time to work on this week. The
+implementation covers all the items you listed above.
+
+I am sharing some of the unit tests from my work. My intention is to
+demonstrate the user API and I would like your feedback on whether
+anything should be changed before I send the v6 patch.
+
+    #[test]
+    fn test_with_different_input_type() -> Result {
+        stack_pin_init!(let class =3D
+    WwClass::new_wound_wait(c_str!("lock_all_ok")));
+
+        let mu1 =3D Arc::pin_init(WwMutex::new(1, &class), GFP_KERNEL)?;
+        let mu2 =3D Arc::pin_init(WwMutex::new("hello", &class),
+        GFP_KERNEL)?;
+
+        lock_all(
+            &class,
+            |ctx| {
+                ctx.lock(&mu1)?;
+                ctx.lock(&mu2)?;
+                Ok(())
+            },
+            |ctx| {
+                ctx.with_locked(&mu1, |v| assert_eq!(*v, 1))?;
+                ctx.with_locked(&mu2, |v| assert_eq!(*v, "hello"))?;
+                Ok(())
+            },
+        )?;
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_lock_all_retries_on_deadlock() -> Result {
+        stack_pin_init!(let class =3D
+    WwClass::new_wound_wait(c_str!("lock_all_retry")));
+
+        let mu =3D Arc::pin_init(WwMutex::new(99, &class), GFP_KERNEL)?;
+        let mut first_try =3D true;
+
+        let res =3D lock_all(
+            &class,
+            |ctx| {
+                if first_try {
+                    first_try =3D false;
+                    // simulate deadlock on first attempt
+                    return Err(EDEADLK);
+                }
+                ctx.lock(&mu)
+            },
+            |ctx| {
+                ctx.with_locked(&mu, |v| {
+                    *v +=3D 1;
+                    *v
+                })
+            },
+        )?;
+
+        assert_eq!(res, 100);
+        Ok(())
+    }
+
+    #[test]
+    fn test_with_locked_on_unlocked_mutex() -> Result {
+        stack_pin_init!(let class =3D
+    WwClass::new_wound_wait(c_str!("with_unlocked_mutex")));
+
+        let mu =3D Arc::pin_init(WwMutex::new(5, &class), GFP_KERNEL)?;
+
+        let mut ctx =3D ExecContext::new(&class)?;
+
+        let ecode =3D ctx.with_locked(&mu, |_v| {}).unwrap_err();
+        assert_eq!(EINVAL, ecode);
+
+        Ok(())
+    }
 
 
-Ye, that's a lot more manageable than what I came up with, shoulda
-really done better since the option I used for a reference looks a lot
-more like this than what I had... Thanks.
+Please let me know if this looks fine in terms of user API so
+I can make any necessary adjustments before sending v6.
 
---4EeWks93mszFnPWF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaLcc3gAKCRB4tDGHoIJi
-0jnKAP9LYjFVXcrh5zaOZUH0oAgMo/4x8LRtidC5WGVJnSFzRAEAwRmIFTqnghCO
-5eXDhlTuIMYMEiqkRoSEu+mM/OF6PwQ=
-=RGAX
------END PGP SIGNATURE-----
-
---4EeWks93mszFnPWF--
+Regards,
+Onur
