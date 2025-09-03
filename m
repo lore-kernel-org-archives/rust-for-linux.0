@@ -1,82 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4A12EBBB3;
-	Wed,  3 Sep 2025 08:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A972F28E2;
+	Wed,  3 Sep 2025 09:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756888070; cv=none; b=HLkZI79WuJW+9WtiJetZtARfSI3S9+f9bOcWxui1H4sjpz48fmXNsqLKbq2KDnUgJ8B/dtpZ3gwsQdhCIB6H36Y/4wH9kQ1ieKvsjjlF03KfEJc86BU51y/95QX+qGd7sbnN+Ew+TQ4nZNnbaXdKImHyuD8uTWeIfS78ETQ23F4=
+	t=1756890771; cv=none; b=miMqM9lSSeMOiNA4GJ1vN+Lg/jIShBQH1sb05BkRQrdB0uIY9/MPoiG14r6O54aQ3k+e34Zl2Jt4JHJR3li+fTPEgjHFmp44691PQHT40inqd2FRIok863jrWIwE3Medcp2hnSZ9UP1eXhbe1Kg0HAsljF9uaYKmrZNti3kzd6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756888070; c=relaxed/simple;
-	bh=RB95aOX+kayC1qRy+/KzYs7xMyQLdRtju6GyR1JJy4c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=dHWpdCjP+nc8G/p1QM65Y/IrJ/wYDDGfHKvgdil8LDx8Gb6GBK/70mcgmYOPOPGIHN+o9TJiCgBSbKnmluIU2xguu8LVam5jw0qt4fHBWkgczlu5kH56oy3iqzX/ewFL7GKoo4JV+R5zDyn3W03ooCvLJqvRXsTr0UK21OV8vmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGTyGxhX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756890771; c=relaxed/simple;
+	bh=u1dUo+ncWnByrkiVnzOKVZT2Xjkh2cB3EGgl85trqm8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iN1e8BWZ2DNl6QxgTO8tlnFbhrN+qe12C4chJhh0hNnR2kqt0VDWE7xTyESpd84I49F5lIoLGFAjC4n7jahs54UtrhErY5ik8m8mO+frVFGUIFZrUtjEnMfW4uvqNrk5rg23JuIV90gR4vlyQ+ArV0YjIrvEbBizdi/QbSS0efw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNYk8X+A; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGTyGxhX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCF1C4CEF0;
-	Wed,  3 Sep 2025 08:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756888069;
-	bh=RB95aOX+kayC1qRy+/KzYs7xMyQLdRtju6GyR1JJy4c=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=GGTyGxhXDPj/D/mL/FktKW2Jhl6+O+srYKvLL2UpeNyBlC/2u5YUY6Xcw2fBujEkw
-	 djeD3MthykhOOjLgMXTk2on5Tvs4Clbj8mXVtFbDE5Vx9It70FI/kaP0bGrPqvEQ/b
-	 w8VU/q9XxXYjn3LuQiugbvIvBpZT47OEEoe3kOCC/LkVq5mlpYNn9/w9WqlaI2E+5G
-	 HJu8ZOQ07xw8IrpW+hnTRrChSbA5nWZ4T1E0Vv7MzA17uav1faItGrtQL+e19yB7WN
-	 fw1EJ2OygYlfoHT+I3kF3SpcJHrjFSsjjhrfJR++PWU1kt7EdVA0PkIW93dO/GE0GC
-	 yDOKvPV6wcM6Q==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNYk8X+A"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-24ca270d700so414445ad.0;
+        Wed, 03 Sep 2025 02:12:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756890769; x=1757495569; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u1dUo+ncWnByrkiVnzOKVZT2Xjkh2cB3EGgl85trqm8=;
+        b=jNYk8X+ANTyTPRZOQPNw1aFoWqog6BEEILMH3skLcNgtY0K8fn3AWwZHdsE19Hqmyl
+         Pfypr8WnVKbhn3I+bVndrO0FiHsqv1U/KIrnd8tLJ/nfUghGv/JlF9TLtQFzGifdUYz6
+         05vwvvDnUwDpLrS+bPCC+A9sDADhG0YiOfSDL+LvwkGOqIOmStedOomAATWMiz119RcM
+         oluwgydm0VPlIubZ8gyEk8xWYc1GMvRwvXt6tQP+9MUmKA4Gk7As035oaFqkCmiUshKX
+         Bpu2vkl4oEDT1Db7KtAIB4lW90yCa+nTX3HOuC6OtQUTfsT0JBf1euTNI+Q7Qu1rMYB6
+         Ziog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756890769; x=1757495569;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u1dUo+ncWnByrkiVnzOKVZT2Xjkh2cB3EGgl85trqm8=;
+        b=M07vQAsmFJ+OC3IZnb01xI98Cu/MRuD4ngTzZ7ujXOuS3SwcFASOMy18LXVDwu8rjp
+         BAEmhIwZyRXrDYeb72zPVNp8cKCFGqZlFgjC7OCl6TG3vtoAd1eXwuTZGKLGQFxHwedX
+         dGxOm2QnTJJDYc/ib9qqJ4onUAciQSNFAFXP7KYCNuPIbRBNCF/LWjMSK62cW89toJhA
+         zLY5I6KtYHNd5snk+N79q7DfjWDFSeOvJaudMEJlERr6bHYEm+ZUO9nWAYjJYTNqeALP
+         IuMULJT92OlDsU6VaBuF6Pl49Wv7XW/hnKnDAA873FLt4rvZlu8WcrWcvmqoqEH4Srge
+         /ZFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5NAcBVcJkFkdYVjZ8Lqy8lGVuP6hYXtzYB2r+IyTanO+ylGMc6onoKnveRBT3YJCnu2RA+F4mMJCkO1Mb@vger.kernel.org, AJvYcCWoEUmoYQItupAHVyO5QL8bK3/6C8uCw0s2/iwnj+gn+7OlXV4tws4bdUW/iUB5MG8pGsXMZz31KlmiY3h2Fnc=@vger.kernel.org, AJvYcCX1HVhvNvmqTxDt3ekzaI3fRFn+TKLGFYAWaIHKECZkef6ZUhHe12N0RXphktXUV2sHPTH7KLBw@vger.kernel.org, AJvYcCXa7EST1Nz+38YUUZQlY7/rfuSL3bAIdHeVwkmMQBkF4g7o0naV75rR5Jl3ltazmpkJpIOizWfbmYof2k0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP91y4xwQ5uY23yaQOMFsvjOHMBUqkEY5NyxfSkRaSgvqTkCYZ
+	VZQhDopg/ZE1YhekLOaG5nqtl61J1LBRA5InMxJ5ichsHxfZxvRiUb+2WK+4WMyF97VYFVR956A
+	4xcu+DLSKYYd5nErPdgdsFAaO2x/Xpe0=
+X-Gm-Gg: ASbGncsj5RHBfsr9QBEVfeENZbeSLXizutKcMTkz7ZonyQ9t6toyh+i8s9Xwant8xNP
+	RLIFLVsmA/UDgw7PyYk45ONG4zJ9HdVTnPAYiNFc7Ve5De6XfBjATmlOucbG0V1gxI982rTK9Lf
+	yQvatfYrrVsRlNZSTMv7wK34Pu5nL05HlR05H8dIEyVyGAYwXkbTyGyRQVxRI3ct2KE/nSpOzXT
+	b9L/eoOrxOJ/dYK/00AgceTFdJozJ55Oc32FvLhSHjs8SE1V9y9ijf49DTiDqtHxYFcBF60lZvT
+	Ie3TLcWycgSJhAytn3YR5fM3x6nrp7xZBA5p
+X-Google-Smtp-Source: AGHT+IFy+V9mXKNgGUInVKnO4rUD7VlssVnjx0POASZsCkyJ+rfepXrTHaYt+5C8DyDBAIFxdX2YSb9WPGAXKP6wep0=
+X-Received: by 2002:a17:903:41cf:b0:248:b43a:3ff with SMTP id
+ d9443c01a7336-2491f246be0mr103559945ad.8.1756890768748; Wed, 03 Sep 2025
+ 02:12:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250408220311.1033475-1-ojeda@kernel.org> <20250901-shrimp-define-9d99cc2a012a@spud>
+In-Reply-To: <20250901-shrimp-define-9d99cc2a012a@spud>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 3 Sep 2025 11:12:35 +0200
+X-Gm-Features: Ac12FXzVStDccJZt9jg6LxgcDhbP5A9e31eO3h_DSesybX7nfJW90L6qE4tU3Nw
+Message-ID: <CANiq72=hD3No2R8-8znrOsL+AEs3rCVjNn3sn-d7qKSKZaGWvg@mail.gmail.com>
+Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
+To: Conor Dooley <conor@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Sep 2025 10:27:43 +0200
-Message-Id: <DCJ0UA7KM9AP.OGO7EJB4ORQP@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 02/11] gpu: nova-core: move GSP boot code out of
- `Gpu` constructor
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-References: <20250902-nova_firmware-v3-0-56854d9c5398@nvidia.com>
- <20250902-nova_firmware-v3-2-56854d9c5398@nvidia.com>
- <843554b1-f4c5-43f5-a23b-583339708bea@kernel.org>
- <DCIZ79KKSSF1.25NJT5ZWR3OOS@nvidia.com>
-In-Reply-To: <DCIZ79KKSSF1.25NJT5ZWR3OOS@nvidia.com>
 
-On Wed Sep 3, 2025 at 9:10 AM CEST, Alexandre Courbot wrote:
-> On Wed Sep 3, 2025 at 8:12 AM JST, Danilo Krummrich wrote:
->> On 9/2/25 4:31 PM, Alexandre Courbot wrote:
->>>       pub(crate) fn new(
->>>           pdev: &pci::Device<device::Bound>,
->>>           devres_bar: Arc<Devres<Bar0>>,
->>
->> The diff is hiding it, but with this patch we should also make sure that=
- this=20
->> returns impl PinInit<Self, Error> rather than Result<impl PinInit<Self>.
->>
->> I think this should be possible now.
+On Mon, Sep 1, 2025 at 7:46=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
+e:
 >
-> There is still code that can return errors (falcon creation, etc) - do
-> you mean that we should move it into the pin initializer and turn it
-> into a `try_pin_init`?
+> I'm not really sure what your target.json suggestion below is, so just
+> reporting so that someone that understands the alternative solutions can
+> fix this.
 
-Yeah, that would be better practice, if it doesn't work out for a good reas=
-on
-we can also fall back to Result<impl PinInit<Self, Error>, but we should at
-least try to avoid it.
+If you mean the last paragraph of the commit, then what I meant is
+that we could do the filter conditionally, so that `rustc-option`
+would work to test flags that require the `target.json` for those
+architectures that already do not use `target.json`.
+
+Cheers,
+Miguel
