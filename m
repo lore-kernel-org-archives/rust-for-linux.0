@@ -1,195 +1,175 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2077.outbound.protection.outlook.com [40.107.101.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7592F2D5C92;
-	Wed,  3 Sep 2025 21:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756936672; cv=fail; b=VXZzoXbSOR7g6glVt0yZUFMfCkSeU9hmENRjaImvOtxLnShm7Ve/a6AXBU9ohPpCTZX3Z4RaDXzKyCeMJrCs4mQkaFYD+M9UcOVahMUq3BsDAb1tSXE1Af1BMTx1YqduxJqk2M55UCiMnp6Ubte3u2vxDMyYrqxWSFpeRDM+wq8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756936672; c=relaxed/simple;
-	bh=UidDljYV15bCQclPjnivKuFKmx3GWB3A8ZQ5lLYnGBM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=fi1d0CUnM6t9Vr0avgzAxoTkiDaXDRt6kz5UO1UQ57DEqGIrZ4T+SPVyW7/fRrJorD1RTjBX/AJaotP3/0BqxG6DAI7FE8m/lkuZaz4polIHDH7XAUYcmCsVJU9pH8VfX6ECn1QQ7Up9jmU6SeTtHvv5Y31ey427X71g6/QEHa4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=C5InY7kj; arc=fail smtp.client-ip=40.107.101.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5AD2C11F2;
+	Wed,  3 Sep 2025 22:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756937037; cv=none; b=N/1UIx0Qh1cGZbGvLxf1wWAO9aXFljCdWlDJwplEvgz6q0q0NR3z9StV1LY3D/NFFtbGRw6xMQRWr5vOhGTqw+wqLA/QqNGKIq9tYfQFatciO9CamFgKK+xM5j25/bhNXAhvOv7QoxJFAVLhBDIFPgZWMfuGD+Ee01J0n+GR4PU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756937037; c=relaxed/simple;
+	bh=TwDdvBFvSvsOarwoKovd0tvWzgb6n8Y5qHyXtmkaZDg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k4D36AkQ/HGLASIaz5rtL4OWFBJUAtrIzxJfTbHzTyPCfdyjwRD6FpH+tcFOn/AEfrofnajrOlR864xvj8HiV+BbwyeT7U0/FUHQC3H//EkCpA7hE/EBg7j9P24cUWfs/efnTI2bsMtmeA4254HfnZ3BO4VFjf16X/R8DCvmtcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gDKlXnA7; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="C5InY7kj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T3fuRzowxL7e2+Ds3HeCb5JNoGcoimRsu7oquQOhmYhxKQ+kkGyESszpUJ6j50wHoP0V2+oUx6arcOnec6W5DThgxaPtk7CetjfcodwnA2oHoJeqWfq/KDqEyY/CH9KAYKBamqKHnipIPuiX6lcBqiF9PvrN9AGyhMPiHrdDQkTezCE75tbh1K9zb1CM8JNEUwB/y+u2vL6MUfFGWELVtq6EeWq7Mpc8pCUzQr62brw48E/zNaEuq5V1AF5C4VFcBbkstZbFaAmc7A72Bz3o0b+UskvIaGYSqhIYYgkVXoedLSewqBeSvA+0nGevpNwvsgXX8sYiLf1AHy/XRyfRsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lr7WOTpyxRmZ8r6DZ+00v837fRkNDKwC+v3dREZ87zc=;
- b=YiSh/4HJc9CpHEgQ7eEPoLKyZoPxOzlXdmmu8kewU3ms8qvFF6OhYlmXOmX+fVCtADjiHo8gbZlqjNJM5Pcy+YAzdP3kcXvWAC+n3O6mnqstXuMoMEuTWYKaTYu4eWUxA98AaqPQCbRAPYwBuD2WZKI/VFMFxhqqCglu3/jE6ylR2eJ+4TTpDjEITFbFiXw4HFPJYxYfov8rRZ5TK8SxnAY2Z43WIVxILsohjvxe/cd+fQRCA7tptjCmWFxFQj/Lz+mX+g7PJt5W4Zt8osYFyXfy8cwxeaezA3T3hsT6hPuyZ2MIsdVcNkCefGft2mnEZHPHyjmXPnIFLRFaoDcDwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lr7WOTpyxRmZ8r6DZ+00v837fRkNDKwC+v3dREZ87zc=;
- b=C5InY7kjgpuL2KRAAdPTkMauCcjIFQjIKxKF2zVpaYVVxwpLzKi24Ecrlz9xEgu06q545OUsj5G/npmlZgp8iHv32XBV1VoLdbEhYWj8WGn/r8VrKdgg8KLCIJxNo9djA3Tdqc8khCLXWhgk95zsmb54kSq2jfW3l9ZDNyOkv9G+52Hr9lsEXrHTtW1oeamFCMUwBZovLH+QaW/JCEzSrUTQhlXH/KUAEdPVxXqdRmQYgRnXLwZPeWQuyjlX4tOqleuGmrEkoNLUnmmRnNAGHnT4+IB+SaurJKel4oFNC+NmGOsl6dz3YNe7UOjUqyFHcYAC8W5mKXWAQnEybY8oPQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DS2PR12MB9589.namprd12.prod.outlook.com (2603:10b6:8:279::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
- 2025 21:57:49 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9073.021; Wed, 3 Sep 2025
- 21:57:49 +0000
-Message-ID: <3eec959e-b15a-4d32-92f5-d95f187319bf@nvidia.com>
-Date: Wed, 3 Sep 2025 17:57:46 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] rust: Move register and bitstruct macros out of
- Nova
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- dakr@kernel.org, acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
- nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-References: <20250903215428.1296517-1-joelagnelf@nvidia.com>
- <20250903215428.1296517-5-joelagnelf@nvidia.com>
- <2B8C8645-206C-4BDD-8EE0-07E79A78E3F1@collabora.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <2B8C8645-206C-4BDD-8EE0-07E79A78E3F1@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN0PR07CA0004.namprd07.prod.outlook.com
- (2603:10b6:408:141::22) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gDKlXnA7"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-772301f8ae2so369441b3a.0;
+        Wed, 03 Sep 2025 15:03:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756937034; x=1757541834; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jG0m6HNJ/BCPE0TOqPLp7Ou6yvk+l9Cs7COyFN/45qQ=;
+        b=gDKlXnA7bC/er2j4z7OcqdNRs8CbRhFqirOuZMIraNgwh9/PVYUlW8sdVoIzzK4x0x
+         eoMPjgUHdzjbsmEq2aWJiX/vC7EoGEHzb4t4bjIEcyAI4HrRQ3tx0wOEelLaPck1rlEm
+         9TQPuLpUlN0Hp+0Gp9JJj8AHXLptlvc2D/3kMMKYTMsg2pVstvqssq6QsTrUQ861gp69
+         Mad9dWCKE0wa3XWr5N8fMGl6CkBXlhBNWHWiS852FPgGRPDCLB3yo9jSLPruklIshxPw
+         FZTmNB0nPl4iuUA/MvKuUCOlWxExKgBnDU9m7IwrV+wPZn7uAAl5UGPgqqEzAgiKWyFP
+         +lCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756937034; x=1757541834;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jG0m6HNJ/BCPE0TOqPLp7Ou6yvk+l9Cs7COyFN/45qQ=;
+        b=gbZR6l6Db75f8AMCWHaOtFEcnUnGN8Jd+KaVU8vyUluwMzZvLwMP7H0tRQc32GpqC6
+         9bTQNF7MYu9jNW37uRO7T8ZdLUCth4OVLDPezB1tuOFWZ0rDuQYtIYXHX0U7I85pDTcT
+         ii+3v6ErMZtjNJLRfgvyGw+j8UVbeitaYeUyNJSREKHSMyIoTubh36YndPU39YdwMdJc
+         uqC8k9KULTDqZb9NQrSgUT1m/R69lsTZFntBihtC7sXlbrA1Uyac4YMTd5mKwUJsw2NC
+         ewNlgxEZCfI6DjpUKz0s7/030PTeicWSAcF6osfJHbwul8EyYZO5b/LnpQ50dqXKIxDQ
+         /7QA==
+X-Forwarded-Encrypted: i=1; AJvYcCVoiTpL70inM12dTZKd88mG/uJzIRvpa5L64492nf5AJtJUABy6bcRJ6UMb3ORphOLirB/O+mOBFJoX0TMnfpE=@vger.kernel.org, AJvYcCW3lXQm1M4jF5nOLarbwKP4piPqNSs3PzoSMX3NJ3qth25Tw/tyzrWafXM2hRLqIbYpDVGcwxUIvZ05Ghw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX0mfB00Hjzp0y1GkYyXkyVlitu31bcNzGiTUTQG2NjsKV5UpV
+	bgeQzQaJk6w1GWPoqFqCBKH8pJadb38ydiv4CjDbndF/garnSlljL8Gd
+X-Gm-Gg: ASbGnctEc2aOyuTBMSvHmY88X4eAJ4gnbbZOjQy55HdPNwKNE4zh9MSS5/s9VFGKRXQ
+	RHzFTMfGbmC/O6M/pBUXzpo8Hlj6a0YjCfiRUmUL7/+yyM0tzcEDpv9ZrIE7UBiIzCGkZu/JF8i
+	8/7qeHGQbHdxld/FgHxLhcFpI2Gpej5+vJ/UJ/8AzzyiaqlNVHQdUCZL1IEOolG6r0Nge7B44Da
+	rSx/6QtH6bayHJbJN9p8bG/gif043shPzmWqQp2GEORd2N9Sq7Bh51Y87jyuNYRf9SEbVUAeHAf
+	gXTWgDiykaThoHdgma1JSwHLgi3V04WDU66xGAcMdE296JdAlo1lFLxWoIC8/LHXgYif30E0Lya
+	MCspRr49lHOCOsXhlri8lfHhbY4mUSqu8
+X-Google-Smtp-Source: AGHT+IGFzD46F74vfRZav7p17SnqQadIrOzjssirKipnGqHhiSHqc/rNHmh16H0lV55oT0r9qjPfFw==
+X-Received: by 2002:a17:903:2301:b0:237:d734:5642 with SMTP id d9443c01a7336-24944ac6b51mr224607925ad.41.1756937034059;
+        Wed, 03 Sep 2025 15:03:54 -0700 (PDT)
+Received: from localhost ([216.228.127.131])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24b1b5e5902sm54229625ad.49.2025.09.03.15.03.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 15:03:53 -0700 (PDT)
+Date: Wed, 3 Sep 2025 18:03:51 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Mitchell Levy <levymitchell0@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 4/7] rust: cpumask: Add getters for globally defined
+ cpumasks
+Message-ID: <aLi7Ptya5xp22P-B@yury>
+References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
+ <20250828-rust-percpu-v3-4-4dd92e1e7904@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS2PR12MB9589:EE_
-X-MS-Office365-Filtering-Correlation-Id: b52efc8c-cbd4-4649-2e5a-08ddeb34ec28
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?M0xGVHRNVzJSUGlkMGNhVTJ0aDNqMUlvN1RLdEVNZ1ptTnNvK1JqWWJqZ2ZW?=
- =?utf-8?B?S1p5cEorQno1Wi9vV2wvY1h5QUxkbUYrOThJOXVXRXFqK1prV0pIdG0rZkV0?=
- =?utf-8?B?eVB4WXNaNGlva3BZRFhEcGQ4UDFONTR1cVVBWHZPVzlsVGNVRTE1NVE4RjY5?=
- =?utf-8?B?dDF4TUhjRS9VZkgrMWpQZkZLN3ZXRzhhbGtXUUNtV0xKellYb0FRZGoyVlBy?=
- =?utf-8?B?WEYvMDRDUU1TNDBjVGs4d3FXcWpFdmg0RWphRHJJMDFyRHp5YWkweUtWeEYv?=
- =?utf-8?B?YlFiK1RTbUI3aTUwcGp2SWNOUVNZZmRGSGk1UWp3akhZYnlJQUc0bmNTQjdj?=
- =?utf-8?B?SWhUcUdzbjl3cjdjQkswUmxncUNCYXpYQ2UyQUJISHRXcnlKQWVwcXVTNFFj?=
- =?utf-8?B?RFJwVjZHYVZFQ1F6Tkc4RE5ma1lCV3JlaXlpdVRJTTNpNko4SlpZQnh3ZUd1?=
- =?utf-8?B?eHBQYUl1MnZVUXpJN3pGQ2o1MjFlbElhMXRvTFkyYW42aC9MUVJXUFdyakt2?=
- =?utf-8?B?aXorTVhyeXVQZjkwQkJDckQzSWhNLzBvNzlPczJSKzRZTDBHTFY4ZytFUWFV?=
- =?utf-8?B?NTdqaWRERk4vaXplK09ZaVI4c1BRL3VUdEhLQzVFSWdWNmNmekdXRnNGdzNE?=
- =?utf-8?B?V3dsWHFOVjZsRjRpdXlGVmduclVXeU94b2IrTzhVWUtGOUlmQWFOVHlyRUNq?=
- =?utf-8?B?TStzcUlsMmF5U0RNVkliNkFhY1g5dVgxakx4NEFlRkwzRnJEUmNMaXhjaCts?=
- =?utf-8?B?d1c1U0pqN3JYOEI0Y3BaWjFodTRrS05NcURuazVpcFJheTZnbTQrYXV1MWVv?=
- =?utf-8?B?SmY4Q2g3NTVhQU5OalhHR3FtR0IyN0NzZE1QcHBqaHhWRTFGUlRvTUJhaGZJ?=
- =?utf-8?B?YkRPbnduRmJkRngrMHZaR2VoZ2VMVTQzNEtNY3RVNDFudXNzTGs0SU5XVjZq?=
- =?utf-8?B?V3B2RjNHZm9LQ0tsVWFVcURlNFJIaWI4QnJ4SHNtdEJkYjJoc1JUaDB5L01k?=
- =?utf-8?B?Zzkvb3BJbS9Kdyt5MUVPbUJrbzR4bTF5c1NVcEhKVTQ2SkZqUDluQmdNY1ZX?=
- =?utf-8?B?a01mbG04MUxpYUE0bzhqanU3V0lNYk5ZM2VIbjluNXBwU1dRZ1ZlcjFhQmxN?=
- =?utf-8?B?eHZMNTRvMUFhK0phNmpMUnRtUWd5aVVBNDNGQ2NXN2lFcThRdkpSTHRsZ1dU?=
- =?utf-8?B?WisrSDEvb3ZqN3NjWmtuU3AzSnJMWUZxTVVIRk5aMi9RcmV6Tm5MdzNROE9x?=
- =?utf-8?B?UU5HMzQ1YkRnaU1KVzF5UW9xYlkxekZjVWtNaFZCOVhCcGVaQVdqdUlBUzdG?=
- =?utf-8?B?UVExeG1jVmVPN294TEdMVGVETjMreUVibEZVL3FBcE93amorVlp6YndKWndk?=
- =?utf-8?B?dStjbUhScEo1SjYyTmVyZG52NjQ1aUtvaHZQQnYvNjlhZzY3SFQ3VVR2SmxP?=
- =?utf-8?B?cGZheHU5Rm40V1VQTWh2MEM1SzZrYS8vM1ZCOFhUZFllU1VXRFNPcXNuc09I?=
- =?utf-8?B?VGFKakxxN0hQWVZzcDhoZms2dnNBZVN5VGJmNUhiKzZIcHowK05VdmxuMjdy?=
- =?utf-8?B?ZHpXckxMeUxkUXZWbFgxb1ljZjJFcENZeldBMnhjUTZ4cEs4VkxWR0VDdHIv?=
- =?utf-8?B?SUNzZHljRnFnUFlUT3F5TmQ5bFhkSjFpSVFFZ0IyUk1GOHRUbWN2b28ra0d4?=
- =?utf-8?B?Q3BhTEVWc0ZQdlZJQ3FNc2NUbUhJODhRNHRyZEVvbFc5YStMaFhGUnZhNUNC?=
- =?utf-8?B?bEVwQnFLSVAxcVJQVnlJRVlESTBTUTlsVzJ1b2d2eU9YYjVwcFBQaml4OWwx?=
- =?utf-8?B?eW1VVEh4VGQ0ZUkrdzZGRmIzdm1IR3Y4Z0RqWlhzNVlhUG93ZmRDazIyd2F6?=
- =?utf-8?B?SWRwcisxUVUvaUl3cEh3ejFMNlU5UUhQZDBtL2M3R3plaWl6YUErejFQd2FW?=
- =?utf-8?Q?m8k5BF1/tYQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MkZDZXJHcHpwdDU0d210ZEZqQk1pUnZNZEV6elFzSXF6N3NMd0ZxR2hjdmRy?=
- =?utf-8?B?dmszTGxvM2g0UmJJM3REVFFYY3VwUzRJTFVGbENzR2pubjM2ZDkxSzNLeFk5?=
- =?utf-8?B?M1N6bjQwN0t4ek1mM3lzTUNIVE9sckJCdW5xRlU0b25WN3RKN1M3Yld1RWZx?=
- =?utf-8?B?elZBelc5Y2hiREUrWEw2dkd0UDB6L3h4b1BIV3ZXa1ZBSFBNTFdNc1JtbitJ?=
- =?utf-8?B?SitMdWpCQTBlU3VIb3kwWTZFQk9iVUtxVFI4a3dNYlNackUwTi9JblFESEdm?=
- =?utf-8?B?QkxGZU5SK1V2Y0RwcVg3NDg4ajdkQzdwRzVCV1I3OGU5V01PQ3ZVdVp1K2RC?=
- =?utf-8?B?L291RGdZYWJCSzFSYktEMVJrbERYbkZGZGxleklLOW1XQThkRVpXQXRoU2xa?=
- =?utf-8?B?Zm9hMmRiZWtXOFpURlBnMFFTWGJWV25OZEdjZWhWdExwUENBemhhU09LdFpR?=
- =?utf-8?B?NTRVWmptYi9JNnlCQ3k2dnhSVlp1cG5JMlFrditUdDRQQmxyMmlpdVNMdHo0?=
- =?utf-8?B?aTFsMWJkaEVYd294aWR6WHFRUlpybTRPSUR2bEN2MzU0RHEzR016bG5hL3g5?=
- =?utf-8?B?RVRwcWJhbGdUSEx3aC8zRWk3OW9ZazhCTzZxU3hCbmZTcERNcTVoSjR2YitE?=
- =?utf-8?B?YlhPaWtpVmJTdVlkbElqNXNDMWlNV0JhRkNpL0V0SlVKSGJMUDR2bDd2RmVL?=
- =?utf-8?B?QWUwcjl0UWRMdUMyb1FRQmlzL0hENGNXdzZVZ25DOW9rU1QwRVE1TFdleVVC?=
- =?utf-8?B?VG1BanhRakh4bnRTMXZadGFlL0ZaVXkydm1LMVc2QkxKN0VWangvYzRjUjdW?=
- =?utf-8?B?bkErRGdSMW5uVGI5Nm5aMHV2VlovckZzT1NocGtidEN2Wk1ORlZ4UWgwclJO?=
- =?utf-8?B?aUV6dHo5ZkQvbDJUY1JEZlF5UHVPNnFjcVZCYTlHM09rNUV2dS9HUFdYMG1q?=
- =?utf-8?B?Tk5NbFRJUWhtdU1nRHNsUCtJdmhiQ0xwN0oxL3lYTCtSRVRRTnJzRFkxa2FU?=
- =?utf-8?B?NlRNbGk2TWlnK1NOM0EwSXdvQTk1d1hFM2pGai84V2xVSmhaWTZ3Q3BlaFhx?=
- =?utf-8?B?ejd0NExSRHl4TUFrTXVTT3QrdkY1YVdwVzJuaUNTeDFjeGdoZENVaWgyY2xL?=
- =?utf-8?B?cE11YVNOZmxla2ZIY0NZc0I0WERsMmN2aTYvdDZ6R2RBc1VCY0pvUUdXenA5?=
- =?utf-8?B?UzdTRmRtc1hTdk9DMFRLRXVLckI5SVAyT3ZDL0NqUExETTk3cFNiejZIZkQ3?=
- =?utf-8?B?c0RVd1Z4VmYvbkQ5NkthYnQ5WlR6N2czVm9kaEtpZXdDbm5NUDFCTkdRMC8y?=
- =?utf-8?B?ZUxqL1M2UDhLM1JSNGNSMEFZdHVsYzc0RW1KMlF3ejBaZHlFS2MveGpTNzFD?=
- =?utf-8?B?YUFBbGhvUFQ1cTk5cXlLYytBZVZ2bTgvT0lhSkdid0xFakEzcWR2aFZZVUVY?=
- =?utf-8?B?ZkxEUDFJcWlBVklwakxHMXRQeGo0ei9kYjFQNVBGcTBiazRnd2F5T2VZTkdl?=
- =?utf-8?B?YWswL0FpUTJmMU1haE0vOGhGUDBhZ0hpUk1zUjNIYi9BWDEvWCtMN2l2cVBw?=
- =?utf-8?B?Sjc0Y29DUkZHVG5TTHJYd1BETm85cVYxOUl4VE9YY0xkM2NHaTMrdkxteHRV?=
- =?utf-8?B?SmYvU1RMU2dmQlV3NVA0Sm8vMkNyS3RtZnpNSGRaSnRtR09YQWFORzVxUHVW?=
- =?utf-8?B?QlF0SkQ1VFozN2RKRGVtN2ZnSmN1OHczRDBpeHdWYmtyNTlpcUV4Kzk3S0h6?=
- =?utf-8?B?WDdwSzJrU0VwZXp4cTQwY2VDSG9zS0VOdFlBaURRSlpKa2hyQUVFWEZBZE1B?=
- =?utf-8?B?eHUyZHZoMlprZkUxeGVtd1lHckRXWG1adUtyZTRKV3FnYWZ5ZjhiY2lIVG43?=
- =?utf-8?B?cmIxN0MzcnM3NU5FN3BKN3dqMVBDdHZHcWhkb2NGT2lGS3FhcjF1T0lXcWNC?=
- =?utf-8?B?RmxvQ1ZJNEp5eEQwL3Qxc0ZZZUw0S1EyN1pVTUdJQmFlRHJlZmNEVHJQTDZt?=
- =?utf-8?B?MDh4N1VsWitLUU9YOG9UbHRLQ2xjMG1maUVHRUFXclUxNVVuNDBUWFlFODNM?=
- =?utf-8?B?eEhocUgzSGl2ak1rR0dWaDFNd2Fmem9NRmw1WUpPK2ZZU1FsbzRsUEFzclV1?=
- =?utf-8?Q?8yVhn60ELgumj3DLyx+/Lvok6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b52efc8c-cbd4-4649-2e5a-08ddeb34ec28
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 21:57:49.1310
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DWvPx+pOM2cY97jLzj/uxSWO+0R0P2fj1kBc102z118W2fL1eyBXPZEWjbWh7WsBDZhUNQo2arpeCvkKUOMiJg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9589
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828-rust-percpu-v3-4-4dd92e1e7904@gmail.com>
 
+On Thu, Aug 28, 2025 at 12:00:11PM -0700, Mitchell Levy wrote:
+> Add getters for the global cpumasks documented in
+> `include/linux/cpumask.h`, specifically:
+> - cpu_possible_mask
+> - cpu_online_mask
+> - cpu_enabled_mask
+> - cpu_present_mask
+> - cpu_active_mask
+> 
+> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> ---
+>  rust/kernel/cpumask.rs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+> 
+> diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+> index b7401848f59e..ca9aa6875b4a 100644
+> --- a/rust/kernel/cpumask.rs
+> +++ b/rust/kernel/cpumask.rs
+> @@ -77,6 +77,52 @@ pub unsafe fn as_ref<'a>(ptr: *const bindings::cpumask) -> &'a Self {
+>          unsafe { &*ptr.cast() }
+>      }
+>  
+> +    /// Get a CPU mask representing possible CPUs; has bit `cpu` set iff cpu is populatable
+> +    #[inline]
+> +    pub fn possible() -> &'static Self {
+> +        // SAFETY: `__cpu_possible_mask` is a valid global provided by the kernel that lives
+> +        // forever.
+> +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_possible_mask) }
+> +    }
 
+This function and the following look like returning a boolean.
+Maybe possible_cpus()? 
 
-On 9/3/2025 5:56 PM, Daniel Almeida wrote:
-> 
-> 
->> On 3 Sep 2025, at 18:54, Joel Fernandes <joelagnelf@nvidia.com> wrote:
->>
->> Out of broad need for these macros in Rust, move them out. Several folks
->> have shown interest (Nova, Tyr GPU drivers).
->>
->> bitstruct - defines bitfields in Rust structs similar to C.
->> register - support for defining hardware registers and accessors.
->>
->> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> 
-> Thanks a lot Joel, I will pick this up on Tyr and let you know how it went.
-> 
-> Expect a Tested-by tag in the coming days.
-> 
-Looking forward to it, thanks!
+The general rule is to keep the rust naming as close to C as
+possible, but in this case Cpumask::cpu_possible_mask is, OK,
+somewhat excessive.
 
- - Joel
+Thanks,
+Yury
 
+> +
+> +    /// Get a CPU mask representing online CPUs; has bit `cpu` set iff cpu available to the
+> +    /// scheduler
+> +    #[inline]
+> +    pub fn online() -> &'static Self {
+> +        // SAFETY: `__cpu_online_mask` is a valid global provided by the kernel that lives forever.
+> +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_online_mask`
+> +        // may change its value.
+> +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_online_mask) }
+> +    }
+> +
+> +    /// Get a CPU mask representing enabled CPUs; has bit `cpu` set iff cpu can be brought online
+> +    #[inline]
+> +    pub fn enabled() -> &'static Self {
+> +        // SAFETY: `__cpu_enabled_mask` is a valid global provided by the kernel that lives forever.
+> +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_enabled_mask`
+> +        // may change its value.
+> +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_enabled_mask) }
+> +    }
+> +
+> +    /// Get a CPU mask representing present CPUs; has bit `cpu` set iff cpu is populated
+> +    #[inline]
+> +    pub fn present() -> &'static Self {
+> +        // SAFETY: `__cpu_present_mask` is a valid global provided by the kernel that lives
+> +        // forever. Since we wrap the returned pointer in an `Opaque`, it's ok that
+> +        // `__cpu_present_mask` may change its value.
+> +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_present_mask) }
+> +    }
+> +
+> +    /// Get a CPU mask representing active CPUs; has bit `cpu` set iff cpu is available to
+> +    /// migration.
+> +    #[inline]
+> +    pub fn active() -> &'static Self {
+> +        // SAFETY: `__cpu_active_mask` is a valid global provided by the kernel that lives forever.
+> +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_active_mask`
+> +        // may change its value.
+> +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_active_mask) }
+> +    }
+> +
+>      /// Obtain the raw `struct cpumask` pointer.
+>      pub fn as_raw(&self) -> *mut bindings::cpumask {
+>          let this: *const Self = self;
+> 
+> -- 
+> 2.34.1
