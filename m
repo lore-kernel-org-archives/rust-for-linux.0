@@ -1,156 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C842D63E4;
-	Wed,  3 Sep 2025 16:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3162D3ECA;
+	Wed,  3 Sep 2025 17:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756916671; cv=none; b=ivGlkiadMQ4dm7Bkrhn4+fcRDi1EqK1tOMjnCsawNygHDsNYjhTBpiDK/1+fNKbE2rmi2EsJ9yxNh2cIkvdgDIszYZXCrARfRFXEzfnu0PuOPrHRdK+F3Ee5ZmNon3oqrZoxTohtfTE50zMvMWasCHXipw6+EWLUzf7Yvg03pLs=
+	t=1756921123; cv=none; b=inT39sQ0LErbu4Ui9ucFRhelGigR0B1t30tLhBeXz81RJWEtbSlkgxmJoqV9I8OYgRHsG+cnHxCTiBywtjDB68qQB5nsSdIBneimsJAlFzMvvJZ37zO3qfUgpvDJzHA69Wbe9n18bP7+EtH5T1IBH67tRWEL/kTI52rWCjbR9L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756916671; c=relaxed/simple;
-	bh=DL6QTWpxjep8S77vkYK54cGY5aTugS5u3x3ExCSFzJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oyDjURu+ff3TvgbPLd7zbLEl949gA7smaqHwLVugvg9liQJ+m08ka3v5bahe2K8Nw4xfvowxCCbHfZRaHhgp9WPDfhfZc8S7pN8odX+lUhWBLkh+YNUvqvgZBkyb3Cu5Gd4xbIR2LKljyezWEPo1WDZdvvgJtdir/7KtojjaUas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ChG+Pq3q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756921123; c=relaxed/simple;
+	bh=sDtez26JtHmXj+HkncRjK6RMlpBQeh6/CLfdJ2yVa6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CpLAjrK0S9hgAq5CGAawpRC+vSSzq55Cnai2rGG680sNi5hsBtfEEZnlT02MJEOmYUFE8CwDFgwS9A4BrJCeoeYgaWTklqVuJWW+tJROPFtE2oU5EtRPOKgQcPyPE2IsAOvPAB4q0dXNiGOa/C+lKhfVoAOLWfNoWNODx7GI93s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=MLpmBGTQ; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ChG+Pq3q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEA7C4CEF7;
-	Wed,  3 Sep 2025 16:24:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756916670;
-	bh=DL6QTWpxjep8S77vkYK54cGY5aTugS5u3x3ExCSFzJc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ChG+Pq3qDcRC+nd4R6whFyaNia1iwrqnCqXksGoRITxD03ICyUn4RQpLKr7UHAkut
-	 HRog8JvEQ45l2VlKsVFoI9LC9sKQSL/HNK9SfFWeQoZbprCCTmfP84yQtFC9k30Lq4
-	 FoyU9CFEMGuHrjuHQ6UfINLNSNJ5hGot05u8Wf7hV6fkggnT0MF4KZvE7f/xR1BA7f
-	 asBYUj9eqs+WUq3QbfehrVWmUJ41gwf2LPp6p4eO7X8tL1RXU3fyOXAOhQd9+js6jg
-	 0yrCfVrD2RQLJCWa8Uhlrm9cyFCxj9zfO9OqYLzWH5bOnfUnYdfR45K2Fijj94GSlC
-	 DpZMs8XmcbIfg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1utqHc-00000007Vov-3kcx;
-	Wed, 03 Sep 2025 18:24:28 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>,
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MLpmBGTQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TkMyOEDRjY78DNgrgZNzSqvfgAP1GRrfp0tpaFEmIjE=; b=MLpmBGTQ+D7nUUcAIQLIrHGEZK
+	MlEGb+L/+rIntnWR3QLhHfep9Bj9JtMtHnoefOIWGWuX7wAZ+/wBcgSJheyV5POdiNLTOSr/YIGc2
+	dvsHmZ+/KDZyWdO/A2pC7HPehtNs1I6gVV/VNXl8CcvzPSaPune9GCi1D2bhcIpZO7WhbW0B4tyaZ
+	IskBniZBP1BPEf9Jb9pmGnnYQwj5uxYRuvLZyJy4Cq+f1o9LfaHxMB37UxB8xsgwdiEns1hpCPFI8
+	CsXGeQq61IWdteEhPbb3y3BHoOrP0DGJWSP8A1cneJaWA5M57TnS7eIG8Vsc3rmhp7C7wRYdI1d4Q
+	5Cdzkkwg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1utrRN-00000005ycx-24hl;
+	Wed, 03 Sep 2025 17:38:37 +0000
+Date: Wed, 3 Sep 2025 18:38:37 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <mchehab+huawei@kernel.org>,
-	Benno Lossin <mchehab+huawei@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Danilo Krummrich <mchehab+huawei@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Miguel Ojeda <mchehab+huawei@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 3/3] tools/docs: sphinx-* break documentation bulds on openSUSE
-Date: Wed,  3 Sep 2025 18:24:16 +0200
-Message-ID: <29135db8c8094006f256e1fa0b64663c735737e7.1756916565.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1756916565.git.mchehab+huawei@kernel.org>
+Subject: Re: [PATCH v2 3/3] tools/docs: sphinx-* break documentation bulds on
+ openSUSE
+Message-ID: <aLh9HVd8_S9LvSgv@casper.infradead.org>
 References: <cover.1756916565.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+ <29135db8c8094006f256e1fa0b64663c735737e7.1756916565.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <29135db8c8094006f256e1fa0b64663c735737e7.1756916565.git.mchehab+huawei@kernel.org>
 
-Before this patch, building htmldocs on opensuseLEAP works
-fine:
+On Wed, Sep 03, 2025 at 06:24:16PM +0200, Mauro Carvalho Chehab wrote:
+> Before this patch, building htmldocs on opensuseLEAP works
+> fine:
+> 
+>     # make htmldocs
+>     Available Python versions:
+>       /usr/bin/python3.11
+> 
+>     Python 3.6.15 not supported. Changing to /usr/bin/python3.11
+>     Python 3.6.15 not supported. Changing to /usr/bin/python3.11
 
-    # make htmldocs
-    Available Python versions:
-      /usr/bin/python3.11
+[...]
 
-    Python 3.6.15 not supported. Changing to /usr/bin/python3.11
-    Python 3.6.15 not supported. Changing to /usr/bin/python3.11
-    Using alabaster theme
-    Using Python kernel-doc
+> 1. after this change, sphinx-pre-install needs to be called
+>    by hand:
+> 
+>     $ /usr/bin/python3.11 tools/docs/sphinx-pre-install
+>     Detected OS: openSUSE Leap 15.6.
+>     Sphinx version: 7.2.6
 
-    ...
+I thought the preferred option was to be able to specify:
 
-As the logic detects that Python 3.6 is too old and recommends
-intalling python311-Sphinx. If installed, documentation builds
-work like a charm.
+PYTHON=/usr/bin/python3.11 make htmldocs
 
-Yet, some develpers complained that running python3.11 instead
-of python3 should not happen. So, let's break the build to make
-them happier:
+or even make htmldocs PYTHON=/usr/bin/python3.11
 
-    $ make htmldocs
-    Python 3.6.15 not supported. Bailing out
-    You could run, instead:
-      /usr/bin/python3.11 /root/tools/docs/sphinx-build-wrapper htmldocs --sphinxdirs=. --conf=conf.py --theme= --css= --paper=
-
-    Python 3.6.15 not supported. Bailing out
-    make[2]: *** [Documentation/Makefile:75: htmldocs] Error 1
-    make[1]: *** [/root/Makefile:1806: htmldocs] Error 2
-    make: *** [Makefile:248: __sub-make] Error 2
-
-It should be noticed that:
-
-1. after this change, sphinx-pre-install needs to be called
-   by hand:
-
-    $ /usr/bin/python3.11 tools/docs/sphinx-pre-install
-    Detected OS: openSUSE Leap 15.6.
-    Sphinx version: 7.2.6
-
-    All optional dependencies are met.
-    Needed package dependencies are met.
-
-2. sphinx-build-wrapper will auto-detect python3.11 and
-   suggest a way to build the docs using the parameters passed
-   via make variables. In this specific example:
-
-   /usr/bin/python3.11 /root/tools/docs/sphinx-build-wrapper htmldocs --sphinxdirs=. --conf=conf.py --theme= --css= --paper=
-
-3. As this needs to be executed outside docs Makefile, it won't run
-   the validation check scripts nor build Rust documentation if
-   enabled, as the extra scripts are part of the docs Makefile.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- tools/docs/sphinx-build-wrapper | 3 ++-
- tools/docs/sphinx-pre-install   | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
-index 932b1b675274..48e6e0a76aeb 100755
---- a/tools/docs/sphinx-build-wrapper
-+++ b/tools/docs/sphinx-build-wrapper
-@@ -719,7 +719,8 @@ def main():
- 
-     args = parser.parse_args()
- 
--    PythonVersion.check_python(MIN_PYTHON_VERSION)
-+    PythonVersion.check_python(MIN_PYTHON_VERSION, show_alternatives=True,
-+                               bail_out=True)
- 
-     builder = SphinxBuilder(venv=args.venv, verbose=args.verbose,
-                             n_jobs=args.jobs, interactive=args.interactive)
-diff --git a/tools/docs/sphinx-pre-install b/tools/docs/sphinx-pre-install
-index 663d4e2a3f57..698989584b6a 100755
---- a/tools/docs/sphinx-pre-install
-+++ b/tools/docs/sphinx-pre-install
-@@ -1531,7 +1531,8 @@ def main():
- 
-     checker = SphinxDependencyChecker(args)
- 
--    PythonVersion.check_python(MIN_PYTHON_VERSION)
-+    PythonVersion.check_python(MIN_PYTHON_VERSION,
-+                               bail_out=True, success_on_error=True)
-     checker.check_needs()
- 
- # Call main if not used as module
--- 
-2.51.0
-
+like being able to specify CC, LD or AWK.
