@@ -1,160 +1,136 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6981130AACE;
-	Wed,  3 Sep 2025 13:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756907259; cv=pass; b=k7AhYHfEqaWraHX+y2+z3ByOCjTsf7l71JqY6UeqSyEcWWE66XKwh+bs9WQhl1BoBeEXnGKU4yytDaCyxAwrS8kJoJNcJazc2wXtWfi7Rzs6PtLRKLyqraX1cLIfjwjTEufP6fDDebTlICzHtowloVIyVFobVR3nqM1P51Jvpwg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756907259; c=relaxed/simple;
-	bh=ITJTWecC+CSDvkSqKeo9BXVvz8TjMY6zMS2W+ttZqRI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=D7IYEHFSlJ+OI3PPXlLkxdRaf1Gr+PI5vbg3tDASBgbsI55EVuG6J0KL77GARkP4RBFutMUJYxp+zNHx5HEkvACkjzmXOPNMMjh1oFszCXhHlY0jHtbCg3XTFvwhkwvpniwrriTXlXMfD/BP8BNsFJpjHVOln5dhDue9EcTYthU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bSEQb82j; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8B13112C4;
+	Wed,  3 Sep 2025 14:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756911243; cv=none; b=TUSwO+vShVI3MVO79TFH2Rab87YaZPBLuP4uG+iOk7kXXq7vGFzAXC1J2RAsEo1XkgWTkAJ2rCiaIhqPZYflzeh4kqs30Sq4QGxyXdctD8Xkkn2CIB4RkAB7qx04yUN5+VELEhZypC48JgyPqW0EtDl73wYHur/qCcbsOpqDer8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756911243; c=relaxed/simple;
+	bh=7dxGcjkVQEaBQwL4M7LziNmEIKiJ5GLHnlBKDFlV1x4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=bAn+53cwaWYOJ3eLdzlkvl7XvlZc9yOgMzPcbi2UUzHdhioETuJbxGw7hq3zxS2PvoLeM945p3NZIfc2XRxBue112R7y5srSNgFb0BPSFPkIUfwqrg+A1m7pNDCMHkkm3RonrPLt0K9Mwq8BaP2L6jjEdU7jI5WrGDjwE8Vf0cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOYnk5FL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bSEQb82j"
-ARC-Seal: i=1; a=rsa-sha256; t=1756907224; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Sy8gKNkmpG47Q0A9MAR77itWBHvUdOTff+X5kQJyDSv9IuAT5fcJeNwCfA+M+cNVQdazTDmwM7VT9Nu+vyRCNzBO8CO+5OoryPany4+tK8mldqPQhuyBcmZaf6zTUwteOAvKEBCtLFlKyocNHgM7gncsMQytGSQca4pZa7xgPmM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756907224; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9aAPxOQn6Z5+vfXZjg3b8yBK4ErWjXJUixPFKFs14ZQ=; 
-	b=lqzX3Zqrm/X9/Ki25VkBrjfdt3b1BVtrMzYjv+GS5S7ECXUSHuFfr3FFkiwYQrUXiI34jMXZAhz1jDnyNPXGSQjq98AxxXEDozpHshdxuCe7A+p7ULJtxPSIx5BFHLXZp2cgEuQCI9cVCj3wV8U0owYTPtBh7LtFlmQy7IS8HFI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756907224;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=9aAPxOQn6Z5+vfXZjg3b8yBK4ErWjXJUixPFKFs14ZQ=;
-	b=bSEQb82jBNgi9OFte2HnDy/HS3awc2pw6RvXLO2D+Cgo+tkdtrm4hc0GNyAyvzui
-	1oDxRWWSMBHPjP9kSlJ/WOnl2RsXxyf7kY2Wcm+lK2BRCZITILw4nci/IckbTVr37la
-	LhcZnUemsrA+zff/DjY91YTmUKEbZf+h65cQZlVs=
-Received: by mx.zohomail.com with SMTPS id 1756907222551404.6800223646171;
-	Wed, 3 Sep 2025 06:47:02 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOYnk5FL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DED0C4CEF0;
+	Wed,  3 Sep 2025 14:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756911243;
+	bh=7dxGcjkVQEaBQwL4M7LziNmEIKiJ5GLHnlBKDFlV1x4=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=cOYnk5FLKNlwh9PbZjvvg9kqFbsgBfKkUoUjIFl87XE4B3zWld6UdRWlywX2SnV1/
+	 j4Quq4c2Mjixm6/oxIaFuMMm5KNp5Y+a3EtVEA3maIcpQtxmpo3IgDffU9l96ieClU
+	 s4nQW7A9gQjfBCdMV9gqLVd4igDUp0zIh9TCDdX1YfKj3qp7IQmUEGgbzNl2DkAE5Z
+	 8QNJ2AJuKi4js9nSBkrFMuenQ/ktrly/VMSdIs8bVVBqOhKJdgx9Lj0e6DOdLPnV2G
+	 PyvhG/4RqwBYiPOVP/pKhI+aYCGQMDwUIXsLjaDBfwBZoVvVOtPs95IeTTAhbqqQoW
+	 kaf5jPmxdl4ag==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 1/7] rust: add C wrappers for ww_mutex inline functions
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250903131313.4365-2-work@onurozkan.dev>
-Date: Wed, 3 Sep 2025 10:46:45 -0300
-Cc: rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- lossin@kernel.org,
- lyude@redhat.com,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- bjorn3_gh@protonmail.com
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <142043A6-0F31-4684-A203-AFFC6F36F6AE@collabora.com>
-References: <20250903131313.4365-1-work@onurozkan.dev>
- <20250903131313.4365-2-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 03 Sep 2025 16:53:57 +0200
+Message-Id: <DCJ9206YBEV2.1ICN4VILLM09J@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 02/11] gpu: nova-core: move GSP boot code out of
+ `Gpu` constructor
+References: <20250902-nova_firmware-v3-0-56854d9c5398@nvidia.com>
+ <20250902-nova_firmware-v3-2-56854d9c5398@nvidia.com>
+ <DCIKSL18GE9A.2R4BAGR56YVPF@kernel.org>
+ <DCIZ5VVLACXO.1L0QTYM5YVRQV@nvidia.com>
+ <DCJ0T81CZQ88.6IK6LG0E0R02@kernel.org>
+ <DCJ3R8YQUYK1.3K5BCWHMAEOL7@nvidia.com>
+ <DCJ46WGRUXR8.1GKGGL2568E1X@kernel.org>
+ <DCJ5ZOH6DO2S.8GGF9FABSVNT@nvidia.com>
+In-Reply-To: <DCJ5ZOH6DO2S.8GGF9FABSVNT@nvidia.com>
 
+On Wed Sep 3, 2025 at 2:29 PM CEST, Alexandre Courbot wrote:
+> To be honest I am not completely sure about the best layout yet and will
+> need more visibility to understand whether this is optimal. But
+> considering that we want to run the GSP boot process over a built `Gpu`
+> instance, we cannot store the result of said process inside `Gpu` unless
+> we put it inside e.g. an `Option`. But then the variant will always be
+> `Some` after `probe` returns, and yet we will have to perform a match
+> every time we want to access it.
+>
+> The current separation sounds reasonable to me for the time being, with
+> `Gpu` containing purely hardware resources obtained without help from
+> user-space, while `Gsp` is the result of running a bunch of firmwares.
+> An alternative design would be to store `Gpu` inside `Gsp`, but `Gsp`
+> inside `Gpu` is trickier due to the build order. No matter what we do,
+> switching the layout later should be trivial if we don't choose the
+> best one now.
 
+Gsp should be part of the Gpu object. The Gpu object represents the entire
+instance of the Gpu, including hardware ressources, firmware runtime state,=
+ etc.
 
-> On 3 Sep 2025, at 10:13, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> Some of the kernel's `ww_mutex` functions are implemented as
-> `static inline`, so they are inaccessible from Rust as bindgen
-> can't generate code on them. This patch provides C function wrappers
-> around these inline implementations, so bindgen can see them and =
-generate
-> the corresponding Rust code.
->=20
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
-> rust/helpers/helpers.c  |  1 +
-> rust/helpers/ww_mutex.c | 39 +++++++++++++++++++++++++++++++++++++++
-> 2 files changed, 40 insertions(+)
-> create mode 100644 rust/helpers/ww_mutex.c
->=20
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 7cf7fe95e41d..4c789c5537b1 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -50,4 +50,5 @@
-> #include "vmalloc.c"
-> #include "wait.c"
-> #include "workqueue.c"
-> +#include "ww_mutex.c"
-> #include "xarray.c"
-> diff --git a/rust/helpers/ww_mutex.c b/rust/helpers/ww_mutex.c
-> new file mode 100644
-> index 000000000000..61a487653394
-> --- /dev/null
-> +++ b/rust/helpers/ww_mutex.c
-> @@ -0,0 +1,39 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/ww_mutex.h>
-> +
-> +void rust_helper_ww_mutex_init(struct ww_mutex *lock, struct ww_class =
-*ww_class)
-> +{
-> + ww_mutex_init(lock, ww_class);
-> +}
-> +
-> +void rust_helper_ww_acquire_init(struct ww_acquire_ctx *ctx, struct =
-ww_class *ww_class)
-> +{
-> + ww_acquire_init(ctx, ww_class);
-> +}
-> +
-> +void rust_helper_ww_acquire_done(struct ww_acquire_ctx *ctx)
-> +{
-> + ww_acquire_done(ctx);
-> +}
-> +
-> +void rust_helper_ww_acquire_fini(struct ww_acquire_ctx *ctx)
-> +{
-> + ww_acquire_fini(ctx);
-> +}
-> +
-> +void rust_helper_ww_mutex_lock_slow(struct ww_mutex *lock, struct =
-ww_acquire_ctx *ctx)
-> +{
-> + ww_mutex_lock_slow(lock, ctx);
-> +}
-> +
-> +int rust_helper_ww_mutex_lock_slow_interruptible(struct ww_mutex =
-*lock, struct ww_acquire_ctx *ctx)
-> +{
-> + return ww_mutex_lock_slow_interruptible(lock, ctx);
-> +}
-> +
-> +bool rust_helper_ww_mutex_is_locked(struct ww_mutex *lock)
-> +{
-> + return ww_mutex_is_locked(lock);
-> +}
-> +
-> --
-> 2.50.0
->=20
+The initialization of the Gsp structure doesn't really need a Gpu structure=
+ to
+be constructed, it needs certain members of the Gpu structure, i.e. order o=
+f
+initialization of the members does matter.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+If it makes things more obvious we can always create new types and increase=
+ the
+hierarchy within the Gpu struct itself.
 
+The technical limitation you're facing is always the same, no matter the la=
+yout
+we choose: we need pin-init to provide us references to already initialized
+members.
+
+I will check with Benno in today's Rust call what's the best way to address
+this.
+
+> There is also an easy workaround to the sibling initialization issue,
+> which is to store `Gpu` and `Gsp` behind `Pin<KBox>` - that way we can
+> initialize both outside `try_pin_init!`, at the cost of two more heap
+> allocations over the whole lifetime of the device. If we don't have a
+> proper solution to the problem now, this might be better than using
+> `unsafe` as a temporary solution.
+
+Yeah, this workaround is much easier to implement when they're siblings (le=
+ss
+allocations temporarily), but let's not design things this way because of t=
+hat.
+
+As mentioned above, I will check with Benno today.
+
+> The same workaround could also be used for to `GspFirmware` and its page
+> tables - since `GspFirmware` is temporary and can apparently be
+> discarded after the GSP is booted, this shouldn't be a big issue. This
+> will allow the driver to probe, and we can add TODO items to fix that
+> later if a solution is in sight.
+>
+>>
+>> I thought the intent was to keep temporary values local to start_gsp() a=
+nd not
+>> store them next to Gpu in the same allocation?
+>
+> It is not visible in the current patchset, but `start_gsp` will
+> eventually return the runtime data of the GSP - notably its log buffers
+> and command queue, which are needed to operate it. All the rest (notably
+> the loaded firmwares) will be local to `start_gsp` and discarded upon
+> its return.
+
+Ok, that makes sense, but it should really be part of the Gpu structure.
