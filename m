@@ -1,126 +1,110 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C1923BCEE;
-	Wed,  3 Sep 2025 23:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382EA1459F7
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Sep 2025 23:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756940750; cv=none; b=KuubYUE/KyGKEQdOkSNou8R5u+GVO7z23mOTjzBeZKJCO5ZfwIIKEGaWQlYh9VvD12x30V4wsS+Nmxmq6D7v19Fd8amVB8gYj+spo6g+ynOQ6t/ZTTx+qSesZAtC3F/k79h5rpKAl0kMulcY09y68ji8R+UCrEmtRpYGia+weOU=
+	t=1756941877; cv=none; b=EQ5JFFfJ3P7HNzk6xR780HzpQTOViLW7Oo1PuhjnQWZXfi/X6BQhXBFsmgpXPevPsxPPqqT8laTiOzcM4bF5P6N0mkwU4/SGBdPwVN1qUYKoAbmt5G95bU7ehXErfWfL6gGLZ1ccP4yR8wzN7nTCbaVTZ8gh9DlkG4U5lmt/sVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756940750; c=relaxed/simple;
-	bh=eq7/R5IKf88go9v4Ju5UZ0MbBx+KI8h5xSO/c+W4WRo=;
+	s=arc-20240116; t=1756941877; c=relaxed/simple;
+	bh=B4MQg+tVyIEQBtbxab9btlYwylfbuT9p5w33UynSFSg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uDDHz4PCaqJocaRPmixoCEBehnnFT4eZhgbb6V/0zkAYk2aNDBlferEcUsoi7o4Lllz4F8/bvEMFVOunhXbeHlJaSs7IfUC1VMzq9FN1BUFRmLflKLFkbxuwDFpZynHQQEnzbnG09wmwfkDCrhumpcgQBAuVCqDizFTHf5SvNz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/boVlXx; arc=none smtp.client-ip=209.85.214.182
+	 To:Cc:Content-Type; b=WT+lOJU+EeeHGWe7dizqlV60Gk0jkqTrPinimJkWoCV2rFTavJf2Tl/Xc4WTp9SA3L48hwcbYcjM4DsSnWES7k8szEirrrtUHbT7OrAIfvQEgIWZf/1d+8z2fzK5Nat6hlX1P25lcCDiQuAig7RdVUOjJ8uNOxzskjYBtErZhlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V+jiA0C2; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/boVlXx"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-24af8aa2606so705065ad.1;
-        Wed, 03 Sep 2025 16:05:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V+jiA0C2"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-24b150fb800so969595ad.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Sep 2025 16:24:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756940748; x=1757545548; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756941875; x=1757546675; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SAh+dME9OWSqfZnxDjcTM+6W1pRlteZ4zjfIGpBbxFM=;
-        b=k/boVlXxIqvgXkGgqM7VaaoIzIe8uZEHknP1rXVUwa345kUjroRCiMCf5b733TD4NI
-         iZEp67BkT/Cws9apDl+Zj+MffZe/hE7aYPgUJvEliYHOm1mVQ4kDxdKCtflSc5SAtrF1
-         6Y+83oW41oP976ooV0IlkkotQKMkL0vYkNa1sn7/pposA9fgDCfXIMHUOB5Q7bFMLmUe
-         QFAQQp93Zy/vsxGlVHAL5h2tSnYNwYkrHOr3n31c6XM0XUkNEITxwpxWlq7jc4xRRvUj
-         bgvmHsakluLOegiwFvsAqVzlU617RL4RlA1Vb7kYxiXpz0hImoixtSOiCIu3zdj8e51P
-         RNfg==
+        bh=B4MQg+tVyIEQBtbxab9btlYwylfbuT9p5w33UynSFSg=;
+        b=V+jiA0C2RjwX8ScbZNta7MynuzYXFGc2IIfE+usbgarS91pSVBEJjZWLAeVk1RrdAj
+         ur/LCGIFpsBfC1rfQjwn2i9r6ecWVTdN5Kt626i5RQtOiL+hY+I7VuejshT7xFZF72Lq
+         +/W6J54km3q7LNcdISOp/AApKmCrAnXUbCfhKIT0as3sq53s7pQzQZjNpfNIXVg7x9cZ
+         Xb5rB+XPg32cojUEkc0C2d3i1h5e0HRy3IEGB85i42laQjBfr7Gm8xJxB5Hif6HuKGee
+         WLNDnSL7f9dtJvn239arbuM9EX8lJUBbIu3RnoMLhmsEIT/ohek7CnMe+Hpg8XnKuFnY
+         JLyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756940748; x=1757545548;
+        d=1e100.net; s=20230601; t=1756941875; x=1757546675;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SAh+dME9OWSqfZnxDjcTM+6W1pRlteZ4zjfIGpBbxFM=;
-        b=uxdWmBhIefBhXPm0m6ZsEfsJ5WlRnV2+x2KIzlnKR1mBvtuuSH4Z3iPYz5wf0kLjBT
-         6u5zpROTgsBjhYaFD1sHeU9rHxTSdInqCQ/jZIfTgaHndQjMrDBAN6chSWxFYPh3W9Q+
-         p8d8ncVYZ/I60LcdM/bSm3zjIju/OqKfA/7vM7s1JMyjnu9BGomVaHesKOtMnCl4wa7u
-         G3eQAxfVhddJY3DJuUTsjCcpUkD15UC9YejzzTyqDjfiOK3yyBwYCSOiuDcEFG845/Q6
-         WGzjYCk0dDjBPOKgeezovf54zJrRVkSrsDC6Z5w7DGDkS/94dCXFsE+4BL75mEGAMzFZ
-         Raag==
-X-Forwarded-Encrypted: i=1; AJvYcCVWpimjxH4DCrft8l8KzhxfsRRECTF7Gslb54iJT6pJ574gAIP1YfoHGr8deVupmgA0QRol3Y20BqRxbug=@vger.kernel.org, AJvYcCWVfVDMxAz00j12qH0ynKb7mvgqIpyj6UElpTMPnWJ4mCOgOxVhSZlXuSEqvsfw8tKsG2gAoP4K8PVjOuftPAs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7VscNXR/oXLz6ISulu/2/k969Knjd9JOJwonql3K9RKaPEvn2
-	LYDVrjLfPT9SuAuIcgusQZ2XRtfjD3d2sQFpqKr4S3ZvNZji9iO0j4JXbIVQVxz0YAgXAgXjoB5
-	OQzAQPpLkJFC35SMAUMaBAcyPdi5/AD+ECFP+UKY=
-X-Gm-Gg: ASbGncs/D1nHV/LQG7tKv2hZtuKiuus4jZV/iKX4RfarEPEHd3rl5UaDQJMkoC/lhgM
-	FZ/9gpozL+PTC1eE1VksTiMayxRyUrGhWsQpvqUQovaTAK2UUOsmRjzHtsEJJz1m0bOOuKy2Olu
-	YjxeBXKPcuujuYesDXpcuTKvRqESJI9vxy3xYo18wrq3Ry6FI43aF/ALqIWueKQ8S5UAbb3gNrU
-	QBrvymFAaXN5fzXPvSv++iKhqmrjsW8wfg53Ez5pOCbhXp9me4N8f46tdud354xXpEj8Vwt2hKA
-	7w0citMY+dRVKtGoaRowV2/Rcg==
-X-Google-Smtp-Source: AGHT+IG3ySswXqKjDVnI6DYwqiLKZ+zahBDaGUECQtFUfaWb6/E3RF2IzUEhOFKBc0MKjkW2U6s15CTFTiZJNbe+kmE=
-X-Received: by 2002:a17:902:ea0a:b0:248:7a43:e1c5 with SMTP id
- d9443c01a7336-2491f112bdbmr141413195ad.7.1756940748238; Wed, 03 Sep 2025
- 16:05:48 -0700 (PDT)
+        bh=B4MQg+tVyIEQBtbxab9btlYwylfbuT9p5w33UynSFSg=;
+        b=bqoplYge8wWOx6EOt2hIYi3CiqBrWRdzEUMMXbXK5sfC7VmbaRteud8tJMjqKong7Z
+         UEvf60R0j8nunIQIJvxnDDh4qHu9KDatDgNvVphIjixkePkz/LmrLncGD6jleHuCeBs/
+         UN+cpAR+EEmenfuG+PnvJNzGF5HyDZdc548hA5TRG8YGoaCET2xKox1RS0BDe8H2/egg
+         rD6oI0CZgBS8iUikum4HJ2SDHPCmWL33Xxfd25TsLTWAoIApmGfE6H4/y0rOoc9ITWsl
+         8PK7chu7aYgY7qJ3qokO1LKL9xao051x3Mp4lBsKb2IEZ4sL1Vd9oAxumbyyybZwfqAB
+         Pxeg==
+X-Forwarded-Encrypted: i=1; AJvYcCWtik10cfJhs+sTbK2OlJQOKC3+aE9tztHUxwl0a3cnxYkk5tzIZvfCmrv555lhZ5xj+CNfkUkkNeGq0fTkHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw++dG5M5xWXMOuBPeOjnLPICyeqdINzvr0LsrpTWDzDl3ZR0EY
+	IibpP+ZJOuDTsAKIL6VK/c0NgeG1qeqM5JP0irU4+fzR4Ad6ioeq+Rztrq20ZJu0vjYZ8xUXzTu
+	78lSq++H3XJptkSRT6C79aqFaYXR4ppE=
+X-Gm-Gg: ASbGnctiaZJx0yLVkeTqMtBmCB2uIwwDkIzp1Gul7UphdkGkCNBPhVYScQ+rkMnAErg
+	6j27fj6iaKh7Dpxt3aYoAsSw3KZEnqqBZmzhsdBgijCtu/j/Pj/AD27KtRC7asxxXqgkJfpelHG
+	F4s+v4bGw7/K+84UjYBYuF6N1YurJrBvwAlrq5FzjnTmH8BTpS1AOmOgONjMY2vbgHklZX3h0M2
+	gUGFYs6GvriEHiO16RRYIGtdvU77Mm9WSKGKS/Y/rxQNYHUp2RzqqiD7IQYowrR9v2+an2v4ueh
+	3cmdNGytk7nIz92eF1f3iqYRFdR45+lK2gIF
+X-Google-Smtp-Source: AGHT+IEjlWFuPMxhtD/Mq7OZwOStvmczamQHMaG5FsSJXT9epadmoDRef8lNJ29rsmcfdJHBWLObAXkHao0s90DS5wU=
+X-Received: by 2002:a17:903:1a70:b0:248:847b:8906 with SMTP id
+ d9443c01a7336-2491098b4c3mr158698905ad.11.1756941875488; Wed, 03 Sep 2025
+ 16:24:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com> <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
-In-Reply-To: <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
+References: <20250830-cheesy-prone-ee5fae406c22@spud> <20250903190806.2604757-1-SpriteOvO@gmail.com>
+In-Reply-To: <20250903190806.2604757-1-SpriteOvO@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 4 Sep 2025 01:05:36 +0200
-X-Gm-Features: Ac12FXzihGQzDs_GFutYOUS54a14oRZ9cA9ZcvsQfbCtCM9R-v8HIZFcT-sGIq0
-Message-ID: <CANiq72nnWmzOfZ1PhSid4t_e-yWEgi_hVx5Uj4hrB9wzpuP6nA@mail.gmail.com>
-Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for DynamicPerCpu
-To: Mitchell Levy <levymitchell0@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Date: Thu, 4 Sep 2025 01:24:22 +0200
+X-Gm-Features: Ac12FXx5iwHLbaJ0TZ88p_k42OqHbK3bT3Fq9WvwJC3yuhfgjLr0qE6Io-xqWpQ
+Message-ID: <CANiq72nRA9zHbzroLPa9aNSEzKre=V8Jwmw2Lezy6AHgbm+FcA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: get the version of libclang used by bindgen in
+ a separate script
+To: Asuna Yang <spriteovo@gmail.com>
+Cc: Conor Dooley <conor@kernel.org>, Jason Montleon <jmontleo@redhat.com>, 
+	Han Gao <rabenda.cn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Matthew Maurer <mmaurer@google.com>, Jeff Xu <jeffxu@chromium.org>, 
+	Jan Hendrik Farr <kernel@jfarr.cc>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Christian Brauner <brauner@kernel.org>, Brian Gerst <brgerst@gmail.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 28, 2025 at 9:01=E2=80=AFPM Mitchell Levy <levymitchell0@gmail.=
-com> wrote:
+On Wed, Sep 3, 2025 at 9:08=E2=80=AFPM Asuna Yang <spriteovo@gmail.com> wro=
+te:
 >
-> +    /// Get a `*mut MaybeUninit<T>` to the per-CPU variable on the CPU r=
-epresented by `cpu`. Note
-> +    /// that without some kind of synchronization, use of the returned p=
-ointer may cause a data
-> +    /// race. It is the caller's responsibility to use the returned poin=
-ter in a reasonable way.
+> Decouple the code for getting the version of libclang used by Rust
+> bindgen from rust_is_available.sh into a separate script so that we can
+> define a symbol for the version in Kconfig that will be used for
+> checking in subsequent patches.
 
-Please try to make the first paragraph ("short description" / title) smalle=
-r.
+Hmm... I am not sure it is a good idea to move that into another
+script. Do we really need to intertwine these two scripts? The rename
+isn't great either.
 
-Does "reasonable" mean anything different than any other raw pointer?
-
-> +    /// # Safety
-
-Newline after section headers (also elsewhere).
-
-> +    /// - The returned pointer is valid only if `self` is (that is, it p=
-oints to a live allocation
-> +    ///   correctly sized and aligned to hold a `T`)
-> +    /// - The returned pointer is valid only if the bit corresponding to=
- `cpu` is set in
-> +    ///   `Cpumask::possible()`.
-
-It sounds like the returned pointer can be invalid without triggering
-UB -- could you please clarify why the method is `unsafe`?
-
-In addition, please use intra-doc links wherever possible (e.g. there
-a was also an `Arc` elsewhere).
-
-> +        // SAFETY: The requirements of this function ensure this call is=
- safe.
-> +        unsafe { bindings::per_cpu_ptr(self.0.cast(), cpu.as_u32()) }.ca=
-st()
-
-Please try to explain why, not just that it is. It isn't clear how the
-safety preconditions, which only seem to talk about the returned
-pointer, make this OK.
+Cc'ing the rust-for-linux list too.
 
 Thanks!
 
