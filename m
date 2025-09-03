@@ -1,107 +1,108 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6102F28E2;
-	Wed,  3 Sep 2025 09:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B702D3A6E;
+	Wed,  3 Sep 2025 10:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756893215; cv=none; b=aQtzEyBr5aoIgGA2ecpmy8fU4kKG9QVt8lFWzQtkGwwebk07tTTSD/4eBaIwtgCUF9GZ+KU3bM6o4P6ZMMF6Q3qHNArDXZ5tg9UIvVKpuUiC1HbV5nx2a/ctXUFn90CI02jXB5MadhOe1ouFjJAhoDRD1usatICvHU1cPjaZd8E=
+	t=1756893800; cv=none; b=k5WLlT8ZB2LJnHfKy0WDBs24BWv5dZ76BUFzEAq/DaC4ZD74OGexz8yi+diU74ljw0o6OEQrSheqO6vO2KIPWyy2brfxGLhIa0toCH2R0/pW3RNWtPeKp1j7czu4R/jZTM0qXpcrk6k8xHD6gdJQUrh4cGsSzpZh8RZZT0IcKaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756893215; c=relaxed/simple;
-	bh=9pnQtopGV2abpjWDxF1mFfUr6ACXC/Esur84mjvfVmU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWMIe+Wk51cHKhlAZW9kp8kp5mx9MQW40CP7AjuR3Z/RNQII316IfhkzmhtvMYfs1jyQtYslyF7YWw0B1SbD/5t4HtLakQC/hv58GfgPlx2xgIXihmpBp9R8m/4T/U3dRYhogheBM96Ky8zrFq4xe5My2czM1hYgu1MoTxWXZ4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8Bx3tITELho7C0GAA--.12923S3;
-	Wed, 03 Sep 2025 17:53:23 +0800 (CST)
-Received: from linux.localdomain (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJAxfcEMELhom_16AA--.5842S3;
-	Wed, 03 Sep 2025 17:53:20 +0800 (CST)
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: WANG Rui <wangrui@loongson.cn>,
-	rust-for-linux@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 1/3] docs: rust: quick-start: Add another way to install
-Date: Wed,  3 Sep 2025 17:53:13 +0800
-Message-ID: <20250903095315.15057-2-yangtiezhu@loongson.cn>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20250903095315.15057-1-yangtiezhu@loongson.cn>
-References: <20250903095315.15057-1-yangtiezhu@loongson.cn>
+	s=arc-20240116; t=1756893800; c=relaxed/simple;
+	bh=0ZPxvE++kjDwbZXPjF0sDxxNrHcRHnaI9qILXHsLE2M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CdKsHUWb8KY5m3vy5cDNjMVcRo9Emx47b0FPYyBwDnJJqm6v7H7YCnPEBwRX51sDnTBR8/s/x38Sd6QgRIIMbpcxciH6NB9lm92YzViP2d/ORy9vqi8RwqISoHqqiPPYOmUAsZEWdwLbWdZuh+5S1gUIRkT7jVMsHj/ef3VNmC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WGOVOp8j; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WGOVOp8j"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b4716f9a467so802777a12.0;
+        Wed, 03 Sep 2025 03:03:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756893798; x=1757498598; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YgbMRQUc5eRrRBiJK+N/XxrKzBvJ2dEhNy/lilwY3gg=;
+        b=WGOVOp8jDjmF4Hi5b36NyExqeKaSxOIKq5BzY3Gqj+wSJm2DXJuVuOVQ57SOBWSjbk
+         HMdhWylrM7Zg9m5zacMUCpyWBX+W1ANagBp518qSTg/YaqElXliBP4yaok4EKNU0xQvd
+         PTLlJw6Pc9Uiai0n61E7jUHIb0QUKUhoGWRWqf/n4unmQ1xHyaD0tYyc9c4E6hFGCGot
+         V4ouxldjZBYRH6OBz3iYqfLjSr0CvUXII3JO+7ODFbXBPGuoFDI4T/AnDXM/ymhQC9MJ
+         ZZJRqY3n0sl93GjBjrqYx4H8hFJ7B5zq+NJicXkYTKKPKdn/fVtkdf9Qr/PT4HfzLlbj
+         WwAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756893798; x=1757498598;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YgbMRQUc5eRrRBiJK+N/XxrKzBvJ2dEhNy/lilwY3gg=;
+        b=Qa4IpEclLv9m1nIcGRkgzJl/XdqlKvr3NHYVbwS3+aowyrKzEHVHd5OW3MWmpJOQav
+         qsh57LroSzikJAGdvlSZGMILpqmy6wg4/tEIM+DDOn2gYqTxp61jG3Hj9Gmzl2sNaHhi
+         kFvcahcvbPV8uhPvNu8cz8YSz4rYg7/cTmOkSFKVPlbk9Ik+YcwwapLA0+/5h+AsMaGP
+         i4RaXtgosth0oIQEkVxOH7tx9VvVLLCK8AXx5yr4NqIZ+wqr8TKN60YHKBupiekkOmMB
+         zF+0ArsaBv0ih/5tsR+cNQ6EIzhnsylg5d1lyTfsqbDH+RsbdJZU2Cojp3AI0KSFH5TY
+         aG5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVrmRIEUf8jpNyml3vDcS3y+CgGX+oDsQjXpFvvgPJ3uxVs9L/0MEIwWZ7hmu+iwRkUetqMQLUms372c8Q=@vger.kernel.org, AJvYcCXv07/ya5DHn86P+RYzQrPvS3Hmi5o5Q/wIQyXWmx4cklc68G+Y4mtITKF+EYJQ3YdrYnvkdrbCYwQ5myLlVCc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylYD7eeeaxDotiLkhh6oBVZXLHEjQ2L6erm10dMqwDmWjqXPiV
+	O7OC4+S1Ti8UifBcGrTvF07SvR7yhktuvOJrGRasPTB2gRWjPRHC24u0gPZMrYayJtQHNdbmkKE
+	cuKHxfhGo23FNlCEjjrHytVXx18JGFoI=
+X-Gm-Gg: ASbGncue2TTiob0LPhZKO9zIMtyXPhaifutYV8qHrF8KtVjdr9MVF6YcGKXjIoxTV/J
+	RoBW5E+P6Q8mPIvf1zqGbqV4F49vZfjkDgsnNKrHISXJa6ZD1SHxNY8xwvG8MT27XLeh36cLdzE
+	p4nhsKVBskZDO7DDRF7BLPAlOCJGalx06GIhGZq/AJNUz25gXvwdZxKfZmjSvfyLz4R0hrGJF1E
+	1FVQ2x1rTpbpaQxBbu3LS1HG/ZXRoCVj3GBfY7Ps/PWBtCFXxziAuzDMlXUE2Eo+8fLR08GMUUL
+	bTfTpxRp8RfU5IzBtjE1ch6Yn86yS556QhGJ
+X-Google-Smtp-Source: AGHT+IF1drbJnXtfZZ8zYkcNWKkBm91s6BKPijOBEDVGIWtcvxdjKU4Tan7TbgcI5ovaMpvUsGr9yGVrgGP9Pwve9jw=
+X-Received: by 2002:a17:90b:1e0f:b0:32b:7082:b4 with SMTP id
+ 98e67ed59e1d1-32b70820446mr500316a91.1.1756893798517; Wed, 03 Sep 2025
+ 03:03:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxfcEMELhom_16AA--.5842S3
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7AryrKr4fCF1fGFWDJr4UZFc_yoW8Ar43pw
-	4jkr9xA3sxGr12kryrtayfWrW5CrWSgrWUGFZ7K347CrZ8Arn5trnrt3yYvF1DuFW8AF4Y
-	vF1vyry5ua95A3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AK
-	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j83kZUUUUU=
+References: <20250829192243.678079-1-ojeda@kernel.org> <20250829192243.678079-4-ojeda@kernel.org>
+ <CANiq72k7_GbFwRxW5vikF_SpiNcNm7Ff0oe6jyYX_voDg92QFA@mail.gmail.com>
+ <2025083032-barmaid-rising-a977@gregkh> <CANiq72nAagBBPhyU3XdETMKBuFPbMMRaSTStWPpyLnByYPP=+A@mail.gmail.com>
+ <2025090325-drinking-illusion-ef3d@gregkh>
+In-Reply-To: <2025090325-drinking-illusion-ef3d@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 3 Sep 2025 12:03:06 +0200
+X-Gm-Features: Ac12FXxbDdR4QPlJmACRMoGL91T5xgbMv2dg4TrsLcHw3W1mo3SjnyY3z7tN85A
+Message-ID: <CANiq72n-R_NaMzWtYe3430RwOpOtmxb9KP7ee5FxV+AHXGA2+g@mail.gmail.com>
+Subject: Re: [PATCH 3/3] rust: error: replace `WARN_ON_ONCE` comment with `debug_assert!`
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When compiling with LLVM and CONFIG_RUST is set, there is build error on
-LoongArch:
+On Wed, Sep 3, 2025 at 11:46=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> There are no "constraints" only a definition of a vulnerability that we
+> must follow.  And for that, any way that a user could cause a reboot or
+> panic, without having root privileges, gets assigned a CVE.
+>
+> One exception being if lockdep or a few other "debugging only" options
+> are enabled.  Those are explicitly stated by their maintainers that they
+> should NEVER be enabled in a real system.  For those we do not assign
+> CVEs as they should never be actually triggered by a user.
+>
+> So I don't know what to recommend here.  I strongly advise against
+> adding code to the kernel that can cause users to reboot their boxes if
+> they do something.  But hey, if developers want to do that, I'll gladly
+> assign CVEs for when it happens :)
 
-     --> rust/kernel/lib.rs:331:13
-      |
-  331 |         loc.file_with_nul()
-      |             ^^^^^^^^^^^^^ method not found in `&'a Location<'a>`
+Sounds good to me, thanks.
 
-  error: aborting due to 1 previous error
+These are meant to be debug assertions, so it should be fine. We can
+be more explicit in the wording of the config option.
 
-It seems that the latest version of rustc is not compatible, in order to
-install the workable rustc version for LoongArch, there is another simple
-and easy way, add it to the Quick Start guide.
-
-Suggested-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
----
- Documentation/rust/quick-start.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-index 155f7107329a..fdd9f54f4fe4 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -21,6 +21,20 @@ Alternatively, the next two "Requirements" sections explain each component and
- how to install them through ``rustup``, the standalone installers from Rust
- and/or building them.
- 
-+Additionally, if you want to install a specified version, you can remove the
-+exist packages from your Linux distribution first, e.g. for Fedora Linux::
-+
-+	dnf remove rust
-+
-+and run the following in your terminal::
-+
-+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-+
-+then follow the onscreen instructions to install from the official release
-+channels, enabling you to easily switch between stable, beta, and nightly
-+compilers and keep them updated. Please see https://rustup.rs/ for more
-+information.
-+
- The rest of the document explains other aspects on how to get started.
- 
- 
--- 
-2.42.0
-
+Cheers,
+Miguel
