@@ -1,73 +1,73 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E49E284662;
-	Wed,  3 Sep 2025 10:11:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205EF2ED84F;
+	Wed,  3 Sep 2025 10:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756894291; cv=none; b=Y6yH3fY1afRxS17cUMiMiVE4PHTQ3Skvr6UElwOPKLdwSpbhQRBEGWZ1IYOxdl9a9kx97izzmGyZAP9WY8+OQOn7i5ntdt9eNWZvTvQhHYLTd0yJaep+x2pbna4iUAemVUVpo2HCB1LPupOcoVwjkiwlIhqTaVYZESRFhLhVcd4=
+	t=1756895315; cv=none; b=EXDm95GfMo3Ece2FuVjUDVHWcfxj3F9MMlU+g+Xyc3PyIfIVZuw8e/KF5coanUupJyeHwR+BJG+RmyD7WZYei+abFdAdUIr20y16L4N2ouVgdPbT0SbMj1E937IGUm2ZRklOZdZQYnBjSxAKPg5PY+R9nFbA+LVohKNdIVAc2vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756894291; c=relaxed/simple;
-	bh=U4MZoi8oLGDJoMxDELHFZu0xWz5d5A+jT4oMO7QogZU=;
+	s=arc-20240116; t=1756895315; c=relaxed/simple;
+	bh=MT33R0JtPbGlbxTpxLWmtl9dyNYq9ekSL901r3ltk28=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l7ZPnX3erhHVlrf5YkS6pf33q2c82Hj+uNQd4gwFmFUA4Gpni/TWqrwEMSpAsuxZvQBZBtQj6hme1yFags0uKMwaqvhuyI0J+FPerj1nvoDfXxooVyG5rHxuTYLhCfWXIA71ud9eSWJsKMNNaidJBVs39DiKe+08DkNWkYHrTdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FUd8z/vV; arc=none smtp.client-ip=209.85.214.173
+	 To:Cc:Content-Type; b=KyC2KAkD4nWRnUepXfpaoLxaE9NxUs+HhckFi5sWNoWfRQqYuGS+OApc4WwgcTJf9TO+aYHYBdmNgRiRj1snXy9q+Vevx9eLFbpCNwdm9wdEHfYxhpPfWozgddsm0PQxZQP1gC8ZKy1Rdxkg3BU+DNtK4e2+Op9PYeBajYO18Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vok1qK4R; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FUd8z/vV"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24b1331cb98so3005365ad.2;
-        Wed, 03 Sep 2025 03:11:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vok1qK4R"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24aacdf40a2so9369165ad.1;
+        Wed, 03 Sep 2025 03:28:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756894290; x=1757499090; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756895313; x=1757500113; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U4MZoi8oLGDJoMxDELHFZu0xWz5d5A+jT4oMO7QogZU=;
-        b=FUd8z/vVaM5HM7OIA3SNe3iN28T+7erbkyFpPTZQkaqG3Fipwko07dYjODEiYZIU2A
-         3KqnLKAQlrneIjVDptjxeMnAlISufnJiVJd5dus3z3fMoGlDyY5P8IMFIrC9pmLfSX1F
-         KF9+kgwqeVfkZ6PU5vzXl1D+tblaAyhIIaV0BgXhso0qv7LC4HPQGnxa2cUllyrrmzyD
-         TSco2l1JNX2OTCRVbrYBhBpq35l9XUEbmuiRWxGXf2PZ3LeIchCQcagSMeIDOi0P2M9u
-         dYeQQdgZKBNeJIh25J2wUhd5e4x14c70hIeekxCrlG04kJC0x+lC17n0oxKyIeVfiQrU
-         Bf3Q==
+        bh=w/5sRARH/MrxbC7CqhPIy+nQvt4VVCRT77w8qNlk6QY=;
+        b=Vok1qK4RyMtHu7RYB+2WLbdSwjaxdN7LyB4yRzVJ4xWdVG9lv4ZYnfGPMrIw5p7FBF
+         XkYzfStrnC6T2p706B2nTUEWynDfuiBuZmLqiGCWvmuDLliosWG7ugdaaVwXoh6aqT0O
+         ySazH9riRj/lpXS1gjK1OUGolxD50lGptsIho98NTyqd7f6AQdE4Q6lCwULx7v7qWPsp
+         9hWmf9/2Q72R/cnGn25ItWQRXuL+lAsiupdUQV7vOx3pZW5GZfiUsnw0QACnFaS5hdc4
+         7FiTo8IwIFX1RREi6YGYnbWmDTGJQepIudF66v7PSUNrX8+FwsM8HJkPCeB8AYRgG3qM
+         0kdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756894290; x=1757499090;
+        d=1e100.net; s=20230601; t=1756895313; x=1757500113;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U4MZoi8oLGDJoMxDELHFZu0xWz5d5A+jT4oMO7QogZU=;
-        b=jC3y7l/Tmncfi8NjePlsUkGDr8H1HvqhpgYQYO9HSamXtxZ1TKsiYOB/PcdCOm1iml
-         HdTROrOc1DIZY3Z8CF56i9Jsvqy5iniiSU9ltOBI/vWkxHtHP6xTdj7a17jevOjNieTY
-         KY/vNtvKQ7Ckc/s1WklkvB8r1d60jmxuwhuT4Xs1RYzMzEb0AVeCkXV5Df9IV9YFv69D
-         rlkI65PNuE2QscoR8w7PK0GfCUqBgXW1NDG7HMxe1fzc1cW0z08mmi5aGaOQb07rfEPi
-         F50BHpqDhxmgQ+cZYpAlZ81Qe52YymRSoMgFFk1PRPQfrT777zf9ps0oSCCQiKaZoPcY
-         tPpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUNYl3BkSmRiDR5ub+ILZNaL/sFfsF67t4MSwlQ50n5qy09b8OVJ9ugX3fg9J4RB2fOsU9ofhUJNqxomebjfsA=@vger.kernel.org, AJvYcCXQjBzLGAbIUwr5q1MGOKGZcYxFRI13RpBbo7SBWB9B8BXyC/l91muRXMeZHBAvTnseTJo1i1SiDExRqgk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGxOZBnL1An1c5oshsCCvyxheKbjYuV7MeA1S6TNtPqNz6Msos
-	kPyRrXNwhRlTeY5oV6IZf2//zZ0s/ecA8AqF9CkPZl3GWjAkwoOzqTflcHTHtF8MWTEcfJKEbP/
-	rxkopNS6RTvkS6SbpOHzR5V3xjbfchhigIqhuSPEUsg==
-X-Gm-Gg: ASbGncsbevKZive5KAcAUzDnOMOnOozmtpH07B/Z5q3W9ykU0+0rzUfFkjnoRotMkg4
-	7Ns4XAsR57QzDGE6pBcx+aHBWj6LaoUxlyv3iQ8NkMvBTDY1Fy2PvvRa59rUvlGJ+uGofm86Bf+
-	XJBh+P81rYapSf5LHMZ/3vuwUNLAnbt7JQsmjUqtrenrP7jX8XuqQOMW519h2my8F2Un5JN9cJK
-	Xr0IWtOFnVyLWRgqCWNtDaPlzSgQavPrI8xY4wMF0OAlJWXA5+A1U5R0E3dGPS9SJ2y94putcyu
-	xZYRidVKtixS50LPWG+ua0VS7Q==
-X-Google-Smtp-Source: AGHT+IFwGI9nyWNoJg8uwXwGJ3TxB4TNP09lA7q7e9wGdXtNR/k17bCYNPM3BYw+7ukDm+E8vdiADOOngjA3baARINM=
-X-Received: by 2002:a17:902:e804:b0:245:f85c:8c6f with SMTP id
- d9443c01a7336-2491e5df36fmr128836005ad.3.1756894289581; Wed, 03 Sep 2025
- 03:11:29 -0700 (PDT)
+        bh=w/5sRARH/MrxbC7CqhPIy+nQvt4VVCRT77w8qNlk6QY=;
+        b=Yo8KcezuXZ5FOrLqLMjDjd2rL9ea8T24ecwAvSdSWsWTNoeUX3KNDu6IfzRl+NiaYe
+         LDGC9bi3SbhRzUTZcPnHtU1h4NWlVHcgHs6UWTlDPtpdK5ExUMww0cDZUxcp7iuXdA9v
+         CaPaZ7Ou0zvYCVK2IKUClzmjyyoZ5ClSLSnOeBwgqa38yJXAn4SS/fKisKBvJ5XDDEc/
+         i6FCb1s26ul3KNz5AbvM3xQTq9FrW1c1Y34uOz0uuti5pY8MK/x5Ue8aV8G9Ybvq9a0g
+         Y0Bma8DKYF90H1klorNpyqA+nvNO8MDGHZEBm50cSWuw8ZMVeVSEmdd/Q2BRS8yXvaxA
+         KHCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUw7Tfy8vWb6rDUXUCqzhLVN653ECTmm7dUlS793DcMPtkvh3jBs4iagVlzI6VzyCb/oSc5tUPtaQUKK84=@vger.kernel.org, AJvYcCWZsfQjI9ECFnoV61ivw5lRJRbaRid+0/6IDK48iEVSzy7EuspelkZwyq13PB/8lo6NlquOgC/R8Xm27DkBiqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF1lexfgz4rA7XkpAWX0vvX61LyM7Q/58TW+p2Vxv3CjEUe1Sj
+	IKU9777/3Lgvz/kij9/J5nRmA0e6Ff1TG1NKvD4YX8yY1TviCXCGR2gllagCTIhEpK5FpPqHvXb
+	LYTD/QG2UgRInNLd6q47bu01uWwRqorA=
+X-Gm-Gg: ASbGncv2RKHqWS+XkZYkqLC4b0HL3jcpKbOwz2T/mCKnACtLC52WiK4Dz3QNlCy8uEe
+	hHowk/5IaBx4Tfo4sisdoCmdRlXP6ulD7o5fZf7R8dLN2ccRhfnkoHqIno8el6miy/EOMqbAIoX
+	8vxHx14F8AGDK3DRmyk2mBBYCDbbYbEb4awW8p+qM9NoX4t3vxU2ZITAGF6xBzpCbsjuATZ6O+P
+	ehhCEyN7U2Ilqoyp8adj69F4BtMedmSHmV1Crk5hPRf5oPfrnJe0HnenqXPA4+F2SJwYITvlS9g
+	UPs1sykJFc+mUNOywyuqjLud5v7dfKobB4uJ
+X-Google-Smtp-Source: AGHT+IFEKoh9Yoyy+qA7m2lg3d/RWinqGDyMV3KpWiUNfa6fSFU2oSwzJzlC58Z+3GwCct3Y994q9UEQVEUOAmf9XNQ=
+X-Received: by 2002:a17:902:c409:b0:248:79d4:939f with SMTP id
+ d9443c01a7336-2490fc97225mr123506415ad.7.1756895313392; Wed, 03 Sep 2025
+ 03:28:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250903095315.15057-1-yangtiezhu@loongson.cn> <20250903095315.15057-2-yangtiezhu@loongson.cn>
-In-Reply-To: <20250903095315.15057-2-yangtiezhu@loongson.cn>
+References: <20250903095315.15057-1-yangtiezhu@loongson.cn> <20250903095315.15057-4-yangtiezhu@loongson.cn>
+In-Reply-To: <20250903095315.15057-4-yangtiezhu@loongson.cn>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 3 Sep 2025 12:11:16 +0200
-X-Gm-Features: Ac12FXx73Wpq1b-4qjn_jQh2j4PxEmWDtbARo9rp6bgf8M0PObw8Mg54qeDFzjg
-Message-ID: <CANiq72m0HO91gFcVuH3kPz6b6fZ_vrbO3BGmb3DpyhuRnvGkeQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] docs: rust: quick-start: Add another way to install
+Date: Wed, 3 Sep 2025 12:28:20 +0200
+X-Gm-Features: Ac12FXySq6GpPGdcsnBaBnSmKXNhwG7-Ypt-SnPNuOd4ijDkvAUU0G7fjPzdayc
+Message-ID: <CANiq72n5hg-ZyGV4oEca9iCbmQByanFUpNTkS=QmE1k8MUBR8w@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/3] LoongArch: Handle table jump option for RUST
 To: Tiezhu Yang <yangtiezhu@loongson.cn>
 Cc: Huacai Chen <chenhuacai@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	WANG Rui <wangrui@loongson.cn>, rust-for-linux@vger.kernel.org, 
@@ -78,19 +78,47 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Sep 3, 2025 at 11:53=E2=80=AFAM Tiezhu Yang <yangtiezhu@loongson.cn=
 > wrote:
 >
-> It seems that the latest version of rustc is not compatible, in order to
+> When compiling with LLVM and CONFIG_RUST is set, there exist objtool
+> warnings "sibling call from callable instruction with modified stack
+> frame" in rust/core.o and rust/kernel.o.
 
-This is only in nightly Rust -- we have a couple commits in -next that
-make Rust >=3D 1.91 work. Could you please try those? i.e. starting at
-8851e27d2cb9 ("rust: support Rust >=3D 1.91.0 target spec"). They should
-land in e.g. -rc5.
+Thanks for fixing this! I have seen it for a long time in my CI:
 
-Regarding `rustup`: we could link to the install instructions, but I
-don't think it is a good idea to replicate a particular `curl` line
-that could change upstream (e.g. the domain changing hands),
-especially one that installs something on the fly.
+I think this is:
 
-Thanks!
+    Reported-by: Miguel Ojeda <ojeda@kernel.org>
+    Closes: https://lore.kernel.org/rust-for-linux/CANiq72mNeCuPkCDrG2db3w=
+=3DAX+O-zYrfprisDPmRac_qh65Dmg@mail.gmail.com/
+
+Perhaps consider adding an example of the warning in the log for
+future Lore searches:
+
+    rust/core.o: warning: objtool:
+_RNvXs1_NtNtCs5QSdWC790r4_4core5ascii10ascii_charNtB5_9AsciiCharNtNtB9_3fmt=
+5Debug3fmt+0x54:
+sibling call from callable instruction with modified stack frame
+
+> (1) Please install rustc 1.78.0 (without annotate-tablejump option) or
+> 1.87.0 (with annotate-tablejump option), do not use the latest version
+> for now, otherwise there may be build error:
+
+Nightly is not a released version, and it is expected that it breaks
+from time to time. Even beta may break. We are ~2 months away from
+that release.
+
+In any case, I don't think this information is related to this commit.
+
+> +config RUSTC_HAS_ANNOTATE_TABLEJUMP
+> +       depends on RUST
+> +       def_bool $(rustc-option,-Cllvm-args=3D--loongarch-annotate-tablej=
+ump)
+
+I think this may be fine given it is `-Cllvm-args` and anyway
+LoongArch doesn't use a `target.json` (which is great!), but please
+double-check reading what I wrote in 46e24a545cdb ("rust:
+kasan/kbuild: fix missing flags on first build") just in case.
+
+I hope this helps!
 
 Cheers,
 Miguel
