@@ -1,317 +1,156 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D1229C323;
-	Wed,  3 Sep 2025 16:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C842D63E4;
+	Wed,  3 Sep 2025 16:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756915570; cv=none; b=WNUyaJdmWl147qis01a5KgZy6WOKkjfLjLHl2BAoxuDGb/1vEf4Ahdh44IItO2WeyBb5egXssRKb71Hm+G/NvySZs//KTWNBJ2SlxzwRbqO3aaT0eL9GL0Z93yAldoI5+z7wgWArZ/Ye7ucxBTiqu/2bseHlMqVhZEVcYuaz0IU=
+	t=1756916671; cv=none; b=ivGlkiadMQ4dm7Bkrhn4+fcRDi1EqK1tOMjnCsawNygHDsNYjhTBpiDK/1+fNKbE2rmi2EsJ9yxNh2cIkvdgDIszYZXCrARfRFXEzfnu0PuOPrHRdK+F3Ee5ZmNon3oqrZoxTohtfTE50zMvMWasCHXipw6+EWLUzf7Yvg03pLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756915570; c=relaxed/simple;
-	bh=eMm7CdSxdi2JGX3257lPFRMtpni/lRltMz7IiWUbMbg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bx9u6S2SjxxuJPvA9kEaOTxos7niJ24Ho4v1FNFAPvINRJrjBulEk2HU0pZ+wr3qAyZBDTKmIvmvUdnpnP/oZBooCWmdqEgNJ+tS+HlMGrVDNaIA+Zmpv28/T19kZiofZScSVk+NWrymXiRz6PzQXhvoPjycqK5EP/u6mM1choU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ePQE5Hro; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756916671; c=relaxed/simple;
+	bh=DL6QTWpxjep8S77vkYK54cGY5aTugS5u3x3ExCSFzJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oyDjURu+ff3TvgbPLd7zbLEl949gA7smaqHwLVugvg9liQJ+m08ka3v5bahe2K8Nw4xfvowxCCbHfZRaHhgp9WPDfhfZc8S7pN8odX+lUhWBLkh+YNUvqvgZBkyb3Cu5Gd4xbIR2LKljyezWEPo1WDZdvvgJtdir/7KtojjaUas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ChG+Pq3q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ePQE5Hro"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b3415bfb26so694941cf.3;
-        Wed, 03 Sep 2025 09:06:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756915567; x=1757520367; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=wtG0lSFcCsgRhfzFGAJql7iOsNVinPOKt+3XnDjH6Qo=;
-        b=ePQE5HroRSEEnUxKOvHKl1YwIC+ddxIC3WupKmEtE5QVr9njWn/0lCgHlIOWnOdkNy
-         6AUaisbW8JdCetWUf4FmagtSa7tT8laCeLBpte1acF5kIDF8JXLdJiTIvVN5zadvxyjg
-         S4Ra7wtsQuQJP8ZnukRbRc12oH+pg2nr2zNChpkCiDWJAeq2Wwn+rHUeUGnfKsJM8dQx
-         11Xpc+SsW1+tv/aXTfsaOcpZzcv+Jg5Sh2mz1z8ekwHZYFv4fUJQj4vFwgNShNblhqgV
-         bowqXcfqdYsDgLuVPCojZukPkr3yR/qmq/c/t9yqjfIE5MC0f1/tm4K5TVq+AZwkNvqN
-         noDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756915567; x=1757520367;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wtG0lSFcCsgRhfzFGAJql7iOsNVinPOKt+3XnDjH6Qo=;
-        b=o+dP3uBw4UCeuvbvV7p6k3+Ft/5c/Uxfm2OwT7raM55VS3YAlypQIugJN9ZVZ4Fe4R
-         vT8UhLXPSedUtx9VbP9w0JZW8HHan0JeeMHYpH8P0Ghgf1Lz/ys4Q6IgytdQG+XBCU6u
-         Vxg0mOYG0BQvh68aoQZ/y9Ix6SUP7kcdGaIdzmT2ynmoVCafd4nUsRQXTfh6zEmT1FNB
-         9GHU3KJ9QyoniC61TOz8oZI70q6VLdescbgC4jW5eQqAh2XmkT0Bfd9HqK3cQqfjcaZz
-         hIBYzv9MHYw2NW84WY92P1l9sF1ezBDY/FIP3J7YiRjLdtCbz+QwXeLWYYsUwsNPvD/f
-         k4gg==
-X-Forwarded-Encrypted: i=1; AJvYcCXrKnofOlyUqnSDUlws9isaB1OFiGroh6TvlxzRAhyfs8oVYoSHxdN/dng50mL+X3rolmlfBXh1lDyIXC0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWJxvYy9vQbEaG3bkXQbaqjcqtN9bdm5oS/E2e8HesVf6oQY6D
-	IU+Mjap1tfA8F5qGhdvng8twxaWVHvLeZWwzicfH70Iw+nKE42u4V5F/
-X-Gm-Gg: ASbGncvvfNyrIE2H9h34Pb6oop0nGb5z7lBSVGF5gL16dOmvKBfNBUuWYtkB+yhPd8P
-	reiK5hJwoO1czR70bVsFYIyWMDLyyYcsLrx2T6+0b44WV8kI5GBAvYNqR5rXc8HfZZABgLJGuLd
-	IfUS3Zf+hLzr7z0xGxJeOvLNSlwFNRhJ2jFqo9iSLrWEDrS+dBC5bHpYVRxX9dbnsbdXaiwXFtG
-	bLc5KwXseGHzH0+N39WGIFYc9R67x4+I4w/utP08R8JcgeVms+hBCrHoOQ8hERCPXiszHIdJ85g
-	WkHF8fAjppiFh0kgu5de9/EYLBnVQWmBwfImxQ6kAd7WFmZpSM1Pk5gR4MXEeCDzsDSm8bWS6w4
-	KAG2Pvk0GTDNT0vqRNqfuwQDkKghCFQzAGGjDnqxaBtCuRqh9/zkfAHZVfCJqOGbzFtYYrxawg4
-	OcWsKLlqmctLswo5BMoimmMsyqdkhz9n5Org==
-X-Google-Smtp-Source: AGHT+IFC+IPPKxcEgGV87IthwLLY97OA6GdYBbHxCcjlnfhaTUDGmRymoMzj3sW/Tj+rFLHEs3Py+A==
-X-Received: by 2002:a05:622a:4c0e:b0:4b3:552:27ae with SMTP id d75a77b69052e-4b31da3ac27mr256133601cf.52.1756915566932;
-        Wed, 03 Sep 2025 09:06:06 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b48f62aa1esm13824211cf.6.2025.09.03.09.06.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 09:06:06 -0700 (PDT)
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BA9D9F4006C;
-	Wed,  3 Sep 2025 12:06:05 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Wed, 03 Sep 2025 12:06:05 -0400
-X-ME-Sender: <xms:bWe4aNziqnMmZs3H3Iy_bDxag736NikDJ-Zh8MIYfKNFtllbCnE9Qw>
-    <xme:bWe4aDthLrzZthCrSkDTSQX1i6pLaxNbvivVl0OkeAN3Sz_JHM3xjU7lnLZYIe_z1
-    JMe_1GYN-OuxbS1Kw>
-X-ME-Received: <xmr:bWe4aE0cjWFT6-RL_fb8oYwitO91MiXwsj9pM0MjuN86zyYx_mWFbGucMUjvtOBxw7wvxSTZna-RIF9n5irpfkEhmx544wpu>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdefheejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttd
-    dtudenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgr
-    ihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefgleehteekgfduteejjeekhfejfedvie
-    eftdfhhefggfehheeileeihfdtteehfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepfihorhhksehonhhurhhoiihkrghnrdguvghvpdhrtghpthhtoheprhhushhtqd
-    hfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhi
-    nhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
-    hoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlhihuuggvsehrvgguhhgr
-    thdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhih
-    sehgrghrhihguhhordhnvghtpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnh
-    gvlhdrohhrgh
-X-ME-Proxy: <xmx:bWe4aH5IOKye-5zhq9D5RtXNmp9wgFjiRhkYk-48OQVbf0nTbFKzwA>
-    <xmx:bWe4aOPCEZs9S4ACaTjojU7X0lSRnE2bH1aUzp91TD0gPBjiuwKq2g>
-    <xmx:bWe4aDHxGhqCPrzR8qbzgVMSVr-9PInVoTea0J7WlNnCq24D8uZzoA>
-    <xmx:bWe4aK1fEtQk-rkfbMdkXrRxtIxSQ27R2DaIUFQJyL-s4B68cczfow>
-    <xmx:bWe4aCHIaU2a5BODEaAb8tOcNSbB-YBBuvgSCW2DyKKgJ4c4ablBfPoE>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Sep 2025 12:06:04 -0400 (EDT)
-Date: Wed, 3 Sep 2025 09:06:03 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
-	peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-	longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
-	bjorn3_gh@protonmail.com, daniel.almeida@collabora.com
-Subject: Re: [PATCH v6 2/7] rust: implement `WwClass` for ww_mutex support
-Message-ID: <aLhna_Xj6W88F6Wp@tardis-2.local>
-References: <20250903131313.4365-1-work@onurozkan.dev>
- <20250903131313.4365-3-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ChG+Pq3q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEA7C4CEF7;
+	Wed,  3 Sep 2025 16:24:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756916670;
+	bh=DL6QTWpxjep8S77vkYK54cGY5aTugS5u3x3ExCSFzJc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ChG+Pq3qDcRC+nd4R6whFyaNia1iwrqnCqXksGoRITxD03ICyUn4RQpLKr7UHAkut
+	 HRog8JvEQ45l2VlKsVFoI9LC9sKQSL/HNK9SfFWeQoZbprCCTmfP84yQtFC9k30Lq4
+	 FoyU9CFEMGuHrjuHQ6UfINLNSNJ5hGot05u8Wf7hV6fkggnT0MF4KZvE7f/xR1BA7f
+	 asBYUj9eqs+WUq3QbfehrVWmUJ41gwf2LPp6p4eO7X8tL1RXU3fyOXAOhQd9+js6jg
+	 0yrCfVrD2RQLJCWa8Uhlrm9cyFCxj9zfO9OqYLzWH5bOnfUnYdfR45K2Fijj94GSlC
+	 DpZMs8XmcbIfg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1utqHc-00000007Vov-3kcx;
+	Wed, 03 Sep 2025 18:24:28 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <mchehab+huawei@kernel.org>,
+	Benno Lossin <mchehab+huawei@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <mchehab+huawei@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Miguel Ojeda <mchehab+huawei@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 3/3] tools/docs: sphinx-* break documentation bulds on openSUSE
+Date: Wed,  3 Sep 2025 18:24:16 +0200
+Message-ID: <29135db8c8094006f256e1fa0b64663c735737e7.1756916565.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1756916565.git.mchehab+huawei@kernel.org>
+References: <cover.1756916565.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250903131313.4365-3-work@onurozkan.dev>
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On Wed, Sep 03, 2025 at 04:13:08PM +0300, Onur Özkan wrote:
-> Adds the `WwClass` type, the first step in supporting
-> `ww_mutex` in Rust. `WwClass` represents a class of ww
-> mutexes used for deadlock avoidance for supporting both
-> wait-die and wound-wait semantics.
-> 
-> Also adds the `define_ww_class!` macro for safely declaring
-> static instances.
-> 
-> Signed-off-by: Onur Özkan <work@onurozkan.dev>
-> ---
->  rust/kernel/sync/lock.rs          |   1 +
->  rust/kernel/sync/lock/ww_mutex.rs | 136 ++++++++++++++++++++++++++++++
->  2 files changed, 137 insertions(+)
->  create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
-> 
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index 27202beef90c..5b320c2b28c1 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -15,6 +15,7 @@
-> 
->  pub mod mutex;
->  pub mod spinlock;
-> +pub mod ww_mutex;
-> 
->  pub(super) mod global;
->  pub use global::{GlobalGuard, GlobalLock, GlobalLockBackend, GlobalLockedBy};
-> diff --git a/rust/kernel/sync/lock/ww_mutex.rs b/rust/kernel/sync/lock/ww_mutex.rs
-> new file mode 100644
-> index 000000000000..ca5b4525ace6
-> --- /dev/null
-> +++ b/rust/kernel/sync/lock/ww_mutex.rs
-> @@ -0,0 +1,136 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! A kernel Wound/Wait Mutex.
-> +//!
-> +//! This module provides Rust abstractions for the Linux kernel's `ww_mutex` implementation,
-> +//! which provides deadlock avoidance through a wait-wound or wait-die algorithm.
-> +//!
-> +//! C header: [`include/linux/ww_mutex.h`](srctree/include/linux/ww_mutex.h)
-> +//!
-> +//! For more information: <https://docs.kernel.org/locking/ww-mutex-design.html>
-> +
-> +use crate::bindings;
-> +use crate::prelude::*;
-> +use crate::types::Opaque;
-> +
-> +/// Create static [`WwClass`] instances.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::{c_str, define_ww_class};
-> +///
-> +/// define_ww_class!(WOUND_WAIT_GLOBAL_CLASS, wound_wait, c_str!("wound_wait_global_class"));
-> +/// define_ww_class!(WAIT_DIE_GLOBAL_CLASS, wait_die, c_str!("wait_die_global_class"));
-> +/// ```
-> +#[macro_export]
-> +macro_rules! define_ww_class {
-> +    ($name:ident, wound_wait, $class_name:expr) => {
-> +        static $name: $crate::sync::lock::ww_mutex::WwClass =
-> +            // SAFETY: This is `static`, so address is fixed and won't move.
-> +            unsafe { $crate::sync::lock::ww_mutex::WwClass::unpinned_new($class_name, false) };
-> +    };
-> +    ($name:ident, wait_die, $class_name:expr) => {
-> +        static $name: $crate::sync::lock::ww_mutex::WwClass =
-> +            // SAFETY: This is `static`, so address is fixed and won't move.
-> +            unsafe { $crate::sync::lock::ww_mutex::WwClass::unpinned_new($class_name, true) };
-> +    };
-> +}
-> +
-> +/// A class used to group mutexes together for deadlock avoidance.
-> +///
-> +/// All mutexes that might be acquired together should use the same class.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::sync::lock::ww_mutex::WwClass;
-> +/// use kernel::c_str;
-> +/// use pin_init::stack_pin_init;
-> +///
-> +/// stack_pin_init!(let _wait_die_class = WwClass::new_wait_die(c_str!("graphics_buffers")));
-> +/// stack_pin_init!(let _wound_wait_class = WwClass::new_wound_wait(c_str!("memory_pools")));
-> +///
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +#[pin_data]
-> +pub struct WwClass {
-> +    #[pin]
-> +    inner: Opaque<bindings::ww_class>,
-> +}
-> +
-> +// SAFETY: [`WwClass`] is set up once and never modified. It's fine to share it across threads.
-> +unsafe impl Sync for WwClass {}
-> +// SAFETY: Doesn't hold anything thread-specific. It's safe to send to other threads.
-> +unsafe impl Send for WwClass {}
-> +
-> +impl WwClass {
-> +    /// Creates an unpinned [`WwClass`].
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Caller must guarantee that the returned value is not moved after creation.
-> +    pub const unsafe fn unpinned_new(name: &'static CStr, is_wait_die: bool) -> Self {
-> +        WwClass {
-> +            inner: Opaque::new(bindings::ww_class {
-> +                stamp: bindings::atomic_long_t { counter: 0 },
-> +                acquire_name: name.as_char_ptr(),
-> +                mutex_name: name.as_char_ptr(),
-> +                is_wait_die: is_wait_die as u32,
-> +                // TODO: Replace with `bindings::lock_class_key::default()` once stabilized for `const`.
-> +                //
-> +                // SAFETY: This is always zero-initialized when defined with `DEFINE_WD_CLASS`
-> +                // globally on C side.
-> +                //
-> +                // Ref: <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/ww_mutex.h?h=v6.16-rc2#n85>
+Before this patch, building htmldocs on opensuseLEAP works
+fine:
 
-Please don't use internet to reference the code in the same repo ;-) You
-can just say "see __WW_CLASS_INITIALIZER() in include/linux/ww_mutex.h".
+    # make htmldocs
+    Available Python versions:
+      /usr/bin/python3.11
 
-> +                acquire_key: unsafe { core::mem::zeroed() },
-> +                // TODO: Replace with `bindings::lock_class_key::default()` once stabilized for `const`.
-> +                //
-> +                // SAFETY: This is always zero-initialized when defined with `DEFINE_WD_CLASS`
-> +                // globally on C side.
-> +                //
-> +                // Ref: <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/ww_mutex.h?h=v6.16-rc2#n85>
-> +                mutex_key: unsafe { core::mem::zeroed() },
-> +            }),
-> +        }
-> +    }
-> +
-> +    /// Creates a [`WwClass`].
-> +    ///
-> +    /// You should not use this function directly. Use the [`define_ww_class!`]
-> +    /// macro or call [`WwClass::new_wait_die`] or [`WwClass::new_wound_wait`] instead.
-> +    const fn new(name: &'static CStr, is_wait_die: bool) -> Self {
-> +        WwClass {
-> +            inner: Opaque::new(bindings::ww_class {
+    Python 3.6.15 not supported. Changing to /usr/bin/python3.11
+    Python 3.6.15 not supported. Changing to /usr/bin/python3.11
+    Using alabaster theme
+    Using Python kernel-doc
 
-You cannot use Opaque::new() here, it'll move the object when new()
-returns. You should change the function signature to a `... ->
-PinInit<Self>`, and use pin_init!() macro + Opaque::ffi_init(), like:
+    ...
 
-    const fn new(...) -> PinInit<Self> {
-        pin_init!{
-	    Self {
-	        inner <- Opaque::ffi_init(|class| {
-		    ...
-		});
-	    }
-	}
-    }
+As the logic detects that Python 3.6 is too old and recommends
+intalling python311-Sphinx. If installed, documentation builds
+work like a charm.
 
-Regards,
-Boqun
+Yet, some develpers complained that running python3.11 instead
+of python3 should not happen. So, let's break the build to make
+them happier:
 
-> +                stamp: bindings::atomic_long_t { counter: 0 },
-> +                acquire_name: name.as_char_ptr(),
-> +                mutex_name: name.as_char_ptr(),
-> +                is_wait_die: is_wait_die as u32,
-> +                // TODO: Replace with `bindings::lock_class_key::default()` once stabilized for `const`.
-> +                //
-> +                // SAFETY: This is always zero-initialized when defined with `DEFINE_WD_CLASS`
-> +                // globally on C side.
-> +                //
-> +                // Ref: <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/ww_mutex.h?h=v6.16-rc2#n85>
-> +                acquire_key: unsafe { core::mem::zeroed() },
-> +                // TODO: Replace with `bindings::lock_class_key::default()` once stabilized for `const`.
-> +                //
-> +                // SAFETY: This is always zero-initialized when defined with `DEFINE_WD_CLASS`
-> +                // globally on C side.
-> +                //
-> +                // Ref: <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/ww_mutex.h?h=v6.16-rc2#n85>
-> +                mutex_key: unsafe { core::mem::zeroed() },
-> +            }),
-> +        }
-> +    }
-> +
-> +    /// Creates wait-die [`WwClass`].
-> +    pub fn new_wait_die(name: &'static CStr) -> impl PinInit<Self> {
-> +        Self::new(name, true)
-> +    }
-> +
-> +    /// Creates wound-wait [`WwClass`].
-> +    pub fn new_wound_wait(name: &'static CStr) -> impl PinInit<Self> {
-> +        Self::new(name, false)
-> +    }
-> +}
-> --
-> 2.50.0
-> 
+    $ make htmldocs
+    Python 3.6.15 not supported. Bailing out
+    You could run, instead:
+      /usr/bin/python3.11 /root/tools/docs/sphinx-build-wrapper htmldocs --sphinxdirs=. --conf=conf.py --theme= --css= --paper=
+
+    Python 3.6.15 not supported. Bailing out
+    make[2]: *** [Documentation/Makefile:75: htmldocs] Error 1
+    make[1]: *** [/root/Makefile:1806: htmldocs] Error 2
+    make: *** [Makefile:248: __sub-make] Error 2
+
+It should be noticed that:
+
+1. after this change, sphinx-pre-install needs to be called
+   by hand:
+
+    $ /usr/bin/python3.11 tools/docs/sphinx-pre-install
+    Detected OS: openSUSE Leap 15.6.
+    Sphinx version: 7.2.6
+
+    All optional dependencies are met.
+    Needed package dependencies are met.
+
+2. sphinx-build-wrapper will auto-detect python3.11 and
+   suggest a way to build the docs using the parameters passed
+   via make variables. In this specific example:
+
+   /usr/bin/python3.11 /root/tools/docs/sphinx-build-wrapper htmldocs --sphinxdirs=. --conf=conf.py --theme= --css= --paper=
+
+3. As this needs to be executed outside docs Makefile, it won't run
+   the validation check scripts nor build Rust documentation if
+   enabled, as the extra scripts are part of the docs Makefile.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ tools/docs/sphinx-build-wrapper | 3 ++-
+ tools/docs/sphinx-pre-install   | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
+index 932b1b675274..48e6e0a76aeb 100755
+--- a/tools/docs/sphinx-build-wrapper
++++ b/tools/docs/sphinx-build-wrapper
+@@ -719,7 +719,8 @@ def main():
+ 
+     args = parser.parse_args()
+ 
+-    PythonVersion.check_python(MIN_PYTHON_VERSION)
++    PythonVersion.check_python(MIN_PYTHON_VERSION, show_alternatives=True,
++                               bail_out=True)
+ 
+     builder = SphinxBuilder(venv=args.venv, verbose=args.verbose,
+                             n_jobs=args.jobs, interactive=args.interactive)
+diff --git a/tools/docs/sphinx-pre-install b/tools/docs/sphinx-pre-install
+index 663d4e2a3f57..698989584b6a 100755
+--- a/tools/docs/sphinx-pre-install
++++ b/tools/docs/sphinx-pre-install
+@@ -1531,7 +1531,8 @@ def main():
+ 
+     checker = SphinxDependencyChecker(args)
+ 
+-    PythonVersion.check_python(MIN_PYTHON_VERSION)
++    PythonVersion.check_python(MIN_PYTHON_VERSION,
++                               bail_out=True, success_on_error=True)
+     checker.check_needs()
+ 
+ # Call main if not used as module
+-- 
+2.51.0
+
