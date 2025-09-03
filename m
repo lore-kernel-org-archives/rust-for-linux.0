@@ -1,120 +1,239 @@
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3ED198A11;
-	Wed,  3 Sep 2025 00:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9205D263C75;
+	Wed,  3 Sep 2025 06:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756861180; cv=none; b=VAqPpZ0QBkb4OCCbMwTGRPSawVF7VUDROIgcemkFDWtS/skfpVNmt+KIZSPNHgMmpcD8iyXHjT0Cfi7Ge/JYKgcgldIu7cYYchU144fBAv9gWyUQXXlGTPhE2JEcsXAsvkLNspYH6VwzbmhZx7SdX2/L6ng4qwxPcNncwebi6JY=
+	t=1756880676; cv=none; b=dN2AmjqvR+v0ZvcXGnxhwBX13938G5KAYc9r9O+R5WrizXzZ8d4Ni2v/cFIBTcCNfqbS/INeQdykUjaj2mogHdSHZU8HG3KwtYO9eHwnVR+zVdNwVVpfAXBLyZS8vPhTWj9IDdF65aPuNuBKm29NK8U/ueDm/uy9sT2XMbMKHJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756861180; c=relaxed/simple;
-	bh=xC3e9ZFLnNKv0UU6Iqr/JW7Nbmjud41nuXXb5wnvBGw=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=C6qFmQliCMAR6z9u8j69m5TYJ3FV8bLtc/P6x8nvldH6lF+deEv4o2SoznBquR+dfPY245jRugmpE1z0yEeDGvDUCMyTaTR158CNJ9XUW4d48ned8hLNbkb0Iri/f8hvwIFmdGbnXScwYhvYmyPh3Bk+AOPiFnwwMTD24RMafVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJFllUxT; arc=none smtp.client-ip=209.85.219.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756880676; c=relaxed/simple;
+	bh=HQ4GcK6psRNsjQKvl0aV1CT5lOymSoezznIizaNDOvY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HbrIDn3qLXbZ4HwqMca2wZL8sUFzafNBDCIs7ZfssY8UjJKcp4MRYQVgdlXDSg3z0iLY5t8Cpf/0iCBTOgcsGX2lleZPshZMCnPn1ctO7gJ7X0XwjwdCvedL2qz8riq+7kp9tbPMHHb9puc9XgtkAOgwCyDEVRCGKun8oAKp7k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Mq4kB78t; arc=none smtp.client-ip=178.154.239.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJFllUxT"
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e96f14a6e97so5454079276.2;
-        Tue, 02 Sep 2025 17:59:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756861178; x=1757465978; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8Y06vxPv1L9jWLGnaFGjZfi9MLlAl9lDUxU0w0jvdhE=;
-        b=IJFllUxTRpgCiT7Pxmt/3YRG83X7WOTNgFcsprXmI7j0Zg+SoSi4T0TQT2GqrqLr91
-         ugUP/gdoZZRkFcktfytoFkAjCs0i/iSmYps8ddsvDD2RvKZ67/UbrKSLogNqBzuJAKKr
-         nqrgBfDv3oWjqdr8WooflCOZqLXQ3LqH0j6bIAGPohxTwstFPk18DY/usIl3nFVD8NFk
-         l6TmUe3vp4ch/4vihXrcOG6OuMdOBhoZ9GDmkrrkic/HXzH0ABqLONtY09K7/R9U+Pwy
-         ldvgt2L8wHT/EH0bO1vnhWeF/2tB6/T9gj5Xz1ZVc0v3V4B7/docY4HOnMOcyoNhWTsj
-         zLDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756861178; x=1757465978;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Y06vxPv1L9jWLGnaFGjZfi9MLlAl9lDUxU0w0jvdhE=;
-        b=mMsmMr0o7zWl2cufMz6Ve718SOUz3DIKraRBJuVqwJoTDeelr2N0CzZOJXBcoiTQ9V
-         ZfM5DP23ZSPyWGnUgz7BZAV/TQCeaAFuZ8+lg7BIokDJU6Aa2qGnKugW7sokz/3EP/Kh
-         E13oeaI+Z0RhRh5C7Olf5tVFe9fW+sujzGs5R7/3GlR477z2rlqann3bzj0OzeGX0QvF
-         muim8z6kGw7rnqWqccrMeR0vIfuu5S4uBeX1odG7u4gyjTqxnaqIBuEQcYk9/A5qjrAV
-         lxwbvY8mVyJedKKVQT6v/TkLnwNYyj7LftJ6xYGUuwbJ8OZQR2sRG3zTENIaW2SBROwO
-         oJzw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqxfMQKn7za6rxjRkbhaLBTbeZBVI7vZiaKDs88OAvUV3+NpsTfdCk3FxrxsdW4kRIfCCTf6rlejicVwo=@vger.kernel.org, AJvYcCXSYITMSSXCuQZJJ8jewc2xggW1Pu9157rpCUz9qBtNOOU9dT3zFBdjeJKGJMTan1+tZw+agd5ArZKis87dlXU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGjMg06tYM3a01I6Xrzqqjec+sEylhUuIH/w9QvLk72F28pRK8
-	pPlhyJEqcmhk7F1k6TiQRVm2S2e9qUUcxbBJDQ7VePeqLQvbUhwtFWff
-X-Gm-Gg: ASbGncuDPgqSn+EJMh4rE0H9KGVQlN5Lvmqz1m2Pl2/eKvMpigPAUHJZtmBDsL6c6lV
-	xSRJnIl+gwR54jNhmcuvs/7/8wavouEQmKRQym96g3cvI5zVKm876ZcYBFaYQISW4/m42U4QdGs
-	oTrSq2X1auuYuA+FS+bvTpokCE0vIHbyWQBN0b9GPP0EhwN2rh2OHeY4HCpAVKsRqh4cx91acqF
-	i7jfGunONNCzMumeqnLx/ZLqS2pR6Jr/GZjarLa8A5fo/Rx4qeRySu1w6z1ke0x4nqx+YU4iNx2
-	Ioh/1X6VZku//wNNtoLrJLzIOTJVVYPaMhkQiLkxpgVeFQ9Z3v3O+IICqbh01l3CqPWaNza/XMC
-	7+P0lWk5WjOYiiZRX7ZW8c0rl4BggquiG+B5WdmJWj7FHT1w6YNbgM9UIxjExzYOR7GWLiLW4Bw
-	==
-X-Google-Smtp-Source: AGHT+IEDe9TR4LaoFnfze7nZ8Z1pjnS+aIG/ZELW7ocNHanWUV2XSZY9wPTHficq3aOCAX7mED9jJQ==
-X-Received: by 2002:a05:6902:2b83:b0:e96:f63c:9a1a with SMTP id 3f1490d57ef6-e98a5839e52mr14421464276.43.1756861177454;
-        Tue, 02 Sep 2025 17:59:37 -0700 (PDT)
-Received: from [192.168.1.209] (74.211.99.176.16clouds.com. [74.211.99.176])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e9bbdf57cc0sm1043893276.13.2025.09.02.17.59.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 17:59:37 -0700 (PDT)
-From: Asuna <spriteovo@gmail.com>
-X-Google-Original-From: Asuna <SpriteOvO@gmail.com>
-Message-ID: <e48699fb-287d-42a9-ba6c-5edad86965f4@gmail.com>
-Date: Wed, 3 Sep 2025 08:59:29 +0800
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Mq4kB78t"
+Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:2a0e:0:640:b7ff:0])
+	by forward500a.mail.yandex.net (Yandex) with ESMTPS id DC7ED81DBF;
+	Wed, 03 Sep 2025 09:24:28 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id MOZ1RjtLJSw0-tbbcjoQb;
+	Wed, 03 Sep 2025 09:24:27 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1756880667;
+	bh=e7CXoEgbqdQlnVu4AkvrhZJos3vjANNbFz6CwkwPdi4=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=Mq4kB78t24eHmeffzFge6Z9ViLx2kpqsb2J5LxaXkIHBOsGISjpj4jhql0SUDuSGt
+	 pu/CvzbHlIP2ZbOsjzQGNmJLC8cWYjx7hqRZgp2OaBFG+dblvZgv28crweJuoB87VG
+	 CtS/mYJZRUneUe189aTQw/WfMwk4ZvIARRLf3xQo=
+Authentication-Results: mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Wed, 3 Sep 2025 09:24:22 +0300
+From: Onur <work@onurozkan.dev>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Benno Lossin <lossin@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, mingo@redhat.com,
+ will@kernel.org, longman@redhat.com, felipe_life@live.com,
+ daniel@sedlak.dev, bjorn3_gh@protonmail.com
+Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
+Message-ID: <20250903092422.37b29315@nimda.home>
+In-Reply-To: <20250902195328.6293b5d4@nimda.home>
+References: <20250621184454.8354-1-work@onurozkan.dev>
+	<20250724165351.509cff53@nimda.home>
+	<ec32fc5f5a8658c084f96540bd41f5462fa5c182.camel@gmail.com>
+	<20250806085702.5bf600a3@nimda.home>
+	<539d3e0da773c32a42b4ab5c9d4aa90383481ff6.camel@redhat.com>
+	<DBVLEGFYBWKE.2RW8J853CJHTY@kernel.org>
+	<20250814141302.1eabda12@nimda.home>
+	<76D4D052-79B6-4D3F-AAA1-164FF7A41284@collabora.com>
+	<20250814185622.468aad30@nimda.home>
+	<182E916F-3B59-4721-B415-81C3CF175DA7@collabora.com>
+	<20250902195328.6293b5d4@nimda.home>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: RISC-V: Re-enable GCC+Rust builds
-To: Conor Dooley <conor@kernel.org>
-Cc: Jason Montleon <jmontleo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <68496eed-b5a4-4739-8d84-dcc428a08e20@gmail.com>
- <20250830-cheesy-prone-ee5fae406c22@spud>
- <20250901-lasso-kabob-de32b8fcede8@spud>
- <b1734c45-42ec-46c7-9d4c-2677044aacab@gmail.com>
- <20250901-unseemly-blimp-a74e3c77e780@spud>
-Content-Language: en-US
-In-Reply-To: <20250901-unseemly-blimp-a74e3c77e780@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> That particular one might be a problem not because of -mstack-protector-guard itself, but rather three options get added at once:
-> 	$(eval KBUILD_CFLAGS += -mstack-protector-guard=tls		  \
-> 				-mstack-protector-guard-reg=tp		  \
-> 				-mstack-protector-guard-offset=$(shell	  \
-> 			awk '{if ($$2 == "TSK_STACK_CANARY") print $$3;}' \
-> 				$(objtree)/include/generated/asm-offsets.h))
-> and the other ones might be responsible for the error.
+On Tue, 2 Sep 2025 19:53:28 +0300
+Onur <work@onurozkan.dev> wrote:
 
+> On Thu, 14 Aug 2025 15:22:57 -0300
+> Daniel Almeida <daniel.almeida@collabora.com> wrote:
+>=20
+> >=20
+> > Hi Onur,
+> >=20
+> > > On 14 Aug 2025, at 12:56, Onur <work@onurozkan.dev> wrote:
+> > >=20
+> > > On Thu, 14 Aug 2025 09:38:38 -0300
+> > > Daniel Almeida <daniel.almeida@collabora.com> wrote:
+> > >=20
+> > >> Hi Onur,
+> > >>=20
+> > >>> On 14 Aug 2025, at 08:13, Onur =C3=96zkan <work@onurozkan.dev> wrot=
+e:
+> > >>>=20
+> > >>> Hi all,
+> > >>>=20
+> > >>> I have been brainstorming on the auto-unlocking (on dynamic
+> > >>> number of mutexes) idea we have been discussing for some time.
+> > >>>=20
+> > >>> There is a challange with how we handle lock guards and my
+> > >>> current thought is to remove direct data dereferencing from
+> > >>> guards. Instead, data access would only be possible through a
+> > >>> fallible method (e.g., `try_get`). If the guard is no longer
+> > >>> valid, this method would fail to not allow data-accessing after
+> > >>> auto-unlock.
+> > >>>=20
+> > >>> In practice, it would work like this:
+> > >>>=20
+> > >>> let a_guard =3D ctx.lock(mutex_a)?;
+> > >>> let b_guard =3D ctx.lock(mutex_b)?;
+> > >>>=20
+> > >>> // Suppose user tries to lock `mutex_c` without aborting the
+> > >>> // entire function (for some reason). This means that even on
+> > >>> // failure, `a_guard` and `b_guard` will still be accessible.
+> > >>> if let Ok(c_guard) =3D ctx.lock(mutex_c) {
+> > >>>    // ...some logic
+> > >>> }
+> > >>>=20
+> > >>> let a_data =3D a_guard.try_get()?;
+> > >>> let b_data =3D b_guard.try_get()?;
+> > >>=20
+> > >> Can you add more code here? How is this going to look like with
+> > >> the two closures we=E2=80=99ve been discussing?
+> > >=20
+> > > Didn't we said that tuple-based closures are not sufficient when
+> > > dealing with a dynamic number of locks (ref [1]) and ww_mutex is
+> > > mostly used with dynamic locks? I thought implementing that
+> > > approach is not worth it (at least for now) because of that.
+> > >=20
+> > > [1]:
+> > > https://lore.kernel.org/all/DBS8REY5E82S.3937FAHS25ANA@kernel.org
+> > >=20
+> > > Regards,
+> > > Onur
+> >=20
+> >=20
+> >=20
+> > I am referring to this [0]. See the discussion and itemized list at
+> > the end.
+> >=20
+> > To recap, I am proposing a separate type that is similar to
+> > drm_exec, and that implements this:
+> >=20
+> > ```
+> > a) run a user closure where the user can indicate which ww_mutexes
+> > they want to lock b) keep track of the objects above
+> > c) keep track of whether a contention happened
+> > d) rollback if a contention happened, releasing all locks
+> > e) rerun the user closure from a clean slate after rolling back
+> > f) run a separate user closure whenever we know that all objects
+> > have been locked. ```
+> >=20
+>=20
+> Finally, I was able to allocate some time to work on this week. The
+> implementation covers all the items you listed above.
+>=20
+> I am sharing some of the unit tests from my work. My intention is to
+> demonstrate the user API and I would like your feedback on whether
+> anything should be changed before I send the v6 patch.
+>=20
+>     #[test]
+>     fn test_with_different_input_type() -> Result {
+>         stack_pin_init!(let class =3D
+>     WwClass::new_wound_wait(c_str!("lock_all_ok")));
+>=20
+>         let mu1 =3D Arc::pin_init(WwMutex::new(1, &class), GFP_KERNEL)?;
+>         let mu2 =3D Arc::pin_init(WwMutex::new("hello", &class),
+>         GFP_KERNEL)?;
+>=20
+>         lock_all(
+>             &class,
+>             |ctx| {
+>                 ctx.lock(&mu1)?;
+>                 ctx.lock(&mu2)?;
+>                 Ok(())
+>             },
+>             |ctx| {
+>                 ctx.with_locked(&mu1, |v| assert_eq!(*v, 1))?;
+>                 ctx.with_locked(&mu2, |v| assert_eq!(*v, "hello"))?;
+>                 Ok(())
+>             },
+>         )?;
+>=20
+>         Ok(())
+>     }
+>=20
+>     #[test]
+>     fn test_lock_all_retries_on_deadlock() -> Result {
+>         stack_pin_init!(let class =3D
+>     WwClass::new_wound_wait(c_str!("lock_all_retry")));
+>=20
+>         let mu =3D Arc::pin_init(WwMutex::new(99, &class), GFP_KERNEL)?;
+>         let mut first_try =3D true;
+>=20
+>         let res =3D lock_all(
+>             &class,
+>             |ctx| {
+>                 if first_try {
+>                     first_try =3D false;
+>                     // simulate deadlock on first attempt
+>                     return Err(EDEADLK);
+>                 }
+>                 ctx.lock(&mu)
+>             },
+>             |ctx| {
+>                 ctx.with_locked(&mu, |v| {
+>                     *v +=3D 1;
+>                     *v
+>                 })
+>             },
+>         )?;
+>=20
+>         assert_eq!(res, 100);
+>         Ok(())
+>     }
+>=20
+>     #[test]
+>     fn test_with_locked_on_unlocked_mutex() -> Result {
+>         stack_pin_init!(let class =3D
+>     WwClass::new_wound_wait(c_str!("with_unlocked_mutex")));
+>=20
+>         let mu =3D Arc::pin_init(WwMutex::new(5, &class), GFP_KERNEL)?;
+>=20
+>         let mut ctx =3D ExecContext::new(&class)?;
+>=20
+>         let ecode =3D ctx.with_locked(&mu, |_v| {}).unwrap_err();
+>         assert_eq!(EINVAL, ecode);
+>=20
+>         Ok(())
+>     }
+>=20
+>=20
+> Please let me know if this looks fine in terms of user API so
+> I can make any necessary adjustments before sending v6.
+>=20
+> Regards,
+> Onur
 
-I still don't understand the problem here. `bindgen_skip_c_flags` in 
-`rust/Makefile` contains a pattern `-mstack-protector-guard%`, the % at 
-the end enables it to match all those 3 options at the same time, and 
-`filter-out` function removes them before passing to Rust bindgen's 
-libclang. Am I missing something here?
+There will be some changes to this API, I found some design issues on
+it. Previously, lock_all was an individual function, I will
+move it under `impl ExecContext` so that we can track more mutexes.
 
+I will send v6 in a day or two. To avoid confusion, please ignore the
+previous mail and review v6 directly since there will be some
+differences.
 
-> Similarly, something like -Wno-unterminated-string-initialization could cause a problem if gcc supports it but not libclang.
-
-
-Yes. However, this option is only about warnings, not architecture 
-related and does not affect the generated results, so simply adding it 
-into `bindgen_skip_c_flags` patterns should be enough, I think.
-
-> I think you're mostly better off catching that sort of thing in Kconfig, where possible and just make incompatible mixes invalid. What's actually incompatible is likely going to depend heavily on what options are enabled.
-
-Sounds better, I'll go down that path.
+Thanks,
+Onur
