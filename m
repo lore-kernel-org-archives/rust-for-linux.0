@@ -1,101 +1,111 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A972F28E2;
-	Wed,  3 Sep 2025 09:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C262B23BCF8;
+	Wed,  3 Sep 2025 09:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756890771; cv=none; b=miMqM9lSSeMOiNA4GJ1vN+Lg/jIShBQH1sb05BkRQrdB0uIY9/MPoiG14r6O54aQ3k+e34Zl2Jt4JHJR3li+fTPEgjHFmp44691PQHT40inqd2FRIok863jrWIwE3Medcp2hnSZ9UP1eXhbe1Kg0HAsljF9uaYKmrZNti3kzd6o=
+	t=1756892763; cv=none; b=K66ZRchaYvDlwOKxpXBt/2CAYjF6oD21Zlx38NVnzFSFkW2WuU9ZH1VRX19ydrXRFm+SM9Ow2ysZclHdJsMrp+6xGFPN0wO2ZJV6IBzOYu/ifOr6N5o3L7M8tBBg2WWY/UQTueJlqs6JLZzYE8gerdCsSxyDlMitMj+dd7mnMtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756890771; c=relaxed/simple;
-	bh=u1dUo+ncWnByrkiVnzOKVZT2Xjkh2cB3EGgl85trqm8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iN1e8BWZ2DNl6QxgTO8tlnFbhrN+qe12C4chJhh0hNnR2kqt0VDWE7xTyESpd84I49F5lIoLGFAjC4n7jahs54UtrhErY5ik8m8mO+frVFGUIFZrUtjEnMfW4uvqNrk5rg23JuIV90gR4vlyQ+ArV0YjIrvEbBizdi/QbSS0efw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNYk8X+A; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756892763; c=relaxed/simple;
+	bh=ZKlDPs5tUy7NnCdcegG/WFo2cZdk8beeu3/iLMX0A4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fnAb+Ay0B43CkIdJN9CcH5WeK/OE1BGCZFH8XBGQX4k5gKJR6A+njRHAXKTltJ6/crKTXSbaxQeS8wJPJwSm8zMISdSRHCypaZVKFxD27NY0GEr2Z6qYg0X5GHEB8LvFn8O7RoypPbZA3HU2TLwKHeZ03+LTT08vn2xkAkWtr14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GV0C1yzv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNYk8X+A"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-24ca270d700so414445ad.0;
-        Wed, 03 Sep 2025 02:12:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756890769; x=1757495569; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u1dUo+ncWnByrkiVnzOKVZT2Xjkh2cB3EGgl85trqm8=;
-        b=jNYk8X+ANTyTPRZOQPNw1aFoWqog6BEEILMH3skLcNgtY0K8fn3AWwZHdsE19Hqmyl
-         Pfypr8WnVKbhn3I+bVndrO0FiHsqv1U/KIrnd8tLJ/nfUghGv/JlF9TLtQFzGifdUYz6
-         05vwvvDnUwDpLrS+bPCC+A9sDADhG0YiOfSDL+LvwkGOqIOmStedOomAATWMiz119RcM
-         oluwgydm0VPlIubZ8gyEk8xWYc1GMvRwvXt6tQP+9MUmKA4Gk7As035oaFqkCmiUshKX
-         Bpu2vkl4oEDT1Db7KtAIB4lW90yCa+nTX3HOuC6OtQUTfsT0JBf1euTNI+Q7Qu1rMYB6
-         Ziog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756890769; x=1757495569;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u1dUo+ncWnByrkiVnzOKVZT2Xjkh2cB3EGgl85trqm8=;
-        b=M07vQAsmFJ+OC3IZnb01xI98Cu/MRuD4ngTzZ7ujXOuS3SwcFASOMy18LXVDwu8rjp
-         BAEmhIwZyRXrDYeb72zPVNp8cKCFGqZlFgjC7OCl6TG3vtoAd1eXwuTZGKLGQFxHwedX
-         dGxOm2QnTJJDYc/ib9qqJ4onUAciQSNFAFXP7KYCNuPIbRBNCF/LWjMSK62cW89toJhA
-         zLY5I6KtYHNd5snk+N79q7DfjWDFSeOvJaudMEJlERr6bHYEm+ZUO9nWAYjJYTNqeALP
-         IuMULJT92OlDsU6VaBuF6Pl49Wv7XW/hnKnDAA873FLt4rvZlu8WcrWcvmqoqEH4Srge
-         /ZFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5NAcBVcJkFkdYVjZ8Lqy8lGVuP6hYXtzYB2r+IyTanO+ylGMc6onoKnveRBT3YJCnu2RA+F4mMJCkO1Mb@vger.kernel.org, AJvYcCWoEUmoYQItupAHVyO5QL8bK3/6C8uCw0s2/iwnj+gn+7OlXV4tws4bdUW/iUB5MG8pGsXMZz31KlmiY3h2Fnc=@vger.kernel.org, AJvYcCX1HVhvNvmqTxDt3ekzaI3fRFn+TKLGFYAWaIHKECZkef6ZUhHe12N0RXphktXUV2sHPTH7KLBw@vger.kernel.org, AJvYcCXa7EST1Nz+38YUUZQlY7/rfuSL3bAIdHeVwkmMQBkF4g7o0naV75rR5Jl3ltazmpkJpIOizWfbmYof2k0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP91y4xwQ5uY23yaQOMFsvjOHMBUqkEY5NyxfSkRaSgvqTkCYZ
-	VZQhDopg/ZE1YhekLOaG5nqtl61J1LBRA5InMxJ5ichsHxfZxvRiUb+2WK+4WMyF97VYFVR956A
-	4xcu+DLSKYYd5nErPdgdsFAaO2x/Xpe0=
-X-Gm-Gg: ASbGncsj5RHBfsr9QBEVfeENZbeSLXizutKcMTkz7ZonyQ9t6toyh+i8s9Xwant8xNP
-	RLIFLVsmA/UDgw7PyYk45ONG4zJ9HdVTnPAYiNFc7Ve5De6XfBjATmlOucbG0V1gxI982rTK9Lf
-	yQvatfYrrVsRlNZSTMv7wK34Pu5nL05HlR05H8dIEyVyGAYwXkbTyGyRQVxRI3ct2KE/nSpOzXT
-	b9L/eoOrxOJ/dYK/00AgceTFdJozJ55Oc32FvLhSHjs8SE1V9y9ijf49DTiDqtHxYFcBF60lZvT
-	Ie3TLcWycgSJhAytn3YR5fM3x6nrp7xZBA5p
-X-Google-Smtp-Source: AGHT+IFy+V9mXKNgGUInVKnO4rUD7VlssVnjx0POASZsCkyJ+rfepXrTHaYt+5C8DyDBAIFxdX2YSb9WPGAXKP6wep0=
-X-Received: by 2002:a17:903:41cf:b0:248:b43a:3ff with SMTP id
- d9443c01a7336-2491f246be0mr103559945ad.8.1756890768748; Wed, 03 Sep 2025
- 02:12:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GV0C1yzv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA252C4CEF0;
+	Wed,  3 Sep 2025 09:46:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1756892762;
+	bh=ZKlDPs5tUy7NnCdcegG/WFo2cZdk8beeu3/iLMX0A4c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GV0C1yzvREcrwqNjc2PMT67tBBFW/EXhnoIs/QPooaoc8Obdf9N7h3j7PJ5Z/SYjH
+	 ee9berSxGonB2lm1cEbUhrSeqH47I7a1xEwd3ldBEe7lDDGP/PYRM66DJWLtT6BJid
+	 CZWppXqwnkBGcxaq5o8hmS5jHMhN3xzZSiC11V+8=
+Date: Wed, 3 Sep 2025 11:45:58 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 3/3] rust: error: replace `WARN_ON_ONCE` comment with
+ `debug_assert!`
+Message-ID: <2025090325-drinking-illusion-ef3d@gregkh>
+References: <20250829192243.678079-1-ojeda@kernel.org>
+ <20250829192243.678079-4-ojeda@kernel.org>
+ <CANiq72k7_GbFwRxW5vikF_SpiNcNm7Ff0oe6jyYX_voDg92QFA@mail.gmail.com>
+ <2025083032-barmaid-rising-a977@gregkh>
+ <CANiq72nAagBBPhyU3XdETMKBuFPbMMRaSTStWPpyLnByYPP=+A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250408220311.1033475-1-ojeda@kernel.org> <20250901-shrimp-define-9d99cc2a012a@spud>
-In-Reply-To: <20250901-shrimp-define-9d99cc2a012a@spud>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 3 Sep 2025 11:12:35 +0200
-X-Gm-Features: Ac12FXzVStDccJZt9jg6LxgcDhbP5A9e31eO3h_DSesybX7nfJW90L6qE4tU3Nw
-Message-ID: <CANiq72=hD3No2R8-8znrOsL+AEs3rCVjNn3sn-d7qKSKZaGWvg@mail.gmail.com>
-Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
-To: Conor Dooley <conor@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nAagBBPhyU3XdETMKBuFPbMMRaSTStWPpyLnByYPP=+A@mail.gmail.com>
 
-On Mon, Sep 1, 2025 at 7:46=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
->
-> I'm not really sure what your target.json suggestion below is, so just
-> reporting so that someone that understands the alternative solutions can
-> fix this.
+On Sat, Aug 30, 2025 at 01:07:52PM +0200, Miguel Ojeda wrote:
+> On Sat, Aug 30, 2025 at 8:28 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > If you wish to state that CONFIG_RUST_DEBUG_ASSERTIONS=y should NEVER be
+> > used in ANY shipping Linux system, then yes, we can carve out an
+> > exception for this (we do that if lockdep is enabled as that should
+> > never be in a running system, only a development one).
+> 
+> The config option is meant for development purposes ("debug"). We
+> don't control all its behavior anyway, because the compiler/stdlib
+> will also add many assertions (e.g. for unsafe preconditions). So, for
+> instance, it could easily have a non-trivial performance impact.
+> 
+> For the same reason, it will also change behavior depending on the
+> compiler version. So, for instance, new assertions in new compiler
+> versions could have an impact that is not seen in previous versions.
+> 
+> Thus, for this particular config option, we cannot guarantee much, and
+> the help text already states "This can be used to enable extra
+> debugging code in development but not in production.".
+> 
+> Having said that, I regularly CI-test our main branches with the
+> option enabled, and it has worked fine so far.
+> 
+> So if a user actually run with such kind of asserts in production,
+> because they really want to crash on anything and everything, I don't
+> see why they couldn't. It may really be that it actually stops an
+> important exploit from going on. Of course, it may also be that it
+> elevates a trivial bug into a denial of service elsewhere, but that
+> risk may be worth it for certain users.
+> 
+> In fact, I would say it is a good thing that certain specialized users
+> run with it enabled, because then it means they may find potential
+> bugs for others, and that makes everyone safer in practice.
+> 
+> But I don't know what exact constraints the CVE system puts on you, so
+> it is hard to assess what the best wording for such an option would
+> be.
 
-If you mean the last paragraph of the commit, then what I meant is
-that we could do the filter conditionally, so that `rustc-option`
-would work to test flags that require the `target.json` for those
-architectures that already do not use `target.json`.
+There are no "constraints" only a definition of a vulnerability that we
+must follow.  And for that, any way that a user could cause a reboot or
+panic, without having root privileges, gets assigned a CVE.
 
-Cheers,
-Miguel
+One exception being if lockdep or a few other "debugging only" options
+are enabled.  Those are explicitly stated by their maintainers that they
+should NEVER be enabled in a real system.  For those we do not assign
+CVEs as they should never be actually triggered by a user.
+
+So I don't know what to recommend here.  I strongly advise against
+adding code to the kernel that can cause users to reboot their boxes if
+they do something.  But hey, if developers want to do that, I'll gladly
+assign CVEs for when it happens :)
+
+thanks,
+
+greg k-h
