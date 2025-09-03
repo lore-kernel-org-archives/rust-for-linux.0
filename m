@@ -1,161 +1,376 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2071.outbound.protection.outlook.com [40.107.236.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6CE4C92;
-	Wed,  3 Sep 2025 17:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756921275; cv=none; b=ayuDwZquNLSm1Z6KyAfVlO2Cx8bIb4zgAzN8p0kwpZs5s/5LQC6JdXeNYgYY4oZCHIrlGr1RvgdeCu66saUQ4Z2GcmCgUtcD8qntgdgoStyKXzyzDBvkSdn671lV/wPPHYCW+2xXj3V2jFwuCrpZfwQbxn8PSk8zewtpw0iaThI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756921275; c=relaxed/simple;
-	bh=DwBkzoE+GXBkoTQ6jyYyprBpeOMhHPBK+76dx8fUlEE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DG9eord9q12+L/RE2f2J7HSLMpGipLyW+RYII5fWa7oZww/YqW+Q2qWzWaeyMw+yefMvbm5HoazuR1CE5HG6aUWnZtqAE9mfefZ7FEWT69Nf0to2HZlWHeW4zCj+h+ZZQl4g/OcuMG/Dp1xpew+EgY8+Iaik157Iq8qA7TF7wyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KBmCg5QE; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8F333438A;
+	Wed,  3 Sep 2025 17:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756922102; cv=fail; b=T6/ahOpPJrMujORNgzPlHLLSnJixDSWw0HKOBOZT0mC2cOX+2hdX9EDc4lBcAQACQ/QGs3coIB8a5rCLVyD1xC/uRG4H1zkNFFMruS9xKGHfKOgu0pWCxN0j9/CxAUMYKzdMO2LDGygd7fAcjIvaCq2fe+qPiWoIGU7lb1ZBCx4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756922102; c=relaxed/simple;
+	bh=M71spwxMXVK3qXRLL9m965FqfbVWijMLGpqYJva63So=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=V0iTRW3UWTaX6ugqRcSRhIixL/7g20VjbFQl4ENLXXCPe6AltiSKfPXoENGh7f+WAQhnRD8dHeC831YE20rcKsI2Xxcq6bsV2g/4Pps46sYdJeENqbQpSCWMLMOTGdPoVx73iiQHJLoIDhI4yidW1HT8aYf0cAl2xXB7Yw89y2k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VZswPj5N; arc=fail smtp.client-ip=40.107.236.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KBmCg5QE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=X1eVCAkFUUWC9Rcj+8pDwlYz1m9LGmi/MZUugLKYsbM=; b=KBmCg5QE+NSTb1NZX6o53q9SKe
-	z6CSKCFXKN3ffeW1JCQ9L+ou9wnVksOSytx0wnS5Ik7nv1V5Iir6BhAfQBajLGtbCCNI6DkUwsaqf
-	Ff6cYdX/GsQmGt6eYl+SgG3D6pqj8pZ/b95GBHDCy1ACH0iYgNeZXVLPfBeY6FPw4wPFzTDktl1T0
-	vR7UvYAxA+Jcc8cNjPt9d+4YgAT8rwe5vMZs6sq1mfQb6IgdRlCCgF23e6SHAUJXLjYfo7BB0fArm
-	lEJ39H4SC1aTCzk8zD3dorofvl9g527rpWsAJgE1AfrMqNPvvs5hdKsObtipWKnHUOHuLWikX7IjX
-	bT2yrREw==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utrTt-00000007DH0-0CKu;
-	Wed, 03 Sep 2025 17:41:13 +0000
-Message-ID: <76c552d4-878f-4ec4-a22c-c5b0f7903eba@infradead.org>
-Date: Wed, 3 Sep 2025 10:41:12 -0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VZswPj5N"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bShNIoAqP5BqeGVwWJXNSkbCE3jIkEsQAGJ+lDswpfwzFpYiajuGfCZ7/m+KbfxH4q44OKlHEjD0omCAYruDPIJqHEOaUMA11771/MMO73qHVkMz44jTQzQGk4fdqLrQklqzIYVNsVE270XAZ0JATFFND2GVjJzBtCuoxNzdkHsxwzPR1ipBZRFLbwh6vFj2NgLZfOh+5QkVgBMVKWF86Dpsp92z3JMyI6OREatkBZBULg9P2emGZZ5cgXQUGl7PjiS5bazqnJ25Y2pQm4AUmdSyRHjDtUDfQ+VcVtDDT7w896SZFHKJNyCcEQkWmO1brPf7gb5no/KZtedoSGmXlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iKoLylk4Re4jmw02P5CcUKuUcr9OqLwfnJpAfBh2Zc8=;
+ b=iQGmUPErCXXrzbtDcxsz38LMMr46rKR8DXp9MI0JFvPU4I8glG/8gqW8ZVWmmnYXIhtEUVDUvY+wuZmHQY2LuqyKIcyXAmk5zErUvjJYkJD232BK0OqNXGd0/qsHCNdmZ5NZgz6TAryWVQFSfa4yb/d/NgGKqEa37J3ySH4abGU4MNramg8Yz1JJD8nBeavqO3pOMzbkchY/cRtwLHnMcseTCkE+zE9BR+hP15icXx1IYFP8NevId+S7ArtTtHT2WpOTJZRwvpUKUnvtfs4jCGVj5khcNo3ZlNWsdDIdFBoLZt0zYXNruQgqbioLQDAvtQbWWzJuhSj2d1JqrPETQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iKoLylk4Re4jmw02P5CcUKuUcr9OqLwfnJpAfBh2Zc8=;
+ b=VZswPj5NSeMYlNo0m0iFJ+/Dz7MM/nORuW2tktEqZ7tofEeuijHJ5ZfKXN3LO1lbfIoxXOW8ZjJBDzLLCkZLy11ZU1b5sK3hA6q62ReW0Avx9i696ayLJgF5AFpav0SgUF4ijBmzjqQbjJCDiw5K6sWCNhYHYjD/vv3obF3/+5TiS1onpNnm27tOyDZ3xCR82bWVQE7rd571s8bo7y0R2P7eRY1l2t/6446kgUutFvpK9xvA6qYvubD7VJMq07yib+6K6pH/o22oEsBFTzL0CJ65TYIfx+lrS0CeEuosI/Xx77ymU8ziTVPaJ9WPDL8SR6ZYtgtO5yCceAHppIUCNQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by SJ5PPF4D350AC80.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::993) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
+ 2025 17:54:55 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9073.021; Wed, 3 Sep 2025
+ 17:54:54 +0000
+Message-ID: <5067c4fb-718c-4362-85d0-68a2ba53ea4f@nvidia.com>
+Date: Wed, 3 Sep 2025 13:54:51 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
+ structs
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
+ <D0E4757B-B26C-49AE-9076-267C0CBC2577@collabora.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <D0E4757B-B26C-49AE-9076-267C0CBC2577@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BL0PR0102CA0031.prod.exchangelabs.com
+ (2603:10b6:207:18::44) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] tools/docs: sphinx-* break documentation bulds on
- openSUSE
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc: =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <cover.1756916565.git.mchehab+huawei@kernel.org>
- <29135db8c8094006f256e1fa0b64663c735737e7.1756916565.git.mchehab+huawei@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <29135db8c8094006f256e1fa0b64663c735737e7.1756916565.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|SJ5PPF4D350AC80:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86b570a0-a3a9-4fad-f929-08ddeb12fcb2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M054THlpYVhUcGxHdkFCU1pMUnpWZUNTbzhqYXNpVzNMS1J1Yy9xYzZVZUVz?=
+ =?utf-8?B?a0Jid1Z3a01rZVlzTTAzdHptaDBDWTU0ZG5DaGczSUltbWFLem5TODkyWjZP?=
+ =?utf-8?B?RkllZGp0MjQzdlpvMXZVR29WMzBXenMrT0Vqa0pkNlB0NWV6UVlXTkdid0xw?=
+ =?utf-8?B?Q2dxL01FMm9WRFNSOCtBRGV3QjNmVkIzeTNqQjNLOTBSZXJTMlBkUVJpVE5i?=
+ =?utf-8?B?aU9reWl6R05GWnFidndYc1JJWVlqcTFLYTVNSUJMSE5YSnJnVlNEcXBzb0Rp?=
+ =?utf-8?B?Qy9lUDJNcDR6b3R4N0xPTkpBb1MrVWFVZWpIVW1zUFlBbTlaYzNzSjRkWFlx?=
+ =?utf-8?B?eEhxZUF6SWFZSHBueVJhZjcvVERnTEUwYlFjVEpWR1orWlZVMlZTKzlvRFJM?=
+ =?utf-8?B?enZxZXBHYmErQityOVJySytObjM2anBYbk9rTGpUd2FtK2JZbDlsR0pwU2V6?=
+ =?utf-8?B?SktHeFR6cnc3MEtNOENONEJ3ME1RWkJzRGhJTy91SEdDd2N2SEpkRGU4RVRR?=
+ =?utf-8?B?Y09Mc21ZTXcvRkMxblZZUmY1ZTVyc1NkZkJONXlCcFJXZnh6RndSQ0IxOEVm?=
+ =?utf-8?B?SUphYjVkNGVjQ0NpbTI3QVBsOVRNZk9xY2VNVnJ4TWJRQWNDSCszYkxoME1y?=
+ =?utf-8?B?c2RqTWNDV21GN1JSRVB5b1lnSUxRd0syaFVOV2l1TzBSZFUvRWZ2WGdiWWZH?=
+ =?utf-8?B?b0dNNkFSZG9rNXl3NXBXY3gxNHY2OTZBUytWeXBmaVcrem0wSU0vY0xCczBI?=
+ =?utf-8?B?YzNZRXRoZGZhWTgxNWkySlVjV0lhbnF3Qi92dkVnYkdMQUJZVktIQWZUUS93?=
+ =?utf-8?B?VitOTm1xOW52MHZ3bDJBZFFia2o3NjNzK2p1RUhJbjNQWkVLVnNpU3VRUGow?=
+ =?utf-8?B?eWhBcENuaFdhRG5laU4wanRsNVZvYXVMclRtMGFCV2ZtQXJwd1VKdHR4dERX?=
+ =?utf-8?B?VXRaN0oxZnBCenExbm5LZ1BZSndlbU5UcUQzTi9ZaE1ybnNEQkx6K1ZLRFVk?=
+ =?utf-8?B?NjF4dGFWT3hJaytQa3NjUlkxNE1uL2grNW03UnVlV3kvbnV1UFBvV1lrNGtY?=
+ =?utf-8?B?U2VhMVVGU01SRDhUaWNBOHp5YitUeUR5eFFlbUUxQ2RWTjN0dGM0SStGZmJm?=
+ =?utf-8?B?SnRSVEtoNVFjendMNkhQNFQwWkJva1lhb21EVnV1NldkVG8zUjE4Z0k1c2ZS?=
+ =?utf-8?B?ZDRReE9kVlZPUWE0eTJBTVpDUDFGZEFxMnVaM25xY2JsRkludmFYVXlsQU95?=
+ =?utf-8?B?NjF1dndPWlpKaTA0RzZ1ZHhmSWk1SEhLWkhQNXNiWCtQeFpLOFdLK2xrcE9i?=
+ =?utf-8?B?MUpKQUtVaGk1WkRZeCtnbWEyTTZhQ21Fd2hQNmx3cjY1bEpDemkzdzhuK0dj?=
+ =?utf-8?B?N3dCT3V1QU9Pa3A0ZVpHUU9lZFR5T0dJRVQya0JhOHFmaXVrLzNpcXRHTHNZ?=
+ =?utf-8?B?TGlBQW5vWWFud0dkQlNockFvSjA1SGVZMUt5OGsyaUtKTEdxZkZLaXFPaElB?=
+ =?utf-8?B?dVhOT2ZaUXpUeWJCOXI3UkFFMW00LzZyd1F5SG0yVEppTUo4N2RqNHpOcjg3?=
+ =?utf-8?B?UjkrNU9hUGc3dWlYQ3RYd21tWUo1QjBJeEgyUzdidGhTaWp2OFo2aFZmMEhX?=
+ =?utf-8?B?eUt2UFZqMFFHTHhkL2Y0SEoyU0tLQXZJWlFuQXFXQkRNUytsRmhUOVpGY1Nq?=
+ =?utf-8?B?Z0kraEZ1dnNSTnVXNGlrdmYvZEd0SERNc0ZySWlqMVNmMFd3ZTRVbzRFaUtF?=
+ =?utf-8?B?VTRHTC80U1lFTFUzZTQ3YTFNZElTSFkwdWxXSmxmbVBtcjg1RjhGV29LeEVI?=
+ =?utf-8?B?eVZrQTRMNTZudnphbS8wdDd3QmZMdlBTbHZ2UGptTEJFSWdEVHFhaEF0Y1pk?=
+ =?utf-8?B?ZGltcC9Obm1velZuTEhBNUdvc1FLaDgwUjVvUHhoTVFhQ1E9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b1dVVWd4U0xHRHZibThyR3RkaTBRNVNzTFp6REhVb01vZ3ZBczNVZWZ2aXRI?=
+ =?utf-8?B?UlZWSFNVZVFibGNOL2VwNFJEMjAvWW0rTjl3Nld2SFo1MFBjSlZCdDNYcGJC?=
+ =?utf-8?B?YS9sWmhqekFheXhueFQ1ZnN0V0FndnRIWGpQaEpmMXdjcHlHZlJOQXFnUXpI?=
+ =?utf-8?B?VUJCZFdsU1drVEUwTmphTGwxV0VicTRLZUZ3QkZTWHpkcUNIWTQ2RFB2cGxW?=
+ =?utf-8?B?aWpQQU1RelJkS3QzTlg1NDdRalBJajVlNWsrNkc0cTV1bWVycVhHTlBXaTl4?=
+ =?utf-8?B?Y3VPS2VkNUx0QWRNamVScUVzRFpXQXRXc21BK3JUVDhWL2drR3J0TS9zaTNX?=
+ =?utf-8?B?Mk9yWUVRdUdNdFdpQnZRdnJac2xvWEtOblFoODlRcURhSm5KU3BNbTZyRE1G?=
+ =?utf-8?B?emNIQmVKQjZvL0VlaGdIcDR1ZlMzaEoxaVhhZlcxdWVIM1hJbjMvUUYxOXor?=
+ =?utf-8?B?MTY0QkduV2ZNdWY0Q0IrVElEQUxGZTNNcE1ITjdsSzZsdXphYW5lN28rdHF6?=
+ =?utf-8?B?SHowRGoxU1dpM3RkeDgzNTVpdjUyL1Z3eEY2d0hHcitOT05wVmZZVE4wV25h?=
+ =?utf-8?B?YzczWU1VS1lzSm1BRGJ4a1MzWUNETk1mK1JUU0dwcDAzdlZoU011Q21rU3dn?=
+ =?utf-8?B?MlVlYVl5dUpISmpYeXdlSHdyczZQR1FoRVVDeEJDS2w1N3VzRGNWQU5zeTdK?=
+ =?utf-8?B?cUhka0M1VXRIamhtaXhpVWJHWDltSjZXaVYvU2ZxUThwV3JBaHozVzdzdm56?=
+ =?utf-8?B?UXlQaUpQUkJvTTg4RkcvRzVFMUpJNlg3aWE2U1JuZ0lGQnVGV00vYWpiMEtU?=
+ =?utf-8?B?YTU0UXVUUnE4R3EwcmdCaUJSQW4wbmJWaHV6dVlDVHV4V21UYnc2YlozbytH?=
+ =?utf-8?B?a2tsVHNGM2t1b3VPZEJoMGtiNjBBOGFIaFFubTZMa21NbGlFQXFKc0EzWUdP?=
+ =?utf-8?B?Z2N2R2tiRmpYdHdmZkY0aFcraWRhSlZHZi9EeitpOGs4eXdnVWZkamVBbGV2?=
+ =?utf-8?B?TnZNYjd6OG0vQXhsL3gyUkZZeDdPTWJiTHBCUFZPS04xOVNaa1FEd2daL2M4?=
+ =?utf-8?B?dC9XU21yYktvY25ETGEwM2MzUitQYzFERHZDY2x2SCtFbndNZXV1OUhhSDJD?=
+ =?utf-8?B?Q2JwYXdSYitWam9MOW5xSlMrNzZwVWF4eGF1QU80NzdDQWVmQVUveXFBbjJ1?=
+ =?utf-8?B?L3JmSkUzQTB1NVlUdFdXYnlkdFM5N1NCQXE4eHc5Y2c1c0txK1p5cUV0YWxO?=
+ =?utf-8?B?ajl3QnU5Z1JSSUJscUVDa0tyYmFBWTNZZjc5L2wwQjZHUW9VV1hJQ2RIOVg0?=
+ =?utf-8?B?Q3QxamJWSmp3a3cyeTZXTGtZbjlkcjJ2dldQNmxlV1Myc3R4dWRDRUc0dkFs?=
+ =?utf-8?B?VTFubVE2eUVHZnRmRXlWell5ck50N0RSdUZkK3BKK3U1K2dJSzVGR0E4RzJV?=
+ =?utf-8?B?ajZ3WVBISDlkSFU5czFTSUZIYm41ZHpFR0JMN0hLdG51TzZQR0lCcS9kaFhE?=
+ =?utf-8?B?ZmIzWktqT0pUeFRpOWhxcFl5amFHanJxWm1vS2ZNWFd5U3dVYjFqNk93U080?=
+ =?utf-8?B?NmhPRFhIT2R3OVp1MTRDeTRyTDZBbG05MWxXNmsrME9mNlJxSjQwZjFuSXd4?=
+ =?utf-8?B?eGdlM1dyVGVBUGJuNXhsejNCSmFpQWRwNE9CQXFETW4ybmxkS1hudHppby9M?=
+ =?utf-8?B?TDJlQktkNmdRYWVURGsxL1JERVo1b3V2NjlIa2lzWUlxb253am5lRHdpbE1I?=
+ =?utf-8?B?WnlMblNqQnVyaW1Rd2FKSGNycEhMUTRwVStIczlHSjkzc3NkeWJIeHMyUERQ?=
+ =?utf-8?B?eHIwaGZNamlSVG9wanpValJmTFFTamp0dDlWNkhFeTVtTHNyalB3SkkzL0Nw?=
+ =?utf-8?B?WEF3clM4MnlxR0xsVGZjUnRreFM3ditXbUlNbGNQWnR4dlpFSE51ekJoZjEv?=
+ =?utf-8?B?cW9UbGQyS1lIUzhGeHptSlVLL1ZaLzZFaHM5d2JYQmJlNlp6d2RYL1NFREd2?=
+ =?utf-8?B?Q01MY21VRnkreERHZ3RYTk82VGhCQUhTZjdsRzRMcGlaVTNxa2NmRklJRThq?=
+ =?utf-8?B?NG9JcXhZSEl5SUdocjR2cWc4L1IrS1B3R1cvT2pYTDBjbmlHY3V0L2hJNXZK?=
+ =?utf-8?Q?6R9UvFvZmJbLS102/3GR6o4DL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86b570a0-a3a9-4fad-f929-08ddeb12fcb2
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 17:54:54.0159
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Qioiqovf2Pbcsy6S5dEN4aa1hHc159dzQh2sXD9obJ2T9boPzlpB08eDVWin9z5S4yDp2urDr8L3mB+b7WbXTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF4D350AC80
 
 
 
-On 9/3/25 9:24 AM, Mauro Carvalho Chehab wrote:
-> Before this patch, building htmldocs on opensuseLEAP works
-> fine:
+On 9/3/2025 9:29 AM, Daniel Almeida wrote:
+> Hi Joel,
 > 
->     # make htmldocs
->     Available Python versions:
->       /usr/bin/python3.11
+>> On 24 Aug 2025, at 10:59, Joel Fernandes <joelagnelf@nvidia.com> wrote:
+>>
+>> Add a minimal bitfield library for defining in Rust structures (called
+>> bitstruct), similar in concept to bit fields in C structs. This will be used
+>> for defining page table entries and other structures in nova-core.
+>>
+>> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+>> ---
+>> drivers/gpu/nova-core/bitstruct.rs | 149 +++++++++++++++++++++++++++++
+>> drivers/gpu/nova-core/nova_core.rs |   1 +
+>> 2 files changed, 150 insertions(+)
+>> create mode 100644 drivers/gpu/nova-core/bitstruct.rs
+>>
+>> diff --git a/drivers/gpu/nova-core/bitstruct.rs b/drivers/gpu/nova-core/bitstruct.rs
+>> new file mode 100644
+>> index 000000000000..661a75da0a9c
+>> --- /dev/null
+>> +++ b/drivers/gpu/nova-core/bitstruct.rs
+>> @@ -0,0 +1,149 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +//
+>> +// bitstruct.rs — C-style library for bitfield-packed Rust structures
+>> +//
+>> +// A library that provides support for defining bit fields in Rust
+>> +// structures to circumvent lack of native language support for this.
+>> +//
+>> +// Similar usage syntax to the register! macro.
+>> +
+>> +use kernel::prelude::*;
+>> +
+>> +/// Macro for defining bitfield-packed structures in Rust.
+>> +/// The size of the underlying storage type is specified with #[repr(TYPE)].
+>> +///
+>> +/// # Example (just for illustration)
+>> +/// ```rust
+>> +/// bitstruct! {
+>> +///     #[repr(u64)]
+>> +///     pub struct PageTableEntry {
+>> +///         0:0       present     as bool,
+>> +///         1:1       writable    as bool,
+>> +///         11:9      available   as u8,
+>> +///         51:12     pfn         as u64,
+>> +///         62:52     available2  as u16,
+>> +///         63:63     nx          as bool,
+>> +///     }
+>> +/// }
+>> +/// ```
+>> +///
+>> +/// This generates a struct with methods:
+>> +/// - Constructor: `default()` sets all bits to zero.
+>> +/// - Field accessors: `present()`, `pfn()`, etc.
+>> +/// - Field setters: `set_present()`, `set_pfn()`, etc.
+>> +/// - Builder methods: `with_present()`, `with_pfn()`, etc.
 > 
->     Python 3.6.15 not supported. Changing to /usr/bin/python3.11
->     Python 3.6.15 not supported. Changing to /usr/bin/python3.11
->     Using alabaster theme
->     Using Python kernel-doc
-> 
->     ...
-> 
-> As the logic detects that Python 3.6 is too old and recommends
-> intalling python311-Sphinx. If installed, documentation builds
-> work like a charm.
-> 
-> Yet, some develpers complained that running python3.11 instead
-> of python3 should not happen. So, let's break the build to make
-> them happier:
-> 
->     $ make htmldocs
->     Python 3.6.15 not supported. Bailing out
->     You could run, instead:
->       /usr/bin/python3.11 /root/tools/docs/sphinx-build-wrapper htmldocs --sphinxdirs=. --conf=conf.py --theme= --css= --paper=
+> I think this could use a short example highlighting the builder pattern. It may
+> be initially unclear that the methods can be chained, even though the word
+> “builder” is being used.
 
-                            /root
-??
+Sure, added, thanks!
 
 > 
->     Python 3.6.15 not supported. Bailing out
->     make[2]: *** [Documentation/Makefile:75: htmldocs] Error 1
->     make[1]: *** [/root/Makefile:1806: htmldocs] Error 2
->     make: *** [Makefile:248: __sub-make] Error 2
+>> +/// - Raw conversion: `from_raw()`, `into_raw()`
+>> +#[allow(unused_macros)]
+>> +macro_rules! bitstruct {
+>> +    (
+>> +        #[repr($storage:ty)]
+>> +        $vis:vis struct $name:ident {
+>> +            $(
+>> +                $hi:literal : $lo:literal $field:ident as $field_type:tt
+>> +            ),* $(,)?
+>> +        }
+>> +    ) => {
+>> +        #[repr(transparent)]
+>> +        #[derive(Copy, Clone, Default)]
+>> +        $vis struct $name($storage);
+>> +
+>> +        impl $name {
+>> +            /// Create from raw value
+>> +            #[inline(always)]
+>> +            $vis const fn from_raw(val: $storage) -> Self {
+>> +                Self(val)
+>> +            }
+>> +
+>> +            /// Get raw value
+>> +            #[inline(always)]
+>> +            $vis const fn into_raw(self) -> $storage {
+>> +                self.0
+>> +            }
+>> +        }
+>> +
+>> +        impl core::fmt::Debug for $name {
+>> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+>> +                write!(f, "{}({:#x})", stringify!($name), self.0)
+>> +            }
+>> +        }
+>> +
+>> +        // Generate all field methods
+>> +        $(
+>> +            bitstruct_field_impl!($vis, $name, $storage, $hi, $lo, $field as $field_type);
+>> +        )*
+>> +    };
+>> +}
+>> +
+>> +/// Helper to calculate mask for bit fields
+>> +#[allow(unused_macros)]
+>> +macro_rules! bitstruct_mask {
+>> +    ($hi:literal, $lo:literal, $storage:ty) => {{
+>> +        let width = ($hi - $lo + 1) as usize;
+>> +        let storage_bits = 8 * core::mem::size_of::<$storage>();
+>> +        if width >= storage_bits {
+>> +            <$storage>::MAX
+>> +        } else {
+>> +            ((1 as $storage) << width) - 1
 > 
-> It should be noticed that:
-> 
-> 1. after this change, sphinx-pre-install needs to be called
->    by hand:
-> 
->     $ /usr/bin/python3.11 tools/docs/sphinx-pre-install
->     Detected OS: openSUSE Leap 15.6.
->     Sphinx version: 7.2.6
-> 
->     All optional dependencies are met.
->     Needed package dependencies are met.
-> 
-> 2. sphinx-build-wrapper will auto-detect python3.11 and
->    suggest a way to build the docs using the parameters passed
->    via make variables. In this specific example:
-> 
->    /usr/bin/python3.11 /root/tools/docs/sphinx-build-wrapper htmldocs --sphinxdirs=. --conf=conf.py --theme= --css= --paper=
+> Can’t we have a build_assert here instead?
 
-ditto.
+Good idea, will change.
 
+>> +    }};
+>> +}
+>> +
+>> +#[allow(unused_macros)]
+>> +macro_rules! bitstruct_field_impl {
+>> +    ($vis:vis, $struct_name:ident, $storage:ty, $hi:literal, $lo:literal, $field:ident as $field_type:tt) => {
+>> +        impl $struct_name {
+>> +            #[inline(always)]
+>> +            $vis const fn $field(&self) -> $field_type {
+>> +                let field_val = (self.0 >> $lo) & bitstruct_mask!($hi, $lo, $storage);
+>> +                bitstruct_cast_value!(field_val, $field_type)
+>> +            }
+>> +        }
+>> +        bitstruct_make_setters!($vis, $struct_name, $storage, $hi, $lo, $field, $field_type);
+>> +    };
+>> +}
+>> +
+>> +/// Helper macro to convert extracted value to target type
+>> +///
+>> +/// Special handling for bool types is required because the `as` keyword
+>> +/// cannot be used to convert to bool in Rust. For bool fields, we check
+>> +/// if the extracted value is non-zero. For all other types, we use the
+>> +/// standard `as` conversion.
+>> +#[allow(unused_macros)]
+>> +macro_rules! bitstruct_cast_value {
+>> +    ($field_val:expr, bool) => {
+>> +        $field_val != 0
+>> +    };
+>> +    ($field_val:expr, $field_type:tt) => {
+>> +        $field_val as $field_type
+>> +    };
+>> +}
+>> +
+>> +#[allow(unused_macros)]
+>> +macro_rules! bitstruct_write_bits {
+>> +    ($raw:expr, $hi:literal, $lo:literal, $val:expr, $storage:ty) => {{
+>> +        let mask = bitstruct_mask!($hi, $lo, $storage);
+>> +        ($raw & !(mask << $lo)) | ((($val as $storage) & mask) << $lo)
+>> +    }};
+>> +}
+>> +
+>> +#[allow(unused_macros)]
+>> +macro_rules! bitstruct_make_setters {
 > 
-> 3. As this needs to be executed outside docs Makefile, it won't run
->    the validation check scripts nor build Rust documentation if
->    enabled, as the extra scripts are part of the docs Makefile.
+>> +    ($vis:vis, $struct_name:ident, $storage:ty, $hi:literal, $lo:literal, $field:ident, $field_type:tt) => {
+>> +        ::kernel::macros::paste! {
+>> +            impl $struct_name {
+>> +                #[inline(always)]
+>> +                #[allow(dead_code)]
+>> +                $vis fn [<set_ $field>](&mut self, val: $field_type) {
+>> +                    self.0 = bitstruct_write_bits!(self.0, $hi, $lo, val, $storage);
+>> +                }
+>> +
+>> +                #[inline(always)]
+>> +                #[allow(dead_code)]
+>> +                $vis const fn [<with_ $field>](mut self, val: $field_type) -> Self {
+>> +                    self.0 = bitstruct_write_bits!(self.0, $hi, $lo, val, $storage);
+>> +                    self
+>> +                }
+>> +            }
+>> +        }
+>> +    };
+>> +}
+>> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+>> index cb2bbb30cba1..54505cad4a73 100644
+>> --- a/drivers/gpu/nova-core/nova_core.rs
+>> +++ b/drivers/gpu/nova-core/nova_core.rs
+>> @@ -2,6 +2,7 @@
+>>
+>> //! Nova Core GPU Driver
+>>
+>> +mod bitstruct;
+>> mod dma;
+>> mod driver;
+>> mod falcon;
+>> -- 
+>> 2.34.1
+>>
+>>
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  tools/docs/sphinx-build-wrapper | 3 ++-
->  tools/docs/sphinx-pre-install   | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
-> index 932b1b675274..48e6e0a76aeb 100755
-> --- a/tools/docs/sphinx-build-wrapper
-> +++ b/tools/docs/sphinx-build-wrapper
-> @@ -719,7 +719,8 @@ def main():
->  
->      args = parser.parse_args()
->  
-> -    PythonVersion.check_python(MIN_PYTHON_VERSION)
-> +    PythonVersion.check_python(MIN_PYTHON_VERSION, show_alternatives=True,
-> +                               bail_out=True)
->  
->      builder = SphinxBuilder(venv=args.venv, verbose=args.verbose,
->                              n_jobs=args.jobs, interactive=args.interactive)
-> diff --git a/tools/docs/sphinx-pre-install b/tools/docs/sphinx-pre-install
-> index 663d4e2a3f57..698989584b6a 100755
-> --- a/tools/docs/sphinx-pre-install
-> +++ b/tools/docs/sphinx-pre-install
-> @@ -1531,7 +1531,8 @@ def main():
->  
->      checker = SphinxDependencyChecker(args)
->  
-> -    PythonVersion.check_python(MIN_PYTHON_VERSION)
-> +    PythonVersion.check_python(MIN_PYTHON_VERSION,
-> +                               bail_out=True, success_on_error=True)
->      checker.check_needs()
->  
->  # Call main if not used as module
+> The code itself looks good. Thanks for doing this work, it will be useful for Tyr :)
 
--- 
-~Randy
+Glad to hear! I will send a v2 out today or tomorrow, thanks.
+
+ - Joel
 
