@@ -1,161 +1,217 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1161A28DB46;
-	Thu,  4 Sep 2025 21:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB8329E10F
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 21:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757019935; cv=none; b=vAHHE6pYOk7WtB36owvkn17qkj+LVgThryuGkJfkLEDW1XQstFVH95bzS1C9xZP4kOMH4JJBckxp6nL3kbQC0r9WO9ASwxG+0esSU5+bxidmFzbMutWV6/SauNF4TrQ2EbUf87cu5BU+t2q3H64DIwxLib4vJxK5wJXzsesd1TU=
+	t=1757020444; cv=none; b=p45wO4uMFM1m4gfhft6HMxpVd9V+W2CiucH8vI/W8//RivkIjvXebKvV8AtzGNbFQjhJi6ESDDGcBiPy+3JrqYwxz3U1WKfOPNXSiV8jbKyIZOBC8bN6P3TNFSGtyrYtNwdl2NIgNz2blysPnMgGp3hOxoCwg6htey3SqOl0DKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757019935; c=relaxed/simple;
-	bh=pywoOeEESFWdfylHO8uqiS4BGL+csxqD2zObt34MaAk=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pyg8z/OvXFmcegh4lztNDOD8Ovx5iEzLiTqRn8pfbRpBGym4j+lT24J7PMN6vKNgTHbFxQnp5WAdX391AR/aqMhr9zkW2BCoJfM1VVrEb+ekgIdYkJ4rO16u8wlHVbddbNlPt8NUH5ZPMvR1kb/Hucjx8kZzsnLcrS9ORKp+KWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DQmFlp4Z; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757020444; c=relaxed/simple;
+	bh=pG7w/3JHU8axFyAFdX9e0nFyT0oX71h+TjUDTVFGEkA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lHCTLgLaymwVNVbKOqWEBO8R99Sk/Fo2Su0/zSU2I6ck9mdvcEpepQXnm/8MhCvpl6KyspwQdR5JpvELyT1KAB3AvsIEv0CpHGi1ANTZIQy/2PsWZtz+S6mT7MzJxkDqDxTbksVYatEk4LieN3fdhm/fJeaSqv96lKVf9/MS8lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yySFxCNx; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DQmFlp4Z"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7722f2f2aa4so1959832b3a.1;
-        Thu, 04 Sep 2025 14:05:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yySFxCNx"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b52047b3f21so272022a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 14:14:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757019933; x=1757624733; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=pePvqOR7Q5lmGezz3Zl2SMH1cqCRYl41xACklsYlDnY=;
-        b=DQmFlp4Z9B6BlsiVOSOdqeO8UdoiRmgOtSCJctN5XltG6sPRBmiSzt7b9kgWBAVw9U
-         wFdZbLO42m12pGyCKDmI/Khovel/4Z0SVmGW5RoW5kTYyHe4iAk5p3h8yMLhUZWPZ0Ok
-         9PD7AyQufRdm4wvyHUX5ONa0onBqbYSMGsaox35e9MbN4WAf5wqRvDF9zc98UNYAMaKv
-         pt8inPe/1kDmptHyennpdIWz0hiyb1jcjWcDAQLHDwGToNk4xZZXVp9GTrCZog2Uc6DQ
-         tAuPu25nJcq5fOZYF0pt/Rotji5NiDV82tXYP7Is2R60TzURcnrQSHg56zLio/QVnFWW
-         YlbQ==
+        d=google.com; s=20230601; t=1757020442; x=1757625242; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TJYwU2yPPd0EE6hrwXyI4Ct3oTbe0VrmrCjZwMAZaNg=;
+        b=yySFxCNxmQLXdjX5N+KevTH6sm6opxbc+g/MnGH8PNyHlbgYlMHh0aiJsG0CwP3TeB
+         MMhsx4abUSTmiH7xlbr1O6RGSECYXizEs4gVoVdu7D39TJNjEvkw0Nq6B9/aA5kVE0/X
+         5u15/2NDwlUBxKfTLIQ+chiFj0J4qPpfi7rYha0L1dKne/KT/8C7M30weZ4LRDNRLIi0
+         MEbw3gBvBAVPzac6vnThbttjUird9F1Ya0Ww+zCStHUiYvDE9GEkFomHz8RIi1fMfDf6
+         YUCaO9PKaUeR6WpnsHX9M5MeRpdH64KQ7qbI7lcvga6LDMBaVpHokTi9KKr3hIg68qLB
+         CvXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757019933; x=1757624733;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pePvqOR7Q5lmGezz3Zl2SMH1cqCRYl41xACklsYlDnY=;
-        b=VofiQJxOYwaKj2it9PhhLSp8a0XB+ymU4fWVwHCw/1+yf4gfnhBHN3e3Y7ARb+SjCI
-         v3grEfFVU+GjmFRAXivjoEQAUWWBUXVY7uNg1lGdM/yzp7MV2ONPfWkaQ974dOVmHLuV
-         8ZQb2wYsZqqqQdMv1AlvIzvT/9M4p00HkgW2/6SfcOWqI0HOBbcTOSgbynSgMr700Wnm
-         kyvs+NzszDwzbxI3jceKYCOzGspZvPs0qO3OTGfhl/UQgSEOIt5KOgHpEyN1k0x3vDy4
-         4RX3ki6QxbSKQ7XJThAhvxGG5oYNCx3CmVAJOeFrupPuE6z5cRQwunQ5GrhFqbAhX8sh
-         Rggw==
-X-Forwarded-Encrypted: i=1; AJvYcCUs8bQeX7MLHFDNiO7nmcvyejNBfxBM6IAKla6q0PHUrJFMQl2SHlLoyldk6KVrp1FVyWopkT1q5Jio17FtePc=@vger.kernel.org, AJvYcCV4rsw1gaDRdV9LpihG7CM3LeiLs7kH3vRUWwjmJTMsaVuuPBWFSW4RRcGABesX8acF1ASUU3QZkPi7ThE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx85kz135BAyKkMfb0rAOW2EW+zrOcYCdPHV74S43m1ytfO+a4T
-	5qGzg93xI7u5BJpR82U2U61NkxAttbAk/Wt7rHMRApOt/Vj/XrdxloW6
-X-Gm-Gg: ASbGncttPfT7R0AxpxY7A0nREfYZ0U69nQf7LOHMDhQ3cVsAfE5O1LXgqmm5p9wj9vF
-	lyxKHZEmW7mToojSQM1IurAIg4Y0iUsEw3cc1wNjVEDSgU+3OX6/iYSLKVYJTlF+6IAYkOg3Md3
-	4EbcGhcSFyzryEhlUsoBJq0ETaPTQDkl+0cj3AtiASiqVri//2NrJ2g2fAmwesT/T0a56EwOYqI
-	j0ei95UPEF/8VMg7UHWh84bPyE6uHY0youxblHmjxwNEj11ZoXzMnKUPsK/l4jqn/8cD9IYP0dB
-	4Q7HFWNSLXrW6BFQxNVOZvN2JFTFi9AKvhuXEVRiKh4aNjsUgiLQsbm7Kg1Qg+sCgVfToKOLt6z
-	KNZHfPgOB21liztbLcYXYEVMaeEn1iZE6UjOfTA==
-X-Google-Smtp-Source: AGHT+IFqHr/M76UHbTB5jG3tqCeaieTz2lBy8yr6iwfKPpC80S5IkLRd3TQLo0XvYyhNo6p2eDpIkA==
-X-Received: by 2002:a05:6a00:1acf:b0:772:615f:b5b1 with SMTP id d2e1a72fcca58-772615fb6e9mr21433903b3a.18.1757019933027;
-        Thu, 04 Sep 2025 14:05:33 -0700 (PDT)
-Received: from Cyndaquil. ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4e27d1sm19872865b3a.81.2025.09.04.14.05.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 14:05:32 -0700 (PDT)
-Message-ID: <68b9ff1c.050a0220.35de1d.11b7@mx.google.com>
-X-Google-Original-Message-ID: <aLn/GebopZOJZoyc@Cyndaquil.>
-Date: Thu, 4 Sep 2025 14:05:29 -0700
-From: Mitchell Levy <levymitchell0@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for
- DynamicPerCpu
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
- <aLi-7W21N45fBGJk@yury>
- <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com>
- <aLn4bopPt8uS4d1O@yury>
+        d=1e100.net; s=20230601; t=1757020442; x=1757625242;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TJYwU2yPPd0EE6hrwXyI4Ct3oTbe0VrmrCjZwMAZaNg=;
+        b=AqEWrkGdQTFeIFWwsF8SWbjrqHnXmVklJvbGZOL/2uHU0UFcXf3+2xHW2yHf/+ljit
+         VVOxyS6rgBlwb8UH0uuqlHFw0mc2J0fOO+Q49/b4xUTCPFKnuusR2gWxBbFmYRaY6Nj7
+         A7SjyoLgeDW/Jox7HyV9WovS4iefy5W6bCwnVaaxVN1UzLwgXhhG1O3IRTmRB3fE6Duk
+         R3qDP9fuXeT8ZZyMxi8fgjBzO7uA/Q24DrRMZ7fe10gtqBf5t1d5XeK5iFwWqGVrFmfD
+         7vbfBgeZ1Yu8TITrsiGCyNjd5xX+KOJNrfIS3VwRe6vUGoeGAoVgKv7JENQO31csqqdp
+         pQhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUYU9+ztJ/YIZ3tVcYwVBvPWI+OWrik9wq5TKVriEItC7v+o5j8wPbW6i6DqtiKO/D2M410i7VVCLbKHqZy5g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCmq8GL6Z8bjmWTgNN4f7yuhejsQ+R/tJWPIi66ZWzK0qnRNPF
+	7F6f7bO0sOpZrnPxxwrNKXSed/7rNjH3vm+GxiKbiDVkAC90kzP4ZSnsc1HCWtF2CXXjWpq2l9p
+	RHZ3cUMrE5Q==
+X-Google-Smtp-Source: AGHT+IFnOCNhfUC3rzOF/0ujJoDz5JXVR+P5i65FDIYEF3jrwCYtHQJHtt2dKcmSkcstvk2jFoQNyLB+aEUP
+X-Received: from pjbsj13.prod.google.com ([2002:a17:90b:2d8d:b0:328:116e:273])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:ac8:b0:248:cd0b:3441
+ with SMTP id d9443c01a7336-24944b0dcb1mr247773305ad.30.1757020442072; Thu, 04
+ Sep 2025 14:14:02 -0700 (PDT)
+Date: Thu, 04 Sep 2025 21:13:51 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLn4bopPt8uS4d1O@yury>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAA8BumgC/2XSwW7DIAwG4Fepch4VNgFDT3uPaQcgThtpXbYkj
+ TZVffeRVlNSOGL4fhD2tRp56HisDrtrNfDcjV3/mRYAL7sqnvznkUXXpEKFErWs0YqGw+XYjmK
+ 4jJNQsdHREQdqoErka+C2+7nnvb2n9akbp374vcfPsFT/g9xz0AxCChMMUwzk0LWvx74/fvA+9
+ udqSZpxo5XMNCaNbBvlrLaAodBq1VpCplXSVktrXOuDISx0vdWY6Tppsta7aCIyUaH1VutM66Q
+ VOxWZQiDDhTarNpB9/2yWuzF6RoAAShWaNhrrTFPSLlqrtCePsvxzu9WUaZt0NBoN16CaWhbar
+ Zpk3m+33I3BsQ/aOw2FBrlyC8W4yKVnhtOrVWxVeO747TGKA39f0kRPj3msgh9ZpP1zNx12s9k DiSFiOn37A/twKVUHAwAA
+X-Change-Id: 20250428-debugfs-rust-3cd5c97eb7d1
+X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757020440; l=5962;
+ i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
+ bh=pG7w/3JHU8axFyAFdX9e0nFyT0oX71h+TjUDTVFGEkA=; b=NhgcVfJ+Dz+XKdXa9mw16yqlipg7kgSXv1v8b+sui3OC40XLGb5SQ7rTG/VybhANxKJoK2Eyj
+ tbNJZ6kt8lCAQhCAzMorrA0+6+byHc/3bsTfMUPTYzyUzXTpCzTN42b
+X-Mailer: b4 0.14.2
+Message-ID: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+Subject: [PATCH v11 0/7] rust: DebugFS Bindings
+From: Matthew Maurer <mmaurer@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>, 
+	Dirk Beheme <dirk.behme@de.bosch.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Sep 04, 2025 at 04:37:02PM -0400, Yury Norov wrote:
-> On Thu, Sep 04, 2025 at 01:26:07PM -0700, Mitchell Levy wrote:
-> > On Wed, Sep 03, 2025 at 06:19:25PM -0400, Yury Norov wrote:
-> > > On Thu, Aug 28, 2025 at 12:00:12PM -0700, Mitchell Levy wrote:
-> 
-> ...
-> 
-> > > > +impl<T: Clone> DynamicPerCpu<T> {
-> > > > +    /// Allocates a new per-CPU variable
-> > > > +    ///
-> > > > +    /// # Arguments
-> > > > +    /// * `val` - The initial value of the per-CPU variable on all CPUs.
-> > > > +    /// * `flags` - Flags used to allocate an `Arc` that keeps track of the underlying
-> > > > +    ///   `PerCpuAllocation`.
-> > > > +    pub fn new_with(val: T, flags: Flags) -> Option<Self> {
-> > > > +        let alloc: PerCpuAllocation<T> = PerCpuAllocation::new_uninit()?;
-> > > > +        let ptr = alloc.0;
-> > > > +
-> > > > +        for cpu in Cpumask::possible().iter() {
-> > > 
-> > > In C we've got the 'for_each_possible_cpu()'. Is there any way to
-> > > preserve that semantics in rust? I really believe that similar
-> > > semantics on higher level on both sides will help _a_lot_ for those
-> > > transitioning into the rust world (like me).
-> > 
-> > I'm not sure I understand what you mean --- I believe the semantics
-> > should be the same here (`cpu` takes on each value in
-> > `cpu_possible_mask`). Could you please clarify?
-> > 
-> 
-> I mean:
-> 
->         for_each_possible_cpu(cpu) {
->                 let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
->                 unsafe { (*remote_ptr).write(val.clone()); }
->                 let arc = Arc::new(alloc, flags).ok()?;
->                 Some(Self { alloc: arc })
->         }
-> 
-> Is it possible to do the above in rust?
+This series provides safe DebugFS bindings for Rust, with sample
+modules using them.
 
-Ah, I see.
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+Changes in v11:
+- Rephrased comments/docs based on list feedback
+- Switched longer polymorphic declarations to use where clauses
+- Switched `TI: PinInit` to `impl PinInit` (this was previously required
+  for `use<>`
+- Keep `Scope` private until the scoped interface is added
+- `Render` -> `Writer`, `UpdateFromSlice` -> `Reader`
+- Documented that `Debug` format is subject to change
+- Link to v10: https://lore.kernel.org/r/20250819-debugfs-rust-v10-0-86e20f3cf3bb@google.com
 
-The syntax would be slightly different, probably something like
+Changes in v10:
+- Introduced Scoped to show how either a File or Dir can be bound to
+  data
+- Remove use of `use<>` for MSRV compatibility
+- Added Write support
+- Added more complex sample driver using scoped interface
+- Updated original sample driver to use writes to drive mutation
+- Added `FileOps<T>` (only for DebugFS, not a kernel-wide abstraction)
+  to decrease needed `unsafe` for keeping vtables paired to types.
+- Centralized `dentry` lifecycle management to `entry.rs`.
+- Link to v9: https://lore.kernel.org/r/20250709-debugfs-rust-v9-0-92b9eab5a951@google.com
 
-        use cpu::for_each_possible_cpu;
+Changes in v9:
+- Switched to `PinInit` backing instead of `ForeignOwnable`
+- Changed sample to be a platform driver
+- Exported a static property
+- Demonstrated runtime mutation in platform driver (`inc_counter`)
+- Demonstrated how driver code would interact with data structures
+  exported through DebugFS (`Wrapper`)
+- Link to v8: https://lore.kernel.org/r/20250627-debugfs-rust-v8-0-c6526e413d40@google.com
 
-        for_each_possible_cpu(|&cpu| {
-                let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
-                // ...
-        })
+Changes in v8:
+- Switched from casts to `core::from_{ref, mut}` in type change
+- Link to v7: https://lore.kernel.org/r/20250624-debugfs-rust-v7-0-9c8835a7a20f@google.com
 
-it *might* also be possible to use a macro and dispense with the need for
-a closure, though I'm not familiar enough with proc macros to say for
-sure. That would probably look like
+Changes in v7:
+- Rewrote `entry::Entry` -> `Entry`
+- Use `c_int` and `c_void` from kernel prelude rather than core
+- Removed unnecessary `display_open` cast
+- Switched from `Deref` + an explicit box to `ForeignOwnable` for
+  attaching owned data.
+- Made `&'static` and `&'static mut` implement `ForeignOwnable`
+- Swapped "driver" to "module" in sample code
+- Link to v6: https://lore.kernel.org/r/20250618-debugfs-rust-v6-0-72cae211b133@google.com
 
-        for_each_possible_cpu!(cpu) {
-                let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
-                // ...
-        }
+Changes in v6:
+- Replaced explicit lifetimes with children keeping their parents alive.
+- Added support for attaching owned data.
+- Removed recomendation to only keep root handles and handles you want
+  to delete around.
+- Refactored some code into separate files to improve clarity.
+- Link to v5: https://lore.kernel.org/r/20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com
 
-though personally I think the first one is better (simpler
-implementation without too much syntactic overhead, especially since
-closures are already used some within R4L).
+Changes in v5:
+- Made Dir + File wrappers around Entry
+- All functions return owning handles. To discard without drop, use
+  `forget`. To keep a handle without drop, use `ManuallyDrop`.
+- Fixed bugs around `not(CONFIG_DEBUG_FS)`
+- Removed unnecessary `addr_of!`
+- Link to v4: https://lore.kernel.org/r/20250502-debugfs-rust-v4-0-788a9c6c2e77@google.com
 
-Thanks,
-Mitchell
+Changes in v4:
+- Remove SubDir, replace with type-level constant.
+- Add lifetime to Dir to prevent subdirectories and files from outliving
+  their parents and triggering an Oops when accessed.
+- Split unsafe blocks with two calls into two blocks
+- Access `private` field through direct pointer dereference, avoiding
+  creation of a reference to it.
+- Notably not changed - owning/non-owning handle defaults. The best read
+  I had from the thread was to continue with this mode, but I'm willing
+  to change if need be.
+- Comment changes
+  - More comment markdown
+  - Remove scopes from examples
+  - Put `as_ptr` properties into a `# Guarantees` section.
+- Link to v3: https://lore.kernel.org/r/20250501-debugfs-rust-v3-0-850869fab672@google.com
+
+Changes in v3:
+- Split `Dir` into `Dir`/`SubDir`/`File` to improve API.
+- Add "." to end of all comments.
+- Convert INVARIANT to # Invariants on types.
+- Add backticks everywhere I found variables/types in my comments.
+- Promoted invariant comment to doc comment.
+- Extended sample commenting to make it clearer what is happening.
+- Link to v2: https://lore.kernel.org/r/20250430-debugfs-rust-v2-0-2e8d3985812b@google.com
+
+Changes in v2:
+- Drop support for builder / pinned bindings in initial series
+- Remove `ARef` usage to abstract the dentry nature of handles
+- Remove error handling to discourage users from caring whether DebugFS
+  is enabled.
+- Support CONFIG_DEBUG_FS=n while leaving the API available
+- Fixed mistaken decimal/octal mixup
+- Doc/comment cleanup
+- Link to v1: https://lore.kernel.org/r/20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com
+
+---
+Matthew Maurer (7):
+      rust: debugfs: Add initial support for directories
+      rust: debugfs: Add support for read-only files
+      rust: debugfs: Add support for writable files
+      rust: debugfs: Add support for callback-based files
+      samples: rust: Add debugfs sample driver
+      rust: debugfs: Add support for scoped directories
+      samples: rust: Add scoped debugfs sample driver
+
+ MAINTAINERS                              |   4 +
+ rust/bindings/bindings_helper.h          |   1 +
+ rust/kernel/debugfs.rs                   | 594 +++++++++++++++++++++++++++++++
+ rust/kernel/debugfs/callback_adapters.rs | 122 +++++++
+ rust/kernel/debugfs/entry.rs             | 164 +++++++++
+ rust/kernel/debugfs/file_ops.rs          | 247 +++++++++++++
+ rust/kernel/debugfs/traits.rs            | 102 ++++++
+ rust/kernel/lib.rs                       |   1 +
+ samples/rust/Kconfig                     |  22 ++
+ samples/rust/Makefile                    |   2 +
+ samples/rust/rust_debugfs.rs             | 151 ++++++++
+ samples/rust/rust_scoped_debugfs.rs      | 134 +++++++
+ 12 files changed, 1544 insertions(+)
+---
+base-commit: f3c5631f70e434e318c44001e2417d4770f06cd0
+change-id: 20250428-debugfs-rust-3cd5c97eb7d1
+
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
