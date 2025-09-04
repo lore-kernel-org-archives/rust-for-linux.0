@@ -1,158 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8773E30E85F;
-	Thu,  4 Sep 2025 17:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CDB305E2C;
+	Thu,  4 Sep 2025 18:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757007508; cv=none; b=gb8lTORNDNEORSVXNJbQ7RZSh1OCpJh9oXLdLAQIW4M8NNpK25uvvK8OQon4Z1220EM3KAEqrnDgabGMJt77F4nyYIyaHF/w4Sq0hfK0xiz1VGWwBJNMnPLgtBciYiMXHteGzb65sDcseWYiWh777sc/koyrGY4IVq3ABu6K9oM=
+	t=1757008970; cv=none; b=e34puenMos1gpEZwtLy4FiZ0tc1BKqmfq0DRRrHYAhBlgnhgSEAeq9NbOAxMbAHE0Jovmdwc1Z9mEDkchxseJJSCOpxxuByJ1htGvd6MvqdGg1VayXKqPeoPnjEpOiEu3C51MOpKjFgVsf4TuWwCEBRHPgEMhLYkBSPRKeHJPH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757007508; c=relaxed/simple;
-	bh=ClxexQ/a7OST66iIxAo1C/n96JM3lKGXw0eScg5CJnc=;
-	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:Mime-Version; b=i17z4eCOpYOVBUeuuuKwKIaetpjPDY/060x3qMdic8lhrMH6+J9SrDlhwcgv3IdEw9A0kph67hBIYn9mOAI3t+oTbZ27s4mtVFOlSH0qbmWlhVyo0xZsslXKNPDL5Aj5caFQ0StSmANJtQUtDPfsYQl3QVLu2VUtBMqRngRScGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AE6uX0MQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757008970; c=relaxed/simple;
+	bh=9m2+Knp456ZCEyzvARIpHs11Vo3J1om399jUM7dRa3A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZtOGK2OrMk8DJkTR3PzumXF70+kLKYgtwgVfmHxxTEf7tedUcq7fxy4lhfY88n/6HdYw88KwCA3YVIwofllF+2R6Qxqd0FWDrgrZ/ORhqiiiNBtzT09Ao+3Spu6JUKSm6H/eUlEvZeDtGqvd3bzQxlU/u97xjDlSbrpQZTTRs9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EWyi0H/B; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AE6uX0MQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32304C4CEF0;
-	Thu,  4 Sep 2025 17:38:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757007508;
-	bh=ClxexQ/a7OST66iIxAo1C/n96JM3lKGXw0eScg5CJnc=;
-	h=Date:Subject:Cc:To:From:From;
-	b=AE6uX0MQ/CDEUz2/O6RbIDRhFdUsiR8rImcO+/U/NBhW+NP2WG8A0/kud2WlSnDc1
-	 Y1STxwBnZacJ3uEABFuadV64DANlM/KnS+PS4kS12X93pzuRQ8COZGWzIiliN/rGmA
-	 H4iMHgmncbs5Exzj8I2qttNlyjWNZ3MKA0lbWv+uRkJrsFfqe8V26bIJmKMqLjSpH7
-	 Et06ZHxgxmIIx9cps5hgDYXQFf2aq2t6RqvlfplSwY8eMpn0Yg7sV8vuE4IXSu6glm
-	 vDPvojoJD3Q1N3uYbI/nAdr9fW2FMgnyCdDpg+w0bPabqKIuucpCFUGGiRkNcU8hYe
-	 UL9QbnL8o2OKw==
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 04 Sep 2025 19:38:23 +0200
-Message-Id: <DCK76G2JH58W.1QPN6YHTEOABB@kernel.org>
-Subject: [GIT PULL] Rust ALLOC & DMA for v6.18
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
- <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EWyi0H/B"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-24c786130feso12746125ad.2;
+        Thu, 04 Sep 2025 11:02:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757008969; x=1757613769; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9m2+Knp456ZCEyzvARIpHs11Vo3J1om399jUM7dRa3A=;
+        b=EWyi0H/Bq6BabMFY83+/juvp4AimcmG/QjAADlLubz15ECNNXZynk98w6RgETUAPc5
+         8C6o+G9BzvuH7mWiQTmq6DrtvvMAEUc9FrWuNhSNXkwHqyiU2yGQPH+fPzSp5TacqScT
+         boXRjotu4f4PwlSL5wA7UEl1jndWAhRvRZD/G5qQdX56hAGxDhVUk+YSvRTxJrl91QDv
+         Fcc8zzQlECdkNGiNipkGXwP8Y7iNmwts7dQiW8EnGcpPgBE2G5RzQCav4cWgv0tFPuBW
+         CP/O+UAlgx84S/t4uPYk/BHe/h8y7nFxQPn9oO3xqIf28hY8T0BMHBakpXcEvwKgghgt
+         5VWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757008969; x=1757613769;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9m2+Knp456ZCEyzvARIpHs11Vo3J1om399jUM7dRa3A=;
+        b=sAzwtzG7lRq2stJzzJsA0FRUvhZHDg/0AQI0pmBuBUlErm0vsWuTNlwToY7EsSLDBW
+         iRAgi+8lDRJnOIWr+gQZkC2aUjUXtK0AgoEh6qmf4H1CVzMkKTpH0WB7NdC8x3F7nt3o
+         6Kvwsj2SlhW84SDnkrslenNOmnRog7VCFgbxlKcxOcc8VBBYds6ZXOcKjQnXJNlk8QJH
+         YdHO2z+hfoS+0cAoD1Xe5dwbfk0nZ9TmnviMRH2odanjFRwUb17IYBvHC6zVk5PlFuzd
+         zzoIe/sdVpdnjIS8q8L4xN4taqeUVJO+Gwa2D50edD5HZupx4Kqzx5lgsjZOQ4AjnIox
+         rq0A==
+X-Forwarded-Encrypted: i=1; AJvYcCUPNHKETYSMEck+QZ7w4jllGrDi+c3MqANJao2QaKYBIK9AdlnKI36CsG56i3kefBBwtCzcqZt3dVy8cOYc@vger.kernel.org, AJvYcCW2bTyVlfpZtWd2zZz3cad+YYIDlTA9b+9Zu8dSumB0A+I0ir8dDqUjJgwRKw1vDYm8B2coB6ocYVv68xkCfY4=@vger.kernel.org, AJvYcCX6au/nIU6b4pEJB0YYdJd0Am7m7GclztTvAX6tm6KCtXecCnbQNKBc+e9KOsApVT+esLqE3CAV1yyHFfddl+U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRSnQleaBrViV/gYMegagvvjUtiSW3xBv+5fQ+9l3okvVGsdmT
+	ycJCx1WFUMMJnxL5dco0iiBZDSs3tYuwHwdmtI//zC5RcQnjFy3vp/0Z
+X-Gm-Gg: ASbGncv4kjOmw77w5uRB9VhHhZfRUM702FabiaETHCLWc0MCyl8VG/vZISELC1pt7rW
+	xWby8nrS2DfAenCguNO+Sl+u6Vyqx0C7/EZ2mfgG7c7e/2sx96dl2He0UvIr4fm9lKN96vl1ozB
+	U1VacRcDRWVy5T3Zt/grPwPQMlJYmwq/Rv7vUbj30tY7px5GWWCFN8rnb0LQ+auC7sf/Nl9lEjk
+	qunZjPFh4zLt1gQBrTHMpqKH3zWZkF1Ro2dVuvKXiOCFS3zj1b5Hbjk/nPMO4bG7A8tVQLSR5m8
+	4OgH+bJDquBb96Yc35v7+2U9snfDhm+ATUIMWCVNUjdof/Ln1NX+VMpCEkFvpeRaDrR2zy0BhD8
+	OJU/mVckPPj1QT+Bk6GkSpvYZXQmV1xxPQbT1Johh3Us=
+X-Google-Smtp-Source: AGHT+IFt1YdwQYa6uf0UKpSYSWeB0rrSwFVcSYr7JUSX1VqIFL6DRixZ0NE42ePMXBIA1aWC7I59Wg==
+X-Received: by 2002:a17:903:283:b0:24c:e6a6:9e42 with SMTP id d9443c01a7336-24ce6a6b740mr14589495ad.27.1757008968372;
+        Thu, 04 Sep 2025 11:02:48 -0700 (PDT)
+Received: from localhost ([216.228.127.131])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24b020a7cb5sm89280895ad.115.2025.09.04.11.02.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 11:02:47 -0700 (PDT)
+Date: Thu, 4 Sep 2025 14:02:45 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Burak Emir <bqe@google.com>
+Cc: Kees Cook <kees@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Carlos LLama <cmllamas@google.com>,
+	Pekka Ristola <pekkarr@protonmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v15 0/5] rust: adds Bitmap API, ID pool and bindings
+Message-ID: <aLnURXW_ZiX2iJd_@yury>
+References: <20250904165015.3791895-1-bqe@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: aerc 0.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904165015.3791895-1-bqe@google.com>
 
-Hi Miguel,
+On Thu, Sep 04, 2025 at 04:50:04PM +0000, Burak Emir wrote:
+> This series adds a Rust bitmap API for porting the approach from
+> commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+> to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
 
-Please pull the following ALLOC & DMA changes.
-
-All commits have been in linux-next for a couple of weeks. There are two tr=
-ivial
-conflicts with the -mm and Linus' tree [1][2].
-
-Some patches that would usually go through this tree went through the -mm t=
-ree
-[3][4]; [5] and [6] go through drm-rust together with their first user -- o=
-ne
-minor import conflict in samples/rust/rust_dma.rs expected.
-
-- Danilo
-
-[1] https://lore.kernel.org/all/20250818122053.355aab17@canb.auug.org.au/
-[2] https://lore.kernel.org/all/20250826173041.3140da7b@canb.auug.org.au/
-[3] https://lore.kernel.org/all/20250806124034.1724515-1-vitaly.wool@konsul=
-ko.se/
-[4] https://lore.kernel.org/all/d2e3d6454c1435713be0fe3c0dc444d2c60bba51.17=
-53929369.git.zhuhui@kylinos.cn/
-[5] https://lore.kernel.org/all/20250820145434.94745-1-dakr@kernel.org/
-[6] https://lore.kernel.org/all/20250828133323.53311-1-dakr@kernel.org/
-
-The following changes since commit 8f5ae30d69d7543eee0d70083daf4de8fe15d585=
-:
-
-  Linux 6.17-rc1 (2025-08-10 19:41:16 +0300)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/alloc-next-v6.18-2025-09=
--04
-
-for you to fetch changes up to fe927defbb4f31c15a52f0372d7f5d608f161086:
-
-  rust: alloc: remove `allocator_test` (2025-08-24 15:30:40 +0200)
-
-----------------------------------------------------------------
-Alloc & DMA changes for v6.18
-
-Allocator:
-  - Provide information about the minimum alignment guarantees of
-    Kmalloc, Vmalloc and KVmalloc.
-  - Take minimum alignment guarantees of allocators for ForeignOwnable
-    into account.
-  - Remove the `allocator_test` incl. `Cmalloc`.
-
-Box:
-  - Implement Box::pin_slice(), which constructs a pinned slice of
-    elements.
-
-Vec:
-  - Simplify KUnit test module name to "rust_kvec".
-  - Add doc-test for Vec::as_slice().
-  - Constify various methods.
-
-DMA:
-  - Update ARef and AlwaysRefCounted imports.
-
-MISC:
-  - Remove support for unused host `#[test]`s.
-  - Constify ArrayLayout::new_unchecked().
-
-----------------------------------------------------------------
-Alice Ryhl (3):
-      rust: alloc: specify the minimum alignment of each allocator
-      rust: alloc: take the allocator into account for FOREIGN_ALIGN
-      rust: alloc: implement Box::pin_slice()
-
-Danilo Krummrich (1):
-      rust: alloc: add ARCH_KMALLOC_MINALIGN to bindgen blocklist
-
-Hui Zhu (2):
-      rust: alloc: kvec: add doc example for as_slice method
-      rust: alloc: kvec: simplify KUnit test module name to "rust_kvec"
-
-Miguel Ojeda (2):
-      rust: kernel: remove support for unused host `#[test]`s
-      rust: alloc: remove `allocator_test`
-
-Onur =C3=96zkan (2):
-      rust: make `ArrayLayout::new_unchecked` a `const fn`
-      rust: make `kvec::Vec` functions `const fn`
-
-Shankari Anand (1):
-      rust: dma: Update ARef and AlwaysRefCounted imports from sync::aref
-
- rust/Makefile                       |   9 +--------
- rust/bindgen_parameters             |   1 +
- rust/bindings/bindings_helper.h     |   1 +
- rust/kernel/alloc.rs                |  15 ++++++++-------
- rust/kernel/alloc/allocator.rs      |   8 ++++++++
- rust/kernel/alloc/allocator_test.rs | 113 --------------------------------=
----------------------------------------------------------------------------=
-------
- rust/kernel/alloc/kbox.rs           |  90 ++++++++++++++++++++++++++++++++=
-++++++++++++++++++++++++++++++++++++++++++++++++++++++----
- rust/kernel/alloc/kvec.rs           |  22 ++++++++++++++++------
- rust/kernel/alloc/layout.rs         |   2 +-
- rust/kernel/dma.rs                  |   2 +-
- rust/kernel/error.rs                |   4 ++--
- rust/kernel/lib.rs                  |   2 +-
- rust/kernel/sync/arc.rs             |   6 +++---
- samples/rust/rust_dma.rs            |   2 +-
- 14 files changed, 130 insertions(+), 147 deletions(-)
- delete mode 100644 rust/kernel/alloc/allocator_test.rs
+Added in bitmap-for-next for testing. Thanks!
