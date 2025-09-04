@@ -1,131 +1,99 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DC2277CA4;
-	Thu,  4 Sep 2025 12:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756990584; cv=pass; b=TFjJ/W0uExNt00SGpoUF5xv2bq0FUc/dAXmFnwGcu9rp1A+9ohYBKlX1vtM23sGJSVQi18EI9WW+FA6RMt20Y6BHRdvttJR7FBq0brHJnCugVqIv9BWlZhdwZEfaSONXBRQQhXDBp1Axg4WtNezWscYxwvLSFYwQbW9dtjVGTx8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756990584; c=relaxed/simple;
-	bh=wkdmqXKZo1tHNEjUJXXVj27FZ7Zjg6MMvyBcbROIYJY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=YbfsO/VAm7IZxZlUYmTKKEDKJgm/QEyd2rVOX2OUbjJAr7fO83ZWHVJB5syPxyAX4l4EHuhE+fA2St1ZM1EtOJaBk2cSv2fm6eKVJchENom+zcF93RYRTcFSJ7d1la/PSKI+S6EsCKw1luJwdwt751hMQchZ3dZFGoBBBjwYdIo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=BII/ePzk; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24692FC895
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 13:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756991289; cv=none; b=jWzgCz9udt1aXd0U0C3WzXEIkehHJTQWqFHEcD3R9gRHzDe8n9aAaEK+8fSaOT+BW+fyLvMHKTXW+YtEZosJRYVbJPSFjJa3QWHFaDVA32H+puPryD7+veYJr2ddQOQwPlye85Tp6x2MW/1yaCdH6sXHcNqWai+nWon34OH37S8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756991289; c=relaxed/simple;
+	bh=4cZqK9YzKCpf0+zZ9irAoAp8vCEv1wbUaz3rjA5fNE4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qBN5qIi4l1vQkp+J3NFV43EFTjNATRT9eWGDbEdrsrWuByrpAfnyYOGkw2AdC3nWAT/akQXlTgxHtuzDUG0kYgf27RYEVxIFhq34NukMb8XFuF6wKIrt1APN6Byfa4QyLVR1wYjB++AMniEvHZCkiQZg1QPTlhNodRzJf2CYJcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E6hlXJkG; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="BII/ePzk"
-ARC-Seal: i=1; a=rsa-sha256; t=1756990551; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Ol/OxM4mp3DvaV5G8Oz2RkBldtrtCDfPwxGRyWQvSW417obvnAHslBBLEenHdNqeKHRCaqmBHM4xitqVV+aN3+zwDsrhhd1YAcWM1MnnJ6FlIZqQ+/UbhHE7beDm5NWyyR5GyzB0vx9ox0awcgDjvYTi+dZXQRQJlJ5RAg0gMv8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756990551; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=4yQXcYDvDkWrXuTPgSfbG55Fo5/awg+Dvlk2c39nTQc=; 
-	b=jE/9ASCAC5cm3vBRjWPE9ycgDNDjX6GGV+XfZ3OrfnQrnZnF2yJddB1Fc9MAc+P4lQZ5lvpmkFb9AK3hPKHNMuv+mja5OYsZAFM7959goLqkOtlCRxHzYNFF0VdtMnT0DEKVVjFxIfHvfrzfILf0Y6bJ/uHfJb+v9wtD+4l1LdA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756990551;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=4yQXcYDvDkWrXuTPgSfbG55Fo5/awg+Dvlk2c39nTQc=;
-	b=BII/ePzk4ZuTOuSqHJxN5z0IMwtmpB+vcfs1mIJIRiLyZVBmGwCvTxSporJ1bfnm
-	yMxiXPhW4aoAwy+RRgEcZZxnnA5kparef/DjjHMLEeuxC5kiId29Dq4/MYdae9Wj0om
-	IqaSM45h59bp+8drZhSIUilh+H44dFXi86skHNyM=
-Received: by mx.zohomail.com with SMTPS id 1756990548664140.47824642979833;
-	Thu, 4 Sep 2025 05:55:48 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E6hlXJkG"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3e249a4d605so299032f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 06:08:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756991286; x=1757596086; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4cZqK9YzKCpf0+zZ9irAoAp8vCEv1wbUaz3rjA5fNE4=;
+        b=E6hlXJkG4hPYwLFypn3mCBhkVMicv7RpGvd7YkRty6WunpEBNzohzgsfp2MQx+WqVe
+         6DKVPk8hFPp2FVY6VUocQrq86tWNTMqRQXdDJLWVCBymxivGlT1/046nQ00ld1+NJBsQ
+         3NgKjqbajaqO0/5M/ANL2GF3OxU2MjHwmz4FyrN0ZFAsum87WRkENgWvJqH1tGPtc4Yt
+         XyOwZX9d/nxi8lIqwPq4oho7Kril6qZuMl5uInVq5lVsJGMAMlO4DGzlyxDF4CHeZcNo
+         aVJ34/ekU2+MjcvBS3N+g7K8u77833NitznLfr2vN7udLX2yGcbRwqZx4Vb95+XQZj2n
+         cCow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756991286; x=1757596086;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4cZqK9YzKCpf0+zZ9irAoAp8vCEv1wbUaz3rjA5fNE4=;
+        b=WFjQFduRCS4eH0a/w1UaM6B1QGWqqQR0C4qxIfjCDEBotkUe4WeMgS6M19YYa6plDR
+         qyB7HCK2BO63UTM7ObOnv9M5bJSTJqoZPUiGEpYH7QtjWE4gYJvmVGipA5tzveeQaKb7
+         tAt6/qaBd9CFjGXA8zSmFyUHwwJ23sfxgI21Ax5a4mILqswUDA8eUHNabT6bjzEzY2wJ
+         O+u+ibUYl7xsyZKIMNPSK3MciQkBc6/9fGO4KCi78u/ZoK+jEJQhOn3/CW4F/toWZZEY
+         H4LP6V8Yqj2/qVcnHbZqcNJq9KUwo5VTx/b0Ojk4nerF+Yyh3HGg5Kqvl6bS+CTQb/RW
+         QmJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVT6btE1Rh8HnyNAvMz0iKZOX84vHvFrc2xHhvUUWJ1cXBsTeJqJkH/lhvEMn/tKUAd/6m6OjQjNa7zCmRV0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTUwEwat50U1HTpUSZUszrwgozCx2Rc7PbTeXa3oI/i3dOAvTJ
+	guqUty3dCGGM8KxGfitxHf3Kq7hZXYtxVMGAMbreOQu9zQN9RhVoFa/JKAq782XLXe5WIOnjf7G
+	xbzzSJoJSJdiJz0lwobBaS5LMC1pO8Szlqa7M8Xq8
+X-Gm-Gg: ASbGncuw2AliQorru+/eh/L63iEjsNGpzo6lettDSXBzj5LnU0sGLMxZ0tIY8vDxiQe
+	scXBQyDaycGsj1M8QGqqjhfKTO5E6FpwnKUzqF8siwRzpRNjzlTKcMmhtycnb64CRu0dZ7AMFu1
+	f/eqBIKMgL24KHn+DFZL62CgSbleOZ8D9VSVdiy1W+zoxaxxNhRpDm2N5zMAUKE/HDcsJf4I3fa
+	tviPlmaUqgw3RaNEGLZngon5f9oJqAAPX6oCwFA3t1j/sbLAOybsaY4K/k96psaLxT+j7/+AJGx
+	RT2IXRP2amxWgp/puBYJJA==
+X-Google-Smtp-Source: AGHT+IFg6AKl3SCJnL7g0+bfVP2sauEBpLDoUNy8WCcZYED03ALkKxVTPtnNlh4mcIMrUbbycxmFvWWlSYL5Ai+IHxo=
+X-Received: by 2002:a05:6000:2308:b0:3d7:abf7:24af with SMTP id
+ ffacd0b85a97d-3d7abf72cecmr10000884f8f.23.1756991285894; Thu, 04 Sep 2025
+ 06:08:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 06/14] rust: drm: gem: Add raw_dma_resv() function
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250829224116.477990-7-lyude@redhat.com>
-Date: Thu, 4 Sep 2025 09:55:30 -0300
-Cc: dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Asahi Lina <lina+kernel@asahilina.net>,
- linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org,
- "open list:DMA BUFFER SHARING FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linux-media@vger.kernel.org (ope>),
- "moderated list:DMA BUFFER SHARING
- FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linaro-mm-sig@lists.linaro.org (mod>)
+MIME-Version: 1.0
+References: <20250904-clk-send-sync-v1-1-48d023320eb8@google.com> <CB9F3786-48F0-46EE-BE61-8823E437C786@collabora.com>
+In-Reply-To: <CB9F3786-48F0-46EE-BE61-8823E437C786@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 4 Sep 2025 15:07:53 +0200
+X-Gm-Features: Ac12FXy7iJnmk3xcF8Jlr0VlqsGLW3OO3fce9tyZdWo45UwBU5P9xsN6P9IsbB8
+Message-ID: <CAH5fLgjRaFjiw84_uP4N2kTs_iuDCe1vcZ7gyF4XiwDkbEgiWQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: clk: implement Send and Sync
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-clk@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <4E13112B-6379-4466-8924-417AA6ACB228@collabora.com>
-References: <20250829224116.477990-1-lyude@redhat.com>
- <20250829224116.477990-7-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
+On Thu, Sep 4, 2025 at 2:31=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+> Can you base your change on top of [0]? Otherwise it will become stale ra=
+ther
+> quickly, as this introduces new types, i.e.: Clk<Unprepared>, Clk<Prepare=
+d>
+> etc.
+>
+> I will push out a new version today.
+>
+> [0]: https://lore.kernel.org/rust-for-linux/20250729-clk-type-state-v1-1-=
+896b53816f7b@collabora.com/
 
+I would suggest the reverse. If your series is based on top of mine,
+then this patch can land today regardless of how long it takes to
+finish the clk refactor.
 
-> On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> For retrieving a pointer to the struct dma_resv for a given GEM =
-object. We
-> also introduce it in a new trait, BaseObjectPrivate, which we =
-automatically
-> implement for all gem objects and don't expose to users outside of the
-> crate.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
-> rust/kernel/drm/gem/mod.rs | 12 ++++++++++++
-> 1 file changed, 12 insertions(+)
->=20
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index ec36cd9ea69ed..f901d4263ee87 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -186,6 +186,18 @@ fn create_mmap_offset(&self) -> Result<u64> {
->=20
-> impl<T: IntoGEMObject> BaseObject for T {}
->=20
-> +/// Crate-private base operations shared by all GEM object classes.
-> +#[expect(unused)]
-> +pub(crate) trait BaseObjectPrivate: IntoGEMObject {
-> +    /// Return a pointer to this object's dma_resv.
-> +    fn raw_dma_resv(&self) -> *mut bindings::dma_resv {
-> +        // SAFETY: `as_gem_obj()` always returns a valid pointer to =
-the base DRM gem object
-
-This apparently does not match the actual function call below anymore.
-
-> +        unsafe { (*self.as_raw()).resv }
-> +    }
-> +}
-> +
-> +impl<T: IntoGEMObject> BaseObjectPrivate for T {}
-> +
-> /// A base GEM object.
-> ///
-> /// Invariants
-> --=20
-> 2.50.0
->=20
-
+Alice
