@@ -1,223 +1,438 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2048.outbound.protection.outlook.com [40.107.94.48])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC515224225;
-	Thu,  4 Sep 2025 11:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FAA2C21C0;
+	Thu,  4 Sep 2025 12:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756985638; cv=fail; b=DbKBtqR1r7M2vYA20eNWUZdBoL6uQ+U7BJM8rttwsUaFUutbe3upjUyVbtf5EcqQEmpb83P0HEnl9C6gOQdG/xFJJSlwrBZ0R3R/ZRvCFrigM+HOYZqUMXV5sRe58XIj3tneyexkfkf9Jily9IIyR+t4WGWSS+jMndSbt6kMT3A=
+	t=1756987974; cv=pass; b=Ox39zJhkP/DFGhlvnLqLR+A7M4r6L/mM9knlSs/EZevtH8nGz4mT/Y3m8XGO9ifD5Wny0Vy9xZd6lbCYPuiJmYjMxqf46osSkpGXotHUklDgf1BwjnhXWgigFBDa+fFbiYYaCigzR3J8lXf+Nz/aq09SNqVRhtsuTBWbj+lATt4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756985638; c=relaxed/simple;
-	bh=W9E99DCQgpGYJKWAdQRY11M4yIwFG4Kv8Zx8nbhnWrI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gdOfIuq+HiRawBvYOSNaOXEZ4+OKhLKTBAPdeM3XxsT+/cE7LdiJfuxZKn8VtFoNkFOA5d/wq6P/i5acGzwrRKIzWeYDOMm0s/n7jZ4KsCHkIEte1Jxit0rABKEZMud0Syu/+hga+AtnM+RrHNHrpYaB3tmfLOS7qSyYfP0hkYw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VwXzKxYy; arc=fail smtp.client-ip=40.107.94.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1756987974; c=relaxed/simple;
+	bh=L9UY9fY8S78Td4d+Nvcnh5r45q+r3aH+TFNj1euUELg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ps18spP5DNeTShDq26S0RUxGYs+VHSuUKUl2hXi3DU6b0o3TahmpQxvEgx5VenmrCpqo3OieFbCiUXVFz5X49UHe65IVTLSX3bm3RrMr5mrZSAeluMiYEAQiohUWCtUkxtMKjZzXt7TkYDtnwZrcRSmPqE5HVAIJiYNJZG+sL6c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=jMMy9td9; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VwXzKxYy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mxH16BRJjwh9ApEA6hLGuRBkthU1yFBDpZYfwzrFpqv3WvFbQInfDZvQizA67rne03l6yXcNfuJJgiwiPxMkFjdlbBEPaDdT8GPecpxvSUPyl+JEYOQMjSG7SepmDr1X4wk704IU0/Y7YnS7myKy2bpeZN1SSyCqJuiHhqDm5bkRsxKtcBipaZHcwxeYmnEveQjqq2zracYPLef2fxSi/6sq46wgF6hKgp/6QT2NqmNVEviFItGx/6C+JbMJ21vwhVE3cqzYpuCGjoND9RLn0ieEHCkoogB7frQMrHTQUzXXokIyRqkPnb1ObjQXhGhjEA6F6K41vHLUn4xCUwTLJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W9E99DCQgpGYJKWAdQRY11M4yIwFG4Kv8Zx8nbhnWrI=;
- b=ZEMmEWWPwQtY90KDvfgOhQLnllvQiqUIfd4yrfz1CkzoWbCIRDs64C8q7dS9aUwqvb3EIbWHGdfdMhcPmD0iZb5Pqyah5nCQew/2xU+rQ/vTPN2n/3XSYdVYz63bQBXmT2GhBfk1/nVchEh1lS/Nvf7tPrLrZl+ZNoEPW85kT2SiA2M8C3ejgsjD0h7t9ohh6+BzBQR4BKfiMk112DS1BK2DbpD5mVM3YU+K8a8xHrV4N+9sh38PgptwEUu4gpvRlT/JXWuOBK1SZnOdiYcSRDI4tdPtHlmWWqFflwfR9T0UDxiXXGOsvMShf9VlBF+oozwt74lbzXcoZcS4rhcoPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W9E99DCQgpGYJKWAdQRY11M4yIwFG4Kv8Zx8nbhnWrI=;
- b=VwXzKxYyucv3prYqj7Z4/7zPOxGQdOQeXm1sbhceNb3XVyUBUsOdwiraBPYM5ZFnkuZFN/FX6KyJUuwdOwCWDQk4B/y3Ccm1bTpv6n8Czao/cQrrdkv8WkO0qnp/UL+dwGGrU9AAGMH+zWdLp6F03/iMESaHT8WCk6O0kzKorj2L0c8GYp190N44RdrwTJZZw6p3DIWZkmvv98RweYDLOexl4LuElkagnK7zm/1yygQ/iXMVazlxj2qrxM0tLwr+D1gDbTv4DRfjAvr+YLCU0iEFE3FUMylnkRPofrWZKnWpAZh7SDh7dtN9R8B8rzj+jmFIJg8nJJS+XIcgdWIY4w==
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by PH7PR12MB7795.namprd12.prod.outlook.com (2603:10b6:510:278::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
- 2025 11:33:53 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9073.021; Thu, 4 Sep 2025
- 11:33:53 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-CC: Alexandre Courbot <acourbot@nvidia.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
-	<alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?utf-8?B?QmrDtnJuIFJveSBCYXJvbg==?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, John Hubbard <jhubbard@nvidia.com>, Alistair
- Popple <apopple@nvidia.com>, "nouveau@lists.freedesktop.org"
-	<nouveau@lists.freedesktop.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
- structs
-Thread-Topic: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
- structs
-Thread-Index: AQHcFP9mydaUsviYL0KPJ5QjT1cfF7RzNsSAgA5qTACAAMmaAIAAQugAgABIBQY=
-Date: Thu, 4 Sep 2025 11:33:53 +0000
-Message-ID: <DEC556AB-8E6F-475B-AF9F-11973F7A92B1@nvidia.com>
-References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
- <DCBGLCQVD1RF.6V5UT0NQ4GLB@nvidia.com>
- <444ebd64-7a90-46a6-b885-2c114aa59284@nvidia.com>
- <DCJOUO214EXC.32MFBN80VJW3K@nvidia.com>
- <DCJTY0OQFG83.1AX49CQARXCEX@kernel.org>
-In-Reply-To: <DCJTY0OQFG83.1AX49CQARXCEX@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR12MB8059:EE_|PH7PR12MB7795:EE_
-x-ms-office365-filtering-correlation-id: 652fde97-113e-43a6-a875-08ddeba6ed8b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?U1JXOVJGR2dNbVlld3cxUWw0YW1icDVMSktpU3NyczFEMzNvYmFLK0tFT2NT?=
- =?utf-8?B?SmtWMlJ4TVdUK000NXIxK25CT2VGdVZybUNuUUtLRmY2dFQ0Q0t2ZVZ4VjJy?=
- =?utf-8?B?Z0dLQVRIdnFYOWliY3p5ejAvVXFkNmlYTnNtU2pGb1RXZjlRLzBvaGZSRnBm?=
- =?utf-8?B?VEIyaHV5eHIzbjAwSWg0bXhZZ2p0QURWZGNUQVEwSklXTXloVC9RRnVJZFNW?=
- =?utf-8?B?VmJpVzh2VEVVblNzdjV6WkZyNGdXK3QwV3pPZHI0VEFBcVdBR0RDc2dZM2NO?=
- =?utf-8?B?NWRWZFVWYnBKZkRWczIyMkNsVDFXZjhlMVlYM2l5bm53NWgrSFZ2ZEZHYmhu?=
- =?utf-8?B?bFhsU0pkd0ZjSUNHU3dPanhva0dRRUxxR0gyMmZ2TW5xakQxK2tMeGg0MDI5?=
- =?utf-8?B?UDh5V2FkWEE4aUVWcGRaT3JWUzA2ekVRYm15bFVqMHVwUzNnRXJKS0wrWC9M?=
- =?utf-8?B?dFpLbWlwb3ZWNnJMekk2K3U3WHFheGRqbmkzYmppMWFXSEU0YUY5bEdLRExS?=
- =?utf-8?B?RUpTalkrUGNKUys4cEtzTXVNUzZMQ2FGSFl5WGpvam5wQnJvWVRIUGloMjNO?=
- =?utf-8?B?bktLMk1NZzRQbXNjU1VjQjA5bmp4RTBPdHo0bGJ0eHJrMzdoNHVsckpML29w?=
- =?utf-8?B?Vy9HbDl4dnRTSXJPYVVrQUJ1R0NUNkRlcFNhVi94RzkyZ1lRWkFLajNWa24z?=
- =?utf-8?B?Y1R2VVRwYjdXQlBJanNxbWpzNjdTR1hjdHJaQmMwWFZaNldyRlFZdHg2Rk50?=
- =?utf-8?B?THppc2FGODFhcHFJVEpiUE1Ld05QdWhGd0t1N21PV3gxRzBFUnBUZFVHM2xo?=
- =?utf-8?B?dnd5cXVKR3h3T2pJdFpOQXl2V1ZrYjNheEV2d2JNUTVRM3dNa2I2RDlQNlpZ?=
- =?utf-8?B?SEJRS2p1QTdpN2ZEaURYekRCSnNtWDJ4NHZPcTFmanZtOVR4VW1KR0tEV3Ft?=
- =?utf-8?B?NEpQcWkya2ozTnE3aWk5d0lNc0U2NnFQaUt5bXJCU0xMdTUxZnNKV2xLRlVl?=
- =?utf-8?B?TlJ4bVlmQng0RXhSWU85TGdwQTBKY1AwdWtaTVZoM2xlL09aRU9uZjIrcTBP?=
- =?utf-8?B?R3JQRWU4eHRvWGx5ZXhQSGI4WXJNVU9RM1BzdG1zUXhWRGpiNUNCZWJxdkZS?=
- =?utf-8?B?d1piZ3pZT0JBMTVQQXFuTFVKYkdMc3k5cTBvRGkvYStrRTVTQ0ovcHVZejZC?=
- =?utf-8?B?a0o3WUNXR0U3aWt2dFltYUkzOFJOK3RRTEhnakZvbmc4V3lzNVNSRDBaTEg2?=
- =?utf-8?B?bHQ3dnNIUjg2N1RiMGUrcldHK0IwK2J1dTRveWtsenh6RFpTUURwRmVHSUxQ?=
- =?utf-8?B?eWpEV283dytjcklISEZET0FUQ0k0d0lNYUo4S0I3STRDQitqU0tQdEwrSUlm?=
- =?utf-8?B?djdQY29WVERoZk8zTTFBWTI0VUU2bWxvbWxiZFo0YjZHRy9QN082T3drTFB4?=
- =?utf-8?B?NVF4ZnppaEROVEM4RStJcy93ZDRZbjBaZzBXQm43K0JaVW1YaE8wSFExUW5K?=
- =?utf-8?B?NEM4TGFRZzhXUWw4RlVkMHRXOE1DNHpZTUw4R1QxR1JOMGhqNTY1bHYwcnhY?=
- =?utf-8?B?UDcwNU91dEgxb1Q4TFRrbHNhZ3RPZGpya0I1SWppaSt3dHVmVUlnWThIWENB?=
- =?utf-8?B?djB3VGR3c2g2bU4zeU9EOXpLeVVXTkFWNjdKbGZtT3hvVk1pTW5XQTEyVG93?=
- =?utf-8?B?YkJPUDYxZENPcGpwblJLWUtUblRkWWF5NGhBMDF4WjFncXhoZnlRTGtMODdk?=
- =?utf-8?B?UVhrOVViaEJMOHVsNnVkT2Y0ZHVlbXhhVWpkcmc4MFBmZVFPTWVNOUI5dmFY?=
- =?utf-8?B?aDdZYTY1S20wNHZJcGNBc0VUbTNUakVaSXhFU3p3ZHZXMzFxZTczQnBjdmVU?=
- =?utf-8?B?QVBrV0NMSURFaGlOWklWNTJmTm5uNzl4bzNJQjlnVU8wc284bU1VUzdCN3Nx?=
- =?utf-8?B?TTY2alZrNGdVV3M5WHNDV3RZVmdEQkFmWjBSQjdnN3hRM3U5ZUZKK0VndzM4?=
- =?utf-8?B?L0w1cDAvekxRPT0=?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?YWFqL3JoNDVySHRlaDM0UlVwVWpRT3RjeVBobFZzK3U5WCtiZ2kyVVpqN2J1?=
- =?utf-8?B?ZnBVZTI3cjBzbXJVTDkrR2VEWW15UStpd1p6NjMvY0RTWFk4eFpVeENscDF6?=
- =?utf-8?B?NjlZTzJUbUpVRERDL2VxSWUzWHVtUUd0OWVrZ0VZUjlGaUZBNE5WakJVVUpa?=
- =?utf-8?B?dG9JVmZibnhyTHJETm1aOEpYYVl6N1JFc3BOakRGcTBUWjlnOGdNclIzTU1l?=
- =?utf-8?B?ZlhmMnhBcXZyREJSdVF0S3pKdWtJL0FzcFRWUGJGV1l0UC9zdDBUVUZFd1NS?=
- =?utf-8?B?bFIwZXMrT3YvY28rSU9ON3JZbDc0YlUvWFdSWFRybTlWaWRWM2pSNWg1SEdv?=
- =?utf-8?B?RzQzMmFpdVBDT1BHdEIrRFZpQnlnUkJ5R292K2h5Rzh1MjNBVzVabnpQeFNH?=
- =?utf-8?B?bmg3bDVJSW4zNEFWMXllaTM2a0NDUWxibXJHQTV4N0xtaHFDc2RhUXB4dnFX?=
- =?utf-8?B?a1BxdTg4Sy83czdRVXc4SkNUOSs0Z3U5alFDWWw3YVh0YkpwM2M3QnpVdmxn?=
- =?utf-8?B?Q2VxT3N2Qytrbm50MlNRdkFlNWlFcDhUS1lqTDYwZnR4ajk5d0E1YnM5SUZp?=
- =?utf-8?B?RTVuUlVFSnM4cENvQUZ3L3lNYjNJOU4wM1dRblFrZWwyY1BKRUEra3puYjFN?=
- =?utf-8?B?Y0xXK1lDQkw5eTcyaDZ3dmRueG1xdU9pY1VXcHp1dWx5b0RmR1oydStSMW9o?=
- =?utf-8?B?K1lGZkNKUm5pNWZVWjNzckhiRDJBZ0thcHpTOFhaNWhvRDViWUVwVmJPSm03?=
- =?utf-8?B?ZXNJUVNqWGJadjhRRllwL0MxeHZnWUpGKzZMRFZUUWw0QmFQN0RDRkozSlds?=
- =?utf-8?B?Ukw1SlVyVktUcG5Ra0NCYk1zbzJEYWY4QnJPb0MxUjhacW9kUWVaZXNITmk3?=
- =?utf-8?B?T3VWQlVyVWE2TUZJSWJXT0tKU2U2ZmZzQnp2TGNqYXNUV3Z0Q2pDeW9ybWQ0?=
- =?utf-8?B?TWx5Y1V2OXZyQnFjMXIwMmhZL0tlUy8rT0VOL0p6c3lRWEdrNFEvT1Bpa1Yz?=
- =?utf-8?B?NEU5RDVFS3JWR1JGZGE2MEo5eUVLaS9UL2VmUVpkbzh5cVNNN0l2eG84OUcw?=
- =?utf-8?B?K3NHSWtIeXRHd1hOdVNwSCtPVkFVSG5NZEJCMVcrL3JhTTMvc1p0Z05IT2tW?=
- =?utf-8?B?THRKTG5KRmJOcW5oSzBCTVpHdklBVFk3S3FpeEM5d0pVbDVSMW0zZE5FbnBs?=
- =?utf-8?B?VXZ4RkNVd0ttZkxJcmVWRCtlSy9MeS9OTEt3d0F1U2Q3V1NXbmJXS0VvVVd1?=
- =?utf-8?B?ajUwSnNsY3ZIYWRIUGtJNmJkOVkxck44ejQxNlRYR045cXNXTkd6OXpUUDUz?=
- =?utf-8?B?QTVpK28rWUxnVklzSzJlZnk2TTY0bzVnNWJxeHR6SW0xTnAybzBmZXdPQXpK?=
- =?utf-8?B?V3BMbjhxd1ZsT3Y5WTZ4cW5zMVBNaEU1WGhWZW5BamlPMFE3UWl4RlZYQk15?=
- =?utf-8?B?cEVyYnlINkVTbDNHR09OQ1lrR1BTQ0ZwQXpGZ1hiYUpSU24ySEFGZEw5czhv?=
- =?utf-8?B?dFQwbWZVZVYzcTUyMkswakFSZHh1VW4ranJiRW1TOHBVK1kzMkpXVkk1QnZK?=
- =?utf-8?B?dmVyNFdpMmUrWkM5WjJuRjBjOXgxSFA5VjRkaWMwaWF2c2JVUVgycnp5Z1Z2?=
- =?utf-8?B?M2J5Zlg2eC9qWTZocm12T2JoYi83dXJZcy9oemxGZ3hORFhTU0FhVEUzaFlz?=
- =?utf-8?B?UUFUaHJVNmo4RkJ1a2ZlYjQxcGVTTzljNTdLai9xZkJtbFBYVm1nbHQrYjVL?=
- =?utf-8?B?M3owVWRZZnNlblpzUWtCWFZlbHFRQ1ZkdGo4aU1hTG1lNXlIWGhPZzIvY21L?=
- =?utf-8?B?enEvSFhHNGxXNUQ4Y0hFaWZkWmt2VXFkTXVodi9nL0Iva08wNXQvdUtaak1D?=
- =?utf-8?B?S1NHTE5qMXVHYmE1VGUycEpzckZVaVN1cnlmelRyVEpwREVnWDVncktHOTQr?=
- =?utf-8?B?L2hSUEtpczVHejdaUk54TTRTWGJtY04rKzhCUWtFaVgrSmNIUCt3MW1iRzht?=
- =?utf-8?B?ZGpxSk5LOGFuK2t3NndITk8xdjlsVWs0Z2lDc0dZYmhMQVlENStHQUN3V1g3?=
- =?utf-8?B?S00yaFp5Umx5QlNDM01PazNIRTlsb3BuZW8vQlh5d3VzY3ozc1dmZHVSSWJq?=
- =?utf-8?Q?QOTwplajvZCS+jRkgRWuy0/7y?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="jMMy9td9"
+ARC-Seal: i=1; a=rsa-sha256; t=1756987933; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TvKirX4c74x7jqN1tg6isOyPPEnZPs+fy4zd55xvA2Kog/pOh5jVY0IcNm9uvILjpgYC/MaPYRGnKJmj6emAOPNvfL6poMD5v2dfWX/9qzmd0ehQ9uSM3qC+f+60JaSmFHkv/tLJ/rpoTSizkvC4oMCVXcw1DHVZdmp2Qhcg0LA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756987933; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Kg+imjEAl3CXmIfEbHlp4v245YFguRUUK5TRAGFXJso=; 
+	b=dzP89dQ+z49VzlwEan2/Yl6RWm+w2nhq3AinO5RmzyLWd2Ev4fXVrVwJRSctuJrHnVmSYy1lXZWe3w051TJ2xg1lugn/OrukxfXwJmtVmnTPKZ3cCfv2q8k2DptnOCrkh984LLdEdTMfvZIv0Kysj3Nh0fo0U/BGqaJ+WrZCZLo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756987933;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=Kg+imjEAl3CXmIfEbHlp4v245YFguRUUK5TRAGFXJso=;
+	b=jMMy9td9dP/h8xOOi6g/kSvcUIBDwA2A4iqcDR8bGLQRHpUv3G2kd2ywqfhKg/GL
+	UsoBC55q5otWRoNIjhW+guh3cuuc0GLY6Bwz4q4cQfdDWlKY9gRKt5L13DD6cyhmjuf
+	B/unwPc5DkYdxBlEBcWaQTAUDGhe2V4kPBdaidww=
+Received: by mx.zohomail.com with SMTPS id 1756987929589959.508568434057;
+	Thu, 4 Sep 2025 05:12:09 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 652fde97-113e-43a6-a875-08ddeba6ed8b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2025 11:33:53.8678
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qrRZM2m+VGSBBV6Vk7hWBgFMJ6IEElVufKAUtkA9tRPKLqvhJnbCFGOOQwnDTRUAR8oAS98bEUu1BsE1099K6w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7795
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v3 01/14] rust: drm: gem: Simplify use of generics
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250829224116.477990-2-lyude@redhat.com>
+Date: Thu, 4 Sep 2025 09:11:51 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ "open list:DRM DRIVER FOR NVIDIA GPUS [RUST]" <nouveau@lists.freedesktop.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <662189D6-44B2-4880-971D-A3D2D748542D@collabora.com>
+References: <20250829224116.477990-1-lyude@redhat.com>
+ <20250829224116.477990-2-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-DQoNCj4gT24gU2VwIDQsIDIwMjUsIGF0IDM6MTbigK9BTSwgRGFuaWxvIEtydW1tcmljaCA8ZGFr
-ckBrZXJuZWwub3JnPiB3cm90ZToNCj4gDQo+IO+7v09uIFRodSBTZXAgNCwgMjAyNSBhdCA1OjE2
-IEFNIENFU1QsIEFsZXhhbmRyZSBDb3VyYm90IHdyb3RlOg0KPj4gT24gVGh1IFNlcCA0LCAyMDI1
-IGF0IDEyOjE1IEFNIEpTVCwgSm9lbCBGZXJuYW5kZXMgd3JvdGU6DQo+PiA8c25pcD4NCj4+Pj4+
-ICt1c2Uga2VybmVsOjpwcmVsdWRlOjoqOw0KPj4+Pj4gKw0KPj4+Pj4gKy8vLyBNYWNybyBmb3Ig
-ZGVmaW5pbmcgYml0ZmllbGQtcGFja2VkIHN0cnVjdHVyZXMgaW4gUnVzdC4NCj4+Pj4+ICsvLy8g
-VGhlIHNpemUgb2YgdGhlIHVuZGVybHlpbmcgc3RvcmFnZSB0eXBlIGlzIHNwZWNpZmllZCB3aXRo
-ICNbcmVwcihUWVBFKV0uDQo+Pj4+PiArLy8vDQo+Pj4+PiArLy8vICMgRXhhbXBsZSAoanVzdCBm
-b3IgaWxsdXN0cmF0aW9uKQ0KPj4+Pj4gKy8vLyBgYGBydXN0DQo+Pj4+PiArLy8vIGJpdHN0cnVj
-dCEgew0KPj4+Pj4gKy8vLyAgICAgI1tyZXByKHU2NCldDQo+Pj4+PiArLy8vICAgICBwdWIgc3Ry
-dWN0IFBhZ2VUYWJsZUVudHJ5IHsNCj4+Pj4+ICsvLy8gICAgICAgICAwOjAgICAgICAgcHJlc2Vu
-dCAgICAgYXMgYm9vbCwNCj4+Pj4+ICsvLy8gICAgICAgICAxOjEgICAgICAgd3JpdGFibGUgICAg
-YXMgYm9vbCwNCj4+Pj4+ICsvLy8gICAgICAgICAxMTo5ICAgICAgYXZhaWxhYmxlICAgYXMgdTgs
-DQo+Pj4+PiArLy8vICAgICAgICAgNTE6MTIgICAgIHBmbiAgICAgICAgIGFzIHU2NCwNCj4+Pj4+
-ICsvLy8gICAgICAgICA2Mjo1MiAgICAgYXZhaWxhYmxlMiAgYXMgdTE2LA0KPj4+Pj4gKy8vLyAg
-ICAgICAgIDYzOjYzICAgICBueCAgICAgICAgICBhcyBib29sLA0KPj4+PiANCj4+Pj4gQSBub3Rl
-IG9uIHN5bnRheDogZm9yIG5vdmEtY29yZSwgd2UgbWF5IHdhbnQgdG8gdXNlIHRoZSBgSDpMYCBu
-b3RhdGlvbiwNCj4+Pj4gYXMgdGhpcyBpcyB3aGF0IE9wZW5STSB1c2VzLCBidXQgaW4gdGhlIGxh
-cmdlciBrZXJuZWwgd2UgbWlnaHQgd2FudCB0bw0KPj4+PiB1c2UgaW5jbHVzaXZlIHJhbmdlcyAo
-YEwuLj1IYCkgYXMgaXQgd2lsbCBsb29rIG1vcmUgbmF0dXJhbCBpbiBSdXN0DQo+Pj4+IGNvZGUg
-KGFuZCBpcyB0aGUgbm90YXRpb24gdGhlIGBiaXRzYCBtb2R1bGUgYWxyZWFkeSB1c2VzKS4NCj4+
-PiANCj4+PiBQZXJoYXBzIGZ1dHVyZSBhZGQtb24gZW5oYW5jZW1lbnQgdG8gaGF2ZSBib3RoIHN5
-bnRheD8gSSdkIGxpa2UgdG8gaW5pdGlhbGx5DQo+Pj4ga2VlcCBIOkwgYW5kIHN0YWJpbGl6ZSB0
-aGUgY29kZSBmaXJzdCwgd2hhdCBkbyB5b3UgdGhpbms/DQo+PiANCj4+IExldCdzIGhhdmUgdGhl
-IGRpc2N1c3Npb24gd2l0aCB0aGUgb3RoZXIgc3Rha2Vob2xkZXJzIChEYW5pZWw/KS4gSSB0aGlu
-aw0KPj4gaW4gTm92YSB3ZSB3YW50IHRvIGtlZXAgdGhlIGBIOkxgIHN5bnRheCwgYXMgaXQgbWF0
-Y2hlcyB3aGF0IHRoZSBPcGVuUk0NCj4+IGhlYWRlcnMgZG8gKHNvIE5vdmEgd291bGQgaGF2ZSBp
-dHMgb3duIGByZWdpc3RlcmAgbWFjcm8gdGhhdCBjYWxscyBpbnRvDQo+PiB0aGUgY29tbW9uIG9u
-ZSwgdHdlYWtpbmcgdGhpbmdzIGFzIGl0IG5lZWRzKS4gQnV0IGluIHRoZSBrZXJuZWwgY3JhdGUg
-d2UNCj4+IHNob3VsZCB1c2Ugc29tZXRoaW5nIGludHVpdGl2ZSBmb3IgZXZlcnlvbmUuDQo+IA0K
-PiBJIGRvbid0IGNhcmUgdG9vIG11Y2ggYWJvdXQgd2hldGhlciBpdCdzIGdvbm5hIGJlIEg6TCBv
-ciBMOkggWzFdLCBidXQgSSBkbyBjYXJlDQo+IGFib3V0IGJlaW5nIGNvbnNpc3RlbnQgdGhyb3Vn
-aG91dCB0aGUga2VybmVsLiBMZXQncyBub3Qgc3RhcnQgdGhlIHByYWN0aWNlIG9mDQo+IHR3aXN0
-aW5nIGtlcm5lbCBBUElzIHRvIE5WXyogc3BlY2lmaWMgQVBJcyB0aGF0IGRpZmZlciBmcm9tIHdo
-YXQgcGVvcGxlIGFyZSB1c2VkDQo+IHRvIHdvcmsgd2l0aCBpbiB0aGUga2VybmVsLg0KPiANCj4g
-WzFdIElmIGl0J3MgZ29ubmEgYmUgSDpMLCBJIHRoaW5rIHdlIHNob3VsZCBhbHNvIGxpc3QgdGhp
-bmdzIGluIHJldmVyc2Ugb3JkZXIsDQo+ICAgIGkuZS46DQo+IA0KPiAgICBwdWIgc3RydWN0IFBh
-Z2VUYWJsZUVudHJ5IHsNCj4gICAgICAgIDYzOjYzICAgICBueCAgICAgICAgICBhcyBib29sLA0K
-PiAgICAgICAgNjI6NTIgICAgIGF2YWlsYWJsZTIgIGFzIHUxNiwNCj4gICAgICAgIDUxOjEyICAg
-ICBwZm4gICAgICAgICBhcyB1NjQsDQo+ICAgICAgICAxMTo5ICAgICAgYXZhaWxhYmxlICAgYXMg
-dTgsDQo+ICAgICAgICAxOjEgICAgICAgd3JpdGFibGUgICAgYXMgYm9vbCwNCj4gICAgICAgIDA6
-MCAgICAgICBwcmVzZW50ICAgICBhcyBib29sLA0KPiAgICB9DQo+IA0KPiBUaGlzIGlzIGFsc28g
-d2hhdCB3b3VsZCBiZSBteSBwcmVmZXJyZWQgc3R5bGUgZm9yIHRoZSBrZXJuZWwgaW4gZ2VuZXJh
-bC4NCg0KU3VyZSwgdGhhdCBvbmx5IG1lYW5zIEkgaGF2ZSB0byBjaGFuZ2UgdGhlIGV4YW1wbGUg
-Y29kZSBzaW5jZSB0aGUNCm1hY3JvIGl0c2VsZiBhbHJlYWR5IHN1cHBvcnRzIHRoYXQuIEkgY2Fu
-IGRvIHRoYXQuDQoNClRoYW5rcy4NCg0KDQoNCg0KDQo+IA0KPiAtIERhbmlsbw0K
+Hi Lyude,
+
+> On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> Now that my rust skills have been honed, I noticed that there's a lot =
+of
+> generics in our gem bindings that don't actually need to be here. =
+Currently
+> the hierarchy of traits in our gem bindings looks like this:
+>=20
+>  * Drivers implement:
+>    * BaseDriverObject<T: DriverObject> (has the callbacks)
+>    * DriverObject (has the drm::Driver type)
+>  * Crate implements:
+>    * IntoGEMObject for Object<T> where T: DriverObject
+>      Handles conversion to/from raw object pointers
+>    * BaseObject for T where T: IntoGEMObject
+>      Provides methods common to all gem interfaces
+>=20
+>  Also of note, this leaves us with two different drm::Driver =
+associated
+>  types:
+>    * DriverObject::Driver
+>    * IntoGEMObject::Driver
+>=20
+> I'm not entirely sure of the original intent here unfortunately (if =
+anyone
+> is, please let me know!), but my guess is that the idea would be that =
+some
+> objects can implement IntoGEMObject using a different ::Driver than
+> DriverObject - presumably to enable the usage of gem objects from =
+different
+> drivers. A reasonable usecase of course.
+>=20
+> However - if I'm not mistaken, I don't think that this is actually how
+> things would go in practice. Driver implementations are of course
+> implemented by their associated drivers, and generally drivers are not
+> linked to each-other when building the kernel. Which is to say that =
+even in
+> a situation where we would theoretically deal with gem objects from =
+another
+> driver, we still wouldn't have access to its drm::driver::Driver
+> implementation. It's more likely we would simply want a variant of gem
+> objects in such a situation that have no association with a
+> drm::driver::Driver type.
+>=20
+> Taking that into consideration, we can assume the following:
+> * Anything that implements BaseDriverObject will implement =
+DriverObject
+>  In other words, all BaseDriverObjects indirectly have an associated
+>  ::Driver type - so the two traits can be combined into one with no
+>  generics.
+> * Not everything that implements IntoGEMObject will have an associated
+>  ::Driver, and that's OK.
+>=20
+> And with this, we now can do quite a bit of cleanup with the use of
+> generics here. As such, this commit:
+>=20
+> * Removes the generics on BaseDriverObject
+> * Moves DriverObject::Driver into BaseDriverObject
+> * Removes DriverObject
+> * Removes IntoGEMObject::Driver
+> * Add AllocImpl::Driver, which we can use as a binding to figure out =
+the
+>  correct File type for BaseObject
+>=20
+> Leaving us with a simpler trait hierarchy that now looks like this:
+>=20
+>  * Drivers implement: BaseDriverObject
+>  * Crate implements:
+>    * IntoGEMObject for Object<T> where T: DriverObject
+>    * BaseObject for T where T: IntoGEMObject
+>=20
+> Which makes the code a lot easier to understand and build on :).
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
+> ---
+> V2:
+> * Don't refer to Object<T> in callbacks, as this would result in =
+drivers
+>  getting the wrong gem object type for shmem gem objects once we add
+>  support for those. Instead, we'll just add a type alias to clean this
+>  part up.
+> V3:
+> * Fix nova compilation
+> * Also, add an associated driver type to AllocImpl - as we still need =
+the
+>  current driver accessible from BaseObject so that we can use the =
+driver's
+>  various associated types, like File
+> V4:
+> * Add missing Object =3D Self constraint to type bounds for =
+create_handle,
+>  lookup_handle. I forgot that if drivers can have private gem objects =
+with
+>  a different data layout, we can only guarantee gem objects with =
+handles
+>  are of the same gem object type as the main one in use by the driver.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> drivers/gpu/drm/nova/gem.rs |  8 ++--
+> rust/kernel/drm/driver.rs   |  3 ++
+> rust/kernel/drm/gem/mod.rs  | 77 ++++++++++++++++---------------------
+> 3 files changed, 40 insertions(+), 48 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
+> index cd82773dab92c..2760ba4f3450b 100644
+> --- a/drivers/gpu/drm/nova/gem.rs
+> +++ b/drivers/gpu/drm/nova/gem.rs
+> @@ -16,16 +16,14 @@
+> #[pin_data]
+> pub(crate) struct NovaObject {}
+>=20
+> -impl gem::BaseDriverObject<gem::Object<NovaObject>> for NovaObject {
+> +impl gem::DriverObject for NovaObject {
+> +    type Driver =3D NovaDriver;
+> +
+>     fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, =
+Error> {
+>         try_pin_init!(NovaObject {})
+>     }
+> }
+>=20
+> -impl gem::DriverObject for NovaObject {
+> -    type Driver =3D NovaDriver;
+> -}
+> -
+> impl NovaObject {
+>     /// Create a new DRM GEM object.
+>     pub(crate) fn new(dev: &NovaDevice, size: usize) -> =
+Result<ARef<gem::Object<Self>>> {
+> diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
+> index fe7e8d06961aa..dae0f4d1bbe3c 100644
+> --- a/rust/kernel/drm/driver.rs
+> +++ b/rust/kernel/drm/driver.rs
+> @@ -86,6 +86,9 @@ pub struct AllocOps {
+>=20
+> /// Trait for memory manager implementations. Implemented internally.
+> pub trait AllocImpl: super::private::Sealed + drm::gem::IntoGEMObject =
+{
+> +    /// The [`Driver`] implementation for this [`AllocImpl`].
+> +    type Driver: drm::Driver;
+> +
+>     /// The C callback operations for this memory manager.
+>     const ALLOC_OPS: AllocOps;
+> }
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index b71821cfb5eaa..31c5799d995c5 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -15,31 +15,31 @@
+> use core::{mem, ops::Deref, ptr::NonNull};
+>=20
+> /// GEM object functions, which must be implemented by drivers.
+> -pub trait BaseDriverObject<T: BaseObject>: Sync + Send + Sized {
+> +pub trait DriverObject: Sync + Send + Sized {
+> +    /// Parent `Driver` for this object.
+> +    type Driver: drm::Driver;
+> +
+>     /// Create a new driver data object for a GEM object of a given =
+size.
+> -    fn new(dev: &drm::Device<T::Driver>, size: usize) -> impl =
+PinInit<Self, Error>;
+> +    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl =
+PinInit<Self, Error>;
+>=20
+>     /// Open a new handle to an existing object, associated with a =
+File.
+>     fn open(
+> -        _obj: &<<T as IntoGEMObject>::Driver as drm::Driver>::Object,
+> -        _file: &drm::File<<<T as IntoGEMObject>::Driver as =
+drm::Driver>::File>,
+> +        _obj: &<Self::Driver as drm::Driver>::Object,
+> +        _file: &drm::File<<Self::Driver as drm::Driver>::File>,
+>     ) -> Result {
+>         Ok(())
+>     }
+>=20
+>     /// Close a handle to an existing object, associated with a File.
+>     fn close(
+> -        _obj: &<<T as IntoGEMObject>::Driver as drm::Driver>::Object,
+> -        _file: &drm::File<<<T as IntoGEMObject>::Driver as =
+drm::Driver>::File>,
+> +        _obj: &<Self::Driver as drm::Driver>::Object,
+> +        _file: &drm::File<<Self::Driver as drm::Driver>::File>,
+>     ) {
+>     }
+> }
+>=20
+> /// Trait that represents a GEM object subtype
+> pub trait IntoGEMObject: Sized + super::private::Sealed + =
+AlwaysRefCounted {
+> -    /// Owning driver for this type
+> -    type Driver: drm::Driver;
+> -
+>     /// Returns a reference to the raw `drm_gem_object` structure, =
+which must be valid as long as
+>     /// this owning object is valid.
+>     fn as_raw(&self) -> *mut bindings::drm_gem_object;
+> @@ -74,25 +74,15 @@ unsafe fn dec_ref(obj: NonNull<Self>) {
+>     }
+> }
+>=20
+> -/// Trait which must be implemented by drivers using base GEM =
+objects.
+> -pub trait DriverObject: BaseDriverObject<Object<Self>> {
+> -    /// Parent `Driver` for this object.
+> -    type Driver: drm::Driver;
+> -}
+> -
+> -extern "C" fn open_callback<T: BaseDriverObject<U>, U: BaseObject>(
+> +extern "C" fn open_callback<T: DriverObject>(
+>     raw_obj: *mut bindings::drm_gem_object,
+>     raw_file: *mut bindings::drm_file,
+> ) -> core::ffi::c_int {
+>     // SAFETY: `open_callback` is only ever called with a valid =
+pointer to a `struct drm_file`.
+> -    let file =3D unsafe {
+> -        drm::File::<<<U as IntoGEMObject>::Driver as =
+drm::Driver>::File>::from_raw(raw_file)
+> -    };
+> -    // SAFETY: `open_callback` is specified in the AllocOps structure =
+for `Object<T>`, ensuring that
+> -    // `raw_obj` is indeed contained within a `Object<T>`.
+> -    let obj =3D unsafe {
+> -        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as =
+IntoGEMObject>::from_raw(raw_obj)
+> -    };
+> +    let file =3D unsafe { drm::File::<<T::Driver as =
+drm::Driver>::File>::from_raw(raw_file) };
+> +    // SAFETY: `open_callback` is specified in the AllocOps structure =
+for `DriverObject<T>`,
+> +    // ensuring that `raw_obj` is contained within a =
+`DriverObject<T>`
+> +    let obj =3D unsafe { <<T::Driver as drm::Driver>::Object as =
+IntoGEMObject>::from_raw(raw_obj) };
+>=20
+>     match T::open(obj, file) {
+>         Err(e) =3D> e.to_errno(),
+> @@ -100,26 +90,21 @@ extern "C" fn open_callback<T: =
+BaseDriverObject<U>, U: BaseObject>(
+>     }
+> }
+>=20
+> -extern "C" fn close_callback<T: BaseDriverObject<U>, U: BaseObject>(
+> +extern "C" fn close_callback<T: DriverObject>(
+>     raw_obj: *mut bindings::drm_gem_object,
+>     raw_file: *mut bindings::drm_file,
+> ) {
+>     // SAFETY: `open_callback` is only ever called with a valid =
+pointer to a `struct drm_file`.
+> -    let file =3D unsafe {
+> -        drm::File::<<<U as IntoGEMObject>::Driver as =
+drm::Driver>::File>::from_raw(raw_file)
+> -    };
+> +    let file =3D unsafe { drm::File::<<T::Driver as =
+drm::Driver>::File>::from_raw(raw_file) };
+> +
+>     // SAFETY: `close_callback` is specified in the AllocOps structure =
+for `Object<T>`, ensuring
+>     // that `raw_obj` is indeed contained within a `Object<T>`.
+> -    let obj =3D unsafe {
+> -        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as =
+IntoGEMObject>::from_raw(raw_obj)
+> -    };
+> +    let obj =3D unsafe { <<T::Driver as drm::Driver>::Object as =
+IntoGEMObject>::from_raw(raw_obj) };
+>=20
+>     T::close(obj, file);
+> }
+>=20
+> impl<T: DriverObject> IntoGEMObject for Object<T> {
+> -    type Driver =3D T::Driver;
+> -
+>     fn as_raw(&self) -> *mut bindings::drm_gem_object {
+>         self.obj.get()
+>     }
+> @@ -141,10 +126,12 @@ fn size(&self) -> usize {
+>=20
+>     /// Creates a new handle for the object associated with a given =
+`File`
+>     /// (or returns an existing one).
+> -    fn create_handle(
+> -        &self,
+> -        file: &drm::File<<<Self as IntoGEMObject>::Driver as =
+drm::Driver>::File>,
+> -    ) -> Result<u32> {
+> +    fn create_handle<D, F>(&self, file: &drm::File<F>) -> Result<u32>
+> +    where
+> +        Self: AllocImpl<Driver =3D D>,
+> +        D: drm::Driver<Object =3D Self, File =3D F>,
+> +        F: drm::file::DriverFile,
+
+Shouldn=E2=80=99t this be F: drm::file::DriverFile<Driver =3DD>?
+
+As you said in the commit message, I don=E2=80=99t see where exactly we =
+would have
+two competing drm::Driver types when calling this function, but we =
+should
+perhaps enforce this bound anyways.
+
+> +    {
+>         let mut handle: u32 =3D 0;
+>         // SAFETY: The arguments are all valid per the type =
+invariants.
+>         to_result(unsafe {
+> @@ -154,10 +141,12 @@ fn create_handle(
+>     }
+>=20
+>     /// Looks up an object by its handle for a given `File`.
+> -    fn lookup_handle(
+> -        file: &drm::File<<<Self as IntoGEMObject>::Driver as =
+drm::Driver>::File>,
+> -        handle: u32,
+> -    ) -> Result<ARef<Self>> {
+> +    fn lookup_handle<D, F>(file: &drm::File<F>, handle: u32) -> =
+Result<ARef<Self>>
+> +    where
+> +        Self: AllocImpl<Driver =3D D>,
+> +        D: drm::Driver<Object =3D Self, File =3D F>,
+> +        F: drm::file::DriverFile,
+
+Same here?
+
+> +    {
+>         // SAFETY: The arguments are all valid per the type =
+invariants.
+>         let ptr =3D unsafe { =
+bindings::drm_gem_object_lookup(file.as_raw().cast(), handle) };
+>         if ptr.is_null() {
+> @@ -212,8 +201,8 @@ impl<T: DriverObject> Object<T> {
+>=20
+>     const OBJECT_FUNCS: bindings::drm_gem_object_funcs =3D =
+bindings::drm_gem_object_funcs {
+>         free: Some(Self::free_callback),
+> -        open: Some(open_callback::<T, Object<T>>),
+> -        close: Some(close_callback::<T, Object<T>>),
+> +        open: Some(open_callback::<T>),
+> +        close: Some(close_callback::<T>),
+>         print_info: None,
+>         export: None,
+>         pin: None,
+> @@ -296,6 +285,8 @@ fn deref(&self) -> &Self::Target {
+> }
+>=20
+> impl<T: DriverObject> AllocImpl for Object<T> {
+> +    type Driver =3D T::Driver;
+> +
+>     const ALLOC_OPS: AllocOps =3D AllocOps {
+>         gem_create_object: None,
+>         prime_handle_to_fd: None,
+> --=20
+> 2.50.0
+>=20
+
+With the DriverFile comment sorted out:
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
