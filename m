@@ -1,516 +1,264 @@
-Received: from forward500d.mail.yandex.net (forward500d.mail.yandex.net [178.154.239.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC70227B95;
-	Thu,  4 Sep 2025 16:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B151C861D
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 16:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757003571; cv=none; b=CBI0OWXvvRj/pfejtrvkuw+ESwf7ypKkCkZ4ja4qORuSHAkCCiLKEbSHctnaqbosL6a433o16LmfDpaqctV6RfMl7drbKHk/Fi82Fp5L9zxdYnBIXp6BkB3j79qoUmV0B+OMYqjNGVFMAzo8RayfDDoemAeFaF8RWvaeRg3FDnQ=
+	t=1757004622; cv=none; b=XOFOz0iLpT0JWFH7mIOeLvRFXTiHgQk8l6ApZaVcO7i4KDpSioTEZ1vBginoDbWMY8ZZ59tXSRZBnw5qbz1I03nZ+b3+NqWWdNkERYjOCWcJbAWUp8gV3SAxBUswfH3c3AgNZd0M5cDH2RxCBMjhvnLVPeYCnYpaJa1Z9ReB6mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757003571; c=relaxed/simple;
-	bh=lFIbaiSWTsno82O7hUyATzI2n/Po1kfMjVo7bmohg9A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cx6oRVbSbkiQRX8iGpnIn8tEv6ujveccxRYsjF5WhL9JxPhvz5n3Ufb7t9iLZ1WBRtKdbMpqhurzGteBd69FokrbFzkpd4wjwN9kByZEzPrpwAPTbNmK1P3mnDaSHABers7LWfdpw9etZHGXRWjqZR3PyH/mlB2vWNG1mFUFVjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=LugOS7WW; arc=none smtp.client-ip=178.154.239.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1757004622; c=relaxed/simple;
+	bh=eAZ8pfbaoEypteMV747NomwE1hc0p47KjDxFyUhFRYw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JE/caVZir5+Uiz2eeOz/6BuZ7SSxRcD/wHm2HGotkp8C+5P+/kYPndVpsoUfsOJVj2C4gS/8L/eLvYrk1xlOzbEUmz0mJTL8DrlRi/hCGDTREyWcrLfw2YyP+cn1z1nKJaM9JXZC34LFtNqwY12brSGpT6BGJ8gjUHXcuwzcSi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0+RRwzoH; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="LugOS7WW"
-Received: from mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:202b:0:640:eaed:0])
-	by forward500d.mail.yandex.net (Yandex) with ESMTPS id CE9DB80F44;
-	Thu, 04 Sep 2025 19:32:36 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id WWkDko0LN4Y0-CGyHLYHL;
-	Thu, 04 Sep 2025 19:32:35 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757003556;
-	bh=ZprfmHznSbwcPiJDZZeeQ0iFQtcmVlyR1CCgAk5DgAk=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=LugOS7WWxD92bxXuQkZSfxzdY0+C25QMIqIk4kxpso5CgaMyk1ehJWeBlPpQA58zf
-	 GXXZpwzh79AiRyj1pGW3HF3t6HK/sCnK3w3xaXj/DSO9XL5uDXopFpqCj4cc4HgY1y
-	 k6NYpr4LnSbjZLIFuDbxdlBROi90BC2K67sQlfYs=
-Authentication-Results: mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 4 Sep 2025 19:32:29 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Danilo
- Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH] rust: rbtree: add immutable cursor
-Message-ID: <20250904193229.214236b5@nimda.home>
-In-Reply-To: <20250904142552.2790602-1-vitaly.wool@konsulko.se>
-References: <20250904142552.2790602-1-vitaly.wool@konsulko.se>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0+RRwzoH"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b9dc5c2ba0so674566f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 09:50:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757004618; x=1757609418; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8b7/XUFYjGLTtPaCMlyKu/PlgpxYgj/4qAzmA1kZ03E=;
+        b=0+RRwzoH364u6KUS4UTr9xFGNJPblBGwn2gcJSeqSDSPRGjwcZvb66FLp1YlHQYAzb
+         DhpM5BglV44j80wZkNVng4qhvH7Qppnh9bAH+kR+FtZA/SpHTRyN2+bW5YsbWCVfbvJB
+         10SV6vq4jEK1JNaHg1/SEmaweWFf5tb+RpW1B0DLunxgRyu0TcQg4m/2+0yWHyl5wMe3
+         6E1ajCufV8QgX+hUHOdSEYlr1NJpvTIrzgXW6+LT30Z7RcX+Vb/ZWp80296BqgIW+/Mb
+         9dKuxOvJ34r4mDns3s2faLEjJdBrqw4d6/w6jAUc/VxY8n9zFtWGh1A9oG1bdut2RP+Q
+         7aMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757004618; x=1757609418;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8b7/XUFYjGLTtPaCMlyKu/PlgpxYgj/4qAzmA1kZ03E=;
+        b=QLKcAM9K1C0nDFz35KFqMWnes2EKHE8TBQv2HeXxAFMKphKRZHlGCVsljetCknwLP5
+         9+Ia058sGSdp0rBh2gSsOj/KzEvBDubTJPGgLzHNIXw3qGLu9qsGLOcfkLkNWBJwa2Vs
+         r1smmZZ6M4H8T3oLtcfcGrNlnJXI1LOtqPTqOYbc24zcZ/IJyzJsAp0D4ZVCYt8ZQIWO
+         eEe+sJu2AZfNHkuN4QtYbGtA/GdXn6soOqVIzeTP2hLXUGk6X41VLekMRGsm5nBrYl8m
+         sX8uf/Fm+NF8sEwkeyFHTSWxvBEXUqaL6c6sVFT6Qiinqy+iTNCSMtzSF2bbT130IlPq
+         FlIg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7IDrO7vAE8qPR7eVOr3kv4qC+zh3s3cQNI46PbvHQklv7nYI4/X8HMy5n/6k7HyEGfOuACtHF6+Gij3dgkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycJPEMBs5w0rBVDZdTvr5UtKi1m7no/5vAgRfaxlcQWBDyBAmI
+	fzJ6WVxG3wGSHjbCb/XUJF6jLCeeOP1MdQDS9PCJ+EUMLQ1fXntF3qaicLNVe2a8MwIgaw==
+X-Google-Smtp-Source: AGHT+IH1toEx+b5y7y/Qyp7BWtKrZQXOEKDEj3q6qAS0VaZ9qh7QZ6upHMiRioEKyfB4tzPWnIBSKjo=
+X-Received: from wrce15.prod.google.com ([2002:adf:9bcf:0:b0:3d7:cd09:ae17])
+ (user=bqe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:310e:b0:3c8:6b76:2ee9
+ with SMTP id ffacd0b85a97d-3d1dcb764e0mr15298551f8f.19.1757004618425; Thu, 04
+ Sep 2025 09:50:18 -0700 (PDT)
+Date: Thu,  4 Sep 2025 16:50:04 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.355.g5224444f11-goog
+Message-ID: <20250904165015.3791895-1-bqe@google.com>
+Subject: [PATCH v15 0/5] rust: adds Bitmap API, ID pool and bindings
+From: Burak Emir <bqe@google.com>
+To: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>
+Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu,  4 Sep 2025 16:25:52 +0200
-Vitaly Wool <vitaly.wool@konsulko.se> wrote:
+This series adds a Rust bitmap API for porting the approach from
+commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
 
-> Sometimes we may need to iterate over, or find an element in a read
-> only (or read mostly) red-black tree, and in that case we don't need a
-> mutable reference to the tree, which we'll however have to take to be
-> able to use the current (mutable) cursor implementation.
-> 
-> This patch adds a simple immutable cursor implementation to RBTree,
-> which enables us to use an immutable tree reference. The existing
-> (fully featured) cursor implementation is renamed to CursorMut,
-> while retaining its functionality.
-> 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> ---
->  rust/kernel/rbtree.rs | 241
-> +++++++++++++++++++++++++++++++++++++----- 1 file changed, 217
-> insertions(+), 24 deletions(-)
-> 
-> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-> index b8fe6be6fcc4..3b96d4a24217 100644
-> --- a/rust/kernel/rbtree.rs
-> +++ b/rust/kernel/rbtree.rs
-> @@ -11,7 +11,7 @@
->      cmp::{Ord, Ordering},
->      marker::PhantomData,
->      mem::MaybeUninit,
-> -    ptr::{addr_of_mut, from_mut, NonNull},
-> +    ptr::{addr_of, addr_of_mut, from_mut, NonNull},
->  };
->  
->  /// A red-black tree with owned nodes.
-> @@ -243,34 +243,64 @@ pub fn values_mut(&mut self) -> impl
-> Iterator<Item = &'_ mut V> { }
->  
->      /// Returns a cursor over the tree nodes, starting with the
-> smallest key.
-> -    pub fn cursor_front(&mut self) -> Option<Cursor<'_, K, V>> {
-> +    pub fn cursor_front_mut(&mut self) -> Option<CursorMut<'_, K,
-> V>> { let root = addr_of_mut!(self.root);
->          // SAFETY: `self.root` is always a valid root node
->          let current = unsafe { bindings::rb_first(root) };
->          NonNull::new(current).map(|current| {
->              // INVARIANT:
->              // - `current` is a valid node in the [`RBTree`] pointed
-> to by `self`.
-> -            Cursor {
-> +            CursorMut {
->                  current,
->                  tree: self,
->              }
->          })
->      }
->  
-> +    /// Returns an unmutable cursor over the tree nodes, starting
+The Rust bitmap API provides a safe abstraction to underlying bitmap
+and bitops operations. For now, only includes method necessary for
+dbitmap.h, more can be added later. We perform bounds checks for
+hardening, violations are programmer errors that result in panics.
 
-This should be "Returns an immutable...".
+We include set_bit_atomic and clear_bit_atomic operations. One has
+to avoid races with non-atomic operations, which is ensure by the
+Rust type system: either callers have shared references &bitmap in
+which case the mutations are atomic operations. Or there is a
+exclusive reference &mut bitmap, in which case there is no concurrent
+access.
 
-> with the smallest key.
-> +    pub fn cursor_front(&self) -> Option<Cursor<'_, K, V>> {
-> +        let root = addr_of!(self.root);
-> +        // SAFETY: `self.root` is always a valid root node
-> +        let current = unsafe { bindings::rb_first(root) };
-> +        NonNull::new(current).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed
-> to by `self`.
-> +            Cursor {
-> +                current,
-> +                _tree: PhantomData,
-> +            }
-> +        })
-> +    }
-> +
->      /// Returns a cursor over the tree nodes, starting with the
-> largest key.
-> -    pub fn cursor_back(&mut self) -> Option<Cursor<'_, K, V>> {
-> +    pub fn cursor_back_mut(&mut self) -> Option<CursorMut<'_, K, V>>
-> { let root = addr_of_mut!(self.root);
->          // SAFETY: `self.root` is always a valid root node
->          let current = unsafe { bindings::rb_last(root) };
->          NonNull::new(current).map(|current| {
->              // INVARIANT:
->              // - `current` is a valid node in the [`RBTree`] pointed
-> to by `self`.
-> -            Cursor {
-> +            CursorMut {
->                  current,
->                  tree: self,
->              }
->          })
->      }
-> +
-> +    /// Returns a cursor over the tree nodes, starting with the
-> largest key.
-> +    pub fn cursor_back(&self) -> Option<Cursor<'_, K, V>> {
-> +        let root = addr_of!(self.root);
-> +        // SAFETY: `self.root` is always a valid root node
-> +        let current = unsafe { bindings::rb_last(root) };
-> +        NonNull::new(current).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed
-> to by `self`.
-> +            Cursor {
-> +                current,
-> +                _tree: PhantomData,
-> +            }
-> +        })
-> +    }
->  }
->  
->  impl<K, V> RBTree<K, V>
-> @@ -421,7 +451,7 @@ pub fn remove(&mut self, key: &K) -> Option<V> {
->      /// If the given key exists, the cursor starts there.
->      /// Otherwise it starts with the first larger key in sort order.
->      /// If there is no larger key, it returns [`None`].
-> -    pub fn cursor_lower_bound(&mut self, key: &K) ->
-> Option<Cursor<'_, K, V>>
-> +    pub fn cursor_lower_bound_mut(&mut self, key: &K) ->
-> Option<CursorMut<'_, K, V>> where
->          K: Ord,
->      {
-> @@ -470,12 +500,74 @@ pub fn cursor_lower_bound(&mut self, key: &K)
-> -> Option<Cursor<'_, K, V>> NonNull::new(links).map(|current| {
->              // INVARIANT:
->              // - `current` is a valid node in the [`RBTree`] pointed
-> to by `self`.
-> -            Cursor {
-> +            CursorMut {
->                  current,
->                  tree: self,
->              }
->          })
->      }
-> +
-> +    /// Returns a cursor over the tree nodes based on the given key.
-> +    ///
-> +    /// If the given key exists, the cursor starts there.
-> +    /// Otherwise it starts with the first larger key in sort order.
-> +    /// If there is no larger key, it returns [`None`].
-> +    pub fn cursor_lower_bound(&self, key: &K) -> Option<Cursor<'_,
-> K, V>>
-> +    where
-> +        K: Ord,
-> +    {
-> +        let mut node = self.root.rb_node;
-> +        let mut best_match: Option<NonNull<Node<K, V>>> = None;
-> +        while !node.is_null() {
-> +            // SAFETY: By the type invariant of `Self`, all non-null
-> `rb_node` pointers stored in
-> +            // `self` point to the links field of `Node<K, V>`
-> objects.
-> +            let this = unsafe { container_of!(node, Node<K, V>,
-> links) };
-> +            // SAFETY: `this` is a non-null node so it is valid by
-> the type invariants.
-> +            let this_key = unsafe { &(*this).key };
-> +            // SAFETY: `node` is a non-null node so it is valid by
-> the type invariants.
-> +            let left_child = unsafe { (*node).rb_left };
-> +            // SAFETY: `node` is a non-null node so it is valid by
-> the type invariants.
-> +            let right_child = unsafe { (*node).rb_right };
-> +            match key.cmp(this_key) {
-> +                Ordering::Equal => {
-> +                    best_match = NonNull::new(this);
-> +                    break;
-> +                }
-> +                Ordering::Greater => {
-> +                    node = right_child;
-> +                }
-> +                Ordering::Less => {
-> +                    let is_better_match = match best_match {
-> +                        None => true,
-> +                        Some(best) => {
-> +                            // SAFETY: `best` is a non-null node so
-> it is valid by the type
-> +                            // invariants.
-> +                            let best_key = unsafe {
-> &(*best.as_ptr()).key };
-> +                            best_key > this_key
-> +                        }
-> +                    };
-> +                    if is_better_match {
-> +                        best_match = NonNull::new(this);
-> +                    }
-> +                    node = left_child;
-> +                }
-> +            };
-> +        }
-> +
-> +        let best = best_match?;
-> +
-> +        // SAFETY: `best` is a non-null node so it is valid by the
-> type invariants.
-> +        let links = unsafe { addr_of_mut!((*best.as_ptr()).links) };
+This series includes an optimization to represent the bitmap inline,
+as suggested by Yury.
 
-Shouldn't we use `addr_of!` here?
+We ran a simple microbenchmark which shows that overall the Rust API 
+can be expected to be about 4.5% slower than C API.
 
-> +
-> +        NonNull::new(links).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed
-> to by `self`.
-> +            Cursor {
-> +                current,
-> +                _tree: PhantomData,
-> +            }
-> +        })
-> +    }
->  }
->  
->  impl<K, V> Default for RBTree<K, V> {
-> @@ -507,7 +599,7 @@ fn drop(&mut self) {
->      }
->  }
->  
-> -/// A bidirectional cursor over the tree nodes, sorted by key.
-> +/// A bidirectional mutable cursor over the tree nodes, sorted by
-> key. ///
->  /// # Examples
->  ///
-> @@ -526,7 +618,7 @@ fn drop(&mut self) {
->  /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->  ///
->  /// // Get a cursor to the first element.
-> -/// let mut cursor = tree.cursor_front().unwrap();
-> +/// let mut cursor = tree.cursor_front_mut().unwrap();
->  /// let mut current = cursor.current();
->  /// assert_eq!(current, (&10, &100));
->  ///
-> @@ -564,7 +656,7 @@ fn drop(&mut self) {
->  /// tree.try_create_and_insert(20, 200, flags::GFP_KERNEL)?;
->  /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->  ///
-> -/// let mut cursor = tree.cursor_back().unwrap();
-> +/// let mut cursor = tree.cursor_back_mut().unwrap();
->  /// let current = cursor.current();
->  /// assert_eq!(current, (&30, &300));
->  ///
-> @@ -577,7 +669,7 @@ fn drop(&mut self) {
->  /// use kernel::rbtree::RBTree;
->  ///
->  /// let mut tree: RBTree<u16, u16> = RBTree::new();
-> -/// assert!(tree.cursor_front().is_none());
-> +/// assert!(tree.cursor_front_mut().is_none());
->  ///
->  /// # Ok::<(), Error>(())
->  /// ```
-> @@ -628,7 +720,7 @@ fn drop(&mut self) {
->  /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->  ///
->  /// // Retrieve a cursor.
-> -/// let mut cursor = tree.cursor_front().unwrap();
-> +/// let mut cursor = tree.cursor_front_mut().unwrap();
->  ///
->  /// // Get a mutable reference to the current value.
->  /// let (k, v) = cursor.current_mut();
-> @@ -655,7 +747,7 @@ fn drop(&mut self) {
->  /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->  ///
->  /// // Remove the first element.
-> -/// let mut cursor = tree.cursor_front().unwrap();
-> +/// let mut cursor = tree.cursor_front_mut().unwrap();
->  /// let mut current = cursor.current();
->  /// assert_eq!(current, (&10, &100));
->  /// cursor = cursor.remove_current().0.unwrap();
-> @@ -665,7 +757,7 @@ fn drop(&mut self) {
->  /// assert_eq!(current, (&20, &200));
->  ///
->  /// // Get a cursor to the last element, and remove it.
-> -/// cursor = tree.cursor_back().unwrap();
-> +/// cursor = tree.cursor_back_mut().unwrap();
->  /// current = cursor.current();
->  /// assert_eq!(current, (&30, &300));
->  ///
-> @@ -694,7 +786,7 @@ fn drop(&mut self) {
->  /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->  ///
->  /// // Get a cursor to the first element.
-> -/// let mut cursor = tree.cursor_front().unwrap();
-> +/// let mut cursor = tree.cursor_front_mut().unwrap();
->  /// let mut current = cursor.current();
->  /// assert_eq!(current, (&10, &100));
->  ///
-> @@ -702,7 +794,7 @@ fn drop(&mut self) {
->  /// assert!(cursor.remove_prev().is_none());
->  ///
->  /// // Get a cursor to the last element.
-> -/// cursor = tree.cursor_back().unwrap();
-> +/// cursor = tree.cursor_back_mut().unwrap();
->  /// current = cursor.current();
->  /// assert_eq!(current, (&30, &300));
->  ///
-> @@ -726,19 +818,51 @@ fn drop(&mut self) {
->  ///
->  /// # Invariants
->  /// - `current` points to a node that is in the same [`RBTree`] as
-> `tree`. -pub struct Cursor<'a, K, V> {
-> +pub struct CursorMut<'a, K, V> {
->      tree: &'a mut RBTree<K, V>,
->      current: NonNull<bindings::rb_node>,
->  }
->  
-> -// SAFETY: The [`Cursor`] has exclusive access to both `K` and `V`,
-> so it is sufficient to require them to be `Send`. -// The cursor only
-> gives out immutable references to the keys, but since it has excusive
-> access to those same -// keys, `Send` is sufficient. `Sync` would be
-> okay, but it is more restrictive to the user. -unsafe impl<'a, K:
-> Send, V: Send> Send for Cursor<'a, K, V> {} +/// A bidirectional
-> unmutable cursor over the tree nodes, sorted by key. This is a
+We also introduce a Rust API in id_pool.rs that would replace 
+dbitmap.h from the commit referenced above. This data structure is coupled 
+with the bitmap API and adds support for growing and shrinking, along
+with fine-grained control over when allocation happens. 
+The Binder code needs this since it holds a spinlock at the time it
+discovers that growing is necessary; this has to be release
+for performing a memory allocation with GFP_KERNEL that may cause 
+sleep.  We include example doctests that demonstrate this usage.
 
-Same here, should be "A bidirectional immutable...".
+Thanks everyone for all the helpful comments, this series has improved 
+significantly as a result of your work.
 
---
+Changes v14 --> v15:
+- Rebased on commit 08b06c30a445 ("Merge tag 'v6.17-rc4-ksmbd-fix' of git://git.samba.org/ksmbd")
 
-Regards,
-Onur
+Changes v13 --> v14:
+- Rebased on commit 8742b2d8935f ("Merge tag 'pull-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs")
+- applied clippy suggestions for pointer casts
+- in benchmark module, replace use of the Rust Ktime abstraction 
+- in benchmark module, move newlines around for pr_cont to work
+  with Instant, elapsed.
+- added Alice's Reviewed-by tag
 
-> simpler +/// variant of CursorMut that is basically providing read
-> only access. +/// +/// # Examples +///
-> +/// In the following example, we obtain a cursor to the first
-> element in the tree. +/// The cursor allows us to iterate
-> bidirectionally over key/value pairs in the tree. +///
-> +/// ```
-> +/// use kernel::{alloc::flags, rbtree::RBTree};
-> +///
-> +/// // Create a new tree.
-> +/// let mut tree = RBTree::new();
-> +///
-> +/// // Insert three elements.
-> +/// tree.try_create_and_insert(10, 100, flags::GFP_KERNEL)?;
-> +/// tree.try_create_and_insert(20, 200, flags::GFP_KERNEL)?;
-> +/// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
-> +///
-> +/// // Get a cursor to the first element.
-> +/// let cursor = tree.cursor_front().unwrap();
-> +/// let current = cursor.current();
-> +/// assert_eq!(current, (&10, &100));
-> +///
-> +/// # Ok::<(), Error>(())
-> +pub struct Cursor<'a, K, V> {
-> +    _tree: PhantomData<&'a RBTree<K, V>>,
-> +    current: NonNull<bindings::rb_node>,
-> +}
-> +
-> +// SAFETY: The [`CursorMut`] has exclusive access to both `K` and
-> `V`, so it is sufficient to +// require them to be `Send`.
-> +// The cursor only gives out immutable references to the keys, but
-> since it has excusive access to +// those same keys, `Send` is
-> sufficient. `Sync` would be okay, but it is more restrictive to the
-> +// user. +unsafe impl<'a, K: Send, V: Send> Send for CursorMut<'a,
-> K, V> {} 
-> -// SAFETY: The [`Cursor`] gives out immutable references to K and
-> mutable references to V, +// SAFETY: The [`CursorMut`] gives out
-> immutable references to K and mutable references to V, // so it has
-> the same thread safety requirements as mutable references. -unsafe
-> impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {} +unsafe
-> impl<'a, K: Sync, V: Sync> Sync for CursorMut<'a, K, V> {} 
->  impl<'a, K, V> Cursor<'a, K, V> {
->      /// The current node
-> @@ -749,6 +873,75 @@ pub fn current(&self) -> (&K, &V) {
->          unsafe { Self::to_key_value(self.current) }
->      }
->  
-> +    /// # Safety
-> +    ///
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has immutable access to `node` for the duration
-> of `'b`.
-> +    unsafe fn to_key_value<'b>(node: NonNull<bindings::rb_node>) ->
-> (&'b K, &'b V) {
-> +        // SAFETY: the caller guarantees that `node` is a valid
-> pointer in an `RBTree`.
-> +        let (k, v) = unsafe { Self::to_key_value_raw(node) };
-> +        // SAFETY: the caller guarantees immutable access to `node`.
-> +        (k, unsafe { &*v })
-> +    }
-> +
-> +    /// # Safety
-> +    ///
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has immutable access to the key for the
-> duration of `'b`.
-> +    unsafe fn to_key_value_raw<'b>(node: NonNull<bindings::rb_node>)
-> -> (&'b K, *mut V) {
-> +        // SAFETY: By the type invariant of `Self`, all non-null
-> `rb_node` pointers stored in `self`
-> +        // point to the links field of `Node<K, V>` objects.
-> +        let this = unsafe { container_of!(node.as_ptr(), Node<K, V>,
-> links) };
-> +        // SAFETY: The passed `node` is the current node or a
-> non-null neighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let k = unsafe { &(*this).key };
-> +        // SAFETY: The passed `node` is the current node or a
-> non-null neighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let v = unsafe { addr_of_mut!((*this).value) };
-> +        (k, v)
-> +    }
-> +
-> +    /// Access the previous node without moving the cursor.
-> +    pub fn peek_prev(&self) -> Option<(&K, &V)> {
-> +        self.peek(Direction::Prev)
-> +    }
-> +
-> +    /// Access the previous node without moving the cursor.
-> +    pub fn peek_next(&self) -> Option<(&K, &V)> {
-> +        self.peek(Direction::Next)
-> +    }
-> +
-> +    fn peek(&self, direction: Direction) -> Option<(&K, &V)> {
-> +        self.get_neighbor_raw(direction).map(|neighbor| {
-> +            // SAFETY:
-> +            // - `neighbor` is a valid tree node.
-> +            // - By the function signature, we have an immutable
-> reference to `self`.
-> +            unsafe { Self::to_key_value(neighbor) }
-> +        })
-> +    }
-> +
-> +    fn get_neighbor_raw(&self, direction: Direction) ->
-> Option<NonNull<bindings::rb_node>> {
-> +        // SAFETY: `self.current` is valid by the type invariants.
-> +        let neighbor = unsafe {
-> +            match direction {
-> +                Direction::Prev =>
-> bindings::rb_prev(self.current.as_ptr()),
-> +                Direction::Next =>
-> bindings::rb_next(self.current.as_ptr()),
-> +            }
-> +        };
-> +
-> +        NonNull::new(neighbor)
-> +    }
-> +}
-> +
-> +impl<'a, K, V> CursorMut<'a, K, V> {
-> +    /// The current node
-> +    pub fn current(&self) -> (&K, &V) {
-> +        // SAFETY:
-> +        // - `self.current` is a valid node by the type invariants.
-> +        // - We have an immutable reference by the function
-> signature.
-> +        unsafe { Self::to_key_value(self.current) }
-> +    }
-> +
->      /// The current node, with a mutable value
->      pub fn current_mut(&mut self) -> (&K, &mut V) {
->          // SAFETY:
-> @@ -920,7 +1113,7 @@ unsafe fn to_key_value_raw<'b>(node:
-> NonNull<bindings::rb_node>) -> (&'b K, *mut }
->  }
->  
-> -/// Direction for [`Cursor`] operations.
-> +/// Direction for [`Cursor`] and [`CursorMut`] operations.
->  enum Direction {
->      /// the node immediately before, in sort order
->      Prev,
+Changes v12 --> v13:
+- Rebased on commit 75f5f23f8787 ("Merge tag 'block-6.16-20250619' of git://git.kernel.dk/linux")
+- Renamed types CBitmap --> Bitmap, Bitmap --> BitmapVec.
+- Rewrote unit tests to not use `unwrap()` but `Result` and `?`
+- Replaced NonNull::as_mut() with NonNull::as_ptr()
+- declared local BITS_PER_LONG usize constants, fixed rustdoc
+
+Changes v11 --> v12:
+- Added Reviewed-by tag, changed named of benchmark module
+- Fixed config, rustdoc, clippy and bytes computation (Pekka).
+- Added test that exercises CONFIG_RUST_BITMAP_HARDENED,
+  verified it panics.
+- Had to add a break to benchmark module, for the
+  CONFIG_RUST_BITMAP_HARDENED case which enforces bounds check.
+
+Changes v10 --> v11:
+- Fix Kconfig dependency, Rust benchmark depends on CONFIG_RUST
+- Disable clippy warning for len() without is_empty() in id_pool.rs
+
+Changes v9 --> v10:
+- change helper to use `unsigned long` for `nr` parameter (Boqun)
+- add missing and fix safety comments (Boqun, Pekka)
+- move benchmark module output and results to #4 commit msg.
+- use pr_cont to avoid repeating find_bit_benchmark_rust log prefix.
+- Disable clippy warning for len() without is_empty() in bitmap.rs
+
+Changes v8 --> v9:
+- added a new type `CBitmap` that makes any C bitmap accessible with
+  the same API, and add Deref so both Bitmap and
+  CBitmap can share the same implementation.  Full credit for this 
+  goes to Alice who suggested idea and code.
+- added config dependency on CONFIG_RUST that was missing from
+  CONIG_FIND_BIT_BENCHMARK_RUST.
+- implemented Send for Bitmap, it is actually needed by Binder.
+- reworded commit msg for clarity.
+- removed unsafe for atomic ops.
+- renamed `bitmap_hardening_assert` to `bitmap_assert` and make operations
+  do nothing and log error when RUST_BITMAP_HARDENED is off.
+- update author information in find_bit_benchmark_rust.rs
+- Various improvements to id_pool, better names and comments.
+
+Changes v7 --> v8:
+- added Acked-by for bindings patches
+- add RUST_BITMAP_HARDENED config, making extra bound-checks configurable.
+  This is added to security/Kconfig.hardening 
+- changed checks of `index` return value to >=
+- removed change to FIND_BIT_BENCHMARK
+
+Changes v6 --> v7:
+- Added separate unit tests in bitmap.rs and benchmark module,
+  following the example in find_bit_benchmark.c
+- Added discussion about using vendored bitset to commit message.
+- Refined warning about naming convention
+
+Changes v5 --> v6:
+- Added SAFETY comment for atomic operations.
+- Added missing volatile to bitops set_bit and clear_bit bindings.
+- Fixed condition on `nbits` to be <= i32::MAX, update SAFETY comments.
+- Readability improvements.
+- Updated doc comments wording and indentation.
+
+Changes v4 --> v5: (suggested by Yury and Alice)
+- rebased on next-20250318
+- split MAINTAINERS changes
+- no dependencies on [1] and [2] anymore - Viresh,
+  please do add a separate section if you want to maintain cpumask.rs
+  separately.
+- imports atomic and non-atomic variants, introduces a naming convention
+  set_bit and set_bit_atomic on the Rust side.
+- changed naming and comments. Keeping `new`.
+- change dynamic_id_pool to id_pool
+- represent bitmap inline when possible
+- add some more tests
+- add myself to M: line for the Rust abstractions
+
+Changes v3 --> v4:
+- Rebased on Viresh's v3 [2].
+- split into multiple patches, separate Rust and bindings. (Yury)
+- adds dynamic_id_pool.rs to show the Binder use case. (Yury)
+- include example usage that requires release of spinlock (Alice)
+- changed bounds checks to `assert!`, shorter (Yury)
+- fix param names in binding helpers. (Miguel)
+- proper rustdoc formatting, and use examples as kunit tests. (Miguel)
+- reduce number of Bitmap methods, and simplify API through
+  use Option<usize> to handle the "not found" case.
+- make Bitmap pointer accessors private, so Rust Bitmap API
+  provides an actual abstraction boundary (Tamir)
+- we still return `AllocError` in `Bitmap::new` in case client code
+  asks for a size that is too large. Intentionally
+  different from other bounds checks because it is not about
+  access but allocation, and we expect that client code need
+  never handle AllocError and nbits > u32::MAX situations
+  differently.
+
+Changes v2 --> v3:
+- change `bitmap_copy` to `copy_from_bitmap_and_extend` which
+  zeroes out extra bits. This enables dbitmap shrink and grow use
+  cases while offering a consistent and understandable Rust API for
+  other uses (Alice)
+
+Changes v1 --> v2:
+- Rebased on Yury's v2 [1] and Viresh's v3 [2] changes related to
+  bitmap.
+- Removed import of `bindings::*`, keeping only prefix (Miguel)
+- Renamed panic methods to make more explicit (Miguel)
+- use markdown in doc comments and added example/kunit test (Miguel)
+- Added maintainer section for BITOPS API BINDINGS [RUST] (Yury)
+- Added M: entry for bitmap.rs which goes to Alice (Viresh, Alice)
+- Changed calls from find_* to _find_*, removed helpers (Yury)
+- Use non-atomic __set_bit and __clear_bit from Bitmap Rust API (Yury)
+
+Link [1] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
+Link [2] https://lore.kernel.org/rust-for-linux/cover.1742296835.git.viresh.kumar@linaro.org/
+Link [v14] https://lore.kernel.org/rust-for-linux/20250813153548.1650533-1-bqe@google.com/
+
+Burak Emir (5):
+  rust: add bindings for bitmap.h
+  rust: add bindings for bitops.h
+  rust: add bitmap API.
+  rust: add find_bit_benchmark_rust module.
+  rust: add dynamic ID pool abstraction for bitmap
+
+ MAINTAINERS                     |  15 +
+ lib/Kconfig.debug               |  13 +
+ lib/Makefile                    |   1 +
+ lib/find_bit_benchmark_rust.rs  | 104 ++++++
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers/bitmap.c           |   9 +
+ rust/helpers/bitops.c           |  23 ++
+ rust/helpers/helpers.c          |   2 +
+ rust/kernel/bitmap.rs           | 597 ++++++++++++++++++++++++++++++++
+ rust/kernel/id_pool.rs          | 226 ++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ security/Kconfig.hardening      |  10 +
+ 12 files changed, 1004 insertions(+)
+ create mode 100644 lib/find_bit_benchmark_rust.rs
+ create mode 100644 rust/helpers/bitmap.c
+ create mode 100644 rust/helpers/bitops.c
+ create mode 100644 rust/kernel/bitmap.rs
+ create mode 100644 rust/kernel/id_pool.rs
+
+
+base-commit: 08b06c30a44555a8b1d14950e4462a52bfa0758b
+-- 
+2.51.0.355.g5224444f11-goog
 
