@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784CD27E7DA;
-	Thu,  4 Sep 2025 12:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE67032F77B;
+	Thu,  4 Sep 2025 12:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756988327; cv=pass; b=AzKid7oqIPfjGkb1DXeV/0JG/ICm00LT77P4zVGjIRuQAgFppX7GOpDK5Wq8q5TzZ9lIbY7ElAaVGsYkivSkQRGmNkVRZHRtRxga34BbXgR1zwAqRxC/Jx5A8kT7zFApMVJtDKjxZzfXLXNwZl8zI7j3IYFKvukQU+ntqcgz8EQ=
+	t=1756989128; cv=pass; b=bIDleio4crpjcePiC4YrrINtzb9mntOKMRSVdY4+Pm1deB8E1lh1dxOn2fm+EB9ddUna4lARwn7WHcenTwqdafVXHBu/WJPLhrAAxNxWw/o8PPAcfWaGA85m1eHTkcQYlqKC/3GZjV10ddGqtIZCTJ4Dnpt7Bc2ZkauryhTaE84=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756988327; c=relaxed/simple;
-	bh=dhFHlGyMZvzaUto2hCu/vOiTWfaGlSNWDhXXaQMo8Rg=;
+	s=arc-20240116; t=1756989128; c=relaxed/simple;
+	bh=6FbDbPZobxC9svGYjuKWJ/ikHmQK3ctj8zeP21jLaCg=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=t8Iulvl18mk+wR952CvHqXwyLRz8XVNvaM785O4XhXNjsnrJ0CHzh36JRFDTOzB1nnAr1wCHoueF06h2ryWVzofMbnAueKrzWiqwBxu3ynWymeXMA9f3m+pXrkC+q39qYSD07wQZDoZ7H5QVwUVNKH3FjFf+w527uc6u6JxbT7s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CcbWdzhk; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=NRUv6/WyVd35c0yU++PsC6Nw80xhIJZgXeOyHljckGPOQXClKBUPq3ivLCZSgbjRDV+RiyArd5D6Zo+RGCeCmEwsB55lp15nzQF95qLu+HvF4mZLPc1Ju8sUNxnSkatWXrc0ia+PsET2pILedOM//NnxbRWVHkYQ8IIzFHmu/WY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=DXSRcE13; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CcbWdzhk"
-ARC-Seal: i=1; a=rsa-sha256; t=1756988285; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="DXSRcE13"
+ARC-Seal: i=1; a=rsa-sha256; t=1756989107; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=dRrG0fSjtlDhA2wpZb/kkJ90v5z8fd633NamFcld3UZEVJk3xcXcPUXA+/6a9DtAfesRkrEVYlLUZwyt20G3s2E6AIewYLaub3GClVVw19mhTJN0PxsI64IQIiOHNHipbSG7zQioLiLcqr28520tkVuqj44sVhSR6s/gMDWQmTg=
+	b=HOWhScNr1wUvSa2o7O6Nrjk5oGJKC1MWxnfDk3MXMn7bSpJJpe4wHWrf+HFQsj76VqjQdHdtXw2IDZCB1cxHaFtSRPRWwDZITaPjfeUm5z68vf44I53UtjmaOV3LL/bjXV9upJ2EpnBEgynObqyHczbtYlf7pQofEFBlmXYKers=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756988285; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=PniDd8q7i51dKDLDoV+CziCPP+VbPskOVJVwBIuSbJs=; 
-	b=fv1h7ar0s65z2e667eev8zqRanYWlk2yBzeAH1+7M2ZLPPswtsS3ZPwdCN+QxQuBNyqVn8RlYXYWo92/5ffKrvpMOc2xSMareG8XoT/z4z/aqJNHrRne9mzTFRm2oQSTvEez767qYII02nBGZXl2woYze8Qq34gMYc5VuCTIDQs=
+	t=1756989107; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=vOiTWYBCudswC5h85TFZHJnqluWo4OG28H4xN4hnraw=; 
+	b=ZfpnbYVVbnGBwkjajb3iF7SXSwtTMiGL5LYHVKbsUgHEkysmqcp0MhtOj2Y4QlVYdaZdpYtJ3g+1i6JcTw3q7PRc0gk+vLUVeOWekYkkjMDNNDbtolmR6g9eB1qdYRU4IGxjewrqzcSDF6y/kZirfSeYF0m270m/jMerFE+EA80=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756988285;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756989107;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=PniDd8q7i51dKDLDoV+CziCPP+VbPskOVJVwBIuSbJs=;
-	b=CcbWdzhk0XFj3QidRCbUytsNfv3eoWGRHTFWMULxH21M2z3MQTWaRO317j2EpryK
-	vUnFL3h9Fc6/ZfEyVP54zVXorltzA7/HgwU827+BM8ObAwZs/N/S61Xd4UJVbomSMgd
-	yWqWdpWFV31nzfIWWjfeFpcWZ3r1wLpHyus3FuWA=
-Received: by mx.zohomail.com with SMTPS id 1756988284509936.693694341028;
-	Thu, 4 Sep 2025 05:18:04 -0700 (PDT)
+	bh=vOiTWYBCudswC5h85TFZHJnqluWo4OG28H4xN4hnraw=;
+	b=DXSRcE133DVP4VHZCyFZ4QgZdH5ma3wFjoErAFCvUEPW0OgBk8GX4njBRNwH6hsE
+	/REA+Nq4CqwuBy7kxO9pVOkA7MbyHTzpUarkQ6JMQvNzpeBajQLLVrSONme2UkTXzdB
+	XxM/s7k66dHzVFhPtAJF4iHTrYFvoPegLdwSqEGM=
+Received: by mx.zohomail.com with SMTPS id 1756989104182732.7086986239485;
+	Thu, 4 Sep 2025 05:31:44 -0700 (PDT)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,80 +44,96 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 03/14] rust: drm: gem: Drop Object::SIZE
+Subject: Re: [PATCH] rust: clk: implement Send and Sync
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250829224116.477990-4-lyude@redhat.com>
-Date: Thu, 4 Sep 2025 09:17:49 -0300
-Cc: dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
+In-Reply-To: <20250904-clk-send-sync-v1-1-48d023320eb8@google.com>
+Date: Thu, 4 Sep 2025 09:31:28 -0300
+Cc: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
  Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>,
  Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- Asahi Lina <lina+kernel@asahilina.net>
+ Danilo Krummrich <dakr@kernel.org>,
+ linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <DEAC44E1-9037-4609-A53F-0BBBDCC576A0@collabora.com>
-References: <20250829224116.477990-1-lyude@redhat.com>
- <20250829224116.477990-4-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
+Message-Id: <CB9F3786-48F0-46EE-BE61-8823E437C786@collabora.com>
+References: <20250904-clk-send-sync-v1-1-48d023320eb8@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
+Hi Alice, good catch, this is indeed missing.
 
-
-> On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
+> On 4 Sep 2025, at 06:03, Alice Ryhl <aliceryhl@google.com> wrote:
 >=20
-> Drive-by fix, it doesn't seem like anything actually uses this =
-constant
-> anymore.
+> These traits are required for drivers to embed the Clk type in their =
+own
+> data structures because driver data structures are usually required to
+> be Send. See e.g. [1] for the kind of workaround that drivers =
+currently
+> need due to lacking this annotation.
 >=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Link: =
+https://lore.kernel.org/rust-for-linux/20250812-tyr-v2-1-9e0f3dc9da95@coll=
+abora.com/ [1]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
-> rust/kernel/drm/gem/mod.rs | 5 +----
-> 1 file changed, 1 insertion(+), 4 deletions(-)
+> I'm not sure if there was already sent a patch for this. I recall
+> being told that one had been sent, but I could not find it. Maybe I
+> mixed it up with the regulator change, so now I'm sending a change for
+> clk.
+> ---
+> rust/kernel/clk.rs | 7 +++++++
+> 1 file changed, 7 insertions(+)
 >=20
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index 80940ed11368d..b27b9fbf28bbb 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -12,7 +12,7 @@
->     prelude::*,
->     types::{ARef, AlwaysRefCounted, Opaque},
-> };
-> -use core::{mem, ops::Deref, ptr::NonNull};
-> +use core::{ops::Deref, ptr::NonNull};
+> diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+> index =
+1e6c8c42fb3a321951e275101848b35e1ae5c2a8..0a290202da69669d670ddad2b6762a1d=
+5f1d912e 100644
+> --- a/rust/kernel/clk.rs
+> +++ b/rust/kernel/clk.rs
+> @@ -129,6 +129,13 @@ mod common_clk {
+>     #[repr(transparent)]
+>     pub struct Clk(*mut bindings::clk);
 >=20
-> /// A type alias for retrieving a [`Driver`]s [`DriverFile`] =
-implementation from its
-> /// [`DriverObject`] implementation.
-> @@ -197,9 +197,6 @@ pub struct Object<T: DriverObject + Send + Sync> {
-> }
+> +    // SAFETY: It is safe to call `clk_put` on another thread than =
+where `clk_get` was called.
+> +    unsafe impl Send for Clk {}
+> +
+> +    // SAFETY: It is safe to call any combination of the `&self` =
+methods in parallel, as the
+> +    // methods are synchronized internally.
+> +    unsafe impl Sync for Clk {}
+> +
+>     impl Clk {
+>         /// Gets [`Clk`] corresponding to a [`Device`] and a =
+connection id.
+>         ///
 >=20
-> impl<T: DriverObject> Object<T> {
-> -    /// The size of this object's structure.
-> -    pub const SIZE: usize =3D mem::size_of::<Self>();
-> -
->     const OBJECT_FUNCS: bindings::drm_gem_object_funcs =3D =
-bindings::drm_gem_object_funcs {
->         free: Some(Self::free_callback),
->         open: Some(open_callback::<T>),
+> ---
+> base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+> change-id: 20250904-clk-send-sync-3cfa7f4e1ce2
+>=20
+> Best regards,
 > --=20
-> 2.50.0
->=20
+> Alice Ryhl <aliceryhl@google.com>
 >=20
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Can you base your change on top of [0]? Otherwise it will become stale =
+rather
+quickly, as this introduces new types, i.e.: Clk<Unprepared>, =
+Clk<Prepared>
+etc.
 
+I will push out a new version today.
+
+[0]: =
+https://lore.kernel.org/rust-for-linux/20250729-clk-type-state-v1-1-896b53=
+816f7b@collabora.com/=
