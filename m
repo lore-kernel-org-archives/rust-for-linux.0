@@ -1,55 +1,55 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAAA2C027C
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 21:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1047A2C08CF
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 21:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757020450; cv=none; b=phArgg3hmZprMxLBIVFucezFYL0YfODcg+D9EKg1SqD5DuMzlVwodG84Q178DntY8AUnGJGCJwMQL82OTOhi59l+X031jJAufVIzNwxJ9/bykaP7944r40guAbehlNdIvJA48kUUshV/N6ua2lpxMBrIKtwHZ0nAN42qrSUb0ck=
+	t=1757020451; cv=none; b=DfXylSzsXAkEOEZz/pU/EShUE98g5OarGwm4xwoKjypC3+7gIKr4K9JdE6mHBWfzeDyM7uNVBWnGVzyNt5V50CKDxnLJSSNl7eTQSuWblyBGDDBRavDMeSqtWCLq/j7iBS0ShTOt1s1ukuYFytOM/EAl5atgi+tmJTAHJyC5+DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757020450; c=relaxed/simple;
-	bh=GezwA+wXVKp0DRIhqN2BHGB5ngH9Od3xM+ZXjB5cz8k=;
+	s=arc-20240116; t=1757020451; c=relaxed/simple;
+	bh=VBQJoE+Lm8CzDWuYMiCor0vZ902eURER25jDonvcF78=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GRhJNEzGG5Q5YRiu67N6LtuUF0F8RK1ghuW9iiWGGuNvFctr31DNGSt2ysOFo1AYYuK4/C4xlvxCXMrg4ymrmTvi6RHzxJwerIDLtkicR/nOwDKIWRuq4hQUdNJK0GtzNtHHjUVqvaGUI7TM4UlbSxMW+LhKRVrCDakyze3+q6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WnQ7uTeL; arc=none smtp.client-ip=209.85.219.201
+	 To:Cc:Content-Type; b=lXT2qlIGLzl78LjpahfRdv/gFAr8pvDnJEwzRR63hbH3M0ftvcrQGMoNc53hbXmA6ua2DKM+j7+ms2Vzo4CSL57c/5NHcdNEr9JtDgwYnk3JF9YnAQEsjFzamNx5u3lbYCqXuFsBtYJGGMrsrRwcxREy9mYlt8MqriJmfMWrckU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aijcNr77; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WnQ7uTeL"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e96ffa1b145so2037288276.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 14:14:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aijcNr77"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b471757d82fso1026976a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 14:14:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757020447; x=1757625247; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1757020449; x=1757625249; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fyc9Sezqjjgx53ixJnCGx8glIsEj3Qx8OmK+mprgV5M=;
-        b=WnQ7uTeLd6nygjbzf9qvIYLBd8OwPs427X59x4FKlCYuXgFvWoQijFlbOQgOPebpJ7
-         9yqS+hbO3AsiGXAzSp7Yo4X4+J3DUXn3d9Q0czOOD/DCSj9sX+LVhAaVqTnOC2Q2vMyk
-         OEWP6ikiZ58dErSvk52peaX7G5gkVsRrEl4j2lYDQjZbhwONAxzpSZoEzP+MagfWd/Xf
-         BgXejL7lD0TK3tACLBeQwYk4EeZK6S3wRRmArx1TH+56Rr5CBzSTNVcnJ+ULNzfVMnLO
-         ddhyyLdlYC/TQkihOHBPyc201OBlya90OTlplNcbuPe9NYjZltrNIDoTfztcYt05Lozk
-         XEQA==
+        bh=PEBpj/QWOHMN6zKC2IFSIRLeTaHgu8MbKbl5WICV5ps=;
+        b=aijcNr77trrDx3Sf/nDDkIXnKkwFvdrpUQnbgtcw5cvFEcYHMv/evriYZ546SdIqwc
+         18875I272yFTF6+WCa18QpipAL88VwlR5PAnvnxEcK5lOrJUJ490oCEdbTW+Qvjbh9iy
+         66NoGMMOkbzem9XFNlcSA8Hjv/o97OkiB5+Ff6MUDcBU0PBrl90mDbjhgz4+Pd/4ExAw
+         peJ4baxpZ0spEvEOUc6F1bCj3nApHMQ6FohudgmRbDaC9rxKAqhyUEw9lvCwqdtiX3xs
+         kxNUIxV/Xox8eU6GUWSodfqPtYkbvitlEoZsrWRaOAnO8xLYsDEDcpGyPA8yPcscHJEH
+         E4AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757020447; x=1757625247;
+        d=1e100.net; s=20230601; t=1757020449; x=1757625249;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fyc9Sezqjjgx53ixJnCGx8glIsEj3Qx8OmK+mprgV5M=;
-        b=m+7uWO6URP3+9DsDpBXyKcss3e2wac6Bqr4jCFp41aU0ywJNK/YhRukA/ix75rGqmQ
-         lBqzhF4Pi2YHrrt4rbubgQsbxevjepJ1vKfaGxgP9v7TXnz6eIO36uIqNG/G5F/0nf2e
-         Demncis6ZkeY/YN2BYeJ1TtrBjMPbJXLNvdtcjo6cG9ZnHn9s9r48zyHQmEPbkreG1oT
-         PsltIhyyrFMwrrVGHa3FNrzn2m48hyjUeHCKb9akTVyK8eWQHUADac70vWuPVNy5orTn
-         c3I8jJIk8MTUhtH3THfj81Qb6vnL6JWldGtmBqx5Hr8MUTEJJ1vuWrWxZ6o2KJaufjyu
-         p3Ig==
-X-Forwarded-Encrypted: i=1; AJvYcCV+ktvcA/9T+3NNOGTmCRBPpO/Yd6MNoyEUq77rDnMVw0ktxTfs/2aAvU117Dw2razLnhBPFzXFJmkQ0WmmIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxB6GKBGebvff5RnW0ouiSoJGGjM92dc91gAlUP0zq+Fa/9ktm5
-	fEA5Ir3FsIK167AbZ/R3WpEpYXIdTlI0HBhPBSX1eRWDXgHOfr62ZBJbt3NngH6zv48WxjvGZaH
-	JsQK4HRewmw==
-X-Google-Smtp-Source: AGHT+IHtJUU+BwbDx4oO0LPbQFnhU87b9Fk4a0b0A/+npzA9WhgEO7z8wfilcXuJx8DFXvvID3ZDVJfqDlnn
-X-Received: from ybmm5.prod.google.com ([2002:a25:2605:0:b0:e93:d518:e700])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6902:2b01:b0:e9b:c256:af4b
- with SMTP id 3f1490d57ef6-e9bc256b3e4mr10808881276.29.1757020447010; Thu, 04
- Sep 2025 14:14:07 -0700 (PDT)
-Date: Thu, 04 Sep 2025 21:13:54 +0000
+        bh=PEBpj/QWOHMN6zKC2IFSIRLeTaHgu8MbKbl5WICV5ps=;
+        b=nowdKW5royI/5/ECmCTrkkZEhcZ/jWIdKrJ4nkGViO3Q6q62L+Mc0GqUFn9bl/AV51
+         JSA3VMlsC6eIZSP8SZVlgaqJnTEzWgbnpeIPIEVAInTXBE+CXC2zf4FGQx93/AXO3Dq0
+         jWWkXWORH9rXw+syLsjz+6tYnQlChgQuWtI3aNZr7Q58vK6JPKJAQngza1vMvuFdcqc4
+         Ie+L3fYrXv7IEDl1ii6Vks0t07y5Q47tyN6mYFUsuxOz7abEJyTkIenh7K7bQfDP9VJD
+         xnyv+vhL+SgDxUAjWzqsHecEPjxlj4kO6acITtzj+Bc0NbuvfvwnOiY8viWX/7/D5Cef
+         f41w==
+X-Forwarded-Encrypted: i=1; AJvYcCVXckafPcmhlAk2dSqQfhh04sN6sbbtV1Ia+H7vSw+T0wNOzXSYv/66bPn/0SoPAwHL4z5pMDmLgkxARS7rtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZugJzjUmGy0VD6ouBKAHmac8x4L1IAvfA/bgLSm5qKNOSmQZU
+	qEunKgp1V42gRUXa53c6JscdmmaeqjJ1ntYbZ25lIOgh1i5kd5vpWIgL/xtVzNVGT80RL16pI1w
+	c5jOz/QPPcw==
+X-Google-Smtp-Source: AGHT+IGbS/wyh1uE8LybvJ86AyH49A6f/q1fbYysOfAJ3VDRse5YpA4slFp/VCzkU7qFmAIG4oezk/FPqPjQ
+X-Received: from plez7.prod.google.com ([2002:a17:902:ccc7:b0:24c:829d:8a31])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f92:b0:24c:784c:4a90
+ with SMTP id d9443c01a7336-24c784c4f25mr135221085ad.1.1757020449145; Thu, 04
+ Sep 2025 14:14:09 -0700 (PDT)
+Date: Thu, 04 Sep 2025 21:13:55 +0000
 In-Reply-To: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,13 +59,13 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
 X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757020440; l=10526;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757020440; l=10441;
  i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=GezwA+wXVKp0DRIhqN2BHGB5ngH9Od3xM+ZXjB5cz8k=; b=NsN9PoG5PU/07PDksIzzAFi+2OAYpKBmAOjenprrduVLB8G+uCSyg3NnR7F4PAI4tkqTTyaHf
- e3hIoEts4h2Asy/lazghdBZ8Z8GwGraJuYlseidPEFuuAfnTFAgkff7
+ bh=VBQJoE+Lm8CzDWuYMiCor0vZ902eURER25jDonvcF78=; b=4yvOnY7aq++9sixiTSlDJ66p5sgpKg8M1iQFPoYkoUEbBai4xRYv8lCE4vAMamqvsom0z2Ezm
+ 5/+XYC1AZBdALNM4ZXKIEDlwJi2mJnmqZkkOqHMfal0PUxiTjGlMhtD
 X-Mailer: b4 0.14.2
-Message-ID: <20250904-debugfs-rust-v11-3-7d12a165685a@google.com>
-Subject: [PATCH v11 3/7] rust: debugfs: Add support for writable files
+Message-ID: <20250904-debugfs-rust-v11-4-7d12a165685a@google.com>
+Subject: [PATCH v11 4/7] rust: debugfs: Add support for callback-based files
 From: Matthew Maurer <mmaurer@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -79,292 +79,304 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Extends the `debugfs` API to support creating writable files. This
-is done via the `Dir::write_only_file` and `Dir::read_write_file`
-methods, which take a data object that implements the `Reader`
-trait.
+Extends the `debugfs` API to support creating files with content
+generated and updated by callbacks. This is done via the
+`read_callback_file`, `write_callback_file`, and
+`read_write_callback_file` methods.
+
+These methods allow for more flexible file definition, either because
+the type already has a `Writer` or `Reader` method that doesn't
+do what you'd like, or because you cannot implement it (e.g. because
+it's a type defined in another crate or a primitive type).
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
- rust/kernel/debugfs.rs          |  37 ++++++++++++-
- rust/kernel/debugfs/file_ops.rs | 113 +++++++++++++++++++++++++++++++++++++++-
- rust/kernel/debugfs/traits.rs   |  69 ++++++++++++++++++++++++
- 3 files changed, 216 insertions(+), 3 deletions(-)
+ rust/kernel/debugfs.rs                   |  89 ++++++++++++++++++++++
+ rust/kernel/debugfs/callback_adapters.rs | 122 +++++++++++++++++++++++++++++++
+ rust/kernel/debugfs/file_ops.rs          |   8 ++
+ 3 files changed, 219 insertions(+)
 
 diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
-index b28665f58cd6a17e188aef5e8c539f6c7433a3b0..1f041f09a6eaf5603170ce4c7724b3ef50eecf13 100644
+index 1f041f09a6eaf5603170ce4c7724b3ef50eecf13..1032f279da380c549991e903c4162b7e4aaec571 100644
 --- a/rust/kernel/debugfs.rs
 +++ b/rust/kernel/debugfs.rs
-@@ -16,10 +16,10 @@
+@@ -12,12 +12,16 @@
+ use crate::str::CStr;
+ #[cfg(CONFIG_DEBUG_FS)]
+ use crate::sync::Arc;
++use crate::uaccess::UserSliceReader;
++use core::fmt;
+ use core::marker::PhantomPinned;
  use core::ops::Deref;
  
  mod traits;
--pub use traits::Writer;
-+pub use traits::{Reader, Writer};
+ pub use traits::{Reader, Writer};
  
++mod callback_adapters;
++use callback_adapters::{FormatAdapter, NoWriter, WritableAdapter};
  mod file_ops;
--use file_ops::{FileOps, ReadFile};
-+use file_ops::{FileOps, ReadFile, ReadWriteFile, WriteFile};
+ use file_ops::{FileOps, ReadFile, ReadWriteFile, WriteFile};
  #[cfg(CONFIG_DEBUG_FS)]
- mod entry;
- #[cfg(CONFIG_DEBUG_FS)]
-@@ -142,6 +142,39 @@ pub fn read_only_file<'a, T, E: 'a>(
-         let file_ops = &<T as ReadFile<_>>::FILE_OPS;
+@@ -143,6 +147,46 @@ pub fn read_only_file<'a, T, E: 'a>(
          self.create_file(name, data, file_ops)
      }
-+
-+    /// Creates a read-write file in this directory.
+ 
++    /// Creates a read-only file in this directory, with contents from a callback.
 +    ///
-+    /// Reading the file uses the [`Writer`] implementation.
-+    /// Writing to the file uses the [`Reader`] implementation.
-+    pub fn read_write_file<'a, T, E: 'a>(
++    /// `f` must be a function item or a non-capturing closure.
++    /// This is statically asserted and not a safety requirement.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use core::sync::atomic::{AtomicU32, Ordering};
++    /// # use kernel::c_str;
++    /// # use kernel::debugfs::Dir;
++    /// # use kernel::prelude::*;
++    /// # let dir = Dir::new(c_str!("foo"));
++    /// let file = KBox::pin_init(
++    ///     dir.read_callback_file(c_str!("bar"),
++    ///     AtomicU32::new(3),
++    ///     &|val, f| {
++    ///       let out = val.load(Ordering::Relaxed);
++    ///       writeln!(f, "{out:#010x}")
++    ///     }),
++    ///     GFP_KERNEL)?;
++    /// // Reading "foo/bar" will show "0x00000003".
++    /// file.store(10, Ordering::Relaxed);
++    /// // Reading "foo/bar" will now show "0x0000000a".
++    /// # Ok::<(), Error>(())
++    /// ```
++    pub fn read_callback_file<'a, T, E: 'a, F>(
 +        &'a self,
 +        name: &'a CStr,
 +        data: impl PinInit<T, E> + 'a,
++        _f: &'static F,
 +    ) -> impl PinInit<File<T>, E> + 'a
 +    where
-+        T: Writer + Reader + Send + Sync + 'static,
++        T: Send + Sync + 'static,
++        F: Fn(&T, &mut fmt::Formatter<'_>) -> fmt::Result + Send + Sync,
 +    {
-+        let file_ops = &<T as ReadWriteFile<_>>::FILE_OPS;
++        let file_ops = <FormatAdapter<T, F>>::FILE_OPS.adapt();
 +        self.create_file(name, data, file_ops)
 +    }
 +
-+    /// Creates a write-only file in this directory.
+     /// Creates a read-write file in this directory.
+     ///
+     /// Reading the file uses the [`Writer`] implementation.
+@@ -159,6 +203,31 @@ pub fn read_write_file<'a, T, E: 'a>(
+         self.create_file(name, data, file_ops)
+     }
+ 
++    /// Creates a read-write file in this directory, with logic from callbacks.
 +    ///
-+    /// The file owns its backing data. Writing to the file uses the [`Reader`]
-+    /// implementation.
++    /// Reading from the file is handled by `f`. Writing to the file is handled by `w`.
 +    ///
-+    /// The file is removed when the returned [`File`] is dropped.
-+    pub fn write_only_file<'a, T, E: 'a>(
++    /// `f` and `w` must be function items or non-capturing closures.
++    /// This is statically asserted and not a safety requirement.
++    pub fn read_write_callback_file<'a, T, E: 'a, F, W>(
 +        &'a self,
 +        name: &'a CStr,
 +        data: impl PinInit<T, E> + 'a,
++        _f: &'static F,
++        _w: &'static W,
 +    ) -> impl PinInit<File<T>, E> + 'a
 +    where
-+        T: Reader + Send + Sync + 'static,
++        T: Send + Sync + 'static,
++        F: Fn(&T, &mut fmt::Formatter<'_>) -> fmt::Result + Send + Sync,
++        W: Fn(&T, &mut UserSliceReader) -> Result<(), Error> + Send + Sync,
 +    {
-+        self.create_file(name, data, &T::FILE_OPS)
++        let file_ops =
++            <WritableAdapter<FormatAdapter<T, F>, W> as file_ops::ReadWriteFile<_>>::FILE_OPS
++                .adapt()
++                .adapt();
++        self.create_file(name, data, file_ops)
++    }
++
+     /// Creates a write-only file in this directory.
+     ///
+     /// The file owns its backing data. Writing to the file uses the [`Reader`]
+@@ -175,6 +244,26 @@ pub fn write_only_file<'a, T, E: 'a>(
+     {
+         self.create_file(name, data, &T::FILE_OPS)
+     }
++
++    /// Creates a write-only file in this directory, with write logic from a callback.
++    ///
++    /// `w` must be a function item or a non-capturing closure.
++    /// This is statically asserted and not a safety requirement.
++    pub fn write_callback_file<'a, T, E: 'a, W>(
++        &'a self,
++        name: &'a CStr,
++        data: impl PinInit<T, E> + 'a,
++        _w: &'static W,
++    ) -> impl PinInit<File<T>, E> + 'a
++    where
++        T: Send + Sync + 'static,
++        W: Fn(&T, &mut UserSliceReader) -> Result<(), Error> + Send + Sync,
++    {
++        let file_ops = <WritableAdapter<NoWriter<T>, W> as WriteFile<_>>::FILE_OPS
++            .adapt()
++            .adapt();
++        self.create_file(name, data, file_ops)
 +    }
  }
  
  #[pin_data]
+diff --git a/rust/kernel/debugfs/callback_adapters.rs b/rust/kernel/debugfs/callback_adapters.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..6c024230f676d55c8ddacb69de9c27587e29c636
+--- /dev/null
++++ b/rust/kernel/debugfs/callback_adapters.rs
+@@ -0,0 +1,122 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (C) 2025 Google LLC.
++
++//! Adapters which allow the user to supply a write or read implementation as a value rather
++//! than a trait implementation. If provided, it will override the trait implementation.
++
++use super::{Reader, Writer};
++use crate::prelude::*;
++use crate::uaccess::UserSliceReader;
++use core::fmt;
++use core::fmt::Formatter;
++use core::marker::PhantomData;
++use core::ops::Deref;
++
++/// # Safety
++///
++/// To implement this trait, it must be safe to cast a `&Self` to a `&Inner`.
++/// It is intended for use in unstacking adapters out of `FileOps` backings.
++pub(crate) unsafe trait Adapter {
++    type Inner;
++}
++
++/// Adapter to implement `Reader` via a callback with the same representation as `T`.
++///
++/// * Layer it on top of `WriterAdapter` if you want to add a custom callback for `write`.
++/// * Layer it on top of `NoWriter` to pass through any support present on the underlying type.
++///
++/// # Invariants
++///
++/// If an instance for `WritableAdapter<_, W>` is constructed, `W` is inhabited.
++#[repr(transparent)]
++pub(crate) struct WritableAdapter<D, W> {
++    inner: D,
++    _writer: PhantomData<W>,
++}
++
++// SAFETY: Stripping off the adapter only removes constraints
++unsafe impl<D, W> Adapter for WritableAdapter<D, W> {
++    type Inner = D;
++}
++
++impl<D: Writer, W> Writer for WritableAdapter<D, W> {
++    fn write(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
++        self.inner.write(fmt)
++    }
++}
++
++impl<D: Deref, W> Reader for WritableAdapter<D, W>
++where
++    W: Fn(&D::Target, &mut UserSliceReader) -> Result + Send + Sync + 'static,
++{
++    fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
++        // SAFETY: WritableAdapter<_, W> can only be constructed if W is inhabited
++        let w: &W = unsafe { materialize_zst() };
++        w(self.inner.deref(), reader)
++    }
++}
++
++/// Adapter to implement `Writer` via a callback with the same representation as `T`.
++///
++/// # Invariants
++///
++/// If an instance for `FormatAdapter<_, F>` is constructed, `F` is inhabited.
++#[repr(transparent)]
++pub(crate) struct FormatAdapter<D, F> {
++    inner: D,
++    _formatter: PhantomData<F>,
++}
++
++impl<D, F> Deref for FormatAdapter<D, F> {
++    type Target = D;
++    fn deref(&self) -> &D {
++        &self.inner
++    }
++}
++
++impl<D, F> Writer for FormatAdapter<D, F>
++where
++    F: Fn(&D, &mut Formatter<'_>) -> fmt::Result + 'static,
++{
++    fn write(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
++        // SAFETY: FormatAdapter<_, F> can only be constructed if F is inhabited
++        let f: &F = unsafe { materialize_zst() };
++        f(&self.inner, fmt)
++    }
++}
++
++// SAFETY: Stripping off the adapter only removes constraints
++unsafe impl<D, F> Adapter for FormatAdapter<D, F> {
++    type Inner = D;
++}
++
++#[repr(transparent)]
++pub(crate) struct NoWriter<D> {
++    inner: D,
++}
++
++// SAFETY: Stripping off the adapter only removes constraints
++unsafe impl<D> Adapter for NoWriter<D> {
++    type Inner = D;
++}
++
++impl<D> Deref for NoWriter<D> {
++    type Target = D;
++    fn deref(&self) -> &D {
++        &self.inner
++    }
++}
++
++/// For types with a unique value, produce a static reference to it.
++///
++/// # Safety
++///
++/// The caller asserts that F is inhabited
++unsafe fn materialize_zst<F>() -> &'static F {
++    const { assert!(core::mem::size_of::<F>() == 0) };
++    let zst_dangle: core::ptr::NonNull<F> = core::ptr::NonNull::dangling();
++    // SAFETY: While the pointer is dangling, it is a dangling pointer to a ZST, based on the
++    // assertion above. The type is also inhabited, by the caller's assertion. This means
++    // we can materialize it.
++    unsafe { zst_dangle.as_ref() }
++}
 diff --git a/rust/kernel/debugfs/file_ops.rs b/rust/kernel/debugfs/file_ops.rs
-index c2fbef96580eaa2fab7cc8c1ba559c3284d12e1b..2060c8d14d83455efa6ec179669f2c3fcc35ccaf 100644
+index 2060c8d14d83455efa6ec179669f2c3fcc35ccaf..50fead17b6f31feaf1caaef31c24ccdf6d8a5835 100644
 --- a/rust/kernel/debugfs/file_ops.rs
 +++ b/rust/kernel/debugfs/file_ops.rs
-@@ -1,10 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0
+@@ -2,6 +2,7 @@
  // Copyright (C) 2025 Google LLC.
  
--use super::Writer;
-+use super::{Reader, Writer};
+ use super::{Reader, Writer};
++use crate::debugfs::callback_adapters::Adapter;
  use crate::prelude::*;
  use crate::seq_file::SeqFile;
  use crate::seq_print;
-+use crate::uaccess::UserSlice;
- use core::fmt::{Display, Formatter, Result};
- use core::marker::PhantomData;
- 
-@@ -126,3 +127,113 @@ impl<T: Writer + Sync> ReadFile<T> for T {
-         unsafe { FileOps::new(operations, 0o400) }
-     };
- }
-+
-+fn read<T: Reader + Sync>(data: &T, buf: *const c_char, count: usize) -> isize {
-+    let mut reader = UserSlice::new(UserPtr::from_ptr(buf as *mut c_void), count).reader();
-+
-+    if let Err(e) = data.read_from_slice(&mut reader) {
-+        return e.to_errno() as isize;
-+    }
-+
-+    count as isize
-+}
-+
-+/// # Safety
-+///
-+/// `file` must be a valid pointer to a `file` struct.
-+/// The `private_data` of the file must contain a valid pointer to a `seq_file` whose
-+/// `private` data in turn points to a `T` that implements `Reader`.
-+/// `buf` must be a valid user-space buffer.
-+pub(crate) unsafe extern "C" fn write<T: Reader + Sync>(
-+    file: *mut bindings::file,
-+    buf: *const c_char,
-+    count: usize,
-+    _ppos: *mut bindings::loff_t,
-+) -> isize {
-+    // SAFETY: The file was opened with `single_open`, which sets `private_data` to a `seq_file`.
-+    let seq = unsafe { &mut *((*file).private_data.cast::<bindings::seq_file>()) };
-+    // SAFETY: By caller precondition, this pointer is live and points to a value of type `T`.
-+    let data = unsafe { &*(seq.private as *const T) };
-+    read(data, buf, count)
-+}
-+
-+// A trait to get the file operations for a type.
-+pub(crate) trait ReadWriteFile<T> {
-+    const FILE_OPS: FileOps<T>;
-+}
-+
-+impl<T: Writer + Reader + Sync> ReadWriteFile<T> for T {
-+    const FILE_OPS: FileOps<T> = {
-+        let operations = bindings::file_operations {
-+            open: Some(writer_open::<T>),
-+            read: Some(bindings::seq_read),
-+            write: Some(write::<T>),
-+            llseek: Some(bindings::seq_lseek),
-+            release: Some(bindings::single_release),
-+            // SAFETY: `file_operations` supports zeroes in all fields.
-+            ..unsafe { core::mem::zeroed() }
-+        };
-+        // SAFETY: `operations` is all stock `seq_file` implementations except for `writer_open`
-+        // and `write`.
-+        // `writer_open`'s only requirement beyond what is provided to all open functions is that
-+        // the inode's data pointer must point to a `T` that will outlive it, which matches the
-+        // `FileOps` requirements.
-+        // `write` only requires that the file's private data pointer points to `seq_file`
-+        // which points to a `T` that will outlive it, which matches what `writer_open`
-+        // provides.
-+        unsafe { FileOps::new(operations, 0o600) }
-+    };
-+}
-+
-+/// # Safety
-+///
-+/// `inode` must be a valid pointer to an `inode` struct.
-+/// `file` must be a valid pointer to a `file` struct.
-+unsafe extern "C" fn write_only_open(
-+    inode: *mut bindings::inode,
-+    file: *mut bindings::file,
-+) -> c_int {
-+    // SAFETY: The caller ensures that `inode` and `file` are valid pointers.
-+    unsafe { (*file).private_data = (*inode).i_private };
-+    0
-+}
-+
-+/// # Safety
-+///
-+/// * `file` must be a valid pointer to a `file` struct.
-+/// * The `private_data` of the file must contain a valid pointer to a `T` that implements
-+///   `Reader`.
-+/// * `buf` must be a valid user-space buffer.
-+pub(crate) unsafe extern "C" fn write_only_write<T: Reader + Sync>(
-+    file: *mut bindings::file,
-+    buf: *const c_char,
-+    count: usize,
-+    _ppos: *mut bindings::loff_t,
-+) -> isize {
-+    // SAFETY: The caller ensures that `file` is a valid pointer and that `private_data` holds a
-+    // valid pointer to `T`.
-+    let data = unsafe { &*((*file).private_data as *const T) };
-+    read(data, buf, count)
-+}
-+
-+pub(crate) trait WriteFile<T> {
-+    const FILE_OPS: FileOps<T>;
-+}
-+
-+impl<T: Reader + Sync> WriteFile<T> for T {
-+    const FILE_OPS: FileOps<T> = {
-+        let operations = bindings::file_operations {
-+            open: Some(write_only_open),
-+            write: Some(write_only_write::<T>),
-+            llseek: Some(bindings::noop_llseek),
-+            // SAFETY: `file_operations` supports zeroes in all fields.
-+            ..unsafe { core::mem::zeroed() }
-+        };
-+        // SAFETY:
-+        // * `write_only_open` populates the file private data with the inode private data
-+        // * `write_only_write`'s only requirement is that the private data of the file point to
-+        //   a `T` and be legal to convert to a shared reference, which `write_only_open`
-+        //   satisfies.
-+        unsafe { FileOps::new(operations, 0o200) }
-+    };
-+}
-diff --git a/rust/kernel/debugfs/traits.rs b/rust/kernel/debugfs/traits.rs
-index 0e6e461324de42a3d80b692264d50e78a48f561d..3d99482e53a395aef81bb045d3effe827f5f4386 100644
---- a/rust/kernel/debugfs/traits.rs
-+++ b/rust/kernel/debugfs/traits.rs
-@@ -3,8 +3,15 @@
- 
- //! Traits for rendering or updating values exported to DebugFS.
- 
-+use crate::prelude::*;
- use crate::sync::Mutex;
-+use crate::uaccess::UserSliceReader;
- use core::fmt::{self, Debug, Formatter};
-+use core::str::FromStr;
-+use core::sync::atomic::{
-+    AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicU16, AtomicU32, AtomicU64,
-+    AtomicU8, AtomicUsize, Ordering,
-+};
- 
- /// A trait for types that can be written into a string.
- ///
-@@ -31,3 +38,65 @@ fn write(&self, f: &mut Formatter<'_>) -> fmt::Result {
-         writeln!(f, "{self:?}")
+@@ -46,6 +47,13 @@ pub(crate) const fn mode(&self) -> u16 {
      }
  }
-+
-+/// A trait for types that can be updated from a user slice.
-+///
-+/// This works similarly to `FromStr`, but operates on a `UserSliceReader` rather than a &str.
-+///
-+/// It is automatically implemented for all atomic integers, or any type that implements `FromStr`
-+/// wrapped in a `Mutex`.
-+pub trait Reader {
-+    /// Updates the value from the given user slice.
-+    fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result<()>;
-+}
-+
-+impl<T: FromStr> Reader for Mutex<T> {
-+    fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result<()> {
-+        let mut buf = [0u8; 128];
-+        if reader.len() > buf.len() {
-+            return Err(EINVAL);
-+        }
-+        let n = reader.len();
-+        reader.read_slice(&mut buf[..n])?;
-+
-+        let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?;
-+        let val = s.trim().parse::<T>().map_err(|_| EINVAL)?;
-+        *self.lock() = val;
-+        Ok(())
+ 
++impl<T: Adapter> FileOps<T> {
++    pub(super) const fn adapt(&self) -> &FileOps<T::Inner> {
++        // SAFETY: `Adapter` asserts that `T` can be legally cast to `T::Inner`.
++        unsafe { core::mem::transmute(self) }
 +    }
 +}
 +
-+macro_rules! impl_reader_for_atomic {
-+    ($(($atomic_type:ty, $int_type:ty)),*) => {
-+        $(
-+            impl Reader for $atomic_type {
-+                fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result<()> {
-+                    let mut buf = [0u8; 21]; // Enough for a 64-bit number.
-+                    if reader.len() > buf.len() {
-+                        return Err(EINVAL);
-+                    }
-+                    let n = reader.len();
-+                    reader.read_slice(&mut buf[..n])?;
-+
-+                    let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?;
-+                    let val = s.trim().parse::<$int_type>().map_err(|_| EINVAL)?;
-+                    self.store(val, Ordering::Relaxed);
-+                    Ok(())
-+                }
-+            }
-+        )*
-+    };
-+}
-+
-+impl_reader_for_atomic!(
-+    (AtomicI16, i16),
-+    (AtomicI32, i32),
-+    (AtomicI64, i64),
-+    (AtomicI8, i8),
-+    (AtomicIsize, isize),
-+    (AtomicU16, u16),
-+    (AtomicU32, u32),
-+    (AtomicU64, u64),
-+    (AtomicU8, u8),
-+    (AtomicUsize, usize)
-+);
+ #[cfg(CONFIG_DEBUG_FS)]
+ impl<T> Deref for FileOps<T> {
+     type Target = bindings::file_operations;
 
 -- 
 2.51.0.355.g5224444f11-goog
