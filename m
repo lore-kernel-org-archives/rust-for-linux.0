@@ -1,243 +1,223 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2051.outbound.protection.outlook.com [40.107.96.51])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406CD1CEAB2;
-	Thu,  4 Sep 2025 15:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4FD2C21D8;
+	Thu,  4 Sep 2025 16:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756999692; cv=fail; b=YdXa6IKHFb4dHONs6QU4jcESzeaKIsBAd8p1MQkRwd7nvX6oJnQNPouAUoNqeX5AFUpN1Ss1AqJhvK49okYVuL7r04hmoOFjVRvsgmo7tzHbm58RWyxTMlUbmwm6vpbqtDYgAxQb7+UMjTDnP/UtQkZWM61nJwHdmBWxSEko3YA=
+	t=1757001933; cv=pass; b=VcwQzSvIaCrWm3t+cu/7LZ/zjNUHB54hmA/3TQ+5cYkMXHm3FEB94AI/Lh1WmRRN7tqGS3dNj3uWB7f8NdYd4NvumcK89IpLwNp4SA3roC0625z5f2tMHqe8xM4h71dCSqQG01fKoZpNGxazdYdY3SvNexbISEFTPoK8e0cHPOQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756999692; c=relaxed/simple;
-	bh=I9VhiPxt0yZjBqnpZ6HodCl+7AVKLxKUbHTTIMoMzHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mbFykjfQpwfAiWgJeSSIz4bAQfobZneNUnGVBo6+sQQg9wPZ6/+q748/0W7oZ1uYDmLu+tJ9fFTzBxFGsW7mevTcElG3epYgwTYERitdKNJiVz0aWg0AgdbdUoposyBIZjmNEF8mTMWaHqviVcy8o6K0zLOmDA86jtKrDdQRZi8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cG9uYC4n; arc=fail smtp.client-ip=40.107.96.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1757001933; c=relaxed/simple;
+	bh=t9lu0JvhFkb5SYNRJXlmsj74IKcd4iYS8XLjNYqVtU8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Lg3wl0wlloqdX6yqkv3IUTjNP2CccDMxSRUXTZqWkxoFtRkulVFNpFbRnHpDpHaaMgcUtyOEKP3meclk5sQSC3BgKtMUanic2DcqqVnk9r2/y331ATZp6j83rrVa6RiWIo/1dRZGe3ZRXlI2krb3LskwGu5kcyRmX4BcjYxDXzk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=HTPG9K+B; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cG9uYC4n"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oKUKnNdan0EGnc1FPbFXEGDw9liQn7R/QqHIDP5MeMuDfKsIcp64xmUMcW0Yq+we2gLBMIU3RMT5OzodlzFJFLS2fj3Ml0VljgxnxydQEnuNu1nWcZUns1lZKkPi/5KYVOjlbYwbf1f1sIKUJV8AJpAvLG81tXIhHup6hJqqWn4k/Qa7gBL5dGAQqTBYAv/4tHQe5E/q/8OTdLWuBbGP71HOdSJkFUcy/RjjPw3wv6ko+DDdtcZlawO2dUhvylLSR+I4yPdZbgZvh2kZzN25QgA7BBlxX95Z1yFnS8RL1ZgAOvu4oCNU114hYZld9G4s+uGrl/2bzMeDL+1AYBFEjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8Z3WycfbwWxWFLzrIghzqpo0gUOgXonexeIJAt1TBWo=;
- b=WltRJ5yEAxSpUqroL3hYM1/hDy4WNTQy/aGibu9Ptl0D63tRBMSrrLaQliojLUna/G7IvPYsOwtGjQcCLJBFKHQAzbky5fV+GqzE8mpY7kGex7vTiDL2q3yoGsuZebmC8q5/VYMRSxvmHwStiYqEnZ3yxGnYwVmTppHBWZLMDWUzsGRtYHse3ei8Vy10VjejcV80KhhkLuVZqNFEo3kik+Mq8ngU9nL87W8jKd1xwBZK4LmDJs6NVsUFHGwY8hbnqu8jw2tXllRiak5FyBUFJ/UsCnTRSNhCg61RBYXr7mxnSV+xpd3dT0S4efqF8wqjFN3X5yha1+Qp642VBi/RXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8Z3WycfbwWxWFLzrIghzqpo0gUOgXonexeIJAt1TBWo=;
- b=cG9uYC4njALBAea1dqFe1m95wIjpUiVeGJjQ83Yiq2owM0hblLje6mYg3LS/tpNgtJ4aNWg2qCwFrtFb1msL4P1kJs0oroilYIUGn0itWa4BIW7gBlub9oq4zPOHTKMdUk9iAQzAaBPzRJya1QE3Mbz29lxT4TCFRkluYPbPDS4ySJsLYGuH7XTCQBGFh3SqMEp2JlA4Jztb5Hdv/35XaksDuyASm7QqhdZBjo2FyOvh/OwOvc3PG3dkYqmVwWQSRXSiCrBjw3gbAquYZJD6/GC6r4loGYZNNxQBY2RPryvBchw9X2VlqRb6weHItBWdWx3R/FkO9+X3EUdDXmOs4g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DM6PR12MB4332.namprd12.prod.outlook.com (2603:10b6:5:21e::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Thu, 4 Sep
- 2025 15:28:08 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9073.021; Thu, 4 Sep 2025
- 15:28:08 +0000
-Date: Thu, 4 Sep 2025 11:28:06 -0400
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 02/11] gpu: nova-core: move GSP boot code out of `Gpu`
- constructor
-Message-ID: <20250904152646.GA1967049@joelbox2>
-References: <20250902-nova_firmware-v3-0-56854d9c5398@nvidia.com>
- <20250902-nova_firmware-v3-2-56854d9c5398@nvidia.com>
- <DCIKSL18GE9A.2R4BAGR56YVPF@kernel.org>
- <DCIZ5VVLACXO.1L0QTYM5YVRQV@nvidia.com>
- <DCJ0T81CZQ88.6IK6LG0E0R02@kernel.org>
- <DCJ3R8YQUYK1.3K5BCWHMAEOL7@nvidia.com>
- <DCJ46WGRUXR8.1GKGGL2568E1X@kernel.org>
- <DCJ5ZOH6DO2S.8GGF9FABSVNT@nvidia.com>
- <DCJ9206YBEV2.1ICN4VILLM09J@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCJ9206YBEV2.1ICN4VILLM09J@kernel.org>
-X-ClientProxiedBy: BN9PR03CA0200.namprd03.prod.outlook.com
- (2603:10b6:408:f9::25) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="HTPG9K+B"
+ARC-Seal: i=1; a=rsa-sha256; t=1757001827; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=gtRAk0lbJpwRajce8c3ou1oyR8B31wR2xCsncDDpk8GWWo9WMbzxgocK0I+fqceiwPeueps6+YVZjEQSWzwgFfD4RiY3Z7jOjvOLUaQc7h/Dj3uluxYi7GAJsgvPs8XhUeNIAhEgS13wLVqgXBCEdWOBHMaGf+GspJRkaDMJC/8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757001827; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=rJ141p4G/KKeNp34zR+PuCIzRFG2OM4Vkt+bjATVJ9Q=; 
+	b=e/PMtmWWs9xF3tc/vKdNOxlK9iw0XBjhurUgH3EAbAFnUNPzUK3Y3UErrizatqg0689i8WfjCKmny0dfgGc1m4fMTe1LDFBVmkXCA13RRwwVmHfuZjbUTCI5GQTNsiVJUfSByGYPuq1ffXvTKS34K1KTFfb2UEujHG6MK3bPTY4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757001827;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=rJ141p4G/KKeNp34zR+PuCIzRFG2OM4Vkt+bjATVJ9Q=;
+	b=HTPG9K+B/NXU0PsSt1T7FkCP7HHqQ2Sj0WfyN3XKqSrDE+xU1QBCqbjex4lUf1Fs
+	6cImP9GEyIwkDVO7/0OhbJRvwcg/ssoVtjiosxiIy4bdBle9yt3OV3jbkRiBRm32pbV
+	UExPwukgNb8A2O8TWiJThBh3BBmYYN6AJ5y+jtqU=
+Received: by mx.zohomail.com with SMTPS id 1757001825245717.3281844603312;
+	Thu, 4 Sep 2025 09:03:45 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DM6PR12MB4332:EE_
-X-MS-Office365-Filtering-Correlation-Id: b76e11a8-ec36-47ea-81bc-08ddebc7a657
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EI3fX4CCBC94b7juJ0G2ThUwsnr3O2oTeXQ5TaVqehMgXX1h7Jzg2yd7Z8LU?=
- =?us-ascii?Q?ypW/Hr9jUEzMBai6MBKObhxANjlJHq+uXcJd6kHLR1eytDfFklWZ0Yuphwj8?=
- =?us-ascii?Q?3Gct5JwLIWMwnoxz16ltCzwfx8sgfAmxM5JKpc4B5WgZoyPHbsfKOx0K7B6o?=
- =?us-ascii?Q?6U3UddYA5oPlJywcGpKSzePsmL5apEPaE7h5vNIGt/yVeJiJz3y/llEaXQCJ?=
- =?us-ascii?Q?YSECknLkptTT0quRAW9dBZvYwNYOzpOJ9Ukh+gnYY/buL6L/bqBDMZc8Qke+?=
- =?us-ascii?Q?vAh3N2zL265vZdkAj/jikFt9GF8hOnWZILrj8aU2qSEWZky2EPx5NTzyG1d6?=
- =?us-ascii?Q?rFmZxZuFoXvuPjSEL0n5wvBbT+C8TR8xt4I6KUWwZEOcVE6BPzrv+pTxd4ul?=
- =?us-ascii?Q?c2b0wEVoVNi1QSYzQDy09BIKdXNoOw2c6O446Vte2reSORXdhfhJ2ZF9z6IS?=
- =?us-ascii?Q?tibsvSsDz0gCtEL6fjhofHByb5dCNmi6B2+Hj6Irt8AgA2QiHWW3PqGzUpmI?=
- =?us-ascii?Q?OTNdhVYqEgd6RA4nMbOn/zmbHRqKTBO1OVLwhdLX1WN7hlUoJwPD7M8yy6Se?=
- =?us-ascii?Q?O4tsNYyoEU72qt99UTIu1aRSZokOHUMl0dJTNW4Th5pz0l4D/szt0b3AUtcJ?=
- =?us-ascii?Q?z39KmUVLZ4z4QMjHUn/KNDty9YFpNXWsc28wqBnfWwMh4rOuK952tl4eu2CY?=
- =?us-ascii?Q?0C/TboDNLwgCMhvFxmFz68+WbRa5vjXSbbA2zlzcwNw0+/y5j070bLuUh0jk?=
- =?us-ascii?Q?waOHhwan6n3uNDpTlhszolizS1ha6KU7OayYcyiti2iqwzufW6mUWC2bCQbG?=
- =?us-ascii?Q?KUrBMYFW/PPkl4/WXlp2yUBDkjApM38eIndc6Wx+SV7mQkkadM4HEfat+cw5?=
- =?us-ascii?Q?RcfbUVwIJA+4q8dWblkt332MEmovbIFWBetiKRIjdNyOAe4GM+LxzH+Go+b/?=
- =?us-ascii?Q?Zp7ZodLngkfW+QSpIkHzgtp1S3d87D/kKmgry1E4IfTmnhNCVbqBgGO7/sML?=
- =?us-ascii?Q?VEg8WZ2w9uHuMbqxsbn/4GliUQrmdO3Ng5NdMpDDpTbHqAkKXCAycIERfO5h?=
- =?us-ascii?Q?xohdJTNAmEyLFwwUtT+1ZzVLsxZsJcNEgu1E3wFft90IUiOX+qV31TYjfHlG?=
- =?us-ascii?Q?lJY4Kv9kgM/IPsCC0C0s3rHzzaQdq4G1iX22CBO3elI9JzHgp1w/vwgZ80nB?=
- =?us-ascii?Q?x+/BsoelIXoHH+3tzFEYuzkKnG3aq3qByrrcorryecYq+CPbJUI2QNcRFn/Z?=
- =?us-ascii?Q?Re3hitoiMXBLXBq30zh93YsHGjRwgFHQK56LcAQcHUr+jd3rN7DbesbCJVJq?=
- =?us-ascii?Q?CCvKwXqvm1cTjnshJXfAN3Hd7etYXXfePp0RRkQerDpeMzdaBpwwkXul1n0M?=
- =?us-ascii?Q?FhKDOWfzkAJuUc8sag2iprGp0PTnD6dP22hdXBFe3qsghY8DiyBRkw0cjWQh?=
- =?us-ascii?Q?XUWty+WNQTY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4OFLt9A9TGUt3nJ4y64++e46NkDIzqubMYT8mnxXBZAQUWSeeH5Zssaci0bi?=
- =?us-ascii?Q?BSlLUZqsWu78QghrBM8F66YjIJG74KixDc+HYFVRrOT87y9hQudUHvGlflPI?=
- =?us-ascii?Q?Z77dq/hCfeNEaUSOSwkXG0am42wbfBX8I/L/eHahSiSUrl7N46DkXK9pxQni?=
- =?us-ascii?Q?DKtbZa0kZLJcSp4Z+rAbBftLBk1SHHjnmo8XG9Q9h/NLeQKhbQEzymmMXAQk?=
- =?us-ascii?Q?egl0VWUTBnLrvZDm2+O+FwLapXiz4ZrKN4xsifDr6HUagyW9+9/LjCMU2e6i?=
- =?us-ascii?Q?u4KRhB0h0GmNUndMm31G05o8agJPy3dlb21kCxWbDkX+hgi5lSdZEAyKBCLN?=
- =?us-ascii?Q?mvnBSAsgP6jfh43Yz7GZcIUC7Bz9XiUq0LVObL2BNiISGE01sI4jddQ8ksXk?=
- =?us-ascii?Q?UfXpkcn4xVgko8M9ns0kvAjTwsBIxt0ZBFE9s5CuVTa0l0+WnfgmQPbho53W?=
- =?us-ascii?Q?cLO6D86G7vJVVscSTg+G21kTMHz5qfdmbYLN827nwTFIGMqeelkZ18nXXeBY?=
- =?us-ascii?Q?jq6dQXjp5pfmIyQHD7h3nZIHfbputjU5yMX8g84e1i+vtoZNHoPriZslYUNb?=
- =?us-ascii?Q?hXWD117+nT3ejETlTH7/2gTGTHi39TeO/Dyne5wcXOsMv2VSllHbnmuCnOBO?=
- =?us-ascii?Q?zfqwkfrnDGKzk2YfwQSCu1pO8tJYv6Mh8Kn4/twZPl9uPIgEpIQSufMlSIXW?=
- =?us-ascii?Q?L9nOv+gNoRXaR+saBlw5xksY1g354m9m1ZviG/11PImwIGYcPHS/+d32s3jv?=
- =?us-ascii?Q?NE3DW4s3cM+ryWhEevIUSwVWkxWsp0fyaGk8BK3/J6ynzW9L6s0y9CnbMVrn?=
- =?us-ascii?Q?LtzdrOExCg9KdpfNML7Gy+RLZDrBuGHHAmsm2zWgvsc/FqTvqonvSFU65rRy?=
- =?us-ascii?Q?EQUznZk7sYlB+Y6F1Xc8PJL68a1XLlhcXmC6fhfngDfs17z9kTAUrIlmanjl?=
- =?us-ascii?Q?5634Iqd+s1nfxHbd6dvPZ7Q9l9D7vs+pswCI1sEp2NTWtJNXbYoOp8dN11UK?=
- =?us-ascii?Q?4RE7D820oX/KNnUilIAtwnzkpNruj+Fgk1DIaFGLYCJuC7uqU1n9cUVXKfN+?=
- =?us-ascii?Q?qe4hZkfs2sWJp86Js3xv3RdLEynfuATY3MBRAKXLoaLNseI8SPhneqhETTjx?=
- =?us-ascii?Q?fIRZQS3yD6tt3pucntMxz0D9RfFDLzvOQqBQkzWCpXtWm/3SpRGuWeBBZXLn?=
- =?us-ascii?Q?Q/c8mm9wABEHpumeUjdR6zK+LkAwHsS3LSREmgIkX7+jhEJknsEpofMQ8Ho+?=
- =?us-ascii?Q?aXG64hzCf8ZVDvLuC24xXor20QESnYUchkyx+FvXXq5ewL+20aXnbq/7cALT?=
- =?us-ascii?Q?uakwdx27B+oSb76GhgQDgFaPLZxAU92V0cEZjTkhFvlnLkBY8V4nvUv2g644?=
- =?us-ascii?Q?HqlznX42bq302ywUiIx6VqgbGCA+IHg/60IZM/+hDcuHyfy6BeMIhmhjITXr?=
- =?us-ascii?Q?tvVXV3VIQ3dcXr2JbG+vEyWaWBg6cF4YQWpCmeCJxvXJpZ8JN9PYcuxj9FBD?=
- =?us-ascii?Q?DnE5ZCzDq4BpHGfca6FqG2mtLOdA2h86N4LMItDVR2a6US/ZPMSo5lEBtDle?=
- =?us-ascii?Q?3/Zuz19ijGESZL8yA6ajL9bGokzjAmh6IDhQPJCQ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b76e11a8-ec36-47ea-81bc-08ddebc7a657
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 15:28:07.9999
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TezZokajs2aoMnXAMez0bLIT4ZXtNySQjZ5UH4Ys+TsUq+2QysAf4fOpWmQ3uUNlKy6I343AE/xI0VMo65aTow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4332
-
-Hi Danilo,
-
-On Wed, Sep 03, 2025 at 04:53:57PM +0200, Danilo Krummrich wrote:
-> On Wed Sep 3, 2025 at 2:29 PM CEST, Alexandre Courbot wrote:
-> > To be honest I am not completely sure about the best layout yet and will
-> > need more visibility to understand whether this is optimal. But
-> > considering that we want to run the GSP boot process over a built `Gpu`
-> > instance, we cannot store the result of said process inside `Gpu` unless
-> > we put it inside e.g. an `Option`. But then the variant will always be
-> > `Some` after `probe` returns, and yet we will have to perform a match
-> > every time we want to access it.
-> >
-> > The current separation sounds reasonable to me for the time being, with
-> > `Gpu` containing purely hardware resources obtained without help from
-> > user-space, while `Gsp` is the result of running a bunch of firmwares.
-> > An alternative design would be to store `Gpu` inside `Gsp`, but `Gsp`
-> > inside `Gpu` is trickier due to the build order. No matter what we do,
-> > switching the layout later should be trivial if we don't choose the
-> > best one now.
-> 
-> Gsp should be part of the Gpu object.
-
-Just checking, if Gsp is a part of Gpu as you mentioned, and start_gsp() is
-called from within Gpu::new(), does that not avoid the problem of referring
-to fields of pin-initialized structs entirely, at least for this usecase for
-nova?  Or is there any nova-related usecase where this is problematic?
-
-thanks,
-
- - Joel
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v3 11/14] rust: drm: gem: Introduce SGTableRef
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250829224116.477990-12-lyude@redhat.com>
+Date: Thu, 4 Sep 2025 13:03:27 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Asahi Lina <lina+kernel@asahilina.net>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F97D14AA-2ADF-4D49-9F4B-418113F79562@collabora.com>
+References: <20250829224116.477990-1-lyude@redhat.com>
+ <20250829224116.477990-12-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
 
+Hi Lyude,
 
-[...]
+> On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> Currently we expose the ability to retrieve an SGTable for an shmem =
+gem
+> object using gem::shmem::Object::<T>::sg_table(). However, this only =
+gives us a
+> borrowed reference. This being said - retrieving an SGTable is a =
+fallible
+> operation, and as such it's reasonable that a driver may want to hold
+> onto an SGTable for longer then a reference would allow in order to =
+avoid
+> having to deal with fallibility every time they want to access the =
+SGTable.
+> One such driver with this usecase is the Asahi driver.
+>=20
+> So to support this, let's introduce SGTableRef - which both holds a
+> pointer to the SGTable and a reference to its respective GEM object in
+> order to keep the GEM object alive for as long as the SGTableRef. The
+> type can be used identically to a normal SGTable.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
+> ---
+> V3:
+> * Rename OwnedSGTable to SGTableRef. Since the current version of the
+>  SGTable abstractions now has a `Owned` and `Borrowed` variant, I =
+think
+>  renaming this to SGTableRef makes things less confusing.
+>  We do however, keep the name of owned_sg_table() as-is.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> rust/kernel/drm/gem/shmem.rs | 50 ++++++++++++++++++++++++++++++++++++
+> 1 file changed, 50 insertions(+)
+>=20
+> diff --git a/rust/kernel/drm/gem/shmem.rs =
+b/rust/kernel/drm/gem/shmem.rs
+> index 6a8a392c3691b..1437cda27a22c 100644
+> --- a/rust/kernel/drm/gem/shmem.rs
+> +++ b/rust/kernel/drm/gem/shmem.rs
+> @@ -178,6 +178,22 @@ pub fn sg_table(&self) -> =
+Result<&scatterlist::SGTable> {
+>         Ok(unsafe { scatterlist::SGTable::from_raw(sgt) })
+>     }
+>=20
+> +    /// Creates (if necessary) and returns an owned reference to a =
+scatter-gather table of DMA pages
+> +    /// for this object.
+> +    ///
+> +    /// This is the same as [`sg_table`](Self::sg_table), except that =
+it instead returns a
+> +    /// [`OwnedSGTable`] which holds a reference to the associated =
+gem object.
 
-> The Gpu object represents the entire
-> instance of the Gpu, including hardware ressources, firmware runtime state, etc.
-> 
-> The initialization of the Gsp structure doesn't really need a Gpu structure to
-> be constructed, it needs certain members of the Gpu structure, i.e. order of
-> initialization of the members does matter.
-> 
-> If it makes things more obvious we can always create new types and increase the
-> hierarchy within the Gpu struct itself.
-> 
-> The technical limitation you're facing is always the same, no matter the layout
-> we choose: we need pin-init to provide us references to already initialized
-> members.
-> 
-> I will check with Benno in today's Rust call what's the best way to address
-> this.
-> 
-> > There is also an easy workaround to the sibling initialization issue,
-> > which is to store `Gpu` and `Gsp` behind `Pin<KBox>` - that way we can
-> > initialize both outside `try_pin_init!`, at the cost of two more heap
-> > allocations over the whole lifetime of the device. If we don't have a
-> > proper solution to the problem now, this might be better than using
-> > `unsafe` as a temporary solution.
-> 
-> Yeah, this workaround is much easier to implement when they're siblings (less
-> allocations temporarily), but let's not design things this way because of that.
-> 
-> As mentioned above, I will check with Benno today.
-> 
-> > The same workaround could also be used for to `GspFirmware` and its page
-> > tables - since `GspFirmware` is temporary and can apparently be
-> > discarded after the GSP is booted, this shouldn't be a big issue. This
-> > will allow the driver to probe, and we can add TODO items to fix that
-> > later if a solution is in sight.
-> >
-> >>
-> >> I thought the intent was to keep temporary values local to start_gsp() and not
-> >> store them next to Gpu in the same allocation?
-> >
-> > It is not visible in the current patchset, but `start_gsp` will
-> > eventually return the runtime data of the GSP - notably its log buffers
-> > and command queue, which are needed to operate it. All the rest (notably
-> > the loaded firmwares) will be local to `start_gsp` and discarded upon
-> > its return.
-> 
-> Ok, that makes sense, but it should really be part of the Gpu structure.
+This was forgotten ^
+
+> +    ///
+> +    /// This will pin the object in memory.
+> +    pub fn owned_sg_table(&self) -> Result<SGTableRef<T>> {
+
+owned_sg_table() returns SGTableRef. I do think this is confusing.
+
+> +        Ok(SGTableRef {
+
+Let=E2=80=99s call this shmem::SGTable, perhaps?
+
+> +            sgt: self.sg_table()?.into(),
+> +            // INVARIANT: We take an owned refcount to `self` here, =
+ensuring that `sgt` remains
+> +            // valid for as long as this `OwnedSGTable`.
+> +            _owner: self.into(),
+> +        })
+> +    }
+> +
+>     /// Creates and returns a virtual kernel memory mapping for this =
+object.
+>     pub fn vmap(&self) -> Result<VMap<T>> {
+>         let mut map: MaybeUninit<bindings::iosys_map> =3D =
+MaybeUninit::uninit();
+> @@ -309,3 +325,37 @@ fn drop(&mut self) {
+> unsafe impl<T: DriverObject> Send for VMap<T> {}
+> /// SAFETY: `iosys_map` objects are safe to send across threads.
+> unsafe impl<T: DriverObject> Sync for VMap<T> {}
+> +
+> +/// An owned reference to a scatter-gather table of DMA address spans =
+for a GEM shmem object.
+> +///
+> +/// This object holds an owned reference to the underlying GEM shmem =
+object, ensuring that the
+> +/// [`SGTable`] referenced by `SGTableRef` remains valid for the =
+lifetime of this object.
+> +///
+> +/// # Invariants
+> +///
+> +/// - `sgt` is kept alive by `_owner`, ensuring it remains valid for =
+as long as `Self`.
+> +/// - `sgt` corresponds to the owned object in `_owner`.
+> +/// - This object is only exposed in situations where we know the =
+underlying `SGTable` will not be
+> +///   modified for the lifetime of this object.
+> +///
+> +/// [`SGTable`]: scatterlist::SGTable
+> +pub struct SGTableRef<T: DriverObject> {
+> +    sgt: NonNull<scatterlist::SGTable>,
+
+Didn=E2=80=99t Danilo & Abdiel introduce an owned SGTable variant?
+
+> +    _owner: ARef<Object<T>>,
+> +}
+> +
+> +// SAFETY: This object is only exposed in situations where we know =
+the underlying `SGTable` will not
+> +// be modified for the lifetime of this object.
+
+We should perhaps say why is it valid to send SGTable to another thread =
+here.
+
+> +unsafe impl<T: DriverObject> Send for SGTableRef<T> {}
+> +// SAFETY: This object is only exposed in situations where we know =
+the underlying `SGTable` will not
+> +// be modified for the lifetime of this object.
+> +unsafe impl<T: DriverObject> Sync for SGTableRef<T> {}
+> +
+> +impl<T: DriverObject> Deref for SGTableRef<T> {
+> +    type Target =3D scatterlist::SGTable;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: Creating an immutable reference to this is safe =
+via our type invariants.
+> +        unsafe { self.sgt.as_ref() }
+
+The as_ref() nomenclature remains in place to convert *mut T to &T? I =
+thought
+that had changed to from_raw().
+
+
+> +    }
+> +}
+> --=20
+> 2.50.0
+>=20
+>=20
+
