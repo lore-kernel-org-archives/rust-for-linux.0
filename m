@@ -1,63 +1,63 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BE3253F05;
-	Thu,  4 Sep 2025 20:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F43E280312;
+	Thu,  4 Sep 2025 20:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757017667; cv=none; b=Mp72lIjnaKM3GCrSYaVdTNamtaH77STG5eDsqrngaTvNg/VcrXZ7GHgcTE2RyNy7+zvVPRKpj8pGOppQMKcXc8RKXUFVvbiEGSZJZI/DcIBb9H2ylB8h0G+hL0FN0+Qt75UHG6ZDsfZ5lYibfyrsecGcL8b6laQ0of1mTOnTGpo=
+	t=1757018227; cv=none; b=ShkyX2AiC+uiFAL9SNPmGRZVZgYKqkwjda2qmaDFtiTwrJ6x8UYP77IcjKOABA5uAbQE0WVoIWQLHQtMPLzPigsPNLgGaYm87/hC5bGcdmvzXLJyyLS3w9FQLsMUK2RGBiDIPBgxjIsJNq4+30oNTv8uqwMDjsmsoRWs7eRN35Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757017667; c=relaxed/simple;
-	bh=TCyNPOGCtr/xyMB/1/cD+kQcMkocTSItLEGsbf8MsRQ=;
+	s=arc-20240116; t=1757018227; c=relaxed/simple;
+	bh=XNF4WH6xk9pZ4JhitpBCMSFT4vAaOschjm1uXKEQMGU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XDbN2yQE9CTBidYvfAIGM/VH4sJ/YXSCyud70Z9grgSOFu3ukNwg3WGoG7Bn8f7oDd+orTMzgyZmqh11AcovvkacyUPFlgfxbT0sNKPnOEqQjPdEV6h8xfa58y1k6N6LEAmRwDU9AUhkWj6NS2+PvKch3TOajLoLlTxMYm42E3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OD7c7LFQ; arc=none smtp.client-ip=209.85.219.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=u7giIQ2urqUun0U1vaIoRGCBOlXHEhOlFL9NHP8TmqUM6SnKs/eF/bftG7yyuIKrhS3RO5Zbnic4XntSrsVwd0QncSdrG+kyGL1Le5XyKw5bPj2JaKPaLozWDo1Vt/pJxQTf0NKvbcbes4e3FFHoUrnaZk2WUiHoKulX8qkbX94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XjB4Y7/Z; arc=none smtp.client-ip=209.85.128.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OD7c7LFQ"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e9d5e41c670so1526104276.0;
-        Thu, 04 Sep 2025 13:27:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XjB4Y7/Z"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71d603f13abso16969497b3.0;
+        Thu, 04 Sep 2025 13:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757017665; x=1757622465; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757018224; x=1757623024; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KvB00ALLfGnFg6LmNb2oOcpwz39zT9dJ6DxoEfayJGI=;
-        b=OD7c7LFQpPcWXuxRRbWH1Xf9xryyhMnhxaKcVUGSXFCMWGaTH8iQm8gVtD8Zb153vx
-         eBBCuDIX817Sq1Q0DF+qtPwarlZHpbNQX47HKlOxpVb7RqohLW7rin5el9uMxLoUfrE6
-         N3DHMk/6ajz8avDEwLlY+EsxHLKQL2dtcMNjgJtdC8IVdkzlQ+KX2XmQmdqJ+vd9hkA7
-         vhqChvggrXtP8XgCsR4bPMgSF4wd+5QMaLPVyrhxO3DCiZhlzXAIyOVpBob9PzpjsOrI
-         2UZPFj2rr2RzZQD1KnECOSMXLwamiuU6QYvvWcGY0VI0+h9tyncms36fspDtFHZmnbg4
-         SZzQ==
+        bh=EI6nD7Kb2vJ6eXm1beP+MC7SFJD+s+Tf7//wFJSVUQY=;
+        b=XjB4Y7/ZgrkgpVYdds1MMNwauyDUKFykcyOKpy1dua8pltaxkJDU883B/0H6Zztexc
+         zMYuV9upEH1LchSpW13sxwsv/o3HUUZS5Ow8BjzIyisAp+bfXakiZFtxxy72lO7odmvk
+         geKbPXZ4MtDpsR9ZB7A1oNWCp78AxJkJNFxa41/k8IRj6dY76zdKnPmevgs4tO+b3Ke9
+         +mVBUH7wzLww7gH19JYr6KrY/VasULVGdfzIGwAVS37A/fE9QreqGUNfayuhI5jHIeta
+         1nfrl3oiPxmnEwh1HR7VSJLJgYNesDYfvjFSe0Hj6tlH/RL1WJ9ELuWDwxKB5TUlmD20
+         D18w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757017665; x=1757622465;
+        d=1e100.net; s=20230601; t=1757018224; x=1757623024;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KvB00ALLfGnFg6LmNb2oOcpwz39zT9dJ6DxoEfayJGI=;
-        b=CrbAnbRobYR3DwGDZF/Fxq4BjFfQU0BNgfP3XaIZNdX648NW9a0jX75vQtOG0NY6Rv
-         CoAV1lRyJrXjkZT5s+tGSq4ESXEr12ZDr5OCP7X11Dwu52FLyR0+ms0aSaYhAzxo5Dyk
-         fmFVB1tYMUWlm+Cv7U/e3hkiFlZuU/kvXvG+aqncJulOKOe0Ssu9VTT6piZaqaIyPf9d
-         RpwciRg+ZrzTx93PufJ1SVx+TKMX2Qzk3v1Wqq4p5Oo1ZcjJNnU5SMUqqRhgrd1CJG5Y
-         sNm98KakTBtKmSL3ibh5Oqv5vkbLj81oDa15WcLZkge/3u1/SGA4OzSpkJjfVvnhjGUG
-         13qA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/nVM7jWJJkHCCLNiOcmm6u8eCXdcEg/9jH0ZFTHenNKutZH3p140T0J9DneSfHCbaOms07teAv62lULI=@vger.kernel.org, AJvYcCUyd6Rm7FSZK2bBQeC78hhwN26fegYWBkQ54jMwzIOysWT8ekx1JQhE7gx8lLjX647iGY8i0xz4K3jLyy60930=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM7xTjUx112bhIUnA4a2SoKtEsxvodmqJQsPhfs8403DgI77ie
-	MrTF2PaVi9Sb4GEqkVab3OokDhfwSyIBhOdQ30BRk2EOJdJGqM58spUx
-X-Gm-Gg: ASbGncvF2/tejYQOvghMiaBvMBRtKEd1oFqtwPrGVWpTVbWh68/pKL1r3l9MLeNnz79
-	5qpekTmE9syT5cW/YTqckJAIL6+SnMI51/zYV+OPLukxab1eltidUpGXG4tFVgRVN6o+8ludrx+
-	Pb7rU4XOue29ukfXawpFr2fAPIXAzU+qJ32Vvdv6H8qNhYTZhEia7j7184+3pawpZe5loK5lGtt
-	TAuACeaSsRNTg+WqYS31GIuAO2pPqKNL/99Ox6rRcHyJ1EMRmRPEHAUwJv467gTWplmWO6hf78D
-	GONe+A+rVwOZvOv4q7gPrMQN+C6K4ST+vDXKrgHWNOy/J6orwi1o8LuT1ObP6ylsbyxxgYR0TNJ
-	f25UPwq7V8WZq6Wtl0sZ16Ii3L6Qbs1jx
-X-Google-Smtp-Source: AGHT+IFEin3sVc/RJ0H3j23pXeDGR2NQkhbQfFAip/QeL6r8A6bl0sYH8LkbMo/F5ZLv1yUwPLRxSA==
-X-Received: by 2002:a05:690e:165c:b0:5fc:8075:1ac5 with SMTP id 956f58d0204a3-60175d7f7b7mr3511304d50.11.1757017664951;
-        Thu, 04 Sep 2025 13:27:44 -0700 (PDT)
+        bh=EI6nD7Kb2vJ6eXm1beP+MC7SFJD+s+Tf7//wFJSVUQY=;
+        b=GZ+hhBh1ZF8kBrzMSEcpd6SF7lbja4ZD52T73ASd6/HfZ2Z/TGSnOlmo7OmQexVAIF
+         MJ85zR68AGt2fqJhwhiHaqX0JIQ1N/AqseJqm5/Znz71XruFUw+kVz1J9Vlw6wtMGZ0y
+         aY7+AKSdnpj8Xyz3aIcmX5/bmGvDjrKb1OdHUyqpKWKyzx1AlldFNJgxHPqCqEaF6ZC1
+         eQ2nbDvRBxGUZYmpAH4C5lsRAB+RNTrdQS0ZfJk0iiPQHYz2PVw8GFXFhx+HTrsyWlmk
+         t3BgGCihNTEwes9+PPs7K88xcGlGtP40NrIA/ZP8kYEJnc9EYNRbBr/AN/ayWQ4RTD9y
+         MMLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCMRA2DkmIWyNMnPEnP6YLDaZw4ags+Ux579bhB8lKP7GUefTHcFYXDmMFNHy3BnxtIdcxFkI1/4pEZm8Vg9s=@vger.kernel.org, AJvYcCVNtj09nS20kZQRl6iuNp1yw4q7abtej5UleE43Glf7HEhWOmdVDkO3bk1n6xPvRbZ7ZwRz3nRR6saG+Uw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLgt03jUtxnJmUhPVLXCjhHPaLR7HHseNETTcMqN4iR7/6PRrz
+	vBgw5K1rBwxbsxokgymz+rzQfPyZ42xkkeL1AicVgC1MaNHe5Exngww/
+X-Gm-Gg: ASbGncs+qvO4v1c7K2InwuDMIdWvG8Xy3yyvxX9Y6b5aL6iKPliGr44ktmjBQ8DtvNg
+	25hqb4eL9RUcnvhlkb2zXIWwlALWmSfZTwDu8fMVChhUKH/d4T+wOh8YeHedhs0KBX+jz0RW4cH
+	uj/urGaJBPEpbTKRtmq09ID3Yp3xDDMH0ZFB88O3kLWBzPRs33rpD29EQAqKlUerLVLTjWDl/On
+	oY4hb4O+ta9684+XsFyORXUbaN9Y8ZZX5wO0WdRXr+hGCmdJ+1yqpaLi+mbLZjFFSTh0d+/7nh2
+	nm9F7gmAzd4UCceUcaws0UFWIRVmkMq9DbDoUZijSKhb9d7UJ9ICoDsR+jdjYkHiIDL8/gHYApS
+	sFua/xWtOkpTNq6w50XigXFY71zMNUtH/
+X-Google-Smtp-Source: AGHT+IFiE5N1M0ZHCK0VNaiwKKRp7XpL3kAlt6Jadb18nEF1ZoE40INUGXk3t/leYVgwWHl3y69GxQ==
+X-Received: by 2002:a05:690c:7002:b0:721:3efa:6d05 with SMTP id 00721157ae682-722764caa67mr246004437b3.26.1757018224161;
+        Thu, 04 Sep 2025 13:37:04 -0700 (PDT)
 Received: from localhost ([2601:347:100:5ea0:1218:85e4:58ab:e67f])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a83295b7sm24319117b3.24.2025.09.04.13.27.44
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a855a89csm23725327b3.55.2025.09.04.13.37.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 13:27:44 -0700 (PDT)
-Date: Thu, 4 Sep 2025 16:27:43 -0400
+        Thu, 04 Sep 2025 13:37:03 -0700 (PDT)
+Date: Thu, 4 Sep 2025 16:37:02 -0400
 From: Yury Norov <yury.norov@gmail.com>
 To: Mitchell Levy <levymitchell0@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -73,13 +73,13 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/7] rust: percpu: introduce a rust API for per-CPU
- variables
-Message-ID: <aLn2PzD1KRbu4SpZ@yury>
+Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for
+ DynamicPerCpu
+Message-ID: <aLn4bopPt8uS4d1O@yury>
 References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-1-4dd92e1e7904@gmail.com>
- <aLi2MBAwoD65tokv@yury>
- <68b9ee59.170a0220.a7a31.675c@mx.google.com>
+ <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
+ <aLi-7W21N45fBGJk@yury>
+ <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,80 +88,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <68b9ee59.170a0220.a7a31.675c@mx.google.com>
+In-Reply-To: <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com>
 
-On Thu, Sep 04, 2025 at 12:53:59PM -0700, Mitchell Levy wrote:
-> On Wed, Sep 03, 2025 at 05:42:08PM -0400, Yury Norov wrote:
-> > On Thu, Aug 28, 2025 at 12:00:08PM -0700, Mitchell Levy wrote:
+On Thu, Sep 04, 2025 at 01:26:07PM -0700, Mitchell Levy wrote:
+> On Wed, Sep 03, 2025 at 06:19:25PM -0400, Yury Norov wrote:
+> > On Thu, Aug 28, 2025 at 12:00:12PM -0700, Mitchell Levy wrote:
 
 ...
 
-> > > +    /// Get a `&mut MaybeUninit<T>` to the per-CPU variable on the current CPU represented by `&self`
+> > > +impl<T: Clone> DynamicPerCpu<T> {
+> > > +    /// Allocates a new per-CPU variable
 > > > +    ///
-> > > +    /// # Safety
-> > > +    /// The returned `&mut T` must follow Rust's aliasing rules. That is, no other `&(mut) T` may
-> > > +    /// exist that points to the same location in memory. In practice, this means that `get_(mut_)ref`
+> > > +    /// # Arguments
+> > > +    /// * `val` - The initial value of the per-CPU variable on all CPUs.
+> > > +    /// * `flags` - Flags used to allocate an `Arc` that keeps track of the underlying
+> > > +    ///   `PerCpuAllocation`.
+> > > +    pub fn new_with(val: T, flags: Flags) -> Option<Self> {
+> > > +        let alloc: PerCpuAllocation<T> = PerCpuAllocation::new_uninit()?;
+> > > +        let ptr = alloc.0;
+> > > +
+> > > +        for cpu in Cpumask::possible().iter() {
 > > 
-> > How long is this line?
+> > In C we've got the 'for_each_possible_cpu()'. Is there any way to
+> > preserve that semantics in rust? I really believe that similar
+> > semantics on higher level on both sides will help _a_lot_ for those
+> > transitioning into the rust world (like me).
 > 
-> 102 chars, or 103 if you include the newline. `rustfmt` doesn't break
-> the line, so I left it as-is for this patch. Happy to change it if it
-> poses a problem, though.
-
-Then don't use that tool - it's broken. In kernel we used to have 80-chars
-limit for the lines, recently relaxed to 100.
- 
-> > > +    /// must not be called on another `PerCpuPtr<T>` that is a copy/clone of `&self` for as long as
-> > > +    /// the returned reference lives.
-> > > +    ///
-> > > +    /// CPU preemption must be disabled before calling this function and for the lifetime of the
-> > > +    /// returned reference. Otherwise, the returned reference might end up being a reference to a
-> > > +    /// different CPU's per-CPU area, causing the potential for a data race.
-> > > +    #[allow(clippy::mut_from_ref)] // Safety requirements prevent aliasing issues
-> > > +    pub unsafe fn get_mut_ref(&self) -> &mut MaybeUninit<T> {
-> > > +        // SAFETY: `self.get_ptr()` returns a valid pointer to a `MaybeUninit<T>` by its contract,
-> > > +        // and the safety requirements of this function ensure that the returned reference is
-> > > +        // exclusive.
-> > > +        unsafe { &mut *(self.get_ptr()) }
-> > > +    }
-> > 
-> > Here and everywhere: would it make sense to enforce it by testing
-> > the CPU with preemptible() before returning a reference? 
+> I'm not sure I understand what you mean --- I believe the semantics
+> should be the same here (`cpu` takes on each value in
+> `cpu_possible_mask`). Could you please clarify?
 > 
-> The only thing we could do would be to panic, which I don't 100% love.
-> Another alternative would be to take a &'a CpuGuard and bound the
-> lifetime of the returned reference to 'a, and then we don't need to do
-> any run-time checking at all.
-> 
-> Originally, I had left this to the caller because it might make sense
-> down the line for some complex behavior based on per-CPU (e.g., per-CPU
-> refcount) to do all its own management of per-CPU variables using
-> `PerCpuPtr` as a core primitive. In these cases, I believe there are
-> some times where being non-preemptible wouldn't actually be required
-> (that said, my thoughts on this aren't well reflected in the safety
-> comment, since I said it must be disabled... gah). But, the more I think
-> about it, the more I think these use cases would be better served by
-> just using `get_ptr` --- conjuring `&mut` references seems like it would
-> be a big footgun. And the safety comment already actually reflects these
-> thoughts somewhat :)
 
-If you think that in future there will be a user who will not need to
-disable preemption before dereferencing a percpu pointer, then you can
-add another less restricted flavor of the helper.
+I mean:
 
-> For v4 I will probably have this function take a &'a CpuGuard and use
-> that to bound the liftetime of the returned reference, unless there are
-> other thoughts on this point.
+        for_each_possible_cpu(cpu) {
+                let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
+                unsafe { (*remote_ptr).write(val.clone()); }
+                let arc = Arc::new(alloc, flags).ok()?;
+                Some(Self { alloc: arc })
+        }
 
-I don't want you to panic just because of invlid user call, but
-whatever you call in comment must be enforced in code, right?
-
-
-You can use the guard, if it guarantees the preemption disabled; or 
-you can return None; you can create CONFIG_RUST_PERCPU_HARDENED for
-panics.
-
-Please refer the recent bitmap API wrapper, and how erroneous request
-is handled there.
-
-https://lore.kernel.org/all/20250904165015.3791895-4-bqe@google.com/
+Is it possible to do the above in rust?
