@@ -1,103 +1,238 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CACC306D36;
-	Thu,  4 Sep 2025 13:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4FA1B3923;
+	Thu,  4 Sep 2025 13:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756992198; cv=pass; b=dk2ZHgQ9Dg2js2Jkma60iE8uXTAQNO6+ek3MqcIGewXFPmzmnNPAIH/99HVMSlV/zOf5edVD/PEk41d14L11Jltu00Xb3+sQ8GOPHBR45EL2vAsNkpzUotcDHC/4Nkcefd0+4+49wJPLKZMlKnYlaqdWYZGGfEpe124pSMJw3gQ=
+	t=1756992654; cv=pass; b=tGDEmAIqICzppHq1mCouyynEK+Bx44N0C6exonISTL4iUvMDeQxXacUZkX3HVzg6GL0tckXML0Y3etxtfsHthTOa+O9RQkrwkzF1j+GOkdI9S85lP0DCsRxJol8l1iTDBhjH4WpT4HvfcSSSzT65Pg+yl99By2mwwpFx4cBd8io=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756992198; c=relaxed/simple;
-	bh=bhm73F+M8pEYKYlPp5PI3Hp1kRr4g7QcydbznI7A32U=;
+	s=arc-20240116; t=1756992654; c=relaxed/simple;
+	bh=9t/qObxwAQIJZWqPhMOAkEx+q3DHLR6ldA8acsg4YUc=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=JnbnvaB+x2TwuBkGmMR/T696sdAJORb5IQlYneNAjevz/HUYfi/Km/PR8QUYvx/iD6PwIkX44i6tIUOZYqVfPvHzXvqbFyaU+dT8EP3GSh/6p3vYRO1Z2s4B89Trr2haj6qwjkGTYDRUJkZ4Xq1hy0ucVLCAClAveem4uJOcQbY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=biGoIWD6; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=bR1Ys09pmgDVoKGiBFhYsG9evYfCVIzjABzDV90Ez8tXSJs7wgQQKKb9McrU2GQEzLigIGzKWNx2JY4/ejDh1m6bQzKgjgFYTdMEbOTTWAUgU8TZl+Ze8KvKchL1wHqpREYEgBHQJWxEzrc0RnWfjdEMQ+rMzuRs7387TdiTFzE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cCDyB7iH; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="biGoIWD6"
-ARC-Seal: i=1; a=rsa-sha256; t=1756992177; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cCDyB7iH"
+ARC-Seal: i=1; a=rsa-sha256; t=1756992619; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=cO56TXW5CTX2VSlBygMfNXZE5pVgeqmiBd8IPspLvAF0EqxwKr7unbvK+2e/JA8xmfO1OQFhDzk4yQbD/wG4wClnkXmAUV6XLGSnnBemd8aa7gs3+MvbxCUiKkaBwxPawiBzUWdIxxf3x9yXfmaaFZJUgxfnm2BpBA9U0fq7JQU=
+	b=AspmHjs0J9N8R8aQtXbHzPdhHkih1Ukc2YC119QihtRgV6gqK3JNRvLNZHNIsZz6VN4o3J5FfHmWo+aoEWjxtGpbo59IhSPIMTmoQ9EriKfiwdyTm3OH6xDF26ltRB0K7Hba7GfWABALez3rCiWXoX+UkNO0ZHBHTbn/eo3HMZM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756992177; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=bhm73F+M8pEYKYlPp5PI3Hp1kRr4g7QcydbznI7A32U=; 
-	b=iybKfrGxujqX52H67ZTvRW4oR7IXRXysPK4cB+mHu/+iwz88x7FrjbiyuB7irdEI3GLeeMDabprY0WEqtZlU6iZQOiuLV8aI3o0U/IBrWmSD5mtyVFyrgU7WxCUNeL8Qgil8TmlmrK9QhnTUSwWkh+L0m44yeE1MivU66wzSlr0=
+	t=1756992619; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Jt9TDRg9vypXcsn/2cLvRfCa62ax4BK86VzMaQ8tCLg=; 
+	b=jg8caw3SAd9Dz7SwScv+AAtwLqJLS4uKTcnA8uZBej6HEsgR82d5ykmCKx/zfwhqoiIHXPkEfG9TW9AHGWpsPhZzbx3R3Z3ksc0NxmqijoiyqhP5pIg0s6+zYbeZVESsiMZE9xo8G5OXgWLDlxbGBOXa9cN2SBPWJElCiFzyBB8=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756992177;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756992619;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=bhm73F+M8pEYKYlPp5PI3Hp1kRr4g7QcydbznI7A32U=;
-	b=biGoIWD6eb1ILuKY5I79GXsb+v6IQSAQ/bmJoqRc/21sMRG/KwTU5ZV22RqUtj7m
-	TCskeTjvo/e8Hg1oJtZCqz5/wC5wxaAaq80FKejTrGRwcELtkayLV05ASTSfy7wx6Kp
-	jnIxRr8IUY1aPkbdh+P5xcAdUkuTXvspWQ+6EbrQ=
-Received: by mx.zohomail.com with SMTPS id 1756992174964253.37598761629408;
-	Thu, 4 Sep 2025 06:22:54 -0700 (PDT)
+	bh=Jt9TDRg9vypXcsn/2cLvRfCa62ax4BK86VzMaQ8tCLg=;
+	b=cCDyB7iHNwSeEaMsnx/InFLAiSAmoBw9OZeCtsghwiRm51grvh0wiJq51DuS/+lV
+	Qbc8gofk8gF6DB2qk6TR/5xbh5wwZIxtQXBEasc5wpxbCgS7Ha45muoLI03fxKAHEyT
+	RwsIvcnzgTppWR1l5fWFu7UIWd+CaAbsE0akmK3g=
+Received: by mx.zohomail.com with SMTPS id 1756992616735300.35543377674844;
+	Thu, 4 Sep 2025 06:30:16 -0700 (PDT)
 Content-Type: text/plain;
-	charset=utf-8
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rust: clk: implement Send and Sync
+Subject: Re: [PATCH v3 07/14] drm/gem/shmem: Extract drm_gem_shmem_init() from
+ drm_gem_shmem_create()
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CAH5fLgjRaFjiw84_uP4N2kTs_iuDCe1vcZ7gyF4XiwDkbEgiWQ@mail.gmail.com>
-Date: Thu, 4 Sep 2025 10:22:38 -0300
-Cc: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
+In-Reply-To: <20250829224116.477990-8-lyude@redhat.com>
+Date: Thu, 4 Sep 2025 10:29:59 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
  Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>,
  Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ Danilo Krummrich <dakr@kernel.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <06C4ED75-E370-4F19-B6BE-6D2455C94180@collabora.com>
-References: <20250904-clk-send-sync-v1-1-48d023320eb8@google.com>
- <CB9F3786-48F0-46EE-BE61-8823E437C786@collabora.com>
- <CAH5fLgjRaFjiw84_uP4N2kTs_iuDCe1vcZ7gyF4XiwDkbEgiWQ@mail.gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
+Message-Id: <891BE2DC-6B2D-409D-970C-F57BA7D86598@collabora.com>
+References: <20250829224116.477990-1-lyude@redhat.com>
+ <20250829224116.477990-8-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
+Hi Lyude,
 
+Did something happen here? All the indentation seems off.
 
-> On 4 Sep 2025, at 10:07, Alice Ryhl <aliceryhl@google.com> wrote:
+It looks ok when applied though.
+
+> On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> On Thu, Sep 4, 2025 at 2:31=E2=80=AFPM Daniel Almeida
-> <daniel.almeida@collabora.com> wrote:
->> Can you base your change on top of [0]? Otherwise it will become =
-stale rather
->> quickly, as this introduces new types, i.e.: Clk<Unprepared>, =
-Clk<Prepared>
->> etc.
->>=20
->> I will push out a new version today.
->>=20
->> [0]: =
-https://lore.kernel.org/rust-for-linux/20250729-clk-type-state-v1-1-896b53=
-816f7b@collabora.com/
+> With gem objects in rust, the most ideal way for us to be able to =
+handle
+> gem shmem object creation is to be able to handle the memory =
+allocation of
+> a gem object ourselves - and then have the DRM gem shmem helpers =
+initialize
+> the object we've allocated afterwards. So, let's spit out
+> drm_gem_shmem_init() from drm_gem_shmem_create() to allow for doing =
+this.
 >=20
-> I would suggest the reverse. If your series is based on top of mine,
-> then this patch can land today regardless of how long it takes to
-> finish the clk refactor.
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> drivers/gpu/drm/drm_gem_shmem_helper.c | 75 +++++++++++++++++---------
+> include/drm/drm_gem_shmem_helper.h     |  1 +
+> 2 files changed, 51 insertions(+), 25 deletions(-)
 >=20
-> Alice
+> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c =
+b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> index 5d1349c34afd3..b20a7b75c7228 100644
+> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> @@ -48,28 +48,12 @@ static const struct drm_gem_object_funcs =
+drm_gem_shmem_funcs =3D {
+> .vm_ops =3D &drm_gem_shmem_vm_ops,
+> };
+>=20
+> -static struct drm_gem_shmem_object *
+> -__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool =
+private,
+> -       struct vfsmount *gemfs)
+> +static int __drm_gem_shmem_init(struct drm_device *dev, struct =
+drm_gem_shmem_object *shmem,
+> + size_t size, bool private, struct vfsmount *gemfs)
+> {
+> - struct drm_gem_shmem_object *shmem;
+> - struct drm_gem_object *obj;
+> + struct drm_gem_object *obj =3D &shmem->base;
+> int ret =3D 0;
+>=20
+> - size =3D PAGE_ALIGN(size);
+> -
+> - if (dev->driver->gem_create_object) {
+> - obj =3D dev->driver->gem_create_object(dev, size);
+> - if (IS_ERR(obj))
+> - return ERR_CAST(obj);
+> - shmem =3D to_drm_gem_shmem_obj(obj);
+> - } else {
+> - shmem =3D kzalloc(sizeof(*shmem), GFP_KERNEL);
+> - if (!shmem)
+> - return ERR_PTR(-ENOMEM);
+> - obj =3D &shmem->base;
+> - }
+> -
+> if (!obj->funcs)
+> obj->funcs =3D &drm_gem_shmem_funcs;
+>=20
+> @@ -81,7 +65,7 @@ __drm_gem_shmem_create(struct drm_device *dev, =
+size_t size, bool private,
+> }
+> if (ret) {
+> drm_gem_private_object_fini(obj);
+> - goto err_free;
+> + return ret;
+> }
+>=20
+> ret =3D drm_gem_create_mmap_offset(obj);
+> @@ -102,14 +86,55 @@ __drm_gem_shmem_create(struct drm_device *dev, =
+size_t size, bool private,
+>     __GFP_RETRY_MAYFAIL | __GFP_NOWARN);
+> }
+>=20
+> - return shmem;
+> -
+> + return 0;
+> err_release:
+> drm_gem_object_release(obj);
+> -err_free:
+> - kfree(obj);
+> + return ret;
+> +}
+>=20
+> - return ERR_PTR(ret);
+> +/**
+> + * drm_gem_shmem_init - Initialize an allocated object.
+> + * @dev: DRM device
+> + * @obj: The allocated shmem GEM object.
+> + *
+> + * Returns:
+> + * 0 on success, or a negative error code on failure.
+> + */
+> +int drm_gem_shmem_init(struct drm_device *dev, struct =
+drm_gem_shmem_object *shmem, size_t size)
+> +{
+> + return __drm_gem_shmem_init(dev, shmem, size, false, NULL);
+> +}
+> +EXPORT_SYMBOL_GPL(drm_gem_shmem_init);
+> +
+> +static struct drm_gem_shmem_object *
+> +__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool =
+private,
+> +       struct vfsmount *gemfs)
+> +{
+> + struct drm_gem_shmem_object *shmem;
+> + struct drm_gem_object *obj;
+> + int ret =3D 0;
+> +
+> + size =3D PAGE_ALIGN(size);
+> +
+> + if (dev->driver->gem_create_object) {
+> + obj =3D dev->driver->gem_create_object(dev, size);
+> + if (IS_ERR(obj))
+> + return ERR_CAST(obj);
+> + shmem =3D to_drm_gem_shmem_obj(obj);
+> + } else {
+> + shmem =3D kzalloc(sizeof(*shmem), GFP_KERNEL);
+> + if (!shmem)
+> + return ERR_PTR(-ENOMEM);
+> + obj =3D &shmem->base;
+> + }
+> +
+> + ret =3D __drm_gem_shmem_init(dev, shmem, size, private, gemfs);
+> + if (ret) {
+> + kfree(obj);
+> + return ERR_PTR(ret);
+> + }
+> +
+> + return shmem;
+> }
+> /**
+>  * drm_gem_shmem_create - Allocate an object with the given size
+> diff --git a/include/drm/drm_gem_shmem_helper.h =
+b/include/drm/drm_gem_shmem_helper.h
+> index 92f5db84b9c22..235dc33127b9a 100644
+> --- a/include/drm/drm_gem_shmem_helper.h
+> +++ b/include/drm/drm_gem_shmem_helper.h
+> @@ -107,6 +107,7 @@ struct drm_gem_shmem_object {
+> #define to_drm_gem_shmem_obj(obj) \
+> container_of(obj, struct drm_gem_shmem_object, base)
+>=20
+> +int drm_gem_shmem_init(struct drm_device *dev, struct =
+drm_gem_shmem_object *shmem, size_t size);
+> struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device =
+*dev, size_t size);
+> struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct =
+drm_device *dev,
+>   size_t size,
+> --=20
+> 2.50.0
+>=20
 >=20
 
-True,
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Ok then:
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
