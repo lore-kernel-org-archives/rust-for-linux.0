@@ -1,130 +1,161 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A79284B4E;
-	Thu,  4 Sep 2025 20:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1161A28DB46;
+	Thu,  4 Sep 2025 21:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757018284; cv=none; b=MNd+5KS85DFABTOVjU1W7B6MO+UjvP/kVcVMF8B/aBN8FFMC0GEzkp1v+/LtETB0DlZGJVFz7iYJ+6SSLg5zoHSBS0BpapZbac1G8nOdtoRoYC9VGo5YFnFMNDZ+CIiqq3M3k2OmlTAkly4/vZNwvfBOiDnENf6w9b1aucC95FQ=
+	t=1757019935; cv=none; b=vAHHE6pYOk7WtB36owvkn17qkj+LVgThryuGkJfkLEDW1XQstFVH95bzS1C9xZP4kOMH4JJBckxp6nL3kbQC0r9WO9ASwxG+0esSU5+bxidmFzbMutWV6/SauNF4TrQ2EbUf87cu5BU+t2q3H64DIwxLib4vJxK5wJXzsesd1TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757018284; c=relaxed/simple;
-	bh=jhh00s7ip+FeDC7Nh2hWPnkefeUX3xcGprPGO9tNdd8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OpTxC/VomGwgkVinK0QqZjqKVQk9k0IqhTme7R5lFVhF8Jhs9Fc+3u2xh0udIGnEoDD1914C0EUqB0+UDkjdMeAdb/amhPYo3XwB9OYfeXN8J3F5yVPidGXesckJNLIgkNFAArZI+VGv4JRnxYNTIiXasYigai2UFoJruBrRrS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CytsPNQd; arc=none smtp.client-ip=209.85.215.179
+	s=arc-20240116; t=1757019935; c=relaxed/simple;
+	bh=pywoOeEESFWdfylHO8uqiS4BGL+csxqD2zObt34MaAk=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pyg8z/OvXFmcegh4lztNDOD8Ovx5iEzLiTqRn8pfbRpBGym4j+lT24J7PMN6vKNgTHbFxQnp5WAdX391AR/aqMhr9zkW2BCoJfM1VVrEb+ekgIdYkJ4rO16u8wlHVbddbNlPt8NUH5ZPMvR1kb/Hucjx8kZzsnLcrS9ORKp+KWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DQmFlp4Z; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CytsPNQd"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b4fc0249e41so63638a12.2;
-        Thu, 04 Sep 2025 13:38:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DQmFlp4Z"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7722f2f2aa4so1959832b3a.1;
+        Thu, 04 Sep 2025 14:05:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757018283; x=1757623083; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jhh00s7ip+FeDC7Nh2hWPnkefeUX3xcGprPGO9tNdd8=;
-        b=CytsPNQdcEhTkbm6OSROeV4cTgTrea6mNIL9G5cTR0ab5KiQp3XKKHYJuk9Dy1weM/
-         1bAlP2bCcacvbbbmR2mfEphqguz15d0JzpSZ+0Z3Dk1RbfdQlCM9FtEhM0+yBfvNONPW
-         jII6dkfWeqJFnAg6iwoT2UMJVpYZY1+deDMlN1ctCg+leTXIZnMQAxwLneRcnxbHhoBg
-         mO9X6crA/KwkG2/D60a9XSbIkPPUvKpt5vhhbEkeeQyIY5OWvY90aQSqLcarSX9pmA9C
-         3zQHEM0XF6vVqFIEdw9YvvPhPaK/+82PFLUpVg3UQYt6ofHue9J0fwPbdL0ZlodmGayh
-         fv6A==
+        d=gmail.com; s=20230601; t=1757019933; x=1757624733; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=pePvqOR7Q5lmGezz3Zl2SMH1cqCRYl41xACklsYlDnY=;
+        b=DQmFlp4Z9B6BlsiVOSOdqeO8UdoiRmgOtSCJctN5XltG6sPRBmiSzt7b9kgWBAVw9U
+         wFdZbLO42m12pGyCKDmI/Khovel/4Z0SVmGW5RoW5kTYyHe4iAk5p3h8yMLhUZWPZ0Ok
+         9PD7AyQufRdm4wvyHUX5ONa0onBqbYSMGsaox35e9MbN4WAf5wqRvDF9zc98UNYAMaKv
+         pt8inPe/1kDmptHyennpdIWz0hiyb1jcjWcDAQLHDwGToNk4xZZXVp9GTrCZog2Uc6DQ
+         tAuPu25nJcq5fOZYF0pt/Rotji5NiDV82tXYP7Is2R60TzURcnrQSHg56zLio/QVnFWW
+         YlbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757018283; x=1757623083;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jhh00s7ip+FeDC7Nh2hWPnkefeUX3xcGprPGO9tNdd8=;
-        b=cS5LTL3731Bhlj6KJ9eAfPPWPAWCaMzsjgBoG0KOL3cWk/jgGZzNWQW9eh2BncWLbl
-         x75V7hWwyOTvdWBmywc1ss2WqohaMRHKjnvdkwLT3at4MRL9ZnkeKBz7qMwZYjmxz+rd
-         h85rNRGrV0tT6Fn//PbjyDYYlCl6KtObiRZz2ZXOT9vb4FQvLyhEJBpPco2DZIaIRmsx
-         eDAqpVZEqG6eY1bs1oA5pmH5cE2K1eD/j2nC5xs+hQUe6bL8Id3qXzxtiAyzohpyHu5a
-         0b982CIxAQdzxZg62BL1OBNlMcVs6dfR1YmBzyXrnfBNfmsNVBfZDdCi69/DSPU0UjDm
-         CoFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOWeyIYPEcKV1FdIPlJrkkWpH94j3hSQz4rHkTRizNxOSDqHOfKR1+TGD8uY1ySR/Z5BfaFKEPg/0mjV0MMo8=@vger.kernel.org, AJvYcCXZ8tyuj7uavhAnqYiZMwfJxiqEkTvV64wNgEDyxGr41bcH8LH9r4C7hApHqNiJNSP+d1KwjPtmb40+278=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3uSqDZcOjK8whm0i1iE9n30vr7kyoZwsM/z2acJHEOVST5kVg
-	lgZsQcNUuz9P2Xp1dH4FYcYue2q2IvdZHd3LBs4SDhBUmrQwfBobPY2BFJGjYceJPivDeUeYXaE
-	OwhBGio9J2Qb58zs2gRsJ+HdJ70lj/eE=
-X-Gm-Gg: ASbGncsvFycxLfk3CXwiq8RMhEejxRJfR0SU4gqgoLy7OIPvyjY0Ywdf2zifu/sisps
-	iAQE7sA7HD1/QOde9pkKWp3PLkbgPTAT8e4sluXDyS7nJVyiu7xI5ugooAedrMAA2r/NIlB7+uO
-	8onQyev+91FcBeHiTef9qFUD+mtycKxP5046heUBAU9I/yFuHz7YBGKQ4CMU/+kKGkUYL4oBy29
-	rR2/c1SNJWXPpwQVHbvalBVQBgJGwkR4eRenesK0tHcYY/qILFoew9r4JBGexMM4QJQWP6p8OUJ
-	F8+OCpcA1BpE/p3dOBt0GUWdrCeWDDfPrHFi
-X-Google-Smtp-Source: AGHT+IFqx1GUCyWqYDe3BDuJ5rH+p0E80yA7Xljhs0Nix5yrCExt8EgPQzOmi9EaBsIyNxC+TxydT7c2/DwA9G8pP1g=
-X-Received: by 2002:a17:90b:2250:b0:32b:aed4:aa1a with SMTP id
- 98e67ed59e1d1-32baed4ade9mr1371213a91.4.1757018282507; Thu, 04 Sep 2025
- 13:38:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757019933; x=1757624733;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pePvqOR7Q5lmGezz3Zl2SMH1cqCRYl41xACklsYlDnY=;
+        b=VofiQJxOYwaKj2it9PhhLSp8a0XB+ymU4fWVwHCw/1+yf4gfnhBHN3e3Y7ARb+SjCI
+         v3grEfFVU+GjmFRAXivjoEQAUWWBUXVY7uNg1lGdM/yzp7MV2ONPfWkaQ974dOVmHLuV
+         8ZQb2wYsZqqqQdMv1AlvIzvT/9M4p00HkgW2/6SfcOWqI0HOBbcTOSgbynSgMr700Wnm
+         kyvs+NzszDwzbxI3jceKYCOzGspZvPs0qO3OTGfhl/UQgSEOIt5KOgHpEyN1k0x3vDy4
+         4RX3ki6QxbSKQ7XJThAhvxGG5oYNCx3CmVAJOeFrupPuE6z5cRQwunQ5GrhFqbAhX8sh
+         Rggw==
+X-Forwarded-Encrypted: i=1; AJvYcCUs8bQeX7MLHFDNiO7nmcvyejNBfxBM6IAKla6q0PHUrJFMQl2SHlLoyldk6KVrp1FVyWopkT1q5Jio17FtePc=@vger.kernel.org, AJvYcCV4rsw1gaDRdV9LpihG7CM3LeiLs7kH3vRUWwjmJTMsaVuuPBWFSW4RRcGABesX8acF1ASUU3QZkPi7ThE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx85kz135BAyKkMfb0rAOW2EW+zrOcYCdPHV74S43m1ytfO+a4T
+	5qGzg93xI7u5BJpR82U2U61NkxAttbAk/Wt7rHMRApOt/Vj/XrdxloW6
+X-Gm-Gg: ASbGncttPfT7R0AxpxY7A0nREfYZ0U69nQf7LOHMDhQ3cVsAfE5O1LXgqmm5p9wj9vF
+	lyxKHZEmW7mToojSQM1IurAIg4Y0iUsEw3cc1wNjVEDSgU+3OX6/iYSLKVYJTlF+6IAYkOg3Md3
+	4EbcGhcSFyzryEhlUsoBJq0ETaPTQDkl+0cj3AtiASiqVri//2NrJ2g2fAmwesT/T0a56EwOYqI
+	j0ei95UPEF/8VMg7UHWh84bPyE6uHY0youxblHmjxwNEj11ZoXzMnKUPsK/l4jqn/8cD9IYP0dB
+	4Q7HFWNSLXrW6BFQxNVOZvN2JFTFi9AKvhuXEVRiKh4aNjsUgiLQsbm7Kg1Qg+sCgVfToKOLt6z
+	KNZHfPgOB21liztbLcYXYEVMaeEn1iZE6UjOfTA==
+X-Google-Smtp-Source: AGHT+IFqHr/M76UHbTB5jG3tqCeaieTz2lBy8yr6iwfKPpC80S5IkLRd3TQLo0XvYyhNo6p2eDpIkA==
+X-Received: by 2002:a05:6a00:1acf:b0:772:615f:b5b1 with SMTP id d2e1a72fcca58-772615fb6e9mr21433903b3a.18.1757019933027;
+        Thu, 04 Sep 2025 14:05:33 -0700 (PDT)
+Received: from Cyndaquil. ([174.127.224.194])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4e27d1sm19872865b3a.81.2025.09.04.14.05.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 14:05:32 -0700 (PDT)
+Message-ID: <68b9ff1c.050a0220.35de1d.11b7@mx.google.com>
+X-Google-Original-Message-ID: <aLn/GebopZOJZoyc@Cyndaquil.>
+Date: Thu, 4 Sep 2025 14:05:29 -0700
+From: Mitchell Levy <levymitchell0@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for
+ DynamicPerCpu
+References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
+ <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
+ <aLi-7W21N45fBGJk@yury>
+ <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com>
+ <aLn4bopPt8uS4d1O@yury>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com> <CANiq72nnWmzOfZ1PhSid4t_e-yWEgi_hVx5Uj4hrB9wzpuP6nA@mail.gmail.com>
- <68b9f3d6.050a0220.174510.28d9@mx.google.com>
-In-Reply-To: <68b9f3d6.050a0220.174510.28d9@mx.google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 4 Sep 2025 22:37:48 +0200
-X-Gm-Features: Ac12FXx-tTsNVn2EwIk9LpKY3_SwIwSIlYHTvNwAjGyhRpyARFyh2FmCJDKByuI
-Message-ID: <CANiq72nkZ0F1_YUfBg_y=JcEMnQW+uVr9v4BXONUJdor3ZJzgA@mail.gmail.com>
-Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for DynamicPerCpu
-To: Mitchell Levy <levymitchell0@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLn4bopPt8uS4d1O@yury>
 
-On Thu, Sep 4, 2025 at 10:17=E2=80=AFPM Mitchell Levy <levymitchell0@gmail.=
-com> wrote:
->
-> Will do.
+On Thu, Sep 04, 2025 at 04:37:02PM -0400, Yury Norov wrote:
+> On Thu, Sep 04, 2025 at 01:26:07PM -0700, Mitchell Levy wrote:
+> > On Wed, Sep 03, 2025 at 06:19:25PM -0400, Yury Norov wrote:
+> > > On Thu, Aug 28, 2025 at 12:00:12PM -0700, Mitchell Levy wrote:
+> 
+> ...
+> 
+> > > > +impl<T: Clone> DynamicPerCpu<T> {
+> > > > +    /// Allocates a new per-CPU variable
+> > > > +    ///
+> > > > +    /// # Arguments
+> > > > +    /// * `val` - The initial value of the per-CPU variable on all CPUs.
+> > > > +    /// * `flags` - Flags used to allocate an `Arc` that keeps track of the underlying
+> > > > +    ///   `PerCpuAllocation`.
+> > > > +    pub fn new_with(val: T, flags: Flags) -> Option<Self> {
+> > > > +        let alloc: PerCpuAllocation<T> = PerCpuAllocation::new_uninit()?;
+> > > > +        let ptr = alloc.0;
+> > > > +
+> > > > +        for cpu in Cpumask::possible().iter() {
+> > > 
+> > > In C we've got the 'for_each_possible_cpu()'. Is there any way to
+> > > preserve that semantics in rust? I really believe that similar
+> > > semantics on higher level on both sides will help _a_lot_ for those
+> > > transitioning into the rust world (like me).
+> > 
+> > I'm not sure I understand what you mean --- I believe the semantics
+> > should be the same here (`cpu` takes on each value in
+> > `cpu_possible_mask`). Could you please clarify?
+> > 
+> 
+> I mean:
+> 
+>         for_each_possible_cpu(cpu) {
+>                 let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
+>                 unsafe { (*remote_ptr).write(val.clone()); }
+>                 let arc = Arc::new(alloc, flags).ok()?;
+>                 Some(Self { alloc: arc })
+>         }
+> 
+> Is it possible to do the above in rust?
 
-By the way, sorry -- just to clarify, I didn't mean to remove
-anything, but rather split it (likely at the first full stop).
+Ah, I see.
 
-> Yes, this is true; strictly speaking, calling this function without
-> dereferencing the returned pointer is always safe. I suppose I find i
-t> clearer that, when a function has preconditions that are necessary for
-> it to return a valid pointer, the "safe-ness" has more to do with the
-> functions preconditions than the act of dereferencing the pointer.
+The syntax would be slightly different, probably something like
 
-In that case, I would make it safe -- we don't use safety
-preconditions to mark "dangerous" operations, so to speak.
+        use cpu::for_each_possible_cpu;
 
-> In this case, the pointer shouldn't be going very far, but I think this
-> logic applies especially well in cases where pointers might be getting
-> stored away for later (and so the validity of the dereference later on
-> might rely on non-local conditions).
+        for_each_possible_cpu(|&cpu| {
+                let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
+                // ...
+        })
 
-But that applies to any returned raw pointer, no?
+it *might* also be possible to use a macro and dispense with the need for
+a closure, though I'm not familiar enough with proc macros to say for
+sure. That would probably look like
 
-> This flows from the first requirement (that `self` is a live allocation,
-> which is necessary for `per_cpu_ptr` to return a valid pointer). Though,
-> as above, simply possessing this pointer isn't UB, so it's arguable that
-> any call to `per_cpu_ptr` (on x86 at least, I'm not sure how it's
-> implemented on other arches) is always safe. Regardless, I agree this
-> comment should be more clear (even if the function is safe, it's
-> probably worth noting why the pointer returned is valid when the
-> function preconditions are met); will fix.
+        for_each_possible_cpu!(cpu) {
+                let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
+                // ...
+        }
 
-Sounds good, thanks!
+though personally I think the first one is better (simpler
+implementation without too much syntactic overhead, especially since
+closures are already used some within R4L).
 
-If you have cases you think other architectures may have different
-requirements, and you think it is likely one could enable the support
-for other arches and break it, then I would suggest adding a comment
-about it.
-
-Or, ideally, try to see if other architectures are fine already, even
-if you still don't enable the code in other arches.
-
-Cheers,
-Miguel
+Thanks,
+Mitchell
