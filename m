@@ -1,134 +1,133 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88031917F4
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 10:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756982428; cv=none; b=ESdTNAGxPVJ7az2S/CVo2Rcj0m4A7fY5vaNblx+jM0UB9JE29nTTH9ac9xRU1GQQgU0KL4ShqscrjBKkRxZJQUxpUr4wRxTJJgokFdPIyoWdHGGybCxF9QbpmcWxdTHSkkHzzeMtnmjp15HSspz1vJfd5jHg41nbbWA4p7/RDeo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756982428; c=relaxed/simple;
-	bh=K35TYVQdmCqeD7Q3E8OIUOVLCEHOxk1ZzvVD9CcXM0g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eYQE2uV500KkrcmfhKdS8xqU3VpwzW8sOolXhMe4d4p1L8vijSaYI+9ixcDlqWoRBTvK6wzuzjzux+DXOFZ9wZU3M14Pj4fOJKBgKAfkH9s7G3+bQCKOJjRvv35pCdQLVOOmZ4t5maztJIDYnUMfClv36sHnUtl79EnBrCrCvfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IX0C3vNk; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846CB1917FB;
+	Thu,  4 Sep 2025 11:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756983776; cv=pass; b=ADmXjcoKHvIH99yN1wLc41c6wY3oQxRgjtNq7slWYTr8E4jZxkRR2Aujt8x3EdgtYFcFDP3gJKyhv5y8hlC1dBfw4/PXUSqvTrMilinOz3eBTI3FLuLTBlDV1kSu0KMvVP+K2uDDxeFI++ACdx71u7aHUm9WUhmefbxt6DLOwYg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756983776; c=relaxed/simple;
+	bh=3UgIibTB47PeQZqU+bSLcHe5zQ85KUGU4yiKuuPW16U=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=KXP7oCtg+TgRY/wXpQEiN2D+Dp6v/qeJzKmipwbUD0LqWNo9BHFGXCqydoJvIAFxdGhB7c/Uzva2WUhNfQp0pKmEWIoAqpiXIgKMteUR7mE9hBisiVmCBxvvQ0qaRGWmIT1yjtclkV3nyT73GJ+4HdaA21CQ9p/DipuB3jQxMT8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=gBHU3Amu; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IX0C3vNk"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3dbf3054ac4so437872f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 03:40:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756982425; x=1757587225; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o6y2QOBZu14x36SZiIQblNfOse9Z30SqsU6mw32en+A=;
-        b=IX0C3vNkyF7wS+NVZHzQZdQsK/4MIrU68d9uFFm0UA3rjBeAORNyPm0dDYEUNJeWIA
-         yVizZij6kvIZvan6Ssjd/jRhNB0agwwW4l7utVO4UoRYQM+QPSRJjCMW5OcTy0hmIlay
-         okZTyTI/169C3jTozGkwFVVYMzzVYPN8A1NrqDt4ajeMgYBDXFMeBfR9E6/MYCN5+uaZ
-         IJycZ+N9Kcucf94GWXelN0NU6hNAaMoXJOGGmOnK50SVlHY+gVD8FT+jqRYV2eDAgKf+
-         n1WNPLVTPyo5XgIhCeOLuumdbxgQ9OqM9S/vAlAvk+kpVH8ziWlGYHgaYvq8ZjUIvK94
-         qxjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756982425; x=1757587225;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o6y2QOBZu14x36SZiIQblNfOse9Z30SqsU6mw32en+A=;
-        b=PbyajvOgJDfZQJUBZwhadvbKXQ4IkedgCZY0BJeuzoiMFSOM12YevnGUApUODIp3sk
-         SEQWR6urj6hznJLPh5aLXZYrKAVpu+9VxYWjUYu1/Zj5oXkiGPWlE4RzkeVH17NOUmaE
-         LgazuTcTmnZ+8i9C83mJW0clvBW4XfwMYmyzzeJQ8trHe72IYfauFx3nqvJN5vLgZ2AV
-         dwI0UgipqU9u9KXLPu8XH+1vzflOva9zx3nRt8qtguIxInVe+legh6VSgFVeNyCK5P4+
-         Z+u/5sjnG4zdjBo/JnRN5whjiCQK/83tz/kICtBUy8sq4f0YPbRDy+WSQ+Dn+Krv1R8G
-         DEQA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3StzVNLliHXlkmiP8FKqRdONnMHMdpk4Zoe+R0mr5W+vRfhHE/SM/MjsQ4leUpLaz0hD2mqODsPk8VVfQOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWm31DHTgy3d3bW9LoXvIPD6tSAJcc9FESw+Q6un6o0eDZ/wPG
-	ktvhT405Msa2A6v44pNoB86yJL97UE/Sx6Hd+I0zRrOYgNCzPulu4bpaCUiPgcsQ/gLtI3K6+aq
-	eNYo3sgvzGQEYjJ+P/Q==
-X-Google-Smtp-Source: AGHT+IF9yvAHvKVOXXpEFHka86WFsWc+ojWObCx+xIgC+kdLnrHsvwSPcYjH86gfddOM2J9YtQ9wDriAn1Gd+jI=
-X-Received: from wrbfu17.prod.google.com ([2002:a05:6000:25f1:b0:3e1:aeb6:bd24])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:420c:b0:3d6:212b:9ae2 with SMTP id ffacd0b85a97d-3d6212b9f09mr13611267f8f.63.1756982425153;
- Thu, 04 Sep 2025 03:40:25 -0700 (PDT)
-Date: Thu, 4 Sep 2025 10:40:24 +0000
-In-Reply-To: <20250901202850.208116-1-dakr@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="gBHU3Amu"
+ARC-Seal: i=1; a=rsa-sha256; t=1756983757; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=YGrZaiFXgz/dcAD/GhG5qWejTWpckke2xtxufSRxDWuIJ8TfsHzsQxzSDX1D1IstkMHOGXUlrdb4GRh0IHLqvh5GLRU0VgsT2nAVtVGcyIr8h/jnKsRO3FhUEoVY1wlOvYsnh2+gXQnqHXqgSWQVQ2yYffpbMCdybTmSIuZbIZ4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756983757; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=M+c8sBfNK7jTMhcj9S/0VC9pw8RniI4xywgLwf5sppE=; 
+	b=bCvYFODO7/KwS+25DN9Px9ISAIUCdCXbhvPcsqXI9TlcLdCp0D1SXxr7hmoIqTni/oj23iG0zWqhnl8s/UZSRsdl4rBmc3Zv0XdOmmL8TAYN3l5QV0t0Dsot0n08onTDCYznArS1n710ERwgk3DfUu9VIc4cwABpL/aXshgkOYU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756983756;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=M+c8sBfNK7jTMhcj9S/0VC9pw8RniI4xywgLwf5sppE=;
+	b=gBHU3AmuyBe8B5E0E8wU5a6jJhJv1uugBOQrrisM+9rIaGMuTo8Rcf4quNHKP8E0
+	liL6RHiyLZ6rYKSeMfr2d25Il4g17l2rBOreViwmNCxDBEfQbJOCCG+eXjGd8HLPd3R
+	wDIwvWOs8v6Sw3RcjnY+u0UYYMf5EUjtrWad5Z70=
+Received: by mx.zohomail.com with SMTPS id 1756983753966635.954770851991;
+	Thu, 4 Sep 2025 04:02:33 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250901202850.208116-1-dakr@kernel.org>
-Message-ID: <aLlsmNzp_KardLUt@google.com>
-Subject: Re: [PATCH] MAINTAINERS: Add drm-rust tree for Rust DRM drivers and infrastructure
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, acourbot@nvidia.com, 
-	daniel.almeida@collabora.com, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
+ structs
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DCJOUO214EXC.32MFBN80VJW3K@nvidia.com>
+Date: Thu, 4 Sep 2025 08:02:16 -0300
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+ linux-kernel@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8498F151-B4DF-43D3-981E-FAE598964CA2@collabora.com>
+References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
+ <DCBGLCQVD1RF.6V5UT0NQ4GLB@nvidia.com>
+ <444ebd64-7a90-46a6-b885-2c114aa59284@nvidia.com>
+ <DCJOUO214EXC.32MFBN80VJW3K@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Mon, Sep 01, 2025 at 10:26:39PM +0200, Danilo Krummrich wrote:
-> Multiple DRM Rust drivers (e.g. nova-core, nova-drm, Tyr, rvkms) are in
-> development, with at least Nova and (soon) Tyr already upstream. Having a
-> shared tree will ease and accelerate development, since all drivers can
-> consume new infrastructure in the same release cycle.
-> 
-> This includes infrastructure shared with other subsystem trees (e.g. Rust
-> or driver-core). By consolidating in drm-rust, we avoid adding extra
-> burden to drm-misc maintainers, e.g. dealing with cross-tree topic
-> branches.
-> 
-> The drm-misc tree is not a good fit for this stage of development, since
-> its documented scope is small drivers with occasional large series.
-> 
-> Rust drivers in development upstream, however, regularly involve large
-> patch series, new infrastructure, and shared topic branches, which may
-> not align well with drm-misc at this stage.
-> 
-> The drm-rust tree may not be a permanent solution. Once the core Rust,
-> DRM, and KMS infrastructure have stabilized, drivers and infrastructure
-> changes are expected to transition into drm-misc or standalone driver
-> trees respectively. Until then, drm-rust provides a dedicated place to
-> coordinate development without disrupting existing workflows too much.
-> 
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Alexandre Courbot <acourbot@nvidia.com>
-> Cc: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  MAINTAINERS | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fe168477caa4..1cd6597c7f1d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8079,7 +8079,6 @@ F:	Documentation/devicetree/bindings/gpu/
->  F:	Documentation/gpu/
->  F:	drivers/gpu/drm/
->  F:	drivers/gpu/vga/
-> -F:	rust/kernel/drm/
->  F:	include/drm/drm
->  F:	include/linux/vga*
->  F:	include/uapi/drm/
-> @@ -8096,6 +8095,16 @@ X:	drivers/gpu/drm/radeon/
->  X:	drivers/gpu/drm/tegra/
->  X:	drivers/gpu/drm/xe/
->  
-> +DRM DRIVERS AND COMMON INFRASTRUCTURE [RUST]
-> +M:	Danilo Krummrich <dakr@kernel.org>
-> +M:	Alice Ryhl <aliceryhl@google.com>
-> +S:	Supported
-> +W:	https://drm.pages.freedesktop.org/maintainer-tools/drm-rust.html
 
-It looks like the right path is:
-https://drm.pages.freedesktop.org/maintainer-tools/repositories/drm-rust.html
 
-Alice
+> On 4 Sep 2025, at 00:16, Alexandre Courbot <acourbot@nvidia.com> =
+wrote:
+>=20
+> On Thu Sep 4, 2025 at 12:15 AM JST, Joel Fernandes wrote:
+> <snip>
+>>>> +use kernel::prelude::*;
+>>>> +
+>>>> +/// Macro for defining bitfield-packed structures in Rust.
+>>>> +/// The size of the underlying storage type is specified with =
+#[repr(TYPE)].
+>>>> +///
+>>>> +/// # Example (just for illustration)
+>>>> +/// ```rust
+>>>> +/// bitstruct! {
+>>>> +///     #[repr(u64)]
+>>>> +///     pub struct PageTableEntry {
+>>>> +///         0:0       present     as bool,
+>>>> +///         1:1       writable    as bool,
+>>>> +///         11:9      available   as u8,
+>>>> +///         51:12     pfn         as u64,
+>>>> +///         62:52     available2  as u16,
+>>>> +///         63:63     nx          as bool,
+>>>=20
+>>> A note on syntax: for nova-core, we may want to use the `H:L` =
+notation,
+>>> as this is what OpenRM uses, but in the larger kernel we might want =
+to
+>>> use inclusive ranges (`L..=3DH`) as it will look more natural in =
+Rust
+>>> code (and is the notation the `bits` module already uses).
+>>=20
+>> Perhaps future add-on enhancement to have both syntax? I'd like to =
+initially
+>> keep H:L and stabilize the code first, what do you think?
+>=20
+> Let's have the discussion with the other stakeholders (Daniel?). I =
+think
+> in Nova we want to keep the `H:L` syntax, as it matches what the =
+OpenRM
+> headers do (so Nova would have its own `register` macro that calls =
+into
+> the common one, tweaking things as it needs). But in the kernel crate =
+we
+> should use something intuitive for everyone.
+>=20
+
+I don=E2=80=99t specifically care which syntax is used. We will adapt to =
+it.
+
+=E2=80=94 Daniel
+
