@@ -1,248 +1,131 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D562BE65B;
-	Thu,  4 Sep 2025 08:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC532D77E4
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 09:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756974590; cv=none; b=NbRzV9lItI2QxH8aiXNjuymASFO0s/zRZ78kvv/3YUVOb0xDp9WiNRsgOAjmi1Y9/cifk4eWavHg1Gz/wcZ26JlSZW8UPfoxJPgU2C9uY3jkDWcu2kWN5zOG+UJrpAgYw9KCFj2uZi5/hvN4vJ5lzZhjSW6/9ov/d5HToeRab/s=
+	t=1756976610; cv=none; b=gs5UHKjG8+MmaFuSyr78NgtKto6JvNOWPAbe/UfHh5LcBsbXZlVjvdF9VA/AM1sFHPVv3jdyuFasVUdZMsa6vs4JFSoplJBM8Gm8xMjYN1BANkwqdHGTZ2NJrrilHWVZ4GRlGZwdFW1ItvYpsh0hVJ2Eq/nV2j6Hb1r6l++pFLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756974590; c=relaxed/simple;
-	bh=QNtfTlAH6DI4T1zY3ES9S9NLB82uklHXRFVHEC7qN3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LBgjyK72+KaMFydvrQCHXYuRxsDV5DZ46SNImKnjD7QXvw+DVf0KJunnGmMr78gAQBGRpx41X8qRSNa8rRn2lNev6NFCBpSPAo37iHHX0EGhO06qck56OvkSxIOQLOSWGrCSRTPclSRYssfXlLfD3r8EfhJc26Q6sX4HbmJmIAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=SW0zoAYZ; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1756976610; c=relaxed/simple;
+	bh=vd6AugBRQQ7LSCss9P7jkclD2lwejCl9P5EdEOF1JQA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=H781HFFJz2HUNchRqcV4HCK4YylohcZz10sdT0iskrIEHv2NHspdwCW5HdqZWDwgSlC6gBpubVOR1GeyRkybtdrBsSA9/+MRTjh3BmvmiqJAIdPMxxNch/DmLZOQb13Bpn2UxfoBuhPhzANwKBJpddVfaOmdlWYl+CxMaVvS9Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tekYqWB+; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="SW0zoAYZ"
-Received: from mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:bc97:0:640:ee90:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 2E8D680D65;
-	Thu, 04 Sep 2025 11:23:26 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id JNcTFoOMp8c0-OsCcU95U;
-	Thu, 04 Sep 2025 11:23:24 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1756974204;
-	bh=V9WvHvEbx2gLOiXH9zZov+GXvO0ue22G7wOiU8UeFpg=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=SW0zoAYZDP3JwsmhCtorY+AhIILYpnQLGYIaUj2lT1o1hxhIMTV/45RpbtkgEvH7O
-	 cBnGDgR5SU2o3QZ0J2SYoYBC9m4b5IPUu/iElOzzvA3Fy8jKp4/lte9icERWeT0sVN
-	 GSGEwH8/kH57nSDvBGL7r3TET3Hn/z0dTuXTxoqM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-76.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 4 Sep 2025 11:23:16 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
- peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com, daniel.almeida@collabora.com
-Subject: Re: [PATCH v6 2/7] rust: implement `WwClass` for ww_mutex support
-Message-ID: <20250904112316.3fc88712@nimda.home>
-In-Reply-To: <aLhna_Xj6W88F6Wp@tardis-2.local>
-References: <20250903131313.4365-1-work@onurozkan.dev>
-	<20250903131313.4365-3-work@onurozkan.dev>
-	<aLhna_Xj6W88F6Wp@tardis-2.local>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tekYqWB+"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45cb612d362so4289655e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 02:03:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756976607; x=1757581407; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jJtnDDrtdvxSxz2byyhf6ovg3vXgEml10lpi8GliOwg=;
+        b=tekYqWB+kGgUXTKTfXzZb1/3XFaAyHW0G5mD/UyznnWDka6LP+pVidT9CMWn43F1Az
+         wtnd/gwvukSeiyVkykYgbSFu1EKLpxZp61Uss//gaNzI4mLhfju03ggEzzXbDZzbVE2k
+         FUmzfcyKVEepoX8S6KlckEW3XFomIXGwUUwucd7J/g0ld9Cn95YHHHWJBvEzt1Aan1LD
+         E9GX3cjBGTOfp6wnKCgAr3dTiXItuKLjlUMxZgdbgI0BsN055zMRIXmYo5UURC2fDUKb
+         41YuuyfZJ9E8eTkJBUkX5poyzSI8qgRLDDcvnzdKCgj7cKA6n6D6GpBxAcCutEB+JxF0
+         VA8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756976607; x=1757581407;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jJtnDDrtdvxSxz2byyhf6ovg3vXgEml10lpi8GliOwg=;
+        b=Y8m7/jrgkKC9htOrnNfDb5Lxu3CMfQx85TsX3zN5alk/+llo0Hi7JwXHWNEzFnaUw+
+         N0VF0VGaTol+mwjh3ulXAUIhU/5lRS/9w8jMwJXbMPzwE2LiJD+KlER9HcksmHOQCa0F
+         wf3UWYMH/RZ2w9s3V4QE2ZncOIuZNopmvR/Afl736AXwXiRqccDsDuaaATHm5tUS4fot
+         N36tH04Y6EB0+Df2YUOvFvSg+FdRqINbZAjkQi8zJmBIjRXCkXRIXUSWdC33bOaXY/r/
+         3P3Rd+lmKt1+16fBNGOto3W9QeJRflqHOTboSfgKeWB6t0/AUX2eHFSzj+dvNOiOzUCY
+         abzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU2AGrIS7Kb/1hTJ5TId93JzCKehWLSvzsdPbzOCqDaQp1PdLS1A20eYRnyip34O4bD+kTRE8EyjtLiF2S5sg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8yOE5kzGMXYb0GZ/T3ucV6QMmZXWss+fxQykBksHRsVsB4pjE
+	/EUKMX6Vd5eucQV4DFMVrIOn7lLt7bdoQAPR0O3BHOKwlLsza4uCo4X7XVOJ4SbwIHzImfDsTYK
+	QiHKTxgColtSCvoNEGQ==
+X-Google-Smtp-Source: AGHT+IFON1WOJMPLi3KX20ldY+fg9A+absAs4vpg5c2bhfbXxem38DAApNJjd/cwu2TKdJ2KoCKCY+4GfZPUlUU=
+X-Received: from wmbep20.prod.google.com ([2002:a05:600c:8414:b0:45b:9cac:6fea])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:354f:b0:459:d6a6:77c with SMTP id 5b1f17b1804b1-45b855add8bmr140973945e9.33.1756976606738;
+ Thu, 04 Sep 2025 02:03:26 -0700 (PDT)
+Date: Thu, 04 Sep 2025 09:03:19 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANZVuWgC/x3MMQqAMAxA0atIZgO1VkSvIg4lphqUKg2IIt7d4
+ viG/x9QTsIKffFA4lNU9phRlQXQ4uPMKFM2WGMb0xmHtK2oHCfUOxLWFHwbHFfEFnJzJA5y/b9 hfN8PQpUfpV8AAAA=
+X-Change-Id: 20250904-clk-send-sync-3cfa7f4e1ce2
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1600; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=vd6AugBRQQ7LSCss9P7jkclD2lwejCl9P5EdEOF1JQA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBouVXZEgW4jnxvJ/iEOXp3OqgNSuN/YN/xWrsUl
+ SHDqcVjfEWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaLlV2QAKCRAEWL7uWMY5
+ RmRBD/9CYkpfGQt4q39WuBsUiTUblJypwp1kURHjawSb19cMOK6iRyNxPWJ5XFUnnmSrI20oTxq
+ xb/XKSu1fg6DVdee5o2IfO4oYwZg88f4sFNwi1wZS8ghUcbgkGS37DcOexsFbojXb55i/rh5TyJ
+ ZZByQj+JrSx9XTyh/weW/Y/2TTtYn+d3tbVHFV69heZUNYTFmi/z677wHaGH9kcja5p9+9rZ6XL
+ vPTw7USab1mnLP6p09WCBPmx37b19BkbddxuFWsSq2p3ZHp657uUpgOTmiaQqz9srkJZhRMa2Wy
+ N9h+v3YR5H3zD6xIc19nB+LuSseRU6lD05Q5vtgs3yEkS2e9NtHrj2O0JDrW4bQ9VzqdMvYLkz5
+ 98Qvst/ohMU/YWeDQwa9psTIfGaL5mMFncAQajootFjynWZ2ed1Q6JOYDHRNm/7SNdCESVFFlMi
+ GBAtvAkWzWU01Fa24TFche5ToEyzcWDjE+lSXax/5MUljrsLN6sQD2cA1hwXjlLFRwtkY4UH4Zn
+ 78qRXHUn0uKPuSVJnjXBDYxj5uJWK0breTxPRQixK7IUhRWKa2K9PPcb58MgiXU0pETKAABBogp
+ rJt3B79qzP9ZTvBP6P673FpDuH0bBV94XF2/OXenumEIsf2fEaOAK6DImEmg1cbNSpcuDoMo6FP 9bsx2qmPLaHdL2Q==
+X-Mailer: b4 0.14.2
+Message-ID: <20250904-clk-send-sync-v1-1-48d023320eb8@google.com>
+Subject: [PATCH] rust: clk: implement Send and Sync
+From: Alice Ryhl <aliceryhl@google.com>
+To: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, 3 Sep 2025 09:06:03 -0700
-Boqun Feng <boqun.feng@gmail.com> wrote:
+These traits are required for drivers to embed the Clk type in their own
+data structures because driver data structures are usually required to
+be Send. See e.g. [1] for the kind of workaround that drivers currently
+need due to lacking this annotation.
 
-> On Wed, Sep 03, 2025 at 04:13:08PM +0300, Onur =C3=96zkan wrote:
-> > Adds the `WwClass` type, the first step in supporting
-> > `ww_mutex` in Rust. `WwClass` represents a class of ww
-> > mutexes used for deadlock avoidance for supporting both
-> > wait-die and wound-wait semantics.
-> >=20
-> > Also adds the `define_ww_class!` macro for safely declaring
-> > static instances.
-> >=20
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/sync/lock.rs          |   1 +
-> >  rust/kernel/sync/lock/ww_mutex.rs | 136
-> > ++++++++++++++++++++++++++++++ 2 files changed, 137 insertions(+)
-> >  create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
-> >=20
-> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> > index 27202beef90c..5b320c2b28c1 100644
-> > --- a/rust/kernel/sync/lock.rs
-> > +++ b/rust/kernel/sync/lock.rs
-> > @@ -15,6 +15,7 @@
-> >=20
-> >  pub mod mutex;
-> >  pub mod spinlock;
-> > +pub mod ww_mutex;
-> >=20
-> >  pub(super) mod global;
-> >  pub use global::{GlobalGuard, GlobalLock, GlobalLockBackend,
-> > GlobalLockedBy}; diff --git a/rust/kernel/sync/lock/ww_mutex.rs
-> > b/rust/kernel/sync/lock/ww_mutex.rs new file mode 100644
-> > index 000000000000..ca5b4525ace6
-> > --- /dev/null
-> > +++ b/rust/kernel/sync/lock/ww_mutex.rs
-> > @@ -0,0 +1,136 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! A kernel Wound/Wait Mutex.
-> > +//!
-> > +//! This module provides Rust abstractions for the Linux kernel's
-> > `ww_mutex` implementation, +//! which provides deadlock avoidance
-> > through a wait-wound or wait-die algorithm. +//!
-> > +//! C header:
-> > [`include/linux/ww_mutex.h`](srctree/include/linux/ww_mutex.h) +//!
-> > +//! For more information:
-> > <https://docs.kernel.org/locking/ww-mutex-design.html> +
-> > +use crate::bindings;
-> > +use crate::prelude::*;
-> > +use crate::types::Opaque;
-> > +
-> > +/// Create static [`WwClass`] instances.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// use kernel::{c_str, define_ww_class};
-> > +///
-> > +/// define_ww_class!(WOUND_WAIT_GLOBAL_CLASS, wound_wait,
-> > c_str!("wound_wait_global_class")); +///
-> > define_ww_class!(WAIT_DIE_GLOBAL_CLASS, wait_die,
-> > c_str!("wait_die_global_class")); +/// ``` +#[macro_export]
-> > +macro_rules! define_ww_class {
-> > +    ($name:ident, wound_wait, $class_name:expr) =3D> {
-> > +        static $name: $crate::sync::lock::ww_mutex::WwClass =3D
-> > +            // SAFETY: This is `static`, so address is fixed and
-> > won't move.
-> > +            unsafe {
-> > $crate::sync::lock::ww_mutex::WwClass::unpinned_new($class_name,
-> > false) };
-> > +    };
-> > +    ($name:ident, wait_die, $class_name:expr) =3D> {
-> > +        static $name: $crate::sync::lock::ww_mutex::WwClass =3D
-> > +            // SAFETY: This is `static`, so address is fixed and
-> > won't move.
-> > +            unsafe {
-> > $crate::sync::lock::ww_mutex::WwClass::unpinned_new($class_name,
-> > true) };
-> > +    };
-> > +}
-> > +
-> > +/// A class used to group mutexes together for deadlock avoidance.
-> > +///
-> > +/// All mutexes that might be acquired together should use the
-> > same class. +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// use kernel::sync::lock::ww_mutex::WwClass;
-> > +/// use kernel::c_str;
-> > +/// use pin_init::stack_pin_init;
-> > +///
-> > +/// stack_pin_init!(let _wait_die_class =3D
-> > WwClass::new_wait_die(c_str!("graphics_buffers"))); +///
-> > stack_pin_init!(let _wound_wait_class =3D
-> > WwClass::new_wound_wait(c_str!("memory_pools"))); +/// +/// #
-> > Ok::<(), Error>(()) +/// ```
-> > +#[pin_data]
-> > +pub struct WwClass {
-> > +    #[pin]
-> > +    inner: Opaque<bindings::ww_class>,
-> > +}
-> > +
-> > +// SAFETY: [`WwClass`] is set up once and never modified. It's
-> > fine to share it across threads. +unsafe impl Sync for WwClass {}
-> > +// SAFETY: Doesn't hold anything thread-specific. It's safe to
-> > send to other threads. +unsafe impl Send for WwClass {}
-> > +
-> > +impl WwClass {
-> > +    /// Creates an unpinned [`WwClass`].
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Caller must guarantee that the returned value is not moved
-> > after creation.
-> > +    pub const unsafe fn unpinned_new(name: &'static CStr,
-> > is_wait_die: bool) -> Self {
-> > +        WwClass {
-> > +            inner: Opaque::new(bindings::ww_class {
-> > +                stamp: bindings::atomic_long_t { counter: 0 },
-> > +                acquire_name: name.as_char_ptr(),
-> > +                mutex_name: name.as_char_ptr(),
-> > +                is_wait_die: is_wait_die as u32,
-> > +                // TODO: Replace with
-> > `bindings::lock_class_key::default()` once stabilized for `const`.
-> > +                //
-> > +                // SAFETY: This is always zero-initialized when
-> > defined with `DEFINE_WD_CLASS`
-> > +                // globally on C side.
-> > +                //
-> > +                // Ref:
-> > <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/include/linux/ww_mutex.h?h=3Dv6.16-rc2#n85>
->=20
-> Please don't use internet to reference the code in the same repo ;-)
-> You can just say "see __WW_CLASS_INITIALIZER() in
-> include/linux/ww_mutex.h".
->=20
+Link: https://lore.kernel.org/rust-for-linux/20250812-tyr-v2-1-9e0f3dc9da95@collabora.com/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+I'm not sure if there was already sent a patch for this. I recall
+being told that one had been sent, but I could not find it. Maybe I
+mixed it up with the regulator change, so now I'm sending a change for
+clk.
+---
+ rust/kernel/clk.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-I don't know why I did that tbh :D I guess I wanted to have a permament
-ref, but it doesn't make much sense yeah.
+diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+index 1e6c8c42fb3a321951e275101848b35e1ae5c2a8..0a290202da69669d670ddad2b6762a1d5f1d912e 100644
+--- a/rust/kernel/clk.rs
++++ b/rust/kernel/clk.rs
+@@ -129,6 +129,13 @@ mod common_clk {
+     #[repr(transparent)]
+     pub struct Clk(*mut bindings::clk);
+ 
++    // SAFETY: It is safe to call `clk_put` on another thread than where `clk_get` was called.
++    unsafe impl Send for Clk {}
++
++    // SAFETY: It is safe to call any combination of the `&self` methods in parallel, as the
++    // methods are synchronized internally.
++    unsafe impl Sync for Clk {}
++
+     impl Clk {
+         /// Gets [`Clk`] corresponding to a [`Device`] and a connection id.
+         ///
 
-> > +                acquire_key: unsafe { core::mem::zeroed() },
-> > +                // TODO: Replace with
-> > `bindings::lock_class_key::default()` once stabilized for `const`.
-> > +                //
-> > +                // SAFETY: This is always zero-initialized when
-> > defined with `DEFINE_WD_CLASS`
-> > +                // globally on C side.
-> > +                //
-> > +                // Ref:
-> > <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/include/linux/ww_mutex.h?h=3Dv6.16-rc2#n85>
-> > +                mutex_key: unsafe { core::mem::zeroed() },
-> > +            }),
-> > +        }
-> > +    }
-> > +
-> > +    /// Creates a [`WwClass`].
-> > +    ///
-> > +    /// You should not use this function directly. Use the
-> > [`define_ww_class!`]
-> > +    /// macro or call [`WwClass::new_wait_die`] or
-> > [`WwClass::new_wound_wait`] instead.
-> > +    const fn new(name: &'static CStr, is_wait_die: bool) -> Self {
-> > +        WwClass {
-> > +            inner: Opaque::new(bindings::ww_class {
->=20
-> You cannot use Opaque::new() here, it'll move the object when new()
-> returns. You should change the function signature to a `... ->
-> PinInit<Self>`, and use pin_init!() macro + Opaque::ffi_init(), like:
->=20
->     const fn new(...) -> PinInit<Self> {
->         pin_init!{
-> 	    Self {
-> 	        inner <- Opaque::ffi_init(|class| {
-> 		    ...
-> 		});
-> 	    }
-> 	}
->     }
->=20
-> Regards,
-> Boqun
+---
+base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+change-id: 20250904-clk-send-sync-3cfa7f4e1ce2
 
-I didn't know that, will do that in the following patch.
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-Thanks,
-Onur
