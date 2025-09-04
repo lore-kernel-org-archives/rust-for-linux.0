@@ -1,107 +1,134 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69332DBF48
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 09:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88031917F4
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 10:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756976934; cv=none; b=iRc/iE8Rxw3M680usS/aX3b7LTjYaI3TuP2LR5+Db1c38GeELqTUz+P64oTXirxf2qeAGRWwRWzpZhVh6YS1pcxTfii4A+FvGvJi6dt/eciUB2SjQhkQW65j5stV9wuvv8EGTi1xXUxFOk+GQsqwbDDl9ZJGl7DM4ofsDilD9H4=
+	t=1756982428; cv=none; b=ESdTNAGxPVJ7az2S/CVo2Rcj0m4A7fY5vaNblx+jM0UB9JE29nTTH9ac9xRU1GQQgU0KL4ShqscrjBKkRxZJQUxpUr4wRxTJJgokFdPIyoWdHGGybCxF9QbpmcWxdTHSkkHzzeMtnmjp15HSspz1vJfd5jHg41nbbWA4p7/RDeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756976934; c=relaxed/simple;
-	bh=9OuwB/mKcO6haey57JJkqXea6iJb0zgcty8aAKBWe5w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sGrBvoJWKF8NHU052niFib/6tcClJ92F71+x7Gr7r7ehdq9putjg7AvphHdg2e5RyE/jmU6o9xROm/EnF+Z43LbGuGJukCH/p8ZI0uv5kuODxZLVGx+XQvziUb2N6kR1iZ848ws5oDFS9fRNHuEdqwx8vnpdUfbDk0xijfFjXOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ceca3pwi; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1756982428; c=relaxed/simple;
+	bh=K35TYVQdmCqeD7Q3E8OIUOVLCEHOxk1ZzvVD9CcXM0g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eYQE2uV500KkrcmfhKdS8xqU3VpwzW8sOolXhMe4d4p1L8vijSaYI+9ixcDlqWoRBTvK6wzuzjzux+DXOFZ9wZU3M14Pj4fOJKBgKAfkH9s7G3+bQCKOJjRvv35pCdQLVOOmZ4t5maztJIDYnUMfClv36sHnUtl79EnBrCrCvfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IX0C3vNk; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ceca3pwi"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-77287fb79d3so781565b3a.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 02:08:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IX0C3vNk"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3dbf3054ac4so437872f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 03:40:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756976932; x=1757581732; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rmBbjONRTs6bzm6TRjxemHxdhBeOSzGNBuBX1gDxW0c=;
-        b=Ceca3pwiSSggVuowWec1JaLEyCaRIHEEeuEXh/Pg2vqE4eeee5PYsZ+7FpTWtLbdhj
-         b4fSSdlxnHgsOgH0tE4QoRCkkGqnV8SE5M0FsiiPVT59UJZ1++fNuZk20zJPCpBdGnsR
-         bpoIUhJsiAOj7N0+5yRiIsQOKPKmMd/wVrADJu5SOAWagOrdk6vbjacvbxuc3sXT4oVw
-         zFBGDbt0SKUAyXznewucg5kpr1wGY5ascZUvXoNkaSBuaeaPLSDfGckGKi+g9W59H+W2
-         Xcn+nidUd00WcL37TCqzcWFEEUFK96Pv2bIHPNTXA0qI0c0dkaHNtr8W9gP24zxFye5r
-         2veQ==
+        d=google.com; s=20230601; t=1756982425; x=1757587225; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o6y2QOBZu14x36SZiIQblNfOse9Z30SqsU6mw32en+A=;
+        b=IX0C3vNkyF7wS+NVZHzQZdQsK/4MIrU68d9uFFm0UA3rjBeAORNyPm0dDYEUNJeWIA
+         yVizZij6kvIZvan6Ssjd/jRhNB0agwwW4l7utVO4UoRYQM+QPSRJjCMW5OcTy0hmIlay
+         okZTyTI/169C3jTozGkwFVVYMzzVYPN8A1NrqDt4ajeMgYBDXFMeBfR9E6/MYCN5+uaZ
+         IJycZ+N9Kcucf94GWXelN0NU6hNAaMoXJOGGmOnK50SVlHY+gVD8FT+jqRYV2eDAgKf+
+         n1WNPLVTPyo5XgIhCeOLuumdbxgQ9OqM9S/vAlAvk+kpVH8ziWlGYHgaYvq8ZjUIvK94
+         qxjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756976932; x=1757581732;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rmBbjONRTs6bzm6TRjxemHxdhBeOSzGNBuBX1gDxW0c=;
-        b=RWILEsLXA9LrqMQyANJwOoQ/6oFt8e6FgzZ1u4qQy1Y79pJaQPTReGkcDde/06gSvu
-         7SAgySxQQm2oj9nBIhGwZKcwCD7CSB50RIpVZNML07fqPo4MGAQCttKFk7G6mqlSmmKy
-         2sod8PgwqwnuqGSKy+aYLs5kZ+/kSDabxTSb8+vDLSbysEx9iBM+XARRQDjuMPjfiz5S
-         dLpcw1eWB8s3pcMtlndVexi2fFTUn304qRAGGnX7cHlsHz2hrLPc5RJBwvkMeuS7fWbu
-         GrxfBlWkywb6EMaobsVETZPT2luUjTlKQdw2ueTi/jpBI7Uw1bbsiwTEmDnL53MEJ1BR
-         i4YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXOiHTdRFme+mLzloYVSJFd0y2j/hIhmzFt/MV3Olh5/0v6cpKgQz7C7rx2HdDxArhYZAx25jvwpzTzYjG6Yw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCJrYpo1DSAaZVcAbqc0cjLRm4IeJXXpCYHLoxXLeEsRaw8nWn
-	0/F7rhE2gNfbsOxyJaJujMD4gOApemsg8YilWo7YaYH7cQ2nt+qfUlxPVxJSOWkJicQ=
-X-Gm-Gg: ASbGncvRE+1FfXkS0isWtB6z1DHL3wY7md2cR59ceL0l4NVqLxh+W73p8KBcS6J39FN
-	3Yw5GVdUaQ3MvekIgDrpMEMlOPPwf4UcwS1h+/zrpYYlKBGwwttCd/UfRBjhIoeRBRTM7K6M6nm
-	fy9BtZotjg/qhyQEhzuo+27U3jBv35w/SIrLx4XmF5ucEkOMR1p0hRaqvcsTwO3PioNzfeYZt7c
-	YT8YTxfwaoFfUrmAq8MKgdKiIK/ZfvWOpDZ4dElp3ghOf6s5LwxhmMhBkSgHA8muezLTX0qF4Q6
-	mWj2fP+g6x3JleeYGE+/Uplj9rkbg1s9bqA3JUuY0LWYXk5HOmdYbgmW3HJvLWRmoq53u4S3TsY
-	8OhoS/D791eoTmzzKqO2aW19BZPSglq2Wsz8=
-X-Google-Smtp-Source: AGHT+IHI7lc2wZNpnK6c7bml3S96KONYzvjvTqV1qrfL3bzvd/FiM6GZPsewH6KTBQYgX9g7o654HA==
-X-Received: by 2002:a05:6a20:3d86:b0:243:a189:f1f8 with SMTP id adf61e73a8af0-243d6ddb3bdmr27908154637.8.1756976931899;
-        Thu, 04 Sep 2025 02:08:51 -0700 (PDT)
-Received: from localhost ([122.172.87.183])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd0736ba7sm16257509a12.12.2025.09.04.02.08.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 02:08:51 -0700 (PDT)
-Date: Thu, 4 Sep 2025 14:38:49 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: clk: implement Send and Sync
-Message-ID: <20250904090849.7uiroafxk5juml6b@vireshk-i7>
-References: <20250904-clk-send-sync-v1-1-48d023320eb8@google.com>
+        d=1e100.net; s=20230601; t=1756982425; x=1757587225;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o6y2QOBZu14x36SZiIQblNfOse9Z30SqsU6mw32en+A=;
+        b=PbyajvOgJDfZQJUBZwhadvbKXQ4IkedgCZY0BJeuzoiMFSOM12YevnGUApUODIp3sk
+         SEQWR6urj6hznJLPh5aLXZYrKAVpu+9VxYWjUYu1/Zj5oXkiGPWlE4RzkeVH17NOUmaE
+         LgazuTcTmnZ+8i9C83mJW0clvBW4XfwMYmyzzeJQ8trHe72IYfauFx3nqvJN5vLgZ2AV
+         dwI0UgipqU9u9KXLPu8XH+1vzflOva9zx3nRt8qtguIxInVe+legh6VSgFVeNyCK5P4+
+         Z+u/5sjnG4zdjBo/JnRN5whjiCQK/83tz/kICtBUy8sq4f0YPbRDy+WSQ+Dn+Krv1R8G
+         DEQA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3StzVNLliHXlkmiP8FKqRdONnMHMdpk4Zoe+R0mr5W+vRfhHE/SM/MjsQ4leUpLaz0hD2mqODsPk8VVfQOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWm31DHTgy3d3bW9LoXvIPD6tSAJcc9FESw+Q6un6o0eDZ/wPG
+	ktvhT405Msa2A6v44pNoB86yJL97UE/Sx6Hd+I0zRrOYgNCzPulu4bpaCUiPgcsQ/gLtI3K6+aq
+	eNYo3sgvzGQEYjJ+P/Q==
+X-Google-Smtp-Source: AGHT+IF9yvAHvKVOXXpEFHka86WFsWc+ojWObCx+xIgC+kdLnrHsvwSPcYjH86gfddOM2J9YtQ9wDriAn1Gd+jI=
+X-Received: from wrbfu17.prod.google.com ([2002:a05:6000:25f1:b0:3e1:aeb6:bd24])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:420c:b0:3d6:212b:9ae2 with SMTP id ffacd0b85a97d-3d6212b9f09mr13611267f8f.63.1756982425153;
+ Thu, 04 Sep 2025 03:40:25 -0700 (PDT)
+Date: Thu, 4 Sep 2025 10:40:24 +0000
+In-Reply-To: <20250901202850.208116-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250904-clk-send-sync-v1-1-48d023320eb8@google.com>
+Mime-Version: 1.0
+References: <20250901202850.208116-1-dakr@kernel.org>
+Message-ID: <aLlsmNzp_KardLUt@google.com>
+Subject: Re: [PATCH] MAINTAINERS: Add drm-rust tree for Rust DRM drivers and infrastructure
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, tzimmermann@suse.de, acourbot@nvidia.com, 
+	daniel.almeida@collabora.com, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On 04-09-25, 09:03, Alice Ryhl wrote:
-> These traits are required for drivers to embed the Clk type in their own
-> data structures because driver data structures are usually required to
-> be Send. See e.g. [1] for the kind of workaround that drivers currently
-> need due to lacking this annotation.
+On Mon, Sep 01, 2025 at 10:26:39PM +0200, Danilo Krummrich wrote:
+> Multiple DRM Rust drivers (e.g. nova-core, nova-drm, Tyr, rvkms) are in
+> development, with at least Nova and (soon) Tyr already upstream. Having a
+> shared tree will ease and accelerate development, since all drivers can
+> consume new infrastructure in the same release cycle.
 > 
-> Link: https://lore.kernel.org/rust-for-linux/20250812-tyr-v2-1-9e0f3dc9da95@collabora.com/ [1]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> This includes infrastructure shared with other subsystem trees (e.g. Rust
+> or driver-core). By consolidating in drm-rust, we avoid adding extra
+> burden to drm-misc maintainers, e.g. dealing with cross-tree topic
+> branches.
+> 
+> The drm-misc tree is not a good fit for this stage of development, since
+> its documented scope is small drivers with occasional large series.
+> 
+> Rust drivers in development upstream, however, regularly involve large
+> patch series, new infrastructure, and shared topic branches, which may
+> not align well with drm-misc at this stage.
+> 
+> The drm-rust tree may not be a permanent solution. Once the core Rust,
+> DRM, and KMS infrastructure have stabilized, drivers and infrastructure
+> changes are expected to transition into drm-misc or standalone driver
+> trees respectively. Until then, drm-rust provides a dedicated place to
+> coordinate development without disrupting existing workflows too much.
+> 
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
-> I'm not sure if there was already sent a patch for this. I recall
-> being told that one had been sent, but I could not find it. Maybe I
-> mixed it up with the regulator change, so now I'm sending a change for
-> clk.
-> ---
->  rust/kernel/clk.rs | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  MAINTAINERS | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fe168477caa4..1cd6597c7f1d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8079,7 +8079,6 @@ F:	Documentation/devicetree/bindings/gpu/
+>  F:	Documentation/gpu/
+>  F:	drivers/gpu/drm/
+>  F:	drivers/gpu/vga/
+> -F:	rust/kernel/drm/
+>  F:	include/drm/drm
+>  F:	include/linux/vga*
+>  F:	include/uapi/drm/
+> @@ -8096,6 +8095,16 @@ X:	drivers/gpu/drm/radeon/
+>  X:	drivers/gpu/drm/tegra/
+>  X:	drivers/gpu/drm/xe/
+>  
+> +DRM DRIVERS AND COMMON INFRASTRUCTURE [RUST]
+> +M:	Danilo Krummrich <dakr@kernel.org>
+> +M:	Alice Ryhl <aliceryhl@google.com>
+> +S:	Supported
+> +W:	https://drm.pages.freedesktop.org/maintainer-tools/drm-rust.html
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+It looks like the right path is:
+https://drm.pages.freedesktop.org/maintainer-tools/repositories/drm-rust.html
 
--- 
-viresh
+Alice
