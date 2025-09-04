@@ -1,295 +1,180 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AD02F5484
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 21:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B601A23A9;
+	Thu,  4 Sep 2025 21:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757020457; cv=none; b=jhsufBBPrs1auwULoLa2S7P/hYEdLVZ7QTHV4oP3F16n5G8PdXGtzqCHm0FJOQGayTXh4vn8UyZNGu+sgoi06b1zpVcck6elsQsFcX/DmIQnahbGzt1AEubFoKyzETSPx4Y+jQFiGeu8owD2aCKNQWyXpngQRSIdSV8mK6hKvOY=
+	t=1757020639; cv=none; b=iJj/nGrMVzMZP2Q5WAs6esuubapeXP4+iEnUbao5jY3UGM6cVmJMkSzg7Ds2MgrDXaicHUIq+7cStZvv+NO79EXm4aXxe/WVAB+arqd4hAujZ3Br0jI+H5yWS4TuhExyTC7CPv5NRPdOUS2GV197gQsMoLnZNItTyp++oorHM10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757020457; c=relaxed/simple;
-	bh=ZOByofkirTEhHxljqlcJt3YijCsj4603lkXVxLBHevc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GOtfXQvLC8jzl3i/eCQJfzXIA+p2eAEShzwkVj2MZDM+B4iDga7mTQ2HtDctfrnX6TpVzH4gb90wjeCI0cp0Wxjro7/hQZZQ0djQ/GO/ORrRjNv5Wo78EcR2YH1p64HlBVxrmFvFmswaTX7iZzSA5ybpgMnndjThT+s1Xn+7kvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BL7ohsv+; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+	s=arc-20240116; t=1757020639; c=relaxed/simple;
+	bh=iAdRiJXtRT5ddNYZ2h4yf+SUvlLPVO+1WbmGgumlLXg=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NTb30vJNIb/5w8wtX61c4NdJIhOXwm7SJhzEvBp3ITlm6fYkkAqXLqz9wG9mk+aOX+yCB7OPZEdL1u2qnfU39O8J/QGW2pJ93I0g82uarcxmzdZPfbQnqeDRpfEeCiSHZZmjvUC4vl58DsR/UU+Hb9CRZhFGogq6OH/vNdRaSTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eqRdrM9d; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BL7ohsv+"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-77260707951so2124072b3a.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Sep 2025 14:14:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eqRdrM9d"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-772627dd50aso2941326b3a.1;
+        Thu, 04 Sep 2025 14:17:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757020455; x=1757625255; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MuVbHTcTn1dGtaw/xfjGHfOlmUWLY+u0Yv+dfyfZ2z0=;
-        b=BL7ohsv+0QJsYKvY/8WoZ/6ufGM0HjlHpe2JUftH6WiV5zaHS7f9jn184BlKilDPsA
-         GC4yvBywrHw+E0r5uaT86gkuMZWA3e0gTWaDm8hm8woGm9DU8/AMRsR903diXYQnTuZW
-         Z2Lsl99uyRWRkLpH6g2mxyCxhFCVpjJWRIYi5QDIic0C5XtfogGh2L0/md4lcNry8Wkp
-         yiC3CmCa9u3m3YHeoPg4GY+6FH/y6tbBBcXj55MecLOtb+R/ZalWjIeWT4kkEYHVfBp5
-         1eeiBOrhFhpx7xhnPotnnr1/P7r088rdBzSUZL/qQK77P0THBHWYdO8UQFie5OoArbnu
-         Bgiw==
+        d=gmail.com; s=20230601; t=1757020636; x=1757625436; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=px3Ogp6YWCHs89tEx1iBwQpFNyIvSJt4gg+izDxpdC0=;
+        b=eqRdrM9dQ2zka/kK61zNcyyavIWeGx3ifsOu1XJsBZKpfiZz0/mS8RE8FlTbeBr+b4
+         73ikt/iwTRN2OfmHfoMYXDJGkCSK7g+hgSfSGCiWbJG6FZF2I+AwQs/+aZkGbSwGe30i
+         FQZNapJx79NUGXLbJHKzzpcg3m40cOx5yVgViYLPRpMjHWlf4iNqs3EE5oTC3OES2DyZ
+         hiBhiJlLqUzBm64xdZLJPFBIfwuxtuK0pY74VTDOPng5McIRisdin7XW783U3H38IDdt
+         4pYvf4uUZrTHG1VNOwSXk2vDoWEHle2be7r3XC70sfkSu4l8bKzLBDpoAZtAkvJUl3cJ
+         F+Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757020455; x=1757625255;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MuVbHTcTn1dGtaw/xfjGHfOlmUWLY+u0Yv+dfyfZ2z0=;
-        b=kbiy1Uildsr0WdSBK7DFJjLfdoFCwAXawUVJ1Bfi+MDrW/ITe36aAd/N99cRhXsC8Y
-         uTsDT5NC6nfz9UlS4DRx7TjgEvAvFuN2gD13enk1pej0ZoS2n1wF2F+sQz5Uu92fw5wU
-         PkPQmP+cmtVoBhySUarPxrXDAy6OC/n8er5my1bAvvtMe2F4hkTKxId9DHx7iJyJ+fh6
-         nkQNG0U4EeWBCpqMRvBKJYzH0xAIM4O9cpNQPKvNgG3zwGEjrjOwtsG6bT/02RLKdCf8
-         zxEryPrz0/xdhA9Hygzd5AUmsOdzr4U99SxXqWlowTmXR+/hON/xWG+coMndZ4Zu6+Wn
-         tFXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUDGuW08Ovmoh1rDvH//of3vqTEb4EKe7R5FGHfbBY6y1F6ZeOk88dy8jM8QDAXekYgMOvbpTQcB850FaztyQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqnanlhCWN6AenJtVXlUCocXNMfoEJMM4+LHIok1yakzi4mYa1
-	oteLt+7ThNdqZCM80efpEpvnM0KYmq7dq+fNHLA/8wAZ6fwHnVBlKeww2uyiqjkiCl30E4xBqEZ
-	i/6SG21gmCA==
-X-Google-Smtp-Source: AGHT+IE8miOQ1cTcO0C+Ywnb/WSRBEUZzd7DMsAk3P0BP9MWStesJpoYvtzfZYCTN4qKw3/Cfc/6aI10NvFj
-X-Received: from pfbjo21.prod.google.com ([2002:a05:6a00:9095:b0:771:83fa:dfac])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:218a:b0:243:b20d:5e05
- with SMTP id adf61e73a8af0-243d6f051e5mr28631242637.39.1757020455228; Thu, 04
- Sep 2025 14:14:15 -0700 (PDT)
-Date: Thu, 04 Sep 2025 21:13:58 +0000
-In-Reply-To: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+        d=1e100.net; s=20230601; t=1757020636; x=1757625436;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=px3Ogp6YWCHs89tEx1iBwQpFNyIvSJt4gg+izDxpdC0=;
+        b=kRkpQCNi8UKl1sUqQHgQQQdUHnGhJcrakPZ1czjPTObKPMlEGX7Qex0MW0hK5ymtEH
+         dXkC0tfyIE9NrzDdEUrRedZKc1TPSj7V7FHMgotfqyaSyAc57zwJ/NEXZcYNqhtYiCDj
+         0Iq0z2fsTLY0FDu7r/MV2TacHO5IGw39Z1e3+EUFoYnEfa1bGhL3n/OdoVD3bGxA1uK0
+         yC+B2U07kg3EqRkZoREXF8hQnNDLcy2sXB22H2dwBNPFSVDgKtcrjIPLqu9aiaSh5cow
+         6L563aP1A1DIoZTRSyG8Jdj6YWrM6/llyWASF21XCZiG9LHL/ZJ6F4QurTiRO8ZAOOyc
+         ooNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUitIGUiicE3wqF7qc5vCJbf/hooVmrlaPrIL9FhBv9uL7AWZbd99p80SB62sRI1jXMPh73pW0oMyStpr5w0fg=@vger.kernel.org, AJvYcCWfnLxirPqEwIootpRvoPzxk5jKP+UdwgkrS7TCx6Z4PEHdMFnIaThWqOwczU/N97iFfhXg3QiV5HAHNac=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yylfeg5GH6U6NzocNoC7YU7zWTsgGrW90SxYeiWvRDjYl3EG1YQ
+	M3i6bEkt+ajrH0lxawgT8h9x2X3cdw81oA/Wp+KJL2xjgDyWJoI0Rhr1
+X-Gm-Gg: ASbGnctvF0ehVaMFeolY0OS7gFrydA5yAg+kAUc5SzOD80i1Dff0Pr9xcazcMt8mL1M
+	XKfcZhVJGsXQPlEZX9OTI15GyKDJeJqc9HWYIbQjC/QaQqmz8HvNxLNY9AKNGZSBNmsxwdIHtoM
+	ntxnk3oXWQB+m1Bm2ILonmSYtrpm+ufv/VCu+vhSrVEJphdC2ODv0+hObON5neHViRQH4y+t2wj
+	/BJGvKQMTm3y9e1/ncNzZrYmTJqfHZOqYgi0JDUlYdB7vXyMHqxkau0bedMInAU0Q0lYyzwqgBl
+	Pb15VuoVmgf/l+mP9XEP5EpP5/vdjaAY4YlU0Eg/tSaAH2tqXQkzLD3+iQ5fCDBCYO1oIqjvdMi
+	gZPqqGMUApaq4aNG5BS2EZ8u3WSI=
+X-Google-Smtp-Source: AGHT+IG5l20PWWMfzJjJHKvLY6V0Xvg6JZ009OTeub2pHn29i1TL6bxezyUFqKnj2cbj0Z5C4lE+rQ==
+X-Received: by 2002:a17:902:e945:b0:24b:eef:643c with SMTP id d9443c01a7336-24cedc6f3f1mr12554305ad.5.1757020635583;
+        Thu, 04 Sep 2025 14:17:15 -0700 (PDT)
+Received: from Cyndaquil. ([174.127.224.194])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cd5092951sm18811275ad.18.2025.09.04.14.17.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 14:17:15 -0700 (PDT)
+Message-ID: <68ba01db.170a0220.31417f.72dc@mx.google.com>
+X-Google-Original-Message-ID: <aLoB0+aEivX5jEuV@Cyndaquil.>
+Date: Thu, 4 Sep 2025 14:17:07 -0700
+From: Mitchell Levy <levymitchell0@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 1/7] rust: percpu: introduce a rust API for per-CPU
+ variables
+References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
+ <20250828-rust-percpu-v3-1-4dd92e1e7904@gmail.com>
+ <aLi2MBAwoD65tokv@yury>
+ <68b9ee59.170a0220.a7a31.675c@mx.google.com>
+ <aLn2PzD1KRbu4SpZ@yury>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
-X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757020440; l=7155;
- i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=ZOByofkirTEhHxljqlcJt3YijCsj4603lkXVxLBHevc=; b=z+SsK8AErLja4NFbvWC9hBFsO/jociQidr7OHZFQUBBZxVNnfNJfH3+U1dQALNPMVtQF/RxOC
- ABPHJUeKBRkBVRtNo40OpsQ44BZRYj8V0p1k7vJcJ/y5gvyxSfqOGJr
-X-Mailer: b4 0.14.2
-Message-ID: <20250904-debugfs-rust-v11-7-7d12a165685a@google.com>
-Subject: [PATCH v11 7/7] samples: rust: Add scoped debugfs sample driver
-From: Matthew Maurer <mmaurer@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>, 
-	Dirk Beheme <dirk.behme@de.bosch.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLn2PzD1KRbu4SpZ@yury>
 
-Adds a new sample driver `rust_scoped_debugfs` that demonstrates the
-use of the scoped debugfs APIs.
+On Thu, Sep 04, 2025 at 04:27:43PM -0400, Yury Norov wrote:
+> On Thu, Sep 04, 2025 at 12:53:59PM -0700, Mitchell Levy wrote:
+> > On Wed, Sep 03, 2025 at 05:42:08PM -0400, Yury Norov wrote:
+> > > On Thu, Aug 28, 2025 at 12:00:08PM -0700, Mitchell Levy wrote:
+> 
+> ...
+> 
+> > > > +    /// Get a `&mut MaybeUninit<T>` to the per-CPU variable on the current CPU represented by `&self`
+> > > > +    ///
+> > > > +    /// # Safety
+> > > > +    /// The returned `&mut T` must follow Rust's aliasing rules. That is, no other `&(mut) T` may
+> > > > +    /// exist that points to the same location in memory. In practice, this means that `get_(mut_)ref`
+> > > 
+> > > How long is this line?
+> > 
+> > 102 chars, or 103 if you include the newline. `rustfmt` doesn't break
+> > the line, so I left it as-is for this patch. Happy to change it if it
+> > poses a problem, though.
+> 
+> Then don't use that tool - it's broken. In kernel we used to have 80-chars
+> limit for the lines, recently relaxed to 100.
 
-The driver creates a `control` directory with two write-only files,
-`create` and `remove`. Writing a name and a series of numbers to
-`create` will create a new subdirectory under a `dynamic` directory.
-This new subdirectory will contain files that expose the numbers as
-atomic values.
+Sure, will fix.
 
-Writing a name to `remove` will remove the corresponding subdirectory
-from the `dynamic` directory.
+> > > > +    /// must not be called on another `PerCpuPtr<T>` that is a copy/clone of `&self` for as long as
+> > > > +    /// the returned reference lives.
+> > > > +    ///
+> > > > +    /// CPU preemption must be disabled before calling this function and for the lifetime of the
+> > > > +    /// returned reference. Otherwise, the returned reference might end up being a reference to a
+> > > > +    /// different CPU's per-CPU area, causing the potential for a data race.
+> > > > +    #[allow(clippy::mut_from_ref)] // Safety requirements prevent aliasing issues
+> > > > +    pub unsafe fn get_mut_ref(&self) -> &mut MaybeUninit<T> {
+> > > > +        // SAFETY: `self.get_ptr()` returns a valid pointer to a `MaybeUninit<T>` by its contract,
+> > > > +        // and the safety requirements of this function ensure that the returned reference is
+> > > > +        // exclusive.
+> > > > +        unsafe { &mut *(self.get_ptr()) }
+> > > > +    }
+> > > 
+> > > Here and everywhere: would it make sense to enforce it by testing
+> > > the CPU with preemptible() before returning a reference? 
+> > 
+> > The only thing we could do would be to panic, which I don't 100% love.
+> > Another alternative would be to take a &'a CpuGuard and bound the
+> > lifetime of the returned reference to 'a, and then we don't need to do
+> > any run-time checking at all.
+> > 
+> > Originally, I had left this to the caller because it might make sense
+> > down the line for some complex behavior based on per-CPU (e.g., per-CPU
+> > refcount) to do all its own management of per-CPU variables using
+> > `PerCpuPtr` as a core primitive. In these cases, I believe there are
+> > some times where being non-preemptible wouldn't actually be required
+> > (that said, my thoughts on this aren't well reflected in the safety
+> > comment, since I said it must be disabled... gah). But, the more I think
+> > about it, the more I think these use cases would be better served by
+> > just using `get_ptr` --- conjuring `&mut` references seems like it would
+> > be a big footgun. And the safety comment already actually reflects these
+> > thoughts somewhat :)
+> 
+> If you think that in future there will be a user who will not need to
+> disable preemption before dereferencing a percpu pointer, then you can
+> add another less restricted flavor of the helper.
 
-This sample serves as an example of how to use the `debugfs::Scope`
-and `debugfs::ScopedDir` APIs to create and manage debugfs entries
-that are tied to the lifetime of a data structure.
+Yeah, that's fair.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- MAINTAINERS                         |   1 +
- samples/rust/Kconfig                |  11 +++
- samples/rust/Makefile               |   1 +
- samples/rust/rust_scoped_debugfs.rs | 134 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 147 insertions(+)
+> > For v4 I will probably have this function take a &'a CpuGuard and use
+> > that to bound the liftetime of the returned reference, unless there are
+> > other thoughts on this point.
+> 
+> I don't want you to panic just because of invlid user call, but
+> whatever you call in comment must be enforced in code, right?
+> 
+> 
+> You can use the guard, if it guarantees the preemption disabled; or 
+> you can return None; you can create CONFIG_RUST_PERCPU_HARDENED for
+> panics.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b6db584a33dd7ee39de3fdd0085d2bd7b7bef0e..2cbe890085dbb6a652623b38dd0eadeeaa127a94 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7482,6 +7482,7 @@ F:	rust/kernel/driver.rs
- F:	rust/kernel/faux.rs
- F:	rust/kernel/platform.rs
- F:	samples/rust/rust_debugfs.rs
-+F:	samples/rust/rust_scoped_debugfs.rs
- F:	samples/rust/rust_driver_platform.rs
- F:	samples/rust/rust_driver_faux.rs
- 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 01101db41ae31b08a86d048cdd27da8ef9bb23a2..3372935519d658529ee7ba25fb2c3fff6adae8c4 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -73,6 +73,17 @@ config SAMPLE_RUST_DEBUGFS
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_SCOPED_DEBUGFS
-+	tristate "Scoped DebugFS Test Module"
-+	depends on DEBUG_FS
-+	help
-+	  This option builds the Rust Scoped DebugFS Test module sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_scoped_debugfs.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_DRIVER_PCI
- 	tristate "PCI Driver"
- 	depends on PCI
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 61276222a99f8cc6d7f84c26d0533b30815ebadd..de10b7f4db3996dc57be813ceb076d050ad8f65a 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
- obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
- obj-$(CONFIG_SAMPLE_RUST_DEBUGFS)		+= rust_debugfs.o
-+obj-$(CONFIG_SAMPLE_RUST_SCOPED_DEBUGFS)	+= rust_scoped_debugfs.o
- obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
-diff --git a/samples/rust/rust_scoped_debugfs.rs b/samples/rust/rust_scoped_debugfs.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..7c34cab62a2753d1ede3a1334be1fb13ddce780c
---- /dev/null
-+++ b/samples/rust/rust_scoped_debugfs.rs
-@@ -0,0 +1,134 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2025 Google LLC.
-+
-+//! Sample DebugFS exporting platform driver that demonstrates the use of
-+//! `Scope::dir` to create a variety of files without the need to separately
-+//! track them all.
-+
-+use core::sync::atomic::AtomicUsize;
-+use kernel::debugfs::{Dir, Scope};
-+use kernel::prelude::*;
-+use kernel::sync::Mutex;
-+use kernel::{c_str, new_mutex, str::CString};
-+
-+module! {
-+    type: RustScopedDebugFs,
-+    name: "rust_scoped_debugfs",
-+    authors: ["Matthew Maurer"],
-+    description: "Rust Scoped DebugFS usage sample",
-+    license: "GPL",
-+}
-+
-+fn remove_file_write(
-+    mod_data: &ModuleData,
-+    reader: &mut kernel::uaccess::UserSliceReader,
-+) -> Result<()> {
-+    let mut buf = [0u8; 128];
-+    if reader.len() >= buf.len() {
-+        return Err(EINVAL);
-+    }
-+    let n = reader.len();
-+    reader.read_slice(&mut buf[..n])?;
-+
-+    let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?.trim();
-+    let nul_idx = s.len();
-+    buf[nul_idx] = 0;
-+    let to_remove = CStr::from_bytes_with_nul(&buf[..nul_idx + 1]).map_err(|_| EINVAL)?;
-+    mod_data
-+        .devices
-+        .lock()
-+        .retain(|device| device.name.as_bytes() != to_remove.as_bytes());
-+    Ok(())
-+}
-+
-+fn create_file_write(
-+    mod_data: &ModuleData,
-+    reader: &mut kernel::uaccess::UserSliceReader,
-+) -> Result<()> {
-+    let mut buf = [0u8; 128];
-+    if reader.len() > buf.len() {
-+        return Err(EINVAL);
-+    }
-+    let n = reader.len();
-+    reader.read_slice(&mut buf[..n])?;
-+
-+    let mut nums = KVec::new();
-+
-+    let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?.trim();
-+    let mut items = s.split_whitespace();
-+    let name_str = items.next().ok_or(EINVAL)?;
-+    let name = CString::try_from_fmt(fmt!("{name_str}"))?;
-+    let file_name = CString::try_from_fmt(fmt!("{name_str}"))?;
-+    for sub in items {
-+        nums.push(
-+            AtomicUsize::new(sub.parse().map_err(|_| EINVAL)?),
-+            GFP_KERNEL,
-+        )?;
-+    }
-+
-+    let scope = KBox::pin_init(
-+        mod_data
-+            .device_dir
-+            .scope(DeviceData { name, nums }, &file_name, |dev_data, dir| {
-+                for (idx, val) in dev_data.nums.iter().enumerate() {
-+                    let Ok(name) = CString::try_from_fmt(fmt!("{idx}")) else {
-+                        return;
-+                    };
-+                    dir.read_write_file(&name, val);
-+                }
-+            }),
-+        GFP_KERNEL,
-+    )?;
-+    (*mod_data.devices.lock()).push(scope, GFP_KERNEL)?;
-+
-+    Ok(())
-+}
-+
-+struct RustScopedDebugFs {
-+    _data: Pin<KBox<Scope<ModuleData>>>,
-+}
-+
-+#[pin_data]
-+struct ModuleData {
-+    device_dir: Dir,
-+    #[pin]
-+    devices: Mutex<KVec<Pin<KBox<Scope<DeviceData>>>>>,
-+}
-+
-+impl ModuleData {
-+    fn init(device_dir: Dir) -> impl PinInit<Self> {
-+        pin_init! {
-+            Self {
-+                device_dir: device_dir,
-+                devices <- new_mutex!(KVec::new())
-+            }
-+        }
-+    }
-+}
-+
-+struct DeviceData {
-+    name: CString,
-+    nums: KVec<AtomicUsize>,
-+}
-+
-+fn init_control(base_dir: &Dir, dyn_dirs: Dir) -> impl PinInit<Scope<ModuleData>> + '_ {
-+    base_dir.scope(
-+        ModuleData::init(dyn_dirs),
-+        c_str!("control"),
-+        |data, dir| {
-+            dir.write_only_callback_file(c_str!("create"), data, &create_file_write);
-+            dir.write_only_callback_file(c_str!("remove"), data, &remove_file_write);
-+        },
-+    )
-+}
-+
-+impl kernel::Module for RustScopedDebugFs {
-+    fn init(_module: &'static kernel::ThisModule) -> Result<Self, Error> {
-+        let base_dir = Dir::new(c_str!("rust_scoped_debugfs"));
-+        let dyn_dirs = base_dir.subdir(c_str!("dynamic"));
-+        Ok(Self {
-+            _data: KBox::pin_init(init_control(&base_dir, dyn_dirs), GFP_KERNEL)?,
-+        })
-+    }
-+}
+Yes, the existence of a `CpuGuard` guarantees that preemption is
+disabled.
 
--- 
-2.51.0.355.g5224444f11-goog
+> Please refer the recent bitmap API wrapper, and how erroneous request
+> is handled there.
+> 
+> https://lore.kernel.org/all/20250904165015.3791895-4-bqe@google.com/
 
+Thanks,
+Mitchell
