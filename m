@@ -1,57 +1,57 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE212FF15B;
-	Thu,  4 Sep 2025 13:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753F7302CC3;
+	Thu,  4 Sep 2025 13:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756992950; cv=pass; b=i3h31AGRWd7Cmoy3zku5M/fnWTQds4wZuIY599fQA23tp5r6vW+dc7c87L/K3Xy5T1TSSz8mb1hl2zQybDMekhxXC23bCdoOilESmwiAvGA45vAy2xnl6qKO6S61EAtQLJj3XB6DGISaN0mZyjT42uv+9wZYd62f5tjw6laoz7o=
+	t=1756993421; cv=pass; b=BcK0ARB5wYwQXamx37DgM6EBE5H9jw7SI9r4beAnMR1beSCMI+wCHssn7Ol3OzJ5corb5AnwDGR92Z5TCKqO2YUarUwFx0O+3FQeKh7+Kyi968gROzhrjXPXUhH7QkjOOuXhhRnG7mB9gT/rKN0hSrzpyjJzxtpASDWw615V5DM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756992950; c=relaxed/simple;
-	bh=nPk9ZOXqvwoqWRAeTf74Qvfb/iFRVJTM6jVqOIXTPUk=;
+	s=arc-20240116; t=1756993421; c=relaxed/simple;
+	bh=3PvhRnUQs3Az1IPfNwGcm1ALNf5Pd3gXrjnWap2nMlw=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=auV0LSbTA00WoyjAstBtXmykU6oSsf6Kq2DDAaEwJdNRkkqs0d/Cg0w9JLWwB2taHIqhWZzGuaNYAr4bqPtOza6HfTspzbpFvMXD/Lh7S4MahsK4zGcihgiJACpoOWviJELYV0ADpGTfBJKrA/07W+Uuh+bZochXJe5zLMwq6gs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UsJjKoTY; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=OlwrPgMHMzHIZ5+XsfdLqlR/ZTsznkoriqqPvqUOFHgGXQZDLLgg5yP6oEgmwqMqYl7w+KBh5Ry/Ndn48v5zavUBHrE1+Vt3h+zyKazt1z8goSlEuvFv5jCxBfx9vIrRzMVdKDG59M3ILmyHZyKHP5KuK3tefPCgGzJs4QEaYpg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=EqDhF7bJ; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UsJjKoTY"
-ARC-Seal: i=1; a=rsa-sha256; t=1756992924; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="EqDhF7bJ"
+ARC-Seal: i=1; a=rsa-sha256; t=1756993394; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=XDjhWHa4NmN0rbRoKzcTFdfJ8XYbE0/NfMze/eLl+ScNVXSFTyTW/9B8yG20U7WxXAqn/0ttZ9K3IIvlIS6EIo7aSP+7AkfzCSbaHxwojn/8jbGsPUZY3U5MaHncXgWAlGjEfqjhOlAdty5yKqiA90cEv+50lRI48Kdlq0pysy0=
+	b=EM5RoJlDfidcoH0iXxABuN7m3OYlKGT+wnqNJELtbqkq7Bqy7YpsWx5iTdIimV/o5iOi3eYqpRJ8vVnjSpQ4AM7AzRFoDztrgj7bebQQxtOEPD+K6RJUs1QnnY64OUtKxuWPM5UWftPyD33C7V7g67OGJh+IjrKF+Wea+sSpjO8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756992924; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=BDP7uwNrDy2L82t2/eHdfQJEVvQlEfERp6xLzY9YInM=; 
-	b=Rkz4B8gGPJIIikNnVuiC9W1AbtGfp4jJ7TXvO8Rkd0ntZn+ibnXZIaVAFkRFyIWyMcGMNVYW7yp6e7tX6JtM9lyijzXL0o1QnY3ngTv/ObJf8gNFWXKO19CmZVKYwlWVfcsXFic8oV8aLkvwgqkdeW/wSEITLGRzMCGD+KBUaiM=
+	t=1756993394; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=v/CGpSbTX1swAaII5MzvS161EteBjkwE/loRHMWcMrE=; 
+	b=U3YK7nZm/bLjgDIxJubCTzRmhy5p13IsMKb0SruW0+Q5V//rs0TIDsyGg/FosfP0M8VZF0rWLsY+uKB88ujPhF0SRNXoPB0s/1jCFX1gU/fYMoKiXsEka0p01Cq+91pmNw5NW30d6TfXFOSs9IFIunaEIWBfCrf3Xf0QH0qrNCE=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756992924;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756993394;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=BDP7uwNrDy2L82t2/eHdfQJEVvQlEfERp6xLzY9YInM=;
-	b=UsJjKoTYefuGH+/A8dOzjmVdktkPOr7NxfdR3BrNcsADvs7Kai8hnyRuD770lPGS
-	6WEhqGlEjaA4FhYMJs0durFPB9iZzOs6elB1fclJq+Ag1QVrznljQdzu1EiGXj1H64I
-	q+txlE2KryahxIOW1DLWeB7Pm8wm1yVx/gD4JQq8=
-Received: by mx.zohomail.com with SMTPS id 1756992922006491.6688209679671;
-	Thu, 4 Sep 2025 06:35:22 -0700 (PDT)
+	bh=v/CGpSbTX1swAaII5MzvS161EteBjkwE/loRHMWcMrE=;
+	b=EqDhF7bJLuQAElm1IsjDZdxHLUV9Jb4oCgW/HpVLvppQ+9QJnyzs7qNzq0oQkPdZ
+	JNQ+tyjOgj5tB7VBcCmVWuUTRKRgsT1Kru3tliFQk4r1zAatMwCa7NwQgZw8OGu+t9s
+	k4WRNWnpFFmYc/cWSE90dqPgclkYNAS4CAzUGeeE=
+Received: by mx.zohomail.com with SMTPS id 1756993391488147.0851196413604;
+	Thu, 4 Sep 2025 06:43:11 -0700 (PDT)
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 08/14] drm/gem/shmem: Extract drm_gem_shmem_release()
- from drm_gem_shmem_free()
+Subject: Re: [PATCH v3 09/14] rust: gem: Introduce DriverObject::Args
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250829224116.477990-9-lyude@redhat.com>
-Date: Thu, 4 Sep 2025 10:35:05 -0300
+In-Reply-To: <20250829224116.477990-10-lyude@redhat.com>
+Date: Thu, 4 Sep 2025 10:42:55 -0300
 Cc: dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>,
  Thomas Zimmermann <tzimmermann@suse.de>,
@@ -66,11 +66,12 @@ Cc: dri-devel@lists.freedesktop.org,
  Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>
+ Asahi Lina <lina+kernel@asahilina.net>,
+ "open list:DRM DRIVER FOR NVIDIA GPUS [RUST]" <nouveau@lists.freedesktop.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <A6150946-73B6-43AE-B12C-B0E692E9E3A5@collabora.com>
+Message-Id: <91A174DE-B7A1-4F35-ADAB-39873B17A3D4@collabora.com>
 References: <20250829224116.477990-1-lyude@redhat.com>
- <20250829224116.477990-9-lyude@redhat.com>
+ <20250829224116.477990-10-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
@@ -79,114 +80,227 @@ X-ZohoMailClient: External
 
 > On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> At the moment the way that freeing gem shmem objects is not ideal for =
-rust
+> This is an associated type that may be used in order to specify a =
+data-type
+> to pass to gem objects when construction them, allowing for drivers to =
+more
 
-This does not read very well IMHO.
+This doesn=E2=80=99t read very well IMHO.
 
-> bindings. drm_gem_shmem_free() releases all of the associated memory =
-with a
-> gem shmem object with kfree(), which means that for us to correctly =
-release
-> a gem shmem object in rust we have to manually drop all of the =
-contents of
-> our gem object structure in-place by hand before finally calling
-> drm_gem_shmem_free() to release the shmem resources and the allocation =
-for
-> the gem object.
+> easily initialize their private-data for gem objects.
+
+nit: I think that "private data" doesn=E2=80=99t need a hyphen?
+
 >=20
-> Since the only reason this is an issue is because of =
-drm_gem_shmem_free()
-> calling kfree(), we can fix this by splitting drm_gem_shmem_free() out =
-into
-> itself and drm_gem_shmem_release(), where drm_gem_shmem_release() =
-releases
-> the various gem shmem resources without freeing the structure itself. =
-With
-> this, we can safely re-acquire the KBox for the gem object's memory
-> allocation and let rust handle cleaning up all of the other struct =
-members
-> automatically.
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
+> ---
+> V3:
+> * s/BaseDriverObject/DriverObject/
 >=20
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
-> drivers/gpu/drm/drm_gem_shmem_helper.c | 23 ++++++++++++++++++-----
-> include/drm/drm_gem_shmem_helper.h     |  1 +
-> 2 files changed, 19 insertions(+), 5 deletions(-)
+> drivers/gpu/drm/nova/gem.rs |  5 ++-
+> rust/kernel/drm/gem/mod.rs  | 75 +++++++++++++++++++++++++++++++++----
+> 2 files changed, 71 insertions(+), 9 deletions(-)
 >=20
-> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c =
-b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> index b20a7b75c7228..50594cf8e17cc 100644
-> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> @@ -175,13 +175,13 @@ struct drm_gem_shmem_object =
-*drm_gem_shmem_create_with_mnt(struct drm_device *de
-> EXPORT_SYMBOL_GPL(drm_gem_shmem_create_with_mnt);
+> diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
+> index 10e3053f1a246..015cb56061a56 100644
+> --- a/drivers/gpu/drm/nova/gem.rs
+> +++ b/drivers/gpu/drm/nova/gem.rs
+> @@ -19,8 +19,9 @@ pub(crate) struct NovaObject {}
+> impl gem::DriverObject for NovaObject {
+>     type Driver =3D NovaDriver;
+>     type Object =3D gem::Object<Self>;
+> +    type Args =3D ();
 >=20
-> /**
-> - * drm_gem_shmem_free - Free resources associated with a shmem GEM =
-object
-> - * @shmem: shmem GEM object to free
-> + * drm_gem_shmem_release - Release resources associated with a shmem =
-GEM object.
-> + * @shmem: shmem GEM object
->  *
-> - * This function cleans up the GEM object state and frees the memory =
-used to
-> - * store the object itself.
-> + * This function cleans up the GEM object state, but does not free =
-the memory used to store the
-> + * object itself. This function is meant to be a dedicated helper for =
-the Rust GEM bindings.
->  */
-> -void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem)
-> +void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem)
-> {
-> struct drm_gem_object *obj =3D &shmem->base;
->=20
-> @@ -208,6 +208,19 @@ void drm_gem_shmem_free(struct =
-drm_gem_shmem_object *shmem)
+> -    fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, =
+Error> {
+> +    fn new(_dev: &NovaDevice, _size: usize, _args: Self::Args) -> =
+impl PinInit<Self, Error> {
+>         try_pin_init!(NovaObject {})
+>     }
 > }
+> @@ -34,7 +35,7 @@ pub(crate) fn new(dev: &NovaDevice, size: usize) -> =
+Result<ARef<gem::Object<Self
+>             return Err(EINVAL);
+>         }
 >=20
-> drm_gem_object_release(obj);
+> -        gem::Object::new(dev, aligned_size)
+> +        gem::Object::new(dev, aligned_size, ())
+>     }
+>=20
+>     /// Look up a GEM object handle for a `File` and return an =
+`ObjectRef` for it.
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index f901d4263ee87..fe6ff3762a504 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -6,13 +6,14 @@
+>=20
+> use crate::{
+>     alloc::flags::*,
+> -    bindings, drm,
+> +    bindings,
+>     drm::driver::{AllocImpl, AllocOps},
+> +    drm::{self, private::Sealed},
+>     error::{to_result, Result},
+>     prelude::*,
+>     types::{ARef, AlwaysRefCounted, Opaque},
+> };
+> -use core::{ops::Deref, ptr::NonNull};
+> +use core::{marker::PhantomData, ops::Deref, ptr::NonNull};
+>=20
+> /// A type alias for retrieving a [`Driver`]s [`DriverFile`] =
+implementation from its
+> /// [`DriverObject`] implementation.
+> @@ -21,6 +22,26 @@
+> /// [`DriverFile`]: drm::file::DriverFile
+> pub type DriverFile<T> =3D drm::File<<<T as DriverObject>::Driver as =
+drm::Driver>::File>;
+>=20
+> +/// A helper macro for implementing AsRef<OpaqueObject<=E2=80=A6>>
+> +macro_rules! impl_as_opaque {
+> +    ($type:ty where $tparam:ident : $tparam_trait:ident) =3D> {
+> +        impl<D, $tparam> =
+core::convert::AsRef<kernel::drm::gem::OpaqueObject<D>> for $type
+> +        where
+> +            D: kernel::drm::driver::Driver,
+> +            Self: kernel::drm::gem::DriverObject<Driver =3D D>,
+> +            Self: kernel::drm::gem::IntoGEMObject,
+> +            $tparam: $tparam_trait,
+> +        {
+> +            fn as_ref(&self) -> &kernel::drm::gem::OpaqueObject<D> {
+> +                // SAFETY: This cast is safe via our type invariant.
+> +                unsafe { &*((self.as_raw().cast_const()).cast()) }
+> +            }
+> +        }
+> +    };
 > +}
-> +EXPORT_SYMBOL_GPL(drm_gem_shmem_release);
 > +
-> +/**
-> + * drm_gem_shmem_free - Free resources associated with a shmem GEM =
-object
-> + * @shmem: shmem GEM object to free
-> + *
-> + * This function cleans up the GEM object state and frees the memory =
-used to
-> + * store the object itself.
-> + */
-> +void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem)
-> +{
-> + drm_gem_shmem_release(shmem);
-> kfree(shmem);
-> }
-> EXPORT_SYMBOL_GPL(drm_gem_shmem_free);
-> diff --git a/include/drm/drm_gem_shmem_helper.h =
-b/include/drm/drm_gem_shmem_helper.h
-> index 235dc33127b9a..589f7bfe7506e 100644
-> --- a/include/drm/drm_gem_shmem_helper.h
-> +++ b/include/drm/drm_gem_shmem_helper.h
-> @@ -112,6 +112,7 @@ struct drm_gem_shmem_object =
-*drm_gem_shmem_create(struct drm_device *dev, size_t
-> struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct =
-drm_device *dev,
->   size_t size,
->   struct vfsmount *gemfs);
-> +void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem);
-> void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem);
+> +pub(crate) use impl_as_opaque;
+> +
+> /// GEM object functions, which must be implemented by drivers.
+> pub trait DriverObject: Sync + Send + Sized {
+>     /// Parent `Driver` for this object.
+> @@ -29,8 +50,15 @@ pub trait DriverObject: Sync + Send + Sized {
+>     /// The GEM object type that will be passed to various callbacks.
+>     type Object: AllocImpl;
 >=20
-> void drm_gem_shmem_put_pages_locked(struct drm_gem_shmem_object =
-*shmem);
+> +    /// The data type to use for passing arguments to =
+[`BaseDriverObject::new`].
+> +    type Args;
+> +
+>     /// Create a new driver data object for a GEM object of a given =
+size.
+> -    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl =
+PinInit<Self, Error>;
+> +    fn new(
+> +        dev: &drm::Device<Self::Driver>,
+> +        size: usize,
+> +        args: Self::Args,
+> +    ) -> impl PinInit<Self, Error>;
+>=20
+>     /// Open a new handle to an existing object, associated with a =
+File.
+>     fn open(_obj: &Self::Object, _file: &DriverFile<Self>) -> Result {
+> @@ -42,7 +70,7 @@ fn close(_obj: &Self::Object, _file: =
+&DriverFile<Self>) {}
+> }
+>=20
+> /// Trait that represents a GEM object subtype
+> -pub trait IntoGEMObject: Sized + super::private::Sealed + =
+AlwaysRefCounted {
+> +pub trait IntoGEMObject: Sized + Sealed + AlwaysRefCounted {
+>     /// Returns a reference to the raw `drm_gem_object` structure, =
+which must be valid as long as
+>     /// this owning object is valid.
+>     fn as_raw(&self) -> *mut bindings::drm_gem_object;
+> @@ -233,11 +261,11 @@ impl<T: DriverObject> Object<T> {
+>     };
+>=20
+>     /// Create a new GEM object.
+> -    pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> =
+Result<ARef<Self>> {
+> +    pub fn new(dev: &drm::Device<T::Driver>, size: usize, args: =
+T::Args) -> Result<ARef<Self>> {
+>         let obj: Pin<KBox<Self>> =3D KBox::pin_init(
+>             try_pin_init!(Self {
+>                 obj: Opaque::new(bindings::drm_gem_object::default()),
+> -                data <- T::new(dev, size),
+> +                data <- T::new(dev, size, args),
+>                 // INVARIANT: The drm subsystem guarantees that the =
+`struct drm_device` will live
+>                 // as long as the GEM object lives.
+>                 dev: dev.into(),
+> @@ -289,7 +317,7 @@ extern "C" fn free_callback(obj: *mut =
+bindings::drm_gem_object) {
+>     }
+> }
+>=20
+> -impl<T: DriverObject> super::private::Sealed for Object<T> {}
+> +impl<T: DriverObject> Sealed for Object<T> {}
+>=20
+> impl<T: DriverObject> Deref for Object<T> {
+>     type Target =3D T;
+> @@ -313,6 +341,39 @@ impl<T: DriverObject> AllocImpl for Object<T> {
+>     };
+> }
+>=20
+> +impl_as_opaque!(Object<T> where T: DriverObject);
+> +
+> +/// A GEM object whose private-data layout is not known.
+> +///
+> +/// Not all GEM objects are created equal, and subsequently drivers =
+may occasionally need to deal
+> +/// with situations where they are working with a GEM object but have =
+no knowledge of its
+> +/// private-data layout.
+> +///
+> +/// It may be used just like a normal [`Object`], with the exception =
+that it cannot access
+> +/// driver-private data.
+> +///
+> +/// # Invariant
+> +///
+> +/// Via `#[repr(transparent)]`, this type is guaranteed to have an =
+identical data layout to
+> +/// `struct drm_gem_object`.
+> +#[repr(transparent)]
+> +pub struct OpaqueObject<T: =
+drm::Driver>(Opaque<bindings::drm_gem_object>, PhantomData<T>);
+
+I=E2=80=99m not sure whether this belongs in this patch.
+
+I agree with the motivation, but where exactly is this used for now? I =
+don't
+see it being passed in a callback, for example. The only way to get one =
+would
+be through as_ref() IIUC, but who would call this and why?
+
+> +
+> +impl<T: drm::Driver> IntoGEMObject for OpaqueObject<T> {
+> +    unsafe fn from_raw<'a>(self_ptr: *mut bindings::drm_gem_object) =
+-> &'a Self {
+> +        // SAFETY:
+> +        // - This cast is safe via our type invariant.
+> +        // - `self_ptr` is guaranteed to be a valid pointer to a gem =
+object by our safety contract.
+> +        unsafe { &*self_ptr.cast::<Self>().cast_const() }
+> +    }
+> +
+> +    fn as_raw(&self) -> *mut bindings::drm_gem_object {
+> +        self.0.get()
+> +    }
+> +}
+> +
+> +impl<D: drm::Driver> Sealed for OpaqueObject<D> {}
+> +
+> pub(super) const fn create_fops() -> bindings::file_operations {
+>     // SAFETY: As by the type invariant, it is safe to initialize =
+`bindings::file_operations`
+>     // zeroed.
 > --=20
 > 2.50.0
 >=20
->=20
 
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
