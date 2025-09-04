@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4FA1B3923;
-	Thu,  4 Sep 2025 13:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE212FF15B;
+	Thu,  4 Sep 2025 13:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756992654; cv=pass; b=tGDEmAIqICzppHq1mCouyynEK+Bx44N0C6exonISTL4iUvMDeQxXacUZkX3HVzg6GL0tckXML0Y3etxtfsHthTOa+O9RQkrwkzF1j+GOkdI9S85lP0DCsRxJol8l1iTDBhjH4WpT4HvfcSSSzT65Pg+yl99By2mwwpFx4cBd8io=
+	t=1756992950; cv=pass; b=i3h31AGRWd7Cmoy3zku5M/fnWTQds4wZuIY599fQA23tp5r6vW+dc7c87L/K3Xy5T1TSSz8mb1hl2zQybDMekhxXC23bCdoOilESmwiAvGA45vAy2xnl6qKO6S61EAtQLJj3XB6DGISaN0mZyjT42uv+9wZYd62f5tjw6laoz7o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756992654; c=relaxed/simple;
-	bh=9t/qObxwAQIJZWqPhMOAkEx+q3DHLR6ldA8acsg4YUc=;
+	s=arc-20240116; t=1756992950; c=relaxed/simple;
+	bh=nPk9ZOXqvwoqWRAeTf74Qvfb/iFRVJTM6jVqOIXTPUk=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=bR1Ys09pmgDVoKGiBFhYsG9evYfCVIzjABzDV90Ez8tXSJs7wgQQKKb9McrU2GQEzLigIGzKWNx2JY4/ejDh1m6bQzKgjgFYTdMEbOTTWAUgU8TZl+Ze8KvKchL1wHqpREYEgBHQJWxEzrc0RnWfjdEMQ+rMzuRs7387TdiTFzE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cCDyB7iH; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=auV0LSbTA00WoyjAstBtXmykU6oSsf6Kq2DDAaEwJdNRkkqs0d/Cg0w9JLWwB2taHIqhWZzGuaNYAr4bqPtOza6HfTspzbpFvMXD/Lh7S4MahsK4zGcihgiJACpoOWviJELYV0ADpGTfBJKrA/07W+Uuh+bZochXJe5zLMwq6gs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UsJjKoTY; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cCDyB7iH"
-ARC-Seal: i=1; a=rsa-sha256; t=1756992619; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UsJjKoTY"
+ARC-Seal: i=1; a=rsa-sha256; t=1756992924; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=AspmHjs0J9N8R8aQtXbHzPdhHkih1Ukc2YC119QihtRgV6gqK3JNRvLNZHNIsZz6VN4o3J5FfHmWo+aoEWjxtGpbo59IhSPIMTmoQ9EriKfiwdyTm3OH6xDF26ltRB0K7Hba7GfWABALez3rCiWXoX+UkNO0ZHBHTbn/eo3HMZM=
+	b=XDjhWHa4NmN0rbRoKzcTFdfJ8XYbE0/NfMze/eLl+ScNVXSFTyTW/9B8yG20U7WxXAqn/0ttZ9K3IIvlIS6EIo7aSP+7AkfzCSbaHxwojn/8jbGsPUZY3U5MaHncXgWAlGjEfqjhOlAdty5yKqiA90cEv+50lRI48Kdlq0pysy0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756992619; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Jt9TDRg9vypXcsn/2cLvRfCa62ax4BK86VzMaQ8tCLg=; 
-	b=jg8caw3SAd9Dz7SwScv+AAtwLqJLS4uKTcnA8uZBej6HEsgR82d5ykmCKx/zfwhqoiIHXPkEfG9TW9AHGWpsPhZzbx3R3Z3ksc0NxmqijoiyqhP5pIg0s6+zYbeZVESsiMZE9xo8G5OXgWLDlxbGBOXa9cN2SBPWJElCiFzyBB8=
+	t=1756992924; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=BDP7uwNrDy2L82t2/eHdfQJEVvQlEfERp6xLzY9YInM=; 
+	b=Rkz4B8gGPJIIikNnVuiC9W1AbtGfp4jJ7TXvO8Rkd0ntZn+ibnXZIaVAFkRFyIWyMcGMNVYW7yp6e7tX6JtM9lyijzXL0o1QnY3ngTv/ObJf8gNFWXKO19CmZVKYwlWVfcsXFic8oV8aLkvwgqkdeW/wSEITLGRzMCGD+KBUaiM=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756992619;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756992924;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=Jt9TDRg9vypXcsn/2cLvRfCa62ax4BK86VzMaQ8tCLg=;
-	b=cCDyB7iHNwSeEaMsnx/InFLAiSAmoBw9OZeCtsghwiRm51grvh0wiJq51DuS/+lV
-	Qbc8gofk8gF6DB2qk6TR/5xbh5wwZIxtQXBEasc5wpxbCgS7Ha45muoLI03fxKAHEyT
-	RwsIvcnzgTppWR1l5fWFu7UIWd+CaAbsE0akmK3g=
-Received: by mx.zohomail.com with SMTPS id 1756992616735300.35543377674844;
-	Thu, 4 Sep 2025 06:30:16 -0700 (PDT)
+	bh=BDP7uwNrDy2L82t2/eHdfQJEVvQlEfERp6xLzY9YInM=;
+	b=UsJjKoTYefuGH+/A8dOzjmVdktkPOr7NxfdR3BrNcsADvs7Kai8hnyRuD770lPGS
+	6WEhqGlEjaA4FhYMJs0durFPB9iZzOs6elB1fclJq+Ag1QVrznljQdzu1EiGXj1H64I
+	q+txlE2KryahxIOW1DLWeB7Pm8wm1yVx/gD4JQq8=
+Received: by mx.zohomail.com with SMTPS id 1756992922006491.6688209679671;
+	Thu, 4 Sep 2025 06:35:22 -0700 (PDT)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,11 +44,11 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 07/14] drm/gem/shmem: Extract drm_gem_shmem_init() from
- drm_gem_shmem_create()
+Subject: Re: [PATCH v3 08/14] drm/gem/shmem: Extract drm_gem_shmem_release()
+ from drm_gem_shmem_free()
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250829224116.477990-8-lyude@redhat.com>
-Date: Thu, 4 Sep 2025 10:29:59 -0300
+In-Reply-To: <20250829224116.477990-9-lyude@redhat.com>
+Date: Thu, 4 Sep 2025 10:35:05 -0300
 Cc: dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org,
@@ -68,171 +68,125 @@ Cc: dri-devel@lists.freedesktop.org,
  Trevor Gross <tmgross@umich.edu>,
  Danilo Krummrich <dakr@kernel.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <891BE2DC-6B2D-409D-970C-F57BA7D86598@collabora.com>
+Message-Id: <A6150946-73B6-43AE-B12C-B0E692E9E3A5@collabora.com>
 References: <20250829224116.477990-1-lyude@redhat.com>
- <20250829224116.477990-8-lyude@redhat.com>
+ <20250829224116.477990-9-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
-Hi Lyude,
 
-Did something happen here? All the indentation seems off.
-
-It looks ok when applied though.
 
 > On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> With gem objects in rust, the most ideal way for us to be able to =
-handle
-> gem shmem object creation is to be able to handle the memory =
-allocation of
-> a gem object ourselves - and then have the DRM gem shmem helpers =
-initialize
-> the object we've allocated afterwards. So, let's spit out
-> drm_gem_shmem_init() from drm_gem_shmem_create() to allow for doing =
-this.
+> At the moment the way that freeing gem shmem objects is not ideal for =
+rust
+
+This does not read very well IMHO.
+
+> bindings. drm_gem_shmem_free() releases all of the associated memory =
+with a
+> gem shmem object with kfree(), which means that for us to correctly =
+release
+> a gem shmem object in rust we have to manually drop all of the =
+contents of
+> our gem object structure in-place by hand before finally calling
+> drm_gem_shmem_free() to release the shmem resources and the allocation =
+for
+> the gem object.
+>=20
+> Since the only reason this is an issue is because of =
+drm_gem_shmem_free()
+> calling kfree(), we can fix this by splitting drm_gem_shmem_free() out =
+into
+> itself and drm_gem_shmem_release(), where drm_gem_shmem_release() =
+releases
+> the various gem shmem resources without freeing the structure itself. =
+With
+> this, we can safely re-acquire the KBox for the gem object's memory
+> allocation and let rust handle cleaning up all of the other struct =
+members
+> automatically.
 >=20
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
-> drivers/gpu/drm/drm_gem_shmem_helper.c | 75 +++++++++++++++++---------
+> drivers/gpu/drm/drm_gem_shmem_helper.c | 23 ++++++++++++++++++-----
 > include/drm/drm_gem_shmem_helper.h     |  1 +
-> 2 files changed, 51 insertions(+), 25 deletions(-)
+> 2 files changed, 19 insertions(+), 5 deletions(-)
 >=20
 > diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c =
 b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> index 5d1349c34afd3..b20a7b75c7228 100644
+> index b20a7b75c7228..50594cf8e17cc 100644
 > --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
 > +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> @@ -48,28 +48,12 @@ static const struct drm_gem_object_funcs =
-drm_gem_shmem_funcs =3D {
-> .vm_ops =3D &drm_gem_shmem_vm_ops,
-> };
+> @@ -175,13 +175,13 @@ struct drm_gem_shmem_object =
+*drm_gem_shmem_create_with_mnt(struct drm_device *de
+> EXPORT_SYMBOL_GPL(drm_gem_shmem_create_with_mnt);
 >=20
-> -static struct drm_gem_shmem_object *
-> -__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool =
-private,
-> -       struct vfsmount *gemfs)
-> +static int __drm_gem_shmem_init(struct drm_device *dev, struct =
-drm_gem_shmem_object *shmem,
-> + size_t size, bool private, struct vfsmount *gemfs)
-> {
-> - struct drm_gem_shmem_object *shmem;
-> - struct drm_gem_object *obj;
-> + struct drm_gem_object *obj =3D &shmem->base;
-> int ret =3D 0;
->=20
-> - size =3D PAGE_ALIGN(size);
-> -
-> - if (dev->driver->gem_create_object) {
-> - obj =3D dev->driver->gem_create_object(dev, size);
-> - if (IS_ERR(obj))
-> - return ERR_CAST(obj);
-> - shmem =3D to_drm_gem_shmem_obj(obj);
-> - } else {
-> - shmem =3D kzalloc(sizeof(*shmem), GFP_KERNEL);
-> - if (!shmem)
-> - return ERR_PTR(-ENOMEM);
-> - obj =3D &shmem->base;
-> - }
-> -
-> if (!obj->funcs)
-> obj->funcs =3D &drm_gem_shmem_funcs;
->=20
-> @@ -81,7 +65,7 @@ __drm_gem_shmem_create(struct drm_device *dev, =
-size_t size, bool private,
-> }
-> if (ret) {
-> drm_gem_private_object_fini(obj);
-> - goto err_free;
-> + return ret;
-> }
->=20
-> ret =3D drm_gem_create_mmap_offset(obj);
-> @@ -102,14 +86,55 @@ __drm_gem_shmem_create(struct drm_device *dev, =
-size_t size, bool private,
->     __GFP_RETRY_MAYFAIL | __GFP_NOWARN);
-> }
->=20
-> - return shmem;
-> -
-> + return 0;
-> err_release:
-> drm_gem_object_release(obj);
-> -err_free:
-> - kfree(obj);
-> + return ret;
-> +}
->=20
-> - return ERR_PTR(ret);
-> +/**
-> + * drm_gem_shmem_init - Initialize an allocated object.
-> + * @dev: DRM device
-> + * @obj: The allocated shmem GEM object.
-> + *
-> + * Returns:
-> + * 0 on success, or a negative error code on failure.
-> + */
-> +int drm_gem_shmem_init(struct drm_device *dev, struct =
-drm_gem_shmem_object *shmem, size_t size)
-> +{
-> + return __drm_gem_shmem_init(dev, shmem, size, false, NULL);
-> +}
-> +EXPORT_SYMBOL_GPL(drm_gem_shmem_init);
-> +
-> +static struct drm_gem_shmem_object *
-> +__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool =
-private,
-> +       struct vfsmount *gemfs)
-> +{
-> + struct drm_gem_shmem_object *shmem;
-> + struct drm_gem_object *obj;
-> + int ret =3D 0;
-> +
-> + size =3D PAGE_ALIGN(size);
-> +
-> + if (dev->driver->gem_create_object) {
-> + obj =3D dev->driver->gem_create_object(dev, size);
-> + if (IS_ERR(obj))
-> + return ERR_CAST(obj);
-> + shmem =3D to_drm_gem_shmem_obj(obj);
-> + } else {
-> + shmem =3D kzalloc(sizeof(*shmem), GFP_KERNEL);
-> + if (!shmem)
-> + return ERR_PTR(-ENOMEM);
-> + obj =3D &shmem->base;
-> + }
-> +
-> + ret =3D __drm_gem_shmem_init(dev, shmem, size, private, gemfs);
-> + if (ret) {
-> + kfree(obj);
-> + return ERR_PTR(ret);
-> + }
-> +
-> + return shmem;
-> }
 > /**
->  * drm_gem_shmem_create - Allocate an object with the given size
+> - * drm_gem_shmem_free - Free resources associated with a shmem GEM =
+object
+> - * @shmem: shmem GEM object to free
+> + * drm_gem_shmem_release - Release resources associated with a shmem =
+GEM object.
+> + * @shmem: shmem GEM object
+>  *
+> - * This function cleans up the GEM object state and frees the memory =
+used to
+> - * store the object itself.
+> + * This function cleans up the GEM object state, but does not free =
+the memory used to store the
+> + * object itself. This function is meant to be a dedicated helper for =
+the Rust GEM bindings.
+>  */
+> -void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem)
+> +void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem)
+> {
+> struct drm_gem_object *obj =3D &shmem->base;
+>=20
+> @@ -208,6 +208,19 @@ void drm_gem_shmem_free(struct =
+drm_gem_shmem_object *shmem)
+> }
+>=20
+> drm_gem_object_release(obj);
+> +}
+> +EXPORT_SYMBOL_GPL(drm_gem_shmem_release);
+> +
+> +/**
+> + * drm_gem_shmem_free - Free resources associated with a shmem GEM =
+object
+> + * @shmem: shmem GEM object to free
+> + *
+> + * This function cleans up the GEM object state and frees the memory =
+used to
+> + * store the object itself.
+> + */
+> +void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem)
+> +{
+> + drm_gem_shmem_release(shmem);
+> kfree(shmem);
+> }
+> EXPORT_SYMBOL_GPL(drm_gem_shmem_free);
 > diff --git a/include/drm/drm_gem_shmem_helper.h =
 b/include/drm/drm_gem_shmem_helper.h
-> index 92f5db84b9c22..235dc33127b9a 100644
+> index 235dc33127b9a..589f7bfe7506e 100644
 > --- a/include/drm/drm_gem_shmem_helper.h
 > +++ b/include/drm/drm_gem_shmem_helper.h
-> @@ -107,6 +107,7 @@ struct drm_gem_shmem_object {
-> #define to_drm_gem_shmem_obj(obj) \
-> container_of(obj, struct drm_gem_shmem_object, base)
->=20
-> +int drm_gem_shmem_init(struct drm_device *dev, struct =
-drm_gem_shmem_object *shmem, size_t size);
-> struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device =
-*dev, size_t size);
+> @@ -112,6 +112,7 @@ struct drm_gem_shmem_object =
+*drm_gem_shmem_create(struct drm_device *dev, size_t
 > struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct =
 drm_device *dev,
 >   size_t size,
+>   struct vfsmount *gemfs);
+> +void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem);
+> void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem);
+>=20
+> void drm_gem_shmem_put_pages_locked(struct drm_gem_shmem_object =
+*shmem);
 > --=20
 > 2.50.0
 >=20
 >=20
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
