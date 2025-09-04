@@ -1,84 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F388308F02
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Sep 2025 14:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9E63093DE;
+	Thu,  4 Sep 2025 15:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756997996; cv=none; b=T2z8EMcKIDOeGDAXKxAZOGdbLBohnM7fQc4HF1GIOhG6hBLEitfCG4YrqtYrH0F9MleTHhyIZoIUwPV0cRqqezEVZ+8U0u88RXnYic0YFehmJAt0RztmefMUa0vkc5FTcWV2CQP/MGGZHJZrkLv4NMrphrAww8oZYzBkQ3fMhAk=
+	t=1756998845; cv=none; b=RLd+ZuYfBHShZhQywMueWJxEt6s+RHjaZes5R9QDA0Q3FkhhdSI3e73+lHNWTIABGydtzF7HfH0vbJBs94kuLcqEtAsaUU+3Jn0kK1quimDxmwqcdiB+VJNV7lYj45suBxk+xY7hmPn8w2VeapaM2qCxBftW2yKniPAcKyupZGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756997996; c=relaxed/simple;
-	bh=A80hmLCBsFuMh9D5Ud3xXcTFTDoBIy6F/cbXvZEv8WU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=m97kEq1xhvaoh7mmjbc8IMvSAYBkBWlBisqtR4OoKpEZDw8psgdOxba7tlUsK7wSXhHex4QlLlmXy2JTaVsRmQUwEt0cvD6rgbZRQBHvZUR3CbA2vt88FMOoTri/d1swaQbHnEHqnhcxLyO0haqLUTE8m5dw0GHgd/S4+n84qII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ohERPzmt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756998845; c=relaxed/simple;
+	bh=4fVS3KGyqeV1lJidHPJr6bN+eqPLHXknjcJUCvpAUoY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=kxFKwd84DLdaWei/UruNDKPY++ZiNllwatASYViHD6gAjsP02i8wCy6wv6znt9Ehr4J8RxGep0px4jqXhpUdG3l9esGaDRoVbsLepnHPPSq4iV3bxfC4+LpCO93zBA6m4/G1qOCkSpdAijrvtwRVtObvZ/FMYPl7jIE9X3VMGkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6j+bWyk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ohERPzmt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F99C4CEF0;
-	Thu,  4 Sep 2025 14:59:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6j+bWyk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5E4C4CEF0;
+	Thu,  4 Sep 2025 15:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756997996;
-	bh=A80hmLCBsFuMh9D5Ud3xXcTFTDoBIy6F/cbXvZEv8WU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ohERPzmt5VBCUFWuq40mmenf0prlxYq2Xifbd3DTGjyOTHMSNHFNzWg83ONPxUeN9
-	 EgHpi2AVF3cGVjJRbtYGRoqMF1Bt7G4A0UnObdihEZQwkIy7AbaStkHww+7zwreM+T
-	 Apjn3LTy1KTwjGaaomwWqyQu9N3Ticw5cRISubI53Dx3YWNmU8WF9czSFqqmjGUkJs
-	 XgWfJGoeVnYX5mhbfE5cN5hQPNSC0hPqVjhiULsMI0QU6KskjdmUc3ZLLzIGziRF2E
-	 iE1WX64JmwLmSAwuATrS8C6lqxMmemfInztjTSkg+UcYZ479DEOJW5aDF/eXDyw2G8
-	 2rctDUPBhMxkA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- rust-for-linux@vger.kernel.org
-In-Reply-To: <20250821193259.964504-1-lyude@redhat.com>
-References: <20250821193259.964504-1-lyude@redhat.com>
-Subject: Re: [PATCH v9 0/7] rust/hrtimer: Various hrtimer + time additions
-Message-Id: <175699797757.553433.2072824810352370996.b4-ty@kernel.org>
-Date: Thu, 04 Sep 2025 16:59:37 +0200
+	s=k20201202; t=1756998844;
+	bh=4fVS3KGyqeV1lJidHPJr6bN+eqPLHXknjcJUCvpAUoY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m6j+bWyko5gK169Obq4LmmzKSaeTeANs8R/x48tgrdKK5zKoDDrkC/DSgmkDDIKXF
+	 m/fLhNqIv2udrIyScLA16vVnYjSZ/pxa5Suy+R4cetPyv006C4Z/4MrnzAzb1xcgUM
+	 jPcVygqgQeSh8DMfYsnpBBEgg0PhdWA7lW4xg++It3gwrVDoV1ZCIdIYiBmSzDrRra
+	 Bl7rk0obV1oelJ7ezRTRfroQ/mefmhAM3ZCZoyR0qe1IJl5AbKKoptZjRXis0jrlKW
+	 MzUal3kdJmiNztBfqoIohkpg7vitrbxG/qCz43DIZszpOa/FK4Tzz+x2sl95w98Sq3
+	 M5UP1ROdCNy9w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 04 Sep 2025 17:13:59 +0200
+Message-Id: <DCK43W485VCY.3KE72NNMDP32D@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Waiman Long"
+ <longman@redhat.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] rust: lock: add a Pin<&mut T> accessor
+X-Mailer: aerc 0.20.1
+References: <20250828-lock-t-when-t-is-pinned-v2-0-b067c4b93fd6@collabora.com> <20250828-lock-t-when-t-is-pinned-v2-3-b067c4b93fd6@collabora.com>
+In-Reply-To: <20250828-lock-t-when-t-is-pinned-v2-3-b067c4b93fd6@collabora.com>
 
+On Thu Aug 28, 2025 at 10:52 PM CEST, Daniel Almeida wrote:
+> In order for callers to be able to access the inner T safely if T: !Unpin=
+,
+> there needs to be a way to get a Pin<&mut T>. Add this accessor and a
+> corresponding example to tell users how it works.
+>
+> This is not useful on its own for now, because we do not support pin
+> projections yet. This means that the following is not going to compile:
+>
+>     let mut data: MutexGuard<'_, Data> =3D mutex.lock();
+>     let mut data: Pin<&mut Data> =3D data.as_mut();
+>     let foo =3D &mut data.foo;
+>
+> A future patch can enable the behavior above by implementing support for
+> pin projections. Said patch is in the works already and will possibly
+> land on 6.18.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1181
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-On Thu, 21 Aug 2025 15:32:40 -0400, Lyude Paul wrote:
-> This is a collection of various bindings that I added to hrtimer when I
-> was originally getting it ready to be used in rvkms. I've mostly been
-> waiting for Andreas's hrtimer series to go upstream before submitting
-> these.
-> 
-> All of these are currently being used within rvkms for vblank emulation.
-> 
-> [...]
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
-Applied, thanks!
+> ---
+>  rust/kernel/sync/lock.rs | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+>
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 9242790d15dbf65d66518d060a8a777aac558cfc..7191804a244da05db74294fde=
+c598f1a4732682c 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -245,6 +245,31 @@ pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnO=
+nce() -> U) -> U {
+> =20
+>          cb()
+>      }
+> +
+> +    /// Returns a pinned mutable reference to the protected data.
+> +    ///
+> +    /// The guard implements [`DerefMut`] when `T: Unpin`, so for [`Unpi=
+n`]
+> +    /// types [`DerefMut`] should be used instead of this function.
+> +    ///
+> +    /// [`DerefMut`]: core::ops::DerefMut
+> +    /// [`Unpin`]: core::marker::Unpin
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// # use kernel::sync::{Mutex, MutexGuard};
+> +    /// # use core::pin::Pin;
+> +    /// struct Data;
+> +    ///
+> +    /// fn example(mutex: &Mutex<Data>) {
+> +    ///   let mut data: MutexGuard<'_, Data> =3D mutex.lock();
+> +    ///   let mut data: Pin<&mut Data> =3D data.as_mut();
+> +    ///  }
 
-[1/7] rust: hrtimer: Document the return value for HrTimerHandle::cancel()
-      commit: a984da24e7ac411c95bab7b6c127bae4927f9d03
-[2/7] rust: hrtimer: Add HrTimerInstant
-      commit: 0e2aab67f2d5716e8db73b6d0719208b44086ed5
-[3/7] rust: hrtimer: Add HrTimer::raw_forward() and forward()
-      commit: 3efb9ce91c5279d7ea73563d1fb136077f52dd2e
-[4/7] rust: hrtimer: Add HrTimerCallbackContext and ::forward()
-      commit: 3f2a5ba784b808109cac0aac921213e43143a216
-[5/7] rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
-      commit: ac0a7bd27f6593dfe9ea6b65538bebbbd8322241
-[6/7] rust: time: Add Instant::from_ktime()
-      commit: 583802cc99bdac95d173aaf1fc58e99993aa1d1d
-[7/7] rust: hrtimer: Add HrTimer::expires()
-      commit: 4b0147494275fdbea98305f4ddad7e2def7b556f
+The formatting looks off in this one, there should be 4 spaces of
+indentation here; there are also 2 spaces in front of the `}`.
 
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
+Also `Data` implements `Unpin`, so you're not following your own
+recommendation from above :)
 
+---
+Cheers,
+Benno
+
+> +    /// ```
+> +    pub fn as_mut(&mut self) -> Pin<&mut T> {
+> +        // SAFETY: `self.lock.data` is structurally pinned.
+> +        unsafe { Pin::new_unchecked(&mut *self.lock.data.get()) }
+> +    }
+>  }
+> =20
+>  impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
 
