@@ -1,180 +1,315 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B601A23A9;
-	Thu,  4 Sep 2025 21:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8972C0289;
+	Thu,  4 Sep 2025 21:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757020639; cv=none; b=iJj/nGrMVzMZP2Q5WAs6esuubapeXP4+iEnUbao5jY3UGM6cVmJMkSzg7Ds2MgrDXaicHUIq+7cStZvv+NO79EXm4aXxe/WVAB+arqd4hAujZ3Br0jI+H5yWS4TuhExyTC7CPv5NRPdOUS2GV197gQsMoLnZNItTyp++oorHM10=
+	t=1757021743; cv=none; b=D45s1yECCaxQXyCyto1U8+hrgr3P0aUlQefwBvP8hMJ25L6wo2uS5yQgXWH2KR4qk3zdJSGjgTfySqbZ02m49pH7LXS2V6w4wfGK1q3q99DY1uQSTMXwP/97b0ie5bMNz0PYOtsIcCYRmfyVuaMK7/ryjK+mhLjuXMSWdR2HNo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757020639; c=relaxed/simple;
-	bh=iAdRiJXtRT5ddNYZ2h4yf+SUvlLPVO+1WbmGgumlLXg=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NTb30vJNIb/5w8wtX61c4NdJIhOXwm7SJhzEvBp3ITlm6fYkkAqXLqz9wG9mk+aOX+yCB7OPZEdL1u2qnfU39O8J/QGW2pJ93I0g82uarcxmzdZPfbQnqeDRpfEeCiSHZZmjvUC4vl58DsR/UU+Hb9CRZhFGogq6OH/vNdRaSTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eqRdrM9d; arc=none smtp.client-ip=209.85.210.175
+	s=arc-20240116; t=1757021743; c=relaxed/simple;
+	bh=m9NnJCluKVTR11hVnQmXKzYllpPWfe3CilE8MG0CLyc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hNkr8emepxvT0uqhXIb2oSGf48QvUQQCIAyEblPeCt4+GVwa39ovM24TW8UwiQuHsjT/aOk4mXmUjYdNjhYX0NkrTizOB2B/E022RwUjfIHXMDGxsTZiojxdFg3VU3aDOMe154MvgDg7qqy4q8nliCsYL3XPAcll4lb3I9Hz2zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUMUEcCv; arc=none smtp.client-ip=209.85.219.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eqRdrM9d"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-772627dd50aso2941326b3a.1;
-        Thu, 04 Sep 2025 14:17:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUMUEcCv"
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e96fc00ad79so1472612276.0;
+        Thu, 04 Sep 2025 14:35:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757020636; x=1757625436; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=px3Ogp6YWCHs89tEx1iBwQpFNyIvSJt4gg+izDxpdC0=;
-        b=eqRdrM9dQ2zka/kK61zNcyyavIWeGx3ifsOu1XJsBZKpfiZz0/mS8RE8FlTbeBr+b4
-         73ikt/iwTRN2OfmHfoMYXDJGkCSK7g+hgSfSGCiWbJG6FZF2I+AwQs/+aZkGbSwGe30i
-         FQZNapJx79NUGXLbJHKzzpcg3m40cOx5yVgViYLPRpMjHWlf4iNqs3EE5oTC3OES2DyZ
-         hiBhiJlLqUzBm64xdZLJPFBIfwuxtuK0pY74VTDOPng5McIRisdin7XW783U3H38IDdt
-         4pYvf4uUZrTHG1VNOwSXk2vDoWEHle2be7r3XC70sfkSu4l8bKzLBDpoAZtAkvJUl3cJ
-         F+Dg==
+        d=gmail.com; s=20230601; t=1757021740; x=1757626540; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IvCBV4RAVElTtuBlztSRnmNbm0dDQBJMrO8cYnccOd4=;
+        b=kUMUEcCvbgyKiMBtA3TOdZKAkTSs59VATMCu04VpTnXFXgGFgubXwct1zemC/72jwb
+         RQNuhWpStWeWp8uQ1qlW81iKiQWQ6oTPBhcvGrSwUHPb730CBje0wghkmzRp3bM4VDu9
+         DNgC1xN9DK/VZbxdFUv7r8kT/piYSSsVS6+qJ8EcezQwEkPfnHcdDQQK7gyuq0BO4UWC
+         U77PsjifaDvSg0APe4i5RPDfj9XdRxLNUoqAloFc2R0gdRBuSpJChEzXb1fYhKOywwh2
+         +O+RdVCBGs5yywYMFL1yTSbHxD3+d8P+8Y0IojfXcVok9LcPdHdXzuPSxr0INJz2A5OX
+         Fs6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757020636; x=1757625436;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=px3Ogp6YWCHs89tEx1iBwQpFNyIvSJt4gg+izDxpdC0=;
-        b=kRkpQCNi8UKl1sUqQHgQQQdUHnGhJcrakPZ1czjPTObKPMlEGX7Qex0MW0hK5ymtEH
-         dXkC0tfyIE9NrzDdEUrRedZKc1TPSj7V7FHMgotfqyaSyAc57zwJ/NEXZcYNqhtYiCDj
-         0Iq0z2fsTLY0FDu7r/MV2TacHO5IGw39Z1e3+EUFoYnEfa1bGhL3n/OdoVD3bGxA1uK0
-         yC+B2U07kg3EqRkZoREXF8hQnNDLcy2sXB22H2dwBNPFSVDgKtcrjIPLqu9aiaSh5cow
-         6L563aP1A1DIoZTRSyG8Jdj6YWrM6/llyWASF21XCZiG9LHL/ZJ6F4QurTiRO8ZAOOyc
-         ooNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUitIGUiicE3wqF7qc5vCJbf/hooVmrlaPrIL9FhBv9uL7AWZbd99p80SB62sRI1jXMPh73pW0oMyStpr5w0fg=@vger.kernel.org, AJvYcCWfnLxirPqEwIootpRvoPzxk5jKP+UdwgkrS7TCx6Z4PEHdMFnIaThWqOwczU/N97iFfhXg3QiV5HAHNac=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yylfeg5GH6U6NzocNoC7YU7zWTsgGrW90SxYeiWvRDjYl3EG1YQ
-	M3i6bEkt+ajrH0lxawgT8h9x2X3cdw81oA/Wp+KJL2xjgDyWJoI0Rhr1
-X-Gm-Gg: ASbGnctvF0ehVaMFeolY0OS7gFrydA5yAg+kAUc5SzOD80i1Dff0Pr9xcazcMt8mL1M
-	XKfcZhVJGsXQPlEZX9OTI15GyKDJeJqc9HWYIbQjC/QaQqmz8HvNxLNY9AKNGZSBNmsxwdIHtoM
-	ntxnk3oXWQB+m1Bm2ILonmSYtrpm+ufv/VCu+vhSrVEJphdC2ODv0+hObON5neHViRQH4y+t2wj
-	/BJGvKQMTm3y9e1/ncNzZrYmTJqfHZOqYgi0JDUlYdB7vXyMHqxkau0bedMInAU0Q0lYyzwqgBl
-	Pb15VuoVmgf/l+mP9XEP5EpP5/vdjaAY4YlU0Eg/tSaAH2tqXQkzLD3+iQ5fCDBCYO1oIqjvdMi
-	gZPqqGMUApaq4aNG5BS2EZ8u3WSI=
-X-Google-Smtp-Source: AGHT+IG5l20PWWMfzJjJHKvLY6V0Xvg6JZ009OTeub2pHn29i1TL6bxezyUFqKnj2cbj0Z5C4lE+rQ==
-X-Received: by 2002:a17:902:e945:b0:24b:eef:643c with SMTP id d9443c01a7336-24cedc6f3f1mr12554305ad.5.1757020635583;
-        Thu, 04 Sep 2025 14:17:15 -0700 (PDT)
-Received: from Cyndaquil. ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cd5092951sm18811275ad.18.2025.09.04.14.17.14
+        d=1e100.net; s=20230601; t=1757021740; x=1757626540;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IvCBV4RAVElTtuBlztSRnmNbm0dDQBJMrO8cYnccOd4=;
+        b=YobDCVPnpcdnbk/if4Py4ppagevv/iVl1wJXXqt52Zpb3QHO3JPpjZYcNoHOdbXxVS
+         9AO4TsLX4/wBgoZokIGJx1/Z+xnAjv3nC88pL/W1KQGmUfX9sEPMUfazojhXT/5UN0V1
+         p4HA8aaIp6ghZXuZVfYpJqb6vVL8ZiG21l9kGdsXk78dJg5nAjzrEOVnGnOkmCSyDFD5
+         3s5hOq/gyupDswK21na3vxGHF45kr3TYgmf+EaAs0TqLw2KZGq9AYWoBcj1ZI9daE3gZ
+         lfd9/MKy1vdPFcARlZ7DLcSQ4Nes4XOaMnErf6TqeAcngLMlHeRpTnFLu7wfJAwENpWc
+         ln7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXa3nl8NBzu4s3LH2xP4EAlKxmcuaSxr77quF69jQTWo93gyclW/dmcItjHLZp3UOZxKjSkK/zSNSrQtcuGbg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIIz07/HvHe1z90VkacSo8WkX0FD6aEAV7LlSbGR9UmSxUKtHq
+	eP8ZRqRfsTFuX3WtELK4qEEg+MgayZo82LceOu7fx2KbQFHvGzqNeO3e
+X-Gm-Gg: ASbGncsp2ruT4mpZxLm7tSLOVtv1mGNFx2OsQoPy02GCw2/XqS9J3syZDS8mnytHix3
+	MUw3UOLKty+kRAOhXM5tCxyjuGgroaAGc0ssBexgu89S+m8OGLQEgHvKKkpm4yt1GWj+Ey6tAxC
+	xUVZMCPuIxm0RCV0bPhDG7zW+S0y/m5ToxufFw6jRKgVIL5oulJwGeipFzo+Lqa/USPNnmz5sUL
+	ywiDlmjCb0LWPGVCpG+SgzpBD1cRVuigPFEAifLW0hbnxo0IVE5CMHx+OS2flhv3ucvG/0CtEQp
+	Wit/oq5K9YZAXUT8SIHqOjfihYZqSsbTVPrbAKvLDisBsHFgSTumVtCOAXpYEEbv07AWNQkDObB
+	NcvXoh0shCdkHj9sRXoNO9w==
+X-Google-Smtp-Source: AGHT+IGcjNZusnsLiR6R1wgbKQBrEhDGHmeQUz60B2AGaGgy+2NRFtq0i4WitkyqZVH+hfJ5zflfxw==
+X-Received: by 2002:a05:690e:424c:b0:5f3:319c:fec6 with SMTP id 956f58d0204a3-60175b91dfcmr3275590d50.11.1757021740093;
+        Thu, 04 Sep 2025 14:35:40 -0700 (PDT)
+Received: from localhost ([2601:347:100:5ea0:1218:85e4:58ab:e67f])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-5ff8ef2b4cdsm1726511d50.7.2025.09.04.14.35.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 14:17:15 -0700 (PDT)
-Message-ID: <68ba01db.170a0220.31417f.72dc@mx.google.com>
-X-Google-Original-Message-ID: <aLoB0+aEivX5jEuV@Cyndaquil.>
-Date: Thu, 4 Sep 2025 14:17:07 -0700
-From: Mitchell Levy <levymitchell0@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+        Thu, 04 Sep 2025 14:35:39 -0700 (PDT)
+Date: Thu, 4 Sep 2025 17:35:38 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/7] rust: percpu: introduce a rust API for per-CPU
- variables
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-1-4dd92e1e7904@gmail.com>
- <aLi2MBAwoD65tokv@yury>
- <68b9ee59.170a0220.a7a31.675c@mx.google.com>
- <aLn2PzD1KRbu4SpZ@yury>
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>, nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
+ structs
+Message-ID: <aLoGKilQPupPQkd2@yury>
+References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aLn2PzD1KRbu4SpZ@yury>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250824135954.2243774-1-joelagnelf@nvidia.com>
 
-On Thu, Sep 04, 2025 at 04:27:43PM -0400, Yury Norov wrote:
-> On Thu, Sep 04, 2025 at 12:53:59PM -0700, Mitchell Levy wrote:
-> > On Wed, Sep 03, 2025 at 05:42:08PM -0400, Yury Norov wrote:
-> > > On Thu, Aug 28, 2025 at 12:00:08PM -0700, Mitchell Levy wrote:
-> 
-> ...
-> 
-> > > > +    /// Get a `&mut MaybeUninit<T>` to the per-CPU variable on the current CPU represented by `&self`
-> > > > +    ///
-> > > > +    /// # Safety
-> > > > +    /// The returned `&mut T` must follow Rust's aliasing rules. That is, no other `&(mut) T` may
-> > > > +    /// exist that points to the same location in memory. In practice, this means that `get_(mut_)ref`
-> > > 
-> > > How long is this line?
-> > 
-> > 102 chars, or 103 if you include the newline. `rustfmt` doesn't break
-> > the line, so I left it as-is for this patch. Happy to change it if it
-> > poses a problem, though.
-> 
-> Then don't use that tool - it's broken. In kernel we used to have 80-chars
-> limit for the lines, recently relaxed to 100.
+Hi Joel,
 
-Sure, will fix.
+(Thanks to John for referencing this.)
 
-> > > > +    /// must not be called on another `PerCpuPtr<T>` that is a copy/clone of `&self` for as long as
-> > > > +    /// the returned reference lives.
-> > > > +    ///
-> > > > +    /// CPU preemption must be disabled before calling this function and for the lifetime of the
-> > > > +    /// returned reference. Otherwise, the returned reference might end up being a reference to a
-> > > > +    /// different CPU's per-CPU area, causing the potential for a data race.
-> > > > +    #[allow(clippy::mut_from_ref)] // Safety requirements prevent aliasing issues
-> > > > +    pub unsafe fn get_mut_ref(&self) -> &mut MaybeUninit<T> {
-> > > > +        // SAFETY: `self.get_ptr()` returns a valid pointer to a `MaybeUninit<T>` by its contract,
-> > > > +        // and the safety requirements of this function ensure that the returned reference is
-> > > > +        // exclusive.
-> > > > +        unsafe { &mut *(self.get_ptr()) }
-> > > > +    }
-> > > 
-> > > Here and everywhere: would it make sense to enforce it by testing
-> > > the CPU with preemptible() before returning a reference? 
-> > 
-> > The only thing we could do would be to panic, which I don't 100% love.
-> > Another alternative would be to take a &'a CpuGuard and bound the
-> > lifetime of the returned reference to 'a, and then we don't need to do
-> > any run-time checking at all.
-> > 
-> > Originally, I had left this to the caller because it might make sense
-> > down the line for some complex behavior based on per-CPU (e.g., per-CPU
-> > refcount) to do all its own management of per-CPU variables using
-> > `PerCpuPtr` as a core primitive. In these cases, I believe there are
-> > some times where being non-preemptible wouldn't actually be required
-> > (that said, my thoughts on this aren't well reflected in the safety
-> > comment, since I said it must be disabled... gah). But, the more I think
-> > about it, the more I think these use cases would be better served by
-> > just using `get_ptr` --- conjuring `&mut` references seems like it would
-> > be a big footgun. And the safety comment already actually reflects these
-> > thoughts somewhat :)
-> 
-> If you think that in future there will be a user who will not need to
-> disable preemption before dereferencing a percpu pointer, then you can
-> add another less restricted flavor of the helper.
+On Sun, Aug 24, 2025 at 09:59:52AM -0400, Joel Fernandes wrote:
+> Add a minimal bitfield library for defining in Rust structures (called
+> bitstruct), similar in concept to bit fields in C structs.
 
-Yeah, that's fair.
+So maybe name it bitfield? 
 
-> > For v4 I will probably have this function take a &'a CpuGuard and use
-> > that to bound the liftetime of the returned reference, unless there are
-> > other thoughts on this point.
-> 
-> I don't want you to panic just because of invlid user call, but
-> whatever you call in comment must be enforced in code, right?
-> 
-> 
-> You can use the guard, if it guarantees the preemption disabled; or 
-> you can return None; you can create CONFIG_RUST_PERCPU_HARDENED for
-> panics.
+> This will be used
+> for defining page table entries and other structures in nova-core.
 
-Yes, the existence of a `CpuGuard` guarantees that preemption is
-disabled.
+I think this is understatement, and this will find a broader use. :)
 
-> Please refer the recent bitmap API wrapper, and how erroneous request
-> is handled there.
-> 
-> https://lore.kernel.org/all/20250904165015.3791895-4-bqe@google.com/
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+
+I agree with the others that this bitstruct is worth to live in core
+directory. I just merged bitmap wrapper in rust/kernel/bitmap.rs, and
+I think this one should go in rust/kernel/bitstruct.rs (or bitfield.rs?).
+
+Can you please consider this change for v2, and also add the new file in
+BITOPS API record in MAINTAINERS?
+
+A couple nits inline.
 
 Thanks,
-Mitchell
+Yury
+
+> ---
+>  drivers/gpu/nova-core/bitstruct.rs | 149 +++++++++++++++++++++++++++++
+>  drivers/gpu/nova-core/nova_core.rs |   1 +
+>  2 files changed, 150 insertions(+)
+>  create mode 100644 drivers/gpu/nova-core/bitstruct.rs
+> 
+> diff --git a/drivers/gpu/nova-core/bitstruct.rs b/drivers/gpu/nova-core/bitstruct.rs
+> new file mode 100644
+> index 000000000000..661a75da0a9c
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/bitstruct.rs
+> @@ -0,0 +1,149 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//
+> +// bitstruct.rs — C-style library for bitfield-packed Rust structures
+> +//
+> +// A library that provides support for defining bit fields in Rust
+> +// structures to circumvent lack of native language support for this.
+> +//
+> +// Similar usage syntax to the register! macro.
+> +
+> +use kernel::prelude::*;
+> +
+> +/// Macro for defining bitfield-packed structures in Rust.
+> +/// The size of the underlying storage type is specified with #[repr(TYPE)].
+> +///
+> +/// # Example (just for illustration)
+> +/// ```rust
+> +/// bitstruct! {
+> +///     #[repr(u64)]
+> +///     pub struct PageTableEntry {
+> +///         0:0       present     as bool,
+> +///         1:1       writable    as bool,
+> +///         11:9      available   as u8,
+> +///         51:12     pfn         as u64,
+> +///         62:52     available2  as u16,
+> +///         63:63     nx          as bool,
+> +///     }
+> +/// }
+
+Is it possible to create overlapping fields? Should we allow that?
+(I guess yes.) Does your machinery handle it correctly now?
+
+If the answer is yes, can you add a test for it?
+
+> +/// ```
+> +///
+> +/// This generates a struct with methods:
+> +/// - Constructor: `default()` sets all bits to zero.
+> +/// - Field accessors: `present()`, `pfn()`, etc.
+> +/// - Field setters: `set_present()`, `set_pfn()`, etc.
+> +/// - Builder methods: `with_present()`, `with_pfn()`, etc.
+> +/// - Raw conversion: `from_raw()`, `into_raw()`
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct {
+> +    (
+> +        #[repr($storage:ty)]
+> +        $vis:vis struct $name:ident {
+> +            $(
+> +                $hi:literal : $lo:literal $field:ident as $field_type:tt
+> +            ),* $(,)?
+> +        }
+> +    ) => {
+> +        #[repr(transparent)]
+> +        #[derive(Copy, Clone, Default)]
+> +        $vis struct $name($storage);
+> +
+> +        impl $name {
+> +            /// Create from raw value
+> +            #[inline(always)]
+> +            $vis const fn from_raw(val: $storage) -> Self {
+> +                Self(val)
+> +            }
+> +
+> +            /// Get raw value
+> +            #[inline(always)]
+> +            $vis const fn into_raw(self) -> $storage {
+> +                self.0
+> +            }
+> +        }
+> +
+> +        impl core::fmt::Debug for $name {
+> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+> +                write!(f, "{}({:#x})", stringify!($name), self.0)
+> +            }
+> +        }
+> +
+> +        // Generate all field methods
+> +        $(
+> +            bitstruct_field_impl!($vis, $name, $storage, $hi, $lo, $field as $field_type);
+> +        )*
+> +    };
+> +}
+> +
+> +/// Helper to calculate mask for bit fields
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_mask {
+> +    ($hi:literal, $lo:literal, $storage:ty) => {{
+> +        let width = ($hi - $lo + 1) as usize;
+> +        let storage_bits = 8 * core::mem::size_of::<$storage>();
+
+Does this '8' mean BITS_PER_BYTE? If so, we've got BITS_PER_TYPE() macro. Can
+you use it here?
+
+> +        if width >= storage_bits {
+> +            <$storage>::MAX
+
+This is an attempt to make an out-of-boundary access. Maybe print a
+warning or similar? 
+
+I actually think that if user wants to make an out-of-boundary access,
+the best thing we can do is to keep the memory untouched. So, maybe
+return None here, or 0, and make sure that the upper code doesn't
+access it?
+
+> +        } else {
+> +            ((1 as $storage) << width) - 1
+> +        }
+> +    }};
+> +}
+> +
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_field_impl {
+> +    ($vis:vis, $struct_name:ident, $storage:ty, $hi:literal, $lo:literal, $field:ident as $field_type:tt) => {
+> +        impl $struct_name {
+> +            #[inline(always)]
+> +            $vis const fn $field(&self) -> $field_type {
+> +                let field_val = (self.0 >> $lo) & bitstruct_mask!($hi, $lo, $storage);
+> +                bitstruct_cast_value!(field_val, $field_type)
+> +            }
+> +        }
+> +        bitstruct_make_setters!($vis, $struct_name, $storage, $hi, $lo, $field, $field_type);
+> +    };
+> +}
+> +
+> +/// Helper macro to convert extracted value to target type
+> +///
+> +/// Special handling for bool types is required because the `as` keyword
+> +/// cannot be used to convert to bool in Rust. For bool fields, we check
+> +/// if the extracted value is non-zero. For all other types, we use the
+> +/// standard `as` conversion.
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_cast_value {
+> +    ($field_val:expr, bool) => {
+> +        $field_val != 0
+> +    };
+> +    ($field_val:expr, $field_type:tt) => {
+> +        $field_val as $field_type
+> +    };
+> +}
+> +
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_write_bits {
+> +    ($raw:expr, $hi:literal, $lo:literal, $val:expr, $storage:ty) => {{
+> +        let mask = bitstruct_mask!($hi, $lo, $storage);
+> +        ($raw & !(mask << $lo)) | ((($val as $storage) & mask) << $lo)
+> +    }};
+> +}
+> +
+> +#[allow(unused_macros)]
+> +macro_rules! bitstruct_make_setters {
+> +    ($vis:vis, $struct_name:ident, $storage:ty, $hi:literal, $lo:literal, $field:ident, $field_type:tt) => {
+> +        ::kernel::macros::paste! {
+> +            impl $struct_name {
+> +                #[inline(always)]
+> +                #[allow(dead_code)]
+> +                $vis fn [<set_ $field>](&mut self, val: $field_type) {
+> +                    self.0 = bitstruct_write_bits!(self.0, $hi, $lo, val, $storage);
+> +                }
+> +
+> +                #[inline(always)]
+> +                #[allow(dead_code)]
+> +                $vis const fn [<with_ $field>](mut self, val: $field_type) -> Self {
+> +                    self.0 = bitstruct_write_bits!(self.0, $hi, $lo, val, $storage);
+> +                    self
+> +                }
+> +            }
+> +        }
+> +    };
+> +}
+> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+> index cb2bbb30cba1..54505cad4a73 100644
+> --- a/drivers/gpu/nova-core/nova_core.rs
+> +++ b/drivers/gpu/nova-core/nova_core.rs
+> @@ -2,6 +2,7 @@
+>  
+>  //! Nova Core GPU Driver
+>  
+> +mod bitstruct;
+>  mod dma;
+>  mod driver;
+>  mod falcon;
+> -- 
+> 2.34.1
+> 
