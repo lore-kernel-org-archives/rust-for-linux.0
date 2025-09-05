@@ -1,139 +1,177 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8B928368A
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 09:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD4326F2A0
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 09:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757062813; cv=none; b=UJySf99tURURfqR99yVLqdCg5pE2kWnmHeFaPGhZymeum9DNeMcXTJ6Ik9LaZhoIgKFwXRkNJZ7XwMxc7rlCbZDJJWbv/YUKDYExuTPIm/iFN0vqmlLRSdGG6HD98EcI7hP29QJ2OtUX5naszmPgECaSyJYbjCsMrFJilE3q42A=
+	t=1757063312; cv=none; b=APWj2JNtgdaEdIP3tF2ffdv5ThmimLHjF5LOE1aSEVEitLg9Q4QGv9AZQIGzxb4Bpo+OCKV35mWYyzs+7sVbc59EyJJc2SbfowjpFWtf0t9Q9lsn/nlM+peoT0IebvYawIkE4HG9MhBtEKdkSjqT0zkxRYbfMOGVRGpKV8Ma6WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757062813; c=relaxed/simple;
-	bh=hzIPcb3X9GhIqYYtsJtuh5Vdog5+cau3zXlup5lenBg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ehkJg0SJZSPbDZHYeJmFo2ZcLTftpbhcHXFf77RbueaQIAd63P5X44Vb2ZHfklx5CjROblaBRSrZ2byMu8iNvURNtgFdpOKsbvZjWmtQTUl+Sen/uw+19lpGHJsGVFAzniFQXE8J9drZ3ol8VqoyIrLNq6T+jn2fV7IVRt98Ewg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ftenetsi; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1757063312; c=relaxed/simple;
+	bh=pfUYsJytL5Xha+9fmGtXNsuTP5Iy55visY0fvimyZbU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jyJ3ID/ZVbH1khXE8izoCgo6hNtgLLQUL/DCEYXH3feH4DAku/z+K6ebNUY8V9uBf62X9IIZemjx4MUQg2ziCQxu7SBG0WjwX3E2TKhamTBkGaSxaMZNGXUY83xlFBG9Y8dufm3DJG8jhmDwdJG7aXBJi6170JxwOvqMJuwHdxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Hog5+1Us; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ftenetsi"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45b71eef08eso12612215e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 02:00:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Hog5+1Us"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45b83ae1734so11331765e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 02:08:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757062809; x=1757667609; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xA7E7SWyY2rywATmTma5dtVVfW7ez0VkGcAkYBGMn2k=;
-        b=FtenetsipxzKPa7d/9t0+ZM/zvrX5WrF0sCU2f9/4HkQLXIc4nF2o22TuGu3YAnuPE
-         zvPLz5DTS7lhyzFZAOgnj+qO/GBxcbenVwVGCZzNpZCyPGXofR7EQ1kyylBB2SoNhdsk
-         2KlTeD596/6RVgKxzFcRPuh7dq9fk4iZY63e+y1B24Ba+smzFHsXc/mR0Rsq/nUVdfmy
-         7bJiztc5ug5reett3eylch3iBIqdBr9S6oW+tUmcrZXQYqsiYCNaJGGMvLpRaQgRIUFL
-         30EWnA4m4A/srbDrbwkdcoKcPoj2z7MU71xBi6adcCrIVSYurwAc0Ri/W5va3tFBG6UA
-         tQNQ==
+        d=suse.com; s=google; t=1757063308; x=1757668108; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rfNHkuuYJisQeLCjdnmFarVASjjt4pqTTKCuIEhNpU0=;
+        b=Hog5+1UslOdFsaPl3KvhmRVcpoT0JvaPMjqSpsRWTdvvG6sFubfvYz+P/7rpTzdkJq
+         xdS7P1YTVFleidcF5Dupgz1RmG/SVdc2/N1kSOIrHXAAYlcw7zshCwgIexQ6dUcBxV8u
+         hagR86hBw0Up6mHvvIISqPg8D/cwgYVVyAUam5i1/ef+BsEjHDUFWpTDEN5+yU/lhehf
+         yYrHE69+8I4UvA5jW/50LOagD79xomZmcg6HHn2lZ+alDtruEFq8JjMtNCosXRY819YY
+         v3DqaKqB9mLo9Bev/do0zRJ1XCR7P7dwFg4mKSTdNOtcP62yrlecKo48I4jvWoD+51VK
+         M6Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757062809; x=1757667609;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xA7E7SWyY2rywATmTma5dtVVfW7ez0VkGcAkYBGMn2k=;
-        b=NErFkbr6+v3PAFTUlmdR0jUw+C2yHI/cIhFJu4YfvFj6V0F/hJ1rvsSJmzAjNMeq83
-         8nY+aqltdsVPTOR0XGETUrN9mRKj/eGVirDAFcDsfAYzS25+OUKcWGvd4LkGQUxE2rlv
-         NaZl3T4776B/L3qSZpj0yrIJdL/Ti6KQi4DSKl1nciSUv2HXz2bnTRhN7vp42jsj3LfV
-         gkL9P16fldrdZllU92/bQNxftCS1iAR4tcbvBZUKf0H/vRbBWBo8UumOxoPmY89FvR/U
-         TBMPXGZboAlhvStR4h7eRCTQKAqI2/23HUWrkN+EQD6UfEkw673lyYuIsSN5w4EPgT80
-         bMKQ==
-X-Gm-Message-State: AOJu0YwOnW/sVtKCro3RX6sqPIBVADw4Hb7Dk+sfhE/KjCPplS5GQOlp
-	WIiBWWcWoBQuF6ZNoZ2pfgL2Y/Gn4Ox5joVeQsDFUqzw6vannjUovprYjICFt/i+J0oUWp4RF1J
-	5l4W94WmbF0g9tGc40Q==
-X-Google-Smtp-Source: AGHT+IEskge5MKMlJoG74FiZmY/yaFnVbV5RRxEYcD5LjhMZRlcH9qa85hp5Z70Yy5y8DJH9slw/4+GneaXkFUA=
-X-Received: from wmth17.prod.google.com ([2002:a05:600c:8b71:b0:45c:d828:e348])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2088:b0:3d6:7ae1:af00 with SMTP id ffacd0b85a97d-3d67ae1bdf0mr13547126f8f.20.1757062809326;
- Fri, 05 Sep 2025 02:00:09 -0700 (PDT)
-Date: Fri, 5 Sep 2025 09:00:08 +0000
-In-Reply-To: <20250904142552.2790602-1-vitaly.wool@konsulko.se>
+        d=1e100.net; s=20230601; t=1757063308; x=1757668108;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rfNHkuuYJisQeLCjdnmFarVASjjt4pqTTKCuIEhNpU0=;
+        b=JG0lOkJc8bG7rZQ7wStgW/bou17Vx/AAN0J5imAzsP8xStyY30qeM56B+dnjo0S3bC
+         iobK51YZ7OCZZuHhB0i1xaItoZpQvtP/z/KT0BodcWyUknV+bMoBLg0qzfX3HdR2P0aX
+         xFXcw3RkJ4XnmOKlzkw1MOee/VIJRrRSaBA2Z/STYbq9VQKinlditcQfXJoNh6JUN5d5
+         6r7JF2iCsH6RuprvasPEFYRDAwsY+1mkKM+C5tzya250I8bprBPDlep23NtJjwmg7ZEs
+         xv4Zit5XUrS0S679py5nQ8u4yM8hhyAwM8aqmXp98Nt1x3jWOpCKvbZK3XeXeQwp6UNp
+         Gs0w==
+X-Forwarded-Encrypted: i=1; AJvYcCVzPAvSGT2nQSfF6uupz8kxX4TTbzqC0l9vMNThL6h7OCZYqux82iJmm+litYHPUvTfliOqkNuJ1hRF+YlLhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7HqF0NJ84rtP587bsAjT1kQsURNx9RhIJZGpfROYaLSbA/g7W
+	XBxiDQLov4AwsrGjQp0SnAPw+NGZ/G5qCG/DTZAzFn2NDt1ocV3Av17/JUrQfemyi0g=
+X-Gm-Gg: ASbGncv+B0cxuB9w/qyr4mkEyX8tgGbg45ViPPFi4aF6OVSALc2PnbkV1T93/RrAv7G
+	71G/Fh8zQNLA/otQ1Z3EtrzLfNkqrnAL1A+EbDn69uhhS+HBdo6tq1A3ZRveufbnkhrtbcU4eCX
+	+Xz9HJxAnK2w9Q13q8m3nvAZDCEFhuc9oGs8OQJ64PG1EbloOFwp0soNJBwEDF1fyWfffPGPF4R
+	sHs8GHlxJlg3o8Bn6sgEhZPaC1hr+9sZdJ0pGzZrObIuEHuhjMssLdnXlEvQkXNBc+YSBhtixEz
+	xliWppwdsEEFJ+rUjIom7kd6xfQ1Nr6qc91V8RVd4pFKzuruDdR1b6RAcKWBRtMyk4VO7qgfpj7
+	UgCfLb3c8LAUnLO46/cyifwwwG08nVqacaa4bgieHhxjlkt68ZeuC2ikEpg==
+X-Google-Smtp-Source: AGHT+IEe6Z1CIxc3wwR6bIcUETKibcIoiDaTx4IWniTQ7UYnUkWPwDFvUlnVCzahyGvL94wifXuujg==
+X-Received: by 2002:a05:600c:1d1d:b0:45d:d287:d339 with SMTP id 5b1f17b1804b1-45dd287d512mr42523305e9.25.1757063308214;
+        Fri, 05 Sep 2025 02:08:28 -0700 (PDT)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd0350e80sm68900805e9.22.2025.09.05.02.08.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 02:08:27 -0700 (PDT)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Subject: [PATCH 0/2] rust: replace wq users and add WQ_PERCPU to alloc_workqueue() users
+Date: Fri,  5 Sep 2025 11:08:17 +0200
+Message-ID: <20250905090819.107694-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250904142552.2790602-1-vitaly.wool@konsulko.se>
-Message-ID: <aLqmmKZMDAAFCBsX@google.com>
-Subject: Re: [PATCH] rust: rbtree: add immutable cursor
-From: Alice Ryhl <aliceryhl@google.com>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 04, 2025 at 04:25:52PM +0200, Vitaly Wool wrote:
-> Sometimes we may need to iterate over, or find an element in a read
-> only (or read mostly) red-black tree, and in that case we don't need a
-> mutable reference to the tree, which we'll however have to take to be
-> able to use the current (mutable) cursor implementation.
-> 
-> This patch adds a simple immutable cursor implementation to RBTree,
-> which enables us to use an immutable tree reference. The existing
-> (fully featured) cursor implementation is renamed to CursorMut,
-> while retaining its functionality.
-> 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+Below is a summary of a discussion about the Workqueue API and cpu isolation
+considerations. Details and more information are available here:
 
-Overall looks good to me!
+        "workqueue: Always use wq_select_unbound_cpu() for WORK_CPU_UNBOUND."
+        https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
 
-A few comments below:
+=== Current situation: problems ===
 
-> -// SAFETY: The [`Cursor`] has exclusive access to both `K` and `V`, so it is sufficient to require them to be `Send`.
-> -// The cursor only gives out immutable references to the keys, but since it has excusive access to those same
-> -// keys, `Send` is sufficient. `Sync` would be okay, but it is more restrictive to the user.
-> -unsafe impl<'a, K: Send, V: Send> Send for Cursor<'a, K, V> {}
-> +// SAFETY: The [`CursorMut`] has exclusive access to both `K` and `V`, so it is sufficient to
-> +// require them to be `Send`.
-> +// The cursor only gives out immutable references to the keys, but since it has excusive access to
-> +// those same keys, `Send` is sufficient. `Sync` would be okay, but it is more restrictive to the
-> +// user.
-> +unsafe impl<'a, K: Send, V: Send> Send for CursorMut<'a, K, V> {}
->  
-> -// SAFETY: The [`Cursor`] gives out immutable references to K and mutable references to V,
-> +// SAFETY: The [`CursorMut`] gives out immutable references to K and mutable references to V,
->  // so it has the same thread safety requirements as mutable references.
-> -unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {}
-> +unsafe impl<'a, K: Sync, V: Sync> Sync for CursorMut<'a, K, V> {}
+Let's consider a nohz_full system with isolated CPUs: wq_unbound_cpumask is
+set to the housekeeping CPUs, for !WQ_UNBOUND the local CPU is selected.
 
-We should also have Send/Sync impls for the new immutable Cursor type.
-They need to look like this since the immutable cursor only has shared
-access and not exclusive access.
+This leads to different scenarios if a work item is scheduled on an isolated
+CPU where "delay" value is 0 or greater then 0:
+        schedule_delayed_work(, 0);
 
-unsafe impl<'a, K: Sync, V: Sync> Send for Cursor<'a, K, V> {}
-unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {}
+This will be handled by __queue_work() that will queue the work item on the
+current local (isolated) CPU, while:
 
-> +    /// # Safety
-> +    ///
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has immutable access to `node` for the duration of `'b`.
-> +    unsafe fn to_key_value<'b>(node: NonNull<bindings::rb_node>) -> (&'b K, &'b V) {
-> +        // SAFETY: the caller guarantees that `node` is a valid pointer in an `RBTree`.
-> +        let (k, v) = unsafe { Self::to_key_value_raw(node) };
-> +        // SAFETY: the caller guarantees immutable access to `node`.
-> +        (k, unsafe { &*v })
-> +    }
-> +
-> +    /// # Safety
-> +    ///
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has immutable access to the key for the duration of `'b`.
-> +    unsafe fn to_key_value_raw<'b>(node: NonNull<bindings::rb_node>) -> (&'b K, *mut V) {
+        schedule_delayed_work(, 1);
 
-The mutable cursor has `to_key_value_raw` because it needs both a &V and
-`&mut V` version, but the immutable Cursor doesn't have that so it
-doesn't need a raw version either.
+Will move the timer on an housekeeping CPU, and schedule the work there.
 
-That said, perhaps we could share this logic between the two cursor
-types? We can make these methods standalone instead of being part of the
-cursor so that both cursors can use the same helper methods instead of
-duplicating them.
+Currently if a user enqueue a work item using schedule_delayed_work() the
+used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+schedule_work() that is using system_wq and queue_work(), that makes use
+again of WORK_CPU_UNBOUND.
 
-Alice
+This lack of consistentcy cannot be addressed without refactoring the API.
+
+=== Plan and future plans ===
+
+This patchset is the first stone on a refactoring needed in order to
+address the points aforementioned; it will have a positive impact also
+on the cpu isolation, in the long term, moving away percpu workqueue in
+favor to an unbound model.
+
+These are the main steps:
+1)  API refactoring (that this patch is introducing)
+    -   Make more clear and uniform the system wq names, both per-cpu and
+        unbound. This to avoid any possible confusion on what should be
+        used.
+
+    -   Introduction of WQ_PERCPU: this flag is the complement of WQ_UNBOUND,
+        introduced in this patchset and used on all the callers that are not
+        currently using WQ_UNBOUND.
+
+        WQ_UNBOUND will be removed in a future release cycle.
+
+        Most users don't need to be per-cpu, because they don't have
+        locality requirements, because of that, a next future step will be
+        make "unbound" the default behavior.
+
+2)  Check who really needs to be per-cpu
+    -   Remove the WQ_PERCPU flag when is not strictly required.
+
+3)  Add a new API (prefer local cpu)
+    -   There are users that don't require a local execution, like mentioned
+        above; despite that, local execution yeld to performance gain.
+
+        This new API will prefer the local execution, without requiring it.
+
+=== Introduced Changes by this series ===
+
+1) [P 1-2] Replace use of system_wq and system_unbound_wq
+
+        system_wq is a per-CPU workqueue, but his name is not clear.
+        system_unbound_wq is to be used when locality is not required.
+
+        Because of that, system_wq has been renamed in system_percpu_wq, and
+        system_unbound_wq has been renamed in system_dfl_wq.
+
+
+=== For Maintainers ===
+
+There are prerequisites for this series, already merged in the master branch.
+The commits are:
+
+128ea9f6ccfb6960293ae4212f4f97165e42222d ("workqueue: Add system_percpu_wq and
+system_dfl_wq")
+
+930c2ea566aff59e962c50b2421d5fcc3b98b8be ("workqueue: Add new WQ_PERCPU flag")
+
+
+Thanks!
+
+Marco Crivellari (2):
+  rust: replace use of system_unbound_wq with system_dfl_wq
+  rust: replace use of system_wq with system_percpu_wq
+
+ rust/kernel/workqueue.rs | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+-- 
+2.51.0
+
