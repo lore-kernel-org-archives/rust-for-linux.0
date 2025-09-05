@@ -1,322 +1,515 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2050.outbound.protection.outlook.com [40.107.102.50])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CCB305967;
-	Fri,  5 Sep 2025 18:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45DF27E07F;
+	Fri,  5 Sep 2025 18:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757097952; cv=fail; b=LHk7qJGZDV7aGQhGOipKQWHxxEc3Q3yTaT5uSw7/rAprKggUxALX+WIpLXWVv2VSGW2u1x/88UdvBZIkqpxL4MDG1ZkktcHSodLvlr4gX8uz6fU98n+Mrl+CvAl+94kbaVYdLrtc3OCsBm6KDieRXKKQoohUtYUwCupcFqrb/Uk=
+	t=1757098248; cv=pass; b=rz/KM24TV5BRFX0fxeEjXS8eisLuQ5jBpHHjYCqlbr2pGcjcvgZw+OaKL8xLxXrdkksKxjjDxpRXcrAcrPOUlmYTdLOKV2lbvKObqzCGMt8LP65d0s9GEUgi/A4QGsBPTfdjztYk3h1wnVtt3xtGl7wzHpFDi2jb6aR3C67+67g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757097952; c=relaxed/simple;
-	bh=KV1iatS0EpE3w7E+YStnaAwADVJXvg0fI4QP1qUKme4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=LnzAYf4GY7/CzCCZKCEFld2aHUDe0gg1VYXr1mLxH3zNqrn7gviNCmKnK08AgFuFZWih/rlJMVHFsfvkPDsOR3d2YsvHTTvtjDQC9vDw/rMocFSyGYH+F5y1jr9+HPn8+1nfobDU0vykp3aktQ+bBiyDyaEzbSA7xVeFpmFOegw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HlUVhnqY; arc=fail smtp.client-ip=40.107.102.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1757098248; c=relaxed/simple;
+	bh=psnnZEHO1jLg6QFHHneQeik3rC53a/rYz22ZqHoWlAc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=TAEHR7qFoH/A+wYMnr4Lj/ZdkVsFn6WI55XwuvZjmJwYE3ruTVVmmyNHN0H2nK74zUzxzqjqjbvI3UV3hGE9ABtLVQt5wmLDgOpkWPhRwRBe5cd4OfCZiF592MIzx1+8nzkJawqAmyVSfIn7f7yxS6NHDGFkFa6UphqUpekxSi4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ZrjfXZXA; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HlUVhnqY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VnnMsJeb+8+XzfjkDsBWZjnRV+w9RxXoHFvCEU6Wu1CzDsJhBDhnluJ9D+dm0UUH6FwQp7E1xFGKAqQW2FL9e5LVtqr4Pii23NEtPdbZI5J40BZEUx04mrcu9BDGI2fNI1HIs48iIVTZHLMijmjowJmAOyhqsleeVxDj3jC64HJjadRPNGKFXDKPWOQfOKD85feFZMb0THi+F+5NGWz1HQ/I3KWVXknYWL068JOtz9r294JE6citofR+wWrVYO4ZmfTToRm1XhWIRj3qOVWkcGSRGN8ePos6blN0Zv2y5/HeIJ1Ff/anxyYwHi5JsveyOs1FF0LIQcm9auokKD5Qdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BOY2W+Gq7HVlluLeTZSb+TvXPi8auVTu7vw/PXb3+nY=;
- b=atDgcqXHP0B1CC8QmQwNf5hSG1Yr60yNHxxkGJkrwrZumkF2eoO1nOTlvqXqeCMNGyg2wAsMauH9Db65fLMlUD8s1/+jjM4rZpoY55i+eWKTnDxFJs0ccpO6iOwR+EeiOpzXzCZqaUs+lt9JDesRYT1dJnkDQkiClTp9qSo68t89k6ls0isFyusW69VqVaKeVjxY7yLT6xLDXH7Dbh69h7dXA8nJZkFgaTS/ZKdin6cEJtF1zTyhl2A/didJNLr/dXGXGt+owy7U/+i9w6YfMqXP5CMOwIqw/RsCuVe6UyWZQOhZEAMnKlJ5t2SKBDa93C66SqtdQ9Kr3q0w6WvEAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BOY2W+Gq7HVlluLeTZSb+TvXPi8auVTu7vw/PXb3+nY=;
- b=HlUVhnqYgCUUGKXS385AsKY5YvY+iQSvBNY27AtDINToka7z1fPr6tStFrZx5j/iK+7o/74KwYWAjHvasUvFMuOWElA7D3pMU7tT48qU0yqcIU2auiIfovYRjMH3TQYPZMoHEEEIpivTkokNyFelkcKXb6N8rnnIIHF16ju0rw36J3vKwSNKmslRqvp2yzCX5Z6AB57Vaj0wyIJgFeGuzputFDCrXVCjrtSwZOL/NVUADyJOQFXvq1IPUz70hs2GAZASoYfuY2PvRutDhPach6PPbUYIO8fsXPtrgk2PTtbz9lGxgOzk5rGmASWKkYsyPVd8KJGkpSPr0oTEoy6jGg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Fri, 5 Sep
- 2025 18:45:46 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9094.018; Fri, 5 Sep 2025
- 18:45:45 +0000
-Message-ID: <f421387a-6797-487f-843d-2c67811d8f68@nvidia.com>
-Date: Fri, 5 Sep 2025 14:45:43 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
- structs
-To: Yury Norov <yury.norov@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, John Hubbard <jhubbard@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
- <aLoGKilQPupPQkd2@yury>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <aLoGKilQPupPQkd2@yury>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN9PR03CA0297.namprd03.prod.outlook.com
- (2603:10b6:408:f5::32) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ZrjfXZXA"
+ARC-Seal: i=1; a=rsa-sha256; t=1757098216; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MGszn2MP1l39+Iqv8mWTs3TJdW8srp547RJ61/GwtVjJPYGiuG3NhhVmSXustrTduRk8BkLPAgdgOdW6attE/vJqrlYTneTVkkWKohFvcqK9lJ8c6QVgB3SJZ9Jyr088XiYIhU2RQa9SiVnGiEELmz+qMhoWMQVGrY84qJ3iFgE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757098216; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=8RQIiHyNynBWq6LtRFAmJpE3Kl8lr5mXan0DTdyIJrM=; 
+	b=kVGm408EeF49iGab28OTDPun0UTb7ci+26wsAgYUbAClzN/5pWQUyCxQ0vb3cr96mi9z5ByYgZPBzedPZVRs5gU4YykIgr7TruzioShmFBO2c3J8NUbvfU7JatHZEWb0mCui1VbjbFPNgYcsLg6mJMsvEmLVyko8wS/M7d/0XYs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757098216;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=8RQIiHyNynBWq6LtRFAmJpE3Kl8lr5mXan0DTdyIJrM=;
+	b=ZrjfXZXA/qRCIOMKo5HNkBJ44NEJXSLVVgopwjDNo8fP9lBMQQc/44ul7VOvjycG
+	T+TO5uZxaaPW0rwztqecFrvSMl9GACbTiFDm6x9D/E17qliOw3rZwEGn/jYqH8CfuBo
+	EAqv4HSELpsr4nHc5KTlnpQTXpEt5WAnrppdceGU=
+Received: by mx.zohomail.com with SMTPS id 1757098215259640.9815782272678;
+	Fri, 5 Sep 2025 11:50:15 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DM4PR12MB8476:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea55fbd8-6d03-4f43-51a7-08ddecac6c90
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SE5GRmJVNW9pdWFvOENuOXgvaUsxcUk5L21ablQzbCt0RlZCQ0o3dW8rS3Q3?=
- =?utf-8?B?MzI3K0g5Z3dIQng5LzNHZE1mMjlNZVlWVTBhYmRQdUVISFFmQmVrbGo3ekVy?=
- =?utf-8?B?elhJOUNwM1Axay95YmlkM2xjd2tnWDdKTHRQM0Y0TCtFUHl6QU5jcmpqNVdV?=
- =?utf-8?B?NHlaVFZFY1ovUlMvOTdudFU5b1JBemdiSnIyNzNrcjFHV0xPZkpkOHRwUkVn?=
- =?utf-8?B?VGN6U1Nxc0FkZUw3S0lTR0hwaENtS0ZFOU5ZSmhxN2hrWE1jMnczYis0OGFy?=
- =?utf-8?B?Y281OUIyK1hiRzQyQUZHcUhES1dJb0VSUXB0KzNhTGJnN0d5TlpOV1p0NFN5?=
- =?utf-8?B?MzJWRE9aNUE1T0xiMTFiQnFJV3UxNG9Vdi80UUNYNVBKVFdhQktGNmFlU0dH?=
- =?utf-8?B?L1p0RkF0ZW9aYUNoK0F2MWRJNmVCeXRaSzJIeWd4a0ZZekFrNHMxTlZvd1dp?=
- =?utf-8?B?T1hHNDdSS3dyNzNvNkZQMGZnd0NVbFhtcnMrd3NVeUZ6NHEyVnlSSGRKenp1?=
- =?utf-8?B?U2F2QmNqRXhnMlJlNHkyQ3pQc3c0WmNvUGJxem1iNXJJaWdMN1FJd1krM3Mw?=
- =?utf-8?B?WitEcWVVaW1wNDB6dXgvMmVkQ3BjQmdxRERUQkJDVTFZVUdDUWVmcXF2LzZj?=
- =?utf-8?B?Wmp3YjlXcmowOVlUOWg5aDhxQnJ1dkdSbjROc00yMnNLbGhPN2llbkt4WGxv?=
- =?utf-8?B?a1h2RWxkd0RvQjNhbGVGemNYdFQ0SnBLUVNiY0pIZ2RzVmRzaDlYSEkvVzht?=
- =?utf-8?B?YVpBVkFFS2VVakdyK1dPaVZ6R2hhVEJwZEgyS1JRdGM3NHR1UnMrK2VDTW5J?=
- =?utf-8?B?NDhlZFNnLzVUUnFqc24yOHdpN2tZemJ6bFYzbGhsVkFWeWd0VDFNUDFHMXBo?=
- =?utf-8?B?R1ZsYU1kOWVHaFpBK0tMeEFPOWV5bDZZMlk1emx3dmpMR2hUSWdFTjUvT0FH?=
- =?utf-8?B?OWt6REVBTCtNTzVwSEVibjYvS3ZNS2RvYzR0THVlSTBTenQxanBpSXBhSHdl?=
- =?utf-8?B?TndYb3NuL2dMdm80Q1ljUTU3TUM2cE13YjNqWWYrODdLMkJZZDkyOGp0R0Ry?=
- =?utf-8?B?STU4emZmT0lTRDhDNWhOZHVKYnc1NDYrbXQvekt6MnB2bmYybDg4NUhKdDBX?=
- =?utf-8?B?Szk0ZUhpbTZ2UUphcmlzQ3JIQ01WYldOTForT1V4VmlwQStzcy9oQVpobUc0?=
- =?utf-8?B?N2pSZU5CdmswNWZSVjZpVVdFb1pVM293ejU5VmtvZml2Z2dQdHRKeGVVMG9w?=
- =?utf-8?B?WEVsd1J1Um56dmhXeHVjNDBxNmtIQ3hzR0VzQ3ZNVHdsMlNQMTR6cXM5V3dl?=
- =?utf-8?B?eHBtNXMvbnp5b29lcC96NTk4T1daMEpGZ2xSNHcyLzM1RFhCWGExdVRWMFhw?=
- =?utf-8?B?eUJ6U0xKZzVIbnpTYUFWMUFyaXNzclk3bDh1QW50Q1NldlB0K0VCaDM5ZHVz?=
- =?utf-8?B?M0ZnYzNoYUtIZURlT2wzcEVZN0tEU2lIYkxwQ0p3ck5GUEp1dEdUekJSRnRW?=
- =?utf-8?B?bUxXb2NVMityQWpFSXJ0MzhWZXdHekdwUkRKdEVWSUQyY0g1blcyVFI3c2VT?=
- =?utf-8?B?dnZkVzVGbTREVjhBTXA1N3hURnpKRlN6NzIrYlIyYXdsNkRNVi9oZjBKYTcz?=
- =?utf-8?B?SjNneVBsWllnYmRaTzRlM0lVS0daOVBlSmNWa1A4b3JFRUpYdHBIZU1tTWM3?=
- =?utf-8?B?bEhFc0hha0JJaUpTWmhkK1RGZmpCQ0VJWUk0N3hWRTZYWmVoUUNWL2RtNFpv?=
- =?utf-8?B?cFNtYW9rR2NvQ3l2ZkFEeWtONWp6Uk5sNWpmVHJ5S0VkNWU0R1RKZWY5bGlB?=
- =?utf-8?B?K1pkeWgwZUFWYkZDU0wwVHEwTVQrN0RVZ1hUOGd4L2JYMkFzUkVERCtkcm9S?=
- =?utf-8?B?ZjV4V0ZIQU5zQU9oR2hweDU2eDhFM3B2SjAxcWkyd016Ly9BQTNreWVLVVpQ?=
- =?utf-8?Q?syiuNCdaJdM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QXBUWmt4VjZ5OGtuVjJacXBzaTFlWW1uUFpTcGgzYzk5WnQydHpVUmlpaCt6?=
- =?utf-8?B?dDBuZTJKdTVSeVVkSzNheEd2YTZ0Vis0aWRVL3pTcDArSXJnRU03ZTk1c2lM?=
- =?utf-8?B?MFhUUUp0d053bnJLeTgrK08vczNUUkRzemdzQ3R5ck5HWmx4QW1ZNHhBMlI1?=
- =?utf-8?B?aE9xUkpSQmx3V3pyRGowdCs4VytrbTRBZVcxa3gvVUhySFhQOEJlUVhrQWJY?=
- =?utf-8?B?TldhMXlyeUgvdllJR0NsU0VvVHBtUjNTZkMwU2NkVHRhUWg3QTQ4L1VmSENT?=
- =?utf-8?B?TmZ2Y2JqdjRwai81czU1MlB6aEhvZisxcmNzMnZUTVVoZytUc2g0NndQeENE?=
- =?utf-8?B?Wm0vRW5TdFFVMzFqUG1iV0kvL1lSaXEwQTU3cnBSMTdRTXpsaGNNWHNja2JB?=
- =?utf-8?B?NWNwVVpOUFpOQVJmRTVwbDhqTDluc2lzd2dnSDAvNlpxSkt1di9PdVRIZWFP?=
- =?utf-8?B?VGRzMVVIY1JBUHM5U1paNnN0RTVoNUo0MGl2a1pMR2FrMmRpSi9jclVGTS9N?=
- =?utf-8?B?RDhDSjFHbEt4Q1Z1enFYd3Y1M25wc25PRUo3MUlpSWNRUERuSFZYcjlmK2p4?=
- =?utf-8?B?cUF6L3JQSDI3eHhsQ1RNOEE4UnJ4TkFRaitOWWVReHlhY01XWWRKYWp1aS9M?=
- =?utf-8?B?b3hCN3JKZERZcG1oZHZuZmRuTWk4ZHcyUkdYYnRoZVpqUG9wYklQYmlJbUdB?=
- =?utf-8?B?Y0sxV1BwdklvMmE1Qm5Md3BtaGt4SERXcWE1UEZrSlBLM2xMd0trQnJQbkg4?=
- =?utf-8?B?VWNiV0h2TmE3QjdlODZZSEhJZmp3elBQSTNUSTNENFBVQ1RCZXppSWs3TEJN?=
- =?utf-8?B?MkcvcE9wbHNqRlNIKy8vMzlPOGtYNENQM05RTjhnN2ZiRng3ZGM3ZURuVXAv?=
- =?utf-8?B?TEFNSWxrSGJhdnlFS09pVGVaaVRBRklOSUZrSlN6ZFZ3M09WWHdWZDhNSlZZ?=
- =?utf-8?B?Wng4VVpWNkNjVzRUTUpnekoxYWptaEhXWnorYnRpTGN4Mmg5enZiUWJLMFpG?=
- =?utf-8?B?d3lXWkpkeHZTR251VzN1aUlGZUhpVEpoL2VYSSt2cENtT3d6Ujc2bHMvRXMx?=
- =?utf-8?B?NEVpaFFpZkdNQWxSTmRCUHBtcy92QS92UmlTUFAyT0NCZ25SQWIrL1ZCZmk4?=
- =?utf-8?B?aUpZazBIdzMwQS8wVnpyWllnOFpVd3hlWkF3cjdSK295RkJjUmVXWmR0a09H?=
- =?utf-8?B?T0NwdE9BSS94NFVSbUgrU2lVc3ZCekdZQis1MEhkN2Z3RGRqTGhjYmZsQldi?=
- =?utf-8?B?dnFqZVVPSjdqNkJmeXZJM2VVSE1sMEtRQWx1SnNqQk0vczIrc3pCVDBJdkRM?=
- =?utf-8?B?czV1M1hMUWJhbERaMnVJWUQzdWRDcEV3M0Z1byswWVltTW5oK0pnZEtJRjBC?=
- =?utf-8?B?NlhhWVd6MlY5MFM2Uy9yUXFXNmZ0R3prUlF5eENMRGtqeFI1TDhMMTNJWHly?=
- =?utf-8?B?MUFINDlUQ1dWcC9jMktRNDFKdzdqcFMrWktTVlBSTjlXdDNKNU96M29KR0N6?=
- =?utf-8?B?WUtZcnRya1VYcC9ET0dac3ppVTBnSnliTm40TTFkb05UK0R1Tkl5aFBJdUxL?=
- =?utf-8?B?dG84K2RiZVh4WTE0cnBUQUNndXlKeGxadkFGYzI1akt2bjY0SGhqMmUwSnNk?=
- =?utf-8?B?Qy9vUXpYTS9iUThVNUtTN3grSU9ETHNMd0dCOFFBdHArTmtjTVJBcFNiZUNi?=
- =?utf-8?B?Zy9URVkxQlY2ZlRvalVXMGNOcGdud2lTb3hGOEphUGczOE1qeTU4UnBZekN4?=
- =?utf-8?B?dkw3UDl6cFdJUUZYYU4xRHNUUVJWV2U5OFNIWGgvUGRNMVAzSjQ5akNmMWhT?=
- =?utf-8?B?Z0E2azZqdmxtZ1R2bFFqQThHSWFMVlhNclVGQkgzV1lVQkhwTFJNYlk5MGdl?=
- =?utf-8?B?anFIRTNKbVQyTFVGeFErOGxwaU9LQjZPY2RIdVVYZGJmNG1halRxUDlWaW5P?=
- =?utf-8?B?Tkx0ZzRKeFZmUFpvbjRQQm1LVUVKT1k4V3IrQjRiOWdZV3FZNTJlYURBc25C?=
- =?utf-8?B?czJJNjl0Mm14dmdhTlFXRTNCQzUrRXBsN1NRRVVKc043MVB0VzB3WU5UNDZw?=
- =?utf-8?B?aE83VnpvWjFOU3FZWkJ0Q2FQNHFOUVN4YXI5M041MHk4c3d0UXJjVHdEajNl?=
- =?utf-8?Q?Cv35xIyMAqOmx+ZapAGDJXyP/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea55fbd8-6d03-4f43-51a7-08ddecac6c90
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 18:45:45.8522
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T8Ny5yyrBXW85s1t+D4/yi0PjjKXkYFiX3bRaBdgin+wOBVe7gBh1oBxuwW5A/SyfwUBXNz1wxpTSJOOWpCLMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8476
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 3/7] rust: implement `WwMutex`, `WwAcquireCtx` and
+ `WwMutexGuard`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250903131313.4365-4-work@onurozkan.dev>
+Date: Fri, 5 Sep 2025 15:49:57 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ lossin@kernel.org,
+ lyude@redhat.com,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ peterz@infradead.org,
+ mingo@redhat.com,
+ will@kernel.org,
+ longman@redhat.com,
+ felipe_life@live.com,
+ daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <886565B2-B5CD-49DA-9598-EBD60490C0DC@collabora.com>
+References: <20250903131313.4365-1-work@onurozkan.dev>
+ <20250903131313.4365-4-work@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
+Hi Onur,
 
+I think this is starting to come together IMHO. Some comments inline.
 
-On 9/4/2025 5:35 PM, Yury Norov wrote:
-> Hi Joel,
-> 
-> (Thanks to John for referencing this.)
-> 
-> On Sun, Aug 24, 2025 at 09:59:52AM -0400, Joel Fernandes wrote:
->> Add a minimal bitfield library for defining in Rust structures (called
->> bitstruct), similar in concept to bit fields in C structs.
-> 
-> So maybe name it bitfield?
+> On 3 Sep 2025, at 10:13, Onur =C3=96zkan <work@onurozkan.dev> wrote:
+>=20
+> Includes full locking API (lock, try_lock, slow path, interruptible =
+variants)
+> and integration with kernel bindings.
+>=20
+> Also adds the `EDEADLK` error code to support deadlock detection.
+>=20
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
+> rust/kernel/error.rs              |   1 +
+> rust/kernel/sync/lock/ww_mutex.rs | 289 +++++++++++++++++++++++++++++-
+> 2 files changed, 289 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index a41de293dcd1..560de6117094 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -64,6 +64,7 @@ macro_rules! declare_err {
+>     declare_err!(EPIPE, "Broken pipe.");
+>     declare_err!(EDOM, "Math argument out of domain of func.");
+>     declare_err!(ERANGE, "Math result not representable.");
+> +    declare_err!(EDEADLK, "Resource deadlock avoided.");
+>     declare_err!(EOVERFLOW, "Value too large for defined data type.");
+>     declare_err!(ETIMEDOUT, "Connection timed out.");
+>     declare_err!(ERESTARTSYS, "Restart the system call.");
+> diff --git a/rust/kernel/sync/lock/ww_mutex.rs =
+b/rust/kernel/sync/lock/ww_mutex.rs
+> index ca5b4525ace6..314360632953 100644
+> --- a/rust/kernel/sync/lock/ww_mutex.rs
+> +++ b/rust/kernel/sync/lock/ww_mutex.rs
+> @@ -10,8 +10,11 @@
+> //! For more information: =
+<https://docs.kernel.org/locking/ww-mutex-design.html>
+>=20
+> use crate::bindings;
+> +use crate::error::to_result;
+> use crate::prelude::*;
+> -use crate::types::Opaque;
+> +use crate::types::{NotThreadSafe, Opaque};
+> +use core::cell::UnsafeCell;
+> +use core::marker::PhantomData;
+>=20
+> /// Create static [`WwClass`] instances.
+> ///
+> @@ -134,3 +137,287 @@ pub fn new_wound_wait(name: &'static CStr) -> =
+impl PinInit<Self> {
+>         Self::new(name, false)
+>     }
+> }
+> +
+> +/// Groups multiple mutex acquisitions together for deadlock =
+avoidance.
+> +///
+> +/// Must be used when acquiring multiple mutexes of the same class.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::sync::lock::ww_mutex::{WwClass, WwAcquireCtx, =
+WwMutex};
+> +/// use kernel::c_str;
+> +/// use kernel::sync::Arc;
+> +/// use pin_init::stack_pin_init;
+> +///
+> +/// stack_pin_init!(let class =3D =
+WwClass::new_wound_wait(c_str!("my_class")));
+> +///
+> +/// // Create mutexes.
+> +/// let mutex1 =3D Arc::pin_init(WwMutex::new(1, &class), =
+GFP_KERNEL)?;
+> +/// let mutex2 =3D Arc::pin_init(WwMutex::new(2, &class), =
+GFP_KERNEL)?;
+> +///
+> +/// // Create acquire context for deadlock avoidance.
+> +/// let ctx =3D KBox::pin_init(WwAcquireCtx::new(&class), =
+GFP_KERNEL)?;
+> +///
+> +/// // Acquire multiple locks safely.
+> +/// let guard1 =3D ctx.lock(&mutex1)?;
+> +/// let guard2 =3D ctx.lock(&mutex2)?;
+> +///
+> +/// // Mark acquisition phase as complete.
+> +/// ctx.done();
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +#[pin_data(PinnedDrop)]
+> +pub struct WwAcquireCtx<'a> {
 
-Sure, that sounds good to me. I wanted the name "struct" in it, but I guess
-since a caller is expected to pass "struct" in the invocation, it should be
-good, in fact better because "bitfield" adds more information, so thank you!
+Please drop the Ww prefix. This is ww_mutex.rs <http://ww_mutex.rs/> =
+after all.
 
-> 
->> This will be used
->> for defining page table entries and other structures in nova-core.
-> 
-> I think this is understatement, and this will find a broader use. :)
+> +    #[pin]
+> +    inner: Opaque<bindings::ww_acquire_ctx>,
+> +    _p: PhantomData<&'a WwClass>,
+> +}
+> +
+> +impl<'ww_class> WwAcquireCtx<'ww_class> {
+> +    /// Initializes `Self` with calling C side `ww_acquire_init` =
+inside.
+> +    pub fn new(ww_class: &'ww_class WwClass) -> impl PinInit<Self> {
+> +        let class =3D ww_class.inner.get();
+> +        pin_init!(WwAcquireCtx {
+> +            inner <- Opaque::ffi_init(|slot: *mut =
+bindings::ww_acquire_ctx| {
+> +                // SAFETY: `ww_class` is valid for the lifetime =
+`'ww_class` captured by `Self`.
+> +                unsafe { bindings::ww_acquire_init(slot, class) }
+> +            }),
+> +            _p: PhantomData
+> +        })
+> +    }
+> +
+> +    /// Marks the end of the acquire phase.
+> +    ///
+> +    /// After calling this function, no more mutexes can be acquired =
+with this context.
+> +    pub fn done(&self) {
+> +        // SAFETY: The context is pinned and valid.
+> +        unsafe { bindings::ww_acquire_done(self.inner.get()) };
+> +    }
 
-Thanks :)
+This lets you call done() multiple times. We should probably use a =
+typestate here.
 
-> 
->> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> 
-> I agree with the others that this bitstruct is worth to live in core
-> directory. I just merged bitmap wrapper in rust/kernel/bitmap.rs, and
-> I think this one should go in rust/kernel/bitstruct.rs (or bitfield.rs?).
+> +
+> +    /// Locks the given mutex.
+> +    pub fn lock<'a, T>(&'a self, ww_mutex: &'a WwMutex<'a, T>) -> =
+Result<WwMutexGuard<'a, T>> {
 
-Sure, bitfield.rs sounds good to me.
+> +        // SAFETY: The mutex is pinned and valid.
+> +        let ret =3D unsafe { =
+bindings::ww_mutex_lock(ww_mutex.mutex.get(), self.inner.get()) };
+> +
+> +        to_result(ret)?;
+> +
+> +        Ok(WwMutexGuard::new(ww_mutex))
+> +    }
+> +
+> +    /// Similar to `lock`, but can be interrupted by signals.
+> +    pub fn lock_interruptible<'a, T>(
+> +        &'a self,
+> +        ww_mutex: &'a WwMutex<'a, T>,
+> +    ) -> Result<WwMutexGuard<'a, T>> {
+> +        // SAFETY: The mutex is pinned and valid.
+> +        let ret =3D unsafe {
+> +            =
+bindings::ww_mutex_lock_interruptible(ww_mutex.mutex.get(), =
+self.inner.get())
+> +        };
+> +
+> +        to_result(ret)?;
+> +
+> +        Ok(WwMutexGuard::new(ww_mutex))
+> +    }
+> +
+> +    /// Locks the given mutex using the slow path.
+> +    ///
+> +    /// This function should be used when `lock` fails (typically due =
+to a potential deadlock).
+> +    pub fn lock_slow<'a, T>(&'a self, ww_mutex: &'a WwMutex<'a, T>) =
+-> Result<WwMutexGuard<'a, T>> {
+> +        // SAFETY: The mutex is pinned and valid, and we're in the =
+slow path.
+> +        unsafe { bindings::ww_mutex_lock_slow(ww_mutex.mutex.get(), =
+self.inner.get()) };
+> +
+> +        Ok(WwMutexGuard::new(ww_mutex))
+> +    }
+> +
+> +    /// Similar to `lock_slow`, but can be interrupted by signals.
+> +    pub fn lock_slow_interruptible<'a, T>(
+> +        &'a self,
+> +        ww_mutex: &'a WwMutex<'a, T>,
+> +    ) -> Result<WwMutexGuard<'a, T>> {
+> +        // SAFETY: The mutex is pinned and valid, and we are in the =
+slow path.
+> +        let ret =3D unsafe {
+> +            =
+bindings::ww_mutex_lock_slow_interruptible(ww_mutex.mutex.get(), =
+self.inner.get())
+> +        };
+> +
+> +        to_result(ret)?;
+> +
+> +        Ok(WwMutexGuard::new(ww_mutex))
+> +    }
+> +
+> +    /// Tries to lock the mutex without blocking.
+> +    ///
+> +    /// Unlike `lock`, no deadlock handling is performed.
+> +    pub fn try_lock<'a, T>(&'a self, ww_mutex: &'a WwMutex<'a, T>) -> =
+Result<WwMutexGuard<'a, T>> {
+> +        // SAFETY: The mutex is pinned and valid.
+> +        let ret =3D unsafe { =
+bindings::ww_mutex_trylock(ww_mutex.mutex.get(), self.inner.get()) };
+> +
+> +        if ret =3D=3D 0 {
+> +            return Err(EBUSY);
+> +        } else {
+> +            to_result(ret)?;
+> +        }
+> +
+> +        Ok(WwMutexGuard::new(ww_mutex))
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for WwAcquireCtx<'_> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY: The context is being dropped and is pinned.
+> +        unsafe { bindings::ww_acquire_fini(self.inner.get()) };
+> +    }
+> +}
+> +
+> +/// A wound/wait mutex backed with C side `ww_mutex`.
+> +///
+> +/// This is a mutual exclusion primitive that provides deadlock =
+avoidance when
+> +/// acquiring multiple locks of the same class.
 
-> 
-> Can you please consider this change for v2, and also add the new file in
-> BITOPS API record in MAINTAINERS?
+A link would be cool for the docs.
 
-Yes.
+> +///
+> +/// # Examples
+> +///
+> +/// ## Basic Usage
+> +///
+> +/// ```
+> +/// use kernel::c_str;
+> +/// use kernel::sync::Arc;
+> +/// use kernel::sync::lock::ww_mutex::{WwClass, WwAcquireCtx, WwMutex =
+};
+> +/// use pin_init::stack_pin_init;
+> +///
+> +/// stack_pin_init!(let class =3D =
+WwClass::new_wound_wait(c_str!("buffer_class")));
+> +/// let mutex =3D Arc::pin_init(WwMutex::new(42, &class), =
+GFP_KERNEL)?;
+> +///
+> +/// let ctx =3D KBox::pin_init(WwAcquireCtx::new(&class), =
+GFP_KERNEL)?;
+> +///
+> +/// let guard =3D ctx.lock(&mutex)?;
+> +/// assert_eq!(*guard, 42);
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +///
+> +/// ## Multiple Locks
+> +///
+> +/// ```
+> +/// use kernel::c_str;
+> +/// use kernel::prelude::*;
+> +/// use kernel::sync::Arc;
+> +/// use kernel::sync::lock::ww_mutex::{WwClass, WwAcquireCtx, =
+WwMutex};
+> +/// use pin_init::stack_pin_init;
+> +///
+> +/// stack_pin_init!(let class =3D =
+WwClass::new_wait_die(c_str!("resource_class")));
+> +/// let mutex_a =3D Arc::pin_init(WwMutex::new("Resource A", &class), =
+GFP_KERNEL)?;
+> +/// let mutex_b =3D Arc::pin_init(WwMutex::new("Resource B", &class), =
+GFP_KERNEL)?;
+> +///
+> +/// let ctx =3D KBox::pin_init(WwAcquireCtx::new(&class), =
+GFP_KERNEL)?;
+> +///
+> +/// // Try to acquire both locks.
+> +/// let guard_a =3D match ctx.lock(&mutex_a) {
+> +///     Ok(guard) =3D> guard,
+> +///     Err(e) if e =3D=3D EDEADLK =3D> {
+> +///         // Deadlock detected, use slow path.
 
-[...]>> +/// # Example (just for illustration)
->> +/// ```rust
->> +/// bitstruct! {
->> +///     #[repr(u64)]
->> +///     pub struct PageTableEntry {
->> +///         0:0       present     as bool,
->> +///         1:1       writable    as bool,
->> +///         11:9      available   as u8,
->> +///         51:12     pfn         as u64,
->> +///         62:52     available2  as u16,
->> +///         63:63     nx          as bool,
->> +///     }
->> +/// }
-> 
-> Is it possible to create overlapping fields? Should we allow that?
-> (I guess yes.) Does your machinery handle it correctly now?
-> 
-> If the answer is yes, can you add a test for it?
+You must release all other locks before calling this, except there =
+aren=E2=80=99t any taken in your example.
 
-It is possible, but it is an unintended side effect. It is not the primary use
-case though, but also there is no harm in doing it if the user needs it. I will
-add a test case, I will include this in the K-Unit test in v3.
+You should perhaps add a release_all() function to the context.
 
-> 
->> +/// ```
->> +///
->> +/// This generates a struct with methods:
->> +/// - Constructor: `default()` sets all bits to zero.
->> +/// - Field accessors: `present()`, `pfn()`, etc.
->> +/// - Field setters: `set_present()`, `set_pfn()`, etc.
->> +/// - Builder methods: `with_present()`, `with_pfn()`, etc.
->> +/// - Raw conversion: `from_raw()`, `into_raw()`
->> +#[allow(unused_macros)]
->> +macro_rules! bitstruct {
->> +    (
->> +        #[repr($storage:ty)]
->> +        $vis:vis struct $name:ident {
->> +            $(
->> +                $hi:literal : $lo:literal $field:ident as $field_type:tt
->> +            ),* $(,)?
->> +        }
->> +    ) => {
->> +        #[repr(transparent)]
->> +        #[derive(Copy, Clone, Default)]
->> +        $vis struct $name($storage);
->> +
->> +        impl $name {
->> +            /// Create from raw value
->> +            #[inline(always)]
->> +            $vis const fn from_raw(val: $storage) -> Self {
->> +                Self(val)
->> +            }
->> +
->> +            /// Get raw value
->> +            #[inline(always)]
->> +            $vis const fn into_raw(self) -> $storage {
->> +                self.0
->> +            }
->> +        }
->> +
->> +        impl core::fmt::Debug for $name {
->> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
->> +                write!(f, "{}({:#x})", stringify!($name), self.0)
->> +            }
->> +        }
->> +
->> +        // Generate all field methods
->> +        $(
->> +            bitstruct_field_impl!($vis, $name, $storage, $hi, $lo, $field as $field_type);
->> +        )*
->> +    };
->> +}
->> +
->> +/// Helper to calculate mask for bit fields
->> +#[allow(unused_macros)]
->> +macro_rules! bitstruct_mask {
->> +    ($hi:literal, $lo:literal, $storage:ty) => {{
->> +        let width = ($hi - $lo + 1) as usize;
->> +        let storage_bits = 8 * core::mem::size_of::<$storage>();
-> 
-> Does this '8' mean BITS_PER_BYTE? If so, we've got BITS_PER_TYPE() macro. Can
-> you use it here?
-> 
->> +        if width >= storage_bits {
->> +            <$storage>::MAX
-> 
-> This is an attempt to make an out-of-boundary access. Maybe print a
-> warning or similar? 
+> +///         ctx.lock_slow(&mutex_a)?
+> +///     }
+> +///     Err(e) =3D> return Err(e),
+> +/// };
+> +///
+> +/// let guard_b =3D ctx.lock(&mutex_b)?;
+> +/// ctx.done();
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +#[pin_data]
+> +pub struct WwMutex<'a, T: ?Sized> {
+> +    _p: PhantomData<&'a WwClass>,
 
-Only width > storage_bits is out-of-boundary. Also in v2 [1] I completely
-replaced this part with genmask, so we are no longer calculating WIDTH.
+Make the PhantomData last, please.
 
-+        const [<$field:upper _MASK>]: $storage = {
-+            // Generate mask for shifting
-+            match ::core::mem::size_of::<$storage>() {
-+                1 => ::kernel::bits::genmask_u8($lo..=$hi) as $storage,
-+                2 => ::kernel::bits::genmask_u16($lo..=$hi) as $storage,
-+                4 => ::kernel::bits::genmask_u32($lo..=$hi) as $storage,
-+                8 => ::kernel::bits::genmask_u64($lo..=$hi) as $storage,
-+                _ => <$storage>::MAX
-+            }
-+        };
+> +    #[pin]
+> +    mutex: Opaque<bindings::ww_mutex>,
+> +    data: UnsafeCell<T>,
+> +}
+> +
+> +// SAFETY: [`WwMutex`] can be shared between threads.
+> +unsafe impl<T: ?Sized + Send> Send for WwMutex<'_, T> {}
 
-I could add a build_assert here though to make sure size_of($storage) > ($hi -
-$lo), but I think genmask already has a build_assert:
-                build_assert!(n < <$ty>::BITS);
-so it may not be needed.
+=E2=80=9CSend=E2=80=9D does not share anything. When you send something, =
+some other
+thread has it, and you don=E2=80=99t have it anymore.
 
-[1] https://lore.kernel.org/all/20250903215428.1296517-3-joelagnelf@nvidia.com/
+Blank here.
 
-thanks,
+> +// SAFETY: [`WwMutex`] can be safely accessed from multiple threads =
+concurrently.
+> +unsafe impl<T: ?Sized + Send + Sync> Sync for WwMutex<'_, T> {}
+> +
+> +impl<'ww_class, T> WwMutex<'ww_class, T> {
+> +    /// Creates `Self` with calling `ww_mutex_init` inside.
 
- - Joel
+^ This does not parse very well.
+
+> +    pub fn new(t: T, ww_class: &'ww_class WwClass) -> impl =
+PinInit<Self> {
+
+Please rename =E2=80=9Ct=E2=80=9D to =E2=80=9Cdata=E2=80=9D.
+
+> +        let class =3D ww_class.inner.get();
+> +        pin_init!(WwMutex {
+> +            mutex <- Opaque::ffi_init(|slot: *mut bindings::ww_mutex| =
+{
+> +                // SAFETY: `ww_class` is valid for the lifetime =
+`'ww_class` captured by `Self`.
+> +                unsafe { bindings::ww_mutex_init(slot, class) }
+> +            }),
+> +            data: UnsafeCell::new(t),
+> +            _p: PhantomData,
+> +        })
+> +    }
+> +}
+> +
+> +impl<T: ?Sized> WwMutex<'_, T> {
+
+I wonder why we need this ?Sized here?
+
+> +    /// Returns a raw pointer to the inner mutex.
+> +    fn as_ptr(&self) -> *mut bindings::ww_mutex {
+> +        self.mutex.get()
+> +    }
+> +
+> +    /// Checks if the mutex is currently locked.
+> +    ///
+> +    /// Intended for internal tests only and should not be used
+> +    /// anywhere else.
+
+Why?
+
+> +    #[cfg(CONFIG_KUNIT)]
+> +    fn is_locked(&self) -> bool {
+
+I=E2=80=99d recommend removing this CONFIG_KUNIT and making this pub. =
+You can see
+that there are users for this function in the C code, like for example,
+dma_resv_is_locked().
+
+> +        // SAFETY: The mutex is pinned and valid.
+> +        unsafe { bindings::ww_mutex_is_locked(self.mutex.get()) }
+> +    }
+> +}
+> +
+> +/// A guard that provides exclusive access to the data protected
+> +/// by a [`WwMutex`].
+> +///
+> +/// # Invariants
+> +///
+> +/// The guard holds an exclusive lock on the associated [`WwMutex`]. =
+The lock is held
+> +/// for the entire lifetime of this guard and is automatically =
+released when the
+> +/// guard is dropped.
+> +#[must_use =3D "the lock unlocks immediately when the guard is =
+unused"]
+> +pub struct WwMutexGuard<'a, T: ?Sized> {
+> +    mutex: &'a WwMutex<'a, T>,
+> +    _not_send: NotThreadSafe,
+> +}
+> +
+> +// SAFETY: [`WwMutexGuard`] can be shared between threads if the data =
+can.
+> +unsafe impl<T: ?Sized + Sync> Sync for WwMutexGuard<'_, T> {}
+> +
+> +impl<'a, T: ?Sized> WwMutexGuard<'a, T> {
+> +    /// Creates a new guard for a locked mutex.
+> +    fn new(mutex: &'a WwMutex<'a, T>) -> Self {
+> +        Self {
+> +            mutex,
+> +            _not_send: NotThreadSafe,
+> +        }
+> +    }
+> +}
+> +
+> +impl<T: ?Sized> core::ops::Deref for WwMutexGuard<'_, T> {
+> +    type Target =3D T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: We hold the lock, so we have exclusive access.
+> +        unsafe { &*self.mutex.data.get() }
+> +    }
+> +}
+> +
+> +impl<T: ?Sized> core::ops::DerefMut for WwMutexGuard<'_, T> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        // SAFETY: We hold the lock, so we have exclusive access.
+> +        unsafe { &mut *self.mutex.data.get() }
+> +    }
+
+We need to add a bound on Unpin. See [0].
+
+> +}
+> +
+> +impl<T: ?Sized> Drop for WwMutexGuard<'_, T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: We hold the lock and are about to release it.
+> +        unsafe { bindings::ww_mutex_unlock(self.mutex.as_ptr()) };
+> +    }
+> +}
+> =E2=80=94
+> 2.50.0
+>=20
+>=20
+
+[0]: =
+https://lore.kernel.org/rust-for-linux/20250828-lock-t-when-t-is-pinned-v2=
+-1-b067c4b93fd6@collabora.com/
 
