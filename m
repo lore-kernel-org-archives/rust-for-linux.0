@@ -1,107 +1,83 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9752D7DE2
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 07:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1F32D1F64;
+	Fri,  5 Sep 2025 09:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757056778; cv=none; b=QbBKiqFW7ngHvObXn0Te7MPwCWHbP2YqYkkBSTkH5WHdiiuzhb7lczalm6udSXxKd+kZjXdLPElc4/eU85BhiMdlNJckAMj/ytspVuzTr0TULy8tHOJv45e7ObeviBfE5d0G6dBzHoj72lBQ4t8VVOTOGokx8JNd0l9YsRTZ+Ko=
+	t=1757062808; cv=none; b=GOJ7ItXE88fkaEAZ7H390OiuTJeLfzt9D3nVDIuMW8JLYUBjpj6oxnuxlzBIzkJGvANeimiOAvQUy9X9q1lV0sGuxhaDgDWsQvyJHXNuh1oAeyBEM1FPzh3FHgOqudFJZQAheI3fKJ2B3OAxM0thLfuhTMM9yA/AN1df4ZPDXUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757056778; c=relaxed/simple;
-	bh=onocq6twXaoXdwX5nQirMF9Kmg6OzlgFZ2RFJQEwhPg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n7ZrzR9LVMbz7D83iKvAC4HyHMXyTvoSyHcGi9tR6lJL9giBVVhem5BY8CLza+82Fgpn2c7ZAoC8G0f2z4YsE+oFSmC66ReMXhBz6QmCFX5lk7fphUlmB7uWv/AqDj90bSFPg3/lifcJxfatYCaiBYdUv0XUwWkNh9m08fiapc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DoloE0yz; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1757062808; c=relaxed/simple;
+	bh=8ijI8iLawoBKYo/neDNtLZHH221638zcRNFfo6wvkZ8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=fvxfps4nD4OzutO+XvWfhORIcBx9lZ6+RfCD7N0npu1O7Glbd/OxUIHYgXMCR8cXetCRatF9n/9uaOes4rgCYgDHgmUS5oNe4cdG8eWEHSEICmb2G22Cdsnh7oVIJ3VS8SaIQaNnwScEhlYI3XdrAh5NS4aYbxuQsG5pV6simII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lj+yg1DG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DoloE0yz"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45b9912a07dso9752745e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 00:19:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757056775; x=1757661575; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nzDQDuZjxVC6oySC+SReVx9M1aCW1txUI5kRYOyeNM8=;
-        b=DoloE0yzO1xQj6c9HRZ82gXSVvTz4HrWm9yxFbSZF6YLj10vAkj1nVNZxM+KIFTyj+
-         HxOSLOuBMa6vUWW87Sg2VluwSNcWw2vvU+rsFIe5EsoPDJdyeDxHTYSFJaBgWzpPRf9v
-         /adRj85HqqPmdVyzGWXGklKrPe42+p41aVFYO9Mk2eLWIQ1VbbleRyaRK1Z3NKrwxTpW
-         cVtkdc9zdNKASpA3EjOa1bEBtM46No7ZlF9ovmsLR5SuLbaaAM2Ak0SCq94s/Fn/AZQH
-         3zLeid9uVsw2ol18BjFvFji/fLiQ91UdJVL+UTzxFHWYe+wdIwqXHMw4D/WqeFgOz+JV
-         U+Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757056775; x=1757661575;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nzDQDuZjxVC6oySC+SReVx9M1aCW1txUI5kRYOyeNM8=;
-        b=o3uVODDiARcT3KsU6EvxpVTP/alLkuF9r4T9ZbQcz71wjXjDmH1hoBFBhByR1QWj8z
-         hvHsgzQAEZtsXiY/zg3wp87q+J73XhvOVYsQ4lN8w/A372SY+3X70qf9a6IKEw9yMnS9
-         ngsO+5uN91JPYCOEu1WQJkhD9PzQMkz8YuoPAgy2UQlaho4gjGxjvoAWj8mbE0xMF1LT
-         xM0oWLAmCQtLzxSkOgTjGLt9oqEp+L3ZwffozdLEn0/fh28nl9dkAf4cKO91Ob87itTO
-         cmYlCjSedidKglkR2tkiujr/riner1ODqMnvO3K4gC9rEqlFkRUPW/ETbs0zFw+YWMwd
-         aaSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZm8xLBM7KyPh7nQCTsKhoPfw5d3+DAk4ID2qC4oBBD82FfaWuExiSX+k/4jQYW9hMlA12TCz4+EX8mfgRLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YysailD6/+HKe3EdJaysOTs1JzoOtw189NcY+ftCH6tIdEjBCP3
-	rrBgundDdzSF6S+WBXICEr9v5Oty9Ba75kfzgJLN3b2CCYZJ0PFXqWm9qgj85CK+HyLz0ZYEiqZ
-	2VIGv2gJe2+bONKhJhw==
-X-Google-Smtp-Source: AGHT+IHMbd1cgOBQqeIHZBAcbJF/pQ0YegzqkDP/pVp9v6OrwLpQzRk9eV1m5hUFWBGmD9QF/W3bgJQ5m0Nq3FM=
-X-Received: from wmqd22.prod.google.com ([2002:a05:600c:34d6:b0:45b:4777:8063])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c4aa:b0:45b:47e1:ef69 with SMTP id 5b1f17b1804b1-45b855beda0mr160151915e9.36.1757056775334;
- Fri, 05 Sep 2025 00:19:35 -0700 (PDT)
-Date: Fri, 5 Sep 2025 07:19:34 +0000
-In-Reply-To: <20250901202850.208116-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lj+yg1DG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDC8C4CEF1;
+	Fri,  5 Sep 2025 09:00:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757062808;
+	bh=8ijI8iLawoBKYo/neDNtLZHH221638zcRNFfo6wvkZ8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Lj+yg1DGRv3d0iVz93BJ/kHZUHXD+WVqecd8OaNPgzt3TF9NlX8rJf+HWwCFletLj
+	 6/jQyYAHMb4+GxSZ5Wr3gG3qczOH/dVXn+jSjiKq9jTrGgdhuMyAQxt57XgiJ85llO
+	 Yh9AHmCcNQAc/EMeGqjHIjRaxvkm2kjr3Y5W/04HLGO7/p60H7HEBTQ6oN2Gvkfl3D
+	 K0hS0UUr/sklfVja7a4Aht0iXgFtSSYHjXvJKph4Z6PFeiQhV7wYNfv76Myg45U7RB
+	 IHpFm54AegdzC5ZPYhIm3qjt38b11XhQ24FhxazJM/ePyIfjI7GizFehIwZXbt9hoR
+	 151din7s58ahw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250901202850.208116-1-dakr@kernel.org>
-Message-ID: <aLqPBqXZX7lERvoU@google.com>
-Subject: Re: [PATCH] MAINTAINERS: Add drm-rust tree for Rust DRM drivers and infrastructure
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, acourbot@nvidia.com, 
-	daniel.almeida@collabora.com, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Sep 2025 11:00:02 +0200
+Message-Id: <DCKQS4126EVC.38ZJ0GOFDYCP7@kernel.org>
+Subject: Re: [PATCH v11 5/7] samples: rust: Add debugfs sample driver
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
+ <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Matthew Maurer" <mmaurer@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+ <20250904-debugfs-rust-v11-5-7d12a165685a@google.com>
+In-Reply-To: <20250904-debugfs-rust-v11-5-7d12a165685a@google.com>
 
-On Mon, Sep 01, 2025 at 10:26:39PM +0200, Danilo Krummrich wrote:
-> Multiple DRM Rust drivers (e.g. nova-core, nova-drm, Tyr, rvkms) are in
-> development, with at least Nova and (soon) Tyr already upstream. Having a
-> shared tree will ease and accelerate development, since all drivers can
-> consume new infrastructure in the same release cycle.
-> 
-> This includes infrastructure shared with other subsystem trees (e.g. Rust
-> or driver-core). By consolidating in drm-rust, we avoid adding extra
-> burden to drm-misc maintainers, e.g. dealing with cross-tree topic
-> branches.
-> 
-> The drm-misc tree is not a good fit for this stage of development, since
-> its documented scope is small drivers with occasional large series.
-> 
-> Rust drivers in development upstream, however, regularly involve large
-> patch series, new infrastructure, and shared topic branches, which may
-> not align well with drm-misc at this stage.
-> 
-> The drm-rust tree may not be a permanent solution. Once the core Rust,
-> DRM, and KMS infrastructure have stabilized, drivers and infrastructure
-> changes are expected to transition into drm-misc or standalone driver
-> trees respectively. Until then, drm-rust provides a dedicated place to
-> coordinate development without disrupting existing workflows too much.
-> 
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Alexandre Courbot <acourbot@nvidia.com>
-> Cc: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Thu Sep 4, 2025 at 11:13 PM CEST, Matthew Maurer wrote:
+> +kernel::acpi_device_table!(
+> +    ACPI_TABLE,
+> +    MODULE_ACPI_TABLE,
+> +    <RustDebugFs as platform::Driver>::IdInfo,
+> +    [(acpi::DeviceId::new(c_str!("LNUXDEBF")), ())]
 
-Applied to drm-rust-fixes. Thanks!
+This should use "LNUXBEEF", as we explicitly reserved it for sample and tes=
+t
+code.
 
+I think we could reserve more if we see a benefit, but so far it's only use=
+d by
+the platform driver sample, so we should be good.
+
+Either way, no need to resend for this only, it can be fixed up on apply. :=
+)
+
+> +);
+> +
+> +impl platform::Driver for RustDebugFs {
+> +    type IdInfo =3D ();
+> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D None;
+
+NIT: This defaults to None, so it can be omitted.
+
+> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> =3D Some(&A=
+CPI_TABLE);
