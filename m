@@ -1,136 +1,313 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796BFE552;
-	Fri,  5 Sep 2025 22:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768FC24DCE5
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 23:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757112461; cv=none; b=sMt6JgTnILekSPflSFBcju7EnCgf2MYEVpAWKcSsMsUV9Z4fZI+Bxdn37Ri5Y08CZ4iULL5zFB8DR/s7cq1AOo9dEEpVkPNFyjKQmI610tq0lbQERJZS99GL5NCEuZoYsLsVG1bFKweBFvvKYBlcpp64Ern4/O+SiiMzBcgMhA8=
+	t=1757113873; cv=none; b=gGCZtLXYWKuSGCS5yR2WZ0QzBkKR5W7W9PNfM2FIVJ1vUpHjM9g7x78ijuGKhjNCcBaYmDrm8x7iPwiPI8jBBO0N80EFddYqqBRNA1qh/e6SSRjW76SRAe+hkP3KfNib2IHGt3Ahdu1Rnx22ZeXGycZBecgjm+AxDv/xODRGHh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757112461; c=relaxed/simple;
-	bh=tGd46iQZ4DRbpvmkNmCnAZN6AsD9LicfdvyOISy1Mw4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=gn78l7j/Ox9nS2XAppEc2ymBfQGgqTMbzfFjTq5mfhlyFTHgeYTuNl/kylgJoAgbCRu0b2F5EfLvg93UcNLgl1ldACHR3fgHXOF2lAVZA/yCGyK1i41CA0Ldtme4M2c6BZDFTP/WutTQRr9ov6L6aBUGf+FJd3nkPM2f4vpxzyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TcAR77h4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757113873; c=relaxed/simple;
+	bh=J97RolsDZMOWZlBo3x+/AMGYoHsy38vAcO8LAqZ3ZkA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D3Wx4oFtBJEZk1+gLEv0GvGqInIfOgI3iOZOwxDmBlvnRSRCb+l0G76TqBMuqf4/IIqoc+ADx/QvhEKlq++evYGDTHr2gqLrMcHjWqxBzTSkkcfjGfOZ0M+ZyM4oR7yL1a9rcp0In2eDrZgrFzA/gPXHx1KDMEpau5XGYTQVxC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=SL/rYTeC; arc=none smtp.client-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TcAR77h4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B005C4CEF1;
-	Fri,  5 Sep 2025 22:47:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757112460;
-	bh=tGd46iQZ4DRbpvmkNmCnAZN6AsD9LicfdvyOISy1Mw4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=TcAR77h4nbsHt3U50oejIjGSj8BdrAIgFlSpDcx5NiYDyXpLea7shRMuTA609gocg
-	 u9S6lrMd3bUWK76TBOgERnUWkorsz9Wovc3lehCAtg2NSfDovhYa2Ho11Qn0o8MaHp
-	 wFkQz2NlQtk61Y7D+m7/8/VTDSZRK2y2z0Ewl62j/FwG45YPA5CdZD5bhSC5jWoo0l
-	 1DCw1wM9dSSG+7SGCocKZr5yqhGbDh4lKYEUDQR8i/3c9aJ93B8aU9jRlWKXzuK8ku
-	 VsYKvmq4jL5s5CcsBNaJC64l/Ru45zCJ9NzYznJ8Z4W7QAbbfnuul28DgCUsapwhF6
-	 zKGo7P4oLHQHQ==
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="SL/rYTeC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
+	s=protonmail3; t=1757113867; x=1757373067;
+	bh=CMpThxO7D1GsCHv7hwjIfxuRhz5SaFAtCrRQOcNVqXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=SL/rYTeCwe2ocFyMVXbki26JogoQL3RYP++L8vcXDjU2UOu1yYvKCUUbjndqEPfgK
+	 C3WIP8VJmPlQEMhezTDqFt1bMq8d6D0Rlu4kNuTS/VhP515tqvIbAjWh+Wz6QyUTV/
+	 bvUm+t9Pc7Qfhe8+u11ypkI0fudY9BbD7Qr+ecFXx/ozGuYk46b1lo/2atbRehGhuC
+	 63XUQ/Zbi4vnyxDqEwE96P893WZPs01CzPL1rEZT4L7R7pHtFzTjiveFypyH+BQflY
+	 QHG7jQI50JsFKoFH6EdmqvIl8U8J/TZvz+O+7ZT8N7l/jv4oaP91xe0RKlZE5i/9MI
+	 cMz5cfSpkmIQw==
+X-Pm-Submission-Id: 4cJXCD5cDPz1DDrM
+Date: Fri, 5 Sep 2025 23:11:01 +0000
+From: Elle Rhumsaa <elle@weathered-steel.dev>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, peterz@infradead.org, mingo@redhat.com,
+	will@kernel.org, longman@redhat.com, felipe_life@live.com,
+	daniel@sedlak.dev, bjorn3_gh@protonmail.com,
+	daniel.almeida@collabora.com
+Subject: Re: [PATCH v6 6/7] rust: ww_mutex/exec: add high-level API
+Message-ID: <aLtt6YaPAfGgfZdq@archiso>
+References: <20250903131313.4365-1-work@onurozkan.dev>
+ <20250903131313.4365-7-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Sep 2025 00:47:36 +0200
-Message-Id: <DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org>
-Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
-Cc: "Boris Brezillon" <boris.brezillon@collabora.com>, "Matthew Brost"
- <matthew.brost@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Steven Price"
- <steven.price@arm.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Liviu Dudau" <liviu.dudau@arm.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
- <20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
- <20250905152505.005a610d@fedora>
- <CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
-In-Reply-To: <CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250903131313.4365-7-work@onurozkan.dev>
 
-On Fri Sep 5, 2025 at 8:18 PM CEST, Alice Ryhl wrote:
-> On Fri, Sep 5, 2025 at 3:25=E2=80=AFPM Boris Brezillon
-> <boris.brezillon@collabora.com> wrote:
->> On Fri, 05 Sep 2025 12:11:28 +0000
->> Alice Ryhl <aliceryhl@google.com> wrote:
->> > +static bool
->> > +drm_gpuvm_bo_is_dead(struct drm_gpuvm_bo *vm_bo)
->> > +{
->> > +     return !kref_read(&vm_bo->kref);
->>
->> I'm not too sure I like the idea of [ab]using vm_bo::kref to defer the
->> vm_bo release. I get why it's done like that, but I'm wondering why we
->> don't defer the release of drm_gpuva objects instead (which is really
->> what's being released in va_unlink()). I can imagine drivers wanting to
->> attach resources to the gpuva that can't be released in the
->> dma-signalling path in the future, and if we're doing that at the gpuva
->> level, we also get rid of this kref dance, since the va will hold a
->> vm_bo ref until it's destroyed.
->>
->> Any particular reason you went for vm_bo destruction deferral instead
->> of gpuva?
->
-> All of the things that were unsafe to release in the signalling path
-> were tied to the vm_bo, so that is why I went for vm_bo cleanup.
-> Another advantage is that it lets us use the same deferred logic for
-> the vm_bo_put() call that drops the refcount from vm_bo_obtain().
->
-> Of course if gpuvas might have resources that need deferred cleanup,
-> that might change the situation somewhat.
+On Wed, Sep 03, 2025 at 04:13:12PM +0300, Onur Özkan wrote:
+> `ExecContext` is a helper built on top of ww_mutex
+> that provides a retrying interface for lock acquisition.
+> When `EDEADLK` is hit, it drops all held locks, resets
+> the acquire context and retries the given (by the user)
+> locking algorithm until it succeeds.
+> 
+> The API keeps track of acquired locks, cleans them up
+> automatically and allows data access to the protected
+> data through `with_locked()`. The `lock_all()` helper
+> allows implementing multi-mutex algorithms in a simpler
+> and less error-prone way while keeping the ww_mutex
+> semantics.
+> 
+> Signed-off-by: Onur Özkan <work@onurozkan.dev>
+> ---
+>  rust/kernel/sync/lock/ww_mutex.rs      |   2 +
+>  rust/kernel/sync/lock/ww_mutex/exec.rs | 176 +++++++++++++++++++++++++
+>  2 files changed, 178 insertions(+)
+>  create mode 100644 rust/kernel/sync/lock/ww_mutex/exec.rs
+> 
+> diff --git a/rust/kernel/sync/lock/ww_mutex.rs b/rust/kernel/sync/lock/ww_mutex.rs
+> index b415d6deae9b..7de6578513e5 100644
+> --- a/rust/kernel/sync/lock/ww_mutex.rs
+> +++ b/rust/kernel/sync/lock/ww_mutex.rs
+> @@ -16,6 +16,8 @@
+>  use core::cell::UnsafeCell;
+>  use core::marker::PhantomData;
+> 
+> +pub mod exec;
+> +
+>  /// Create static [`WwClass`] instances.
+>  ///
+>  /// # Examples
+> diff --git a/rust/kernel/sync/lock/ww_mutex/exec.rs b/rust/kernel/sync/lock/ww_mutex/exec.rs
+> new file mode 100644
+> index 000000000000..2f1fc540f0b8
+> --- /dev/null
+> +++ b/rust/kernel/sync/lock/ww_mutex/exec.rs
+> @@ -0,0 +1,176 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! A high-level [`WwMutex`] execution helper.
+> +//!
+> +//! Provides a retrying lock mechanism on top of [`WwMutex`] and [`WwAcquireCtx`].
+> +//! It detects [`EDEADLK`] and handles it by rolling back and retrying the
+> +//! user-supplied locking algorithm until success.
+> +
+> +use crate::prelude::*;
+> +use crate::sync::lock::ww_mutex::{WwAcquireCtx, WwClass, WwMutex, WwMutexGuard};
+> +use core::ptr;
+> +
+> +/// High-level execution type for ww_mutex.
+> +///
+> +/// Tracks a series of locks acquired under a common [`WwAcquireCtx`].
+> +/// It ensures proper cleanup and retry mechanism on deadlocks and provides
+> +/// type-safe access to locked data via [`with_locked`].
+> +///
+> +/// Typical usage is through [`lock_all`], which retries a user-supplied
+> +/// locking algorithm until it succeeds without deadlock.
+> +pub struct ExecContext<'a> {
+> +    class: &'a WwClass,
+> +    acquire: Pin<KBox<WwAcquireCtx<'a>>>,
+> +    taken: KVec<WwMutexGuard<'a, ()>>,
+> +}
+> +
+> +impl<'a> Drop for ExecContext<'a> {
+> +    fn drop(&mut self) {
+> +        self.release_all_locks();
+> +    }
+> +}
+> +
+> +impl<'a> ExecContext<'a> {
+> +    /// Creates a new [`ExecContext`] for the given lock class.
+> +    ///
+> +    /// All locks taken through this context must belong to the same class.
+> +    ///
+> +    /// TODO: Add some safety mechanism to ensure classes are not different.
+> +    pub fn new(class: &'a WwClass) -> Result<Self> {
+> +        Ok(Self {
+> +            class,
+> +            acquire: KBox::pin_init(WwAcquireCtx::new(class), GFP_KERNEL)?,
+> +            taken: KVec::new(),
+> +        })
+> +    }
+> +
+> +    /// Attempts to lock a [`WwMutex`] and records the guard.
+> +    ///
+> +    /// Returns [`EDEADLK`] if lock ordering would cause a deadlock.
+> +    pub fn lock<T>(&mut self, mutex: &'a WwMutex<'a, T>) -> Result<()> {
+> +        let guard = self.acquire.lock(mutex)?;
+> +        // SAFETY: Type is erased for storage. Actual access uses `with_locked`
+> +        // which safely casts back.
+> +        let erased: WwMutexGuard<'a, ()> = unsafe { core::mem::transmute(guard) };
+> +        self.taken.push(erased, GFP_KERNEL)?;
+> +
+> +        Ok(())
+> +    }
+> +
+> +    /// Runs `locking_algorithm` until success with retrying on deadlock.
+> +    ///
+> +    /// `locking_algorithm` should attempt to acquire all needed locks.
+> +    /// If [`EDEADLK`] is detected, this function will roll back, reset
+> +    /// the context and retry automatically.
+> +    ///
+> +    /// Once all locks are acquired successfully, `on_all_locks_taken` is
+> +    /// invoked for exclusive access to the locked values. Afterwards, all
+> +    /// locks are released.
+> +    ///
+> +    /// # Example
+> +    ///
+> +    /// ```
+> +    /// use kernel::alloc::KBox;
+> +    /// use kernel::c_str;
+> +    /// use kernel::prelude::*;
+> +    /// use kernel::sync::Arc;
+> +    /// use kernel::sync::lock::ww_mutex;
+> +    /// use pin_init::stack_pin_init;
+> +    ///
+> +    /// stack_pin_init!(let class = ww_mutex::WwClass::new_wound_wait(c_str!("lock_all_example")));
+> +    ///
+> +    /// let mutex1 = Arc::pin_init(ww_mutex::WwMutex::new(0, &class), GFP_KERNEL)?;
+> +    /// let mutex2 = Arc::pin_init(ww_mutex::WwMutex::new(0, &class), GFP_KERNEL)?;
+> +    /// let mut ctx = KBox::pin_init(ww_mutex::exec::ExecContext::new(&class)?, GFP_KERNEL)?;
+> +    ///
+> +    /// ctx.lock_all(
+> +    ///     |ctx| {
+> +    ///         // Try to lock both mutexes.
+> +    ///         ctx.lock(&mutex1)?;
+> +    ///         ctx.lock(&mutex2)?;
+> +    ///
+> +    ///         Ok(())
+> +    ///     },
+> +    ///     |ctx| {
+> +    ///         // Safely mutate both values while holding the locks.
+> +    ///         ctx.with_locked(&mutex1, |v| *v += 1)?;
+> +    ///         ctx.with_locked(&mutex2, |v| *v += 1)?;
+> +    ///
+> +    ///         Ok(())
+> +    ///     },
+> +    /// )?;
+> +    ///
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn lock_all<T, Y, Z>(
+> +        &mut self,
+> +        mut locking_algorithm: T,
+> +        mut on_all_locks_taken: Y,
+> +    ) -> Result<Z>
+> +    where
+> +        T: FnMut(&mut ExecContext<'a>) -> Result<()>,
+> +        Y: FnMut(&mut ExecContext<'a>) -> Result<Z>,
+> +    {
+> +        loop {
+> +            match locking_algorithm(self) {
+> +                Ok(()) => {
+> +                    // All locks in `locking_algorithm` succeeded.
+> +                    // The user can now safely use them in `on_all_locks_taken`.
+> +                    let res = on_all_locks_taken(self);
+> +                    self.release_all_locks();
+> +
+> +                    return res;
+> +                }
+> +                Err(e) if e == EDEADLK => {
+> +                    // Deadlock detected, retry from scratch.
+> +                    self.cleanup_on_deadlock()?;
+> +                    continue;
+> +                }
+> +                Err(e) => {
+> +                    return Err(e);
+> +                }
+> +            }
+> +        }
+> +    }
+> +
+> +    /// Executes `f` with a mutable reference to the data behind `mutex`.
+> +    ///
+> +    /// Fails with [`EINVAL`] if the mutex was not locked in this context.
+> +    pub fn with_locked<T, Y>(
+> +        &mut self,
+> +        mutex: &'a WwMutex<'a, T>,
+> +        f: impl FnOnce(&mut T) -> Y,
+> +    ) -> Result<Y> {
+> +        // Find the matching guard.
+> +        for guard in &mut self.taken {
+> +            if mutex.as_ptr() == guard.mutex.as_ptr() {
+> +                // SAFETY: We know this guard belongs to `mutex` and holds the lock.
+> +                let typed = unsafe { &mut *ptr::from_mut(guard).cast::<WwMutexGuard<'a, T>>() };
+> +                return Ok(f(&mut **typed));
+> +            }
+> +        }
+> +
+> +        // `mutex` isn't locked in this `ExecContext`.
+> +        Err(EINVAL)
+> +    }
 
-I think we want to track PT(E) allocations, or rather reference counts of p=
-age
-table structures carried by the drm_gpuva, but we don't need to release the=
-m on
-drm_gpuva_unlink(), which is where we drop the reference count of the vm_bo=
-.
+This can be refactored using a more idiomatic functional style:
 
-Deferring drm_gpuva_unlink() isn't really an option I think, the GEMs list =
-of
-VM_BOs and the VM_BOs list of VAs is usually used in ttm_device_funcs::move=
- to
-map or unmap all VAs associated with a GEM object.
+diff --git a/rust/kernel/sync/lock/ww_mutex/exec.rs b/rust/kernel/sync/lock/ww_mutex/exec.rs
+index 543c5218232a..8fdfb11104b9 100644
+--- a/rust/kernel/sync/lock/ww_mutex/exec.rs
++++ b/rust/kernel/sync/lock/ww_mutex/exec.rs
+@@ -142,16 +142,17 @@ pub fn with_locked<T, Y>(
+         f: impl FnOnce(&mut T) -> Y,
+     ) -> Result<Y> {
+         // Find the matching guard.
+-        for guard in &mut self.taken {
+-            if mutex.as_ptr() == guard.mutex.as_ptr() {
++        self.taken
++            .iter_mut()
++            .find_map(|guard| if mutex.as_ptr() == guard.mutex.as_ptr() {
+                 // SAFETY: We know this guard belongs to `mutex` and holds the lock.
+-                let typed = unsafe { &mut *ptr::from_mut(guard).cast::<WwMutexGuard<'a, T>>() };
+-                return Ok(f(&mut **typed));
+-            }
+-        }
+-
+-        // `mutex` isn't locked in this `ExecContext`.
+-        Err(EINVAL)
++                Some(unsafe { &mut *ptr::from_mut(guard).cast::<WwMutexGuard<'a, T>>() })
++            } else {
++                None
++            })
++            .map(|typed| f(&mut **typed))
++            // `mutex` isn't locked in this `ExecContext`.
++            .ok_or(EINVAL)
+     }
 
-I think PT(E) reference counts etc. should be rather released when the drm_=
-gpuva
-is freed, i.e. page table allocations can be bound to the lifetime of a
-drm_gpuva. Given that, I think that eventually we'll need a cleanup list fo=
-r
-those as well, since once they're removed from the VM tree (in the fence
-signalling critical path), we loose access otherwise.
+     /// Releases all currently held locks in this context.
 
->> > +static void
->> > +drm_gpuvm_bo_defer_locked(struct kref *kref)
->> > +{
->> > +     struct drm_gpuvm_bo *vm_bo =3D container_of(kref, struct drm_gpu=
-vm_bo,
->> > +                                               kref);
->> > +     struct drm_gpuvm *gpuvm =3D vm_bo->vm;
->> > +
->> > +     if (!drm_gpuvm_resv_protected(gpuvm)) {
->> > +             drm_gpuvm_bo_list_del(vm_bo, extobj, true);
->> > +             drm_gpuvm_bo_list_del(vm_bo, evict, true);
->> > +     }
->> > +
->> > +     list_del(&vm_bo->list.entry.gem);
->> > +     mutex_unlock(&vm_bo->obj->gpuva.lock);
->>
->> I got tricked by this implicit unlock, and the conditional unlocks it
->> creates in drm_gpuva_unlink_defer(). Honestly, I'd rather see this
->> unlocked moved to drm_gpuva_unlink_defer() and a conditional unlock
->> added to drm_gpuvm_bo_put_deferred(), because it's easier to reason
->> about when the lock/unlock calls are in the same function
->> (kref_put_mutex() being the equivalent of a conditional lock).
->
-> Ok. I followed the docs of kref_put_mutex() that say to unlock it from
-> the function.
+> +
+> +    /// Releases all currently held locks in this context.
+> +    ///
+> +    /// It is intended to be used for internal implementation only.
+> +    fn release_all_locks(&mut self) {
+> +        self.taken.clear();
+> +    }
+> +
+> +    /// Resets this context after a deadlock detection.
+> +    ///
+> +    /// Drops all held locks and reinitializes the [`WwAcquireCtx`].
+> +    ///
+> +    /// It is intended to be used for internal implementation only.
+> +    fn cleanup_on_deadlock(&mut self) -> Result {
+> +        self.release_all_locks();
+> +        // Re-init fresh `WwAcquireCtx`.
+> +        self.acquire = KBox::pin_init(WwAcquireCtx::new(self.class), GFP_KERNEL)?;
+> +
+> +        Ok(())
+> +    }
+> +}
+> --
+> 2.50.0
+> 
+> 
 
-Yes, please keep it the way it is, I don't want to deviate from what is
-documented and everyone else does. Besides that, I also think it's a little
-less error prone.
+Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
