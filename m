@@ -1,148 +1,197 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8375721D5B3
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 09:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A301805A
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 11:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757064576; cv=none; b=RgUIn3cuSOhUcbdzphpD9dyxZa9eD75rf+ntAXZTe4wdLRRJhiJlToAgIQEnxx3cffkr++06eokkX7EW/X6vhzOJ4FdDuDO3rVxjWepdTaPhY/U9iMW2C7Q/S7X/F8Yoxc5mLiHdRv86Y7bRqBT/8q9+ZJtZ3HCgI/VBO72vN5o=
+	t=1757072052; cv=none; b=tCWjezb30GTZ3R1uBq+psHkXgPuDvEgxWXWW2AkQV2c1+jwpqN+VQC3BSKwBFy5iB8iQrr8QmIm0Dz7Hd7PI69t22VFZPAa+0SmorBT5hROH7gk3U0WvGZdXQJ7+kfpd1jtA7R7KonwroNpWFfsYFwM7+hR7EJeFSaa4MH0roEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757064576; c=relaxed/simple;
-	bh=XJLm1AVv6uM85MnaVHgSBfa+5D+iLuyciRZXAoHcf1I=;
+	s=arc-20240116; t=1757072052; c=relaxed/simple;
+	bh=gI79STuomZdL9o6m+TVp0Q1ayFNIxYM8hEwMd4OxsKA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S0WJ8WtUVucLElTKPgvFfEAbAJSXtfTlU4pavcBrG8pqMBfISrDDGCwbs0tNTnRCKQ30VGiqY7DlGvaEhib4ABb/8qz+Tvg0T4TFWjFdpZpPn8POLOezAYc1RZJ4Hv2i3N7LOAyMGCnDN+QB63hdAZjCz5CqDcrkxoXTlUi1I9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTCux9mv; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=L9w9HcyecMX7LYO6Iaoop9qyYmxd6YLLZkC0xusLM47ETJBYrUYKCiyC+oSRE0p7XRkc1q66+oc4b7MSIVq8IxxYxpDyxgMShJNo6jP7QlKOj7IQ7yuh+cxdJZ1ELfpIwS08CtnDqEKesFbVfWMnwCREvBsJmK8uV+qE/+UYh4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4YH4z8kC; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTCux9mv"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-32baaf13944so156412a91.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 02:29:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4YH4z8kC"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3d1bf79d758so1825587f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 04:34:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757064575; x=1757669375; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1757072049; x=1757676849; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=64x7tFu9vNW4A1Yx/Z+Ta3ooY2aSWmUmfoFqNjdxwWE=;
-        b=DTCux9mva6bNLwiTLXXmR7uBJA5ywYjBDeo/Pa/ws1OJYMzjpc8L8vRjnkBnGSn+ro
-         cPenb1blq2F6IG++n6mRaVSjbVktmUU5aNgE8Sv2CbOR8DCJ/i9NCR73fphmp2dzU+c+
-         2CkOlX9liAR2vk9vSS184osk8Fc4EwGKD+2r2x5+kKYO7LBd05F48xt2RCL6UG3k67tz
-         SVRripaX8G6yT8Rdz3N89JqEDrUg5AO8Rg2lkbvbw8PaAOsglzBrUX4nr+GwIBuo9z/7
-         GHrs7aRrJFgi6InzfWkcncHoRWg124/cn5E+FZ9Qba1xjnZFNFoMbvUYAD50I03mWPBU
-         O/NQ==
+        bh=y9p8Ednxu5nU/nofok5DmsRxs4m8cs9tVr0AC5pk66w=;
+        b=4YH4z8kCvgkDmPvE/9PkO8uWIid/RNEGyCMSsj3swqq5Gj4qVvv29lU+SSKAJpK7Id
+         XfUL4qHmOloBF56SR7nLvy5sDRilDn/+lXhv7mRj7EfXMC1uglB1ZImkfjwISAo2/vW2
+         givaDEu16fToRRcYdeHEy4AnEhUmMj/m2PCipZfi+CJ5iHAy7FIIZzHzHSvBIHPfUTVw
+         tlOK9P5KjCyZC6zvTXM2m/EjYRgJFEZJdEDunED8ePhVeHoMxjmZQ3oBL4JdgZP5+GWt
+         fHhxWdmbQNjwQdU22ST08YpSi+5zsOs4wVkYJCm0GjjSIp6xMo7jei2AqSx0TKI4podN
+         q1qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757064575; x=1757669375;
+        d=1e100.net; s=20230601; t=1757072049; x=1757676849;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=64x7tFu9vNW4A1Yx/Z+Ta3ooY2aSWmUmfoFqNjdxwWE=;
-        b=mX3Ib4OuKFFAs77pErlsrPTqaPCcx4Adiz7b85x1Ex3h1rDp8fJ1SgODkVGjGHPkRI
-         aDhXxEAbLZFUbJv6Q/jj9s14Rf/h+AZ0kBLAXj595IytTmpFoG2chZFIF7ciuHFsqXcY
-         ZSTIu4fIe3K6E5KWXDwPuPc9wb7bTG5AOSfuJqfpDYe8Hn7KWs7BbWYCsML3jB8nmNqW
-         zj7xG6XHLxL6nfKcPg/MkZzjCSY5HO0nHzFQPDZlZqGo3g24v948kOT05Dgj5mmhSw+7
-         iAz/Hv5Toace6s9tED1dXIL+M2kN4wwG3buGQ1dW/aaTFXbJ1TScrifwU6+W5hGr5S+8
-         X7Ig==
-X-Forwarded-Encrypted: i=1; AJvYcCUBX+/3N97upvUugWUsak49hmwOZNo3xtoBxOtj3MeTxvXUibIekCJsb6tuhOwAoPM2+yOfwfaKlDpCqv1llg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRuZqKw3BwL9QyWW4F0id1+RXKfJ8AidGoxZfC+BmHZYG2CBuF
-	tryt2kTYPyUsgH7r2sLAWIOT4X8480FLdXOi/VjunryKMIjDOnU6Wf77lcD4oADokU1H4ONf4om
-	Tn4lZuuD7wnpBOHj6I2ZIacQW9kjhhvI=
-X-Gm-Gg: ASbGncsa8UEQd0VR3UdAZAoWBkUVIOVl5nHz7vU12n7HnniUHGgA46hxYVQqwKNf3ui
-	MfBJ2Xg/UWFqVd5gG9xnrA4fy5/bycDmOYMTZK2Ppus6yAX1ROyWFX254uQYo0g73xhL5rSXHbv
-	iVCjtT6BAHO9HT2LLlzaHpMEjkrKr2H1Mecwq3zGFkUO2s+BrwRUH80OSWf14WT7w+ITTj4+Vzh
-	vTRbvrcZVMhppDBLs7CoiizTSoDz4lnVUtHbt/r0QKF2tbMRrZHqWZ5F8GSenTaK6J+MZd/GYEs
-	8Nb2AwRN6WPC6xTDLjdesQANKw==
-X-Google-Smtp-Source: AGHT+IHgc21W7zKfsI2lsaF0NMo+Bvhu18XWT0Os3TXnu0za7ri+xyLrkcWJXeBkz5AvZXuKLhgpjoGoA4oOw4EI508=
-X-Received: by 2002:a17:90b:4a05:b0:32b:87ef:5faa with SMTP id
- 98e67ed59e1d1-32b87ef6076mr4514958a91.4.1757064574674; Fri, 05 Sep 2025
- 02:29:34 -0700 (PDT)
+        bh=y9p8Ednxu5nU/nofok5DmsRxs4m8cs9tVr0AC5pk66w=;
+        b=EUM+p92+ObWg4jSjETlere3piqn2CE+4isvyBUPxq/IEnpkujOAkuTfuuUxhkbhM+H
+         yTdWjpkx3uqiezjHxEvotSM/l8wwV7v5Rr2OTREZ4i/t51k4kTN7NHHnIW26XbCJTCzF
+         2/3raAJsuxTiuUHrKGsQ0FUAAR8xZ0O2UrrS9evODiP0keumcXqV5MLNXp9V/XPs3nMM
+         Q7iCOo9NlpLjPPEzLaDsp7VdLS8wYMoKcERLLdeZsuw35OON5rqNXFVGTux6BOeWn804
+         j1k04oUgoaBqaqBy94QaZNywhTx6/6HHQZCqERnB19abfxekY0Zngc6Ej/0Wd2O4+qDJ
+         5yqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQHXbCM/HhvrPz3chiE8DzIqLjjMNwcLLM2GxjFAXLOXouUG1PubqJuZsk1iljQ29xArIVIbla5WHwNkALDA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxovbmJy9NHIS5dg+Q3y/q6yBiEdYyqF083Ss3pObMpYqp4sc9X
+	w5ITco1DImT8UR7DIyNXCmh8DCRNVrrmnFTPtU9fK9yBIiPLg7iHnh7qX763AfcX8lLTJz8lkyd
+	QlJiiL980FDZKHn99JAnmw6LUT/gfV43L9M7x4nGA35w901jzxYTUKjtu
+X-Gm-Gg: ASbGncsZZIl66ky1uSm2TGC/tR4N4+7qLpqiaFCOaKaTnyLBCAAt0/nA0dw+6/gPoQD
+	6/buB1kImD1oDXIayJ/gItg9cJqJ8le05fjgUKP5ROVLuMH+nk0ObYOEUb9wT5A/PrHtiv0UBUr
+	sGCnhRs7zcx0nK5JMV9/3tkIf5Eq2auhsmhUTgf+l5OS1CVi1M6N2ZelW4cohQFb2yjhzyxCkPU
+	AU+p3MRAzVZ21PNxj14mRsx8IsOqtXS16ywxKpw6Qh8oZ1EwsHyrMEMglqNpR2e17FBXlve5jip
+	wnWS27BLQXLZWQjI8VI4ZA==
+X-Google-Smtp-Source: AGHT+IHbm99eCpz6pmNgIVI3YAfPfFjfHgdX/M/7/80v249u9tlCHQ6PgHSANl/f/pJiboTfF/etBph6p+hmyFWS7pE=
+X-Received: by 2002:a05:6000:2dc6:b0:3dc:b041:9919 with SMTP id
+ ffacd0b85a97d-3dcb0419c22mr9739898f8f.11.1757072048338; Fri, 05 Sep 2025
+ 04:34:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250904165015.3791895-1-bqe@google.com> <aLnURXW_ZiX2iJd_@yury>
-In-Reply-To: <aLnURXW_ZiX2iJd_@yury>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 5 Sep 2025 11:29:22 +0200
-X-Gm-Features: Ac12FXw3K8-fRUZqrr8Rrbc-XWCMxkFwB1rv1F5RTm_1knNaTCBruur135vYY3U
-Message-ID: <CANiq72==48=69hYiDo1321pCzgn_n1_jg=ez5UYXX91c+g5JVQ@mail.gmail.com>
-Subject: Re: [PATCH v15 0/5] rust: adds Bitmap API, ID pool and bindings
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Carlos LLama <cmllamas@google.com>, 
-	Pekka Ristola <pekkarr@protonmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20250905090819.107694-1-marco.crivellari@suse.com>
+In-Reply-To: <20250905090819.107694-1-marco.crivellari@suse.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 5 Sep 2025 13:33:56 +0200
+X-Gm-Features: Ac12FXwOFIo7MW0Xq1R5Gef_lsZ8di8V-7GrfYQ7fe3KT0Rs9Jyhi-v12jX7llw
+Message-ID: <CAH5fLgiZnCbNLpuphv4Kgsu48kRkhf6wJiSLrrgsqyEDvU3X3Q@mail.gmail.com>
+Subject: Re: [PATCH 0/2] rust: replace wq users and add WQ_PERCPU to
+ alloc_workqueue() users
+To: Marco Crivellari <marco.crivellari@suse.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 4, 2025 at 8:02=E2=80=AFPM Yury Norov <yury.norov@gmail.com> wr=
-ote:
+On Fri, Sep 5, 2025 at 11:12=E2=80=AFAM Marco Crivellari
+<marco.crivellari@suse.com> wrote:
 >
-> Added in bitmap-for-next for testing. Thanks!
+> Below is a summary of a discussion about the Workqueue API and cpu isolat=
+ion
+> considerations. Details and more information are available here:
+>
+>         "workqueue: Always use wq_select_unbound_cpu() for WORK_CPU_UNBOU=
+ND."
+>         https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de=
+/
+>
+> =3D=3D=3D Current situation: problems =3D=3D=3D
+>
+> Let's consider a nohz_full system with isolated CPUs: wq_unbound_cpumask =
+is
+> set to the housekeeping CPUs, for !WQ_UNBOUND the local CPU is selected.
+>
+> This leads to different scenarios if a work item is scheduled on an isola=
+ted
+> CPU where "delay" value is 0 or greater then 0:
+>         schedule_delayed_work(, 0);
+>
+> This will be handled by __queue_work() that will queue the work item on t=
+he
+> current local (isolated) CPU, while:
+>
+>         schedule_delayed_work(, 1);
+>
+> Will move the timer on an housekeeping CPU, and schedule the work there.
+>
+> Currently if a user enqueue a work item using schedule_delayed_work() the
+> used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+> WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+> schedule_work() that is using system_wq and queue_work(), that makes use
+> again of WORK_CPU_UNBOUND.
+>
+> This lack of consistentcy cannot be addressed without refactoring the API=
+.
+>
+> =3D=3D=3D Plan and future plans =3D=3D=3D
+>
+> This patchset is the first stone on a refactoring needed in order to
+> address the points aforementioned; it will have a positive impact also
+> on the cpu isolation, in the long term, moving away percpu workqueue in
+> favor to an unbound model.
+>
+> These are the main steps:
+> 1)  API refactoring (that this patch is introducing)
+>     -   Make more clear and uniform the system wq names, both per-cpu and
+>         unbound. This to avoid any possible confusion on what should be
+>         used.
+>
+>     -   Introduction of WQ_PERCPU: this flag is the complement of WQ_UNBO=
+UND,
+>         introduced in this patchset and used on all the callers that are =
+not
+>         currently using WQ_UNBOUND.
+>
+>         WQ_UNBOUND will be removed in a future release cycle.
+>
+>         Most users don't need to be per-cpu, because they don't have
+>         locality requirements, because of that, a next future step will b=
+e
+>         make "unbound" the default behavior.
+>
+> 2)  Check who really needs to be per-cpu
+>     -   Remove the WQ_PERCPU flag when is not strictly required.
+>
+> 3)  Add a new API (prefer local cpu)
+>     -   There are users that don't require a local execution, like mentio=
+ned
+>         above; despite that, local execution yeld to performance gain.
+>
+>         This new API will prefer the local execution, without requiring i=
+t.
+>
+> =3D=3D=3D Introduced Changes by this series =3D=3D=3D
+>
+> 1) [P 1-2] Replace use of system_wq and system_unbound_wq
+>
+>         system_wq is a per-CPU workqueue, but his name is not clear.
+>         system_unbound_wq is to be used when locality is not required.
+>
+>         Because of that, system_wq has been renamed in system_percpu_wq, =
+and
+>         system_unbound_wq has been renamed in system_dfl_wq.
+>
+>
+> =3D=3D=3D For Maintainers =3D=3D=3D
+>
+> There are prerequisites for this series, already merged in the master bra=
+nch.
+> The commits are:
+>
+> 128ea9f6ccfb6960293ae4212f4f97165e42222d ("workqueue: Add system_percpu_w=
+q and
+> system_dfl_wq")
+>
+> 930c2ea566aff59e962c50b2421d5fcc3b98b8be ("workqueue: Add new WQ_PERCPU f=
+lag")
+>
+>
+> Thanks!
+>
+> Marco Crivellari (2):
+>   rust: replace use of system_unbound_wq with system_dfl_wq
+>   rust: replace use of system_wq with system_percpu_wq
+>
+>  rust/kernel/workqueue.rs | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 
-linux-next breaks with CONFIG_RUST_BITMAP_HARDENED=3Dy:
+The functions you are changing are intended to match 1-to-1 with the
+wq globals defined by the C side. Changing them so that Rust and C no
+longer agrees on what the wqs are called seems wrong. How about adding
+new functions instead?
 
-     error[E0425]: cannot find function `owned_bitmap_out_of_bounds`
-in this scope
-       --> rust/kernel/bitmap.rs:484:1
-        |
-    484 | #[kunit_tests(rust_kernel_bitmap)]
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
-
-because the proc macro doesn't support `cfg`s (moving it below
-`#[test]` wouldn't work either). I have filled:
-
-    https://github.com/Rust-for-Linux/linux/issues/1185
-
-so that we don't forget about it.
-
-Meanwhile, I would recommend e.g. moving the `cfg` inside the
-function, something like:
-
-    diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-    index 6e0824579781..2f00e91e9c35 100644
-    --- a/rust/kernel/bitmap.rs
-    +++ b/rust/kernel/bitmap.rs
-    @@ -551,18 +551,21 @@ fn bitmap_set_clear_find() -> Result<(), AllocErr=
-or> {
-             Ok(())
-         }
-
-    -    #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
-         #[test]
-         fn owned_bitmap_out_of_bounds() -> Result<(), AllocError> {
-    -        let mut b =3D BitmapVec::new(128, GFP_KERNEL)?;
-    +        #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
-    +        {
-    +            let mut b =3D BitmapVec::new(128, GFP_KERNEL)?;
-    +
-    +            b.set_bit(2048);
-    +            b.set_bit_atomic(2048);
-    +            b.clear_bit(2048);
-    +            b.clear_bit_atomic(2048);
-    +            assert_eq!(None, b.next_bit(2048));
-    +            assert_eq!(None, b.next_zero_bit(2048));
-    +            assert_eq!(None, b.last_bit());
-    +        }
-
-    -        b.set_bit(2048);
-    -        b.set_bit_atomic(2048);
-    -        b.clear_bit(2048);
-    -        b.clear_bit_atomic(2048);
-    -        assert_eq!(None, b.next_bit(2048));
-    -        assert_eq!(None, b.next_zero_bit(2048));
-    -        assert_eq!(None, b.last_bit());
-             Ok(())
-         }
-
-Thanks!
-
-Cheers,
-Miguel
+Alice
