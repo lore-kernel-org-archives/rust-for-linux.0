@@ -1,62 +1,56 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633C831B803;
-	Fri,  5 Sep 2025 15:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9569931B81B;
+	Fri,  5 Sep 2025 15:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757085047; cv=pass; b=QHy9RSICMU+ctn1SkMXPcdxMvAFtNYYop51bPA9yD2tOMJyagIFWAQPc5DiYdgyv9p1PcVtuXJkNmxub9iAUva5/1U9rp077QtIbCQo6ArgwJzvBAT2CgnP5W1+RJAi0W18fWzAvQdyTEjS09ETBeANvJHHZMUGpYN8KmUOrR4M=
+	t=1757085582; cv=pass; b=QwaHKrdsMLiqd6HN32g9NnB//7SFjT79eTBQIGaojrOJkP2yIVYotfgh+CPeAk/xuH0ghvIXacQIaJ/bjQpgnEa9kpoDINkyu+dvZtLKAXuGL8mdYr5BATFT2NG90kv/DHrGFfuncTn3rx8mLE7zLEGaoPC1vuEvwSH2HAUfAWc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757085047; c=relaxed/simple;
-	bh=Sg5QloBmNBhbgnhTi7CRgmMaIQs8iusLYYFnEzlWotU=;
+	s=arc-20240116; t=1757085582; c=relaxed/simple;
+	bh=TQ1Yli/mjvLpY76C5SbFhJX/Muh/7iPRfCGOv9erSQw=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=c43Sg0fojYqDYp9yHkYYgUImFkD4rk4d/OZ/dYpSih8ekpbB5rbNvXT5Ss35oOc5u9UKZU77BVfuwwy22sEE2w/TfQtwM50sBSce1rN3fcwRJihk93ezHhj4UjavebnzQ09N+ePi1VaWbZDS7CTIfvpmY3dNleV3+XTj6kHs3BY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Hs1PFDyL; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=oJB7DFzBGbvm002TBtm5vYYWrzcFAOTRGAb/6Xg9DklLDUHnI0URNfwRq21x5b64w9LC44tit121DCyP7qYS9HSIFXjBaOjjKQm/y1FXDpXmFo9jt1oA658N3PYAPlhwReLbsxEDFRbqfrPN7TqLBkZ31UH/H5rHo4RrkNtByPw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CJO5fkgn; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Hs1PFDyL"
-ARC-Seal: i=1; a=rsa-sha256; t=1757085004; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CJO5fkgn"
+ARC-Seal: i=1; a=rsa-sha256; t=1757085547; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=muzTrFE0xFpqDKLtdyyFMZmWlc9glOkQ15V+K9e9MAr9MDD/IZ/cD1eFfq4EG5QzJ2EcvysfV2xSGw9d5zg6RLEW+XKtBbOkC8vntTFiyY8aWE+63zyHNpWR1mIHu6AQ5HXQzMnLiHvx4eO9ZB+3Zv9X29byEFCreyixzKUmHpo=
+	b=JGlElhOkLBJPIeqbwCoHjSjJ5NI7enbdWrKyrw8q+sY0J7oK8hfY9lIgNoLH8yZ1YDdxLOnOCB2ZXWfD7+fF2XQDuicLZl5lPi7Nx9nL/ggaiXXlPU4ThbaVnQEtRmNwxB7d83fTENPmwvowYjvQy56L4UCvgVnvAXmAxcvze4k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757085004; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jbiMsBZ0PMAYhHiet9jWLejQpnmLCaVZIWGnKUvfBgw=; 
-	b=eKv1Mk+Pe/+yy+1iIYkaTCvIqzp6kY/+nC5+3a5THVb6BDEzW6fEzaUvvR/p5xmGPTucKgiqmLCD0vrBP2j6aQNhy6y0TA7nE5wLNSbA65ALGdewkOS5Xf4o49kqKQ78sEVrn07GHHLixs7JnPBgh6Nz1/arU0OWMnEVGmwTO4k=
+	t=1757085547; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WvMWIb097CAfEDcALNW+hr4jEjolOIJhOGMsgheYVik=; 
+	b=hfYLkWeLSn8haeiazMARP7lJh0oiOjboJdyhHyOWT0p7GbkIYWwzoYX6ZqXV2ziLsF5/Udk9lnaaGlgwH9w+Y4DV3457zMDjP0f8sQzcgYsOZY91ghdfLTV16VgkaDEZ8eE5saN4Q1FJOX7ibBgFy5FagWWdTRdL4+vrJGOSBfE=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757085004;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757085547;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=jbiMsBZ0PMAYhHiet9jWLejQpnmLCaVZIWGnKUvfBgw=;
-	b=Hs1PFDyLOgH2WIDI9i7X2cgb2TEegjw9O9CRWH22coFBO/5pul6A/xJY9DrTNJMx
-	UjiM3vZY9oGGpdf8CdH1vFvmYYSW8ez7gjJCGdCd0vrEeZXLd5TrSATwNIIQTppOHhN
-	TdapNNWVa08RV4mUmLaVYGsAZ+qLWy9UI3a9fUmI=
-Received: by mx.zohomail.com with SMTPS id 1757085001454158.55519036584815;
-	Fri, 5 Sep 2025 08:10:01 -0700 (PDT)
+	bh=WvMWIb097CAfEDcALNW+hr4jEjolOIJhOGMsgheYVik=;
+	b=CJO5fkgnV/OpTh5xLkfsJmyl1URRXq8Jwyl2Hjo+uvk/WOvg8fMrttWXzUpr3jbs
+	U+S6Ldw2zcEdCgblxfAqAqNgRfyef4jqn7gjFhk0vcsi2F3N5edqvUKDaXelKQxgyp9
+	NyRzvjHp307Wl0lDivuM3YdHi5iA6phdFBtaAwnA=
+Received: by mx.zohomail.com with SMTPS id 1757085544614181.09692545870018;
+	Fri, 5 Sep 2025 08:19:04 -0700 (PDT)
 Content-Type: text/plain;
-	charset=utf-8
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 13/14] rust: drm: gem: Add export() callback
+Subject: Re: [PATCH v3 14/14] rust: drm: gem: Add BaseObject::prime_export()
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250829224116.477990-14-lyude@redhat.com>
-Date: Fri, 5 Sep 2025 12:09:42 -0300
+In-Reply-To: <20250829224116.477990-15-lyude@redhat.com>
+Date: Fri, 5 Sep 2025 12:18:47 -0300
 Cc: dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
  Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
@@ -66,19 +60,24 @@ Cc: dri-devel@lists.freedesktop.org,
  Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
  Sumit Semwal <sumit.semwal@linaro.org>,
  =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
  Asahi Lina <lina+kernel@asahilina.net>,
- "open list:DRM DRIVER FOR NVIDIA GPUS [RUST]" <nouveau@lists.freedesktop.org>,
  linux-media@vger.kernel.org,
  linaro-mm-sig@lists.linaro.org,
  "open list:DMA BUFFER SHARING FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linux-media@vger.kernel.org (ope>),
  "moderated list:DMA BUFFER SHARING
  FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linaro-mm-sig@lists.linaro.org (mod>)
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <D47EACDC-76CE-4D36-9564-210B390C9A82@collabora.com>
+Message-Id: <282C2384-D046-43E3-88DE-70A130961D93@collabora.com>
 References: <20250829224116.477990-1-lyude@redhat.com>
- <20250829224116.477990-14-lyude@redhat.com>
+ <20250829224116.477990-15-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
@@ -87,193 +86,83 @@ X-ZohoMailClient: External
 
 > On 29 Aug 2025, at 19:35, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> This introduces an optional export() callback for GEM objects, which =
-is
-> used to implement the drm_gem_object_funcs->export function.
+> We just added an export() callback that GEM objects can implement, but
+> without any way of actually exporting a DmaBuf<T>. So let's add one by
+> introducing bindings for drm_gem_prime_export().
 >=20
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
-> drivers/gpu/drm/nova/gem.rs  |  1 +
-> rust/kernel/drm/gem/mod.rs   | 72 +++++++++++++++++++++++++++++++++++-
-> rust/kernel/drm/gem/shmem.rs |  6 ++-
-> 3 files changed, 76 insertions(+), 3 deletions(-)
+> rust/kernel/dma_buf.rs     |  1 -
+> rust/kernel/drm/gem/mod.rs | 24 +++++++++++++++++++++++-
+> 2 files changed, 23 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
-> index 015cb56061a56..bbce6b0f4e6a4 100644
-> --- a/drivers/gpu/drm/nova/gem.rs
-> +++ b/drivers/gpu/drm/nova/gem.rs
-> @@ -16,6 +16,7 @@
-> #[pin_data]
-> pub(crate) struct NovaObject {}
+> diff --git a/rust/kernel/dma_buf.rs b/rust/kernel/dma_buf.rs
+> index a66829afcd129..a2086918efd17 100644
+> --- a/rust/kernel/dma_buf.rs
+> +++ b/rust/kernel/dma_buf.rs
+> @@ -20,7 +20,6 @@ unsafe impl Send for DmaBuf {}
+> // SAFETY: `struct dma_buf` is thread-safe
+> unsafe impl Sync for DmaBuf {}
 >=20
-> +#[vtable]
-> impl gem::DriverObject for NovaObject {
->     type Driver =3D NovaDriver;
->     type Object =3D gem::Object<Self>;
+> -#[expect(unused)]
+> impl DmaBuf {
+>     /// Convert from a `*mut bindings::dma_buf` to a [`DmaBuf`].
+>     ///
 > diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index f9f9727f14e4a..1ac25fc6d527b 100644
+> index 1ac25fc6d527b..75ffd5541e84c 100644
 > --- a/rust/kernel/drm/gem/mod.rs
 > +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -8,7 +8,7 @@
->=20
-> use crate::{
->     alloc::flags::*,
-> -    bindings,
-> +    bindings, dma_buf,
+> @@ -11,7 +11,7 @@
+>     bindings, dma_buf,
 >     drm::driver::{AllocImpl, AllocOps},
 >     drm::{self, private::Sealed},
->     error::{to_result, Result},
-> @@ -45,6 +45,7 @@ fn as_ref(&self) -> =
-&kernel::drm::gem::OpaqueObject<D> {
-> pub(crate) use impl_as_opaque;
+> -    error::{to_result, Result},
+> +    error::{from_err_ptr, to_result, Result},
+>     prelude::*,
+>     types::{ARef, AlwaysRefCounted, Opaque},
+> };
+> @@ -225,6 +225,28 @@ fn lookup_handle<D, F, O>(file: &drm::File<F>, =
+handle: u32) -> Result<ARef<Self>
+>         Ok(unsafe { ARef::from_raw(obj.into()) })
+>     }
 >=20
-> /// GEM object functions, which must be implemented by drivers.
-> +#[vtable]
-> pub trait DriverObject: Sync + Send + Sized {
->     /// Parent `Driver` for this object.
->     type Driver: drm::Driver;
-> @@ -69,6 +70,11 @@ fn open(_obj: &Self::Object, _file: =
-&DriverFile<Self>) -> Result {
->=20
->     /// Close a handle to an existing object, associated with a File.
->     fn close(_obj: &Self::Object, _file: &DriverFile<Self>) {}
+> +    /// Export a [`DmaBuf`] for this GEM object using the DRM prime =
+helper library.
+> +    ///
+> +    /// `flags` should be a set of flags from =
+[`fs::file::flags`](kernel::fs::file::flags).
+> +    fn prime_export(&self, flags: u32) -> Result<DmaBuf<Self>> {
+> +        // SAFETY: `as_raw()` always returns a valid pointer to an =
+initialized `drm_gem_object`.
+> +        let dma_ptr =3D unsafe { =
+bindings::drm_gem_prime_export(self.as_raw(), flags as i32) };
 > +
-> +    /// Optional handle for exporting a gem object.
-> +    fn export(_obj: &Self::Object, _flags: u32) -> =
-Result<DmaBuf<Self::Object>> {
-> +        unimplemented!()
-
-Shouldn=E2=80=99t this be the vtable-specific build error?
-
-> +    }
-> }
->=20
-> /// Trait that represents a GEM object subtype
-> @@ -138,6 +144,21 @@ extern "C" fn close_callback<T: DriverObject>(
->     T::close(obj, file);
-> }
->=20
-> +extern "C" fn export_callback<T: DriverObject>(
-> +    raw_obj: *mut bindings::drm_gem_object,
-> +    flags: i32,
-> +) -> *mut bindings::dma_buf {
-> +    // SAFETY: `export_callback` is specified in the AllocOps =
-structure for `Object<T>`, ensuring
-> +    // that `raw_obj` is contained within a `Object<T>`.
-> +    let obj =3D unsafe { T::Object::from_raw(raw_obj) };
+> +        // `drm_gem_prime_export()` returns either an error pointer, =
+or a valid pointer to an
+> +        // initialized `dma_buf` on success.
+> +        let dma_ptr =3D from_err_ptr(dma_ptr)?;
 > +
-> +    match T::export(obj, flags as u32) {
-> +        // DRM takes a hold of the reference
-> +        Ok(buf) =3D> buf.into_raw(),
-> +        Err(e) =3D> e.to_ptr(),
-> +    }
-> +}
-> +
-> impl<T: DriverObject> IntoGEMObject for Object<T> {
->     fn as_raw(&self) -> *mut bindings::drm_gem_object {
->         self.obj.get()
-> @@ -248,7 +269,11 @@ impl<T: DriverObject> Object<T> {
->         open: Some(open_callback::<T>),
->         close: Some(close_callback::<T>),
->         print_info: None,
-> -        export: None,
-> +        export: if T::HAS_EXPORT {
-> +            Some(export_callback::<T>)
-> +        } else {
-> +            None
-> +        },
->         pin: None,
->         unpin: None,
->         get_sg_table: None,
-> @@ -375,6 +400,49 @@ fn as_raw(&self) -> *mut bindings::drm_gem_object =
-{
->=20
-> impl<D: drm::Driver> Sealed for OpaqueObject<D> {}
->=20
-> +/// A [`dma_buf::DmaBuf`] which has been exported from a GEM object.
-> +///
-> +/// The [`dma_buf::DmaBuf`] will be released when this type is =
-dropped.
-> +///
-> +/// # Invariants
-> +///
-> +/// - `self.0` points to a valid initialized [`dma_buf::DmaBuf`] for =
-the lifetime of this object.
-> +/// - The GEM object from which this [`dma_buf::DmaBuf`] was exported =
-from is guaranteed to be of
-> +///   type `T`.
-> +pub struct DmaBuf<T: IntoGEMObject>(NonNull<dma_buf::DmaBuf>, =
-PhantomData<T>);
-> +
-> +impl<T: IntoGEMObject> Deref for DmaBuf<T> {
-> +    type Target =3D dma_buf::DmaBuf;
-> +
-> +    #[inline]
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: This pointer is guaranteed to be valid by our type =
-invariants.
-> +        unsafe { self.0.as_ref() }
-
-> +    }
-> +}
-> +
-> +impl<T: IntoGEMObject> Drop for DmaBuf<T> {
-> +    #[inline]
-> +    fn drop(&mut self) {
 > +        // SAFETY:
-> +        // - `dma_buf::DmaBuf` is guaranteed to have an identical =
-layout to `struct dma_buf`
-> +        //   by its type invariants.
-> +        // - We hold the last reference to this `DmaBuf`, making it =
-safe to destroy.
-
-How can we be sure of this?
-
-> +        unsafe { =
-bindings::drm_gem_dmabuf_release(self.0.cast().as_ptr()) }
+> +        // - We checked that dma_ptr is not an error, so it must =
+point to an initialized dma_buf
+> +        // - We used drm_gem_prime_export(), so `dma_ptr` will remain =
+valid until a call to
+> +        //   `drm_gem_prime_release()` which we don't call here.
+> +        let dma_buf =3D unsafe { dma_buf::DmaBuf::from_raw(dma_ptr) =
+};
+> +
+> +        // INVARIANT: We used drm_gem_prime_export() to create this =
+dma_buf, fulfilling the
+> +        // invariant that this dma_buf came from a GEM object of type =
+`Self`.
+> +        Ok(DmaBuf(dma_buf.into(), PhantomData))
 > +    }
-> +}
 > +
-> +impl<T: IntoGEMObject> DmaBuf<T> {
-> +    /// Leak the reference for this [`DmaBuf`] and return a raw =
-pointer to it.
-> +    #[inline]
-> +    pub(crate) fn into_raw(self) -> *mut bindings::dma_buf {
-
-Then this should perhaps be called leak()? At least if we=E2=80=99re =
-following the std nomenclature.
-
-> +        let dma_ptr =3D self.as_raw();
-> +
-> +        core::mem::forget(self);
-> +        dma_ptr
-> +    }
-> +}
-> +
-> pub(super) const fn create_fops() -> bindings::file_operations {
->     // SAFETY: As by the type invariant, it is safe to initialize =
-`bindings::file_operations`
->     // zeroed.
-> diff --git a/rust/kernel/drm/gem/shmem.rs =
-b/rust/kernel/drm/gem/shmem.rs
-> index 1437cda27a22c..b3a70e6001842 100644
-> --- a/rust/kernel/drm/gem/shmem.rs
-> +++ b/rust/kernel/drm/gem/shmem.rs
-> @@ -66,7 +66,11 @@ impl<T: DriverObject> Object<T> {
->         open: Some(super::open_callback::<T>),
->         close: Some(super::close_callback::<T>),
->         print_info: Some(bindings::drm_gem_shmem_object_print_info),
-> -        export: None,
-> +        export: if T::HAS_EXPORT {
-> +            Some(super::export_callback::<T>)
-> +        } else {
-> +            None
-> +        },
->         pin: Some(bindings::drm_gem_shmem_object_pin),
->         unpin: Some(bindings::drm_gem_shmem_object_unpin),
->         get_sg_table: =
-Some(bindings::drm_gem_shmem_object_get_sg_table),
+>     /// Creates an mmap offset to map the object from userspace.
+>     fn create_mmap_offset(&self) -> Result<u64> {
+>         // SAFETY: The arguments are valid per the type invariant.
 > --=20
 > 2.50.0
 >=20
 
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
