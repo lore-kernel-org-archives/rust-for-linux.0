@@ -1,389 +1,177 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9F613D539;
-	Fri,  5 Sep 2025 19:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757101381; cv=pass; b=VBvGOcRjGiefhGAWW66rGfy5joENXovq4DNQ8+3SCzaAeHEwjpIjlE8njdqZkIj9wDECk5J4UMtaY08shAvyOAtQHqO76U8ZpPOqDgDfYS34t6AvjvmmB+RDywaHnavg5AS89am0WGQzZ/t+H27mqOdtC60A9DU1qICoF7X3ynU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757101381; c=relaxed/simple;
-	bh=eTkDk+I/OKsADe2MIpR12aMPJSAbnJMYjX9dKyIZjkw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=kwNP1fSJfe9gsR66IpBirL1cyxR2N1dvs0kRTwM/C0n08XEtQh+ZuFLQ4/fqVF0Xxw9zUkz4uy2ukLZU3Z3f8jBW4tKW3QU21jKa3XiHTIfjgvhrGidMBJHudYcsWXXTk47i/XD+r4ARvL/OJ3oLSzKHuUHsmta1HH9tp8K0TRM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YYol3hGO; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A81A27FD59
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 19:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757101452; cv=none; b=tmN+bvJLTZ5i4zuttWC5+t8RiLh749T9UXs7IPECdTLZ/rRduc6OmTvKPrfmdl4aLppVIfE4dQbkwiD66AEtEiAHEBafH4pH4j+fr3rq3ga8qtP6rjsiZCRoGTomS2x57Gvht5auNkniMAaLculoSfF/xXUTxqSKYdHGi449i2E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757101452; c=relaxed/simple;
+	bh=a5PCH555xh/FnPTh8KPDazTQ18vDk+HyzhpLL4LoL+w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lg/rLbZuk7PXV/xeLoIOOkn8d5Yd8tlycHNwl/zc6emPqWLrGOBWZ2LfTL/eJ5fhyRzzTq6nSJkKYlVm9Zdi4OCqcWVdpWtsgkEVTUn6Ctj/opEah0Bp1vuMHJ4lG1IvYF6CYCuIP7hSrDMpUWl1tkQ7jqqcak3ZfGnspIOxMak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AV432Tef; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YYol3hGO"
-ARC-Seal: i=1; a=rsa-sha256; t=1757101350; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=VFAR4NZkwck0nu+5baqJYzb/+J1rmtR/IpgsO+sJczmYaKadeurzFbmN5JjJGu5ukTU2z+7oa/pDY8JtxIKECZIPvUnZiYRIIU/h+nhW4RBrHdQHEvji/oOQKKEIzYNFycbjuIDH7EJX0q6sL2MdeMkYkuFfcxFVhcGom9NGdBY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757101350; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=K6Hy2lEwesd2Fo+prBdvk6dcBl3iKpawrLmZHQx7Zfg=; 
-	b=A+HgTR01aF/7OlRqMYhGoVCsFxS3TaUakzJYWFA+PTyG5r460rQz8NJLwnhe06oE1VfTxvMlaz5mnakyai8TOOdnhRQNB9iDW/7L2q0lf9+VDOK2X2zA0dDm5cIz9HnwwQYZgGuWrxYP898HEqvITAD6hMTg6rFJYoWqBgs23d4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757101350;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=K6Hy2lEwesd2Fo+prBdvk6dcBl3iKpawrLmZHQx7Zfg=;
-	b=YYol3hGOUXrpMjg+MT34Z3kpQduGfF+/y9KgroA+Cssoq6mBAcEuv1ahAdn3PE02
-	04dfPlTOzetio8p55eKuBtECyK/K5G83gXxzieDUq4EWMFRS92NkxoK6ZzxKprLxE2u
-	3Z/uMqbayJlSBTETAcYQSBf3giHyeDSgfsOf5jlo=
-Received: by mx.zohomail.com with SMTPS id 1757101347383113.13212255591861;
-	Fri, 5 Sep 2025 12:42:27 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AV432Tef"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45dd7b15a64so9918215e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 12:44:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757101449; x=1757706249; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sEI7GQWEAkQYIFHGJfGFwyujQ5t6k8CCgPdx37+tNBE=;
+        b=AV432TefHusWYetGiUdezU6pTpi+Lh/Q8NpGGuU8A3tuoqqYM4OxaeP1fPitVem7rq
+         HVwxJuioy2UU6C0Ibzh4MF9Qu+wS0c+/58GH0ts8pjvQbCkf9ZhmiSIGswavxAaWeDQL
+         imqfohX7rDBfRaRGXSC4jJmrmHWvgNd8pT5z2AtBG0DW0gBRPn5TycA4cJ3wiuKTRafn
+         5oPy3UvneXb3c6Cfge15R7PfMxXBcSOgSUU9DD7wlXZuPzKD8+FfiI1SoTI63Ihmia3y
+         lw6tJbBYAoYDQf7SMCq/cWpsN/nsnAtHrBmST6Upxe+SvcO14oiJUqN4g49VtXd+8TxO
+         GCmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757101449; x=1757706249;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sEI7GQWEAkQYIFHGJfGFwyujQ5t6k8CCgPdx37+tNBE=;
+        b=uvAQLUyK4WVzojN2lHnsYhO1vdYgshmtw0tMtmLMhl52+Iygt9qZ6ASyCDWGM7OHQS
+         isjRGhuv5vtmYc0O+qJjb1bsxCL2dkgB9kLu78BwR2KK8JKuymN3pxPLvD5VLcfj88ZO
+         tfV1wLpnUgzAJHSimIg8fZBiGuCwxjNa84c4/AgSBgv4joRGl+FQJ94691EFydT/O6MC
+         f7KY/UpmBUOxLHsrL0wjGL86V1S5mYV0rqvR9OYottMr6GymDexetNc7jjbGrexc0JYG
+         LexowkSUNHZY5bAcP8iUy/WI1XfH4edXbLMZzPB7EBSh//hsJFb72JIiHbExieRLK8/1
+         lFZA==
+X-Gm-Message-State: AOJu0Yx//GNP7lWwa7o6s9cxRG3Sfw+Sr6j2P1WMtqd6YApb9UylIaLH
+	z1tAfebhZbsRY2vSST+ZRGbjKbiaByhlcRpLiW816tHoaCO6ff1kHwoSOh6DlaBBip3zC/V4Yje
+	dOi/NRCe+czO6I6u9tOR3X6Zq4Xb+Sxx5gzjJkR5o
+X-Gm-Gg: ASbGnctj6WzlKSLsCpPvkBrPHghpihy/vQ/qY2VfYUfhLs73lmKHGV6HwNFPG/Laj7x
+	vZs04IeKcGVeCPJksRPCXuIy/OC9ze0tK44P1sKgZ4iRRh65Zh+GERF7RzHv6GxOD/zejjzVFJ6
+	Ay9GDJ9AvduTwFGYtK6mEwH2rZ8j7bXrvrbN2G9dGHohhdOQZN6sPbtMfZdrbrUw1TciRVGTq/z
+	V5ohnmWJiH4lNxAzBrPikdfZ+ju6z/MXd31MShgdIXD33YIu6SBBKbGUg==
+X-Google-Smtp-Source: AGHT+IF6MaLna2TQSOHb7d4GBuMmNaoPsk+52ZYWmtEHN5XdVUvDZRZuUA+u39+Kqb9oYicCEfPk4c1s2sjBR7v5eMI=
+X-Received: by 2002:a05:600c:8b5c:b0:45b:9b9f:88cb with SMTP id
+ 5b1f17b1804b1-45dd5b78584mr37184055e9.16.1757101448644; Fri, 05 Sep 2025
+ 12:44:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 6/7] rust: ww_mutex/exec: add high-level API
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250903131313.4365-7-work@onurozkan.dev>
-Date: Fri, 5 Sep 2025 16:42:09 -0300
-Cc: rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- lossin@kernel.org,
- lyude@redhat.com,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- bjorn3_gh@protonmail.com
+MIME-Version: 1.0
+References: <20250904142552.2790602-1-vitaly.wool@konsulko.se>
+ <aLqmmKZMDAAFCBsX@google.com> <F53AA863-91B7-459E-98B2-74FA44BA48AB@konsulko.se>
+In-Reply-To: <F53AA863-91B7-459E-98B2-74FA44BA48AB@konsulko.se>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 5 Sep 2025 21:43:56 +0200
+X-Gm-Features: Ac12FXxVtO11zadmXe8FVEHG0-wuqmIWGxxCK3572T8RsPB_M_OFAcLD5K9AUJc
+Message-ID: <CAH5fLgi2UjihwmvdMqBMe0chNpA+OGex2=kLg2NWcXsKmD7wpA@mail.gmail.com>
+Subject: Re: [PATCH] rust: rbtree: add immutable cursor
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: rust-for-linux <rust-for-linux@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <6D30FEF7-07E7-4851-A7A2-76649AD0B217@collabora.com>
-References: <20250903131313.4365-1-work@onurozkan.dev>
- <20250903131313.4365-7-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
-Hi Onur,
+On Fri, Sep 5, 2025 at 7:30=E2=80=AFPM Vitaly Wool <vitaly.wool@konsulko.se=
+> wrote:
+>
+>
+>
+> > On Sep 5, 2025, at 11:00 AM, Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > On Thu, Sep 04, 2025 at 04:25:52PM +0200, Vitaly Wool wrote:
+> >> Sometimes we may need to iterate over, or find an element in a read
+> >> only (or read mostly) red-black tree, and in that case we don't need a
+> >> mutable reference to the tree, which we'll however have to take to be
+> >> able to use the current (mutable) cursor implementation.
+> >>
+> >> This patch adds a simple immutable cursor implementation to RBTree,
+> >> which enables us to use an immutable tree reference. The existing
+> >> (fully featured) cursor implementation is renamed to CursorMut,
+> >> while retaining its functionality.
+> >>
+> >> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> >
+> > Overall looks good to me!
+> >
+> > A few comments below:
+> >
+> >> -// SAFETY: The [`Cursor`] has exclusive access to both `K` and `V`, s=
+o it is sufficient to require them to be `Send`.
+> >> -// The cursor only gives out immutable references to the keys, but si=
+nce it has excusive access to those same
+> >> -// keys, `Send` is sufficient. `Sync` would be okay, but it is more r=
+estrictive to the user.
+> >> -unsafe impl<'a, K: Send, V: Send> Send for Cursor<'a, K, V> {}
+> >> +// SAFETY: The [`CursorMut`] has exclusive access to both `K` and `V`=
+, so it is sufficient to
+> >> +// require them to be `Send`.
+> >> +// The cursor only gives out immutable references to the keys, but si=
+nce it has excusive access to
+> >> +// those same keys, `Send` is sufficient. `Sync` would be okay, but i=
+t is more restrictive to the
+> >> +// user.
+> >> +unsafe impl<'a, K: Send, V: Send> Send for CursorMut<'a, K, V> {}
+> >>
+> >> -// SAFETY: The [`Cursor`] gives out immutable references to K and mut=
+able references to V,
+> >> +// SAFETY: The [`CursorMut`] gives out immutable references to K and =
+mutable references to V,
+> >> // so it has the same thread safety requirements as mutable references=
+.
+> >> -unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {}
+> >> +unsafe impl<'a, K: Sync, V: Sync> Sync for CursorMut<'a, K, V> {}
+> >
+> > We should also have Send/Sync impls for the new immutable Cursor type.
+> > They need to look like this since the immutable cursor only has shared
+> > access and not exclusive access.
+> >
+> > unsafe impl<'a, K: Sync, V: Sync> Send for Cursor<'a, K, V> {}
+> > unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {}
+> >
+> >> +    /// # Safety
+> >> +    ///
+> >> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
+> >> +    /// - The caller has immutable access to `node` for the duration =
+of `'b`.
+> >> +    unsafe fn to_key_value<'b>(node: NonNull<bindings::rb_node>) -> (=
+&'b K, &'b V) {
+> >> +        // SAFETY: the caller guarantees that `node` is a valid point=
+er in an `RBTree`.
+> >> +        let (k, v) =3D unsafe { Self::to_key_value_raw(node) };
+> >> +        // SAFETY: the caller guarantees immutable access to `node`.
+> >> +        (k, unsafe { &*v })
+> >> +    }
+> >> +
+> >> +    /// # Safety
+> >> +    ///
+> >> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
+> >> +    /// - The caller has immutable access to the key for the duration=
+ of `'b`.
+> >> +    unsafe fn to_key_value_raw<'b>(node: NonNull<bindings::rb_node>) =
+-> (&'b K, *mut V) {
+> >
+> > The mutable cursor has `to_key_value_raw` because it needs both a &V an=
+d
+> > `&mut V` version, but the immutable Cursor doesn't have that so it
+> > doesn't need a raw version either.
+> >
+> > That said, perhaps we could share this logic between the two cursor
+> > types? We can make these methods standalone instead of being part of th=
+e
+> > cursor so that both cursors can use the same helper methods instead of
+> > duplicating them.
+> >
+>
+> I was thinking about doing some paste macro magic, but maybe it=E2=80=99s=
+ better to go the way Boqun is suggesting in another reply and introduce a =
+helper function returning Option<NonNull<..>>. What would you prefer?
 
-> On 3 Sep 2025, at 10:13, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> `ExecContext` is a helper built on top of ww_mutex
+I would prefer a helper function.
 
-Again, I wonder what people think about this particular name.
-
-> that provides a retrying interface for lock acquisition.
-> When `EDEADLK` is hit, it drops all held locks, resets
-> the acquire context and retries the given (by the user)
-> locking algorithm until it succeeds.
->=20
-> The API keeps track of acquired locks, cleans them up
-> automatically and allows data access to the protected
-> data through `with_locked()`. The `lock_all()` helper
-> allows implementing multi-mutex algorithms in a simpler
-> and less error-prone way while keeping the ww_mutex
-> semantics.
->=20
-
-Great, this was exactly what I was looking for! :)
-
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
-> rust/kernel/sync/lock/ww_mutex.rs      |   2 +
-> rust/kernel/sync/lock/ww_mutex/exec.rs | 176 +++++++++++++++++++++++++
-> 2 files changed, 178 insertions(+)
-> create mode 100644 rust/kernel/sync/lock/ww_mutex/exec.rs
->=20
-> diff --git a/rust/kernel/sync/lock/ww_mutex.rs =
-b/rust/kernel/sync/lock/ww_mutex.rs
-> index b415d6deae9b..7de6578513e5 100644
-> --- a/rust/kernel/sync/lock/ww_mutex.rs
-> +++ b/rust/kernel/sync/lock/ww_mutex.rs
-> @@ -16,6 +16,8 @@
-> use core::cell::UnsafeCell;
-> use core::marker::PhantomData;
->=20
-> +pub mod exec;
-> +
-> /// Create static [`WwClass`] instances.
-> ///
-> /// # Examples
-> diff --git a/rust/kernel/sync/lock/ww_mutex/exec.rs =
-b/rust/kernel/sync/lock/ww_mutex/exec.rs
-> new file mode 100644
-> index 000000000000..2f1fc540f0b8
-> --- /dev/null
-> +++ b/rust/kernel/sync/lock/ww_mutex/exec.rs
-> @@ -0,0 +1,176 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! A high-level [`WwMutex`] execution helper.
-> +//!
-> +//! Provides a retrying lock mechanism on top of [`WwMutex`] and =
-[`WwAcquireCtx`].
-> +//! It detects [`EDEADLK`] and handles it by rolling back and =
-retrying the
-> +//! user-supplied locking algorithm until success.
-> +
-> +use crate::prelude::*;
-> +use crate::sync::lock::ww_mutex::{WwAcquireCtx, WwClass, WwMutex, =
-WwMutexGuard};
-> +use core::ptr;
-> +
-> +/// High-level execution type for ww_mutex.
-> +///
-> +/// Tracks a series of locks acquired under a common =
-[`WwAcquireCtx`].
-> +/// It ensures proper cleanup and retry mechanism on deadlocks and =
-provides
-> +/// type-safe access to locked data via [`with_locked`].
-> +///
-> +/// Typical usage is through [`lock_all`], which retries a =
-user-supplied
-> +/// locking algorithm until it succeeds without deadlock.
-> +pub struct ExecContext<'a> {
-> +    class: &'a WwClass,
-> +    acquire: Pin<KBox<WwAcquireCtx<'a>>>,
-> +    taken: KVec<WwMutexGuard<'a, ()>>,
-> +}
-> +
-> +impl<'a> Drop for ExecContext<'a> {
-> +    fn drop(&mut self) {
-> +        self.release_all_locks();
-
-If we move this to the acquire context, then we can do away with this =
-drop impl.
-
-> +    }
-> +}
-> +
-> +impl<'a> ExecContext<'a> {
-> +    /// Creates a new [`ExecContext`] for the given lock class.
-> +    ///
-> +    /// All locks taken through this context must belong to the same =
-class.
-> +    ///
-> +    /// TODO: Add some safety mechanism to ensure classes are not =
-different.
-
-core::ptr::eq()?
-
-> +    pub fn new(class: &'a WwClass) -> Result<Self> {
-> +        Ok(Self {
-> +            class,
-> +            acquire: KBox::pin_init(WwAcquireCtx::new(class), =
-GFP_KERNEL)?,
-> +            taken: KVec::new(),
-> +        })
-> +    }
-> +
-> +    /// Attempts to lock a [`WwMutex`] and records the guard.
-> +    ///
-> +    /// Returns [`EDEADLK`] if lock ordering would cause a deadlock.
-> +    pub fn lock<T>(&mut self, mutex: &'a WwMutex<'a, T>) -> =
-Result<()> {
-> +        let guard =3D self.acquire.lock(mutex)?;
-> +        // SAFETY: Type is erased for storage. Actual access uses =
-`with_locked`
-> +        // which safely casts back.
-
-Why?
-
-> +        let erased: WwMutexGuard<'a, ()> =3D unsafe { =
-core::mem::transmute(guard) };
-
-We should really try our very best to avoid transmuting things.
-
-Why can=E2=80=99t you store a KVec<MutexGuard<=E2=80=98a, T>>? Seems =
-straightforward if
-you add a T parameter to ExecContext.
-
-Also, someone correct me if I am wrong, but users can explicitly have T =
-be
-e.g.: KBox<dyn SomeTrait> if they want to.
-
-> +        self.taken.push(erased, GFP_KERNEL)?;
-> +
-> +        Ok(())
-> +    }
-> +
-> +    /// Runs `locking_algorithm` until success with retrying on =
-deadlock.
-> +    ///
-> +    /// `locking_algorithm` should attempt to acquire all needed =
-locks.
-> +    /// If [`EDEADLK`] is detected, this function will roll back, =
-reset
-> +    /// the context and retry automatically.
-> +    ///
-> +    /// Once all locks are acquired successfully, =
-`on_all_locks_taken` is
-> +    /// invoked for exclusive access to the locked values. =
-Afterwards, all
-> +    /// locks are released.
-> +    ///
-> +    /// # Example
-> +    ///
-> +    /// ```
-> +    /// use kernel::alloc::KBox;
-> +    /// use kernel::c_str;
-> +    /// use kernel::prelude::*;
-> +    /// use kernel::sync::Arc;
-> +    /// use kernel::sync::lock::ww_mutex;
-> +    /// use pin_init::stack_pin_init;
-> +    ///
-> +    /// stack_pin_init!(let class =3D =
-ww_mutex::WwClass::new_wound_wait(c_str!("lock_all_example")));
-> +    ///
-> +    /// let mutex1 =3D Arc::pin_init(ww_mutex::WwMutex::new(0, =
-&class), GFP_KERNEL)?;
-> +    /// let mutex2 =3D Arc::pin_init(ww_mutex::WwMutex::new(0, =
-&class), GFP_KERNEL)?;
-> +    /// let mut ctx =3D =
-KBox::pin_init(ww_mutex::exec::ExecContext::new(&class)?, GFP_KERNEL)?;
-> +    ///
-> +    /// ctx.lock_all(
-> +    ///     |ctx| {
-> +    ///         // Try to lock both mutexes.
-> +    ///         ctx.lock(&mutex1)?;
-> +    ///         ctx.lock(&mutex2)?;
-> +    ///
-> +    ///         Ok(())
-> +    ///     },
-> +    ///     |ctx| {
-> +    ///         // Safely mutate both values while holding the locks.
-> +    ///         ctx.with_locked(&mutex1, |v| *v +=3D 1)?;
-> +    ///         ctx.with_locked(&mutex2, |v| *v +=3D 1)?;
-> +    ///
-> +    ///         Ok(())
-> +    ///     },
-> +    /// )?;
-
-Can you add intermediary variables to hold the closures, just for extra =
-clarity?
-
-i.e.:
-
-let locking_algorithm =3D =E2=80=A6;
-let on_all_locks_taken =3D =E2=80=A6;
-
-This is of course identical, but it conveys the meaning just a bit =
-better.
-
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn lock_all<T, Y, Z>(
-> +        &mut self,
-> +        mut locking_algorithm: T,
-> +        mut on_all_locks_taken: Y,
-> +    ) -> Result<Z>
-> +    where
-> +        T: FnMut(&mut ExecContext<'a>) -> Result<()>,
-
-Just =E2=80=9CResult=E2=80=9D.
-
-> +        Y: FnMut(&mut ExecContext<'a>) -> Result<Z>,
-> +    {
-> +        loop {
-> +            match locking_algorithm(self) {
-> +                Ok(()) =3D> {
-> +                    // All locks in `locking_algorithm` succeeded.
-> +                    // The user can now safely use them in =
-`on_all_locks_taken`.
-> +                    let res =3D on_all_locks_taken(self);
-> +                    self.release_all_locks();
-> +
-> +                    return res;
-> +                }
-> +                Err(e) if e =3D=3D EDEADLK =3D> {
-> +                    // Deadlock detected, retry from scratch.
-> +                    self.cleanup_on_deadlock()?;
-> +                    continue;
-> +                }
-> +                Err(e) =3D> {
-> +                    return Err(e);
-> +                }
-> +            }
-> +        }
-> +    }
-
-This apparently looks ok.
-
-> +
-> +    /// Executes `f` with a mutable reference to the data behind =
-`mutex`.
-> +    ///
-> +    /// Fails with [`EINVAL`] if the mutex was not locked in this =
-context.
-> +    pub fn with_locked<T, Y>(
-> +        &mut self,
-> +        mutex: &'a WwMutex<'a, T>,
-> +        f: impl FnOnce(&mut T) -> Y,
-> +    ) -> Result<Y> {
-> +        // Find the matching guard.
-> +        for guard in &mut self.taken {
-> +            if mutex.as_ptr() =3D=3D guard.mutex.as_ptr() {
-
-core::ptr::eq() ?
-
-> +                // SAFETY: We know this guard belongs to `mutex` and =
-holds the lock.
-> +                let typed =3D unsafe { &mut =
-*ptr::from_mut(guard).cast::<WwMutexGuard<'a, T>>() };
-> +                return Ok(f(&mut **typed));
-
-This doesn=E2=80=99t look good, but it will probably improve once we get =
-rid of the transmute.
-
- Also, can you find a comparable use-case for this in the C code?
-
-> +            }
-> +        }
-> +
-> +        // `mutex` isn't locked in this `ExecContext`.
-> +        Err(EINVAL)
-> +    }
-> +
-> +    /// Releases all currently held locks in this context.
-> +    ///
-> +    /// It is intended to be used for internal implementation only.
-> +    fn release_all_locks(&mut self) {
-> +        self.taken.clear();
-> +    }
-> +
-> +    /// Resets this context after a deadlock detection.
-> +    ///
-> +    /// Drops all held locks and reinitializes the [`WwAcquireCtx`].
-> +    ///
-> +    /// It is intended to be used for internal implementation only.
-
-^ This last line can go away as this is private.
-
-> +    fn cleanup_on_deadlock(&mut self) -> Result {
-> +        self.release_all_locks();
-> +        // Re-init fresh `WwAcquireCtx`.
-> +        self.acquire =3D =
-KBox::pin_init(WwAcquireCtx::new(self.class), GFP_KERNEL)?;
-
-This will require one allocation per rollback.
-
-> +
-> +        Ok(())
-> +    }
-> +}
-> --
-> 2.50.0
->=20
-
+Alice
