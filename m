@@ -1,46 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213F135337E
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 13:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA5F3568ED;
+	Fri,  5 Sep 2025 13:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757079249; cv=none; b=IZHrfMEVjUQNoXAoGRw7PHVfs4hDIZd0RHxKp0GlIBA0VWOq6n7jrbZLnoqW6035FgU84A3Fvoec2dsqiFWVpOxAyvKS+S7ROBuTei2lb6JYMlJvQPWbe2C5lgqklXPW1YXEA9EOc6KFOU0/Ioe/iLE8KSx16MOZD+JwIKrg6PE=
+	t=1757079252; cv=none; b=SCr8Oi9c1OZUp3HrFQpc82LltA4V6571vL+kq4I6ba2Yf8WWbZNldCEZb8aRN3I/f/Upxf65L0v4pzSQZd1F0RaLGW+wV5k1mY5hpWqzuGWqaxXSG4a90uVgST/DATw0gjoMLT1Ve7PikgsQ3JV6GqFJxgBIdn9PiwVnpMW7ezQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757079249; c=relaxed/simple;
-	bh=ocrtdopBzGalgz4efBZGbJAZ1F2YJxeK4B44kGhwOEs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gqVGFQ5hIYl6Q9RfsBE4G22EuHt/AIdA0o9YbRyPZWif3LZfhjiXPk1+54YeSMXAWOmfGDRhX/I9YtutGAW10CyuSqGNgDaoMnZiL8xkAhIoZIx+34kQNugkL0EajI4PN/M8WT11gr9r4V/VRkbxPk54BRvE+7BakCFQHD+pgR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1wyuS32; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757079252; c=relaxed/simple;
+	bh=sn6vetOgCrcrDb0Zwhe3R7oKWElKEyh3pKeO1pF+0Kk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DGn/fwzYWcKAynNjlPb6rfkNgmEqm5y/IesvBvXjkquZthCs/pkFvo6oqQAMqCiVS6IzPjC8/GnGYxkPv4SirBiVTj25wQBIYg3qlyQhg5wdKEKAeOZeLleU3Hggd7B0u66/B8yJbSVr5dlCgQMT9Lsemh49LFHdm5odtsYx+os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rSvtGq3x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1wyuS32"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775CDC4CEF5;
-	Fri,  5 Sep 2025 13:34:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rSvtGq3x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7FEC4CEF5;
+	Fri,  5 Sep 2025 13:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757079248;
-	bh=ocrtdopBzGalgz4efBZGbJAZ1F2YJxeK4B44kGhwOEs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=M1wyuS32t8/h4ya5Z8l4/3zo1qEfXAG5OSjkfbLkkW1emVvEuxw5uFd1GV1Bvm/13
-	 3gTVVvZdCslHUkLdmjkmAFAPnlPCUamMYxR4WtnrpGt6zeJJkzkex+WrbHiBGoLC73
-	 /JsYUZCuy5b/qRkYTTKOH+ZOwcT9R0ZAnernPrpQL5j9HierlAJ2TrYQUWgjE995rA
-	 bCOuXXt3hgrh/TGyqAcOoWRr3HKgk7JnqIigPVGg3fl1wvEOfJWccAL39crdQrGnM9
-	 6UUKmv1YzIO0GA1kqVHevTGL8SLW0s1KptdLDdH4oCYKh1pDut8qNxET2X3TqLuNbX
-	 OwRyWaORIPi0Q==
+	s=k20201202; t=1757079252;
+	bh=sn6vetOgCrcrDb0Zwhe3R7oKWElKEyh3pKeO1pF+0Kk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rSvtGq3xOaOh9G6ySBCfZroTKhIQ/ITdJkRguq2TgqD19ISr6m8g2tdl9ltfZyp++
+	 Q0L2x009wZhV1cf1Q5BRGQUdgR/fOSGvk9BmZvw5xlWWpNpl045r/UdW9asii+Yg6Z
+	 bKyRUS29BO9W8co17/+PgxZfq+RhnNIj3LOTX134JicTgyfn9YKFg5oOSrvU15mtRe
+	 snM8hRm16ocvgZQC2V+FUXPO+UGCrRr7owTUgDS/2dk37JktCw9aM6CFGPOnBEUV3a
+	 FzlKpaNRtqgsLciZMsGUgtZybBXoOF89dZAwE8SQeZP43GYvpiQopBnsMsNsVx3uF3
+	 dSB9VTjrt3qMg==
 From: Benno Lossin <lossin@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
+To: Benno Lossin <lossin@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [PATCH 0/2] pin-init sync v6.18
-Date: Fri,  5 Sep 2025 15:33:57 +0200
-Message-ID: <20250905133401.3312707-1-lossin@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Fiona Behrens <me@kloenk.dev>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] rust: pin-init: examples: error: use `Error` in `fn main()`
+Date: Fri,  5 Sep 2025 15:33:58 +0200
+Message-ID: <20250905133401.3312707-2-lossin@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250905133401.3312707-1-lossin@kernel.org>
+References: <20250905133401.3312707-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,27 +54,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some very small changes coming from CI fixes & a readme update. These
-changes are already merged upstream & originate from these pull
-requests:
+When running this example with no cargo features enabled, the compiler
+warns on 1.89:
 
-* https://github.com/Rust-for-Linux/pin-init/pull/79
-* https://github.com/Rust-for-Linux/pin-init/pull/80
-* https://github.com/Rust-for-Linux/pin-init/pull/81
-* https://github.com/Rust-for-Linux/pin-init/pull/82
+  error: struct `Error` is never constructed
+    --> examples/error.rs:11:12
+     |
+  11 | pub struct Error;
+     |            ^^^^^
+     |
+     = note: `-D dead-code` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(dead_code)]`
 
-Note that 80 & 82 only changed CI, test & cargo files that aren't
-included in the kernel tree.
+Thus use the error in the main function to avoid this warning.
 
-Benno Lossin (2):
-  rust: pin-init: examples: error: use `Error` in `fn main()`
-  rust: pin-init: README: add information banner on the rename to
-    `pin-init`
+Link: https://github.com/Rust-for-Linux/pin-init/pull/79/commits/1f4f749b5b151d0dfdf9672af323e39a33e920fd
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+---
+ rust/pin-init/examples/error.rs | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- rust/pin-init/README.md         | 12 ++++++++++++
- rust/pin-init/examples/error.rs |  4 +++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
-
+diff --git a/rust/pin-init/examples/error.rs b/rust/pin-init/examples/error.rs
+index e0cc258746ce..8f4e135eb8ba 100644
+--- a/rust/pin-init/examples/error.rs
++++ b/rust/pin-init/examples/error.rs
+@@ -24,4 +24,6 @@ fn from(_: AllocError) -> Self {
+ }
+ 
+ #[allow(dead_code)]
+-fn main() {}
++fn main() {
++    let _ = Error;
++}
 
 base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
 -- 
