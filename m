@@ -1,122 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B9117BA6;
-	Fri,  5 Sep 2025 17:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECF5313270;
+	Fri,  5 Sep 2025 17:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757092712; cv=none; b=NyPV8mHOulB6vPugHqlysoOGZCbd8R7ZeFq4LLZxK/DhyJcuoPX/IHv04uisV4jMn+p0dmTiV52lbyVO3uM3N6iKIZ4F/JhubbZGKdsExuLML1d2v2G+ZZ9YggBHKFKdab3CcpSkSosnwxjpWqIcSQmqeeFMaIvJj/3U5ew3lV8=
+	t=1757092916; cv=none; b=e+pZoMjfNVRNM5WU4ihiyrcSOZ8tl3O65eiwCy7H7dMfFJAUSu8mTAQfRCqvEdjRYoEFCTW0jSAj1gc/s0JA8qCQMOaxBMEWVqNqqkUvlTAmZ1gipBF0rN55wsODBNWQrgCWeSvvTU5mM+SEo5V8FJbF/YC5aG75mcliJl6aVmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757092712; c=relaxed/simple;
-	bh=AWSjBgq3zhHdP9BGjciHx5eMjuRmw2yC8sc9IocKhxs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=b6Svd09LIvOy/hH9pzgWJnwSOSGuq0SEXFOCZxnGP5zWubVdzL13wBU3uGezNKgqON3s+1qje0zRB88tExGpIXrhdrRvpe5pKwaO1lmhV5cDuH3oNSeaaz0Za3mFJiWlWN81CnTpwZ6n19TqrBPVEyLwJnyqZABpxIfnAhhVc/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JjGjOhIp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757092916; c=relaxed/simple;
+	bh=UGJZrTlyxlhtg40AgmN8LaTmzVKr4Sl2AOH8Cpc9Org=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=feoa52+TRraVjyvt6u450yIoCG5t3S59qrJ6eKfrL1VjW9whWziy8BUwZF71eXXS5Y34Q6XOUhGkUkJ/2k8VPr7Lz/tecPaoZAtfKd9bB8NaDvPN+AOz/le73e7OyZVvHUkOCZafk8RWk8FsED9vfIwCyWbPWtvu5NML6UNM+u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zb3G1xOz; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JjGjOhIp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238E8C4CEF1;
-	Fri,  5 Sep 2025 17:18:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757092711;
-	bh=AWSjBgq3zhHdP9BGjciHx5eMjuRmw2yC8sc9IocKhxs=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=JjGjOhIpa+Dq4GYo24uci2y36ObrtkBRW01e4SkHWqZBdSPvB4i1p2iKiZx3vOmZg
-	 H2e+GPe27P7++gklGKgvKerqhuEtc6mkgE7QQWF4zd51UgCovyuUNr3j9Gu0yO/wVe
-	 om4Cl/+W+Ennk5zXfyUmEmprEkwbSLOlzjpfZGLeYDZE0jnl5HTirBa5UZBM+LK1Fd
-	 UVYLHvo7FORuyKZtXRydnPsWdb7JOuQP5AUp4LxCrAwx3Z1GGSsclzHme8rU+LDi+c
-	 KL1sz+nKya/wJ7VIaGq2/uN+l3Mgq9xR/Xb4YV85uei8S8uTeSG42iTEZ8V2S/V7aF
-	 n8iizHXS66zUg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zb3G1xOz"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-7291d89185fso11427686d6.0;
+        Fri, 05 Sep 2025 10:21:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757092913; x=1757697713; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ojkruaY3kRdJj/HExv5LGFVsZ/Ot5/KNUgISWC2ZkwY=;
+        b=Zb3G1xOz15x2HJJb7XSfb2duM0PuHd9Gau9404/dWDC0XPkPelSp1C17IpWc0C8MFz
+         awlzZGGUx8PXXKLxGKUJZuziZepMa6F5Fe45BULqT8AK7D7vwirD5YnAg9N7eFL014qR
+         EoXUGa0eSc3rM78WZFk6ThZ6KVv1TcRRVamXsqWDe7/ac3fFSrWCxUQNzcN3jCYnSIW5
+         DqMeKNVxxKny1pSuvP6GMV0iFO15TFTlb/lOirpgZpeQsxgyFDlS5HUCrUxbMERxRjRE
+         81zRqeVVunos37FJnSDe6i3Pe0pwEJPRCZzN1oSkgcKG9Cy5Dx8gdQ5g0b7OB5zcCg0F
+         kLDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757092913; x=1757697713;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ojkruaY3kRdJj/HExv5LGFVsZ/Ot5/KNUgISWC2ZkwY=;
+        b=rJVVMIpDdgSL+bdjeL705+D/saEjK5H6qunEzoDqQbGiLx/+0dlS5E9tPVkRvSMFai
+         RnyIb/SuHfH7MaunkSMbeaan0choXxsU7ACCEYu+Q5UekAvE6xtw7xAB7CGUjgjFRUxE
+         czM+RiKGIohvvaTuzJDXJWVeW7rcUnOik5bWh2gfo9bQmLH2bAZAYbYGKC0iWGRfU+dg
+         tglK/T8lmOhqHAxn+zxLS5JsjYtP0ON45bTEmu+EvMPcVKe5XvnKxoeNXyck3VGs+162
+         nrwIigeMID554wdpPH4lgIKDoUY+3scHcrWTsDIbks28qrCXv7kvUFWugPU0SzkdloJ4
+         jvTw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOwdL7HozudGTnqs/vCzvLBTy9SyR/k+VqF22So76MQ6Uu+fC5lC42MsYoj8Z7wjJ0x17P3le0G8fTH60=@vger.kernel.org, AJvYcCX2yfJeHFNqAT22fHD4azrV2fzOCsMesa4l/9uotXULrcGYgsyF644kqqrXUoC/jFesQ2feffhIUFsfxpKK6j4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymFchfrDvbxkx4blRvq6tnHfDDeA3TvCaoorD6VTKuJA8rwFkK
+	sYj8aVQx3E3dJxqizLEDm6b2KvUWT7ydJaTDaPX5T24kT5X/TsRB/g+t
+X-Gm-Gg: ASbGncurI/0gkjxC+tnUF3i/lQMfw5iADDvlAOaAwghWk5sRNy/ZQR00mmxp98DOiHy
+	rBB6cMxOsbvRyDwEWLyi105XkKUSIIh2KXWvyJf8fs4eUkwp8IKsVW4oTumpcfONx0xUUvkYWb7
+	A/+xCH9Xlwi8d5W8VDk2zj+ZcahEQoS4mzyR5MynMg/7ZyFsVjeCIwf+unj00/g8fRkcr01MfbR
+	9kWvjGFPYsHDkA0mQEpM+Br/WM67y+Eda8vqQfuAio6vDuzhT5BxvaIMYB6sLrqZ6q7tAfDiVEV
+	fr2O+vRnas1A7Q2UPbppUimRUEpuPjOZdqgmxj/u2FnZ0grncptr+xUQaliXvZ6a4lKZbHaWZYZ
+	nSuZhMI5wCEBBP9FTXWhblQi8ge206L9Ts+pcqmAbcj19gr5ei8a2DJIT5eG/ovqKjDT5pEuWlu
+	QligWk2nTl2LDlbaSP7DbKvPKWvEKwN6PWZtelOr10fzph
+X-Google-Smtp-Source: AGHT+IHvYp931SXAxT1u59cLKnwlPbnLOsc4TRjevIGttrrwPHVRH8WvMI0LrkxHpd2Yn2NzTDShiQ==
+X-Received: by 2002:a05:6214:410a:b0:70d:f758:597b with SMTP id 6a1803df08f44-70fac6f8128mr257309206d6.5.1757092912874;
+        Fri, 05 Sep 2025 10:21:52 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-720b683283csm69994416d6.68.2025.09.05.10.21.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 10:21:52 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id ED72CF40066;
+	Fri,  5 Sep 2025 13:21:51 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Fri, 05 Sep 2025 13:21:51 -0400
+X-ME-Sender: <xms:Lxy7aDBsJ0Z0KryaHpKn4ltDLTN_66ChTkvw2iMGoNoYavdw5cFpdw>
+    <xme:Lxy7aIC4psUkUhoS2LEgJr_2Dhr2BMqs6bUymT9VYm73aKUzr2LsoIklkfp8yfhg3
+    pk8W4j26rB8V7jdNA>
+X-ME-Received: <xmr:Lxy7aKHN3aUuZXPdDeWjl2wkj_JgNGJeea1BxmS47T9I70PCyuE3-MbZe6hgsj3FjuAgbn1YUMlvj2ageVjZEOOXaR40PkAW>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdelgeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpefftdeihfeigedtvdeuueffieetvedtgeejuefhhffgudfgfeeggfeftdeigeehvden
+    ucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
+    ohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnh
+    hgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedu
+    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihse
+    hgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhn
+    mhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphht
+    thhopehtmhhgrhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepuggrkhhrsehkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:Lxy7aP7GFvd5i-ussE66htRj9wgyQTrIMxZCUBJT7VY7d6s1fFDRSw>
+    <xmx:Lxy7aBRug6LIiZOF2QENhQlxZFgKsbpf4DRrWiM3mTtd8Cya5tUeSw>
+    <xmx:Lxy7aK5nB1wGt2xLs4F4VXWcq-LliBoqm7jqwYxHDyOuHK4wSuAS8A>
+    <xmx:Lxy7aOSN6tVyuvIlA1uvvh2diDHhwff7T2X2CXGSQ256n2M1HUGVXw>
+    <xmx:Lxy7aPnhTwPfoAcNU5U5CPXfSSuLc5Dkjd4n5jc8XCqOivL3Bd3OhXXp>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 Sep 2025 13:21:51 -0400 (EDT)
+Date: Fri, 5 Sep 2025 10:21:50 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>,
+	Alban Kurti <kurti@invicto.ai>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: pin-init: add references to previously initialized
+ fields
+Message-ID: <aLscLsY0Sv1Qwgni@tardis-2.local>
+References: <20250905140047.3325945-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 Sep 2025 19:18:25 +0200
-Message-Id: <DCL1DPN708H0.3JTL93J2GD2DR@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: pin-init: add references to previously
- initialized fields
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
- "Alban Kurti" <kurti@invicto.ai>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250905140047.3325945-1-lossin@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20250905140047.3325945-1-lossin@kernel.org>
 
-On Fri Sep 5, 2025 at 4:00 PM CEST, Benno Lossin wrote:
+On Fri, Sep 05, 2025 at 04:00:46PM +0200, Benno Lossin wrote:
 > After initializing a field in an initializer macro, create a variable
 > holding a reference that points at that field. The type is either
 > `Pin<&mut T>` or `&mut T` depending on the field's structural pinning
 > kind.
->
-> Link: https://github.com/Rust-for-Linux/pin-init/pull/83/commits/0f658594=
-c39398f58cd5cb99a8141e370e225e74
+> 
+
+It's hard to review because of lack of examples. Could you or Danilo
+share some sample usages? Thanks!
+
+Regards,
+Boqun
+
+> Link: https://github.com/Rust-for-Linux/pin-init/pull/83/commits/0f658594c39398f58cd5cb99a8141e370e225e74
 > Signed-off-by: Benno Lossin <lossin@kernel.org>
-
-I forgot to test with the right configuration and found some errors with
-existing code. Here are their fixes. If I don't need to re-send, I will
-add them on apply (if you want a v2, let me know).
-
----
-Cheers,
-Benno
-
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index da18091143a6..91dbf3f4b166 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -134,11 +134,9 @@ pub fn new<'a, E>(
-         T: 'a,
-         Error: From<E>,
-     {
--        let callback =3D Self::devres_callback;
--
-         try_pin_init!(&this in Self {
-             dev: dev.into(),
--            callback,
-+            callback: Self::devres_callback,
-             // INVARIANT: `inner` is properly initialized.
-             inner <- {
-                 // SAFETY: `this` is a valid pointer to uninitialized memo=
-ry.
-@@ -151,7 +149,7 @@ pub fn new<'a, E>(
-                 //    properly initialized, because we require `dev` (i.e.=
- the *bound* device) to
-                 //    live at least as long as the returned `impl PinInit<=
-Self, Error>`.
-                 to_result(unsafe {
--                    bindings::devm_add_action(dev.as_raw(), Some(callback)=
-, inner.cast())
-+                    bindings::devm_add_action(dev.as_raw(), Some(*callback=
-), inner.cast())
-                 })?;
-=20
-                 Opaque::pin_init(try_pin_init!(Inner {
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci=
-.rs
-index 606946ff4d7f..1ac0b06fa3b3 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -78,8 +78,8 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -=
-> Result<Pin<KBox<Self>
-=20
-         let drvdata =3D KBox::pin_init(
-             try_pin_init!(Self {
--                pdev: pdev.into(),
-                 bar <- pdev.iomap_region_sized::<{ Regs::END }>(0, c_str!(=
-"rust_driver_pci")),
-+                pdev: pdev.into(),
-                 index: *info,
-             }),
-             GFP_KERNEL,
+> ---
+[...]
