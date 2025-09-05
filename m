@@ -1,181 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9A0313288;
-	Fri,  5 Sep 2025 17:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B9117BA6;
+	Fri,  5 Sep 2025 17:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757092341; cv=none; b=GI7199+P4OcOEivUOAQi8r3jEBa8aLYlPEKv20Fqk6dHMsz3QExv2FHxXYbtNKDBVP7df/V3ygRjLOzel8PT1IY4OZolGTq7VzcGUklWZWfFRoOIJix/+0lS67lnHgq/2FVRW8TXLRTzCO5H18NrEbL3rM7wVQu6QxTQLAKw0as=
+	t=1757092712; cv=none; b=NyPV8mHOulB6vPugHqlysoOGZCbd8R7ZeFq4LLZxK/DhyJcuoPX/IHv04uisV4jMn+p0dmTiV52lbyVO3uM3N6iKIZ4F/JhubbZGKdsExuLML1d2v2G+ZZ9YggBHKFKdab3CcpSkSosnwxjpWqIcSQmqeeFMaIvJj/3U5ew3lV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757092341; c=relaxed/simple;
-	bh=IFxTOOPIkWltB7RImBUO8KCn23J9LPZLVhwYnb4mcJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1AItTfOBHy84M3aGDMSn0Kp+POAc5bAp/KADUBkXu5WNUZasImcjVBKZDuHHXzKSGJ/1E0Zmwe4gu/6KdZWq9M69AdJJ3UD1+BXSK3lT5tOfATqxGIOpzvxmY8zmkZ4i1YmfjgMo0m2xe1SrgYxoRw9lCNhWUQ8LTa+A/dikCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/JReImE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757092712; c=relaxed/simple;
+	bh=AWSjBgq3zhHdP9BGjciHx5eMjuRmw2yC8sc9IocKhxs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=b6Svd09LIvOy/hH9pzgWJnwSOSGuq0SEXFOCZxnGP5zWubVdzL13wBU3uGezNKgqON3s+1qje0zRB88tExGpIXrhdrRvpe5pKwaO1lmhV5cDuH3oNSeaaz0Za3mFJiWlWN81CnTpwZ6n19TqrBPVEyLwJnyqZABpxIfnAhhVc/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JjGjOhIp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/JReImE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9486DC4CEF7;
-	Fri,  5 Sep 2025 17:12:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JjGjOhIp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238E8C4CEF1;
+	Fri,  5 Sep 2025 17:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757092341;
-	bh=IFxTOOPIkWltB7RImBUO8KCn23J9LPZLVhwYnb4mcJ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/JReImEHbwT6D9rCn4txDYsUXZvuZNsJ0C4osO1jMylhG8tTe1wS5m/NVLfGWYen
-	 l83aqMr3qeQRewdIukcrZw5VitGhrPNpbZuz88QsgBdp9KVCu2pMWBied+r6XnaRmE
-	 jQzFyHP4l9I7Rqf3iuDgKbfcaFyzp2AnmeEtMfdYnmTFIeKNaxfQcdPPC8MAa8SNHP
-	 JJ7S5+XeZ8eDo9yTlHDenGU1Mk4/Gt+z5Yb0dD5w5LYGagANk3oGp5JJFlbATurhGN
-	 d442wBKrxc/YO6lCiuNQRoGStZIGbQirQCFkKGqG5QKLgg7vHgFCW9GgpHJG9Fn/uS
-	 PS3jLPDQEnElQ==
-From: Benno Lossin <lossin@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Alban Kurti <kurti@invicto.ai>,
-	Fiona Behrens <me@kloenk.dev>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] rust: pin-init: add pin projections to `#[pin_data]`
-Date: Fri,  5 Sep 2025 19:12:07 +0200
-Message-ID: <20250905171209.944599-2-lossin@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250905171209.944599-1-lossin@kernel.org>
-References: <20250905171209.944599-1-lossin@kernel.org>
+	s=k20201202; t=1757092711;
+	bh=AWSjBgq3zhHdP9BGjciHx5eMjuRmw2yC8sc9IocKhxs=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=JjGjOhIpa+Dq4GYo24uci2y36ObrtkBRW01e4SkHWqZBdSPvB4i1p2iKiZx3vOmZg
+	 H2e+GPe27P7++gklGKgvKerqhuEtc6mkgE7QQWF4zd51UgCovyuUNr3j9Gu0yO/wVe
+	 om4Cl/+W+Ennk5zXfyUmEmprEkwbSLOlzjpfZGLeYDZE0jnl5HTirBa5UZBM+LK1Fd
+	 UVYLHvo7FORuyKZtXRydnPsWdb7JOuQP5AUp4LxCrAwx3Z1GGSsclzHme8rU+LDi+c
+	 KL1sz+nKya/wJ7VIaGq2/uN+l3Mgq9xR/Xb4YV85uei8S8uTeSG42iTEZ8V2S/V7aF
+	 n8iizHXS66zUg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Sep 2025 19:18:25 +0200
+Message-Id: <DCL1DPN708H0.3JTL93J2GD2DR@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: pin-init: add references to previously
+ initialized fields
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
+ "Alban Kurti" <kurti@invicto.ai>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250905140047.3325945-1-lossin@kernel.org>
+In-Reply-To: <20250905140047.3325945-1-lossin@kernel.org>
 
-Make the `#[pin_data]` macro generate a `*Projection` struct that holds
-either `Pin<&mut Field>` or `&mut Field` for every field of the original
-struct. Which version is chosen depends on weather there is a `#[pin]`
-or not respectively. Access to this projected version is enabled through
-generating `fn project(self: Pin<&mut Self>) -> SelfProjection<'_>`.
+On Fri Sep 5, 2025 at 4:00 PM CEST, Benno Lossin wrote:
+> After initializing a field in an initializer macro, create a variable
+> holding a reference that points at that field. The type is either
+> `Pin<&mut T>` or `&mut T` depending on the field's structural pinning
+> kind.
+>
+> Link: https://github.com/Rust-for-Linux/pin-init/pull/83/commits/0f658594=
+c39398f58cd5cb99a8141e370e225e74
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
 
-Link: https://github.com/Rust-for-Linux/pin-init/pull/75/commits/2d698367d646c7ede90e01aa22842c1002d017b3
-[ Adapt workqueue to use the new projection instead of its own, custom
-  one - Benno ]
-Signed-off-by: Benno Lossin <lossin@kernel.org>
+I forgot to test with the right configuration and found some errors with
+existing code. Here are their fixes. If I don't need to re-send, I will
+add them on apply (if you want a v2, let me know).
+
 ---
- rust/kernel/workqueue.rs    | 10 ++-----
- rust/pin-init/src/macros.rs | 60 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 62 insertions(+), 8 deletions(-)
+Cheers,
+Benno
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index b9343d5bc00f..6ca14c629643 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -356,18 +356,12 @@ struct ClosureWork<T> {
-     func: Option<T>,
- }
- 
--impl<T> ClosureWork<T> {
--    fn project(self: Pin<&mut Self>) -> &mut Option<T> {
--        // SAFETY: The `func` field is not structurally pinned.
--        unsafe { &mut self.get_unchecked_mut().func }
--    }
--}
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index da18091143a6..91dbf3f4b166 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -134,11 +134,9 @@ pub fn new<'a, E>(
+         T: 'a,
+         Error: From<E>,
+     {
+-        let callback =3D Self::devres_callback;
 -
- impl<T: FnOnce()> WorkItem for ClosureWork<T> {
-     type Pointer = Pin<KBox<Self>>;
- 
-     fn run(mut this: Pin<KBox<Self>>) {
--        if let Some(func) = this.as_mut().project().take() {
-+        if let Some(func) = this.as_mut().project().func.take() {
-+            // if let Some(func) = this.as_mut().project_func().take() {
-             (func)()
-         }
-     }
-diff --git a/rust/pin-init/src/macros.rs b/rust/pin-init/src/macros.rs
-index 9ced630737b8..d225cc144904 100644
---- a/rust/pin-init/src/macros.rs
-+++ b/rust/pin-init/src/macros.rs
-@@ -831,6 +831,17 @@ macro_rules! __pin_data {
-             $($fields)*
-         }
- 
-+        $crate::__pin_data!(make_pin_projections:
-+            @vis($vis),
-+            @name($name),
-+            @impl_generics($($impl_generics)*),
-+            @ty_generics($($ty_generics)*),
-+            @decl_generics($($decl_generics)*),
-+            @where($($whr)*),
-+            @pinned($($pinned)*),
-+            @not_pinned($($not_pinned)*),
-+        );
-+
-         // We put the rest into this const item, because it then will not be accessible to anything
-         // outside.
-         const _: () = {
-@@ -980,6 +991,55 @@ fn drop(&mut self) {
-             stringify!($($rest)*),
-         );
-     };
-+    (make_pin_projections:
-+        @vis($vis:vis),
-+        @name($name:ident),
-+        @impl_generics($($impl_generics:tt)*),
-+        @ty_generics($($ty_generics:tt)*),
-+        @decl_generics($($decl_generics:tt)*),
-+        @where($($whr:tt)*),
-+        @pinned($($(#[$($p_attr:tt)*])* $pvis:vis $p_field:ident : $p_type:ty),* $(,)?),
-+        @not_pinned($($(#[$($attr:tt)*])* $fvis:vis $field:ident : $type:ty),* $(,)?),
-+    ) => {
-+        $crate::macros::paste! {
-+            #[doc(hidden)]
-+            $vis struct [< $name Projection >] <'__pin, $($decl_generics)*> {
-+                $($(#[$($p_attr)*])* $pvis $p_field : ::core::pin::Pin<&'__pin mut $p_type>,)*
-+                $($(#[$($attr)*])* $fvis $field : &'__pin mut $type,)*
-+                ___pin_phantom_data: ::core::marker::PhantomData<&'__pin mut ()>,
-+            }
-+
-+            impl<$($impl_generics)*> $name<$($ty_generics)*>
-+            where $($whr)*
-+            {
-+                /// Pin-projects all fields of `Self`.
-+                ///
-+                /// These fields are structurally pinned:
-+                $(#[doc = ::core::concat!(" - `", ::core::stringify!($p_field), "`")])*
-+                ///
-+                /// These fields are **not** structurally pinned:
-+                $(#[doc = ::core::concat!(" - `", ::core::stringify!($field), "`")])*
-+                $vis fn project<'__pin>(
-+                    self: ::core::pin::Pin<&'__pin mut Self>,
-+                ) -> [< $name Projection >] <'__pin, $($ty_generics)*> {
-+                    // SAFETY: we only give access to `&mut` for fields not structurally pinned.
-+                    let this = unsafe { ::core::pin::Pin::get_unchecked_mut(self) };
-+                    [< $name Projection >] {
-+                        $(
-+                            // SAFETY: `$p_field` is structurally pinned.
-+                            $(#[$($p_attr)*])*
-+                            $p_field : unsafe { ::core::pin::Pin::new_unchecked(&mut this.$p_field) },
-+                        )*
-+                        $(
-+                            $(#[$($attr)*])*
-+                            $field : &mut this.$field,
-+                        )*
-+                        ___pin_phantom_data: ::core::marker::PhantomData,
-+                    }
-+                }
-+            }
-+        }
-+    };
-     (make_pin_data:
-         @pin_data($pin_data:ident),
-         @impl_generics($($impl_generics:tt)*),
--- 
-2.50.1
-
+         try_pin_init!(&this in Self {
+             dev: dev.into(),
+-            callback,
++            callback: Self::devres_callback,
+             // INVARIANT: `inner` is properly initialized.
+             inner <- {
+                 // SAFETY: `this` is a valid pointer to uninitialized memo=
+ry.
+@@ -151,7 +149,7 @@ pub fn new<'a, E>(
+                 //    properly initialized, because we require `dev` (i.e.=
+ the *bound* device) to
+                 //    live at least as long as the returned `impl PinInit<=
+Self, Error>`.
+                 to_result(unsafe {
+-                    bindings::devm_add_action(dev.as_raw(), Some(callback)=
+, inner.cast())
++                    bindings::devm_add_action(dev.as_raw(), Some(*callback=
+), inner.cast())
+                 })?;
+=20
+                 Opaque::pin_init(try_pin_init!(Inner {
+diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci=
+.rs
+index 606946ff4d7f..1ac0b06fa3b3 100644
+--- a/samples/rust/rust_driver_pci.rs
++++ b/samples/rust/rust_driver_pci.rs
+@@ -78,8 +78,8 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -=
+> Result<Pin<KBox<Self>
+=20
+         let drvdata =3D KBox::pin_init(
+             try_pin_init!(Self {
+-                pdev: pdev.into(),
+                 bar <- pdev.iomap_region_sized::<{ Regs::END }>(0, c_str!(=
+"rust_driver_pci")),
++                pdev: pdev.into(),
+                 index: *info,
+             }),
+             GFP_KERNEL,
