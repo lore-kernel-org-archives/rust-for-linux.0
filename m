@@ -1,63 +1,63 @@
 Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E813F3090C2
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 09:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E1327E7DD
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 09:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757063313; cv=none; b=oGniqeyfFkrtrb5FWKv9oHL/Fd8nN5RCmd2xCBUJNjRMnJts6jX9YG+Q2UsJzRry+T9HobC9tIO3rhpAQ6HnjXiY9R3G1HR/9O6BQStpXoSH0/I/PK0h4e25SGgM+521UQwaVUvbYnYjzxLXwJjAWNIhsnG0rku7fPg8MrLgCgE=
+	t=1757063313; cv=none; b=WviysZAVg5dffM8o01TFd91BjVZ+V6OsYstx7NvIhtCqco7jhEPKqK9iAOh0SmnvKbszL5V2a2pje5Xk6LswkguG1LIBnFKarDVGDqLpjhm0Xf7Rf5hgaPy42SM9pYhDfPJ14lM8AOlHCYTuyMoWEEvUiPwXQ2SGN6m65yrNDHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757063313; c=relaxed/simple;
-	bh=k+ixhQPGGF72LjHNNF5qNcmLsCiq464i8JXv41ZYhso=;
+	bh=26Tb1NtsqwZ1rv+sVNZuBfdl1j0yHZvMb0KD02KS9aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFQlYk7AI5hZKeIvkm/4JVsdNANywoY8+2lSVOYOzwJjtz2rDMfc0elmVrpEI1arX3P0b807w7WOAECCAAFfbLrGRCT07YrzqMNWrkv0cEbbz5g9u8T8vNeqpbn7id+9UmLfYASiUWVs0z/tVdcWP/23j1+HfFVcWZ2fer+1qM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Ah0tmg8e; arc=none smtp.client-ip=209.85.128.50
+	 MIME-Version; b=EaF24Y0XJdc+T4YqZ7kd0lvTABSsi7lmleiXDgGiRwYT3DEvsDQ3wXe9rRKIZA1D7OkIaEMHnCgughmxCJirynFM/k8mB16yzrJHi+STKDL/Q9fDRL0rqPrOvX7seaF0JcWkEDZsdtfR/fv/xYOcqC1yYKySNTw7ENrij25fKcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=M7CRSVSI; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Ah0tmg8e"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45b9c35bc0aso17257075e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 02:08:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="M7CRSVSI"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45dd505a1dfso7518815e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 02:08:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757063309; x=1757668109; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1757063310; x=1757668110; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nMpbE6VafRyeOOP29fdsM3EDpozD5yF3rEIxtn+59NM=;
-        b=Ah0tmg8e1B9z2LnN3sOiJ2+WgecqgThPr+eTgN7oPxnYlp0W8NtQ6Z/U+AgGQUBJfL
-         vwon7GE2oAhbZL8Hs2JtI9wy6xwpFkMWiGqDnGPTNLeBfyWZt0BIfIOW3F4BJ/NX/Kpx
-         gzLSHlBgwnwAUwENMGRkqrxPmkeHseWJuIs+FPZ6R963TZzyos+oAwKa1EzS4drOOJsa
-         DLrN2ecNC+HJRUDe4FjOudgQW5DKHecTYIUn+ZJwGNMtbCj2rA98tT0laH8UkkRoUOoL
-         qx3PFSFdUMeUz8rC2l/RLPP/ayT5HrCm1tH/UVwvDHeLb3S1Cw7XlB6yqmRrQlgzk8s9
-         yabg==
+        bh=vsx4ro+fg1Da+fZ6k37g0k5i+Ei4r7saLuhpbXY1yMw=;
+        b=M7CRSVSIPdrVjHEiX3ynHHUpvetOiCRTKsJgCPWe7bseB9Q98YLQLGSBwHbZeGkpQE
+         /aPocbNzlBPzXITNXx4BztXxA7ChXEiSD/SNq86d/6JBR/P3nzh1KWfjigJLMvgkg7m8
+         J6O1ZbgnxFcrdNLJXuVy7D0i/REVhCWNQ1kC1desbMJ89+sJe39gBXmtq3jiB1KbN+J8
+         y+VNjEF1H9xAuMwgxgu8MX0pob/s/HsQp7qsz+3zHu4zwuJogTmTtHkwqgfWLtzq9Bqi
+         w8dfZY2DWBe8+3w8vLnPEo3zUY2OxdwCktLcbWtz1mk/uZzlMipltfboP7sP1M+3UMea
+         nQug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757063309; x=1757668109;
+        d=1e100.net; s=20230601; t=1757063310; x=1757668110;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nMpbE6VafRyeOOP29fdsM3EDpozD5yF3rEIxtn+59NM=;
-        b=N+ZkphZrLWt9cGoeYNydmUBcSg73kYDkJxI4lHy14062kWs0YTYv/dqO8ntbKQK9rO
-         WgRmqCL+0LGu0i5OYQA46NqMlysfIp2L8Gy9J56wXgr2t/eXSfKYoOZAhSwcEpYBDvma
-         5IdcdXKDA/Cd/F1qqaWo+L2geHMNEdTbPlkViUYtHLxS7doMt+i2LoBb1Eq/u7S1o06D
-         eg5uKCoxPiAphkS307sEGuYoPFoINyrMUILp6Z7iF2d22zdfNMKIs30IwAScWR7Xw5Dr
-         CVAQ4ZoT/Ey0LSw9BP4lvFsPFf3tX0FK6H2AZ/nrMD3Rkx+WhE7JNthyaHSrY+f/P2mb
-         /sOw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3yoOaiydo2X8aVw4YugyojZLniLIsjsPJB05XJiZnfHmv28VX3UeLoQYZg6VnG15YDpgE9gyiQo64gk73aw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+/F29O9w0U2GeGOehk0IcQ6ejRSNoAVY4ZX4hCvZfHjdS5psH
-	5oabNRkXfgSqaPudyV2CURuqRtO3etC8JEXhyolom8B4MafHvB5wHFxuRk5q1Wqc6C4=
-X-Gm-Gg: ASbGncuKblzpLIqvLOAbl0Esmo9NkjgFqIVdcWzW4rSBnAcwbeLlehT20/1SjRE8INz
-	tOkm95nwmN1FPDV11G2CBqHiLHPrKgRyhHYxI2AiMH0mVSQ8b9yoPSKj+bdeXY0OzpacK8GjRfg
-	0QZ4I0+LP3dHwbRH1AAOsixxZHt1W28x9pSarXzfHfJpQxDlrnkaoobeWtq1mPwM6zHDzUyPiBC
-	5l4Yz8EfLSdxMTrS6T8M+aabqbfcsWw+xj8/4UJeKOkAsQB3nSaGRRkP0snKA/o4q52UGCp0a2y
-	kG2oGAiL3+wfk9zliqZRYWZDZeYHKQv2fy5O8POQTcwSTQt0fLCFJGS0ogn8k1fiwTcagys5Uly
-	k1T+sQ1JpafzVOSQO8esg9Qyc616YRT43SM8ujzE3/MbeZl27fjPGPTn1Bw==
-X-Google-Smtp-Source: AGHT+IEQ7iICtAFI26qq7I6gkL+FcH2hfR1NxHLVFsStd3ArLDcFGJmIecq7OFAY9rQ+tTYgegYx2w==
-X-Received: by 2002:a05:600c:3556:b0:45b:8822:d6c4 with SMTP id 5b1f17b1804b1-45b88321ca0mr179252895e9.33.1757063309076;
-        Fri, 05 Sep 2025 02:08:29 -0700 (PDT)
+        bh=vsx4ro+fg1Da+fZ6k37g0k5i+Ei4r7saLuhpbXY1yMw=;
+        b=N/rxr4aqi/CKVuJlGpqPWlKmbwLZ22oeKMh99DinR3xWmxPRUZUrf60ry6o7My3DUO
+         WnJX2r+djdG18F5uVSiuC0kWh7EzP51Im9rOceDpIYYoyPBg9dTht0A2hYLjR1nwQmau
+         X/Ssd5sFxNimP7oZ9A7JaSCrOYpaEYLzoasxgcrkRAALvR5eQcWtMRoS5A/un1GExWAL
+         FTQyCXTCp6GR5MNcIQ1SCYd/QEZv0k/h9nOKAjhF7trEGwCUwBST018EkpExQDLFa/rl
+         w8HwzwZ4hBZiBpFS3eu+eG6JNeJOjVUb33/DvO+ZoJfcKX0htYuszmotiySHfOqYWTCo
+         aIvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXb/g6LxYFndFeIwW//LKpcD70w017HnCPPo0Fxxk4JTofY1jpjJu/47VNkk3P5eIdFkVeXXlahA3cUBf/ASg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwL35HzBFRtWKjl9CyFpO6u4+PXySSvngSS46nd/BRE8x1246ZT
+	YTb6dyg49wmD4OZxyPzi1QR4DLBD8A92fAzm4Qj6nKysS2793d/OWoJOL8p6qmT65Lg=
+X-Gm-Gg: ASbGncvRWLzx1BQwoKWGjinXud89lW1QFcxUSw+cD0QqcW4VGpQpKhpDiKK/UPyo7H/
+	BxdIijJmHdZOCUX8BVBkpOaWFKCn8hOP28zQCjlqTDpKpOnV/yKaXHr3QMfBQBSdP3wsxycXim2
+	6VsK8Af7c/HRq6RzhC/Nowk+9/oJ4RBfuI65l20ozzQC4gQ/uD5P38gYlvma2iml2FYD5drX1/U
+	kBw85hEvUnPhIZhXKQiKjDUTV4FJMKjZqnm8CcRkoemb7J15RiW3Wqmcb63ZbIRpQ5a5hTWKdBh
+	uPKRIIwtzIVm+y3b1XdkIl/WJuTSSXvw/k0PMGEmpcsMEgRR/0qSW13m0exoyEa0X659fK3AMVi
+	f19CAGNjGWjHaQNQxCm2acvWL+U5s3JL3ThViHDYqPpLZl1ctHIWuBE1+hg==
+X-Google-Smtp-Source: AGHT+IHUYSE4/MqB/EOjKjkztpcu59mOOTXF5Ahf/lvz7h2oStW1eg9hrquGPbwauw4p3kcS8EXfwA==
+X-Received: by 2002:a05:600c:1c08:b0:45d:d353:a491 with SMTP id 5b1f17b1804b1-45dd54a5b31mr22217865e9.1.1757063310044;
+        Fri, 05 Sep 2025 02:08:30 -0700 (PDT)
 Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd0350e80sm68900805e9.22.2025.09.05.02.08.28
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd0350e80sm68900805e9.22.2025.09.05.02.08.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 02:08:28 -0700 (PDT)
+        Fri, 05 Sep 2025 02:08:29 -0700 (PDT)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
@@ -69,9 +69,9 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>
-Subject: [PATCH 1/2] rust: replace use of system_unbound_wq with system_dfl_wq
-Date: Fri,  5 Sep 2025 11:08:18 +0200
-Message-ID: <20250905090819.107694-2-marco.crivellari@suse.com>
+Subject: [PATCH 2/2] rust: replace use of system_wq with system_percpu_wq
+Date: Fri,  5 Sep 2025 11:08:19 +0200
+Message-ID: <20250905090819.107694-3-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250905090819.107694-1-marco.crivellari@suse.com>
 References: <20250905090819.107694-1-marco.crivellari@suse.com>
@@ -91,16 +91,18 @@ again of WORK_CPU_UNBOUND.
 
 This lack of consistentcy cannot be addressed without refactoring the API.
 
-system_unbound_wq should be the default workqueue so as not to enforce
-locality constraints for random work whenever it's not required.
+system_wq is a per-CPU worqueue, yet nothing in its name tells about that
+CPU affinity constraint, which is very often not required by users. Make
+it clear by adding a system_percpu_wq.
 
-Adding system_dfl_wq to encourage its use when unbound work should be used.
+queue_work() / queue_delayed_work() mod_delayed_work() will now use the
+new per-cpu wq: whether the user still stick on the old name a warn will
+be printed along a wq redirect to the new one.
 
-queue_work() / queue_delayed_work() / mod_delayed_work() will now use the
-new unbound wq: whether the user still use the old wq a warn will be
-printed along with a wq redirect to the new one.
+This patch add the new system_percpu_wq except for mm, fs and net
+subsystem, whom are handled in separated patches.
 
-The old system_unbound_wq will be kept for a few release cycles.
+The old wq will be kept for a few release cylces.
 
 Suggested-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
@@ -109,27 +111,28 @@ Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index f98bd02b838f..8ca813d68a1a 100644
+index 8ca813d68a1a..6f508c3e37e4 100644
 --- a/rust/kernel/workqueue.rs
 +++ b/rust/kernel/workqueue.rs
-@@ -662,14 +662,14 @@ pub fn system_long() -> &'static Queue {
-     unsafe { Queue::from_raw(bindings::system_long_wq) }
+@@ -633,15 +633,15 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
+     }
  }
  
--/// Returns the system unbound work queue (`system_unbound_wq`).
-+/// Returns the system unbound work queue (`system_dfl_wq`).
+-/// Returns the system work queue (`system_wq`).
++/// Returns the system work queue (`system_percpu_wq`).
  ///
- /// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
- /// are executed immediately as long as `max_active` limit is not reached and resources are
- /// available.
- pub fn system_unbound() -> &'static Queue {
--    // SAFETY: `system_unbound_wq` is a C global, always available.
--    unsafe { Queue::from_raw(bindings::system_unbound_wq) }
-+    // SAFETY: `system_dfl_wq` is a C global, always available.
-+    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
+ /// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU multi-threaded. There are
+ /// users which expect relatively short queue flush time.
+ ///
+ /// Callers shouldn't queue work items which can run for too long.
+ pub fn system() -> &'static Queue {
+-    // SAFETY: `system_wq` is a C global, always available.
+-    unsafe { Queue::from_raw(bindings::system_wq) }
++    // SAFETY: `system_percpu_wq` is a C global, always available.
++    unsafe { Queue::from_raw(bindings::system_percpu_wq) }
  }
  
- /// Returns the system freezable work queue (`system_freezable_wq`).
+ /// Returns the system high-priority work queue (`system_highpri_wq`).
 -- 
 2.51.0
 
