@@ -1,103 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7294F231845;
-	Fri,  5 Sep 2025 15:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8690631D744;
+	Fri,  5 Sep 2025 15:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757085966; cv=none; b=GDJRPm0TJQQqGt8wB71VTTfZIe72NJndGfB2pzwtPoo6Q+Y7bIU3ORfb06v57FT0eJRyabiNDsVLq5w3jBcCn6bLx4FCyX5D19hL1ZeQ8V5yHVG3cin9ljumYdncD7MXweLV0Gi3GpV5mnZ3kkpGuX/tLooiE0B5MVW50P5uOzw=
+	t=1757087789; cv=none; b=q7Wl8flukJNTAwmwl13+kiAuewhbNcOj4j4o5INbkMMAcKffayJIfOzR1hy9ZwyUDJ8aUc0Gz9gTR0BMgnXPtV0wuw/Hn7rEnRHT8WZ+TsffXcOdWKwWGozoKOndMa/dkJxFuM6p3uCcrA8bBVxNS37Wd21+tlerTBRXBeOlNhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757085966; c=relaxed/simple;
-	bh=HeSmTEkMZa5aYj4W+/yA7FOCufTHzp4QQTSxsuJZE1A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uEStt7Ue/8tLmyKibXUcM83Su5w6CRkS00CynDxlrdNohXZ7TZkcsN8uKzN1AbbGKYsiE1hf4fOZYWFwURfZ6FTd90mu2kgRF+EPkV47TFER8AV8WGJ7IgKGvD0IshdRmklwc4mUIEPkLD9ahzyG3CLAw0/wn0xOnQURFln/PWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5coExKt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757087789; c=relaxed/simple;
+	bh=pcnGAznxIEC7EbbTSRq9hisXNulVSJI/mitRD7IVHy8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=puLO07mTWRp+QIPNWU85y/YxYY8ArMQsum8ohHXOVqK0zVZ5WvOQ6FfTU3g4DWKh7oHmbY91HijSKwjw8VmfW/sDlcWI61q3CiKJdnovrI7s4qEM7JOPhTREb9tQ8DvIxGVDlQSBRWA+1c+TGqTU3tfgsm+1gA2lOU9WIdRTRJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c8bd3MXp; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5coExKt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95369C4CEF1;
-	Fri,  5 Sep 2025 15:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757085966;
-	bh=HeSmTEkMZa5aYj4W+/yA7FOCufTHzp4QQTSxsuJZE1A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V5coExKt3JFlpn19Eh/CX6P8SbVNODKaVutXfs0yU0xu8ok2KvaAAHxVRuNAXmY9m
-	 JdcAnimbzcKMzcu4NXIiz6SWsyshIqac2oE3lqMNq926ekkR18m/uo1RT5N4p6R7gQ
-	 IHAcu1cJOOuZo3jvJNVyATQQ3gTPH6adbIme1r5T+V41ffhmCLO4WJBazIptDQrQwN
-	 jKZQjNVz7i/nXi441Yln43I1FQZCBovg+l8Yq9GNZ/mE+l9Z/kGIdM0xk2KwtV4I0s
-	 6rBixDmc1FaR9+rcesjmSIPl9wh2/B4MDhjTZkpyySVoHhrwY7/LwDbnffAz/SaayM
-	 /4o4yimnhYZbw==
-Date: Fri, 5 Sep 2025 16:25:56 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Asuna <spriteovo@gmail.com>
-Cc: Jason Montleon <jmontleo@redhat.com>, Han Gao <rabenda.cn@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Tejun Heo <tj@kernel.org>,
-	Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
-	Matthew Maurer <mmaurer@google.com>, Jeff Xu <jeffxu@chromium.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] RISC-V: re-enable gcc + rust builds
-Message-ID: <20250905-domain-theater-214254632b87@spud>
-References: <20250830-cheesy-prone-ee5fae406c22@spud>
- <20250903190806.2604757-1-SpriteOvO@gmail.com>
- <20250903190806.2604757-2-SpriteOvO@gmail.com>
- <20250904-sterilize-swagger-c7999b124e83@spud>
- <f7434b76-49d0-4ef3-8c77-c1642dc211cd@gmail.com>
- <1b95b2f0-e916-4a86-a274-da2ff7f9d516@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c8bd3MXp"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-248f2da72edso3788025ad.2;
+        Fri, 05 Sep 2025 08:56:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757087788; x=1757692588; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pcnGAznxIEC7EbbTSRq9hisXNulVSJI/mitRD7IVHy8=;
+        b=c8bd3MXp41TfJYLnPWn9Cix75k3aPXFJhU618XW7lb6e2tOTk42Vvvp8zVdLiI75fR
+         YqIBtX69g8S1MstlJMHAACT1QhTQh14OqH4NYIY4HIH0gJBMlqsqsjWixxHDk6XXyl0D
+         s1ME0cl+BSZZXtMY04jxDTAKmOBKHXln/HnNYRrSKG7bJxqVwqAdCA7KhoR1C2vgM6IQ
+         7ON9PiYtKGF+/tsSGRI6u2GFe3Gydabd5vtxH8QpD3s6RfFCrjgBHzw32pONKBQ7VTmX
+         UMT85yYoej/u1cN4RrbMdDMhdINktREH7L7tBXjR4M9F4r7Dc2h+FHA+1KNVe3lWdbdK
+         5QSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757087788; x=1757692588;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pcnGAznxIEC7EbbTSRq9hisXNulVSJI/mitRD7IVHy8=;
+        b=DGz6kI7kdNmUokQXMcZ6of1iLAkImLwafqlA79+TxwLlSyi/3/d5xHl1qaxFMLUlhR
+         JgXG8VJelKcZl4bqBVgsH4jwmPzIWHHNB0kFzkXSkCS1vUApxfbb5EHFMcu6q/GboxTb
+         zZ2IEB2hcqZ2WBjKDGcq5LyYoI3WQjf/vw571HlGCHuzojA9zBa1bGmOmMfPLub0tCYW
+         3qgsDYVEiNmU1cpK3xa34IASRA6nHmWuOqHZ2OrLJlcp3y0GaAHH2ccMiWOSgJ2r/RhW
+         lxCo6nt+j0O3yL6/afoCFHnaHe4iWyGvpcqLxPgUQvO0Qy8taumI7SCm02yZsKkvijS7
+         vEGw==
+X-Forwarded-Encrypted: i=1; AJvYcCWr7E6xtvZlWSVm7kvMuF80pOGP+FuF+GmlAjWo/aRDPRDM1BFRoW9iAYf+dtJiz6njw3R5IvbTVv+ybseICx8=@vger.kernel.org, AJvYcCXChb+4rrksOz9vbD2W9qh0YDHFM7UdHFUBg2UPPEpUQWJzCUvhJRIIZDtd6h4JOg3E9TudIiCyfw8bOD2H@vger.kernel.org, AJvYcCXWuisoHe2KQuhjtnFLVHcJb8HtZx7p17yQcf/PwJaWoGnqkwjPPLd2Dw1CyNCMJOhufkCNeqA25rVNnL4kjWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS5DZubh/v8c2mQPVpiyccQ8/xGXLQ/GmEQn7Bb5kzRhXkEajb
+	aDzda8dBhm02TbLhxbnAVlbIFeUMQmm0k4RWB1SPGeIkOAnxMfVHJUiKE2AwyeL1YSPklgZbbQd
+	bdoelZdRWykvKO4E4Jvyuk/4k63M34rk=
+X-Gm-Gg: ASbGncsdUdmnZQBYroQshtWI8JcmCjJYKPnSabAvFZUEBKtKGkYDbJLVfkosVkp3HYv
+	VbS7Tn/yvMOCLSxwUnW4doJgliuSN56VnjutQYqYgvGuft0imNIZDf50Ynhr0vRfcitjICl9DJg
+	StoZkJGyLNPF+7KYeMFsqmVQPZ2V04sHMsdso9hFrIW90NSxKNu8ZcDg3h+XcCEBZrOkFtSIZyX
+	BbGgaDtW2+8xOwq6ihdFpvUlYvABsbnYCPN2SPLX1G6GbOegt2Yfn9Rnouia0z+hJDOL2HsjvH4
+	krDU/WSBF3hmuLRMLeodGi1vGw==
+X-Google-Smtp-Source: AGHT+IF1dTaVV6W/81i45DpyYdcg7pg29RYnQDdjqqMS3Pt5h19w21OosjVbZcjDakD7XmGMBIvdb/mrHGnHA4PtyM0=
+X-Received: by 2002:a17:902:e74f:b0:246:ed8f:c63e with SMTP id
+ d9443c01a7336-2491be7d2a2mr202503665ad.0.1757087787736; Fri, 05 Sep 2025
+ 08:56:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+82/AboaHQrENvzx"
-Content-Disposition: inline
-In-Reply-To: <1b95b2f0-e916-4a86-a274-da2ff7f9d516@gmail.com>
+References: <20250904165015.3791895-1-bqe@google.com> <aLnURXW_ZiX2iJd_@yury>
+ <CANiq72==48=69hYiDo1321pCzgn_n1_jg=ez5UYXX91c+g5JVQ@mail.gmail.com> <aLrjNze2_L_vAnWX@yury>
+In-Reply-To: <aLrjNze2_L_vAnWX@yury>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 5 Sep 2025 17:56:15 +0200
+X-Gm-Features: Ac12FXyBrmRcLFt5YG2uxmiZLky5ex7OPkFK9lSHgX0FSU_aqENr8sCbxJ66nnQ
+Message-ID: <CANiq72=KyX39_jyZNewithy-bVL90wN2mg=SQokX3ArKF83B6w@mail.gmail.com>
+Subject: Re: [PATCH v15 0/5] rust: adds Bitmap API, ID pool and bindings
+To: Yury ooNorov <yury.norov@gmail.com>
+Cc: Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Carlos LLama <cmllamas@google.com>, 
+	Pekka Ristola <pekkarr@protonmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Sep 5, 2025 at 3:18=E2=80=AFPM Yury ooNorov <yury.norov@gmail.com> =
+wrote:
+>
+> Thanks for the testing, Miguel! I've folded-in your fix and added
+> your co-developed-by tag. Please let me know if it doesn't work for
+> you.
 
---+82/AboaHQrENvzx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+You're welcome! I regularly build a bunch of arches/configs/compiler
+versions etc.
 
-On Fri, Sep 05, 2025 at 07:07:20AM +0800, Asuna wrote:
-> CC rust-for-linux list, I missed it in copying from get_maintainer.pl, the
-> thread is a bit of a mess now :(
+As for the tag, you are too kind :) It is such a small thing that I
+feel it may look like it diminishes the work from Burak and others, so
+I think it may be best to drop it (and anyway I didn't take a close
+look at the code or the latest versions, and a SoB would need to be
+added either way).
 
-If you're doing that, keep the whole message in the mail. Think I just
-perpetuated the problem by replying to the mail a body rather than the
-one with the amended CC list.
+Thanks!
 
---+82/AboaHQrENvzx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaLsBBAAKCRB4tDGHoIJi
-0vPPAP0WJW3cfKzXqItvB2XzxRMkipRGuzMESsAFO02Trs2WgwD+KeERdtt4LZdp
-OrpmtNGQfWOFHR1lVYnmonUUL88WawI=
-=lC0v
------END PGP SIGNATURE-----
-
---+82/AboaHQrENvzx--
+Cheers,
+Miguel
