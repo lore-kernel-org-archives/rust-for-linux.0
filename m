@@ -1,177 +1,205 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2057.outbound.protection.outlook.com [40.107.244.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A81A27FD59
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 19:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757101452; cv=none; b=tmN+bvJLTZ5i4zuttWC5+t8RiLh749T9UXs7IPECdTLZ/rRduc6OmTvKPrfmdl4aLppVIfE4dQbkwiD66AEtEiAHEBafH4pH4j+fr3rq3ga8qtP6rjsiZCRoGTomS2x57Gvht5auNkniMAaLculoSfF/xXUTxqSKYdHGi449i2E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757101452; c=relaxed/simple;
-	bh=a5PCH555xh/FnPTh8KPDazTQ18vDk+HyzhpLL4LoL+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lg/rLbZuk7PXV/xeLoIOOkn8d5Yd8tlycHNwl/zc6emPqWLrGOBWZ2LfTL/eJ5fhyRzzTq6nSJkKYlVm9Zdi4OCqcWVdpWtsgkEVTUn6Ctj/opEah0Bp1vuMHJ4lG1IvYF6CYCuIP7hSrDMpUWl1tkQ7jqqcak3ZfGnspIOxMak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AV432Tef; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CF925B1D2;
+	Fri,  5 Sep 2025 21:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757107753; cv=fail; b=e56FE82KK2Rcb5EfsQGUSBdUL7ufiAiDdWXjhKFL3eT7q2boUldUY569PfTVr3YdwqvOdLLj9x0SQKFrjz0AIZx8ts2yokGE2wKg3pQoBR8j3b6T2OhMgwhqFuaGomXXl5nk9Q4YGRlFvsF/Upk63trj3tahJ43RzyFXtHQ/yOM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757107753; c=relaxed/simple;
+	bh=16jsOsW2UaG7iYMlR98RVktA9xYI2ZtJ2E0pzfbds9E=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hBgVYXT0TnDpMV3ghsArWN7/SY/rQFBgmRvPpkKpIL9FaGL65kengKv9C3ni97dlxqZ36mkr6nYcfAzZlpunvyEYQmKe8CH8ehvlXEOC66ckjKkyr64ERxeJufjJ5u4G6g34Q40jeuTmcBHOmu2Uhgj33xRD2GYmXJasZ91KQlg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IOuZDgXk; arc=fail smtp.client-ip=40.107.244.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AV432Tef"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45dd7b15a64so9918215e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 12:44:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757101449; x=1757706249; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sEI7GQWEAkQYIFHGJfGFwyujQ5t6k8CCgPdx37+tNBE=;
-        b=AV432TefHusWYetGiUdezU6pTpi+Lh/Q8NpGGuU8A3tuoqqYM4OxaeP1fPitVem7rq
-         HVwxJuioy2UU6C0Ibzh4MF9Qu+wS0c+/58GH0ts8pjvQbCkf9ZhmiSIGswavxAaWeDQL
-         imqfohX7rDBfRaRGXSC4jJmrmHWvgNd8pT5z2AtBG0DW0gBRPn5TycA4cJ3wiuKTRafn
-         5oPy3UvneXb3c6Cfge15R7PfMxXBcSOgSUU9DD7wlXZuPzKD8+FfiI1SoTI63Ihmia3y
-         lw6tJbBYAoYDQf7SMCq/cWpsN/nsnAtHrBmST6Upxe+SvcO14oiJUqN4g49VtXd+8TxO
-         GCmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757101449; x=1757706249;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sEI7GQWEAkQYIFHGJfGFwyujQ5t6k8CCgPdx37+tNBE=;
-        b=uvAQLUyK4WVzojN2lHnsYhO1vdYgshmtw0tMtmLMhl52+Iygt9qZ6ASyCDWGM7OHQS
-         isjRGhuv5vtmYc0O+qJjb1bsxCL2dkgB9kLu78BwR2KK8JKuymN3pxPLvD5VLcfj88ZO
-         tfV1wLpnUgzAJHSimIg8fZBiGuCwxjNa84c4/AgSBgv4joRGl+FQJ94691EFydT/O6MC
-         f7KY/UpmBUOxLHsrL0wjGL86V1S5mYV0rqvR9OYottMr6GymDexetNc7jjbGrexc0JYG
-         LexowkSUNHZY5bAcP8iUy/WI1XfH4edXbLMZzPB7EBSh//hsJFb72JIiHbExieRLK8/1
-         lFZA==
-X-Gm-Message-State: AOJu0Yx//GNP7lWwa7o6s9cxRG3Sfw+Sr6j2P1WMtqd6YApb9UylIaLH
-	z1tAfebhZbsRY2vSST+ZRGbjKbiaByhlcRpLiW816tHoaCO6ff1kHwoSOh6DlaBBip3zC/V4Yje
-	dOi/NRCe+czO6I6u9tOR3X6Zq4Xb+Sxx5gzjJkR5o
-X-Gm-Gg: ASbGnctj6WzlKSLsCpPvkBrPHghpihy/vQ/qY2VfYUfhLs73lmKHGV6HwNFPG/Laj7x
-	vZs04IeKcGVeCPJksRPCXuIy/OC9ze0tK44P1sKgZ4iRRh65Zh+GERF7RzHv6GxOD/zejjzVFJ6
-	Ay9GDJ9AvduTwFGYtK6mEwH2rZ8j7bXrvrbN2G9dGHohhdOQZN6sPbtMfZdrbrUw1TciRVGTq/z
-	V5ohnmWJiH4lNxAzBrPikdfZ+ju6z/MXd31MShgdIXD33YIu6SBBKbGUg==
-X-Google-Smtp-Source: AGHT+IF6MaLna2TQSOHb7d4GBuMmNaoPsk+52ZYWmtEHN5XdVUvDZRZuUA+u39+Kqb9oYicCEfPk4c1s2sjBR7v5eMI=
-X-Received: by 2002:a05:600c:8b5c:b0:45b:9b9f:88cb with SMTP id
- 5b1f17b1804b1-45dd5b78584mr37184055e9.16.1757101448644; Fri, 05 Sep 2025
- 12:44:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IOuZDgXk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XdHXLj6E39iid4kJTNg7EBuXWM02R1IM2TRBn2s10NGJJyHDyZ0b8CMxfcC2NpCV1Mu+KXmtPHuEgk+jrzd0uagAkLZqrq1i+BWXS6LjX7klooRayoxavQz74iPWuP1sru7VHbRrGU786WGoNHuVzPSONPwJVDZG/tdo7Z2mx4C1rwmtitRuEft8MRCXF1X/T2s+8iIKXNUC9zjP0hnoC/NBXallqMVUOCmwpo9IFqUkznhnA/C+NV3L+F1CtHgyAazquYPjyhSbgzP2+gQt4A5ZNxfSfIoXju03MU5/z0hJ2XhZfQz/stQLrHdVRns0dnTTB5M9i+dQCDtNS9/SGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=adherVS76pr9R6jXn088pyA+qWFYjl90tyZQwYp45CQ=;
+ b=vKSyErC56gvvLXhdGXRmlpY/LhOBJM3tM0emk/126cvS6QK+kkgtdNg4DBIbzaBkz/hMwZZkZVSZeOuYpP5pQfF6fEvIGBPjSUc5zx0+N+dmM9K3mn/qb5dw5QVQVv5CXvHX/NKXyFRL99D6j5wiv4/v/QYtoiNt+WkKK3adv0GMqnfKDaxJb0N6iryrdPBHGNn4Gkwo7T7evXtidz9b77jWrS4VgwPp0l8t1jwYpwDMCa1fJ6v6OTKoW/iQO7yhjRsr5W7Yoi56hftw6bQWgdrqTFKmaIiP3n/aTqMYO9JML0oL1/blJ3iiDz63iX7e2FkoATyEGOwcEIBXwFPLMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=adherVS76pr9R6jXn088pyA+qWFYjl90tyZQwYp45CQ=;
+ b=IOuZDgXkda1pE33M/bSegTgk9clNQy1L+kIgRpOymNHrmivnWviht0oDS26KSjmu8vM+HKLcXb8XE0WRiXQ2UZ+oCnCXssNpV/6xdBalqkmi7w3PkOr7N/vYh45TFRc2FGggMAf+VhFXF5wj8BVhUvW93wG4FKpVCsJ/r8nP+h65uOKl1zjfbnjLC1q/yMQ9vmYKccLdkGTqVO3/v7qHBPtqicZogLM2KQg0dE/VGfrGbHN/uk6wkAPGxdK3fxk566Uaf2mNED61MpjVQv81S2pg2w7jygu5ZCB+H7ICYNi3NPbPFQuCkh5uqeixHEG7SUE2xb60iTIlhdsRTemjfA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB5949.namprd12.prod.outlook.com (2603:10b6:510:1d8::21)
+ by CH3PR12MB8933.namprd12.prod.outlook.com (2603:10b6:610:17a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.29; Fri, 5 Sep
+ 2025 21:29:09 +0000
+Received: from PH7PR12MB5949.namprd12.prod.outlook.com
+ ([fe80::85:1897:39e3:6262]) by PH7PR12MB5949.namprd12.prod.outlook.com
+ ([fe80::85:1897:39e3:6262%4]) with mapi id 15.20.9073.026; Fri, 5 Sep 2025
+ 21:29:09 +0000
+Message-ID: <40e412fb-5b45-46d4-ad62-252dea0b9ac1@nvidia.com>
+Date: Fri, 5 Sep 2025 14:29:07 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] nova-core: Add a library for bitfields in Rust
+ structs
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Alistair Popple <apopple@nvidia.com>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+References: <20250824135954.2243774-1-joelagnelf@nvidia.com>
+ <DCBGLCQVD1RF.6V5UT0NQ4GLB@nvidia.com>
+ <444ebd64-7a90-46a6-b885-2c114aa59284@nvidia.com>
+ <DCJOUO214EXC.32MFBN80VJW3K@nvidia.com>
+ <DCJTY0OQFG83.1AX49CQARXCEX@kernel.org>
+ <DCJYU75OUCGQ.3AEODDJR4IT38@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DCJYU75OUCGQ.3AEODDJR4IT38@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR05CA0051.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::26) To PH7PR12MB5949.namprd12.prod.outlook.com
+ (2603:10b6:510:1d8::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250904142552.2790602-1-vitaly.wool@konsulko.se>
- <aLqmmKZMDAAFCBsX@google.com> <F53AA863-91B7-459E-98B2-74FA44BA48AB@konsulko.se>
-In-Reply-To: <F53AA863-91B7-459E-98B2-74FA44BA48AB@konsulko.se>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 5 Sep 2025 21:43:56 +0200
-X-Gm-Features: Ac12FXxVtO11zadmXe8FVEHG0-wuqmIWGxxCK3572T8RsPB_M_OFAcLD5K9AUJc
-Message-ID: <CAH5fLgi2UjihwmvdMqBMe0chNpA+OGex2=kLg2NWcXsKmD7wpA@mail.gmail.com>
-Subject: Re: [PATCH] rust: rbtree: add immutable cursor
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5949:EE_|CH3PR12MB8933:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7b8806bc-e55a-49aa-671e-08ddecc33fd5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OGlkUklCNnBtVjZhNEZGWDRTdnlOVXRtOFpXVzRiS3RZd3ZiWjVHRWM1VExj?=
+ =?utf-8?B?aWVubGdvOThZUmxDUlZSeCt6Q1Z5MkdDbWxzL1JxWU9oT1p0ZHlCSlB4SHEv?=
+ =?utf-8?B?VmVVcytHMkFHTjZ3cktFZmk3MHRVMC8yek0vcVZUNDlZbVN5WEsrbkhOUVBs?=
+ =?utf-8?B?OUdxS0I5emY5ai84WkpJVGREL0l3d3RlbS90VWwrV1dMOUZHUjNlUkJwa0xE?=
+ =?utf-8?B?cStLZzNDZ2xIamtKU0FUMFJxZkJ5UzN1cnhLSGJzSGhTMmRzRURaQXJCYmdv?=
+ =?utf-8?B?QTY3RHBwanpoZ3oxbDBkY3lVKzU0YzRMSTNSRGQzMWszQzF0MnhHMGQ4cks4?=
+ =?utf-8?B?Q1FXbUlSZDNMUXJwSjNjS2E0a2NiVDVsUE1McjdKQ283WUFsNDF1Q1VEekpO?=
+ =?utf-8?B?RklhTE9qRGtlbW9rQzFod2VWNGZkVzFFSDBBM1REc0RhNnpPRFJmNG1OZ01K?=
+ =?utf-8?B?UTBmQkd2WktvVTNSNmhlK2RRNjJNU0I3Rm85eEpublVmK3h1VnlrZy84UFVF?=
+ =?utf-8?B?VThSRDlBNHhKeTdJWXMyKzdBWDh5T1dZOTlISXFrWlFpc3VFWXBQd2FqVWFK?=
+ =?utf-8?B?VG1tNEhvdVgwZlJLYXIzSmdzNDZ1OXNkdURyNTVBaXR0clRLREN4SWd1QWRp?=
+ =?utf-8?B?YnZ4NVlCcjRCcUR3Rlp4ZTZyTXV2bUs4akhOSzcyU0M3WTNVWEZ5VDg3ai9N?=
+ =?utf-8?B?eC9LWEdZRnR6U01XZkNpWXh4Z1gyaUlGYXIwNVQvUXJkOEt0OGswMXlneVdh?=
+ =?utf-8?B?dEF1cTlBZmdsTWRBSjFET2lZZU1OdXRVUjhBcGJDZk5JMHQrL1VPUytJWE5X?=
+ =?utf-8?B?b2s4UG9uNjNtTEI1QnZNQTVFZ05TNUFLRDJCQnpUNWJmbzRyblBLU2FEbml4?=
+ =?utf-8?B?NkZYWStOR2wwd0tSamVmRnhkVUZUU28xY0c4U1lmTmZjT1JzMGJwcFZLWFlr?=
+ =?utf-8?B?VCsyZkZ1VmhHVmhXeStVM1kwcWlMSlhFWTlFSXJsaUFYSHdhYnd6cnoyS2ls?=
+ =?utf-8?B?OXExSUMwVGRNUURtTXZuVkdwS09vUXA2N080N1FpRm5HNjNxYUdMeFVsWi9J?=
+ =?utf-8?B?cHJweWpVZnRGcEl6ZmZiY1JJd002Z2UzaHpxN1BXN1FPMmw4YWVUNTIzMW5U?=
+ =?utf-8?B?Z1VjUE5RVHJEeEh3cm8xS2hYcllTVC9rWXRoZlFvV0xDRFN4WlNyRmQxVWpM?=
+ =?utf-8?B?NjZnZlhLWU1PNUMwUkJOVlVWT0dPbzM1QzE2bFdpV3hmaHRFR0RxUlZNcU1m?=
+ =?utf-8?B?Q3lCWUZXeU1jTjhRVWczZWw4L3A2Yk4xQWhzOCt6MEtHVG9vbitJc2Q4R0RF?=
+ =?utf-8?B?ZjlETFZwWVZoL0k0Lzg4S3VIQ1pIVmd0djYzcjVLVjcrbDF5bTBSU1JqUTRp?=
+ =?utf-8?B?cncyM1pRMWFYUzgvSy9hVkJYby9MNWc4T254U213bnlKZlZqTUZSODczYWsv?=
+ =?utf-8?B?eXo3VWN2dmxkT1plWk1nemhaYUUzeUhtM3lvZDdwY2JVK1A0c3MvVHFtREEy?=
+ =?utf-8?B?Wlc3bHRXa0F1OUczR25EakcyeVlKTzZDd3RUUzNueVZ4VFlJS2hTWEEvd1FK?=
+ =?utf-8?B?OG1yZG1iZnJBa1pZVUhLMDRJYmExL0FtU1NJNGdQQUtBUHVjNE5wL2g4biti?=
+ =?utf-8?B?ZFdVVFJGczcxNi9kM0x1dmw0SkVMRnpBYUVtNWtoZEU3OTdDM0ZwSERrekhH?=
+ =?utf-8?B?NWhIQUFBOGhock5jRDFDWVdrTWxnanRrb2FGZG91WGsxT3RFUzRIak40MzJy?=
+ =?utf-8?B?cTNOeGw2eStQL2p6MWx3ZDgreThaallnejQ2YzlEWDVDQkRSVXdSL05CcEo4?=
+ =?utf-8?B?NklhaTkyRUg0YUVvT1g2bXQwUHZhaGZSY1VsVE9JUVp4ZzZPTXp0amJzanpw?=
+ =?utf-8?B?NmdRTDRCRFVBZFRWaEFEeTlUR3h6bncxNGpzQTBqZ0V5aEVIOUdmaHNYcDUx?=
+ =?utf-8?Q?cIdInOrmmJk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5949.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q1RQNDJPczNQdmpJSDMyTC9EQzZBZWtiSVIvU2dLNGt1YSszbWJpUjhLYVNz?=
+ =?utf-8?B?U3pETnJ6YURabFhqaDU1OGtqbnZGaExuYWJzUHpURjBMeThna1VTc0NZZWor?=
+ =?utf-8?B?WjVMc1p1ejFUdUVHanJHZ1g0c2lHT2x1WklndnRhUEExZEZEZ0xpdDlhQkI0?=
+ =?utf-8?B?d1JPQ2x3Y3JCWFAvbEpjd0Q2SjY2VHJCMDFUekRWcWRXNVN2SUdWSHRwVkF2?=
+ =?utf-8?B?Qm0zdDZtZTBUOHRaM283dlEzSFIyQjF0Vzg5a1YyN0lKeVJJU0kvNmZ3Q1Mx?=
+ =?utf-8?B?anQ0L0U1bkpDTENIdG5xdnRJdEFpcDQwWEZ1UEpwNjRDbGorSWFVaFEzTmZC?=
+ =?utf-8?B?NEx5SHg0eDI3TkxHUnB3UVFaUnV6UEk0VGJ0bkRialBONmMzazhIOURrRUtO?=
+ =?utf-8?B?Zmd0djZhWGJQS3V0SWUzbzVsblNJTDJtMnBTbi83Qm9Gc3NNenNod0dMMWVo?=
+ =?utf-8?B?bkUvbFRNS3VUbGx4d1g4OEVCNUNXL0lJTy8vUHp1cGhkU3ZtYzdzQ2VNVW5o?=
+ =?utf-8?B?ZzBzOFRKL3N3WTRkK00wQWFuL2ZYSEU4QjRkaTRjVVErTi8zZkxyMzZtNDhS?=
+ =?utf-8?B?NVZMaWtGeDlSWTNIcWhEanEvMUU1emtXUm1OMEp2YTRDalU5OEdvNklwRms2?=
+ =?utf-8?B?akpKUDk4bkNXQWlKNzFDQVd1OGU0TEFtYXRFR3VoSFROSVBxYWhsTmlIR3pR?=
+ =?utf-8?B?c2o0aVp5NkV1MmlQazVNaUg2YmNFZDlxQkc5eW92T2NaK0ZiQ0s0UWt3SHE4?=
+ =?utf-8?B?NDJsVzRFV3Nub2ptSWNiRitNSjI2MURvZW1ydzdxbG5hOW9OcFpzbm52dC9T?=
+ =?utf-8?B?czNOTE84b2FxcGthNWE4bTgrRGNvaEU0L0VtSWk3akFFaVRqU0NsaVduaThE?=
+ =?utf-8?B?L3J2U2thaDVhS1NkQlh5NXEvSG9kVDJUcHNIb1BqNThvRU95N21HQ05JT2Jn?=
+ =?utf-8?B?NDdzd25SMVRFVmQyd1Bzc2lrYWZuMUlpODJxVHozT0l3bHlIditYZkhETWtH?=
+ =?utf-8?B?MEhCOFVyT3FVbDZsc0VxNFZhaEJzcU1WQ1lUdlRvZVlYVXJIOEpyaHVEZU5Q?=
+ =?utf-8?B?b1Flcjlab2xCbjZEL1lYMjF6OWZDc2NJbG5OZUVZSEVHTnlMYk9IdzhXMU1U?=
+ =?utf-8?B?elNyTUZmbms5WDZ4Mm0xQzhrbmZyWnRweG1XeFBxaDczYUZHeHl1eS8yUnlO?=
+ =?utf-8?B?K0dIeVNGNWs2T3ZiK01sR3dEcnFNdlF6RzF4WDlyclpnRDgxRytuZUIrZlJl?=
+ =?utf-8?B?bS9KTm01V0thZExmQS9BYnptYWFmQTUrWjhSbTBqN1Z1L2h3RVI4MG83aXQx?=
+ =?utf-8?B?OE83VG82eXZxc04weUNWdVRvZzFrWGRVSkg2UnN2TUtCMHg4MDk1ejNFbitt?=
+ =?utf-8?B?SEllSTNZYVVYbDJmY3Z1VFJkNkNIanFYVHBDVEFmYjFBdGFXam04bXB6KzFq?=
+ =?utf-8?B?dFNVVkMrNjJBald1WmwvbjNsY2ZZaytORWdjN1JnWkhSRkxLa0NsZlF3RlNZ?=
+ =?utf-8?B?VDBiSWtCam10UnRXSnIrN2kvdk1yTHU0RXNKZjNkc2ovZWNvVVdCZXVnU1l5?=
+ =?utf-8?B?RE1ZdG1SR2pIMXFsQWc0bExYQWcyVXNpWFdtOStpWDhFd3FqblhvRzFRR1Jp?=
+ =?utf-8?B?cnhjdnFUU2hXS2hyRGd4M0picVk4c2xPeDFPYzVjWEY5S3M2RGRSaGtaTDV3?=
+ =?utf-8?B?TUtpR2R6am1mTDVhWTloVDcrVE1TSFhZaTNGOFNqcGZTS3BDbExlVTZ1MUNW?=
+ =?utf-8?B?d2tvTFlsTkY0ODBTZ3poRUlFR1lJUURDQldPZm1yNTM1UHcrdC9JWGV2QTht?=
+ =?utf-8?B?U3UyUVZMTTZtNjJILzhOSkIvUTJtR0FNK3hmdlEwR3Q1QUFDNVF6ZUJ4akRi?=
+ =?utf-8?B?K0xMVWc3TTY4aDgzeHJjQmVxRmxSNi8vRXlYSUdIZ3JidG9zb3czQUtLTlBZ?=
+ =?utf-8?B?SkNWcUphQ01DWlFzQVdnWXdLV1NrblZ5aTVIWkNxU0s2d0VxYkE3Z0NrbnRL?=
+ =?utf-8?B?VFFCM1Rxc3QrZzdFVHFnT3doOURPd3JJQ05oeFJPRjdxMDV3SlFoWnRLNUN4?=
+ =?utf-8?B?aXB0eGNqRTdmQVl2U1I2eUVDREFHdHBSYU5Qb3pQckRsSjJWSU5Md1pva1hn?=
+ =?utf-8?Q?mX6kUeptslbGxzBktn/v948CO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b8806bc-e55a-49aa-671e-08ddecc33fd5
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5949.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 21:29:09.3436
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1DqbR2T475+oDDEJOSRV1m/j52K0Qk0I2+bqpcLn7/pcAc5Lh1Ly2tRweiO9aY8NWzXGsfCprM2py3yn0tTquw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8933
 
-On Fri, Sep 5, 2025 at 7:30=E2=80=AFPM Vitaly Wool <vitaly.wool@konsulko.se=
-> wrote:
->
->
->
-> > On Sep 5, 2025, at 11:00 AM, Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > On Thu, Sep 04, 2025 at 04:25:52PM +0200, Vitaly Wool wrote:
-> >> Sometimes we may need to iterate over, or find an element in a read
-> >> only (or read mostly) red-black tree, and in that case we don't need a
-> >> mutable reference to the tree, which we'll however have to take to be
-> >> able to use the current (mutable) cursor implementation.
-> >>
-> >> This patch adds a simple immutable cursor implementation to RBTree,
-> >> which enables us to use an immutable tree reference. The existing
-> >> (fully featured) cursor implementation is renamed to CursorMut,
-> >> while retaining its functionality.
-> >>
-> >> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> >
-> > Overall looks good to me!
-> >
-> > A few comments below:
-> >
-> >> -// SAFETY: The [`Cursor`] has exclusive access to both `K` and `V`, s=
-o it is sufficient to require them to be `Send`.
-> >> -// The cursor only gives out immutable references to the keys, but si=
-nce it has excusive access to those same
-> >> -// keys, `Send` is sufficient. `Sync` would be okay, but it is more r=
-estrictive to the user.
-> >> -unsafe impl<'a, K: Send, V: Send> Send for Cursor<'a, K, V> {}
-> >> +// SAFETY: The [`CursorMut`] has exclusive access to both `K` and `V`=
-, so it is sufficient to
-> >> +// require them to be `Send`.
-> >> +// The cursor only gives out immutable references to the keys, but si=
-nce it has excusive access to
-> >> +// those same keys, `Send` is sufficient. `Sync` would be okay, but i=
-t is more restrictive to the
-> >> +// user.
-> >> +unsafe impl<'a, K: Send, V: Send> Send for CursorMut<'a, K, V> {}
-> >>
-> >> -// SAFETY: The [`Cursor`] gives out immutable references to K and mut=
-able references to V,
-> >> +// SAFETY: The [`CursorMut`] gives out immutable references to K and =
-mutable references to V,
-> >> // so it has the same thread safety requirements as mutable references=
-.
-> >> -unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {}
-> >> +unsafe impl<'a, K: Sync, V: Sync> Sync for CursorMut<'a, K, V> {}
-> >
-> > We should also have Send/Sync impls for the new immutable Cursor type.
-> > They need to look like this since the immutable cursor only has shared
-> > access and not exclusive access.
-> >
-> > unsafe impl<'a, K: Sync, V: Sync> Send for Cursor<'a, K, V> {}
-> > unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {}
-> >
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> >> +    /// - The caller has immutable access to `node` for the duration =
-of `'b`.
-> >> +    unsafe fn to_key_value<'b>(node: NonNull<bindings::rb_node>) -> (=
-&'b K, &'b V) {
-> >> +        // SAFETY: the caller guarantees that `node` is a valid point=
-er in an `RBTree`.
-> >> +        let (k, v) =3D unsafe { Self::to_key_value_raw(node) };
-> >> +        // SAFETY: the caller guarantees immutable access to `node`.
-> >> +        (k, unsafe { &*v })
-> >> +    }
-> >> +
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> >> +    /// - The caller has immutable access to the key for the duration=
- of `'b`.
-> >> +    unsafe fn to_key_value_raw<'b>(node: NonNull<bindings::rb_node>) =
--> (&'b K, *mut V) {
-> >
-> > The mutable cursor has `to_key_value_raw` because it needs both a &V an=
-d
-> > `&mut V` version, but the immutable Cursor doesn't have that so it
-> > doesn't need a raw version either.
-> >
-> > That said, perhaps we could share this logic between the two cursor
-> > types? We can make these methods standalone instead of being part of th=
-e
-> > cursor so that both cursors can use the same helper methods instead of
-> > duplicating them.
-> >
->
-> I was thinking about doing some paste macro magic, but maybe it=E2=80=99s=
- better to go the way Boqun is suggesting in another reply and introduce a =
-helper function returning Option<NonNull<..>>. What would you prefer?
+On 9/4/25 4:06 AM, Alexandre Courbot wrote:
+> On Thu Sep 4, 2025 at 4:16 PM JST, Danilo Krummrich wrote:
+>> On Thu Sep 4, 2025 at 5:16 AM CEST, Alexandre Courbot wrote:
+>>> On Thu Sep 4, 2025 at 12:15 AM JST, Joel Fernandes wrote:
+>>> <snip>
+>> 	pub struct PageTableEntry {
+>> 	    63:63     nx          as bool,
+>> 	    62:52     available2  as u16,
+>> 	    51:12     pfn         as u64,
+>> 	    11:9      available   as u8,
+>> 	    1:1       writable    as bool,
+>> 	    0:0       present     as bool,
+>> 	}
+>>
+>> This is also what would be my preferred style for the kernel in general.
+> 
+> Sorry for the confusion. The discussion was whether to keep using the
+> `H:L` syntax of the current macro, or use Rust's inclusive ranges syntax
+> (i.e. `L..=H`), as the `genmask_*` macros currently do.
+> 
 
-I would prefer a helper function.
+The H:L (for example "11:9 available as u8", above) is elegant and readable.
 
-Alice
+The Rust native syntax "L..=H", much less so.
+
+For this part of the kernel, dealing specifically with bits, feel pretty
+strongly that we should go with "H:L".
+
+
+thanks,
+-- 
+John Hubbard
+
