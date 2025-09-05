@@ -1,138 +1,148 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E1327E7DD
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 09:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8375721D5B3
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Sep 2025 09:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757063313; cv=none; b=WviysZAVg5dffM8o01TFd91BjVZ+V6OsYstx7NvIhtCqco7jhEPKqK9iAOh0SmnvKbszL5V2a2pje5Xk6LswkguG1LIBnFKarDVGDqLpjhm0Xf7Rf5hgaPy42SM9pYhDfPJ14lM8AOlHCYTuyMoWEEvUiPwXQ2SGN6m65yrNDHw=
+	t=1757064576; cv=none; b=RgUIn3cuSOhUcbdzphpD9dyxZa9eD75rf+ntAXZTe4wdLRRJhiJlToAgIQEnxx3cffkr++06eokkX7EW/X6vhzOJ4FdDuDO3rVxjWepdTaPhY/U9iMW2C7Q/S7X/F8Yoxc5mLiHdRv86Y7bRqBT/8q9+ZJtZ3HCgI/VBO72vN5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757063313; c=relaxed/simple;
-	bh=26Tb1NtsqwZ1rv+sVNZuBfdl1j0yHZvMb0KD02KS9aA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaF24Y0XJdc+T4YqZ7kd0lvTABSsi7lmleiXDgGiRwYT3DEvsDQ3wXe9rRKIZA1D7OkIaEMHnCgughmxCJirynFM/k8mB16yzrJHi+STKDL/Q9fDRL0rqPrOvX7seaF0JcWkEDZsdtfR/fv/xYOcqC1yYKySNTw7ENrij25fKcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=M7CRSVSI; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1757064576; c=relaxed/simple;
+	bh=XJLm1AVv6uM85MnaVHgSBfa+5D+iLuyciRZXAoHcf1I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S0WJ8WtUVucLElTKPgvFfEAbAJSXtfTlU4pavcBrG8pqMBfISrDDGCwbs0tNTnRCKQ30VGiqY7DlGvaEhib4ABb/8qz+Tvg0T4TFWjFdpZpPn8POLOezAYc1RZJ4Hv2i3N7LOAyMGCnDN+QB63hdAZjCz5CqDcrkxoXTlUi1I9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTCux9mv; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="M7CRSVSI"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45dd505a1dfso7518815e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 02:08:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTCux9mv"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-32baaf13944so156412a91.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Sep 2025 02:29:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757063310; x=1757668110; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1757064575; x=1757669375; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vsx4ro+fg1Da+fZ6k37g0k5i+Ei4r7saLuhpbXY1yMw=;
-        b=M7CRSVSIPdrVjHEiX3ynHHUpvetOiCRTKsJgCPWe7bseB9Q98YLQLGSBwHbZeGkpQE
-         /aPocbNzlBPzXITNXx4BztXxA7ChXEiSD/SNq86d/6JBR/P3nzh1KWfjigJLMvgkg7m8
-         J6O1ZbgnxFcrdNLJXuVy7D0i/REVhCWNQ1kC1desbMJ89+sJe39gBXmtq3jiB1KbN+J8
-         y+VNjEF1H9xAuMwgxgu8MX0pob/s/HsQp7qsz+3zHu4zwuJogTmTtHkwqgfWLtzq9Bqi
-         w8dfZY2DWBe8+3w8vLnPEo3zUY2OxdwCktLcbWtz1mk/uZzlMipltfboP7sP1M+3UMea
-         nQug==
+        bh=64x7tFu9vNW4A1Yx/Z+Ta3ooY2aSWmUmfoFqNjdxwWE=;
+        b=DTCux9mva6bNLwiTLXXmR7uBJA5ywYjBDeo/Pa/ws1OJYMzjpc8L8vRjnkBnGSn+ro
+         cPenb1blq2F6IG++n6mRaVSjbVktmUU5aNgE8Sv2CbOR8DCJ/i9NCR73fphmp2dzU+c+
+         2CkOlX9liAR2vk9vSS184osk8Fc4EwGKD+2r2x5+kKYO7LBd05F48xt2RCL6UG3k67tz
+         SVRripaX8G6yT8Rdz3N89JqEDrUg5AO8Rg2lkbvbw8PaAOsglzBrUX4nr+GwIBuo9z/7
+         GHrs7aRrJFgi6InzfWkcncHoRWg124/cn5E+FZ9Qba1xjnZFNFoMbvUYAD50I03mWPBU
+         O/NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757063310; x=1757668110;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1757064575; x=1757669375;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vsx4ro+fg1Da+fZ6k37g0k5i+Ei4r7saLuhpbXY1yMw=;
-        b=N/rxr4aqi/CKVuJlGpqPWlKmbwLZ22oeKMh99DinR3xWmxPRUZUrf60ry6o7My3DUO
-         WnJX2r+djdG18F5uVSiuC0kWh7EzP51Im9rOceDpIYYoyPBg9dTht0A2hYLjR1nwQmau
-         X/Ssd5sFxNimP7oZ9A7JaSCrOYpaEYLzoasxgcrkRAALvR5eQcWtMRoS5A/un1GExWAL
-         FTQyCXTCp6GR5MNcIQ1SCYd/QEZv0k/h9nOKAjhF7trEGwCUwBST018EkpExQDLFa/rl
-         w8HwzwZ4hBZiBpFS3eu+eG6JNeJOjVUb33/DvO+ZoJfcKX0htYuszmotiySHfOqYWTCo
-         aIvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXb/g6LxYFndFeIwW//LKpcD70w017HnCPPo0Fxxk4JTofY1jpjJu/47VNkk3P5eIdFkVeXXlahA3cUBf/ASg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL35HzBFRtWKjl9CyFpO6u4+PXySSvngSS46nd/BRE8x1246ZT
-	YTb6dyg49wmD4OZxyPzi1QR4DLBD8A92fAzm4Qj6nKysS2793d/OWoJOL8p6qmT65Lg=
-X-Gm-Gg: ASbGncvRWLzx1BQwoKWGjinXud89lW1QFcxUSw+cD0QqcW4VGpQpKhpDiKK/UPyo7H/
-	BxdIijJmHdZOCUX8BVBkpOaWFKCn8hOP28zQCjlqTDpKpOnV/yKaXHr3QMfBQBSdP3wsxycXim2
-	6VsK8Af7c/HRq6RzhC/Nowk+9/oJ4RBfuI65l20ozzQC4gQ/uD5P38gYlvma2iml2FYD5drX1/U
-	kBw85hEvUnPhIZhXKQiKjDUTV4FJMKjZqnm8CcRkoemb7J15RiW3Wqmcb63ZbIRpQ5a5hTWKdBh
-	uPKRIIwtzIVm+y3b1XdkIl/WJuTSSXvw/k0PMGEmpcsMEgRR/0qSW13m0exoyEa0X659fK3AMVi
-	f19CAGNjGWjHaQNQxCm2acvWL+U5s3JL3ThViHDYqPpLZl1ctHIWuBE1+hg==
-X-Google-Smtp-Source: AGHT+IHUYSE4/MqB/EOjKjkztpcu59mOOTXF5Ahf/lvz7h2oStW1eg9hrquGPbwauw4p3kcS8EXfwA==
-X-Received: by 2002:a05:600c:1c08:b0:45d:d353:a491 with SMTP id 5b1f17b1804b1-45dd54a5b31mr22217865e9.1.1757063310044;
-        Fri, 05 Sep 2025 02:08:30 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd0350e80sm68900805e9.22.2025.09.05.02.08.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 02:08:29 -0700 (PDT)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Subject: [PATCH 2/2] rust: replace use of system_wq with system_percpu_wq
-Date: Fri,  5 Sep 2025 11:08:19 +0200
-Message-ID: <20250905090819.107694-3-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250905090819.107694-1-marco.crivellari@suse.com>
-References: <20250905090819.107694-1-marco.crivellari@suse.com>
+        bh=64x7tFu9vNW4A1Yx/Z+Ta3ooY2aSWmUmfoFqNjdxwWE=;
+        b=mX3Ib4OuKFFAs77pErlsrPTqaPCcx4Adiz7b85x1Ex3h1rDp8fJ1SgODkVGjGHPkRI
+         aDhXxEAbLZFUbJv6Q/jj9s14Rf/h+AZ0kBLAXj595IytTmpFoG2chZFIF7ciuHFsqXcY
+         ZSTIu4fIe3K6E5KWXDwPuPc9wb7bTG5AOSfuJqfpDYe8Hn7KWs7BbWYCsML3jB8nmNqW
+         zj7xG6XHLxL6nfKcPg/MkZzjCSY5HO0nHzFQPDZlZqGo3g24v948kOT05Dgj5mmhSw+7
+         iAz/Hv5Toace6s9tED1dXIL+M2kN4wwG3buGQ1dW/aaTFXbJ1TScrifwU6+W5hGr5S+8
+         X7Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCUBX+/3N97upvUugWUsak49hmwOZNo3xtoBxOtj3MeTxvXUibIekCJsb6tuhOwAoPM2+yOfwfaKlDpCqv1llg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRuZqKw3BwL9QyWW4F0id1+RXKfJ8AidGoxZfC+BmHZYG2CBuF
+	tryt2kTYPyUsgH7r2sLAWIOT4X8480FLdXOi/VjunryKMIjDOnU6Wf77lcD4oADokU1H4ONf4om
+	Tn4lZuuD7wnpBOHj6I2ZIacQW9kjhhvI=
+X-Gm-Gg: ASbGncsa8UEQd0VR3UdAZAoWBkUVIOVl5nHz7vU12n7HnniUHGgA46hxYVQqwKNf3ui
+	MfBJ2Xg/UWFqVd5gG9xnrA4fy5/bycDmOYMTZK2Ppus6yAX1ROyWFX254uQYo0g73xhL5rSXHbv
+	iVCjtT6BAHO9HT2LLlzaHpMEjkrKr2H1Mecwq3zGFkUO2s+BrwRUH80OSWf14WT7w+ITTj4+Vzh
+	vTRbvrcZVMhppDBLs7CoiizTSoDz4lnVUtHbt/r0QKF2tbMRrZHqWZ5F8GSenTaK6J+MZd/GYEs
+	8Nb2AwRN6WPC6xTDLjdesQANKw==
+X-Google-Smtp-Source: AGHT+IHgc21W7zKfsI2lsaF0NMo+Bvhu18XWT0Os3TXnu0za7ri+xyLrkcWJXeBkz5AvZXuKLhgpjoGoA4oOw4EI508=
+X-Received: by 2002:a17:90b:4a05:b0:32b:87ef:5faa with SMTP id
+ 98e67ed59e1d1-32b87ef6076mr4514958a91.4.1757064574674; Fri, 05 Sep 2025
+ 02:29:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250904165015.3791895-1-bqe@google.com> <aLnURXW_ZiX2iJd_@yury>
+In-Reply-To: <aLnURXW_ZiX2iJd_@yury>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 5 Sep 2025 11:29:22 +0200
+X-Gm-Features: Ac12FXw3K8-fRUZqrr8Rrbc-XWCMxkFwB1rv1F5RTm_1knNaTCBruur135vYY3U
+Message-ID: <CANiq72==48=69hYiDo1321pCzgn_n1_jg=ez5UYXX91c+g5JVQ@mail.gmail.com>
+Subject: Re: [PATCH v15 0/5] rust: adds Bitmap API, ID pool and bindings
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Carlos LLama <cmllamas@google.com>, 
+	Pekka Ristola <pekkarr@protonmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently if a user enqueue a work item using schedule_delayed_work() the
-used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
-WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
-schedule_work() that is using system_wq and queue_work(), that makes use
-again of WORK_CPU_UNBOUND.
+On Thu, Sep 4, 2025 at 8:02=E2=80=AFPM Yury Norov <yury.norov@gmail.com> wr=
+ote:
+>
+> Added in bitmap-for-next for testing. Thanks!
 
-This lack of consistentcy cannot be addressed without refactoring the API.
+linux-next breaks with CONFIG_RUST_BITMAP_HARDENED=3Dy:
 
-system_wq is a per-CPU worqueue, yet nothing in its name tells about that
-CPU affinity constraint, which is very often not required by users. Make
-it clear by adding a system_percpu_wq.
+     error[E0425]: cannot find function `owned_bitmap_out_of_bounds`
+in this scope
+       --> rust/kernel/bitmap.rs:484:1
+        |
+    484 | #[kunit_tests(rust_kernel_bitmap)]
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
 
-queue_work() / queue_delayed_work() mod_delayed_work() will now use the
-new per-cpu wq: whether the user still stick on the old name a warn will
-be printed along a wq redirect to the new one.
+because the proc macro doesn't support `cfg`s (moving it below
+`#[test]` wouldn't work either). I have filled:
 
-This patch add the new system_percpu_wq except for mm, fs and net
-subsystem, whom are handled in separated patches.
+    https://github.com/Rust-for-Linux/linux/issues/1185
 
-The old wq will be kept for a few release cylces.
+so that we don't forget about it.
 
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
----
- rust/kernel/workqueue.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Meanwhile, I would recommend e.g. moving the `cfg` inside the
+function, something like:
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 8ca813d68a1a..6f508c3e37e4 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -633,15 +633,15 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-     }
- }
- 
--/// Returns the system work queue (`system_wq`).
-+/// Returns the system work queue (`system_percpu_wq`).
- ///
- /// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU multi-threaded. There are
- /// users which expect relatively short queue flush time.
- ///
- /// Callers shouldn't queue work items which can run for too long.
- pub fn system() -> &'static Queue {
--    // SAFETY: `system_wq` is a C global, always available.
--    unsafe { Queue::from_raw(bindings::system_wq) }
-+    // SAFETY: `system_percpu_wq` is a C global, always available.
-+    unsafe { Queue::from_raw(bindings::system_percpu_wq) }
- }
- 
- /// Returns the system high-priority work queue (`system_highpri_wq`).
--- 
-2.51.0
+    diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+    index 6e0824579781..2f00e91e9c35 100644
+    --- a/rust/kernel/bitmap.rs
+    +++ b/rust/kernel/bitmap.rs
+    @@ -551,18 +551,21 @@ fn bitmap_set_clear_find() -> Result<(), AllocErr=
+or> {
+             Ok(())
+         }
 
+    -    #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+         #[test]
+         fn owned_bitmap_out_of_bounds() -> Result<(), AllocError> {
+    -        let mut b =3D BitmapVec::new(128, GFP_KERNEL)?;
+    +        #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+    +        {
+    +            let mut b =3D BitmapVec::new(128, GFP_KERNEL)?;
+    +
+    +            b.set_bit(2048);
+    +            b.set_bit_atomic(2048);
+    +            b.clear_bit(2048);
+    +            b.clear_bit_atomic(2048);
+    +            assert_eq!(None, b.next_bit(2048));
+    +            assert_eq!(None, b.next_zero_bit(2048));
+    +            assert_eq!(None, b.last_bit());
+    +        }
+
+    -        b.set_bit(2048);
+    -        b.set_bit_atomic(2048);
+    -        b.clear_bit(2048);
+    -        b.clear_bit_atomic(2048);
+    -        assert_eq!(None, b.next_bit(2048));
+    -        assert_eq!(None, b.next_zero_bit(2048));
+    -        assert_eq!(None, b.last_bit());
+             Ok(())
+         }
+
+Thanks!
+
+Cheers,
+Miguel
