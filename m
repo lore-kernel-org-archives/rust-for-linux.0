@@ -1,34 +1,34 @@
-Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
+Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFC7207DF3
-	for <rust-for-linux@vger.kernel.org>; Sat,  6 Sep 2025 04:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F6125CC70
+	for <rust-for-linux@vger.kernel.org>; Sat,  6 Sep 2025 04:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757132684; cv=none; b=FUiW+KZ9IIA3vasptVeE4geIjKaKxjh7n9Vt/+1bTRL4u6hyWSHlN0CPCl6pWc+sMX4sS05uL8gTOkmt8Ph0OzoWkt6yUh3V9haAbPZS8LrfP9I7F7lQGQ/vz9Fu9vpY4A97+h6xPMWoteGJ87O6haUwHZwSzvf8ZKxXVzDwNUc=
+	t=1757132714; cv=none; b=pMzmqonQ/39rqSLrv6ZGVsZdJkUA0ILTm57hYRmBRMGXBIA68aPmgfTChcgqRP6ZoV8acGdonrmgNVFcluO14rKUsrfIZRU0ShYhW5xbYV96p2zWND0coFil9HIcXG7YjjllcFxJGoHtyz+s8r4Y6KTT6uWsRg1oqYSGZRvsJD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757132684; c=relaxed/simple;
-	bh=1+JmRgiHFS1ezt51/fFuKvE0QIEzvTYAmM/8M+6nV18=;
+	s=arc-20240116; t=1757132714; c=relaxed/simple;
+	bh=m+g8BYlez7IWWawMWcATZFDSQzz6aV8RTde+Kh3uKoo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rfxb+GZDEFKYsPxSSssZTP2KixJUi2cN41on2h+KnJRHXbl3SI1p3ntZGpePezpA1V+S+xAZeso6Y3LC0n2NCfiJgnVDCPe1FQRrkQP3psEhoDqLU7gTroyGYFF+mhFy8hht3Wx/LYKQv4sNh+0Jmz11PrfTzLbczC3/lX8TvyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=RR5Fpng8; arc=none smtp.client-ip=109.224.244.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=So/Ps+Co471JKSSsUv9Dpmgmvy4gOgaitIWWkvniQB7L2hP6WjpWlUnawYiKY460OhPvW3kd9ZapHnfk4nZmQPXfJC8GsRKjlcdUlw7fx/UzoOn5GJ8tCWFNHnY1slKkJH+xY6rl9D8Ocbdgiwno6NaV0whhmFdsWVQsvfzs5cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=MewIHMS9; arc=none smtp.client-ip=79.135.106.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="RR5Fpng8"
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="MewIHMS9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
-	s=protonmail3; t=1757132680; x=1757391880;
-	bh=3Zvijpa631V7wubkvOkhifvYtNgcD58VRn+gcruW1ss=;
+	s=protonmail3; t=1757132709; x=1757391909;
+	bh=rNzVhKmsciCMw2LmxSTOaBTkqUon5XjsC9y0zaCRqZ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=RR5Fpng8ItQbwbROaALvqQcghtUm9h28a4E0vbmXp1R5Tb8zLlK8TO2jwDhT3RLYZ
-	 tuwb1o2gh+hv7VU5cfXSV3vCGl/TPClaSW+VDGatAu5M0rrSJM12xWvb8A5dAM/SZg
-	 k6YBrhXdx0Qafvp8EjAIc1g2SXi8wmLBxi9pwH6vNPSbYIGM5I0Xb5ab/KQkssTopZ
-	 zX+DWyXl2AdpWioM0CabI7ASJ17oeDXrIi9WtS1pHEnEtaXdLcc9vq1XKyJ99EaeYm
-	 5kxHJXd3Dkh9gGE1pZ4CY1WLkaMUl3b9ua60bfb9thKPsgswONXPAC1Zg3ssMxjxoq
-	 viXLwFuAqsF0g==
-X-Pm-Submission-Id: 4cJg915dVdz1DF4V
-Date: Sat, 6 Sep 2025 04:24:31 +0000
+	b=MewIHMS9FrDRgEpUQ8VznZ3+qivQMx3zYW+70G0moAvevzpMTTmUgK4SZBcI4CSyp
+	 bh5qFOq48xUkmBfHVGoC/rQXeoz54fVkxciDPDajWWhy5hrVM1UJeUGYRpN2CT+wqd
+	 o2TC71bu25DSyUvgf+RXRHFlVpLdfUogL2HcBw5KAISQzAb/+KjODYBOHmIpQya2Hg
+	 SwNqUJYroLAd8gM+VtnWY/jARg1fCY0aZT2eXCcVtZ8jICzucTaWhWOmCAvlUC7KsI
+	 xaEjopb/j1Ecd476+8X6+wJQ4yAeUeJ3XYMjZBPcKr7xhi+EsJERjhnugEZmo4eZTY
+	 fEb/DFZazwJdw==
+X-Pm-Submission-Id: 4cJg9b2yqmz2ScWn
+Date: Sat, 6 Sep 2025 04:25:04 +0000
 From: Elle Rhumsaa <elle@weathered-steel.dev>
 To: Boqun Feng <boqun.feng@gmail.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -44,10 +44,10 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH 08/14] rust: sync: atomic: Add Atomic<{usize,isize}>
-Message-ID: <aLu3f8t53ei4LOLj@archiso>
+Subject: Re: [PATCH 09/14] rust: sync: Add memory barriers
+Message-ID: <aLu3oL1pPH8dXRfT@archiso>
 References: <20250905044141.77868-1-boqun.feng@gmail.com>
- <20250905044141.77868-9-boqun.feng@gmail.com>
+ <20250905044141.77868-10-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,132 +56,146 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250905044141.77868-9-boqun.feng@gmail.com>
+In-Reply-To: <20250905044141.77868-10-boqun.feng@gmail.com>
 
-On Thu, Sep 04, 2025 at 09:41:35PM -0700, Boqun Feng wrote:
-> Add generic atomic support for `usize` and `isize`. Note that instead of
-> mapping directly to `atomic_long_t`, the represention type
-> (`AtomicType::Repr`) is selected based on CONFIG_64BIT. This reduces
-> the necessity of creating `atomic_long_*` helpers, which could save
-> the binary size of kernel if inline helpers are not available. To do so,
-> an internal type `isize_atomic_repr` is defined, it's `i32` in 32bit
-> kernel and `i64` in 64bit kernel.
+On Thu, Sep 04, 2025 at 09:41:36PM -0700, Boqun Feng wrote:
+> Memory barriers are building blocks for concurrent code, hence provide
+> a minimal set of them.
+> 
+> The compiler barrier, barrier(), is implemented in inline asm instead of
+> using core::sync::atomic::compiler_fence() because memory models are
+> different: kernel's atomics are implemented in inline asm therefore the
+> compiler barrier should be implemented in inline asm as well. Also it's
+> currently only public to the kernel crate until there's a reasonable
+> driver usage.
 > 
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Reviewed-by: Benno Lossin <lossin@kernel.org>
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Link: https://lore.kernel.org/all/20250719030827.61357-9-boqun.feng@gmail.com/
+> Link: https://lore.kernel.org/all/20250719030827.61357-10-boqun.feng@gmail.com/
 > ---
->  rust/kernel/sync/atomic/predefine.rs | 53 +++++++++++++++++++++++++---
->  1 file changed, 49 insertions(+), 4 deletions(-)
+>  rust/helpers/barrier.c      | 18 +++++++++++
+>  rust/helpers/helpers.c      |  1 +
+>  rust/kernel/sync.rs         |  1 +
+>  rust/kernel/sync/barrier.rs | 61 +++++++++++++++++++++++++++++++++++++
+>  4 files changed, 81 insertions(+)
+>  create mode 100644 rust/helpers/barrier.c
+>  create mode 100644 rust/kernel/sync/barrier.rs
 > 
-> diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-> index d0875812f6ad..45a17985cda4 100644
-> --- a/rust/kernel/sync/atomic/predefine.rs
-> +++ b/rust/kernel/sync/atomic/predefine.rs
-> @@ -2,6 +2,9 @@
->  
->  //! Pre-defined atomic types
->  
-> +use crate::static_assert;
-> +use core::mem::{align_of, size_of};
+> diff --git a/rust/helpers/barrier.c b/rust/helpers/barrier.c
+> new file mode 100644
+> index 000000000000..cdf28ce8e511
+> --- /dev/null
+> +++ b/rust/helpers/barrier.c
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
->  // SAFETY: `i32` has the same size and alignment with itself, and is round-trip transmutable to
->  // itself.
->  unsafe impl super::AtomicType for i32 {
-> @@ -28,6 +31,35 @@ fn rhs_into_delta(rhs: i64) -> i64 {
->      }
->  }
->  
-> +// Defines an internal type that always maps to the integer type which has the same size alignment
-> +// as `isize` and `usize`, and `isize` and `usize` are always bi-directional transmutable to
-> +// `isize_atomic_repr`, which also always implements `AtomicImpl`.
-> +#[allow(non_camel_case_types)]
-> +#[cfg(not(CONFIG_64BIT))]
-> +type isize_atomic_repr = i32;
-> +#[allow(non_camel_case_types)]
-> +#[cfg(CONFIG_64BIT)]
-> +type isize_atomic_repr = i64;
+> +#include <asm/barrier.h>
 > +
-> +// Ensure size and alignment requirements are checked.
-> +static_assert!(size_of::<isize>() == size_of::<isize_atomic_repr>());
-> +static_assert!(align_of::<isize>() == align_of::<isize_atomic_repr>());
-> +static_assert!(size_of::<usize>() == size_of::<isize_atomic_repr>());
-> +static_assert!(align_of::<usize>() == align_of::<isize_atomic_repr>());
-> +
-> +// SAFETY: `isize` has the same size and alignment with `isize_atomic_repr`, and is round-trip
-> +// transmutable to `isize_atomic_repr`.
-> +unsafe impl super::AtomicType for isize {
-> +    type Repr = isize_atomic_repr;
+> +void rust_helper_smp_mb(void)
+> +{
+> +	smp_mb();
 > +}
 > +
-> +// SAFETY: The wrapping add result of two `isize_atomic_repr`s is a valid `usize`.
-> +unsafe impl super::AtomicAdd<isize> for isize {
-> +    fn rhs_into_delta(rhs: isize) -> isize_atomic_repr {
-> +        rhs as isize_atomic_repr
+> +void rust_helper_smp_wmb(void)
+> +{
+> +	smp_wmb();
+> +}
+> +
+> +void rust_helper_smp_rmb(void)
+> +{
+> +	smp_rmb();
+> +}
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 7053f9245759..85ad14b81925 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -9,6 +9,7 @@
+>  
+>  #include "atomic.c"
+>  #include "auxiliary.c"
+> +#include "barrier.c"
+>  #include "blk.c"
+>  #include "bug.c"
+>  #include "build_assert.c"
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 7e962e5429d2..bf8943c88a89 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -12,6 +12,7 @@
+>  mod arc;
+>  pub mod aref;
+>  pub mod atomic;
+> +pub mod barrier;
+>  pub mod completion;
+>  mod condvar;
+>  pub mod lock;
+> diff --git a/rust/kernel/sync/barrier.rs b/rust/kernel/sync/barrier.rs
+> new file mode 100644
+> index 000000000000..8f2d435fcd94
+> --- /dev/null
+> +++ b/rust/kernel/sync/barrier.rs
+> @@ -0,0 +1,61 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Memory barriers.
+> +//!
+> +//! These primitives have the same semantics as their C counterparts: and the precise definitions
+> +//! of semantics can be found at [`LKMM`].
+> +//!
+> +//! [`LKMM`]: srctree/tools/memory-model/
+> +
+> +/// A compiler barrier.
+> +///
+> +/// A barrier that prevents compiler from reordering memory accesses across the barrier.
+> +#[inline(always)]
+> +pub(crate) fn barrier() {
+> +    // By default, Rust inline asms are treated as being able to access any memory or flags, hence
+> +    // it suffices as a compiler barrier.
+> +    //
+> +    // SAFETY: An empty asm block.
+> +    unsafe { core::arch::asm!("") };
+> +}
+> +
+> +/// A full memory barrier.
+> +///
+> +/// A barrier that prevents compiler and CPU from reordering memory accesses across the barrier.
+> +#[inline(always)]
+> +pub fn smp_mb() {
+> +    if cfg!(CONFIG_SMP) {
+> +        // SAFETY: `smp_mb()` is safe to call.
+> +        unsafe { bindings::smp_mb() };
+> +    } else {
+> +        barrier();
 > +    }
 > +}
 > +
->  // SAFETY: `u32` and `i32` has the same size and alignment, and `u32` is round-trip transmutable to
->  // `i32`.
->  unsafe impl super::AtomicType for u32 {
-> @@ -54,6 +86,19 @@ fn rhs_into_delta(rhs: u64) -> i64 {
->      }
->  }
->  
-> +// SAFETY: `usize` has the same size and alignment with `isize_atomic_repr`, and is round-trip
-> +// transmutable to `isize_atomic_repr`.
-> +unsafe impl super::AtomicType for usize {
-> +    type Repr = isize_atomic_repr;
-> +}
-> +
-> +// SAFETY: The wrapping add result of two `isize_atomic_repr`s is a valid `usize`.
-> +unsafe impl super::AtomicAdd<usize> for usize {
-> +    fn rhs_into_delta(rhs: usize) -> isize_atomic_repr {
-> +        rhs as isize_atomic_repr
+> +/// A write-write memory barrier.
+> +///
+> +/// A barrier that prevents compiler and CPU from reordering memory write accesses across the
+> +/// barrier.
+> +#[inline(always)]
+> +pub fn smp_wmb() {
+> +    if cfg!(CONFIG_SMP) {
+> +        // SAFETY: `smp_wmb()` is safe to call.
+> +        unsafe { bindings::smp_wmb() };
+> +    } else {
+> +        barrier();
 > +    }
 > +}
 > +
->  use crate::macros::kunit_tests;
->  
->  #[kunit_tests(rust_atomics)]
-> @@ -73,7 +118,7 @@ macro_rules! for_each_type {
->  
->      #[test]
->      fn atomic_basic_tests() {
-> -        for_each_type!(42 in [i32, i64, u32, u64] |v| {
-> +        for_each_type!(42 in [i32, i64, u32, u64, isize, usize] |v| {
->              let x = Atomic::new(v);
->  
->              assert_eq!(v, x.load(Relaxed));
-> @@ -82,7 +127,7 @@ fn atomic_basic_tests() {
->  
->      #[test]
->      fn atomic_xchg_tests() {
-> -        for_each_type!(42 in [i32, i64, u32, u64] |v| {
-> +        for_each_type!(42 in [i32, i64, u32, u64, isize, usize] |v| {
->              let x = Atomic::new(v);
->  
->              let old = v;
-> @@ -95,7 +140,7 @@ fn atomic_xchg_tests() {
->  
->      #[test]
->      fn atomic_cmpxchg_tests() {
-> -        for_each_type!(42 in [i32, i64, u32, u64] |v| {
-> +        for_each_type!(42 in [i32, i64, u32, u64, isize, usize] |v| {
->              let x = Atomic::new(v);
->  
->              let old = v;
-> @@ -110,7 +155,7 @@ fn atomic_cmpxchg_tests() {
->  
->      #[test]
->      fn atomic_arithmetic_tests() {
-> -        for_each_type!(42 in [i32, i64, u32, u64] |v| {
-> +        for_each_type!(42 in [i32, i64, u32, u64, isize, usize] |v| {
->              let x = Atomic::new(v);
->  
->              assert_eq!(v, x.fetch_add(12, Full));
+> +/// A read-read memory barrier.
+> +///
+> +/// A barrier that prevents compiler and CPU from reordering memory read accesses across the
+> +/// barrier.
+> +#[inline(always)]
+> +pub fn smp_rmb() {
+> +    if cfg!(CONFIG_SMP) {
+> +        // SAFETY: `smp_rmb()` is safe to call.
+> +        unsafe { bindings::smp_rmb() };
+> +    } else {
+> +        barrier();
+> +    }
+> +}
 > -- 
 > 2.51.0
 > 
