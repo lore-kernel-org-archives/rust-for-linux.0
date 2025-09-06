@@ -1,72 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359AB221DA5;
-	Sat,  6 Sep 2025 15:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFDA84E07;
+	Sat,  6 Sep 2025 17:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757173719; cv=none; b=OcEX6fQd9PVadhxtl3mg6r/yArfZhPEs2YEO1ACJNDzQst94tt7Nli0iB3DhNGWVD7ZEdRs1OehZdVVVxb/XuehtTsCgFWUL1jUCWw/jPuQd8Tfb3EZofWbm+cmALV73EqRDF0ZEvBjzLmhmsHsdQJLwA1k7f7FxkSgOlbokV0g=
+	t=1757180961; cv=none; b=PBXxP7CHgJXsdD50EOsv/nzVqitik3fSbuddpZqtNivIkALZVxqqJ3Ydicz4ut5Hp2+kxHi3KEJxg7zTPWikYY1o9ETfuR4Q2cVzD2ygE1i5ZMotGPHmirXvBZ1VgsP7QDC6+Q9v5mB5+ZiNhJUfD6C+CU94n96dJgIdzrtYZL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757173719; c=relaxed/simple;
-	bh=QQ7KMn0OoniHUFpZx2lBqgPxKPg2Vwh4ulFX8fgo0ew=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=Af6+qZHQ2gq9W2uVCBBhP8F20LxiTu1gsMZ/X5NIF2XrP08USXRXLly3URS7E0BE3egUdNkoh8Wv/d5NpyOs2TI7L0Vx9rhOG0hWmWynXlnhMlXkfSM64FuLyrE8toj/LuJL5E53qc1Yud8jq1BHgyYd4Lbv3SVQRCNaWJ3QyaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCSbbrK9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757180961; c=relaxed/simple;
+	bh=83wRe5Lt+eBDQM0fzG8eoc8FaWDaq9vHLIisNMS4MP0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pTVClkCqXsixXXjg6EsAkJN/F2F/HLCqgRXf1PvArAmaW4KA5MTIw38NHxrzT/lZ5Dwk9IMZk4FzS4MLOH+bcdKOjuvxrPyTnTY0uBM0sT4CW28S6xPOwaHgM4oRnkL/bverfL9U7RNTfRL4J8BcgKAM4rtULkUVPCQV0rLnehw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKz9TubJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCSbbrK9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9946C4CEF8;
-	Sat,  6 Sep 2025 15:48:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKz9TubJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD33C4CEE7;
+	Sat,  6 Sep 2025 17:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757173718;
-	bh=QQ7KMn0OoniHUFpZx2lBqgPxKPg2Vwh4ulFX8fgo0ew=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=RCSbbrK9qtud6gCJGDTPp+5KbDLCLDXboJVe6y2xyWaQVnA2TQLCvR1XRPoKQrJmo
-	 jRePw9kbPrT4oqB9k7/YIwq1CWNx5QHuV2ZfHCn7g4ElgFZs57t7zwLDn2dlEedZ+D
-	 FN0fjAM3k8lto2w1+9sL2liR7kv+fp+23AQQTg1HzwSWmigxvIGEC0kReviz3bd5XN
-	 3H7xVS9W/gVB69EB5Yj5AjKb+hgkW6h6n2mvJnVRspkj+C34ikXSQft2ej6xDkDPiY
-	 Msc0i0Z4OQXUKptkF211Vz73/kJdvvBYgBe9JRYFxhW5iyub9cVDTbJBug3f83ysR8
-	 9EIoZhiU57eFg==
+	s=k20201202; t=1757180960;
+	bh=83wRe5Lt+eBDQM0fzG8eoc8FaWDaq9vHLIisNMS4MP0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dKz9TubJ434H6+8ZBLDWbc7rKTItogRbcJ2eQLlkqOERJ4SnZuUOiBgxGyg8hVgMc
+	 RwP0uZVC2WQLE2X7fgJR/4CH0EM65dzsapj06qjfvwqfmYvDfTdsTvujiI1EA29O1M
+	 Vhr3oknr52KELbv1T2P6BSEDn8U5Fp2y8csQePx1ifaEOo8ZpBy0MN2CK2ykGgRGCz
+	 iiJx5MZmnpr+ang1JLjPFHe3Qzu9TdQ0WDBeQOeMuzNsyrPTNNTf6t0hF9gHCUi/wq
+	 XPQrvWG0vlIQB7saz1yHS6fo6a/DwTttDQkKVqU2hys2FgfG9FPHr65QyuoUTVraxo
+	 sMXgoMgaWwtDw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.17 (2nd)
+Date: Sat,  6 Sep 2025 19:49:01 +0200
+Message-ID: <20250906174901.1244166-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Sep 2025 17:48:33 +0200
-Message-Id: <DCLU3G70XEAR.383M8VEKRK6BM@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 2/2] samples: rust: add a USB driver sample
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Michal
- Wilczynski" <m.wilczynski@samsung.com>, "Igor Korotin"
- <igor.korotin.linux@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-usb@vger.kernel.org>
-References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
- <20250825-b4-usb-v1-2-7aa024de7ae8@collabora.com>
- <2025090618-smudgy-cringing-a7a4@gregkh>
- <D8EAF874-4FED-42EE-8FD8-E89B6CB0086A@collabora.com>
- <2025090601-iron-glitter-c77d@gregkh>
- <831C4AE2-6964-4699-9E74-E4B721B87B17@collabora.com>
- <DCLQZZHU42HN.4Y4PP0PPR10O@kernel.org>
- <9657C897-087E-4544-849B-964E99D95A50@collabora.com>
- <DCLTJMIAMCVL.35U236MMS5CCK@kernel.org>
- <85B643A9-1657-43ED-BE98-BE7E502D08DA@collabora.com>
-In-Reply-To: <85B643A9-1657-43ED-BE98-BE7E502D08DA@collabora.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sat Sep 6, 2025 at 5:46 PM CEST, Daniel Almeida wrote:
-> As I said to Greg above, I=E2=80=99m here to help if anyone wants to writ=
-e a USB
-> driver. Those interested are free to reach out to me and we will work tog=
-ether
-> to merge the required abstractions with a real user in mind. Hopefully th=
-is
-> encourages others to join in this work :)
+Hi Linus,
 
-Yes, that'd be great! :)
+Please pull these two changes to prepare for the future Rust 1.91.0.
+
+All commits have been in linux-next during this week.
+
+No conflicts expected.
+
+Thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 1b237f190eb3d36f52dffe07a40b5eb210280e00:
+
+  Linux 6.17-rc3 (2025-08-24 12:04:12 -0400)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.17-2
+
+for you to fetch changes up to 8851e27d2cb947ea8bbbe8e812068f7bf5cbd00b:
+
+  rust: support Rust >= 1.91.0 target spec (2025-08-31 23:34:34 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v6.17 (2nd)
+
+Toolchain and infrastructure:
+
+ - Two changes to prepare for the future Rust 1.91.0 release (expected
+   2025-10-30, currently in nightly): a target specification format
+   change and a renamed, soon-to-be-stabilized 'core' function.
+
+----------------------------------------------------------------
+Alice Ryhl (1):
+      rust: use the new name Location::file_as_c_str() in Rust >= 1.91.0
+
+Miguel Ojeda (1):
+      rust: support Rust >= 1.91.0 target spec
+
+ init/Kconfig                    |  3 +++
+ rust/kernel/lib.rs              | 15 ++++++++++-----
+ scripts/generate_rust_target.rs | 12 ++++++++++--
+ 3 files changed, 23 insertions(+), 7 deletions(-)
