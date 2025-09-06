@@ -1,203 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DAF1C84A1;
-	Sat,  6 Sep 2025 07:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB4423184A
+	for <rust-for-linux@vger.kernel.org>; Sat,  6 Sep 2025 09:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757145392; cv=none; b=NxG6yvbwd1L9/uFoJGlxz/DghvZJGFVqe3ntMmwk5+/XrBVeeyUitp98qOvtzVzIRevRAmqg1kGgW7a2mkD2aGpzoIBEFWkVnbL5s3KIAGAUPzpDg2TMR9dM9F35xVD9gSqSP+yXOou3dFBVkGFtBg72IHHQhgI2NJu0gofQ3t0=
+	t=1757149541; cv=none; b=pmhufhKBUT+mz8duak20yiv3+GOrhlAYEfBnBlaPFt/MMReyjC91LbUdnyClAQk45icJ5g4OEkIppZ3Fi6PUQRoWL3QMSZLciBE56419CW484MAZgSKxGXqMz0ip4wCRyRhlecKYaolR9IARDsFGti2ytBs9mi5GMH2OldUJHT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757145392; c=relaxed/simple;
-	bh=6MpzkwaTQMjmEYFnZViHjiIwAE3okFT2YcFGwEWrMu0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=fm/Mmk5kSUmRffXMOyrn7kvokR2O+bvyng9UoIuYQUIPf9LzsiG17ePdewH0C/SYgA63QX8UI6eKosROa6mFLbaaSymnswEgPOoAFx35G8ITPp+uKADtgQCk1JAawjUlbeqAnVw3/u9ofK9y41Z+JbRziYm0zCKgHXsRvfjAlDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JDPgr7UR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757149541; c=relaxed/simple;
+	bh=3iQcrJcqfq++ZTQeqS1T6YrLPIp3lL5wLcHB28bWo/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QRixxxbbdj/o69+kI2+V7PG9deBGzK1OwO3Vt1RGC5aS071PCxyhUTfkPaFTLKZW/e+IF4bnCqAAQoxHzFo2eRquOGnN+pABYaITXUblwIO65w1ktbCI8m3yzeJLxY4XS9XM3jLBRFyV4cwEPeH4L1tR4R6rB+JoRpSXiGm2kMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F2XEgIu9; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JDPgr7UR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1806C4CEE7;
-	Sat,  6 Sep 2025 07:56:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757145391;
-	bh=6MpzkwaTQMjmEYFnZViHjiIwAE3okFT2YcFGwEWrMu0=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=JDPgr7URW8s7vw/k79cIlH8pPnGb6W1TRtu+NcgwNT+haAornpO/O5/b02eZY3tOw
-	 vvzGi9grirM0MP4Oky1dwoVR4tRHa9eQDEUCTyinM4bPPHCwxcB+oGtX8brxFP4K0N
-	 66cSVv1nOkSKtaW9mhxLnbkcWLyAVz0nkRXTmMY9+kaKmBxQjiRZOFdY7H5VNBURWz
-	 xgD39ulj6KwxWdYWKrfNm63CPXIjTJLFNOwmKgaLwFreHeLB1wbzERLMRGH6HORPgT
-	 MDZf/Yd+PsjNIB5vOkiWjf8fhc5o9GtXk5RcK9sxaHH+HPpsThbDaY6v41hpYnKIrl
-	 6pWiNQqdJv05A==
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F2XEgIu9"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3c6abcfd142so1358480f8f.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 06 Sep 2025 02:05:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757149537; x=1757754337; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hki8HdhvXHfU2F+7OeXOSp1xyhvTQ6nvom6Fvz3c+mw=;
+        b=F2XEgIu9MzE/3fAFKvS77wTQGN9yWWe192O0RjSu+oLz+iEm2JKeatNUKOwCi9JAHl
+         35JjnqLADAAt35gXBMNPk0BAHRMuRPyAiQD0LChmZHYyjYqoqq5f+FpLszNZEXl+o5gT
+         /XtmvN/gu7eMjeWvB/T/JKOmaQY+HTK8tYB4IiDE1KghjIRZtVXOHsBZysfdLNV40dxc
+         1eYYgUfHGBmUvCgL9qj196c4GxG+G9XBuhwwa2kJqritAdnt2scM3uGEL77W9ZTtXMCA
+         Hy8JTKBXn0njjsCDXMtLC7n1L25uheu5GktVPv/GoacDP5N1JgtpSJk0oX6X/QurDWMS
+         KuPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757149537; x=1757754337;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hki8HdhvXHfU2F+7OeXOSp1xyhvTQ6nvom6Fvz3c+mw=;
+        b=m1AzypVRdgC4TsMVndav3yh2rkxFeG7TsQ78MXKQliTR6lvt7COKPzyjkXfUp2w5/P
+         qGtKzHgfdoIYBTnc7U7FD1HjLBnTgX8YHrO8N6UG+Zgd6LavWHj/Un+Lo7fGpARXkCee
+         8aEeuQbvCcONKQGPj8qG9ktqHT62+N3MxAJdZ6BvU6fzmQgAle7icLuSE99oC3wyOwsb
+         fTmLGkkUOVbHoz/EbKMTnp2Cw6fvjhk+aX1Sj3VtW7Ww4fbd17SAvxquN3CzZKGzDlnt
+         WSckW9OyKvHCCD8OQyM8OOFSHqB2/mrEZbfFso9I4w1Nq1XsvMPEut+4/LO7UYdMvTo9
+         4pNg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFcDHrtdVVqSCsbFE8s6+YrmO2zWmOy6L+2bAT30O/49riYEtP6RFIZBJXcKdW9OJGEBt4PrdhTR9M5LM4yA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVQgcAHsAYw1LXPq3s+OVB4heFv8qrYGMYFTrlH9EnOCccly6p
+	0pS10IUFTXQuqpojkyw7C0zF8s4iY9+jGsLSedbttq+ooFEEDmc3ucmwvewMFSIYgZ8=
+X-Gm-Gg: ASbGncuFxBer/TDfEghe2znSW6Fgra3ZbxW0Qaxy3S3yL1W4Vq2ENsOJARSCJcJ/pzv
+	IDPUhyLgfs4k/FQvHpu1GyKhr10mKcbwRgv2fzO+eH9nG8+xojAQSYNWo8qRD01AUL52XcF6QQH
+	l+Fs7fAbmJYYQTI3TOK6tU5MjV4cTS/Rez4wk5ejRfHG1Rtozath82+c0aLrohWbRgor/R2uaK8
+	plczjSynvd9Rp3sFW4zOTl5t0dXmW16cnQ7fGrr2CMOnoj0oN3ncAO/lEWITWhuVeuKzJ4MLIHZ
+	YD8yhSlx/mKZBo9w3Wxn2OQH6BZezGd5sP7Br4LLpQIfeFJfkmHRyii89HbWLHiplHzVy1XHOwS
+	BOOlx8aTuTvalPjAdGo9lwuBZOL1JSctQpEly+A==
+X-Google-Smtp-Source: AGHT+IHOiFBNtbdh+ZPHcW0eh5OTeyAVCftx5e6W3o7t6l/2O0QB2mqkLdjfjU9NIQo/lpGZbryoNw==
+X-Received: by 2002:a5d:588d:0:b0:3d6:4596:8a29 with SMTP id ffacd0b85a97d-3e643e0a48emr1185814f8f.44.1757149537170;
+        Sat, 06 Sep 2025 02:05:37 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3df4fd372ccsm12287698f8f.32.2025.09.06.02.05.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Sep 2025 02:05:36 -0700 (PDT)
+Date: Sat, 6 Sep 2025 12:05:33 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Carlos LLama <cmllamas@google.com>,
+	Pekka Ristola <pekkarr@protonmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v15 0/5] rust: adds Bitmap API, ID pool and bindings
+Message-ID: <aLv5Xce6R4ofalnf@stanley.mountain>
+References: <20250904165015.3791895-1-bqe@google.com>
+ <aLnURXW_ZiX2iJd_@yury>
+ <CANiq72==48=69hYiDo1321pCzgn_n1_jg=ez5UYXX91c+g5JVQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Sep 2025 09:56:25 +0200
-Message-Id: <DCLK1YG1L5TZ.1VMGX131LII9V@kernel.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-Cc: "rust-for-linux" <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed" <yosry.ahmed@linux.dev>, "Nhat
- Pham" <nphamcs@gmail.com>, <linux-mm@kvack.org>
-Subject: Re: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250823130522.867263-1-vitaly.wool@konsulko.se>
- <DCCIRTHGQFNX.1M8GXO4TYA7DF@kernel.org>
- <DFA3B588-3650-42DA-8875-7AB7D20A2BCA@konsulko.se>
- <DCDC2M7N28X2.3Q8XYNEDOGK6A@kernel.org>
- <9c63dda1-0a4b-4131-a5e7-12ad2e88c6d6@konsulko.se>
-In-Reply-To: <9c63dda1-0a4b-4131-a5e7-12ad2e88c6d6@konsulko.se>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72==48=69hYiDo1321pCzgn_n1_jg=ez5UYXX91c+g5JVQ@mail.gmail.com>
 
-On Thu Aug 28, 2025 at 9:22 AM CEST, Vitaly Wool wrote:
->
->
-> On 8/27/25 17:59, Benno Lossin wrote:
->> On Wed Aug 27, 2025 at 4:24 PM CEST, Vitaly Wool wrote:
->>>
->>>
->>>> On Aug 26, 2025, at 7:02 PM, Benno Lossin <lossin@kernel.org> wrote:
->>>>
->>>> On Sat Aug 23, 2025 at 3:05 PM CEST, Vitaly Wool wrote:
->>>>> +pub trait ZpoolDriver {
->>>>> +    /// Opaque Rust representation of `struct zpool`.
->>>>> +    type Pool: ForeignOwnable;
->>>>
->>>> I think this is the same question that Danilo asked a few versions ago=
-,
->>>> but why do we need this? Why can't we just use `Self` instead?
->>>
->>> It=E2=80=99s convenient to use it in the backend implementation, like i=
-n the toy example supplied in the documentation part:
->>>
->>> +/// struct MyZpool {
->>> +///     name: &'static CStr,
->>> +///     bytes_used: AtomicU64,
->>> +/// }
->>> =E2=80=A6
->>> +/// impl ZpoolDriver for MyZpoolDriver {
->>> +///     type Pool =3D KBox<MyZpool>;
->>>
->>> Does that make sense?
->>=20
->> No, why can't it just be like this:
->>=20
->>      struct MyZpool {
->>          name: &'static CStr,
->>          bytes_used: AtomicU64,
->>      }
->>     =20
->>      struct MyZpoolDriver;
->>     =20
->>      impl ZpoolDriver for MyZpoolDriver {
->>          type Error =3D Infallible;
->>     =20
->>          fn create(name: &'static CStr) -> impl PinInit<Self, Self::Erro=
-r> {
->>              MyZpool { name, bytes_used: AtomicU64::new(0) }
->>          }
->>     =20
->>          fn malloc(&mut self, size: usize, gfp: Flags, _nid: NumaNode) -=
-> Result<usize> {
->>              let mut pow: usize =3D 0;
->>              for n in 6..=3DPAGE_SHIFT {
->>                  if size <=3D 1 << n {
->>                      pow =3D n;
->>                      break;
->>                  }
->>              }
->>              match pow {
->>                  0 =3D> Err(EINVAL),
->>                  _ =3D> {
->>                      let vec =3D KVec::<u64>::with_capacity(1 << (pow - =
-3), gfp)?;
->>                      let (ptr, _len, _cap) =3D vec.into_raw_parts();
->>                      self.bytes_used.fetch_add(1 << pow, Ordering::Relax=
-ed);
->>                      Ok(ptr as usize | (pow - 6))
->>                  }
->>              }
->>          }
->>     =20
->>          unsafe fn free(&self, handle: usize) {
->>              let n =3D (handle & 0x3F) + 3;
->>              let uptr =3D handle & !0x3F;
->>     =20
->>              // SAFETY:
->>              // - uptr comes from handle which points to the KVec alloca=
-tion from `alloc`.
->>              // - size =3D=3D capacity and is coming from the first 6 bi=
-ts of handle.
->>              let vec =3D unsafe { KVec::<u64>::from_raw_parts(uptr as *m=
-ut u64, 1 << n, 1 << n) };
->>              drop(vec);
->>              self.bytes_used.fetch_sub(1 << (n + 3), Ordering::Relaxed);
->>          }
->>     =20
->>          unsafe fn read_begin(&self, handle: usize) -> NonNull<u8> {
->>              let uptr =3D handle & !0x3F;
->>              // SAFETY: uptr points to a memory area allocated by KVec
->>              unsafe { NonNull::new_unchecked(uptr as *mut u8) }
->>          }
->>     =20
->>          unsafe fn read_end(&self, _handle: usize, _handle_mem: NonNull<=
-u8>) {}
->>     =20
->>          unsafe fn write(&self, handle: usize, handle_mem: NonNull<u8>, =
-mem_len: usize) {
->>              let uptr =3D handle & !0x3F;
->>              // SAFETY: handle_mem is a valid non-null pointer provided =
-by zpool, uptr points to
->>              // a KVec allocated in `malloc` and is therefore also valid=
-.
->>              unsafe {
->>                  copy_nonoverlapping(handle_mem.as_ptr().cast(), uptr as=
- *mut c_void, mem_len)
->>              };
->>          }
->>     =20
->>          fn total_pages(&self) -> u64 {
->>              self.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
->>          }
->>      }
->
-> It can indeed but then the ZpoolDriver trait will have to be extended=20
-> with functions like into_raw() and from_raw(), because zpool expects=20
-> *mut c_void, so on the Adapter side it will look like
->
->      extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void=
- {
->          // SAFETY: the memory pointed to by name is guaranteed by zpool=
-=20
-> to be a valid string
->          let pool =3D unsafe { T::create(CStr::from_char_ptr(name),=20
-> Flags::from_raw(gfp)) };
->          match pool {
->              Err(_) =3D> null_mut(),
->              Ok(p) =3D> T::into_raw(p).cast(),
->          }
->      }
->
-> The question is, why does this make it better?
+Here is the patch so people who want to build linux-next can just apply
+it instead of needing to cut and paste and then %s/    // or whatever...
+Hopefully, people aren't building kernels over the weekend and it's fixed
+on Monday.  But just in case.
 
-No, thanks for sharing that function. Then the question becomes, do you
-really need `ForeignOwnable`? Or is `KBox` enough? Do you really want
-people to use `Arc<MyZPool>`? Because `BorrowedMut` of `Arc` is the same
-as it's `Borrowed` variant (it's read-only after all).
+regards,
+dan carpenter
 
-If you can get away with just `Box` (you might want people to choose
-their allocator, which is fine IMO), then I'd do so.
+diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+index 6e0824579781..2f00e91e9c35 100644
+--- a/rust/kernel/bitmap.rs
++++ b/rust/kernel/bitmap.rs
+@@ -551,18 +551,21 @@ fn bitmap_set_clear_find() -> Result<(), AllocError> {
+         Ok(())
+     }
+ 
+-    #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+     #[test]
+     fn owned_bitmap_out_of_bounds() -> Result<(), AllocError> {
+-        let mut b = BitmapVec::new(128, GFP_KERNEL)?;
++        #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
++        {
++            let mut b = BitmapVec::new(128, GFP_KERNEL)?;
++
++            b.set_bit(2048);
++            b.set_bit_atomic(2048);
++            b.clear_bit(2048);
++            b.clear_bit_atomic(2048);
++            assert_eq!(None, b.next_bit(2048));
++            assert_eq!(None, b.next_zero_bit(2048));
++            assert_eq!(None, b.last_bit());
 
----
-Cheers,
-Benno
+-        b.set_bit(2048);
+-        b.set_bit_atomic(2048);
+-        b.clear_bit(2048);
+-        b.clear_bit_atomic(2048);
+-        assert_eq!(None, b.next_bit(2048));
+-        assert_eq!(None, b.next_zero_bit(2048));
+-        assert_eq!(None, b.last_bit());
+         Ok(())
+     }
+
