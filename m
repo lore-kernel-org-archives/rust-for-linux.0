@@ -1,91 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0941C6FF6;
-	Sat,  6 Sep 2025 12:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757160604; cv=none; b=m/O/GXOVL2udgd/qSaSxQapwCaIv7aqMCuul1nZuLtXcM2inSQu2H6whBfthfUYyq3W2hrYIKJbfmvvf+r5hCKafhiLn+idF86qAaB+L7NitMIzgkMTd3tSxMrXSl8WjwBfbEvPDnKqP5VGUcUl2Ifsf70PzvWiGObLmaY6uqdM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757160604; c=relaxed/simple;
-	bh=5dQ1FHAiqFGqeRjhyzOo1dwscoGiMgElpqrF9vHE2so=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r9iUQxLXfWTsLuiB1LDGQn6vkJKSBMHzmRmoLiE/3tXct/vH81jpwvtZ8YRDOTqA/+9J7NSdFp91ETwTXcKkHDtKhwCiWvHk8oG5hKjjCzif2OeLznoAsncvqIYdMoPf7r6Ty5bMgMtqx/65C93UY7mgurHrVpMDipNizY+XXWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyJ3NIWb; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35334289E07;
+	Sat,  6 Sep 2025 12:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757162513; cv=pass; b=nLuoQ8GlImy9K0z+Tmfi/mQntbWOwh6RNw+swGjurTlO/N1pczvzm2/sqLLA2ilTJtNTxJAb8AOa+lk43JWn8ytBY1jBIUx9aU7+oERz2j4+W9KakXmeR9vf7SDtR8GkWnB+PWOLDujPN3GHEjwDW+RP/5rFgSSNjpL4faNQosU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757162513; c=relaxed/simple;
+	bh=+eqeUrynzQyETIKqPK5kWdB5I+zyHoqmenioXoReh5U=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=cp0kwl0PcczPeECAstCjloi2qksosTYksNbEf5UUcHmU1l10eMiOZ8z6WTRVdRe60rRwLtzsRrtE87+Zy+o+Cu2Azoph7V+YMYZ3WgshUdgiah+DZMLScf+jAgamQ5TgjjtsOsZmqbA2SF6bqpODW5+0tObthCiSijEzWvi3E+c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ktQDE/DP; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyJ3NIWb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF6AC4CEE7;
-	Sat,  6 Sep 2025 12:10:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757160603;
-	bh=5dQ1FHAiqFGqeRjhyzOo1dwscoGiMgElpqrF9vHE2so=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MyJ3NIWb2jxVgGJCIndaOG/g4tbN0uCN0IgYwNwoUs/CwikrdYbW07XRa60E0XvXW
-	 Ggttwu4M5CsLL787HjwDASx9PSPx9p+qLUaYaY3YL7vyl/Td8Em79XEPzCYhGjAB/9
-	 Xo+iZO8c5vPzmMYMuKd3v3Ldqbv3OAnKXPK13oqc=
-Date: Sat, 6 Sep 2025 14:10:01 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 2/2] samples: rust: add a USB driver sample
-Message-ID: <2025090601-iron-glitter-c77d@gregkh>
-References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
- <20250825-b4-usb-v1-2-7aa024de7ae8@collabora.com>
- <2025090618-smudgy-cringing-a7a4@gregkh>
- <D8EAF874-4FED-42EE-8FD8-E89B6CB0086A@collabora.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ktQDE/DP"
+ARC-Seal: i=1; a=rsa-sha256; t=1757162494; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=QOnfWk4m4j7fpjBWdqk0hMHsSHbVAlxZu1w7RVdhw6lt6oY0+BmBvJHwV+m3GL2+Y+w7i9CUm5CrviDIFj3S999aETwDWarETnLxA9sXNXQc2ZguWv/iutv093jKcBwHXPDLlsApc5VhBROGnuzzDs4jx3Dw9iK2NuOraa0j0kE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757162494; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=vb8MLbau1tNKQMfwbKPgSSgl5gQ2XVqDf0CiTm+vxpA=; 
+	b=NSjHh3RGtNul/0g7fkyh4fdMw18+UQo//Qak3ELI9OKoRuoGoxtyAPLTIrtgHJ7N7ApheFYWhRrcEHuPHWV/8xhqXulgCKCw23aqnh5aWzNNq92iGNR9SdsEzv8UKgHVB2c0Va+EVewKeo7okJKSmajjDuZhPyrIKuiPf/QzNv0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757162494;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=vb8MLbau1tNKQMfwbKPgSSgl5gQ2XVqDf0CiTm+vxpA=;
+	b=ktQDE/DP8rnsRJQbqtCtTlK+WiT3gPXETnFSIFS4sqDG73Ebr3wz/QWUP30piBpO
+	xjfY4A0nJ8cp+ODUh/wt6B+l68enxTdfzAr5v3NIrUmtbJ0itWPCSc3iOqLtB6pWAP6
+	rV0j9cEE7L0cSCEp01ukCIYGTtbee61TLxN1UFGI=
+Received: by mx.zohomail.com with SMTPS id 1757162492631331.60289813179213;
+	Sat, 6 Sep 2025 05:41:32 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <D8EAF874-4FED-42EE-8FD8-E89B6CB0086A@collabora.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 2/2] samples: rust: add a USB driver sample
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <2025090601-iron-glitter-c77d@gregkh>
+Date: Sat, 6 Sep 2025 09:41:16 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-usb@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <831C4AE2-6964-4699-9E74-E4B721B87B17@collabora.com>
+References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
+ <20250825-b4-usb-v1-2-7aa024de7ae8@collabora.com>
+ <2025090618-smudgy-cringing-a7a4@gregkh>
+ <D8EAF874-4FED-42EE-8FD8-E89B6CB0086A@collabora.com>
+ <2025090601-iron-glitter-c77d@gregkh>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Sat, Sep 06, 2025 at 09:04:04AM -0300, Daniel Almeida wrote:
-> Hi Greg,
-> 
-> […]
-> 
-> > 
-> > Sorry for the delay.
-> > 
-> > But these bindings really are only for a usb interface probe/disconnect
-> > sequence, right?  no real data flow at all?
-> > 
-> > I recommend looking at the usb-skeleton.c driver, and implementing that
-> > as your sample driver for rust.  That will ensure that you actually have
-> > the correct apis implemented and the reference count logic working
-> > properly.  You have urb anchors and callbacks and other stuff as well to
-> > ensure that you get right.  That driver pretty much should handle
-> > everything that you need to do to write a usb driver for any type of
-> > "real" device.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> 
-> I thought that an iterative approach would work here, i.e.: merge this, then
-> URBs, then more stuff, etc.
 
-Ah, that makes sense, I didn't realize you want that here.  What USB
-device do you want to write a rust driver for?  Are you going to need
-bindings to the usb major number, or is it going to talk to some other
-subsystem instead?
 
-Right now, these bindings don't really do anything USB specific at all
-except allow a driver to bind to a device.
+>>=20
+>> I thought that an iterative approach would work here, i.e.: merge =
+this, then
+>> URBs, then more stuff, etc.
+>=20
+> Ah, that makes sense, I didn't realize you want that here.  What USB
+> device do you want to write a rust driver for?  Are you going to need
+> bindings to the usb major number, or is it going to talk to some other
+> subsystem instead?
+>=20
+> Right now, these bindings don't really do anything USB specific at all
+> except allow a driver to bind to a device.
+>=20
+> thanks,
+>=20
+> greg k-h
 
-thanks,
+To be honest, I'm trying to pave the way for others.
 
-greg k-h
+I often hear people saying that they would look into Rust drivers if =
+only they
+did not have to write all the surrounding infrastructure themselves. On =
+the
+other hand, there is no infrastructure because there are no drivers. =
+It's a
+chicken and egg problem that I am trying to solve.
+
+It's also a cool opportunity to learn about USB, but I don't have any =
+plans
+for a driver at the moment other than a instructional sample driver in =
+Rust.
+
+Give me a few more weeks and I'll come up with the code for the other =
+things
+you've pointed out.
+
+By the way, I wonder how testing would work. I tested this by plugging =
+in my
+mouse and fiddling around with =
+/sys/bus/usb/drivers/rust_driver_usb/new_id. I
+am not sure how this is going to work once I start looking into data =
+transfer
+and etc. Perhaps there's a simple device out there that I should target? =
+Or
+maybe there's a way to "fake" a USB device that would work with the =
+sample
+driver for demonstration purposes.
+
+-- Daniel=
