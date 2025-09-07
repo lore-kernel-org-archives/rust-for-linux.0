@@ -1,171 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C5AD528;
-	Sun,  7 Sep 2025 17:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A401F29ACD8;
+	Sun,  7 Sep 2025 18:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757266191; cv=none; b=uxkGkQbXkDkVR/r6/+DLQUEjgAiR+F7Sgdho1qsobtzCTYqEPhBMN6vuCrLXbdLxbwlFbd7hIaZGWeMaWG2thp/0OOFHgfKLcPv/dH9NiovgbOn3gMZvo5SqWDLYQ/i4tzOwhm/ZK0s6ZpzQUw3uglrKgvHpTVN7bYS8Z6RblLo=
+	t=1757268905; cv=none; b=TGU+EsJj/dRbsLo7cUstkacKHPDA5Nv+Vz3JnT9DLJUUgwFvRpE7MaGez9oFYP2LtlJU3CkRvFHlfhq6eFCUhoCmsFYpmOz/dN1l3f9vfdtDWb3ZZTGAAe03Bopb9BeOyZy4DYd5z97QPxQ4zU78n9KXSjXggv11EX9tzoVrML8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757266191; c=relaxed/simple;
-	bh=0EG5iMtpXHAr9o67Svqnd6QDcjP/7zqWAiJ5kZj/vzA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=jAO4ue3kr9Hgd2VvcD6jIxBWmmR0aLGaJZOyTwvenp9eRJYjBf0nSKibMGDY+QpEgbF0VtlO5Xf6tt8JQR7i0m+qHMRUb9MlmgpEEi8Y4rAZPSTsTI2yFo49ATHOZmr/SB87/kd1wSB6JurajAajfWlIyerFrA/Y2JSXmtUn4WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agGvGD8Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757268905; c=relaxed/simple;
+	bh=Ydk91NzxOXXi/9YfPkvlp88QmnwQdHBwRvBI36n88IY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RAFbgjNSEeLc5ZFR65qcruGb4mjaGaCBGIR4iZkpguzg1Rne70brX6Lgu5fnQ8IOggUbEsgUdzhC7ktQix1QGF4ODICSFaIWBkMM7sIzySTUezPz5gysV+vWrTzEpf43FOxT8ZeBYw4ZI+BNR8ccQrxWj/EkBYnGZkVkiVUua0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FHB0xpfi; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agGvGD8Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD11C4CEF0;
-	Sun,  7 Sep 2025 17:29:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757266190;
-	bh=0EG5iMtpXHAr9o67Svqnd6QDcjP/7zqWAiJ5kZj/vzA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=agGvGD8QOdeoJsWiRrfHbuqmQIRTA3beP8UtuXEzxN4C/LnjBt67qdwepq+lN3SAu
-	 FJgFjQRX6AFn207iel6M1J+YUIR+HuuY3/7Kl5lnqwr0hcEEfytDtxM5IqJIzzo/R1
-	 7Rh2+nUCjInlGjkC4r4YR1mTunPyjva/HwYe8/Z42xQbmUEThaJO/F4F7w8vK38HjQ
-	 xxuSWhg0iKgFXSbyahkUQZP7253S7zrEKbBqIpCTV7+wafqJi6voHe5t2EK8FNbDsF
-	 I+ODeUlPSZA728dNHguDiD67D1T3USSWoysq2LZbfRjwL9BGLwkRNNiTCC4UlPa99f
-	 gc16hP0GJWDjg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FHB0xpfi"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24b157ba91bso8778465ad.3;
+        Sun, 07 Sep 2025 11:15:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757268903; x=1757873703; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=so7tAPulNJoJZMuWiKPDBzUnu5rjpYZ5RN5Pr7FZmqc=;
+        b=FHB0xpfivltlsKiK/woNzuD45/ERloPBSwk+er1LDn2Iq4PsCz0RHTJ0thme1KA8Fe
+         V7wnOC1g4bR885LbtJpTs9NXA8gpIKdEV8GCUUQVhRakQNbPgZAxqoWoJHDuUEDgxAT3
+         SkFO0+bmX1u+j5NTUpteAZuA9fQzM1xMabaco7/0P5iKFYjO37KM9Bc89hT/RFhi8iHy
+         NgaDXjc+WB+Wi0fVCN8JA7YDPd9JkR4Pe4BoeQX18CexZ+cjgCEkaU3VZyADDJ13hUiX
+         1QvmXrNLQeEShm9ipYspMJWJHZfFn4P4COubIuEWeB7AfvPKZ2ofaiVoIY0k/fvdPLQ/
+         B+sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757268903; x=1757873703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=so7tAPulNJoJZMuWiKPDBzUnu5rjpYZ5RN5Pr7FZmqc=;
+        b=g8BCEhw1VbvHOrxrLP9R+Ko1HH5IZ3xIGWohi3dmfu2JOmcXA/XvCJ3N6eLXJIrgwI
+         JqX5PHxjPpVLdf4YRon90Bn9Snl30epoaHzQanzDb4BoGA+sQ6NQ7m3xhT/MgpsjXN3n
+         I/PVYk0fANt/DBx2nna5mEu1uVU9TmRqnbqfRMTGjcl++Lv0A8Nn5LCQb1p3ObXryyWv
+         DozWhCbj4OmLWv4aO+sWwkxy57pO23Im/VQPkJKJv0sFXl/Wj5Ar9ye09NnFilGKQjy6
+         Xk6IF8+X49rodG65jfyf0SqxQmpE/Ff6OhmlgSJXXc1F496LZtXfyrJXYzFuIVYl+z9J
+         i7lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6e4zKuac5VwS1jScn+Z3xMN7lwTc81dqBDqCzOmuFoRzyRrGveAaWojFZQWBoDWbdAwx+9So7W0PGqMeVHQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YweRzarXz/MTRm4lKHsamFK7R2bsS9BKcrzhnpg2vYrgFIO/cNi
+	LHwBO7W9kzGaap0ueSOj6Gk+r3PAS50hnR5rhNSlI3TCqIsfH4e3jytKNiHJ6aE64k7aKvxyxMA
+	TrNpvXzF6HrCLtUZqF69gJXdpkgaFLy8=
+X-Gm-Gg: ASbGnctn9rv8U/5hzkveuODUuz3qjPfluqOaE+N12QP6GOn1xMet4AHuqFybDbvFQyn
+	2IegzowmyaEOPaPlUQMv6yKZvDQ84oPwetoW9NQmEDRWcDq/7sMTZGFwnbtAH4wIo0zM/t1GcvD
+	5XEOfmTj5FQXjFD12f3E3kXOkX3a4QlSggkhQ6frZslenvTyuf5fbr5/bEn+1KmKtr01k+uX2Ur
+	ePlYpnLO5SuSLCH2WKqgtMLTPkJh6qDAXeTHRlyK90OMDB68RblQhRJZWC0HFikPXgWqQSX28Qa
+	yL7RwxnaC3brZyX8gMe1/8Blu+OItC/bcYtY
+X-Google-Smtp-Source: AGHT+IEFi+yiD6pVt8xzykvdhNR8iAoTqSIP3/VvCtQxgaxGbdva/bQu0Po7Zl81J3iNwIzpTh79xZ2zh37yiiaAZ/4=
+X-Received: by 2002:a17:902:f644:b0:24b:1421:bbf8 with SMTP id
+ d9443c01a7336-2516697f1d8mr44536825ad.0.1757268902784; Sun, 07 Sep 2025
+ 11:15:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250903215428.1296517-1-joelagnelf@nvidia.com> <20250903215428.1296517-5-joelagnelf@nvidia.com>
+In-Reply-To: <20250903215428.1296517-5-joelagnelf@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 7 Sep 2025 20:14:49 +0200
+X-Gm-Features: AS18NWDG9a3NtPqmPD6xE-rs6EheOTI3-aJP7xdVXVOvHjupVzwUtV7enM1PPPs
+Message-ID: <CANiq72mx7NA1KD5fw98kba+3oENHW44QXVGO1VmvPPUKin2LPg@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] rust: Move register and bitstruct macros out of Nova
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	dakr@kernel.org, acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, nouveau@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 07 Sep 2025 19:29:45 +0200
-Message-Id: <DCMQVH09L1Y5.3A842FC1NGG5H@kernel.org>
-Subject: Re: [PATCH] rust: pin-init: add references to previously
- initialized fields
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Fiona Behrens" <me@kloenk.dev>, "Alban
- Kurti" <kurti@invicto.ai>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250905140047.3325945-1-lossin@kernel.org>
- <DCL1DPN708H0.3JTL93J2GD2DR@kernel.org> <aLshd0_C-1rh3FAg@tardis-2.local>
- <DCLNSNWA7AT7.19OWOXUMJ5ZRJ@kernel.org> <aLzmcK2UM53I2Tbn@tardis-2.local>
- <aLzoyWpOr6eg-3yB@tardis-2.local> <DCMFN8UGD7QN.27HTYEXL87Z8@kernel.org>
-In-Reply-To: <DCMFN8UGD7QN.27HTYEXL87Z8@kernel.org>
 
-On Sun Sep 7, 2025 at 10:41 AM CEST, Benno Lossin wrote:
-> On Sun Sep 7, 2025 at 4:07 AM CEST, Boqun Feng wrote:
->> On Sat, Sep 06, 2025 at 06:57:04PM -0700, Boqun Feng wrote:
->>> On Sat, Sep 06, 2025 at 12:52:22PM +0200, Danilo Krummrich wrote:
->>> > On Fri Sep 5, 2025 at 7:44 PM CEST, Boqun Feng wrote:
->>> > > On Fri, Sep 05, 2025 at 07:18:25PM +0200, Benno Lossin wrote:
->>> > > [...]
->>> > >> index 606946ff4d7f..1ac0b06fa3b3 100644
->>> > >> --- a/samples/rust/rust_driver_pci.rs
->>> > >> +++ b/samples/rust/rust_driver_pci.rs
->>> > >> @@ -78,8 +78,8 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::=
-IdInfo) -> Result<Pin<KBox<Self>
->>> > >> =20
->>> > >>          let drvdata =3D KBox::pin_init(
->>> > >>              try_pin_init!(Self {
->>> > >> -                pdev: pdev.into(),
->>> > >>                  bar <- pdev.iomap_region_sized::<{ Regs::END }>(0=
-, c_str!("rust_driver_pci")),
->>> > >> +                pdev: pdev.into(),
->>> > >
->>> > > Ok, this example is good enough for me to express the concern here:=
- the
->>> > > variable shadowing behavior seems not straightforward (maybe becaus=
-e in
->>> > > normal Rust initalization expression, no binding is created for
->>> > > previous variables, neither do we have a `let` here).
->>> > >
->>> > > Would the future inplace initialization have the similar behavior? =
-I
->>> > > asked because a natural resolution is adding a special syntax like:
->>> > >
->>> > >     let a =3D ..;
->>> > >
->>> > >     try_pin_init!(Self {
->>> > >         b: a,
->>> > > 	let a =3D a.into(); // create the new binding here.
->>> > > 	c: a, // <- use the previous initalized `a`.
->>> > >     }
->>> >=20
->>> > Can you please clarify the example? I'm a bit confused that this is n=
-ot a field
->>> > of Self, so currently this can just be written as:
->>> >=20
->>>=20
->>> Oh, I could have been more clear: `a` is a field of `Self`, and the
->>> `let` part initalizes it.
->>>=20
->>> > 	try_pin_init!(Self {
->>> > 	   b: a,
->>> > 	   c: a.into,
->>> > 	})
->>> >=20
->>> > Of course assuming that a is Clone, as the code above does as well.
->>> >=20
->>> > So, if we are concerned by the variable shadowing, which I'm less con=
-cerned
->>> > about, maybe we can do this:
->>>=20
->>> I'm not that concerned to block this, but it does look to me like we ar=
-e
->>> inventing a new way (and even a different syntax because normal Rust
->>> initialization doesn't create new bindings) to create binding, so I
->>> think I should bring it up.
->>>=20
->>> >=20
->>> > 	// The "original" `a` and `b`.
->>> > 	let a: A =3D ...;
->>> > 	let b: B =3D ...;
->>> >=20
->>> > 	try_pin_init!(Self {
->>> > 	   a,                   // Initialize the field only.
->>> > 	   let b <- b,          // Initialize the field and create a `&B` na=
-med `b`.
->>> > 	   c: a.into(),         // That's the "original" `a`.
->>> > 	   d <- D::new(b),      // Not the original `b`, but the pin-init on=
-e.
->>> > 	})
->>
->> Another idea is using `&this`:
->>
->>  	try_pin_init!(&this in Self {
->>  	   a,                   // Initialize the field only.
->>  	   b <- b,              // Initialize the field only.
->>  	   c: a.into(),         // That's the "original" `a`.
->>  	   d <- D::new(this->b),      // Not the original `b`, but the pin-ini=
-t one.
->>  	})
->>
->> , like a special field projection during initialization.
+Hi Joel,
+
+I didn't check the macros, but a couple nits I noticed in this patch
+in particular given it moved it to `kernel`...
+
+On Wed, Sep 3, 2025 at 11:54=E2=80=AFPM Joel Fernandes <joelagnelf@nvidia.c=
+om> wrote:
 >
-> The main issue with new syntax is the difficulty of implementing it. The
-> let one is fine, but it's pretty jarring & doesn't get formatted by
-> rustfmt (which I want to eventually have). Using `this` does look better
-> IMO, but it's near impossible to implement using declarative macros
-> (even using `syn` it seems difficult to me). So either we find some way
-> to express it in existing rust syntax (maybe use an attribute?), or we
-> just keep it this way.
->
-> Maybe Gary has some ideas on how to implement it.
+> +//! A library that provides support for defining bit fields in Rust
 
-I also thought about reusing `this`, but I think we should not reuse it. We
-still need it to get pointers to uninitialized fields.
+What about just "Support for defining bit fields in ..." or similar?
 
-Surely, we could say that we provide this.as_ptr() to get the NonNull `this=
-`
-is currently defined to be and otherwise make it expose only the initialize=
-d
-fields for a certain scope.
+> +//! structures. Also used from things that need bitfields like register =
+macro.
 
-But as you say, that sounds tricky to implement and is probably not very
-intuitive either. I'd rather say keep it as it is, if we don't want somethi=
-ng
-like the `let b <- b` syntax I proposed for formatting reasons.
+The "register macro" part sounds like it should be formatted with
+Markdown plus an intra-doc link.
+
+> -            ::kernel::build_assert!(
+> +            build_assert!(
+
+Is this path unqualified for some reason? Does it mean the user needs
+to have imported the prelude?
+
+> +pub use super::{bitstruct, register};
+
+Please justify in the commit message why we want them in the prelude,
+e.g. are they expected to be common? Does it simplify some code? etc.
+
+Thanks!
+
+Cheers,
+Miguel
