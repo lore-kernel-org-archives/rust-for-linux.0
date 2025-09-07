@@ -1,99 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678DA1C28E;
-	Sun,  7 Sep 2025 21:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5877120F08E;
+	Sun,  7 Sep 2025 22:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757281158; cv=none; b=CK8YnoKLbgo+dqhDxtB8bDR7ppBeSfbdQ/6G/fxSd220d9iX7cx0kJd9IlAhvBbHtiwkuqIjy3bjpX2bruuJDZPPUzdLgGuE/tLyz4LZSPLEMM+5b7FpU6nRcDe447D8USi/oM06pNFke9nUdSnaWTSvJ3SW/47Mi55V6rNTzCY=
+	t=1757284130; cv=none; b=Rp4YvMEsYholotQwj9kt7feB/95yX31aAoqv1GMEB1V8q4O1YDVVyTQdpCy+SCRiFbocVVdH0E7rVfu+AUxF61JrKUOs1hxLqIEhVooJjzfY4f547bZipzN8/jB4fCo8YsnrawyYMRhT68SHI8dbN3VM+2UCRf/+ijRZyB85yUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757281158; c=relaxed/simple;
-	bh=g2BuCmO24IGiRlULssHIrCTTWeLKsrRnFKiQgSZg2co=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=ZwXnlL3xtLX1ojySV1OD7qncOju003F5FNVf3mXXTr7uv59ViJE42z6c6mppGWXhHh6yPLR1sudcCmgfOaL0BmDwFDkYORRdPq9T+rTb5YhtHGbjZc2sGAuEUk90H2ZlPpbfsrJvpqraKA6oGe0BDjgqj/DduiV21N2fB+be608=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECsCyA9q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757284130; c=relaxed/simple;
+	bh=Jdyp87VeYRanIqFmUw6vy7xC6GuBA2UsO0EJfl07arA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AW8JjboZf5Vu3UgpJoM9NXpkm8DLY7LZKmhrF1+THCoh2LoSD6rEhuT/kvmZsqTIuJNEcpE5Hzg1/0jl+NClpzCr7kGWTVYlARc9O0lundjy85hXqRsd6l5J8kHIYOsCMB+mC+DXcEHqzrRiuQsPZ7Jhj9yqr6+mLB6pVRAruEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X9DKlGfe; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECsCyA9q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D736DC4CEF0;
-	Sun,  7 Sep 2025 21:39:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757281157;
-	bh=g2BuCmO24IGiRlULssHIrCTTWeLKsrRnFKiQgSZg2co=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=ECsCyA9qLhm7cAs/tKGzM8nKQGoI73/ODe+FnyMF1lG1smzQIw1QPW0MKtM00HclD
-	 svO0Pr/jkx+UXkrqn4Mk6BGlLE2VYHtmtOpf0VG8pkAAj4vNiWBXp6il2UmNElrYik
-	 poKrYRejLFhxJQcNL0f0DipbE6v1NbRfsYgkprhpU396PbHcGWokG67yEdU1NLYWvt
-	 Q+6M3zutZNm2VdkoKXy5CXuod1fcBdssAej6hV/hK8zeg0ee1A3Lc37iMz0Eu0BACT
-	 TzCu42Tfes+p6vTBfawhtGA3HWvM+/kM41B1isKT3JjsEOdaHmXxyDd8FP6nfm4I/p
-	 KqC8sgriWg92w==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X9DKlGfe"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-24b157ba91bso9253985ad.3;
+        Sun, 07 Sep 2025 15:28:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757284128; x=1757888928; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jdyp87VeYRanIqFmUw6vy7xC6GuBA2UsO0EJfl07arA=;
+        b=X9DKlGfe6D3yfoYSrESOS2OJcxnHnE7DerGn+pxyurmuaI9FtdcqQzjBXQKdFC7/pt
+         +BO41ly7YxVMZmOe1IxUYcN00IEEf0q89yG8ty5bI9yvA2Pfh/EijMSWRgl26bnU83YB
+         yUYlXacwcG5sukJHEVHBeobtP0oZc9qQ6PfHGrFwT6QoH3B3IeOge7ax8SxnWtRtVhcq
+         2duWmBB4m8SbUtmyKvcIvt1rYp/aQkmjmt5xIQIp1FUDxnYdrv/b2qg5bOiTmQpOO2U/
+         UIhz/hc06tHPy69/f3hrf8pvEn3SuPSoHhTY1a2gLgJgtbqg22p6ZPOubbnYLlz7b5DT
+         GSew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757284128; x=1757888928;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jdyp87VeYRanIqFmUw6vy7xC6GuBA2UsO0EJfl07arA=;
+        b=Vul6NVF2LtLcx1MrPSh+BjtdUFfmhAwb+b8PEQbFzOkKv9A5JTI8xsbKIdkxBQtjcb
+         lDne3/WCjQ2DiMY6gW+fFpOcOJnwR6IJrQxr7oGek8t7wU4gCtE/shsQxRgM/ex5ew9a
+         s7Yw/bwsY/FGAq96CwQSfZgSW0/sCw+QYTHS/SMnv8yrnqebtvtCEJknfy/2hE7SFkGc
+         nPIfH+yKy9eN/sCXwOh6CSPmKhClnacfdnQ5resvws2ZeKNCtQyQJK3QUJBC09MdUWEM
+         2+JQSbdzpRWBqb2gG2FbAGVu+IM9pDNf6DlzuZWs2e6QtsEKBYiae7I7ZeLcaUMtLuZ3
+         BjtA==
+X-Forwarded-Encrypted: i=1; AJvYcCWomIjEh5ejq+rRSOhc+w88pblNsLRFLX8mD2nxZqmXd0J3wwUE2n3kugvj8A9KFLJkaBwZEu+S0jHs7vU=@vger.kernel.org, AJvYcCX/gb6LtvH9m1BDTiosjeC2JcM67xPDX7Vu6vH73RvROQGZURNBnlj3w+4NB4ODmZkDTf2p1e0dypBG/fnz/DQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4GvHNuCar0C7TUL5wi2LrnvLmwKctnXq/jWW8gVqJu25H+RcH
+	/oScdQcMB2TOFbhkAsyF5t/ylMrjJNnu79L8ZiWCVIPwcbrhUQXW/d6ObHgvk2FR1p9Km1Go2rh
+	eOwcz4XeGcNyWKYcF4gDOgz+irnKYFC0=
+X-Gm-Gg: ASbGncsMWNWU9wsvZNQfkj+AJD0FCidev9ABrreTCaxJSweu5yXeeTSv2rmhC7GmDW2
+	EDJ/iAFuMJYtKYMYpbPAQoFR1Aaa5pK6tqEHVLNoj3yO5RqBTiO7prEMwBmEuG9Y8ppuYkjrw5r
+	tELdedwW+gLbp6w9LLC9Twx7U1vY6fUEtJXvdAy7zIX7WEKl90WzhIXGiNKmzOsloGeLYEA3FoH
+	eQmQEzLNOW/W5et9eYO9cfG/MYwxLURJZThnaq26qaLOkiSpA6nXRCcn/mllyCAf9ehUU6ETpGn
+	orkcm2BcTfQWMQko+JX1T/1I3Vfvx1VuzxDH
+X-Google-Smtp-Source: AGHT+IHeHzk6udhwz4fney38x7L6dMwuOcobxknukdIVizR5PEcm6WA8GQDH++2EkukwFu5mAoMUqZO+VQS4BnHMC08=
+X-Received: by 2002:a17:90b:17d1:b0:32b:4c51:628a with SMTP id
+ 98e67ed59e1d1-32d43fb18dfmr4583886a91.8.1757284127629; Sun, 07 Sep 2025
+ 15:28:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <DCK76G2JH58W.1QPN6YHTEOABB@kernel.org>
+In-Reply-To: <DCK76G2JH58W.1QPN6YHTEOABB@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 8 Sep 2025 00:28:35 +0200
+X-Gm-Features: AS18NWCH5CQzhPsEphE142YdtjGl1wIs9cw6MvXKmijurS1ozoICewrpPeXHPU8
+Message-ID: <CANiq72kNpLWnzW00iHMQ4Pvk11SuktBYA3=TLGyQ7WnkDy9U2Q@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust ALLOC & DMA for v6.18
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 07 Sep 2025 23:39:13 +0200
-Message-Id: <DCMW6H0VJ9AP.1XWI1RI9YWO9H@kernel.org>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Fiona Behrens" <me@kloenk.dev>, "Alban
- Kurti" <kurti@invicto.ai>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: pin-init: add references to previously
- initialized fields
-References: <20250905140047.3325945-1-lossin@kernel.org>
- <DCL1DPN708H0.3JTL93J2GD2DR@kernel.org> <aLshd0_C-1rh3FAg@tardis-2.local>
- <DCLNSNWA7AT7.19OWOXUMJ5ZRJ@kernel.org> <aLzmcK2UM53I2Tbn@tardis-2.local>
- <aLzoyWpOr6eg-3yB@tardis-2.local> <DCMFN8UGD7QN.27HTYEXL87Z8@kernel.org>
- <DCMQVH09L1Y5.3A842FC1NGG5H@kernel.org>
- <DCMVHB8P7Z2G.PCOWPQXBSBT6@kernel.org>
-In-Reply-To: <DCMVHB8P7Z2G.PCOWPQXBSBT6@kernel.org>
 
-On Sun Sep 7, 2025 at 11:06 PM CEST, Benno Lossin wrote:
-> On Sun Sep 7, 2025 at 7:29 PM CEST, Danilo Krummrich wrote:
-> I have some ideas of changing the syntax to be more closure-esque:
+On Thu, Sep 4, 2025 at 7:38=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
 >
->     init!(|this| -> Result<MyStruct, Error> {
->         let x =3D 42;
->         MyStruct {
->             x,
->         }
->     })
->
-> There we could add another parameter, that would then serve this
-> purpose. We should also probably rename `this` to `slot` & then use
-> `this` for the initialized version.
+> Please pull the following ALLOC & DMA changes.
 
-I think that's a pretty good idea, but the part that I think is a little bi=
-t
-confusing remains: `this` will need to have different fields depending on w=
-here
-it's accessed.
+Merged into `rust-next` -- thanks for the summary and sending it early!
 
-> But as I said before, implementing the `this` thing from a macro
-> perspective is rather difficult (I have two ideas on how to do it and
-> both are bad...).
->
->> But as you say, that sounds tricky to implement and is probably not very
->> intuitive either. I'd rather say keep it as it is, if we don't want some=
-thing
->> like the `let b <- b` syntax I proposed for formatting reasons.
->
-> I don't feel like that's conveying the correct thing, it looks as if you
-> are only declaring a local variable.
-
-Yeah, it's not great, but given that it's a custom syntax it also does not
-create wrong expectations I'd say.
-
-Anyways, I'm fine with either. For now we probably want to land the version=
- as
-it is and revisit once you settle on the syntax rework you mentioned above.
+Cheers,
+Miguel
