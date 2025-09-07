@@ -1,95 +1,113 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B4011712
-	for <rust-for-linux@vger.kernel.org>; Sun,  7 Sep 2025 10:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66BB18A6DB
+	for <rust-for-linux@vger.kernel.org>; Sun,  7 Sep 2025 10:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757242659; cv=none; b=NgGXGfKOjlC3c9MfRlfA1veeeAy9bfNNpYZ8oKAKM4+5u77yeVW/yWdmttipRCJXcvzlZw6IX3HfILvO7wIrELt734bZPqeJ8HE8WjE2meJHMs+A/VLLBaOwqsY0Xe7Ehehyst2cuDIbFiMDaQUzq/bYnsABCrktyLd2e2r2G6s=
+	t=1757242772; cv=none; b=mvRdEv2uo5pYCFiVnlj0/I0t8W7Oesg2M4c+YiIpHBYVhPz6JZcl73z2D7AemQ7xWGC3J59P3hBEHjyQAKJLpPyOMnaDnekaPVKmTTuA2ZoX2TJB4o06glpa4c9g/L6VWlZYi5D3G+v0sva8UTSQbrymdT6IVGJ5hAxaEPVReyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757242659; c=relaxed/simple;
-	bh=lPpPZRm5wDdiOlnmObs6/JqmfBFAenE2Kn0SI6dg+Mw=;
+	s=arc-20240116; t=1757242772; c=relaxed/simple;
+	bh=Jn7DhhG1HyOHVMii19EXt6HoYd+tNXEZNiR41qcbG+g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Y/YqwaFzqo5eIUTompLHFKF/b4BEO2tz5ZkVdsKeQcjuIOrvEBujquitxH9SUR3QMB72rBeqtDoWK/DbbQKWqjrlWpJp4u9+OIyCcf66z7OWumLfIa7mXV1IaRNGm6MDy0LGuubRlldD/ZaDYY0WKZ5GKKNJ8LIwKU2/2D2yCI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fZKhdpmE; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=pbP881Gx9J3t8US9MSgA3BYFOFUlPTxMfNnXzKvn0n0m89KQz1pPqxELWpxATQ7JYT2/GG3tubhwABYdSXW6Oz0wiU2+p9kOOxxOvOiPhXKxofbvDcm84lQA9RONoJ3H5tjNPUPezzWy6E7tXHwCasWryJNUpS0mEKCrzka1FHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pDmUSJnv; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fZKhdpmE"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45cb4f23156so18372465e9.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 07 Sep 2025 03:57:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pDmUSJnv"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45de14da365so6421465e9.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 07 Sep 2025 03:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757242656; x=1757847456; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1757242769; x=1757847569; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9bW5BS8l5hy9hs8XlT7fBWdVcrw/67VKhJ4W74l/W1A=;
-        b=fZKhdpmEL1BozGkK59VxXmLw5WHDt8kAw7TVU1qcnazl01tqJaRqoUCSvKPV5+RKe5
-         v8xAPyq+SUx4QLcE1Iq7zLwzkh0bfcBmli3JMuTS+NhAp+ICNOje9N+pT9iHOWXt5Ivx
-         dbsjEWBAapAsJ7aw99sS3lkr/4IxcqWECEfhdoSzHesJYAE8hALcqm6mEwCXEzw0T45g
-         j2PgWi0ZCEoK0adWztAGdfo0HlnHkVyqsbGSwtEEyInZ7rn3OAenrUSP1COCgYGupmI+
-         CJAbNawavU99x8jXgK2Bt3G1Ea3vs9AFAeOJcywoguRnG/Zxxrk+tcXKPe7/SU0n1Whk
-         lGwA==
+        bh=nru7/1De12iNy/Lo6mL6Fz1GV9z9SyaW/89+3KISNuI=;
+        b=pDmUSJnvG+eqIZzkROd5SsqxZf4KSfar48FBtw5V1hzOHP4R5fLLIJjDb2WZaF3Q+I
+         WYheXdCNqwO4ycg901s1oXN86qnJx3dEeF3LzomXKKWKzwP+LA8gpTkUBq+ndZiqh2GI
+         12JSc4sQF6Vcnr2jnPAM+Crc96qLrwkGXXssfx+LgOO/Hm99k8yDjVReatZfJGwxyN/8
+         gBThJpski5Xw/vm9DfZw7I8qxa1YAK/r0cvAuHmLSsdXLdH4iAOKEVhipuHi0n+7bRTP
+         MtLkTRa8FlAlRLfq4UWO0eTEEq079BRqIeZxRZNyujSsJzxIMLWpLoqWJXvgEbTtr26h
+         QPYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757242656; x=1757847456;
+        d=1e100.net; s=20230601; t=1757242769; x=1757847569;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9bW5BS8l5hy9hs8XlT7fBWdVcrw/67VKhJ4W74l/W1A=;
-        b=e9YBj9A/F9sofzciuZZcP6DQvaO6CqHjjKW226n8FzQN5IdfDCdAws1FnnQQra5KR+
-         zROZPXDW/F2YrVEAxme+HoSbc50IJuRMwVbIJxwvw+WwXpNm94SERS65EMIbzG5REEew
-         qD7zTLDTVtmOE41kdDVzRdPFnxBTDD6oMxVbtY0AZ6blD+pAqGvpeKMvGZGo//KXODYQ
-         6sYWCTMeeCa9h8MXIzG/YsbQZxYGj1DJxaJooRHaKu5dNYKameO06YIT8VMOmHqC8KDO
-         rcMGbhFMNBMnojkVvVqHYQl3YI9XAVhA72r0A23VM7UomjPYq9fIax7axHmXIrlzhesn
-         iwaA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1c32LZlCOuDYPhZv6mk8yoX2QOzO2EXcx80DHAiu5UbMVbZvvARz/H0rxMPGSzGEqTMVjWAPSMvkXaKJARQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzr+ihDT9BPL7rLCzMNgCjAEupJiTGzvu0H1hVKytcc3/VWUHo6
-	mnl10CQ27ZZXAklpvv1z1ypvf/P4rL43Q6muHM3RPqO7zHZ+RSYiJXIHHLurF7CDtwKfz1zxxNp
-	RM9fWEBFbTzyj2lo+Fg==
-X-Google-Smtp-Source: AGHT+IFHWBdpeOOMGJf+wo6ol1QZ252iQApfx25t8bt4+q6E9lh+rGvi5+RDjvCHUYIHevj0+eJknd7d0bHkPSo=
-X-Received: from wmbep24.prod.google.com ([2002:a05:600c:8418:b0:45d:cfa4:ce0d])
+        bh=nru7/1De12iNy/Lo6mL6Fz1GV9z9SyaW/89+3KISNuI=;
+        b=ShX3j8xRa46NeAIuggaeGzsoGPJpmBaowdzxMSGlVWl4Ln7esYHNIyHjxqp9X1cNku
+         C8t9b6j0KWx73IroajOO4noboWxayHQ/LOFfDdNp6GBEFUmeTm4juxzLuy7n2SgvkshK
+         W8oKa3kn8jCyDKC7F7s4EEBScQCQkdZ8EW6jtkAK1kxWqsjmQTak5T60J6RjxJ9BF89v
+         Oxxiyg1DkzbsaT1r5X8+21ljPiR63hA6B29NMDqhwd/w0NIhfRF/OaR5YWffMQwz5Z3I
+         ce8FKvdavEwa1m5sDN3UMoG12zrSBVU1su3JxOrKZoeH9KPdQxYCfGuQ7o4mYj4lXTEq
+         pLqg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgE9HpWGeKAS+ldXqZrruLaUTmWv84YhRM5GQH5uvOaVP2Y6AFvm8Kv9APEuNi+dZGm4NTXVWOSICiaT+tqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM5HpGSIKbGoSCQl1l2yZEOwj1K4aJ4l+bIwnUdD7qmOYaqyHK
+	KT+tUhrvGWny36xcVeL6kxx8fCqBxlWvhorgxvhzQbXHY/aD+3bGbtTlmpsXXw+nAKytLf4WhL6
+	i/+t89klhUky5yDqo1g==
+X-Google-Smtp-Source: AGHT+IEO00SwMUdgmBkfcCYJ1fsDPI1xYuY1er0rIaxUxSTDTvFSh41jkR7cSeu8y5v+3Z4Xh0/HPN7Z/+Ekzas=
+X-Received: from wmbet15.prod.google.com ([2002:a05:600c:818f:b0:45b:7580:5aa])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1386:b0:45c:b5f7:c6e4 with SMTP id 5b1f17b1804b1-45dddedf9bfmr30888125e9.35.1757242656441;
- Sun, 07 Sep 2025 03:57:36 -0700 (PDT)
-Date: Sun, 7 Sep 2025 10:57:35 +0000
-In-Reply-To: <20250905140534.3328297-1-lossin@kernel.org>
+ 2002:a05:600c:4ed0:b0:45d:d0d6:223f with SMTP id 5b1f17b1804b1-45de5ff494cmr5479955e9.0.1757242769289;
+ Sun, 07 Sep 2025 03:59:29 -0700 (PDT)
+Date: Sun, 7 Sep 2025 10:59:28 +0000
+In-Reply-To: <CAAofZF4a6ARXOS0rmK5zY1Kd3xdODqdkj_keZmEYx8Z-JRvhng@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250905140534.3328297-1-lossin@kernel.org>
-Message-ID: <aL1lHyhzWX0xGrmo@google.com>
-Subject: Re: [PATCH] rust: pin-init: add code blocks to `[try_][pin_]init!` macros
+References: <20250905090819.107694-1-marco.crivellari@suse.com>
+ <CAH5fLgiZnCbNLpuphv4Kgsu48kRkhf6wJiSLrrgsqyEDvU3X3Q@mail.gmail.com> <CAAofZF4a6ARXOS0rmK5zY1Kd3xdODqdkj_keZmEYx8Z-JRvhng@mail.gmail.com>
+Message-ID: <aL1lkN5WcWkwiq3S@google.com>
+Subject: Re: [PATCH 0/2] rust: replace wq users and add WQ_PERCPU to
+ alloc_workqueue() users
 From: Alice Ryhl <aliceryhl@google.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
-	Christian Schrefl <chrisi.schrefl@gmail.com>, Alban Kurti <kurti@invicto.ai>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Marco Crivellari <marco.crivellari@suse.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Sep 05, 2025 at 04:05:31PM +0200, Benno Lossin wrote:
-> Allow writing `_: { /* any number of statements */ }` in initializers to
-> run arbitrary code during initialization.
+On Fri, Sep 05, 2025 at 06:05:50PM +0200, Marco Crivellari wrote:
+> Hello Alice,
 > 
->     try_init!(MyStruct {
->         _: {
->             if check_something() {
->                 return Err(MyError);
->             }
->         },
->         foo: Foo::new(val),
->         _: {
->             println!("successfully initialized `MyStruct`");
->         },
->     })
+> Thanks for your reply!
 > 
-> Link: https://github.com/Rust-for-Linux/pin-init/pull/84/commits/2880a9b898336e2d54f80715f00ce00f21f74d2f
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> I'm not entirely sure I understood your doubt.
+> 
+> system_dfl_wq and system_percpu_wq are wq(s) also present in the C code.
+> They are part of the prerequisite already merged in:
+> 
+> 128ea9f6ccfb6960293ae4212f4f97165e42222d
+> ("workqueue: Add system_percpu_wq and system_dfl_wq")
+> 
+> Let me know if I haven't understood correctly what you meant.
+> 
+> Thanks!
 
-Nice! Would it be possible to include a user so I can see it work in
-practice? E.g., for the irq feature?
+I mean that instead of:
+
++/// Returns the system unbound work queue (`system_dfl_wq`).
+ ///
+ /// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
+ /// are executed immediately as long as `max_active` limit is not reached and resources are
+ /// available.
+ pub fn system_unbound() -> &'static Queue {
+-    // SAFETY: `system_unbound_wq` is a C global, always available.
+-    unsafe { Queue::from_raw(bindings::system_unbound_wq) }
++    // SAFETY: `system_dfl_wq` is a C global, always available.
++    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
+ }
+
+you add a new function:
+
+	pub fn system_dfl() -> &'static Queue {
+	    // SAFETY: `system_dfl_wq` is a C global, always available.
+	    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
+	}
+
+and do *not* modify system_unbound().
 
 Alice
