@@ -1,182 +1,160 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B314A06;
-	Sun,  7 Sep 2025 08:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63CC2192E4;
+	Sun,  7 Sep 2025 08:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757233219; cv=none; b=J02SLVZoM+g/E3/rraw79cJA5eXt1b0CxKMEhjJovrBkuRquvyEDy9Gepj9y9BretoQ+5diM2h7JvWsv+5vb3zfJj+n4BbtcEOYxxAkFzUP7goQEh+qbIViy48659gwUQ1/bI74o4E4fJbWi5qWqbBaB0Y8QxYR7KC24pcfZjig=
+	t=1757234514; cv=none; b=NzLeIMANImQLn1QtozA4oecyzkUzCj1HO8awGfYhA2ACh5n7xByuq5GsdiOJxqGzJmZhmA8H/z8//frkMUFrv/WcnCbSx9JrhklFcsOLzFqCaP5CQPGaF4Tl4UxmHk6WMQSefoa5oB4XzAd5dhx7RjMmYsOfmBJGyOYhjBLPiA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757233219; c=relaxed/simple;
-	bh=WS/XaX3wOHVnhHAxGuafrPoemfTd0VcjPyTOVwJa9/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iJnt2nUZ56k66f89lT4B8kv6Jbe6acEOWYXhzPU/o0qUsPdfH5m1tEMhyNVcKsJIqdnuLXTxKPMMkL7C8dmjnJCEU7+tYO9iYq2DPcXLpeVqFI6tgCaN897d5LXYkyX+gGTN41hMH84CpLJ06+N5FSgV7PobZFaTIftCFqNm5FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=iCC6hcMA; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1757234514; c=relaxed/simple;
+	bh=GFcsiDtMsF2n1sNgOpIvu0722nloN3cfFrtddDj549w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=KQ1fzopN+fF7KY7C/dA0dWlCYy6ZLVkd5tIaZtbcRdmH29k0wHxwz+bQ/pJqruaOSd++clIBmKWGLUmzpgS5dkVaf/eZoGS2YkRgIM+pnhnMSHS111V9X3vPW8MxAV8J04+SCibHgAzVUWhPewTm6HQikpJe7MH+S+FTGqvN3Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYrD6NDD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="iCC6hcMA"
-Received: from mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:582e:0:640:200:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id A003D80AA3;
-	Sun, 07 Sep 2025 11:20:12 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 6Kf8EwlM7Sw0-kg7N4O4m;
-	Sun, 07 Sep 2025 11:20:11 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757233211;
-	bh=P3ODHwoQxLQWBGEsy0K6883JH3EDCUD22i04tJTJsQY=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=iCC6hcMAi8K+Durc0iNlataiVZ6End/NhoDBj91SbRhk0RIW62hwwScz3Fqh2A7ny
-	 2lL9Uxe/fakPIUjlVj57fIF39OnjaZ3HlABg5nf4bWcGt1FRFmpGJbK78QorxMgbsZ
-	 j0PecHPJW/jse/l4RaWTJVpe3OfMJK5s4JGsAW6U=
-Authentication-Results: mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Sun, 7 Sep 2025 11:20:06 +0300
-From: Onur <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com
-Subject: Re: [PATCH v6 6/7] rust: ww_mutex/exec: add high-level API
-Message-ID: <20250907112006.6bdbb478@nimda.home>
-In-Reply-To: <2B16DBF4-1F6C-4025-8373-5651867B7D49@collabora.com>
-References: <20250903131313.4365-1-work@onurozkan.dev>
- <20250903131313.4365-7-work@onurozkan.dev>
- <6D30FEF7-07E7-4851-A7A2-76649AD0B217@collabora.com>
- <20250906141310.2c29aa8e@nimda.home>
- <2B16DBF4-1F6C-4025-8373-5651867B7D49@collabora.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYrD6NDD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663B3C4CEF0;
+	Sun,  7 Sep 2025 08:41:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757234513;
+	bh=GFcsiDtMsF2n1sNgOpIvu0722nloN3cfFrtddDj549w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TYrD6NDDd2gXvdYEqqvm+J9X5zIv2jeUBxS28Psr/cTHEIpo//c7+HZGXfZ2wVLGV
+	 ibALarAxpTvtc6oAsHBzHUr0897xG5QZXBQSf/2j6MP72G1NdWkBToAJFM0F2k3+22
+	 QPvyva8UmtqGDXlbYkakY3v0x3uLbrFi26EuMuXJHbp/ENA07PX5dBZx3TXRDu7wG+
+	 pNNLZGPChbVFu2Y0BGlKFuOMYHj+BFGFeg8kghwH5/3Co5D0DamEqsosbTZs68Fi8d
+	 8MPUMpTnuSRIbzLHEUY96Bb5BHw0uqSkoOg3T8algz/27ut0Lt3idXC7KgVA891KTC
+	 qtWXe4sBLuoAA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 07 Sep 2025 10:41:48 +0200
+Message-Id: <DCMFN8UGD7QN.27HTYEXL87Z8@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>, "Danilo Krummrich"
+ <dakr@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Fiona Behrens" <me@kloenk.dev>, "Alban
+ Kurti" <kurti@invicto.ai>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: pin-init: add references to previously
+ initialized fields
+X-Mailer: aerc 0.20.1
+References: <20250905140047.3325945-1-lossin@kernel.org>
+ <DCL1DPN708H0.3JTL93J2GD2DR@kernel.org> <aLshd0_C-1rh3FAg@tardis-2.local>
+ <DCLNSNWA7AT7.19OWOXUMJ5ZRJ@kernel.org> <aLzmcK2UM53I2Tbn@tardis-2.local>
+ <aLzoyWpOr6eg-3yB@tardis-2.local>
+In-Reply-To: <aLzoyWpOr6eg-3yB@tardis-2.local>
 
-On Sat, 6 Sep 2025 12:04:34 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+On Sun Sep 7, 2025 at 4:07 AM CEST, Boqun Feng wrote:
+> On Sat, Sep 06, 2025 at 06:57:04PM -0700, Boqun Feng wrote:
+>> On Sat, Sep 06, 2025 at 12:52:22PM +0200, Danilo Krummrich wrote:
+>> > On Fri Sep 5, 2025 at 7:44 PM CEST, Boqun Feng wrote:
+>> > > On Fri, Sep 05, 2025 at 07:18:25PM +0200, Benno Lossin wrote:
+>> > > [...]
+>> > >> index 606946ff4d7f..1ac0b06fa3b3 100644
+>> > >> --- a/samples/rust/rust_driver_pci.rs
+>> > >> +++ b/samples/rust/rust_driver_pci.rs
+>> > >> @@ -78,8 +78,8 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::I=
+dInfo) -> Result<Pin<KBox<Self>
+>> > >> =20
+>> > >>          let drvdata =3D KBox::pin_init(
+>> > >>              try_pin_init!(Self {
+>> > >> -                pdev: pdev.into(),
+>> > >>                  bar <- pdev.iomap_region_sized::<{ Regs::END }>(0,=
+ c_str!("rust_driver_pci")),
+>> > >> +                pdev: pdev.into(),
+>> > >
+>> > > Ok, this example is good enough for me to express the concern here: =
+the
+>> > > variable shadowing behavior seems not straightforward (maybe because=
+ in
+>> > > normal Rust initalization expression, no binding is created for
+>> > > previous variables, neither do we have a `let` here).
+>> > >
+>> > > Would the future inplace initialization have the similar behavior? I
+>> > > asked because a natural resolution is adding a special syntax like:
+>> > >
+>> > >     let a =3D ..;
+>> > >
+>> > >     try_pin_init!(Self {
+>> > >         b: a,
+>> > > 	let a =3D a.into(); // create the new binding here.
+>> > > 	c: a, // <- use the previous initalized `a`.
+>> > >     }
+>> >=20
+>> > Can you please clarify the example? I'm a bit confused that this is no=
+t a field
+>> > of Self, so currently this can just be written as:
+>> >=20
+>>=20
+>> Oh, I could have been more clear: `a` is a field of `Self`, and the
+>> `let` part initalizes it.
+>>=20
+>> > 	try_pin_init!(Self {
+>> > 	   b: a,
+>> > 	   c: a.into,
+>> > 	})
+>> >=20
+>> > Of course assuming that a is Clone, as the code above does as well.
+>> >=20
+>> > So, if we are concerned by the variable shadowing, which I'm less conc=
+erned
+>> > about, maybe we can do this:
+>>=20
+>> I'm not that concerned to block this, but it does look to me like we are
+>> inventing a new way (and even a different syntax because normal Rust
+>> initialization doesn't create new bindings) to create binding, so I
+>> think I should bring it up.
+>>=20
+>> >=20
+>> > 	// The "original" `a` and `b`.
+>> > 	let a: A =3D ...;
+>> > 	let b: B =3D ...;
+>> >=20
+>> > 	try_pin_init!(Self {
+>> > 	   a,                   // Initialize the field only.
+>> > 	   let b <- b,          // Initialize the field and create a `&B` nam=
+ed `b`.
+>> > 	   c: a.into(),         // That's the "original" `a`.
+>> > 	   d <- D::new(b),      // Not the original `b`, but the pin-init one=
+.
+>> > 	})
+>
+> Another idea is using `&this`:
+>
+>  	try_pin_init!(&this in Self {
+>  	   a,                   // Initialize the field only.
+>  	   b <- b,              // Initialize the field only.
+>  	   c: a.into(),         // That's the "original" `a`.
+>  	   d <- D::new(this->b),      // Not the original `b`, but the pin-init=
+ one.
+>  	})
+>
+> , like a special field projection during initialization.
 
->=20
->=20
-> > On 6 Sep 2025, at 08:13, Onur <work@onurozkan.dev> wrote:
-> >=20
-> > On Fri, 5 Sep 2025 16:42:09 -0300
-> > Daniel Almeida <daniel.almeida@collabora.com> wrote:
-> >=20
-> >> Hi Onur,
-> >>=20
-> >>> On 3 Sep 2025, at 10:13, Onur =C3=96zkan <work@onurozkan.dev> wrote:
-> >>>=20
-> >>> `ExecContext` is a helper built on top of ww_mutex
-> >>=20
-> >> Again, I wonder what people think about this particular name.
-> >>=20
-> >>> that provides a retrying interface for lock acquisition.
-> >>> When `EDEADLK` is hit, it drops all held locks, resets
-> >>> the acquire context and retries the given (by the user)
-> >>> locking algorithm until it succeeds.
-> >>>=20
-> >>> The API keeps track of acquired locks, cleans them up
-> >>> automatically and allows data access to the protected
-> >>> data through `with_locked()`. The `lock_all()` helper
-> >>> allows implementing multi-mutex algorithms in a simpler
-> >>> and less error-prone way while keeping the ww_mutex
-> >>> semantics.
-> >>>=20
-> >>=20
-> >> Great, this was exactly what I was looking for! :)
-> >>=20
-> >>> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> >>> ---
-> >>> rust/kernel/sync/lock/ww_mutex.rs      |   2 +
-> >>> rust/kernel/sync/lock/ww_mutex/exec.rs | 176
-> >>> +++++++++++++++++++++++++ 2 files changed, 178 insertions(+)
-> >>> create mode 100644 rust/kernel/sync/lock/ww_mutex/exec.rs
-> >>>=20
-> >>> diff --git a/rust/kernel/sync/lock/ww_mutex.rs
-> >>> b/rust/kernel/sync/lock/ww_mutex.rs index
-> >>> b415d6deae9b..7de6578513e5 100644 ---
-> >>> a/rust/kernel/sync/lock/ww_mutex.rs +++
-> >>> b/rust/kernel/sync/lock/ww_mutex.rs @@ -16,6 +16,8 @@
-> >>> use core::cell::UnsafeCell;
-> >>> use core::marker::PhantomData;
-> >>>=20
-> >>> +pub mod exec;
-> >>> +
-> >>> /// Create static [`WwClass`] instances.
-> >>> ///
-> >>> /// # Examples
-> >>> diff --git a/rust/kernel/sync/lock/ww_mutex/exec.rs
-> >>> b/rust/kernel/sync/lock/ww_mutex/exec.rs new file mode 100644
-> >>> index 000000000000..2f1fc540f0b8
-> >>> --- /dev/null
-> >>> +++ b/rust/kernel/sync/lock/ww_mutex/exec.rs
-> >>> @@ -0,0 +1,176 @@
-> >>> +// SPDX-License-Identifier: GPL-2.0
-> >>> +
-> >>> +//! A high-level [`WwMutex`] execution helper.
-> >>> +//!
-> >>> +//! Provides a retrying lock mechanism on top of [`WwMutex`] and
-> >>> [`WwAcquireCtx`]. +//! It detects [`EDEADLK`] and handles it by
-> >>> rolling back and retrying the +//! user-supplied locking algorithm
-> >>> until success. +
-> >>> +use crate::prelude::*;
-> >>> +use crate::sync::lock::ww_mutex::{WwAcquireCtx, WwClass, WwMutex,
-> >>> WwMutexGuard}; +use core::ptr;
-> >>> +
-> >>> +/// High-level execution type for ww_mutex.
-> >>> +///
-> >>> +/// Tracks a series of locks acquired under a common
-> >>> [`WwAcquireCtx`]. +/// It ensures proper cleanup and retry
-> >>> mechanism on deadlocks and provides +/// type-safe access to
-> >>> locked data via [`with_locked`]. +///
-> >>> +/// Typical usage is through [`lock_all`], which retries a
-> >>> user-supplied +/// locking algorithm until it succeeds without
-> >>> deadlock. +pub struct ExecContext<'a> {
-> >>> +    class: &'a WwClass,
-> >>> +    acquire: Pin<KBox<WwAcquireCtx<'a>>>,
-> >>> +    taken: KVec<WwMutexGuard<'a, ()>>,
-> >>> +}
-> >>> +
-> >>> +impl<'a> Drop for ExecContext<'a> {
-> >>> +    fn drop(&mut self) {
-> >>> +        self.release_all_locks();
-> >>=20
-> >> If we move this to the acquire context, then we can do away with
-> >> this drop impl.
-> >>=20
-> >>> +    }
-> >>> +}
-> >>> +
-> >>> +impl<'a> ExecContext<'a> {
-> >>> +    /// Creates a new [`ExecContext`] for the given lock class.
-> >>> +    ///
-> >>> +    /// All locks taken through this context must belong to the
-> >>> same class.
-> >>> +    ///
-> >>> +    /// TODO: Add some safety mechanism to ensure classes are not
-> >>> different.
-> >>=20
-> >> core::ptr::eq()?
-> >>=20
-> >=20
-> > I was thinking more of a type-level mechanism to do ensure that.
->=20
-> Why?
->=20
+The main issue with new syntax is the difficulty of implementing it. The
+let one is fine, but it's pretty jarring & doesn't get formatted by
+rustfmt (which I want to eventually have). Using `this` does look better
+IMO, but it's near impossible to implement using declarative macros
+(even using `syn` it seems difficult to me). So either we find some way
+to express it in existing rust syntax (maybe use an attribute?), or we
+just keep it this way.
 
-So that wait-wound and wait-die classes don't get mixed up in the
-same `ExecContext` by using type validation at compile time.
+Maybe Gary has some ideas on how to implement it.
 
-Of course, `core::ptr::eq()` is still useful/required when the classes
-are of the same type but not exactly the same value. Maybe we can do
-both.
-
-
-Thanks,
-Onur
+---
+Cheers,
+Benno
