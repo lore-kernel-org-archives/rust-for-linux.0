@@ -1,63 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB45710E0;
-	Sat,  6 Sep 2025 19:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AFB19CC28;
+	Sun,  7 Sep 2025 01:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757188156; cv=none; b=J5WQlLH1tugvnVPUwK061uJgPK3eAWchrBF7l9LC7MgStZIfOQZF7Rwrtjx0XkUF68X3uv0Y7OZ/5dbsXXDOvHoJxessclgmpGodR9/F3KzZ+WZmKAj4gr+gTduNJX1IoETVA66bKpAvrGz/9l1fGp0XOJNjGEW65tLJDAF/w9k=
+	t=1757210229; cv=none; b=IP1TNBocPxSzKKkozKJYjjIfjmLStjRyMYdLMecjPShxj7yEUEJSHFlgDKB96CgkZsrFrufDhqwtAMRp4Wr7s9YbUzqwtIcsRHqgTrDSBhQMiWatTSXyx8zXCZrTFfsjenUBxjsyBv9s54V3K3rNO5C+uEymb5QuhPC2bggWqMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757188156; c=relaxed/simple;
-	bh=rIiPK07wJbss6Qbgul68MJIwu5jVzOiPI2vWJrjuYkI=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=A/D7mj0K2J/Te1wBzF4G3LKtR2qDimFsZamjYTsSDW/tmDH88EchxObk8JHrjipwrbyVsFuezDDax7dKguXGiZMJjjoPfw4j7q5UR7QDqwdlK4hT7LN7p5Oz40+ZWw3WNnl6fd5tzbv2eHAI+i4FUlL0nwFWfWSP8CPwOGRSrj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a33Uqv2W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757210229; c=relaxed/simple;
+	bh=HIANAWEJTSk4h6jVR+naSmXE055aF+gsPiBbfQucI+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FFNEOMpQJGW4zEhHTQUVvce6NUmW4gWzG38sJ6sWH1KrgAudOYBQFY9GRTcQ5e+t6QlK1CkdHD9wIaTxVKknLQ9l9TzhXMZdZcmfXfxB58nj1lPzBkbfqqpzOSvTCt/dOaJTjqGHlY1at+QsnoMIj0D1sI3h1K0fEg9do2p4vck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aNfE7ZGW; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a33Uqv2W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522A8C4CEE7;
-	Sat,  6 Sep 2025 19:49:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757188156;
-	bh=rIiPK07wJbss6Qbgul68MJIwu5jVzOiPI2vWJrjuYkI=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=a33Uqv2Wzd0lgrCj65q/pRfhRj7nSv+GOlFm6isRDXezw3GAI/u+i2iuqoya4MRsQ
-	 swoDuDvafs3YDoeejWnQSK4EZgztLuRlNrlYwLYusrrUky60jdMRV8poVAJk6+5pH8
-	 U7DUEalcHoakNSs+Pc/oJq4Mcc4k29c5EYykJf5j1HL5ntb2AJ80jlOv4GAxSYLsCz
-	 9FlaEc1XER2HE3ykPf0d77H+ahv98Y6iQOn56LKxZObojziSfMilWZ7Y8IFm7bJpuL
-	 WPqoYj2GmdZzuWnXfbTp6WG2sC028/jIbLQtWY6X600lzRZkZXiWqGZDQ+Y/lF3lB6
-	 o+RbAUMNjeKAQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFE7383BF69;
-	Sat,  6 Sep 2025 19:49:21 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 6.17 (2nd)
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20250906174901.1244166-1-ojeda@kernel.org>
-References: <20250906174901.1244166-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20250906174901.1244166-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.17-2
-X-PR-Tracked-Commit-Id: 8851e27d2cb947ea8bbbe8e812068f7bf5cbd00b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b236920731dd90c3fba8c227aa0c4dee5351a639
-Message-Id: <175718816052.2921744.15177006160768320115.pr-tracker-bot@kernel.org>
-Date: Sat, 06 Sep 2025 19:49:20 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aNfE7ZGW"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-81076e81a23so322438585a.3;
+        Sat, 06 Sep 2025 18:57:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757210227; x=1757815027; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6Ubqm0cemNSwa00R4M8gX2Nj2LvSr0FhtjEjZFitZIs=;
+        b=aNfE7ZGWsaaksQ7bUqg0YDez2CfbNcqTCLqk92iUgub95tew6vqqMOwJA59iufrmf+
+         skl34d0H8bW7Qnfs1tgwqu5u8aBWYjFV0J7IMS4+5IRBQb4usT3LIlKyS3bjU1gbSD7o
+         kDVRvRBMXJpkPXJDLa+k4lcWssd2hjtYHLj0zOoWhGcfRtcOW3nx9Z77nljrJPczHqAH
+         Qoax6PU9VUI2cWaDT9eLNQ1r0oCNwB0s5WQGhIMPbZyG4GWYzX5qZeurqeL7O3VHoTWw
+         29XKIEssKj6a4BeW0kVwHcjW14ZebayzrLJh9ldFfTm2MQeZWrxk35wuvKjl7DGEZe+Y
+         rrdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757210227; x=1757815027;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6Ubqm0cemNSwa00R4M8gX2Nj2LvSr0FhtjEjZFitZIs=;
+        b=Uvh7/i2RTtfwarDtOwCABl5+tsMwBGf3MQa2irXkVmOLEYAfdgiJN9Bhp0yl/4DigZ
+         UK7icG80wvi/+bAIuTUyLQ3zpP4WqZ36r1ORm7tkYTY/mC4BT+z5EM47DgecymYq7f1y
+         AndfV+dXEVQRpFHWos6i02ymGV1KZDbK4XYNguJvP3dsjcATIegF9gF/ho3F6EFR3bf4
+         /lytw+45Cdeg0QnCpwZGF9Zr4cIpzKR99RSKdiEdtZX0g1YZfBLXi7t8T27/zGBMu+eg
+         NBX++6sitnm+s3SY5y8elfYzTJ+6iJJokA3Tae68Ac2D5/dsOWiKQYwuzBBeCX2dZhHd
+         eMCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUC6qwcnHUdy4K2C4e3uRTO+0CpIvPzmfYt/TttBu7cZU/zl8Dra6bJRPohXyH2nhLQNfR9ogRtrWH0wO4=@vger.kernel.org, AJvYcCUsAZJcxeuIAXH8rpwEQLCIl+KyloG8cZBw02zCZoX63TWjKPYoaHE9n2zLN48yRCZ/UZMo+1zp6euZ7PV0jNI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsuDegqTq2BoJuBB3wLETa4J7Jz9j7j8crXHvlOY2xmlQzdCHv
+	nrHdv0iWpHzk7OyYXIqMkxcNkiuuyMxCuxcwlThHuAa0Y1+AXXJM5xBf
+X-Gm-Gg: ASbGncu0b+VOuBnjot9AKEfhaxSybH25vzy03C9CfyRY2A9oHhJ5qrWYMNmvnEtih7p
+	EGZ7dgCDuwrAiN17W+Gu15n8u0Gcys+MtnW+Sf6/lMBGpfz2Jl5ExvnKmyaaGNS6e3npBnRu36w
+	FVZb/0O1tjmUaMoFhbJAZQkQzUKeKOXOOqYX9YMfNw4E4H9Qppbr+RV2kPZoJlI+TmSXKHi9OmG
+	owVzLPlRhNAkpYQQFRNwzVldeveF/bqfEedVIMD1Ol5VQCZmwhpXI5wbeBI8gkT2nuG0gq7EG4D
+	hCv8jSGVBM+bNZrxoo83jJQHOvAV4OLp3k62fQu2yYaktonmoD0O2fEskyh7ogm81hZ8DsZHss5
+	jZp4iXhy6gTMQNCIh78R1wWDhogT6Kt4zB+x3CJEkd0O/mxQhqcdcB20BLTjb5vXhh9Ce6eXZa4
+	IGWw5mZ85VjHwLg8tLUQrMwj5psuWqTY6dfQ==
+X-Google-Smtp-Source: AGHT+IGkfbUjiAfmJrUYTAsNW2Fmn0Z++NsMhASSx2EZdGTuDDapBTiJXZp60cXzhq31btTZ8hzpeQ==
+X-Received: by 2002:a05:620a:ab04:b0:813:de67:afff with SMTP id af79cd13be357-813de67b39cmr299305885a.46.1757210227039;
+        Sat, 06 Sep 2025 18:57:07 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b48f501690sm74875171cf.0.2025.09.06.18.57.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Sep 2025 18:57:06 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C37BFF40066;
+	Sat,  6 Sep 2025 21:57:05 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Sat, 06 Sep 2025 21:57:05 -0400
+X-ME-Sender: <xms:cea8aIYZGHRMMNs45SFezA-MHEEdzl0w2HuPTDiumWNZuVdcZpxlIg>
+    <xme:cea8aE7empNwKt4XCUc8KRQCm1W3DA4It6dXh2NJHypj6LGfUkkghYK0rbpwzQHL7
+    EbyCwrwds1ojZ79MA>
+X-ME-Received: <xmr:cea8aAmUOLOwNEmteWVgAOuHf_YecFEz0JJ4h3vI72vyxlgd1fdvNouGOIcyQicytzc1AUWV2l__BnULVesEsQFK7I0kR1OM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeefkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhsshhinheskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhope
+    hgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehp
+    rhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhm
+    pdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:cea8aKHQInfR5brGYOxvHvhvz7HQTKd4uiwuLaKNdhP2-2RB0oV1Uw>
+    <xmx:cea8aEEW2JBYpTbiLXHk4cgima6ctKY5xWsX1OufED3OmUPqtR9PwA>
+    <xmx:cea8aC3_ivyfYOiTyrNg339F7JgTnt7yGzeriR1RwgnWw8P2j83VEw>
+    <xmx:cea8aGerBw4c9XVnZvkYYMQPrWi_CDDhH2qEvVcDYkzF3Tza1yXzJg>
+    <xmx:cea8aEJE7c0LReqOgI_FU6EeMC6cVdkwjIcMQWZfdgxLb3PLcqrW66FE>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 6 Sep 2025 21:57:05 -0400 (EDT)
+Date: Sat, 6 Sep 2025 18:57:04 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Fiona Behrens <me@kloenk.dev>, Alban Kurti <kurti@invicto.ai>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?iso-8859-1?Q?Wilczy=B4nski?= <kwilczynski@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: pin-init: add references to previously initialized
+ fields
+Message-ID: <aLzmcK2UM53I2Tbn@tardis-2.local>
+References: <20250905140047.3325945-1-lossin@kernel.org>
+ <DCL1DPN708H0.3JTL93J2GD2DR@kernel.org>
+ <aLshd0_C-1rh3FAg@tardis-2.local>
+ <DCLNSNWA7AT7.19OWOXUMJ5ZRJ@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DCLNSNWA7AT7.19OWOXUMJ5ZRJ@kernel.org>
 
-The pull request you sent on Sat,  6 Sep 2025 19:49:01 +0200:
+On Sat, Sep 06, 2025 at 12:52:22PM +0200, Danilo Krummrich wrote:
+> On Fri Sep 5, 2025 at 7:44 PM CEST, Boqun Feng wrote:
+> > On Fri, Sep 05, 2025 at 07:18:25PM +0200, Benno Lossin wrote:
+> > [...]
+> >> index 606946ff4d7f..1ac0b06fa3b3 100644
+> >> --- a/samples/rust/rust_driver_pci.rs
+> >> +++ b/samples/rust/rust_driver_pci.rs
+> >> @@ -78,8 +78,8 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> Result<Pin<KBox<Self>
+> >>  
+> >>          let drvdata = KBox::pin_init(
+> >>              try_pin_init!(Self {
+> >> -                pdev: pdev.into(),
+> >>                  bar <- pdev.iomap_region_sized::<{ Regs::END }>(0, c_str!("rust_driver_pci")),
+> >> +                pdev: pdev.into(),
+> >
+> > Ok, this example is good enough for me to express the concern here: the
+> > variable shadowing behavior seems not straightforward (maybe because in
+> > normal Rust initalization expression, no binding is created for
+> > previous variables, neither do we have a `let` here).
+> >
+> > Would the future inplace initialization have the similar behavior? I
+> > asked because a natural resolution is adding a special syntax like:
+> >
+> >     let a = ..;
+> >
+> >     try_pin_init!(Self {
+> >         b: a,
+> > 	let a = a.into(); // create the new binding here.
+> > 	c: a, // <- use the previous initalized `a`.
+> >     }
+> 
+> Can you please clarify the example? I'm a bit confused that this is not a field
+> of Self, so currently this can just be written as:
+> 
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.17-2
+Oh, I could have been more clear: `a` is a field of `Self`, and the
+`let` part initalizes it.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b236920731dd90c3fba8c227aa0c4dee5351a639
+> 	try_pin_init!(Self {
+> 	   b: a,
+> 	   c: a.into,
+> 	})
+> 
+> Of course assuming that a is Clone, as the code above does as well.
+> 
+> So, if we are concerned by the variable shadowing, which I'm less concerned
+> about, maybe we can do this:
 
-Thank you!
+I'm not that concerned to block this, but it does look to me like we are
+inventing a new way (and even a different syntax because normal Rust
+initialization doesn't create new bindings) to create binding, so I
+think I should bring it up.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+> 
+> 	// The "original" `a` and `b`.
+> 	let a: A = ...;
+> 	let b: B = ...;
+> 
+> 	try_pin_init!(Self {
+> 	   a,                   // Initialize the field only.
+> 	   let b <- b,          // Initialize the field and create a `&B` named `b`.
+> 	   c: a.into(),         // That's the "original" `a`.
+> 	   d <- D::new(b),      // Not the original `b`, but the pin-init one.
+> 	})
+
+This looks good to me as well. But I'm curious what the syntax would be
+like in the in-place placement language feature in the future.
+
+Regards,
+Boqun
