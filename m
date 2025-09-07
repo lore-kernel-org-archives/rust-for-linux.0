@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475073597A;
-	Sun,  7 Sep 2025 22:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2F81922FD;
+	Sun,  7 Sep 2025 23:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757285468; cv=none; b=YtpCAsZFSPINPWhRTDc3nVex3UN00T7MD9zAXmpdtsgsyLPHEoXEccqLRg7Tsc2qpiTLM9cNEZx+kOusvMIi2x/aBX+kbLiBdjl8/PSIoTyG/jQeKq6qG4zDtjt+PLhkt05UBWwWDJNQJGR/KieNgXdoAPXjxo5f0F/rUkkZ5cU=
+	t=1757287518; cv=none; b=b/WLNNHfnAYdDI3brBYDbdQBfv/hvc4YylcuBXb2yrAXvfE/MVx6xlezpJtpbbli8lzVCpty1hFgP4EvF0s+lPnBHgkNmLM5rJsat2lmG8FXJsaXhAzpNQIq8S1zhPi275pexwlpPemLG3q2rsCQCMeSfv9IWKjSlWrUABziwac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757285468; c=relaxed/simple;
-	bh=fGTCI6P9ODPKffPJ8VaT5xwiykzdLEdHOnQvoxGRM0E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=HSNo/maug4ln0CWHru1vqBEXvyu/rRXlTOj7djGjOIvbcg611oRdw4xaFF+//pQHthXF02p94tjYaGB6J4ikxbh8wtK7lWjpwNzWxDu8nGH1rO66lPMt3TJR4Uu80Jmc9PxO7nAawsEmBXj/RJ61iOw9CtT2f1nCAU8uBTN/YRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nn9ebj5m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757287518; c=relaxed/simple;
+	bh=2IK1HntqZit2+7T9ga7A2o5l9tYj6VYkyIJ5hFhuKIc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=mKTsgEqHussoA9fZh9RTcJnZNmD+myMCWjSiHk//UFGGehWu//mHwYgk9c0gO7oYM56lrOrV240hoex3iAjZLD7GeKhoaculG2L7LKNNtXIXH9vj/S40peplf1hguu2DM/4HoZrC94DtUgQjLq6E7XCnY61go6g5L1KMquVYObU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aae61bQB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nn9ebj5m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937D4C4CEF0;
-	Sun,  7 Sep 2025 22:51:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aae61bQB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22472C4CEF0;
+	Sun,  7 Sep 2025 23:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757285467;
-	bh=fGTCI6P9ODPKffPJ8VaT5xwiykzdLEdHOnQvoxGRM0E=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=Nn9ebj5mWCCwon78T5jk2zTUli/MpCoW/zNc5NuiejJw++46mbBMREx8zLLjMj5iO
-	 RPiPrp3M5FtyCj7sevS1Oul2dYjFDuXrzhq18IYJyI5aCccHtqzVcILTZpTejdOyTR
-	 7tiszVKcx/5Hmc5xRS/bNiPO9kFX36H04oezCu5PyyQyGCtS0Es3MijkqRUSF05ses
-	 HemmMH2StyNm6gTx2rRp/3RCcAy7kn/LLbYM9/u5HuY4ShPWc+Zf/844ELMHKZBo8I
-	 07QcaNZXdr/XOMnLIjlsLPnyL9a5L0hvLxr7KmYf9Uy+X2U8DFuLtl7iPK54aVKUvR
-	 3dChO8EYnqMAA==
+	s=k20201202; t=1757287516;
+	bh=2IK1HntqZit2+7T9ga7A2o5l9tYj6VYkyIJ5hFhuKIc=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Aae61bQBmyoZgaEUDNSECYT3wALjb0jNytP9riTlucETh91KIjUrgenJXcsoBXpCJ
+	 m5Jr+yPszE2KN8/2GsRTdEVuD9kC/X7IzmwvgkUbf7y3gc5bDtTQ+1tqIyUIYWzei2
+	 Jm/XqoVd35xFDnaYj+fdeOiXMYfwTnKeZCE0+7YR/RLrqDApZAp6RV9lZOPyqW83T3
+	 ZdV1/NB3WrT9DNqwyhVbz18dVC8bbNLXGxJtUviKJPX/5/cP+pCbtk07HaC18a/wvh
+	 JGLxTbEst1/eNqXN+nu+kKbZfi8ptO89nMpxSX35yIJbyw7eL1VpmfptzBALZlNqrH
+	 4bFwmz0DXnNMg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,97 +34,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 08 Sep 2025 00:51:02 +0200
-Message-Id: <DCMXPGXDXHYT.D9VJ5QBMAVPN@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Fiona Behrens" <me@kloenk.dev>, "Alban
- Kurti" <kurti@invicto.ai>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: pin-init: add references to previously
- initialized fields
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250905140047.3325945-1-lossin@kernel.org>
- <DCL1DPN708H0.3JTL93J2GD2DR@kernel.org> <aLshd0_C-1rh3FAg@tardis-2.local>
- <DCLNSNWA7AT7.19OWOXUMJ5ZRJ@kernel.org> <aLzmcK2UM53I2Tbn@tardis-2.local>
- <aLzoyWpOr6eg-3yB@tardis-2.local> <DCMFN8UGD7QN.27HTYEXL87Z8@kernel.org>
- <DCMQVH09L1Y5.3A842FC1NGG5H@kernel.org>
- <DCMVHB8P7Z2G.PCOWPQXBSBT6@kernel.org>
- <DCMW6H0VJ9AP.1XWI1RI9YWO9H@kernel.org>
-In-Reply-To: <DCMW6H0VJ9AP.1XWI1RI9YWO9H@kernel.org>
+Date: Mon, 08 Sep 2025 01:25:11 +0200
+Message-Id: <DCMYFLXXMOHT.M34887LRPXHH@kernel.org>
+Subject: Re: [PATCH v11 5/7] samples: rust: Add debugfs sample driver
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
+ <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Matthew Maurer" <mmaurer@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+ <20250904-debugfs-rust-v11-5-7d12a165685a@google.com>
+ <DCKQS4126EVC.38ZJ0GOFDYCP7@kernel.org>
+ <CAGSQo01He7cNvcOQBxAqLicSjKniSp=97K6GupnxS4B=G9p4rw@mail.gmail.com>
+In-Reply-To: <CAGSQo01He7cNvcOQBxAqLicSjKniSp=97K6GupnxS4B=G9p4rw@mail.gmail.com>
 
-On Sun Sep 7, 2025 at 11:39 PM CEST, Danilo Krummrich wrote:
-> On Sun Sep 7, 2025 at 11:06 PM CEST, Benno Lossin wrote:
->> On Sun Sep 7, 2025 at 7:29 PM CEST, Danilo Krummrich wrote:
->> I have some ideas of changing the syntax to be more closure-esque:
+On Sat Sep 6, 2025 at 5:19 AM CEST, Matthew Maurer wrote:
+> On Fri, Sep 5, 2025 at 2:00=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >>
->>     init!(|this| -> Result<MyStruct, Error> {
->>         let x =3D 42;
->>         MyStruct {
->>             x,
->>         }
->>     })
+>> On Thu Sep 4, 2025 at 11:13 PM CEST, Matthew Maurer wrote:
+>> > +kernel::acpi_device_table!(
+>> > +    ACPI_TABLE,
+>> > +    MODULE_ACPI_TABLE,
+>> > +    <RustDebugFs as platform::Driver>::IdInfo,
+>> > +    [(acpi::DeviceId::new(c_str!("LNUXDEBF")), ())]
 >>
->> There we could add another parameter, that would then serve this
->> purpose. We should also probably rename `this` to `slot` & then use
->> `this` for the initialized version.
+>> This should use "LNUXBEEF", as we explicitly reserved it for sample and =
+test
+>> code.
+>>
+>> I think we could reserve more if we see a benefit, but so far it's only =
+used by
+>> the platform driver sample, so we should be good.
+>>
+>> Either way, no need to resend for this only, it can be fixed up on apply=
+. :)
 >
-> I think that's a pretty good idea, but the part that I think is a little =
-bit
-> confusing remains: `this` will need to have different fields depending on=
- where
-> it's accessed.
+> Ah, thanks, I was unaware that it was specially reserved and so tried
+> to pick something distinct. You fixing up this and the `OF_ID_TABLE`
+> on apply SGTM.
 
-Yeah (that's also the main issue with the macro implementation).
+Ok, I will wait for Greg to have a look first.
 
->> But as I said before, implementing the `this` thing from a macro
->> perspective is rather difficult (I have two ideas on how to do it and
->> both are bad...).
->>
->>> But as you say, that sounds tricky to implement and is probably not ver=
-y
->>> intuitive either. I'd rather say keep it as it is, if we don't want som=
-ething
->>> like the `let b <- b` syntax I proposed for formatting reasons.
->>
->> I don't feel like that's conveying the correct thing, it looks as if you
->> are only declaring a local variable.
->
-> Yeah, it's not great, but given that it's a custom syntax it also does no=
-t
-> create wrong expectations I'd say.
-
-I'd say it looks like combining the `<-` operation already used by the
-`init!` macro & a `let` binding. Thus introducing a local variable
-that's (pin) initialized in-place. Not a field of the current struct.
-
-> Anyways, I'm fine with either. For now we probably want to land the versi=
-on as
-> it is and revisit once you settle on the syntax rework you mentioned abov=
-e.
-
-I actually came up with a third option that looks best IMO:
-
-    init!(MyStruct {
-        x: 42,
-        #[with_binding]
-        y: 24,
-        z: *y,
-    })
-
-The `#[with_binding]` attribute makes the macro generate a variable `y`.
-`x` & `z` don't give access to their value. (we of course should come up
-with a better name).
-
-Any thoughts?
-
----
-Cheers,
-Benno
+- Danilo
