@@ -1,113 +1,233 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66BB18A6DB
-	for <rust-for-linux@vger.kernel.org>; Sun,  7 Sep 2025 10:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0E818FDAB
+	for <rust-for-linux@vger.kernel.org>; Sun,  7 Sep 2025 11:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757242772; cv=none; b=mvRdEv2uo5pYCFiVnlj0/I0t8W7Oesg2M4c+YiIpHBYVhPz6JZcl73z2D7AemQ7xWGC3J59P3hBEHjyQAKJLpPyOMnaDnekaPVKmTTuA2ZoX2TJB4o06glpa4c9g/L6VWlZYi5D3G+v0sva8UTSQbrymdT6IVGJ5hAxaEPVReyA=
+	t=1757243724; cv=none; b=iJfkYCoD5pgTKnAL7jNDkXQuwmOUaCt03rZRnIjrWPRJts3RindDjIx55LDr4DOD26oofRIPI6AEEwU8ltSMfk/ef68jR5ZKMx7tlfT+gJ7GCsqFydA58MbbZJaPuvqHZhobFferKWCN8JAntFqA3GzRO9qipL3AyUn3rNqMv+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757242772; c=relaxed/simple;
-	bh=Jn7DhhG1HyOHVMii19EXt6HoYd+tNXEZNiR41qcbG+g=;
+	s=arc-20240116; t=1757243724; c=relaxed/simple;
+	bh=MKYUopQS7eKHksfsQosxZG+bhhpOJOJJX5o+HxyaNY0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pbP881Gx9J3t8US9MSgA3BYFOFUlPTxMfNnXzKvn0n0m89KQz1pPqxELWpxATQ7JYT2/GG3tubhwABYdSXW6Oz0wiU2+p9kOOxxOvOiPhXKxofbvDcm84lQA9RONoJ3H5tjNPUPezzWy6E7tXHwCasWryJNUpS0mEKCrzka1FHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pDmUSJnv; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=MLApyzr5xsJ+g8xki6aj2ionCxplk/tWM8JmeRkNhsHlt+zXmSbh1rISRx8COpMJjR34XYvUhXZiNBdOF/mdd2t5IS69xTcdoTaCzo/v5rbOHhif7O5NN4yb8LI9hLpf8K6cmziu4Plp/zkdMSLc9z0MNNGRbBwdrDdDQi9d/bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IDO0I+Oa; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pDmUSJnv"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45de14da365so6421465e9.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 07 Sep 2025 03:59:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IDO0I+Oa"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3e40057d90aso1000056f8f.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 07 Sep 2025 04:15:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757242769; x=1757847569; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nru7/1De12iNy/Lo6mL6Fz1GV9z9SyaW/89+3KISNuI=;
-        b=pDmUSJnvG+eqIZzkROd5SsqxZf4KSfar48FBtw5V1hzOHP4R5fLLIJjDb2WZaF3Q+I
-         WYheXdCNqwO4ycg901s1oXN86qnJx3dEeF3LzomXKKWKzwP+LA8gpTkUBq+ndZiqh2GI
-         12JSc4sQF6Vcnr2jnPAM+Crc96qLrwkGXXssfx+LgOO/Hm99k8yDjVReatZfJGwxyN/8
-         gBThJpski5Xw/vm9DfZw7I8qxa1YAK/r0cvAuHmLSsdXLdH4iAOKEVhipuHi0n+7bRTP
-         MtLkTRa8FlAlRLfq4UWO0eTEEq079BRqIeZxRZNyujSsJzxIMLWpLoqWJXvgEbTtr26h
-         QPYQ==
+        d=google.com; s=20230601; t=1757243721; x=1757848521; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qYE7Mdh99/9rzNVteX8mWuWywSt6JxH5pN7ISK0g0K0=;
+        b=IDO0I+OaK7Yur7haaH7eANJE5lZd5YDWNjWjQBckNw3Qofzxa2RCCinYX0i4fWZ6eR
+         WHUybZlPbLeMAC+TrY7pKOBwHNe8rtfSCioEy72KJWeDH3ItytbgfxFMVokZsXaD6CxY
+         y6JMJWvLjQHZeQDb9Njx0S5F0kW7p2+ukSMICtNWRZOFOp/iRHpAL0dLetY5E3nhvW6U
+         rFjtWRTLPhIVqjZD3Kw7op75f5Ewy2ea4BMFkMbGSp8y3kpL4unbjPJBC4DYvjp4lkJO
+         A6/Bvur1ameNccd2xVGeMi8m1yJOIYPENlZ7fQJPwL19bZC6wzox1UZD2+4VJojMQTvd
+         vElw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757242769; x=1757847569;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nru7/1De12iNy/Lo6mL6Fz1GV9z9SyaW/89+3KISNuI=;
-        b=ShX3j8xRa46NeAIuggaeGzsoGPJpmBaowdzxMSGlVWl4Ln7esYHNIyHjxqp9X1cNku
-         C8t9b6j0KWx73IroajOO4noboWxayHQ/LOFfDdNp6GBEFUmeTm4juxzLuy7n2SgvkshK
-         W8oKa3kn8jCyDKC7F7s4EEBScQCQkdZ8EW6jtkAK1kxWqsjmQTak5T60J6RjxJ9BF89v
-         Oxxiyg1DkzbsaT1r5X8+21ljPiR63hA6B29NMDqhwd/w0NIhfRF/OaR5YWffMQwz5Z3I
-         ce8FKvdavEwa1m5sDN3UMoG12zrSBVU1su3JxOrKZoeH9KPdQxYCfGuQ7o4mYj4lXTEq
-         pLqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUgE9HpWGeKAS+ldXqZrruLaUTmWv84YhRM5GQH5uvOaVP2Y6AFvm8Kv9APEuNi+dZGm4NTXVWOSICiaT+tqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM5HpGSIKbGoSCQl1l2yZEOwj1K4aJ4l+bIwnUdD7qmOYaqyHK
-	KT+tUhrvGWny36xcVeL6kxx8fCqBxlWvhorgxvhzQbXHY/aD+3bGbtTlmpsXXw+nAKytLf4WhL6
-	i/+t89klhUky5yDqo1g==
-X-Google-Smtp-Source: AGHT+IEO00SwMUdgmBkfcCYJ1fsDPI1xYuY1er0rIaxUxSTDTvFSh41jkR7cSeu8y5v+3Z4Xh0/HPN7Z/+Ekzas=
-X-Received: from wmbet15.prod.google.com ([2002:a05:600c:818f:b0:45b:7580:5aa])
+        d=1e100.net; s=20230601; t=1757243721; x=1757848521;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qYE7Mdh99/9rzNVteX8mWuWywSt6JxH5pN7ISK0g0K0=;
+        b=fkg88Bn5o+IObL+/uX24Hj3swmvVKA2Ga5gVfeBacSTREudjGiMJ8cyeWFMzp6nZyS
+         o3qmmkzSTFOhE+E/nig9DbaFxsL1iH/74VFNpcbUyxV0pmTlrHyW5PIJo7XZ+NICgYGt
+         cjq+IqmviwAxQGyIgIZAEpg//p/bnfsFVLeP+Hrcf83bCY+wg05bRCyF4zXSMiYOUT4G
+         OS6lV+zQUa1xlNuCh9Xlx8eSZTlo8WFkWyoPT8nSPqmN3lJ4thKhQ79IS8QCi1e+B0D6
+         LEuaoNJL52IQ7LjL42uNsQ1aqWg0oBiDQBIYi0auE7mRVxGG9qlJNS1sQ0f1EUApL1PX
+         kujg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2ZpauplM0TroTp3twmhi0aWMvUpX3RzmUdphP7irbHzOGMxOMU6Uz1U3Y2SKru4JZBzYhVpUc0dnW8h2NYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJkk1wg0t81XpjyfKliB3aJoe0ItpAP24RfYAA59zFfqYQgIfu
+	iu+BifRQtCFjckd9Fc5JKrm0ewc3tCNP/uDIq7RuffZKoxmStL1CLkOM9RO/oPBYIN287VX2f37
+	Vlw+SLysrCJNF4aiDIw==
+X-Google-Smtp-Source: AGHT+IHuEDNEPXu7Dy3DfM2a1VFFRo/E10YKm/lyBx1r925AHGa8w+aVHbPsl0A4UzCnXWHx+qBEECQh0lFq/dc=
+X-Received: from wmc24.prod.google.com ([2002:a05:600c:6018:b0:45b:79d1:abcb])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4ed0:b0:45d:d0d6:223f with SMTP id 5b1f17b1804b1-45de5ff494cmr5479955e9.0.1757242769289;
- Sun, 07 Sep 2025 03:59:29 -0700 (PDT)
-Date: Sun, 7 Sep 2025 10:59:28 +0000
-In-Reply-To: <CAAofZF4a6ARXOS0rmK5zY1Kd3xdODqdkj_keZmEYx8Z-JRvhng@mail.gmail.com>
+ 2002:a5d:5f92:0:b0:3d7:2284:b20 with SMTP id ffacd0b85a97d-3e641e3cd77mr2638780f8f.3.1757243721320;
+ Sun, 07 Sep 2025 04:15:21 -0700 (PDT)
+Date: Sun, 7 Sep 2025 11:15:20 +0000
+In-Reply-To: <DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250905090819.107694-1-marco.crivellari@suse.com>
- <CAH5fLgiZnCbNLpuphv4Kgsu48kRkhf6wJiSLrrgsqyEDvU3X3Q@mail.gmail.com> <CAAofZF4a6ARXOS0rmK5zY1Kd3xdODqdkj_keZmEYx8Z-JRvhng@mail.gmail.com>
-Message-ID: <aL1lkN5WcWkwiq3S@google.com>
-Subject: Re: [PATCH 0/2] rust: replace wq users and add WQ_PERCPU to
- alloc_workqueue() users
+References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
+ <20250905-vmbo-defer-v1-1-7ae1a382b674@google.com> <20250905152505.005a610d@fedora>
+ <CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com> <DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org>
+Message-ID: <aL1pSFB9iBsfHFM_@google.com>
+Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
 From: Alice Ryhl <aliceryhl@google.com>
-To: Marco Crivellari <marco.crivellari@suse.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, Matthew Brost <matthew.brost@intel.com>, 
+	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Steven Price <steven.price@arm.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Liviu Dudau <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 05, 2025 at 06:05:50PM +0200, Marco Crivellari wrote:
-> Hello Alice,
-> 
-> Thanks for your reply!
-> 
-> I'm not entirely sure I understood your doubt.
-> 
-> system_dfl_wq and system_percpu_wq are wq(s) also present in the C code.
-> They are part of the prerequisite already merged in:
-> 
-> 128ea9f6ccfb6960293ae4212f4f97165e42222d
-> ("workqueue: Add system_percpu_wq and system_dfl_wq")
-> 
-> Let me know if I haven't understood correctly what you meant.
-> 
-> Thanks!
+On Sat, Sep 06, 2025 at 12:47:36AM +0200, Danilo Krummrich wrote:
+> On Fri Sep 5, 2025 at 8:18 PM CEST, Alice Ryhl wrote:
+> > On Fri, Sep 5, 2025 at 3:25=E2=80=AFPM Boris Brezillon
+> > <boris.brezillon@collabora.com> wrote:
+> >> On Fri, 05 Sep 2025 12:11:28 +0000
+> >> Alice Ryhl <aliceryhl@google.com> wrote:
+> >> > +static bool
+> >> > +drm_gpuvm_bo_is_dead(struct drm_gpuvm_bo *vm_bo)
+> >> > +{
+> >> > +     return !kref_read(&vm_bo->kref);
+> >>
+> >> I'm not too sure I like the idea of [ab]using vm_bo::kref to defer the
+> >> vm_bo release. I get why it's done like that, but I'm wondering why we
+> >> don't defer the release of drm_gpuva objects instead (which is really
+> >> what's being released in va_unlink()). I can imagine drivers wanting t=
+o
+> >> attach resources to the gpuva that can't be released in the
+> >> dma-signalling path in the future, and if we're doing that at the gpuv=
+a
+> >> level, we also get rid of this kref dance, since the va will hold a
+> >> vm_bo ref until it's destroyed.
+> >>
+> >> Any particular reason you went for vm_bo destruction deferral instead
+> >> of gpuva?
+> >
+> > All of the things that were unsafe to release in the signalling path
+> > were tied to the vm_bo, so that is why I went for vm_bo cleanup.
+> > Another advantage is that it lets us use the same deferred logic for
+> > the vm_bo_put() call that drops the refcount from vm_bo_obtain().
+> >
+> > Of course if gpuvas might have resources that need deferred cleanup,
+> > that might change the situation somewhat.
+>=20
+> I think we want to track PT(E) allocations, or rather reference counts of=
+ page
+> table structures carried by the drm_gpuva, but we don't need to release t=
+hem on
+> drm_gpuva_unlink(), which is where we drop the reference count of the vm_=
+bo.
+>=20
+> Deferring drm_gpuva_unlink() isn't really an option I think, the GEMs lis=
+t of
+> VM_BOs and the VM_BOs list of VAs is usually used in ttm_device_funcs::mo=
+ve to
+> map or unmap all VAs associated with a GEM object.
+>=20
+> I think PT(E) reference counts etc. should be rather released when the dr=
+m_gpuva
+> is freed, i.e. page table allocations can be bound to the lifetime of a
+> drm_gpuva. Given that, I think that eventually we'll need a cleanup list =
+for
+> those as well, since once they're removed from the VM tree (in the fence
+> signalling critical path), we loose access otherwise.
 
-I mean that instead of:
+Hmm. Another more conceptual issue with deferring gpuva is that
+"immediate mode" is defined as having the GPUVM match the GPU's actual
+address space at all times, which deferred gpuva cleanup would go
+against.
 
-+/// Returns the system unbound work queue (`system_dfl_wq`).
- ///
- /// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
- /// are executed immediately as long as `max_active` limit is not reached and resources are
- /// available.
- pub fn system_unbound() -> &'static Queue {
--    // SAFETY: `system_unbound_wq` is a C global, always available.
--    unsafe { Queue::from_raw(bindings::system_unbound_wq) }
-+    // SAFETY: `system_dfl_wq` is a C global, always available.
-+    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
- }
+Deferring vm_bo cleanup doesn't have this issue because even though the
+vm_bo isn't kfreed immediately, all GPUVM apis still treat it as-if it
+isn't there anymore.
 
-you add a new function:
+> >> > +static void
+> >> > +drm_gpuvm_bo_defer_locked(struct kref *kref)
+> >> > +{
+> >> > +     struct drm_gpuvm_bo *vm_bo =3D container_of(kref, struct drm_g=
+puvm_bo,
+> >> > +                                               kref);
+> >> > +     struct drm_gpuvm *gpuvm =3D vm_bo->vm;
+> >> > +
+> >> > +     if (!drm_gpuvm_resv_protected(gpuvm)) {
+> >> > +             drm_gpuvm_bo_list_del(vm_bo, extobj, true);
+> >> > +             drm_gpuvm_bo_list_del(vm_bo, evict, true);
+> >> > +     }
+> >> > +
+> >> > +     list_del(&vm_bo->list.entry.gem);
+> >> > +     mutex_unlock(&vm_bo->obj->gpuva.lock);
+> >>
+> >> I got tricked by this implicit unlock, and the conditional unlocks it
+> >> creates in drm_gpuva_unlink_defer(). Honestly, I'd rather see this
+> >> unlocked moved to drm_gpuva_unlink_defer() and a conditional unlock
+> >> added to drm_gpuvm_bo_put_deferred(), because it's easier to reason
+> >> about when the lock/unlock calls are in the same function
+> >> (kref_put_mutex() being the equivalent of a conditional lock).
+> >
+> > Ok. I followed the docs of kref_put_mutex() that say to unlock it from
+> > the function.
+>=20
+> Yes, please keep it the way it is, I don't want to deviate from what is
+> documented and everyone else does. Besides that, I also think it's a litt=
+le
+> less error prone.
 
-	pub fn system_dfl() -> &'static Queue {
-	    // SAFETY: `system_dfl_wq` is a C global, always available.
-	    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
+I gave it a try:
+
+bool
+drm_gpuvm_bo_put_deferred(struct drm_gpuvm_bo *vm_bo)
+{
+	drm_WARN_ON(vm_bo->vm->drm, !drm_gpuvm_immediate_mode(vm_bo->vm));
+
+	if (!vm_bo)
+		return false;
+
+	if (kref_put_mutex(&vm_bo->kref, drm_gpuvm_bo_defer_locked,
+			   &vm_bo->obj->gpuva.lock)) {
+		/*
+		 * It's important that the GEM stays alive for the duration in which
+		 * drm_gpuvm_bo_defer_locked() holds the mutex, but the instant we add
+		 * the vm_bo to bo_defer, another thread might call
+		 * drm_gpuvm_bo_deferred_cleanup() and put the GEM. For this reason, we
+		 * add the vm_bo to bo_defer *after* releasing the GEM's mutex.
+		 */
+		mutex_unlock(&vm_bo->obj->gpuva.lock);
+		drm_gpuvm_bo_list_add(vm_bo, bo_defer, true);
+		return true;
 	}
 
-and do *not* modify system_unbound().
+	return false;
+}
+
+void
+drm_gpuva_unlink_defer(struct drm_gpuva *va)
+{
+	struct drm_gem_object *obj =3D va->gem.obj;
+	struct drm_gpuvm_bo *vm_bo =3D va->vm_bo;
+	bool should_defer_bo;
+
+	if (unlikely(!obj))
+		return;
+
+	drm_WARN_ON(vm_bo->vm->drm, !drm_gpuvm_immediate_mode(vm_bo->vm));
+
+	mutex_lock(&obj->gpuva.lock);
+	list_del_init(&va->gem.entry);
+
+	/*
+	 * This is drm_gpuvm_bo_put_deferred() slightly modified since we
+	 * already hold the mutex. It's important that we add the vm_bo to
+	 * bo_defer after releasing the mutex for the same reason as in
+	 * drm_gpuvm_bo_put_deferred().
+	 */
+	should_defer_bo =3D kref_put(&vm_bo->kref, drm_gpuvm_bo_defer_locked);
+	mutex_unlock(&obj->gpuva.lock);
+	if (should_defer_bo)
+		drm_gpuvm_bo_list_add(vm_bo, bo_defer, true);
+
+	va->vm_bo =3D NULL;
+}
+
+I do think it looks relatively nice like this, particularly
+drm_gpuva_unlink_defer(). But that's also the one not using
+kref_put_mutex().
 
 Alice
