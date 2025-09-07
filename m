@@ -1,99 +1,130 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE00191F84;
-	Sun,  7 Sep 2025 22:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475073597A;
+	Sun,  7 Sep 2025 22:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757284313; cv=none; b=R+b9SlbPYn916GyYD86FNu6miZhyKaeJQzIQ8hJBN2YEPOcRjF0RG3YsD0bGUmJ+W9f/lsbWeo/HJElKAYBSvSB8uhIYI5tzY48KIIBmitJQmdBeHpdtWBxe+xqvtmDZaG7NEHeXP69XllPW7DIqpbWoCdZKvK984OA4yt1JKC8=
+	t=1757285468; cv=none; b=YtpCAsZFSPINPWhRTDc3nVex3UN00T7MD9zAXmpdtsgsyLPHEoXEccqLRg7Tsc2qpiTLM9cNEZx+kOusvMIi2x/aBX+kbLiBdjl8/PSIoTyG/jQeKq6qG4zDtjt+PLhkt05UBWwWDJNQJGR/KieNgXdoAPXjxo5f0F/rUkkZ5cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757284313; c=relaxed/simple;
-	bh=A0iG2s8NsaHXbe7QwSW3kwFQk8Cle6cuWsR/m31eV/I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aTATDngnbqYoOIiUDatNCuKZ38CA0yobN/f+ex+J+7gq555wAe7tcCHT48ELGwmS+d8gnw892MIfHNmAodqIPDBJmRFlF0vcnaNvfNh7Lpqm89tobAvplAZ07w4UOHunorwLMIOFz2Zz0jK0GwMRCmRQvGc19RCjFnn+i8OhXEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mwAI5989; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757285468; c=relaxed/simple;
+	bh=fGTCI6P9ODPKffPJ8VaT5xwiykzdLEdHOnQvoxGRM0E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=HSNo/maug4ln0CWHru1vqBEXvyu/rRXlTOj7djGjOIvbcg611oRdw4xaFF+//pQHthXF02p94tjYaGB6J4ikxbh8wtK7lWjpwNzWxDu8nGH1rO66lPMt3TJR4Uu80Jmc9PxO7nAawsEmBXj/RJ61iOw9CtT2f1nCAU8uBTN/YRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nn9ebj5m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mwAI5989"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-32d69b5d737so81850a91.2;
-        Sun, 07 Sep 2025 15:31:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757284310; x=1757889110; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A0iG2s8NsaHXbe7QwSW3kwFQk8Cle6cuWsR/m31eV/I=;
-        b=mwAI5989r7Cm/X+JLk5TJtMOJE2LGeLsmPcorJwwC/M7XaaiplAvbE7EcippL0Wm4U
-         GYTEtMBORXBzdbKUtqzFJKEZLnMhVe6ynYKWbeDtR4yK0P9CUXC/Tpol8XJo3coyiG9C
-         WFotQbilSaFYEq0k8zCuR52/VgpBNbhHYH6j7ejwsuxHvP/RiAU4jy24byqGBj13W4C4
-         cKfIQf6UvuKAL3SGHIzQpoiO+3l/iPnH4xpUPCa36bw1qe6JMKVZZUsmHoQREjXckmfA
-         DPnnDPqJT21JXUrL0GAzbajj0WKQWIpfBhZ2jmn3gYZKpTBcnruLaBXl+YRfykomOVTX
-         37ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757284310; x=1757889110;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A0iG2s8NsaHXbe7QwSW3kwFQk8Cle6cuWsR/m31eV/I=;
-        b=nuT9nWGWsrFbEMT8PE5rcd4Sr3dtsSpV/ecbsmX8XMt8Eo5+ToNhMOLFodLkkChGRr
-         tyTSGMW8LYy8RaM4nlC6FBb9bjPScCr5hIRLlxuogpuo3FEa/FjpUQKqk3wm1CsJVJ38
-         JWKEZBJMz6Nj+LuXTJ7MxlJ6IDTi7qpcGoMcV5WcATIQGGieyGiWjQkA2E+vkpp7H0hw
-         2dqKRWp/ykxwB/+zWojeotef/0se2/iO3nDIIcUJCOvE9EnYLPhgDuriz5wwYgciNTIu
-         lIjqsqQXgQ6UYiH7B9UUMX3o4yDJtG1vyTAfxtLfrubMD/pHBtpKqH7pLK3lQUHedbEi
-         s5lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2Eo3VhWoxIut52YAMx2H4IAmRnqk9X+BMYwkDtkBqGs+Tz1Zgs0V3+THfmxfg2n65Yfie8fmZl9ZfeNg=@vger.kernel.org, AJvYcCWDnGgmYiUIM1OPhiI4J5KZuN/3u9+6iq0s3p3BPQa9xYXcMUysXPKLQlS+Nr/5tgQuLcr/4xgZ1ORNazmSurg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKosxVEQaNIZjeR8BfBUwwNEcFxjI/0pdKRL8BrFXtg9KQl5iX
-	ft4LE/M7lAEos21OKTfsClby1/pcdXMa92EEm6WUNie0FUFKuvl/85HReA4dFVM6sUUWWCRrgyw
-	5xAUm4614Pik01kgRQdFSTztnLXzvutg=
-X-Gm-Gg: ASbGncv/RECrWuPQIHIcdhidoXRP8he+LdQ9xwGfiQ+3amArCNGfOK+aHO6SiEOcfY9
-	SJF8EXpSQOpsJVob91UWzrNYL03q/VtRnEat7nq/op7x3fTWdU+Hb0uW60py6bZPsawEnN8eP5i
-	jc+yqLw7hJFt3p59mn69dU8P42fyVZsEPMVusCBiyW4ysgnEa/yhIAjHaup92Xu/UvH051aewCD
-	NbPFO2jN5eTvXCz+PReXWzeWZ+vQ/5ZtsXb+tyYxHfFDRWH1Jp3Xg22zzzlr2wkW38LoXNuyEV9
-	Ik3IEafPeTt4xn2BCEWpZXVY0Q==
-X-Google-Smtp-Source: AGHT+IGG3HpNTb2vTtLsVngngSHh/RfU4AOGJ5c2YYlHpsyA55YVHi/hUAcqVhc4ta/9cft44R1aNjISOp66lrDKDo4=
-X-Received: by 2002:a17:902:ea01:b0:246:ed8f:c63e with SMTP id
- d9443c01a7336-25168e74592mr39216555ad.0.1757284310209; Sun, 07 Sep 2025
- 15:31:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nn9ebj5m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937D4C4CEF0;
+	Sun,  7 Sep 2025 22:51:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757285467;
+	bh=fGTCI6P9ODPKffPJ8VaT5xwiykzdLEdHOnQvoxGRM0E=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=Nn9ebj5mWCCwon78T5jk2zTUli/MpCoW/zNc5NuiejJw++46mbBMREx8zLLjMj5iO
+	 RPiPrp3M5FtyCj7sevS1Oul2dYjFDuXrzhq18IYJyI5aCccHtqzVcILTZpTejdOyTR
+	 7tiszVKcx/5Hmc5xRS/bNiPO9kFX36H04oezCu5PyyQyGCtS0Es3MijkqRUSF05ses
+	 HemmMH2StyNm6gTx2rRp/3RCcAy7kn/LLbYM9/u5HuY4ShPWc+Zf/844ELMHKZBo8I
+	 07QcaNZXdr/XOMnLIjlsLPnyL9a5L0hvLxr7KmYf9Uy+X2U8DFuLtl7iPK54aVKUvR
+	 3dChO8EYnqMAA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250818132551.133410-1-shankari.ak0208@gmail.com>
-In-Reply-To: <20250818132551.133410-1-shankari.ak0208@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 8 Sep 2025 00:31:36 +0200
-X-Gm-Features: AS18NWDd7uEDj6f6FN-5qorf6Dg1cnOeL99kuze94D4OJRaDY2wvuvmNYpHyxBA
-Message-ID: <CANiq72=hMoVto3grUSWbMs+rOXhQifs7vg=+052b8pMkN3Q26Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: task: update ARef and AlwaysRefCounted imports from sync::aref
-To: Shankari Anand <shankari.ak0208@gmail.com>, Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 08 Sep 2025 00:51:02 +0200
+Message-Id: <DCMXPGXDXHYT.D9VJ5QBMAVPN@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Fiona Behrens" <me@kloenk.dev>, "Alban
+ Kurti" <kurti@invicto.ai>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: pin-init: add references to previously
+ initialized fields
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250905140047.3325945-1-lossin@kernel.org>
+ <DCL1DPN708H0.3JTL93J2GD2DR@kernel.org> <aLshd0_C-1rh3FAg@tardis-2.local>
+ <DCLNSNWA7AT7.19OWOXUMJ5ZRJ@kernel.org> <aLzmcK2UM53I2Tbn@tardis-2.local>
+ <aLzoyWpOr6eg-3yB@tardis-2.local> <DCMFN8UGD7QN.27HTYEXL87Z8@kernel.org>
+ <DCMQVH09L1Y5.3A842FC1NGG5H@kernel.org>
+ <DCMVHB8P7Z2G.PCOWPQXBSBT6@kernel.org>
+ <DCMW6H0VJ9AP.1XWI1RI9YWO9H@kernel.org>
+In-Reply-To: <DCMW6H0VJ9AP.1XWI1RI9YWO9H@kernel.org>
 
-On Mon, Aug 18, 2025 at 3:26=E2=80=AFPM Shankari Anand
-<shankari.ak0208@gmail.com> wrote:
+On Sun Sep 7, 2025 at 11:39 PM CEST, Danilo Krummrich wrote:
+> On Sun Sep 7, 2025 at 11:06 PM CEST, Benno Lossin wrote:
+>> On Sun Sep 7, 2025 at 7:29 PM CEST, Danilo Krummrich wrote:
+>> I have some ideas of changing the syntax to be more closure-esque:
+>>
+>>     init!(|this| -> Result<MyStruct, Error> {
+>>         let x =3D 42;
+>>         MyStruct {
+>>             x,
+>>         }
+>>     })
+>>
+>> There we could add another parameter, that would then serve this
+>> purpose. We should also probably rename `this` to `slot` & then use
+>> `this` for the initialized version.
 >
-> Update call sites in `task.rs` to import `ARef` and
-> `AlwaysRefCounted` from `sync::aref` instead of `types`.
+> I think that's a pretty good idea, but the part that I think is a little =
+bit
+> confusing remains: `this` will need to have different fields depending on=
+ where
+> it's accessed.
+
+Yeah (that's also the main issue with the macro implementation).
+
+>> But as I said before, implementing the `this` thing from a macro
+>> perspective is rather difficult (I have two ideas on how to do it and
+>> both are bad...).
+>>
+>>> But as you say, that sounds tricky to implement and is probably not ver=
+y
+>>> intuitive either. I'd rather say keep it as it is, if we don't want som=
+ething
+>>> like the `let b <- b` syntax I proposed for formatting reasons.
+>>
+>> I don't feel like that's conveying the correct thing, it looks as if you
+>> are only declaring a local variable.
 >
-> This aligns with the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to sync.
->
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> Yeah, it's not great, but given that it's a custom syntax it also does no=
+t
+> create wrong expectations I'd say.
 
-Applied to `rust-next` -- thanks everyone!
+I'd say it looks like combining the `<-` operation already used by the
+`init!` macro & a `let` binding. Thus introducing a local variable
+that's (pin) initialized in-place. Not a field of the current struct.
 
-And thanks Boqun for confirming to go ahead.
+> Anyways, I'm fine with either. For now we probably want to land the versi=
+on as
+> it is and revisit once you settle on the syntax rework you mentioned abov=
+e.
 
+I actually came up with a third option that looks best IMO:
+
+    init!(MyStruct {
+        x: 42,
+        #[with_binding]
+        y: 24,
+        z: *y,
+    })
+
+The `#[with_binding]` attribute makes the macro generate a variable `y`.
+`x` & `z` don't give access to their value. (we of course should come up
+with a better name).
+
+Any thoughts?
+
+---
 Cheers,
-Miguel
+Benno
