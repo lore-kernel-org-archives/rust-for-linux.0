@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF9625B1D2;
-	Sun,  7 Sep 2025 11:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764831991C9;
+	Sun,  7 Sep 2025 11:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757245464; cv=none; b=potx9HEL6rQgREECYIiFKd5lpuhTSHEJtpJmTOLbrfuO6rmhcZAFc6DhtLZBa/mwul16WDvUz5xnhVcyuRL5nKEwdy9WRZqAXiter8ZHFYC3jZo1TnmzwKef3dtEJiV7qEVHAerJHpX/BnqYXWbym6jFD+U66ComviEOubIJGuk=
+	t=1757245773; cv=none; b=dzYMwk5TYKR5kfofat5f+LUuzYI/Uww5L3XNRt9V86QcqWMQBsJ5iYDFTHB4RGdzxnHxIoGtlED5tdcUmAhKHN9g3PbrIiIQD0GGYAzi/XtXkOMwZoymjbkzHGGpjeR0m9FoJJe6wt0xapZTwMdMFYgNPSrLBwZx3yf2N08Dx4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757245464; c=relaxed/simple;
-	bh=OvDT2Q/6yP6Dr4ss8IQJNkHW43Mx6ronKHaCUw6k19c=;
+	s=arc-20240116; t=1757245773; c=relaxed/simple;
+	bh=aIdhlvipyo2+0PeyQWDF3eftzsmA1c2NyjjqT0eU764=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=KGw79omyMIsmQD64WCPErs8wdwg9ISZLTXn9hU3TYDVOpVztHPyDvFN4VqVexnmBubA4/gNbPOHP4oEDM1AFN/vuNRDlyxIIvSUe97PavGLnFCy1dvoDK0vGWmmpCO1wOhdc/QOxsgS47lXErhMpeo1TBLPgK+Tb21ZGZNsW2rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4zYbyEj; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Y+TBjnuXHhm+DB5e5lo3BfvhhqNUp/wncexhSMPLEJoKvPiX0u13KuELt9ZibAzVFqeNEoVKODp3dUHq6daV2Ap2GDiNOv/zpfnDVde+QpMt4V599eK/vQxysqaWLca468RhyiTy6Kdcz7ZivavpdVkD/d2rU4n0CNnyw7p31lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2YkkkLc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4zYbyEj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DA2C4CEF0;
-	Sun,  7 Sep 2025 11:44:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2YkkkLc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B88C4CEF0;
+	Sun,  7 Sep 2025 11:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757245463;
-	bh=OvDT2Q/6yP6Dr4ss8IQJNkHW43Mx6ronKHaCUw6k19c=;
+	s=k20201202; t=1757245773;
+	bh=aIdhlvipyo2+0PeyQWDF3eftzsmA1c2NyjjqT0eU764=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=a4zYbyEjoxjWiq8i+8Z6u6XzG5ZdbrD5mL4mRfMR6gVL/aHHWWcMBRDacX66Crddp
-	 iJm6nho7ridjF/uP6udJxYYT7Ns/N8oeVm+NCYs9ODako0PT5T5KsjzdEohwkziTy8
-	 a+ATwY7B4WETEmDo4/67Cbx9fc6zul749ph9nv/LLQeB22/dQnzDT9Zy2saQI/J1yl
-	 aNC22KWgBRvxqqqtl5eLiz8h7E9Ntj2ohmcdNzET0oLT30vcorTdTqJU00d5QH6sB1
-	 E4fX6f7g1gvNyMtSltbTXubIhoOeFV7v3P9/cZJ+yYbLlvyIJU5TurAEtvBFbWGfI9
-	 bAN5YQkXyEdtQ==
+	b=b2YkkkLc+dGfx3ZjDLU5dsOg9R4XIg0hxranpL9139I6xYZ7xJCaFK+glzyeI9+fo
+	 KEJGfXq1VGvaUGy1SaoLjk1IC9f5xFa1Au7RVhW3nztY/qhU1HCjc9JYqFwXgl6Wed
+	 YxI2OoHXEkkWj8QCQQPJSlBb2B1uRjqWhdo8pzAZgbFth2gHLlxGvpczcwudpHIXup
+	 gEJZ4PuoNGyMtFWPnYkSmB5haPTdIsg1LPIbth0stNwkRuZ/zYnKwoOaf3iA70jWa3
+	 we0eaH1e/Nlf5LdQBVAcON6HuCD5Ux2cGuzpd69c/ULfIIn9nhO6mrpfXrS+LeNJI+
+	 KUJahWylYrZWg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,126 +34,117 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 07 Sep 2025 13:44:19 +0200
-Message-Id: <DCMJIZJKOFC0.2F9NNE8FAT4B5@kernel.org>
-Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
-Cc: "Boris Brezillon" <boris.brezillon@collabora.com>, "Matthew Brost"
- <matthew.brost@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Steven Price"
- <steven.price@arm.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Liviu Dudau" <liviu.dudau@arm.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Date: Sun, 07 Sep 2025 13:49:28 +0200
+Message-Id: <DCMJMXGN68E0.IZ2F31AI11JW@kernel.org>
+Subject: Re: [PATCH] rust: pin-init: add code blocks to `[try_][pin_]init!`
+ macros
+Cc: "Benno Lossin" <lossin@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Fiona Behrens" <me@kloenk.dev>,
+ "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Alban Kurti"
+ <kurti@invicto.ai>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
- <20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
- <20250905152505.005a610d@fedora>
- <CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
- <DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org> <aL1pSFB9iBsfHFM_@google.com>
- <DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org> <aL1u_YxOkuj1kIq6@google.com>
-In-Reply-To: <aL1u_YxOkuj1kIq6@google.com>
+References: <20250905140534.3328297-1-lossin@kernel.org>
+ <aL1lHyhzWX0xGrmo@google.com> <DCMJ0VFOV9L1.33BPI08N4H7WZ@kernel.org>
+ <aL1tloBwmJnYFPpa@google.com>
+In-Reply-To: <aL1tloBwmJnYFPpa@google.com>
 
-On Sun Sep 7, 2025 at 1:39 PM CEST, Alice Ryhl wrote:
-> On Sun, Sep 07, 2025 at 01:28:05PM +0200, Danilo Krummrich wrote:
->> On Sun Sep 7, 2025 at 1:15 PM CEST, Alice Ryhl wrote:
->> > On Sat, Sep 06, 2025 at 12:47:36AM +0200, Danilo Krummrich wrote:
->> >> On Fri Sep 5, 2025 at 8:18 PM CEST, Alice Ryhl wrote:
->> >> > On Fri, Sep 5, 2025 at 3:25=E2=80=AFPM Boris Brezillon
->> >> > <boris.brezillon@collabora.com> wrote:
->> >> >> On Fri, 05 Sep 2025 12:11:28 +0000
->> >> >> Alice Ryhl <aliceryhl@google.com> wrote:
->> >> >> > +static bool
->> >> >> > +drm_gpuvm_bo_is_dead(struct drm_gpuvm_bo *vm_bo)
->> >> >> > +{
->> >> >> > +     return !kref_read(&vm_bo->kref);
->> >> >>
->> >> >> I'm not too sure I like the idea of [ab]using vm_bo::kref to defer=
- the
->> >> >> vm_bo release. I get why it's done like that, but I'm wondering wh=
-y we
->> >> >> don't defer the release of drm_gpuva objects instead (which is rea=
-lly
->> >> >> what's being released in va_unlink()). I can imagine drivers wanti=
-ng to
->> >> >> attach resources to the gpuva that can't be released in the
->> >> >> dma-signalling path in the future, and if we're doing that at the =
-gpuva
->> >> >> level, we also get rid of this kref dance, since the va will hold =
-a
->> >> >> vm_bo ref until it's destroyed.
->> >> >>
->> >> >> Any particular reason you went for vm_bo destruction deferral inst=
-ead
->> >> >> of gpuva?
->> >> >
->> >> > All of the things that were unsafe to release in the signalling pat=
-h
->> >> > were tied to the vm_bo, so that is why I went for vm_bo cleanup.
->> >> > Another advantage is that it lets us use the same deferred logic fo=
-r
->> >> > the vm_bo_put() call that drops the refcount from vm_bo_obtain().
->> >> >
->> >> > Of course if gpuvas might have resources that need deferred cleanup=
-,
->> >> > that might change the situation somewhat.
+On Sun Sep 7, 2025 at 1:33 PM CEST, Alice Ryhl wrote:
+> On Sun, Sep 07, 2025 at 01:20:39PM +0200, Danilo Krummrich wrote:
+>> On Sun Sep 7, 2025 at 12:57 PM CEST, Alice Ryhl wrote:
+>> > On Fri, Sep 05, 2025 at 04:05:31PM +0200, Benno Lossin wrote:
+>> >> Allow writing `_: { /* any number of statements */ }` in initializers=
+ to
+>> >> run arbitrary code during initialization.
 >> >>=20
->> >> I think we want to track PT(E) allocations, or rather reference count=
-s of page
->> >> table structures carried by the drm_gpuva, but we don't need to relea=
-se them on
->> >> drm_gpuva_unlink(), which is where we drop the reference count of the=
- vm_bo.
+>> >>     try_init!(MyStruct {
+>> >>         _: {
+>> >>             if check_something() {
+>> >>                 return Err(MyError);
+>> >>             }
+>> >>         },
+>> >>         foo: Foo::new(val),
+>> >>         _: {
+>> >>             println!("successfully initialized `MyStruct`");
+>> >>         },
+>> >>     })
 >> >>=20
->> >> Deferring drm_gpuva_unlink() isn't really an option I think, the GEMs=
- list of
->> >> VM_BOs and the VM_BOs list of VAs is usually used in ttm_device_funcs=
-::move to
->> >> map or unmap all VAs associated with a GEM object.
->> >>=20
->> >> I think PT(E) reference counts etc. should be rather released when th=
-e drm_gpuva
->> >> is freed, i.e. page table allocations can be bound to the lifetime of=
- a
->> >> drm_gpuva. Given that, I think that eventually we'll need a cleanup l=
-ist for
->> >> those as well, since once they're removed from the VM tree (in the fe=
-nce
->> >> signalling critical path), we loose access otherwise.
+>> >> Link: https://github.com/Rust-for-Linux/pin-init/pull/84/commits/2880=
+a9b898336e2d54f80715f00ce00f21f74d2f
+>> >> Signed-off-by: Benno Lossin <lossin@kernel.org>
 >> >
->> > Hmm. Another more conceptual issue with deferring gpuva is that
->> > "immediate mode" is defined as having the GPUVM match the GPU's actual
->> > address space at all times, which deferred gpuva cleanup would go
->> > against.
+>> > Nice! Would it be possible to include a user so I can see it work in
+>> > practice? E.g., for the irq feature?
 >>=20
->> Depends on what "deferred gpuva cleanup" means.
+>> Devres needs this too, but the corresponding devres stuff was a fix and =
+is in
+>> the current -rc only, so that's not a candidate.
 >>=20
->> What needs to happen in the run_job() is drm_gpuva_unlink() and
->> drm_gpuva_unmap(). Freeing the drm_gpuva, inluding releasing the assoici=
-ated
->> driver specific resources, can be deferred.
+>> The IRQ stuff is in driver-core-next going to Linus for v6.18, hence, us=
+ing it
+>> there, this patch would have to go through the driver-core tree as well.
+>>=20
+>> For me it is fine either way.
 >
-> Yeah I guess we could have unlink remove the gpuva, but then allow the
-> end-user to attach the gpuva to a list of gpuvas to kfree deferred. That
-> way, the drm_gpuva_unlink() is not deferred but any resources it has can
-> be.
+> It doesn't have to land together. I would be happy with:
 >
-> Of course, this approach also makes deferred gpuva cleanup somewhat
-> orthogonal to this patch.
+> 	THIS CYCLE: Land just this patch.
+> 	NEXT CYCLE: Land the irq and/or devres user.
+>
+> But I'd like to see it work in practice before I give a Reviewed-by.
+> It's hard to evaluate this kind of macro change just from the macro
+> itself.
 
-Yes, it is.
+Here's a patch for using it in devres (we backmerged -rc3 into
+driver-core-next):
 
-> One annoying part is that we don't have an gpuvm ops operation for
-> freeing gpuva, and if we add one for this, it would *only* be used in
-> this case as most drivers explicitly kfree gpuvas, which could be
-> confusing for end-users.
+From 23e48f081b7ba6bebd375c6fa929f070f7977fc5 Mon Sep 17 00:00:00 2001
+From: Danilo Krummrich <dakr@kernel.org>
+Date: Sun, 7 Sep 2025 13:44:43 +0200
+Subject: [PATCH] rust: devres: take advantage of initializer code blocks
 
-I think the reason why I left GPUVA alloc and free to drivers was that I wa=
-s
-expecting them to use a dedicated kmemcache for that.
+Use pin-init initializer code blocks to register the devres action.
 
-However, we can still provide drm_gpuva_alloc(), drm_gpuva_free() and va_fr=
-ee(),
-va_alloc() callbacks for drivers to implement.
+This resolved the TODO introduced by commit 75a7b151e808 ("rust: devres:
+fix leaking call to devm_add_action()").
+
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/devres.rs | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 132545962218..430fc4880ddb 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -119,7 +119,6 @@ pub struct Devres<T: Send> {
+     // explicit `Send` and `Sync' impls can be removed.
+     #[pin]
+     inner: Opaque<Inner<T>>,
+-    _add_action: (),
+ }
+
+ impl<T: Send> Devres<T> {
+@@ -146,10 +145,7 @@ pub fn new<'a, E>(
+                     revoke <- Completion::new(),
+                     data <- Revocable::new(data),
+             })),
+-            // TODO: Replace with "initializer code blocks" [1] once avail=
+able.
+-            //
+-            // [1] https://github.com/Rust-for-Linux/pin-init/pull/69
+-            _add_action: {
++            _: {
+                 // SAFETY: `this` is a valid pointer to uninitialized memo=
+ry.
+                 let inner =3D unsafe { &raw mut (*this.as_ptr()).inner };
+
+
+base-commit: 544c94f0e155614551e0210074597a23d117830c
+--
+2.51.0
+
