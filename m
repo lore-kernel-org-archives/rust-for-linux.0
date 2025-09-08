@@ -1,239 +1,153 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2075.outbound.protection.outlook.com [40.107.94.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199EE30B50D;
-	Mon,  8 Sep 2025 13:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757337977; cv=fail; b=UijiM9lC9TR/zOVuZ8W57z2doEMnG5xnwOpWA3hjHYk8C8Z6hsWKJyouQSu0GdQBsme+c1FYIK+kqfJynfdlj6KwnmljKpxhF3Suqd5E8BRkhU3jdu1eVDkBoRVbBLunesoKRaaAqHN2U2HGg8nsixutlm6f7mwx9wrCnAU1Z5Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757337977; c=relaxed/simple;
-	bh=wOnGHLolPRnBFd2R8hf05eFsoiW7T5YYLnPL30WqURk=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=HSLP9Td72S5jPuw8qsk2cLWx5u6Hiky+hcRwWJ39Mrx/086d9wIC8bZOV/VYqMTXTnL3omtNiSfOyUxpxQqLsqS9bN2YeWGqQQbGfSLL8loBziYbE5Uygi4Gs/l9Au9/mPjuBsTpcmSySJPHYYXe4Fw8raVn1Gp9LswsDt9Y3Qg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=k0+2gU+2; arc=fail smtp.client-ip=40.107.94.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7F330ACE5;
+	Mon,  8 Sep 2025 13:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757338232; cv=none; b=raomElZbvDY9eFVGsFI8ars41qxl2V5EfS8POzMu6urhtHdjT9PISm2LzdGRH4B0CYp3hM8H+PKpdUvZQmew1BqjqiqXQAB61nYgUaeM04Lh5dpZ5LSW/BPV946oKlN46Zo3d4ZB+ceeQ+VjVYAeyjzrOoZ0xVhxir8OBioVMsI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757338232; c=relaxed/simple;
+	bh=u1HQzTVwo3wSX9vTjeJ19hrto1ZAkwXR6KamFdw34gA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HD+HJnEQLkFi2eNm53aWSfoRr0q6PXRiHYCXJI8/cM1eYV2QahJU0tMnBmXDY55h8VBr1SoFwPSKZwUgz1AwShigWsAbJCjD/ixbqdhSSBgBdV6dQVMjSNP080XwU7SD4Y4GUkwIjvoouPthupGJugYIf4CTcl8A/GfCkUBLSSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbHoFlyE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="k0+2gU+2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mzlTgh8MUIpH4irA42NO6dQeAbli0Nj6eVhDA8IpdGV5USLZ+v9jrjT+JF+4udP/h1BBYxNiMWgyPzTD4iRohKLa+/uhD1F1+lRn1i9jxl+pdoDLTnSg2GuyUbQ0t9CN8O66r5qRG8CoSQ9zCxS+fiNMhJYCEOvMFcTbK6s1PbVosE0JfvOdEp7SsuF2VO6lQUpgoR8w2pDSQQum7QNEXyNEJN6ru9AYPt9Dy3EzwRuxYgSmeo6EglXcp2fLOn0rDtiyHcqVhDIO1osaL66gMWWKiCU5KQT+kUwQX38pWH/iQJ+d9Mgi9BUSgpqk0nWz/59492FK84Pjb2Qus6MblA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HqrtTfPiSd2KEmqlJZPXQVxjnJwBT42KAf8EB/qUex0=;
- b=B+hY5+ReOKVpsguODrtJFpe9MhqrYRvnvIMeViTa7UTDLLrkn50TG4IENqGItvIAg02u1ifQC/ffD7RCq7NNAiN5ZJbv02Wo2BdTsNbNlFVqKYA0u6yNbrIphYQUPdhZnnKdYe5GYCsVle3IwSu4eVlLDnP2MkfSuLcF5uCTZ0FXJAD9JL1x8HomGpfyTAXkLTVVQILBVQXl7d5gmyTCLk2SGKrHCKBTuCNCMb6DTj+lHOqnKd4cZ7cdxoRSfTTDbX+LkEXbGTcqfxiZL+qSbLKQM7RuPwLYjDlA95oUUZicirwMMwJv9CXd7M0seog6kJGSDI4WRg9BPFOdCic+kg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HqrtTfPiSd2KEmqlJZPXQVxjnJwBT42KAf8EB/qUex0=;
- b=k0+2gU+2rUBAvYu7xEAb8/fPDWS9dBShOHeC1SLvtM+4b7RRWT/nyIyX98qf+cm7hHZqJMHZ7TuqsiwPKf7PtCrkBZ2mLQETsGn5f4aQtH9HtaKPn7xD7J+UpHbO4QWUosfYLa8WZxdov7auh0UHi5Vsm1WpVkRfJzD8z5vK5vtlwgHn/+iycigNC4MIPSOFv3i83FRL7NTlvRj7+PEAr50wDFfGbl1V+LVpnxTs27+t0TjCTIWCFoCOaYSdF7Px4pZTwSTr373F4CjdIeofX/ExqaqV8Nfh2y0jWFfdYgtjwV8zDfV0J/J9wcbkui3TecZkK9TJHz8CY9cqteslCg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ5PPF3487F9737.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::990) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Mon, 8 Sep
- 2025 13:26:11 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
- 13:26:11 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Mon, 08 Sep 2025 22:25:55 +0900
-Subject: [PATCH v5 2/2] gpu: nova-core: use Alignment for alignment-related
- operations
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250908-num-v5-2-c0f2f681ea96@nvidia.com>
-References: <20250908-num-v5-0-c0f2f681ea96@nvidia.com>
-In-Reply-To: <20250908-num-v5-0-c0f2f681ea96@nvidia.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- nouveau@lists.freedesktop.org, Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: TYCP286CA0010.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:26c::18) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbHoFlyE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAC4C4CEF1;
+	Mon,  8 Sep 2025 13:30:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757338231;
+	bh=u1HQzTVwo3wSX9vTjeJ19hrto1ZAkwXR6KamFdw34gA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wbHoFlyEqQH4YAwy0IeS7jW14OOYbNUD4M7YMioNtRFlpR8OPveLOQuNnrRMQPvkf
+	 6unLfMHzkDQs0EFBKuIlPYf98e+EyC9iJVicSeIX/Nm8CGmObwTdKsE4ng8+sDeV3U
+	 qB3OhqAtfDQMR4zlIxPJIsIoTS8aTISUBW8dsoTs=
+Date: Mon, 8 Sep 2025 15:30:29 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
+	Dirk Beheme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
+Message-ID: <2025090817-attendant-ungodly-78f6@gregkh>
+References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+ <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
+ <2025090807-bootleg-trophy-a031@gregkh>
+ <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
+ <2025090849-tweak-conductor-f642@gregkh>
+ <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ5PPF3487F9737:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a88a1fb-1972-4476-bcff-08ddeedb46da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|7416014|376014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZkVUdGgvZFdHZ1JOL2JRTVNNQUM5NlZMUEZqR1NudjBvano0YU5wTHgxNjZK?=
- =?utf-8?B?bWh5VVNYcGJDYmdGenE3TUNDa2hrcGJUYmQvYjJmZU1TNEc3U0d6K3NiSmhH?=
- =?utf-8?B?ZEpvOWUxdFpJYlNQMGRIc0pyR25qWng3eFRTU3k0aXl5Q1BSYlhkb2FwQS9N?=
- =?utf-8?B?dFZzM0VsWWY4dEg0ZTNlckYwS0hoNGdOVXJwK2EraWlvbGRsWDNKUzBLTE5C?=
- =?utf-8?B?YzhrRVE3S2lwOGo5R3RoWFVOUTRLbHM5SGxidVNGSHY3andVU0NaVDdqQ2k4?=
- =?utf-8?B?ZjI4dk02ZEdEOUlBSHFhMTF3NEZmdExUNnBQWTdxVjFmSEhiUVlMYnBkUElz?=
- =?utf-8?B?aVl3TU9HM015dlpxUE83bTFNWVdSem13Rko3aGN2WnltVUpqZVlaaUVUMDNW?=
- =?utf-8?B?MFMwSmlXU09wcmtnTUJQdFZWUGRBQkY1dTZmWnZqeW1nclJoTDhHdit0K2ZS?=
- =?utf-8?B?ZlVpQnFmWUtUSjdaeXFOaDdoZjNXZ2VtSzEycVVmYkZWMGpsa2FmdGo5UGtW?=
- =?utf-8?B?b29YdTNSeklzWUhkRFp3SmJpc2kvQjRQMGx3WEE2UUh3QkdCa2pCRzhtNk9Z?=
- =?utf-8?B?ZFV4NWk2N2p4eExudGRsa1BaRTNmRkxHYnZ4RjJOeU1vNVlqeXVWbHBldEJI?=
- =?utf-8?B?d2ZHaDF5NE9adXFoU0Jkd1dQUUFLOG41T25yeWlYYzlWQ0VoblAvSmRLVVcx?=
- =?utf-8?B?dEVPYjlpT3dueG45elRPUmJSdUx3ZHpqOFZBbVhxdzJZY2RCdlpFTXpvMCtx?=
- =?utf-8?B?WkIvSlJvVVE2MlNoVXQ1TVpRelROREtZZnRaVHVTWWJMZUFiZ1p4SVNoc04z?=
- =?utf-8?B?ME9jYTlrQU1jVitvcFJ6RUc5WEp2K1cyNXc1S2dnaGZVZGMwd2g1RnVTbjhY?=
- =?utf-8?B?anJvQ2MzNzBNbmYvQkJRVVlYNU5PL0d6NEtKUlp1SmNJUHA0QXNBSVd6V2Rx?=
- =?utf-8?B?ODBBSHRyc1FocDE4S1dXSDZqQ1VUT1VhRlUxcGRXK0gzcXp3cktDSHI3QW1X?=
- =?utf-8?B?S1V3TGg0U2dhcVZFV3A5bUQxV2d4bGVtSU1qdDBlTUxZMVhENGhmT2pGUkRo?=
- =?utf-8?B?Zmc1TGw2M3JTV3M1amhUdm4xSEcvY1hDWCtGTHJnMi9UOU1IRFU4d2FiS3pt?=
- =?utf-8?B?Q2Rma3RzZnh5WjNpRUQxdmJtWWkyTGhZQUhYMzhvWURNcHVrS2gyWWtCYXdC?=
- =?utf-8?B?RmNEbHJUZWRaanN2NnhBdFI4QVowa0VRWHdQL3FaMzFYTGN2Z1IydkkzY0lG?=
- =?utf-8?B?cTJ6bllGWndpdDR4RzcxS1I5ZnYrRmRkTlNCeE1TcEF4WVhMMVRqVHFuNlpK?=
- =?utf-8?B?Z3JmNTEvQzNnT3NXM1E2bERUeGgySnJWT2xqcXBQeFZ2TGFtOXg4K3lvclpZ?=
- =?utf-8?B?d2ZCVzRpUTUydmp2Ti9lek9rRjYxVXgwWEtHbDBqRXZ1MHFwMjk3MmpMVHY0?=
- =?utf-8?B?UFVwT3pINnlqU1B0SVZFejg5anZLTkU1V1NwblVSQ2Y1N1l3ZFJFSnMvWnVa?=
- =?utf-8?B?MEJ3VmRyZ1RWNXpSOUZURWQ5WlpCQWJvRXZ0MlM0VlpOQm9GbDNDUUVTTEQ0?=
- =?utf-8?B?UXBzZmVyaTdJbnlGbE1Vc1BaOHBXd05Jc3p2cXE2K0p2MmZNdWJFM0RZUUJI?=
- =?utf-8?B?SlFMUkpHNmJKM2lHRVNiSG9vV3lzMXZTZU5zVDVWNWc4NUFVWkpwb3RoU2JV?=
- =?utf-8?B?Rm5tZVRVdUFpNnhCajI0S0N0WUhXdm1qOWZNRmd5YUhMZVhtdlk1aUtMdGhx?=
- =?utf-8?B?d29HWCtjSGc2OXJlVnovUnp5VlRBb2NmUEluVXd4M0o0QzQwQk55WDg1cHds?=
- =?utf-8?B?L0NIUTRydHhIMHFiNXlUWDhXMWNVMVVuYVpXczVFY3hPQXpsWlYwQko2dVRD?=
- =?utf-8?B?UzJQczJpNmJOV3A2bE9FTlBCZ2h0Tzdld0tMY1VYNzF2dkF3M2c1dDNic090?=
- =?utf-8?B?UGRNTnlpdTRRejhUaWgxdVBCRUVxSVlyRVljUW5lQ2g3Z25nUkowNk92Q3dp?=
- =?utf-8?B?V2YrUFQyTXh3PT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UzFWTFRlUkVweGpmbTc0VzVITG0zUExGOVNyT1NibnFLSjNMOGplZE1OeUlj?=
- =?utf-8?B?WkJTcGpKYkR1eW50cE5jRFg0VU5tL1VqTnFvRWdlNjlFV2UyZXdJYkVXaTZH?=
- =?utf-8?B?dXl2U1VHUkRTanB0VEtBQXZETFpMeDlpTmlyM0R0UnVvbnZ4VElQcFppNUFM?=
- =?utf-8?B?Q3JqTk1BNTdBNHR4MGw4ZzFVNE9abGNxaldGYzFvSlZpbk1kdHlzK0M2NkZS?=
- =?utf-8?B?RUhEUWtObDliTnFFbXphVGlwNytMbnhDMTZFU3FCcUhLME03NkxRRUZOaExQ?=
- =?utf-8?B?eS9QaUJhb05hM25kSk50NElJWFZzSHVhRVNoSXZKSnErNFNQUjNVUkxESTdV?=
- =?utf-8?B?c3djM1ZXR3Vsak9FV1dyUFhWTEUrR1kzbVVrVVIyellxMk1zbDg0MnZnelU4?=
- =?utf-8?B?VW4raGlGSk5PR0RteStWbGd3VEl5M2p2eGlnTmRXU0JJRldKNVVoNkd0di9M?=
- =?utf-8?B?a0phR1AxZEI0N01GK1dmSkxRK2lVcGFseElnUFUwNytESkowYkVhQnNiK2J3?=
- =?utf-8?B?WFVlU3I3aGdWaTVnNUNOMW5XQVFJUWVBZDlERWpTSnRnOTU1VEJ4Z1lvSTRv?=
- =?utf-8?B?T21KZ25uTGVxYWhIYjdHbWVTZE9RZkNZTjNpUkgvTG1XYk8vNm1jTVhNVmhB?=
- =?utf-8?B?Yk9nK0xiWnIwYUpsakR3bTNieWt5eFNCdVpHWmdJMi9iaHo2cnlzZGY2L3By?=
- =?utf-8?B?TjlBOEtnYUFQUDdtL0M0dHd3OTFxenJhRzJ6RDNoUkt1ZnorZFVvY2RyVm5l?=
- =?utf-8?B?SUd2Ky9vZ3pPZmF5SnVTV01xNGdtVmdDZXVGa0dWL2xIcXB3Z2JPS29BU0xm?=
- =?utf-8?B?ejdPaytUQWU1TzJOdXVmYkdvYkJCVEpPUWZjZWdtMHlmaWJ5L3ZXaGVRSzBz?=
- =?utf-8?B?cEtaMFVNbFRucERJOE9sdEJLQ1FoYTJqU0pMT3k4VnVqb3VvQXBoZ2UrRkx0?=
- =?utf-8?B?WEJUcFNKd3ROc0YzQTFUeUloOGIzdlp0dllWVitjdHVVeHlybXVWSGcvVkQ5?=
- =?utf-8?B?enRZcCtGTjQyaW9KdFphdTY3eU1HSzI5NlBUYkJ5MWd2cTZuVmVXZyszVjBR?=
- =?utf-8?B?ZU1KM2wyWGtycmg3cjVNUDYrdW1ubER2MnlkVzNQYXM1RFJwdUtaelByTG9l?=
- =?utf-8?B?RFVHdDRYeTBhSXF6RHcwK0FZN1huUkJlQXg5NC9uQ3NncS9OUFN5NEUxbFg3?=
- =?utf-8?B?OGJkTklqR3dtU2ZIcC9ERTFZOW1pbytMQndkYmcrQzk3SW8xRlFGRVI4NURC?=
- =?utf-8?B?YTYvamN5RTJBUlBONWtkbExTMkVJQjJzVVc3c09hZGFjME1xUTJpT0wxSzJJ?=
- =?utf-8?B?L0YxZFg3STVxbGQ0S2pMb1JUV3EzaWFJY3BqeHhlNEo2UHh1UjJ4TE5wTTZv?=
- =?utf-8?B?R2tqbGdxVzZOb1RSU0d3Vmo5SFRBUmNxSUNxNDRtRjhFQ21zTjhGR0xPTElD?=
- =?utf-8?B?SVVBZi84MUYydXJEZDZVNFQ2MTEwNHBicEEyTkxtUEt2K1RUdk8wYjMxTitu?=
- =?utf-8?B?TUkwUVFXeTBsTVBsNFpqT3ZFd3U3V0owUkk4b01qY1ZBT0dnUjlJeVRVampw?=
- =?utf-8?B?aHRDYXdBaVFqc3IxNms4TUpyeFhzcVVkSTQxUHRacnV4Y2szYjFFeUg3ajE1?=
- =?utf-8?B?VktrNWxIZDZHZFlUTHFlNWNTeW1yYzV3Nis0eDNXd2xkMXI4b21heE1FWmt5?=
- =?utf-8?B?THBCUzRpK0JCbVNQZHZJb3I1eXVqeFVxNDgxVWJhZmRaZWhDaVdjZ0I3SmpY?=
- =?utf-8?B?cFhqMC9MTDYvZ3hTTWEvWWozUDJITFhocmc2QlAxWmEzZ1NsVXVuOW5OREdO?=
- =?utf-8?B?UGI4ZUZyOHEvb0pheW01ODYwdUwvWmhlWnMxVk1LZ3F5SWMxRjF6SFhTQ213?=
- =?utf-8?B?RW42NWVTK0tPSXZuTFpnV2h1REZNQlh4NmdqQ2NYNmp3QTR0RWFQNWd1bmxh?=
- =?utf-8?B?Z3JBNXR2ZWR6WkJqU0dxcm16VlFGR1VLaWR4RnliVGwrMWpENVozSGdoL0ZD?=
- =?utf-8?B?NEg5Z2lSb2ladnM5dFl6VHdkcUQyQzdWbHpQWnlnWjA3OTJHL1pleTl6MTNT?=
- =?utf-8?B?THJIYU54RENDQmtLT1BmY1NIZEx4UXF2NkZXUTFNZTZ1Qm96NkJsa0dIeEp6?=
- =?utf-8?B?MFZ6Y2FlV2JHVEV4QWVMTWNvU2ZqRnRmdS9Yc05IdDhoa0E5NUYxYjdCeUww?=
- =?utf-8?Q?dVi6ybIDMkEuhH5G84pqMPGBqTq64oyaDy6gCueIrOB+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a88a1fb-1972-4476-bcff-08ddeedb46da
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 13:26:11.1726
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9M06HTnKvkt/xprjFiTT/ed/QpG9J4PmgSQm1p/fb3fWIeOUJCCBTw9GbvZJhytmFqdIcK0cIMh9CytV9iCv/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF3487F9737
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org>
 
-Make use of the newly-available `Alignment` type and remove the
-corresponding TODO item.
+On Mon, Sep 08, 2025 at 03:22:41PM +0200, Danilo Krummrich wrote:
+> On Mon Sep 8, 2025 at 2:48 PM CEST, Greg Kroah-Hartman wrote:
+> > On Mon, Sep 08, 2025 at 12:54:46PM +0200, Danilo Krummrich wrote:
+> >> diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
+> >> index b26eea3ee723..475502f30b1a 100644
+> >> --- a/samples/rust/rust_debugfs.rs
+> >> +++ b/samples/rust/rust_debugfs.rs
+> >> @@ -59,6 +59,8 @@ struct RustDebugFs {
+> >>      #[pin]
+> >>      _compatible: File<CString>,
+> >>      #[pin]
+> >> +    _test: File<&'static CStr>,
+> >> +    #[pin]
+> >>      counter: File<AtomicUsize>,
+> >>      #[pin]
+> >>      inner: File<Mutex<Inner>>,
+> >> @@ -140,6 +142,7 @@ fn new(pdev: &platform::Device<Core>) -> impl PinInit<Self, Error> + '_ {
+> >>                          .property_read::<CString>(c_str!("compatible"))
+> >>                          .required_by(dev)?,
+> >>                  ),
+> >> +                _test <- debugfs.read_only_file(c_str!("test"), c_str!("some_value")),
+> >
+> > Cool, but again, we do not want to ever be storing individual debugfs
+> > files.  Well, we can, but for 90% of the cases, we do not, we only want
+> > to remove the whole directory when that goes out of scope, which will
+> > clean up the files then.
+> 
+> This API does not work in the way that you have a struct storing the data you
+> want to expose *and* another one for the files with the data attached.
+> 
+> The File type contains the actual data. For instance, if you have a struct Foo,
+> where you want to expose the members through debugfs you would *not* do:
+> 
+> 	struct Foo {
+> 	   a: u32,
+> 	   b: u32,
+> 	}
+> 
+> 	struct FooFiles {
+> 	   a: File<&u32>,
+> 	   b: File<&u32>
+> 	}
+> 
+> and then create an instance of Foo *and* another instance of FooFiles to export
+> them via debugfs.
 
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
- Documentation/gpu/nova/core/todo.rst | 1 -
- drivers/gpu/nova-core/fb.rs          | 6 +++---
- drivers/gpu/nova-core/vbios.rs       | 4 ++--
- 3 files changed, 5 insertions(+), 6 deletions(-)
+Ah, that's exactly what I was trying to do.
 
-diff --git a/Documentation/gpu/nova/core/todo.rst b/Documentation/gpu/nova/core/todo.rst
-index 48b20656dcb16056db7784fa186f161126aae9aa..89431fec9041b1f35cc55799c91f48dc6bc918eb 100644
---- a/Documentation/gpu/nova/core/todo.rst
-+++ b/Documentation/gpu/nova/core/todo.rst
-@@ -145,7 +145,6 @@ Numerical operations [NUMM]
- Nova uses integer operations that are not part of the standard library (or not
- implemented in an optimized way for the kernel). These include:
- 
--- Aligning up and down to a power of two,
- - The "Find Last Set Bit" (`fls` function of the C part of the kernel)
-   operation.
- 
-diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
-index 68559902ae78bdef8d9bbe88a2f33eecde2ebcab..27d9edab8347c5ed3be104d62a9e32709238bb92 100644
---- a/drivers/gpu/nova-core/fb.rs
-+++ b/drivers/gpu/nova-core/fb.rs
-@@ -3,6 +3,7 @@
- use core::ops::Range;
- 
- use kernel::prelude::*;
-+use kernel::ptr::{Alignable, Alignment};
- use kernel::sizes::*;
- use kernel::sync::aref::ARef;
- use kernel::{dev_warn, device};
-@@ -130,10 +131,9 @@ pub(crate) fn new(chipset: Chipset, bar: &Bar0) -> Result<Self> {
-         };
- 
-         let frts = {
--            const FRTS_DOWN_ALIGN: u64 = SZ_128K as u64;
-+            const FRTS_DOWN_ALIGN: Alignment = Alignment::new::<SZ_128K>();
-             const FRTS_SIZE: u64 = SZ_1M as u64;
--            // TODO[NUMM]: replace with `align_down` once it lands.
--            let frts_base = (vga_workspace.start & !(FRTS_DOWN_ALIGN - 1)) - FRTS_SIZE;
-+            let frts_base = vga_workspace.start.align_down(FRTS_DOWN_ALIGN) - FRTS_SIZE;
- 
-             frts_base..frts_base + FRTS_SIZE
-         };
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index e6a06071420566560d69697e85dd0c6b384f33cb..71fbe71b84db9d93fd7ac8eca58e67f97e4bc46a 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -9,6 +9,7 @@
- use kernel::device;
- use kernel::error::Result;
- use kernel::prelude::*;
-+use kernel::ptr::{Alignable, Alignment};
- use kernel::types::ARef;
- 
- /// The offset of the VBIOS ROM in the BAR0 space.
-@@ -174,8 +175,7 @@ fn next(&mut self) -> Option<Self::Item> {
- 
-         // Advance to next image (aligned to 512 bytes).
-         self.current_offset += image_size;
--        // TODO[NUMM]: replace with `align_up` once it lands.
--        self.current_offset = self.current_offset.next_multiple_of(512);
-+        self.current_offset = self.current_offset.align_up(Alignment::new::<512>())?;
- 
-         Some(Ok(full_image))
-     }
+> Instead you would change your struct Foo to just be:
+> 
+> 	struct Foo {
+> 	   a: File<u32>,
+> 	   b: File<u32>,
+> 	}
+> 
+> If you now create an instance of Foo (let's call it `foo`), then foo.a or foo.b
+> dereferences to the inner type, i.e. the u32. Or in other words `foo` still
+> behaves as if `a` and `b` would be u32 values. For instance:
+> 
+>    if foo.a == 42 {
+>       pr_info!("Foo::b = {}\n", foo.b);
+>    }
 
--- 
-2.51.0
+Oh that's not going to work well at all :(
 
+Think about something "simple" like a pci config descriptor.  You have a
+structure, with fields, already sitting there.  You want to expose those
+fields in debugfs.  So you want to only create debugfs files in one
+location in a driver, you don't want ALL users of those fields to have
+to go through a File<T> api, right?  That would be crazy, all drivers
+would end up always having File<T> everywhere.
+
+> The fact that the backing files of `a` and `b` are removed from debugfs when Foo
+> is dropped is necessary since otherwise we create a UAF.
+
+That's fine, but:
+
+> Think of File<T> as a containers like you think of KBox<T>.
+
+Ok, but again, you are now forcing all users to think of debugfs as the
+main "interface" to those variables, which is not true (nor should it
+be.)
+
+> KBox<T> behaves exactly like T, but silently manages the backing kmalloc()
+> allocation that T lives in.
+> 
+> With File<T> it's exactly the same, it behaves exactly like the T that lives
+> within File<T>, but silently manages the debugfs file the T is exposed by.
+
+And what happens if debugfs is not enabled?  What about if creating the
+file fails?  The variable still needs to be present and active and
+working.
+
+thanks,
+
+greg k-h
