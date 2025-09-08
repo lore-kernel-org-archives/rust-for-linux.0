@@ -1,101 +1,146 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E222224B06
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 10:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3679A2DE71C
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 10:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757326966; cv=none; b=NgTB+lEuNfnkqWIKkypPoUXcGBVMeJ+dvz6qJ5OZ3Q0ZWGNyPEGblUUft7U0eyNdrEwasY0JuORtez14HyTlH2UMmgHiu08PhuWXPl1NPxFLXpit3qLgsDA9Psd4/fmb9E2Aa4h8QmSwIVciyP8acKbyhaATkYqQkSEKteNNao8=
+	t=1757327072; cv=none; b=R0gNzCnkQkh8kkCxDKIcXEo1MrYdrHNxKo/QljlbRxaZd1Yerz3+7z0EDp89X8O+N/o1+SCMjxvSwpFO4ToA3QVgjUlIgKpFVRiV6j4vhII2/qyYxnj6XRQ/193VqW8PGjm4+GuQ7nYiCsUBV2yVFmwx8EqyFpIiiODOwhVmJn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757326966; c=relaxed/simple;
-	bh=RHFxWDCHLy5hvU8idDeLnpypbjz+dKFI/3c2JendMoY=;
+	s=arc-20240116; t=1757327072; c=relaxed/simple;
+	bh=XnWf6lKHXJUHU3vhe1YUuEdjO9a2CX2ypi/RZq+5EDk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gNLFjDDJvSF1VBVfP/P7nP3OCyV2iIlIBfpJwQ1R7piMTMRZfikps7H6lVZuapyV73JIsOohbbmWaCTdJ/yNldtQiwtLR7TO7VaWJQiiMvKPTneWeGJrm8TZTs8tVHHxQTG5TJi64BUkSBhp/wFNBvKVxHBRtqdaO88d2jVMptM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RiiAWDkJ; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=nd4P52jZrKOT4XxZ1+glCfXDDpIp5WzadlH4GwgMoksY/MT4xZqBUKcKT8Wjh4ZM9RNardvZreA5Y9PM6Y6HcmnN7s6Sp1J4/u1zAiQTOJDVn68/JNPvs04SKJU1aaoSVwr50NSKhT17bh8Sh33+1u71cP1BqWgUZ/zpowH2FF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Y/5QVI7n; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RiiAWDkJ"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45de1f2cdeeso6862515e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 03:22:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Y/5QVI7n"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55ce508d4d6so3757116e87.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 03:24:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757326963; x=1757931763; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1757327068; x=1757931868; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZrzZTtPMBTTwhC4hDpYeCTJZty1sUGPfAIEYck4kXTs=;
-        b=RiiAWDkJgLVkF/rUWUJGTeM5S6+zrBpg1qnCf0/zDs7A7WW4l7jqM7vu39E1N4SKn3
-         P2XZYzGHAWatVK9OUlT0g+DIMVDvut7SVvtHKl/5IoEMi703d2a1bDk1aUlT9kHkOl+e
-         ticcS0I+H8o4z8rIt9xhT00UdsxPsidZp5w6C6hwZPax8Gi+cAfciMEzqiQP0qNLltPu
-         JLt4KaIWNxM6atB+RUWcz57jxDTWokfmPy4wvXcQuu5aGkZgKCmusQl5Ti+k+lI/ILtS
-         kyZ2HCpT0a1v5kSREMjknDKOiSMUvTGNy9bQp5GrgOvW0e2hEDBhZOeKfoM2hiUMmvEX
-         xhow==
+        bh=hwjChtfYMEeGuB/wdk7FN7umIHbSaximMcCkeQ4PR3g=;
+        b=Y/5QVI7nhI6iFA+QCwmSQAWL5DYgynJTHqID7hupV7NjgLydvj/1xiLYreY5L8xnm1
+         I7gHAJ0WlUOouVccC3XKhqIsp4DZXu3nAt8urrYRIKZsrsZZIEezh6kIECBlHl8fgCde
+         H34IKB3QW5WbS/m92a9qqg3l1xFTZy1En+syOSZxI9NujszwVgzoiow8yoNCwSikhkLn
+         zHKbI1qRPnoWplh2iXa86AFtVEDGNpBBQWk9qbrSfEb7rzhi98b+M1wVftsv/6Spep+9
+         hE/hjQcRSAri15PHdhtXtx1Sb8uWb2/gQLaEE5HYy9f6sA1roYvxtNZPzvoQbcqeowx9
+         do5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757326963; x=1757931763;
+        d=1e100.net; s=20230601; t=1757327068; x=1757931868;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZrzZTtPMBTTwhC4hDpYeCTJZty1sUGPfAIEYck4kXTs=;
-        b=DO0I2g3Kr29l288gx0Okh+yyukedFoDLxpA1Y4NHywSMe9GcONHNH8Ok6YOvhF/yPL
-         6XpUimaHOqPrTdWGs3msBAfDRGxhjAfmw2AXQ0aUYyAG0x80G2/Y015+aMLkSIY+54Z1
-         Js8ziWUYdTP8sL+B0vvGFPoKy0rxd7brNBUIlJomy9VGIWzzkkWMGy+KzlncT2OyE8SK
-         lHur9LAlz9/Bs5NDM+h8HjLVm3lCfi7Orjej54lzr4DN2r8RiBiAec2Px98G0feovaMO
-         xo7mzOS6lOVzeFhfojNWPqUZM25Kv1KbF5xYGc2V1v+yBPmnw2n+zPu+jyKNcS7SnU8c
-         WEFA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFkz1Vu2VcW3wjkoJVWHiBUYuwod4WDT1y3usNUfLRssmg5ir/keJkPvuWlNpJFskA3ZKXtlowPPakwK6EHQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrXhSvfw/labFaUqmgeTt/KteE23tMzSJwd7Rfb6oZYLJIicip
-	SPEQOGpvSSgYjkVh1UEF1sVU89CSUVtVzLJ3Pd98UzpSQlQQMSQVvCvzUhpeJ6NRumk9QsizpJ3
-	fidm2KAnzoYrm06lpg70Nf1Zy7pzL226sd+qdwaBW
-X-Gm-Gg: ASbGncudaebRLdmwVwNek3CRSfoU2A+hHKqPuGMNolBzu24sQ8Gtbz71YrMQ2zCp+l5
-	ZIniuRIKwcHEj/g3EBbqErzqYLM1xEd0pUOfd+d5OKTbTJii8GMdM1VFf+hVfU5RGREcdRniHEd
-	sMt1bgMZbwxH7jCe3XNx+gmLuxtQHKH0PG+yd6pUFT+cvX7dWhbZldRbZ67OPhQhJlpKeUG411F
-	fMK61h6NAakmKSQzZaS8wX47ANR5k9s7yCpWkkHIfFjFGJGYztu/KyA9yBXBM9zBzSuB0OFdymf
-X-Google-Smtp-Source: AGHT+IFgWYJROM17+WIrfUEk3tvBLaNIow64btrV8OrhYTpagog0f41sQ1woWipkCJ+Mg8IHT5GJftLiAT4HnQvHO3M=
-X-Received: by 2002:a05:6000:26ce:b0:3d3:8711:d934 with SMTP id
- ffacd0b85a97d-3e63736edd3mr6168164f8f.14.1757326963179; Mon, 08 Sep 2025
- 03:22:43 -0700 (PDT)
+        bh=hwjChtfYMEeGuB/wdk7FN7umIHbSaximMcCkeQ4PR3g=;
+        b=YRlCN5Joq5yI068lpRRXe1wtTN3FYuY+mS3qrwc4IouF9DyHDXZAHdo3vXb++ctp98
+         RWKivPFa1i7jrQPVzsCOGM29WuIdy/MygGyrRAdkocO23r3DRAxcojGp5RZiwzZVWX8V
+         ML56ncV6PJs8cn/GWZkeKWOJrw8lrHZZRWVqpMRGPSkt+HHy4f6SCBP74bg+P9+aAso0
+         +sWpUqrPi7BlXEGQ7+JBkmCuL+TVb281E+RT0DXOzAcrRlHdkthdBN7mnupRAktYFhVs
+         FaJ5G00hWOCqzXOPLToR44QiLlmUEqDlCAvX5Ye8JiP0Ox8p6XvEtjIEci4gJFY79q68
+         ekIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWuGG6UtRDZQgAfEcgp8NLjAXEv5GDyImqe6K5pp6gxf86jhxx0qdCeTwcQgkycXgpsAQgz7uZO1sQqAIWhw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGdXTHOuFZ0nuW2fqdL5Apc6W4ArmwoK4I4SM8Qd8EknVWhtvp
+	GA4+Dd+v2YTaF3HPW8uX4uM+85lKCcxd6JFAq6JlItohvPseM48o4j9FW6M8Ty40Nr4/zXIab17
+	VDvMzxhjGv81QBklN1ztrYvs8UQTcoRuxyU7s8hg82g==
+X-Gm-Gg: ASbGncv06FxfrMHNSZbek+pY2E19lywbcX42C/YCMRYiqbMrh3itqMZax+GWCHKDO3r
+	/RddgBjUG7d6/YrgO+UqMGRRHxxhFv01NstsLRKLuvMK8AveJnLJksG/ajbsRhBWznO567nDRSA
+	ADnPhBLBvI1E6A6dVAg4DtooNSMp6zzKb+ZYaz5lAGiXkTggdbjB8/l8+BheA9jYUCvYyqoTaGR
+	HBEPY+qYQepg5TTGpYSNLyXp7ymtuIo13+3VcFGWXjA6TiKnnc=
+X-Google-Smtp-Source: AGHT+IEU92SWFcqL2QLe01sPUZQ53vA4dSF+LeC1eGi9vzhaBBHpAD5T0LpNw8VkFQ7aMMrmY4T/VkWVtAdVP7ScVQ0=
+X-Received: by 2002:a05:6512:3984:b0:55f:4e8a:19b9 with SMTP id
+ 2adb3069b0e04-56260873705mr1755433e87.25.1757327068230; Mon, 08 Sep 2025
+ 03:24:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250906140256.3059395-1-vitaly.wool@konsulko.se>
- <aL6YHkF96ICqqbBZ@google.com> <94252007-f389-41d0-b5a0-ed948225543a@kernel.org>
- <CANiq72k6OXcvjzKimfzKAAw8QPzDoVxUx_smFA8KU6gEwJ3yeQ@mail.gmail.com>
-In-Reply-To: <CANiq72k6OXcvjzKimfzKAAw8QPzDoVxUx_smFA8KU6gEwJ3yeQ@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 8 Sep 2025 12:22:29 +0200
-X-Gm-Features: AS18NWA9hYdpwy_1B5DZiD19hEAKMFtTbh_pCUoACeHBYWDL0ERivZum5zi9du0
-Message-ID: <CAH5fLghyDNd1SSL5uTZpSR-5j3q9=frAa=AgUjvap45b-DuUig@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: rbtree: add immutable cursor
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Vitaly Wool <vitaly.wool@konsulko.se>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+References: <20250905090819.107694-1-marco.crivellari@suse.com>
+ <CAH5fLgiZnCbNLpuphv4Kgsu48kRkhf6wJiSLrrgsqyEDvU3X3Q@mail.gmail.com>
+ <CAAofZF4a6ARXOS0rmK5zY1Kd3xdODqdkj_keZmEYx8Z-JRvhng@mail.gmail.com> <aL1lkN5WcWkwiq3S@google.com>
+In-Reply-To: <aL1lkN5WcWkwiq3S@google.com>
+From: Marco Crivellari <marco.crivellari@suse.com>
+Date: Mon, 8 Sep 2025 12:24:17 +0200
+X-Gm-Features: Ac12FXwzRONvDWlYnRSSfpeI4s-lFdpCX_TWM6Wio52dNFtybcl11454WB4Q3Oo
+Message-ID: <CAAofZF77saPdGYXt-oYkfV=2pRCRtso5eJuw+FqmS8b8WERgOA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] rust: replace wq users and add WQ_PERCPU to
+ alloc_workqueue() users
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 8, 2025 at 11:21=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Sun, Sep 7, 2025 at 12:59=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+> I mean that instead of:
 >
-> On Mon, Sep 8, 2025 at 11:06=E2=80=AFAM Danilo Krummrich <dakr@kernel.org=
-> wrote:
-> >
-> > Why not use &raw? Consistency with the rest of the file?
+> +/// Returns the system unbound work queue (`system_dfl_wq`).
+>  ///
+>  /// Workers are not bound to any specific CPU, not concurrency managed, =
+and all queued work items
+>  /// are executed immediately as long as `max_active` limit is not reache=
+d and resources are
+>  /// available.
+>  pub fn system_unbound() -> &'static Queue {
+> -    // SAFETY: `system_unbound_wq` is a C global, always available.
+> -    unsafe { Queue::from_raw(bindings::system_unbound_wq) }
+> +    // SAFETY: `system_dfl_wq` is a C global, always available.
+> +    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
+>  }
 >
-> I guess -- it is a good thing, but since we are actively trying to
-> move to the operator, it would minimize work to avoid adding new ones:
+> you add a new function:
 >
->     https://github.com/Rust-for-Linux/linux/issues/1148
+>         pub fn system_dfl() -> &'static Queue {
+>             // SAFETY: `system_dfl_wq` is a C global, always available.
+>             unsafe { Queue::from_raw(bindings::system_dfl_wq) }
+>         }
 >
-> Cheers,
-> Miguel
+> and do *not* modify system_unbound().
+>
+> Alice
 
-Do we already have a patch making this refactor for rbtree? I don't
-think I saw one. I can send one if not.
+Hello Alice,
 
-Alice
+Ah, perfect. Yes it makes sense this change, you're right.
+I will send the v2 introducing the new functions for both the patches
+in this series.
+
+It would also make sense to also change the above comment, mentioning that
+system_unbound() uses a wq that will be removed in the future, and so
+it is better to
+use system_dfl() instead?
+
+I'm thinking to something like:
+
++///
++/// Note: system_unbound_wq will be removed in a future release
+cycle. Use system_dfl_wq instead.
+pub fn system_unbound() -> &'static Queue {
+    // SAFETY: `system_unbound_wq` is a C global, always available.
+    unsafe { Queue::from_raw(bindings::system_unbound_wq) }
+}
+
++pub fn system_dfl() -> &'static Queue {
++    // SAFETY: `system_dfl_wq` is a C global, always available.
++    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
++}
+
+Sounds good?
+
+Thanks!
+
+--=20
+
+Marco Crivellari
+
+L3 Support Engineer, Technology & Product
+
+marco.crivellari@suse.com
