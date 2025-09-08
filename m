@@ -1,149 +1,101 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F842F8BE8;
-	Mon,  8 Sep 2025 10:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E222224B06
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 10:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757326812; cv=none; b=badjmX2mYGBECv4m+s2r+Tf84bUdkIr46vXpgviIBuut+/c+bIMbMCBLcxQEonVmfuORtW3d1yfL/QmaZgFqFlKrhRt1GBJlkBlxzWmQ1WRFvXCpNZ0mes9oWrtlAOyTZBeowbLJaIafxKRSDfqsrFdbvJzVlBQfWHh2grDk0NA=
+	t=1757326966; cv=none; b=NgTB+lEuNfnkqWIKkypPoUXcGBVMeJ+dvz6qJ5OZ3Q0ZWGNyPEGblUUft7U0eyNdrEwasY0JuORtez14HyTlH2UMmgHiu08PhuWXPl1NPxFLXpit3qLgsDA9Psd4/fmb9E2Aa4h8QmSwIVciyP8acKbyhaATkYqQkSEKteNNao8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757326812; c=relaxed/simple;
-	bh=iIFJ6NmZ1H1JOINY4fZdqZyuJ4VYblJcKfuSrQZN94M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JK8aRWiszfpOgWD+HJ2l876GKXzsRaxCBjz3i/mptTdz5Gbk2WmSthbqy9UsqcJmdcJg/ou1Ac1oB/fsabeXueHnFRCN6FiqBsqG4Y+2bRn6nltFeCwOMYzioKrCLUL8pnvtVEPfeS3NmYi0O9eMbls/GBBHrh/0V85TWNrq4AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=b5fZ+QiP; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1757326966; c=relaxed/simple;
+	bh=RHFxWDCHLy5hvU8idDeLnpypbjz+dKFI/3c2JendMoY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gNLFjDDJvSF1VBVfP/P7nP3OCyV2iIlIBfpJwQ1R7piMTMRZfikps7H6lVZuapyV73JIsOohbbmWaCTdJ/yNldtQiwtLR7TO7VaWJQiiMvKPTneWeGJrm8TZTs8tVHHxQTG5TJi64BUkSBhp/wFNBvKVxHBRtqdaO88d2jVMptM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RiiAWDkJ; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="b5fZ+QiP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1757326808;
-	bh=iIFJ6NmZ1H1JOINY4fZdqZyuJ4VYblJcKfuSrQZN94M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b5fZ+QiPy/IPlQHqjq/UftWyBFb9U/6psv9mWA9wDT84gbfkdLr+w3eRdkDWGdZwd
-	 IMbi1z18YkfaltQfGH/dapMZ2cEUG2N3ZyP4k6JYJGcCSSN7IhGdFkU3cuRJJyxHGp
-	 zy+nptShUmMhdHOmrTLVDACNGBP4H6ogwGZ/6u7+90uckEGQoxoRq0BjrLhCbzAVoE
-	 OhXdc55y1hmZb1Pej1yc0fLgP3LtiqNiUhR28/oBO1ycMHHQpAKcSVuPn+2OEbh4sW
-	 olVBaw8Eukq6yRttYIQVfAcFTyH0pk00ZMMxkbcCkbjX/J/yxI7xfq4PKrVQDwNl2e
-	 x1OjUYgE/HhwA==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 38FF817E0C96;
-	Mon,  8 Sep 2025 12:20:08 +0200 (CEST)
-Date: Mon, 8 Sep 2025 12:20:02 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Matthew Brost"
- <matthew.brost@intel.com>, Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=
- <thomas.hellstrom@linux.intel.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Steven Price"
- <steven.price@arm.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Liviu Dudau" <liviu.dudau@arm.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
-Message-ID: <20250908122002.2c80dd3a@fedora>
-In-Reply-To: <DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org>
-References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
-	<20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
-	<20250905152505.005a610d@fedora>
-	<CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
-	<DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org>
-	<aL1pSFB9iBsfHFM_@google.com>
-	<DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org>
-	<aL1u_YxOkuj1kIq6@google.com>
-	<20250908091140.44856fde@fedora>
-	<aL6TJYRmWIkQXujj@google.com>
-	<DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RiiAWDkJ"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45de1f2cdeeso6862515e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 03:22:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757326963; x=1757931763; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZrzZTtPMBTTwhC4hDpYeCTJZty1sUGPfAIEYck4kXTs=;
+        b=RiiAWDkJgLVkF/rUWUJGTeM5S6+zrBpg1qnCf0/zDs7A7WW4l7jqM7vu39E1N4SKn3
+         P2XZYzGHAWatVK9OUlT0g+DIMVDvut7SVvtHKl/5IoEMi703d2a1bDk1aUlT9kHkOl+e
+         ticcS0I+H8o4z8rIt9xhT00UdsxPsidZp5w6C6hwZPax8Gi+cAfciMEzqiQP0qNLltPu
+         JLt4KaIWNxM6atB+RUWcz57jxDTWokfmPy4wvXcQuu5aGkZgKCmusQl5Ti+k+lI/ILtS
+         kyZ2HCpT0a1v5kSREMjknDKOiSMUvTGNy9bQp5GrgOvW0e2hEDBhZOeKfoM2hiUMmvEX
+         xhow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757326963; x=1757931763;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZrzZTtPMBTTwhC4hDpYeCTJZty1sUGPfAIEYck4kXTs=;
+        b=DO0I2g3Kr29l288gx0Okh+yyukedFoDLxpA1Y4NHywSMe9GcONHNH8Ok6YOvhF/yPL
+         6XpUimaHOqPrTdWGs3msBAfDRGxhjAfmw2AXQ0aUYyAG0x80G2/Y015+aMLkSIY+54Z1
+         Js8ziWUYdTP8sL+B0vvGFPoKy0rxd7brNBUIlJomy9VGIWzzkkWMGy+KzlncT2OyE8SK
+         lHur9LAlz9/Bs5NDM+h8HjLVm3lCfi7Orjej54lzr4DN2r8RiBiAec2Px98G0feovaMO
+         xo7mzOS6lOVzeFhfojNWPqUZM25Kv1KbF5xYGc2V1v+yBPmnw2n+zPu+jyKNcS7SnU8c
+         WEFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFkz1Vu2VcW3wjkoJVWHiBUYuwod4WDT1y3usNUfLRssmg5ir/keJkPvuWlNpJFskA3ZKXtlowPPakwK6EHQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrXhSvfw/labFaUqmgeTt/KteE23tMzSJwd7Rfb6oZYLJIicip
+	SPEQOGpvSSgYjkVh1UEF1sVU89CSUVtVzLJ3Pd98UzpSQlQQMSQVvCvzUhpeJ6NRumk9QsizpJ3
+	fidm2KAnzoYrm06lpg70Nf1Zy7pzL226sd+qdwaBW
+X-Gm-Gg: ASbGncudaebRLdmwVwNek3CRSfoU2A+hHKqPuGMNolBzu24sQ8Gtbz71YrMQ2zCp+l5
+	ZIniuRIKwcHEj/g3EBbqErzqYLM1xEd0pUOfd+d5OKTbTJii8GMdM1VFf+hVfU5RGREcdRniHEd
+	sMt1bgMZbwxH7jCe3XNx+gmLuxtQHKH0PG+yd6pUFT+cvX7dWhbZldRbZ67OPhQhJlpKeUG411F
+	fMK61h6NAakmKSQzZaS8wX47ANR5k9s7yCpWkkHIfFjFGJGYztu/KyA9yBXBM9zBzSuB0OFdymf
+X-Google-Smtp-Source: AGHT+IFgWYJROM17+WIrfUEk3tvBLaNIow64btrV8OrhYTpagog0f41sQ1woWipkCJ+Mg8IHT5GJftLiAT4HnQvHO3M=
+X-Received: by 2002:a05:6000:26ce:b0:3d3:8711:d934 with SMTP id
+ ffacd0b85a97d-3e63736edd3mr6168164f8f.14.1757326963179; Mon, 08 Sep 2025
+ 03:22:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250906140256.3059395-1-vitaly.wool@konsulko.se>
+ <aL6YHkF96ICqqbBZ@google.com> <94252007-f389-41d0-b5a0-ed948225543a@kernel.org>
+ <CANiq72k6OXcvjzKimfzKAAw8QPzDoVxUx_smFA8KU6gEwJ3yeQ@mail.gmail.com>
+In-Reply-To: <CANiq72k6OXcvjzKimfzKAAw8QPzDoVxUx_smFA8KU6gEwJ3yeQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 8 Sep 2025 12:22:29 +0200
+X-Gm-Features: AS18NWA9hYdpwy_1B5DZiD19hEAKMFtTbh_pCUoACeHBYWDL0ERivZum5zi9du0
+Message-ID: <CAH5fLghyDNd1SSL5uTZpSR-5j3q9=frAa=AgUjvap45b-DuUig@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: rbtree: add immutable cursor
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Vitaly Wool <vitaly.wool@konsulko.se>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 08 Sep 2025 10:47:25 +0200
-"Danilo Krummrich" <dakr@kernel.org> wrote:
-
-> On Mon Sep 8, 2025 at 10:26 AM CEST, Alice Ryhl wrote:
-> > On Mon, Sep 08, 2025 at 09:11:40AM +0200, Boris Brezillon wrote:  
-> >> Hi Alice,
-> >> 
-> >> On Sun, 7 Sep 2025 11:39:41 +0000
-> >> Alice Ryhl <aliceryhl@google.com> wrote:
-> >>   
-> >> > Yeah I guess we could have unlink remove the gpuva, but then allow the
-> >> > end-user to attach the gpuva to a list of gpuvas to kfree deferred. That
-> >> > way, the drm_gpuva_unlink() is not deferred but any resources it has can
-> >> > be.  
-> >> 
-> >> This ^.
-> >>   
-> >> > 
-> >> > Of course, this approach also makes deferred gpuva cleanup somewhat
-> >> > orthogonal to this patch.  
-> >> 
-> >> Well, yes and no, because if you go for gpuva deferred cleanup, you
-> >> don't really need the fancy kref_put() you have in this patch, it's
-> >> just a regular vm_bo_put() that's called in the deferred gpuva path on
-> >> the vm_bo attached to the gpuva being released.  
+On Mon, Sep 8, 2025 at 11:21=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Mon, Sep 8, 2025 at 11:06=E2=80=AFAM Danilo Krummrich <dakr@kernel.org=
+> wrote:
 > >
-> > Ok, so what you suggest is that on gpuva_unlink() we remove the gpuva
-> > from the vm_bo's list, but then instead of putting the vm_bo's refcount,
-> > we add the gpuva to a list, and in the deferred cleanup codepath we
-> > iterate gpuvas and drop vm_bo refcounts *at that point*. Is that
-> > understood correctly?  
-> 
-> It has to be a special unlink function though, since otherwise
-> 
-> 	drm_gpuva_link();
-> 	drm_gpuva_unlink();
-> 	drm_gpuva_link();
-> 	drm_gpuva_unlink();
-> 
-> leaks the VM_BO.
+> > Why not use &raw? Consistency with the rest of the file?
+>
+> I guess -- it is a good thing, but since we are actively trying to
+> move to the operator, it would minimize work to avoid adding new ones:
+>
+>     https://github.com/Rust-for-Linux/linux/issues/1148
+>
+> Cheers,
+> Miguel
 
-I'm not following. Yes there's going to be a
-drm_gpuva_unlink_defer_put() that skips the
+Do we already have a patch making this refactor for rbtree? I don't
+think I saw one. I can send one if not.
 
-        va->vm_bo = NULL;
-        drm_gpuvm_bo_put(vm_bo);
-
-and adds the gpuva to a list for deferred destruction. But I'm not
-seeing where the leak is. Once the gpuva has been put in this list,
-there should be no existing component referring to this object, and it's
-going to be destroyed or recycled, but not re-used as-is.
-
-
-> Sounds a bit messy, but my concern is really about the below:
-> 
-> > That means we don't immediately remove the vm_bo from the gem.gpuva
-> > list, but the gpuva list in the vm_bo will be empty. I guess you already
-> > have to handle such vm_bos anyway since you can already have an empty
-> > vm_bo in between vm_bo_obtain() and the first call to gpuva_link().
-> >
-> > One disadvantage is that we might end up preparing or unevicting a GEM
-> > object that doesn't have any VAs left, which the current approach
-> > avoids.  
-> 
-> Yeah, we really want to avoid that.
-
-I think I agree that we want to avoid it, but I'm not too sure about
-the solution that involves playing with vm_bo::kref. I'm particularly
-worried by the fact drivers can iterate the evict/extobj lists
-directly, and can thus see objects scheduled for destruction. I know
-there's a gpuvm_bo_is_dead() helper, and drivers should be aware of the
-risks, but I don't feel comfortable about this.
-
-And since we've mentioned the possibility of having to support
-gpuva destruction deferral too, I'm wondering it wouldn't be cleaner
-to just go for this approach from the start (gpuva owns a ref to a
-vm_bo, which gets released when the gpuva object is released).
+Alice
