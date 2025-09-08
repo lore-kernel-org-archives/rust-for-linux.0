@@ -1,154 +1,105 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AA52ED14D;
-	Mon,  8 Sep 2025 09:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D162F3C01
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 10:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757324243; cv=none; b=JCZTmhYKm/GZfcqvPPFSHEInRhZC6fYa7YX8ptSDe10nJeztVOKp5L14/iOExV7OOwZgTvY/+nRoUvCMEtA2JQeWOvfuC8lPmROe0UorIFwtHltuGrTlBtirPs41DMCTJfPJYxYvG0dfEuU0bTRHQYNEeP9zHCPomrhG7km9uo4=
+	t=1757325820; cv=none; b=SYQUFIUhC0Df+UAXDCR9BjXTRcqMuJcUVtQmerDAKKo2P5pguMgbBCGEn7UVRs9hQsLkcE+/KRWhB2ViKPdSxh7xr3TGJQL9SnVzSdrmTNwqfTCSwN16b8Lp0DN1uqOho1yrDkelogC31zaztNJZtYSa+XMROpeI01+DmnQGxuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757324243; c=relaxed/simple;
-	bh=WlJblooR4r8w7l/04ljXstHrZImkNxyr3pKUtvaZN8I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r3IOuusXWSdGH+T1qpMNHNiEVInnswhm/lEEnQ8Rk4s3MDqm6XNbwxRIWyBpvXmfFNzt34nwoIUQSE4sdS4CK/RNNWHSqgax6oMmfgIbw8vZdu6ldoWzHKbLu4GjT1dFSK64VUReCBjgpqpUSo4ohGO5w+9Kvd4kf1Ni3VQQTRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=pLVc7lYw; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1757325820; c=relaxed/simple;
+	bh=/dnp+b70WtKeplBbH4n2SjTpjJwhsy8D29w78HMNMW4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MabWlgdr/DiE7hVRUtnpHV4Uk//pEYvQvDCl8ZWFR/Dnxk/1v2+FhIaumWqvlwoPiWR5hbfa5e6pVt+t4tOIPTE3CZpfTE2C4FFoqq9312BVswKndyngOQwvra/fjFTTtwhTARbkzq6QbqqBD+FupXiAz2Dlr+vNE8G8bIU1GZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=w59xb9D0; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="pLVc7lYw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1757324239;
-	bh=WlJblooR4r8w7l/04ljXstHrZImkNxyr3pKUtvaZN8I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pLVc7lYw4/8zHpqX2uEat5I3jva1TgXMaKqpWRCq+odrPSlNNEiE686aGQxoTod0e
-	 +gFQv8Nge63beMhhXGIutalzJLe6uS7m5Gf6fO7oGDdB7MGe37ZyIKhVHu3dw6md7q
-	 +pAevO8WZMVcGk1Po57wU2H8AxHfEKG2mcaSuzsGnSve4IO9/LwpIu3VSmEYI2Re4K
-	 5DevsulsOCNYWLcr2t241CuqoY+1mQh2Frl3FPtRO4pnBdBjGuB1ruZcCZAdv/U8UH
-	 kJ0a0W2pQWQzf15imPosSYIXkHqa5/iiw2NvQ9AkCP0esgIyVBzT/E6wYrp2QioDca
-	 fsL8HSonYCQOg==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8C28117E0EB8;
-	Mon,  8 Sep 2025 11:37:18 +0200 (CEST)
-Date: Mon, 8 Sep 2025 11:37:13 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
- <matthew.brost@intel.com>, "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?="
- <thomas.hellstrom@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Steven Price <steven.price@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau
- <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
-Message-ID: <20250908113713.34e57f16@fedora>
-In-Reply-To: <aL6TJYRmWIkQXujj@google.com>
-References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
-	<20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
-	<20250905152505.005a610d@fedora>
-	<CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
-	<DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org>
-	<aL1pSFB9iBsfHFM_@google.com>
-	<DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org>
-	<aL1u_YxOkuj1kIq6@google.com>
-	<20250908091140.44856fde@fedora>
-	<aL6TJYRmWIkQXujj@google.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w59xb9D0"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45de4e1a0fdso4075435e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 03:03:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757325816; x=1757930616; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eaps07dD7XTryihAK0nxG3s+QduS7EL0qLU4yW3i/2k=;
+        b=w59xb9D0QbhiwjGic5IbwqSvzNFg2sA2i+X7c1ZIbrQu9zFglgTl6POcQJ4yythZsu
+         cmf5OLptFtMbfh6ls9mnXVHGFcGbBHHEPNr+Wrjiq7LifJn+Jmylvrozuwg+05Y63SWm
+         O+jmMHUXf2jLOrbnNvkvdQZWdAqwsT7oT2Q5+qFgiUAw25vOpzac4bYFof66zP3TOP3q
+         9fHupeH29NQPUb52G46mQng0JfagPpRkYshIi/zEA1y8OtMDjaVN+EFCKVM8mRoBkPA4
+         i+12TliiV1NAX/JdR5I/hJJW5Ndtbaq+g4I/YtW9T24ztgGBNvbQXkNMyMX9A+Yexx2H
+         THOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757325817; x=1757930617;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eaps07dD7XTryihAK0nxG3s+QduS7EL0qLU4yW3i/2k=;
+        b=MkAiUr5eG1czGPXEbHFPebNt5cYJvWve1qv8x2UIti/5OuQbOfrdZdzzXWSO9KlluY
+         rsd8WfHvbffCJYIt92nErL9m2wCr8qteEgfWyPOkswd59tqAkVpqvD+OMaQA+GvhOoUA
+         AiDjCimhFgKLsahaPa2leXOwphFtC77UONhXB2/ONcTOTjiqDE3oA8yYORETaYbvZFg8
+         j1x/nFEXa6clQS8kfpOrNy/VcjU9699q3hLjZv2ewB4dHrLHTfL1wVjyzVD7MZU/6tBK
+         s4Z27W95X0M4KJdy/OPwrbzoyQVDLiXjlMp7ykWfJH3LuYd2PSB0Eh3bQYb/luItmd5S
+         zhGw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLmFyFRnJYQbRubJ0Ik1jqmc+0ZpR0t3AJFdiEjHCcx621d1wMrGK6uaEJOdqz5xSrkJ+gKN1eU/PJRVv3AQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRxx3rOO8S6iuTF9tp73EUhkw5kNI/IzG6dzB9fTpkeF24IDfI
+	pA4TjctUUl0trB7Bx0rpW6MaLLh5+VNHZc8BGGIczdOZuVl+C+Eb3DoHl9TDcTapArE=
+X-Gm-Gg: ASbGncuHkevgkcZ3j+TkOVIPVQBaYOQLO5i0LJs1rgpyrYfm7GknaTFfTRDLtvuPWnE
+	05yBgzEwdfMtOrjCtvFT4WkSBbwFmy6lt56L6bOK0rKjdeUyMjl5WEteM9+AvG8CRB3EAlCKZVL
+	6KLivro6O0E/xrX+9k3QficUXdgrPHzrP8ls4K1gBDumX7Gv3sgIqlECi2K+3dUGAPb180hfrc5
+	AdURe+lEnApCxGt3ymFkXiweZdusPW3mRYe9O7lznq1OUJwVzgXfR3a4ErlZb09hvApsKdrZ7OT
+	UenYAHdN9IDXjWHlhZ1F3J2/rn9IDmx9IHgNnBefrgLQCMUc/0hxhaR0YfsjJpFebrnUtMBXjhz
+	y8tKQg+5e20xWm92nLGgYfCOOZb0=
+X-Google-Smtp-Source: AGHT+IGL5OGrJB0ylbpCgIg6utoXZbQI9spp3FeA2h1mOkfInEYNAHzZhtaFvbEqqM0z7SIbBa3RoA==
+X-Received: by 2002:a05:600c:3516:b0:456:1824:4808 with SMTP id 5b1f17b1804b1-45dddedde1amr64296245e9.32.1757325816590;
+        Mon, 08 Sep 2025 03:03:36 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45dd05faa9esm92427275e9.3.2025.09.08.03.03.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 03:03:36 -0700 (PDT)
+Date: Mon, 8 Sep 2025 13:03:32 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Carlos LLama <cmllamas@google.com>,
+	Pekka Ristola <pekkarr@protonmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v15 0/5] rust: adds Bitmap API, ID pool and bindings
+Message-ID: <aL6p9P_bfYQsasYW@stanley.mountain>
+References: <20250904165015.3791895-1-bqe@google.com>
+ <aLnURXW_ZiX2iJd_@yury>
+ <CANiq72==48=69hYiDo1321pCzgn_n1_jg=ez5UYXX91c+g5JVQ@mail.gmail.com>
+ <aLv8buzrro0E5CCQ@stanley.mountain>
+ <aLxE0AvP63nXxciG@yury>
+ <CANiq72kgPKwMdEni7xPOXZ55CDiUk6=ZXDZrx6fSheRSZ5aq_A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72kgPKwMdEni7xPOXZ55CDiUk6=ZXDZrx6fSheRSZ5aq_A@mail.gmail.com>
 
-On Mon, 8 Sep 2025 08:26:13 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> On Mon, Sep 08, 2025 at 09:11:40AM +0200, Boris Brezillon wrote:
-> > Hi Alice,
-> > 
-> > On Sun, 7 Sep 2025 11:39:41 +0000
-> > Alice Ryhl <aliceryhl@google.com> wrote:
-> >   
-> > > Yeah I guess we could have unlink remove the gpuva, but then allow the
-> > > end-user to attach the gpuva to a list of gpuvas to kfree deferred. That
-> > > way, the drm_gpuva_unlink() is not deferred but any resources it has can
-> > > be.  
-> > 
-> > This ^.
-> >   
-> > > 
-> > > Of course, this approach also makes deferred gpuva cleanup somewhat
-> > > orthogonal to this patch.  
-> > 
-> > Well, yes and no, because if you go for gpuva deferred cleanup, you
-> > don't really need the fancy kref_put() you have in this patch, it's
-> > just a regular vm_bo_put() that's called in the deferred gpuva path on
-> > the vm_bo attached to the gpuva being released.  
+On Mon, Sep 08, 2025 at 11:24:02AM +0200, Miguel Ojeda wrote:
+> I understood that Dan was fixing the first diff he posted.
 > 
-> Ok, so what you suggest is that on gpuva_unlink() we remove the gpuva
-> from the vm_bo's list, but then instead of putting the vm_bo's refcount,
-> we add the gpuva to a list, and in the deferred cleanup codepath we
-> iterate gpuvas and drop vm_bo refcounts *at that point*. Is that
-> understood correctly?
 
-Yes, that's what I'm suggesting.
+Yeah.  Sorry.  I tested it but then I must have damanged it before I
+sent it.  :/
 
-> 
-> That means we don't immediately remove the vm_bo from the gem.gpuva
-> list, but the gpuva list in the vm_bo will be empty. I guess you already
-> have to handle such vm_bos anyway since you can already have an empty
-> vm_bo in between vm_bo_obtain() and the first call to gpuva_link().
-> 
-> One disadvantage is that we might end up preparing or unevicting a GEM
-> object that doesn't have any VAs left, which the current approach
-> avoids.
-
-Fair enough, though, as you said, the unnecessary ::prepare() already
-exists in the "queue-map-operation" path, because the object is added
-to the extobj list as soon as vm_bo_obtain() is called, not at _map()
-time. This being said, I don't know if it really matters in practice,
-because:
-
-1. if buffer eviction happens too often, the system will already suffer
-   from the constant swapout/swapin already, it's not a single buffer
-   that's going to make a difference
-2. hopefully the buffer will be gone before the next job is submitted
-   most of the time
-3. we can flush the gpuva destruction list before preparing/unevicting
-   GEM objects, so we don't end up processing vm_bos that no longer
-   exist. Actually, I think this step is good to have regardless
-   of what we decide here, because the less elements we have to iterate
-   the better, and in the submit path, we've already acquired all
-   GEM locks to do that cleanup, so we're probably better off doing it
-   right away.
-
-> 
-> > > One annoying part is that we don't have an gpuvm ops operation for
-> > > freeing gpuva, and if we add one for this, it would *only* be used in
-> > > this case as most drivers explicitly kfree gpuvas, which could be
-> > > confusing for end-users.  
-> > 
-> > Also not sure ::vm_bo_free() was meant to be used like that. It was for
-> > drivers that need to control the drm_gpuvm_bo allocation, not those
-> > that rely on the default implementation (kmalloc). Given how things
-> > are described in the the doc, it feels weird to have a ::vm_bo_free()
-> > without ::vm_bo_alloc(). So, if we decide to go this way (which I'm
-> > still not convinced we should, given ultimately we might want to defer
-> > gpuvas cleanup), the ::vm_bo_free() doc should be extended to cover
-> > this 'deferred vm_bo free' case.  
-> 
-> I can implement vm_bo_alloc() too, but I think it seems like a pretty
-> natural way to use vm_bo_free().
-
-Not necessarily saying we should have a vm_bo_alloc(), just saying it
-feels weird as it is now because of the asymmetry and how things are
-described in the doc.
+regards,
+dan carpenter
