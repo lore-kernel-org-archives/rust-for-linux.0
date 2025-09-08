@@ -1,127 +1,107 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050592E92D9;
-	Mon,  8 Sep 2025 12:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF4C2FE05C;
+	Mon,  8 Sep 2025 12:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757333535; cv=none; b=YlgaDLW0vv+fziLXROLDxedztlYwgqdsVcHFodkckn9rUf06g0haH0+4nFRIxK0ufXnqWKrwNQR7dRBzu2GnWMMlFA6ahIkltrIdLDxFOb4rjBn+vMDfh8NmXZ8zFSXacPVzNzHs3VTXsEo2dC1iecgEp1O2LYeo/1fmGuGSXxY=
+	t=1757333941; cv=none; b=szsWdot4NB/FsZoS8m3NcQ9KoD/gZh5tZPSWqKIi+ITCQ2J+vpfNcLduCoiMxQyhGD9Vs+SQpl3zq5LhSOJ3TX9hUZTWM3DHVXjDr2KZF+41ERKuP++teqJbDGdZOLF449iUg5bOyiuabfKvELeeWvpMDWVIYPBtnbJ6iAMNt8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757333535; c=relaxed/simple;
-	bh=A1nEkZqKBTKgjMS5u3/csdHzUSVuykKtfEll9i1YIcw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S7Nymo7UlFgt9Irzj9m3XMX+Qe2iv80KSm7jLYpm7//xkOIAX5rrN7CALLgFz8p1aSYfmVpzoFuSUBwxIAoY4XplXceQRY7jFDuyW5zDVx56UPIklZ8xi9x0QQXpulWAdh/rItzMZHpeluJQF7T77hSVnUPi97bimUNKMhDRu1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=GDdS1fPl; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1757333941; c=relaxed/simple;
+	bh=Bjt5TTPVSQZ/tHjsIJfb/E1h7CryZzk5zV0k9z3ue8E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VtqYCyf75YO5oNlnRiCBw0lsDSy2v6DtfI3I/Bn1Ksj4IpBUAVouJNqEbXEs5V3eu+vxFqcZwTZDpHl6SDILF+SsIXffMtlW7Zz6YkDOPALEV1G2ZVlYLTkHMCvYFW0UweQnGjZDLmAnMtJic8RvxyDbJa3xQfDA10A/zSaI7UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NI4OKK0x; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="GDdS1fPl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1757333532;
-	bh=A1nEkZqKBTKgjMS5u3/csdHzUSVuykKtfEll9i1YIcw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GDdS1fPlVlqjGWv2o5Qt8uhh3csjD7EsLoJsufaiK5kR+7SYJMgeZGxaw4qTXF7cf
-	 HvILRv/0iUZG9uoGhVD1oKSBNo4+aD/wOtb2ILTvxaaowMlTdXmTkO0/iXQYrFVCGU
-	 HNsfA1kCThqWuGka0ethtZ5HXV+LgUO4FNX+DDCEBDUZYwHNht2hxAzJPaP3GWBdlN
-	 6mVrm1Vx3xcoKeLvjnJFDsLW/KthdOSAhjREQ7WmXFaE+7VJyifoBKjPQpRF1KxECm
-	 dPOBw+Enfn0sYs6Dd7nojakXLENLIskBnhvMTbLrRsx3H/jNmRW1RxezQo1UBSFafy
-	 TMNSrAw3PgV8g==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B695017E00A6;
-	Mon,  8 Sep 2025 14:12:11 +0200 (CEST)
-Date: Mon, 8 Sep 2025 14:11:56 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Matthew Brost"
- <matthew.brost@intel.com>, Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=
- <thomas.hellstrom@linux.intel.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Steven Price"
- <steven.price@arm.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Liviu Dudau" <liviu.dudau@arm.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
-Message-ID: <20250908141156.3dbdea0b@fedora>
-In-Reply-To: <DCNDGFE7RR5Q.X3PCDW0KIX89@kernel.org>
-References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
-	<20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
-	<20250905152505.005a610d@fedora>
-	<CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
-	<DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org>
-	<aL1pSFB9iBsfHFM_@google.com>
-	<DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org>
-	<aL1u_YxOkuj1kIq6@google.com>
-	<20250908091140.44856fde@fedora>
-	<aL6TJYRmWIkQXujj@google.com>
-	<DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org>
-	<20250908122002.2c80dd3a@fedora>
-	<DCNDGFE7RR5Q.X3PCDW0KIX89@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NI4OKK0x"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3296a9d17d3so280715a91.1;
+        Mon, 08 Sep 2025 05:18:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757333939; x=1757938739; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UnVwoVyn//Z2vM4s+si2Kxwai71xQMgGvo/eM3BxEEQ=;
+        b=NI4OKK0x0eqw6FWz4cX9/Rx1GwX2q8YEDCVD5DP68KQN1odGqjGoMOotcQmMgI4AL0
+         VI4JplN7qpwC8x8uURM67fH2YYc8bNX7jt4Q8PzVa7/PqGnZLPehpGALniQVtdg7LDCY
+         E3DR4zA4WiB65h3XOXi3Mqmy34iO7Qo4fUVlL2scAjCGAc9rK3XOKKCVGZ82EuMJ+0qc
+         Pu2P0U8+/ErVAraO8rtRkJwT6W7M4wTF8828MEHCHo3/9WuxiQOHSodIdAIqvg306/+X
+         aiO/3pOANpN/nkFsb6zib4AVleP7+z5N0Xd+KsmbWFiO4CWkDblaaAJExYrp2/IACSKa
+         k9gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757333939; x=1757938739;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UnVwoVyn//Z2vM4s+si2Kxwai71xQMgGvo/eM3BxEEQ=;
+        b=XQqIBvzTco9ePSkUhEcZV6UHdJfw/2iHCcXMEpaoU3pSpBa9qM4zSDozhP4TIyBOxR
+         dmH+HzaMu7zUU1O0n29GHFxztx+jMz0OhkfTxxGV66cInvt174Hmx110BP0AMHewYJ+f
+         8TPFUb+yk7EPja3BsBKVb4B8jEZ1q2MvqyYyciKYIQ1oj5RBCZuFjcFpGOKbe0T/L6OX
+         cbv0GBgpjfCXZpgomD90/IfJgHfab13nITjr9JiYTD8ZcUCfBZHwd1XvVWZ51IVRHyCN
+         87HhhExU2/egSRKddv1/hRYC75WU9URpRdKsFd62W995mSb0wlpABY/4bA79N3Tu+R9+
+         6AOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXErNfXbYMqLonjQIHA4yhepDyPzUQDyfud5ec54/RAE1hK0FqgqYfOQGE76quavUXIf9ULG9NU4nO5GRw=@vger.kernel.org, AJvYcCXXFNtBaL612EOxsun/9oiL02gWNm1rA4djYKTmVrBuU7iY65Z51q7qL26b/EmBGOQrBr3NUNKqBftsFnclFJk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIY2h9d8AIAvYITMsYPkUgjGDu6jzn7gcSpqqGCPu8kVOOfqLY
+	79S42kBq/M2ZJ/B4DbkIpua/mIFG66tJa0MN4hbtgpyu6QFfkFpPxJ/yO0Gg0AAhITyhcgq7Hx7
+	o4GqewveFM0zSB2LvbRDjMI3ENduTibU=
+X-Gm-Gg: ASbGncvxvdNMWp9UKxmz3mFdKyfISq6QRx5ITJBGtFQkdIQ2AcnmV6ANz6X0bB8g1FM
+	i179QaVM/lTGm5iXx42awc5jVwWJ/lT4B9lvAVbDuUvaX1T2rwHe+aIONJZ3RiBkhYQAaYMtWd9
+	5ry0DkLqVFlT+Qb8jMEYs+6cz3U/vJOp58ITn/gDF0QtdNG1hxttK0cJqTvHyNyg8n761t2IH7L
+	gHGrcNAFINs50jp3TrVWjw00B+Bq2yhPnkgNkTThI0E4zhNE9Jwo36cWEp+mz2yOFWybsrSMgip
+	73Kcnhp8tLzs6K3MbvCnianxIv3CQ0Jee0Pu
+X-Google-Smtp-Source: AGHT+IExp7vrnfrB+oYdUfZxpaoGpWB4pYjPADczIeby99Fh1CAe5jhOpEJKx/4M3VoqQi9Cy2FogH2NYNCkfA8iWfc=
+X-Received: by 2002:a17:90b:1e53:b0:32b:7082:b4 with SMTP id
+ 98e67ed59e1d1-32d43eff842mr6206525a91.1.1757333939205; Mon, 08 Sep 2025
+ 05:18:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250821-num-v4-0-1f3a425d7244@nvidia.com> <20250821-num-v4-1-1f3a425d7244@nvidia.com>
+In-Reply-To: <20250821-num-v4-1-1f3a425d7244@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 8 Sep 2025 14:18:46 +0200
+X-Gm-Features: AS18NWA_7SYOMxlej0IqsywHZCPkpSHFIWWWt1sNnYld0p5CsJB3tagME3ZntpI
+Message-ID: <CANiq72=wsLQtOmXuqAnLJbppq7BgdU=XoZ7hT86LkwLYEWp3nQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: add `Alignment` type
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 08 Sep 2025 13:11:32 +0200
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+On Thu, Aug 21, 2025 at 2:42=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
+>
+> +/// TODO: Temporary substitute for the [`Alignment`] nightly type from t=
+he standard library, and to
+> +/// be eventually replaced by it.
 
-> On Mon Sep 8, 2025 at 12:20 PM CEST, Boris Brezillon wrote:
-> > I'm not following. Yes there's going to be a
-> > drm_gpuva_unlink_defer_put() that skips the
-> >
-> >         va->vm_bo = NULL;
-> >         drm_gpuvm_bo_put(vm_bo);
-> >
-> > and adds the gpuva to a list for deferred destruction. But I'm not
-> > seeing where the leak is. Once the gpuva has been put in this list,
-> > there should be no existing component referring to this object, and it's
-> > going to be destroyed or recycled, but not re-used as-is.  
-> 
-> I'm saying exactly what you say: "has to be a special unlink function" ->
-> drm_gpuva_unlink_defer_put(). :)
+Should this be a comment, i.e. `//`, rather than part of the docs? (It
+is fine intermixing if needed, or putting them at the end of the docs
+too).
 
-I don't see how calling drm_gpuva_unlink() instead of
-drm_gpuva_unlink_defer_put() would leak the vm_bo though. I mean, it
-would certainly be wrong because you'd be calling cleanup methods that
-are expected to be called with the resv lock held from the
-dma-signalling path, but that's a different issue, no? Anyway, if we're
-going to allow gpuva cleanup/destruction deferral, we'll either need to
-do that through a different function, or through some specialization of
-drm_gpuva_unlink() that does things differently based on the
-immediate/non-immediate mode (or some other flag).
+> +    /// Validates that `align` is a power of two at runtime, and returns=
+ an
+> +    /// [`Alignment`] of the same value.
+> +    ///
+> +    /// [`None`] is returned if `align` is not a power of two.
 
-> 
-> >> Yeah, we really want to avoid that.  
-> >
-> > I think I agree that we want to avoid it, but I'm not too sure about
-> > the solution that involves playing with vm_bo::kref. I'm particularly
-> > worried by the fact drivers can iterate the evict/extobj lists
-> > directly, and can thus see objects scheduled for destruction. I know
-> > there's a gpuvm_bo_is_dead() helper, and drivers should be aware of the
-> > risks, but I don't feel comfortable about this.  
-> 
-> No, drivers can't iterate the evict/extobj lists directly; or at least this is
-> not intended by GPUVM's API and if drivers do so, this is considered peeking
-> into GPUVM internals, so drivers are on their own anyways.
-> 
-> Iterators, such as for_each_vm_bo_in_list() are not exposed to drivers.
+"Returns [`None`] if ..." is probably simpler.
 
-Okay, that's a good thing. I thought Xe was doing some funky stuff with
-the list...
+(Sending these two nits since you will send a new version with the
+const generic.)
 
-> 
-> > And since we've mentioned the possibility of having to support
-> > gpuva destruction deferral too, I'm wondering it wouldn't be cleaner
-> > to just go for this approach from the start (gpuva owns a ref to a
-> > vm_bo, which gets released when the gpuva object is released).  
+Thanks!
 
+Cheers,
+Miguel
