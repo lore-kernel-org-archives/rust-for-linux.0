@@ -1,226 +1,230 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2050.outbound.protection.outlook.com [40.107.93.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCAC1E51FB;
-	Mon,  8 Sep 2025 16:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757350554; cv=none; b=LnSkSY262RZR2f8Xx9UUpurIEyKjLR1TX7Xqf+LuOp3JZpGrYU6QLrL+pUaiZ9Xem4Ht0dJmgca7lZADBpFIh0XKMJHlLAWxylX0ScHSoZ8Rqk/sofBaQ4ZFLlXA+0jyy4ZLlPzdLjndnSNXPPpMMb0mMz7InL6ZBbt37ZtQnwA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757350554; c=relaxed/simple;
-	bh=ZQxPu1Ye8766GYYpbvfkJ+IRZDxqwSiUbraDVu8vR7k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Hs5oiFluETDt7jFNGWxIr7Cuo+7SZHplDo0v1g4zW2VbPMv7OexWjg9Wy+iFt9MJC1cE6VGaH9TMklQbuOMewhSTTtPCXzEd4zyA+UeAoaz/f0hd2pI8ud7XEeMidY4X5n0Q+8kNjNFNug8Vkq4hGfCFLA/gGxj2Hkr6pFBay9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUFgy1Jm; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B63311943;
+	Mon,  8 Sep 2025 17:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757351183; cv=fail; b=illVHHd1pwTUeCgUjv/6aM9Bm2qCtaEhN41f9DPa5ks8wXI7vJeDfzAyDeixwkOB5wSW85eoFXKmupVUrfixEt97TXxfF4XwgsZxnkmhZdB+IauTu+/tbJDW9FDWRCbHsAo2TNPT5iCThuiGfY2fqd6FybOskVDXUye0CIG9TH0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757351183; c=relaxed/simple;
+	bh=rsRuq+gsYhMiHaYt3YgwF68h/XuWwiciDgPFuRR1Lqg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tOa8eLQOEBHqiJnM7ssbdPTjo5ZrseS5m7fJGnbgr+BAmk5qXMZBY/Fc+pmJt5mdFaYi5ha00AMRAHTMKh3HI0prnw3NatkpBfXGpBJPUtun/B4AkdFeC0mH5AR8u0mlg5RekhyrlBmjpIP5qw2D7a0K3PwFZvcEmD1onhnX484=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CABbl/43; arc=fail smtp.client-ip=40.107.93.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUFgy1Jm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E73DC4CEF1;
-	Mon,  8 Sep 2025 16:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757350553;
-	bh=ZQxPu1Ye8766GYYpbvfkJ+IRZDxqwSiUbraDVu8vR7k=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=MUFgy1JmE2j1E4vgzlIFPVngOg7MsfbNlupHD/b/MhMseoxTkN2kVaZTkSI72Bsah
-	 ddlY2WhHWX6tDgcXHl2tbGorgoFmsgVDAQUiPRv+ohlMBCFgThqlc3YsqMVSiTjKyw
-	 2p+KgOHAugs7OiFIuScCaGnhu9RSxQvMoHgUSnYRF2CHihIcvCu9I2Z8b4ECtza6hG
-	 f2V7jM12PyM3C0ApeWeT+wAro5G5Nf9X73f/HTLh9KV2lQE2e7WjyUK0jVZ0IFzst5
-	 sc5K67pt8sE7lRIyz3pJHvkVk+59SW3BwKDkUznEwQFwHcGwnDyNBL/LOvuvlljTWO
-	 ftTuUQ9BglcoA==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CABbl/43"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cPsHjOt8b5Ah+ogLenztF4d4ZigVxqvrxtnFkNl4DOlKfAXul/IddrneJieoVgIaxz4WgJPET5lvpHbLXPQan2nn0H9deDEKaazKbQsywD0Lu9ZZel2onrr5Q+DNrY7pSB6JV/3bOY9ZoK9aCX/uAySFCjYcBVeb59t8KkRgHQWbX57FzTyNtn67HBuoLElFzUH21e+UDIvvF3KpsKb3sEgNnQs9laY7h3d1ptBLUR/VKNmYWg+LpTVoT1c6LwzlAyA/pG2RacP3AW9/8Knz2ypxdquRBL5dX2OpYdB6sBFfdnAzG8Y5BK0oR2zBgTjdIlQZLH64++QBk8FVWo8lVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SLuOiVhGX1fDuN23SRuIKwdcLbhwK8HA1GZoAjZ5C6U=;
+ b=pf+9jdLdORuPXieQI88U33L15Ijge3KOFwrCnMz0fEtTiD1RQZtHwtleNmeXFAxUbT5niN0gca9pkqjKjO6gkD05xi2lY8hRq+/YIXx5xJWLxRdVfqVRUroCWY6weVCnz3UVBnen2KxxF2Co+OEKK1SQ8mn3pUAPqlc4YcV0Sowngh1KgfwNe9Ie5JuDNNx2L4BFXaWRN1FPkhbL3GcKjSTTRbXSmR/maSU+bfnAwauNTwnyaGbOi4JJWoChmCR2T1dtZcimyZcrnYYVogrfh0EK5lEvg/lTRonKBDsN8yDCGOg5/INKerwXPcLAGiLSGPtAT/zlXi/EKP/N+Nh19Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SLuOiVhGX1fDuN23SRuIKwdcLbhwK8HA1GZoAjZ5C6U=;
+ b=CABbl/43SddfJrUEMOLPO20HFtvXmjPekckMOlChqtDH/Q+nKb/HRwYuOGb4ck4kFAi9VD+GCMMWAsNuB/P/UsJdYGVM5IQXGDO+WrphvYyR/wOu3s8U53GxynojbRbTkEZ5R9jb8PZhc3W4EZlDuqCDhEEnhLdMkdPKQFz9djVo1BA8sTJpF1PzXBoAICkuJSrX+31FNmnnz4eE0fARP2CKEWOGn+ZCmC9ud8hJV/Z6Vxj8JLO4hm/aPOpCskIAddASluJoftP7rGWQu0W+cC5oTafFHNDnJAnzMaIyKwbcemE3Zl6uhYbfV8dVPkr0vs316sEZmYAxRYj6IDgbIA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by BY5PR12MB4083.namprd12.prod.outlook.com (2603:10b6:a03:20d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
+ 2025 17:06:18 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
+ 17:06:17 +0000
+Message-ID: <a2c990ff-e05c-4d09-aaeb-5a2fc16ecb77@nvidia.com>
+Date: Mon, 8 Sep 2025 13:06:12 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] rust: Move register and bitstruct macros out of
+ Nova
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ dakr@kernel.org, acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+References: <20250903215428.1296517-1-joelagnelf@nvidia.com>
+ <20250903215428.1296517-5-joelagnelf@nvidia.com>
+ <CANiq72mx7NA1KD5fw98kba+3oENHW44QXVGO1VmvPPUKin2LPg@mail.gmail.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <CANiq72mx7NA1KD5fw98kba+3oENHW44QXVGO1VmvPPUKin2LPg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BLAPR03CA0155.namprd03.prod.outlook.com
+ (2603:10b6:208:32f::13) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 08 Sep 2025 18:55:48 +0200
-Message-Id: <DCNKS0XXGU9F.1VBER18A81OYU@kernel.org>
-Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
- <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
- <2025090807-bootleg-trophy-a031@gregkh>
- <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
- <2025090849-tweak-conductor-f642@gregkh>
- <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org>
- <2025090817-attendant-ungodly-78f6@gregkh>
- <DCNGJMN80Z34.1O45B1LM9PB2S@kernel.org>
- <2025090850-canon-banish-baf6@gregkh>
- <DCNIASL0KG57.3LC7NU7COE5KU@kernel.org>
- <2025090808-slicer-consent-6db0@gregkh>
- <DCNK8EHQ7OZ5.3U3VC187LUU66@kernel.org>
-In-Reply-To: <DCNK8EHQ7OZ5.3U3VC187LUU66@kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|BY5PR12MB4083:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a3a0237-e071-4ff2-1194-08ddeefa066b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RW9tQTJMQWxyQjR2SHRnaTdneHlXeU5RbExYRmdEbjZsbkRhNk1yS0IwNTI3?=
+ =?utf-8?B?OXB1ZGtQaXZBTU5QWUVMSmpkNDQ5M2Jsa1pHVzQrN3FWMzJqRytzT0svRDFT?=
+ =?utf-8?B?MDhuT3o4TnBEeGFjSHJRWFA3aVIrY096RE9YNjJ3V1VrV2Z3M2lZUVdTTXlq?=
+ =?utf-8?B?NVhpOVphV3V3MDN0WkUvRURsT09nVUtURzNNWW10Z2tteGo2Q256UWZHa2J1?=
+ =?utf-8?B?akdTQmVzRzFUZmtMcjZoTGNnMS83QVRpS2R3RVl1SWcwRVVJRUJ1NEVVVndJ?=
+ =?utf-8?B?b3lGOG1uUHpIUTZETEdWc2M4c05FZDhDZmk4Z0EvMlAzeEpEd1ZYVFJvWnFW?=
+ =?utf-8?B?eU8rOWkxb201MzIzRFk2OVhxOG5qbnJOVnZNVDRYVUlVMUNUM0x4MDNyRk83?=
+ =?utf-8?B?ak8wUktRcm5WWHZHT2hvenM2K0tPbFVHRHFRNG12czc0TGx4eHpGWCtIY1dC?=
+ =?utf-8?B?a3RzQzBnTjRhVlhCVU1vTmlkVFRFd2hHYzVjbWNzcTc1RDBmVFIwQ1ExSTRu?=
+ =?utf-8?B?S0U3N0Rhbko2a0F5Q3c4Z1U0YWN3UlFaZGQxOE1WZHBJUjJQZDhYdjZtQmlj?=
+ =?utf-8?B?bFRSdGdqK1FiSWdHOWZ2ZW1QNDE3R1luRmFHeVpCbU1oRTIzdm0veER1SWxa?=
+ =?utf-8?B?Qm9iR2E0TDRnZXl4RzZDbVErdFAvZDJhTjNiT2l5VTdhZFdlVXJ5d0gzWDFD?=
+ =?utf-8?B?VjVvTVpyb0ZRUTJLSHo1TXBzOVVpTld2cmd1bGhKcjlDRVFlZlZ5NnI3SkdF?=
+ =?utf-8?B?UFpoaHNjRnNjaHk5bEM0dWJwc09haForbDVFTVVJdlEvNXhnZVRGMkl4WWJQ?=
+ =?utf-8?B?TDlpUlBiaDcwUFN0cjRRSGxQSUlKY3JzVjlDS0FZS2FUR2ZUcCtURkhaUS9K?=
+ =?utf-8?B?NTh1aWNja1BONnd2MURNVVAvbHlYaXExTjZNTWVpSWZYY0Y0czJkRnJjeWky?=
+ =?utf-8?B?dnRJOStjeWg5aGhTemkrRy9sSWdKVjhmRU03OUlKVjlCRHFNQXFTOHBvU3Zh?=
+ =?utf-8?B?cjZidUZEeWE5RlhZc29GK2J2K3ZnOEdpYTNhNVE0TzRhdSsvWGprTHo2TjRv?=
+ =?utf-8?B?Q0RCeUlPRy9NVVZqTzVmak1FTU1iS3Q0WityOWF6eWpjK2F3c1NXRzh3MTJM?=
+ =?utf-8?B?WmlYaTBoQUMra0ZkTHk3M2Q2VE1rQnA2VzUvN21JYnJUcldQby80bjlHZW9r?=
+ =?utf-8?B?T0dCS2FROExqV0o3ckJ5YW1sYWxsZ3VIYmcxZkhtby9yQkFHY2F5T2dHbGcv?=
+ =?utf-8?B?cWNaV1pET0llb08yL2ZNSDZWQWc1VFRTNHlybGpkbEtBSzVYQVk1TDk0UWcw?=
+ =?utf-8?B?citkNDltMy9uRzZhUkVmL2J3ZkxJdG9GaWFqOHF4d2p6bHN5WWI5Y2QvUVNU?=
+ =?utf-8?B?WEU1TmRjSG1YbnlnRVNwN0ZlUmNsZXg1b1Y4M0E5aXFCUEpYOGplVjZUVEYw?=
+ =?utf-8?B?SThKVXJpMVN4WUEyYVhIcVduSDJxbktWaXhDK2Q2VWQ4MXQ3MUl2di9HemNW?=
+ =?utf-8?B?bzlYbTdCYUZzNlJQblBKRU5FZ3pEaEx4TWhaN2x4Wm9vcTFlcWZZclhtTFJQ?=
+ =?utf-8?B?NTNETmxia1F6ZHdUV2hMdVA1RE5vTGcvUjNxc1B5Q1BXY1Q4ZCtwN1BLR3ZF?=
+ =?utf-8?B?eWwwWHgrRlVQMCtjRVVtWkZER0hrYnoyS3crNlpqNWJyR2laNFdabkZVaTFB?=
+ =?utf-8?B?cWRNRVY3VndvdnRORlN4RGc1WGZ2SXAvOCtHQXlpRFpHVEJmNStnckVMOWpp?=
+ =?utf-8?B?c2MxYnRrb29od1luNkNacEg0YStac1dRUlR6VlI5WHNSQUo1TXpBMUxiWmQw?=
+ =?utf-8?B?ZHRxeG02emdKUXJiVHZ0cXIvejcrK1JmTHBKY3djbkdmYTl5blpCVTdmN2Y1?=
+ =?utf-8?B?eklUWCtoM0M3eGFyOEltZEJUTWh2QktqMU9hekVmekxVYmxCamhQVXg0QVk3?=
+ =?utf-8?Q?bSNa8bTiXT4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VEV2dkRrcnpqODd1eEZvbTZiV1JHdFpmUzM3cG9SS1hGbUpUSjk1R1hJYmI5?=
+ =?utf-8?B?cmlDTEw2V2FIcWUrSTdkZzNCWFZXNUFwMFc0d1krTm1WU2FFS3FkUmU1d3Y5?=
+ =?utf-8?B?NEx0TG1qb0tzQ2VRMUxVWkM1ZmNONVZia1YzeTA2ZGE3Szg1aFUzd1VpV1F6?=
+ =?utf-8?B?eGRJUFVTU09odUZveGg5UllZZzdHZjczeXRDUjVxU0JDTGJPYVRxSnB6Qk9Y?=
+ =?utf-8?B?OTB2WGNBUkhFbWwrNFNPNllSc2hKTEd4ZjBwcFY3U25EYUxqU3NjYWI2WTRH?=
+ =?utf-8?B?aDFpdjExYW9jTGZIYXQwUXJ6UENXWU4zVkEvRVc3K1I1WW5BZGpSR1BrZWMw?=
+ =?utf-8?B?MWViVzdqclVBNzdLVnFJSWFTNnhvalNnVWZrN0JZSWZ1bXZzdG1wdnM0ZHRj?=
+ =?utf-8?B?WWt4VEhzdVY3SXQveWthb1JPemxrVXFUOEh6TEF6S1RHNlRLZHg3RjFhN25K?=
+ =?utf-8?B?ZVBNUUtYcWNXOWNQdDRBbEFLVEM0ZnBuZWtlMHNMUVZtbzV6WVV2T3NFMGk2?=
+ =?utf-8?B?cGhXWFF0KzV0Uk53bTltMkM1WUI4WitJeW1sUDdQWUFuZmdEYjVKTWhocUZG?=
+ =?utf-8?B?cGRSdHcxSWUwbmtRQVF1L2ppMnZkVUpQc2czWkFUdGFQbkk3REVoRkx5dGlq?=
+ =?utf-8?B?eEltOXgyaCtQR1dVa1l5S2RLaERvdUJYM056OWlWK3JQYlVoQnFWMzJMMWlZ?=
+ =?utf-8?B?K1R1SzZqcFlKWGI1bFIvbkZyc2JiWmJuZkFhOUVqeEt3Z3FmOXJEWG1vVW1r?=
+ =?utf-8?B?N2NPZkpOUnlrOWdHRWF2RS9zWjduYWpZa25oU29JdFJLMk41RHU1UGt1cis4?=
+ =?utf-8?B?TmlUMmRTdU15SGhDYWRpRm1kWTd4S0ZHVmVrbGZuc0FsYklsWXJldXFrNjVz?=
+ =?utf-8?B?a1Y5ZStSODRuNVI3K00xM0c3V3VsUldCOVRmd3F2ZnNuL0RVVEFyNUFjRDRL?=
+ =?utf-8?B?S1FrTThiWVUwRWphVEg3VDN4emhEOUlpQ1lqMTQxdFB2YlprWE0yd3pxakFp?=
+ =?utf-8?B?d01QRGZwL05mYWxLdlNrQXJvK0poR2IvQjkwQzlkUVlkbGZ1cDdHcUprcFpx?=
+ =?utf-8?B?ZkM0aU1WenNGN0ZaLzRkNzFFT3J0bVI3L3ZnR0FPYS9ZQ2RyRjdTQlYwYnZM?=
+ =?utf-8?B?WHJEakxkWEdnM1ByMnFFWXN3R1lNeWhjVG0yZ25ZbVk3V1ZuWk80dVVWTWRV?=
+ =?utf-8?B?WmtpeXZrR0NSOFJGUVBSM1NBVmJjaDdIcFRma1d4MEhydmVlcXN1em5Va21p?=
+ =?utf-8?B?ZHI3WFlIbjhmNmFRak10SUo3Y1BadjFTT1pZRzVwVTlrNHdsNTZtK09KL2x3?=
+ =?utf-8?B?RTZySVdKZkpRWnEzV1ZDaytydTB0OVNTT3JxUUxvenBnbzNYNHpoRTZzQVBo?=
+ =?utf-8?B?R283T1lUSGp4cUNPRmkzYnFpOEtwcTFmMnlnTDdvdlNIczZVWEs4QnlycFll?=
+ =?utf-8?B?RUtKZFJlTVRoWGVRUE5kakdZV1FFUVp6UVJhVzB5VHpUUzNibU9maGJmT1RQ?=
+ =?utf-8?B?ZU5ZUS9wVVlQMkpOS0lUSDBTRmZCMlpzQlhaU2JhVWZlanZjVVpJTVBEaTJw?=
+ =?utf-8?B?dGx4blRVRDBsT3NXdWwwbU1kT3UyV2lFUElUT1RuL1BzMTFGOFFHRCtQVzRy?=
+ =?utf-8?B?WHBmSXRrRkpieUZmVGZVMUFrL1BxeHlCckRoRzlmZEFwdi8yN0pEaWx6WFpO?=
+ =?utf-8?B?V1p2eGdLcjJsL2lBZ21UaEJPNkFXK0t3RXFwL29xNWI1YmlKc2ZYUVJZbUdv?=
+ =?utf-8?B?Ly82Nk9pOG1IMk1VNytCTXphejA1akk0UVVRZmVjaG42SXN2a3dKV0JWWTFS?=
+ =?utf-8?B?Q3hWNjNWcklkb21FS2s4dEpvSktqTDAzcXlGSFZ1RDNXc0VNd0lEaTkvVmJD?=
+ =?utf-8?B?eDlhSFpybmI4eHl6VnoybyttWTV3WHN4bGJacnVxTXFjSE9ZOENrWWVUWHdk?=
+ =?utf-8?B?aXZYekF5bnN3c25iNUxYUUR1OXhDTlAxUEphQVdnVHdTTUdJNmJQSVAvczZI?=
+ =?utf-8?B?cHQrMnNXeTdEeHpuS3Q1cytVd3ArcDJicUdyV0tzbVBnaE03WmVrVlBMOXF4?=
+ =?utf-8?B?ZTZ3TVVaN1VWVGlZSU5QcXFxbGI3NTRjdG9BYVVUWElzUXdwcVR5NlEvbW55?=
+ =?utf-8?Q?RlBgAHAEC/PcgLDAghXzQkwyl?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a3a0237-e071-4ff2-1194-08ddeefa066b
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 17:06:17.7107
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: n6YYPOAVfAX1RhKPBT8I6D8iPyZ/P3BBroM+1HqQzElYNx20Y2LLlzSI35/iU/D9nxetWjj9WaZ0EfsTEtr6hg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4083
 
-On Mon Sep 8, 2025 at 6:30 PM CEST, Danilo Krummrich wrote:
-> On Mon Sep 8, 2025 at 6:19 PM CEST, Greg Kroah-Hartman wrote:
->> On Mon, Sep 08, 2025 at 04:59:16PM +0200, Danilo Krummrich wrote:
->
-> <snip>
->
->>> We agree on the goal here, but unfortunately it's not really possible. =
-There are
->>> two options that were already exercised:
->>>=20
->>> 	(1) Force that FooFiles (or FooDir) is bound to the lifetime of a
->>> 	    reference of Foo with FooDir<&'a Foo>.
->>>=20
->>> 	    This isn't workable because we then can't store both of them into
->>> 	    the same parent structure.
->>>=20
->>> 	(2) Reference count Foo (Arc<Foo>) and make FooDir own a referenc coun=
-t
->>> 	    of Foo.
->>>=20
->>> 	    But this is bad for the mentioned reasons. :(
->>>=20
->>> 	(3) The File<T> API we have now, which gives you the behavior you ask
->>> 	    for with Scope<T>.
->>>=20
->>> 	    Where Scope<T> creates a directory and owns the data you pass to i=
-t,
->>> 	    e.g. a pci config descriptor.
->>>=20
->>> 	    The user can create an arbitrary number of files exporting any of
->>> 	    the fields in date that live in the scope and don't need to be tra=
-cked
->>> 	    separately, i.e. don't create separate object instances.
->>>=20
->>> 	    The directory (and hence all the files) is removed once the Scope<=
-T>
->>> 	    is dropped, including the data it owns.
->
-> <snip>
->
->>> I can provide some working code later on (currently in a meeting). :)
+
+
+On 9/7/2025 2:14 PM, Miguel Ojeda wrote:
+> Hi Joel,
+> 
+> I didn't check the macros, but a couple nits I noticed in this patch
+> in particular given it moved it to `kernel`...
+> 
+> On Wed, Sep 3, 2025 at 11:54 PM Joel Fernandes <joelagnelf@nvidia.com> wrote:
 >>
->> Working code for the simple "foo" example will be good.  Here's my
->> horrible (and will not build) example I was trying to get to work.
->
-> Here it comes [1]. :)
->
-> [1] rust_debugfs_soc_info.rs
->
-> // SPDX-License-Identifier: GPL-2.0
->
-> //! Simple `debugfs::Scope` example.
->
-> use kernel::c_str;
-> use kernel::debugfs::{Dir, Scope};
-> use kernel::prelude::*;
->
-> module! {
->     type: MyModule,
->     name: "MyModule",
->     description: "Just a simple test module.",
->     license: "GPL",
-> }
->
-> #[derive(Debug)]
-> struct HwSocInfo {
->     name: &'static CStr,
->     ver: u32,
->     id: u32,
-> }
->
-> impl HwSocInfo {
->     fn new(name: &'static CStr, ver: u32, id: u32) -> Self {
->         Self { name, ver, id }
->     }
-> }
->
-> struct MyModule {
->     // Dropped when MyModule is released (e.g. through `rmmod`).
->     //
->     // This will drop the inner `HwSocInfo`, the "foo" directory, and all=
- files created within this
->     // directory.
->     _scope: Pin<KBox<Scope<HwSocInfo>>>,
+>> +//! A library that provides support for defining bit fields in Rust
+> 
+> What about just "Support for defining bit fields in ..." or similar?
+> 
+>> +//! structures. Also used from things that need bitfields like register macro.
 
-And yes, I get that HwSocInfo now lives within a debugfs structure, just li=
-ke
-with
+Ok, I changed it to:
+"Also used from things that need bitfields like [`register!`] macro." for next
+revision.
 
-	struct Data {
-	   version: File<u32>,
-	}
+> 
+> The "register macro" part sounds like it should be formatted with
+> Markdown plus an intra-doc link.
+> 
+>> -            ::kernel::build_assert!(
+>> +            build_assert!(
+> 
+> Is this path unqualified for some reason? Does it mean the user needs
+> to have imported the prelude?
 
-but those become transparent wrappers if debugfs is disabled, i.e. zero
-overhead. They also won't make the driver fail if anything with debugfs goe=
-s
-south if enabled.
+Yes, for register macro importing prelude is required (I commented more below).
 
-And I also understand your point that now they're part of a "real" data
-structure. But in the end, debugfs *is* part of the driver. And while we sh=
-ould
-ensure that it doesn't impact drivers as much as possible (which we do), I =
-don't
-think that we necessarily have to hide the fact entirely.
+> 
+>> +pub use super::{bitstruct, register};
+> 
+> Please justify in the commit message why we want them in the prelude,
+> e.g. are they expected to be common? Does it simplify some code? etc.
+> 
+The issue I ran into is, without adding it to prelude, the users of register!
+macro will have to import both bitfield! and register! macros explictly, even
+though they're only using register!. I tried to make it work without adding to
+prelude, but couldn't:
 
-Having that said, I also don't really see an alternative. If we really want
-debugfs structures to be entirely separate we would have to either
+  use kernel::{bitfield, register};
 
-  (1) reference count fields exposed through debugfs, or
+Also not adding it to prelude, means register! macro has to invoke bitfield with
+$crate prefixed  ($crate::bitfield).
 
-  (2) make the interface unsafe, use raw pointers and assert that a debugfs=
- file
-      never out-lives the data it exposes, just like in C.
+I think the prelude-way is clean, but let me know if there's any other trick I
+can try.
 
-As I mentioned previously, while File<T> is visible in driver structures on=
-ly,
-(1) even enforces drivers to break their lifetime patterns, which is much w=
-orse
-and not acceptable I think.
+I will also add this rationale to the commit message as you suggested.
 
-I would even say that (2) is better than (1), because it becomes safe when
-debugfs is disabled. Yet I think both (1) and (2) are much worse that what =
-we
-have right now.
+Thanks!
 
-And I think the Scope API helps a lot in keeping things reasonable for case=
-s
-where a lot of fields of a single structure should be exposed separately, s=
-uch
-as the one you sketched up.
-
-> }
->
-> impl kernel::Module for MyModule {
->     fn init(_module: &'static kernel::ThisModule) -> Result<Self, Error> =
-{
->         let root_dir =3D Dir::new(c_str!("my_module"));
->
->         // Obtain some `HwSocInfo`, could from anywhere.
->         let soc_info =3D HwSocInfo::new(c_str!("foo"), 24, 42);
->
->         let scope =3D KBox::pin_init(
->             // Create directory scope, that contains some data and a bunc=
-h of files exporting this
->             // data.
->             root_dir.scope(soc_info, c_str!("hw_soc_info"), |soc_info, di=
-r| {
->                 dir.read_only_file(c_str!("name"), &soc_info.name);
->                 dir.read_only_file(c_str!("ver"), &soc_info.ver);
->                 dir.read_only_file(c_str!("id"), &soc_info.id);
->             }),
->             GFP_KERNEL,
->         )?;
->
->         // Print the contents of `soc_info` that were moved into `scope`.
->         pr_info!("HwSocInfo: {:?}\n", &**scope);
->
->         Ok(Self { _scope: scope })
->     }
-> }
+ - Joel
 
