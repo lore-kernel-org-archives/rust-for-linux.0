@@ -1,177 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE351A2387;
-	Mon,  8 Sep 2025 14:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20C630CDB6;
+	Mon,  8 Sep 2025 14:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757341016; cv=none; b=nG1GUkioTMSd9Jmp7287+hRCXI8aFpigS/PPL76y3o59fNsZv5nBFidiX6lx6gNDqrQNM2LrcMBENe+QjNI2ZEQU+Q83qOa6CI8VhqgaMd3xcWLtz620LWWFGYOL45OUAxKfWgpib2FBQCIMF4qPATEztr4RCCID17pHyv/vEgU=
+	t=1757341301; cv=none; b=j1nCkQV+65qj0FQ2/JvgqbAGnqftLPG0MMPUscJ72ER8VRxjQ+A6m0Vxyxg45dbFIsBlHJIcgm9FMYLCVYVEgrbvbJtr3blZTQlXML+Mp/AYbIFXqC92psdhZCVw4m3aDaaf0g4oXwgnULb5YadlLc3Iw1TBQqNZQSfxte08itk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757341016; c=relaxed/simple;
-	bh=94npVl5jLq96wDZIo1JSM7p8/M/pUBuHIQbiVP+l0DU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QaWC6WB11fRvwuG41n4ClAR+V3j/k9KUYKnyNABMKD/5Isbwdv3kUQjryVzsFJgJmpw1uwVnljKYFUg8N2PIdEqbUMJaL7EpDya2ps6PGuboi1yKkLJCpG+zIvzye7VvfcjO8OcRqN+WN99jJgUNVQUAv9wQFezrc9euirXLHY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHnYOIyE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757341301; c=relaxed/simple;
+	bh=XeuQJKx+F8QDaqesC40rVF81yiQ01EIBgBmzXvLUCrE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I4Fvt9KMcqLYMCdRanqrLqep7+uaXR93iLdp2yb3tG2Z2ph8Mg7IEQA8TKWu2u8xYwNZ+b67vBWVVVK7tfFdQKIBtFR1Hculbejv5mCVNbJSCmTfpDNaRM2e5PdTJLDRnfqachmCrorZaMdwIv+JE/V3kTjzKGKgBj7IuSv/9XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RBbBuTnw; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHnYOIyE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2D0C4CEF7;
-	Mon,  8 Sep 2025 14:16:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757341015;
-	bh=94npVl5jLq96wDZIo1JSM7p8/M/pUBuHIQbiVP+l0DU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zHnYOIyEDGi4jEMpXTIvjZH2Ykyn0lZE4JHdzY7aJhkCofA6tFms6iysyXEM4rYl8
-	 5N5nROeINyzldr61AgDNo0xUVbtCOCGPYerxKSSFf2jN/iMzovNpkDNP+qCiZ808rZ
-	 bjkbLY2bjn0+Y9pUHWqOOmiHRnlbNLmg/U6BSO/s=
-Date: Mon, 8 Sep 2025 16:16:52 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
-	Dirk Beheme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
-Message-ID: <2025090850-canon-banish-baf6@gregkh>
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
- <2025090807-bootleg-trophy-a031@gregkh>
- <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
- <2025090849-tweak-conductor-f642@gregkh>
- <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org>
- <2025090817-attendant-ungodly-78f6@gregkh>
- <DCNGJMN80Z34.1O45B1LM9PB2S@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RBbBuTnw"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b4741e1cde5so494421a12.3;
+        Mon, 08 Sep 2025 07:21:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757341299; x=1757946099; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4fX9DC1fZNQkRHn2ACjPhGN+9jbwsbcB0Idr+2XnvFo=;
+        b=RBbBuTnwaZdxr53a11XuezcfgkXIGBTlnNIACfD8gz21gD+fN/R4nhMg+FUCROBfqd
+         cWREc7PR0G066kChcVQheFisroGzgUQzHLQ+FYTmPjdm06TYOtWGHlnft7kNlBmsxbqz
+         38KGriYd7m5pQC5T5WAfeGTwZ0mgp6RT1nioiSogEkwkFhE3BmcnK8JXtdWlhKsWcxQQ
+         aZS3wgD8if6Ky1MKxRwyFFHIHrajonX3MXzwsG4OkA/k/rpYvJzvau+fiaXhbj9yyyYR
+         FJoF8vWugpVGN2OyCvTicdOFHQAbgQ8gGNDU2kz/u3zAMZfqDNmvRv8z7aaUKn5J6Jnf
+         vnkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757341299; x=1757946099;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4fX9DC1fZNQkRHn2ACjPhGN+9jbwsbcB0Idr+2XnvFo=;
+        b=fqlG5MbSRvquCgti1dpZZ9L1ez6YHobUl3j4KziMAP40fkgeivqyugljkpKHYZx9NE
+         ebdx+nyUIgjQ5M8Zz7Bv0jLOtkTvKKcmZiD8YOOU2/QezeIbiSUobqRUNyoNCP0pPV4x
+         ztuikJGwqo0a27Pr5DtuVWSf0CQdayhFfy6eO/LeAn4FovDKduBXLH1APkkZEgUjt5Qn
+         QIJT2zLPczH+t5dHpSGypvsmXAs1yapikDuT5McC0TtMH3YlwbBnF7XHGKBLRW3POvft
+         VGrr+bj12i6RH6Obbig6CR4O5agECzRfCIONHpNlCh56Xhq6kI3EedNk9cbKEhPLSPNo
+         4CeA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwfP1nQaZjfqwZkZ9mOAP0coT3AFgAC37hgBOoJOGRJ62dsHGVJRtYXRrJBB/fFzmnSOvX1GSF1kG4AYQ=@vger.kernel.org, AJvYcCXWMyXxhFrYvMaPRDQj4qt5H6Mgq9Lwz1HWJp6TZt9q6FtH+QkoSfqeO4QXlG5cNsVEy91SPmA1YHet3xRvX2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywcrbth+I6PzIkTPwAN6F3h8iFmKBErrN2sLuJs1dgl4LQgF+S3
+	N1x2pGsZwQ2ZhYqluYYioPxqLEA2vaEJC9JnfAHzyJpviyCMrDTfwEOvUikoJg5D71FYfKUzVmR
+	QZR++0NFHxrlCL1Rf1+gPzlwQ2L5fpXs=
+X-Gm-Gg: ASbGncuANZYdj0d6G7q/F1bRBUWR3tysch+1YXo/WLsqzLee8PC10xKXw4uFQMxZy/j
+	9w+YgH/+Y44oCeTJkNXNqQXu0kcOZ4M623Hj9d9PUx817+06jMEwxeW/b4yEMLhbx49tZD5QbW/
+	sraOFT19MO9GDMW/xsNfgEcKBVOeCwR7njA3ECfBMzwmZr3RBlaf7w4LKMvgugyx2GLKnH2VmsD
+	SZZ2z2Z5cfV00nRKxPC6yQK4f6lyhco232qz6r6rb0v/7R4W9DW6/3otpLBDdPiiCljd/NX+w6D
+	A4qevXLvfece+Od6gL/ctnvev+RLuYt5fE6y
+X-Google-Smtp-Source: AGHT+IGFDNWEzR+hV5I6QdUVy03a1/7tXTmOQLf+GpNdlfKZ504RA/zXUJf2avq4t3EcVfEw/QWRxQ/DDabXjK9CYqI=
+X-Received: by 2002:a17:90b:1e53:b0:32b:7082:b4 with SMTP id
+ 98e67ed59e1d1-32d43eff842mr6514245a91.1.1757341299091; Mon, 08 Sep 2025
+ 07:21:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCNGJMN80Z34.1O45B1LM9PB2S@kernel.org>
+References: <20250908-num-v5-0-c0f2f681ea96@nvidia.com> <20250908-num-v5-1-c0f2f681ea96@nvidia.com>
+In-Reply-To: <20250908-num-v5-1-c0f2f681ea96@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 8 Sep 2025 16:21:26 +0200
+X-Gm-Features: AS18NWAfR5raXlS_a2FxsPSSP3cBVpNTWSI1d9yZGzogiu6fnijmKILcUd_FVZM
+Message-ID: <CANiq72kUsG10+E-W6zhFXhexZV+O_a-K1Px0kGkWPKvMMhAztQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] rust: add `Alignment` type
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 08, 2025 at 03:36:46PM +0200, Danilo Krummrich wrote:
-> On Mon Sep 8, 2025 at 3:30 PM CEST, Greg Kroah-Hartman wrote:
-> > On Mon, Sep 08, 2025 at 03:22:41PM +0200, Danilo Krummrich wrote:
-> >> On Mon Sep 8, 2025 at 2:48 PM CEST, Greg Kroah-Hartman wrote:
-> >> > On Mon, Sep 08, 2025 at 12:54:46PM +0200, Danilo Krummrich wrote:
-> >> >> diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
-> >> >> index b26eea3ee723..475502f30b1a 100644
-> >> >> --- a/samples/rust/rust_debugfs.rs
-> >> >> +++ b/samples/rust/rust_debugfs.rs
-> >> >> @@ -59,6 +59,8 @@ struct RustDebugFs {
-> >> >>      #[pin]
-> >> >>      _compatible: File<CString>,
-> >> >>      #[pin]
-> >> >> +    _test: File<&'static CStr>,
-> >> >> +    #[pin]
-> >> >>      counter: File<AtomicUsize>,
-> >> >>      #[pin]
-> >> >>      inner: File<Mutex<Inner>>,
-> >> >> @@ -140,6 +142,7 @@ fn new(pdev: &platform::Device<Core>) -> impl PinInit<Self, Error> + '_ {
-> >> >>                          .property_read::<CString>(c_str!("compatible"))
-> >> >>                          .required_by(dev)?,
-> >> >>                  ),
-> >> >> +                _test <- debugfs.read_only_file(c_str!("test"), c_str!("some_value")),
-> >> >
-> >> > Cool, but again, we do not want to ever be storing individual debugfs
-> >> > files.  Well, we can, but for 90% of the cases, we do not, we only want
-> >> > to remove the whole directory when that goes out of scope, which will
-> >> > clean up the files then.
-> >> 
-> >> This API does not work in the way that you have a struct storing the data you
-> >> want to expose *and* another one for the files with the data attached.
-> >> 
-> >> The File type contains the actual data. For instance, if you have a struct Foo,
-> >> where you want to expose the members through debugfs you would *not* do:
-> >> 
-> >> 	struct Foo {
-> >> 	   a: u32,
-> >> 	   b: u32,
-> >> 	}
-> >> 
-> >> 	struct FooFiles {
-> >> 	   a: File<&u32>,
-> >> 	   b: File<&u32>
-> >> 	}
-> >> 
-> >> and then create an instance of Foo *and* another instance of FooFiles to export
-> >> them via debugfs.
-> >
-> > Ah, that's exactly what I was trying to do.
-> 
-> But that's bad, then we're back at the lifetime problem from the beginning,
-> because the File<&Foo> then somehow needs to ensure that the instance Foo
-> remains alive as long as File<&Foo> or the backing directory exists.
-> 
-> So, you eventually end of with Foo needing to be reference counted with its own
-> memory allocation, which horribly messes with your lifetimes in the driver.
+On Mon, Sep 8, 2025 at 3:26=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
+>
+> +        if ALIGN.is_power_of_two() {
+> +            // INVARIANT: `align` is a power of two.
+> +            // SAFETY: `align` is a power of two, and thus non-zero.
+> +            Self(unsafe { NonZero::new_unchecked(ALIGN) })
+> +        } else {
+> +            build_error!("Provided alignment is not a power of two.");
+> +        }
 
-Once I want to drop Foo, FooFiles should "go out of scope" and be gone.
-If a backing file descriptor is still held open, it will then become
-"stale" and not work.  Much like the revokable stuff works.
+Would `build_assert!` at the top work instead?
 
-Note, none of this is in the C code today, and debugfs is bound to root
-permissions, so it's not really an issue, but I can understand the goal
-of correctness...
+> +    /// Returns this alignment as a `usize`.
 
-Anyway, I looked at the scoped example here, and I don't see how that
-works any differently.  How can I use it to have a single Dir "handle"
-that when goes out of scope, can drop the files attached to it that were
-created to reference Foo.a and Foo.b in your example above?
+Intra-doc link.
 
-> You don't want a a field to be reference counted just because it's exposed via
-> debugfs.
+> +            // SAFETY: per the invariants, `self.0` is always a power of=
+ two so this block will
 
-Exactly, the data is the thing driving this, not the debugfs file.
+"Per".
 
-> >> Instead you would change your struct Foo to just be:
-> >> 
-> >> 	struct Foo {
-> >> 	   a: File<u32>,
-> >> 	   b: File<u32>,
-> >> 	}
-> >> 
-> >> If you now create an instance of Foo (let's call it `foo`), then foo.a or foo.b
-> >> dereferences to the inner type, i.e. the u32. Or in other words `foo` still
-> >> behaves as if `a` and `b` would be u32 values. For instance:
-> >> 
-> >>    if foo.a == 42 {
-> >>       pr_info!("Foo::b = {}\n", foo.b);
-> >>    }
-> >
-> > Oh that's not going to work well at all :(
-> >
-> > Think about something "simple" like a pci config descriptor.  You have a
-> > structure, with fields, already sitting there.  You want to expose those
-> > fields in debugfs.
-> 
-> This is more of a special case that is addressed by the Scope API in patch 6 and
-> patch 7, so we should be good.
+I can pick this, with or without the user -- or do you need this in
+Nova this cycle?
 
-See above for my lack of understanding of that :)
+Thanks!
 
-> > And what happens if debugfs is not enabled?  What about if creating the
-> > file fails?  The variable still needs to be present and active and
-> > working.
-> 
-> This is the case, the variable will still be present and active in any case.
-
-Ugh, but really, that's very unworkable overall.  While I see the logic
-here, it's making the debugfs interface be the "main" one, when really
-that is just an afterthought and is NOT the thing to focus on at all.
-
-Again, debugfs is just "on the side for debugging", let's not force it
-to be the way that data is accessed within the kernel itself, like is
-being done with the wrapping of File<T> here.
-
-thanks,
-
-greg k-h
+Cheers,
+Miguel
