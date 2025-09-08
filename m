@@ -1,125 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C4E31327F;
-	Mon,  8 Sep 2025 17:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E340030F948
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 18:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757354316; cv=none; b=I2Kh9zHiKqQZTFpxO3LEzsg5du71BbIoysfOkqaBvHccw2ipZYrNxZM06JEu9WFuTu9IW6rgjZK09gJ/1iWbqyHgsL3Ot2kEDGaG23ltNFi8xplt0wcFR8IDzUc3A0ycjwoFBwRuO18rdVumksX/PmRtKkIidvEkUeem0hiRnM8=
+	t=1757356232; cv=none; b=ItAgyCrwwKD1Zol3yjKDDGqYm4o3Qj/OI/MnR9izT68keRFgPbceVa6eLUWm+oCez3gxid4FnIE+tJeofBzpnYJOLQPyUKV3+Os3/+JY9m4Uezh60YtQ1VBxdBUrDOg7JxxJz0ggJP31zPzKCysnILrraQe/DVP/+K5Y9RhDYjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757354316; c=relaxed/simple;
-	bh=gt0EpPEAyoApJr09LrsCXlMB+0xjP2bmwcOFF+Pv5Sw=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=YgSZ4Idh1k4NWZcGdw/kUvk0t28yOT+buKHc2U8AryU/iycfRDPKMX4Ou+d4k8ItRdXtJJsXLrJ9rUPe8y+UPNq/8kC/p4YrGy500zjQzxSxX4iucxESMyVCwgqTHS4aMQyDO7VFEebYXRsJetEyF+8NlqdgFFBEMCPQXYy6lSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNsYZtrc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757356232; c=relaxed/simple;
+	bh=jUG/qTOwcqt3yC9mUtQIEdDFh7q46RZ3EeLs17fAC5k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iqKtx+DhWkjsNoAWsxrk49ATxUFQsfdE5rUbudir+f6bDuniZTudRKA0im3DdiEp9j/uP9TS6iXV3LfSdhn0Jxt/nvFRc/EaA81mri0MrdyIfwhzO6pekreYNQHwNp2l47S0uGwu7tPyGl4Sx28os3WAMe3QdQspIylSsNNbMW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OtBtKmaC; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNsYZtrc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC3EC4CEF5;
-	Mon,  8 Sep 2025 17:58:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757354315;
-	bh=gt0EpPEAyoApJr09LrsCXlMB+0xjP2bmwcOFF+Pv5Sw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MNsYZtrcdT+iWGtZ2zWmzMIStr5RyYgtdbBlMm7gPfJqXZ40FhR1kOjXOowgn5uMq
-	 Umikt3vwRgYlwXbbjvagqhwS6Kh+kfY/vp3Wj4tdYWkMUjB10vu7eWbLwOvI1ES25g
-	 GSIfuu/mkmE0tam8dphlXs8bEqxTis+zBUayiuJ62V0Eepu9DG2KLKllYbxHZkIEu8
-	 Cbkw/Kx7rKdc0bKJJ10fMi2J1b6in/SkNs9Dk1442fZO0n7fDL7YVLrVffWTGVI7gt
-	 /A5W7mt7madDGHoI3k79o5gdKDAloAze1KbxdcBF07o+c4J9UJDmDM7UhO+oh863gJ
-	 gQy0NQSWmyjLw==
-Content-Type: multipart/mixed; boundary="------------eNldNmG8FKXO6slpRWvrzn9e"
-Message-ID: <197e6b98-e390-4080-a3e8-a42e0b2cd674@kernel.org>
-Date: Mon, 8 Sep 2025 19:58:30 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OtBtKmaC"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-32b7e7e81f6so354071a91.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 11:30:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757356230; x=1757961030; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jUG/qTOwcqt3yC9mUtQIEdDFh7q46RZ3EeLs17fAC5k=;
+        b=OtBtKmaCqeWVEvVpgPYnI9n83LiOriysMJ8+FGacHt9BTPkbeWCqtPOGl86Ei24t1U
+         LL2evB8CUeU+FKFssj2dHT7f39eEwkVoIyEtXTsTgnxLGCYpeZBww6k2UTNmKqdq8TGZ
+         obOYiq3BAeJTT+W6OLCf9Vw2ZgdnXw7jpQG/MGDvkzInwv8mMOX9u5ly1FD/u73oKECj
+         3wCpsbxzHndAuq4RIKluL+4I3HQUTvAusHqk1NuN+c4HShxvki3tjDpKioGATkwbRjpE
+         gy73lI+7+yFABXXA7p8A679KZJFuPUHP6WX24HGSybIgIRF8LVKgoa74yP4c+uQd0Ayt
+         sOPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757356230; x=1757961030;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jUG/qTOwcqt3yC9mUtQIEdDFh7q46RZ3EeLs17fAC5k=;
+        b=JnK9bCKz86p7zNY1QxmCAwDzjg6Y3knATUWzpD1MIa6iocvmfaeBWwNz7ouV4D2sL/
+         sBb0irKc3J/8yNwgbnH7yWC9fXTCC5dY+CSuyQJg4BQwm5hEX7+CckOJW4cAOHC0JevH
+         ojMc5WHniTheg6FiH98XoeNTeBAk8PlrltA0qleotb4el3VMGYiiY4uUBUu7SAOW+vDO
+         BdBmhEdbslqiiHoRauquWodr9bzZQBGrxyeXDfpGqS2cwGrq0HijijwxAgzBOoG5o6fJ
+         PzMjvtopHy8IwA4dE9g51gEwu57tp/HMDiQRiXe0JMvcmkynlw2oh3txNDEzSgBKHqWE
+         sK6w==
+X-Gm-Message-State: AOJu0YxNFmnlufa3gfXmWrJG2n7o38H5roAsbzuXMZKitawu/uqru7tQ
+	uJgy2IV5g/RP1YKrpnv3NRWX6cAta+lPtA5deszE0bdzX9hl5XSQfeChMAdPLYLDIf0kGEoH+Vh
+	t41ujtGwXM01qwUC1d656fgsxJDbQ/Hc=
+X-Gm-Gg: ASbGnctdBQuyGzuP4T2hA8+cIkJGSAR7gfrbCZD6cBRhSMBTb94Awi1fH4bFX7pHTwv
+	9JRXNxwJpTyzhI+1eGvfBZIeOWax7YVyRWDG6Fexa5teZmbg5SufnVZIogaSOAAr2Oxri5SRZeu
+	ZxNI6DJyADA5JsVQv/j+Op3Iuw2Duj/COulrFPOTAWtNdcQHbov+TM2JlV4LFV4KvhzSYqkYhD3
+	f71FZpocVBrV6rkxbWAG7SkB4f8LF159cyHW30Sm4rXQyCsToOaT97YIgnZLQ68rn/gTQqyLAT4
+	dsp7nIoJUeI0clCN0LdvK0sURQ==
+X-Google-Smtp-Source: AGHT+IFYFAtkKVHfkI4g4kFkE1d40Em0cg1+x+GlQODl/28udoQL+FMvsGsvmxW5ZnvLdbzyKFAliPqQrsvAqRpvrZQ=
+X-Received: by 2002:a17:90b:38cb:b0:32c:e048:35a6 with SMTP id
+ 98e67ed59e1d1-32d43f126f8mr6361297a91.1.1757356230052; Mon, 08 Sep 2025
+ 11:30:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>,
- Benno Lossin <lossin@kernel.org>, Dirk Beheme <dirk.behme@de.bosch.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
- <2025090807-bootleg-trophy-a031@gregkh>
- <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
- <2025090849-tweak-conductor-f642@gregkh>
- <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org>
- <2025090817-attendant-ungodly-78f6@gregkh>
- <DCNGJMN80Z34.1O45B1LM9PB2S@kernel.org> <2025090850-canon-banish-baf6@gregkh>
- <DCNIASL0KG57.3LC7NU7COE5KU@kernel.org>
- <2025090808-slicer-consent-6db0@gregkh>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <2025090808-slicer-consent-6db0@gregkh>
+References: <20250908125339.3313777-1-vitaly.wool@konsulko.se>
+ <CANiq72mekzqaNak+KYxqzxOeKpmNDYPO2bvATw6FkOjHWO1w0w@mail.gmail.com> <99eff662-417c-4adb-b7dc-7f3053a4d616@konsulko.se>
+In-Reply-To: <99eff662-417c-4adb-b7dc-7f3053a4d616@konsulko.se>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 8 Sep 2025 20:30:17 +0200
+X-Gm-Features: AS18NWBUf3xKIGqgJxhuSkY88RUo_0-BQw4wkowd6tsSsYMjrpMlu-w9nDmqDfc
+Message-ID: <CANiq72m480giNVxfsvjGRt1y8RLuPpO-52Z-6xEHrrF-9amGiA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: rbtree: add immutable cursor
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a multi-part message in MIME format.
---------------eNldNmG8FKXO6slpRWvrzn9e
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+On Mon, Sep 8, 2025 at 6:41=E2=80=AFPM Vitaly Wool <vitaly.wool@konsulko.se=
+> wrote:
+>
+> Absolutely, I wonder though if I'm supposed to do that only for the code
+> I'm adding, or for the whole file, and if the latter is the preferred
+> way, if that should be arranged as a 1st patch in a 2 patch series. What
+> would you recommend?
 
-On 9/8/25 6:19 PM, Greg Kroah-Hartman wrote:
-> Working code for the simple "foo" example will be good.  Here's my
-> horrible (and will not build) example I was trying to get to work.
+Only for the added ones is fine, so no worries. For the older ones,
+please feel free to leave a review in the old patch (and/or check if
+it needs a rebase or similar).
 
-I think our examples were pretty close already, but here's also your file. :)
---------------eNldNmG8FKXO6slpRWvrzn9e
-Content-Type: text/rust; charset=UTF-8; name="rust_debugfs2.rs"
-Content-Disposition: attachment; filename="rust_debugfs2.rs"
-Content-Transfer-Encoding: base64
+Thanks a lot!
 
-Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAKCi8vIENvcHlyaWdodCAoQykg
-MjAyNSBHcmVnIEtyb2FoLUhhcnRtYW4gPGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnPgov
-LyBDb3B5cmlnaHQgKEMpIDIwMjUgVGhlIExpbnV4IEZvdW5kYXRpb24KCi8vISBTYW1wbGUg
-ZGVidWdmcyBydXN0IG1vZHVsZSB0aGF0IGVtdWxhdGVzIHNvY19pbmZvIHRvIHRyeSB0byBz
-ZWUganVzdCBob3cgd2VsbCB0aGUgYXBpIGNhbgovLyEgd29yay4uLgoKdXNlIGNvcmU6OmZt
-dDsKdXNlIGtlcm5lbDo6Y19zdHI7CnVzZSBrZXJuZWw6OmRlYnVnZnM6OntEaXIsIFNjb3Bl
-fTsKdXNlIGtlcm5lbDo6cHJlbHVkZTo6KjsKCm1vZHVsZSEgewogICAgdHlwZTogU29jSW5m
-bywKICAgIG5hbWU6ICJydXN0X3NvY19pbmZvIiwKICAgIGF1dGhvcnM6IFsiR3JlZyBLcm9h
-aC1IYXJ0bWFuIl0sCiAgICBkZXNjcmlwdGlvbjogIlJ1c3Qgc29jX2luZm8gc2FtcGxlIGRy
-aXZlciIsCiAgICBsaWNlbnNlOiAiR1BMIiwKfQoKZm4gZm91bmRyeV9wcmludChmb3VuZHJ5
-OiAmdTMyLCBmOiAmbXV0IGZtdDo6Rm9ybWF0dGVyPCdfPikgLT4gZm10OjpSZXN1bHQgewog
-ICAgd3JpdGVsbiEoZiwgIkZvdW5kcnk6IHt9IiwgZm91bmRyeSkKfQoKLy8gRmFrZSAiaGFy
-ZHdhcmUgU09DIGluZm8gb2JqZWN0IHRoYXQgaWRlYWxseSB3b3VsZCByZWFkIGZyb20gdGhl
-IGhhcmR3YXJlIHRvIGdldCB0aGUgaW5mby4KLy8gRm9yIG5vdyBqdXN0IHVzZSBzb21lIGZh
-a2UgZGF0YQojW2Rlcml2ZShEZWJ1ZyldCnN0cnVjdCBId1NvY0luZm8gewogICAgaWQ6IHUz
-MiwKICAgIHZlcjogdTMyLAogICAgcmF3X2lkOiB1MzIsCiAgICBmb3VuZHJ5OiB1MzIsCiAg
-ICBuYW1lOiAmJ3N0YXRpYyBDU3RyLAp9CgppbXBsIEh3U29jSW5mbyB7CiAgICBmbiBuZXco
-KSAtPiBTZWxmIHsKICAgICAgICBTZWxmIHsKICAgICAgICAgICAgaWQ6IDEyMywKICAgICAg
-ICAgICAgdmVyOiA0NTYsCiAgICAgICAgICAgIHJhd19pZDogNzg5LAogICAgICAgICAgICBm
-b3VuZHJ5OiAwLAogICAgICAgICAgICBuYW1lOiBjX3N0ciEoImh3X3NvYyBuYW1lIiksCiAg
-ICAgICAgfQogICAgfQp9CgpzdHJ1Y3QgU29jSW5mbyB7CiAgICBfZGVidWdfZGlyOiBEaXIs
-CiAgICBfaHdfc29jX2luZm86IFBpbjxLQm94PFNjb3BlPEh3U29jSW5mbz4+PiwKfQoKaW1w
-bCBrZXJuZWw6Ok1vZHVsZSBmb3IgU29jSW5mbyB7CiAgICBmbiBpbml0KF90aGlzOiAmJ3N0
-YXRpYyBUaGlzTW9kdWxlKSAtPiBSZXN1bHQ8U2VsZj4gewogICAgICAgIC8vIFJlYWQgZnJv
-bSB0aGUgaGFyZHdhcmUgYW5kIGdldCBvdXIgc3RydWN0dXJlIGluZm9ybWF0aW9uCiAgICAg
-ICAgbGV0IGh3X3NvY19pbmZvID0gSHdTb2NJbmZvOjpuZXcoKTsKCiAgICAgICAgLy8gQ3Jl
-YXRlIHRoZSByb290IGRpcmVjdG9yeQogICAgICAgIGxldCByb290ID0gRGlyOjpuZXcoY19z
-dHIhKCJydXN0X3NvY19pbmZvIikpOwoKICAgICAgICBsZXQgc2NvcGUgPSBLQm94OjpwaW5f
-aW5pdCgKICAgICAgICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSBzY29wZSwgdGhhdCBjb250
-YWlucyBzb21lIGRhdGEgYW5kIGEgYnVuY2ggb2YgZmlsZXMgZXhwb3J0aW5nIHRoaXMKICAg
-ICAgICAgICAgLy8gZGF0YS4KICAgICAgICAgICAgcm9vdC5zY29wZShod19zb2NfaW5mbywg
-Y19zdHIhKCJod19zb2NfaW5mbyIpLCB8aHdfc29jX2luZm8sIGRpcnwgewogICAgICAgICAg
-ICAgICAgZGlyLnJlYWRfb25seV9maWxlKGNfc3RyISgiaWQiKSwgJmh3X3NvY19pbmZvLmlk
-KTsKICAgICAgICAgICAgICAgIGRpci5yZWFkX29ubHlfZmlsZShjX3N0ciEoInZlciIpLCAm
-aHdfc29jX2luZm8udmVyKTsKICAgICAgICAgICAgICAgIGRpci5yZWFkX29ubHlfZmlsZShj
-X3N0ciEoInJhd19pZCIpLCAmaHdfc29jX2luZm8ucmF3X2lkKTsKICAgICAgICAgICAgICAg
-IGRpci5yZWFkX29ubHlfZmlsZShjX3N0ciEoIm5hbWUiKSwgJmh3X3NvY19pbmZvLm5hbWUp
-OwogICAgICAgICAgICAgICAgZGlyLnJlYWRfY2FsbGJhY2tfZmlsZShjX3N0ciEoImZvdW5k
-cnkiKSwgJmh3X3NvY19pbmZvLmZvdW5kcnksICZmb3VuZHJ5X3ByaW50KTsKICAgICAgICAg
-ICAgfSksCiAgICAgICAgICAgIEdGUF9LRVJORUwsCiAgICAgICAgKT87CgogICAgICAgIGxl
-dCBzb2NfaW5mbzogJkh3U29jSW5mbyA9ICZzY29wZTsKCiAgICAgICAgLy8gUHJpbnQgdGhl
-IGNvbnRlbnRzIG9mIGBzb2NfaW5mb2AgdGhhdCB3ZXJlIG1vdmVkIGludG8gYHNjb3BlYC4K
-ICAgICAgICBwcl9pbmZvISgiSHdTb2NJbmZvOiB7Oj99XG4iLCBzb2NfaW5mbyk7CgogICAg
-ICAgIE9rKFNlbGYgewogICAgICAgICAgICBfZGVidWdfZGlyOiByb290LAogICAgICAgICAg
-ICBfaHdfc29jX2luZm86IHNjb3BlLAogICAgICAgIH0pCiAgICB9Cn0K
-
---------------eNldNmG8FKXO6slpRWvrzn9e--
+Cheers,
+Miguel
