@@ -1,165 +1,186 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010010.outbound.protection.outlook.com [52.101.69.10])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9BC22333B;
-	Mon,  8 Sep 2025 07:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757314908; cv=fail; b=lbUUL2oYXx5fqTFs7aEF8uwW9esnNScBqsUFtqlJSG6aE9aQcP4mDtynK5kYwjulmqyFogFID+7si8OAP0CC2piYEzi89dHRIfd9Lc1OxmJ2E9hFicmLx7i2051pJRCAkRm+izzPLdEi+RFnTrKwgLGR2HKlNFu1MPMePYxgv8E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757314908; c=relaxed/simple;
-	bh=2iBgwtDz5SwYD7SLiNtSsRW3Y9vHS8ESsxEgd8XZkUs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=s/Y5jWAu5bBC2FrPcwRKpzf3NjpAJ4ZdzNqZBdmgFIjAA4syiY1bkE9e1X5ZK5XNXW/TCtEQQQ5ePBrGp6v4ex8+GwIGfRYSmUSCvTMUes2nHe2JLfuIuXNtQWOPCGk9oBeghn13Xz60jCugp7EDFSpp7BNwq8AtmmK/WTvlxFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=sQKyE/hx; arc=fail smtp.client-ip=52.101.69.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A097747F;
+	Mon,  8 Sep 2025 07:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757315515; cv=none; b=Gd6lp7CPRR5pF7DmYfm+H6BBEAzsJvto5XFOm6gYOXPUA4bOyCO4LVvHnZkL8Rj5SUnjmxAyC3H3VmfzMsW/KR9R3pKITqpce/txVF0KZsteLilyxdL975Nae0TPI5Liq+gc5HNXY3adGSuVlEgClsAxuhh43UT4T0RVB0etLOU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757315515; c=relaxed/simple;
+	bh=Of78UZh64IZN2D+3zi6NAhV8bopsYtrVBUXbZLFLOuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s8lnBalU7t5lZwvYwKT/QMmmCK81Am/iOIJMwIJ5v59lHTfdbOB9mN4bYFB4gXTmh9cuAQmQHJrD5tEhjPBbhJKYble9J9qZzi4HeaXEOXF73/YLIfn/d5MXCwnCiZ7tjovhc5C4r7D1dIIi8yzXeUNXzVd1mLl9GUweq2GkNFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=jh/FZUGB; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="sQKyE/hx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CrAbMiDE9FVPAyjFz+k2ewN1onCC+9/0Axgv6YZ/mjyWLzgo2hJGICsabPhd0t+5X9bVZ5c2DP2Ce1veG6FZeqSKHam70OcIgJ2p+0xQxQOAkTBbO02+Kehr/giIBV1Hzjv/lg0lJCUXXLAPoGR+9jb2yAjyMx/bPkFCfoayh8Hf72hgSDKxgmggoYIXQub+vxQjdnLMfYB1pkwZdKCSxP76Q5gssV3hrA6LCvcJt8BHHp2rVy93GxVMUDF2YLGfz8gYPlWIpdKaw78Gzwq7puUHttqRx7CUG1RUeyBX+skKDpsrANAhQ5wJpXiSEmtyaFHzqwPLrpIaiWJyfG1YqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=euoiDbmgvc4wzTbyl3qGHz0Fd51MmyYA7gLVAAoSMWs=;
- b=WKfKmVcW9eulcUwf1y1DuOQgGdlHWjRdnUxFUz9A/agB0ICJbeMBgasfzdhYP8TuVZC1Ruk692qUKKpGxb33CukdmwKI21qUWym0x+psPg6ksac9MbZNHNk/NzPxGjII4pjSTSLIlSEwJj4Ke/lZWL6xFPyavWgGvrEho47UEjru5lXcxsMJuD5akbycOf8dpROa4Sy09zYoUulnue/xu+U45uZ9QlCn1p5KVUJQjQ8iyeP12busN17sMLKzJv6hBEErJslwKZQi6pK3qPk5GOkvAE/rEvXx88zv06n5kOvRDtpKTQny4JpCk41/Ens3eS6MO8xIrosqBqaZbp8PlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=google.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=euoiDbmgvc4wzTbyl3qGHz0Fd51MmyYA7gLVAAoSMWs=;
- b=sQKyE/hx4N7x+nkYJTOwN4zkqXDEQAnSnOIaOjCbKitoT//UgFf91J1iiU4H8Qh70B+wMmsJr0oChRpldeA4wcr2N0e5nDvcWh1xhhxrRU7DrICyGkgoD/MjJ+1w60YERv6TmHdf3I2KxGe5Jbyk+RaQczVpu7m+BOEYUXlkMwrVtSd18+S2eETQjBeVENPf6Q1ymhVk2XTlJrvZwtO+lZ+apEl/N5pbBc9VFaPzYj2FbrNMlck6oVNDzYbeDU9SiLEjhCe4g3p3FD8Z7c1fdQIPsXEmfNSigT1dqGNgUV3tVmJI4FC9bXWW4pd1Wl9UFl/357F6xTxAj+4bd2u7Nw==
-Received: from DB9PR05CA0007.eurprd05.prod.outlook.com (2603:10a6:10:1da::12)
- by PR3PR10MB3817.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:42::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Mon, 8 Sep
- 2025 07:01:38 +0000
-Received: from DB1PEPF00039231.eurprd03.prod.outlook.com
- (2603:10a6:10:1da:cafe::e4) by DB9PR05CA0007.outlook.office365.com
- (2603:10a6:10:1da::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.14 via Frontend Transport; Mon,
- 8 Sep 2025 07:01:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- DB1PEPF00039231.mail.protection.outlook.com (10.167.8.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9115.13 via Frontend Transport; Mon, 8 Sep 2025 07:01:38 +0000
-Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 8 Sep
- 2025 09:01:24 +0200
-Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by
- SI-EXCAS2001.de.bosch.com (10.139.217.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.58; Mon, 8 Sep 2025 09:01:24 +0200
-Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
- (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 8 Sep
- 2025 09:01:23 +0200
-Message-ID: <ee0e1fce-8b5d-4e3f-a261-b36a286525cf@de.bosch.com>
-Date: Mon, 8 Sep 2025 09:01:16 +0200
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="jh/FZUGB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1757315506;
+	bh=Of78UZh64IZN2D+3zi6NAhV8bopsYtrVBUXbZLFLOuw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jh/FZUGBFSm7nf8WfKZUADT/s3C4xpz4FcYbhkkvkyB2kuBQH7o8PBPNfJvOXWW+S
+	 lhREUPWp1BucMpHD8aNW2KjUXCJi8skCE6Gu3C/hYRipR84Cjn3gMIWgMtI5oAMlfU
+	 Yh3cd5qp9Eply6j5U/6+EmMW8dVeZcqguZ9GYou1Vwt7yE687sbsSrWlvhuNF0XMAU
+	 MJgIoD8nZUfWks1mdxBFs9EUzdMnDqIeBTM6zBY57NHtaqkdGqEHXyjyyj8GWDpdhx
+	 9hu5BO96NTBSWO879cHcC282K7VmRoYwkFL/+RxEDTb1OJ50/80SCrpD6Rp4K13bx8
+	 NsLxbWVkv66rg==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 92FFD17E0100;
+	Mon,  8 Sep 2025 09:11:45 +0200 (CEST)
+Date: Mon, 8 Sep 2025 09:11:40 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
+ <matthew.brost@intel.com>, "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?="
+ <thomas.hellstrom@linux.intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Steven Price <steven.price@arm.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau
+ <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
+Message-ID: <20250908091140.44856fde@fedora>
+In-Reply-To: <aL1u_YxOkuj1kIq6@google.com>
+References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
+	<20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
+	<20250905152505.005a610d@fedora>
+	<CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
+	<DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org>
+	<aL1pSFB9iBsfHFM_@google.com>
+	<DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org>
+	<aL1u_YxOkuj1kIq6@google.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v11 0/7] rust: DebugFS Bindings
-To: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Sami
- Tolvanen" <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, "Benno
- Lossin" <lossin@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF00039231:EE_|PR3PR10MB3817:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6a85688-9592-420a-45b0-08ddeea58e74
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700013|82310400026|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bkIvaE42RmpFT2tNRVRsSnhNUGt4TURZbk1BcU9pWUhDb1VwWXZNYm9nS2FX?=
- =?utf-8?B?elNrZkFZU3Qyb2dUakxBQUc0VTFiOTV1bkhPQU9OQStsNXQ4cG5yeE1ZOHdZ?=
- =?utf-8?B?b1BjM25SMGFIMXU3c0g4NDgxUmJSaUxRanRISnAxU240STVBMjRwcVptVlFZ?=
- =?utf-8?B?Z3FoN2RtMVF4SUkwOUNPM0xMQ3lkcXVTUHVlMC9RcENCK3paazMyWmZqZ2xP?=
- =?utf-8?B?VTZVelplVUtuNS9IbXF3cnNWR3NqQTJLdnB3OUlxY0RNb3VoN3lkUUNaSzI4?=
- =?utf-8?B?cUI2cGR3b0x1Y1I1ck5jQmR5aG1rd1VJQk85YXNYbEpJRmRLUUYwcndwRWho?=
- =?utf-8?B?eWNQYVZjY2xMZTNYVzdTV0hGRm5BTW9rV1lFdWR4SWxId2t0VXBQR2s3MExG?=
- =?utf-8?B?VCtuUi9qMGNjc0Q2eXo2dFEwdE9VNWdyYVhaWXROZ2cwd0NzSkUxUUM3N0hW?=
- =?utf-8?B?MTVBdVBEYWlwdlZTUkJNOXJsYTRNOVVQU01IWTgyL1I3UFpWa0NWb0x2akMy?=
- =?utf-8?B?MXNxUXlCUmJ1Vmpzano0VndoVU5OeUt4elNiK3lOdGk2Qk1JOFdSREVyUFFF?=
- =?utf-8?B?WjZ4aWRlRERUMHNTeFBOZm9IU0xSYm9rNDIvdFVQbWd1L3hFSFJMTi9yVG94?=
- =?utf-8?B?UnRscmY5VFQyYjBxRC9xa2lsYlg2V1l5QVFldjR5bVlpdytTSVRiR2F1WHI3?=
- =?utf-8?B?Y1lYZHdrN2d0ZUhBSUdXeGVHWTRpV2s4WjhiOCtlLzJpcHdHMWdZK09YN3Ay?=
- =?utf-8?B?c0FscjhieXZsQWIreGJYZW1DVGkzb0FHR0lVUG5la2s4dFYwSFBpcFVpTlR2?=
- =?utf-8?B?UVhXM2xpcU1nd1hIaTdLMHRkU2FvZzNzZlJLT3Azc0hjNmNuN2huajNZUkNO?=
- =?utf-8?B?OW9BUy9uWDFQUi80TkVIbG1KNVdFOU0xSTJSNXZ0MWZBK2grandhV3lVMDVT?=
- =?utf-8?B?TXJVTjhXV3pIWVgwb3ExT0NkU3RocWx1Z1dnSWJ1czcwc28vc3RqWWZqRE9a?=
- =?utf-8?B?bGNXWThqQnlSOEJTQ1FIandIZHhoME1ZUTBOaXdpSCtpbVAxSCt0dFM4aGJj?=
- =?utf-8?B?VmdIQkYzeWcxRE1Ka3hyTi9BM0lXb2J0UVVHdURNSU96NUFKZzFsQTJZNzJT?=
- =?utf-8?B?bXVwQjR5WmxUMDdjRHdsRlZvaTBjN2dja2Y2ODAyVEpvSnZ3MFRLNjQ3N2g3?=
- =?utf-8?B?Uk5SMzBHc2xPZWZHZzJacmFYSnY4NlNDTTdna2x4NzFkS1dmOExTR0IvaXVw?=
- =?utf-8?B?N1BRMmIyVTkyNUNpOEwvUU9MQnBEcFhneEoyanpyeFJDRDZ2NDI4NTdQd05T?=
- =?utf-8?B?RU1WTWxueTUyMW1XS1ArTGtUZGQzV2RhdS9FcHlLeC90U0VGeUZwRXF3OElI?=
- =?utf-8?B?RVIxazEwcVViNFpFbTJHOE1RYm1SSkthd0JUVm5QMzRpRXpKbTNHdWpnM2Rj?=
- =?utf-8?B?TXZpSGVvNlFhQ2t5RVI5SmJQRk96Z2hjRkg0QVc1OW5sMmJkUEtWVjJHeGl0?=
- =?utf-8?B?RG5sb282SXJaVHR1UENBd3lGN0N0ODZyZTNjWVN1STBmUzF2MnYybElZWkNv?=
- =?utf-8?B?Ly9UY2JQR3lXTG9FR01OZzE5R0J4RURQR21PZXBxeS90VkpyRjN2L3RrTDNy?=
- =?utf-8?B?ZVoxOTh6aDNLVVNGMExsV1pnc3pEL0gyMkRCYXhzeEQyTDBhNUh3NnQzVFhG?=
- =?utf-8?B?c3VPcVZUYTFuYURzQVZLb3pZc3FpWTVTelpCT21RY0hGTWxjSWx4T0dsNEc5?=
- =?utf-8?B?K3pqK0Y2NSsyK0VUZjZTRnFTbHpzbnpsRWQxaUVRc01TUnpiallNelRnNGZZ?=
- =?utf-8?B?VCtKbFp6K2Iwd0QwRUo5MWZmK2lHdXpIQUhWOTBsTCs1SFVTeGNuWmxLNWxC?=
- =?utf-8?B?dlpSMHJYRU44djd5ejdRRU5sNkRGeHg5aTNETEY0WXRnSm1RcnU1U21jeWVM?=
- =?utf-8?B?bXBXekM1alJtdnlhZlRFS00wYTNDaTVMODRia21FekxCbmlaT1VGRUZzQUNo?=
- =?utf-8?B?YWtqaklTcmM5bWllWnY1NVRnekpqSjZHbmxOdW5HTEN4ekVucFZBVVZjanc0?=
- =?utf-8?B?MzM1cDhBSlAvYkZseG9Qb0c0R3o1c0kyWmt4QT09?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700013)(82310400026)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 07:01:38.2474
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6a85688-9592-420a-45b0-08ddeea58e74
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF00039231.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR10MB3817
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 04/09/2025 23:13, Matthew Maurer wrote:
-> This series provides safe DebugFS bindings for Rust, with sample
-> modules using them.
-> 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-On ARM64 on top of v6.17-rc1 I switched from v10 used previously to this
-v11 series to use read_only_file() to export some u64 proprietary values.
+Hi Alice,
 
-If you like feel free to add
+On Sun, 7 Sep 2025 11:39:41 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+> On Sun, Sep 07, 2025 at 01:28:05PM +0200, Danilo Krummrich wrote:
+> > On Sun Sep 7, 2025 at 1:15 PM CEST, Alice Ryhl wrote: =20
+> > > On Sat, Sep 06, 2025 at 12:47:36AM +0200, Danilo Krummrich wrote: =20
+> > >> On Fri Sep 5, 2025 at 8:18 PM CEST, Alice Ryhl wrote: =20
+> > >> > On Fri, Sep 5, 2025 at 3:25=E2=80=AFPM Boris Brezillon
+> > >> > <boris.brezillon@collabora.com> wrote: =20
+> > >> >> On Fri, 05 Sep 2025 12:11:28 +0000
+> > >> >> Alice Ryhl <aliceryhl@google.com> wrote: =20
+> > >> >> > +static bool
+> > >> >> > +drm_gpuvm_bo_is_dead(struct drm_gpuvm_bo *vm_bo)
+> > >> >> > +{
+> > >> >> > +     return !kref_read(&vm_bo->kref); =20
+> > >> >>
+> > >> >> I'm not too sure I like the idea of [ab]using vm_bo::kref to defe=
+r the
+> > >> >> vm_bo release. I get why it's done like that, but I'm wondering w=
+hy we
+> > >> >> don't defer the release of drm_gpuva objects instead (which is re=
+ally
+> > >> >> what's being released in va_unlink()). I can imagine drivers want=
+ing to
+> > >> >> attach resources to the gpuva that can't be released in the
+> > >> >> dma-signalling path in the future, and if we're doing that at the=
+ gpuva
+> > >> >> level, we also get rid of this kref dance, since the va will hold=
+ a
+> > >> >> vm_bo ref until it's destroyed.
+> > >> >>
+> > >> >> Any particular reason you went for vm_bo destruction deferral ins=
+tead
+> > >> >> of gpuva? =20
+> > >> >
+> > >> > All of the things that were unsafe to release in the signalling pa=
+th
+> > >> > were tied to the vm_bo, so that is why I went for vm_bo cleanup.
+> > >> > Another advantage is that it lets us use the same deferred logic f=
+or
+> > >> > the vm_bo_put() call that drops the refcount from vm_bo_obtain().
+> > >> >
+> > >> > Of course if gpuvas might have resources that need deferred cleanu=
+p,
+> > >> > that might change the situation somewhat. =20
+> > >>=20
+> > >> I think we want to track PT(E) allocations, or rather reference coun=
+ts of page
+> > >> table structures carried by the drm_gpuva, but we don't need to rele=
+ase them on
+> > >> drm_gpuva_unlink(), which is where we drop the reference count of th=
+e vm_bo.
+> > >>=20
+> > >> Deferring drm_gpuva_unlink() isn't really an option I think, the GEM=
+s list of
+> > >> VM_BOs and the VM_BOs list of VAs is usually used in ttm_device_func=
+s::move to
+> > >> map or unmap all VAs associated with a GEM object.
+> > >>=20
+> > >> I think PT(E) reference counts etc. should be rather released when t=
+he drm_gpuva
+> > >> is freed, i.e. page table allocations can be bound to the lifetime o=
+f a
+> > >> drm_gpuva. Given that, I think that eventually we'll need a cleanup =
+list for
+> > >> those as well, since once they're removed from the VM tree (in the f=
+ence
+> > >> signalling critical path), we loose access otherwise. =20
+> > >
+> > > Hmm. Another more conceptual issue with deferring gpuva is that
+> > > "immediate mode" is defined as having the GPUVM match the GPU's actual
+> > > address space at all times, which deferred gpuva cleanup would go
+> > > against. =20
+> >=20
+> > Depends on what "deferred gpuva cleanup" means.
+> >=20
+> > What needs to happen in the run_job() is drm_gpuva_unlink() and
+> > drm_gpuva_unmap(). Freeing the drm_gpuva, inluding releasing the assoic=
+iated
+> > driver specific resources, can be deferred. =20
+>=20
+> Yeah I guess we could have unlink remove the gpuva, but then allow the
+> end-user to attach the gpuva to a list of gpuvas to kfree deferred. That
+> way, the drm_gpuva_unlink() is not deferred but any resources it has can
+> be.
 
-Thanks!
+This ^.
 
-Dirk
+>=20
+> Of course, this approach also makes deferred gpuva cleanup somewhat
+> orthogonal to this patch.
+
+Well, yes and no, because if you go for gpuva deferred cleanup, you
+don't really need the fancy kref_put() you have in this patch, it's
+just a regular vm_bo_put() that's called in the deferred gpuva path on
+the vm_bo attached to the gpuva being released.
+
+>=20
+> One annoying part is that we don't have an gpuvm ops operation for
+> freeing gpuva, and if we add one for this, it would *only* be used in
+> this case as most drivers explicitly kfree gpuvas, which could be
+> confusing for end-users.
+
+Also not sure ::vm_bo_free() was meant to be used like that. It was for
+drivers that need to control the drm_gpuvm_bo allocation, not those
+that rely on the default implementation (kmalloc). Given how things
+are described in the the doc, it feels weird to have a ::vm_bo_free()
+without ::vm_bo_alloc(). So, if we decide to go this way (which I'm
+still not convinced we should, given ultimately we might want to defer
+gpuvas cleanup), the ::vm_bo_free() doc should be extended to cover
+this 'deferred vm_bo free' case.
+
+Regards,
+
+Boris
