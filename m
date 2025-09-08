@@ -1,66 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA06F30ACF0;
-	Mon,  8 Sep 2025 13:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41F54A33;
+	Mon,  8 Sep 2025 13:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757338694; cv=none; b=qUuBNW9Ze1nn0KJdwPlBlgXXLh+fmSzOo3HFSX3yAuDN3y2o0MgMXhd+wN+MlQMYEMRHsZ2cmiQQDdVmkTKcKKxzFCyqa/lmKhOtcskGGYSDO9D6amgO/8BpV2LqKkJZFQxnABxzroQYvyrTCGbItK2fMg13O1WkO1YmMT8NhJc=
+	t=1757339816; cv=none; b=WISwztbBNGD+PyGQ6j5FIDc4yKIpKACKovHCkmqHuc0qcwd78y/jRW4oIiczcxub+arlTDIsXGgS5JN/obEeUpmhpXV+yvjBynDdkP3InI6AJEmPBoUU6e/gujsRwEdd9nXFekcZUmmZQrgatH/291vS2/0ZtKHpz7+r+Ms+HQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757338694; c=relaxed/simple;
-	bh=c88FQ0i5OL/97YDEXu34QlMCovtvSIcJwKO1Me4FgnE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ccrfMKGbA/OCPh95Q9G9lnveA/Q4fliDwMUEHzpBjSzZJ+yuVa9lmOC1YRsTjJtb/lJgo0B6lFdTKRDXULjaQ7cJ5//Nbs+mbRSC+GNLglacx4Q6dayzPvaqaBo3Umg7wY2zrXtXGfaPGB3rAOGFD5pjJ6+Yo0vs4dunnAzmdg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AYC8cec+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757339816; c=relaxed/simple;
+	bh=zRYexB8bj4GScDf3jj7zv+A1nsXQZmKkRKsKp2/PZ0g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ECslleqNJuPS8GIxy/6gDWvQVnmKOINmXBhx1VsvXcuW3JzSsBy69C2u1kflzBJEoXSaW2Bq2COags5GIjSh6EO93iyE/cjvtP3qlXS1miGkgLtJIVVGMa7b6YjHAF2jSp3naHrGBsvXpzmQEnH7VUQuAcHqxp5erOVkZA1NcR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rm03CAil; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AYC8cec+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132BAC4CEF1;
-	Mon,  8 Sep 2025 13:38:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rm03CAil"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0D1C4CEF1;
+	Mon,  8 Sep 2025 13:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757338693;
-	bh=c88FQ0i5OL/97YDEXu34QlMCovtvSIcJwKO1Me4FgnE=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=AYC8cec+otm76elhRixcIwpAWzZzbvjDO3dOWcB/sm3xicSiwYK3oK9XET0K9cIqW
-	 39eChRgPS0ruhGe5TWSwML/cjW3BicLTy0V9soAl7gxWiKcDp6kNJYuUvVKQloFY/k
-	 46UF7KEzOPfQ1sv7s2RCB39/Vg1Gn+OjCjnd6EjRpRtJJNOqVzIFX+K59YzB6rReuW
-	 DKCJUaIqUHxLwRDwg0On3rgMTLxBYjp6zC74H1RAtFKN2GwPhTD71SToqf+T94NqH9
-	 +uv2UJ8GMxVEnOiwTdcPSF1g4zgS6Mlqntzr1Lkm6eFOZ9wi8bbIm/j3OcmFiYdlPN
-	 LQ3OlwgFcESiQ==
+	s=k20201202; t=1757339816;
+	bh=zRYexB8bj4GScDf3jj7zv+A1nsXQZmKkRKsKp2/PZ0g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rm03CAill+YlAHZghvUXvTt0aZ2mrKayqNNcLvMJbBWrP4R7/96CvKdE2pAa4cx+6
+	 EcSxQrVK85M45C9kKolpiNs5ssqmxyvElBYg0cD2WTBdK46KsnWe+zzJJvnma55BGH
+	 pHpOvPMQ3Gky4fyr5hkVE9SfATNJmFdKQNq4v2ZAMQD7bzHZ66ymRUrt1mVK3cikNd
+	 xN6i+Fr9XbpxkenYeCmuw9lRr+qpadxRteQhBJuzWRX29eMwKwh9DQeX4eUIG/Ov/R
+	 1qnH/GLznu+Xny2IDVayLHxmEPkUBgS8oz7z2qVO13NZWd0pQP1Rd84UKFAvlnZ/jm
+	 fhV15UeCd7Q+Q==
+Message-ID: <8a41b893-cb4a-4380-a671-f554bd6d0cf3@kernel.org>
+Date: Mon, 8 Sep 2025 15:56:51 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] gpu: nova-core: use Alignment for
+ alignment-related operations
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ nouveau@lists.freedesktop.org
+References: <20250908-num-v5-0-c0f2f681ea96@nvidia.com>
+ <20250908-num-v5-2-c0f2f681ea96@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250908-num-v5-2-c0f2f681ea96@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 08 Sep 2025 15:38:08 +0200
-Message-Id: <DCNGKO9TN2MI.1VQBWAO7A6U2X@kernel.org>
-Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Matthew Maurer"
- <mmaurer@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
- <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
- <2025090807-bootleg-trophy-a031@gregkh>
- <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
- <2025090849-tweak-conductor-f642@gregkh>
- <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org>
- <2025090817-attendant-ungodly-78f6@gregkh>
- <CAH5fLggZ_ELrcLekF5GD5JQAkSz_Ycg7T+fZc7crjFA5jk1y3Q@mail.gmail.com>
-In-Reply-To: <CAH5fLggZ_ELrcLekF5GD5JQAkSz_Ycg7T+fZc7crjFA5jk1y3Q@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
 
-On Mon Sep 8, 2025 at 3:34 PM CEST, Alice Ryhl wrote:
-> All of these things is why I recommended to Matthew that he should add
-> back the scoped API, since it doesn't have all these drawbacks.
+On 9/8/25 3:25 PM, Alexandre Courbot wrote:
+> Make use of the newly-available `Alignment` type and remove the
+> corresponding TODO item.
+> 
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Yeah, I think it's the correct solution to make those cases nicer.
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+
