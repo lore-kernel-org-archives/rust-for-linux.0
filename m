@@ -1,251 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9F22FC87A;
-	Mon,  8 Sep 2025 13:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D537309F1C
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 13:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757338249; cv=none; b=WhEjZn/ozClsqBT+7Kz5/bOss9JedKFjQILHxEUO42CkbigTZrix+7jDqpSW2r05f5q137FBDRYD/Akao2hOyUxrh2V6bWmp+M3Xq8OSn7FGG/sg6/98m4RfM6nL22J5KYhrKW+fDXstkSdXnwCJlJQV/vd3ics4Owt8YNTN17I=
+	t=1757338498; cv=none; b=GnPEeq9a34pczpbh32twEovUm+sEx4dNT50GM6OAPdZsArvWdzZyMxdckprWdJTquP+wvmRixdVuqLb/3E5FZPfdmAq8A/1UQTwJD97S1WSGK8HA7ruXoJ12WotJ1YDHlezEHnOGBxuBo5n3/OuSiqdxj8OWRsBMR1YqGAmhqzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757338249; c=relaxed/simple;
-	bh=43Hewi2BclPOCITvKgyR9/LxgEmNZJxprzhuxYnNdus=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=YRxbQ3YECypHnyHKYYXK48Qg/jn5K2x5pMbfL20ZX0QB8eIHUxSBLeWecpS1QzGWiknTIpVRyQI+gdP1egYBWob3ze7s21YNWsyNlrMpwcX9N/roK666eBq8U6WbHjzWMrxhV/UKvmNjm95ch1pbaT1h3+VwS9KJXLFxwuN2nH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4TzIAi5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757338498; c=relaxed/simple;
+	bh=LNcX05/LCXsPUHERl2+7b0SIa/daVDyP7L6I5U0eI2M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kovgcBhC6M4P/iwfaqDYMVlIwAMOmuS0Tpg3VlrtM2tCoOl2gYM+kscBDae7VuzCRYCYMj6kLC95mE2nS2Isob4U8kYtv73yUW1y4A8xP5JBR8wg+2NTbpvnKiGoUfTKktFklkqOCmDDeHEZb6SOC/mBJqWt27R64Po+pZJ4QoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JB1ytb3a; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4TzIAi5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29EEC4CEF1;
-	Mon,  8 Sep 2025 13:30:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757338248;
-	bh=43Hewi2BclPOCITvKgyR9/LxgEmNZJxprzhuxYnNdus=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=L4TzIAi5Ws0GJEApNYAGrssCaq03NOK3HMmfDnGcdwYdboecArel8ZcbDIwJyCPpA
-	 Y1C5E7/3kMMET+zJ8/L9FICkQM6COoi9AeTllYzBRzR0vJFE/A+S23hj21Js8X2Sz0
-	 2zXV2iPqJkiJUmHlPeFLdmUPE1WUc69I2EjnBwdwHX9c74Uk9MQcagAReUHrFBppfq
-	 M/0VfmCo+8DS1HrOBJO4G+9VOym64wH1xvseLM4JIeOunI7Tf4jgT5Wn7PAVgB5di3
-	 6h2Ugg0nsNLvlA79d0WpFjj8tuYzjt20wNS2uMdw7OSGJZ2lGlm33qEWIjQXcn/s5W
-	 rqatI//RrIytA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JB1ytb3a"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45de221da9cso7724725e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 06:34:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757338495; x=1757943295; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E/tKrYwMMkLTbqkkthV8AG/fr+t6l+qGhUImzEGNYdE=;
+        b=JB1ytb3arQal83dvvuMBQ3SsGCrGJ9p4QLCVCD/8jzuUAOBsCYaYsnkF1Ow2Fzm04e
+         oeRPt1hEDD/sAqvDP9Z5WdvFXE+/jdB9JhTJ9jiYKUOoSS506cArYFGMrXMC7VUT8kih
+         cXaeS9VSWHEN1DoUwumwUOdk34Lo5HxksyvK8nlCw4nW8NXFc0OYi48ijIKUS2w4c4qp
+         sDfOh7/mTAdVqDyXMsvSVXtMYjj8g8uRQlz28nAk7AopVgbxs3+S6dezdXW5jsGMiWEv
+         591c+Dlp9HaoqC9pdduESO2gXZgrxeBGGEgQdF66GDc74v94+OraBDidq82lcjkrPzEY
+         /+CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757338495; x=1757943295;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E/tKrYwMMkLTbqkkthV8AG/fr+t6l+qGhUImzEGNYdE=;
+        b=cbUbZiaOCGc2GfizsZWOei9ud+8eipPwdPfR1o2Qv8G1nYWP+f0ZKniUNnyHaccTJM
+         9rWTRHUb8Xh1tnNQ2ySGoVbmqmq8cX+Tw6yU/g8sr02b07ju4jUsSvciK9SkMWnmIYFp
+         wiu95Uql9LNMlB2pTnoknfs3/WLbur5PC+CfQu6cywux4huD9FpghLwMzvMHFb+F7Jjr
+         orYst0UKvGmTRLzFYkgOX6bOdyWIvPY+09RZTJczHJCn9JE0uW75jQFJPvDFUNahAcaS
+         ywTGvNeU/9cgGGOTO5Olg0kmhmxAoPlR3a4wCMcW7obOW1bSAyyPodYkUfnOso27qctT
+         Mw2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXZKMWSlu+t8RAq9hE5YEnFlVbKo2pfXvru8vRRTnWO8R+k/mNsgDKbKaymLfHmJq+QL5xDLLZGUaX3NJ5wYg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEzO2x7E8Fz6Qr10gn2hN1YvKN2JBVx+o4hWkRlFbAdA6kNUda
+	8+ggA0Dbu8i7sY5micN4NNcUCEv0B9msuBfgT+vjXAzRQCR5M9INFexBkqa7ROgHNtJJYn5gjKn
+	UuCGxlVD5BYEBl01XoN+dB0cNmI462OccaI9xi0VB
+X-Gm-Gg: ASbGnctJAHCnNtFD++aS0X0yw6UmbC0hTCiGFksY6jSgGpsAFJ+i2jfpPYxFE+pvw5W
+	IFTOFbi9LZNobqlPpzgcigpEF57mADsucrueBORzz5AGQYOfzW/+QCd7X9XXNhTZ+0lixBUzxu1
+	Mb5qwq55pV4dcd9X9Gf4vr2E7PjuqnBYqHrOh30Vl2rG+h2HK5heC2oHgfYi+bPTKskmbB9+Y46
+	aSF6CgUMVZ8VKPNxlk8TQPXYQQKrSK13NnaciTyuq5TtvifqzF3P5WWeKo2G9ZclS38fafn9TPN
+	6JVvrOXneEI=
+X-Google-Smtp-Source: AGHT+IH4AhoIeHcXN/Wiht429W5rIuhwkFXhsm5HZS8OIgOA1tUZLzgYvnfHcj7Aw/Vm3U7aoBcjWOOLcRy+pzEqIDg=
+X-Received: by 2002:a05:600c:4587:b0:45d:d94b:a8fc with SMTP id
+ 5b1f17b1804b1-45ddde8c757mr85977165e9.16.1757338495051; Mon, 08 Sep 2025
+ 06:34:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 08 Sep 2025 15:30:42 +0200
-Message-Id: <DCNGEZQX66AJ.3ENBSQTHAJ9WJ@kernel.org>
-Subject: Re: [PATCH v11 5/7] samples: rust: Add debugfs sample driver
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
- <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
+MIME-Version: 1.0
 References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-5-7d12a165685a@google.com>
- <2025090838-twelve-snap-683a@gregkh>
-In-Reply-To: <2025090838-twelve-snap-683a@gregkh>
+ <20250904-debugfs-rust-v11-2-7d12a165685a@google.com> <2025090807-bootleg-trophy-a031@gregkh>
+ <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org> <2025090849-tweak-conductor-f642@gregkh>
+ <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org> <2025090817-attendant-ungodly-78f6@gregkh>
+In-Reply-To: <2025090817-attendant-ungodly-78f6@gregkh>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 8 Sep 2025 15:34:42 +0200
+X-Gm-Features: AS18NWB2zW9ifDWrTNJgpft2LnY-eb3jo16xCwu4pQuWQeM6FgNN03Mu6Cw2yAU
+Message-ID: <CAH5fLggZ_ELrcLekF5GD5JQAkSz_Ycg7T+fZc7crjFA5jk1y3Q@mail.gmail.com>
+Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>, 
+	Dirk Beheme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Sep 8, 2025 at 3:08 PM CEST, Greg Kroah-Hartman wrote:
-> On Thu, Sep 04, 2025 at 09:13:56PM +0000, Matthew Maurer wrote:
->> Adds a new sample driver that demonstrates the debugfs APIs.
->>=20
->> The driver creates a directory in debugfs and populates it with a few
->> files:
->> - A read-only file that displays a fwnode property.
->> - A read-write file that exposes an atomic counter.
->> - A read-write file that exposes a custom struct.
->>=20
->> This sample serves as a basic example of how to use the `debugfs::Dir`
->> and `debugfs::File` APIs to create and manage debugfs entries.
->>=20
->> Signed-off-by: Matthew Maurer <mmaurer@google.com>
->> ---
->>  MAINTAINERS                  |   1 +
->>  samples/rust/Kconfig         |  11 ++++
->>  samples/rust/Makefile        |   1 +
->>  samples/rust/rust_debugfs.rs | 151 ++++++++++++++++++++++++++++++++++++=
-+++++++
->>  4 files changed, 164 insertions(+)
->>=20
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 8f2dbf71ca3f8f97e4d7619375279ed11d1261b2..5b6db584a33dd7ee39de3fdd=
-0085d2bd7b7bef0e 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -7481,6 +7481,7 @@ F:	rust/kernel/devres.rs
->>  F:	rust/kernel/driver.rs
->>  F:	rust/kernel/faux.rs
->>  F:	rust/kernel/platform.rs
->> +F:	samples/rust/rust_debugfs.rs
->>  F:	samples/rust/rust_driver_platform.rs
->>  F:	samples/rust/rust_driver_faux.rs
->> =20
->> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
->> index 7f7371a004ee0a8f67dca99c836596709a70c4fa..01101db41ae31b08a86d048c=
-dd27da8ef9bb23a2 100644
->> --- a/samples/rust/Kconfig
->> +++ b/samples/rust/Kconfig
->> @@ -62,6 +62,17 @@ config SAMPLE_RUST_DMA
->> =20
->>  	  If unsure, say N.
->> =20
->> +config SAMPLE_RUST_DEBUGFS
->> +	tristate "DebugFS Test Module"
->> +	depends on DEBUG_FS
->> +	help
->> +	  This option builds the Rust DebugFS Test module sample.
->> +
->> +	  To compile this as a module, choose M here:
->> +	  the module will be called rust_debugfs.
->> +
->> +	  If unsure, say N.
->> +
->>  config SAMPLE_RUST_DRIVER_PCI
->>  	tristate "PCI Driver"
->>  	depends on PCI
->> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
->> index bd2faad63b4f3befe7d1ed5139fe25c7a8b6d7f6..61276222a99f8cc6d7f84c26=
-d0533b30815ebadd 100644
->> --- a/samples/rust/Makefile
->> +++ b/samples/rust/Makefile
->> @@ -4,6 +4,7 @@ ccflags-y +=3D -I$(src)				# needed for trace events
->>  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+=3D rust_minimal.o
->>  obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+=3D rust_misc_device.o
->>  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+=3D rust_print.o
->> +obj-$(CONFIG_SAMPLE_RUST_DEBUGFS)		+=3D rust_debugfs.o
->>  obj-$(CONFIG_SAMPLE_RUST_DMA)			+=3D rust_dma.o
->>  obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+=3D rust_driver_pci.o
->>  obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+=3D rust_driver_platform.o
->> diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..8d394f06b37e69ea1c30a3b0=
-d8444c80562cc5ab
->> --- /dev/null
->> +++ b/samples/rust/rust_debugfs.rs
->> @@ -0,0 +1,151 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +// Copyright (C) 2025 Google LLC.
->> +
->> +//! Sample DebugFS exporting platform driver
->> +//!
->> +//! To successfully probe this driver with ACPI, use an ssdt that looks=
- like
->> +//!
->> +//! ```dsl
->> +//! DefinitionBlock ("", "SSDT", 2, "TEST", "VIRTACPI", 0x00000001)
->> +//! {
->> +//!    Scope (\_SB)
->> +//!    {
->> +//!        Device (T432)
->> +//!        {
->> +//!            Name (_HID, "LNUXDEBF")  // ACPI hardware ID to match
->> +//!            Name (_UID, 1)
->> +//!            Name (_STA, 0x0F)        // Device present, enabled
->> +//!            Name (_DSD, Package () { // Sample attribute
->> +//!                ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->> +//!                Package() {
->> +//!                    Package(2) {"compatible", "sample-debugfs"}
->> +//!                }
->> +//!            })
->> +//!            Name (_CRS, ResourceTemplate ()
->> +//!            {
->> +//!                Memory32Fixed (ReadWrite, 0xFED00000, 0x1000)
->> +//!            })
->> +//!        }
->> +//!    }
->> +//! }
->> +//! ```
->> +
->> +use core::str::FromStr;
->> +use core::sync::atomic::AtomicUsize;
->> +use core::sync::atomic::Ordering;
->> +use kernel::c_str;
->> +use kernel::debugfs::{Dir, File};
->> +use kernel::new_mutex;
->> +use kernel::prelude::*;
->> +use kernel::sync::Mutex;
->> +
->> +use kernel::{acpi, device::Core, of, platform, str::CString, types::ARe=
-f};
->> +
->> +kernel::module_platform_driver! {
->> +    type: RustDebugFs,
->> +    name: "rust_debugfs",
->> +    authors: ["Matthew Maurer"],
->> +    description: "Rust DebugFS usage sample",
->> +    license: "GPL",
->> +}
->> +
->> +#[pin_data]
->> +struct RustDebugFs {
->> +    pdev: ARef<platform::Device>,
->> +    // As we only hold these for drop effect (to remove the directory/f=
-iles) we have a leading
->> +    // underscore to indicate to the compiler that we don't expect to u=
-se this field directly.
->> +    _debugfs: Dir,
->> +    #[pin]
->> +    _compatible: File<CString>,
->> +    #[pin]
->> +    counter: File<AtomicUsize>,
->> +    #[pin]
->> +    inner: File<Mutex<Inner>>,
+On Mon, Sep 8, 2025 at 3:30=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Why are you saving the file pointers here at all?  They shouldn't be
-> needed to keep around, all that should be needed is the Dir, right?  If
-> not, this needs to be revisited...
-
-It's not really the file pointers, but the actual data, i.e. a CString,
-AtomicUsize and a Mutex<Inner>. That they're wrapped by the File<T> type, o=
-nly
-means that they're exported via debugfs (if enabled, otherwise they are not=
-).
-
->> +impl platform::Driver for RustDebugFs {
->> +    type IdInfo =3D ();
->> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D None;
->> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> =3D Some(&=
-ACPI_TABLE);
->> +
->> +    fn probe(
->> +        pdev: &platform::Device<Core>,
->> +        _info: Option<&Self::IdInfo>,
->> +    ) -> Result<Pin<KBox<Self>>> {
->> +        let result =3D KBox::try_pin_init(RustDebugFs::new(pdev), GFP_K=
-ERNEL)?;
->> +        // We can still mutate fields through the files which are atomi=
-c or mutexed:
->> +        result.counter.store(91, Ordering::Relaxed);
+> On Mon, Sep 08, 2025 at 03:22:41PM +0200, Danilo Krummrich wrote:
+> > On Mon Sep 8, 2025 at 2:48 PM CEST, Greg Kroah-Hartman wrote:
+> > > On Mon, Sep 08, 2025 at 12:54:46PM +0200, Danilo Krummrich wrote:
+> > >> diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugf=
+s.rs
+> > >> index b26eea3ee723..475502f30b1a 100644
+> > >> --- a/samples/rust/rust_debugfs.rs
+> > >> +++ b/samples/rust/rust_debugfs.rs
+> > >> @@ -59,6 +59,8 @@ struct RustDebugFs {
+> > >>      #[pin]
+> > >>      _compatible: File<CString>,
+> > >>      #[pin]
+> > >> +    _test: File<&'static CStr>,
+> > >> +    #[pin]
+> > >>      counter: File<AtomicUsize>,
+> > >>      #[pin]
+> > >>      inner: File<Mutex<Inner>>,
+> > >> @@ -140,6 +142,7 @@ fn new(pdev: &platform::Device<Core>) -> impl Pi=
+nInit<Self, Error> + '_ {
+> > >>                          .property_read::<CString>(c_str!("compatibl=
+e"))
+> > >>                          .required_by(dev)?,
+> > >>                  ),
+> > >> +                _test <- debugfs.read_only_file(c_str!("test"), c_s=
+tr!("some_value")),
+> > >
+> > > Cool, but again, we do not want to ever be storing individual debugfs
+> > > files.  Well, we can, but for 90% of the cases, we do not, we only wa=
+nt
+> > > to remove the whole directory when that goes out of scope, which will
+> > > clean up the files then.
+> >
+> > This API does not work in the way that you have a struct storing the da=
+ta you
+> > want to expose *and* another one for the files with the data attached.
+> >
+> > The File type contains the actual data. For instance, if you have a str=
+uct Foo,
+> > where you want to expose the members through debugfs you would *not* do=
+:
+> >
+> >       struct Foo {
+> >          a: u32,
+> >          b: u32,
+> >       }
+> >
+> >       struct FooFiles {
+> >          a: File<&u32>,
+> >          b: File<&u32>
+> >       }
+> >
+> > and then create an instance of Foo *and* another instance of FooFiles t=
+o export
+> > them via debugfs.
 >
-> Here?  This feels odd, the file is the wrapper for the variable you want
-> the file to show?  That feels backwards.  Usually the variable is always
-> present, and then you can create a debugfs file to read/modify it.  But
-> if debugfs is NOT enabled, you can still use the variable, it's just the
-> file logic that is gone, right?
+> Ah, that's exactly what I was trying to do.
+>
+> > Instead you would change your struct Foo to just be:
+> >
+> >       struct Foo {
+> >          a: File<u32>,
+> >          b: File<u32>,
+> >       }
+> >
+> > If you now create an instance of Foo (let's call it `foo`), then foo.a =
+or foo.b
+> > dereferences to the inner type, i.e. the u32. Or in other words `foo` s=
+till
+> > behaves as if `a` and `b` would be u32 values. For instance:
+> >
+> >    if foo.a =3D=3D 42 {
+> >       pr_info!("Foo::b =3D {}\n", foo.b);
+> >    }
+>
+> Oh that's not going to work well at all :(
+>
+> Think about something "simple" like a pci config descriptor.  You have a
+> structure, with fields, already sitting there.  You want to expose those
+> fields in debugfs.  So you want to only create debugfs files in one
+> location in a driver, you don't want ALL users of those fields to have
+> to go through a File<T> api, right?  That would be crazy, all drivers
+> would end up always having File<T> everywhere.
+>
+> > The fact that the backing files of `a` and `b` are removed from debugfs=
+ when Foo
+> > is dropped is necessary since otherwise we create a UAF.
+>
+> That's fine, but:
+>
+> > Think of File<T> as a containers like you think of KBox<T>.
+>
+> Ok, but again, you are now forcing all users to think of debugfs as the
+> main "interface" to those variables, which is not true (nor should it
+> be.)
 
-Please see [1]. :)
+All of these things is why I recommended to Matthew that he should add
+back the scoped API, since it doesn't have all these drawbacks.
 
-[1] https://lore.kernel.org/lkml/DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org/
-
-> So what would this file look like without debugfs being enabled?  Would
-> the atomic variable still be here?  I think it wouldn't, which is not
-> ok...
-
-Yes, that atomic would still be there, the File<AtomicUsize> behaves exactl=
-y
-like a standalone AtomicUsize (except that it exports it in debugfs), and i=
-n
-case of debugfs disabled you would access the atomic the exact same way, ju=
-st
-that no actual debugfs file exporting the AtomicUsize is created in the
-background -- so fully transparent.
+Alice
