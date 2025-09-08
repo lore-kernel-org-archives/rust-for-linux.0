@@ -1,177 +1,195 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3219945945;
-	Mon,  8 Sep 2025 19:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FE82D3228
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 19:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757360289; cv=none; b=pxRsgS4ohpxmA6Ry+AlzNtvQxGfXwULFd68wADANHolfYFIGN/gZcimuyd32yfV7q5bakWE4rD8MNrpbjzGENgwWe+qFT/FUskroTzU076cmZ5+FZWC/10XPCZl8SXvHo4mNxx8MAbRHcbt/q0TS6IRYHiQtojxwWx8+d5kTybY=
+	t=1757360775; cv=none; b=BuVvmEMnfGiOW9QUQlrbVNLaayJwLkMnSD4yUyjawjxjnRDX3uMkQLsYCRzdcjiFq+83ftkQgMOdhqBo2HEIhwNG3GdMYmTMKLu2SfljPySZVymio2J5ZHugeeL49Q5Qb1uwHw1C6Xz/ezyGFoUnN5iBufvXxWGNyx3V8d+HX3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757360289; c=relaxed/simple;
-	bh=9zrTiGY3vGZMxk3+Zve/YTWV4HePUtAgTaI9V41iObU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jn4n8Nsnmwwy1VJzj9qtzo6rdmAy/dIn7JUdmJKU0o/lhwSjdim3g+vCe8WAQ0Te6D8WG6NgwM4BkpTRKn6jJDua9gwqFe89mEBwXKv6Qd3v/dAIOFBeU9zBu0mVs0wYUYvAfRcyViHJtcesR2o/mzveX46/Dp/4NYxjzar/Pfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImOx2ESX; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757360775; c=relaxed/simple;
+	bh=N69wDxrbi+fA5VqgbL8Sr7yDr1PhsL3cbCP913A1f0o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S6yzDV/xvCU2XsmvnfpMEYtUE0jILjZamxb/QP9E4zPx7loiIqqoUXIf9efXpk5uHGyD6RN7wgL+YJOITJ+CUooCyq0KIpH6RTJZTA6ghrcww2m9wExKo0lhztUYcxCjA9um30/MU2gxTPB/kwReChiVibqK2Wto6+71P5imQJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Iyhhjxru; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImOx2ESX"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-729c1074875so34111866d6.0;
-        Mon, 08 Sep 2025 12:38:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Iyhhjxru"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-248e01cd834so10869455ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 12:46:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757360287; x=1757965087; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=purestorage.com; s=google2022; t=1757360772; x=1757965572; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mz439NWTNaZ4G1pBZKrSBs21o1PeCh6E1eqZGLA8wkg=;
-        b=ImOx2ESXpofuSz8GndGaPyw6B13jBfKsIKJVzpYyNrsfx2TrRzwPlgn8puyZQ3r0ht
-         MhETpz+Pf8j7FCj3+Qs+kFAg97Z1IiQocFODDlckTqyNaHrDYVx01cblsoP7UWI15rbE
-         4ZnPxm0Fm/gnKxlY94Bj186s8sq73NPRTT8TY1dYNC88HQF8bNHLqwYPrV6hGm9SNJ35
-         lzmyQ2d9GoAUYp7M6Z2kETozcF/v4npkyKaDFdPJcRRqMhD6y4SzIZNE5AE6SZVKbaNV
-         gWzebRC0AOclp4gyTlQjO715VqQ3DM+mKEsTnMFhCmbDcHQ5/k2xgeos2Yg2TGDeL5G8
-         jt3w==
+        bh=I9driASAEmFmP3jFlHoCR+IRYlP6CAxxYklIzPlsusQ=;
+        b=IyhhjxruxKzJWbDDF1uPQYyOYpyBbRogMc7Xmaq/yzTx/IYvzwP10Fztit3G92ei6O
+         dMSBh6IUFlNR6giw8b46vpPvHP2V4DCr1UabeIECOSlYTxGoc4gFp0aFfwNjKDWY60EM
+         v+idKqwvOGVoSldGmyXUC2TTLl6/Soh4G/9bE4gJkfl6J3doYVmHjWxdVR0XuiDnk9N+
+         PXynUHPlkMhOmMSdsosunN35cDI63PtlrrFnJaFHSPgOQlMqL3vKyU/XZNd0bJYsFGrJ
+         LqpK72SZN60+wByjeYDn3tO7hhpD+kNBpD1uEX6WdqcY8ZfRUxXQqdgEGRpPWfGu6mFc
+         LOuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757360287; x=1757965087;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1757360772; x=1757965572;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mz439NWTNaZ4G1pBZKrSBs21o1PeCh6E1eqZGLA8wkg=;
-        b=lQgEhFclCOXqYkDORXOYzLZmFA9dGphpu76ty1gqAM2ZDmcJEtXGDox1DGqvzRjCbf
-         4xuj9S75dgXtI0Bm4fbkc0efM3ZPx4VVUkqXbWkHXsaNkBh/D6CUpAUTiWR4GXIFUN7Z
-         5YdziziY2bgJGivkVj3KZVTOLHQQdXSOexE/ciPBpy0nN/0XuSrwItN7VeofUunHoFyO
-         /b2bVBo1V8gxjahGxnsvsAcJwigQV6Oh21IQJOE8v3EQ5eU+htgeUIZspzpzlXpEtfM9
-         qPW3GmAZATYun7YWKJZ2yfoquAhddGhMJZ7hg84jVT9/olY6t1XApg98BHQ6U4mGCSqE
-         fIbg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5rexoikTa7ACPgbwRQ1j5BIUDRe46Xgmimr9wjqXeEWbxYFLRV1UE7RXydnrF1YXSMj1M/hDpl2jXum4=@vger.kernel.org, AJvYcCVglp+jx8u+sSJzM8/eFbKzpGKaGV/ViAePsZfJRM896heHU9LWXWikB5BYOOoHFepE08iK8M5KIdoYnsOyIKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOC+kllCtbS3KejjT4rLdIT80TR8N/pL6/m1YqeLkX26zA+2K9
-	0yfJX4EbRWgCbp7/oGh50Gr7OwsBpBE0kN9S2lZmRi66cDrJVS8mpZ5mg/jSqQ==
-X-Gm-Gg: ASbGncvTqtZefvnYbN6iITDuDvdEaYj39ziivxjz7+m80ykAeqgLSVlcHYhGNnYvvqY
-	EpJy2h+40u/GLY8BxYk66urLqhAb3cyKROmAWlXVV5iSOd41p9/4fTa2B7RKFaYZFD6T5xIonaQ
-	ePLJCRtte8htiCxTAFyp78ysxWVzC3xVTpQcViFu0OaTVgsYacPCETd4P1C+jda67nc44vr9wru
-	qo1nDCP/ZYfnYJGM8Lfhv2VfVLG0+NhyoJOpzaKmKnpLJJMlVqMyMOrzJdCYhmNQ2SYtQAJt0D+
-	mmKn5Pdg0bL8CcJ3cSPxbNv944IcIJ4o7pmA8aFSiEnvsJy50ozqr1RzkPXfW1OsodWrpQW52qm
-	eTWUUJj6yNWsZheihJRJ7/BjNOVltcOfr2OPpDjCOyPd7DF2JQ18jSOfRegDWhkPMKPGlh2BCoQ
-	j54477K2u2PRDkNHZxWVgSGgqsB4E+yt93aQ==
-X-Google-Smtp-Source: AGHT+IEfmwoguzXcsUAse8UFcvcD2HVF/pjPcHVcl0GquUR6WY2BLygLU7VZVb1IDhnPEgtR+spafg==
-X-Received: by 2002:ad4:5c8b:0:b0:70d:ff3a:f981 with SMTP id 6a1803df08f44-7393d42bc35mr76447596d6.37.1757360286977;
-        Mon, 08 Sep 2025 12:38:06 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-72aea5d8d61sm88883306d6.56.2025.09.08.12.38.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 12:38:06 -0700 (PDT)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id ED170F4006A;
-	Mon,  8 Sep 2025 15:38:05 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Mon, 08 Sep 2025 15:38:05 -0400
-X-ME-Sender: <xms:nTC_aNam9pyP3e64g8aLu08bGEsAYf_Ch7kZpj9BL6dXjkYwHYq9aA>
-    <xme:nTC_aF7pEpOhXRhbcZrJdzR4p0HuKWC_70tBN99eitLbaIEaC0muqlzAwsL-nfgOV
-    zHJzbQ7xPDNC5lsBQ>
-X-ME-Received: <xmr:nTC_aNmpBWYrVD_0B9D1V-0YGCuJjGHLEHv_n6otK1k-A20eOOuq6MqWZ0NkLb-u5T57ey9_8pLRtSjtxpIKN_1JOioQ4yJl>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeeflecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhsshhinheskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhope
-    hgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehp
-    rhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhm
-    pdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:nTC_aDH6zVXEjRgWDVRvlHkvwT92SsHXbAg2pBoCzii0fBIzu1u4_w>
-    <xmx:nTC_aJEo0Fc-NfjwCbRTboXCgs4zezpULGxcCBkX51709JwE8KY1Ew>
-    <xmx:nTC_aD2rXtYy96aR-gSI9QXyyEd1auS27ZBby4J0zuqKYV4gPdTsJA>
-    <xmx:nTC_aDdOfnih61EptiuyWY86vtZrHpqIuO4KvoC2JxSsUtbjSTsysg>
-    <xmx:nTC_aNJ2dzCzoyKGk89Sfyua3AMcwGG_BMZzDwaVxIkqA7qTgljWvHyP>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Sep 2025 15:38:05 -0400 (EDT)
-Date: Mon, 8 Sep 2025 12:38:04 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Fiona Behrens <me@kloenk.dev>, Alban Kurti <kurti@invicto.ai>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?iso-8859-1?Q?Wilczy=B4nski?= <kwilczynski@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: pin-init: add references to previously initialized
- fields
-Message-ID: <aL8wnJcro6uXiD74@tardis-2.local>
-References: <aLzoyWpOr6eg-3yB@tardis-2.local>
- <DCMFN8UGD7QN.27HTYEXL87Z8@kernel.org>
- <DCMQVH09L1Y5.3A842FC1NGG5H@kernel.org>
- <DCMVHB8P7Z2G.PCOWPQXBSBT6@kernel.org>
- <DCMW6H0VJ9AP.1XWI1RI9YWO9H@kernel.org>
- <DCMXPGXDXHYT.D9VJ5QBMAVPN@kernel.org>
- <DCMYLXICOGM7.2G4JBQAE7805B@kernel.org>
- <aL46nRkYj2SlOhl8@tardis-2.local>
- <DCN9YYV750Q4.3K9X2EAA3RKJ8@kernel.org>
- <DCNALVTE4DIN.1K0U4BGN35CHI@kernel.org>
+        bh=I9driASAEmFmP3jFlHoCR+IRYlP6CAxxYklIzPlsusQ=;
+        b=Qoo1c9gDsPYDZEhdg73TGM7jw+27bJSM6KB7Vm/xSzxfQiXiC/lrOy/RhfiDEDRjCA
+         VAJAVhmn5r9iyAgk/bKdyY9941ZmNlaJwbuEWZTNaJbbSl+Xazn0t4IRbFGDzU7OB9MK
+         W74rwUk1pwPXfXNAVF/YeBj8OZbjtR1ukoK8IQSaOEznnUAKzaPJn8PK4Xr0nBRRtWeA
+         y11lGKID8UW4QDQBDyCtPmldyP3939pc2pSjzA7tq4NWA8Heg/UU+QLI79v7i7ckXU5H
+         edKuguWKoAQMGXPw4aIt0OsqCNoi7TodRKHUn3vq7MX4JkL5NBbyognLNDFLBsqLk41m
+         jyyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXv+TMIuDLwqXYUs4R6tW6lxzyg8mYlHA2EwzKyqb73gStWC5Y9cyg0x7aXvpfRYP1ldZs2jhes50Ih6lU8Jg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuDGI5GbZsfkSZ9rflrWekkyZK3uVmfWSEZ88KwmPe+Yzq0oZF
+	In83MsF6EMAu4kH+16WHGCV8PjywHZQ3tXqev/ocHKt5m3Of34jdwaBX1zhSqZWz23yTmp4pZLT
+	vv1ky6CTYn9j30uv52SboquHPZqhlBYgOTgr14V2xXA==
+X-Gm-Gg: ASbGnct1ECIjn3KbwbHWLQFBltLDxYcNejcUUJiYigeSNU9xrqmsRE7I9ZOCGhNqELC
+	TK8labPWh/GD1Hy/p1v2+jhsuDK+pqyosD6DykKrD0N2rBoO2jYY8UPJ8qnqvKdS2yCUVmDv/mn
+	neOaX41478dPbnMU1VNcU+fRBIu2jy9oIhxK/jniWf4GxKuJyVXa/BvlouVR7wRjdQlmoYxrk4b
+	VRpzc2g
+X-Google-Smtp-Source: AGHT+IGThrKgpaZ2Jb+IxUr+u2cOUabVPTBAwo+RY7tux4h/Zk1WncO4NjXraMuphAlOZPqbrt4I+GCL5BfG+ELw2mM=
+X-Received: by 2002:a17:902:f54d:b0:24c:e213:ca4a with SMTP id
+ d9443c01a7336-2516ed66d7amr73266655ad.2.1757360771804; Mon, 08 Sep 2025
+ 12:46:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCNALVTE4DIN.1K0U4BGN35CHI@kernel.org>
+References: <20250822125555.8620-1-sidong.yang@furiosa.ai> <20250822125555.8620-3-sidong.yang@furiosa.ai>
+ <CADUfDZpsePAbEON_90frzrPCPBt-a=1sW2Q=i8BGS=+tZhudFA@mail.gmail.com>
+ <aLbFiChBnTNLBAyV@sidongui-MacBookPro.local> <CADUfDZpPvj3R7kzWC9bQVV0iuCBOnKsNUFn=B3ivf7De5wCB8g@mail.gmail.com>
+ <aLxFAamglufhUvq0@sidongui-MacBookPro.local>
+In-Reply-To: <aLxFAamglufhUvq0@sidongui-MacBookPro.local>
+From: Caleb Sander Mateos <csander@purestorage.com>
+Date: Mon, 8 Sep 2025 12:45:58 -0700
+X-Gm-Features: Ac12FXwNfDS_Qqj870v2sNtiyiKyRUxgf6ydh_1JzHPqlof9837yRmLCR8lKXvE
+Message-ID: <CADUfDZruwQyOcAeOXkXMLX+_HgOBeYdHUmgnJdT5pGQEmXt9+g@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 2/5] io_uring/cmd: zero-init pdu in
+ io_uring_cmd_prep() to avoid UB
+To: Sidong Yang <sidong.yang@furiosa.ai>
+Cc: Jens Axboe <axboe@kernel.dk>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 08, 2025 at 10:57:36AM +0200, Danilo Krummrich wrote:
-> On Mon Sep 8, 2025 at 10:27 AM CEST, Benno Lossin wrote:
-> > On Mon Sep 8, 2025 at 4:08 AM CEST, Boqun Feng wrote:
-> >> On Mon, Sep 08, 2025 at 01:33:26AM +0200, Danilo Krummrich wrote:
-> >>> On Mon Sep 8, 2025 at 12:51 AM CEST, Benno Lossin wrote:
-> >>> > I actually came up with a third option that looks best IMO:
-> >>> >
-> >>> >     init!(MyStruct {
-> >>> >         x: 42,
-> >>> >         #[with_binding]
-> >>> >         y: 24,
-> >>> >         z: *y,
-> >>> >     })
-> >>> >
-> >>> > The `#[with_binding]` attribute makes the macro generate a variable `y`.
-> >>> > `x` & `z` don't give access to their value. (we of course should come up
-> >>> > with a better name).
-> >>> >
-> >>> > Any thoughts?
-> >>> 
-> >>> It may be a bit verbose is some cases, but it makes things pretty obvious, so
-> >>> LGTM.
-> >>> 
-> >>> How about just #[bind] or #[access]?
+On Sat, Sep 6, 2025 at 7:28=E2=80=AFAM Sidong Yang <sidong.yang@furiosa.ai>=
+ wrote:
+>
+> On Tue, Sep 02, 2025 at 08:31:00AM -0700, Caleb Sander Mateos wrote:
+> > On Tue, Sep 2, 2025 at 3:23=E2=80=AFAM Sidong Yang <sidong.yang@furiosa=
+.ai> wrote:
+> > >
+> > > On Mon, Sep 01, 2025 at 05:34:28PM -0700, Caleb Sander Mateos wrote:
+> > > > On Fri, Aug 22, 2025 at 5:56=E2=80=AFAM Sidong Yang <sidong.yang@fu=
+riosa.ai> wrote:
+> > > > >
+> > > > > The pdu field in io_uring_cmd may contain stale data when a reque=
+st
+> > > > > object is recycled from the slab cache. Accessing uninitialized o=
+r
+> > > > > garbage memory can lead to undefined behavior in users of the pdu=
+.
+> > > > >
+> > > > > Ensure the pdu buffer is cleared during io_uring_cmd_prep() so th=
+at
+> > > > > each command starts from a well-defined state. This avoids exposi=
+ng
+> > > > > uninitialized memory and prevents potential misinterpretation of =
+data
+> > > > > from previous requests.
+> > > > >
+> > > > > No functional change is intended other than guaranteeing that pdu=
+ is
+> > > > > always zero-initialized before use.
+> > > > >
+> > > > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> > > > > ---
+> > > > >  io_uring/uring_cmd.c | 1 +
+> > > > >  1 file changed, 1 insertion(+)
+> > > > >
+> > > > > diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
+> > > > > index 053bac89b6c0..2492525d4e43 100644
+> > > > > --- a/io_uring/uring_cmd.c
+> > > > > +++ b/io_uring/uring_cmd.c
+> > > > > @@ -203,6 +203,7 @@ int io_uring_cmd_prep(struct io_kiocb *req, c=
+onst struct io_uring_sqe *sqe)
+> > > > >         if (!ac)
+> > > > >                 return -ENOMEM;
+> > > > >         ioucmd->sqe =3D sqe;
+> > > > > +       memset(&ioucmd->pdu, 0, sizeof(ioucmd->pdu));
+> > > >
+> > > > Adding this overhead to every existing uring_cmd() implementation i=
+s
+> > > > unfortunate. Could we instead track the initialized/uninitialized
+> > > > state by using different types on the Rust side? The io_uring_cmd
+> > > > could start as an IoUringCmd, where the PDU field is MaybeUninit,
+> > > > write_pdu<T>() could return a new IoUringCmdPdu<T> that guarantees =
+the
+> > > > PDU has been initialized.
+> > >
+> > > I've found a flag IORING_URING_CMD_REISSUE that we could initialize
+> > > the pdu. In uring_cmd callback, we can fill zero when it's not reissu=
+ed.
+> > > But I don't know that we could call T::default() in miscdevice. If we
+> > > make IoUringCmdPdu<T>, MiscDevice also should be MiscDevice<T>.
+> > >
+> > > How about assign a byte in pdu for checking initialized? In uring_cmd=
+(),
+> > > We could set a byte flag that it's not initialized. And we could retu=
+rn
+> > > error that it's not initialized in read_pdu().
 > >
-> > I like `#[bind]`.
-> >
-> >> #[shadow] or #[maybe_rebind] ? Or #[pin_ref], the last one is clear
-> >> about the purpose.
-> >
-> > Hmm in `init!` it's never pinned.
-> 
-> I thought about #[shadow] as well, but it is not really accurate I think, as we
-> might not shadow anything. #[maybe_rebind] sounds a bit like it conditionally
-> rebinds, as in "it may not do anything", but it always binds.
-> 
-> So, I think it should one clear instruction, i.e. #[bind], #[access], #[ref],
-> #[use], #[let], etc.
+> > Could we do the zero-initialization (or T::default()) in
+> > MiscdeviceVTable::uring_cmd() if the IORING_URING_CMD_REISSUE flag
+> > isn't set (i.e. on the initial issue)? That way, we avoid any
+> > performance penalty for the existing C uring_cmd() implementations.
+> > I'm not quite sure what you mean by "assign a byte in pdu for checking
+> > initialized".
+>
+> Sure, we could fill zero when it's the first time uring_cmd called with
+> checking the flag. I would remove this commit for next version. I also
+> suggests that we would provide the method that read_pdu() and write_pdu()=
+.
+> In read_pdu() I want to check write_pdu() is called before. So along the
+> 20 bytes for pdu, maybe we could use a bytes for the flag that pdu is
+> initialized?
 
-In that sense I think `#[let]` is best? Because it indicates this field
-initialization works as a `let`-statement (in term of creating a new
-binding), of course I don't have strong ojections against other options.
+Not sure what you mean about "20 bytes for pdu".
+It seems like it would be preferable to enforce that write_pdu() has
+been called before read_pdu() using the Rust type system instead of a
+runtime check. I was thinking a signature like fn write_pdu(cmd:
+IoUringCmd, value: T) -> IoUringCmdPdu<T>. Do you feel there's a
+reason that wouldn't work and a runtime check would be necessary?
 
-Regards,
-Boqun
+>
+> But maybe I would introduce a new struct that has Pin<&mut IoUringCmd> an=
+d
+> issue_flags. How about some additional field for pdu is initialized like =
+below?
+>
+> struct IoUringCmdArgs {
+>   ioucmd: Pin<&mut IoUringCmd>,
+>   issue_flags: u32,
+>   pdu_initialized: bool,
+> }
+
+One other thing I realized is that issue_flags should come from the
+*current* context rather than the context the uring_cmd() callback was
+called in. For example, if io_uring_cmd_done() is called from task
+work context, issue_flags should match the issue_flags passed to the
+io_uring_cmd_tw_t callback, not the issue_flags originally passed to
+the uring_cmd() callback. So it probably makes more sense to decouple
+issue_flags from the (owned) IoUringCmd. I think you could pass it by
+reference (&IssueFlags) or with a phantom reference lifetime
+(IssueFlags<'_>) to the Rust uring_cmd() and task work callbacks to
+ensure it can't be used after those callbacks have returned.
+
+Best,
+Caleb
