@@ -1,148 +1,123 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5812F7442
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 10:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9239189;
+	Mon,  8 Sep 2025 10:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757327246; cv=none; b=cv/6G2i/jS9xAdT9ucYqToAE2qwV+vACPJRV20edrcV7Ikl2qdRguVmjE8FnxXEnIvHunMl02mNPvetZVrS80rKadOoLzSG0k8e8mDSXl/+QHJ+Mx5QvsrXJ+xVknotVd8sJ+R5gpowQRxuUHuihTOpSp+6ZVHDrtzg42lMq8ZA=
+	t=1757328892; cv=none; b=k3xlcXWA6sr9ZOBRAZ2Rc+zRe9uxF1eiFb7SQGQkaS1u+LhwrLULBHwcLw1VJuAY3rC5Lws9bTNcl9v3MV8Ku+7tpPDz98tSbHaDM6gW0ak5HI25fOmgKE1iuiYudZmSPdgzNvMln5rzqE9O27x2H152ERA4tzrPb0DkBhnXe2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757327246; c=relaxed/simple;
-	bh=p+47WcWglPh8cHOV1anr2NNtyExiMlYclDsFmLrL+q0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T7sGkM78N8lnMgZT7mhbf/ccloGvEFRA/kksPplehRmvRFyKprZpEKHJUaCRaRNXCXaXIwBN6H9/Py1/ftShQn6jquFt5MCoX9zz0HbpXaCDxIaIzwPyDI6e4G2WDXbzVjuUh/HC7wHZN714fxTyejr89wz3GWKz6Zx8nK9iQbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cb34IRqw; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1757328892; c=relaxed/simple;
+	bh=hlWRmP89svceQHxhWRC8JmwmeGVsWRQ8ttOXrLBPQaI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=iF9byY/vdhFEsLEiVABWUxE/8N/YoNeeITEFilhWQ4HOPFpe1Hv4x7HdC7g7T/Z7mEcnIwuRj2QJecDJ1MfaiZOBR2NmpSuS7zH5h7OqHNse5xswNC3SEUhTJd0XX0yq5JNwH37Ej4b1OrGaOUetRPRA+eRW9LgRubZROxOj994=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ru/psgNw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cb34IRqw"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45de93a7516so2747375e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 03:27:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757327243; x=1757932043; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hpOycKpNrCn4rkM2NfUH6YKx7FlZXyPiSA0q4L4Gsyk=;
-        b=cb34IRqwOp8o+GhstxPwd0aODhrq6Z/geVBRLoVOTnfz4inq5nAu4Y1txUa5YF0grU
-         ohIXeSnko8o2f17cDT34H3RfUzI9cW6/1avTjgTH+R9Pg2iqVyr+0YNb4e59irMmMBh0
-         JQPwUlc66yyTFH82fkoNSe4VPqq64n0EiLFSxwPeSsQH5yKrHS1Wm29WvMUo4Mo409CO
-         NKVX7uJTkIJbjKgJ/1JARbNSqpKrMm+4ppgLe8qQ26qRrgYHUFFSoK8Dz6E4dySeW/RH
-         5yvMeY6rDinUGY/PsFF9/nj+8idcjizqUNrF9C8kYZqySRDh6c69sFVgllE/J8bfTk5M
-         aCkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757327243; x=1757932043;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hpOycKpNrCn4rkM2NfUH6YKx7FlZXyPiSA0q4L4Gsyk=;
-        b=JVglHqPRJ21Kmzxk5HQxDZYXxgDd25Na6bAXTPQynF2SHkXKyaVBL5zpjMezfJdGba
-         sknBIg8NNyofwoPBu8rPmHCsXMG0xWmjEKnqXDhpNVB9dpnoRBkEca3OftnZa9GLQiAE
-         EdJCfZP7+1CVo+rCA8pVYqSxBY8iSmSUdgxJsFU4yi2EZOC2/ZqXVL4IZvP8uTx1rgkw
-         iUnI+yXqYG5cd4APTUDO9gYLbtkHOn4XADe7qUH5kaLmXpmcp5mv9tj1UFAIClTJK6aC
-         3mvanhVXE2jePYRcR1fD0LLV+RDud9d/VfXZDLQAV9wOGm7efgwLLqwSUYwKG2SpzaUX
-         7AUw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTJ3uknJUtCzTrXZvvBgxik7R6HNaXhCuefDv9Jg9Tx+6D9JORzfH0Mu04D7xsg+c9SpCvgI8oe1zN/fzsLA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPKBDwyyYw4QSzZfuAXbP4oGxI9j4+ytAN0F64nlKnPFt+KwpS
-	bPqdTb4AO+aG+21zvO6Mg0GJ2RwYJ9EfJlNFFLEGgbqTAI2HQngbXodEq7R10kdm8bHiTzbjIcv
-	onV2GZ8dN0yNCCkfLo2rO7iKok57s9xiPlVHmTNAO
-X-Gm-Gg: ASbGncvuf2ik/wLzOTAMwbY/QXdPGlCk6OhmaazV2sOyrZrNUYx/S47dU8vbF2R4LG4
-	Ktcn/1JbZIr274HZotaj+TBkd9i+c/yBV+rVWVEsJkBmiB2+uIVdhu0KzVRAg+zKYgqa4uSXXWo
-	NpVDH3/AWTD1ylanggvZU+r9IbDjQUdw8vrmyy4UgtFRlNw7zDnosmvi8g41gNVYvsXJrMjWbrS
-	7TfHqw0rnGbwj4ehtnURoFGlOKm4OrIy7d1YwPEjjuaTp1zVt0cm5ZtgzXnMOXPe5pVqZbTjZTp
-X-Google-Smtp-Source: AGHT+IF1Cbte21xkAvMtwWzYEwm3mddkzs3ZFlLYA+xE0Cy1Db4e0m1OyTs6q9h/fmVp3bSIjSn+pPUDhj+c84O0z+w=
-X-Received: by 2002:a05:600c:1f13:b0:458:a559:a693 with SMTP id
- 5b1f17b1804b1-45dddee8ec7mr69312315e9.18.1757327242952; Mon, 08 Sep 2025
- 03:27:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ru/psgNw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E58C4CEF1;
+	Mon,  8 Sep 2025 10:54:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757328891;
+	bh=hlWRmP89svceQHxhWRC8JmwmeGVsWRQ8ttOXrLBPQaI=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=ru/psgNwnsQURHU7EB4hRIrfDMZIjIFIs+UysEYBN+Rv0uXyOPVaQ0pxwhkeAFLmf
+	 F+E2fqKln9Q5y45IC2hUaNLExi2LSDxuXjs6+ayh6S9aP6O7aBvq24uyvFUyDpg3ri
+	 vuDQxmNCSz9RtwWt+o3Z+y2HU4e617Y2jaQqcVXfRL7Gdh7l/kjm8SVptCMsrC4EQQ
+	 TM3LMK58yt4uZdJkoXlKE+bZf203HqluJ1LDA1YgfGsqXQejEZj58q+MI96DeFghiU
+	 2l+MxgGCLDi1Bgniwm2fqLeArciv9OY5NM7MjDry6HB53UTaYkCRiCyjpKO7l40K6W
+	 YD8W8tg8k9jcg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250905090819.107694-1-marco.crivellari@suse.com>
- <CAH5fLgiZnCbNLpuphv4Kgsu48kRkhf6wJiSLrrgsqyEDvU3X3Q@mail.gmail.com>
- <CAAofZF4a6ARXOS0rmK5zY1Kd3xdODqdkj_keZmEYx8Z-JRvhng@mail.gmail.com>
- <aL1lkN5WcWkwiq3S@google.com> <CAAofZF77saPdGYXt-oYkfV=2pRCRtso5eJuw+FqmS8b8WERgOA@mail.gmail.com>
-In-Reply-To: <CAAofZF77saPdGYXt-oYkfV=2pRCRtso5eJuw+FqmS8b8WERgOA@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 8 Sep 2025 12:27:08 +0200
-X-Gm-Features: AS18NWCYc_nH8W0ls-cmfvyqe9ECin2EJCFI2RVqhWK_2Gs1UhFItzTsbYn2zkg
-Message-ID: <CAH5fLghpysJv5wt1ANPN+SHE2At8J6MHso7F1HdnNLomqniBrg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] rust: replace wq users and add WQ_PERCPU to
- alloc_workqueue() users
-To: Marco Crivellari <marco.crivellari@suse.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 08 Sep 2025 12:54:46 +0200
+Message-Id: <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
+Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
+ <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+ <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
+ <2025090807-bootleg-trophy-a031@gregkh>
+In-Reply-To: <2025090807-bootleg-trophy-a031@gregkh>
 
-On Mon, Sep 8, 2025 at 12:24=E2=80=AFPM Marco Crivellari
-<marco.crivellari@suse.com> wrote:
+On Mon Sep 8, 2025 at 12:17 PM CEST, Greg Kroah-Hartman wrote:
+> I tried using this in a "tiny" test module I had written, and I get the
+> following build error:
 >
-> On Sun, Sep 7, 2025 at 12:59=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> > I mean that instead of:
-> >
-> > +/// Returns the system unbound work queue (`system_dfl_wq`).
-> >  ///
-> >  /// Workers are not bound to any specific CPU, not concurrency managed=
-, and all queued work items
-> >  /// are executed immediately as long as `max_active` limit is not reac=
-hed and resources are
-> >  /// available.
-> >  pub fn system_unbound() -> &'static Queue {
-> > -    // SAFETY: `system_unbound_wq` is a C global, always available.
-> > -    unsafe { Queue::from_raw(bindings::system_unbound_wq) }
-> > +    // SAFETY: `system_dfl_wq` is a C global, always available.
-> > +    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
-> >  }
-> >
-> > you add a new function:
-> >
-> >         pub fn system_dfl() -> &'static Queue {
-> >             // SAFETY: `system_dfl_wq` is a C global, always available.
-> >             unsafe { Queue::from_raw(bindings::system_dfl_wq) }
-> >         }
-> >
-> > and do *not* modify system_unbound().
-> >
-> > Alice
+>    --> samples/rust/rust_debugfs2.rs:64:53
+>     |
+> 64  |         _file =3D root.read_only_file(c_str!("name"), &hw_soc_info.=
+name);
+>     |                      --------------                 ^^^^^^^^^^^^^^^=
+^^ expected `&u32`, found `&&CStr`
+>     |                      |
+>     |                      arguments to this method are incorrect
+>     |
+>     =3D note: expected reference `&u32`
+>                found reference `&&'static kernel::prelude::CStr`
 >
-> Hello Alice,
+> I'm trying to "just" print a CStr, which is defined as:
 >
-> Ah, perfect. Yes it makes sense this change, you're right.
-> I will send the v2 introducing the new functions for both the patches
-> in this series.
->
-> It would also make sense to also change the above comment, mentioning tha=
-t
-> system_unbound() uses a wq that will be removed in the future, and so
-> it is better to
-> use system_dfl() instead?
->
-> I'm thinking to something like:
->
-> +///
-> +/// Note: system_unbound_wq will be removed in a future release
-> cycle. Use system_dfl_wq instead.
-> pub fn system_unbound() -> &'static Queue {
->     // SAFETY: `system_unbound_wq` is a C global, always available.
->     unsafe { Queue::from_raw(bindings::system_unbound_wq) }
+> struct HwSocInfo {
+>     id: u32,
+>     ver: u32,
+>     raw_id: u32,
+>     foundry: u32,
+>     name: &'static CStr,
 > }
 >
-> +pub fn system_dfl() -> &'static Queue {
-> +    // SAFETY: `system_dfl_wq` is a C global, always available.
-> +    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
-> +}
->
-> Sounds good?
+> Is this just a "user is holding it wrong" error on my side, or can this a=
+pi not
+> handle CStr values?
 
-That is reasonable, yes. Please make it a link:
+What you're doing should fundamentally work.
 
-/// Note: `system_unbound_wq` will be removed in a future release
-cycle. Use [`system_dfl`] instead.
+The above error suggests that your declaration of `_file` is File<&u32> rat=
+her
+than File<&'static CStr>.
 
-Alice
+Also note the double reference you create with `&hw_soc_info.name`, this sh=
+ould
+just be `hw_soc_info.name`.
+
+You can also test this case by applying the following diff the the sample i=
+n v5:
+
+diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
+index b26eea3ee723..475502f30b1a 100644
+--- a/samples/rust/rust_debugfs.rs
++++ b/samples/rust/rust_debugfs.rs
+@@ -59,6 +59,8 @@ struct RustDebugFs {
+     #[pin]
+     _compatible: File<CString>,
+     #[pin]
++    _test: File<&'static CStr>,
++    #[pin]
+     counter: File<AtomicUsize>,
+     #[pin]
+     inner: File<Mutex<Inner>>,
+@@ -140,6 +142,7 @@ fn new(pdev: &platform::Device<Core>) -> impl PinInit<S=
+elf, Error> + '_ {
+                         .property_read::<CString>(c_str!("compatible"))
+                         .required_by(dev)?,
+                 ),
++                _test <- debugfs.read_only_file(c_str!("test"), c_str!("so=
+me_value")),
+                 counter <- Self::build_counter(&debugfs),
+                 inner <- Self::build_inner(&debugfs),
+                 _debugfs: debugfs,
+
