@@ -1,119 +1,213 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51652F3C28
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 14:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9985730BB9A;
+	Mon,  8 Sep 2025 14:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757342185; cv=none; b=getucAQBqAQxMvUjQtgzmGN5MX4LCjD6iaEiR38jZyfXR7TF6KmI7Fdj0m5NMZ+siB/Tvvp1qjkKH/uCxz+SOjqKGWS88j7dxD2DYZTS6c9B1s+f5y8C30MM/lk+iBjHmKCueAATQw73pOMOUa9Ij/ftFbRoZkesE93m2ZlCSEI=
+	t=1757343563; cv=none; b=BWGzs9VUCymmbXG/tAyThwGnfc1WJLng/iFcATZq73a1KfAzIp6RD6vdYY5ho4oC+kSIeuLoRRRYqbkOkBbawUnwofHtNelpiTHbqsZ20yskquHsrOvGHergvDtM0VR9rOBk328qdr4JnyZMStwlPoL1Rr7I2vx5f2Nl812GYBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757342185; c=relaxed/simple;
-	bh=FIVWf3bpKmjp75cp07PUchurcybMcPfdUSIyZqVIJkQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=chasSbeZwA3uaaYJbS95UfuUAgXuqdsW/EtmRWNtFrbKxdVfVa7px6FXVfE6YlNnk1x9E0gUhNNE2rR7Qtgmo1lorqt9ybWM3YVwS60Yt7V3jFFVFT8jMR4Hks2LB1tByRB3HuCqND1IPDOreRjXCvfI7s9ZALTr9pD6JrHb7dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dq9uiiLA; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757343563; c=relaxed/simple;
+	bh=otgqWTIuVTslI+DJ2LPpoUIdkOI9OhIMBK8AkSETJBY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=FPvsduXhMrUUt3LcJRJBvWxkdHz7/XARi1o43YwC8yTU3+jCkz0w+MT3S3kK3S5JnBORa/iFvpqeH9lyYN01+v1KOUHfxGYQh9WLZZFd6QfTSlCe/M7JrRvuOBGQQ7kN0f0x2z61GlX9qlORqpVk41lE3/zf6GOWPC+67QoNgBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6P7kvb0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dq9uiiLA"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-248e01cd834so10357145ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 07:36:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757342183; x=1757946983; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FIVWf3bpKmjp75cp07PUchurcybMcPfdUSIyZqVIJkQ=;
-        b=dq9uiiLAjR/CbvAOQQzSo1VK+g0xTKHqekzCU6+IC80BGopFl9ZKRmA9n4BkaBZe1N
-         JXhT0BeV+NUavAhsksV4vEs6kR9vsmVqy14DnyW2gJvJBkSKOkSlVFrXiUnL2gPz5qf+
-         TQxMe3CvNto7wI40jFEk5ANiNIZTaZPJXhJ7ORss7R0mZacGtxbc+zZ7nEf1XN8Uq/HT
-         87KGhX/Bv60blIu+Sp58DhbJU+BKPaetIvjfgsuaB17ZRxtaBObE3wc8vRVChuOsJyDf
-         9+dVudcAsuwEwqacU4CtCtznaMXOuBcHbS6wBg6IUt0tk5p2fQRVOiAkjHTO9WWRZfHL
-         WzZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757342183; x=1757946983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FIVWf3bpKmjp75cp07PUchurcybMcPfdUSIyZqVIJkQ=;
-        b=OYfP6iXDKaE/gBZDOIcGPKHLzJPVmg1mV8S17eppJnVt9BaNpCesgadHMhCdTzZsMc
-         hvkLALe2lNWtAMn/6Hg/flfNg95BZnTxiU/jJAnUgEEgZ/pmpP8OYQhhj3hTsSTxm7I0
-         rHob070nw2DfDHLl5a1qRYAwVWcKw1caPFq/no6s5R8rixoQmvAShouD8zuiXy3zgtui
-         H23xtTKlKH0t3X4bOA0Hya3mC9mpuwoEq3l7kSLr0D70RIlATcDktbXf32Fsy7NURR9o
-         9/mvfAMuw8Ow38lLKAqql5VEaNf+/Ua1OM9Nb1JOLL3D9Fc/Al2zAInL2KE2AVk+Wthf
-         PjNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWP4DJC/X/nYo3V9szC2q9uE68udtioWMr5irfVESyLHsDJ0guE48os2j4AyEnXdJztp55wqM+XpSqsbuQsIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7gM5yUtENPVV/u+g+hnJ8QTo/1KNVb6Cmrq0QFBy3nb5hoX8Z
-	sbBrDMDMc9tRAjkQ/wx6Gz/f0bK9fUooV6b/hm2w0NNOU4BfP8zMu7byggTWR9oir+0Axo0sysx
-	pJ9m+GLDkYe2V0ZvJ4O9rkuKUibuwWgQ=
-X-Gm-Gg: ASbGncvcq/uJkZ4Y85CwI4UTvkwopGVvJkOd4KT93J3dpNGniHyLtUKdA+y5/bT5yMO
-	/2Fg9asWZbuy1ZqG/GdGxCJpJRfLefgn9N0uvnWImOJKShWkE7zsMQA/CFsYZPm46QKBnbiyhli
-	8ImIV5CcPa0nB8A0jLFQZRWGmAbgq/NBWMEBetbSM8rhuCmo/mE2TBaqEQuMA1bMrtwVHsF7rUu
-	DUDLZ0mB5vd/1N+Y8ksDMqi4q0R6eiQvspOiOGDEDp+BgBoag6MXu2T+7Vkd/sSI7OHaxe2aq6J
-	zHxZcmmUwUEUS90BbwrNqATW5g==
-X-Google-Smtp-Source: AGHT+IEds3iCyTuDUwiTjHRJ7lLf/Q2xjxTJDIKMpnFx1aFKpliIcBsGFm3iFx+addcMcQGerU8ggQutMgqEUUjcd3Y=
-X-Received: by 2002:a17:903:18c:b0:24c:cc2c:9da5 with SMTP id
- d9443c01a7336-25173ea24a3mr62209635ad.6.1757342183075; Mon, 08 Sep 2025
- 07:36:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6P7kvb0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B48C4CEF1;
+	Mon,  8 Sep 2025 14:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757343561;
+	bh=otgqWTIuVTslI+DJ2LPpoUIdkOI9OhIMBK8AkSETJBY=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=S6P7kvb0tjREX8O3l15m4nh+9Sx7jA99s3DsXMQuJ2wRSBmOdxBKZyDKj7dgbUu0m
+	 dZKHtS6rlEL5lGJ7R8fwxgMCefwwzXqJWBEYrrPxZpLEasm9jE+610PkfBU4P2Wtil
+	 5TjKygA7SbOUy+9X0UW5iMNVk4emSoowHtJXHBfwUaZMmUeNEfMIpx6Wc9PlN0chWS
+	 kc5esLQjkVe1LBOSN0P86EjbgObKOQXdLprfNABWX6SGXWzWe7J+winuTO7kTuFNbA
+	 M2NkgvV+fdqIkkMX6e5rAuu7D4qsTftJMmHoqjSl4+RgtrQ3VamHszIrrwDAi0YEo+
+	 ITs+PI5krSUjA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250908-distill-lint-1ae78bcf777c@spud>
-In-Reply-To: <20250908-distill-lint-1ae78bcf777c@spud>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 8 Sep 2025 16:36:09 +0200
-X-Gm-Features: AS18NWB-MWPE9egfDgR8swoEM8VNIC5oT99W_zIRlpTR_s6ZNeMwU8I66RyA-sw
-Message-ID: <CANiq72mw36RzCtNVax650fJ=+cYjuGNF722_Mn2Oy1FAvxWc8Q@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: cfi: only 64-bit arm and x86 support CFI_CLANG
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
-	stable@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Matthew Maurer <mmaurer@google.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, linux-riscv@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 08 Sep 2025 16:59:16 +0200
+Message-Id: <DCNIASL0KG57.3LC7NU7COE5KU@kernel.org>
+Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
+Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
+ <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+ <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
+ <2025090807-bootleg-trophy-a031@gregkh>
+ <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
+ <2025090849-tweak-conductor-f642@gregkh>
+ <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org>
+ <2025090817-attendant-ungodly-78f6@gregkh>
+ <DCNGJMN80Z34.1O45B1LM9PB2S@kernel.org>
+ <2025090850-canon-banish-baf6@gregkh>
+In-Reply-To: <2025090850-canon-banish-baf6@gregkh>
 
-On Mon, Sep 8, 2025 at 3:13=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
+On Mon Sep 8, 2025 at 4:16 PM CEST, Greg Kroah-Hartman wrote:
+> On Mon, Sep 08, 2025 at 03:36:46PM +0200, Danilo Krummrich wrote:
+>> On Mon Sep 8, 2025 at 3:30 PM CEST, Greg Kroah-Hartman wrote:
+>> > On Mon, Sep 08, 2025 at 03:22:41PM +0200, Danilo Krummrich wrote:
+>> >> On Mon Sep 8, 2025 at 2:48 PM CEST, Greg Kroah-Hartman wrote:
+>> >> > On Mon, Sep 08, 2025 at 12:54:46PM +0200, Danilo Krummrich wrote:
+>> >> >> diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debu=
+gfs.rs
+>> >> >> index b26eea3ee723..475502f30b1a 100644
+>> >> >> --- a/samples/rust/rust_debugfs.rs
+>> >> >> +++ b/samples/rust/rust_debugfs.rs
+>> >> >> @@ -59,6 +59,8 @@ struct RustDebugFs {
+>> >> >>      #[pin]
+>> >> >>      _compatible: File<CString>,
+>> >> >>      #[pin]
+>> >> >> +    _test: File<&'static CStr>,
+>> >> >> +    #[pin]
+>> >> >>      counter: File<AtomicUsize>,
+>> >> >>      #[pin]
+>> >> >>      inner: File<Mutex<Inner>>,
+>> >> >> @@ -140,6 +142,7 @@ fn new(pdev: &platform::Device<Core>) -> impl =
+PinInit<Self, Error> + '_ {
+>> >> >>                          .property_read::<CString>(c_str!("compati=
+ble"))
+>> >> >>                          .required_by(dev)?,
+>> >> >>                  ),
+>> >> >> +                _test <- debugfs.read_only_file(c_str!("test"), c=
+_str!("some_value")),
+>> >> >
+>> >> > Cool, but again, we do not want to ever be storing individual debug=
+fs
+>> >> > files.  Well, we can, but for 90% of the cases, we do not, we only =
+want
+>> >> > to remove the whole directory when that goes out of scope, which wi=
+ll
+>> >> > clean up the files then.
+>> >>=20
+>> >> This API does not work in the way that you have a struct storing the =
+data you
+>> >> want to expose *and* another one for the files with the data attached=
+.
+>> >>=20
+>> >> The File type contains the actual data. For instance, if you have a s=
+truct Foo,
+>> >> where you want to expose the members through debugfs you would *not* =
+do:
+>> >>=20
+>> >> 	struct Foo {
+>> >> 	   a: u32,
+>> >> 	   b: u32,
+>> >> 	}
+>> >>=20
+>> >> 	struct FooFiles {
+>> >> 	   a: File<&u32>,
+>> >> 	   b: File<&u32>
+>> >> 	}
+>> >>=20
+>> >> and then create an instance of Foo *and* another instance of FooFiles=
+ to export
+>> >> them via debugfs.
+>> >
+>> > Ah, that's exactly what I was trying to do.
+>>=20
+>> But that's bad, then we're back at the lifetime problem from the beginni=
+ng,
+>> because the File<&Foo> then somehow needs to ensure that the instance Fo=
+o
+>> remains alive as long as File<&Foo> or the backing directory exists.
+>>=20
+>> So, you eventually end of with Foo needing to be reference counted with =
+its own
+>> memory allocation, which horribly messes with your lifetimes in the driv=
+er.
 >
-> From: Conor Dooley <conor.dooley@microchip.com>
->
-> The kernel uses the standard rustc targets for non-x86 targets, and out
-> of those only 64-bit arm's target has kcfi support enabled. For x86, the
-> custom 64-bit target enables kcfi.
->
-> The HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC config option that allows
-> CFI_CLANG to be used in combination with RUST does not check whether the
-> rustc target supports kcfi. This breaks the build on riscv (and
-> presumably 32-bit arm) when CFI_CLANG and RUST are enabled at the same
-> time.
->
-> Ordinarily, a rustc-option check would be used to detect target support
-> but unfortunately rustc-option filters out the target for reasons given
-> in commit 46e24a545cdb4 ("rust: kasan/kbuild: fix missing flags on first
-> build"). As a result, if the host supports kcfi but the target does not,
-> e.g. when building for riscv on x86_64, the build would remain broken.
->
-> Instead, make HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC depend on the only
-> two architectures where the target used supports it to fix the build.
->
-> CC: stable@vger.kernel.org
-> Fixes: ca627e636551e ("rust: cfi: add support for CFI_CLANG with Rust")
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> Once I want to drop Foo, FooFiles should "go out of scope" and be gone.
 
-If you are taking this through RISC-V:
+We agree on the goal here, but unfortunately it's not really possible. Ther=
+e are
+two options that were already exercised:
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+	(1) Force that FooFiles (or FooDir) is bound to the lifetime of a
+	    reference of Foo with FooDir<&'a Foo>.
 
-Cheers,
-Miguel
+	    This isn't workable because we then can't store both of them into
+	    the same parent structure.
+
+	(2) Reference count Foo (Arc<Foo>) and make FooDir own a referenc count
+	    of Foo.
+
+	    But this is bad for the mentioned reasons. :(
+
+	(3) The File<T> API we have now, which gives you the behavior you ask
+	    for with Scope<T>.
+
+	    Where Scope<T> creates a directory and owns the data you pass to it,
+	    e.g. a pci config descriptor.
+
+	    The user can create an arbitrary number of files exporting any of
+	    the fields in date that live in the scope and don't need to be tracked
+	    separately, i.e. don't create separate object instances.
+
+	    The directory (and hence all the files) is removed once the Scope<T>
+	    is dropped, including the data it owns.
+
+> If a backing file descriptor is still held open, it will then become
+> "stale" and not work.  Much like the revokable stuff works.
+>
+> Note, none of this is in the C code today, and debugfs is bound to root
+> permissions, so it's not really an issue, but I can understand the goal
+> of correctness...
+
+The lifetime guarantee we talk about is about the debugfs file still having=
+ a
+pointer to data that has already been dropped / freed.
+
+In C you have to remove the debugfs file or directly (and hence the file) b=
+efore
+the data exposed through it is freed. In C this is on the driver to take ca=
+re
+of.
+
+(If in C a driver has multiple structures exported in the same debugfs dire=
+ctory
+it has to manually take care of keeping all structures alive as long as the
+directory (and hence all files) exist.)
+
+In Rust we need the abstraction to guarantee this.
+
+> Anyway, I looked at the scoped example here, and I don't see how that
+> works any differently.  How can I use it to have a single Dir "handle"
+> that when goes out of scope, can drop the files attached to it that were
+> created to reference Foo.a and Foo.b in your example above?
+
+In the example above you would move Foo into the Scope<Foo>. For instance:
+
+	let dir =3D root_dir.scope(foo, cstr!("subdir"), |foo, dir| {
+		dir.read_only_file(c_str!("a"), foo.a);
+		dir.read_only_file(c_str!("b"), foo.b);
+	});
+
+Note that those methods don't return anything, they're automatically bound =
+to
+the Scope in lifetime.
+
+So, Foo could be your pci config descriptor.
+
+If `dir` is dropped, everything dies, the Scope, the "subdir" directory, al=
+l the
+files and also Foo.
+
+I can provide some working code later on (currently in a meeting). :)
