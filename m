@@ -1,113 +1,136 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4D30ACEA
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Sep 2025 13:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2594A06;
+	Mon,  8 Sep 2025 13:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757337559; cv=none; b=sBIjwsOpKDeVICLKg4b9XBLEDo9nINmu3TLe401O+eQajdbGr3/IGGbearlvglSNhGsdepOYZgrXGNaKWEDU6AdMqprxqJc0sCdC8Ac4p4YTZl1te7YObRpYigj6ySZiSCxuUWYwf5u9JzjPfRj39Vq3a8Oc7y8FY+22TAQAwWA=
+	t=1757337766; cv=none; b=R5gD2md2ZrPdo4rq/VZ6B37qVwFzgwq8wSpOGjT+0yLIUNPBbvYV8jLmQEX4MS/WoHvwlsDGOpdTqCGko741sC+mnAcFrFySjvGT3x9Xc3mPzx2c0AdGDpofLCCHZeftTOirmi5jW+onol1O1D4ETVBthn9L2YGOjFUr/Hvww+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757337559; c=relaxed/simple;
-	bh=nWM82YYVgDfmnz3ZFulMlOndRktGXnF272wdon8Wdvw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gr/4Qe2cdwGLXK9gVyVcWYOoNavbqaKRaZHUsQPmXoX2wHIzf7n48VSD+KfR6ArNbKNjMj0q7gO69LC/FIgQckAH3F++8cJq7YbgtgL9Ec6bMuE1K7X10q6FattayHDIKPYgvP9BvIAIoqmIuJkU/vaKyP8V/h/WrPsEvlAPSOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a4LvXJ0D; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1757337766; c=relaxed/simple;
+	bh=oGMXLolCMDVFp1mzpmZLsQtGcdLcEDD0RTT5IraeD98=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=QcR5hWzASmJg3LNOxLZinFQmH4TDMxvbWAJME3v5XoVmvwa7MxL/uZ6rDNXf1PpSo5rolVv55Yx9lfexdMucJdyy1c3SaM+E/BlaP//q3xGyvnRpQePkyLM1ScODeuVxrSWmrtjXhw8eJx6iVU0I/HlxWtC2F9TVnKEcOxJB8xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUCz31aE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a4LvXJ0D"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45b9814efbcso36122895e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Sep 2025 06:19:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757337555; x=1757942355; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nWM82YYVgDfmnz3ZFulMlOndRktGXnF272wdon8Wdvw=;
-        b=a4LvXJ0Dn30n/WO4xD7J+kLySGxRnSCOXJzoEqx7BdOWmEq2Tbzqk1LtMfnp5H7ZBe
-         mT0MSJPl3caqIDSafAC973IpPnS2ph/uP78qXBoNwsR36dkdyulLeSEEsj840wqJX3iP
-         U+SoQYHg2m4W8lzRIg6pvEhMc1gzfHHsmdeDOm567nYNOoBcXBbnqFy7YnC78dXHlMnZ
-         Cx8EZWFKDO2jsZkZ9ZNoLGd0zBDEHaTR2kiklJqsTHrsvyUGaEq0E/0vk3aF9WGcTuzJ
-         +F7rXtUZvcWi4PWno0ZHnWxQek5pk6vhO2hnkIOKPGG4btBjr2+4g5TJqhjfRU3jQPdE
-         fA/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757337555; x=1757942355;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nWM82YYVgDfmnz3ZFulMlOndRktGXnF272wdon8Wdvw=;
-        b=mdUnBSFxstrFqq9etBy592BGvWtqJKXQw/r4bB+td1ypQw1Dwl6WyAdaOm6uVgrE2X
-         SXoERi2JsUJyDxhHeC5R+N9diVHp/xHtIV1uSzUwBQwYCBrFv7W8fZLMJUDQGIOeqJ4d
-         0QJn5YyciUgYQiteqc8JvYef/K+PJ9e4kYXGRAGK3K0vnswXjBiPBarmzm1bi6gSmz0T
-         Qa/PZhHcuLN6ku/zyTR8YrKc2cxHPEtq+rbfbMASxoSPlTUIR+ddEXdWoz7C1EwFev6f
-         +YWqaOrkwcyYmNEzPQlo3teKTw02iNb6Xk2skTeFOlnz85aSVBhx3pVP6lzbAgp6oUG3
-         8V/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX9Rx0QgZ+XrxDev+Da09EY/K1UQLvzBPk3bcqPCZdFAAqu/DgNew6K4hKbZZpSvzx0ia/R3rDUyCjx2XSy1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyy+W9x7nhK4DE0V8jIaL5yhbMHmNw9Hl6WFH81cmImrlnKCp+c
-	d37oTxGqVfDKWe3dbwBCtm8cyAMZ5MNrZ0SzE9sBMHcVRhO3IkggQzdW6JH67zfNYH4bnZARGUF
-	nmBY7aY5NWWsQRl/5NHIf6iCiITVhhmfNehJjbg8J
-X-Gm-Gg: ASbGnctqMJF6w8+XHfEFtveFVMXKzMW1ndGu2UDKk/TONCUbIoREmA7zOLeeQu+TCjC
-	QRFUZffnbXjHHhmLMiDciTCeqyrwy/mter2iR2d9U6VoB8sKYNUl3sWh90mLTDzEa6/nFgeS7Mk
-	+NmF9txiG6bpMT2KslKx7PRbEtqRh6xUknmu64tQ0gfEhQRs1trEuM5lrXaI/6qkFnhSeBrrtqA
-	8eo/ahAB6QxWUn2smExv6yLWRXLu4Py+RNbORHXghGriRse5GgdxoJiddAx5m8bBCH1UfPZz7xD
-	EMoauBXP7mY=
-X-Google-Smtp-Source: AGHT+IFjSj9fcvGgclrt2uVXMQc5eZzeD36hnbx/1QwTeUfZ8T3zw8xE5Ei6zyAbQg85xb3R6cvvnoz9yGYt46etz/w=
-X-Received: by 2002:a5d:5f47:0:b0:3cf:ef30:c819 with SMTP id
- ffacd0b85a97d-3e627b712cfmr5610348f8f.4.1757337554607; Mon, 08 Sep 2025
- 06:19:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUCz31aE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04276C4CEF1;
+	Mon,  8 Sep 2025 13:22:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757337766;
+	bh=oGMXLolCMDVFp1mzpmZLsQtGcdLcEDD0RTT5IraeD98=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=fUCz31aEhKMazmVeuIhP3Vg8oSJMlOUcTQUhtb9AbjKSIakE1rzGRCZubx+EkWbIv
+	 eeOeDG92oNZjKpQ+L5W3AoUljesDEDVeSsITBuhSjiNJ1xvMVeq2Wg8JQE9vtlSGrm
+	 QQTyQzkbR6eWVYhPcQKA5//eHAzfAQMBVk9v+448yPedeBPucdXGr7lB9p3fZx+Lqv
+	 dE+IoUPSlcPO1vrl80Ci4kJJc2gqYlHjqpY9IahU0vX1Q5I2hwmi/pe+31hgi9vtFh
+	 CPqC5LojP99iNVZPBTrL3Y7b6X1cZ1tbMf5qjePmWg1jRsE0qyLNPsAUu/x1Ji8x5L
+	 +VU/AuMSW55+g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250908-distill-lint-1ae78bcf777c@spud>
-In-Reply-To: <20250908-distill-lint-1ae78bcf777c@spud>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 8 Sep 2025 15:19:02 +0200
-X-Gm-Features: AS18NWCUVBew4vUh8r_LLedLxLSYsoQ9pdJJZqEHSkY4P6yHIK6L_lJbY-hCLEI
-Message-ID: <CAH5fLghqe8sxLD3vk6VLbA8UoMgEw1iNxgE8uETAeCnRz1D0DQ@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: cfi: only 64-bit arm and x86 support CFI_CLANG
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
-	stable@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Matthew Maurer <mmaurer@google.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, linux-riscv@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 08 Sep 2025 15:22:41 +0200
+Message-Id: <DCNG8UF8XFT2.12S9I7MBNV5PX@kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
+Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
+ <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+ <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
+ <2025090807-bootleg-trophy-a031@gregkh>
+ <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
+ <2025090849-tweak-conductor-f642@gregkh>
+In-Reply-To: <2025090849-tweak-conductor-f642@gregkh>
 
-On Mon, Sep 8, 2025 at 3:13=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
+On Mon Sep 8, 2025 at 2:48 PM CEST, Greg Kroah-Hartman wrote:
+> On Mon, Sep 08, 2025 at 12:54:46PM +0200, Danilo Krummrich wrote:
+>> diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
+>> index b26eea3ee723..475502f30b1a 100644
+>> --- a/samples/rust/rust_debugfs.rs
+>> +++ b/samples/rust/rust_debugfs.rs
+>> @@ -59,6 +59,8 @@ struct RustDebugFs {
+>>      #[pin]
+>>      _compatible: File<CString>,
+>>      #[pin]
+>> +    _test: File<&'static CStr>,
+>> +    #[pin]
+>>      counter: File<AtomicUsize>,
+>>      #[pin]
+>>      inner: File<Mutex<Inner>>,
+>> @@ -140,6 +142,7 @@ fn new(pdev: &platform::Device<Core>) -> impl PinIni=
+t<Self, Error> + '_ {
+>>                          .property_read::<CString>(c_str!("compatible"))
+>>                          .required_by(dev)?,
+>>                  ),
+>> +                _test <- debugfs.read_only_file(c_str!("test"), c_str!(=
+"some_value")),
 >
-> From: Conor Dooley <conor.dooley@microchip.com>
->
-> The kernel uses the standard rustc targets for non-x86 targets, and out
-> of those only 64-bit arm's target has kcfi support enabled. For x86, the
-> custom 64-bit target enables kcfi.
->
-> The HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC config option that allows
-> CFI_CLANG to be used in combination with RUST does not check whether the
-> rustc target supports kcfi. This breaks the build on riscv (and
-> presumably 32-bit arm) when CFI_CLANG and RUST are enabled at the same
-> time.
->
-> Ordinarily, a rustc-option check would be used to detect target support
-> but unfortunately rustc-option filters out the target for reasons given
-> in commit 46e24a545cdb4 ("rust: kasan/kbuild: fix missing flags on first
-> build"). As a result, if the host supports kcfi but the target does not,
-> e.g. when building for riscv on x86_64, the build would remain broken.
->
-> Instead, make HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC depend on the only
-> two architectures where the target used supports it to fix the build.
->
-> CC: stable@vger.kernel.org
-> Fixes: ca627e636551e ("rust: cfi: add support for CFI_CLANG with Rust")
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> Cool, but again, we do not want to ever be storing individual debugfs
+> files.  Well, we can, but for 90% of the cases, we do not, we only want
+> to remove the whole directory when that goes out of scope, which will
+> clean up the files then.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+This API does not work in the way that you have a struct storing the data y=
+ou
+want to expose *and* another one for the files with the data attached.
+
+The File type contains the actual data. For instance, if you have a struct =
+Foo,
+where you want to expose the members through debugfs you would *not* do:
+
+	struct Foo {
+	   a: u32,
+	   b: u32,
+	}
+
+	struct FooFiles {
+	   a: File<&u32>,
+	   b: File<&u32>
+	}
+
+and then create an instance of Foo *and* another instance of FooFiles to ex=
+port
+them via debugfs.
+
+Instead you would change your struct Foo to just be:
+
+	struct Foo {
+	   a: File<u32>,
+	   b: File<u32>,
+	}
+
+If you now create an instance of Foo (let's call it `foo`), then foo.a or f=
+oo.b
+dereferences to the inner type, i.e. the u32. Or in other words `foo` still
+behaves as if `a` and `b` would be u32 values. For instance:
+
+   if foo.a =3D=3D 42 {
+      pr_info!("Foo::b =3D {}\n", foo.b);
+   }
+
+The fact that the backing files of `a` and `b` are removed from debugfs whe=
+n Foo
+is dropped is necessary since otherwise we create a UAF.
+
+Think of File<T> as a containers like you think of KBox<T>.
+
+KBox<T> behaves exactly like T, but silently manages the backing kmalloc()
+allocation that T lives in.
+
+With File<T> it's exactly the same, it behaves exactly like the T that live=
+s
+within File<T>, but silently manages the debugfs file the T is exposed by.
