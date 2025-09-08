@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1901E7C27;
-	Mon,  8 Sep 2025 10:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53D822422D;
+	Mon,  8 Sep 2025 11:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757328985; cv=none; b=SMjvQFpx3ks81N9l9yt/5P7ifKIwgczYBGlCcYeNg9YDh0kYiitZvbHV1pqDkPjJ84YZ1jtbBa0qE0R/IH5rJQ3FdK2rKEDuXVw++raKVf3nY1+NMrYWiPB+e9uqUabFJtLhcICQuJ+b6W6L+qUaLqZcW4x2k7uPFVDvu2hBr9I=
+	t=1757329897; cv=none; b=YfzSB/XkBrcd+cnuOJKhrwukMbpxbjjwyrp/HhsGmSTC/K7bDygA26rQ4FNmna0emX+l+dvSYrRuO2rRVFJjIjqiW080z+auGVCzcfQmrC00eSNmvH2Q9t89ESf4/NtPqIpRJ+KO1+9A9smAFY5HhOReHE7Wvw2arQhTWD+Mhz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757328985; c=relaxed/simple;
-	bh=egRqwTIj5juRtCDSGcwyu7lklaGTrbNM5D0WYRarOpc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=UB7T+lxlGtxpHrxgVJnub++rpA4wMGrvcpcsdkO8NUFfFYor/DHOm6PHEUYiYn8V6U2da3BqoQUAeE3eRRgVW75YFgkfnj10gEEGiPjtazZg+CDUmN0ibYLI6VClWy6iCTlvszqWwLKbjFCmzHqP3IrB0tVMA7LgxFDhopqyKSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ntzkPpcE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757329897; c=relaxed/simple;
+	bh=Gf3bKLVGBIqbxULlO+jSRJmsI6c3oODRH0Ft0N6BqUk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=WFVq07G9y6fNqW9kjP8D7rAKx/UkSGh5owPVyIr3dfevvKnlUyOS4PnytcI1gNqTXErrhV/of2ba/XtC5ODfErlTbG/JEUQUDBC/l24P+1jdqX2QEpmw7l9dBaLqqt64/9Kz6ktCrtg9SgZ34BlOicggUPk/AwJXPqHWqfob5zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQrPBfUD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ntzkPpcE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BDFC4CEF1;
-	Mon,  8 Sep 2025 10:56:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQrPBfUD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A381CC4CEF9;
+	Mon,  8 Sep 2025 11:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757328984;
-	bh=egRqwTIj5juRtCDSGcwyu7lklaGTrbNM5D0WYRarOpc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=ntzkPpcEm1oXdoJoU/HpAo0RXgAD9pCzuc3p3Up5qK2WFTYV/V/mAU2zkSbSf7xmK
-	 A99ze7yy0FuKwF/dN7Sv96oGbzgrNKjfD110ASx7Ye5BWEMmqMlAMH/XoDMM+JnXLN
-	 1RUuL3UbUEtqcmW75Yu5snGFjIN1pTXijfozZubJ0OD0Nk4rJfRJmwj/vlPQk6YjSQ
-	 8QcBPHKj5bbEDLZqepBuJ+noLDY+hvOwF+Y42h0bKWEpKjMJVFG5AmiccJsSNMm+5b
-	 ZJ6Y8jJnzccjpgWOpT3w9BKKLlgj8pnyZ/2/iKogGgUz6+8GJNikk3h7GMeSlJXTD7
-	 +a/3MZh6wMR3Q==
+	s=k20201202; t=1757329896;
+	bh=Gf3bKLVGBIqbxULlO+jSRJmsI6c3oODRH0Ft0N6BqUk=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=TQrPBfUDMaZ8w+ALMfFLKSvgLIRPLaLK+W+CWaalH/wWCWUoPzFjZ0G2iLGamw9OJ
+	 sv/zKxaR4+T5jJ7SlDF0D02rm1kLWcdlVtlN+UecUnq8RnmqniP1DiQHi/epJbcvvh
+	 Acy8thCDU9Y3ngaMXb2C3Zrzki91T9VsEu/fW0dCjk8ttFHBLP4wOVAOlJevIuer1a
+	 wnl5aRQezmoltG6R5YsniEjt7uN38e74A18aOSfBjpfifVPK/lFqkqaEsQdNZC2Gtm
+	 ua/od/aQ0Apavh28JTCwMemQtBmhlN7drI+ol2HVKQJTuDplWF3v87MuF6DkG1PehD
+	 MZIT9elzG9kpQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,95 +34,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 08 Sep 2025 12:56:19 +0200
-Message-Id: <DCND4SAEHX7T.3I2S7MDMUNSNL@kernel.org>
-Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Dirk Beheme"
- <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Date: Mon, 08 Sep 2025 13:11:32 +0200
+Message-Id: <DCNDGFE7RR5Q.X3PCDW0KIX89@kernel.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
- <2025090807-bootleg-trophy-a031@gregkh>
- <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
-In-Reply-To: <DCND3LBZ0Y2J.377ZTOSOUXMOB@kernel.org>
+Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Matthew Brost"
+ <matthew.brost@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Steven Price"
+ <steven.price@arm.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Liviu Dudau" <liviu.dudau@arm.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Boris Brezillon" <boris.brezillon@collabora.com>
+References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
+ <20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
+ <20250905152505.005a610d@fedora>
+ <CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
+ <DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org> <aL1pSFB9iBsfHFM_@google.com>
+ <DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org> <aL1u_YxOkuj1kIq6@google.com>
+ <20250908091140.44856fde@fedora> <aL6TJYRmWIkQXujj@google.com>
+ <DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org> <20250908122002.2c80dd3a@fedora>
+In-Reply-To: <20250908122002.2c80dd3a@fedora>
 
-On Mon Sep 8, 2025 at 12:54 PM CEST, Danilo Krummrich wrote:
-> On Mon Sep 8, 2025 at 12:17 PM CEST, Greg Kroah-Hartman wrote:
->> I tried using this in a "tiny" test module I had written, and I get the
->> following build error:
->>
->>    --> samples/rust/rust_debugfs2.rs:64:53
->>     |
->> 64  |         _file =3D root.read_only_file(c_str!("name"), &hw_soc_info=
-.name);
->>     |                      --------------                 ^^^^^^^^^^^^^^=
-^^^ expected `&u32`, found `&&CStr`
->>     |                      |
->>     |                      arguments to this method are incorrect
->>     |
->>     =3D note: expected reference `&u32`
->>                found reference `&&'static kernel::prelude::CStr`
->>
->> I'm trying to "just" print a CStr, which is defined as:
->>
->> struct HwSocInfo {
->>     id: u32,
->>     ver: u32,
->>     raw_id: u32,
->>     foundry: u32,
->>     name: &'static CStr,
->> }
->>
->> Is this just a "user is holding it wrong" error on my side, or can this =
-api not
->> handle CStr values?
+On Mon Sep 8, 2025 at 12:20 PM CEST, Boris Brezillon wrote:
+> I'm not following. Yes there's going to be a
+> drm_gpuva_unlink_defer_put() that skips the
 >
-> What you're doing should fundamentally work.
+>         va->vm_bo =3D NULL;
+>         drm_gpuvm_bo_put(vm_bo);
 >
-> The above error suggests that your declaration of `_file` is File<&u32> r=
-ather
-> than File<&'static CStr>.
->
-> Also note the double reference you create with `&hw_soc_info.name`, this =
-should
-> just be `hw_soc_info.name`.
->
-> You can also test this case by applying the following diff the the sample=
- in v5:
+> and adds the gpuva to a list for deferred destruction. But I'm not
+> seeing where the leak is. Once the gpuva has been put in this list,
+> there should be no existing component referring to this object, and it's
+> going to be destroyed or recycled, but not re-used as-is.
 
-*sample in patch 5
+I'm saying exactly what you say: "has to be a special unlink function" ->
+drm_gpuva_unlink_defer_put(). :)
 
+>> Yeah, we really want to avoid that.
 >
-> diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
-> index b26eea3ee723..475502f30b1a 100644
-> --- a/samples/rust/rust_debugfs.rs
-> +++ b/samples/rust/rust_debugfs.rs
-> @@ -59,6 +59,8 @@ struct RustDebugFs {
->      #[pin]
->      _compatible: File<CString>,
->      #[pin]
-> +    _test: File<&'static CStr>,
-> +    #[pin]
->      counter: File<AtomicUsize>,
->      #[pin]
->      inner: File<Mutex<Inner>>,
-> @@ -140,6 +142,7 @@ fn new(pdev: &platform::Device<Core>) -> impl PinInit=
-<Self, Error> + '_ {
->                          .property_read::<CString>(c_str!("compatible"))
->                          .required_by(dev)?,
->                  ),
-> +                _test <- debugfs.read_only_file(c_str!("test"), c_str!("=
-some_value")),
->                  counter <- Self::build_counter(&debugfs),
->                  inner <- Self::build_inner(&debugfs),
->                  _debugfs: debugfs,
+> I think I agree that we want to avoid it, but I'm not too sure about
+> the solution that involves playing with vm_bo::kref. I'm particularly
+> worried by the fact drivers can iterate the evict/extobj lists
+> directly, and can thus see objects scheduled for destruction. I know
+> there's a gpuvm_bo_is_dead() helper, and drivers should be aware of the
+> risks, but I don't feel comfortable about this.
 
+No, drivers can't iterate the evict/extobj lists directly; or at least this=
+ is
+not intended by GPUVM's API and if drivers do so, this is considered peekin=
+g
+into GPUVM internals, so drivers are on their own anyways.
+
+Iterators, such as for_each_vm_bo_in_list() are not exposed to drivers.
+
+> And since we've mentioned the possibility of having to support
+> gpuva destruction deferral too, I'm wondering it wouldn't be cleaner
+> to just go for this approach from the start (gpuva owns a ref to a
+> vm_bo, which gets released when the gpuva object is released).
