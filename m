@@ -1,509 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702AC273F9;
-	Mon,  8 Sep 2025 10:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F842F8BE8;
+	Mon,  8 Sep 2025 10:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757326624; cv=none; b=b1PyoozHIH2B5WHgOxPUB9cihW5byIPfPIBmnfPF4JFgx25/bf5uR4/viSb3Ld/+bVW8QspkycEuZHigS3kzJytu0hNGICEl2Tdf2vJYW4VC0HmaPHcHHmvqaV/3bgCN5zYvfIRO9LxE/mobOh0Qqdmwi59Y84wjF6UgyEFLs4k=
+	t=1757326812; cv=none; b=badjmX2mYGBECv4m+s2r+Tf84bUdkIr46vXpgviIBuut+/c+bIMbMCBLcxQEonVmfuORtW3d1yfL/QmaZgFqFlKrhRt1GBJlkBlxzWmQ1WRFvXCpNZ0mes9oWrtlAOyTZBeowbLJaIafxKRSDfqsrFdbvJzVlBQfWHh2grDk0NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757326624; c=relaxed/simple;
-	bh=xcuHld45FMsSZXZksfSC4H58GyVAM9t1/XpltfBewEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iNWNbK6IQaLWaoNNsjnZaCvYGbPLRNYFJRXkR24ZLicQLt23ARH8HnOO9wZBvw3m6P9nbPHFU/2Vu0mxznekDn4QsDULZnVmC1EmC1+V+1A2xRMLbE3RvBJUZCim1jFs1PhQuIhlKhZbD4F0YKeOs46joznboSI1wl0yPB6XAyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZkwWuGk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757326812; c=relaxed/simple;
+	bh=iIFJ6NmZ1H1JOINY4fZdqZyuJ4VYblJcKfuSrQZN94M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JK8aRWiszfpOgWD+HJ2l876GKXzsRaxCBjz3i/mptTdz5Gbk2WmSthbqy9UsqcJmdcJg/ou1Ac1oB/fsabeXueHnFRCN6FiqBsqG4Y+2bRn6nltFeCwOMYzioKrCLUL8pnvtVEPfeS3NmYi0O9eMbls/GBBHrh/0V85TWNrq4AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=b5fZ+QiP; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZkwWuGk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673CCC4CEF1;
-	Mon,  8 Sep 2025 10:17:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757326624;
-	bh=xcuHld45FMsSZXZksfSC4H58GyVAM9t1/XpltfBewEw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eZkwWuGku/NnzwaNEd2+shzI4LSKl0bYR8gviCQRAYj9inUJQUD0WNEc1wzoQJ4gP
-	 WwjK0lzw3bCETOeuOSsnHj2GBQTaqxrrfXKQeeZF+LvislTPZikenagcTRv6YquWc3
-	 9gp+JUoGfOmltDJpZdpz6iJKRV91e7FsUhBbAB2k=
-Date: Mon, 8 Sep 2025 12:17:01 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
-	Dirk Beheme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
-Message-ID: <2025090807-bootleg-trophy-a031@gregkh>
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="b5fZ+QiP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1757326808;
+	bh=iIFJ6NmZ1H1JOINY4fZdqZyuJ4VYblJcKfuSrQZN94M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=b5fZ+QiPy/IPlQHqjq/UftWyBFb9U/6psv9mWA9wDT84gbfkdLr+w3eRdkDWGdZwd
+	 IMbi1z18YkfaltQfGH/dapMZ2cEUG2N3ZyP4k6JYJGcCSSN7IhGdFkU3cuRJJyxHGp
+	 zy+nptShUmMhdHOmrTLVDACNGBP4H6ogwGZ/6u7+90uckEGQoxoRq0BjrLhCbzAVoE
+	 OhXdc55y1hmZb1Pej1yc0fLgP3LtiqNiUhR28/oBO1ycMHHQpAKcSVuPn+2OEbh4sW
+	 olVBaw8Eukq6yRttYIQVfAcFTyH0pk00ZMMxkbcCkbjX/J/yxI7xfq4PKrVQDwNl2e
+	 x1OjUYgE/HhwA==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 38FF817E0C96;
+	Mon,  8 Sep 2025 12:20:08 +0200 (CEST)
+Date: Mon, 8 Sep 2025 12:20:02 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Matthew Brost"
+ <matthew.brost@intel.com>, Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=
+ <thomas.hellstrom@linux.intel.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Steven Price"
+ <steven.price@arm.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Liviu Dudau" <liviu.dudau@arm.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
+Message-ID: <20250908122002.2c80dd3a@fedora>
+In-Reply-To: <DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org>
+References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
+	<20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
+	<20250905152505.005a610d@fedora>
+	<CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
+	<DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org>
+	<aL1pSFB9iBsfHFM_@google.com>
+	<DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org>
+	<aL1u_YxOkuj1kIq6@google.com>
+	<20250908091140.44856fde@fedora>
+	<aL6TJYRmWIkQXujj@google.com>
+	<DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 04, 2025 at 09:13:53PM +0000, Matthew Maurer wrote:
-> Extends the `debugfs` API to support creating read-only files. This
-> is done via the `Dir::read_only_file` method, which takes a data object
-> that implements the `Writer` trait.
+On Mon, 08 Sep 2025 10:47:25 +0200
+"Danilo Krummrich" <dakr@kernel.org> wrote:
+
+> On Mon Sep 8, 2025 at 10:26 AM CEST, Alice Ryhl wrote:
+> > On Mon, Sep 08, 2025 at 09:11:40AM +0200, Boris Brezillon wrote:  
+> >> Hi Alice,
+> >> 
+> >> On Sun, 7 Sep 2025 11:39:41 +0000
+> >> Alice Ryhl <aliceryhl@google.com> wrote:
+> >>   
+> >> > Yeah I guess we could have unlink remove the gpuva, but then allow the
+> >> > end-user to attach the gpuva to a list of gpuvas to kfree deferred. That
+> >> > way, the drm_gpuva_unlink() is not deferred but any resources it has can
+> >> > be.  
+> >> 
+> >> This ^.
+> >>   
+> >> > 
+> >> > Of course, this approach also makes deferred gpuva cleanup somewhat
+> >> > orthogonal to this patch.  
+> >> 
+> >> Well, yes and no, because if you go for gpuva deferred cleanup, you
+> >> don't really need the fancy kref_put() you have in this patch, it's
+> >> just a regular vm_bo_put() that's called in the deferred gpuva path on
+> >> the vm_bo attached to the gpuva being released.  
+> >
+> > Ok, so what you suggest is that on gpuva_unlink() we remove the gpuva
+> > from the vm_bo's list, but then instead of putting the vm_bo's refcount,
+> > we add the gpuva to a list, and in the deferred cleanup codepath we
+> > iterate gpuvas and drop vm_bo refcounts *at that point*. Is that
+> > understood correctly?  
 > 
-> The file's content is generated by the `Writer` implementation, and the
-> file is automatically removed when the returned `File` handle is
-> dropped.
+> It has to be a special unlink function though, since otherwise
 > 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->  rust/kernel/debugfs.rs          | 148 +++++++++++++++++++++++++++++++++++++++-
->  rust/kernel/debugfs/entry.rs    |  42 ++++++++++++
->  rust/kernel/debugfs/file_ops.rs | 128 ++++++++++++++++++++++++++++++++++
->  rust/kernel/debugfs/traits.rs   |  33 +++++++++
->  4 files changed, 350 insertions(+), 1 deletion(-)
+> 	drm_gpuva_link();
+> 	drm_gpuva_unlink();
+> 	drm_gpuva_link();
+> 	drm_gpuva_unlink();
 > 
-> diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
-> index 65be71600b8eda83c0d313f3d205d0713e8e9510..b28665f58cd6a17e188aef5e8c539f6c7433a3b0 100644
-> --- a/rust/kernel/debugfs.rs
-> +++ b/rust/kernel/debugfs.rs
-> @@ -8,12 +8,18 @@
->  // When DebugFS is disabled, many parameters are dead. Linting for this isn't helpful.
->  #![cfg_attr(not(CONFIG_DEBUG_FS), allow(unused_variables))]
->  
-> -#[cfg(CONFIG_DEBUG_FS)]
->  use crate::prelude::*;
->  use crate::str::CStr;
->  #[cfg(CONFIG_DEBUG_FS)]
->  use crate::sync::Arc;
-> +use core::marker::PhantomPinned;
-> +use core::ops::Deref;
-> +
-> +mod traits;
-> +pub use traits::Writer;
->  
-> +mod file_ops;
-> +use file_ops::{FileOps, ReadFile};
->  #[cfg(CONFIG_DEBUG_FS)]
->  mod entry;
->  #[cfg(CONFIG_DEBUG_FS)]
-> @@ -53,6 +59,34 @@ fn create(name: &CStr, parent: Option<&Dir>) -> Self {
->          Self()
->      }
->  
-> +    /// Creates a DebugFS file which will own the data produced by the initializer provided in
-> +    /// `data`.
-> +    fn create_file<'a, T, E: 'a>(
-> +        &'a self,
-> +        name: &'a CStr,
-> +        data: impl PinInit<T, E> + 'a,
-> +        file_ops: &'static FileOps<T>,
-> +    ) -> impl PinInit<File<T>, E> + 'a
-> +    where
-> +        T: Sync + 'static,
-> +    {
-> +        let scope = Scope::<T>::new(data, move |data| {
-> +            #[cfg(CONFIG_DEBUG_FS)]
-> +            if let Some(parent) = &self.0 {
-> +                // SAFETY: Because data derives from a scope, and our entry will be dropped before
-> +                // the data is dropped, it is guaranteed to outlive the entry we return.
-> +                unsafe { Entry::dynamic_file(name, parent.clone(), data, file_ops) }
-> +            } else {
-> +                Entry::empty()
-> +            }
-> +        });
-> +        try_pin_init! {
-> +            File {
-> +                scope <- scope
-> +            } ? E
-> +        }
-> +    }
-> +
->      /// Create a new directory in DebugFS at the root.
->      ///
->      /// # Examples
-> @@ -79,4 +113,116 @@ pub fn new(name: &CStr) -> Self {
->      pub fn subdir(&self, name: &CStr) -> Self {
->          Dir::create(name, Some(self))
->      }
-> +
-> +    /// Creates a read-only file in this directory.
-> +    ///
-> +    /// The file's contents are produced by invoking [`Writer::write`] on the value initialized by
-> +    /// `data`.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// # use kernel::c_str;
-> +    /// # use kernel::debugfs::Dir;
-> +    /// # use kernel::prelude::*;
-> +    /// # let dir = Dir::new(c_str!("my_debugfs_dir"));
-> +    /// let file = KBox::pin_init(dir.read_only_file(c_str!("foo"), 200), GFP_KERNEL)?;
-> +    /// // "my_debugfs_dir/foo" now contains the number 200.
-> +    /// // The file is removed when `file` is dropped.
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn read_only_file<'a, T, E: 'a>(
-> +        &'a self,
-> +        name: &'a CStr,
-> +        data: impl PinInit<T, E> + 'a,
-> +    ) -> impl PinInit<File<T>, E> + 'a
-> +    where
-> +        T: Writer + Send + Sync + 'static,
-> +    {
-> +        let file_ops = &<T as ReadFile<_>>::FILE_OPS;
-> +        self.create_file(name, data, file_ops)
-> +    }
-> +}
-> +
-> +#[pin_data]
-> +/// Handle to a DebugFS scope, which ensures that attached `data` will outlive the provided
-> +/// [`Entry`] without moving.
-> +/// Currently, this is used to back [`File`] so that its `read` and/or `write` implementations
-> +/// can assume that their backing data is still alive.
-> +struct Scope<T> {
-> +    // This order is load-bearing for drops - `_entry` must be dropped before `data`.
-> +    #[cfg(CONFIG_DEBUG_FS)]
-> +    _entry: Entry,
-> +    #[pin]
-> +    data: T,
-> +    // Even if `T` is `Unpin`, we still can't allow it to be moved.
-> +    #[pin]
-> +    _pin: PhantomPinned,
-> +}
-> +
-> +#[pin_data]
-> +/// Handle to a DebugFS file, owning its backing data.
-> +///
-> +/// When dropped, the DebugFS file will be removed and the attached data will be dropped.
-> +pub struct File<T> {
-> +    #[pin]
-> +    scope: Scope<T>,
-> +}
-> +
-> +#[cfg(not(CONFIG_DEBUG_FS))]
-> +impl<'b, T: 'b> Scope<T> {
-> +    fn new<E: 'b, F>(data: impl PinInit<T, E> + 'b, init: F) -> impl PinInit<Self, E> + 'b
-> +    where
-> +        F: for<'a> FnOnce(&'a T) -> Entry + 'b,
-> +    {
-> +        try_pin_init! {
-> +            Self {
-> +                data <- data,
-> +                _pin: PhantomPinned
-> +            } ? E
-> +        }
-> +        .pin_chain(|scope| {
-> +            init(&scope.data);
-> +            Ok(())
-> +        })
-> +    }
-> +}
-> +
-> +#[cfg(CONFIG_DEBUG_FS)]
-> +impl<'b, T: 'b> Scope<T> {
-> +    fn entry_mut(self: Pin<&mut Self>) -> &mut Entry {
-> +        // SAFETY: _entry is not structurally pinned.
-> +        unsafe { &mut Pin::into_inner_unchecked(self)._entry }
-> +    }
-> +
-> +    fn new<E: 'b, F>(data: impl PinInit<T, E> + 'b, init: F) -> impl PinInit<Self, E> + 'b
-> +    where
-> +        F: for<'a> FnOnce(&'a T) -> Entry + 'b,
-> +    {
-> +        try_pin_init! {
-> +            Self {
-> +                _entry: Entry::empty(),
-> +                data <- data,
-> +                _pin: PhantomPinned
-> +            } ? E
-> +        }
-> +        .pin_chain(|scope| {
-> +            *scope.entry_mut() = init(&scope.data);
-> +            Ok(())
-> +        })
-> +    }
-> +}
-> +
-> +impl<T> Deref for Scope<T> {
-> +    type Target = T;
-> +    fn deref(&self) -> &T {
-> +        &self.data
-> +    }
-> +}
-> +
-> +impl<T> Deref for File<T> {
-> +    type Target = T;
-> +    fn deref(&self) -> &T {
-> +        &self.scope
-> +    }
->  }
-> diff --git a/rust/kernel/debugfs/entry.rs b/rust/kernel/debugfs/entry.rs
-> index d2fba0e65e20e954e2a33e776b872bac4adb12e8..227fa50b7a79aeab49779e54b8c4241f455777c3 100644
-> --- a/rust/kernel/debugfs/entry.rs
-> +++ b/rust/kernel/debugfs/entry.rs
-> @@ -1,6 +1,8 @@
->  // SPDX-License-Identifier: GPL-2.0
->  // Copyright (C) 2025 Google LLC.
->  
-> +use crate::debugfs::file_ops::FileOps;
-> +use crate::ffi::c_void;
->  use crate::str::CStr;
->  use crate::sync::Arc;
->  
-> @@ -40,6 +42,46 @@ pub(crate) fn dynamic_dir(name: &CStr, parent: Option<Arc<Self>>) -> Self {
->          }
->      }
->  
-> +    /// # Safety
-> +    ///
-> +    /// * `data` must outlive the returned `Entry`.
-> +    pub(crate) unsafe fn dynamic_file<T>(
-> +        name: &CStr,
-> +        parent: Arc<Self>,
-> +        data: &T,
-> +        file_ops: &'static FileOps<T>,
-> +    ) -> Self {
-> +        // SAFETY: The invariants of this function's arguments ensure the safety of this call.
-> +        // * `name` is a valid C string by the invariants of `&CStr`.
-> +        // * `parent.as_ptr()` is a pointer to a valid `dentry` by invariant.
-> +        // * The caller guarantees that `data` will outlive the returned `Entry`.
-> +        // * The guarantees on `FileOps` assert the vtable will be compatible with the data we have
-> +        //   provided.
-> +        let entry = unsafe {
-> +            bindings::debugfs_create_file_full(
-> +                name.as_char_ptr(),
-> +                file_ops.mode(),
-> +                parent.as_ptr(),
-> +                core::ptr::from_ref(data) as *mut c_void,
-> +                core::ptr::null(),
-> +                &**file_ops,
-> +            )
-> +        };
-> +
-> +        Entry {
-> +            entry,
-> +            _parent: Some(parent),
-> +        }
-> +    }
-> +
-> +    /// Constructs a placeholder DebugFS [`Entry`].
-> +    pub(crate) fn empty() -> Self {
-> +        Self {
-> +            entry: core::ptr::null_mut(),
-> +            _parent: None,
-> +        }
-> +    }
-> +
->      /// Returns the pointer representation of the DebugFS directory.
->      ///
->      /// # Guarantees
-> diff --git a/rust/kernel/debugfs/file_ops.rs b/rust/kernel/debugfs/file_ops.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..c2fbef96580eaa2fab7cc8c1ba559c3284d12e1b
-> --- /dev/null
-> +++ b/rust/kernel/debugfs/file_ops.rs
-> @@ -0,0 +1,128 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (C) 2025 Google LLC.
-> +
-> +use super::Writer;
-> +use crate::prelude::*;
-> +use crate::seq_file::SeqFile;
-> +use crate::seq_print;
-> +use core::fmt::{Display, Formatter, Result};
-> +use core::marker::PhantomData;
-> +
-> +#[cfg(CONFIG_DEBUG_FS)]
-> +use core::ops::Deref;
-> +
-> +/// # Invariant
-> +///
-> +/// `FileOps<T>` will always contain an `operations` which is safe to use for a file backed
-> +/// off an inode which has a pointer to a `T` in its private data that is safe to convert
-> +/// into a reference.
-> +pub(super) struct FileOps<T> {
-> +    #[cfg(CONFIG_DEBUG_FS)]
-> +    operations: bindings::file_operations,
-> +    #[cfg(CONFIG_DEBUG_FS)]
-> +    mode: u16,
-> +    _phantom: PhantomData<T>,
-> +}
-> +
-> +impl<T> FileOps<T> {
-> +    /// # Safety
-> +    ///
-> +    /// The caller asserts that the provided `operations` is safe to use for a file whose
-> +    /// inode has a pointer to `T` in its private data that is safe to convert into a reference.
-> +    const unsafe fn new(operations: bindings::file_operations, mode: u16) -> Self {
-> +        Self {
-> +            #[cfg(CONFIG_DEBUG_FS)]
-> +            operations,
-> +            #[cfg(CONFIG_DEBUG_FS)]
-> +            mode,
-> +            _phantom: PhantomData,
-> +        }
-> +    }
-> +
-> +    #[cfg(CONFIG_DEBUG_FS)]
-> +    pub(crate) const fn mode(&self) -> u16 {
-> +        self.mode
-> +    }
-> +}
-> +
-> +#[cfg(CONFIG_DEBUG_FS)]
-> +impl<T> Deref for FileOps<T> {
-> +    type Target = bindings::file_operations;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.operations
-> +    }
-> +}
-> +
-> +struct WriterAdapter<T>(T);
-> +
-> +impl<'a, T: Writer> Display for WriterAdapter<&'a T> {
-> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-> +        self.0.write(f)
-> +    }
-> +}
-> +
-> +/// Implements `open` for `file_operations` via `single_open` to fill out a `seq_file`.
-> +///
-> +/// # Safety
-> +///
-> +/// * `inode`'s private pointer must point to a value of type `T` which will outlive the `inode`
-> +///   and will not have any unique references alias it during the call.
-> +/// * `file` must point to a live, not-yet-initialized file object.
-> +unsafe extern "C" fn writer_open<T: Writer + Sync>(
-> +    inode: *mut bindings::inode,
-> +    file: *mut bindings::file,
-> +) -> c_int {
-> +    // SAFETY: The caller ensures that `inode` is a valid pointer.
-> +    let data = unsafe { (*inode).i_private };
-> +    // SAFETY:
-> +    // * `file` is acceptable by caller precondition.
-> +    // * `print_act` will be called on a `seq_file` with private data set to the third argument,
-> +    //   so we meet its safety requirements.
-> +    // * The `data` pointer passed in the third argument is a valid `T` pointer that outlives
-> +    //   this call by caller preconditions.
-> +    unsafe { bindings::single_open(file, Some(writer_act::<T>), data) }
-> +}
-> +
-> +/// Prints private data stashed in a seq_file to that seq file.
-> +///
-> +/// # Safety
-> +///
-> +/// `seq` must point to a live `seq_file` whose private data is a valid pointer to a `T` which may
-> +/// not have any unique references alias it during the call.
-> +unsafe extern "C" fn writer_act<T: Writer + Sync>(
-> +    seq: *mut bindings::seq_file,
-> +    _: *mut c_void,
-> +) -> c_int {
-> +    // SAFETY: By caller precondition, this pointer is valid pointer to a `T`, and
-> +    // there are not and will not be any unique references until we are done.
-> +    let data = unsafe { &*((*seq).private.cast::<T>()) };
-> +    // SAFETY: By caller precondition, `seq_file` points to a live `seq_file`, so we can lift
-> +    // it.
-> +    let seq_file = unsafe { SeqFile::from_raw(seq) };
-> +    seq_print!(seq_file, "{}", WriterAdapter(data));
-> +    0
-> +}
-> +
-> +// Work around lack of generic const items.
-> +pub(crate) trait ReadFile<T> {
-> +    const FILE_OPS: FileOps<T>;
-> +}
-> +
-> +impl<T: Writer + Sync> ReadFile<T> for T {
-> +    const FILE_OPS: FileOps<T> = {
-> +        let operations = bindings::file_operations {
-> +            read: Some(bindings::seq_read),
-> +            llseek: Some(bindings::seq_lseek),
-> +            release: Some(bindings::single_release),
-> +            open: Some(writer_open::<Self>),
-> +            // SAFETY: `file_operations` supports zeroes in all fields.
-> +            ..unsafe { core::mem::zeroed() }
-> +        };
-> +        // SAFETY: `operations` is all stock `seq_file` implementations except for `writer_open`.
-> +        // `open`'s only requirement beyond what is provided to all open functions is that the
-> +        // inode's data pointer must point to a `T` that will outlive it, which matches the
-> +        // `FileOps` requirements.
-> +        unsafe { FileOps::new(operations, 0o400) }
-> +    };
-> +}
-> diff --git a/rust/kernel/debugfs/traits.rs b/rust/kernel/debugfs/traits.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..0e6e461324de42a3d80b692264d50e78a48f561d
-> --- /dev/null
-> +++ b/rust/kernel/debugfs/traits.rs
-> @@ -0,0 +1,33 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (C) 2025 Google LLC.
-> +
-> +//! Traits for rendering or updating values exported to DebugFS.
-> +
-> +use crate::sync::Mutex;
-> +use core::fmt::{self, Debug, Formatter};
-> +
-> +/// A trait for types that can be written into a string.
-> +///
-> +/// This works very similarly to `Debug`, and is automatically implemented if `Debug` is
-> +/// implemented for a type. It is also implemented for any writable type inside a `Mutex`.
-> +///
-> +/// The derived implementation of `Debug` [may
-> +/// change](https://doc.rust-lang.org/std/fmt/trait.Debug.html#stability)
-> +/// between Rust versions, so if stability is key for your use case, please implement `Writer`
-> +/// explicitly instead.
-> +pub trait Writer {
-> +    /// Formats the value using the given formatter.
-> +    fn write(&self, f: &mut Formatter<'_>) -> fmt::Result;
-> +}
-> +
-> +impl<T: Writer> Writer for Mutex<T> {
-> +    fn write(&self, f: &mut Formatter<'_>) -> fmt::Result {
-> +        self.lock().write(f)
-> +    }
-> +}
-> +
-> +impl<T: Debug> Writer for T {
-> +    fn write(&self, f: &mut Formatter<'_>) -> fmt::Result {
-> +        writeln!(f, "{self:?}")
-> +    }
-> +}
+> leaks the VM_BO.
 
-I tried using this in a "tiny" test module I had written, and I get the
-following build error:
+I'm not following. Yes there's going to be a
+drm_gpuva_unlink_defer_put() that skips the
 
-   --> samples/rust/rust_debugfs2.rs:64:53
-    |
-64  |         _file = root.read_only_file(c_str!("name"), &hw_soc_info.name);
-    |                      --------------                 ^^^^^^^^^^^^^^^^^ expected `&u32`, found `&&CStr`
-    |                      |
-    |                      arguments to this method are incorrect
-    |
-    = note: expected reference `&u32`
-               found reference `&&'static kernel::prelude::CStr`
+        va->vm_bo = NULL;
+        drm_gpuvm_bo_put(vm_bo);
 
-I'm trying to "just" print a CStr, which is defined as:
+and adds the gpuva to a list for deferred destruction. But I'm not
+seeing where the leak is. Once the gpuva has been put in this list,
+there should be no existing component referring to this object, and it's
+going to be destroyed or recycled, but not re-used as-is.
 
-struct HwSocInfo {
-    id: u32,
-    ver: u32,
-    raw_id: u32,
-    foundry: u32,
-    name: &'static CStr,
-}
 
-Is this just a "user is holding it wrong" error on my side, or can this api not
-handle CStr values?
+> Sounds a bit messy, but my concern is really about the below:
+> 
+> > That means we don't immediately remove the vm_bo from the gem.gpuva
+> > list, but the gpuva list in the vm_bo will be empty. I guess you already
+> > have to handle such vm_bos anyway since you can already have an empty
+> > vm_bo in between vm_bo_obtain() and the first call to gpuva_link().
+> >
+> > One disadvantage is that we might end up preparing or unevicting a GEM
+> > object that doesn't have any VAs left, which the current approach
+> > avoids.  
+> 
+> Yeah, we really want to avoid that.
 
-thanks,
+I think I agree that we want to avoid it, but I'm not too sure about
+the solution that involves playing with vm_bo::kref. I'm particularly
+worried by the fact drivers can iterate the evict/extobj lists
+directly, and can thus see objects scheduled for destruction. I know
+there's a gpuvm_bo_is_dead() helper, and drivers should be aware of the
+risks, but I don't feel comfortable about this.
 
-greg k-h
+And since we've mentioned the possibility of having to support
+gpuva destruction deferral too, I'm wondering it wouldn't be cleaner
+to just go for this approach from the start (gpuva owns a ref to a
+vm_bo, which gets released when the gpuva object is released).
