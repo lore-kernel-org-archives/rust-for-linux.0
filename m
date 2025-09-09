@@ -1,243 +1,160 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A496274B29
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Sep 2025 16:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0C02C0273;
+	Tue,  9 Sep 2025 16:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757435573; cv=none; b=r1Cv72IqZh9o44u3NziZvT7BTbxaEt4zhGbJ5e5skOwh8HlMGBEtFNAX6+r0RhfR3UZ9n/fEA38iu3qiLb2oB4fANzyeSg2V/7T03++eoab6hhQwYelPPx/V1T1UrvKed4egCOxGsKlMZm/yUNQEwc8wty28UdaJRV4/JZSPnxc=
+	t=1757436049; cv=none; b=qqGNpky2aR1cB9YzPIf3VDd900l9dabzO/6GUmaD3d+1gJ2ySa6IrKsMwB5MEeim1Fop6G2XVXnFy8OJfUJrx4qSkAM1grKZcOzbK1WffeShH6zhgnMCM40mx1NRpP+qNGSkVSeFqDwDgJQwMO0LkchHG+mHnw/7wE4YTNmL2O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757435573; c=relaxed/simple;
-	bh=Xr5CK1P1XT9HWsAVQ36j0qp4IoJaLvfcdx8ETfqbHlU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ItLxfdCmLSBCl3CtxI77hjoBTr1qLnZFZJcaKrTSIud62dGYhTPiVlG1ebXVbxgifq0ImCr6TrDZjHOwEP/mwYhP/UStQuQ6++jke9XQl1v8O0Tp0Sa20qpKZKw51+tQQdohpA8ZB2SSR7dHfL5EtODPARQflUJh/LMILZV9waw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=TKbJWLwd; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+	s=arc-20240116; t=1757436049; c=relaxed/simple;
+	bh=DsmtwckixLME0r6rlgitk45MeFqcv1jMLe+x0m9pdYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YllqO8HEihRh89rNUgfgW6YBu4aK9OCvy8kGLPhgwqPieWRMKRCznf6g/loLuwRZanKMQq3stDGZqLxsuNV9dxAwa+6szSkHabkmt2raBVbnzpEpg2t0EKnjAh1M3ccj/dcba3XI4lYYFOuzPpegnYa2sBXlj1+Iv3gWmbYWpdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KzJVOmnf; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="TKbJWLwd"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7728ec910caso391642b3a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 09:32:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KzJVOmnf"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8072bb631daso539383585a.1;
+        Tue, 09 Sep 2025 09:40:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1757435571; x=1758040371; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RQ1B1pGE+pkvFzuUpWI8zKRsZeCqGkc9CUgwCxkxLiw=;
-        b=TKbJWLwdnlPJdeZ203S9yixdFsuGDCG3jj+I6DcsZRWsxSZ76ymjEC80PrCXSURifh
-         nZctyuPSoQs6Y3sf2xaBA/kmbxFJKwwNsa1dwJVn/xw7ifNdhogM+eB1iHvB+z+SpQH/
-         DbYiyEc2rkUlMCrbtcnTGbRNmwn7cfaxGlkuZCxkhHMy+MfzOw9xIuOrPIaX+YzmZedF
-         T9QeKSShAwg7nmNGGNcgFEM6rkl0lOZDwCMtlOOjsdCvf7Y5680sx/WTKRMM3fnvPy93
-         qmMcTjDkktL+ZdyPOjBO1k5kQYFIKM2BlgeEE1YC1BXJLJHHI1X3ctUKhl8mbPW0oUh4
-         nkXw==
+        d=gmail.com; s=20230601; t=1757436047; x=1758040847; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=gS7mM/4N0grbgruYQEKrI9zVY9v9+ZQYpAxSRL8zcLo=;
+        b=KzJVOmnfXUl9lv6S1K7eVADbmdW3ZE5deBVZN6mt51eGRWxH6NAbITpW6UZguAZeAa
+         jRTQR/D01Zb1skQPyqt7Bu/4NZ/FuGOLyD+ylJFELBVq4cypPvGMwZx3yuotdVcU2d0x
+         dqip9u0u9OfjtOBaqVpk6RySS/Agkfpi9M2mRBvASP8v8vDE3M/ZvdU538YLbbBqjmvx
+         zRyGonopDG0cyM9UMR9GH0F741+jJZB7tWuau9BDWE4mZQq8XMdKr2EDhWBfv96Im55J
+         LZkMpUCUGhA70tpOv6vS/4ii/5f3uh2kyERyFpZOErlk24Y6qZBxGQrli9FLUd3szbhe
+         TLSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757435571; x=1758040371;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RQ1B1pGE+pkvFzuUpWI8zKRsZeCqGkc9CUgwCxkxLiw=;
-        b=TYh5jlu1enKKhV99rNHashG6JV0eAcDicqI5TSgLRuB97jfDOotSxVOUmXjrEleU0w
-         82IJRezV1V6nfYIipG1NP7fzO/5NjaJw0H9ZjKVLrzQbCsNthvNpui8U+huNSz3mwZMA
-         GVJtIHkzqHk+gKWmtDu/Rm6ly1U0vizUPybwZYjWScDpBSlsaDFtevr/268XttaLDVZd
-         Q4V8SN1HRUEPG8OGoR3On5SKrYkMknccq+4WAz/R4opwAOL3Q5DK6/p+2L8fhbTP1zF0
-         DP6gMS3eEmcLcNKp67TS8oJCetM6sZPOGnVnaAgDF4dKeeP3TyVYPRZ1iInDhKw3S6Gb
-         SDog==
-X-Forwarded-Encrypted: i=1; AJvYcCWb2b58537oETxLrz+FOjunEqBkFKg3YaI7OluZRqvW8rnIlh25K9VyyRNgGUpCx/ok7Jc5zF+hl1OIGdaSFA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaRnA3NoK7Qx7DEDMjf5q5d9ojKXnFoZGlu7t+l9jzkuXCA/4R
-	eXd3D8PX2Qljw5RFctIwm3vydULUGmsrIC/3i7o/K0vcZH6RjA7ObCueCWrAeBBl1Dc+ITysHFr
-	A95EOfWNxkHH51Yhi50X17uwWSQVdHZMwAZ1LJUOeKA==
-X-Gm-Gg: ASbGnctzaxykHiHhI2KKuNVV15RjSgOWEnbFYy7AjRbXs5OcIkczDNwl+tCdJ8uKhz8
-	yeL0W7gkHWkSWKRQBkNvZ8pgnwwJHJcr3DxCf5Xsne74iD6MPSXUrenC4dF32WNlr0lcwPcZcC/
-	fIxY5ua5INrMb6sXdyR3Ix4++TQI8JuCSW7Xd2kQJSfB8D1jzYA476Iw3tGggVefjvEPdmbw3xm
-	DUEClePttkYts8sG2c=
-X-Google-Smtp-Source: AGHT+IFOHORFtmcadaEdXDJCDsNUJ5Id6tlwIgyVdiSH9C3Gd4752s8eNPUfJ8V45hIoag4PqOtmYWXrNrLFAMvFs9k=
-X-Received: by 2002:a17:903:184:b0:253:a668:b638 with SMTP id
- d9443c01a7336-253a668b76fmr80815055ad.2.1757435570778; Tue, 09 Sep 2025
- 09:32:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757436047; x=1758040847;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gS7mM/4N0grbgruYQEKrI9zVY9v9+ZQYpAxSRL8zcLo=;
+        b=MPBRpZiPUcH0J12ylIZ90zd9V0Lmn2oFfHsX7J2aNjmvQos2edTD4nYii2avot4s2q
+         CyPbLivnvrZB8Cx+f2ywk2L0NrX1FYW1gJZGhFYeHaqYER/9w72R5kWCd9HVLS1V3vd9
+         KvQ6b4TQar/zyA//BFNR4Jgbr3/x4ytte+y4B/3enPKD+wE/t91XO0KGS2jp3pu4/eBs
+         N97x+xiGhpaE2p20m5FdfDUQqbEPN9MlxNzrez95W6bhBb+b1i2sdWyMW9M2ZFoEFinL
+         Vt/BUfPUQD2I14CFfpsFtfIPGOpr6VUtco35GVzNrGH7xrB/fBA+m5JkXmiyGQPbHEpw
+         1dOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV37Wet5Xhrcuho62dBaN7mY9GCALKhTsfKmnVpL6s37Mqtsvh2wUtOto1Ridw8IVvJ2rxk4E+Gk45lqzaj3VE=@vger.kernel.org, AJvYcCXFURfZs7+xNJsDpTLYq5SYASzE9kN6qtZ7Y531cGuEECiA6j8xW3zN6GO9Y0zC/YOZqwj2G134yLLfeAQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynEfCxB/AUZccHmFOUFz8hUIf4KQ2bWhoHsMUjPB4lq4x4KgYq
+	iZintZl+nkCly21qcMdOX3jvbfd85FMmg1/leb8EPkosmUJ0RElcHiel
+X-Gm-Gg: ASbGncv4xmYuBN8VhL/idl1aBiJ7WR12x2K1mEKZpjeIONbRZqIkXGbfSdK5H9o1VJx
+	sIpMlqtHCOt1I2YbGR9IIRNmIcsyk3FuG6FnMHYiygeahdIUYKhuiPhK8urJwrougqV49O+6/KW
+	vT79GT8IcCZSRyM9d1pxPYLFxMvSJLKGjMmRBlCxVlbUGif/r4XvL1Yx6Gu+/qw7nUSV8fgGPit
+	mAC0RuOMRYN+Xk9HGcdFh0vSMO3WDRJLr6OgSRSkw67W5ljM+oBO+q24rpQ7aVHXSUZUkH9gq9P
+	JRYejtidn2qf7SBWTxWgDCJlCY0nXkHXaIQic3KVgTecsFWAUfprcNnbAfTbEk5pJZWg1BdfKAL
+	os7YKYaGYI+XQUEZhd/kORk7EKU6S0d7zV2v8GdDUYKVbRn/+m1fMXkabbooe8Q/tyFCXQu4f2Y
+	pkTSf3W4A6MKVuc4lm6b/TuAP1cLVre/el3g==
+X-Google-Smtp-Source: AGHT+IFjLJFh+D73rZbvKHmeUI3jgKWvh2hB45V6RASmn5NE8C4AppqtKSkLOAyb/RtS3DIf77tPWA==
+X-Received: by 2002:a05:620a:700c:b0:812:cf99:edba with SMTP id af79cd13be357-813bdf6871emr1295216885a.10.1757436046497;
+        Tue, 09 Sep 2025 09:40:46 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-81b6019f4b3sm143442685a.70.2025.09.09.09.40.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 09:40:46 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 94DC3F40068;
+	Tue,  9 Sep 2025 12:40:45 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 09 Sep 2025 12:40:45 -0400
+X-ME-Sender: <xms:jVjAaK4lghnqiRRKKMw0Wti2mFuw9LirmZEvCeX-TyxvrFvm8xWyCg>
+    <xme:jVjAaPv-chdb6mT3GjVFTdvihBoArbCS_zlfx8Ib4_LWASliTKeh2aAk86IpO19NW
+    5HcyBRL3LlXMDzjHg>
+X-ME-Received: <xmr:jVjAaP421yGis2jHQkwQaRxboA84tBSDd-2xnLamcfXxutLQTtY8677LqxcQpRuvVl3gyCElikfOrVm8FVE-Zn0GU7fjVpMM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdelvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpedtgeehleevffdujeffgedvlefghffhleekieeifeegveetjedvgeevueffieeh
+    hfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprh
+    gtphhtthhopehlghhirhgufihoohgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghr
+    ohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdp
+    rhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorh
+    hnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinhes
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:jVjAaD2jXU4ZLbl70b0K8CLNiTFVMp-glZKxfa2vVCQSWwpM714k0w>
+    <xmx:jVjAaCjCbRQYoWxfAzrhu1gsLqbFlYYyDGc0hVOzJH30VDPfbo1uuw>
+    <xmx:jVjAaDoL71yOOPTjHQGX0wSfsPFZz9qNldu18HhoYue8POIdmM-XyQ>
+    <xmx:jVjAaFOz51HsLJ2oGZpd1_eJe44brjzShrZrN6gesyZA38QoRMW6AQ>
+    <xmx:jVjAaP328m_06IL6ykN9tla-YYKZWOQDh1Qj-Ybm-HXJXITpgKya4Fcl>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 9 Sep 2025 12:40:45 -0400 (EDT)
+Date: Tue, 9 Sep 2025 09:40:44 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] rust: regulator: add devm_enable and
+ devm_enable_optional
+Message-ID: <aMBYjIo2O77Dp2VV@tardis-2.local>
+References: <20250908-regulator-remove-dynamic-v2-0-e575ae2cde6a@collabora.com>
+ <20250908-regulator-remove-dynamic-v2-2-e575ae2cde6a@collabora.com>
+ <aL_PwXck1HsLp5wH@tardis-2.local>
+ <AA8FC1A7-EE88-44FA-A0A9-A3EA5529B10D@collabora.com>
+ <aMBJ805QjQcPdRol@tardis-2.local>
+ <8CA69D19-754C-43F5-96CD-B7060C68B025@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250822125555.8620-1-sidong.yang@furiosa.ai> <20250822125555.8620-3-sidong.yang@furiosa.ai>
- <CADUfDZpsePAbEON_90frzrPCPBt-a=1sW2Q=i8BGS=+tZhudFA@mail.gmail.com>
- <aLbFiChBnTNLBAyV@sidongui-MacBookPro.local> <CADUfDZpPvj3R7kzWC9bQVV0iuCBOnKsNUFn=B3ivf7De5wCB8g@mail.gmail.com>
- <aLxFAamglufhUvq0@sidongui-MacBookPro.local> <CADUfDZruwQyOcAeOXkXMLX+_HgOBeYdHUmgnJdT5pGQEmXt9+g@mail.gmail.com>
- <aMA8_MuU0V-_ja5O@sidongui-MacBookPro.local>
-In-Reply-To: <aMA8_MuU0V-_ja5O@sidongui-MacBookPro.local>
-From: Caleb Sander Mateos <csander@purestorage.com>
-Date: Tue, 9 Sep 2025 09:32:37 -0700
-X-Gm-Features: Ac12FXzQvujRvBk7BrdPEq7wsRrBxTuBzt1uAroiqCSXJie2MYSfaQTK2iLj2rc
-Message-ID: <CADUfDZppdnM2QAeX37OmZsXqd7sO7KvyLnNPUYOgLpWMb+FpoQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 2/5] io_uring/cmd: zero-init pdu in
- io_uring_cmd_prep() to avoid UB
-To: Sidong Yang <sidong.yang@furiosa.ai>
-Cc: Jens Axboe <axboe@kernel.dk>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8CA69D19-754C-43F5-96CD-B7060C68B025@collabora.com>
 
-On Tue, Sep 9, 2025 at 7:43=E2=80=AFAM Sidong Yang <sidong.yang@furiosa.ai>=
- wrote:
->
-> On Mon, Sep 08, 2025 at 12:45:58PM -0700, Caleb Sander Mateos wrote:
-> > On Sat, Sep 6, 2025 at 7:28=E2=80=AFAM Sidong Yang <sidong.yang@furiosa=
-.ai> wrote:
-> > >
-> > > On Tue, Sep 02, 2025 at 08:31:00AM -0700, Caleb Sander Mateos wrote:
-> > > > On Tue, Sep 2, 2025 at 3:23=E2=80=AFAM Sidong Yang <sidong.yang@fur=
-iosa.ai> wrote:
-> > > > >
-> > > > > On Mon, Sep 01, 2025 at 05:34:28PM -0700, Caleb Sander Mateos wro=
-te:
-> > > > > > On Fri, Aug 22, 2025 at 5:56=E2=80=AFAM Sidong Yang <sidong.yan=
-g@furiosa.ai> wrote:
-> > > > > > >
-> > > > > > > The pdu field in io_uring_cmd may contain stale data when a r=
-equest
-> > > > > > > object is recycled from the slab cache. Accessing uninitializ=
-ed or
-> > > > > > > garbage memory can lead to undefined behavior in users of the=
- pdu.
-> > > > > > >
-> > > > > > > Ensure the pdu buffer is cleared during io_uring_cmd_prep() s=
-o that
-> > > > > > > each command starts from a well-defined state. This avoids ex=
-posing
-> > > > > > > uninitialized memory and prevents potential misinterpretation=
- of data
-> > > > > > > from previous requests.
-> > > > > > >
-> > > > > > > No functional change is intended other than guaranteeing that=
- pdu is
-> > > > > > > always zero-initialized before use.
-> > > > > > >
-> > > > > > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
-> > > > > > > ---
-> > > > > > >  io_uring/uring_cmd.c | 1 +
-> > > > > > >  1 file changed, 1 insertion(+)
-> > > > > > >
-> > > > > > > diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
-> > > > > > > index 053bac89b6c0..2492525d4e43 100644
-> > > > > > > --- a/io_uring/uring_cmd.c
-> > > > > > > +++ b/io_uring/uring_cmd.c
-> > > > > > > @@ -203,6 +203,7 @@ int io_uring_cmd_prep(struct io_kiocb *re=
-q, const struct io_uring_sqe *sqe)
-> > > > > > >         if (!ac)
-> > > > > > >                 return -ENOMEM;
-> > > > > > >         ioucmd->sqe =3D sqe;
-> > > > > > > +       memset(&ioucmd->pdu, 0, sizeof(ioucmd->pdu));
-> > > > > >
-> > > > > > Adding this overhead to every existing uring_cmd() implementati=
-on is
-> > > > > > unfortunate. Could we instead track the initialized/uninitializ=
-ed
-> > > > > > state by using different types on the Rust side? The io_uring_c=
-md
-> > > > > > could start as an IoUringCmd, where the PDU field is MaybeUnini=
-t,
-> > > > > > write_pdu<T>() could return a new IoUringCmdPdu<T> that guarant=
-ees the
-> > > > > > PDU has been initialized.
-> > > > >
-> > > > > I've found a flag IORING_URING_CMD_REISSUE that we could initiali=
-ze
-> > > > > the pdu. In uring_cmd callback, we can fill zero when it's not re=
-issued.
-> > > > > But I don't know that we could call T::default() in miscdevice. I=
-f we
-> > > > > make IoUringCmdPdu<T>, MiscDevice also should be MiscDevice<T>.
-> > > > >
-> > > > > How about assign a byte in pdu for checking initialized? In uring=
-_cmd(),
-> > > > > We could set a byte flag that it's not initialized. And we could =
-return
-> > > > > error that it's not initialized in read_pdu().
-> > > >
-> > > > Could we do the zero-initialization (or T::default()) in
-> > > > MiscdeviceVTable::uring_cmd() if the IORING_URING_CMD_REISSUE flag
-> > > > isn't set (i.e. on the initial issue)? That way, we avoid any
-> > > > performance penalty for the existing C uring_cmd() implementations.
-> > > > I'm not quite sure what you mean by "assign a byte in pdu for check=
-ing
-> > > > initialized".
-> > >
-> > > Sure, we could fill zero when it's the first time uring_cmd called wi=
-th
-> > > checking the flag. I would remove this commit for next version. I als=
-o
-> > > suggests that we would provide the method that read_pdu() and write_p=
-du().
-> > > In read_pdu() I want to check write_pdu() is called before. So along =
-the
-> > > 20 bytes for pdu, maybe we could use a bytes for the flag that pdu is
-> > > initialized?
-> >
-> > Not sure what you mean about "20 bytes for pdu".
-> > It seems like it would be preferable to enforce that write_pdu() has
-> > been called before read_pdu() using the Rust type system instead of a
-> > runtime check. I was thinking a signature like fn write_pdu(cmd:
-> > IoUringCmd, value: T) -> IoUringCmdPdu<T>. Do you feel there's a
-> > reason that wouldn't work and a runtime check would be necessary?
->
-> I didn't think about make write_pdu() to return IoUringCmdPdu<T> before.
-> I think it's good way to pdu is safe without adding a new generic param f=
-or
-> MiscDevice. write_pdu() would return IoUringCmdPdu<T> and it could call
-> IoUringCmdPdu<T>::pdu(&mut self) -> &mut T safely maybe.
+On Tue, Sep 09, 2025 at 01:12:51PM -0300, Daniel Almeida wrote:
+> 
+[...]
+> >>> These two functions are already EXPORT_SYMBOL_GPL(), so you won't need
+> >>> to add rust_helper for them. Creating rust_helper_*() for them will just
+> >>> export additional symbols.
+> >> 
+> >> These are inlined (stubbed) if CONFIG_REGULATOR is not set, so we need the
+> >> helpers to get around that, IIUC.
+> >> 
+> > 
+> > Well, then the question is why we want to compiler regulator.rs if
+> > CONFIG_REGULATOR=n? Shouldn't we do:
+> 
+> Yes, we do want to compile regulator .rs. There´s been prior discussion on
+> this (see [0] below, but also [1]).
+> 
 
-Yes, that's what I was thinking.
+Thanks for the pointers. Well I guess we really need helper inlining
+badly ;-)
 
->
-> >
-> > >
-> > > But maybe I would introduce a new struct that has Pin<&mut IoUringCmd=
-> and
-> > > issue_flags. How about some additional field for pdu is initialized l=
-ike below?
-> > >
-> > > struct IoUringCmdArgs {
-> > >   ioucmd: Pin<&mut IoUringCmd>,
-> > >   issue_flags: u32,
-> > >   pdu_initialized: bool,
-> > > }
-> >
-> > One other thing I realized is that issue_flags should come from the
-> > *current* context rather than the context the uring_cmd() callback was
-> > called in. For example, if io_uring_cmd_done() is called from task
-> > work context, issue_flags should match the issue_flags passed to the
-> > io_uring_cmd_tw_t callback, not the issue_flags originally passed to
-> > the uring_cmd() callback. So it probably makes more sense to decouple
-> > issue_flags from the (owned) IoUringCmd. I think you could pass it by
-> > reference (&IssueFlags) or with a phantom reference lifetime
-> > (IssueFlags<'_>) to the Rust uring_cmd() and task work callbacks to
-> > ensure it can't be used after those callbacks have returned.
->
-> I have had no idea about task work context. I agree with you that
-> it would be better to separate issue_flags from IoUringCmd. So,
-> IoUringCmdArgs would have a only field Pin<&mut IoUringCmd>?
+Regards,
+Boqun
 
-"Task work" is a mechanism io_uring uses to queue work to run on the
-thread that submitted an io_uring operation. It's basically a
-per-thread atomic queue of callbacks that the thread will process
-whenever it returns from the kernel to userspace (after a syscall or
-an interrupt). This is the context where asynchronous uring_cmd
-completions are generally processed (see
-io_uring_cmd_complete_in_task() and io_uring_cmd_do_in_task_lazy()). I
-can't speak to the history of why io_uring uses task work, but my
-guess would be that it provides a safe context to acquire the
-io_ring_ctx uring_lock mutex (e.g. nvme_uring_cmd_end_io() can be
-called from an interrupt handler, so it's not allowed to take a
-mutex). Processing all the task work at once also provides natural
-opportunities for batching.
-Yes, we probably don't need to bundle anything else with the
-IoUringCmd after all. As I mentioned earlier, I don't think Pin<&mut
-IoUringCmd> will work for uring_cmds that complete asynchronously, as
-they will need to outlive the uring_cmd() call. So uring_cmd() needs
-to transfer ownership of the struct io_uring_cmd.
-
-Best,
-Caleb
+> > 
+> > #[cfg(CONFIG_REGULATOR)]
+> > pub mod regulator
+> > 
+> > in rust/kernel/lib.rs?
+> 
+[...]
