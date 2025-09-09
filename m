@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804A1258EFB;
-	Tue,  9 Sep 2025 17:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFEF316911;
+	Tue,  9 Sep 2025 17:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757437367; cv=pass; b=n/NWr8+QlT4xNBSHEIZCjvDQDNbkpxUwXHPRT3zTsaNT3TER92jAVcb5uEvy68EQfQ6cA3atgRn6fW+lNSYNubB0ROSaV+qVZK+DJCCRY7xzPD/qI/QkGp+95CZYdAWiRn9uL+tAL1xRsqeuxaLku76yqr7jKiMqm1xDgRvreDE=
+	t=1757437467; cv=pass; b=YLF6GTMwd3obFwR7yL3kj4Ns0r72bSDViUUp09ttuiSKbBatINzm1YQ6Gq1etXA6s0ivrGiNFjerKg34x3vzp8TO57lhh/9ivnGTYY7Z7xbxU73Tvcl/55cFDYHvUaDylYZ2/dmnkh8gi3lMttQLBASjqFRekhoS7IO2gPVuJZE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757437367; c=relaxed/simple;
-	bh=COSvmSyevD9dcT8YVmVKsH1in6CKNyug3YbUQ0z2sr4=;
+	s=arc-20240116; t=1757437467; c=relaxed/simple;
+	bh=5dGQK8wJM38VE5tVHI9D9YwSya8XbhZ8wjwloKJ7eOI=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=OQF3FjfHvC4xzcVdLo5J6yReeaHyZBLDrCC4T7WI5bzbXl9KLOzdoNUuneHK4rcNGUygen4njFOrmPxDlJ1tyQME7L34cLJSb70uHDkGV9muVLNoQpzDi4JiskXVflumTuzpaw2Sk20iNe3KghLceY5EoYrpBpIv6vVGy3c3Tek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=T4qonAxI; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=U86rBSS983MD4Wj/Q9py3msEV2tkCpCp9mgsHQ2b9flhmlE20PnlsrMWmeiiNLtQfeyHGY+QbX7GYGHYWY7s80RRDwLS9+b2Y4QE0diLDIS9KYjbvSUL3sFU2BiWdSSCD0drb18ckPcYzx491HGfMMThxPBmz9cjVxM4t7vHKqc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cGaH/LqN; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="T4qonAxI"
-ARC-Seal: i=1; a=rsa-sha256; t=1757437345; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cGaH/LqN"
+ARC-Seal: i=1; a=rsa-sha256; t=1757437446; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=YKZiireURZ4Rzt5SBAidjTx9kllIK3dDKh90qaDZjKbAoGhdXjQuGjj6chCoPLGv/hZUChXsitjfDTeXJjULzptsE/Qcu4QlrCzNxbpOCB7P7YdM/TMit2hufpTanEbXfnS70GOlf3adrqno7v5FoPpk08gBDf+HxTxxr3sCVn8=
+	b=fWdsfauvBL12Rfb+NxXRjUPFl+ZifP6gmcvtdHOGPhKSfIg9vLGMvnDaZPJ4kr2sZhleD4OJYzuRlkR5T4/rF+16rpEouHPqdSgX7rXiZskBKFiiTkc3rRjhIAJBHaWQVqiG317efYzCSrecoJkwIf7y+dnPH5ya5dKoYXIW5vA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757437345; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=COSvmSyevD9dcT8YVmVKsH1in6CKNyug3YbUQ0z2sr4=; 
-	b=as/lt38RK8o00QFSTR0oeSaQJxwrjfTEPzop4egSfkjOrY/5kFRwPnDLdLQD68EdbpgRAtNE3MUI6v/mEs3ribQStdqNGJZSUSwKwQFwsL7yURuvTCFqoPaBgZnQYTRoKL6Bi83oeHbYaCBMATP01OUppNyb2KDlReUe8ghOCYk=
+	t=1757437446; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=5dGQK8wJM38VE5tVHI9D9YwSya8XbhZ8wjwloKJ7eOI=; 
+	b=IVik97SCfKVmUfcP/freebJwfPwdrvODx/2OdzSqV89FMGYFUzYUkS6kA3VSmENJdZvkzPnLdCf1hG4A1IcTmFVWQfLw/pYdtEOV3RgaaTA8WE/kzBGOuRsc6BWBZfV8KlXdEi1iDTh04AkhPLbZBPbJrWW/K6Czcb1ad0vsqBU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757437345;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757437446;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=COSvmSyevD9dcT8YVmVKsH1in6CKNyug3YbUQ0z2sr4=;
-	b=T4qonAxIiDgskQsKS58gmPSEqNQY7IAIARPFKsoTyh9UPqpffsNSaNA/US5h9Fib
-	akoCuPkuUa+Pn71NWX45Oln1EvHKHSBceNthI9TCuzYXtMlavf/LK7uFncI4lUVaC3J
-	oH5ZwF5LLuPcEytYD1fpr0FAPgeaeblHRHgGJR+w=
-Received: by mx.zohomail.com with SMTPS id 1757437342958679.3930952067639;
-	Tue, 9 Sep 2025 10:02:22 -0700 (PDT)
+	bh=5dGQK8wJM38VE5tVHI9D9YwSya8XbhZ8wjwloKJ7eOI=;
+	b=cGaH/LqNt7AsgVZlxU9jNqN4pnM+U5laOaqmZKjRuaii7M5yymveUr8JbCn51FeD
+	JOKixunsQi8hTF4NLmMbtztLKItK1dzkoSOT0TNuTSDvNC9Uv/rzuyDYnuUUD5MDs8o
+	OsIshNeaT3bZU3QxHO/4cJ6+Moklm7N53H3iVVfg=
+Received: by mx.zohomail.com with SMTPS id 1757437442807427.4205442612746;
+	Tue, 9 Sep 2025 10:04:02 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -48,7 +48,7 @@ Subject: Re: [PATCH v2 2/2] rust: regulator: add devm_enable and
  devm_enable_optional
 From: Daniel Almeida <daniel.almeida@collabora.com>
 In-Reply-To: <aMBYjIo2O77Dp2VV@tardis-2.local>
-Date: Tue, 9 Sep 2025 14:02:06 -0300
+Date: Tue, 9 Sep 2025 14:03:46 -0300
 Cc: Liam Girdwood <lgirdwood@gmail.com>,
  Mark Brown <broonie@kernel.org>,
  Miguel Ojeda <ojeda@kernel.org>,
@@ -63,7 +63,7 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
  linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <C22AAFA9-3EE4-4B99-90B9-1E748A0D45AF@collabora.com>
+Message-Id: <2897332E-7746-41E0-8A03-129F574A7224@collabora.com>
 References: <20250908-regulator-remove-dynamic-v2-0-e575ae2cde6a@collabora.com>
  <20250908-regulator-remove-dynamic-v2-2-e575ae2cde6a@collabora.com>
  <aL_PwXck1HsLp5wH@tardis-2.local>
@@ -104,25 +104,6 @@ discussion on
 > Thanks for the pointers. Well I guess we really need helper inlining
 > badly ;-)
 >=20
-
-
-A bit out of context now, but I don=E2=80=99t worry too much about =
-binary size. I
-don=E2=80=99t think there=E2=80=99s enough functions in helpers/*.c to =
-justify that.
-
-What I do worry about is the indirection that might get added on the hot =
-paths,
-like requiring one extra function call (i.e.: for rust_helper_*) for =
-every mmio
-read/write, for example. That might have non-negligible impacts on =
-performance
-IMHO.
-
-So yes, I do agree with you that this should be fixed.
-
-
-
 > Regards,
 > Boqun
 >=20
@@ -132,5 +113,16 @@ So yes, I do agree with you that this should be fixed.
 >>>=20
 >>> in rust/kernel/lib.rs?
 >>=20
-> [...]
+> [=E2=80=A6]
+
+Ah, by the way, that seemed to be your only comment. I will wait some =
+more for
+the discussion to die down and then send a new version addressing =
+Danilo=E2=80=99s
+points. Can I get your r-b, or is there anything else you=E2=80=99d like =
+to see
+changed?
+
+=E2=80=94 Daniel
+
 
