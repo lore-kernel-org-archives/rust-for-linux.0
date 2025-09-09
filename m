@@ -1,368 +1,136 @@
-Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935AA31D393;
-	Tue,  9 Sep 2025 17:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757437281; cv=none; b=SbGf+IElf8T8yk724Pu2zZprIJiZmEKwDl46NdLWJ18CIeYB1fIfiLSbNyu/6lpvjkI3bi5bFEC/3Lb1RrVcg800Ii/ZfzvUfPgMm64WR4VT43ChGxTiLmhMcJBze8LD29C2bXgfE3PIblU+aey8XGwcVXsVYc76IeQduJ4B3C0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757437281; c=relaxed/simple;
-	bh=YblYGC+W97HSFOOr7BT5YAnf4Zo8fFjmTbR0W2+lsHA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qvMuA5C735uykYwAI2N92KdgYX/kUsZQMhQjESNhoPGFh9UOmo1BFN6XZh4lUY+VieBzgvTLqjBc4RNSfATMKC3/Sf6/dwcHVt7NxDY5PzpSETzM+DYgMhurQcOeI0I9Ke1+mHdvJkBU8DRww/uLgRQOBK5WmX54GJsPRQgoWr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=UzqAItoH; arc=none smtp.client-ip=178.154.239.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804A1258EFB;
+	Tue,  9 Sep 2025 17:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757437367; cv=pass; b=n/NWr8+QlT4xNBSHEIZCjvDQDNbkpxUwXHPRT3zTsaNT3TER92jAVcb5uEvy68EQfQ6cA3atgRn6fW+lNSYNubB0ROSaV+qVZK+DJCCRY7xzPD/qI/QkGp+95CZYdAWiRn9uL+tAL1xRsqeuxaLku76yqr7jKiMqm1xDgRvreDE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757437367; c=relaxed/simple;
+	bh=COSvmSyevD9dcT8YVmVKsH1in6CKNyug3YbUQ0z2sr4=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=OQF3FjfHvC4xzcVdLo5J6yReeaHyZBLDrCC4T7WI5bzbXl9KLOzdoNUuneHK4rcNGUygen4njFOrmPxDlJ1tyQME7L34cLJSb70uHDkGV9muVLNoQpzDi4JiskXVflumTuzpaw2Sk20iNe3KghLceY5EoYrpBpIv6vVGy3c3Tek=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=T4qonAxI; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="UzqAItoH"
-Received: from mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:149a:0:640:77a6:0])
-	by forward101a.mail.yandex.net (Yandex) with ESMTPS id DC89D80CA4;
-	Tue, 09 Sep 2025 20:01:09 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id F0NUYT4M44Y0-332VttFn;
-	Tue, 09 Sep 2025 20:01:09 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757437269;
-	bh=AAWJ05zT6fItPUdAyppkEMkc7ybpVNFCRRssKDo3VHc=;
-	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=UzqAItoHIxG6v1+6os5elridsQ/dC9JjMPegPC2UDi1TrdcqRPBgeKfG/hs0rKyfU
-	 bgKKmncRBu0PvUQoFJEQsp9JOcB6gnnEBnSBFPYwejmjAtK971B6a9UfcAUXIlD4Zm
-	 ghQv6GBrJT07K8yUrcfXL6S7t8A4SHtJ+yPBMiFM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	daniel@sedlak.dev,
-	dirk.behme@de.bosch.com,
-	felipe_life@live.com,
-	tamird@gmail.com,
-	dakr@kernel.org,
-	tmgross@umich.edu,
-	aliceryhl@google.com,
-	a.hindborg@kernel.org,
-	lossin@kernel.org,
-	bjorn3_gh@protonmail.com,
-	gary@garyguo.net,
-	boqun.feng@gmail.com,
-	alex.gaynor@gmail.com,
-	ojeda@kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 1/1] rust: refactor to_result to return the original value
-Date: Tue,  9 Sep 2025 20:00:13 +0300
-Message-ID: <20250909170013.16025-2-work@onurozkan.dev>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250909170013.16025-1-work@onurozkan.dev>
-References: <20250909170013.16025-1-work@onurozkan.dev>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="T4qonAxI"
+ARC-Seal: i=1; a=rsa-sha256; t=1757437345; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=YKZiireURZ4Rzt5SBAidjTx9kllIK3dDKh90qaDZjKbAoGhdXjQuGjj6chCoPLGv/hZUChXsitjfDTeXJjULzptsE/Qcu4QlrCzNxbpOCB7P7YdM/TMit2hufpTanEbXfnS70GOlf3adrqno7v5FoPpk08gBDf+HxTxxr3sCVn8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757437345; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=COSvmSyevD9dcT8YVmVKsH1in6CKNyug3YbUQ0z2sr4=; 
+	b=as/lt38RK8o00QFSTR0oeSaQJxwrjfTEPzop4egSfkjOrY/5kFRwPnDLdLQD68EdbpgRAtNE3MUI6v/mEs3ribQStdqNGJZSUSwKwQFwsL7yURuvTCFqoPaBgZnQYTRoKL6Bi83oeHbYaCBMATP01OUppNyb2KDlReUe8ghOCYk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757437345;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=COSvmSyevD9dcT8YVmVKsH1in6CKNyug3YbUQ0z2sr4=;
+	b=T4qonAxIiDgskQsKS58gmPSEqNQY7IAIARPFKsoTyh9UPqpffsNSaNA/US5h9Fib
+	akoCuPkuUa+Pn71NWX45Oln1EvHKHSBceNthI9TCuzYXtMlavf/LK7uFncI4lUVaC3J
+	oH5ZwF5LLuPcEytYD1fpr0FAPgeaeblHRHgGJR+w=
+Received: by mx.zohomail.com with SMTPS id 1757437342958679.3930952067639;
+	Tue, 9 Sep 2025 10:02:22 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 2/2] rust: regulator: add devm_enable and
+ devm_enable_optional
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aMBYjIo2O77Dp2VV@tardis-2.local>
+Date: Tue, 9 Sep 2025 14:02:06 -0300
+Cc: Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C22AAFA9-3EE4-4B99-90B9-1E748A0D45AF@collabora.com>
+References: <20250908-regulator-remove-dynamic-v2-0-e575ae2cde6a@collabora.com>
+ <20250908-regulator-remove-dynamic-v2-2-e575ae2cde6a@collabora.com>
+ <aL_PwXck1HsLp5wH@tardis-2.local>
+ <AA8FC1A7-EE88-44FA-A0A9-A3EA5529B10D@collabora.com>
+ <aMBJ805QjQcPdRol@tardis-2.local>
+ <8CA69D19-754C-43F5-96CD-B7060C68B025@collabora.com>
+ <aMBYjIo2O77Dp2VV@tardis-2.local>
+To: Boqun Feng <boqun.feng@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Current `to_result` helper takes a `c_int` and returns `Ok(())` on
-success and this has some issues like:
 
-    - Callers lose the original return value and often have to store
-	it in a temporary variable before calling `to_result`.
 
-    - It only supports `c_int`, which makes callers to unnecessarily
-	cast when working with other types (e.g. `u16` in phy
-	abstractions). We even have some places that ignore to use
-	`to_result` helper because the input doesn't fit in `c_int`
-	(see [0]).
+> On 9 Sep 2025, at 13:40, Boqun Feng <boqun.feng@gmail.com> wrote:
+>=20
+> On Tue, Sep 09, 2025 at 01:12:51PM -0300, Daniel Almeida wrote:
+>>=20
+> [...]
+>>>>> These two functions are already EXPORT_SYMBOL_GPL(), so you won't =
+need
+>>>>> to add rust_helper for them. Creating rust_helper_*() for them =
+will just
+>>>>> export additional symbols.
+>>>>=20
+>>>> These are inlined (stubbed) if CONFIG_REGULATOR is not set, so we =
+need the
+>>>> helpers to get around that, IIUC.
+>>>>=20
+>>>=20
+>>> Well, then the question is why we want to compiler regulator.rs if
+>>> CONFIG_REGULATOR=3Dn? Shouldn't we do:
+>>=20
+>> Yes, we do want to compile regulator .rs. There=C2=B4s been prior =
+discussion on
+>> this (see [0] below, but also [1]).
+>>=20
+>=20
+> Thanks for the pointers. Well I guess we really need helper inlining
+> badly ;-)
+>=20
 
-[0]: https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
 
-This patch changes `to_result` to be generic and also return the
-original value on success.
+A bit out of context now, but I don=E2=80=99t worry too much about =
+binary size. I
+don=E2=80=99t think there=E2=80=99s enough functions in helpers/*.c to =
+justify that.
 
-So that the code that previously looked like:
+What I do worry about is the indirection that might get added on the hot =
+paths,
+like requiring one extra function call (i.e.: for rust_helper_*) for =
+every mmio
+read/write, for example. That might have non-negligible impacts on =
+performance
+IMHO.
 
-    let ret = unsafe { bindings::some_ffi_call() };
-    to_result(ret).map(|()| SomeType::new(ret))
+So yes, I do agree with you that this should be fixed.
 
-can now be written more directly as:
 
-    to_result(unsafe { bindings::some_ffi_call() })
-	.map(|ret| SomeType::new(ret))
 
-Similarly, code such as:
-
-    let res: isize = $some_ffi_call();
-    if res < 0 {
-	    return Err(Error::from_errno(res as i32));
-    }
-
-can now be used with `to_result` as:
-
-    to_result($some_ffi_call())?;
-
-This patch only fixes the callers that broke after the changes on `to_result`.
-I haven't included all the improvements made possible by the new design since
-that could conflict with other ongoing patches [1]. Once this patch is approved
-and applied, I am planning to follow up with creating a "good first issue" on [2]
-for those additional changes.
-
-[1]: https://lore.kernel.org/rust-for-linux/?q=to_result
-[2]: https://github.com/Rust-for-Linux/linux
-
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/near/536374456
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/auxiliary.rs        |  3 ++-
- rust/kernel/block/mq/tag_set.rs |  3 ++-
- rust/kernel/cpufreq.rs          |  6 ++++--
- rust/kernel/devres.rs           |  3 ++-
- rust/kernel/dma.rs              | 11 ++++++++---
- rust/kernel/error.rs            | 17 ++++++++++++-----
- rust/kernel/miscdevice.rs       |  2 +-
- rust/kernel/mm/virt.rs          |  3 ++-
- rust/kernel/pci.rs              |  6 ++++--
- rust/kernel/platform.rs         |  3 ++-
- rust/kernel/regulator.rs        | 14 ++++++++------
- 11 files changed, 47 insertions(+), 24 deletions(-)
-
-diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-index 4749fb6bffef..74b4da1192e1 100644
---- a/rust/kernel/auxiliary.rs
-+++ b/rust/kernel/auxiliary.rs
-@@ -42,7 +42,8 @@ unsafe fn register(
-         // SAFETY: `adrv` is guaranteed to be a valid `RegType`.
-         to_result(unsafe {
-             bindings::__auxiliary_driver_register(adrv.get(), module.0, name.as_char_ptr())
--        })
-+        })?;
-+        Ok(())
-     }
-
-     unsafe fn unregister(adrv: &Opaque<Self::RegType>) {
-diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index c3cf56d52bee..e8adb9d72475 100644
---- a/rust/kernel/block/mq/tag_set.rs
-+++ b/rust/kernel/block/mq/tag_set.rs
-@@ -65,7 +65,8 @@ pub fn new(
-                 // SAFETY: we do not move out of `tag_set`.
-                 let tag_set: &mut Opaque<_> = unsafe { Pin::get_unchecked_mut(tag_set) };
-                 // SAFETY: `tag_set` is a reference to an initialized `blk_mq_tag_set`.
--                error::to_result( unsafe { bindings::blk_mq_alloc_tag_set(tag_set.get())})
-+                error::to_result( unsafe { bindings::blk_mq_alloc_tag_set(tag_set.get())})?;
-+                Ok(())
-             }),
-             _p: PhantomData,
-         })
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index afc15e72a7c3..b9db81aea5c6 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -157,7 +157,8 @@ pub fn as_raw(&self) -> *mut bindings::cpufreq_policy_data {
-     #[inline]
-     pub fn generic_verify(&self) -> Result {
-         // SAFETY: By the type invariant, the pointer stored in `self` is valid.
--        to_result(unsafe { bindings::cpufreq_generic_frequency_table_verify(self.as_raw()) })
-+        to_result(unsafe { bindings::cpufreq_generic_frequency_table_verify(self.as_raw()) })?;
-+        Ok(())
-     }
- }
-
-@@ -520,7 +521,8 @@ pub fn set_suspend_freq(&mut self, freq: Hertz) -> &mut Self {
-     #[inline]
-     pub fn generic_suspend(&mut self) -> Result {
-         // SAFETY: By the type invariant, the pointer stored in `self` is valid.
--        to_result(unsafe { bindings::cpufreq_generic_suspend(self.as_mut_ref()) })
-+        to_result(unsafe { bindings::cpufreq_generic_suspend(self.as_mut_ref()) })?;
-+        Ok(())
-     }
-
-     /// Provides a wrapper to the generic get routine.
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index d04e3fcebafb..487e194f7d96 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -327,7 +327,8 @@ fn register_foreign<P>(dev: &Device<Bound>, data: P) -> Result
-         // `devm_add_action_or_reset()` also calls `callback` on failure, such that the
-         // `ForeignOwnable` is released eventually.
-         bindings::devm_add_action_or_reset(dev.as_raw(), Some(callback::<P>), ptr.cast())
--    })
-+    })?;
-+    Ok(())
- }
-
- /// Encapsulate `data` in a [`KBox`] and [`Drop::drop`] `data` once `dev` is unbound.
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 2bc8ab51ec28..04ca70f6f684 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -33,7 +33,8 @@ unsafe fn dma_set_mask(&self, mask: DmaMask) -> Result {
-         // - By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
-         // - The safety requirement of this function guarantees that there are no concurrent calls
-         //   to DMA allocation and mapping primitives using this mask.
--        to_result(unsafe { bindings::dma_set_mask(self.as_ref().as_raw(), mask.value()) })
-+        to_result(unsafe { bindings::dma_set_mask(self.as_ref().as_raw(), mask.value()) })?;
-+        Ok(())
-     }
-
-     /// Set up the device's DMA coherent addressing capabilities.
-@@ -50,7 +51,10 @@ unsafe fn dma_set_coherent_mask(&self, mask: DmaMask) -> Result {
-         // - By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
-         // - The safety requirement of this function guarantees that there are no concurrent calls
-         //   to DMA allocation and mapping primitives using this mask.
--        to_result(unsafe { bindings::dma_set_coherent_mask(self.as_ref().as_raw(), mask.value()) })
-+        to_result(unsafe {
-+            bindings::dma_set_coherent_mask(self.as_ref().as_raw(), mask.value())
-+        })?;
-+        Ok(())
-     }
-
-     /// Set up the device's DMA addressing capabilities.
-@@ -71,7 +75,8 @@ unsafe fn dma_set_mask_and_coherent(&self, mask: DmaMask) -> Result {
-         //   to DMA allocation and mapping primitives using this mask.
-         to_result(unsafe {
-             bindings::dma_set_mask_and_coherent(self.as_ref().as_raw(), mask.value())
--        })
-+        })?;
-+        Ok(())
-     }
- }
-
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index a41de293dcd1..6563ea71e203 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -376,12 +376,19 @@ fn from(e: core::convert::Infallible) -> Error {
- pub type Result<T = (), E = Error> = core::result::Result<T, E>;
-
- /// Converts an integer as returned by a C kernel function to an error if it's negative, and
--/// `Ok(())` otherwise.
--pub fn to_result(err: crate::ffi::c_int) -> Result {
--    if err < 0 {
--        Err(Error::from_errno(err))
-+/// returns the original value otherwise.
-+pub fn to_result<T>(code: T) -> Result<T>
-+where
-+    T: Copy + TryInto<i32>,
-+{
-+    // Try casting into `i32`.
-+    let casted: crate::ffi::c_int = code.try_into().unwrap_or(0);
-+
-+    if casted < 0 {
-+        Err(Error::from_errno(casted))
-     } else {
--        Ok(())
-+        // Return the original input value.
-+        Ok(code)
-     }
- }
-
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index 6373fe183b27..22b72ae84c03 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -79,7 +79,7 @@ pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Error> {
-                 // the destructor of this type deallocates the memory.
-                 // INVARIANT: If this returns `Ok(())`, then the `slot` will contain a registered
-                 // misc device.
--                to_result(unsafe { bindings::misc_register(slot) })
-+                to_result(unsafe { bindings::misc_register(slot) }).map(|_| ())
-             }),
-             _t: PhantomData,
-         })
-diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index 6086ca981b06..62c00dcdb5e1 100644
---- a/rust/kernel/mm/virt.rs
-+++ b/rust/kernel/mm/virt.rs
-@@ -194,7 +194,8 @@ pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -> &'a Self {
-     pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result {
-         // SAFETY: By the type invariant of `Self` caller has read access and has verified that
-         // `VM_MIXEDMAP` is set. By invariant on `Page` the page has order 0.
--        to_result(unsafe { bindings::vm_insert_page(self.as_ptr(), address, page.as_ptr()) })
-+        to_result(unsafe { bindings::vm_insert_page(self.as_ptr(), address, page.as_ptr()) })?;
-+        Ok(())
-     }
- }
-
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 887ee611b553..b52a7be488d0 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -47,7 +47,8 @@ unsafe fn register(
-         // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
-         to_result(unsafe {
-             bindings::__pci_register_driver(pdrv.get(), module.0, name.as_char_ptr())
--        })
-+        })?;
-+        Ok(())
-     }
-
-     unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
-@@ -437,7 +438,8 @@ impl Device<device::Core> {
-     /// Enable memory resources for this device.
-     pub fn enable_device_mem(&self) -> Result {
-         // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
--        to_result(unsafe { bindings::pci_enable_device_mem(self.as_raw()) })
-+        to_result(unsafe { bindings::pci_enable_device_mem(self.as_raw()) })?;
-+        Ok(())
-     }
-
-     /// Enable bus-mastering for this device.
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 8f028c76f9fa..751b65bfc357 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -54,7 +54,8 @@ unsafe fn register(
-         }
-
-         // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
--        to_result(unsafe { bindings::__platform_driver_register(pdrv.get(), module.0) })
-+        to_result(unsafe { bindings::__platform_driver_register(pdrv.get(), module.0) })?;
-+        Ok(())
-     }
-
-     unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
-diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
-index 34bb24ec8d4d..a5f357bda6e9 100644
---- a/rust/kernel/regulator.rs
-+++ b/rust/kernel/regulator.rs
-@@ -260,15 +260,15 @@ pub fn set_voltage(&self, min_voltage: Voltage, max_voltage: Voltage) -> Result
-                 min_voltage.as_microvolts(),
-                 max_voltage.as_microvolts(),
-             )
--        })
-+        })?;
-+        Ok(())
-     }
-
-     /// Gets the current voltage of the regulator.
-     pub fn get_voltage(&self) -> Result<Voltage> {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        let voltage = unsafe { bindings::regulator_get_voltage(self.inner.as_ptr()) };
--
--        to_result(voltage).map(|()| Voltage::from_microvolts(voltage))
-+        to_result(unsafe { bindings::regulator_get_voltage(self.inner.as_ptr()) })
-+            .map(Voltage::from_microvolts)
-     }
-
-     fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
-@@ -288,12 +288,14 @@ fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
-
-     fn enable_internal(&self) -> Result {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
-+        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })?;
-+        Ok(())
-     }
-
-     fn disable_internal(&self) -> Result {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) })
-+        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) })?;
-+        Ok(())
-     }
- }
-
---
-2.50.0
+> Regards,
+> Boqun
+>=20
+>>>=20
+>>> #[cfg(CONFIG_REGULATOR)]
+>>> pub mod regulator
+>>>=20
+>>> in rust/kernel/lib.rs?
+>>=20
+> [...]
 
