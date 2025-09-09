@@ -1,121 +1,117 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531A92FC88C;
-	Tue,  9 Sep 2025 18:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757442213; cv=pass; b=MQ5Guz9SX1vVD8vN8d0Bz7wQzwQ5B0K9lHL2xdYtE7H/g5zJmBo88NUYSOcyy+Rr1S8rSDS1/hy7HVSngMF2khsKhOEhQsq5LMqm+AFm6Mu6Gt3tQCOc6AueKwYOdcStC7Dl4UoodCvEX+dzffLVR7jIYfG8P6ml5/v+BRvwB/8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757442213; c=relaxed/simple;
-	bh=ubRkoJFbuAK+yS+v4W1ZNa9lC41JmMiyAmj1e7TS7bQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=aXJVm6CkNgjQ3Aqu53NHHFrOOw8+IYrXsiXR4CPLnoF1YGgnN72qEEvXGIMHtvvQWEeQ8InTqkfAR0tB4oosZsZanl+4u8jMzIVd7AsXppnQ1/DtTwNUSj6hlHRa8JderALy/z+HOt8mlfnjECRbA5/9bBOhbAIdA5h2qHUozKI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=VBLIms0F; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55387352FF1;
+	Tue,  9 Sep 2025 18:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757442358; cv=none; b=WTCV36kCBHU9A90IAmHY6FJ3EaBoNJKzjEfM7/qVEdIc0UEYnhSscYCLCW917M0UmbII30v+lg6cZBXdZei6NqHxLGe8HqNYAL8ne4MSFNKlFsMiiuAzzFsf4aQZvMaEw/z//4Ucy/tHRaJ2JVZKGOA2pXtEYlf2q86XkTEp/Tw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757442358; c=relaxed/simple;
+	bh=p3Ohv1fZUmfCQVAA0toEUAgo0lV/B2uu7TCDi209wfA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xs8nZv1xrq3ACzY0zt8O4vAxccE7c39GaI0shD9HDdSNgygxEInVzpocH6wavqcaCL1A/7u2MDqs5P0+/ShIgsYygO9MwpNnua7WVa7hg7RR+XVAOcB73Cob4PX2i8Z1wopNVIy3+q56kQNP362+8ZKADd0JpUoKJdgUEi7FXIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=M4xfNQdO; arc=none smtp.client-ip=178.154.239.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="VBLIms0F"
-ARC-Seal: i=1; a=rsa-sha256; t=1757442183; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=bI40IG7HNevlCHBra3f0TBjpeg1nf2SprMYCxigrt3GtNFX4Drq51/bZfQKkOgsV8CiF23JBR6BvRLhHysGM78awQOOsEU0FQBh8w7KJFfObP46m0Mz1hadxZAm0lezTXBE6SUOnPHx5hpAEAhEWvwpAAuqKk5U3E7KsjQprW8E=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757442183; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=MRRNEQt8u3ZdYDHCaJT8rczhY+A4PzkMymyQNNuh5Tg=; 
-	b=HPwyUZ/xwN/NCSU5bS1fu1TluQJ8XIfNn9r2lVuZeQDUDDnglxf9Cvse0KKmfpQVXeNJJm8Fuw1MxaUMrY8IFxaR7IQvHGeM95DIh3zer5JmBR1ggqeIcqAgzE6mbQ9+6ZeKxlmZ2yLWSLBrJgJqHTAG2ZH8zdx4AB/ASjUvams=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757442182;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=MRRNEQt8u3ZdYDHCaJT8rczhY+A4PzkMymyQNNuh5Tg=;
-	b=VBLIms0FlinvQ4dVLcIWgjPqMfaYGAbxG2k0ecqafoC2Sl8W1LxDHShuKo6KzgXC
-	NqhRpVX390Gr2X1e2nnFy1eEPOTV69fyiSjwxzGhEBHIWLTBIGuUc9SQMEHmQJVbemZ
-	xh2+fIdsXPj4cjdhjpeJ3t5vVgU2JDH48KrbDy6o=
-Received: by mx.zohomail.com with SMTPS id 1757442181262749.6141457442421;
-	Tue, 9 Sep 2025 11:23:01 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="M4xfNQdO"
+Received: from mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:571a:0:640:23e3:0])
+	by forward502a.mail.yandex.net (Yandex) with ESMTPS id CEEB682051;
+	Tue, 09 Sep 2025 21:25:52 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id mPOnUF6MsW20-zWvmpWr5;
+	Tue, 09 Sep 2025 21:25:51 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1757442352;
+	bh=9ktIWNUwdxv7QOVyYgdiUzdyk5SrWsr9kqXmnB4DsM8=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=M4xfNQdOUn5/YwO7xUZvQeZnPNHLnGlu3+rtXvTNjJD+FxtWpeVSfTXA5rzjgDlJw
+	 PO2R1dSogUF4UuAbu+D8W2p0U82KWP0/9WhdW9y2+nVIro3NjLeqUOLaqsZOdXF02n
+	 oUdY6OiuVJ/5TAy7b2ISMaZmijDGYOV7izErC/8Y=
+Authentication-Results: mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 9 Sep 2025 21:25:48 +0300
+From: Onur <work@onurozkan.dev>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com,
+ tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu, aliceryhl@google.com,
+ a.hindborg@kernel.org, lossin@kernel.org, bjorn3_gh@protonmail.com,
+ gary@garyguo.net, boqun.feng@gmail.com, alex.gaynor@gmail.com,
+ ojeda@kernel.org
+Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original
+ value
+Message-ID: <20250909212548.2e1aff9f@nimda.home>
+In-Reply-To: <20250909204308.74ccedf4@nimda.home>
+References: <20250909170013.16025-1-work@onurozkan.dev>
+	<20250909170013.16025-2-work@onurozkan.dev>
+	<CANiq72=kWpxpo23JUYTqxwpsY=E0uUvCHgotRuepZpL-qUqXqw@mail.gmail.com>
+	<20250909204308.74ccedf4@nimda.home>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v4 1/3] rust: i2c: add basic I2C device and driver
- abstractions
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DCOH6SUB5M7K.1K4V1DRAERH1S@kernel.org>
-Date: Tue, 9 Sep 2025 15:22:42 -0300
-Cc: Igor Korotin <igor.korotin.linux@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Hung <alex.hung@amd.com>,
- Tamir Duberstein <tamird@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-i2c@vger.kernel.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <F8146F2E-E66B-4F47-816D-40AAFE8B65F7@collabora.com>
-References: <20250820151427.1812482-1-igor.korotin.linux@gmail.com>
- <20250820151913.1814284-1-igor.korotin.linux@gmail.com>
- <CB269793-D165-4D22-95E5-F978C1ECC79E@collabora.com>
- <655ca23c-1fe6-498a-80b8-1b75044d9db3@gmail.com>
- <467F4F57-9452-4B68-931B-4A55A7CBC268@collabora.com>
- <DCOH6SUB5M7K.1K4V1DRAERH1S@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
+On Tue, 9 Sep 2025 20:43:08 +0300
+Onur =C3=96zkan <work@onurozkan.dev> wrote:
 
-
-> On 9 Sep 2025, at 15:19, Danilo Krummrich <dakr@kernel.org> wrote:
+> On Tue, 9 Sep 2025 19:17:56 +0200
+> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 >=20
-> On Tue Sep 9, 2025 at 7:53 PM CEST, Daniel Almeida wrote:
->>> On 9 Sep 2025, at 14:19, Igor Korotin <igor.korotin.linux@gmail.com> =
-wrote:
->>> On 8/27/2025 7:37 PM, Daniel Almeida wrote:
->>>>> +    /// Returns the driver's private data from the matching entry =
-in the [`i2c::IdTable`], if any.
->>>>> +    ///
->>>>> +    /// If this returns `None`, it means there is no match with =
-an entry in the [`i2c::IdTable`].
->>>>> +    fn i2c_id_info(dev: &I2cClient) -> Option<&'static <Self as =
-driver::Adapter>::IdInfo> {
->>>> Again, perhaps a private member function? I=E2=80=99m trying to =
-simplify the syntax here.
->>>=20
->>> Can you, please, kindly clarify what do you mean? If a function is =
-not pub/pub(crate),
->>> it is a private function.
->>=20
->> I mean a function that takes &self or &mut self as applicable.
+> > On Tue, Sep 9, 2025 at 7:01=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.=
+dev>
+> > wrote:
+> > >
+> > > This patch only fixes the callers that broke after the changes on
+> > > `to_result`. I haven't included all the improvements made possible
+> > > by the new design since
+> >=20
+> > I think Daniel asked in the previous version what you mean by
+> > "callers that broke" here -- it is a bit confusing, since it seems
+> > this is a fix (and thus needs to be prioritized).
+> >=20
+> > Is that the case?
+> >=20
+> > Thanks!
+> >=20
+> > Cheers,
+> > Miguel
 >=20
-> This just turns things around you you have to pass in the Adapter =
-type, which is
-> required by this function. Having the device ID table and ID info =
-accessors on
-> the device structure doesn't really make sense.
+> What I meant is that the change on `to_result` signature introduced a
+> breaking change so I had to update its callers accordingly.
 >=20
-> The current implementation is also in line with what we do in the =
-driver core
-> code and in other bus implementations, such as PCI.
+> The fix I mentioned in this version is a different matter.
+>=20
+> Before the rebase, the regulator module had a get_voltage function
+> like this:
+>=20
+> 	let voltage =3D unsafe {...};
+>=20
+> 	if voltage < 0 {
+>     		Err(...)
+> 	} else {
+>     		Ok(Voltage::from_microvolts(voltage))
+> 	}
+>=20
+> But on the regulator/for-next branch, a patch was applied that changed
+> it to:
+>=20
+> 	let voltage =3D unsafe {...};
+> 	to_result(voltage).map(|()| Voltage::from_microvolts(voltage))
+>=20
+> That change was incompatible with v1 (due to the different signature
+> of to_result), which fails to build with my patch. This version (v2)
+> fixes the issue introduced in v1.
+>=20
+> Sorry for the confusion, I hope it's more clear now.
+>=20
+> Thanks,
+> Onur
 
-Ok then, in which case feel free to disregard my previous comment :)
-
-=E2=80=94 Daniel=
+If I am not mistaken the way I prepared v2 is also not correct. I guess
+the fix for regulator/for-next should be a separate patch.
