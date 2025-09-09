@@ -1,71 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF302C234F;
-	Tue,  9 Sep 2025 09:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB60D28E579;
+	Tue,  9 Sep 2025 09:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757409276; cv=none; b=BR1Bug3LFDmmC2oCnqdDFBkxbAPhp8W2fJKIegkdvEyeSbo+zt5KpBb1QgMBrkitGv/YzUxg5Cc1N5D7nV2wKHdTw1ik+cWOdpQ4x5Xn5t9rAevuZDOS0wlnYSmrnDa2TzI7LP1LYIoWLUTmq6FAC628DU5929I89LSq9iaKGaw=
+	t=1757410035; cv=none; b=fcDvRHSej30DVwH/ury/E3UK4Q3xHoSM7crsQk6BoSNm4alb6XyCoZY5IXggFKaIRHCIBxlcYkuDgpK3mOLc+VLO7bZ8cFp/foC7KZeiVbzxYIQXXvOTQXyLWE+Pe6eUi1Oml01iI3j1sUzb94NnvsaMZWbzJ+QMEbPwHaD2Qrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757409276; c=relaxed/simple;
-	bh=VQJWCICOhHbCkaUmxx5hpqb4ryuOMWY3hLJbYcGO+W8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=g2bKYZAsNCCwhQ3Czm5qU8ZbUSEO2XGueUjrKD9HKDyxSvd+6m0UvCwq6+jwlJIOcY1Zk13PFol2t8rleuKwSRnSUVHvd3tkwDgSSKup2AkoBeeiiwnIn8C70pPOKi7RYvYHur6mxcuOyinHeCp9EBdQctEBLBYHO50eCUhzjm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5jf9RFl; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5jf9RFl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F9DC4CEF7;
-	Tue,  9 Sep 2025 09:14:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757409275;
-	bh=VQJWCICOhHbCkaUmxx5hpqb4ryuOMWY3hLJbYcGO+W8=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=W5jf9RFl5PZh8xzrNThdiHCskbj7mamuSL8moI1HITaNGI2YQGHjGeTVgPixQ6CLC
-	 TiHNk+53Y0FBCW0KMPmApMTxqo2xbmSTV81CgNwMPKBep8JGSDCQpDH+UerjYrcmF1
-	 uhMV+SZkOyjN6FIIdw9ml/hsA6YiOIyBMg4s2m21RtKABWHtS/TZMQMCUBTdoWmdy+
-	 7kuaUcLNBV7n12k1Lt8ilyyCclQkYvllO8Uh8CAoTdFwcsomDhtHPxlCNTLMcM/NxL
-	 7Sia8SSrpDVYRmJfuhq8qsKah2ZXJw13dRMLVoZPCfiy+93XLjxngFM62Ygf3JMTTt
-	 7ZTgWcWofpADg==
+	s=arc-20240116; t=1757410035; c=relaxed/simple;
+	bh=+DLg60lZDBzN6GJTarOXafWeiiDD4x1Nkq280BXb/+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f4e4cknG3wmNtSJd9koN9nJCtgpqKHiH19/hL9ghlHSNKhp6orz6tD9kUqlN9DlVUL4huNCb/bitctq3wHAhnYZyErDyavnWcMlTXACXeAfGf+kfvfwQdNWjTor0HjagcjF6S6CmL2O1sW4V/mMdJlrQTIzXWzKnjd9R/mIkVcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8BxmdHt8r9onE8IAA--.17858S3;
+	Tue, 09 Sep 2025 17:27:09 +0800 (CST)
+Received: from linux.localdomain (unknown [113.200.148.30])
+	by front1 (Coremail) with SMTP id qMiowJDxbMHr8r9oeuSJAA--.56108S2;
+	Tue, 09 Sep 2025 17:27:08 +0800 (CST)
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: WANG Rui <wangrui@loongson.cn>,
+	rust-for-linux@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] Fix objtool warnings with RUST on LoongArch
+Date: Tue,  9 Sep 2025 17:27:05 +0800
+Message-ID: <20250909092707.3127-1-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 09 Sep 2025 11:14:31 +0200
-Message-Id: <DCO5LDQHXVUC.3J2MSYSA0WCVC@kernel.org>
-Subject: Re: [PATCH v5 1/2] rust: add `Alignment` type
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250908-num-v5-0-c0f2f681ea96@nvidia.com>
- <20250908-num-v5-1-c0f2f681ea96@nvidia.com>
- <CANiq72kUsG10+E-W6zhFXhexZV+O_a-K1Px0kGkWPKvMMhAztQ@mail.gmail.com>
- <DCO2UHSV1FJH.146QJD3UR8FVR@nvidia.com>
- <CANiq72khp7PVeKmbvM=ima7Tp7o1zPfjNY6dRK79aAQZsOvBPw@mail.gmail.com>
-In-Reply-To: <CANiq72khp7PVeKmbvM=ima7Tp7o1zPfjNY6dRK79aAQZsOvBPw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxbMHr8r9oeuSJAA--.56108S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
+	BjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
+	xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
+	j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxV
+	AFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
+	14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j0FALUUUUU=
 
-On Tue Sep 9, 2025 at 9:21 AM CEST, Miguel Ojeda wrote:
-> On Tue, Sep 9, 2025 at 9:05=E2=80=AFAM Alexandre Courbot <acourbot@nvidia=
-.com> wrote:
->>
->> With -rc6 approaching, I don't think we will merge any Nova code taking
->> advantage of this for this cycle, so please feel free to take this
->> patch. We can then merge patch 2 through drm-rust after -rc1 is
->> released.
->
-> Sure, sounds good. I can also take patch 2 already as a user of this
-> if you prefer (ideally with an Acked-by).
+This series is to fix objtool warnings when compiling with LLVM and
+CONFIG_RUST is set, thanks WANG Rui and Miguel for your suggestions
+about RUST.
 
-Yeah, this way around make much more sense,
+The second patch uses the option -Zno-jump-tables, here is a related
+discussion:
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+https://github.com/rust-lang/rust/pull/145974#issuecomment-3236418282
+
+Tiezhu Yang (2):
+  LoongArch: Make LTO case independent in Makefile
+  LoongArch: Handle jump tables option for RUST
+
+ arch/loongarch/Kconfig  |  4 ++++
+ arch/loongarch/Makefile | 16 +++++++++++-----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
+
+-- 
+2.42.0
+
