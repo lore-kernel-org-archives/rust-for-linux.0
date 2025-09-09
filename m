@@ -1,169 +1,195 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6DF190685;
-	Tue,  9 Sep 2025 14:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA9F350820
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Sep 2025 14:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757427636; cv=none; b=gyQ0Y1OSGGdZexxkGxJqdaMu3OuO9rYD+IIgCVpjt7YvBNnIXiIsrwYTs1vSXnwyACxiSiPoAjHE7VF9ISvVeFicmL8VLcJ3pUOA0/t+aDHfjxEkE+qusi6kxeifV/02n6LTDORsS0JgkBBgM/1zFVjvLWYNSVJdxrr1v9HTtns=
+	t=1757428996; cv=none; b=S2Dl7azVKk5kqMmslB6ef6JIkVU1E6QUhzWkViENFDTGRHQfgFjiUz1QZc7clCzhtiJizIgWvRV0L2r7b3IOHqyJduWjY1h4g+RTeW/ZQv5Q5wmaZQWNJSuDyjzCICBwLl1pJh1xEBKBA5sb5B3XLehobd6K3nxbdCtuP2wxaOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757427636; c=relaxed/simple;
-	bh=9duqgX9fp6sWfF5QruNj80hrtd81w9SbJf6/XjHYUP0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qzqavLurmZ3188fV94uqL3OZwAPHxo6HSt0zK34sd6Nizn5TBB+2RROEtxm99jQRhHPs8YFkmdUlBsUwxrS+TbppyENgCgpaeaLHb/l7/TbBbfj0IwbIgRjO9kjtfo481n0OUKftaRGp1L1EnXDoOAWbpwhtOXSZlj1psTuVw44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ui8qjKCv; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1757428996; c=relaxed/simple;
+	bh=kZsPvc1qbpj/gMZ9DpWcp5bZPO/uvzGdQpRMrhizyWI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NceEH27A9U1luUB9onctG5cOu3E/R6RvsBGx+webkBRR8Hzer2YElO5+NKOn9zvSfBjQZS3tKLABBjP6c4RG5EXSltlaY3N8bQJ7xs5Lm37gbrWVa+T1f1NLHDkfrYERbTrrhffle46asCwUf84iEea+tAU0RH4kxFpx1E7wWxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=VnTco8KB; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ui8qjKCv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757427635; x=1788963635;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=9duqgX9fp6sWfF5QruNj80hrtd81w9SbJf6/XjHYUP0=;
-  b=Ui8qjKCv4t96TQkjZb5KObjWtXrK9Hr3v1F+1hu6oskre5H+dqFzMbMV
-   xeChtnjzzftHEc6f70eDKSUl74ajLeBOEgrSYQLAWccnJ2Me2be7w+dXJ
-   YC8G6COihhLi7rn+W1OfZ7Gp5pOND+Xtpj1iXHVf4rcduBDPfHVWAZdNK
-   JYcS1nwFCie9A7weYm/WOM3MqtEj6DtXoeBahEFQa+03sxIP19mXGnh+6
-   VnlqiZHGPzQStB2P+c3jMewmxZJ8wZoIWY/t9VPtfloP/2zHbwty1Zp5D
-   FK1kVzb/p34rf+ez82x0UN0Zv5okzZ/0LRuf0O/FoqOwSq40NbxHYNS2O
-   Q==;
-X-CSE-ConnectionGUID: qq75ZQpRTC6YYL6bCSGZtg==
-X-CSE-MsgGUID: 7b+MEi66RTiIX55VGGEb2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="59407806"
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="59407806"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 07:20:34 -0700
-X-CSE-ConnectionGUID: CPSFohp6TIOyyPaUzAUk6Q==
-X-CSE-MsgGUID: G6Z0XHwCQNGOPZtUW0YjeQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="173011980"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO [10.245.244.108]) ([10.245.244.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 07:20:30 -0700
-Message-ID: <c7a7aac3e82fde7a20970e6a65d200ab79804b0f.camel@linux.intel.com>
-Subject: Re: [PATCH v2 1/2] drm/gpuvm: add deferred vm_bo cleanup
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard	
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
-	 <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Boris Brezillon	
- <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau
- <liviu.dudau@arm.com>, 	dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org
-Date: Tue, 09 Sep 2025 16:20:32 +0200
-In-Reply-To: <20250909-vmbo-defer-v2-1-9835d7349089@google.com>
-References: <20250909-vmbo-defer-v2-0-9835d7349089@google.com>
-	 <20250909-vmbo-defer-v2-1-9835d7349089@google.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="VnTco8KB"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b4e84a61055so4052742a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 07:43:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=furiosa.ai; s=google; t=1757428994; x=1758033794; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ddrCOGQrTk4YnXFxSW8TsT6ATPKz9oABWw9Dn9DJNeo=;
+        b=VnTco8KBuR+foyDbPPs2k5BaCq3hw7833lztpl+dYU9WOW+WxH18sfdJnOIW9PhnRj
+         vodWHS72+E04YHPbrwkyROO1BQgbbgGHvb3VNbiOeSyVrWrktMWNmAy24mNwTCb1eKzk
+         AWxagRq8es04G0qRnkBfJX5Q7Q9McDMON6QcA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757428994; x=1758033794;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ddrCOGQrTk4YnXFxSW8TsT6ATPKz9oABWw9Dn9DJNeo=;
+        b=a1D3Meb0Nq7JJ5LntLwNRhO+y62NFYndC1JXAgQcW5c7SMVS/roM4Q9T/jBbnuSlzJ
+         tVfQxleWBfY7j5SJTYWN6pSwILuItNOv0fUH+vVKfnJ43NgZ8QFcSbblgmYI7ewqJzDf
+         8Od79BieUHf/oTzaq7miZqEKBJWYRpME3LkXMAj+ARGzY7aYPcCM27QbBr4BarhGHnxN
+         cEztpD0lotVGB42+NXMJl/OG7ss7RkFhYqRxynraGAqBoG1izSuI4GWoGJf3/KcW1pLC
+         kKqSHEJKLqmE9CQO7ebHogvUOUd4AcfiYQl7DTKQVsrToTMbebiwSzFGoB0+dUuOjC/a
+         CDkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWLkT/P/tJ6WHwgvJpE+j4HCSa6jSMtQo492HVVp7ILMg6PO4esa2EJmK5iXwC3xHt3X0gEOCm3y1IL+SqA4g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8KfhQJNGHXpoFt9K6YJiNaQnhY+Y871V0Fchru8PRAKgFklpj
+	qU5DRVaoEKoDevTFLSLQn81dFUyfjH6VZU/MkiatHPnN+Ite4OpqQmmsl/0WmXRtwRY=
+X-Gm-Gg: ASbGncu1TgPTIJezrYjepzksOlmBy7jVhyVJuZXtbpiMn1sDQVtOtLrwhIrm5fX4b2s
+	/zhABz6mk0Wk88aQ/gOhOetGj6CvCNuyEPvFI4HoIpShYVpMXJVdNSNa2EdaHoh7hDHk+zsPwp8
+	WXSSizrd6Hhy+e2agxBePUKrfo6jFw7or+ruaQGmb6j1FtCBMrNnoN9LaOeqH7Nman/WaHj41IU
+	/39gn3N7eLKisE5hEwFCuKt4dMNib2QnNQJLzS154ZXTWCqyv6q34L4A0R5ojuuJqu19o6Zkfo3
+	LiNSpyhsxoHIYVUbHdUTJ7aerzIjZU08SYXzauKRpR40mxZHF+AWcE84a9Ew0gbsuHhRbYSiaD6
+	CKxZtHpsaly5vqxuORSv6UUq7hRZ4z+qglZ+T0vjREunAhKR/PsxdbA==
+X-Google-Smtp-Source: AGHT+IF0maZnaaLQLAz9HyDOMDlcVgeagw7Fn/NEgjbTn/SufuWhh4SmMvMtEn5ZIob4ZX3rKUzR3A==
+X-Received: by 2002:a17:903:b48:b0:258:dc72:9d76 with SMTP id d9443c01a7336-258dc729f05mr38100225ad.10.1757428994417;
+        Tue, 09 Sep 2025 07:43:14 -0700 (PDT)
+Received: from sidongui-MacBookPro.local ([61.83.209.48])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25a281e5620sm313525ad.63.2025.09.09.07.43.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 07:43:13 -0700 (PDT)
+Date: Tue, 9 Sep 2025 23:43:08 +0900
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Caleb Sander Mateos <csander@purestorage.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org
+Subject: Re: [RFC PATCH v3 2/5] io_uring/cmd: zero-init pdu in
+ io_uring_cmd_prep() to avoid UB
+Message-ID: <aMA8_MuU0V-_ja5O@sidongui-MacBookPro.local>
+References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
+ <20250822125555.8620-3-sidong.yang@furiosa.ai>
+ <CADUfDZpsePAbEON_90frzrPCPBt-a=1sW2Q=i8BGS=+tZhudFA@mail.gmail.com>
+ <aLbFiChBnTNLBAyV@sidongui-MacBookPro.local>
+ <CADUfDZpPvj3R7kzWC9bQVV0iuCBOnKsNUFn=B3ivf7De5wCB8g@mail.gmail.com>
+ <aLxFAamglufhUvq0@sidongui-MacBookPro.local>
+ <CADUfDZruwQyOcAeOXkXMLX+_HgOBeYdHUmgnJdT5pGQEmXt9+g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADUfDZruwQyOcAeOXkXMLX+_HgOBeYdHUmgnJdT5pGQEmXt9+g@mail.gmail.com>
 
-On Tue, 2025-09-09 at 13:36 +0000, Alice Ryhl wrote:
-> When using GPUVM in immediate mode, it is necessary to call
-> drm_gpuvm_unlink() from the fence signalling critical path. However,
-> unlink may call drm_gpuvm_bo_put(), which causes some challenges:
->=20
-> 1. drm_gpuvm_bo_put() often requires you to take resv locks, which
-> you
-> =C2=A0=C2=A0 can't do from the fence signalling critical path.
-> 2. drm_gpuvm_bo_put() calls drm_gem_object_put(), which is often
-> going
-> =C2=A0=C2=A0 to be unsafe to call from the fence signalling critical path=
-.
->=20
-> To solve these issues, add a deferred version of drm_gpuvm_unlink()
-> that
-> adds the vm_bo to a deferred cleanup list, and then clean it up
-> later.
->=20
-> The new methods take the GEMs GPUVA lock internally rather than
-> letting
-> the caller do it because it also needs to perform an operation after
-> releasing the mutex again. This is to prevent freeing the GEM while
-> holding the mutex (more info as comments in the patch). This means
-> that
-> the new methods can only be used with DRM_GPUVM_IMMEDIATE_MODE.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> =C2=A0drivers/gpu/drm/drm_gpuvm.c | 174
-> ++++++++++++++++++++++++++++++++++++++++++++
-> =C2=A0include/drm/drm_gpuvm.h=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 26 +++++++
-> =C2=A02 files changed, 200 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/drm_gpuvm.c
-> b/drivers/gpu/drm/drm_gpuvm.c
-> index
-> 78a1a4f095095e9379bdf604d583f6c8b9863ccb..5aa8b3813019705f70101950af2
-> d8fe4e648e9d0 100644
-> --- a/drivers/gpu/drm/drm_gpuvm.c
-> +++ b/drivers/gpu/drm/drm_gpuvm.c
-> @@ -876,6 +876,27 @@ __drm_gpuvm_bo_list_add(struct drm_gpuvm *gpuvm,
-> spinlock_t *lock,
-> =C2=A0	cond_spin_unlock(lock, !!lock);
-> =C2=A0}
-> =C2=A0
-> +/**
-> + * drm_gpuvm_bo_is_dead() - check whether this vm_bo is scheduled
+On Mon, Sep 08, 2025 at 12:45:58PM -0700, Caleb Sander Mateos wrote:
+> On Sat, Sep 6, 2025 at 7:28 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> >
+> > On Tue, Sep 02, 2025 at 08:31:00AM -0700, Caleb Sander Mateos wrote:
+> > > On Tue, Sep 2, 2025 at 3:23 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> > > >
+> > > > On Mon, Sep 01, 2025 at 05:34:28PM -0700, Caleb Sander Mateos wrote:
+> > > > > On Fri, Aug 22, 2025 at 5:56 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> > > > > >
+> > > > > > The pdu field in io_uring_cmd may contain stale data when a request
+> > > > > > object is recycled from the slab cache. Accessing uninitialized or
+> > > > > > garbage memory can lead to undefined behavior in users of the pdu.
+> > > > > >
+> > > > > > Ensure the pdu buffer is cleared during io_uring_cmd_prep() so that
+> > > > > > each command starts from a well-defined state. This avoids exposing
+> > > > > > uninitialized memory and prevents potential misinterpretation of data
+> > > > > > from previous requests.
+> > > > > >
+> > > > > > No functional change is intended other than guaranteeing that pdu is
+> > > > > > always zero-initialized before use.
+> > > > > >
+> > > > > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> > > > > > ---
+> > > > > >  io_uring/uring_cmd.c | 1 +
+> > > > > >  1 file changed, 1 insertion(+)
+> > > > > >
+> > > > > > diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
+> > > > > > index 053bac89b6c0..2492525d4e43 100644
+> > > > > > --- a/io_uring/uring_cmd.c
+> > > > > > +++ b/io_uring/uring_cmd.c
+> > > > > > @@ -203,6 +203,7 @@ int io_uring_cmd_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+> > > > > >         if (!ac)
+> > > > > >                 return -ENOMEM;
+> > > > > >         ioucmd->sqe = sqe;
+> > > > > > +       memset(&ioucmd->pdu, 0, sizeof(ioucmd->pdu));
+> > > > >
+> > > > > Adding this overhead to every existing uring_cmd() implementation is
+> > > > > unfortunate. Could we instead track the initialized/uninitialized
+> > > > > state by using different types on the Rust side? The io_uring_cmd
+> > > > > could start as an IoUringCmd, where the PDU field is MaybeUninit,
+> > > > > write_pdu<T>() could return a new IoUringCmdPdu<T> that guarantees the
+> > > > > PDU has been initialized.
+> > > >
+> > > > I've found a flag IORING_URING_CMD_REISSUE that we could initialize
+> > > > the pdu. In uring_cmd callback, we can fill zero when it's not reissued.
+> > > > But I don't know that we could call T::default() in miscdevice. If we
+> > > > make IoUringCmdPdu<T>, MiscDevice also should be MiscDevice<T>.
+> > > >
+> > > > How about assign a byte in pdu for checking initialized? In uring_cmd(),
+> > > > We could set a byte flag that it's not initialized. And we could return
+> > > > error that it's not initialized in read_pdu().
+> > >
+> > > Could we do the zero-initialization (or T::default()) in
+> > > MiscdeviceVTable::uring_cmd() if the IORING_URING_CMD_REISSUE flag
+> > > isn't set (i.e. on the initial issue)? That way, we avoid any
+> > > performance penalty for the existing C uring_cmd() implementations.
+> > > I'm not quite sure what you mean by "assign a byte in pdu for checking
+> > > initialized".
+> >
+> > Sure, we could fill zero when it's the first time uring_cmd called with
+> > checking the flag. I would remove this commit for next version. I also
+> > suggests that we would provide the method that read_pdu() and write_pdu().
+> > In read_pdu() I want to check write_pdu() is called before. So along the
+> > 20 bytes for pdu, maybe we could use a bytes for the flag that pdu is
+> > initialized?
+> 
+> Not sure what you mean about "20 bytes for pdu".
+> It seems like it would be preferable to enforce that write_pdu() has
+> been called before read_pdu() using the Rust type system instead of a
+> runtime check. I was thinking a signature like fn write_pdu(cmd:
+> IoUringCmd, value: T) -> IoUringCmdPdu<T>. Do you feel there's a
+> reason that wouldn't work and a runtime check would be necessary?
 
-NIT: Is zombie a better name than dead?
+I didn't think about make write_pdu() to return IoUringCmdPdu<T> before.
+I think it's good way to pdu is safe without adding a new generic param for
+MiscDevice. write_pdu() would return IoUringCmdPdu<T> and it could call
+IoUringCmdPdu<T>::pdu(&mut self) -> &mut T safely maybe.
 
-> for cleanup
-> + * @vm_bo: the &drm_gpuvm_bo
-> + *
-> + * When a vm_bo is scheduled for cleanup using the bo_defer list, it
-> is not
-> + * immediately removed from the evict and extobj lists if they are
-> protected by
-> + * the resv lock, as we can't take that lock during run_job() in
-> immediate
-> + * mode. Therefore, anyone iterating these lists should skip entries
-> that are
-> + * being destroyed.
-> + *
-> + * Checking the refcount without incrementing it is okay as long as
-> the lock
-> + * protecting the evict/extobj list is held for as long as you are
-> using the
-> + * vm_bo, because even if the refcount hits zero while you are using
-> it, freeing
-> + * the vm_bo requires taking the list's lock.
-> + */
-> +static bool
-> +drm_gpuvm_bo_is_dead(struct drm_gpuvm_bo *vm_bo)
-> +{
-> +	return !kref_read(&vm_bo->kref);
-> +}
-> +
-> =C2=A0/**
-> =C2=A0 * drm_gpuvm_bo_list_add() - insert a vm_bo into the given list
-> =C2=A0 * @__vm_bo: the &drm_gpuvm_bo
-> @@ -1081,6 +1102,9 @@ drm_gpuvm_init(struct drm_gpuvm *gpuvm, const
-> char *name,
-> =C2=A0	INIT_LIST_HEAD(&gpuvm->evict.list);
-> =C2=A0	spin_lock_init(&gpuvm->evict.lock);
-> =C2=A0
-> +	INIT_LIST_HEAD(&gpuvm->bo_defer.list);
-> +	spin_lock_init(&gpuvm->bo_defer.lock);
-> +
+> 
+> >
+> > But maybe I would introduce a new struct that has Pin<&mut IoUringCmd> and
+> > issue_flags. How about some additional field for pdu is initialized like below?
+> >
+> > struct IoUringCmdArgs {
+> >   ioucmd: Pin<&mut IoUringCmd>,
+> >   issue_flags: u32,
+> >   pdu_initialized: bool,
+> > }
+> 
+> One other thing I realized is that issue_flags should come from the
+> *current* context rather than the context the uring_cmd() callback was
+> called in. For example, if io_uring_cmd_done() is called from task
+> work context, issue_flags should match the issue_flags passed to the
+> io_uring_cmd_tw_t callback, not the issue_flags originally passed to
+> the uring_cmd() callback. So it probably makes more sense to decouple
+> issue_flags from the (owned) IoUringCmd. I think you could pass it by
+> reference (&IssueFlags) or with a phantom reference lifetime
+> (IssueFlags<'_>) to the Rust uring_cmd() and task work callbacks to
+> ensure it can't be used after those callbacks have returned.
 
-This list appears to exactly follow the pattern a lockless list was
-designed for. Saves some space in the vm_bo and gets rid of the
-excessive locking. <include/linux/llist.h>
+I have had no idea about task work context. I agree with you that
+it would be better to separate issue_flags from IoUringCmd. So, 
+IoUringCmdArgs would have a only field Pin<&mut IoUringCmd>?
 
-Otherwise LGTM.
-
-/Thomas
-
+> 
+> Best,
+> Caleb
