@@ -1,90 +1,407 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C4D32F775;
-	Tue,  9 Sep 2025 12:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B694230C603
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Sep 2025 12:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757420060; cv=none; b=ABwRLwkTNkn/t8o3qDxYNKoJiAoTnzUF0E5Wy6SayN9s2/ZAzVBuc1gvME2b+25icVkiN9KtLHQ0xBt5HUM9uu7F5G/ZfaePr6Tq9aWjO7SQeTFWRoqbGNFc/0Pc68j45kaVgY3ImKmVgg8EbS9CXBuqKKuc5K8M71J1lh/VnOc=
+	t=1757421389; cv=none; b=KxpD3iqiW5cf8vMDFHaFMK8bp3+kMbYO26TC8pYzKoryZsKSX16f1Dcs7E5gU7qFBL53e2llaZ7cSQWec9bOY2NmfOA5UJ/edJhff05lSTRv5es3DIPndJSZ+Tj3GSYacuiIQJWcBQG/OpRzYK6ZmIkBqqJNX18re62UUBkVqSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757420060; c=relaxed/simple;
-	bh=nfO6Qip4wT2nqsDYDR/PKlg64uG9rndsPou4q5q7/AM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ve8asKqQ9ZUwXTgHfiu4nKANNDvg05OoPsxRqNnn2ittlow5ce/nA1qgGaVn7btP0AX+JjixCoFNlBo2ufe4Un7FazM1O8b2YTaUYJjpUx42kEzC6g3pjImFBNdLdOrfGfroASlLlQOLGJY0XknPRtc51FD4CGwp3ojJDbQKAV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMr2axex; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757421389; c=relaxed/simple;
+	bh=HZClZgg8P8mVprLk8hPWAv50PfnziNXSVcNkzhwfpd8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J7Hg4lWy+0Gz9iZQwomyLL/mwIP4R2CHgbqRa3fSE/9qyFF3qtsmPonrWMUZv2OAVAJW0p9BkAy2hzgfQsT8BMt+mO26jzod6jCbLbuNhlSSnkiihejQ9bVml/PzUvzULSCmMJj0MJdsf945Mwaea3bOFYv5450LG4Zzr8nuhBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vtqwxQJ3; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMr2axex"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA92C4CEF7;
-	Tue,  9 Sep 2025 12:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757420059;
-	bh=nfO6Qip4wT2nqsDYDR/PKlg64uG9rndsPou4q5q7/AM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tMr2axexlrFj5gL9A5wx0Pm7Zq/Y5C2R915B/D1ID5hwZs1w5i55e/R1gqXyDFoKa
-	 aEdpr+MCr+XI+VwdTGdvIzXtoaB0zx4kSNQ1i+Set8uNLjFS24RS9FTTGXQQpco5OB
-	 nOD/LoJaq3ADDiRQO8QYtOQKbBjMqrXkRjlZFabc=
-Date: Tue, 9 Sep 2025 14:14:15 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Simon Neuenhausen <simon.neuenhausen@rwth-aachen.de>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH 2/2] samples: rust: add a USB driver sample
-Message-ID: <2025090916-dill-elated-3d68@gregkh>
-References: <20250825-b4-usb-v1-2-7aa024de7ae8@collabora.com>
- <2025090618-smudgy-cringing-a7a4@gregkh>
- <D8EAF874-4FED-42EE-8FD8-E89B6CB0086A@collabora.com>
- <2025090601-iron-glitter-c77d@gregkh>
- <831C4AE2-6964-4699-9E74-E4B721B87B17@collabora.com>
- <DCLQZZHU42HN.4Y4PP0PPR10O@kernel.org>
- <9657C897-087E-4544-849B-964E99D95A50@collabora.com>
- <DCLTJMIAMCVL.35U236MMS5CCK@kernel.org>
- <85B643A9-1657-43ED-BE98-BE7E502D08DA@collabora.com>
- <3aca9e74-b67c-4bfe-a206-9a6eecdf76ab@rwth-aachen.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vtqwxQJ3"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3c46686d1e6so3642590f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 05:36:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757421386; x=1758026186; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IuHm918GfIeEf1Ir04QAGsz9mtLn5P/sYnaZ6DvVfQQ=;
+        b=vtqwxQJ3ycVIavlqRgzPASpG/7rQD+s16nU+aZmUluMzr1j+MC0+Rll9xlgZXQBA/E
+         wn3TjZIWM4FGd5u+kMM4jvvKm9xGOc03RXqWzu+HG9MknKqsQLNnNJ6M1nQihLOQkaHu
+         +vxXqKmjIRRHpitc0kXF1kmRktK3GIwjdLd4ijdYXE+ZleCLfMUk7LOYAgszXt2m4GFN
+         wI1HcxB5A3mWw99LwZu8C0UpgmiU5VwoegSgNE34gkHWjJByVUcFCPMQFbBmbhklEvro
+         yF6m+wUVuYFZFcslFecLdM9o+YnzMWMlZB1P39tHZdp/EVKt7oHV98cgReG83rfatqKD
+         6tGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757421386; x=1758026186;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IuHm918GfIeEf1Ir04QAGsz9mtLn5P/sYnaZ6DvVfQQ=;
+        b=SxjR0CY9av8pZqavmlwGyKiT+t2aXy7IzEB3h+1GFTHN/i6P4Apow9CS4Re2/uAPEe
+         OqWEIBy6qxWNjnz5XmFoOUX9OKKyZu0uqCaoN5rK3ge7yEF4yl8O0pS6JvPWqJXJrgbx
+         /15x3Bxx5ztmqfCm+E1VIr6JVXN9d0ok3YVx7RpTkhPmiJziC5akhvsou7HIenCTUXkh
+         uyN5o/UhXBUXd4lyLXj309LYfNtQhysj6XiT2NEEEjrvJw+sMNjZjMVe7ZRo17V8LknD
+         pyFBMHnLWh0i/Qv5PsIQqznrZE2eSaK++vw3j2vq26PGlaz9tC090q//qGVajekRrERt
+         vehg==
+X-Gm-Message-State: AOJu0YyCLaDdLhqcRoz9THFT/o8pgoomo2bE9kIoNiEhKsbCG449UpQB
+	VfgRnjNHwLy1R5H3GFg8estl1P+HRKO1QU7k49sY+zAB5VHooYWEmnoSuwoblmSfkt7QH5iXgmT
+	qGntxL4aCXCsdQhQ65PPVMHhGjKkNeqlbFWrtqjAX
+X-Gm-Gg: ASbGncugARETyICjPTYw9jQcnq9NRKH3D5MBN6atgxOmaQWitZps0QxrwQBfgRqdw4+
+	0UmOp/l3WZrcE4p4IU7lKKBYNk/AOtP2THNY9dAPWupcIMClKso8N0tFZbeyHXt4YztLKw9MlV8
+	lUyBIKBISaGKs3KVcKVW2OHhv4vzY1bTAliAhzb3Miqfqo9A/Im9L4W9/DXlhV2Sv/lL1Yw11DD
+	k7LGRS3F8PFLreW2Xge5DQJO3tURnyaGTFX8Ut9zEbeu69YSSjJDz5fmGAs6r+6wmjgpROEkaau
+	FxRWATXadmHYcSqDO1e81w==
+X-Google-Smtp-Source: AGHT+IFCyHgVIRKsYxoy4Zt4SH9/2M4SuYouE+tZGOXEXB1baIe867sUA7Ohl/hWq8EQ34aVe92g3Fbem3U74J+8gY4=
+X-Received: by 2002:a05:6000:22c3:b0:3d6:7ae1:af00 with SMTP id
+ ffacd0b85a97d-3e641873f43mr9653157f8f.20.1757421385614; Tue, 09 Sep 2025
+ 05:36:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3aca9e74-b67c-4bfe-a206-9a6eecdf76ab@rwth-aachen.de>
+References: <20250909123258.29304-1-work@onurozkan.dev>
+In-Reply-To: <20250909123258.29304-1-work@onurozkan.dev>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 9 Sep 2025 14:36:13 +0200
+X-Gm-Features: AS18NWCi_38LYtkaR8jEU9nhKwV1_eL_w_MepK-Pt_PgDQ9LoNWOyuUyjrutq2Y
+Message-ID: <CAH5fLghVt6MKfiDkmd-5DMAKA=yXQzMu3GNHAqB+HRGhyJ0tqA@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: refactor `to_result` to return the original value
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com, 
+	tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu, a.hindborg@kernel.org, 
+	lossin@kernel.org, bjorn3_gh@protonmail.com, gary@garyguo.net, 
+	boqun.feng@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 09, 2025 at 01:19:12PM +0200, Simon Neuenhausen wrote:
-> Hi,
-> 
-> > On 06.09.25 17:46, Daniel Almeida wrote:
-> 
-> > As I said to Greg above, I’m here to help if anyone wants to write a USB
-> > driver. Those interested
-> are free to reach out to me and we will work together to merge the required
-> abstractions with a real user in mind. Hopefully this encourages others to
-> join in this work :)
-> I had planned on writing a USB driver for TI nspire calculators, that would
-> make them mountable as USB mass storage devices, since they use a
-> proprietary USB protocol, that usually requires paid software from TI. At
-> the time I gave up on that, due to the lack of USB support in RFL, but I
-> could revive the effort using this.
+On Tue, Sep 9, 2025 at 2:33=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev>=
+ wrote:
+>
+> Current `to_result` helper takes a `c_int` and returns `Ok(())` on
+> success and this has some issues like:
+>
+>     - Callers lose the original return value and often have to store
+>         it in a temporary variable before calling `to_result`.
+>
+>     - It only supports `c_int`, which makes callers to unnecessarily
+>         cast when working with other types (e.g. `u16` in phy
+>         abstractions). We even have some places that ignore to use
+>         `to_result` helper because the input doesn't fit in `c_int`
+>         (see [0]).
+>
+> [0]: https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
+>
+> This patch changes `to_result` to be generic and also return the
+> original value on success.
+>
+> So that the code that previously looked like:
+>
+>     let ret =3D unsafe { bindings::some_ffi_call() };
+>     to_result(ret).map(|()| SomeType::new(ret))
+>
+> can now be written more directly as:
+>
+>     to_result(unsafe { bindings::some_ffi_call() })
+>         .map(|ret| SomeType::new(ret))
+>
+> Similarly, code such as:
+>
+>     let res: isize =3D $some_ffi_call();
+>     if res < 0 {
+>         return Err(Error::from_errno(res as i32));
+>     }
+>
+> can now be used with `to_result` as:
+>
+>     to_result($some_ffi_call())?;
+>
+> Existing call sites that only care about success/failure are updated
+> to append `.map(|_| ())` to preserve their previous semantics. They
+> can also use the equivalent pattern:
+>
+>     to_result($something)?;
+>     Ok(())
+>
+> This patch only fixes the callers that broke after the changes on `to_res=
+ult`.
+> I haven't included all the improvements made possible by the new design s=
+ince
+> that could conflict with other ongoing patches [1]. Once this patch is ap=
+proved
+> and applied, I am planning to follow up with creating a "good first issue=
+" on [2]
+> for those additional changes.
+>
+> [1]: https://lore.kernel.org/rust-for-linux/?q=3Dto_result
+> [2]: https://github.com/Rust-for-Linux/linux
+>
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x=
+/near/536374456
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
+>  rust/kernel/auxiliary.rs        |  1 +
+>  rust/kernel/block/mq/tag_set.rs |  2 +-
+>  rust/kernel/cpufreq.rs          |  3 ++-
+>  rust/kernel/devres.rs           |  1 +
+>  rust/kernel/dma.rs              |  3 +++
+>  rust/kernel/error.rs            | 17 ++++++++++++-----
+>  rust/kernel/miscdevice.rs       |  2 +-
+>  rust/kernel/mm/virt.rs          |  1 +
+>  rust/kernel/pci.rs              |  3 ++-
+>  rust/kernel/platform.rs         |  2 +-
+>  rust/kernel/regulator.rs        |  5 +++--
+>  11 files changed, 28 insertions(+), 12 deletions(-)
+>
+> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+> index 4749fb6bffef..479c0ad2a572 100644
+> --- a/rust/kernel/auxiliary.rs
+> +++ b/rust/kernel/auxiliary.rs
+> @@ -43,6 +43,7 @@ unsafe fn register(
+>          to_result(unsafe {
+>              bindings::__auxiliary_driver_register(adrv.get(), module.0, =
+name.as_char_ptr())
+>          })
+> +        .map(|_| ())
+>      }
+>
+>      unsafe fn unregister(adrv: &Opaque<Self::RegType>) {
+> diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_s=
+et.rs
+> index c3cf56d52bee..0e7883163000 100644
+> --- a/rust/kernel/block/mq/tag_set.rs
+> +++ b/rust/kernel/block/mq/tag_set.rs
+> @@ -65,7 +65,7 @@ pub fn new(
+>                  // SAFETY: we do not move out of `tag_set`.
+>                  let tag_set: &mut Opaque<_> =3D unsafe { Pin::get_unchec=
+ked_mut(tag_set) };
+>                  // SAFETY: `tag_set` is a reference to an initialized `b=
+lk_mq_tag_set`.
+> -                error::to_result( unsafe { bindings::blk_mq_alloc_tag_se=
+t(tag_set.get())})
+> +                error::to_result( unsafe { bindings::blk_mq_alloc_tag_se=
+t(tag_set.get())}).map(|_| ())
+>              }),
+>              _p: PhantomData,
+>          })
+> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+> index be2dffbdb546..c3fa20ce229a 100644
+> --- a/rust/kernel/cpufreq.rs
+> +++ b/rust/kernel/cpufreq.rs
+> @@ -157,6 +157,7 @@ pub fn as_raw(&self) -> *mut bindings::cpufreq_policy=
+_data {
+>      pub fn generic_verify(&self) -> Result {
+>          // SAFETY: By the type invariant, the pointer stored in `self` i=
+s valid.
+>          to_result(unsafe { bindings::cpufreq_generic_frequency_table_ver=
+ify(self.as_raw()) })
+> +            .map(|_| ())
+>      }
+>  }
+>
+> @@ -519,7 +520,7 @@ pub fn set_suspend_freq(&mut self, freq: Hertz) -> &m=
+ut Self {
+>      #[inline]
+>      pub fn generic_suspend(&mut self) -> Result {
+>          // SAFETY: By the type invariant, the pointer stored in `self` i=
+s valid.
+> -        to_result(unsafe { bindings::cpufreq_generic_suspend(self.as_mut=
+_ref()) })
+> +        to_result(unsafe { bindings::cpufreq_generic_suspend(self.as_mut=
+_ref()) }).map(|_| ())
+>      }
+>
+>      /// Provides a wrapper to the generic get routine.
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> index d04e3fcebafb..214cd9a0ebe0 100644
+> --- a/rust/kernel/devres.rs
+> +++ b/rust/kernel/devres.rs
+> @@ -328,6 +328,7 @@ fn register_foreign<P>(dev: &Device<Bound>, data: P) =
+-> Result
+>          // `ForeignOwnable` is released eventually.
+>          bindings::devm_add_action_or_reset(dev.as_raw(), Some(callback::=
+<P>), ptr.cast())
+>      })
+> +    .map(|_| ())
+>  }
+>
+>  /// Encapsulate `data` in a [`KBox`] and [`Drop::drop`] `data` once `dev=
+` is unbound.
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> index 68fe67624424..f614453ddb7d 100644
+> --- a/rust/kernel/dma.rs
+> +++ b/rust/kernel/dma.rs
+> @@ -34,6 +34,7 @@ unsafe fn dma_set_mask(&self, mask: DmaMask) -> Result =
+{
+>          // - The safety requirement of this function guarantees that the=
+re are no concurrent calls
+>          //   to DMA allocation and mapping primitives using this mask.
+>          to_result(unsafe { bindings::dma_set_mask(self.as_ref().as_raw()=
+, mask.value()) })
+> +            .map(|_| ())
+>      }
+>
+>      /// Set up the device's DMA coherent addressing capabilities.
+> @@ -51,6 +52,7 @@ unsafe fn dma_set_coherent_mask(&self, mask: DmaMask) -=
+> Result {
+>          // - The safety requirement of this function guarantees that the=
+re are no concurrent calls
+>          //   to DMA allocation and mapping primitives using this mask.
+>          to_result(unsafe { bindings::dma_set_coherent_mask(self.as_ref()=
+.as_raw(), mask.value()) })
+> +            .map(|_| ())
+>      }
+>
+>      /// Set up the device's DMA addressing capabilities.
+> @@ -72,6 +74,7 @@ unsafe fn dma_set_mask_and_coherent(&self, mask: DmaMas=
+k) -> Result {
+>          to_result(unsafe {
+>              bindings::dma_set_mask_and_coherent(self.as_ref().as_raw(), =
+mask.value())
+>          })
+> +        .map(|_| ())
+>      }
+>  }
+>
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index db14da976722..f76afa4b7ec1 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -378,12 +378,19 @@ fn from(e: core::convert::Infallible) -> Error {
+>  pub type Result<T =3D (), E =3D Error> =3D core::result::Result<T, E>;
+>
+>  /// Converts an integer as returned by a C kernel function to an error i=
+f it's negative, and
+> -/// `Ok(())` otherwise.
+> -pub fn to_result(err: crate::ffi::c_int) -> Result {
+> -    if err < 0 {
+> -        Err(Error::from_errno(err))
+> +/// returns the original value otherwise.
+> +pub fn to_result<T>(code: T) -> Result<T>
+> +where
+> +    T: Copy + TryInto<i32>,
+> +{
+> +    // Try casting into `i32`.
+> +    let casted: crate::ffi::c_int =3D code.try_into().unwrap_or(0);
+> +
+> +    if casted < 0 {
+> +        Err(Error::from_errno(casted))
+>      } else {
+> -        Ok(())
+> +        // Return the original input value.
+> +        Ok(code)
+>      }
+>  }
+>
+> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+> index 6373fe183b27..22b72ae84c03 100644
+> --- a/rust/kernel/miscdevice.rs
+> +++ b/rust/kernel/miscdevice.rs
+> @@ -79,7 +79,7 @@ pub fn register(opts: MiscDeviceOptions) -> impl PinIni=
+t<Self, Error> {
+>                  // the destructor of this type deallocates the memory.
+>                  // INVARIANT: If this returns `Ok(())`, then the `slot` =
+will contain a registered
+>                  // misc device.
+> -                to_result(unsafe { bindings::misc_register(slot) })
+> +                to_result(unsafe { bindings::misc_register(slot) }).map(=
+|_| ())
+>              }),
+>              _t: PhantomData,
+>          })
+> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> index a1bfa4e19293..5494f96e91b0 100644
+> --- a/rust/kernel/mm/virt.rs
+> +++ b/rust/kernel/mm/virt.rs
+> @@ -195,6 +195,7 @@ pub fn vm_insert_page(&self, address: usize, page: &P=
+age) -> Result {
+>          // SAFETY: By the type invariant of `Self` caller has read acces=
+s and has verified that
+>          // `VM_MIXEDMAP` is set. By invariant on `Page` the page has ord=
+er 0.
+>          to_result(unsafe { bindings::vm_insert_page(self.as_ptr(), addre=
+ss, page.as_ptr()) })
+> +            .map(|_| ())
+>      }
+>  }
+>
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 887ee611b553..6e917752cb89 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -48,6 +48,7 @@ unsafe fn register(
+>          to_result(unsafe {
+>              bindings::__pci_register_driver(pdrv.get(), module.0, name.a=
+s_char_ptr())
+>          })
+> +        .map(|_| ())
+>      }
+>
+>      unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
+> @@ -437,7 +438,7 @@ impl Device<device::Core> {
+>      /// Enable memory resources for this device.
+>      pub fn enable_device_mem(&self) -> Result {
+>          // SAFETY: `self.as_raw` is guaranteed to be a pointer to a vali=
+d `struct pci_dev`.
+> -        to_result(unsafe { bindings::pci_enable_device_mem(self.as_raw()=
+) })
+> +        to_result(unsafe { bindings::pci_enable_device_mem(self.as_raw()=
+) }).map(|_| ())
+>      }
+>
+>      /// Enable bus-mastering for this device.
+> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+> index 8f028c76f9fa..5a5561c7326e 100644
+> --- a/rust/kernel/platform.rs
+> +++ b/rust/kernel/platform.rs
+> @@ -54,7 +54,7 @@ unsafe fn register(
+>          }
+>
+>          // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> -        to_result(unsafe { bindings::__platform_driver_register(pdrv.get=
+(), module.0) })
+> +        to_result(unsafe { bindings::__platform_driver_register(pdrv.get=
+(), module.0) }).map(|_| ())
+>      }
+>
+>      unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
+> diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
+> index 65f3a125348f..e17ae6e9a990 100644
+> --- a/rust/kernel/regulator.rs
+> +++ b/rust/kernel/regulator.rs
+> @@ -261,6 +261,7 @@ pub fn set_voltage(&self, min_voltage: Voltage, max_v=
+oltage: Voltage) -> Result
+>                  max_voltage.as_microvolts(),
+>              )
+>          })
+> +        .map(|_| ())
+>      }
+>
+>      /// Gets the current voltage of the regulator.
+> @@ -291,12 +292,12 @@ fn get_internal(dev: &Device, name: &CStr) -> Resul=
+t<Regulator<T>> {
+>
+>      fn enable_internal(&mut self) -> Result {
+>          // SAFETY: Safe as per the type invariants of `Regulator`.
+> -        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr(=
+)) })
+> +        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr(=
+)) }).map(|_| ())
+>      }
+>
+>      fn disable_internal(&mut self) -> Result {
+>          // SAFETY: Safe as per the type invariants of `Regulator`.
+> -        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr=
+()) })
+> +        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr=
+()) }).map(|_| ())
 
-usb-storage is really just SCSI, so if you want to try to do this, you
-are going to have to write a scsi driver for the calculator.  Not
-something you probably really want to do :(
+IMO all of the new map calls in this patch should use the
 
-Odd are this would be a much simpler userspace program instead, as you
-can control USB devices directly from userspace, no kernel driver
-needed.
+to_result(...)?
+Ok(())
 
-thanks,
+syntax.
 
-greg k-h
+Alice
