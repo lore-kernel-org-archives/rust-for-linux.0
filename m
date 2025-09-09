@@ -1,219 +1,94 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A31F78F54;
-	Tue,  9 Sep 2025 20:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757450865; cv=pass; b=DRGN0XDmdgDEVMTqXbZuaM5mA9Ojr9t2AKmuZEjcjaZLYdTh/H97v0SqoyM7tyOCSyOW9byy1h1UW4Xh/BknZaWyTaikmQ8W/ZLCe2T7DN9LodE/sMWI/8XpfaHs9hgU357+eSKIrkHs6hV4byQaPCVk4wjmQKHNifpswaGuM6o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757450865; c=relaxed/simple;
-	bh=Qa2ll3BVVpB5aAIg+ho61m4eACb5NpV0z/JSHo8TlGk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fXdgLhU+l8FsnvMabm+DmjY/igaPHgsUDCo4gvziU7SuSJ+KJx76PpMgcEF5iTm+Yt/L25JwIRGFfwotUCssUZktCGdZQJsK3ed3ca3bVeclcjqPmIB27IbMKd1PdK+Jny2tj1bCd/mVRcyZv7Ai+7//H8e40ZT97LnP4lxI0aA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=V9zZrVHK; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2EE1FF5F9;
+	Tue,  9 Sep 2025 20:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757451193; cv=none; b=bgpEPivyn7al6cCzkcUfclWxzlOms7vir+2KTVM4TSfzQGdKnfwWg6dCOTxzKsnPf6/s1M8rSLzEfY21aZfipZuXJnokPOfZQItzoYTrhy8+rO7clsBlAa37TqoElTrB89kZ2qTJIOKNkUWUzJqGQZ5oZdDKn9DnrE9HhLgGUbo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757451193; c=relaxed/simple;
+	bh=lRNvw5Vej2PNjUqrctTC6POIwS0tW4NvDAn8P9RwduA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fapfX/k6V91EeXl3a7kEQNgVunn83Pw3RPYxMiYs73bsau5SZrh0ypE9WW7rftFWUrb2Z2E7MfEleoEsV00zsZn4PZOLNk9PQJE4S19fDuCcHmAlLR+GIXMrnWNDaCMm7mzHy+lvwkd5ISvqo4EZFymKYadnSOPKRs90li6Iy9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HCgi2h/o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="V9zZrVHK"
-ARC-Seal: i=1; a=rsa-sha256; t=1757450848; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=KEsmyRKlprPk5xfmi+YpO23FTskByoyUCZ4j4WI2vij4L6nbHTWMhTv42yzp8RSR4ojit5m1iVbVmEG51fRg8nMxWVJ1nGDT7Z1PriUyCGVaJZUM+1sbJE3HblhDoiX2gx6+rzFOj6WYXJ3gEGJKuM6JWjunGZ3GIm+++jv2Iag=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757450848; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=TWs+/bHrT8S1EcXwM/Qh1rN2SkCFsPpL2DGXvSv40UQ=; 
-	b=YFkC08YvKmw8bhLXZgrhT8A7jBrMBmL4C+qg3eiSLFc7VkkO6oXxFJ6/Cd++XIADw6pOKt/Ft23fq/bHRsudazzOFGHvMf8wmjBRwsW1jKnXu+2XE+OusWpHjTb+JqQgzTKtth1s1teILR85QSKY8K2MNcAgfC52U57C76sDBr0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757450848;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
-	bh=TWs+/bHrT8S1EcXwM/Qh1rN2SkCFsPpL2DGXvSv40UQ=;
-	b=V9zZrVHKH3E9Ip5I1sialc93dyk91YzmGXLHnDQxFOwZ8iUhzjWczFK36XMdrBi5
-	RmErTaJ7LxBuOm/5RjQklq2O+8KKfUeiPRrBtHWUMmsfX/2sf6yHOhpprfC6v0rzbyk
-	pGiha24wUZ0YzPOoF+dVCbtc4shshAJFWRU8ZYFM=
-Received: by mx.zohomail.com with SMTPS id 1757450847036149.5317195361498;
-	Tue, 9 Sep 2025 13:47:27 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Tue, 09 Sep 2025 17:46:55 -0300
-Subject: [PATCH] rust: irq: request: touch up the documentation
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HCgi2h/o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D628DC4CEF4;
+	Tue,  9 Sep 2025 20:53:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757451193;
+	bh=lRNvw5Vej2PNjUqrctTC6POIwS0tW4NvDAn8P9RwduA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HCgi2h/oQxBkyv+fOnr8t5TFe2z+Zv5AnIySO30rnXXrcif2Z2sLz6aR01iGQGeuI
+	 dZBqoYvtKNZZWUZq4gvUKQvHs/q5pp0nRCSZjlCVWy0HgfSu6R4wUWsCU2wEttsIc1
+	 jEpxu+T8CL2JuMA/a+2gdTh68sm3ozEM5+s4sQARkQct8uykEGEn1HlAkgoFDwWLQZ
+	 OY66NiLuCqvt6lqitD5Vkb86PQsVKe4MtFDop2g87p4dW4bUfRx+Ik4GNg+RqES6Hj
+	 bQlqo5j4UWTwKa/G43M0oNoa2jTBn0NVhgOGtSKk0xGYOBUpPB4uZGtew6K4ThgU/H
+	 s7nARvIYuMpcw==
+Date: Tue, 9 Sep 2025 22:53:08 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, =?UTF-8?B?QmrDtnJu?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 08/19] tools/docs: sphinx-build-wrapper: add a
+ wrapper for sphinx-build
+Message-ID: <20250909225308.30a42062@foz.lan>
+In-Reply-To: <87y0qnv4j2.fsf@trenco.lwn.net>
+References: <cover.1756969623.git.mchehab+huawei@kernel.org>
+	<e019f951190a732f9ac0b21bcda7e49af3bd5cbd.1756969623.git.mchehab+huawei@kernel.org>
+	<87plbzwubl.fsf@trenco.lwn.net>
+	<7tk2mkydbcblodhipoddued5smsc3ifnmeqen5wv7eu3mbmvgi@nwxqo5366umj>
+	<87y0qnv4j2.fsf@trenco.lwn.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250909-irq-andreas-fixes-v1-1-dbc9aafed2cb@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAD6SwGgC/x3LSwqAMAwA0atI1gbqj1qvIi6qjZpN1QREKN7d4
- vIxTAIlYVIYigRCNysfMaMqC1h2HzdCDtlQm7ozzjhkudDHIOQVV35IsbW26Rq7hLmvIH+n0B/
- yNk7v+wESP84YYwAAAA==
-X-Change-ID: 20250909-irq-andreas-fixes-4773537cdb81
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
 
-Parts of the documentation are either unclear or misplaced and can
-otherwise be improved. This commit fixes them.
+Em Tue, 09 Sep 2025 12:56:17 -0600
+Jonathan Corbet <corbet@lwn.net> escreveu:
 
-This is specially important in the context of the safety requirements of
-functions or type invariants, as users have to uphold the former and may
-rely on the latter, so we should avoid anything that may create
-confusion.
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+> 
+> > Basically, what happens is that the number of jobs can be on
+> > different places:  
+> 
+> There is a lot of complexity there, and spread out between __init__(),
+> run_sphinx(), and handle_pdf().  Is there any way to create a single
+> figure_out_how_many_damn_jobs() and coalesce that logic there?  That
+> would help make that part of the system a bit more comprehensible.
 
-Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/kernel/irq/request.rs | 44 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 34 insertions(+), 10 deletions(-)
+I'll try to better organize it, but run_sphinx() does something
+different than handle_pdf():
 
-diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
-index b150563fdef809899c7ca39221c4928238e31110..a1d0e934972fa555968dba5731077cb11606a0d3 100644
---- a/rust/kernel/irq/request.rs
-+++ b/rust/kernel/irq/request.rs
-@@ -30,6 +30,11 @@ pub enum IrqReturn {
- pub trait Handler: Sync {
-     /// The hard IRQ handler.
-     ///
-+    /// A "hard" handler in the context of the Linux kernel is the part of an
-+    /// interrupt handler that runs in interrupt context. The hard handler
-+    /// usually defers time consuming processing to run in process context, for
-+    /// instance by queuing the work on a work queue for later execution.
-+    ///
-     /// This is executed in interrupt context, hence all corresponding
-     /// limitations do apply.
-     ///
-@@ -54,9 +59,7 @@ fn handle(&self, device: &Device<Bound>) -> IrqReturn {
- /// # Invariants
- ///
- /// - `self.irq` is the same as the one passed to `request_{threaded}_irq`.
--/// - `cookie` was passed to `request_{threaded}_irq` as the cookie. It is guaranteed to be unique
--///   by the type system, since each call to `new` will return a different instance of
--///   `Registration`.
-+/// - `cookie` is unique.
- #[pin_data(PinnedDrop)]
- struct RegistrationInner {
-     irq: u32,
-@@ -91,7 +94,9 @@ fn drop(self: Pin<&mut Self>) {
- // concurrent access.
- unsafe impl Sync for RegistrationInner {}
- 
--// SAFETY: It is safe to send `RegistrationInner` across threads.
-+// SAFETY: It is safe to transfer ownership of `RegistrationInner` from another
-+// thread, because it has no shared mutable state. The IRQ owned by
-+// `RegistrationInner` via `cookie` can be dropped from any thread.
- unsafe impl Send for RegistrationInner {}
- 
- /// A request for an IRQ line for a given device.
-@@ -112,7 +117,7 @@ impl<'a> IrqRequest<'a> {
-     ///
-     /// - `irq` should be a valid IRQ number for `dev`.
-     pub(crate) unsafe fn new(dev: &'a Device<Bound>, irq: u32) -> Self {
--        // INVARIANT: `irq` is a valid IRQ number for `dev`.
-+        // By function safety requirement, irq` is a valid IRQ number for `dev`.
-         IrqRequest { dev, irq }
-     }
- 
-@@ -183,6 +188,8 @@ pub fn irq(&self) -> u32 {
- /// * We own an irq handler whose cookie is a pointer to `Self`.
- #[pin_data]
- pub struct Registration<T: Handler + 'static> {
-+    /// We need to drop inner before handler, as we must ensure that the handler
-+    /// is valid until `free_irq` is called.
-     #[pin]
-     inner: Devres<RegistrationInner>,
- 
-@@ -196,7 +203,8 @@ pub struct Registration<T: Handler + 'static> {
- }
- 
- impl<T: Handler + 'static> Registration<T> {
--    /// Registers the IRQ handler with the system for the given IRQ number.
-+    /// Registers the IRQ handler with the system for the IRQ number represented
-+    /// by `request`.
-     pub fn new<'a>(
-         request: IrqRequest<'a>,
-         flags: Flags,
-@@ -208,7 +216,11 @@ pub fn new<'a>(
-             inner <- Devres::new(
-                 request.dev,
-                 try_pin_init!(RegistrationInner {
--                    // INVARIANT: `this` is a valid pointer to the `Registration` instance
-+                    // INVARIANT: `this` is a valid pointer to the `Registration` instance.
-+                    // INVARIANT: `cookie` is being passed to `request_irq` as
-+                    // the cookie. It is guaranteed to be unique by the type
-+                    // system, since each call to `new` will return a different
-+                    // instance of `Registration`.
-                     cookie: this.as_ptr().cast::<c_void>(),
-                     irq: {
-                         // SAFETY:
-@@ -260,7 +272,8 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
- 
- /// # Safety
- ///
--/// This function should be only used as the callback in `request_irq`.
-+/// - This function should be only used as the callback in `request_irq`.
-+/// - `ptr` must be valid for use as a reference to `T`
- unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: *mut c_void) -> c_uint {
-     // SAFETY: `ptr` is a pointer to `Registration<T>` set in `Registration::new`
-     let registration = unsafe { &*(ptr as *const Registration<T>) };
-@@ -288,6 +301,11 @@ pub enum ThreadedIrqReturn {
- pub trait ThreadedHandler: Sync {
-     /// The hard IRQ handler.
-     ///
-+    /// A "hard" handler in the context of the Linux kernel is the part of an
-+    /// interrupt handler that runs in interrupt context. The hard handler
-+    /// usually defers time consuming processing to run in process context, for
-+    /// instance by queuing the work on a work queue for later execution.
-+    ///
-     /// This is executed in interrupt context, hence all corresponding
-     /// limitations do apply. All work that does not necessarily need to be
-     /// executed from interrupt context, should be deferred to the threaded
-@@ -427,6 +445,10 @@ pub fn new<'a>(
-                 request.dev,
-                 try_pin_init!(RegistrationInner {
-                     // INVARIANT: `this` is a valid pointer to the `ThreadedRegistration` instance.
-+                    // INVARIANT: `cookie` is being passed to
-+                    // `request_threaded_irq` as the cookie. It is guaranteed to
-+                    // be unique by the type system, since each call to `new`
-+                    // will return a different instance of `Registration`.
-                     cookie: this.as_ptr().cast::<c_void>(),
-                     irq: {
-                         // SAFETY:
-@@ -479,7 +501,8 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
- 
- /// # Safety
- ///
--/// This function should be only used as the callback in `request_threaded_irq`.
-+/// - This function should be only used as the callback in `request_threaded_irq`.
-+/// - `ptr` must be valid for use as a reference to `T`
- unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler>(
-     _irq: i32,
-     ptr: *mut c_void,
-@@ -495,7 +518,8 @@ pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
- 
- /// # Safety
- ///
--/// This function should be only used as the callback in `request_threaded_irq`.
-+/// - This function should be only used as the callback in `request_threaded_irq`.
-+/// - `ptr` must be valid for use as a reference to `T`
- unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler>(_irq: i32, ptr: *mut c_void) -> c_uint {
-     // SAFETY: `ptr` is a pointer to `ThreadedRegistration<T>` set in `ThreadedRegistration::new`
-     let registration = unsafe { &*(ptr as *const ThreadedRegistration<T>) };
+- run_sphinx: claims all tokens;
+- handle_pdf: use future.concurrent and handle parallelism inside it.
 
----
-base-commit: 4c48aed6dfcd32ea23e52adc1072405a62facf46
-change-id: 20250909-irq-andreas-fixes-4773537cdb81
+Perhaps I can move the future.concurrent parallelism to jobserver library
+to simplify the code a little bit while offering an interface somewhat similar
+to run_sphinx logic. Let's see if I can find a way to do it while keeping
+the code generic (*).
 
-Best regards,
--- 
-Daniel Almeida <daniel.almeida@collabora.com>
+Will take a look on it probably on Thursday of Friday.
 
+(*) I did one similar attempt at devel time adding a subprocess call
+    wrapper there, but didn't like much the solution, but this was
+    before the need to use futures.concurrent.
+
+> That said, I've been unable to make this change break in my testing.  I
+> guess I'm not seeing a lot of impediments to applying the next version
+> at this point.
+
+Great! I'll probably be respinning the next (hopefully final) version
+by the end of this week, if I don't get sidetracked with other things.
+
+Thanks,
+Mauro
