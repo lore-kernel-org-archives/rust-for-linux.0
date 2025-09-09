@@ -1,174 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A85321F35;
-	Tue,  9 Sep 2025 11:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757418368; cv=none; b=br6k0yBK28igXzh13e4wS2a6vhmE9xOFOXdCNK/l6xmGyqrRD4goOXrXUEpugxUYHSbrJXAZhK5vmb0XGEd7N6RCsOkOGQUp4diZSOJFsUDaHhcE5HZKeZFq9+67gRzULKNqWZI1ED/OHBnXQlq+oom58hMlmD/BOHC3kPwsmUM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757418368; c=relaxed/simple;
-	bh=uhe//XJjJxP6iJWzYFShGAzGMjO7dDnhbwj/aYwazAs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Rp26QPMbN9LYX3RtB7qIIgstBbr3dL5uGbMuZGSzSuaEo4t+xQFWlnJxM3Ib/fvybcz5NTP8xPx0aQNSHdNynD7qNKKf3CK+Yz8WCiTMY0Zu1V8OXMKWrauzWGYjZjsXMBdhkFFklaFn5sZ2WvnMBlzONnQu3umOAQnUi//U+TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W4v5nXSY; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CB7304BB5;
+	Tue,  9 Sep 2025 12:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757419986; cv=pass; b=h2BgbtToAfrNGc8ZOALbTeyeUEd9HVD7KoBLXToclyq1oOTMh5XCOMMpwalmE5Rq0EeuapZsjr7+uMkwtNV4XhjnU5OnDhSiFSsKntEpzlRT0oTUuSPwqQMBJx8j9V2dVrEOy9Jxey000YnwjoiFJsV2SbcjN5gK9LUMR9tl8k4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757419986; c=relaxed/simple;
+	bh=qRTm08wogJ6IEQYYX7Nk2zH1EbLuhk9DI/DPby6mwQ0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=SgoL0OYjvB0BPmYVQDshoM0ZBM5AlW4FOlykY83ENNn1eeH7ZyB6AHF61Rh/7bv69euDAh6NmmzbvK/2knc5g/Or4deDPvKjTmr7rrb9NESYk0fliEDimCsumlxthot+sWGA9PYPKca+56QXmbS2Q2arARKUxO2G0fnrTpBJeCQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=BM/ws7gy; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W4v5nXSY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757418367; x=1788954367;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=uhe//XJjJxP6iJWzYFShGAzGMjO7dDnhbwj/aYwazAs=;
-  b=W4v5nXSYh1fKMRSlkAjYlvO1AZ5qC5q3c2UPkGV0eIVvniX2xs7mJEEi
-   bTheefRY4uqn24sTCzzs369JCXFl0WokLgP/fXNMOJQOXLWAQprcvJLFy
-   R9tYOJu5XdbsINQij2YcGLXxZsiPQ7zy2ncQfNKrNxcXf4bQO7+yD4wRm
-   LISsEfBER8FQmadgB8qkWKS0Gn4O66lkzYN+cDYM9aWJD/yRrTJDXNl8J
-   KFYv16Li4OqF++fwl++XwR42qHolJt97c4pa/cETxUzmbch997RmS9h+h
-   bvadQN9e+QdZYTAY/N/W1bvA3BrIPYUguj65/d9EeJ6ajtzK2JebR60yn
-   Q==;
-X-CSE-ConnectionGUID: bLEZLa8ZRcu6AtluJdUAGA==
-X-CSE-MsgGUID: h5rigHFnRbyE3XR4bzscSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63528671"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="63528671"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 04:46:06 -0700
-X-CSE-ConnectionGUID: Rqaf2/G3TNS/txgKEP8nLg==
-X-CSE-MsgGUID: 8mFi2zPYScWSR1sIesxYyg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="204053396"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO [10.245.244.108]) ([10.245.244.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 04:46:02 -0700
-Message-ID: <ed002179af749657ebe503cdf708588de9330013.camel@linux.intel.com>
-Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>, Matthew Brost	
- <matthew.brost@intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Steven Price <steven.price@arm.com>,
- Daniel Almeida	 <daniel.almeida@collabora.com>, Liviu Dudau
- <liviu.dudau@arm.com>, 	dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org
-Date: Tue, 09 Sep 2025 13:46:03 +0200
-In-Reply-To: <e5afeb60-96cc-4a9b-a360-2da03e4e236e@kernel.org>
-References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
-	 <20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
-	 <20250905152505.005a610d@fedora>
-	 <CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
-	 <DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org> <aL1pSFB9iBsfHFM_@google.com>
-	 <DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org> <aL1u_YxOkuj1kIq6@google.com>
-	 <20250908091140.44856fde@fedora> <aL6TJYRmWIkQXujj@google.com>
-	 <DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org> <20250908122002.2c80dd3a@fedora>
-	 <DCNDGFE7RR5Q.X3PCDW0KIX89@kernel.org> <20250908141156.3dbdea0b@fedora>
-	 <7aa3f464-a3d0-47a0-b044-d8db93f45918@kernel.org>
-	 <a2006f74-75bb-48ac-ac9c-0a71c8f9d510@linux.intel.com>
-	 <8078cad2-d5d3-4e20-9848-034c2a503f3d@kernel.org>
-	 <cbd5c99d2394335ac4aeb2740994ab14508e2553.camel@linux.intel.com>
-	 <CAH5fLghY8o0ouvaz48D4bsWMJ7A06L750xdKibaoe=bKjVOpzg@mail.gmail.com>
-	 <e5afeb60-96cc-4a9b-a360-2da03e4e236e@kernel.org>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="BM/ws7gy"
+ARC-Seal: i=1; a=rsa-sha256; t=1757419961; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=cZa6GESQ97dMg+rynhdCMUAoIPsAuEcDQg0rWghvSxu1jKqvfYcYxqW/xE1hXuc4r/VQVzxTHrFdDlcb031kAnMPENwN5hMtFXCgpLxABC9WzsIWsebsvBQQ64d65ZsArTj1qdBpOMoHq3gddgCUKfytObT5BvfNEKiWwnVEzFk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757419961; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=qRTm08wogJ6IEQYYX7Nk2zH1EbLuhk9DI/DPby6mwQ0=; 
+	b=azFE/VIRrRK5vv5Eebiu89uHK6509YStWkplsKOQ3aMG/lDG6nXvUb9ZOOtYFfL+ex8o9kZcjGEFFK3RJ6Ffqx4ieqwGsaUbEIu3m223mnz7TXl7meelAYxpRERJTT/y8e2Jkw0MaP3JmS4x1jimdcbK0E6ULjFPNJ26JFwpAdM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757419961;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=qRTm08wogJ6IEQYYX7Nk2zH1EbLuhk9DI/DPby6mwQ0=;
+	b=BM/ws7gycQgRHCFozthJdHDoQ36qwU3lBS0AOSxzZW4PuCrsSi1cJ1SP4j6rDldR
+	Ev0k+SeeWreurDcv20q5a1uNqy1NrMmtuH0wA6UnxmmIIKm8hn0XQmu54xS8ezQR8Jg
+	gZVusSraG8T22r+UKG47R5TjFP7Q9cIgSJOCXGUE=
+Received: by mx.zohomail.com with SMTPS id 1757419958375181.19043421461697;
+	Tue, 9 Sep 2025 05:12:38 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 2/2] samples: rust: add a USB driver sample
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <3aca9e74-b67c-4bfe-a206-9a6eecdf76ab@rwth-aachen.de>
+Date: Tue, 9 Sep 2025 09:12:21 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ Igor Korotin <igor.korotin.linux@gmail.com>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-usb@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <77E6BE1A-B928-4A36-98C4-74FB4A7C19C0@collabora.com>
+References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
+ <20250825-b4-usb-v1-2-7aa024de7ae8@collabora.com>
+ <2025090618-smudgy-cringing-a7a4@gregkh>
+ <D8EAF874-4FED-42EE-8FD8-E89B6CB0086A@collabora.com>
+ <2025090601-iron-glitter-c77d@gregkh>
+ <831C4AE2-6964-4699-9E74-E4B721B87B17@collabora.com>
+ <DCLQZZHU42HN.4Y4PP0PPR10O@kernel.org>
+ <9657C897-087E-4544-849B-964E99D95A50@collabora.com>
+ <DCLTJMIAMCVL.35U236MMS5CCK@kernel.org>
+ <85B643A9-1657-43ED-BE98-BE7E502D08DA@collabora.com>
+ <3aca9e74-b67c-4bfe-a206-9a6eecdf76ab@rwth-aachen.de>
+To: Simon Neuenhausen <simon.neuenhausen@rwth-aachen.de>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, 2025-09-09 at 13:28 +0200, Danilo Krummrich wrote:
-> On 9/9/25 1:24 PM, Alice Ryhl wrote:
-> > On Tue, Sep 9, 2025 at 1:11=E2=80=AFPM Thomas Hellstr=C3=B6m
-> > <thomas.hellstrom@linux.intel.com> wrote:
-> > >=20
-> > > On Tue, 2025-09-09 at 12:47 +0200, Danilo Krummrich wrote:
-> > > > On 9/9/25 12:39 PM, Thomas Hellstr=C3=B6m wrote:
-> > > > > On 9/8/25 14:20, Danilo Krummrich wrote:
-> > > > > > On 9/8/25 2:11 PM, Boris Brezillon wrote:
-> > > > > > > On Mon, 08 Sep 2025 13:11:32 +0200
-> > > > > > > "Danilo Krummrich" <dakr@kernel.org> wrote:
-> > > > > > > > No, drivers can't iterate the evict/extobj lists
-> > > > > > > > directly; or
-> > > > > > > > at least this is
-> > > > > > > > not intended by GPUVM's API and if drivers do so, this
-> > > > > > > > is
-> > > > > > > > considered peeking
-> > > > > > > > into GPUVM internals, so drivers are on their own
-> > > > > > > > anyways.
-> > > > > > > >=20
-> > > > > > > > Iterators, such as for_each_vm_bo_in_list() are not
-> > > > > > > > exposed
-> > > > > > > > to drivers.
-> > > > > > > Okay, that's a good thing. I thought Xe was doing some
-> > > > > > > funky
-> > > > > > > stuff with
-> > > > > > > the list...
-> > > > > > Maybe, I don't know. If they do so, the should send patches
-> > > > > > adding the
-> > > > > > corresponding iterators and provide a rationale why drivers
-> > > > > > need
-> > > > > > to access those
-> > > > > > lists directly and why we can't provide an API that handles
-> > > > > > the
-> > > > > > overall
-> > > > > > use-case, such as drm_gpuvm_prepare_objects(), etc.
-> > > > >=20
-> > > > > We're using the drm_gpuvm_*for_each* macros in drm_gpuvm.h,
-> > > > > assuming from name
-> > > > > and docs they are driver api.
-> > > > >=20
-> > > > > Also the drm_gem_for_each_gpuvm_bo(), although this usage
-> > > > > could
-> > > > > easily be
-> > > > > converted to a helper.
-> > > >=20
-> > > > We were talking about the extobj/evict lists, the ones you
-> > > > mention
-> > > > are fine of
-> > > > course. :)
-> > > >=20
-> > >=20
-> > > Hmm. Now on closer inspection it looks like we're checking for
-> > > evict
-> > > list empty, It looks like rebinding after validation may in
-> > > theory
-> > > evict some bos to system memory and then we'd rerun the
-> > > validation step
-> > > if the evict list was not empty.
-> > >=20
-> > > We could of course add a helper for that or if there are better
-> > > suggestions to handle that situation, that'd be fine as well.
-> >=20
-> > I don't think evict list empty means that there are no evicted
-> > GEMs.
-> > It's possible for an extobj to be missing from the evict list in
-> > some
-> > scenarios. That's why drm_gpuvm_prepare_objects_locked() checks
-> > evicted on the extobj list to ensure that the evicted list is
-> > up-to-date when you call into drm_gpuvm_validate_locked().
+Greg,
+
+> On 9 Sep 2025, at 08:19, Simon Neuenhausen =
+<simon.neuenhausen@rwth-aachen.de> wrote:
 >=20
-> Indeed, though I would expect that Xe considers that? It was Thomas
-> who proposed
-> the logic you describe here back then IIRC. :)
+> Hi,
 >=20
+>> On 06.09.25 17:46, Daniel Almeida wrote:
+>=20
+>> As I said to Greg above, I=E2=80=99m here to help if anyone wants to =
+write a USB driver. Those interested
+> are free to reach out to me and we will work together to merge the =
+required abstractions with a real user in mind. Hopefully this =
+encourages others to join in this work :)
+> I had planned on writing a USB driver for TI nspire calculators, that =
+would make them mountable as USB mass storage devices, since they use a =
+proprietary USB protocol, that usually requires paid software from TI. =
+At the time I gave up on that, due to the lack of USB support in RFL, =
+but I could revive the effort using this.
+>=20
+> I'll admit that this is pretty gimmicky, but if it helps to get this =
+merged, I would be happy to do it.
+>=20
+> Greetings
+>=20
+> Simon Neuenhausen
 
-Yeah I don't think that eviction-while-validating could happen to
-extobjs, but rather to local objects, if it happens at all anymore,
-we've made a lot of changes in that area.
+We apparently have a user :)
 
-But moving forward both the extobj scenario and local object scenarios
-will probably have to be considered in OOM situations, but then we'd of
-course need to suggest suitable additions to drm_gpuvm to handle that.
+Would you be ok if I continue this work? I can look into gadget zero as =
+you and
+Alan said.
 
-/Thomas
-
-
-
-
+=E2=80=94 Daniel=
