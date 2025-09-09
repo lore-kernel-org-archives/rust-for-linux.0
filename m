@@ -1,84 +1,99 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE757215198;
-	Tue,  9 Sep 2025 13:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757425071; cv=pass; b=ZhJ1XwM7k/Po4re3QEu8vCmm7M4PtqKYSblZenXpGcRHIcF9YBF0rxEdYTduo7JrKgFAj8u6hlcrsMoPXFVGaoR8Uiatl7r8dWiRAz5dfcddNd4z4UOC9HdkseKu5up5X5MNydBvFVFeMcUoPVH7xUsQwrcuc519Byojw+uQoJs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757425071; c=relaxed/simple;
-	bh=vDE7ir/Q7thEdsekL5zUEuO0QD6TAng9vUKCP9GpxY0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=rCihdFRcsjsQ6xqIgS62anN4FrBc4uqefV4JVcUCaYrHEByi3fHdiEDnmYvX98aWrrknUKBsUE1M2XwyH82YxBrpntT+Mc2JALcYquA2spfUKtYbAdmcPH6cyNkmv7DlFzZUAJ0YdDFafkY6zHrTDE8QR1u2o2LSlRq+9UV7exU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=f9/DX6Ds; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF124215198
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Sep 2025 13:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757425183; cv=none; b=m8NL2lEPhdZz8El8gbxUl2nd2Vt5ZbMgXGOPqJVC//IifauAgbid/Qu8NX4h1B02mi3VFsrbwo4obMfg4JbxO8o12lOuWKxV0FV4jhMnNEtc13+RkprTUCMGDu0ZYpXqHBml3XbGI70LbyTmvqQo9Qh9ke3tMK5iYENZBOFIqCY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757425183; c=relaxed/simple;
+	bh=S2xhixjFwQUQeXlIeA6ZaWxrR0UvwXu4bKCCoaCBlPM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RFdQ+/dwmqWAMrdpkxnwSRaSiANsP6p/6+o0r7EgoriZiLUoiu+uq4mwKtTPeyzpXw1P5cheopW/gr2zwvX1FDgw0vStdqrYqRGiVfn5ys6LOvgAgSsl9zXtT5sMzwS5T7uuzAHMm4A8pMwfbEFzqOZ6Bc99m8OCjP0K02paPiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1sJVlwBB; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="f9/DX6Ds"
-ARC-Seal: i=1; a=rsa-sha256; t=1757425041; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=DRnPNZ9FHg1EE306zf6op9Zevb/+iQaio04QrAjfKBKqzLnOKx/Gyf8WGThBNPFwvBmIymAzpZjZXXtDliSBHCqfV8PCsLpT4ZrGaudhzzlxUY/RUV/81fJCR62sjvcNp+YkMRJ61khDrPE7zCCPcv5gg9s9DHFGbasXThQDyV8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757425041; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vDE7ir/Q7thEdsekL5zUEuO0QD6TAng9vUKCP9GpxY0=; 
-	b=T4/bkpB4rMwgDlBai5GzPPrf4NkcBwu1w+MVr+cIyqLBEDcHoPKrj704pjbH1Xez+8GV9z5JDv8cSIY2E6RdJvw+X1OqMeSeD+ZXlKaPEPs87nEePvB6A0tHBNOvo8nW+Y1Q1b6M///3NPDCP78O40EpcW9+IOrf86DJSqoJgDY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757425041;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=vDE7ir/Q7thEdsekL5zUEuO0QD6TAng9vUKCP9GpxY0=;
-	b=f9/DX6Ds175Fx2Ou0TuHIOvCArr7HoYsjjU4d7PS+PrRtjfHpnZ3jLEWuJUN+6DA
-	ozRjAISzPSTY9wsYKHv1ZpRxBCnsn2eUx4OnqEWsCU3Y+uvQDkf+j0vJN243M78RPyI
-	GqNu0VskkGUuYIq3rRQS3GH6It+tS9fXM7Nv6xPE=
-Received: by mx.zohomail.com with SMTPS id 1757425037616341.77359567758015;
-	Tue, 9 Sep 2025 06:37:17 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1sJVlwBB"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b047a0345eeso432825166b.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 06:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757425180; x=1758029980; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S/cWSKApgCqU8gCN90/R56WkIagNeujRN6OKwQyz0bk=;
+        b=1sJVlwBB+ix0ydnv3ZEeppi8D2Ipc+nyFtUUBhfHunrFbN9nQ8hn67YPuBnRSi1fjE
+         UX8IXHm2zgeMim3GybYl2sRThPgSWCi5MXp5dFXKZA7oOkOg34zbVwFEszT+qYOEvRVn
+         /CCUje9lK7RAb/bAKnfH8Rm/b8f/pxDjHPSV08OvZHaQ+TAMXmJzyg4j/LdlCaBVZeyR
+         CVGMJi15hFXNijcjXiyD8ZmAj5D1QoEyXfQjvZS2sY5+rFbIXDp4AxAbqx/4PB1CuHIV
+         6uDCyYlFCLgkVDY9gaYwd0nJxTFd86jCxviJCxmSvnm8M7U2OtN+AK1IqN1Kq2lBhTfM
+         uckg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757425180; x=1758029980;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S/cWSKApgCqU8gCN90/R56WkIagNeujRN6OKwQyz0bk=;
+        b=Wyv9NXuK+K7YrgntR2eTHwx7g2FNm259bVCz+3h3Po+FfNXLlLCrave3OndBCM/mIw
+         RYBlRQCPEEP3I/YxrJQQ3ZNYReumcdLncTlSguMLqjOFeWRAZbkxIF0K9WrN+OjZtp/R
+         gPfnYQTsPotdGK2Z5OU03KlOTzifFy410K1bTHW9sXNF8e9vEsAi1CvlyiBKZR2oe4TT
+         OExTt+e46mpFPXmcf9soo9hSTPl1Rck1w3LvOfbY3QP/tFq5ANySUczvtAHawlrGqvYs
+         JW+Vji+RL4KS1K95jPzCwMllXZVVdAcdogVqa4oM2oZ+yS/LsdRnnv5n7e8maB3IOBAZ
+         ZaQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVn5p1qyS8/WMqEBzLs8/JcOStE77Wist/czvkxInnqH4oFr5sSrttTDQa2IHE+Zg5mTUuXY7Sp5u2zmOGonA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7Cp/dW5fhWe81RRq5eNLvmFyup9LN4OmOiE9vIeZr21v9X3cC
+	RUoReTjatzvjpoHgbXx1zMpb5t0VARdBRX7fmXQtO78go93hQPGxIf857Ji4eFy2VanrXqWTZFM
+	/OtBC9lbAdjKQ/tZwsA==
+X-Google-Smtp-Source: AGHT+IFklFVheyARxR3qqSDXvhkKe8XA6XwiuCSVTGag3JTwA8+KX1InqMPhxPHUjqN8oInLSi0RtsKFDfniBqE=
+X-Received: from ejcre10.prod.google.com ([2002:a17:907:a2ca:b0:b04:4fb2:458b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:d8d:b0:b04:33a1:7f11 with SMTP id a640c23a62f3a-b04b1459913mr1134074866b.26.1757425179999;
+ Tue, 09 Sep 2025 06:39:39 -0700 (PDT)
+Date: Tue, 9 Sep 2025 13:39:39 +0000
+In-Reply-To: <20250909-vmbo-defer-v2-1-9835d7349089@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v1] rust: refactor `to_result` to return the original
- value
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <C424F7A6-524C-4A37-8513-B3BA2178A709@collabora.com>
-Date: Tue, 9 Sep 2025 10:37:01 -0300
-Cc: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- daniel@sedlak.dev,
- dirk.behme@de.bosch.com,
- felipe_life@live.com,
- tamird@gmail.com,
- dakr@kernel.org,
- tmgross@umich.edu,
- a.hindborg@kernel.org,
- lossin@kernel.org,
- bjorn3_gh@protonmail.com,
- gary@garyguo.net,
- boqun.feng@gmail.com,
- alex.gaynor@gmail.com,
- ojeda@kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CDBE5225-831B-4C70-BFD0-FDE034871DCA@collabora.com>
-References: <20250909123258.29304-1-work@onurozkan.dev>
- <CAH5fLghVt6MKfiDkmd-5DMAKA=yXQzMu3GNHAqB+HRGhyJ0tqA@mail.gmail.com>
- <C424F7A6-524C-4A37-8513-B3BA2178A709@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+References: <20250909-vmbo-defer-v2-0-9835d7349089@google.com> <20250909-vmbo-defer-v2-1-9835d7349089@google.com>
+Message-ID: <aMAuGy6Rc55mkqCW@google.com>
+Subject: Re: [PATCH v2 1/2] drm/gpuvm: add deferred vm_bo cleanup
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Steven Price <steven.price@arm.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Liviu Dudau <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
+On Tue, Sep 09, 2025 at 01:36:22PM +0000, Alice Ryhl wrote:
+> When using GPUVM in immediate mode, it is necessary to call
+> drm_gpuvm_unlink() from the fence signalling critical path. However,
+> unlink may call drm_gpuvm_bo_put(), which causes some challenges:
+> 
+> 1. drm_gpuvm_bo_put() often requires you to take resv locks, which you
+>    can't do from the fence signalling critical path.
+> 2. drm_gpuvm_bo_put() calls drm_gem_object_put(), which is often going
+>    to be unsafe to call from the fence signalling critical path.
+> 
+> To solve these issues, add a deferred version of drm_gpuvm_unlink() that
+> adds the vm_bo to a deferred cleanup list, and then clean it up later.
+> 
+> The new methods take the GEMs GPUVA lock internally rather than letting
+> the caller do it because it also needs to perform an operation after
+> releasing the mutex again. This is to prevent freeing the GEM while
+> holding the mutex (more info as comments in the patch). This means that
+> the new methods can only be used with DRM_GPUVM_IMMEDIATE_MODE.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
->=20
-> What exactly broke for regulator.rs <http://regulator.rs/>? It works =
-just fine.
+I'm not sure if we came to a conclusion on the gpuva defer stuff on v1,
+but I found a less confusing way to implement the locking. Please check
+it out.
 
-Please excuse my weird email client here.
-
-=E2=80=94 Daniel=
+Alice
