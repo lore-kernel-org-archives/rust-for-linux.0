@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F1223C8C5;
-	Tue,  9 Sep 2025 08:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF302C234F;
+	Tue,  9 Sep 2025 09:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757406559; cv=none; b=hfniY724hS3rgVGxVOXUw2XdDszo9VgWRICSg3mAFJGySFFcUjyZD9E8C1RQLFzqQJ2f0wnzZKTU0dM6DyqCK3VpngmbLF9zaRVElnTyq537Krqsg6Cw2uHIcRIPSzUDgqSckn1dGdaXzR3FF5ldjBhGnJgoiPcMV92NH8+B2y0=
+	t=1757409276; cv=none; b=BR1Bug3LFDmmC2oCnqdDFBkxbAPhp8W2fJKIegkdvEyeSbo+zt5KpBb1QgMBrkitGv/YzUxg5Cc1N5D7nV2wKHdTw1ik+cWOdpQ4x5Xn5t9rAevuZDOS0wlnYSmrnDa2TzI7LP1LYIoWLUTmq6FAC628DU5929I89LSq9iaKGaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757406559; c=relaxed/simple;
-	bh=Yh0QysXYdu44lUy6HVpVPDaMU/piHe2LJbyO836FVh8=;
+	s=arc-20240116; t=1757409276; c=relaxed/simple;
+	bh=VQJWCICOhHbCkaUmxx5hpqb4ryuOMWY3hLJbYcGO+W8=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=WMz5fqHwQf1EiXHcBOANjYwlN4oDXYmd8QMrkWUc3f41KN4ZWpzPEw/U3Yi1TPGbHlRhvQTDLKlJ1Amic/8s+pnQoWWXGvpHQhQeQxpXEGD4iTKoXaWJFNId3fARfhcIXAoMpAlenJHZX2H/I0+sQ8j56bxsIAShXRP4XIy7pKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=URtjggut; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=g2bKYZAsNCCwhQ3Czm5qU8ZbUSEO2XGueUjrKD9HKDyxSvd+6m0UvCwq6+jwlJIOcY1Zk13PFol2t8rleuKwSRnSUVHvd3tkwDgSSKup2AkoBeeiiwnIn8C70pPOKi7RYvYHur6mxcuOyinHeCp9EBdQctEBLBYHO50eCUhzjm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5jf9RFl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="URtjggut"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76883C4CEF4;
-	Tue,  9 Sep 2025 08:29:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5jf9RFl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F9DC4CEF7;
+	Tue,  9 Sep 2025 09:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757406558;
-	bh=Yh0QysXYdu44lUy6HVpVPDaMU/piHe2LJbyO836FVh8=;
+	s=k20201202; t=1757409275;
+	bh=VQJWCICOhHbCkaUmxx5hpqb4ryuOMWY3hLJbYcGO+W8=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=URtjggutOq+snpRI8DWcj/wT6jEcKVeqIgfJp74GVk38LPmJhACes+TO8VO1/6PYI
-	 PGBiYKZSPqZ69ifSkR4HjOrZP5i46DHuvzHSCDV8KRFbxZThlw5Q3riJunIBag+D1P
-	 dVC+TVo3fhXrdqroYFHp8Hgs5zbf43wPvHmG7k7xOY0ASiur6/pK4gyriTTDep0NKH
-	 2FQcHtPTRo5uf1ucHPNl8OTlqFJqKAQ2RUn+317kSAA7AjrUxpETi9i16+0e9P5ZDc
-	 FsJYJaGj2tLjHRk3qGsSqAqqdEdP0bNx119dgNzvQqyOegKE1rxeodU7iPV0mjck0I
-	 lW+IaymR/TtLg==
+	b=W5jf9RFl5PZh8xzrNThdiHCskbj7mamuSL8moI1HITaNGI2YQGHjGeTVgPixQ6CLC
+	 TiHNk+53Y0FBCW0KMPmApMTxqo2xbmSTV81CgNwMPKBep8JGSDCQpDH+UerjYrcmF1
+	 uhMV+SZkOyjN6FIIdw9ml/hsA6YiOIyBMg4s2m21RtKABWHtS/TZMQMCUBTdoWmdy+
+	 7kuaUcLNBV7n12k1Lt8ilyyCclQkYvllO8Uh8CAoTdFwcsomDhtHPxlCNTLMcM/NxL
+	 7Sia8SSrpDVYRmJfuhq8qsKah2ZXJw13dRMLVoZPCfiy+93XLjxngFM62Ygf3JMTTt
+	 7ZTgWcWofpADg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,67 +34,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 09 Sep 2025 10:29:13 +0200
-Message-Id: <DCO4MP8YT3A8.2PFXX7VJ1STD@kernel.org>
-Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
+Date: Tue, 09 Sep 2025 11:14:31 +0200
+Message-Id: <DCO5LDQHXVUC.3J2MSYSA0WCVC@kernel.org>
+Subject: Re: [PATCH v5 1/2] rust: add `Alignment` type
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
  <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Sami Tolvanen" <samitolvanen@google.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Benno Lossin" <lossin@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Dirk Behme" <dirk.behme@de.bosch.com>
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
- <45f6f6e0-bd1e-41e7-8c8e-bb556644a873@de.bosch.com>
-In-Reply-To: <45f6f6e0-bd1e-41e7-8c8e-bb556644a873@de.bosch.com>
+References: <20250908-num-v5-0-c0f2f681ea96@nvidia.com>
+ <20250908-num-v5-1-c0f2f681ea96@nvidia.com>
+ <CANiq72kUsG10+E-W6zhFXhexZV+O_a-K1Px0kGkWPKvMMhAztQ@mail.gmail.com>
+ <DCO2UHSV1FJH.146QJD3UR8FVR@nvidia.com>
+ <CANiq72khp7PVeKmbvM=ima7Tp7o1zPfjNY6dRK79aAQZsOvBPw@mail.gmail.com>
+In-Reply-To: <CANiq72khp7PVeKmbvM=ima7Tp7o1zPfjNY6dRK79aAQZsOvBPw@mail.gmail.com>
 
-On Tue Sep 9, 2025 at 9:29 AM CEST, Dirk Behme wrote:
-> On 04/09/2025 23:13, Matthew Maurer wrote:
->> +#[cfg(not(CONFIG_DEBUG_FS))]
->> +impl<'b, T: 'b> Scope<T> {
->> +    fn new<E: 'b, F>(data: impl PinInit<T, E> + 'b, init: F) -> impl Pi=
-nInit<Self, E> + 'b
->> +    where
->> +        F: for<'a> FnOnce(&'a T) -> Entry + 'b,
+On Tue Sep 9, 2025 at 9:21 AM CEST, Miguel Ojeda wrote:
+> On Tue, Sep 9, 2025 at 9:05=E2=80=AFAM Alexandre Courbot <acourbot@nvidia=
+.com> wrote:
+>>
+>> With -rc6 approaching, I don't think we will merge any Nova code taking
+>> advantage of this for this cycle, so please feel free to take this
+>> patch. We can then merge patch 2 through drm-rust after -rc1 is
+>> released.
 >
-> Inspired by Greg's & Danilo's discussion I tried building with
-> CONFIG_DEBUG_FS disabled. And get
->
-> error[E0412]: cannot find type `Entry` in this scope
->    --> rust/kernel/debugfs.rs:351:37
->     |
-> 351 |         F: for<'a> FnOnce(&'a T) -> Entry + 'b,
->     |                                     ^^^^^ not found in this scope
->
-> And giving it some Entry (for my 1.81.0)
->
-> error: hidden lifetime parameters in types are deprecated
->    --> rust/kernel/debugfs.rs:352:37
->     |
-> 352 |         F: for<'a> FnOnce(&'a T) -> Entry + 'b,
->     |                                     ^^^^^ expected lifetime paramet=
-er
+> Sure, sounds good. I can also take patch 2 already as a user of this
+> if you prefer (ideally with an Acked-by).
 
-Yeah, I caught this as well and fixed it up on my end with the following di=
-ff:
+Yeah, this way around make much more sense,
 
-diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
-index ecfcce845d3f..1f25777743db 100644
---- a/rust/kernel/debugfs.rs
-+++ b/rust/kernel/debugfs.rs
-@@ -348,7 +348,7 @@ pub struct File<T> {
- impl<'b, T: 'b> Scope<T> {
-     fn new<E: 'b, F>(data: impl PinInit<T, E> + 'b, init: F) -> impl PinIn=
-it<Self, E> + 'b
-     where
--        F: for<'a> FnOnce(&'a T) -> Entry + 'b,
-+        F: for<'a> FnOnce(&'a T) + 'b,
-     {
-         try_pin_init! {
-             Self {
+Acked-by: Danilo Krummrich <dakr@kernel.org>
