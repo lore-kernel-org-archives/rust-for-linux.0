@@ -1,195 +1,366 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6934F146A66;
-	Tue,  9 Sep 2025 15:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0610F10E3;
+	Tue,  9 Sep 2025 15:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757432313; cv=none; b=HYgUPT2KiEBsL9EytSqlrhq/Isj9sheUu37pyqPbrvDzLAVZa8cYGwVgTgQYPsMR9lMSv3hP4X+VlYxdTULmU08648h8aOfXaAB5FwvWEGHI4/dg3H9NeO6fe4klaI7/sELkyD/TL7VcZtSGqU1k/d/0Q9eTsUYaZcu0wV1xmS0=
+	t=1757432741; cv=none; b=UvQ2XsVibGQWFuLRUGHLItJTTUYDgB3iSiKxquiulTescB+Jv1CSkjjRWrc0aZXO1tVSx4zD48izTRZSPJTNP1KMPpkToYUfvHbPeBTwSkidwIt2cEpHlOX7CvQ2jkeiuGF3ynuhW/ckT/Yi3VJBBC1Rs/X85ftxHgtAphIJqN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757432313; c=relaxed/simple;
-	bh=YaSG66NRgKPkQ1bCgScmlkcGm6GefcLnamGKVw31HX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SzP9PlIiND8ajI0hW2V8giZWn+psX41aLW2COcQC9QVrwAQppEBVa0VN8dDiaCXRHcwE88rcS7HZ8xQkI/rORIsjSNOj7OODjotI7ilYBvv75Lbi65vRSIHahYVXRo10my6WB+1j04Md7X8oPbcaWw358+RsR6h+KNgnsOYhG0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dNbdaxaV; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757432741; c=relaxed/simple;
+	bh=0yz6aghSeYaaRKdDcRzSd6f06S1jGRsDA2q9Dz/HqU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=URzjsjczV8dwomxywESdqXhfiiYPkZznjtujLdVUP6tHP3cqJgDXPstIRz2NCoRkSh9k03LHVCXnWwmL94IEbIgOT1sMniRJ1IcNFAN5bsGTbzCVU/C/Dcepa8+6LJp/hxgCXdZpm5NnXeh+PSAP/9YUly3m9KHq4JC/Og2+Ir0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=fuU63Asy; arc=none smtp.client-ip=178.154.239.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNbdaxaV"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-70ddadde494so49266266d6.1;
-        Tue, 09 Sep 2025 08:38:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757432310; x=1758037110; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jCGWwE0Dfpn0jrzsRy+P5oxdVsQ38mSXaDrR9/FuTMk=;
-        b=dNbdaxaVrzzxBkej64eq0avMZUkdGKrlG0sOnt4YIGG1MCEPzloLvzkVlHReEeQEAh
-         I2kdUGKzfYs39h3w2K8iWYZtECBhgY5/icYsYbWzvg+xFrmom9ngyxE4UJD0D9TIp5Tb
-         G3nmmymCiYJEDXZGWANDMhMWfV2dLdSd2YWTf1VWno9uBD0Qs6rUszgxLQMYpB9OGx+I
-         bv3dX6RTrU9Cm+myxTb3jmVJ6hfdl9en/UT0sjJE6U1NNZX17S8+W6qSqQ00C/o8OCq3
-         lKotBviJRzkYRlQqOpDQ0cKxwRx3av6K+8Ohb88pyYbUOeekFyyv9bxN2PU4DdW5yPZW
-         yr9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757432310; x=1758037110;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jCGWwE0Dfpn0jrzsRy+P5oxdVsQ38mSXaDrR9/FuTMk=;
-        b=hBt+UEB4aU893Kzm3V+aNq5kNXm5PlgPVOlvouKcCeMtACiyRh8VPZfgPYXMIWTNIT
-         55XoRjagnIz2bVxohx9JvBdxkQMMIkLvgpuM+16xgN7p3Xn8NHrIgO17f/ucRUFknb+T
-         URQVuG/arDjGVEjzf0Md3yf9dNGw6u0Gy8QnbABTLCalzwFoUGKjFmxmduSnBrnnT677
-         CQh0+P32q5IyreIO+JSYjbX1MIJ6wf2FX/O1QhcCSmXjydtda2iRqMzArS8oBFjGwtEd
-         KLGK8QKPMFqWDdoVcp3dOpklKu6yUym/Yzy7Xgf3VKk1xaD5ggJbPpDjt12fJbQHb4yp
-         GdtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2UFsjxChMDxdHLxUmHdIipMwrO00MGG3loYjUbAZluOqILW9xDcrlelouEqdup6UJMo+YQ3WZB+EKqutqGGY=@vger.kernel.org, AJvYcCWwL2OgvGw2S5kmkaIlGatUsFP9SVDYDDYDbmzjcxGr4toeElBbFbii8ZRq5iR1E4IWmKnVVnp7GKRePGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMGD4+IafAcj9Vl7YsGr+83zN6sy8yZBsG60SoZeyY6LTJYUFS
-	C8FZsY2w440S9HieVgKBv3tMjp5jH+kBYbADIkserzkUqC7BJsvagI1m
-X-Gm-Gg: ASbGncvbndHAFiv4RycRDpI3qugfXHp1ESQRgNNa7Rhfug8zEASYzWX4m+gRdN5JwYa
-	JCHEhOCmdCqytT0nmPSTzfP9d2Gdwjmp5fQZ/0vifX9+IsSO9ExaVxvMJ+UXMzNmxXE4ys7A0PS
-	or6wE+CI9OyyynVahe9iONxnbIGEcQDDEHc9PdVjahsPAPTXMasqCufxLXyldKPnJePhw0YVIzi
-	oT9K2UYz7ONVA5weYZi7HwrnVpaF6fI36F6NwQApQLJM5pWAimxZMIx89EfTYLWj1eneX+FlbZx
-	KJLhxUr1S4v1yqcoGk7hmPnuP19NbaPqtzjgDhq3yPRugPe/Rql/A/YjjGrz8VRN3cKNFjeLK1S
-	vbRsRhTKg1vxLQXxyhN7jlu7+5lIl02+6Jds/RCa5fVDLeVOP+ztWxWyTV/sQtUHI9FDQtDALOY
-	NCFZgdV8gN/Wj/epNJyZjWSqdUURcHnnJStA==
-X-Google-Smtp-Source: AGHT+IGAB3Sm9mUCHwWW6zyk2l7yM8J/xYP6a7duPO0bIwn42vPWs0GKOe2trIT7jLxE4emgH+9CkA==
-X-Received: by 2002:ad4:5ced:0:b0:74b:5d86:7539 with SMTP id 6a1803df08f44-74b5d8675e0mr65695896d6.42.1757432310084;
-        Tue, 09 Sep 2025 08:38:30 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-727b2c047dcsm112993856d6.59.2025.09.09.08.38.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 08:38:29 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 17328F40068;
-	Tue,  9 Sep 2025 11:38:29 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 09 Sep 2025 11:38:29 -0400
-X-ME-Sender: <xms:9EnAaObiyHjyF2mgTYX-MFg7x6b78Bh3AeYcKdQPcoxm1AuIY0OQ3g>
-    <xme:9EnAaNPfMTbCfjYarXnNz6iS_WofDIAyHL56CGiGyfNPEVxzob97dJXWSsr3VSlQG
-    oD3IMkRhyaZ-p-QjQ>
-X-ME-Received: <xmr:9EnAaPYCP06nDUMV5Q-z6cM9hLZxOrX_hoPByc3Utb-WubEgTZ5GW-wEhiYb3tciy8OVSJV4THypdzjI12UB6G0-rq1eC-MQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdejlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpedtgeehleevffdujeffgedvlefghffhleekieeifeegveetjedvgeevueffieeh
-    hfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprh
-    gtphhtthhopehlghhirhgufihoohgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghr
-    ohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdp
-    rhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorh
-    hnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinhes
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlh
-    drohhrgh
-X-ME-Proxy: <xmx:9UnAaNVLcJCJMjfDfJq7gKPPqW3EqUo6n85Y-texNoUsFhE50k8sQg>
-    <xmx:9UnAaOAa-DWNU7UofhZ3rq_sNJxqeLHt2ApAlAtRi4yCKRkaLEkoYA>
-    <xmx:9UnAaJIhLErM1xB2Tn7JO4Y77mPlw1LcO-aBMbhcCUm2OlNOxbPgQQ>
-    <xmx:9UnAaMtGHSDlECtVgKueyTAsjbCFBO5ioSZ9ITJnVc41pWPfKewl7g>
-    <xmx:9UnAaBWR4GFvw59_R6ULd7-GYvFUvjmzNQ18wUxm52KkkwOfv7wYTjnT>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 9 Sep 2025 11:38:28 -0400 (EDT)
-Date: Tue, 9 Sep 2025 08:38:27 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] rust: regulator: add devm_enable and
- devm_enable_optional
-Message-ID: <aMBJ805QjQcPdRol@tardis-2.local>
-References: <20250908-regulator-remove-dynamic-v2-0-e575ae2cde6a@collabora.com>
- <20250908-regulator-remove-dynamic-v2-2-e575ae2cde6a@collabora.com>
- <aL_PwXck1HsLp5wH@tardis-2.local>
- <AA8FC1A7-EE88-44FA-A0A9-A3EA5529B10D@collabora.com>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="fuU63Asy"
+Received: from mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:290e:0:640:f317:0])
+	by forward502a.mail.yandex.net (Yandex) with ESMTPS id E9F59809BE;
+	Tue, 09 Sep 2025 18:45:28 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id OjLILl4LuKo0-8eHHkWSo;
+	Tue, 09 Sep 2025 18:45:28 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1757432728;
+	bh=dIRrBjelZrgFNCTCF1oaGTQ+9cRVwzvwxL9eis2Nb8E=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=fuU63Asya9b0JbIYNjWzZzCcVMoi+Tx7cRLs4YuTE/BS5B35N6B56Ysrr7iT/TguE
+	 E2CH4qM5gHSya4oemztI7rw+OXVrG2LtmoM2te+0Tio2HcL4j809YmaSusc+AA27z9
+	 QkLj7iC1iv7ZrtQwVv1nD8Cv4IUY/8qe64AJOMJo=
+Authentication-Results: mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 9 Sep 2025 18:45:24 +0300
+From: Onur <work@onurozkan.dev>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com,
+ tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu,
+ a.hindborg@kernel.org, lossin@kernel.org, bjorn3_gh@protonmail.com,
+ gary@garyguo.net, boqun.feng@gmail.com, alex.gaynor@gmail.com,
+ ojeda@kernel.org
+Subject: Re: [PATCH v1] rust: refactor `to_result` to return the original
+ value
+Message-ID: <20250909184524.1482d602@nimda.home>
+In-Reply-To: <CAH5fLghVt6MKfiDkmd-5DMAKA=yXQzMu3GNHAqB+HRGhyJ0tqA@mail.gmail.com>
+References: <20250909123258.29304-1-work@onurozkan.dev>
+	<CAH5fLghVt6MKfiDkmd-5DMAKA=yXQzMu3GNHAqB+HRGhyJ0tqA@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AA8FC1A7-EE88-44FA-A0A9-A3EA5529B10D@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 09, 2025 at 12:04:35PM -0300, Daniel Almeida wrote:
-> Hi Boqun, thanks for chiming in!
-> 
-> > On 9 Sep 2025, at 03:57, Boqun Feng <boqun.feng@gmail.com> wrote:
-> > 
-> > On Mon, Sep 08, 2025 at 08:10:28PM -0300, Daniel Almeida wrote:
-> >> A lot of drivers only care about enabling the regulator for as long as
-> >> the underlying Device is bound. This can be easily observed due to the
-> >> extensive use of `devm_regulator_get_enable` and
-> >> `devm_regulator_get_enable_optional` throughout the kernel.
-> >> 
-> >> Therefore, make this helper available in Rust. Also add an example
-> >> noting how it should be the default API unless the driver needs more
-> >> fine-grained control over the regulator.
-> >> 
-> >> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> >> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> >> ---
-> >> rust/helpers/regulator.c | 10 +++++++++
-> >> rust/kernel/regulator.rs | 58 +++++++++++++++++++++++++++++++++++++++++++++++-
-> >> 2 files changed, 67 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/rust/helpers/regulator.c b/rust/helpers/regulator.c
-> >> index cd8b7ba648ee33dd14326c9242fb6c96ab8e32a7..11bc332443bd064f4b5afd350ffc045badff9076 100644
-> >> --- a/rust/helpers/regulator.c
-> >> +++ b/rust/helpers/regulator.c
-> >> @@ -40,4 +40,14 @@ int rust_helper_regulator_is_enabled(struct regulator *regulator)
-> >> return regulator_is_enabled(regulator);
-> >> }
-> >> 
-> >> +int rust_helper_devm_regulator_get_enable(struct device *dev, const char *id)
-> >> +{
-> >> + return devm_regulator_get_enable(dev, id);
-> >> +}
-> >> +
-> >> +int rust_helper_devm_regulator_get_enable_optional(struct device *dev, const char *id)
-> >> +{
-> >> + return devm_regulator_get_enable_optional(dev, id);
-> >> +}
-> >> +
-> > 
-> > These two functions are already EXPORT_SYMBOL_GPL(), so you won't need
-> > to add rust_helper for them. Creating rust_helper_*() for them will just
-> > export additional symbols.
-> 
-> These are inlined (stubbed) if CONFIG_REGULATOR is not set, so we need the
-> helpers to get around that, IIUC.
-> 
+On Tue, 9 Sep 2025 14:36:13 +0200
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Well, then the question is why we want to compiler regulator.rs if
-CONFIG_REGULATOR=n? Shouldn't we do:
+> On Tue, Sep 9, 2025 at 2:33=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.de=
+v> wrote:
+> >
+> > Current `to_result` helper takes a `c_int` and returns `Ok(())` on
+> > success and this has some issues like:
+> >
+> >     - Callers lose the original return value and often have to store
+> >         it in a temporary variable before calling `to_result`.
+> >
+> >     - It only supports `c_int`, which makes callers to unnecessarily
+> >         cast when working with other types (e.g. `u16` in phy
+> >         abstractions). We even have some places that ignore to use
+> >         `to_result` helper because the input doesn't fit in `c_int`
+> >         (see [0]).
+> >
+> > [0]: https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
+> >
+> > This patch changes `to_result` to be generic and also return the
+> > original value on success.
+> >
+> > So that the code that previously looked like:
+> >
+> >     let ret =3D unsafe { bindings::some_ffi_call() };
+> >     to_result(ret).map(|()| SomeType::new(ret))
+> >
+> > can now be written more directly as:
+> >
+> >     to_result(unsafe { bindings::some_ffi_call() })
+> >         .map(|ret| SomeType::new(ret))
+> >
+> > Similarly, code such as:
+> >
+> >     let res: isize =3D $some_ffi_call();
+> >     if res < 0 {
+> >         return Err(Error::from_errno(res as i32));
+> >     }
+> >
+> > can now be used with `to_result` as:
+> >
+> >     to_result($some_ffi_call())?;
+> >
+> > Existing call sites that only care about success/failure are updated
+> > to append `.map(|_| ())` to preserve their previous semantics. They
+> > can also use the equivalent pattern:
+> >
+> >     to_result($something)?;
+> >     Ok(())
+> >
+> > This patch only fixes the callers that broke after the changes on
+> > `to_result`. I haven't included all the improvements made possible
+> > by the new design since that could conflict with other ongoing
+> > patches [1]. Once this patch is approved and applied, I am planning
+> > to follow up with creating a "good first issue" on [2] for those
+> > additional changes.
+> >
+> > [1]: https://lore.kernel.org/rust-for-linux/?q=3Dto_result
+> > [2]: https://github.com/Rust-for-Linux/linux
+> >
+> > Link:
+> > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/nea=
+r/536374456
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev> ---
+> >  rust/kernel/auxiliary.rs        |  1 +
+> >  rust/kernel/block/mq/tag_set.rs |  2 +-
+> >  rust/kernel/cpufreq.rs          |  3 ++-
+> >  rust/kernel/devres.rs           |  1 +
+> >  rust/kernel/dma.rs              |  3 +++
+> >  rust/kernel/error.rs            | 17 ++++++++++++-----
+> >  rust/kernel/miscdevice.rs       |  2 +-
+> >  rust/kernel/mm/virt.rs          |  1 +
+> >  rust/kernel/pci.rs              |  3 ++-
+> >  rust/kernel/platform.rs         |  2 +-
+> >  rust/kernel/regulator.rs        |  5 +++--
+> >  11 files changed, 28 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+> > index 4749fb6bffef..479c0ad2a572 100644
+> > --- a/rust/kernel/auxiliary.rs
+> > +++ b/rust/kernel/auxiliary.rs
+> > @@ -43,6 +43,7 @@ unsafe fn register(
+> >          to_result(unsafe {
+> >              bindings::__auxiliary_driver_register(adrv.get(),
+> > module.0, name.as_char_ptr()) })
+> > +        .map(|_| ())
+> >      }
+> >
+> >      unsafe fn unregister(adrv: &Opaque<Self::RegType>) {
+> > diff --git a/rust/kernel/block/mq/tag_set.rs
+> > b/rust/kernel/block/mq/tag_set.rs index c3cf56d52bee..0e7883163000
+> > 100644 --- a/rust/kernel/block/mq/tag_set.rs
+> > +++ b/rust/kernel/block/mq/tag_set.rs
+> > @@ -65,7 +65,7 @@ pub fn new(
+> >                  // SAFETY: we do not move out of `tag_set`.
+> >                  let tag_set: &mut Opaque<_> =3D unsafe {
+> > Pin::get_unchecked_mut(tag_set) }; // SAFETY: `tag_set` is a
+> > reference to an initialized `blk_mq_tag_set`.
+> > -                error::to_result( unsafe {
+> > bindings::blk_mq_alloc_tag_set(tag_set.get())})
+> > +                error::to_result( unsafe {
+> > bindings::blk_mq_alloc_tag_set(tag_set.get())}).map(|_| ()) }),
+> >              _p: PhantomData,
+> >          })
+> > diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+> > index be2dffbdb546..c3fa20ce229a 100644
+> > --- a/rust/kernel/cpufreq.rs
+> > +++ b/rust/kernel/cpufreq.rs
+> > @@ -157,6 +157,7 @@ pub fn as_raw(&self) -> *mut
+> > bindings::cpufreq_policy_data { pub fn generic_verify(&self) ->
+> > Result { // SAFETY: By the type invariant, the pointer stored in
+> > `self` is valid. to_result(unsafe {
+> > bindings::cpufreq_generic_frequency_table_verify(self.as_raw()) })
+> > +            .map(|_| ())
+> >      }
+> >  }
+> >
+> > @@ -519,7 +520,7 @@ pub fn set_suspend_freq(&mut self, freq: Hertz)
+> > -> &mut Self { #[inline]
+> >      pub fn generic_suspend(&mut self) -> Result {
+> >          // SAFETY: By the type invariant, the pointer stored in
+> > `self` is valid.
+> > -        to_result(unsafe {
+> > bindings::cpufreq_generic_suspend(self.as_mut_ref()) })
+> > +        to_result(unsafe {
+> > bindings::cpufreq_generic_suspend(self.as_mut_ref()) }).map(|_| ())
+> > }
+> >
+> >      /// Provides a wrapper to the generic get routine.
+> > diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> > index d04e3fcebafb..214cd9a0ebe0 100644
+> > --- a/rust/kernel/devres.rs
+> > +++ b/rust/kernel/devres.rs
+> > @@ -328,6 +328,7 @@ fn register_foreign<P>(dev: &Device<Bound>,
+> > data: P) -> Result // `ForeignOwnable` is released eventually.
+> >          bindings::devm_add_action_or_reset(dev.as_raw(),
+> > Some(callback::<P>), ptr.cast()) })
+> > +    .map(|_| ())
+> >  }
+> >
+> >  /// Encapsulate `data` in a [`KBox`] and [`Drop::drop`] `data`
+> > once `dev` is unbound. diff --git a/rust/kernel/dma.rs
+> > b/rust/kernel/dma.rs index 68fe67624424..f614453ddb7d 100644
+> > --- a/rust/kernel/dma.rs
+> > +++ b/rust/kernel/dma.rs
+> > @@ -34,6 +34,7 @@ unsafe fn dma_set_mask(&self, mask: DmaMask) ->
+> > Result { // - The safety requirement of this function guarantees
+> > that there are no concurrent calls //   to DMA allocation and
+> > mapping primitives using this mask. to_result(unsafe {
+> > bindings::dma_set_mask(self.as_ref().as_raw(), mask.value()) })
+> > +            .map(|_| ())
+> >      }
+> >
+> >      /// Set up the device's DMA coherent addressing capabilities.
+> > @@ -51,6 +52,7 @@ unsafe fn dma_set_coherent_mask(&self, mask:
+> > DmaMask) -> Result { // - The safety requirement of this function
+> > guarantees that there are no concurrent calls //   to DMA
+> > allocation and mapping primitives using this mask. to_result(unsafe
+> > { bindings::dma_set_coherent_mask(self.as_ref().as_raw(),
+> > mask.value()) })
+> > +            .map(|_| ())
+> >      }
+> >
+> >      /// Set up the device's DMA addressing capabilities.
+> > @@ -72,6 +74,7 @@ unsafe fn dma_set_mask_and_coherent(&self, mask:
+> > DmaMask) -> Result { to_result(unsafe {
+> >              bindings::dma_set_mask_and_coherent(self.as_ref().as_raw(),
+> > mask.value()) })
+> > +        .map(|_| ())
+> >      }
+> >  }
+> >
+> > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> > index db14da976722..f76afa4b7ec1 100644
+> > --- a/rust/kernel/error.rs
+> > +++ b/rust/kernel/error.rs
+> > @@ -378,12 +378,19 @@ fn from(e: core::convert::Infallible) ->
+> > Error { pub type Result<T =3D (), E =3D Error> =3D
+> > core::result::Result<T, E>;
+> >
+> >  /// Converts an integer as returned by a C kernel function to an
+> > error if it's negative, and -/// `Ok(())` otherwise.
+> > -pub fn to_result(err: crate::ffi::c_int) -> Result {
+> > -    if err < 0 {
+> > -        Err(Error::from_errno(err))
+> > +/// returns the original value otherwise.
+> > +pub fn to_result<T>(code: T) -> Result<T>
+> > +where
+> > +    T: Copy + TryInto<i32>,
+> > +{
+> > +    // Try casting into `i32`.
+> > +    let casted: crate::ffi::c_int =3D code.try_into().unwrap_or(0);
+> > +
+> > +    if casted < 0 {
+> > +        Err(Error::from_errno(casted))
+> >      } else {
+> > -        Ok(())
+> > +        // Return the original input value.
+> > +        Ok(code)
+> >      }
+> >  }
+> >
+> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+> > index 6373fe183b27..22b72ae84c03 100644
+> > --- a/rust/kernel/miscdevice.rs
+> > +++ b/rust/kernel/miscdevice.rs
+> > @@ -79,7 +79,7 @@ pub fn register(opts: MiscDeviceOptions) -> impl
+> > PinInit<Self, Error> { // the destructor of this type deallocates
+> > the memory. // INVARIANT: If this returns `Ok(())`, then the `slot`
+> > will contain a registered // misc device.
+> > -                to_result(unsafe { bindings::misc_register(slot) })
+> > +                to_result(unsafe { bindings::misc_register(slot)
+> > }).map(|_| ()) }),
+> >              _t: PhantomData,
+> >          })
+> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> > index a1bfa4e19293..5494f96e91b0 100644
+> > --- a/rust/kernel/mm/virt.rs
+> > +++ b/rust/kernel/mm/virt.rs
+> > @@ -195,6 +195,7 @@ pub fn vm_insert_page(&self, address: usize,
+> > page: &Page) -> Result { // SAFETY: By the type invariant of `Self`
+> > caller has read access and has verified that // `VM_MIXEDMAP` is
+> > set. By invariant on `Page` the page has order 0. to_result(unsafe
+> > { bindings::vm_insert_page(self.as_ptr(), address, page.as_ptr()) })
+> > +            .map(|_| ())
+> >      }
+> >  }
+> >
+> > diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> > index 887ee611b553..6e917752cb89 100644
+> > --- a/rust/kernel/pci.rs
+> > +++ b/rust/kernel/pci.rs
+> > @@ -48,6 +48,7 @@ unsafe fn register(
+> >          to_result(unsafe {
+> >              bindings::__pci_register_driver(pdrv.get(), module.0,
+> > name.as_char_ptr()) })
+> > +        .map(|_| ())
+> >      }
+> >
+> >      unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
+> > @@ -437,7 +438,7 @@ impl Device<device::Core> {
+> >      /// Enable memory resources for this device.
+> >      pub fn enable_device_mem(&self) -> Result {
+> >          // SAFETY: `self.as_raw` is guaranteed to be a pointer to
+> > a valid `struct pci_dev`.
+> > -        to_result(unsafe {
+> > bindings::pci_enable_device_mem(self.as_raw()) })
+> > +        to_result(unsafe {
+> > bindings::pci_enable_device_mem(self.as_raw()) }).map(|_| ()) }
+> >
+> >      /// Enable bus-mastering for this device.
+> > diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+> > index 8f028c76f9fa..5a5561c7326e 100644
+> > --- a/rust/kernel/platform.rs
+> > +++ b/rust/kernel/platform.rs
+> > @@ -54,7 +54,7 @@ unsafe fn register(
+> >          }
+> >
+> >          // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> > -        to_result(unsafe {
+> > bindings::__platform_driver_register(pdrv.get(), module.0) })
+> > +        to_result(unsafe {
+> > bindings::__platform_driver_register(pdrv.get(), module.0)
+> > }).map(|_| ()) }
+> >
+> >      unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
+> > diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
+> > index 65f3a125348f..e17ae6e9a990 100644
+> > --- a/rust/kernel/regulator.rs
+> > +++ b/rust/kernel/regulator.rs
+> > @@ -261,6 +261,7 @@ pub fn set_voltage(&self, min_voltage: Voltage,
+> > max_voltage: Voltage) -> Result max_voltage.as_microvolts(),
+> >              )
+> >          })
+> > +        .map(|_| ())
+> >      }
+> >
+> >      /// Gets the current voltage of the regulator.
+> > @@ -291,12 +292,12 @@ fn get_internal(dev: &Device, name: &CStr) ->
+> > Result<Regulator<T>> {
+> >
+> >      fn enable_internal(&mut self) -> Result {
+> >          // SAFETY: Safe as per the type invariants of `Regulator`.
+> > -        to_result(unsafe {
+> > bindings::regulator_enable(self.inner.as_ptr()) })
+> > +        to_result(unsafe {
+> > bindings::regulator_enable(self.inner.as_ptr()) }).map(|_| ()) }
+> >
+> >      fn disable_internal(&mut self) -> Result {
+> >          // SAFETY: Safe as per the type invariants of `Regulator`.
+> > -        to_result(unsafe {
+> > bindings::regulator_disable(self.inner.as_ptr()) })
+> > +        to_result(unsafe {
+> > bindings::regulator_disable(self.inner.as_ptr()) }).map(|_| ())
+>=20
+> IMO all of the new map calls in this patch should use the
+>=20
+> to_result(...)?
+> Ok(())
+>=20
+> syntax.
+>=20
+> Alice
 
-#[cfg(CONFIG_REGULATOR)]
-pub mod regulator
 
-in rust/kernel/lib.rs?
+Agreed, will do it in v2.
 
-> In fact, doing the change you proposed will result in Intel´s bot
-> complaining. Same for all other functions defined in the helper C file.
-> 
-
-With above, we probably can remove the whole helper file for regulator.
-
-Regards,
-Boqun
-
-> - Daniel
-> 
+-Onur
