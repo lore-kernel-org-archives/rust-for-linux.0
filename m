@@ -1,109 +1,208 @@
-Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A86F22CBC6;
-	Tue,  9 Sep 2025 17:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757439806; cv=none; b=Nwrxwgd0P0xo4jqrK/5PrmqZl7gNySdm/Eq4Xe2qbtlO4HCvTKlVWVnVDaUT8f4B69mxC+24SsBqXxx4dJR/5lwsTwhAmMZuM7XL84OClaRvr3LBwgIk833lx6FYH3f2VK37j9k7C5ZNf/nCAx0wo0qSBZOAapAFn3Fqn62ZTBE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757439806; c=relaxed/simple;
-	bh=MtwLVlkHVgr67uxmXLkBqM6as9LewlRLCO1saNl3KBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tZLx12lVrgnZbD9tatNgFSW+FroKZEIkMZTmX1Q9QAhLn0+aJ0Rag8cj10kQ3IvzZenNSmKCNfhZ92IxFyNPduLrYVsPDHlD2N0e7K4aWrOVWS4O/rhvB1ZkF+9rj5YNvk5iJB1CvcXGEOjsN9wMevtwPoalzgQavXariUx7RnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=NSWR1xg1; arc=none smtp.client-ip=178.154.239.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D6725B1E0;
+	Tue,  9 Sep 2025 17:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757440498; cv=pass; b=EvTCrOp95xos7GNne/v/L5Igea44P+Q6WIHVpnI18Dmyx2wXRawV/O9rqPV/wTLgMya4zY52u69kO5283IQIHjj4oJUZLsqDmVIVM8k/nvbWaymILYDvlhOBp1vj2r2G5SqBRZPj9mCJWFOAzxXDjcCDTDwE0mNeExfYup5aGLk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757440498; c=relaxed/simple;
+	bh=bi3FzqBbDGwN+S84x5Yy8igL8ByIEyiiRi++2Iffi1s=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ajImKZarSLBgT2Fm8mJAa3wV/dTFMmOojj4cyUeK4JS7Goo7vFCm5LHUTLcZFbCXD9Xpy969ZYyYq0eeBT+IIEeddRkoMUWjRXCp2cxf1AB4nKhsogBR8lK0PEYKHNe6mzOURr02Ptem6RnvJgkGLHkEWvpNpZUHKz9wql4UDRA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=I86g5J2O; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="NSWR1xg1"
-Received: from mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:418:0:640:bb5:0])
-	by forward501d.mail.yandex.net (Yandex) with ESMTPS id ED80881D2E;
-	Tue, 09 Sep 2025 20:43:13 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id AhNjVj4MsSw0-jzZttvcT;
-	Tue, 09 Sep 2025 20:43:13 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757439793;
-	bh=yPmKonhsA0dNYPoLqMInBTa05jTe+xOTUUxdXxjbrW0=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=NSWR1xg1kjFibxZAl2Rn5Cvi+QYsdTefhfu+3i4Vd9Us5zZUiWz9wpw0Gq2pqS4Ut
-	 H/2zOyvQY81xdUK4HPVJJdk/qbJsrLtMzd6NJjw8aN4nqfZOP7RLphy7HgKzOJslBH
-	 ac2FT1YQNgGMaZ6GNM/FRfwitftGpNfY9/o/eP5k=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 9 Sep 2025 20:43:08 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com,
- tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu, aliceryhl@google.com,
- a.hindborg@kernel.org, lossin@kernel.org, bjorn3_gh@protonmail.com,
- gary@garyguo.net, boqun.feng@gmail.com, alex.gaynor@gmail.com,
- ojeda@kernel.org
-Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original
- value
-Message-ID: <20250909204308.74ccedf4@nimda.home>
-In-Reply-To: <CANiq72=kWpxpo23JUYTqxwpsY=E0uUvCHgotRuepZpL-qUqXqw@mail.gmail.com>
-References: <20250909170013.16025-1-work@onurozkan.dev>
-	<20250909170013.16025-2-work@onurozkan.dev>
-	<CANiq72=kWpxpo23JUYTqxwpsY=E0uUvCHgotRuepZpL-qUqXqw@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="I86g5J2O"
+ARC-Seal: i=1; a=rsa-sha256; t=1757440454; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=c2sContwzi2EUk8oGNM1aMpIJKcOje4zU8RD+odgo2kVz0GPRahG3/D5LF6emOYpXphKz38P/fuHR199ijpoRFyj6A/dYpHZPySJY84ms4G37YkujynwmWZhqsQvhke/vcpwozkXRvGqt9Aa+jSpXX+X5M6/uHxdjxj6F1sSa+s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757440454; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ZexlUvzuh8BcVVQKwrBhxK1Lku6iKS7yCiVoXMY4Yas=; 
+	b=FW7NKz+QGjBssqVYhQtFdSxVeMCNf/+VsC8QHj9gHhlYIklrwauj0EIVCImJC3fruX2rCHo5OEPIDAcMc9c0R1LEpeTuM4SqbqhG5aI7+o+zWJIhT0W4C6O9NpAyvLo8w5mGOmB41fJo5bde6H6w3LlolN8NMzBZO+ujX97P5WM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757440454;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=ZexlUvzuh8BcVVQKwrBhxK1Lku6iKS7yCiVoXMY4Yas=;
+	b=I86g5J2OlK49zHbPszu2USloO12NGEFukteoHiSieOSpF5vjoKMB7x5tXyASG5bS
+	cU4CiidIXJQLE/ZDmzLRDBZqP5dDbGeWrHeXjBaL5Loey3irVV6QJq9Cy6lfUakWFOO
+	n8svMb8LbXgp8yWgtqt8MuHeo/Fx7ZfGBj71YcJw=
+Received: by mx.zohomail.com with SMTPS id 17574404525881001.4507671242769;
+	Tue, 9 Sep 2025 10:54:12 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v4 1/3] rust: i2c: add basic I2C device and driver
+ abstractions
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <655ca23c-1fe6-498a-80b8-1b75044d9db3@gmail.com>
+Date: Tue, 9 Sep 2025 14:53:55 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Alex Hung <alex.hung@amd.com>,
+ Tamir Duberstein <tamird@gmail.com>,
+ Xiangfei Ding <dingxiangfei2009@gmail.com>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-i2c@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <467F4F57-9452-4B68-931B-4A55A7CBC268@collabora.com>
+References: <20250820151427.1812482-1-igor.korotin.linux@gmail.com>
+ <20250820151913.1814284-1-igor.korotin.linux@gmail.com>
+ <CB269793-D165-4D22-95E5-F978C1ECC79E@collabora.com>
+ <655ca23c-1fe6-498a-80b8-1b75044d9db3@gmail.com>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, 9 Sep 2025 19:17:56 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-> On Tue, Sep 9, 2025 at 7:01=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.de=
-v> wrote:
-> >
-> > This patch only fixes the callers that broke after the changes on
-> > `to_result`. I haven't included all the improvements made possible
-> > by the new design since
+
+> On 9 Sep 2025, at 14:19, Igor Korotin <igor.korotin.linux@gmail.com> =
+wrote:
 >=20
-> I think Daniel asked in the previous version what you mean by "callers
-> that broke" here -- it is a bit confusing, since it seems this is a
-> fix (and thus needs to be prioritized).
+> Hi Daniel
 >=20
-> Is that the case?
+> On 8/27/2025 7:37 PM, Daniel Almeida wrote:
+>>> +
+>>> +        let i2c_table =3D match T::I2C_ID_TABLE {
+>>> +            Some(table) =3D> table.as_ptr(),
+>>> +            None =3D> core::ptr::null(),
+>>> +        };
+>>> +
+>>> +        let of_table =3D match T::OF_ID_TABLE {
+>>> +            Some(table) =3D> table.as_ptr(),
+>>> +            None =3D> core::ptr::null(),
+>>> +        };
+>>> +
+>>> +        let acpi_table =3D match T::ACPI_ID_TABLE {
+>>> +            Some(table) =3D> table.as_ptr(),
+>>> +            None =3D> core::ptr::null(),
+>>> +        };
+>>> +
+>>> +        // SAFETY: It's safe to set the fields of `struct =
+i2c_client` on initialization.
+>>> +        unsafe {
+>>> +            (*idrv.get()).driver.name =3D name.as_char_ptr();
+>>> +            (*idrv.get()).probe =3D Some(Self::probe_callback);
+>>> +            (*idrv.get()).remove =3D Some(Self::remove_callback);
+>>> +            (*idrv.get()).shutdown =3D =
+Some(Self::shutdown_callback);
+>>> +            (*idrv.get()).id_table =3D i2c_table;
+>>> +            (*idrv.get()).driver.of_match_table =3D of_table;
+>>> +            (*idrv.get()).driver.acpi_match_table =3D acpi_table;
+>>> +        }
+>>> +
+>>> +        // SAFETY: `idrv` is guaranteed to be a valid `RegType`.
+>>> +        to_result(unsafe { bindings::i2c_register_driver(module.0, =
+idrv.get()) })
+>>> +    }
+>>> +
+>>> +    unsafe fn unregister(idrv: &Opaque<Self::RegType>) {
+>>> +        // SAFETY: `idrv` is guaranteed to be a valid `RegType`.
+>>> +        unsafe { bindings::i2c_del_driver(idrv.get()) }
+>>> +    }
+>>> +}
+>>> +
+>>> +impl<T: Driver + 'static> Adapter<T> {
+>>> +    extern "C" fn probe_callback(idev: *mut bindings::i2c_client) =
+-> kernel::ffi::c_int {
+>>> +        // SAFETY: The I2C bus only ever calls the probe callback =
+with a valid pointer to a
+>>> +        // `struct i2c_client`.
+>>> +        //
+>>> +        // INVARIANT: `idev` is valid for the duration of =
+`probe_callback()`.
+>>> +        let idev =3D unsafe { =
+&*idev.cast::<I2cClient<device::CoreInternal>>() };
+>>> +
+>>> +        let info =3D
+>>> +            Self::i2c_id_info(idev).or_else(|| <Self as =
+driver::Adapter>::id_info(idev.as_ref()));
+>> I wonder if these should be private member functions?
+>>> +
+>>> +        from_result(|| {
+>>> +            let data =3D T::probe(idev, info)?;
+>>> +
+>>> +            idev.as_ref().set_drvdata(data);
+>>> +            Ok(0)
+>>> +        })
+>>> +    }
+>>> +
+>>> +    extern "C" fn remove_callback(idev: *mut bindings::i2c_client) =
+{
+>>> +        // SAFETY: `idev` is a valid pointer to a `struct =
+i2c_client`.
+>>> +        let idev =3D unsafe { =
+&*idev.cast::<I2cClient<device::CoreInternal>>() };
+>>> +
+>>> +        // SAFETY: `remove_callback` is only ever called after a =
+successful call to
+>>> +        // `probe_callback`, hence it's guaranteed that =
+`I2cClient::set_drvdata()` has been called
+>>> +        // and stored a `Pin<KBox<T>>`.
+>>> +        drop(unsafe { =
+idev.as_ref().drvdata_obtain::<Pin<KBox<T>>>() });
+>>> +    }
+>>> +
+>>> +    extern "C" fn shutdown_callback(idev: *mut =
+bindings::i2c_client) {
+>>> +        // SAFETY: `shutdown_callback` is only ever called for a =
+valid `idev`
+>>> +        let idev =3D unsafe { =
+&*idev.cast::<I2cClient<device::Core>>() };
+>>> +
+>>> +        T::shutdown(idev);
+>>> +    }
+>>> +
+>>> +    /// The [`i2c::IdTable`] of the corresponding driver.
+>>> +    fn i2c_id_table() -> Option<IdTable<<Self as =
+driver::Adapter>::IdInfo>> {
+>>> +        T::I2C_ID_TABLE
+>>> +    }
+>>> +
+>>> +    /// Returns the driver's private data from the matching entry =
+in the [`i2c::IdTable`], if any.
+>>> +    ///
+>>> +    /// If this returns `None`, it means there is no match with an =
+entry in the [`i2c::IdTable`].
+>>> +    fn i2c_id_info(dev: &I2cClient) -> Option<&'static <Self as =
+driver::Adapter>::IdInfo> {
+>> Again, perhaps a private member function? I=E2=80=99m trying to =
+simplify the syntax here.
 >=20
-> Thanks!
+> Can you, please, kindly clarify what do you mean? If a function is not =
+pub/pub(crate),
+> it is a private function.
 >=20
-> Cheers,
-> Miguel
+> Thanks,
+> Igor
+>=20
 
-What I meant is that the change on `to_result` signature introduced a
-breaking change so I had to update its callers accordingly.
+I mean a function that takes &self or &mut self as applicable.
 
-The fix I mentioned in this version is a different matter.
-
-Before the rebase, the regulator module had a get_voltage function like
-this:
-
-	let voltage =3D unsafe {...};
-
-	if voltage < 0 {
-    		Err(...)
-	} else {
-    		Ok(Voltage::from_microvolts(voltage))
-	}
-
-But on the regulator/for-next branch, a patch was applied that changed
-it to:
-
-	let voltage =3D unsafe {...};
-	to_result(voltage).map(|()| Voltage::from_microvolts(voltage))
-
-That change was incompatible with v1 (due to the different signature of
-to_result), which fails to build with my patch. This version (v2)
-fixes the issue introduced in v1.
-
-Sorry for the confusion, I hope it's more clear now.
-
-Thanks,
-Onur
+=E2=80=94 Daniel=
