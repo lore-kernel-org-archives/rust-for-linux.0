@@ -1,97 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574E5303A21;
-	Tue,  9 Sep 2025 19:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757446673; cv=none; b=QMIENappSzMzwE3tsCbeYlAzwWpGty8pwrW7hR+W/O1/GWNHyrClRtiB5iOYSqNtR5TWHstscdlKj/2hRaUjoCb7PD7pt3zSayKVSfq/RhfcefSSmqZreLjv7GZQ9i31h9s8eMr5pWUJCZqbdZ6kGHUQOAyWch/oIgb87dNUMDY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757446673; c=relaxed/simple;
-	bh=Vkfs1C2Q/m2ciXngYEnMywKI/5g7jYuOYmYnMi4Z+6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rm4LUgXeKAsTGWx/ZlACaduok0nVUObGFx9OsGPz6taAPydSRUvc4WtNHB+WR2CZEAtihAnoMa8W3oiqdVtvLrPDtqXLI8U553y93eLI+rxkVKWhQlpfVw0KEv0J25lpUWW9/gJfGRmd+nb2hmHabdPbGIP3eIlgGskjtnG3s9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BK33sGpV; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB18F302CD0;
+	Tue,  9 Sep 2025 19:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757447466; cv=pass; b=r2E1I/ez87zvz3M2wWZfw42P1BRAYPXv/GzJsBH14B6PfvgRP+ct04d/CLJImZinSzWHzeYtBULRsecYJoOpbsF8omoruM6tk9R1gGwCHkxfplJ1gyc/gXHRKrUHbjQSQdf2jEwyCvtV0tGEXo1VJu68yqqGx3b5O4GIvm4Ebls=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757447466; c=relaxed/simple;
+	bh=CgaI1ryl2lJRZTbc5uvxKQsL94BLJ/VJBanvuIHtCcs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=u6AMbqp5bLizO0YJZWnKMkxyMXg2V8pB/MvxGMXycf1MWVFTAKebOOQEKWtaHFpC1yijgnts501eFBannl4kD9Zoc/ZwhvMqX3qhqrXTPGWTzDRWSnG6SBpIPnhi5++yZrf5VxNaBZ23hPTc/BKhZS19UfqOR99Nj+lG+4S8UKI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UQG/ebZv; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BK33sGpV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BB1C4CEF4;
-	Tue,  9 Sep 2025 19:37:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757446672;
-	bh=Vkfs1C2Q/m2ciXngYEnMywKI/5g7jYuOYmYnMi4Z+6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BK33sGpV6gJZdNQka35B5igzFncF6O4QoVJduYx5uymEwm19+Pae/Y8Ji2ztm6vFh
-	 Of79hrgQzN752E6kK9Pd6CitdpQ05JM71b0yY2nJK5WUadz3JmWI4AqHd+rhRkpPML
-	 jPSesTwS7Zw48bKNgh3AxJtfj3r28MMf09jWFv3Lide1Ok8C5lkasp0zoJfr6zuOnF
-	 N5cxlSvTSt07fnYvpbKZtFqt6TP2eL80kCSBPIQL9mOveIT/STSyNFrSlP91N6uUF+
-	 FdL0uwcDH/ATxbhiykxuiJP1XMjnnp4vhtxpR+0sRrU4PCEIaA22KI5S4HXWZpjWlB
-	 smMV1bUYsFvcA==
-Date: Tue, 9 Sep 2025 22:37:48 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	Keith Busch <kbusch@kernel.org>, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 03/16] dma-debug: refactor to use physical addresses
- for page mapping
-Message-ID: <20250909193748.GG341237@unreal>
-References: <cover.1757423202.git.leonro@nvidia.com>
- <56d1a6769b68dfcbf8b26a75a7329aeb8e3c3b6a.1757423202.git.leonro@nvidia.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UQG/ebZv"
+ARC-Seal: i=1; a=rsa-sha256; t=1757447438; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=mdXUVHaTT6B+QCx6ISABg9nUfKZdsF9aINIGyxEJTvwqOo+5K1ffYLUmvaQaowxSd3TkIMDxgTLqvjeYHW2h3IwqBzUeAqGAz8G0MGMMWtS46qlfxMSuFXQIFZIz7rvBwIRuzbC9V2UmT8fG+8UfJryj0799vMGXmIZcUt5ZoiQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757447438; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=X4kc+sqIlqwrRZbkovqf9uhYtz6iUvsGomVE2OHyz+c=; 
+	b=N8Sai4QeeZiP013Tt6PHIYLVwbFuR3ROZwlSp+cAZ2nozt6Ayt2KjLZP7pEwJ+vGPVk+TaHG/RLLxm5cquC3Mv2j0AHEEHFCloNNAEChQvfAxo6Ep570rfSVROmLoPDraJvpkqm8jAzN3iBGSGIgZvmn7uulSLUZP1isShbyl0c=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757447438;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=X4kc+sqIlqwrRZbkovqf9uhYtz6iUvsGomVE2OHyz+c=;
+	b=UQG/ebZvJr1AwVLprrByb3U8QkfhR1XqpH5VztWm8GNPYQA89udX2/gEa2SwFO4b
+	tqT0zk+K0gmWQ1F7kUEwpqRI63BgUVevqf9cabiRkIH16oKoDTMBmivHb8XyC4fxdJY
+	whZsRORpOoSFhB1JC7XbY3+2Zc0S60OOO/IDtnI4=
+Received: by mx.zohomail.com with SMTPS id 1757447437317465.8216735890609;
+	Tue, 9 Sep 2025 12:50:37 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <56d1a6769b68dfcbf8b26a75a7329aeb8e3c3b6a.1757423202.git.leonro@nvidia.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 3/3] rust: lock: add a Pin<&mut T> accessor
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aL47zBoNpvjYxec5@tardis-2.local>
+Date: Tue, 9 Sep 2025 16:50:19 -0300
+Cc: Benno Lossin <lossin@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>,
+ Waiman Long <longman@redhat.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A2534940-B847-40F6-8420-4ABEAE1D9A39@collabora.com>
+References: <20250828-lock-t-when-t-is-pinned-v2-0-b067c4b93fd6@collabora.com>
+ <20250828-lock-t-when-t-is-pinned-v2-3-b067c4b93fd6@collabora.com>
+ <DCK43W485VCY.3KE72NNMDP32D@kernel.org>
+ <BD4724FF-4AB7-4551-B71C-C22E6E709F19@collabora.com>
+ <aL47zBoNpvjYxec5@tardis-2.local>
+To: Boqun Feng <boqun.feng@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Sep 09, 2025 at 04:27:31PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+Hi Boqun, sorry for the delay,
 
-<...>
+>>>> +
+>>>> +    /// Returns a pinned mutable reference to the protected data.
+>>>> +    ///
+>>>> +    /// The guard implements [`DerefMut`] when `T: Unpin`, so for =
+[`Unpin`]
+>>>> +    /// types [`DerefMut`] should be used instead of this =
+function.
+>>>> +    ///
+>>>> +    /// [`DerefMut`]: core::ops::DerefMut
+>>>> +    /// [`Unpin`]: core::marker::Unpin
+>>>> +    ///
+>>>> +    /// # Examples
+>>>> +    ///
+>>>> +    /// ```
+>>>> +    /// # use kernel::sync::{Mutex, MutexGuard};
+>>>> +    /// # use core::pin::Pin;
+>>>> +    /// struct Data;
+>>>> +    ///
+>>>> +    /// fn example(mutex: &Mutex<Data>) {
+>>>> +    ///   let mut data: MutexGuard<'_, Data> =3D mutex.lock();
+>>>> +    ///   let mut data: Pin<&mut Data> =3D data.as_mut();
+>>>> +    ///  }
+>>>=20
+>>> The formatting looks off in this one, there should be 4 spaces of
+>>> indentation here; there are also 2 spaces in front of the `}`.
+>>>=20
+>>> Also `Data` implements `Unpin`, so you're not following your own
+>>> recommendation from above :)
+>>=20
+>> I=C2=B4ll fix this :)
+>>=20
+>=20
+> If the fix is small, feel free to send a diff and I can fold it when
+> queueing (i.e. no need to resend the whole series). I'm trying to send
+> it to tip before -rc6 so there will be some more tests. Thanks!
+>=20
+> Regards,
+> Boqun
+>=20
 
->  include/linux/page-flags.h         |  1 +
 
-<...>
+This should address what Benno pointed out:
 
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -614,6 +614,7 @@ FOLIO_FLAG(dropbehind, FOLIO_HEAD_PAGE)
->   * available at this point.
->   */
->  #define PageHighMem(__p) is_highmem_idx(page_zonenum(__p))
-> +#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
 
-This was a not so great idea to add PhysHighMem() because of "else"
-below which unfolds to maze of macros and automatically generated
-functions with "static inline int Page##uname ..." signature.
-
->  #define folio_test_highmem(__f)	is_highmem_idx(folio_zonenum(__f))
->  #else
->  PAGEFLAG_FALSE(HighMem, highmem)
-
-Thanks
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 7191804a244d..cb00fdb94ffd 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -258,13 +258,13 @@ pub(crate) fn do_unlocked<U>(&mut self, cb: impl =
+FnOnce() -> U) -> U {
+     ///
+     /// ```
+     /// # use kernel::sync::{Mutex, MutexGuard};
+-    /// # use core::pin::Pin;
+-    /// struct Data;
++    /// # use core::{pin::Pin, marker::PhantomPinned};
++    /// struct Data(PhantomPinned);
+     ///
+     /// fn example(mutex: &Mutex<Data>) {
+-    ///   let mut data: MutexGuard<'_, Data> =3D mutex.lock();
+-    ///   let mut data: Pin<&mut Data> =3D data.as_mut();
+-    ///  }
++    ///     let mut data: MutexGuard<'_, Data> =3D mutex.lock();
++    ///     let mut data: Pin<&mut Data> =3D data.as_mut();
++    /// }
+     /// ```
+     pub fn as_mut(&mut self) -> Pin<&mut T> {
+         // SAFETY: `self.lock.data` is structurally pinned.=
