@@ -1,103 +1,94 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837F918FDBE;
-	Tue,  9 Sep 2025 20:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757448875; cv=pass; b=T8+9Up6wRSyKHIbK0MtGD+5lLW7sbxJNPGJd+0zOV1ADa5YTNmPT3k22rpVhH/ZK6iLlZtIi4iyuq0294LCEbYNcrTiKOxg6fp4aiqInEL9Z2PggmPBUrkfMEVA1f71wlHcSVIXg5m6hID7heMRAudt1z/iujknay6sTUekY36c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757448875; c=relaxed/simple;
-	bh=XYP8FOZl6arVwSH9tqj6Uzxqg7yEkGDjl7z/cd2+GUk=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Tw9u15kBnIiUi5GjdzU0p+i4eGsFvCDdPo6BxNa3sYZ7ixBOiLOGwE5RczbFtGdbntUKearlbyGi6iv0tR0b5UzczEBO2a3WltdFDfuTKadynToD87ShYdmraASn4NrPVm++zKybW4i7P+HSq6REulFDZJ/XmcJvfzmZNNPsmYM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=IMQqXXh9; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A569302CAB
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Sep 2025 20:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757448894; cv=none; b=X2DOFNiwbDFGsuFGngnWXNDrOniF1o/c3YuJXafLIBjB7iMff5L/gM/Mlia8b9nsr3HcJ4hXIyqWeDo5pTRZvcA9clJ8BiikoWn4pY7IPkxCfPemG5Xv+M4zsOpG5FxEzsdUkwmNjhzwYkT1Qu1Q4gT8w1RxOw3nrKr4f4AlJtk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757448894; c=relaxed/simple;
+	bh=0RsLYpIdBCFq2CXnIllIIUx06sgVvgCrX54kp3Ry6Rk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ya+2wdHdsg7khScqjX1BClx5n0o8iIms8pPhSrRCscu29En0/I4h+1T5mQPHAuXoGkvEMGaSA7WAKztl7r5qQ41/fEWfzSwKfB7jY4jQUp+XqMA/9lAH8ueCbrffkq8KEoxUCR1JViCZoPNWYrMkza7NAWalhqRgTJf55IPlGhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WB/TmuGi; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="IMQqXXh9"
-ARC-Seal: i=1; a=rsa-sha256; t=1757448849; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZS+PXXkXJMF8nmLyWxF8MLLj2xdgJG01tt3zIfdLgg9H8i7wRFU6P84E4L2dTn2w0Nwq06uigAYP8GISRyt/LE8KFx6s1x+uvqMGPLHynhXDEQdEXvDw84I8xmt2SdEU3mxldnu1sV8Os/UaekXTLnbpzTtaatP/9aCkXSEX3v8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757448849; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=XYP8FOZl6arVwSH9tqj6Uzxqg7yEkGDjl7z/cd2+GUk=; 
-	b=e98UMGMd/qqcpQEQs58ssV6sajBFpNRE51umasms0muUEAScTVjLJ7VvuQhrlFidmtLgJ1m24wwCXnpprYn6eRzT53kZp/nfzGXD5M51rkbmskZbJ7tzKBZDZJ99UB0yi/bPbH6mKUmP5icFVbURaXQeo9YaMATZhg9f4NcrQKI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757448849;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=XYP8FOZl6arVwSH9tqj6Uzxqg7yEkGDjl7z/cd2+GUk=;
-	b=IMQqXXh9fZdzTzCv0jHOq5/Bp2avzzp/jAuqj6mUihJmIQoB+HNNq7S/4WIcOt6h
-	7smqVKabvbjmFdBjMR3uPWk4OScPggIl08n4qu4bV2hvZZaWugJ3ZXZ4vmP8SkB/Nj+
-	mitVn4itXriHrDHkfFGpjIzIJb8Ri46Eu95x3GLc=
-Received: by mx.zohomail.com with SMTPS id 1757448847246298.0135545057768;
-	Tue, 9 Sep 2025 13:14:07 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WB/TmuGi"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-24cb267c50eso9115455ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 13:14:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757448892; x=1758053692; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0RsLYpIdBCFq2CXnIllIIUx06sgVvgCrX54kp3Ry6Rk=;
+        b=WB/TmuGiRWgLeL+HxKBxEx9Lrl9rg70jzCxSp82/rZODI8A/epK0bddOnTiqMnpJHH
+         Qlo3ZdVOJImOsv17+c9MQPmhb1nYYF4XslVlskgIcJD/9PkRBD52Tavz+SK6gDINsUXi
+         wMgcnRu7rCGX4PRo7lx9uWtcflDSUznsXEZFGLdbyt6EXIBMNcz6Cewap2XFz7TC2FMr
+         lWALxUtqfacWk3BJlKrgkUJ+70Ydrp9Te8/kSnfKU/7rIc1mN5ApjhZkaazD01dH+Szi
+         sf3ROAkTACsyo1XbgTiSPlhT6fbZLokBWHnFvgD8zVp9+hOxOFnHVor/WotT+PLVzq4E
+         EFbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757448892; x=1758053692;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0RsLYpIdBCFq2CXnIllIIUx06sgVvgCrX54kp3Ry6Rk=;
+        b=XpQwKXhGSW63KUMRj+8Bbvpv662DjUN4q/yF37ZUPGmo15+GeL+f8DT3R0eMpeHNhW
+         qHV+jfm0HvlUh/aecvzCHowrz+Yit9oAjtGDrDhTM+VdwS0ysJSR+2K5GGLVPwbfxEmb
+         fpOwwwaP0/LX1ZNeI1BlL6tB68KVH/7u5WxyrCi91aWtmnJVTxe6BCYJnc4DvJbgIss/
+         XCVsoPiWJa2hlu5WhLngTOqYSFwh2Xn1c/Ky/Ov9yliCYZMLmSRjO2M8WnvpttDt2dif
+         ca8WAHHm56ofRCyGaD6dUsm4/t/h1VUO3bgU0XhTyA4vo0VdWs/3rzDVBCWHu9d8ydLa
+         wHCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXr2wsXyVYQjert4eaksq7ODANj/Jv+jkIqE4GPG9jK1Qh6xT+lxpNNGetg6fSdPhI+DdNP4Ccb45HaQi0KiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+IyuTm1RtyinLc+jBOxQYZMgFIxRx5K4hvLN2XZHQ2WhmMM6f
+	p665Kqna6gsH9qxbqjIpE+Vo5AF8FIXtffKzZakzh1wL2dFz3Y/8y/EPecAzKPK4J1RwoSXjJAM
+	Cu3PfBusNYpSygcYsQoJ8YMsIfQEiLiI=
+X-Gm-Gg: ASbGncstbuKDkAEQo1NWFgRuEsTvyBai0JXJx0qscfftm5S7PMu9jed2N78Zc9xDKgw
+	9wADqdHagzhfFhBooOAkIn2BsRR2ftp726y/s1xqp5UVFj6RUnkbJeSj4pqN/FKEkMPvC9JRg4f
+	3Mjn2GsqCVJeeRad+i/YnMUL6b4nAosNUVgczz3oNfAqMHL3Mop2poqWB1GdYcIhekST8xQjsqG
+	2w+CVFH3nitCRhOeyVovgIFE+BmfBMkkMC/VP0NdEHNblFTIT+Ymt0ipYhLE0bxOEyqb7RI4Hhf
+	MnO1F3so5ZfvdH0P1UFrIAlKCQ==
+X-Google-Smtp-Source: AGHT+IG8l2Cl0crbnUXdUU1gkjVHq4CtZSPylbc0kTpXl7tI3C1ru4Lsu/w7cyIRw74CZbstsu1Z6Dk+uaNPN+HTnJo=
+X-Received: by 2002:a17:902:ea01:b0:246:ed8f:c63e with SMTP id
+ d9443c01a7336-25168e74592mr84188935ad.0.1757448892145; Tue, 09 Sep 2025
+ 13:14:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original
- value
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250909215330.4a2f050f@nimda.home>
-Date: Tue, 9 Sep 2025 17:13:49 -0300
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- daniel@sedlak.dev,
- dirk.behme@de.bosch.com,
- felipe_life@live.com,
- tamird@gmail.com,
- dakr@kernel.org,
- tmgross@umich.edu,
- aliceryhl@google.com,
- a.hindborg@kernel.org,
- lossin@kernel.org,
- bjorn3_gh@protonmail.com,
- gary@garyguo.net,
- boqun.feng@gmail.com,
- alex.gaynor@gmail.com,
- ojeda@kernel.org
+MIME-Version: 1.0
+References: <20250909092707.3127-1-yangtiezhu@loongson.cn> <20250909092707.3127-3-yangtiezhu@loongson.cn>
+ <CANiq72n7OSCUzycAQXFybx6BSVnj3MWAXvZj7U=AWf_UQwmO+g@mail.gmail.com> <CAGSQo01mQfcU1EiW53be1hcts0c1p-HQAab_HBk6VcVmhq3n2Q@mail.gmail.com>
+In-Reply-To: <CAGSQo01mQfcU1EiW53be1hcts0c1p-HQAab_HBk6VcVmhq3n2Q@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 9 Sep 2025 22:14:39 +0200
+X-Gm-Features: AS18NWDg4ZT2JJKp5Wn_EDsPG-hMufN-5mAXel2614jBzRLlCVd_Ejc82tjlxds
+Message-ID: <CANiq72nkim=Nn__xM118Vut-Bhyo6Na3RK-F6a0pCxN-M7Xgsg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] LoongArch: Handle jump tables option for RUST
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, WANG Rui <wangrui@loongson.cn>, rust-for-linux@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <7E1CF096-2886-483A-929F-1EEF5E94AD47@collabora.com>
-References: <20250909170013.16025-1-work@onurozkan.dev>
- <20250909170013.16025-2-work@onurozkan.dev>
- <CANiq72=kWpxpo23JUYTqxwpsY=E0uUvCHgotRuepZpL-qUqXqw@mail.gmail.com>
- <20250909204308.74ccedf4@nimda.home>
- <468A76F2-FC02-4B54-974B-7C52D946ECEB@collabora.com>
- <20250909215330.4a2f050f@nimda.home>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
-[=E2=80=A6]
+On Tue, Sep 9, 2025 at 8:06=E2=80=AFPM Matthew Maurer <mmaurer@google.com> =
+wrote:
+>
+> I think this isn't needed. I added it initially because Kconfig was
+> dying when `rustc` was not on the path, but I'm not sure how I managed
+> that, since `success,trap` should guard against that (perhaps I was
+> doing something wrong in earlier development, fixed it, and didn't
+> remove the restriction). I have tested `rustc-option` with an
+> intentionally missing `rustc`, and Kconfig doesn't seem to be taken
+> down (and it gets a no answer), so the change to the macro means that
+> doc warning should be removed.
 
-> If you look at the changes in rust/kernel/error.rs, you will see that
-> the `to_result` function has been modified and some of its callers =
-were
-> updated because the function signature changed.
->=20
-> The regulator patch I sent earlier is unrelated to this one. They are
-> not doing the same thing. That patch aimed to make use of `to_result`
+Yeah, that matches my test then, thanks! (and for the patch)
 
-This is the piece of information I was missing, thanks.
-
-> instead of handling errors manually. This patch on the other hand,
-> changes how `to_result` itself works and some of its callers need to =
-be
-> updated accordingly just like in the other modules included here. The
-> reason for changing the `to_result` function is explained in the =
-commit
-> description.
->=20
-> -Onur=20
-
-=E2=80=94 Daniel=
+Cheers,
+Miguel
