@@ -1,101 +1,140 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326AE317709
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Sep 2025 10:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DECA3203B0;
+	Tue,  9 Sep 2025 11:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757415475; cv=none; b=H2Tc3HcEN57v2rcJPnju511PSjkPHpPWvSwj5ZZmbo1At1OvG9bfx8VQW0h4mm2TDXsYw4YdxL8qjHpsfppC5Jr+fwO52dMoxcDIGefrD+m3+JlQP1YfvaVXAaPq7HlehTUNV9QvvLwGstJBOdXyLmizEq8c79R4WPm99L1vdIo=
+	t=1757416267; cv=none; b=raU18kvZA2FxdRFcxXsdaLco7aTrD1QWSDTkhwtnVZUVMDrt0bBlN+JOyb/kRwXbXTjgUBHnibH1EK6wV7NfAYUWi+NZS4dLr5eQ0n9MtJopifhPML30gEMaQR4BC3xKzb0iPelcON85KHiLn1OPK5rBl7lZ75J9EyUEzf9itrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757415475; c=relaxed/simple;
-	bh=2qJii75iX2H9ZNmZHO96TRyyefKym2oMcBVinEsMC3I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kOv1IUOjb9eFh3rPnI09m3wEyPr4L0WDM/B+IjFY/eldCSAD4UK+g/oLdXpLSQ5WsJ5RVjtyxUwG1rPMyjye5/PYP1gpAU8MXV2nHFoYzQ0MGDqUBx7chk4ycydbKPIu3+z/mssxeuApUyqJfX3nqxyGU+6O6N2U0az8mohiKeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHrtPiqS; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757416267; c=relaxed/simple;
+	bh=bOM0a0A+HB5LBofYI+3MTNno0SLEwnhQSFIL8qE1y+Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IAkINNSWpQOLtNMlSgzuzWSeh7mpce1fMdYGCybkzGOMm8lBM47J8vqUsMo6LgN+bbN461y2l1tTC1xgHpRyt35M3IlX7aOKKTSa9uRDsZKEZXrM8f+yXldJxRfkds9Jrl9C8hVqzALB8sOyEKEMBPGjwu38FGN6Jh/RE8dwyN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rqaep0ha; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHrtPiqS"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32ba5163454so452635a91.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 03:57:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757415472; x=1758020272; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MOj657j5Mnz8nVz+aHzr8oWclDauOAy9FeLA5tjE16Q=;
-        b=dHrtPiqS1VZM0UI0SiB0xsl+itFnqtwkkrVklzKNexbMHFJLuOXKzgY8LxTDtmbIt6
-         GhY0HV4pIFIdU8D3/2gA8OWldM+gV9KFerqT4LZ+2YSdRveymIoZrRW2flPrsTHZF0C/
-         aDnUpsGxmgiZlSP4kDnjIytEO7V/H+jCQkakVc50NoAm1Z0IE+j8vFLVR+uWPvr8Zy9N
-         lMURjwcvcbvzuhFqd0v0lhTmRq1eBEzS3VakiEOY0lifJjWBWZlKStWjSDN7G+Xj5KLP
-         p4isBv2c8hS4BqGXGimtmTqtJCuKTVRATYAvPtvF+jQ3cA9KoRGOLHTQbpHLqgkLZ/nT
-         Uoaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757415472; x=1758020272;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MOj657j5Mnz8nVz+aHzr8oWclDauOAy9FeLA5tjE16Q=;
-        b=s2HC90mcCMb30Up3/1EHK9+q0ivg/DDXB66WQQn29GOukj1Vhm4KUqOyg0NzchkJ1b
-         ICAkiY2IVMa2IXRLMgKbRMUVleugfPQfakctHNsJ4H43MycuH6hALw7PokeUGKzxLT7C
-         NvwS4dLXMiqpw56oGWjy8Rz0Nr7gYp4RIbdPveSgmuFQK1y2YrYPg01BoLW/8PsZnXW9
-         u2CzIQXdy95uufvOX4AEG1AVrG/QhG0c5tH2G/GUNceTmp5oZpQQkMU8RWp0dXQuNdN6
-         S8nO7sOPdJqxFaxeIe46R4wWK7GupGQCRCvN+qN0ZLpTL+TkJ0CN6porrUGtgcA4mUw1
-         Pppw==
-X-Forwarded-Encrypted: i=1; AJvYcCWuaChwTdnfK3TYCBW908fStl70QSxzpZyFrY0MF7QrmCVniCzHJRhrg3mfz5VguQZHDLfDPwy8r6WtDAt7mQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK/ZdnZmIAd/8dTG0bObopIcT23BncNX0N4Go+rrPlnfk/eYOp
-	oS2/RrCHGmZzXtQ1nZGtYQH43Zg7y8w3rJKIjp6SPeIGtoLactXliCZooepeJn/7ydKvywWdqnN
-	7i/iPUmde+WlcZzFTpXxCz4eoiupWlCk=
-X-Gm-Gg: ASbGncvsGsEfhkRZWRgExmPJ43/biew9hJ5mlYvHfxz5LAq8ovujgMZ+8/QpMvITNkG
-	Iicuew+zy0t02hkIN0tJ2cczDTBZfPNMZ/HjdJS0wMDD9+J4nRoO058fc4MRNMxKl+6Ixm66OLa
-	mDk1byoAO75QrG2uIhEFstob7+TJJlws+vTDCIEilQkpNlEe2DFHC8USnYkSujDgZJiE1d7FyOn
-	fT7rpmm0+4ocUQ7bOVLeh9w6oM6RBG0jTk8S5HoSMvejk19vz/QYsFOiQKGvgTM6FupezZME67m
-	tybzD42AuvRXjfKLukgjQbOl7mrD5qPboKZo
-X-Google-Smtp-Source: AGHT+IHmJSD9mvx32JMCMKUtj+A6Iea7OUmn870TZehtVnrYC8OSU5oHqTLumOjvLIOX3eQTIcrVZlGUnPI9cim9tKY=
-X-Received: by 2002:a17:90b:1d12:b0:32b:6abf:d94e with SMTP id
- 98e67ed59e1d1-32d43e2b577mr8427871a91.0.1757415472504; Tue, 09 Sep 2025
- 03:57:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rqaep0ha"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757416264; x=1788952264;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=bOM0a0A+HB5LBofYI+3MTNno0SLEwnhQSFIL8qE1y+Q=;
+  b=Rqaep0haG1h6esJfx3hQq7bXVXArUR/P0Zjp1GaFptq8a9+Go+kZf60O
+   +MqE8f08r870Eb5mO3v4aV/IImbm183oU3gZ3E+bet4x76SqaGQduXpgY
+   zCeTBXYrJMRwlZL++3z+MrvbXnv8miuMGn6PB0v+FUyfmGYxOYgMEZfWg
+   gwQG5oncqzy9urSLL5QTXqg76rPWi1QmD7rbbPXETT/tqDqcMEMApWwyk
+   zYOBkEBigRGdaEntZYMr9juui/1pcIPEr3eeD0FNjSsmFRoRxmKtIsEub
+   vIv64PFZ2FAKPZwOUruP0Pq8Rqm6pWfwH/ikWDtfclLqqpKDWvwMoRkvR
+   g==;
+X-CSE-ConnectionGUID: 7BKBUH5aQ26QP2KadzocSQ==
+X-CSE-MsgGUID: tIDQFZFfRhijYlgkPsIi8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="62323931"
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
+   d="scan'208";a="62323931"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 04:11:03 -0700
+X-CSE-ConnectionGUID: Z7coOfXjRzyh+dC2z08F5A==
+X-CSE-MsgGUID: SqhHfoc2QVKtI97PVE5nLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
+   d="scan'208";a="172936765"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO [10.245.244.108]) ([10.245.244.108])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 04:11:00 -0700
+Message-ID: <cbd5c99d2394335ac4aeb2740994ab14508e2553.camel@linux.intel.com>
+Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, Alice Ryhl	
+ <aliceryhl@google.com>, Matthew Brost <matthew.brost@intel.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann	 <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter	 <simona@ffwll.ch>, Steven Price
+ <steven.price@arm.com>, Daniel Almeida	 <daniel.almeida@collabora.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, 	dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org
+Date: Tue, 09 Sep 2025 13:10:59 +0200
+In-Reply-To: <8078cad2-d5d3-4e20-9848-034c2a503f3d@kernel.org>
+References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
+	 <20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
+	 <20250905152505.005a610d@fedora>
+	 <CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
+	 <DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org> <aL1pSFB9iBsfHFM_@google.com>
+	 <DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org> <aL1u_YxOkuj1kIq6@google.com>
+	 <20250908091140.44856fde@fedora> <aL6TJYRmWIkQXujj@google.com>
+	 <DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org> <20250908122002.2c80dd3a@fedora>
+	 <DCNDGFE7RR5Q.X3PCDW0KIX89@kernel.org> <20250908141156.3dbdea0b@fedora>
+	 <7aa3f464-a3d0-47a0-b044-d8db93f45918@kernel.org>
+	 <a2006f74-75bb-48ac-ac9c-0a71c8f9d510@linux.intel.com>
+	 <8078cad2-d5d3-4e20-9848-034c2a503f3d@kernel.org>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aL9Ch_XaYTxMzFXK@x1>
-In-Reply-To: <aL9Ch_XaYTxMzFXK@x1>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Sep 2025 12:57:40 +0200
-X-Gm-Features: AS18NWCGswd-XFUKG33qMZwlodKSwmA-15DaQhSx_nbEJ5Xz7_FyaFy_GrM1YqM
-Message-ID: <CANiq72=6yb5PZnuPYX3xWAms6pfYmfpoPj-GE1AZv7OfxcROJA@mail.gmail.com>
-Subject: Re: [PATCH next 1/1] perf symbols: Handle 'N' symbols in /proc/kallsyms
-To: Arnaldo Carvalho de Melo <acme@kernel.org>, Jocelyn Falempe <jfalempe@redhat.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc: Namhyung Kim <namhyung@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Ian Rogers <irogers@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	James Clark <james.clark@linaro.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Kan Liang <kan.liang@linux.intel.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 8, 2025 at 10:54=E2=80=AFPM Arnaldo Carvalho de Melo
-<acme@kernel.org> wrote:
->
-> +       // a seemingly Rust mangled name
+On Tue, 2025-09-09 at 12:47 +0200, Danilo Krummrich wrote:
+> On 9/9/25 12:39 PM, Thomas Hellstr=C3=B6m wrote:
+> > On 9/8/25 14:20, Danilo Krummrich wrote:
+> > > On 9/8/25 2:11 PM, Boris Brezillon wrote:
+> > > > On Mon, 08 Sep 2025 13:11:32 +0200
+> > > > "Danilo Krummrich" <dakr@kernel.org> wrote:
+> > > > > I'm saying exactly what you say: "has to be a special unlink
+> > > > > function" ->
+> > > > > drm_gpuva_unlink_defer_put(). :)
+> > > > I don't see how calling drm_gpuva_unlink() instead of
+> > > > drm_gpuva_unlink_defer_put() would leak the vm_bo though.
+> > > Initially (i.e. a few mails back), it sounded to me as if you'd
+> > > propose to drop
+> > > the drm_gpuva's vm_bo reference only when it is freed.
+> > >=20
+> > > > > No, drivers can't iterate the evict/extobj lists directly; or
+> > > > > at least this is
+> > > > > not intended by GPUVM's API and if drivers do so, this is
+> > > > > considered peeking
+> > > > > into GPUVM internals, so drivers are on their own anyways.
+> > > > >=20
+> > > > > Iterators, such as for_each_vm_bo_in_list() are not exposed
+> > > > > to drivers.
+> > > > Okay, that's a good thing. I thought Xe was doing some funky
+> > > > stuff with
+> > > > the list...
+> > > Maybe, I don't know. If they do so, the should send patches
+> > > adding the
+> > > corresponding iterators and provide a rationale why drivers need
+> > > to access those
+> > > lists directly and why we can't provide an API that handles the
+> > > overall
+> > > use-case, such as drm_gpuvm_prepare_objects(), etc.
+> >=20
+> > We're using the drm_gpuvm_*for_each* macros in drm_gpuvm.h,
+> > assuming from name
+> > and docs they are driver api.
+> >=20
+> > Also the drm_gem_for_each_gpuvm_bo(), although this usage could
+> > easily be
+> > converted to a helper.
+>=20
+> We were talking about the extobj/evict lists, the ones you mention
+> are fine of
+> course. :)
+>=20
 
-Yeah, it is a Rust mangled symbol:
+Hmm. Now on closer inspection it looks like we're checking for evict
+list empty, It looks like rebinding after validation may in theory
+evict some bos to system memory and then we'd rerun the validation step
+if the evict list was not empty.
 
-    core::iter::adapters::map::map_try_fold::<usize,
-drm_panic_qr::Version, (),
-core::ops::control_flow::ControlFlow<drm_panic_qr::Version>,
-drm_panic_qr::Version,
-core::iter::traits::iterator::Iterator::find::check<drm_panic_qr::Version,
-<drm_panic_qr::Version>::from_segments::{closure#0}>::{closure#0}>::{closur=
-e#0}
+We could of course add a helper for that or if there are better
+suggestions to handle that situation, that'd be fine as well.
 
-From your `grep`, it seems that is the only one you see? If so, it
-would be nice to understand why.
+Thanks,
+Thomas
 
-Cheers,
-Miguel
