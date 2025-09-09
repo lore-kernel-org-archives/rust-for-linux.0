@@ -1,66 +1,67 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6575831CA56;
-	Tue,  9 Sep 2025 17:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596512D5C74;
+	Tue,  9 Sep 2025 17:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757438349; cv=none; b=dMiIlxomCiwkuWfaPhSeSvhDjTL895sjehayMgeKsoUpt2LbyCHtovoOafYhjaGZB2ZLdXiEvDNKwTdZSCAvCnm7z/Tg/rrT8Hz9cSFPbOJ4zSpVq+d+vw1TflLisn0YdNNk1xJBig3VdFUz7YS4OPFhD6dNgf5ny29HNBk9hN4=
+	t=1757438805; cv=none; b=mvR4JsYjrOngR8USG02YtnARALNhO08/dQFPuh8zdaEQGeNJJdLmDZaVeSIPArUOW8NCp8aaZP0leiEGLrqKrPXYDxmiBHefJ8owkVU2IivJmzW/U/c7KDTiDNe5c4IRkXIsdEk+WOsx8uOYlxy/wxPYreh79Aj0la+0j0W9FJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757438349; c=relaxed/simple;
-	bh=bWWnGj0S+MEzFaJeOUMbJYLA0erOC190FHMhWP/fRWM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ngw2Jzc2QqZERGzL7F/yRE5R+dAngWbQJWxv+D1lXId+qbzc/nPKgoD+hDbDrd0ymwpI4zrimN5256EKexZsKNQzHf4P4G85ibLvBEDg+rgMrhjFUJSYJ8XGnIeCaTS96Us9pww5oQxmwvYcL6pU+vX/YIMXtSK+VReiE8GZV5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YWebY2Fe; arc=none smtp.client-ip=209.85.221.47
+	s=arc-20240116; t=1757438805; c=relaxed/simple;
+	bh=N+pGwPw9MZww6G+9DA4s3ooxnN9i57hMzT73xzakERs=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=fVuqGZ2xAuOKBdC2S/K3Tz3PGyhhs6fnu9osCUH20v8X9wi5lpXltLxhoOPXErMnm2iJE295yozx7we/4zDHiJMHKiEm7aUI6C0Uzmmi5HwpAVs8KDpqL2I3SbmPKDA5DQUF3CCgM8EePdMTg2tYV7NrhUcGpFbTn6dG4sHcnMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QyIfbSRm; arc=none smtp.client-ip=209.85.219.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YWebY2Fe"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3e537dc30c7so4245997f8f.3;
-        Tue, 09 Sep 2025 10:19:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QyIfbSRm"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e96d65194c1so4533488276.1;
+        Tue, 09 Sep 2025 10:26:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757438346; x=1758043146; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l25EVoDFKNwGSM0isuq3f17bD+L6S3kSkSJqwpB+hRo=;
-        b=YWebY2FeTqtVOK4t5jwPcOlcGun3gKKPOATXRC9UpxkFlCr7lrm3zK0oxeyCU+xR8c
-         2FuUgSZ/1JllfNpLaWb20YCvA5Q0pXaMnOalCV83FuXZy1TCz9ej+Uoo0bNei4nH4PFI
-         cGehrzkwRSKViaZaeqULNXGb2/IOaYCKFk+htuB/Z4NFtlD45wa493cHz3rPHFhAT8ks
-         BOK+CNWNIzap0xe8CuB9j6f7DmDiFzCDHgbBZrEfUdMTqn+NXlVb5d5pGlYGcO5BnkZC
-         vJmgubudWvOeP6h7DxvUg6xx/EqL1QSrhIH7WJNALG/JcEgHd9UDGQzU7ZOx+WBul+Rw
-         4PtA==
+        d=gmail.com; s=20230601; t=1757438803; x=1758043603; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0oIkfurNYJ8ubibO+ta3BmDEx7AccbTt3F6wYbDoMRI=;
+        b=QyIfbSRmWt/H/WdIs9NxGXg28tR4bQgTUsuxQFFGCMEjtZGTtAd44nokr64mRLHba7
+         z09jAa1zpBqdZQBwdyRZ3CiRKoQvTcS+Lykke23hJyx1jaEwjFOh2qh6BPVNjM2kRXcL
+         XJNO/qxHup6JirMBHL0KnI+rTa5H/SFkKVqFSJOtYCPkDTk1ndAvcM/fDqMwIp1Iu2qG
+         YqTEGu6M83nXjDzB9NUGg6KC8ZYDxb6UMk1sXiZKNpjg0QcsQe3ArqkwCobH+z2TJWGW
+         rg00aPmljaAi0O573u7/axQujATfCUmMUT8dpIIFRG5VYDnBmdKUfFbLwjwOcyF5Tpn8
+         Ggeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757438346; x=1758043146;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1757438803; x=1758043603;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l25EVoDFKNwGSM0isuq3f17bD+L6S3kSkSJqwpB+hRo=;
-        b=tYCchG3wrppE9T88yxgCztnNUqV7J/zaogbm0bI+CZfglXhIMppduEanTMCCJfwOAF
-         6s5F2oMelIgi2GabFES2OoVU+G5TdgOpRZ5y4EyHk5znLkKtr4+nXIpQrHZb6hcoqgLc
-         LVjlVAE65gvaB2MS1/0XT02nuyR4MV6AEcVFOD2nZ4z982fwy/iHc1k3u373+MC5uodC
-         scSSXz/X4p4myK2KVNUMD/6EnKyLgUckkvO2R6fkeDiNq8QJcccPNyoZKFOmQ4InKAI3
-         oJjjA/tnQ3WEqdYUVoIRyh232jlxoSjxuVB7GUlVG0lJ5uYJOa7gzaqcaE2J59zRRlA/
-         DtpA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMt6NLtszRFandMbWcuQzKUJlNAqX5tfXFu5akNu54ZUsKEJmAyoL6YTx4Lbom85/wRuBW9Hx0RkE=@vger.kernel.org, AJvYcCVM/YhUFl9gkn3A7Ngp0Fltq52VI4Id7S1Yrl7fdT5OBVHhiKufMdC6OL4kHfvanUZK0FfX5obq0/GnTX+O@vger.kernel.org, AJvYcCWWgScgc9P1Z8sdOKHRiSi4OD2wC8QYTnxczvhfArjVBBATNaYl4TO+Xm4G4WSy0bUWRtYpoctkE9wGFaIEYJQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeWzO3RQ3ell/hzmG8pQwhZ48E7W+CECkCT80FcRZ40BL0rc0H
-	jDvstgrjshY0WMbGSg74A6yCYi3cwkxH+haFNvKc4jyPF47P2uYl7vMo
-X-Gm-Gg: ASbGncsuZI/L4mWfFskabgITwLzQDMkotdK5jeU70WBTayR7z2Xgfpt0Qv+iPuPLZ6t
-	ttYQEjN2ta7DF/S4tpW9O9ekYu0LPGncy6XVqE3/mDck6rrVjGkFKTWCBvIVP/O9HpODvlvd8nk
-	2fRwk3bKgsVDdqdDYYIKrSFQFGjvqR6cS1ZK2EJJi9tc29mQsz9ZAG8Gkw1yTPyYWRndcoK9WKJ
-	cBrHCRpqEfOFAosn6nsycYk1YI8uza/zrAhHSb+rUIzWzBXD6csUA9HTuAosIw0+fNs9N6OLKfQ
-	jmHjL/oDASRhf+3fLKbq+UEulRxT51e2SSNzjtymRoJTtUsyzLGsKaNd733inDzyF2AFvclFAJ5
-	ve5VztYiFG4mgOJ1ZWKYFHLLPEzUoJupKf4uo5FgmZ9baXyW2DGA1ntiF5zoAKi0oWAVO832zsg
-	4kTVbpvD6xlUk=
-X-Google-Smtp-Source: AGHT+IEzEqgCQjkt5PCDth2nN24b5YqmS9WtwgMI6DUL7TT1tAavecUGpN2Gj2qC/kSXsDgYKU0Lcg==
-X-Received: by 2002:a05:6000:178b:b0:3e3:24c3:6d85 with SMTP id ffacd0b85a97d-3e6428cd370mr9905453f8f.22.1757438345455;
-        Tue, 09 Sep 2025 10:19:05 -0700 (PDT)
-Received: from ?IPV6:2a01:4b00:bd1b:2400:28bc:5a7:3bb6:8f22? ([2a01:4b00:bd1b:2400:28bc:5a7:3bb6:8f22])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e75224eb27sm3401552f8f.62.2025.09.09.10.19.04
+        bh=0oIkfurNYJ8ubibO+ta3BmDEx7AccbTt3F6wYbDoMRI=;
+        b=Knn9wIoNv9jEWVYIf+ltK4Rv3W3ZeeL3nRlTgJRRIYsclGq/m08SEKX4APVWHQ+9aW
+         qWZRlAJamPd3Euk4N0rxSsD5Ild6GgZM57utepY09L+yXf+fCjWxkX/q5vLiMoKf8hqV
+         PKsfGeoa6RKmA8ZzPrQP5e3dIFYDV7ncXZ3Nzits6qXCgYGSorHS8h5epAS15t1aIpUl
+         RRfWjGlC6U048tp/Em+719M7WbPHVdj/0+LiwUSV6X/Gm+N7uD84LXnjkswFBCfGUG/W
+         xWnFL7xasXV1FVxQ5JdtAA80FLj9UffbsYwObn0CxyOwX5kDfnIW8E+SoFcb8+nXdtgR
+         vsGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPs0b0mCZ/uv+cluZu1SNKdsdBDtuwKE0H8+VR+vDBaQtV8EwGLS2E0WtqVU/1R7+HcykvJuXTTgbT4x69@vger.kernel.org, AJvYcCVnqd5qC/aBdviP5HaMF7DdPiwyhAxDuczL0nhCULJC1506vsBXWLAYfu9/l0WsZyccDliIICQ00Mk=@vger.kernel.org, AJvYcCWJ8mtkNJ70aacTYtWD0dUNboMKtaDFbA4X4gag+AyJEHA6odyPLOfdIkWi5zs9ROE4rc5oyCFCVr+YEqrQKqk=@vger.kernel.org, AJvYcCWqYuYRr+119jfkXSzToD6mo8W3JPc9MGrMHmBtHrm0PqveWRVv/NTHBwolvg9pxaPJCbTGOrmViS6jEx36@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHg3zYxBMgpZ1OBKvK//3aL2+WuzVThEqfTAYTvxdGJDu7Frdw
+	fm5esQT1Of9wIsW5Amr/GGB/BzvGsFL2akj2xmdATMQmwStaizSQI7wJHb/UgFMdHUk=
+X-Gm-Gg: ASbGncs1vsVNuzQbU3ANxg1l/N9qgFY2c/esJySAuaN7y8QC7g3cCnkwfokQgRk3/UK
+	DCjaRg5hMPjNAfyL0j6RBSdcAcFZU2Kd4+5O+nt89EqsBjbKH0MFb+pkpfiTEbGPP3Bm1Rafw0d
+	ZmboCl8at8TAb9HLK4TR+MxFsAhBH1pDqn4rQMDFQMXbR+2fjSPst3Y+1Nj+UFcabmlqkhCt4qU
+	QqxML1Rmn27adJEEb66SvLwmD2CjDz3CkFhw/hmCNUrBhi5xPPw1gRB37LfZXlVbf2/L/eX25YJ
+	XN7x3F1V7CHE2q0+VXecjLWGNxn+46emcAvWOpb4DYryKc5QDdH/MgUJFZtFJp+H1X+bz2RCj56
+	w1POiKTj3kFHXvpm/ZVGykeioUNbvd/80peocCy5mG/zyuhQcTz37
+X-Google-Smtp-Source: AGHT+IGWvHZDYiA4RGkwYsweLqhI/RtpyRtGhg9Auj53oYUggWnrYnKSkAk9+pz7VYUcyUr/yHalzg==
+X-Received: by 2002:a05:6902:2b8c:b0:e97:1bc:b273 with SMTP id 3f1490d57ef6-e9f662ee3b5mr12680572276.21.1757438802651;
+        Tue, 09 Sep 2025 10:26:42 -0700 (PDT)
+Received: from [192.168.1.209] (74.211.99.176.16clouds.com. [74.211.99.176])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e9bbdf1fcbasm6726070276.6.2025.09.09.10.26.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 10:19:04 -0700 (PDT)
-Message-ID: <655ca23c-1fe6-498a-80b8-1b75044d9db3@gmail.com>
-Date: Tue, 9 Sep 2025 18:19:03 +0100
+        Tue, 09 Sep 2025 10:26:42 -0700 (PDT)
+From: Asuna <spriteovo@gmail.com>
+X-Google-Original-From: Asuna <SpriteOvO@gmail.com>
+Message-ID: <a78dca6d-5504-4f46-910b-820cb9ca750c@gmail.com>
+Date: Wed, 10 Sep 2025 01:26:33 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,127 +69,35 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] rust: i2c: add basic I2C device and driver
- abstractions
-To: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v2] RISC-V: re-enable gcc + rust builds
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Hung <alex.hung@amd.com>,
- Tamir Duberstein <tamird@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-i2c@vger.kernel.org
-References: <20250820151427.1812482-1-igor.korotin.linux@gmail.com>
- <20250820151913.1814284-1-igor.korotin.linux@gmail.com>
- <CB269793-D165-4D22-95E5-F978C1ECC79E@collabora.com>
+ Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Han Gao <rabenda.cn@gmail.com>, Conor Dooley <conor@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+References: <20250909-gcc-rust-v2-v2-1-35e086b1b255@gmail.com>
+ <CANiq72kZAeVjPF_O+o9zy=1-wh+6nUiW26_ngqf8unNi4twMCA@mail.gmail.com>
 Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <CB269793-D165-4D22-95E5-F978C1ECC79E@collabora.com>
+In-Reply-To: <CANiq72kZAeVjPF_O+o9zy=1-wh+6nUiW26_ngqf8unNi4twMCA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Daniel
+On 9/10/25 1:12 AM, Miguel Ojeda wrote:
+> To clarify, since this probably targets the next cycle, there is time
+> to discuss and get feedback to do whatever we feel it is best
+> (personally, I can take a look after Kangrejos at some point). Is
+> there a particular rush for this?
 
-On 8/27/2025 7:37 PM, Daniel Almeida wrote:
->> +
->> +        let i2c_table = match T::I2C_ID_TABLE {
->> +            Some(table) => table.as_ptr(),
->> +            None => core::ptr::null(),
->> +        };
->> +
->> +        let of_table = match T::OF_ID_TABLE {
->> +            Some(table) => table.as_ptr(),
->> +            None => core::ptr::null(),
->> +        };
->> +
->> +        let acpi_table = match T::ACPI_ID_TABLE {
->> +            Some(table) => table.as_ptr(),
->> +            None => core::ptr::null(),
->> +        };
->> +
->> +        // SAFETY: It's safe to set the fields of `struct i2c_client` on initialization.
->> +        unsafe {
->> +            (*idrv.get()).driver.name = name.as_char_ptr();
->> +            (*idrv.get()).probe = Some(Self::probe_callback);
->> +            (*idrv.get()).remove = Some(Self::remove_callback);
->> +            (*idrv.get()).shutdown = Some(Self::shutdown_callback);
->> +            (*idrv.get()).id_table = i2c_table;
->> +            (*idrv.get()).driver.of_match_table = of_table;
->> +            (*idrv.get()).driver.acpi_match_table = acpi_table;
->> +        }
->> +
->> +        // SAFETY: `idrv` is guaranteed to be a valid `RegType`.
->> +        to_result(unsafe { bindings::i2c_register_driver(module.0, idrv.get()) })
->> +    }
->> +
->> +    unsafe fn unregister(idrv: &Opaque<Self::RegType>) {
->> +        // SAFETY: `idrv` is guaranteed to be a valid `RegType`.
->> +        unsafe { bindings::i2c_del_driver(idrv.get()) }
->> +    }
->> +}
->> +
->> +impl<T: Driver + 'static> Adapter<T> {
->> +    extern "C" fn probe_callback(idev: *mut bindings::i2c_client) -> kernel::ffi::c_int {
->> +        // SAFETY: The I2C bus only ever calls the probe callback with a valid pointer to a
->> +        // `struct i2c_client`.
->> +        //
->> +        // INVARIANT: `idev` is valid for the duration of `probe_callback()`.
->> +        let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal>>() };
->> +
->> +        let info =
->> +            Self::i2c_id_info(idev).or_else(|| <Self as driver::Adapter>::id_info(idev.as_ref()));
-> 
-> I wonder if these should be private member functions?
-> 
->> +
->> +        from_result(|| {
->> +            let data = T::probe(idev, info)?;
->> +
->> +            idev.as_ref().set_drvdata(data);
->> +            Ok(0)
->> +        })
->> +    }
->> +
->> +    extern "C" fn remove_callback(idev: *mut bindings::i2c_client) {
->> +        // SAFETY: `idev` is a valid pointer to a `struct i2c_client`.
->> +        let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal>>() };
-> 
->> +
->> +        // SAFETY: `remove_callback` is only ever called after a successful call to
->> +        // `probe_callback`, hence it's guaranteed that `I2cClient::set_drvdata()` has been called
->> +        // and stored a `Pin<KBox<T>>`.
->> +        drop(unsafe { idev.as_ref().drvdata_obtain::<Pin<KBox<T>>>() });
->> +    }
->> +
->> +    extern "C" fn shutdown_callback(idev: *mut bindings::i2c_client) {
->> +        // SAFETY: `shutdown_callback` is only ever called for a valid `idev`
->> +        let idev = unsafe { &*idev.cast::<I2cClient<device::Core>>() };
->> +
->> +        T::shutdown(idev);
->> +    }
->> +
->> +    /// The [`i2c::IdTable`] of the corresponding driver.
->> +    fn i2c_id_table() -> Option<IdTable<<Self as driver::Adapter>::IdInfo>> {
->> +        T::I2C_ID_TABLE
->> +    }
->> +
->> +    /// Returns the driver's private data from the matching entry in the [`i2c::IdTable`], if any.
->> +    ///
->> +    /// If this returns `None`, it means there is no match with an entry in the [`i2c::IdTable`].
->> +    fn i2c_id_info(dev: &I2cClient) -> Option<&'static <Self as driver::Adapter>::IdInfo> {
-> 
-> Again, perhaps a private member function? I’m trying to simplify the syntax here.
-
-Can you, please, kindly clarify what do you mean? If a function is not 
-pub/pub(crate),
-it is a private function.
-
-Thanks,
-Igor
+Nah, no rush, as long as it works so that RISC-V distros can deliver 
+Rust-based components, that's the main issue I'm trying to address.
