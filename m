@@ -1,100 +1,125 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC20831B117
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Sep 2025 10:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99FF3191B4;
+	Tue,  9 Sep 2025 10:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757412998; cv=none; b=iuyeHyb9OMujXbaJIIKRT2Ex+/9ie4uUi2QGahN2UXNhirTfjNRoRTqFAmqpqMV24AKKRGueFn0fHJI5wEIIDtMitmHZWlfD6VmwLgJsxzWTAXoxLvK8ij+Gt8iKrM1a9RF/TjlOibyZRnX3S6Pz+kL/LL052WUCreBU3ccl8Bo=
+	t=1757414406; cv=none; b=HQM1LJaFJpTZP+t8GyhwS3FFbtmAy54QwMmZdkh72PaKOGeKkz5Ice9tqC7lR6Zra6zH7JSxju3ACLXxGf1kcsfpqLQ7m6KQAKtBZoIL4jjyfePpViYNT3GiuqruJwS0jSuisthMEjism44YuhYIVc6pqDsZ0RUl0oExUvyvt68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757412998; c=relaxed/simple;
-	bh=BA//Cphq5edMK4Qw1gaH2KdEhbSdge9EaLUpTsUxTOA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rcHuHFgAkaBvy/TtoOYyOheeI4RsNehFZYQRqDNuw10aRXBEIdS1DN9kKQCjXuiMxsoAKVz8H3REMMaxwhW+Ib1HyeHbZsZinW9+7cY56Ul/LMn7hidi1a3xulH3LDuTEEyUNMdCW9N7ihbbrHbZwSMXHAdWBI7yij60FlQ71SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e5peua5g; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757414406; c=relaxed/simple;
+	bh=QFFhbMDKwNRaHn+F2bynsGPDcC6TVygzOweEmuYMtco=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PQTyj7Pa1J0OruO255Gv1w9V0P+kmB85aEPsoevVRtwePwsQed3Mh/Xr4qSMeshEcAcefjiZz2nrmcdmBzcd92/ta9rllUz2PfqiF5kYBY564MJm6TD5Sork6zrZtpHf0qcBxhWzou/RLuE1Q0++sEIhPMvGEBlQs9+dmITi+pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WWzWQmjS; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e5peua5g"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24cb267c50eso8292735ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 03:16:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757412996; x=1758017796; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sRA1tNnGH/MfGCb7e8SaVap6oHhoVBPZzEtWR1E3eD8=;
-        b=e5peua5g3ILU+0wnqDy0NkdG0g4fpvIirUcW+Mi/AT7KqJ0ljBl31smdRf6hP1kMxB
-         XU288g7MORHsmEgFF8VrZzG/T1zJl51RN/4XNwWs2rBQ1oXYg60cDydNho59BRlvSKc1
-         RBXiap7wrbaNYsGZRKNwY4BITHd0gER3UnRegmornzWep2g3lG+erfuPhaJEKO/dAPFr
-         VO4yyq2UlSFrtggFL1caL6ltc4Y0WISyW5meP/axngdKl8QQDPbCqSywczD2h9sfTnbY
-         b4XvmWEG0XBOjRD//cJB3K//qWhKKhrTmK1kne26VzBZISMddZiLX3kk2QlkOuUcfVSd
-         kP0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757412996; x=1758017796;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sRA1tNnGH/MfGCb7e8SaVap6oHhoVBPZzEtWR1E3eD8=;
-        b=N91rUEkPaCqDGDrleREYOC9p+pIKneILDkxe/e32d3+qSTKXyt5u01bSoqAU2SnzKL
-         GjafUllJRNSZ3EIYeQzyHk/H2byZ1E7O+uPqHI2UKNauXsgaKvJ0O2QzHZclHVA5v72j
-         3ZHrl1ATAkmiXtfVW1Nc803VAIv9Qz+AB2pbjneS/8uE08X5YCNmbpKdjF5ZqSNw63OT
-         YhIUT0hXGEIJKIJtqLsKY2gxbF33iBB9KQSvxO/DLQBHxJRjtbVpW6heqIaJBGkTvB4d
-         +AN8tDf8shABpDsYG1uVDUJ/tnzm6W3jeQa1CxiESgCUxLXDG7G33/3Us3Oc7eeLj/De
-         kcFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWPW+HV0V9mz5b/BcycMQWtGf4DPWHNbWSIBaUnuMp/bLIspphgRZVsyJ1PW1VzKwFPmGGhL8AsaVSfYd9/XA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAl68CZN45iFv80RQKM5iSAIWzqS05lxy/AuctUDzMVP5TRdIo
-	wb5+b3xtZetM1F7BwsmcUk60IOhV0hi0jMAXjX40dfhc2wjH+F4DevS+6HZenEM4kfvJMF3t3V9
-	nePpzSFPYkzjfYCBfo86BI0VXylvUyjE=
-X-Gm-Gg: ASbGncsn2zdaBYXfyxZgSRag7nlblsCdAchwFM8erVoFjia7dzbbmDuu/PAHbuQGaFS
-	M1opfHBo/mCU4wSrMsOdktqDahht0vHuASziSxC+wKC25ZuiKFkqo/FgoTNbmVEW2z+nz68EYAa
-	dcyQ0dV6s3NDjwL1EQZoiMtFINvYIFvUiGV3VjhXnwMRj6gUDwhPqOY9y1SLgLzUqX4hVt+/TRI
-	YFVh7/AoAVDpfvnJRo6OVQZ1GbWNmaxYqO/hY75HEhfg3GrGxHRiQ/o2TZcuZ/Y+sTfaaj+NLjF
-	xJa6KVzfUETPmRKkdw1NvbZXgw==
-X-Google-Smtp-Source: AGHT+IFRVKo/Gtkg+6TprWyzPoJr3m/eSYj6SZpUwtqQlLRttkeYnxvnIbsHYeRNu819giRbB97IRmdiE0doJRE7eVM=
-X-Received: by 2002:a17:902:e845:b0:24e:a074:fbbe with SMTP id
- d9443c01a7336-251703939dbmr75623775ad.3.1757412995866; Tue, 09 Sep 2025
- 03:16:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WWzWQmjS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757414405; x=1788950405;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QFFhbMDKwNRaHn+F2bynsGPDcC6TVygzOweEmuYMtco=;
+  b=WWzWQmjS5fZOflt6X7DMUPF5Ln09fSnecnZDfCYJzGBkExWtUQAldHMG
+   ACqMB6pJHNXMzrY0DTdtdvipsiLr2u7Yibeez3RnXKXKtap3Yfc8IIyOS
+   GMyPMPWNSIgbezMXuBvLXGLjaGlEg+CATNZHxqgd92yO9hIqBF7pk6rTl
+   fB3qwKOWlIxq6uqlYIrqwne2WxYoF8OtFqaEHebEyyRfCq7CtdQV7caXX
+   2qWNkUxECSos/PCa7UoS1RXt28fnAWfJghypR3/MkyXbwRyAsD2wB02pn
+   4Til8TuVLP6A480V97yMLRTWUMXQCXgBW6s6x89iZReznjeEimn1RtFuJ
+   g==;
+X-CSE-ConnectionGUID: ffpNP+yjSFGpyFSp+Eop4w==
+X-CSE-MsgGUID: fQT7iyCrQpqSZpBo3Xz5fA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="59387813"
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
+   d="scan'208";a="59387813"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 03:40:05 -0700
+X-CSE-ConnectionGUID: nyAPWHYpQuakfqWlFa5bYQ==
+X-CSE-MsgGUID: llkZRbCmTCKxOdwPI3QTjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
+   d="scan'208";a="172927459"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO [10.245.244.108]) ([10.245.244.108])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 03:39:59 -0700
+Message-ID: <a2006f74-75bb-48ac-ac9c-0a71c8f9d510@linux.intel.com>
+Date: Tue, 9 Sep 2025 12:39:59 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250909092707.3127-1-yangtiezhu@loongson.cn> <20250909092707.3127-3-yangtiezhu@loongson.cn>
-In-Reply-To: <20250909092707.3127-3-yangtiezhu@loongson.cn>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Sep 2025 12:16:22 +0200
-X-Gm-Features: AS18NWBru0Kq2XMwTpEiOoCDlYbqPUJ3s50syOJN4CqxsvVJPRxFAC9ia-wum2c
-Message-ID: <CANiq72n7OSCUzycAQXFybx6BSVnj3MWAXvZj7U=AWf_UQwmO+g@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] LoongArch: Handle jump tables option for RUST
-To: Tiezhu Yang <yangtiezhu@loongson.cn>, Matthew Maurer <mmaurer@google.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	WANG Rui <wangrui@loongson.cn>, rust-for-linux@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] drm/gpuvm: add deferred vm_bo cleanup
+To: Danilo Krummrich <dakr@kernel.org>,
+ Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Matthew Brost
+ <matthew.brost@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Steven Price <steven.price@arm.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20250905-vmbo-defer-v1-0-7ae1a382b674@google.com>
+ <20250905-vmbo-defer-v1-1-7ae1a382b674@google.com>
+ <20250905152505.005a610d@fedora>
+ <CAH5fLghgqv0mNYf8r-rdeBaCGxYsdkBouqgo_ohx3DYHwpcZRQ@mail.gmail.com>
+ <DCL8DQV23FIZ.KJ74UQ9YOFZV@kernel.org> <aL1pSFB9iBsfHFM_@google.com>
+ <DCMJ6K06T63T.2UBTM1RL4YJ0A@kernel.org> <aL1u_YxOkuj1kIq6@google.com>
+ <20250908091140.44856fde@fedora> <aL6TJYRmWIkQXujj@google.com>
+ <DCNAE3CJMEJ0.JH1F0MJABXQI@kernel.org> <20250908122002.2c80dd3a@fedora>
+ <DCNDGFE7RR5Q.X3PCDW0KIX89@kernel.org> <20250908141156.3dbdea0b@fedora>
+ <7aa3f464-a3d0-47a0-b044-d8db93f45918@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+In-Reply-To: <7aa3f464-a3d0-47a0-b044-d8db93f45918@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 9, 2025 at 11:27=E2=80=AFAM Tiezhu Yang <yangtiezhu@loongson.cn=
-> wrote:
+Hi,
+
+On 9/8/25 14:20, Danilo Krummrich wrote:
+> On 9/8/25 2:11 PM, Boris Brezillon wrote:
+>> On Mon, 08 Sep 2025 13:11:32 +0200
+>> "Danilo Krummrich" <dakr@kernel.org> wrote:
+>>> I'm saying exactly what you say: "has to be a special unlink function" ->
+>>> drm_gpuva_unlink_defer_put(). :)
+>> I don't see how calling drm_gpuva_unlink() instead of
+>> drm_gpuva_unlink_defer_put() would leak the vm_bo though.
+> Initially (i.e. a few mails back), it sounded to me as if you'd propose to drop
+> the drm_gpuva's vm_bo reference only when it is freed.
 >
-> +config RUSTC_HAS_ANNOTATE_TABLEJUMP
-> +       depends on RUST
-> +       def_bool $(rustc-option,-Cllvm-args=3D--loongarch-annotate-tablej=
-ump)
+>>> No, drivers can't iterate the evict/extobj lists directly; or at least this is
+>>> not intended by GPUVM's API and if drivers do so, this is considered peeking
+>>> into GPUVM internals, so drivers are on their own anyways.
+>>>
+>>> Iterators, such as for_each_vm_bo_in_list() are not exposed to drivers.
+>> Okay, that's a good thing. I thought Xe was doing some funky stuff with
+>> the list...
+> Maybe, I don't know. If they do so, the should send patches adding the
+> corresponding iterators and provide a rationale why drivers need to access those
+> lists directly and why we can't provide an API that handles the overall
+> use-case, such as drm_gpuvm_prepare_objects(), etc.
 
-I am not sure if this needs the `depends on` -- from a quick test, it
-seems to run regardless of it (and your `ifdef` below doesn't care
-either). Cc'ing Matthew in case he remembers why the docs mention that
-the Kconfig one should be guarded by `RUST_IS_AVAILABLE`.
+We're using the drm_gpuvm_*for_each* macros in drm_gpuvm.h, assuming 
+from name and docs they are driver api.
 
-In any case, it shouldn't hurt and it is only on the LoongArch Makefile.
+Also the drm_gem_for_each_gpuvm_bo(), although this usage could easily 
+be converted to a helper.
 
-If you will be taking this through the LoongArch tree:
+So I don't think we're abusing internals ATM. If so we should ofc fix that.
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+IMO if some iteration macros or members that are exposed in the 
+driver-facing headers need to be private (where it's not totally 
+obvious) they should be marked as such or moved to private headers.
 
-Thanks again for fixing this!
+Thanks,
 
-Cheers,
-Miguel
+Thomas
+
+
+
