@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EFE35A2B4;
-	Tue,  9 Sep 2025 20:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837F918FDBE;
+	Tue,  9 Sep 2025 20:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757448765; cv=pass; b=JqaliVitJD5dcshcwJFiKhhWInypV1/GWvd6G/43NjE7Iy/LU+TPaC29hWuqqhOm3YX/SlnZT7bQbayMXABtfymCoTt9Af6Fj+mfehlIfZUkNeWmyOcsk367+K2Ha1J0fJfr/hDt9+Oewy1jRNsIeuQ3NYV8IfuNlYRGxCTfG6g=
+	t=1757448875; cv=pass; b=T8+9Up6wRSyKHIbK0MtGD+5lLW7sbxJNPGJd+0zOV1ADa5YTNmPT3k22rpVhH/ZK6iLlZtIi4iyuq0294LCEbYNcrTiKOxg6fp4aiqInEL9Z2PggmPBUrkfMEVA1f71wlHcSVIXg5m6hID7heMRAudt1z/iujknay6sTUekY36c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757448765; c=relaxed/simple;
-	bh=U9b8NIT0IHIPcBnZngkR0PkBA7eeDB5ceXEVqeMSLaI=;
+	s=arc-20240116; t=1757448875; c=relaxed/simple;
+	bh=XYP8FOZl6arVwSH9tqj6Uzxqg7yEkGDjl7z/cd2+GUk=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ogsEAOIr5tnfZWvUGKvIiBCOX0pC/W1uaz6OLpHIc3eQc+QczNE7HjnkUjbSRo++wIN4VBF4aQSwedBy7dSzM8O0W1S9OkDb9HSllmg+G/gERcxcwoSXNchhmsrwbCN7jc7Wc8ROFIXUMup8M+UY49sCYUDbWpeaGqET9NQjHBk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=AhslWzII; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=Tw9u15kBnIiUi5GjdzU0p+i4eGsFvCDdPo6BxNa3sYZ7ixBOiLOGwE5RczbFtGdbntUKearlbyGi6iv0tR0b5UzczEBO2a3WltdFDfuTKadynToD87ShYdmraASn4NrPVm++zKybW4i7P+HSq6REulFDZJ/XmcJvfzmZNNPsmYM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=IMQqXXh9; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="AhslWzII"
-ARC-Seal: i=1; a=rsa-sha256; t=1757448740; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="IMQqXXh9"
+ARC-Seal: i=1; a=rsa-sha256; t=1757448849; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=kHDqc3/b+1dxUUtUkM2Z+CfdK0v7qebk95ZCCjelqTg8bJkLo9oHghUM5twp7T4TG7pjUS6FwghTwMeIshQT+3VgLMDYzn9TIl3IeuY0FhkmGNhOC3AEtexQGgv+vViyqpmqzT50FDLjxaSrc0AcTdNPqE7/4JjlnZ01bHt/lOA=
+	b=ZS+PXXkXJMF8nmLyWxF8MLLj2xdgJG01tt3zIfdLgg9H8i7wRFU6P84E4L2dTn2w0Nwq06uigAYP8GISRyt/LE8KFx6s1x+uvqMGPLHynhXDEQdEXvDw84I8xmt2SdEU3mxldnu1sV8Os/UaekXTLnbpzTtaatP/9aCkXSEX3v8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757448740; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=U9b8NIT0IHIPcBnZngkR0PkBA7eeDB5ceXEVqeMSLaI=; 
-	b=JspyMv2uVO7caTv8LdWygsaMJgJUDcE6JJqJdVx+Vympb5zH74/N26X1jDvhrj11Auf+K7rHNQzlvmTlmcFdhkJufAEOnK8QxApuh9odFvCegsS2u2ZjH+J/InSeQclLVNYgkbmlt48FHodZjTpbcjBI2gmOT0Eg2sVNlJAHVZg=
+	t=1757448849; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=XYP8FOZl6arVwSH9tqj6Uzxqg7yEkGDjl7z/cd2+GUk=; 
+	b=e98UMGMd/qqcpQEQs58ssV6sajBFpNRE51umasms0muUEAScTVjLJ7VvuQhrlFidmtLgJ1m24wwCXnpprYn6eRzT53kZp/nfzGXD5M51rkbmskZbJ7tzKBZDZJ99UB0yi/bPbH6mKUmP5icFVbURaXQeo9YaMATZhg9f4NcrQKI=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757448740;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757448849;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=U9b8NIT0IHIPcBnZngkR0PkBA7eeDB5ceXEVqeMSLaI=;
-	b=AhslWzIIODUgZkw3M7m98VmkUDVPWT8LaBy2LWmsKZBOkO9Y0CNqgBXK6yfrrO3E
-	HzbfF0WqLdHcHXepZy9PP8/NiJey+S1TknFgn546MDkB2DSWS7EXPEGrylSjqv57sjq
-	6ocC/qM9ZnBC2qgDTIwDN9Rc5KyeuRXCQ53LfB/4=
-Received: by mx.zohomail.com with SMTPS id 1757448738705897.8611453818289;
-	Tue, 9 Sep 2025 13:12:18 -0700 (PDT)
+	bh=XYP8FOZl6arVwSH9tqj6Uzxqg7yEkGDjl7z/cd2+GUk=;
+	b=IMQqXXh9fZdzTzCv0jHOq5/Bp2avzzp/jAuqj6mUihJmIQoB+HNNq7S/4WIcOt6h
+	7smqVKabvbjmFdBjMR3uPWk4OScPggIl08n4qu4bV2hvZZaWugJ3ZXZ4vmP8SkB/Nj+
+	mitVn4itXriHrDHkfFGpjIzIJb8Ri46Eu95x3GLc=
+Received: by mx.zohomail.com with SMTPS id 1757448847246298.0135545057768;
+	Tue, 9 Sep 2025 13:14:07 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -47,9 +47,9 @@ Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
 Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original
  value
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CANiq72=NrS1cFJec6sm7ZY-UPqrzxHKVvPu67Rze02Fg_xeWpQ@mail.gmail.com>
-Date: Tue, 9 Sep 2025 17:12:00 -0300
-Cc: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+In-Reply-To: <20250909215330.4a2f050f@nimda.home>
+Date: Tue, 9 Sep 2025 17:13:49 -0300
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org,
  daniel@sedlak.dev,
@@ -67,63 +67,37 @@ Cc: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
  alex.gaynor@gmail.com,
  ojeda@kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <E64F356B-7EC5-4F46-9ADF-610CBF249651@collabora.com>
+Message-Id: <7E1CF096-2886-483A-929F-1EEF5E94AD47@collabora.com>
 References: <20250909170013.16025-1-work@onurozkan.dev>
  <20250909170013.16025-2-work@onurozkan.dev>
  <CANiq72=kWpxpo23JUYTqxwpsY=E0uUvCHgotRuepZpL-qUqXqw@mail.gmail.com>
  <20250909204308.74ccedf4@nimda.home>
- <CANiq72=NrS1cFJec6sm7ZY-UPqrzxHKVvPu67Rze02Fg_xeWpQ@mail.gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+ <468A76F2-FC02-4B54-974B-7C52D946ECEB@collabora.com>
+ <20250909215330.4a2f050f@nimda.home>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
+[=E2=80=A6]
 
+> If you look at the changes in rust/kernel/error.rs, you will see that
+> the `to_result` function has been modified and some of its callers =
+were
+> updated because the function signature changed.
+>=20
+> The regulator patch I sent earlier is unrelated to this one. They are
+> not doing the same thing. That patch aimed to make use of `to_result`
 
-> On 9 Sep 2025, at 17:05, Miguel Ojeda =
-<miguel.ojeda.sandonis@gmail.com> wrote:
->=20
-> On Tue, Sep 9, 2025 at 7:43=E2=80=AFPM Onur =C3=96zkan =
-<work@onurozkan.dev> wrote:
->>=20
->> That change was incompatible with v1 (due to the different signature =
-of
->> to_result), which fails to build with my patch. This version (v2)
->> fixes the issue introduced in v1.
->=20
-> In that case, please try to avoid mentioning "broken" or "fix" or
-> similar, i.e. there is nothing broken in the tree itself (the commit
-> message should mention what is done in the patch). If you want to give
-> extra clarifications, then you can always add them outside the commit
-> message, below the `---` line.
->=20
-> In addition, if the changes here are required to be done all at once,
-> then please do not rebase on top of regulator -- this would need to go
+This is the piece of information I was missing, thanks.
 
-Merely rebasing on top of the rust tree will crate a conflict with his =
-previous regulator patch.
+> instead of handling errors manually. This patch on the other hand,
+> changes how `to_result` itself works and some of its callers need to =
+be
+> updated accordingly just like in the other modules included here. The
+> reason for changing the `to_result` function is explained in the =
+commit
+> description.
+>=20
+> -Onur=20
 
-My suggestion is to just wait for rc1.
-
-> into the global Rust tree. Otherwise, any changes that does not need
-> to go at the same time should go separately so that it is easier to
-> land.
->=20
-> Finally, I am not sure I follow the `unwrap_or(0)` here. If one passes
-> a negative enough `i64`, wouldn't that mean `Ok` starts to be
-> returned? Currently all negatives that are not codes are supposed to
-> be bugs.
->=20
-> Either way, I think this should probably go on top of
-> =
-https://lore.kernel.org/rust-for-linux/20250829192243.678079-3-ojeda@kerne=
-l.org/,
-> since that adds documentation, and thus it would be nice to adjust
-> that one to whatever the generic one should do now, especially if the
-> semantics are changing.
->=20
-> Thanks!
->=20
-> Cheers,
-> Miguel
->=20
-
+=E2=80=94 Daniel=
