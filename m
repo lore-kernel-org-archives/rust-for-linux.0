@@ -1,128 +1,98 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFEF316911;
-	Tue,  9 Sep 2025 17:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757437467; cv=pass; b=YLF6GTMwd3obFwR7yL3kj4Ns0r72bSDViUUp09ttuiSKbBatINzm1YQ6Gq1etXA6s0ivrGiNFjerKg34x3vzp8TO57lhh/9ivnGTYY7Z7xbxU73Tvcl/55cFDYHvUaDylYZ2/dmnkh8gi3lMttQLBASjqFRekhoS7IO2gPVuJZE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757437467; c=relaxed/simple;
-	bh=5dGQK8wJM38VE5tVHI9D9YwSya8XbhZ8wjwloKJ7eOI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=U86rBSS983MD4Wj/Q9py3msEV2tkCpCp9mgsHQ2b9flhmlE20PnlsrMWmeiiNLtQfeyHGY+QbX7GYGHYWY7s80RRDwLS9+b2Y4QE0diLDIS9KYjbvSUL3sFU2BiWdSSCD0drb18ckPcYzx491HGfMMThxPBmz9cjVxM4t7vHKqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cGaH/LqN; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7591332A3E1;
+	Tue,  9 Sep 2025 17:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757437833; cv=none; b=nW1eMir9ig0+awMl4HwqX1OK+GkF0jKO+qOwoIWCaBbkJh70GlasTbEmzgCqid8FZben26SCHjdg2q8MU0c8arvkP0/gZyJaaIIpcwI184f0jY9zfCE2CCZ+PQwKSgsA6Qqjus/NGox7U7SIubPwNmzBIkfqg6pfs8BqHcROncc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757437833; c=relaxed/simple;
+	bh=mUi4AOnYML2NlnW1fSURRmF5lKnm20xRWn530unMYOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=szMINMpCZ1k3hgGjKcziTKVLhv4sdKM3eiaIiHeVdfcmIqlXT3yyjV+h99SZRvVpiKlOdJf2QqZDTznC5U3pRle0Gey7vlFPknv4Kbo762YCjvPIsRMgi6RMgfwHVaWzWETBRAUC5IZrvPieZeA6Wf6PRlMCQcSOGIa9RUXGvpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVh6EGjE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cGaH/LqN"
-ARC-Seal: i=1; a=rsa-sha256; t=1757437446; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=fWdsfauvBL12Rfb+NxXRjUPFl+ZifP6gmcvtdHOGPhKSfIg9vLGMvnDaZPJ4kr2sZhleD4OJYzuRlkR5T4/rF+16rpEouHPqdSgX7rXiZskBKFiiTkc3rRjhIAJBHaWQVqiG317efYzCSrecoJkwIf7y+dnPH5ya5dKoYXIW5vA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757437446; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=5dGQK8wJM38VE5tVHI9D9YwSya8XbhZ8wjwloKJ7eOI=; 
-	b=IVik97SCfKVmUfcP/freebJwfPwdrvODx/2OdzSqV89FMGYFUzYUkS6kA3VSmENJdZvkzPnLdCf1hG4A1IcTmFVWQfLw/pYdtEOV3RgaaTA8WE/kzBGOuRsc6BWBZfV8KlXdEi1iDTh04AkhPLbZBPbJrWW/K6Czcb1ad0vsqBU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757437446;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=5dGQK8wJM38VE5tVHI9D9YwSya8XbhZ8wjwloKJ7eOI=;
-	b=cGaH/LqNt7AsgVZlxU9jNqN4pnM+U5laOaqmZKjRuaii7M5yymveUr8JbCn51FeD
-	JOKixunsQi8hTF4NLmMbtztLKItK1dzkoSOT0TNuTSDvNC9Uv/rzuyDYnuUUD5MDs8o
-	OsIshNeaT3bZU3QxHO/4cJ6+Moklm7N53H3iVVfg=
-Received: by mx.zohomail.com with SMTPS id 1757437442807427.4205442612746;
-	Tue, 9 Sep 2025 10:04:02 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Precedence: bulk
-X-Mailing-List: rust-for-linux@vger.kernel.org
-List-Id: <rust-for-linux.vger.kernel.org>
-List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVh6EGjE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2DDC4CEF4;
+	Tue,  9 Sep 2025 17:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757437833;
+	bh=mUi4AOnYML2NlnW1fSURRmF5lKnm20xRWn530unMYOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sVh6EGjEochncoiM6rlrCezIS791nqYSdlBthmzNftJJHgVAv5j36/xuk2US2SSe0
+	 4mHjDO5E4mU6ssWorsslRs2ojLJXvtpQkRC9v1sYI9fvWV/iLmvRh5FPUx+g3fzWRi
+	 79Yf/4JIppLOjqma4u1kDTxOC3Df6dUFEj044TaKgDE9eBzec+oQlPMZtqV+44Qspk
+	 WZ8hMkSV76zjLc+3sNnDHrQeKKbvvX2TsV7D0+T0+9pESMaldzP6Wl24wEAYRcp3+P
+	 uXey5Yp+EQuKvJrX442x2Snu14AwvCNG84pqwMArTWAj0+n3Dk8FhqbaChOz5eh0Qm
+	 eSEwRb/5IS3VQ==
+Date: Tue, 9 Sep 2025 18:10:27 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v2 2/2] rust: regulator: add devm_enable and
  devm_enable_optional
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aMBYjIo2O77Dp2VV@tardis-2.local>
-Date: Tue, 9 Sep 2025 14:03:46 -0300
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2897332E-7746-41E0-8A03-129F574A7224@collabora.com>
+Message-ID: <0b2951b2-ebee-401b-84fd-ecfabd01376a@sirena.org.uk>
 References: <20250908-regulator-remove-dynamic-v2-0-e575ae2cde6a@collabora.com>
  <20250908-regulator-remove-dynamic-v2-2-e575ae2cde6a@collabora.com>
  <aL_PwXck1HsLp5wH@tardis-2.local>
  <AA8FC1A7-EE88-44FA-A0A9-A3EA5529B10D@collabora.com>
  <aMBJ805QjQcPdRol@tardis-2.local>
- <8CA69D19-754C-43F5-96CD-B7060C68B025@collabora.com>
- <aMBYjIo2O77Dp2VV@tardis-2.local>
-To: Boqun Feng <boqun.feng@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+ <d59eae86-9b8b-4d4d-9a1c-b76ff0f42704@sirena.org.uk>
+ <871905b9-995b-4b16-97a1-7be580716ce4@kernel.org>
+Precedence: bulk
+X-Mailing-List: rust-for-linux@vger.kernel.org
+List-Id: <rust-for-linux.vger.kernel.org>
+List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uJzBj8Hexa6WK6wo"
+Content-Disposition: inline
+In-Reply-To: <871905b9-995b-4b16-97a1-7be580716ce4@kernel.org>
+X-Cookie: Ma Bell is a mean mother!
 
 
+--uJzBj8Hexa6WK6wo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> On 9 Sep 2025, at 13:40, Boqun Feng <boqun.feng@gmail.com> wrote:
->=20
-> On Tue, Sep 09, 2025 at 01:12:51PM -0300, Daniel Almeida wrote:
->>=20
-> [...]
->>>>> These two functions are already EXPORT_SYMBOL_GPL(), so you won't =
-need
->>>>> to add rust_helper for them. Creating rust_helper_*() for them =
-will just
->>>>> export additional symbols.
->>>>=20
->>>> These are inlined (stubbed) if CONFIG_REGULATOR is not set, so we =
-need the
->>>> helpers to get around that, IIUC.
->>>>=20
->>>=20
->>> Well, then the question is why we want to compiler regulator.rs if
->>> CONFIG_REGULATOR=3Dn? Shouldn't we do:
->>=20
->> Yes, we do want to compile regulator .rs. There=C2=B4s been prior =
-discussion on
->> this (see [0] below, but also [1]).
->>=20
->=20
-> Thanks for the pointers. Well I guess we really need helper inlining
-> badly ;-)
->=20
-> Regards,
-> Boqun
->=20
->>>=20
->>> #[cfg(CONFIG_REGULATOR)]
->>> pub mod regulator
->>>=20
->>> in rust/kernel/lib.rs?
->>=20
-> [=E2=80=A6]
+On Tue, Sep 09, 2025 at 06:29:49PM +0200, Danilo Krummrich wrote:
+> On 9/9/25 6:17 PM, Mark Brown wrote:
 
-Ah, by the way, that seemed to be your only comment. I will wait some =
-more for
-the discussion to die down and then send a new version addressing =
-Danilo=E2=80=99s
-points. Can I get your r-b, or is there anything else you=E2=80=99d like =
-to see
-changed?
+> > If we do that then every single user needs to also add ifdefs for the
+> > regulator API which is not exactly wonderful usability.
 
-=E2=80=94 Daniel
+> OOC, I assume users do not just depend on CONFIG_REGULATOR, as it depends on the
+> actual platform / board whether they require control over a regulator?
 
+Yes, and an awful lot of the time control over the regulator is just an
+optimisation and not actually required for things to work (eg, doing
+DVFS or disabling the supply when the device is idle to reduce power
+consumption).
 
+--uJzBj8Hexa6WK6wo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjAX4IACgkQJNaLcl1U
+h9DxbQf/UfN6CsWN2iI6iDGLYt9+hI8iY/6VSopgoge/yA64C6k2az5IF82yDO8+
+vU7ReTbp+4kH0tPWoQ31Z4itAZxwjlm5NrpyxGSLS0qvhlO8vakZ8ENQpD/Pp1UG
+/VPhhMx3GKCO7XEtBWJMVneV0Xjv9HyTFYnQX9v5eksb0Xgfug/eAp87kUYPvSXa
+xmR+H04gMobRFMtbHidtMU8pmVPz3aGk/G9AVME62y/PwJ4rWOjrgd+x25dhJW+v
+16QvDeMKWkdw6LBPj8DUwEs35B4YyrCD8jasapo+G+IMBWEePnZzSA+YBWURfkB/
+8aLMD69fg0o7QLpx4PYWWlsnOpXxrg==
+=jQRQ
+-----END PGP SIGNATURE-----
+
+--uJzBj8Hexa6WK6wo--
