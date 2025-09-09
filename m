@@ -1,102 +1,227 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C0333EB15;
-	Tue,  9 Sep 2025 13:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3BF236435;
+	Tue,  9 Sep 2025 13:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757424325; cv=none; b=UfSLMfXoXUSyQLZYHqyRIYUX8Ha6XS/OWMk+1CP2D/LevJPVKQHeeD8pIJ5LNA888QAj1iIfe3mEqvDBjICDTQZE1ACeEeRQ8HlCYmC8ycPYPgNaq61MPyzD6rwOFZqfRF5hIPhym7ED4bRanjxu84jDU6K/fzTPw4HqnUOiPSs=
+	t=1757424496; cv=none; b=FQoIxuIuxV+NySEKJh0G7kFJrINK/nIJAXqfJ/iwCppMU0O1l4iWts8dIohIIzo6WzpdUNN5AbtUof+L92ebS02RLLM8PS/7bpUdoQ8TCtzA7Eo0HYYuiGwLAtGauwXP6KCA2U44xMD40c9zz613+mNki5gI8mrOSnfhkFalPso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757424325; c=relaxed/simple;
-	bh=oPk44DQS8yhUOAFD00EGVtUnkpr4ITAVEqHGH03U3K8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uCEzV+wH0BJEEjgJV2IAvKP1vmho0WLkMpIeNO8zcr6tEXKGXDfy6aCuc0RATTL5l+C1XZKLA8b3otlsbFVB1+C+Ers6j6kuBKqOhjTtiteUGv7mWrdXW/vT9iHUFQML1v+VJQdkiXK4upeyJdMhDaE6cgLLUOPpOotP8gYtYdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCsm+2R2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757424496; c=relaxed/simple;
+	bh=4Kp6x0JSqX0slJB3ko5gRb1MmNBDdg5wnGscFkyjE2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B6YI5wu7Fl1zYDbbeK59A6/kvDv9iNBb7nWFuPso2E8GaPcnOgzHkEVCMckHmtvjr1IoyEAYDxQR/9gVUaeD27zs72wtwTfXFnugFUDRQmFkzsrI9nRRLQGeffqSshCsvdZEVlenIvdWjyAxScezjPZNFkj7bHVvRCLoMoJsIbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdb2HzRe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCsm+2R2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39638C4CEF4;
-	Tue,  9 Sep 2025 13:25:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757424324;
-	bh=oPk44DQS8yhUOAFD00EGVtUnkpr4ITAVEqHGH03U3K8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bCsm+2R231pR7pyj/b1tH/hStJwkojpL4xbvCPsy7yu7IeBuY+t4E9XnOY/IGwKXf
-	 zymLnCMLXAM/t76Fptirbqoxjs3WZqpfdp60/wksDqOo+iwmg07elehiKOGZ5cTUc1
-	 jUhBZihwcfTPKceHr+TrXlzG19qhF07GLCPt7gi0=
-Date: Tue, 9 Sep 2025 15:25:21 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Simon Neuenhausen <simon.neuenhausen@rwth-aachen.de>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdb2HzRe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06301C4CEF4;
+	Tue,  9 Sep 2025 13:28:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757424495;
+	bh=4Kp6x0JSqX0slJB3ko5gRb1MmNBDdg5wnGscFkyjE2Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fdb2HzReI50PZxO4MtzTlQzMUmIPNsId/eyqchj5xq6lrQ+njXuothnH6ox2KFWeg
+	 Pig6E0g5m+KtNmnqkOJsk5hVZD5EzndXl5JM5PtfJqxvRhWT2nxJ8qOPZHQ2Zk5vSm
+	 hjiXORu2mJvDfOxyK0zhuwFVDHho9JsG9Y1F0WD/fRg3CSXDPAUlijyJFrxE3LLi2j
+	 SOfVx4izw+hJqGavvnWRCV6fQbNYft+6mURTgKfF7e8OEjs7s7bEqYTlYKR3y6ZD5D
+	 USU+zYf9+5pw17PdePh0uV6Xx55Pd1LZB6owTlIpMPrDjk4SjIlxeQea0fHRhF/4jF
+	 qN1Cp9bFLJoqA==
+From: Leon Romanovsky <leon@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH 2/2] samples: rust: add a USB driver sample
-Message-ID: <2025090908-stifling-citric-08ed@gregkh>
-References: <2025090618-smudgy-cringing-a7a4@gregkh>
- <D8EAF874-4FED-42EE-8FD8-E89B6CB0086A@collabora.com>
- <2025090601-iron-glitter-c77d@gregkh>
- <831C4AE2-6964-4699-9E74-E4B721B87B17@collabora.com>
- <DCLQZZHU42HN.4Y4PP0PPR10O@kernel.org>
- <9657C897-087E-4544-849B-964E99D95A50@collabora.com>
- <DCLTJMIAMCVL.35U236MMS5CCK@kernel.org>
- <85B643A9-1657-43ED-BE98-BE7E502D08DA@collabora.com>
- <3aca9e74-b67c-4bfe-a206-9a6eecdf76ab@rwth-aachen.de>
- <77E6BE1A-B928-4A36-98C4-74FB4A7C19C0@collabora.com>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	iommu@lists.linux.dev,
+	Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com,
+	Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev,
+	Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: [PATCH v6 00/16] dma-mapping: migrate to physical address-based API
+Date: Tue,  9 Sep 2025 16:27:28 +0300
+Message-ID: <cover.1757423202.git.leonro@nvidia.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <77E6BE1A-B928-4A36-98C4-74FB4A7C19C0@collabora.com>
 
-On Tue, Sep 09, 2025 at 09:12:21AM -0300, Daniel Almeida wrote:
-> Greg,
-> 
-> > On 9 Sep 2025, at 08:19, Simon Neuenhausen <simon.neuenhausen@rwth-aachen.de> wrote:
-> > 
-> > Hi,
-> > 
-> >> On 06.09.25 17:46, Daniel Almeida wrote:
-> > 
-> >> As I said to Greg above, I’m here to help if anyone wants to write a USB driver. Those interested
-> > are free to reach out to me and we will work together to merge the required abstractions with a real user in mind. Hopefully this encourages others to join in this work :)
-> > I had planned on writing a USB driver for TI nspire calculators, that would make them mountable as USB mass storage devices, since they use a proprietary USB protocol, that usually requires paid software from TI. At the time I gave up on that, due to the lack of USB support in RFL, but I could revive the effort using this.
-> > 
-> > I'll admit that this is pretty gimmicky, but if it helps to get this merged, I would be happy to do it.
-> > 
-> > Greetings
-> > 
-> > Simon Neuenhausen
-> 
-> We apparently have a user :)
+From: Leon Romanovsky <leonro@nvidia.com>
 
-No, this will not work as a kernel driver, it needs to be done in
-userspace as the complexity involved would be crazy to be in the
-kernel, it would be much simpler as a libusb program.
+Changelog:
+v6:
+ * Based on "dma-debug: don't enforce dma mapping check on noncoherent
+   allocations" patch.
+ * Removed some unused variables from kmsan conversion.
+ * Fixed missed ! in dma check.
+v5: https://lore.kernel.org/all/cover.1756822782.git.leon@kernel.org
+ * Added Jason's and Keith's Reviewed-by tags
+ * Fixed DMA_ATTR_MMIO check in dma_direct_map_phys
+ * Jason's cleanup suggestions
+v4: https://lore.kernel.org/all/cover.1755624249.git.leon@kernel.org/
+ * Fixed kbuild error with mismatch in kmsan function declaration due to
+   rebase error.
+v3: https://lore.kernel.org/all/cover.1755193625.git.leon@kernel.org
+ * Fixed typo in "cacheable" word
+ * Simplified kmsan patch a lot to be simple argument refactoring
+v2: https://lore.kernel.org/all/cover.1755153054.git.leon@kernel.org
+ * Used commit messages and cover letter from Jason
+ * Moved setting IOMMU_MMIO flag to dma_info_to_prot function
+ * Micro-optimized the code
+ * Rebased code on v6.17-rc1
+v1: https://lore.kernel.org/all/cover.1754292567.git.leon@kernel.org
+ * Added new DMA_ATTR_MMIO attribute to indicate
+   PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
+ * Rewrote dma_map_* functions to use thus new attribute
+v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
+------------------------------------------------------------------------
 
-> Would you be ok if I continue this work? I can look into gadget zero as you and
-> Alan said.
+This series refactors the DMA mapping to use physical addresses
+as the primary interface instead of page+offset parameters. This
+change aligns the DMA API with the underlying hardware reality where
+DMA operations work with physical addresses, not page structures.
 
-Sure, but again, we need a real user before I'll be able to take this.
+The series maintains export symbol backward compatibility by keeping
+the old page-based API as wrapper functions around the new physical
+address-based implementations.
 
-USB's "problem" is that for any non-class device, it should be done as a
-userspace program and not a kernel driver.  It's simpler that way, more
-secure, and easier to debug and support.  The number of "new" USB
-devices out there that need a new kernel driver for it has been very
-very low for the past 15+ years.
+This series refactors the DMA mapping API to provide a phys_addr_t
+based, and struct-page free, external API that can handle all the
+mapping cases we want in modern systems:
 
-thanks,
+ - struct page based cacheable DRAM
+ - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cacheable
+   MMIO
+ - struct page-less PCI peer to peer non-cacheable MMIO
+ - struct page-less "resource" MMIO
 
-greg k-h
+Overall this gets much closer to Matthew's long term wish for
+struct-pageless IO to cacheable DRAM. The remaining primary work would
+be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
+phys_addr_t without a struct page.
+
+The general design is to remove struct page usage entirely from the
+DMA API inner layers. For flows that need to have a KVA for the
+physical address they can use kmap_local_pfn() or phys_to_virt(). This
+isolates the struct page requirements to MM code only. Long term all
+removals of struct page usage are supporting Matthew's memdesc
+project which seeks to substantially transform how struct page works.
+
+Instead make the DMA API internals work on phys_addr_t. Internally
+there are still dedicated 'page' and 'resource' flows, except they are
+now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
+flows use the same phys_addr_t.
+
+When DMA_ATTR_MMIO is specified things work similar to the existing
+'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
+pfn_valid(), etc are never called on the phys_addr_t. This requires
+rejecting any configuration that would need swiotlb. CPU cache
+flushing is not required, and avoided, as ATTR_MMIO also indicates the
+address have no cacheable mappings. This effectively removes any
+DMA API side requirement to have struct page when DMA_ATTR_MMIO is
+used.
+
+In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
+except on the common path of no cache flush, no swiotlb it never
+touches a struct page. When cache flushing or swiotlb copying
+kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
+usage. This was already the case on the unmap side, now the map side
+is symmetric.
+
+Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
+must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
+path must also set it. This corrects some existing bugs where iommu
+mappings for P2P MMIO were improperly marked IOMMU_CACHE.
+
+Since ATTR_MMIO is made to work with all the existing DMA map entry
+points, particularly dma_iova_link(), this finally allows a way to use
+the new DMA API to map PCI P2P MMIO without creating struct page. The
+VFIO DMABUF series demonstrates how this works. This is intended to
+replace the incorrect driver use of dma_map_resource() on PCI BAR
+addresses.
+
+This series does the core code and modern flows. A followup series
+will give the same treatment to the legacy dma_ops implementation.
+
+Thanks
+
+Leon Romanovsky (16):
+  dma-mapping: introduce new DMA attribute to indicate MMIO memory
+  iommu/dma: implement DMA_ATTR_MMIO for dma_iova_link().
+  dma-debug: refactor to use physical addresses for page mapping
+  dma-mapping: rename trace_dma_*map_page to trace_dma_*map_phys
+  iommu/dma: rename iommu_dma_*map_page to iommu_dma_*map_phys
+  iommu/dma: implement DMA_ATTR_MMIO for iommu_dma_(un)map_phys()
+  dma-mapping: convert dma_direct_*map_page to be phys_addr_t based
+  kmsan: convert kmsan_handle_dma to use physical addresses
+  dma-mapping: implement DMA_ATTR_MMIO for dma_(un)map_page_attrs()
+  xen: swiotlb: Open code map_resource callback
+  dma-mapping: export new dma_*map_phys() interface
+  mm/hmm: migrate to physical address-based DMA mapping API
+  mm/hmm: properly take MMIO path
+  block-dma: migrate to dma_map_phys instead of map_page
+  block-dma: properly take MMIO path
+  nvme-pci: unmap MMIO pages with appropriate interface
+
+ Documentation/core-api/dma-api.rst        |   4 +-
+ Documentation/core-api/dma-attributes.rst |  18 ++++
+ arch/powerpc/kernel/dma-iommu.c           |   4 +-
+ block/blk-mq-dma.c                        |  15 ++-
+ drivers/iommu/dma-iommu.c                 |  61 ++++++------
+ drivers/nvme/host/pci.c                   |  18 +++-
+ drivers/virtio/virtio_ring.c              |   4 +-
+ drivers/xen/swiotlb-xen.c                 |  21 +++-
+ include/linux/blk-mq-dma.h                |   6 +-
+ include/linux/blk_types.h                 |   2 +
+ include/linux/dma-direct.h                |   2 -
+ include/linux/dma-map-ops.h               |   8 +-
+ include/linux/dma-mapping.h               |  33 +++++++
+ include/linux/iommu-dma.h                 |  11 +--
+ include/linux/kmsan.h                     |   9 +-
+ include/linux/page-flags.h                |   1 +
+ include/trace/events/dma.h                |   9 +-
+ kernel/dma/debug.c                        |  82 ++++------------
+ kernel/dma/debug.h                        |  37 ++-----
+ kernel/dma/direct.c                       |  22 +----
+ kernel/dma/direct.h                       |  57 +++++++----
+ kernel/dma/mapping.c                      | 112 +++++++++++++---------
+ kernel/dma/ops_helpers.c                  |   6 +-
+ mm/hmm.c                                  |  19 ++--
+ mm/kmsan/hooks.c                          |  10 +-
+ rust/kernel/dma.rs                        |   3 +
+ tools/virtio/linux/kmsan.h                |   2 +-
+ 27 files changed, 312 insertions(+), 264 deletions(-)
+
+-- 
+2.51.0
+
