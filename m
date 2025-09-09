@@ -1,94 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2EE1FF5F9;
-	Tue,  9 Sep 2025 20:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE7C2571B0;
+	Tue,  9 Sep 2025 21:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757451193; cv=none; b=bgpEPivyn7al6cCzkcUfclWxzlOms7vir+2KTVM4TSfzQGdKnfwWg6dCOTxzKsnPf6/s1M8rSLzEfY21aZfipZuXJnokPOfZQItzoYTrhy8+rO7clsBlAa37TqoElTrB89kZ2qTJIOKNkUWUzJqGQZ5oZdDKn9DnrE9HhLgGUbo=
+	t=1757452233; cv=none; b=G8ZN8ODMW+/z0m07j5HsiSWLWHQ8U0SLnWi6ngexczR/TjW4r3cDWVnfELvFzvUn9pJca7vuUZwkyqNRYRmCukiT7CfGwJOEe/NW111DcZ++a+rP37Y/JO0SrYI6LBwt4wnRzhX7Yepn5vwHc5u5Vl4YI/gba2F7m7La5ndCKHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757451193; c=relaxed/simple;
-	bh=lRNvw5Vej2PNjUqrctTC6POIwS0tW4NvDAn8P9RwduA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fapfX/k6V91EeXl3a7kEQNgVunn83Pw3RPYxMiYs73bsau5SZrh0ypE9WW7rftFWUrb2Z2E7MfEleoEsV00zsZn4PZOLNk9PQJE4S19fDuCcHmAlLR+GIXMrnWNDaCMm7mzHy+lvwkd5ISvqo4EZFymKYadnSOPKRs90li6Iy9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HCgi2h/o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757452233; c=relaxed/simple;
+	bh=ZhYj3i702NIlNoxxmFEysWbkdVutr8kgHzHlOYCMjQ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qb3OCWPGwZ4u2Yxvtb3k3o+uRXD8OKWRdbtOyvxa83PB/FDa7Mj1q5D+a29yrNVBGCTkQl9o7x7IFg/kmmYiV+l+FOXOLm6hVUMV1r632XDhU0MEEun8jQgS6pZryKnRwPA3zJOJk045aXdaNuBxCiqjZPB1uMptSZMhx+mgk4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIUlMKge; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HCgi2h/o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D628DC4CEF4;
-	Tue,  9 Sep 2025 20:53:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIUlMKge"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BC9C4CEF4;
+	Tue,  9 Sep 2025 21:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757451193;
-	bh=lRNvw5Vej2PNjUqrctTC6POIwS0tW4NvDAn8P9RwduA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HCgi2h/oQxBkyv+fOnr8t5TFe2z+Zv5AnIySO30rnXXrcif2Z2sLz6aR01iGQGeuI
-	 dZBqoYvtKNZZWUZq4gvUKQvHs/q5pp0nRCSZjlCVWy0HgfSu6R4wUWsCU2wEttsIc1
-	 jEpxu+T8CL2JuMA/a+2gdTh68sm3ozEM5+s4sQARkQct8uykEGEn1HlAkgoFDwWLQZ
-	 OY66NiLuCqvt6lqitD5Vkb86PQsVKe4MtFDop2g87p4dW4bUfRx+Ik4GNg+RqES6Hj
-	 bQlqo5j4UWTwKa/G43M0oNoa2jTBn0NVhgOGtSKk0xGYOBUpPB4uZGtew6K4ThgU/H
-	 s7nARvIYuMpcw==
-Date: Tue, 9 Sep 2025 22:53:08 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 08/19] tools/docs: sphinx-build-wrapper: add a
- wrapper for sphinx-build
-Message-ID: <20250909225308.30a42062@foz.lan>
-In-Reply-To: <87y0qnv4j2.fsf@trenco.lwn.net>
-References: <cover.1756969623.git.mchehab+huawei@kernel.org>
-	<e019f951190a732f9ac0b21bcda7e49af3bd5cbd.1756969623.git.mchehab+huawei@kernel.org>
-	<87plbzwubl.fsf@trenco.lwn.net>
-	<7tk2mkydbcblodhipoddued5smsc3ifnmeqen5wv7eu3mbmvgi@nwxqo5366umj>
-	<87y0qnv4j2.fsf@trenco.lwn.net>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	s=k20201202; t=1757452232;
+	bh=ZhYj3i702NIlNoxxmFEysWbkdVutr8kgHzHlOYCMjQ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RIUlMKge+proD5snVcjhwQsdRc2vxEItZdcU5MtasdgEZZUDYAloJXg0MeYQwbuCc
+	 0bGBfv7UqSdmKACiw+moUId4bG4+5o0DYQoYI1DEbcmc3L29PQ7niMYO/90bZ5kmDD
+	 ylDd0UQcVNeVmP0SPpkVeRdy1mcOHxw9cZcJbeoiZ+kcjIHb6S0/U35n2qLxkG6J3U
+	 wwOSqRv4CXxzmGoJ2jV1w0sztgLZJnAUdQJgnCW1lt/nZR1CmpYdwIOdL//uJj0+Da
+	 dY5W0koqfz3qwlCxObSqUu31zQ7j9god2YjvJf8jStYE8+pEJvHcT5NZTvF1aCwre7
+	 41cXfQ+D8GX9A==
+Date: Tue, 9 Sep 2025 22:10:27 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] rust: regulator: add devm_enable and
+ devm_enable_optional
+Message-ID: <1d6f3782-3876-44c4-bed8-08d68ae6cdad@sirena.org.uk>
+References: <20250908-regulator-remove-dynamic-v2-0-e575ae2cde6a@collabora.com>
+ <20250908-regulator-remove-dynamic-v2-2-e575ae2cde6a@collabora.com>
+ <aL_PwXck1HsLp5wH@tardis-2.local>
+ <AA8FC1A7-EE88-44FA-A0A9-A3EA5529B10D@collabora.com>
+ <aMBJ805QjQcPdRol@tardis-2.local>
+ <CANiq72m18qUTjqjKKYgPfeEUh=vN+Jzz=ACFDcgA-JDLL_N5SA@mail.gmail.com>
+ <aMBVgrVqX2w31GhV@tardis-2.local>
+ <3bed2164-8f68-42ed-9ab9-6fda05687535@sirena.org.uk>
+ <aMBgyxREYOM1GZFI@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="1Sy4rBf6Er4A36G8"
+Content-Disposition: inline
+In-Reply-To: <aMBgyxREYOM1GZFI@tardis-2.local>
+X-Cookie: Ma Bell is a mean mother!
 
-Em Tue, 09 Sep 2025 12:56:17 -0600
-Jonathan Corbet <corbet@lwn.net> escreveu:
 
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
-> 
-> > Basically, what happens is that the number of jobs can be on
-> > different places:  
-> 
-> There is a lot of complexity there, and spread out between __init__(),
-> run_sphinx(), and handle_pdf().  Is there any way to create a single
-> figure_out_how_many_damn_jobs() and coalesce that logic there?  That
-> would help make that part of the system a bit more comprehensible.
+--1Sy4rBf6Er4A36G8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'll try to better organize it, but run_sphinx() does something
-different than handle_pdf():
+On Tue, Sep 09, 2025 at 10:15:55AM -0700, Boqun Feng wrote:
+> On Tue, Sep 09, 2025 at 06:11:24PM +0100, Mark Brown wrote:
 
-- run_sphinx: claims all tokens;
-- handle_pdf: use future.concurrent and handle parallelism inside it.
+> > The C stubs are all inlined so should have zero impact on the resulting
+> > binary (as are all equivalent stubs generally).
 
-Perhaps I can move the future.concurrent parallelism to jobserver library
-to simplify the code a little bit while offering an interface somewhat similar
-to run_sphinx logic. Let's see if I can find a way to do it while keeping
-the code generic (*).
+> Yeah, but for a rust_helper, right now a function and an exported symbol
+> will be generated so that Rust can do FFI. That's the size impact I'm
+> talking about. And for regulator, we only have helpers if
+> CONFIG_REGULATOR=n.
 
-Will take a look on it probably on Thursday of Friday.
+That seems like it should be solvable on the Rust side in a similar
+manner to how it's solved on the C side?
 
-(*) I did one similar attempt at devel time adding a subprocess call
-    wrapper there, but didn't like much the solution, but this was
-    before the need to use futures.concurrent.
+--1Sy4rBf6Er4A36G8
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> That said, I've been unable to make this change break in my testing.  I
-> guess I'm not seeing a lot of impediments to applying the next version
-> at this point.
+-----BEGIN PGP SIGNATURE-----
 
-Great! I'll probably be respinning the next (hopefully final) version
-by the end of this week, if I don't get sidetracked with other things.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjAl8IACgkQJNaLcl1U
+h9BdFgf9GqdB/97QUn2n7x0euLao90e+gqk92p8ozED8BM2a4I0/xqpOWWRJ7vJb
+rNwplg4Piaq4sSse4L0AaQU7b5uSLYki4a3o5vnfqUG++emFpKIfcTb+nw9HwUH1
+SiayjZfFkE3FDDz/jHFpWSqc/IuUOWrqZjA3P6+0Qd5Z+quRVOlAHJfrx6tM49sq
+1xJsdssOzBq1bYIBcYfA/mtG3ito2B0TNlsPjDaU/CPRWyTuU5VHFWRPpKnYSecu
+Aq6fcCBmGbB6TBHFb4lm2YDhAq24XrpYONGNEYp+WZ3DnSnRtdfqxvggLYct/BDv
+FezLOBv+ArNUAE7YBRrGRiOvDuqt8g==
+=fqz/
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mauro
+--1Sy4rBf6Er4A36G8--
