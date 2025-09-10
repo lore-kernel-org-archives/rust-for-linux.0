@@ -1,247 +1,214 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2048.outbound.protection.outlook.com [40.107.243.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74A42BE7BB;
-	Wed, 10 Sep 2025 05:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757483110; cv=fail; b=ts0y5FpiJoewkBiPbwL8FFVrLQ1JX96gsoo+9Q8f+wrSayJW5A9GLLdwDAUu9tCMmBGWJob60KP1DuRs+L5V2oJ0mZp75u0d/1qphHIDWZ7HuqVMbZ4JopLHc9ztWkkePB9vhutStkSjg6XxlE0UVU6D2f3DV5sGOyvrHAc2a5g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757483110; c=relaxed/simple;
-	bh=Z3uI62D8e07po/xeHvuAAK0jCgGJexG5uEkStKraggo=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=sfZRTEGIOr/DywYg2obMp5or78qq6hGMldARmMVHEt1ZPEYDAp9PYUVhvdlJtPaRZkEhX1gVXG4AiwGbl5q+II1zZsOWlJlV9cCw/JLq2ihPkHbaBGsnFkTbdd19s6hFIo78Yv/bLt9P/Prr9W58ScjyDEkwe+rmfnnPDmFlAcA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mkBsePaE; arc=fail smtp.client-ip=40.107.243.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9012A2BF3CC
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 06:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757485592; cv=none; b=l//N7Wz6p40Abm+7en4o2jQwD6KIRUgf6PvtGKfl/Vdv2qn3nCFRNK5TQEj5X4IWlYs6orO7G/Ui1ipIBAqVMpZCc5RvGRFPC08Qi0zuhT1WO+voLer0uZCLIYG7X3ynNUCS0AfOuZqGuAGcYBDVU7zNVlrokD9FNW7PjGzHxQo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757485592; c=relaxed/simple;
+	bh=O+byhjgn9O3fhX401NYy6R/T+AFXl8YLi+Ts9OFY7yo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SVhkTuW+NXiyaVbd/yUCOba5hE/TU8f6bbrXaLRPkaL8G2UHZh6nQb+Irx7PFeid7ouJcz8wxvOi9mYI2Py7bypmgGXCc3IrYIb8zvoEftcAaJbmLFCMZOzAupR1QMhA6kyDMSpNHRG8CPAhYhGhwwNVmLH7GluMNMVB+Fb6/3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tn0iQe1v; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mkBsePaE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WOnTa5RZKiTeH31e0iFqLUJ2gr17Bagv3dc0Ie7e0j0V3/zKkWil0f5Pu4iZ+3BnGmO7Y0xxd7uaPjE1JOM0JB2HHQJSYNLkrf2ysXLbMDIB6JLSUuugEnPGijMelOAYtLR8tqS78m32HC4T4igL7l2hBQ71hlLzf7r6h9rGv+rjEf7c6UCNM2X2gPLLtmEMTlwVDpxc7tKn5rI7vdailBdN8y4qjfr/z351LdM/CelaJ8dRxiqQgwrJpiidvi1dxqRt+aeIbzIfv1SFMp4FPlbQUG6ayUI+g4J2wZoW4Vnr2nFoQwIVrMO+AfTdsEHcS6dBlXMS3thk9hISTkqBWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Nr89AkKLcXDcz515tOq1oH0IFs4i/h/J0FFf5d8mQ78=;
- b=GMpWhqSKaPOcOM9WxvQmEDBOHGkbCQr1hHLP7kJO8tk37kiuzTXKUVt/9mxAEx4LZz8wQnvjU4Wc38XvANFTLDM5VxgPTznlH3/uk5VblzYOLxNWYh74fWvJBFV8gwVIQ2ewfPbSultxdZqrJdvkv3Cfd0z4XNty1sMlXHMnFEKOmhe5CqEljgnOxrqM/i/8UybeXlvNwZjo+zUX1Jw88xVzMFfrxeUBCzfIdoljjsW4hqpsDUJO5hIOSmCuJaT9Mktxd0W/di3AqocRUo8Li2PCaD51CUP+ssJdqCz254B4lgiQtwKmG6aEz7AkBNOFNCSEGgKW4AyLkupwAmI5Uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Nr89AkKLcXDcz515tOq1oH0IFs4i/h/J0FFf5d8mQ78=;
- b=mkBsePaELxbTrKjfBLk5lKdKyPeRWE9XmLrRen4ibUWMiVXTMF917GO93yqtm/HUAO0XvRYswksstkYmjBwfdRwkQ0Ku+32XXrkoY89h5tXY26cSn8O5QoYmmOJxdI5vJcvtOaMeII9Vps/XH+Uknh1HvAYfTQ7XBbSP03yQ1zQoK4Sg8pJnp+9KsrrUmGapkLbJVp4NNtI1q8RuHuDNXG7j7JBhvsAtq9+6RWGy7qvuP+5GFga9aEUo6N8ixnYH9oHcH8J70AZAxZTifKKCmcJtEXz3BZr/TDr2+nOVi+7NcmB3dqLLXtIXbXbnynTgHlCZEvBnqfRinisIwNUM1w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH8PR12MB6962.namprd12.prod.outlook.com (2603:10b6:510:1bd::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
- 2025 05:45:03 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
- 05:45:03 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 10 Sep 2025 14:44:59 +0900
-Message-Id: <DCOVRI3TVJBN.3OGDSK8HW74LL@nvidia.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Alistair
- Popple" <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: Implicit panics (was: [PATCH v2 2/8] gpu: nova-core: firmware:
- add support for common firmware header)
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20250826-nova_firmware-v2-0-93566252fe3a@nvidia.com>
- <20250826-nova_firmware-v2-2-93566252fe3a@nvidia.com>
- <9adb92d4-6063-4032-bf76-f98dcfe2c824@nvidia.com>
- <DCD2VJ1WJW2O.VM7E4PD3DFYO@nvidia.com>
- <CANiq72=nGbziZCKt=AneE_vXw76i=+td0dSVfbOJ8kJ9eYHw9w@mail.gmail.com>
-In-Reply-To: <CANiq72=nGbziZCKt=AneE_vXw76i=+td0dSVfbOJ8kJ9eYHw9w@mail.gmail.com>
-X-ClientProxiedBy: OSTP286CA0043.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:224::6) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tn0iQe1v"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45dde353979so24631085e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 23:26:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757485589; x=1758090389; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HaEKyJoMmj0za4RAONLaAHEr1xwODIsSeqBAMEZRNJM=;
+        b=tn0iQe1vaFYDf4pfdKVtZHDkSzApz3DK/ycmPEsDUwUksI0O8Zn+nZpYn3Twvz3y+M
+         7WDnSSMLOGkJ2mLVJSg9S814BondyMJ/z1YWAur5eVktQ5/RHIKlmDscwnXcMZc8ybsD
+         OHMBnttQ5byy3ReSPjTDEKE3JEmuYQZ7ex3R+9Fbu+zN9XFG7N7vrEycdsDBNKsWzush
+         Vm3qu3kQVAeQoFR8eokQYIggpwb2nhoVihhBb0dnW3GJ4qZPRm1mUDvPm9P00zVkcDbR
+         H3KW2ltQo8b9s4Ct24hwnIIbE+nQ9SOG5acQqwTcHXjOy4HQu2d4SnrW9NQ/6dZqB9BK
+         SbEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757485589; x=1758090389;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HaEKyJoMmj0za4RAONLaAHEr1xwODIsSeqBAMEZRNJM=;
+        b=jJL5q8j05pYxnbMXZ7gQsgPk4RfJ7jFsrpAoctzr+yPFiuqB4gn3EG3QIj+fqkgGBm
+         CzUy696/7Q0OyujWuQsZKhF2GOrqhk1Pp1HA06AG7W1/lm55dTESbF3FfUsnWpMEsWiL
+         5IH+2h4vur3ff4Yr1Qe/EOWiLGGc4vK+S1svounAip8/Jlj/1dGTxD7AWRttkVRq9Ciu
+         I1lV2haEMRhv+pIpSQdLeqD/cmvL1w1m9hA5GHjzQBS36PbZFWZGz2zfKVMVTZA4pelo
+         9OdTXuoH2MJcbnFTxmtsLBRrU/7Gx9PcKbJvVcw+jZ0hYKSvdk7Hj+0Qy8Or95MtSdTd
+         X8RA==
+X-Gm-Message-State: AOJu0YyCzqcztTRJchlfP5RTpNQl5inlIQ1NpIgjQIj2br9oc3rLXqw7
+	XuUX+aYvUirY1EEqtR92E4i3FT+0Ve4PJcs9mU53oAkwSx3v6P73qlxKi7vxVcpHRN9So64eXBb
+	5SYsMtSOx3Ohuq+nTWg==
+X-Google-Smtp-Source: AGHT+IGcagabav8zZiy45Vz4TefE5UhpdZHnIpq9OhxA7rq8VMdc20fFBHdrydW+7kWkVPLfzhk+We3NdNBIug0=
+X-Received: from wmbep22.prod.google.com ([2002:a05:600c:8416:b0:45b:883d:4704])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3549:b0:45d:d3a4:8416 with SMTP id 5b1f17b1804b1-45dddec3240mr123947175e9.15.1757485589024;
+ Tue, 09 Sep 2025 23:26:29 -0700 (PDT)
+Date: Wed, 10 Sep 2025 06:26:27 +0000
+In-Reply-To: <20250909170013.16025-2-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH8PR12MB6962:EE_
-X-MS-Office365-Filtering-Correlation-Id: fee47e78-6e39-44db-1531-08ddf02d3043
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VUhWdEhDYzJSamMreEttZVN4QTNFcXRtVEVOSlJRWm1mUHl3b2Z4YTUxV1JZ?=
- =?utf-8?B?Q0YxN3dwZmtoTXkvYWJOdjVJOE94amg5bXdkMktiSFJLeU1ndGtwc2lUeVlu?=
- =?utf-8?B?RElCNjc4aDBKRkxnV2NKNSs2M2FjS2NZSmN0eERiM0djdFUwRDdNQzdIZU9I?=
- =?utf-8?B?dU9yUXJJckhqbjcwblduMmI5ZzJYMTF1SmJjNUNXM1pyRDc0QXo5V2piZlZw?=
- =?utf-8?B?T3VjZmR5UE0wQ2hiZ0lkM3NsVDduaXlLM3ZjSkVzK0EvUXNrV1Q3aWVGR05u?=
- =?utf-8?B?VmtqVDdmQXJVaENpVWVoOC9JNUxZK3RKeXZnblFvMGNaREE2WnJDdnlSZE1H?=
- =?utf-8?B?WDNkdlhWYWJyY082cS8xWEhlbGRYVCtpK1Ivd05QZFZ4STRtRXlZYXpwZ01p?=
- =?utf-8?B?TnNwbzFQbEtRc0ZPWGxDQnJPZTljSGk3QTdiekdoemd3U29ha2pLYkkvTU5O?=
- =?utf-8?B?bSswSXBtU2tlYmdIc2pzVkJaQ3hoYWZVMGhtWXdWa1UwTDNlREZ1WHNNdTBT?=
- =?utf-8?B?Y3Z2cjYvdGxwMngwQkhiSDZqbUdmalpWMldkZU1ZSTJPcS9rQWUxVlE1Tjhy?=
- =?utf-8?B?MTYvUVBqbXJLZi9XRVVVckE5cTE4Rmt1RUF0dUtCNXp4SEowcTgyU01GLzdq?=
- =?utf-8?B?ZmJ1V1RHNWVDaC9Qc1E3WlpPVEpZTWdVMis1THY1SWhpeERNbHFsVEVPS3RO?=
- =?utf-8?B?b3ZtcmNiSDQ1ZHJaOTl1andmS05iMkVuT013d0V6UXBESXQvZlZ0VXFmT3dI?=
- =?utf-8?B?UjNLc1ovWnRRdWR1dDdWN0p1NXBnRm1Kb2IvenAwOTNzczdldmU1ZnBnRkU0?=
- =?utf-8?B?a3VZT0VRUWM1WE1xYWxuK2d6STd3cXRvR2NUQ1JvY2ZjNDUxSWN1dk1weFRR?=
- =?utf-8?B?c3dlbDdFWEZKZ3JyWktzQncvUjhPRHFDUjFZQ2toTjZaaWhDR0NkTXM1RFZV?=
- =?utf-8?B?dWZUOVQxVGVLTTliWHhUenBVRmFMZXpEVzJWL21mbWFSZlU3MmdaQllrYUVF?=
- =?utf-8?B?RVgrZTUvV2YzcW5YNU1WTWdpbWdHTkFhU2k3emxCSjZ5UVlSa2gza29BdFVD?=
- =?utf-8?B?ak96Y1ExTmc2Qk9xampxd21zc1owQUNadlNKWmwveFZrTXlVeENUM284SVRF?=
- =?utf-8?B?b1RWaXJ5bkhHNTVoSHhMaWVyZ0dlVStVNUZ0MTY5MUwxRFlxbVZqbWlqQU5q?=
- =?utf-8?B?VlYydEJnSnU2T1pFVzN1eHgrWlQrazhubzBpaHRoUU5JOVFISEtlaHNSZ1Bi?=
- =?utf-8?B?T2NnTkh5dG1RSllRVGM3bFpCNWQweGNwM1ZUenN5Z2h1SHo5SjBiRm1aRXcw?=
- =?utf-8?B?RmdGS0xxSld3dVhIMURLM2dDZEt3NExUcFRwT0M0SHFCWHV5T04zekJ1eDVz?=
- =?utf-8?B?cFFQWktjZUl2ZWM3R1h0L1JGRXFZN2dRbC8xVHpmMy9DckJWR2dHRk9GbWQ3?=
- =?utf-8?B?N25qKy9TNFJjcDJPK3d0OUpnMldxeXo2Y2xlTDJhSllVZUlKeE10bUYvcEtk?=
- =?utf-8?B?cUxra0hDSUttS2V5N0JVTE5xTnVuTFg4dFRIbUd4L2lVSGYwcGJac2JUVU1N?=
- =?utf-8?B?dUlZQTJUYW92eVU1MUtBNTllMmRhcW1iOU9pN3pHSDE5TUQwempDVkt5a1hF?=
- =?utf-8?B?U0xURmJGSnBLZ0JpNFM1NWxpZm8vZitnbFZQL3NjZ0czMXhVcVllMHF0UlRF?=
- =?utf-8?B?d01KeGhMYlJyT2ZnZ3lFcnY3SXFGMWdINnlDVXR1YkZsQ0tTdEhKSXoyd2dE?=
- =?utf-8?B?a2MrRDQ2T3ZrMGRWZVdkbWZzRGp1NGZYbFRHelNKd0grUXZlRENQcEp6ejZ6?=
- =?utf-8?B?dXVtSUJoRjNtMndzK2VzWEtUbnhiQnRGVm41M053RTNjU21LMFpTWW1jSUVE?=
- =?utf-8?B?a2dpUUEybTBkTEhOdGREM3FXVmV3ZEl2ZFlBWEdXWC9mNUY2a25iaUErWnRr?=
- =?utf-8?Q?kD5BmhU11kA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dDhyTm90aUh4ekYwWnN1UFpKaER6Rmw0bVJVTndmR1h0YnJpRFFzVmVrcjJP?=
- =?utf-8?B?QVJ2b2xvL0hlMjZoLzJjN04yaHlsUEJkNE13UFpEdHJ6Z0JYajl5T1VhRFhi?=
- =?utf-8?B?UFlteEJKQ1NtRzZxM1RnMWg5UWZBSmFUcjZFYlVKSnA4MytNTGpJd3gvdjFX?=
- =?utf-8?B?R2ZyUndsZjlpSVIya1VvV0dHQTlmb1ExREkvbEJsNWJEV1p3L3B2NklHdHRa?=
- =?utf-8?B?QUE3cFhPOGhmbVZEelo2QjFqY3luWTN5ZGpTTzR0bUxjbjlxY1RwdHBIWXpE?=
- =?utf-8?B?TWdYMytuNFByZ21qd0g3NGdJWWEvTGltZjJjYjBhQkZ5NVJNbTNySVEwN0FN?=
- =?utf-8?B?NTRlNkwrU3dVRHZDaUNOVWxDdkh1UUtTb0xtSTdyTmVpeHc5R04rQjdFR3k3?=
- =?utf-8?B?TWRiYUNSSWx3bTAxektwWUxMWVAzUi9GOUwxWWdiYm9ZV2tDTDFpOEg3UkFw?=
- =?utf-8?B?cnRtd1A1T09OS3h0SG5QRjFVbnZ2YU4vSmhlc3dPSVFYd0Nuc1VCMHpqYlVB?=
- =?utf-8?B?aXplYXNTQmUxcElVaHA5Nm9CVW9TVHk2TmtGakxiek0yYTQ5RGk2dk1ObGQy?=
- =?utf-8?B?b09IUkJzeVJWM0pQVzlMcU5XbmpyeXZQTVpjYXZUQWFvRWI4cFcrQ1JEbzd3?=
- =?utf-8?B?UnZ6QTlpN2EySSt5aXhrOGZtN1gvY3lEcFlwb0VRWlhOU2tVU0kwdUhUUHc4?=
- =?utf-8?B?SFUwY2hsSWNmRUdLOXNjOHZFMHlDb09aSjNXOU9EM2NBYU5XZDRsalg1dy9r?=
- =?utf-8?B?ckQ2d0tuNEFCT1NPSWVUdDJBWU5RaEZGbUxKWXptQ2lDZmlqOFV2QWpYcXQv?=
- =?utf-8?B?T0RYcjkvNUpCV0RwUkhnNjQ1dzhUb2IzZ2xtVFppSjlxNkpqR2dXajlBN3c1?=
- =?utf-8?B?cVdIZG1ocEIzaVBHVmIvZUMvL01MQUwxTEw3MmxHWnpZbGtnTUF2TXZwVERv?=
- =?utf-8?B?R3ZxTkJKVi83aVJsblQxTGVjYVBRcE5VTHNEQ0JxVkd6dWtya1pJSitoRWFk?=
- =?utf-8?B?Q3ZzSTdaMVkrbWJTT0lwYmZOaGNPY01wUTBQeFd3SjRHeHdRV3dGaGQ5VTVH?=
- =?utf-8?B?YVQxVW53ZFpXZmpSMjVyUHMyeFJQK1ZFTmo4RWJPL3lzTFVFb3doRFpHS1ZV?=
- =?utf-8?B?dGwrYW9xWEU5bUZNcHVMZ3lXWUovNGcvbGNLK3FyT0tEbDN2aGptYjRoVW84?=
- =?utf-8?B?OWFqZDJOTVJmcTZmaXYwNTNseC9saVY1LzhtTjNZMEVDUHRBallrVkpFNXpC?=
- =?utf-8?B?SDdRSjArblEzZmFrc01tR2N0TGdqTXg0UVpoeU5MY1B0TFk5VDNLUkZUbjhk?=
- =?utf-8?B?UWdkdXRndGNweVFIczV1MXo1NVlhWm9ZWnNsQ0p5cDVmZVluVDUvZGpoeXRL?=
- =?utf-8?B?L1ZyN2ZlSDRnYXNaemZWU1g1anVXZFpKdkZQY2J6Z2FNbHJwZHZuNDZZSDBJ?=
- =?utf-8?B?dWUyUjhpbHNxbUFWb3JJYjE2d2d6LzMxZG1hUXhVTzN5d1VWblZHMGJkTjdD?=
- =?utf-8?B?bUtPSGZsTU5BRytHZG1vQ3FldXRDdUZhYTBDTHplTzREdkxsSENIYml2U3Ex?=
- =?utf-8?B?NXVxQWUzYmovYUp5UzVBZE9iSFpadmJkU00zTUQvYWY1MVpzNEczaHVtNXFJ?=
- =?utf-8?B?SGxqQ2wwMEVMa3RLM0doSThhZ1ZHcHBWNE51NXNlcFlyUDJod3REaXlIL25E?=
- =?utf-8?B?U0l2ZnNXWUZNckFMb0FkYzV4OXoyVTJQY21uUVQwK2dhNTlRdkFmaXF4Z3hi?=
- =?utf-8?B?S3JWVythZ2JMdmpaaXpZSms5dExNMkZRM0tlK1QzYWx1a2ZETHJ5cnRrT3Yr?=
- =?utf-8?B?QXU0ek5DQzQ5eWdlZGZOM0xhNG9wZUhhMlBMY1U5d3BCWmFuY1EzTXNRM0o4?=
- =?utf-8?B?bjBHdTZlSXBlSWIvOHUwbVRXZEFvU3o1bDc5b0EwS2kzY0xxUUxFMDFzZjRU?=
- =?utf-8?B?Z0I0YWpDeElVNGxqd09SYTE4bnNacncraU9hZ0krTi9wZVlJS2dTRXo3TUY5?=
- =?utf-8?B?L29BYk9KeHh5cmI3TWxlWGpIN3BLclBqcFFwNkNIQld4dDBVekp5YnpDZUc2?=
- =?utf-8?B?MGxsYjdnRmlQcU5TZnRiU1NDUzRndjJ0L01URHA4MHczQ2U2Yy85N0RTWG1O?=
- =?utf-8?B?NWlRTXZ0U0h4UHNoQkVsdHQ0Tm1XS056eVRBeVB3S1pEMFRSMkoyb2dJSSs2?=
- =?utf-8?Q?xPXZFEW9lcAlNtki6TI2X9EnOUFC3W5cU6VGB0xijmdM?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fee47e78-6e39-44db-1531-08ddf02d3043
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 05:45:03.2809
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T39hrCSSaE+524OI8mFXuPbWbDhMLGa+zCHDwbbDBi0wCX7HC+6prn4XVj9/l3fENtAXYGPz2V5PMB3Snb77xQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6962
+Mime-Version: 1.0
+References: <20250909170013.16025-1-work@onurozkan.dev> <20250909170013.16025-2-work@onurozkan.dev>
+Message-ID: <aMEaE2NEU2FctgH2@google.com>
+Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original value
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com, 
+	tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu, a.hindborg@kernel.org, 
+	lossin@kernel.org, bjorn3_gh@protonmail.com, gary@garyguo.net, 
+	boqun.feng@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel, sorry for the delay in replying!
+On Tue, Sep 09, 2025 at 08:00:13PM +0300, Onur =C3=96zkan wrote:
+> Current `to_result` helper takes a `c_int` and returns `Ok(())` on
+> success and this has some issues like:
+>=20
+>     - Callers lose the original return value and often have to store
+> 	it in a temporary variable before calling `to_result`.
+>=20
+>     - It only supports `c_int`, which makes callers to unnecessarily
+> 	cast when working with other types (e.g. `u16` in phy
+> 	abstractions). We even have some places that ignore to use
+> 	`to_result` helper because the input doesn't fit in `c_int`
+> 	(see [0]).
+>=20
+> [0]: https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
+>=20
+> This patch changes `to_result` to be generic and also return the
+> original value on success.
+>=20
+> So that the code that previously looked like:
+>=20
+>     let ret =3D unsafe { bindings::some_ffi_call() };
+>     to_result(ret).map(|()| SomeType::new(ret))
+>=20
+> can now be written more directly as:
+>=20
+>     to_result(unsafe { bindings::some_ffi_call() })
+> 	.map(|ret| SomeType::new(ret))
+>=20
+> Similarly, code such as:
+>=20
+>     let res: isize =3D $some_ffi_call();
+>     if res < 0 {
+> 	    return Err(Error::from_errno(res as i32));
+>     }
+>=20
+> can now be used with `to_result` as:
+>=20
+>     to_result($some_ffi_call())?;
+>=20
+> This patch only fixes the callers that broke after the changes on `to_res=
+ult`.
+> I haven't included all the improvements made possible by the new design s=
+ince
+> that could conflict with other ongoing patches [1]. Once this patch is ap=
+proved
+> and applied, I am planning to follow up with creating a "good first issue=
+" on [2]
+> for those additional changes.
+>=20
+> [1]: https://lore.kernel.org/rust-for-linux/?q=3Dto_result
+> [2]: https://github.com/Rust-for-Linux/linux
+>=20
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x=
+/near/536374456
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 
-On Thu Aug 28, 2025 at 8:26 PM JST, Miguel Ojeda wrote:
-> On Wed, Aug 27, 2025 at 10:47=E2=80=AFAM Alexandre Courbot <acourbot@nvid=
-ia.com> wrote:
->>
->> However, `fw_start + fw_size` can panic in debug configuration if it
->> overflows. In a release build I believe it will just happily wrap, and
->
-> In the kernel, it is a panic in the default configuration, not just a deb=
-ug one.
->
-> We have debug assertions too -- and those are disabled by default, but
-> they are separate from the overflow checking, which is the one enabled
-> by default.
->
-> So, any use of those operators is limited to cases where one knows,
-> somehow, that it will not overflow. And e.g. user-controlled inputs
-> cannot use them at all.
->
-> So, conceptually, something like this:
->
->   - Static assert if the compiler knows it cannot fail.
->   - Build assert if the optimizer knows it cannot fail.
->   - Unfallible (like the possibly panicking operators) if the
-> developer knows it cannot fail.
->   - Fallible/wrapping/saturating/... if the developer isn't sure or it
-> simply cannot be known until runtime. User-derived inputs must use
-> this option (or rarely the unsafe one).
->   - Unsafe if the developer knows it cannot fail and the other options
-> are not acceptable for some reason. Ideally paired with a debug
-> assertion (the compiler adds these already for many unsafe
-> preconditions).
->
-> In the past I requested upstream Rust a way to have a "third mode"
-> ("report and continue") for the operators so that it would wrap (like
-> the non-panicking mode) but allowing us to add a customization point
-> so that we can e.g. `WARN_ON_ONCE`.
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index a41de293dcd1..6563ea71e203 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -376,12 +376,19 @@ fn from(e: core::convert::Infallible) -> Error {
+>  pub type Result<T =3D (), E =3D Error> =3D core::result::Result<T, E>;
+>=20
+>  /// Converts an integer as returned by a C kernel function to an error i=
+f it's negative, and
+> -/// `Ok(())` otherwise.
+> -pub fn to_result(err: crate::ffi::c_int) -> Result {
+> -    if err < 0 {
+> -        Err(Error::from_errno(err))
+> +/// returns the original value otherwise.
+> +pub fn to_result<T>(code: T) -> Result<T>
+> +where
+> +    T: Copy + TryInto<i32>,
+> +{
+> +    // Try casting into `i32`.
+> +    let casted: crate::ffi::c_int =3D code.try_into().unwrap_or(0);
+> +
+> +    if casted < 0 {
+> +        Err(Error::from_errno(casted))
+>      } else {
+> -        Ok(())
+> +        // Return the original input value.
+> +        Ok(code)
+>      }
+>  }
 
-That would be nice, but also wouldn't cover all the cases where implicit
-panics can happen, like out-of-bounds slice accesses - we can't have a
-"report-and-continue" mode for these.
+I don't think this is the best way to declare this function. The
+conversions I would want are:
 
-And that's really the elephant in the room IMHO: such panic sites can be
-introduced implicitly, without the programmer realizing it, potentially
-resulting in more runtime panics for Rust modules than one might expect
-from a language whose main selling point is safety. I understand that
-the previous sentence is a bit fallacious, since such panics indicate
-bugs in the code that would likely go unnoticed in C (which is arguably
-worse). But perception matters, and such crashes can be damaging to the
-reputation of the project.
+* i32 -> Result<u32>
+* isize -> Result<usize>
+* i64 -> Result<u64>
 
-In user-space, crates like `no_panic` can provide a compile-time
-guarantee that a given function cannot panic. I don't know how that
-would translate to the kernel, but ideally we could have some support
-from tooling (compiler and/or LSP?) to warn us of sites introduced in
-the code. After all, since the compiler inserts these panic sites, it
-should also be able to tell us where they are, allowing us to evaluate
-(and hopefully remove) them before the code ships to users. Most of them
-could then be eliminated by constraining inputs or using checked
-variants.
+Your commit messages mentions i16, but does the error types even fit in
+16 bits? Maybe. But they don't fit in i8. That is to say, I think it
+should support all the types larger than i32 (the errors fit in those
+types too), but for the ones that are smaller, it might not make sense
+if the type is too small. That's the reverse of what you have now.
 
-I am not suggesting we should mandate that ALL Rust kernel code be
-proven panic-free at compile time, however since I started writing
-kernel code in Rust, I've often wished I had a simple way to check
-whether my carefully-crafted function processing user-space data really
-*is* panic-free.
+We probably need a new trait. E.g.:
 
-> As for discussing no-panic, sure!
+trait ToResult {
+    type Unsigned;
+    fn to_result(self) -> Result<Self::Unsigned, Error>;
+}
 
-Writing a uC topic proposal for Plumbers right now. :)
+impl ToResult for i32 {
+    type Unsigned =3D u32;
+    fn to_result(self) -> Result<u32, Error> {
+        ...
+    }
+}
+
+impl ToResult for isize {
+    type Unsigned =3D usize;
+    fn to_result(self) -> Result<usize, Error> {
+        ...
+    }
+}
+
+pub fn to_result<T: ToResult>(code: T) -> Result<T::Unsigned> {
+    T::to_result(code)
+}
+
+> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+> index 6373fe183b27..22b72ae84c03 100644
+> --- a/rust/kernel/miscdevice.rs
+> +++ b/rust/kernel/miscdevice.rs
+> @@ -79,7 +79,7 @@ pub fn register(opts: MiscDeviceOptions) -> impl PinIni=
+t<Self, Error> {
+>                  // the destructor of this type deallocates the memory.
+>                  // INVARIANT: If this returns `Ok(())`, then the `slot` =
+will contain a registered
+>                  // misc device.
+> -                to_result(unsafe { bindings::misc_register(slot) })
+> +                to_result(unsafe { bindings::misc_register(slot) }).map(=
+|_| ())
+
+This still uses the `map` pattern. Please change it too.
+
+Alice
