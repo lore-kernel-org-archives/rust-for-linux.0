@@ -1,179 +1,182 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2058.outbound.protection.outlook.com [40.107.94.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAF627F017
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 11:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757505150; cv=none; b=rf+T9viPU3Qrt2NUIlSQeJx6EZ0Y0q+MN8OsWGS4EgFlgEcZj7U2XZ3fY708829LXYRnFHuzbdq54e8DHeE0ftBHga9ruTXeA1fkjhQg+0+RMwDDMGFnNattboGGUp8h0jPaq6ATBBZkeULe82sfvtSEUYGcR2lG0LPA5EjafWA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757505150; c=relaxed/simple;
-	bh=e4bdA9laZbM3EfcZ0X9/imMIUb2Gb39r21T9GFYy+58=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZExV/KO1q6GJXtVBRkPrf105SJ17Px9wIXZx65iyRdVu5a7VERN2yGp1TXTjA7WaQEAb6eGn9UaL6tCj0sTo2Nf+zY1vA4i7Mf7FzRNJMlfduNUSCkyyqs0RJ7SAaAyhO/y0Z4hEw1aScawngL2o0FJFbJtIsDzHNSzcPgrExLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CeDAY/M6; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06EA316900;
+	Wed, 10 Sep 2025 11:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757505525; cv=fail; b=Ag5mG3hWo5IuXknetv8IhE9SbBxnLUI10gy1ne1jOZ6ejNo1iIRjE5CA2z8OUR1WNmQno6CGpYTn2093+HNp3r9W6WamyzIoOKeVFmlIxlQwdcqmxuQThnJKvEjFdSHNwZfTORLxUgOefxym042Mkm43tag5uSbJvTU6MbwlUVk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757505525; c=relaxed/simple;
+	bh=D0diukIneuBxxsZ+gaEgXn6zfxuX17JD8EjqTvzBrTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YRD7aRkjnkjq+Ut/heqyjdsAAHO+DeeaI6HSNOJGYxe0kf7PRcxYXhbYATG0FBvoPti1H/+YSBUMeTJztmbUGsw1qGfHNPoJ4dDCPvVtLNRofYt+GYzeUIG5b9p71YUshDULwBL0wEpG+MlGOkYM4QjwvFATkvT2yilPyRSvbDM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DCGX5i1w; arc=fail smtp.client-ip=40.107.94.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CeDAY/M6"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3e3aafe06a7so3345453f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 04:52:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757505147; x=1758109947; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U46X76YKHn1BRClXohd2pCqWqgDo3sVqrrD/BOqtq6c=;
-        b=CeDAY/M6L9S82earBtraBVwXVIsIAoqdZV6FeAewZAILRKNLIJmeMdxqH3nVMsSQVr
-         FmIA+FIA6ktCxrRbptJhEKLgMV+gTxnL5DKC1rWcuskHbEciiVw93XmZSgxtdemTR4/o
-         JGuyAi7MNbosp0bCUJ1vEhTWUrtSWKMzW9GAOGiPTTTrzlB2cAmo11+49QEk/HtWT4WS
-         oMBrR5PkouMQOnUSSnMP+M8wW0shwU2UZBJXPOo4+7GPSusdOzQpw8bM/ZPqv6O+cFA3
-         OxNMU6vXp+aZ2GaU+baAwTaUTBJ9VEdS6xuKuPhF5h1y3J8n1jWzWcVZVMgUGM+hfavy
-         tgQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757505147; x=1758109947;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U46X76YKHn1BRClXohd2pCqWqgDo3sVqrrD/BOqtq6c=;
-        b=RPUGd8cbQZ53WGFvtUooVnJnE0+6iSNlom/g8DE5R7IMRSkWMbeNxzXrE2YBrcuqG5
-         gZ085H2h3vfOsa88F3Zz0fEWUdThjcBZ6NtEN83grbRxNDcGei1jDXSkRTm6svpMQcO+
-         gJja4C8p376aM8ehLDR6a+IKtsKuLjKwjwdzUg+6l7DyCUJDFFiXS/E9rDHOVf71UdS2
-         TWBPryvjJSf7xITOZkna6lH4xfsY1mTwyjtF3aGGcX33AL7WjMNvp7OFuUDzjmAjVzPJ
-         voRmAdoKKp8ibLzXf+/6QlB2UPJjPXcu6v6/t8rHD6wyDPw4360/MRX9KkD62HP+4uu4
-         gqDw==
-X-Forwarded-Encrypted: i=1; AJvYcCW55xt/PDrzKJ6dmX5DSkwr+Gyt+U0/pxwXyZZFRI2803JSjatRuYEtr5tlP+VHRyAQb5WJcR83lMzUBMSBLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWdb6p9epdPKBuI6p6U5yMJCrCGpFzBmlhjKrs6zz+h6CW1JAd
-	YmunJvUXagVwfz1BnYQ0/nnbhUiWmD1PTutewk9hPgwA3qWktz2LWJKthi3Xz+/+SDOVH5ynrkF
-	BiachCIF6jEGHURVg+RLJyoaVsl/hsezMPgWdmxk1
-X-Gm-Gg: ASbGnctFXB4/XkI2hJc4CRgoX2sbQcoPryorSNiXngAVaCT8kA7jyIniPpWg9vmr9PW
-	Hnbjj1S5/IYV+/C7aVI+znOifeVhy79BJ8qJPd+XwNJDUTw/alZ0IgTz5EwZ0CSTZ/7jc2rNMyu
-	P9G3tlmzq+8I876AmjARl4bDC5TbjuguMp4g5FG39GO0/tngk09euiInqizempBttdTcb3VCvze
-	OPI/gk3TN9zFa80byZo6FSXlIFcnwXPxxeEpCN9Rc2vareXBK5K37G5OQ==
-X-Google-Smtp-Source: AGHT+IErhntOQVzgPns8ISGDADdpAB61F5bnMVwtgDnrhzYG8zp4IeEhc7oW9TpLnTCtbJ5aJuLv6ZOvVJkT4RdrFy8=
-X-Received: by 2002:a05:6000:25c2:b0:3df:33e9:14cc with SMTP id
- ffacd0b85a97d-3e6442da8d5mr13285933f8f.54.1757505146808; Wed, 10 Sep 2025
- 04:52:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DCGX5i1w"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sn3V7oELjkrT+Ex+wYuTTfJd3WsUwYgnJmnkM+tItOpmbM+J8qovkAPHYt/A7PKdAxoWGlisZ5TesXjmIXvOHKWcNXtA1O3Hg9SA6mAhfrHEezRPKmMCSHIRBmSiBgsvZgxaw6V0hH4pbdO54/Yd5q5EIYBFKZuN7d/8WIw+zLxloBetM/UCcYtcIc6GW5rH0jBKwge7a0m4jPykaBH8Y8sKHehJQWlDdKdUNpkCp2evYTZ7lvgs+TsiTWScPuI24eLlp6TrdOL+hleedbJyK+OJ4SytpZZpW4FYO/j3zVP4FD60hiKyFc9ZB4/0Ery3tfckBgfq1QXuqElNvsjftw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M2CRGJWbvgTRAKQCpQVq3CvW0DQ/ZyYML+xgjXHDleo=;
+ b=tB2vXc4aLG7Xvj/iBdZSvwn5l5BDP6C+4bz1pIRIWCRgMWFDDbhmT5qJwttomGtb8BHCznSs1U/3u4v6DHTHmWC/I6z+Xr6vluxXtIpc3nRzQiDjGvtecnGkPUr8uW7zs/hJWBGP80S7Nc1dUlCLFh9qUOu5jO987pSlHgXoT/P1w6NsT3FQBwOILLwl3So1eAjWPEjg3x9jiy8sN7xCZqAPkDZVJitbvd8ChCDhycviaJq9+sQzjix1CUYwDf9us224wMfxwnVp/LXMt9t30uAoOeFS7X2kQZFGh8Eg3ciqLaMSqi0Ur/Kgqry1mm4HqC3j/XfupYGVGiT8b2TLaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M2CRGJWbvgTRAKQCpQVq3CvW0DQ/ZyYML+xgjXHDleo=;
+ b=DCGX5i1wV1JzbNNAuAK46B1FTzUqbIWJJr1k/xRxSeDUhzU9om62gERPuNF9zaGeSw3Z47iVGhqjLYvnnpANarQksVzq5onyjKQEa/uqx4+QH9ptjWiYcpUBJuCKrMO21J8C5gZEzPW3uZshpwp8TsczXFauxzksXuc9pJwioRUTXudhdy6L2hUGfrzW6zFhm7ermfbnA+frN//qvdI/SL4Ye+KQ/MfEcYEEtrj13319OvercvtIa+jAK7pRYfUZPJwYgn+rUmDsHPM/wcOgja0mFu5Tjb6neURlaC8VFX+tVNuwHJvJyj+If2Ypv4p2rx/AJA7xTfLlNTPx9BllEA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by CH3PR12MB8709.namprd12.prod.outlook.com (2603:10b6:610:17c::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
+ 2025 11:58:41 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
+ 11:58:40 +0000
+Date: Wed, 10 Sep 2025 08:58:39 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
+	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
+	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
+	Keith Busch <kbusch@kernel.org>, linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v6 03/16] dma-debug: refactor to use physical addresses
+ for page mapping
+Message-ID: <20250910115839.GT789684@nvidia.com>
+References: <cover.1757423202.git.leonro@nvidia.com>
+ <56d1a6769b68dfcbf8b26a75a7329aeb8e3c3b6a.1757423202.git.leonro@nvidia.com>
+ <20250909193748.GG341237@unreal>
+ <20250910052618.GH341237@unreal>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910052618.GH341237@unreal>
+X-ClientProxiedBy: YT4PR01CA0498.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10c::6) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250910100755.2361281-1-lossin@kernel.org> <aMFQL-Hq1KvBG5lh@google.com>
- <DCP1Y8N4SRRF.25V7F6PV5ODCQ@kernel.org> <CAH5fLgg+-oz_cP9=ke+ukp9qYZAsD=hKqvvGfkJWRcCKdrTQ-g@mail.gmail.com>
- <DCP2STI9M1XX.3RHBQDPQOC3JO@kernel.org>
-In-Reply-To: <DCP2STI9M1XX.3RHBQDPQOC3JO@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 10 Sep 2025 13:52:14 +0200
-X-Gm-Features: AS18NWC693vUyJRrFe_67v99ngDuGtmgBjD0KGQIP9wthtOlQgbODTCOn6ws5us
-Message-ID: <CAH5fLgjS+T1acN9jsEv85bhhXwevSA2trqu-9aFFsKpH82b8iA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: pin-init: add `#[bind]` attribute to access
- previously initialized fields
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Fiona Behrens <me@kloenk.dev>, 
-	Alban Kurti <kurti@invicto.ai>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|CH3PR12MB8709:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3d1beeb-870b-4064-522c-08ddf0616235
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?FzIxhCTl/DFGFmaXIkSJW43QRlHeUwrObkzUBGOXZlpW5TknvixiA4gDQdO0?=
+ =?us-ascii?Q?Y/Q2AqArhV3Ean+ESTnkZr/fvpBX2nkWxFKLLH4g5CA9C8G475Hr3gb3OOjv?=
+ =?us-ascii?Q?6uJVbcwr9hyVssPYNNIHf4cHbHNfa1FcsJ0EkEfNXG98vrQPHF/sWCvG8QI/?=
+ =?us-ascii?Q?COGsWCNfWUGpIWeBBcktY7eFttSjXnJa/fCDlR5M7SnWvVHjP09ct5kmeZoH?=
+ =?us-ascii?Q?SAYNOPDNskcy46Em8ly9RRUNfqYG4XoPucVxFGwyPQt0cGYV/RAX2nuBRLnY?=
+ =?us-ascii?Q?oDenFOddnolaVnUlfh0CImgVZFr/tUkfCle8aamRAftKGcs67gzyutBwvoDi?=
+ =?us-ascii?Q?dNUaAWRksh0OpZeDtOzS+yUixVU6iF6zuAgdtdJ+/SJw1dzFDkGfm80wGCoH?=
+ =?us-ascii?Q?pckzkDSveUd+iwi2lfDzjyPVQ9yj0CiH/xxWs9md9M1AQSc3NZiJU1hLjeKm?=
+ =?us-ascii?Q?aAY8FuT7mkNTvmr+F8IaY1xbUkqwDE0/IWF1EmvaP2B2COuQ7wMj4RNUjEOc?=
+ =?us-ascii?Q?O/AhbcPzLAMyP9dJTa4ojajfgOMtdCIXx/Rxry4yk0Rx2rZ2fjSA6M+C0jit?=
+ =?us-ascii?Q?E4yYm3ZocgAEqqYDdafANBeHp39vXTx87t0jZIqiUkS+AeC6ISIHwD9hDxkj?=
+ =?us-ascii?Q?3NKmejdUiaLbjH+sBCgqd206gGNFVcc0Zt98Oozys1GBZXwHRLMY812uQPYE?=
+ =?us-ascii?Q?uyHrhpRnGAIYWFfAHefw01QVwryhLl4F/p2FxxZ5WJ2mJk8iLma6uzFa9nse?=
+ =?us-ascii?Q?KDIQcCRrG9o4DskmRPMDf1PaNxx8TvwULUPJB0jwTMsE0RkZQnTZYU69eX3J?=
+ =?us-ascii?Q?DTJiamg3E5I0LV9zQ7KUNLWj7+scC2fn2wUO2D+w6NK2kvcb0lvj02l6UkTc?=
+ =?us-ascii?Q?X7jKgFI4/1/bAGQetuBuvx+ircaAenX1Iq6FMnRYQcgdor2MWhUDTqFKizIA?=
+ =?us-ascii?Q?vJmD0Pht5I+lSm+VVTECa5eMOZE6H/UwUgnXBgFiR+SdXv8DEnEnO9a+9Ujl?=
+ =?us-ascii?Q?fTzsLsC/NZI0DsiAFIBO+4w+7SMolqtyX9A00a9XgVJOp0yXxu2QqO44FHlF?=
+ =?us-ascii?Q?F5kOApjBfLOwHK4UEafL48ADf1hzQpNZPMIk6R2fhwlKEIUMoSNqHn4cTPxl?=
+ =?us-ascii?Q?znJlbuU5Ch+3Eejo3q7yZqrX3ozlPCo0nBxc8d/f9Cr9yddhddHSyXN4+eBq?=
+ =?us-ascii?Q?1K8vM06RHw5aht/nrdIYWUbgLh/jYAL7eVKdCjw67lWNVVQn+anrn3l19WdD?=
+ =?us-ascii?Q?BSnlzXwqrv/YfQoqXhsDx+EYQ9FcwydQzXtPK0D5bSt8yOGcjkm9NRk++zQ6?=
+ =?us-ascii?Q?K5aUj8NJxT+OVBPsX2TS4htXjJaFpFkDZIIIo3/5K+GVBWGmqOwVOybPuki7?=
+ =?us-ascii?Q?iI62pGuhOEA82Yro5WGvlkvleuez4YsUAy/C9hO+W3hCWvzy7fg3ZN0wgqkG?=
+ =?us-ascii?Q?ptHYclhyF3Q=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9YO2VNtN7/AVkNY5N+N6bpbx5DVFYyJdxIshjK2kTpMeuaOdcSF5l7noHEF1?=
+ =?us-ascii?Q?s+lB5UEncua+s5Drg3oPC44ZKgxdHC7EQ1mmSbi+XEq4qFKNNVBpiRWSIfc/?=
+ =?us-ascii?Q?8ywQrj440x8YBHiXj4uZB0QE+J1KktuhiJc4bflyorZLYXXCNTQlvOTv371c?=
+ =?us-ascii?Q?ASDGOoCEv3wTgUSySdjTbUQQGWvJC0NQpKSsq2qJNstew84LYBuDpBk3uV4o?=
+ =?us-ascii?Q?vBenXfKllbuWTEDAUQSxwockvdu2HZ5HxpgplNGCWZ7znKBO2Us7KIHdhBAe?=
+ =?us-ascii?Q?TCX53Fa2wFwLETR5Ho0D0sOXqpILTIZlgHisolBKChaVQ1AKIqqsvk1hmIgd?=
+ =?us-ascii?Q?YE6/iB4CEGVROiDFPAO5TfADkkrbbKpGKD5A/XCbSSUrHrrkqIUnPM/LzYXQ?=
+ =?us-ascii?Q?WGT0sXGTpAAVusd7OCVZF7nEWNxNPvf9OafKMixxZg+5lm9hMrGaDiXZ7U/0?=
+ =?us-ascii?Q?bWiQu0xeLBXSVpmNEob1HkW8KfUJ1e3A8+quycFN8fJOn5cfpnSW3FEqOAjC?=
+ =?us-ascii?Q?JgfkhIRa6APiEb2G4je21c6BWKbOX5cOHZDHFENP3jL5g+YoyyU1LJz0NoX8?=
+ =?us-ascii?Q?mASc/SCKxHdg3dyOiFa2V+Xpjd+N2LutqqAwhQg4IORPN9sNWSwzKWeX8TPJ?=
+ =?us-ascii?Q?OYNp+31ak76mDNFtIe0GgR/CPpX7wrNktItOo5t05HaCglof/SdPTIbMFvnQ?=
+ =?us-ascii?Q?dIlVEWzu0f1mZZgQUsT1aBY9Hx24N4Kx5QcmLxuijEYIEebO87J8trQkpOC6?=
+ =?us-ascii?Q?5HvTn80xxmbnBR4Z8s48Qux7dO4liJ+EP9gA8N10i8HYKFz6FU5y6aWdKBDu?=
+ =?us-ascii?Q?F2nCo6aUF13uff4b9pX53OdttabCsWvQhcMi73AjQz70ijVhIZRi5rD81caI?=
+ =?us-ascii?Q?qzAmnxy0fXs8ZFjYivEVLHNmcYoWZVTCFLm9h9ZlCYQajTaL3WZ2b4bBYqGY?=
+ =?us-ascii?Q?mE3YlmZLwZtHu8pjWIHa8Vu9ugDe14ebg5WRs5a83zohvO7s4Sb4LfCpMic1?=
+ =?us-ascii?Q?IpBv8kPo4agNFbf1H2TyXz5QyQaAkHqbPjJgR2bgQJ8ELYUjejyvmEhrmoEJ?=
+ =?us-ascii?Q?cle6p7D1vIfzHtVjImdzimXsTUYCsAKTGPmt140QMNxPK7rxy96x1wl3+GfE?=
+ =?us-ascii?Q?2QmAUir2xSQdsVPQXgP+rTTiGOpzo02zLXIOySsQlKBQPfcSP0MVBNdZmxpU?=
+ =?us-ascii?Q?KY1LAWASYTztVwsHLEbLnBvuORa0/G0/n1GbQA1BBOj9PkqnwENbff4O7HYX?=
+ =?us-ascii?Q?n/06d/f2gFt8Gr7mnZ6gme2FoyHeKWUKi0gX2Yeoawx+x9szqxzDkBmWGxM8?=
+ =?us-ascii?Q?R24cd960+95kkj5RLQyuLq+qQSfIut3CnDpnavZuMCT8M7VanWjlKpxbVBmH?=
+ =?us-ascii?Q?9ZdLMvbeCVO22byX6zJ/TqPCtJxTr4zQCRF5JSAHjnClMwsB+zPNa8RuDdCD?=
+ =?us-ascii?Q?ozo2sXZqvbCbHoDATIse33PWDM4HV99uQGVFvcLv2sGGvcSNU4Qq3K73wuEo?=
+ =?us-ascii?Q?rAyxsA9mNo4oh0K+wFkx6BNR032gCcNqav90jaUAoi5RrDp9pRWy4nuuK/ZR?=
+ =?us-ascii?Q?TKRZ0lKjkgxNLtP0ngU=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3d1beeb-870b-4064-522c-08ddf0616235
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 11:58:40.8152
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NOBo5qiUePOEw1x7YNat0KXcE5eLDbKYD5g/dL+or0XOWmfL8YpjCGLIZSmZwreP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8709
 
-On Wed, Sep 10, 2025 at 1:15=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Wed Sep 10, 2025 at 12:40 PM CEST, Alice Ryhl wrote:
-> > On Wed, Sep 10, 2025 at 12:36=E2=80=AFPM Benno Lossin <lossin@kernel.or=
-g> wrote:
-> >>
-> >> On Wed Sep 10, 2025 at 12:17 PM CEST, Alice Ryhl wrote:
-> >> > On Wed, Sep 10, 2025 at 12:07:53PM +0200, Benno Lossin wrote:
-> >> >> Assigning a field a value in an initializer macro can be marked wit=
-h the
-> >> >> `#[bind]` attribute. Doing so creates a `let` binding with the same
-> >> >> name. This `let` binding has the type `Pin<&mut T>` if the field is
-> >> >> structurally pinned or `&mut T` otherwise (where `T` is the type of=
- the
-> >> >> field).
-> >> >>
-> >> >> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> >> >
-> >> > Is there a reason we can't apply this to all fields and avoid the
-> >> > attribute?
-> >>
-> >> Adding the attribute was due to Boqun's concern on v1 [1]. I think it
-> >> might be surprising too, but I'm also happy with no attribute.
-> >>
-> >> [1]: https://lore.kernel.org/all/aLshd0_C-1rh3FAg@tardis-2.local
-> >
-> > IMO the ideal is if it works without an attribute. Perhaps trying that
-> > in the kernel is a reasonable experiment to find out whether that's
-> > reasonable to do for the general language feature?
-> >
-> >> > Do we have a place that might be able to use this?
-> >>
-> >> I didn't find one, but Danilo plans to base some changes on top this
-> >> cycle that need this.
->
-> We can use it in devres right away:
->
-> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> index d04e3fcebafb..97c616a1733d 100644
-> --- a/rust/kernel/devres.rs
-> +++ b/rust/kernel/devres.rs
-> @@ -137,10 +137,11 @@ pub fn new<'a, E>(
->      {
->          let callback =3D Self::devres_callback;
->
-> -        try_pin_init!(&this in Self {
-> +        try_pin_init!(Self {
->              dev: dev.into(),
->              callback,
->              // INVARIANT: `inner` is properly initialized.
-> +            #[bind]
->              inner <- Opaque::pin_init(try_pin_init!(Inner {
->                      devm <- Completion::new(),
->                      revoke <- Completion::new(),
-> @@ -150,8 +151,7 @@ pub fn new<'a, E>(
->              //
->              // [1] https://github.com/Rust-for-Linux/pin-init/pull/69
->              _add_action: {
-> -                // SAFETY: `this` is a valid pointer to uninitialized me=
-mory.
-> -                let inner =3D unsafe { &raw mut (*this.as_ptr()).inner }=
-;
-> +                let inner =3D core::ptr::from_ref(inner.into_ref().get_r=
-ef());
+On Wed, Sep 10, 2025 at 08:26:18AM +0300, Leon Romanovsky wrote:
+>  #define PageHighMem(__p) is_highmem_idx(page_zonenum(__p))
+> -#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
+>  #define folio_test_highmem(__f)        is_highmem_idx(folio_zonenum(__f))
+>  #else
+>  PAGEFLAG_FALSE(HighMem, highmem)
+>  #endif
+> +#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
 
-Overall looks good. Looks like you want Opaque::get here rather than
-the cast cast cast operation.
+Yeah, that's what I imagined, and I'd make it a static inline
 
->                  // SAFETY:
->                  // - `dev.as_raw()` is a pointer to a valid bound device=
-.
-> @@ -160,7 +160,7 @@ pub fn new<'a, E>(
->                  //    properly initialized, because we require `dev` (i.=
-e. the *bound* device) to
->                  //    live at least as long as the returned `impl PinIni=
-t<Self, Error>`.
->                  to_result(unsafe {
-> -                    bindings::devm_add_action(dev.as_raw(), Some(callbac=
-k), inner.cast())
-> +                    bindings::devm_add_action(dev.as_raw(), Some(callbac=
-k), inner.cast_mut().cast())
->                  }).inspect_err(|_| {
->                      let inner =3D Opaque::cast_into(inner);
->
->
-> Together with the initializer code blocks this becomes quite nice. :)
->
-> > Danilo, what plans do you have?
->
-> Besides that, the plan is [1].
->
-> [1] https://lore.kernel.org/all/DCL32RUQ6Z56.1ERY7JBK6O1J6@kernel.org/
+static inline bool PhysHighMem(phys_addr_t phys)
 
-Looks nice :)
+These existing macros are old fashioned imho.
 
-Alice
+Jason
