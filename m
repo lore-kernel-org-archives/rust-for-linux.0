@@ -1,173 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A23324B33;
-	Wed, 10 Sep 2025 14:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757514447; cv=none; b=PHbNeRMfe6ZEte50Sg9YkgAiP1kJrrJAN/je0Ps4SQhylOq92KQfghh6ak4yX4ogRrhTYIHaRce1mPLAEM0jNGMeKH79+Y1b5Ki7jG3h2QPtHDkorBQQdEnWbVYXv2F1Obr2qg4HWoytJk34+ECj5/GkTC5LlkEw4vMPp6jg1h8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757514447; c=relaxed/simple;
-	bh=5g5RBXhPqG8J7yMsN/VQOQGJMxPjWBvVy7aoWO0AUds=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=brBrs2Q17O1PDqFUu9PVmTpXIROO7S5NwWT/uFEyeRGjsH89Hoh25blibtwd2cnYsiEurHB6ICOjHhlywS1wlaeeLpK5cxwBlW32HxWyNPaFbfSc86yLmi2dGeic2vn5ZNIfNOE0PZTCSCjUVTT3racjq6BUcv0Z4qYWD+zVVVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VgVuC69I; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319AC334703;
+	Wed, 10 Sep 2025 14:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757515438; cv=pass; b=VBIfu7PtesqK2eBzR4komwf9OlamMUeGwhb1WbQN4YOcTuAfAJ6g6gmdW8jWYFzn/nqT13zmN9QolV6Ew8RcMfW84MaxEveh1PjSX23Y0qr39cnNFAslH8SQu+wZE0dH3fkWz5+95kbSG1nSMj9EjpI01WAXmQBZyjy3vV4xwPc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757515438; c=relaxed/simple;
+	bh=jWf+1iSB/smQ+JM7XZSTmLuJQb9ZbXX2Cx7HEGs4BjM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=aeBPX2se+cKT7DqG4AtNSrkArlJW4J/YuUCouNigcVVZzrEqBZ4gedW/7DUMAQ0Gt2o9NMPq0Zer2Mvd+eecNY6xmD0C1tgVE+9leyoD04IZJ/xM64z1ws5SkGlaB1z7ao85te+losXRWextJhpfYvNP1uByhMtv4HIZcbg/UcM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=feTMT6ab; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VgVuC69I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A3DC4CEEB;
-	Wed, 10 Sep 2025 14:27:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757514447;
-	bh=5g5RBXhPqG8J7yMsN/VQOQGJMxPjWBvVy7aoWO0AUds=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VgVuC69I2qrVBPMfqkgTTLxAyUIuw76pJEbQ38ySGUovDRmI8lPGgl9VOtjd0N5ef
-	 ijzr+reZCZmyXh7jK3TI9w4LOjsS70ahUFH/iBSe6PJP3ZV14vJZy5OGTn2wdxqYgY
-	 JWJeQGDYoyH2qG2JTGXF5R7IYQXN/PC7+0AbzzqLmgxIvN/YzpsxHWzo+4zhGXAt5r
-	 riklA7PCu75l3QKjY2ueNesmDrZRW76jCTBEXlAFmyqVW1DWdi+Dv5cA3FFMgvg8Ps
-	 I7IhPyT7ZSQpELg1/N13ETsNErDw67UnFcc5RPVjsxCAHEMp/hh7teC8KDfrpj5FOR
-	 m8Lmz6j7BcKkA==
-Date: Wed, 10 Sep 2025 15:27:19 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Asuna Yang <spriteovo@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Han Gao <rabenda.cn@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-kbuild@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH v2] RISC-V: re-enable gcc + rust builds
-Message-ID: <20250910-harmless-bamboo-ebc94758fdad@spud>
-References: <20250909-gcc-rust-v2-v2-1-35e086b1b255@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="feTMT6ab"
+ARC-Seal: i=1; a=rsa-sha256; t=1757515418; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MMq+EoqgJoYlcFOzgg1a8Rz0lEeN5cuylX5lnnSpflLZ5mXnOKDWI7YiZXMl6g60S96YuzP2PwSFTM0tfoep9dg9ToUKs2/N4P16VJWlefmW5LdxYiN29uRSheROOCYUdkwTgvmQMk010tZxHjSyk0LoEGlAUX3QR7RexDO7R6c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757515418; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=n+BmJhI3Z0aT6bNC5a9jb74/Ds7aMQmdDL2VAdy6ZWM=; 
+	b=dQSCL3rUmgkm16VUxU+JFLWQRwbgF2PBIm7Tv6Xo5L0o53BjkYf+iNwKpzSxmxTaRiSmdQ4of1xB+EKboI/3ZecGdRPTNTLXzExBBu1xUkKa5IAFF0hVRaqKfzCntx6GHJroLVVs0fzkt8D38WBB6GWwsHdh+NCVLxsL/tJDTdU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757515418;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=n+BmJhI3Z0aT6bNC5a9jb74/Ds7aMQmdDL2VAdy6ZWM=;
+	b=feTMT6ab8zHYd4DYR1SX81008fE8ZqkjzRgxAxnwcdzCss/Op11bxN9GyKTWG0LE
+	p1vsSlCdxvOABlpOaem5T3xibu999Qq1wIXit9rgK77e/XJu3oTGa0IgHAkPReVJ30F
+	4IghQ3BKgmJAb/J2YhPDX6c0xAMacslC5GmRpEtw=
+Received: by mx.zohomail.com with SMTPS id 175751541634272.4536622769192;
+	Wed, 10 Sep 2025 07:43:36 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9LQSzFz/Ck3gJsLT"
-Content-Disposition: inline
-In-Reply-To: <20250909-gcc-rust-v2-v2-1-35e086b1b255@gmail.com>
-
-
---9LQSzFz/Ck3gJsLT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] rust: irq: request: touch up the documentation
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aMEc0-8mM4uaFwlB@google.com>
+Date: Wed, 10 Sep 2025 11:43:20 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <6149F5A9-D38A-4D28-8F97-3D672079AAB7@collabora.com>
+References: <20250909-irq-andreas-fixes-v1-1-dbc9aafed2cb@collabora.com>
+ <aMEc0-8mM4uaFwlB@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Sep 09, 2025 at 06:53:11PM +0200, Asuna Yang wrote:
-> Commit 33549fcf37ec ("RISC-V: disallow gcc + rust builds") disabled GCC
-> + Rust builds for RISC-V due to differences in extension handling
-> compared to LLVM.
->=20
-> Add a Kconfig symbol to indicate the version of libclang used by Rust
-> bindgen and add conditions for the availability of libclang to the
-> RISC-V extension Kconfig symbols that depend on the cc-option function.
->=20
-> For Zicsr/Zifencei special handling, since LLVM/Clang always enables
-> these two extensions, either don't pass them to -march, or pass them
-> explicitly and Rust bindgen libclang must recognize them.
->=20
-> Clang does not support -mno-riscv-attribute flag, filter it out to
-> resolve error: unknown argument: '-mno-riscv-attribute'.
->=20
-> Define BINDGEN_TARGET_riscv to pass the target triplet to Rust bindgen
-> libclang for RISC-V to resolve error: unsupported argument 'medany' to
-> option '-mcmodel=3D' for target 'unknown'. Improve to output a clearer
-> error message if the target triplet is undefined for Rust bindgen
-> libclang.
->=20
-> Update the documentation, GCC + Rust builds are now supported.
->=20
-> ---
+Hi Alice,
 
-FWIW, this --- breaks git, and anything after this line (including your
-signoff) is lost when the patch is applied.
-
-> Discussion:
-> https://lore.kernel.org/linux-riscv/68496eed-b5a4-4739-8d84-dcc428a08e20@=
-gmail.com/
-> Patch v1:
-> https://lore.kernel.org/linux-riscv/20250903190806.2604757-1-SpriteOvO@gm=
-ail.com/
+> On 10 Sep 2025, at 03:38, Alice Ryhl <aliceryhl@google.com> wrote:
 >=20
-> GCC + Rust builds for RISC-V are disabled about a year ago due to differe=
-nces in
-> extension handling compared to LLVM, as discussed in
-> https://lore.kernel.org/all/20240917000848.720765-1-jmontleo@redhat.com/
+> On Tue, Sep 09, 2025 at 05:46:55PM -0300, Daniel Almeida wrote:
+>> Parts of the documentation are either unclear or misplaced and can
+>> otherwise be improved. This commit fixes them.
+>>=20
+>> This is specially important in the context of the safety requirements =
+of
+>> functions or type invariants, as users have to uphold the former and =
+may
+>> rely on the latter, so we should avoid anything that may create
+>> confusion.
+>>=20
+>> Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 >=20
-> This patch re-enables GCC + Rust builds. Compared to v1, v2 reverts the
-> separation of get-rust-bindgen-libclang script and improves Kconfig condi=
-tions
-> based on Conor's review.
+>> /// A request for an IRQ line for a given device.
+>> @@ -112,7 +117,7 @@ impl<'a> IrqRequest<'a> {
+>>     ///
+>>     /// - `irq` should be a valid IRQ number for `dev`.
+>>     pub(crate) unsafe fn new(dev: &'a Device<Bound>, irq: u32) -> =
+Self {
+>> -        // INVARIANT: `irq` is a valid IRQ number for `dev`.
+>> +        // By function safety requirement, irq` is a valid IRQ =
+number for `dev`.
+>>         IrqRequest { dev, irq }
 >=20
-> The separation of get-rust-bindgen-libclang script is reverted based on t=
-he
-> concerns raised by Miguel. However, it's worth noting that we now have 3
-> different places rust/Makefile scripts/{Kconfig.include,rust_is_avilable.=
-sh}
-> where manually calling bindgen rust_is_available_bindgen_libclang.h + sed=
- to get
-> the version of libclang, and in particular, for our newly added Kconfig s=
-ymbol,
-> we now use awk to canonicalize the version to an integer. I would still l=
-ike to
-> do the script separation later for better maintainability and readability=
- if
-> possible, which can be discussed further later when Miguel has time.
+> When creating a value with an Invariants section, we usually have an
+> INVARIANT comment. Why was this one removed?
+
+This was requested by Andreas [0].
+
 >=20
-> Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
+>>     }
+>>=20
+>> @@ -183,6 +188,8 @@ pub fn irq(&self) -> u32 {
+>> /// * We own an irq handler whose cookie is a pointer to `Self`.
+>> #[pin_data]
+>> pub struct Registration<T: Handler + 'static> {
+>> +    /// We need to drop inner before handler, as we must ensure that =
+the handler
+>> +    /// is valid until `free_irq` is called.
+>>     #[pin]
+>>     inner: Devres<RegistrationInner>,
+>>=20
+>> @@ -196,7 +203,8 @@ pub struct Registration<T: Handler + 'static> {
+>> }
+>>=20
+>> impl<T: Handler + 'static> Registration<T> {
+>> -    /// Registers the IRQ handler with the system for the given IRQ =
+number.
+>> +    /// Registers the IRQ handler with the system for the IRQ number =
+represented
+>> +    /// by `request`.
+>>     pub fn new<'a>(
+>>         request: IrqRequest<'a>,
+>>         flags: Flags,
+>> @@ -208,7 +216,11 @@ pub fn new<'a>(
+>>             inner <- Devres::new(
+>>                 request.dev,
+>>                 try_pin_init!(RegistrationInner {
+>> -                    // INVARIANT: `this` is a valid pointer to the =
+`Registration` instance
+>> +                    // INVARIANT: `this` is a valid pointer to the =
+`Registration` instance.
+>> +                    // INVARIANT: `cookie` is being passed to =
+`request_irq` as
+>> +                    // the cookie. It is guaranteed to be unique by =
+the type
+>> +                    // system, since each call to `new` will return =
+a different
+>> +                    // instance of `Registration`.
+>>                     cookie: this.as_ptr().cast::<c_void>(),
+>=20
+> I believe these comments address the invariants of RegistrationInner. =
+In
+> that case, we usually place them on the struct:
+>=20
+> // INVARIANT: `this` is a valid pointer to the `Registration` =
+instance.
+> // INVARIANT: `cookie` is being passed to `request_irq` as
+> // the cookie. It is guaranteed to be unique by the type
+> // system, since each call to `new` will return a different
+> // instance of `Registration`.
+> try_pin_init!(RegistrationInner {
+>=20
 
-> diff --git a/init/Kconfig b/init/Kconfig
-> index e3eb63eadc8757a10b091c74bbee8008278c0521..0859d308a48591df769c7dbae=
-f6f035324892bd3 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -82,6 +82,12 @@ config RUSTC_LLVM_VERSION
->  	int
->  	default $(rustc-llvm-version)
-> =20
-> +config RUST_BINDGEN_LIBCLANG_VERSION
-> +	int
-> +	default $(rustc-bindgen-libclang-version)
-> +	help
-> +	  This is the version of `libclang` used by the Rust bindings generator.
+Also requested by Andreas, i.e.:
 
-The riscv patchwork CI stuff is really unhappy with this change:
-init/Kconfig:87: syntax error
-init/Kconfig:87: invalid statement
-init/Kconfig:88: invalid statement
-init/Kconfig:89:warning: ignoring unsupported character '`'
-init/Kconfig:89:warning: ignoring unsupported character '`'
-init/Kconfig:89:warning: ignoring unsupported character '.'
-init/Kconfig:89: unknown statement "This"
+> >>> +/// # Invariants
+> >>> +///
+> >>> +/// - `self.irq` is the same as the one passed to =
+`request_{threaded}_irq`.
+> >>> +/// - `cookie` was passed to `request_{threaded}_irq` as the =
+cookie. It is guaranteed to be unique
+> >>> +/// by the type system, since each call to `new` will return a =
+different instance of
+> >>> +/// `Registration`.
+> >>
+> >> This seems like a mix of invariant declaration and conformance. I =
+don't
+> >> think the following belongs here:
+> >>
+> >> It is guaranteed to be unique
+> >> by the type system, since each call to `new` will return a =
+different instance of
+> >> `Registration`.
+> >>
+> >> You could replace it with a uniqueness requirement.
+> >
+> > WDYM? This invariant is indeed provided by the type system and we do =
+rely on it
+> > to make the abstraction work.
+>=20
+> The invariant section of the type documentation should be a list of
+> invariants, not reasoning about why the invariants hold. The reasoning
+> goes in the code where we construct the type, where we momentarily
+> break invariants, or where we change the value of the type.
+>=20
+> In this case, I think the invariant is that `cookie` is unique. How we
+> conform to this invariant does not belong in the list. When you
+> construct the type, you should have an `// INVARIANT:` comment
+> explaining why the newly constructed type upholds the invariant.
+>=20
+> At least that is how I understand intended use of the framework.
 
-Is this bogus, or can rustc-bindgen-libclang-version return nothing
-under some conditions where rust is not available?
-Should this have 2 default lines like some other options in the file?
 
---9LQSzFz/Ck3gJsLT
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+> Also, I don't really understand these comments. The first invariant =
+is:
+>=20
+> `self.irq` is the same as the one passed to `request_{threaded}_irq`.
+>=20
+> and the justification for that is that `this` is a valid pointer to =
+the
+> `Registration` instance. That doesn't make sense to me because this
+> comment talks about `this`/`cookie` when it should talk about `irq`.
+>=20
+>>                     irq: {
+>>                         // SAFETY:
+>=20
+> Alice
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMGKxwAKCRB4tDGHoIJi
-0i95AQCss36HRy+RsBlpl62gIPI85+hygKJh0GXl428sU0nQ8AEA2u/2TAxBFT7L
-YIW9Fn96HjUF3TjlXvi7128E1IzngQg=
-=mZl4
------END PGP SIGNATURE-----
+Is the order supposed to match? I wasn=E2=80=99t relating these two at =
+this particular =E2=80=9C// INVARIANT: "
 
---9LQSzFz/Ck3gJsLT--
+[0]: =
+https://lore.kernel.org/rust-for-linux/87zfblurtj.fsf@t14s.mail-host-addre=
+ss-is-not-set/=
