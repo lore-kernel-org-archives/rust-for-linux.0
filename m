@@ -1,141 +1,341 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C39219301
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 10:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3839F24169D;
+	Wed, 10 Sep 2025 10:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757498473; cv=none; b=lbZ4n8NeL2TqTPaYIE2Ab9iG+Add/O8PxW9bg4oMoEwWcKx5k0TdL6pX7YM6PCGbkQ0kCmbg2tpsi4wu+EbtF1LKzHqb4iKYQ5sNxCIIxGT1MINgoEM8cszoxqCHBtTsZeROpIg9V9JTunxxjbbDQBXPrToDfhTJb79wIzsrKB8=
+	t=1757498881; cv=none; b=GFZuLyIObq8LMx0ZqggUxOZP1ckBOeQ5ZijvCZ8Kww0U54lGdQCxaVdSy3uPL87rluotTtveeaZ5STb0qs6QGavSu0fd9RzMFX0FPtK1V62C6Ndk8X07M/CnxhRJ8NGVp+2+uptz6VBKjcsLwWXMyI9E4rSZ5x8r93JZk5bsAok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757498473; c=relaxed/simple;
-	bh=q4uYyjZeT3X1uLSrC3Wk71Cjszm5hRnmgp8XTdb5gD4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mc+Xf8UUEY/ViLDnCTCeBbQkxGksvU9gdMPDX4jDgwCq5m/d4Mn9hVasWFJOkZOYS444ERIwZb2bswm+QNPcJZCC5/6G/Djpr5UBjM3VLqZG8NUT2V9ypY+oQzSYFFlIKX0yz8NQ/M79UZK+or5truOs53jM9gK8Pd/Onpq5Lmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hTduE3HG; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757498881; c=relaxed/simple;
+	bh=SgY377TySytRn6FIO/rE2+aLA7x8CvZYrR5OUKT5s/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mO9cSJhUVmuw6McE5gRpkawRRZtporTbfaZLJemizGw4F2bdAUudWnCjdZKf6dJQHI1XpfWGooOaM+1oiStuGM5eIGVOp/QjWEhQM8foUYcLTlRQ/9So/004kCpbg4MqiWRzPu/VCo8pk41ZgniEi4zcf49ogMXCFqVqx5Kslis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2ELCipT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hTduE3HG"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-24aacdf40a2so16479435ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 03:01:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757498471; x=1758103271; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q4uYyjZeT3X1uLSrC3Wk71Cjszm5hRnmgp8XTdb5gD4=;
-        b=hTduE3HGI/jHNu9cosNZPFkC7ZbMAZU67riRIjP7/vA/tglJC0Wb5ceuyLBuxQZp3c
-         h34Shy/XvS7qmL/8jAwu3Mtu5lllmDkbqhar89bE2hbIbHZ6hdNDEl7H0Amp6kuKter8
-         LcX/zCxnwRMVIOnqJA5/iwLMmxYjgtNdA4UruqXQsvorgHy416IOZU2tEDFPCHCHg1Wu
-         wIuRiT82wYUdkplxugrosbGMrntkDyozCv/Y8YMBVwS4/Ryk9F6ZsdBjXras+kEYNgd6
-         asV7HR7D9fU9ubWRFwLyBL0VHPNWcmOZJN8c6KB/MLGfmInfQWkd9QyGlJ+OoQojSWfA
-         3Csw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757498471; x=1758103271;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q4uYyjZeT3X1uLSrC3Wk71Cjszm5hRnmgp8XTdb5gD4=;
-        b=P53+7Sz4sYPynqL6IKtAShXxEpGZSjC8dY+KhG1RAHQbYF8BAl5zySzm5nBIHx+tUo
-         ECEfvPMED+iRJHS0aKEBlW1aFIJ037qSuYSCj6mWv/h5l04c5z57vJcALtKQfz/y9ue6
-         bqD8GFE2qCDCbmFvixrQsgSQmI7tNPm8C4hbsWfnWe6WvfDwovzhuOb73RXVdy1z4zDg
-         6yZv6iIteJwck4nhIDEM7wxD1swK0Ix+6eExJbfbg5qWeouiX+A/8PZRUo3zJragm9Jr
-         18vOaWzjEz0RBx7igTDClAOMq9AoTtmSkQwmSk7sU4V7HZdwwJ5gu2wGHgQwMB3lBkAA
-         /bwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVMrPYFTDO01/HaloeCSOd5nWC6OG+ZERAmyWezHZ0VXXAJyG2e5Ro042AW42ttYc2W+47o/30kPWNx/KtmXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyf+G8nfvg6gzn6GE1CQY8s+uZI5YqQnTw5SdYs0VdP2Cdr3pkC
-	3gMfLwy4v+pWNH5dRi+pbFM3grOLipbftrk6/xT3M0n2KWZEchKm5zZkFE01+gMOPyIs7WVJtkW
-	QkK7b2PVoGO4TWIIRkO4V7H9jlqfTk2U=
-X-Gm-Gg: ASbGncv5GHpdXTb/RJZA/l0ZjVxU+VG838Tl3d2aip0BfTZq2/tI1B+AHX2EZt+nTra
-	Zg8OfoEYGqa0I8uQ/wb6FfS1+Dk8ZT1Fgiy4MID7x8kg9KHED6vgk4PVD+CKoQr35xwwcBiOTIq
-	3VqUecoSApECrjp/NBKkDRrpJ9cBdu4u2cvmrYz4UDPGVFmdq8ZNcMpD4ESASUkqKzJmqvOWeDz
-	/VMOb7/R4yt04Cwd561tnyxOF3T1w0F/sf3OH89MUGTMeK/zIGuOr6YBAqC8lA7lwkL8T2obBdo
-	z7iQH4Mc2r5ArHLiehhXztxEjscPD1EP6/xc
-X-Google-Smtp-Source: AGHT+IEAL6fPEIytHux98x5koSeZTz+GJXocZx4VGKO9evNP7NMBw73sdhCn/m6+6whVEQTC76oWfQxflZiVR9UaSxU=
-X-Received: by 2002:a05:6a21:6da1:b0:246:d43a:3865 with SMTP id
- adf61e73a8af0-2533e950b02mr12197267637.1.1757498471364; Wed, 10 Sep 2025
- 03:01:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2ELCipT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B1EC4CEF0;
+	Wed, 10 Sep 2025 10:07:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757498880;
+	bh=SgY377TySytRn6FIO/rE2+aLA7x8CvZYrR5OUKT5s/M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=j2ELCipT1u5m8iD0vib9RNYRmxAf1Vb2HFxTmZ1bqSh4lnUBVqfcHNrwysi5dYFxZ
+	 WR4UW1cCaw+i++Ed+nhYeN494sfsc6e6+zK9NFVPqo1RvSaIzhxdJXyDjojoPuW8K7
+	 jI2j0oMU/4+07kDxiVi146JF0B9vXhAs/H/RPH/cxzcAi2atOfHg9We/ghZZvHAWfM
+	 yB502zF5WapOR6WHT+UidHPlTz5RcqDqri/CBSnhgbrnKxNXX7RUh17LblQo15iBv4
+	 6ZgQwZNSoqY0TSZkAT/hHntYOSPCdiKH952CeSz4r2KTnWVfH92BYCPqoYueT94B1M
+	 W2t7pCg/zv1VA==
+From: Benno Lossin <lossin@kernel.org>
+To: Benno Lossin <lossin@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Fiona Behrens <me@kloenk.dev>,
+	Alban Kurti <kurti@invicto.ai>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] rust: pin-init: add `#[bind]` attribute to access previously initialized fields
+Date: Wed, 10 Sep 2025 12:07:53 +0200
+Message-ID: <20250910100755.2361281-1-lossin@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250826-nova_firmware-v2-0-93566252fe3a@nvidia.com>
- <20250826-nova_firmware-v2-2-93566252fe3a@nvidia.com> <9adb92d4-6063-4032-bf76-f98dcfe2c824@nvidia.com>
- <DCD2VJ1WJW2O.VM7E4PD3DFYO@nvidia.com> <CANiq72=nGbziZCKt=AneE_vXw76i=+td0dSVfbOJ8kJ9eYHw9w@mail.gmail.com>
- <DCOVRI3TVJBN.3OGDSK8HW74LL@nvidia.com>
-In-Reply-To: <DCOVRI3TVJBN.3OGDSK8HW74LL@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 10 Sep 2025 12:00:59 +0200
-X-Gm-Features: AS18NWB3P1o-FQ07s_jB_zwoyBitfxkjABJvrHdFdftaj751AhGxluVMI4T6kjw
-Message-ID: <CANiq72n-q0vdzp=Tb=brue+BMoNYdCTKsqcMYUsvKgvu9ZqGoQ@mail.gmail.com>
-Subject: Re: Implicit panics (was: [PATCH v2 2/8] gpu: nova-core: firmware:
- add support for common firmware header)
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Alistair Popple <apopple@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 10, 2025 at 7:45=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> That would be nice, but also wouldn't cover all the cases where implicit
-> panics can happen, like out-of-bounds slice accesses - we can't have a
-> "report-and-continue" mode for these.
+Assigning a field a value in an initializer macro can be marked with the
+`#[bind]` attribute. Doing so creates a `let` binding with the same
+name. This `let` binding has the type `Pin<&mut T>` if the field is
+structurally pinned or `&mut T` otherwise (where `T` is the type of the
+field).
 
-In principle, it could cover OOBs (even if it is a bad idea).
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+---
+Changes from v1:
+* require explicit annotation through `#[bind]` to create the let
+  binding
+* this removes the need to patch existing uses of initializer macros
+---
+ rust/pin-init/src/macros.rs | 181 ++++++++++++++++++++++++++++--------
+ 1 file changed, 142 insertions(+), 39 deletions(-)
 
-> But perception matters, and such crashes can be damaging to the reputatio=
-n of the project.
+diff --git a/rust/pin-init/src/macros.rs b/rust/pin-init/src/macros.rs
+index 9ced630737b8..21798a9d195f 100644
+--- a/rust/pin-init/src/macros.rs
++++ b/rust/pin-init/src/macros.rs
+@@ -988,38 +988,56 @@ fn drop(&mut self) {
+         @pinned($($(#[$($p_attr:tt)*])* $pvis:vis $p_field:ident : $p_type:ty),* $(,)?),
+         @not_pinned($($(#[$($attr:tt)*])* $fvis:vis $field:ident : $type:ty),* $(,)?),
+     ) => {
+-        // For every field, we create a projection function according to its projection type. If a
+-        // field is structurally pinned, then it must be initialized via `PinInit`, if it is not
+-        // structurally pinned, then it can be initialized via `Init`.
+-        //
+-        // The functions are `unsafe` to prevent accidentally calling them.
+-        #[allow(dead_code)]
+-        #[expect(clippy::missing_safety_doc)]
+-        impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
+-        where $($whr)*
+-        {
+-            $(
+-                $(#[$($p_attr)*])*
+-                $pvis unsafe fn $p_field<E>(
+-                    self,
+-                    slot: *mut $p_type,
+-                    init: impl $crate::PinInit<$p_type, E>,
+-                ) -> ::core::result::Result<(), E> {
+-                    // SAFETY: TODO.
+-                    unsafe { $crate::PinInit::__pinned_init(init, slot) }
+-                }
+-            )*
+-            $(
+-                $(#[$($attr)*])*
+-                $fvis unsafe fn $field<E>(
+-                    self,
+-                    slot: *mut $type,
+-                    init: impl $crate::Init<$type, E>,
+-                ) -> ::core::result::Result<(), E> {
+-                    // SAFETY: TODO.
+-                    unsafe { $crate::Init::__init(init, slot) }
+-                }
+-            )*
++        $crate::macros::paste! {
++            // For every field, we create a projection function according to its projection type. If a
++            // field is structurally pinned, then it must be initialized via `PinInit`, if it is not
++            // structurally pinned, then it can be initialized via `Init`.
++            //
++            // The functions are `unsafe` to prevent accidentally calling them.
++            #[allow(dead_code)]
++            #[expect(clippy::missing_safety_doc)]
++            impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
++            where $($whr)*
++            {
++                $(
++                    $(#[$($p_attr)*])*
++                    $pvis unsafe fn $p_field<E>(
++                        self,
++                        slot: *mut $p_type,
++                        init: impl $crate::PinInit<$p_type, E>,
++                    ) -> ::core::result::Result<(), E> {
++                        // SAFETY: TODO.
++                        unsafe { $crate::PinInit::__pinned_init(init, slot) }
++                    }
++
++                    $(#[$($p_attr)*])*
++                    $pvis unsafe fn [<__project_ $p_field>]<'__slot>(
++                        self,
++                        slot: &'__slot mut $p_type,
++                    ) -> ::core::pin::Pin<&'__slot mut $p_type> {
++                        ::core::pin::Pin::new_unchecked(slot)
++                    }
++                )*
++                $(
++                    $(#[$($attr)*])*
++                    $fvis unsafe fn $field<E>(
++                        self,
++                        slot: *mut $type,
++                        init: impl $crate::Init<$type, E>,
++                    ) -> ::core::result::Result<(), E> {
++                        // SAFETY: TODO.
++                        unsafe { $crate::Init::__init(init, slot) }
++                    }
++
++                    $(#[$($attr)*])*
++                    $fvis unsafe fn [<__project_ $field>]<'__slot>(
++                        self,
++                        slot: &'__slot mut $type,
++                    ) -> &'__slot mut $type {
++                        slot
++                    }
++                )*
++            }
+         }
+     };
+ }
+@@ -1207,7 +1225,7 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+         @slot($slot:ident),
+         @guards($($guards:ident,)*),
+         // In-place initialization syntax.
+-        @munch_fields($field:ident <- $val:expr, $($rest:tt)*),
++        @munch_fields($(#[$bind:ident])? $field:ident <- $val:expr, $($rest:tt)*),
+     ) => {
+         let init = $val;
+         // Call the initializer.
+@@ -1216,6 +1234,11 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+         // return when an error/panic occurs.
+         // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
+         unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
++        $crate::__init_internal!(bind($(#[$bind])?):
++            @field($field),
++            @slot($slot),
++            @data($data),
++        );
+         // Create the drop guard:
+         //
+         // We rely on macro hygiene to make it impossible for users to access this local variable.
+@@ -1239,7 +1262,7 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+         @slot($slot:ident),
+         @guards($($guards:ident,)*),
+         // In-place initialization syntax.
+-        @munch_fields($field:ident <- $val:expr, $($rest:tt)*),
++        @munch_fields($(#[$bind:ident])? $field:ident <- $val:expr, $($rest:tt)*),
+     ) => {
+         let init = $val;
+         // Call the initializer.
+@@ -1247,6 +1270,13 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+         // SAFETY: `slot` is valid, because we are inside of an initializer closure, we
+         // return when an error/panic occurs.
+         unsafe { $crate::Init::__init(init, ::core::ptr::addr_of_mut!((*$slot).$field))? };
++
++        $crate::__init_internal!(bind($(#[$bind])?):
++            @field($field),
++            @slot($slot),
++            @data(),
++        );
++
+         // Create the drop guard:
+         //
+         // We rely on macro hygiene to make it impossible for users to access this local variable.
+@@ -1265,12 +1295,51 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+             );
+         }
+     };
+-    (init_slot($($use_data:ident)?):
++    (init_slot(): // No `use_data`, so all fields are not structurally pinned
++        @data($data:ident),
++        @slot($slot:ident),
++        @guards($($guards:ident,)*),
++        // Init by-value.
++        @munch_fields($(#[$bind:ident])? $field:ident $(: $val:expr)?, $($rest:tt)*),
++    ) => {
++        {
++            $(let $field = $val;)?
++            // Initialize the field.
++            //
++            // SAFETY: The memory at `slot` is uninitialized.
++            unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
++        }
++
++        $crate::__init_internal!(bind($(#[$bind])?):
++            @field($field),
++            @slot($slot),
++            @data(),
++        );
++
++        // Create the drop guard:
++        //
++        // We rely on macro hygiene to make it impossible for users to access this local variable.
++        // We use `paste!` to create new hygiene for `$field`.
++        $crate::macros::paste! {
++            // SAFETY: We forget the guard later when initialization has succeeded.
++            let [< __ $field _guard >] = unsafe {
++                $crate::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
++            };
++
++            $crate::__init_internal!(init_slot():
++                @data($data),
++                @slot($slot),
++                @guards([< __ $field _guard >], $($guards,)*),
++                @munch_fields($($rest)*),
++            );
++        }
++    };
++    (init_slot($use_data:ident):
+         @data($data:ident),
+         @slot($slot:ident),
+         @guards($($guards:ident,)*),
+         // Init by-value.
+-        @munch_fields($field:ident $(: $val:expr)?, $($rest:tt)*),
++        @munch_fields($(#[$bind:ident])? $field:ident $(: $val:expr)?, $($rest:tt)*),
+     ) => {
+         {
+             $(let $field = $val;)?
+@@ -1279,6 +1348,12 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+             // SAFETY: The memory at `slot` is uninitialized.
+             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
+         }
++        $crate::__init_internal!(bind($(#[$bind])?):
++            @field($field),
++            @slot($slot),
++            @data($data),
++        );
++
+         // Create the drop guard:
+         //
+         // We rely on macro hygiene to make it impossible for users to access this local variable.
+@@ -1289,7 +1364,7 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+                 $crate::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
+             };
+ 
+-            $crate::__init_internal!(init_slot($($use_data)?):
++            $crate::__init_internal!(init_slot($use_data):
+                 @data($data),
+                 @slot($slot),
+                 @guards([< __ $field _guard >], $($guards,)*),
+@@ -1297,6 +1372,34 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+             );
+         }
+     };
++    (bind(#[bind]):
++        @field($field:ident),
++        @slot($slot:ident),
++        @data($data:ident),
++    ) => {
++        // SAFETY:
++        // - the project function does the correct field projection,
++        // - the field has been initialized,
++        // - the reference is only valid until the end of the initializer.
++        let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
++    };
++    (bind(#[bind]):
++        @field($field:ident),
++        @slot($slot:ident),
++        @data(),
++    ) => {
++        // SAFETY:
++        // - the field is not structurally pinned, since no `use_data` was required to create this
++        //   initializer,
++        // - the field has been initialized,
++        // - the reference is only valid until the end of the initializer.
++        let $field = unsafe { &mut (*$slot).$field };
++    };
++    (bind():
++        @field($field:ident),
++        @slot($slot:ident),
++        @data($($data:ident)?),
++    ) => {};
+     (make_initializer:
+         @slot($slot:ident),
+         @type_name($t:path),
+@@ -1354,7 +1457,7 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+     (make_initializer:
+         @slot($slot:ident),
+         @type_name($t:path),
+-        @munch_fields($field:ident <- $val:expr, $($rest:tt)*),
++        @munch_fields($(#[$bind:ident])? $field:ident <- $val:expr, $($rest:tt)*),
+         @acc($($acc:tt)*),
+     ) => {
+         $crate::__init_internal!(make_initializer:
+@@ -1367,7 +1470,7 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+     (make_initializer:
+         @slot($slot:ident),
+         @type_name($t:path),
+-        @munch_fields($field:ident $(: $val:expr)?, $($rest:tt)*),
++        @munch_fields($(#[$bind:ident])? $field:ident $(: $val:expr)?, $($rest:tt)*),
+         @acc($($acc:tt)*),
+     ) => {
+         $crate::__init_internal!(make_initializer:
 
-Yes, we are well aware -- we have had it in our wish list for upstream
-Rust for a long time.
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+-- 
+2.50.1
 
-We are tackling these things as we go -- e.g. we solved the `alloc`
-panics and the ball on the report-and-continue mode for overflows
-started moving.
-
-Part of Rust for Linux is about making Rust the best language for
-kernel development it can be, after all, and so far upstream Rust has
-been quite helpful on giving us the features we need -- we meet with
-them every two weeks, please join if you have time!
-
-(Side note: the "safety" that Rust "sells" isn't really about avoiding
-panics, although obviously it would be a nice feature to have.)
-
-> Writing a uC topic proposal for Plumbers right now. :)
-
-I see it there, thanks! I can briefly mention the topic in Kangrejos,
-since we will have Rust representation, including from the language
-team.
-
-I don't think the discussion should focus much on "Do we need this?"
-but rather more on "What exactly do we want? Would we be OK with a
-local solution? Do we need/want a global one? Would we be OK with LSP?
-Would we be OK with no panics after optimizations, e.g. a link time
-check? Or do we want full support in the language for guaranteed
-non-panicking functions? Do we need exceptional carve-outs on such
-checking for particular language constructs?" and so on. And, of
-course, "Who has time to write an RFC and implement an experiment
-upstream if an approach is decided".
-
-Getting data on "in practice, how much of an issue it is on the Rust
-side" would help too -- those with actual users running Rust kernel
-code probably can tell us something.
-
-What I would personally expect to happen is that, over time, we
-understand better what are the worst cases we must tackle.
-
-Cheers,
-Miguel
