@@ -1,144 +1,94 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E5830FC39;
-	Wed, 10 Sep 2025 15:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E96B26B777;
+	Wed, 10 Sep 2025 17:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757519878; cv=none; b=KG/jbBEctla7UPOJifsmAknr1HnywB5uHYH3tNHRce9lIA88WyJd6obAIcx4JdnPTyBwYeC12BiZ+F3bkvruQ8HUsdFRVXuS2714TVRljuoe8x3yXsH1p4mU9IECQBo3b6/Tbe+Lnv0Sq17YR+7bNR2DTYTEBafZSen1mvBqJlY=
+	t=1757524232; cv=none; b=CP21uNW4lENkM5X14Cyyjg3XQIFjKT7pjWMUONKA2Cq7195+OgSS4tOvxDod2cYu0S0c/bvU7htRZFaJvyN3f8hlSYCO/cDU3RhKITDAB8dfbMAOmhWoMBKm3P+5/LWX3kFMMU30AdbiGZ+Fy9WlPS4/Xeia4Mir//XoSLhbLuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757519878; c=relaxed/simple;
-	bh=3f3fTdEx0CvLdoBZ9wVCD1IKQF+p+fgc9v1DuV5Nq3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NBNHKQN/9eT+oooOuaMMeUTurmvL93CF6/IFnMJ4n8im6mkS4oVNZo1Rs+TOybg7zHAbbLLtgF5Sg/HBEGolodrbTW9C+BuxMFDmH7MALYPuqPADXG0WqhJaHPFbjLKXKZm80Yw+WweeZf64MAuWP3cK7pNg+5nUWPhBpsDSRV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=HEwrG97l; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1757524232; c=relaxed/simple;
+	bh=PW76yThY2gj9z7rD5xixHiYA1fdwTSwz1aZ0Fy8V/Q8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=KcQCaNSY1oDbzPTgC24bPP+bYEyEt56lvn5wNt0W7dScSkIli/skkOD838i+Xn/iP7LsNTm3jDlK2PyIkiSwxlWZ5lSrtjpf+x9bCufy/hMS9ewBH4UaQd4DaxngvRjt9+Y5qj3jU77/f4mQFbAJM5Rfg9rDTk4lCsUc2/3760w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XhVqs87O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="HEwrG97l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1757519874;
-	bh=3f3fTdEx0CvLdoBZ9wVCD1IKQF+p+fgc9v1DuV5Nq3c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HEwrG97ltNTGGhfByXRt96hJtoDGiAIEPl1ZBG/0gxNkoMWUEK57NiUUR8o/3XdEy
-	 Zizu6wW/RXVlSe/c1T8eEdNUXNfn1vwkVtjoItPq1SbCypubpO2fWCCo7hmMXRQ5eW
-	 Lp2p3/hQXUQejA4chTaczscAXuof5ALn7PfS2vJujtABuJY8OW5f5UaS/YnskCa9aJ
-	 IfZopk8vdjiYMRVxuS/CS8iVaAomIuTwnR43kj6dSAUSJvU8WginbaUe2rhkB95mDF
-	 I3RiqfNYNo2/XqgrtI2VkuKH/kmMNp5TeXv2o/ItlfHtnQSe89fFR/+JCnyCpcSc8+
-	 g/aKgfzRa/XCw==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id E225917E0A2B;
-	Wed, 10 Sep 2025 17:57:52 +0200 (CEST)
-Date: Wed, 10 Sep 2025 17:57:40 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Daniel Stone <daniels@collabora.com>, Rob Herring
- <robh@kernel.org>, Beata Michalska <beata.michalska@arm.com>, Carsten
- Haitzler <carsten.haitzler@foss.arm.com>, Ashley Smith
- <ashley.smith@collabora.com>, Steven Price <steven.price@arm.com>, Jeffrey
- Vander Stoep <jeffv@google.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH v3] rust: drm: Introduce the Tyr driver for Arm Mali
- GPUs
-Message-ID: <20250910175740.2d15d0d5@fedora>
-In-Reply-To: <20250910-tyr-v3-1-dba3bc2ae623@collabora.com>
-References: <20250910-tyr-v3-1-dba3bc2ae623@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhVqs87O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DCFC4CEEB;
+	Wed, 10 Sep 2025 17:10:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757524232;
+	bh=PW76yThY2gj9z7rD5xixHiYA1fdwTSwz1aZ0Fy8V/Q8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=XhVqs87O5vwpjXJZuz/l3R+3PlT9EsG9htJigQx5KGKzbC4D0lzNDRopdYC/X+6bm
+	 VwK3Wz2+9nQ2XeUK9tKarluTxL1WDOWZMLy3Aph5g3z6tnNu6UfawqXGNmleALZLnd
+	 x/IAitRwky2u3Iez09gP4tFErPpSXTB8ZdsXoRJgPNGftLhPZWc3V32M8EKq5+Qt37
+	 GOdroyHfcUbRIz2mt56P5tVJ4CwgFOfSXqtLpH2q4lyCqZGzXKdx6rah1KwQayDw17
+	 SdrdvsjRxMkqMVKpHRpnqcWyqRCcSmPKITQelQx1xrwAu1HRKatnM+0CjGYqT4AdUO
+	 66mywoU8R44ew==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 10 Sep 2025 19:10:27 +0200
+Message-Id: <DCPACBXOKLNF.1ZWCPVR4F9PFQ@kernel.org>
+Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
+Cc: "Dirk Behme" <dirk.behme@de.bosch.com>, "Matthew Maurer"
+ <mmaurer@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Sami Tolvanen"
+ <samitolvanen@google.com>, "Timur Tabi" <ttabi@nvidia.com>, "Benno Lossin"
+ <lossin@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
+ <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
+ <45f6f6e0-bd1e-41e7-8c8e-bb556644a873@de.bosch.com>
+ <DCO4MP8YT3A8.2PFXX7VJ1STD@kernel.org>
+ <2025091014-explicit-grafted-e849@gregkh>
+ <ef5c0c7b-3fb3-4099-966c-62cf08d9b2b4@kernel.org>
+ <2025091027-granny-squatted-c5b5@gregkh>
+ <17254fe7-3dea-411b-b6a7-fa368ec548e7@kernel.org>
+In-Reply-To: <17254fe7-3dea-411b-b6a7-fa368ec548e7@kernel.org>
 
-On Wed, 10 Sep 2025 10:51:18 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+On Wed Sep 10, 2025 at 5:43 PM CEST, Danilo Krummrich wrote:
+> On 9/10/25 5:36 PM, Greg Kroah-Hartman wrote:
+>> I've pushed these to driver-core-testing if you could fix it up as I
+>> don't know what the other change was?
+>
+> Sure, will do.
 
-> Add a Rust driver for ARM Mali CSF-based GPUs. It is a port of Panthor
-> and therefore exposes Panthor's uAPI and name to userspace, and the
-> product of a joint effort between Collabora, Arm and Google engineers.
-> 
-> The aim is to incrementally develop Tyr with the abstractions that are
-> currently available until it is consider to be in parity with Panthor
-> feature-wise.
-> 
-> The development of Tyr itself started in January, after a few failed
-> attempts of converting Panthor piecewise through a mix of Rust and C
-> code. There is a downstream branch that's much further ahead in terms of
-> capabilities than this initial patch.
-> 
-> The downstream code is capable of booting the MCU, doing sync VM_BINDS
-> through the work-in-progress GPUVM abstraction and also doing (trivial)
-> submits through Asahi's drm_scheduler and dma_fence abstractions. So
-> basically, most of what one would expect a modern GPU driver to do,
-> except for power management and some other very important adjacent
-> pieces. It is not at the point where submits can correctly deal with
-> dependencies, or at the point where it can rotate access to the GPU
-> hardware fairly through a software scheduler, but that is simply a
-> matter of writing more code.
-> 
-> This first patch, however, only implements a subset of the current
-> features available downstream, as the rest is not implementable without
-> pulling in even more abstractions. In particular, a lot of things depend
-> on properly mapping memory on a given VA range, which itself depends on
-> the GPUVM abstraction that is currently work-in-progress. For this
-> reason, we still cannot boot the MCU and thus, cannot do much for the
-> moment.
-> 
-> This constitutes a change in the overall strategy that we have been
-> using to develop Tyr so far. By submitting small parts of the driver
-> upstream iteratively, we aim to:
-> 
-> a) evolve together with Nova and rvkms, hopefully reducing regressions
-> due to upstream changes (that may break us because we were not there, in
-> the first place)
-> 
-> b) prove any work-in-progress abstractions by having them run on a real
-> driver and hardware and,
-> 
-> c) provide a reason to work on and review said abstractions by providing
-> a user, which would be tyr itself.
-> 
-> Despite its limited feature-set, we offer IGT tests. It is only tested
-> on the rk3588, so any other SoC is probably not going to work at all for
-> now.
-> 
-> The skeleton is basically taken from Nova and also
-> rust_platform_driver.rs.
-> 
-> Lastly, the name "Tyr" is inspired by Norse mythology, reflecting ARM's
-> tradition of naming their GPUs after Nordic mythological figures and
-> places.
-> 
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> Co-developed-by: Beata Michalska  <beata.michalska@arm.com>
-> Signed-off-by: Beata Michalska  <beata.michalska@arm.com>
-> Co-developed-by: Carsten Haitzler <carsten.haitzler@foss.arm.com>
-> Signed-off-by: Carsten Haitzler <carsten.haitzler@foss.arm.com>
-> Co-developed-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> 
-> Link: https://www.collabora.com/news-and-blog/news-and-events/introducing-tyr-a-new-rust-drm-driver.html
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+* rust: debugfs: Add initial support for directories
+* rust: debugfs: Add support for read-only files
 
-Not that is really matters, but this is
+    [ Fixup build failure when CONFIG_DEBUGFS=3Dn. - Danilo ]
 
-Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
+* rust: debugfs: Add support for writable files
+
+    [ Fix up Result<()> -> Result. - Danilo ]
+
+* rust: debugfs: Add support for callback-based files
+
+    [ Fix up Result<(), Error> -> Result. - Danilo ]
+
+* samples: rust: Add debugfs sample driver
+
+    [ Change ACPI ID "LNUXDEBF" to "LNUXBEEF". - Danilo ]
+
+* rust: debugfs: Add support for scoped directories
+
+    [ Fix up Result<(), Error> -> Result; fix spurious backtick in
+      doc-comment. - Danilo ]
+
+* samples: rust: Add scoped debugfs sample driver
+
+    [ Rename "scoped_debugfs" -> "debugfs_scoped", fix up
+      Result<(), Error> -> Result. - Danilo ]
