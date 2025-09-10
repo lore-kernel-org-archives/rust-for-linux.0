@@ -1,107 +1,122 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FAD5464E;
-	Wed, 10 Sep 2025 04:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116522BD597;
+	Wed, 10 Sep 2025 05:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757479831; cv=none; b=hBhPhC7yBgXx6cPI3XnudbuFDmzW3c5VG79ZFjapUm2VYZFbFALmdIzNidsVwN2XedFAUP0zRRveHqHmfDGb+3F3jbVdWzmeRKNLLFNSaoa8PcDZd7K1cHRoGZnqZZNNzRViRPElEJmm4UiZnzY49wz44O7ud3teWFgzl3y5jN0=
+	t=1757481985; cv=none; b=EdzSlKwlzJ4cII89OePdM1PwGHtEk+6eOGtlDQKmOr4OJkKHXuIyOAm9MymoX6k6Xx9HHeQ1L4nhrHzJ//Q8s06OuYqsSTRr38/2b3bGFm++eZ5WqrSyFCOBcI2U165WktcfR+WZ8oewc1JkbZxhGDFutLBdVduC59XpsCa8Vic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757479831; c=relaxed/simple;
-	bh=pcuqoEviNPbJvknb19Mq3h2E1vBBzM1N/CmTcY4Gtss=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QktWPbZ/B+k7LnNTPQGp6tbyTTx+M/3s6f2swztQVE7YhYtcytVe5VgesUq5va3/3G1F4eMXA0Lue61DHSgvVD34EcTc3XYxyQj4kkUArPuuV8crz8cfoY5/rB6++Vi7kVI6D8eS4voXkj4yiW5Jol57Q0Dx05hK+NoK489BCsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=WCrM0aBA; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1757481985; c=relaxed/simple;
+	bh=bqpgnX0YeaX4gP4gTelyGSzbrLPxwuSSl4ugIJkeFPI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y0bZuDXiBB3zpTYlTt9cGuC8/jtS0DtM7Av7SJYIuIjzM4EHBmHGS8gtdgPoouGbq6cV5Nv8hPF11UaFGZcv2ZyBVfwFPqVeLbgR7KLMKwNjNaPKzAI9uWxfpU+L8l8zmHRyHKTDaixlZfwysql032l7FHDLsZVZVO/l7ZB6pNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3++ctIi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="WCrM0aBA"
-Received: from mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:4985:0:640:840f:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 58C3CC1455;
-	Wed, 10 Sep 2025 07:50:25 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KoBhCrALq4Y0-nXgCZlYu;
-	Wed, 10 Sep 2025 07:50:24 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757479824;
-	bh=pcuqoEviNPbJvknb19Mq3h2E1vBBzM1N/CmTcY4Gtss=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=WCrM0aBAqOA//rJ0ODtyexV9pkGve2LURzb4BxZNUSP/rYsOWMAjrpXeHH+qevwlC
-	 uljE/AAs2oYzp81Le14PnIFPEe6a4Si3BAbSpcThVC2K4bJ35FAjOD3Ne+yylBELKs
-	 ECTURqcH6kokfp11vz6b8d1q69REJCXttMhWXNQQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 10 Sep 2025 07:50:18 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com,
- tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu, aliceryhl@google.com,
- a.hindborg@kernel.org, lossin@kernel.org, bjorn3_gh@protonmail.com,
- gary@garyguo.net, boqun.feng@gmail.com, alex.gaynor@gmail.com,
- ojeda@kernel.org
-Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original
- value
-Message-ID: <20250910075018.706163e2@nimda.home>
-In-Reply-To: <CANiq72=NrS1cFJec6sm7ZY-UPqrzxHKVvPu67Rze02Fg_xeWpQ@mail.gmail.com>
-References: <20250909170013.16025-1-work@onurozkan.dev>
-	<20250909170013.16025-2-work@onurozkan.dev>
-	<CANiq72=kWpxpo23JUYTqxwpsY=E0uUvCHgotRuepZpL-qUqXqw@mail.gmail.com>
-	<20250909204308.74ccedf4@nimda.home>
-	<CANiq72=NrS1cFJec6sm7ZY-UPqrzxHKVvPu67Rze02Fg_xeWpQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3++ctIi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF34CC4CEF0;
+	Wed, 10 Sep 2025 05:26:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757481983;
+	bh=bqpgnX0YeaX4gP4gTelyGSzbrLPxwuSSl4ugIJkeFPI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W3++ctIiiR7UFpzqM9AUidv9AQ1n3Dz1tKeZadPk/293ETffI9nRLBp7aQx9AFled
+	 M5GCYM1B4a3jkkhLPVRESnUtwcqokI2ZK9ojJ1YPCMkJpjHT45Cl+QruyYKY3aGARs
+	 FpovID2F5xbpoec1xDhgC6MFSHIrXsB7JTzFkx6nfm41N+Pm3w/y/LnuGSrU2VRkhJ
+	 x7tt8kh1ACIrOtgalXRNyxNgQvord1Z8/t1JGvHRdIaRHxawPvJnDmdHHJxvC9RDqD
+	 RQiYwqXBRXcawbcju2eKP99VtdepUl8ofw/258NbTAl3BVZxhNFXZSkWH5N4CtNQIn
+	 DIZ8LyFL6amIQ==
+Date: Wed, 10 Sep 2025 08:26:18 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
+	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
+	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
+	Keith Busch <kbusch@kernel.org>, linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v6 03/16] dma-debug: refactor to use physical addresses
+ for page mapping
+Message-ID: <20250910052618.GH341237@unreal>
+References: <cover.1757423202.git.leonro@nvidia.com>
+ <56d1a6769b68dfcbf8b26a75a7329aeb8e3c3b6a.1757423202.git.leonro@nvidia.com>
+ <20250909193748.GG341237@unreal>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909193748.GG341237@unreal>
 
-On Tue, 9 Sep 2025 22:05:53 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+On Tue, Sep 09, 2025 at 10:37:48PM +0300, Leon Romanovsky wrote:
+> On Tue, Sep 09, 2025 at 04:27:31PM +0300, Leon Romanovsky wrote:
+> > From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> <...>
+> 
+> >  include/linux/page-flags.h         |  1 +
+> 
+> <...>
+> 
+> > --- a/include/linux/page-flags.h
+> > +++ b/include/linux/page-flags.h
+> > @@ -614,6 +614,7 @@ FOLIO_FLAG(dropbehind, FOLIO_HEAD_PAGE)
+> >   * available at this point.
+> >   */
+> >  #define PageHighMem(__p) is_highmem_idx(page_zonenum(__p))
+> > +#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
+> 
+> This was a not so great idea to add PhysHighMem() because of "else"
+> below which unfolds to maze of macros and automatically generated
+> functions with "static inline int Page##uname ..." signature.
+> 
+> >  #define folio_test_highmem(__f)	is_highmem_idx(folio_zonenum(__f))
+> >  #else
+> >  PAGEFLAG_FALSE(HighMem, highmem)
 
-> On Tue, Sep 9, 2025 at 7:43=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.de=
-v> wrote:
-> >
-> > That change was incompatible with v1 (due to the different
-> > signature of to_result), which fails to build with my patch. This
-> > version (v2) fixes the issue introduced in v1.
->=20
-> In that case, please try to avoid mentioning "broken" or "fix" or
-> similar, i.e. there is nothing broken in the tree itself (the commit
-> message should mention what is done in the patch). If you want to give
-> extra clarifications, then you can always add them outside the commit
-> message, below the `---` line.
->=20
-> In addition, if the changes here are required to be done all at once,
-> then please do not rebase on top of regulator -- this would need to go
-> into the global Rust tree. Otherwise, any changes that does not need
-> to go at the same time should go separately so that it is easier to
-> land.
->=20
-> Finally, I am not sure I follow the `unwrap_or(0)` here. If one passes
-> a negative enough `i64`, wouldn't that mean `Ok` starts to be
-> returned? Currently all negatives that are not codes are supposed to
-> be bugs.
->=20
+After sleeping over it, the following hunk will help:
 
-I think the best approach would be to return `EINVAL` from `to_result`,
-what do yo think?
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index dfbc4ba86bba2..2a1f346178024 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -614,11 +614,11 @@ FOLIO_FLAG(dropbehind, FOLIO_HEAD_PAGE)
+  * available at this point.
+  */
+ #define PageHighMem(__p) is_highmem_idx(page_zonenum(__p))
+-#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
+ #define folio_test_highmem(__f)        is_highmem_idx(folio_zonenum(__f))
+ #else
+ PAGEFLAG_FALSE(HighMem, highmem)
+ #endif
++#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
 
-> Either way, I think this should probably go on top of
-> https://lore.kernel.org/rust-for-linux/20250829192243.678079-3-ojeda@kern=
-el.org/,
-> since that adds documentation, and thus it would be nice to adjust
-> that one to whatever the generic one should do now, especially if the
-> semantics are changing.
->=20
-> Thanks!
->=20
-> Cheers,
-> Miguel
+ /* Does kmap_local_folio() only allow access to one page of the folio? */
+ #ifdef CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP
 
-I will do that in v3.
 
-Thanks,
-Onur
+> 
+> Thanks
+> 
