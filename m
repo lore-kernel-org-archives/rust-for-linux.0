@@ -1,236 +1,139 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0923191BF
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 11:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9A425A355;
+	Wed, 10 Sep 2025 11:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757502360; cv=none; b=V3dfhpXSMwPhmAzOtixOvhLe6/hpI0GsLKp0f9fsR2wBQuQBrmi6D4t6RRHce6lmgOqQtvlZ/5ekyUL6aa7JRYcZZLX6i96gKln4Aj/h/dzmi8yaZ02ns57ZHD8Uef1teed/FRNfISOoCIFzOL+UQrJFCTuIxFDHhRODqbwObz0=
+	t=1757502956; cv=none; b=pFlkZPxPCG1GEtwny3QWQ5ZOkeJ0LuSb+bz2w3KReaWkfm43iD7aaWeDq527bZetBEi+6DCIUJ0oYBtFH2IQ3EZE8du2X1QtUEbJnf1jbrHgTucPh/9ss7wRyiZEl/yT9Td9tOGpnPbr3ZY+WiXSXVaBMvsF27aarl3X0CipYiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757502360; c=relaxed/simple;
-	bh=y1so4TbjMvONJOfZSG5Fi0E/0DAoWKO86CwMn9gP0XQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KxWtgOh1yYPd9DmiBgZ9jgPI1oEEG2FzLg/0Wxe75oFU20yZlJWCahD/edESHKfvTJLodK0j7RKQHvjQkrDTX8IGeDvrRZTmHZL8bzm7eLU7lJL/53SCghJjxbiAXP/63xW0DH3j2a1Z+KoovJNy0jQoWnji9j8TpDuYgDAqgkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hQc6he65; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1757502956; c=relaxed/simple;
+	bh=BdC2G/sPdAAcWM8ibb7077nWQaIdcyBi3i4pvQB9Mn4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=GD1Gv/G4fe9eilNOIANf4RU0uQTw+JA+1wWoINJeY6uZhZOSLtw2dSbw01AM8X3tbt4C6URLo/vT7fhxsOkZjJpNdT8aZF5qp1EP08nckFcmyCyXE1CrSsSgi6e+Ccw0QolXgND3faYP6Z/+SqngHLqZ7TeIUdbTmpoIHXHTW0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWzGmc8p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hQc6he65"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45dd5e24d16so48699665e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 04:05:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757502356; x=1758107156; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=un8nhzB1WVU7qlNSbKSKoy2s60POBtDvaBHvldZIFU0=;
-        b=hQc6he65J8bQgM9G7anquiwIwFl67d70jy8xYcy3bM8imfynSowdW8qix7JAsBS1A7
-         vQHRh67k+7DUGR9yc3B/qLg/DfITjKB/r681RBnZ17GJNe0oknGxzCh0niR0OLMefU7P
-         PfNMkDWivGhLzdGU/OQtgYuCrlySKUTMQMbIaBvq1n+S7+BdlD9C3bUXKB6CoIPBpI2K
-         7TXKLugNGe4c2S/MkbC+iH6V3K9IR8q/ZEQlKD7n5p5T7aYEGYsScpvn0sun1xk4AMW6
-         pxEVBLmBPklAH2ocklUMOyyWzcG9O+zSn8qB/jwJ3Ay0NRero19x0h1HVulJJI2LPgdC
-         FXGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757502356; x=1758107156;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=un8nhzB1WVU7qlNSbKSKoy2s60POBtDvaBHvldZIFU0=;
-        b=vS4g7CogyUSFM20NodVenX2S1xNHiDMV9HONLR+qzOvnnaJijcCs8dgjywFjO7WYR/
-         V38IKn8SD4BvfsH98Gw3MolheFWDMgMUSJx097UxPSRdk13My+Ei6kCDNTJQefidgtxL
-         bmVciGSwlYvm8w3c5tb7tVEZgiyc3oXemv2y7smEZ+SVxlcAovgPmu4hoxkOj1TDY+WK
-         MJ2JHwxHdmG9qaDD1hQttH6l+CF7lB7gxWYMBpH5+qE6tD7DWImuWv0a1gFLB0QYOCa0
-         6SjbYpmV397Xa4D6A5El6ftiIf8BHKHgE87lRwUS+SjrSshGRu2ZXJmZdbB9LiVjZ3zV
-         +L4A==
-X-Gm-Message-State: AOJu0YzaxYohK8SMe2rQ4v/N6z8CJLF1IpGLrb4/DhrwJZOgAbZUpC1E
-	VpdTwRr1AZZvwJEvmlKsve/htDvO7NUcRaaJ24aUu5lXVsFBe8v/c+q5IvNhR3Ja5bGVhk3K06d
-	V17SNi9PtFfsMVRNsMt5zFtU/4MeRV9J7jXMkRd5U
-X-Gm-Gg: ASbGncvY9WmO1REVDXH1n+B2rvHxZ0NxdyRfKriBgqSDBY2CmHCVC5wj4ozIps4/eqr
-	zI8PzryjKThHHFRFJmmL1a6KO54wxdyPQP3dmESf1fnmpQW9AzqtR09eyyFeTYHTlUwS8OH+R5C
-	QYTUF9IG+dqR4FGRa4cAphbJpQQXi4LPpVDghPsX63Pjf92YHPiFiLU4zboNZlX0cgQBQp7pykX
-	j8uyTS4khlsGnhLvbTIea/KloBwJui9cnDq1Ko0VDonAGmO5Z1+a4udQg==
-X-Google-Smtp-Source: AGHT+IG/+91gjeD8g7gPwMhTt1ikXFi5N0FLHEo0UHw9OVEivkBLcW7lSPD7VE1w1l5KB6lOFVSe+BSVtZ+jf3FIAL8=
-X-Received: by 2002:a05:600c:5299:b0:45d:dd47:b45f with SMTP id
- 5b1f17b1804b1-45dddef7fdamr121487525e9.31.1757502356255; Wed, 10 Sep 2025
- 04:05:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWzGmc8p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60833C4CEF0;
+	Wed, 10 Sep 2025 11:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757502954;
+	bh=BdC2G/sPdAAcWM8ibb7077nWQaIdcyBi3i4pvQB9Mn4=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=pWzGmc8pSRElyq4MLXJdB+mp2TyP1/q0W+/TF+r7eOyXCEvqEMj5iuno0Ff4iJEJN
+	 CdGp/fDFxjXggrgxlIIv9Ag4ctNkIXyxtvksZxZFOknM9aWFoEhu2EFP5/aVZ9WrQ2
+	 tfCEpvBMuXKGeU44LF/kRSyG0C+1bhe8k50hR8F7mQVyAPaOQ4J9KmDXl3HzNqc9tf
+	 mhWzK5wKEzOAXtHYdB8XUnc44GWXLYB93ROFnfd1Sfry6lEZ78VM2i1doEPLUK/BdY
+	 FgZ92sVS92KYw+UMis0bYYfniksCt245FOv2RE5g/eMHrZTCC1qifSIr4/DsJ/HxFb
+	 Q9zTlzMrKj7Pg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250909170013.16025-1-work@onurozkan.dev> <20250909170013.16025-2-work@onurozkan.dev>
- <aMEaE2NEU2FctgH2@google.com> <20250910135848.1ea11519@nimda.home>
-In-Reply-To: <20250910135848.1ea11519@nimda.home>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 10 Sep 2025 13:05:42 +0200
-X-Gm-Features: AS18NWB-5lon1PP9gczsJp-JwKcaPqyaIo_NMa9DPgfAMAEtZ0Iu-VPS9gr-fMY
-Message-ID: <CAH5fLggb=_Vtk74RONc+pQUSc1XrVi=jdD1=mHNs6-67ZCYB0A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original value
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com, 
-	tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu, a.hindborg@kernel.org, 
-	lossin@kernel.org, bjorn3_gh@protonmail.com, gary@garyguo.net, 
-	boqun.feng@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 10 Sep 2025 13:15:50 +0200
+Message-Id: <DCP2STI9M1XX.3RHBQDPQOC3JO@kernel.org>
+Subject: Re: [PATCH v2] rust: pin-init: add `#[bind]` attribute to access
+ previously initialized fields
+Cc: "Benno Lossin" <lossin@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Fiona Behrens" <me@kloenk.dev>, "Alban
+ Kurti" <kurti@invicto.ai>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250910100755.2361281-1-lossin@kernel.org>
+ <aMFQL-Hq1KvBG5lh@google.com> <DCP1Y8N4SRRF.25V7F6PV5ODCQ@kernel.org>
+ <CAH5fLgg+-oz_cP9=ke+ukp9qYZAsD=hKqvvGfkJWRcCKdrTQ-g@mail.gmail.com>
+In-Reply-To: <CAH5fLgg+-oz_cP9=ke+ukp9qYZAsD=hKqvvGfkJWRcCKdrTQ-g@mail.gmail.com>
 
-On Wed, Sep 10, 2025 at 12:59=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.de=
-v> wrote:
+On Wed Sep 10, 2025 at 12:40 PM CEST, Alice Ryhl wrote:
+> On Wed, Sep 10, 2025 at 12:36=E2=80=AFPM Benno Lossin <lossin@kernel.org>=
+ wrote:
+>>
+>> On Wed Sep 10, 2025 at 12:17 PM CEST, Alice Ryhl wrote:
+>> > On Wed, Sep 10, 2025 at 12:07:53PM +0200, Benno Lossin wrote:
+>> >> Assigning a field a value in an initializer macro can be marked with =
+the
+>> >> `#[bind]` attribute. Doing so creates a `let` binding with the same
+>> >> name. This `let` binding has the type `Pin<&mut T>` if the field is
+>> >> structurally pinned or `&mut T` otherwise (where `T` is the type of t=
+he
+>> >> field).
+>> >>
+>> >> Signed-off-by: Benno Lossin <lossin@kernel.org>
+>> >
+>> > Is there a reason we can't apply this to all fields and avoid the
+>> > attribute?
+>>
+>> Adding the attribute was due to Boqun's concern on v1 [1]. I think it
+>> might be surprising too, but I'm also happy with no attribute.
+>>
+>> [1]: https://lore.kernel.org/all/aLshd0_C-1rh3FAg@tardis-2.local
 >
-> On Wed, 10 Sep 2025 06:26:27 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
+> IMO the ideal is if it works without an attribute. Perhaps trying that
+> in the kernel is a reasonable experiment to find out whether that's
+> reasonable to do for the general language feature?
 >
-> > On Tue, Sep 09, 2025 at 08:00:13PM +0300, Onur =C3=96zkan wrote:
-> > > Current `to_result` helper takes a `c_int` and returns `Ok(())` on
-> > > success and this has some issues like:
-> > >
-> > >     - Callers lose the original return value and often have to store
-> > >     it in a temporary variable before calling `to_result`.
-> > >
-> > >     - It only supports `c_int`, which makes callers to unnecessarily
-> > >     cast when working with other types (e.g. `u16` in phy
-> > >     abstractions). We even have some places that ignore to use
-> > >     `to_result` helper because the input doesn't fit in `c_int`
-> > >     (see [0]).
-> > >
-> > > [0]: https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
-> > >
-> > > This patch changes `to_result` to be generic and also return the
-> > > original value on success.
-> > >
-> > > So that the code that previously looked like:
-> > >
-> > >     let ret =3D unsafe { bindings::some_ffi_call() };
-> > >     to_result(ret).map(|()| SomeType::new(ret))
-> > >
-> > > can now be written more directly as:
-> > >
-> > >     to_result(unsafe { bindings::some_ffi_call() })
-> > >     .map(|ret| SomeType::new(ret))
-> > >
-> > > Similarly, code such as:
-> > >
-> > >     let res: isize =3D $some_ffi_call();
-> > >     if res < 0 {
-> > >         return Err(Error::from_errno(res as i32));
-> > >     }
-> > >
-> > > can now be used with `to_result` as:
-> > >
-> > >     to_result($some_ffi_call())?;
-> > >
-> > > This patch only fixes the callers that broke after the changes on
-> > > `to_result`. I haven't included all the improvements made possible
-> > > by the new design since that could conflict with other ongoing
-> > > patches [1]. Once this patch is approved and applied, I am planning
-> > > to follow up with creating a "good first issue" on [2] for those
-> > > additional changes.
-> > >
-> > > [1]: https://lore.kernel.org/rust-for-linux/?q=3Dto_result
-> > > [2]: https://github.com/Rust-for-Linux/linux
-> > >
-> > > Link:
-> > > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/n=
-ear/536374456
-> > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> >
-> > > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> > > index a41de293dcd1..6563ea71e203 100644
-> > > --- a/rust/kernel/error.rs
-> > > +++ b/rust/kernel/error.rs
-> > > @@ -376,12 +376,19 @@ fn from(e: core::convert::Infallible) ->
-> > > Error { pub type Result<T =3D (), E =3D Error> =3D
-> > > core::result::Result<T, E>;
-> > >
-> > >  /// Converts an integer as returned by a C kernel function to an
-> > > error if it's negative, and -/// `Ok(())` otherwise.
-> > > -pub fn to_result(err: crate::ffi::c_int) -> Result {
-> > > -    if err < 0 {
-> > > -        Err(Error::from_errno(err))
-> > > +/// returns the original value otherwise.
-> > > +pub fn to_result<T>(code: T) -> Result<T>
-> > > +where
-> > > +    T: Copy + TryInto<i32>,
-> > > +{
-> > > +    // Try casting into `i32`.
-> > > +    let casted: crate::ffi::c_int =3D code.try_into().unwrap_or(0);
-> > > +
-> > > +    if casted < 0 {
-> > > +        Err(Error::from_errno(casted))
-> > >      } else {
-> > > -        Ok(())
-> > > +        // Return the original input value.
-> > > +        Ok(code)
-> > >      }
-> > >  }
-> >
-> > I don't think this is the best way to declare this function. The
-> > conversions I would want are:
-> >
-> > * i32 -> Result<u32>
-> > * isize -> Result<usize>
-> > * i64 -> Result<u64>
-> >
-> > Your commit messages mentions i16, but does the error types even fit
-> > in 16 bits? Maybe. But they don't fit in i8. That is to say, I think
-> > it should support all the types larger than i32 (the errors fit in
-> > those types too), but for the ones that are smaller, it might not
-> > make sense if the type is too small. That's the reverse of what you
-> > have now.
-> >
-> > We probably need a new trait. E.g.:
-> >
-> > trait ToResult {
-> >     type Unsigned;
-> >     fn to_result(self) -> Result<Self::Unsigned, Error>;
-> > }
-> >
-> > impl ToResult for i32 {
-> >     type Unsigned =3D u32;
-> >     fn to_result(self) -> Result<u32, Error> {
-> >         ...
-> >     }
-> > }
-> >
-> > impl ToResult for isize {
-> >     type Unsigned =3D usize;
-> >     fn to_result(self) -> Result<usize, Error> {
-> >         ...
-> >     }
-> > }
-> >
-> > pub fn to_result<T: ToResult>(code: T) -> Result<T::Unsigned> {
-> >     T::to_result(code)
-> > }
-> >
->
-> `Error::from_errno` is limited to i32, that's why I followed the
-> `TryInto<i32>` approach, but I like this design too.
+>> > Do we have a place that might be able to use this?
+>>
+>> I didn't find one, but Danilo plans to base some changes on top this
+>> cycle that need this.
 
-If you pass an i32 that is not a valid errno, then it becomes EINVAL.
-In the case of `isize`, I would say that if a negative isize does not
-fit in i32, then that should fall into the same scenario.
+We can use it in devres right away:
 
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index d04e3fcebafb..97c616a1733d 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -137,10 +137,11 @@ pub fn new<'a, E>(
+     {
+         let callback =3D Self::devres_callback;
+=20
+-        try_pin_init!(&this in Self {
++        try_pin_init!(Self {
+             dev: dev.into(),
+             callback,
+             // INVARIANT: `inner` is properly initialized.
++            #[bind]
+             inner <- Opaque::pin_init(try_pin_init!(Inner {
+                     devm <- Completion::new(),
+                     revoke <- Completion::new(),
+@@ -150,8 +151,7 @@ pub fn new<'a, E>(
+             //
+             // [1] https://github.com/Rust-for-Linux/pin-init/pull/69
+             _add_action: {
+-                // SAFETY: `this` is a valid pointer to uninitialized memo=
+ry.
+-                let inner =3D unsafe { &raw mut (*this.as_ptr()).inner };
++                let inner =3D core::ptr::from_ref(inner.into_ref().get_ref=
+());
+=20
+                 // SAFETY:
+                 // - `dev.as_raw()` is a pointer to a valid bound device.
+@@ -160,7 +160,7 @@ pub fn new<'a, E>(
+                 //    properly initialized, because we require `dev` (i.e.=
+ the *bound* device) to
+                 //    live at least as long as the returned `impl PinInit<=
+Self, Error>`.
+                 to_result(unsafe {
+-                    bindings::devm_add_action(dev.as_raw(), Some(callback)=
+, inner.cast())
++                    bindings::devm_add_action(dev.as_raw(), Some(callback)=
+, inner.cast_mut().cast())
+                 }).inspect_err(|_| {
+                     let inner =3D Opaque::cast_into(inner);
+=20
 
-> > > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> > > index 6373fe183b27..22b72ae84c03 100644
-> > > --- a/rust/kernel/miscdevice.rs
-> > > +++ b/rust/kernel/miscdevice.rs
-> > > @@ -79,7 +79,7 @@ pub fn register(opts: MiscDeviceOptions) -> impl
-> > > PinInit<Self, Error> { // the destructor of this type deallocates
-> > > the memory. // INVARIANT: If this returns `Ok(())`, then the `slot`
-> > > will contain a registered // misc device.
-> > > -                to_result(unsafe { bindings::misc_register(slot) })
-> > > +                to_result(unsafe { bindings::misc_register(slot)
-> > > }).map(|_| ())
-> >
-> > This still uses the `map` pattern. Please change it too.
-> >
-> > Alice
->
->
-> I left that part intentionally and explained the reason in v2 changelog.
+Together with the initializer code blocks this becomes quite nice. :)
 
-I missed that, ok. I still prefer Ok::<...>()
+> Danilo, what plans do you have?
+
+Besides that, the plan is [1].
+
+[1] https://lore.kernel.org/all/DCL32RUQ6Z56.1ERY7JBK6O1J6@kernel.org/
