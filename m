@@ -1,59 +1,59 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C02274B29
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 10:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F16274B29
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 10:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757499814; cv=none; b=jeMJddglzDajb2ElocM1P8+KtZCtdmgqZfo2hHi6fL0SbjMv0iJ1Qtx/5eo7YiTQPAbuo8oH6bBluqRjTqAx7Yxx9UEGftA2oDyeuQ8qMHXRfQyNh2ducRXVFnFO1Ir2KRnMZuBL1jeMoXkR5d6yHvPcTY1x6qxJ3o0gZAn+cDs=
+	t=1757499869; cv=none; b=CuepOukuJ8h1/SaMvLIPg+d5bfD1heqAD38Mqzv3KlRfeb4p9zHSssSYAYAAWY9uwrB7HMnXTxAbckobUpPyyfjDSRfdYF5Bl+upLoEouImIv0821WX/vj8Jjbi8g575u7oNd/8SzSfVwqaXu4aoskYyKsoWKvrPM1d3JlerHRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757499814; c=relaxed/simple;
-	bh=PGttvBL9JFQtk+P9936QbIX5psM2HFw2fTKtEkCUi+s=;
+	s=arc-20240116; t=1757499869; c=relaxed/simple;
+	bh=JNI1xafTZn6iCK80v9bddB92GDc91qjYHFvm0IrIlYU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Osd0YcPr9eu9yNoUaa9mPfSZRUbPOwQDwz2BFj6vYiNC3AJVJ0o9nJyI6gZ8HLF2CUOn3bFea3yzOabBXaUf+mKhbCq4zxrw281vzaMn6eDzut5iQ7KUJXRjINqzSzVDzvsEHkx2Z7MiCj7lyU0XXh1OWahB1YfQ9hcnRSVsgg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1nA5JWSX; arc=none smtp.client-ip=209.85.128.54
+	 To:Cc:Content-Type; b=LjdEfUYm7z0fOyriwXa0oXj4T1HK4Yfnh4T8Sx7AFuEUucK1o+0yENK2KIv77xNHAvzVE1/XKfmXpcsiUXFJPEr6kE32ucCrXTxBlySf1jEJWvG/KrzhBI/0pvKHSEuSTjPEnCzanfZRgfudw4dnr6prfqebCh4IV9BtpxxeGwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=td/mqn6r; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1nA5JWSX"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45ddc7d5731so28142565e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 03:23:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="td/mqn6r"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3dea538b826so5585055f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 03:24:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757499811; x=1758104611; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1757499866; x=1758104666; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0tufP6z/2etbln4lUc4bR0WynCFYZ0JZvTvmDKR+ycI=;
-        b=1nA5JWSXaVA+Ro3GqgR9d6dUMzrY1ad0fDc8uqggFlOQTLM2S2bcE0P4u/gQ2ysg3G
-         edqYmnoWhvmViTERpGA6nDn8+otwSnyrfBRt69vxj2jQCyXQvUZM6QseQ8AOEvgAD/dO
-         DWhCs0mglamnXxXqqmK5b4NDnYkihWS4dSnLeHBJBY//Gzj0eh1yIrhuCmk+rcK6PjJl
-         Y6PNZ9VWi2Th+gZvGsOy3hXu9zLnEE1XKTnSo0ieWM/eH8MZ1wCwHnO8UZHqmMVFNJ5S
-         CbKnN1+P00DPE7rkTZEccETW+VmI5DlO+z91ljunwxPYCdoPhGsPNO6N1ZD4djYDfL6s
-         mVLQ==
+        bh=kW0FZZNyJC6DQyL0h+B3+4W3ivZ1mhg1DGb6+1jin8s=;
+        b=td/mqn6rZx+wbPD4l7n1Y1cMpyKaXClnS1OfxI1HvwTNmwjza92S6kuXUneZNERATi
+         Xzik5H2ExZvJek6uGUiluu7iO4uF8B1fcIqELzYgDf8Za939LXjAA4IwxnnogBi8jzk6
+         UabwWDp2Sk8x5SkJwzPuTcfNsdf1LUCD71lpSkLQddBl933qCgt8nVU6pedHz3r9VPig
+         iOqfjfyE/K6AeQtSFY9c6yqCzgfmQebmxzQtzFTs+Vha0dw5NUPzlnoRyJZ0UENh73/b
+         gadnI5MmCKLUe40+dZLhZg3zQ4ZPw/6Vk2zRhm9dL6YMdHJyXvl+NZif+8itnvs5E3JD
+         P6Nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757499811; x=1758104611;
+        d=1e100.net; s=20230601; t=1757499866; x=1758104666;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0tufP6z/2etbln4lUc4bR0WynCFYZ0JZvTvmDKR+ycI=;
-        b=KJ+Q5wasnO2jnbU8bTNF9quxrecTs5kORRedWOzRVzvTgITIT+esu1zSSGEQSRrsW3
-         Y9rOWpBLNpEqa4ZweROHkPNgL6F145V+XRJNnTh4EbIh5WTAJ1z01pXw/8hareo0uop/
-         ZHHua8RsRMiIPZPtMxREMIIP2sCnbkgYd3qwWxALy6xKaq/Yh6BPbgjAuOq+GjQlc5Wd
-         p97VBSIo6GKhvohdW7jtYbGCalNHDHwKsIHa5zr3/l1UIPrCrLuHu9a2N12y1JzXBbLP
-         XHoEPzMDs58z3a34AymWQQokG0KcqQaIV4XhRhbowCXInw7wpOEGxiUf7B88pKxSbWMR
-         fkww==
-X-Forwarded-Encrypted: i=1; AJvYcCW2ZqGEMZUCCo7C5tblWcyQQlj7jWHbv37MQ1MhWhDtaTo+eHnhKYRwt+4K+U1zeidPxJTsEyMgx3RcbEMqAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyl0hUv5xSGCyjBxglvq1rdHqjmBtt/bauBGQVFFDyVEOc6UMxf
-	/yaI8PeTnzEaliSsQ3dpRMUXkC0t7EA+WMjwu+o+AIQny8xRFjs5tuilVi4cJKXF2SWovfHjJvJ
-	GcyEG/XJKTiw/3V/8l8ZBkvU3zhsImCzNGd/GXB0g
-X-Gm-Gg: ASbGncsglDCNpDCJmX3w2K6fSqOObabJMWYg1AOyfisHdxeQpJrY037ORQoylQa0zBV
-	3Uu3g/4VafpCYjiWWixRsmZ9odshK3jctlzS1agjZ/FLYMsw/QL3AXb4Q7WNG3RIbVuplVWaLkD
-	nYzaCcEYIzRaxkfBE0aygH1lxH8TpjmRdJ3P7FEtJ0nmekCUCpSlT/4FLgsgtzpAKjfsntZrMn+
-	jw79vbI3xq9VGUOCkNXnMTsQUnlLMs9rufCOc2iUeh8fqpbDx8sjDeeJA==
-X-Google-Smtp-Source: AGHT+IFjEgYFGrcmPgggqL7SOlE8Cvi/8ijfclUwOksIktRtxum1JWy8VXL6gR6ObDPw404jEWbDXLTruwRGyXw9t5A=
-X-Received: by 2002:a05:6000:420f:b0:3d1:e22d:df2f with SMTP id
- ffacd0b85a97d-3e641969ce2mr16378740f8f.23.1757499810745; Wed, 10 Sep 2025
- 03:23:30 -0700 (PDT)
+        bh=kW0FZZNyJC6DQyL0h+B3+4W3ivZ1mhg1DGb6+1jin8s=;
+        b=eSZC5qYCsOk7Kdcx4cXKn24d5lD1qI+9AQznCUB9JQAgMucfD4SMHvEIyWS52es64T
+         8uRgx6lfb0zy1wNRmrgxR1yKqECF3FnUynDSyf6/V9gRZone+m1aWQzexiqxZXCcVjSX
+         cTBlW1TG8pfSy8rYud8pnkESVHIuZqlkx56kEbuaeEYPI1qo9+JNCN4AFLZIzk/F7g6s
+         zrqf7kJk1VF0okYZnWsocj3fPncZkQdlavI06OzD6IXExhBk3BpSgKegxi6a+MIR/E/z
+         t6/3r/S6Wdpk+iMcVwf8uNxkGixLobsBfH7h8whsdiHhDadxKhqvzStdJf/Vo297C3z3
+         UKzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhczKZoGB8euzkjJ/GYV24ZgrPMq2z+Wb8Hof4CIYT9bkwN2YOB1ziSnNkkag3jZtB8eAJoKtSlloI2m3I+g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXr0b8fEJYsnJKc+ax+PSwuww59EshL3RHz8YdCnNqTi82et5r
+	ib/WCxK+YmnDEfD6DJhKReny/Mch33dpakn9yPInvoznll4E3yZNA/zFoNUfbqO4hRWo5OJsL4H
+	Ad2gKfUwm/CbBCGtobu8DBYyvovd6Z/s2lxS952pQ
+X-Gm-Gg: ASbGncv3vAR7/Ia2HX0VGbGLd7zPDq20wOUZmG6jOEi1XxrCQSEH8jJ6jxSfsD4/77H
+	blKBHmYjoGoi6Hvgz3H/bZ9KfkNO3Mq6QePXSSLIiQ8Q/kJW9Oo2JkHFaZqKzifHtgC2FNrsg+X
+	4GEuSH7f2DUhQUr+IBRrgkJqCuqczmhF5KQ2KXq03jAp7sjX43SVR0emrrat9CcoMZ6kFszbfyK
+	nNL1V60HSSQgb0ZqUkE01ZbH96TlFi8F3MPW3VPvHk++Ig=
+X-Google-Smtp-Source: AGHT+IGpIjBaaH28lZlXigtwqbex6iaGE3z3xj8Kfy1iwRJ6hJC1qIRa6GrV11hAN529VTFfyR9gXBuuvFaBwq0xgac=
+X-Received: by 2002:a05:6000:40dd:b0:3dc:2912:14d0 with SMTP id
+ ffacd0b85a97d-3e643ff65cbmr12031836f8f.33.1757499865819; Wed, 10 Sep 2025
+ 03:24:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,11 +61,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250905171209.944599-1-lossin@kernel.org> <20250905171209.944599-2-lossin@kernel.org>
-In-Reply-To: <20250905171209.944599-2-lossin@kernel.org>
+ <CAH5fLgjD+S0nBvDMuTfMYd6-o-3f=xGztk+jZQRhm1_vmNiHAw@mail.gmail.com>
+In-Reply-To: <CAH5fLgjD+S0nBvDMuTfMYd6-o-3f=xGztk+jZQRhm1_vmNiHAw@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 10 Sep 2025 12:23:17 +0200
-X-Gm-Features: AS18NWD6xYvlI13ABsfyCh0SoWvgFM4fz7y9hvPt5Zv6mWQjfHhmjU85KdCzgzg
-Message-ID: <CAH5fLgjD+S0nBvDMuTfMYd6-o-3f=xGztk+jZQRhm1_vmNiHAw@mail.gmail.com>
+Date: Wed, 10 Sep 2025 12:24:12 +0200
+X-Gm-Features: AS18NWApose0qYKV2Zj1c4N1wmOA4t8FrjkdH5ovzXiiZUzBAmcn_x5yfJZd9Kc
+Message-ID: <CAH5fLgi5M+9gaH8QmwLd=7Gto7C6nceLd6g25a4O7hcrax16kQ@mail.gmail.com>
 Subject: Re: [PATCH 2/2] rust: pin-init: add pin projections to `#[pin_data]`
 To: Benno Lossin <lossin@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -78,99 +79,52 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 5, 2025 at 7:12=E2=80=AFPM Benno Lossin <lossin@kernel.org> wro=
-te:
+On Wed, Sep 10, 2025 at 12:23=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >
-> Make the `#[pin_data]` macro generate a `*Projection` struct that holds
-> either `Pin<&mut Field>` or `&mut Field` for every field of the original
-> struct. Which version is chosen depends on weather there is a `#[pin]`
-> or not respectively. Access to this projected version is enabled through
-> generating `fn project(self: Pin<&mut Self>) -> SelfProjection<'_>`.
->
-> Link: https://github.com/Rust-for-Linux/pin-init/pull/75/commits/2d698367=
-d646c7ede90e01aa22842c1002d017b3
-> [ Adapt workqueue to use the new projection instead of its own, custom
->   one - Benno ]
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> ---
->  rust/kernel/workqueue.rs    | 10 ++-----
->  rust/pin-init/src/macros.rs | 60 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 62 insertions(+), 8 deletions(-)
->
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index b9343d5bc00f..6ca14c629643 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -356,18 +356,12 @@ struct ClosureWork<T> {
->      func: Option<T>,
->  }
->
-> -impl<T> ClosureWork<T> {
-> -    fn project(self: Pin<&mut Self>) -> &mut Option<T> {
-> -        // SAFETY: The `func` field is not structurally pinned.
-> -        unsafe { &mut self.get_unchecked_mut().func }
-> -    }
-> -}
-> -
->  impl<T: FnOnce()> WorkItem for ClosureWork<T> {
->      type Pointer =3D Pin<KBox<Self>>;
->
->      fn run(mut this: Pin<KBox<Self>>) {
-> -        if let Some(func) =3D this.as_mut().project().take() {
-> +        if let Some(func) =3D this.as_mut().project().func.take() {
-> +            // if let Some(func) =3D this.as_mut().project_func().take()=
- {
->              (func)()
->          }
->      }
-> diff --git a/rust/pin-init/src/macros.rs b/rust/pin-init/src/macros.rs
-> index 9ced630737b8..d225cc144904 100644
-> --- a/rust/pin-init/src/macros.rs
-> +++ b/rust/pin-init/src/macros.rs
-> @@ -831,6 +831,17 @@ macro_rules! __pin_data {
->              $($fields)*
->          }
->
-> +        $crate::__pin_data!(make_pin_projections:
-> +            @vis($vis),
-> +            @name($name),
-> +            @impl_generics($($impl_generics)*),
-> +            @ty_generics($($ty_generics)*),
-> +            @decl_generics($($decl_generics)*),
-> +            @where($($whr)*),
-> +            @pinned($($pinned)*),
-> +            @not_pinned($($not_pinned)*),
-> +        );
-> +
->          // We put the rest into this const item, because it then will no=
-t be accessible to anything
->          // outside.
->          const _: () =3D {
-> @@ -980,6 +991,55 @@ fn drop(&mut self) {
->              stringify!($($rest)*),
->          );
->      };
-> +    (make_pin_projections:
-> +        @vis($vis:vis),
-> +        @name($name:ident),
-> +        @impl_generics($($impl_generics:tt)*),
-> +        @ty_generics($($ty_generics:tt)*),
-> +        @decl_generics($($decl_generics:tt)*),
-> +        @where($($whr:tt)*),
-> +        @pinned($($(#[$($p_attr:tt)*])* $pvis:vis $p_field:ident : $p_ty=
-pe:ty),* $(,)?),
-> +        @not_pinned($($(#[$($attr:tt)*])* $fvis:vis $field:ident : $type=
-:ty),* $(,)?),
-> +    ) =3D> {
-> +        $crate::macros::paste! {
-> +            #[doc(hidden)]
-> +            $vis struct [< $name Projection >] <'__pin, $($decl_generics=
-)*> {
+> On Fri, Sep 5, 2025 at 7:12=E2=80=AFPM Benno Lossin <lossin@kernel.org> w=
+rote:
+> >
+> > Make the `#[pin_data]` macro generate a `*Projection` struct that holds
+> > either `Pin<&mut Field>` or `&mut Field` for every field of the origina=
+l
+> > struct. Which version is chosen depends on weather there is a `#[pin]`
+> > or not respectively. Access to this projected version is enabled throug=
+h
+> > generating `fn project(self: Pin<&mut Self>) -> SelfProjection<'_>`.
+> >
+> > Link: https://github.com/Rust-for-Linux/pin-init/pull/75/commits/2d6983=
+67d646c7ede90e01aa22842c1002d017b3
+> > [ Adapt workqueue to use the new projection instead of its own, custom
+> >   one - Benno ]
+> > Signed-off-by: Benno Lossin <lossin@kernel.org>
+> > ---
+> >  rust/kernel/workqueue.rs    | 10 ++-----
+> >  rust/pin-init/src/macros.rs | 60 +++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 62 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> > index b9343d5bc00f..6ca14c629643 100644
+> > --- a/rust/kernel/workqueue.rs
+> > +++ b/rust/kernel/workqueue.rs
+> > @@ -356,18 +356,12 @@ struct ClosureWork<T> {
+> >      func: Option<T>,
+> >  }
+> >
+> > -impl<T> ClosureWork<T> {
+> > -    fn project(self: Pin<&mut Self>) -> &mut Option<T> {
+> > -        // SAFETY: The `func` field is not structurally pinned.
+> > -        unsafe { &mut self.get_unchecked_mut().func }
+> > -    }
+> > -}
+> > -
+> >  impl<T: FnOnce()> WorkItem for ClosureWork<T> {
+> >      type Pointer =3D Pin<KBox<Self>>;
+> >
+> >      fn run(mut this: Pin<KBox<Self>>) {
+> > -        if let Some(func) =3D this.as_mut().project().take() {
+> > +        if let Some(func) =3D this.as_mut().project().func.take() {
+> > +            // if let Some(func) =3D this.as_mut().project_func().take=
+() {
 
-I'm not sure we want $vis here. That's the visibility of the original
-struct, but I don't think we want it to be pub just because the struct
-is.
-
-Otherwise looks reasonable.
-
-Alice
+Spurious comment.
