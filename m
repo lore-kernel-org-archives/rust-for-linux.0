@@ -1,193 +1,291 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2087.outbound.protection.outlook.com [40.107.94.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4D928B501;
-	Wed, 10 Sep 2025 17:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0D926D4D8;
+	Wed, 10 Sep 2025 18:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.87
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757526913; cv=pass; b=KIfmuyHTvFTT4AwmiGfceoomeoSIVdX5u8FvtqhwwjcHBzhAi+refuSfZU780FOVDZHKUekDEkNRuwtLCRLDvx3HNUbgWsrqmPdcgJORo9WsNXFxMo8HNPC87auhUw4dC67+qihrxH4ZR5uX/p/5AXCvddA0Uw/D0vxgOhrFevk=
+	t=1757527801; cv=fail; b=nEX+zsqA71wc9VpVJbymEPOAYiRmpweeOoGQZTI8H0KLzScP3258Ip0Ncg6jABWT+iOpsJFpIxt3+q2VhDsvM/tMYvgLKtmyj0ik7of0wgXJcMzUvHbEYCk6krAArrnIE+JJFs7WcyJ7/62LbUZjpeSa5xXZFhxN04q0CQsEcOM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757526913; c=relaxed/simple;
-	bh=y+Vk5IPf5yAXY3Xy6BiDHoJWHile6Cy9+H+G9a3U388=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QagQkzzSozV20wM9yFNnYU54ujJh1fuiZsS44qd1vLhvCd5NbGlgIHU3QmhaoGgLd70Zr2o+QQAUPa8pt9QNiFZ9VY0dnnrlTnpmxy20Q9mNgHaA5FVeE/ElkXFUyMyqsI8IEQGQUmjaAdq8k46RHXAwmc3J9K51kBnEtWfx4v0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=c9dETBzu; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1757527801; c=relaxed/simple;
+	bh=DATg4Xk//+u5XxJ3sFEeBybITpM3hJ2cJfbG5MybrIE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Vccx4rXCHuf24gOtppxaDrrLDEFDVd7Qbnjh1qPF6zSZqRy3msjUKa7fLFaKtDoQBUTfLgcbY5YmxgN9phg5X3meYyxalergIMsWncQeWabBPmLpvl6Gu/jZ/Vb7E24exiyTaeRkxygx7vBGiAz6uxieHWNxSwXEJPwhGQtwDSo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=U0kHgsVB; arc=fail smtp.client-ip=40.107.94.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="c9dETBzu"
-ARC-Seal: i=1; a=rsa-sha256; t=1757526896; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=kjzBnca2hLI5URWNWxH7CM4COzQ3XKoIYKajHHxDkvQ9wjEzil44Ua+wq3EHPJLYfawTjAr67TfIY1C53HyXmG1tUgl+kyxcewluvJ9KfijKYOcEtOrUaHxtVOT4rVYcxLiCEmnJdrlPRA0GtyQybAcYYNISsoxLCqU+1qAewGI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757526896; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=oHmbwbkQQvKLhyz4wCp3NOMYVa7zCDTSqMwuifJeQ4I=; 
-	b=ITWNLCwAjBspmUcTZASJZhdyKW3UGVbJnJhq8wf4XsaaPZYZDi/vt/P9BHwEEM3Q9h47nC82ztqFfcH6FxNKO5YZfC1LEL/f1WCJthiYSQRElH+5JNjrGbswRKQhhwFba5g4BPI3Q9+CXsBCHnQAiQz1IByruNPJ+0REf8xMPds=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757526896;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=oHmbwbkQQvKLhyz4wCp3NOMYVa7zCDTSqMwuifJeQ4I=;
-	b=c9dETBzuNM0e8PJCV7e0gFeM+YXqzmwXObpKwHkaPxPtrJ7VM7cBYz8Bst6B6o04
-	qc9W1fLrFHXF4vBvLO9nz9/PLBMisTIkk13ONwhvYdMJN+jWysh/hrlpw0M1gfEb1U2
-	5uNhddBYpbcHonLhyknfg7PzyXRnRXEaUCKa7LCk=
-Received: by mx.zohomail.com with SMTPS id 1757526894359276.53351403212207;
-	Wed, 10 Sep 2025 10:54:54 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Wed, 10 Sep 2025 14:54:32 -0300
-Subject: [PATCH v3 2/2] rust: regulator: add devm_enable and
- devm_enable_optional
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="U0kHgsVB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q9H/RpwWCbwbmVeWgeF4pR8Z0IQ7caPm9hIOmtLPS75TUMEt3HXNR/hHj/E86XdjkCslwoH6DBPADVxPRIuf6bV81Yor3/a9UisPr5fsXUaiEcQc/LEAMbHcPceQwWDOP43cJlK8XRNpBbO+VKgfknatlgsBCHB/N7qztY8TyG7Fx2rszqugU2Ae8bpYR7Q7ECdcxN6J1A/9n8Ry/B2Q0zj4d/O98Lxtw1jrz5a6ruFxyepbWxAg6pnPOoAcA0ss+TuVERHThAxkcGz+X1W5eUfphIRtqLhX8LCUJS9/5HdGuM7K1MGAll6q7Pad9T7BGcKx+RwS8MbVePevQ+RS5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MWiIpJWrhfDIsBu+iDrginfVPcc5u5MN4r3Avx+i1FE=;
+ b=rYi385H94HL6+q1PbVqR9CaL+BUjC5rcCS6lx8bOCP7QWkPslvDXzpuDZIT9r/mxs+K7iYcUU0isPplG37wJ2Kzz/B5ohfk+tVHZt9T7CGkqXeGgJOg3CXrYrRWiiCem/15txOIQBQAa/na5Vu3P7m13BZvQ2LGplyV2FQu474dog0F1uWsnpRq1C+E2INNYBgXqf64jsaXEFGAP5ZqZfj7bxmY2WXcwYh3nq1iocq01cZUjMM5DMjeGyGcKG3PlsjtiFOHFmVg3OGrkji/rwumvdGIQ/V61Ewg16wmY4U/VmmIrgp2h3Q6qCP4rFREJrEcY9GKJKu5p/B9yal+YMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MWiIpJWrhfDIsBu+iDrginfVPcc5u5MN4r3Avx+i1FE=;
+ b=U0kHgsVBjfMmXa3+4TriERio9evBIKr1tIXgIxoZdcqLNw/oZELK9WWpGqHFbyl/uocxsG3mslJRe95PkKwEJVJofg7YpACSIbI6ryLI+b2mNud9TXZuWbwedw4Hvnmth8R4eKa5q3Jl0y6qmb+muIl8a7qJWhDoyr8x6Iy8IrUxxIVfQ/9TW3+S5RVMzaiT1nJ8St/xD1N/SbNoECiPUMt8BO1POd2RYEBsa6tfgNxGWf/Xtrew37qFe8BI0A2b9rx4jbl51hEqah6sguZ02ueQ7r5GY06FQPEE+qgQfI5tf2C+5S2mheG1Jex4j49m2T/4R+472xElmQy9KkGetg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by MN0PR12MB6367.namprd12.prod.outlook.com (2603:10b6:208:3d3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
+ 2025 18:09:56 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
+ 18:09:56 +0000
+Date: Wed, 10 Sep 2025 14:09:55 -0400
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org, acourbot@nvidia.com,
+	Alistair Popple <apopple@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	joel@joelfernandes.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: Re: [PATCH] rust: pci: add PCI interrupt allocation and management
+ support
+Message-ID: <20250910180955.GA598866@joelbox2>
+References: <20250910035415.381753-1-joelagnelf@nvidia.com>
+ <DCOZMX59W82I.1AH7XVW3RUX2D@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DCOZMX59W82I.1AH7XVW3RUX2D@kernel.org>
+X-ClientProxiedBy: BL1P223CA0040.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:5b6::13) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250910-regulator-remove-dynamic-v3-2-07af4dfa97cc@collabora.com>
-References: <20250910-regulator-remove-dynamic-v3-0-07af4dfa97cc@collabora.com>
-In-Reply-To: <20250910-regulator-remove-dynamic-v3-0-07af4dfa97cc@collabora.com>
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|MN0PR12MB6367:EE_
+X-MS-Office365-Filtering-Correlation-Id: fc526f58-867f-45a0-e81a-08ddf0953f9e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fGMbzt2s+iYQSijQsHlOERfRT0/TVCmWKmxkb5SeUKbZpQn6ygooNcnkM9ob?=
+ =?us-ascii?Q?BmBAV6QTsqEVuY3ITxoQmo654+UVI6UL++I0yVHZEoHsvocw8Ho7MtGBda+R?=
+ =?us-ascii?Q?KOihNrX2xlXn0vh2012rp9y4npD1gnmbO/rabaRcDW02DWLQYGmI8xvoDLGZ?=
+ =?us-ascii?Q?vj9LP7yTmS0eMe0zGXxsWUt+2wRFMtIiV4y7GL2ls1uddszu6WBoZFzipKsy?=
+ =?us-ascii?Q?VfOJJ04w1WLKmUX/Ts5Ze4J2aGOtaKnZh2KGPn9rtl7jMPQNYV2KHxBshV6J?=
+ =?us-ascii?Q?VE39+NEWQy0tR+AHP7IrJL7GDGa8OtEjC12eBC+R1TCt/7MjO0qXDEbUuvJm?=
+ =?us-ascii?Q?7yb+/7g9XiqRfAfOn6FgdSIQN/ikmaQQ7iPHWpLdq9rG+nhp4XSvQ1P0sA1v?=
+ =?us-ascii?Q?WeSN4Sz57si185Cz5lH82m7rjri4rg0jhkbRQM3U/F5f9GyA+mKs6Sulz8li?=
+ =?us-ascii?Q?1rS21sALKLqLET4HloJjyBf2eOgivnPa7KwqEVfFrr1v1CYi/iwagwgFzJU9?=
+ =?us-ascii?Q?MeDYVVqg0iPg7520lEO3+9016xsMZrBY2CaogfY2OpoK7g8qNzLQcwVCOGNP?=
+ =?us-ascii?Q?0fsWMKVhdDtqEkj4xDlZIhsdR/rH5q8ScBQEL/3tMDCbu/J8BY+ptRHIahES?=
+ =?us-ascii?Q?qGRv7AMNFhPg7CeJPxXEm5XW20ZKHVdvObXLT0RsPCIBLdBCoIrSR8roR9/E?=
+ =?us-ascii?Q?4n4yaqMg3HJAcOFksa4OltGKC5bEl6kbOBV4Acy9ESEs3rrd8WFOyVs//i+m?=
+ =?us-ascii?Q?6G4WwEXAma/+Q/LOBMM+1M3GPl5Edg6XwOVzbmaf8EaXRlCKjlquCJskOuck?=
+ =?us-ascii?Q?XEqdLIqjEbOi3kaLI+ZFwFcYULe00MktuYzZOrJ/D7MET1FwtWGN44+WSYa2?=
+ =?us-ascii?Q?3nlSXAJuEUdxqc6dusL+Ak9dtL3Ofj0Hyf7avIbQQOVmV7l4QLt697Lk4PNy?=
+ =?us-ascii?Q?5WfJaMD6W9b6CkZRvXunPcK4QTTFRDahq/AlIwBn+o7Z5fhXZWYe6cJvkoAt?=
+ =?us-ascii?Q?kIU/cMVTTT2U3V4y4DfYZha0eAp4vEZvtTUMWZdUU/HhVWxqCDhivAkVtA1k?=
+ =?us-ascii?Q?FiORy3T7KJhrhKPafB1T+r90/Gf70tCB81Aq6vw/xXn7jagK+1OlPB6DhViK?=
+ =?us-ascii?Q?9I3qysP2MdvTDA0Z2362VCz5H6GIR8jva6Gr686RdIjhXOJ2em1Bwc3H85Is?=
+ =?us-ascii?Q?W38Kuf/1+ss+BgQyV7muJWmu4e9ZNPUYnF2MyMjO/4s0YO+TH3muuvEl7Qw7?=
+ =?us-ascii?Q?1ss5o+OeKonxXQYankTZJyMQ0GhAj6IavLXKhTWhF/Tt9wKZ+xzFspq+LzLU?=
+ =?us-ascii?Q?IAObDOWCI0vTPjF7KCORSnS+U3Gk+5aT8jZbDvsB0oZaqqDx7MxrFcEX6ZUK?=
+ =?us-ascii?Q?WXwvpblALRj3tHgOrTpI6OYO3dPIwD1zZTXIyJsR8iMVElbfUx+NDRcVGoeL?=
+ =?us-ascii?Q?XY+W5N6Mnzw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?h99G/PSxpznkHxSIXlF9W8zAqGNDIJgoR9mYasCxAuL9RacpvGVtr2xz4yO1?=
+ =?us-ascii?Q?AYbNFFvzQLA1LF+10fiD5iczN9LdLJ/WugK08SVHrtOUT5GWOjouQwk0REu4?=
+ =?us-ascii?Q?6YTO2gcvky/cs/GBDE+8VLoNd4kFWuETG43EMg/lyTdmdmnZhf8CxN/0f4X0?=
+ =?us-ascii?Q?HVawCshg/Ch4l2AUVJWODe1cEHqLcrd1tZbb8h+i8UBpTglctnWKseAiLHR5?=
+ =?us-ascii?Q?njd/OHuEN+pTFj3y5ipoB05Xq0p4Vyl10yV3G4MYoA0r3beTA6QimcNxUJU0?=
+ =?us-ascii?Q?jBeoXKOYISK7O6+wXl5IcuiFS/c7u9sJ+dN5PRrnfGXI7LdrgaTA0MYYYUb/?=
+ =?us-ascii?Q?mGYfmMJR69kz2iVubIxSHqiTJCUud0VrOiaBWK2D0cYo13s4vXlsjMseVujr?=
+ =?us-ascii?Q?68DkHli5hH8qDBF5Lc38Ork7bclXhf8bXyqFM2u1L8VpDvkxKNK56nE588EY?=
+ =?us-ascii?Q?FVVYDp9yOBeLzPZJxVwF4lQX4dVT0QE3jKBBkQkC2jQhgesJEsw4IeTKDkX4?=
+ =?us-ascii?Q?X+daWpTxf8X4wqMD+ayM76snpr6X9ziHid70TF94ljyoKla/u8VTuUzx9qO4?=
+ =?us-ascii?Q?C9s3pAF54Ytr2tcTRR30MJJgBW84j5s3OQK/n0dyTMHE4xtLhvBIJbB95dBu?=
+ =?us-ascii?Q?ivflSHEkd5vNH2eNgHUkU/CgSx8kYCmgeP+RFyk7wOGbdxtWAdeHWLRjKacD?=
+ =?us-ascii?Q?ma4q55TBhPkyKSAReLmhyrCJA+VGwcxKIwTl0aiNi4CZODHlEqSugssP5d4R?=
+ =?us-ascii?Q?OD5lsNiJ+PNcZddyZKUpRGShoK09KGWdvYPQoKNeITF38YDqjmxqHgvrcqR/?=
+ =?us-ascii?Q?0Jp/fN7jlSrEQyYhQnI47RSvhPgSjUHwg6TLmA8JSUUAd3D3bNexqbW7WVYC?=
+ =?us-ascii?Q?uJASFKVhtetnrLANM9+GJmQ0YSGbDBl3D8rYcn9uF7ZBROXMVMj3ACd4F3uU?=
+ =?us-ascii?Q?Wxf1D8NocUnxI4ZfdgnR5ZepCWPXd/bTY7CrO1o4zW6M+LuRMlZombdbzsyk?=
+ =?us-ascii?Q?neUvR//qZ0hpOEDMBVzfFv7sq+pRijDUbx0PnGK7Oa/MtOf0coOF4THm85vH?=
+ =?us-ascii?Q?X0JJ+ipP5uT1D5+mFRMBateFD9csh7m8b5HpQ5ly7ASr2bpUO81odjvCEF7V?=
+ =?us-ascii?Q?ptiWpPKj8usOrRPO+80AOFLX7Lxv3/qm5AYR0jShutnGt+pZPFfUAlfMyv99?=
+ =?us-ascii?Q?SoZBrHZGjKrFd4TGV9gdR3OvZhQuiLgbPSeSqcBEm3dA3mEDl/+uPeCLA+aQ?=
+ =?us-ascii?Q?pBrppuczrAkIeoAo9Wwne4OOARp+9wVuzhG29+ml52X0yLXBr6W50yYGSwlA?=
+ =?us-ascii?Q?F20DXXO2BSfG15iNk8533vgytog+kkD7iN4ebWYJhYHVhtmGJtVSEOPud5wD?=
+ =?us-ascii?Q?u72SAiUNVXodsMUbBW+bRAmHA35/bKLWSV/ioAcCgTf7CX5ur/nv0ybrvo3D?=
+ =?us-ascii?Q?u2b0UcgZPjjYjWW9ppcsbFSS0Ws5BTmagQapyveUgV3MXNtr4NJUTYfZY2Ot?=
+ =?us-ascii?Q?t7tsebitTPKvAKYA2lJKoqniidOyIT/dfYaBbMa7yu8Zs8jzi0m+7n6kzmuR?=
+ =?us-ascii?Q?dEU4ETDgx8pZ1b3dF99UcS3bF7mJ8/Tf3Cf4TqGZ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc526f58-867f-45a0-e81a-08ddf0953f9e
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 18:09:56.6115
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: //n0JNta1c0gREpagwcG8oLLVPx+coqHty3lElsdvpI544a/9BxuRI/678r/rLhz9IuB4971qNYIj6WxD2qBjA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6367
 
-A lot of drivers only care about enabling the regulator for as long as
-the underlying Device is bound. This can be easily observed due to the
-extensive use of `devm_regulator_get_enable` and
-`devm_regulator_get_enable_optional` throughout the kernel.
+On Wed, Sep 10, 2025 at 10:47:05AM +0200, Danilo Krummrich wrote:
+> On Wed Sep 10, 2025 at 5:54 AM CEST, Joel Fernandes wrote:
+> >  impl Device<device::Bound> {
+> 
+> The Bound context is not enough for some of the methods below, some of them
+> require the Core context, more below.
 
-Therefore, make this helper available in Rust. Also add an example
-noting how it should be the default API unless the driver needs more
-fine-grained control over the regulator.
+Actually my patch already does that, the diff format creates confusion. Some
+of the below methods (like alloc) are in fact added to the device::Core
+context.
 
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/helpers/regulator.c | 10 ++++++++
- rust/kernel/regulator.rs | 60 +++++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 69 insertions(+), 1 deletion(-)
+> > +    /// Free all allocated IRQ vectors for this device.
+> > +    ///
+> > +    /// This should be called to release interrupt resources when they are no longer needed,
+> > +    /// during driver unbind or removal.
+> > +    pub fn free_irq_vectors(&self) {
+> > +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> > +        // `pci_free_irq_vectors` is safe to call even if no vectors are currently allocated.
+> > +        unsafe { bindings::pci_free_irq_vectors(self.as_raw()) };
+> > +    }
+> 
+> This requires the Core context, but we should not provide this method at all to
+> begin with; it puts the burden on drivers to remember calling this.
+> Instead, alloc_irq_vectors() should register a devres object with
+> devres::register(), so this gets called automatically when the device is
+> unbound.
 
-diff --git a/rust/helpers/regulator.c b/rust/helpers/regulator.c
-index cd8b7ba648ee33dd14326c9242fb6c96ab8e32a7..11bc332443bd064f4b5afd350ffc045badff9076 100644
---- a/rust/helpers/regulator.c
-+++ b/rust/helpers/regulator.c
-@@ -40,4 +40,14 @@ int rust_helper_regulator_is_enabled(struct regulator *regulator)
- 	return regulator_is_enabled(regulator);
- }
- 
-+int rust_helper_devm_regulator_get_enable(struct device *dev, const char *id)
-+{
-+	return devm_regulator_get_enable(dev, id);
-+}
-+
-+int rust_helper_devm_regulator_get_enable_optional(struct device *dev, const char *id)
-+{
-+	return devm_regulator_get_enable_optional(dev, id);
-+}
-+
- #endif
-diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
-index 5ea2307f02df4a10c1c8c07b3b8c134d13519b69..b55a201e5029fdfbf51d2d54180dc82372d7a571 100644
---- a/rust/kernel/regulator.rs
-+++ b/rust/kernel/regulator.rs
-@@ -18,7 +18,7 @@
- 
- use crate::{
-     bindings,
--    device::Device,
-+    device::{Bound, Device},
-     error::{from_err_ptr, to_result, Result},
-     prelude::*,
- };
-@@ -69,6 +69,41 @@ pub struct Error<State: RegulatorState> {
-     /// The regulator that caused the error, so that the operation may be retried.
-     pub regulator: Regulator<State>,
- }
-+/// Obtains and enables a [`devres`]-managed regulator for a device.
-+///
-+/// This calls [`regulator_disable()`] and [`regulator_put()`] automatically on
-+/// driver detach.
-+///
-+/// This API is identical to `devm_regulator_get_enable()`, and should be
-+/// preferred over the [`Regulator<T: RegulatorState>`] API if the caller only
-+/// cares about the regulator being enabled.
-+///
-+/// [`devres`]: https://docs.kernel.org/driver-api/driver-model/devres.html
-+/// [`regulator_disable()`]: https://docs.kernel.org/driver-api/regulator.html#c.regulator_disable
-+/// [`regulator_put()`]: https://docs.kernel.org/driver-api/regulator.html#c.regulator_put
-+pub fn devm_enable(dev: &Device<Bound>, name: &CStr) -> Result {
-+    // SAFETY: `dev` is a valid and bound device, while `name` is a valid C
-+    // string.
-+    to_result(unsafe { bindings::devm_regulator_get_enable(dev.as_raw(), name.as_ptr()) })
-+}
-+
-+/// Same as [`devm_enable`], but calls `devm_regulator_get_enable_optional`
-+/// instead.
-+///
-+/// This obtains and enables a [`devres`]-managed regulator for a device, but
-+/// does not print a message nor provides a dummy if the regulator is not found.
-+///
-+/// This calls [`regulator_disable()`] and [`regulator_put()`] automatically on
-+/// driver detach.
-+///
-+/// [`devres`]: https://docs.kernel.org/driver-api/driver-model/devres.html
-+/// [`regulator_disable()`]: https://docs.kernel.org/driver-api/regulator.html#c.regulator_disable
-+/// [`regulator_put()`]: https://docs.kernel.org/driver-api/regulator.html#c.regulator_put
-+pub fn devm_enable_optional(dev: &Device<Bound>, name: &CStr) -> Result {
-+    // SAFETY: `dev` is a valid and bound device, while `name` is a valid C
-+    // string.
-+    to_result(unsafe { bindings::devm_regulator_get_enable_optional(dev.as_raw(), name.as_ptr()) })
-+}
- 
- /// A `struct regulator` abstraction.
- ///
-@@ -146,6 +181,29 @@ pub struct Error<State: RegulatorState> {
- /// }
- /// ```
- ///
-+/// If a driver only cares about the regulator being on for as long it is bound
-+/// to a device, then it should use [`devm_enable`] or [`devm_enable_optional`].
-+/// This should be the default use-case unless more fine-grained control over
-+/// the regulator's state is required.
-+///
-+/// [`devm_enable`]: crate::regulator::devm_enable
-+/// [`devm_optional`]: crate::regulator::devm_enable_optional
-+///
-+/// ```
-+/// # use kernel::prelude::*;
-+/// # use kernel::c_str;
-+/// # use kernel::device::{Bound, Device};
-+/// # use kernel::regulator;
-+/// fn enable(dev: &Device<Bound>) -> Result {
-+///     // Obtain a reference to a (fictitious) regulator and enable it. This
-+///     // call only returns whether the operation succeeded.
-+///     regulator::devm_enable(dev, c_str!("vcc"))?;
-+///
-+///     // The regulator will be disabled and put when `dev` is unbound.
-+///     Ok(())
-+/// }
-+/// ```
-+///
- /// ## Disabling a regulator
- ///
- /// ```
+Great idea, thanks I will try this out.
+> 
+> Note that a cleanup through devres is not in conflict with the Core context
+> requirement.
 
--- 
-2.51.0
+Got it.
 
+> > +    /// Allocate IRQ vectors for this PCI device.
+> > +    ///
+> > +    /// Allocates between `min_vecs` and `max_vecs` interrupt vectors for the device.
+> > +    /// The allocation will use MSI-X, MSI, or legacy interrupts based on the `irq_types`
+> > +    /// parameter and hardware capabilities. When multiple types are specified, the kernel
+> > +    /// will try them in order of preference: MSI-X first, then MSI, then legacy interrupts.
+> > +    /// This is called during driver probe.
+> > +    ///
+> > +    /// # Arguments
+> > +    ///
+> > +    /// * `min_vecs` - Minimum number of vectors required
+> > +    /// * `max_vecs` - Maximum number of vectors to allocate
+> > +    /// * `irq_types` - Types of interrupts that can be used
+> > +    ///
+> > +    /// # Returns
+> > +    ///
+> > +    /// Returns the number of vectors successfully allocated, or an error if the allocation
+> > +    /// fails or cannot meet the minimum requirement.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// // Allocate using any available interrupt type in the order mentioned above.
+> > +    /// let nvecs = dev.alloc_irq_vectors(1, 32, IrqTypes::all())?;
+> > +    ///
+> > +    /// // Allocate MSI or MSI-X only (no legacy interrupts)
+> > +    /// let msi_only = IrqTypes::default()
+> > +    ///     .with(IrqType::Msi)
+> > +    ///     .with(IrqType::MsiX);
+> > +    /// let nvecs = dev.alloc_irq_vectors(4, 16, msi_only)?;
+> > +    /// ```
+> > +    pub fn alloc_irq_vectors(
+> > +        &self,
+> > +        min_vecs: u32,
+> > +        max_vecs: u32,
+> > +        irq_types: IrqTypes,
+> > +    ) -> Result<u32> {
+> > +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> > +        // `pci_alloc_irq_vectors` internally validates all parameters and returns error codes.
+> > +        let ret = unsafe {
+> > +            bindings::pci_alloc_irq_vectors(self.as_raw(), min_vecs, max_vecs, irq_types.raw())
+> > +        };
+> > +
+> > +        to_result(ret)?;
+> > +        Ok(ret as u32)
+> > +    }
+> 
+> This is only valid to be called from the Core context, as it modifies internal
+> fields of the inner struct device.
+
+It is called from core context, the diff format confuses.
+> 
+> Also, it would be nice if it would return a new type that can serve as argument
+> for irq_vector(), such that we don't have to rely on random integers.
+
+Makes sense, I will do that.
+
+> > +
+> > +    /// Get the Linux IRQ number for a specific vector.
+> > +    ///
+> > +    /// This is called during driver probe after successful IRQ allocation
+> > +    /// to obtain the IRQ numbers for registering interrupt handlers.
+> > +    ///
+> > +    /// # Arguments
+> > +    ///
+> > +    /// * `vector` - The vector index (0-based)
+> > +    ///
+> > +    /// # Returns
+> > +    ///
+> > +    /// Returns the Linux IRQ number for the specified vector, or an error if the vector
+> > +    /// index is invalid or no vectors are allocated.
+> > +    pub fn irq_vector(&self, vector: u32) -> Result<u32> {
+> 
+> This method is already staged for inclusion in v6.18 in driver-core-next. Please
+> make sure to base changes on top of the tree mentioned in the maintainers file,
+> driver-core in this case.
+> 
+> The signature of the existing method is:
+> 
+> 	pub fn irq_vector(&self, index: u32) -> Result<IrqRequest<'_>>
+> 
+> We return an IrqRequest, which captures the IRQ number *and* the corresponding
+> device, such that you can't get the combination wrong.
+> 
+> Maybe it's worth looking at improving the index argument with a new type as
+> mentioned above.
+
+Ah Ok, thanks for pointing this out. I will rebase and reuse this.
+
+thanks,
+
+ - Joel
+
+> 
+> > +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> > +        let irq = unsafe { bindings::pci_irq_vector(self.as_raw(), vector) };
+> > +
+> > +        to_result(irq)?;
+> > +        Ok(irq as u32)
+> > +    }
+> >  }
