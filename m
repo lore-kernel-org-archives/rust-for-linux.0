@@ -1,263 +1,685 @@
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D459226D1F;
-	Wed, 10 Sep 2025 12:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5D0306491;
+	Wed, 10 Sep 2025 12:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757508975; cv=none; b=QPmdlJNE15yg51W09N3cT4Xg+g9WhXfzKl2UuiEd4pD+3MlOSpb3q3O/bkrCr3g9sDK6cuvQOOQa8gZJo0A9tVYEe2Ys6eMA05g+sR96GdRF7dE5cKDN53uMPa3MsRSR4qmwLP78uWdMfhSfLGwJ1hK3cZWCVJ92y71dlultftE=
+	t=1757509172; cv=none; b=fSqGA7T9psxe5UT6fDR9l24kY82kSsJrFNQM4Low8O4e5ANsY47P3W7xy2snph4HtY/RwtcfBu9VEcojrTugUwuldofn/5RrIHd9ZgAJLqBwWPbWMM/IRQ+A8sJoopoJJph2TntnDaEeme/L1B910Jjc4t/TRDy1ddDas4U6csA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757508975; c=relaxed/simple;
-	bh=53WONVDAOrYbWHTo33FZdUjYOHITBRsjxqcruBXoacs=;
+	s=arc-20240116; t=1757509172; c=relaxed/simple;
+	bh=TA4gHHxevK3RxqZ2rpHDwGDA/YEDAlO7Zz4Iz5XUBRM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d0KOLC8KaWrzDj/YpPJ/BmmelbDznZ8Ia8/Jcq2vw5ZpleynATqzVeasDfiPGfgG2EEiZeAfUrdHUa0xBNWWNnTeamfH5uUZURn9MTzhmHfeLB/625kg4NyEy2E7eaD4g0FKMBBO0FrksoRzi0fFAcAWZegQ/fcMW50EsAHHnsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=lv/ovcp8; arc=none smtp.client-ip=178.154.239.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	 MIME-Version:Content-Type; b=FB87dfVxemaRwtbm2DRsYHh53hAEI/pm7WsDIwH1xH+Iq/1i/aehnMPQMJRuL4g5Cj0kBioFmbHE3X2Wz7LN/uKMdRGLoe3cSAg690OpL5rqMm/MRbm2aTNAzt/ohBt6Hagfh7J03DX5VuXcRvbkDasBKkXquGOtLi/vTpeOYUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=in+P2WCS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="lv/ovcp8"
-Received: from mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:3d8d:0:640:b127:0])
-	by forward500a.mail.yandex.net (Yandex) with ESMTPS id E5D708270B;
-	Wed, 10 Sep 2025 15:56:03 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id xtJu85GMomI0-XmJY2Gmq;
-	Wed, 10 Sep 2025 15:56:03 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757508963;
-	bh=Fxi1AP0JW+8xhnVMhlRNLoIDo/8xyqHk/5hEL4LoNXs=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=lv/ovcp846IBQvOLCRLst39sEhQRc3Wy+stTiMKSImc+h80DwNoMFInWJ9l19op4w
-	 dMRBMrSsnPrsUyhtS02byRk6eqVUCH4BTcqWI0bzNYeuztUWGh3m8eN6Rxv/C+HaBc
-	 hD7J8gkPP2VVf+CI+5AGSHGqhaeQbaL/TQnGTVJM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 10 Sep 2025 15:55:58 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com,
- tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu,
- a.hindborg@kernel.org, lossin@kernel.org, bjorn3_gh@protonmail.com,
- gary@garyguo.net, boqun.feng@gmail.com, alex.gaynor@gmail.com,
- ojeda@kernel.org
-Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original
- value
-Message-ID: <20250910155558.36ebf8df@nimda.home>
-In-Reply-To: <CAH5fLgjT3LLpg-CjdbR5_+sgBZEsrCP-c4eJt=E3NmtVDKMJ5Q@mail.gmail.com>
-References: <20250909170013.16025-1-work@onurozkan.dev>
-	<20250909170013.16025-2-work@onurozkan.dev>
-	<aMEaE2NEU2FctgH2@google.com>
-	<20250910135848.1ea11519@nimda.home>
-	<CAH5fLggb=_Vtk74RONc+pQUSc1XrVi=jdD1=mHNs6-67ZCYB0A@mail.gmail.com>
-	<20250910154746.03a3bc2f@nimda.home>
-	<CAH5fLgjT3LLpg-CjdbR5_+sgBZEsrCP-c4eJt=E3NmtVDKMJ5Q@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="in+P2WCS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E0CC4CEF0;
+	Wed, 10 Sep 2025 12:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757509172;
+	bh=TA4gHHxevK3RxqZ2rpHDwGDA/YEDAlO7Zz4Iz5XUBRM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=in+P2WCSutotYjkQjbIkbf52Pd2tKc9reoMrghl9ITk7IHGdgIdE3DgXNwsDfXK1K
+	 gujU/5oCGumFeKkkfkfHQleKfBrSDor6WeCiF4/NcM5rRyxoMLSdHWsIwPxK4wWxwA
+	 /9wMv+Nx1f2BXcceW8z4O354N6056OoTbEvOD35h3viEmJwxS7CYjEIABon3RWv2gK
+	 Pt8YCj0agBeIIX5Uu/9FknQUD6GhhSJg5/bts/Qyz0KPrEbw3Dvp7VOo81n63tzbyn
+	 p23MOuzOVn/MIAJAKIJ//M72/lquRi8fsb5b7M0UtXeSdJQgekyMv0mAmJMs2br+zT
+	 iqrTLKxAgHG0w==
+Date: Wed, 10 Sep 2025 14:59:26 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List
+ <linux-doc@vger.kernel.org>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl
+ <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 08/19] tools/docs: sphinx-build-wrapper: add a
+ wrapper for sphinx-build
+Message-ID: <20250910145926.453f5441@foz.lan>
+In-Reply-To: <e13837a0ac46dffe39c600d11fdf33f538bdc9c3@intel.com>
+References: <cover.1756969623.git.mchehab+huawei@kernel.org>
+	<e019f951190a732f9ac0b21bcda7e49af3bd5cbd.1756969623.git.mchehab+huawei@kernel.org>
+	<e13837a0ac46dffe39c600d11fdf33f538bdc9c3@intel.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 10 Sep 2025 14:50:03 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
+Em Wed, 10 Sep 2025 13:46:17 +0300
+Jani Nikula <jani.nikula@linux.intel.com> escreveu:
 
-> On Wed, Sep 10, 2025 at 2:47=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.d=
-ev> wrote:
+> On Thu, 04 Sep 2025, Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> > There are too much magic inside docs Makefile to properly run
+> > sphinx-build. Create an ancillary script that contains all
+> > kernel-related sphinx-build call logic currently at Makefile.
 > >
-> > On Wed, 10 Sep 2025 13:05:42 +0200
-> > Alice Ryhl <aliceryhl@google.com> wrote:
+> > Such script is designed to work both as an standalone command
+> > and as part of a Makefile. As such, it properly handles POSIX
+> > jobserver used by GNU make.
 > >
-> > > On Wed, Sep 10, 2025 at 12:59=E2=80=AFPM Onur =C3=96zkan <work@onuroz=
-kan.dev>
-> > > wrote:
-> > > >
-> > > > On Wed, 10 Sep 2025 06:26:27 +0000
-> > > > Alice Ryhl <aliceryhl@google.com> wrote:
-> > > >
-> > > > > On Tue, Sep 09, 2025 at 08:00:13PM +0300, Onur =C3=96zkan wrote:
-> > > > > > Current `to_result` helper takes a `c_int` and returns
-> > > > > > `Ok(())` on success and this has some issues like:
-> > > > > >
-> > > > > >     - Callers lose the original return value and often have
-> > > > > > to store it in a temporary variable before calling
-> > > > > > `to_result`.
-> > > > > >
-> > > > > >     - It only supports `c_int`, which makes callers to
-> > > > > > unnecessarily cast when working with other types (e.g.
-> > > > > > `u16` in phy abstractions). We even have some places that
-> > > > > > ignore to use `to_result` helper because the input doesn't
-> > > > > > fit in `c_int` (see [0]).
-> > > > > >
-> > > > > > [0]:
-> > > > > > https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
-> > > > > >
-> > > > > > This patch changes `to_result` to be generic and also
-> > > > > > return the original value on success.
-> > > > > >
-> > > > > > So that the code that previously looked like:
-> > > > > >
-> > > > > >     let ret =3D unsafe { bindings::some_ffi_call() };
-> > > > > >     to_result(ret).map(|()| SomeType::new(ret))
-> > > > > >
-> > > > > > can now be written more directly as:
-> > > > > >
-> > > > > >     to_result(unsafe { bindings::some_ffi_call() })
-> > > > > >     .map(|ret| SomeType::new(ret))
-> > > > > >
-> > > > > > Similarly, code such as:
-> > > > > >
-> > > > > >     let res: isize =3D $some_ffi_call();
-> > > > > >     if res < 0 {
-> > > > > >         return Err(Error::from_errno(res as i32));
-> > > > > >     }
-> > > > > >
-> > > > > > can now be used with `to_result` as:
-> > > > > >
-> > > > > >     to_result($some_ffi_call())?;
-> > > > > >
-> > > > > > This patch only fixes the callers that broke after the
-> > > > > > changes on `to_result`. I haven't included all the
-> > > > > > improvements made possible by the new design since that
-> > > > > > could conflict with other ongoing patches [1]. Once this
-> > > > > > patch is approved and applied, I am planning to follow up
-> > > > > > with creating a "good first issue" on [2] for those
-> > > > > > additional changes.
-> > > > > >
-> > > > > > [1]: https://lore.kernel.org/rust-for-linux/?q=3Dto_result
-> > > > > > [2]: https://github.com/Rust-for-Linux/linux
-> > > > > >
-> > > > > > Link:
-> > > > > > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/top=
-ic/x/near/536374456
-> > > > > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > > > >
-> > > > > > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> > > > > > index a41de293dcd1..6563ea71e203 100644
-> > > > > > --- a/rust/kernel/error.rs
-> > > > > > +++ b/rust/kernel/error.rs
-> > > > > > @@ -376,12 +376,19 @@ fn from(e: core::convert::Infallible)
-> > > > > > -> Error { pub type Result<T =3D (), E =3D Error> =3D
-> > > > > > core::result::Result<T, E>;
-> > > > > >
-> > > > > >  /// Converts an integer as returned by a C kernel function
-> > > > > > to an error if it's negative, and -/// `Ok(())` otherwise.
-> > > > > > -pub fn to_result(err: crate::ffi::c_int) -> Result {
-> > > > > > -    if err < 0 {
-> > > > > > -        Err(Error::from_errno(err))
-> > > > > > +/// returns the original value otherwise.
-> > > > > > +pub fn to_result<T>(code: T) -> Result<T>
-> > > > > > +where
-> > > > > > +    T: Copy + TryInto<i32>,
-> > > > > > +{
-> > > > > > +    // Try casting into `i32`.
-> > > > > > +    let casted: crate::ffi::c_int =3D
-> > > > > > code.try_into().unwrap_or(0); +
-> > > > > > +    if casted < 0 {
-> > > > > > +        Err(Error::from_errno(casted))
-> > > > > >      } else {
-> > > > > > -        Ok(())
-> > > > > > +        // Return the original input value.
-> > > > > > +        Ok(code)
-> > > > > >      }
-> > > > > >  }
-> > > > >
-> > > > > I don't think this is the best way to declare this function.
-> > > > > The conversions I would want are:
-> > > > >
-> > > > > * i32 -> Result<u32>
-> > > > > * isize -> Result<usize>
-> > > > > * i64 -> Result<u64>
-> > > > >
-> > > > > Your commit messages mentions i16, but does the error types
-> > > > > even fit in 16 bits? Maybe. But they don't fit in i8. That is
-> > > > > to say, I think it should support all the types larger than
-> > > > > i32 (the errors fit in those types too), but for the ones
-> > > > > that are smaller, it might not make sense if the type is too
-> > > > > small. That's the reverse of what you have now.
-> > > > >
-> > > > > We probably need a new trait. E.g.:
-> > > > >
-> > > > > trait ToResult {
-> > > > >     type Unsigned;
-> > > > >     fn to_result(self) -> Result<Self::Unsigned, Error>;
-> > > > > }
-> > > > >
-> > > > > impl ToResult for i32 {
-> > > > >     type Unsigned =3D u32;
-> > > > >     fn to_result(self) -> Result<u32, Error> {
-> > > > >         ...
-> > > > >     }
-> > > > > }
-> > > > >
-> > > > > impl ToResult for isize {
-> > > > >     type Unsigned =3D usize;
-> > > > >     fn to_result(self) -> Result<usize, Error> {
-> > > > >         ...
-> > > > >     }
-> > > > > }
-> > > > >
-> > > > > pub fn to_result<T: ToResult>(code: T) -> Result<T::Unsigned>
-> > > > > { T::to_result(code)
-> > > > > }
-> > > > >
-> > > >
-> > > > `Error::from_errno` is limited to i32, that's why I followed the
-> > > > `TryInto<i32>` approach, but I like this design too.
-> > >
-> > > If you pass an i32 that is not a valid errno, then it becomes
-> > > EINVAL. In the case of `isize`, I would say that if a negative
-> > > isize does not fit in i32, then that should fall into the same
-> > > scenario.
-> > >
+> > On a side note, there was a line number increase due to the
+> > conversion:
 > >
-> > In that case replacing `unwrap_or(0)` with `map_err(|_|
-> > code::EINVAL)` should do the job?
+> >  Documentation/Makefile          |  131 +++----------
+> >  tools/docs/sphinx-build-wrapper |  293 +++++++++++++++++++++++++++++++
+> >  2 files changed, 323 insertions(+), 101 deletions(-)
 > >
-> > I also thought of an alternative to the custom-trait=E2=80=93based appr=
-oach.
-> > What do you think about something like this:
+> > This is because some things are more verbosed on Python and because
+> > it requires reading env vars from Makefile. Besides it, this script
+> > has some extra features that don't exist at the Makefile:
 > >
-> >     pub fn to_result<T, R>(code: T) -> Result<R>
-> >     where
-> >         T: Copy + TryInto<i32> + TryInto<R>,
-> >     {
-> >         // Try casting into `i32`.
-> >         let casted: crate::ffi::c_int =3D code.try_into().map_err(|_|
-> >     code::EINVAL)?;
+> > - It can be called directly from command line;
+> > - It properly return PDF build errors.
 > >
-> >         if casted < 0 {
-> >             Err(Error::from_errno(casted))
-> >         } else {
-> >             // Return the original input value as `R`.
-> >             code.try_into().map_err(|_| code::EINVAL)
-> >         }
-> >     }
-> >
-> >
-> > On the caller side, it would look like this:
-> >
-> >     let val: u16 =3D to_result(...)?;
-> >
-> > The main difference here is that this version can be used to cast
-> > into multiple different types, not just `i32 -> u32` or `i64 ->
-> > u64`.
->=20
-> I think making the return type a separate generic makes this too
-> difficult to use. It means that any time you would write this:
->=20
-> to_result(unsafe { ... })?;
-> Ok(())
->=20
-> now you need to tell the compiler what kind of integer you want to get
-> from to_result, just so you can immediately ignore the integer.
->=20
-> Alice
+> > When running the script alone, it will only take handle sphinx-build
+> > targets. On other words, it won't runn make rustdoc after building
+> > htmlfiles, nor it will run the extra check scripts.  
+> 
+> I've always strongly believed we should aim to make it possible to build
+> the documentation by running sphinx-build directly on the
+> command-line. Not that it would be the common way to run it, but to not
+> accumulate things in the Makefile that need to happen before or
+> after. To promote handling the documentation build in Sphinx. To be able
+> to debug issues and try new Sphinx versions without all the hacks.
 
-Yes, and with the custom trait you need to import it in order to use
-the `to_result` helper. I don't have a strong preference either way.
-I guess I will wait a couple of days to get more feedback from others
-as well. Thank you for your quick feedback and review so far!
+That would be the better, but, unfortunately, this is not possible, for 
+several reasons:
 
--Onur
+1. SPHINXDIRS. It needs a lot of magic to work, both before running
+   sphinx-build and after (inside conf.py);
+2. Several extensions require kernel-specific environment variables to
+   work. Calling sphinx-build directly breaks them;
+3. Sphinx itself doesn't build several targets alone. Instead, they create
+   a Makefile, and an extra step is needed to finish the build. That's 
+   the case for pdf and texinfo, for instance;
+4. Man pages generation. Sphinx support to generate it is very poor;
+5. Rust integration adds more complexity to the table;
+
+I'm not seeing sphinx-build supporting the above needs anytime soon,
+and, even if we push our needs to Sphinx and it gets accepted there,
+we'll still need to wait for quite a while until LTS distros merge
+them.
+
+> This patch moves a bunch of that logic into a Python wrapper, and I feel
+> like it complicates matters. You can no longer rely on 'make V=1' to get
+> the build commands, for instance.
+
+Quite the opposite. if you try using "make V=1", it won't show the
+command line used to call sphinx-build anymore.
+
+This series restore it.
+
+See, if you build with this series with V=1, you will see exactly
+what commands are used on the build:
+
+	$ make V=1 htmldocs
+	...
+	python3 ./tools/docs/sphinx-build-wrapper htmldocs \
+	        --sphinxdirs="." --conf="conf.py" \
+        	--builddir="Documentation/output" \
+	        --theme= --css= --paper=
+	python3 /new_devel/docs/sphinx_latest/bin/sphinx-build -j25 -b html -c /new_devel/docs/Documentation -d /new_devel/docs/Documentation/output/.doctrees -D kerneldoc_bin=scripts/kernel-doc.py -D version=6.17.0-rc1 -D release=6.17.0-rc1+ -D kerneldoc_srctree=. /new_devel/docs/Documentation /new_devel/docs/Documentation/output
+	...
+
+
+
+> Newer Sphinx versions have the -M option for "make mode". The Makefiles
+> produced by sphinx-quickstart only have one build target:
+> 
+> # Catch-all target: route all unknown targets to Sphinx using the new
+> # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+
+I didn't know about this, but from [1] it sounds it covers just two
+targets: "latexpdf" and "info".
+
+The most complex scenario is still not covered: SPHINXDIRS.
+
+[1] https://www.sphinx-doc.org/en/master/man/sphinx-build.html
+
+> %: Makefile
+>         @$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+> 
+> That's all.
+
+Try doing such change on your makefile. it will break:
+
+	- SPHINXDIRS;
+	- V=1;
+	- rustdoc
+
+and will still be dependent on variables that are passed via
+env from Kernel makefile. So, stil you can't run from command
+line. Also, if you call sphinx-build from command line:
+
+	$ sphinx-build -j25 -b html Documentation Documentation/output
+	...
+	      File "<frozen os>", line 717, in __getitem__
+	    KeyError: 'srctree'
+
+It won't work, as several parameters that are required by conf.py and by
+Sphinx extensions would be missing (the most important one is srctree, but
+there are others in the line too).
+
+> The proposed wrapper duplicates loads of code that's supposed to be
+> handled by sphinx-build directly.
+
+Once we get the wrapper, we can work to simplify it, but still I
+can't see how to get rid of it.
+
+> Including the target/builder names.
+
+True, but this was a design decision taken lots of years ago: instead
+of:
+	make html
+
+we're using:
+
+	make htmldocs
+
+This series doesn't change that: either makefile or the script need
+to tho the namespace conversion.
+
+> Seems to me the goal should be to figure out *generic* wrappers for
+> handling parallelism, not Sphinx aware/specific.
+> 
+> 
+> BR,
+> Jani.
+> 
+> >
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > ---
+> >  Documentation/Makefile          | 131 ++++----------
+> >  tools/docs/sphinx-build-wrapper | 293 ++++++++++++++++++++++++++++++++
+> >  2 files changed, 323 insertions(+), 101 deletions(-)
+> >  create mode 100755 tools/docs/sphinx-build-wrapper
+> >
+> > diff --git a/Documentation/Makefile b/Documentation/Makefile
+> > index deb2029228ed..4736f02b6c9e 100644
+> > --- a/Documentation/Makefile
+> > +++ b/Documentation/Makefile
+> > @@ -23,21 +23,22 @@ SPHINXOPTS    =
+> >  SPHINXDIRS    = .
+> >  DOCS_THEME    =
+> >  DOCS_CSS      =
+> > -_SPHINXDIRS   = $(sort $(patsubst $(srctree)/Documentation/%/index.rst,%,$(wildcard $(srctree)/Documentation/*/index.rst)))
+> >  SPHINX_CONF   = conf.py
+> >  PAPER         =
+> >  BUILDDIR      = $(obj)/output
+> >  PDFLATEX      = xelatex
+> >  LATEXOPTS     = -interaction=batchmode -no-shell-escape
+> >  
+> > +PYTHONPYCACHEPREFIX ?= $(abspath $(BUILDDIR)/__pycache__)
+> > +
+> > +# Wrapper for sphinx-build
+> > +
+> > +BUILD_WRAPPER = $(srctree)/tools/docs/sphinx-build-wrapper
+> > +
+> >  # For denylisting "variable font" files
+> >  # Can be overridden by setting as an env variable
+> >  FONTS_CONF_DENY_VF ?= $(HOME)/deny-vf
+> >  
+> > -ifeq ($(findstring 1, $(KBUILD_VERBOSE)),)
+> > -SPHINXOPTS    += "-q"
+> > -endif
+> > -
+> >  # User-friendly check for sphinx-build
+> >  HAVE_SPHINX := $(shell if which $(SPHINXBUILD) >/dev/null 2>&1; then echo 1; else echo 0; fi)
+> >  
+> > @@ -51,63 +52,31 @@ ifeq ($(HAVE_SPHINX),0)
+> >  
+> >  else # HAVE_SPHINX
+> >  
+> > -# User-friendly check for pdflatex and latexmk
+> > -HAVE_PDFLATEX := $(shell if which $(PDFLATEX) >/dev/null 2>&1; then echo 1; else echo 0; fi)
+> > -HAVE_LATEXMK := $(shell if which latexmk >/dev/null 2>&1; then echo 1; else echo 0; fi)
+> > +# Common documentation targets
+> > +infodocs texinfodocs latexdocs epubdocs xmldocs pdfdocs linkcheckdocs:
+> > +	$(Q)@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > +	+$(Q)$(PYTHON3) $(BUILD_WRAPPER) $@ \
+> > +		--sphinxdirs="$(SPHINXDIRS)" --conf="$(SPHINX_CONF)" \
+> > +		--builddir="$(BUILDDIR)" \
+> > +		--theme=$(DOCS_THEME) --css=$(DOCS_CSS) --paper=$(PAPER)
+> >  
+> > -ifeq ($(HAVE_LATEXMK),1)
+> > -	PDFLATEX := latexmk -$(PDFLATEX)
+> > -endif #HAVE_LATEXMK
+> > -
+> > -# Internal variables.
+> > -PAPEROPT_a4     = -D latex_elements.papersize=a4paper
+> > -PAPEROPT_letter = -D latex_elements.papersize=letterpaper
+> > -ALLSPHINXOPTS   = -D kerneldoc_srctree=$(srctree) -D kerneldoc_bin=$(KERNELDOC)
+> > -ALLSPHINXOPTS   += $(PAPEROPT_$(PAPER)) $(SPHINXOPTS)
+> > -ifneq ($(wildcard $(srctree)/.config),)
+> > -ifeq ($(CONFIG_RUST),y)
+> > -	# Let Sphinx know we will include rustdoc
+> > -	ALLSPHINXOPTS   +=  -t rustdoc
+> > -endif
+> > +# Special handling for pdfdocs
+> > +ifeq ($(shell which $(PDFLATEX) >/dev/null 2>&1; echo $$?),0)
+> > +pdfdocs: DENY_VF = XDG_CONFIG_HOME=$(FONTS_CONF_DENY_VF)
+> > +else
+> > +pdfdocs:
+> > +	$(warning The '$(PDFLATEX)' command was not found. Make sure you have it installed and in PATH to produce PDF output.)
+> > +	@echo "  SKIP    Sphinx $@ target."
+> >  endif
+> > -# the i18n builder cannot share the environment and doctrees with the others
+> > -I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
+> > -
+> > -# commands; the 'cmd' from scripts/Kbuild.include is not *loopable*
+> > -loop_cmd = $(echo-cmd) $(cmd_$(1)) || exit;
+> > -
+> > -# $2 sphinx builder e.g. "html"
+> > -# $3 name of the build subfolder / e.g. "userspace-api/media", used as:
+> > -#    * dest folder relative to $(BUILDDIR) and
+> > -#    * cache folder relative to $(BUILDDIR)/.doctrees
+> > -# $4 dest subfolder e.g. "man" for man pages at userspace-api/media/man
+> > -# $5 reST source folder relative to $(src),
+> > -#    e.g. "userspace-api/media" for the linux-tv book-set at ./Documentation/userspace-api/media
+> > -
+> > -PYTHONPYCACHEPREFIX ?= $(abspath $(BUILDDIR)/__pycache__)
+> > -
+> > -quiet_cmd_sphinx = SPHINX  $@ --> file://$(abspath $(BUILDDIR)/$3/$4)
+> > -      cmd_sphinx = \
+> > -	PYTHONPYCACHEPREFIX="$(PYTHONPYCACHEPREFIX)" \
+> > -	BUILDDIR=$(abspath $(BUILDDIR)) SPHINX_CONF=$(abspath $(src)/$5/$(SPHINX_CONF)) \
+> > -	$(PYTHON3) $(srctree)/scripts/jobserver-exec \
+> > -	$(CONFIG_SHELL) $(srctree)/Documentation/sphinx/parallel-wrapper.sh \
+> > -	$(SPHINXBUILD) \
+> > -	-b $2 \
+> > -	-c $(abspath $(src)) \
+> > -	-d $(abspath $(BUILDDIR)/.doctrees/$3) \
+> > -	-D version=$(KERNELVERSION) -D release=$(KERNELRELEASE) \
+> > -	$(ALLSPHINXOPTS) \
+> > -	$(abspath $(src)/$5) \
+> > -	$(abspath $(BUILDDIR)/$3/$4) && \
+> > -	if [ "x$(DOCS_CSS)" != "x" ]; then \
+> > -		cp $(if $(patsubst /%,,$(DOCS_CSS)),$(abspath $(srctree)/$(DOCS_CSS)),$(DOCS_CSS)) $(BUILDDIR)/$3/_static/; \
+> > -	fi
+> >  
+> > +# HTML main logic is identical to other targets. However, if rust is enabled,
+> > +# an extra step at the end is required to generate rustdoc.
+> >  htmldocs:
+> > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,html,$(var),,$(var)))
+> > -
+> > +	$(Q)@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > +	+$(Q)$(PYTHON3) $(BUILD_WRAPPER) $@ \
+> > +		--sphinxdirs="$(SPHINXDIRS)" --conf="$(SPHINX_CONF)" \
+> > +		--builddir="$(BUILDDIR)" \
+> > +		--theme=$(DOCS_THEME) --css=$(DOCS_CSS) --paper=$(PAPER)
+> >  # If Rust support is available and .config exists, add rustdoc generated contents.
+> >  # If there are any, the errors from this make rustdoc will be displayed but
+> >  # won't stop the execution of htmldocs
+> > @@ -118,49 +87,6 @@ ifeq ($(CONFIG_RUST),y)
+> >  endif
+> >  endif
+> >  
+> > -texinfodocs:
+> > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,texinfo,$(var),texinfo,$(var)))
+> > -
+> > -# Note: the 'info' Make target is generated by sphinx itself when
+> > -# running the texinfodocs target define above.
+> > -infodocs: texinfodocs
+> > -	$(MAKE) -C $(BUILDDIR)/texinfo info
+> > -
+> > -linkcheckdocs:
+> > -	@$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,linkcheck,$(var),,$(var)))
+> > -
+> > -latexdocs:
+> > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,latex,$(var),latex,$(var)))
+> > -
+> > -ifeq ($(HAVE_PDFLATEX),0)
+> > -
+> > -pdfdocs:
+> > -	$(warning The '$(PDFLATEX)' command was not found. Make sure you have it installed and in PATH to produce PDF output.)
+> > -	@echo "  SKIP    Sphinx $@ target."
+> > -
+> > -else # HAVE_PDFLATEX
+> > -
+> > -pdfdocs: DENY_VF = XDG_CONFIG_HOME=$(FONTS_CONF_DENY_VF)
+> > -pdfdocs: latexdocs
+> > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > -	$(foreach var,$(SPHINXDIRS), \
+> > -	   $(MAKE) PDFLATEX="$(PDFLATEX)" LATEXOPTS="$(LATEXOPTS)" $(DENY_VF) -C $(BUILDDIR)/$(var)/latex || sh $(srctree)/scripts/check-variable-fonts.sh || exit; \
+> > -	   mkdir -p $(BUILDDIR)/$(var)/pdf; \
+> > -	   mv $(subst .tex,.pdf,$(wildcard $(BUILDDIR)/$(var)/latex/*.tex)) $(BUILDDIR)/$(var)/pdf/; \
+> > -	)
+> > -
+> > -endif # HAVE_PDFLATEX
+> > -
+> > -epubdocs:
+> > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,epub,$(var),epub,$(var)))
+> > -
+> > -xmldocs:
+> > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,xml,$(var),xml,$(var)))
+> > -
+> >  endif # HAVE_SPHINX
+> >  
+> >  # The following targets are independent of HAVE_SPHINX, and the rules should
+> > @@ -172,6 +98,9 @@ refcheckdocs:
+> >  cleandocs:
+> >  	$(Q)rm -rf $(BUILDDIR)
+> >  
+> > +# Used only on help
+> > +_SPHINXDIRS   = $(sort $(patsubst $(srctree)/Documentation/%/index.rst,%,$(wildcard $(srctree)/Documentation/*/index.rst)))
+> > +
+> >  dochelp:
+> >  	@echo  ' Linux kernel internal documentation in different formats from ReST:'
+> >  	@echo  '  htmldocs        - HTML'
+> > diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
+> > new file mode 100755
+> > index 000000000000..3256418d8dc5
+> > --- /dev/null
+> > +++ b/tools/docs/sphinx-build-wrapper
+> > @@ -0,0 +1,293 @@
+> > +#!/usr/bin/env python3
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +import argparse
+> > +import os
+> > +import shlex
+> > +import shutil
+> > +import subprocess
+> > +import sys
+> > +from lib.python_version import PythonVersion
+> > +
+> > +LIB_DIR = "../../scripts/lib"
+> > +SRC_DIR = os.path.dirname(os.path.realpath(__file__))
+> > +sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
+> > +
+> > +from jobserver import JobserverExec
+> > +
+> > +MIN_PYTHON_VERSION = PythonVersion("3.7").version
+> > +PAPER = ["", "a4", "letter"]
+> > +TARGETS = {
+> > +    "cleandocs":     { "builder": "clean" },
+> > +    "linkcheckdocs": { "builder": "linkcheck" },
+> > +    "htmldocs":      { "builder": "html" },
+> > +    "epubdocs":      { "builder": "epub",    "out_dir": "epub" },
+> > +    "texinfodocs":   { "builder": "texinfo", "out_dir": "texinfo" },
+> > +    "infodocs":      { "builder": "texinfo", "out_dir": "texinfo" },
+> > +    "latexdocs":     { "builder": "latex",   "out_dir": "latex" },
+> > +    "pdfdocs":       { "builder": "latex",   "out_dir": "latex" },
+> > +    "xmldocs":       { "builder": "xml",     "out_dir": "xml" },
+> > +}
+> > +
+> > +class SphinxBuilder:
+> > +    def is_rust_enabled(self):
+> > +        config_path = os.path.join(self.srctree, ".config")
+> > +        if os.path.isfile(config_path):
+> > +            with open(config_path, "r", encoding="utf-8") as f:
+> > +                return "CONFIG_RUST=y" in f.read()
+> > +        return False
+> > +
+> > +    def get_path(self, path, use_cwd=False, abs_path=False):
+> > +        path = os.path.expanduser(path)
+> > +        if not path.startswith("/"):
+> > +            if use_cwd:
+> > +                base = os.getcwd()
+> > +            else:
+> > +                base = self.srctree
+> > +            path = os.path.join(base, path)
+> > +        if abs_path:
+> > +            return os.path.abspath(path)
+> > +        return path
+> > +
+> > +    def __init__(self, builddir, verbose=False, n_jobs=None):
+> > +        self.verbose = None
+> > +        self.kernelversion = os.environ.get("KERNELVERSION", "unknown")
+> > +        self.kernelrelease = os.environ.get("KERNELRELEASE", "unknown")
+> > +        self.pdflatex = os.environ.get("PDFLATEX", "xelatex")
+> > +        self.latexopts = os.environ.get("LATEXOPTS", "-interaction=batchmode -no-shell-escape")
+> > +        if not verbose:
+> > +            verbose = bool(os.environ.get("KBUILD_VERBOSE", "") != "")
+> > +        if verbose is not None:
+> > +            self.verbose = verbose
+> > +        parser = argparse.ArgumentParser()
+> > +        parser.add_argument('-j', '--jobs', type=int)
+> > +        parser.add_argument('-q', '--quiet', type=int)
+> > +        sphinxopts = shlex.split(os.environ.get("SPHINXOPTS", ""))
+> > +        sphinx_args, self.sphinxopts = parser.parse_known_args(sphinxopts)
+> > +        if sphinx_args.quiet is True:
+> > +            self.verbose = False
+> > +        if sphinx_args.jobs:
+> > +            self.n_jobs = sphinx_args.jobs
+> > +        self.n_jobs = n_jobs
+> > +        self.srctree = os.environ.get("srctree")
+> > +        if not self.srctree:
+> > +            self.srctree = "."
+> > +            os.environ["srctree"] = self.srctree
+> > +        self.sphinxbuild = os.environ.get("SPHINXBUILD", "sphinx-build")
+> > +        self.kerneldoc = self.get_path(os.environ.get("KERNELDOC",
+> > +                                                      "scripts/kernel-doc.py"))
+> > +        self.builddir = self.get_path(builddir, use_cwd=True, abs_path=True)
+> > +
+> > +        self.config_rust = self.is_rust_enabled()
+> > +
+> > +        self.pdflatex_cmd = shutil.which(self.pdflatex)
+> > +        self.latexmk_cmd = shutil.which("latexmk")
+> > +
+> > +        self.env = os.environ.copy()
+> > +
+> > +    def run_sphinx(self, sphinx_build, build_args, *args, **pwargs):
+> > +        with JobserverExec() as jobserver:
+> > +            if jobserver.claim:
+> > +                n_jobs = str(jobserver.claim)
+> > +            else:
+> > +                n_jobs = "auto" # Supported since Sphinx 1.7
+> > +            cmd = []
+> > +            cmd.append(sys.executable)
+> > +            cmd.append(sphinx_build)
+> > +            if self.n_jobs:
+> > +                n_jobs = str(self.n_jobs)
+> > +
+> > +            if n_jobs:
+> > +                cmd += [f"-j{n_jobs}"]
+> > +
+> > +            if not self.verbose:
+> > +                cmd.append("-q")
+> > +            cmd += self.sphinxopts
+> > +            cmd += build_args
+> > +            if self.verbose:
+> > +                print(" ".join(cmd))
+> > +            return subprocess.call(cmd, *args, **pwargs)
+> > +
+> > +    def handle_html(self, css, output_dir):
+> > +        if not css:
+> > +            return
+> > +        css = os.path.expanduser(css)
+> > +        if not css.startswith("/"):
+> > +            css = os.path.join(self.srctree, css)
+> > +        static_dir = os.path.join(output_dir, "_static")
+> > +        os.makedirs(static_dir, exist_ok=True)
+> > +        try:
+> > +            shutil.copy2(css, static_dir)
+> > +        except (OSError, IOError) as e:
+> > +            print(f"Warning: Failed to copy CSS: {e}", file=sys.stderr)
+> > +
+> > +    def handle_pdf(self, output_dirs):
+> > +        builds = {}
+> > +        max_len = 0
+> > +        for from_dir in output_dirs:
+> > +            pdf_dir = os.path.join(from_dir, "../pdf")
+> > +            os.makedirs(pdf_dir, exist_ok=True)
+> > +            if self.latexmk_cmd:
+> > +                latex_cmd = [self.latexmk_cmd, f"-{self.pdflatex}"]
+> > +            else:
+> > +                latex_cmd = [self.pdflatex]
+> > +            latex_cmd.extend(shlex.split(self.latexopts))
+> > +            tex_suffix = ".tex"
+> > +            has_tex = False
+> > +            build_failed = False
+> > +            with os.scandir(from_dir) as it:
+> > +                for entry in it:
+> > +                    if not entry.name.endswith(tex_suffix):
+> > +                        continue
+> > +                    name = entry.name[:-len(tex_suffix)]
+> > +                    has_tex = True
+> > +                    try:
+> > +                        subprocess.run(latex_cmd + [entry.path],
+> > +                                       cwd=from_dir, check=True)
+> > +                    except subprocess.CalledProcessError:
+> > +                        pass
+> > +                    pdf_name = name + ".pdf"
+> > +                    pdf_from = os.path.join(from_dir, pdf_name)
+> > +                    pdf_to = os.path.join(pdf_dir, pdf_name)
+> > +                    if os.path.exists(pdf_from):
+> > +                        os.rename(pdf_from, pdf_to)
+> > +                        builds[name] = os.path.relpath(pdf_to, self.builddir)
+> > +                    else:
+> > +                        builds[name] = "FAILED"
+> > +                        build_failed = True
+> > +                    name = entry.name.removesuffix(".tex")
+> > +                    max_len = max(max_len, len(name))
+> > +
+> > +            if not has_tex:
+> > +                name = os.path.basename(from_dir)
+> > +                max_len = max(max_len, len(name))
+> > +                builds[name] = "FAILED (no .tex)"
+> > +                build_failed = True
+> > +        msg = "Summary"
+> > +        msg += "\n" + "=" * len(msg)
+> > +        print()
+> > +        print(msg)
+> > +        for pdf_name, pdf_file in builds.items():
+> > +            print(f"{pdf_name:<{max_len}}: {pdf_file}")
+> > +        print()
+> > +        if build_failed:
+> > +            sys.exit("PDF build failed: not all PDF files were created.")
+> > +        else:
+> > +            print("All PDF files were built.")
+> > +
+> > +    def handle_info(self, output_dirs):
+> > +        for output_dir in output_dirs:
+> > +            try:
+> > +                subprocess.run(["make", "info"], cwd=output_dir, check=True)
+> > +            except subprocess.CalledProcessError as e:
+> > +                sys.exit(f"Error generating info docs: {e}")
+> > +
+> > +    def cleandocs(self, builder):
+> > +        shutil.rmtree(self.builddir, ignore_errors=True)
+> > +
+> > +    def build(self, target, sphinxdirs=None, conf="conf.py",
+> > +              theme=None, css=None, paper=None):
+> > +        builder = TARGETS[target]["builder"]
+> > +        out_dir = TARGETS[target].get("out_dir", "")
+> > +        if target == "cleandocs":
+> > +            self.cleandocs(builder)
+> > +            return
+> > +        if theme:
+> > +                os.environ["DOCS_THEME"] = theme
+> > +        sphinxbuild = shutil.which(self.sphinxbuild, path=self.env["PATH"])
+> > +        if not sphinxbuild:
+> > +            sys.exit(f"Error: {self.sphinxbuild} not found in PATH.\n")
+> > +        if builder == "latex":
+> > +            if not self.pdflatex_cmd and not self.latexmk_cmd:
+> > +                sys.exit("Error: pdflatex or latexmk required for PDF generation")
+> > +        docs_dir = os.path.abspath(os.path.join(self.srctree, "Documentation"))
+> > +        kerneldoc = self.kerneldoc
+> > +        if kerneldoc.startswith(self.srctree):
+> > +            kerneldoc = os.path.relpath(kerneldoc, self.srctree)
+> > +        args = [ "-b", builder, "-c", docs_dir ]
+> > +        if builder == "latex":
+> > +            if not paper:
+> > +                paper = PAPER[1]
+> > +            args.extend(["-D", f"latex_elements.papersize={paper}paper"])
+> > +        if self.config_rust:
+> > +            args.extend(["-t", "rustdoc"])
+> > +        if conf:
+> > +            self.env["SPHINX_CONF"] = self.get_path(conf, abs_path=True)
+> > +        if not sphinxdirs:
+> > +            sphinxdirs = os.environ.get("SPHINXDIRS", ".")
+> > +        sphinxdirs_list = []
+> > +        for sphinxdir in sphinxdirs:
+> > +            if isinstance(sphinxdir, list):
+> > +                sphinxdirs_list += sphinxdir
+> > +            else:
+> > +                for name in sphinxdir.split(" "):
+> > +                    sphinxdirs_list.append(name)
+> > +        output_dirs = []
+> > +        for sphinxdir in sphinxdirs_list:
+> > +            src_dir = os.path.join(docs_dir, sphinxdir)
+> > +            doctree_dir = os.path.join(self.builddir, ".doctrees")
+> > +            output_dir = os.path.join(self.builddir, sphinxdir, out_dir)
+> > +            src_dir = os.path.normpath(src_dir)
+> > +            doctree_dir = os.path.normpath(doctree_dir)
+> > +            output_dir = os.path.normpath(output_dir)
+> > +            os.makedirs(doctree_dir, exist_ok=True)
+> > +            os.makedirs(output_dir, exist_ok=True)
+> > +            output_dirs.append(output_dir)
+> > +            build_args = args + [
+> > +                "-d", doctree_dir,
+> > +                "-D", f"kerneldoc_bin={kerneldoc}",
+> > +                "-D", f"version={self.kernelversion}",
+> > +                "-D", f"release={self.kernelrelease}",
+> > +                "-D", f"kerneldoc_srctree={self.srctree}",
+> > +                src_dir,
+> > +                output_dir,
+> > +            ]
+> > +            try:
+> > +                self.run_sphinx(sphinxbuild, build_args, env=self.env)
+> > +            except (OSError, ValueError, subprocess.SubprocessError) as e:
+> > +                sys.exit(f"Build failed: {repr(e)}")
+> > +            if target in ["htmldocs", "epubdocs"]:
+> > +                self.handle_html(css, output_dir)
+> > +        if target == "pdfdocs":
+> > +            self.handle_pdf(output_dirs)
+> > +        elif target == "infodocs":
+> > +            self.handle_info(output_dirs)
+> > +
+> > +def jobs_type(value):
+> > +    if value is None:
+> > +        return None
+> > +    if value.lower() == 'auto':
+> > +        return value.lower()
+> > +    try:
+> > +        if int(value) >= 1:
+> > +            return value
+> > +        raise argparse.ArgumentTypeError(f"Minimum jobs is 1, got {value}")
+> > +    except ValueError:
+> > +        raise argparse.ArgumentTypeError(f"Must be 'auto' or positive integer, got {value}")
+> > +
+> > +def main():
+> > +    parser = argparse.ArgumentParser(description="Kernel documentation builder")
+> > +    parser.add_argument("target", choices=list(TARGETS.keys()),
+> > +                        help="Documentation target to build")
+> > +    parser.add_argument("--sphinxdirs", nargs="+",
+> > +                        help="Specific directories to build")
+> > +    parser.add_argument("--conf", default="conf.py",
+> > +                        help="Sphinx configuration file")
+> > +    parser.add_argument("--builddir", default="output",
+> > +                        help="Sphinx configuration file")
+> > +    parser.add_argument("--theme", help="Sphinx theme to use")
+> > +    parser.add_argument("--css", help="Custom CSS file for HTML/EPUB")
+> > +    parser.add_argument("--paper", choices=PAPER, default=PAPER[0],
+> > +                        help="Paper size for LaTeX/PDF output")
+> > +    parser.add_argument("-v", "--verbose", action='store_true',
+> > +                        help="place build in verbose mode")
+> > +    parser.add_argument('-j', '--jobs', type=jobs_type,
+> > +                        help="Sets number of jobs to use with sphinx-build")
+> > +    args = parser.parse_args()
+> > +    PythonVersion.check_python(MIN_PYTHON_VERSION)
+> > +    builder = SphinxBuilder(builddir=args.builddir,
+> > +                            verbose=args.verbose, n_jobs=args.jobs)
+> > +    builder.build(args.target, sphinxdirs=args.sphinxdirs, conf=args.conf,
+> > +                  theme=args.theme, css=args.css, paper=args.paper)
+> > +
+> > +if __name__ == "__main__":
+> > +    main()  
+> 
+
+
+
+Thanks,
+Mauro
