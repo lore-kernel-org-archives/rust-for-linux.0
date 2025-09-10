@@ -1,196 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD5E30F93D;
-	Wed, 10 Sep 2025 08:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287F0241139;
+	Wed, 10 Sep 2025 09:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757494032; cv=none; b=T7gqx4h+U7E8aX3y/2fMOSGEhcCgLA9vjLSc4s68KRKNFSq8wy5m52LxPf/1NWcQOWHobn+WuBLG8N7zyKfoFD9lK0OmP3zOMBNz69sSfKM1BBpb1hCduAbBmQ1i5Vf86JsorH9tL/B3tiNmPEX+Rsz1HC3OADi5GACHuAWAce4=
+	t=1757497264; cv=none; b=fA/mL1YkB5QUZ89aC2FJECB7wfPZ0sDCFMxz9Qh7fQ3WFKODWXWDtr5Ty7/3PzMiCEPz3fv9Ix5yqTI1lf8YaIJytNWOgEUwx+2v330V4Ne8DXi320VF7PE9xJO4gD55+AjbOL4QDfSZ2X5rDkO3ILJIQOP9oEXrvs3CVU7/nY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757494032; c=relaxed/simple;
-	bh=WppBPowSewof/D5eVLXkCnHoKjpriLA2OUGq3Qnm2eI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=jiVDyoswJDsRm0X3rhYvyhq3COtMoSlz8ldrMd/UHvlhYfiFQBYCEe5CRh3r2XYsHkmJYTyQPxW6TLHO0GJA/HCcV4LJwqJn+vDVMR/3xYqV4Dd6hM3Mna3gzKXsWzQtVMraH0K934xfq03BPqdAStt9HN/gT8dN/UGgL9cSRYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJESPZ6l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757497264; c=relaxed/simple;
+	bh=lvYn9eg1hctElf592ouO63bzTtzzMC1s11sttsG3hY8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gj9ORfb5ExuRdL+ksEXj5kG8ppEq2XLBZf21lBpwpLV5igMbJrms/rN2ST7fxL7NUinMxtm+KLBeQ6M1RU9BxhoU+MohKkaWoVsMQV9HJv6JlM7dviH9XpCdwc4m8Mw2M81bpuf5iwtiYhpfqDgHqeOOhYCKLdNvtZguLFwfaCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmflZhe0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJESPZ6l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD53C4CEF0;
-	Wed, 10 Sep 2025 08:47:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmflZhe0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2411C4CEF0;
+	Wed, 10 Sep 2025 09:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757494031;
-	bh=WppBPowSewof/D5eVLXkCnHoKjpriLA2OUGq3Qnm2eI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=ZJESPZ6lxzuProG9lMdkWZnUdwptCur8qCkwbnuymnB4OzQnTCSsZvNKwlM+l14av
-	 avSWz9q2NGNPJ7zXztH7yMlB4il8x79co82w/jAbVLYOSFQ0aIbZHAU3hIJ4TayqDK
-	 1SawHkF2W6Q1FQO1zffxQ5+X7OzKE431V/h3dm5jqqM7H8V2oEPl+IWq8JRhrGAzB0
-	 gsWRzii0hSeix6ew8EDmTjd/KjZxhaKX1befEeCYkL33hvqcdSnI6v6PYeNtQHodZf
-	 d2Uxau1tFgH3LbK2rEQEmxF3f6r4NsaVDKfeeifUFW9TDSvZpKNOMc5EQyUv7chuA1
-	 rwE9Mop5Dwncw==
+	s=k20201202; t=1757497263;
+	bh=lvYn9eg1hctElf592ouO63bzTtzzMC1s11sttsG3hY8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FmflZhe0+ZE/C3s5kFN9yHv/9+4iXIfFth7Px5CjvIQcKjN1hW/AJWLptjUS3SadT
+	 t6JHC6Xg40h8/7/TCCKDj/BgVmg2KZ6hzlS+SQKqkfd9jqCWgeW01++zeUXUxRN1Kg
+	 wYrAE5ScFxKKrGIUdO9Gk5l+FyvJEOFTBgR+sYxYKLKOr//Lb113mHJOLMv+9i6wMz
+	 t2J6aYuZwxUGz0f+ulS+hJ6s1hZUOHc+Sb62j1wTj7cUw4KapRvKnq6T/jBwLE2U3f
+	 BcWtsUTTR15vXZnqVz4miQn1ohkQaXxqOISSyBR6Ja05xFuISIC13ibYQiQyv3S9QW
+	 IkX/Gsg5a0i+g==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	a.hindborg@kernel.org,
+	ojeda@kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH] MAINTAINERS: Update the DMA Rust entry
+Date: Wed, 10 Sep 2025 11:40:03 +0200
+Message-ID: <20250910094015.11551-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 10 Sep 2025 10:47:05 +0200
-Message-Id: <DCOZMX59W82I.1AH7XVW3RUX2D@kernel.org>
-Subject: Re: [PATCH] rust: pci: add PCI interrupt allocation and management
- support
-Cc: <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <acourbot@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, <joel@joelfernandes.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250910035415.381753-1-joelagnelf@nvidia.com>
-In-Reply-To: <20250910035415.381753-1-joelagnelf@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed Sep 10, 2025 at 5:54 AM CEST, Joel Fernandes wrote:
->  impl Device<device::Bound> {
+Update the DMA Rust maintainers entry in the following two aspects:
 
-The Bound context is not enough for some of the methods below, some of them
-require the Core context, more below.
+  (1) Change Abdiel's entry to 'Reviewer'.
 
-> +    /// Free all allocated IRQ vectors for this device.
-> +    ///
-> +    /// This should be called to release interrupt resources when they a=
-re no longer needed,
-> +    /// during driver unbind or removal.
-> +    pub fn free_irq_vectors(&self) {
-> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a vali=
-d `struct pci_dev`.
-> +        // `pci_free_irq_vectors` is safe to call even if no vectors are=
- currently allocated.
-> +        unsafe { bindings::pci_free_irq_vectors(self.as_raw()) };
-> +    }
+  (2) Take patches through the driver-core tree.
 
-This requires the Core context, but we should not provide this method at al=
-l to
-begin with; it puts the burden on drivers to remember calling this.
+Abdiel won't do any more maintainer work on the DMA (or scatterlist)
+infrastructure, but he'd like to be kept in the loop, hence change is
+entry to 'R:'.
 
-Instead, alloc_irq_vectors() should register a devres object with
-devres::register(), so this gets called automatically when the device is
-unbound.
+Analogous to [1], the DMA (and scatterlist) helpers are closely coupled
+with the core device infrastructure and the device lifecycle, hence take
+patches through the driver-core tree by default.
 
-Note that a cleanup through devres is not in conflict with the Core context
-requirement.
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Link: https://lore.kernel.org/r/20250725202840.2251768-1-ojeda@kernel.org [1]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +    /// Allocate IRQ vectors for this PCI device.
-> +    ///
-> +    /// Allocates between `min_vecs` and `max_vecs` interrupt vectors fo=
-r the device.
-> +    /// The allocation will use MSI-X, MSI, or legacy interrupts based o=
-n the `irq_types`
-> +    /// parameter and hardware capabilities. When multiple types are spe=
-cified, the kernel
-> +    /// will try them in order of preference: MSI-X first, then MSI, the=
-n legacy interrupts.
-> +    /// This is called during driver probe.
-> +    ///
-> +    /// # Arguments
-> +    ///
-> +    /// * `min_vecs` - Minimum number of vectors required
-> +    /// * `max_vecs` - Maximum number of vectors to allocate
-> +    /// * `irq_types` - Types of interrupts that can be used
-> +    ///
-> +    /// # Returns
-> +    ///
-> +    /// Returns the number of vectors successfully allocated, or an erro=
-r if the allocation
-> +    /// fails or cannot meet the minimum requirement.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// // Allocate using any available interrupt type in the order ment=
-ioned above.
-> +    /// let nvecs =3D dev.alloc_irq_vectors(1, 32, IrqTypes::all())?;
-> +    ///
-> +    /// // Allocate MSI or MSI-X only (no legacy interrupts)
-> +    /// let msi_only =3D IrqTypes::default()
-> +    ///     .with(IrqType::Msi)
-> +    ///     .with(IrqType::MsiX);
-> +    /// let nvecs =3D dev.alloc_irq_vectors(4, 16, msi_only)?;
-> +    /// ```
-> +    pub fn alloc_irq_vectors(
-> +        &self,
-> +        min_vecs: u32,
-> +        max_vecs: u32,
-> +        irq_types: IrqTypes,
-> +    ) -> Result<u32> {
-> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a vali=
-d `struct pci_dev`.
-> +        // `pci_alloc_irq_vectors` internally validates all parameters a=
-nd returns error codes.
-> +        let ret =3D unsafe {
-> +            bindings::pci_alloc_irq_vectors(self.as_raw(), min_vecs, max=
-_vecs, irq_types.raw())
-> +        };
-> +
-> +        to_result(ret)?;
-> +        Ok(ret as u32)
-> +    }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fed6cd812d79..281149d9b821 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7239,15 +7239,15 @@ F:	include/linux/swiotlb.h
+ F:	kernel/dma/
+ 
+ DMA MAPPING HELPERS DEVICE DRIVER API [RUST]
+-M:	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+ M:	Danilo Krummrich <dakr@kernel.org>
++R:	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+ R:	Daniel Almeida <daniel.almeida@collabora.com>
+ R:	Robin Murphy <robin.murphy@arm.com>
+ R:	Andreas Hindborg <a.hindborg@kernel.org>
+ L:	rust-for-linux@vger.kernel.org
+ S:	Supported
+ W:	https://rust-for-linux.com
+-T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+ F:	rust/helpers/dma.c
+ F:	rust/kernel/dma.rs
+ F:	samples/rust/rust_dma.rs
 
-This is only valid to be called from the Core context, as it modifies inter=
-nal
-fields of the inner struct device.
+base-commit: 3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f
+-- 
+2.51.0
 
-Also, it would be nice if it would return a new type that can serve as argu=
-ment
-for irq_vector(), such that we don't have to rely on random integers.
-
-> +
-> +    /// Get the Linux IRQ number for a specific vector.
-> +    ///
-> +    /// This is called during driver probe after successful IRQ allocati=
-on
-> +    /// to obtain the IRQ numbers for registering interrupt handlers.
-> +    ///
-> +    /// # Arguments
-> +    ///
-> +    /// * `vector` - The vector index (0-based)
-> +    ///
-> +    /// # Returns
-> +    ///
-> +    /// Returns the Linux IRQ number for the specified vector, or an err=
-or if the vector
-> +    /// index is invalid or no vectors are allocated.
-> +    pub fn irq_vector(&self, vector: u32) -> Result<u32> {
-
-This method is already staged for inclusion in v6.18 in driver-core-next. P=
-lease
-make sure to base changes on top of the tree mentioned in the maintainers f=
-ile,
-driver-core in this case.
-
-The signature of the existing method is:
-
-	pub fn irq_vector(&self, index: u32) -> Result<IrqRequest<'_>>
-
-We return an IrqRequest, which captures the IRQ number *and* the correspond=
-ing
-device, such that you can't get the combination wrong.
-
-Maybe it's worth looking at improving the index argument with a new type as
-mentioned above.
-
-> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a vali=
-d `struct pci_dev`.
-> +        let irq =3D unsafe { bindings::pci_irq_vector(self.as_raw(), vec=
-tor) };
-> +
-> +        to_result(irq)?;
-> +        Ok(irq as u32)
-> +    }
->  }
