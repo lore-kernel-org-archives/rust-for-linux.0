@@ -1,70 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8618345759;
-	Wed, 10 Sep 2025 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EFA2BE7BB;
+	Wed, 10 Sep 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757515655; cv=none; b=P6Ystt3swgnKstz2cPK0W+LJ4q4sl5MnQw1TH81O4/+A50JXE3kE6d8pFaAaVl6kfaGF0ExrEoFb3SpBU4NiqcbWSMR6bKszk7Ye7jIGIaVVCuatC1OatrcWyxup5M3bRNXSB+k/y8ZAPFs9nH6LpOoqm8kdoRF2wc6zSqpHY/g=
+	t=1757516357; cv=none; b=WOhJWMayoWzo/8+gxpeGalPODNmCZMt/ed1MVhS+Z1qG76W0FV4N5ZPt6RA0S6nuVoRbiBeSYrvd7olIFYha3Pbtfr1Bein1VleZ+Bx8tDzBJT17hs9JD7oTsuupzJ4v8lKFJagdcGXEvQ4Z+blDgyRwi8ZNW+oHNK61CaPj4wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757515655; c=relaxed/simple;
-	bh=zTgMOjpepBy/l2UTo0fo6Ntsz4DK/OWhGhpf4R9a+4k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O6xsLsEpLKrHpcfIxLLsf0nPIDL6km+sChoch8nY0eK9atP/yifLIr8yOI6ERdwZxNYHzFcH+MoO/Pmw8VCOEStASoaEN5dnXvoCv+I1OQnkGr45Y+ETGcX3qDb/icVNxc0gEdplpMakRXX80Vh/7SC+UZyXmtv3vL4DecF8E18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ydi+fp1J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757516357; c=relaxed/simple;
+	bh=2LDzN10cx2BWaLcJ9AwxZ1ehZQX1L6fRUnHukaEuBu8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Hj1f/6vRg17CKL9dlEgQo9TnX5uZ7xDzvoZdh5N82enwYk57OAeDNwThAwCh3Uu8iui+IwlPuy+Zo+JLWdrkztz+UgSFNUfBJvhTTPEzYg/ml2szdtNydCaCdu4S1r5uG0QfY03170fRPZFOWqOI0QId+gf5fjkzKoG5jvaxvjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHoyjENO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ydi+fp1J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F3FC4CEEB;
-	Wed, 10 Sep 2025 14:47:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHoyjENO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C7FC4CEEB;
+	Wed, 10 Sep 2025 14:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757515655;
-	bh=zTgMOjpepBy/l2UTo0fo6Ntsz4DK/OWhGhpf4R9a+4k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ydi+fp1Jt87eJIKw8OFpw6tqu5Ch9Xe+ed5u5rKbNYXbeiJj01R2EEYYCcZvVED7Z
-	 kCSgvu08M9lTjNORFJ/abqMnjgCBSymroRe2aYkpEIDXk1sr4LJ0QKUq5EUxXQZZIh
-	 EfocJdkvV8gq15uqw5vP8eGlUphjSvBoOBUhWc39RlNXVcY4j136finQanDvzcSTVO
-	 XAmmLe890dR7Yg9Yg77vM9J49jXZ0ZLYyjmzcZT3M2VdyBlO6mcBPg4KO9zwcKfJ0q
-	 qXkCreeNAnKE4gYgtruK9cBQ/wXwLnyvYhW1te+QoT32dkdJ8KcfEflTZVaL+YjfSX
-	 CKcGg8txQGOOg==
-Message-ID: <a82b9810-c3f5-4351-a796-e639c937f4d7@kernel.org>
-Date: Wed, 10 Sep 2025 16:47:27 +0200
+	s=k20201202; t=1757516356;
+	bh=2LDzN10cx2BWaLcJ9AwxZ1ehZQX1L6fRUnHukaEuBu8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=UHoyjENOYMi9OFRn+rZaKrMuC9pHJBeDUNRfINtgH3rRdfEJIdmet1QWMKog90ez+
+	 MNSC5jjynUe/VYqqFYwSPmvHgvtQjRq6aeCvvI3Dxn/FSiCOONiz7+N4ZsmyDH3WcK
+	 fLm0c3sbq7c5K5ohGQSanhjPPc0z7SCflPs+QIdwr57b1Cf+SJHQA5wVxaxNWq6f8J
+	 183sNs0E9+fwQCZKyoPOYe0wu6vd9mFilqcVQS8Yh4MCkWLdbus8ezJiNiaBWBMQZ1
+	 vciF+tk7tgRsZgMSotrPr4jcPzK1JVbDCTo0XEZ8iLKOfE/uk3S2wggAnS/hs2s5w4
+	 nrr9EcsPzA+XQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] rust: drm: Introduce the Tyr driver for Arm Mali GPUs
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Daniel Stone <daniels@collabora.com>, Rob Herring <robh@kernel.org>,
- Beata Michalska <beata.michalska@arm.com>,
- Carsten Haitzler <carsten.haitzler@foss.arm.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Ashley Smith <ashley.smith@collabora.com>,
- Steven Price <steven.price@arm.com>, Jeffrey Vander Stoep
- <jeffv@google.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, kernel@collabora.com
-References: <20250910-tyr-v3-1-dba3bc2ae623@collabora.com>
- <b44ca395-102e-4780-949d-9d656ba18ec0@kernel.org>
- <50CC05D3-CCF5-44AA-9E8A-71DA8733B78E@collabora.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <50CC05D3-CCF5-44AA-9E8A-71DA8733B78E@collabora.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Wed, 10 Sep 2025 16:59:11 +0200
+Message-Id: <DCP7JTWPA4QS.9PTE12UVZFDC@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Fiona Behrens" <me@kloenk.dev>, "Alban Kurti" <kurti@invicto.ai>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] rust: pin-init: add `#[bind]` attribute to access
+ previously initialized fields
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20250910100755.2361281-1-lossin@kernel.org>
+ <aMFQL-Hq1KvBG5lh@google.com> <DCP1Y8N4SRRF.25V7F6PV5ODCQ@kernel.org>
+ <CAH5fLgg+-oz_cP9=ke+ukp9qYZAsD=hKqvvGfkJWRcCKdrTQ-g@mail.gmail.com>
+ <DCP456FHT625.1L5BVZ4LPD8VQ@kernel.org> <aMGE64_J5R8U_rk5@tardis-2.local>
+In-Reply-To: <aMGE64_J5R8U_rk5@tardis-2.local>
 
-On 9/10/25 4:43 PM, Daniel Almeida wrote:
-> Fair enough, perhaps a quick v4 then?
+On Wed Sep 10, 2025 at 4:02 PM CEST, Boqun Feng wrote:
+> On Wed, Sep 10, 2025 at 02:19:00PM +0200, Benno Lossin wrote:
+>> On Wed Sep 10, 2025 at 12:40 PM CEST, Alice Ryhl wrote:
+>> > On Wed, Sep 10, 2025 at 12:36=E2=80=AFPM Benno Lossin <lossin@kernel.o=
+rg> wrote:
+>> >>
+>> >> On Wed Sep 10, 2025 at 12:17 PM CEST, Alice Ryhl wrote:
+>> >> > On Wed, Sep 10, 2025 at 12:07:53PM +0200, Benno Lossin wrote:
+>> >> >> Assigning a field a value in an initializer macro can be marked wi=
+th the
+>> >> >> `#[bind]` attribute. Doing so creates a `let` binding with the sam=
+e
+>> >> >> name. This `let` binding has the type `Pin<&mut T>` if the field i=
+s
+>> >> >> structurally pinned or `&mut T` otherwise (where `T` is the type o=
+f the
+>> >> >> field).
+>> >> >>
+>> >> >> Signed-off-by: Benno Lossin <lossin@kernel.org>
+>> >> >
+>> >> > Is there a reason we can't apply this to all fields and avoid the
+>> >> > attribute?
+>> >>
+>> >> Adding the attribute was due to Boqun's concern on v1 [1]. I think it
+>> >> might be surprising too, but I'm also happy with no attribute.
+>> >>
+>> >> [1]: https://lore.kernel.org/all/aLshd0_C-1rh3FAg@tardis-2.local
+>> >
+>> > IMO the ideal is if it works without an attribute. Perhaps trying that
+>> > in the kernel is a reasonable experiment to find out whether that's
+>> > reasonable to do for the general language feature?
+>>=20
+>> @Boqun what is your opinion on this?
+>>=20
+>
+> If we plan to make the in-place initializer language feature behave
+> similar, as I asked here [1], then dropping `#[bind]` seems good to me.
 
-In case this remains to be the only change you could also fix it up on apply.
+I don't think we can promise how that language feature is going to look
+like. It will definitely support accessing already initialized fields,
+but in what form remains to be seen.
+
+---
+Cheers,
+Benno
+
+> [1]: https://lore.kernel.org/rust-for-linux/aLshd0_C-1rh3FAg@tardis-2.loc=
+al/
+>
+> Thanks!
+>
+> Regards,
+> Boqun
+>
+>> I'm open to take v2 or v1, whatever you guys prefer.
+>>=20
+>> ---
+>> Cheers,
+>> Benno
+
