@@ -1,260 +1,266 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD3C27603B;
-	Wed, 10 Sep 2025 12:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A04D279792
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 12:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757508485; cv=none; b=AZNOLB2FSsFGdDTmPLK8ioaMf3HiwHWflEIC+s3aMt6/clenX9Ys6cft5H22S6PhsBi7FMP+CJO0CaYPq/7d15YD9fNG+Wn0tL5cLGERUsYBS2vN74+bWGaueLvs/DCLVaY49aqLmGAHbAchG1L9WFQtYdnTfJ65vFYIeHDSjsI=
+	t=1757508620; cv=none; b=sShWN2xLxb52IpircH3oCZcxXgPIbcEw6tqTzTeLG9vgI2r9u1+xGVR8ArjMygvCu/mXnQ0t1o2GpEL28UboDy0p3PDIxnOSdlVvcx6cU1IKyW0hVSE1cxeHqAuwV9aAoiODkHDbQprza3DjHAaEtWDmWrbTbfuiHN/09G7IXGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757508485; c=relaxed/simple;
-	bh=o57R+RjGtbRZETc+z5VMIE1x5OfcOrMG3Fhy/Dbifjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nhR5YivRFaNQ3B25umnQJEhpghLsiKg4dfBTKq706VgU0IFkKN6KzkKo23ypl7HUg2G/dddFBG8NYpD9FbHuhh8vBdf9jjndmuRefh1vRle7XJyduAagpLTp00Py2j45tqWJwc9fD0brBcuXN/105nEHUFaMi5KMV/e85Dn/6z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=SrVD/Sw8; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1757508620; c=relaxed/simple;
+	bh=KPKpgcY5xKixyKiUfwzHTBY5sunC7kg8R3SkA4pQiUE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IpPGqfVEpT5BC0BKRfOkpvSVULt2w3q4qQxvzhNfzuJKqrv4WM44e59ZOqrZf/1RQmAQk1ItdlG+drivP5UeWebYt5O1qW3g9jsocNjWRzWiPEHlR7BgWBSqHX47kwHoUKLGoQJfZMtGHXeYg65Y01qo5utBwnQX7Ryx35hW3fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q+IyQdV2; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="SrVD/Sw8"
-Received: from mail-nwsmtp-smtp-production-main-95.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-95.vla.yp-c.yandex.net [IPv6:2a02:6b8:c18:43a9:0:640:86ff:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 4F15981C01;
-	Wed, 10 Sep 2025 15:47:53 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-95.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id mlJ9h3GMnqM0-X69uNjes;
-	Wed, 10 Sep 2025 15:47:52 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757508472;
-	bh=QzbU/m7w4HCG3KfyJeBKSykx8sOcGAjMdR8/iOEs/iY=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=SrVD/Sw83iEPCdJfD1X8/3AO3chnhCIS9iA2aeQ1tCIDVsNHYctzUVvsL2c6FEKCT
-	 2ItqVNGGUk4Llgglo+FM5H6GfX7DxxTEDKvIo0oocRZpf6K1pvrYOXsresCtN16Twx
-	 aR1APbWXfpSg+YtBRs8d0THkYnIbvkAmUlUUi004=
-Authentication-Results: mail-nwsmtp-smtp-production-main-95.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 10 Sep 2025 15:47:46 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com,
- tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu,
- a.hindborg@kernel.org, lossin@kernel.org, bjorn3_gh@protonmail.com,
- gary@garyguo.net, boqun.feng@gmail.com, alex.gaynor@gmail.com,
- ojeda@kernel.org
-Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original
- value
-Message-ID: <20250910154746.03a3bc2f@nimda.home>
-In-Reply-To: <CAH5fLggb=_Vtk74RONc+pQUSc1XrVi=jdD1=mHNs6-67ZCYB0A@mail.gmail.com>
-References: <20250909170013.16025-1-work@onurozkan.dev>
-	<20250909170013.16025-2-work@onurozkan.dev>
-	<aMEaE2NEU2FctgH2@google.com>
-	<20250910135848.1ea11519@nimda.home>
-	<CAH5fLggb=_Vtk74RONc+pQUSc1XrVi=jdD1=mHNs6-67ZCYB0A@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q+IyQdV2"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45deccb2c1eso17136725e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 05:50:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757508617; x=1758113417; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KxQmUaO34FNds/dKkUVjytcJcTLUNu+HbjN0DdBAszU=;
+        b=Q+IyQdV2Qn699C4V/B3N8t1mZ07gWVcIwDoanrE1Gi5PLoo9LO/c8ltNOhRQuoHDmj
+         6Y0BMXsr5HULw6xLxCtFf3scbs8aNpfOJVEdhtWZpbsRvaYyYZ1MzTCPT/ej6nvetjIy
+         zGlZG8xFPrHzpqeQBEzGHWAhpYBxxccHHCyfOBy/M/1efkK23/1Gu6PCYgvZvFRev7CS
+         oyXXwmMtT/8uBeAQOr0Owx+hKtj7hbpephJlzNWc6KDkbW3cmFkFOU6zWbk/G2+axiVN
+         1xk7/L3wHu98vL7k0uNTrHpMGM5Tk/SkTv0mPCmqPEDnl9es7xzdJNOWnUBlZ9gES0Nw
+         gMIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757508617; x=1758113417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KxQmUaO34FNds/dKkUVjytcJcTLUNu+HbjN0DdBAszU=;
+        b=qM2vQmwUlXitV8K7zpHg5utqiDNvLX7fnMRJBCrEdX3uESuShm4aHxYUJEIRrP6HEP
+         yPP0FoDW0QdLrOX7biyFtH0jKmbQenhqAa+KzVXfGTflWmKNG/B4rZ1UlnZCVhSenQzH
+         4K5odUm8ApRa2Wk/vuNaWpjlCC2hwYbnG0qQmYdE5a8unnutTiteLo2lt4S9MvzCE7OH
+         AT4nm+JJJaWeXP5GZOf+WMpwhPvVv3lNTL+qOLv1feDTxCKvbJ4vIWAZNiqnKlWdwUpi
+         4SL42uTjz6Rew3ECcdscRu0m6+UhWyFNPZ5pA0eHKhF6f3Cah2xjqbgr3WFoxwRCyiJG
+         0wWw==
+X-Gm-Message-State: AOJu0Ywdz7rCofEJDKgtmeOGOUnW5hgS2xn5FWEUVuYAO3B8qnvBPegU
+	tQl54Jo3DlZ+o8B0oEl59DOfBCW5mqO2ymAh/XcWQFLTsMcim9rzjIDzvYdRlputAiJi9O4HMdM
+	kb/8gAW6+JMOt84jwQeIY+VT1LeQd2yb+nLPC/O2P
+X-Gm-Gg: ASbGncv+UJfDMiFPDsW2zJRnFG9T4ZZ4/vPwI7rHpWgaX7hAWfCCBk1Fvfn+gawayuc
+	EZhRoIkLC9OPoF+4Mihp1WfpasGxAZPl1kphSXl0f+RZaZa5TktYfj7Dy+tiba2bhDUg+m8u/Rz
+	yfFjNCoBUEw0Uw3P0NSZPW0C08VIJzYJu8ev826gFkicHByS4y0SAbkxY+g7taAJ4eXvFswnzge
+	xA5LaUn6xuBKiNEGY3NR9yORrwuLoQmOPdkoA0mRaFijN4=
+X-Google-Smtp-Source: AGHT+IEbxhh8cTjZB/V6q92Pchj2dBc2ScpYmlbGUllxoq8p9L1AznFEPoNTObajMnViT6wWxEvxi59ZyfF2QEWst5g=
+X-Received: by 2002:a05:600c:1993:b0:45b:8b3e:9f66 with SMTP id
+ 5b1f17b1804b1-45dddeb93b3mr123082635e9.13.1757508616333; Wed, 10 Sep 2025
+ 05:50:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20250909170013.16025-1-work@onurozkan.dev> <20250909170013.16025-2-work@onurozkan.dev>
+ <aMEaE2NEU2FctgH2@google.com> <20250910135848.1ea11519@nimda.home>
+ <CAH5fLggb=_Vtk74RONc+pQUSc1XrVi=jdD1=mHNs6-67ZCYB0A@mail.gmail.com> <20250910154746.03a3bc2f@nimda.home>
+In-Reply-To: <20250910154746.03a3bc2f@nimda.home>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 10 Sep 2025 14:50:03 +0200
+X-Gm-Features: AS18NWDWXd1HXdc12LmAivcw38d0hGJ5DtWRvFLZjwivmB8y9UPifJXdqpKPH4A
+Message-ID: <CAH5fLgjT3LLpg-CjdbR5_+sgBZEsrCP-c4eJt=E3NmtVDKMJ5Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] rust: refactor to_result to return the original value
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	daniel@sedlak.dev, dirk.behme@de.bosch.com, felipe_life@live.com, 
+	tamird@gmail.com, dakr@kernel.org, tmgross@umich.edu, a.hindborg@kernel.org, 
+	lossin@kernel.org, bjorn3_gh@protonmail.com, gary@garyguo.net, 
+	boqun.feng@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 10 Sep 2025 13:05:42 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> On Wed, Sep 10, 2025 at 12:59=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.=
-dev>
+On Wed, Sep 10, 2025 at 2:47=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev=
 > wrote:
-> >
-> > On Wed, 10 Sep 2025 06:26:27 +0000
-> > Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > > On Tue, Sep 09, 2025 at 08:00:13PM +0300, Onur =C3=96zkan wrote:
-> > > > Current `to_result` helper takes a `c_int` and returns `Ok(())`
-> > > > on success and this has some issues like:
+>
+> On Wed, 10 Sep 2025 13:05:42 +0200
+> Alice Ryhl <aliceryhl@google.com> wrote:
+>
+> > On Wed, Sep 10, 2025 at 12:59=E2=80=AFPM Onur =C3=96zkan <work@onurozka=
+n.dev>
+> > wrote:
+> > >
+> > > On Wed, 10 Sep 2025 06:26:27 +0000
+> > > Alice Ryhl <aliceryhl@google.com> wrote:
+> > >
+> > > > On Tue, Sep 09, 2025 at 08:00:13PM +0300, Onur =C3=96zkan wrote:
+> > > > > Current `to_result` helper takes a `c_int` and returns `Ok(())`
+> > > > > on success and this has some issues like:
+> > > > >
+> > > > >     - Callers lose the original return value and often have to
+> > > > > store it in a temporary variable before calling `to_result`.
+> > > > >
+> > > > >     - It only supports `c_int`, which makes callers to
+> > > > > unnecessarily cast when working with other types (e.g. `u16` in
+> > > > > phy abstractions). We even have some places that ignore to use
+> > > > >     `to_result` helper because the input doesn't fit in `c_int`
+> > > > >     (see [0]).
+> > > > >
+> > > > > [0]:
+> > > > > https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
+> > > > >
+> > > > > This patch changes `to_result` to be generic and also return the
+> > > > > original value on success.
+> > > > >
+> > > > > So that the code that previously looked like:
+> > > > >
+> > > > >     let ret =3D unsafe { bindings::some_ffi_call() };
+> > > > >     to_result(ret).map(|()| SomeType::new(ret))
+> > > > >
+> > > > > can now be written more directly as:
+> > > > >
+> > > > >     to_result(unsafe { bindings::some_ffi_call() })
+> > > > >     .map(|ret| SomeType::new(ret))
+> > > > >
+> > > > > Similarly, code such as:
+> > > > >
+> > > > >     let res: isize =3D $some_ffi_call();
+> > > > >     if res < 0 {
+> > > > >         return Err(Error::from_errno(res as i32));
+> > > > >     }
+> > > > >
+> > > > > can now be used with `to_result` as:
+> > > > >
+> > > > >     to_result($some_ffi_call())?;
+> > > > >
+> > > > > This patch only fixes the callers that broke after the changes
+> > > > > on `to_result`. I haven't included all the improvements made
+> > > > > possible by the new design since that could conflict with other
+> > > > > ongoing patches [1]. Once this patch is approved and applied, I
+> > > > > am planning to follow up with creating a "good first issue" on
+> > > > > [2] for those additional changes.
+> > > > >
+> > > > > [1]: https://lore.kernel.org/rust-for-linux/?q=3Dto_result
+> > > > > [2]: https://github.com/Rust-for-Linux/linux
+> > > > >
+> > > > > Link:
+> > > > > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic=
+/x/near/536374456
+> > > > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 > > > >
-> > > >     - Callers lose the original return value and often have to
-> > > > store it in a temporary variable before calling `to_result`.
+> > > > > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> > > > > index a41de293dcd1..6563ea71e203 100644
+> > > > > --- a/rust/kernel/error.rs
+> > > > > +++ b/rust/kernel/error.rs
+> > > > > @@ -376,12 +376,19 @@ fn from(e: core::convert::Infallible) ->
+> > > > > Error { pub type Result<T =3D (), E =3D Error> =3D
+> > > > > core::result::Result<T, E>;
+> > > > >
+> > > > >  /// Converts an integer as returned by a C kernel function to
+> > > > > an error if it's negative, and -/// `Ok(())` otherwise.
+> > > > > -pub fn to_result(err: crate::ffi::c_int) -> Result {
+> > > > > -    if err < 0 {
+> > > > > -        Err(Error::from_errno(err))
+> > > > > +/// returns the original value otherwise.
+> > > > > +pub fn to_result<T>(code: T) -> Result<T>
+> > > > > +where
+> > > > > +    T: Copy + TryInto<i32>,
+> > > > > +{
+> > > > > +    // Try casting into `i32`.
+> > > > > +    let casted: crate::ffi::c_int =3D
+> > > > > code.try_into().unwrap_or(0); +
+> > > > > +    if casted < 0 {
+> > > > > +        Err(Error::from_errno(casted))
+> > > > >      } else {
+> > > > > -        Ok(())
+> > > > > +        // Return the original input value.
+> > > > > +        Ok(code)
+> > > > >      }
+> > > > >  }
 > > > >
-> > > >     - It only supports `c_int`, which makes callers to
-> > > > unnecessarily cast when working with other types (e.g. `u16` in
-> > > > phy abstractions). We even have some places that ignore to use
-> > > >     `to_result` helper because the input doesn't fit in `c_int`
-> > > >     (see [0]).
+> > > > I don't think this is the best way to declare this function. The
+> > > > conversions I would want are:
 > > > >
-> > > > [0]:
-> > > > https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
+> > > > * i32 -> Result<u32>
+> > > > * isize -> Result<usize>
+> > > > * i64 -> Result<u64>
 > > > >
-> > > > This patch changes `to_result` to be generic and also return the
-> > > > original value on success.
+> > > > Your commit messages mentions i16, but does the error types even
+> > > > fit in 16 bits? Maybe. But they don't fit in i8. That is to say,
+> > > > I think it should support all the types larger than i32 (the
+> > > > errors fit in those types too), but for the ones that are
+> > > > smaller, it might not make sense if the type is too small. That's
+> > > > the reverse of what you have now.
 > > > >
-> > > > So that the code that previously looked like:
+> > > > We probably need a new trait. E.g.:
 > > > >
-> > > >     let ret =3D unsafe { bindings::some_ffi_call() };
-> > > >     to_result(ret).map(|()| SomeType::new(ret))
+> > > > trait ToResult {
+> > > >     type Unsigned;
+> > > >     fn to_result(self) -> Result<Self::Unsigned, Error>;
+> > > > }
 > > > >
-> > > > can now be written more directly as:
-> > > >
-> > > >     to_result(unsafe { bindings::some_ffi_call() })
-> > > >     .map(|ret| SomeType::new(ret))
-> > > >
-> > > > Similarly, code such as:
-> > > >
-> > > >     let res: isize =3D $some_ffi_call();
-> > > >     if res < 0 {
-> > > >         return Err(Error::from_errno(res as i32));
+> > > > impl ToResult for i32 {
+> > > >     type Unsigned =3D u32;
+> > > >     fn to_result(self) -> Result<u32, Error> {
+> > > >         ...
 > > > >     }
+> > > > }
 > > > >
-> > > > can now be used with `to_result` as:
+> > > > impl ToResult for isize {
+> > > >     type Unsigned =3D usize;
+> > > >     fn to_result(self) -> Result<usize, Error> {
+> > > >         ...
+> > > >     }
+> > > > }
 > > > >
-> > > >     to_result($some_ffi_call())?;
+> > > > pub fn to_result<T: ToResult>(code: T) -> Result<T::Unsigned> {
+> > > >     T::to_result(code)
+> > > > }
 > > > >
-> > > > This patch only fixes the callers that broke after the changes
-> > > > on `to_result`. I haven't included all the improvements made
-> > > > possible by the new design since that could conflict with other
-> > > > ongoing patches [1]. Once this patch is approved and applied, I
-> > > > am planning to follow up with creating a "good first issue" on
-> > > > [2] for those additional changes.
-> > > >
-> > > > [1]: https://lore.kernel.org/rust-for-linux/?q=3Dto_result
-> > > > [2]: https://github.com/Rust-for-Linux/linux
-> > > >
-> > > > Link:
-> > > > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x=
-/near/536374456
-> > > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 > > >
-> > > > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> > > > index a41de293dcd1..6563ea71e203 100644
-> > > > --- a/rust/kernel/error.rs
-> > > > +++ b/rust/kernel/error.rs
-> > > > @@ -376,12 +376,19 @@ fn from(e: core::convert::Infallible) ->
-> > > > Error { pub type Result<T =3D (), E =3D Error> =3D
-> > > > core::result::Result<T, E>;
-> > > >
-> > > >  /// Converts an integer as returned by a C kernel function to
-> > > > an error if it's negative, and -/// `Ok(())` otherwise.
-> > > > -pub fn to_result(err: crate::ffi::c_int) -> Result {
-> > > > -    if err < 0 {
-> > > > -        Err(Error::from_errno(err))
-> > > > +/// returns the original value otherwise.
-> > > > +pub fn to_result<T>(code: T) -> Result<T>
-> > > > +where
-> > > > +    T: Copy + TryInto<i32>,
-> > > > +{
-> > > > +    // Try casting into `i32`.
-> > > > +    let casted: crate::ffi::c_int =3D
-> > > > code.try_into().unwrap_or(0); +
-> > > > +    if casted < 0 {
-> > > > +        Err(Error::from_errno(casted))
-> > > >      } else {
-> > > > -        Ok(())
-> > > > +        // Return the original input value.
-> > > > +        Ok(code)
-> > > >      }
-> > > >  }
-> > >
-> > > I don't think this is the best way to declare this function. The
-> > > conversions I would want are:
-> > >
-> > > * i32 -> Result<u32>
-> > > * isize -> Result<usize>
-> > > * i64 -> Result<u64>
-> > >
-> > > Your commit messages mentions i16, but does the error types even
-> > > fit in 16 bits? Maybe. But they don't fit in i8. That is to say,
-> > > I think it should support all the types larger than i32 (the
-> > > errors fit in those types too), but for the ones that are
-> > > smaller, it might not make sense if the type is too small. That's
-> > > the reverse of what you have now.
-> > >
-> > > We probably need a new trait. E.g.:
-> > >
-> > > trait ToResult {
-> > >     type Unsigned;
-> > >     fn to_result(self) -> Result<Self::Unsigned, Error>;
-> > > }
-> > >
-> > > impl ToResult for i32 {
-> > >     type Unsigned =3D u32;
-> > >     fn to_result(self) -> Result<u32, Error> {
-> > >         ...
-> > >     }
-> > > }
-> > >
-> > > impl ToResult for isize {
-> > >     type Unsigned =3D usize;
-> > >     fn to_result(self) -> Result<usize, Error> {
-> > >         ...
-> > >     }
-> > > }
-> > >
-> > > pub fn to_result<T: ToResult>(code: T) -> Result<T::Unsigned> {
-> > >     T::to_result(code)
-> > > }
-> > >
+> > > `Error::from_errno` is limited to i32, that's why I followed the
+> > > `TryInto<i32>` approach, but I like this design too.
 > >
-> > `Error::from_errno` is limited to i32, that's why I followed the
-> > `TryInto<i32>` approach, but I like this design too.
->=20
-> If you pass an i32 that is not a valid errno, then it becomes EINVAL.
-> In the case of `isize`, I would say that if a negative isize does not
-> fit in i32, then that should fall into the same scenario.
->=20
-
-In that case replacing `unwrap_or(0)` with `map_err(|_| code::EINVAL)`
-should do the job?
-
-I also thought of an alternative to the custom-trait=E2=80=93based approach.
-What do you think about something like this:
-
-    pub fn to_result<T, R>(code: T) -> Result<R>
-    where
-        T: Copy + TryInto<i32> + TryInto<R>,
-    {
-        // Try casting into `i32`.
-        let casted: crate::ffi::c_int =3D code.try_into().map_err(|_|
-    code::EINVAL)?;
-
-        if casted < 0 {
-            Err(Error::from_errno(casted))
-        } else {
-            // Return the original input value as `R`.
-            code.try_into().map_err(|_| code::EINVAL)
-        }
-    }
-
-
-On the caller side, it would look like this:
-
-    let val: u16 =3D to_result(...)?;
-
-The main difference here is that this version can be used to cast into
-multiple different types, not just `i32 -> u32` or `i64 -> u64`.
-
-Regards,
-Onur
-
->=20
-> > > > diff --git a/rust/kernel/miscdevice.rs
-> > > > b/rust/kernel/miscdevice.rs index 6373fe183b27..22b72ae84c03
-> > > > 100644 --- a/rust/kernel/miscdevice.rs
-> > > > +++ b/rust/kernel/miscdevice.rs
-> > > > @@ -79,7 +79,7 @@ pub fn register(opts: MiscDeviceOptions) ->
-> > > > impl PinInit<Self, Error> { // the destructor of this type
-> > > > deallocates the memory. // INVARIANT: If this returns `Ok(())`,
-> > > > then the `slot` will contain a registered // misc device.
-> > > > -                to_result(unsafe {
-> > > > bindings::misc_register(slot) })
-> > > > +                to_result(unsafe {
-> > > > bindings::misc_register(slot) }).map(|_| ())
-> > >
-> > > This still uses the `map` pattern. Please change it too.
-> > >
-> > > Alice
+> > If you pass an i32 that is not a valid errno, then it becomes EINVAL.
+> > In the case of `isize`, I would say that if a negative isize does not
+> > fit in i32, then that should fall into the same scenario.
 > >
-> >
-> > I left that part intentionally and explained the reason in v2
-> > changelog.
->=20
-> I missed that, ok. I still prefer Ok::<...>()
+>
+> In that case replacing `unwrap_or(0)` with `map_err(|_| code::EINVAL)`
+> should do the job?
+>
+> I also thought of an alternative to the custom-trait=E2=80=93based approa=
+ch.
+> What do you think about something like this:
+>
+>     pub fn to_result<T, R>(code: T) -> Result<R>
+>     where
+>         T: Copy + TryInto<i32> + TryInto<R>,
+>     {
+>         // Try casting into `i32`.
+>         let casted: crate::ffi::c_int =3D code.try_into().map_err(|_|
+>     code::EINVAL)?;
+>
+>         if casted < 0 {
+>             Err(Error::from_errno(casted))
+>         } else {
+>             // Return the original input value as `R`.
+>             code.try_into().map_err(|_| code::EINVAL)
+>         }
+>     }
+>
+>
+> On the caller side, it would look like this:
+>
+>     let val: u16 =3D to_result(...)?;
+>
+> The main difference here is that this version can be used to cast into
+> multiple different types, not just `i32 -> u32` or `i64 -> u64`.
 
+I think making the return type a separate generic makes this too
+difficult to use. It means that any time you would write this:
+
+to_result(unsafe { ... })?;
+Ok(())
+
+now you need to tell the compiler what kind of integer you want to get
+from to_result, just so you can immediately ignore the integer.
+
+Alice
