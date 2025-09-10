@@ -1,150 +1,210 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF2130648C
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 06:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749133101A7;
+	Wed, 10 Sep 2025 08:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757486390; cv=none; b=ej06bKN0GDmyb8nyVQfKr8cztlpG1fSuL8LVdnQt2KMNDofzweRQ2lo+VU9gboc5IlqGmEbrHxcon2HRIjP9+wBMP12tvdEaFa/EtMUfOypeo/RABnBuC8JBESU3LvjUwTp3+yuokcx1ySIBzmQgiBxYFVGp3T51ARkAmFD4PZY=
+	t=1757491288; cv=none; b=ddbgKOhlXVHtJr3rtSOevaz3hYZPqqYbTcpG7UlNkobi0uwYZJn0E/Ybc0/Ia/BP2cnGUIsO/iTcOSiY50V1o+DgxWp1CdTmwV6x+FICGVZarKCLX7Q4ScMScdS557JGEmc6DyIa0+8SglAQj6hmU90/cklG+NAjUxfHW6Denvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757486390; c=relaxed/simple;
-	bh=rfQe+ePDp4Zo0AgaP4d2M/YN/CS2BDKY5Aq9m9aG2wI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SZ55NFgF2vauht9RhP39MYVMSUcNiAxBoILX96canuIZOyGPfcUmhJbcIRo6l5nPPJq/AdHUreeW1kz10gbjsXl11pVGrny+5weporbQrx0UYlUGgsBuOrIsAZ57Twm8d4kkYFzC609+l0gJA4Pxe2/7Smajru9h2z5PZhZpmJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sfA9CzK1; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1757491288; c=relaxed/simple;
+	bh=W9AyICeigCjB4ZfW6Mn13qQroeZohBNvhnwa50EVj9s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=sJ3RJ5u4dwlZ6BuQ1PA7ig9easlwJHSh/dyCJyJUjJCCFCEoPUdOeYA5iEJLUPV5osECI3auh0AQDlckOTD70Q6CHjvfaCHuUnjDg+qgdgUaUu09L1Cj3X/rTb6tIW45OLdKZ1lS9C55XCIRmsKKsfAxadRVmuvy7muiQYG33o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9hu+wut; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sfA9CzK1"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b046fc9f28bso554960466b.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Sep 2025 23:39:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757486387; x=1758091187; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0ZgO5jwANFMehJfMoLYUsZTxd5NY3ndlOci6BOUflzQ=;
-        b=sfA9CzK13Vexf+5Y5pM3KwocHcTeSTzAoISTLeF2IRgev8EvfJ/Y+XOsZMmwq80ma/
-         t7gHyDuaWeeVXSDmViqqjkfjYkMFkxJ2NSxMBAq9ALlqRQkGDV6mbYibUYZEoDZCdikw
-         ixM0gc1hIizGNhaC9uw2PAwAfwKLlcNpV8vSY2Xl0v+25YBraocT2/Zb+mbeiMrLsojj
-         hH5HANPsWyYf4CX/P3r+pMKCQbPbAw+u/I6810PyENH5LZs6nWGItNAdYGpIhTLfgUpQ
-         cCC/iS/Mj1IQCWA6FjsNsj+O9v4B6JX6lwnkSDG/o8naR4oyB99VjwqcW/2npXMYxX1S
-         frfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757486387; x=1758091187;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=0ZgO5jwANFMehJfMoLYUsZTxd5NY3ndlOci6BOUflzQ=;
-        b=C5y5xqHA7Ws4CPyAux7CEfMcluGBFJd/wUo5D68R77Y7OhNZE9ZYEsLbYsvjWvnzXy
-         55phVdRoTOIrM3Jo+Grtr/Cw9fknrS0iZp3umNBiGxBlzViv1FVLJsqmU3hwjPImbb2m
-         nMt0mXbC8GsWkJrCKtaX7hpM8G8LFRbFACbLBS3/xKL3EOiEtvLCKFo+UMB141fcTTDj
-         kYZBR7xA1c3+gYh6TxKLvPecJFMANA09C+q1FPzbRv8BHbsiSQKDlwAEW84EpMlgmK5Y
-         ErMTBfdaGPNYlQgaNJCi3CLeqTN32NtQV0JPPMxZGvsfN1+++0aFFJP59bawJUkzLxLD
-         iblQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0WpeXpdciOmgPtoDWPy6aeEiOoXYO4O0bUBjQUXqmflRdT8fmwNbfwR5OgfQR72ZeX2okvIqOfUqcQqRmVw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhelvbfiQDThws0aYhb48U0j+2yuSPG0dLscyGXxL5GXtVirc4
-	zfRrmYH4b4BN9l+mqk1gO3Wr4R/g7kCu4HU+1xn+bLSISjdTyvBPSeKVpn2e4eZc/55ER/DKgj8
-	BsgdL/fSeJtSfEpYlgg==
-X-Google-Smtp-Source: AGHT+IF290sfWDJWyXR0CbzZnHAG1Yyq7SWKBAx8oPF32kqB1mi5kcbwO1hzeAGXP44801EWVIisUmt4Rpwov5g=
-X-Received: from edh22.prod.google.com ([2002:a05:6402:5056:b0:62b:f094:4936])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3f2a:b0:b04:9d90:a7e6 with SMTP id a640c23a62f3a-b04b1741ac2mr1432308366b.55.1757486387560;
- Tue, 09 Sep 2025 23:39:47 -0700 (PDT)
-Date: Wed, 10 Sep 2025 06:39:46 +0000
-In-Reply-To: <c7a7aac3e82fde7a20970e6a65d200ab79804b0f.camel@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9hu+wut"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E1DC4CEF5;
+	Wed, 10 Sep 2025 08:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757491288;
+	bh=W9AyICeigCjB4ZfW6Mn13qQroeZohBNvhnwa50EVj9s=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=O9hu+wutcuu/Q7972UJxuki8Y3HF4ragOWc7XGwFauq0XvJt5T/41JaU7f3ND83lO
+	 EVRVi9iOwSjLuwb6kX7NPM10qUQFLq0OnnSD35bMP+nXottJf4RDXgzxBESv7bUZgT
+	 AlwjvU4+dydveIghjt8smeGX8GqNRzYAUopY6BXbQhfZayr5d3hdU3NAFcOYyTvWXN
+	 xgIA1u/iIR0GClqtjHMuVTVU/y7N3th6G6/NoazYd+uoYfiOvKtQYu0xxxtCqQKtUP
+	 UoLc3sdaX9535hMlddg5lLAjLv8Z2XnGYx2dM73rzI8s74z9PjMVhTevClGKq8Lgcq
+	 VZ5K6xEMCyIrg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250909-vmbo-defer-v2-0-9835d7349089@google.com>
- <20250909-vmbo-defer-v2-1-9835d7349089@google.com> <c7a7aac3e82fde7a20970e6a65d200ab79804b0f.camel@linux.intel.com>
-Message-ID: <aMEdMg_3ljC27i1-@google.com>
-Subject: Re: [PATCH v2 1/2] drm/gpuvm: add deferred vm_bo cleanup
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau <liviu.dudau@arm.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 10 Sep 2025 10:01:22 +0200
+Message-Id: <DCOYNWXYKBOK.XCRA4Z34RUXP@kernel.org>
+Subject: Re: [PATCH v3 02/11] gpu: nova-core: move GSP boot code out of
+ `Gpu` constructor
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250902-nova_firmware-v3-0-56854d9c5398@nvidia.com>
+ <20250902-nova_firmware-v3-2-56854d9c5398@nvidia.com>
+ <843554b1-f4c5-43f5-a23b-583339708bea@kernel.org>
+ <DCIZ79KKSSF1.25NJT5ZWR3OOS@nvidia.com>
+ <DCJ0UA7KM9AP.OGO7EJB4ORQP@kernel.org>
+ <DCOBWF0EZLHF.3FFVAB16SJ3FW@nvidia.com>
+ <DCOCL398HXDH.3QH9U6UGGIUP1@kernel.org>
+ <DCOUK0Z4YV6M.2R0CFE57DY5CR@nvidia.com>
+In-Reply-To: <DCOUK0Z4YV6M.2R0CFE57DY5CR@nvidia.com>
 
-On Tue, Sep 09, 2025 at 04:20:32PM +0200, Thomas Hellstr=C3=B6m wrote:
-> On Tue, 2025-09-09 at 13:36 +0000, Alice Ryhl wrote:
-> > When using GPUVM in immediate mode, it is necessary to call
-> > drm_gpuvm_unlink() from the fence signalling critical path. However,
-> > unlink may call drm_gpuvm_bo_put(), which causes some challenges:
-> >=20
-> > 1. drm_gpuvm_bo_put() often requires you to take resv locks, which
-> > you
-> > =C2=A0=C2=A0 can't do from the fence signalling critical path.
-> > 2. drm_gpuvm_bo_put() calls drm_gem_object_put(), which is often
-> > going
-> > =C2=A0=C2=A0 to be unsafe to call from the fence signalling critical pa=
-th.
-> >=20
-> > To solve these issues, add a deferred version of drm_gpuvm_unlink()
-> > that
-> > adds the vm_bo to a deferred cleanup list, and then clean it up
-> > later.
-> >=20
-> > The new methods take the GEMs GPUVA lock internally rather than
-> > letting
-> > the caller do it because it also needs to perform an operation after
-> > releasing the mutex again. This is to prevent freeing the GEM while
-> > holding the mutex (more info as comments in the patch). This means
-> > that
-> > the new methods can only be used with DRM_GPUVM_IMMEDIATE_MODE.
-> >=20
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> > =C2=A0drivers/gpu/drm/drm_gpuvm.c | 174
-> > ++++++++++++++++++++++++++++++++++++++++++++
-> > =C2=A0include/drm/drm_gpuvm.h=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 26 ++++++=
-+
-> > =C2=A02 files changed, 200 insertions(+)
-> >=20
-> > diff --git a/drivers/gpu/drm/drm_gpuvm.c
-> > b/drivers/gpu/drm/drm_gpuvm.c
-> > index
-> > 78a1a4f095095e9379bdf604d583f6c8b9863ccb..5aa8b3813019705f70101950af2
-> > d8fe4e648e9d0 100644
-> > --- a/drivers/gpu/drm/drm_gpuvm.c
-> > +++ b/drivers/gpu/drm/drm_gpuvm.c
-> > @@ -876,6 +876,27 @@ __drm_gpuvm_bo_list_add(struct drm_gpuvm *gpuvm,
-> > spinlock_t *lock,
-> > =C2=A0	cond_spin_unlock(lock, !!lock);
-> > =C2=A0}
-> > =C2=A0
-> > +/**
-> > + * drm_gpuvm_bo_is_dead() - check whether this vm_bo is scheduled
->=20
-> NIT: Is zombie a better name than dead?
+On Wed Sep 10, 2025 at 6:48 AM CEST, Alexandre Courbot wrote:
+> On Tue Sep 9, 2025 at 11:43 PM JST, Danilo Krummrich wrote:
+>> 	impl Gpu {
+>> 	    pub(crate) fn new<'a>(
+>> 	        dev: &'a Device<Bound>,
+>> 	        bar: &'a Bar0
+>> 	        devres_bar: Arc<Devres<Bar0>>,
+>> 	    ) -> impl PinInit<Self, Error> + 'a {
+>> 	        try_pin_init(Self {
+>> 	            bar: devres_bar,
+>> 	            spec: Spec::new(bar)?,
+>> 	            gsp_falcon: Falcon::<Gsp>::new(dev, spec.chipset)?,
+>> 	            sec2_falcon: Falcon::<Sec2>::new(dev, spec.chipset)?,
+>> 	            sysmem_flush: SysmemFlush::register(dev, bar, spec.chipset)=
+?
+>> 	            gsp <- Gsp::new(gsp_falcon, sec2_falcon, sysmem_flush)?,
+>> 	        })
+>> 	    }
+>> 	}
+>
+> It does work. The bizareness of passing the `bar` twice aside,
 
-I could see that name make sense.
+Yeah, but it really seems like a minor inconvinience. (Especially, since th=
+is
+will be the only occurance of this we'll ever have.)
 
-> > =C2=A0/**
-> > =C2=A0 * drm_gpuvm_bo_list_add() - insert a vm_bo into the given list
-> > =C2=A0 * @__vm_bo: the &drm_gpuvm_bo
-> > @@ -1081,6 +1102,9 @@ drm_gpuvm_init(struct drm_gpuvm *gpuvm, const
-> > char *name,
-> > =C2=A0	INIT_LIST_HEAD(&gpuvm->evict.list);
-> > =C2=A0	spin_lock_init(&gpuvm->evict.lock);
-> > =C2=A0
-> > +	INIT_LIST_HEAD(&gpuvm->bo_defer.list);
-> > +	spin_lock_init(&gpuvm->bo_defer.lock);
-> > +
->=20
-> This list appears to exactly follow the pattern a lockless list was
-> designed for. Saves some space in the vm_bo and gets rid of the
-> excessive locking. <include/linux/llist.h>
+> here is what it looks like when I got it to compile:
 
-Good point.
+This looks great!
 
-Alice
+>     pub(crate) fn new<'a>(
+>         pdev: &'a pci::Device<device::Bound>,
+>         devres_bar: Arc<Devres<Bar0>>,
+>         bar: &'a Bar0,
+>     ) -> impl PinInit<Self, Error> + 'a {
+>         try_pin_init!(Self {
+>             spec: Spec::new(bar).inspect(|spec| {
+>                 dev_info!(
+>                     pdev.as_ref(),
+>                     "NVIDIA (Chipset: {}, Architecture: {:?}, Revision: {=
+})\n",
+>                     spec.chipset,
+>                     spec.chipset.arch(),
+>                     spec.revision
+>                 );
+>             })?,
+
++             _: {
++                 gfw::wait_gfw_boot_completion(bar)
++                     .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot di=
+d not complete"))?;
++             },
+>
+>             sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.=
+chipset)?,
+>
+>             gsp_falcon: Falcon::<Gsp>::new(
+>                 pdev.as_ref(),
+>                 spec.chipset,
+>                 bar,
+>                 spec.chipset > Chipset::GA100,
+>             )
+>             .inspect(|falcon| falcon.clear_swgen0_intr(bar))?,
+>
+>             sec2_falcon: Falcon::<Sec2>::new(pdev.as_ref(), spec.chipset,=
+ bar, true)?,
+>
+-             gsp: Self::start_gsp(pdev, bar, spec.chipset, gsp_falcon, sec=
+2_falcon)?,
++             gsp <- Self::start_gsp(pdev, bar, spec.chipset, gsp_falcon, s=
+ec2_falcon),
+>
+>             bar: devres_bar,
+>         })
+>     }
+>
+> The wait for GFW initialization had to be moved to `probe`, but that's
+> fine IMO.
+
+That's not necessary, you can keep it in Gpu::new() -- I don't see what's
+preventing us from that. I inserted it in the code above.
+
+> I do however find the code less readable in this form, less
+> editable as well. And LSP seems lost, so I don't get any syntax
+> highlighting in the `try_pin_init` block.
+
+Benno is working on a syntax update, so automatic formatting etc. will prop=
+erly
+work.
+
+Otherwise, I can't see how this is a downgrade. It represents the initializ=
+ation
+process in a much clearer way that the current implementation of Gsp::new()=
+,
+which is rather messy.
+
+> Fundamentally, this changes the method from a fallible method returning
+> a non-fallible initializer into a non-fallible method returning a
+> fallible initializer.
+
+Yeah, that's the best case when working with pin-init.
+
+> I'm ok with that, and maybe this new form will
+> encourage us to keep this method short, which is what we want, but other
+> than that what benefit are we getting from this change?
+
+The immediate benefit is that we don't need an extra allocation for the Gsp
+structure.
+
+The general benefit is that once we need to add more fields to
+structures that require pinning (such as locks -- and we will need a lot of
+them) we're prepared for it.
+
+If we're not prepared for it, I'm pretty sure that everytime someone needs =
+to
+add e.g. a new lock for something, it will just result in a new Pin<KBox<T>=
+>,
+because the initial pin-init hierarchy just isn't there, and creating a new
+allocation is more convinient than fixing the existing code.
+
+This is exactly what pin-init was introduced for in the kernel, such that w=
+e're
+not doing worse than equivalent C code.
+
+	struct Foo {
+	   struct Bar bar;
+	   void *data;
+	   struct mutex data_lock;
+	}
+
+	struct Bar {
+	   void *data;
+	   struct mutex data_lock;
+	}
+
+In C you can just kmalloc(sizeof(Foo), GFP_KERNEL) and subsequently initial=
+ize
+all fields.
+
+In Rust I don't want to fall back having to allocate for Bar *and* for Foo
+separately.
+
+If there are things to improve with pin-init, let's improve them, but let's=
+ not
+do worse than C code in this aspect.
