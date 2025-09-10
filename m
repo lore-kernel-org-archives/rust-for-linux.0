@@ -1,272 +1,729 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2084.outbound.protection.outlook.com [40.107.220.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAF51E834B;
-	Wed, 10 Sep 2025 13:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757510732; cv=fail; b=SPInqYfy0dsl6ST7EGKjDPyYXLMhpmbgNsIQ7GfC5gFeILTsRiVFpg5ELJarumreE5A59katXyAHRHo6ner59LWsy8D7rtJ+fUmZlpXiQPLHotZM71H2VbDWHDCQkqgjlZXIJI/3dpu2LBV0gh3LcHNcB5+Z9SQDTuAXCKqOccM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757510732; c=relaxed/simple;
-	bh=lvKW2tmrHBHQV6Z5haYJjGS411lMy1D/j5HtoyV7Bos=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=Vt/Gv+kUWq3Jfwt2Co74QHQGvTazntIJz2NTf598v6+DKH66LINRJ7i8vBx5DsuxDdfNFSBJHdC0IUm0RqIQR+kiN+d9INfdv3qe1m03mHhg3Va9ytns96S3DzqOdVJ8YY7KT8jpgerE01/aDlwRpgHWy3mvPyCkFpuyX2aVOvk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rJGVMAPs; arc=fail smtp.client-ip=40.107.220.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963171EF36B;
+	Wed, 10 Sep 2025 13:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757511219; cv=none; b=XmvTvvLwyp4QSyFgFyybIB1RtX8Uy8/5SGlDYYG6gSh5fe6H1TqHC9Gt6Ge++OgyfB8lpxBzQlqtcHMagSYyFct/liVk9jD1F7QgU/J5gK0csClgd+JtkFQMGbXRkzAsR6PDjbiiTCnL88/4Jvt+8ZgHZaCJnzaWtgmnUgyS1fw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757511219; c=relaxed/simple;
+	bh=Y9WUibGejkizRlKFRo6LsTeffesxNkc4TOFTE7q2v5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MUEwctWh1eIIMrTPyr9TN86ls53WuO5558jSB7V7+7nBHGlp0/zNvKgJdk/YF982EA5IRvzYkk2+fcj71R/jqLMHdOjMnuGITRmFtznNRiJYrDWmwk0ZXDTR4eO4/Vq9hLdO1UUywTyMtqpCeDDsjoPbeEyWLLu3XPhQ3IIu1UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+lvOU7r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rJGVMAPs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t0Dz1bvUCbSG7waervL0rkBggF3MkDlLnExHEZTjpCyzcUvH1cAbtQm3jTFtHerCnw1ItXCoQSyHkBUoRBehwOL5KZu0UUmlAQtx8WvNv1kbumSSd9G2Y2RDli8sEO6bo1JkWih4L4FE6gSlOwPgvpcdNFOwrqTU1BYY/fLjOrINhwp0dgUo/GHlMXcvMzJnZo7E7OUUA091rwynqFx12dJ2SkAK+6/uqIDV5p4okwyy2kdArpYgLyWkH9N9Aa+zncPPPZaAdIG87kdVElEcsQiZ5MCcfiGEfLaT0mob7NvcRReM5EyBs9zqERCpmDc4sSotyNIah7yG/or61UF96A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ssSLwxGl9IDj6aYotbh7MnN7xGtdH2ZIShnkOQjWwtY=;
- b=qr5EA09mjKNT70IAACwJlaciyQb/DsFfhvLa5KNHSUufjis7fbm6dHFOzewwhlbqkVfdj/OQbAsBeN6UfZkPD6x4qgn4o+tTZdCKu/5p3I5Zhn+kthvDNbdryBTQrTJX/Sjh6/foKmq3EUsCcK2Xd8yBwa8HfOZdDMkY/jx91kSH3rWcllBHcOJ8ecR1kwuCI8+7EphKbEUq/7d4GdaVtJG3hLtMwv9mZE96ix3D/4DDIRS0iyoIkzcjHHwO076suPZTA4+9gkeT0lkN9JALnxLRelOBUnjwuIMdvpGGdbTAXLV6fxok72Nd7Z2CtPlHS2qQJRC0Bd0A9fCElPfNqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ssSLwxGl9IDj6aYotbh7MnN7xGtdH2ZIShnkOQjWwtY=;
- b=rJGVMAPsM/kpDf9MnbqnTvmGuunGHtCZkUqRNqbGGKvBy6lqEfhwJACBj29kxkBLBBhnMfwdz8e98xAKW5oy23+ihJe75b0cX9xpBAu6OrVk1WHcsl/cKBycLSf9zaaSZOjwSbJ4Yz4D1//YpJD1kMRQASLNJFYX/D5VVKxjqldSGiufrJEykqpY6LOPIBfxCZTHO+Z+iRJKiGPYQwkAsVdjwc2viI3A/b9VCT1//FWh9fcoGEZstuZtwYZoxyojG1SrpKxQaIKDYbGWCcABMXNcC919l8NTr6QWDnXUekXF2svZF0VGkt+nUuIkoAO0RGS2/eySY70mj7anRILDCQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by BN5PR12MB9539.namprd12.prod.outlook.com (2603:10b6:408:2aa::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
- 2025 13:25:28 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
- 13:25:27 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 10 Sep 2025 22:25:24 +0900
-Message-Id: <DCP5K0R9YB31.2VFUFEFOHV8LR@nvidia.com>
-Subject: Re: [PATCH v2 1/4] nova-core: bitstruct: Move bitfield-specific
- code from register! into new macro
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>
-Cc: <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <dakr@kernel.org>, "Alistair Popple" <apopple@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
- "Daniel Almeida" <daniel.almeida@collabora.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20250903215428.1296517-1-joelagnelf@nvidia.com>
- <20250903215428.1296517-2-joelagnelf@nvidia.com>
- <DCN39JCF1DIJ.3JESSN7N9WJBP@nvidia.com>
- <3ef9e2c2-560e-4b58-96f8-a6db4236fe0e@nvidia.com>
- <DCNX57PKVO6C.2MYEGBZ26OQ59@nvidia.com> <20250909185532.GA4167211@joelbox2>
-In-Reply-To: <20250909185532.GA4167211@joelbox2>
-X-ClientProxiedBy: TYCP286CA0149.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:31b::12) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+lvOU7r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBE8C4CEF0;
+	Wed, 10 Sep 2025 13:33:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757511219;
+	bh=Y9WUibGejkizRlKFRo6LsTeffesxNkc4TOFTE7q2v5k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=m+lvOU7rWb0PeiSNQuK4UuiSImWhMbNGKAqOFmW/8eLWfrd7mScQgIWVRGQWlfv3F
+	 v+xFCqMEV7vSydytN9ZJKEYh5bFORyFchVhOTJU5QVTFVaQ6TWMA9IS5rwX0hvz2Yo
+	 TDkv/IEVYXgOMUiNCA3A7gLLP06qATIZ5YUFJal/elcL9FFEtdxirIGAR26Nd3QB5L
+	 uLRGeG5eZEFPddSCB1HHUz8leS7Q8FCVzgROOL3Uw8OJcN/9opWETsQRwOcqmxDKwG
+	 q3sIaa557ZuVgWSR0lmCHbCpuzgt5rfr0X4AnYSWO4qis3535+614jXQF2gB7qHOV0
+	 7gPUQCQoRqu4w==
+Date: Wed, 10 Sep 2025 15:33:34 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List
+ <linux-doc@vger.kernel.org>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl
+ <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 08/19] tools/docs: sphinx-build-wrapper: add a
+ wrapper for sphinx-build
+Message-ID: <20250910153334.0b3e1440@foz.lan>
+In-Reply-To: <20250910145926.453f5441@foz.lan>
+References: <cover.1756969623.git.mchehab+huawei@kernel.org>
+	<e019f951190a732f9ac0b21bcda7e49af3bd5cbd.1756969623.git.mchehab+huawei@kernel.org>
+	<e13837a0ac46dffe39c600d11fdf33f538bdc9c3@intel.com>
+	<20250910145926.453f5441@foz.lan>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BN5PR12MB9539:EE_
-X-MS-Office365-Filtering-Correlation-Id: d190b374-309e-4029-f2ee-08ddf06d81b1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?R2FPMjMxUUZSaXBZT2pKSWNCR3ZUOHluS3lJMVhQM0FLTEI2dGNhSkFmM3E1?=
- =?utf-8?B?aERIZGJ3OWlGVFd0b1E3Y2hBMkRjcTd0bmhxQXRidFg2UVFBcWlQRzZMVkZq?=
- =?utf-8?B?WUF2dHppNS9CYVFSNWdpZWw1L29TZGhuOUo0bGNMYTRQSUNJRVdhZHd2M1lX?=
- =?utf-8?B?NEszQ0gweWxzT1piTGZ2dlFMK3lPNFUvUldqSGxGUEFoRHk4eCtrMVU5bk9s?=
- =?utf-8?B?WExnTGV0KzFabXlKMytkN3JXTnAyQ2dsV01BaVc0cUk3UCtRZTJaWmNXOUJQ?=
- =?utf-8?B?MDhaUDAxZGx5enZUTGJpT091Z3o2RkswT3FzeENvS2RiWTZtbWtNb0NBZ0ln?=
- =?utf-8?B?TGVKTWc1U2tGdTBjUHlzK0RBdk4xcnBWclFmK202UGhDYWZXZzJPcHNXbGli?=
- =?utf-8?B?QzBXTXJ4aW4wT3FtTFIvUUs1ZTYremI1cjFrbVdSM2JxWTRJMTJKOGR3U3Z0?=
- =?utf-8?B?clFBUlZzbDhaNEk5cTBIQzJyRVl1YXg1R3NYbUJrQmk0dUowc0NaeFhQR3pP?=
- =?utf-8?B?WFBudGoraUhLcmQ0Nzlxc1ZYVm1pdkt1UTgrS2hzMHlFRFJ1b0I2L3pDNmFW?=
- =?utf-8?B?YWo1ZVhzNUUxSFJuT2M2dEpCK003bGtPWGlpdXNodGttd2NUam5pTEdNOFUz?=
- =?utf-8?B?K2x0UHpqaEJOT0VjODBOTnpIbEVNMDZLbWYrNThIYWR3blF0NDlsZkg0ejht?=
- =?utf-8?B?VEZ6cmlYTWh6Mlo4c2lNZXlNdWQwemdobmQ2LzNHclltYUl0dFVQb2xaSVdM?=
- =?utf-8?B?SCtRYkVIN004ckJUSlcyNVZlUy9kYkJGUFRxeVVNTjdubUpSRFFSME8zQUE0?=
- =?utf-8?B?Mk55RzZUb1BkZ1JwMnRXUHBJY0xPS0dsNS9iSC9EZld4VHJvMTU3N2RzbUNV?=
- =?utf-8?B?d0JGMkhtelEwcWZ2NnA4NVZEWEpoc0lKdTBWaHlNVnRsZzRZaFVtTVZUSmNm?=
- =?utf-8?B?K213SUwzNjdBWWFPZzVkZ29IQzVUK21TS05hdXhvNGRkMGFuMm1rOVVOYlBx?=
- =?utf-8?B?NlhING1oUW85aWFqV2lyaGk1a0xycHBmRVpib2pWSDdnQXFySmlhTGhxOExk?=
- =?utf-8?B?QzlpKzFxUGVYdVl3eEcxVTA0MTdTYUc2MXdyeHhiTGU2T3VEakR0Y0tTelAz?=
- =?utf-8?B?cUF4UXhDRWJjakhKeFBHbEhLWXVPTExWeDl5OWkrekQ5S0ZMNHkvOG5CN3F3?=
- =?utf-8?B?bS9wTU4vTjJ3WTV3WTA3c3Nkd0ZETjdnQlcrZkxKUU9mQ3RKZmdpSk45Qmt2?=
- =?utf-8?B?Ri9McHcvQkFHVTlJdGdOcElYNkkxSzRyK0pNYmdNODZjMjJ1UUtib3J3eGln?=
- =?utf-8?B?dURHbEZ5N0ZVSnRQTjR0NG9jUjlsNXoxdEVpbmtGdUVGamtjTEVnWjdSRGpR?=
- =?utf-8?B?NS9qMGpoeUNCcHBDaWIramV4SFNCT2pHM1I0WnRsbm4rM3RJR2RCdmJBV2ly?=
- =?utf-8?B?SWdPTWtMYmZGY0N0NUk2OVFKT3BzcS8zdXNCd05HSzd2TjV1VTJFVkdkRjhG?=
- =?utf-8?B?a1dEZkFaRHljMmJMdUJZdCtBKzdaQW5nUE1BQVRJMWR0citqRHJMMHpwck96?=
- =?utf-8?B?a0wrUGJ5cGQrNlRNOG0xRWpxQm1abXIrRWswd1BvazdaYTRXRHZqb1NkSGJY?=
- =?utf-8?B?RkRsc0JRNTBuN0RpN2RqTk1sV296VlREMWJQTUxBdElZanI3Q2I1NkhMWU5o?=
- =?utf-8?B?SzBoLzRJQXVCUDZ4UXJWM2t3M2doN0JrWjAyMnNyWXpHc1hSUjZRdHNrMW1o?=
- =?utf-8?B?Mm12MGsySlRabkxudWRJRjhzdnpmZG5SaWN4aW5FS2hMZ0d0emIzWXBjY2p6?=
- =?utf-8?B?TCtJZTlDUE1KUTRNSnhPSkErY0hkU09KUTlqYWpnWVJ6cHNVMGIzaWM5bnVU?=
- =?utf-8?B?SlZONmJkVXRVUkhDQzE5SG1SVVN0cHNoVDNGY0MrTW9FREJtaHc5SmxtRmVn?=
- =?utf-8?Q?s3xEPBF1/0A=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UGVlT2NWbXNlalpoQU1TcEtKK0xSQndDUnVSR09tWWRqZFdiR1dBN1NGMnpv?=
- =?utf-8?B?ZGpaNTMxRVB4cmdFL09qa3hrWUQ2SmluRDZqK1FmTlJoU1Y4KzFXbE9FcTM3?=
- =?utf-8?B?cVlIM01UT1NFVitFWXFKWkNDNlgyb3RVc3UyNTdySUZaUUFaUEhKeHJsNkVv?=
- =?utf-8?B?SjI2SWRXd1JDUnpEV2pYWElLYlp4SEE3WG9xVXcrdmJmSEtSTzVseDBjelR6?=
- =?utf-8?B?dU1SWll2M2lqZ2RrbWpmbW1JV2huZGhnWXlCcm5kQUlINjFVTjR3RnlzZ2xp?=
- =?utf-8?B?L2hJeXNVVkUzbi9EWU1lZWkxVEJYWS9ORHpnTzV5TzBwQWZ5VVhjR3RTRUow?=
- =?utf-8?B?UDArOXpTSFFFUldleWFiVWZZVzhUV2FMZjQ1U2xTK3NVQVZLWW5kSUhMeTFp?=
- =?utf-8?B?SlluRVNtYjV0NnQyUE9qeEhCdXdvOFVLWTV1Snc4eXREZ1RPRjNwMDZub2dv?=
- =?utf-8?B?VmpwSTFNdWRUekc1YjJmL2w2UGhFVE9ycXZlTkJLb21wUmx4dVN1cXNQUTRv?=
- =?utf-8?B?aVFFV21rOUZRMlBpOVlZZnJZN3lucit0SFhnc2RGM3ZZQldFclV5UUMvSi8v?=
- =?utf-8?B?ck0rMi9yUktEZko0bENTbDRKcmNTUWllZ2pSZ2ZmQUpsanBOeTlHd3pEeUww?=
- =?utf-8?B?VGU3eDlXaVRLRWw1ZkhJNkwxVVFYbVJSaWNnRDF0M2J1dWpXdFBFK2pOY05H?=
- =?utf-8?B?RU5QY3pGS0E4YVpGSkNNRWhBd2g4NnJJTnNrV1NiaHp4R0cyYWx6QW1tTndL?=
- =?utf-8?B?dW5LTnNoZWV3czNoM09DMlI4QmVlbGZ4UnBTbU4vTXNEWFd1VUVBUnJiQWtT?=
- =?utf-8?B?MW02cHpUQTVOeXpEN1N3YzBBWXp2MDhvYldQbDBjYnNsbUZlNmZiazBpZklq?=
- =?utf-8?B?OEg5NTM3NXcxZ3VjejhMN1ovaG1EczhPVnFmK09aeVFadThNSnJaSjVJT09F?=
- =?utf-8?B?bWdVcTdVT3BsNUYzbTJ6M09oQ0JEaCtLUGxnRHNYM0d1M0dmb3BiWEMxbWw3?=
- =?utf-8?B?azJHeDRoQ0hyZDN2dGo1RGFNdVlCelQwVkVYaG1jRG5NTnZ1Ni9RTitpN2dX?=
- =?utf-8?B?eHExbWErRVNVNEwxVy9GWldrR0Y0dHhoOVBZYVJ6dUo4ZmVndmxGejVmUmJt?=
- =?utf-8?B?MnpLZmxIUk1yTEExbXpMM1F0bUtOV2U4K3hWT2hNTU1YanQzOEVuTU90ck5L?=
- =?utf-8?B?WlNkWFMvSUpIczFlVUVRcWJrWWc1VmpJc3U4UEZsZ0hDVXJVbDczN0NicDRv?=
- =?utf-8?B?RTdpamxtZE1zejBrQkt0b1ExczEyUnBIeWVXd1NNUzdwZnlEUjdYZVBkREt4?=
- =?utf-8?B?bVFWNXlIUnBaQVhrNmhOc0IyU2ZkbzZOS0Q4bXhEbGIwWURaNGdyZ0c5Mlgr?=
- =?utf-8?B?NGRvaXBicTZia1B5Q1MwUVBPV0FueFE5a2QxY3BNZlZKRllKWWlvMFJ4a1R5?=
- =?utf-8?B?RmY5T0QwckFONTlqV2FyUE9EVjdmVURFd2ZnNzJpSWhTY3BKQUV3MUgxYnM4?=
- =?utf-8?B?b0d6K0prZWVLZ0pvNjFqR25VNTdDdkhveGNGbWNXU3kzWkliNlNSZXBWRytJ?=
- =?utf-8?B?SHRESlROTVpST1doaEt0aGN0ZGJrOVNvcnJQSXlzOWNpMkgxKzVzanZpMkNY?=
- =?utf-8?B?dldzOWpnQTg2VEttOGdERzZ0S0wzSmFGV0ZsVnhzOTJFZ0k4cUtwR05PWExx?=
- =?utf-8?B?M0o3NUI1NVBKSEFMMWdZSEtqZWRYYXo3K1RoREp1N0lucXFhclFhRlA5L3BT?=
- =?utf-8?B?a0VnTnVQcjhuYmtnY243dnRQN3YyZmM0YWJkQkc3L01FM0t5NVUwQ0ZEdURX?=
- =?utf-8?B?bFJHN1ZNM3pONHlsZHlYWFVHMGx0SmJ5VUk0Y09rZTFxK1ROeGFGWkhVMisw?=
- =?utf-8?B?S2htNkhhRHNUVGkrRndWeHJGcUNPdjhkNFluMWdtbm9QTE9mM25xdURndkd1?=
- =?utf-8?B?a2tVanJvekd2VVJhUWpEdVppdmlFb2loWk9LaGgvNUppSSthZldKRWdZODVG?=
- =?utf-8?B?Q1RWeklTdjk3VUlreGt3T2gwaE44UnBKQjEyYzBqZS9NVWx3NFpkekRwbkhQ?=
- =?utf-8?B?T1lDTGpmNHd2WkZPTzIwZUlhVHNqS2lKVHdzaTFqMkVOeXdBWFAxUHV3M1hX?=
- =?utf-8?B?dVAvdmNBbzc2SEJDWXg5bXBDSmMwOFdqRDZSWm16c0VaZ2xFZjlzOWdxR0Vo?=
- =?utf-8?Q?QeopN+m1SZQ3CQwS2ykEwDHN4iKAm/HK4sxZCq2Aswkb?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d190b374-309e-4029-f2ee-08ddf06d81b1
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 13:25:27.7078
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xj8gVdX5XMse5MO70ZoRCLCDAkJWDy/WF4NF6QLj5ltMtJny1xLE3KCBf1R5aWUdVSDKi6Kd/D0m8WyLhF/s+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9539
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed Sep 10, 2025 at 3:55 AM JST, Joel Fernandes wrote:
-> On Tue, Sep 09, 2025 at 11:37:15AM +0900, Alexandre Courbot wrote:
->> On Tue Sep 9, 2025 at 2:16 AM JST, Joel Fernandes wrote:
->> > Hi Alex,
->> >
->> > On 9/7/2025 11:12 PM, Alexandre Courbot wrote:
->> >> On Thu Sep 4, 2025 at 6:54 AM JST, Joel Fernandes wrote:
->> >>> The bitfield-specific into new macro. This will be used to define
->> >>> structs with bitfields, similar to C language.
->> >>>
->> >>> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
->> >>> ---
->> >>>  drivers/gpu/nova-core/bitstruct.rs   | 271 ++++++++++++++++++++++++=
-+++
->> >>>  drivers/gpu/nova-core/nova_core.rs   |   3 +
->> >>>  drivers/gpu/nova-core/regs/macros.rs | 247 +-----------------------
->> >>>  3 files changed, 282 insertions(+), 239 deletions(-)
->> >>>  create mode 100644 drivers/gpu/nova-core/bitstruct.rs
->> >>>
->> >>> diff --git a/drivers/gpu/nova-core/bitstruct.rs b/drivers/gpu/nova-c=
-ore/bitstruct.rs
->> >>> new file mode 100644
->> >>> index 000000000000..1dd9edab7d07
->> >>> --- /dev/null
->> >>> +++ b/drivers/gpu/nova-core/bitstruct.rs
->> >>> @@ -0,0 +1,271 @@
->> >>> +// SPDX-License-Identifier: GPL-2.0
->> >>> +//
->> >>> +// bitstruct.rs =E2=80=94 Bitfield library for Rust structures
->> >>> +//
->> >>> +// A library that provides support for defining bit fields in Rust
->> >>> +// structures. Also used from things that need bitfields like regis=
-ter macro.
->> >>> +///
->> >>> +/// # Syntax
->> >>> +///
->> >>> +/// ```rust
->> >>> +/// bitstruct! {
->> >>> +///     struct ControlReg {
->> >>=20
->> >> The `struct` naming here looks a bit confusing to me - as of this pat=
-ch,
->> >> this is a u32, right? And eventually these types will be limited to p=
-rimitive types,
->> >> so why not just `ControlReg: u32 {` ?
->> >
->> > This is done in a later patch. This patch is only code movement, in la=
-ter patch
->> > we add precisely the syntax you're describing when we add storage type=
-s, and
->> > update the register! macro. In this patch bitstruct is only u32.
->>=20
->> My point was, is the `struct` keyword needed at all? Isn't it a bit
->> confusing since these types are technically not Rust structs?
->
-> Now that bitstruct has changed to bitfield, I would really insist on leav=
-ing
-> 'struct' in there.
->
-> So it will look like this:
->
-> //! bitfield! {
-> //!     struct ControlReg {
-> //!         3:0       mode        as u8 ?=3D> Mode;
-> //!         7         state       as bool =3D> State;
-> //!     }
-> //! }
->
-> Sounds reasonable?
+Em Wed, 10 Sep 2025 14:59:26 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> escreveu:
 
-I was about to write "but it not a struct", and then I remembered that
-the body of the macro does this:
+> Em Wed, 10 Sep 2025 13:46:17 +0300
+> Jani Nikula <jani.nikula@linux.intel.com> escreveu:
+> 
+> > On Thu, 04 Sep 2025, Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:  
+> > > There are too much magic inside docs Makefile to properly run
+> > > sphinx-build. Create an ancillary script that contains all
+> > > kernel-related sphinx-build call logic currently at Makefile.
+> > >
+> > > Such script is designed to work both as an standalone command
+> > > and as part of a Makefile. As such, it properly handles POSIX
+> > > jobserver used by GNU make.
+> > >
+> > > On a side note, there was a line number increase due to the
+> > > conversion:
+> > >
+> > >  Documentation/Makefile          |  131 +++----------
+> > >  tools/docs/sphinx-build-wrapper |  293 +++++++++++++++++++++++++++++++
+> > >  2 files changed, 323 insertions(+), 101 deletions(-)
+> > >
+> > > This is because some things are more verbosed on Python and because
+> > > it requires reading env vars from Makefile. Besides it, this script
+> > > has some extra features that don't exist at the Makefile:
+> > >
+> > > - It can be called directly from command line;
+> > > - It properly return PDF build errors.
+> > >
+> > > When running the script alone, it will only take handle sphinx-build
+> > > targets. On other words, it won't runn make rustdoc after building
+> > > htmlfiles, nor it will run the extra check scripts.    
+> > 
+> > I've always strongly believed we should aim to make it possible to build
+> > the documentation by running sphinx-build directly on the
+> > command-line. Not that it would be the common way to run it, but to not
+> > accumulate things in the Makefile that need to happen before or
+> > after. To promote handling the documentation build in Sphinx. To be able
+> > to debug issues and try new Sphinx versions without all the hacks.  
+> 
+> That would be the better, but, unfortunately, this is not possible, for 
+> several reasons:
+> 
+> 1. SPHINXDIRS. It needs a lot of magic to work, both before running
+>    sphinx-build and after (inside conf.py);
+> 2. Several extensions require kernel-specific environment variables to
+>    work. Calling sphinx-build directly breaks them;
+> 3. Sphinx itself doesn't build several targets alone. Instead, they create
+>    a Makefile, and an extra step is needed to finish the build. That's 
+>    the case for pdf and texinfo, for instance;
+> 4. Man pages generation. Sphinx support to generate it is very poor;
+> 5. Rust integration adds more complexity to the table;
 
-        pub(crate) struct $name(u32);
+Heh, I ended forgetting what motivated me to do this work: the lack
+of a native pdf builder (or an external one that actually works).
 
-... so there goes my argument. :') Just one more thing below.
+The current approach of using LaTeX for PDF is dirty:
 
->
->> I agree the `: u32` can be introduced later, the original `register!`
->> macro did not specify any type information so there is indeed no reason
->> to add it in this patch.
->
-> Yep.
+- Sphinx can't produce a LaTeX file from the Kernel trees without
+  hundreds of warnings;
+- latexmk hides some of them, but even it just one warning is reported,
+  the return status is not zero.
 
-When you introduce the types, can you change the syntax from `: u32` to
-`(u32)`? That way the declaration becomes
+So, at the end of a PDF build via latex builder and the extra 
+makefile, there's no way to know if all PDF files were built or not,
+except by having a somewhat complex logic that verifies all files
+one by one.
 
-    bitfield! {
-        struct ControlReg(u32) {
-            ...
-        }
-    }
+We needed that to check if all PDF files were generated at the set of
+test platforms we want docs build to work.
 
-... which at least looks like a valid declaration for a Rust struct
-that wraps a primitive type. Same for registers, if possible.
+As the logic to check is complex, I would need to either add an
+extra magic inside the already too complex Documentation/Makefile,
+or to add one more hackish script.
+
+Instead, I opted to reduce the number of scripts required during
+PDF builds. So, this series:
+
+- dropped the need of running jobserver;
+- dropped the parallel jobs shell script;
+- dropped the extra script to generate man pages;
+- can later be integrated with sphinx-pre-install, dropping one
+  more script;
+- didn't add an extra script to fix the return code for PDF;
+- now summarizes what PDF files were actually generated and what
+  files weren't produced.
+
+> 
+> I'm not seeing sphinx-build supporting the above needs anytime soon,
+> and, even if we push our needs to Sphinx and it gets accepted there,
+> we'll still need to wait for quite a while until LTS distros merge
+> them.
+> 
+> > This patch moves a bunch of that logic into a Python wrapper, and I feel
+> > like it complicates matters. You can no longer rely on 'make V=1' to get
+> > the build commands, for instance.  
+> 
+> Quite the opposite. if you try using "make V=1", it won't show the
+> command line used to call sphinx-build anymore.
+> 
+> This series restore it.
+> 
+> See, if you build with this series with V=1, you will see exactly
+> what commands are used on the build:
+> 
+> 	$ make V=1 htmldocs
+> 	...
+> 	python3 ./tools/docs/sphinx-build-wrapper htmldocs \
+> 	        --sphinxdirs="." --conf="conf.py" \
+>         	--builddir="Documentation/output" \
+> 	        --theme= --css= --paper=
+> 	python3 /new_devel/docs/sphinx_latest/bin/sphinx-build -j25 -b html -c /new_devel/docs/Documentation -d /new_devel/docs/Documentation/output/.doctrees -D kerneldoc_bin=scripts/kernel-doc.py -D version=6.17.0-rc1 -D release=6.17.0-rc1+ -D kerneldoc_srctree=. /new_devel/docs/Documentation /new_devel/docs/Documentation/output
+> 	...
+> 
+> 
+> 
+> > Newer Sphinx versions have the -M option for "make mode". The Makefiles
+> > produced by sphinx-quickstart only have one build target:
+> > 
+> > # Catch-all target: route all unknown targets to Sphinx using the new
+> > # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).  
+> 
+> I didn't know about this, but from [1] it sounds it covers just two
+> targets: "latexpdf" and "info".
+> 
+> The most complex scenario is still not covered: SPHINXDIRS.
+> 
+> [1] https://www.sphinx-doc.org/en/master/man/sphinx-build.html
+> 
+> > %: Makefile
+> >         @$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+> > 
+> > That's all.  
+> 
+> Try doing such change on your makefile. it will break:
+> 
+> 	- SPHINXDIRS;
+> 	- V=1;
+> 	- rustdoc
+> 
+> and will still be dependent on variables that are passed via
+> env from Kernel makefile. So, stil you can't run from command
+> line. Also, if you call sphinx-build from command line:
+> 
+> 	$ sphinx-build -j25 -b html Documentation Documentation/output
+> 	...
+> 	      File "<frozen os>", line 717, in __getitem__
+> 	    KeyError: 'srctree'
+> 
+> It won't work, as several parameters that are required by conf.py and by
+> Sphinx extensions would be missing (the most important one is srctree, but
+> there are others in the line too).
+> 
+> > The proposed wrapper duplicates loads of code that's supposed to be
+> > handled by sphinx-build directly.  
+> 
+> Once we get the wrapper, we can work to simplify it, but still I
+> can't see how to get rid of it.
+> 
+> > Including the target/builder names.  
+> 
+> True, but this was a design decision taken lots of years ago: instead
+> of:
+> 	make html
+> 
+> we're using:
+> 
+> 	make htmldocs
+> 
+> This series doesn't change that: either makefile or the script need
+> to tho the namespace conversion.
+> 
+> > Seems to me the goal should be to figure out *generic* wrappers for
+> > handling parallelism, not Sphinx aware/specific.
+> > 
+> > 
+> > BR,
+> > Jani.
+> >   
+> > >
+> > > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > > ---
+> > >  Documentation/Makefile          | 131 ++++----------
+> > >  tools/docs/sphinx-build-wrapper | 293 ++++++++++++++++++++++++++++++++
+> > >  2 files changed, 323 insertions(+), 101 deletions(-)
+> > >  create mode 100755 tools/docs/sphinx-build-wrapper
+> > >
+> > > diff --git a/Documentation/Makefile b/Documentation/Makefile
+> > > index deb2029228ed..4736f02b6c9e 100644
+> > > --- a/Documentation/Makefile
+> > > +++ b/Documentation/Makefile
+> > > @@ -23,21 +23,22 @@ SPHINXOPTS    =
+> > >  SPHINXDIRS    = .
+> > >  DOCS_THEME    =
+> > >  DOCS_CSS      =
+> > > -_SPHINXDIRS   = $(sort $(patsubst $(srctree)/Documentation/%/index.rst,%,$(wildcard $(srctree)/Documentation/*/index.rst)))
+> > >  SPHINX_CONF   = conf.py
+> > >  PAPER         =
+> > >  BUILDDIR      = $(obj)/output
+> > >  PDFLATEX      = xelatex
+> > >  LATEXOPTS     = -interaction=batchmode -no-shell-escape
+> > >  
+> > > +PYTHONPYCACHEPREFIX ?= $(abspath $(BUILDDIR)/__pycache__)
+> > > +
+> > > +# Wrapper for sphinx-build
+> > > +
+> > > +BUILD_WRAPPER = $(srctree)/tools/docs/sphinx-build-wrapper
+> > > +
+> > >  # For denylisting "variable font" files
+> > >  # Can be overridden by setting as an env variable
+> > >  FONTS_CONF_DENY_VF ?= $(HOME)/deny-vf
+> > >  
+> > > -ifeq ($(findstring 1, $(KBUILD_VERBOSE)),)
+> > > -SPHINXOPTS    += "-q"
+> > > -endif
+> > > -
+> > >  # User-friendly check for sphinx-build
+> > >  HAVE_SPHINX := $(shell if which $(SPHINXBUILD) >/dev/null 2>&1; then echo 1; else echo 0; fi)
+> > >  
+> > > @@ -51,63 +52,31 @@ ifeq ($(HAVE_SPHINX),0)
+> > >  
+> > >  else # HAVE_SPHINX
+> > >  
+> > > -# User-friendly check for pdflatex and latexmk
+> > > -HAVE_PDFLATEX := $(shell if which $(PDFLATEX) >/dev/null 2>&1; then echo 1; else echo 0; fi)
+> > > -HAVE_LATEXMK := $(shell if which latexmk >/dev/null 2>&1; then echo 1; else echo 0; fi)
+> > > +# Common documentation targets
+> > > +infodocs texinfodocs latexdocs epubdocs xmldocs pdfdocs linkcheckdocs:
+> > > +	$(Q)@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > > +	+$(Q)$(PYTHON3) $(BUILD_WRAPPER) $@ \
+> > > +		--sphinxdirs="$(SPHINXDIRS)" --conf="$(SPHINX_CONF)" \
+> > > +		--builddir="$(BUILDDIR)" \
+> > > +		--theme=$(DOCS_THEME) --css=$(DOCS_CSS) --paper=$(PAPER)
+> > >  
+> > > -ifeq ($(HAVE_LATEXMK),1)
+> > > -	PDFLATEX := latexmk -$(PDFLATEX)
+> > > -endif #HAVE_LATEXMK
+> > > -
+> > > -# Internal variables.
+> > > -PAPEROPT_a4     = -D latex_elements.papersize=a4paper
+> > > -PAPEROPT_letter = -D latex_elements.papersize=letterpaper
+> > > -ALLSPHINXOPTS   = -D kerneldoc_srctree=$(srctree) -D kerneldoc_bin=$(KERNELDOC)
+> > > -ALLSPHINXOPTS   += $(PAPEROPT_$(PAPER)) $(SPHINXOPTS)
+> > > -ifneq ($(wildcard $(srctree)/.config),)
+> > > -ifeq ($(CONFIG_RUST),y)
+> > > -	# Let Sphinx know we will include rustdoc
+> > > -	ALLSPHINXOPTS   +=  -t rustdoc
+> > > -endif
+> > > +# Special handling for pdfdocs
+> > > +ifeq ($(shell which $(PDFLATEX) >/dev/null 2>&1; echo $$?),0)
+> > > +pdfdocs: DENY_VF = XDG_CONFIG_HOME=$(FONTS_CONF_DENY_VF)
+> > > +else
+> > > +pdfdocs:
+> > > +	$(warning The '$(PDFLATEX)' command was not found. Make sure you have it installed and in PATH to produce PDF output.)
+> > > +	@echo "  SKIP    Sphinx $@ target."
+> > >  endif
+> > > -# the i18n builder cannot share the environment and doctrees with the others
+> > > -I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
+> > > -
+> > > -# commands; the 'cmd' from scripts/Kbuild.include is not *loopable*
+> > > -loop_cmd = $(echo-cmd) $(cmd_$(1)) || exit;
+> > > -
+> > > -# $2 sphinx builder e.g. "html"
+> > > -# $3 name of the build subfolder / e.g. "userspace-api/media", used as:
+> > > -#    * dest folder relative to $(BUILDDIR) and
+> > > -#    * cache folder relative to $(BUILDDIR)/.doctrees
+> > > -# $4 dest subfolder e.g. "man" for man pages at userspace-api/media/man
+> > > -# $5 reST source folder relative to $(src),
+> > > -#    e.g. "userspace-api/media" for the linux-tv book-set at ./Documentation/userspace-api/media
+> > > -
+> > > -PYTHONPYCACHEPREFIX ?= $(abspath $(BUILDDIR)/__pycache__)
+> > > -
+> > > -quiet_cmd_sphinx = SPHINX  $@ --> file://$(abspath $(BUILDDIR)/$3/$4)
+> > > -      cmd_sphinx = \
+> > > -	PYTHONPYCACHEPREFIX="$(PYTHONPYCACHEPREFIX)" \
+> > > -	BUILDDIR=$(abspath $(BUILDDIR)) SPHINX_CONF=$(abspath $(src)/$5/$(SPHINX_CONF)) \
+> > > -	$(PYTHON3) $(srctree)/scripts/jobserver-exec \
+> > > -	$(CONFIG_SHELL) $(srctree)/Documentation/sphinx/parallel-wrapper.sh \
+> > > -	$(SPHINXBUILD) \
+> > > -	-b $2 \
+> > > -	-c $(abspath $(src)) \
+> > > -	-d $(abspath $(BUILDDIR)/.doctrees/$3) \
+> > > -	-D version=$(KERNELVERSION) -D release=$(KERNELRELEASE) \
+> > > -	$(ALLSPHINXOPTS) \
+> > > -	$(abspath $(src)/$5) \
+> > > -	$(abspath $(BUILDDIR)/$3/$4) && \
+> > > -	if [ "x$(DOCS_CSS)" != "x" ]; then \
+> > > -		cp $(if $(patsubst /%,,$(DOCS_CSS)),$(abspath $(srctree)/$(DOCS_CSS)),$(DOCS_CSS)) $(BUILDDIR)/$3/_static/; \
+> > > -	fi
+> > >  
+> > > +# HTML main logic is identical to other targets. However, if rust is enabled,
+> > > +# an extra step at the end is required to generate rustdoc.
+> > >  htmldocs:
+> > > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,html,$(var),,$(var)))
+> > > -
+> > > +	$(Q)@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > > +	+$(Q)$(PYTHON3) $(BUILD_WRAPPER) $@ \
+> > > +		--sphinxdirs="$(SPHINXDIRS)" --conf="$(SPHINX_CONF)" \
+> > > +		--builddir="$(BUILDDIR)" \
+> > > +		--theme=$(DOCS_THEME) --css=$(DOCS_CSS) --paper=$(PAPER)
+> > >  # If Rust support is available and .config exists, add rustdoc generated contents.
+> > >  # If there are any, the errors from this make rustdoc will be displayed but
+> > >  # won't stop the execution of htmldocs
+> > > @@ -118,49 +87,6 @@ ifeq ($(CONFIG_RUST),y)
+> > >  endif
+> > >  endif
+> > >  
+> > > -texinfodocs:
+> > > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,texinfo,$(var),texinfo,$(var)))
+> > > -
+> > > -# Note: the 'info' Make target is generated by sphinx itself when
+> > > -# running the texinfodocs target define above.
+> > > -infodocs: texinfodocs
+> > > -	$(MAKE) -C $(BUILDDIR)/texinfo info
+> > > -
+> > > -linkcheckdocs:
+> > > -	@$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,linkcheck,$(var),,$(var)))
+> > > -
+> > > -latexdocs:
+> > > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,latex,$(var),latex,$(var)))
+> > > -
+> > > -ifeq ($(HAVE_PDFLATEX),0)
+> > > -
+> > > -pdfdocs:
+> > > -	$(warning The '$(PDFLATEX)' command was not found. Make sure you have it installed and in PATH to produce PDF output.)
+> > > -	@echo "  SKIP    Sphinx $@ target."
+> > > -
+> > > -else # HAVE_PDFLATEX
+> > > -
+> > > -pdfdocs: DENY_VF = XDG_CONFIG_HOME=$(FONTS_CONF_DENY_VF)
+> > > -pdfdocs: latexdocs
+> > > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > > -	$(foreach var,$(SPHINXDIRS), \
+> > > -	   $(MAKE) PDFLATEX="$(PDFLATEX)" LATEXOPTS="$(LATEXOPTS)" $(DENY_VF) -C $(BUILDDIR)/$(var)/latex || sh $(srctree)/scripts/check-variable-fonts.sh || exit; \
+> > > -	   mkdir -p $(BUILDDIR)/$(var)/pdf; \
+> > > -	   mv $(subst .tex,.pdf,$(wildcard $(BUILDDIR)/$(var)/latex/*.tex)) $(BUILDDIR)/$(var)/pdf/; \
+> > > -	)
+> > > -
+> > > -endif # HAVE_PDFLATEX
+> > > -
+> > > -epubdocs:
+> > > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,epub,$(var),epub,$(var)))
+> > > -
+> > > -xmldocs:
+> > > -	@$(srctree)/tools/docs/sphinx-pre-install --version-check
+> > > -	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,xml,$(var),xml,$(var)))
+> > > -
+> > >  endif # HAVE_SPHINX
+> > >  
+> > >  # The following targets are independent of HAVE_SPHINX, and the rules should
+> > > @@ -172,6 +98,9 @@ refcheckdocs:
+> > >  cleandocs:
+> > >  	$(Q)rm -rf $(BUILDDIR)
+> > >  
+> > > +# Used only on help
+> > > +_SPHINXDIRS   = $(sort $(patsubst $(srctree)/Documentation/%/index.rst,%,$(wildcard $(srctree)/Documentation/*/index.rst)))
+> > > +
+> > >  dochelp:
+> > >  	@echo  ' Linux kernel internal documentation in different formats from ReST:'
+> > >  	@echo  '  htmldocs        - HTML'
+> > > diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
+> > > new file mode 100755
+> > > index 000000000000..3256418d8dc5
+> > > --- /dev/null
+> > > +++ b/tools/docs/sphinx-build-wrapper
+> > > @@ -0,0 +1,293 @@
+> > > +#!/usr/bin/env python3
+> > > +# SPDX-License-Identifier: GPL-2.0
+> > > +import argparse
+> > > +import os
+> > > +import shlex
+> > > +import shutil
+> > > +import subprocess
+> > > +import sys
+> > > +from lib.python_version import PythonVersion
+> > > +
+> > > +LIB_DIR = "../../scripts/lib"
+> > > +SRC_DIR = os.path.dirname(os.path.realpath(__file__))
+> > > +sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
+> > > +
+> > > +from jobserver import JobserverExec
+> > > +
+> > > +MIN_PYTHON_VERSION = PythonVersion("3.7").version
+> > > +PAPER = ["", "a4", "letter"]
+> > > +TARGETS = {
+> > > +    "cleandocs":     { "builder": "clean" },
+> > > +    "linkcheckdocs": { "builder": "linkcheck" },
+> > > +    "htmldocs":      { "builder": "html" },
+> > > +    "epubdocs":      { "builder": "epub",    "out_dir": "epub" },
+> > > +    "texinfodocs":   { "builder": "texinfo", "out_dir": "texinfo" },
+> > > +    "infodocs":      { "builder": "texinfo", "out_dir": "texinfo" },
+> > > +    "latexdocs":     { "builder": "latex",   "out_dir": "latex" },
+> > > +    "pdfdocs":       { "builder": "latex",   "out_dir": "latex" },
+> > > +    "xmldocs":       { "builder": "xml",     "out_dir": "xml" },
+> > > +}
+> > > +
+> > > +class SphinxBuilder:
+> > > +    def is_rust_enabled(self):
+> > > +        config_path = os.path.join(self.srctree, ".config")
+> > > +        if os.path.isfile(config_path):
+> > > +            with open(config_path, "r", encoding="utf-8") as f:
+> > > +                return "CONFIG_RUST=y" in f.read()
+> > > +        return False
+> > > +
+> > > +    def get_path(self, path, use_cwd=False, abs_path=False):
+> > > +        path = os.path.expanduser(path)
+> > > +        if not path.startswith("/"):
+> > > +            if use_cwd:
+> > > +                base = os.getcwd()
+> > > +            else:
+> > > +                base = self.srctree
+> > > +            path = os.path.join(base, path)
+> > > +        if abs_path:
+> > > +            return os.path.abspath(path)
+> > > +        return path
+> > > +
+> > > +    def __init__(self, builddir, verbose=False, n_jobs=None):
+> > > +        self.verbose = None
+> > > +        self.kernelversion = os.environ.get("KERNELVERSION", "unknown")
+> > > +        self.kernelrelease = os.environ.get("KERNELRELEASE", "unknown")
+> > > +        self.pdflatex = os.environ.get("PDFLATEX", "xelatex")
+> > > +        self.latexopts = os.environ.get("LATEXOPTS", "-interaction=batchmode -no-shell-escape")
+> > > +        if not verbose:
+> > > +            verbose = bool(os.environ.get("KBUILD_VERBOSE", "") != "")
+> > > +        if verbose is not None:
+> > > +            self.verbose = verbose
+> > > +        parser = argparse.ArgumentParser()
+> > > +        parser.add_argument('-j', '--jobs', type=int)
+> > > +        parser.add_argument('-q', '--quiet', type=int)
+> > > +        sphinxopts = shlex.split(os.environ.get("SPHINXOPTS", ""))
+> > > +        sphinx_args, self.sphinxopts = parser.parse_known_args(sphinxopts)
+> > > +        if sphinx_args.quiet is True:
+> > > +            self.verbose = False
+> > > +        if sphinx_args.jobs:
+> > > +            self.n_jobs = sphinx_args.jobs
+> > > +        self.n_jobs = n_jobs
+> > > +        self.srctree = os.environ.get("srctree")
+> > > +        if not self.srctree:
+> > > +            self.srctree = "."
+> > > +            os.environ["srctree"] = self.srctree
+> > > +        self.sphinxbuild = os.environ.get("SPHINXBUILD", "sphinx-build")
+> > > +        self.kerneldoc = self.get_path(os.environ.get("KERNELDOC",
+> > > +                                                      "scripts/kernel-doc.py"))
+> > > +        self.builddir = self.get_path(builddir, use_cwd=True, abs_path=True)
+> > > +
+> > > +        self.config_rust = self.is_rust_enabled()
+> > > +
+> > > +        self.pdflatex_cmd = shutil.which(self.pdflatex)
+> > > +        self.latexmk_cmd = shutil.which("latexmk")
+> > > +
+> > > +        self.env = os.environ.copy()
+> > > +
+> > > +    def run_sphinx(self, sphinx_build, build_args, *args, **pwargs):
+> > > +        with JobserverExec() as jobserver:
+> > > +            if jobserver.claim:
+> > > +                n_jobs = str(jobserver.claim)
+> > > +            else:
+> > > +                n_jobs = "auto" # Supported since Sphinx 1.7
+> > > +            cmd = []
+> > > +            cmd.append(sys.executable)
+> > > +            cmd.append(sphinx_build)
+> > > +            if self.n_jobs:
+> > > +                n_jobs = str(self.n_jobs)
+> > > +
+> > > +            if n_jobs:
+> > > +                cmd += [f"-j{n_jobs}"]
+> > > +
+> > > +            if not self.verbose:
+> > > +                cmd.append("-q")
+> > > +            cmd += self.sphinxopts
+> > > +            cmd += build_args
+> > > +            if self.verbose:
+> > > +                print(" ".join(cmd))
+> > > +            return subprocess.call(cmd, *args, **pwargs)
+> > > +
+> > > +    def handle_html(self, css, output_dir):
+> > > +        if not css:
+> > > +            return
+> > > +        css = os.path.expanduser(css)
+> > > +        if not css.startswith("/"):
+> > > +            css = os.path.join(self.srctree, css)
+> > > +        static_dir = os.path.join(output_dir, "_static")
+> > > +        os.makedirs(static_dir, exist_ok=True)
+> > > +        try:
+> > > +            shutil.copy2(css, static_dir)
+> > > +        except (OSError, IOError) as e:
+> > > +            print(f"Warning: Failed to copy CSS: {e}", file=sys.stderr)
+> > > +
+> > > +    def handle_pdf(self, output_dirs):
+> > > +        builds = {}
+> > > +        max_len = 0
+> > > +        for from_dir in output_dirs:
+> > > +            pdf_dir = os.path.join(from_dir, "../pdf")
+> > > +            os.makedirs(pdf_dir, exist_ok=True)
+> > > +            if self.latexmk_cmd:
+> > > +                latex_cmd = [self.latexmk_cmd, f"-{self.pdflatex}"]
+> > > +            else:
+> > > +                latex_cmd = [self.pdflatex]
+> > > +            latex_cmd.extend(shlex.split(self.latexopts))
+> > > +            tex_suffix = ".tex"
+> > > +            has_tex = False
+> > > +            build_failed = False
+> > > +            with os.scandir(from_dir) as it:
+> > > +                for entry in it:
+> > > +                    if not entry.name.endswith(tex_suffix):
+> > > +                        continue
+> > > +                    name = entry.name[:-len(tex_suffix)]
+> > > +                    has_tex = True
+> > > +                    try:
+> > > +                        subprocess.run(latex_cmd + [entry.path],
+> > > +                                       cwd=from_dir, check=True)
+> > > +                    except subprocess.CalledProcessError:
+> > > +                        pass
+> > > +                    pdf_name = name + ".pdf"
+> > > +                    pdf_from = os.path.join(from_dir, pdf_name)
+> > > +                    pdf_to = os.path.join(pdf_dir, pdf_name)
+> > > +                    if os.path.exists(pdf_from):
+> > > +                        os.rename(pdf_from, pdf_to)
+> > > +                        builds[name] = os.path.relpath(pdf_to, self.builddir)
+> > > +                    else:
+> > > +                        builds[name] = "FAILED"
+> > > +                        build_failed = True
+> > > +                    name = entry.name.removesuffix(".tex")
+> > > +                    max_len = max(max_len, len(name))
+> > > +
+> > > +            if not has_tex:
+> > > +                name = os.path.basename(from_dir)
+> > > +                max_len = max(max_len, len(name))
+> > > +                builds[name] = "FAILED (no .tex)"
+> > > +                build_failed = True
+> > > +        msg = "Summary"
+> > > +        msg += "\n" + "=" * len(msg)
+> > > +        print()
+> > > +        print(msg)
+> > > +        for pdf_name, pdf_file in builds.items():
+> > > +            print(f"{pdf_name:<{max_len}}: {pdf_file}")
+> > > +        print()
+> > > +        if build_failed:
+> > > +            sys.exit("PDF build failed: not all PDF files were created.")
+> > > +        else:
+> > > +            print("All PDF files were built.")
+> > > +
+> > > +    def handle_info(self, output_dirs):
+> > > +        for output_dir in output_dirs:
+> > > +            try:
+> > > +                subprocess.run(["make", "info"], cwd=output_dir, check=True)
+> > > +            except subprocess.CalledProcessError as e:
+> > > +                sys.exit(f"Error generating info docs: {e}")
+> > > +
+> > > +    def cleandocs(self, builder):
+> > > +        shutil.rmtree(self.builddir, ignore_errors=True)
+> > > +
+> > > +    def build(self, target, sphinxdirs=None, conf="conf.py",
+> > > +              theme=None, css=None, paper=None):
+> > > +        builder = TARGETS[target]["builder"]
+> > > +        out_dir = TARGETS[target].get("out_dir", "")
+> > > +        if target == "cleandocs":
+> > > +            self.cleandocs(builder)
+> > > +            return
+> > > +        if theme:
+> > > +                os.environ["DOCS_THEME"] = theme
+> > > +        sphinxbuild = shutil.which(self.sphinxbuild, path=self.env["PATH"])
+> > > +        if not sphinxbuild:
+> > > +            sys.exit(f"Error: {self.sphinxbuild} not found in PATH.\n")
+> > > +        if builder == "latex":
+> > > +            if not self.pdflatex_cmd and not self.latexmk_cmd:
+> > > +                sys.exit("Error: pdflatex or latexmk required for PDF generation")
+> > > +        docs_dir = os.path.abspath(os.path.join(self.srctree, "Documentation"))
+> > > +        kerneldoc = self.kerneldoc
+> > > +        if kerneldoc.startswith(self.srctree):
+> > > +            kerneldoc = os.path.relpath(kerneldoc, self.srctree)
+> > > +        args = [ "-b", builder, "-c", docs_dir ]
+> > > +        if builder == "latex":
+> > > +            if not paper:
+> > > +                paper = PAPER[1]
+> > > +            args.extend(["-D", f"latex_elements.papersize={paper}paper"])
+> > > +        if self.config_rust:
+> > > +            args.extend(["-t", "rustdoc"])
+> > > +        if conf:
+> > > +            self.env["SPHINX_CONF"] = self.get_path(conf, abs_path=True)
+> > > +        if not sphinxdirs:
+> > > +            sphinxdirs = os.environ.get("SPHINXDIRS", ".")
+> > > +        sphinxdirs_list = []
+> > > +        for sphinxdir in sphinxdirs:
+> > > +            if isinstance(sphinxdir, list):
+> > > +                sphinxdirs_list += sphinxdir
+> > > +            else:
+> > > +                for name in sphinxdir.split(" "):
+> > > +                    sphinxdirs_list.append(name)
+> > > +        output_dirs = []
+> > > +        for sphinxdir in sphinxdirs_list:
+> > > +            src_dir = os.path.join(docs_dir, sphinxdir)
+> > > +            doctree_dir = os.path.join(self.builddir, ".doctrees")
+> > > +            output_dir = os.path.join(self.builddir, sphinxdir, out_dir)
+> > > +            src_dir = os.path.normpath(src_dir)
+> > > +            doctree_dir = os.path.normpath(doctree_dir)
+> > > +            output_dir = os.path.normpath(output_dir)
+> > > +            os.makedirs(doctree_dir, exist_ok=True)
+> > > +            os.makedirs(output_dir, exist_ok=True)
+> > > +            output_dirs.append(output_dir)
+> > > +            build_args = args + [
+> > > +                "-d", doctree_dir,
+> > > +                "-D", f"kerneldoc_bin={kerneldoc}",
+> > > +                "-D", f"version={self.kernelversion}",
+> > > +                "-D", f"release={self.kernelrelease}",
+> > > +                "-D", f"kerneldoc_srctree={self.srctree}",
+> > > +                src_dir,
+> > > +                output_dir,
+> > > +            ]
+> > > +            try:
+> > > +                self.run_sphinx(sphinxbuild, build_args, env=self.env)
+> > > +            except (OSError, ValueError, subprocess.SubprocessError) as e:
+> > > +                sys.exit(f"Build failed: {repr(e)}")
+> > > +            if target in ["htmldocs", "epubdocs"]:
+> > > +                self.handle_html(css, output_dir)
+> > > +        if target == "pdfdocs":
+> > > +            self.handle_pdf(output_dirs)
+> > > +        elif target == "infodocs":
+> > > +            self.handle_info(output_dirs)
+> > > +
+> > > +def jobs_type(value):
+> > > +    if value is None:
+> > > +        return None
+> > > +    if value.lower() == 'auto':
+> > > +        return value.lower()
+> > > +    try:
+> > > +        if int(value) >= 1:
+> > > +            return value
+> > > +        raise argparse.ArgumentTypeError(f"Minimum jobs is 1, got {value}")
+> > > +    except ValueError:
+> > > +        raise argparse.ArgumentTypeError(f"Must be 'auto' or positive integer, got {value}")
+> > > +
+> > > +def main():
+> > > +    parser = argparse.ArgumentParser(description="Kernel documentation builder")
+> > > +    parser.add_argument("target", choices=list(TARGETS.keys()),
+> > > +                        help="Documentation target to build")
+> > > +    parser.add_argument("--sphinxdirs", nargs="+",
+> > > +                        help="Specific directories to build")
+> > > +    parser.add_argument("--conf", default="conf.py",
+> > > +                        help="Sphinx configuration file")
+> > > +    parser.add_argument("--builddir", default="output",
+> > > +                        help="Sphinx configuration file")
+> > > +    parser.add_argument("--theme", help="Sphinx theme to use")
+> > > +    parser.add_argument("--css", help="Custom CSS file for HTML/EPUB")
+> > > +    parser.add_argument("--paper", choices=PAPER, default=PAPER[0],
+> > > +                        help="Paper size for LaTeX/PDF output")
+> > > +    parser.add_argument("-v", "--verbose", action='store_true',
+> > > +                        help="place build in verbose mode")
+> > > +    parser.add_argument('-j', '--jobs', type=jobs_type,
+> > > +                        help="Sets number of jobs to use with sphinx-build")
+> > > +    args = parser.parse_args()
+> > > +    PythonVersion.check_python(MIN_PYTHON_VERSION)
+> > > +    builder = SphinxBuilder(builddir=args.builddir,
+> > > +                            verbose=args.verbose, n_jobs=args.jobs)
+> > > +    builder.build(args.target, sphinxdirs=args.sphinxdirs, conf=args.conf,
+> > > +                  theme=args.theme, css=args.css, paper=args.paper)
+> > > +
+> > > +if __name__ == "__main__":
+> > > +    main()    
+> >   
+> 
+> 
+> 
+> Thanks,
+> Mauro
+
+
+
+Thanks,
+Mauro
