@@ -1,113 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7ECA324B0A;
-	Wed, 10 Sep 2025 15:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D818426F2B0;
+	Wed, 10 Sep 2025 15:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757518573; cv=none; b=LDBuPpYxx1Y/KTO0muXVY8iyoMScstZDXEjbI2yRJr7YHDxi184jcjoodo4z4AkD71ABQ9iH61/wSkgEAPoep1xsaDpmW9mC1YqUTyKGv7qnMSaXJXcsKtftxnEhm7hlWm92OtvhBvQf4qGBnx8cb5d1TZULW+F1ZgXMDHowITM=
+	t=1757518779; cv=none; b=DzCU/2dR0NiR7mXVwgO4l/u7yV9rBTOsVOm0VYzzqwhlRW+gl+8fYC9beBIrHgBFV687nltaW/7Qio/IfuC8Mr9mVvE4kbxIeAsksBGH1gTc10GBZpwdCLYXu++IAYYlxTjwDgVlevg7DgGEMKSrv2VXdIIy8bcKHDi9Tu/cUeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757518573; c=relaxed/simple;
-	bh=TYMu5BOHm/qQcAr0Dy+e6bh+1PiSeQZinlkSqNeX0as=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SBMAtQigTCjF9YqBtO+tMKb6o34xsvTbI1gIZlTOQiNoRwJ7XoOYVavV2BM6F/xDsRSd6XqZ7IoHHGhGoDPn6ooY6zgu8czSyHD8imIMRo1VDfjNUfVdoF+0gjIQIz9Qo0xDZBIMI3qNQ0DK5rIqnfBlE7E31UwzfskTz0mTeHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeVsbrXe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757518779; c=relaxed/simple;
+	bh=yUDdS/kuvrozQGLQ5U1rfQ0M4SPbUZSrG694a+5B/Qk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=ghK3oj/I+OE2CjxX6XQR+1Lqyl+nW26Ef2LIkAi+NiEitZED+EpLps4sGIiRlDfheLPMk20KYDLDfCrBYoHYmOqcBPoKOo02MqujM/LO7daGZNgdrCn4lEO0ESeUw/aUWeqB5dCXhqpqrUpN8cBdDKLvgXmAla9od5SSh5VyrmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMt59hWx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeVsbrXe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D21C4CEF0;
-	Wed, 10 Sep 2025 15:36:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757518572;
-	bh=TYMu5BOHm/qQcAr0Dy+e6bh+1PiSeQZinlkSqNeX0as=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMt59hWx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3503C4CEF7;
+	Wed, 10 Sep 2025 15:39:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757518779;
+	bh=yUDdS/kuvrozQGLQ5U1rfQ0M4SPbUZSrG694a+5B/Qk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JeVsbrXeGHTG8TtxnWuyKXMML5DRNaa9jEfse/JO1JMSU3bLHFY4fBYGjf6MK396p
-	 80rIRkJ4SlrzH8FntM1DnZFqA3IAXqYxTvfSovUfX7wKikZs46r1GukmPNjRvDuZNG
-	 RJF3LJVzQ7XSxGjz8yJplS+uWJwJ00ttnUIX/iDo=
-Date: Wed, 10 Sep 2025 17:36:09 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>,
-	Matthew Maurer <mmaurer@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v11 2/7] rust: debugfs: Add support for read-only files
-Message-ID: <2025091027-granny-squatted-c5b5@gregkh>
-References: <20250904-debugfs-rust-v11-0-7d12a165685a@google.com>
- <20250904-debugfs-rust-v11-2-7d12a165685a@google.com>
- <45f6f6e0-bd1e-41e7-8c8e-bb556644a873@de.bosch.com>
- <DCO4MP8YT3A8.2PFXX7VJ1STD@kernel.org>
- <2025091014-explicit-grafted-e849@gregkh>
- <ef5c0c7b-3fb3-4099-966c-62cf08d9b2b4@kernel.org>
+	b=SMt59hWxE4DAiEWQ2LyGmBT1g9X4q51DD+ii+z0vGAQN/r3XzJ2MUKsQCqW4UvhI1
+	 q6fy0a8tnE2hyVuSJpefhBaFfYD4iC0wombfDnp3hYD6zvaoybQ7pxcIYfkIMNxC9v
+	 yLfIX9rffkNKP3JJdeO3akm2u3hMdeeJCtDEmFdA9UPK8EKmRo1Tkr9/7tb/g+652J
+	 9MnBzITvmBQE/YkT7iO8iPCYw6qt0osAvJ45tLmIYKJS/hyjjXEkD5SYhetTKyelu8
+	 uXqUB7jyn996I0omfV1+Kz2XXhy1r9EyWNTYrXSWfeq7l97/ni8oTcr1sR6ShMycHw
+	 NCNQreXn9NNtA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ef5c0c7b-3fb3-4099-966c-62cf08d9b2b4@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 10 Sep 2025 17:39:34 +0200
+Message-Id: <DCP8ER16H0AF.2FF0F9922SS0@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Fiona Behrens" <me@kloenk.dev>, "Alban Kurti" <kurti@invicto.ai>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] rust: pin-init: add `#[bind]` attribute to access
+ previously initialized fields
+X-Mailer: aerc 0.20.1
+References: <20250910100755.2361281-1-lossin@kernel.org>
+ <aMFQL-Hq1KvBG5lh@google.com> <DCP1Y8N4SRRF.25V7F6PV5ODCQ@kernel.org>
+ <CAH5fLgg+-oz_cP9=ke+ukp9qYZAsD=hKqvvGfkJWRcCKdrTQ-g@mail.gmail.com>
+ <DCP456FHT625.1L5BVZ4LPD8VQ@kernel.org> <aMGE64_J5R8U_rk5@tardis-2.local>
+ <DCP7JTWPA4QS.9PTE12UVZFDC@kernel.org> <aMGT6h5yIcpR3mCg@tardis-2.local>
+In-Reply-To: <aMGT6h5yIcpR3mCg@tardis-2.local>
 
-On Wed, Sep 10, 2025 at 05:23:26PM +0200, Danilo Krummrich wrote:
-> On 9/10/25 5:22 PM, Greg Kroah-Hartman wrote:
-> > On Tue, Sep 09, 2025 at 10:29:13AM +0200, Danilo Krummrich wrote:
-> >> On Tue Sep 9, 2025 at 9:29 AM CEST, Dirk Behme wrote:
-> >>> On 04/09/2025 23:13, Matthew Maurer wrote:
-> >>>> +#[cfg(not(CONFIG_DEBUG_FS))]
-> >>>> +impl<'b, T: 'b> Scope<T> {
-> >>>> +    fn new<E: 'b, F>(data: impl PinInit<T, E> + 'b, init: F) -> impl PinInit<Self, E> + 'b
-> >>>> +    where
-> >>>> +        F: for<'a> FnOnce(&'a T) -> Entry + 'b,
-> >>>
-> >>> Inspired by Greg's & Danilo's discussion I tried building with
-> >>> CONFIG_DEBUG_FS disabled. And get
-> >>>
-> >>> error[E0412]: cannot find type `Entry` in this scope
-> >>>    --> rust/kernel/debugfs.rs:351:37
-> >>>     |
-> >>> 351 |         F: for<'a> FnOnce(&'a T) -> Entry + 'b,
-> >>>     |                                     ^^^^^ not found in this scope
-> >>>
-> >>> And giving it some Entry (for my 1.81.0)
-> >>>
-> >>> error: hidden lifetime parameters in types are deprecated
-> >>>    --> rust/kernel/debugfs.rs:352:37
-> >>>     |
-> >>> 352 |         F: for<'a> FnOnce(&'a T) -> Entry + 'b,
-> >>>     |                                     ^^^^^ expected lifetime parameter
-> >>
-> >> Yeah, I caught this as well and fixed it up on my end with the following diff:
-> >>
-> >> diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
-> >> index ecfcce845d3f..1f25777743db 100644
-> >> --- a/rust/kernel/debugfs.rs
-> >> +++ b/rust/kernel/debugfs.rs
-> >> @@ -348,7 +348,7 @@ pub struct File<T> {
-> >>  impl<'b, T: 'b> Scope<T> {
-> >>      fn new<E: 'b, F>(data: impl PinInit<T, E> + 'b, init: F) -> impl PinInit<Self, E> + 'b
-> >>      where
-> >> -        F: for<'a> FnOnce(&'a T) -> Entry + 'b,
-> >> +        F: for<'a> FnOnce(&'a T) + 'b,
-> >>      {
-> >>          try_pin_init! {
-> >>              Self {
-> >>
-> > 
-> > Can you send this as a fix-up patch?
-> 
-> If you don't mind I would fix this (and one other nit) up on apply. :)
+On Wed Sep 10, 2025 at 5:06 PM CEST, Boqun Feng wrote:
+> On Wed, Sep 10, 2025 at 04:59:11PM +0200, Benno Lossin wrote:
+>> On Wed Sep 10, 2025 at 4:02 PM CEST, Boqun Feng wrote:
+>> > On Wed, Sep 10, 2025 at 02:19:00PM +0200, Benno Lossin wrote:
+>> >> On Wed Sep 10, 2025 at 12:40 PM CEST, Alice Ryhl wrote:
+>> >> > On Wed, Sep 10, 2025 at 12:36=E2=80=AFPM Benno Lossin <lossin@kerne=
+l.org> wrote:
+>> >> >>
+>> >> >> On Wed Sep 10, 2025 at 12:17 PM CEST, Alice Ryhl wrote:
+>> >> >> > On Wed, Sep 10, 2025 at 12:07:53PM +0200, Benno Lossin wrote:
+>> >> >> >> Assigning a field a value in an initializer macro can be marked=
+ with the
+>> >> >> >> `#[bind]` attribute. Doing so creates a `let` binding with the =
+same
+>> >> >> >> name. This `let` binding has the type `Pin<&mut T>` if the fiel=
+d is
+>> >> >> >> structurally pinned or `&mut T` otherwise (where `T` is the typ=
+e of the
+>> >> >> >> field).
+>> >> >> >>
+>> >> >> >> Signed-off-by: Benno Lossin <lossin@kernel.org>
+>> >> >> >
+>> >> >> > Is there a reason we can't apply this to all fields and avoid th=
+e
+>> >> >> > attribute?
+>> >> >>
+>> >> >> Adding the attribute was due to Boqun's concern on v1 [1]. I think=
+ it
+>> >> >> might be surprising too, but I'm also happy with no attribute.
+>> >> >>
+>> >> >> [1]: https://lore.kernel.org/all/aLshd0_C-1rh3FAg@tardis-2.local
+>> >> >
+>> >> > IMO the ideal is if it works without an attribute. Perhaps trying t=
+hat
+>> >> > in the kernel is a reasonable experiment to find out whether that's
+>> >> > reasonable to do for the general language feature?
+>> >>=20
+>> >> @Boqun what is your opinion on this?
+>> >>=20
+>> >
+>> > If we plan to make the in-place initializer language feature behave
+>> > similar, as I asked here [1], then dropping `#[bind]` seems good to me=
+.
+>>=20
+>> I don't think we can promise how that language feature is going to look
+>> like. It will definitely support accessing already initialized fields,
+>> but in what form remains to be seen.
+>>=20
+>
+> Sure, but in kernel we are able to stay the same as whatever the
+> language feature will be like, right?
 
-I've pushed these to driver-core-testing if you could fix it up as I
-don't know what the other change was?
+Yes :)
 
-thanks,
+> In other words, as long as we propose the same thing to the language
+> feature and keep kernel code and language feature synced (presumbly
+> there could be some more discussion on the syntax when presented to Rust
+> commmunity), then I'm think it's fine.
 
-greg k-h
+I'll take v1 (with the in-tree fixes) then. Do you mind giving your RB
+for that one? Thanks!
+
+---
+Cheers,
+Benno
