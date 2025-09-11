@@ -1,201 +1,128 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE882329F21;
-	Thu, 11 Sep 2025 03:31:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE90140E5F
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Sep 2025 04:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757561500; cv=none; b=fYagKwVrgYY6u2dIEeythIq624mRZYF834EBvMTbuXMfHKa5gsH3oYIabeGfeG3IYKfqPLgrBKjtm1BqZIEwpV0teq5CJqXgv3iO8JY3NbqCwFoAZq5FQBWEMOu1RjfX08XE7EcJMmPicNFKRv1HtRyRI7ovO4mwm31CUtfr8Zg=
+	t=1757565973; cv=none; b=abAwWITIXpnyzlAzBUKVMSTU95QE5YEzZYj71Hd+OA6x/n0cjlGMR9WQPfaySfDLVJ6VY+y272WPCJ8N5j2uJHm/ZdGcLNS9arDz3hoRfIWrpoq2YrruDvU2TyBMhTOm33B1zquBKcki79cMjwLs800iyxQXTosY5kW9yrkXoH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757561500; c=relaxed/simple;
-	bh=8rb2eHgz+sisqDC2HjdtfVMWa883OZctZ6qacBEEcu4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FeOH886HwDXfp92Sa/V6wZTLtWnW6SEEGtz3eZA/NEIDXll6vxe5e/zZaGakA7sgnMKkwt5efgOytrAQ2eX34oncQCCPKMxggTjyyLgFRImuTSh4KHzXii/yUYWxQpBMO0POPfQ+A4zyu2z9p3AHFNkRKN31NOvIDqDVx4FkdEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FrkPbhKK; arc=none smtp.client-ip=209.85.222.177
+	s=arc-20240116; t=1757565973; c=relaxed/simple;
+	bh=ZYQmQVPBF8zKRLNJ+D4bhiIq4DL1k5MFPT2Ve8g115I=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RfFpn6h0p3WAN0YmOj0J9tZ/jvbeU0n5LywjG8fB5mbulDXSlGRMtxA+Pt2jd+8VcLVD1Q0wdiytYG5r3yJKOX2BivMH+W2HGeOpZKH4piy2Nf7gVXLGdoWAEQaDxZA3uW6CDkapW4E0YeqWuf6UiEiFIZ3Hde4aa3xOf9DLbsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QVUvX8H9; arc=none smtp.client-ip=209.85.128.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FrkPbhKK"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-817f3d08465so22797285a.2;
-        Wed, 10 Sep 2025 20:31:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVUvX8H9"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71d60528734so2519287b3.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 21:46:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757561498; x=1758166298; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1syGiOChJSsvX5X8w25jQPHC2Ezw8kmnSNlrI7kOygU=;
-        b=FrkPbhKKA+MCebshsDzcR0LfL7um1TCnra2iYXDwM2U1dIP6RdX4LILHGfJbjagUYC
-         PEBwdUXpMRlGHfC53wOmQPImcbxroKS1jzBFOnn7wWDwZE7RONI3sIeqgifZR59NpcZZ
-         GYbu/hh4NiCTU/6yQ9gaCm1HCmWOG+BfUqLEK+NDK338GiRvuoq6j4GbNgV0YTD3jApz
-         Ul7KzjgeEexap1ka3WShzTqbsOG8N1YKtoCxfJeWZp49JU1enph6AtBAP3mr2/Cjpmgv
-         +4RVJ5cdrizOPvQdYak7b+5SZ26/+yyUGdMPmm+dSRcMuDvMsdNvk3r1mn+5GIq4QLRK
-         Quuw==
+        d=gmail.com; s=20230601; t=1757565971; x=1758170771; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1OFQORNmMyhF8NqnLlI7wxOYnlK/yXDebbJxZdkpHcc=;
+        b=QVUvX8H99YU7pKHdlG0uydz/0HeW8qJ53/5dxsUs7PeTDkdQi08HUM3DSol7FAMrc1
+         QjvuOZ6McvDLrVzHOPstBnf2dM352XnRuaM+Oya5mh/EV3Dk1/YZtXvGgYXwV8N02Ptk
+         mZ+cNc/0dGHSXwQHYM2lJEzl+2IN+h1eZWaQ+jMWNhkFrIaGbtI0msA0m8G9lG+MI/os
+         nFSXEZFBWMwik4LSj2G2gh9/t/T4eSZwGZrr4LtyFCPJIuPvsC3rMo0Qq3CQXrvHD+QM
+         ZJ+BBPZLAw+BWzNaBAR437h889AHD/XGanoQ7YJ197Ld1WVYEF+foVEuv+qK1jj3wiXp
+         gp+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757561498; x=1758166298;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1syGiOChJSsvX5X8w25jQPHC2Ezw8kmnSNlrI7kOygU=;
-        b=fw6qJjDah0LDiWd8r7tL6CbV16aaKrpBuDP1RsJlMhpLf779aJVLlUBm6TlLz4fHG+
-         ujIQgZrc36vnRSSYd3y7OAyScnlRAhB1MOjt+NSyusmjawN8UrT5Di4VlF1UAhzFbTkF
-         KrycZaRYRq+YPc9vBJToF828uWdUzONH3/88+nsXL8rwvtjYUroxnAPB3raWzeRDBDJx
-         ZuN07dLKcpRfaiwyhDGfupDgY+63BcAQEktgoFGHjPpOLmyYe90ZLYqDgw+MRqAfowfL
-         KrOidg+TlRLdTyJpOPD1vwNyFOfHqAmhQuTkjbwvvLYTetefMgV4e6AowWzCukDMsYNM
-         0HcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV++2rbHg29AfEpKp0qPDibmEvlE4CF6Ysu+lb5qgYFGlkhF/ITnIDk1kLsBRBpHbZoU3ASzGRWgn2oRRub6LI=@vger.kernel.org, AJvYcCWfqhkZ+JH5r0bvsFQT+7TYOKyY/gBOkQRbCSU+5GMT+EG2nOkTPC+WY3T6uAWNPY5P451MW8q6M8Ah7tE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvRKzpEHNKPwcFCM8Rn3hSYexcPpgeLFNQ5/pId59bFiwg68k8
-	d16IH3M9ASOTg4Gaw6aAhgMXY6XbT1y7m58o2pUANxtFNiQlS7EnbbeV
-X-Gm-Gg: ASbGncuklbTo9d9xftnPfxVm1/NcLN10w5xgbOvNwjHds4pQtv60Bzp8kjH0ZkoWRBA
-	rRK0ToKLfkzav3RUg2tnrkDTX+J8bGIVI7pppZfRTRI/GSFJXXr93mE0VrROYtPdgATt2xofb+x
-	Z3q4+P9kxfr6yNRv9vvjJi7r40mBYIy1qrTOgJlVZh/q6vc6mnHbS2X34o5ThkX4v5pDf3rGXcf
-	3y7znBFYnpJkbMJ5Qx342OhYDJnNA4TEUFlo/i04Zchw9Ro5tlsLqANRY36iAqD7EdinQNb1V5y
-	dgOqgpXcJeT191F1kGZeXk5+yVyGpQ6KdoWkv1RxIt9qdwBKgTXL1xFGqCUYdn36+mlb+C0A8Ua
-	DdsyYhkyCtkZ1FDis0ZZ7UCYicP/4jmgA5bF6TCpnxEvGVqsm2MCswy184B9LdKRBD1cHTAp9Xr
-	YMDXZOUwkwDq28IENraE96EA+iX+8wsBodWw==
-X-Google-Smtp-Source: AGHT+IGrDLo5bWSqO5mkCkjgJQTWPL25KQoZekxLgU5oTKRa8fIInxRcyYRazkbM5fjz4IYYVySZ6Q==
-X-Received: by 2002:a05:620a:4690:b0:811:2b34:cf45 with SMTP id af79cd13be357-813c568d2ecmr1670054585a.79.1757561497551;
-        Wed, 10 Sep 2025 20:31:37 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b639daa5edsm3292951cf.32.2025.09.10.20.31.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 20:31:37 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8595EF40066;
-	Wed, 10 Sep 2025 23:31:36 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Wed, 10 Sep 2025 23:31:36 -0400
-X-ME-Sender: <xms:mELCaH5m2zpva2BKwefEl8XBdCj6UdPsVMUs-_LrhbA-jcTsgZCHDQ>
-    <xme:mELCaIEVp71Kh_LlH4M1_h3g2VKvgMzONI7ax-__5xqmyJ0o7vVWeYRCkcC-B7_9U
-    bcBg4KXP5BrcPiYxA>
-X-ME-Received: <xmr:mELCaCSMmsqNZ2Bn6ERN-_Bix6CCZKQsbtclueSnu06f4bsfPiRDf6-x9jbSzfQzNQpZkXSIguM62YqFdGrmLOlu1DArZHL4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvhedtlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeevgffhueevkedutefgveduuedujeefledthffgheegkeekiefgudekhffggeel
-    feenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvg
-    hrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprh
-    gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhn
-    fegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegrrdhhihhnuggsoh
-    hrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdr
-    vgguuhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:mELCaCcJk2WofuBWEHIS3FvFzKNJznnFCE3Z1icCdUCTQtSiwXEy5g>
-    <xmx:mELCaIi5SUn9zCNfz52qHA3WOwX8HW9afQ3_EF_WHfJsK9usr5CUMw>
-    <xmx:mELCaFLRaSQ7i6VLID4CE6vrpM1W4ye0YqEykeeNYxGnOgeNu415hQ>
-    <xmx:mELCaNGK-u8fRFXp2LOaxqUi14FbeNvIghfc1ltJvPq0JVHkrtrMkw>
-    <xmx:mELCaD198j_BuVKJHpozr3AyrTuTlse77cXiT_-Pgcwz_9vjBxScG6oN>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Sep 2025 23:31:35 -0400 (EDT)
-Date: Wed, 10 Sep 2025 20:31:34 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Dirk Behme <dirk.behme@gmail.com>, Alban Kurti <kurti@invicto.ai>,
-	Fiona Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: pin-init: add pin projections to `#[pin_data]`
-Message-ID: <aMJClvnT6O5WrcCD@tardis.local>
-References: <20250905171209.944599-1-lossin@kernel.org>
- <20250905171209.944599-2-lossin@kernel.org>
- <CAH5fLgjD+S0nBvDMuTfMYd6-o-3f=xGztk+jZQRhm1_vmNiHAw@mail.gmail.com>
- <DCP1ZX3ASX86.2LS8OQBF4DPL9@kernel.org>
- <CAH5fLghfeWZ1FYdgQKQ7aBftHEGgXPYZ9WTWueTSZxxtaaRB1A@mail.gmail.com>
- <DCP44KG3HEKL.35ANJWT161W6M@kernel.org>
+        d=1e100.net; s=20230601; t=1757565971; x=1758170771;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1OFQORNmMyhF8NqnLlI7wxOYnlK/yXDebbJxZdkpHcc=;
+        b=cJcpI73yoMA+eCQBugeYeiH5pcalMqgwfH4MAeJqR+Q+lix1zNn0w7xyxhH1KUaqAG
+         CQvQTinWeMCsQOqQ7XlhHVfJtOHSTe3qEi/XUWYEHkVHyMG95Cq2Vaz7cUqfVVZT8jLl
+         jrLOEtzKZP+4uHC6eDgnHEeUet54K9ouNWmuCXZmCWpHRFs0KQjs0eSCcvvjb1kgGBc2
+         11OuYv29p3ZSblCKUcd8XPV0qZaKhekGWmRrbNOGNSJ+VXFrOJwuBV7tFZPGabxABrgv
+         VB7FPQadDzD0mcIYQwtyBgk9oiLfldGpZAlJatkH6m5bI5bY7dm31NQ6sBAMSLvVvJZh
+         oh5w==
+X-Forwarded-Encrypted: i=1; AJvYcCX+C+XZV8PvQbbKgBru67PYdaALvyO0jsuAj6DJoUpX+W00tf4aG/+TPsBPJwhTIKOJqA/EhMPFKeQgkWcqYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTkypfiWyawg/MAT3QHEXYD/LgbgF4DEFoMYf+K66eb1Wduh9R
+	u5651AhJpySg2SDlfJYlIynSMW0FPqGAqJ4MxoFwZgPBZAFq3Wm0jEFn
+X-Gm-Gg: ASbGncsy2792vHMyQiPkR3QGfraJOHOOrjixOQmliwzk5NJ2X2YFtyFrYIdf2gn4IDS
+	X8vMENOtffNUBRjpWJd5NOHAKJe2XULonHWzSmwkiPNdGLjnGDmfiTY+BBN9y/X2rVm0CfcM7M2
+	bRNt2pEWl1w3dT+xQs9HfT3B3BRULJmFPUZRk+cFHg5Rk4dQxIzyVSI8NYxfKz3pq3cRnCEGGqk
+	hJuHGxNTeU3tp2WxpBRq/EmR4I3w23krfVk3mpPxOfuBSRfhR3ErCtGrom2q6oGkMUcr2aaBQTZ
+	FaNbqtlko/C0Vd7ARuSrNhBobxY5ItZEfXZH59lpRdAOROyai6v+aml+NCRX4VHqYeH3TUVoGbH
+	iFhEZZ4o3H9+TipBM/JMo0uErOPKGKBOnPU5LV4C8YMjt56B7b2+DUmM4FUt7VtPg5X0fxRCKKg
+	==
+X-Google-Smtp-Source: AGHT+IE09XmvpU67NiXH7rk2LbrDMhUi3e2OWnnlWTn7trnF2NMGewy0hktXoxQgahi3Y4iKLHRnRg==
+X-Received: by 2002:a05:690c:6309:b0:722:7a7f:5358 with SMTP id 00721157ae682-727f28e7503mr153782967b3.4.1757565970388;
+        Wed, 10 Sep 2025 21:46:10 -0700 (PDT)
+Received: from [192.168.1.209] (74.211.99.176.16clouds.com. [74.211.99.176])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-72f76c28400sm1130767b3.30.2025.09.10.21.46.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 21:46:09 -0700 (PDT)
+From: Asuna <spriteovo@gmail.com>
+X-Google-Original-From: Asuna <SpriteOvO@gmail.com>
+Message-ID: <6bceca9d-44cd-4373-a456-7c2129b418e3@gmail.com>
+Date: Thu, 11 Sep 2025 12:46:01 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DCP44KG3HEKL.35ANJWT161W6M@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] RISC-V: re-enable gcc + rust builds
+To: Conor Dooley <conor@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Han Gao <rabenda.cn@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-kbuild@vger.kernel.org,
+ llvm@lists.linux.dev
+References: <20250909-gcc-rust-v2-v2-1-35e086b1b255@gmail.com>
+ <20250910-harmless-bamboo-ebc94758fdad@spud>
+Content-Language: en-US
+In-Reply-To: <20250910-harmless-bamboo-ebc94758fdad@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 10, 2025 at 02:18:12PM +0200, Benno Lossin wrote:
-> On Wed Sep 10, 2025 at 12:54 PM CEST, Alice Ryhl wrote:
-> > On Wed, Sep 10, 2025 at 12:38 PM Benno Lossin <lossin@kernel.org> wrote:
-> >>
-> >> On Wed Sep 10, 2025 at 12:23 PM CEST, Alice Ryhl wrote:
-> >> > On Fri, Sep 5, 2025 at 7:12 PM Benno Lossin <lossin@kernel.org> wrote:
-> >> >> +    (make_pin_projections:
-> >> >> +        @vis($vis:vis),
-> >> >> +        @name($name:ident),
-> >> >> +        @impl_generics($($impl_generics:tt)*),
-> >> >> +        @ty_generics($($ty_generics:tt)*),
-> >> >> +        @decl_generics($($decl_generics:tt)*),
-> >> >> +        @where($($whr:tt)*),
-> >> >> +        @pinned($($(#[$($p_attr:tt)*])* $pvis:vis $p_field:ident : $p_type:ty),* $(,)?),
-> >> >> +        @not_pinned($($(#[$($attr:tt)*])* $fvis:vis $field:ident : $type:ty),* $(,)?),
-> >> >> +    ) => {
-> >> >> +        $crate::macros::paste! {
-> >> >> +            #[doc(hidden)]
-> >> >> +            $vis struct [< $name Projection >] <'__pin, $($decl_generics)*> {
-> >> >
-> >> > I'm not sure we want $vis here. That's the visibility of the original
-> >> > struct, but I don't think we want it to be pub just because the struct
-> >> > is.
-> >>
-> >> Why shouldn't it be pub if the original is pub? I don't really
-> >> understand the concern, since the fields themselves will still have the
-> >> correct visibility. Additionally, there is the `___pin_phantom_data`
-> >> field that's always private, so you cannot construct this outside of the
-> >> module.
-> >
-> > I mean, for instance, it's going to mean that every single struct that
-> > wraps Opaque in a private field will get a useless pub function called
-> > project that will appear in html docs.
-> 
-> It's `#[doc(hidden)]` :)
-> 
-> > Pin-project limits the visibility to pub(crate) when the struct is pub.
-> 
-> I think I would have to look inside the `vis` to recreate that behavior,
-> so I'd rather do it as a future patch. Thoughts?
-> 
+On 9/10/25 10:27 PM, Conor Dooley wrote:
+> FWIW, this --- breaks git, and anything after this line (including your
+> signoff) is lost when the patch is applied.
 
-This reminds me: I think should make these functions `#[inline]` for
-now? (Until we make a decision about whether it's pub(crate) or $vis)
+I used b4 command to prepare and send the cover letter and patch for v2, 
+not sure what happened.
 
-Otherwise compiler will generate functions in kernel binaries for some
-of them. E.g.
+I see that other people's patches have a [PATCH 0/n] email as a start 
+that describes their patch series, this is called a cover-letter in b4 
+and git-send-email right?
 
-nm .kunit/vmlinux.o  | rustfilt | grep project
-00000000002449cc T <kernel::sync::LockClassKey>::project
-000000000023ef40 T <kernel::sync::completion::Completion>::project
-000000000023ef40 T <kernel::sync::poll::PollCondVar>::project
-0000000000244994 T <kernel::sync::condvar::CondVar>::project
-0000000000260a68 T <doctests_kernel_generated::rust_doctest_kernel_init_rs_3::main::_doctest_main____rust_kernel_init_rs_69_0::RawFoo>::project
-0000000000008b70 d __UNIQUE_ID___addressable__RNvMs0_NtCshc5sK6KjdJJ_6kernel4syncNtB5_12LockClassKey7project2007
-0000000000008c98 d __UNIQUE_ID___addressable__RNvMs1_NtNtCshc5sK6KjdJJ_6kernel4sync10completionNtB5_10Completion7project2044
-0000000000008ca0 d __UNIQUE_ID___addressable__RNvMs1_NtNtCshc5sK6KjdJJ_6kernel4sync4pollNtB5_11PollCondVar7project2045
-0000000000008b60 d __UNIQUE_ID___addressable__RNvMs1_NtNtCshc5sK6KjdJJ_6kernel4sync7condvarNtB5_7CondVar7project2005
-0000000000010d28 r __export_symbol_<kernel::sync::LockClassKey>::project
-0000000000010f78 r __export_symbol_<kernel::sync::completion::Completion>::project
-0000000000010f88 r __export_symbol_<kernel::sync::poll::PollCondVar>::project
-0000000000010d08 r __export_symbol_<kernel::sync::condvar::CondVar>::project
+> The riscv patchwork CI stuff is really unhappy with this change:
+> init/Kconfig:87: syntax error
+> init/Kconfig:87: invalid statement
+> init/Kconfig:88: invalid statement
+> init/Kconfig:89:warning: ignoring unsupported character '`'
+> init/Kconfig:89:warning: ignoring unsupported character '`'
+> init/Kconfig:89:warning: ignoring unsupported character '.'
+> init/Kconfig:89: unknown statement "This"
+>
+> Is this bogus, or can rustc-bindgen-libclang-version return nothing
+> under some conditions where rust is not available?
+> Should this have 2 default lines like some other options in the file?
 
-Otherwise the patch looks good to me. Feel free to add:
+This is because rustc-bindgen-libclang-version can't find the bindgen 
+and returns nothing. Sorry I forgot to mention this, it's another reason 
+why I wanted to separate the script, in a separate script we can easily 
+fallback to return 0 when an error is encountered.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-
-Regards,
-Boqun
-
-> ---
-> Cheers,
-> Benno
+Adding a second line `default 0` doesn't work, I'll try to fix it. BTW, 
+when I fix it, if the diff isn't too large, do I need to open a v3 
+patch, or simply replying to the thread just fine?
