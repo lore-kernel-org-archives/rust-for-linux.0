@@ -1,87 +1,259 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8511330E832;
-	Thu, 11 Sep 2025 10:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491FE2EA74B;
+	Thu, 11 Sep 2025 10:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757585760; cv=none; b=AB6xEQBQtgI1QtF5BjVZVcdJWspLmwK/45GqeIrX7RQIwgUMSnnleLo0gjfFoNPUhYzmY3aNH1N3Kya9zDNusSoPrxPSuIb4AtIx0DrYuamsX3BDzlFR1rAAxhetB9B76IFrPVILPMudxye1Lb7CZhKpfR4ofkRh8usf3fqX260=
+	t=1757586245; cv=none; b=t9JdQrMNdNCp5+7dGR4Mjd8sS5arpxje4b3dsDsco4rjh86H8lR8lY3kuvwQbX5HpRqM0Wx+YuSYt7OBqGoH798mBzcUYCJ4+66RW036ApTtvVOU0tLy/n6YxTFRdGFqmeul/c03ZVvtQbVPeOFt5Xm4u4wCopd5zbp6jepWMJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757585760; c=relaxed/simple;
-	bh=aF7rZ5pnheQnLEFsnlZ2JySSI3HQohgNyKgwl/jgnFQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S7ZaQJ6ihVdEUPO8bRw02D8H0USSN55dkn9iLZX071FhLZqbJYi4aE4YJp+aUg4W9hr1/v1q6fsfZSqqo7ys0EQBnxrjmBILnOOkjdXR9LOO5UkZOSxuRwYoSOopnGTw+sNc2cWLy8GxzLTSDT92SwkCkyeoMgMmGcZDw/Bc6NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=eI7S84UK; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1757586245; c=relaxed/simple;
+	bh=l83JyltFbxLN9ZdpMJJt8oCqrMGADRRAdA3f1EVdvj8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GTzPk85iKhUZlzXovbWrGhkg4Pu8B0NM1tGsx6NtcC4Ml0uWJJ3fvb1+km32PmZrrZnVKGe6DnUoJcAD4ybEmY3Nltcc7703b3otLl17kq8jD2M1zjcbo+MkJxxoL65H4YZmkP9P0Vjrejfs6b6a/62s+3lPggmRsQFcuZKugLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TNbyJizt; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="eI7S84UK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1757585750;
-	bh=aF7rZ5pnheQnLEFsnlZ2JySSI3HQohgNyKgwl/jgnFQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eI7S84UKCA4Dko7vZwjJd14mi1E2gunUuBBC9GuPuOIz6bwu6aBD9WBO50yldplMY
-	 GsVjfCyyE9C3GcuzqSOb6ssrCu8/iM2JyB4IxYpfsgSiAcsY31Ef8dUN+BBvwb/8tK
-	 nwqoB9OVqqRPkQw99xCmBTPmCZnDSuFvgau4qANq6Jy9OsxZ8rtQQL01FRAABOn67p
-	 bJOWdL0cfU+l8jJmlxX+2BdzgYiw4GT0dkT86bytnoJNzjqosIVYeWnfP4WKFRe6Su
-	 782KaFBoOATVlEUjkNRjoKQl35rX5RCae5DJMY7WqdmOLtjhpyCj7ulbYkLNujdzf8
-	 /lv/mz00Ap5Og==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0944617E0A2B;
-	Thu, 11 Sep 2025 12:15:49 +0200 (CEST)
-Date: Thu, 11 Sep 2025 12:15:37 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
- <matthew.brost@intel.com>, "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?="
- <thomas.hellstrom@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Steven Price <steven.price@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau
- <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] panthor: use drm_gpuva_unlink_defer()
-Message-ID: <20250911121537.523195c5@fedora>
-In-Reply-To: <20250909-vmbo-defer-v2-2-9835d7349089@google.com>
-References: <20250909-vmbo-defer-v2-0-9835d7349089@google.com>
-	<20250909-vmbo-defer-v2-2-9835d7349089@google.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TNbyJizt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757586244; x=1789122244;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=l83JyltFbxLN9ZdpMJJt8oCqrMGADRRAdA3f1EVdvj8=;
+  b=TNbyJiztY1vx1Wv34UUr0b0ma7xQgc7p6Z6IVk5IRcZA9+udhbjf47IE
+   ZV3NqAU1oj8H6mDEYfYRsWoG83qFz7dzBvzYlHP2X+uHZo1C7NUWdC+Br
+   8CYHfR6t/tkR4uWB+j/SrFpFKp1uuuI1020uNevBv1aTWHiVvkwXjyPuZ
+   UlDjmrLWFMFtBMj5Ewc4BxEwhkaNC6TybrqtAvMm/PeEAFndx+/8qwaVx
+   EBgETazi9RRvwxNS9B5w+DI66LMRJg+tVZOqXYLIWYWAd4EEolK+fgSwM
+   bJgoegkaNWhXmgwF8TGJPHK1XGoK3zrmNj2BAstYCQHvSpHoZQgANsI0s
+   g==;
+X-CSE-ConnectionGUID: Dap+xi0AQ+6K3TgfMg1nBA==
+X-CSE-MsgGUID: zjdKUkymRN6/sFIeWDLYSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="71013894"
+X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; 
+   d="scan'208";a="71013894"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 03:24:03 -0700
+X-CSE-ConnectionGUID: VwNRGGacSSin4IlJYcsbww==
+X-CSE-MsgGUID: TAgzjslaRlu/9yo2/yeF2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; 
+   d="scan'208";a="178846753"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.136])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 03:23:58 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List
+ <linux-doc@vger.kernel.org>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Trevor
+ Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 08/19] tools/docs: sphinx-build-wrapper: add a
+ wrapper for sphinx-build
+In-Reply-To: <20250910145926.453f5441@foz.lan>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1756969623.git.mchehab+huawei@kernel.org>
+ <e019f951190a732f9ac0b21bcda7e49af3bd5cbd.1756969623.git.mchehab+huawei@kernel.org>
+ <e13837a0ac46dffe39c600d11fdf33f538bdc9c3@intel.com>
+ <20250910145926.453f5441@foz.lan>
+Date: Thu, 11 Sep 2025 13:23:55 +0300
+Message-ID: <45888ca6c88071c754784495b4ef69460ea67b4f@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Tue, 09 Sep 2025 13:36:23 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Wed, 10 Sep 2025, Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> Em Wed, 10 Sep 2025 13:46:17 +0300
+> Jani Nikula <jani.nikula@linux.intel.com> escreveu:
+>
+>> On Thu, 04 Sep 2025, Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+>> > There are too much magic inside docs Makefile to properly run
+>> > sphinx-build. Create an ancillary script that contains all
+>> > kernel-related sphinx-build call logic currently at Makefile.
+>> >
+>> > Such script is designed to work both as an standalone command
+>> > and as part of a Makefile. As such, it properly handles POSIX
+>> > jobserver used by GNU make.
+>> >
+>> > On a side note, there was a line number increase due to the
+>> > conversion:
+>> >
+>> >  Documentation/Makefile          |  131 +++----------
+>> >  tools/docs/sphinx-build-wrapper |  293 +++++++++++++++++++++++++++++++
+>> >  2 files changed, 323 insertions(+), 101 deletions(-)
+>> >
+>> > This is because some things are more verbosed on Python and because
+>> > it requires reading env vars from Makefile. Besides it, this script
+>> > has some extra features that don't exist at the Makefile:
+>> >
+>> > - It can be called directly from command line;
+>> > - It properly return PDF build errors.
+>> >
+>> > When running the script alone, it will only take handle sphinx-build
+>> > targets. On other words, it won't runn make rustdoc after building
+>> > htmlfiles, nor it will run the extra check scripts.  
+>> 
+>> I've always strongly believed we should aim to make it possible to build
+>> the documentation by running sphinx-build directly on the
+>> command-line. Not that it would be the common way to run it, but to not
+>> accumulate things in the Makefile that need to happen before or
+>> after. To promote handling the documentation build in Sphinx. To be able
+>> to debug issues and try new Sphinx versions without all the hacks.
+>
+> That would be the better, but, unfortunately, this is not possible, for 
+> several reasons:
+>
+> 1. SPHINXDIRS. It needs a lot of magic to work, both before running
+>    sphinx-build and after (inside conf.py);
 
->  static void panthor_vma_init(struct panthor_vma *vma, u32 flags)
-> @@ -2084,12 +2010,12 @@ static int panthor_gpuva_sm_step_map(struct drm_gpuva_op *op, void *priv)
->  	if (ret)
->  		return ret;
->  
-> -	/* Ref owned by the mapping now, clear the obj field so we don't release the
-> -	 * pinning/obj ref behind GPUVA's back.
-> -	 */
->  	drm_gpuva_map(&vm->base, &vma->base, &op->map);
->  	panthor_vma_link(vm, vma, op_ctx->map.vm_bo);
-> +
-> +	drm_gpuvm_bo_put_deferred(op_ctx->map.vm_bo);
+Makes you wonder if that's the right solution to the original
+problem. It was added as a kind of hack, and it stuck.
 
-Hm, I don't see why we need a drm_gpuvm_bo_put_deferred() here. The
-original idea was to delegate the vm_bo ownership to the VA being added
-to the VM tree, so if we put it here, we have a UAF situation, don't we?
+> 2. Several extensions require kernel-specific environment variables to
+>    work. Calling sphinx-build directly breaks them;
 
->  	op_ctx->map.vm_bo = NULL;
-> +
->  	return 0;
->  }
+The extensions shouldn't be using environment variables for
+configuration anyway. Add config options and set them in conf.py like
+everything else?
+
+> 3. Sphinx itself doesn't build several targets alone. Instead, they create
+>    a Makefile, and an extra step is needed to finish the build. That's 
+>    the case for pdf and texinfo, for instance;
+
+That's not true for the Makefile currently generated by
+sphinx-quickstart. Granted, I haven't used Sphinx much for pdf output.
+
+> 4. Man pages generation. Sphinx support to generate it is very poor;
+
+In what way?
+
+> 5. Rust integration adds more complexity to the table;
+>
+> I'm not seeing sphinx-build supporting the above needs anytime soon,
+> and, even if we push our needs to Sphinx and it gets accepted there,
+> we'll still need to wait for quite a while until LTS distros merge
+> them.
+
+I'm not suggesting to add anything to Sphinx upstream.
+
+>> This patch moves a bunch of that logic into a Python wrapper, and I feel
+>> like it complicates matters. You can no longer rely on 'make V=1' to get
+>> the build commands, for instance.
+>
+> Quite the opposite. if you try using "make V=1", it won't show the
+> command line used to call sphinx-build anymore.
+>
+> This series restore it.
+>
+> See, if you build with this series with V=1, you will see exactly
+> what commands are used on the build:
+>
+> 	$ make V=1 htmldocs
+> 	...
+> 	python3 ./tools/docs/sphinx-build-wrapper htmldocs \
+> 	        --sphinxdirs="." --conf="conf.py" \
+>         	--builddir="Documentation/output" \
+> 	        --theme= --css= --paper=
+> 	python3 /new_devel/docs/sphinx_latest/bin/sphinx-build -j25 -b html -c /new_devel/docs/Documentation -d /new_devel/docs/Documentation/output/.doctrees -D kerneldoc_bin=scripts/kernel-doc.py -D version=6.17.0-rc1 -D release=6.17.0-rc1+ -D kerneldoc_srctree=. /new_devel/docs/Documentation /new_devel/docs/Documentation/output
+> 	...
+>
+>
+>
+>> Newer Sphinx versions have the -M option for "make mode". The Makefiles
+>> produced by sphinx-quickstart only have one build target:
+>> 
+>> # Catch-all target: route all unknown targets to Sphinx using the new
+>> # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+>
+> I didn't know about this, but from [1] it sounds it covers just two
+> targets: "latexpdf" and "info".
+
+sphinx-build -M help gives a list of 24 targets.
+
+> The most complex scenario is still not covered: SPHINXDIRS.
+>
+> [1] https://www.sphinx-doc.org/en/master/man/sphinx-build.html
+>
+>> %: Makefile
+>>         @$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+>> 
+>> That's all.
+>
+> Try doing such change on your makefile. it will break:
+>
+> 	- SPHINXDIRS;
+> 	- V=1;
+> 	- rustdoc
+
+I know it does. That's the problem.
+
+> and will still be dependent on variables that are passed via
+> env from Kernel makefile. So, stil you can't run from command
+> line. Also, if you call sphinx-build from command line:
+>
+> 	$ sphinx-build -j25 -b html Documentation Documentation/output
+> 	...
+> 	      File "<frozen os>", line 717, in __getitem__
+> 	    KeyError: 'srctree'
+>
+> It won't work, as several parameters that are required by conf.py and by
+> Sphinx extensions would be missing (the most important one is srctree, but
+> there are others in the line too).
+>
+>> The proposed wrapper duplicates loads of code that's supposed to be
+>> handled by sphinx-build directly.
+>
+> Once we get the wrapper, we can work to simplify it, but still I
+> can't see how to get rid of it.
+
+I just don't understand the mentality of first adding something complex,
+and then working to simplify it.
+
+Don't make it a Rube Goldberg machine in the first place.
+
+>> Including the target/builder names.
+>
+> True, but this was a design decision taken lots of years ago: instead
+> of:
+> 	make html
+>
+> we're using:
+>
+> 	make htmldocs
+>
+> This series doesn't change that: either makefile or the script need
+> to tho the namespace conversion.
+
+In the above Makefile snippet that conversion would be $(@:docs=)
+
+The clean Makefile way of checking for having Sphinx and the required
+versions of Python and dependencies etc. would be a .PHONY target that
+just checks, and doesn't do *anything* else. It shouldn't be part of the
+sphinx-build rules.
+
+PHONY += check-versions
+check-versions:
+	sphinx-pre-install --version-check
+
+htmldocs: check-versions
+	...
+
+Or something like that.
+
+>> Seems to me the goal should be to figure out *generic* wrappers for
+>> handling parallelism, not Sphinx aware/specific.
+>> 
+>> 
+>> BR,
+>> Jani.
+
+-- 
+Jani Nikula, Intel
