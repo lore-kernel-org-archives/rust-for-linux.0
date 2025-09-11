@@ -1,70 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0154315F;
-	Thu, 11 Sep 2025 19:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23B6277CAE;
+	Thu, 11 Sep 2025 20:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757620658; cv=none; b=thaMhutmAhioiQONrOo1R8YATtF8BKXyj1YfXoc2e/eLan7pAhi0Svhu3ZEUVfydi99R5C7AL6ISwqPduBp8U2ypDACtXGLSHfLjkRKdzbKakA/FS2ADFN14oGr5hrBjbmpaB8IeDddWTO+GANc+dAXcIRVjgFlmLYAhWDwBM1E=
+	t=1757622232; cv=none; b=m4D3wovXWzEDn91DSoupOyxXdSKYXLmduZpdkZ+nRVm/zlOu73+1FTlGntvRv6Safuojzxe06bJi+OzCuZjNLERL98Q88fWQ2NQSo17qWhSxzUIzdqScy7ZmRo7Z5JsjRKXp35Uqc6UitTXEaBudp+JvWXuZfYUeUIIVwHlp9CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757620658; c=relaxed/simple;
-	bh=qvZGaMRgnngt+aIivbrtkO1FDOUULEq9PP1s7JMEYlg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DLfzthdjy7xkHJA8wpzAZMg0XEWfFZwvC1nKsP9lArf2nvr8W+GLa33ZpBu8ppNtiQ0gt72AiFqQxI6teAccV6JlfUAfk+4HgGSJjlJs2fE/69Z3SKwASZrzYaHJel5I69qFjX2qWOBQqtoEu/Rs1GtnS77DmWXSr/+mxgQvqNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hp4fV75B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757622232; c=relaxed/simple;
+	bh=PyFbXxgLfiqZCSLfzMA8KQbt6qVlJRGfha6ahnEDLzc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=bDgX+k81w1YZpaEefL0ZkBHaELe848KhVJ2La7RxX4eQP9RvmQgnlQdU13SzTWgH3wVMrz/ArRIYvSh0ienT+iFrD3kghqi6iE4skS/Tti2NE3wr6c0DoLS8KkA5/Y0ZiWjL7DrjIjdfPLVtYnCHGsrAcgisVCM1EEA51TQ66V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1pjQzEM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hp4fV75B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A11C4CEF0;
-	Thu, 11 Sep 2025 19:57:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1pjQzEM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C58CC4CEF0;
+	Thu, 11 Sep 2025 20:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757620657;
-	bh=qvZGaMRgnngt+aIivbrtkO1FDOUULEq9PP1s7JMEYlg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hp4fV75B8HjcDeQUggPW+JahNGtfBa/MjVq8UNViaIbduH/f/firHL1WmgY37x7Hm
-	 7gVO81CNHcGyJYKbEP1sp4oUyL9cxHz7Ep28ig63U1TRCm1NALFXVMDwFC2/8TY4ee
-	 cZWEORtiTciO35JTUngpZ2gdhveKvUglPifHOCwDSDb4jLTxYe0jw2kujIkMWkZIKb
-	 lge80MRl0kuSiDwkl3B0ufydM5Pg7biWZjuCBbtJILfNfVj8i01C5qKUtiOwn1vE+7
-	 WQHhxUqh9qoYSjCULBZSEeaRRduFuIK+c0ihHrfYGf1TXbDtZzFylwWiQaW35NN8XN
-	 /Zm7HyXKNx+XA==
-Message-ID: <5c2b66fc-35c6-485f-b721-c8d57f77262b@kernel.org>
-Date: Thu, 11 Sep 2025 21:57:34 +0200
+	s=k20201202; t=1757622232;
+	bh=PyFbXxgLfiqZCSLfzMA8KQbt6qVlJRGfha6ahnEDLzc=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=b1pjQzEMy2yEfO5xhEZKNCYYNn+84YT8n0FCmz6PXtf3xEglmx7H+FLN0zacJzkRU
+	 naXiqIwi53P7z5Z/3BbgTsyDXabHUZs2kg9bu16HxhKdrj5tUbOomsPbK44jMK42aJ
+	 a8joJ1C2NycPdbF0n0ZTEWAs0mdTUhRo8MTWh3yEyF2zurrQ/ytAiAXlXo5xbUwHsB
+	 KL15QX8/fTP632TChmLFtllwl1b1WJmKG9PoOeFGBUJG2YFy9i/hGKIGD+V6NaACj3
+	 RvmUyT5EutXQxjMPqJYGJd79lDaOJqi0uG8unke6g3Es23zGrCmphRy0nTl3I7h6Sc
+	 digylkavGJLFg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Update the DMA Rust entry
-To: gregkh@linuxfoundation.org
-Cc: rafael@kernel.org, abdiel.janulgue@gmail.com,
- daniel.almeida@collabora.com, robin.murphy@arm.com, a.hindborg@kernel.org,
- ojeda@kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250910094015.11551-1-dakr@kernel.org>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250910094015.11551-1-dakr@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 11 Sep 2025 22:23:46 +0200
+Message-Id: <DCQ92VZ22KOU.14L0I1QBKBT29@kernel.org>
+Subject: Re: [PATCH v5 1/3] rust: i2c: add basic I2C device and driver
+ abstractions
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>, "Asahi Lina" <lina+kernel@asahilina.net>,
+ "Wedson Almeida Filho" <wedsonaf@gmail.com>, "Alex Hung"
+ <alex.hung@amd.com>, "Tamir Duberstein" <tamird@gmail.com>, "Xiangfei Ding"
+ <dingxiangfei2009@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-i2c@vger.kernel.org>
+To: "Igor Korotin" <igor.korotin.linux@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250911154717.96637-1-igor.korotin.linux@gmail.com>
+ <20250911154936.97118-1-igor.korotin.linux@gmail.com>
+In-Reply-To: <20250911154936.97118-1-igor.korotin.linux@gmail.com>
 
-On 9/10/25 11:40 AM, Danilo Krummrich wrote:
-> Update the DMA Rust maintainers entry in the following two aspects:
-> 
->   (1) Change Abdiel's entry to 'Reviewer'.
-> 
->   (2) Take patches through the driver-core tree.
-> 
-> Abdiel won't do any more maintainer work on the DMA (or scatterlist)
-> infrastructure, but he'd like to be kept in the loop, hence change is
-> entry to 'R:'.
-> 
-> Analogous to [1], the DMA (and scatterlist) helpers are closely coupled
-> with the core device infrastructure and the device lifecycle, hence take
-> patches through the driver-core tree by default.
-> 
-> Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> Link: https://lore.kernel.org/r/20250725202840.2251768-1-ojeda@kernel.org [1]
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Thu Sep 11, 2025 at 5:49 PM CEST, Igor Korotin wrote:
+> +pub trait Driver: Send {
+> +    /// The type holding information about each device id supported by t=
+he driver.
+> +    // TODO: Use `associated_type_defaults` once stabilized:
+> +    //
+> +    // ```
+> +    // type IdInfo: 'static =3D ();
+> +    // ```
+> +    type IdInfo: 'static;
+> +
+> +    /// The table of device ids supported by the driver.
+> +    const I2C_ID_TABLE: Option<IdTable<Self::IdInfo>> =3D None;
+> +
+> +    /// The table of OF device ids supported by the driver.
+> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D None;
+> +
+> +    /// The table of ACPI device ids supported by the driver.
+> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> =3D None;
+> +
+> +    /// I2C driver probe.
+> +    ///
+> +    /// Called when a new i2c client is added or discovered.
+> +    /// Implementers should attempt to initialize the client here.
+> +    fn probe(
+> +        dev: &I2cClient<device::Core>,
+> +        id_info: Option<&Self::IdInfo>,
+> +    ) -> Result<Pin<KBox<Self>>>;
+> +
+> +    /// I2C driver shutdown
+> +    ///
+> +    /// Called when
 
-Applied to driver-core-linus, thanks!
+Seems like you did forget to actually finish the comment.
+
+> +    fn shutdown(dev: &I2cClient<device::Core>) {
+
+You should also provide a Pin<&Self> argument.
+
+> +        let _ =3D dev;
+> +    }
+
+Can you please also add an unbind() method analogous to PCI, platform, etc.=
+? It
+avoids that people have to use try_access() for accessing device resources =
+on
+remove().
