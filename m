@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB07311C10;
-	Thu, 11 Sep 2025 11:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB8C1CAA4;
+	Thu, 11 Sep 2025 11:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757589827; cv=none; b=cok4l3x4PSsyMZLFD8M2r/38fWZ1vIfKSuenQvuBQSlgkAM0TqsEYVLX911ynDWpIDQBi/B/1JiWiu1g/bwx7Glr+alDOrZhpdImZjp/mhZwlGtlgtt0BAo2GZ4jq6Zp8G1CaJkewPnckjN3RPTW6kH09QrNHmdzR+GFO92/K84=
+	t=1757590042; cv=none; b=OkhjMN6ziBzKlRSzuWpvGXZtMiggaPqL5mRCqpEZ8V9xDPZzU8C8wvPbfg7XLxFixmC+cIX84tba3GAzCsoNOBY3xbO/e5ZGsaiL/uIwGWEYXqSMUo1+rpqugrJx9VkmdwVFhKk+fvgIIqVjI4jfRPZHdgqYS/0O+6hh+r5EpLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757589827; c=relaxed/simple;
-	bh=p4waa9LkxC8TTbVh+HqVY69fXLYJWft8thFtWQWeKzo=;
+	s=arc-20240116; t=1757590042; c=relaxed/simple;
+	bh=7x9RX4R0yGFt9SaAULfJv4ZUVpGgjrzTlX6Xxo5HDj0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DNWlNkgOft5KUN9cKh26FEotXcwzpUGxFeuJo0EA6lowvJNS6kpnaN7irEnubpNXym5ukfliuOMx+XQvXiF/xyfgTUH+sgGZh9YqdJ8Mwecp2HjrxXPNACzgsspkSK1vxPC4viECGtLEY5WaGLte5qR7XBKCMumyABboZUr75iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OM53fV2N; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=QEo16diLnnx0wn8XOrED3xpZ5g8aV2sURRPzzlz2jhlErhp2qJXktl0NfVcXw9Qf3yfyRPQZ3zOj+Rpyy+GFx716XeMyI8JF79W6KEeNc9DTmdGgNRSJ0APrYld1dxWZ/W0Is6opa6A//UDs/ogIzB13g7NnNICmzDpfOyMVCJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6s6oloT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OM53fV2N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA3AC4CEF0;
-	Thu, 11 Sep 2025 11:23:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6s6oloT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B95C4CEF0;
+	Thu, 11 Sep 2025 11:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757589826;
-	bh=p4waa9LkxC8TTbVh+HqVY69fXLYJWft8thFtWQWeKzo=;
+	s=k20201202; t=1757590041;
+	bh=7x9RX4R0yGFt9SaAULfJv4ZUVpGgjrzTlX6Xxo5HDj0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OM53fV2NC+l33RRDjaAOxmYNre07SpJ6jmrQ8VFbi5RNanuG5K5lirnRtn0uwFmh/
-	 rb4or7E6glMg2cWFY3Ymlgyx398Y6cKWJpzvdETAQHkUdMipZ4HG5Ah9Wu3nPDJ2QX
-	 B5R269ptR+hbjRldrlhrLAhBVMIc0AwR4YDpcFA6TCmgTyEHfyvKUvnUEE1GzLqmtg
-	 w4Cd/hpJp1ut86yD4mMwKRn4oWVvkUKPLWy/PQpmKepsj7MkCXyiN3MJ6U52gjn//C
-	 GCFGgW0bsObFVCJEwcUGuke5HFPfV3eKCR3KMuGsAkrJkBUK4ibQU0hwPAh1iZdtPk
-	 gulQKZ1hUfhpA==
-Message-ID: <694e6b89-4d83-4a61-87e8-5c420b60114f@kernel.org>
-Date: Thu, 11 Sep 2025 13:23:40 +0200
+	b=X6s6oloTndlDJx3ztDIKJjVQuau4BdMbUCgEE2426w1z25y0vF/BBN4xZaip6KGkx
+	 Opk7ATGu2XKrpJiQjZmtwwmJqERYR/ZmF+T+7ZtJ4vJzx6Cjb0pWZ0fJk5dXwGB5Wh
+	 YkTTscOP670GDAdp4tLEnZd/xcXO7gYwRFwtvnoslqOFmbSRTw1i89WUO44Zmj73A5
+	 qLrUzSiIObVzcYGloBs9mWNce92zUE1eYdaahTOZqasQkwN9BK0NtoDiNEq6xtjGkv
+	 AX01MzpcTWjejjKSq6lyGTplwojxksvOtjWDTOAWy9K/uAhhjgGu/7kMlLV+9w071p
+	 EWe788vRpfbzg==
+Message-ID: <9c1a7902-4e14-4b25-ba32-57a475a0bccc@kernel.org>
+Date: Thu, 11 Sep 2025 13:27:15 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 05/12] gpu: nova-core: firmware: move firmware request
- code into a function
+Subject: Re: [PATCH v5 08/12] gpu: nova-core: firmware: process and prepare
+ the GSP firmware
 To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
@@ -51,15 +51,38 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 References: <20250911-nova_firmware-v5-0-5a8a33bddca1@nvidia.com>
- <20250911-nova_firmware-v5-5-5a8a33bddca1@nvidia.com>
+ <20250911-nova_firmware-v5-8-5a8a33bddca1@nvidia.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20250911-nova_firmware-v5-5-5a8a33bddca1@nvidia.com>
+In-Reply-To: <20250911-nova_firmware-v5-8-5a8a33bddca1@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/11/25 1:04 PM, Alexandre Courbot wrote:
-> +/// Requests the GPU firmware `name` suitable for `chipset`, with version `ver`.
-> +fn request_nv_firmware(
+> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> index 06a7ee8f4195759fb55ad483852724bb1ab46793..8505ee81c43e7628d1f099aff285244f8908c633 100644
+> --- a/drivers/gpu/nova-core/gpu.rs
+> +++ b/drivers/gpu/nova-core/gpu.rs
+> @@ -8,6 +8,7 @@
+>  use crate::fb::SysmemFlush;
+>  use crate::firmware::booter::{BooterFirmware, BooterKind};
+>  use crate::firmware::fwsec::{FwsecCommand, FwsecFirmware};
+> +use crate::firmware::gsp::GspFirmware;
+>  use crate::firmware::{Firmware, FIRMWARE_VERSION};
+>  use crate::gfw;
+>  use crate::regs;
+> @@ -285,6 +286,11 @@ pub(crate) fn start_gsp(
+>  
+>          let bios = Vbios::new(dev, bar)?;
+>  
+> +        let _gsp_fw = KBox::pin_init(
+> +            GspFirmware::new(dev, chipset, FIRMWARE_VERSION)?,
+> +            GFP_KERNEL,
+> +        )?;
 
-I think just request_firmware() is fine.
+Since we now have the infrastructure in place and the change is trival, I'd
+prefer to make this a member of struct Gsp and make it part of the Gpu structure
+directly (without separate allocation).
+
+Should we need dynamic dispatch in the future, it's also trivial to make it its
+own allocation again, but maybe we also get around the dyn dispatch. :)
