@@ -1,383 +1,570 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDAF32A801;
-	Thu, 11 Sep 2025 11:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB792D0612
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Sep 2025 11:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757590683; cv=none; b=lcLZKtNRDybHj4kfRnw9dy7T/wlChLatg14vLWGKaZErFp/+XfGG1X4h8+M9IBdLFvtkxnKkISsY0cSSNPdXE5MfEyUrsLCJ6Si5fhoxoYFamDHRZZxb8Ag68J1LlnA0qWhrgg/Er+A4LV9NjOX9hOOvlYJ3EXz/8lrUUr7estM=
+	t=1757591296; cv=none; b=LEtbVTLZslTssycGDap0Hu5yD88esEyv5SMTyt58fB7rPmLfIRRD0S49beK59BE9ZSSb/E/yfnuf6pQyzFXH3DKBMkvI2BFFNm9Nx54z7RyIRJw5ATrBJ3PJpa7MWGrzG9td4ToeRza0SYijmBzX9VH9m0+K/6xfAsy9WmvKtmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757590683; c=relaxed/simple;
-	bh=AuNxrGnRVYvi5d8A4ikjl7xUWU5g2dvqqItFHrICQN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RjTj1Ngh15wmBKOhIEbTQTYS2UtsOdi0ekynoO8j15nBe3vGydYXlsQ3b0S/XuKDjDqWwEReGNxXPkO7AyrywQEUyQyL6sxTcHhIxx26IK8M9HOjasIndGuS/4hRKO2iIox2tw90cYhb6feXrRbG0tbRx6OIM3W6sg9hgkCMcdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIjki2mz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757591296; c=relaxed/simple;
+	bh=BiJShqy1jKLdwV9OO+4t5CNgH0tRivigzclgBA8pt4Q=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=q2zCbNZRSA5/eRHogGCWCDW4Mavn68ktrG/egScyJCwAvRZfydlIlFmfyWEvVyNRPy5Uyro6NU998vBqwK+qaM+pvc+YXnzGY027gmCOYoE06u6xzu+M5Zyyw045ft3HBgF1bUuDAp93/86/ffYIcE5+YT0/fUa0Gxn8yAyO0zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=VjPst1ym; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=V0E/Mz1F; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIjki2mz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B48FC4CEF0;
-	Thu, 11 Sep 2025 11:38:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757590682;
-	bh=AuNxrGnRVYvi5d8A4ikjl7xUWU5g2dvqqItFHrICQN0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IIjki2mz3LZHae0uGnXSBzsAFo5Kybm4WzHOpD5/f39MC82FNU6wEg8ynlAAdfiIm
-	 McEyDtykBSnaYXCv8tWQv93Ub4Hkn2MmoZb8GgiiYgzDCqbfZWXnrLx1Z3E7o1mc9F
-	 wAib6A4KWn0Nco2AoF8IIHG16eSHjrTjUJCnbh1UbAXFnlBnjoy1LbuX9bPwsaGYwN
-	 8HpwERfH//yKjH6/4aLWKm/E+69OGg8I7RoDjeP/vrJ8NzVbxJKyEGb1H/1brkUrU3
-	 f7UYfqhOMMp8OGNqduLZeqoiLcAbPdZtR0lXkbd0FWa3i9TPjFRhmCSiV8Z8XtD51D
-	 NIYgo4X2bEduw==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uwfcl-00000007F3w-2JZu;
-	Thu, 11 Sep 2025 13:37:59 +0200
-Date: Thu, 11 Sep 2025 13:37:59 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 08/19] tools/docs: sphinx-build-wrapper: add a wrapper
- for sphinx-build
-Message-ID: <fuv4p45tvjfdvwu2625s2l2kvcw64p4ohherlwyum3vmogmrfz@yb47nt66xgm6>
-References: <cover.1756969623.git.mchehab+huawei@kernel.org>
- <e019f951190a732f9ac0b21bcda7e49af3bd5cbd.1756969623.git.mchehab+huawei@kernel.org>
- <e13837a0ac46dffe39c600d11fdf33f538bdc9c3@intel.com>
- <20250910145926.453f5441@foz.lan>
- <45888ca6c88071c754784495b4ef69460ea67b4f@intel.com>
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="VjPst1ym";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="V0E/Mz1F"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1757591284; x=1758196084;
+	d=konsulko.se; s=rsa2;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=ge7Rsiz5SvHkAeB/eOf0E5sqMkEK+GOQvHj3yIs0z1A=;
+	b=VjPst1ymbXtE8ap/6Rln42x50kngUQyv8gL9jEWBsZQqcPUdqXkbk5taXDhesxqGybcKGLxxtBu4e
+	 Mp2CzWTH/XhNOHvpbKIqOi7N3+JygTaUoRsL29hjN2KRtwslfBB24u+mS+C8S6mFbj0okXRZxejgPp
+	 udwjG6qMyDNP2dSIw3Uev6sOebdamfJi9mdUqNybP+FnDD2U2MZ1mYC7Cz9JY9oz1PwkLvqpvszix8
+	 ZooM/Hmb+WTFHBkIT3M9a50LeK8P97twMT/ZS+XEuCD0IasOqF8SFtzyD3QOyQb6gv0O0X+aFuMfNL
+	 4tIyLfEYpyWgSN6BMBsMUf09Ib3bRXw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1757591284; x=1758196084;
+	d=konsulko.se; s=ed2;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=ge7Rsiz5SvHkAeB/eOf0E5sqMkEK+GOQvHj3yIs0z1A=;
+	b=V0E/Mz1F1HFt6XBUI1Bb/odmI1h6V1hcyvmHO4S0mtEFKCn0q70u+JLxHMZBlKAqZXdXmWHDtvnrm
+	 e2zfE8UDw==
+X-HalOne-ID: 2b35c8f4-8f05-11f0-8dc3-fb5fec76084d
+Received: from smtpclient.apple (host-217-213-112-24.mobileonline.telia.com [217.213.112.24])
+	by mailrelay3.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 2b35c8f4-8f05-11f0-8dc3-fb5fec76084d;
+	Thu, 11 Sep 2025 11:48:03 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <45888ca6c88071c754784495b4ef69460ea67b4f@intel.com>
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH v4] rust: rbtree: add immutable cursor
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <20250909065937.3433134-1-vitaly.wool@konsulko.se>
+Date: Thu, 11 Sep 2025 13:48:02 +0200
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <35949BA6-6B57-4E55-997D-C928E56B4372@konsulko.se>
+References: <20250909065937.3433134-1-vitaly.wool@konsulko.se>
+To: rust-for-linux <rust-for-linux@vger.kernel.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
 
-On Thu, Sep 11, 2025 at 01:23:55PM +0300, Jani Nikula wrote:
-> On Wed, 10 Sep 2025, Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-> > Em Wed, 10 Sep 2025 13:46:17 +0300
-> > Jani Nikula <jani.nikula@linux.intel.com> escreveu:
-> >
-> >> On Thu, 04 Sep 2025, Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-> >> > There are too much magic inside docs Makefile to properly run
-> >> > sphinx-build. Create an ancillary script that contains all
-> >> > kernel-related sphinx-build call logic currently at Makefile.
-> >> >
-> >> > Such script is designed to work both as an standalone command
-> >> > and as part of a Makefile. As such, it properly handles POSIX
-> >> > jobserver used by GNU make.
-> >> >
-> >> > On a side note, there was a line number increase due to the
-> >> > conversion:
-> >> >
-> >> >  Documentation/Makefile          |  131 +++----------
-> >> >  tools/docs/sphinx-build-wrapper |  293 +++++++++++++++++++++++++++++++
-> >> >  2 files changed, 323 insertions(+), 101 deletions(-)
-> >> >
-> >> > This is because some things are more verbosed on Python and because
-> >> > it requires reading env vars from Makefile. Besides it, this script
-> >> > has some extra features that don't exist at the Makefile:
-> >> >
-> >> > - It can be called directly from command line;
-> >> > - It properly return PDF build errors.
-> >> >
-> >> > When running the script alone, it will only take handle sphinx-build
-> >> > targets. On other words, it won't runn make rustdoc after building
-> >> > htmlfiles, nor it will run the extra check scripts.  
-> >> 
-> >> I've always strongly believed we should aim to make it possible to build
-> >> the documentation by running sphinx-build directly on the
-> >> command-line. Not that it would be the common way to run it, but to not
-> >> accumulate things in the Makefile that need to happen before or
-> >> after. To promote handling the documentation build in Sphinx. To be able
-> >> to debug issues and try new Sphinx versions without all the hacks.
-> >
-> > That would be the better, but, unfortunately, this is not possible, for 
-> > several reasons:
-> >
-> > 1. SPHINXDIRS. It needs a lot of magic to work, both before running
-> >    sphinx-build and after (inside conf.py);
-> 
-> Makes you wonder if that's the right solution to the original
-> problem. It was added as a kind of hack, and it stuck.
 
-The problem is, IMHO, due to the lack of flexibility of sphinx-build:
-It should have a way on it to do partial documentation builds.
 
-On our specific case, given that building docs takes so much time,
-SPHINXDIRS is needed, as it allows to quickly check how a change is
-output.
+> On Sep 9, 2025, at 8:59 AM, Vitaly Wool <vitaly.wool@konsulko.se> =
+wrote:
+>=20
+> Sometimes we may need to iterate over, or find an element in a read
+> only (or read mostly) red-black tree, and in that case we don't need a
+> mutable reference to the tree, which we'll however have to take to be
+> able to use the current (mutable) cursor implementation.
+>=20
+> This patch adds a simple immutable cursor implementation to RBTree,
+> which enables us to use an immutable tree reference. The existing
+> (fully featured) cursor implementation is renamed to CursorMut,
+> while retaining its functionality.
+>=20
+> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
 
-I use it a lot at devel time.
+Just wanted to do a friendly ping about this one. Is there anything that =
+needs to be improved, or is this one is good to go?
 
-Also, media documentation builds depend on it:
+~Vitaly
 
-    https://linuxtv.org/downloads/v4l-dvb-apis-new/
+> ---
+> Changelog:
+> ---------
+> v1 -> v2:
+> * corrected grammar hiccups
+> * logic for cursor_lower_bound[_mut] variants put into a separate
+> * function
+> * to_key_value_raw() removed from the immutable cursor implementation
+> v2 -> v3:
+> * find_best_match() modified to directly return links
+> * safety comments corrected for Send/Sync
+> v3 -> v4:
+> * &raw is used instead of addr_mut!
+>=20
+> rust/kernel/rbtree.rs | 238 ++++++++++++++++++++++++++++++++++--------
+> 1 file changed, 195 insertions(+), 43 deletions(-)
+>=20
+> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+> index b8fe6be6fcc4..10f4df081889 100644
+> --- a/rust/kernel/rbtree.rs
+> +++ b/rust/kernel/rbtree.rs
+> @@ -243,34 +243,64 @@ pub fn values_mut(&mut self) -> impl =
+Iterator<Item =3D &'_ mut V> {
+>     }
+>=20
+>     /// Returns a cursor over the tree nodes, starting with the =
+smallest key.
+> -    pub fn cursor_front(&mut self) -> Option<Cursor<'_, K, V>> {
+> +    pub fn cursor_front_mut(&mut self) -> Option<CursorMut<'_, K, V>> =
+{
+>         let root =3D addr_of_mut!(self.root);
+>         // SAFETY: `self.root` is always a valid root node
+>         let current =3D unsafe { bindings::rb_first(root) };
+>         NonNull::new(current).map(|current| {
+>             // INVARIANT:
+>             // - `current` is a valid node in the [`RBTree`] pointed =
+to by `self`.
+> -            Cursor {
+> +            CursorMut {
+>                 current,
+>                 tree: self,
+>             }
+>         })
+>     }
+>=20
+> +    /// Returns an immutable cursor over the tree nodes, starting =
+with the smallest key.
+> +    pub fn cursor_front(&self) -> Option<Cursor<'_, K, V>> {
+> +        let root =3D &raw const self.root;
+> +        // SAFETY: `self.root` is always a valid root node
+> +        let current =3D unsafe { bindings::rb_first(root) };
+> +        NonNull::new(current).map(|current| {
+> +            // INVARIANT:
+> +            // - `current` is a valid node in the [`RBTree`] pointed =
+to by `self`.
+> +            Cursor {
+> +                current,
+> +                _tree: PhantomData,
+> +            }
+> +        })
+> +    }
+> +
+>     /// Returns a cursor over the tree nodes, starting with the =
+largest key.
+> -    pub fn cursor_back(&mut self) -> Option<Cursor<'_, K, V>> {
+> +    pub fn cursor_back_mut(&mut self) -> Option<CursorMut<'_, K, V>> =
+{
+>         let root =3D addr_of_mut!(self.root);
+>         // SAFETY: `self.root` is always a valid root node
+>         let current =3D unsafe { bindings::rb_last(root) };
+>         NonNull::new(current).map(|current| {
+>             // INVARIANT:
+>             // - `current` is a valid node in the [`RBTree`] pointed =
+to by `self`.
+> -            Cursor {
+> +            CursorMut {
+>                 current,
+>                 tree: self,
+>             }
+>         })
+>     }
+> +
+> +    /// Returns a cursor over the tree nodes, starting with the =
+largest key.
+> +    pub fn cursor_back(&self) -> Option<Cursor<'_, K, V>> {
+> +        let root =3D &raw const self.root;
+> +        // SAFETY: `self.root` is always a valid root node
+> +        let current =3D unsafe { bindings::rb_last(root) };
+> +        NonNull::new(current).map(|current| {
+> +            // INVARIANT:
+> +            // - `current` is a valid node in the [`RBTree`] pointed =
+to by `self`.
+> +            Cursor {
+> +                current,
+> +                _tree: PhantomData,
+> +            }
+> +        })
+> +    }
+> }
+>=20
+> impl<K, V> RBTree<K, V>
+> @@ -421,12 +451,47 @@ pub fn remove(&mut self, key: &K) -> Option<V> {
+>     /// If the given key exists, the cursor starts there.
+>     /// Otherwise it starts with the first larger key in sort order.
+>     /// If there is no larger key, it returns [`None`].
+> -    pub fn cursor_lower_bound(&mut self, key: &K) -> =
+Option<Cursor<'_, K, V>>
+> +    pub fn cursor_lower_bound_mut(&mut self, key: &K) -> =
+Option<CursorMut<'_, K, V>>
+> +    where
+> +        K: Ord,
+> +    {
+> +        let best =3D self.find_best_match(key)?;
+> +
+> +        NonNull::new(best.as_ptr()).map(|current| {
+> +            // INVARIANT:
+> +            // - `current` is a valid node in the [`RBTree`] pointed =
+to by `self`.
+> +            CursorMut {
+> +                current,
+> +                tree: self,
+> +            }
+> +        })
+> +    }
+> +
+> +    /// Returns a cursor over the tree nodes based on the given key.
+> +    ///
+> +    /// If the given key exists, the cursor starts there.
+> +    /// Otherwise it starts with the first larger key in sort order.
+> +    /// If there is no larger key, it returns [`None`].
+> +    pub fn cursor_lower_bound(&self, key: &K) -> Option<Cursor<'_, K, =
+V>>
+>     where
+>         K: Ord,
+>     {
+> +        let best =3D self.find_best_match(key)?;
+> +
+> +        NonNull::new(best.as_ptr()).map(|current| {
+> +            // INVARIANT:
+> +            // - `current` is a valid node in the [`RBTree`] pointed =
+to by `self`.
+> +            Cursor {
+> +                current,
+> +                _tree: PhantomData,
+> +            }
+> +        })
+> +    }
+> +
+> +    fn find_best_match(&self, key: &K) -> =
+Option<NonNull<bindings::rb_node>> {
+>         let mut node =3D self.root.rb_node;
+> -        let mut best_match: Option<NonNull<Node<K, V>>> =3D None;
+> +        let mut best_key: Option<&K> =3D None;
+> +        let mut best_links: Option<NonNull<bindings::rb_node>> =3D =
+None;
+>         while !node.is_null() {
+>             // SAFETY: By the type invariant of `Self`, all non-null =
+`rb_node` pointers stored in `self`
+>             // point to the links field of `Node<K, V>` objects.
+> @@ -439,42 +504,30 @@ pub fn cursor_lower_bound(&mut self, key: &K) -> =
+Option<Cursor<'_, K, V>>
+>             let right_child =3D unsafe { (*node).rb_right };
+>             match key.cmp(this_key) {
+>                 Ordering::Equal =3D> {
+> -                    best_match =3D NonNull::new(this);
+> +                    // SAFETY: `this` is a non-null node so it is =
+valid by the type invariants.
+> +                    best_links =3D Some(unsafe { =
+NonNull::new_unchecked(&mut (*this).links) });
+>                     break;
+>                 }
+>                 Ordering::Greater =3D> {
+>                     node =3D right_child;
+>                 }
+>                 Ordering::Less =3D> {
+> -                    let is_better_match =3D match best_match {
+> +                    let is_better_match =3D match best_key {
+>                         None =3D> true,
+>                         Some(best) =3D> {
+> -                            // SAFETY: `best` is a non-null node so =
+it is valid by the type invariants.
+> -                            let best_key =3D unsafe { =
+&(*best.as_ptr()).key };
+> -                            best_key > this_key
+> +                            best > this_key
+>                         }
+>                     };
+>                     if is_better_match {
+> -                        best_match =3D NonNull::new(this);
+> +                        best_key =3D Some(this_key);
+> +                        // SAFETY: `this` is a non-null node so it is =
+valid by the type invariants.
+> +                        best_links =3D Some(unsafe { =
+NonNull::new_unchecked(&mut (*this).links) });
+>                     }
+>                     node =3D left_child;
+>                 }
+>             };
+>         }
+> -
+> -        let best =3D best_match?;
+> -
+> -        // SAFETY: `best` is a non-null node so it is valid by the =
+type invariants.
+> -        let links =3D unsafe { addr_of_mut!((*best.as_ptr()).links) =
+};
+> -
+> -        NonNull::new(links).map(|current| {
+> -            // INVARIANT:
+> -            // - `current` is a valid node in the [`RBTree`] pointed =
+to by `self`.
+> -            Cursor {
+> -                current,
+> -                tree: self,
+> -            }
+> -        })
+> +        best_links
+>     }
+> }
+>=20
+> @@ -507,7 +560,7 @@ fn drop(&mut self) {
+>     }
+> }
+>=20
+> -/// A bidirectional cursor over the tree nodes, sorted by key.
+> +/// A bidirectional mutable cursor over the tree nodes, sorted by =
+key.
+> ///
+> /// # Examples
+> ///
+> @@ -526,7 +579,7 @@ fn drop(&mut self) {
+> /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
+> ///
+> /// // Get a cursor to the first element.
+> -/// let mut cursor =3D tree.cursor_front().unwrap();
+> +/// let mut cursor =3D tree.cursor_front_mut().unwrap();
+> /// let mut current =3D cursor.current();
+> /// assert_eq!(current, (&10, &100));
+> ///
+> @@ -564,7 +617,7 @@ fn drop(&mut self) {
+> /// tree.try_create_and_insert(20, 200, flags::GFP_KERNEL)?;
+> /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
+> ///
+> -/// let mut cursor =3D tree.cursor_back().unwrap();
+> +/// let mut cursor =3D tree.cursor_back_mut().unwrap();
+> /// let current =3D cursor.current();
+> /// assert_eq!(current, (&30, &300));
+> ///
+> @@ -577,7 +630,7 @@ fn drop(&mut self) {
+> /// use kernel::rbtree::RBTree;
+> ///
+> /// let mut tree: RBTree<u16, u16> =3D RBTree::new();
+> -/// assert!(tree.cursor_front().is_none());
+> +/// assert!(tree.cursor_front_mut().is_none());
+> ///
+> /// # Ok::<(), Error>(())
+> /// ```
+> @@ -628,7 +681,7 @@ fn drop(&mut self) {
+> /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
+> ///
+> /// // Retrieve a cursor.
+> -/// let mut cursor =3D tree.cursor_front().unwrap();
+> +/// let mut cursor =3D tree.cursor_front_mut().unwrap();
+> ///
+> /// // Get a mutable reference to the current value.
+> /// let (k, v) =3D cursor.current_mut();
+> @@ -655,7 +708,7 @@ fn drop(&mut self) {
+> /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
+> ///
+> /// // Remove the first element.
+> -/// let mut cursor =3D tree.cursor_front().unwrap();
+> +/// let mut cursor =3D tree.cursor_front_mut().unwrap();
+> /// let mut current =3D cursor.current();
+> /// assert_eq!(current, (&10, &100));
+> /// cursor =3D cursor.remove_current().0.unwrap();
+> @@ -665,7 +718,7 @@ fn drop(&mut self) {
+> /// assert_eq!(current, (&20, &200));
+> ///
+> /// // Get a cursor to the last element, and remove it.
+> -/// cursor =3D tree.cursor_back().unwrap();
+> +/// cursor =3D tree.cursor_back_mut().unwrap();
+> /// current =3D cursor.current();
+> /// assert_eq!(current, (&30, &300));
+> ///
+> @@ -694,7 +747,7 @@ fn drop(&mut self) {
+> /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
+> ///
+> /// // Get a cursor to the first element.
+> -/// let mut cursor =3D tree.cursor_front().unwrap();
+> +/// let mut cursor =3D tree.cursor_front_mut().unwrap();
+> /// let mut current =3D cursor.current();
+> /// assert_eq!(current, (&10, &100));
+> ///
+> @@ -702,7 +755,7 @@ fn drop(&mut self) {
+> /// assert!(cursor.remove_prev().is_none());
+> ///
+> /// // Get a cursor to the last element.
+> -/// cursor =3D tree.cursor_back().unwrap();
+> +/// cursor =3D tree.cursor_back_mut().unwrap();
+> /// current =3D cursor.current();
+> /// assert_eq!(current, (&30, &300));
+> ///
+> @@ -726,18 +779,47 @@ fn drop(&mut self) {
+> ///
+> /// # Invariants
+> /// - `current` points to a node that is in the same [`RBTree`] as =
+`tree`.
+> -pub struct Cursor<'a, K, V> {
+> +pub struct CursorMut<'a, K, V> {
+>     tree: &'a mut RBTree<K, V>,
+>     current: NonNull<bindings::rb_node>,
+> }
+>=20
+> -// SAFETY: The [`Cursor`] has exclusive access to both `K` and `V`, =
+so it is sufficient to require them to be `Send`.
+> -// The cursor only gives out immutable references to the keys, but =
+since it has excusive access to those same
+> -// keys, `Send` is sufficient. `Sync` would be okay, but it is more =
+restrictive to the user.
+> -unsafe impl<'a, K: Send, V: Send> Send for Cursor<'a, K, V> {}
+> +/// A bidirectional immutable cursor over the tree nodes, sorted by =
+key. This is a simpler
+> +/// variant of CursorMut that is basically providing read only =
+access.
+> +///
+> +/// # Examples
+> +///
+> +/// In the following example, we obtain a cursor to the first element =
+in the tree.
+> +/// The cursor allows us to iterate bidirectionally over key/value =
+pairs in the tree.
+> +///
+> +/// ```
+> +/// use kernel::{alloc::flags, rbtree::RBTree};
+> +///
+> +/// // Create a new tree.
+> +/// let mut tree =3D RBTree::new();
+> +///
+> +/// // Insert three elements.
+> +/// tree.try_create_and_insert(10, 100, flags::GFP_KERNEL)?;
+> +/// tree.try_create_and_insert(20, 200, flags::GFP_KERNEL)?;
+> +/// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
+> +///
+> +/// // Get a cursor to the first element.
+> +/// let cursor =3D tree.cursor_front().unwrap();
+> +/// let current =3D cursor.current();
+> +/// assert_eq!(current, (&10, &100));
+> +///
+> +/// # Ok::<(), Error>(())
+> +pub struct Cursor<'a, K, V> {
+> +    _tree: PhantomData<&'a RBTree<K, V>>,
+> +    current: NonNull<bindings::rb_node>,
+> +}
+>=20
+> -// SAFETY: The [`Cursor`] gives out immutable references to K and =
+mutable references to V,
+> -// so it has the same thread safety requirements as mutable =
+references.
+> +// SAFETY: The immutable cursor gives out shared access to `K` and =
+`V` so if `K` and `V` can be
+> +// shared across threads, then it's safe to share the cursor.
+> +unsafe impl<'a, K: Sync, V: Sync> Send for Cursor<'a, K, V> {}
+> +
+> +// SAFETY: The immutable cursor gives out shared access to `K` and =
+`V` so if `K` and `V` can be
+> +// shared across threads, then it's safe to share the cursor.
+> unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {}
+>=20
+> impl<'a, K, V> Cursor<'a, K, V> {
+> @@ -749,6 +831,76 @@ pub fn current(&self) -> (&K, &V) {
+>         unsafe { Self::to_key_value(self.current) }
+>     }
+>=20
+> +    /// # Safety
+> +    ///
+> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
+> +    /// - The caller has immutable access to `node` for the duration =
+of `'b`.
+> +    unsafe fn to_key_value<'b>(node: NonNull<bindings::rb_node>) -> =
+(&'b K, &'b V) {
+> +        // SAFETY: By the type invariant of `Self`, all non-null =
+`rb_node` pointers stored in `self`
+> +        // point to the links field of `Node<K, V>` objects.
+> +        let this =3D unsafe { container_of!(node.as_ptr(), Node<K, =
+V>, links) };
+> +        // SAFETY: The passed `node` is the current node or a =
+non-null neighbor,
+> +        // thus `this` is valid by the type invariants.
+> +        let k =3D unsafe { &(*this).key };
+> +        // SAFETY: The passed `node` is the current node or a =
+non-null neighbor,
+> +        // thus `this` is valid by the type invariants.
+> +        let v =3D unsafe { &(*this).value };
+> +        (k, v)
+> +    }
+> +
+> +    /// Access the previous node without moving the cursor.
+> +    pub fn peek_prev(&self) -> Option<(&K, &V)> {
+> +        self.peek(Direction::Prev)
+> +    }
+> +
+> +    /// Access the previous node without moving the cursor.
+> +    pub fn peek_next(&self) -> Option<(&K, &V)> {
+> +        self.peek(Direction::Next)
+> +    }
+> +
+> +    fn peek(&self, direction: Direction) -> Option<(&K, &V)> {
+> +        self.get_neighbor_raw(direction).map(|neighbor| {
+> +            // SAFETY:
+> +            // - `neighbor` is a valid tree node.
+> +            // - By the function signature, we have an immutable =
+reference to `self`.
+> +            unsafe { Self::to_key_value(neighbor) }
+> +        })
+> +    }
+> +
+> +    fn get_neighbor_raw(&self, direction: Direction) -> =
+Option<NonNull<bindings::rb_node>> {
+> +        // SAFETY: `self.current` is valid by the type invariants.
+> +        let neighbor =3D unsafe {
+> +            match direction {
+> +                Direction::Prev =3D> =
+bindings::rb_prev(self.current.as_ptr()),
+> +                Direction::Next =3D> =
+bindings::rb_next(self.current.as_ptr()),
+> +            }
+> +        };
+> +
+> +        NonNull::new(neighbor)
+> +    }
+> +}
+> +
+> +// SAFETY: The [`CursorMut`] has exclusive access to both `K` and =
+`V`, so it is sufficient to
+> +// require them to be `Send`.
+> +// The cursor only gives out immutable references to the keys, but =
+since it has excusive access to
+> +// those same keys, `Send` is sufficient. `Sync` would be okay, but =
+it is more restrictive to the
+> +// user.
+> +unsafe impl<'a, K: Send, V: Send> Send for CursorMut<'a, K, V> {}
+> +
+> +// SAFETY: The [`CursorMut`] gives out immutable references to K and =
+mutable references to V,
+> +// so it has the same thread safety requirements as mutable =
+references.
+> +unsafe impl<'a, K: Sync, V: Sync> Sync for CursorMut<'a, K, V> {}
+> +
+> +
+> +impl<'a, K, V> CursorMut<'a, K, V> {
+> +    /// The current node
+> +    pub fn current(&self) -> (&K, &V) {
+> +        // SAFETY:
+> +        // - `self.current` is a valid node by the type invariants.
+> +        // - We have an immutable reference by the function =
+signature.
+> +        unsafe { Self::to_key_value(self.current) }
+> +    }
+> +
+>     /// The current node, with a mutable value
+>     pub fn current_mut(&mut self) -> (&K, &mut V) {
+>         // SAFETY:
+> @@ -920,7 +1072,7 @@ unsafe fn to_key_value_raw<'b>(node: =
+NonNull<bindings::rb_node>) -> (&'b K, *mut
+>     }
+> }
+>=20
+> -/// Direction for [`Cursor`] operations.
+> +/// Direction for [`Cursor`] and [`CursorMut`] operations.
+> enum Direction {
+>     /// the node immediately before, in sort order
+>     Prev,
+> --=20
+> 2.39.2
+>=20
+>=20
 
-And probably other subsystems do the same, confining docs into
-a subsystem-specific document.
-
-> 
-> > 2. Several extensions require kernel-specific environment variables to
-> >    work. Calling sphinx-build directly breaks them;
-> 
-> The extensions shouldn't be using environment variables for
-> configuration anyway. Add config options and set them in conf.py like
-> everything else?
-
-Agreed, but that's a separate problem, and should be addressed outside
-this path changeset.
-
-This one give one step on such direction by passing some parameters
-via -D instead of env, but still conf.py and scripts are handling
-them on a very particular way.
-
-> > 3. Sphinx itself doesn't build several targets alone. Instead, they create
-> >    a Makefile, and an extra step is needed to finish the build. That's 
-> >    the case for pdf and texinfo, for instance;
-> 
-> That's not true for the Makefile currently generated by
-> sphinx-quickstart. Granted, I haven't used Sphinx much for pdf output.
-
-At the beginning, we were relying on the auto-generated pdf makefiles
-only, but this had several issues (I can't recall them anymore). So,
-we ended to a more complex proccess.
-
-Yet, still broken, as, no matter if using sphinx quickstart way
-or not, one needs to run (directly or indirectly) the produced
-Makefile inside Documentation/output/.../latex to generate files,
-and it will still always return non-zero, even if all PDFs are
-built.
-
-The real fix for it is outside our hands: someone needs to change
-the way PDF is produced with a proper PDF builder instead of latex
-and integrate at Sphinx tree.
-
-There are some OOT docutils and/or sphinx pdf builders. We tried for
-a while rst2pdf, but never worked for the Kernel source.
-
-> 
-> > 4. Man pages generation. Sphinx support to generate it is very poor;
-> 
-> In what way?
-
-Have you ever tried to use it?
-
-    "This builder produces manual pages in the groff format. 
-     You have to specify which documents are to be included in 
-     which manual pages via the man_pages configuration value."
-    (https://www.sphinx-doc.org/en/master/usage/builders/index.html#sphinx.builders.manpage.ManualPageBuilder)
-
-I tried when we were migrating to Sphinx. In summary:
-    - Each man page requires an entry on a list;
-
-        man_pages = [
-            ('man/func', 'func', 'Func Documentation', [authors], 1),
-            ...
-        ]
-
-    - Each man page requires a .rst file;
-    - Each man page .rst file requires an specific format, like this:
-
-        func(9)
-        =======
-
-        NAME
-        ----
-        func - ...
-
-        SYNOPSIS
-        --------
-...
-
-        DESCRIPTION
-        -----------
-...
-
-      E.g. it is basically a troff source "converted" to .rst.
-
-> > 5. Rust integration adds more complexity to the table;
-> >
-> > I'm not seeing sphinx-build supporting the above needs anytime soon,
-> > and, even if we push our needs to Sphinx and it gets accepted there,
-> > we'll still need to wait for quite a while until LTS distros merge
-> > them.
-> 
-> I'm not suggesting to add anything to Sphinx upstream.
-
-Without Sphinx upstream changes, I can't see how we'll get rid of
-sphinx-build pre/post processing.
-
-> >> This patch moves a bunch of that logic into a Python wrapper, and I feel
-> >> like it complicates matters. You can no longer rely on 'make V=1' to get
-> >> the build commands, for instance.
-> >
-> > Quite the opposite. if you try using "make V=1", it won't show the
-> > command line used to call sphinx-build anymore.
-> >
-> > This series restore it.
-> >
-> > See, if you build with this series with V=1, you will see exactly
-> > what commands are used on the build:
-> >
-> > 	$ make V=1 htmldocs
-> > 	...
-> > 	python3 ./tools/docs/sphinx-build-wrapper htmldocs \
-> > 	        --sphinxdirs="." --conf="conf.py" \
-> >         	--builddir="Documentation/output" \
-> > 	        --theme= --css= --paper=
-> > 	python3 /new_devel/docs/sphinx_latest/bin/sphinx-build -j25 -b html -c /new_devel/docs/Documentation -d /new_devel/docs/Documentation/output/.doctrees -D kerneldoc_bin=scripts/kernel-doc.py -D version=6.17.0-rc1 -D release=6.17.0-rc1+ -D kerneldoc_srctree=. /new_devel/docs/Documentation /new_devel/docs/Documentation/output
-> > 	...
-> >
-> >
-> >
-> >> Newer Sphinx versions have the -M option for "make mode". The Makefiles
-> >> produced by sphinx-quickstart only have one build target:
-> >> 
-> >> # Catch-all target: route all unknown targets to Sphinx using the new
-> >> # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-> >
-> > I didn't know about this, but from [1] it sounds it covers just two
-> > targets: "latexpdf" and "info".
-> 
-> sphinx-build -M help gives a list of 24 targets.
-
-Ok, but those are the extra ones. Btw, I'm almost sure we tried it for
-latexpdf in the early days. Didn't work well. I guess the problem as
-related to returned error codes that are always causing make pdfdocs
-to return errors.
- 
-> > The most complex scenario is still not covered: SPHINXDIRS.
-> >
-> > [1] https://www.sphinx-doc.org/en/master/man/sphinx-build.html
-> >
-> >> %: Makefile
-> >>         @$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-> >> 
-> >> That's all.
-> >
-> > Try doing such change on your makefile. it will break:
-> >
-> > 	- SPHINXDIRS;
-> > 	- V=1;
-> > 	- rustdoc
-> 
-> I know it does. That's the problem.
-
-The wrapper fixes it by handling the pre/post sphinx-build logic
-at the right way.
-
-See, this series doesn't change the need or the implementation logic
-for pre/post sphinx-build steps(*). It just moves them to a wrapper,
-while getting rid of all small hacky scripts that are needed to make
-them work.
-
-We can and should still pursue the goal of simplifying pre/post
-steps.
-
-(*) The only change is for PDF: after the series, the return code
-    is now zero if all PDF files build, non-zero otherwise.
-
-    This makes easier for humans and for CI to be sure that there 
-    are nothing at the .rst files causing PDF builds to break.
-
-> 
-> > and will still be dependent on variables that are passed via
-> > env from Kernel makefile. So, stil you can't run from command
-> > line. Also, if you call sphinx-build from command line:
-> >
-> > 	$ sphinx-build -j25 -b html Documentation Documentation/output
-> > 	...
-> > 	      File "<frozen os>", line 717, in __getitem__
-> > 	    KeyError: 'srctree'
-> >
-> > It won't work, as several parameters that are required by conf.py and by
-> > Sphinx extensions would be missing (the most important one is srctree, but
-> > there are others in the line too).
-> >
-> >> The proposed wrapper duplicates loads of code that's supposed to be
-> >> handled by sphinx-build directly.
-> >
-> > Once we get the wrapper, we can work to simplify it, but still I
-> > can't see how to get rid of it.
-> 
-> I just don't understand the mentality of first adding something complex,
-> and then working to simplify it.
-
-It doesn't make it more complex. Quite the opposite:
-
-- it ports what we have as-is to a script;
-- it drops hacky glues that were added over time on 4 different files
-  to handle sphinxdirs, jobserver, parallelism, second build steps,
-  man pages generation;
-- it fixes the return code issue with pdf builds.
-
-As all pre/post steps are now in a single place, it makes it easier to
-maintain.
-
-> Don't make it a Rube Goldberg machine in the first place.
-> 
-> >> Including the target/builder names.
-> >
-> > True, but this was a design decision taken lots of years ago: instead
-> > of:
-> > 	make html
-> >
-> > we're using:
-> >
-> > 	make htmldocs
-> >
-> > This series doesn't change that: either makefile or the script need
-> > to tho the namespace conversion.
-> 
-> In the above Makefile snippet that conversion would be $(@:docs=)
-
-The same could be done at python. Yet, I opted there to use a dict
-mainly because:
-
-- we're not consistent about where files will be stored:
-  with sphinx-quickstart, html files goes into _build/html. On our
-  build system, we dropped "/html";
-- we have some specific rules about where the final PDF files will
-  be stored;
-- we need to map what builder is used, because of the second step.
-
-So, instead of having code checking for those specifics, I opted to
-place on a dict, as it makes clearer and easier to maintain.
-
-> The clean Makefile way of checking for having Sphinx and the required
-> versions of Python and dependencies etc. would be a .PHONY target that
-> just checks, and doesn't do *anything* else. It shouldn't be part of the
-> sphinx-build rules.
-> 
-> PHONY += check-versions
-> check-versions:
-> 	sphinx-pre-install --version-check
-> 
-> htmldocs: check-versions
-> 	...
-> 
-> Or something like that.
-
-The problem with that is that we shouldn't run sphinx-pre-install for
-cleandocs or non-doc targets.
-
-Anyway, this series doesn't touch sphinx-pre-install call. It is still
-inside docs Makefile.
-
-What we can do in the future is to convert sphinx-pre-install code into
-a library and then call a check_versions() method from it at the wrapper
-script, like:
-
-    SphinxPreInstal().check_versions()     # or something equivalent
-
-And then dropping it from the build system. Yet, this is out of the scope
-of this series.
- 
--- 
-Thanks,
-Mauro
