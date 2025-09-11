@@ -1,164 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535F0243367;
-	Thu, 11 Sep 2025 12:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F078A2E8E17;
+	Thu, 11 Sep 2025 13:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757594817; cv=none; b=Inw/djCo98URhdN9WKD2pxVSzefAKXrmKemz7GiTEwpO2PFl9vy/io4h1+/N6RhC4wevVnADNoUMQvWVgMrhS7xbb9G5ve6LglLwUFZL9nDNm8Ej5FnMYMHJTEcoWQD4IWBVMKTeB8Hb5HMnExsYbtp5BJKR7DukRcO/pqrFvZc=
+	t=1757596481; cv=none; b=iXSoCuNQ+BLQ2uiGYft7FEpe/hzs3Ktl59+RkfEfvj1nc7YCr7rTz7MZMl031ciWi9pOkzKlAzJ6odNFsTk2k8eLETGj0i1rA2SufEocK6S2JpLhxQ8H/VKjMhbjp6s0RvuJeSzpp/rPuTJGLgJTrptSflkjrxHPAe0CSFax6r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757594817; c=relaxed/simple;
-	bh=ZMKRsM2d2FmjPym3iMEMNiiUE1WxtkOsfG1kTOUZ+po=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CRzUdM5A3aU9Vv0jArtMtxwfRoazMe7P872DMOqntxUPtO1Ahw2RvF3akR53HZLN1IWmWCzg5/8K1jkrojmGEQOLxYDi13beQe4YlSmWqDVJjipsnykPlbW5vUZM5i/L6mla73njPrtbs9faRqkAHO5v2T/iRajaRvV6N5scF20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2Jgjxe0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757596481; c=relaxed/simple;
+	bh=KX7xrHa+olS2oROnPjX8J2BFoTeFIgxJ4Lv3gDXpUMk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GX3V14Xn2ZpYGQK/bY2awgq4BF4HuKsM1SYB2PVvk65zddQ69iJAbVeha+CrqB+Abz6pVbK9xaOczzuiKp3sZ/dm6+X6ATv5hpDOzMbrh4LCs6V6qV7DewqCcimcUZEv+NRugqJcL7HmgfpOz8hvF1LyEfKt0XV4tgTCA1bToZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BMNY8ka5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2Jgjxe0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1842C4CEF1;
-	Thu, 11 Sep 2025 12:46:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BMNY8ka5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8EDC4CEF8;
+	Thu, 11 Sep 2025 13:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757594816;
-	bh=ZMKRsM2d2FmjPym3iMEMNiiUE1WxtkOsfG1kTOUZ+po=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=b2Jgjxe0smjNxwt90PXOQmhfvrW+ekazryG1m+dsEte/g78R+1fK3qaDluF7kr6qw
-	 DOUSJCOcA1AxyvONbB/ozhz0+y2dBOVqOu1Npn4WNDyBu0uKNYhPZcI5gSvrxShHsA
-	 JahfpeIWpvJth+407eK40K+s2A6BHrfSYHtL/DPAdToRxSNbDeLCoCxQn86SIUuIGk
-	 YWGOFAF4lrSbKcYkJPXMYY0KzQQ2SNnLs89YCEMmlxTVk8emI6d5xVNPdLO3qjITm7
-	 qSlhqA5q/vBTAeTXwmixuXgvjIqOB/4KixRAVS5iQNIruTnDfHHodcyWPNoY4n/ayS
-	 Y/RuMddb9f1Hw==
-Message-ID: <ce74db34-77bc-4207-94c8-6e0580189448@kernel.org>
-Date: Thu, 11 Sep 2025 14:46:51 +0200
+	s=k20201202; t=1757596480;
+	bh=KX7xrHa+olS2oROnPjX8J2BFoTeFIgxJ4Lv3gDXpUMk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BMNY8ka5NU+VI1MvoMs8tdN9twEhfEOt6uHnMuw/zG9gVEyVe/5lVgCJ02DWkmQLq
+	 Fdl3RoRxTueqgHTHfbVxagk8VtPvmwoEyZEau6cD7wse+rO2nbfwmJmmiS553+DP2B
+	 yZ2WsSAMYwSJGbjThMmq184i//iYfBog+QuW84FpNFuhkUyC2+JoPzcfaD9Ztl8I78
+	 1gPLPfUZkieEE52ZtrlTwyr5e027kXiXhtJhWQuAYcNDC9WqmWB1PVx6ZfIC6jcIQd
+	 XfPzPxjtqx1fJ5gagtreHl0mLS/Bz0TnTtqOcTBQYcwz+rQz/XSLpRvbtAo6AeJly1
+	 9KlPyFS3bVuoQ==
+Date: Thu, 11 Sep 2025 14:14:33 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Asuna <spriteovo@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Han Gao <rabenda.cn@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-kbuild@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2] RISC-V: re-enable gcc + rust builds
+Message-ID: <20250911-reprogram-conductor-f02af5f6d03e@spud>
+References: <20250909-gcc-rust-v2-v2-1-35e086b1b255@gmail.com>
+ <20250910-harmless-bamboo-ebc94758fdad@spud>
+ <6bceca9d-44cd-4373-a456-7c2129b418e3@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/12] gpu: nova-core: move GSP boot code to a
- dedicated method
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-References: <20250911-nova_firmware-v5-0-5a8a33bddca1@nvidia.com>
- <20250911-nova_firmware-v5-2-5a8a33bddca1@nvidia.com>
- <e1755470-587b-4a43-8171-3d031b7fb4f4@kernel.org>
- <DCPYQNZG1OJK.2EE4JWJAROK57@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DCPYQNZG1OJK.2EE4JWJAROK57@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Pv6XXkkXxcuB8WU5"
+Content-Disposition: inline
+In-Reply-To: <6bceca9d-44cd-4373-a456-7c2129b418e3@gmail.com>
 
-On 9/11/25 2:17 PM, Alexandre Courbot wrote:
-> On Thu Sep 11, 2025 at 8:22 PM JST, Danilo Krummrich wrote:
->> On 9/11/25 1:04 PM, Alexandre Courbot wrote:
->>> +    /// Attempt to start the GSP.
->>> +    ///
->>> +    /// This is a GPU-dependent and complex procedure that involves loading firmware files from
->>> +    /// user-space, patching them with signatures, and building firmware-specific intricate data
->>> +    /// structures that the GSP will use at runtime.
->>> +    ///
->>> +    /// Upon return, the GSP is up and running, and its runtime object given as return value.
->>> +    pub(crate) fn start_gsp(
->>> +        pdev: &pci::Device<device::Bound>,
->>> +        bar: &Bar0,
->>> +        chipset: Chipset,
->>> +        gsp_falcon: &Falcon<Gsp>,
->>> +        _sec2_falcon: &Falcon<Sec2>,
->>> +    ) -> Result<()> {> +        let dev = pdev.as_ref();
->>> +
->>> +        let bios = Vbios::new(dev, bar)?;
->>> +
->>> +        let fb_layout = FbLayout::new(chipset, bar)?;
->>> +        dev_dbg!(dev, "{:#x?}\n", fb_layout);
->>> +
->>> +        Self::run_fwsec_frts(dev, gsp_falcon, bar, &bios, &fb_layout)?;
->>> +
->>> +        // Return an empty placeholder for now, to be replaced with the GSP runtime data.
->>> +        Ok(())
->>> +    }
->>
->> I'd rather create the Gsp structure already, move the code to Gsp::new() and
->> return an impl PinInit<Self, Error>. If you don't want to store any of the
->> object instances you create above yet, you can just stuff all the code into an
->> initializer code block, as you do in the next patch with
->> gfw::wait_gfw_boot_completion().
-> 
-> I don't think that would work, or be any better even if it did. The full
-> GSP initialization is pretty complex and all we need to return is one
-> object created at the beginning that doesn't need to be pinned.
-> Moreover, the process is also dependent on the GPU family and completely
-> different on Hopper/Blackwell.
 
-Why would it not work? There is no difference between the code above being
-executed from an initializer block or directly in Gsp::new().
-> You can see the whole process on [1]. `libos` is the object that is
-> returned (although its name and type will change). All the rest it
-> loading, preparing and running firmware, and that is done on the GPU. I
-> think it would be very out of place in the GSP module.
-> 
-> It is also very step-by-step: run this firmware, wait for it to
-> complete, run another one, wait for a specific message from the GSP, run
-> the sequencer, etc. And most of this stuff is thrown away once the GSP
-> is running. That's where the limits of what we can do with `pin_init!`
-> are reached, and the GSP object doesn't need to be pinned anyway.
+--Pv6XXkkXxcuB8WU5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I don't see that, in the code you linked you have a bunch of calls that don't
-return anything that needs to survive, this can be in an initializer block.
+On Thu, Sep 11, 2025 at 12:46:01PM +0800, Asuna wrote:
+> On 9/10/25 10:27 PM, Conor Dooley wrote:
+> > FWIW, this --- breaks git, and anything after this line (including your
+> > signoff) is lost when the patch is applied.
+>=20
+> I used b4 command to prepare and send the cover letter and patch for v2, =
+not
+> sure what happened.
 
-And then you have
+Dunno. Maybe while editing your commit message you omitted the signoff
+somehow? I don't use b4-submit, so I don't know how it formats stuff. If
+it inserted the --- and what was below it was your intended cover
+letter, your patch itself might be missing the signoff?
+>=20
+> I see that other people's patches have a [PATCH 0/n] email as a start that
+> describes their patch series, this is called a cover-letter in b4 and
+> git-send-email right?
 
-let mut libos = gsp::GspMemObjects::new(pdev, bar)?;
+Yes it is. Not really needed if you only have one patch though.
 
-which only needs the device reference and the bar reference.
+> > The riscv patchwork CI stuff is really unhappy with this change:
+> > init/Kconfig:87: syntax error
+> > init/Kconfig:87: invalid statement
+> > init/Kconfig:88: invalid statement
+> > init/Kconfig:89:warning: ignoring unsupported character '`'
+> > init/Kconfig:89:warning: ignoring unsupported character '`'
+> > init/Kconfig:89:warning: ignoring unsupported character '.'
+> > init/Kconfig:89: unknown statement "This"
+> >=20
+> > Is this bogus, or can rustc-bindgen-libclang-version return nothing
+> > under some conditions where rust is not available?
+> > Should this have 2 default lines like some other options in the file?
+>=20
+> This is because rustc-bindgen-libclang-version can't find the bindgen and
+> returns nothing. Sorry I forgot to mention this, it's another reason why I
+> wanted to separate the script, in a separate script we can easily fallback
+> to return 0 when an error is encountered.
+>=20
+> Adding a second line `default 0` doesn't work, I'll try to fix it. BTW, w=
+hen
+> I fix it, if the diff isn't too large, do I need to open a v3 patch, or
+> simply replying to the thread just fine?
 
-So you can easily write this as:
+Feel free to reply with the diff if you're looking to discuss the
+implantation, but for the sake of the various bits of automation
+(patchwork, ci bots etc) please submit a v3 when you're happy with what
+you've produced.
 
-try_pin_init!(Self {
-   _: {
-      // all the throw-away stuff from above
-   },
-   libos <- gsp::GspMemObjects::new(pdev, bar),
-   _: {
-      libos.do_some_stuff_mutable()?;
-   }
-})
-> By keeping the initialization in the GPU, we can keep the GSP object
-> architecture-independent, and I think it makes sense from a design point
-> of view. That's not to say this code should be in `gpu.rs`, maybe we
-> want to move it to a GPU HAL, or if we really want this as part of the
-> GSP a `gsp/boot` module supporting all the different archs. But I'd
-> prefer to think about this when we start supporting several
-> architectures.
+--Pv6XXkkXxcuB8WU5
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Didn't we talk about a struct Gsp that will eventually be returned by
-Self::start_gsp(), or did I make this up in my head?
+-----BEGIN PGP SIGNATURE-----
 
-The way I think about this is that we'll have a struct Gsp that represents the
-entry point in the driver to mess with the GSP command queue.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMLLNgAKCRB4tDGHoIJi
+0sTWAQDdTuuMdgIe7i+D0GfClKSNwZiGeo6RL2W+QEs7l4LftQD7BqPNj+VBOnFy
+pCrKuAA/4HOvXEmHWCYJdIAAEL+4bA0=
+=CuGR
+-----END PGP SIGNATURE-----
 
-But either way, this throws up two questions, if Self::start_gsp() return a
-struct GspMemObjects instead (which is probably the same thing with a different
-name), then:
-
-Are we sure this won't need any locks? If it will need locking (which I expect)
-then it needs pin-init.
-
-If it never needs pinning why did you write it as
-
-gsp <- Self::start_gsp(pdev, bar, spec.chipset, gsp_falcon, sec2_falcon)?,
-
-in a patch 3?
-> [1] https://github.com/Gnurou/linux/blob/gsp_init_rebase/drivers/gpu/nova-core/gpu.rs#L305
-
+--Pv6XXkkXxcuB8WU5--
