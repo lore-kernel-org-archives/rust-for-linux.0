@@ -1,68 +1,66 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE90140E5F
-	for <rust-for-linux@vger.kernel.org>; Thu, 11 Sep 2025 04:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCBD2D0618;
+	Thu, 11 Sep 2025 07:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757565973; cv=none; b=abAwWITIXpnyzlAzBUKVMSTU95QE5YEzZYj71Hd+OA6x/n0cjlGMR9WQPfaySfDLVJ6VY+y272WPCJ8N5j2uJHm/ZdGcLNS9arDz3hoRfIWrpoq2YrruDvU2TyBMhTOm33B1zquBKcki79cMjwLs800iyxQXTosY5kW9yrkXoH0=
+	t=1757577578; cv=none; b=Q26jiNhNHoUW5yPp6iVck7yfqMcDzvGKpYEfjdzixmBZT0oXnkhhhkvaIsAG0x5L4WS4W96saLLhVVWiAHuqeGe+4k1bYnIufobBjxXs7U6VZDor6AOHXbFR1ilnuNbNQfxPuIzhId74WvcO7gHAB3bkiFFK3EXMGbzzWNqWg7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757565973; c=relaxed/simple;
-	bh=ZYQmQVPBF8zKRLNJ+D4bhiIq4DL1k5MFPT2Ve8g115I=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RfFpn6h0p3WAN0YmOj0J9tZ/jvbeU0n5LywjG8fB5mbulDXSlGRMtxA+Pt2jd+8VcLVD1Q0wdiytYG5r3yJKOX2BivMH+W2HGeOpZKH4piy2Nf7gVXLGdoWAEQaDxZA3uW6CDkapW4E0YeqWuf6UiEiFIZ3Hde4aa3xOf9DLbsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QVUvX8H9; arc=none smtp.client-ip=209.85.128.178
+	s=arc-20240116; t=1757577578; c=relaxed/simple;
+	bh=at6W0Sk6OHxTFRWnRkghHWR3Ehx4+dN0M2Zy5oaFRk8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LrgthQo5ldLJk5sjgCBFdL643ZJ7acwkm/FxHvHA9IcOX+DQghEk75kFUpIPHp48kNDxVD9Tw+PBA5gi8zqTk9QtBWsoXiuLHjtJx2OhLnmXaOIB45w9BDfxdVLNHgFNadKPQTVwXnTPIVmKyL6lNsVRslh2KHKxjQg1Q9SEEiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pc6lnnJ4; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVUvX8H9"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71d60528734so2519287b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Sep 2025 21:46:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pc6lnnJ4"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f7b6e4145so410030e87.1;
+        Thu, 11 Sep 2025 00:59:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757565971; x=1758170771; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1OFQORNmMyhF8NqnLlI7wxOYnlK/yXDebbJxZdkpHcc=;
-        b=QVUvX8H99YU7pKHdlG0uydz/0HeW8qJ53/5dxsUs7PeTDkdQi08HUM3DSol7FAMrc1
-         QjvuOZ6McvDLrVzHOPstBnf2dM352XnRuaM+Oya5mh/EV3Dk1/YZtXvGgYXwV8N02Ptk
-         mZ+cNc/0dGHSXwQHYM2lJEzl+2IN+h1eZWaQ+jMWNhkFrIaGbtI0msA0m8G9lG+MI/os
-         nFSXEZFBWMwik4LSj2G2gh9/t/T4eSZwGZrr4LtyFCPJIuPvsC3rMo0Qq3CQXrvHD+QM
-         ZJ+BBPZLAw+BWzNaBAR437h889AHD/XGanoQ7YJ197Ld1WVYEF+foVEuv+qK1jj3wiXp
-         gp+A==
+        d=gmail.com; s=20230601; t=1757577575; x=1758182375; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U7er97Y3OYMOo2yGE9gkvezpwQR54iFaPqu7weYqFQw=;
+        b=Pc6lnnJ4JmzTbog6kPPztJH/Di+mCzzSKAiuRkvZ3Q+BS/Atz2tc0ujdL/D8HhujZm
+         IZsTppGZoppBRJzQ5PADeLbxZjfHMoQ+/BQdNuJnJlCNmd2Sd2Cd1kEX/7bY6YCBxTsa
+         IVBmAHWwKqHvMZJ/yEpQ+wISqUdtnuxu5kLkuacnTjxukdGY8KT7S7393Vh6qiLfUzJs
+         KCO/5XZ/4QrD2dpXsFqCOipy6Jzt/SSWsn6FpMfccJH5vgcrh2Eal0/qDzsIc6RYd1T8
+         ur13EtLHGLlrd/T/BJDsSD0cu+KopnGS+6T8Ux+/WTGWZrFwB/wtmick7GGoLfL1lyCE
+         krsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757565971; x=1758170771;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
+        d=1e100.net; s=20230601; t=1757577575; x=1758182375;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1OFQORNmMyhF8NqnLlI7wxOYnlK/yXDebbJxZdkpHcc=;
-        b=cJcpI73yoMA+eCQBugeYeiH5pcalMqgwfH4MAeJqR+Q+lix1zNn0w7xyxhH1KUaqAG
-         CQvQTinWeMCsQOqQ7XlhHVfJtOHSTe3qEi/XUWYEHkVHyMG95Cq2Vaz7cUqfVVZT8jLl
-         jrLOEtzKZP+4uHC6eDgnHEeUet54K9ouNWmuCXZmCWpHRFs0KQjs0eSCcvvjb1kgGBc2
-         11OuYv29p3ZSblCKUcd8XPV0qZaKhekGWmRrbNOGNSJ+VXFrOJwuBV7tFZPGabxABrgv
-         VB7FPQadDzD0mcIYQwtyBgk9oiLfldGpZAlJatkH6m5bI5bY7dm31NQ6sBAMSLvVvJZh
-         oh5w==
-X-Forwarded-Encrypted: i=1; AJvYcCX+C+XZV8PvQbbKgBru67PYdaALvyO0jsuAj6DJoUpX+W00tf4aG/+TPsBPJwhTIKOJqA/EhMPFKeQgkWcqYA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTkypfiWyawg/MAT3QHEXYD/LgbgF4DEFoMYf+K66eb1Wduh9R
-	u5651AhJpySg2SDlfJYlIynSMW0FPqGAqJ4MxoFwZgPBZAFq3Wm0jEFn
-X-Gm-Gg: ASbGncsy2792vHMyQiPkR3QGfraJOHOOrjixOQmliwzk5NJ2X2YFtyFrYIdf2gn4IDS
-	X8vMENOtffNUBRjpWJd5NOHAKJe2XULonHWzSmwkiPNdGLjnGDmfiTY+BBN9y/X2rVm0CfcM7M2
-	bRNt2pEWl1w3dT+xQs9HfT3B3BRULJmFPUZRk+cFHg5Rk4dQxIzyVSI8NYxfKz3pq3cRnCEGGqk
-	hJuHGxNTeU3tp2WxpBRq/EmR4I3w23krfVk3mpPxOfuBSRfhR3ErCtGrom2q6oGkMUcr2aaBQTZ
-	FaNbqtlko/C0Vd7ARuSrNhBobxY5ItZEfXZH59lpRdAOROyai6v+aml+NCRX4VHqYeH3TUVoGbH
-	iFhEZZ4o3H9+TipBM/JMo0uErOPKGKBOnPU5LV4C8YMjt56B7b2+DUmM4FUt7VtPg5X0fxRCKKg
-	==
-X-Google-Smtp-Source: AGHT+IE09XmvpU67NiXH7rk2LbrDMhUi3e2OWnnlWTn7trnF2NMGewy0hktXoxQgahi3Y4iKLHRnRg==
-X-Received: by 2002:a05:690c:6309:b0:722:7a7f:5358 with SMTP id 00721157ae682-727f28e7503mr153782967b3.4.1757565970388;
-        Wed, 10 Sep 2025 21:46:10 -0700 (PDT)
-Received: from [192.168.1.209] (74.211.99.176.16clouds.com. [74.211.99.176])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-72f76c28400sm1130767b3.30.2025.09.10.21.46.03
+        bh=U7er97Y3OYMOo2yGE9gkvezpwQR54iFaPqu7weYqFQw=;
+        b=kl8Fx3bSAB8ZU4Jj3pYCX1mIUdrUNBJcEW3V5rp4LztJYY4IlKgIzal79WFWd/XZHF
+         Dog3UpM+UcBFL5+U7sg7tfGI78uCyffXbhyCZfgJtGBDFoc1MmbkeLZsvciRZfxSv5Cq
+         34397iRgx/tf+IwZIu4Mg8pIUYdExC+WRCbfkSbPyUe7ITKxlNtdq8M8OsEdBRzzdXXR
+         DlnmLHA31QdRFiQ5BTXxIJKgNrf2y1ta4tKsKCETeQ4DeeA6RTP/dFXp6f6kBVngB8lG
+         DnPGh3T8YeJS60lBQCXJUkDFVJB7kHt4Fa+QNAQSdWBkWJesTsm3wzmrjqq7GYQ3PR+j
+         G6CA==
+X-Forwarded-Encrypted: i=1; AJvYcCUb4XLky5rg/Rm9S40ju9Uyct3H8aoBkl1OtfeLiEooFsD9gGn6MO0KDfJf6JxMvwRAZZcc+z7MEBi6BrU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDxDuzhhGUepcsbIwQOpIcwLiIM4ueQp2ctwIZaIV3AgBQQHYO
+	muqmY9tnIDIOWb7NQWs+jpaCh67KLjCU1SWNRGZ2hJYg241UCY+Am9H6
+X-Gm-Gg: ASbGncvi5pHPjEPFlXYQfKqZs64ln13xd+XgVPcpnzT+xPWV0aMMPHVCRa7eQ6zV0pF
+	Mp5vrgBN4O6+qpjGqQfW0vvuG9t9vjYKL6Af+A+NRo+/Q1Kn+aADtTOls6xcgWWtraYqdZG7Lgx
+	fR9RHy7AiYdvJAgMTEYiGWaAhZOvUu/r34b+2AF+trlo1gmIaqX95/SzlMdxpa3BlY3Aa5FRoJs
+	DpogSSOjfUA3+T15sgYuRzJ2uPb+zRsJ34ygo/3YcDtuYn2RXZ4cu8echU6cBQrPbbxTf0FFGi7
+	SzrqXXLE8Nnx7sZQaWcJHADaJUK/Al30OMbPU5Ajh7DOzUXfwBce3055wCd2inAJmFkAj5zJVS8
+	e3m54RKdcGGxWvdUQugUN5LMlMcdmMj+92JLG9wOXhBPMhGOsFSJQHYPqEhpb7aotW5AOPmZyyI
+	lhq5Vn/p1dqw==
+X-Google-Smtp-Source: AGHT+IEcRHX/jzK33oWfXHXRgPLTQYsSGVS5W8ACzX4aqsC9MRQ7GpT2EtFP5AMmXk4iQRXy9bWsZg==
+X-Received: by 2002:ac2:568c:0:b0:55b:8afb:e638 with SMTP id 2adb3069b0e04-562637cbf2amr6849841e87.28.1757577574652;
+        Thu, 11 Sep 2025 00:59:34 -0700 (PDT)
+Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-56e64dbbf7bsm241402e87.118.2025.09.11.00.59.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Sep 2025 21:46:09 -0700 (PDT)
-From: Asuna <spriteovo@gmail.com>
-X-Google-Original-From: Asuna <SpriteOvO@gmail.com>
-Message-ID: <6bceca9d-44cd-4373-a456-7c2129b418e3@gmail.com>
-Date: Thu, 11 Sep 2025 12:46:01 +0800
+        Thu, 11 Sep 2025 00:59:34 -0700 (PDT)
+Message-ID: <3c7e9c24-5190-4ea6-a1de-472cf4c13742@gmail.com>
+Date: Thu, 11 Sep 2025 10:59:33 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,59 +68,66 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] RISC-V: re-enable gcc + rust builds
-To: Conor Dooley <conor@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Han Gao <rabenda.cn@gmail.com>, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-kbuild@vger.kernel.org,
- llvm@lists.linux.dev
-References: <20250909-gcc-rust-v2-v2-1-35e086b1b255@gmail.com>
- <20250910-harmless-bamboo-ebc94758fdad@spud>
+Subject: Re: [PATCH] MAINTAINERS: Update the DMA Rust entry
+To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
+ rafael@kernel.org, daniel.almeida@collabora.com, robin.murphy@arm.com,
+ a.hindborg@kernel.org, ojeda@kernel.org
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250910094015.11551-1-dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20250910-harmless-bamboo-ebc94758fdad@spud>
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <20250910094015.11551-1-dakr@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/10/25 10:27 PM, Conor Dooley wrote:
-> FWIW, this --- breaks git, and anything after this line (including your
-> signoff) is lost when the patch is applied.
 
-I used b4 command to prepare and send the cover letter and patch for v2, 
-not sure what happened.
 
-I see that other people's patches have a [PATCH 0/n] email as a start 
-that describes their patch series, this is called a cover-letter in b4 
-and git-send-email right?
+On 10/09/2025 12:40, Danilo Krummrich wrote:
+> Update the DMA Rust maintainers entry in the following two aspects:
+> 
+>    (1) Change Abdiel's entry to 'Reviewer'.
+> 
+>    (2) Take patches through the driver-core tree.
+> 
+> Abdiel won't do any more maintainer work on the DMA (or scatterlist)
+> infrastructure, but he'd like to be kept in the loop, hence change is
+> entry to 'R:'.
+> 
+> Analogous to [1], the DMA (and scatterlist) helpers are closely coupled
+> with the core device infrastructure and the device lifecycle, hence take
+> patches through the driver-core tree by default.
+> 
+> Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> Link: https://lore.kernel.org/r/20250725202840.2251768-1-ojeda@kernel.org [1]
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>   MAINTAINERS | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fed6cd812d79..281149d9b821 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7239,15 +7239,15 @@ F:	include/linux/swiotlb.h
+>   F:	kernel/dma/
+>   
+>   DMA MAPPING HELPERS DEVICE DRIVER API [RUST]
+> -M:	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>   M:	Danilo Krummrich <dakr@kernel.org>
+> +R:	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>   R:	Daniel Almeida <daniel.almeida@collabora.com>
+>   R:	Robin Murphy <robin.murphy@arm.com>
+>   R:	Andreas Hindborg <a.hindborg@kernel.org>
+>   L:	rust-for-linux@vger.kernel.org
+>   S:	Supported
+>   W:	https://rust-for-linux.com
+> -T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+>   F:	rust/helpers/dma.c
+>   F:	rust/kernel/dma.rs
+>   F:	samples/rust/rust_dma.rs
+> 
+> base-commit: 3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f
 
-> The riscv patchwork CI stuff is really unhappy with this change:
-> init/Kconfig:87: syntax error
-> init/Kconfig:87: invalid statement
-> init/Kconfig:88: invalid statement
-> init/Kconfig:89:warning: ignoring unsupported character '`'
-> init/Kconfig:89:warning: ignoring unsupported character '`'
-> init/Kconfig:89:warning: ignoring unsupported character '.'
-> init/Kconfig:89: unknown statement "This"
->
-> Is this bogus, or can rustc-bindgen-libclang-version return nothing
-> under some conditions where rust is not available?
-> Should this have 2 default lines like some other options in the file?
+Acked-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 
-This is because rustc-bindgen-libclang-version can't find the bindgen 
-and returns nothing. Sorry I forgot to mention this, it's another reason 
-why I wanted to separate the script, in a separate script we can easily 
-fallback to return 0 when an error is encountered.
-
-Adding a second line `default 0` doesn't work, I'll try to fix it. BTW, 
-when I fix it, if the diff isn't too large, do I need to open a v3 
-patch, or simply replying to the thread just fine?
