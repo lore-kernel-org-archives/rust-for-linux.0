@@ -1,39 +1,39 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F988293B73;
-	Thu, 11 Sep 2025 12:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8035630BF7B;
+	Thu, 11 Sep 2025 12:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757594176; cv=none; b=gFeATbWF3u3fEqEPPOm4B9BZFDbXgrg9PhQDNv1ULldT2naS0yTC/+G8LbtxZbwYK6gxhlw60EH2/j/lhbGriKdzX68cgwZJ7wScnCmYkwvyGGkWd5bKSUEfXU709y4fCIn1xUmxSUkA8TA4O/PXtmB5zxD9Kj8DZNq8mLUVhek=
+	t=1757594384; cv=none; b=Ui29i2ncmUvkh1JWKa7VN6gnE67YiQbVfu07ghipH7KlWpv20WnRZyikAFM0diyg2KGqMYLFpt0b37SagDc9j33wVf6Oqmzi51seDZgCJIZ/ng94KAtdNH3hR/roQhfvEkPtV/OhDkIb3+gdJyH/0MIRktMnYWUxFY2m/7KMp/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757594176; c=relaxed/simple;
-	bh=/foYGMWdrK3ZwjcwGzqYJDHY5VMNoPB64NM1Gm9vO0s=;
+	s=arc-20240116; t=1757594384; c=relaxed/simple;
+	bh=ZrctxyvnXYiaVMve4hAPpN6QSvgdEACuwuibUshXyiA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OAtudYE1P8UUsqGNW/9Cww6IvLahssCC52mQ5u6OOBdC3ZS+PVDMquxmNHO4D5EmJplfREbmNjAqlupSacNDdE11OrpD6p0VA6U5AmDTlqJ9XIVU4qBzP6IfsyW6vp+tx+IX0DD4Bn1d6DvTeDI/xuLEsbN52NJIca1T0ytxVEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=oa5TjNjr; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=idvmUC1vlQc1xvq+LylTeZMSZq45b0csIwj5M0KUfgdAa5xTQtwTFWwo599KA1qOxMGQFdsIZYyFHZFPIuuMgkdVP0xjsVabUKIuPbQ/92eRRsB8lbCzsdAsYqlyPV6eS9bWzKWkTrjQm7RTTVQfTUzLJzBS6rZg2WDR6YOdRsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=CcVTjDgd; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="oa5TjNjr"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="CcVTjDgd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1757594172;
-	bh=/foYGMWdrK3ZwjcwGzqYJDHY5VMNoPB64NM1Gm9vO0s=;
+	s=mail; t=1757594380;
+	bh=ZrctxyvnXYiaVMve4hAPpN6QSvgdEACuwuibUshXyiA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oa5TjNjruLrUJ/ZdCAg4ZcGelwX9zMXSqsLRDbNXWfZdXnsrLuuhf5C8j34ztMFJt
-	 Y+k9RBPNhgls8GH368UyCbUlQwID1Saiwp94YnuRSdIX5ETTlHoW7Iox9fTJ2mqcUz
-	 /n3J88FD4ZtseKJVrfInAHo7PdO8E0L0Dg+ny6KM+D40a1nihzV4ZVrMjhm2ORASBP
-	 P3fN36gdRD+tfTcrmhyDY6rUMYHhM9pBviY938R1t1cdUebdT7yw67G2Grrqr7CBa9
-	 rul0kcSXw3pBMyHoCQlj0q2iXiEMuOzyqZQucYdnSMtXfLloh4jRry9O0vME6hSE0P
-	 YlhGzjblycpxQ==
+	b=CcVTjDgd7nSS/oGyWsgxJK83BFtTlasQwcZApdQeFH2mGZs391b8U2AlFRMaiMaiy
+	 vFOHi+un9GqUUbaz4dDIMibse/dvZSdmaZ5ElWWpYpPZED9O3d17FIauz9nxs/6aah
+	 fQKqZDnLOJsJeZsgqzgqUGVVAPYrlfL/ucV80uhC60HO/dcemTSUnU7sQaVm9W+8ts
+	 5wXdnZhEM1SI8HYjT4GsQpoU4GchMQdZFAPN/TdQUb9lcWj8UMRrp82BOd1VKymDbk
+	 pwbKRS+TMIhFJSiiyetX84gU/exC7KL7SDKE2ghmwNqhxsysDQ9HMiJEitU0DMYsgL
+	 j+1lUJJzZgT+A==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1D81C17E00FC;
-	Thu, 11 Sep 2025 14:36:12 +0200 (CEST)
-Date: Thu, 11 Sep 2025 14:35:53 +0200
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3B10117E00FC;
+	Thu, 11 Sep 2025 14:39:40 +0200 (CEST)
+Date: Thu, 11 Sep 2025 14:38:50 +0200
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
@@ -46,7 +46,7 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
  <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v2 2/2] panthor: use drm_gpuva_unlink_defer()
-Message-ID: <20250911143553.759ce6f4@fedora>
+Message-ID: <20250911143850.5d79c3a3@fedora>
 In-Reply-To: <20250909-vmbo-defer-v2-2-9835d7349089@google.com>
 References: <20250909-vmbo-defer-v2-0-9835d7349089@google.com>
 	<20250909-vmbo-defer-v2-2-9835d7349089@google.com>
@@ -198,12 +198,12 @@ Alice Ryhl <aliceryhl@google.com> wrote:
 >  	if (!preallocated_vm_bo) {
 > -		if (!drm_gem_is_imported(&bo->base.base))
 > -			drm_gem_shmem_unpin(&bo->base);
+
+Aren't we leaking a pin ref here? If drm_gpuvm_bo_create() returns
+NULL, ::vm_bo_free() won't be called, meaning we never return the pin
+ref we acquired earlier in this function.
+
 > -
-
-Aren't we leaking a pin ref here? If the preallocated_vm_bo is
-NULL, ::vm_bo_free() won't be called and we're never releasing the ref
-we acquired earlier in this function, are we?
-
 >  		ret = -ENOMEM;
 >  		goto err_cleanup;
 >  	}
