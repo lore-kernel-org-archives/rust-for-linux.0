@@ -1,325 +1,164 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8035630BF7B;
-	Thu, 11 Sep 2025 12:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535F0243367;
+	Thu, 11 Sep 2025 12:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757594384; cv=none; b=Ui29i2ncmUvkh1JWKa7VN6gnE67YiQbVfu07ghipH7KlWpv20WnRZyikAFM0diyg2KGqMYLFpt0b37SagDc9j33wVf6Oqmzi51seDZgCJIZ/ng94KAtdNH3hR/roQhfvEkPtV/OhDkIb3+gdJyH/0MIRktMnYWUxFY2m/7KMp/M=
+	t=1757594817; cv=none; b=Inw/djCo98URhdN9WKD2pxVSzefAKXrmKemz7GiTEwpO2PFl9vy/io4h1+/N6RhC4wevVnADNoUMQvWVgMrhS7xbb9G5ve6LglLwUFZL9nDNm8Ej5FnMYMHJTEcoWQD4IWBVMKTeB8Hb5HMnExsYbtp5BJKR7DukRcO/pqrFvZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757594384; c=relaxed/simple;
-	bh=ZrctxyvnXYiaVMve4hAPpN6QSvgdEACuwuibUshXyiA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=idvmUC1vlQc1xvq+LylTeZMSZq45b0csIwj5M0KUfgdAa5xTQtwTFWwo599KA1qOxMGQFdsIZYyFHZFPIuuMgkdVP0xjsVabUKIuPbQ/92eRRsB8lbCzsdAsYqlyPV6eS9bWzKWkTrjQm7RTTVQfTUzLJzBS6rZg2WDR6YOdRsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=CcVTjDgd; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1757594817; c=relaxed/simple;
+	bh=ZMKRsM2d2FmjPym3iMEMNiiUE1WxtkOsfG1kTOUZ+po=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CRzUdM5A3aU9Vv0jArtMtxwfRoazMe7P872DMOqntxUPtO1Ahw2RvF3akR53HZLN1IWmWCzg5/8K1jkrojmGEQOLxYDi13beQe4YlSmWqDVJjipsnykPlbW5vUZM5i/L6mla73njPrtbs9faRqkAHO5v2T/iRajaRvV6N5scF20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2Jgjxe0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="CcVTjDgd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1757594380;
-	bh=ZrctxyvnXYiaVMve4hAPpN6QSvgdEACuwuibUshXyiA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CcVTjDgd7nSS/oGyWsgxJK83BFtTlasQwcZApdQeFH2mGZs391b8U2AlFRMaiMaiy
-	 vFOHi+un9GqUUbaz4dDIMibse/dvZSdmaZ5ElWWpYpPZED9O3d17FIauz9nxs/6aah
-	 fQKqZDnLOJsJeZsgqzgqUGVVAPYrlfL/ucV80uhC60HO/dcemTSUnU7sQaVm9W+8ts
-	 5wXdnZhEM1SI8HYjT4GsQpoU4GchMQdZFAPN/TdQUb9lcWj8UMRrp82BOd1VKymDbk
-	 pwbKRS+TMIhFJSiiyetX84gU/exC7KL7SDKE2ghmwNqhxsysDQ9HMiJEitU0DMYsgL
-	 j+1lUJJzZgT+A==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3B10117E00FC;
-	Thu, 11 Sep 2025 14:39:40 +0200 (CEST)
-Date: Thu, 11 Sep 2025 14:38:50 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
- <matthew.brost@intel.com>, "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?="
- <thomas.hellstrom@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Steven Price <steven.price@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau
- <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] panthor: use drm_gpuva_unlink_defer()
-Message-ID: <20250911143850.5d79c3a3@fedora>
-In-Reply-To: <20250909-vmbo-defer-v2-2-9835d7349089@google.com>
-References: <20250909-vmbo-defer-v2-0-9835d7349089@google.com>
-	<20250909-vmbo-defer-v2-2-9835d7349089@google.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2Jgjxe0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1842C4CEF1;
+	Thu, 11 Sep 2025 12:46:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757594816;
+	bh=ZMKRsM2d2FmjPym3iMEMNiiUE1WxtkOsfG1kTOUZ+po=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=b2Jgjxe0smjNxwt90PXOQmhfvrW+ekazryG1m+dsEte/g78R+1fK3qaDluF7kr6qw
+	 DOUSJCOcA1AxyvONbB/ozhz0+y2dBOVqOu1Npn4WNDyBu0uKNYhPZcI5gSvrxShHsA
+	 JahfpeIWpvJth+407eK40K+s2A6BHrfSYHtL/DPAdToRxSNbDeLCoCxQn86SIUuIGk
+	 YWGOFAF4lrSbKcYkJPXMYY0KzQQ2SNnLs89YCEMmlxTVk8emI6d5xVNPdLO3qjITm7
+	 qSlhqA5q/vBTAeTXwmixuXgvjIqOB/4KixRAVS5iQNIruTnDfHHodcyWPNoY4n/ayS
+	 Y/RuMddb9f1Hw==
+Message-ID: <ce74db34-77bc-4207-94c8-6e0580189448@kernel.org>
+Date: Thu, 11 Sep 2025 14:46:51 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/12] gpu: nova-core: move GSP boot code to a
+ dedicated method
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+References: <20250911-nova_firmware-v5-0-5a8a33bddca1@nvidia.com>
+ <20250911-nova_firmware-v5-2-5a8a33bddca1@nvidia.com>
+ <e1755470-587b-4a43-8171-3d031b7fb4f4@kernel.org>
+ <DCPYQNZG1OJK.2EE4JWJAROK57@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <DCPYQNZG1OJK.2EE4JWJAROK57@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue, 09 Sep 2025 13:36:23 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On 9/11/25 2:17 PM, Alexandre Courbot wrote:
+> On Thu Sep 11, 2025 at 8:22 PM JST, Danilo Krummrich wrote:
+>> On 9/11/25 1:04 PM, Alexandre Courbot wrote:
+>>> +    /// Attempt to start the GSP.
+>>> +    ///
+>>> +    /// This is a GPU-dependent and complex procedure that involves loading firmware files from
+>>> +    /// user-space, patching them with signatures, and building firmware-specific intricate data
+>>> +    /// structures that the GSP will use at runtime.
+>>> +    ///
+>>> +    /// Upon return, the GSP is up and running, and its runtime object given as return value.
+>>> +    pub(crate) fn start_gsp(
+>>> +        pdev: &pci::Device<device::Bound>,
+>>> +        bar: &Bar0,
+>>> +        chipset: Chipset,
+>>> +        gsp_falcon: &Falcon<Gsp>,
+>>> +        _sec2_falcon: &Falcon<Sec2>,
+>>> +    ) -> Result<()> {> +        let dev = pdev.as_ref();
+>>> +
+>>> +        let bios = Vbios::new(dev, bar)?;
+>>> +
+>>> +        let fb_layout = FbLayout::new(chipset, bar)?;
+>>> +        dev_dbg!(dev, "{:#x?}\n", fb_layout);
+>>> +
+>>> +        Self::run_fwsec_frts(dev, gsp_falcon, bar, &bios, &fb_layout)?;
+>>> +
+>>> +        // Return an empty placeholder for now, to be replaced with the GSP runtime data.
+>>> +        Ok(())
+>>> +    }
+>>
+>> I'd rather create the Gsp structure already, move the code to Gsp::new() and
+>> return an impl PinInit<Self, Error>. If you don't want to store any of the
+>> object instances you create above yet, you can just stuff all the code into an
+>> initializer code block, as you do in the next patch with
+>> gfw::wait_gfw_boot_completion().
+> 
+> I don't think that would work, or be any better even if it did. The full
+> GSP initialization is pretty complex and all we need to return is one
+> object created at the beginning that doesn't need to be pinned.
+> Moreover, the process is also dependent on the GPU family and completely
+> different on Hopper/Blackwell.
 
-> Instead of manually deferring cleanup of vm_bos, use the new GPUVM
-> infrastructure for doing so.
+Why would it not work? There is no difference between the code above being
+executed from an initializer block or directly in Gsp::new().
+> You can see the whole process on [1]. `libos` is the object that is
+> returned (although its name and type will change). All the rest it
+> loading, preparing and running firmware, and that is done on the GPU. I
+> think it would be very out of place in the GSP module.
 > 
-> To avoid manual management of vm_bo refcounts, the panthor_vma_link()
-> and panthor_vma_unlink() methods are changed to get and put a vm_bo
-> refcount on the vm_bo. This simplifies the code a lot. I preserved the
-> behavior where panthor_gpuva_sm_step_map() drops the refcount right away
-> rather than letting panthor_vm_cleanup_op_ctx() do it later.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  drivers/gpu/drm/panthor/panthor_mmu.c | 113 ++++++----------------------------
->  1 file changed, 19 insertions(+), 94 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-> index 6dec4354e3789d17c5a87fc8de3bc86764b804bc..fd9ed88a4259e5fb88e5acffcf6d8a658cc7115d 100644
-> --- a/drivers/gpu/drm/panthor/panthor_mmu.c
-> +++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-> @@ -181,20 +181,6 @@ struct panthor_vm_op_ctx {
->  		u64 range;
->  	} va;
->  
-> -	/**
-> -	 * @returned_vmas: List of panthor_vma objects returned after a VM operation.
-> -	 *
-> -	 * For unmap operations, this will contain all VMAs that were covered by the
-> -	 * specified VA range.
-> -	 *
-> -	 * For map operations, this will contain all VMAs that previously mapped to
-> -	 * the specified VA range.
-> -	 *
-> -	 * Those VMAs, and the resources they point to will be released as part of
-> -	 * the op_ctx cleanup operation.
-> -	 */
-> -	struct list_head returned_vmas;
-> -
->  	/** @map: Fields specific to a map operation. */
->  	struct {
->  		/** @map.vm_bo: Buffer object to map. */
-> @@ -1081,47 +1067,18 @@ void panthor_vm_free_va(struct panthor_vm *vm, struct drm_mm_node *va_node)
->  	mutex_unlock(&vm->mm_lock);
->  }
->  
-> -static void panthor_vm_bo_put(struct drm_gpuvm_bo *vm_bo)
-> +static void panthor_vm_bo_free(struct drm_gpuvm_bo *vm_bo)
->  {
->  	struct panthor_gem_object *bo = to_panthor_bo(vm_bo->obj);
-> -	struct drm_gpuvm *vm = vm_bo->vm;
-> -	bool unpin;
-> -
-> -	/* We must retain the GEM before calling drm_gpuvm_bo_put(),
-> -	 * otherwise the mutex might be destroyed while we hold it.
-> -	 * Same goes for the VM, since we take the VM resv lock.
-> -	 */
-> -	drm_gem_object_get(&bo->base.base);
-> -	drm_gpuvm_get(vm);
-> -
-> -	/* We take the resv lock to protect against concurrent accesses to the
-> -	 * gpuvm evicted/extobj lists that are modified in
-> -	 * drm_gpuvm_bo_destroy(), which is called if drm_gpuvm_bo_put()
-> -	 * releases sthe last vm_bo reference.
-> -	 * We take the BO GPUVA list lock to protect the vm_bo removal from the
-> -	 * GEM vm_bo list.
-> -	 */
-> -	dma_resv_lock(drm_gpuvm_resv(vm), NULL);
-> -	mutex_lock(&bo->base.base.gpuva.lock);
-> -	unpin = drm_gpuvm_bo_put(vm_bo);
-> -	mutex_unlock(&bo->base.base.gpuva.lock);
-> -	dma_resv_unlock(drm_gpuvm_resv(vm));
->  
-> -	/* If the vm_bo object was destroyed, release the pin reference that
-> -	 * was hold by this object.
-> -	 */
-> -	if (unpin && !drm_gem_is_imported(&bo->base.base))
-> +	if (!drm_gem_is_imported(&bo->base.base))
->  		drm_gem_shmem_unpin(&bo->base);
-> -
-> -	drm_gpuvm_put(vm);
-> -	drm_gem_object_put(&bo->base.base);
-> +	kfree(vm_bo);
->  }
->  
->  static void panthor_vm_cleanup_op_ctx(struct panthor_vm_op_ctx *op_ctx,
->  				      struct panthor_vm *vm)
->  {
-> -	struct panthor_vma *vma, *tmp_vma;
-> -
->  	u32 remaining_pt_count = op_ctx->rsvd_page_tables.count -
->  				 op_ctx->rsvd_page_tables.ptr;
->  
-> @@ -1134,16 +1091,12 @@ static void panthor_vm_cleanup_op_ctx(struct panthor_vm_op_ctx *op_ctx,
->  	kfree(op_ctx->rsvd_page_tables.pages);
->  
->  	if (op_ctx->map.vm_bo)
-> -		panthor_vm_bo_put(op_ctx->map.vm_bo);
-> +		drm_gpuvm_bo_put_deferred(op_ctx->map.vm_bo);
->  
->  	for (u32 i = 0; i < ARRAY_SIZE(op_ctx->preallocated_vmas); i++)
->  		kfree(op_ctx->preallocated_vmas[i]);
->  
-> -	list_for_each_entry_safe(vma, tmp_vma, &op_ctx->returned_vmas, node) {
-> -		list_del(&vma->node);
-> -		panthor_vm_bo_put(vma->base.vm_bo);
-> -		kfree(vma);
-> -	}
-> +	drm_gpuvm_bo_deferred_cleanup(&vm->base);
->  }
->  
->  static struct panthor_vma *
-> @@ -1232,7 +1185,6 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
->  		return -EINVAL;
->  
->  	memset(op_ctx, 0, sizeof(*op_ctx));
-> -	INIT_LIST_HEAD(&op_ctx->returned_vmas);
->  	op_ctx->flags = flags;
->  	op_ctx->va.range = size;
->  	op_ctx->va.addr = va;
-> @@ -1243,7 +1195,9 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
->  
->  	if (!drm_gem_is_imported(&bo->base.base)) {
->  		/* Pre-reserve the BO pages, so the map operation doesn't have to
-> -		 * allocate.
-> +		 * allocate. This pin is dropped in panthor_vm_bo_free(), so
-> +		 * once we call drm_gpuvm_bo_create(), GPUVM will take care of
-> +		 * dropping the pin for us.
->  		 */
->  		ret = drm_gem_shmem_pin(&bo->base);
->  		if (ret)
-> @@ -1263,9 +1217,6 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
->  
->  	preallocated_vm_bo = drm_gpuvm_bo_create(&vm->base, &bo->base.base);
->  	if (!preallocated_vm_bo) {
-> -		if (!drm_gem_is_imported(&bo->base.base))
-> -			drm_gem_shmem_unpin(&bo->base);
+> It is also very step-by-step: run this firmware, wait for it to
+> complete, run another one, wait for a specific message from the GSP, run
+> the sequencer, etc. And most of this stuff is thrown away once the GSP
+> is running. That's where the limits of what we can do with `pin_init!`
+> are reached, and the GSP object doesn't need to be pinned anyway.
 
-Aren't we leaking a pin ref here? If drm_gpuvm_bo_create() returns
-NULL, ::vm_bo_free() won't be called, meaning we never return the pin
-ref we acquired earlier in this function.
+I don't see that, in the code you linked you have a bunch of calls that don't
+return anything that needs to survive, this can be in an initializer block.
 
-> -
->  		ret = -ENOMEM;
->  		goto err_cleanup;
->  	}
-> @@ -1282,16 +1233,6 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
->  	mutex_unlock(&bo->base.base.gpuva.lock);
->  	dma_resv_unlock(panthor_vm_resv(vm));
->  
-> -	/* If the a vm_bo for this <VM,BO> combination exists, it already
-> -	 * retains a pin ref, and we can release the one we took earlier.
-> -	 *
-> -	 * If our pre-allocated vm_bo is picked, it now retains the pin ref,
-> -	 * which will be released in panthor_vm_bo_put().
-> -	 */
-> -	if (preallocated_vm_bo != op_ctx->map.vm_bo &&
-> -	    !drm_gem_is_imported(&bo->base.base))
-> -		drm_gem_shmem_unpin(&bo->base);
-> -
->  	op_ctx->map.bo_offset = offset;
->  
->  	/* L1, L2 and L3 page tables.
-> @@ -1339,7 +1280,6 @@ static int panthor_vm_prepare_unmap_op_ctx(struct panthor_vm_op_ctx *op_ctx,
->  	int ret;
->  
->  	memset(op_ctx, 0, sizeof(*op_ctx));
-> -	INIT_LIST_HEAD(&op_ctx->returned_vmas);
->  	op_ctx->va.range = size;
->  	op_ctx->va.addr = va;
->  	op_ctx->flags = DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP;
-> @@ -1387,7 +1327,6 @@ static void panthor_vm_prepare_sync_only_op_ctx(struct panthor_vm_op_ctx *op_ctx
->  						struct panthor_vm *vm)
->  {
->  	memset(op_ctx, 0, sizeof(*op_ctx));
-> -	INIT_LIST_HEAD(&op_ctx->returned_vmas);
->  	op_ctx->flags = DRM_PANTHOR_VM_BIND_OP_TYPE_SYNC_ONLY;
->  }
->  
-> @@ -2033,26 +1972,13 @@ static void panthor_vma_link(struct panthor_vm *vm,
->  
->  	mutex_lock(&bo->base.base.gpuva.lock);
->  	drm_gpuva_link(&vma->base, vm_bo);
-> -	drm_WARN_ON(&vm->ptdev->base, drm_gpuvm_bo_put(vm_bo));
->  	mutex_unlock(&bo->base.base.gpuva.lock);
->  }
->  
-> -static void panthor_vma_unlink(struct panthor_vm *vm,
-> -			       struct panthor_vma *vma)
-> +static void panthor_vma_unlink(struct panthor_vma *vma)
->  {
-> -	struct panthor_gem_object *bo = to_panthor_bo(vma->base.gem.obj);
-> -	struct drm_gpuvm_bo *vm_bo = drm_gpuvm_bo_get(vma->base.vm_bo);
-> -
-> -	mutex_lock(&bo->base.base.gpuva.lock);
-> -	drm_gpuva_unlink(&vma->base);
-> -	mutex_unlock(&bo->base.base.gpuva.lock);
-> -
-> -	/* drm_gpuva_unlink() release the vm_bo, but we manually retained it
-> -	 * when entering this function, so we can implement deferred VMA
-> -	 * destruction. Re-assign it here.
-> -	 */
-> -	vma->base.vm_bo = vm_bo;
-> -	list_add_tail(&vma->node, &vm->op_ctx->returned_vmas);
-> +	drm_gpuva_unlink_defer(&vma->base);
-> +	kfree(vma);
->  }
->  
->  static void panthor_vma_init(struct panthor_vma *vma, u32 flags)
-> @@ -2084,12 +2010,12 @@ static int panthor_gpuva_sm_step_map(struct drm_gpuva_op *op, void *priv)
->  	if (ret)
->  		return ret;
->  
-> -	/* Ref owned by the mapping now, clear the obj field so we don't release the
-> -	 * pinning/obj ref behind GPUVA's back.
-> -	 */
->  	drm_gpuva_map(&vm->base, &vma->base, &op->map);
->  	panthor_vma_link(vm, vma, op_ctx->map.vm_bo);
-> +
-> +	drm_gpuvm_bo_put_deferred(op_ctx->map.vm_bo);
->  	op_ctx->map.vm_bo = NULL;
-> +
->  	return 0;
->  }
->  
-> @@ -2128,16 +2054,14 @@ static int panthor_gpuva_sm_step_remap(struct drm_gpuva_op *op,
->  		 * owned by the old mapping which will be released when this
->  		 * mapping is destroyed, we need to grab a ref here.
->  		 */
-> -		panthor_vma_link(vm, prev_vma,
-> -				 drm_gpuvm_bo_get(op->remap.unmap->va->vm_bo));
-> +		panthor_vma_link(vm, prev_vma, op->remap.unmap->va->vm_bo);
->  	}
->  
->  	if (next_vma) {
-> -		panthor_vma_link(vm, next_vma,
-> -				 drm_gpuvm_bo_get(op->remap.unmap->va->vm_bo));
-> +		panthor_vma_link(vm, next_vma, op->remap.unmap->va->vm_bo);
->  	}
->  
-> -	panthor_vma_unlink(vm, unmap_vma);
-> +	panthor_vma_unlink(unmap_vma);
->  	return 0;
->  }
->  
-> @@ -2154,12 +2078,13 @@ static int panthor_gpuva_sm_step_unmap(struct drm_gpuva_op *op,
->  		return ret;
->  
->  	drm_gpuva_unmap(&op->unmap);
-> -	panthor_vma_unlink(vm, unmap_vma);
-> +	panthor_vma_unlink(unmap_vma);
->  	return 0;
->  }
->  
->  static const struct drm_gpuvm_ops panthor_gpuvm_ops = {
->  	.vm_free = panthor_vm_free,
-> +	.vm_bo_free = panthor_vm_bo_free,
->  	.sm_step_map = panthor_gpuva_sm_step_map,
->  	.sm_step_remap = panthor_gpuva_sm_step_remap,
->  	.sm_step_unmap = panthor_gpuva_sm_step_unmap,
-> 
+And then you have
+
+let mut libos = gsp::GspMemObjects::new(pdev, bar)?;
+
+which only needs the device reference and the bar reference.
+
+So you can easily write this as:
+
+try_pin_init!(Self {
+   _: {
+      // all the throw-away stuff from above
+   },
+   libos <- gsp::GspMemObjects::new(pdev, bar),
+   _: {
+      libos.do_some_stuff_mutable()?;
+   }
+})
+> By keeping the initialization in the GPU, we can keep the GSP object
+> architecture-independent, and I think it makes sense from a design point
+> of view. That's not to say this code should be in `gpu.rs`, maybe we
+> want to move it to a GPU HAL, or if we really want this as part of the
+> GSP a `gsp/boot` module supporting all the different archs. But I'd
+> prefer to think about this when we start supporting several
+> architectures.
+
+Didn't we talk about a struct Gsp that will eventually be returned by
+Self::start_gsp(), or did I make this up in my head?
+
+The way I think about this is that we'll have a struct Gsp that represents the
+entry point in the driver to mess with the GSP command queue.
+
+But either way, this throws up two questions, if Self::start_gsp() return a
+struct GspMemObjects instead (which is probably the same thing with a different
+name), then:
+
+Are we sure this won't need any locks? If it will need locking (which I expect)
+then it needs pin-init.
+
+If it never needs pinning why did you write it as
+
+gsp <- Self::start_gsp(pdev, bar, spec.chipset, gsp_falcon, sec2_falcon)?,
+
+in a patch 3?
+> [1] https://github.com/Gnurou/linux/blob/gsp_init_rebase/drivers/gpu/nova-core/gpu.rs#L305
 
