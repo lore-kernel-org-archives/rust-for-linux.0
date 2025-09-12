@@ -1,153 +1,204 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCB5270EC3
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 04:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6B62750F2;
+	Fri, 12 Sep 2025 06:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757650104; cv=none; b=OvlDMhLU8MDA+JC6HvjXNQ8/b7OLaGgS7hqlhnxBG0Kpw9+dhZCHtlBG6Hzu5VJSe4LwzPQYSMWzVkRbwGvwWSURSp6Xv/PpmMQKfw7r/x+HNWMNXnRYg4LxQQpf/ro0eLG0ikJZ/Su2h0OPbiMlJPpjAKY4tQNTUqo0KxJLEfs=
+	t=1757659329; cv=none; b=ELPSc1m6sX6UedQHZ+A91+SzkHgiABGHSPNCQx6rvsx2yWrztA6PSdAzhYWBoxMDr0lAFFZh2EpcW10AYiKRUK/t4n6R57vNu+Vu4ODNwBkB+4/NtT3nbOs42GNlb5bWcPVHqTBZedoBKozXow1hhWTithusKhh1ph1ldj5X9zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757650104; c=relaxed/simple;
-	bh=Nv9Ol6QCsNG8nFcik7Gk9H70FH9gCQn0lEfqy+xG4bw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bgLseY1iHM/Blj2aK4MF7rG7BWM0O0bobwJZLlBFt6o1DffZVBdzB07vGPJXMd8vu3TYoKYFTFf9NoK4oOhqzg+LwFxxjJpf3vXH7S8kkjx9eRQynv+wuwV0yr5EwRAp8YcJhiO1TllqrUAq9F3NI6XGSNHLpVyzujwZplHtxTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ManN7pm7; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757659329; c=relaxed/simple;
+	bh=XARN275NSX7547scBYEyJ8UtV2onKi9DOJyaZQNGPoE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ts63DJGy8goVf9fsMoI/EKcSGgSQ8nmXIs3ZHTu3a3eJKEDJxHrak15c5A/ry+SbPTF2yoY7zsXJcAbJh2s7MlcVUexglYVPq0SrXIdITyry9nUlWkPqTBRWxrXb6VPauV0tWemy4u6EKCgshkDK+hO3jc2+IKXbqcaS9O+5WVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=af6vTfth; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ManN7pm7"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-74595f3852cso1041461a34.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 Sep 2025 21:08:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757650101; x=1758254901; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eg74TuIEI69uvpd3+KJam3rG3dm6pB1vhxGROySTbzg=;
-        b=ManN7pm7xNw4KMHILYa0xyJFaJCbQzCdNQth4bXDQIe+SQYM0SUWCylMMrpnfd3X5o
-         vrSbp5FQQwoFkQTjGYwjU3/CBi4KhlPRp4o3X6cdkJ/U6vsTbai9MMsR8lLSpM6qG23y
-         SeSAYEfpyLPDYw4OzAFg0D1nWR3uQgtF3WqcpCU9v2reHVKzk7s6XxWcRuZIppSg/WRJ
-         5OclvC31upeAp1KbbiqdcEU0LynKZ2OdEAXjde3dxEjLuU3ZycNe/NkxSEsJLPxqKH0y
-         UQPxu13iBnBbbRLJmj7rtnZMB2BW7Sv9cVHW4yOwsq0+xcQa58rdvM8E4a/CrzTKLhrV
-         PKxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757650101; x=1758254901;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eg74TuIEI69uvpd3+KJam3rG3dm6pB1vhxGROySTbzg=;
-        b=ClLO4UazIjjizjJjBDXSCzrczCWVH6Jd/i2Sjalrr67Nk5eXTHMRK+WwnDRN7cqyLo
-         CcObfkJvWZf2MC7IbXy6P2L46ALB6sqGxTzOAwWeicKMyOqTLgjZxtcJypfzIC1TojnD
-         5opGls5UGWl7UROCZC4t84sRhpESgFhcagLbpXURBtXb749twF/E2dt9ituGtqVVOjeJ
-         gwCugyHOtkkeXxX302OwFboPmwx8s/rmg+gi1AVf/yw6aPblXd4seiLfLBEh+t8TmOaC
-         VWqkZEPh0ccN6fUk/5VVt/Ap+iIU5iT7T9fiG5Eov/VpeiMUtVUzKzsQF6rHZ8Cq+flY
-         Vqaw==
-X-Gm-Message-State: AOJu0YywfmdiTa9FAh0PnQybZqLEuIoKodJOaCsZ9Ta0yaTQC9AKSlf3
-	8UnDYyLaX4Oylcd3zha+QgDC5poQ/DU/vRIvzcHrG/JCPPLrMjCLaSZv
-X-Gm-Gg: ASbGncuuwgF+BiioXmRrQMMuPwPDFx1IimYYz7P5ZmmWlaAI22/JY+DwU4IFFAnNcmj
-	pCmiZtot9kgDhkz2f52tLb9db3V0haOnDsj5tgPaRJmJRm4BowvO6n2LMr7HFP7aGm/NJg+AxV1
-	TwCXnlpIYGLdjp696OZmv1idNAK8LcFA/DvPHfUflYGfFI5LlwoRy6kHecpJAEsPEhLkUeqMSjH
-	5yfa1ZvCV35h6PoCUi2qu8BEzDCAFc+d2tk8O8KXN2AoXS8XH7VmW5OG5bSKot37/OqQlQhwEqJ
-	NSuU5GULiKj8cQIuH0EEl3sSVjLZ1wekdvabKPjl3VMO8znvolr51t9zPNsL66x+RPye16KYEKx
-	YMw7dPaUAoLmZqgzXrt7PgIDw+mkBNoXOuy8MwzyzSnfnuA7ambqCeFtacmbt5qexHgQvz19grB
-	GQW0upwMNLJQTxh1aSecc=
-X-Google-Smtp-Source: AGHT+IFpdUTO7PRVbu6OteUBib7yjiQAfePZPl/rwNk1bMjyuwnjQurngem8tCG0KGrPLsLfCE+Scg==
-X-Received: by 2002:a05:6808:3208:b0:439:af0a:dc8d with SMTP id 5614622812f47-43b8d9f6c3amr680522b6e.38.1757650101436;
-        Thu, 11 Sep 2025 21:08:21 -0700 (PDT)
-Received: from [192.168.86.41] (c-73-136-245-43.hsd1.tx.comcast.net. [73.136.245.43])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-43b82abafc6sm599323b6e.25.2025.09.11.21.08.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Sep 2025 21:08:21 -0700 (PDT)
-Message-ID: <4940aa5a-18d0-4bcd-9125-80f5a9920627@gmail.com>
-Date: Thu, 11 Sep 2025 23:08:17 -0500
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="af6vTfth"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757659328; x=1789195328;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XARN275NSX7547scBYEyJ8UtV2onKi9DOJyaZQNGPoE=;
+  b=af6vTfth1ahq9GC4xpomf6CcABAYw/8VNRDsosLaNYWG8IYuo/bNW6jk
+   Ry/K80vUE1pOLWRynzihpyVPY0bm2rod4RLUnD8AfFdfmZ57o4QCaoU3N
+   5A7DObR0CMpqA9pECcnb+DsjXSB/RWDVdPROiy/qSlokyjaY2+F7i6Sme
+   XFCz9Z+ZvRfCBmLMC7/6o+UivuGsHJLsb9weHkoEeakomBsD8SKeqokef
+   cmXyR5r8zzuhmzj9w18HEcpU6cqFdCXyuUuB9fkV0hXNc6Hm4TbQyptdX
+   N47OX1IJAqH7Q+9z8agifZ6dvi8N82WHreMILddnWDq3MtojuDrHF4A2r
+   w==;
+X-CSE-ConnectionGUID: IIIqWRUCSPKK2r2DIiLVTg==
+X-CSE-MsgGUID: CdpeU/M3RNaCjRBmLia/rQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="63825762"
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
+   d="scan'208";a="63825762"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 23:42:07 -0700
+X-CSE-ConnectionGUID: Oxn9V5DzSJCdg0k03flx9Q==
+X-CSE-MsgGUID: r2bIIqZXTWCxU6X5CjMrtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
+   d="scan'208";a="177927638"
+Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 11 Sep 2025 23:42:00 -0700
+Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uwxTp-0000t2-2p;
+	Fri, 12 Sep 2025 06:41:57 +0000
+Date: Fri, 12 Sep 2025 14:41:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
+	dakr@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: Re: [PATCH] rust: pci: add PCI interrupt allocation and management
+ support
+Message-ID: <202509121404.668X5Vy6-lkp@intel.com>
+References: <20250910035415.381753-1-joelagnelf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Printing with overflow checks can cause modpost errors
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>
-References: <20250911213157.GA1039411@joelbox2> <aMNo7qRCp_yprUAW@my-computer>
- <20250912025343.GA1376629@joelbox2>
-Content-Language: en-US
-From: Andrew Ballance <andrewjballance@gmail.com>
-In-Reply-To: <20250912025343.GA1376629@joelbox2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910035415.381753-1-joelagnelf@nvidia.com>
 
-On 9/11/25 9:53 PM, Joel Fernandes wrote:
-> On Thu, Sep 11, 2025 at 07:27:26PM -0500, Andrew Ballance wrote:
->> On Thu, Sep 11, 2025 at 05:31:57PM -0400, Joel Fernandes wrote:
->>> Hello,
->>> Recently some of have been running into modpost errors more frequently. Ahead
->>> of Kangrejos, I am trying to study them, the one I looked at today is truly
->>> weird, below are more details.
->>>
->>> I narrowed it down to the print statement and specifically the FFI call to
->>> printk bindings. This was first reported by Timur Tabi on CC.
->>>
->>> With CONFIG_RUST_OVERFLOW_CHECKS=y and CONFIG_RUST_BUILD_ASSERT_ALLOW=y, the
->>> following patch when applied to nova-core will fail to build with following
->>> errors. The question is why does the overflow checking fail since the
->>> arithmetic is valid, and why only during printing (and say not during the
->>> call to write32).
->>>
->>>    MODPOST Module.symvers
->>> ERROR: modpost: "rust_build_error" [drivers/gpu/nova-core/nova_core.ko] undefined!
->>> make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
->>> make[1]: *** [/home/joelaf/repo/linux-nova-rm-call/Makefile:1961: modpost] Error 2
->>> make: *** [Makefile:248: __sub-make] Error 2
->>>
->>> Any comments or thoughts?
->>>
->>
->> Io::write32 tries to do a bounds check at compile time and if it cannot
->> be done it causes a build error. it looks like because a pointer to
->> offset is passed across a ffi boundary, rustc makes no assumptions about
->> the value of offset. so it cannot do the bounds check at compile time
->> and causes a build error.
-> 
-> Are you saying this issue is related to iowrite32? I don't think so because
-> the issue does not happen if you comment out the pr_err in my example and
-> leave the write32 as it is. So it is something with the call to printk (FFI).
-> 
-> Why can't it assume the value of offset? All the values to compute it are
-> available at compile time right?
-> 
-> thanks,
-> 
->   - Joel
-> 
+Hi Joel,
 
-This is a resend because I forgot to cc the mailing list.
+kernel test robot noticed the following build errors:
 
-it has to do with the FFI call. The value of offset can be found out at
-compile time, but because a pointer is passed through, the c side could
-theoretically change the value before write32 is called.
-The pointer passed is const so rustc should assume that the c side does
-not change offset, but looks like rustc does not do that.
+[auto build test ERROR on pci/next]
+[also build test ERROR on pci/for-linus drm-misc/drm-misc-next drm-tip/drm-tip linus/master v6.17-rc5]
+[cannot apply to next-20250911]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-as a test i created a version where a copy of offset is passed to printk
-instead of offset and it compiles.
-e.g:
-// SNIP
-let offset = <B as kernel::io::register::RegisterBase<$base>>::BASE
-     + Self::OFFSET
-     + (idx * Self::STRIDE);
-let offset_copy = offset;
+url:    https://github.com/intel-lab-lkp/linux/commits/Joel-Fernandes/rust-pci-add-PCI-interrupt-allocation-and-management-support/20250910-115528
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20250910035415.381753-1-joelagnelf%40nvidia.com
+patch subject: [PATCH] rust: pci: add PCI interrupt allocation and management support
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250912/202509121404.668X5Vy6-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250912/202509121404.668X5Vy6-lkp@intel.com/reproduce)
 
-pr_err!("{}", offset_copy);
-io.write32(self.0, offset);
-// SNIP
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509121404.668X5Vy6-lkp@intel.com/
 
-Best regards,
-Andrew Ballance
+All errors (new ones prefixed by >>):
 
+>> error[E0425]: cannot find value `dev` in this scope
+   --> rust/doctests_kernel_generated.rs:6968:13
+   |
+   6968 | let nvecs = dev.alloc_irq_vectors(1, 32, IrqTypes::all())?;
+   |             ^^^ not found in this scope
+--
+>> error[E0433]: failed to resolve: use of undeclared type `IrqTypes`
+   --> rust/doctests_kernel_generated.rs:6968:42
+   |
+   6968 | let nvecs = dev.alloc_irq_vectors(1, 32, IrqTypes::all())?;
+   |                                          ^^^^^^^^ use of undeclared type `IrqTypes`
+   |
+   help: consider importing this struct
+   |
+   3    + use kernel::pci::IrqTypes;
+   |
+--
+>> error[E0433]: failed to resolve: use of undeclared type `IrqTypes`
+   --> rust/doctests_kernel_generated.rs:6971:16
+   |
+   6971 | let msi_only = IrqTypes::default()
+   |                ^^^^^^^^ use of undeclared type `IrqTypes`
+   |
+   help: consider importing this struct
+   |
+   3    + use kernel::pci::IrqTypes;
+   |
+--
+>> error[E0433]: failed to resolve: use of undeclared type `IrqType`
+   --> rust/doctests_kernel_generated.rs:6972:11
+   |
+   6972 |     .with(IrqType::Msi)
+   |           ^^^^^^^ use of undeclared type `IrqType`
+   |
+   help: consider importing this enum
+   |
+   3    + use kernel::pci::IrqType;
+   |
+--
+>> error[E0433]: failed to resolve: use of undeclared type `IrqType`
+   --> rust/doctests_kernel_generated.rs:6973:11
+   |
+   6973 |     .with(IrqType::MsiX);
+   |           ^^^^^^^ use of undeclared type `IrqType`
+   |
+   help: consider importing this enum
+   |
+   3    + use kernel::pci::IrqType;
+   |
+--
+>> error[E0425]: cannot find value `dev` in this scope
+   --> rust/doctests_kernel_generated.rs:6974:13
+   |
+   6974 | let nvecs = dev.alloc_irq_vectors(4, 16, msi_only)?;
+   |             ^^^ not found in this scope
+--
+>> error[E0433]: failed to resolve: use of undeclared type `IrqTypes`
+   --> rust/doctests_kernel_generated.rs:7025:16
+   |
+   7025 | let msi_only = IrqTypes::default()
+   |                ^^^^^^^^ use of undeclared type `IrqTypes`
+   |
+   help: consider importing this struct
+   |
+   3    + use kernel::pci::IrqTypes;
+   |
+--
+>> error[E0433]: failed to resolve: use of undeclared type `IrqType`
+   --> rust/doctests_kernel_generated.rs:7026:11
+   |
+   7026 |     .with(IrqType::Msi)
+   |           ^^^^^^^ use of undeclared type `IrqType`
+   |
+   help: consider importing this enum
+   |
+   3    + use kernel::pci::IrqType;
+   |
+--
+>> error[E0433]: failed to resolve: use of undeclared type `IrqType`
+   --> rust/doctests_kernel_generated.rs:7027:11
+   |
+   7027 |     .with(IrqType::MsiX);
+   |           ^^^^^^^ use of undeclared type `IrqType`
+   |
+   help: consider importing this enum
+   |
+   3    + use kernel::pci::IrqType;
+   |
 
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
