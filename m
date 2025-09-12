@@ -1,90 +1,98 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2392D7385
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 08:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24B32D63E2;
+	Fri, 12 Sep 2025 08:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757665677; cv=none; b=YGdijA5renIXELGd8uSYnd3oY6sOE7jF5kQHWjp15ZqInsHbMhrgv4tYXeYFeKcWZZQuvXZm/lr7cBrekEs8OWUXrPgNM654QfGGJEkx8uSd44xJkRy5+lkuE2KhF8SBf3LRxV1WxOuQT+nfMbwDif211d87K+uqlJWH9wTIOOk=
+	t=1757665700; cv=none; b=dwSJSfZfUPmH5+Z8w/bQZYIE6PGg6YyuI7u/IaNIQnBn+UHSpcqZ4K793YM9+5ROgsJTy1M8783VDq1NxiWM5wqm+YNx4of2LOPM0qHeHPRuw93ynXEfBaYQJwP55RzxUcjaRCvx69vCOgSbM1yDUDNBpGp3MvxOrMFNEKgJjLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757665677; c=relaxed/simple;
-	bh=gyafARm2+5+HraSg62syFphF8W9ftxH5KWVkzqAeKV4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JPHCiwlGGI1tJR04DyOTaek2EaBYrapRTGWsOKacCSmlo0Yv2igZxcfR6tnLlpxX5aQAfACueDx3Rc0HaBJi/3WDdKMTjsKZV4ciY0xcPcC+wCOTnSaoJH5mazR5OACUCYGxg9czTgPMP/eB9GqgSsF4saJyi4G6gfGM7/j/vdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nsWZYBBa; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757665700; c=relaxed/simple;
+	bh=n1EW4vy65nSPoafSwWSgXqad37bTolvO1cf0oGnHTWA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kxNbQJF2wDwtSxuWVUAseb7lnVwWHLSOrFbWdCMB/6DqO0U7IeA6GkUTF1dmA3XEufPtSjzRQ8WQr3e6wstBG47pWP8A2cWs7fAG+MsOleaPtzf4MljDSvE+Awelm24UIhYfQwRZiHkEiDAVzn1yOSInzm/stqN3Vx0YNAdB9E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=heMrIWKO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nsWZYBBa"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24cb6c57a16so1891265ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 01:27:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757665675; x=1758270475; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gyafARm2+5+HraSg62syFphF8W9ftxH5KWVkzqAeKV4=;
-        b=nsWZYBBaUNHzrN6FP4KdFo1Am/18J4tSRrl71pXa9B537UYPi8CBsuqjqif4UdFJAC
-         97it5gZTE/iwrmAiuQnrnIcYthEzA6Elertol2jRC0mDyOT9Ek1ZOtc0UdDoHxOnOCo0
-         4M3rb1pRe+VO7HxFicxULy+hWxXt2EHk04vKJ3VYIXRpBKveyp+5tR54vwS8NPPgUcOR
-         umKrdLcqW0sHrq4CHroJCgTON+rAg6OQMY9INxaxpv1bZkPeJfo1S7zaWTMNPdbA0gFE
-         DsNBH0iwycZH+1lGHcCv8Awvgb1fVF30iCQxHBCq+HknGpoT8JX5otw3JJgEr5nZekC+
-         XcCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757665675; x=1758270475;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gyafARm2+5+HraSg62syFphF8W9ftxH5KWVkzqAeKV4=;
-        b=NIGIsAfsHgh5eSbPvEzek0bWo0Ex4/vCrJYFxNCgay2A9j5Skv0sWlF4YvtCmf0Xuz
-         rENd2i+SNeHrfpVcD2st6AZlEDGYDNQzgFamqlg9ZDJcnzTn76h/2gBuE/+LqhV+guAR
-         T2zBCEukz4DRL7sseEQDQ53GsD+z+FDwJXW7KpCkyow70Tw/LrtCVHVxxKa++RrZyHX3
-         VGqdTCa6V/vxses+Td7Oog7O0LHrZIA0AQTJmyELbEAzRcJWqZ1VLbSl7klvAOT27rQ9
-         R8L577ypK3gwM2p1aaZcdJdSXLdk+GLEPtBBL9wVnqWTsQToTlhhEtb36vbJYIDIq1yV
-         d5uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVG97t205BJiHKdybdtt8ygv+K4paE0nPjgNKgPDLP/rvn4JstX5Pr6gKJFHnH+niNjIdxUMw7GQIBBc6fn6w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzknJcFgu1FOBL86AAzqmll/SbG/npTi3kOme1R9PN437DbA8F2
-	9R1SVbk/3JFIC/VPbo43fB6lrXq/7/m6HSvgbNyRoQ+VibabNVAbbEWr1Gi1Z10ImbzK/HXyt1f
-	UNMPPdqtoV+Ju2iUbO2VOF6Lbom6C+Pc=
-X-Gm-Gg: ASbGncv2O1VgRXpxvMPBUyoGNs6TxmXa4n78aublLgz306q5Yh6rdcZyi9vweHMbB2l
-	A1OYSV4CUQIY6ddADHEPD+kbI/rY0hzWdlY457lEYZ3/txKzo7atTCM5BKLBYsDUgL1o/+LL81l
-	lMQD6QvYCKE22/YAibKmtw3TUPVUCi9yUT3Ebwm4Ggs9gtxdWQlxkeQOKcxTW0n2bW8uwTTd+W8
-	QLO42ViCIZ8SQ+we3IbeReHYySJOazcBHTT3vMox7ffgnBT85P9/BobU0jjGBBYpMejk83XoCym
-	yzW9+WliKNJhS2Alx7Gf9PyaxQ==
-X-Google-Smtp-Source: AGHT+IFXtk/b+mBcCvYGj0Siyd7M1xdtwtm+rgr5hC4xpHP7Y4e1MWcNVn5VfaCSvjXJxZUU9Q7GdujGkw54EvBzg/k=
-X-Received: by 2002:a17:902:c40a:b0:25c:9a33:95fb with SMTP id
- d9443c01a7336-25d26d4c80fmr12553565ad.8.1757665674856; Fri, 12 Sep 2025
- 01:27:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="heMrIWKO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512A3C4CEF4;
+	Fri, 12 Sep 2025 08:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757665698;
+	bh=n1EW4vy65nSPoafSwWSgXqad37bTolvO1cf0oGnHTWA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=heMrIWKOSv80U/xz5fRNyHaY47UB3AKqXNR30TWBXKEuwFKKAihGB2Ts+rpO5w5Sv
+	 SZolg0L0DOBn9xMMvDTsH+jfmQcn7ju81LlqMHVjQ68zo88sBz+vVDEUGKs4PAy8zs
+	 JZiCbWaKIG1G4cCgexplVHiGWJAbcoANp4oiZ8c8XYe5B/N4UbN9+mIWf525PkgVj1
+	 SFfE1WFslqHwslAkooJ8EpdkYgoN+mJKNBTbNJPPvBWUfkEfEB0uAkP+ESJYUfbvaC
+	 XBUIjzFQcM639J5X/faL1nA5e27Czb9VArnJycIbjAUbK5FqcwNX9F+ltChMSjTTJx
+	 Kqg3QiEnGDVsQ==
+Date: Fri, 12 Sep 2025 10:28:13 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, Linux Doc Mailing List
+ <linux-doc@vger.kernel.org>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl
+ <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 08/19] tools/docs: sphinx-build-wrapper: add a
+ wrapper for sphinx-build
+Message-ID: <20250912102813.6ea711ca@foz.lan>
+In-Reply-To: <87zfb1p0r3.fsf@trenco.lwn.net>
+References: <cover.1756969623.git.mchehab+huawei@kernel.org>
+	<e019f951190a732f9ac0b21bcda7e49af3bd5cbd.1756969623.git.mchehab+huawei@kernel.org>
+	<e13837a0ac46dffe39c600d11fdf33f538bdc9c3@intel.com>
+	<20250910145926.453f5441@foz.lan>
+	<45888ca6c88071c754784495b4ef69460ea67b4f@intel.com>
+	<fuv4p45tvjfdvwu2625s2l2kvcw64p4ohherlwyum3vmogmrfz@yb47nt66xgm6>
+	<87zfb1p0r3.fsf@trenco.lwn.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250911213157.GA1039411@joelbox2> <aMNo7qRCp_yprUAW@my-computer>
- <20250912025343.GA1376629@joelbox2> <4940aa5a-18d0-4bcd-9125-80f5a9920627@gmail.com>
-In-Reply-To: <4940aa5a-18d0-4bcd-9125-80f5a9920627@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 12 Sep 2025 10:27:42 +0200
-X-Gm-Features: AS18NWAksCJUI94FyECCBQ1v6323LDTQdfn2krc8zxB7QJ_YxljDTqr2dN0MuY0
-Message-ID: <CANiq72kZgZdU4Dut3rmcWT-cujyJaP_99ekis_XdfQ-7LmgZ5Q@mail.gmail.com>
-Subject: Re: Printing with overflow checks can cause modpost errors
-To: Andrew Ballance <andrewjballance@gmail.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 12, 2025 at 6:08=E2=80=AFAM Andrew Ballance
-<andrewjballance@gmail.com> wrote:
->
-> The pointer passed is const so rustc should assume that the c side does
-> not change offset, but looks like rustc does not do that.
+Em Thu, 11 Sep 2025 07:38:56 -0600
+Jonathan Corbet <corbet@lwn.net> escreveu:
 
-That is not possible -- a const pointer does not guarantee the value
-will not be changed.
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+> 
+> > On Thu, Sep 11, 2025 at 01:23:55PM +0300, Jani Nikula wrote:  
+> >> > 1. SPHINXDIRS. It needs a lot of magic to work, both before running
+> >> >    sphinx-build and after (inside conf.py);  
+> >> 
+> >> Makes you wonder if that's the right solution to the original
+> >> problem. It was added as a kind of hack, and it stuck.  
+> >
+> > The problem is, IMHO, due to the lack of flexibility of sphinx-build:
+> > It should have a way on it to do partial documentation builds.  
+> 
+> A couple of times I have looked into using intersphinx, making each book
+> into an actually separate book.  The thing I always run into is that
+> doing a complete docs build, with working references, would require
+> building everything twice.  This is probably worth another attempt one
+> of these years...
 
-Cheers,
-Miguel
+The big advantage of intersphinx is for PDF and LaTeX output, as
+this is the only way to have cross-references there.
+
+It is also good for subsystem-specific books (or "sub-"books) like:
+
+	- Documentation/admin-guide/media/
+	- Documentation/driver-api/media/
+	- Documentation/userspace-api/media/
+
+Right now, we create a single book with all those tree, but I would
+prefer to build each of them as separate units, as they are for separated
+audiences, but only if cross-references will be solved in a way that
+html and pdf docs will point to the other books stored at linuxtv.org.
+
+For html, this won't be any different, in practice, from what we have,
+but for PDF and ePub, this would mean smaller books.
+
+Thanks,
+Mauro
