@@ -1,109 +1,99 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E0D2D879A
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 09:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DC324DCE9
+	for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 09:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757669273; cv=none; b=RXE7R8tN+kmwPuSC4uC8oZ/2uMQ81NqHIBbbegchsC7FvcnQNOgcvlD/9PGKpeZSowOeZNu0sal7v1zrhuTuqcmTbRDYay/gdUDP6GfzVnXF07b3DBBLNHlVGiZmMpt1yRXgxPoH7h2fyK1GiHO6xepiFHDDtZ0FdIefGaRWuaY=
+	t=1757670333; cv=none; b=QTh54NINo4cNAusaBs5pSI1reTyD1nOG+dCx0Xdm6mVaoNp8UysVME1536gCrlR80ZRiX2wNykuyNeamfcM1svT3HRZTnNR0k1L7Bb/2VaimpAZjSnHJNaFehDYXVcFRPysMPBoWGpqMaDiZX6Yo6vDrU6iSnlhHBBL/w4frwjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757669273; c=relaxed/simple;
-	bh=3tSH5UPTW11Y9XuzBfniGHAKTRbqqxgrANUoPyfLX9A=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=pgn6pT1gTIsbkjJGwGBkPd8cV+hLScRO5POCDY4Xl4nzUMPllSRQlVzA2P4crLQK+Pf8FYvStmpZvf8v4p0fij/YPHFySNAwd5CVMsA3HDBySPhTBXpxY5nqBH66U5wWmsIDCfzJe6oHfAOy/IpQi48WGZlOZUzXusoVyrv1/KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S99D42A7; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1757670333; c=relaxed/simple;
+	bh=Mw1tvDfrEkD0vqRhNIGrI/cTTOsCCyJetHroo+JH5ik=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uoQjnUsdh05rnbJpAiM0DRgq4cI8ihck+cfMjzg6ZMv01ndL434LjrwoCXyayRyR2ZXxLPzKS4yA7LeASPbn3rFKXkLBceL/SfXvr/Cf9fsVabblbv+LjxC7mP1CK8i4/rlRiILe3TXhdlN6fR/+A2cCDXfJ9kfJ+Xlg8nosbiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4sVxw6Wz; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S99D42A7"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-772627dd50aso3164643b3a.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 02:27:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4sVxw6Wz"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45decc9e83dso10300185e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 02:45:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757669271; x=1758274071; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3tSH5UPTW11Y9XuzBfniGHAKTRbqqxgrANUoPyfLX9A=;
-        b=S99D42A7T0nrNsHpFhPhe+ly2iDBO5C4Rw4pqonjYSH8715QNB6TZasAmTfo9UivV3
-         zTikZiZY9CtMA4BqdlcuwvYpm+RwNtaXtqE4pnaIUANW6mqR873Ua/9Zyn56j09C729X
-         NctCgaP8tnrjPBtkHzvZVapVf2+u+McDoqNSvS8FH5Dcx/orqYbq1UpZXpezHZb4hOO+
-         oP1GS4mBav9QGjQuOqces6l0hPrRLfRxIloYwPR8MlAVLFapiVeN7kV7/gKdF41LEl7x
-         hW3YjvsztxMellSab6OQpxMp4pr9hv4oF1NV9fmALC1Iauh742y286iifoh37o1wATaF
-         7dVA==
+        d=google.com; s=20230601; t=1757670330; x=1758275130; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mw1tvDfrEkD0vqRhNIGrI/cTTOsCCyJetHroo+JH5ik=;
+        b=4sVxw6WznNHYAWEB9WZQku8Pski1E/qXfN7LzbCEutRvOOyiNS1d5iA9WTf1Y+h5mN
+         SEYg/m7irnh40Nn/4tW3LbMYkKk+Y1dabeSyv+0mvmaPs6S2fd40rrUjeTZF/LIND0zG
+         EdyfoPBpdA+43bePs0+m5zPZtTxi49D+XZOLyGh7qp+u9cMVGYs6dBFhYAqScT4ogfU7
+         76Nm1KQnJoz1Y9rvMWQCMjR+aXmSOmdqeBerH5LgDuECX5GMHHMyTPUzsXVFSVrbU2su
+         +tLOwmjvi+r5mDFEosPACukgTFGL6TQQkMgoxibP5UVZgzRF5IlmBwpbcL9/y3qLlfc4
+         q/4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757669271; x=1758274071;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3tSH5UPTW11Y9XuzBfniGHAKTRbqqxgrANUoPyfLX9A=;
-        b=Zidhv5lFuPlcWOEzWdVOvsdYG7pzzQwE33J1fGw1hIBJ4G/GvHXYTBHD60N4vT+Fah
-         t02obdmyttTC3HGKOTZ0qR5ATuDr5TZPjTIcLnp7GuyqeYfyUVDC+/UBr/eIZ7DdW90x
-         yny3MJtKCxO6pZTXmFDSpkjCxCeuxH3x7djE0qqs39u+nfRHGhglzaFL14kw3GmZKcS3
-         2ELjkU7nbK8Yj3hFyks5uSlIsZLn7lF+xZYTiAMFkhAPQuWAS3NraZVSKUanvdSt3zu4
-         xBJ0L/or7sVQX3WQ0xNoog2OiaW1dqGnDo8XslT21El41et/Gd8sxXCBKFSQNqsKxVQU
-         x65w==
-X-Gm-Message-State: AOJu0YwevH9AcxOTxW1kx4F1IUZkAw3e8EQbipnCeeqDRPbypzN39st/
-	gZPC/QsRkV6rpTKb0qZ5V1+3FvDD9r6dbG3GPspuRT8an6lMonFiRVM8cyHYcPfF49h5Qg3DV2k
-	KAe6fla4qRfxadDa0czYmPPTOcRbOSLDk6PXE12hrwsIiGyKAPu1S+xs=
-X-Gm-Gg: ASbGnctDUXHi7eGWPM4a5ZgWtitGFZ+XHoYmK0l6HNO1P0khBOQXaT1NmZ1jNXFP2F/
-	bUP3AyIAfD1eh7Rozi9dMylz8bxfSnyo9IfiH2yMNYqCfSVlZ06tW4IC9MqfHQ/qyUWp6fv7uPK
-	1Kt/T6KcTJ31c7rPWtwou935bdLmxt43fvAATiHwMZLx0uf4JJOzpWYiYE/GFTHFaDD6DNdP60X
-	VF1BL0wdnIQlXvYS/DaJrIm+GMbRfw8YDeeDaHTG/kbtj7gWOL1VEIDZc+DZc6kreTrDgmG
-X-Google-Smtp-Source: AGHT+IGZ9/J/gRux6Yk+W24Z34To2Mx5yS/AKLrFXbt6lRuuYYcUiQ9kDBNt6XBpcfyt0QsI4mIodpEyYI0UUJ58oww=
-X-Received: by 2002:a17:902:a718:b0:25c:4d67:4deb with SMTP id
- d9443c01a7336-25d2ab3e054mr18239165ad.8.1757669271042; Fri, 12 Sep 2025
- 02:27:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757670330; x=1758275130;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Mw1tvDfrEkD0vqRhNIGrI/cTTOsCCyJetHroo+JH5ik=;
+        b=U8YhQnkqBfbyM37ddKIxcxGYvGX24mmLvkKGDrSsjejDtL+Mifh9QvWRJX99Nh4Knj
+         rf52ypRHXcU61Ndo8rz67NuEpINE95MKQbTLZhwTsUvJOu0g6K2elVb3JVLreQP8eqC5
+         0GdXCYikTtMSMG8grJy3M0mVPy2BJNVRaQXGIkR5I5M/61WROT4FHu3J6LGvbOKGoabe
+         IaMztQ4a86Bv/ODWS0Ghi0Ix8PVqtF8L1ih4sceSWEVD+N8EfO7+irVw0kgbqdBx1Kcb
+         HV4CYAIDoTCFif5bTk4hzkbX5B62DvHjvHNE9FKqwrmtLsdLoJvyVhczy22iK2EpjSnm
+         Gzow==
+X-Forwarded-Encrypted: i=1; AJvYcCVMV1itBWbpOgQ74/jTm7LSaJQGn0xW7iAVaMrPVB22MR9tz+P6U0FCQHVBuZ2nT3zlX3OsjwADxvrx43dRdg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLuCzxCcas9cQH/1OmLb/2c+fCM89GjfTlXl8KiqJ5XjC1rOcF
+	zSxrH7hdqeVm0Z4inxua5hwmpYTizF4GX0sl+CwVH9WJ5letJFAipI+K6xu4ReXrw+jU5TgR4JP
+	mccNltuHy70k3Dn60/fv9I9/PFWYXwB9Pn4SUqAFm
+X-Gm-Gg: ASbGncsJjFNoHoN2qtC6Bp+idbQ6AeR4LS8khlrhBnv9xLZ5CU7w/fJwaenfuNqanR1
+	JJs+t4dO3Hxxzz3OALIGZEKacWRsoKxFDD68RzSWBfIF3faDCaCrlQl3egZLdV1UVe/LPNDkR5q
+	6TEQTejcOYNA8AQgxuFedn8wtLAVNg2PIfOgM0ZJKefOTy2sPoa8jrCOdmNoLRkSpRf4+rRP8zV
+	61xYc5xbIyFenv+jEgYYw+G4/KQNO/o6L84ugLR1ZWnuMGckWYYQeHM6SKLyuvCCFcRjyGnmj0U
+	3K0lRipo
+X-Google-Smtp-Source: AGHT+IH8Wx7aYDSjWGUDy5HYTHvs5te6PAR8YoJQwM/9F63oaFGwqOu/DLW2n7FD5zTPDogqXwQoXh14w7BRpqq3blQ=
+X-Received: by 2002:a05:6000:238a:b0:3d4:f7ae:bebb with SMTP id
+ ffacd0b85a97d-3e7658c0f60mr2359259f8f.26.1757670329961; Fri, 12 Sep 2025
+ 02:45:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 12 Sep 2025 14:57:39 +0530
-X-Gm-Features: AS18NWC_BexFmwLhPfYunrkIwo54ALG6qwusgzRfQHujBXuhNkTXAN-rFLSveGY
-Message-ID: <CA+G9fYv0rvRLMM+20vNSdzVWoT4skpoJ9EjD0LyY6dD1TqjTzg@mail.gmail.com>
-Subject: next-20250912: rustgcc: x86_64-linux-gnu-ld: error: unplaced orphan
- section `.sframe' from `vmlinux.o'
-To: rust-for-linux@vger.kernel.org, open list <linux-kernel@vger.kernel.org>, 
-	lkft-triage@lists.linaro.org, Linux Regressions <regressions@lists.linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Ben Copeland <benjamin.copeland@linaro.org>
+References: <20250911213157.GA1039411@joelbox2> <aMNo7qRCp_yprUAW@my-computer>
+ <20250912025343.GA1376629@joelbox2> <4940aa5a-18d0-4bcd-9125-80f5a9920627@gmail.com>
+ <CANiq72kZgZdU4Dut3rmcWT-cujyJaP_99ekis_XdfQ-7LmgZ5Q@mail.gmail.com>
+In-Reply-To: <CANiq72kZgZdU4Dut3rmcWT-cujyJaP_99ekis_XdfQ-7LmgZ5Q@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 12 Sep 2025 11:45:16 +0200
+X-Gm-Features: AS18NWBwf40JnAm6-b2l4TvNLfRabNDc0CxhktLrtMoAJ2-o4_5NAjP0nqdJ4vk
+Message-ID: <CAH5fLgiP2DRcGy04YdsWS9+N1=_CCNEtAGrCn31vUHjnDLW9xw@mail.gmail.com>
+Subject: Re: Printing with overflow checks can cause modpost errors
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andrew Ballance <andrewjballance@gmail.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following build warnings / errors noticed on x86_64 rust config
-with rustgcc toolchains on the Linux next-20250912 tag.
+On Fri, Sep 12, 2025 at 10:28=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Fri, Sep 12, 2025 at 6:08=E2=80=AFAM Andrew Ballance
+> <andrewjballance@gmail.com> wrote:
+> >
+> > The pointer passed is const so rustc should assume that the c side does
+> > not change offset, but looks like rustc does not do that.
+>
+> That is not possible -- a const pointer does not guarantee the value
+> will not be changed.
 
-The change in the build environment noticed as rustgcc version upgrade
-gcc (Debian 14.3.0-5) 14.3.0 to gcc (Debian 15.2.0-3) 15.2.0
+I believe this code is using an immutable reference and not just a
+pointer, so it would be UB to use it to write to `offset`, and so it
+would be valid to assume it has not changed. But I think that in most
+scenarios, Rust only optimizes using that information when the
+reference appears as a function argument, which is not the case here.
 
-Regression Analysis:
-- New regression? yes
-- Reproducibility? yes
-
-Test regression: next-20250912: x86_64-linux-gnu-ld: error: unplaced
-orphan section `.sframe' from `vmlinux.o'
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Test log
-x86_64-linux-gnu-ld: error: unplaced orphan section `.sframe' from `vmlinux.o'
-
-## Source
-* Kernel version: 6.17.0-rc5
-* Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
-* Git describe: 6.17.0-rc5-next-20250912
-* Git commit: 590b221ed4256fd6c34d3dea77aa5bd6e741bbc1
-* Architectures: x86_64
-* Toolchains: gcc (Debian 15.2.0-3) 15.2.0
-* Kconfigs: rustgcc-lkftconfig-kselftest
-
-## Build
-* Build log: https://qa-reports.linaro.org/api/testruns/29861691/log_file/
-* Build details:
-https://regressions.linaro.org/lkft/linux-next-master/next-20250912/build/rustgcc-lkftconfig-kselftest/
-* Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/builds/32aTGwi7jsx5icm9sDcpfJLbJQB
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/32aTGwi7jsx5icm9sDcpfJLbJQB/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/32aTGwi7jsx5icm9sDcpfJLbJQB/config
-
---
-Linaro LKFT
+Alice
