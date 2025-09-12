@@ -1,204 +1,245 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6B62750F2;
-	Fri, 12 Sep 2025 06:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76C62E401;
+	Fri, 12 Sep 2025 08:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757659329; cv=none; b=ELPSc1m6sX6UedQHZ+A91+SzkHgiABGHSPNCQx6rvsx2yWrztA6PSdAzhYWBoxMDr0lAFFZh2EpcW10AYiKRUK/t4n6R57vNu+Vu4ODNwBkB+4/NtT3nbOs42GNlb5bWcPVHqTBZedoBKozXow1hhWTithusKhh1ph1ldj5X9zQ=
+	t=1757664411; cv=none; b=Xzy/zHuPqd/QJ8LWxUX30kKWgoekceARj8nz6So+5CYPL8KPTzrK9CMCaPqPPoKXA5k9EVu1UcdetAXxQYFNf46RCaa4ZvpdSaYFX6T7AWNBsWQzOZHReqrC4Ha5iYx7y8izbAgtcAg9qcUieTtzEYFwkzydCkQPs1fL28Wjg8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757659329; c=relaxed/simple;
-	bh=XARN275NSX7547scBYEyJ8UtV2onKi9DOJyaZQNGPoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ts63DJGy8goVf9fsMoI/EKcSGgSQ8nmXIs3ZHTu3a3eJKEDJxHrak15c5A/ry+SbPTF2yoY7zsXJcAbJh2s7MlcVUexglYVPq0SrXIdITyry9nUlWkPqTBRWxrXb6VPauV0tWemy4u6EKCgshkDK+hO3jc2+IKXbqcaS9O+5WVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=af6vTfth; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1757664411; c=relaxed/simple;
+	bh=JIDNigBEQ26LMxGdb3Stg7SADUM2py3C9JqZNK5PaBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z2W0UFqo+a5ztUXNhRqH3Q3iVRF96mSii7sTuwIu9SnE7liEEq+/zAzXoRGUDagPkHHhFA8xVbHdn+kF7Kf6frWa2W5BdUJ4daiTwaGApsSeBWTWadKyzPk9wGu70HHvEIfgZLYPhernEI/Nkcfp4prxJqRjiHAEgpBNngsnuak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xi6LesXp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="af6vTfth"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757659328; x=1789195328;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XARN275NSX7547scBYEyJ8UtV2onKi9DOJyaZQNGPoE=;
-  b=af6vTfth1ahq9GC4xpomf6CcABAYw/8VNRDsosLaNYWG8IYuo/bNW6jk
-   Ry/K80vUE1pOLWRynzihpyVPY0bm2rod4RLUnD8AfFdfmZ57o4QCaoU3N
-   5A7DObR0CMpqA9pECcnb+DsjXSB/RWDVdPROiy/qSlokyjaY2+F7i6Sme
-   XFCz9Z+ZvRfCBmLMC7/6o+UivuGsHJLsb9weHkoEeakomBsD8SKeqokef
-   cmXyR5r8zzuhmzj9w18HEcpU6cqFdCXyuUuB9fkV0hXNc6Hm4TbQyptdX
-   N47OX1IJAqH7Q+9z8agifZ6dvi8N82WHreMILddnWDq3MtojuDrHF4A2r
-   w==;
-X-CSE-ConnectionGUID: IIIqWRUCSPKK2r2DIiLVTg==
-X-CSE-MsgGUID: CdpeU/M3RNaCjRBmLia/rQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="63825762"
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="63825762"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 23:42:07 -0700
-X-CSE-ConnectionGUID: Oxn9V5DzSJCdg0k03flx9Q==
-X-CSE-MsgGUID: r2bIIqZXTWCxU6X5CjMrtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="177927638"
-Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 11 Sep 2025 23:42:00 -0700
-Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uwxTp-0000t2-2p;
-	Fri, 12 Sep 2025 06:41:57 +0000
-Date: Fri, 12 Sep 2025 14:41:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
-	dakr@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: Re: [PATCH] rust: pci: add PCI interrupt allocation and management
- support
-Message-ID: <202509121404.668X5Vy6-lkp@intel.com>
-References: <20250910035415.381753-1-joelagnelf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xi6LesXp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061DEC4CEF5;
+	Fri, 12 Sep 2025 08:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757664411;
+	bh=JIDNigBEQ26LMxGdb3Stg7SADUM2py3C9JqZNK5PaBM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Xi6LesXpM5el8fvLzaOJ/6hXe8hKRX727RutnRMh+D5yeUkpSfHrWY3NlCZ10qHKj
+	 9OJpk08TH9Cq5TmKLQthA1Ntm+s0J1lIyMOc5S/iiZrXQ2gVXRkorZ2H5PCfswHWQf
+	 oEr20N5QU1MnJwHzI553WVNyow9NMueYI+9OewiwCR+xV6UuILGkuIf9iDQzmZ0C2d
+	 A/HGRK6nBKFSqkgIBykCSzIHNv5gurGb3xRkmsr6WfafvYU8rgDokziBwhrYlQGszf
+	 8BvoRfv54yuwiz+nm0J4iLAs3iWMieKEMWh2gLD/+QE/4yGk9RueqOY0U65s1weRPs
+	 6clf7PV+Rk1Og==
+Date: Fri, 12 Sep 2025 10:06:45 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, Linux Doc Mailing List
+ <linux-doc@vger.kernel.org>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl
+ <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 08/19] tools/docs: sphinx-build-wrapper: add a
+ wrapper for sphinx-build
+Message-ID: <20250912100645.15c79351@foz.lan>
+In-Reply-To: <87ldmkojo5.fsf@trenco.lwn.net>
+References: <cover.1756969623.git.mchehab+huawei@kernel.org>
+	<e019f951190a732f9ac0b21bcda7e49af3bd5cbd.1756969623.git.mchehab+huawei@kernel.org>
+	<e13837a0ac46dffe39c600d11fdf33f538bdc9c3@intel.com>
+	<20250910145926.453f5441@foz.lan>
+	<45888ca6c88071c754784495b4ef69460ea67b4f@intel.com>
+	<fuv4p45tvjfdvwu2625s2l2kvcw64p4ohherlwyum3vmogmrfz@yb47nt66xgm6>
+	<87zfb1p0r3.fsf@trenco.lwn.net>
+	<a1333c717bb5bcea7f7c616cbf8604fa259c3158@intel.com>
+	<87ldmkojo5.fsf@trenco.lwn.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910035415.381753-1-joelagnelf@nvidia.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Hi Joel,
+Em Thu, 11 Sep 2025 13:47:54 -0600
+Jonathan Corbet <corbet@lwn.net> escreveu:
 
-kernel test robot noticed the following build errors:
+> Jani Nikula <jani.nikula@linux.intel.com> writes:
+>=20
+> > On Thu, 11 Sep 2025, Jonathan Corbet <corbet@lwn.net> wrote: =20
+> >> A couple of times I have looked into using intersphinx, making each bo=
+ok
+> >> into an actually separate book.  The thing I always run into is that
+> >> doing a complete docs build, with working references, would require
+> >> building everything twice.  This is probably worth another attempt one
+> >> of these years... =20
 
-[auto build test ERROR on pci/next]
-[also build test ERROR on pci/for-linus drm-misc/drm-misc-next drm-tip/drm-tip linus/master v6.17-rc5]
-[cannot apply to next-20250911]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+There are a couple of different usecase scenarios for building docs.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Joel-Fernandes/rust-pci-add-PCI-interrupt-allocation-and-management-support/20250910-115528
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20250910035415.381753-1-joelagnelf%40nvidia.com
-patch subject: [PATCH] rust: pci: add PCI interrupt allocation and management support
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250912/202509121404.668X5Vy6-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250912/202509121404.668X5Vy6-lkp@intel.com/reproduce)
+1) The first and most important one is to produce book(s) for people
+   to use. This is usually done by some automation, and the result is
+   placed on places like:
+	- https://docs.kernel.org/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509121404.668X5Vy6-lkp@intel.com/
+   and on subsystem-specific places like:
+	- https://linuxtv.org/downloads/v4l-dvb-apis-new/
 
-All errors (new ones prefixed by >>):
+for scenario (1), taking twice the time to build is not an issue, as
+nobody will be sitting on a chair waiting for the build to finish.
 
->> error[E0425]: cannot find value `dev` in this scope
-   --> rust/doctests_kernel_generated.rs:6968:13
-   |
-   6968 | let nvecs = dev.alloc_irq_vectors(1, 32, IrqTypes::all())?;
-   |             ^^^ not found in this scope
---
->> error[E0433]: failed to resolve: use of undeclared type `IrqTypes`
-   --> rust/doctests_kernel_generated.rs:6968:42
-   |
-   6968 | let nvecs = dev.alloc_irq_vectors(1, 32, IrqTypes::all())?;
-   |                                          ^^^^^^^^ use of undeclared type `IrqTypes`
-   |
-   help: consider importing this struct
-   |
-   3    + use kernel::pci::IrqTypes;
-   |
---
->> error[E0433]: failed to resolve: use of undeclared type `IrqTypes`
-   --> rust/doctests_kernel_generated.rs:6971:16
-   |
-   6971 | let msi_only = IrqTypes::default()
-   |                ^^^^^^^^ use of undeclared type `IrqTypes`
-   |
-   help: consider importing this struct
-   |
-   3    + use kernel::pci::IrqTypes;
-   |
---
->> error[E0433]: failed to resolve: use of undeclared type `IrqType`
-   --> rust/doctests_kernel_generated.rs:6972:11
-   |
-   6972 |     .with(IrqType::Msi)
-   |           ^^^^^^^ use of undeclared type `IrqType`
-   |
-   help: consider importing this enum
-   |
-   3    + use kernel::pci::IrqType;
-   |
---
->> error[E0433]: failed to resolve: use of undeclared type `IrqType`
-   --> rust/doctests_kernel_generated.rs:6973:11
-   |
-   6973 |     .with(IrqType::MsiX);
-   |           ^^^^^^^ use of undeclared type `IrqType`
-   |
-   help: consider importing this enum
-   |
-   3    + use kernel::pci::IrqType;
-   |
---
->> error[E0425]: cannot find value `dev` in this scope
-   --> rust/doctests_kernel_generated.rs:6974:13
-   |
-   6974 | let nvecs = dev.alloc_irq_vectors(4, 16, msi_only)?;
-   |             ^^^ not found in this scope
---
->> error[E0433]: failed to resolve: use of undeclared type `IrqTypes`
-   --> rust/doctests_kernel_generated.rs:7025:16
-   |
-   7025 | let msi_only = IrqTypes::default()
-   |                ^^^^^^^^ use of undeclared type `IrqTypes`
-   |
-   help: consider importing this struct
-   |
-   3    + use kernel::pci::IrqTypes;
-   |
---
->> error[E0433]: failed to resolve: use of undeclared type `IrqType`
-   --> rust/doctests_kernel_generated.rs:7026:11
-   |
-   7026 |     .with(IrqType::Msi)
-   |           ^^^^^^^ use of undeclared type `IrqType`
-   |
-   help: consider importing this enum
-   |
-   3    + use kernel::pci::IrqType;
-   |
---
->> error[E0433]: failed to resolve: use of undeclared type `IrqType`
-   --> rust/doctests_kernel_generated.rs:7027:11
-   |
-   7027 |     .with(IrqType::MsiX);
-   |           ^^^^^^^ use of undeclared type `IrqType`
-   |
-   help: consider importing this enum
-   |
-   3    + use kernel::pci::IrqType;
-   |
+On such scenario, SPHINXDIRS is important on subsystem-specific docs.
+For instance, on media, we use SPHINXDIRS to pick parts of 3 different
+books:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+	- Documentation/admin-guide/media/
+	- Documentation/driver-api/media/
+	- Documentation/userspace-api/media/
+
+What media automation does, once per day, is:
+
+	# Non-essencial parts of index.rst dropped
+	cat <<END >Documentation/media/index.rst
+	=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+	Linux Kernel Media Documentation
+	=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+
+	.. toctree::
+
+	        admin-guide/index
+        	driver-api/index
+	        userspace-api/index
+	END
+
+	rsync -uAXEHlaSx -W --inplace --delete Documentation/admin-guide/media/ Do=
+cumentation/media/admin-guide
+	rsync -uAXEHlaSx -W --inplace --delete Documentation/driver-api/media/ Doc=
+umentation/media/driver-api
+	rsync -uAXEHlaSx -W --inplace --delete Documentation/userspace-api/media/ =
+Documentation/media/userspace-api
+
+	make SPHINXDIRS=3D'media' CSS=3D'$CSS' DOCS_THEME=3D'$DOCS_THEME' htmldocs
+	make SPHINXDIRS=3D'media' pdfdocs
+	make SPHINXDIRS=3D'media' epubdocs
+
+2) CI tests. Here, taking more time usually is not a problem, except
+   when CI is used before pushing stuff, and the developer has to wait
+   it to finish before pushing.
+
+For scenario (2), a build time increase is problematic, as, if it now
+takes twice the time, a change like that will require twice the
+resources for the build with may increase costs.
+
+3) developers who touched docs. They want a way to quickly build and
+   verify the output for their changes.
+
+Here, any time increase is problematic, and SPHINXDIRS play an important=20
+hole by allowing them to build only the touched documents.
+
+For instance, when I was developing Netlink yaml plugin, I had to use
+dozens of times:
+
+	make SPINXDRS=3DDocumentation/netlink/specs/ htmldocs
+
+If I had to build the entire documentation every time, the development
+time would increase from days to weeks.
+
+Looking on those three scenarios, the only one where intersphinx is
+useful is (1).
+
+=46rom my PoV, we should support intersphinx, but this should be optional.
+Also, one has to point from where intersphinx will point unsolved
+symbols. So, we would need something like:
+
+	make SPHINXREFMAP=3Dintersphinx_mapping.py htmldocs
+
+where intersphinx_mapping.py would be a file containing intersphinx
+configuration. We would add a default map at Documentation/, while
+letting it to be overridden if some subsystem has different requirements
+or is using a different CSS tamplate or not using alabaster.
+
+> > I think the main factor in that should be whether it makes sense from
+> > overall documentation standpoint, not the technical details.
+
+Agreed.
+
+> > Having several books might make sense. It might even be helpful in
+> > organizing the documentation by audiences. But having the granularity of
+> > SPHINXDIRS with that would be overkill.=20
+
+On the contrary. SPHINXDIRS granuarity is very important for scenario (3).
+
+> > And there needs to be a book to
+> > bring them together, and link to the other books, acting as the landing
+> > page. =20
+>=20
+> Well, I think that the number of existing directories needs to be
+> reduced rather further.  I made progress in that direction by coalescing
+> all the arch docs under Documentation/arch/.  I would like to do
+> something similar with all the device-specific docs, creating
+> Documentation/devices/.  Then we start to get to a reasonable number of
+> books.
+
+I don't think reducing the number of books should be the goal, but,
+instead, to have them with a clear and coherent organization with focus
+on the audience that will be actually using them.
+
+After reorg, we may have less books. That's fine. But it is also fine
+if we end with more books.
+
+I lost the battle years ago, but I still believe that, at least for
+some subsystems like media, i2c, DRM, security and others, a=20
+subsystem-specific book could be better. After all, the audience for
+such subsystems is very specialized.
+
+> > I believe it should be possible to generate the intersphinx inventory
+> > without generating the full html or pdf documentation. So I don't think
+> > it's actually two complete docs builds. It might speed things up to have
+> > a number of independent documentation builds. =20
+>=20
+> That's a good point, I hadn't looked into that part.  The builder phase
+> takes a lot of the time, if that could be cut out things would go
+> faster.=20
+
+Indeed, but we need to double check if .doctree cache expiration will
+happen the right way for all books affected by a partial build.
+
+During this merge window, I sent a RFC patch in the middle of a comment
+with a conf.py logic to detect Sphinx cache expiration. I remember I
+added a comment asking if we should upstream it or not, but, as nobody
+answered, I ended forgetting about it.
+
+If we're willing to experiment with that, I recommend looking on such
+patch and add a variant of it, enabled via V=3D1 or via some debug
+parameter.
+
+The goal would be to check if a change on a file will ensure that all
+books using it will have cache expiration and be rebuilt.
+
+> > As to the working references, IIUC partial builds with SPHINXDIRS
+> > doesn't get that part right if there are references outside of the
+> > designated dirs, leading to warnings. =20
+>=20
+> That is true.  My point though is that, to get the references right with
+> a *full* build, a two-pass approach is needed though, as you suggest,
+> perhaps the first pass could be faster.
+
+How fast? during development time, SPHINXDIRS means a couple of seconds:
+
+	$ make clean; time make SPHINXDIRS=3D"peci" htmldocs
+	...
+	real    0m1,373s
+	user    0m1,348s
+
+Even more complex builds, even when picking more than one book, like this:
+
+	$ make clean; time make SPHINXDIRS=3D"driver-api/media/ userspace-api/medi=
+a/" htmldocs
+	...
+	real    0m11,801s
+	user    0m31,381s
+	sys     0m6,880s
+
+it still fits at the seconds range. Can interphinx first pass have a
+similar build time?
+
+Thanks,
+Mauro
