@@ -1,239 +1,137 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B96430ACF9
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 16:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358C63081BD;
+	Fri, 12 Sep 2025 17:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757695322; cv=none; b=tA6PFx2hATiSQ+CbyouLWeoz6lmbu0IELSfZt65J6FK9yA1plKxZ2SwNy0UuMKf/FXRsKadzaeR/kWYb5DmCcMzXI6+BpK9pDISR5B47Fn4gLfrSv2vb1beiW44TGTXQxqbP6v6c2din2cTJbEWcsrf6//GzD5SXPuOh0X0m62Q=
+	t=1757698944; cv=none; b=XO2tYKnAoZXDSCzblyunj06NbB/jhMOUgHVoHmZiul2TB729Id8MuzGHg+i3TlohALSXd5gvc8EMBnT3UCHZNfhDH71nefgwTR1szkzxuPoykA8mbh1WCweTXVolrp2oT8sVHZ285ZorIkxV540tcFSOnc3IVkj/s8STMy/dLUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757695322; c=relaxed/simple;
-	bh=iYOckhXvoXHI89aZgEd+P0bhwExKnzLKVvLjUbSKj3E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dZ0qIrrqo17n0B7wpm9VJA1vmRY0B7p2/GhoeifN1wUbg8QiPUdy/hd3ru9zc+VT3xZ41P2+UxgVCkrBoFfKvXc4o0b/4gkbA7fuUcbIH94dUIdTGvWua7yCKXrr5OI4Yz7pOqUItrnIL+4jurcqQHVFp9USSS8HO9K1fvzwjoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=NW+5Ac7w; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	s=arc-20240116; t=1757698944; c=relaxed/simple;
+	bh=0cY7VeaySFBSAW5INmThb2nsUazkylOBbySNCBPZKbw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VX1vx7p1ohl8fRf0dFBZKMdLxTHBGhxQMjKyoyn/vvgOmwmK/no2RqGsP82+yVll1UKNvV3k41OxnXS4ErqEMJPOzi1t6wy2yVQuQw+DXGn5mIGkPwBbgzU4QZYX4VkAIG7YpJekkvSMZNdSXMEZguushY9mrYKK0bQOnlfNR08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=abWVJLlu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="NW+5Ac7w"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-76e4fc419a9so1885764b3a.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 09:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1757695319; x=1758300119; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eUzTaaKQdM78ZqXpIezMElUSzU7VXjFq6bGRx3LctHs=;
-        b=NW+5Ac7wBU3jLuW4Je3egpX7udJ9A1sqenRMhhOBxh0GS5dpAJ77vTgwN1BlOKxR4m
-         pCnFcIl0K8XDYkBorXUDTJhocRANny2atAWmIXBrd3kVdTlndHVH5qCs5xR/p866RTdI
-         FogH0m2zzqDTOcMsOp9t50DOkrni6t/EDLsuU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757695319; x=1758300119;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eUzTaaKQdM78ZqXpIezMElUSzU7VXjFq6bGRx3LctHs=;
-        b=XCMzH1rINHQsju9bK/1rUlASLcGFDRnIX1GORp5fV1WiykfrCXFreNoCErThGmyR/J
-         o8ITkJ9w/jDf8/kmS9lSzetjJkDIa4KgcIj+7I8Eywy5imbhB5ej5V0Gz9ECuxYGjM1J
-         GejIX5M1ZxySW7ZJrst1otc3C8QKHQNujkF8QClBwL7T7zi7fOfRjmZJVNVt7lO51vQF
-         5KYlmSE7DlxmWFwXyfxjW4uyna8vbMz5GSD2IWZcR53W+bX5PpP4TP4saTW2vrDr0j7e
-         SPaoU0uVW16VVCi5pViZm9j3vXDMKSfAz703SInJljscTFuUZSFa+iJshqMsi8O+yd1C
-         3r5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXU0LcePRuwm9qO/hiesu0ZfoskAJ4PnULD+N7/mSu6Q+NjDVdpc/+ZLa5SZqy9MS/l3zBElt6aUnEM8Qxk5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwceVgkRDvePZFyFi79T7vzgDI43oCTEQjC1YqB4RTfygNc/A4X
-	2SNYTnSxQkcrcEiP9u3DAuf1es2GK6/6B0KdSa6ZPHnvzHUFi+PU+Nnz87siQBR7MzY=
-X-Gm-Gg: ASbGncuV9tXr4Ge28nMtHZ+5KT0vl1HL89wGX+2qN1bxNN7HEj2Mm/6DXwtRtD7uQvR
-	fZvqQWoCYC6ez0rAC1DfJvdojjueI4k4zKi/6ABzL2Okei6PR6ddvzbyCtwi5U8WScdqc992HLf
-	0qF7/rFKLgXzxtJzYPSchxqhfVNVeNp9BXdXEQ4VWw5yn7bM3a2cXsjEueS7UBefDxGD3otv5w/
-	C4Y9pWtOqOb+pgeZwNxcHX7pinQqMudPcoq6SxIYEylgxx/OyAGQn+P/RSXng6ObaL8P0OJlr9Q
-	Wjl6/tiXBBgIEZAoXb/txOiG+6+ziqrZGdKzl6rbwPfCje07k39X0i2b3KVbebZCOiKi2GcX0At
-	9EOVpYdGH8ut3EGIVt4OuNJyvo63TsV8B+ZDmBCSmzGMDI5HwYoO+TXvB
-X-Google-Smtp-Source: AGHT+IH+5x9DuKFx9PMoW08FbBeZtXn84JaYEDOdb8DYH7O2d5sqqNiM+uDN2bMJC7MuYFmvHxIQtw==
-X-Received: by 2002:a05:6a00:a8a:b0:771:ec42:1c1e with SMTP id d2e1a72fcca58-77612168e3emr3844530b3a.16.1757695319263;
-        Fri, 12 Sep 2025 09:41:59 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([175.195.128.78])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607b17e23sm5970153b3a.55.2025.09.12.09.41.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 09:41:58 -0700 (PDT)
-Date: Sat, 13 Sep 2025 01:41:44 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Caleb Sander Mateos <csander@purestorage.com>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abWVJLlu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A1EC4CEF1;
+	Fri, 12 Sep 2025 17:42:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757698943;
+	bh=0cY7VeaySFBSAW5INmThb2nsUazkylOBbySNCBPZKbw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=abWVJLluulo3Sk63YTyecs8iH4LIt/zrLRDB5tD2tBXVS1+CDaUuymgYv4H8Iu2e+
+	 jqp+YeWn1u/W9HmZ8uuv3y+CeFyk2O8TGJ+Q1Uz88EcyWG5DGBHxLGWWeBp2EDVrxY
+	 mdJJ+6gRj//jEbPpWz00DlDDCcsb6MN4Fyt7GfrpCHJtypipvNSDiKpzuAfqY86TIZ
+	 BI0dORgLOvQQqqqdBGljofFyaejshKgxVvD1V2Vugw4QPD4jTneT5tCofs7ToFh3Kb
+	 qfrXIZm63eXPsPHhExHGzb3CNeBzdBWgeP5Ese5GCL+oRQ47ciyXLcDwvXEYN2NZxh
+	 AZEZ88lGdszVw==
+From: Benno Lossin <lossin@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Benno Lossin <lossin@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [RFC PATCH v3 2/5] io_uring/cmd: zero-init pdu in
- io_uring_cmd_prep() to avoid UB
-Message-ID: <aMRNSBHDM4nkewHO@sidongui-MacBookPro.local>
-References: <20250822125555.8620-1-sidong.yang@furiosa.ai>
- <20250822125555.8620-3-sidong.yang@furiosa.ai>
- <CADUfDZpsePAbEON_90frzrPCPBt-a=1sW2Q=i8BGS=+tZhudFA@mail.gmail.com>
- <aLbFiChBnTNLBAyV@sidongui-MacBookPro.local>
- <CADUfDZpPvj3R7kzWC9bQVV0iuCBOnKsNUFn=B3ivf7De5wCB8g@mail.gmail.com>
- <aLxFAamglufhUvq0@sidongui-MacBookPro.local>
- <CADUfDZruwQyOcAeOXkXMLX+_HgOBeYdHUmgnJdT5pGQEmXt9+g@mail.gmail.com>
- <aMA8_MuU0V-_ja5O@sidongui-MacBookPro.local>
- <CADUfDZppdnM2QAeX37OmZsXqd7sO7KvyLnNPUYOgLpWMb+FpoQ@mail.gmail.com>
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Fiona Behrens <me@kloenk.dev>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Alban Kurti <kurti@invicto.ai>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [GIT PULL] Rust pin-init for v6.18
+Date: Fri, 12 Sep 2025 19:41:46 +0200
+Message-ID: <20250912174148.373530-1-lossin@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADUfDZppdnM2QAeX37OmZsXqd7sO7KvyLnNPUYOgLpWMb+FpoQ@mail.gmail.com>
 
-On Tue, Sep 09, 2025 at 09:32:37AM -0700, Caleb Sander Mateos wrote:
-> On Tue, Sep 9, 2025 at 7:43 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >
-> > On Mon, Sep 08, 2025 at 12:45:58PM -0700, Caleb Sander Mateos wrote:
-> > > On Sat, Sep 6, 2025 at 7:28 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > > >
-> > > > On Tue, Sep 02, 2025 at 08:31:00AM -0700, Caleb Sander Mateos wrote:
-> > > > > On Tue, Sep 2, 2025 at 3:23 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > > > > >
-> > > > > > On Mon, Sep 01, 2025 at 05:34:28PM -0700, Caleb Sander Mateos wrote:
-> > > > > > > On Fri, Aug 22, 2025 at 5:56 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > > > > > > >
-> > > > > > > > The pdu field in io_uring_cmd may contain stale data when a request
-> > > > > > > > object is recycled from the slab cache. Accessing uninitialized or
-> > > > > > > > garbage memory can lead to undefined behavior in users of the pdu.
-> > > > > > > >
-> > > > > > > > Ensure the pdu buffer is cleared during io_uring_cmd_prep() so that
-> > > > > > > > each command starts from a well-defined state. This avoids exposing
-> > > > > > > > uninitialized memory and prevents potential misinterpretation of data
-> > > > > > > > from previous requests.
-> > > > > > > >
-> > > > > > > > No functional change is intended other than guaranteeing that pdu is
-> > > > > > > > always zero-initialized before use.
-> > > > > > > >
-> > > > > > > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
-> > > > > > > > ---
-> > > > > > > >  io_uring/uring_cmd.c | 1 +
-> > > > > > > >  1 file changed, 1 insertion(+)
-> > > > > > > >
-> > > > > > > > diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
-> > > > > > > > index 053bac89b6c0..2492525d4e43 100644
-> > > > > > > > --- a/io_uring/uring_cmd.c
-> > > > > > > > +++ b/io_uring/uring_cmd.c
-> > > > > > > > @@ -203,6 +203,7 @@ int io_uring_cmd_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
-> > > > > > > >         if (!ac)
-> > > > > > > >                 return -ENOMEM;
-> > > > > > > >         ioucmd->sqe = sqe;
-> > > > > > > > +       memset(&ioucmd->pdu, 0, sizeof(ioucmd->pdu));
-> > > > > > >
-> > > > > > > Adding this overhead to every existing uring_cmd() implementation is
-> > > > > > > unfortunate. Could we instead track the initialized/uninitialized
-> > > > > > > state by using different types on the Rust side? The io_uring_cmd
-> > > > > > > could start as an IoUringCmd, where the PDU field is MaybeUninit,
-> > > > > > > write_pdu<T>() could return a new IoUringCmdPdu<T> that guarantees the
-> > > > > > > PDU has been initialized.
-> > > > > >
-> > > > > > I've found a flag IORING_URING_CMD_REISSUE that we could initialize
-> > > > > > the pdu. In uring_cmd callback, we can fill zero when it's not reissued.
-> > > > > > But I don't know that we could call T::default() in miscdevice. If we
-> > > > > > make IoUringCmdPdu<T>, MiscDevice also should be MiscDevice<T>.
-> > > > > >
-> > > > > > How about assign a byte in pdu for checking initialized? In uring_cmd(),
-> > > > > > We could set a byte flag that it's not initialized. And we could return
-> > > > > > error that it's not initialized in read_pdu().
-> > > > >
-> > > > > Could we do the zero-initialization (or T::default()) in
-> > > > > MiscdeviceVTable::uring_cmd() if the IORING_URING_CMD_REISSUE flag
-> > > > > isn't set (i.e. on the initial issue)? That way, we avoid any
-> > > > > performance penalty for the existing C uring_cmd() implementations.
-> > > > > I'm not quite sure what you mean by "assign a byte in pdu for checking
-> > > > > initialized".
-> > > >
-> > > > Sure, we could fill zero when it's the first time uring_cmd called with
-> > > > checking the flag. I would remove this commit for next version. I also
-> > > > suggests that we would provide the method that read_pdu() and write_pdu().
-> > > > In read_pdu() I want to check write_pdu() is called before. So along the
-> > > > 20 bytes for pdu, maybe we could use a bytes for the flag that pdu is
-> > > > initialized?
-> > >
-> > > Not sure what you mean about "20 bytes for pdu".
-> > > It seems like it would be preferable to enforce that write_pdu() has
-> > > been called before read_pdu() using the Rust type system instead of a
-> > > runtime check. I was thinking a signature like fn write_pdu(cmd:
-> > > IoUringCmd, value: T) -> IoUringCmdPdu<T>. Do you feel there's a
-> > > reason that wouldn't work and a runtime check would be necessary?
-> >
-> > I didn't think about make write_pdu() to return IoUringCmdPdu<T> before.
-> > I think it's good way to pdu is safe without adding a new generic param for
-> > MiscDevice. write_pdu() would return IoUringCmdPdu<T> and it could call
-> > IoUringCmdPdu<T>::pdu(&mut self) -> &mut T safely maybe.
-> 
-> Yes, that's what I was thinking.
+Hi Danilo,
 
-Good, I'll change api in this way. Thanks!
+As discussed with Miguel, I'm sending my PR to you this time.
 
-> 
-> >
-> > >
-> > > >
-> > > > But maybe I would introduce a new struct that has Pin<&mut IoUringCmd> and
-> > > > issue_flags. How about some additional field for pdu is initialized like below?
-> > > >
-> > > > struct IoUringCmdArgs {
-> > > >   ioucmd: Pin<&mut IoUringCmd>,
-> > > >   issue_flags: u32,
-> > > >   pdu_initialized: bool,
-> > > > }
-> > >
-> > > One other thing I realized is that issue_flags should come from the
-> > > *current* context rather than the context the uring_cmd() callback was
-> > > called in. For example, if io_uring_cmd_done() is called from task
-> > > work context, issue_flags should match the issue_flags passed to the
-> > > io_uring_cmd_tw_t callback, not the issue_flags originally passed to
-> > > the uring_cmd() callback. So it probably makes more sense to decouple
-> > > issue_flags from the (owned) IoUringCmd. I think you could pass it by
-> > > reference (&IssueFlags) or with a phantom reference lifetime
-> > > (IssueFlags<'_>) to the Rust uring_cmd() and task work callbacks to
-> > > ensure it can't be used after those callbacks have returned.
-> >
-> > I have had no idea about task work context. I agree with you that
-> > it would be better to separate issue_flags from IoUringCmd. So,
-> > IoUringCmdArgs would have a only field Pin<&mut IoUringCmd>?
-> 
-> "Task work" is a mechanism io_uring uses to queue work to run on the
-> thread that submitted an io_uring operation. It's basically a
-> per-thread atomic queue of callbacks that the thread will process
-> whenever it returns from the kernel to userspace (after a syscall or
-> an interrupt). This is the context where asynchronous uring_cmd
-> completions are generally processed (see
-> io_uring_cmd_complete_in_task() and io_uring_cmd_do_in_task_lazy()). I
-> can't speak to the history of why io_uring uses task work, but my
-> guess would be that it provides a safe context to acquire the
-> io_ring_ctx uring_lock mutex (e.g. nvme_uring_cmd_end_io() can be
-> called from an interrupt handler, so it's not allowed to take a
-> mutex). Processing all the task work at once also provides natural
-> opportunities for batching.
+The code changes themselves aren't that big, but functionality-wise
+there are three important ones: pin-projections, code blocks and access
+to previously initialized fields. More syntax changes will be on the way
+for v6.19 and I hope I'll be a bit earlier in that cycle :)
 
-Thanks, I've checked io_uring_cmd_complete_in_task() that it receives
-callback that has issue_flags different with io_uring_cmd(). I'll try to add
-a api that wrapping io_uring_cmd_complete_in_task() for next version.
+The commits have been in linux-next for one day.
 
->
-> Yes, we probably don't need to bundle anything else with the
-> IoUringCmd after all. As I mentioned earlier, I don't think Pin<&mut
-> IoUringCmd> will work for uring_cmds that complete asynchronously, as
-> they will need to outlive the uring_cmd() call. So uring_cmd() needs
-> to transfer ownership of the struct io_uring_cmd.
+I have a conflict with your devres fix that's in -rc3, the resolution in
+linux-next looks good.
 
-I can't think that how to take ownership of struct io_uring_cmd. The
-struct allocated with io_alloc_req() and should be freed with io_free_req().
-If taking ownership means having pointer of struct io_uring_cmd, I think
-it's no difference with current version. Also could it be called with
-mem::forget() if it has ownership?
+Please pull for v6.18 -- thanks!
 
-Thanks,
-Sidong
- 
-> Best,
-> Caleb
+---
+Cheers,
+Benno
+
+The following changes since commit 8f5ae30d69d7543eee0d70083daf4de8fe15d585:
+
+  Linux 6.17-rc1 (2025-08-10 19:41:16 +0300)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/pin-init-v6.18
+
+for you to fetch changes up to 42415d163e5df6db799c7de6262d707e402c2c7e:
+
+  rust: pin-init: add references to previously initialized fields (2025-09-11 23:30:02 +0200)
+
+----------------------------------------------------------------
+pin-init changes for v6.18
+
+Changed:
+
+- `#[pin_data]` now generates a `*Projection` struct similar to the
+  `pin-project` crate.
+
+- Add initializer code blocks to `[try_][pin_]init!` macros: make
+  initializer macros accept any number of `_: {/* arbitrary code */},` &
+  make them run the code at that point.
+
+- Make the `[try_][pin_]init!` macros expose initialized fields via a
+  `let` binding as `&mut T` or `Pin<&mut T>` for later fields.
+
+Upstream dev news:
+
+- Released v0.0.10 before the changes included in this tag.
+
+- Inform users of the impending rename from `pinned-init` to `pin-init`
+  (in the kernel the rename already happened).
+
+- More CI improvements.
+
+----------------------------------------------------------------
+Benno Lossin (6):
+      rust: pin-init: examples: error: use `Error` in `fn main()`
+      rust: pin-init: README: add information banner on the rename to `pin-init`
+      rust: pin-init: rename `project` -> `project_this` in doctest
+      rust: pin-init: add pin projections to `#[pin_data]`
+      rust: pin-init: add code blocks to `[try_][pin_]init!` macros
+      rust: pin-init: add references to previously initialized fields
+
+ rust/kernel/devres.rs           |   6 +-
+ rust/kernel/workqueue.rs        |   9 +-
+ rust/pin-init/README.md         |  12 ++
+ rust/pin-init/examples/error.rs |   4 +-
+ rust/pin-init/src/lib.rs        |   4 +-
+ rust/pin-init/src/macros.rs     | 239 ++++++++++++++++++++++++++++++++++------
+ samples/rust/rust_driver_pci.rs |   2 +-
+ 7 files changed, 227 insertions(+), 49 deletions(-)
