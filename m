@@ -1,78 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCBDEAF9;
-	Sat, 13 Sep 2025 17:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D878F8460;
+	Sat, 13 Sep 2025 17:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757785603; cv=none; b=m3X06+Qg4ZJHzUA6xy2j+4LEpqbwc+iY4uKNdmvRzgx/K+y2Y1ojut/WxmY+4+UjztBE7fB8YCKwosplaK+dkUGXAixEFdM4FL7nnVIDkldCfO4Zsm9w9ldfJxM7yUdlhfaB9c4eWrDDKFGtgv+1O6Fy4j1p5MQ8/2SlJFF8VoM=
+	t=1757785806; cv=none; b=SnY1eO79Vm738bDyMcIW1+vlcnpHVDbjwtZ9df2BCLS9dQGRPR/arqbx2aEw/ilJQsXCzFofeFBXH6EjlEm+Z4vEKBstcGMqMGbF1OrSK6G4eFv1CSk31TTCTH/YYvkxV6uQH5IBtre9+zXf15PY67uS1DW0+DPM3Grn1s55ZMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757785603; c=relaxed/simple;
-	bh=qEeDUMM2cPdTS1r7qPnD2EjgT3DkSIwjoi3Bsr9b0Bo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=D3fBWfT4Jl+1sxU+aI2sUIDqy9kSX924fIki4y1XAupZHxdd44yVrBNvT/vwcz5bQ1+6U0o9kHGWVW+CFDGlnyxDSqUgOCQnxNOpTJ4B04EJTzE1Us3KwMvXT+FZe/E95C1B8YZ5YjuvQ7R1s5yyN1fYgUkz7tp5o677MVP+WUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Drf1A9hQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757785806; c=relaxed/simple;
+	bh=NJUkX4qJdApSi0mWFjD33fuvXoVp9O0hwKSsheFT/OY=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=l4uKigURoSZqud5W8Sa/hw2RtOouXDUJ/dcn91+La0pr90SJB1Qj50pSd4XdgV5E7e7HD/fr09XIdHXdVY2WIlSczCJ0qS7rkd7d2bQ3DWuHURJQP2hIh6jhz88xsASyyKSx+1A94ejYF/hBXu3UXlbYd56RuU7DFey9eTlArZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rlfepsTT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Drf1A9hQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD5DC4CEEB;
-	Sat, 13 Sep 2025 17:46:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rlfepsTT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B999C4CEEB;
+	Sat, 13 Sep 2025 17:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757785603;
-	bh=qEeDUMM2cPdTS1r7qPnD2EjgT3DkSIwjoi3Bsr9b0Bo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Drf1A9hQ43XaKKhLKjVhxDn88Kz6iVuzp/kRiY0nJnlnkdGdLmlZ8KzEzCh+Qa1xq
-	 jv7vgYdYL7g9y6Svz68VX/IuittJpFY2UQY08ktTUlRDKbVQoqUz9uLM500As3lmdj
-	 Z+rZ0J5Q/IZhYDcHXEmy5jNbKnFuD3jybRhcol84vHA++F62HOoUr/JwCSN7rOG39O
-	 fv/djtOgRiuml3GEP5VBXKBX4fRL1zJfKYUn9Gy3A1phxWqBbcOr91CI1cgYnO6sRA
-	 +kv01BABMHAnIbV2PCNrSLP3sTKRa7YQqk+YVsRqlVgYy4WRDNfHE/DMCqZeU8jsUR
-	 Ub8xXS/P8xOUA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
- rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org, nathan@kernel.org, nicolas.schier@linux.dev,
- masahiroy@kernel.org, aliceryhl@google.com,
- thomas.weissschuh@linutronix.de, tamird@gmail.com,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
- dakr@kernel.org, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH] rust: add `rustcheck` make target for check-only builds
-In-Reply-To: <20250913100847.9234-1-work@onurozkan.dev>
-References: <-ebVaoKp9tTjZGmdSRi8rrH1o7SgmGyyzk-g2ALSCBKPJP44z7dSPCplhwKt-sibwLwqP7IPEml6qCkSpJhd8g==@protonmail.internalid>
- <20250913100847.9234-1-work@onurozkan.dev>
-Date: Sat, 13 Sep 2025 19:46:28 +0200
-Message-ID: <87bjnei6tn.fsf@kernel.org>
+	s=k20201202; t=1757785806;
+	bh=NJUkX4qJdApSi0mWFjD33fuvXoVp9O0hwKSsheFT/OY=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=rlfepsTThJUPgTWwPDREcqOHGrFilduSiE5vmksGXxyYmR9lnZOezm0nT9E7RCLCE
+	 7EQaASTyYQNAyFdiD3HyVPKJml3ACiEizj3aUvyvIBhcihu85r/6mCelbtEgHGIMiu
+	 CF5AuwF09b2y8phS5NwEyEVQuul7hleYPoEaBexd412hVqoB8JY9nGLSAdjqo25LTt
+	 6yL7tYDj/TiKwIvzFqj57L9A1ihON2XhtQmb7sDOVgeAjKGCYDW3JY5r8E0H8+aSgG
+	 qmMymxvy6gEcUBrOvAKZfSV8FGQOPaPO6fSe3Y+Nj0k+06Y8TQDUnMFFvkfotipZhY
+	 hIkN7tV+mir3Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE85383BF4E;
+	Sat, 13 Sep 2025 17:50:09 +0000 (UTC)
+Subject: Re: [GIT PULL] Driver core fixes for 6.17-rc6
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <DCRL0KY7TS19.3SDABYFHZWQ7T@kernel.org>
+References: <DCRL0KY7TS19.3SDABYFHZWQ7T@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <DCRL0KY7TS19.3SDABYFHZWQ7T@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git tags/driver-core-6.17-rc6
+X-PR-Tracked-Commit-Id: f6d2900f2806d584303db689d9e18f0443610514
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: b891d11b74b447df6e18104199148e420c985ac1
+Message-Id: <175778580823.3289187.14747059909385349294.pr-tracker-bot@kernel.org>
+Date: Sat, 13 Sep 2025 17:50:08 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Saravana Kannan <saravanak@google.com>, Andrew
+ Morton <akpm@linux-foundation.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Onur =C3=96zkan <work@onurozkan.dev> writes:
+The pull request you sent on Sat, 13 Sep 2025 11:57:38 +0200:
 
-> Adds a new `rustcheck` make target to run a check-only build
-> similar to `cargo check`. This allows us to verify that the Rust
-> sources can build without building/linking final artifacts,
-> which speeds up the iteration (a lot) during development.
->
-> The target supports the same flags as other Rust build rules, so
-> it can also be used with `CLIPPY=3D1` (e.g., `make LLVM=3D1 rustcheck
-> CLIPPY=3D1) to run Clippy in a faster way.
->
-> Also, unlike `make LLVM=3D1`, it doesn't compile large amounts of C
-> code (on a fresh checkout) when the goal is only to check that
-> Rust builds are not broken after some changes.
->
+> git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git tags/driver-core-6.17-rc6
 
-I think this is a good idea! However, it looks like this target only
-checks rust code that live in rust/. Can we also check code that lives
-elsewhere, like drivers?
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/b891d11b74b447df6e18104199148e420c985ac1
 
+Thank you!
 
-Best regards,
-Andreas Hindborg
-
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
