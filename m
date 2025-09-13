@@ -1,209 +1,267 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2047.outbound.protection.outlook.com [40.107.93.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDD12745C;
-	Sat, 13 Sep 2025 01:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757725352; cv=fail; b=G2JeQJXD66o9Vq+DEVOaF7hEAVUM3fMbbzUCINGNCvo1idphX1FQm8qxrHG2MUZUxTrDyLWmzCY6PLfmI/AxS5UwfPmqBuzgLO8ZR6V+1eEsUDdoigQjSpw1qtey0l6FwoQesIzBceUjPcRd08kkEQEUxBJQ+pXZskbppQqJI8Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757725352; c=relaxed/simple;
-	bh=siIU7DQFfKlzRU2ARPuAuz9yHGJ/3JsLc1MgHWt77Kw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LnFIu6PYWNftWk1Tz72RoU/f62nhMRmHazHzvG0mUpQtCiNHAMjuCQFzui7d24ycdCAtEm/LdDh/08FAKJd0M3d1fXeTgOyTyvczDkXLdF067tc/hlpogPsQs2itoCzW3qCwQbS0lfZbumBH2xTyjq7Mgrmzcom0vvFCTplJy/I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AhigLUET; arc=fail smtp.client-ip=40.107.93.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937AD1AF0A7
+	for <rust-for-linux@vger.kernel.org>; Sat, 13 Sep 2025 04:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757736793; cv=none; b=W5qWzYOoymm8wTpj6mPamrZkObUH3Xke8crT6E3HJzZUV/1tDSUxkth5CsGOEIJUBE3yzFziHDkVplELPHlWWnq1tuW5sdjhskP+u9fN6r/hRI2fDXCuZ4uzEx2NEfGgFl6FbJsG8cNVxvur2c2+WXPpxGkQZQvvS5xha6O1yGo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757736793; c=relaxed/simple;
+	bh=6Wv2HIN7vUW7BDwatkGfyIrEwGjkldeub3pyvlc0eVc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pZRTgfgR2A+LcYYwhkuhznJldD06ISV/6z6TxdzFEMHrHURQUrm0hB7vKwbH4MwpYhyhQGiQ/j3teqBNJeWzz1fAJvkHLCSrTe0jqnTU0ehDlVLWHRm5M5azxqW0dBXWWt6alDXMbGsdxBzgN36Gx2bCBqVb+YACuKE1+VrXIFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VKgq0z3i; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AhigLUET"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HRXdGjOiGU2aZw/pACB99OdjKEE3EGv4x0qvTmRY7R3TLWHrIz9DJVJtqMGjZJOEXc7CDhPWu153CNk5fWcgufPUbFxm6sFRKNL4OqontgrDu1E0dGwPc3J81pAS/cH5cxTLd9gVHZ8GA+f3I30PoLYxJyXiRY687qY3sbN8EQ5GjJKAhC1bdSeLHafDv+83UngjNu6ijk7u0rIIodhC5UiyZVp/ZYBGUGoodfeyf4RQjMej5omHMOoUl4jRRsglzpysvjTeDXP7kj1tWIy1jzQixyFK3ewjCFBVocgK/34OyS/ULjqX5YFdSrOFEt1vzFpO13aEyge46S375CN8MA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SptTuagc5TVSshUl1KAM/wXVFI+zzM6rLEc3P0vm4so=;
- b=ImeiphDT+7p0/ZwLUHE+1kt4nJlZD+iSQiTC3P1iGmYOPI2Cv1GmgIltMHV/reSKAQRhZjAx+F31ab8pZr9uOiqqU2Bb2kUG+QbJY6cK1uf6xpTXXp6UhKbsBY9bKWpEdgcEQyeaMeCVdtSk/qgMSBEpZ4gY+LnA6Tk3fT1ujG+n51ZdJlVOBgVVcTjY3QF3e6Ve4yHTNFJezzZtiH8iyH1PfOpzUEl5V3SXjlG2n2vrCxbVTG3L/zy9h+wwgproW3PYNp75zlF8xkCDdxvYkj2yGhmt/0YdTcueSUfVkn1rrWThfzqNfGW+1+e2LnqyrNDs5WqiPZ+u2Vw/PzZibQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SptTuagc5TVSshUl1KAM/wXVFI+zzM6rLEc3P0vm4so=;
- b=AhigLUETnRZ5hciwPHBZjBRMoxGBDiT5qlFK4+l0X1jaTfUrs21KTJadVQB7QEaC7K12zAhHHWecIfXRvdrJpxw9AVn0zKopyrQbjp3KDEeX3C7oprvdJHsmZP3A7n+hijmwRD7FzGmrRfmfYq+uJRZFVi45e8NPxXS3c15My0D+zhGj0NCV60eKgMmr2HojBWBpuO6ga4xKMw+7KSnlm80SjoNpnbh1BcDrfb5nENS9e8JkrMSleA69XAgaCS2hG0rm0y5LC8fPYyTy0vPP7aH3KeENhg3yh7zRSdFNBiWi5QH/shu45WsaS5QQFR3XLPPgqbC7fKk8qc8pYPworg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by CY8PR12MB7241.namprd12.prod.outlook.com (2603:10b6:930:5a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Sat, 13 Sep
- 2025 01:02:28 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9094.021; Sat, 13 Sep 2025
- 01:02:28 +0000
-Date: Fri, 12 Sep 2025 21:02:26 -0400
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v5 02/12] gpu: nova-core: move GSP boot code to a
- dedicated method
-Message-ID: <20250913010226.GA1478480@joelbox2>
-References: <20250911-nova_firmware-v5-0-5a8a33bddca1@nvidia.com>
- <20250911-nova_firmware-v5-2-5a8a33bddca1@nvidia.com>
- <e1755470-587b-4a43-8171-3d031b7fb4f4@kernel.org>
- <DCPYQNZG1OJK.2EE4JWJAROK57@nvidia.com>
- <ce74db34-77bc-4207-94c8-6e0580189448@kernel.org>
- <DCQ074EMFNIK.1OJLWJXWZLDXZ@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCQ074EMFNIK.1OJLWJXWZLDXZ@nvidia.com>
-X-ClientProxiedBy: BL1PR13CA0439.namprd13.prod.outlook.com
- (2603:10b6:208:2c3::24) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VKgq0z3i"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-7726a3f185eso3713626d6.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 12 Sep 2025 21:13:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757736790; x=1758341590; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2WaF7o0RRlJLnLEo33jbMbEqykYIDx6ByziHakyovt0=;
+        b=VKgq0z3iwwXWN7J+o3FLnj01ipIwk7ZZQa2ydqGiL6eWMNE1j5LiYqhtUsS0i3u5Aa
+         VEi9K8dk0kpeso5Fd0tfJ3VqOHG3K94yiqybc4/OpMlymyi7kySg45Lqb1tV4CDPW67i
+         6HTrfmm8vti+xjdZIrHWkCfAdZeUyBHB+x+oUnJPN9EcC8h9Ncg9givLBx0gokriOg1L
+         HoKaQuWS6a75MKB4lQnIpUcwcmgbURHOpl5Kf0YJQNE4X9gDPji2M0Pjgfo40NZaWlN/
+         Jouv2Om5eywaR7+xOc1k0YwXU165RHHEiKeEyzklKj32Y/sGbZEDH1J01yjIgov/tN8v
+         7Xsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757736790; x=1758341590;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2WaF7o0RRlJLnLEo33jbMbEqykYIDx6ByziHakyovt0=;
+        b=etSsZ8WMh2iivEpaGwJvkzTpBtbeMMP3UsItZqmB1pyufGOxp6st+HtW2l5DWilhnV
+         d+gJ+GUyvxnmcCH4uu3TIZOkPP8uRn/59KqzUdUz8WwX7i4+8ah+JPPY2Qk/Kd7unmPo
+         PWfv9zhd0Fn8fIPBqS/LHuPWRiZqh09BdBASe7R7KYMLq2Fm1LEDMhjwapZsQO684cmZ
+         aiHp3hEXjuZ+h4BYWoSykbqnEF+pUMfMMqr4oWQItwpX0E4kQtzOVrNu8zXH7Uqq7wmG
+         Hj9YJlPVCEGEjn+B9RVuYwKiTaRTY+DiI9oUmN3J1GjBsOJJE5QrYLe4ZO8GiLAYFFf3
+         VL4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW8OOLNzUCJZJ4DwTw8T8p2M02caodP59oxqTGl60S0GcsNJzoNPx0YRKd25S+3SujZPNWvxEYWw4bKXlK5HA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1iHUH8jl4A+sHQZeggwQyUsr4FNUl5rjse4X2y1c0XI+v5DXX
+	OLmUYHhlA327eC3Oz8iM2ccADA+r2EV2050eYRYbNXslGIYHGTpj/OEmumW0pb//b3nhxrfOmfk
+	YIxgoALZgjKqpZefPLuDqINPWfQXdCyfImhE35TC5
+X-Gm-Gg: ASbGncvWhj91yuiF+FUixbRLBgD9bmQs8VSro5nonMN8jyH3xLH4mSKMvuXzg7paVnz
+	3YazignAIAmuQRfQs8+DghJxrv5h3qnw+KmxEiiYVXWQXbq0Bb1av+Jqt39qEQAShSvkrRJR+9A
+	7dNe0xoLnKrYbNrFEECkvFkyOpunKmG9P+fASVU3GhiqaBF0B90Tzx5fepdkpNxCG8fWzOXKGs6
+	wP3W/gpwPUD
+X-Google-Smtp-Source: AGHT+IHKc+BIL8HoXt+AUZpO+zz3DYyjJLhkC0RgZhsdwqSW3JBqhrTUk4DXveLp59CE951IsU1IKqchh0/sEkjjWYQ=
+X-Received: by 2002:ad4:4f05:0:b0:768:24e:734b with SMTP id
+ 6a1803df08f44-768027c3b96mr58195596d6.45.1757736790152; Fri, 12 Sep 2025
+ 21:13:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|CY8PR12MB7241:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7d8ef32-5623-4b53-af93-08ddf261357c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bMlBW4lfOcd7PwqKbwuaVs2iOxwTJVEYiRfdT8r+hW9pCugq0uRh2k227zOc?=
- =?us-ascii?Q?UiifLvu7p8fQoGcbCXB/olQQK1XFYjs5oLvuxxF4OP8h6xOjHRB7UwfcHJn+?=
- =?us-ascii?Q?GKKsZO6UiFhKuhLH+4Z+UFzYikw6xMj+LsI2Q9hPCUm7D2zAJuDWHPkle/Hr?=
- =?us-ascii?Q?5wwAc/hQQLFy4TenwgVdnMa3b/0vfubtq5qdu18ul5kWukX9fSFjTswbCdPU?=
- =?us-ascii?Q?WSsuooQs6Iseyl563pXqA3piyA+jfnX7m3B/gOIprBcMXcxTz0+EClyAjCzd?=
- =?us-ascii?Q?2oBmRRaySypEcw89vYyVWkXCMy3ZHXSyM3DfHs6xYuXg/EdcbhxyPPLt5uhm?=
- =?us-ascii?Q?DxJ86ujB85KUIPXYTEw44keeSZqICq1EDTiMusc4V3lxV9F7Kse7b3nj2A0N?=
- =?us-ascii?Q?znuSu6YKuIwnJYvmpJ6E7cvUS00VWQNrZyUTJhpEljVO77WP1VpyXqkorN2O?=
- =?us-ascii?Q?OvCgistjLuNUPrzQ6W7hje6W09eeJi81jnzV0i3N7VUAWzn8XNIokjfSLKhG?=
- =?us-ascii?Q?d5XGzwhOGeUdg2z6rKYnOi8CST+lMa4QLtsKhAOJnb6hDr5/NQIEZzz4ELqy?=
- =?us-ascii?Q?PX8xvkxOzQUjbB/zRxp+FylU1yV98VHR97jjS3ecuxmvFiCwtBbhSo4lV4BA?=
- =?us-ascii?Q?CfWgAsGVIyGN9Zy+tjGrFlCV7/NXtNjdbjNuq/h6be+T6OZflH48qUzP0Jke?=
- =?us-ascii?Q?biYtUm+2q+ia4F3+VFhKdXZvFKf60YIvAzbbSb0KXb3TWwr+krY2A+c7SV10?=
- =?us-ascii?Q?bDeEY9UGa87e08nCamFYgTVdmBxGB+7r2hGIuXGKC/9qWCs+HATq72eiv90d?=
- =?us-ascii?Q?sEDmvqlZQ0DGylWGsjJDw6Dl+gnQxycGpy7VgLBn+1HFuNsq51N3vCeq8QgH?=
- =?us-ascii?Q?jM6YrAmRMiffoUyIC8MaETHpV9tYtAd5j50H4YXU2NBQ/BNaV0JtMIMLkmxj?=
- =?us-ascii?Q?u4V6/SPcFUNfy1VTgYJAdiWVpJ/YD9nu413XAHdrlKyga4niondGtSdb6sH/?=
- =?us-ascii?Q?rPzXgws/kLoViJTrT+/1vuNT+uNkJ0oIF5cR6gNSji0CS2FSgsAvStvFtrNG?=
- =?us-ascii?Q?TmCBTvHX61+K2tVMC3TOuG0IYtPsOinpm6N8qE7ecL7Ew4PCKqfxLZw1BDXA?=
- =?us-ascii?Q?RdjtZtSte3aiW0lvjm+AmpBYUpm7g4sVa1JkTavleqzJ8KZbzoZzWNYXpQkZ?=
- =?us-ascii?Q?Xai5PfW//ipdRjQRxgelBAsXGHBe/QPNx7GVcYFSGIMJQg3beQ2hMHtdQI+i?=
- =?us-ascii?Q?Iu1Z7tkvjs4yyBSLv7fJFSC3wiqUZNISHCfD1k162uA8FC8Oh3NzwK5Op0Vz?=
- =?us-ascii?Q?sEhYcxGDJOb0toQB0/UjSQKWHj0C0wIPPZWAH61RZKNigDlV6bVHOUSENXrk?=
- =?us-ascii?Q?A69Bf2egeysNiBIf9I44JHa8+VXFj3vF9jlnEshgdM2oR6TFNwj0RYPE9Hz8?=
- =?us-ascii?Q?SxZOgLfFkvY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4s9k1D1qH4qdKXTnrZP0S8jyfw83iQtD9/79atwcTcA7PXuMhnGuqOdDsdQn?=
- =?us-ascii?Q?qef+1hAuuVwHD0+o8Zm0iTF4OYZuyCXzImJohphsMz7ViT02PFw+fMnzfXXI?=
- =?us-ascii?Q?6qXAqL10ziqa8OE0Xe0iN8h7223P6HpU5Do/W6W/A2qfdYUs/CkR2tmi6Umx?=
- =?us-ascii?Q?9f3pPawOhDFmN5rixSYB3527T30A2WpZq4QVLYRhtApuYAqInrujoTEMeiht?=
- =?us-ascii?Q?mKHZaEStgxOOUROlWabkKrO4eD2TVVmAuxrGB+uANMsDjq82m+EQoy+eNNck?=
- =?us-ascii?Q?xUcmepCHR1DOAv8NgfuZthuUD+TwZRHEpDrQItNQOdhVI1rF/fC2NPQu9vfi?=
- =?us-ascii?Q?Lu5Z8VOKzSUbMwCEhADFYI+A1n1xOJZOj0NOXAxk7LhJCNlWpVnDzW+NUoMi?=
- =?us-ascii?Q?NoRgw529gZobsk3ffyTyBmkoM3TnZxWj49EpfmYt00cazquP7o2CRp/bGIYW?=
- =?us-ascii?Q?+3QBmg9muOfMd5glycbCwY+nGuiN0392arNpSvwzLARYNh301qjt7PadWRN9?=
- =?us-ascii?Q?zbHFdKRer6mECYG52N3CmcnpSADeNK7m+CfXbaTSco/OdiIaq2RKNLHa2quU?=
- =?us-ascii?Q?O+Ah1sH9ZfcXk49VVgeprROwOPZpFqqsm39nMdg7fB/AU8W27VuIbL6tbckP?=
- =?us-ascii?Q?7BQH9nmAczLsIjdKkfFj8EKkosbFoLzywDfyNd2GJ4fYGfzZu2Q1PfCm5k+i?=
- =?us-ascii?Q?7Tvfv20dGKciB8KTO4R6vQkGTPYuOudaf5NyKmGfi7o45w8VBVSWyjtMN0n9?=
- =?us-ascii?Q?gJ8K7F9srXq9X69hncX9AAc2R8xBUaNssljDR5x7lq2MWEfHXXnPJxvBb8Mq?=
- =?us-ascii?Q?yjy80rGArDYGmWogrFrNENWbwWTkascSIizSQkaDwQBcvGciUi/rp6lYteda?=
- =?us-ascii?Q?3M9JGc4bitDOU4O5F6s7FhtLysly+vLGlNnGCTLIknAzNBbrQ/bV72PlS/rD?=
- =?us-ascii?Q?B1+keYZDRafwKFTJ/eTDHlTDDMnvVJulZbjmIQiepyAYLMtmoWnn4du4QSMS?=
- =?us-ascii?Q?I3GQy/8qxwtfXguayLOIXdZsf9BULzi2WOt2z5izc27KvHYyuVJZfG0F/gUd?=
- =?us-ascii?Q?YcFe9E151A2nroEoaFoDYMtObFb9o7XCuRFGrdnInV5beAmaq6WLyR0NS+9b?=
- =?us-ascii?Q?bfbB/Kgf498vlLbbfRaheumkASkM/htHoDoHtiAVy9yPP/Ui/ihzTrKpk9PG?=
- =?us-ascii?Q?+vwWl88zlX32KKk+wP9Pap4HidSAkFS4Bg9KAtwgm1TlPChXCLnaQ1apBAxw?=
- =?us-ascii?Q?B0TnQoyX/tTO3Drd8wPXFwIKo5gCWQXXKUqG5wbD5H6Tny/F07zLJMbyzwuy?=
- =?us-ascii?Q?o8GAk4wYg1vkZ7viATheNQra1MxSo7U7M4PNTAs1pXAyCQr3KQAmPutlEe46?=
- =?us-ascii?Q?sg8ue0bkamxdnEkz2P0MEn5FJe725Sgk+U2aTw8BNJFriaqwPtGFnUhlo1Qz?=
- =?us-ascii?Q?qOqcZLXCTTkhUFSYrd7u8WYeZJ5YfI38nP5LdsjPNpYuI2fmzIu4SdP1Ktyz?=
- =?us-ascii?Q?ABIvwyqGDtH5qbggf4axZV9xr5NjDST8KeLNoyLFgum9f7HieQi3Oorhzesm?=
- =?us-ascii?Q?QHXSwxHADOzXix5koDDaMzys9GK9k+8bqiWgJNI5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7d8ef32-5623-4b53-af93-08ddf261357c
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2025 01:02:28.1097
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D0C4K7zGI0vPFf8M4JsbpEOBE5JlXKnnRchIbWCsbhe+F1nbLCxx1uOCibWarimxjQZc5VdEZXZP4oqqJVkbOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7241
+References: <20250907201558.104566-2-ent3rm4n@gmail.com>
+In-Reply-To: <20250907201558.104566-2-ent3rm4n@gmail.com>
+From: David Gow <davidgow@google.com>
+Date: Sat, 13 Sep 2025 12:12:58 +0800
+X-Gm-Features: AS18NWA_OPADCOyEQRHmaGqDz6q8iqh-FKjck1YFOyZcNegh2IRpto0VgcRD95E
+Message-ID: <CABVgOSnYnSz8cyZBk6U-bLrG23naqFBjAS-xVYe5OBFosASMxQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: kunit: allow `cfg` on `test`s
+To: Kaibo Ma <ent3rm4n@gmail.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <rmoar@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 11, 2025 at 10:26:08PM +0900, Alexandre Courbot wrote:
-> On Thu Sep 11, 2025 at 9:46 PM JST, Danilo Krummrich wrote:
-[..] 
-> >> By keeping the initialization in the GPU, we can keep the GSP object
-> >> architecture-independent, and I think it makes sense from a design point
-> >> of view. That's not to say this code should be in `gpu.rs`, maybe we
-> >> want to move it to a GPU HAL, or if we really want this as part of the
-> >> GSP a `gsp/boot` module supporting all the different archs. But I'd
-> >> prefer to think about this when we start supporting several
-> >> architectures.
-> >
-> > Didn't we talk about a struct Gsp that will eventually be returned by
-> > Self::start_gsp(), or did I make this up in my head?
-> >
-> > The way I think about this is that we'll have a struct Gsp that represents the
-> > entry point in the driver to mess with the GSP command queue.
-> >
-> > But either way, this throws up two questions, if Self::start_gsp() return a
-> > struct GspMemObjects instead (which is probably the same thing with a different
-> > name), then:
-> >
-> > Are we sure this won't need any locks? If it will need locking (which I expect)
-> > then it needs pin-init.
-> 
-> Sorry, I have been imprecise: I should I said: "it can be moved" rather
-> than "it doesn't need to be pinned". In that case I don't think
-> `Gsp::new` needs to return an `impl PinInit`, right?
+On Mon, 8 Sept 2025 at 04:17, Kaibo Ma <ent3rm4n@gmail.com> wrote:
+>
+> The `kunit_test` proc macro only checks for the `test` attribute
+> immediately preceding a `fn`. If the function is disabled via a `cfg`,
+> the generated code would result in a compile error referencing a
+> non-existent function [1].
+>
+> This collects attributes and specifically cherry-picks `cfg` attributes
+> to be duplicated inside KUnit wrapper functions such that a test function
+> disabled via `cfg` compiles and is ignored correctly.
+>
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72=3D=3D48=3D69hYiDo132=
+1pCzgn_n1_jg=3Dez5UYXX91c+g5JVQ@mail.gmail.com/ [1]
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1185
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Kaibo Ma <ent3rm4n@gmail.com>
+> ---
 
-If you don't mind clarifying for me, what is the difference between "it
-doesn't need to be pinned" and "it can be moved"? AFAICS, they mean the same
-thing. If you don't want move semantics on something, the only way to achieve
-that is pinning no?. If it can be moved, and it contains locks, then that will
-break unless pinned AFAICS. So if need locking in Gsp, which I think we'll
-need (to support sychrnoized command queue accesses), then I think pinning is
-unavoidable.
+Thanks very much: I think this is a great improvement over not having
+'cfg' work at all.
 
-On the other hand, if just the firmware loading part is kept separate,
-then perhaps that part can remain unpinned?
+I do think, though, that we need to handle disabled tests differently,
+as it causes two issues:
+1. Currently, disabled tests are still included in the suite which
+contains them, and always pass. It'd be nice if they either were
+missing from the suite, or were marked 'skipped' by default.
+2. It's not possible to have several implementations of the same test
+(or, depending on how you look at it, several tests with the same
+name) with different #[cfg] attributes, even if all but one are
+disabled.
 
-Any chance we can initialize the locks later? We don't need locking until
-after the boot process is completed, and if there's a way we can dynamically
-"pin", where we hypothetically pin after the boot process completed, that
-might also work. Though I am not sure if that's something possible in
-Rust/rust4linux or if it makes sense.
+My ideal solution to both of these issues would be to only include
+tests (i.e., the wrapper function and the kunit_case struct) if
+they're enabled. That's possibly more difficult than it looks, though:
+my initial attempt at implementing this ran aground trying to
+calculate num_tests.
 
-Other thoughts?
+Even if that's not feasible, we should at least make disabled tests be
+marked 'skipped'. A quick way of doing this would be to mark the test
+as skipped in the wrapper function:
+(*_test).status =3D ::kernel::bindings::kunit_status_KUNIT_SKIPPED;
+And then re-mark it as success (KUnit tests expect the initial state
+to be success) within the {cfg_attr} block:
+(*_test).status =3D ::kernel::bindings::kunit_status_KUNIT_SUCCESS;
 
-thanks,
+That doesn't solve issue #2, but I suspect that's rare enough that we
+can leave it until someone actually has a good reason to have two test
+implementations.
 
- - Joel
+Otherwise, this seems fine to me.
 
+Thanks,
+-- David
+
+>  rust/kernel/kunit.rs |  7 +++++++
+>  rust/macros/kunit.rs | 46 ++++++++++++++++++++++++++++++++------------
+>  2 files changed, 41 insertions(+), 12 deletions(-)
+>
+> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+> index 41efd8759..32640dfc9 100644
+> --- a/rust/kernel/kunit.rs
+> +++ b/rust/kernel/kunit.rs
+> @@ -357,4 +357,11 @@ fn rust_test_kunit_example_test() {
+>      fn rust_test_kunit_in_kunit_test() {
+>          assert!(in_kunit_test());
+>      }
+> +
+> +    #[test]
+> +    #[cfg(not(all()))]
+> +    fn rust_test_kunit_always_disabled_test() {
+> +        // This test should never run because of the `cfg`.
+> +        assert!(false);
+> +    }
+>  }
+> diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+> index 81d18149a..850a321e5 100644
+> --- a/rust/macros/kunit.rs
+> +++ b/rust/macros/kunit.rs
+> @@ -5,6 +5,7 @@
+>  //! Copyright (c) 2023 Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.co=
+m>
+>
+>  use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
+> +use std::collections::HashMap;
+>  use std::fmt::Write;
+>
+>  pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenSt=
+ream {
+> @@ -41,20 +42,32 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: Toke=
+nStream) -> TokenStream {
+>      // Get the functions set as tests. Search for `[test]` -> `fn`.
+>      let mut body_it =3D body.stream().into_iter();
+>      let mut tests =3D Vec::new();
+> +    let mut attributes: HashMap<String, TokenStream> =3D HashMap::new();
+>      while let Some(token) =3D body_it.next() {
+>          match token {
+> -            TokenTree::Group(ident) if ident.to_string() =3D=3D "[test]"=
+ =3D> match body_it.next() {
+> -                Some(TokenTree::Ident(ident)) if ident.to_string() =3D=
+=3D "fn" =3D> {
+> -                    let test_name =3D match body_it.next() {
+> -                        Some(TokenTree::Ident(ident)) =3D> ident.to_stri=
+ng(),
+> -                        _ =3D> continue,
+> -                    };
+> -                    tests.push(test_name);
+> +            TokenTree::Punct(ref p) if p.as_char() =3D=3D '#' =3D> match=
+ body_it.next() {
+> +                Some(TokenTree::Group(g)) if g.delimiter() =3D=3D Delimi=
+ter::Bracket =3D> {
+> +                    if let Some(TokenTree::Ident(name)) =3D g.stream().i=
+nto_iter().next() {
+> +                        // Collect attributes because we need to find wh=
+ich are tests. We also
+> +                        // need to copy `cfg` attributes so tests can be=
+ conditionally enabled.
+> +                        attributes
+> +                            .entry(name.to_string())
+> +                            .or_default()
+> +                            .extend([token, TokenTree::Group(g)]);
+> +                    }
+> +                    continue;
+>                  }
+> -                _ =3D> continue,
+> +                _ =3D> (),
+>              },
+> +            TokenTree::Ident(i) if i.to_string() =3D=3D "fn" && attribut=
+es.contains_key("test") =3D> {
+> +                if let Some(TokenTree::Ident(test_name)) =3D body_it.nex=
+t() {
+> +                    tests.push((test_name, attributes.remove("cfg").unwr=
+ap_or_default()))
+> +                }
+> +            }
+> +
+>              _ =3D> (),
+>          }
+> +        attributes.clear();
+>      }
+>
+>      // Add `#[cfg(CONFIG_KUNIT=3D"y")]` before the module declaration.
+> @@ -100,11 +113,20 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: To=
+kenStream) -> TokenStream {
+>      let mut test_cases =3D "".to_owned();
+>      let mut assert_macros =3D "".to_owned();
+>      let path =3D crate::helpers::file();
+> -    for test in &tests {
+> +    let num_tests =3D tests.len();
+> +    for (test, cfg_attr) in tests {
+>          let kunit_wrapper_fn_name =3D format!("kunit_rust_wrapper_{test}=
+");
+> -        // An extra `use` is used here to reduce the length of the messa=
+ge.
+> +        // Append any `cfg` attributes the user might have written on th=
+eir tests so we don't
+> +        // attempt to call them when they are `cfg`'d out. An extra `use=
+` is used here to reduce
+> +        // the length of the assert message.
+>          let kunit_wrapper =3D format!(
+> -            "unsafe extern \"C\" fn {kunit_wrapper_fn_name}(_test: *mut =
+::kernel::bindings::kunit) {{ use ::kernel::kunit::is_test_result_ok; asser=
+t!(is_test_result_ok({test}())); }}",
+> +            r#"unsafe extern "C" fn {kunit_wrapper_fn_name}(_test: *mut =
+::kernel::bindings::kunit)
+> +            {{
+> +                {cfg_attr} {{
+> +                    use ::kernel::kunit::is_test_result_ok;
+> +                    assert!(is_test_result_ok({test}()));
+> +                }}
+> +            }}"#,
+>          );
+>          writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
+>          writeln!(
+> @@ -139,7 +161,7 @@ macro_rules! assert_eq {{
+>      writeln!(
+>          kunit_macros,
+>          "static mut TEST_CASES: [::kernel::bindings::kunit_case; {}] =3D=
+ [\n{test_cases}    ::kernel::kunit::kunit_case_null(),\n];",
+> -        tests.len() + 1
+> +        num_tests + 1
+>      )
+>      .unwrap();
+>
+> --
+> 2.50.1
+>
