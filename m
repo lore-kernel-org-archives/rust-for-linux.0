@@ -1,43 +1,43 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7360C2F28EF;
-	Sat, 13 Sep 2025 16:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B0E84A3E
+	for <rust-for-linux@vger.kernel.org>; Sat, 13 Sep 2025 16:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757780012; cv=none; b=R1O7XaWGYs46dldMSGU5encYLqAsmYcIngvjxBc7fM9PbDa/VspfeFSRYWDfRERrdW05u6ugIuuLVD/DaJXYO5gyJU60oShu8+C8RS59Xw4CPV8GRWlIDQAcbb797XXbGZFfU0KzD6uVBgOP2UgwVw1XJeopxLWLqQOPmGPK4BA=
+	t=1757782656; cv=none; b=VjlsJv19lIMwqPi+cqY/wUJiNuR6k68QjVj7LRhTYXB/XapB4t9jop4OZF2bFiBiMj6XXYVOJFSHnIOb9bsIkoYbLuoee2F2zyzlK6QVzCOr6k+TBMW/4ibPTFzonE4PSLf4y6nCxjly6geg2IcgfkV/A3IpjJZyXjO4eDa+xD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757780012; c=relaxed/simple;
-	bh=JntV3RGjz1Jbe0FoUMzE5n20T/KBYLOoC0wvMbE0SQA=;
+	s=arc-20240116; t=1757782656; c=relaxed/simple;
+	bh=18S0HKMWjpM4cKU51yt4uNvUa1o7IL6iHgJlRJkYu5k=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IYAqDqxGDFUmSTqqSBwSiDy53HIV8qn4MtiWalcV6Xyyl7IBPrSG0iKVT4vixzTiQERmGCMhomf13zSeZiz4SxMiSFXMH5gr/rMb6oREnO7uhClBX9luJjbKTDpxQLEPSDlMnGupNYUJqVIO4MKVxLfdlDhb+X5H3XFMEGDilC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=B2w/guqy; arc=none smtp.client-ip=79.135.106.29
+	 MIME-Version:Content-Type; b=feocCL4s/b5ANHoTEvy0PK+cbFQ/wvWTrW6fm0lltMzcv81wxmmHsmiKpGxBqvcGAwS9lVUBOicfNuWMESUApwD+Hr1C2uKRFYFJkO2mDvtrh6d/l4RUx8QAQ8da6PhnFtGD8vGJINUS0YBPgxI0x/G8sKfvPpXycBIucobY5q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=ERxBgOrC; arc=none smtp.client-ip=109.224.244.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="B2w/guqy"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="ERxBgOrC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1757780006; x=1758039206;
-	bh=xrSdxGPnLC2CBHkZSGp5i4YD6BUUlFfg9BJWTFd34G0=;
+	s=protonmail3; t=1757782652; x=1758041852;
+	bh=VRyCCFGTy4GGFNWO81YA+MF/hD5hOxRGRAxn1FFoDWs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=B2w/guqyZMC6xUP+BKyjLDpk67JpDc+IlepJRNMOeCGaEzRj4MkAIl21YxeoTH925
-	 ZRCLa4znlAlva9dZC46nsIC17Qw2LtV16BfdfowgUsIh+B7+ik75w55pDYMZzvCN+G
-	 0v8tqpT2KoRwlF28+bT/xR2ygXDBOtkQ4UvycBAm2dVVz7VX1XLU6UMO+CzqFg6vle
-	 wETlvuR27lrhk5B+hz/eNBUAnF/gmZF2lS2qr+TR9mzy4x0cnEWlocFQczg9YA/zRv
-	 l8V6zI1Xx/DR8/fuQS+8Wcpt0J3Gl+fEOHCXGsAQ0u5R8oUsmx58FqHd/W0+BtnE7u
-	 JxIl0mRTm/DpA==
-Date: Sat, 13 Sep 2025 16:13:18 +0000
-To: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+	b=ERxBgOrCkNtF+YJOAT1GgAMtvhHYiMGPY8yAKodLNzB/XoAS+acYd2eMQrlZA0Sss
+	 rbgZqboTimn/WpYhh5TkGuRFZqUhDn7DshnUvRYmF+R0F19Dzm0bm06cnOuTHjaip1
+	 STwrVSZEklD6HHERNAZuQOXpk5cPhsaB6wtbHsY1c96bUSbxJNrBOfYykAM97jP266
+	 KqJUDN4c40kaQjkAhHmljWro8WmVw3F7nGGhQakzvXZkWQzxho8AKB2la8LZRM98sl
+	 78Sre47ryEmsUxNn1WMS26CMHy1QOS36KS9GhkLh4sjvEafcGaaPdPYfOumd8tIxGH
+	 /dfUn/ddN17+Q==
+Date: Sat, 13 Sep 2025 16:57:26 +0000
+To: Maxime Ripard <mripard@kernel.org>
 From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Jiri Kosina <jikos@kernel.org>, a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, Benjamin Tissoires <benjamin.tissoires@redhat.com>, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, db48x@db48x.net, gary@garyguo.net, ojeda@kernel.org, tmgross@umich.edu, peter.hutterer@who-t.net, Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Subject: [PATCH v3 RESEND RESEND 3/3] rust: hid: Glorious PC Gaming Race Model O and O- mice reference driver
-Message-ID: <20250913161222.3889-4-sergeantsagara@protonmail.com>
-In-Reply-To: <20250913161222.3889-1-sergeantsagara@protonmail.com>
-References: <20250913161222.3889-1-sergeantsagara@protonmail.com>
+Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [RFC PATCH 0/3] Initial plumbing for implementing DRM connector APIs in Rust
+Message-ID: <87plbus32o.fsf@protonmail.com>
+In-Reply-To: <20250827-cherubic-tapir-of-wind-5cf0c4@houat>
+References: <20250818050251.102399-2-sergeantsagara@protonmail.com> <g5n4vx5hkreacrtjrbzsefnctvki6d7oh7qyjrb6wtqvzp7adl@rzmxiyblpnsz> <87ect61txs.fsf@protonmail.com> <20250827-cherubic-tapir-of-wind-5cf0c4@houat>
 Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: c6c36e8696197aa0100d1fb66ca71fba0352e3f2
+X-Pm-Message-ID: d6976cf9619b1bafd78468ee96fbcca38d5dfb00
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,180 +47,96 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Demonstrate how to perform a report fixup from a Rust HID driver. The mice
-specify the const flag incorrectly in the consumer input report descriptor,
-which leads to inputs being ignored. Correctly patch the report descriptor
-for the Model O and O- mice.
+On Wed, 27 Aug, 2025 08:57:58 +0200 "Maxime Ripard" <mripard@kernel.org> wr=
+ote:
+> Hi Rahul,
+>
+> On Wed, Aug 20, 2025 at 04:46:52AM +0000, Rahul Rameshbabu wrote:
+>> On Tue, 19 Aug, 2025 11:06:40 +0200 "Maxime Ripard" <mripard@kernel.org>=
+ wrote:
+>> > Hi Rahul,
+>> >
+>> > On Mon, Aug 18, 2025 at 05:04:15AM +0000, Rahul Rameshbabu wrote:
+>> >> I am working on a drm_connector scoped backlight API in Rust. I have =
+been
+>> >> looking through Hans de Goede's previous efforts on this topic to hel=
+p
+>> >> guide my design. My hope is to enable backlight control over external
+>> >> displays through DDC or USB Monitor Control Class while also supporti=
+ng
+>> >> internal panels. In parallel, I would like to improve the driver
+>> >> probing/selection mechanism when there are different candidates for d=
+riving
+>> >> a backlight device. This initial RFC is mainly intended to sanity che=
+ck
+>> >> that the plumbing I have chosen for extending the DRM connector
+>> >> functionality in Rust seems reasonable.
+>> >
+>> > It's a great goal, and I had that same discussion with Hans recently
+>> > too, but I can't find the link between backling/DDC CI, and Rust. Can
+>> > you elaborate?
+>>=20
+>> Hi Maxime,
+>>=20
+>> Sure, let me elaborate on this. You are right that plumbing DDC
+>> CI/backlight support at the DRM connector level does not need to be
+>> implemented in Rust.
+>>=20
+>> If we look at Hans's proposal, the suggested phase 2 was to add a
+>> drm_connector helper function for plumbing a pointer to the backlight
+>> device implementation. I had some model differences with regards to how
+>> the API would look like, mostly stemming from concerns about providing
+>> better runtime overriding of the acpi_video_get_backlight_type based
+>> backlight selection. However, I am aligned with the direction of scoping
+>> at the drm_connector level. I basically was interested in implementing
+>> this helper functionality in Rust instead of C, which is where Rust came
+>> into play.
+>>=20
+>> I was also interested in declaring and attaching a drm_property in Rust
+>> for controlling properties such as backlight rather than updating the
+>> drm_connector declaration in C as an experiment.
+>>=20
+>> Let me know if you feel like this work would be better off as a C
+>> implementation. I can also send out a detailed architecture proposal to
+>> the mailing list if that would help.
+>>=20
+>> Link: https://lore.freedesktop.org/wayland-devel/0d188965-d809-81b5-74ce=
+-7d30c49fee2d@redhat.com/
+>
+> Thanks for the explanation.
+>
+> I'm not sure Rust is at the point where we can use it for the framework.
+> If we want to make this work useful, we have to make it consistent and
+> usable across all drivers, but we do have drivers for architectures that
+> aren't supported by Rust yet (let alone tier 1).
+>
+> So it feels to me that it would be a bit premature for that work to be
+> in Rust. If you do want to use it from a Rust driver though, feel free
+> to write bindings for it, that would be a great addition.
 
-Portions of the HID report post-fixup:
-device 0:0
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               84
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               112
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               140
+Hi Maxime,
 
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
----
+Thanks for the follow-up. Sorry for the delay in my response. I was
+preparing a slide deck for Kangrejos 2025 (Rust for Linux conference).
 
-Notes:
-    Changelog:
-   =20
-        v2->v3:
-          * Fixed docstring formatting
-          * Updated MAINTAINERS file based on v1 and v2 discussion
-        v1->v2:
-          * Use vendor id and device id from drivers/hid/hid-ids.h bindings
-          * Make use for dev_err! as appropriate
+https://binary-eater.github.io/kangrejos-2025/
 
- MAINTAINERS                      |  7 ++++
- drivers/hid/Kconfig              |  8 +++++
- drivers/hid/Makefile             |  1 +
- drivers/hid/hid-glorious.c       |  2 ++
- drivers/hid/hid_glorious_rust.rs | 60 ++++++++++++++++++++++++++++++++
- 5 files changed, 78 insertions(+)
- create mode 100644 drivers/hid/hid_glorious_rust.rs
+The above discusses the architecture I had in mind in greater detail. I
+am working on some last minute tweaks. I wanted to do a couple things
+with regards to this topic.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6c60765f2aaa..eee9a33914ef 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10200,6 +10200,13 @@ L:=09platform-driver-x86@vger.kernel.org
- S:=09Maintained
- F:=09drivers/platform/x86/gigabyte-wmi.c
-=20
-+GLORIOUS RUST DRIVER [RUST]
-+M:=09Rahul Rameshbabu <sergeantsagara@protonmail.com>
-+L:=09linux-input@vger.kernel.org
-+S:=09Maintained
-+T:=09git git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git rust
-+F:=09drivers/hid/hid_glorious_rust.rs
-+
- GNSS SUBSYSTEM
- M:=09Johan Hovold <johan@kernel.org>
- S:=09Maintained
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index 922e76e18af2..b8ef750fb8b6 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -406,6 +406,14 @@ config HID_GLORIOUS
- =09  Support for Glorious PC Gaming Race mice such as
- =09  the Glorious Model O, O- and D.
-=20
-+config HID_GLORIOUS_RUST
-+=09tristate "Glorious O and O- mice Rust reference driver"
-+=09depends on USB_HID
-+=09depends on RUST_HID_ABSTRACTIONS
-+=09help
-+=09  Support for Glorious PC Gaming Race O and O- mice
-+=09  in Rust.
-+
- config HID_HOLTEK
- =09tristate "Holtek HID devices"
- =09depends on USB_HID
-diff --git a/drivers/hid/Makefile b/drivers/hid/Makefile
-index 10ae5dedbd84..bd86b3db5d88 100644
---- a/drivers/hid/Makefile
-+++ b/drivers/hid/Makefile
-@@ -55,6 +55,7 @@ obj-$(CONFIG_HID_FT260)=09=09+=3D hid-ft260.o
- obj-$(CONFIG_HID_GEMBIRD)=09+=3D hid-gembird.o
- obj-$(CONFIG_HID_GFRM)=09=09+=3D hid-gfrm.o
- obj-$(CONFIG_HID_GLORIOUS)  +=3D hid-glorious.o
-+obj-$(CONFIG_HID_GLORIOUS_RUST)=09+=3D hid_glorious_rust.o
- obj-$(CONFIG_HID_VIVALDI_COMMON) +=3D hid-vivaldi-common.o
- obj-$(CONFIG_HID_GOODIX_SPI)=09+=3D hid-goodix-spi.o
- obj-$(CONFIG_HID_GOOGLE_HAMMER)=09+=3D hid-google-hammer.o
-diff --git a/drivers/hid/hid-glorious.c b/drivers/hid/hid-glorious.c
-index 5bbd81248053..d7362852c20f 100644
---- a/drivers/hid/hid-glorious.c
-+++ b/drivers/hid/hid-glorious.c
-@@ -76,8 +76,10 @@ static int glorious_probe(struct hid_device *hdev,
- }
-=20
- static const struct hid_device_id glorious_devices[] =3D {
-+#if !IS_ENABLED(CONFIG_HID_GLORIOUS_RUST)
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- =09=09USB_DEVICE_ID_GLORIOUS_MODEL_O) },
-+#endif
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- =09=09USB_DEVICE_ID_GLORIOUS_MODEL_D) },
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_LAVIEW,
-diff --git a/drivers/hid/hid_glorious_rust.rs b/drivers/hid/hid_glorious_ru=
-st.rs
-new file mode 100644
-index 000000000000..8cffc1c605dd
---- /dev/null
-+++ b/drivers/hid/hid_glorious_rust.rs
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2025 Rahul Rameshbabu <sergeantsagara@protonmail.com>
-+
-+//! Rust reference HID driver for Glorious Model O and O- mice.
-+
-+use kernel::{self, bindings, device, hid, prelude::*};
-+
-+struct GloriousRust;
-+
-+kernel::hid_device_table!(
-+    HID_TABLE,
-+    MODULE_HID_TABLE,
-+    <GloriousRust as hid::Driver>::IdInfo,
-+    [(
-+        hid::DeviceId::new_usb(
-+            hid::Group::Generic,
-+            bindings::USB_VENDOR_ID_SINOWEALTH,
-+            bindings::USB_DEVICE_ID_GLORIOUS_MODEL_O,
-+        ),
-+        (),
-+    )]
-+);
-+
-+#[vtable]
-+impl hid::Driver for GloriousRust {
-+    type IdInfo =3D ();
-+    const ID_TABLE: hid::IdTable<Self::IdInfo> =3D &HID_TABLE;
-+
-+    /// Fix the Glorious Model O and O- consumer input report descriptor t=
-o use
-+    /// the variable and relative flag, while clearing the const flag.
-+    ///
-+    /// Without this fixup, inputs from the mice will be ignored.
-+    fn report_fixup<'a, 'b: 'a>(hdev: &hid::Device<device::Core>, rdesc: &=
-'b mut [u8]) -> &'a [u8] {
-+        if rdesc.len() =3D=3D 213
-+            && (rdesc[84] =3D=3D 129 && rdesc[85] =3D=3D 3)
-+            && (rdesc[112] =3D=3D 129 && rdesc[113] =3D=3D 3)
-+            && (rdesc[140] =3D=3D 129 && rdesc[141] =3D=3D 3)
-+        {
-+            dev_info!(
-+                hdev.as_ref(),
-+                "patching Glorious Model O consumer control report descrip=
-tor\n"
-+            );
-+
-+            rdesc[85] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATIV=
-E;
-+            rdesc[113] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATI=
-VE;
-+            rdesc[141] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATI=
-VE;
-+        }
-+
-+        rdesc
-+    }
-+}
-+
-+kernel::module_hid_driver! {
-+    type: GloriousRust,
-+    name: "GloriousRust",
-+    authors: ["Rahul Rameshbabu <sergeantsagara@protonmail.com>"],
-+    description: "Rust reference HID driver for Glorious Model O and O- mi=
-ce",
-+    license: "GPL",
-+}
---=20
-2.47.2
+1. Send a high level RFC describing the architecture / functionality
+2. In parallel, maybe further evaluate whether Rust could be viable for
+   this effort. I hope the slides I put together help.
+3. If the discussion in point 2 seems to suggest that Rust is not
+   viable, do the core implementation work in C.
 
+Let me know if this seems like a reasonable approach and thank you so
+much for taking the time to respond.
+
+Thanks,
+Rahul Rameshbabu
+
+>
+> Maxime
 
