@@ -1,39 +1,47 @@
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADAD1684B0
-	for <rust-for-linux@vger.kernel.org>; Sat, 13 Sep 2025 17:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCBDEAF9;
+	Sat, 13 Sep 2025 17:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757784385; cv=none; b=afgNxwvfwhltESWwA33GSVHBmJm5uGdafI9/vWuwvL82nmWZeLhTrfLfY4cX5+TVT2oKAhSDNOGRXAeNlGrA43hVOZasZH44ApkXcSTm1uux0lKipHbwSuXgXOeSs8kk9rHcuDOQ5NzycRcr3+Z5fqysMph4ZIPFIVIZ3+lXXNY=
+	t=1757785603; cv=none; b=m3X06+Qg4ZJHzUA6xy2j+4LEpqbwc+iY4uKNdmvRzgx/K+y2Y1ojut/WxmY+4+UjztBE7fB8YCKwosplaK+dkUGXAixEFdM4FL7nnVIDkldCfO4Zsm9w9ldfJxM7yUdlhfaB9c4eWrDDKFGtgv+1O6Fy4j1p5MQ8/2SlJFF8VoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757784385; c=relaxed/simple;
-	bh=Wf2ZzSOt5660dGKv9igOpDU5akfcnDDqQb605DQBPxk=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=pTrMfrHT01+G0Eqma3pHv+RMpyEncnOIL0TpqpXsvtRM8LkMM5Ax0alDpD8nUogIzACXdIcn7Km6QW6ETnpS0CvNXquVMsH1jZBcwlmPs2RWU8Zo054W95f0HElwN92VCAlXHWeiCV7Aa38Nt1dSuRsiLFguRXkuNrCvuuCOzD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=weRtPNN9; arc=none smtp.client-ip=109.224.244.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1757785603; c=relaxed/simple;
+	bh=qEeDUMM2cPdTS1r7qPnD2EjgT3DkSIwjoi3Bsr9b0Bo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=D3fBWfT4Jl+1sxU+aI2sUIDqy9kSX924fIki4y1XAupZHxdd44yVrBNvT/vwcz5bQ1+6U0o9kHGWVW+CFDGlnyxDSqUgOCQnxNOpTJ4B04EJTzE1Us3KwMvXT+FZe/E95C1B8YZ5YjuvQ7R1s5yyN1fYgUkz7tp5o677MVP+WUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Drf1A9hQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="weRtPNN9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1757784380; x=1758043580;
-	bh=nm6twt1cSQc5oagHyaklZaX2j2ffhTb0crzBpiIBMwU=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=weRtPNN9t6WEITu2+86JapOAokMT0rCgy+iXtk+EcEugfAYo86AxTg6oNdM7h7dx5
-	 W0VkwQn5KDMiEH+UkZ7uD5ei3+kvtNY2w5T6N4AvaN2vfBoVfA0keQT3xLmUyQ/dYq
-	 e6Km2+UlQ+ZxagAjikEByDemlCc4wWJ65IoPmSGwBYZOjVy5kU4wcUomJLHeTxHVHV
-	 2HRlSNamvNrVZhmrZHTp/qBAaplCFe3f76AYL6BWltVlpwVdjm8lrFEzu13Ew0cWu2
-	 sqnUk1stHwFwUPhwfPgjXmbCl3yU39tcmDh146a+ZRSihV4ykhKT2C03vCuZU5YSL5
-	 dhBmy6iTvARGA==
-Date: Sat, 13 Sep 2025 17:26:11 +0000
-To: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Subject: [PATCH] rust: pci: fix incorrect platform references in doc comments
-Message-ID: <20250913172557.19074-1-sergeantsagara@protonmail.com>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: 0ce628db2ce03996e49017e2cd6672b0a22d3d22
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Drf1A9hQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD5DC4CEEB;
+	Sat, 13 Sep 2025 17:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757785603;
+	bh=qEeDUMM2cPdTS1r7qPnD2EjgT3DkSIwjoi3Bsr9b0Bo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Drf1A9hQ43XaKKhLKjVhxDn88Kz6iVuzp/kRiY0nJnlnkdGdLmlZ8KzEzCh+Qa1xq
+	 jv7vgYdYL7g9y6Svz68VX/IuittJpFY2UQY08ktTUlRDKbVQoqUz9uLM500As3lmdj
+	 Z+rZ0J5Q/IZhYDcHXEmy5jNbKnFuD3jybRhcol84vHA++F62HOoUr/JwCSN7rOG39O
+	 fv/djtOgRiuml3GEP5VBXKBX4fRL1zJfKYUn9Gy3A1phxWqBbcOr91CI1cgYnO6sRA
+	 +kv01BABMHAnIbV2PCNrSLP3sTKRa7YQqk+YVsRqlVgYy4WRDNfHE/DMCqZeU8jsUR
+	 Ub8xXS/P8xOUA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+ rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org, nathan@kernel.org, nicolas.schier@linux.dev,
+ masahiroy@kernel.org, aliceryhl@google.com,
+ thomas.weissschuh@linutronix.de, tamird@gmail.com,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
+ dakr@kernel.org, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH] rust: add `rustcheck` make target for check-only builds
+In-Reply-To: <20250913100847.9234-1-work@onurozkan.dev>
+References: <-ebVaoKp9tTjZGmdSRi8rrH1o7SgmGyyzk-g2ALSCBKPJP44z7dSPCplhwKt-sibwLwqP7IPEml6qCkSpJhd8g==@protonmail.internalid>
+ <20250913100847.9234-1-work@onurozkan.dev>
+Date: Sat, 13 Sep 2025 19:46:28 +0200
+Message-ID: <87bjnei6tn.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,41 +51,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Substitute 'platform' with 'pci' where appropriate in the comments.
+Onur =C3=96zkan <work@onurozkan.dev> writes:
 
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Fixes: 1bd8b6b2c5d3 ("rust: pci: add basic PCI device / driver abstractions=
-")
-Fixes: 18ebb25dfa18 ("rust: pci: implement Driver::unbind()")
----
- rust/kernel/pci.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> Adds a new `rustcheck` make target to run a check-only build
+> similar to `cargo check`. This allows us to verify that the Rust
+> sources can build without building/linking final artifacts,
+> which speeds up the iteration (a lot) during development.
+>
+> The target supports the same flags as other Rust build rules, so
+> it can also be used with `CLIPPY=3D1` (e.g., `make LLVM=3D1 rustcheck
+> CLIPPY=3D1) to run Clippy in a faster way.
+>
+> Also, unlike `make LLVM=3D1`, it doesn't compile large amounts of C
+> code (on a fresh checkout) when the goal is only to check that
+> Rust builds are not broken after some changes.
+>
 
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 887ee611b553..658e806a5da7 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -240,11 +240,11 @@ pub trait Driver: Send {
-=20
-     /// PCI driver probe.
-     ///
--    /// Called when a new platform device is added or discovered.
--    /// Implementers should attempt to initialize the device here.
-+    /// Called when a new pci device is added or discovered. Implementers =
-should
-+    /// attempt to initialize the device here.
-     fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> Result=
-<Pin<KBox<Self>>>;
-=20
--    /// Platform driver unbind.
-+    /// PCI driver unbind.
-     ///
-     /// Called when a [`Device`] is unbound from its bound [`Driver`]. Imp=
-lementing this callback
-     /// is optional.
+I think this is a good idea! However, it looks like this target only
+checks rust code that live in rust/. Can we also check code that lives
+elsewhere, like drivers?
 
-base-commit: 099381a08db3539c6aab6616c94d7950d74fcd2d
---=20
-2.47.2
+
+Best regards,
+Andreas Hindborg
 
 
