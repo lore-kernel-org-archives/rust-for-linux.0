@@ -1,211 +1,343 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC909221F06;
-	Sat, 13 Sep 2025 10:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4A726F29B
+	for <rust-for-linux@vger.kernel.org>; Sat, 13 Sep 2025 12:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757758881; cv=none; b=UtReFvMirF9318+1QCRDAj0Q+haYfiS88JqQl4YUyFcGF8lvtvbfKsGDAh9qW+ut4t0FSPkhNRnPTLhXkk6GIyOv8OKTNEj81jv4SOOeBNwQX1IAw7DMb/K5UUoSH05hq9bpWIsAX8HDSNPnQT970z3iy3K73p66t8k5lpR2VKg=
+	t=1757767331; cv=none; b=bwBUNpWFC+GmeNyzmOG+3QehD73mVcBv7QFql9d38KoLjTlkD8bB3xpZM8P+Qb8C3Bvntd9B9J3/QDMo0369hvAe5jjll7VIl3VLr7L7w8ySypnK730hx7+3CX6sBwaPGD1LVTCQ024a2M75GMLPqrYAHMmrJEeBPxTcG1Mu/F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757758881; c=relaxed/simple;
-	bh=sBk7lvYg6K58o/MJAWcaZB6LuTuDcDWqVZym/7pTPkk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dgzU/aLFHB0R+SMvf/79jesCidxM2lsrajx+JxACX7h962bZaZJuYNqR79UmN3DJgvGJ6XdGvztgNj/k55sz065Is2CV+DYkF/IgHDtAJuYLtOvZkSPavzf9JeOjFtFWQp4kjqQCczm+XuseUcNna08ktcrflFuipJ5wx0bPZFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=UJ2adir4; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1757767331; c=relaxed/simple;
+	bh=kIhxFXQIQTNc+Iy/xvLDG6uUq5A0jNQrqhGjefi8q94=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l+8RfmquF6wGdkrNsG5QU3j0M2ZlumWiASO7TSFxVxlHpPOIWHiw0rRbPypNzA83p97XX2cdsDVAT9MfkdwyiRckG/jXjokgPgUBdy4JWsWbNFdITQWX9WXV5EEPBoRNgJQ0236v78c7XSfD2EIV1PwTy226meU+DuMvnXPrT58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=ffeKwQDH; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="UJ2adir4"
-Received: from mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:4ca4:0:640:f272:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id AFF71C0F22;
-	Sat, 13 Sep 2025 13:21:09 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4LKYdiVLuSw0-AfhiAxHE;
-	Sat, 13 Sep 2025 13:21:08 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757758868;
-	bh=+0HwJ7olMB/EXgqWe8NsF2z4rdK5PM2P+U36sMmPliU=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=UJ2adir4OveRrPFpmWobHyoGzwW7R0G4N/bS4HabbuOIvIiaDM8LYkWoKLr3whG+E
-	 AQUUH6HGiNEjkdTp8Nbo7bqsQBdtdfw1PTkpR2uuBWKEuJtMJeyQqtBeEJd1X64kHI
-	 kf4TkE2LmIv0xNv5nH/r5E3Eieqf3Km+wvwf0sjc=
-Authentication-Results: mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Sat, 13 Sep 2025 13:21:04 +0300
-From: Onur <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org, nathan@kernel.org, nicolas.schier@linux.dev,
- masahiroy@kernel.org, aliceryhl@google.com,
- thomas.weissschuh@linutronix.de, tamird@gmail.com,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- tmgross@umich.edu, dakr@kernel.org
-Subject: Re: [PATCH] rust: add `rustcheck` make target for check-only builds
-Message-ID: <20250913132104.715c5092@nimda.home>
-In-Reply-To: <20250913100847.9234-1-work@onurozkan.dev>
-References: <20250913100847.9234-1-work@onurozkan.dev>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="ffeKwQDH"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-244580523a0so28108645ad.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 13 Sep 2025 05:42:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=furiosa.ai; s=google; t=1757767329; x=1758372129; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/9duoDwLODdQr2eNa1OtOkxFDQUPt6wjgx1Athkl2o0=;
+        b=ffeKwQDHukvgU7T9sFTLQx5IBJdmrcYRYVaM9TWpuHu0HOrWgJOimG094wIPTBsg7y
+         VEtxlZvRjAmw+2xdQRe6LoBacxOfmnUcN+UCEqsLcvqhaMfzz3G223DsHqPZf/8hZY+Q
+         FZw3KFZ0hwQVJ1XQp3sL9VBumq/ABmBxHHnLM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757767329; x=1758372129;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/9duoDwLODdQr2eNa1OtOkxFDQUPt6wjgx1Athkl2o0=;
+        b=fkLd/M4IN2HOr15LlkUZVisglGB6cK31x8sTETeE9Std4Vim5nyDnXdjuW9crB9hMN
+         6Ow5+7DdNMVBNHJ99ijiYxWhiq9vbl5ahvgViSrZgh2lHpckoNJxEoF6oHwsBlf9f1MG
+         tZ+pNJbaW/9DAMDj0ph2oPslQrWfpT0dS8LVmLr5b545XL0VxoTZVvPsQ1Hr1K2jS5+1
+         0oaraKzxSRWzJ+fV/m6tj+xOgY3KEKVqy8/7lZada5nTSrrA9Bn4KklJDf7txAP41xXT
+         Xy8BhnxqSP/t/3OOnFuNduXwtEsIqmSaRUeS1oeTlEs3VzqjUCcS1//k1CIYW53bzWCf
+         oIPg==
+X-Forwarded-Encrypted: i=1; AJvYcCWG0HiyOTEA6sTM7+eWm1W2bs6AppeJz2/Iew/5SagKmbnnj3AhgRCPJy3JZMaRRX4qcS5oqrMLDonZQ1CiQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKNaRBoR2Yy9ftpBM5Az0bYInkImnPyYiCgUpCOlS/f5doXuaB
+	l+MZQvj+wYNO8ff305Lw3seRpho57nOd5F5unKBSpWxgpW2ljGgoKvtTPRk2dOzYQlI=
+X-Gm-Gg: ASbGncuxCY/1tPGWhzZ8uNkT3VyNpu4LENMn1qyJpEfEXCr3w3kOK3TQa5lzclssCLl
+	FOX6sMMspdb/4EibQlQHNFU5opBqI7lZzpApJ8pa1WPPhGlOqv+0UavTBCwn/XMXCm18Tn3U7bd
+	uzPz+alDCmx2eh56uSYWakG81oco3+wMO30PX0eYI1Q6v0dkIv8e51meWDFEfjwEzG9Fh8VjZxw
+	+vs95s46UpcziIti5rx0y4nLMbHmm6BcsCD/Lo+6H2xGZRh8H4xT2hfPOScMqOYHezeVZwrNTUF
+	c5qCI82OqAgWW96GKsdh4o7ZHlVPbLJS1Fy6P1rUOh/55oRuGTe5/6y1Aokh9W5tYnJfd1rLkee
+	zZQ+gwzMvvwU37awCkkxacA9rregQR9OrP2BkCCRv/eNrWug+wMLBfMysr83WSBW0TZs=
+X-Google-Smtp-Source: AGHT+IEfGVve+qOntlhQUD55T5Er2IYX9b3WcF5xwrm+kFXlXuC2bwamQsqYr8LU2tYzB+cRguk2Iw==
+X-Received: by 2002:a17:902:db04:b0:262:d081:96c with SMTP id d9443c01a7336-262d0810e05mr11980195ad.17.1757767329394;
+        Sat, 13 Sep 2025 05:42:09 -0700 (PDT)
+Received: from sidongui-MacBookPro.local ([175.195.128.78])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c3ad2fa37sm74210085ad.111.2025.09.13.05.42.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Sep 2025 05:42:08 -0700 (PDT)
+Date: Sat, 13 Sep 2025 21:42:03 +0900
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Caleb Sander Mateos <csander@purestorage.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org
+Subject: Re: [RFC PATCH v3 2/5] io_uring/cmd: zero-init pdu in
+ io_uring_cmd_prep() to avoid UB
+Message-ID: <aMVmm1Ydt4iOfxu5@sidongui-MacBookPro.local>
+References: <20250822125555.8620-3-sidong.yang@furiosa.ai>
+ <CADUfDZpsePAbEON_90frzrPCPBt-a=1sW2Q=i8BGS=+tZhudFA@mail.gmail.com>
+ <aLbFiChBnTNLBAyV@sidongui-MacBookPro.local>
+ <CADUfDZpPvj3R7kzWC9bQVV0iuCBOnKsNUFn=B3ivf7De5wCB8g@mail.gmail.com>
+ <aLxFAamglufhUvq0@sidongui-MacBookPro.local>
+ <CADUfDZruwQyOcAeOXkXMLX+_HgOBeYdHUmgnJdT5pGQEmXt9+g@mail.gmail.com>
+ <aMA8_MuU0V-_ja5O@sidongui-MacBookPro.local>
+ <CADUfDZppdnM2QAeX37OmZsXqd7sO7KvyLnNPUYOgLpWMb+FpoQ@mail.gmail.com>
+ <aMRNSBHDM4nkewHO@sidongui-MacBookPro.local>
+ <CADUfDZrHse9nDxfd0UDkxOEmVRg-b=KDEUZ9Hz08eojXJvgtng@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADUfDZrHse9nDxfd0UDkxOEmVRg-b=KDEUZ9Hz08eojXJvgtng@mail.gmail.com>
 
-On Sat, 13 Sep 2025 13:08:47 +0300
-Onur =C3=96zkan <work@onurozkan.dev> wrote:
+On Fri, Sep 12, 2025 at 10:56:31AM -0700, Caleb Sander Mateos wrote:
+> On Fri, Sep 12, 2025 at 9:42 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> >
+> > On Tue, Sep 09, 2025 at 09:32:37AM -0700, Caleb Sander Mateos wrote:
+> > > On Tue, Sep 9, 2025 at 7:43 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> > > >
+> > > > On Mon, Sep 08, 2025 at 12:45:58PM -0700, Caleb Sander Mateos wrote:
+> > > > > On Sat, Sep 6, 2025 at 7:28 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> > > > > >
+> > > > > > On Tue, Sep 02, 2025 at 08:31:00AM -0700, Caleb Sander Mateos wrote:
+> > > > > > > On Tue, Sep 2, 2025 at 3:23 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> > > > > > > >
+> > > > > > > > On Mon, Sep 01, 2025 at 05:34:28PM -0700, Caleb Sander Mateos wrote:
+> > > > > > > > > On Fri, Aug 22, 2025 at 5:56 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> > > > > > > > > >
+> > > > > > > > > > The pdu field in io_uring_cmd may contain stale data when a request
+> > > > > > > > > > object is recycled from the slab cache. Accessing uninitialized or
+> > > > > > > > > > garbage memory can lead to undefined behavior in users of the pdu.
+> > > > > > > > > >
+> > > > > > > > > > Ensure the pdu buffer is cleared during io_uring_cmd_prep() so that
+> > > > > > > > > > each command starts from a well-defined state. This avoids exposing
+> > > > > > > > > > uninitialized memory and prevents potential misinterpretation of data
+> > > > > > > > > > from previous requests.
+> > > > > > > > > >
+> > > > > > > > > > No functional change is intended other than guaranteeing that pdu is
+> > > > > > > > > > always zero-initialized before use.
+> > > > > > > > > >
+> > > > > > > > > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> > > > > > > > > > ---
+> > > > > > > > > >  io_uring/uring_cmd.c | 1 +
+> > > > > > > > > >  1 file changed, 1 insertion(+)
+> > > > > > > > > >
+> > > > > > > > > > diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
+> > > > > > > > > > index 053bac89b6c0..2492525d4e43 100644
+> > > > > > > > > > --- a/io_uring/uring_cmd.c
+> > > > > > > > > > +++ b/io_uring/uring_cmd.c
+> > > > > > > > > > @@ -203,6 +203,7 @@ int io_uring_cmd_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+> > > > > > > > > >         if (!ac)
+> > > > > > > > > >                 return -ENOMEM;
+> > > > > > > > > >         ioucmd->sqe = sqe;
+> > > > > > > > > > +       memset(&ioucmd->pdu, 0, sizeof(ioucmd->pdu));
+> > > > > > > > >
+> > > > > > > > > Adding this overhead to every existing uring_cmd() implementation is
+> > > > > > > > > unfortunate. Could we instead track the initialized/uninitialized
+> > > > > > > > > state by using different types on the Rust side? The io_uring_cmd
+> > > > > > > > > could start as an IoUringCmd, where the PDU field is MaybeUninit,
+> > > > > > > > > write_pdu<T>() could return a new IoUringCmdPdu<T> that guarantees the
+> > > > > > > > > PDU has been initialized.
+> > > > > > > >
+> > > > > > > > I've found a flag IORING_URING_CMD_REISSUE that we could initialize
+> > > > > > > > the pdu. In uring_cmd callback, we can fill zero when it's not reissued.
+> > > > > > > > But I don't know that we could call T::default() in miscdevice. If we
+> > > > > > > > make IoUringCmdPdu<T>, MiscDevice also should be MiscDevice<T>.
+> > > > > > > >
+> > > > > > > > How about assign a byte in pdu for checking initialized? In uring_cmd(),
+> > > > > > > > We could set a byte flag that it's not initialized. And we could return
+> > > > > > > > error that it's not initialized in read_pdu().
+> > > > > > >
+> > > > > > > Could we do the zero-initialization (or T::default()) in
+> > > > > > > MiscdeviceVTable::uring_cmd() if the IORING_URING_CMD_REISSUE flag
+> > > > > > > isn't set (i.e. on the initial issue)? That way, we avoid any
+> > > > > > > performance penalty for the existing C uring_cmd() implementations.
+> > > > > > > I'm not quite sure what you mean by "assign a byte in pdu for checking
+> > > > > > > initialized".
+> > > > > >
+> > > > > > Sure, we could fill zero when it's the first time uring_cmd called with
+> > > > > > checking the flag. I would remove this commit for next version. I also
+> > > > > > suggests that we would provide the method that read_pdu() and write_pdu().
+> > > > > > In read_pdu() I want to check write_pdu() is called before. So along the
+> > > > > > 20 bytes for pdu, maybe we could use a bytes for the flag that pdu is
+> > > > > > initialized?
+> > > > >
+> > > > > Not sure what you mean about "20 bytes for pdu".
+> > > > > It seems like it would be preferable to enforce that write_pdu() has
+> > > > > been called before read_pdu() using the Rust type system instead of a
+> > > > > runtime check. I was thinking a signature like fn write_pdu(cmd:
+> > > > > IoUringCmd, value: T) -> IoUringCmdPdu<T>. Do you feel there's a
+> > > > > reason that wouldn't work and a runtime check would be necessary?
+> > > >
+> > > > I didn't think about make write_pdu() to return IoUringCmdPdu<T> before.
+> > > > I think it's good way to pdu is safe without adding a new generic param for
+> > > > MiscDevice. write_pdu() would return IoUringCmdPdu<T> and it could call
+> > > > IoUringCmdPdu<T>::pdu(&mut self) -> &mut T safely maybe.
+> > >
+> > > Yes, that's what I was thinking.
+> >
+> > Good, I'll change api in this way. Thanks!
+> >
+> > >
+> > > >
+> > > > >
+> > > > > >
+> > > > > > But maybe I would introduce a new struct that has Pin<&mut IoUringCmd> and
+> > > > > > issue_flags. How about some additional field for pdu is initialized like below?
+> > > > > >
+> > > > > > struct IoUringCmdArgs {
+> > > > > >   ioucmd: Pin<&mut IoUringCmd>,
+> > > > > >   issue_flags: u32,
+> > > > > >   pdu_initialized: bool,
+> > > > > > }
+> > > > >
+> > > > > One other thing I realized is that issue_flags should come from the
+> > > > > *current* context rather than the context the uring_cmd() callback was
+> > > > > called in. For example, if io_uring_cmd_done() is called from task
+> > > > > work context, issue_flags should match the issue_flags passed to the
+> > > > > io_uring_cmd_tw_t callback, not the issue_flags originally passed to
+> > > > > the uring_cmd() callback. So it probably makes more sense to decouple
+> > > > > issue_flags from the (owned) IoUringCmd. I think you could pass it by
+> > > > > reference (&IssueFlags) or with a phantom reference lifetime
+> > > > > (IssueFlags<'_>) to the Rust uring_cmd() and task work callbacks to
+> > > > > ensure it can't be used after those callbacks have returned.
+> > > >
+> > > > I have had no idea about task work context. I agree with you that
+> > > > it would be better to separate issue_flags from IoUringCmd. So,
+> > > > IoUringCmdArgs would have a only field Pin<&mut IoUringCmd>?
+> > >
+> > > "Task work" is a mechanism io_uring uses to queue work to run on the
+> > > thread that submitted an io_uring operation. It's basically a
+> > > per-thread atomic queue of callbacks that the thread will process
+> > > whenever it returns from the kernel to userspace (after a syscall or
+> > > an interrupt). This is the context where asynchronous uring_cmd
+> > > completions are generally processed (see
+> > > io_uring_cmd_complete_in_task() and io_uring_cmd_do_in_task_lazy()). I
+> > > can't speak to the history of why io_uring uses task work, but my
+> > > guess would be that it provides a safe context to acquire the
+> > > io_ring_ctx uring_lock mutex (e.g. nvme_uring_cmd_end_io() can be
+> > > called from an interrupt handler, so it's not allowed to take a
+> > > mutex). Processing all the task work at once also provides natural
+> > > opportunities for batching.
+> >
+> > Thanks, I've checked io_uring_cmd_complete_in_task() that it receives
+> > callback that has issue_flags different with io_uring_cmd(). I'll try to add
+> > a api that wrapping io_uring_cmd_complete_in_task() for next version.
+> >
+> > >
+> > > Yes, we probably don't need to bundle anything else with the
+> > > IoUringCmd after all. As I mentioned earlier, I don't think Pin<&mut
+> > > IoUringCmd> will work for uring_cmds that complete asynchronously, as
+> > > they will need to outlive the uring_cmd() call. So uring_cmd() needs
+> > > to transfer ownership of the struct io_uring_cmd.
+> >
+> > I can't think that how to take ownership of struct io_uring_cmd. The
+> > struct allocated with io_alloc_req() and should be freed with io_free_req().
+> > If taking ownership means having pointer of struct io_uring_cmd, I think
+> > it's no difference with current version. Also could it be called with
+> > mem::forget() if it has ownership?
+> 
+> I don't mean ownership of the io_uring_cmd allocation; that's the
+> responsibility of the io_uring layer. But once the io_uring_cmd is
+> handed to the uring_cmd() implementation, it belongs to that layer
+> until it completes the command back to io_uring. Maybe a better way to
+> describe it would be as ownership of the "executing io_uring_cmd". The
+> problem with Pin<&mut IoUringCmd> is that it is a borrowed reference
+> to the io_uring_cmd, so it can't outlive the uring_cmd() callback.
+> Yes, it's possible to leak the io_uring_cmd by never calling
+> io_uring_cmd_done() to return it to the io_uring layer.
 
-> Adds a new `rustcheck` make target to run a check-only build
-> similar to `cargo check`. This allows us to verify that the Rust
-> sources can build without building/linking final artifacts,
-> which speeds up the iteration (a lot) during development.
->=20
-> The target supports the same flags as other Rust build rules, so
-> it can also be used with `CLIPPY=3D1` (e.g., `make LLVM=3D1 rustcheck
-> CLIPPY=3D1) to run Clippy in a faster way.
->=20
-> Also, unlike `make LLVM=3D1`, it doesn't compile large amounts of C
-> code (on a fresh checkout) when the goal is only to check that
-> Rust builds are not broken after some changes.
->=20
-> Suggested-by: Benno Losin <lossin@kernel.org>
-> Link:
-> https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/near/=
-539103602
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev> ---
->  Makefile      |  7 +++++
->  rust/Makefile | 73
-> +++++++++++++++++++++++++++++++++++++++++++++++++++ 2 files changed,
-> 80 insertions(+)
->=20
-> diff --git a/Makefile b/Makefile
-> index cf37b9407821..7812cdc72938 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1716,6 +1716,8 @@ help:
->  	@echo  '		    is formatted, printing a diff
-> otherwise.' @echo  '  rustdoc	  - Generate Rust documentation'
->  	@echo  '		    (requires kernel .config)'
-> +	@echo  '  rustcheck       - Check that the Rust code builds'
-> +	@echo  '                    (requires kernel .config)'
->  	@echo  '  rusttest        - Runs the Rust tests'
->  	@echo  '                    (requires kernel .config;
-> downloads external repos)' @echo  '  rust-analyzer	  -
-> Generate rust-project.json rust-analyzer support file' @@ -1821,6
-> +1823,11 @@ PHONY +=3D rustdoc rustdoc: prepare
->  	$(Q)$(MAKE) $(build)=3Drust $@
-> =20
-> +# Checking Rust sources.
-> +PHONY +=3D rustcheck
-> +rustcheck: prepare0
-> +	$(Q)$(MAKE) $(build)=3Drust $@
-> +
->  # Testing target
->  PHONY +=3D rusttest
->  rusttest: prepare
-> diff --git a/rust/Makefile b/rust/Makefile
-> index bfa915b0e588..c148ef4a8c08 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -265,6 +265,79 @@ rusttest-kernel: $(src)/kernel/lib.rs
-> rusttestlib-ffi rusttestlib-kernel \ rusttestlib-uapi
-> rusttestlib-pin_init FORCE +$(call if_changed,rustc_test)
-> =20
-> +## Check-only compilation (similar to `cargo check`)
-> +quiet_cmd_rustc_check_library =3D $(RUSTC_OR_CLIPPY_QUIET) CHECK $<
-> +      cmd_rustc_check_library =3D \
-> +        OBJTREE=3D$(abspath $(objtree)) \
-> +        $(RUSTC_OR_CLIPPY) $(rust_common_flags) \
-> +                @$(objtree)/include/generated/rustc_cfg
-> $(rustc_target_flags) \
-> +                --crate-type $(if
-> $(rustc_check_library_proc),proc-macro,rlib) \
-> +                $(if $(rustc_check_library_proc),,--emit=3Dmetadata) \
-> +                --out-dir $(objtree)/$(obj)/check
-> -L$(objtree)/$(obj)/check \
-> +                --crate-name $(if
-> $(rustc_check_crate_name),$(rustc_check_crate_name), \
-> +				$(subst rustcheck-,,$(subst
-> rustchecklib-,,$@))) $< +
-> +rustcheck: rustchecklib-build_error rustchecklib-ffi
-> rustchecklib-macros \
-> +	rustchecklib-compiler_builtins
-> rustchecklib-pin_init_internal \
-> +	rustchecklib-pin_init rustchecklib-bindings
-> rustchecklib-uapi \
-> +	rustchecklib-kernel
-> +
-> +rustchecklib-build_error: $(src)/build_error.rs FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
-> +rustchecklib-ffi: $(src)/ffi.rs FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
-> +rustchecklib-macros: private rustc_target_flags =3D --extern proc_macro
-> +rustchecklib-macros: private rustc_check_library_proc =3D yes
-> +rustchecklib-macros: $(src)/macros/lib.rs FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
-> +rustchecklib-compiler_builtins: private rustc_check_crate_name =3D
-> compiler_builtins_kernel +rustchecklib-compiler_builtins:
-> $(src)/compiler_builtins.rs FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
-> +rustchecklib-pin_init_internal: private rustc_target_flags =3D --cfg
-> kernel \
-> +	--extern proc_macro
-> +rustchecklib-pin_init_internal: private rustc_check_library_proc =3D
-> yes +rustchecklib-pin_init_internal:
-> $(src)/pin-init/internal/src/lib.rs FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
-> +rustchecklib-pin_init: private rustc_target_flags =3D --extern
-> pin_init_internal \
-> +	--extern macros --cfg kernel
-> +rustchecklib-pin_init: $(src)/pin-init/src/lib.rs
-> rustchecklib-macros \
-> +	rustchecklib-pin_init_internal FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
-> +rustchecklib-bindings: private rustc_target_flags =3D --extern ffi
-> +rustchecklib-bindings: $(src)/bindings/lib.rs \
-> +    $(obj)/bindings/bindings_generated.rs \
-> +    $(obj)/bindings/bindings_helpers_generated.rs \
-> +    rustchecklib-ffi FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
-> +rustchecklib-uapi: private rustc_target_flags =3D --extern ffi
-> +rustchecklib-uapi: $(src)/uapi/lib.rs $(obj)/uapi/uapi_generated.rs \
-> +    rustchecklib-ffi FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
-> +ifdef CONFIG_JUMP_LABEL
-> +rustchecklib-kernel:
-> $(obj)/kernel/generated_arch_static_branch_asm.rs FORCE +endif
-> +ifndef CONFIG_UML
-> +ifdef CONFIG_BUG
-> +rustchecklib-kernel: $(obj)/kernel/generated_arch_warn_asm.rs \
-> +	$(obj)/kernel/generated_arch_reachable_asm.rs FORCE
-> +endif
-> +endif
-> +
-> +rustchecklib-kernel: private rustc_target_flags =3D --extern ffi
-> --extern pin_init \
-> +	--extern build_error --extern macros --extern bindings
-> --extern uapi +rustchecklib-kernel: $(src)/kernel/lib.rs
-> rustchecklib-ffi rustchecklib-pin_init \
-> +	rustchecklib-build_error rustchecklib-macros
-> rustchecklib-bindings \
-> +	rustchecklib-uapi FORCE
-> +	+$(call if_changed,rustc_check_library)
-> +
->  ifdef CONFIG_CC_IS_CLANG
->  bindgen_c_flags =3D $(c_flags)
->  else
+Thanks, I understood that IoUringCmd could be outlive uring_cmd callback.
+But it's sad that it could be leaked without any unsafe code.
 
-Seems like I got some indentation issues, will handle in in the next
-version after some feedbacks.
+> 
+> I would imagine something like this:
+> 
+> #[derive(Clone, Copy)]
+> struct IssueFlags<'a>(c_uint, PhantomData<&'a ()>);
+> 
+> // Indicates ownership of the io_uring_cmd between uring_cmd() and
+> io_uring_cmd_done()
+> struct IoUringCmd(NonNull<bindings::io_uring_cmd>);
+> 
+> impl IoUringCmd {
+>         // ...
+> 
+>         fn done(self, ret: i32, res2: u64, issue_flags: IssueFlags<'_>) {
+>                 let cmd = self.0.as_ptr();
+>                 let issue_flags = issue_flags.0;
+>                 unsafe {
+>                         bindings::io_uring_cmd_done(cmd, ret, res2, issue_flags)
+>                 }
+>         }
+> }
+> 
+> // Can choose whether to complete the command synchronously or asynchronously.
+> // If take_async() is called, IoUringCmd::done() needs to be called to
+> complete the command.
+> // If take_async() isn't called, the command is completed synchronously
+> // with the return value from MiscDevice::uring_cmd().
+> struct UringCmdInput<'a>(&mut Option<NonNull<bindings::io_uring_cmd>>);
 
--Onur
+Thanks for a detailed example!
+
+But rather than this, We could introduce new return type that has a callback that
+user could take IoUringCmd instead of returning -EIOCBQUEUED. 
+
+But I prefer that we provide just one type IoUringCmd without UringCmdInput.
+Although UringCmdInput, user could call done() in uring_cmd callback and 
+it makes confusion that whether task_async() called and returning -EIOCBQUEUED
+is mismatched that returns -EINVAL. We don't need to make it complex.
+
+Thanks,
+Sidong
+> 
+> impl UringCmdInput<'_> {
+>         fn take_async(self) -> IoUringCmd {
+>                 IoUringCmd(self.0.take().unwrap())
+>         }
+> }
+> 
+> trait MiscDevice {
+>         // ...
+> 
+>         fn uring_cmd(
+>                 _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+>                 _cmd: UringCmdInput<'_>,
+>                 _ issue_flags: IssueFlags <'_>,
+>         ) -> Result<i32> {
+>                 build_error!(VTABLE_DEFAULT_ERROR)
+>         }
+> }
+> 
+> impl<T: MiscDevice> MiscdeviceVTable<T> {
+>         // ...
+> 
+>         unsafe extern "C" fn uring_cmd(
+>                 ioucmd: *mut bindings::io_uring_cmd,
+>                 issue_flags: c_uint,
+>         ) -> c_int {
+>                 let raw_file = unsafe { (*ioucmd).file };
+>                 let private = unsafe { (*raw_file).private_data }.cast();
+>                 let device = unsafe { <T::Ptr as
+> ForeignOwnable>::borrow(private) };
+>                 let mut ioucmd = Some(NonNull::new(ioucmd).unwrap());
+>                 let issue_flags = IssueFlags(issue_flags, PhantomData);
+>                 let ret = T::uring_cmd(device, UringCmdInput(&mut
+> ioucmd), issue_flags);
+>                 // -EIOCBQUEUED indicates ownership of io_uring_cmd
+> has been taken
+>                 if iou_cmd.is_none() {
+>                         return -bindings::EIOCBQUEUED;
+>                 }
+> 
+>                 let ret = from_result(|| ret);
+>                 if ret == -bindings::EIOCBQUEUED {
+>                         -bindings::EINVAL
+>                 } else {
+>                         ret
+>                 }
+>         }
+> }
+> 
+> Best,
+> Caleb
