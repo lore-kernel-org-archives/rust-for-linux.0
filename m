@@ -1,133 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7702264C6;
-	Sun, 14 Sep 2025 14:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E618D21E0BA
+	for <rust-for-linux@vger.kernel.org>; Sun, 14 Sep 2025 20:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757860970; cv=none; b=i/yyF6fzdqFgij1Fcnvlpm3vRHrpktJe3I5zmfI//Z6KI3fjx4MyGru2yv+QA38GJmPzZCFGgrSLog1GUTNn6hw4TuatKKzWpx8yIeIVyo7TSR1IUQMxwUl8wtowNpvQPIdREgKHpQe5RtNaWFLQJGCcz7xQNO6VM5ObQDsU9XA=
+	t=1757883434; cv=none; b=JvkopdKeQU0hMVC5PYAST15Fz6+jD7GvS8l1PFIwF13LtIO1ucM9oeMaKJ3KFB4Y1A4ZIVRRatKZTSm7IKNNQNECUJnSKddSo1YPHu/rvhfViSNIJfkbuigBIGIT6VdroqV2b47cRoewIIWD6I4opNgrzHWXx2uK8N0TtOvh4LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757860970; c=relaxed/simple;
-	bh=PzQNP+iXhbAYk0sG25Qch7JW6l/swG0JTlYB7VYGAkA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=pvIVnJiFMwuqDuLpFPMszpF0A5s+RWRWZEqD35Us8VbmyiGNVHym99YRnRm/CcM0krK9RSEeKTV+0XZRnKuOjb1c4LtVz0CzHdHBQJctAdSt+G6Q3pzp7f1YFp/zu8Sf8DV4Cgg1dEWaWlQ30V7Ydr7AdUaYHMVnOjt7xjrAp8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyJ9u22k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757883434; c=relaxed/simple;
+	bh=E+1Rhf4TtAslOVEyRfpCz7urUP1VaTu8F6OjeI/pzV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PcxjgL8oFA/QAkgtNjp4F3m1iliL+zbrKQE9NUbBhqYohl7LSxvoiqMuhdYI+5u4ezATE5PiNUeNBVypZRGaiSxuMexFueYnyCN4bf2WZXicWJkt4S9ublrP0FAs40BeSwmIuTPEW3LGM9tbbkeS63VgPUfnEbBDxiQT2+iDYic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CTcjB1gH; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyJ9u22k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FD2C4CEF0;
-	Sun, 14 Sep 2025 14:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757860970;
-	bh=PzQNP+iXhbAYk0sG25Qch7JW6l/swG0JTlYB7VYGAkA=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=SyJ9u22kZEM6Iy0bBBL385iaJikOGqSCcxn6kHCIXdE55aDFRSzFnWoOFyM8oO2X0
-	 SIL5oADcHfk8ScoXvbqrIvH88vkT7H3zunH9yAL589yrZK/X/QOED+GFejo1JvVYg7
-	 eV9Yeo3L2S++pidfDuVhbjGcdf0vd/c43fH5nZTCgI4Ri77mgfZdUaVIQj8XG6xfy1
-	 cn2GN9mUONavKphnFQbAXXjp/iq0y4OBSwwEh3oCRldFO1PpmE5jRUkaAxcy/eAilS
-	 ZftbG+SKU7MEC8+hUcYjMkalaZWheyBM3F+hIagCwjlSVt4O+l1wwEJydCF0uO+TsU
-	 4k38Rf3H52BkQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CTcjB1gH"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-77504ee95b7so10811246d6.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 14 Sep 2025 13:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757883431; x=1758488231; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=lYzC7DTlBazYH/vrpI5c9K3KG0tzYBKVkyZN0WJVZs0=;
+        b=CTcjB1gH7S5mGlHx91tzrqZkCiaZtqZQSlOlv0s9MeUOE60zzW5MRYp3jU1DO1gZCV
+         dhiXdSDUY2ZwkbGbRI+YCwRPKfFOmjTKTrjPJ7pGFagOX/fthJ1cQufcY1h6JM6tiDcU
+         ieNUC/0CXwB9R0Na9bgx4GvhgaKdQs40PHlIx6VzFcParNR3FRaFslGZ7IMPySA+wXLU
+         i+KuMrev0K7/WkQ6SUNLfnoYDHj9N9twfhSjWHwE2psw3rYTJaMwzCKqBDBTuXnJkQOw
+         hkPMEIMsfWXOeYgVZMXWbxe+JfpZFQDXyKhR1MK13GZOeeZE8lkiMThyph8oi9gb3OaC
+         y/tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757883431; x=1758488231;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lYzC7DTlBazYH/vrpI5c9K3KG0tzYBKVkyZN0WJVZs0=;
+        b=AQg3p37TXl0SgzQJCpzVJVq0A2yar0t59dMLp6Tq7Yc9Ja/ylfvhvJASECHrTGA+4j
+         cYoBDMCpG/rnJ8SGhS52UdX6UszwVKXvXlbH50DRGDfzfBU+cYFr40CUO6OpxK65Sp+Z
+         50QNpyTlGYA5adkPnXWgCzTa2IWoO6vHrsEtGp0VIzPWZhrxRA0J45FY9hI3owrmi2d3
+         ECP58YPqibWTXBZILiGk801/QSKA4LYjHghNxR0Gyqvz/Gk/OWmrvukhis1bIjng44Pw
+         MOvWanedNhj+6I8+ofTHyY/4n8g7WKsxTHoqkQpE69XZaluFZfqsEn2GvpfquPrkdiWE
+         7LUg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXRNtTgeMB1JqsGokL8Hw9Wl63jc4eaG5oGTMTU/DMBOrTJYVAk7+IHoo0BDoDmnN+IsgKOuZEYKX5nX5XeA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCQ28RfxNvgdiPef9CQ5zsilvsZg1eVWh4iLEY17YkCqSbXaeb
+	W3u1rERMBG1e4X97LbLbSaKT2t6hQ99J6nCEwRmj8E164Jl0tMaMF8gp
+X-Gm-Gg: ASbGncsNywUYAi0NT5S66NjWXOA7DS0pYS4u5QnBueKzL0PxvG+6mCmEw6562X6drt5
+	cITHW85aAHIyAuU8PdFEmSmsA+iJR2PID54282WLNND8Yv0UEG7SV9P/uRWZ4qWrJSRrY/oA2pZ
+	TH9tdxvkkuF6+RY1WA/PG+e6Gel1rnLlZ+OJ6wyfLrtwtC5ZnlsXxBcVaR2vZ/ClfeKk61fGs2q
+	Q+OD6iXaxFEYrb9pKHZa+ExRJySQgf9geJRGdTWyYSoR9KzCsm3BzYHbcKE9u/lyuupt+Bs/nlf
+	1xgR3viyhE47cyTVBX56Zys3VDQQu67GtRHOY547jDRGI2m91uGNcUSzfUJTd0ZMYt7bI3LZ0Qk
+	XCZiwiZzEyjT5gvWsh6OrDZuiTuJRl2cDNzALrk3BCQis3azGD/gBxlQ/YZuu9sARnnmCdFRd66
+	XjtsJY3jPyK+ADIea/qzVIsfk=
+X-Google-Smtp-Source: AGHT+IFwb8QYA51dTPTDUlRdj4ZuYKyJJ+3+ho4CbwnE8QXUiHnNdyvgLPli+R0c1GQPsHhdkVTnuw==
+X-Received: by 2002:a05:6214:5018:b0:77c:394f:4580 with SMTP id 6a1803df08f44-77c394f5105mr37329426d6.51.1757883430705;
+        Sun, 14 Sep 2025 13:57:10 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-763b6800370sm63337246d6.33.2025.09.14.13.57.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Sep 2025 13:57:10 -0700 (PDT)
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A2F69F40068;
+	Sun, 14 Sep 2025 16:57:09 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Sun, 14 Sep 2025 16:57:09 -0400
+X-ME-Sender: <xms:JSzHaOIRsv71NhpZLHqXUc3JKAlS9Ah_ieKzQYgv8HOSIlXtBAgfTQ>
+    <xme:JSzHaBXnObaCztPZKhQkyK5mGMi5MgVzCW6yhpwo8aah5JRL73g4z0x6xc-m3_fNY
+    fbW75lawyS69E1pIA>
+X-ME-Received: <xmr:JSzHaCjA2BULm25Bri64ocYQvXpP-HyCzdTk8tfWfoc7nCNlprW7NyWFxjimHgorLErUVh_xNz62_9_u8Lh_zyuY9lo46WXD>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdefheekfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeffiefhtdeiudeigfeviedvgeduueekfeegvdelhffhkeekgfdufeeugfefjefg
+    udenucffohhmrghinheplhhotghkrdgurghtrgdpkhgvrhhnvghlrdhorhhgnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgv
+    shhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehhe
+    ehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+    pdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepug
+    grnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohep
+    lhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghriiesihhnfh
+    hrrgguvggrugdrohhrghdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdp
+    rhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmh
+    grnhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtph
+    htthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:JSzHaNvGer0ixFUgKKlDhw0LW9B04pndaPJeIldcJA00vo03TGYBdg>
+    <xmx:JSzHaCw3VeV2-R-f7KMA66fZwlYWvIErwTVE1xvJa78Adb3n2-uWkw>
+    <xmx:JSzHaCaoX_Oh9PjABqJEKtn0fjooiLTW8bv4zGFUPmXpLVt93pGT3Q>
+    <xmx:JSzHaBV7GdF6-sM8vNRLc-hXyrntYZKmQvTVJyBztX30JGp4vH3HRg>
+    <xmx:JSzHaDHiq1zp2fQ2qxGFx9wXFc8lKIVzj9V7aFHRtCK0NT8Ra40nNg7K>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 14 Sep 2025 16:57:09 -0400 (EDT)
+Date: Sun, 14 Sep 2025 13:57:07 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Benno Lossin <lossin@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] rust: lock: add a Pin<&mut T> accessor
+Message-ID: <aMcsI14mzwubhT6e@tardis.local>
+References: <20250828-lock-t-when-t-is-pinned-v2-0-b067c4b93fd6@collabora.com>
+ <20250828-lock-t-when-t-is-pinned-v2-3-b067c4b93fd6@collabora.com>
+ <DCK43W485VCY.3KE72NNMDP32D@kernel.org>
+ <BD4724FF-4AB7-4551-B71C-C22E6E709F19@collabora.com>
+ <aL47zBoNpvjYxec5@tardis-2.local>
+ <A2534940-B847-40F6-8420-4ABEAE1D9A39@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 14 Sep 2025 16:42:40 +0200
-Message-Id: <DCSLPCSQRYOY.3BX3008H5CVQP@kernel.org>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Alistair
- Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v5 02/12] gpu: nova-core: move GSP boot code to a
- dedicated method
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20250911-nova_firmware-v5-2-5a8a33bddca1@nvidia.com>
- <e1755470-587b-4a43-8171-3d031b7fb4f4@kernel.org>
- <DCPYQNZG1OJK.2EE4JWJAROK57@nvidia.com>
- <ce74db34-77bc-4207-94c8-6e0580189448@kernel.org>
- <DCQ074EMFNIK.1OJLWJXWZLDXZ@nvidia.com> <20250913010226.GA1478480@joelbox2>
- <DCRPJKD0UHDQ.IOWSOB2IK06E@kernel.org> <20250913171357.GA1551194@joelbox2>
- <CANiq72n50MaMXeWdwvVOEQd3YEHbDRqeeRzbdY8hPnePtq-hnw@mail.gmail.com>
- <b1aea815-68b4-4d6c-9e12-3a949ee290c6@nvidia.com>
- <20250913220625.GA1564550@joelbox2> <DCS59IDCIKH1.2M3I6H0NVD0RG@nvidia.com>
-In-Reply-To: <DCS59IDCIKH1.2M3I6H0NVD0RG@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <A2534940-B847-40F6-8420-4ABEAE1D9A39@collabora.com>
 
-On Sun Sep 14, 2025 at 3:49 AM CEST, Alexandre Courbot wrote:
-> On Sun Sep 14, 2025 at 7:06 AM JST, Joel Fernandes wrote:
->> On Sat, Sep 13, 2025 at 02:29:54PM -0700, John Hubbard wrote:
->>> Yes. It's only "paranoia" if the code is bug-free. So Rust itself
->>> naturally will look "a little" paranoid, that's core to its mission. :)
->>
->> This seems to be taken out-of-context, I said "paranoia" mainly because =
-I am
->> not sure if excessive use of pinning may tend to cause other problems. T=
-he
->> "paranoia" is about over-usage of pinning. Personally, I don't prefer to=
- pin
->> stuff in my code until I absolutely need to, or when I start having need=
-s for
->> pinning, like using spinlocks. Maybe I am wrong, but the way I learnt Ru=
-st,
->> data movement is baked into it. I am not yet confident pinning will not
->> constraint Rust code gen -- but that could just be a part of my learning
->> journey that I have to convince myself it is Ok to do so in advance of
->> actually requiring it even if you simply hypothetically anticipate needi=
-ng it
->> (as Danilo pointed out that in practice this is not an issue and I do te=
-nd to
->> agree with Miguel and Danilo because they are usually right :-D). I am
->> researching counter examples :-)
->
-> You can look at the definition for `Pin` in [1], but it is so short we
-> can paste it here:
->
->     #[repr(transparent)]
->     #[derive(Copy, Clone)]
->     pub struct Pin<Ptr> {
->         pointer: Ptr,
->     }
->
-> There isn't much getting in the way of optimized code generation - its
-> purpose is simply to constraint the acquisition of mutable references to
-> prevent moving the pointee out.
->
-> I started this patchset a little bit skeptical about the need to pin so
-> many things, but after seeing the recent additions to `pin_init` and
-> rewriting the code as Danilo suggested, it starteds to click. The
-> supposed restrictions are in practice avoided by embracing the concept
-> fully, and in the end I got that feeling (familiar when writing Rust) of
-> being guided towards the right design - a bit like playing bowling with
-> gutter guards.
+On Tue, Sep 09, 2025 at 04:50:19PM -0300, Daniel Almeida wrote:
+> Hi Boqun, sorry for the delay,
+> 
+> >>>> +
+> >>>> +    /// Returns a pinned mutable reference to the protected data.
+> >>>> +    ///
+> >>>> +    /// The guard implements [`DerefMut`] when `T: Unpin`, so for [`Unpin`]
+> >>>> +    /// types [`DerefMut`] should be used instead of this function.
+> >>>> +    ///
+> >>>> +    /// [`DerefMut`]: core::ops::DerefMut
+> >>>> +    /// [`Unpin`]: core::marker::Unpin
+> >>>> +    ///
+> >>>> +    /// # Examples
+> >>>> +    ///
+> >>>> +    /// ```
+> >>>> +    /// # use kernel::sync::{Mutex, MutexGuard};
+> >>>> +    /// # use core::pin::Pin;
+> >>>> +    /// struct Data;
+> >>>> +    ///
+> >>>> +    /// fn example(mutex: &Mutex<Data>) {
+> >>>> +    ///   let mut data: MutexGuard<'_, Data> = mutex.lock();
+> >>>> +    ///   let mut data: Pin<&mut Data> = data.as_mut();
+> >>>> +    ///  }
+> >>> 
+> >>> The formatting looks off in this one, there should be 4 spaces of
+> >>> indentation here; there are also 2 spaces in front of the `}`.
+> >>> 
+> >>> Also `Data` implements `Unpin`, so you're not following your own
+> >>> recommendation from above :)
+> >> 
+> >> I´ll fix this :)
+> >> 
+> > 
+> > If the fix is small, feel free to send a diff and I can fold it when
+> > queueing (i.e. no need to resend the whole series). I'm trying to send
+> > it to tip before -rc6 so there will be some more tests. Thanks!
+> > 
+> > Regards,
+> > Boqun
+> > 
+> 
+> 
+> This should address what Benno pointed out:
+> 
+> 
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 7191804a244d..cb00fdb94ffd 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -258,13 +258,13 @@ pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+>      ///
+>      /// ```
+>      /// # use kernel::sync::{Mutex, MutexGuard};
+> -    /// # use core::pin::Pin;
+> -    /// struct Data;
+> +    /// # use core::{pin::Pin, marker::PhantomPinned};
+> +    /// struct Data(PhantomPinned);
+>      ///
+>      /// fn example(mutex: &Mutex<Data>) {
+> -    ///   let mut data: MutexGuard<'_, Data> = mutex.lock();
+> -    ///   let mut data: Pin<&mut Data> = data.as_mut();
+> -    ///  }
+> +    ///     let mut data: MutexGuard<'_, Data> = mutex.lock();
+> +    ///     let mut data: Pin<&mut Data> = data.as_mut();
+> +    /// }
+>      /// ```
+>      pub fn as_mut(&mut self) -> Pin<&mut T> {
+>          // SAFETY: `self.lock.data` is structurally pinned.
 
-That's a great way to put it -- I had a similar experience when writing
-pin-init and thinking about it purely theoretically. Good to see that it
-works out in practice (and continues to do so :).
+Applied and queued:
 
-> Yes, that means redesigning and rebasing our code, but that's also the
-> cost of learning a new language.
->
-> And yes, things can still be a little bit rough around the edges, but
-> there is awareness and action taken to address these issues, at the
-> compiler level when relevant. This makes me confident for the future.
+	git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git locking
 
-If you have an issue that you cannot work around, or something that
-looks off, let me know. Maybe that's something that pin-init can deal
-better with or we can have another library that helps with it. After all
-pin-init is specially tailored for the kernel to work :)
+I also remove the part in the commit log where it mentioned about pin
+projection, since the pull request for that is already created and
+merged. Thanks!
 
----
-Cheers,
-Benno
+I will give it some tests and see if I could send a pull request to tip
+early next week, so it can be in v6.18.
+
+Regards,
+Boqun
