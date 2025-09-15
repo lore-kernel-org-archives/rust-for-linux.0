@@ -1,199 +1,451 @@
-Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C753C1E515;
-	Mon, 15 Sep 2025 11:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C308B1F4169
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Sep 2025 12:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757937214; cv=none; b=ZSnWb6YjJmI8rHTquWyTpt7jB/s93sq4Vr2+CozGj2pGyW+xpMvfgttHkxDqo6ze6NDzZ7+mGAuYj0aj3AstzK00BDXqwfrZNOBEw29EDkjN5DeM4Y76INWJw4460iEwJRCwqbJ0rU0WIEO67AAyCW2j8456kUgcylo7elsd1YU=
+	t=1757937779; cv=none; b=irz6p4qREb6wydWiwEQWtBFGqJpuFAs9C7zc2WqZcJfk9NzhhEOMH7CsVxJmaB6+NwlW3pRBYCuUowo851D8NOhC8KApImxogTNIybta/Q9tj1yhrm4XKDzjGTVT0FVGgdbPD3utUoGTD7NKh3fV0wo+JbxdFgMGStxY6olxvro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757937214; c=relaxed/simple;
-	bh=INR0gKKwfACJO986I6vNpgz9ymZl5uN+u2Vu5okD6e8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QS5EK/1ceT4H1KgSggQh6ZwTC24WfYiksPYd15XDDPgzLJxqm26u35BoPj+x+GMESi/jh+NPqdllIjDzO6VkicaV8oy3AhXaK9WLWvGbpDrDw/rPygmaLqtXbrXKWNsOxbBFpCqtASFQGgRj6hZIWVk1e8khmKIvvot64HSySpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=kqirxFrl; arc=none smtp.client-ip=178.154.239.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1757937779; c=relaxed/simple;
+	bh=sFJVLZ2KZ0Hcz5cJHFJSDExMCeJ3YzptQttWezMDcKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RMRkYgNXC8lmHSKh50NH9DGc3GlsZDZmU5nYyC2ySv0FNlrjf7/M1Zrs+XW+b5m2HogUuedXk02rdP++NhQ9g6RbX97pY7r5WA9/t5DpzcXhrxrdkj8NPwa/X5VRF5RES6WSa3fc+E6c0pEVbQqueeIUiowq68cGiMP/oTR2DxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K2WCnXf2; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="kqirxFrl"
-Received: from mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:b002:0:640:910e:0])
-	by forward100a.mail.yandex.net (Yandex) with ESMTPS id 423C4C02F7;
-	Mon, 15 Sep 2025 14:53:24 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CrNrXmiMGa60-tz9LPaL6;
-	Mon, 15 Sep 2025 14:53:23 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757937203;
-	bh=aMw30NSXQpEeokpSwIEdrXINNAVHyNRWHjg7QYbqax0=;
-	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=kqirxFrlQMzP2PUk8B0wNoQeQV8SlLMZ5VoKlUTdszGC2qOXbmpFMMmIBSNVB1lKw
-	 9Qqi0zEoHDLUO1t2ZFsQEtKJ6kYxQ02Nhyd+U01+aGVk2U+H+CDxCCSbjr5GyKePqd
-	 bwsP6222w12RQ0JiCFdo9EM8zOOutHkmVm6/SDcE=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org,
-	nathan@kernel.org,
-	nicolas.schier@linux.dev,
-	masahiroy@kernel.org,
-	aliceryhl@google.com,
-	thomas.weissschuh@linutronix.de,
-	tamird@gmail.com,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 1/1] rust: add `rustcheck` make target for check-only builds
-Date: Mon, 15 Sep 2025 14:53:11 +0300
-Message-ID: <20250915115311.3025-2-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250915115311.3025-1-work@onurozkan.dev>
-References: <20250915115311.3025-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K2WCnXf2"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b4d4881897cso2635918a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Sep 2025 05:02:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757937776; x=1758542576; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rkXTp59y9C0MEqVnEurpqF7SQ6VGFRiSZtPfZgLQH78=;
+        b=K2WCnXf26Fma2ItmcNKbCk9+SfaVs/otvIt/CpCED6/kbhBnVxiiJBJ9YM9J6lYLGf
+         3V68wpoHuSyw/ibcfW0LMkF/dYk4l20Kr5bnpD8RN8K9Y8tJYlCFrnU73CpuObImNYEw
+         XUokdzRXwBnFtqzh3mv9aXocaeZbQZq8WyeLdZw+rtHq6RNOspTxrgfZFnbqXuHZ2+Rx
+         TeUyMJE8TpBIsWXxY8Yi/BizzAJ7hgfQzKOtQkisaZ9hYIwLbr+WeMyTlvROMq4WHw61
+         I5c/8XhZ4j7kfryiGRqVgZzYRLvU1yC/pRb7uePxTcmQw7ekngaEzEZ3Bz+2EN7nhI5M
+         +02A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757937776; x=1758542576;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rkXTp59y9C0MEqVnEurpqF7SQ6VGFRiSZtPfZgLQH78=;
+        b=tOyxICjwARo6+U0U6/h/wQNKMUx7jlSBXp/kjPlBd1B7AHJ5D6qV192mY0mneEhT8d
+         6jmPEnlajjq2zgEfsolePfijH56CswGV3S15uwPlYKrkq+gIT1vigIAeiL/pAag2tNnn
+         H5PDpyhjEWtttZTuxwEhiniFatod7DgcToXmHgf19iGo1XcP3f1Zem+stR2LBeDWlOH0
+         xB/Pj8Mzz1evKeFeCgf8b8BfMLIBGYJu72ouCwg+Boni+WfehT1v9FKWLHXDCrLYxxXh
+         ELFHHAedm7wiYjw874qqHMlcogLO7jA0P8ZlenZWJIhSYGRZSvqlkIRMpIII/TQVYM82
+         hRZw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFEssdYCN1rfCOmc5UNJt8cSMRoGefv07vvheesDZsE2khmuQzHMoMynbULOfJZPgbKUZ365XLD0ehHrN5/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2xfZBXLZ1ZieKM2GlkOn7mivuMZhIAAL2Y8ujJlCSPEo2WYF0
+	q61bV6pPmoYArEFecYVnyJWwcmbdNFm9u2IfP6NqrXSlX1MkaDeGab4=
+X-Gm-Gg: ASbGnctfPs2+PnS1ZXe1S30M0uejhRqYAF1GH6af1+uZAk71AM/hC+JHfXHYDGp8gPj
+	3PJ3lP3OBMFj9Cb0f5uH5v56EFHtn5V8jOJ2jUHNH/a5uBFyh038lZgE3qNGfFrPR0IugYJ/lKi
+	/s0ZeXXeE7ltb6GAhRC25c+3hYlR4Ug1646jfb2EnwQKrl9qqklr3isEs2Z2YF5xFXP+OHsrB1m
+	/AurqGLaXxC9Q606TeiQFSurovmTAmYKqn7FVnNutgErtOkees+GgCyWAD59lBNCyIe7HYqa3n4
+	Ff7crURZveHnJrE3/9rOLCrV8t9Hjz9dMHheQxuhn31hUKv7uesFrjJN3OJc7jNSq8YqZA==
+X-Google-Smtp-Source: AGHT+IHL/HryR9tiooOb7lDGKCroEx2G99AHs7zmSQOVmt8ODb0sMPwpnyH24OUKIczYAVQ64mshQg==
+X-Received: by 2002:a17:902:fc4c:b0:263:d6b5:fbe1 with SMTP id d9443c01a7336-263d6b60724mr63969435ad.55.1757937773109;
+        Mon, 15 Sep 2025 05:02:53 -0700 (PDT)
+Received: from FZWforever ([223.160.191.120])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-264eeab7bc8sm41174815ad.28.2025.09.15.05.02.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 05:02:52 -0700 (PDT)
+From: JaimeFine <jaimefine6@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	ojeda@kernel.org
+Cc: Jaime Fine <jaimefine6@gmail.com>
+Subject: [PATCH] rust: auxiliary: Fix 'initialialized' typo
+Date: Mon, 15 Sep 2025 20:02:27 +0800
+Message-ID: <20250915120235.1942-1-jaimefine6@gmail.com>
+X-Mailer: git-send-email 2.50.0.windows.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Adds a new `rustcheck` make target to run a check-only build
-similar to `cargo check`. This allows us to verify that the Rust
-sources can build without building/linking final artifacts,
-which speeds up the iteration (a lot) during development.
+From: Jaime Fine <jaimefine6@gmail.com>
 
-The target also supports the CLIPPY flag (e.g., `make LLVM=1
-rustcheck CLIPPY=1) to run Clippy in a faster way.
+Suggested-by: onur-ozkan
 
-Also, unlike `make LLVM=1`, it doesn't compile large amounts of C
-code (on a fresh checkout) when the goal is only to check that
-Rust builds are not broken after some changes.
-
-Suggested-by: Benno Losin <lossin@kernel.org>
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/near/539103602
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
+Link: https://github.com/Rust-for-Linux/linux/issues/1187
+Signed-off-by: Jaime Fine <jaimefine6@gmail.com>
 ---
- Makefile      |  7 +++++
- rust/Makefile | 73 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 80 insertions(+)
+ rust/kernel/auxiliary.rs | 357 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 357 insertions(+)
+ create mode 100644 rust/kernel/auxiliary.rs
 
-diff --git a/Makefile b/Makefile
-index cf37b9407821..7812cdc72938 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1716,6 +1716,8 @@ help:
- 	@echo  '		    is formatted, printing a diff otherwise.'
- 	@echo  '  rustdoc	  - Generate Rust documentation'
- 	@echo  '		    (requires kernel .config)'
-+	@echo  '  rustcheck       - Check that the Rust code builds'
-+	@echo  '                    (requires kernel .config)'
- 	@echo  '  rusttest        - Runs the Rust tests'
- 	@echo  '                    (requires kernel .config; downloads external repos)'
- 	@echo  '  rust-analyzer	  - Generate rust-project.json rust-analyzer support file'
-@@ -1821,6 +1823,11 @@ PHONY += rustdoc
- rustdoc: prepare
- 	$(Q)$(MAKE) $(build)=rust $@
- 
-+# Checking Rust sources.
-+PHONY += rustcheck
-+rustcheck: prepare0
-+	$(Q)$(MAKE) $(build)=rust $@
+diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+new file mode 100644
+index 0000000..3626072
+--- /dev/null
++++ b/rust/kernel/auxiliary.rs
+@@ -0,0 +1,357 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- # Testing target
- PHONY += rusttest
- rusttest: prepare
-diff --git a/rust/Makefile b/rust/Makefile
-index bfa915b0e588..b45878870207 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -265,6 +265,79 @@ rusttest-kernel: $(src)/kernel/lib.rs rusttestlib-ffi rusttestlib-kernel \
-     rusttestlib-uapi rusttestlib-pin_init FORCE
- 	+$(call if_changed,rustc_test)
- 
-+## Check-only compilation (similar to `cargo check`)
-+quiet_cmd_rustc_check_library = $(RUSTC_OR_CLIPPY_QUIET) CHECK $<
-+      cmd_rustc_check_library = \
-+        OBJTREE=$(abspath $(objtree)) \
-+        $(RUSTC_OR_CLIPPY) $(rust_common_flags) \
-+                @$(objtree)/include/generated/rustc_cfg $(rustc_target_flags) \
-+                --crate-type $(if $(rustc_check_library_proc),proc-macro,rlib) \
-+                $(if $(rustc_check_library_proc),,--emit=metadata) \
-+                --out-dir $(objtree)/$(obj)/check -L$(objtree)/$(obj)/check \
-+                --crate-name $(if $(rustc_check_crate_name),$(rustc_check_crate_name), \
-+				$(subst rustcheck-,,$(subst rustchecklib-,,$@))) $<
++//! Abstractions for the auxiliary bus.
++//!
++//! C header: [`include/linux/auxiliary_bus.h`](srctree/include/linux/auxiliary_bus.h)
 +
-+rustcheck: rustchecklib-build_error rustchecklib-ffi rustchecklib-macros \
-+	rustchecklib-compiler_builtins rustchecklib-pin_init_internal \
-+	rustchecklib-pin_init rustchecklib-bindings rustchecklib-uapi \
-+	rustchecklib-kernel
++use crate::{
++    bindings, container_of, device,
++    device_id::{RawDeviceId, RawDeviceIdIndex},
++    driver,
++    error::{from_result, to_result, Result},
++    prelude::*,
++    types::Opaque,
++    ThisModule,
++};
++use core::{
++    marker::PhantomData,
++    ptr::{addr_of_mut, NonNull},
++};
 +
-+rustchecklib-build_error: $(src)/build_error.rs FORCE
-+	+$(call if_changed,rustc_check_library)
++/// An adapter for the registration of auxiliary drivers.
++pub struct Adapter<T: Driver>(T);
 +
-+rustchecklib-ffi: $(src)/ffi.rs FORCE
-+	+$(call if_changed,rustc_check_library)
++// SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid if
++// a preceding call to `register` has been successful.
++unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
++    type RegType = bindings::auxiliary_driver;
 +
-+rustchecklib-macros: private rustc_target_flags = --extern proc_macro
-+rustchecklib-macros: private rustc_check_library_proc = yes
-+rustchecklib-macros: $(src)/macros/lib.rs FORCE
-+	+$(call if_changed,rustc_check_library)
++    unsafe fn register(
++        adrv: &Opaque<Self::RegType>,
++        name: &'static CStr,
++        module: &'static ThisModule,
++    ) -> Result {
++        // SAFETY: It's safe to set the fields of `struct auxiliary_driver` on initialization.
++        unsafe {
++            (*adrv.get()).name = name.as_char_ptr();
++            (*adrv.get()).probe = Some(Self::probe_callback);
++            (*adrv.get()).remove = Some(Self::remove_callback);
++            (*adrv.get()).id_table = T::ID_TABLE.as_ptr();
++        }
 +
-+rustchecklib-compiler_builtins: private rustc_check_crate_name = compiler_builtins_kernel
-+rustchecklib-compiler_builtins: $(src)/compiler_builtins.rs FORCE
-+	+$(call if_changed,rustc_check_library)
++        // SAFETY: `adrv` is guaranteed to be a valid `RegType`.
++        to_result(unsafe {
++            bindings::__auxiliary_driver_register(adrv.get(), module.0, name.as_char_ptr())
++        })
++    }
 +
-+rustchecklib-pin_init_internal: private rustc_target_flags = --cfg kernel \
-+	--extern proc_macro
-+rustchecklib-pin_init_internal: private rustc_check_library_proc = yes
-+rustchecklib-pin_init_internal: $(src)/pin-init/internal/src/lib.rs FORCE
-+	+$(call if_changed,rustc_check_library)
++    unsafe fn unregister(adrv: &Opaque<Self::RegType>) {
++        // SAFETY: `adrv` is guaranteed to be a valid `RegType`.
++        unsafe { bindings::auxiliary_driver_unregister(adrv.get()) }
++    }
++}
 +
-+rustchecklib-pin_init: private rustc_target_flags = --extern pin_init_internal \
-+	--extern macros --cfg kernel
-+rustchecklib-pin_init: $(src)/pin-init/src/lib.rs rustchecklib-macros \
-+	rustchecklib-pin_init_internal FORCE
-+	+$(call if_changed,rustc_check_library)
++impl<T: Driver + 'static> Adapter<T> {
++    extern "C" fn probe_callback(
++        adev: *mut bindings::auxiliary_device,
++        id: *const bindings::auxiliary_device_id,
++    ) -> kernel::ffi::c_int {
++        // SAFETY: The auxiliary bus only ever calls the probe callback with a valid pointer to a
++        // `struct auxiliary_device`.
++        //
++        // INVARIANT: `adev` is valid for the duration of `probe_callback()`.
++        let adev = unsafe { &*adev.cast::<Device<device::CoreInternal>>() };
 +
-+rustchecklib-bindings: private rustc_target_flags = --extern ffi
-+rustchecklib-bindings: $(src)/bindings/lib.rs \
-+	$(obj)/bindings/bindings_generated.rs \
-+	$(obj)/bindings/bindings_helpers_generated.rs \
-+	rustchecklib-ffi FORCE
-+	+$(call if_changed,rustc_check_library)
++        // SAFETY: `DeviceId` is a `#[repr(transparent)`] wrapper of `struct auxiliary_device_id`
++        // and does not add additional invariants, so it's safe to transmute.
++        let id = unsafe { &*id.cast::<DeviceId>() };
++        let info = T::ID_TABLE.info(id.index());
 +
-+rustchecklib-uapi: private rustc_target_flags = --extern ffi
-+rustchecklib-uapi: $(src)/uapi/lib.rs $(obj)/uapi/uapi_generated.rs \
-+	rustchecklib-ffi FORCE
-+	+$(call if_changed,rustc_check_library)
++        from_result(|| {
++            let data = T::probe(adev, info)?;
 +
-+ifdef CONFIG_JUMP_LABEL
-+rustchecklib-kernel: $(obj)/kernel/generated_arch_static_branch_asm.rs FORCE
-+endif
-+ifndef CONFIG_UML
-+ifdef CONFIG_BUG
-+rustchecklib-kernel: $(obj)/kernel/generated_arch_warn_asm.rs \
-+	$(obj)/kernel/generated_arch_reachable_asm.rs FORCE
-+endif
-+endif
++            adev.as_ref().set_drvdata(data);
++            Ok(0)
++        })
++    }
 +
-+rustchecklib-kernel: private rustc_target_flags = --extern ffi --extern pin_init \
-+	--extern build_error --extern macros --extern bindings --extern uapi
-+rustchecklib-kernel: $(src)/kernel/lib.rs rustchecklib-ffi rustchecklib-pin_init \
-+	rustchecklib-build_error rustchecklib-macros rustchecklib-bindings \
-+	rustchecklib-uapi FORCE
-+	+$(call if_changed,rustc_check_library)
++    extern "C" fn remove_callback(adev: *mut bindings::auxiliary_device) {
++        // SAFETY: The auxiliary bus only ever calls the probe callback with a valid pointer to a
++        // `struct auxiliary_device`.
++        //
++        // INVARIANT: `adev` is valid for the duration of `probe_callback()`.
++        let adev = unsafe { &*adev.cast::<Device<device::CoreInternal>>() };
 +
- ifdef CONFIG_CC_IS_CLANG
- bindgen_c_flags = $(c_flags)
- else
++        // SAFETY: `remove_callback` is only ever called after a successful call to
++        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
++        // and stored a `Pin<KBox<T>>`.
++        drop(unsafe { adev.as_ref().drvdata_obtain::<Pin<KBox<T>>>() });
++    }
++}
++
++/// Declares a kernel module that exposes a single auxiliary driver.
++#[macro_export]
++macro_rules! module_auxiliary_driver {
++    ($($f:tt)*) => {
++        $crate::module_driver!(<T>, $crate::auxiliary::Adapter<T>, { $($f)* });
++    };
++}
++
++/// Abstraction for `bindings::auxiliary_device_id`.
++#[repr(transparent)]
++#[derive(Clone, Copy)]
++pub struct DeviceId(bindings::auxiliary_device_id);
++
++impl DeviceId {
++    /// Create a new [`DeviceId`] from name.
++    pub const fn new(modname: &'static CStr, name: &'static CStr) -> Self {
++        let name = name.as_bytes_with_nul();
++        let modname = modname.as_bytes_with_nul();
++
++        // TODO: Replace with `bindings::auxiliary_device_id::default()` once stabilized for
++        // `const`.
++        //
++        // SAFETY: FFI type is valid to be zero-initialized.
++        let mut id: bindings::auxiliary_device_id = unsafe { core::mem::zeroed() };
++
++        let mut i = 0;
++        while i < modname.len() {
++            id.name[i] = modname[i];
++            i += 1;
++        }
++
++        // Reuse the space of the NULL terminator.
++        id.name[i - 1] = b'.';
++
++        let mut j = 0;
++        while j < name.len() {
++            id.name[i] = name[j];
++            i += 1;
++            j += 1;
++        }
++
++        Self(id)
++    }
++}
++
++// SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `auxiliary_device_id` and does not add
++// additional invariants, so it's safe to transmute to `RawType`.
++unsafe impl RawDeviceId for DeviceId {
++    type RawType = bindings::auxiliary_device_id;
++}
++
++// SAFETY: `DRIVER_DATA_OFFSET` is the offset to the `driver_data` field.
++unsafe impl RawDeviceIdIndex for DeviceId {
++    const DRIVER_DATA_OFFSET: usize =
++        core::mem::offset_of!(bindings::auxiliary_device_id, driver_data);
++
++    fn index(&self) -> usize {
++        self.0.driver_data
++    }
++}
++
++/// IdTable type for auxiliary drivers.
++pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
++
++/// Create a auxiliary `IdTable` with its alias for modpost.
++#[macro_export]
++macro_rules! auxiliary_device_table {
++    ($table_name:ident, $module_table_name:ident, $id_info_type: ty, $table_data: expr) => {
++        const $table_name: $crate::device_id::IdArray<
++            $crate::auxiliary::DeviceId,
++            $id_info_type,
++            { $table_data.len() },
++        > = $crate::device_id::IdArray::new($table_data);
++
++        $crate::module_device_table!("auxiliary", $module_table_name, $table_name);
++    };
++}
++
++/// The auxiliary driver trait.
++///
++/// Drivers must implement this trait in order to get an auxiliary driver registered.
++pub trait Driver {
++    /// The type holding information about each device id supported by the driver.
++    ///
++    /// TODO: Use associated_type_defaults once stabilized:
++    ///
++    /// type IdInfo: 'static = ();
++    type IdInfo: 'static;
++
++    /// The table of device ids supported by the driver.
++    const ID_TABLE: IdTable<Self::IdInfo>;
++
++    /// Auxiliary driver probe.
++    ///
++    /// Called when an auxiliary device is matches a corresponding driver.
++    fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>;
++}
++
++/// The auxiliary device representation.
++///
++/// This structure represents the Rust abstraction for a C `struct auxiliary_device`. The
++/// implementation abstracts the usage of an already existing C `struct auxiliary_device` within
++/// Rust code that we get passed from the C side.
++///
++/// # Invariants
++///
++/// A [`Device`] instance represents a valid `struct auxiliary_device` created by the C portion of
++/// the kernel.
++#[repr(transparent)]
++pub struct Device<Ctx: device::DeviceContext = device::Normal>(
++    Opaque<bindings::auxiliary_device>,
++    PhantomData<Ctx>,
++);
++
++impl<Ctx: device::DeviceContext> Device<Ctx> {
++    fn as_raw(&self) -> *mut bindings::auxiliary_device {
++        self.0.get()
++    }
++
++    /// Returns the auxiliary device' id.
++    pub fn id(&self) -> u32 {
++        // SAFETY: By the type invariant `self.as_raw()` is a valid pointer to a
++        // `struct auxiliary_device`.
++        unsafe { (*self.as_raw()).id }
++    }
++
++    /// Returns a reference to the parent [`device::Device`], if any.
++    pub fn parent(&self) -> Option<&device::Device> {
++        let ptr: *const Self = self;
++        // CAST: `Device<Ctx: DeviceContext>` types are transparent to each other.
++        let ptr: *const Device = ptr.cast();
++        // SAFETY: `ptr` was derived from `&self`.
++        let this = unsafe { &*ptr };
++
++        this.as_ref().parent()
++    }
++}
++
++impl Device {
++    extern "C" fn release(dev: *mut bindings::device) {
++        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
++        // embedded in `struct auxiliary_device`.
++        let adev = unsafe { container_of!(dev, bindings::auxiliary_device, dev) };
++
++        // SAFETY: `adev` points to the memory that has been allocated in `Registration::new`, via
++        // `KBox::new(Opaque::<bindings::auxiliary_device>::zeroed(), GFP_KERNEL)`.
++        let _ = unsafe { KBox::<Opaque<bindings::auxiliary_device>>::from_raw(adev.cast()) };
++    }
++}
++
++// SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
++// argument.
++kernel::impl_device_context_deref!(unsafe { Device });
++kernel::impl_device_context_into_aref!(Device);
++
++// SAFETY: Instances of `Device` are always reference-counted.
++unsafe impl crate::types::AlwaysRefCounted for Device {
++    fn inc_ref(&self) {
++        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
++        unsafe { bindings::get_device(self.as_ref().as_raw()) };
++    }
++
++    unsafe fn dec_ref(obj: NonNull<Self>) {
++        // CAST: `Self` a transparent wrapper of `bindings::auxiliary_device`.
++        let adev: *mut bindings::auxiliary_device = obj.cast().as_ptr();
++
++        // SAFETY: By the type invariant of `Self`, `adev` is a pointer to a valid
++        // `struct auxiliary_device`.
++        let dev = unsafe { addr_of_mut!((*adev).dev) };
++
++        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
++        unsafe { bindings::put_device(dev) }
++    }
++}
++
++impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<Ctx> {
++    fn as_ref(&self) -> &device::Device<Ctx> {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
++        // `struct auxiliary_device`.
++        let dev = unsafe { addr_of_mut!((*self.as_raw()).dev) };
++
++        // SAFETY: `dev` points to a valid `struct device`.
++        unsafe { device::Device::from_raw(dev) }
++    }
++}
++
++// SAFETY: A `Device` is always reference-counted and can be released from any thread.
++unsafe impl Send for Device {}
++
++// SAFETY: `Device` can be shared among threads because all methods of `Device`
++// (i.e. `Device<Normal>) are thread safe.
++unsafe impl Sync for Device {}
++
++/// The registration of an auxiliary device.
++///
++/// This type represents the registration of a [`struct auxiliary_device`]. When an instance of this
++/// type is dropped, its respective auxiliary device will be unregistered from the system.
++///
++/// # Invariants
++///
++/// `self.0` always holds a valid pointer to an initialized and registered
++/// [`struct auxiliary_device`].
++pub struct Registration(NonNull<bindings::auxiliary_device>);
++
++impl Registration {
++    /// Create and register a new auxiliary device.
++    pub fn new(parent: &device::Device, name: &CStr, id: u32, modname: &CStr) -> Result<Self> {
++        let boxed = KBox::new(Opaque::<bindings::auxiliary_device>::zeroed(), GFP_KERNEL)?;
++        let adev = boxed.get();
++
++        // SAFETY: It's safe to set the fields of `struct auxiliary_device` on initialization.
++        unsafe {
++            (*adev).dev.parent = parent.as_raw();
++            (*adev).dev.release = Some(Device::release);
++            (*adev).name = name.as_char_ptr();
++            (*adev).id = id;
++        }
++
++        // SAFETY: `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`,
++        // which has not been initialized yet.
++        unsafe { bindings::auxiliary_device_init(adev) };
++
++        // Now that `adev` is initialized, leak the `Box`; the corresponding memory will be freed
++        // by `Device::release` when the last reference to the `struct auxiliary_device` is dropped.
++        let _ = KBox::into_raw(boxed);
++
++        // SAFETY:
++        // - `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`, which has
++        //   been initialized,
++        // - `modname.as_char_ptr()` is a NULL terminated string.
++        let ret = unsafe { bindings::__auxiliary_device_add(adev, modname.as_char_ptr()) };
++        if ret != 0 {
++            // SAFETY: `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`,
++            // which has been initialized.
++            unsafe { bindings::auxiliary_device_uninit(adev) };
++
++            return Err(Error::from_errno(ret));
++        }
++
++        // SAFETY: `adev` is guaranteed to be non-null, since the `KBox` was allocated successfully.
++        //
++        // INVARIANT: The device will remain registered until `auxiliary_device_delete()` is called,
++        // which happens in `Self::drop()`.
++        Ok(Self(unsafe { NonNull::new_unchecked(adev) }))
++    }
++}
++
++impl Drop for Registration {
++    fn drop(&mut self) {
++        // SAFETY: By the type invariant of `Self`, `self.0.as_ptr()` is a valid registered
++        // `struct auxiliary_device`.
++        unsafe { bindings::auxiliary_device_delete(self.0.as_ptr()) };
++
++        // This drops the reference we acquired through `auxiliary_device_init()`.
++        //
++        // SAFETY: By the type invariant of `Self`, `self.0.as_ptr()` is a valid registered
++        // `struct auxiliary_device`.
++        unsafe { bindings::auxiliary_device_uninit(self.0.as_ptr()) };
++    }
++}
++
++// SAFETY: A `Registration` of a `struct auxiliary_device` can be released from any thread.
++unsafe impl Send for Registration {}
++
++// SAFETY: `Registration` does not expose any methods or fields that need synchronization.
++unsafe impl Sync for Registration {}
 -- 
-2.51.0
+2.50.0.windows.1
 
