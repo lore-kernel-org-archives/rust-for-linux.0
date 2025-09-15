@@ -1,161 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ABC28DB56;
-	Mon, 15 Sep 2025 06:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F393B136E3F;
+	Mon, 15 Sep 2025 06:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757918689; cv=none; b=UgZc+JcB6Y4jZpAvEvHL9D9zCxvtyy0wVdunm0enqF+k17wgFWRgNYQDZxvHZzqL+fEiqes8Pe2T3FuZz/tIhRFJ4e+Ree2/1qefZ79oCSZ4YGJq7z+PI/7+p4x6w674lajvuWbkAEgpq990W5SPtOD9Qh1ExATdsrDas22G4+s=
+	t=1757919533; cv=none; b=CaHQhmT95PQdnl8KAosLDg3NN4EjS2B+2jWdAizMOLpo2XL1ek9M7f1Cw9XdrTh+HQ0iKqifMgwJ+hxH/IsPovfTOOQ0BvSRNEn1lgJxinlYlnnjeC4Eqd0OJ7eF1Q4ZqB9fpp8bhXDpeCo5aQR/hXFtJ57JK7JdsP+Vd8rsPt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757918689; c=relaxed/simple;
-	bh=VAfu4F5dsdSIYPJ7m+h39bitRfmL3DD8Nk2X9dOJhtQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=izHE7xEVePJnrVqYS3fTxgT+uKqn9vkoPm//i0wRwcyQU3+uzZKTuhZkEI5XaCOh26kUvFsfufL5+azLrn47hvBCdv1+zOdV6L2fNXxOhR8p33z35DgHQBs640DdDKH7Hg9zvVwwn1GCaK2Epr6x9iAcCFbSxHEDLCDW/qf867k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ragfCJFp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757919533; c=relaxed/simple;
+	bh=nRRbPf3NF5C5ekIv2cigVd3N3aQVOq638dblv75A6XU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sMqj/I3JWwxftGjm153xBfccik6NLjaPQsvu6i6qDfg9W4xZcI0cknGkqHyMjKPSKvWk/HyOeANkfVnHsPZmOFbvzHrtqBLXaucJAEPyb0BCDovJMlDt+uADt8E6QK1bVbp5U5qG8p8t97S5oU90+rGeTOstF+pNlYKukPTrnx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b27XNKfx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ragfCJFp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88CAC4CEF1;
-	Mon, 15 Sep 2025 06:44:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b27XNKfx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB3AC4CEF1;
+	Mon, 15 Sep 2025 06:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757918688;
-	bh=VAfu4F5dsdSIYPJ7m+h39bitRfmL3DD8Nk2X9dOJhtQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ragfCJFpMq98eSjOvZnc9x4bbzLfT4wMQ01fDijHQdZh7LM9OkhjE3F1fZ74HrIcY
-	 sopGLJsszn2n4BRv0CdZ95jFgnyShWURJoGqX3SXTnuo0+YWrHoa412S2JfyMazepG
-	 KLRjF9QUYt/SV5WXgi8pwJYTTq0GQEUORXy7NEDpD37DcWgrhjwXXCLU6TnYhps3GP
-	 8SNaBJ/AMr73WbgbSJWylotp1ZQELWaAFJp5Q/RnhlNo3D75E77EyUQXk0J9zlVqra
-	 C1xm44+rUYVMb8lwSeIR4hgvWfyZB8WO3R2ChkX7zwkcAurQcYZKC9WrfObwaF0WAi
-	 GoufU1EwP5CxQ==
+	s=k20201202; t=1757919532;
+	bh=nRRbPf3NF5C5ekIv2cigVd3N3aQVOq638dblv75A6XU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b27XNKfxXO32bo4XZTUsv8BOFRM9ukXfA74S+9pSymWTZKe9OL37vQVMWFQuTGoX7
+	 xnhV5dLTMuwQo5MUeMBNitcdttBBB+21eka6zPwDeMOqoV7kF8u/gRmoLR2/9gUr3k
+	 gMcwmLZfFbLkcdvy7lwK36543l6fTGpF+1ccADQcT7uNzbZ0RBj/dEkt0wwO1PxUf/
+	 wP3hr9r5Me6npLG/X4AqRuVVbYJO43zNuETmp1VrCMfW629KjykSfUVsy3jtpGJy8t
+	 MfdZ4a69ktTRIuemttgPORLBHGk9GwBcUVLifcryeyT8mIbwUF1dBF/JoI7DpFtCZR
+	 yCmDYvs9p9y9Q==
+Date: Mon, 15 Sep 2025 12:28:43 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Rahul Rameshbabu <sergeantsagara@protonmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH] rust: pci: fix incorrect platform references in doc
+ comments
+Message-ID: <3tvlfhghyl3xu7drx2vawkw54ghrbbf32qfgsiutrltm3sszck@bdgqp64pbdy7>
+References: <20250913172557.19074-1-sergeantsagara@protonmail.com>
+ <CANiq72msM5PT2mYKrX_RPXYtA4vapMRO=iSex1gQZqiXdpvvDA@mail.gmail.com>
+ <26oqasrlptl5v4ymfkrlznltbwqx5rfi4dworhri3msme4wlmm@cclnphvwur6r>
+ <CANiq72mpQO0v-acGOWUcYaBmETSTAjkJUDN4MT498imVGboYQQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Sep 2025 08:44:38 +0200
-Message-Id: <DCT65W48G0CN.19VOHM3178BWM@kernel.org>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Alistair
- Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v5 02/12] gpu: nova-core: move GSP boot code to a
- dedicated method
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20250911-nova_firmware-v5-2-5a8a33bddca1@nvidia.com>
- <e1755470-587b-4a43-8171-3d031b7fb4f4@kernel.org>
- <DCPYQNZG1OJK.2EE4JWJAROK57@nvidia.com>
- <ce74db34-77bc-4207-94c8-6e0580189448@kernel.org>
- <DCQ074EMFNIK.1OJLWJXWZLDXZ@nvidia.com> <20250913010226.GA1478480@joelbox2>
- <DCRPJKD0UHDQ.IOWSOB2IK06E@kernel.org> <20250913171357.GA1551194@joelbox2>
- <CANiq72n50MaMXeWdwvVOEQd3YEHbDRqeeRzbdY8hPnePtq-hnw@mail.gmail.com>
- <b1aea815-68b4-4d6c-9e12-3a949ee290c6@nvidia.com>
- <20250913220625.GA1564550@joelbox2> <DCS59IDCIKH1.2M3I6H0NVD0RG@nvidia.com>
- <DCSLPCSQRYOY.3BX3008H5CVQP@kernel.org>
- <DCT3XP3PVHJZ.2T0L221T3HW5R@nvidia.com>
-In-Reply-To: <DCT3XP3PVHJZ.2T0L221T3HW5R@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mpQO0v-acGOWUcYaBmETSTAjkJUDN4MT498imVGboYQQ@mail.gmail.com>
 
-On Mon Sep 15, 2025 at 6:59 AM CEST, Alexandre Courbot wrote:
-> On Sun Sep 14, 2025 at 11:42 PM JST, Benno Lossin wrote:
->> On Sun Sep 14, 2025 at 3:49 AM CEST, Alexandre Courbot wrote:
->>> On Sun Sep 14, 2025 at 7:06 AM JST, Joel Fernandes wrote:
->>>> On Sat, Sep 13, 2025 at 02:29:54PM -0700, John Hubbard wrote:
->>>>> Yes. It's only "paranoia" if the code is bug-free. So Rust itself
->>>>> naturally will look "a little" paranoid, that's core to its mission. =
-:)
->>>>
->>>> This seems to be taken out-of-context, I said "paranoia" mainly becaus=
-e I am
->>>> not sure if excessive use of pinning may tend to cause other problems.=
- The
->>>> "paranoia" is about over-usage of pinning. Personally, I don't prefer =
-to pin
->>>> stuff in my code until I absolutely need to, or when I start having ne=
-eds for
->>>> pinning, like using spinlocks. Maybe I am wrong, but the way I learnt =
-Rust,
->>>> data movement is baked into it. I am not yet confident pinning will no=
-t
->>>> constraint Rust code gen -- but that could just be a part of my learni=
-ng
->>>> journey that I have to convince myself it is Ok to do so in advance of
->>>> actually requiring it even if you simply hypothetically anticipate nee=
-ding it
->>>> (as Danilo pointed out that in practice this is not an issue and I do =
-tend to
->>>> agree with Miguel and Danilo because they are usually right :-D). I am
->>>> researching counter examples :-)
->>>
->>> You can look at the definition for `Pin` in [1], but it is so short we
->>> can paste it here:
->>>
->>>     #[repr(transparent)]
->>>     #[derive(Copy, Clone)]
->>>     pub struct Pin<Ptr> {
->>>         pointer: Ptr,
->>>     }
->>>
->>> There isn't much getting in the way of optimized code generation - its
->>> purpose is simply to constraint the acquisition of mutable references t=
-o
->>> prevent moving the pointee out.
->>>
->>> I started this patchset a little bit skeptical about the need to pin so
->>> many things, but after seeing the recent additions to `pin_init` and
->>> rewriting the code as Danilo suggested, it starteds to click. The
->>> supposed restrictions are in practice avoided by embracing the concept
->>> fully, and in the end I got that feeling (familiar when writing Rust) o=
-f
->>> being guided towards the right design - a bit like playing bowling with
->>> gutter guards.
->>
->> That's a great way to put it -- I had a similar experience when writing
->> pin-init and thinking about it purely theoretically. Good to see that it
->> works out in practice (and continues to do so :).
->>
->>> Yes, that means redesigning and rebasing our code, but that's also the
->>> cost of learning a new language.
->>>
->>> And yes, things can still be a little bit rough around the edges, but
->>> there is awareness and action taken to address these issues, at the
->>> compiler level when relevant. This makes me confident for the future.
->>
->> If you have an issue that you cannot work around, or something that
->> looks off, let me know. Maybe that's something that pin-init can deal
->> better with or we can have another library that helps with it. After all
->> pin-init is specially tailored for the kernel to work :)
->
-> I was thinking about the lack of access to already-initialized fields in
-> the initializer when writing this, which has been covered so thanks for
-> that. :)
->
-> One more thing I still don't know how to do without unsafe code is
-> accessing structurally-pinned members of a pinned object. I had expected
-> that projection methods would be generated for such members marked
-> `#[pin]`, but I haven't found anything yet. For instance, we need to
-> call mutable methods on a pinned member of a pinned object, and the only
-> way I have found to do this is to use unsafe code. Is there a better
-> way?
+On Mon, Sep 15, 2025 at 08:28:30AM GMT, Miguel Ojeda wrote:
+> On Mon, Sep 15, 2025 at 7:29 AM Manivannan Sadhasivam <mani@kernel.org> wrote:
+> >
+> > Why should a spelling fix be backported to stable? The stable kernel rules
+> > explicitly states that these kind of fixes should *not* be backported:
+> >
+> >   - No "trivial" fixes without benefit for users (spelling changes, whitespace
+> >     cleanups, etc).
+> 
+> I am aware, but the stable team has autoselected a similar fix in the
+> past (and I asked them about it, precisely because of the rules
+> above).
+> 
+> For typos outside doc comments, I wouldn't tag it (but they may still
+> autoselect it).
+> 
+> For typos in rendered docs like this one, especially one that is not
+> just a spelling one (like this one), I think it is OK either way, and
+> a bit more worth it since these are meant to be rendered unlike
+> implementation comments.
+> 
+> Thus, since this one was in the fuzzy line, I suggested it so that the
+> contributor avoided Greg's bot when detecting the missing tag.
+> 
+> As for noautosel, I wouldn't do that -- they want them sometimes,
+> after all. Instead, I would reserve it for things that really
+> shouldn't be picked for a given reason.
+> 
+> I hope that clarifies a bit.
+> 
 
-That also lands together with access to initialized fields :) Danilo
-already merged it into drm-rust-next: 619db96daf94 ("rust: pin-init: add
-pin projections to `#[pin_data]`").
+Fair enough!
 
-You can only project the entire struct at once, but most of the time
-that should be sufficient.
+- Mani
 
----
-Cheers,
-Benno
+-- 
+மணிவண்ணன் சதாசிவம்
