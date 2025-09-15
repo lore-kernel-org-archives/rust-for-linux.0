@@ -1,100 +1,77 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264972F360E
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Sep 2025 11:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBCC301465;
+	Mon, 15 Sep 2025 11:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757935925; cv=none; b=MN2zUwFcnyLGrCnmXFa2DujeCk1Euf1GBDpdYn46hczFeNItnZhpdcGNYGo0psHmzij799Am60W8+tNBKXjWznm6kIsT6Tl4xS0wjRAk/vr0XKsi6ixKvbCqbeVTmPqSe7HomVb9J8EFgRqiLSDtWUwRhByCcLeNKtdK1uksqeo=
+	t=1757937212; cv=none; b=h9lMRSzv6qAyycNJdmT/vKJ38ffa8jQ5l0vjHwvYvZMd7tjOvqjljnRbbp5MV0T9GAjfoDy7CYDtDplkcgi+cv4PbE8J2U/yNCr/AdRzphha522ENI/++ljwxWVR+DrJX5Zwb8Z1Hm+MeeEiiGJbTn0JV5d66fwoJ2tjebj2mqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757935925; c=relaxed/simple;
-	bh=lhjJlR0g/usWNJatZv6IWd+4bQ7YOG5GDqfYIhKPOL0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F4URTchvDW2SOmTLNJFJnvfV+T1mmz/xNPQyjOk8iz75lB9AuTsU7kxg4ZluQYc1ahbz+Ruw2xeJ7VRopmENr32GGNnWNrcGjXEIRx2MoTEVuWDcy3/LSS2lQJDr06/X5NEwE6MFlfwAgL/FZ7KSIkcZ8a/MZcYUWiTvWsI5BPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PkbYKpaT; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757937212; c=relaxed/simple;
+	bh=rw6JMwmCQedtBTQUSJzpJoxXe+FRZMS4boJtWfoG3rk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LTKKEhtAOYwYSX3FLYXm96gak1Go93QxK+Jer453U2H3++193K7xJeTNSQ+uGa9pwgNRA8Dg8ZoYznMlVcbtdIYFbUFrzdu0kJMFTW7pzVhC1Xh1f1xbgT3an6tJwr1cgUI2vsUlclYFQkKZUzSPTbSsw5c7MVjxLCDaStPUMOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=HDz1Zwdc; arc=none smtp.client-ip=178.154.239.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PkbYKpaT"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32e78c3680dso115348a91.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Sep 2025 04:32:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757935923; x=1758540723; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NeeqBjq0kQoqEVGA6Y2CLldAeUXvC4YRAFLGe03vX7Y=;
-        b=PkbYKpaTOOLr0AAAI3t8SOjbfbmfUTqodfdEA+zR1f8rA3ZdhQQkOtVyzLZOLjqTKh
-         8OrBSwHT+PUo9pBz9TJwY9MC2ySP3+VpACINqlJkiddYpuBsgO988jjQDW4eIxR6SCEq
-         +iOxSHN9bN2KJvhwZ4n05N+COdesCdQ7nz6xrxpLGuztn5q+d2cDzJb0EVjb4Rm8BAYN
-         JSF+DbPRfHR6g/DlNUhHOu4qG9k1PMRhWRb6yklKBLYtjpl+MPdkl3AHZlYKepKOdq66
-         ayJ8l5bqDvWDTobZhp98MFK2OekaaEeRjP2Jb9JPuQ9DyoODezQCTgLxKnuw2HyOxQCK
-         83MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757935923; x=1758540723;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NeeqBjq0kQoqEVGA6Y2CLldAeUXvC4YRAFLGe03vX7Y=;
-        b=M4n7cYkhvEFROWCfZKPGGXQ3qvIFd8RDbYzpgR50VxIE9TXm4FaG02Hy/3FhUN29q+
-         0gKjpyny6NP1408xI551YvJtSfFeqaU9S/rhR7sCtNRnwEI+J794EDY+p2cksU1fLRbw
-         ZvLbV+MVx9VC2c8RExCrwX7x+WRMLGv/wqgka99xJ4Y+CodeVnrvB2KJcdysdh69OYru
-         bJMFexL0JINpLeAJeYB/kt1jVcsWtZyfoO91AID71Z1qsz+bwDoTb9SEFnMTBn4qVVYz
-         pMwhrCcLBlJdAayP1D/FagTGdZ8vLbpw8QEUrNjhRAuknBT886SSq6C8C4GckvKgMJ5Q
-         SuHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXXzgShklkR+AmYH5fa8KpSDclMweIhbP1RxriEtiM88X3OTEzGEa7rD7nENvfQJh31UhBEXra/nuhj/T7H9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6SEO+WcI/ErVg3xsQPZJaCgTSsp0dcoa9sUyS1siBjTGfReiJ
-	3s57/tKof5Z8BnISwk/KBhkoxCJWp1Gg/KNQtfWzbPuehAXaFvYEN5AEeqo/Y5MrPO5aGhywUnF
-	GRwV+PpVBKdafPUhwO2t53oHrlwMxfWY=
-X-Gm-Gg: ASbGncsTzgx4ExKK1mSEJpfMerxml0/rzYujZXKeE86MGLJv/dNHJgCqxaabj3JZ5i5
-	M5M1VCAGfMtHUalJ/H0TXKsM4OhSsw/9iX0rVl0YDYRyEONH1naRX3gtsfZNQrbQHPOKP+E1Nv2
-	3t+Tu0I2ut1KidWjitvqsJAREIWTig0Iu1qXpAmIvUoLsBhf7kMQTIOCDiBJZRFNsRsKd8rhzP0
-	WZ3Glii0sp0fSe4xp9XWNYDnohZP1ZRI6SfGcB/6+1OLfqwKmYtigCye5G/qLW4dzkNMV5TeZmw
-	wd2hofVSznktXQhdZEuPHiAKeA==
-X-Google-Smtp-Source: AGHT+IFLEChMwTeZv5zuFVulh4BpL4UJn1lGFgnTimd2jNCKBJYG8XZnkCZ7OMd8EBC3LUpilbZ/TDqMDVfAxrtC740=
-X-Received: by 2002:a17:902:e552:b0:258:a3a1:9aa5 with SMTP id
- d9443c01a7336-25d21ad61b4mr80648715ad.0.1757935923362; Mon, 15 Sep 2025
- 04:32:03 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="HDz1Zwdc"
+Received: from mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:b002:0:640:910e:0])
+	by forward100a.mail.yandex.net (Yandex) with ESMTPS id 2ECE2C006B;
+	Mon, 15 Sep 2025 14:53:21 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CrNrXmiMGa60-GXxRK6ue;
+	Mon, 15 Sep 2025 14:53:20 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1757937200;
+	bh=njiMJmDEfszF6H1476FNLp3VYoDINigreEW0u2XI6sc=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=HDz1ZwdcNVKPFGniPy1YUbvpKSMX82HQcsud4r1NUGKJBkj7MpMfK7IqCbMwNHOd0
+	 MBhPYP9xGfc46JO4WzWJSocUtv2ySn3nYUAW2DD1OxcI/ptWwQWYfaENT+8UuaDIy/
+	 4oNvqBHM23gg3RkyQPenNUUBuPiD184Gl9QDOEAA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	nathan@kernel.org,
+	nicolas.schier@linux.dev,
+	masahiroy@kernel.org,
+	aliceryhl@google.com,
+	thomas.weissschuh@linutronix.de,
+	tamird@gmail.com,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v2 0/1] rust: add `rustcheck` make target for check-only builds
+Date: Mon, 15 Sep 2025 14:53:10 +0300
+Message-ID: <20250915115311.3025-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAL-mriJXvgyqy+MhoMs7_KSPe9-hOOpyUZbwtRX=_gFJZ3P0NA@mail.gmail.com>
-In-Reply-To: <CAL-mriJXvgyqy+MhoMs7_KSPe9-hOOpyUZbwtRX=_gFJZ3P0NA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 15 Sep 2025 13:31:51 +0200
-X-Gm-Features: AS18NWBtBXe42q8ymONrppPDdAod42jTCddg3yW5ar0tps4ZuWHC7zJ2DJ9o0kM
-Message-ID: <CANiq72mVksRjOs-O-roM0oJVBxNsXyRf_NQhC0QoYB5gdtFuTA@mail.gmail.com>
-Subject: Re: [0001-rust-auxiliary-Fix-initialialized-typo.patch] rust:
- auxiliary: Fix 'initialialized' typo
-To: Zhaowen Fan <jaimefine6@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, bjorn3_gh@protonmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 15, 2025 at 1:29=E2=80=AFPM Zhaowen Fan <jaimefine6@gmail.com> =
-wrote:
->
-> This patch fixes a typo in `auxiliary.rs`.
+Changes in v2:
+  - Couple of indentation fixes in rust/Makefile.
 
-Please see:
+Onur Özkan (1):
+  rust: add `rustcheck` make target for check-only builds
 
-    https://docs.kernel.org/process/submitting-patches.html
-    https://rust-for-linux.com/contributing
+ Makefile      |  7 +++++
+ rust/Makefile | 73 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 80 insertions(+)
 
-on how to format a patch and who to send it etc.
+-- 
+2.51.0
 
-I would suggest using `git-format-patch` and `git-send-email` or `b4` to do=
- it.
-
-Also, you can take a look at how other patches appear in:
-
-    https://lore.kernel.org/rust-for-linux/
-
-Thanks!
-
-Cheers,
-Miguel
