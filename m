@@ -1,117 +1,161 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB5117C21E
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Sep 2025 06:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ABC28DB56;
+	Mon, 15 Sep 2025 06:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757917724; cv=none; b=gnFQFAE0acMqDBqTilGuQIm4C9tfpI0C1By23rkj4WEqyxjAGAqZFV96Dfv9lxnYQSjVtuKF/MCJCEx2hoUrvD8hhijMvRyusBjO/Jg6N9C2ibqTtLoUL5PLEJ4e9SFRVKbYu6ESIkzbT3cZvsRfIglHsttelObvktmoRpf15FU=
+	t=1757918689; cv=none; b=UgZc+JcB6Y4jZpAvEvHL9D9zCxvtyy0wVdunm0enqF+k17wgFWRgNYQDZxvHZzqL+fEiqes8Pe2T3FuZz/tIhRFJ4e+Ree2/1qefZ79oCSZ4YGJq7z+PI/7+p4x6w674lajvuWbkAEgpq990W5SPtOD9Qh1ExATdsrDas22G4+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757917724; c=relaxed/simple;
-	bh=r/9Kn45ZUStYRhTjTOzLMQUK+ADSzSjvKa97iBsSXfk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W1atF5+Fm/O/MYio52rU+ZuVUaUjp+ZJ0SRwh5LTEscZB/HdihuNm7fznB2QNTP5Mwhy672Jv+OcezaNjIMBEvdzZlsijT4twjWv/gzCu2mwSfwKYbXMwHaPteFGZIwd78C25ehJa0EmDB1HzpBDpOw0DWe3oQgMNiwwpyLaduI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LflDPC5E; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757918689; c=relaxed/simple;
+	bh=VAfu4F5dsdSIYPJ7m+h39bitRfmL3DD8Nk2X9dOJhtQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=izHE7xEVePJnrVqYS3fTxgT+uKqn9vkoPm//i0wRwcyQU3+uzZKTuhZkEI5XaCOh26kUvFsfufL5+azLrn47hvBCdv1+zOdV6L2fNXxOhR8p33z35DgHQBs640DdDKH7Hg9zvVwwn1GCaK2Epr6x9iAcCFbSxHEDLCDW/qf867k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ragfCJFp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LflDPC5E"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32e801552ccso8911a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 14 Sep 2025 23:28:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757917722; x=1758522522; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vmqCBgglSH1XFTVmKbDycfFQaWCzr9UXmOQ9aT0xQLg=;
-        b=LflDPC5ElrIkFtQIpKiy+aQibJzVNLC+DgkpBILfdx5zRORuFyGIV9g9Jt3NpRyoRv
-         K/PAw8B/1A0N6tAjIORmDo7WbbmidEN8L26lBPTRCgo/BEFu+m4zOptkCybotDP7dm3M
-         TGsFzfRCILs0Oo/CaF24kGAcMwH63G2aa6fhYRHki/O9pMvYTQtrnZsOOcw+6Ek2nOJZ
-         BVbm/TjpmmR/7y6c+jHRVI9j11P5ixvuy8BA+9ZN+VftUb9TNI8RlJFR9AMmMb0T5h6j
-         PsSDw7C9f3rSQwlOPPuzjMeUjeoDv0B9LScjfnkj8skAUWGSAP2pOy6kmPBm/em3CIrD
-         dqqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757917722; x=1758522522;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vmqCBgglSH1XFTVmKbDycfFQaWCzr9UXmOQ9aT0xQLg=;
-        b=q7eUIdtQJ3Vtb29tOoN8VLtXgc3m4IlNxkq4kTPvNu6hDSAEehHMv8YfePJJa9+5dE
-         arUfW0O+6SMi2CYxX+rfl7pLcPItzNwXNFsJEcYxQAKJxTBi0igN4fQUEcSAiDZ8dNZo
-         sD6lp6rnUQeX0RZLRmyKDSA1GR7jUIh9zKuEGWhkcZKELjTyFfdrf9x+xyTH0ng4id2S
-         IY/yhhW1H9F26w/n0u2DLZXpzuBP8mBGct/tk3wFxEVsYHxUx1ozyFluL1huEHvL3KrU
-         npxrjbsKMjqxJw+3AE42zwvZ0LHrVqIof7jaYvqkNxNU6J5ZkITwPsyInE5+9/+xCsb5
-         jQIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUE5LV7yyufO4oncGTrWCplHQoAPDYr/yEQURb3HKs7rqrSrgQ42xrO7z9LX/wBdUCP0zgvnt3MVdH/VcX8Hw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxQRv5dhkFFbyBJ4V/vPk1QKvdXduYxK6UPGIC9jf5RDkrxsVJ
-	CwAHaCMUdpa+lPlD8jB7Mb1ZuMo/v3OH9tTpAPLKNWsDUvfKcuM/VNVBHImvPwyXWfa6E4GBSvt
-	TePTA0UvdXZC/wI2l4hQjcCS2A/NGjjM=
-X-Gm-Gg: ASbGnctBNeR+XKlzV2rCOznbq4kTVr+so8AWIFKqAtohdm8XOVuZ3uDSxPs9id3wV72
-	q/3nxLDFEjAwat9nq7Sfv2cy7NlkULDauePiyHg37hFcBYwQKPV0AMcNMOH4dD5XaMfBTt5gM+D
-	VoTEU2hTaVuk9sGgcXLokNTXa/kSvX3ULHDv9TrKqJsDaobCafudbdJYtxQV35sQ4jzCN2qS/IE
-	Ful7tT+Ws4ZlP1J/8lGmL1xV5z+1Kk3Osd3OJKkRpTMqK9rzWK8AemqujzlytpiMS9kTpHCYb4/
-	9rn9oO1WCFGLiXyiUh3HkV9anjt+bU03L0qN
-X-Google-Smtp-Source: AGHT+IEchiEsGjMEl1Hm6ui7MHlyoHtVT9JbiNr8xFHt1Dh/GCG2aVZ9Mc9Wk0rDlBUnhgEKt0EkP1bILsFTHX+KRrs=
-X-Received: by 2002:a17:90b:3804:b0:32d:e980:7a70 with SMTP id
- 98e67ed59e1d1-32de9807ddfmr6262491a91.0.1757917722224; Sun, 14 Sep 2025
- 23:28:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ragfCJFp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88CAC4CEF1;
+	Mon, 15 Sep 2025 06:44:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757918688;
+	bh=VAfu4F5dsdSIYPJ7m+h39bitRfmL3DD8Nk2X9dOJhtQ=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ragfCJFpMq98eSjOvZnc9x4bbzLfT4wMQ01fDijHQdZh7LM9OkhjE3F1fZ74HrIcY
+	 sopGLJsszn2n4BRv0CdZ95jFgnyShWURJoGqX3SXTnuo0+YWrHoa412S2JfyMazepG
+	 KLRjF9QUYt/SV5WXgi8pwJYTTq0GQEUORXy7NEDpD37DcWgrhjwXXCLU6TnYhps3GP
+	 8SNaBJ/AMr73WbgbSJWylotp1ZQELWaAFJp5Q/RnhlNo3D75E77EyUQXk0J9zlVqra
+	 C1xm44+rUYVMb8lwSeIR4hgvWfyZB8WO3R2ChkX7zwkcAurQcYZKC9WrfObwaF0WAi
+	 GoufU1EwP5CxQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250913172557.19074-1-sergeantsagara@protonmail.com>
- <CANiq72msM5PT2mYKrX_RPXYtA4vapMRO=iSex1gQZqiXdpvvDA@mail.gmail.com> <26oqasrlptl5v4ymfkrlznltbwqx5rfi4dworhri3msme4wlmm@cclnphvwur6r>
-In-Reply-To: <26oqasrlptl5v4ymfkrlznltbwqx5rfi4dworhri3msme4wlmm@cclnphvwur6r>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 15 Sep 2025 08:28:30 +0200
-X-Gm-Features: AS18NWCkmdX2sBHMEVZOaZAumYceYyW3PCH1MqnX3I-KTdnLVgDBS3-v3ItVfN8
-Message-ID: <CANiq72mpQO0v-acGOWUcYaBmETSTAjkJUDN4MT498imVGboYQQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: pci: fix incorrect platform references in doc comments
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Rahul Rameshbabu <sergeantsagara@protonmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 15 Sep 2025 08:44:38 +0200
+Message-Id: <DCT65W48G0CN.19VOHM3178BWM@kernel.org>
+Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Alistair
+ Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v5 02/12] gpu: nova-core: move GSP boot code to a
+ dedicated method
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20250911-nova_firmware-v5-2-5a8a33bddca1@nvidia.com>
+ <e1755470-587b-4a43-8171-3d031b7fb4f4@kernel.org>
+ <DCPYQNZG1OJK.2EE4JWJAROK57@nvidia.com>
+ <ce74db34-77bc-4207-94c8-6e0580189448@kernel.org>
+ <DCQ074EMFNIK.1OJLWJXWZLDXZ@nvidia.com> <20250913010226.GA1478480@joelbox2>
+ <DCRPJKD0UHDQ.IOWSOB2IK06E@kernel.org> <20250913171357.GA1551194@joelbox2>
+ <CANiq72n50MaMXeWdwvVOEQd3YEHbDRqeeRzbdY8hPnePtq-hnw@mail.gmail.com>
+ <b1aea815-68b4-4d6c-9e12-3a949ee290c6@nvidia.com>
+ <20250913220625.GA1564550@joelbox2> <DCS59IDCIKH1.2M3I6H0NVD0RG@nvidia.com>
+ <DCSLPCSQRYOY.3BX3008H5CVQP@kernel.org>
+ <DCT3XP3PVHJZ.2T0L221T3HW5R@nvidia.com>
+In-Reply-To: <DCT3XP3PVHJZ.2T0L221T3HW5R@nvidia.com>
 
-On Mon, Sep 15, 2025 at 7:29=E2=80=AFAM Manivannan Sadhasivam <mani@kernel.=
-org> wrote:
+On Mon Sep 15, 2025 at 6:59 AM CEST, Alexandre Courbot wrote:
+> On Sun Sep 14, 2025 at 11:42 PM JST, Benno Lossin wrote:
+>> On Sun Sep 14, 2025 at 3:49 AM CEST, Alexandre Courbot wrote:
+>>> On Sun Sep 14, 2025 at 7:06 AM JST, Joel Fernandes wrote:
+>>>> On Sat, Sep 13, 2025 at 02:29:54PM -0700, John Hubbard wrote:
+>>>>> Yes. It's only "paranoia" if the code is bug-free. So Rust itself
+>>>>> naturally will look "a little" paranoid, that's core to its mission. =
+:)
+>>>>
+>>>> This seems to be taken out-of-context, I said "paranoia" mainly becaus=
+e I am
+>>>> not sure if excessive use of pinning may tend to cause other problems.=
+ The
+>>>> "paranoia" is about over-usage of pinning. Personally, I don't prefer =
+to pin
+>>>> stuff in my code until I absolutely need to, or when I start having ne=
+eds for
+>>>> pinning, like using spinlocks. Maybe I am wrong, but the way I learnt =
+Rust,
+>>>> data movement is baked into it. I am not yet confident pinning will no=
+t
+>>>> constraint Rust code gen -- but that could just be a part of my learni=
+ng
+>>>> journey that I have to convince myself it is Ok to do so in advance of
+>>>> actually requiring it even if you simply hypothetically anticipate nee=
+ding it
+>>>> (as Danilo pointed out that in practice this is not an issue and I do =
+tend to
+>>>> agree with Miguel and Danilo because they are usually right :-D). I am
+>>>> researching counter examples :-)
+>>>
+>>> You can look at the definition for `Pin` in [1], but it is so short we
+>>> can paste it here:
+>>>
+>>>     #[repr(transparent)]
+>>>     #[derive(Copy, Clone)]
+>>>     pub struct Pin<Ptr> {
+>>>         pointer: Ptr,
+>>>     }
+>>>
+>>> There isn't much getting in the way of optimized code generation - its
+>>> purpose is simply to constraint the acquisition of mutable references t=
+o
+>>> prevent moving the pointee out.
+>>>
+>>> I started this patchset a little bit skeptical about the need to pin so
+>>> many things, but after seeing the recent additions to `pin_init` and
+>>> rewriting the code as Danilo suggested, it starteds to click. The
+>>> supposed restrictions are in practice avoided by embracing the concept
+>>> fully, and in the end I got that feeling (familiar when writing Rust) o=
+f
+>>> being guided towards the right design - a bit like playing bowling with
+>>> gutter guards.
+>>
+>> That's a great way to put it -- I had a similar experience when writing
+>> pin-init and thinking about it purely theoretically. Good to see that it
+>> works out in practice (and continues to do so :).
+>>
+>>> Yes, that means redesigning and rebasing our code, but that's also the
+>>> cost of learning a new language.
+>>>
+>>> And yes, things can still be a little bit rough around the edges, but
+>>> there is awareness and action taken to address these issues, at the
+>>> compiler level when relevant. This makes me confident for the future.
+>>
+>> If you have an issue that you cannot work around, or something that
+>> looks off, let me know. Maybe that's something that pin-init can deal
+>> better with or we can have another library that helps with it. After all
+>> pin-init is specially tailored for the kernel to work :)
 >
-> Why should a spelling fix be backported to stable? The stable kernel rule=
-s
-> explicitly states that these kind of fixes should *not* be backported:
+> I was thinking about the lack of access to already-initialized fields in
+> the initializer when writing this, which has been covered so thanks for
+> that. :)
 >
->   - No "trivial" fixes without benefit for users (spelling changes, white=
-space
->     cleanups, etc).
+> One more thing I still don't know how to do without unsafe code is
+> accessing structurally-pinned members of a pinned object. I had expected
+> that projection methods would be generated for such members marked
+> `#[pin]`, but I haven't found anything yet. For instance, we need to
+> call mutable methods on a pinned member of a pinned object, and the only
+> way I have found to do this is to use unsafe code. Is there a better
+> way?
 
-I am aware, but the stable team has autoselected a similar fix in the
-past (and I asked them about it, precisely because of the rules
-above).
+That also lands together with access to initialized fields :) Danilo
+already merged it into drm-rust-next: 619db96daf94 ("rust: pin-init: add
+pin projections to `#[pin_data]`").
 
-For typos outside doc comments, I wouldn't tag it (but they may still
-autoselect it).
+You can only project the entire struct at once, but most of the time
+that should be sufficient.
 
-For typos in rendered docs like this one, especially one that is not
-just a spelling one (like this one), I think it is OK either way, and
-a bit more worth it since these are meant to be rendered unlike
-implementation comments.
-
-Thus, since this one was in the fuzzy line, I suggested it so that the
-contributor avoided Greg's bot when detecting the missing tag.
-
-As for noautosel, I wouldn't do that -- they want them sometimes,
-after all. Instead, I would reserve it for things that really
-shouldn't be picked for a given reason.
-
-I hope that clarifies a bit.
-
+---
 Cheers,
-Miguel
+Benno
