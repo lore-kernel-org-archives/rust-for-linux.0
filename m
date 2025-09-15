@@ -1,48 +1,51 @@
 Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30AD2D46AF;
-	Mon, 15 Sep 2025 07:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F06E1F0E29;
+	Mon, 15 Sep 2025 07:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757921376; cv=none; b=OVofeJ54TL6hZqPJcLMb6UUInVmFo4fkBSsa4LW/bB4ieijQYK+FbOvjD2jV8iSPUW23ogyZeHK3FB5/NxYpK2CcxtU0Z1I6nn1JmIGqUmwaBe+tipinjq62EhK29hrb2K0l3/I5Vslun9fkNXLng9r1C25X84p4wojdAAbKyQY=
+	t=1757921568; cv=none; b=Sd1Kfo2QBSvniwLGfWH70NPP6gnBdKtdy2au9zF5aaAFkG2eRGKbIEaohMggnwCuvHWBmBBZmPLZAYso7N608GTLr5VFDJlLtJyi0CrqK/SGy6D733uPryewSKc8nL+aXPv7ZwXgLvlGMGKj1APT6bv5wgrWpHMsaO+DvJmCRsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757921376; c=relaxed/simple;
-	bh=AZYff6B2X5xOnw0ElaH3FMka5USkGbkAnFbdjeSa91Y=;
+	s=arc-20240116; t=1757921568; c=relaxed/simple;
+	bh=yRUQqd7L/C0ZEHwXsB76iJRkPJ9cD4gFhMNAyDhkkgE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QAklTr5/+0o3Bw7Wxul2cL2f2u6RyAjFh1RTGAA+rakU5hODj2pj3/aG45pYsA3rKkgpkuMvw44RrUH31gae0WAtVN87gRFGhqliqQ2Q0CsI36F/xZ/4sPkHBeillPQBn80scp0Y9E/hoW+kQSAH0g/GSXHquXEpLDVyu2ynQig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=h6sEUr+M; arc=none smtp.client-ip=178.154.239.81
+	 MIME-Version:Content-Type; b=MLTpRgj8uDOzeKUtVQKbFIM4D4yOAAwvp1LYcjw79i8VGGNCDjdCAWSfZCyHQ8yDL6s9cnusOfsv6mp+cQkfkrejBJyFTpGktyBGntWh5LOR7TWWWvWGyeveBrotSpzGiYsrlNgTPYmpkPO9y5jsFen/ZB30fFOAnQrbs9fsvjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=fYvPgjPd; arc=none smtp.client-ip=178.154.239.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="h6sEUr+M"
-Received: from mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net [IPv6:2a02:6b8:c22:d15:0:640:4031:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 2EEA380BEF;
-	Mon, 15 Sep 2025 10:29:24 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id JTJ3WYuMoqM0-O6cwJvSH;
-	Mon, 15 Sep 2025 10:29:23 +0300
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="fYvPgjPd"
+Received: from mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:418:0:640:bb5:0])
+	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 87C3180BFF;
+	Mon, 15 Sep 2025 10:32:44 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id cWJaRfgM1qM0-t207wbne;
+	Mon, 15 Sep 2025 10:32:43 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1757921363;
-	bh=VJqdXxD+DK6pXojKHstsCLjPvzxSY7UrQTBYHRfeZH4=;
+	s=mail; t=1757921563;
+	bh=yRUQqd7L/C0ZEHwXsB76iJRkPJ9cD4gFhMNAyDhkkgE=;
 	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=h6sEUr+MaBrBzJfoNLV6+NqdVg1R+3PIwX9udRVNdNU1HMpejFCWW/hL5O27l3htb
-	 BzIWGXGT0KFloZBdgevqgcxvKasRzl/7RWJRj1dWKBJEyPE47C4N1eaG1uxUV0pdt5
-	 Jc6gR4HsyAHLAafnh2jXDkCw7IHuD8VFqBSmnxSo=
-Authentication-Results: mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Mon, 15 Sep 2025 10:29:18 +0300
+	b=fYvPgjPd6fpXQNoR+EVjg6mOCa1fKKKs3QKTXk7oEAltC4I24Sq1Mbvh6Vs2gSR+5
+	 t9RMGleEU5WQOuvViH+Uqb6WFa3HoGpaWJmLZalEv3KwsnmaR21pwH+HXGX2xqceez
+	 LNqJzcYsER5Tx01Lk9goTT5Bf7Uw4d6LPThCweag=
+Authentication-Results: mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Mon, 15 Sep 2025 10:32:38 +0300
 From: Onur <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
- dakr@kernel.org, tamird@gmail.com, daniel@sedlak.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: less allocation in CString::try_from
-Message-ID: <20250915102918.77adc04a@nimda.home>
-In-Reply-To: <CAH5fLgi-VrhDSEjJA4Bg+5Wmr2JDAmmOc1FkfZAZ29SMqkX++w@mail.gmail.com>
-References: <20250915065401.20141-1-work@onurozkan.dev>
-	<CAH5fLgi-VrhDSEjJA4Bg+5Wmr2JDAmmOc1FkfZAZ29SMqkX++w@mail.gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
+ nicolas.schier@linux.dev, masahiroy@kernel.org, aliceryhl@google.com,
+ thomas.weissschuh@linutronix.de, tamird@gmail.com,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
+ dakr@kernel.org
+Subject: Re: [PATCH] rust: add `rustcheck` make target for check-only builds
+Message-ID: <20250915103238.3263445e@nimda.home>
+In-Reply-To: <87bjnei6tn.fsf@kernel.org>
+References: <-ebVaoKp9tTjZGmdSRi8rrH1o7SgmGyyzk-g2ALSCBKPJP44z7dSPCplhwKt-sibwLwqP7IPEml6qCkSpJhd8g==@protonmail.internalid>
+	<20250913100847.9234-1-work@onurozkan.dev>
+	<87bjnei6tn.fsf@kernel.org>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -53,43 +56,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 15 Sep 2025 09:26:00 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Sat, 13 Sep 2025 19:46:28 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-> On Mon, Sep 15, 2025 at 8:54=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.d=
-ev> wrote:
-> >
-> > Allocates buffer with the correct capacity upfront by
-> > using the length of the `CStr` to avoid extra and unnecessary
-> > re-allocation when converting from `CStr` to `CString`.
-> >
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/str.rs | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> > index 6c892550c0ba..98d41d995e45 100644
-> > --- a/rust/kernel/str.rs
-> > +++ b/rust/kernel/str.rs
-> > @@ -946,9 +946,10 @@ impl<'a> TryFrom<&'a CStr> for CString {
-> >      type Error =3D AllocError;
-> >
-> >      fn try_from(cstr: &'a CStr) -> Result<CString, AllocError> {
-> > -        let mut buf =3D KVec::new();
-> > +        let bytes =3D cstr.to_bytes_with_nul();
-> >
-> > -        buf.extend_from_slice(cstr.to_bytes_with_nul(),
-> > GFP_KERNEL)?;
-> > +        let mut buf =3D KVec::with_capacity(bytes.len(),
-> > GFP_KERNEL)?;
-> > +        buf.extend_from_slice(bytes, GFP_KERNEL)?;
+> Onur =C3=96zkan <work@onurozkan.dev> writes:
 >=20
-> I don't think this changes the number of allocations. KVec::new() does
-> not allocate.
+> > Adds a new `rustcheck` make target to run a check-only build
+> > similar to `cargo check`. This allows us to verify that the Rust
+> > sources can build without building/linking final artifacts,
+> > which speeds up the iteration (a lot) during development.
+> >
+> > The target supports the same flags as other Rust build rules, so
+> > it can also be used with `CLIPPY=3D1` (e.g., `make LLVM=3D1 rustcheck
+> > CLIPPY=3D1) to run Clippy in a faster way.
+> >
+> > Also, unlike `make LLVM=3D1`, it doesn't compile large amounts of C
+> > code (on a fresh checkout) when the goal is only to check that
+> > Rust builds are not broken after some changes.
+> >
 >=20
-> Alice
+> I think this is a good idea! However, it looks like this target only
+> checks rust code that live in rust/. Can we also check code that lives
+> elsewhere, like drivers?
+>=20
 
-Good to know, thanks!
+My work depends on the existing build system and that system doesn't
+allow me to do that (yet).
 
+Regards,
 Onur
+
+>=20
+> Best regards,
+> Andreas Hindborg
+>=20
+>=20
+
