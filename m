@@ -1,183 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6425619DF4F;
-	Mon, 15 Sep 2025 05:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB5117C21E
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Sep 2025 06:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757915303; cv=none; b=NnQiUxY2wFuIognBsaawOoG2kQ1evvRAqaUwDAYR0xJbKI4ehdO0qwvNwPNkUD22XcyUxB2X0an7G86ttbOnMMSCitqoe+5YULxGJQQuyOaB+FpT2mAcFJTtz5jQ1ucsFx7u1eQRZC8B0aQCt2PT28b1QJO7Ui+pU55BZ8OiwuY=
+	t=1757917724; cv=none; b=gnFQFAE0acMqDBqTilGuQIm4C9tfpI0C1By23rkj4WEqyxjAGAqZFV96Dfv9lxnYQSjVtuKF/MCJCEx2hoUrvD8hhijMvRyusBjO/Jg6N9C2ibqTtLoUL5PLEJ4e9SFRVKbYu6ESIkzbT3cZvsRfIglHsttelObvktmoRpf15FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757915303; c=relaxed/simple;
-	bh=QmA1uWtopyZKqYFa3aB5R38vcRhwp6UNA5QEhCCpxlY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EmIRlyKdzm0hyWCwrNXqF55utMwmqArkWgLr0xxkZi0sRopwMt+PkX42NnEzgPFDoV5Davve/fS9s7/eHt61ICZh6poB2Ph4ckH/Xy8iKC7yLQ2o9sadbtWN41w+PTbNOyzjqaLoo/7XijgSHqmhRdpwsghXHU2tAesJEdv/CEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LY4R44OP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757917724; c=relaxed/simple;
+	bh=r/9Kn45ZUStYRhTjTOzLMQUK+ADSzSjvKa97iBsSXfk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W1atF5+Fm/O/MYio52rU+ZuVUaUjp+ZJ0SRwh5LTEscZB/HdihuNm7fznB2QNTP5Mwhy672Jv+OcezaNjIMBEvdzZlsijT4twjWv/gzCu2mwSfwKYbXMwHaPteFGZIwd78C25ehJa0EmDB1HzpBDpOw0DWe3oQgMNiwwpyLaduI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LflDPC5E; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LY4R44OP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FCDC4CEF1;
-	Mon, 15 Sep 2025 05:48:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757915302;
-	bh=QmA1uWtopyZKqYFa3aB5R38vcRhwp6UNA5QEhCCpxlY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LY4R44OPNzL3Qer2vVNQup9uUTcNx43gZqh5FwLU0Oh1PdFVX0Y/KMu9Uvifa32bq
-	 LKQg8b7U2pc5ik4+PxHv4Vxaw4OOg+vsmxh8TnpYqhx/pMCEM27S4kfw09R8Z3+SrS
-	 WOCH3NphTYB7cis3wXHahmF9XEuFQFnTdwnEgrsxicfvxKQHyvsgH5+RBeSZZNlt+1
-	 jN5OeNDI/I13LeozFgh3Z/w6y7Zqmf8gbZ1coqUma25WZo+AQ3j6hF69NbTonbiUow
-	 a8r0c3Mzdr4L7umKhPtyml+GICc0Iz7CXrXjBFFY5PAmWMihDcJf2V0TWoeJPC1g6V
-	 RKkFNq598mfYQ==
-Date: Fri, 12 Sep 2025 12:03:27 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	Keith Busch <kbusch@kernel.org>, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <20250912090327.GU341237@unreal>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LflDPC5E"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32e801552ccso8911a91.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 14 Sep 2025 23:28:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757917722; x=1758522522; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vmqCBgglSH1XFTVmKbDycfFQaWCzr9UXmOQ9aT0xQLg=;
+        b=LflDPC5ElrIkFtQIpKiy+aQibJzVNLC+DgkpBILfdx5zRORuFyGIV9g9Jt3NpRyoRv
+         K/PAw8B/1A0N6tAjIORmDo7WbbmidEN8L26lBPTRCgo/BEFu+m4zOptkCybotDP7dm3M
+         TGsFzfRCILs0Oo/CaF24kGAcMwH63G2aa6fhYRHki/O9pMvYTQtrnZsOOcw+6Ek2nOJZ
+         BVbm/TjpmmR/7y6c+jHRVI9j11P5ixvuy8BA+9ZN+VftUb9TNI8RlJFR9AMmMb0T5h6j
+         PsSDw7C9f3rSQwlOPPuzjMeUjeoDv0B9LScjfnkj8skAUWGSAP2pOy6kmPBm/em3CIrD
+         dqqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757917722; x=1758522522;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vmqCBgglSH1XFTVmKbDycfFQaWCzr9UXmOQ9aT0xQLg=;
+        b=q7eUIdtQJ3Vtb29tOoN8VLtXgc3m4IlNxkq4kTPvNu6hDSAEehHMv8YfePJJa9+5dE
+         arUfW0O+6SMi2CYxX+rfl7pLcPItzNwXNFsJEcYxQAKJxTBi0igN4fQUEcSAiDZ8dNZo
+         sD6lp6rnUQeX0RZLRmyKDSA1GR7jUIh9zKuEGWhkcZKELjTyFfdrf9x+xyTH0ng4id2S
+         IY/yhhW1H9F26w/n0u2DLZXpzuBP8mBGct/tk3wFxEVsYHxUx1ozyFluL1huEHvL3KrU
+         npxrjbsKMjqxJw+3AE42zwvZ0LHrVqIof7jaYvqkNxNU6J5ZkITwPsyInE5+9/+xCsb5
+         jQIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUE5LV7yyufO4oncGTrWCplHQoAPDYr/yEQURb3HKs7rqrSrgQ42xrO7z9LX/wBdUCP0zgvnt3MVdH/VcX8Hw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxQRv5dhkFFbyBJ4V/vPk1QKvdXduYxK6UPGIC9jf5RDkrxsVJ
+	CwAHaCMUdpa+lPlD8jB7Mb1ZuMo/v3OH9tTpAPLKNWsDUvfKcuM/VNVBHImvPwyXWfa6E4GBSvt
+	TePTA0UvdXZC/wI2l4hQjcCS2A/NGjjM=
+X-Gm-Gg: ASbGnctBNeR+XKlzV2rCOznbq4kTVr+so8AWIFKqAtohdm8XOVuZ3uDSxPs9id3wV72
+	q/3nxLDFEjAwat9nq7Sfv2cy7NlkULDauePiyHg37hFcBYwQKPV0AMcNMOH4dD5XaMfBTt5gM+D
+	VoTEU2hTaVuk9sGgcXLokNTXa/kSvX3ULHDv9TrKqJsDaobCafudbdJYtxQV35sQ4jzCN2qS/IE
+	Ful7tT+Ws4ZlP1J/8lGmL1xV5z+1Kk3Osd3OJKkRpTMqK9rzWK8AemqujzlytpiMS9kTpHCYb4/
+	9rn9oO1WCFGLiXyiUh3HkV9anjt+bU03L0qN
+X-Google-Smtp-Source: AGHT+IEchiEsGjMEl1Hm6ui7MHlyoHtVT9JbiNr8xFHt1Dh/GCG2aVZ9Mc9Wk0rDlBUnhgEKt0EkP1bILsFTHX+KRrs=
+X-Received: by 2002:a17:90b:3804:b0:32d:e980:7a70 with SMTP id
+ 98e67ed59e1d1-32de9807ddfmr6262491a91.0.1757917722224; Sun, 14 Sep 2025
+ 23:28:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
+References: <20250913172557.19074-1-sergeantsagara@protonmail.com>
+ <CANiq72msM5PT2mYKrX_RPXYtA4vapMRO=iSex1gQZqiXdpvvDA@mail.gmail.com> <26oqasrlptl5v4ymfkrlznltbwqx5rfi4dworhri3msme4wlmm@cclnphvwur6r>
+In-Reply-To: <26oqasrlptl5v4ymfkrlznltbwqx5rfi4dworhri3msme4wlmm@cclnphvwur6r>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 15 Sep 2025 08:28:30 +0200
+X-Gm-Features: AS18NWCkmdX2sBHMEVZOaZAumYceYyW3PCH1MqnX3I-KTdnLVgDBS3-v3ItVfN8
+Message-ID: <CANiq72mpQO0v-acGOWUcYaBmETSTAjkJUDN4MT498imVGboYQQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: pci: fix incorrect platform references in doc comments
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Rahul Rameshbabu <sergeantsagara@protonmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-pci@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 12, 2025 at 12:25:38AM +0200, Marek Szyprowski wrote:
-> On 09.09.2025 15:27, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> >
-> > Changelog:
-> > v6:
-> >   * Based on "dma-debug: don't enforce dma mapping check on noncoherent
-> >     allocations" patch.
-> >   * Removed some unused variables from kmsan conversion.
-> >   * Fixed missed ! in dma check.
-> > v5: https://lore.kernel.org/all/cover.1756822782.git.leon@kernel.org
-> >   * Added Jason's and Keith's Reviewed-by tags
-> >   * Fixed DMA_ATTR_MMIO check in dma_direct_map_phys
-> >   * Jason's cleanup suggestions
-> > v4: https://lore.kernel.org/all/cover.1755624249.git.leon@kernel.org/
-> >   * Fixed kbuild error with mismatch in kmsan function declaration due to
-> >     rebase error.
-> > v3: https://lore.kernel.org/all/cover.1755193625.git.leon@kernel.org
-> >   * Fixed typo in "cacheable" word
-> >   * Simplified kmsan patch a lot to be simple argument refactoring
-> > v2: https://lore.kernel.org/all/cover.1755153054.git.leon@kernel.org
-> >   * Used commit messages and cover letter from Jason
-> >   * Moved setting IOMMU_MMIO flag to dma_info_to_prot function
-> >   * Micro-optimized the code
-> >   * Rebased code on v6.17-rc1
-> > v1: https://lore.kernel.org/all/cover.1754292567.git.leon@kernel.org
-> >   * Added new DMA_ATTR_MMIO attribute to indicate
-> >     PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
-> >   * Rewrote dma_map_* functions to use thus new attribute
-> > v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
-> > ------------------------------------------------------------------------
-> >
-> > This series refactors the DMA mapping to use physical addresses
-> > as the primary interface instead of page+offset parameters. This
-> > change aligns the DMA API with the underlying hardware reality where
-> > DMA operations work with physical addresses, not page structures.
-> >
-> > The series maintains export symbol backward compatibility by keeping
-> > the old page-based API as wrapper functions around the new physical
-> > address-based implementations.
-> >
-> > This series refactors the DMA mapping API to provide a phys_addr_t
-> > based, and struct-page free, external API that can handle all the
-> > mapping cases we want in modern systems:
-> >
-> >   - struct page based cacheable DRAM
-> >   - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cacheable
-> >     MMIO
-> >   - struct page-less PCI peer to peer non-cacheable MMIO
-> >   - struct page-less "resource" MMIO
-> >
-> > Overall this gets much closer to Matthew's long term wish for
-> > struct-pageless IO to cacheable DRAM. The remaining primary work would
-> > be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
-> > phys_addr_t without a struct page.
-> >
-> > The general design is to remove struct page usage entirely from the
-> > DMA API inner layers. For flows that need to have a KVA for the
-> > physical address they can use kmap_local_pfn() or phys_to_virt(). This
-> > isolates the struct page requirements to MM code only. Long term all
-> > removals of struct page usage are supporting Matthew's memdesc
-> > project which seeks to substantially transform how struct page works.
-> >
-> > Instead make the DMA API internals work on phys_addr_t. Internally
-> > there are still dedicated 'page' and 'resource' flows, except they are
-> > now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
-> > flows use the same phys_addr_t.
-> >
-> > When DMA_ATTR_MMIO is specified things work similar to the existing
-> > 'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
-> > pfn_valid(), etc are never called on the phys_addr_t. This requires
-> > rejecting any configuration that would need swiotlb. CPU cache
-> > flushing is not required, and avoided, as ATTR_MMIO also indicates the
-> > address have no cacheable mappings. This effectively removes any
-> > DMA API side requirement to have struct page when DMA_ATTR_MMIO is
-> > used.
-> >
-> > In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
-> > except on the common path of no cache flush, no swiotlb it never
-> > touches a struct page. When cache flushing or swiotlb copying
-> > kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
-> > usage. This was already the case on the unmap side, now the map side
-> > is symmetric.
-> >
-> > Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
-> > must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
-> > path must also set it. This corrects some existing bugs where iommu
-> > mappings for P2P MMIO were improperly marked IOMMU_CACHE.
-> >
-> > Since ATTR_MMIO is made to work with all the existing DMA map entry
-> > points, particularly dma_iova_link(), this finally allows a way to use
-> > the new DMA API to map PCI P2P MMIO without creating struct page. The
-> > VFIO DMABUF series demonstrates how this works. This is intended to
-> > replace the incorrect driver use of dma_map_resource() on PCI BAR
-> > addresses.
-> >
-> > This series does the core code and modern flows. A followup series
-> > will give the same treatment to the legacy dma_ops implementation.
-> 
-> Applied patches 1-13 into dma-mapping-for-next branch. Let's check if it 
-> works fine in linux-next.
+On Mon, Sep 15, 2025 at 7:29=E2=80=AFAM Manivannan Sadhasivam <mani@kernel.=
+org> wrote:
+>
+> Why should a spelling fix be backported to stable? The stable kernel rule=
+s
+> explicitly states that these kind of fixes should *not* be backported:
+>
+>   - No "trivial" fixes without benefit for users (spelling changes, white=
+space
+>     cleanups, etc).
 
-Thanks a lot.
+I am aware, but the stable team has autoselected a similar fix in the
+past (and I asked them about it, precisely because of the rules
+above).
 
-> 
-> Best regards
-> -- 
-> Marek Szyprowski, PhD
-> Samsung R&D Institute Poland
-> 
-> 
+For typos outside doc comments, I wouldn't tag it (but they may still
+autoselect it).
+
+For typos in rendered docs like this one, especially one that is not
+just a spelling one (like this one), I think it is OK either way, and
+a bit more worth it since these are meant to be rendered unlike
+implementation comments.
+
+Thus, since this one was in the fuzzy line, I suggested it so that the
+contributor avoided Greg's bot when detecting the missing tag.
+
+As for noautosel, I wouldn't do that -- they want them sometimes,
+after all. Instead, I would reserve it for things that really
+shouldn't be picked for a given reason.
+
+I hope that clarifies a bit.
+
+Cheers,
+Miguel
