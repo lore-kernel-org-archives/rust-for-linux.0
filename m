@@ -1,71 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF24306B15;
-	Mon, 15 Sep 2025 12:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0A03128BE
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Sep 2025 14:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757938515; cv=none; b=lYeA7E1ZjWMT9bbre1AQAfdx4ejkx5A6Mc6vRAbrOgnuR/BCrXQ7HgY8E3E+aCfVPZg1aNEWiWG6uqJTbu0OvB87XiR0dWsVfXyoLGUQeIZwUwTly4cdEfbg3hILwwLTOrxU+g19AtiJzLE0V4pLTmHHyXQA3MTgN80J9QY2HSg=
+	t=1757944919; cv=none; b=Dt2eEaqkJK8vmps5js12oc60l25HUFQM0KoUCoroenDAsV6Vkb7VakXYprigoc/Sn65pNodNOJ5o29CrVsFkoJi+k+M6f7WxGiNZgHBVWO/iwiVXaT9zd56DD5hwD3gDYnj/zVuh4fYvvMqlaUtLwGYqwhJTt1ZRMyJ35pzrl4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757938515; c=relaxed/simple;
-	bh=Una6Hs/ck9bAAALrjnU+o0p2zO7jFHKyVqQGCI1gvvU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dc3+p+MoPNJYp+HshFSnHUcj3wcGedXDeSpk8upQC38PHUZ1U62BqkHWphpOQ5CfY2660RJhK8NsWEkXAqpuO57/9q1t/o+Qep/n4ym7ZyT784snGgHO6Rhgk4yO1u+8shmr7PEEp0sdeo6QclTnT8QUlhf15pDvCegYrLOfuAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZTRnQ1u; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757944919; c=relaxed/simple;
+	bh=CwUy7xI3aeGV2jHi752NlVRGAmuCtCfD9OUAYRdA1bA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tNRJbjupJJUPr0gRGd52Bxq5jKnrxLlu5nzfyCjP1Kc8lRZtgKXc5ReBG3+xt0PL+WT0I4JNj3jQ+to71fhYSuZfbujZ8wB8t6ZuWA+rPE8BCyHAKte9K0HAjkBz6oosnGtBnpv+4uP2G9k+tXT4FOJBYJQuTskWjIFI719Q8gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h7SWvRLo; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZTRnQ1u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12B0C4CEF1;
-	Mon, 15 Sep 2025 12:15:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757938514;
-	bh=Una6Hs/ck9bAAALrjnU+o0p2zO7jFHKyVqQGCI1gvvU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LZTRnQ1uXjpSZP/w2Ns5p96l1aaB26xge580VvyiG2xWC9dvZ7vo5vJUkfiE6ffei
-	 0nN34sQpoXVGn6vEjW7ntfG+xVmNqUBzLGiGT6bn1++xjpdbcfe9o1sU8rTFyUtOP3
-	 LpPlf2PswgwjlwunSzUTPP6JhPGFFUHSMfui+dqs=
-Date: Mon, 15 Sep 2025 14:14:59 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: JaimeFine <jaimefine6@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	ojeda@kernel.org
-Subject: Re: [PATCH] rust: auxiliary: Fix 'initialialized' typo
-Message-ID: <2025091515-prison-eats-cb1e@gregkh>
-References: <20250915120235.1942-1-jaimefine6@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h7SWvRLo"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757944905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=AhJ4pkDiJ0lWkmhamxXqTKU3eDM1TJhpY4CZ/P9eJwI=;
+	b=h7SWvRLorPI/hS+JB+Q5OH1c0BtLwcdyC1iqMl/fC/0e6SMC/9ih8/4d4iySxlDt58aOsW
+	GE43IfUiziAt0TrrZ5P7OsJE+575EuEad6mh1NNL17DeLS4bJbIf+dhJA6H38TuOWMRE9p
+	g0P3cavDxaeaC6BHAOthYONZlIltqKs=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH] rust: cpufreq: streamline find_supply_names
+Date: Mon, 15 Sep 2025 15:59:54 +0200
+Message-ID: <20250915135954.2329723-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915120235.1942-1-jaimefine6@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Sep 15, 2025 at 08:02:27PM +0800, JaimeFine wrote:
-> From: Jaime Fine <jaimefine6@gmail.com>
-> 
-> Suggested-by: onur-ozkan
+Remove local variables from find_supply_names() and use .and_then() with
+the more concise kernel::kvec![] macro, instead of KVec::with_capacity()
+followed by .push() and Some().
 
-What specific "typo" is being changed here?
+No functional changes intended.
 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1187
-> Signed-off-by: Jaime Fine <jaimefine6@gmail.com>
-> ---
->  rust/kernel/auxiliary.rs | 357 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 357 insertions(+)
->  create mode 100644 rust/kernel/auxiliary.rs
-> 
-> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-> new file mode 100644
-> index 0000000..3626072
-> --- /dev/null
-> +++ b/rust/kernel/auxiliary.rs
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ drivers/cpufreq/rcpufreq_dt.rs | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-You added a whole file, you did not modify an existing one :(
+diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
+index 7e1fbf9a091f..224d063c7cec 100644
+--- a/drivers/cpufreq/rcpufreq_dt.rs
++++ b/drivers/cpufreq/rcpufreq_dt.rs
+@@ -28,15 +28,11 @@ fn find_supply_name_exact(dev: &Device, name: &str) -> Option<CString> {
+ /// Finds supply name for the CPU from DT.
+ fn find_supply_names(dev: &Device, cpu: cpu::CpuId) -> Option<KVec<CString>> {
+     // Try "cpu0" for older DTs, fallback to "cpu".
+-    let name = (cpu.as_u32() == 0)
++    (cpu.as_u32() == 0)
+         .then(|| find_supply_name_exact(dev, "cpu0"))
+         .flatten()
+-        .or_else(|| find_supply_name_exact(dev, "cpu"))?;
+-
+-    let mut list = KVec::with_capacity(1, GFP_KERNEL).ok()?;
+-    list.push(name, GFP_KERNEL).ok()?;
+-
+-    Some(list)
++        .or_else(|| find_supply_name_exact(dev, "cpu"))
++        .and_then(|name| kernel::kvec![name].ok())
+ }
+ 
+ /// Represents the cpufreq dt device.
+-- 
+2.51.0
 
-Also, please use scripts/get_maintainer.pl to determine who to send
-patches to.
-
-thanks,
-
-greg k-h
