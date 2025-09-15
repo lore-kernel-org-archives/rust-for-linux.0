@@ -1,93 +1,78 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0A03128BE
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Sep 2025 14:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757944919; cv=none; b=Dt2eEaqkJK8vmps5js12oc60l25HUFQM0KoUCoroenDAsV6Vkb7VakXYprigoc/Sn65pNodNOJ5o29CrVsFkoJi+k+M6f7WxGiNZgHBVWO/iwiVXaT9zd56DD5hwD3gDYnj/zVuh4fYvvMqlaUtLwGYqwhJTt1ZRMyJ35pzrl4c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757944919; c=relaxed/simple;
-	bh=CwUy7xI3aeGV2jHi752NlVRGAmuCtCfD9OUAYRdA1bA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tNRJbjupJJUPr0gRGd52Bxq5jKnrxLlu5nzfyCjP1Kc8lRZtgKXc5ReBG3+xt0PL+WT0I4JNj3jQ+to71fhYSuZfbujZ8wB8t6ZuWA+rPE8BCyHAKte9K0HAjkBz6oosnGtBnpv+4uP2G9k+tXT4FOJBYJQuTskWjIFI719Q8gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h7SWvRLo; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2611DE4C9;
+	Mon, 15 Sep 2025 15:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757950753; cv=pass; b=IuflH4BpYmWTzrEuw4FAhDqcz4cKYH8TOCagBT3upTRFluLJufhVg4MkDIQx9btNHfEfJjzCawCiidi5c60+XQamOcrU86WozTRhfVpHHUQ5WjbvUsMvKScvnljjOdURu6/MkS+Dafk+xCnD6GlpEv6NuO9UkLpEXbBch7Ghung=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757950753; c=relaxed/simple;
+	bh=5kmvQnBymQMrJfGDO8l0+E8qI+rwZ5BMyzqkwT6KPUo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Rcq4xWslZJF8/ekqR9G94UhxpnRg7s0lxsuJcvbvC7EVGGisCyznD4GvaD4Ge0ItubzmX6waFhCbblU85BTpwRe96po1aolZ0pOUrWuEQKA1kREkrDBwAOnQL0aufpNEw5JODN50NnbU0uUnjT72/Umpys0A1neQTVdWOvo3U28=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YAdyjo0S; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h7SWvRLo"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757944905;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=AhJ4pkDiJ0lWkmhamxXqTKU3eDM1TJhpY4CZ/P9eJwI=;
-	b=h7SWvRLorPI/hS+JB+Q5OH1c0BtLwcdyC1iqMl/fC/0e6SMC/9ih8/4d4iySxlDt58aOsW
-	GE43IfUiziAt0TrrZ5P7OsJE+575EuEad6mh1NNL17DeLS4bJbIf+dhJA6H38TuOWMRE9p
-	g0P3cavDxaeaC6BHAOthYONZlIltqKs=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH] rust: cpufreq: streamline find_supply_names
-Date: Mon, 15 Sep 2025 15:59:54 +0200
-Message-ID: <20250915135954.2329723-2-thorsten.blum@linux.dev>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YAdyjo0S"
+ARC-Seal: i=1; a=rsa-sha256; t=1757950731; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Jx//BjnUviO745ZA6pbnnW++OyROvK57X/zX+yUfjLMZKD7SlHnOTUMlyLekjD3vetTiM44W5S7J/sKfnjEayofAZEJ+g8gZcMHofbgsUfmMR/POo68sXUZ0/2GaboL2/ByWvxwaWJETUp3pc/+GsIwwzBQgAxaJRMCNTT9oURc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757950731; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=5kmvQnBymQMrJfGDO8l0+E8qI+rwZ5BMyzqkwT6KPUo=; 
+	b=O3lq7xi0VJgQtQxFFC6AfKFVDl2kIifLCQBfcA4Koq0pF2hAiRYNArlAdAVhvUkh8otPEqPUea91gTXrP1rRLMtlnS7HpG7WniFvClw6yaaqsQIHhq3AKy46jomk3jrO6aDPKORsIm4Ca2qwGI6g3boWftQ1sx2qmOswaEAbaV4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757950731;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=5kmvQnBymQMrJfGDO8l0+E8qI+rwZ5BMyzqkwT6KPUo=;
+	b=YAdyjo0SEwsFhyP2ZOH+hUN9zQ1rbJklHHzYs9Afgk4BDaWMBwL5klo7R4Rd8QHd
+	SczU78NnydtndgX6+Ka3RsLhGrgaj4PZMjOe4jOxYr1LFHxC+5zaV6gXVENu6aeUGcB
+	2dBXEyI5nrX/tJzHTYFw2AI4pxvfSeCrac5bYiSI=
+Received: by mx.zohomail.com with SMTPS id 1757950728174458.07732891061437;
+	Mon, 15 Sep 2025 08:38:48 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] rust: less allocation in CString::try_from
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250915065401.20141-1-work@onurozkan.dev>
+Date: Mon, 15 Sep 2025 17:38:32 +0200
+Cc: rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ lossin@kernel.org,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ tamird@gmail.com,
+ daniel@sedlak.dev,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3208F1A3-CFA9-45BC-85D7-74C8C47CA11F@collabora.com>
+References: <20250915065401.20141-1-work@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Remove local variables from find_supply_names() and use .and_then() with
-the more concise kernel::kvec![] macro, instead of KVec::with_capacity()
-followed by .push() and Some().
+Hi Onur, thanks for working on this :)
 
-No functional changes intended.
+The commit title doesn=E2=80=99t parse very well, can you rework it?
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- drivers/cpufreq/rcpufreq_dt.rs | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+=E2=80=94 Daniel
 
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-index 7e1fbf9a091f..224d063c7cec 100644
---- a/drivers/cpufreq/rcpufreq_dt.rs
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -28,15 +28,11 @@ fn find_supply_name_exact(dev: &Device, name: &str) -> Option<CString> {
- /// Finds supply name for the CPU from DT.
- fn find_supply_names(dev: &Device, cpu: cpu::CpuId) -> Option<KVec<CString>> {
-     // Try "cpu0" for older DTs, fallback to "cpu".
--    let name = (cpu.as_u32() == 0)
-+    (cpu.as_u32() == 0)
-         .then(|| find_supply_name_exact(dev, "cpu0"))
-         .flatten()
--        .or_else(|| find_supply_name_exact(dev, "cpu"))?;
--
--    let mut list = KVec::with_capacity(1, GFP_KERNEL).ok()?;
--    list.push(name, GFP_KERNEL).ok()?;
--
--    Some(list)
-+        .or_else(|| find_supply_name_exact(dev, "cpu"))
-+        .and_then(|name| kernel::kvec![name].ok())
- }
- 
- /// Represents the cpufreq dt device.
--- 
-2.51.0
 
