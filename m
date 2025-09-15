@@ -1,78 +1,79 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2611DE4C9;
-	Mon, 15 Sep 2025 15:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757950753; cv=pass; b=IuflH4BpYmWTzrEuw4FAhDqcz4cKYH8TOCagBT3upTRFluLJufhVg4MkDIQx9btNHfEfJjzCawCiidi5c60+XQamOcrU86WozTRhfVpHHUQ5WjbvUsMvKScvnljjOdURu6/MkS+Dafk+xCnD6GlpEv6NuO9UkLpEXbBch7Ghung=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757950753; c=relaxed/simple;
-	bh=5kmvQnBymQMrJfGDO8l0+E8qI+rwZ5BMyzqkwT6KPUo=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Rcq4xWslZJF8/ekqR9G94UhxpnRg7s0lxsuJcvbvC7EVGGisCyznD4GvaD4Ge0ItubzmX6waFhCbblU85BTpwRe96po1aolZ0pOUrWuEQKA1kREkrDBwAOnQL0aufpNEw5JODN50NnbU0uUnjT72/Umpys0A1neQTVdWOvo3U28=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YAdyjo0S; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3ED1E50E;
+	Mon, 15 Sep 2025 16:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757955203; cv=none; b=bWrzGtiEpnxR/IVsB6WA6y9L+iPIeIpry5IlJA2Kp0BiwH9XYXCToRYQcitTjEVoCiE/mhV1w3Qt4B+IlwCIHAB+wIkKRRjN4L4zVw2Uu0GrmOA2hbYviSlmo8S59Wah4Yxc3sPUxmKDmFMCiDfL8MdhAJlY49/v5fHR9hVeEOo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757955203; c=relaxed/simple;
+	bh=dK6bMtmxif3nC+ZWcgG9DYE55W7jZnHs9ithjl+H1c0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a/Ib+GHPVTo4lgSvPfUE9UcFeQOKah5MKBuXIRGVuqqykzirTJvfJLnsGNATQ00ELLGX0I4hoCO0tqcniffMUbIq1mV2EQ1EVkC82TRY8OJS6la2uvP02fUcLi6hklLSEJXTHD+80ncUZ0huiOGE6AJnwk4/OQ7QiOZE3+z5Pcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=I9l0oc92; arc=none smtp.client-ip=178.154.239.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YAdyjo0S"
-ARC-Seal: i=1; a=rsa-sha256; t=1757950731; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Jx//BjnUviO745ZA6pbnnW++OyROvK57X/zX+yUfjLMZKD7SlHnOTUMlyLekjD3vetTiM44W5S7J/sKfnjEayofAZEJ+g8gZcMHofbgsUfmMR/POo68sXUZ0/2GaboL2/ByWvxwaWJETUp3pc/+GsIwwzBQgAxaJRMCNTT9oURc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757950731; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=5kmvQnBymQMrJfGDO8l0+E8qI+rwZ5BMyzqkwT6KPUo=; 
-	b=O3lq7xi0VJgQtQxFFC6AfKFVDl2kIifLCQBfcA4Koq0pF2hAiRYNArlAdAVhvUkh8otPEqPUea91gTXrP1rRLMtlnS7HpG7WniFvClw6yaaqsQIHhq3AKy46jomk3jrO6aDPKORsIm4Ca2qwGI6g3boWftQ1sx2qmOswaEAbaV4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757950731;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=5kmvQnBymQMrJfGDO8l0+E8qI+rwZ5BMyzqkwT6KPUo=;
-	b=YAdyjo0SEwsFhyP2ZOH+hUN9zQ1rbJklHHzYs9Afgk4BDaWMBwL5klo7R4Rd8QHd
-	SczU78NnydtndgX6+Ka3RsLhGrgaj4PZMjOe4jOxYr1LFHxC+5zaV6gXVENu6aeUGcB
-	2dBXEyI5nrX/tJzHTYFw2AI4pxvfSeCrac5bYiSI=
-Received: by mx.zohomail.com with SMTPS id 1757950728174458.07732891061437;
-	Mon, 15 Sep 2025 08:38:48 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="I9l0oc92"
+Received: from mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:571a:0:640:23e3:0])
+	by forward502a.mail.yandex.net (Yandex) with ESMTPS id 3335681659;
+	Mon, 15 Sep 2025 19:53:12 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 7rSUgQ2M9uQ0-JKLi3MFC;
+	Mon, 15 Sep 2025 19:53:11 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1757955191;
+	bh=dK6bMtmxif3nC+ZWcgG9DYE55W7jZnHs9ithjl+H1c0=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=I9l0oc92QIa2gmtUELpF8s03rr9xIkzabwg1WxkqMaoF7SzPhacOsrSSYF1k6QPue
+	 8xxebtXJFxDC8dAN9QwvAku22qwQCqAAtKu+q8VDPdGcM4WFZdxXstN5Mh9TfrFGBE
+	 lhc2tUKidjGcWYXJlzpo2x9SFXM7b98+GYWStd44=
+Authentication-Results: mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Mon, 15 Sep 2025 19:53:05 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, tamird@gmail.com, daniel@sedlak.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: less allocation in CString::try_from
+Message-ID: <20250915195305.1309fea2@nimda.home>
+In-Reply-To: <3208F1A3-CFA9-45BC-85D7-74C8C47CA11F@collabora.com>
+References: <20250915065401.20141-1-work@onurozkan.dev>
+	<3208F1A3-CFA9-45BC-85D7-74C8C47CA11F@collabora.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rust: less allocation in CString::try_from
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250915065401.20141-1-work@onurozkan.dev>
-Date: Mon, 15 Sep 2025 17:38:32 +0200
-Cc: rust-for-linux@vger.kernel.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- tamird@gmail.com,
- daniel@sedlak.dev,
- linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3208F1A3-CFA9-45BC-85D7-74C8C47CA11F@collabora.com>
-References: <20250915065401.20141-1-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
-Hi Onur, thanks for working on this :)
+On Mon, 15 Sep 2025 17:38:32 +0200
+Daniel Almeida <daniel.almeida@collabora.com> wrote:
 
-The commit title doesn=E2=80=99t parse very well, can you rework it?
+> Hi Onur, thanks for working on this :)
+>=20
+> The commit title doesn=E2=80=99t parse very well, can you rework it?
+>=20
+> =E2=80=94 Daniel
+>=20
+>=20
 
-=E2=80=94 Daniel
+Hi Daniel,
 
+As Alice mentioned in [0], my assumption about reducing allocations was
+wrong. Looking at the KVec implementation details this patch doesn't
+actually change anything other than how the code looks. We can safely
+ignore it. I should have checked that, sorry.
 
+[0]:
+https://lore.kernel.org/all/CAH5fLgi-VrhDSEjJA4Bg+5Wmr2JDAmmOc1FkfZAZ29SMqk=
+X++w@mail.gmail.com/
+
+Thanks,
+Onur
