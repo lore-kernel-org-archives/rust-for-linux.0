@@ -1,62 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D3D13D638;
-	Tue, 16 Sep 2025 11:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D572C3272;
+	Tue, 16 Sep 2025 12:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758023669; cv=none; b=XJEYhLNe5EkquCZipT9HUWU2DHVK7HLmqQ3F4kptZ1hEZzN7fnQN2qbaHjFChbIO2EzVXfa3hlSD2VSWYxoLI7TQtNil5ceUN6dne1goahUA/JE+BL+iH3b2874UCQ9EsFjhfyjA4gPgfBQCjpdbOKnshw6macqL7iN2SEz9EdQ=
+	t=1758024384; cv=none; b=PrPYFNGac1+rjqdqi05aL/h+6qlEsqCrjN2BXhhNgfhTZnyXAzVSecKobXP3RBmIWT9BcnqKebhgEGbFOEncjWVDz4BicV1G1Bx7czm8O9+xXC/GuUGLyMk980Sn7774f7tggChcidDQKo8NEzaKNbNEQ2wWTRVFy4t6GUJMKUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758023669; c=relaxed/simple;
-	bh=IX6I147vwhuwINm2ZsDn7ANleLwLQ5AO0LNeCnkR4iY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XMNSXzGjNa9F63a9zyVKH/7lgg2nSMn/d2jxcfT4ZGCtCR7s38VpO1+aG32oGweMxu2s388DNbg7XVNr6PM4zFM8lsvmpDC4aekUQD0g6nJTCK1runUZpmAOq9Lu93LyurPrsPjhcX473g+d9izcB03I04Rd9qu8D4HPDzG9oF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2NSSuJr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758024384; c=relaxed/simple;
+	bh=aV81kExVrMjIzYolLKVaKcqJpjPt7J0SUF+mvWDVe0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EhCLwlPxMKRKebrQyeGcL8dfVbK9iUTktdDW5B/kgoY3kLbnywCyZI+U+fuXeGE9wsxu+PQhsK8cKfF/glHaiYDM609Six9CzUnSrHlAKA1n9FubeBUyQwvZEbySNeagvbNE1f0MkHs97C7RhdNrfRj/3Ggj5paoUxchGdUufN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Utf/5/ks; arc=none smtp.client-ip=178.154.239.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2NSSuJr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B87C4CEEB;
-	Tue, 16 Sep 2025 11:54:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758023668;
-	bh=IX6I147vwhuwINm2ZsDn7ANleLwLQ5AO0LNeCnkR4iY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N2NSSuJropN0J6OPAInfT7Ics+ZaNcmSLX9W7vUuytq4ngG+84mNjcctZFiv3Ugwd
-	 uhUQGas1We56Mf4a4E8FJBQ82TLteu4q9RczDVyUNC0B1JpRIyeKMP7sV0wDS7e4/h
-	 S0DaYmK2VVvtjeLAJPZV5uwVFGw11OUBxwRiah1w=
-Date: Tue, 16 Sep 2025 13:54:25 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: JaimeF <jaimefine6@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, david.m.ertman@intel.com,
-	ira.weiny@intel.com, leon@kernel.org, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, onur-ozkan <contact@onurozkan.dev>
-Subject: Re: [PATCH] Fixed "initialialized" typo in auxiliary.rs
-Message-ID: <2025091651-symptom-unsocial-385e@gregkh>
-References: <20250916103839.17202-1-jaimefine6@gmail.com>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Utf/5/ks"
+Received: from mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:6148:0:640:ada2:0])
+	by forward500a.mail.yandex.net (Yandex) with ESMTPS id BFBED81BD9;
+	Tue, 16 Sep 2025 15:06:12 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 76PUUpCLo0U0-uhFlNXOP;
+	Tue, 16 Sep 2025 15:06:11 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1758024371;
+	bh=fGrVfPGr5w2/y6PdLHlBhzXjj9KC99u7DtBE5Ei4Fxk=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=Utf/5/ksFeV3Um+mYQUc7YGcyN3HjYuszJRXk3ONQQQ3Nnr5iQkegNu/G5AY8Kp7P
+	 roC8/d9dKSi3aOIjXi9YaitvGyHJszwBWPvsXUrofmUx5NRk07UsBlWt4GRVbE2TcJ
+	 iH73SI3HICJuZmOPT1vxujlP18Z6td31v/+Q9UPI=
+Authentication-Results: mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 16 Sep 2025 15:06:07 +0300
+From: Onur <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org, nathan@kernel.org, nicolas.schier@linux.dev,
+ masahiroy@kernel.org, aliceryhl@google.com,
+ thomas.weissschuh@linutronix.de, tamird@gmail.com,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ tmgross@umich.edu, dakr@kernel.org
+Subject: Re: [PATCH v2 0/1] rust: add `rustcheck` make target for check-only
+ builds
+Message-ID: <20250916150607.1133894d@nimda.home>
+In-Reply-To: <20250915115311.3025-1-work@onurozkan.dev>
+References: <20250915115311.3025-1-work@onurozkan.dev>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250916103839.17202-1-jaimefine6@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 16, 2025 at 10:38:38AM +0000, JaimeF wrote:
-> From: Jaime Fan <jaimefine6@gmail.com>
-> 
-> Suggested-by: onur-ozkan <contact@onurozkan.dev>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1187
-> Signed-off-by: Jaime F <jaimefine6@gmail.com>
+On Mon, 15 Sep 2025 14:53:10 +0300
+Onur =C3=96zkan <work@onurozkan.dev> wrote:
 
-This name did not match your From: line :(
+> Changes in v2:
+>   - Couple of indentation fixes in rust/Makefile.
+>=20
+> Onur =C3=96zkan (1):
+>   rust: add `rustcheck` make target for check-only builds
+>=20
+>  Makefile      |  7 +++++
+>  rust/Makefile | 73
+> +++++++++++++++++++++++++++++++++++++++++++++++++++ 2 files changed,
+> 80 insertions(+)
+>=20
 
-Also, you need to provide some text in the changelog, I can not take
-"empty" changelogs, sorry.
+Should we document this target on [0]? I think it will be used quite
+frequently by Rust developers on the kernel once we land it, so I
+think it's worth documenting. I can include a patch for that if others
+would agree.
 
-thanks,
+[0]: https://docs.kernel.org/rust/quick-start.html
 
-greg k-h
+Regards,
+Onur
