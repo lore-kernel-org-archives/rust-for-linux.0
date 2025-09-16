@@ -1,102 +1,121 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130041C695;
-	Tue, 16 Sep 2025 12:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89AA30BF58
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Sep 2025 12:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758025137; cv=none; b=WExsE8lS9MZjuTXnGBK8DdtZb7GtUN78blBJP+urzTRD3+o8X7jQBh+e7a/gtWqzNfV+/+szRjGFH8H6SLqVGuV7FYHL02XT8QqnmktgWPphncURzq07OMctX9uTxudusRQ5M0tMfX60S0tULzlXhGcWWVK297VSX4lU99GrP7s=
+	t=1758025439; cv=none; b=E8DGZsJ7Aw/aebSq4Vr2SNhqp2RWyG//BB5PpVUY3MwQH1VhK0Yj9D8oMzAssnVuC43GaCDmC4DOgHIrD15FOuT3HWRv93d7zGvTGa24OS/vQOa3/QKqVBAQO2GyoqbuHTZJdcMDpMyVyhCIsvCTPthYRCapee2Zm12R9NgicDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758025137; c=relaxed/simple;
-	bh=Qzyx6iaqieZHa1bD+k8VgtFucreEpdcW2COkAWhgJbU=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=pWzz9mgC3KWvctOt99OCwG8f2A5JYIDdbEWG/695R9B7DdsdL63cpMVlGoHgGsR2Pu83eAKsjmchs2F4X1sSyagNJdvLuicWRVnESuolzgYgaikVBjTi0ktUCx6XPISoyU4m8D5r/j0SluSZGSYc29a0txV9ixv0w8SpNrfamNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8Bx3tKqVcloH_EKAA--.23580S3;
-	Tue, 16 Sep 2025 20:18:50 +0800 (CST)
-Received: from [10.130.10.66] (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJDxrcGpVclouVKZAA--.6520S3;
-	Tue, 16 Sep 2025 20:18:49 +0800 (CST)
-Subject: Re: [PATCH v1] objtool/LoongArch: Mark special atomic instruction as
- INSN_BUG type
-To: WANG Rui <wangrui@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- rust-for-linux@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20250916061117.32315-1-yangtiezhu@loongson.cn>
- <CAHirt9jbY4yX84Kfzax71rCvPY--SQpDKrjqWsDCHMVnuUuD0g@mail.gmail.com>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <b218d981-49a4-3ee3-6eb9-68953ec29b1e@loongson.cn>
-Date: Tue, 16 Sep 2025 20:18:48 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1758025439; c=relaxed/simple;
+	bh=8d+4DfcEU7DAu1276J4GsoKYTHfENDz0N3+uH7rn4hk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kYX2LwQ6tS2iztMsfwjM0Akpk7QaFn2WsnRLwzrMYJqhqqTlWZONt74fvtxfyKDs3yJc0rgD8O2kOCd7ojaoIp/XfF3lTeFIwPM7Z87X7QuxkVdepeT/VF7XBhp7FyEFiBUsQbKHzncX8mk2vjqodyM6zHG37Etz1xXzzcwVxKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4QDVoUa; arc=none smtp.client-ip=209.85.210.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4QDVoUa"
+Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-776df11e5d3so3203057b3a.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Sep 2025 05:23:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758025437; x=1758630237; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cc9kbkk9FnY0voi4C5nTgnXXO4+ZBLvRjU3FYwX/xJ0=;
+        b=e4QDVoUa0bSegwVfrCWH3f6cRJgTsjHBox6x+P+br4k6GM3nwSaV1BVqs/XXW+LPjV
+         YyydN4y5rqVQjTFeI7GkRqUuzcrt2BVryIV6jG29qiD/Aden7CN20O5QKbbIlYuA8aoM
+         LfGrrU/GxArHtfJov0kwnWRDCNuT2UW4CbHyG8UdzgUNazCoVhI3ZRQcoSt40VuXzzH2
+         VoIKG50ejqp+BKvJXmK2TIqtVbTaO3Y+fIry8rDzvbXXsAmK5792VUiY5/vFqAdB8bLR
+         HOx8cgYDQ804o5f7pbGS++A6DBNxlKbADGgP67yQh1e8ReHsW7psg1NMgjArX0eOsyEB
+         jvtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758025437; x=1758630237;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cc9kbkk9FnY0voi4C5nTgnXXO4+ZBLvRjU3FYwX/xJ0=;
+        b=MW2ioaTrZ0VYi0+zmsyPIiMgKaK66c8GV8vwDX5kC7Qtz1OgQkCBEV3+lJwkW5e1NZ
+         TgNsh1MlwjmGVEPnKhUKWp56GN2bPDrltzcYXFQZANuMxpiCDEGH+lYsH0eKGaf2GMbk
+         MoopEub5FJ7Zk+RzB5GYZdvUaelnoxjgmKG0W6B4RafjDZnHp8d1D9tEti1PN8fLozSX
+         8Ln3bB8PPgP3yYLlE98D+94710u7n931XCBGfUJItDdvqVxlc7AIK3xc8GnAABbUCXK6
+         kEWJDpNXt5q8GGE4Qn11GfraBn0YytEYO24bJE7OcKP64WBhcGNGqzL5pXsLlq9XIEuI
+         6I+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUAOSnQKgJ6ecGm1koaM+JT/VqOayDp5DhjuRgPaFzGoOssS7Z1nFosKx3DaO6lBqZ+nv09Y8gRt8+NAvaXlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywy0RfE5lADM1p6DqNjlN4NCI6mE8VOHIOD5/xhmLXrf9I4VFao
+	YaXqxjd8LzliYhz/y0Sne7pdo1MQ/3veHIJVLRBFKhVWkCHT/skNy4Q=
+X-Gm-Gg: ASbGncuG+l9Hux+XCW4vCpYwYBVhLJKv6NjgVcBBJ96k6CwI0w25n2j57mQZ7+NiSdE
+	RAxUTx8zCY/TLPVzM7IyMzpbmDfIyRosAUSxSaPrH7yW4bSlTu2DyEpP6UAsJJBv0AS6RpM54wr
+	lphbH0PeOHoSQRC+/C0edxYDBICJvt/it35WITAMSC4fcuEvlRcl+XvfSGIRWcA4llaZfZ63kXZ
+	ck9/cgSbpR1Qx/y8cMW528GzULg6bE+9MKgJF/e8eoj0XdbWzMxwOauDCJ4vkIoWoumN0d1AMD3
+	sWayay32X+tm3mbbRLCyQeqiShTlGNu6ziMYw3G9j0QemRxEbtRnyxrPnkCAFmWBOBJUi0rmATN
+	dFbf1zgub6O/hlP9m5TCOOHbWZSs3iYDwag4nTiaAsZIeCvO/5VejRjBCPyZnUbbO8q1DM/7ptV
+	LAFqlCcYSQsztDeTC6EOUL
+X-Google-Smtp-Source: AGHT+IHtIClX05RqrDY5XgKAP5kdxB+/MutoSmf2N+uMhCBjW38bSKPehB7NjHoVU/+DVjIGwHNoEQ==
+X-Received: by 2002:a05:6a20:3949:b0:262:af30:e5c with SMTP id adf61e73a8af0-262af303ec3mr13938156637.26.1758025436979;
+        Tue, 16 Sep 2025 05:23:56 -0700 (PDT)
+Received: from codespaces-8c10cd.ktkhmpmw22vebpok31ngjx2qsb.ix.internal.cloudapp.net ([23.97.62.114])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54a36bf815sm14506851a12.15.2025.09.16.05.23.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 05:23:56 -0700 (PDT)
+From: JaimeF <jaimefine6@gmail.com>
+To: gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com
+Cc: david.m.ertman@intel.com,
+	ira.weiny@intel.com,
+	leon@kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jaime Fan <jaimefine6@gmail.com>,
+	onur-ozkan <work@onurozkan.dev>
+Subject: [PATCH] Fixed "initialialized" typo in auxiliary.rs
+Date: Tue, 16 Sep 2025 12:23:03 +0000
+Message-ID: <20250916122303.3364-1-jaimefine6@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAHirt9jbY4yX84Kfzax71rCvPY--SQpDKrjqWsDCHMVnuUuD0g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxrcGpVclouVKZAA--.6520S3
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Kw4kWw1fWrWUGryDCFy8Zwc_yoW8Xw1rpF
-	srZa4ftayDXFZFg3Z7tFZ2gayayrW3ArW7XF1rWr18t398tF13tFn0qrWUJFWrA3yY9ryj
-	qF4qva48uFyY9FXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
-	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
-	6r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
-	vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8vApUUU
-	UUU==
 
-On 2025/9/16 下午5:02, WANG Rui wrote:
-> On Tue, Sep 16, 2025 at 2:11 PM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
->>
->> When compiling with LLVM and CONFIG_RUST is set, there exists the
->> following objtool warning:
->>
->>    rust/compiler_builtins.o: warning: objtool: __rust__unordsf2(): unexpected end of section .text.unlikely.
->>
->> objdump shows that the end of section .text.unlikely is a atomic
->> instruction:
->>
->>    amswap.w        $zero, $ra, $zero
->>
->> According to the LoongArch Reference Manual, if the amswap.w atomic
->> memory access instruction has the same register number as rd and rj,
->> the execution will trigger an Instruction Non-defined Exception, so
->> mark the above instruction as INSN_BUG type to fix the warning.
-> 
-> LLVM lowers `llvm.trap()` to `amswap.w R0, R1, R0`. For x86, it lowers
-> to `ud2`, and objtool marks it as INSN_BUG.
-> 
-> https://github.com/llvm/llvm-project/blob/788a25a0f71bfa5e5e1c12ad093993b115d10e7a/llvm/lib/Target/LoongArch/LoongArchInstrInfo.td#L1376-L1381
+From: Jaime Fan <jaimefine6@gmail.com>
 
-Thanks for the detailed explanation from the point of view of the
-compiler.
+Suggested-by: onur-ozkan <work@onurozkan.dev>
+Link: https://github.com/Rust-for-Linux/linux/issues/1187
+Signed-off-by: Jaime Fan <jaimefine6@gmail.com>
+---
+ rust/kernel/auxiliary.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> LLVM and GCC handle this differently, GCC lowers it to a break
-> instruction. Since the break instruction has other uses, can objtool
-> mark all break instructions as INSN_BUG? or it should mark different
-> types based on the break immediate code.
-
-If the break immediate code is 0, it should mark the type
-as INSN_TRAP. If the break immediate code is 1, it should
-mark the type as INSN_BUG. I will do it.
-
-Thanks,
-Tiezhu
+diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+index 58be09871..129eae8ff 100644
+--- a/rust/kernel/auxiliary.rs
++++ b/rust/kernel/auxiliary.rs
+@@ -317,12 +317,12 @@ pub fn new(parent: &device::Device, name: &CStr, id: u32, modname: &CStr) -> Res
+ 
+         // SAFETY:
+         // - `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`, which has
+-        //   been initialialized,
++        //   been initialized,
+         // - `modname.as_char_ptr()` is a NULL terminated string.
+         let ret = unsafe { bindings::__auxiliary_device_add(adev, modname.as_char_ptr()) };
+         if ret != 0 {
+             // SAFETY: `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`,
+-            // which has been initialialized.
++            // which has been initialized.
+             unsafe { bindings::auxiliary_device_uninit(adev) };
+ 
+             return Err(Error::from_errno(ret));
+-- 
+2.50.1
 
