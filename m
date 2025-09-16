@@ -1,85 +1,35 @@
-Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89AA30BF58
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Sep 2025 12:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.195
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA75B30E0F0;
+	Tue, 16 Sep 2025 12:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758025439; cv=none; b=E8DGZsJ7Aw/aebSq4Vr2SNhqp2RWyG//BB5PpVUY3MwQH1VhK0Yj9D8oMzAssnVuC43GaCDmC4DOgHIrD15FOuT3HWRv93d7zGvTGa24OS/vQOa3/QKqVBAQO2GyoqbuHTZJdcMDpMyVyhCIsvCTPthYRCapee2Zm12R9NgicDc=
+	t=1758025522; cv=none; b=tPRq6lEr5qGsXZ/Qc4EpCfcGfYfVnQyRoyCqIol34iI94+AWw0QtWf2xpPmskGVR5jx0eAdQb6k0MCTX3221v1cq6NvBkYuKsz/ty4/2VnAaZY9vvkKi2a5fPQU/h+jrHDLtDS21ozjiNPa6IOOy/GFiNIF6sIugjZiUt5lp0Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758025439; c=relaxed/simple;
-	bh=8d+4DfcEU7DAu1276J4GsoKYTHfENDz0N3+uH7rn4hk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kYX2LwQ6tS2iztMsfwjM0Akpk7QaFn2WsnRLwzrMYJqhqqTlWZONt74fvtxfyKDs3yJc0rgD8O2kOCd7ojaoIp/XfF3lTeFIwPM7Z87X7QuxkVdepeT/VF7XBhp7FyEFiBUsQbKHzncX8mk2vjqodyM6zHG37Etz1xXzzcwVxKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4QDVoUa; arc=none smtp.client-ip=209.85.210.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4QDVoUa"
-Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-776df11e5d3so3203057b3a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Sep 2025 05:23:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758025437; x=1758630237; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cc9kbkk9FnY0voi4C5nTgnXXO4+ZBLvRjU3FYwX/xJ0=;
-        b=e4QDVoUa0bSegwVfrCWH3f6cRJgTsjHBox6x+P+br4k6GM3nwSaV1BVqs/XXW+LPjV
-         YyydN4y5rqVQjTFeI7GkRqUuzcrt2BVryIV6jG29qiD/Aden7CN20O5QKbbIlYuA8aoM
-         LfGrrU/GxArHtfJov0kwnWRDCNuT2UW4CbHyG8UdzgUNazCoVhI3ZRQcoSt40VuXzzH2
-         VoIKG50ejqp+BKvJXmK2TIqtVbTaO3Y+fIry8rDzvbXXsAmK5792VUiY5/vFqAdB8bLR
-         HOx8cgYDQ804o5f7pbGS++A6DBNxlKbADGgP67yQh1e8ReHsW7psg1NMgjArX0eOsyEB
-         jvtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758025437; x=1758630237;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cc9kbkk9FnY0voi4C5nTgnXXO4+ZBLvRjU3FYwX/xJ0=;
-        b=MW2ioaTrZ0VYi0+zmsyPIiMgKaK66c8GV8vwDX5kC7Qtz1OgQkCBEV3+lJwkW5e1NZ
-         TgNsh1MlwjmGVEPnKhUKWp56GN2bPDrltzcYXFQZANuMxpiCDEGH+lYsH0eKGaf2GMbk
-         MoopEub5FJ7Zk+RzB5GYZdvUaelnoxjgmKG0W6B4RafjDZnHp8d1D9tEti1PN8fLozSX
-         8Ln3bB8PPgP3yYLlE98D+94710u7n931XCBGfUJItDdvqVxlc7AIK3xc8GnAABbUCXK6
-         kEWJDpNXt5q8GGE4Qn11GfraBn0YytEYO24bJE7OcKP64WBhcGNGqzL5pXsLlq9XIEuI
-         6I+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUAOSnQKgJ6ecGm1koaM+JT/VqOayDp5DhjuRgPaFzGoOssS7Z1nFosKx3DaO6lBqZ+nv09Y8gRt8+NAvaXlA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy0RfE5lADM1p6DqNjlN4NCI6mE8VOHIOD5/xhmLXrf9I4VFao
-	YaXqxjd8LzliYhz/y0Sne7pdo1MQ/3veHIJVLRBFKhVWkCHT/skNy4Q=
-X-Gm-Gg: ASbGncuG+l9Hux+XCW4vCpYwYBVhLJKv6NjgVcBBJ96k6CwI0w25n2j57mQZ7+NiSdE
-	RAxUTx8zCY/TLPVzM7IyMzpbmDfIyRosAUSxSaPrH7yW4bSlTu2DyEpP6UAsJJBv0AS6RpM54wr
-	lphbH0PeOHoSQRC+/C0edxYDBICJvt/it35WITAMSC4fcuEvlRcl+XvfSGIRWcA4llaZfZ63kXZ
-	ck9/cgSbpR1Qx/y8cMW528GzULg6bE+9MKgJF/e8eoj0XdbWzMxwOauDCJ4vkIoWoumN0d1AMD3
-	sWayay32X+tm3mbbRLCyQeqiShTlGNu6ziMYw3G9j0QemRxEbtRnyxrPnkCAFmWBOBJUi0rmATN
-	dFbf1zgub6O/hlP9m5TCOOHbWZSs3iYDwag4nTiaAsZIeCvO/5VejRjBCPyZnUbbO8q1DM/7ptV
-	LAFqlCcYSQsztDeTC6EOUL
-X-Google-Smtp-Source: AGHT+IHtIClX05RqrDY5XgKAP5kdxB+/MutoSmf2N+uMhCBjW38bSKPehB7NjHoVU/+DVjIGwHNoEQ==
-X-Received: by 2002:a05:6a20:3949:b0:262:af30:e5c with SMTP id adf61e73a8af0-262af303ec3mr13938156637.26.1758025436979;
-        Tue, 16 Sep 2025 05:23:56 -0700 (PDT)
-Received: from codespaces-8c10cd.ktkhmpmw22vebpok31ngjx2qsb.ix.internal.cloudapp.net ([23.97.62.114])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54a36bf815sm14506851a12.15.2025.09.16.05.23.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 05:23:56 -0700 (PDT)
-From: JaimeF <jaimefine6@gmail.com>
-To: gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com
-Cc: david.m.ertman@intel.com,
-	ira.weiny@intel.com,
-	leon@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
+	s=arc-20240116; t=1758025522; c=relaxed/simple;
+	bh=FnK2JzZ8lnyPHZ24pty5j5NGZVY9jup6dyCln5ebvQo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C3h6+OZ5j5Q1xZcwiYSaeB4QivJg83G6wtLdRzg/AGqE6u1qKD2/eoMAoONI1zEkc60AHTMFqh4b6q77GHqTTX2+Z2Hd7chfPOEgKG1/PGw2gkzNWyj0QFwb7k2wZ71SqqsMMOmue13oVKTFvCEWfoNVCCOzx1XBI0vgi2XJm10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8DxLvAtV8lo9PEKAA--.23504S3;
+	Tue, 16 Sep 2025 20:25:17 +0800 (CST)
+Received: from linux.localdomain (unknown [113.200.148.30])
+	by front1 (Coremail) with SMTP id qMiowJCxXMEsV8lo4VSZAA--.42297S2;
+	Tue, 16 Sep 2025 20:25:16 +0800 (CST)
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: WANG Rui <wangrui@loongson.cn>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jaime Fan <jaimefine6@gmail.com>,
-	onur-ozkan <work@onurozkan.dev>
-Subject: [PATCH] Fixed "initialialized" typo in auxiliary.rs
-Date: Tue, 16 Sep 2025 12:23:03 +0000
-Message-ID: <20250916122303.3364-1-jaimefine6@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] objtool/LoongArch: Decode more instructions
+Date: Tue, 16 Sep 2025 20:25:13 +0800
+Message-ID: <20250916122516.21013-1-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -87,35 +37,34 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxXMEsV8lo4VSZAA--.42297S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
+	BjDU0xBIdaVrnRJUUUBCb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
+	xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
+	j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxV
+	AFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAF
+	wI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE
+	14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x
+	0EwIxGrwCF54CYxVAaw2AFwI0_Jrv_JF1l4c8EcI0Ec7CjxVAaw2AFwI0_JF0_Jw1l4I8I
+	3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJV
+	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAK
+	I48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F
+	4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY
+	6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcsjjDUUUU
 
-From: Jaime Fan <jaimefine6@gmail.com>
+v2: Add patch #2 suggested by WANG Rui.
 
-Suggested-by: onur-ozkan <work@onurozkan.dev>
-Link: https://github.com/Rust-for-Linux/linux/issues/1187
-Signed-off-by: Jaime Fan <jaimefine6@gmail.com>
----
- rust/kernel/auxiliary.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Tiezhu Yang (2):
+  objtool/LoongArch: Mark special atomic instruction as INSN_BUG type
+  objtool/LoongArch: Mark types based on break immediate code
 
-diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-index 58be09871..129eae8ff 100644
---- a/rust/kernel/auxiliary.rs
-+++ b/rust/kernel/auxiliary.rs
-@@ -317,12 +317,12 @@ pub fn new(parent: &device::Device, name: &CStr, id: u32, modname: &CStr) -> Res
- 
-         // SAFETY:
-         // - `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`, which has
--        //   been initialialized,
-+        //   been initialized,
-         // - `modname.as_char_ptr()` is a NULL terminated string.
-         let ret = unsafe { bindings::__auxiliary_device_add(adev, modname.as_char_ptr()) };
-         if ret != 0 {
-             // SAFETY: `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`,
--            // which has been initialialized.
-+            // which has been initialized.
-             unsafe { bindings::auxiliary_device_uninit(adev) };
- 
-             return Err(Error::from_errno(ret));
+ tools/arch/loongarch/include/asm/inst.h | 12 +++++++++
+ tools/objtool/arch/loongarch/decode.c   | 33 ++++++++++++++++++++++---
+ 2 files changed, 42 insertions(+), 3 deletions(-)
+
 -- 
-2.50.1
+2.42.0
 
