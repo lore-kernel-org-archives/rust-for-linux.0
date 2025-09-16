@@ -1,99 +1,62 @@
-Received: from forward203b.mail.yandex.net (forward203b.mail.yandex.net [178.154.239.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E213B2D24A3;
-	Tue, 16 Sep 2025 11:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D3D13D638;
+	Tue, 16 Sep 2025 11:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758022985; cv=none; b=Bs4RZ1ltlT+PyQ00tQspd1V4VuBVmf77gYF8LdqZ61wzN6rid1QciySAQ0eLSyCZPMdKBIuYQ/Aw31wxXZHiOUYO+JUikPJR8OFZTD7U87AdU08ovTwQG+JShxaSV53MDd4hxQPZw1P26HMSjzBi6smwmflLwiDAVdQbgzeRR+I=
+	t=1758023669; cv=none; b=XJEYhLNe5EkquCZipT9HUWU2DHVK7HLmqQ3F4kptZ1hEZzN7fnQN2qbaHjFChbIO2EzVXfa3hlSD2VSWYxoLI7TQtNil5ceUN6dne1goahUA/JE+BL+iH3b2874UCQ9EsFjhfyjA4gPgfBQCjpdbOKnshw6macqL7iN2SEz9EdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758022985; c=relaxed/simple;
-	bh=ufQwXgpAF7x/2e87GzztuyE/4qAuG3GmhscgNSQnQ9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QbNgtcjZOeJWUtcWCqfOrwODnmJYwSwzn0E6D4Q5uFk2P6R8Iad3eUdKmm0+Oj9PtzlCOb13YmalzHhJDk2OiP3XQEmvRwc72eIa4m6WlIreF0vxsQgNfLOW0pESW6lBSVN8nEa7hf6Hw6jQKAo9lKWr12G+fenm97XlxRD6Hu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Mqk3CajW; arc=none smtp.client-ip=178.154.239.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1758023669; c=relaxed/simple;
+	bh=IX6I147vwhuwINm2ZsDn7ANleLwLQ5AO0LNeCnkR4iY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XMNSXzGjNa9F63a9zyVKH/7lgg2nSMn/d2jxcfT4ZGCtCR7s38VpO1+aG32oGweMxu2s388DNbg7XVNr6PM4zFM8lsvmpDC4aekUQD0g6nJTCK1runUZpmAOq9Lu93LyurPrsPjhcX473g+d9izcB03I04Rd9qu8D4HPDzG9oF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2NSSuJr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Mqk3CajW"
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
-	by forward203b.mail.yandex.net (Yandex) with ESMTPS id 0B4FD81773;
-	Tue, 16 Sep 2025 14:35:00 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:942:0:640:e3c0:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id 356A3C0148;
-	Tue, 16 Sep 2025 14:34:52 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kYODtTGM88c0-q7bDjdtS;
-	Tue, 16 Sep 2025 14:34:51 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1758022491;
-	bh=tamG18SOnqflM3WTf5u2oTfNYuCXJLMJ+kcGrwAEU/M=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=Mqk3CajWO8a4IME8O98bYpJ8v70TnGSGyqJp18pc5MUpwjDlVRFlgGqCFNCJkHznh
-	 ecqJ/pqIDgf/f/9NgjETKF2E1X4bFUgpTSXSDgOiHwSRmUKTFmvi7YLM9CYz1oBqlr
-	 T4MsQbVwDJPuvqB1dALawk4xdkUwRsUEM8gf7o5U=
-Authentication-Results: mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 16 Sep 2025 14:34:45 +0300
-From: Onur <work@onurozkan.dev>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2NSSuJr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B87C4CEEB;
+	Tue, 16 Sep 2025 11:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758023668;
+	bh=IX6I147vwhuwINm2ZsDn7ANleLwLQ5AO0LNeCnkR4iY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N2NSSuJropN0J6OPAInfT7Ics+ZaNcmSLX9W7vUuytq4ngG+84mNjcctZFiv3Ugwd
+	 uhUQGas1We56Mf4a4E8FJBQ82TLteu4q9RczDVyUNC0B1JpRIyeKMP7sV0wDS7e4/h
+	 S0DaYmK2VVvtjeLAJPZV5uwVFGw11OUBxwRiah1w=
+Date: Tue, 16 Sep 2025 13:54:25 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
 To: JaimeF <jaimefine6@gmail.com>
-Cc: gregkh@linuxfoundation.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, onur-ozkan <contact@onurozkan.dev>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, david.m.ertman@intel.com,
+	ira.weiny@intel.com, leon@kernel.org, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, onur-ozkan <contact@onurozkan.dev>
 Subject: Re: [PATCH] Fixed "initialialized" typo in auxiliary.rs
-Message-ID: <20250916143445.5d437391@nimda.home>
-In-Reply-To: <20250916103839.17202-1-jaimefine6@gmail.com>
+Message-ID: <2025091651-symptom-unsocial-385e@gregkh>
 References: <20250916103839.17202-1-jaimefine6@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916103839.17202-1-jaimefine6@gmail.com>
 
-On Tue, 16 Sep 2025 10:38:38 +0000
-JaimeF <jaimefine6@gmail.com> wrote:
-
+On Tue, Sep 16, 2025 at 10:38:38AM +0000, JaimeF wrote:
 > From: Jaime Fan <jaimefine6@gmail.com>
 > 
 > Suggested-by: onur-ozkan <contact@onurozkan.dev>
 > Link: https://github.com/Rust-for-Linux/linux/issues/1187
 > Signed-off-by: Jaime F <jaimefine6@gmail.com>
-> ---
->  rust/kernel/auxiliary.rs | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-> index 58be09871..129eae8ff 100644
-> --- a/rust/kernel/auxiliary.rs
-> +++ b/rust/kernel/auxiliary.rs
-> @@ -317,12 +317,12 @@ pub fn new(parent: &device::Device, name:
-> &CStr, id: u32, modname: &CStr) -> Res 
->          // SAFETY:
->          // - `adev` is guaranteed to be a valid pointer to a `struct
-> auxiliary_device`, which has
-> -        //   been initialialized,
-> +        //   been initialized,
->          // - `modname.as_char_ptr()` is a NULL terminated string.
->          let ret = unsafe { bindings::__auxiliary_device_add(adev,
-> modname.as_char_ptr()) }; if ret != 0 {
->              // SAFETY: `adev` is guaranteed to be a valid pointer to
-> a `struct auxiliary_device`,
-> -            // which has been initialialized.
-> +            // which has been initialized.
->              unsafe { bindings::auxiliary_device_uninit(adev) };
->  
->              return Err(Error::from_errno(ret));
 
-Thank you for fixing this!
+This name did not match your From: line :(
 
-Can you please use work@onurozkan.dev address instead of
-contact@onurozkan.dev for both cc-list and suggested-by tag ? I am
-not using contact@..com for LKML.
+Also, you need to provide some text in the changelog, I can not take
+"empty" changelogs, sorry.
 
--Onur
+thanks,
+
+greg k-h
