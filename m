@@ -1,111 +1,104 @@
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BF32FFFB9
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Sep 2025 17:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DE424E00F;
+	Tue, 16 Sep 2025 17:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758042833; cv=none; b=BeHcgZ47UfikL20weyDX+X8y/GGN5FsiGyvwGEZ5faWSiEs4+QBv0FZLiTl9lNh/iMQF6ztjxxSoLzr0CfqiiyqSDbdzkQO5q27D6j6gZwekQWn+IM7C/smdI2A3xFUPPCyoTst7K2u9aAFe/XugACnJYF9WbInJRY5A+4LcYh0=
+	t=1758043303; cv=none; b=jkOe8MkuB5ed0JXOGPE0sKXD4wwQrxaTi7lpfrnomlNUz+7CRJ2f72lgMApFLEXoEI4aqTw8sd494a5XJpuImec9CPAd3QQ4iY0hEXw9lw1oRS5C2p8zY6ba5y9U8u4pgk9knGYxwRg75SDMIy9vYCKL0NiXRxy0XygEsmxWo4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758042833; c=relaxed/simple;
-	bh=PRtXFrqG9+2j9ZTtdc5hIyND05mJaNPrt3wyHxjpkv8=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=mqcULhD2VUkLhcXAlYjRdled7YcBStEFoyKeujK6pYeWx7dB2xzsEKRKJzOvaXiWuVsrag834+o1RGcxKvj5r84+p/kHhRYs+wCkJvixptMnXWGvD6Vb/x3dluOfPm1qOlpAl+ciMNg8VqZITjO+RrUbRd6MqgYVsZ+vaoeUO8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FpQUG3PX; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758043303; c=relaxed/simple;
+	bh=DJ5Z50X5vQEdBklBEnK9nMQ+7I1JuqRFkk4wtkg6jd8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lvm3td+Kog3wWJpqDgXtdf6jZjICDyVzURPuTRAYMwU6ifDqULzTNDwZIfNiQm1ZPpk7o4uB7bZbvC+eZsSQss6epQadn/5We39yhV6OY3r4LzZgDZEILs4Nvt++eDtWvEZ/o1cJiRLMpirjcaYVR3Zp/0CNdiEcS/VhxWtwiic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nK69Sf8A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FpQUG3PX"
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-30ccec928f6so2384994fac.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Sep 2025 10:13:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758042830; x=1758647630; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pN7irB1Co6sighopGJF7gG4VawVJzGo06VZPpbBUeRY=;
-        b=FpQUG3PXPjEXvrHDaFuvcTAFgdW+Y1DOWtfTdbrud3T0QODLpg6tdNvGvXKrB4om+j
-         s8DVZ2QRDN6YXLFILNc7fNqYDpeafwynWGg6NJNyzlLVbyvoW4BJ87aXFPm2wM9UJhWM
-         V30NjJWHctTw7Obn5air6y0OviL2FbM3/TzvkVc4nruzNZkPG+akDIV/xvIIk50gS0H3
-         t4OEUdIvDUk3H67tQ/nx8S1co94AA6WPDk+RMvQ02BGJLLdhoJ1A+WxYRC3tVfEMldaE
-         C9FtntJcEPeWi16CQo2WlEad7szmWrKn2XgKM3F0E02+2giIqE3tZZITa2POyZjm3zs/
-         5QVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758042830; x=1758647630;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pN7irB1Co6sighopGJF7gG4VawVJzGo06VZPpbBUeRY=;
-        b=l45mplw77U0L1cpiX5K9HvWSbkXEGuKPhrU6karqCMhuL/91e7JqHscuhL1Yr2nvaG
-         4rW8JqaeewkiIJKF4tvhjQo+574UglGQQDFJssijGnjdWQkkRv6H7vZSG4JGArV6YOCL
-         QXl5d9VNtc5rF9QGyvlE+VD/iHMM/zWe0jymOC58r4NjmZumP7tlAi82Vmypu/c0Mb2D
-         uMW3G9NFrGwZcMzvvuZRiq3tnOpxk0p7u4IKjTR6mQqBU6qIDkrkWA0+RKCYvjD3PtyM
-         gM5Oa42vsnrx70JZEoAiYFBi0u7rwYDLCe/GZWrmjjNcVHwUbSodJmxr2NhosZC5A0sM
-         vd6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUxT+R85VxPbJRtdE7r0pQjNtyGrWFWuGZniH6A7aAieSTD5S5hdk+gP3w9gsXfE/TS6SWEVr/g2GbBBgiFXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwurR4ztK6FhfmIXsAEtTl7S3Najrprc6NukpPcy4DXbOYwWoH/
-	Fe+VeGKj1ZPTIUQ9J52RpbnVVzRn/RHkZs8gjac+5SR9Zti7Wz0JCGZoRyE5uNnkQXtgv4gw6rd
-	DPft3P06VP33fE4kDV0tu69TKdbu1Bodc4GjRKtpACSJZ2MYPeg==
-X-Gm-Gg: ASbGncuzGKi93lOuk5sQ+jbFNnHo3NLtW2DGMnP4So0RJNmDM4RN94hRO6IobHDEVfJ
-	x6ni3f4kw0ScLE94y3YyntrDFIRMOdMYcIpZ3ZO/8a12q4rkkgMxhZOeYxkM+twMCTHAPwj9od1
-	DSd401C4ktDcWwGFYRYYGkBSIbEBrt1YTw/ua3YUJyn7I83ljnvUF2wocWk3quwUTpb7MeFsaf1
-	Uj2xiJuPA==
-X-Google-Smtp-Source: AGHT+IHNL7E5MM6ST9Dssd3Uk7kmhRzuACb68kP+b/73NM8zJeNTTvvuZKgwQdXeXhctOHI9VLsSjRnoiBVObEk2GdY=
-X-Received: by 2002:a05:6870:7907:b0:333:30f3:cb50 with SMTP id
- 586e51a60fabf-33330f3ce2dmr2784096fac.8.1758042830538; Tue, 16 Sep 2025
- 10:13:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nK69Sf8A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0DFCC4CEEB;
+	Tue, 16 Sep 2025 17:21:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758043302;
+	bh=DJ5Z50X5vQEdBklBEnK9nMQ+7I1JuqRFkk4wtkg6jd8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nK69Sf8A1+xQNLJPVP5BMJ34gDV+ob4401QWkOJn2E0veRXaRdI6Ugl/7gQMNL9YY
+	 anIZ70kGc1KRSKOY7lYBBFLIc3oVLaEQG5u+XQsGg6UkFhzdHFZhV87Lyw1zyt7AlA
+	 7gDO+7SbCDSrk37n8XlySD3fJoNGfvj4br40D3f0NLU1JzZ/omxvw+vMXLrCyaxvt3
+	 ofyTDfzZnSMOzU+VJV8DuOetScgLJ4QskNO31s515siQCddQoY/EwZQGf8yc6zkwfK
+	 Msnm+vTz0q53ELGYhldIzo9lkjCsWqdWScOrKmVo8727WeaPkUBZyl/ZaoMF0Qayrj
+	 fODObCWXRQNHQ==
+Date: Tue, 16 Sep 2025 18:21:35 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Asuna Yang <spriteovo@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Han Gao <rabenda.cn@gmail.com>,
+	Jason Montleon <jmontleo@redhat.com>,
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v3] RISC-V: re-enable gcc + rust builds
+Message-ID: <20250916-getaway-grew-46e4fb956a78@spud>
+References: <20250914-gcc-rust-v3-v3-1-34d4d5864144@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Tong <djfkvcing117@gmail.com>
-Date: Wed, 17 Sep 2025 01:13:38 +0800
-X-Gm-Features: AS18NWCd1eg059A7FpVxTIKZFnQrM5d9AywpW_y-j4Zh7xfE8Gq4rjF-eJySaME
-Message-ID: <CAMfjjQ1Gtjg4iG8L6Xdm1HP6FmoVgDHC6QhtMEGbA6_y-_6SXA@mail.gmail.com>
-Subject: [PATCH] rust/fs: use intra-doc link for `EBADF` in `BadFdError` docs
-To: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Cc: onur-ozkan <work@onurozkan.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ovMXMPQdHm2Jci7/"
+Content-Disposition: inline
+In-Reply-To: <20250914-gcc-rust-v3-v3-1-34d4d5864144@gmail.com>
 
-From af7f05e99ed67f57c83e51ca3a1b3010e3e87762 Mon Sep 17 00:00:00 2001
-From: tong <djfkvcing117@gmail.com>
-Date: Wed, 17 Sep 2025 00:25:44 +0800
-Subject: [PATCH] rust/fs: use intra-doc link for `EBADF` in `BadFdError` do=
-cs
-MIME-Version: 1.0
-Content-Type: text/plain; charset=3DUTF-8
-Content-Transfer-Encoding: 8bit
 
-In rust/kernel/fs/file.rs, replace plain-text `EBADF` in the doc
-comment for BadFdError with an intra-doc link [`EBADF`].
+--ovMXMPQdHm2Jci7/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This improves the generated documentation (so the `EBADF` constant is
-linked), and helps tools such as rust-analyzer to resolve such
-references from the docs.
+On Sun, Sep 14, 2025 at 03:16:40PM +0800, Asuna Yang wrote:
+> +config TOOLCHAIN_MATCHES_ZICSR_ZIFENCEI
+> +	def_bool y
+> +	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
+> +	depends on TOOLCHAIN_NEEDS_OLD_ISA_SPEC || !TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI || RUST_BINDGEN_LIBCLANG_VERSION >= 170000
+> +	help
+> +	  LLVM/Clang >= 17.0.0 starts recognizing Zicsr/Zifencei in -march, passing
+> +	  them to -march doesn't generate an error anymore, and passing them or not
+> +	  doesn't have any real difference, it still follows ISA before version
+> +	  20190608 - Zicsr/Zifencei are included in base ISA.
+> +
+> +	  The current latest version of LLVM/Clang still does not require explicit
+> +	  Zicsr/Zifencei to enable these two extensions, Clang just accepts them in
+> +	  -march and then silently ignores them.
 
-Suggested-by: Onur =C3=96zkan <work@onurozkan.dev>
-Link: https://github.com/Rust-for-Linux/linux/issues/1186
-Signed-off-by: tong <djfkvcing117@gmail.com>
----
- rust/kernel/fs/file.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I still don't really like the name of this option, but I don't really
+have any good suggestions for what to call this.
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-index 67a3654f0fd3..f3153f4c8560 100644
---- a/rust/kernel/fs/file.rs
-+++ b/rust/kernel/fs/file.rs
-@@ -448,9 +448,9 @@ fn drop(&mut self) {
-     }
- }
+Cheers,
+Conor.
 
--/// Represents the `EBADF` error code.
-+/// Represents the [`EBADF`] error code.
- ///
--/// Used for methods that can only fail with `EBADF`.
-+/// Used for methods that can only fail with [`EBADF`].
- #[derive(Copy, Clone, Eq, PartialEq)]
- pub struct BadFdError;
+--ovMXMPQdHm2Jci7/
+Content-Type: application/pgp-signature; name="signature.asc"
 
---=20
-2.34.1
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMmcigAKCRB4tDGHoIJi
+0rfDAP9q+R3zLBj2lwiOj46Ay1jJrWFrzRnaLIF9CVcqW7Tq6gEAhYmZWcMRrz3+
+1MPkLLx2PkcE4kEft2ZLozNAEw1LCww=
+=UxeS
+-----END PGP SIGNATURE-----
+
+--ovMXMPQdHm2Jci7/--
