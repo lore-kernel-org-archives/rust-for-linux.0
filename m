@@ -1,129 +1,115 @@
-Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DE932A822;
-	Tue, 16 Sep 2025 14:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155D93431FC;
+	Tue, 16 Sep 2025 14:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758033628; cv=none; b=eXrbpJ9SQR37m93tJqMhd9ffCmWFhT7mQJX499C5a+RdhmmLeKHgx/vCXb1+w33gC2HoqEFJWYR7DByewj79RxMDdY/xLVnf9B0cDpUJiX7B4/709sig8mwHN9jLs1fcLWfFvShcbzjPh/IBt4Z7Nv3mQmEut2WDGzLJIc3tITw=
+	t=1758033785; cv=none; b=uSPBQBSmb4u09CZFeaeI5QDyp8LGOPcK6U5Ueqkt1pCxbEQCtmJSwl1jVei6fnir/RCrPgXnOMQnGXt9rudnUa8NYQAMjJ70pV7fyYEFFyJ/4DAnkFunnPFzhNq9dxJkXxJrbmyVVoyC731Q2fA8033xOUb1ATzldjfvy03mfqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758033628; c=relaxed/simple;
-	bh=6DRl2reBeCpb8t2mrsH3ks+AVgIL/2jGRm/rHwaMTe0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IaGpHv+7PilpPcIF+tEoU4v6YTnAJB/q8LLp+eMlHkGsxuF81Vv4qNupe2DtLTwDPPc8aJDDSCOdxDXViZift2clvx9tKMs3cq3UuRj80B03WOsHxAqp5vTJ8+bu19tfKb8kOMzR6kUfrml/rm0Q2b9gd+wGc2VXP4q/GoVl/V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=oHEQdfJg; arc=none smtp.client-ip=178.154.239.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1758033785; c=relaxed/simple;
+	bh=27ySvtd3dUO78XvzUBYQ1gA9ElOvc66NxkQRlwyPYfI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=RkUONsex0M1Mfe7w6AI0exgPGfQFD5I2ZPjmNx8yB0VKk6uDxv+IfXxBIOWC702FpAleXrH9c8kiL0PZLF8GYxN3Ciq0YLNJG6aUDf+urk7WW9FDye93A6ggO/Pz8vgG7iGtnIvyUpwliPQD114ymEjxvuJqwpHi/LftoyVh40c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mh/pih+E; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="oHEQdfJg"
-Received: from mail-nwsmtp-smtp-production-main-84.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:3928:0:640:8b00:0])
-	by forward501d.mail.yandex.net (Yandex) with ESMTPS id AE38F817CC;
-	Tue, 16 Sep 2025 17:40:16 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id BeRfCx8Mc4Y0-iZ18mXua;
-	Tue, 16 Sep 2025 17:40:15 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1758033616;
-	bh=GZgz4zFDz9516Y98vd4TS+6TMO0slfCF0WmLDac2DMg=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=oHEQdfJgujP5DSqh5iX88OtLeAGqWMNaVO4NlzYiTVinTnrMzpTZ0Jrexh51HM6im
-	 euEoATBxZI9uxnrBqRoSoFKw856NFc+CbwKazyoTNNJ/JC8+I3rLRUgRBVp/tvvK1I
-	 dyun0PMjaCxMr17/x1UaidFMZ4eFEsKyz6nNqNNU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 16 Sep 2025 17:40:11 +0300
-From: Onur <work@onurozkan.dev>
-To: Tong <djfkvcing117@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- ojeda@kernel.org, Greg KH <gregkh@linuxfoundation.org>,
- alex.gaynor@gmail.com, david.m.ertman@intel.com, ira.weiny@intel.com,
- leon@kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org
-Subject: Re: [PATCH] rust/fs: use intra-doc link for `EBADF` in `BadFdError`
- docs
-Message-ID: <20250916174011.10c791cb@nimda>
-In-Reply-To: <CAMfjjQ18NYsQh7CVzRs=+sYwve4T5y-vf=zMNLyxQvgYE4+mMA@mail.gmail.com>
-References: <CAMfjjQ18NYsQh7CVzRs=+sYwve4T5y-vf=zMNLyxQvgYE4+mMA@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mh/pih+E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B099C4CEF0;
+	Tue, 16 Sep 2025 14:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758033784;
+	bh=27ySvtd3dUO78XvzUBYQ1gA9ElOvc66NxkQRlwyPYfI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Mh/pih+ELUPiwHaVc/5+/no3vUj4N50DWncI5OZDjVYTLqf2vB9gb/8jeQdD6BR1U
+	 MiU83MiTC5eUHidRAe3IUhqZ+padDI8Zn3xfbCpHUm40Hshnr+ZUaGJnW1qgnSeyvj
+	 fEfjhayffU9+phEOFpwcE/cSRlhR/s0rZ8W7PURxJnK6wugMZvXfdQOAzIf5Q/EPbe
+	 gouCIumTkECRbygED4AJmR0FV6B7ASA58hoCmm+wKouYnz1SxzoMUCDu8WZNrij4W4
+	 GZa8g2OgbybCELuCicywK4vnYw0sLYzLR6NpvtuaziHIby1/ICMdvXGOraHrEBQIRr
+	 /TH7xsoHTeKNw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Sep 2025 16:42:56 +0200
+Message-Id: <DCUAYNNP97QI.1VOX5XUS9KP7K@kernel.org>
+Subject: Re: [PATCH v6 10/11] gpu: nova-core: Add base files for r570.144
+ firmware bindings
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250913-nova_firmware-v6-0-9007079548b0@nvidia.com>
+ <20250913-nova_firmware-v6-10-9007079548b0@nvidia.com>
+In-Reply-To: <20250913-nova_firmware-v6-10-9007079548b0@nvidia.com>
 
-Hi Tong,
+Two comments on this, just for the record.
 
-On Tue, 16 Sep 2025 22:25:41 +0800
-Tong <djfkvcing117@gmail.com> wrote:
+On Sat Sep 13, 2025 at 4:12 PM CEST, Alexandre Courbot wrote:
+> From: Alistair Popple <apopple@nvidia.com>
+>
+> Interacting with the GSP currently requires using definitions from C
+> header files. Rust definitions for the types needed for Nova core will
+> be generated using the Rust bindgen tool. This patch adds the base
+> module to allow inclusion of the generated bindings. The generated
+> bindings themselves are added by subsequent patches when they are first
+> used.
 
-> rust/fs: use intra-doc link for `EBADF` in `BadFdError` docs
->=20
-> This patch changes the documentation for `BadFdError` in the `fs`
-> module so that the error variant `EBADF` is referenced via an
-> intra-doc link (i.e., [`EBADF`]) rather than plain text. This
-> improves the generated documentation (so the `EBADF` constant is
-> linked), and helps tools like rust-analyzer to resolve the reference
-> from the docs.
->=20
-> Testing:
-> - regenerated documentation, confirmed the link to `EBADF` shows up
-> correctly,
-> - ran doctests to ensure no broken links in docs,
-> - built affected code with rustfmt / clippy to verify formatting and
-> lint cleanliness.
->=20
-> Suggested-by: https://github.com/onur-ozkan
-> Link: https://github.com/Rust-for-Linux/linux/issues/1186
-> Signed-off-by: Your Name <your.email@example.com>
+For now this is perfectly fine, but in the long term we should avoid creati=
+ng
+bindings from C headers. Instead, I'd like to see the tooling that generate=
+s the
+C headers to generate the Rust data structures (in a more Rust idiomatic wa=
+y)
+right away.
 
-This is wrong.
+> Currently we only intend to support a single firmware version, 570.144,
+> with these bindings. Longer term we intend to move to a more stable GSP
+> interface that isn't tied to specific firmware versions.
 
->=20
-> ---
->=20
-> From 676dd0d1d9276d5dd2a83469ac392732c0a1f34a Mon Sep 17 00:00:00 2001
-> From: Webb321 <140618222+Webb321@users.noreply.github.com>
-> Date: Tue, 16 Sep 2025 22:15:25 +0800
-> Subject: [PATCH] rust/fs: use intra-doc link for `EBADF` in
-> `BadFdError` docs
->=20
-> In `rust/kernel/fs/file.rs`, replace plain text `EBADF` references in
-> the doc comment of `BadFdError` with intra-doc links [`EBADF`].
->=20
-> Testing:
-> - regenerated documentation, confirmed the link to `EBADF` shows up
-> correctly,
-> - ran doctests to ensure no broken links in docs,
-> - built affected code with rustfmt / clippy to verify formatting and
-> lint cleanliness.
->=20
-> Suggested-by: https://github.com/onur-ozkan
+Yet, we have to prepare for proper abstraction of the firmware API:
 
-Should be: Suggested-by: Onur =C3=96zkan <work@onurozkan.dev>
+(1) This is a community project. And as a community project it has to be
+    written in a way that is guaranteed to remain maintainable for the
+    community in any case.
 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1186
-> Signed-off-by: djfkvcing117@gmail.com
-> ---
->  rust/kernel/fs/file.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
->  diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
->  index 35fd5db35c4652..761a9074d65205 100644
->  --- a/rust/kernel/fs/file.rs
->  +++ b/rust/kernel/fs/file.rs
->  @@ -447,7 +447,7 @@ impl Drop for FileDescriptorReservation { } }
->   -/// Represents the `EBADF` error code.
->   +/// Represents the [`EBADF`] error code.
->   ///
->   /// Used for methods that can only fail with `EBADF`.
+    This means that the project can not rely on the hardware vendor to prov=
+ide
+    a stable firmware API; rather it has to written in a way that can deal =
+with
+    changing conditions.
 
-You missed fixing the second `EBADF` here.
+    In fact, this is one of the issues why we don't see a way forward with
+    nouveau, so we can't lock ourselves in here. :)
 
->   #[derive(Copy, Clone, Eq, PartialEq)]
+(2) While I think attempting to be as stable as possible with the firmware =
+API
+    is the correct approach, I also think it is better to reserve yourself =
+some
+    flexibility on changing it.
 
+    I much rather prefer a firmware API that is evolving when really necess=
+ary,
+    than squeezing new features into an existing API (e.g. by adding confus=
+ing
+    extentions) that just isn't a good fit anymore at some point.
 
-Thanks,
-Onur
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+> [acourbot@nvidia.com: adapt the bindings module comment a bit]
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
