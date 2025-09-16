@@ -1,32 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC25723BD1F;
-	Tue, 16 Sep 2025 15:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013ED35CEC2;
+	Tue, 16 Sep 2025 15:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758036841; cv=none; b=ucqaIl589XgnDNdt6pFcqNx0rXNHvV+Yl26OJfGkxp0xZ/+4WXVJJjPMGra8IOhz3NK/Ib+ONriIbJ/3msSzuZaFc4Pd4CojMHEl992FecZqXpBnejbCoCLxUPkzK5dLUPExJEzkLpaplbXysPlLKPs3OOANxpwTlcr69NH0mX8=
+	t=1758037084; cv=none; b=jrVStDkmsfSELqpVPHRSFh1mUUtRwpeHkCJ91aY+7as7Ls632nnY6oZ+6eDXzOWrRs8ps+DEc5oucGdWAl7MunjXmOX2MD3DnL9WLoRewyPfOTRtxDMIcKRkcIli6fiuyGFjWAUcdtE45uQnVX3VrQ9B34w2xBTE0ma4IEehp3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758036841; c=relaxed/simple;
+	s=arc-20240116; t=1758037084; c=relaxed/simple;
 	bh=/KNRhTipWVEIQwkpHzS6ivBX9n/DOl4tBR3cuI/sKLI=;
-	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:MIME-Version:
-	 Content-Disposition; b=MT78P6Qv5AFI/YsGIRgiwB3mRqcjqkGmro7VeLOc7+EcUuEt/nyJd1htufjiXE3TyeLeZjr1uGf0tsCjyqaipEzWzntQ1KzRp5WweGLp+AsXnmCyUdpLRLswYssToqomM0O5PlKuBNtkvZhR8D0WWS9zBAYZHMMtz33jkklyq8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD93C4CEEB;
-	Tue, 16 Sep 2025 15:33:59 +0000 (UTC)
-Content-Transfer-Encoding: quoted-printable
+	h=Content-Type:Date:Message-Id:To:From:Subject:Cc:MIME-Version:
+	 Content-Disposition; b=cN8YVGxaHnCplpXCSRgc3K127FuqpcbSvEBjf2nou2R9DkWU31Leucg7xjjGi3Zm9oqHwPEHYq3Arf9Y0l8yALkjrmmxZxVyEYDwG2qH+ixwv1s5+qxVHJfTq+E8a8e91oeYMDa7OTVdI/HcW5viSHQQxb/mStG5+Qf8LRS1bZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g7KnRHpI; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g7KnRHpI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845C2C4CEF0;
+	Tue, 16 Sep 2025 15:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758037083;
+	bh=/KNRhTipWVEIQwkpHzS6ivBX9n/DOl4tBR3cuI/sKLI=;
+	h=Date:To:From:Subject:Cc:From;
+	b=g7KnRHpIbRKZAVpQcT685hjTtTn8EG/icpphN+G3m1Kvkiw2Pu54ECF4aGiV7pF2y
+	 oFHQD/DPLJyvFWpmLhiy//KcRg78rWguMDZfsJHQXkVT/447IiFhTW498/VOt0hx3a
+	 UntE3fc/42QgjZMKSpDmpbG15aB6X6k+HxxuZ6/CekLU4tcbaXCImXyQFYN+XJlbNI
+	 PABL+ApRX9iL+FZmE8LN3UBscF3Excg/3fnzUk2Ld7l+eR8Ift8BTNSShtRdKDy/ii
+	 LuDNESEKcShbNxr/FZeg0ib+60GZsaJWZNm62v3fXv8Vk6oCjb78B3LngT1Fr6Fhmk
+	 g/5oYdeGE3GWQ==
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Sep 2025 17:33:57 +0200
-Message-Id: <DCUC1PQWPSQJ.1LEHJPN9T49Z5@dakr.org>
+Date: Tue, 16 Sep 2025 17:37:59 +0200
+Message-Id: <DCUC4SY6SRBD.1ZLHAIQZOC6KG@kernel.org>
+To: "Dave Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>
+From: "Danilo Krummrich" <dakr@kernel.org>
 Subject: [GIT PULL] DRM Rust changes for v6.18
 Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
  <acourbot@nvidia.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
  "Miguel Ojeda" <ojeda@kernel.org>, "Benno Lossin" <lossin@kernel.org>,
  <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
  <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Dave Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona.vetter@ffwll.ch>
-From: "Danilo Krummrich" <me@dakr.org>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
