@@ -1,358 +1,179 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3E31C4A0A
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Sep 2025 14:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0F72FC002;
+	Wed, 17 Sep 2025 16:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758120983; cv=none; b=kkplknofPOSg2PMnCOn2xJy4EvpCCxVheOI1R0wCTFSsAyMM0AQr6t3bw0txEbIeSLia9cX0qq6K9LU4oFwhBojO+emGCdourxU/9ueEe40khIxXBEg7ibjkP4yd215ZisTSZ/hVqPTciC/SF5xteOq3XkqtahLxB1XeuDjbbHs=
+	t=1758126659; cv=none; b=OWeW4GVxUcaobjegDSpHHhvT8kpZsO+445KlcmV33rP/bBN9fO9SzmmOxvd/D1+UoIdDgrw+FsauIAzYFuu+EhOAl+cn5s/N5YR8MbBoCasBpTazM1xUCqLUT9tb8IHxHNhLrMWSkcFlXYUEM/glMt6c1qHWJjU1JugLcYLmoDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758120983; c=relaxed/simple;
-	bh=gicOMBaesdNTccvEzddk/YN/oDXQeNuzFolMvo4isZ4=;
+	s=arc-20240116; t=1758126659; c=relaxed/simple;
+	bh=UTcpWzsO83bU5VLg2V0mNfFARp0fI0qWWWu0UU2p/o0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BYX5Cf+GNFN57TGlfn4xT9SyyGvHbUk3GGRyppGFeCumLAjYPsdhSweWAZnOcXkhD+p/lkb9WtraoAkKjp0uqZ4kwEROS86OKq/5ZjiwNH2eGrAQYMDLjL0PxnFvZ6qrGg8FNxdgxuL/2WfxY36yJlNZjKOTGqzejZpENVVpV7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=oiCeZZ6P; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	 Content-Type:Content-Disposition:In-Reply-To; b=LlDdEbH4I/Z/nf3WJx0PM+IMa1TE7dcT7cAU6pPK64aWNl0dgdR9hEB6HrNR81RxKLxRbBBn3DPWhr+GttbqCgqKBnyje2BK5dxqfjCsOBt04tuUFS1ZhDBWy0LZuIoC6ZC8QS+QVrPKPtJiUQe+kjboOPWDXj+R8wNTDc2eJyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=KE97qftU; arc=none smtp.client-ip=212.227.126.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="oiCeZZ6P"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7728815e639so4812576b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Sep 2025 07:56:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1758120980; x=1758725780; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vGgjTNK+wdbeCWY6KMOb7s+5s0orqzod2SL7Bz5GX80=;
-        b=oiCeZZ6P3v1RY/DC/aT0/k64vHpcg+rmZ2WEzpger9u5LevHFgP87BPM/qEoqLJRCZ
-         RwPcvSWibYB9QJNIatvtrgO9JvgBpXrWlFGTws9S3N5pzMAjS6gvohm6UCK1ckqAhrCT
-         5oO6h2E793pbV82qF/AaVpIjwRJ2wf8qtP1O4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758120980; x=1758725780;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vGgjTNK+wdbeCWY6KMOb7s+5s0orqzod2SL7Bz5GX80=;
-        b=gVghe4Lreyp31gvOVp/indFieJU43DyB0+lvcajmXfDK9ax40cIuxkLb3t7ANB8u6M
-         f8LSWL2puva33GiGRgk+Aoi02+r13C+nqOqU62YP9rxh+AQ2MCx6wmYBfey+JH9ouEO/
-         51h0gphk8mZi6MrMae+Nws3jrl3tgOWaWXDZcyzOIz6tJQwnlbWUrmfkP30V0pcSZvXz
-         6wo2kRzZZImojxNffcE/6vzNZVcSTIV+G4pWYwoAzVQbjj9Bv3E2eFrmk5y7OTkO31y3
-         AuZPLeFG4S63ptVq4VPtHmGaFL5zSvDlfvyYo16Pg0QvUywxQI1IoD53jO2ZtKRjDYxb
-         nRqw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrEYWdI7MEXfpUzA8a6WgMs/kQSM9uBK2Yu8BsL4uyv4JcIR8mWYE6NlL3mLINScdXZYMdDtDRhDv5y7z/FA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw29sK7mJgzVpqgIHt9o2TK8wFiqjOYbl0X4HVen/fOxCqH8DF4
-	CDcZnINw3YiallS68tZWBONKIlBdVg0p+DMe0QJQ2rasvyM8QRkFQiYoPD+/PwvIIR0=
-X-Gm-Gg: ASbGncteUq2ak/SW+82IVPqmCspz5Aoo12conjchSHVXAYNhfWtLpedjKxkFyFvV4kA
-	Kjxe6qUwr5SDtBfvxQkYkTX/jdvrk5ZPzdiW6aQv1W+9n4B5VDep+FHU1rFOwuXuveF4WDd+zyY
-	grOleMsLH6oTtVyjd3475JOT+c7BD1gp+1joQj3ADEHXl2ZOWGQ8h7h6ooBI8FLt88Y37DgIRu/
-	DT0e934dEDkJ/88+wl3v8WzSwVUSEWTOzdBPWH3btAwZFDrCIkM4BIwsSVF6bqT6OFCzHcICwH6
-	AdQxhfR9tyNCPGtG2C1roOfP1/WIBDaiU5MVpUDzbBmO4sqwwvoTHzBipGQB0Gut3DJ+ib5MpoD
-	8j22sTK8UK6uzPYH2/3OYqGIAT9QHDABlotaGBiTP4Vy/WA0kbDo6EIXL6PPGN72KPZM=
-X-Google-Smtp-Source: AGHT+IF38AXPY34Cdzv56BftkQZDZ9qSIcFh807nJJKWx6fVTWK3/9fTFBZvhx6xdeQWZibqjDWecQ==
-X-Received: by 2002:a05:6a00:986:b0:771:e4b0:4641 with SMTP id d2e1a72fcca58-77bf6dcfe59mr2978340b3a.1.1758120979976;
-        Wed, 17 Sep 2025 07:56:19 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([175.195.128.78])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607c49fe4sm19473921b3a.101.2025.09.17.07.56.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 07:56:18 -0700 (PDT)
-Date: Wed, 17 Sep 2025 23:56:13 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Caleb Sander Mateos <csander@purestorage.com>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [RFC PATCH v3 2/5] io_uring/cmd: zero-init pdu in
- io_uring_cmd_prep() to avoid UB
-Message-ID: <aMrMDd4kjxim0CkA@sidongui-MacBookPro.local>
-References: <aLbFiChBnTNLBAyV@sidongui-MacBookPro.local>
- <CADUfDZpPvj3R7kzWC9bQVV0iuCBOnKsNUFn=B3ivf7De5wCB8g@mail.gmail.com>
- <aLxFAamglufhUvq0@sidongui-MacBookPro.local>
- <CADUfDZruwQyOcAeOXkXMLX+_HgOBeYdHUmgnJdT5pGQEmXt9+g@mail.gmail.com>
- <aMA8_MuU0V-_ja5O@sidongui-MacBookPro.local>
- <CADUfDZppdnM2QAeX37OmZsXqd7sO7KvyLnNPUYOgLpWMb+FpoQ@mail.gmail.com>
- <aMRNSBHDM4nkewHO@sidongui-MacBookPro.local>
- <CADUfDZrHse9nDxfd0UDkxOEmVRg-b=KDEUZ9Hz08eojXJvgtng@mail.gmail.com>
- <aMVmm1Ydt4iOfxu5@sidongui-MacBookPro.local>
- <CADUfDZrULTJj99Bik3OhUEorMSnL5cWgJ-VqoHePZ6WWDoukTQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="KE97qftU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1758126624; x=1758731424; i=christian@heusel.eu;
+	bh=5YPboLUdZctXu5m55DOsPmcWf3tVIqydrP9uMcMNWuU=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=KE97qftUtTS0K4iP/8AFSgOaoOh66ZlKP4hM4iCLEYyqn0v5ehB5Ew5b/EhaQurz
+	 AUD5gu7UBjzHxegYy9n1ArDFghZxcwbvF5LHa4aDj8a67RB4QY9p7KPe095A4/Duy
+	 FrSnYe2HKMFVfxEXYeTlUQkVC5zL3ACmolYRSG3wpL0IraIpHt0BnKRKhU9OYCsX/
+	 obUNgwz68NGPIB2zXppaYqSyhDrKOHJyn+PI3w+UydFlNJklzt2J7qtTbGEbefO7v
+	 UO7ZJBpAfr8u9XXModp3kCd9wyMMpv1mi95ccSlPYYTfK+jYqFY4/g3AbBfsjW203
+	 /bimYma95uxIdBloFA==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([94.31.75.247]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MlfCk-1uXnUY152Q-00ihC6; Wed, 17 Sep 2025 18:30:24 +0200
+Date: Wed, 17 Sep 2025 18:30:22 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, 
+	rust-for-linux@vger.kernel.org, open list <linux-kernel@vger.kernel.org>, 
+	Linux Regressions <regressions@lists.linux.dev>, lkft-triage@lists.linaro.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Benno Lossin <lossin@kernel.org>, Elle Rhumsaa <elle@weathered-steel.dev>, 
+	Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>, 
+	Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: next-20250915: error[E0425]: cannot find function
+ `atomic_read_acquire` in crate `bindings`
+Message-ID: <e734f4e7-914e-4350-a6b5-968eff64af57@heusel.eu>
+References: <CA+G9fYtT7HNBM2XBbePeZ-Fw+ig7SJ+JE_NpQ1VuHR_TvAjX2w@mail.gmail.com>
+ <CA+G9fYs4JB0ngq+aryXHVQSq-f05cb4agCfyM9zN0SgprQf0_A@mail.gmail.com>
+ <27366f94-67d4-4b73-b420-cacdbe9d603f@heusel.eu>
+ <aMpma-2UokTo0u9j@stanley.mountain>
+ <228245d0-4620-48c7-b4bd-532bb873bdf2@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tgcjvuwq4ccznzrm"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADUfDZrULTJj99Bik3OhUEorMSnL5cWgJ-VqoHePZ6WWDoukTQ@mail.gmail.com>
+In-Reply-To: <228245d0-4620-48c7-b4bd-532bb873bdf2@leemhuis.info>
+X-Provags-ID: V03:K1:Tig3e/n2RcHavpNsMkY2JCTAJHXDurtAqQcHheMpmv1TsxMgP8L
+ w8TDk1p+7SB1tExC8/4MIS6aFEW1+G7j5prTndFntaUxLw1vFYKfrFQE4P3PwN3HLOsyG1k
+ QOoDxkKH4hO4KmOO0ImtSPy9nsbHsaiQIQynhsMG0wqJXiHHbCCj08EtRjgr2IfFaU/fsGW
+ cD4XKGCH4B2T22zzhX0QA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:h9kMXARLPq0=;gPHMkZqC7ePbZTnFE2nuKE311d0
+ R8cyLFPRpZnG8Qdc94PTq8U+/Vc4mA3ADFMDAFY23Ixpx8PzX55AwVFbc3kFeFAJ7/fEoCup2
+ 22w9tdLsB88I/1BuRTQU2qAwAhY9LsNDh7zf9rwO2Oddg4cRuWCurVK/LxF37H7AHZceyPqF/
+ hCrP8kyZiFhns3Nqg1ZFv47Iy9Gm4EFlBmU8rJa0tKSgkU0vavY85MMqN9qcjTRYN/Opmx5Et
+ vBV0TmKgJvbEILs6AFeU4bLc2k0qnqlBCs3Zsz16OuzzZUiTA+HHzbyVej7abuG7b5y+7mIYZ
+ f+J0eGTYzz7Tc6etgvtjcAsDRUz5qA+IyNKAN/9hBHXKyM2K1SKsyBPzN5qBxxvwd59DZ/JaX
+ I5B7FNaJq3l5UiAkoM2Yk4+sbi00OH0w0EVRiFG2CWgpe56aWSFQHZwUNrs9ELbQ8oFxl7yFW
+ vCw7d50UNcCDH7O6IOJgc14gR2E04IybACcDnDO9AtDuSx0Hdm0Uqkr1xa8vXMJEaFw6y2nZy
+ PQ91dD6k6TChgwV6rejHOwwciCsBYNb8k5BFVf/K3RSr7OyTMUH/n44D4X1Hqpi6s6fgjNYi+
+ MEbgvW3Th2Dr/ewUySUoDAXS7ZZFKBzOhKHlXR1wHgRgHV/PiFppyvSyWXiKQWNYHP5Ux6/LG
+ 1RMxq5wYZCV+3Xhr7T3PDstyCi8rjkW2etXM+pw1V3ofiKZyHI2HcC8qFgZOaFdy8uehtc5ks
+ b2jmI/0P5dmDDVmsIbBrWHlXQOCACymTFuPFS3Dz4Qo8xG8V8FwQhvg8UT0BTFahGEErW+zu1
+ 3Luniw4Aq/+ta/jYbzF8tp9/FOCfcE2i4IRmGWXZ2nRv70wk1z5/7KmWcS0jArap7WcC+CqZb
+ DuOib2WATd29mOgwy8G6GoHuIY8RUUbgswD3yeXNvIVGcVTcvEpUES7pOSbrR2E2sVRrS0AYp
+ GXVH+Q/OJCGTG//nZEu79oTNmLoTLyZnxcdtCj7MRSwGC4mVg37PstCuOdXXiWxNFWAEdyrE+
+ CluTPF9OR0e7N8QVy0g6GnbnBYoCCHIFLP1RkD6qd28td8yvMYcyHHzakowqrSh6t2xTg941t
+ pr+G1L04VYHwvVd6ZE7Ej1zxSSNpjYngxcUZZ4ZsyWukp/C7/fC+v3TaoUnfCAHNyFq9b0+Iw
+ IRyLTDdeR2+rMCeN9vDRVE1Fj7xZvR4KblrQQhfkWxRonH7lYjWeGUbiYxlDsrk2cyLZcVW5J
+ yTgJ3/7qZd6tYeoiWP+GnWLW5Z++rmArh50ek4OdFjroplpIK9DXFBP/Pd1AEX8RBWQc2pgYb
+ 5BKwmHIgOihGcNnKXRojYsJ0nf2RjWy/DYDlFrQ2IW+xU32vyLdC8PsDvBuRDhWz7yb6fL9cc
+ 4eOD0AbrrG+YPTRlU9/vR0GWxgQIOVbFbnRwWwtUgB1n1+R8b8FoCA8G7KvjTikvZn/plWyxh
+ v+5ClYyqSdShpVj2VTcFRvE7qp3HRcBDT+3Wz+xoIPTcxrcRKKoGs+y/noA1Zd1nqK5zVvkRI
+ qJVN8SD+sGvVahVrlZGtfbgjYhbn+mCKpWOw/MnlMrrCGWjeljcLFGM2quru4ukeAj78Xas7c
+ BPKsjn0CzMihJcWkbVTz6p/uNlKNbwZPwZy01blL94s4W83XdASvTwv5QnS292UzVyosXsKmq
+ c5t4rw1Xsm4G7BD1f7/LywgjMso1YTpmr8NsuXXv+/TE7CYANJGkGouwhTd/wfLzBWIWiflLG
+ 0HoLoa6171i+Kf5S0JQQhfVe4xVwjY+3TU0qgsvnRBt+jAiE/FiYH4SE=
 
-On Mon, Sep 15, 2025 at 09:54:50AM -0700, Caleb Sander Mateos wrote:
-> On Sat, Sep 13, 2025 at 5:42 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >
-> > On Fri, Sep 12, 2025 at 10:56:31AM -0700, Caleb Sander Mateos wrote:
-> > > On Fri, Sep 12, 2025 at 9:42 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > > >
-> > > > On Tue, Sep 09, 2025 at 09:32:37AM -0700, Caleb Sander Mateos wrote:
-> > > > > On Tue, Sep 9, 2025 at 7:43 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > > > > >
-> > > > > > On Mon, Sep 08, 2025 at 12:45:58PM -0700, Caleb Sander Mateos wrote:
-> > > > > > > On Sat, Sep 6, 2025 at 7:28 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > > > > > > >
-> > > > > > > > On Tue, Sep 02, 2025 at 08:31:00AM -0700, Caleb Sander Mateos wrote:
-> > > > > > > > > On Tue, Sep 2, 2025 at 3:23 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On Mon, Sep 01, 2025 at 05:34:28PM -0700, Caleb Sander Mateos wrote:
-> > > > > > > > > > > On Fri, Aug 22, 2025 at 5:56 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > > > > > > > > > > >
-> > > > > > > > > > > > The pdu field in io_uring_cmd may contain stale data when a request
-> > > > > > > > > > > > object is recycled from the slab cache. Accessing uninitialized or
-> > > > > > > > > > > > garbage memory can lead to undefined behavior in users of the pdu.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Ensure the pdu buffer is cleared during io_uring_cmd_prep() so that
-> > > > > > > > > > > > each command starts from a well-defined state. This avoids exposing
-> > > > > > > > > > > > uninitialized memory and prevents potential misinterpretation of data
-> > > > > > > > > > > > from previous requests.
-> > > > > > > > > > > >
-> > > > > > > > > > > > No functional change is intended other than guaranteeing that pdu is
-> > > > > > > > > > > > always zero-initialized before use.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
-> > > > > > > > > > > > ---
-> > > > > > > > > > > >  io_uring/uring_cmd.c | 1 +
-> > > > > > > > > > > >  1 file changed, 1 insertion(+)
-> > > > > > > > > > > >
-> > > > > > > > > > > > diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
-> > > > > > > > > > > > index 053bac89b6c0..2492525d4e43 100644
-> > > > > > > > > > > > --- a/io_uring/uring_cmd.c
-> > > > > > > > > > > > +++ b/io_uring/uring_cmd.c
-> > > > > > > > > > > > @@ -203,6 +203,7 @@ int io_uring_cmd_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
-> > > > > > > > > > > >         if (!ac)
-> > > > > > > > > > > >                 return -ENOMEM;
-> > > > > > > > > > > >         ioucmd->sqe = sqe;
-> > > > > > > > > > > > +       memset(&ioucmd->pdu, 0, sizeof(ioucmd->pdu));
-> > > > > > > > > > >
-> > > > > > > > > > > Adding this overhead to every existing uring_cmd() implementation is
-> > > > > > > > > > > unfortunate. Could we instead track the initialized/uninitialized
-> > > > > > > > > > > state by using different types on the Rust side? The io_uring_cmd
-> > > > > > > > > > > could start as an IoUringCmd, where the PDU field is MaybeUninit,
-> > > > > > > > > > > write_pdu<T>() could return a new IoUringCmdPdu<T> that guarantees the
-> > > > > > > > > > > PDU has been initialized.
-> > > > > > > > > >
-> > > > > > > > > > I've found a flag IORING_URING_CMD_REISSUE that we could initialize
-> > > > > > > > > > the pdu. In uring_cmd callback, we can fill zero when it's not reissued.
-> > > > > > > > > > But I don't know that we could call T::default() in miscdevice. If we
-> > > > > > > > > > make IoUringCmdPdu<T>, MiscDevice also should be MiscDevice<T>.
-> > > > > > > > > >
-> > > > > > > > > > How about assign a byte in pdu for checking initialized? In uring_cmd(),
-> > > > > > > > > > We could set a byte flag that it's not initialized. And we could return
-> > > > > > > > > > error that it's not initialized in read_pdu().
-> > > > > > > > >
-> > > > > > > > > Could we do the zero-initialization (or T::default()) in
-> > > > > > > > > MiscdeviceVTable::uring_cmd() if the IORING_URING_CMD_REISSUE flag
-> > > > > > > > > isn't set (i.e. on the initial issue)? That way, we avoid any
-> > > > > > > > > performance penalty for the existing C uring_cmd() implementations.
-> > > > > > > > > I'm not quite sure what you mean by "assign a byte in pdu for checking
-> > > > > > > > > initialized".
-> > > > > > > >
-> > > > > > > > Sure, we could fill zero when it's the first time uring_cmd called with
-> > > > > > > > checking the flag. I would remove this commit for next version. I also
-> > > > > > > > suggests that we would provide the method that read_pdu() and write_pdu().
-> > > > > > > > In read_pdu() I want to check write_pdu() is called before. So along the
-> > > > > > > > 20 bytes for pdu, maybe we could use a bytes for the flag that pdu is
-> > > > > > > > initialized?
-> > > > > > >
-> > > > > > > Not sure what you mean about "20 bytes for pdu".
-> > > > > > > It seems like it would be preferable to enforce that write_pdu() has
-> > > > > > > been called before read_pdu() using the Rust type system instead of a
-> > > > > > > runtime check. I was thinking a signature like fn write_pdu(cmd:
-> > > > > > > IoUringCmd, value: T) -> IoUringCmdPdu<T>. Do you feel there's a
-> > > > > > > reason that wouldn't work and a runtime check would be necessary?
-> > > > > >
-> > > > > > I didn't think about make write_pdu() to return IoUringCmdPdu<T> before.
-> > > > > > I think it's good way to pdu is safe without adding a new generic param for
-> > > > > > MiscDevice. write_pdu() would return IoUringCmdPdu<T> and it could call
-> > > > > > IoUringCmdPdu<T>::pdu(&mut self) -> &mut T safely maybe.
-> > > > >
-> > > > > Yes, that's what I was thinking.
-> > > >
-> > > > Good, I'll change api in this way. Thanks!
-> > > >
-> > > > >
-> > > > > >
-> > > > > > >
-> > > > > > > >
-> > > > > > > > But maybe I would introduce a new struct that has Pin<&mut IoUringCmd> and
-> > > > > > > > issue_flags. How about some additional field for pdu is initialized like below?
-> > > > > > > >
-> > > > > > > > struct IoUringCmdArgs {
-> > > > > > > >   ioucmd: Pin<&mut IoUringCmd>,
-> > > > > > > >   issue_flags: u32,
-> > > > > > > >   pdu_initialized: bool,
-> > > > > > > > }
-> > > > > > >
-> > > > > > > One other thing I realized is that issue_flags should come from the
-> > > > > > > *current* context rather than the context the uring_cmd() callback was
-> > > > > > > called in. For example, if io_uring_cmd_done() is called from task
-> > > > > > > work context, issue_flags should match the issue_flags passed to the
-> > > > > > > io_uring_cmd_tw_t callback, not the issue_flags originally passed to
-> > > > > > > the uring_cmd() callback. So it probably makes more sense to decouple
-> > > > > > > issue_flags from the (owned) IoUringCmd. I think you could pass it by
-> > > > > > > reference (&IssueFlags) or with a phantom reference lifetime
-> > > > > > > (IssueFlags<'_>) to the Rust uring_cmd() and task work callbacks to
-> > > > > > > ensure it can't be used after those callbacks have returned.
-> > > > > >
-> > > > > > I have had no idea about task work context. I agree with you that
-> > > > > > it would be better to separate issue_flags from IoUringCmd. So,
-> > > > > > IoUringCmdArgs would have a only field Pin<&mut IoUringCmd>?
-> > > > >
-> > > > > "Task work" is a mechanism io_uring uses to queue work to run on the
-> > > > > thread that submitted an io_uring operation. It's basically a
-> > > > > per-thread atomic queue of callbacks that the thread will process
-> > > > > whenever it returns from the kernel to userspace (after a syscall or
-> > > > > an interrupt). This is the context where asynchronous uring_cmd
-> > > > > completions are generally processed (see
-> > > > > io_uring_cmd_complete_in_task() and io_uring_cmd_do_in_task_lazy()). I
-> > > > > can't speak to the history of why io_uring uses task work, but my
-> > > > > guess would be that it provides a safe context to acquire the
-> > > > > io_ring_ctx uring_lock mutex (e.g. nvme_uring_cmd_end_io() can be
-> > > > > called from an interrupt handler, so it's not allowed to take a
-> > > > > mutex). Processing all the task work at once also provides natural
-> > > > > opportunities for batching.
-> > > >
-> > > > Thanks, I've checked io_uring_cmd_complete_in_task() that it receives
-> > > > callback that has issue_flags different with io_uring_cmd(). I'll try to add
-> > > > a api that wrapping io_uring_cmd_complete_in_task() for next version.
-> > > >
-> > > > >
-> > > > > Yes, we probably don't need to bundle anything else with the
-> > > > > IoUringCmd after all. As I mentioned earlier, I don't think Pin<&mut
-> > > > > IoUringCmd> will work for uring_cmds that complete asynchronously, as
-> > > > > they will need to outlive the uring_cmd() call. So uring_cmd() needs
-> > > > > to transfer ownership of the struct io_uring_cmd.
-> > > >
-> > > > I can't think that how to take ownership of struct io_uring_cmd. The
-> > > > struct allocated with io_alloc_req() and should be freed with io_free_req().
-> > > > If taking ownership means having pointer of struct io_uring_cmd, I think
-> > > > it's no difference with current version. Also could it be called with
-> > > > mem::forget() if it has ownership?
-> > >
-> > > I don't mean ownership of the io_uring_cmd allocation; that's the
-> > > responsibility of the io_uring layer. But once the io_uring_cmd is
-> > > handed to the uring_cmd() implementation, it belongs to that layer
-> > > until it completes the command back to io_uring. Maybe a better way to
-> > > describe it would be as ownership of the "executing io_uring_cmd". The
-> > > problem with Pin<&mut IoUringCmd> is that it is a borrowed reference
-> > > to the io_uring_cmd, so it can't outlive the uring_cmd() callback.
-> > > Yes, it's possible to leak the io_uring_cmd by never calling
-> > > io_uring_cmd_done() to return it to the io_uring layer.
-> >
-> > Thanks, I understood that IoUringCmd could be outlive uring_cmd callback.
-> > But it's sad that it could be leaked without any unsafe code.
-> 
-> Safety in Rust doesn't require destructors to run, which means any
-> resource can be safely leaked
-> (https://faultlore.com/blah/everyone-poops/ has some historical
-> background on why Rust decided leaks had to be considered safe).
-> Leaking an io_uring_cmd is analogous to leaking a Box, both are
-> perfectly possible in safe Rust.
 
-Thanks for the reference. If driver just drops `IoUringCmd` without taking,
-the request wouldn't be completed until io-uring instance deinitialized.
-I understood that we cannot handle this.
+--tgcjvuwq4ccznzrm
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: next-20250915: error[E0425]: cannot find function
+ `atomic_read_acquire` in crate `bindings`
+MIME-Version: 1.0
 
-> 
-> >
-> > >
-> > > I would imagine something like this:
-> > >
-> > > #[derive(Clone, Copy)]
-> > > struct IssueFlags<'a>(c_uint, PhantomData<&'a ()>);
-> > >
-> > > // Indicates ownership of the io_uring_cmd between uring_cmd() and
-> > > io_uring_cmd_done()
-> > > struct IoUringCmd(NonNull<bindings::io_uring_cmd>);
-> > >
-> > > impl IoUringCmd {
-> > >         // ...
-> > >
-> > >         fn done(self, ret: i32, res2: u64, issue_flags: IssueFlags<'_>) {
-> > >                 let cmd = self.0.as_ptr();
-> > >                 let issue_flags = issue_flags.0;
-> > >                 unsafe {
-> > >                         bindings::io_uring_cmd_done(cmd, ret, res2, issue_flags)
-> > >                 }
-> > >         }
-> > > }
-> > >
-> > > // Can choose whether to complete the command synchronously or asynchronously.
-> > > // If take_async() is called, IoUringCmd::done() needs to be called to
-> > > complete the command.
-> > > // If take_async() isn't called, the command is completed synchronously
-> > > // with the return value from MiscDevice::uring_cmd().
-> > > struct UringCmdInput<'a>(&mut Option<NonNull<bindings::io_uring_cmd>>);
-> >
-> > Thanks for a detailed example!
-> >
-> > But rather than this, We could introduce new return type that has a callback that
-> > user could take IoUringCmd instead of returning -EIOCBQUEUED.
-> 
-> I'm not following what you're suggesting, maybe a code sample would help?
+On 25/09/17 09:58AM, Thorsten Leemhuis wrote:
+> On 17.09.25 09:42, Dan Carpenter wrote:
+> > On Tue, Sep 16, 2025 at 06:46:06PM +0200, Christian Heusel wrote:
+> >> On 25/09/16 09:56PM, Naresh Kamboju wrote:
+> >>> On Tue, 16 Sept 2025 at 11:17, Naresh Kamboju <naresh.kamboju@linaro.=
+org> wrote:
+> >>>>
+> >>>> The following build warnings / errors noticed on the arm arm64 and x=
+86_64
+> >>>> with rust config build on the Linux next-20250915 tag.
+> >>>>
+> >>>> First seen on next-20250915
+> >>>> Good: next-20250912
+> >>>> Bad: next-20250915
+> > [...]
+> >>>> Build regression: next-20250915: error[E0425]: cannot find function
+> >>>> `atomic_read_acquire` in crate `bindings`
+> >>>
+> >>> Anders bisected this build regressions and found,
+> >>>
+> >>> # first bad commit:
+> >>>  [eb57133305f61b612252382d0c1478bba7f57b67]
+> >>>  rust: sync: Add basic atomic operation mapping framework
+> >>
+> >> Is this still an issue on next-20250916?
+>=20
+> FWIW, I ran into this on next-20250915 and it afaics was fixed for
+> next-20250916.
+>=20
+> >> As far as I can tell this has
+> >> been fixed, but now there is another rust build issue, see
+> >> https://lore.kernel.org/regressions/0fee48bb-7411-4414-b4e7-395a8c3d0f=
+6c@heusel.eu/
+> >> for more information.
+> >=20
+> > next-20250916 still fails but with a different Rust issue.
+>=20
+> Ran into that that merge mistake, too, but that can be fixed by the
+> patch Christian linked to above  -- and I expect Mark (now CCed) has
+> seen it and will resolve this with today's -next.
 
-maybe like below...
+The issue was indeed resolved with todays next release :)
 
-#[vtable]
-pub trait MiscDevice: Sized {
-    /// ...
+> > [...]
+>=20
+> Ciao, Thorsten
 
-    /// If user returns `EIOCBQUEUED`, this function would be called for
-    /// users who want to take `IoUringCmdAsync`. It could call `done()` for complete
-    /// request.
-    fn uring_cmd_async_prep(
-          device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-          io_uring_cmd_async: IoUringCmdAsync);
-    /// ...
-}
+Thanks everyone for their input!
 
-impl<T: MiscDevice> MiscdeviceVTable<T> {
-    // ...
-    unsafe extern "C" fn uring_cmd(
-          ioucmd: *mut bindings::io_uring_cmd,
-          issue_flags: ffi::c_uint,
-      ) -> c_int {
-          // ...
-          let result = T::uring_cmd(device, ioucmd, issue_flags);
+Cheers,
+Chris
 
-          if let Err(EIOCBQUEUED) = result {
-              T::uring_cmd_async_prep(device, ioucmd.to_async());
-          }
+--tgcjvuwq4ccznzrm
+Content-Type: application/pgp-signature; name="signature.asc"
 
-          from_result(|| result)
-      }
-}
-> 
-> >
-> > But I prefer that we provide just one type IoUringCmd without UringCmdInput.
-> > Although UringCmdInput, user could call done() in uring_cmd callback and
-> > it makes confusion that whether task_async() called and returning -EIOCBQUEUED
-> > is mismatched that returns -EINVAL. We don't need to make it complex.
-> 
-> Sure, if you only want to support asynchronous io_uring_cmd
-> completions, than you can just pass IoUringCmd to
-> MiscDevice::uring_cmd() and require it to call IoUringCmd::done() to
-> complete the command. There's a small performance overhead to that
-> over just returning the result from the uring_cmd() callback for
-> synchronous completions (and it's more verbose), but I think that
-> would be fine for an initial implementation.
+-----BEGIN PGP SIGNATURE-----
 
-I appreciate for your understanding. I think it would be good to have just one
-simple struct `IoUringCmd`. I'll make next version patch soon.
+iQIzBAABCgAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmjK4h4ACgkQwEfU8yi1
+JYXdFg/9ENVS1WHEXyTd2kyCYeNfNwHCBpbmHjNOsFy5vlHSHvGcSZSETLSG0Vr/
+R1w9iCGblTzuNAdbad/nDyhUVBTvhV9DADF74b5fIbbS4Kf4vhTAPCGpH9iAHGzL
+lIbkUl4EX4CRG6B/AJc/UnFVtgXGmTRZ461W6Nil2rRjYaipKYdwoHpShr0pAuWd
+wI7Zcm2//jy58g3wTPCsa1pxHrGTRtwmNKRd6MaqoGk8ZdSWyhPq4xjzA0ozOQd6
+LkcdGDmUnpxdnaPUZbZ3DdSq/BsVpaEsE6xspYaXWukOW7gFegIk+mKP9mzZNj19
+l9+7vpesss1wlCM3ICdfe2vTz93Fti/SEIvB860FayRtZBjUH+EuuUJ5pNi8IutE
+eCYo3GDoppXQsx7JMd5ajDPI3GUQqApFrukMC6/HyF71rSUIoqdgw3NbcsiVHsVy
+lyYD7pUELoOQUIP4odOtgX89iG2wSCaW6b+Lc9kKNds7K1WS82E3NPYt6ki8S7lj
+BUql1Fdc/52lcdY8HvE45KGFntXNoALpVkKcg/A2GPfzmKR93HnjmofcD/S4ioGC
+r7La8EwJcOlQ1F5nuP6B7pMTQ0VZnJlqxc9eNp7zMxNNAT/ANI96k8osz9/D4+SN
+mfBMJPEY19+ADpNnuIg0HOP2GHo+9Z7oA4oi/VfLysCvvq4V0ec=
+=OqdB
+-----END PGP SIGNATURE-----
 
-Thanks,
-Sidong
-
-> 
-> Best,
-> Caleb
+--tgcjvuwq4ccznzrm--
