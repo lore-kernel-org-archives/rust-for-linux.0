@@ -1,100 +1,64 @@
-Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C019D1C07C4;
-	Wed, 17 Sep 2025 12:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA2233C761;
+	Wed, 17 Sep 2025 13:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112957; cv=none; b=qljM2BpCYvNhb1baiJAgtufzZiMeGujRbRSIWgE5EHUUq1RDZnBh4JtD/1nCToXhEaAwDVxFoPTd3hpTmq+W9gDJrUHjIdHPJdcydV5tP+jkFQpFSSMg/CwGOkpTbhqLtz0UXmxhdDL47bNmWQbplKRaKkdnz2l8OseU3XyBiSA=
+	t=1758114538; cv=none; b=qn3wWt5PqWI/ajE4jQj/kFWqrRC2ovtTjfGPSW2qkP0Wn8zpytE9XA6Pjyr6Ol0BAHPHO/VuJbnidAcfGsvppjgbUFHzqC3XQSmI3PVWCNFI3bSubDFu1KzkrmwKmjKMx0idMG61RezaeCDxqKHCTHOkbJ7AmyYHgjpCiGi8hXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112957; c=relaxed/simple;
-	bh=0GXRm/644bc+q9sgMtkhxpnuEEVIBWmnK11cTPL87+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nJuKsTgjOn8JArJnUrmJ6hQiVrjZHAswCkclWPPmVuVX9QH/ZexjBiQXxvuZ3jQYBft34Es2xVPb1v6mHPlKcVTl2AwQDJi70W1zOC/4m1fGHTre1YuVH0y6ORCNV0ikAZtrInUF6CeeUSpJH31YbNIX6UzqkkVie9ckgrL/SW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=PlfVMZFt; arc=none smtp.client-ip=178.154.239.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1758114538; c=relaxed/simple;
+	bh=VLrLSUlBS/P9kZXzPQdphm6EfcLdbn3OHFF6yEub+qs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=gcI/8Dmsim2IxdTFPPfHFV93Yka9CGwGUIiUz3dhBVS5+v6V9Xh29kRjGDINa/DWSFfdolVHgLMeIrLQszbBatmrmoMtUe/zoANYxAjorbwgRwjt0scW2PlXn6DxwfD9sL4DNVttgxyujQUCxyZFuRZjY3G/J4phLCS1Af7Hz+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYmvvuBp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="PlfVMZFt"
-Received: from mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:ba5:0:640:b177:0])
-	by forward501d.mail.yandex.net (Yandex) with ESMTPS id 996AF81EB3;
-	Wed, 17 Sep 2025 15:42:31 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id RgQGaq9L6eA0-Bv8chcnP;
-	Wed, 17 Sep 2025 15:42:30 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1758112950;
-	bh=++k9euwPFCcGpu5VkV/7p9z7fd4LB9g64LucXo0nQcM=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=PlfVMZFtquje8vDHiiZgGiLXOOiJDwnKYsEgs6tqW8Rd193a8qzz2BqoTrxe+r84A
-	 Eo2K8pBvzjV+qLT54ILBtK2+8QlJgOJDalmz3O0NXOM+jZOnr9vAAV56l0a4MZw4e2
-	 WbYzxdIuLZK0kd24/67f5Llm0uVSxhZzYoVn11c8=
-Authentication-Results: mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 17 Sep 2025 15:42:27 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: djfkvcing117@gmail.com
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, gregkh
- <gregkh@linuxfoundation.org>, lossin@kernel.org, gary@garyguo.net
-Subject: Re: [PATCH] rust/fs: use intra-doc link for `EBADF` in `BadFdError`
- docs
-Message-ID: <20250917154227.7ecb47dc@nimda.home>
-In-Reply-To: <20250917033838.8171-1-djfkvcing117@gmail.com>
-References: <20250917033838.8171-1-djfkvcing117@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYmvvuBp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A46C4CEF7;
+	Wed, 17 Sep 2025 13:08:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758114537;
+	bh=VLrLSUlBS/P9kZXzPQdphm6EfcLdbn3OHFF6yEub+qs=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=KYmvvuBp8TffgGuOj2jo+UqW3NIL3QnvuUA3zwR7+L89QD/QHGVBchIy6m8vUN3DT
+	 9LK95cTtwL2zgL9GzHR0bzzokeWu+Fuuyor2uoiBxjzN55CvAa5AYZzvMZqxCF0qBy
+	 2wbaeNZPuOMTh7MCPfggHaTGYz74ma64HovzZhM+zQ2AKol18YDQhpnGX1TYIYsf50
+	 +/NY23j5gZAv4b9M8A3NJWeh41sarb+HyPmXLDYPvpRUhVT1T7PFY3uN8MW+DtnBKO
+	 LtU6q4igqHB8lwhwQP9siWqmVonURttpCuIzgRYZd/5CCjBri6yPg1/DGMcrOirG5/
+	 594IfCF4cHmZw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 17 Sep 2025 15:08:50 +0200
+Message-Id: <DCV3L5I2SKWH.1QPMBQBT71OKA@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] rust: pci: fix incorrect platform reference in PCI
+ driver probe doc comment
+Cc: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <stable@kernel.org>
+To: "Rahul Rameshbabu" <sergeantsagara@protonmail.com>
+References: <20250914031759.9122-1-sergeantsagara@protonmail.com>
+In-Reply-To: <20250914031759.9122-1-sergeantsagara@protonmail.com>
 
-On Wed, 17 Sep 2025 11:38:33 +0800
-djfkvcing117@gmail.com wrote:
+On Sun Sep 14, 2025 at 5:18 AM CEST, Rahul Rameshbabu wrote:
+> Substitute 'platform' with 'pci'.
+>
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72msM5PT2mYKrX_RPXYtA4v=
+apMRO=3DiSex1gQZqiXdpvvDA@mail.gmail.com/
+> Fixes: 1bd8b6b2c5d3 ("rust: pci: add basic PCI device / driver abstractio=
+ns")
+> Cc: stable@kernel.org
+> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
 
-> From: Tong Li <djfkvcing117@gmail.com>
->=20
-> In rust/kernel/fs/file.rs, replace plain-text `EBADF` in the doc
-> comment for BadFdError with an intra-doc link [`EBADF`].
->=20
-> This improves the generated documentation (so the `EBADF` constant is
-> linked), and helps tools such as rust-analyzer to resolve such
-> references from the docs.
->=20
-> Suggested-by: Onur =C3=96zkan <work@onurozkan.dev>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1186
-> Signed-off-by: Tong Li <djfkvcing117@gmail.com>
-> ---
->  rust/kernel/fs/file.rs | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-> index 67a3654f0fd3..f3153f4c8560 100644
-> --- a/rust/kernel/fs/file.rs
-> +++ b/rust/kernel/fs/file.rs
-> @@ -448,9 +448,9 @@ fn drop(&mut self) {
->      }
->  }
-> =20
-> -/// Represents the `EBADF` error code.
-> +/// Represents the [`EBADF`] error code.
->  ///
-> -/// Used for methods that can only fail with `EBADF`.
-> +/// Used for methods that can only fail with [`EBADF`].
->  #[derive(Copy, Clone, Eq, PartialEq)]
->  pub struct BadFdError;
-> =20
-
-Hi Tong,
-
-The description doesn't follow the style guidelines (lines are too
-long). Please run `./scripts/checkpatch.pl $path_to_patch_file` to
-verify before submitting patches.
-
-Also, make sure to version your patches with each revision (e.g., `git
-format-patch $commit -vN`). There are already several patches with the
-same titles on the mailing list.
-
-Thanks,
-Onur
+Applied to driver-core-testing, thanks!
