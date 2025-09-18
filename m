@@ -1,268 +1,89 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9628C1D54D8
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Sep 2025 15:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979DC18FDBD;
+	Thu, 18 Sep 2025 15:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758207745; cv=none; b=QDL67mWPsTFY+OKVbe16V5TsGY5lWMzlhihLD+snFDLU0RLSUWOAQzW555qXzTIkUu+9SAShZp6OJdIlHE3bSv04MeNdm4NlxgVFN32m+j3sWdSCzqocxpsTXyNX4Hh9ZQ4+cpCd1NnP1bk2lxHckk2XzF0bY3Ph2rQXJpTB88Y=
+	t=1758207991; cv=none; b=og5xtZDvOd7kH4wPoqnPks4kDJLKQY34qv8FMz2rtWuAMMO+yEKDC93YTlUszlo/+MHlYZmKbzKPjOqrJBsJdycydC+khNfanXqL5D5dWqMFwPooLVqTdfhDQLJEneYlKltqqzWVdKun3QWWKYBBBAClY2J8JuRg2Ofz5RQpr+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758207745; c=relaxed/simple;
-	bh=vJ54JE6+riZlcAldU+0faKQxu82OqxHqyvNXkYI5oGI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IqWDWOHS6gkdwmww64Z+KBEBt/EPVepSWn5kgiLV2EnQlhIvXHafqCb+xK999X3iNQywySfdc1bX0dJj+5rEngp89feXsOXEWPxQuuhRA3WsSRWXlp6y9nN8ewTOUhW3NxFhZrKcksAck2La/zIb8fYqpLhtLHLnTigtjrsbKdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x9O0XxUF; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1758207991; c=relaxed/simple;
+	bh=XHpYkSXN/kkI4pHYvhq40cYT5X0wwZU5bBK87mtoEwM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+qpvE3mBL2dDhjpPJgXkJcmCm4X70d14EDu7vWgd2zc2DbAHyctnKHlMwL5+ovr7COIwjVTSeqOrq/beh7oZ3094kR9Y5Z8OixGK0GQ0iZ9nxughB1V7Z/EGTMUN4U0vBX2ns7ia/ymUSP+N3MVS5K9O36hUghmxJSVQQg+ERo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K5jpQoQG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x9O0XxUF"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45de5fdda1aso6094565e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Sep 2025 08:02:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758207742; x=1758812542; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=l7zJnB3yDJu54j7XDPcUHBWHQ2xjhdYOpr3OUldWhZI=;
-        b=x9O0XxUFO7N4ZtNhcCOB7pynd1FZ5QJDaTtXr/WiVlQTD45f0sWeZjhqtrWVjMrc40
-         ZYp0MdtR54boZEwb6ECU0f9OKqFAzQZ1xBIWXUO6V8EtEd9ac1YWkBCZh13FF2ImyvIt
-         XhDoJo4yxBUwJZOD71VDNcwa8T9MB/O8wXvqPIWrw76tuR+6G/hFnf0KHv8hyAXR/gaF
-         /HiYUR+gF9Rbmf5zgbw4Si8R3bzpwQ9w7kZOm4xj9hy1hsOclSL2kYAivyQSa/HfQh6n
-         ICgE2N9yIcP7q9WjqnYkaZF9Jbulsc3eun/yZQyJmYS6mNO1rY4+VkIQAtkKh0ZjWbxZ
-         T7dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758207742; x=1758812542;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l7zJnB3yDJu54j7XDPcUHBWHQ2xjhdYOpr3OUldWhZI=;
-        b=Ynzd8tCmpbgCXFW8zKATiORGJtTIiDNHYxGUdI8UnTKR73nsfrjYTzc+s3u6NYnLVw
-         QhZWUBmLEMEquf6rP0V88ppZNa+raCAqoWva4Rp94k3gml8RMzs22+eXXRK+Ewr09X1J
-         71NGOKG9oJhEl0F6MNH5y9tNx8h7GJoTWaBwnZMZR3UdyU9jXAW/BqMUVxA30tGhRCRX
-         ZTR34sDwh/ApD9F9ywl/HBWr0X5ujKjpBsYVmSwjgPrHjHYO8408PE1PD01AtyAsMxOS
-         slfXsRRWMb98h8SftcqeJIY7V89ypnos3Ao1yYRxA2K00NgwuKmhMiMIZbRVEi4NLc/c
-         bSdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAm9iSTf9bb5MlUUv9Ezjdc9SiBQRoASLqE+gK/VGRBylH6Y8DlQflEM9yE7pPvo6IHr6hyG38QJnpRVPkew==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyICCyhotWWm3RQSmmDWBWm6lHQll0flBDSvbaGWO8A1titcj4e
-	IxtTDcWOKWqTlJak3bl5xuIzv9dgxgXcdpMjsQm1Ft+kwUehXyQXyFX6Mh1ZHSdHjoUUtLenSkH
-	dtthc1qUuSraXEDjdaA==
-X-Google-Smtp-Source: AGHT+IGPi4MZRXFcoOWPdUNlDZJMVbEdW8oLBAH+1jAR+Diom6ppak8B/S5RDukjmv+fduoTwCEAHE4877UjRK8=
-X-Received: from wmbay25.prod.google.com ([2002:a05:600c:1e19:b0:464:f7d9:6b0])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e93:b0:45f:2d21:cb36 with SMTP id 5b1f17b1804b1-462074c576amr51491305e9.35.1758207742039;
- Thu, 18 Sep 2025 08:02:22 -0700 (PDT)
-Date: Thu, 18 Sep 2025 15:02:11 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K5jpQoQG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0AE1C4CEEB;
+	Thu, 18 Sep 2025 15:06:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758207991;
+	bh=XHpYkSXN/kkI4pHYvhq40cYT5X0wwZU5bBK87mtoEwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K5jpQoQGgPW5TsXsmOLAPXjfDQUr39YJqQ20OWkjTJddESnZoV162x2OAnfgJV3b4
+	 kfbrGryZgm89wuOcsJxDu/b6TucmGZnvn+qb54qq9h0KpiLZhUboOS0IdtJCg02Uyh
+	 huOWaCPcL2/ZQD3cMGvGqHGv1YVumAgKOQRrSmeejl6pLRiAncsI72qxSjfmaJDhf8
+	 HX0gocAzZPwcQpoy7ykRJoF5brttZsmhVnWFV6suHeQaHMTronTOSCYpAJUq3AQjWe
+	 iKGQ/cuBdlF5b8Io0VvkOm6//0enh3hkmtwGaMk7005ZAVrYUBgp6REPu6thcEbV5D
+	 2y2X1oXadikTw==
+Date: Thu, 18 Sep 2025 18:06:27 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	linux-integrity@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: kselftest and cargo
+Message-ID: <aMwf89qekCuAdD1L@kernel.org>
+References: <aMlqouOSU8XN7V5H@kernel.org>
+ <f18854b2-f9c8-44a3-a09d-3b2ddbcb971a@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPIezGgC/x3MQQqEMAxA0atI1gbaqKBeRVw4NdVsWmmKDoh3t
- 7h8i/9vUE7CCmN1Q+JTVGIosHUFbl/CxihrMZChzgy2xytJZozeK2d0MWhG86PGupZ64gVKeCT 28v+m0/w8L+9hGf9kAAAA
-X-Change-Id: 20250918-write-offset-const-0b231c4282ea
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7310; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=vJ54JE6+riZlcAldU+0faKQxu82OqxHqyvNXkYI5oGI=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBozB748rOfzrnjjSiHKGsX0n/x0Z3PtJbpWHfqq
- gTHB11OZYyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaMwe+AAKCRAEWL7uWMY5
- Rl4RD/4t8Nbnz6TBtCmQoNUw/ZfJv6wR1kk4pmCvIL62u/kkC7XWhfJGvi1fvuVUZNAsyCukNOb
- S0+2aa463z8u2qomYAZNc8ronaonyjtPh8NNcdI3G0b73niWeexkLA7J619ZUlfMxHddicnVACb
- 387tj0pEiWOqKBTAm4dxcr/+IyglGnhIgMkSsJdgzjpOODll2GE5zwJJnuQTzw+HxtNM5sxIPPa
- DIUAG71t3yxrqpQBxUBIkD4f8Z+QgNAy+eBzjWMRQXz+nrLve/UcrY9Tbmg8v1qMutTTsrLLVCM
- ghZhVL/Gy0QXTPzEOQBZ2FFHh4Y6LkoRWOn6X90gwyEfoFLn7P00LIxKU9RXwW4tRN9HwSWLqAE
- /r4ftVa79WR5/TiYyB4eMmiYcsCmxbqv3GEwdnIihYn/ioNDllGczIlZ5MzbsRaOB6c4z1E8X1Y
- V+V/fZ9VITnZggfsta5SeDYXrsN5/krxJ/EkD2717cEvfHgLxI45/7ruAiL/+WJ7WvXjGBwytIf
- QtvHPOljIsnugLwZHCGwpAbQQCZXLHKOxsV/dutoOFxODJ8NITd4vurbhyMu21T43/h0HyamWQE
- qCdE4RhoFXxy4z06spZHRF2O6KU8EnLuiQLMetP37LiyVQ+P3wd45B1WGHm6iOREbrDSN0pCWvO OENwPwQjM3fbOLA==
-X-Mailer: b4 0.14.2
-Message-ID: <20250918-write-offset-const-v1-1-eb51120d4117@google.com>
-Subject: [PATCH] rust: io: use const generics for read/write offsets
-From: Alice Ryhl <aliceryhl@google.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Bjorn Helgaas <bhelgaas@google.com>, 
-	"=?utf-8?q?Krzysztof_Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-pci@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f18854b2-f9c8-44a3-a09d-3b2ddbcb971a@linuxfoundation.org>
 
-Using build_assert! to assert that offsets are in bounds is really
-fragile and likely to result in spurious and hard-to-debug build
-failures. Therefore, build_assert! should be avoided for this case.
-Thus, update the code to perform the check in const evaluation instead.
+On Tue, Sep 16, 2025 at 04:39:37PM -0600, Shuah Khan wrote:
+> On 9/16/25 07:48, Jarkko Sakkinen wrote:
+> > Hi,
+> > 
+> > The pre-existing kselftest for TPM2 is derived works of my earlier Python
+> > based rudimentary TPM2 stack called 'tpm2-scripts'.
+> > 
+> > In order to get more coverage and more mainintainable and extensible test
+> > suite I'd like to eventually rewrite the tests with bash and tpm2sh, which
+> > is a TPM2 cli written with Rust and based on my new TPM2 stack [1] [2].
+> > 
+> > Given linux-rust work, would it be acceptable to require cargo to install
+> > a runner for kselftest? I'm finishing off now 0.11 version of the tool,
+> > which will take some time (versions before that are honestly quite bad,
+> > don't try them) but after that this would be something I'd like to
+> > put together.
+> 
+> Probably fine - how does this impact kselftest default run?
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/gpu/drm/tyr/regs.rs     |  4 ++--
- rust/kernel/devres.rs           |  4 ++--
- rust/kernel/io.rs               | 18 ++++++++++--------
- rust/kernel/io/mem.rs           |  6 +++---
- samples/rust/rust_driver_pci.rs | 10 +++++-----
- 5 files changed, 22 insertions(+), 20 deletions(-)
+OK so this was early query: I might introduce such test as part
+of series that hasa waited for long time for an update [1]. I can
+use tpm2sh more easily to reproduce equivalent crypto as kernel
+does and make a test that can compare the results in a meaningful
+manner. I also plan to relocate tpm2sh as part of git.kernel.org
+custody from Github, as its main dependency tpm2-protocol crate 
+already is [2].
 
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index f46933aaa2214ee0ac58b1ea2a6aa99506a35b70..e3c306e48e86d1d6047cab7944e0fe000901d48b 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -25,13 +25,13 @@
- impl<const OFFSET: usize> Register<OFFSET> {
-     #[inline]
-     pub(crate) fn read(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<u32> {
--        let value = (*iomem).access(dev)?.read32(OFFSET);
-+        let value = (*iomem).access(dev)?.read32::<OFFSET>();
-         Ok(value)
-     }
- 
-     #[inline]
-     pub(crate) fn write(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>, value: u32) -> Result {
--        (*iomem).access(dev)?.write32(value, OFFSET);
-+        (*iomem).access(dev)?.write32::<OFFSET>(value);
-         Ok(())
-     }
- }
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index da18091143a67fcfbb247e7cb4f59f5a4932cac5..3e66e10c05fa078e42162c7a367161fbf735a07f 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -96,7 +96,7 @@ struct Inner<T: Send> {
- /// let devres = KBox::pin_init(Devres::new(dev, iomem), GFP_KERNEL)?;
- ///
- /// let res = devres.try_access().ok_or(ENXIO)?;
--/// res.write8(0x42, 0x0);
-+/// res.write8::<0x0>(0x42);
- /// # Ok(())
- /// # }
- /// ```
-@@ -232,7 +232,7 @@ pub fn device(&self) -> &Device {
-     ///
-     ///     // might_sleep()
-     ///
--    ///     bar.write32(0x42, 0x0);
-+    ///     bar.write32::<0x0>(0x42);
-     ///
-     ///     Ok(())
-     /// }
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 03b467722b8651ebecd660ac0e2d849cf88dc915..563ff8488100d9e07a7f4bffeb085db7bd7e9d6a 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -103,7 +103,7 @@ pub fn maxsize(&self) -> usize {
- ///# fn no_run() -> Result<(), Error> {
- /// // SAFETY: Invalid usage for example purposes.
- /// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
--/// iomem.write32(0x42, 0x0);
-+/// iomem.write32::<0x0>(0x42);
- /// assert!(iomem.try_write32(0x42, 0x0).is_ok());
- /// assert!(iomem.try_write32(0x42, 0x4).is_err());
- /// # Ok(())
-@@ -120,8 +120,8 @@ macro_rules! define_read {
-         /// time, the build will fail.
-         $(#[$attr])*
-         #[inline]
--        pub fn $name(&self, offset: usize) -> $type_name {
--            let addr = self.io_addr_assert::<$type_name>(offset);
-+        pub fn $name<const OFF: usize>(&self) -> $type_name {
-+            let addr = self.io_addr_assert::<$type_name, OFF>();
- 
-             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
-             unsafe { bindings::$c_fn(addr as *const c_void) }
-@@ -149,8 +149,8 @@ macro_rules! define_write {
-         /// time, the build will fail.
-         $(#[$attr])*
-         #[inline]
--        pub fn $name(&self, value: $type_name, offset: usize) {
--            let addr = self.io_addr_assert::<$type_name>(offset);
-+        pub fn $name<const OFF: usize>(&self, value: $type_name) {
-+            let addr = self.io_addr_assert::<$type_name, OFF>();
- 
-             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
-             unsafe { bindings::$c_fn(value, addr as *mut c_void) }
-@@ -217,10 +217,12 @@ fn io_addr<U>(&self, offset: usize) -> Result<usize> {
-     }
- 
-     #[inline]
--    fn io_addr_assert<U>(&self, offset: usize) -> usize {
--        build_assert!(Self::offset_valid::<U>(offset, SIZE));
-+    fn io_addr_assert<U, const OFF: usize>(&self) -> usize {
-+        const {
-+            build_assert!(Self::offset_valid::<U>(OFF, SIZE));
-+        }
- 
--        self.addr() + offset
-+        self.addr() + OFF
-     }
- 
-     define_read!(read8, try_read8, readb -> u8);
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-index 6f99510bfc3a63dd72c1d47dc661dcd48fa7f54e..b73557f5f57c955ac251a46c9bdd6df0687411e2 100644
---- a/rust/kernel/io/mem.rs
-+++ b/rust/kernel/io/mem.rs
-@@ -54,7 +54,7 @@ pub(crate) unsafe fn new(device: &'a Device<Bound>, resource: &'a Resource) -> S
-     ///       pdev: &platform::Device<Core>,
-     ///       info: Option<&Self::IdInfo>,
-     ///    ) -> Result<Pin<KBox<Self>>> {
--    ///       let offset = 0; // Some offset.
-+    ///       const OFFSET: usize = 0; // Some offset.
-     ///
-     ///       // If the size is known at compile time, use [`Self::iomap_sized`].
-     ///       //
-@@ -66,9 +66,9 @@ pub(crate) unsafe fn new(device: &'a Device<Bound>, resource: &'a Resource) -> S
-     ///       let io = iomem.access(pdev.as_ref())?;
-     ///
-     ///       // Read and write a 32-bit value at `offset`.
--    ///       let data = io.read32_relaxed(offset);
-+    ///       let data = io.read32_relaxed::<OFFSET>();
-     ///
--    ///       io.write32_relaxed(data, offset);
-+    ///       io.write32_relaxed::<OFFSET>(data);
-     ///
-     ///       # Ok(KBox::new(SampleDriver, GFP_KERNEL)?.into())
-     ///     }
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-index 606946ff4d7fd98e206ee6420a620d1c44eb0377..6f0388853e2b36e0800df5125a5dd8b20a6d5912 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -46,17 +46,17 @@ struct SampleDriver {
- impl SampleDriver {
-     fn testdev(index: &TestIndex, bar: &Bar0) -> Result<u32> {
-         // Select the test.
--        bar.write8(index.0, Regs::TEST);
-+        bar.write8::<{ Regs::TEST }>(index.0);
- 
--        let offset = u32::from_le(bar.read32(Regs::OFFSET)) as usize;
--        let data = bar.read8(Regs::DATA);
-+        let offset = u32::from_le(bar.read32::<{ Regs::OFFSET }>()) as usize;
-+        let data = bar.read8::<{ Regs::DATA }>();
- 
-         // Write `data` to `offset` to increase `count` by one.
-         //
-         // Note that we need `try_write8`, since `offset` can't be checked at compile-time.
-         bar.try_write8(data, offset)?;
- 
--        Ok(bar.read32(Regs::COUNT))
-+        Ok(bar.read32::<{ Regs::COUNT }>())
-     }
- }
- 
-@@ -98,7 +98,7 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> Result<Pin<KBox<Self>
-     fn unbind(pdev: &pci::Device<Core>, this: Pin<&Self>) {
-         if let Ok(bar) = this.bar.access(pdev.as_ref()) {
-             // Reset pci-testdev by writing a new test index.
--            bar.write8(this.index.0, Regs::TEST);
-+            bar.write8::<{ Regs::TEST }>(this.index.0);
-         }
-     }
- }
+I went over the top in the original mail: most definitely it makes
+sense to retain the pre-existing test, and such "Rust-enhanced"
+test should be conditional, and can instead of depending on cargo
+simply do "command -v" in order to check the existence of tpm2sh
+and output installation instructions if it is missing.
 
----
-base-commit: cf4fd52e323604ccfa8390917593e1fb965653ee
-change-id: 20250918-write-offset-const-0b231c4282ea
+With those precautions it should be somewhat harmless unless you
+actually want to run that test.
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+Thanks for quick response!
 
+[1] https://lore.kernel.org/linux-integrity/20240528210823.28798-1-jarkko@kernel.org/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/tpm2-protocol.git
+
+BR, Jarkko
