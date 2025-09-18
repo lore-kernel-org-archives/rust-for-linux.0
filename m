@@ -1,40 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979DC18FDBD;
-	Thu, 18 Sep 2025 15:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3CC1EB36;
+	Thu, 18 Sep 2025 15:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758207991; cv=none; b=og5xtZDvOd7kH4wPoqnPks4kDJLKQY34qv8FMz2rtWuAMMO+yEKDC93YTlUszlo/+MHlYZmKbzKPjOqrJBsJdycydC+khNfanXqL5D5dWqMFwPooLVqTdfhDQLJEneYlKltqqzWVdKun3QWWKYBBBAClY2J8JuRg2Ofz5RQpr+w=
+	t=1758208001; cv=none; b=T16t78Lvv2B8UQ+/Hu+bO/Nfn4IgZVlFUwqtTKmr96Fo0NU28NWSY/QB2flGo7HRkhfhpApabJ1n6jjgemF4G1hbKZTigvN/7XgK1w2HLhS4MrxLk3nGRNYiTF+mF8NB2sXAjLTmKGq4vCkn7mc2g22ZtTP30ccE5Brq6WNpQzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758207991; c=relaxed/simple;
-	bh=XHpYkSXN/kkI4pHYvhq40cYT5X0wwZU5bBK87mtoEwM=;
+	s=arc-20240116; t=1758208001; c=relaxed/simple;
+	bh=tznCZMZuP/QxmVCF9p6ZdTXuE2XL+BU3sgP+bbyFfy8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U+qpvE3mBL2dDhjpPJgXkJcmCm4X70d14EDu7vWgd2zc2DbAHyctnKHlMwL5+ovr7COIwjVTSeqOrq/beh7oZ3094kR9Y5Z8OixGK0GQ0iZ9nxughB1V7Z/EGTMUN4U0vBX2ns7ia/ymUSP+N3MVS5K9O36hUghmxJSVQQg+ERo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K5jpQoQG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=PhYyLhxodWSbTCwUjB2lHzJS5KoCnK1mq0tGawiTDIgjHpjsZu4eqf7qtCuiSOME89r/H+ZdgSQHbx+GylFYwTvQ7g2Voam4+rwxn59SsqXvMaFoXHh1L0Pl8L1ZXPVi99W1TEaaK+KjvKpLv2YoMkK7ROS+sLDxts1GKP6QOjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doqxYFxl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K5jpQoQG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0AE1C4CEEB;
-	Thu, 18 Sep 2025 15:06:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758207991;
-	bh=XHpYkSXN/kkI4pHYvhq40cYT5X0wwZU5bBK87mtoEwM=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doqxYFxl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB7FC4CEE7;
+	Thu, 18 Sep 2025 15:06:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758208000;
+	bh=tznCZMZuP/QxmVCF9p6ZdTXuE2XL+BU3sgP+bbyFfy8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K5jpQoQGgPW5TsXsmOLAPXjfDQUr39YJqQ20OWkjTJddESnZoV162x2OAnfgJV3b4
-	 kfbrGryZgm89wuOcsJxDu/b6TucmGZnvn+qb54qq9h0KpiLZhUboOS0IdtJCg02Uyh
-	 huOWaCPcL2/ZQD3cMGvGqHGv1YVumAgKOQRrSmeejl6pLRiAncsI72qxSjfmaJDhf8
-	 HX0gocAzZPwcQpoy7ykRJoF5brttZsmhVnWFV6suHeQaHMTronTOSCYpAJUq3AQjWe
-	 iKGQ/cuBdlF5b8Io0VvkOm6//0enh3hkmtwGaMk7005ZAVrYUBgp6REPu6thcEbV5D
-	 2y2X1oXadikTw==
-Date: Thu, 18 Sep 2025 18:06:27 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-	linux-integrity@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: kselftest and cargo
-Message-ID: <aMwf89qekCuAdD1L@kernel.org>
-References: <aMlqouOSU8XN7V5H@kernel.org>
- <f18854b2-f9c8-44a3-a09d-3b2ddbcb971a@linuxfoundation.org>
+	b=doqxYFxlaHSajDoyLkecHqkZa/cRzEepzAeUy7AUwMaZ3SElWLMYuohPd2D/EJ9gz
+	 uh4mr58YlLufv8vVBXwgeTSJGPDcAdS2Lab7vEiPPCT4xhGBzhIxI4XQ6Oy+pNdl25
+	 tI4OKnfPGWtZv/oAxlt5hXEPzTY2TjIBu2Kr1fFM=
+Date: Thu, 18 Sep 2025 17:06:37 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: ManeraKai <manerakai@protonmail.com>
+Cc: "aliceryhl@google.com" <aliceryhl@google.com>,
+	"arnd@arndb.de" <arnd@arndb.de>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/3] rust: miscdevice: Implemented `read` and `write`
+Message-ID: <2025091841-remindful-manned-a57f@gregkh>
+References: <20250918144356.28585-1-manerakai@protonmail.com>
+ <20250918144356.28585-3-manerakai@protonmail.com>
+ <2025091820-canine-tanning-3def@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,47 +44,24 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f18854b2-f9c8-44a3-a09d-3b2ddbcb971a@linuxfoundation.org>
+In-Reply-To: <2025091820-canine-tanning-3def@gregkh>
 
-On Tue, Sep 16, 2025 at 04:39:37PM -0600, Shuah Khan wrote:
-> On 9/16/25 07:48, Jarkko Sakkinen wrote:
-> > Hi,
-> > 
-> > The pre-existing kselftest for TPM2 is derived works of my earlier Python
-> > based rudimentary TPM2 stack called 'tpm2-scripts'.
-> > 
-> > In order to get more coverage and more mainintainable and extensible test
-> > suite I'd like to eventually rewrite the tests with bash and tpm2sh, which
-> > is a TPM2 cli written with Rust and based on my new TPM2 stack [1] [2].
-> > 
-> > Given linux-rust work, would it be acceptable to require cargo to install
-> > a runner for kselftest? I'm finishing off now 0.11 version of the tool,
-> > which will take some time (versions before that are honestly quite bad,
-> > don't try them) but after that this would be something I'd like to
-> > put together.
+On Thu, Sep 18, 2025 at 04:59:01PM +0200, gregkh@linuxfoundation.org wrote:
+> On Thu, Sep 18, 2025 at 02:45:36PM +0000, ManeraKai wrote:
+> > Added the general declaration in `FileOperations`. And implemented the
+> > safe wrapping for misc.
 > 
-> Probably fine - how does this impact kselftest default run?
+> While read/write is "traditional", perhaps instead you should just
+> export read_iter and write_iter as that is the proper way forward for
+> drivers to be using.
 
-OK so this was early query: I might introduce such test as part
-of series that hasa waited for long time for an update [1]. I can
-use tpm2sh more easily to reproduce equivalent crypto as kernel
-does and make a test that can compare the results in a meaningful
-manner. I also plan to relocate tpm2sh as part of git.kernel.org
-custody from Github, as its main dependency tpm2-protocol crate 
-already is [2].
+Wait, maybe not.  The _iter stuff is "hard" for misc devices, and I
+don't think that any of the current ones use that, so nevermind, a
+simple read/write should be all that we need here.
 
-I went over the top in the original mail: most definitely it makes
-sense to retain the pre-existing test, and such "Rust-enhanced"
-test should be conditional, and can instead of depending on cargo
-simply do "command -v" in order to check the existence of tpm2sh
-and output installation instructions if it is missing.
+What type of real misc driver do you want to write in rust that you need
+a read/write callback and not just an ioctl one?
 
-With those precautions it should be somewhat harmless unless you
-actually want to run that test.
+thanks,
 
-Thanks for quick response!
-
-[1] https://lore.kernel.org/linux-integrity/20240528210823.28798-1-jarkko@kernel.org/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/tpm2-protocol.git
-
-BR, Jarkko
+greg k-h
