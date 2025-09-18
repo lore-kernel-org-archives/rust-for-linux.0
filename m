@@ -1,140 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BDC243951;
-	Thu, 18 Sep 2025 16:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3524316199
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Sep 2025 16:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758211393; cv=none; b=mGIupq0sznqy0xgikEbUiB4qZnIZJe+TExTIJY56zPxcttkhDvJ4UpniMT9EHaiW+iZ6msPr+I0ggxa8g3kPGDMVtZdSYddG4ZKubKSVA+iFN1hgY/2aWA7/p0LJ3iCTkGZGNtFnohP5rIt9qnMl54V32oW3aVEkGWyeomwuiuU=
+	t=1758211460; cv=none; b=ANs5HL3EYTLy98lC50a0Vunde+/wMqd8hIZnWndkiXgmb6foFhQ36YOWhVJLK1C1BVwEnAMi/vl4RkeO0onfOIFGwPVy7HzkzR3QM2aoJ6FqXTeTtf9pHX06xwGbttl+uVopWuxNqTX16HO453I47uwLnltsc52IfRCjcX2IZEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758211393; c=relaxed/simple;
-	bh=vH5vxTGmTQMX72D+ve+fQ+5ugobLSMznc3Ridr8UWLQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=EHWPF+c56CXkXMRKV6ZeqCVn5FI5iAlFvsRcL3tRczftiq8W2RjDCsk6lW0vurtAIUlGuHhgkCnGRdoiM4CZTES1OYHPFx+FdMR2DMLCTtw2Kjn2eBD95xU1wRPNzex5BFg8w6vQYKQwE2BPg6I+e4uDJllTSPca8IIQ4FmM0Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B0AuIhhM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758211460; c=relaxed/simple;
+	bh=y6c8lw8EKlOPBKyWspS/31sWHR2owEThgD2fvz6wrA0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vFW/BTnqGXS26vAX3qW7zn4brdtVfrVwDOVwas93KvtMzHlDlHMjIf8bnT8KnG1hslij6o9zVe59T8bG+wi9NxJRb7zyrvRM73i/6jYpsqwK4VSIEaN7NTx1RH4nz3Ik2ayq0fyjZU3ebDoTVnw3bCvAb7aEhKeAsvrqpK4mQbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjgGsBQW; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B0AuIhhM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FBCC4CEE7;
-	Thu, 18 Sep 2025 16:03:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758211392;
-	bh=vH5vxTGmTQMX72D+ve+fQ+5ugobLSMznc3Ridr8UWLQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=B0AuIhhMsEhy9/U2Ac148Np47X//3+PNEjPKs8YGaRIv9xEglCq9DIZa+xT8N6FiO
-	 oqfSgRPBTOf/ioaK605mhscrelsJyjCVt1qwVGCzWm6+a6dmb+Yaa1cegongIeMCCE
-	 ZCX9YDkU9TwFGWqxuvrQQeg3Y8TjjYI0BEg9rJ5ybhR+4bcDY/Fm8NJTFyH5uMrE3d
-	 zXBhNDjcnFUV3wUd32nw8mq6jlKIA5J8ImGK1BCt0SP2h7SbA4g69cXhDxYjJ+6S4H
-	 UjRFOR3uLnDUqYME768v3XTg5HHJpPiB/pB6vAH7fawjiy3blwmkLn8e6odhmkq3kb
-	 F0uFSik5agO2A==
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjgGsBQW"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-81076e81a23so163506785a.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Sep 2025 09:04:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1758211456; x=1758816256; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JQgPx54SvuoVw16CwN5aQ4H7UCLvlv+FoxUfiYTem8g=;
+        b=HjgGsBQW/ujV3dr1oewnRVQi5GiLtqBFU+HTqI6pDGmpiMuWK0EiFL/Naw7PPocwkW
+         J3U0jO2QSxjtiVADvZnAmvdyYRh0X5FWI8Biyvlpg4wx6WDJENE2EtRpCkhuEDaTWA+x
+         OB/4434CTDCYrgkkvq1FkMA8G7vJ83nI+b9XY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758211456; x=1758816256;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JQgPx54SvuoVw16CwN5aQ4H7UCLvlv+FoxUfiYTem8g=;
+        b=XmfsIZNeTDxMULNq+nDr+9w2pMd/RrqfJrnpj2A4Q4LWIyfpSuBEFxtePlVrJ6/P0F
+         mEwPvY6bUj4nqWC5YGtjOo1OJIkQRdu0+MVBCj6vodHzG8jtHxsaKZR40XVRFCRVoLrG
+         mJbdEzhvM46c/XrDow8S219BP+js7AfVXa5/EhYTS3H6r52/e6k34JulDal16z9apbKP
+         8YiuziWsaEgJMIX6yOPdkXMrKC2FaDf6iwOfQO2XA3LrLM4wqIv3R1XTyn5GXDH0CYAj
+         Oyrv8YDd/lgjkRhTOfR17IEwdZ1YF3GxgN6G+Oq5pbkxSFzllQlFGQsjBj/mbVp5KZek
+         tFbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxh73FgDqT8uAErxUrDcV8UOxURQri2b2FpKPLjHN7qzq/MJbt5Pp33MR7tBmakOwLgqLgWuMimLucHR+mCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb3sqaPcXdTCJdTX2xMLYTQjgWNLb1AQB5Fbhc30VJKp62J0w9
+	Jm0Q0ZJEey+TtsLb7gPM7g6jTfLyXpHZ4fq145XKjLqJZs79bXybslanZ63jp5EKEfjNZMK6fx2
+	M3vM/
+X-Gm-Gg: ASbGncvWPHoVA0nKy22X2nDWZWXSvKoCC4wuhaifRdCKG/yVdtM4NCsj18x7eEyse1S
+	qNV5yPpsHC8oeKSyVpcK1LB7Qfu5oUfIIHb1lWZi+kBkn+UggekZoPKRO33xUou3kLPMVaFvnLt
+	SYDfHRZdeeBck6FgHkpyQaqJWWRWBzoHHv9kzhjAzbrwKx9oGbT7HDrYrlPFgt49K95Wwm38L0V
+	5YGnucvnqZ6PH9CWzdYbW6UktAKuN0VVcB6JwJMHW2sFHwRcWZDyAbMeQ6UKWUS9MdMvjhuqF7x
+	MuF9GaSCWgOoAuvvodKtQt/ga7rs6ob1NC2Qt9jC1qI8CnbQsh/Ief2KQCrnnD5ctVV9ZPDjHpI
+	ejy8GVI9VocHcMuBwvEibbwyzQSbqTS958COh0NnvUvdPW1fNpNRedJk6nUvCMo3FA2K5QAAJEh
+	mY5OBeGVmGw2typWwoCYWksMVvwq1/DFJ2oWOZ0dfUCPY2RyCkEbnA9SQoBIrPaQ0CAAfBCbY=
+X-Google-Smtp-Source: AGHT+IGIwAd/uoNV9XL+0qecZOvEJzFlnVi+Hy8TF9s9PCR5fJ4tPFqi0Aa5Sz/TtZFISSFPPfxp7g==
+X-Received: by 2002:a05:620a:205e:b0:825:4783:5c6a with SMTP id af79cd13be357-83ba29b6c60mr12732285a.11.1758211455131;
+        Thu, 18 Sep 2025 09:04:15 -0700 (PDT)
+Received: from [192.168.1.239] (207-181-222-53.s5939.c3-0.hnc-cbr1.chi-hnc.il.cable.rcncustomer.com. [207.181.222.53])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-836262b559dsm183650585a.1.2025.09.18.09.04.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 09:04:14 -0700 (PDT)
+Message-ID: <6712e20a-0fa9-44f5-ae0d-f4d9c3324028@linuxfoundation.org>
+Date: Thu, 18 Sep 2025 10:04:13 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 18 Sep 2025 18:03:05 +0200
-Message-Id: <DCW1X3ZY82PY.TCFDCBLZ7HDQ@kernel.org>
-Cc: <skhan@linuxfoundation.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [RESEND PATCH v5] rust: kernel: introduce
- `unsafe_precondition_assert!` macro
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Ritvik Gupta" <ritvikfoss@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20250827060013.6874-1-ritvikfoss@gmail.com>
-In-Reply-To: <20250827060013.6874-1-ritvikfoss@gmail.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: kselftest and cargo
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-integrity@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <aMlqouOSU8XN7V5H@kernel.org>
+ <f18854b2-f9c8-44a3-a09d-3b2ddbcb971a@linuxfoundation.org>
+ <aMwf89qekCuAdD1L@kernel.org> <aMwh95tMxB7sMEzy@kernel.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <aMwh95tMxB7sMEzy@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed Aug 27, 2025 at 8:00 AM CEST, Ritvik Gupta wrote:
-> diff --git a/rust/kernel/safety.rs b/rust/kernel/safety.rs
-> new file mode 100644
-> index 000000000000..e78d49e3e7c8
-> --- /dev/null
-> +++ b/rust/kernel/safety.rs
-> @@ -0,0 +1,54 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Safety related APIs.
+On 9/18/25 09:15, Jarkko Sakkinen wrote:
+> On Thu, Sep 18, 2025 at 06:06:31PM +0300, Jarkko Sakkinen wrote:
+>> On Tue, Sep 16, 2025 at 04:39:37PM -0600, Shuah Khan wrote:
+>>> On 9/16/25 07:48, Jarkko Sakkinen wrote:
+>>>> Hi,
+>>>>
+>>>> The pre-existing kselftest for TPM2 is derived works of my earlier Python
+>>>> based rudimentary TPM2 stack called 'tpm2-scripts'.
+>>>>
+>>>> In order to get more coverage and more mainintainable and extensible test
+>>>> suite I'd like to eventually rewrite the tests with bash and tpm2sh, which
+>>>> is a TPM2 cli written with Rust and based on my new TPM2 stack [1] [2].
+>>>>
+>>>> Given linux-rust work, would it be acceptable to require cargo to install
+>>>> a runner for kselftest? 
 
-I think this looks fine to start out with.
+What is runner for kselftest in this context?
 
-> +
-> +/// Checks that preconditions of an unsafe function are followed.
-> +///
-> +/// The check is enabled at runtime if debug assertions (`CONFIG_RUST_DE=
-BUG_ASSERTIONS`)
-> +/// are enabled. Otherwise, this macro is no-op.
-> +///
-> +/// # Examples
-> +///
-> +/// ```no_run
-> +/// use kernel::unsafe_precondition_assert;
-> +///
-> +/// struct RawBuffer<T: Copy, const N: usize> {
-> +///     data: [T; N],
-> +/// }
-> +///
-> +/// impl<T: Copy, const N: usize> RawBuffer<T, N> {
-> +///     /// # Safety
-> +///     ///
-> +///     /// The caller must ensure that `index` is less than `N`
-> +///     unsafe fn set_unchecked(&mut self, index: usize, value: T) {
-> +///         unsafe_precondition_assert!(
-> +///             index < N,
-> +///             "RawBuffer::set_unchecked requires index ({}) < N ({})",
-> +///             index,
-> +///             N,
+I'm finishing off now 0.11 version of the tool,
+>>>> which will take some time (versions before that are honestly quite bad,
+>>>> don't try them) but after that this would be something I'd like to
+>>>> put together.
+>>>
+>>> Probably fine - how does this impact kselftest default run?
+>>
+>> OK so this was early query: I might introduce such test as part
+>> of series that hasa waited for long time for an update [1]. I can
+>> use tpm2sh more easily to reproduce equivalent crypto as kernel
+>> does and make a test that can compare the results in a meaningful
+>> manner. I also plan to relocate tpm2sh as part of git.kernel.org
+>> custody from Github, as its main dependency tpm2-protocol crate
+>> already is [2].
+> 
+> Some motivation context, I left out on doing the aforementioned
+> patch set because I did not see importing TPM2 keys useful enough
+> application but recently I've been dealing with remote attestation
+> and that levels up the feature something quite useful.
+> 
+> I.e. so called attestation identity keys are persisted to the NVRAM of a
+> TPM chip and it would great if kernel could at boot time reserve
+> selected (in the command-line) NV indexes and wrap them up into keyring
+> keys. Since in UKI model command-line is signed that effectively locks
+> them in into controlled use only through keyring as kernel can
+> guard that via the device.
+> 
+> I could put tons more detail into this but point to open up this
+> complexity is that getting all cryptography right is easiest done
+> by reproducing it in a test in user space and comparing the
+> results, and Rust and the crate I did give sort of powerful
+> way to describe all this. And also because of the complexity
+> it needs to be anchroed with some kind of sufficient test.
+> 
 
-You can move the names into the `{}`:
+I would say get this in a shape where you can share it for review.
+We can discuss the changes. One thing to keep in mind is dependencies
+for kselftest default run need to be minimal so these tests can run
+on rings with minimal tool support.
 
-    unsafe_precondition_assert!(
-        index < N,
-        "RawBuffer::set_unchecked requires index ({index}) < N ({N})",
-    );
-
-> +///         );
-> +///
-> +///         // SAFETY: By the safety requirements of this function, `ind=
-ex` is valid
-> +///         unsafe {
-> +///             *self.data.get_unchecked_mut(index) =3D value;
-> +///         }
-> +///     }
-> +/// }
-> +/// ```
-> +///
-> +/// # Panics
-> +///
-> +/// Panics if the expression is evaluated to `false` at runtime.
-> +#[macro_export]
-> +macro_rules! unsafe_precondition_assert {
-> +    ($cond:expr $(,)?) =3D> {
-> +        $crate::unsafe_precondition_assert!(@inner $cond, ::core::string=
-ify!($cond))
-> +    };
-> +
-> +    ($cond:expr, $($arg:tt)+) =3D> {
-> +        $crate::unsafe_precondition_assert!(@inner $cond, $crate::prelud=
-e::fmt!($($arg)+))
-> +    };
-> +
-> +    (@inner $cond:expr, $msg:expr) =3D> {
-> +        ::core::debug_assert!($cond, "unsafe precondition(s) violated: {=
-}", $msg) };
-
-The closing `}` should be on the next line.
-
----
-Cheers,
-Benno
-
-> +}
->
-> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-
+thanks,
+-- Shuah
