@@ -1,164 +1,157 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E84925393C
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Sep 2025 16:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BB625393E
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Sep 2025 16:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758214517; cv=none; b=iHBLVvq6EhgrTk2mvNV+CboXIFPIw9vK1pdJUS9938utUax1WbsKY4/eWynzAQ/DLaSX4d8jdJzm8VaKLjtdg4WC5x39GM45ezMpuozHpyc8W/IyEFFeLrFSXN75ssWlhGFGE0ws629N4f+rInf/E3X27gmTgN+1LYDC88AHejY=
+	t=1758214619; cv=none; b=Y7b80wJZtOzaHMAxkg0rfCrQ0COeA56vNdmf52jRfA6nej5d6cSTgztY3m9pYp9X1p4ZxUXhwncHLijonjcsXLb8yx+Ng59ssJlE6YWlWjlrd32NOvPpmKhq+ih5w0+mO5G0bIOniCju2GI1C/UgmcPyC5TwFRgte/r2FwaEafs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758214517; c=relaxed/simple;
-	bh=7yj+8e2r8iHEk5ANg8qImbXoBk4yFye88GKD4KMyPR8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=d+u0417eNobZw7PWms4CQ4+Y3AHuTx3YNdzrYYCntpzz6y59T7+2iu/FKxVFdC48mOiEspQ2h6V15zDKl5OXepB8E+cySHFuW+2/EhslMaFsLxIDfyzY3ysFfN33GSApK1PCcWccrZPMd8vR9W86J/D5SINw20nIcEvlkHWvzP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G3LZ8I88; arc=none smtp.client-ip=209.85.218.73
+	s=arc-20240116; t=1758214619; c=relaxed/simple;
+	bh=UQkDnZN2YupD3ElsirlzPOzXvwseK0yLG5wxXtspicI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rwwaDmKNns9tH/O31oPvZR/OJC8EMqj/+65Mr88Q+76s9XR6mtb4YSNHx3TLbYFkGMw7FSt2iBk7CsGd9zm85Kp8vLWooivXLoes6RQhzQxJ8je/sJRtk5iIbO0MFvRwztNgEYltx8s7ckox2sF5FSZCvGQ1aAnSyYtVI3GavYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jXnI6/a/; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G3LZ8I88"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b111d2951b9so118360766b.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Sep 2025 09:55:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jXnI6/a/"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45b9a856dc2so8346845e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Sep 2025 09:56:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758214514; x=1758819314; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=34EDgIXBDluEGauPQSlOKGzRZygW8gJTTorkuPVWZA8=;
-        b=G3LZ8I88J4I+WvF1pGcBog60wKOHO7rAuAl5p7ORRHLmBdHXuGI8/cin95YFQxUoyW
-         Y2HTwUOYMKJBnFvcWHS5y30hwE/55SV/oOzCYDh7XU4qAoGvBN6AMXTzcEeD1rzpocEK
-         RGTg7fZjQvbZjp1EbtuUXV9KoMZoHYYFog29jT1bv3bP6AQ9oeIpab4PwMuJzkiwBAiz
-         2GSei4cxX0tcVgkwCKF10wHb4jM9mxNLIyyv2MBk2AHKEACOAFtTG9XVr5N2m7T/i8T6
-         3+Nbmz/r2bW0+jtlirJultbAocKTX8vO+09wLRMaFRQQJKkt2nKHag9iK0ezojgLkLvY
-         1mpg==
+        d=google.com; s=20230601; t=1758214615; x=1758819415; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4k3y0PregncblUWSi1Dac4GIHe0eZqcNbIV+BL8uo7s=;
+        b=jXnI6/a/zYADZ6DbYb48EmA0qVXPzs8yc5zVkLeB0qcfqHKcsKjnYM39qYMpb+MQ19
+         KUqSECu7skJ67CR+L65tYZKoQ1by+VtvawEcsHqDAklyZTinf3+kizlueVUOq3WicDhA
+         Ag4/XiQpeSypQj4V8hji+WTtdkzsWMOG/36za9s78YF+vdakheOsLMUAMZPoiNjmOP13
+         FcH5wpYtUPRc4zXXur1btnrfjzsTqt9lwtQXuMpIofk7ZuNLOQEk1bRc786BM58BplMq
+         LMJkRMNMypqF71ivnYWF5r7PkzszOt7DjLy0C3KhfNKYn63bMC8DFQLqL6lKJKBvdgxu
+         r4VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758214514; x=1758819314;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=34EDgIXBDluEGauPQSlOKGzRZygW8gJTTorkuPVWZA8=;
-        b=odX0z4wiJjkubuXh46gAbrPNzNAKn5/HqK6J4ycc56WF+ktnrxAhnR7lVGvdcYaLAn
-         E8LUwYRwP12YVHh6vzT11ULsfVQAjbyg+AH9MOZbtMa3J5TwDdQuV4LST7sphOazwuMC
-         Thq1ttPRfW0Lv2n98lowDhtXbra/jx53WOigptJpOt+G0rz8QpYmf/No2Q5Wre1su2uW
-         6VfnM2QKY90Fp4qXwm1l51vFlN8SnJTQX9NtzTKi5e85klwdBxaMmkmVCznFDm3bWlsQ
-         +z7LyH18HoG54KU7+L8iU+6rGyUOq7QNt+dVa2ProzSPBzptKqBK2d3gVKGQsivDjKmG
-         Cj3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUNX/KZ9TU2wKyjaN4PmLzZl/5zzxKH1S5EbJYACdoe4ifQSCP5ETgPiDOMCUJrI4InpwxF9YmN89Ou1qLrrQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRz1McWiyOkC4tY96NEqiBBfxD6gJaAXRMYhy4WigVr4q5dAgI
-	xsLNyORyrb7AQKVkOxhi2MWCouP3/Ud4Gft4StRZ3m3zBy0a2Sr0kNEIdYrwkMpw3YV2fUptkNd
-	6a1bNzMOXN9TSrEOI3A==
-X-Google-Smtp-Source: AGHT+IF4z5YMCca6wpSe2aYc/hXa4PxHhJwZJSFFGiM7lb0rzYJ7L07Kt4y+RBjUICVPayoJYG2995O0zayX9oE=
-X-Received: from ejcli23.prod.google.com ([2002:a17:907:1997:b0:afc:aa75:6cae])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:94c3:b0:b07:b50d:df66 with SMTP id a640c23a62f3a-b1bb9d0f22fmr674804866b.19.1758214512173;
- Thu, 18 Sep 2025 09:55:12 -0700 (PDT)
-Date: Thu, 18 Sep 2025 16:55:11 +0000
-In-Reply-To: <aMwxLQubVOuGZGLf@google.com>
+        d=1e100.net; s=20230601; t=1758214615; x=1758819415;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4k3y0PregncblUWSi1Dac4GIHe0eZqcNbIV+BL8uo7s=;
+        b=HfgTI4gsm45lIeFaYpizWxGK1la9R2iC+pClvK8j73DzKQYcDQqlE7vy3qVeWBBun/
+         ESg61xJLkxt39f7i9P3kN4afEDB2dnW+Uux53BPP+qtToQnMHyNZ8gUx2+HCwuVRqneN
+         IESEa0lIErJFfYhg0NypCgUPtMqzpFAawivrfdD0uSkGQT49nVO9UPSamLH7p4UzbY+2
+         oc55pN4d1lh1BMXmCJWCNw5oSlAIRcF2Syi3uvIjevp+b6SpBSb6VKyuVSCeEfmMEuvV
+         snRl6+uJZIlvexUxUlfY7P6S4B1ixBOY5xEN6jnHl1Je/Kic6PHL7/q62z9jbX7AHV+F
+         zvcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUPNoH3/8raekIZ/ioMofHy+Rt035P7YDU/lrtmOzGg8w0tJvUodMD/HtL8M/MRawphsvlytFWLwGa8jmiu4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUbQUeZzCYsDq/3kkAzRKmEkJzhLACiIApwH25V+skEH9+aR+e
+	Mw6wBnfOT3kIwyuNpaDZxgq08oFc505EJ8cWq0FxsNSZijTY3JBPTuHlL8QnQ/TthL37jV0AOeF
+	1JAT9PvAjxUuTwHumnO+u/ixC4B9GbKOl65lCmAUT
+X-Gm-Gg: ASbGncu3ERuLKwytpW6m2nrbRucUfTQrlNVFFYypS0Z0O/7LqK6Q/nrl0vYZT665HmD
+	1ZVFc2ZhFlWzZLPoA+0iKs35ZpOYdEB7ksRMZmb2jXXHeTCltZ6nUTA4RORDiIjuM27xgkgbFQ2
+	9Ko1TeA9Gb5MMD8rxoQwVjdWusUiYPG35k1PNzbRYaLn87sGwwSTL3Hg+iv2idhdWBh4JjqRs+e
+	nUyAQmajE7+Kpfk0nXpVSZGELWjCx03Cw4pkqu2ay0FuKvz2SGxi7AtsdF8ECgU
+X-Google-Smtp-Source: AGHT+IGrECi09TQaSKwSJ+8onLSD1LnP0+Uoq3q4qz+bp+RHGMmJnZZourdxee7Ub4Y3szZNq360euO9+rjTCqDTjSk=
+X-Received: by 2002:a05:6000:310d:b0:3da:484a:3109 with SMTP id
+ ffacd0b85a97d-3ee83cabbb0mr7006f8f.38.1758214615021; Thu, 18 Sep 2025
+ 09:56:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250918-rust-binder-v1-1-7a5559e8c6bb@google.com> <aMwxLQubVOuGZGLf@google.com>
-Message-ID: <aMw5b7aNxoULilmg@google.com>
-Subject: Re: [PATCH] rust_binder: add Rust Binder driver
+MIME-Version: 1.0
+References: <20250918-rust-binder-v1-1-7a5559e8c6bb@google.com> <CAHC9VhSPo4+gSqR2g-6yvDtYGyAnQ4scw2_vQCUrKzbBBd790A@mail.gmail.com>
+In-Reply-To: <CAHC9VhSPo4+gSqR2g-6yvDtYGyAnQ4scw2_vQCUrKzbBBd790A@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+Date: Thu, 18 Sep 2025 18:56:41 +0200
+X-Gm-Features: AS18NWAz8MdqEDamxmxcXKPJiVDlGZOQPplPG763EIp0srUdhSQtCXPruqOyyYE
+Message-ID: <CAH5fLggNPBb7g-fq7YMCwi8KsRdpK4uD_+=o_Anqm4Uq7R5VbQ@mail.gmail.com>
+Subject: Re: [PATCH] rust_binder: add Rust Binder driver
+To: Paul Moore <paul@paul-moore.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
 	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Paul Moore <paul@paul-moore.com>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
 	Serge Hallyn <sergeh@kernel.org>, linux-kernel@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Matt Gilbride <mattgilbride@google.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 18, 2025 at 04:19:57PM +0000, Carlos Llamas wrote:
-> On Thu, Sep 18, 2025 at 10:19:38AM +0000, Alice Ryhl wrote:
+On Thu, Sep 18, 2025 at 5:52=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
+ote:
+>
+> On Thu, Sep 18, 2025 at 6:19=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
 > > Please see the attached link to the original RFC for motivation.
-> > 
+> >
 > > I did not include all of the tracepoints as I felt that the mechansim
 > > for making C access fields of Rust structs should be discussed on list
 > > separately. I also did not include the support for building Rust Binder
 > > as a module since that requires exporting a bunch of additional symbols
 > > on the C side.
-> > 
-> > Link: https://lore.kernel.org/r/20231101-rust-binder-v1-0-08ba9197f637@google.com
+> >
+> > Link: https://lore.kernel.org/r/20231101-rust-binder-v1-0-08ba9197f637@=
+google.com
 > > Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > > Co-developed-by: Matt Gilbride <mattgilbride@google.com>
 > > Signed-off-by: Matt Gilbride <mattgilbride@google.com>
 > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > --- /dev/null
-> > +++ b/drivers/android/binder/Makefile
-> > @@ -0,0 +1,9 @@
-> > +# SPDX-License-Identifier: GPL-2.0-only
-> > +ccflags-y += -I$(src)	# needed for trace events
-> > +
-> > +obj-$(CONFIG_ANDROID_BINDER_IPC_RUST) += rust_binder.o
-> > +rust_binder-$(CONFIG_ANDROID_BINDER_IPC_RUST) := \
-> 
-> Since there is only one option for rust_binder.o, the target here should
-> probably be just 'rust_binder-y := ...'.
+> > ---
+> >  drivers/android/Kconfig                       |   15 +-
+> >  drivers/android/Makefile                      |    1 +
+> >  drivers/android/binder/Makefile               |    9 +
+> >  drivers/android/binder/allocation.rs          |  602 +++++++++
+> >  drivers/android/binder/context.rs             |  180 +++
+> >  drivers/android/binder/deferred_close.rs      |  204 +++
+> >  drivers/android/binder/defs.rs                |  182 +++
+> >  drivers/android/binder/dummy.c                |   15 +
+> >  drivers/android/binder/error.rs               |   99 ++
+> >  drivers/android/binder/freeze.rs              |  388 ++++++
+> >  drivers/android/binder/node.rs                | 1131 +++++++++++++++++
+> >  drivers/android/binder/node/wrapper.rs        |   78 ++
+> >  drivers/android/binder/page_range.rs          |  746 +++++++++++
+> >  drivers/android/binder/page_range_helper.c    |   24 +
+> >  drivers/android/binder/page_range_helper.h    |   15 +
+> >  drivers/android/binder/process.rs             | 1696 +++++++++++++++++=
+++++++++
+> >  drivers/android/binder/range_alloc/array.rs   |  251 ++++
+> >  drivers/android/binder/range_alloc/mod.rs     |  329 +++++
+> >  drivers/android/binder/range_alloc/tree.rs    |  488 +++++++
+> >  drivers/android/binder/rust_binder.h          |   23 +
+> >  drivers/android/binder/rust_binder_events.c   |   59 +
+> >  drivers/android/binder/rust_binder_events.h   |   36 +
+> >  drivers/android/binder/rust_binder_internal.h |   87 ++
+> >  drivers/android/binder/rust_binder_main.rs    |  627 +++++++++
+> >  drivers/android/binder/rust_binderfs.c        |  850 +++++++++++++
+> >  drivers/android/binder/stats.rs               |   89 ++
+> >  drivers/android/binder/thread.rs              | 1596 +++++++++++++++++=
+++++++
+> >  drivers/android/binder/trace.rs               |   16 +
+> >  drivers/android/binder/transaction.rs         |  456 +++++++
+> >  include/uapi/linux/android/binder.h           |    2 +-
+> >  rust/bindings/bindings_helper.h               |    8 +
+> >  rust/helpers/binder.c                         |   26 +
+> >  rust/helpers/helpers.c                        |    1 +
+> >  rust/helpers/page.c                           |    8 +
+> >  rust/helpers/security.c                       |   24 +
+> >  rust/kernel/cred.rs                           |    6 +
+> >  rust/kernel/page.rs                           |    6 +
+> >  rust/kernel/security.rs                       |   37 +
+> >  rust/uapi/uapi_helper.h                       |    1 +
+> >  39 files changed, 10409 insertions(+), 2 deletions(-)
+>
+> This is a pretty big patch, in the future it might be nice to
+> decompose things like this into a multi-part patchset.  Regardless,
+> the LSM/security bits look okay to me.
+>
+> Acked-by: Paul Moore <paul@paul-moore.com>
 
-Ok. I don't mind.
-
-> > diff --git a/drivers/android/binder/dummy.c b/drivers/android/binder/dummy.c
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..7e9f6ea3a474b59f11e723a709c0c21e8b8beae0
-> > --- /dev/null
-> > +++ b/drivers/android/binder/dummy.c
-> 
-> This dummy should be removed, we aren't going to need it here right?
-
-Ah yeah, thanks. This file can be deleted.
-
-> > +// SPDX-License-Identifier: GPL-2.0
-> 
-> I'm not sure if all these need to be "GPL-2.0-only" explicitly?
-
-It should be the same.
-
-> > +int init_rust_binderfs(void)
-> > +{
-> > +	int ret;
-> > +	const char *name;
-> > +	size_t len;
-> > +
-> > +	/* Verify that the default binderfs device names are valid. */
-> > +	name = rust_binder_devices_param;
-> > +	for (len = strcspn(name, ","); len > 0; len = strcspn(name, ",")) {
-> > +		if (len > BINDERFS_MAX_NAME)
-> > +			return -E2BIG;
-> > +		name += len;
-> > +		if (*name == ',')
-> > +			name++;
-> > +	}
-> > +
-> > +	/* Allocate new major number for binderfs. */
-> > +	ret = alloc_chrdev_region(&binderfs_dev, 0, BINDERFS_MAX_MINOR,
-> > +				  "rust_binder");
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = register_filesystem(&binder_fs_type);
-> > +	if (ret) {
-> > +		unregister_chrdev_region(binderfs_dev, BINDERFS_MAX_MINOR);
-> > +		return ret;
-> > +	}
-> > +
-> > +	return ret;
-> > +}
-> 
-> Hmm, is there anyway to keep a single binderfs.c implementation? In this
-> case we now have separate CONFIGs we could use for the file creation
-> callback? It would be nice to keep a single binderfs source file.
-
-It could be nice, but it's pretty non-trivial to unify them. If we do
-that, it will have to be a follow-up, and the follow-up will modify C
-Binder too.
-
-Alice
+Thanks!
