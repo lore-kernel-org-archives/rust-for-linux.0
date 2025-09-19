@@ -1,196 +1,105 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E11A302154
-	for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 09:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8182D239F;
+	Fri, 19 Sep 2025 09:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758273200; cv=none; b=gUDBG6o/3bJ651fYMYwlTGfJ89G1FCv8JYiOsaVAbdTNRtVNAaKtFkldwP0WB+lAGpDDyZPyxoR7HTG44YnT++h6G5I1Cjc15dzevAO0MKFX/t37WcdJ1WWSIGlhBQIojkF+uhD1QbbJe0xG8IX/0KVK4lAdeVJILLdJTZg6qQQ=
+	t=1758273989; cv=none; b=GqQfrMcEUmSHCRLRVPCiAkT4z2YUPjHYn47vkd4ScAauwiGwO4IG8YZ+epQXyGkI5YP086uSvjb1x66Z+NddgoeB7Q2TWkGQIopaHZZ51sKJj743d6Tfp/18X0JLwhjPJR2iCZmBKx22QFdYin4+tJx1pxs8MPGDobOi/cfinxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758273200; c=relaxed/simple;
-	bh=qiImjsEzOnaVKlSA0NmMABN9A4Q0NbEvUqksJ6TQ7Vg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AX+ixMD0h/iH7T+SZDSVGPyAoM3Ckg6+q+x1wwLB35Q4SKeR9ZzFbXirxtvB683zASOhM4YUz5CC7mUb/wj8ESUhiqJEurlm7PkqBnmoFQu+9JFUm7yX/wH+tmKTR/5Yo38KDJ+DKCiRdLD9SIQhdeD05SMw+Nn/5SxmK5NXgg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=di82UDSw; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758273989; c=relaxed/simple;
+	bh=QTRMRYKX0MaFllq/94rkyUi9FFuz1LfmIJpbHiO/UfY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=gdXlq1gp4ztZp0H2tGbtofln30nQb8piGsNpn9frzBB2EGN23qe2cPl2bZIVGOCZv0Q/733wvDrHkB+m8D1SspZx/PycBPy0cP1sfjOCJbyomJSXVQDGUfsaN28mJgqL0iL8f98kqI8xB/y4Ttt/TBB3L/Tzq0vndBCTjj3bMKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3Ji3x3B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="di82UDSw"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-79a7d439efbso4356686d6.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 02:13:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758273198; x=1758877998; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HC7c63QfQ23In6I7fvHeR2uJH3BX6Ddk3KhkxkSWOaw=;
-        b=di82UDSw1Ujorkjr5j1iFvqsxFzI6TpG8UvnCWoEYTV/yi4iSgNCZrePM1tJqYQgKn
-         a/gOoUYZqGWMkRY5BbIStmEFAvhVV53M7XpKOQycfQkMY79RFdSOT8uY4EZk+ncik3YP
-         4pExHcCuLv0ZDf+W1lkTc0NxMq9706qW9wH1XY0f+9RlcDo5LoHVBC5Kj9X80fuJT2Rm
-         lEW5TANsWIzcGemzDz/0NS5Ek7Yb4jO65988YvXWmlZtilQxT/Tz9asi5RPbZHI1r1U/
-         aHTLP8+TWRC+L9WL80ocJ2drlmrNCKiyeYu9gm3HDWtPw4TzbDv1Ip/jyu3dn7GWSSoW
-         /iyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758273198; x=1758877998;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HC7c63QfQ23In6I7fvHeR2uJH3BX6Ddk3KhkxkSWOaw=;
-        b=mCbi9Vb07YK2CPl+v7QrFU2LxPJ88Z05djZzT4ea+h4LLm8jET5ATfRNqiqglBe2tp
-         MOako6BIXB+Uyw/vN/spHWXL6HImyNewzrjqNBR1pcoiUXq2ZtwDASQi6Rr6qclCMnaI
-         lXQ4Cj7JRwzxtfrHosSon10XeUvy/68xaVrDKIri+TajJg/zkp6pXb7yn+xZCoFD+OTA
-         0ZA0TmG1SNpxs1juHfaFVafwIQxtnDB3sm3Fsv+7Xypjvywy/emF+JejI7L/+ia8gqxU
-         2FqRRxK8V74ldE5wcOVBy8g9fp6UgFih/mfzwoU+UtOgqskHYa+rQCziey+8iahrUXDe
-         yp6Q==
-X-Gm-Message-State: AOJu0YyxH/gdCT+nRqFrdTWT4BRwbl0LHiAbikrzRbGLCkZc+VMbvJ1d
-	Xxd9vbQfKODUy1EQaR62Po00TFneEqzOud5ntQnBwI1x4xoh55lYCBl0
-X-Gm-Gg: ASbGncu/m1/1Zd3N5P1bWaDtEvMNKADAtWz8SCan73oHCT1tifTe+479+0upUuoTItJ
-	gKAvP6P/J07sdYegmJUht0rmxN9aaGkp3gL2rB0fOiKsMrF52gAbJOmnriCgHrs9cg6op46OquZ
-	tF1jAHry4qcieQMQsm5R2mYOGhIdSwf5gKkgcrtr3IZa4CajEOZiLB4VPxjnJT1bFN+o3LgdjNJ
-	x5PCuOMAsaX5H25sR1Lq6Tg0cqiSm4FjOIXtrtMsOHZn8IbkuQp8WPLqXJ4IlmKrRoEiYJg/T5I
-	5V82oVWluorZHQ6hfadiLupql5JO+Ovl0RD76ZTkm22lkpqqelHkabLftMveziltlfERsizwflP
-	9yo3q5v8A6M1xmQ0smtKyWXof9pcEcdAM2X1fJvgxPbOzX6f/Odtwbhn5NV+9Z+NOEZzrPZ7Qon
-	a7thy5INg2EPK1
-X-Google-Smtp-Source: AGHT+IFZ8F2wXi48IVZenpQOrH5DZrRMNXs/JXKEj22vTrsl2NFuYo7YHquPhCVcBtbRl/WONq7N2A==
-X-Received: by 2002:ad4:5964:0:b0:768:d8cd:17e5 with SMTP id 6a1803df08f44-799197edf17mr24758906d6.40.1758273197932;
-        Fri, 19 Sep 2025 02:13:17 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-79351f71705sm25966476d6.39.2025.09.19.02.13.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 02:13:17 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1E63BF40066;
-	Fri, 19 Sep 2025 05:13:17 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 19 Sep 2025 05:13:17 -0400
-X-ME-Sender: <xms:rR7NaHjsQFcs5aDTv2VXVLNdXb9_pxMP_1Bx_ndi5MAZw-05I27sMg>
-    <xme:rR7NaJzHBL1KHIatq7JOzdFjN31GWe6o5KpQpTIo142PuHO4_g56NOvps8PnL098S
-    1N_Fyj-nwBSzt5NKQ>
-X-ME-Received: <xmr:rR7NaFJ0Mu7EIWl08DNB_-kBf6A7gzBliS93rGueFk99Csc-zSWhIJEUH0vq>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegkeekvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnheptedtteegjeefffeileevheeguddvleekfeeigfevgffhfeetieekgfffhfeiledv
-    necuffhomhgrihhnpehgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgpdhlohgtkh
-    druggrthgrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
-    mhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghe
-    dtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhes
-    fhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepphgvthgvrhiisehnfhhrrgguvggrugdrohhrghdprhgtphhtthho
-    pehmihhnghhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuth
-    hrohhnihigrdguvgdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkhhmmheslhhishhtshdrlhhinhhu
-    gidruggvvhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhonhhgmhgr
-    nhesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:rR7NaO0ZqSAf2bLVlVfPY-9p8MKJ0n4DE0ZunMaGiFEkyJ8KzDkd9g>
-    <xmx:rR7NaPfhOZWOxHWcUGv4Dh0JNMQ5I3bh7l4tAU28fgIGRB36ur__hQ>
-    <xmx:rR7NaC7ZyIctnTg-ZNs7AKVz7qALDWyuyPxCsmjRG6t3BcVssH2X_A>
-    <xmx:rR7NaC9jZx5ajRr_dVnJSy_lMdlyfVFKaC18LPeB2f3xVyDdBVTydA>
-    <xmx:rR7NaJKWPxC0lm3eY3mVj6hWnz4-sTBchNKI7Az-4iZKZk9X1nKHGi_b>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 19 Sep 2025 05:13:16 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: "Peter Zijlstra" <peterz@nfradead.org>,
-	"Ingo Molnar" <mingo@kernel.org>,
-	"Thomas Gleixner" <tglx@linutronix.de>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lkmm@lists.linux.dev,
-	"Will Deacon" <will@kernel.org>,
-	"Peter Zijlstra" <peterz@infradead.org>,
-	Waiman Long <longman@redhat.com>,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	alex.gaynor@gmail.com,
-	"Gary Guo" <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	"Benno Lossin" <lossin@kernel.org>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Trevor Gross" <tmgross@umich.edu>,
-	"Danilo Krummrich" <dakr@kernel.org>,
-	"Andreas Hindborg" <a.hindborg@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 4/4] rust: lock: Add a Pin<&mut T> accessor
-Date: Fri, 19 Sep 2025 11:12:41 +0200
-Message-ID: <20250919091241.32138-5-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250919091241.32138-1-boqun.feng@gmail.com>
-References: <20250919091241.32138-1-boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3Ji3x3B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B31BC4CEF0;
+	Fri, 19 Sep 2025 09:26:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758273989;
+	bh=QTRMRYKX0MaFllq/94rkyUi9FFuz1LfmIJpbHiO/UfY=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=p3Ji3x3BbitPt4pji1kyRyxpk/wbcoaw+nG5MoR8+52rV0fmB2Sad3fYUpl1kcrTK
+	 q3BDoxHY1UYqIg5ZzNwuVlFEaMyplB1QUSb7XbSAwmymH2bXFbCi/I7E6Sw0W9qJZ1
+	 AJBJnFLh1hasSGZiZIIgYrExMcpiNgo1R6E3+6CmbpjnbsgYWD1rF+0fYUNljoGm5w
+	 1IwLK/xvfJ4cwdHnzENrcBE2ZHIaiWj2Ws3LCiPLyxSg+GuBrlC0JIV+5cqoEiU4BQ
+	 ybyJvWMhRGsePrNznQ2K4xDlunk/lMNk4ZyV+0UAsXciPZQ+4QOv3UrJyzL1n+TGoT
+	 bCmD9UksQfT0Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 19 Sep 2025 11:26:19 +0200
+Message-Id: <DCWO3V7WQP0G.127BYBORGE85H@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH] rust: io: use const generics for read/write offsets
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20250918-write-offset-const-v1-1-eb51120d4117@google.com>
+ <20250918181357.GA1825487@joelbox2> <DCWBCL9U0IY4.NFNUMLRULAWM@kernel.org>
+ <752F0825-6F2E-4AC0-BEBD-2E285A521A22@nvidia.com>
+In-Reply-To: <752F0825-6F2E-4AC0-BEBD-2E285A521A22@nvidia.com>
 
-From: Daniel Almeida <daniel.almeida@collabora.com>
+On Fri Sep 19, 2025 at 9:59 AM CEST, Joel Fernandes wrote:
+> Hello, Danilo,
+>
+>> On Sep 19, 2025, at 1:26=E2=80=AFAM, Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>>=20
+>> =EF=BB=BFOn Thu Sep 18, 2025 at 8:13 PM CEST, Joel Fernandes wrote:
+>>>> On Thu, Sep 18, 2025 at 03:02:11PM +0000, Alice Ryhl wrote:
+>>>> Using build_assert! to assert that offsets are in bounds is really
+>>>> fragile and likely to result in spurious and hard-to-debug build
+>>>> failures. Therefore, build_assert! should be avoided for this case.
+>>>> Thus, update the code to perform the check in const evaluation instead=
+.
+>>>=20
+>>> I really don't think this patch is a good idea (and nobody I spoke to t=
+hinks
+>>> so). Not only does it mess up the user's caller syntax completely, it i=
+s also
+>>=20
+>> I appreacite you raising the concern,
+>> but I rather have other people speak up
+>> themselves.
+>
+> I did not mean to speak for others, sorry it came across like that
+> (and that is certainly not what I normally do). But I discussed the
+> patch in person since we are at a conference and discussing it in
+> person, and I did not get a lot of consensus on this. That is what I
+> was trying to say. If it was a brilliant or great idea, I would have
+> hoped for at least one person to tell me that this is exactly how we
+> should do it.
 
-In order for callers to be able to access the inner T safely if T:
-!Unpin, there needs to be a way to get a Pin<&mut T>. Add this accessor
-and a corresponding example to tell users how it works.
+I'm also not really thrilled to see lots more turbofish syntax. However,
+if we can avoid the nasty build_assert errors then in my opinion it's
+better. (yes we do have Gary's cool klint tool to handle them correctly,
+but not every user will be aware of that tool).
 
-This requires the pin projection functionality [1] for better ergonomic.
+Maybe we should ask Rust about adding `const` arguments in their normal
+position again :)
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1181
-Link: https://lore.kernel.org/rust-for-linux/20250912174148.373530-1-lossin@kernel.org/ [1]
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-[boqun: Apply Daniel's fix to the code example, add the reference to pin
-projection patch and remove out-of-date part in the commit log]
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 ---
-
-Notes:
-    SubmissionLink: https://lore.kernel.org/all/20250828-lock-t-when-t-is-pinned-v2-3-b067c4b93fd6@collabora.com/
-
- rust/kernel/sync/lock.rs | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 9242790d15db..cb00fdb94ffd 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -245,6 +245,31 @@ pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
- 
-         cb()
-     }
-+
-+    /// Returns a pinned mutable reference to the protected data.
-+    ///
-+    /// The guard implements [`DerefMut`] when `T: Unpin`, so for [`Unpin`]
-+    /// types [`DerefMut`] should be used instead of this function.
-+    ///
-+    /// [`DerefMut`]: core::ops::DerefMut
-+    /// [`Unpin`]: core::marker::Unpin
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::sync::{Mutex, MutexGuard};
-+    /// # use core::{pin::Pin, marker::PhantomPinned};
-+    /// struct Data(PhantomPinned);
-+    ///
-+    /// fn example(mutex: &Mutex<Data>) {
-+    ///     let mut data: MutexGuard<'_, Data> = mutex.lock();
-+    ///     let mut data: Pin<&mut Data> = data.as_mut();
-+    /// }
-+    /// ```
-+    pub fn as_mut(&mut self) -> Pin<&mut T> {
-+        // SAFETY: `self.lock.data` is structurally pinned.
-+        unsafe { Pin::new_unchecked(&mut *self.lock.data.get()) }
-+    }
- }
- 
- impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
--- 
-2.51.0
-
+Cheers,
+Benno
