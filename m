@@ -1,96 +1,98 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CD62D7DEC
-	for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 09:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FEE2E92B7
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 09:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758273176; cv=none; b=MzQRL1gyBNBXeGkJ09kjFO2k7SkK2bBwa83LQgCnGqI8FApqNGAzfTW4G5f4Q//TYr7xCb6OGAcjJcd07tL0ZYpuJnlQH07aHo9BgUgl83pk0uYr6lJLJB/rYb+MuPH5+JTGuwHiwOWsk042LPV/THfCbm68U+HC4hSBh5Sm7J0=
+	t=1758273184; cv=none; b=A4J/uq2h9azKmtc2EUVbOqXoMxKhDiFMsN33Uv5/s3vuBigUV0qvzQp8vuJFFhK5zcgGvDNflzOf8RPaHCNpMz1jDwtaSWx5VsxrJfMKSJDxs8S4yXVP4mORaAhxdTvrWahWdFLTQvtDVU0haIN35fJf8pFhFqg69Fhl1r2OJFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758273176; c=relaxed/simple;
-	bh=926HOgz8gxzG0OhowK+NIkyZJmV7LXYWGTd5SEq48FA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T9i7XMmFLHiLmuF4f4mR4ioWI2wgBxiHJdjER/Cp+YAGGK9z9m2gLXs1ZwlyCwTlmXQFClz13r3neocMkayRw3xnx0P8qr5D5jO+gMXHrL0q8WtIeaCftyPo1nICt8ud7bV6e0sJGjutMj6iroaVK+8dff3fxJusAAUFOvnFLps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O7lC1LKG; arc=none smtp.client-ip=209.85.160.173
+	s=arc-20240116; t=1758273184; c=relaxed/simple;
+	bh=QweTAqxNpSrDrK2q0/RR+kdBUV2hZvkvOnc1TJn8Yck=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NP2J82Rkj0tO8lDehiJYvtzT3DAXlcaShoaozrGnQRSxv8qv92eai9TxAWVL6wyc3lc/421PHBt2Aoy7w+yjQAtSQuBGNZ0+nZTAg+zG+st7AthcfQwHKsd9ionNm/8nIBIym1UqHeGFjuVp8FSbFqAJ5IB+NQcLVEc/3odDmWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hVPmUjVX; arc=none smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O7lC1LKG"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b109c6b9fcso17864031cf.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 02:12:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hVPmUjVX"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-796fe71deecso11310216d6.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 02:13:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758273174; x=1758877974; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FLP69wPPTyBl3iI6wucn9C3HytX7tdfXjNtYh+fleXw=;
-        b=O7lC1LKGAba6cOegMO51W6wE5aJYCL78+sJ49BBa7aobaR8uRLz+BQ4X9T25T7eXid
-         dc1qLFkR+jWV5Tc3sd+c+QEVYMAz1ZoFygAbKSnhdU1+nGVSDE1ltj0dPVhLfChtxxsO
-         w0nBj5wkCuntLgE7Ps/OJI2Q9hxxg6j5+MmxmPMrkQMyvErieedo/u75O2DVsBn+V57l
-         ni3BsE/hwd2i+Hzgc56SRtieo6lenjFEkfYH8nmX1DKsa+ab5vY/w5DFYSZt05F9nSr5
-         /lSE5s1XcA+6kAWYbnH+1DFtGHMEEldwE5D8BTI6NsqfCdHqei4pjvPkVOY8AJGwJc37
-         9OHg==
+        d=gmail.com; s=20230601; t=1758273182; x=1758877982; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=K70gfC2VGaXawlZrrSZ8hp0QF5eghAVmIXEzCCUkbN4=;
+        b=hVPmUjVX8qD57Te8PtzQaXb7pzBCYUxYaT3AmPJBcIgvd1tDfMhYhZjEmMPWZiaLEN
+         91vtiIAhkGHfCFl0gV/2yFN/y23ek1ZjvYmsOIyib5wa461d8v6B7hIqdeRfNVMo+P23
+         yxeOnXtX2tf8EZY0MD3PPX1Fo8bSzHpE3FwLYB2xMWZtE6Lsxd/TDK0Gl89WBIgxs9Sn
+         TWhY9zUmpV9cLSWB0mto1XtmyatUBIhboUcks0AaUhdIOCUI1tz5xI85IfAy0Gz+BN2J
+         7Emn7lx0c/fJHle5K9pQ8qnVkIrtQt/NLGZt4/Xw71tCkOLxetOZ7jxRC9sWaFRlwp+g
+         /68A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758273174; x=1758877974;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FLP69wPPTyBl3iI6wucn9C3HytX7tdfXjNtYh+fleXw=;
-        b=p++yfTPnhDSBBKifNhodGRbsxmXKTsqyOnsB5KaCWbic2U90WVPQgNUjwA0bPVU9t1
-         UGMzIEq6t6kC+nx0Sy1maPqFnQ4kmvlKQl/DdtvWo0+6JmtqblRx8V4Igu+aCLTn8ThB
-         4MzGPcISTAo4lFv2dK70AUtmGpxJvFe0ABOZoKatzvRfLr9jAc5ru57R9XCMIgqx+H6u
-         x2C+RPhpB6NBB2f0J6Y6Hmi+cdodP18+oPU14IntlDJBPFVK2q1RvQ9FiJFTGecLDZw1
-         CFLu1e7utAAXiKj+RIXO+HSlvcFe7FmKGZRCNGTQKPz1XnlJznV4Gqh3ICZ3E6JVvju2
-         CxNQ==
-X-Gm-Message-State: AOJu0Yz2P9wyYL7rBz15C8KH9LcLib2yA0SDJzJiqQm1bfniG4YX7w1a
-	sq1a8eWSy9mpvi/4zIk/Q4HddZrW9cWcX/B+s/uD5akhhTYoGckQO43k
-X-Gm-Gg: ASbGnctkahjQ0cm1JDUTTT3bjd0F3MaDQxjw3jWFlJzHZTt+hX89yFn1Ht8iyLkH3/f
-	Oz1XlFwBjX9cme1pFI3SSudTTmmOvVdlmRdvQOqnw84mnqex9vc7ieHogAwqPtHcp2NhDa3UXDs
-	0Nz2SYWzET92dwQDPvf0B3eYpymBeRHYxMDqWGH1Ffz29khTa/FlmGxdJzMyG0QnuaDAD6S95MQ
-	4U7j+HDAK/fVZ6tvwtDtJBOLy2Bufg9PiyfvSf1eGFaBFwZg99CQjj0L4OC9QYwV+eTooyL8938
-	rZ12fFunu0e7pYFholRCJFe0dQ19nt8RasK6F4Qx2UUrVoZiXKitPwI2KoB32yDjLysnqJlolLg
-	xUhoR7szNxh/Oi9aYFNR0ySiQEFiarSmypiThAmxZDSuAP4gJof9XwtJfYNOUbOQ1mCHm827sZj
-	zvwbj9pncjHY5h
-X-Google-Smtp-Source: AGHT+IGKevs+ZRXSIZUcCkojfkPosvm16AJuFo9XOQFQbaodj2jImJQseN3Lbq6/BNffjGONr4LqZw==
-X-Received: by 2002:a05:622a:138c:b0:4b4:924c:aecb with SMTP id d75a77b69052e-4c06cbe92d1mr21104121cf.14.1758273173875;
-        Fri, 19 Sep 2025 02:12:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758273182; x=1758877982;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K70gfC2VGaXawlZrrSZ8hp0QF5eghAVmIXEzCCUkbN4=;
+        b=jPWuLM1WDavPVGp4f0tTsgL14i9osADasjLQxajU8eUVIGg3jdhxHFTlsXmxSIQqw+
+         1kHcn6/p1my6edAwiug3mVjDo6BUHJ+JJF7iGIuV/MVeKqDy3FZNdt62IN0+lDfkSLvA
+         d2/h4CVUjCZpIghEUuhz1pBcHHdWmmYy95d85IL82ZFwG8vcBa4BPpRYQq3N9hTBVNLh
+         caeC0SGDt4d1eCtV+6mYPBlgfvkH4GEY7UwspGtx6ADu3/RJ/bs2jE+sQj34SNV1tqQ5
+         H/zWNHDLZa/YSdy2EYHH/SVfOpVcLXAaO6JSir46+/tC2E1SblzdLy4Hm+o0KnjkIqiY
+         Onvg==
+X-Gm-Message-State: AOJu0Yzula9rKs3iAak4y09qC1yE1mvJyK+Fs1xrBr80oByebRD7OFRv
+	QTJBuZislwMWQ1SKA5faBDA3OUcd7GnjsFty+OSIudvaq8MzJtgHZBag
+X-Gm-Gg: ASbGncu8uhM4rORBb0fCsexACfYtV2dcK/Dx0vJ9UgckCIjfVqMsu+AQtYQ6skJuZBt
+	K34+iLwEQcVklOcI9Wr1BFcS9c1D/kEIYDWMZWyyEolmvyXssKJOzteX/5ng3YQnHIAgYRS4qc5
+	PMX0iwsjHjUQSRIE750g35+StuE6fVjuvpEOmjzPexEk8sVYT+7L2+GJ6v441w+8oC9C5txxYDJ
+	uA41n+5X2CWbQ8DQ6CzNydP9C5SQ8w60NwZcWTsN9llm+04iaRVsl0W7c5W5MEndebBfhq+uhtK
+	Ix7FkrRYlts/o2QwOZCWX8d3Oe5Ehx13Va1WN1+Auwv2wiqkPw+8EmtTKMBtdWTKaMkoIAvRC5P
+	6Hex0grgLAPpWEpLgmTEtx2cXsVydFoo41QWvYbDEIFSXau+p+Y5L/Cw3FHdDvXSGc0r1p4ppFU
+	mbaLmLxzLeb2UX
+X-Google-Smtp-Source: AGHT+IENO3y1I+WdQckOF9/GGnaAMQ+ul1aKo9ejx3/ulS4DRfGqgjIdtHE0clXgDs5HZit1Tjxilw==
+X-Received: by 2002:a05:6214:29e1:b0:794:6621:6d18 with SMTP id 6a1803df08f44-7991d549c82mr24827026d6.51.1758273182126;
+        Fri, 19 Sep 2025 02:13:02 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4bda943b56csm26678131cf.39.2025.09.19.02.12.53
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-793474ac8dasm26073756d6.30.2025.09.19.02.13.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 02:12:53 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DACEDF40066;
-	Fri, 19 Sep 2025 05:12:52 -0400 (EDT)
+        Fri, 19 Sep 2025 02:13:01 -0700 (PDT)
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3316AF40066;
+	Fri, 19 Sep 2025 05:13:01 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 19 Sep 2025 05:12:52 -0400
-X-ME-Sender: <xms:lB7NaLq6Q3BjTxYC98o5ZGegSeBTkoELuIR3M6ozx8fjAJ5SwVwnbQ>
-    <xme:lB7NaMOmtyt1fg3YROSJNapsU2R0xubuSjbC0ZAwPHJcNVcIUjyrI9B0j-c_V2bFE
-    JA8HJ_Br96LsXyt0g>
-X-ME-Received: <xmr:lB7NaJ6QrIeFN6HdzX30bo1_E78QWnYwRNPnhqd1UmEc97jKOaf4mEWida1p>
+  by phl-compute-12.internal (MEProxy); Fri, 19 Sep 2025 05:13:01 -0400
+X-ME-Sender: <xms:nR7NaOLBS26uIfK4Ed8QhVmcyJM3gZFCCmMxb0z1MgGIwt1en81uKw>
+    <xme:nR7NaKY1xYyL1iVWtry5iATJBEL0a2_379ADVTfH2YfVvX59wAGqm9e1g-J8iuH_U
+    Pn08rBAjNBSBvXn_A>
+X-ME-Received: <xmr:nR7NaCTvg4nWwxnNKkQxz-BJwtsomwcfFw9VAZrDGjc5w-EfgdnsvhAH9lhB>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegkeekvdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfhvghn
-    ghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnh
-    epgeegueekgefhvedukedtveejhefhkeffveeufeduiedvleetledtkeehjefgieevnecu
-    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshho
-    nhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngh
-    eppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudel
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehpvghtvghriiesnhhfrhgruggvrg
-    gurdhorhhgpdhrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    ohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtoheprhhushhtqdhfoh
-    hrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhkmh
-    hmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepfihilhhlsehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprh
-    gtphhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:lB7NaIXZ_tVBUerGN90gG6-mwnFgkkiWK8yG7vb2EoJxfOj7-uymhQ>
-    <xmx:lB7NaL1TQhYIAcCcKtk3nIW89jbnmpPdDus_nzVb5YSotIynaVDhDg>
-    <xmx:lB7NaPNpFET8Qrs0C01ivQ3LAIce3VU9DKSc6Q5GAF9nbmelKllxXA>
-    <xmx:lB7NaO1FtzYHP-KnTMzpfgbLngFU-A_CXDpdE9iYudp6Z6hp4QZ0Qg>
-    <xmx:lB7NaG38oyQWmdR888zLmRgPNXjWHsh09GSBvT9f3omNOboFwgqU63DE>
+    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhepgffhffevhffhvdfgjefgkedvlefgkeegveeuheelhfeivdegffejgfetuefgheei
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
+    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
+    vdefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehpvghtvghriiesnhhfrhgrug
+    gvrggurdhorhhgpdhrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtoheprhhushhtqd
+    hfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhi
+    nhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hkmhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepfihilhhlsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrgh
+    dprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:nR7NaCg7YxtMhcv3IoTX_-zd2libnCl4OXYA6_Ds91efm7xQkeJ6dg>
+    <xmx:nR7NaOvv6BU7R_WT2VqJsWX595xDh83Ci6pQZbGQbfzj11JVQeOKOA>
+    <xmx:nR7NaEyipy6jYjepz_2klsuBBZrRw02um3fbtquJ_DrzSOtrbVE2Sw>
+    <xmx:nR7NaMOpas1iBqJn84ZsG6cmaZLeBWsxafdFUkhVYYwd113Ng0MaVw>
+    <xmx:nR7NaO25cC3oRhaNC4wAbHcV2E0rfR4zsyDoWN09ForWCLQKj3Y3A9JB>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 19 Sep 2025 05:12:51 -0400 (EDT)
+ 19 Sep 2025 05:13:00 -0400 (EDT)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: "Peter Zijlstra" <peterz@nfradead.org>,
 	"Ingo Molnar" <mingo@kernel.org>,
@@ -110,11 +112,17 @@ Cc: rust-for-linux@vger.kernel.org,
 	"Trevor Gross" <tmgross@umich.edu>,
 	"Danilo Krummrich" <dakr@kernel.org>,
 	"Andreas Hindborg" <a.hindborg@kernel.org>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	stable@vger.kernel.org,
+	Adrian Freihofer <adrian.freihofer@siemens.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>
-Subject: [GIT PULL] [PATCH 0/4] Rust locking changes for v6.18
-Date: Fri, 19 Sep 2025 11:12:37 +0200
-Message-ID: <20250919091241.32138-1-boqun.feng@gmail.com>
+Subject: [PATCH 1/4] locking/spinlock/debug: Fix data-race in do_raw_write_lock
+Date: Fri, 19 Sep 2025 11:12:38 +0200
+Message-ID: <20250919091241.32138-2-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250919091241.32138-1-boqun.feng@gmail.com>
+References: <20250919091241.32138-1-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -123,72 +131,68 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Peter & Ingo,
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Please pull this (mostly) Rust locking changes to tip. It's a bit late
-than usual because I was at Kangrejos conference this week, however the
-changes are relatively small and simple, so I think it's Ok for v6.18.
-I also try using "git notes" for submission links as Thomas suggests,
-let see how it goes ;-)
+KCSAN reports:
 
-The following changes since commit 17d9f8eaa87d40a2ff66598875a43363e37a909b:
+BUG: KCSAN: data-race in do_raw_write_lock / do_raw_write_lock
 
-  MAINTAINERS: update atomic infrastructure entry to include Rust (2025-09-15 09:38:36 +0200)
+write (marked) to 0xffff800009cf504c of 4 bytes by task 1102 on cpu 1:
+ do_raw_write_lock+0x120/0x204
+ _raw_write_lock_irq
+ do_exit
+ call_usermodehelper_exec_async
+ ret_from_fork
 
-are available in the Git repository at:
+read to 0xffff800009cf504c of 4 bytes by task 1103 on cpu 0:
+ do_raw_write_lock+0x88/0x204
+ _raw_write_lock_irq
+ do_exit
+ call_usermodehelper_exec_async
+ ret_from_fork
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/ tags/rust-locking.2025.09.19a
+value changed: 0xffffffff -> 0x00000001
 
-for you to fetch changes up to 9622209360c25d78a81048a9db72f1efef7fbc58:
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 1103 Comm: kworker/u4:1 6.1.111
 
-  rust: lock: Add a Pin<&mut T> accessor (2025-09-15 22:28:35 -0400)
+Commit 1a365e822372 ("locking/spinlock/debug: Fix various data races") has
+adressed most of these races, but seems to be not consistent/not complete.
 
-Regards,
-Boqun
+From do_raw_write_lock() only debug_write_lock_after() part has been
+converted to WRITE_ONCE(), but not debug_write_lock_before() part.
+Do it now.
 
-----------------------------------------------------------------
-Locking changes for v6.18:
+Cc: stable@vger.kernel.org
+Fixes: 1a365e822372 ("locking/spinlock/debug: Fix various data races")
+Reported-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+Acked-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+---
 
-- Fix a data-race in do_raw_write_lock reported by KCSAN
+Notes:
+    SubmissionLink: https://lore.kernel.org/all/20250826102731.52507-1-alexander.sverdlin@siemens.com/
 
-Rust locking changes for v6.18
+ kernel/locking/spinlock_debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-- Make `data` in `Lock` structurally pinned.
+diff --git a/kernel/locking/spinlock_debug.c b/kernel/locking/spinlock_debug.c
+index 87b03d2e41db..2338b3adfb55 100644
+--- a/kernel/locking/spinlock_debug.c
++++ b/kernel/locking/spinlock_debug.c
+@@ -184,8 +184,8 @@ void do_raw_read_unlock(rwlock_t *lock)
+ static inline void debug_write_lock_before(rwlock_t *lock)
+ {
+ 	RWLOCK_BUG_ON(lock->magic != RWLOCK_MAGIC, lock, "bad magic");
+-	RWLOCK_BUG_ON(lock->owner == current, lock, "recursion");
+-	RWLOCK_BUG_ON(lock->owner_cpu == raw_smp_processor_id(),
++	RWLOCK_BUG_ON(READ_ONCE(lock->owner) == current, lock, "recursion");
++	RWLOCK_BUG_ON(READ_ONCE(lock->owner_cpu) == raw_smp_processor_id(),
+ 							lock, "cpu recursion");
+ }
+ 
+-- 
+2.51.0
 
-  Previously the `data` field of a `Lock<T>` is not structurally pinned,
-  and it's impossible to initialize the `data` field with a
-  pin-initializer, hence e.g. a `Lock<T>` where T is a pin-initialized
-  type is not supported. This encourages workarounds like
-  `Lock<Pin<KBox<T>>`, which is more complicated and less efficient.
-  Therefore make the `data` field in `Lock` structurally pinned to
-  support pin-initialized types in a `Lock<T>`.
-
-  Since the `data` field is structurally pinned, make `Guard<T, ...>`
-  only `DerefMut` is T is Unpin, otherwise `Guard::as_mut()` is added to
-  provide a `Pin<&mut T>`. This is different than normal Rust standand
-  library locks.
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEj5IosQTPz8XU1wRHSXnow7UH+rgFAmjNGoEACgkQSXnow7UH
-+riU8ggAnRUTBam8NTmHJpZfVbbNSfx1ndaARxd9Wb/MLEh8OHYKbVRPJwvWGge+
-dafO0VYULku7ho1SeIlLXp4Bbjy3YC6o/J6xOpr9xMmysUky7RHi+Ys0y9gKaSmW
-daPurQEOS8TBUWu5yVxNAfWoRgPEiPULovbzgANKKAV7QsljyoEg7mQCPxLftPze
-Hr22HxU+lr6SDH5Efc8ihGqXJAvwunk+0mkJymZbjWo3ZF3cuhXlTMcIlu1SK14a
-R1VQu5UoX8S5y0T0gkJ84UJ11e0wrSZyT0EqmHWSpVBnyGgWk8H1u284hDiGG2iG
-FvwoSQ9iVuxLhxjhPUSOjq30DzmFfg==
-=MZj4
------END PGP SIGNATURE-----
-
-----------------------------------------------------------------
-Alexander Sverdlin (1):
-      locking/spinlock/debug: Fix data-race in do_raw_write_lock
-
-Daniel Almeida (3):
-      rust: lock: guard: Add T: Unpin bound to DerefMut
-      rust: lock: Pin the inner data
-      rust: lock: Add a Pin<&mut T> accessor
-
- kernel/locking/spinlock_debug.c |  4 ++--
- rust/kernel/sync/lock.rs        | 41 +++++++++++++++++++++++++++++++++++++----
- rust/kernel/sync/lock/global.rs |  5 ++++-
- 3 files changed, 43 insertions(+), 7 deletions(-)
