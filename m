@@ -1,103 +1,110 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A12C30CB45
-	for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 11:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F9B199934
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 11:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758280899; cv=none; b=EIVsf/w96xofOdebHiIRKfjWXvzchhKMs6IItuL99ndaXotmP2v+/0XqiVdcHci7xqv2GsNAkYenbRn1gc1EuC/hURgytxiCITlLFeQb9Apxv8o+dH0BHWvE2lX/+Rvu2WcCinNUwe4Jjo83Y3pSwe4B95w79lwtaJtrJymIKs0=
+	t=1758282389; cv=none; b=us8QiauN0S+h9WqK4NTBoKm1TksMV0g8ho+iOfFqnqTtrf7vzHtUT2nyDyDchIWkBH+AXP3IWTgCg14y6yH2VKjja8eJi7CsbP461Qll1evz+omXldF2yQUXmd2lgrF3L0BUevjF014V662Wu0zcA/V2n542fylkG8qE4EHRbLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758280899; c=relaxed/simple;
-	bh=A4xG/hhI5H20xjSK3ATLZhg7mH6LCnkDNDxdK8t8kEk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qqy0YkIGelO1lnjlEjeQm3bP/m1LtuOKzDT0ruOFj4em1N5iCqp0BncuUgImXSKLT1lwvyYzaorwJinO6bydLCmC0v08pfFso05XjnvLQ3+cl4XcMWSOsyVuLPo/4BaBK1Umk7pxwHoPYgJf0YvGkN79wxv+c7P9MzhwCam1wQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=V7a53qq+; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1758282389; c=relaxed/simple;
+	bh=Nrz5ubywHPXyLCm8cR06/yvkGR3UgcWf4u0DtQaK3XY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EXZWK8pgc8eFhr5UjSjFA3slfz/cW6+0p2ytawbnzlzkkEy0vsBzQmXh3pfprA1dVoqoTV7Y8qM1XEt+lZfztc3gEA72+bcMyqoy5KVihvnU0yL9fAsfLM07M96j5L1zaSBlykuBi8iMLLOPV5F8/0FL3ctp03Kvp/UiQJAbYHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNsv4GiO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="V7a53qq+"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758280881;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1RTqmv+1E+QFMuOy+5mQ8UkGVboO7NXJZS9ix522hHQ=;
-	b=V7a53qq+yTQMa5IzHR4f9+NvU9KCOuXDiGJR8s5Wd5SK8nAmqVT0JdlJZX2oLWyeycOORD
-	ZHDl9GwKZN8UVSjF1Bhg8VQ4WWgfspa9jbNH2ath3vpEalhG5TPcj9HCsigRwk7vdV1gWy
-	ZtsXEAC/N1ipmDsl3Nc/1MMv8pHl6yg=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] rust: net::phy inline if expressions to improve read_status
-Date: Fri, 19 Sep 2025 13:20:08 +0200
-Message-ID: <20250919112007.940061-2-thorsten.blum@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNsv4GiO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2624AC4CEF0;
+	Fri, 19 Sep 2025 11:46:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758282389;
+	bh=Nrz5ubywHPXyLCm8cR06/yvkGR3UgcWf4u0DtQaK3XY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eNsv4GiOXO9DdakRIcIEamvqmoij60IxqCSBQg7iQYNOYbjddzvzn0f3ERd6pL6v7
+	 3VEdL78L9itNkpTopgcv+eU9hzCXsjkbFMihzWtdINUABpnGo3p8KWfCKVZv43zUeR
+	 /GSijZst9XCLY49Z6c12+f28+R8S+xYf1lPdJcljNbh3HWC5GShROC6uw8cvmoX+3X
+	 sTvRuWUS+V0JW/Uj7alCMGOwIkqgntu7J9PluvHYwHIb/gA8H0yjI8sExJavXfpHFo
+	 mO4Rc3xB7l0D519oDCKxhguIfz0h9GSJJ5sKXt3/DpDj+/UYiMUe/a38EyalHHxual
+	 s9+6QHrCSKvZw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ rust-for-linux@vger.kernel.org
+Subject: [GIT PULL] Rust timekeeping for v6.18
+Date: Fri, 19 Sep 2025 13:46:12 +0200
+Message-ID: <87o6r6wtq3.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
 
-Inline the if expressions for dev.set_speed() and dev.set_duplex() to
-improve read_status(). This ensures dev.set_speed() is called only once
-and allows us to remove the local variable 'duplex'.
+Hi Miguel,
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- drivers/net/phy/ax88796b_rust.rs | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+Please pull these changes for the rust timekeeping subsystem.
 
-diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
-index bc73ebccc2aa..2dfd37936689 100644
---- a/drivers/net/phy/ax88796b_rust.rs
-+++ b/drivers/net/phy/ax88796b_rust.rs
-@@ -56,18 +56,17 @@ fn read_status(dev: &mut phy::Device) -> Result<u16> {
-         // linkmode so use MII_BMCR as default values.
-         let ret = dev.read(C22::BMCR)?;
- 
--        if ret & BMCR_SPEED100 != 0 {
--            dev.set_speed(uapi::SPEED_100);
-+        dev.set_speed(if ret & BMCR_SPEED100 != 0 {
-+            uapi::SPEED_100
-         } else {
--            dev.set_speed(uapi::SPEED_10);
--        }
-+            uapi::SPEED_10
-+        });
- 
--        let duplex = if ret & BMCR_FULLDPLX != 0 {
-+        dev.set_duplex(if ret & BMCR_FULLDPLX != 0 {
-             phy::DuplexMode::Full
-         } else {
-             phy::DuplexMode::Half
--        };
--        dev.set_duplex(duplex);
-+        });
- 
-         dev.genphy_read_lpa()?;
- 
--- 
-2.51.0
+This PR consists of three main parts:
+
+ - Additional functionality for `HrTimer` that allows use of operations
+   that can only be executed in timer callback context, or with
+   exclusive access to a timer that is not armed.
+
+ - Arithmetic operations for `Instant` and `Delta`.
+
+ - A few other minor updates.
+
+While these changes will benefit everyone in the long run, they have a
+near future user in rvkms. The changes has been in linux-next for at
+least a week.
+
+The following changes since commit b320789d6883cc00ac78ce83bccbfe7ed58afcf0:
+
+  Linux 6.17-rc4 (2025-08-31 15:33:07 -0700)
+
+are available in the Git repository at:
+
+  ssh://github.com/Rust-for-Linux/linux.git tags/rust-timekeeping-v6.18
+
+for you to fetch changes up to 4521438fb076f8a6a52f45b0e508f6ef10ac0c49:
+
+  rust: time: Implement basic arithmetic operations for Delta (2025-09-04 16:56:48 +0200)
+
+Best regards,
+Andreas
+
+----------------------------------------------------------------
+Rust timekeeping changes for v6.18
+
+ - Add methods on `HrTimer` that can only be called with exclusive access to an
+   unarmed timer, or form timer callback context.
+
+ - Add arithmetic operations to `Instant` and `Delta`.
+
+ - Add a few convenience and access methods to `HrTimer` and `Instant`.
+
+----------------------------------------------------------------
+Lyude Paul (9):
+      rust: hrtimer: Document the return value for HrTimerHandle::cancel()
+      rust: hrtimer: Add HrTimerInstant
+      rust: hrtimer: Add HrTimer::raw_forward() and forward()
+      rust: hrtimer: Add HrTimerCallbackContext and ::forward()
+      rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
+      rust: time: Add Instant::from_ktime()
+      rust: hrtimer: Add HrTimer::expires()
+      rust: time: Implement Add<Delta>/Sub<Delta> for Instant
+      rust: time: Implement basic arithmetic operations for Delta
+
+ rust/kernel/time.rs                 | 163 +++++++++++++++++++++++++++++++++++-
+ rust/kernel/time/hrtimer.rs         | 152 ++++++++++++++++++++++++++++++++-
+ rust/kernel/time/hrtimer/arc.rs     |   9 +-
+ rust/kernel/time/hrtimer/pin.rs     |   9 +-
+ rust/kernel/time/hrtimer/pin_mut.rs |  12 ++-
+ rust/kernel/time/hrtimer/tbox.rs    |   9 +-
+ 6 files changed, 344 insertions(+), 10 deletions(-)
 
