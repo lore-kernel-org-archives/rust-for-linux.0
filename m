@@ -1,110 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F9B199934
-	for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 11:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA0135942;
+	Fri, 19 Sep 2025 12:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758282389; cv=none; b=us8QiauN0S+h9WqK4NTBoKm1TksMV0g8ho+iOfFqnqTtrf7vzHtUT2nyDyDchIWkBH+AXP3IWTgCg14y6yH2VKjja8eJi7CsbP461Qll1evz+omXldF2yQUXmd2lgrF3L0BUevjF014V662Wu0zcA/V2n542fylkG8qE4EHRbLc=
+	t=1758286501; cv=none; b=j+Jrf+4BKxqNi3AlR1dXv940DkW819JhenfuVFolRwtidjqwxRVDiwzdMOuPXcffP6YcOzq6lrMt0o5546LmJE+/2gsOmUQ04WkWYGK0eJoZxa/bLFpJCYmL+ZEc4ypGjoFeJrPBHcUkH6otpsPsISXryaNvkhQYKXeFp/Dk81w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758282389; c=relaxed/simple;
-	bh=Nrz5ubywHPXyLCm8cR06/yvkGR3UgcWf4u0DtQaK3XY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EXZWK8pgc8eFhr5UjSjFA3slfz/cW6+0p2ytawbnzlzkkEy0vsBzQmXh3pfprA1dVoqoTV7Y8qM1XEt+lZfztc3gEA72+bcMyqoy5KVihvnU0yL9fAsfLM07M96j5L1zaSBlykuBi8iMLLOPV5F8/0FL3ctp03Kvp/UiQJAbYHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNsv4GiO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758286501; c=relaxed/simple;
+	bh=P9O+uKYrNCQvlYmvG/GeHErGmRke6M9S1hqFkm9RfvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iK5JQVMy80TUa3NhZXbm7L9ZIpqF/CCezDmzsJ2MmbfFDb2E0/f3LkN89cLdNs/tsTNA2l0u3RukMzcj1/cUNpp8M8jcZXcICbFgAcXNcZY81b0qrFUckNCBd8uCFdzmcDlk7HHO3xhzdwMue7cLv5PTws7merAOfWs2GCVpQpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SA752FVk; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNsv4GiO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2624AC4CEF0;
-	Fri, 19 Sep 2025 11:46:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758282389;
-	bh=Nrz5ubywHPXyLCm8cR06/yvkGR3UgcWf4u0DtQaK3XY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eNsv4GiOXO9DdakRIcIEamvqmoij60IxqCSBQg7iQYNOYbjddzvzn0f3ERd6pL6v7
-	 3VEdL78L9itNkpTopgcv+eU9hzCXsjkbFMihzWtdINUABpnGo3p8KWfCKVZv43zUeR
-	 /GSijZst9XCLY49Z6c12+f28+R8S+xYf1lPdJcljNbh3HWC5GShROC6uw8cvmoX+3X
-	 sTvRuWUS+V0JW/Uj7alCMGOwIkqgntu7J9PluvHYwHIb/gA8H0yjI8sExJavXfpHFo
-	 mO4Rc3xB7l0D519oDCKxhguIfz0h9GSJJ5sKXt3/DpDj+/UYiMUe/a38EyalHHxual
-	 s9+6QHrCSKvZw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
- rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] Rust timekeeping for v6.18
-Date: Fri, 19 Sep 2025 13:46:12 +0200
-Message-ID: <87o6r6wtq3.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SA752FVk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=pU5P+cOwzVnPymtF7+1qAqf6msbrSgTd7Jhc/pEZRXw=; b=SA752FVkQlNvUlfrzU5xfjt9Ct
+	XQapcBVl9zZ2fg4hnd0J2+8TbVG7SZW2X/QirPZE8OPkFLlzx0lHcKV9mA42LczeYulmEDj/t+nXS
+	gl76lOGOFVyx/LDkKTTTWCRWVCMGGJvF6iKUE40b3fm6bWbrAnxQHjn21py/g6L24HT0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uzadM-008wAe-15; Fri, 19 Sep 2025 14:54:40 +0200
+Date: Fri, 19 Sep 2025 14:54:40 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] rust: net::phy inline if expressions to improve
+ read_status
+Message-ID: <d1fe6fa4-da50-4899-8e2c-0721851c4e0d@lunn.ch>
+References: <20250919112007.940061-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919112007.940061-2-thorsten.blum@linux.dev>
 
-Hi Miguel,
+On Fri, Sep 19, 2025 at 01:20:08PM +0200, Thorsten Blum wrote:
+> Inline the if expressions for dev.set_speed() and dev.set_duplex() to
+> improve read_status(). This ensures dev.set_speed() is called only once
 
-Please pull these changes for the rust timekeeping subsystem.
+What is the issue of calling it twice, or 42 times??
 
-This PR consists of three main parts:
+> and allows us to remove the local variable 'duplex'.
 
- - Additional functionality for `HrTimer` that allows use of operations
-   that can only be executed in timer callback context, or with
-   exclusive access to a timer that is not armed.
+And what is wrong with local variables?
 
- - Arithmetic operations for `Instant` and `Delta`.
+And did you disassemble the code? What is the compiler actually doing?
+Does it actually have a stack variable, or is it just a register? Does
+the optimiser end up with just a single call to set_speed()?
 
- - A few other minor updates.
+This is slow path code. It gets called at most once per
+second. Performance does not matter. Which means readability has much
+higher preference. And i find the older version much easier to read.
 
-While these changes will benefit everyone in the long run, they have a
-near future user in rvkms. The changes has been in linux-next for at
-least a week.
-
-The following changes since commit b320789d6883cc00ac78ce83bccbfe7ed58afcf0:
-
-  Linux 6.17-rc4 (2025-08-31 15:33:07 -0700)
-
-are available in the Git repository at:
-
-  ssh://github.com/Rust-for-Linux/linux.git tags/rust-timekeeping-v6.18
-
-for you to fetch changes up to 4521438fb076f8a6a52f45b0e508f6ef10ac0c49:
-
-  rust: time: Implement basic arithmetic operations for Delta (2025-09-04 16:56:48 +0200)
-
-Best regards,
-Andreas
-
-----------------------------------------------------------------
-Rust timekeeping changes for v6.18
-
- - Add methods on `HrTimer` that can only be called with exclusive access to an
-   unarmed timer, or form timer callback context.
-
- - Add arithmetic operations to `Instant` and `Delta`.
-
- - Add a few convenience and access methods to `HrTimer` and `Instant`.
-
-----------------------------------------------------------------
-Lyude Paul (9):
-      rust: hrtimer: Document the return value for HrTimerHandle::cancel()
-      rust: hrtimer: Add HrTimerInstant
-      rust: hrtimer: Add HrTimer::raw_forward() and forward()
-      rust: hrtimer: Add HrTimerCallbackContext and ::forward()
-      rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
-      rust: time: Add Instant::from_ktime()
-      rust: hrtimer: Add HrTimer::expires()
-      rust: time: Implement Add<Delta>/Sub<Delta> for Instant
-      rust: time: Implement basic arithmetic operations for Delta
-
- rust/kernel/time.rs                 | 163 +++++++++++++++++++++++++++++++++++-
- rust/kernel/time/hrtimer.rs         | 152 ++++++++++++++++++++++++++++++++-
- rust/kernel/time/hrtimer/arc.rs     |   9 +-
- rust/kernel/time/hrtimer/pin.rs     |   9 +-
- rust/kernel/time/hrtimer/pin_mut.rs |  12 ++-
- rust/kernel/time/hrtimer/tbox.rs    |   9 +-
- 6 files changed, 344 insertions(+), 10 deletions(-)
-
+	Andrew
