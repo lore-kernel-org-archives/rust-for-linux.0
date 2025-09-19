@@ -1,81 +1,99 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA0135942;
-	Fri, 19 Sep 2025 12:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A192212546
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Sep 2025 13:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758286501; cv=none; b=j+Jrf+4BKxqNi3AlR1dXv940DkW819JhenfuVFolRwtidjqwxRVDiwzdMOuPXcffP6YcOzq6lrMt0o5546LmJE+/2gsOmUQ04WkWYGK0eJoZxa/bLFpJCYmL+ZEc4ypGjoFeJrPBHcUkH6otpsPsISXryaNvkhQYKXeFp/Dk81w=
+	t=1758288731; cv=none; b=kGswt1rjkfiYR3tvJw/OIQy9XDDmLaAy7FD9JPIoD/z+EEXY1wJkVN7r/2Nh+QZNRc+D4/Ck+U49h94abhTNxlPvMUlyyMM029Tb5KzZqKyg/b7nlQDGvJbZcZ7E4wGCbdxwADRkjGegCMW2bG2sa6/YIaTsnnjZsTB0EsX8ZAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758286501; c=relaxed/simple;
-	bh=P9O+uKYrNCQvlYmvG/GeHErGmRke6M9S1hqFkm9RfvA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iK5JQVMy80TUa3NhZXbm7L9ZIpqF/CCezDmzsJ2MmbfFDb2E0/f3LkN89cLdNs/tsTNA2l0u3RukMzcj1/cUNpp8M8jcZXcICbFgAcXNcZY81b0qrFUckNCBd8uCFdzmcDlk7HHO3xhzdwMue7cLv5PTws7merAOfWs2GCVpQpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SA752FVk; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1758288731; c=relaxed/simple;
+	bh=522XQuHiQtRlADvCkhQlS7t0HivCCeZ8Q0Uxor6p3yY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=nMnZEmcFVSX1nAyDCirecFiR87XVLr8aMTRFh1Hsvf3YxMBZ9N0W5EHo6s/lmJFGLMfWcWEFSTGc0/LnEEeO//WfGZ/vZm68l1BvLEGQMR/WjZv13YULRBL4AFLrq96NuNPQlIN2yIR9ontY+DhkpaeXC8hF0iq6zD8e7BpOZ0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qTmi3ROZ; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SA752FVk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=pU5P+cOwzVnPymtF7+1qAqf6msbrSgTd7Jhc/pEZRXw=; b=SA752FVkQlNvUlfrzU5xfjt9Ct
-	XQapcBVl9zZ2fg4hnd0J2+8TbVG7SZW2X/QirPZE8OPkFLlzx0lHcKV9mA42LczeYulmEDj/t+nXS
-	gl76lOGOFVyx/LDkKTTTWCRWVCMGGJvF6iKUE40b3fm6bWbrAnxQHjn21py/g6L24HT0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzadM-008wAe-15; Fri, 19 Sep 2025 14:54:40 +0200
-Date: Fri, 19 Sep 2025 14:54:40 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] rust: net::phy inline if expressions to improve
- read_status
-Message-ID: <d1fe6fa4-da50-4899-8e2c-0721851c4e0d@lunn.ch>
-References: <20250919112007.940061-2-thorsten.blum@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qTmi3ROZ"
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758288727;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xobWA5WH5KabnpNcfVKu8vzslIjS1Bj9ADBWdzv8p14=;
+	b=qTmi3ROZk5xkG2QUZ6CAwtO2SMZ+9OHsi9BVV/+ZjAfeK937Tm0Olfj+YFYYkBysyvDFN8
+	qalWF7GMj0AVk3P+Dnk3xNpKHON/iNFyb4rSeV+t+2ZwNv4eFi7aZyrpyrxXl69mcuOOfP
+	TAeXL4iEyzFi3pPPMxC/Ey2anYbn2IY=
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250919112007.940061-2-thorsten.blum@linux.dev>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH net-next] rust: net::phy inline if expressions to improve
+ read_status
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <d1fe6fa4-da50-4899-8e2c-0721851c4e0d@lunn.ch>
+Date: Fri, 19 Sep 2025 15:30:00 +0200
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <A17B492B-0EAD-4CCE-9889-6D559401D3D3@linux.dev>
+References: <20250919112007.940061-2-thorsten.blum@linux.dev>
+ <d1fe6fa4-da50-4899-8e2c-0721851c4e0d@lunn.ch>
+To: Andrew Lunn <andrew@lunn.ch>
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Sep 19, 2025 at 01:20:08PM +0200, Thorsten Blum wrote:
-> Inline the if expressions for dev.set_speed() and dev.set_duplex() to
-> improve read_status(). This ensures dev.set_speed() is called only once
+On 19. Sep 2025, at 14:54, Andrew Lunn wrote:
+> On Fri, Sep 19, 2025 at 01:20:08PM +0200, Thorsten Blum wrote:
+>> Inline the if expressions for dev.set_speed() and dev.set_duplex() to
+>> improve read_status(). This ensures dev.set_speed() is called only once
+> 
+> What is the issue of calling it twice, or 42 times??
+> 
+>> and allows us to remove the local variable 'duplex'.
+> 
+> And what is wrong with local variables?
+> 
+> And did you disassemble the code? What is the compiler actually doing?
+> Does it actually have a stack variable, or is it just a register? Does
+> the optimiser end up with just a single call to set_speed()?
+> 
+> This is slow path code. It gets called at most once per
+> second. Performance does not matter. Which means readability has much
+> higher preference. And i find the older version much easier to read.
 
-What is the issue of calling it twice, or 42 times??
+There's obviously nothing wrong with local variables. This patch is not
+about performance improvements, but writing consistent and idiomatic
+Rust code.
 
-> and allows us to remove the local variable 'duplex'.
+Currently, dev.set_duplex() uses a local variable and is called once,
+whereas dev.set_speed() doesn't use a local variable and is called
+twice. This is just a cleanup patch using idiomatic (afaik) Rust code.
 
-And what is wrong with local variables?
+Thanks,
+Thorsten
 
-And did you disassemble the code? What is the compiler actually doing?
-Does it actually have a stack variable, or is it just a register? Does
-the optimiser end up with just a single call to set_speed()?
-
-This is slow path code. It gets called at most once per
-second. Performance does not matter. Which means readability has much
-higher preference. And i find the older version much easier to read.
-
-	Andrew
