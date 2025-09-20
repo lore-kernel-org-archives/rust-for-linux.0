@@ -1,806 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662852BF012;
-	Sat, 20 Sep 2025 09:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C137426E712;
+	Sat, 20 Sep 2025 10:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758361235; cv=none; b=uN1Gl/bg4qkAz+a179AY0IxljPm/NUzPBSVJkVlGAcDLg6BlVNfvtKZHd1ufPUT/T2DPDY5ZM/K3BiFNAhEqcpbAlt0cKfxs9oTM2MAO7/zByinoK4fDJmttkutizLrPqJ8t3J7k+HFl+VLXhld3YILzV5p7ubzkVD+I+k3rv10=
+	t=1758363744; cv=none; b=WHVqHufH03cyYbcaRhn+kdMxb9aJMtjFFe4Yr37xihC0/733x9IAauJwo6oNtHb5ytVPrbZwblTo+I/UoUgLRqHXkFUzNJWCcehHdB5PNopuEILm5X5Sh5eKt9QW5rU7Nr5waqe4NrlZk7hBMUGo0pkZXHqyVMq7RzAyRumok0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758361235; c=relaxed/simple;
-	bh=qh2pimvvOFUKtdu39TO2Z/ggLhCxk+StGr5jPvULFvI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fyog2Hx5S5KkEWRnxXrR5y/izQ1aAPa6nxUTv//54LN1djQvchuawIqUCgRXanEsJMp3UWcmVgYZzG11q9dKdWy1RFSq/ZuyDo66Vvt4IlMby7xa3FMbtmLXwV8qhhyfq52ktD8LTSqzrRwm+HZiUfSgvn7tod6LWskcA0r6ZqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ug6w4gh8; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ug6w4gh8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEC8C4CEF9;
-	Sat, 20 Sep 2025 09:40:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758361235;
-	bh=qh2pimvvOFUKtdu39TO2Z/ggLhCxk+StGr5jPvULFvI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ug6w4gh8jpdGWkDn5SFOsRhnqMkhDSQu7ao1pLUw5DA9AIsRYSk7O6vf/CF5Esa/u
-	 e6K62UMWfXsh1iUelKsOJLqCpOZNnPdkeJ1AGk06Z7dlGNOA7yPmiW3fU6vkaLHoA4
-	 YF6la9TaYYF/XU417pxTLDP7S3Gp412AXd09hczAt7GMXZ0zX4DPqSXpk8OodZbfCy
-	 YqkV6CT87mQ6A//yxyWpIqDebmmlvYs06ZxCea9zmDwro+/bn1v5VH/ftHmFbNXuQ9
-	 aOaeRTlfqKxwnG7XbIPjb1AUlbNY6i+MkGQ0cRw9H5mutYa/swz3duAP70R/NASVnG
-	 TQ3JwNBhWCS8Q==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uzu52-00000004Z2w-1Uvi;
-	Sat, 20 Sep 2025 11:40:32 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	"Jonathan Corbet" <corbet@lwn.net>,
-	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <mchehab+huawei@kernel.org>,
-	Benno Lossin <mchehab+huawei@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Danilo Krummrich <mchehab+huawei@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <mchehab+huawei@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 2/3] scripts: remove sphinx-build-wrapper from scripts/
-Date: Sat, 20 Sep 2025 11:40:25 +0200
-Message-ID: <d26137d908dc7813fafcded2c728ec837e4df073.1758361087.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1758361087.git.mchehab+huawei@kernel.org>
-References: <cover.1758361087.git.mchehab+huawei@kernel.org>
+	s=arc-20240116; t=1758363744; c=relaxed/simple;
+	bh=AMr0dm6XYmM343FpYxFM70WEL37BjWwZQn2RFC6QeBM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=KReAHp9I7msn2sACZThtIHFfE9rISAD4bJLlfNUCdPKAwu5HOKXBUtYSZnT7XqgJDkTg4rvSneHnzLzC2gN+vnuS98Z9nlQXcXIaadxk/cvfYSXfve+U6sDpwwh3kNCn5aZWroQ69cbR8a90G8oTP7dBcBO9/8TR9/HJzAX5juU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [117.22.84.112])
+	by gateway (Coremail) with SMTP id _____8AxSNFYgM5ofIoMAA--.27483S3;
+	Sat, 20 Sep 2025 18:22:16 +0800 (CST)
+Received: from [192.168.0.111] (unknown [117.22.84.112])
+	by front1 (Coremail) with SMTP id qMiowJCxH8JSgM5oE0+hAA--.1490S3;
+	Sat, 20 Sep 2025 18:22:10 +0800 (CST)
+Message-ID: <7eafa4a6-55bf-2fcb-19ef-b18bd51bfd39@loongson.cn>
+Date: Sat, 20 Sep 2025 18:22:11 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v1 1/2] LoongArch: Make LTO case independent in Makefile
+Content-Language: en-US
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>, Nathan Chancellor <nathan@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, WANG Rui <wangrui@loongson.cn>,
+ rust-for-linux@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20250909092707.3127-1-yangtiezhu@loongson.cn>
+ <20250909092707.3127-2-yangtiezhu@loongson.cn>
+ <20250920061536.GA1460394@ax162>
+ <CAAhV-H5=w82CDx=1=PZjf4FVW_dGWe_e__QazwDTwE3kKXtPLQ@mail.gmail.com>
+ <c9c4c0e6-946d-95de-9c03-a4b8e1636b81@loongson.cn>
+In-Reply-To: <c9c4c0e6-946d-95de-9c03-a4b8e1636b81@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+X-CM-TRANSID:qMiowJCxH8JSgM5oE0+hAA--.1490S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxKw1fXrW7uF1fWw4rWr43twc_yoW7Xr1Dpw
+	s7CFyDKrWrJr4ktr9rtw45XFy5tr4Dtw1xXF1UtF18AFsFvr1Yqr18Xr1qgFykJws7JrWI
+	qryrGFy7ZF4UAwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
+	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+	vIY487MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
+	6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+	0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
+	KfnxnUUI43ZEXa7IU8VwZ7UUUUU==
 
-Commit 8a298579cdfc ("scripts: sphinx-build-wrapper: get rid of uapi/media Makefile")
-accidentally added scripts/sphinx-build-wrapper, probably due
-to some rebase issues.
+On 9/20/25 17:19, Tiezhu Yang wrote:
+> On 9/20/25 16:23, Huacai Chen wrote:
+>> On Sat, Sep 20, 2025 at 2:15 PM Nathan Chancellor <nathan@kernel.org> 
+>> wrote:
+>>>
+>>> Hi Tiezhu,
+>>>
+>>> On Tue, Sep 09, 2025 at 05:27:06PM +0800, Tiezhu Yang wrote:
+>>>> LTO is not only used for Clang, it maybe used for Rust, make LTO 
+>>>> case out
+>>>> of CONFIG_CC_HAS_ANNOTATE_TABLEJUMP in Makefile.
+>>>>
+>>>> This is preparation for later patch, no function changes.
+>>>>
+>>>> Suggested-by: WANG Rui <wangrui@loongson.cn>
+>>>> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+>>>> ---
+>>>>   arch/loongarch/Makefile | 10 +++++-----
+>>>>   1 file changed, 5 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+>>>> index a3a9759414f4..9d80af7f75c8 100644
+>>>> --- a/arch/loongarch/Makefile
+>>>> +++ b/arch/loongarch/Makefile
+>>>> @@ -102,16 +102,16 @@ KBUILD_CFLAGS                   += $(call 
+>>>> cc-option,-mthin-add-sub) $(call cc-option,-Wa$(comma)
+>>>>
+>>>>   ifdef CONFIG_OBJTOOL
+>>>>   ifdef CONFIG_CC_HAS_ANNOTATE_TABLEJUMP
+>>>> +KBUILD_CFLAGS                        += -mannotate-tablejump
+>>>> +else
+>>>> +KBUILD_CFLAGS                        += -fno-jump-tables # keep 
+>>>> compatibility with older compilers
+>>>> +endif
+>>>> +ifdef CONFIG_LTO_CLANG
+>>>>   # The annotate-tablejump option can not be passed to LLVM backend 
+>>>> when LTO is enabled.
+>>>>   # Ensure it is aware of linker with LTO, 
+>>>> '--loongarch-annotate-tablejump' also needs to
+>>>>   # be passed via '-mllvm' to ld.lld.
+>>>> -KBUILD_CFLAGS                        += -mannotate-tablejump
+>>>> -ifdef CONFIG_LTO_CLANG
+>>>>   KBUILD_LDFLAGS                       += -mllvm 
+>>>> --loongarch-annotate-tablejump
+>>>>   endif
+>>>> -else
+>>>> -KBUILD_CFLAGS                        += -fno-jump-tables # keep 
+>>>> compatibility with older compilers
+>>>> -endif
+>>>>   endif
+>>>>
+>>>>   KBUILD_RUSTFLAGS             += 
+>>>> --target=loongarch64-unknown-none-softfloat -Ccode-model=small
+>>>> -- 
+>>>> 2.42.0
+>>>>
+>>>
+>>> This change is now in -next as commit b15212824a01 ("LoongArch: Make LTO
+>>> case independent in Makefile"), where it breaks the build for clang-18,
+>>> as '--loongarch-annotate-tablejump' is unimplemented there but there is
+>>> no version check before using it.
+>>>
+>>>    $ make -skj"$(nproc)" ARCH=loongarch LLVM=1 mrproper defconfig
+>>>
+>>>    $ scripts/config -d LTO_NONE -e LTO_CLANG_THIN
+>>>
+>>>    $ make -skj"$(nproc)" ARCH=loongarch LLVM=1 olddefconfig vmlinuz.efi
+>>>    ld.lld: error: -mllvm: ld.lld: Unknown command line argument 
+>>> '--loongarch-annotate-tablejump'.
+>>>    ...
+>>>
+>>>    $ scripts/config -s CC_HAS_ANNOTATE_TABLEJUMP
+>>>    undef
+>> Hmm, maybe we need this?
+>> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+>> index ae419e32f22e..fcfa793f9bb0 100644
+>> --- a/arch/loongarch/Makefile
+>> +++ b/arch/loongarch/Makefile
+>> @@ -115,7 +115,7 @@ ifdef CONFIG_LTO_CLANG
+>>   # The annotate-tablejump option can not be passed to LLVM backend
+>> when LTO is enabled.
+>>   # Ensure it is aware of linker with LTO,
+>> '--loongarch-annotate-tablejump' also needs to
+>>   # be passed via '-mllvm' to ld.lld.
+>> -KBUILD_LDFLAGS                 += -mllvm
+>> --loongarch-annotate-tablejump
+>> +KBUILD_LDFLAGS                 += $(call ld-option,-mllvm
+>> --loongarch-annotate-tablejump)
+>>   endif
+>>   endif
+> 
+> We need to handle the other case to use -fno-jump-tables if llvm does
+> not support -loongarch-annotate-tablejump.
+> 
+> So, it is better to update the minimal version of llvm to 20, which
+> includes the following two important commits:
+> 
+> [LoongArch] Add options for annotate tablejump
+> https://github.com/llvm/llvm-project/commit/4c2c17756739
+> 
+> [LoongArch] Avoid indirect branch jumps using the ra register
+> https://github.com/llvm/llvm-project/commit/21ef17c62645
+> 
+> If you are OK, I will send a patch to modify the following file:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/min-tool-version.sh#n29 
+> 
+> 
+> and keep arch/loongarch/Makefile as is.
 
-The file was added on a separate patch series, at tools/docs,
-and has other patches on the top of it, so drop this extra
-version.
+The other way is to keep scripts/min-tool-version.sh as is, and only
+modify arch/loongarch/Makefile, something like this (not tested):
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- scripts/sphinx-build-wrapper | 719 -----------------------------------
- 1 file changed, 719 deletions(-)
- delete mode 100755 scripts/sphinx-build-wrapper
+config LLD_HAS_ANNOTATE_TABLEJUMP
+	def_bool LLD_VERSION >= 200000
 
-diff --git a/scripts/sphinx-build-wrapper b/scripts/sphinx-build-wrapper
-deleted file mode 100755
-index abe8c26ae137..000000000000
---- a/scripts/sphinx-build-wrapper
-+++ /dev/null
-@@ -1,719 +0,0 @@
--#!/usr/bin/env python3
--# SPDX-License-Identifier: GPL-2.0
--# Copyright (C) 2025 Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
--#
--# pylint: disable=R0902, R0912, R0913, R0914, R0915, R0917, C0103
--#
--# Converted from docs Makefile and parallel-wrapper.sh, both under
--# GPLv2, copyrighted since 2008 by the following authors:
--#
--#    Akira Yokosawa <akiyks@gmail.com>
--#    Arnd Bergmann <arnd@arndb.de>
--#    Breno Leitao <leitao@debian.org>
--#    Carlos Bilbao <carlos.bilbao@amd.com>
--#    Dave Young <dyoung@redhat.com>
--#    Donald Hunter <donald.hunter@gmail.com>
--#    Geert Uytterhoeven <geert+renesas@glider.be>
--#    Jani Nikula <jani.nikula@intel.com>
--#    Jan Stancek <jstancek@redhat.com>
--#    Jonathan Corbet <corbet@lwn.net>
--#    Joshua Clayton <stillcompiling@gmail.com>
--#    Kees Cook <keescook@chromium.org>
--#    Linus Torvalds <torvalds@linux-foundation.org>
--#    Magnus Damm <damm+renesas@opensource.se>
--#    Masahiro Yamada <masahiroy@kernel.org>
--#    Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
--#    Maxim Cournoyer <maxim.cournoyer@gmail.com>
--#    Peter Foley <pefoley2@pefoley.com>
--#    Randy Dunlap <rdunlap@infradead.org>
--#    Rob Herring <robh@kernel.org>
--#    Shuah Khan <shuahkh@osg.samsung.com>
--#    Thorsten Blum <thorsten.blum@toblux.com>
--#    Tomas Winkler <tomas.winkler@intel.com>
--
--
--"""
--Sphinx build wrapper that handles Kernel-specific business rules:
--
--- it gets the Kernel build environment vars;
--- it determines what's the best parallelism;
--- it handles SPHINXDIRS
--
--This tool ensures that MIN_PYTHON_VERSION is satisfied. If version is
--below that, it seeks for a new Python version. If found, it re-runs using
--the newer version.
--"""
--
--import argparse
--import locale
--import os
--import re
--import shlex
--import shutil
--import subprocess
--import sys
--
--from concurrent import futures
--from glob import glob
--
--LIB_DIR = "lib"
--SRC_DIR = os.path.dirname(os.path.realpath(__file__))
--
--sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
--
--from jobserver import JobserverExec                  # pylint: disable=C0413
--
--
--def parse_version(version):
--    """Convert a major.minor.patch version into a tuple"""
--    return tuple(int(x) for x in version.split("."))
--
--def ver_str(version):
--    """Returns a version tuple as major.minor.patch"""
--
--    return ".".join([str(x) for x in version])
--
--# Minimal supported Python version needed by Sphinx and its extensions
--MIN_PYTHON_VERSION = parse_version("3.7")
--
--# Default value for --venv parameter
--VENV_DEFAULT = "sphinx_latest"
--
--# List of make targets and its corresponding builder and output directory
--TARGETS = {
--    "cleandocs": {
--        "builder": "clean",
--    },
--    "htmldocs": {
--        "builder": "html",
--    },
--    "epubdocs": {
--        "builder": "epub",
--        "out_dir": "epub",
--    },
--    "texinfodocs": {
--        "builder": "texinfo",
--        "out_dir": "texinfo",
--    },
--    "infodocs": {
--        "builder": "texinfo",
--        "out_dir": "texinfo",
--    },
--    "latexdocs": {
--        "builder": "latex",
--        "out_dir": "latex",
--    },
--    "pdfdocs": {
--        "builder": "latex",
--        "out_dir": "latex",
--    },
--    "xmldocs": {
--        "builder": "xml",
--        "out_dir": "xml",
--    },
--    "linkcheckdocs": {
--        "builder": "linkcheck"
--    },
--}
--
--# Paper sizes. An empty value will pick the default
--PAPER = ["", "a4", "letter"]
--
--class SphinxBuilder:
--    """
--    Handles a sphinx-build target, adding needed arguments to build
--    with the Kernel.
--    """
--
--    def is_rust_enabled(self):
--        """Check if rust is enabled at .config"""
--        config_path = os.path.join(self.srctree, ".config")
--        if os.path.isfile(config_path):
--            with open(config_path, "r", encoding="utf-8") as f:
--                return "CONFIG_RUST=y" in f.read()
--        return False
--
--    def get_path(self, path, abs_path=False):
--        """
--        Ancillary routine to handle patches the right way, as shell does.
--
--        It first expands "~" and "~user". Then, if patch is not absolute,
--        join self.srctree. Finally, if requested, convert to abspath.
--        """
--
--        path = os.path.expanduser(path)
--        if not path.startswith("/"):
--            path = os.path.join(self.srctree, path)
--
--        if abs_path:
--            return os.path.abspath(path)
--
--        return path
--
--    def __init__(self, venv=None, verbose=False, n_jobs=None, interactive=None):
--        """Initialize internal variables"""
--        self.venv = venv
--        self.verbose = None
--
--        # Normal variables passed from Kernel's makefile
--        self.kernelversion = os.environ.get("KERNELVERSION", "unknown")
--        self.kernelrelease = os.environ.get("KERNELRELEASE", "unknown")
--        self.pdflatex = os.environ.get("PDFLATEX", "xelatex")
--
--        if not interactive:
--            self.latexopts = os.environ.get("LATEXOPTS", "-interaction=batchmode -no-shell-escape")
--        else:
--            self.latexopts = os.environ.get("LATEXOPTS", "")
--
--        if not verbose:
--            verbose = bool(os.environ.get("KBUILD_VERBOSE", "") != "")
--
--        # Handle SPHINXOPTS evironment
--        sphinxopts = shlex.split(os.environ.get("SPHINXOPTS", ""))
--
--        # As we handle number of jobs and quiet in separate, we need to pick
--        # it the same way as sphinx-build would pick, so let's use argparse
--        # do to the right argument expansion
--        parser = argparse.ArgumentParser()
--        parser.add_argument('-j', '--jobs', type=int)
--        parser.add_argument('-q', '--quiet', type=int)
--
--        # Other sphinx-build arguments go as-is, so place them
--        # at self.sphinxopts
--        sphinx_args, self.sphinxopts = parser.parse_known_args(sphinxopts)
--        if sphinx_args.quiet == True:
--            self.verbose = False
--
--        if sphinx_args.jobs:
--            self.n_jobs = sphinx_args.jobs
--
--        # Command line arguments was passed, override SPHINXOPTS
--        if verbose is not None:
--            self.verbose = verbose
--
--        self.n_jobs = n_jobs
--
--        # Source tree directory. This needs to be at os.environ, as
--        # Sphinx extensions and media uAPI makefile needs it
--        self.srctree = os.environ.get("srctree")
--        if not self.srctree:
--            self.srctree = "."
--            os.environ["srctree"] = self.srctree
--
--        # Now that we can expand srctree, get other directories as well
--        self.sphinxbuild = os.environ.get("SPHINXBUILD", "sphinx-build")
--        self.kerneldoc = self.get_path(os.environ.get("KERNELDOC",
--                                                      "scripts/kernel-doc.py"))
--        self.obj = os.environ.get("obj", "Documentation")
--        self.builddir = self.get_path(os.path.join(self.obj, "output"),
--                                      abs_path=True)
--
--        # Media uAPI needs it
--        os.environ["BUILDDIR"] = self.builddir
--
--        # Detect if rust is enabled
--        self.config_rust = self.is_rust_enabled()
--
--        # Get directory locations for LaTeX build toolchain
--        self.pdflatex_cmd = shutil.which(self.pdflatex)
--        self.latexmk_cmd = shutil.which("latexmk")
--
--        self.env = os.environ.copy()
--
--        # If venv parameter is specified, run Sphinx from venv
--        if venv:
--            bin_dir = os.path.join(venv, "bin")
--            if os.path.isfile(os.path.join(bin_dir, "activate")):
--                # "activate" virtual env
--                self.env["PATH"] = bin_dir + ":" + self.env["PATH"]
--                self.env["VIRTUAL_ENV"] = venv
--                if "PYTHONHOME" in self.env:
--                    del self.env["PYTHONHOME"]
--                print(f"Setting venv to {venv}")
--            else:
--                sys.exit(f"Venv {venv} not found.")
--
--    def run_sphinx(self, sphinx_build, build_args, *args, **pwargs):
--        """
--        Executes sphinx-build using current python3 command and setting
--        -j parameter if possible to run the build in parallel.
--        """
--
--        with JobserverExec() as jobserver:
--            if jobserver.claim:
--                n_jobs = str(jobserver.claim)
--            else:
--                n_jobs = "auto" # Supported since Sphinx 1.7
--
--            cmd = []
--
--            if self.venv:
--                cmd.append("python")
--            else:
--                cmd.append(sys.executable)
--
--            cmd.append(sphinx_build)
--
--            # if present, SPHINXOPTS or command line --jobs overrides default
--            if self.n_jobs:
--                n_jobs = str(self.n_jobs)
--
--            if n_jobs:
--                cmd += [f"-j{n_jobs}"]
--
--            if not self.verbose:
--                cmd.append("-q")
--
--            cmd += self.sphinxopts
--
--            cmd += build_args
--
--            if self.verbose:
--                print(" ".join(cmd))
--
--            rc = subprocess.call(cmd, *args, **pwargs)
--
--    def handle_html(self, css, output_dir):
--        """
--        Extra steps for HTML and epub output.
--
--        For such targets, we need to ensure that CSS will be properly
--        copied to the output _static directory
--        """
--
--        if not css:
--            return
--
--        css = os.path.expanduser(css)
--        if not css.startswith("/"):
--            css = os.path.join(self.srctree, css)
--
--        static_dir = os.path.join(output_dir, "_static")
--        os.makedirs(static_dir, exist_ok=True)
--
--        try:
--            shutil.copy2(css, static_dir)
--        except (OSError, IOError) as e:
--            print(f"Warning: Failed to copy CSS: {e}", file=sys.stderr)
--
--    def build_pdf_file(self, latex_cmd, from_dir, path):
--        """Builds a single pdf file using latex_cmd"""
--        try:
--            subprocess.run(latex_cmd + [path],
--                            cwd=from_dir, check=True)
--
--            return True
--        except subprocess.CalledProcessError:
--            # LaTeX PDF error code is almost useless: it returns
--            # error codes even when build succeeds but has warnings.
--            # So, we'll ignore the results
--            return False
--
--    def pdf_parallel_build(self, tex_suffix, latex_cmd, tex_files, n_jobs):
--        """Build PDF files in parallel if possible"""
--        builds = {}
--        build_failed = False
--        max_len = 0
--        has_tex = False
--
--        # Process files in parallel
--        with futures.ThreadPoolExecutor(max_workers=n_jobs) as executor:
--            jobs = {}
--
--            for from_dir, pdf_dir, entry in tex_files:
--                name = entry.name
--
--                if not name.endswith(tex_suffix):
--                    continue
--
--                name = name[:-len(tex_suffix)]
--
--                max_len = max(max_len, len(name))
--
--                has_tex = True
--
--                future = executor.submit(self.build_pdf_file, latex_cmd,
--                                         from_dir, entry.path)
--                jobs[future] = (from_dir, name, entry.path)
--
--            for future in futures.as_completed(jobs):
--                from_dir, name, path = jobs[future]
--
--                pdf_name = name + ".pdf"
--                pdf_from = os.path.join(from_dir, pdf_name)
--
--                try:
--                    success = future.result()
--
--                    if success and os.path.exists(pdf_from):
--                        pdf_to = os.path.join(pdf_dir, pdf_name)
--
--                        os.rename(pdf_from, pdf_to)
--                        builds[name] = os.path.relpath(pdf_to, self.builddir)
--                    else:
--                        builds[name] = "FAILED"
--                        build_failed = True
--                except Exception as e:
--                    builds[name] = f"FAILED ({str(e)})"
--                    build_failed = True
--
--        # Handle case where no .tex files were found
--        if not has_tex:
--            name = "Sphinx LaTeX builder"
--            max_len = max(max_len, len(name))
--            builds[name] = "FAILED (no .tex file was generated)"
--            build_failed = True
--
--        return builds, build_failed, max_len
--
--    def handle_pdf(self, output_dirs):
--        """
--        Extra steps for PDF output.
--
--        As PDF is handled via a LaTeX output, after building the .tex file,
--        a new build is needed to create the PDF output from the latex
--        directory.
--        """
--        builds = {}
--        max_len = 0
--        tex_suffix = ".tex"
--
--        # Get all tex files that will be used for PDF build
--        tex_files = []
--        for from_dir in output_dirs:
--            pdf_dir = os.path.join(from_dir, "../pdf")
--            os.makedirs(pdf_dir, exist_ok=True)
--
--            if self.latexmk_cmd:
--                latex_cmd = [self.latexmk_cmd, f"-{self.pdflatex}"]
--            else:
--                latex_cmd = [self.pdflatex]
--
--            latex_cmd.extend(shlex.split(self.latexopts))
--
--            # Get a list of tex files to process
--            with os.scandir(from_dir) as it:
--                for entry in it:
--                    if entry.name.endswith(tex_suffix):
--                        tex_files.append((from_dir, pdf_dir, entry))
--
--        # When using make, this won't be used, as the number of jobs comes
--        # from POSIX jobserver. So, this covers the case where build comes
--        # from command line. On such case, serialize by default, except if
--        # the user explicitly sets the number of jobs.
--        n_jobs = 1
--
--        # n_jobs is either an integer or "auto". Only use it if it is a number
--        if self.n_jobs:
--            try:
--                n_jobs = int(self.n_jobs)
--            except ValueError:
--                pass
--
--        # When using make, jobserver.claim is the number of jobs that were
--        # used with "-j" and that aren't used by other make targets
--        with JobserverExec() as jobserver:
--            n_jobs = 1
--
--            # Handle the case when a parameter is passed via command line,
--            # using it as default, if jobserver doesn't claim anything
--            if self.n_jobs:
--                try:
--                    n_jobs = int(self.n_jobs)
--                except ValueError:
--                    pass
--
--            if jobserver.claim:
--                n_jobs = jobserver.claim
--
--            # Build files in parallel
--            builds, build_failed, max_len = self.pdf_parallel_build(tex_suffix,
--                                                                    latex_cmd,
--                                                                    tex_files,
--                                                                    n_jobs)
--
--        msg = "Summary"
--        msg += "\n" + "=" * len(msg)
--        print()
--        print(msg)
--
--        for pdf_name, pdf_file in builds.items():
--            print(f"{pdf_name:<{max_len}}: {pdf_file}")
--
--        print()
--
--        # return an error if a PDF file is missing
--
--        if build_failed:
--            sys.exit(f"PDF build failed: not all PDF files were created.")
--        else:
--            print("All PDF files were built.")
--
--    def handle_info(self, output_dirs):
--        """
--        Extra steps for Info output.
--
--        For texinfo generation, an additional make is needed from the
--        texinfo directory.
--        """
--
--        for output_dir in output_dirs:
--            try:
--                subprocess.run(["make", "info"], cwd=output_dir, check=True)
--            except subprocess.CalledProcessError as e:
--                sys.exit(f"Error generating info docs: {e}")
--
--    def cleandocs(self, builder):
--
--        shutil.rmtree(self.builddir, ignore_errors=True)
--
--    def build(self, target, sphinxdirs=None, conf="conf.py",
--              theme=None, css=None, paper=None):
--        """
--        Build documentation using Sphinx. This is the core function of this
--        module. It prepares all arguments required by sphinx-build.
--        """
--
--        builder = TARGETS[target]["builder"]
--        out_dir = TARGETS[target].get("out_dir", "")
--
--        # Cleandocs doesn't require sphinx-build
--        if target == "cleandocs":
--            self.cleandocs(builder)
--            return
--
--        # Other targets require sphinx-build
--        sphinxbuild = shutil.which(self.sphinxbuild, path=self.env["PATH"])
--        if not sphinxbuild:
--            sys.exit(f"Error: {self.sphinxbuild} not found in PATH.\n")
--
--        if builder == "latex":
--            if not self.pdflatex_cmd and not self.latexmk_cmd:
--                sys.exit("Error: pdflatex or latexmk required for PDF generation")
--
--        docs_dir = os.path.abspath(os.path.join(self.srctree, "Documentation"))
--
--        # Prepare base arguments for Sphinx build
--        kerneldoc = self.kerneldoc
--        if kerneldoc.startswith(self.srctree):
--            kerneldoc = os.path.relpath(kerneldoc, self.srctree)
--
--        # Prepare common Sphinx options
--        args = [
--            "-b", builder,
--            "-c", docs_dir,
--        ]
--
--        if builder == "latex":
--            if not paper:
--                paper = PAPER[1]
--
--            args.extend(["-D", f"latex_elements.papersize={paper}paper"])
--
--        if self.config_rust:
--            args.extend(["-t", "rustdoc"])
--
--        if conf:
--            self.env["SPHINX_CONF"] = self.get_path(conf, abs_path=True)
--
--        if not sphinxdirs:
--            sphinxdirs = os.environ.get("SPHINXDIRS", ".")
--
--        # The sphinx-build tool has a bug: internally, it tries to set
--        # locale with locale.setlocale(locale.LC_ALL, ''). This causes a
--        # crash if language is not set. Detect and fix it.
--        try:
--            locale.setlocale(locale.LC_ALL, '')
--        except Exception:
--            self.env["LC_ALL"] = "C"
--            self.env["LANG"] = "C"
--
--        # sphinxdirs can be a list or a whitespace-separated string
--        sphinxdirs_list = []
--        for sphinxdir in sphinxdirs:
--            if isinstance(sphinxdir, list):
--                sphinxdirs_list += sphinxdir
--            else:
--                for name in sphinxdir.split(" "):
--                    sphinxdirs_list.append(name)
--
--        # Build each directory
--        output_dirs = []
--        for sphinxdir in sphinxdirs_list:
--            src_dir = os.path.join(docs_dir, sphinxdir)
--            doctree_dir = os.path.join(self.builddir, ".doctrees")
--            output_dir = os.path.join(self.builddir, sphinxdir, out_dir)
--
--            # Make directory names canonical
--            src_dir = os.path.normpath(src_dir)
--            doctree_dir = os.path.normpath(doctree_dir)
--            output_dir = os.path.normpath(output_dir)
--
--            os.makedirs(doctree_dir, exist_ok=True)
--            os.makedirs(output_dir, exist_ok=True)
--
--            output_dirs.append(output_dir)
--
--            build_args = args + [
--                "-d", doctree_dir,
--                "-D", f"kerneldoc_bin={kerneldoc}",
--                "-D", f"version={self.kernelversion}",
--                "-D", f"release={self.kernelrelease}",
--                "-D", f"kerneldoc_srctree={self.srctree}",
--                src_dir,
--                output_dir,
--            ]
--
--            # Execute sphinx-build
--            try:
--                self.run_sphinx(sphinxbuild, build_args, env=self.env)
--            except Exception as e:
--                sys.exit(f"Build failed: {e}")
--
--            # Ensure that html/epub will have needed static files
--            if target in ["htmldocs", "epubdocs"]:
--                self.handle_html(css, output_dir)
--
--        # PDF and Info require a second build step
--        if target == "pdfdocs":
--            self.handle_pdf(output_dirs)
--        elif target == "infodocs":
--            self.handle_info(output_dirs)
--
--    @staticmethod
--    def get_python_version(cmd):
--        """
--        Get python version from a Python binary. As we need to detect if
--        are out there newer python binaries, we can't rely on sys.release here.
--        """
--
--        result = subprocess.run([cmd, "--version"], check=True,
--                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
--                                universal_newlines=True)
--        version = result.stdout.strip()
--
--        match = re.search(r"(\d+\.\d+\.\d+)", version)
--        if match:
--            return parse_version(match.group(1))
--
--        print(f"Can't parse version {version}")
--        return (0, 0, 0)
--
--    @staticmethod
--    def find_python():
--        """
--        Detect if are out there any python 3.xy version newer than the
--        current one.
--
--        Note: this routine is limited to up to 2 digits for python3. We
--        may need to update it one day, hopefully on a distant future.
--        """
--        patterns = [
--            "python3.[0-9]",
--            "python3.[0-9][0-9]",
--        ]
--
--        # Seek for a python binary newer than MIN_PYTHON_VERSION
--        for path in os.getenv("PATH", "").split(":"):
--            for pattern in patterns:
--                for cmd in glob(os.path.join(path, pattern)):
--                    if os.path.isfile(cmd) and os.access(cmd, os.X_OK):
--                        version = SphinxBuilder.get_python_version(cmd)
--                        if version >= MIN_PYTHON_VERSION:
--                            return cmd
--
--        return None
--
--    @staticmethod
--    def check_python():
--        """
--        Check if the current python binary satisfies our minimal requirement
--        for Sphinx build. If not, re-run with a newer version if found.
--        """
--        cur_ver = sys.version_info[:3]
--        if cur_ver >= MIN_PYTHON_VERSION:
--            return
--
--        python_ver = ver_str(cur_ver)
--
--        new_python_cmd = SphinxBuilder.find_python()
--        if not new_python_cmd:
--            sys.exit(f"Python version {python_ver} is not supported anymore.")
--
--        # Restart script using the newer version
--        script_path = os.path.abspath(sys.argv[0])
--        args = [new_python_cmd, script_path] + sys.argv[1:]
--
--        print(f"Python {python_ver} not supported. Changing to {new_python_cmd}")
--
--        try:
--            os.execv(new_python_cmd, args)
--        except OSError as e:
--            sys.exit(f"Failed to restart with {new_python_cmd}: {e}")
--
--def jobs_type(value):
--    """
--    Handle valid values for -j. Accepts Sphinx "-jauto", plus a number
--    equal or bigger than one.
--    """
--    if value is None:
--        return None
--
--    if value.lower() == 'auto':
--        return value.lower()
--
--    try:
--        if int(value) >= 1:
--            return value
--
--        raise argparse.ArgumentTypeError(f"Minimum jobs is 1, got {value}")
--    except ValueError:
--        raise argparse.ArgumentTypeError(f"Must be 'auto' or positive integer, got {value}")
--
--def main():
--    """
--    Main function. The only mandatory argument is the target. If not
--    specified, the other arguments will use default values if not
--    specified at os.environ.
--    """
--    parser = argparse.ArgumentParser(description="Kernel documentation builder")
--
--    parser.add_argument("target", choices=list(TARGETS.keys()),
--                        help="Documentation target to build")
--    parser.add_argument("--sphinxdirs", nargs="+",
--                        help="Specific directories to build")
--    parser.add_argument("--conf", default="conf.py",
--                        help="Sphinx configuration file")
--
--    parser.add_argument("--theme", help="Sphinx theme to use")
--
--    parser.add_argument("--css", help="Custom CSS file for HTML/EPUB")
--
--    parser.add_argument("--paper", choices=PAPER, default=PAPER[0],
--                        help="Paper size for LaTeX/PDF output")
--
--    parser.add_argument("-v", "--verbose", action='store_true',
--                        help="place build in verbose mode")
--
--    parser.add_argument('-j', '--jobs', type=jobs_type,
--                        help="Sets number of jobs to use with sphinx-build")
--
--    parser.add_argument('-i', '--interactive', action='store_true',
--                        help="Change latex default to run in interactive mode")
--
--    parser.add_argument("-V", "--venv", nargs='?', const=f'{VENV_DEFAULT}',
--                        default=None,
--                        help=f'If used, run Sphinx from a venv dir (default dir: {VENV_DEFAULT})')
--
--    args = parser.parse_args()
--
--    SphinxBuilder.check_python()
--
--    builder = SphinxBuilder(venv=args.venv, verbose=args.verbose,
--                            n_jobs=args.jobs, interactive=args.interactive)
--
--    builder.build(args.target, sphinxdirs=args.sphinxdirs, conf=args.conf,
--                  theme=args.theme, css=args.css, paper=args.paper)
--
--if __name__ == "__main__":
--    main()
--- 
-2.51.0
+ifdef CONFIG_LTO_CLANG
+ifdef CONFIG_LLD_HAS_ANNOTATE_TABLEJUMP
+KBUILD_LDFLAGS			+= -mllvm --loongarch-annotate-tablejump
+else
+KBUILD_LDFLAGS			+= -mllvm --no-jump-tables
+endif
+
+Update the minimal llvm version or change Makefile to compat various
+llvm versions, which one do you prefer? Pease let me know.
+
+Thanks,
+Tiezhu
 
