@@ -1,532 +1,164 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012065.outbound.protection.outlook.com [52.101.43.65])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208343128B1;
-	Sat, 20 Sep 2025 18:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1C923AB9C;
+	Sat, 20 Sep 2025 18:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758392605; cv=fail; b=C7P5kkwnIcDtUju3uynEG0VXPhZDPdUmqSMqWbGslL39iQ/liWXo/BfpuuTRdl3an3+FSbNFf8EdvlcKJy1MNX+1wb43b2AMS5WqW/xGrWyFPxDV3mM/oMXRvACO1dJ3u2OnsbGYQGgbVrqdBb9bmwA6lnaQ5U+12xzvkHNIxqk=
+	t=1758393822; cv=pass; b=oXi3TDThrjO03ORoP1ePn/ICm7nUlySEXi6wI0WLbDCHv3CmDd1+55od62V3Bnjd5EcIxflr3QnWgQH88aADP/20dqMj9TYOTN+LBf/E2oBoMAWvQSfrs7Fw/ycpWoE5UCVAxHSjqAJiSNhk5fLs55h827cyPYT6987k0zrA2lM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758392605; c=relaxed/simple;
-	bh=EzcYeSZVg+3WM/CDtsh+jDm6aHXMKzIRB6aXCUJDE4o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aUZDMC5lgFax0yCkynjaIuPfJx0K7BymCp5iY+CHO862rb+hfXYSDhQ2XVLaUlMgAjbrb4v2dUHh7z8IZhJL+76FQOY5vUNwLKhia1uGwZ7PArAzSH1BY4GtWY90yWt4SP2QM1BujxVlhd/U58zjdo0GFVjkXZCtoUgpMwnsyqk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CbZRnYM/; arc=fail smtp.client-ip=52.101.43.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1758393822; c=relaxed/simple;
+	bh=R5HRn2PgReoUKMx1eBc0jNxUugrZtBDmynmUJ5SSmPw=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=L1A+YFg2WqDNEwXRONETQI9Si59ec9OWe2btxMQ9Z8iz1EWDxJ5g7uLx/tj7bOOya6un3K+cu3ZZGGZOuypG0kscPvrrgTfcTG9hn7/MYkrA/+lTn6OPbGUkGgUlQtn+/JoeDol0NuUgn8I//FsozGEuehDDKlDRbZ2AR/Ys6L8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=iC6oMZYR; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CbZRnYM/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=isY2CFC/K3hKOI20WTY8krKaa2NZA3xqHbA1yq1BvYPyIkXijoKromE7BmjPJJVte5LEk/xk5cd3bR37UGHOTMZoRP+WW4RN6HmOEIup2jKNbwOLSxjDmToraWpThuO0UzJbk1ffjCO7inkFAYDkeZmAg2c0kWDilpAw1SqP1MEEktK/5xwd8Quje7lrNVFoe6m3NUJmeTCvTw2+7fmP7gjasmFEmxRkMK28cC5rKEJbhqW8LY2vzwWvQSpi/XCKJr65feX2JRMrclMsZEpgeELxqjG/NthZJnJE4rZKYQfd70qRC6ZzXxdC0yWrHbZywKEB3lbzGa29Si9qFL8p5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ONc/ZUW2asDMfHW/bkWXo0meLgThi5wMSmDKqGUvB+0=;
- b=RNpVu/uRZyWLGOKwrpNVPIc32llNeG34BDwdytfmExizbnqno0viBMOVuVvWzPKldOP63gHOr73p1ua+OjAzxRE5pLJzglXnPUUcamJxCHWAkY3r3Hg0pylB8Ub5aIgfrwCZvc+hZ302bnIPSpmuThc07031Cl0IfhKUePs6Zb8Ev/uUUjTaK7+BtLzBBY6X45/BUeAJr/YQ5FW492tHIo5NJAyFDYuS0Y1Fkj4EKInqCFTFHbqGbv6GK6+JCAn9aTg15s0n9RTURKr9duKr+Xp1tfsjzqT4cefc0y+uxiT4C5NDSiHtGSo0FDk0pHOHE299h4c8rsXKDiG5A3Woiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ONc/ZUW2asDMfHW/bkWXo0meLgThi5wMSmDKqGUvB+0=;
- b=CbZRnYM/7wKIFvBByzsND2eDTabojytud1/5YjMDEHfPJ80WRgax/XPazR6X11BJtiBApCX9WjtfA2FkoB9g2q0Qj0rHjpDN7VHkSXqwrRTY4dmMkqF1JsO1Uyq1iczkP+5UrcC0fGe1QIS5/mA6t+2wsBhq7VTqkhzLqWPTT2WAX8yVLDc9VpsaKz6WYBIe4UYzSozFUd1H43I6loPSiNrLaQ+OG3GBxeAgm4cMJkPBQ+tG2sLg1TlTAxTWhRofWA4GIRxw64883rf9Gb7LukNTQy5ItskggBtnm6l++p7lN6HnA33Jrm/pHtngmrfi41nx6OyoRkNONbKYtwPWBw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by MW6PR12MB8913.namprd12.prod.outlook.com (2603:10b6:303:247::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.18; Sat, 20 Sep
- 2025 18:23:13 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.9137.018; Sat, 20 Sep 2025
- 18:23:13 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	acourbot@nvidia.com
-Cc: Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org,
-	Elle Rhumsaa <elle@weathered-steel.dev>,
-	Yury Norov <yury.norov@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	nouveau@lists.freedesktop.org
-Subject: [PATCH v4 5/6] rust: Add KUNIT tests for bitfield
-Date: Sat, 20 Sep 2025 14:22:31 -0400
-Message-Id: <20250920182232.2095101-6-joelagnelf@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250920182232.2095101-1-joelagnelf@nvidia.com>
-References: <20250920182232.2095101-1-joelagnelf@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BN0PR04CA0099.namprd04.prod.outlook.com
- (2603:10b6:408:ec::14) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="iC6oMZYR"
+ARC-Seal: i=1; a=rsa-sha256; t=1758393802; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=cEgYZDLzfRP3m0D9gSl5NMlItx9GewrgEUTZAiHK3nGSyIXs4DaNdHMHzfnKYiIACio1d4WeTBfmRlAWFVRdcfpggn2YdGsPmz1NJY9Vw0PQFLfGOw5lQ3b+8OhhzOtMu5tMEgfrYAlC33/OyhuUlYY6DN4FhcDLXQxEgY5hKlU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1758393802; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=R5HRn2PgReoUKMx1eBc0jNxUugrZtBDmynmUJ5SSmPw=; 
+	b=DqxVBuq2QpZPyjeW57aAHrzuN/LZRdAqTtRxX2/7pWM9Jt872YpvI4tdTyUKnVMpmZOQcq8mM7oROAo/QcwJro9USQgCZH/3+ISIsouhddS8kGOTlnXkDxBtBZxoCuszdUsNqQlNR6aQ5DbWbF8FZEwThWEFNdCa6hR8Kxou4xs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1758393802;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=R5HRn2PgReoUKMx1eBc0jNxUugrZtBDmynmUJ5SSmPw=;
+	b=iC6oMZYRwJzyxocUOTGpkz0W+HXvdWA/p+MCy8s4jLrgF/+jujT7eZb5sndiChgw
+	xzLdjOImTgm74cJIoy6Mip+/rXXKSL1nSEi+dWRHMfO+Ub3UwpbxXxtuMT4omCRgK3R
+	VdatzvX+GUurkMZ4u6vXlFq6VXMKjGTBv+beyh9U=
+Received: by mx.zohomail.com with SMTPS id 1758393800802877.2320752719693;
+	Sat, 20 Sep 2025 11:43:20 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|MW6PR12MB8913:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac6812de-b667-49a1-88a0-08ddf872bd09
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gCas7HM96mVMH4mMxX4geJJ4qyxmh6avhw4fFeHCjIFqL/ohixwTZhfU+EwN?=
- =?us-ascii?Q?vTHFR+Sx0FJLC/EjUAKO7YiZvxxQRheHBxzYPVWmuUrh2sbbXQE6PZK0LxDb?=
- =?us-ascii?Q?ANFzOjHD6Fs7q/ZReeLBj44STxINIDB4NulqgbVYjA9GAwdc2KsXqZJ/1qjH?=
- =?us-ascii?Q?IH0MqFEROprVO/bGf16PPSTj0iDNWmY1zvEHmzdK+uyuSrnA8d9H4RHScJAW?=
- =?us-ascii?Q?o1TJEZkqXfkIMHqOOfZbvSEEGO5CHAxoQ27C9/BneOsxFWeu2sXKGWgpTjBV?=
- =?us-ascii?Q?Z+e4kB01v3g/7/JNdxEnxWAv/MP9o/dOcsEKOYW1kGUc4/TG9bRKhPd0aqCA?=
- =?us-ascii?Q?HocqrOPqQktrq7eZIjq+84sH+QwnhYk4H0dmEtHYKtGHRs2yCpri9QpScgXU?=
- =?us-ascii?Q?ewcbtflU19NGJiy2EG7NJHSMKMerYzkqQZLhfZpDK8R2gE0woeWVYoAGBl6L?=
- =?us-ascii?Q?5jse7U0Q4Ns78G2hUOOPz9OXJQmXRvGX0Cle4CPbgyPpXEna3eE+cwlP5nqv?=
- =?us-ascii?Q?WwO0ydzlskkBaMiKSRdM82vHYH2VSd+WemYcaYPZeib4pHOdTx251LaLpHvZ?=
- =?us-ascii?Q?gSm9dsznTrZhmOv7qiAhgHUCh9gja62cm+gZnXnPtK/4F7gY82u3GQQ8QnXN?=
- =?us-ascii?Q?LvUcEQMaB3nqt3JKslOnRe+4s8iq+GE57hEwS34fY2p/eY92X+T0uQXpQ0v4?=
- =?us-ascii?Q?aR6uufzOfTip5Bd7Er8hn7Xf65VCrQ+HhO3qvVmwT4M6pbrBa8yG4cECQcW9?=
- =?us-ascii?Q?Fpx31RBmHwAkRT1culY23gGE2A2exGnjg7ZJGjqyDFqIWFJdPGuo3AHWuTdH?=
- =?us-ascii?Q?XRZvZcgmMlt0OyITgZV0i1udSKoFCQJtSHH3/mf5XFSp1uNkIw+bQ5UEJ2cy?=
- =?us-ascii?Q?yMKSfmzTFI/+Z/P82Ku1pTs3jAxkI/inqUekC+0ADKyZQiCQxlZJpSwdkOCX?=
- =?us-ascii?Q?IuVYaQY1bEae2NixXRuHfzcqla85bClmTwMDt9eIhiaq5jXLspUXFemZehtB?=
- =?us-ascii?Q?dBY6o5KOHgvS7bgHizXZTMUarsI610c+CvrrIy30RCfs8jHwUFZGsj2JAaIj?=
- =?us-ascii?Q?H9Osp3mtWMngNlFQ8irZgFndmfaClsniBYD6A2QxegFGP7F02+lcjfDt1fHl?=
- =?us-ascii?Q?r7sYnqBO2kV6flCEFjqnjgIRCHJGfVMVZVEqPHy2Y04QZk54VGcsucCI/6kg?=
- =?us-ascii?Q?LTvcXEmelNzek4XSNJou+Z63ZPfS4VpE9COt1GqEeXvU2ohD5u+ZLcz/lbTd?=
- =?us-ascii?Q?U58q60Qx6G9tMCXE7H1AeIRx5tDJyNas3dq15Rx50PX/mMrqi6uRUxGd3Ctl?=
- =?us-ascii?Q?+2vnySWr77obbGOc6lahfbQXNlI+vd2dFy8nhWnt0Q+uekM5EZ0CznBoEFIq?=
- =?us-ascii?Q?k2lhoYf73wtFkdgPKR9FmVcJ7KkAWJ+ZzsK7hd7QmT0uA/xbHRUYtDfhW5Hr?=
- =?us-ascii?Q?sD//IAxcllA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1udNHi2GMvk1sniumNCecbDZ5nMMKROVmUfZvCo3OSUT9kETPCSMnsqZ4icn?=
- =?us-ascii?Q?pgphWCMnglbXZk5a4eKGiFJJt/tBC5mteaCwdRh8hNRfu7aoTsjcURVxc0xy?=
- =?us-ascii?Q?aRHMZHM3S1pcUM55oDadtptyJIUb3djI+4OFNdti2F3wjRlOmyQpqEEjIzNh?=
- =?us-ascii?Q?4Wj2u7L/ulm38xmO8OeowoOubZz5eNmddQp0pIfBOKIBpalhyxE6eFCYDTZP?=
- =?us-ascii?Q?Tzb8JMZIeUAU0G/6CX7IBfcfaJApvaPOQVpgvFSErhhOd5noEefyyzrCThoX?=
- =?us-ascii?Q?lSZHEMtcHW4HI4L4UTroqXn0dYGIOFeH47K0rLD4jD0k7FMUVSfC1qtq/nJK?=
- =?us-ascii?Q?ur3yelAWt4gwM/4Gg07eWugqqcIlEtzotTx1Cl3GqaMEZgeOC3cAEhtOX5T0?=
- =?us-ascii?Q?poLG28QcFHe+9ROHBd7qMWksf76/kmtK9RwT29lAuhHF9N9qQXea72LTC9C6?=
- =?us-ascii?Q?6sBu+LNY1xs34IEauRxyMLRiy6/GwmOvYwnpr3mgBzUf3BNhboUjI/aWxHe4?=
- =?us-ascii?Q?tW2cQ4+sPzRHiIqhWHgWOJxpe+txU488W5zTq8coJ5VcHs/VMvNFc6GRbQK2?=
- =?us-ascii?Q?1LGSGkmu/APt18Lgfm8TMtAa22WfhAlMLnccYsCWRXMyiacK3w6kUulso8qs?=
- =?us-ascii?Q?6D03x26YdlePwp0OaOkAKrPaq7jSEcdSkyyt2ZW7GJRtnk3QT+0RqsAFiFrI?=
- =?us-ascii?Q?mTPsnMpsCaQlNoeM03vluyBmDtkPxKwLb6cYNNR6T2k9K1LX5RTIeKami9Sz?=
- =?us-ascii?Q?snP3PRcct5BdoYbg29/BJUkyOEihRF4D3wB5UFg9t0CVZLVIWoX/P/4wC/x1?=
- =?us-ascii?Q?VHp0uLLU2fkGOxO96K8xUtsLnO65mVub4qiWXFLqrOFYU20eBawxdBmMZw1h?=
- =?us-ascii?Q?bn32fZHYNMsCsV8fU6qw28h/pClNr3wkkgU/zqKvQL116b/wSrNKDGd26cb7?=
- =?us-ascii?Q?pQITMIWNYlSdAChATwgBhmC0qqT7IH+OdXTL/DhzW6bDLz7TmT5jkNrbbUjg?=
- =?us-ascii?Q?L4+hSdGohsnEgJEABY/uBRDZPOCzuZZR140RrbaDJupRQopAZtxM8iTOP+fu?=
- =?us-ascii?Q?HGPgxxszxods2DUrkQnOgFo5FLMZ+eVYy01P+zThJBAXGEIJ9eVvoc+kZ2PA?=
- =?us-ascii?Q?5s0jXeSGFr7l3yz0GgoN1S+ynVhgVO42DUq3bF+SOFbTepBnIm+2tHW38d9p?=
- =?us-ascii?Q?hpMe2bFVH8oEg5Hy/l8ZV45/hEDZmyemIY5F6u/xg/T7oIRhb/btvWppWybc?=
- =?us-ascii?Q?k6TeYmatjNbl1wl+AmGKycU0X6u5kVjcnSeDsik4bntfXyWeXhxmTRbLUKTA?=
- =?us-ascii?Q?t0JnoJU6KJRtJzlD2BzISJmnub+9e9dSXO6T1oMg0aindk4eQLkMQVOeWmIe?=
- =?us-ascii?Q?dITXM3uSeDYF9a1sJpph802zGuvGHT+lcPFdPOmjLpgKDTjy8t0DmMNhwnBl?=
- =?us-ascii?Q?emGit4jXuXHx6OsrpT0yxLYBM3MkxELEMXtl2O1K7+jeN1lX1gJpChKcyxTN?=
- =?us-ascii?Q?Yb+5Ctn48jzueTOCFjHOTCKGWH62MEAFBJaY28hB3IOC8CVV4YLW5HbXd5zt?=
- =?us-ascii?Q?E7JhYLlyKH8HihJ5jEXsGiwD2H/So6vZLXKixNDq?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac6812de-b667-49a1-88a0-08ddf872bd09
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2025 18:23:03.9116
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U4UnMF6eosgZ55LsAGCMeaOsjRn3+nQdKPpbRWcbwi9TzhbmlFQw+xQOifck+9XD/e9aMZV1G3C2vKiBP6h7dQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8913
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 1/2] rust: clk: implement Send and Sync
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAH5fLgib2a7UK0cYqy1cM6h_OZDMWf+JX+KpXXCJNTZchyfP5A@mail.gmail.com>
+Date: Sat, 20 Sep 2025 20:43:05 +0200
+Cc: Stephen Boyd <sboyd@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0EAFA337-2E62-489E-9C22-61A6E1813C8A@collabora.com>
+References: <20250910-clk-type-state-v2-0-1b97c11bb631@collabora.com>
+ <20250910-clk-type-state-v2-1-1b97c11bb631@collabora.com>
+ <aMG6JVMcMxVuX7De@tardis-2.local>
+ <3D936C1B-FBA9-4964-859C-84BB665BBE3B@collabora.com>
+ <175834480479.4354.6269916774389395049@lazor>
+ <CAH5fLgib2a7UK0cYqy1cM6h_OZDMWf+JX+KpXXCJNTZchyfP5A@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Add KUNIT tests to make sure the macro is working correctly.
 
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
----
- rust/kernel/bits/bitfield.rs | 349 +++++++++++++++++++++++++++++++++++
- 1 file changed, 349 insertions(+)
 
-diff --git a/rust/kernel/bits/bitfield.rs b/rust/kernel/bits/bitfield.rs
-index 6089f3cdbd1b..99e443580b36 100644
---- a/rust/kernel/bits/bitfield.rs
-+++ b/rust/kernel/bits/bitfield.rs
-@@ -341,3 +341,352 @@ fn default() -> Self {
-         }
-     };
- }
-+
-+#[::kernel::macros::kunit_tests(kernel_bitfield)]
-+mod tests {
-+    use core::convert::TryFrom;
-+
-+    // Enum types for testing => and ?=> conversions
-+    #[derive(Debug, Clone, Copy, PartialEq)]
-+    enum MemoryType {
-+        Unmapped = 0,
-+        Normal = 1,
-+        Device = 2,
-+        Reserved = 3,
-+    }
-+
-+    impl Default for MemoryType {
-+        fn default() -> Self {
-+            MemoryType::Unmapped
-+        }
-+    }
-+
-+    impl TryFrom<u8> for MemoryType {
-+        type Error = u8;
-+        fn try_from(value: u8) -> Result<Self, Self::Error> {
-+            match value {
-+                0 => Ok(MemoryType::Unmapped),
-+                1 => Ok(MemoryType::Normal),
-+                2 => Ok(MemoryType::Device),
-+                3 => Ok(MemoryType::Reserved),
-+                _ => Err(value),
-+            }
-+        }
-+    }
-+
-+    impl From<MemoryType> for u64 {
-+        fn from(mt: MemoryType) -> u64 {
-+            mt as u64
-+        }
-+    }
-+
-+    #[derive(Debug, Clone, Copy, PartialEq)]
-+    enum Priority {
-+        Low = 0,
-+        Medium = 1,
-+        High = 2,
-+        Critical = 3,
-+    }
-+
-+    impl Default for Priority {
-+        fn default() -> Self {
-+            Priority::Low
-+        }
-+    }
-+
-+    impl From<u8> for Priority {
-+        fn from(value: u8) -> Self {
-+            match value & 0x3 {
-+                0 => Priority::Low,
-+                1 => Priority::Medium,
-+                2 => Priority::High,
-+                _ => Priority::Critical,
-+            }
-+        }
-+    }
-+
-+    impl From<Priority> for u16 {
-+        fn from(p: Priority) -> u16 {
-+            p as u16
-+        }
-+    }
-+
-+    bitfield! {
-+        struct TestPageTableEntry: u64 {
-+            0:0       present     as bool;
-+            1:1       writable    as bool;
-+            11:9      available   as u8;
-+            13:12     mem_type    as u8 ?=> MemoryType;
-+            17:14     extended_type as u8 ?=> MemoryType;  // For testing failures
-+            51:12     pfn         as u64;
-+            51:12     pfn_overlap as u64;
-+            61:52     available2  as u16;
-+        }
-+    }
-+
-+    bitfield! {
-+        struct TestControlRegister: u16 {
-+            0:0       enable      as bool;
-+            3:1       mode        as u8;
-+            5:4       priority    as u8 => Priority;
-+            7:4       priority_nibble as u8;
-+            15:8      channel     as u8;
-+        }
-+    }
-+
-+    bitfield! {
-+        struct TestStatusRegister: u8 {
-+            0:0       ready       as bool;
-+            1:1       error       as bool;
-+            3:2       state       as u8;
-+            7:4       reserved    as u8;
-+            7:0       full_byte   as u8;  // For entire register
-+        }
-+    }
-+
-+    bitfield! {
-+        struct TestPartialBits: u8 {
-+            0:0       ready       as bool;
-+            1:1       error       as bool;
-+            3:2       state       as u8;
-+        }
-+    }
-+
-+    #[test]
-+    fn test_single_bits() {
-+        let mut pte = TestPageTableEntry::default();
-+
-+        assert!(!pte.present());
-+        assert!(!pte.writable());
-+
-+        pte = pte.set_present(true);
-+        assert!(pte.present());
-+
-+        pte = pte.set_writable(true);
-+        assert!(pte.writable());
-+
-+        pte = pte.set_writable(false);
-+        assert!(!pte.writable());
-+
-+        assert_eq!(pte.available(), 0);
-+        pte = pte.set_available(0x5);
-+        assert_eq!(pte.available(), 0x5);
-+    }
-+
-+    #[test]
-+    fn test_range_fields() {
-+        let mut pte = TestPageTableEntry::default();
-+
-+        pte = pte.set_pfn(0x123456);
-+        assert_eq!(pte.pfn(), 0x123456);
-+        // Test overlapping field reads same value
-+        assert_eq!(pte.pfn_overlap(), 0x123456);
-+
-+        pte = pte.set_available(0x7);
-+        assert_eq!(pte.available(), 0x7);
-+
-+        pte = pte.set_available2(0x3FF);
-+        assert_eq!(pte.available2(), 0x3FF);
-+
-+        // Test TryFrom with ?=> for MemoryType
-+        pte = pte.set_mem_type(MemoryType::Device);
-+        assert_eq!(pte.mem_type(), Ok(MemoryType::Device));
-+
-+        pte = pte.set_mem_type(MemoryType::Normal);
-+        assert_eq!(pte.mem_type(), Ok(MemoryType::Normal));
-+
-+        // Test all valid values for mem_type
-+        pte = pte.set_mem_type(MemoryType::Reserved); // Valid value: 3
-+        assert_eq!(pte.mem_type(), Ok(MemoryType::Reserved));
-+
-+        // Test failure case using extended_type field which has 4 bits (0-15)
-+        // MemoryType only handles 0-3, so values 4-15 should return Err
-+        let mut raw = pte.raw();
-+        // Set bits 17:14 to 7 (invalid for MemoryType)
-+        raw = (raw & !::kernel::bits::genmask_u64(14..=17)) | (0x7 << 14);
-+        let invalid_pte = TestPageTableEntry::from(raw);
-+        // Should return Err with the invalid value
-+        assert_eq!(invalid_pte.extended_type(), Err(0x7));
-+
-+        // Test a valid value after testing invalid to ensure both cases work
-+        // Set bits 17:14 to 2 (valid: Device)
-+        raw = (raw & !::kernel::bits::genmask_u64(14..=17)) | (0x2 << 14);
-+        let valid_pte = TestPageTableEntry::from(raw);
-+        assert_eq!(valid_pte.extended_type(), Ok(MemoryType::Device));
-+
-+        let max_pfn = ::kernel::bits::genmask_u64(0..=39);
-+        pte = pte.set_pfn(max_pfn);
-+        assert_eq!(pte.pfn(), max_pfn);
-+        assert_eq!(pte.pfn_overlap(), max_pfn);
-+    }
-+
-+    #[test]
-+    fn test_builder_pattern() {
-+        let pte = TestPageTableEntry::default()
-+            .set_present(true)
-+            .set_writable(true)
-+            .set_available(0x7)
-+            .set_pfn(0xABCDEF)
-+            .set_mem_type(MemoryType::Reserved)
-+            .set_available2(0x3FF);
-+
-+        assert!(pte.present());
-+        assert!(pte.writable());
-+        assert_eq!(pte.available(), 0x7);
-+        assert_eq!(pte.pfn(), 0xABCDEF);
-+        assert_eq!(pte.pfn_overlap(), 0xABCDEF);
-+        assert_eq!(pte.mem_type(), Ok(MemoryType::Reserved));
-+        assert_eq!(pte.available2(), 0x3FF);
-+    }
-+
-+    #[test]
-+    fn test_raw_operations() {
-+        let raw_value = 0x3FF0000003123E03u64;
-+
-+        // Test using ::from() syntax
-+        let pte = TestPageTableEntry::from(raw_value);
-+        assert_eq!(pte.raw(), raw_value);
-+
-+        assert!(pte.present());
-+        assert!(pte.writable());
-+        assert_eq!(pte.available(), 0x7);
-+        assert_eq!(pte.pfn(), 0x3123);
-+        assert_eq!(pte.pfn_overlap(), 0x3123);
-+        assert_eq!(pte.mem_type(), Ok(MemoryType::Reserved));
-+        assert_eq!(pte.available2(), 0x3FF);
-+
-+        // Test using direct constructor syntax TestStruct(value)
-+        let pte2 = TestPageTableEntry(raw_value);
-+        assert_eq!(pte2.raw(), raw_value);
-+    }
-+
-+    #[test]
-+    fn test_u16_bitfield() {
-+        let mut ctrl = TestControlRegister::default();
-+
-+        assert!(!ctrl.enable());
-+        assert_eq!(ctrl.mode(), 0);
-+        assert_eq!(ctrl.priority(), Priority::Low);
-+        assert_eq!(ctrl.priority_nibble(), 0);
-+        assert_eq!(ctrl.channel(), 0);
-+
-+        ctrl = ctrl.set_enable(true);
-+        assert!(ctrl.enable());
-+
-+        ctrl = ctrl.set_mode(0x5);
-+        assert_eq!(ctrl.mode(), 0x5);
-+
-+        // Test From conversion with =>
-+        ctrl = ctrl.set_priority(Priority::High);
-+        assert_eq!(ctrl.priority(), Priority::High);
-+        assert_eq!(ctrl.priority_nibble(), 0x2); // High = 2 in bits 5:4
-+
-+        ctrl = ctrl.set_channel(0xAB);
-+        assert_eq!(ctrl.channel(), 0xAB);
-+
-+        // Test overlapping fields
-+        ctrl = ctrl.set_priority_nibble(0xF);
-+        assert_eq!(ctrl.priority_nibble(), 0xF);
-+        assert_eq!(ctrl.priority(), Priority::Critical); // bits 5:4 = 0x3
-+
-+        let ctrl2 = TestControlRegister::default()
-+            .set_enable(true)
-+            .set_mode(0x3)
-+            .set_priority(Priority::Medium)
-+            .set_channel(0x42);
-+
-+        assert!(ctrl2.enable());
-+        assert_eq!(ctrl2.mode(), 0x3);
-+        assert_eq!(ctrl2.priority(), Priority::Medium);
-+        assert_eq!(ctrl2.channel(), 0x42);
-+
-+        let raw_value: u16 = 0x4217;
-+        let ctrl3 = TestControlRegister::from(raw_value);
-+        assert_eq!(ctrl3.raw(), raw_value);
-+        assert!(ctrl3.enable());
-+        assert_eq!(ctrl3.priority(), Priority::Medium);
-+        assert_eq!(ctrl3.priority_nibble(), 0x1);
-+        assert_eq!(ctrl3.channel(), 0x42);
-+    }
-+
-+    #[test]
-+    fn test_u8_bitfield() {
-+        let mut status = TestStatusRegister::default();
-+
-+        assert!(!status.ready());
-+        assert!(!status.error());
-+        assert_eq!(status.state(), 0);
-+        assert_eq!(status.reserved(), 0);
-+        assert_eq!(status.full_byte(), 0);
-+
-+        status = status.set_ready(true);
-+        assert!(status.ready());
-+        assert_eq!(status.full_byte(), 0x01);
-+
-+        status = status.set_error(true);
-+        assert!(status.error());
-+        assert_eq!(status.full_byte(), 0x03);
-+
-+        status = status.set_state(0x3);
-+        assert_eq!(status.state(), 0x3);
-+        assert_eq!(status.full_byte(), 0x0F);
-+
-+        status = status.set_reserved(0xA);
-+        assert_eq!(status.reserved(), 0xA);
-+        assert_eq!(status.full_byte(), 0xAF);
-+
-+        // Test overlapping field
-+        status = status.set_full_byte(0x55);
-+        assert_eq!(status.full_byte(), 0x55);
-+        assert!(status.ready());
-+        assert!(!status.error());
-+        assert_eq!(status.state(), 0x1);
-+        assert_eq!(status.reserved(), 0x5);
-+
-+        let status2 = TestStatusRegister::default()
-+            .set_ready(true)
-+            .set_state(0x2)
-+            .set_reserved(0x5);
-+
-+        assert!(status2.ready());
-+        assert!(!status2.error());
-+        assert_eq!(status2.state(), 0x2);
-+        assert_eq!(status2.reserved(), 0x5);
-+        assert_eq!(status2.full_byte(), 0x59);
-+
-+        let raw_value: u8 = 0x59;
-+        let status3 = TestStatusRegister::from(raw_value);
-+        assert_eq!(status3.raw(), raw_value);
-+        assert!(status3.ready());
-+        assert!(!status3.error());
-+        assert_eq!(status3.state(), 0x2);
-+        assert_eq!(status3.reserved(), 0x5);
-+        assert_eq!(status3.full_byte(), 0x59);
-+
-+        let status4 = TestStatusRegister::from(0xFF);
-+        assert!(status4.ready());
-+        assert!(status4.error());
-+        assert_eq!(status4.state(), 0x3);
-+        assert_eq!(status4.reserved(), 0xF);
-+        assert_eq!(status4.full_byte(), 0xFF);
-+    }
-+
-+    #[test]
-+    fn test_partial_bitfield() {
-+        // Test creating a bitfield from a runtime value that has bits set
-+        // beyond what the defined fields can handle.
-+        let raw_value: u8 = 0xff; // All bits set
-+        let bf = TestPartialBits::from(raw_value);
-+        assert_eq!(bf.raw(), 0xff);
-+
-+        // Test individual field extraction from the runtime value
-+        assert!(bf.ready());
-+        assert!(bf.error());
-+        assert_eq!(bf.state(), 3); // bits 3:2 are both set
-+
-+        // Test overflow of setters
-+        let mut bf2 = TestPartialBits::default();
-+        bf2 = bf2.set_state(0x55);
-+        assert_eq!(bf2.state(), 0x1);
-+    }
-+}
--- 
-2.34.1
+> On 20 Sep 2025, at 19:12, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> On Sat, Sep 20, 2025 at 7:06=E2=80=AFAM Stephen Boyd =
+<sboyd@kernel.org> wrote:
+>>=20
+>> Quoting Daniel Almeida (2025-09-10 11:47:30)
+>>> Hi Boqun,
+>>>=20
+>>>> On 10 Sep 2025, at 14:49, Boqun Feng <boqun.feng@gmail.com> wrote:
+>>>>=20
+>>>> On Wed, Sep 10, 2025 at 02:28:27PM -0300, Daniel Almeida wrote:
+>>>>> From: Alice Ryhl <aliceryhl@google.com>
+>>>>>=20
+>>>>> These traits are required for drivers to embed the Clk type in =
+their own
+>>>>> data structures because driver data structures are usually =
+required to
+>>>>> be Send. See e.g. [1] for the kind of workaround that drivers =
+currently
+>>>>> need due to lacking this annotation.
+>>>>>=20
+>>>>> Link: =
+https://lore.kernel.org/rust-for-linux/20250812-tyr-v2-1-9e0f3dc9da95@coll=
+abora.com/ [1]
+>>>>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>>>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>>>>> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+>>>>> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+>>>>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>>>=20
+>>>> This tag list looks a bit weird to me. Why is there a SoB from you
+>>>> before Alice's SoB? At least for the usage I'm familiar with, =
+outside
+>>>> the case of Co-developed-bys, multiple SoBs is used for recording =
+how
+>>>> the patches are routed. For example, if I have a patch that has my =
+SoB
+>>>> and I send it to you, you queue in your tree and then send out to =
+other
+>>>> maintainers for merging, in general you would put your SoB after =
+mine in
+>>>> that case. But I don't think that's case here? Alice's patch has =
+only
+>>>> her SoB:
+>>>>=20
+>>>> =
+https://lore.kernel.org/rust-for-linux/20250904-clk-send-sync-v1-1-48d0233=
+20eb8@google.com/
+>>>>=20
+>>>> What's the intention of the SoB tag here?
+>>>>=20
+>>>> Otherwise the patch looks good to me. If we get the tag list =
+resolved,
+>>>> feel free to add:
+>>>>=20
+>>>> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+>>>>=20
+>>>> Regards,
+>>>> Boqun
+>>>>=20
+>>>=20
+>>> You have to include your SOB when submitting patches from others.
+>>>=20
+>>> This is something I tend to forget often, so I made sure it was =
+there. The
+>>> order may be indeed off though.
+>>=20
+>> Yes the order is wrong. The first SoB should be the commit author.
+>=20
+> One optoin is to just land the original patch:
+> =
+https://lore.kernel.org/all/20250904-clk-send-sync-v1-1-48d023320eb8@googl=
+e.com/
+>=20
+> Alice
 
+I guess this makes even more sense. I was hoping to land these two =
+together,
+but clearly this will not be possible for the time being as the second =
+patch
+has no r-b tags.
+
+=E2=80=94 Daniel=
