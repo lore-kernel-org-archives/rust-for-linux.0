@@ -1,97 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD664A21;
-	Sat, 20 Sep 2025 05:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1812D2F872;
+	Sat, 20 Sep 2025 06:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758344806; cv=none; b=CzJ5O4rvz23a2RT+g4eK4jEOj3wUr/WR03LskyR78mQgFoSa0rySfPqVza9vRiCdplSD2k6t8RMtBqVcAPocUcYGCB9oLOMxC4gc69ZBZUVGgXtvgP3KIohrsoCGVH4SRcwu0p0/WVLPmdoyDRJsTEhMfll7s0rFTkDRewbV6tY=
+	t=1758348942; cv=none; b=rQ6/wx7iGejXNSjG46O+xba2HR0xAr7NYzymFoZqrzDnakKuv5UGqNZPlYumS6QvByID6GqIn2DTeHYYkQOg5Vgc42ov63hDQF4l0qsJ/2xH0V23XTR0FL14lq44p+yp641bLI0vMQgDmJsErEIdg8OZRWn79P1cdN/uTIsmyYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758344806; c=relaxed/simple;
-	bh=0UDfmZ7DaFZLTqzi59DgWOG0qhddX+UAkuVNJQTlmKQ=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=WrMpLawEVfa11E40d3danWwU7+BQ/yrqdnOpnCrq9kS7FNAa59vW3KKxiVoP4U0jmkJRYFw+oDto+S/YF16ExcHSNzyJWz2DH/Y2BS9Ilz34zq1X1MZ70OTpfLLkSRKbrK6ph+DUzC/w8GVJWQbwhvOQb8m6Q2maUmVc6G+T2qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r8csHsX3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758348942; c=relaxed/simple;
+	bh=ztsE8IAVQOOAW1FSbXZvhh4tzVJWmEepEQOu4J5iAbs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XkbeFqIZFPcQ24rBORaSGeW4h8oHljmJrL3f/fjonURFnuEOQGiLiX8iuFewAw+y4GJGFmjPH+Rf8pQJKBcacEGuXdcRKfLCxGKwq0DXcka4Z1beEHd/xvMwAy4YWHHhz4/KmaMYnQextyEvDuI/XvyMJXCUT8xNB7AtDcDyR68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tyBcnN11; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r8csHsX3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D92C4CEEB;
-	Sat, 20 Sep 2025 05:06:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tyBcnN11"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB01C4CEEB;
+	Sat, 20 Sep 2025 06:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758344805;
-	bh=0UDfmZ7DaFZLTqzi59DgWOG0qhddX+UAkuVNJQTlmKQ=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=r8csHsX35fQg5mQ46THNN6En77PyJ8zJJ+Evlg4sO9JjPNoGFZGFxhnil5hO7rjiP
-	 jXDcBh4nQaWIvR2PInQuH6NpNK+rDtnhSXpsVFi2TUAe3AVkB/VTzk6Kq7gV1T41a4
-	 YLBJEsw7zEzJuimXE/j6gfHtU8amKJB97pHHvOi3Owl1naqchh/VIcT5rnkGSIKxhi
-	 fEZyY6YV7FCW0wgZV2mAJ61ygSE0xjDIflPdwKzxcs3XWmDugYd9y7GgpGO206i4TY
-	 nzR7LtRzvACwJPmy8/KS4nfboL0bUunZYiLJts9WEPvdKPmL8iDoOE39bgIJ5+UP6k
-	 fb3/Be+H5wTHg==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1758348941;
+	bh=ztsE8IAVQOOAW1FSbXZvhh4tzVJWmEepEQOu4J5iAbs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tyBcnN114pbec9dW9rWOF2xu2MiqweDbYS1MkVGnjmDUmY6XfGweniU3o1s7MDNh7
+	 5o2cUgdl0lugdCw8SXtiVEuGdk9/O+I4zj4jYG36aWX+nqAkBYX2mFmhV0lqvcoG9X
+	 lXgKc6tLwmMkLE/ItmEHTff/bef+dPDcih2Uk/W3nn3S10OrBZQsnDpfoHRe0q+ZdI
+	 RIWzcb5rS0RBaIkQuAoct2TTRAKQrvzg3Y9TFDCP/OwGyHUL9r/Fi/ELTo9JmBDc/5
+	 UCOkds7ukw0aEA+crddDNAvPhuthcGCPntzEucC29UIieXzY3X/T8ufNEcGvN0tmTT
+	 RjW50vvCv5iUw==
+Date: Fri, 19 Sep 2025 23:15:36 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	WANG Rui <wangrui@loongson.cn>, rust-for-linux@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v1 1/2] LoongArch: Make LTO case independent in Makefile
+Message-ID: <20250920061536.GA1460394@ax162>
+References: <20250909092707.3127-1-yangtiezhu@loongson.cn>
+ <20250909092707.3127-2-yangtiezhu@loongson.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <3D936C1B-FBA9-4964-859C-84BB665BBE3B@collabora.com>
-References: <20250910-clk-type-state-v2-0-1b97c11bb631@collabora.com> <20250910-clk-type-state-v2-1-1b97c11bb631@collabora.com> <aMG6JVMcMxVuX7De@tardis-2.local> <3D936C1B-FBA9-4964-859C-84BB665BBE3B@collabora.com>
-Subject: Re: [PATCH v2 1/2] rust: clk: implement Send and Sync
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Rafael J. Wysocki <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-To: Boqun Feng <boqun.feng@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>
-Date: Fri, 19 Sep 2025 22:06:44 -0700
-Message-ID: <175834480479.4354.6269916774389395049@lazor>
-User-Agent: alot/0.11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909092707.3127-2-yangtiezhu@loongson.cn>
 
-Quoting Daniel Almeida (2025-09-10 11:47:30)
-> Hi Boqun,
->=20
-> > On 10 Sep 2025, at 14:49, Boqun Feng <boqun.feng@gmail.com> wrote:
-> >=20
-> > On Wed, Sep 10, 2025 at 02:28:27PM -0300, Daniel Almeida wrote:
-> >> From: Alice Ryhl <aliceryhl@google.com>
-> >>=20
-> >> These traits are required for drivers to embed the Clk type in their o=
-wn
-> >> data structures because driver data structures are usually required to
-> >> be Send. See e.g. [1] for the kind of workaround that drivers currently
-> >> need due to lacking this annotation.
-> >>=20
-> >> Link: https://lore.kernel.org/rust-for-linux/20250812-tyr-v2-1-9e0f3dc=
-9da95@collabora.com/ [1]
-> >> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> >> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> >> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> >> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> >> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> >=20
-> > This tag list looks a bit weird to me. Why is there a SoB from you
-> > before Alice's SoB? At least for the usage I'm familiar with, outside
-> > the case of Co-developed-bys, multiple SoBs is used for recording how
-> > the patches are routed. For example, if I have a patch that has my SoB
-> > and I send it to you, you queue in your tree and then send out to other
-> > maintainers for merging, in general you would put your SoB after mine in
-> > that case. But I don't think that's case here? Alice's patch has only
-> > her SoB:
-> >=20
-> > https://lore.kernel.org/rust-for-linux/20250904-clk-send-sync-v1-1-48d0=
-23320eb8@google.com/
-> >=20
-> > What's the intention of the SoB tag here?
-> >=20
-> > Otherwise the patch looks good to me. If we get the tag list resolved,
-> > feel free to add:
-> >=20
-> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> >=20
-> > Regards,
-> > Boqun
-> >=20
->=20
-> You have to include your SOB when submitting patches from others.
->=20
-> This is something I tend to forget often, so I made sure it was there. The
-> order may be indeed off though.
+Hi Tiezhu,
 
-Yes the order is wrong. The first SoB should be the commit author.
+On Tue, Sep 09, 2025 at 05:27:06PM +0800, Tiezhu Yang wrote:
+> LTO is not only used for Clang, it maybe used for Rust, make LTO case out
+> of CONFIG_CC_HAS_ANNOTATE_TABLEJUMP in Makefile.
+> 
+> This is preparation for later patch, no function changes.
+> 
+> Suggested-by: WANG Rui <wangrui@loongson.cn>
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> ---
+>  arch/loongarch/Makefile | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+> index a3a9759414f4..9d80af7f75c8 100644
+> --- a/arch/loongarch/Makefile
+> +++ b/arch/loongarch/Makefile
+> @@ -102,16 +102,16 @@ KBUILD_CFLAGS			+= $(call cc-option,-mthin-add-sub) $(call cc-option,-Wa$(comma)
+>  
+>  ifdef CONFIG_OBJTOOL
+>  ifdef CONFIG_CC_HAS_ANNOTATE_TABLEJUMP
+> +KBUILD_CFLAGS			+= -mannotate-tablejump
+> +else
+> +KBUILD_CFLAGS			+= -fno-jump-tables # keep compatibility with older compilers
+> +endif
+> +ifdef CONFIG_LTO_CLANG
+>  # The annotate-tablejump option can not be passed to LLVM backend when LTO is enabled.
+>  # Ensure it is aware of linker with LTO, '--loongarch-annotate-tablejump' also needs to
+>  # be passed via '-mllvm' to ld.lld.
+> -KBUILD_CFLAGS			+= -mannotate-tablejump
+> -ifdef CONFIG_LTO_CLANG
+>  KBUILD_LDFLAGS			+= -mllvm --loongarch-annotate-tablejump
+>  endif
+> -else
+> -KBUILD_CFLAGS			+= -fno-jump-tables # keep compatibility with older compilers
+> -endif
+>  endif
+>  
+>  KBUILD_RUSTFLAGS		+= --target=loongarch64-unknown-none-softfloat -Ccode-model=small
+> -- 
+> 2.42.0
+> 
+
+This change is now in -next as commit b15212824a01 ("LoongArch: Make LTO
+case independent in Makefile"), where it breaks the build for clang-18,
+as '--loongarch-annotate-tablejump' is unimplemented there but there is
+no version check before using it.
+
+  $ make -skj"$(nproc)" ARCH=loongarch LLVM=1 mrproper defconfig
+
+  $ scripts/config -d LTO_NONE -e LTO_CLANG_THIN
+
+  $ make -skj"$(nproc)" ARCH=loongarch LLVM=1 olddefconfig vmlinuz.efi
+  ld.lld: error: -mllvm: ld.lld: Unknown command line argument '--loongarch-annotate-tablejump'.
+  ...
+
+  $ scripts/config -s CC_HAS_ANNOTATE_TABLEJUMP
+  undef
+
+Cheers,
+Nathan
