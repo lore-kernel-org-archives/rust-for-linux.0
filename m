@@ -1,77 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA4F223DDF
-	for <rust-for-linux@vger.kernel.org>; Sat, 20 Sep 2025 10:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758364280; cv=none; b=sdpRlCuQeW/pbzmgsvseBunO+L3MO9Y8u32MGalrtRxk0hZp45dROgOiP3kgbN44XaD47TmxXqpT8BxT0mnqhjvaPrAE5EWv+sqeaUfrQJ/B7pSqChzVGLIflOfTJgVuLstXQScIuWDB8w6eXcqIYiw7KBRhSm1YGYWpBIYkUww=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758364280; c=relaxed/simple;
-	bh=xq5S8xWIcoToAzAfm3QLkK17TuSrN/uIGEKbkZCZ/X4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=oMrdHpQQvgP/IliDkTFk0e/BRqF8yS2ggUBpcwqFz3c77yAmTd+eXU1k7+s3IVrLtql/pULKQSiluzE0hPhXIWLmQmTKjcRJ1/EzEz1nEwSQr1Xb0IsW57UwJW7q+xbuaUE5vMp6/RUjZAGDR2n6jPQYyFpbvFu6S8Lyut7i5ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIik1xKr; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2E219CC37;
+	Sat, 20 Sep 2025 10:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758364425; cv=pass; b=nPV9fsnJn3KFZeMf3En+Hzt5dkCBQcMDgRDRnxGDu5vEfeQXEQ1Qz7IlpfdJyCwmD6hGDa61dNyaQQcG+wejP5uFyS8l1DEY6PuVNityviu6zfWezy/HbwJHTYB9S/OPHrGvd07WZlMbrb1fNV6RF1BlATLaoy38cZJzmih60RU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758364425; c=relaxed/simple;
+	bh=5gbTTGLThCF49SBYHgLCDqqZ8ZxRPZA61AQy7rUHSiY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=gdvjs1xfLP3ZQKIHLErjMrh+T1hiATwVvK+Zub6HX4ZzCoN9Wh8akurdqn2+s8F66j2jdNWSDALpmoSiVU+t1hwfh/Jw6P5zAs3RYpsIxHWX+3eJcB0yji7H7PsSGMerlGif65t8371ru7nCfk/jeVL8xr3aYeM3KVIjz6ffcfo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=MhRocBku; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIik1xKr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1142FC4CEEB;
-	Sat, 20 Sep 2025 10:31:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758364280;
-	bh=xq5S8xWIcoToAzAfm3QLkK17TuSrN/uIGEKbkZCZ/X4=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=aIik1xKrLH+tmh5M4dYxmc4aQy5PIHmNJjztv4fHrD8m7RXBAiU+pgNQiEU8lmO8v
-	 Qkm0wV4pxcxahwb2PwG5e/dyIyZhRHsC6vxyQ3Wp3uQLtRsKFLZHws9t7Cne1jPsxK
-	 LktVgMWHinIrfOsffCQwxEPmswLbrtlYm8CT2Y3nfW/DaYlCM33xzBF3+CiDjAHO/o
-	 3J/OWl/NXt6r8TbP2C7IKqdbh1nxVyOo+7kFAzD9PPNyv1YB0ODYxpsNS2PlALCABR
-	 TxZimo4wocWEmgpcSAezMYKDS58JiZTOhLzdLXMvyjE4OvnjeF47MjwwY443SdJfC6
-	 QeK2MYTfeemFg==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="MhRocBku"
+ARC-Seal: i=1; a=rsa-sha256; t=1758364405; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=FqeKWDVbi/rNVZcN2hBUNLkdAxET5+/lI5cE3nYqcwwV61fmay5oEkEqebmxaO74w2MzgTjQtAox2oqvS0SO0Zmc1X2eF9JG9hm8DDQ4QXdqIcdcsSTQhGuwnjqcAand905BNddLV17WrE/xx752QDa2jMsDiWOUNQ3jjqezJiw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1758364405; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=5gbTTGLThCF49SBYHgLCDqqZ8ZxRPZA61AQy7rUHSiY=; 
+	b=YILUi2TyGHfWa1wyH4DKUwMQWEqAQb+eeOAa6GrsODPOZjGRg4q0w39NgmaujEc6DYMKumvXSmUUX5fnNc3OWx9ymPWnbLZlmoKeULLxxyDzvrTz5XX1DbOJjp+ddSnSsnZzXNYSTRVGlD39FC5EgE7dIcIYvWE4A6CVQFs8pcg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1758364405;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=5gbTTGLThCF49SBYHgLCDqqZ8ZxRPZA61AQy7rUHSiY=;
+	b=MhRocBkuRpmA06kuq+HM7Fc1u1m4HobJJotgxpjUJgTBfyy/ufIBSRm5czhz8I9J
+	qzTmT979B0xlG0hSDALc3xk7dd+Q49D0y9/MOvWGc1qXhubF1gHFhp2jqSMhcwE7bLL
+	aasEwomw5PDzF2pl8+kdOgGcCT0qgtjw6HNLsuls=
+Received: by mx.zohomail.com with SMTPS id 1758364403012665.4098911835472;
+	Sat, 20 Sep 2025 03:33:23 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 1/2] rust: clk: implement Send and Sync
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <175834480479.4354.6269916774389395049@lazor>
+Date: Sat, 20 Sep 2025 12:33:07 +0200
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 20 Sep 2025 12:31:15 +0200
-Message-Id: <DCXK44UDI16B.1712QRUMDAIFT@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 00/11] `Zeroable` improvements & bindings integration
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-X-Mailer: aerc 0.21.0
-References: <20250814093046.2071971-1-lossin@kernel.org>
- <CAH5fLgiattq7gQNStyW2J651EqOnVOoav7uviNvA=xFu0ZSxXg@mail.gmail.com>
-In-Reply-To: <CAH5fLgiattq7gQNStyW2J651EqOnVOoav7uviNvA=xFu0ZSxXg@mail.gmail.com>
+Message-Id: <11324A9C-F7CC-47C7-B225-59A96C333A82@collabora.com>
+References: <20250910-clk-type-state-v2-0-1b97c11bb631@collabora.com>
+ <20250910-clk-type-state-v2-1-1b97c11bb631@collabora.com>
+ <aMG6JVMcMxVuX7De@tardis-2.local>
+ <3D936C1B-FBA9-4964-859C-84BB665BBE3B@collabora.com>
+ <175834480479.4354.6269916774389395049@lazor>
+To: Stephen Boyd <sboyd@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Wed Aug 27, 2025 at 7:19 PM CEST, Alice Ryhl wrote:
-> On Thu, Aug 14, 2025 at 11:31=E2=80=AFAM Benno Lossin <lossin@kernel.org>=
- wrote:
->>
->> This came from a discussion at [1]. And I added some more useful parts
->> to the original idea.
->>
->> I'm not sure on the impact of build times and rust-analyzer. We're
->> adding a derive macro to every struct and union emitted by bindgen.
->> Building using my test-config took 27.7s before and 28.2s after this
->> change, but those are only two runs on my machine with a very reduced
->> config (that enables all Rust code that we have at the moment).
->>
->> Maybe we have to reevaluate this when more C code is scanned by bindgen.
->
-> Imo we should re-export Zeroable from the ffi crate and use it via
-> kernel::ffi in most cases. I don't really want to see pin_init here:
->
-> let mut ctx: bindings::lsm_context =3D pin_init::zeroed();
+Hi Stephen,
 
-Yeah sounds sensible.
+[=E2=80=A6]
 
----
-Cheers,
-Benno
+>>=20
+>> You have to include your SOB when submitting patches from others.
+>>=20
+>> This is something I tend to forget often, so I made sure it was =
+there. The
+>> order may be indeed off though.
+>=20
+> Yes the order is wrong. The first SoB should be the commit author.
+
+Do you want me to send a new version, or do you prefer fixing this =
+before applying?
+
+For trivial changes some maintainers prefer the latter to reduce the =
+amount of noise.
+
+=E2=80=94 Daniel=
