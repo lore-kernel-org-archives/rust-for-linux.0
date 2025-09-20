@@ -1,105 +1,77 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60DC1EDA0F;
-	Sat, 20 Sep 2025 10:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758364586; cv=pass; b=nhYnhdNAjlBioRPQLVo4FGotghRLUYd4zRENEACGIiDfpK1hCFgYTUMmXkk31oyFqml5FvA3nfeqHsVCv30ivFOtvyMOmf3ArA5R3hpPiefjllh47RRTd8eDdpVmIwr/uOiAvTngCZJO2QhnH8qMMzUGlhwYm+jssKtwB8KkUCw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758364586; c=relaxed/simple;
-	bh=XhVjlxD10B7EfXybmuBwRKrwLtgoQoCtuuWPtFVvw3c=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=l2jNXuIN3CXe14PL6wygjYrIg6bF+V/t+NRiOhdyrt6aL78eknu18E67J5DF3ML8jYauY+JB7wwBDLOoM/18BfHKo5v3fIhjSRhkgFjOwPzpgx7BAcDtpqJoV5NKSb07yDbp2h1A/TtSECrM/5MOIz3mYHKiKj/00dUDXW9XsL8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LenH2K7a; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D292D29C2
+	for <rust-for-linux@vger.kernel.org>; Sat, 20 Sep 2025 10:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758365129; cv=none; b=XTgYORlpQvmXvqyTUVs2083Hb6oCUiwDASj+JFoiT+ZOS37b+M1AQuviHWTQWAeOyf4DZIkhiluYIVrc1SvqWDURZz/2s39+XgO6KFG073SfMSW8KlHdJqhsjhnawfkHF6QQkV2lrwMVecQob11ho1UOLP+SFmYR70NtCWDeugo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758365129; c=relaxed/simple;
+	bh=9FBRBNmQKD1qx9s6fFAIIvlo6mswgMC96yaMrXtfAKg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=GvQd2GkJ7nalQ/dmfMCTyvtS4wyGSTaOcgC/kCtYXfiedIMwCptlYdEeh+N07VtykvnPvmQJ7lz5/S/+Q8udHG4IJfWX6LCZ81ssDoSb3D6A1A7GyscgqoZaqR8+4qr/OlWDqdFNABL5AChIwjoXM63o2CEARieFpApviqSLSFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugUXhu6b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LenH2K7a"
-ARC-Seal: i=1; a=rsa-sha256; t=1758364569; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=aQsbP1cGohIJwTQYJy8PZCuozlEMdvuu/obm9kFKGWICjT39SmHcAhSoB2Aq04Kn+CdV9JwxO+Uiwz2c6TrI2dtnFBM1TL1EyQUR0f/zFFyZHRerVZ9q/eoqtpAgwmGRyp/RFQRE77ZKLZqaW9l/phDHAV9TDmRsH1CMnfYDWi8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1758364569; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=XhVjlxD10B7EfXybmuBwRKrwLtgoQoCtuuWPtFVvw3c=; 
-	b=T/AvK9Tqz8rrcwV3pCaHsndxW1AGNNp/9zAxmSMAvKmbT0H5+eArm6xiRaL2dC7axcekB61BXnDMk+3SqfybE5CpEJHMEzRtTFkvXQvYzObVy8JbDsQX6SGK4jtbkwFH2t/P/vg10eCr7S1PomMJY0hVkbSKteY+4JbehJBtWuY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1758364569;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=XhVjlxD10B7EfXybmuBwRKrwLtgoQoCtuuWPtFVvw3c=;
-	b=LenH2K7a7hlAKnOI3BW3s1DJHfCCca0pezFv3H4XXXc1BUzXQAdiyQDJzdRegrLr
-	gnxJusno3oyFsC37qsSlmlmUSTKSCJMKkXU01Q3xe8rTJF41M+17QnIwQ+eaJxpX1UN
-	LKDNa1XCrYbUX2b58kXQqk46j+bDJIDXNdSICrys=
-Received: by mx.zohomail.com with SMTPS id 175836456731956.09508853652039;
-	Sat, 20 Sep 2025 03:36:07 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugUXhu6b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E12C4CEEB;
+	Sat, 20 Sep 2025 10:45:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758365129;
+	bh=9FBRBNmQKD1qx9s6fFAIIvlo6mswgMC96yaMrXtfAKg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ugUXhu6bvglOm9XI1NQvxKAopUlVxfpuOYq/BNEq6u3rvR61gms3kNcj7TSp6sJsA
+	 r0TUo6aowfpwHOkWLIdoal9yYKh0bXpkmetXoagceM31INxyVJAwyQuQHdf3VQRkOk
+	 KCSB8ekdNxho5Slc6GaIPgH1JIjF7u8crV8z8EyOH/vVCY+t0G5KGRDheL4dN3EP1l
+	 zrgYC/9oP+buU2b38+bt0zYI+J9b8Zs85nbNMOb8XGxwV5mhkEMSXDjniXH7ZqfyNX
+	 oPgOXivTjZdYB5z7o1pKWVyVTPK1mVs5yn/khmM/APNuCz9Xk2E9od/JRG/jHksw/U
+	 UawycNgyMTa7w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v2 2/2] rust: clk: use the type-state pattern
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250910-clk-type-state-v2-2-1b97c11bb631@collabora.com>
-Date: Sat, 20 Sep 2025 12:35:52 +0200
-Cc: linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <93C70872-E3E5-4CF2-9CB2-56353C26FDA0@collabora.com>
-References: <20250910-clk-type-state-v2-0-1b97c11bb631@collabora.com>
- <20250910-clk-type-state-v2-2-1b97c11bb631@collabora.com>
-To: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 20 Sep 2025 12:45:25 +0200
+Message-Id: <DCXKEYX404JK.3E3J8ISODTX9D@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v3 00/11] `Zeroable` improvements & bindings integration
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20250814093046.2071971-1-lossin@kernel.org>
+ <CANiq72=KpjeQLULvLuVTP7AazMh27soaQNH2UBQyrhCazn=z+g@mail.gmail.com>
+In-Reply-To: <CANiq72=KpjeQLULvLuVTP7AazMh27soaQNH2UBQyrhCazn=z+g@mail.gmail.com>
 
-Hi everyone, gentle ping for reviewing this patch :)
+On Mon Sep 8, 2025 at 2:04 PM CEST, Miguel Ojeda wrote:
+> On Thu, Aug 14, 2025 at 11:31=E2=80=AFAM Benno Lossin <lossin@kernel.org>=
+ wrote:
+>>
+>>   rust: add `pin-init` as a dependency to `bindings` and `uapi`
+>>   rust: derive `Zeroable` for all structs & unions generated by bindgen
+>>     where possible
+>>   rust: cpufreq: replace `MaybeUninit::zeroed().assume_init()` with
+>>     `pin_init::zeroed()`
+>
+> Applied these #1, #2 and #11 to `rust-next` -- thanks everyone!
+>
+>     [ Formatted comment. - Miguel ]
+>
+> The others should be able to go in independently -- I would recommend
+> submitting them separately.
 
-> On 10 Sep 2025, at 19:28, Daniel Almeida =
-<daniel.almeida@collabora.com> wrote:
->=20
-> The current Clk abstraction can still be improved on the following =
-issues:
->=20
-> a) It only keeps track of a count to clk_get(), which means that users =
-have
-> to manually call disable() and unprepare(), or a variation of those, =
-like
-> disable_unprepare().
->=20
-> b) It allows repeated calls to prepare() or enable(), but it keeps no =
-track
-> of how often these were called, i.e., it's currently legal to write =
-the
-> following:
->=20
-> clk.prepare();
-> clk.prepare();
-> clk.enable();
-> clk.enable();
->=20
-> And nothing gets undone on drop().
+I don't have the time to see all the other patches through, but I've
+opened an issue for users to resend the patches on my behalf:
 
-^ this really sucks so we should probably take in this change.
+    https://github.com/Rust-for-Linux/linux/issues/1189
 
-=E2=80=94 Daniel=
+---
+Cheers,
+Benno
