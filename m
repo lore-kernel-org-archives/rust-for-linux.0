@@ -1,129 +1,148 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E413F1DED77;
-	Sat, 20 Sep 2025 12:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4CD2AEF5;
+	Sat, 20 Sep 2025 15:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758372855; cv=none; b=OFzlMzq8QZGSlCYJ0LPih/xiH3Jq5VqJnKyDaNEZB8REgRw8fIBIqF8j1r42U8XGRlpvWYfK8FWbyBx6m57n4ryiOqxIh6YiA2Zl0RXd2GbjvbgrHJLeZON/Ifl2mk0a55UQPYxL/t9NAfSz77mIwqibkWGuupbwexrV5t1x8Yw=
+	t=1758383637; cv=none; b=kUXMETKPxepL2rst9jYPXHZa0bS+a4u/WALgjTXLLhsCDihPUHYrwQb6WdjtfHIWoOiOmA8yU8yTSe1AdgcaJCePQ73nj/CY/iT1mzHXR+I8sUKVELySVt4SB7IEY6r/+RWuyHRL86WZms4N+xKdi2NBM45RgqB3otouDwOx65M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758372855; c=relaxed/simple;
-	bh=XFWF31OaEaIu/EFDwQs+yCVJV+x8UGU0em54WwiiiUI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uQWkcotEsVURa3p8lol4ZOFKPanWjwWKl/wcA6DcNCSKlvYnh+73noy1CSAr20NxZequS287T0r7ra4X2KE9obvkHgpZWfTrGji67txCyLmxGBF+Tqeb7KYo4iYjHIZGXZYDJ2VJwz7zvr9/ZCMh1IurpM8XM6NFciASnhHqOKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [117.22.84.112])
-	by gateway (Coremail) with SMTP id _____8Cx77+no85o3o8MAA--.25613S3;
-	Sat, 20 Sep 2025 20:52:55 +0800 (CST)
-Received: from [192.168.0.111] (unknown [117.22.84.112])
-	by front1 (Coremail) with SMTP id qMiowJCxG8Geo85o6IOhAA--.19002S3;
-	Sat, 20 Sep 2025 20:52:51 +0800 (CST)
-Message-ID: <750c907d-cc95-5116-4507-52dd48927cec@loongson.cn>
-Date: Sat, 20 Sep 2025 20:52:47 +0800
+	s=arc-20240116; t=1758383637; c=relaxed/simple;
+	bh=74lAPVg94TJI1UJYgpgsOH2UQdl5PvTbgBIsxqD4zKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BU9XaLw1JCW8sj+8Kv6rILFGDKTLXl5lL0N3WXSwwTpdn1CF462vALRrnMwspp2jNBymRNthnEJLypdU0bwHS00En3s3Z5qNWbWcV0t8IoeM9UXQol576VzAOoT9P8nfoAUMDS9xZNfeSfmyfvybVIIbIt5Lei/kTk5BTVZ3A64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qbW+7cTt; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qbW+7cTt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60277C4CEEB;
+	Sat, 20 Sep 2025 15:53:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758383637;
+	bh=74lAPVg94TJI1UJYgpgsOH2UQdl5PvTbgBIsxqD4zKU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qbW+7cTtf3ZC80yzIDcC6P8YiS7RGpwlDTYrGzG6j13dnssuecjvDInjgO1NGXAWT
+	 hwAQh0KbTGofBujeWDAzo8uyHyjnB4klpbdUcdr3KuR2vqLH1ociavVauQR6s6LM4C
+	 wtVOvrFkt2iXYZs5fqCArx+bz0wZR2AOL0I2MwUCesz5LxbYvHr8I0E7tiQwcKX2mh
+	 /6u8BUT9rHwxjmbaoEZQ7oL93zaaJmT1SbIoB4zqQPQjKbmP8WBwznCmHZDgor62TB
+	 Nrccq2E0zXdIiG+Jydr5UoWaXp7Rok6i3H1DFwLNWMk9eGO4TL+3lE8Pzt1MNtveO6
+	 UwT9ZhNinKNOQ==
+Date: Sat, 20 Sep 2025 18:53:52 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Keith Busch <kbusch@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
+	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
+	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
+ API
+Message-ID: <20250920155352.GH10800@unreal>
+References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
+ <cover.1757423202.git.leonro@nvidia.com>
+ <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
+ <20250912090327.GU341237@unreal>
+ <aM1_9cS_LGl4GFC5@kbusch-mbp>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH v1 1/2] LoongArch: Make LTO case independent in Makefile
-Content-Language: en-US
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- WANG Rui <wangrui@loongson.cn>, rust-for-linux@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-References: <20250909092707.3127-1-yangtiezhu@loongson.cn>
- <20250909092707.3127-2-yangtiezhu@loongson.cn>
- <20250920061536.GA1460394@ax162>
- <CAAhV-H5=w82CDx=1=PZjf4FVW_dGWe_e__QazwDTwE3kKXtPLQ@mail.gmail.com>
- <c9c4c0e6-946d-95de-9c03-a4b8e1636b81@loongson.cn>
- <7eafa4a6-55bf-2fcb-19ef-b18bd51bfd39@loongson.cn>
- <CAAhV-H4xx-C28-a8H7yJTK30+r90zL9XTSAb87Jr4zLc5ShBoA@mail.gmail.com>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-In-Reply-To: <CAAhV-H4xx-C28-a8H7yJTK30+r90zL9XTSAb87Jr4zLc5ShBoA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:qMiowJCxG8Geo85o6IOhAA--.19002S3
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ur1xurWDAF1UZr15Zr17CFX_yoW8tr4rpF
-	WkCFykKrs5Jr4kt3sFya18KF45Krs3Ar12q3W5Jr1kZF1qvrZaqw4fGr98WasrAr9rtrW2
-	vFyrKw17WF4UJagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
-	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
-	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
-	vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
-	UUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aM1_9cS_LGl4GFC5@kbusch-mbp>
 
-On 9/20/25 19:41, Huacai Chen wrote:
-...
-
->>> We need to handle the other case to use -fno-jump-tables if llvm does
->>> not support -loongarch-annotate-tablejump.
->>>
->>> So, it is better to update the minimal version of llvm to 20, which
->>> includes the following two important commits:
->>>
->>> [LoongArch] Add options for annotate tablejump
->>> https://github.com/llvm/llvm-project/commit/4c2c17756739
->>>
->>> [LoongArch] Avoid indirect branch jumps using the ra register
->>> https://github.com/llvm/llvm-project/commit/21ef17c62645
->>>
->>> If you are OK, I will send a patch to modify the following file:
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/min-tool-version.sh#n29
->>>
->>>
->>> and keep arch/loongarch/Makefile as is.
->>
->> The other way is to keep scripts/min-tool-version.sh as is, and only
->> modify arch/loongarch/Makefile, something like this (not tested):
->>
->> config LLD_HAS_ANNOTATE_TABLEJUMP
->>          def_bool LLD_VERSION >= 200000
->>
->> ifdef CONFIG_LTO_CLANG
->> ifdef CONFIG_LLD_HAS_ANNOTATE_TABLEJUMP
->> KBUILD_LDFLAGS                  += -mllvm --loongarch-annotate-tablejump
->> else
->> KBUILD_LDFLAGS                  += -mllvm --no-jump-tables
->> endif
-> So complicated?
+On Fri, Sep 19, 2025 at 10:08:21AM -0600, Keith Busch wrote:
+> On Fri, Sep 12, 2025 at 12:03:27PM +0300, Leon Romanovsky wrote:
+> > On Fri, Sep 12, 2025 at 12:25:38AM +0200, Marek Szyprowski wrote:
+> > > >
+> > > > This series does the core code and modern flows. A followup series
+> > > > will give the same treatment to the legacy dma_ops implementation.
+> > > 
+> > > Applied patches 1-13 into dma-mapping-for-next branch. Let's check if it 
+> > > works fine in linux-next.
+> > 
+> > Thanks a lot.
 > 
-> I think below is enough, no?
-> ifdef CONFIG_LTO_CLANG
-> # The annotate-tablejump option can not be passed to LLVM backend when
-> LTO is enabled.
-> # Ensure it is aware of linker with LTO,
-> '--loongarch-annotate-tablejump' also needs to
-> # be passed via '-mllvm' to ld.lld.
-> KBUILD_LDFLAGS                  += $(call ld-option,-mllvm
-> --loongarch-annotate-tablejump,-mllvm --no-jump-tables)
-> endif
+> Just fyi, when dma debug is enabled, we're seeing this new warning
+> below. I have not had a chance to look into it yet, so I'm just
+> reporting the observation.
 
-I do not know whether this is valid, you can test it with llvm 18
-and llvm 20 if you think it is a proper way.
+Did you apply all patches or only Marek's branch?
+I don't get this warning when I run my NVMe tests on current dmabuf-vfio branch.
 
-But IIRC, there is objtool warning with llvm 18, I reported to llvm
-developer Wang Lei and he fixed it as the following commit:
+Thanks
 
-[LoongArch] Avoid indirect branch jumps using the ra register
-https://github.com/llvm/llvm-project/commit/21ef17c62645
-
-Actually, the above commit solved a performance issue of llvm compiler,
-so I prefer to update the minimal llvm version to 20 for LoongArch.
-
-Thanks,
-Tiezhu
-
+> 
+>  DMA-API: nvme 0006:01:00.0: cacheline tracking EEXIST, overlapping mappings aren't supported
+>  WARNING: kernel/dma/debug.c:598 at add_dma_entry+0x26c/0x328, CPU#1: (udev-worker)/773
+>  Modules linked in: acpi_power_meter(E) loop(E) efivarfs(E) autofs4(E)
+>  CPU: 1 UID: 0 PID: 773 Comm: (udev-worker) Tainted: G            E    N  6.17.0-rc6-next-20250918-debug #6 PREEMPT(none)
+>  Tainted: [E]=UNSIGNED_MODULE, [N]=TEST
+>  pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+>  pc : add_dma_entry+0x26c/0x328
+>  lr : add_dma_entry+0x26c/0x328
+>  sp : ffff80009fe0f460
+>  x29: ffff80009fe0f470 x28: 0000000000000001 x27: 0000000000000001
+>  x26: ffff8000835d7f38 x25: ffff8000835d7000 x24: ffff8000835d7e60
+>  x23: 0000000000000000 x22: 0000000006e2cc00 x21: 0000000000000000
+>  x20: ffff800082e8f218 x19: ffff0000a908ff80 x18: 00000000ffffffff
+>  x17: ffff8000801972a0 x16: ffff800080197054 x15: 0000000000000000
+>  x14: 0000000000000000 x13: 0000000000000004 x12: 0000000000020006
+>  x11: 0000000030e4ef9f x10: ffff800083443358 x9 : ffff80008019499c
+>  x8 : 00000000fffeffff x7 : ffff800083443358 x6 : 0000000000000000
+>  x5 : 00000000000bfff4 x4 : 0000000000000000 x3 : ffff0000bb005ac0
+>  x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000bb005ac0
+>  Call trace:
+>   add_dma_entry+0x26c/0x328 (P)
+>   debug_dma_map_phys+0xc4/0xf0
+>   dma_map_phys+0xe0/0x410
+>   dma_map_page_attrs+0x94/0xf8
+>   blk_dma_map_direct.isra.0+0x64/0xb8
+>   blk_rq_dma_map_iter_next+0x6c/0xc8
+>   nvme_prep_rq+0x894/0xa98
+>   nvme_queue_rqs+0xb0/0x1a0
+>   blk_mq_dispatch_queue_requests+0x268/0x3b8
+>   blk_mq_flush_plug_list+0x90/0x188
+>   __blk_flush_plug+0x104/0x170
+>   blk_finish_plug+0x38/0x50
+>   read_pages+0x1a4/0x3b8
+>   page_cache_ra_unbounded+0x1a0/0x400
+>   force_page_cache_ra+0xa8/0xd8
+>   page_cache_sync_ra+0xa0/0x3f8
+>   filemap_get_pages+0x104/0x950
+>   filemap_read+0xf4/0x498
+>   blkdev_read_iter+0x88/0x180
+>   vfs_read+0x214/0x310
+>   ksys_read+0x70/0x110
+>   __arm64_sys_read+0x20/0x30
+>   invoke_syscall+0x4c/0x118
+>   el0_svc_common.constprop.0+0xc4/0xf0
+>   do_el0_svc+0x24/0x38
+>   el0_svc+0x1a0/0x340
+>   el0t_64_sync_handler+0x98/0xe0
+>   el0t_64_sync+0x17c/0x180
+>  ---[ end trace 0000000000000000 ]---
+> 
+> 
