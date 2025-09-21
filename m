@@ -1,73 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442191624E9;
-	Sun, 21 Sep 2025 13:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CF5B652;
+	Sun, 21 Sep 2025 15:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758462574; cv=none; b=r/qIPtyq5klLQ+R/nbSP0TTygdNJxBoRNNVSx+qby/3A/s3lNwk+TI7oZIetOnVQjIByQBRtNLYl+/mVBoZD2jq6ZKeyUuDWa7UpsFvlZKdTj26YRAjgi0cNX0tn0/vbVZPu8KJgtVAPnwuBeESoYTXrr7JIcKa/OzWFxoh174o=
+	t=1758469685; cv=none; b=emLwlyhDoD8rq3ReUHT+mUmmpmEeoQJ2JtoY/OKK6owoo/eok8sL8g1p0hKU4ChNw9nxICzeoQxdBxRLdzsiB21kTFNXHTj3fWGrt/MDdVoFp/pTiZsDwRdwgIH8KtS5J298T6KD5DAzmwUKWadNQV8uozze3xjioPR3WH19n54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758462574; c=relaxed/simple;
-	bh=e5+K3Urlg6adLZ4Pwf4KqE2HE0p++T1FsRQvdME9z/o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=W0n7qMr7esUfBrVo5XLoTRXWAso99cD/c8wPSdObzwcgipb8857qGdIMj7sxfJOHVUCeeIZn/C1FyxUSFzZEq6py5mtYwgGf+ZwYdJVt+Xw64Qo4x0dAkxgOewx+IVElznHQ58hgBaSOTwvrHmX/3hlCwsEKIOWp9XPTeRpRCq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nE34BSOp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758469685; c=relaxed/simple;
+	bh=lB8jKzCoilWGhPypSz0chPua50YkWHfd1+UXohEc1Jk=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=stSLAVCJ2y6J8kjQdQa3U+H7xZ10zfgtNS2Mh9QUHBqLyUZ/M3sw3AcN9MbcRwQcKHUVxCYlIQyx71kT4sM4yj0lTrZH/8bW+PbaZAK+YNJKWlLMl+GY/x0ZvjaWRy34pu0jyRr71m5HBTTbHC3eH+tJ4iHCFgiTZk+ikero4eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kl7tP4qK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nE34BSOp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C34BC4CEE7;
-	Sun, 21 Sep 2025 13:49:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kl7tP4qK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9E4C4CEE7;
+	Sun, 21 Sep 2025 15:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758462573;
-	bh=e5+K3Urlg6adLZ4Pwf4KqE2HE0p++T1FsRQvdME9z/o=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=nE34BSOpdK7Rh5C6ebcUs3ASozou0kkmg0iq59RQAyOX81p26aH7O/NUXtBWnkA8W
-	 Q5vCI67SX+EhmhruBDt3SeWUmEHeEFuBXPsW4iFwJHyA6Q91S1+sXzOva5+WNVg846
-	 mdYWYt8x0d13nr8M9t2QdntZjz9dRgYY6pM7kA053izi62U6pIFKrO2bPhuztYOKeK
-	 hRzBMdYgUk4yH1eFuIvpzW0SqMxYAisxie7B5h+ISbs9Tx0Mn5QtTJ1v3X+E1vaOgH
-	 NxluBCSb8pWvU/oiVLS0tj7TcsWayKkhRotz8v3wzqtDLYmUNx7NDBE3FnWThrs0bI
-	 4CdYwy5s5vc2A==
+	s=k20201202; t=1758469684;
+	bh=lB8jKzCoilWGhPypSz0chPua50YkWHfd1+UXohEc1Jk=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=kl7tP4qK79Aohs/Pt+Nq71nF+CkGK9E1dSdHd6aSIL8G03sn6w2jyE0bRbn3xbDI6
+	 JEmExm6wIV4Emx9pNvsyaWHtaGxZceCa+lMCzanp4GIPSdnD/QYHSq092HqgKMTaNE
+	 u7c4w+ks8EE8bQCpzXc5yn6DViYB2erVbWZzbOUjAY5cpo1NTxCJE8GMKxFJ2tz7ye
+	 QPygwhgSMCI//SZ75SQYlZ/UdBaheqDxFwfqpCECHdPxPVKF03BYF/ttDaGG8UXf77
+	 ZHJXYxvAvLtOR12vwX1fqDIBoQvO2uCkJJLeW3gUSzewPBi8+IeChJ151AL5sBIRuT
+	 gd8UOLvt8YLyw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 21 Sep 2025 15:49:26 +0200
-Message-Id: <DCYIYF3C745Z.2WYSNYOTK041R@kernel.org>
-Subject: Re: [PATCH v4 1/6] nova-core: bitfield: Move bitfield-specific code
- from register! into new macro
-Cc: "Joel Fernandes" <joelagnelf@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <acourbot@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
- Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>, "Yury
- Norov" <yury.norov@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, <nouveau@lists.freedesktop.org>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250920182232.2095101-1-joelagnelf@nvidia.com>
- <20250920182232.2095101-2-joelagnelf@nvidia.com>
- <2025092157-pauper-snap-aad1@gregkh>
-In-Reply-To: <2025092157-pauper-snap-aad1@gregkh>
+In-Reply-To: <11324A9C-F7CC-47C7-B225-59A96C333A82@collabora.com>
+References: <20250910-clk-type-state-v2-0-1b97c11bb631@collabora.com> <20250910-clk-type-state-v2-1-1b97c11bb631@collabora.com> <aMG6JVMcMxVuX7De@tardis-2.local> <3D936C1B-FBA9-4964-859C-84BB665BBE3B@collabora.com> <175834480479.4354.6269916774389395049@lazor> <11324A9C-F7CC-47C7-B225-59A96C333A82@collabora.com>
+Subject: Re: [PATCH v2 1/2] rust: clk: implement Send and Sync
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Michael Turquette <mturquette@baylibre.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Rafael J. Wysocki <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Sun, 21 Sep 2025 08:48:03 -0700
+Message-ID: <175846968308.4354.2923659909996682902@lazor>
+User-Agent: alot/0.11
 
-On Sun Sep 21, 2025 at 11:36 AM CEST, Greg KH wrote:
-> Your example code using this is nice, and it shows how to set up, and
-> query these bits, but that's not anything anyone actually does in the
-> kernel, what they want to do is read/write from hardware with this.
->
-> So, how does that work?  Where does this "drop down" to the native
-> bus/memory transactions and swizzle the bits properly to work correctly?
+Quoting Daniel Almeida (2025-09-20 03:33:07)
+> Hi Stephen,
+>=20
+> [=E2=80=A6]
+>=20
+> >>=20
+> >> You have to include your SOB when submitting patches from others.
+> >>=20
+> >> This is something I tend to forget often, so I made sure it was there.=
+ The
+> >> order may be indeed off though.
+> >=20
+> > Yes the order is wrong. The first SoB should be the commit author.
+>=20
+> Do you want me to send a new version, or do you prefer fixing this before=
+ applying?
+>=20
+> For trivial changes some maintainers prefer the latter to reduce the amou=
+nt of noise.
+>=20
 
-Please see reply in [1], let's continue discussing it there. :)
-
-[1] https://lore.kernel.org/lkml/DCYIX8URVIWM.2ZK3GHH3J82XQ@kernel.org/
+You can send another round. I'm waiting to see if anyone will review the
+second patch. Maybe sending another round will prompt a review.
