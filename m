@@ -1,104 +1,113 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B028F5B
-	for <rust-for-linux@vger.kernel.org>; Sun, 21 Sep 2025 09:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A8124A051
+	for <rust-for-linux@vger.kernel.org>; Sun, 21 Sep 2025 10:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758448760; cv=none; b=I2ZbhFqx9YrrsEXnl4ftUBp58Jo2PiWB2Ab0ZnAaUutypXdgCqSbgGpWCOO5E0X9Y88Phr7Zi5B7OsRp9zn7SW1PZzHj/KZk/TI8JdDvmZUg96I51MvQY8SvWLCqDnVRYYDFWyLe6RpPCIYIQ+vu0F/RY+reO0RHilndRkCXZxk=
+	t=1758451603; cv=none; b=VDO7FzP9YBIH08jdBNBxzXjE9GKzVGWykixVm8jUixOnXHsxZZ8/fqToNgZEGWJ5OID/htZ+iHNxM1R3+0eLPVUpk5Y74Hg1LrEZ/+kiD1VCyMnh7B32Pz5vbAEU5S7n8/lCWm8n5nFgiH2mdHIvaTh+n/r0X6jjPcZ/yP9isv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758448760; c=relaxed/simple;
-	bh=wQ4XKRzPEjC8IN9Dos/AJv1tyfP3n9GhDuIrZCE5xS4=;
+	s=arc-20240116; t=1758451603; c=relaxed/simple;
+	bh=ejJ3R06kUm72MB2imXL8f46b/ReyDQSXYyYGUPqSntI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nJ7MEcuVAfkC/nHYGobHJgY54Fyo9gC67kiQbMKLkBWq0Y7xzydOosEb4SULj2pIBdcZKEdmo4LDRnlG4rNmFUDjbV83OjvIrfora9r2deK5qdg9qn5E7nUHlYkYwBAf0776Gix++X1nInxuWiCVbvLt9kVqm4y6SrISh77jOZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mhq/q7Tu; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=mko9Ng1hJZSzNpEt1zMzaKSFJGiP0l9fk13GM4SHCuU2DghQRDPr8OOan+VNb/FSxbVT7GEZqi6aqGsgC9cgbRcRrMqw/rpuKRxMlbLzBvOTQ8eXGFGxknqSfmNriqqo1UR9laPJ0D6YJeAMryCENCyQlzLA28bkxuU4tM26i5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uXr0itZS; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mhq/q7Tu"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-26808b24a00so6384785ad.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 21 Sep 2025 02:59:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uXr0itZS"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3f2cf786abeso898553f8f.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 21 Sep 2025 03:46:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758448758; x=1759053558; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1758451600; x=1759056400; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EWKmsQdl2jsGwScL3RcU3RgGD8V6ji7p/wbvV6vfnGU=;
-        b=mhq/q7Tuolhipn8mAQFQ/SjBEj3ebDz0SVo89ri0gPqIHyWjPlyLGw3H38qp17RPlI
-         Au5OuqFTXwho9lARQ87YbfVI05BJwf6xhUza0RfzlumBBJrlrBzq6xpqdY5VnMtPPcK0
-         IZApttdwP8SnHoX0lwLeHpx3h1ID0MzZ3tex5pUVfrrsCBBRSN/k8rQpHpCzawZap5Le
-         q6KOvh5gxrzR5nf5At+UgBIR74bTNu3TZtqUtm2o3XhBIjtfqUi3TPiSJHYW0lpaySiv
-         mFq1B24xpuZhViChx3+DYl/M9OWNAoZoiV1YDfV09sWk9Ayv7tBJVVlnQKwKX++rgwDf
-         KrZw==
+        bh=Fut8Mzrft7AcgsVh5x5LQBkL7Q9ZuGUoyrZTtc74kos=;
+        b=uXr0itZS0ezyg4QsvvPh7UpRFexCxkRw1Ehq0InBgj3hHDx60GQNkGI7KwdLUPmmZn
+         TgNpL1F1uVL5VqT1UdKTKQ1I5X5kNtXPE3jwGttIoCVPPzlKeDGeAW8zy0l3hvXIEzrZ
+         wPCPV8Qbp27BKF0Gi35bojMEyqa1um+kbNO2tGfi+/ZAzJTNkzRaHz5F0LpPWl0NPv90
+         CdVDUXbneQ4o8v9P5H6/Oiv0OG/e+39BrJkFjxFDkGG6eZwiRBWkhgzq8M+sBGmlHG+H
+         AKdOW8QmDeQXiwCCnX1yy/mhv0NNFDLIy5CMEwOrUCYUJIjsS7xFFszpVo1oYDDtOYMT
+         TF6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758448758; x=1759053558;
+        d=1e100.net; s=20230601; t=1758451600; x=1759056400;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EWKmsQdl2jsGwScL3RcU3RgGD8V6ji7p/wbvV6vfnGU=;
-        b=cHP9X2Yh+W1n6s5MEIcMwX6JuQrVRLSalHAxWG9ZsyzSmNlKlew3EATgtUrTSpJ8n+
-         To6hFS85/wDeCxM8hs5ctHpnSK83+HDRsACXrlNQ4cqi46mR4WqO28rSjQI4iQNiQW2q
-         Sh2XBcUS3zOnwFV3M0X+tx0tMFMhPYlkJAQuO8H8vDL5pvO/99KSEcPDGeSkYN4bMDob
-         TsNgnPVdqvak+UlepIhzJyMcvUZ32a7rlt9cQBVplVbRZenBWI6ANmXhOW/3HbK2J67G
-         M9lLB6tHF1iNlZRGyl5iYazNwNKJ1VjwHJBapBDCfeE7IWmXvxq3tB7NoLodP7/CoedU
-         rY1w==
-X-Forwarded-Encrypted: i=1; AJvYcCX2c05b5Li7LlkGUPIT2zELngIyrkV4oQ3yc2HgJYxYJWcaUxf/UnKbCaIie2rJZsiZieyBXMUAPGbZCDxGaA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/OU2qQnvdjyhnT/18GfhXUcaa+4itRyy9BerDLYpl45a0Zy5J
-	vsflhJDbdl7oxWEaIH12hQbYU+et6CPnF3a2+qiyU52+evvsFa0BBza6QME389JGkGMOQKTwDFy
-	AohPQo/pAs9+kG3YtVVe9/q1f0k2hnFo=
-X-Gm-Gg: ASbGncsEDtWkWUM8mm0Vj1c4f/PIfv5K7ysXgzfzurSh5Z/ysXeL3gC36LZ5ytGO4Pr
-	TmTjrvM7xiYugFN448dNea5RgI7ktdbEkqqrcTB3L9rlM0vQqOcMceaY9JY4THGhmk+9wnuD4DB
-	wnEHqUGdryHlbeMtoaY6I57UHdOLmagCyKVA5W0aN5rnPJqTqZEa4I8224gvaqb6BQX/IahGlzy
-	SH+G6njRiP8/YURt8WHaMSjjswIYaW6Eokh+kSXOlQh7i264PVqFCABvnSu1bxSKp6iaRX0dp1x
-	BfN9vnyn89NKy6YvmxUHczLQiJnSvjBBc7Cx
-X-Google-Smtp-Source: AGHT+IE/M5n7k5EV9oBMoTKSdZYNJ8k/u28SAzpBTSTXvI/1sciYsCvywr3oY6EDALdphOvsgrpqPOmhVakNTvvKCsI=
-X-Received: by 2002:a17:903:110c:b0:266:914a:2e7a with SMTP id
- d9443c01a7336-269ba50450bmr70599375ad.6.1758448758376; Sun, 21 Sep 2025
- 02:59:18 -0700 (PDT)
+        bh=Fut8Mzrft7AcgsVh5x5LQBkL7Q9ZuGUoyrZTtc74kos=;
+        b=UzYuMFZ1r8MmB8v1MsKY6cWaK9+f/RX/YgbfKsOiXdeSnBOYC1aOhp8fLYmT3MTSOQ
+         ufb8bokp5fzSRN/tGfoufmJTlW/7vJR8gSbvisoeBuUmaFYsZexcB9PivJmTSDb5TT3y
+         0YxglaBTbSoEH0JWDRUEs7EgjvW1uI7EmaAMYnEYYQNUxayQgZ7UX2bYd+JK5rQ/yHbA
+         0SfbdnL+rXBv0WkTnnFQFMTbB3fsO45Ynwf6NXDE85gtaEDcpYA1+jYEV9OcP/eqmapw
+         +S4oLqBum/8rHDQHDVoHDMUHvpUkY/UhJZ+kCmbHgCnBCmms9XMVqYfmuPeuieweJY2/
+         LEfg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHAjO/KIPcLJQrTzNh4m5087VIvHvIK0Lf5TVMPq4HfvvMGE/UTcAYTwjVAbt6RDRj888Yinaowx0p3U0yfA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmOFPdMMDJ7pWREGAYjhOAUOm5EUnzQV8LPQE+2RMk+OW3lu6i
+	BMc20T94XFEQtEiWWJUKjlvZFyHL30qjA6/GdCFc+u0PopgmjuI6tPnu2dW54BTIRDHKmq9iTLr
+	A2K9xBmUbELglDu+JgwCTMvCs6AG0JGnmbQIea/U6
+X-Gm-Gg: ASbGncvXAeX0Mm4wnkHgwmoqaqN3cN2tGb6SDjMkxznzTro75CGC+q1qZpyHBY1T7x5
+	8aaMZXltGoRYfqCD+F5n+/RbjEJGVYBEbT8q5+YpldcLinQbIqS5zFOv+3i8/5s/6q93my/FyiZ
+	zUI/5chD0Bs6rusLGx+Q+4fgKaba5ogIhd4KGChpMGI1mQW7zJr4yQviYXpIXm/2jMz67LwUIOD
+	fS9uss1
+X-Google-Smtp-Source: AGHT+IG+ilMcacJzrGfy67Gt5SnyIG3oRn1w901jpk/xQoevubQ1rvd7vOk9clCmbKV5svvHYfPvxAprCcCgIdzn9Uc=
+X-Received: by 2002:a05:6000:1846:b0:3d4:a64:6754 with SMTP id
+ ffacd0b85a97d-3ee888278f8mr7584321f8f.62.1758451599361; Sun, 21 Sep 2025
+ 03:46:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250920182232.2095101-1-joelagnelf@nvidia.com>
- <20250920182232.2095101-2-joelagnelf@nvidia.com> <2025092157-pauper-snap-aad1@gregkh>
-In-Reply-To: <2025092157-pauper-snap-aad1@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 21 Sep 2025 11:59:05 +0200
-X-Gm-Features: AS18NWAX2coIcjtRAeKTjf4CFDI4YK6EYgm8hWO5NK1pOl2WGGAfjpcS8VVdy_0
-Message-ID: <CANiq72mk1-Ew11RB0kfep5BtB8M_5H6o_Rb2MwamrZd-FmzFWA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/6] nova-core: bitfield: Move bitfield-specific code
- from register! into new macro
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	dakr@kernel.org, acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
+References: <20250920161958.2079105-1-joelagnelf@nvidia.com>
+In-Reply-To: <20250920161958.2079105-1-joelagnelf@nvidia.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sun, 21 Sep 2025 12:46:26 +0200
+X-Gm-Features: AS18NWAQxPNKNG6co6Lg1atbGPV5cDqDMJUHPiD_9mntO-WWhUhMuYW01BNVl8g
+Message-ID: <CAH5fLggXGMHM1bhmaUb94gDu_LiUbMGugARpOZoUNSTU3phm=g@mail.gmail.com>
+Subject: Re: [PATCH] rust: print: Fix issue with rust_build_error
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>, 
-	Yury Norov <yury.norov@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	nouveau@lists.freedesktop.org
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, acourbot@nvidia.com, 
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 21, 2025 at 11:36=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
+On Sat, Sep 20, 2025 at 6:20=E2=80=AFPM Joel Fernandes <joelagnelf@nvidia.c=
+om> wrote:
 >
-> And where does this allow us to define things like BIT(2) for values?
-> (ok, that's kind of not the point of this patch series, but it will come
-> up over time...)
+> When printing just before calling io.write32(), modpost fails due to
+> build_assert's missing rust_build_error symbol. The issue is that, the
+> printk arguments are passed as reference in bindings code, thus Rust
+> cannot trust its value and fails to optimize away the build_assert.
+>
+> The issue can be reproduced with the following simple snippet:
+>   let offset =3D 0;
+>   pr_err!("{}", offset);
+>   io.write32(base, offset);
+>
+> Fix it by just using a closure to call printk. Rust captures the
+> arguments into the closure's arguments thus breaking the dependency.
+> This can be fixed by simply creating a variable alias for each variable
+> however the closure is a simple and concise fix.
+>
+> Another approach with using const-generics for the io.write32 API was
+> investigated, but it cannot work with code that dynamically calculates
+> the write offset.
+>
+> Disassembly of users of pr_err!() with/without patch shows identical
+> code generation, thus the fix has no difference in the final binary.
+>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 
-We have the `bits` module since 6.17:
+The actual bug is that write32 uses build_error!. Trying to change the
+printing macros is just a band-aid. Someone already mentioned that it
+breaks the ? operator. I think this change is a bad idea. We should
+fix the actual problem, rather than making random changes to other
+parts of the kernel to work around build_error!'s inherent fragility.
 
-    https://rust.docs.kernel.org/kernel/bits/index.html
-
-(Or do you mean something else?)
-
-Cheers,
-Miguel
+Alice
