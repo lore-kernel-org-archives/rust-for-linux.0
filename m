@@ -1,81 +1,222 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5748D25A35E;
-	Sun, 21 Sep 2025 11:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADEF1FDA89;
+	Sun, 21 Sep 2025 12:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758453786; cv=none; b=LYK0fD24SzDS2ZFe0kPXgGlHMWoFfApi7x/hwH6oteEsrhhjHwSEtMAKuFmNilIjN34i1PVKAxfYax53Rt3re7tabzGN6VCfpsD+l/vhyRoPc9evzyM2PZBzE2mN9RjHbS/XIe56PK5QMToMcnITGi9d3Y2PGOJZfimZ5evhxJg=
+	t=1758458043; cv=none; b=gV91SMYUeFXvX8iEv1f2BHhKfFDiIRnabcrpbMA/wJ65NWQ4u4XNwbUdUACVfaqykrRxgRngdqvNVh72DHYLrm0yOzMGaIm3N2SaqbNipde4YP8JALULwhhpGA6shtT+LYUZcHmoE9IzRdb5qCX3jQK9jFhPIBdC7t5i/Bc6N5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758453786; c=relaxed/simple;
-	bh=xZADwwqDSNPHGEJ8PpQUJjxdyZCNqEbjTS3lQUkoZ3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oj6hFcJJbvppHS1gWKZrL+nAWpyqEs8UVSw40dkRecBHvnVgCpOKfsrd3qm2iRmBMNt+igCvDzBqvZL87GGDgbkseZ5Hig9MxWup4n0uWJGqOQOjjNvcPaSVe9pmVFIDyTijkQTJV5geuFHqieDnsfbWFgbvYJZlGuMm3izBdp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cToEv8ou; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758458043; c=relaxed/simple;
+	bh=VxmthJPNENbIGHLIKYatBSWAADCcIL/mFRxggTyg46E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=eN8+DravrRkMIQJhMOlw9tni/cCdB4FZZFxPsRwnN9DzQ8wTmTlYx7Eu0FLInS42JCGE08PPplDGSKr12hSCTOB0c5LzU6HgLeoiVTVrle+WvZ7cL2pkwginulQUlncsuAM7C5IWzImtg7wQR26w2vcNOvgyi86WXLItvm72BWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lUCEtW9s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cToEv8ou"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7C9C4CEE7;
-	Sun, 21 Sep 2025 11:23:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758453786;
-	bh=xZADwwqDSNPHGEJ8PpQUJjxdyZCNqEbjTS3lQUkoZ3U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cToEv8our3HW0yuRBchrTdZdREF/tWpBE7R+6dHrhUADoAZI1fXzLYdoSgjVO7stu
-	 7xm+uhl0xTjXziRtB/xWwNj9yuYOR/70of4Om/taeyoa+qqBgzytEJozgfme8kXoej
-	 BjyYO/HdtiK0uTJtSvO4L7xEYGXmfOklOymr2+ow=
-Date: Sun, 21 Sep 2025 13:23:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	dakr@kernel.org, acourbot@nvidia.com,
-	Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
-	Yury Norov <yury.norov@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	nouveau@lists.freedesktop.org
-Subject: Re: [PATCH v4 1/6] nova-core: bitfield: Move bitfield-specific code
- from register! into new macro
-Message-ID: <2025092148-huntsman-existing-5052@gregkh>
-References: <20250920182232.2095101-1-joelagnelf@nvidia.com>
- <20250920182232.2095101-2-joelagnelf@nvidia.com>
- <2025092157-pauper-snap-aad1@gregkh>
- <CANiq72mk1-Ew11RB0kfep5BtB8M_5H6o_Rb2MwamrZd-FmzFWA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lUCEtW9s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE53AC116D0;
+	Sun, 21 Sep 2025 12:33:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758458043;
+	bh=VxmthJPNENbIGHLIKYatBSWAADCcIL/mFRxggTyg46E=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=lUCEtW9sAiXF2PpPs9Dae4vbu6pomlNbS76GGz1KR0zz0aTiQpFgPAs0qp1WO792Y
+	 9EVffICjQQREcHxnxaJ/5E3jscWb/+G2aYMI8j/qfgFAQnRE4c7e8JJKwiorITs0YD
+	 D22Uxyo36ePCho63HL7mhhDgAtx0mQYlJdCALIuBFNXe/7KuquS0ZZ0Xc2qwskMkhG
+	 cfwi7WjGK9NMnQ+c+fe6HNfyEJ5cMDzup9muuGXvrtm0spfr/BkGm0Lb/q8E31QNd8
+	 EVRN75dKr9UQeRzu3LEDaz7yN2UiPTAm7H2FtBQ4desmemMPSrPnitc1AsQGbFRNvg
+	 olsHlyGyHV4QQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mk1-Ew11RB0kfep5BtB8M_5H6o_Rb2MwamrZd-FmzFWA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 21 Sep 2025 14:33:56 +0200
+Message-Id: <DCYHCLM67KRZ.366VS9PDKLYKY@kernel.org>
+To: "Greg KH" <gregkh@linuxfoundation.org>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <dakr@kernel.org>,
+ <acourbot@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>, "Yury
+ Norov" <yury.norov@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, <nouveau@lists.freedesktop.org>
+Subject: Re: [PATCH v4 1/6] nova-core: bitfield: Move bitfield-specific code
+ from register! into new macro
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20250920182232.2095101-1-joelagnelf@nvidia.com>
+ <20250920182232.2095101-2-joelagnelf@nvidia.com>
+ <2025092157-pauper-snap-aad1@gregkh>
+In-Reply-To: <2025092157-pauper-snap-aad1@gregkh>
 
-On Sun, Sep 21, 2025 at 11:59:05AM +0200, Miguel Ojeda wrote:
-> On Sun, Sep 21, 2025 at 11:36 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > And where does this allow us to define things like BIT(2) for values?
-> > (ok, that's kind of not the point of this patch series, but it will come
-> > up over time...)
-> 
-> We have the `bits` module since 6.17:
-> 
->     https://rust.docs.kernel.org/kernel/bits/index.html
-> 
-> (Or do you mean something else?)
+On Sun Sep 21, 2025 at 11:36 AM CEST, Greg KH wrote:
+> On Sat, Sep 20, 2025 at 02:22:27PM -0400, Joel Fernandes wrote:
+>> The bitfield-specific into new macro. This will be used to define
+>> structs with bitfields, similar to C language.
+>>=20
+>> Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
+>> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/bitfield.rs    | 314 +++++++++++++++++++++++++++
+>>  drivers/gpu/nova-core/nova_core.rs   |   3 +
+>>  drivers/gpu/nova-core/regs/macros.rs | 259 +---------------------
+>>  3 files changed, 327 insertions(+), 249 deletions(-)
+>>  create mode 100644 drivers/gpu/nova-core/bitfield.rs
+>>=20
+>> diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/b=
+itfield.rs
+>> new file mode 100644
+>> index 000000000000..ba6b7caa05d9
+>> --- /dev/null
+>> +++ b/drivers/gpu/nova-core/bitfield.rs
+>> @@ -0,0 +1,314 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Bitfield library for Rust structures
+>> +//!
+>> +//! Support for defining bitfields in Rust structures. Also used by the=
+ [`register!`] macro.
+>> +//!
+>> +//! # Syntax
+>> +//!
+>> +//! ```rust
+>> +//! #[derive(Debug, Clone, Copy)]
+>> +//! enum Mode {
+>> +//!     Low =3D 0,
+>> +//!     High =3D 1,
+>> +//!     Auto =3D 2,
+>> +//! }
+>> +//!
+>> +//! impl TryFrom<u8> for Mode {
+>> +//!     type Error =3D u8;
+>> +//!     fn try_from(value: u8) -> Result<Self, Self::Error> {
+>> +//!         match value {
+>> +//!             0 =3D> Ok(Mode::Low),
+>> +//!             1 =3D> Ok(Mode::High),
+>> +//!             2 =3D> Ok(Mode::Auto),
+>> +//!             _ =3D> Err(value),
+>> +//!         }
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! impl From<Mode> for u32 {
+>> +//!     fn from(mode: Mode) -> u32 {
+>> +//!         mode as u32
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! #[derive(Debug, Clone, Copy)]
+>> +//! enum State {
+>> +//!     Inactive =3D 0,
+>> +//!     Active =3D 1,
+>> +//! }
+>> +//!
+>> +//! impl From<bool> for State {
+>> +//!     fn from(value: bool) -> Self {
+>> +//!         if value { State::Active } else { State::Inactive }
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! impl From<State> for u32 {
+>> +//!     fn from(state: State) -> u32 {
+>> +//!         state as u32
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! bitfield! {
+>> +//!     struct ControlReg {
+>> +//!         3:0       mode        as u8 ?=3D> Mode;
+>> +//!         7         state       as bool =3D> State;
+>> +//!     }
+>> +//! }
+>
+> As discussed at the conference this week, I do object to this as it
+> will allow the same mistakes to happen that we used to do in the kernel
+> for a long time before the regmap() api happened, along with GENMASK().
 
-No, that's exactly what I was thinking of, sorry, I missed that :)
+Have you read the following macro arm of the implementation?
 
-greg k-h
+    // Generates the accessor methods for a single field.
+    (
+        @leaf_accessor $name:ident $hi:tt:$lo:tt $field:ident
+            { $process:expr } $to_type:ty =3D> $res_type:ty $(, $comment:li=
+teral)?;
+    ) =3D> {
+        ::kernel::macros::paste!(
+        const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> =3D =
+$lo..=3D$hi;
+        const [<$field:upper _MASK>]: u32 =3D ((((1 << $hi) - 1) << 1) + 1)=
+ - ((1 << $lo) - 1);
+        const [<$field:upper _SHIFT>]: u32 =3D Self::[<$field:upper _MASK>]=
+.trailing_zeros();
+        );
+   =20
+        $(
+        #[doc=3D"Returns the value of this field:"]
+        #[doc=3D$comment]
+        )?
+        #[inline(always)]
+        pub(crate) fn $field(self) -> $res_type {
+            ::kernel::macros::paste!(
+            const MASK: u32 =3D $name::[<$field:upper _MASK>];
+            const SHIFT: u32 =3D $name::[<$field:upper _SHIFT>];
+            );
+            let field =3D ((self.0 & MASK) >> SHIFT);
+
+Here you can see that it's just a mask + shift operation internally to
+access the field.
+   =20
+            $process(field)
+        }
+   =20
+        ::kernel::macros::paste!(
+        $(
+        #[doc=3D"Sets the value of this field:"]
+        #[doc=3D$comment]
+        )?
+        #[inline(always)]
+        pub(crate) fn [<set_ $field>](mut self, value: $to_type) -> Self {
+            const MASK: u32 =3D $name::[<$field:upper _MASK>];
+            const SHIFT: u32 =3D $name::[<$field:upper _SHIFT>];
+            let value =3D (u32::from(value) << SHIFT) & MASK;
+            self.0 =3D (self.0 & !MASK) | value;
+   =20
+            self
+        }
+        );
+    };
+
+Now I too would like to see how exactly this will be used to read data
+from hardware. But at least in theory if the conversion from hardware
+endianness to native endianness is done correctly, this will do the
+right thing :)
+
+> The issue is that you are going to want to take these bitfields as part
+> of a larger structure, and attempt to "lay it over" a chunk of memory
+> that came from, or is going to, hardware.  When that happens, all of the
+> endian issues of mis-matches between hardware and cpus come into play,
+> which is not able to be properly expressed here at all, unless you
+> attempt to either resolve it all later on in something like the regmap
+> api, or you have #ifdef stuff to attempt to capture all of the possible
+> combinations and deal with it at build time (which is strongly never
+> recommended, but is what we used to do in previous decades.)
+
+The "laying over part" requires a cast or transmute in Rust which is
+`unsafe`, so I'd say we will definitely notice it in the code if a user
+would be trying to do it.
+
+---
+Cheers,
+Benno
