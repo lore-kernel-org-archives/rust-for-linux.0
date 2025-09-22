@@ -1,46 +1,46 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011054.outbound.protection.outlook.com [40.93.194.54])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013017.outbound.protection.outlook.com [40.93.201.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9B8306B17;
-	Mon, 22 Sep 2025 11:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF6830506F;
+	Mon, 22 Sep 2025 11:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758540670; cv=fail; b=n9bgdD5XcWZGXds5KziW6+KXcwiq7deGJ7lKGMc8doXHWc2DPab5GIHriMz7MYjSkLLrklow7/P3QgS14JLGBDVrr9/ZsItDTFPtnyOk4K5msLbqpSV57rcdvzoKwCfN5vRkqHvz1ZPeX6+PI80V6ZnK87u+YU4+cKfUVHD+968=
+	t=1758540682; cv=fail; b=RlPeSBmheVXEBRc13ZoW+bBS2+VsGUcLYKoueSxaLVJtXSSjaqhnxXOn4vRFL6ggeuxnkPJSLqnVY276slfNHnXHyxx6hk9mK/PL8l41Yeupl+Ce7T/nFQqrSrRTdPt5222ptELwczGnYesAlR5abyDMFxbUjCYrLXtak8aEvq8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758540670; c=relaxed/simple;
-	bh=KUB1WFGtC75R1avsGmFmtNxXiRwfpmwXh+gGwoPeSTA=;
+	s=arc-20240116; t=1758540682; c=relaxed/simple;
+	bh=7ut2GnioI/EidqPlQhcuMns6nJY4BRKYCpIZO+hMKnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mjy6c7bIjWkC35v9ted1cmJVUt1G7N2jE2z+3DQ/33ZlYGz/nzdyUGmZxqGkNvJ8aWhzkkM3bT+Neex5Ry2j0hg2ukuNbzGmBcOWeKbV2QXIOdgicEbUF45jiiCf1dyfqSTDiFQg2MGwW7ucMpwpByzPb+3XbujsVemsoz6BU8w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AZVw1ob8; arc=fail smtp.client-ip=40.93.194.54
+	 Content-Type:MIME-Version; b=vF7DQ8cUMy63C0Ft41JKgtW6GcnP+/bC8CfWgq2PX0iH0MU5z+NXkB8XDsKIb6uTSUGo4i/3DaaCJaiQ6wT0M5QbAuxWO77WEAdgFG27Tah7rcdLBIdGu4XpE8/4Mwu0tK9PBcHI6EusK0wFK7Z6Gs4uFOLUaWVuXItyIcdLBWs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ff9l+H+K; arc=fail smtp.client-ip=40.93.201.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AZVw1ob8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ff9l+H+K"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y3Kw2FbbEPV/WzNf1dhrZSU9cgSN1jfaAQfa82IMQnZk2Jvt3HwBVDjc2arX9C44SC1evpYxjKM5Ilg3hjQHcFWJp50E5apntvgsxorLwv1Ypjh2etRsqFYZqnDYOR6WYv00sQTs6gsCF3d6PSn8tlA6+uv9rEviINGVzjSG7vtpLhOtjEd5ax5hC9tGM7zRYXDST/QFv5w0MsIOjaq/PB2D/UE4vVHymzO1g/4nwbuddnpcrLj1fzB8wd+MkCviZTVNfEiIoC9AX9wOn+Dsu2UuHWa1llHoFzuLv8GkYsOkRXuTo6s7L5ILcE2+UstNrpRLaN8H2wS5yjvWRpWB5g==
+ b=p2bmyuA9NlVGoaAQ9I+bf9P0zL1ufdEGLwRLI+7+XNCenG3bLQEOnG/8YVBYo2CbnZqsgJaMFbSocBE5mXvsmPLbpT8o0GqTS6uW8BQbmlpmINnXzZGua0WY60nWTaUg5X8TEo1UimPkccl+Q7BvdbzFOzIVkCjFqDJcYBEc5BKXTe7GvhjAU+s3Os3KA+M7EsHUKv+V1RYHGqW6rG3yRP/Fu5hjRSMXkQkWgEcd4DxeNvgBJZPZuVM5PsZUXlsQnhRXy4qRe2XPRWVqr9yGFworC77wg71AT7T321pnOrq9rHe+7Co5qOCgOxpOa246P0LDA1FeNhzxoj7W0Fh3lg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uNHhAF2+/Zg2qJmdhxLn3Rxtezhfa7hDgLnZnW7aJNg=;
- b=Br75FZJCuau9yjknmIYw60Mvy/D52RReen1QPvJ7176hCkkjNj8tToiLtXtOdzq1G/c7rM+BbnhT3a2b03dC4C6tecs7vHefu+NIR3MS5oVoGohr3reVBLDSefw7AKLo/qFdJkoXR0OGcOwAKa8u021UTHr6V60wL+sd00onSm8/kVCafufX9t5Hf2OucrslIz8TdWE+RxMAfFRm2ERAzgVYaU+4DLD+Pzhs8cNLVwngnCSaxFbNeiDqjSzRo1bhulJSl4P/gzMNnHyaXFKkKqaVSyFYLIkRAHCvhvrS/5J6DoCPeDANKEgjH65tkKndVz/aU1vD8pG7yPTc8hbd+g==
+ bh=zwM7jCu+XmEztv06lNbnehWOVPrRRYvp/BL4GPbg4kE=;
+ b=epGBnl37hO+CVYOmcSHVU55ksbLS1Fw0A8FSQkASsx5fTRlrFIY6tpZOxuoe/WHSj6H0Bh/n/bLfM7Wq++aonZcU3sryZnZNhqmAeyMAKy+92rF59IFuiuQoO6c5/+mBDlKiaYzdwyQiNvVmqL0M+lwABtD1sh5Ljlflw6PwI8i/9lki+lPqdAYrc7zoQ4rP0NgsoV0WXdLh5r3GYBXmVfltAtlUp77x48KS+gRr6YnNb9RzMgGmXLj64qyto9DTt5c+iyhfpzPCJL3ZuWTUgZmO8cZA3n6INfDM4/PgrDpnHD0gO+Q+FFpKOD8ohQfrJmtiHpliw72YDpZX/lBPdA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uNHhAF2+/Zg2qJmdhxLn3Rxtezhfa7hDgLnZnW7aJNg=;
- b=AZVw1ob8tB/IvGKwBb/3Y6eyZ+4taAoxuzJVMVHTH0kJoVNXwU1hbmXWHeodvWY0oT6BOWZhQ7qN5neUIB7gXAl8qZ5MHlWqzxLU9AfbB8X4wUdmml8M5+CgGJNKjfU6Ty62uLZLTzxMHFv3KXHQru8nNm1asIsrY8co0MCSKk514scY9wp2H+75tLlPSBG5wT8dwHXwKXwr67mFFeQImfSSIMoEv2Qx394Xh6C4KAybJOdAppTNhJgbJeWwr+pF6Q9FKH9HaoIB5AA+/veEa1ETcmAGN5QNGWL6Y6puHIhVJeYGyGMQKGmBuGP1AHdgkUGYE9xZEqKdd5xVET7bXQ==
+ bh=zwM7jCu+XmEztv06lNbnehWOVPrRRYvp/BL4GPbg4kE=;
+ b=ff9l+H+Kh34Ud5uWIl+gPNQ30JM5VHVyGwEkhERNy6EVtCH0wUERUFyUiu70U85ZDb5JsQE6FFj/TjwExUJitQY5AqFJ/hKrXxvaNKKSU1QzbDBOjHKfSExEh7ZJNFNgFvMFagzT0Amc2Wnk4VkORjeshk1CG7dF4dq299DFPbycjmK2iKNOos9bKfevRVXqsH2P4TRmY/hcIpF31pCcTKBDa4owlEOFqptLFgsUoBbp5LKl+jyz0Rr6ZpM3tmJfqt3NfhsNf4CAWVK8RhHG6QlidfL5gsxD4SXW+OpPXiRhuHerOC5MS6IcQBncdLJ1uq3qYbWUBKesEQaD1FRfCA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- PH0PR12MB5679.namprd12.prod.outlook.com (2603:10b6:510:14f::6) with Microsoft
+ CY8PR12MB7683.namprd12.prod.outlook.com (2603:10b6:930:86::5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.19; Mon, 22 Sep 2025 11:31:04 +0000
+ 15.20.9137.14; Mon, 22 Sep 2025 11:31:15 +0000
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9137.018; Mon, 22 Sep 2025
- 11:31:04 +0000
+ 11:31:15 +0000
 From: Alistair Popple <apopple@nvidia.com>
 To: rust-for-linux@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
@@ -66,16 +66,16 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	Timur Tabi <ttabi@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	nouveau@lists.freedesktop.org
-Subject: [PATCH v2 04/10] gpu: nova-core: Add a slice-buffer (sbuffer) datastructure
-Date: Mon, 22 Sep 2025 21:30:20 +1000
-Message-ID: <20250922113026.3083103-5-apopple@nvidia.com>
+Subject: [PATCH v2 06/10] gpu: nova-core: gsp: Create rmargs
+Date: Mon, 22 Sep 2025 21:30:22 +1000
+Message-ID: <20250922113026.3083103-7-apopple@nvidia.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250922113026.3083103-1-apopple@nvidia.com>
 References: <20250922113026.3083103-1-apopple@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SY5P300CA0038.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:1fd::11) To DS0PR12MB7726.namprd12.prod.outlook.com
+X-ClientProxiedBy: SY8P300CA0021.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:29d::18) To DS0PR12MB7726.namprd12.prod.outlook.com
  (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -84,315 +84,287 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|PH0PR12MB5679:EE_
-X-MS-Office365-Filtering-Correlation-Id: d4238faa-9a6d-4443-1d64-08ddf9cb83b0
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CY8PR12MB7683:EE_
+X-MS-Office365-Filtering-Correlation-Id: abf8eb2d-54ed-4c6f-e15b-08ddf9cb8a12
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?oVEqa6fohGUkx2SAnwvl4KAnBmDjF2a+WfdU2xA2vVzA+e1YDG3GjDyqdX7V?=
- =?us-ascii?Q?+lnDdVhtKvtjdx5l5SHmFc2D87EGnIeknhqdtf5TM4GYTRGPdJgGcX0KMhQr?=
- =?us-ascii?Q?sHOiGD2NelczaAJWdWnRI3hScbIt1f+0Jkw1oUdLCAX6Mg7NdhO952LpB8Qt?=
- =?us-ascii?Q?iM1WQaoTo20d+y9hDQYgWa+2fK5APBRWg9+tLGj2/VHYRT8hfIGquxisS9w/?=
- =?us-ascii?Q?LcdG6F4POC43pHS+LX8+RGsWr0DVQLpf6AFFcF1bOKklVTJsWXeUlTW0eqgm?=
- =?us-ascii?Q?cP4p9aUk2Wkad6SI6RKKZ8aI8a5ZR3+4g/of68BCxS7N08pnipSpo4YHv+cF?=
- =?us-ascii?Q?MrGfC97DREbiJnh4uJcvCnRAE7FpM964/YSh/ffz58EW3rPMLCVxe/KFiWGa?=
- =?us-ascii?Q?7Va6EAQIuz0kYd7WLbV47qzmImfwqrDCzmzz/GHXA+GB8ngow3IyKimxzW7X?=
- =?us-ascii?Q?0bLnJTobCpammLp82KzBPC+O4yIPYyaqn0M1sC8E09vhzNI0e3KTG/850cxY?=
- =?us-ascii?Q?4aeH+FSc8oWQ+evogCIti2ZKO1MM6ROSRUAWYh+XiWKJGZAxSQb/OhZpBJWI?=
- =?us-ascii?Q?nGdHRVa1PMNjoOlYFKQqF3+2JwLlUOxQXMLkuwFIVV8w67MyRNCfn1TVkx8s?=
- =?us-ascii?Q?y15/ktD78QRMJ3/888iuhnMrhWTmh/VmGQYzLR442IKGb86o4TvZAgsDX80S?=
- =?us-ascii?Q?tsDahFy7+MBWx9JbTH2Ky4l9CInQ+yrr1VKEMwNVai5X5Hu0HtMWh8+Wo0DF?=
- =?us-ascii?Q?AbFc+zsiEkOVNDmRLEa29CZkTQgorwnrlIn1vnSgu4ug8y+5alb1CPMGNd3c?=
- =?us-ascii?Q?xeuPSeGd+A5l7N4AKbvB4cAUUvZiCLD2plAQGjlayrojvMWdLi4BHPf5M/KM?=
- =?us-ascii?Q?pkfIB+PYWQ/O1qnb/SVj13RwBIbnIlPaL3nl4prquIi+tUTF1LuIieorSaey?=
- =?us-ascii?Q?fAlgUYjun1ClXHjjRXAsmC5JI3Z7vIsYIZYGuTVUjIs+JSIM7G1p1YaZdKqn?=
- =?us-ascii?Q?iIhhH+pdt4l1QwIfNFzi0NLNjFTkAA8CJP3P1u4uOb92T1oj5Ej+qIwhhzbW?=
- =?us-ascii?Q?xZQJ0kybYL4PFfHIBqndGGIog2DehVZHTXyeq8Fa++t5wfH2n5Rc4LAbD1y2?=
- =?us-ascii?Q?1wZZ646oumk4dH7kbh/DHV5fW+xYeKT+hGE5ITYzInhyD2rEvBJVON0D9H00?=
- =?us-ascii?Q?cBkuIdRTBELN+yTZz3rVdZjMcqy+5u8GnL0Wlzvcf27oaOLldJvbyuSp/Jyy?=
- =?us-ascii?Q?v6yAj046abCNSvommWpPbx94BpRe1QclGrIXFWp+w5AuBxzE4+/t3bEzdA3b?=
- =?us-ascii?Q?82PYfLbyhaJ7Bwec5LMvXj7Ol/1qbU6OSNhnLn/z27ojDOXvd0dnBuUHjGcD?=
- =?us-ascii?Q?s1Hc4rUxi8hy/mwdRCYI8ISFgUoHOPW/Dq5xsmRazqIER8JdiCyoWUyFyXCF?=
- =?us-ascii?Q?e0oIDgSRV74=3D?=
+	=?us-ascii?Q?85KREc+tJ4HUZjc3y8xJAFB+1y7VyrRgK2ai2YECSfTUHMpJjkHa5W8EQxOP?=
+ =?us-ascii?Q?Ck6bhyQ4rSqFJg5PkA7BQXJBNt5laKPknrnL1LjZtg9FxO/NUllsCAdUN9uG?=
+ =?us-ascii?Q?Z68xa3MvzA5DQK6ASYHfdsWn5qctg07SnbOaodsGDZU0S5bvEgXccf3UFzem?=
+ =?us-ascii?Q?aHYBOkh/CkTBU9maOdqO1Lm9sUa1PyI+JORBwU0+fZRSj9fuGW4zB+v2IXrj?=
+ =?us-ascii?Q?o+dBRD+Cwmy/SovAw76H+GsLRuBHdj7hEo2lb3uZP5NeQyZXCAeNMNteo2My?=
+ =?us-ascii?Q?fla8eaf/gacdjHwSKXBr6g/D2w5KS/XW8C95c8mvLdUplZhBcF8IIYFjSi9Q?=
+ =?us-ascii?Q?hEiJAVHdhT4BTSB9b5TZCLkosrd1UueOHOv8qqPIIJgPEx8chp8LqocF8QxA?=
+ =?us-ascii?Q?qemgQo7Tm5I4s4Qh2oVmfMYakuaS60Kfwir0ZOB5VyEdsdcXN3jOJYlSR7OI?=
+ =?us-ascii?Q?9CNeAfEiadXooJuQb50LKTAmZ28ICLXzR4WqOq7jlrx06i3Ajxm/x4vToUs8?=
+ =?us-ascii?Q?rija1TGzmwNQdTYTj2eOlcjnL+2VdO26JZtmY6Ktt6zy+nPxir5a+B/192FZ?=
+ =?us-ascii?Q?4EUpFC9hnAVAEHoHVIdOwyaWyQe2Bru7gQdoUL560Yu7agcxd1lvJVs1fAG5?=
+ =?us-ascii?Q?6qyxLcNeQ/DV2dffMBlZEFD3/55IhrAIAd1LEP8B49xT7LuVcVwpJ0J2Ak3Z?=
+ =?us-ascii?Q?iV4No/zpngfy0qGGU3tY/O24KelWSi2dgGvDpFcI4DY69quoRmpXRbWQ/4oA?=
+ =?us-ascii?Q?2Vb+O02SkFGUvJTVh/GUXoUe6J8/53PmIb5BI7/Vac8bVRTJyjpeGegxa+eN?=
+ =?us-ascii?Q?9EuJyYs/fXd6M/zIl2oRsfMe2bi8b/fuBDSZQbvl9pipt9f0FPFbJNtGrMRl?=
+ =?us-ascii?Q?vjIosejeZadpBHm01Prr9SWxVjI5eviy/BNJNHcDJBK2Pq6+UXA0FzD6v/5S?=
+ =?us-ascii?Q?6Y3fPVj52ksezJ3KzxdPTY/t2wocHh4njMtrzg7QVqHGJ3SxBAd5G5/nZD5D?=
+ =?us-ascii?Q?Q391B8D8eP2cJMKWMpuCrhxGNoSY0Px4uN9OW80jwGqaQ4a5lHLOT5HCy3h7?=
+ =?us-ascii?Q?xNzz6XGmKQaFshucp30okQcht0Tn8G2L+AHM8XUFKm52xvBDJy9c8UDqYLJw?=
+ =?us-ascii?Q?zEc3In0Z2ElJLvOoyfLFNowHcWl5JDQTq3NnB7XUAUuznfr6ImCrjb9kHJ7D?=
+ =?us-ascii?Q?+obq/N4T2Cug6ZeyrM91FQ6eEut+4KpgLUTKOlyDPccbwhMoUL9zSg6kcJsQ?=
+ =?us-ascii?Q?RnZxG2WfoU7HXzTCBVMJP2OUJIm7eyd8BYcDM2k0SWZfHHxJ0uY7/33dKcrC?=
+ =?us-ascii?Q?YPliTXkcOlTwGlptsnTYfVqPBY8pJrPQj3dxUxyRRxkn4oyZaAqNpvosn+0G?=
+ =?us-ascii?Q?ljMVg4lmO0puIM4CULtncbR9Em5EKSzignTRVdb2iNd9okO7iw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6b5iaJpQ+piQmHURuNqlteU6XBX+hDl65xGzNa4+L59v7h6aTcLbWbNgiTX3?=
- =?us-ascii?Q?lqjOXiyxn6j5WbTAWbDdUYDyI0gYRHSBLPaK/G4VJwQlYeOuJO78ljJog8fI?=
- =?us-ascii?Q?fUS3fXkLb+/o1uIWbJhuCbUGclhCE85p2+sSwOUswQSvGpVpNbvuaTuYWdWp?=
- =?us-ascii?Q?SapfDHiVBqzv5+CzQ5i5RGk5bwFJN/eaaEIzpGhnuwNNI4BiuL0Q8bK7yCZW?=
- =?us-ascii?Q?GjLvS6RD60CQlwu0PaWb9mDVw6t0Fb8T3TiZnuZtbiPzDescd8mS23EJP1+f?=
- =?us-ascii?Q?wawEBK/BZqubh/hY6Hkb/lV0PrTrtQm6gE/LWW3DaKvcRcjh5DUtb4OYa1Uv?=
- =?us-ascii?Q?6OuJX+FI6PeNg6KslwSFrOBzgjcbFPN3syhJgEMrdvAIFeEXyb3yYoHi4IZi?=
- =?us-ascii?Q?T8dTN0phWrltGiz5xlbg3naVXGviEbkMeIlU+lwT0h8wcyrHzyR8npVvRX4J?=
- =?us-ascii?Q?42pBMoliqGOcKP0Wgk+4ia2WkOgv10XDMWxmcRNRu4OmfjEjTU+vWN/QlVfJ?=
- =?us-ascii?Q?2FUyDlfdasOvy15D7izXu2trIbhLLu+ZUTzMnmToQl7YvNXJgLay6ZZ5Fttx?=
- =?us-ascii?Q?AHkkY5HzIjj9IJ3hM2aDpZvvbLfJd+kXgru2Kbp9BOM7PY10wp0EuYkSepO4?=
- =?us-ascii?Q?Vjhvcy42axEFXK/8iaN6SfUjV5RJRyP8pciLYe15gTqzY6sFU2C30CHcPFQW?=
- =?us-ascii?Q?q5Tm7S96284CszW6Jxqv34xdNsj0zkZhqaSSRPq7iOIu+QFHdlEkd7V8bfov?=
- =?us-ascii?Q?BuBdSfBM57dyEHDem024iuoQlcTDTuaENyhBPfbqQsYEdj2PM2xsM/e1pbj0?=
- =?us-ascii?Q?RqOSSEmrybSup0Uh68jQO4j7GBvtjBxi9muPTwabeObr4BurQnDdFGKz9P+u?=
- =?us-ascii?Q?5f4MkWuDAVN7stsDjMzfrhAxevYaOKh5QkpMNkhAPXBzrQB6/eBG1eEoEghz?=
- =?us-ascii?Q?eqVZfJxWk1aToCFRJLJm5Be//+qXHkd8J2xQd8yhYuEuOCSKX4x4x1C+3oTB?=
- =?us-ascii?Q?TnGsaFBKcyduGxl5g2j/cYRbaDAwY115iAp+QOOJcqz5sQqI5SmVR0yG/2/F?=
- =?us-ascii?Q?54xiYsUz85RNgPS6EUdJYUr8re82kOckTYAiQSsk3DmZ23+m9Qhj5vJ+p43X?=
- =?us-ascii?Q?JrQlwFw43Q9qblwSF4ISNMPngtHi7uP7TCWHgYO9EVcEjPMbMtTu6UxFKQsQ?=
- =?us-ascii?Q?zihzcSI+eOJZ25Ke02uazjqvRUNdxSf5mAJeB7eGSDIbt8nsh1U4JDuhVE/o?=
- =?us-ascii?Q?SLbpFBoeO/jMoSFGCCqgzFiq9nnxqJkdlc9owWUurJ0lXV+xiwike9H9hmtb?=
- =?us-ascii?Q?/DZPE8G66V3TfyHL4qPwflPY5knBimrzL4jv2JWy/zuMPwpayFi0OrVMORMp?=
- =?us-ascii?Q?m8vu552N97RcODSfo66M6fewI3zTzSu8jXMqAW30BzEW/fuNXtP6RwtgGuij?=
- =?us-ascii?Q?6J8IG+o98vrbuJjWunU7fE+Thzh/HZJh91UKRpMyALDXuCvT35JkpWLR3hvY?=
- =?us-ascii?Q?D3VIlrszpI+yWoX+MpdMJ9SjlEA8zGsIPA48ErYyMQOWC5B6/9co0Paa5LFh?=
- =?us-ascii?Q?G+okaZkeG4GBbuIW9j16gt2j2wy+9FRRu5ZmdUte?=
+	=?us-ascii?Q?W+0S7+O98QIxNblDfrcG8MtpsTj6pqxzrS8oLpOHAqZczmDB29V8mUYVFzj8?=
+ =?us-ascii?Q?nt+6WH6gMYvbZpMwADEE5drxzuwxZ/23F9G99BQvChQL01MsV3BwXmZS6GQs?=
+ =?us-ascii?Q?TXX/QfOUBCBrfae6b4woI1SPYWTSm2Q5Th4Goz1tLEcQ9sBvVcccmNGCW+xB?=
+ =?us-ascii?Q?MlUEf+8gXCt9+7PZsW5u9O7dKGeeoIDsXu7eyKzC+o5Ri9cPY0GI6JZUsiIP?=
+ =?us-ascii?Q?bk0FUJEMlkPYIQr0rzIbpHq1ELLq1YTgd7jgaCsQcSYUdySFzbbjeawbr1LF?=
+ =?us-ascii?Q?bwVWlbvWu9gJgxrA8+kQ+ajlgBENRxyZfsD8r8xddwjLw50kwE28WZLW03IL?=
+ =?us-ascii?Q?bXfahfcxOHLABsP1k31kQM+Gxt1NRXFItVWSCRV985WFveJovJJUgSSoBSXa?=
+ =?us-ascii?Q?tHmi6TagK2V8CcpX8pI5GRj+WKF24r0O3bzn1GmyvscFWQpjpzcLveJOUHvJ?=
+ =?us-ascii?Q?7/aoKgyTeRzYkVYFATvo9iX7h0pRBBnCnQ7TSx0sNsEhpO+XGWM+AoUMl/Jw?=
+ =?us-ascii?Q?hAE28CSW0y1/qtV9wr+DNB0Ay9MBQQACXZSSixmB4ho3pRQuixqt9T7uC4hc?=
+ =?us-ascii?Q?ir3p0ujX2uY37Qb9qd9h2NvtI6EA10ckfqR0eRDq52nTTcKFCa2MBeg895wi?=
+ =?us-ascii?Q?s+InOKQstz/8CdLuPVxxVJqRqnE3D2GdCRXsHNWZhLj/FlpLZeJqiltYc9t6?=
+ =?us-ascii?Q?3gA7mLDy8FmcJyZgDKu+0pss9DvIRgzDltviCTPqvIRek5YmrpCPc0eWvckW?=
+ =?us-ascii?Q?Mwege8AZM7yLVY/MJJScM7T7lhOCunYFv3kD9D+5mEsgu0m3O9/+S1nHp4jo?=
+ =?us-ascii?Q?xIa8gkkTRaoqmb2sPl9jdYeo+eecKh0Qi7AgRJfxDLPLkARNlQp36TTktbVy?=
+ =?us-ascii?Q?D3qZGsQMHdFRG2cvh/G43AmFiAA0HjJe2vp1ZHwdUGCG8+RUjtML1PPnxXZk?=
+ =?us-ascii?Q?+KF0wroH/98cl/7dVSGCOCXUEfARw0Yv1c4Cq4tBOxvYI4GHU7naFxqmiQPg?=
+ =?us-ascii?Q?T9Bc6jDra7SMjdlP2VzP2houUNT4jW7xrDsI0HbLH7utuoLR5tL/FJuYm11H?=
+ =?us-ascii?Q?A4MflpRcsZnUKcpbPpI5l5xVfWHSni8By3+pZVykja9LOUmHI03e3Xk3yxNV?=
+ =?us-ascii?Q?iV/iCVsDanuHrPYoE7TXz72WLOC5SS7tA0C15enBdGilVYYs3xe//T/w7v6h?=
+ =?us-ascii?Q?OH3TwucNSewiR5U3iXgelpkZxSeuHKxaC31QgGhoNUgIb5I2JhNVQ+bIjx/a?=
+ =?us-ascii?Q?ZoHsisURR1eaBMPKfhN6eh7NwZFbVgqrmXvsv4VA9wqf05nLDVAkJ/jdg3e6?=
+ =?us-ascii?Q?qZb+6kS+NZCuknyCW888wsOcLHxuPdfs78PsDJVb2n9n4H0kegSeek9Nkf4Z?=
+ =?us-ascii?Q?aOg7xGV4YZ8ztC7xcUG0Vi9A5vPZf/uxhDeyTePPMxXBVYIfFDAtx2C4Drr+?=
+ =?us-ascii?Q?/HdDa4hFmj9aakZzIPwWWU/GYJml7K+O0m5CuoWAvpmNkytmSMMCmDP+5tLY?=
+ =?us-ascii?Q?M8Y5EPwUEDRYSYSlacS10Z2uY9y5Z3rCODcz9TXckmn8YxceE2HZblm6E7mu?=
+ =?us-ascii?Q?1K0IytPo+YxOTG99C4HP2Ihl8f1YIQY+1o2itgFU?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4238faa-9a6d-4443-1d64-08ddf9cb83b0
+X-MS-Exchange-CrossTenant-Network-Message-Id: abf8eb2d-54ed-4c6f-e15b-08ddf9cb8a12
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 11:31:04.2919
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 11:31:15.0894
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xTZNzR0qx0wWyU9BC9g7kv8JVzqqW3jBchxshj23s+QCx4u4atRcB0cmVqygeyNmwEZQ/KPHMYcWC3jTxNoorg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5679
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1uWjRmFMF/wsARspfqdQSt8v+ijouJi4mNkyF8jMfuJEYJg8wPqDDXqMXDsedU1+PhYoCsUc0yaLL1KObhSLrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7683
 
-From: Joel Fernandes <joelagnelf@nvidia.com>
+Initialise the GSP resource manager arguments (rmargs) which provide
+initialisation parameters to the GSP firmware during boot. The rmargs
+structure contains arguments to configure the GSP message/command queue
+location.
 
-A data structure that can be used to write across multiple slices which
-may be out of order in memory. This lets SBuffer user correctly and
-safely write out of memory order, without error-prone tracking of
-pointers/offsets.
+These are mapped for coherent DMA and added to the libos data structure
+for access when booting GSP.
 
- let mut buf1 = [0u8; 3];
- let mut buf2 = [0u8; 5];
- let mut sbuffer = SBuffer::new([&mut buf1[..], &mut buf2[..]]);
-
- let data = b"hellowo";
- let result = sbuffer.write(data);
-
-An internal conversion of gsp.rs to use this resulted in a nice -ve delta:
-gsp.rs: 37 insertions(+), 99 deletions(-)
-
-Co-developed-by: Alistair Popple <apopple@nvidia.com>
 Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
----
- drivers/gpu/nova-core/nova_core.rs |   1 +
- drivers/gpu/nova-core/sbuffer.rs   | 191 +++++++++++++++++++++++++++++
- 2 files changed, 192 insertions(+)
- create mode 100644 drivers/gpu/nova-core/sbuffer.rs
 
-diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-index fffcaee2249f..a6feeba6254c 100644
---- a/drivers/gpu/nova-core/nova_core.rs
-+++ b/drivers/gpu/nova-core/nova_core.rs
-@@ -11,6 +11,7 @@
- mod gpu;
- mod gsp;
- mod regs;
-+mod sbuffer;
- mod util;
- mod vbios;
+---
+
+Changes for v2:
+ - Rebased on Alex's latest series
+---
+ drivers/gpu/nova-core/gsp.rs                  | 29 +++++++++++++++-
+ drivers/gpu/nova-core/gsp/cmdq.rs             | 14 ++++++--
+ drivers/gpu/nova-core/gsp/fw.rs               | 19 +++++++++++
+ .../gpu/nova-core/gsp/fw/r570_144/bindings.rs | 33 +++++++++++++++++++
+ 4 files changed, 91 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
+index 3d4028d67d2e..bb08bd537ec4 100644
+--- a/drivers/gpu/nova-core/gsp.rs
++++ b/drivers/gpu/nova-core/gsp.rs
+@@ -17,7 +17,10 @@
+ use crate::fb::FbLayout;
+ use crate::gsp::cmdq::GspCmdq;
  
-diff --git a/drivers/gpu/nova-core/sbuffer.rs b/drivers/gpu/nova-core/sbuffer.rs
-new file mode 100644
-index 000000000000..e768e4f1cb7d
---- /dev/null
-+++ b/drivers/gpu/nova-core/sbuffer.rs
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: GPL-2.0
+-use fw::LibosMemoryRegionInitArgument;
++use fw::{
++    LibosMemoryRegionInitArgument, GSP_ARGUMENTS_CACHED, GSP_SR_INIT_ARGUMENTS,
++    MESSAGE_QUEUE_INIT_ARGUMENTS,
++};
+ 
+ pub(crate) mod cmdq;
+ 
+@@ -33,6 +36,7 @@ pub(crate) struct Gsp {
+     pub logintr: CoherentAllocation<u8>,
+     pub logrm: CoherentAllocation<u8>,
+     pub cmdq: GspCmdq,
++    rmargs: CoherentAllocation<GSP_ARGUMENTS_CACHED>,
+ }
+ 
+ /// Creates a self-mapping page table for `obj` at its beginning.
+@@ -90,12 +94,35 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>) -> Result<impl PinInit<Self
+ 
+         // Creates its own PTE array
+         let cmdq = GspCmdq::new(dev)?;
++        let rmargs =
++            create_coherent_dma_object::<GSP_ARGUMENTS_CACHED>(dev, "RMARGS", 1, &mut libos, 3)?;
++        let (shared_mem_phys_addr, cmd_queue_offset, stat_queue_offset) = cmdq.get_cmdq_offsets();
 +
-+use core::ops::Deref;
-+
-+use kernel::alloc::KVec;
-+use kernel::error::code::*;
-+use kernel::prelude::*;
-+
-+/// A buffer abstraction for discontiguous byte slices.
-+///
-+/// This allows you to treat multiple non-contiguous `&mut [u8]` slices
-+/// as a single stream-like read/write buffer.
-+///
-+/// Example:
-+///
-+/// let mut buf1 = [0u8; 3];
-+/// let mut buf2 = [0u8; 5];
-+/// let mut sbuffer = SWriteBuffer::new([&buf1, &buf2]);
-+///
-+/// let data = b"hellowo";
-+/// let result = sbuffer.write_all(0, data);
-+///
-+/// A sliding window of slices to proceed.
-+///
-+/// Both read and write buffers are implemented in terms of operating on slices of a requested
-+/// size. This base class implements logic that can be shared between the two to support that.
-+///
-+/// `S` is a slice type, `I` is an iterator yielding `S`.
-+pub(crate) struct SBuffer<I: Iterator> {
-+    /// `Some` if we are not at the end of the data yet.
-+    cur_slice: Option<I::Item>,
-+    /// All the slices remaining after `cur_slice`.
-+    slices: I,
-+}
-+
-+impl<'a, I> SBuffer<I>
-+where
-+    I: Iterator,
-+{
-+    #[expect(unused)]
-+    pub(crate) fn new_reader(slices: impl IntoIterator<IntoIter = I>) -> Self
-+    where
-+        I: Iterator<Item = &'a [u8]>,
-+    {
-+        Self::new(slices)
-+    }
-+
-+    #[expect(unused)]
-+    pub(crate) fn new_writer(slices: impl IntoIterator<IntoIter = I>) -> Self
-+    where
-+        I: Iterator<Item = &'a mut [u8]>,
-+    {
-+        Self::new(slices)
-+    }
-+
-+    fn new(slices: impl IntoIterator<IntoIter = I>) -> Self
-+    where
-+        I::Item: Deref<Target = [u8]>,
-+    {
-+        let mut slices = slices.into_iter();
-+
-+        Self {
-+            // Skip empty slices to avoid trouble down the road.
-+            cur_slice: slices.find(|s| !s.deref().is_empty()),
-+            slices,
-+        }
-+    }
-+
-+    fn get_slice_internal(
-+        &mut self,
-+        len: usize,
-+        mut f: impl FnMut(I::Item, usize) -> (I::Item, I::Item),
-+    ) -> Option<I::Item>
-+    where
-+        I::Item: Deref<Target = [u8]>,
-+    {
-+        match self.cur_slice.take() {
-+            None => None,
-+            Some(cur_slice) => {
-+                if len >= cur_slice.len() {
-+                    // Caller requested more data than is in the current slice, return it entirely
-+                    // and prepare the following slice for being used. Skip empty slices to avoid
-+                    // trouble.
-+                    self.cur_slice = self.slices.find(|s| !s.deref().is_empty());
-+
-+                    Some(cur_slice)
-+                } else {
-+                    // The current slice can satisfy the request, split it and return a slice of
-+                    // the requested size.
-+                    let (ret, next) = f(cur_slice, len);
-+                    self.cur_slice = Some(next);
-+
-+                    Some(ret)
-+                }
++        dma_write!(
++            rmargs[0].messageQueueInitArguments = MESSAGE_QUEUE_INIT_ARGUMENTS {
++                sharedMemPhysAddr: shared_mem_phys_addr,
++                pageTableEntryCount: cmdq.nr_ptes,
++                cmdQueueOffset: cmd_queue_offset,
++                statQueueOffset: stat_queue_offset,
++                ..Default::default()
 +            }
-+        }
-+    }
-+}
-+
-+/// Provides a way to get non-mutable slices of data to read from.
-+impl<'a, I> SBuffer<I>
-+where
-+    I: Iterator<Item = &'a [u8]>,
-+{
-+    /// Returns a slice of at most `len` bytes, or `None` if we are at the end of the data.
-+    ///
-+    /// If a slice shorter than `len` bytes has been returned, the caller can call this method
-+    /// again until it returns `None` to try and obtain the remainder of the data.
-+    fn get_slice(&mut self, len: usize) -> Option<&'a [u8]> {
-+        self.get_slice_internal(len, |s, pos| s.split_at(pos))
-+    }
-+
-+    /// Ideally we would implement `Read`, but it is not available in `core`.
-+    /// So mimic `std::io::Read::read_exact`.
-+    #[expect(unused)]
-+    pub(crate) fn read_exact(&mut self, mut dst: &mut [u8]) -> Result {
-+        while !dst.is_empty() {
-+            match self.get_slice(dst.len()) {
-+                None => return Err(ETOOSMALL),
-+                Some(src) => {
-+                    let dst_slice;
-+                    (dst_slice, dst) = dst.split_at_mut(src.len());
-+                    dst_slice.copy_from_slice(src);
-+                }
++        )?;
++        dma_write!(
++            rmargs[0].srInitArguments = GSP_SR_INIT_ARGUMENTS {
++                oldLevel: 0,
++                flags: 0,
++                bInPMTransition: 0,
++                ..Default::default()
 +            }
-+        }
++        )?;
++        dma_write!(rmargs[0].bDmemStack = 1)?;
+ 
+         Ok(try_pin_init!(Self {
+             libos,
+             loginit,
+             logintr,
+             logrm,
++            rmargs,
+             cmdq,
+         }))
+     }
+diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
+index a9ba1a4c73d8..9170ccf4a064 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+@@ -99,7 +99,6 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
+         Ok(Self(gsp_mem))
+     }
+ 
+-    #[expect(unused)]
+     fn dma_handle(&self) -> DmaAddress {
+         self.0.dma_handle()
+     }
+@@ -218,7 +217,7 @@ pub(crate) struct GspCmdq {
+     dev: ARef<device::Device>,
+     seq: u32,
+     gsp_mem: DmaGspMem,
+-    pub _nr_ptes: u32,
++    pub nr_ptes: u32,
+ }
+ 
+ impl GspCmdq {
+@@ -231,7 +230,7 @@ pub(crate) fn new(dev: &device::Device<device::Bound>) -> Result<GspCmdq> {
+             dev: dev.into(),
+             seq: 0,
+             gsp_mem,
+-            _nr_ptes: nr_ptes as u32,
++            nr_ptes: nr_ptes as u32,
+         })
+     }
+ 
+@@ -382,6 +381,15 @@ pub(crate) fn receive_msg_from_gsp<M: GspMessageFromGsp, R>(
+             .advance_cpu_read_ptr(msg_header.rpc.length.div_ceil(GSP_PAGE_SIZE as u32));
+         result
+     }
 +
-+        Ok(())
++    pub(crate) fn get_cmdq_offsets(&self) -> (u64, u64, u64) {
++        (
++            self.gsp_mem.dma_handle(),
++            core::mem::offset_of!(Msgq, msgq) as u64,
++            (core::mem::offset_of!(GspMem, gspq) - core::mem::offset_of!(GspMem, cpuq)
++                + core::mem::offset_of!(Msgq, msgq)) as u64,
++        )
 +    }
+ }
+ 
+ fn decode_gsp_function(function: u32) -> &'static str {
+diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
+index 2e4255301e58..06841b103328 100644
+--- a/drivers/gpu/nova-core/gsp/fw.rs
++++ b/drivers/gpu/nova-core/gsp/fw.rs
+@@ -158,9 +158,15 @@ pub(crate) fn new(gsp_firmware: &GspFirmware, fb_layout: &FbLayout) -> Self {
+ }
+ 
+ pub(crate) use r570_144::{
++    GSP_ARGUMENTS_CACHED,
 +
-+    /// Read all the remaining data into a `KVec`.
-+    ///
-+    /// `self` will be empty after this operation.
-+    #[expect(unused)]
-+    pub(crate) fn read_into_kvec(&mut self, flags: kernel::alloc::Flags) -> Result<KVec<u8>> {
-+        let mut buf = KVec::<u8>::new();
+     // GSP firmware constants
+     GSP_FW_WPR_META_MAGIC,
+     GSP_FW_WPR_META_REVISION,
++    GSP_SR_INIT_ARGUMENTS,
 +
-+        if let Some(slice) = core::mem::take(&mut self.cur_slice) {
-+            buf.extend_from_slice(slice, flags)?;
-+        }
-+        for slice in &mut self.slices {
-+            buf.extend_from_slice(slice, flags)?;
-+        }
++    // RM message queue parameters
++    MESSAGE_QUEUE_INIT_ARGUMENTS,
+ 
+     // GSP events
+     NV_VGPU_MSG_EVENT_GSP_INIT_DONE,
+@@ -313,3 +319,16 @@ pub(crate) fn new(sequence: u32, cmd_size: usize, function: u32) -> Self {
+         }
+     }
+ }
 +
-+        Ok(buf)
-+    }
++// SAFETY: Padding is explicit and will not contain uninitialized data.
++unsafe impl AsBytes for GSP_ARGUMENTS_CACHED {}
++
++// SAFETY: This struct only contains integer types for which all bit patterns
++// are valid.
++unsafe impl FromBytes for GSP_ARGUMENTS_CACHED {}
++
++// SAFETY: Padding is explicit and will not contain uninitialized data.
++unsafe impl AsBytes for MESSAGE_QUEUE_INIT_ARGUMENTS {}
++
++// SAFETY: Padding is explicit and will not contain uninitialized data.
++unsafe impl AsBytes for GSP_SR_INIT_ARGUMENTS {}
+diff --git a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+index 3d96d91e5b12..b87c4e6cb857 100644
+--- a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
++++ b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+@@ -319,6 +319,39 @@ fn fmt(&self, fmt: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+ pub const NV_VGPU_MSG_EVENT_NUM_EVENTS: _bindgen_ty_3 = 4131;
+ pub type _bindgen_ty_3 = ffi::c_uint;
+ #[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct MESSAGE_QUEUE_INIT_ARGUMENTS {
++    pub sharedMemPhysAddr: u64_,
++    pub pageTableEntryCount: u32_,
++    pub __bindgen_padding_0: [u8; 4usize],
++    pub cmdQueueOffset: u64_,
++    pub statQueueOffset: u64_,
 +}
-+
-+/// Provides a way to get mutable slices of data to write into.
-+impl<'a, I> SBuffer<I>
-+where
-+    I: Iterator<Item = &'a mut [u8]>,
-+{
-+    /// Returns a mutable slice of at most `len` bytes, or `None` if we are at the end of the data.
-+    ///
-+    /// If a slice shorter than `len` bytes has been returned, the caller can call this method
-+    /// again until it returns `None` to try and obtain the remainder of the data.
-+    fn get_slice_mut(&mut self, len: usize) -> Option<&'a mut [u8]> {
-+        self.get_slice_internal(len, |s, pos| s.split_at_mut(pos))
-+    }
-+
-+    /// Ideally we would implement `Write`, but it is not available in `core`.
-+    /// So mimic `std::io::Write::write_all`.
-+    #[expect(unused)]
-+    pub(crate) fn write_all(&mut self, mut src: &[u8]) -> Result {
-+        while !src.is_empty() {
-+            match self.get_slice_mut(src.len()) {
-+                None => return Err(ETOOSMALL),
-+                Some(dst) => {
-+                    let src_slice;
-+                    (src_slice, src) = src.split_at(dst.len());
-+                    dst.copy_from_slice(src_slice);
-+                }
-+            }
-+        }
-+
-+        Ok(())
-+    }
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct GSP_SR_INIT_ARGUMENTS {
++    pub oldLevel: u32_,
++    pub flags: u32_,
++    pub bInPMTransition: u8_,
++    pub __bindgen_padding_0: [u8; 3usize],
 +}
-+
-+impl<'a, I> Iterator for SBuffer<I>
-+where
-+    I: Iterator<Item = &'a [u8]>,
-+{
-+    type Item = u8;
-+
-+    fn next(&mut self) -> Option<Self::Item> {
-+        // Returned slices are guaranteed to not be empty so we can safely index the first entry.
-+        self.get_slice(1).map(|s| s[0])
-+    }
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct GSP_ARGUMENTS_CACHED {
++    pub messageQueueInitArguments: MESSAGE_QUEUE_INIT_ARGUMENTS,
++    pub srInitArguments: GSP_SR_INIT_ARGUMENTS,
++    pub gpuInstance: u32_,
++    pub bDmemStack: u8_,
++    pub __bindgen_padding_0: [u8; 7usize],
++    pub profilerArgs: GSP_ARGUMENTS_CACHED__bindgen_ty_1,
 +}
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct GSP_ARGUMENTS_CACHED__bindgen_ty_1 {
++    pub pa: u64_,
++    pub size: u64_,
++}
++#[repr(C)]
+ #[derive(Copy, Clone)]
+ pub union rpc_message_rpc_union_field_v03_00 {
+     pub spare: u32_,
 -- 
 2.50.1
 
