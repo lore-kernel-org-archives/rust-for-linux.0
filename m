@@ -1,464 +1,207 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010048.outbound.protection.outlook.com [52.101.56.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018EA313526
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 18:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758564592; cv=none; b=KrejiFGsNuyynTBSfQTHaNNnvekBznM97yej6jRIeiKXfBBQwq8gjCdtZqi/fzGDrz9EEr6eNXAUCZ5DN6cfa/6tdMIoC66OSpb8XYPFHI7a5g/CWEw6SiegzxYuqNgOJyxYGxeW6ixn/n6dF1gMJY0scZXYi2oqbAWnD2Ui0P0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758564592; c=relaxed/simple;
-	bh=ikGo23UXT52fyqCqqKczOtS5pYsO/F+ZDJfBM0EiP7Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=do9k612k8R37XZULd7szEPOgj7Hst2ldoe54DGz8paIwaP/ijiVSGEdupoue0HYLgseQQ+QxPpn1GQgretikapUs5sdGyVDeZyPI3hs/NNLm+0x0DdjDfMz2RWXC9h7haQszNdcwtPftEBz4ewoDW8mYgE/inRSRQ+UsKiKeTCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=F6j5jjRm; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE5D70810;
+	Mon, 22 Sep 2025 19:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758567695; cv=fail; b=sduGYdQVW5oCpuxq2qotQXygbZlnXUbtijFcOd3vSs3YjL4DuIfi7SAi2XLruJy8NcPSDAvAMEmUwsbEmnf4H3bwusUrs38G6lfnPzeHEUCaO82PXL7Tak5/BK6tP9UawdrC6rs6BOuNnQbmDMoU7EAtWh6IZcEAgZtjLdRJdwY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758567695; c=relaxed/simple;
+	bh=mbB2OYhsmttHXACx8TRmeAQxR4jKbRmA13bsUZwPX94=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JvuvbF2RViNmQrRJBsY5JnsHPnUdpGpkZaBzuuxZM2EbpJHJK7vNrEMf/KVF9cxgIeNWUPTtSIKF5i3ca6V23WiK7RpP7sKgUWY0u8trd1bm8eqjHDp4y1Qz9kFFG1E5A1q3zmqQMBowbo4l4sS01TAaHS5NqwT3dufQMG5d0rA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UaU9WOXt; arc=fail smtp.client-ip=52.101.56.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="F6j5jjRm"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-33072cd0a24so262774a91.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 11:09:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1758564589; x=1759169389; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LHWOHNoonAkc7Bu2eu/keJgFCNZ8MjJWtgk79xBJxjY=;
-        b=F6j5jjRm2eKpkmTgozgxcVb8yFfEm2t2ZNOD7ojK82ehVCZVGPr3eELOLRhaRYvSD9
-         KtXbUZsrKlqTy8l1xyNkFlv+ZuYA7z8svALGZ9avc4MxxpggkUxiznMZQ3nVZIWq2Y4U
-         VY05fQsk0tQaaxArLl7W9DQKltXTbLUNaF+ypl9yi3yJheLuwTsxRKPmxxhb8XApUdfQ
-         KvAJK0Jwn5RJkFsOIgx8BC6qQgRNSxiSE12w3Npkz9QaLKZDJF8y8DlZmWOv2oSiOh3a
-         o5RBRgP2oUEnLH0HNJRebh0/UJ2+Cs8un6njzcK+7KGktis/v6L4QCkcLzCj6Dc5EeQG
-         PcOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758564589; x=1759169389;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LHWOHNoonAkc7Bu2eu/keJgFCNZ8MjJWtgk79xBJxjY=;
-        b=dJeyrkmANknsZFkWEGc92mUK+2uNvyItRWATju10IsYvzNXWmufkwQetobWNv7fHPX
-         wMejdsxU7ObWGWGlNSwhqWhhVZ+oBuzupCq7iGzLCIx1DnF3qIkPucrcnxh/KEU1iiar
-         QMpnpnUS5j8hfMv22a1oQ2BO6BuSDv6rndU+eUrXqvvGeyUXdvpAutdlaboUsI6U9M+I
-         AZhSWJYhfsZ3fMQFYbXOT77tj0TiPfpTz65807hMxunG4DbmAcrxk8RwvEtzee88/TD4
-         FGwQDGuf18wAERvoPlKpN8MnqRKkHuWhLwF3TobNMz0WE7hvCaiTOcOts9WjHrTw+TIK
-         vNFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUX4iemM3eAjXSX+ZbYG5UBaZziXwlkObf0MA0Z9UcMUwvze3DWQbYZGWJbNf1PK8zJ80PfPAgZmkeNs5vROw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9FfQtMFYhfXk9yyu4raMl9AER/Mj1sbEMIO9TxnWiF+gmpAkc
-	3RfWPp+S/l3NzRfhkVXN3UHCzPKvkCHIXhRpuZAATBZKZvhNVWAA+E/tDSdxP5TNoiM+Z547/4X
-	4KRMQVrSSdDfu0G9vkk/Sb+rHcgJGLwCxjkH+dLPkqg==
-X-Gm-Gg: ASbGncs155GolIox+WzufYBCVPhlcdyOarGgboJ7aB05PtrmNR41TGIvW1jgyALA86e
-	A//AbyDMC9npA1qbMEpql0TIe8Zberd3BbUTzCi+13gfB9PGpX0jJYSw+8qZPZ4YT/cyasrIMo3
-	gYfNYuC5oycSBrh2bZ4vXDJVvuHxSg2iAy1MKkRVEiv3NMER+DpqLiD5IjCl8aO2jJeLtLP3imi
-	QfvTOV3FVkKYayZ8WpmYHbmWYCjU9AlgvrsnJHfWa8TGB1pYz0=
-X-Google-Smtp-Source: AGHT+IFNMTUh7ZkzIOMLg4r6PD0ixHIMphfbUzlf46DNy5lqedP+FcRxVhmucdxi8Sz//x8P4qguzZL22TZRRcq4JUE=
-X-Received: by 2002:a17:90b:1d8a:b0:32e:1213:1ec1 with SMTP id
- 98e67ed59e1d1-330982458afmr8756491a91.3.1758564588958; Mon, 22 Sep 2025
- 11:09:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UaU9WOXt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jdpIJAPaellpH1c2jDhC38evdb8kC3i3nb9hiDUdD7SW1qGyRnj/XtuTlPNKGm3Z3Mdfk38JaUcRso1DIEnhMhD36xBmd3Lc6S0raWYtnqLEjLRSoCAfhC7/OhDPXRP1ojirq1P8cftqJwLZD9rm7rZ3bEJyWnJuowU2IUAnLJzoajXFN2+dEA1wrrssf2o24+6iAt/mXZXF1Z3UAcSTgOVOWTzF+NGyrxVSFz5VJJGowNWHap17xMvGVPD01jYFp1E0sRzmaItbsE49b+6ZV7/CJUM/nubmwZueUOXBEWEulgoHo/68wDlyW/91QIQ0hNxalq+1/f/Q17B6jVJPYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HZLV6TLkpyXKI6p685Q5cCspLe8CW9PHZnr8wCQrRoI=;
+ b=HqPnjLOZkZbHCfQNzFZtoFUzXXP1/OEsu0s1ClzHA+xI+VSbm5s3X9gxGC1nlTNcwEL/Q7eznIuqQdU3NMAEkYdoFZgN9/Yh95q/NJBckaEx0JpG2IL1MrsyZM1fg5+155T8NiPvXYFYnyq38WMardKDICRQU8cpfbt4rtbe2CFzBTyccY1YO/7dYrw+xPPlB7TUPnmRz6UVgJlORkr3MwAh+laBGW7k36RATmRWqJN7Jt9yYiJGCrn5bX8y7RrieFkiChFU99K1yw326A0SS3G0C0Zdrdb62tny5W4xps1jPkiHkIIL6VkP8Xh8MSwCySuD0QiiQBo+ONdmVupZ7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HZLV6TLkpyXKI6p685Q5cCspLe8CW9PHZnr8wCQrRoI=;
+ b=UaU9WOXtKXMKWPS86j4gFvy2Sfk5BSe/qtNRBiOcBnHLySnJzYTljMbMQpxTknr3xT7WXJvg6A3RvxDeSbl0+65aFSjCXWwHFuENmRZnC9WT00uO2xduMTZd4PNpdy8PRf4SHsgJRv/YZ3oNOigkcMfuCvSJaOef38GW17tsJE4nr/f0TvFagRIJdBCFRwErfT6Q9jLL/Rrc5QDKcE4OObGRMqcgi3kUKg1rPkbHZBQcFAe4fAkznwdiIsgXGgzjqnI878dcBex24Myk9XSYoWvNoBILrgxSsSXCTBa8r4Ry/F17rH+w0norrcJysNHM2RYrkYPmQhXiMRa8J1viSw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB8056.namprd12.prod.outlook.com (2603:10b6:510:269::21)
+ by DS0PR12MB6654.namprd12.prod.outlook.com (2603:10b6:8:d1::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Mon, 22 Sep
+ 2025 19:01:29 +0000
+Received: from PH7PR12MB8056.namprd12.prod.outlook.com
+ ([fe80::5682:7bec:7be0:cbd6]) by PH7PR12MB8056.namprd12.prod.outlook.com
+ ([fe80::5682:7bec:7be0:cbd6%4]) with mapi id 15.20.9137.018; Mon, 22 Sep 2025
+ 19:01:29 +0000
+Date: Mon, 22 Sep 2025 15:01:27 -0400
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, acourbot@nvidia.com,
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: print: Fix issue with rust_build_error
+Message-ID: <20250922190127.GA2462108@joelbox2>
+References: <20250920161958.2079105-1-joelagnelf@nvidia.com>
+ <DCXWEV3YO443.2EUZL32P96Z0D@kernel.org>
+ <20250921004517.GA2101443@joelbox2>
+ <CANiq72kDkAtYQ6fBb4gPEJqsS10qmXRRZj34gDWqjAQEvmXVPw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kDkAtYQ6fBb4gPEJqsS10qmXRRZj34gDWqjAQEvmXVPw@mail.gmail.com>
+X-ClientProxiedBy: BN9P221CA0004.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:408:10a::12) To PH7PR12MB8056.namprd12.prod.outlook.com
+ (2603:10b6:510:269::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aLbFiChBnTNLBAyV@sidongui-MacBookPro.local> <CADUfDZpPvj3R7kzWC9bQVV0iuCBOnKsNUFn=B3ivf7De5wCB8g@mail.gmail.com>
- <aLxFAamglufhUvq0@sidongui-MacBookPro.local> <CADUfDZruwQyOcAeOXkXMLX+_HgOBeYdHUmgnJdT5pGQEmXt9+g@mail.gmail.com>
- <aMA8_MuU0V-_ja5O@sidongui-MacBookPro.local> <CADUfDZppdnM2QAeX37OmZsXqd7sO7KvyLnNPUYOgLpWMb+FpoQ@mail.gmail.com>
- <aMRNSBHDM4nkewHO@sidongui-MacBookPro.local> <CADUfDZrHse9nDxfd0UDkxOEmVRg-b=KDEUZ9Hz08eojXJvgtng@mail.gmail.com>
- <aMVmm1Ydt4iOfxu5@sidongui-MacBookPro.local> <CADUfDZrULTJj99Bik3OhUEorMSnL5cWgJ-VqoHePZ6WWDoukTQ@mail.gmail.com>
- <aMrMDd4kjxim0CkA@sidongui-MacBookPro.local>
-In-Reply-To: <aMrMDd4kjxim0CkA@sidongui-MacBookPro.local>
-From: Caleb Sander Mateos <csander@purestorage.com>
-Date: Mon, 22 Sep 2025 11:09:37 -0700
-X-Gm-Features: AS18NWDeqJjYdY44RI-SgmdWrVXuWWfC58XsrzHKvCwljR8rDS3z-VVA8yS43NM
-Message-ID: <CADUfDZpqP--N4OWx+h4yzWL_hghBwhhCKs4==1VnV4oz5F-brg@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 2/5] io_uring/cmd: zero-init pdu in
- io_uring_cmd_prep() to avoid UB
-To: Sidong Yang <sidong.yang@furiosa.ai>
-Cc: Jens Axboe <axboe@kernel.dk>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB8056:EE_|DS0PR12MB6654:EE_
+X-MS-Office365-Filtering-Correlation-Id: c39bc8e1-3dd2-47e9-c0a7-08ddfa0a703e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N0N4KzFuRDI2bnVYOCswUHBhQllUbHpXemRSN242RzIzNUI3TURZalNHQjJO?=
+ =?utf-8?B?eGVjQWlrSmRtVWRXU0VzelZVRHlWV3ZVUTZtZDA2N01MK2JKNXNQbTJmNTRv?=
+ =?utf-8?B?YXdVTUFMVGRxUXVNSVQ4b0xJeEt2RGl1clFlcFVWbDRUOEVkT2g2bHU2alNs?=
+ =?utf-8?B?Rjc5eGJVZDNXK3MvT0krZnpGY3drMjdMaWxFNEg2bkRIWmpEUFZISDZacHdF?=
+ =?utf-8?B?WlpqRGhuYktlVk5XSmlhYlc4MGxERkZoNm9pRGIwbEJHUWlDa1diVHpDTVFJ?=
+ =?utf-8?B?VWo2KzFsQjVCcTBsTDFBUkZoM05LYm85SndWTlEvdXIxWnh0azcwaER0T0s0?=
+ =?utf-8?B?dnB6dnh3WmNacmhYVWx1L1JnQzFWSjdmQitqem10cjMxWVZOdk5VQmlrZGgz?=
+ =?utf-8?B?MjRHWTlvY0hMalgwcU8vdWN4c1JWTTdldXF1MmtyRjAzTTE2QVZFbVF5WVhT?=
+ =?utf-8?B?RlROUlRWR0xKdGp1ekI2ZE5sY0h0OExrNlVHL3FhNUNVWDFXS3pSdHdtdVRI?=
+ =?utf-8?B?V2YwRzBla25VY2lNc1NjVW1wdmJIZXc3R3BSS0VkMlp6RU96ZzRhL0NwTWxU?=
+ =?utf-8?B?Y2szdXNWM09lRlRsUUVuNWtVdnZOemFFbGdrNmtUTGdhN0RrdnNFaWZ0all5?=
+ =?utf-8?B?U1hWVkgrVXY1aDNOdlozVU5nOFFPS2swSm50NUtBYUg2bjAvWE56UEd2MXhK?=
+ =?utf-8?B?dGszTXhuYlNGVWttc1JPTmdkV2pqSTJ1enNsYU04UW9TaGpsdjQzQVdkOFNh?=
+ =?utf-8?B?dVhJKzRXck9sRUpxQ3FNeHdCQnB4NUIzNEphMm1ucGxDMU1YRWVPcTJ6OFdO?=
+ =?utf-8?B?bjR3NVliRUdFRVEzQ0hhaGJ4Z2I3VkZYVlN4Ukt6b28xdzBJQmpkK0U1Y2Mz?=
+ =?utf-8?B?M2FnYnpQSmpMMXhXUDZpQmVlTU13VlA1M0FpNE9IcUpUSlNXNlFUa3h5NkRt?=
+ =?utf-8?B?d29aYTF3clFUbkFiK0Zsd09SbFdZNGZ5V1FEcDNtVmttMUxvR1hScmhPMWQ3?=
+ =?utf-8?B?OXRNcC9hYlFxSnVSUXd0dUVjbFVPM1RDTW56c1FnRVUrZzdnUGFqQ0RWMmRE?=
+ =?utf-8?B?VVdjUVVzUG14dEZVOGIvVkVoQXFWYWxCQ3czU2NkYk1Ea2xsRXRXdnQrcTU2?=
+ =?utf-8?B?MEVEYmhQSjFVMk1WdEFUWXk1UkZLZzJWeDNIM2h3akw5K1JzZWRQaXN2dEh3?=
+ =?utf-8?B?R0xzL3FzRDRlaHZkVUNrYkxUdWg1V1BxTFBBUW1ZeW4yamNYOFpNeHRTQXhT?=
+ =?utf-8?B?Z0owMC8yaUJvOW5pbjFCQ2labTlsTytKZWI4LzdXN1BIZFFSZzFqZU9IL3hH?=
+ =?utf-8?B?TTNkQ3VTcXE2Z2pTYXFBbjdDS3F3em1STUtiemRaU29IUCtnWlFTLys1dkVL?=
+ =?utf-8?B?WW8yZ0NzODkrNkpqQnpXL3hrWlBIcEI1a3RlRFBkVzk2Uis2RnowaUVTTWxW?=
+ =?utf-8?B?dHNxbnR0Z3BxNDBzeXhUN2FHM3hUaElMS0t1K1hkaEpob0s2dUxqR1hTY3Q2?=
+ =?utf-8?B?Wm4xUC9DMEU2blZCM0tRZVhtZmg3dUllamhoaGF6YUZoMHZvbXc3a3JIVWZR?=
+ =?utf-8?B?Wi9FekhodkQvS2JCMmEyQU56TFgwaUhBV25XKzEwd3Y1Z1VzSmRJQTZsYnYv?=
+ =?utf-8?B?dE8wdk53ZHRIcElOOUFYY0x6ck1NQWkrVFFwclRBb2R2TEt1eEdjRHpoMlNz?=
+ =?utf-8?B?WEhzcjI0cVRFQk5UeTQ0aWxkR3lXTnJqOXczQzBkLzVHTkpWanhLZnZYWkRS?=
+ =?utf-8?B?cW8rSFVLMjJ4bVQwblZKbHlFclVLYjlTUWg1NXRHRWVxRE1kd2RabDFuWDFP?=
+ =?utf-8?B?MFF2MjQxWXF6L1EwQW5SRmwyekhyVnp3aXY0Um5FQ3cxNUgzaXhGQzdHbWhs?=
+ =?utf-8?B?N1Q4WVU0Y3lWRDh4ZXlLTkNickRpcmFUNHBtM0xQVEFieHJRL2cvbitqU1dj?=
+ =?utf-8?Q?9RexYIXLwDM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8056.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VG9YOC94ckJmU244WWpzSkh0aWExd2ZVbklGQlA2YmpUR1F6R3RoY05MQjVB?=
+ =?utf-8?B?aE1WSlZjeHBtWUN6a0p1M1JCNGhmSUNhemgxc1hYZVRzV1U5aVVJeklwamo4?=
+ =?utf-8?B?MkdKeGI5emZQd1J6L2JXbGFXbVBtbng5R0hLTUhOVjlHOUFJTXhtWWVxeWts?=
+ =?utf-8?B?bHB2c2VXMUJqdU9ZTDIzSC81VTVBRXVURGUvcXMvTUw3VzVXeXh6Y3VFZWNU?=
+ =?utf-8?B?NUFsY3U1NkJ5ZEM4OEliaDI4ak5TUU1ydVNmWUxubGQwSENiRkRjMzdlUWtI?=
+ =?utf-8?B?RUJORDNyakh5dXQ3WVpsSG42aWxteDluRkllVzI4THN3ZjJNK1lhaWlWV1k0?=
+ =?utf-8?B?VlVhZDA2Ym9QenM1OE02cTBOemlIQVBrbVZHS3AxcTRMWmZGR1p5RWJGTnZW?=
+ =?utf-8?B?dnMzQ0R5UVRIKy90NEtWNlVidm5XRWVGNTJJdFhQNVMzbEcySXg2azZJOGtt?=
+ =?utf-8?B?bnlDcWtVdG1BU1RXMHRuZnY5RUErYkwvMCtjSllwWElLMnY4TUdYcVI3SGd2?=
+ =?utf-8?B?aThWclJ1R1h5TlM1ODROZXFnOVE4ZkMwMTE0MnF2RUFnZjVJcC9EWDdWUnZV?=
+ =?utf-8?B?OCtNYXFSQ0RJYnkxQ1dLMXJqSlY1dkdHd1F0VG1NcFNSV0NCQnloUjhvRzVG?=
+ =?utf-8?B?NE9QY1BJZkxxYk1XcmVudmVlK1lmdkV4TU5FSTZjcGZhOUhJbTBWbTZqZ2p3?=
+ =?utf-8?B?WGFVZk1Ia2k3VzNZcGJ4REw5VExDRy9ESlNJQzA0K2ptb2luOW95OHdnVDF0?=
+ =?utf-8?B?WjlaYWlwRXZ0clVFaWhrMWRWWVlFdHdIem1KWGpNRlF3WGhhcUZDL2pFakhE?=
+ =?utf-8?B?cDNmckVXbkU3R0puTzJKbWtIdnc4OGJKZjJyZTdXZkJJc1kyVndsWWpOYnNz?=
+ =?utf-8?B?aklkTTU1YkVtUHFjcE42Z3pDanVBc01KRVJEUjltamI1MW9qRFpvR2tSSlNw?=
+ =?utf-8?B?clJHOUtHbExjQ1JSYUxINVRLajl6WXRkUjVtU2MyeU1FTlVwTUY5L3JOd0hl?=
+ =?utf-8?B?NVdCTkhlN205VWd0T0FoZjZEeks3QUFCR1ZpbHFQY3E1R3REcktja3lBMkdp?=
+ =?utf-8?B?RGgvNDBscDNoVktlTW1FbVZRb2FuWWwxaXZEQzJsam15cStUSDh6ZW91bTlz?=
+ =?utf-8?B?K2daM1lpd00yaUJvVFZHSG1wa2ZJYk5mZ1g4NUJFczFWQStYb2NiQytCSTg3?=
+ =?utf-8?B?ZXFJTXk1em9PcTJKdnJKVk5uM2FvTEdmamtWWHZJYjM5VFpMS3NCb21QTVli?=
+ =?utf-8?B?OVNTZW8yckxCaEhEV0VySjFWaWNMRm0xQ0wrUi80UEx6RFVTMHMxODIvaHZD?=
+ =?utf-8?B?UDdWdVVrTWd2ZHFjNHNhTDRuU3Jna2Q2b1VNdUxHb3lxODVtQmNhcXRVaGNr?=
+ =?utf-8?B?cEJoVE5yWU5KMkdYdFd5UWtEKy9ORVhjNjZnQTh2eFZXQ1dnYnNNcFZkVzVw?=
+ =?utf-8?B?aHVhUnJGdkRoWVcwR0cwT25PUG9zcUsrTDNlVktFNkdITllkTk54SFVLeTZY?=
+ =?utf-8?B?OHRHa1Rla0I2dCtHMFRhY1VUQTZ6NUsraFVRcWh1TFhEUkMyc2h1aXp6VW9y?=
+ =?utf-8?B?ZWptcjgwRWFQQ25EWktTVWFObzRvQlVERmlzVkRlWXpGdGYvYkpzNjlJaHl4?=
+ =?utf-8?B?aUpLSTVFdUZOVmRLWHVMeVB1T2c2L0l1T3ZmZWRuS1BLUHp1Zm9ZM0FtSDUy?=
+ =?utf-8?B?N3lXM2V0R3FMV1FYaTk3c3R5QUo1TEJERCtteUpyRTNLOVlTWHBIVFQ1dCtI?=
+ =?utf-8?B?RXJxRWY0cW9HNXhXaURCWnZMUmI2RGhzamZHV24xdEcvN3lqdkpMN3QxTGlD?=
+ =?utf-8?B?SVVOWnhOS0MvYXhIU0gvaUlOQ25nczkwbVBCWkpvU0dWQjlKTW5INW8rVDYz?=
+ =?utf-8?B?T0xRYVBHM1pEa0dsaUpXTjR5UmE0cjJ4N0llZ0NaSGsvb3hRRmI4RTg2a05X?=
+ =?utf-8?B?WnJHbDVXWThPUHFWaGtjV0hMNDY3NVkyekhWQWtMQ25ZdlZaaEJCeFBKRGJj?=
+ =?utf-8?B?Nkx6dTRGN21Kd1B3RVBlZUlEMVBqOFB0djFuZUJXakhBQWhlNndtUWkrYktS?=
+ =?utf-8?B?dEc3a2JzS2Rpd0ErblZWbm9OVS9CQmlRRXFzcUp1Q1BzR2F2T00vZU16VEFF?=
+ =?utf-8?Q?cdYbhFRVJKRXvlva12/lU123i?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c39bc8e1-3dd2-47e9-c0a7-08ddfa0a703e
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8056.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 19:01:29.7913
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 76YlzYuHimcAFjQUdL5MU05V5chgOGT3Y7A8SSBP2TXaVpbjO8rKVt3HSE4bdWa1k5VALG/hxC69t5pDMzf1zw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6654
 
-On Wed, Sep 17, 2025 at 7:56=E2=80=AFAM Sidong Yang <sidong.yang@furiosa.ai=
-> wrote:
->
-> On Mon, Sep 15, 2025 at 09:54:50AM -0700, Caleb Sander Mateos wrote:
-> > On Sat, Sep 13, 2025 at 5:42=E2=80=AFAM Sidong Yang <sidong.yang@furios=
-a.ai> wrote:
-> > >
-> > > On Fri, Sep 12, 2025 at 10:56:31AM -0700, Caleb Sander Mateos wrote:
-> > > > On Fri, Sep 12, 2025 at 9:42=E2=80=AFAM Sidong Yang <sidong.yang@fu=
-riosa.ai> wrote:
-> > > > >
-> > > > > On Tue, Sep 09, 2025 at 09:32:37AM -0700, Caleb Sander Mateos wro=
-te:
-> > > > > > On Tue, Sep 9, 2025 at 7:43=E2=80=AFAM Sidong Yang <sidong.yang=
-@furiosa.ai> wrote:
-> > > > > > >
-> > > > > > > On Mon, Sep 08, 2025 at 12:45:58PM -0700, Caleb Sander Mateos=
- wrote:
-> > > > > > > > On Sat, Sep 6, 2025 at 7:28=E2=80=AFAM Sidong Yang <sidong.=
-yang@furiosa.ai> wrote:
-> > > > > > > > >
-> > > > > > > > > On Tue, Sep 02, 2025 at 08:31:00AM -0700, Caleb Sander Ma=
-teos wrote:
-> > > > > > > > > > On Tue, Sep 2, 2025 at 3:23=E2=80=AFAM Sidong Yang <sid=
-ong.yang@furiosa.ai> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > On Mon, Sep 01, 2025 at 05:34:28PM -0700, Caleb Sande=
-r Mateos wrote:
-> > > > > > > > > > > > On Fri, Aug 22, 2025 at 5:56=E2=80=AFAM Sidong Yang=
- <sidong.yang@furiosa.ai> wrote:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > The pdu field in io_uring_cmd may contain stale d=
-ata when a request
-> > > > > > > > > > > > > object is recycled from the slab cache. Accessing=
- uninitialized or
-> > > > > > > > > > > > > garbage memory can lead to undefined behavior in =
-users of the pdu.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Ensure the pdu buffer is cleared during io_uring_=
-cmd_prep() so that
-> > > > > > > > > > > > > each command starts from a well-defined state. Th=
-is avoids exposing
-> > > > > > > > > > > > > uninitialized memory and prevents potential misin=
-terpretation of data
-> > > > > > > > > > > > > from previous requests.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > No functional change is intended other than guara=
-nteeing that pdu is
-> > > > > > > > > > > > > always zero-initialized before use.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.a=
-i>
-> > > > > > > > > > > > > ---
-> > > > > > > > > > > > >  io_uring/uring_cmd.c | 1 +
-> > > > > > > > > > > > >  1 file changed, 1 insertion(+)
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > diff --git a/io_uring/uring_cmd.c b/io_uring/urin=
-g_cmd.c
-> > > > > > > > > > > > > index 053bac89b6c0..2492525d4e43 100644
-> > > > > > > > > > > > > --- a/io_uring/uring_cmd.c
-> > > > > > > > > > > > > +++ b/io_uring/uring_cmd.c
-> > > > > > > > > > > > > @@ -203,6 +203,7 @@ int io_uring_cmd_prep(struct =
-io_kiocb *req, const struct io_uring_sqe *sqe)
-> > > > > > > > > > > > >         if (!ac)
-> > > > > > > > > > > > >                 return -ENOMEM;
-> > > > > > > > > > > > >         ioucmd->sqe =3D sqe;
-> > > > > > > > > > > > > +       memset(&ioucmd->pdu, 0, sizeof(ioucmd->pd=
-u));
-> > > > > > > > > > > >
-> > > > > > > > > > > > Adding this overhead to every existing uring_cmd() =
-implementation is
-> > > > > > > > > > > > unfortunate. Could we instead track the initialized=
-/uninitialized
-> > > > > > > > > > > > state by using different types on the Rust side? Th=
-e io_uring_cmd
-> > > > > > > > > > > > could start as an IoUringCmd, where the PDU field i=
-s MaybeUninit,
-> > > > > > > > > > > > write_pdu<T>() could return a new IoUringCmdPdu<T> =
-that guarantees the
-> > > > > > > > > > > > PDU has been initialized.
-> > > > > > > > > > >
-> > > > > > > > > > > I've found a flag IORING_URING_CMD_REISSUE that we co=
-uld initialize
-> > > > > > > > > > > the pdu. In uring_cmd callback, we can fill zero when=
- it's not reissued.
-> > > > > > > > > > > But I don't know that we could call T::default() in m=
-iscdevice. If we
-> > > > > > > > > > > make IoUringCmdPdu<T>, MiscDevice also should be Misc=
-Device<T>.
-> > > > > > > > > > >
-> > > > > > > > > > > How about assign a byte in pdu for checking initializ=
-ed? In uring_cmd(),
-> > > > > > > > > > > We could set a byte flag that it's not initialized. A=
-nd we could return
-> > > > > > > > > > > error that it's not initialized in read_pdu().
-> > > > > > > > > >
-> > > > > > > > > > Could we do the zero-initialization (or T::default()) i=
-n
-> > > > > > > > > > MiscdeviceVTable::uring_cmd() if the IORING_URING_CMD_R=
-EISSUE flag
-> > > > > > > > > > isn't set (i.e. on the initial issue)? That way, we avo=
-id any
-> > > > > > > > > > performance penalty for the existing C uring_cmd() impl=
-ementations.
-> > > > > > > > > > I'm not quite sure what you mean by "assign a byte in p=
-du for checking
-> > > > > > > > > > initialized".
-> > > > > > > > >
-> > > > > > > > > Sure, we could fill zero when it's the first time uring_c=
-md called with
-> > > > > > > > > checking the flag. I would remove this commit for next ve=
-rsion. I also
-> > > > > > > > > suggests that we would provide the method that read_pdu()=
- and write_pdu().
-> > > > > > > > > In read_pdu() I want to check write_pdu() is called befor=
-e. So along the
-> > > > > > > > > 20 bytes for pdu, maybe we could use a bytes for the flag=
- that pdu is
-> > > > > > > > > initialized?
-> > > > > > > >
-> > > > > > > > Not sure what you mean about "20 bytes for pdu".
-> > > > > > > > It seems like it would be preferable to enforce that write_=
-pdu() has
-> > > > > > > > been called before read_pdu() using the Rust type system in=
-stead of a
-> > > > > > > > runtime check. I was thinking a signature like fn write_pdu=
-(cmd:
-> > > > > > > > IoUringCmd, value: T) -> IoUringCmdPdu<T>. Do you feel ther=
-e's a
-> > > > > > > > reason that wouldn't work and a runtime check would be nece=
-ssary?
-> > > > > > >
-> > > > > > > I didn't think about make write_pdu() to return IoUringCmdPdu=
-<T> before.
-> > > > > > > I think it's good way to pdu is safe without adding a new gen=
-eric param for
-> > > > > > > MiscDevice. write_pdu() would return IoUringCmdPdu<T> and it =
-could call
-> > > > > > > IoUringCmdPdu<T>::pdu(&mut self) -> &mut T safely maybe.
-> > > > > >
-> > > > > > Yes, that's what I was thinking.
-> > > > >
-> > > > > Good, I'll change api in this way. Thanks!
-> > > > >
-> > > > > >
-> > > > > > >
-> > > > > > > >
-> > > > > > > > >
-> > > > > > > > > But maybe I would introduce a new struct that has Pin<&mu=
-t IoUringCmd> and
-> > > > > > > > > issue_flags. How about some additional field for pdu is i=
-nitialized like below?
-> > > > > > > > >
-> > > > > > > > > struct IoUringCmdArgs {
-> > > > > > > > >   ioucmd: Pin<&mut IoUringCmd>,
-> > > > > > > > >   issue_flags: u32,
-> > > > > > > > >   pdu_initialized: bool,
-> > > > > > > > > }
-> > > > > > > >
-> > > > > > > > One other thing I realized is that issue_flags should come =
-from the
-> > > > > > > > *current* context rather than the context the uring_cmd() c=
-allback was
-> > > > > > > > called in. For example, if io_uring_cmd_done() is called fr=
-om task
-> > > > > > > > work context, issue_flags should match the issue_flags pass=
-ed to the
-> > > > > > > > io_uring_cmd_tw_t callback, not the issue_flags originally =
-passed to
-> > > > > > > > the uring_cmd() callback. So it probably makes more sense t=
-o decouple
-> > > > > > > > issue_flags from the (owned) IoUringCmd. I think you could =
-pass it by
-> > > > > > > > reference (&IssueFlags) or with a phantom reference lifetim=
-e
-> > > > > > > > (IssueFlags<'_>) to the Rust uring_cmd() and task work call=
-backs to
-> > > > > > > > ensure it can't be used after those callbacks have returned=
-.
-> > > > > > >
-> > > > > > > I have had no idea about task work context. I agree with you =
-that
-> > > > > > > it would be better to separate issue_flags from IoUringCmd. S=
-o,
-> > > > > > > IoUringCmdArgs would have a only field Pin<&mut IoUringCmd>?
-> > > > > >
-> > > > > > "Task work" is a mechanism io_uring uses to queue work to run o=
-n the
-> > > > > > thread that submitted an io_uring operation. It's basically a
-> > > > > > per-thread atomic queue of callbacks that the thread will proce=
-ss
-> > > > > > whenever it returns from the kernel to userspace (after a sysca=
-ll or
-> > > > > > an interrupt). This is the context where asynchronous uring_cmd
-> > > > > > completions are generally processed (see
-> > > > > > io_uring_cmd_complete_in_task() and io_uring_cmd_do_in_task_laz=
-y()). I
-> > > > > > can't speak to the history of why io_uring uses task work, but =
-my
-> > > > > > guess would be that it provides a safe context to acquire the
-> > > > > > io_ring_ctx uring_lock mutex (e.g. nvme_uring_cmd_end_io() can =
-be
-> > > > > > called from an interrupt handler, so it's not allowed to take a
-> > > > > > mutex). Processing all the task work at once also provides natu=
-ral
-> > > > > > opportunities for batching.
-> > > > >
-> > > > > Thanks, I've checked io_uring_cmd_complete_in_task() that it rece=
-ives
-> > > > > callback that has issue_flags different with io_uring_cmd(). I'll=
- try to add
-> > > > > a api that wrapping io_uring_cmd_complete_in_task() for next vers=
-ion.
-> > > > >
-> > > > > >
-> > > > > > Yes, we probably don't need to bundle anything else with the
-> > > > > > IoUringCmd after all. As I mentioned earlier, I don't think Pin=
-<&mut
-> > > > > > IoUringCmd> will work for uring_cmds that complete asynchronous=
-ly, as
-> > > > > > they will need to outlive the uring_cmd() call. So uring_cmd() =
-needs
-> > > > > > to transfer ownership of the struct io_uring_cmd.
-> > > > >
-> > > > > I can't think that how to take ownership of struct io_uring_cmd. =
-The
-> > > > > struct allocated with io_alloc_req() and should be freed with io_=
-free_req().
-> > > > > If taking ownership means having pointer of struct io_uring_cmd, =
-I think
-> > > > > it's no difference with current version. Also could it be called =
-with
-> > > > > mem::forget() if it has ownership?
-> > > >
-> > > > I don't mean ownership of the io_uring_cmd allocation; that's the
-> > > > responsibility of the io_uring layer. But once the io_uring_cmd is
-> > > > handed to the uring_cmd() implementation, it belongs to that layer
-> > > > until it completes the command back to io_uring. Maybe a better way=
- to
-> > > > describe it would be as ownership of the "executing io_uring_cmd". =
-The
-> > > > problem with Pin<&mut IoUringCmd> is that it is a borrowed referenc=
-e
-> > > > to the io_uring_cmd, so it can't outlive the uring_cmd() callback.
-> > > > Yes, it's possible to leak the io_uring_cmd by never calling
-> > > > io_uring_cmd_done() to return it to the io_uring layer.
-> > >
-> > > Thanks, I understood that IoUringCmd could be outlive uring_cmd callb=
-ack.
-> > > But it's sad that it could be leaked without any unsafe code.
+On Sun, Sep 21, 2025 at 11:13:11AM +0200, Miguel Ojeda wrote:
+> On Sun, Sep 21, 2025 at 2:45 AM Joel Fernandes <joelagnelf@nvidia.com> wrote:
 > >
-> > Safety in Rust doesn't require destructors to run, which means any
-> > resource can be safely leaked
-> > (https://faultlore.com/blah/everyone-poops/ has some historical
-> > background on why Rust decided leaks had to be considered safe).
-> > Leaking an io_uring_cmd is analogous to leaking a Box, both are
-> > perfectly possible in safe Rust.
->
-> Thanks for the reference. If driver just drops `IoUringCmd` without takin=
-g,
-> the request wouldn't be completed until io-uring instance deinitialized.
-> I understood that we cannot handle this.
->
-> >
-> > >
-> > > >
-> > > > I would imagine something like this:
-> > > >
-> > > > #[derive(Clone, Copy)]
-> > > > struct IssueFlags<'a>(c_uint, PhantomData<&'a ()>);
-> > > >
-> > > > // Indicates ownership of the io_uring_cmd between uring_cmd() and
-> > > > io_uring_cmd_done()
-> > > > struct IoUringCmd(NonNull<bindings::io_uring_cmd>);
-> > > >
-> > > > impl IoUringCmd {
-> > > >         // ...
-> > > >
-> > > >         fn done(self, ret: i32, res2: u64, issue_flags: IssueFlags<=
-'_>) {
-> > > >                 let cmd =3D self.0.as_ptr();
-> > > >                 let issue_flags =3D issue_flags.0;
-> > > >                 unsafe {
-> > > >                         bindings::io_uring_cmd_done(cmd, ret, res2,=
- issue_flags)
-> > > >                 }
-> > > >         }
-> > > > }
-> > > >
-> > > > // Can choose whether to complete the command synchronously or asyn=
-chronously.
-> > > > // If take_async() is called, IoUringCmd::done() needs to be called=
- to
-> > > > complete the command.
-> > > > // If take_async() isn't called, the command is completed synchrono=
-usly
-> > > > // with the return value from MiscDevice::uring_cmd().
-> > > > struct UringCmdInput<'a>(&mut Option<NonNull<bindings::io_uring_cmd=
->>);
-> > >
-> > > Thanks for a detailed example!
-> > >
-> > > But rather than this, We could introduce new return type that has a c=
-allback that
-> > > user could take IoUringCmd instead of returning -EIOCBQUEUED.
-> >
-> > I'm not following what you're suggesting, maybe a code sample would hel=
-p?
->
-> maybe like below...
->
-> #[vtable]
-> pub trait MiscDevice: Sized {
->     /// ...
->
->     /// If user returns `EIOCBQUEUED`, this function would be called for
->     /// users who want to take `IoUringCmdAsync`. It could call `done()` =
-for complete
->     /// request.
->     fn uring_cmd_async_prep(
->           device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
->           io_uring_cmd_async: IoUringCmdAsync);
->     /// ...
-> }
->
-> impl<T: MiscDevice> MiscdeviceVTable<T> {
->     // ...
->     unsafe extern "C" fn uring_cmd(
->           ioucmd: *mut bindings::io_uring_cmd,
->           issue_flags: ffi::c_uint,
->       ) -> c_int {
->           // ...
->           let result =3D T::uring_cmd(device, ioucmd, issue_flags);
->
->           if let Err(EIOCBQUEUED) =3D result {
->               T::uring_cmd_async_prep(device, ioucmd.to_async());
->           }
+> > But even if the pointer is a C const pointer, LLVM seems to
+> > always want to reload it.
+> 
+> What do you mean by this? I think I mentioned in the other thread that
+> a C pointer to const still allows the callee to change the value.
 
-I see. Yes, this could work, but I worry separating the implementation
-into 2 calls makes it difficult to pass state between them. If
-T::uring_cmd() can determine whether the command will complete
-synchronously or asynchronously just by inspecting the
-io_uring_cmd/device, it may be a convenient interface. But if
-T::uring_cmd() performs a bunch of work before deciding the command
-should go async, it may be a pain to pass those computed values to
-T::uring_cmd_async_prep().
+Apologies, indeed a const pointer in C does not mean the pointee cannot be
+modified.
 
->
->           from_result(|| result)
->       }
-> }
-> >
-> > >
-> > > But I prefer that we provide just one type IoUringCmd without UringCm=
-dInput.
-> > > Although UringCmdInput, user could call done() in uring_cmd callback =
-and
-> > > it makes confusion that whether task_async() called and returning -EI=
-OCBQUEUED
-> > > is mismatched that returns -EINVAL. We don't need to make it complex.
-> >
-> > Sure, if you only want to support asynchronous io_uring_cmd
-> > completions, than you can just pass IoUringCmd to
-> > MiscDevice::uring_cmd() and require it to call IoUringCmd::done() to
-> > complete the command. There's a small performance overhead to that
-> > over just returning the result from the uring_cmd() callback for
-> > synchronous completions (and it's more verbose), but I think that
-> > would be fine for an initial implementation.
->
-> I appreciate for your understanding. I think it would be good to have jus=
-t one
-> simple struct `IoUringCmd`. I'll make next version patch soon.
+I think I somewhat understand the issue but still not fully. MIR optimization
+is supposed to optimize away the dead code in build_assert. This is what I
+see for "good" cases when things work.
 
-Yeah, I think it will probably be easiest for an initial
-implementation to always transfer ownership of the io_uring_cmd to
-MiscDevice::uring_cmd() and requiring it to call IoUringCmd::done().
-The synchronous case could be optimized in the future, but that's not
-the primary io_uring_cmd use case.
+But the information that the data being printed is an immutable reference, is
+lost somehow during MIR optimization phase when a printk is involved.  Per the
+github issue [1], there is likely some provenance information in the immutable
+reference to the data, that gets lost during "MIR inlining" optimization. In
+other words, this is not an LLVM problem as I was pointing out, but an MIR
+optimization problem.  Benno/Gary correct me anything I said is wrong.
 
-Best,
-Caleb
+I guess I still have a few more questions:
+
+1. What is being inlined when we talk about MIR inlining? The print
+statement? Constructor to the Argument object? Something else?
+
+2. What does 'noalias' mean in the github report [1], and why would that effect
+'MIR inlining'?
+
+3. Why does LLVM inlining still succeed when MIR inlining is disabled? This
+has something to do with a new llvm feature Niki referred to in the report.
+
+thanks,
+
+ - Joel
+[1] https://github.com/rust-lang/rust/issues/146844
+
