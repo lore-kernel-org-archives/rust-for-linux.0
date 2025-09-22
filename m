@@ -1,116 +1,171 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87208524D1;
-	Sun, 21 Sep 2025 20:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6506E2475C7
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 06:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758488229; cv=none; b=m3nnl8FWNJK+6STQxPOo8O7lU8HTvgIgwO1lJSap8xSEs5LbIvzt7vycH18HQ/Jkh7Czm/f3QXw1mIV3Nz7G4FlN6w11vYxtpkbfnDkZ4Vc2gSw2I0uXlQg8pECuGtxgCdQ/d208jHQ1d/FnbeZAkm4BFYdYrYslvO5WNxwzfHQ=
+	t=1758520973; cv=none; b=ZZs4vYXAg2I6i8CUw42F4xQgeQ+b656h+Fv9TbIZLgOwrURnt6c9nCmodTn1TOqJ1V8XmljhcWI696wuMAr+M64fbjeVJe4k5XR5HXU63cdARUnzsSCQghtaJL5CiwJzMtXxJfXBXDXSFktgJi0/jtTU/lhXlgRmf+Ufmv5kPOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758488229; c=relaxed/simple;
-	bh=i09wc8NXq6PotjxqjMuSQHv+u6f7Q0gcxiSIZOBbbYo=;
+	s=arc-20240116; t=1758520973; c=relaxed/simple;
+	bh=A9SJVOgTvKuEK9eoF02ve19YOGDPDcRZuXtozFIjPzo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q3p8xmfoFV31IaN68x2lqaGoFom7lxoJqB52rXsoizHMeb5t7UBbReo0DsKgS3OrXhEueOnsTDn6ACXqLPkmbf8IwSJ1+mbNHjz74fHSh1jnxCrXwJxpzuQkFZQwiVvbNV8dP7W6pBOEmk8syxCynzsKq7fZ3rDQ6ZUNnLJwtkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mdLl6NtM; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=sIXOI4WxLObg8gBZgIzFoJnqrqmjVr52bqjK3zOrZq6EGSboPBxrGSFnFA6gZRYFFaDnkqcV99cyG//gk4D2xDCOYw3G9m5di+ia4YmAup+dhUpk54IjlQ+rzzDwLQAztHXtQ4GMjn7nqoIcvGx9lx2Mnl+CPHSQ8FJijeghC9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=d3RqjPwj; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mdLl6NtM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758488227; x=1790024227;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=i09wc8NXq6PotjxqjMuSQHv+u6f7Q0gcxiSIZOBbbYo=;
-  b=mdLl6NtMa9yqDul7614Kc/dC+xSlWRqCCvk6O40GFQZ6Y8rNEISLxxhZ
-   W55rCzBiXttPSX9kN1qhxdK8ePJGyLopg4QmV44gxccWWiLiLLdG0pQrJ
-   Lr29kU7DWSSx+EcvZ9X8Q04x9w8SkXLkR0SGqkqLnlE6q5Wo/5kmNCI3Z
-   DxUmj0aVHPA2FXGG2TcY9KqhsqzZMWcjFTxp6LS/EDDd5EzEA8XuQbaY5
-   wyqWYaQxGEJ/ciaacGGZ7bleVfMfCDs9U/VI6SC6RvkXh9a/WFGzBbO0R
-   qpCzC+aUPfsDRliPRjQUdHsd5wao2/4PQyWw1ygTIezeXIUWqzOwAY2y7
-   g==;
-X-CSE-ConnectionGUID: jexQO47AT3S1trW6FFkUtA==
-X-CSE-MsgGUID: 6cMMGOOzSeuqMNHwLEvZ+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="60643308"
-X-IronPort-AV: E=Sophos;i="6.18,283,1751266800"; 
-   d="scan'208";a="60643308"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 13:57:07 -0700
-X-CSE-ConnectionGUID: IW0SUcRoSWqvrIzykSVpHA==
-X-CSE-MsgGUID: U9+NSOYjT/m1JIabRKXizw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,283,1751266800"; 
-   d="scan'208";a="175914597"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 21 Sep 2025 13:57:03 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v0R7E-000109-2l;
-	Sun, 21 Sep 2025 20:57:00 +0000
-Date: Mon, 22 Sep 2025 04:56:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: print: Fix issue with rust_build_error
-Message-ID: <202509220423.4d1foVAO-lkp@intel.com>
-References: <20250920161958.2079105-1-joelagnelf@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="d3RqjPwj"
+Date: Mon, 22 Sep 2025 08:02:36 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758520959;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x5SGPhE0JOeMCnrFddhxhMz/QTAvX5WL+uZeNk00z9M=;
+	b=d3RqjPwjddNvse0JKJql519VUVIGUCxiBSM+I2rhDTEZFnFPRLNru240JZushSupVCjyht
+	4daRi+t8Oi6y/qMZgSagmO7WO2y9re8TIWOeBdbTwL/3Ew2FKjfpcNV+YsMa+3HA1scQZ0
+	YOouVUScBZ6Z4yucnKmZyeaurkuYMoQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Nicolas Schier <nicolas.schier@linux.dev>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
+	nicolas.schier@linux.dev, masahiroy@kernel.org,
+	aliceryhl@google.com, thomas.weissschuh@linutronix.de,
+	tamird@gmail.com, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
+	dakr@kernel.org
+Subject: Re: [PATCH v2 1/1] rust: add `rustcheck` make target for check-only
+ builds
+Message-ID: <20250922-demonic-raccoon-of-will-1adb52@bergen>
+Mail-Followup-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
+	nicolas.schier@linux.dev, masahiroy@kernel.org,
+	aliceryhl@google.com, thomas.weissschuh@linutronix.de,
+	tamird@gmail.com, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
+	dakr@kernel.org
+References: <20250915115311.3025-1-work@onurozkan.dev>
+ <20250915115311.3025-2-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="bBIxi82jCm1Nqn97"
 Content-Disposition: inline
-In-Reply-To: <20250920161958.2079105-1-joelagnelf@nvidia.com>
+In-Reply-To: <20250915115311.3025-2-work@onurozkan.dev>
+X-Migadu-Flow: FLOW_OUT
 
-Hi Joel,
 
-kernel test robot noticed the following build errors:
+--bBIxi82jCm1Nqn97
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on linus/master v6.17-rc6 next-20250919]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On Mon, Sep 15, 2025 at 02:53:11PM +0300, Onur =D6zkan wrote:
+> Adds a new `rustcheck` make target to run a check-only build
+> similar to `cargo check`. This allows us to verify that the Rust
+> sources can build without building/linking final artifacts,
+> which speeds up the iteration (a lot) during development.
+>=20
+> The target also supports the CLIPPY flag (e.g., `make LLVM=3D1
+> rustcheck CLIPPY=3D1) to run Clippy in a faster way.
+>=20
+> Also, unlike `make LLVM=3D1`, it doesn't compile large amounts of C
+> code (on a fresh checkout) when the goal is only to check that
+> Rust builds are not broken after some changes.
+>=20
+> Suggested-by: Benno Losin <lossin@kernel.org>
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x=
+/near/539103602
+> Signed-off-by: Onur =D6zkan <work@onurozkan.dev>
+> ---
+>  Makefile      |  7 +++++
+>  rust/Makefile | 73 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 80 insertions(+)
+>=20
+> diff --git a/Makefile b/Makefile
+> index cf37b9407821..7812cdc72938 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1716,6 +1716,8 @@ help:
+>  	@echo  '		    is formatted, printing a diff otherwise.'
+>  	@echo  '  rustdoc	  - Generate Rust documentation'
+>  	@echo  '		    (requires kernel .config)'
+> +	@echo  '  rustcheck       - Check that the Rust code builds'
+> +	@echo  '                    (requires kernel .config)'
+>  	@echo  '  rusttest        - Runs the Rust tests'
+>  	@echo  '                    (requires kernel .config; downloads externa=
+l repos)'
+>  	@echo  '  rust-analyzer	  - Generate rust-project.json rust-analyzer su=
+pport file'
+> @@ -1821,6 +1823,11 @@ PHONY +=3D rustdoc
+>  rustdoc: prepare
+>  	$(Q)$(MAKE) $(build)=3Drust $@
+> =20
+> +# Checking Rust sources.
+> +PHONY +=3D rustcheck
+> +rustcheck: prepare0
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Joel-Fernandes/rust-print-Fix-issue-with-rust_build_error/20250921-002215
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20250920161958.2079105-1-joelagnelf%40nvidia.com
-patch subject: [PATCH] rust: print: Fix issue with rust_build_error
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250922/202509220423.4d1foVAO-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250922/202509220423.4d1foVAO-lkp@intel.com/reproduce)
+Why do you let rustcheck depend on prepare0 instead of prepare?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509220423.4d1foVAO-lkp@intel.com/
+> +	$(Q)$(MAKE) $(build)=3Drust $@
+> +
+>  # Testing target
+>  PHONY +=3D rusttest
+>  rusttest: prepare
+> diff --git a/rust/Makefile b/rust/Makefile
+> index bfa915b0e588..b45878870207 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -265,6 +265,79 @@ rusttest-kernel: $(src)/kernel/lib.rs rusttestlib-ff=
+i rusttestlib-kernel \
+>      rusttestlib-uapi rusttestlib-pin_init FORCE
+>  	+$(call if_changed,rustc_test)
+> =20
+> +## Check-only compilation (similar to `cargo check`)
+> +quiet_cmd_rustc_check_library =3D $(RUSTC_OR_CLIPPY_QUIET) CHECK $<
+> +      cmd_rustc_check_library =3D \
+> +        OBJTREE=3D$(abspath $(objtree)) \
 
-All errors (new ones prefixed by >>):
+Have you tried this?
 
->> error[E0277]: the `?` operator can only be used in a closure that returns `Result` or `Option` (or another type that implements `FromResidual`)
-   --> rust/doctests_kernel_generated.rs:3446:70
-   |
-   3446 |     pr_info!("The frequency at index 0 is: {:?}n", table.freq(index)?);
-   |     -----------------------------------------------------------------^-
-   |     |                                                                |
-   |     |                                                                cannot use the `?` operator in a closure that returns `()`
-   |     this function should return `Result` or `Option` to accept `?`
+        OBJTREE=3D$(CURDIR) \
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+or
+
+        OBJTREE=3D$(abs_output) \
+
+I'd favor using one of these instead.
+
+Kind regards,
+Nicolas
+
+--bBIxi82jCm1Nqn97
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEh0E3p4c3JKeBvsLGB1IKcBYmEmkFAmjQ5nsACgkQB1IKcBYm
+EmmbjhAAwVgCYyXQ3IY3eY+gsLi8kKvpvUxK05aLvkWDErcqeiDVS+WAlKxoGRbK
+GE1yDdNRZBmvtH6z0B1IP0sK1Bu6Wa0Kb8UdwoT6M080SHDGLlq5QQ7d2y/McZIj
+2xikteMbIbaxxPGYw60CbZR8cCWio3AUrp6+IBj/sXcMO8BK86jQ+IdO2gE/zeLD
+5fZenzYuO4D9e78IdyMRTHR8224qzSGBYx1P9xNbU2bho1eoHf5Efnby8kAeTkfu
+4y7yvozCvLeIpwSFfLfOzbMalGkZ92bwTNpWJi+qRVj3gmq+xSUJ6zp/LPkSYQe0
+0PBEvpi5ndMLmGNgix0igvhpP1/Z0/v0CAzKQXkAUwSxjtknTPpMNc3na7U+RHyZ
+u4ADnJw8PWagiYTJWijgA+dsyvAhAjLSBRBVY94Z/DZR+pNeWtRlsM6V3G45ZFJk
+MMCzvVoTgE2LxgwLEgkFxK45WfpQjSeSLSKdX49Cmu5h6RJEsHyLbiRbgMvuRKmr
+vEMYF+37XBJsC29AeuLdvHyrJ2AM/h9aT7hfrHWG0W5BQexl3ztLnrjfrKBjDJqc
+Aj1r1biGCw63bJdOtmsQleacap0cosMagKaSdOEV18t6uJIylH3MhKK6ej+LgyFd
+nxfgqadowfsepkgfVXSPTHOK5zuvYiDTp2HrYqKyO5tEZZs0bjo=
+=iuAC
+-----END PGP SIGNATURE-----
+
+--bBIxi82jCm1Nqn97--
