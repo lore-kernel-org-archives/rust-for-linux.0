@@ -1,171 +1,244 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012005.outbound.protection.outlook.com [52.101.43.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6506E2475C7
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 06:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758520973; cv=none; b=ZZs4vYXAg2I6i8CUw42F4xQgeQ+b656h+Fv9TbIZLgOwrURnt6c9nCmodTn1TOqJ1V8XmljhcWI696wuMAr+M64fbjeVJe4k5XR5HXU63cdARUnzsSCQghtaJL5CiwJzMtXxJfXBXDXSFktgJi0/jtTU/lhXlgRmf+Ufmv5kPOg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758520973; c=relaxed/simple;
-	bh=A9SJVOgTvKuEK9eoF02ve19YOGDPDcRZuXtozFIjPzo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sIXOI4WxLObg8gBZgIzFoJnqrqmjVr52bqjK3zOrZq6EGSboPBxrGSFnFA6gZRYFFaDnkqcV99cyG//gk4D2xDCOYw3G9m5di+ia4YmAup+dhUpk54IjlQ+rzzDwLQAztHXtQ4GMjn7nqoIcvGx9lx2Mnl+CPHSQ8FJijeghC9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=d3RqjPwj; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1909616CD33;
+	Mon, 22 Sep 2025 06:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758522310; cv=fail; b=FAIwvDB4dpP8Yvs5nEbAlKjmaA+6Bhrd0bwTaj4rx8+mMeSLgOeCYryf+PVfVFdn/0vsGU4PAAI7cfzj1pQlCI+i249avZLOGDtScRGqoYHY6VXQFpnXnDL8rWh7Mebz14gX9TEsEYDY2Ts/uZy5KNdLtzdJbjRXUISRaoZjq2U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758522310; c=relaxed/simple;
+	bh=mWVzUq1AvlV3UVBKWgPLM6xZaA6LnIbl76O4DkQqGD0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=B69r9fo2H98QphIVmW6A31JoQrXEbdz3XPLDE5/EOuJtSJcNux0PBb96k5RYltgPMpMcV0uc5w45poA9E1yRT31aX/faKb/L7EZ0jpQ3Y1Bnpnhed+s8Pf2mWhdgKk/nIE1rraNP1bFvLb0gyOZcEzRai+BSwy7D1B1gEJQhatg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=b8GXEjfP; arc=fail smtp.client-ip=52.101.43.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="d3RqjPwj"
-Date: Mon, 22 Sep 2025 08:02:36 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758520959;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x5SGPhE0JOeMCnrFddhxhMz/QTAvX5WL+uZeNk00z9M=;
-	b=d3RqjPwjddNvse0JKJql519VUVIGUCxiBSM+I2rhDTEZFnFPRLNru240JZushSupVCjyht
-	4daRi+t8Oi6y/qMZgSagmO7WO2y9re8TIWOeBdbTwL/3Ew2FKjfpcNV+YsMa+3HA1scQZ0
-	YOouVUScBZ6Z4yucnKmZyeaurkuYMoQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Nicolas Schier <nicolas.schier@linux.dev>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
-	nicolas.schier@linux.dev, masahiroy@kernel.org,
-	aliceryhl@google.com, thomas.weissschuh@linutronix.de,
-	tamird@gmail.com, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
-	dakr@kernel.org
-Subject: Re: [PATCH v2 1/1] rust: add `rustcheck` make target for check-only
- builds
-Message-ID: <20250922-demonic-raccoon-of-will-1adb52@bergen>
-Mail-Followup-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
-	nicolas.schier@linux.dev, masahiroy@kernel.org,
-	aliceryhl@google.com, thomas.weissschuh@linutronix.de,
-	tamird@gmail.com, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
-	dakr@kernel.org
-References: <20250915115311.3025-1-work@onurozkan.dev>
- <20250915115311.3025-2-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="b8GXEjfP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CRDwYMvVq+uSOsphY9NRFVCO8WZnGyJxxfWUXOA42FNpR+E5L8BjKNSWyJ+xcnwDg7tirm/NxqfHhekFCg2hdlOxOGuwfruNPAiLgBnNKkpe8bPKJg7XnDyK0mzEhYBvRAI+UkIh4iitDeTEMa5mSD99oGAe7d0MM0tBaOyGLa3EZCPMvHj41xctv6TCa4JhO6oEkWmueQB1yGvnmdVrttcKtVdceWDU3BR4ZZl/EOD7FlCsrzeKAXUItIKneP2PMgBg2JJFrEsqaqpx7D/N8B9Fto4PaMQ1I2OINGo+XFE6PlK86Khj6H9YOpreRK92JKnnQlg9D8OkBN/oBqPdbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Aadm65t2BsPvJUcPHIyMVDiIVbF0iIbdDmqj8wSmElA=;
+ b=avI/f3qmJ6cNk90V128ACWWStNj4t/1+TO3b/WpTznWnvCx4BBr1hLnFJ0ccuZ8/LihSrv//FnWRcw+hqmIw3Q4K8bKHrYxAraUwdG2ygNySZ5jgdQhe2XJseVNk7FXi0/NINeXR0+WCLY0RJORVcDckwXmK8yO7EBo73zOu1zATxdO7AYaHpc2R1jGWWj3IObCSs026W8x3FhcmRKdnkLvZIK7PAWUav9yiRZi8pYKa6ByXxSe/0vhkY68MFb2zcT+TLbsQSEt4Nl8na3l0lzbQ1C3qF6MVBQWFSD9pi9OskFegUSAZrtcFvGwCi8bc9tqHeM8JJM9d0CVI0+Zm/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Aadm65t2BsPvJUcPHIyMVDiIVbF0iIbdDmqj8wSmElA=;
+ b=b8GXEjfPnX5STVtHNurQGvZ3IT2WJxva83fl2lP8q05O4WgUGF+a4TQ2J7/u2Wc+D4nKbfVMJZjIBrk4oYLfcQ3RnvP/NH/xl683TpeHuVnPFLUlhRXFT3axbG+CDbMzotlo7g1dm5RmefbSGz3T2ScFXaf0HMvja3vEyVdomyXNXMho7PT1ZYJpMh4cxh5tGBA5v4xHilPKc+UvCcALqHcAfuAJBz56j4knUDWY/YgWc9B1dV23+F94R33OacbFNKeu+CLnWdDN5yOKP83wcaHxP6OYHTIfJU/PbDMdt+q3LoPURc0AuI3j36swOONXBKwaHw+9fFqmCdKnqn01Zw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SJ2PR12MB9191.namprd12.prod.outlook.com (2603:10b6:a03:55a::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Mon, 22 Sep
+ 2025 06:25:04 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9137.018; Mon, 22 Sep 2025
+ 06:25:04 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 22 Sep 2025 15:25:00 +0900
+Message-Id: <DCZ44OA67SLZ.HKORUXU2L9K2@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH] rust: io: use const generics for read/write offsets
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Benno Lossin"
+ <lossin@kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20250918-write-offset-const-v1-1-eb51120d4117@google.com>
+ <20250918181357.GA1825487@joelbox2> <DCWBCL9U0IY4.NFNUMLRULAWM@kernel.org>
+ <752F0825-6F2E-4AC0-BEBD-2E285A521A22@nvidia.com>
+ <DCWO3V7WQP0G.127BYBORGE85H@kernel.org> <20250919205314.GA1884303@joelbox2>
+In-Reply-To: <20250919205314.GA1884303@joelbox2>
+X-ClientProxiedBy: TYCP286CA0209.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:385::12) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="bBIxi82jCm1Nqn97"
-Content-Disposition: inline
-In-Reply-To: <20250915115311.3025-2-work@onurozkan.dev>
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ2PR12MB9191:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca1c99aa-f3f2-405e-8cb2-08ddf9a0c414
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WXBkRHozNlRKNDZMNmljK3NkazhtbDZXNWdGd0FIMXI3aFhjNEZhb1BPYVdV?=
+ =?utf-8?B?UWR3VnVyZXFhZlVPZ0srWjRwOFBJYkV3bjJ0V2pTSFdMS1Y1bE9mZDRabDds?=
+ =?utf-8?B?ZysxOHZvS1Jhb1A0TkJWVzZxSUNzbG9WTnd3ZjBxejJ4YktibS9mMHlHZnVr?=
+ =?utf-8?B?cXlFQzZKN3NnaEFJc2o0ZXl6VkpFYXRlby9oeTYza1JldzZXQnQ0cDJhS3Fr?=
+ =?utf-8?B?YW1wZGM0U0R6SnFwWFNxR0VGbEsvaVdpSmdCZzNNM0tGNVAwWVpBWjFvTU9F?=
+ =?utf-8?B?Q2hKbitYNzU3bERnZi9kVkdQeUJRZng2MmM2aVNvaHE3OXlaS1hNaTd0V0gx?=
+ =?utf-8?B?b1BxWW5nVVNROVNnT2VJZzk1bUN0NTYyM2Vra2hQVmQrVm9kcHNhYmVhMkFn?=
+ =?utf-8?B?VWllSmVKR3prKzZhbWRYZWhzVlpZWnluaDlYNGo5RllmeXVoMXFyZVdwTDZY?=
+ =?utf-8?B?d093NldBZFFRbkp4R2s1bDg3TlZlcjZUUk84Ymd5RjA0ZGU1TDVJYUQreDVp?=
+ =?utf-8?B?aWhGVW1PUmdocU1YT3JscUF1YjlOazV0VExTaHlaM21JK1hwVExnelVWd08x?=
+ =?utf-8?B?TkhCLzhRVlhUUGYvZ0tZMEpnbXpvTHdZT2pOdWxBY3pQSUgxL0s2d21BK1pP?=
+ =?utf-8?B?clRiczU0MHVXQm5iVC9iMEZTck9ueHhhQVIxcEQ1Ymw1UmZCdkNwNGJyNllI?=
+ =?utf-8?B?a3lQVUFHeElVNnFTYVlJL3V1ZFgrL1dHcHFqcGRQcU9KRDJONUg2V2Nzc3dr?=
+ =?utf-8?B?ZXpLcWRsQUNDQ2UxcEllNGlFWTExOTRHWTIzakJ1bHB4b2U3OVd3OWJZNERp?=
+ =?utf-8?B?ZDRuTUZ6SkU0a3NXbHpmY0REYmhVWWNMVUFDUUJYS3c2ZXRZNmZYUDB0cHNm?=
+ =?utf-8?B?VFE0UDhJUXI4VVJCdkVUNUVCYXR1R1FxSkxMSTI4Zk9hallHamZRV1lBemF1?=
+ =?utf-8?B?My92d2g4R0VmaTNZcXlFK1ZJM0hDZDhWTHhadGpMOFhybmd2ckxpbllJeU02?=
+ =?utf-8?B?OUorY1JGNTJMZ3ZvVjRuQ2tsNDlhZHpRVGxSbnZrOENrcTJ3UFU4ekV2MXFW?=
+ =?utf-8?B?eGpHVk1SdlVndWFFRUU3SFpXZFAxaml2bE16U3hXVHBFeU5VRXpqR0VNVmU5?=
+ =?utf-8?B?SUdwUEx3dEp0d01uT0VvbHI4MGRxWDE0WXQrQVhWT0FIM2NvZ1YrcG55SEJU?=
+ =?utf-8?B?WnZoWkUwSlVEZWZ0WmVsUERTNUFBNU1GOG05ckMxM3puQ3ZuRGNVSU9WZUY2?=
+ =?utf-8?B?bkVVcDc2dm1BSkxVYXdpRmU4YWhybkhzS2VycXhsc0lxSFRDem0zcEFIYnh2?=
+ =?utf-8?B?KzlHZ2VmNC96VXRNTkk2OTZmbXBpek9ZYlJyNHpKMEdCM1VZWXJSR1BHZkJM?=
+ =?utf-8?B?OTAxMEpkMzN6ODkwNWlCcFRlK0lFc3VOMTFxU2wwbWRFd0s4STRIK3RWcHN5?=
+ =?utf-8?B?WnlCQXRwMHBVWmZvRnBnSzRwRmYrMzJSUERXcGJrN3d4K2RnMG5PWmdoZDFE?=
+ =?utf-8?B?Z3J1U0JXeDZiM05hWnVyVEQyODdTdlZFTTZ1R1Eyc1FzSE5YT1Fsc3plZkwx?=
+ =?utf-8?B?dzhzNWVNY3dXM3ZOV2w0SXpaNnZWVGZCMG5QMGlIdkhvSlZlZFdSWHVnL3R2?=
+ =?utf-8?B?Z0QzQ2ZsZE00dnNXWjNQUGY3cEhDRmgvUkRvRDRhVWh3bDFqUDh2bE01YzJQ?=
+ =?utf-8?B?c0gyQjF4VDVuMG41L2Rqb0JqekhVczQyYVdLT0ZLM2ZDNnluL1ZMSFJXSDFE?=
+ =?utf-8?B?V0d4aDQ1OWJ5RHNSNXFTYWozYmJLbVZqV2RFMFpMMDk4ZnFJTmIzRGRiaERZ?=
+ =?utf-8?B?dDYzZVhwT0RVdDhpbU1acWxQblJPZE8zdmh0SUFEWDB3eUUyc0lDenlnUVFH?=
+ =?utf-8?B?bWNwMHhZUEZxZDlxQ0M1N0NiZURiUHVzam10MU5keE1XSHFxd1dFM3BkZ1RD?=
+ =?utf-8?Q?zK6QTOF+H1Y=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VktxNEs2c3p2Tk5BemNBcDk2WWN6cUQwaUcyMUxweXJsTExPWTcvRjFSeklX?=
+ =?utf-8?B?bHFweG4wWld1b3MzQkpnNVlUamZVRkxnNmMvemp5amhWRGt3eHhLYnBTS2lL?=
+ =?utf-8?B?Z0lyaGFlT1V0YWJuOUwvK2laYkRLVFdCcS95RTlnd09WZ2h0a1ZUZm1MQ1dZ?=
+ =?utf-8?B?c0dqM2RCUGtYandWa0JYeVoxZGZUVzJrSWZ3VkdhQjFYdmo0NkRxZEFNdkV6?=
+ =?utf-8?B?N0MwUnJ5M0o3UE5sQ2MyckNHaFVLU2lFNUd2Zjh0dHpySE1sNmcxZ0c3Uzc0?=
+ =?utf-8?B?eUpwK3NJMXdUUW0vMjkrZ1E1cFdnUVdKczVSdXY5blh2eWc4N0FwZ2tKUG9h?=
+ =?utf-8?B?QUFPWFBvcHBGQ2Y4SDdENXMwS1dDTzl6Y0h4bUZaaEgwZktiRUE3QWw3dmN0?=
+ =?utf-8?B?cm5Ld0tjUXl1NEdYWVlMQzJaanJSKytSaDVOREZsTy90dllUbFNETWU1aDh0?=
+ =?utf-8?B?Si83SGZhRWhBUnlBb1pxMnVqMTZuQ0xUdHJEL3pJbm9uYTRlMmRRZ3VFZDB1?=
+ =?utf-8?B?TDIzSzg3bndFSVFEd09waDRxN1BoNnltd2p6WGtiTTIyR1dGMFJGSkZUdUxO?=
+ =?utf-8?B?aXBpbnFoRmxIMFNNREhOTkFhUXBOYlNlektyVzhkY0pwSFo1WkhZM3c2aDJh?=
+ =?utf-8?B?UEphNWlnUjVxNUtCbSs3dm1YdWZhTDRJWkJna1B2bDFKRWRBYlEzMWtFMDMy?=
+ =?utf-8?B?Y1pDRkRBQUJqRTVOTksvbHdUay9UVXh6U3NETHJXTGU3YUE1ZHBJRW9vb2lh?=
+ =?utf-8?B?d1hpL1BIOUJXTVAyN3hzdXJTb0t0aDVCS0ZkYTBlVVR5QjczREduNFU2V0tQ?=
+ =?utf-8?B?RzNPRmU3NEFNUnE3Z3dmTktFUlhzTHhFVFZ3c1NGOUJ5ZDBER2l3NStyanpa?=
+ =?utf-8?B?UUtHWlpRQkVBWUhNWW1sOUY5VldzNXpiTEluWUJYbitaREQ2VWpXM1lVSmVs?=
+ =?utf-8?B?VGVmdGdvcXJUNnZ4bGRLa2FkQ1BSclhDdFphMzNZZE1XazFUT0x6SEh5eDJq?=
+ =?utf-8?B?N28vY2RrdTV1WFI4czRJSUxrOWZhNEtrdU0yVm9STlJPSFNvTWVyR3dOdFlt?=
+ =?utf-8?B?NXo2Slk3V3cxOG1Rdi9TRVE5VlBxTjdnR2JwRFREUzdnZFFYTVJKMlJjNTZt?=
+ =?utf-8?B?U0hZUzFkdW53M1NiMHExWEJQaDRkYlVUVFRScERPU09BSlp4QlhUcFZtejBo?=
+ =?utf-8?B?NHlMWVlhWmR1V0FWN05obGIwR2l4NXR3LzJzSVVCOEJqdDZlWDEyQWRhTW1R?=
+ =?utf-8?B?UHVpV3A0VTlsTDl3MEhmRGZBa01kT2xuT3pxRDBIQnFRMlZBeXBTSHNOVUhF?=
+ =?utf-8?B?aUVwS2tmNVlFS1ZMbUV5K09PMU9PTVhOVjFFNzBuRkw4cm9yWXRzcHdsenRV?=
+ =?utf-8?B?SVVYWjdMcDg2Q3RDbm5LeG1ueS9LSFI4YkVNZXY1OUE5WlIrMU5scnBFaEFt?=
+ =?utf-8?B?TDg2WklTVnZQeHRNcHl0ZG1FNllJRXJ4YTdCS1NneW1EM2R4SytLOS8vMEF3?=
+ =?utf-8?B?WkltUzF4UDJ5ck43RllCWEdiSkNWWit5VzEzbThjZ3pTZmZrczJ0YklUMURn?=
+ =?utf-8?B?RVcxMTJwQnZJZ2xwZkZmdytBeUZsZnlRTE5jT3FkSzFScW9xVEJCaVdlRFZX?=
+ =?utf-8?B?bXd2MzQwSVdmNXk0S294L3dOcVJqZy8vMkFRVGY5SHZCTkJRWmd2LzE0RDUv?=
+ =?utf-8?B?SkZDNWVnRFZ1QWZGN08xRTBYYm43dHpvSTk3SHFLQUtqdWUzZUFSQjdsNjds?=
+ =?utf-8?B?cjdGcjgxQnFhWUV5VkNUYWJJRTdtRHFFUGk5bUFQWW1uZlVCN3p2cHVJUW1i?=
+ =?utf-8?B?RkNpM2QrT1hvdERtVWcrbVA0ZTdGdTJCd0t4RVBaME01OGw3NUFaeEc2OSsr?=
+ =?utf-8?B?dS9adVhtSW82MTNkcHByNDJhcU5sK2lEak11SmlGSEVZVXZxRHBiUmxtaU8x?=
+ =?utf-8?B?VEtoSGhTc0hSRm1RS3R3Ukdta1VQZC9FMzBqYjllbzdzdjhma0UwYUdMaHkw?=
+ =?utf-8?B?dlRYRWdDbnVxeVNldFdZRnBaWXpWVVkwVEJFdllTWjk4Vnl1dHJRdy94TWJk?=
+ =?utf-8?B?KzFONTl5aTNsZTBIMmR1bWdoNjJHRUZIN0NETlFvUnBSeFM2ZGJrQVhvWW1K?=
+ =?utf-8?B?L080TzIvZ0ZCOG5HVEoxd0RXY2dPVmNNVnd5OVd2cmh1YmVxRUZiQVVuejNB?=
+ =?utf-8?Q?tFaPRdunpn8IAGb+fHXm2ssPlzLAJLIdDT8Z7fqHvZC7?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca1c99aa-f3f2-405e-8cb2-08ddf9a0c414
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 06:25:04.2712
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3tRJamJ19cycGsOF3wm534UUEm/2mRrvshgihHb6t7EB512vN/viHJtZ/jW7W+hveQKKKePu2+fKkfxxOlsgTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9191
 
+On Sat Sep 20, 2025 at 5:53 AM JST, Joel Fernandes wrote:
+> On Fri, Sep 19, 2025 at 11:26:19AM +0200, Benno Lossin wrote:
+>> On Fri Sep 19, 2025 at 9:59 AM CEST, Joel Fernandes wrote:
+>> > Hello, Danilo,
+>> >
+>> >> On Sep 19, 2025, at 1:26=E2=80=AFAM, Danilo Krummrich <dakr@kernel.or=
+g> wrote:
+>> >>=20
+>> >> On Thu Sep 18, 2025 at 8:13 PM CEST, Joel Fernandes wrote:
+>> >>>> On Thu, Sep 18, 2025 at 03:02:11PM +0000, Alice Ryhl wrote:
+>> >>>> Using build_assert! to assert that offsets are in bounds is really
+>> >>>> fragile and likely to result in spurious and hard-to-debug build
+>> >>>> failures. Therefore, build_assert! should be avoided for this case.
+>> >>>> Thus, update the code to perform the check in const evaluation
+>> >>>> instead.
+>> >>>=20
+>> >>> I really don't think this patch is a good idea (and nobody I spoke t=
+o
+>> >>> thinks so). Not only does it mess up the user's caller syntax
+>> >>> completely, it is also
+>> >>=20
+>> >> I appreacite you raising the concern,
+>> >> but I rather have other people speak up
+>> >> themselves.
+>> >
+>> > I did not mean to speak for others, sorry it came across like that
+>> > (and that is certainly not what I normally do). But I discussed the
+>> > patch in person since we are at a conference and discussing it in
+>> > person, and I did not get a lot of consensus on this. That is what I
+>> > was trying to say. If it was a brilliant or great idea, I would have
+>> > hoped for at least one person to tell me that this is exactly how we
+>> > should do it.
+>>=20
+>> I'm also not really thrilled to see lots more turbofish syntax. However,
+>> if we can avoid the nasty build_assert errors then in my opinion it's
+>> better. (yes we do have Gary's cool klint tool to handle them correctly,
+>
+> Yes, thanks. Also I tried to apply this patch and it doesn't always work
+> because of array indexing usecase in nova, where we compute the offset ba=
+sed
+> on a runtime register index  (**/nova-core/**/macros.rs). Here idx is not=
+ a
+> constant:
+>
+>             /// Read the array register at index `idx` from its address i=
+n `io`.
+>             #[inline(always)]
+>             pub(crate) fn read<const SIZE: usize, T>(
+>                 io: &T,
+>                 idx: usize,
+>             ) -> Self where
+>                 T: ::core::ops::Deref<Target =3D ::kernel::io::Io<SIZE>>,
+>
+> In **/ga102.rs, we have the following usage where ucode_idx cannot be con=
+st:
+>
+> regs::NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION::read(bar, ucode_idx).data()
+>
+> So I am afraid this wont work. Also even if it did work, it means now we =
+have
+> to also put idx as a const generic (turbofish syntax).
 
---bBIxi82jCm1Nqn97
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Sep 15, 2025 at 02:53:11PM +0300, Onur =D6zkan wrote:
-> Adds a new `rustcheck` make target to run a check-only build
-> similar to `cargo check`. This allows us to verify that the Rust
-> sources can build without building/linking final artifacts,
-> which speeds up the iteration (a lot) during development.
->=20
-> The target also supports the CLIPPY flag (e.g., `make LLVM=3D1
-> rustcheck CLIPPY=3D1) to run Clippy in a faster way.
->=20
-> Also, unlike `make LLVM=3D1`, it doesn't compile large amounts of C
-> code (on a fresh checkout) when the goal is only to check that
-> Rust builds are not broken after some changes.
->=20
-> Suggested-by: Benno Losin <lossin@kernel.org>
-> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x=
-/near/539103602
-> Signed-off-by: Onur =D6zkan <work@onurozkan.dev>
-> ---
->  Makefile      |  7 +++++
->  rust/Makefile | 73 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 80 insertions(+)
->=20
-> diff --git a/Makefile b/Makefile
-> index cf37b9407821..7812cdc72938 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1716,6 +1716,8 @@ help:
->  	@echo  '		    is formatted, printing a diff otherwise.'
->  	@echo  '  rustdoc	  - Generate Rust documentation'
->  	@echo  '		    (requires kernel .config)'
-> +	@echo  '  rustcheck       - Check that the Rust code builds'
-> +	@echo  '                    (requires kernel .config)'
->  	@echo  '  rusttest        - Runs the Rust tests'
->  	@echo  '                    (requires kernel .config; downloads externa=
-l repos)'
->  	@echo  '  rust-analyzer	  - Generate rust-project.json rust-analyzer su=
-pport file'
-> @@ -1821,6 +1823,11 @@ PHONY +=3D rustdoc
->  rustdoc: prepare
->  	$(Q)$(MAKE) $(build)=3Drust $@
-> =20
-> +# Checking Rust sources.
-> +PHONY +=3D rustcheck
-> +rustcheck: prepare0
-
-Why do you let rustcheck depend on prepare0 instead of prepare?
-
-> +	$(Q)$(MAKE) $(build)=3Drust $@
-> +
->  # Testing target
->  PHONY +=3D rusttest
->  rusttest: prepare
-> diff --git a/rust/Makefile b/rust/Makefile
-> index bfa915b0e588..b45878870207 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -265,6 +265,79 @@ rusttest-kernel: $(src)/kernel/lib.rs rusttestlib-ff=
-i rusttestlib-kernel \
->      rusttestlib-uapi rusttestlib-pin_init FORCE
->  	+$(call if_changed,rustc_test)
-> =20
-> +## Check-only compilation (similar to `cargo check`)
-> +quiet_cmd_rustc_check_library =3D $(RUSTC_OR_CLIPPY_QUIET) CHECK $<
-> +      cmd_rustc_check_library =3D \
-> +        OBJTREE=3D$(abspath $(objtree)) \
-
-Have you tried this?
-
-        OBJTREE=3D$(CURDIR) \
-
-or
-
-        OBJTREE=3D$(abs_output) \
-
-I'd favor using one of these instead.
-
-Kind regards,
-Nicolas
-
---bBIxi82jCm1Nqn97
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEh0E3p4c3JKeBvsLGB1IKcBYmEmkFAmjQ5nsACgkQB1IKcBYm
-EmmbjhAAwVgCYyXQ3IY3eY+gsLi8kKvpvUxK05aLvkWDErcqeiDVS+WAlKxoGRbK
-GE1yDdNRZBmvtH6z0B1IP0sK1Bu6Wa0Kb8UdwoT6M080SHDGLlq5QQ7d2y/McZIj
-2xikteMbIbaxxPGYw60CbZR8cCWio3AUrp6+IBj/sXcMO8BK86jQ+IdO2gE/zeLD
-5fZenzYuO4D9e78IdyMRTHR8224qzSGBYx1P9xNbU2bho1eoHf5Efnby8kAeTkfu
-4y7yvozCvLeIpwSFfLfOzbMalGkZ92bwTNpWJi+qRVj3gmq+xSUJ6zp/LPkSYQe0
-0PBEvpi5ndMLmGNgix0igvhpP1/Z0/v0CAzKQXkAUwSxjtknTPpMNc3na7U+RHyZ
-u4ADnJw8PWagiYTJWijgA+dsyvAhAjLSBRBVY94Z/DZR+pNeWtRlsM6V3G45ZFJk
-MMCzvVoTgE2LxgwLEgkFxK45WfpQjSeSLSKdX49Cmu5h6RJEsHyLbiRbgMvuRKmr
-vEMYF+37XBJsC29AeuLdvHyrJ2AM/h9aT7hfrHWG0W5BQexl3ztLnrjfrKBjDJqc
-Aj1r1biGCw63bJdOtmsQleacap0cosMagKaSdOEV18t6uJIylH3MhKK6ej+LgyFd
-nxfgqadowfsepkgfVXSPTHOK5zuvYiDTp2HrYqKyO5tEZZs0bjo=
-=iuAC
------END PGP SIGNATURE-----
-
---bBIxi82jCm1Nqn97--
+We could always use the `try_read*` variant for these, but that would
+introduce runtime checking for errors that can't happen. We have been
+pretty successful in avoiding using `try_read*` in Nova so far, and I
+think that's something we should try to preserve as it brings confidence
+that our register accesses are correct.
