@@ -1,501 +1,181 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31B24A1E
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 12:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9457B2DC797
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 15:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758543207; cv=none; b=E3CqXOZj6BTagwJ3W9C+OFPWmMCPdmbv/hP2TqmZbWgqmg7zFZBEN+dZFIlsFIy+YcYmm4qPTbcyer9a98m+CAWFYVjfwJDnzPj75KXQQrPPSLtrYaynIJcWviprEkylSHfJtY9nJb6y0LqvbDrAfTNdEl7WF3Py180OUsIo12Y=
+	t=1758554707; cv=none; b=AZvdGw5oWUaiquQgbrCpXBRUq4rBK7fp1D3aD1SYFqF1ZrDmtuwcV1G1sUg2yCnbsaTeJO7D3RWawD+35u9R139bvmRUEUvcZQWn+QzeZfREV3qrX6ucMkJKN67EYTVe/YyjSKPRSfoy5wKA3i+Se9J0lcUUL5iARdzRbKQzIXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758543207; c=relaxed/simple;
-	bh=/jKOTJi9At9O/NJBZNqw4SgVhb/xOVpVfaR7rFBe5oQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GAuTJrRi+3PW1TQWH5ILBZHzFmLhajAJNLcCj4dLCUT9ronWRSbagzwyVI1St1nCpnDrrlFwWx7SitaHYUJ+U1s0LLUuXFzl1Um5K5jYBqWoRetAqV6D2v76pktlbmY3kVwHyYzxiHLUXEEI1nUzqG3GogPmCtqA5LcpOdM265o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Kfy+YRRJ; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=ZVIYk5Mz; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1758554707; c=relaxed/simple;
+	bh=QYEbatTFWZqu7IgBlVpu9sOEjAAWwlu9TQXQ9Dk+9Jo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jIa1GBkdPfWp1LRF25JOfSy8x+Eezix3RSMY70ao02xM//CtdxtzeStaiuQhNddRKJqHyURdcRG9lEGAabZx+c4ku5vrIA0yOKZ5mdH2a4UejMd7aufRBi+neJhxcLtoJSs5ci19NsIdC00oDVJO+Qpsit+l0av91HjmRAhxhms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GbvKUlc/; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Kfy+YRRJ";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="ZVIYk5Mz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1758543200; x=1759148000;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=VfJlIUDhOlBMGVZcFLP/skN4LWBjtsuHJobPjpppEf8=;
-	b=Kfy+YRRJ2j6EMqjLqZaPqw+661M+UMRPieVBlSIVFOi6hDrRvT6yg/1mTjrQs+kHU77jZ9iN7Uy2B
-	 2sBUsuZBGXIR6XjDYqXzLvMSmEXLRt/RZycNB/Ci0OYvGAx3Khc3b2X3hTfol0lGIV7u7tNqsugzhK
-	 s1EVWxX9QK3ZzEsxq5f5J3l7SDMXUTGARKdX8dPjQfltP7nVmsaiFKA47Adw63BjrLZyZ8hPMKuNH/
-	 m771NFk8jA46xjnSDhVi8Q41W6tFXq0WPeTrdanJtR9/ugPJc9f25Y38rle+SdJPm+liK0H5i8kKqs
-	 7wOPDXx0pmCby29AaVU7WJ0YWfOJh0g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1758543200; x=1759148000;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=VfJlIUDhOlBMGVZcFLP/skN4LWBjtsuHJobPjpppEf8=;
-	b=ZVIYk5MzsQku3y9j6OIaDtuZMBEnCmAeasy/fjIxdh6YXfD4OhB6CbpM/W5+D/563hMLmxjWVcnf7
-	 GGcuINhAQ==
-X-HalOne-ID: 85f7bd9b-97ad-11f0-b8ca-f7376af24660
-Received: from [192.168.10.245] (host-95-203-13-255.mobileonline.telia.com [95.203.13.255])
-	by mailrelay6.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id 85f7bd9b-97ad-11f0-b8ca-f7376af24660;
-	Mon, 22 Sep 2025 12:13:19 +0000 (UTC)
-Message-ID: <9b287ca0-fe1a-46c1-9510-03871326aecb@konsulko.se>
-Date: Mon, 22 Sep 2025 14:13:17 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GbvKUlc/"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-79599d65f75so36511826d6.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 08:25:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758554704; x=1759159504; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PSkikTZXE02HYkXXjiWnrJ/oVniVcD53sHXP8wi/2es=;
+        b=GbvKUlc/JtIR3DWV0VyuNfApCFAPfY7QbNqLoH8dZAPnn2vGY28r76e6+o4rMM0BXz
+         Jc7ROfcH+y5vmcHGsaVlb1Yfkt1q11aJVuF9yMXeB8xnGJgBbqUPsXpyQ9bZeNg48xgz
+         W2j3WdRcNPNi/NwD1/rvno3xosZd3l42L3rVRcawK5JYdiwR7ar3M52Oiscs4AGAfb4E
+         HGypZOs54Wp8KrHu7Ocx8X6hXxh7EFF/wFCf0QTloZ6HWJjWeSk9YOvnqyMeQattKOAi
+         /WrDrv6HnbOum3atBBtrSy1Cp5qp9PX/T8/JrOHHFZk3emlh/h5a5HwWsIbSxc0Uy/VH
+         0g5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758554704; x=1759159504;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PSkikTZXE02HYkXXjiWnrJ/oVniVcD53sHXP8wi/2es=;
+        b=MueC3SeFRsV3810vtrmdKFdR1AHFBJKt+8DVO0OspRvH6wuHTC9wS/I/1RL0VMPm3Q
+         +Q+bBn2mTrjKjkhWg+iE5Rsjd28i2T3uuzgRBat8EYRe1j6aY4QyQHxxtLt+wIkgArER
+         BTnq1493BvNMm7aF6yovfxFRQhQc3KbJmjMsRW4oV8j7yeaAMegepgYdRL/ioocRtv2k
+         ZNzEc8SGFniaHos6LR+N71GzRbL5Ol90PCizgza/X7Rwrzl1fgSiF3bRYCtw8SxOxy0O
+         jw/L2P33svvOYqw9MLJH1HAmTI2hFngt5D8oN8hf2PWVoSjOQFZ1VnMJAyZD521kzSlj
+         2z/w==
+X-Gm-Message-State: AOJu0YyHIdcwTecSbz+s43I9baV8gTGlHGxlmnNOs90w9OmglN65fGW+
+	/6LRx3/ZIjuqAb8wQCZGb4pLsb8cwWtbLVp/R6YwMZuXPFYpc8+s9x27
+X-Gm-Gg: ASbGncs6g+0kSnuUIBE/x2VHxJ848GewbAMLfCeMyRWOxZaD7ZTmNElOJhzKaN4tWwo
+	XoCj6WFKXN53m5USn0+aT8WZUr9Ne2nCUYlevRrWRcLAoT2glSIYtscLJi5rHbR/u1De3Kd3+nx
+	xS0CdYkwTKT33wVFDgM/I9uin6p7M6ETjBDZIHi2rOTRliRi1sOU/t9gYAZmtHTY9mQu5HXN3pk
+	FJSCP/FTz0wYIvYRM+j5SwxRYKS1EntVGKab7b1clvXpxH6mT7eRf1Gt/L5f6k4BOune2VNoyoc
+	H0iusWe2mkSwf59wYzchXqLzZCPSDSxEIbr24YBzGIuaI5l59275jq7YKWhsBahquOIwcIcd7Rn
+	k6Xnn5fszbESx4QE0gjNAFAFwDhn1lfV01X41hUAJqlaxpPAzfiICZpRnGpXqXycm6P0hYdnbUW
+	4mbK2QRUIRjBTV
+X-Google-Smtp-Source: AGHT+IFLuh7hLmB3OCi2rCYdGej4o3AbyEiGyG+VTXpzKGHWHa/tEgW6eba5+uzwS6ylfJZwL6TVtg==
+X-Received: by 2002:a05:6214:2523:b0:74a:c41c:1614 with SMTP id 6a1803df08f44-7991cbb4c5bmr136386876d6.48.1758554704238;
+        Mon, 22 Sep 2025 08:25:04 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-793548c6e02sm74743246d6.60.2025.09.22.08.25.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Sep 2025 08:25:03 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 38708F40066;
+	Mon, 22 Sep 2025 11:25:03 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 22 Sep 2025 11:25:03 -0400
+X-ME-Sender: <xms:T2rRaJh3AXIyZRADqZDkJRc9F_XwjvvGgVNn09ufyoy004M33RJ7Wg>
+    <xme:T2rRaJCMDl5Lw5LPgoT5jE81B3B6rxyeC4HnFFlqVp6V6wtJIL2a-d-P1H5naEPWj
+    _yvz-yckVHuUq6q6wAtOz7xOcnCaPi3QKEuS7t307-cr0l7vycHWA>
+X-ME-Received: <xmr:T2rRaPuLA2I4fOIUYCy81l7cMsrcAZGayDDK5CpKVAXkQh57DbVxbpBIzKKvl7G_G6RtAsOzOW4z0-C2Jd1r-IJ0_ARAzNzm>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehkedvtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedvgedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheprghpohhpphhlvgesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprhhushhtqd
+    hfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughr
+    ihdquggvvhgvlheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtth
+    hopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggtohhurhgsohhtsehn
+    vhhiughirgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohep
+    ghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesph
+    hrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:T2rRaL4t858O6616lJKjIOoRtNlD3un5kYPG9N8BQ_y54SQBcVMugA>
+    <xmx:T2rRaBdUvNQAMWWUBEHyjzmjX8zh3-cMtAisohU5OXhgnb6cnsLEkw>
+    <xmx:T2rRaLWmkpenwAmwnz-Prn2wXG-aTNpGUud4OQdFCUGezJ2cznjPig>
+    <xmx:T2rRaGXlXRj_c2jlwOXNraSakXxl_Fs7Qa8MMJY3OSLo_VUTYkbcAg>
+    <xmx:T2rRaEQFjF6qobnGRJILdvn2WdI0fvS12vl2HovQJZYF8b4vLZzhPY9c>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 22 Sep 2025 11:25:02 -0400 (EDT)
+Date: Mon, 22 Sep 2025 08:25:01 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	dakr@kernel.org, acourbot@nvidia.com,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
+	nouveau@lists.freedesktop.org
+Subject: Re: [PATCH v2 01/10] gpu: nova-core: Set correct DMA mask
+Message-ID: <aNFqTYkkY4qgCyWP@tardis.local>
+References: <20250922113026.3083103-1-apopple@nvidia.com>
+ <20250922113026.3083103-2-apopple@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] rust: rbtree: add immutable cursor
-To: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>
-References: <20250909065937.3433134-1-vitaly.wool@konsulko.se>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <20250909065937.3433134-1-vitaly.wool@konsulko.se>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250922113026.3083103-2-apopple@nvidia.com>
 
-
-
-On 9/9/25 08:59, Vitaly Wool wrote:
-> Sometimes we may need to iterate over, or find an element in a read
-> only (or read mostly) red-black tree, and in that case we don't need a
-> mutable reference to the tree, which we'll however have to take to be
-> able to use the current (mutable) cursor implementation.
+On Mon, Sep 22, 2025 at 09:30:17PM +1000, Alistair Popple wrote:
+> Set the correct DMA mask. Without this DMA will fail on some setups.
 > 
-> This patch adds a simple immutable cursor implementation to RBTree,
-> which enables us to use an immutable tree reference. The existing
-> (fully featured) cursor implementation is renamed to CursorMut,
-> while retaining its functionality.
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
 > 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-
-I don't think I've got any feedback on this one, is there anything else 
-that needs to be addressed or is this one good to go?
-
-~Vitaly
-
 > ---
-> Changelog:
-> ---------
-> v1 -> v2:
-> * corrected grammar hiccups
-> * logic for cursor_lower_bound[_mut] variants put into a separate
-> * function
-> * to_key_value_raw() removed from the immutable cursor implementation
-> v2 -> v3:
-> * find_best_match() modified to directly return links
-> * safety comments corrected for Send/Sync
-> v3 -> v4:
-> * &raw is used instead of addr_mut!
 > 
->   rust/kernel/rbtree.rs | 238 ++++++++++++++++++++++++++++++++++--------
->   1 file changed, 195 insertions(+), 43 deletions(-)
+> Changes for v2:
 > 
-> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-> index b8fe6be6fcc4..10f4df081889 100644
-> --- a/rust/kernel/rbtree.rs
-> +++ b/rust/kernel/rbtree.rs
-> @@ -243,34 +243,64 @@ pub fn values_mut(&mut self) -> impl Iterator<Item = &'_ mut V> {
->       }
->   
->       /// Returns a cursor over the tree nodes, starting with the smallest key.
-> -    pub fn cursor_front(&mut self) -> Option<Cursor<'_, K, V>> {
-> +    pub fn cursor_front_mut(&mut self) -> Option<CursorMut<'_, K, V>> {
->           let root = addr_of_mut!(self.root);
->           // SAFETY: `self.root` is always a valid root node
->           let current = unsafe { bindings::rb_first(root) };
->           NonNull::new(current).map(|current| {
->               // INVARIANT:
->               // - `current` is a valid node in the [`RBTree`] pointed to by `self`.
-> -            Cursor {
-> +            CursorMut {
->                   current,
->                   tree: self,
->               }
->           })
->       }
->   
-> +    /// Returns an immutable cursor over the tree nodes, starting with the smallest key.
-> +    pub fn cursor_front(&self) -> Option<Cursor<'_, K, V>> {
-> +        let root = &raw const self.root;
-> +        // SAFETY: `self.root` is always a valid root node
-> +        let current = unsafe { bindings::rb_first(root) };
-> +        NonNull::new(current).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed to by `self`.
-> +            Cursor {
-> +                current,
-> +                _tree: PhantomData,
-> +            }
-> +        })
-> +    }
-> +
->       /// Returns a cursor over the tree nodes, starting with the largest key.
-> -    pub fn cursor_back(&mut self) -> Option<Cursor<'_, K, V>> {
-> +    pub fn cursor_back_mut(&mut self) -> Option<CursorMut<'_, K, V>> {
->           let root = addr_of_mut!(self.root);
->           // SAFETY: `self.root` is always a valid root node
->           let current = unsafe { bindings::rb_last(root) };
->           NonNull::new(current).map(|current| {
->               // INVARIANT:
->               // - `current` is a valid node in the [`RBTree`] pointed to by `self`.
-> -            Cursor {
-> +            CursorMut {
->                   current,
->                   tree: self,
->               }
->           })
->       }
-> +
-> +    /// Returns a cursor over the tree nodes, starting with the largest key.
-> +    pub fn cursor_back(&self) -> Option<Cursor<'_, K, V>> {
-> +        let root = &raw const self.root;
-> +        // SAFETY: `self.root` is always a valid root node
-> +        let current = unsafe { bindings::rb_last(root) };
-> +        NonNull::new(current).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed to by `self`.
-> +            Cursor {
-> +                current,
-> +                _tree: PhantomData,
-> +            }
-> +        })
-> +    }
->   }
->   
->   impl<K, V> RBTree<K, V>
-> @@ -421,12 +451,47 @@ pub fn remove(&mut self, key: &K) -> Option<V> {
->       /// If the given key exists, the cursor starts there.
->       /// Otherwise it starts with the first larger key in sort order.
->       /// If there is no larger key, it returns [`None`].
-> -    pub fn cursor_lower_bound(&mut self, key: &K) -> Option<Cursor<'_, K, V>>
-> +    pub fn cursor_lower_bound_mut(&mut self, key: &K) -> Option<CursorMut<'_, K, V>>
-> +    where
-> +        K: Ord,
-> +    {
-> +        let best = self.find_best_match(key)?;
-> +
-> +        NonNull::new(best.as_ptr()).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed to by `self`.
-> +            CursorMut {
-> +                current,
-> +                tree: self,
-> +            }
-> +        })
-> +    }
-> +
-> +    /// Returns a cursor over the tree nodes based on the given key.
-> +    ///
-> +    /// If the given key exists, the cursor starts there.
-> +    /// Otherwise it starts with the first larger key in sort order.
-> +    /// If there is no larger key, it returns [`None`].
-> +    pub fn cursor_lower_bound(&self, key: &K) -> Option<Cursor<'_, K, V>>
->       where
->           K: Ord,
->       {
-> +        let best = self.find_best_match(key)?;
-> +
-> +        NonNull::new(best.as_ptr()).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed to by `self`.
-> +            Cursor {
-> +                current,
-> +                _tree: PhantomData,
-> +            }
-> +        })
-> +    }
-> +
-> +    fn find_best_match(&self, key: &K) -> Option<NonNull<bindings::rb_node>> {
->           let mut node = self.root.rb_node;
-> -        let mut best_match: Option<NonNull<Node<K, V>>> = None;
-> +        let mut best_key: Option<&K> = None;
-> +        let mut best_links: Option<NonNull<bindings::rb_node>> = None;
->           while !node.is_null() {
->               // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
->               // point to the links field of `Node<K, V>` objects.
-> @@ -439,42 +504,30 @@ pub fn cursor_lower_bound(&mut self, key: &K) -> Option<Cursor<'_, K, V>>
->               let right_child = unsafe { (*node).rb_right };
->               match key.cmp(this_key) {
->                   Ordering::Equal => {
-> -                    best_match = NonNull::new(this);
-> +                    // SAFETY: `this` is a non-null node so it is valid by the type invariants.
-> +                    best_links = Some(unsafe { NonNull::new_unchecked(&mut (*this).links) });
->                       break;
->                   }
->                   Ordering::Greater => {
->                       node = right_child;
->                   }
->                   Ordering::Less => {
-> -                    let is_better_match = match best_match {
-> +                    let is_better_match = match best_key {
->                           None => true,
->                           Some(best) => {
-> -                            // SAFETY: `best` is a non-null node so it is valid by the type invariants.
-> -                            let best_key = unsafe { &(*best.as_ptr()).key };
-> -                            best_key > this_key
-> +                            best > this_key
->                           }
->                       };
->                       if is_better_match {
-> -                        best_match = NonNull::new(this);
-> +                        best_key = Some(this_key);
-> +                        // SAFETY: `this` is a non-null node so it is valid by the type invariants.
-> +                        best_links = Some(unsafe { NonNull::new_unchecked(&mut (*this).links) });
->                       }
->                       node = left_child;
->                   }
->               };
->           }
-> -
-> -        let best = best_match?;
-> -
-> -        // SAFETY: `best` is a non-null node so it is valid by the type invariants.
-> -        let links = unsafe { addr_of_mut!((*best.as_ptr()).links) };
-> -
-> -        NonNull::new(links).map(|current| {
-> -            // INVARIANT:
-> -            // - `current` is a valid node in the [`RBTree`] pointed to by `self`.
-> -            Cursor {
-> -                current,
-> -                tree: self,
-> -            }
-> -        })
-> +        best_links
->       }
->   }
->   
-> @@ -507,7 +560,7 @@ fn drop(&mut self) {
->       }
->   }
->   
-> -/// A bidirectional cursor over the tree nodes, sorted by key.
-> +/// A bidirectional mutable cursor over the tree nodes, sorted by key.
->   ///
->   /// # Examples
->   ///
-> @@ -526,7 +579,7 @@ fn drop(&mut self) {
->   /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->   ///
->   /// // Get a cursor to the first element.
-> -/// let mut cursor = tree.cursor_front().unwrap();
-> +/// let mut cursor = tree.cursor_front_mut().unwrap();
->   /// let mut current = cursor.current();
->   /// assert_eq!(current, (&10, &100));
->   ///
-> @@ -564,7 +617,7 @@ fn drop(&mut self) {
->   /// tree.try_create_and_insert(20, 200, flags::GFP_KERNEL)?;
->   /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->   ///
-> -/// let mut cursor = tree.cursor_back().unwrap();
-> +/// let mut cursor = tree.cursor_back_mut().unwrap();
->   /// let current = cursor.current();
->   /// assert_eq!(current, (&30, &300));
->   ///
-> @@ -577,7 +630,7 @@ fn drop(&mut self) {
->   /// use kernel::rbtree::RBTree;
->   ///
->   /// let mut tree: RBTree<u16, u16> = RBTree::new();
-> -/// assert!(tree.cursor_front().is_none());
-> +/// assert!(tree.cursor_front_mut().is_none());
->   ///
->   /// # Ok::<(), Error>(())
->   /// ```
-> @@ -628,7 +681,7 @@ fn drop(&mut self) {
->   /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->   ///
->   /// // Retrieve a cursor.
-> -/// let mut cursor = tree.cursor_front().unwrap();
-> +/// let mut cursor = tree.cursor_front_mut().unwrap();
->   ///
->   /// // Get a mutable reference to the current value.
->   /// let (k, v) = cursor.current_mut();
-> @@ -655,7 +708,7 @@ fn drop(&mut self) {
->   /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->   ///
->   /// // Remove the first element.
-> -/// let mut cursor = tree.cursor_front().unwrap();
-> +/// let mut cursor = tree.cursor_front_mut().unwrap();
->   /// let mut current = cursor.current();
->   /// assert_eq!(current, (&10, &100));
->   /// cursor = cursor.remove_current().0.unwrap();
-> @@ -665,7 +718,7 @@ fn drop(&mut self) {
->   /// assert_eq!(current, (&20, &200));
->   ///
->   /// // Get a cursor to the last element, and remove it.
-> -/// cursor = tree.cursor_back().unwrap();
-> +/// cursor = tree.cursor_back_mut().unwrap();
->   /// current = cursor.current();
->   /// assert_eq!(current, (&30, &300));
->   ///
-> @@ -694,7 +747,7 @@ fn drop(&mut self) {
->   /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
->   ///
->   /// // Get a cursor to the first element.
-> -/// let mut cursor = tree.cursor_front().unwrap();
-> +/// let mut cursor = tree.cursor_front_mut().unwrap();
->   /// let mut current = cursor.current();
->   /// assert_eq!(current, (&10, &100));
->   ///
-> @@ -702,7 +755,7 @@ fn drop(&mut self) {
->   /// assert!(cursor.remove_prev().is_none());
->   ///
->   /// // Get a cursor to the last element.
-> -/// cursor = tree.cursor_back().unwrap();
-> +/// cursor = tree.cursor_back_mut().unwrap();
->   /// current = cursor.current();
->   /// assert_eq!(current, (&30, &300));
->   ///
-> @@ -726,18 +779,47 @@ fn drop(&mut self) {
->   ///
->   /// # Invariants
->   /// - `current` points to a node that is in the same [`RBTree`] as `tree`.
-> -pub struct Cursor<'a, K, V> {
-> +pub struct CursorMut<'a, K, V> {
->       tree: &'a mut RBTree<K, V>,
->       current: NonNull<bindings::rb_node>,
->   }
->   
-> -// SAFETY: The [`Cursor`] has exclusive access to both `K` and `V`, so it is sufficient to require them to be `Send`.
-> -// The cursor only gives out immutable references to the keys, but since it has excusive access to those same
-> -// keys, `Send` is sufficient. `Sync` would be okay, but it is more restrictive to the user.
-> -unsafe impl<'a, K: Send, V: Send> Send for Cursor<'a, K, V> {}
-> +/// A bidirectional immutable cursor over the tree nodes, sorted by key. This is a simpler
-> +/// variant of CursorMut that is basically providing read only access.
-> +///
-> +/// # Examples
-> +///
-> +/// In the following example, we obtain a cursor to the first element in the tree.
-> +/// The cursor allows us to iterate bidirectionally over key/value pairs in the tree.
-> +///
-> +/// ```
-> +/// use kernel::{alloc::flags, rbtree::RBTree};
-> +///
-> +/// // Create a new tree.
-> +/// let mut tree = RBTree::new();
-> +///
-> +/// // Insert three elements.
-> +/// tree.try_create_and_insert(10, 100, flags::GFP_KERNEL)?;
-> +/// tree.try_create_and_insert(20, 200, flags::GFP_KERNEL)?;
-> +/// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
-> +///
-> +/// // Get a cursor to the first element.
-> +/// let cursor = tree.cursor_front().unwrap();
-> +/// let current = cursor.current();
-> +/// assert_eq!(current, (&10, &100));
-> +///
-> +/// # Ok::<(), Error>(())
-> +pub struct Cursor<'a, K, V> {
-> +    _tree: PhantomData<&'a RBTree<K, V>>,
-> +    current: NonNull<bindings::rb_node>,
-> +}
->   
-> -// SAFETY: The [`Cursor`] gives out immutable references to K and mutable references to V,
-> -// so it has the same thread safety requirements as mutable references.
-> +// SAFETY: The immutable cursor gives out shared access to `K` and `V` so if `K` and `V` can be
-> +// shared across threads, then it's safe to share the cursor.
-> +unsafe impl<'a, K: Sync, V: Sync> Send for Cursor<'a, K, V> {}
-> +
-> +// SAFETY: The immutable cursor gives out shared access to `K` and `V` so if `K` and `V` can be
-> +// shared across threads, then it's safe to share the cursor.
->   unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a, K, V> {}
->   
->   impl<'a, K, V> Cursor<'a, K, V> {
-> @@ -749,6 +831,76 @@ pub fn current(&self) -> (&K, &V) {
->           unsafe { Self::to_key_value(self.current) }
->       }
->   
-> +    /// # Safety
-> +    ///
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has immutable access to `node` for the duration of `'b`.
-> +    unsafe fn to_key_value<'b>(node: NonNull<bindings::rb_node>) -> (&'b K, &'b V) {
-> +        // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
-> +        // point to the links field of `Node<K, V>` objects.
-> +        let this = unsafe { container_of!(node.as_ptr(), Node<K, V>, links) };
-> +        // SAFETY: The passed `node` is the current node or a non-null neighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let k = unsafe { &(*this).key };
-> +        // SAFETY: The passed `node` is the current node or a non-null neighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let v = unsafe { &(*this).value };
-> +        (k, v)
-> +    }
-> +
-> +    /// Access the previous node without moving the cursor.
-> +    pub fn peek_prev(&self) -> Option<(&K, &V)> {
-> +        self.peek(Direction::Prev)
-> +    }
-> +
-> +    /// Access the previous node without moving the cursor.
-> +    pub fn peek_next(&self) -> Option<(&K, &V)> {
-> +        self.peek(Direction::Next)
-> +    }
-> +
-> +    fn peek(&self, direction: Direction) -> Option<(&K, &V)> {
-> +        self.get_neighbor_raw(direction).map(|neighbor| {
-> +            // SAFETY:
-> +            // - `neighbor` is a valid tree node.
-> +            // - By the function signature, we have an immutable reference to `self`.
-> +            unsafe { Self::to_key_value(neighbor) }
-> +        })
-> +    }
-> +
-> +    fn get_neighbor_raw(&self, direction: Direction) -> Option<NonNull<bindings::rb_node>> {
-> +        // SAFETY: `self.current` is valid by the type invariants.
-> +        let neighbor = unsafe {
-> +            match direction {
-> +                Direction::Prev => bindings::rb_prev(self.current.as_ptr()),
-> +                Direction::Next => bindings::rb_next(self.current.as_ptr()),
-> +            }
-> +        };
-> +
-> +        NonNull::new(neighbor)
-> +    }
-> +}
-> +
-> +// SAFETY: The [`CursorMut`] has exclusive access to both `K` and `V`, so it is sufficient to
-> +// require them to be `Send`.
-> +// The cursor only gives out immutable references to the keys, but since it has excusive access to
-> +// those same keys, `Send` is sufficient. `Sync` would be okay, but it is more restrictive to the
-> +// user.
-> +unsafe impl<'a, K: Send, V: Send> Send for CursorMut<'a, K, V> {}
-> +
-> +// SAFETY: The [`CursorMut`] gives out immutable references to K and mutable references to V,
-> +// so it has the same thread safety requirements as mutable references.
-> +unsafe impl<'a, K: Sync, V: Sync> Sync for CursorMut<'a, K, V> {}
-> +
-> +
-> +impl<'a, K, V> CursorMut<'a, K, V> {
-> +    /// The current node
-> +    pub fn current(&self) -> (&K, &V) {
-> +        // SAFETY:
-> +        // - `self.current` is a valid node by the type invariants.
-> +        // - We have an immutable reference by the function signature.
-> +        unsafe { Self::to_key_value(self.current) }
-> +    }
-> +
->       /// The current node, with a mutable value
->       pub fn current_mut(&mut self) -> (&K, &mut V) {
->           // SAFETY:
-> @@ -920,7 +1072,7 @@ unsafe fn to_key_value_raw<'b>(node: NonNull<bindings::rb_node>) -> (&'b K, *mut
->       }
->   }
->   
-> -/// Direction for [`Cursor`] operations.
-> +/// Direction for [`Cursor`] and [`CursorMut`] operations.
->   enum Direction {
->       /// the node immediately before, in sort order
->       Prev,
+>  - Update DMA mask to correct value for Ampere/Turing (47 bits)
+> ---
+>  drivers/gpu/nova-core/driver.rs | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+> index 1380b47617f7..ccc97340206e 100644
+> --- a/drivers/gpu/nova-core/driver.rs
+> +++ b/drivers/gpu/nova-core/driver.rs
+> @@ -1,6 +1,9 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+> -use kernel::{auxiliary, bindings, c_str, device::Core, pci, prelude::*, sizes::SZ_16M, sync::Arc};
+> +use kernel::{
+> +    auxiliary, bindings, c_str, device::Core, dma::Device, dma::DmaMask, pci, prelude::*,
+> +    sizes::SZ_16M, sync::Arc,
+> +};
+>  
+>  use crate::gpu::Gpu;
+>  
+> @@ -34,6 +37,9 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self
+>          pdev.enable_device_mem()?;
+>          pdev.set_master();
+>  
+> +        // SAFETY: No DMA allocations have been made yet
+> +        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<47>())? };
 
+Any chance you give it this a const name? Otherwise 6 months later it
+becomes a magic number ;-)
+
+Otherwise than this,
+
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
+
+> +
+>          let devres_bar = Arc::pin_init(
+>              pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova-core/bar0")),
+>              GFP_KERNEL,
+> -- 
+> 2.50.1
+> 
