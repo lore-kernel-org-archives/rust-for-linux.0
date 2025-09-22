@@ -1,103 +1,107 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1102B12FF69
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 21:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3168C30DEB0
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 21:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758575851; cv=none; b=IjbEm00xKfBtk23dPn/nZH7q9EuNyXoDZgGUav+OilPJcETgPMDsvSs6GYhD1gnyKr2tEeK6qDcpIThGoinI7bATZKk8ItMQmywqvydn5MouYOwnlY1UFM+N57C4AeeSWuSkWE30TfF7UAcpzhRksZaXcIsQNhD+w7CG28PvTjg=
+	t=1758578390; cv=none; b=LdWAP1wJIioPFDSvl6y9/bT2P1vOCqODZZE7rwVUjJRULEjs5XQYeeS7ZnQ+rOMcJPAWfPs0TxLrinB6ZQGBIHadXFQACpwEXe7bumW6TszxkM9u/CHHkOvm4o9ZSG2vxD6MNGrpVrB+9IGBM2yK7CZ4MBn6cwW0LvDLySfXcfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758575851; c=relaxed/simple;
-	bh=YE/XuXjyf9kdCciU/Gc9Y0YeKwBw/w4DEAQJaIFnGA4=;
+	s=arc-20240116; t=1758578390; c=relaxed/simple;
+	bh=jKUVSnXmSn4FKANXfjyYLOIiAg89nB994b8rJKbFokM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i9ov1JYroQeaT2yQe49WUbWvxSngBURUTmiemQgVhjTazaa+czZTiVYJ4FHsaQFXyFDnFbi12vx2nVeULnvGAWEUsJT350SvNc90dk164osIYVhLBYZR6tWZCiH4IzEyPBGHXNENw6uEhxvQwiCKJ+QAXTRhZziZH31NsCve2vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xBKF3G3r; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=RKFPmzHC/J2uIlu0N88AjiYH+qPN6HDMUdaaucvB9lPxs7QdIoRpi5L+nNqspE5Y8yRV4XRbMKKYXQAGKqndBqtLjq394W644pJjTO3tD8rZUszydkP72KVZtFeS/lP1COjGK70qEgcDTUQ2ty9xps3FDoE50a6CDaaZWNiZF+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h32Lu0BG; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xBKF3G3r"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3ee13baf2e1so3419176f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 14:17:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h32Lu0BG"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-269ba651d06so8651885ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Sep 2025 14:59:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758575848; x=1759180648; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1758578388; x=1759183188; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YE/XuXjyf9kdCciU/Gc9Y0YeKwBw/w4DEAQJaIFnGA4=;
-        b=xBKF3G3r7C37nIw7ZfPZO8i3Zk2pO3WXkg0dzxoTy5A5UVCWy/OwhaZ0VlECsHib7k
-         CaSMpG4MDsIEajwVgIquSsFcuqU0VyCAB9fP3yWqSdI9GYyBuCDasO0bvBydaulsOnYn
-         GSABfQ3mRVCGuFWLIANbt6mUQlPVaxncCyC5RN0pN/XyNhlQhhXbXPtQjHg7Tz6s0lwJ
-         GF2CyaSQ68h6pFZ4ZQsT0blom9o1MmhSSnmRHV+Q9iwgbUPOMJrtHNloP7Q9vX3JS2Rz
-         +kw99eue7/NfGbwbzVzPjeXRCREHLdU0iQrlm9CKlHxyaXr61iBTLMUs4gUPTZrmxzzT
-         RvRA==
+        bh=kTVCircg+kesKPnjuiU2zmcPm3Wk8hx0LgVUotPUxPg=;
+        b=h32Lu0BGY2SAoAMqZEnKFslOWEhtH+8OrSJx2Lkvuzk+ZQ3K6BqOQxq/uJYzfk2CjD
+         NVxNIJ0hjjUsBZmsr6XQP2r0m5/RK+VSt4GaRc4CWSBnCBP5L4BuuKq9o9ub1WOQ/fty
+         TyP1+OsLaLOfoKIS/6IRcRXZaRW6saWZL/ZnLDf4Jk2Pp9TWv1WF66Hi95F+hCdjQ1QO
+         0Udp+ZWgzdxHMAfAJ1X+Bmcw+Zp9lVJWsWX9dqBZ0GxLERIWFaEGJEu0lG5hR2vkd409
+         DN+ocLfyZKKreyR0ziuRKoxg/kl8acEWhr8qpjVYslAMGhYs1vWVszkCYOQTCUiILyNN
+         UtXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758575848; x=1759180648;
+        d=1e100.net; s=20230601; t=1758578388; x=1759183188;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YE/XuXjyf9kdCciU/Gc9Y0YeKwBw/w4DEAQJaIFnGA4=;
-        b=dllzQi78hbHZ3hHun3z7/HneHrGAnQkuSTuI1r2kiwyfxCWzCA15SOMFQyDxlc620D
-         iDp+MzXXnvaIaNmh2eTkujvzfYbKgJOBfZXeXdqJOC18HawW8QEKtQA9pPG9pO12BwwM
-         wFOiq6Xa9XihSzuwXSEPOPgWHCndzMygqsX/ufOkKfXylWqbC57bUepzWkaIN01z5aeH
-         rBf9NujbP2kPCmizDkEsK+kSgwoKpc46zGCNkgyGs8nzg4DJmgCbcZxyceH/mSFrNn1p
-         aYiLp85q4tiUnUzM3L6cXHbsoiGEQTlA14bm0dQJLvdaoLzhtnRRDC3hyx+/py2QE9UT
-         juFg==
-X-Gm-Message-State: AOJu0YzEjSi3syjuCRRHwCy5pS9q3i0LZMI5Ae2/m0jH/4jlGRW8rdlt
-	dShhRW5ZNBnF5XjTBIi5xarKj1LK6RS7fyX0+kmXgU7NFHZkX9qTu8AYaYwMpW91wP8+erjtTV7
-	/PKycku8KZJhpaApFYqvrkw8dkrtV0zTlSarF7XlM
-X-Gm-Gg: ASbGnctUGaEBuNg0AKdn+1+RLqGhy2wKG4GdcC8brW6VLVvcyOv4aLKZQM0ez0unj7X
-	22sKN0QtLMKLmxcXWPrxkzX9YJQU9mrR9tLKe3G4eO9YNUTumj9rHv17FYgLPg+u1wD4zAt1Sqo
-	skkuhHIhUe10M+ZoH55Vgp8kN0GTctKcuVsOLXPyUpViVXCWhfEeps56yE5rD6Yqs5y1hUZM8/5
-	CCAp+w=
-X-Google-Smtp-Source: AGHT+IGFfQDiOiOTcseY76dFEJwdeLwzzEeu9kFerU+3PuuH69Q0zrP1RtnqvJHFmMg62gFwa5AM12ocDwpkjSDDnfs=
-X-Received: by 2002:a05:600c:1d0d:b0:45b:8b3e:9f66 with SMTP id
- 5b1f17b1804b1-46e1d98bfb7mr2416355e9.13.1758575848204; Mon, 22 Sep 2025
- 14:17:28 -0700 (PDT)
+        bh=kTVCircg+kesKPnjuiU2zmcPm3Wk8hx0LgVUotPUxPg=;
+        b=AdfdwplzCzI8VEUqqPR/bdVDAKEQ4JE/bQx8g9WZYAPxSrLWrHCikc4k/I62bxsF2J
+         gzLJ4AmIVJj8aCU8H3454Tvuev6JJp6rl7g6WNQ/nbN+VeELg0aE76UReKglut+xsFOM
+         spABh8gSMHHoqm0EazML0vl17assYdVUpsoh3hXizKNr25JxuhMeu7kDUgnUxh7IStrb
+         tMyeiiQDhaPe2W+Fm8Ld3QZV+GA1FT21VhEv05CX72Q4KmBrZWzekXbLBOg/ILaVn5c+
+         peJV5YOJ52U9lHX0xjdhINh0RVD8Bqvl+G9SCSvd4zsc7Nl61OCAPQDKMsRk1c1L2RhD
+         v1JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqKqm/mL7NXBXo69H1/rcoh+kcPPa4Wvse109DHaIw6wBsdRZrnk5bPY71IRVlSzjzZ3XxNwjnkIH9S8Iw9w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNJe2XA0LJIOobcRhLzgQOfYyAAOCUNE92BMKlDwmTJsJ73qX1
+	hfxq2ztOq4dr4MSAvPI/w1ne7208j+L+Qs1zqQjR/ngQwAYeXj7/UsBLRcuuxJVG3n/2Rz8LKoo
+	PjW4djm5aVZbhbrvIEcD/+CyUQ6CwB4U=
+X-Gm-Gg: ASbGncsUDEff7OzbqP0J2SYdxXeN1rOz/FiuP+dYqj8D2jkc6bmbhEiK957ptW0M2EP
+	kKtLz13Tau2GBHogDqAO8/bDfsfYj6wu6ljeaTo0DjksXTyEKSgWhZI7USUI6VMxDRAKXvyUiRN
+	z8EnE4bKtrd7gEiRc7359lJrof5SIMzLH65wli62UJf5Er46ovNPPtW4Qu49HH/QYu6h4YQKMJQ
+	2BL1wGTDPqmErOjjNCi1CncoofXfK8yDXiBq4nFSyIJxWALCAhMQWAbIvDiKjvDj7zzNSLuSjBp
+	iS1G37+8vDfHgWekkl3dJVoVCA==
+X-Google-Smtp-Source: AGHT+IHO8cJKGFmF6HkfxzDA37dCzzF2eb1sWGALw/BM92tVXUO+gzQ5qLlWsYCyw1t7RNfA8rfVA2phVEot6qjLLv8=
+X-Received: by 2002:a17:902:ec8d:b0:269:67e9:4c20 with SMTP id
+ d9443c01a7336-27cc41d582fmr2476225ad.5.1758578388477; Mon, 22 Sep 2025
+ 14:59:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250909065937.3433134-1-vitaly.wool@konsulko.se> <9b287ca0-fe1a-46c1-9510-03871326aecb@konsulko.se>
-In-Reply-To: <9b287ca0-fe1a-46c1-9510-03871326aecb@konsulko.se>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 22 Sep 2025 23:17:14 +0200
-X-Gm-Features: AS18NWAGBsnmu6IQaC1BSV9I2a1X8mM7h6QAPAtyHzicwwtixR6PIYOvITz2G04
-Message-ID: <CAH5fLgitaTFEhSMm3mZrinsjTktvqLFg6m_JyMxMAd0JzsLtHA@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: rbtree: add immutable cursor
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, linux-kernel@vger.kernel.org, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, 
+References: <20250908-num-v5-0-c0f2f681ea96@nvidia.com>
+In-Reply-To: <20250908-num-v5-0-c0f2f681ea96@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 22 Sep 2025 23:59:36 +0200
+X-Gm-Features: AS18NWD8TsrWVNTwE-9v0GFvv0Ifjza16a049-IVfVsrSbDAQ6mxb5XW5HdMIaY
+Message-ID: <CANiq72nP_VwSnFzyM4HKk5GTAwJw+MeX5JXqA-yLBa9JLe9YOQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/2] rust: add `Alignment` type
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 22, 2025 at 2:13=E2=80=AFPM Vitaly Wool <vitaly.wool@konsulko.s=
-e> wrote:
+On Mon, Sep 8, 2025 at 3:26=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
 >
+> The first patch makes two additions:
 >
+> - Bring an equivalent of the nightly upstream `Alignment` type [1] with
+>   an near-identical public interface,
+> - Add a new `Alignable` extension trait that provides a way to align
+>   values up or down according to an `Alignment`, and implement it on
+>   unsigned integer types.
 >
-> On 9/9/25 08:59, Vitaly Wool wrote:
-> > Sometimes we may need to iterate over, or find an element in a read
-> > only (or read mostly) red-black tree, and in that case we don't need a
-> > mutable reference to the tree, which we'll however have to take to be
-> > able to use the current (mutable) cursor implementation.
-> >
-> > This patch adds a simple immutable cursor implementation to RBTree,
-> > which enables us to use an immutable tree reference. The existing
-> > (fully featured) cursor implementation is renamed to CursorMut,
-> > while retaining its functionality.
-> >
-> > Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> The second patch makes use of these in the Nova driver.
 >
-> I don't think I've got any feedback on this one, is there anything else
-> that needs to be addressed or is this one good to go?
+> [1] https://doc.rust-lang.org/std/ptr/struct.Alignment.html
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-I would like to look, but I'm still tied up in my second consecutive confer=
-ence.
+Applied to `rust-next` -- thanks everyone!
 
-Alice
+    [ Used `build_assert!`, added intra-doc link, `allow`ed
+      `clippy::incompatible_msrv`, added `feature(const_option)`, capitaliz=
+ed
+      safety comment. - Miguel ]
+
+Cheers,
+Miguel
