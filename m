@@ -1,32 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2275C1DF994;
-	Tue, 23 Sep 2025 14:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B36255F31
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Sep 2025 14:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758639153; cv=none; b=bxF0z+JZlHX1Tdf/ohNIXUfNhztcXkHDAOsURXYIcTchsWMD1pKyCEVT1lS+MrrvBJtxV3lF27n5ZzYnmkhKYanesJcR//488gEa1TgaB+mQSLlL6OrPFNIZ5qerDpZ9CrkGqiPAuia3huLmIu1BAY7vO2aB11aU/V/CEbfBACw=
+	t=1758639507; cv=none; b=LTcH4rjf/i7PcZsNc2Ek3wMxoeE6/FQGPEcAMwl5CNeLKU0WKvENXnoEVirJbEUGPo7CJlb6vHcTfe+bK9XAwX4jxcb53P1usdtc6wr25X6QicBajopAAUk5kBCxNG/7iAaI4KSTOwfkJ+gvGQtKMPemQ40F4eeOujFK9YIgcmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758639153; c=relaxed/simple;
-	bh=7Sr1QUFjAXDolunLFBAgtMCy+x6gGsWKJImv0MKmYNY=;
+	s=arc-20240116; t=1758639507; c=relaxed/simple;
+	bh=2JkaldusHnBs9nmgBDsrH+Q4WyDqb15X4kwjmxawQQU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rwp8MqUv2PQpQFlxb/gBxhWn/FekALF6zZSf58AgjESAiO/DVzA/5mnrl0TjzfNmbOHCNxX1EciF928SUjkK2a5MrsqqkYAQk3cY0sNVdtpKXfN0TgQsAiFN4t/JwoS1CQUYHuiaJJAAV91DyS2vnMiFekxweStC6t+mfK1Goy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+iAMB4u; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ICcctgYyvpfUEHXHXZpz5kBrBaGTsGuh4Ya+XzV0wEoGugH8vd4AiAZw+47Cz25Pf4iSNwD+Wir4I8RZb1nat5pWLBiaw5jUe5RpCnmJFgm/H702rDs4MC1OmBbyMVeYhDmehjYhArtsxf/ot+xgqb4utj3hXAKpiRdM9Qc0Bf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=sP2q4quO; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+iAMB4u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CE8C4CEF5;
-	Tue, 23 Sep 2025 14:52:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758639152;
-	bh=7Sr1QUFjAXDolunLFBAgtMCy+x6gGsWKJImv0MKmYNY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X+iAMB4uFnRvPveR+2bs25ALrMggqWde9Rb7uRmZiIJffxEIReL7Zwq1caToLOuHc
-	 CpjBlYByl1/K6eC+TA09r/C4PJR2nU61sCZrwgs6+s4hYJzOsd9mMAwq31YPs5i3n7
-	 aV5tHNCZJQgQprlQjRxX4DkAzkj06TXMDfguZloc=
-Date: Tue, 23 Sep 2025 16:52:29 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="sP2q4quO"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-826311c1774so603928485a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Sep 2025 07:58:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1758639504; x=1759244304; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ri9p27Eq4rFSbThj+QyWFkt8KhHdU/v11ZSJ66tpy+4=;
+        b=sP2q4quOghk4AmdeQfkzmAp6v38+MLilc6cbq47H3cKnN/wlNnmOcFekTKtif/TOqQ
+         q9BqQAwrQUVrln9qvB3EOtOaEqEsvwGLvSpIDYA/kd5jJU/O68cU5TsM+AfY1x0eZdkK
+         92OYqB4u0OM57ZHV3w1cThWDLHlNqbsznZrF6NVR1FEisEZsfTrDTH70J0fUN1JhoQor
+         WHj//WVSAHYVBuaweV8gGWQEhUklAAj6kTk3uyjGk6P9U9UZv6Frbqc+5sz2QJ/dMfMr
+         al3sGbD18AfP9NVnOEuQj/f9ONO7uYhc1paHQFB9j6YezGYUHG1gqVJSKB3Rnjt2p6jc
+         RFwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758639504; x=1759244304;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ri9p27Eq4rFSbThj+QyWFkt8KhHdU/v11ZSJ66tpy+4=;
+        b=xGjUl+Ju7KOm5x4sQb197t0z16pI6TkSCCLKlNYQK8xUX0FZPVIbpmjPBE/WR1UUmZ
+         uR1TvSrxgdTSlUqabxIZLnp2QHQv4U+U8lYZDMDOnPpQ1qVTOnYrn85UegstIf8k5GjU
+         q0IjYBTcAS8QAWriSMNejX+f2z3s+mxUePHGyiipsrhWjps0/NOdWJhCohRjS/RUofQ5
+         znSne0POcO71u0kkElDcwtnLLRKUZfqVYyR9ptVZX/hQp4lgCaukQ4TTBh61HzHWlLcM
+         mKvgKu/ytNCtXf1UcE3X399fpYFak5d2vcnjZkmaXk84+5/oKrLb9jm5bQCbDajqDbW6
+         ALew==
+X-Forwarded-Encrypted: i=1; AJvYcCVkbJwHYB+ipw8ByziPgtL7PM0wU0Q/krxuDaeE0jX9zQXjx+N30l0OS1/NLD+LmVGkaE/3SoRVGFQRhEqAwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylBMeIjHCmrv4Yk+vZ0KlZDLr964EcuAXjEOrqA96xA9PS4jP4
+	FRvgwcYHlPy4N34JWU/SZHWOxO9Q28dkzt5feafcwdhcf6hIUxeLC2bnkr1CyUGElw==
+X-Gm-Gg: ASbGnct5MdriikfTLe4wOe3GKg2qAc16en3BsuYrgF26/Bvd5G4Bnk4pTwWHQjzuXk5
+	ldIYusg4e64hNc2sTGX61dpA9zRl+WcGrnDllIua8T6vyXk1UjEV+SUI5Ro5f70k//aIY9I3JPj
+	mMpnGQ5ftUlPF8Lh4PPYKfcrqpKJxlecE0PCNbqPjel509In+DwOQToZp6/95PjWClLx+smsn9y
+	VMUyUKAsRJJg+1TvbWJmMSnLM3I+4tzyXqiamRDjNgZmR2zweUJSjn/fPtoSJLd4RdIRQpODwnN
+	VFPQbT44KveRV+sKaluyoQjUX7BMEWD61e/ouGPCBTIrT5sgkbPAbko/YES3eFEvsGiwlKCHlVu
+	Kk9lNxfSrwcDZQSCtymlCSjyJQ4lm
+X-Google-Smtp-Source: AGHT+IEgq8/SYBm2nZcy+yIjnlm8ABqUN8h1aeiVdFzWtXPHXTllLJNSOfYjpkG/XFj9RGAIuprC/w==
+X-Received: by 2002:a05:620a:2588:b0:84b:871a:1651 with SMTP id af79cd13be357-8516eb46222mr283379585a.18.1758639504418;
+        Tue, 23 Sep 2025 07:58:24 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:d03:1700::5082])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-85411d12270sm55868085a.26.2025.09.23.07.58.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 07:58:24 -0700 (PDT)
+Date: Tue, 23 Sep 2025 10:58:20 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
@@ -37,7 +72,7 @@ Cc: Daniel Almeida <daniel.almeida@collabora.com>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-usb@vger.kernel.org
 Subject: Re: [PATCH 1/2] rust: usb: add basic USB abstractions
-Message-ID: <2025092344-vacation-envelope-f0cf@gregkh>
+Message-ID: <0ff2a825-1115-426a-a6f9-df544cd0c5fc@rowland.harvard.edu>
 References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
  <20250825-b4-usb-v1-1-7aa024de7ae8@collabora.com>
  <DD07LUJXNZN9.3RHH9NJNRFVNN@kernel.org>
@@ -56,78 +91,6 @@ Content-Disposition: inline
 In-Reply-To: <DD0994IZMBVQ.2HZOA2ZMWT2I@kernel.org>
 
 On Tue, Sep 23, 2025 at 04:38:34PM +0200, Danilo Krummrich wrote:
-> On Tue Sep 23, 2025 at 4:30 PM CEST, Greg Kroah-Hartman wrote:
-> > On Tue, Sep 23, 2025 at 04:03:01PM +0200, Danilo Krummrich wrote:
-> >> On Tue Sep 23, 2025 at 3:31 PM CEST, Daniel Almeida wrote:
-> >> >>> +/// A USB device.
-> >> >>> +///
-> >> >>> +/// This structure represents the Rust abstraction for a C [`struct usb_device`].
-> >> >>> +/// The implementation abstracts the usage of a C [`struct usb_device`] passed in
-> >> >>> +/// from the C side.
-> >> >>> +///
-> >> >>> +/// # Invariants
-> >> >>> +///
-> >> >>> +/// A [`Device`] instance represents a valid [`struct usb_device`] created by the C portion of the
-> >> >>> +/// kernel.
-> >> >>> +///
-> >> >>> +/// [`struct usb_device`]: https://www.kernel.org/doc/html/latest/driver-api/usb/usb.html#c.usb_device
-> >> >>> +#[repr(transparent)]
-> >> >>> +pub struct Device<Ctx: device::DeviceContext = device::Normal>(
-> >> >>> +    Opaque<bindings::usb_device>,
-> >> >>> +    PhantomData<Ctx>,
-> >> >>> +);
-> >> >> 
-> >> >> What do you use the struct usb_device abstraction for? I only see the sample
-> >> >> driver probing a USB interface instead.
-> >> >
-> >> > What I was brainstorming with Greg is to submit this initial support, and then
-> >> > follow up with all the other abstractions needed to implement a Rust version of
-> >> > usb-skeleton.c. IIUC, the plan is to submit any fixes as follow-ups, as we're
-> >> > close to the merge window.
-> >> >
-> >> > struct usb_device would be used for the skeleton driver, so we should keep it if
-> >> > we're following the plan above, IMHO.
-> >> 
-> >> Yes, it's clearly required for the raw accessors for submitting URBs, e.g.
-> >> usb_fill_bulk_urb(), usb_submit_urb(), etc.
-> >> 
-> >> But I'm not sure you actually have to expose a representation of a struct
-> >> usb_device (with device context information) publically for that. It seems to me
-> >> that this can all be contained within the abstraction.
-> >> 
-> >> For instance, the public API could look like this:
-> >> 
-> >> 	let urb = intf.urb_create()?;
-> >> 	urb.fill_bulk(buffer, callback_fn, ...)?;
-> >> 	urb.submit();
-> >> 
-> >> The urb_create() method of a usb::Interface can derive the struct usb_device
-> >> from the struct usb_interface internally and store it in the Urb structure, i.e.
-> >> no need to let drivers mess with this.
-> >> 
-> >> So, I think for this part it makes more sense to first work out the other
-> >> APIs before exposing things speculatively.
-> >> 
-> >> I also just spotted this:
-> >> 
-> >> 	impl<Ctx: device::DeviceContext> AsRef<Device<Ctx>> for Interface<Ctx> {
-> >> 	    fn as_ref(&self) -> &Device<Ctx> {
-> >> 	        // SAFETY: `self.as_raw()` is valid by the type invariants. For a valid interface,
-> >> 	        // the helper should always return a valid USB device pointer.
-> >> 	        let usb_dev = unsafe { bindings::interface_to_usbdev(self.as_raw()) };
-> >> 	
-> >> 	        // SAFETY: The helper returns a valid interface pointer that shares the
-> >> 	        // same `DeviceContext`.
-> >> 	        unsafe { &*(usb_dev.cast()) }
-> >> 	    }
-> >> 	}
-> >> 
-> >> which I think is wrong. You can't derive the device context of a usb::Interface
-> >> for a usb::Device generically. You probably can for the Bound context, but not
-> >> for the Core context.
-> >> 
-> >> But honestly, I'm even unsure for the Bound context.
-> >> 
 > >> @Greg: Can we guarantee that a struct usb_device is always bound as long as one
 > >> of its interfaces is still bound?
 > >
@@ -138,23 +101,25 @@ On Tue, Sep 23, 2025 at 04:38:34PM +0200, Danilo Krummrich wrote:
 > Having a &usb::Device<Bound> would mean that for the lifetime of the reference
 > it is guaranteed that the usb::Device is bound to its USB device driver
 > (struct usb_device_driver).
-
-Wait, usb_device_driver shouldn't be used here, that's only for
-"special" things like hubs and an odd Apple device.
-
+> 
 > The code above establishes that you can get a &usb::Device<Bound> from a
 > &usb::Interface<Bound>, i.e. an interface that is bound to a USB driver
 > (struct usb_driver).
+> 
+> It also does establish the same with other device contexts, such as the Core
+> context.
+> 
+> Despite the question whether this is sematically useful, I doubt that this is
+> a correct assumption to take.
 
-Interfaces are bound to usb_driver, and are a child device of a struct
-usb_device.  There is no need to worry if a driver is bound to a struct
-usb_device at any time, it should be independent if a driver is bound to
-a struct interface.  All that we should care about is the driver that is
-bound to a usb_interface as that is what the rust binding should be for
-here.
+The intention of the USB stack is that yes, a usb_device cannot have 
+children if it isn't bound to a usb_device_driver.  However, we don't 
+try to guarantee that this is true; a particular driver might not 
+enforce this restriction.
 
-Sorry for the naming confusion, usb is messy in places.
+There is a surprisingly large number of calls to 
+usb_register_device_driver() in the kernel (four in addition to the 
+standard one).  I suppose a little auditing could ensure that these 
+drivers do deconfigure their devices when they unbind.
 
-thanks,
-
-greg k-h
+Alan Stern
