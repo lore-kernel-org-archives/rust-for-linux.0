@@ -1,148 +1,190 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012061.outbound.protection.outlook.com [40.93.195.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1308220C47C;
-	Tue, 23 Sep 2025 03:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758599589; cv=none; b=Wl/GkMuTvlGjxzEYrIET7PzyIsyNAdJ4Z/6h5iMnJYnlVIK4hS7vQTHUgPIG53vRIlLAoa+IApgVpcLuQOSL1itIZqnPwc6+/+Vaak2WH1hYWRIkFRaWdrFX0XD9U4oCxfjx2n81JdQH64aJwjfFLayVJk0mK1eZZIJNDZA5sCg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758599589; c=relaxed/simple;
-	bh=1+TJfdADz+eyWxjucM1gnctJYZETTekOsnS1O0xVTmM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U1aka4fBC1x6msa9eAbRsR9VFo5CcZGptzq60UUePUDLOdzYD2/zBgtVffEEJIlw8Vur2ZnAevLTNSznrh4y02ni9INVXiw71sHn54qWOp4oj4S1s0/4qQDZJ6Mzpjeu1TuUQdwwi98g15p4oTntOzk70b4GuPudr6BqHs8J0mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=pAvVdaGa; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF8E2701CE;
+	Tue, 23 Sep 2025 04:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758601390; cv=fail; b=UZ3ouSthv2fAc9DK8gJ7WMa5MX92Nfxx4Zdi7JpkKwGEDcoH/UMfkQNiT0FP1XaK0Qq068yPCegPbRpn6XrX6ZJIKVE1rD8AB89HAp94gwsFTMgr/82SmKEASAeqD9+27fEtAo2gzWW/mLg/8dG6ux7DvsCMRPJVCC578xUzmCU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758601390; c=relaxed/simple;
+	bh=IcAnmdrpr3ednq9qdMgRuQ7I+/3j8yVHBKXf0Qf9nNg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Bv3hAjDt53LW/TgZR5WyIh3hQxMMsrwIMayKvU83LqfY1/bNjhxQG6BuS/c5c0ujbI90kAsUcavgGbCtUdJO+NncmcePbaKp2ezdaJwy300E2iaDXf6ayfKFczBjCjH6AR1eFmiawpyifMlPtg6Jzkn0Gz9yHVijaSMpqcqdL2I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QLmXGGk9; arc=fail smtp.client-ip=40.93.195.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="pAvVdaGa"
-Received: from mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:a982:0:640:e49f:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 5487880784;
-	Tue, 23 Sep 2025 06:47:34 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id OlN5kY2MoGk0-2FrcghgG;
-	Tue, 23 Sep 2025 06:47:33 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1758599253;
-	bh=J9wh+/3satZdgSBE2bEzXkS8hEmnC4EYriUYMbJYZJE=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=pAvVdaGae1ycGPMu7vAsAsEfAPBPuj3sKQAyaWPxyul1/YXNRA44FAER+GHD640W0
-	 g+8+dmXbB1D9cezZ2Nc8Or3GJ7qID+MAkt+TKEXugTT4O8WA49u7IPH7+uiPmeKMx0
-	 WlhAMfu3VeLQhkayyYOPOsmyKHf/i6IzElKLQFxc=
-Authentication-Results: mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 23 Sep 2025 06:47:20 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Nicolas Schier <nicolas.schier@linux.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
- masahiroy@kernel.org, aliceryhl@google.com,
- thomas.weissschuh@linutronix.de, tamird@gmail.com,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- tmgross@umich.edu, dakr@kernel.org
-Subject: Re: [PATCH v2 1/1] rust: add `rustcheck` make target for check-only
- builds
-Message-ID: <20250923064720.0b2ea467@nimda>
-In-Reply-To: <20250922-demonic-raccoon-of-will-1adb52@bergen>
-References: <20250915115311.3025-1-work@onurozkan.dev>
-	<20250915115311.3025-2-work@onurozkan.dev>
-	<20250922-demonic-raccoon-of-will-1adb52@bergen>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QLmXGGk9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gyffy6rl63ithef7PkBX7Nrjf2aRyd0rjvVbHNWXlzTdxodGlabZfSRy67WPsqebRSONUtjNv1DVUKCduyxXrOyOXUFTEnHslzEnu2aIQgyqdT5pGOeczaL0UpCq5HwZBTvRM34GJjLVeuDOZYNnv9BxvLz4l61bmoaTd0R/kJU3s6KCbq3uPLAtTByiJY1z45kN4pawbKTAGuqmkN8/PDvX725t+hEt0Izz9g6LmSV7EVwCHAxyCDITXgMmOT4Awt5/Kr54skvcV+3T+FjrGhpfegndvlVfmo+xESNu4VluZQafLWmHzt3n6oP/pCjqZMpHpiPmUBfb0m09e5+bug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IcAnmdrpr3ednq9qdMgRuQ7I+/3j8yVHBKXf0Qf9nNg=;
+ b=bdomanw5QSCLa/HqgbAS38NwBh8I9Ge2kIbexq6JhBBw4OLcpg8frN+wP9x3NFVkVhHJhmy8SPdEGv5IJ/NdAmFIKg4mt54m2sN/FxQEFZP7o2GcdYJNKTh2vQpfbSjGzXzCr7uXpFBJ9VEsV0E5//iYOMMSEsE35sLW4nn4sd7rEWJYOocbtBy/c8/ZBvHExHHpj3hxcSUBZETqtmXv0lW8BG4Tqb1uBFghEEuvU+NjuE7mLbx3ECnlhtooH0HDzk4JHcdwHwFm39S56Rj9s/jtZSl/REzbn6qnzhqQoFm+x4w3vAV2mmQBmuU8yESJfUR8nWGwcpzUPCn/j4NjcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IcAnmdrpr3ednq9qdMgRuQ7I+/3j8yVHBKXf0Qf9nNg=;
+ b=QLmXGGk9nzfRFu+kBOkIHeQJSa6e0pFJee7DaxUr0CTaPov+MIlkpguc9htVn07FdYN0ziaW2sED/V2sdeIp6l4y/iZtlsEnVN4pRWDQqPYmA+7FH59s05WByR7qdPmnaiTw9Z9fzH75WscTBVxS9pnvFgMya357Cy5pmoinOqIWhGq5f2VZQusgxvlbXyujEspaHER+SFT60UK1B18FadIuS+NMHWrVZv3YqIqN6eiQH4mZiagfKHLpQ6E1jzJYBjm/8p5Fdc9hbMD6qMk+sqNmID4dU2LBr1dNAuZerooqmUiN5iYub20GnXYoSq4G3k9R1I7HjC2dEpyi44CKRQ==
+Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
+ by DS0PR12MB8785.namprd12.prod.outlook.com (2603:10b6:8:14c::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Tue, 23 Sep
+ 2025 04:23:05 +0000
+Received: from CY5PR12MB6526.namprd12.prod.outlook.com
+ ([fe80::d620:1806:4b87:6056]) by CY5PR12MB6526.namprd12.prod.outlook.com
+ ([fe80::d620:1806:4b87:6056%3]) with mapi id 15.20.9137.018; Tue, 23 Sep 2025
+ 04:23:05 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	Alistair Popple <apopple@nvidia.com>, Alexandre Courbot
+	<acourbot@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>, John Hubbard
+	<jhubbard@nvidia.com>, "rust-for-linux@vger.kernel.org"
+	<rust-for-linux@vger.kernel.org>
+CC: "lossin@kernel.org" <lossin@kernel.org>, "ojeda@kernel.org"
+	<ojeda@kernel.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, "tzimmermann@suse.de"
+	<tzimmermann@suse.de>, "tmgross@umich.edu" <tmgross@umich.edu>,
+	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "simona@ffwll.ch"
+	<simona@ffwll.ch>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "maarten.lankhorst@linux.intel.com"
+	<maarten.lankhorst@linux.intel.com>, "nouveau@lists.freedesktop.org"
+	<nouveau@lists.freedesktop.org>, "mripard@kernel.org" <mripard@kernel.org>,
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "airlied@gmail.com"
+	<airlied@gmail.com>, "aliceryhl@google.com" <aliceryhl@google.com>, Joel
+ Fernandes <joelagnelf@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>
+Subject: Re: [PATCH v2 08/10] nova-core: falcon: Add support to check if
+ RISC-V is active
+Thread-Topic: [PATCH v2 08/10] nova-core: falcon: Add support to check if
+ RISC-V is active
+Thread-Index: AQHcK7RuFuxZ8CZ67ESqg+gi8zK57bSfkmOAgABjBACAADazgA==
+Date: Tue, 23 Sep 2025 04:23:05 +0000
+Message-ID: <80d69f5f58431f82f806599c620d31bd704b5b5d.camel@nvidia.com>
+References: <20250922113026.3083103-1-apopple@nvidia.com>
+	 <20250922113026.3083103-9-apopple@nvidia.com>
+	 <38bbcbbb7bdf88f3a06ed9925d4fa058d6352d51.camel@nvidia.com>
+	 <be96c39c-4ac5-4a4c-b5fc-6b1c1026db30@nvidia.com>
+In-Reply-To: <be96c39c-4ac5-4a4c-b5fc-6b1c1026db30@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.0-1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|DS0PR12MB8785:EE_
+x-ms-office365-filtering-correlation-id: c43c858a-5f62-4a66-c886-08ddfa58e4b1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?M3hlQzVNM0ZhVEFqb3JCOUw2ZklhanVVeWZINEp1aG5DY3psNDhwNCtlVnoy?=
+ =?utf-8?B?eU51UEdOQWtwMHBWT2JJaUR6VlVmSXViek8wNEl5VFZQSFQ4YXJSRXNQaXBQ?=
+ =?utf-8?B?V1ErRTZ4TWVxbndkc2Flek9IdjQzUkYxdHdLWlg1SDRBUHVBeUN6U1loVUhH?=
+ =?utf-8?B?aE1TV3hJQUdSUllYZXNHMS9TdnpSYjNPTGgyWTdPUGh4MFNvY3hxVU9ick1W?=
+ =?utf-8?B?enNhNVFQY3VEeWU2YWVlV0dvTDVIaEh2RlFuU0U4SUFvUFo1SFVLTG9KaWNI?=
+ =?utf-8?B?TzJuNng4SkdzS0t1d3VTaGV5OWVDQm5ZYkVDWWd1R1lYd3psUTNuUzdhcFEw?=
+ =?utf-8?B?OHBSekFHOE1PZ1lVcmRtZ21rSDUyaTVXWFVHdldDd0lPRERSSGRHVUNzelo2?=
+ =?utf-8?B?bWdhVm1UdG5rMC93Q1dmUWE5YkVwQk1RZ2pYeUw0ZEN1bHBRT1Z4cVhNUDEz?=
+ =?utf-8?B?ck5McFowZmJMSC9mYkM4bHZyMEdjUGUxYVVOVmpEL01oQS9tOGs2cE1BOEFF?=
+ =?utf-8?B?bmZzc3NqOWFOa2pKTFNPeDYxQ09VclJQUFFMTi92dUN5MlBWQWdIK3h6VExs?=
+ =?utf-8?B?S1dZb0lGWDE2ZHovc2lzZk1VZDlCL0NOSW82SlBISTJoN0NGa2RxTnB6d1BN?=
+ =?utf-8?B?a0tkRitvS3ZwV0RvdFpYNFBpbEhXWlU1QnNQN1drOFEyT1pITURkR0dYdm1O?=
+ =?utf-8?B?M1YyL3lzNTFKNFo2UGtWN0ZWdktEL0taWTFNcWFBa1dYSFRXMTIzMVo4Z2dr?=
+ =?utf-8?B?RHIwdHFwZ3NmZm5yOXRWN2c4a3RudVBmMlRWN0Z1TXZTbllIZURvTU5VRTQ3?=
+ =?utf-8?B?cGpib21MZXZXcEJZd1pnQjdUdWtIZHorNmdwdmJXdXc3Wi80ZzZ5SE16UUhR?=
+ =?utf-8?B?aTE5bE5BRTY1aFE3M24rMTRzUU9jVk1NK2N6NE1nQXplSnJEazRYR1hqSWJ0?=
+ =?utf-8?B?SE8xSjZSYUhrSndVZng5YVNhSXp3d3dxTlRPVGwyaUJ4Y29jVXAwWFFHS05S?=
+ =?utf-8?B?Y29nbWRtZEJudUJUdkplUU4yd1NrUjZYVmZua3dZNGZGRittOW1HSU8vQ0pK?=
+ =?utf-8?B?K1BhR25hbjQrMVNDNHR2cmw5VnJOV1o5b3dSRnN2L0kyUmNRQkFmWEF0Mk5O?=
+ =?utf-8?B?T2h5TU11Nk1RcXRCY3k0VkJlMXhoTHdabGxCTjY1cDdoV0xFWFhZTzJyckpz?=
+ =?utf-8?B?cFNmZmg3bGFTWUMxbTNrak80d1l1TDV3dCttTnpDZ1pDRVBvT0ZVbUllRXpE?=
+ =?utf-8?B?Q0VnSmFLb3YyaG0xNlZlYndZOEVmaENWQVB2MEF3ZXNuM0tpYTRxek9TTkFK?=
+ =?utf-8?B?Vm96NVV0MS9ZT3owakZMQ1lkT1QxYnFobnZWWXpDU1VmeEhJUjB6aGFXbFJp?=
+ =?utf-8?B?SnYxNGxkRDBEclVmSnZrVUpRRU40NlZOcnBTNzlQQ3FWQ0pGRWd2TElRMjFN?=
+ =?utf-8?B?YmpMRXVIQ3h0RlpqaWRVUzRBM1g1aEtGUDRxclRFWGw4dzFoeW0zNXpQMzVo?=
+ =?utf-8?B?dlljdXFzYlRPa05zaGVvVmhSNFd2ZEVqanlXemJyVVd1U2lDbWxnS2VFWDNU?=
+ =?utf-8?B?ZHVvVDBFQlpoRFB6akxQaCtOK0t6L1IwWHNiVSswbEdpSWtGdTVvRWtFckNn?=
+ =?utf-8?B?WGtsR29ETU4rSkNJYkVvZGVjOU9XbWhaMXptQkg5dWIvS0lXZ2RTb1lVQ2h0?=
+ =?utf-8?B?NktXWmxaa1dDWlVZVkwzcXg4T0QvdVNGR3RRa0VtMEk2dzY3VEl6WDgvQ2NM?=
+ =?utf-8?B?MzMxY2FLVWtBTWJEMFpVUnNsSUtKL3FJdjVhb3k5UkJzcFE3eUxrRjBKWjF2?=
+ =?utf-8?B?MG5mRjd1WDluTitreEJXUDVHOUgySGtOd2dzSnphdjY4ZGlUK0NWZmZjb1k0?=
+ =?utf-8?B?enVMWlhJOXhxd1V0S0RVNkZOaDd5SHFHbEFzMms0TTcyQU95UWRBL1lDTXl4?=
+ =?utf-8?B?V09ZRUFva0tQdGlNVkNaNUxOMUFCYlZYSmVzVG5ud2VmeHRLTTdhRG94Y3lV?=
+ =?utf-8?Q?bsjMZ3I0G9plk5g7L/LHWWpSQE5LYA=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?RVhSd3I3bUhIajZxeVZISVpIaDZUd05ONlM3R3RpQ3ZRZG1GcG03QzlMSlo0?=
+ =?utf-8?B?TWx2Y2Z2cGhOUXB1QXhQTDZZcUNPU2lMOFN5QTk0SnY1T0ZVNm9mNk9oQ0JS?=
+ =?utf-8?B?VzZ5bmh6UDI1QmFnbU15SklmeEJubEhFTFNaY3hGS1NEbkh2dkZOWkpqL1dn?=
+ =?utf-8?B?SmtoT3BUeUc1Y3N6bmNFTVVINlM0TjYyNzRFOGpkNnpFcklrZVAxanJlRVUy?=
+ =?utf-8?B?WmszcTNQZVZiV3kyWEhhQ244U1ZxRGgyV3YzT2xpUFdKckFlUGtLMGVIU0gz?=
+ =?utf-8?B?WFNDLzBDQnJxb1NNMy9aMU9pL2FpYWpuQXd0UC80d3dEQ3BnNDhyMWp6cnIw?=
+ =?utf-8?B?MmZFZ0g0bWxOSC9yaHUzT1BSRktoRUdxL2dZSURjOTFJaVh6eFZ4RlZlMnFH?=
+ =?utf-8?B?ZlA2aWpHWmVWZHZCQW1XZmpMVGtJODM1Yzk3aXVGSlNrdlhWd2M4MUdNU3Ar?=
+ =?utf-8?B?RjcwYWJ6QTdrVWFZU21lSkk3OXB0cGU2UzR1eWhYWlJ2UXduNjFKbTRDOUN4?=
+ =?utf-8?B?bjFXMTlpN1lTQU04b29JS2tHUGVoK1UxMzhveExQSkZHTVRlSFI4cCtxS1JL?=
+ =?utf-8?B?Y1dmc1Q0b1JyRnc4eGxET0pya1VnUisxcFlXZGFzZkprajgyMlVuQTVEbE1W?=
+ =?utf-8?B?WXZqaklBZFlPNVR0akNqWXhOcmhqcXRiU2ltQ0ErTzBoSVpLZWpRdnNFcTda?=
+ =?utf-8?B?OHNYdFRneUxsSGJUMXVaYWN3Z0lINU52SkFTMFR6K2p2dklJVEdLbklLNHF5?=
+ =?utf-8?B?SHV2OWdIdU83Um9BQXRVSlNrWk4va2ZERXcrbUVkSnEzMUdmTXJnbkRtS1hE?=
+ =?utf-8?B?R0N2Q1V3SnZteTZsS2F2VTNvZGFiZld0MHRkTTkzWFY1R2JRa1A5bWxDeWZ2?=
+ =?utf-8?B?NmsvZGJ6bzlYRU9MUHRnZnF5NXJYQzZJQnhkUzV4N0liL1dGV3dnSU84V2xr?=
+ =?utf-8?B?Nm5zRnllQUZtTGVhNFBxdzU4VWMwbjJEbXE0eW40dDkxQUduWE1QWEhlb252?=
+ =?utf-8?B?d01COGlZVmVhdkIzTGVMTlBjVUlwWGZhQUVaSTBodHgrQmMrdTI3SUMvMnhl?=
+ =?utf-8?B?M1A5MjhZd1BYdk1EWUdFNVBtQlZ0Q2ZXRFRTclpYMHRQNHRnR1dmUDBFT1Fq?=
+ =?utf-8?B?dkRXZ0pUVmZhYnJWTktwY2VIQUcvWW9PUDZ3VHUxMWpPRm9WZlE5MGxobENC?=
+ =?utf-8?B?Tk00SmVpT05QY1VMcTVJSnVQNzM0dGhhUnRyaEk3OHlESjJwd0RCZUxNOUxT?=
+ =?utf-8?B?eUZlaGNRTkZWWVZQVExrdEtQZjM3THF6VXZlYXFtWkoyaitCaVpWOGcvU1NO?=
+ =?utf-8?B?L0YzVmVVY1dtbGlaRFhLSktyTytDTE12M2I2bnNJOUFBMnhTLzN0WVpOem50?=
+ =?utf-8?B?eHMyTEFxQVFSUXhValBKZ3Z1b3R6d0ZIWENzUTUvRFVLNG9hbWM4VHg1Ulo0?=
+ =?utf-8?B?ai9nekc2ckZtZmlldjJNSVR2QVV5T3BTTVIzRXFpb2JBK1V1VTM1eHBPdEdn?=
+ =?utf-8?B?am8yZStWcytMNDA3QXEyWDVUVlNwSDc5TWM0TG9wSVByd2RBUWV0R1EvTTFU?=
+ =?utf-8?B?eGdJRDR3MTRRTmJLZXg4RHZtMk5aWk9NQ0hXNlpzOXRFaDIwOWViaEx0RTd2?=
+ =?utf-8?B?NGpTbnVQakJmbjgwb25TNU5lS3MxR1FLMHNRc1M3MFRsWFE1TXVhd25SWW03?=
+ =?utf-8?B?SHpqMFljSWR1dlRZT24wMzNYVTlQTC9VQXVRTDcyazFyZlpOZTgzOHJFTWZN?=
+ =?utf-8?B?Vlhqbm5WTTRwY0N2aVJvT0hEQ2J0cUdlTHBmbmNaTmJUQkZzY1BYc0hSTUpT?=
+ =?utf-8?B?SzMvVkpYZEU5MmRBbEVTT2MvRnF6c0VxTmw1dUxwenZhL0oxa2ovV3RyWEFt?=
+ =?utf-8?B?TXZlaWI3Und2d1BkY2NxR3NTd3FTL1BGSmRWM2ZPYTlwbk5BTU95VlpTMG5D?=
+ =?utf-8?B?YnBIUWlRSHpocFNaNkxtK1dTTWdndFdkMExKL3lZU1F2aS9vbXQwRngvcnFj?=
+ =?utf-8?B?YkpZYnNHdmE0YThHQkkyb2kvVWJ5RlBkWnBzVlZ2N2tEeXZCcTZvZi90bndL?=
+ =?utf-8?B?R0dVenJrL3FTalFPVERlUTJ5QnFvdHJNS1hwdThPRlcwWmRueVpLNkRjVXZE?=
+ =?utf-8?Q?66Z+jPQTLydJVWWS2fAwjR9II?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2F5E7028CC5E3345A9F514E1DAD1A535@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c43c858a-5f62-4a66-c886-08ddfa58e4b1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2025 04:23:05.6881
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OSyBqbQQXB2gceS0AvFxWeJOmSOLKzsXaGN1uod56isIuHIqDXMP0NbjwXao/1J6zbJ5Tr9lJbwdWe3PHub0XQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8785
 
-On Mon, 22 Sep 2025 08:02:36 +0200
-Nicolas Schier <nicolas.schier@linux.dev> wrote:
-
-> On Mon, Sep 15, 2025 at 02:53:11PM +0300, Onur =C3=96zkan wrote:
-> > Adds a new `rustcheck` make target to run a check-only build
-> > similar to `cargo check`. This allows us to verify that the Rust
-> > sources can build without building/linking final artifacts,
-> > which speeds up the iteration (a lot) during development.
-> >=20
-> > The target also supports the CLIPPY flag (e.g., `make LLVM=3D1
-> > rustcheck CLIPPY=3D1) to run Clippy in a faster way.
-> >=20
-> > Also, unlike `make LLVM=3D1`, it doesn't compile large amounts of C
-> > code (on a fresh checkout) when the goal is only to check that
-> > Rust builds are not broken after some changes.
-> >=20
-> > Suggested-by: Benno Losin <lossin@kernel.org>
-> > Link:
-> > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/nea=
-r/539103602
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev> ---
-> >  Makefile      |  7 +++++
-> >  rust/Makefile | 73
-> > +++++++++++++++++++++++++++++++++++++++++++++++++++ 2 files
-> > changed, 80 insertions(+)
-> >=20
-> > diff --git a/Makefile b/Makefile
-> > index cf37b9407821..7812cdc72938 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -1716,6 +1716,8 @@ help:
-> >  	@echo  '		    is formatted, printing a diff
-> > otherwise.' @echo  '  rustdoc	  - Generate Rust
-> > documentation' @echo  '		    (requires kernel
-> > .config)'
-> > +	@echo  '  rustcheck       - Check that the Rust code
-> > builds'
-> > +	@echo  '                    (requires kernel .config)'
-> >  	@echo  '  rusttest        - Runs the Rust tests'
-> >  	@echo  '                    (requires kernel .config;
-> > downloads external repos)' @echo  '  rust-analyzer	  -
-> > Generate rust-project.json rust-analyzer support file' @@ -1821,6
-> > +1823,11 @@ PHONY +=3D rustdoc rustdoc: prepare
-> >  	$(Q)$(MAKE) $(build)=3Drust $@
-> > =20
-> > +# Checking Rust sources.
-> > +PHONY +=3D rustcheck
-> > +rustcheck: prepare0
->=20
-> Why do you let rustcheck depend on prepare0 instead of prepare?
->=20
-
-Because "prepare" does more job which isn't necessary (therefore waste
-of time) for "rustcheck".
-
-> > +	$(Q)$(MAKE) $(build)=3Drust $@
-> > +
-> >  # Testing target
-> >  PHONY +=3D rusttest
-> >  rusttest: prepare
-> > diff --git a/rust/Makefile b/rust/Makefile
-> > index bfa915b0e588..b45878870207 100644
-> > --- a/rust/Makefile
-> > +++ b/rust/Makefile
-> > @@ -265,6 +265,79 @@ rusttest-kernel: $(src)/kernel/lib.rs
-> > rusttestlib-ffi rusttestlib-kernel \ rusttestlib-uapi
-> > rusttestlib-pin_init FORCE +$(call if_changed,rustc_test)
-> > =20
-> > +## Check-only compilation (similar to `cargo check`)
-> > +quiet_cmd_rustc_check_library =3D $(RUSTC_OR_CLIPPY_QUIET) CHECK $<
-> > +      cmd_rustc_check_library =3D \
-> > +        OBJTREE=3D$(abspath $(objtree)) \
->=20
-> Have you tried this?
->=20
->         OBJTREE=3D$(CURDIR) \
->=20
-> or
->=20
->         OBJTREE=3D$(abs_output) \
->=20
-> I'd favor using one of these instead.
->=20
-
-I don't have a strong opinion on any of them. I followed the existing
-approach from the other use cases used in the same file.
-
-Regards,
-Onur
+T24gTW9uLCAyMDI1LTA5LTIyIGF0IDE4OjA3IC0wNzAwLCBKb2huIEh1YmJhcmQgd3JvdGU6DQo+
+IEluIHRoZSBzcGlyaXQgb2YgdGhlIGN1cnJlbnQgInNvdWwiIG9mIHBhdGNoc2V0cywgd2hpY2gg
+aXMgImdldA0KPiBHUFUgZmlybXdhcmUgcnVubmluZyBvbiBBbXBlcmUvQWRhIiksIEkgdGhpbmsg
+bGV0J3MgZGVmZXIgdGhlIEhBTHMNCj4gdW50aWwgdGhlIGZpcnN0IHBhdGNoc2V0IHRoYXQgbmVl
+ZHMgdGhlbS4NCg0KRmFpciBlbm91Z2gsIGJ1dCBtYXliZSB0aGlzIHBhdGNoc2V0IHNob3VsZCBt
+YWtlIGl0IGNsZWFyIHRoYXQgaXQgdXNlcyBBbXBlcmUtc3BlY2lmaWMNCnJlZ2lzdGVycz8gIEFs
+bCBvZiB0aGUgcGF0Y2hlcyBoYXZlIGRlc2NyaXB0aW9ucyB0aGF0IGltcGx5IHRoYXQgdGhleSBz
+dXBwb3J0IGFsbCBHU1AtY2FwYWJsZQ0KR1BVcy4NCg==
