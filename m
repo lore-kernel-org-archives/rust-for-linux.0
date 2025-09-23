@@ -1,117 +1,148 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967C022D9EB;
-	Tue, 23 Sep 2025 03:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1308220C47C;
+	Tue, 23 Sep 2025 03:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758597249; cv=none; b=oNztDyiwOShBJZEgCRYyPB4Dv+sMKOA8ih6manekwen03ysbioa1lRcEieM+IY3U1D/78M24Lc7xtUq+fC3evwshMGyNCXUbvhG6RSVah/5r67IifHX0x5yctfrgl60YqrAjBDokvheyLlUC0A+qocJwEGpDsce5y88u+ZW0f6Y=
+	t=1758599589; cv=none; b=Wl/GkMuTvlGjxzEYrIET7PzyIsyNAdJ4Z/6h5iMnJYnlVIK4hS7vQTHUgPIG53vRIlLAoa+IApgVpcLuQOSL1itIZqnPwc6+/+Vaak2WH1hYWRIkFRaWdrFX0XD9U4oCxfjx2n81JdQH64aJwjfFLayVJk0mK1eZZIJNDZA5sCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758597249; c=relaxed/simple;
-	bh=ZrlGg5+T9abifBw/iJ/AfUiU2mX4DnhZuR3Zd+vV5XE=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=h3vpNbYZkflw3PWQkEsWpJMMpe3P/TKxDp99WaTpG5btHD6yQrEWLEI/6SulvOwwc3VYOeFwqttBe5+iomV7QEl75Sj0u9LaRDeppteZEAgnJIKGOVdMsARpu06vXTgeSIf1+ysSH5LWB+3+sbjPdAueVJ7sDINq0jB58Zj5TT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8Cx7792ENJown0NAA--.27437S3;
-	Tue, 23 Sep 2025 11:13:58 +0800 (CST)
-Received: from [10.130.10.66] (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJAxVOR1ENJorgqnAA--.10350S3;
-	Tue, 23 Sep 2025 11:13:58 +0800 (CST)
-Subject: Re: [PATCH v1 1/2] LoongArch: Make LTO case independent in Makefile
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Huacai Chen <chenhuacai@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- WANG Rui <wangrui@loongson.cn>, rust-for-linux@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-References: <20250909092707.3127-1-yangtiezhu@loongson.cn>
- <20250909092707.3127-2-yangtiezhu@loongson.cn>
- <20250920061536.GA1460394@ax162>
- <CAAhV-H5=w82CDx=1=PZjf4FVW_dGWe_e__QazwDTwE3kKXtPLQ@mail.gmail.com>
- <c9c4c0e6-946d-95de-9c03-a4b8e1636b81@loongson.cn>
- <7eafa4a6-55bf-2fcb-19ef-b18bd51bfd39@loongson.cn>
- <CAAhV-H4xx-C28-a8H7yJTK30+r90zL9XTSAb87Jr4zLc5ShBoA@mail.gmail.com>
- <750c907d-cc95-5116-4507-52dd48927cec@loongson.cn>
- <20250923011057.GA3980504@ax162>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <a04cc3e2-d8d9-8ac4-d919-705babf4ccd8@loongson.cn>
-Date: Tue, 23 Sep 2025 11:13:56 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1758599589; c=relaxed/simple;
+	bh=1+TJfdADz+eyWxjucM1gnctJYZETTekOsnS1O0xVTmM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U1aka4fBC1x6msa9eAbRsR9VFo5CcZGptzq60UUePUDLOdzYD2/zBgtVffEEJIlw8Vur2ZnAevLTNSznrh4y02ni9INVXiw71sHn54qWOp4oj4S1s0/4qQDZJ6Mzpjeu1TuUQdwwi98g15p4oTntOzk70b4GuPudr6BqHs8J0mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=pAvVdaGa; arc=none smtp.client-ip=178.154.239.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="pAvVdaGa"
+Received: from mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:a982:0:640:e49f:0])
+	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 5487880784;
+	Tue, 23 Sep 2025 06:47:34 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id OlN5kY2MoGk0-2FrcghgG;
+	Tue, 23 Sep 2025 06:47:33 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1758599253;
+	bh=J9wh+/3satZdgSBE2bEzXkS8hEmnC4EYriUYMbJYZJE=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=pAvVdaGae1ycGPMu7vAsAsEfAPBPuj3sKQAyaWPxyul1/YXNRA44FAER+GHD640W0
+	 g+8+dmXbB1D9cezZ2Nc8Or3GJ7qID+MAkt+TKEXugTT4O8WA49u7IPH7+uiPmeKMx0
+	 WlhAMfu3VeLQhkayyYOPOsmyKHf/i6IzElKLQFxc=
+Authentication-Results: mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 23 Sep 2025 06:47:20 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Nicolas Schier <nicolas.schier@linux.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
+ masahiroy@kernel.org, aliceryhl@google.com,
+ thomas.weissschuh@linutronix.de, tamird@gmail.com,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ tmgross@umich.edu, dakr@kernel.org
+Subject: Re: [PATCH v2 1/1] rust: add `rustcheck` make target for check-only
+ builds
+Message-ID: <20250923064720.0b2ea467@nimda>
+In-Reply-To: <20250922-demonic-raccoon-of-will-1adb52@bergen>
+References: <20250915115311.3025-1-work@onurozkan.dev>
+	<20250915115311.3025-2-work@onurozkan.dev>
+	<20250922-demonic-raccoon-of-will-1adb52@bergen>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250923011057.GA3980504@ax162>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxVOR1ENJorgqnAA--.10350S3
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Aw13Xry8tF13JFyfXw15KFX_yoW8CrW7pa
-	ykWFy3Krs8JF4Iy39Fvw4UKFZ8KrsxGFy8Xr1rtr1kZr1DZrWIgrWxtrZ3XasrZr9rJFW2
-	qFW8t3s8AF4UZ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
-	CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
-	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-	14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
-	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07URa0PU
-	UUUU=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/9/23 上午9:10, Nathan Chancellor wrote:
->>>> ifdef CONFIG_LTO_CLANG
->>>> ifdef CONFIG_LLD_HAS_ANNOTATE_TABLEJUMP
->>>> KBUILD_LDFLAGS                  += -mllvm --loongarch-annotate-tablejump
->>>> else
->>>> KBUILD_LDFLAGS                  += -mllvm --no-jump-tables
->>>> endif
-> 
-> There is no '--no-jump-tables' LLVM option so this will not work.
-> Shouldn't -fno-jump-tables and -Zno-jump-tables take care of generating
-> jump tables?
-> 
->> I do not know whether this is valid, you can test it with llvm 18
->> and llvm 20 if you think it is a proper way.
-> 
-> For what it's worth, Huacai's original suggestion of
-> 
->      KBUILD_LDFLAGS += $(call ld-option,-mllvm --loongarch-annotate-tablejump)
-> 
-> appears to work for me and I do not see any objtool warnings with LTO
-> enabled but I might be missing something.
+On Mon, 22 Sep 2025 08:02:36 +0200
+Nicolas Schier <nicolas.schier@linux.dev> wrote:
 
-As discussed offline, Huacai will test this change and submit a patch
-later.
+> On Mon, Sep 15, 2025 at 02:53:11PM +0300, Onur =C3=96zkan wrote:
+> > Adds a new `rustcheck` make target to run a check-only build
+> > similar to `cargo check`. This allows us to verify that the Rust
+> > sources can build without building/linking final artifacts,
+> > which speeds up the iteration (a lot) during development.
+> >=20
+> > The target also supports the CLIPPY flag (e.g., `make LLVM=3D1
+> > rustcheck CLIPPY=3D1) to run Clippy in a faster way.
+> >=20
+> > Also, unlike `make LLVM=3D1`, it doesn't compile large amounts of C
+> > code (on a fresh checkout) when the goal is only to check that
+> > Rust builds are not broken after some changes.
+> >=20
+> > Suggested-by: Benno Losin <lossin@kernel.org>
+> > Link:
+> > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/nea=
+r/539103602
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev> ---
+> >  Makefile      |  7 +++++
+> >  rust/Makefile | 73
+> > +++++++++++++++++++++++++++++++++++++++++++++++++++ 2 files
+> > changed, 80 insertions(+)
+> >=20
+> > diff --git a/Makefile b/Makefile
+> > index cf37b9407821..7812cdc72938 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -1716,6 +1716,8 @@ help:
+> >  	@echo  '		    is formatted, printing a diff
+> > otherwise.' @echo  '  rustdoc	  - Generate Rust
+> > documentation' @echo  '		    (requires kernel
+> > .config)'
+> > +	@echo  '  rustcheck       - Check that the Rust code
+> > builds'
+> > +	@echo  '                    (requires kernel .config)'
+> >  	@echo  '  rusttest        - Runs the Rust tests'
+> >  	@echo  '                    (requires kernel .config;
+> > downloads external repos)' @echo  '  rust-analyzer	  -
+> > Generate rust-project.json rust-analyzer support file' @@ -1821,6
+> > +1823,11 @@ PHONY +=3D rustdoc rustdoc: prepare
+> >  	$(Q)$(MAKE) $(build)=3Drust $@
+> > =20
+> > +# Checking Rust sources.
+> > +PHONY +=3D rustcheck
+> > +rustcheck: prepare0
+>=20
+> Why do you let rustcheck depend on prepare0 instead of prepare?
+>=20
 
->> But IIRC, there is objtool warning with llvm 18, I reported to llvm
->> developer Wang Lei and he fixed it as the following commit:
->>
->> [LoongArch] Avoid indirect branch jumps using the ra register
->> https://github.com/llvm/llvm-project/commit/21ef17c62645
->>
->> Actually, the above commit solved a performance issue of llvm compiler,
->> so I prefer to update the minimal llvm version to 20 for LoongArch.
-> 
-> I tend to let architecture maintainers make the call around minimum
-> supported versions of compilers, so if that is how you would like to
-> proceed, I am fine with that. I will say LLVM 20 is pretty new (released
-> on March 4th, 2025) but I expect most of your users to probably be using
-> bleeding edge tools for all the changes you make in the compiler and
-> lower level libraries?
+Because "prepare" does more job which isn't necessary (therefore waste
+of time) for "rustcheck".
 
-Usually, I like to use the latest LLVM upstream version to test the
-kernel, but maybe somebody only uses the lower version, so keep the
-minimal version as is.
+> > +	$(Q)$(MAKE) $(build)=3Drust $@
+> > +
+> >  # Testing target
+> >  PHONY +=3D rusttest
+> >  rusttest: prepare
+> > diff --git a/rust/Makefile b/rust/Makefile
+> > index bfa915b0e588..b45878870207 100644
+> > --- a/rust/Makefile
+> > +++ b/rust/Makefile
+> > @@ -265,6 +265,79 @@ rusttest-kernel: $(src)/kernel/lib.rs
+> > rusttestlib-ffi rusttestlib-kernel \ rusttestlib-uapi
+> > rusttestlib-pin_init FORCE +$(call if_changed,rustc_test)
+> > =20
+> > +## Check-only compilation (similar to `cargo check`)
+> > +quiet_cmd_rustc_check_library =3D $(RUSTC_OR_CLIPPY_QUIET) CHECK $<
+> > +      cmd_rustc_check_library =3D \
+> > +        OBJTREE=3D$(abspath $(objtree)) \
+>=20
+> Have you tried this?
+>=20
+>         OBJTREE=3D$(CURDIR) \
+>=20
+> or
+>=20
+>         OBJTREE=3D$(abs_output) \
+>=20
+> I'd favor using one of these instead.
+>=20
 
-Thanks,
-Tiezhu
+I don't have a strong opinion on any of them. I followed the existing
+approach from the other use cases used in the same file.
 
+Regards,
+Onur
