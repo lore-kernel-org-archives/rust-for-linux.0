@@ -1,104 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14671D5146;
-	Tue, 23 Sep 2025 18:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FC230C359
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Sep 2025 20:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758652259; cv=none; b=WZJqfUUL2IakVq+4oL4LUaP67BH94FZXZrValhIKrGP/4gHDzVrySWuwAfabyvZ+4djvXIeJAUP2aqvxltqq5xPLqAlC/7qXR/ZDUkvjdCYkQiSszxXH2mhbrdw4hTeOEOjQyFJvVvw4HCikcdaVAZcSqS5bGtUvelyAupXukyM=
+	t=1758660817; cv=none; b=s+KO8W0aLQsqPHKkUziuRxC2CKYVCpAIVIkiZgmFfKiHv1n7k+klMc6JtpenoNGfwbwvI3oQEJlNi2QwqMZ6J4UwjpMvxYNGUVCseM8E/fAzrdTSwOKCjdqAmX2fOqXfIQQu01ZZrbmTDITkkCP//xdOXze72lnmuFFstYGnakI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758652259; c=relaxed/simple;
-	bh=gxKH7wZVbZJUgsdcRmV6yXRnCWQ9TqZ9bpedLe1yt7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uVrFjialsgDG3tOimC/Btv70vsr7w9/2R83f4nqsInRSs4SXZWtaxGCpaHQ8vNJhXlEbazZGXaozHXLQxUMBtguJ3r+haVBUAgFuds+F0DCCBsYgzhdYHUYUaN2CBYA3EsZ83IhH25ctSe4ypkQDyig9QR2eYU3CRYY9i+n5zb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4ZXIaWM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758660817; c=relaxed/simple;
+	bh=G1CjHe1H6u6QYEqMboB4shYudq3opKfe2g2puvgFMn4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=TWvpmHnk3chaLH552GaMbvkOCPdaCWhPXiyAdKsiIwH1pUWBJyhuBubv/UxeWt8cpCHR8R/Rjua1kFrjVjDuuao3GyZv6eVZoCKWYxRqqMPFAFqY28+YErsBWyeVugBZZAg/rJ8oO/nz92JfHzDswbME1P+atigTHBdok3+I+bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X1mb/SLj; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4ZXIaWM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB030C4CEF5;
-	Tue, 23 Sep 2025 18:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758652259;
-	bh=gxKH7wZVbZJUgsdcRmV6yXRnCWQ9TqZ9bpedLe1yt7s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S4ZXIaWM41Ablw/mVVeAaJkiSYgUA1XjiTWt5LSH4qwLIacOxMZE3jScnz0xix1Wv
-	 SAp5BLuT2R2dCAYXxRdOCtJez17N/cBe9kv8+xOmcpzYoZ/UpcFkDX5GmNuOLJGCFV
-	 Bcs4RLVyhjVQyFhRGAbe1bDHxUFJbKgGu/3vW1Mt1BkujhZ/XZn25PIvUn5jT3S9nw
-	 YVX4n2lhWFpC/hhBuXD/s3h9/tXRxQArUIgc5V0sUKhDNiOC8ABgtjM7Q3+LQGe+ys
-	 cSfhtq2Jd52bcQy4LLrP2uqO++/e9zs0F7UgxrbinfFgheCfADXwZVzyKQ2yU+i53A
-	 XGP2nnt2Bp5Ig==
-Date: Tue, 23 Sep 2025 12:30:55 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <aNLnXwAJveHIqfz0@kbusch-mbp>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
- <20250912090327.GU341237@unreal>
- <aM1_9cS_LGl4GFC5@kbusch-mbp>
- <20250920155352.GH10800@unreal>
- <aM9LH6WSeOPGeleY@kbusch-mbp>
- <20250923170936.GA2614310@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X1mb/SLj"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-267fad019d4so12901265ad.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Sep 2025 13:53:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758660815; x=1759265615; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HeIRUXM48HHUK8Qqvw8VJ1Ezc3fvB2lHmZlSLJhMh8w=;
+        b=X1mb/SLj7QBwrBB6MjVQ80mGoGusgZbyAcK5QIjRmnRiP8d1p8MAzh2rjkM50C91Zo
+         PFbHJ+AjAXVhg2V3OaORFrNS8W+hc48aQFCs9wsQJsWfEYWqD+I4xUQScou+tbgOGnwP
+         U1j+yO6VuuZ6OJLKhaCJDhEc2GHoDDMSBvxcQ97QuBGH4lgachh4quCYB3noW3ftceiv
+         i5dxtvFlbKNu19Daj6TxXajYYQy50pPaWcxYpV0NTqThr4RC/AyYg71KdYmqN51/4XwQ
+         Jy0WdsR2fs2jbojoTIRQ7xWHqLnf7UdfzdO6Bj/vy54aJY3f8DgYxASZCEE6bpUGTlr2
+         X4gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758660815; x=1759265615;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HeIRUXM48HHUK8Qqvw8VJ1Ezc3fvB2lHmZlSLJhMh8w=;
+        b=NNiE+jlrQ71PeafZADWhIltgKowz96gE4KCZ2/Nx4NjZ7IIpYWoGo+zTAa8VY0WnOu
+         6QLTTl6FNFhNDHRwTcpQSk35wAgT+5zfXi9ENElqALyJlZllY2634JMjZmEUrys8lwpX
+         5vAR2KLbJV9BUmL3SNFylkGen6R8XntnaU4D9eMWt0FCzAWU8stzN2AHqh29HiEVUwBW
+         5/NRBnWNo2p5kblifvn1c7VdRW+41t2yJ1BSIc3Zy1CVJfTb9FfxJoy2aLAf7S9jon+h
+         BhGKZ+TBVhmslcbaSqRVKei/DBUvq4x7TQyMZNF5R47qnYSBar8iSU7reWAGKHbJWxFc
+         QFhA==
+X-Gm-Message-State: AOJu0YxfiQ8ma62skTnvavvqdEt6UjAzjcCslmx+f6TXp/WU11/xMZU1
+	2iLALXLL7PDAJfIsA28P6TH2F00LFjvh47vrXUpVycM7fohiItyddL+XIXhsfyV0wFQswgGNiep
+	QNoq5RpiXDSKASb+sJucwnwy1pTERitFZNRJWPPxH9A==
+X-Gm-Gg: ASbGncvCVa5bGR3EmG0anGnyDkffNnwtxAMNBBiEyYERTSFlXTE7dBQQclBdf3Whvzg
+	WLNUM6cdHaLEnVCM6Aaci5gCzxxp8UjetFD03MON/bObr57eJzmFiuiX5JMixgxjdE9zJXLBfRd
+	TGYDZMI6uRe//ESwQpOXql0cPfM4q7+JjzpVFnfkhxVZyjwIDuFPV7dfwziUNV7YOgPahUNhDp5
+	5B/CDEkzb6IQaP0gWVtUqm8D+M4YWYVKkNDzL+faYaCKZNkMI+KT8PHcc3w4WJVzgD197ud8BCy
+	VVCGJG5legvCybDCl/25lywTIw==
+X-Google-Smtp-Source: AGHT+IG7UxLeyVKwsswhjfZ9PBof5WwJL1uF/ZLaV6ryNX7Y5kOSUlCQry1erigNGF1RALXfqrUHzL5kh2hgPH/vrko=
+X-Received: by 2002:a17:902:ea0f:b0:27a:186f:53e4 with SMTP id
+ d9443c01a7336-27cc28bc350mr30869155ad.2.1758660815210; Tue, 23 Sep 2025
+ 13:53:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250923170936.GA2614310@nvidia.com>
+References: <CANiq72=o8B++kHHb8O2tJh8d7E217Vw=mPfnH7mzvFnxEhkyWA@mail.gmail.com>
+In-Reply-To: <CANiq72=o8B++kHHb8O2tJh8d7E217Vw=mPfnH7mzvFnxEhkyWA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 23 Sep 2025 22:53:23 +0200
+X-Gm-Features: AS18NWBFm9BjebyMoJzwlvnIRoO_jynsUp4sm5NkSA_F_9khGE-TORAO4Oaf8Qc
+Message-ID: <CANiq72=anyGhkbVZyK6kwQZKqOjjBSXXMZ=hFj=JuqS1D6iO9w@mail.gmail.com>
+Subject: Re: Rust MC at LPC 2025
+To: rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 23, 2025 at 02:09:36PM -0300, Jason Gunthorpe wrote:
-> On Sat, Sep 20, 2025 at 06:47:27PM -0600, Keith Busch wrote:
-> > 
-> > One other thing to note, this was runing on arm64 platform using smmu
-> > configured with 64k pages. If your iommu granule is 4k instead, we
-> > wouldn't use the blk_dma_map_direct path.
-> 
-> I spent some time looking to see if I could guess what this is and
-> came up empty. It seems most likely we are leaking a dma mapping
-> tracking somehow? The DMA API side is pretty simple here though..
+On Tue, Jul 8, 2025 at 5:40=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> The Rust Microconference for the Linux Plumbers Conference 2025 has
+> been accepted!
+>
+>     https://lpc.events/event/19/sessions/223/
+>
+> Proposals can be submitted now at:
+>
+>     https://lpc.events/event/19/abstracts/
 
-Yeah, nothing stood out to me here either.
- 
-> Not sure the 64k/4k itself is a cause, but triggering the non-iova
-> flow is probably the issue.
-> 
-> Can you check the output of this debugfs:
+The deadline is in less than one week: September 30th.
 
-I don't have a system in this state at the moment, so we checked
-previous logs on machines running older kernels. It's extermely
-uncommon, but this error was happening prior to this series, so I don't
-think this introduced any new problem here. I'll keeping looking, but I
-don't think we'll make much progress if I can't find a more reliable
-reproducer.
-
-Thanks!
+Cheers,
+Miguel
