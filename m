@@ -1,187 +1,171 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010045.outbound.protection.outlook.com [52.101.61.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E8426B971;
-	Wed, 24 Sep 2025 22:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758752702; cv=fail; b=jwXu6Q97rUJ76djCYbNLBTo7mGY48jhEzOSaUuy86RuAOj768OkVaFeRSkd1HSIyzxEto/+F9yIaYU0R8GGk4TBGiVGbZLWV1qTJl5ipAa2pse+qRRunkI88G9O7wkcy0pusn8R2Yp3h0pStj4uQVSmDdYpacTavnmy57vaLgg0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758752702; c=relaxed/simple;
-	bh=dXSPGhkGJyr2X//8T28sL6TEdj0V/DsC8VmEw5dkqTs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=PMWq45Bs7x9r/MiBczNYL9+EaKnNxi3vx/rg/kCn24vCkOzZWiI7CvBrCxTm5bJgXw4ViPybOAjSY0hRjvl9Typ+JEyBYnhC1UgpJYCkXWsLW8Z+BOYWGGQyq/pZI/mUKQmySvmS1vxjLXOwZ/gZmpL1Y+1JKlKX2JMOOYfwPAY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jXmEWFHr; arc=fail smtp.client-ip=52.101.61.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6547B2773D8
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 23:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758757878; cv=none; b=YASCE/DSrROEWV8xZ6cnWGoJiwuUjYqEoxt95NcQ3HbLkVlkqFO7lzMx9EV2uMhDBX5hSq8ukOI9BljqBoviI6kzoxIOEZAfaM6trN8AoyH+ju1dxnOOv/f0f9Cp6Qm+2l8Wl3eGOhf5Kv1bNTY7xIMr3UDvLvIWzRKNMJDu2+M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758757878; c=relaxed/simple;
+	bh=bywdX0nhtg4X6nDuC8jT0AaJN0Y+9epl5eMqmA1AZnc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZpMsFSMlkjx2gamq6sRNNecIimwookDnI79HCYUdkYcIOxRLxRx/oO89LoW62CYrH/1ZkkD9FZiDtitNfeyQYKne0Je73fjcIREGU/A4G9VdsSRQVDo70UGvwfeVwUTZn8TR+EU0Dy15F0INvXxjjoE4vK2ZhYzXe6KvUB4oI5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YD4zubMq; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jXmEWFHr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F+Hxg51ypPS7cXS/Bmm5hH1aV7pS2unE5izC1gqfhtcwitc+mrfROSLoqGDxwGgEUmBpZDFS2FeJfWlMqtP7T9niCBqpKfg1wy2LDj1JBIQys6IJtzyq0Hsjg6yRRggqrk0bjWFNf4knVYNW8y+G5dwm6ZQbYNrDhn9jWCay9qW3soOnKQQcYDnG7Mrne80PLmfHhkbk7H+L7sjvn2T/2XgbrN+s/yArop/HYxJuyy4MJxGNUF19CquOCHbDn8Z6Xyej6lh6pILaPNLY17Z+8d2+zLlvI2CewyCapRF+e2+ZdYlT+SLloW0FZviyUE+6nR93RaChXIm63S3QO0fx/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IkZYEsr2u99vnOrogtl2Mq23CTtOtnzDtWeqG2JRBcI=;
- b=HedBWeMd4R5p7qdIs09kcJcXLapwj8PHicAWjqbsKrh5Yr+WMbW58BUZIicpdVgGxM1Y+6E55CjEj8SVDrSIMYkYsg5mo7A187/oJJputuCE35cZWSCPPMWGOkrYENLbH1n0HsSA+kJwb2RRHFYE72gasODVMXvhYVDaBBW/p1Hj3qV13pGpTSZfrV5Q7Z5H6Mt7AgPsavGQPaTJ+PVQ1H/cnw2qLCArXvzoKwyI3X4SFmHcpQZ/Voi8/IN2GTS7EN9AOphUSuh+HzMaaHFqJ1kI6dPEYNJSthGmwPqBhvYAVXzWUrlHj0fbyHn+vcFShAi1EO5kawUK5Dc2H6wmnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IkZYEsr2u99vnOrogtl2Mq23CTtOtnzDtWeqG2JRBcI=;
- b=jXmEWFHrBcTwFmu1z3mRQgzlwxtqkdDKcQ6AHZLuKRQ1k+Kg/FF0gVVEAOVVE7orszFy1q3FwlbOTdeC/rVzftxl6yf4hJO0YMjNViKRUIYQ9NBRMWb5gaPyv67do8ikX80c0JuUNA7cXM2ZjMOXc2CUhQ65anInsViYG10CO7vj8LrqlMIKjsaSjRYRwNxz5W1wCxfWN26ajTC71KiJbWaatDcnbFU6gPXhOH+qanoEmloZvy9IwgLlobUR/mdG3ao92seriD7LSzCoqa0XD1ZIx56jzLU2SaOSRvPC0VH+ORXl+BJ88feI0hg4tV6HlC+4BMKWijZ/kjd6e+rzbg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
- by CH3PR12MB9148.namprd12.prod.outlook.com (2603:10b6:610:19d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Wed, 24 Sep
- 2025 22:24:58 +0000
-Received: from BY5PR12MB4116.namprd12.prod.outlook.com
- ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
- ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9137.018; Wed, 24 Sep 2025
- 22:24:56 +0000
-Message-ID: <c267b886-b218-4f87-8153-873cb1d08c54@nvidia.com>
-Date: Wed, 24 Sep 2025 15:24:48 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/10] nova-core: gsp: Boot GSP
-To: Alistair Popple <apopple@nvidia.com>, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, dakr@kernel.org, acourbot@nvidia.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org
-References: <20250922113026.3083103-1-apopple@nvidia.com>
- <20250922113026.3083103-11-apopple@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20250922113026.3083103-11-apopple@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR13CA0016.namprd13.prod.outlook.com
- (2603:10b6:a03:180::29) To BY5PR12MB4116.namprd12.prod.outlook.com
- (2603:10b6:a03:210::13)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YD4zubMq"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-267fa729a63so612905ad.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 16:51:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758757877; x=1759362677; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BcrUofB0dKCSsQ7o/jnuwGUrQDlTZKMr766pxf4U7ew=;
+        b=YD4zubMqj4y/2E16KpijgN6eCpK8QBLzKiSZYb1fSsk6qzhncDbT/rbQdAJv+HOm85
+         0/EEG/xP51Q03P/pirH8g/rLFPU8KsF+CFD2CsSA59vkDNk5wIu+lwgs66KUqVGPtIr7
+         OsJ+ptI45sdzVdEIP8ZpuZO+AdsHMwhmVOkbIw4EvAR/9ts7YZ0mRepPO+QeZbLz/jVN
+         eXec79exBuyuAAdCFIB0SjUPNK4yS294WiF0AsQvacrIJOttlPT2+xJM+UYK7NO1tgAe
+         dpOY9O7hehsil3PU2C+mZb80OXn2smkB8Z+9nqiZFLOag+5kiSEuoN9juzL8xPDrRXL9
+         OH2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758757877; x=1759362677;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BcrUofB0dKCSsQ7o/jnuwGUrQDlTZKMr766pxf4U7ew=;
+        b=KV3xL6bG1ji4rHJDqmJC7GUEjWK42SEZQ3BbS+qwjJcr3TmQRsdu9MKMM6+1rq0LLn
+         IKED2UpeSLoYqGqV+Neys5DG6xYCFxcEwCoVlfa6is+hMwFdJGc5xZ/CYwl4O6meeryW
+         Rryf61qUSdJIkqnkkrNrp07ij+W3yWN/hzgC3NrTUmpDiD2pbPhlBOM+XWulxiqYSrKH
+         QiA5EG13jrNeoshMOMw4gTIwLQaT/C3my1qQAwZ0ZOvfqNIUTACeZiFGdCRFxBJCayBM
+         So3zigWrLsRPEl3gqbR9xzdfNk3Q3xD29S1qJ1I4aOCfPePfkrrtnFnHrHvcmPdfpYve
+         5QJw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5a4zxqJ6pC/JQeVyH8WqDjWV0uM2HBuRzvVt5dynhEpa2W9V3txm5iMc568EoEMs333F3oVXNynqi9gZCyw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSDXu2HZ56wVNg4iiZPoZvJeZNci9oBmL7Qr03J3UHYVZ88M/a
+	8LEIt0TtDl48i7ACjqaO8WMaIcuiI7h45sd9dH9R+FHzXXv5dipYoUzx
+X-Gm-Gg: ASbGncszQmgymuaBFAbnTRTnsg7WQucFuZz/2fJs5GLLudhiQNjerQ7yAe7s1CAl99U
+	44sHzVRl7g78VFQJAq876t07veFSL8PAWOQQnnYVcf+bL5Ycwd6h+EAjiTeoT2aHhnxicMpMw7+
+	zfryTt/dPQ2bzfNkuNVQGMU978kL6zuM4iY5O9eiJaPsHaVQ7PRd2u7hsktFl71EHqMh/czzXQn
+	KYp2s0tN4zXjBGtQzdqDNxRINGc3vEW0h/zMwS1puJa+UEoK+mv3xnmN2L/1ZUUvBd4c35p3QC/
+	jdQF8sgjwGWTfr4e/z8MziV99eLNrKEW3tL032v/r8SvfJ/TiuUdV9ELagk1vOZ6d2+wMrwgaTD
+	hCvPDlgoAhZ2eOTZBWSY=
+X-Google-Smtp-Source: AGHT+IF5/ZHYCLfHMWUKUiXIO0yoi5GrlItBDfQAqCKn6V4VH3FNSKCX4czQoTpWgFwCnc41W0qgng==
+X-Received: by 2002:a17:902:e812:b0:266:914a:2e7a with SMTP id d9443c01a7336-27ed4a7e84amr9318595ad.6.1758757876373;
+        Wed, 24 Sep 2025 16:51:16 -0700 (PDT)
+Received: from localhost ([104.249.174.141])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed69bc273sm4296695ad.124.2025.09.24.16.51.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 16:51:15 -0700 (PDT)
+From: Ben Guo <benx.guo@gmail.com>
+To: alexs@kernel.org,
+	si.yanteng@linux.dev,
+	dzm91@hust.edu.cn,
+	corbet@lwn.net,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org
+Cc: hust-os-kernel-patches@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH] docs/zh_CN: Update Rust index translation and add reference label
+Date: Wed, 24 Sep 2025 23:51:12 +0000
+Message-ID: <20250924235114.209967-1-benx.guo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|CH3PR12MB9148:EE_
-X-MS-Office365-Filtering-Correlation-Id: 830a2242-a74b-4547-e9f9-08ddfbb930f2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cEtSak0yU2s0T3MwLzZsNnhCMkFkSWlmTzFUbWpHdE5rTG9OUElYWjYzZjl2?=
- =?utf-8?B?WW4vYUNRRWxOdnd0WDVEWHBQYTVJNzNhbDNpanQ1STNuS2hqbUZQeGZUdFVV?=
- =?utf-8?B?Ync2UFJwMk55c281Um93NHhLVWhmVE50aUJhemR0TGlBZzNETndYZXkxaWZ3?=
- =?utf-8?B?dTNyVkhkY2RRbGkrV2puWFhtTG00eDAyRGJLTSsxclU0eHpDK2g5TUNnNTc1?=
- =?utf-8?B?K0h5aXF4UG1rSWd1Nzduc1liS3dkWjZ5TkJCTnVLSjVZWDJtY2hYTVFzM2pY?=
- =?utf-8?B?SlB1RktaTUpQSmdPQTVrK25ReHBQQllURkoyZTdxSWxKK0c0SUJrSTFQQTA0?=
- =?utf-8?B?Z3pSd0RGbFlzTXFUU2tvZk8xWVlZZXRGbzhYaXBaR2ppekozYmh3N1ZmSEl0?=
- =?utf-8?B?U2VSNWVCc1NqaW8vd1JFRjh0SWFRejB0a0lWYVRPRHBqVHY0N2NRNE1DNHhQ?=
- =?utf-8?B?ekRFNzJyRjI0STRjVWFFYU9zNWg4QnZweUd1eFFuWjZZa3FGRlNNWXRVdEhs?=
- =?utf-8?B?YVRIZE5zdkRBMEkwVEozQ3J0bTgxVXNPS3NOaDZ3UDNyMkIvK1ROMXltTWhm?=
- =?utf-8?B?OUxGUThuMG1BZHBLRk9VVmZReDdSUWJLcWdvbmMrNXlEMDI4VHBUNGdCOXZB?=
- =?utf-8?B?ZkxQczhIS1k5UzhzVStVd09Gb3djdTV4ZEFmYmcwNWVrai9TNmN1dnMzWlZD?=
- =?utf-8?B?S0FsYkEyaUN3endTU1g1cWZwTmJ0NmlkdmQ3cnNFS3NKS1FCeVU1RnJKQStS?=
- =?utf-8?B?ZmtZSk16VjFsS3hVNDZtMmg0dURuazl1TnZ6WlVFVEVLdHU4YjI5Vk5mOXNM?=
- =?utf-8?B?TEFEejRQNEhHSmg3YW9JY3dxWlRQcmQ5SkVTR0JPSUNPQ1p1ZGNLTTJBenpn?=
- =?utf-8?B?NnU5U05DN3lOR2l6RTh3bmh0ZC9nNjVWYnlHUFVNemdyRW5KSUNQeU1YMWtI?=
- =?utf-8?B?ZmtMbmxSR21QNzVxd2RtSm92eDNFRHFzc3VOMU1nVkVZSjMzMCtIZmYwcTFP?=
- =?utf-8?B?T3FvZjBVN0pXakMzaDVUczVwZTlNRk1SK000aFo4eUd4dDFTYi9iYURYdTZL?=
- =?utf-8?B?TFhDbEFicGVBTy9nRWUyV0kyVUIvTFFXTURSSUxHcmJWQjRkMXNJZEt0TnFG?=
- =?utf-8?B?VC9XZnNkV0tnNngyL0ZmeTZWeFJRV3NUWmJIVFlMMWxBNkpYSGU0Yk1RbTI3?=
- =?utf-8?B?VGZEQXIvcXV5SkRYN2FQL2dlREV6WlRoVy9mWC91MXV2L1ozdmhyTU1vOUQ4?=
- =?utf-8?B?MVE0V3RrenZZdTMzNm1oZXRma0JjLzlYWFkvbVRLOEV4OEs1SVU2aWhGZVB4?=
- =?utf-8?B?SW94Zy9TNmFPc2hCZThHdExWS01COW5KZVh6SFlsMWhSanBERE5XZDRIZGlB?=
- =?utf-8?B?ajJHSGlkVzRWTHp1eTlCZnB6L3RDMGNzeHE3bHdyU0UzdjBPY2laMmVoaE92?=
- =?utf-8?B?dThXSDQzdENjUmgrSXpDektpd24xN1BjclR2bzNZbm1TaFh1d0krNlViYU1x?=
- =?utf-8?B?NTM2NS9UbkkzZFVaaEdUQmpYMUhVVVJmK1pVTmVRdWV2VGVUZ3l0ZWVQeElF?=
- =?utf-8?B?V0ZmWEplenNTZktoOXRCd0RQR2NtVEhJNCtuWUJvVVc5N3lwRk1TbkJ6anR1?=
- =?utf-8?B?LzR4ZEUwdXY2cFVwbnFTelNZMW9Pb0V5RTQwUmI4b04vNVpPOTRGZEg5bHk2?=
- =?utf-8?B?TDZXZXdON0hhMU5KQUZtTlhvWUVTUWxzY0Znak1uR2FHbitUck9xT05kdlhV?=
- =?utf-8?B?WkVJYUtWMDRiSlJsdkpJd3FERXkxVnFuQVRZYTFSWlNWS293ZWlhYzlwUDVj?=
- =?utf-8?B?ZHFGdHpTMjhpMlVhTCt1SlVoRHdERTFaY1V2dDhHdGdNcjRqYkVXTWQxYTlX?=
- =?utf-8?B?YUhkUTJveVFGSlBBL25NSmNGOEt2NzRHN1Q2bE52ejMyWGpIQzlGT2NzRDdU?=
- =?utf-8?Q?vz83LzzP9js=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WGNLYTlyK3dqK3BzQWYrdEVzZkVSUHFLOTc3c2tmNHEyMVFlaGxLMkVXRHJx?=
- =?utf-8?B?dnVWbkkwS1I0RzlJcnVZalNYU0pTY3VOWnlxTDkzSjZBUDUrLzVYZ1hwaGFa?=
- =?utf-8?B?NnBqaW5GVkloMUpZN1ZoMWJhS2JWalhqS0N0WEU4OVRnWS9MaG9XTXB6NXRQ?=
- =?utf-8?B?NXRsUTZSZEVNRjdsR2pka25qQ1l4aGFLVkFnOGhjTGRESVVBek9lMFkvMlk1?=
- =?utf-8?B?eTNIYVpPTzR4aTZUUDhrNVRHY01nSnJCYXJCWk1QK2x6Sk5MdUNoakwwdDl0?=
- =?utf-8?B?bEFqSldLc2xad0xXcUtnUmluWTAxMUJBYXNKbkpTbDBOckJaY2F0eUNVZFRD?=
- =?utf-8?B?ZVZ1aUpTQTJ0aGdUN2RTenRUSElseVJNTDhkbGRQK1pEbjhFUVRmMU9BcUR2?=
- =?utf-8?B?T0xHYWdMSVJJVzVJRXJic0xwTkkzUFhtRjdQa29iVjVqaHhKdms1VEsxbVM2?=
- =?utf-8?B?dEw0cWlKdjNoUDVQa3ByQ1R2UVBnQ29ZbDdURWxscENzY1Z1OFhlajhCUDR3?=
- =?utf-8?B?am0wQzFHN2F3ODg4R1NBVGxqc05Nd2hpZmQvbG5Cay9QOU53QVJGL3N0Mjdj?=
- =?utf-8?B?aEtXNDEwOHlKRjhKaCsyb0dLbXpoU0t4MXRpVWtnSFpKR0pjMVJUdnJXWE1P?=
- =?utf-8?B?VlVMTlRVSDdTYUZxd3NtWnd4ZXMzc1FTc2R6SUpERitISTN5TDM5YjVkUk1L?=
- =?utf-8?B?YkNva2pnY2JZUU0rMGkvNnk2SzlxZ1JabnVTYlNjLzFSb3pxNVNZMzlTWEV6?=
- =?utf-8?B?QmtzNFcxUVdOVjRaaENvY3llZWM2UXhZUzNGQnY1MzZiTWt1Wm04L29aMmZq?=
- =?utf-8?B?cEUvaEhNdlo1SWhQTTNHazh3SXR3S0ZZMDcwQ083Q0xKWVVQbUZ1MXlJSFBL?=
- =?utf-8?B?bVpkZDkyNE5YdkZrWjNsc2UzMS81ai9nZU1uYlRKSUFhWlNPK3l0UUN4SjhV?=
- =?utf-8?B?SlkxbndUajBad3BZVlpJaXZUS2Q0K0V6WEZrTDVONldPTkplOFQxUTRmb2w1?=
- =?utf-8?B?dE5temdlemtyb21PanBNNEdPQmxMc08xYU9URmlkMDNUU0ZRbmZIK2oyUG5F?=
- =?utf-8?B?ODNoS1JkdXNqU1FFZWJ6SUNTQk12YzQreGVmOUV5b3RtRUd1TUlRTGdmaXYz?=
- =?utf-8?B?QmU5azJZZXhHMmkwdkwyRWc3V3FZTi9mSE5vS01XNG03Nm9seWhkWnYrYUQv?=
- =?utf-8?B?alh0V2FPbzN0Nlk2SVFrcFh2Z1pGbTBoQVprZk04V3pwMWNSbXZNSGdTdmlr?=
- =?utf-8?B?VzMrL3FIQnNtL0JTOHBMRmZrYnREMkQ5VXZpTDNXNUJTSkMyeVNHNGpFZkN6?=
- =?utf-8?B?NVBkbXZ1dzRQWVpiMjdMaXNhSVVyTXZtdDhyM2dKd0hwTGZUQnFYeDlWcTNq?=
- =?utf-8?B?L3RyRk5uQXRwOWtYOGRzT0JURk0zY0ZzWWlUVEgvaXhzSk90eDZUZXpYek9T?=
- =?utf-8?B?YlVPNm1sWWNHbkhXZGEwOWJWTmhMVU5wTmFQQVRMMHFlVWUxeXJsYjMxdjR0?=
- =?utf-8?B?WEtNZGFkN0xMQmdCSXJNWHNTUHlrSkE2bmlrTFh5R1RmUkxXblhjQnl2cnVT?=
- =?utf-8?B?ZEYwSms3dWhlYjFvclh4TTJMaFN2ZXM4aVFHWXVHa0FSMGJ2bEhnNUZPckZD?=
- =?utf-8?B?L0Nnb2pMVmdQWVpkVEZ0ZVc1bEE3LzU3SjNJeUIxRnBJWUNVUEpzL0daR1lw?=
- =?utf-8?B?aHBHQ0JGTitQZW9iUTBXZklXNUVqS2tWYmhTbis0Q1FFOU8reDB0UmE0c2hR?=
- =?utf-8?B?c29BL0JkNUQ4L0orUk95ZUh3R3hMWGFsdFhSNDVJaUgvTGF4eVY2UEhZT3Qz?=
- =?utf-8?B?RFRnRE1WMDZiTnpMTzRQam5wQVdYT0MvZFlxMmZ6MC93M0drbnNkeFhaOFpw?=
- =?utf-8?B?Wms0ZktpNU4zdXNOL01hOU9CR3hiZzNoZFd2V2Zub0Mrallrb2w2SnRCMmEw?=
- =?utf-8?B?Uzc5czBVMldoeEJ4TWNab1N1aFlFVThnQnZKOFNwODRuaUZLMWV6WU13TFUv?=
- =?utf-8?B?Vm1HVkdaZ250RUZrbWhtRjhDYmRDSjZpb3JUU2JualY0ekhmZ05CbG5YdEg1?=
- =?utf-8?B?WjRtYWFUL0ZHVEtYZVphQmYvZWt1RXkzVW5CcWhsMzRUQW9UNTkxV3dmOUFK?=
- =?utf-8?Q?L7XOd4GDTpf9tcIriNr69mMch?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 830a2242-a74b-4547-e9f9-08ddfbb930f2
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2025 22:24:56.6365
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W8z37wQPG20XDKkK2AR3EM49qF96yTKlV6V5lElkheMS6k09fNJJMPpOCq+YTq8ePzrBq/YiwBInHpKmxTkn6w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9148
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 9/22/25 4:30 AM, Alistair Popple wrote:
+Update the translated rust/index.rst with new contents,
+and add a reference label in rust/general-information.rst so
+that index.rst can link to it properly.
 
-> +        // Match what Nouveau does here:
+Fixes in rust/index.rst:
+- Fixed broken quick-start.rst cross-reference
 
-Silly nit: can we please delete the above comment? (And if you'd
-like to keep the note, then it can go in the commit log instead.)
+Update the translation through commit d0b343605f1b
+("kernel-docs: Add new section for Rust learning materials")
 
-I might be the one who actually added that comment at some point,
-but have since realized the error of my ways. haha
+Signed-off-by: Ben Guo <benx.guo@gmail.com>
+---
+ .../zh_CN/rust/general-information.rst        |  1 +
+ .../translations/zh_CN/rust/index.rst         | 32 ++++++++++++++++++-
+ 2 files changed, 32 insertions(+), 1 deletion(-)
 
-Much of Nova is informed by Nouveau or Open RM or both, but I'd
-like to leave it out of the code proper unless it's really somehow
-key to have it there (and I can't think of any cases yet).
-
-
-thanks,
+diff --git a/Documentation/translations/zh_CN/rust/general-information.rst b/Documentation/translations/zh_CN/rust/general-information.rst
+index 251f6ee2bb44..9b5e37e13f38 100644
+--- a/Documentation/translations/zh_CN/rust/general-information.rst
++++ b/Documentation/translations/zh_CN/rust/general-information.rst
+@@ -13,6 +13,7 @@
+ 
+ 本文档包含了在内核中使用Rust支持时需要了解的有用信息。
+ 
++.. _rust_code_documentation_zh_cn:
+ 
+ 代码文档
+ --------
+diff --git a/Documentation/translations/zh_CN/rust/index.rst b/Documentation/translations/zh_CN/rust/index.rst
+index b01f887e7167..10413b0c17c0 100644
+--- a/Documentation/translations/zh_CN/rust/index.rst
++++ b/Documentation/translations/zh_CN/rust/index.rst
+@@ -10,7 +10,35 @@
+ Rust
+ ====
+ 
+-与内核中的Rust有关的文档。若要开始在内核中使用Rust，请阅读quick-start.rst指南。
++与内核中的Rust有关的文档。若要开始在内核中使用Rust，请阅读 quick-start.rst 指南。
++
++Rust 实验
++---------
++Rust 支持在 v6.1 版本中合并到主线，以帮助确定 Rust 作为一种语言是否适合内核，
++即是否值得进行权衡。
++
++目前，Rust 支持主要面向对 Rust 支持感兴趣的内核开发人员和维护者，
++以便他们可以开始处理抽象和驱动程序，并帮助开发基础设施和工具。
++
++如果您是终端用户，请注意，目前没有适合或旨在生产使用的内置驱动程序或模块，
++并且 Rust 支持仍处于开发/实验阶段，尤其是对于特定内核配置。
++
++代码文档
++--------
++
++给定一个内核配置，内核可能会生成 Rust 代码文档，即由 ``rustdoc`` 工具呈现的 HTML。
++
++.. only:: rustdoc and html
++
++   该内核文档使用 `Rust 代码文档 <rustdoc/kernel/index.html>`_ 构建。
++
++.. only:: not rustdoc and html
++
++   该内核文档不使用 Rust 代码文档构建。
++
++预生成版本提供在：https://rust.docs.kernel.org。
++
++请参阅 :ref:`代码文档 <rust_code_documentation_zh_cn>` 部分以获取更多详细信息。
+ 
+ .. toctree::
+     :maxdepth: 1
+@@ -20,6 +48,8 @@ Rust
+     coding-guidelines
+     arch-support
+ 
++你还可以在 :doc:`../../../process/kernel-docs` 中找到 Rust 的学习材料。
++
+ .. only::  subproject and html
+ 
+    Indices
 -- 
-John Hubbard
+2.43.0
 
