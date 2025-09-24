@@ -1,72 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38649255F24
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 20:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4D62A1BF
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 20:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758744788; cv=none; b=g/2MndR+QXP3nuup2bGN/E//GeQ5S7PVnXO38ouuzF2BHqFPgEGza2FiWU5LQO7YJpcn6gjOhNq0FC6ZGrRXuAJg0PxJi6zksFmh2Ppv1C9H7tY+4K/IgJMAjW2QyiQ6AlFG19CRe65lyj89O76fCOVNa0muvkz4KfcljZW6LmE=
+	t=1758745465; cv=none; b=pMNcOpnw/nFyEJgU92kMyBuRBPJ9rRUQ5IwDasTAxLo3r5f71pmD3TWoxvMZOSgtWcQkWOW/Yx+OpgNoAwhtU1NexnVV24m20ayo2Rl9hBiKbeDG9/3PXdOTVuJFVWeAeWGBuZrRc509IwJWoK78AKVHgapxeN3PbGYYGv19pYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758744788; c=relaxed/simple;
-	bh=X/F6xuW5+1Wk0j8mHA3RYYO/BMXqYwhbDiApoquoaQ0=;
+	s=arc-20240116; t=1758745465; c=relaxed/simple;
+	bh=pBdZ3zbCJQ8PptkYvlJ1YtPe9eCnkGlU9qqoDL0FKNw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i2i54vzChrC0lzdFThtu/A0N7cBwb4MrHmTUr1GIU7wrc38/y8JJX2jlYGfcjRVxAF9HHfFdFzFsdcXe0xge0BpeTX0nz66FSWRNaqS1dMiRMBCXdvuYGXAWTsnd/+R9ITzCocVwZ7uCWUaHDnMRVB/QycD6fYzXx4/1xWdSQGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DIag92XF; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=T+Ol/fb+CitVhne1ATweD1Hc8hmgXWakdI5INktL9+6iMqAchWQeQatuxIU8eLT3jDHNprxW3KuHyrGmyTEQGRzf9NOvD51OlrhwGEEgVosF/4wpaTySkTmzj+GpXNMPY4LYSN2chpnT1tKWNrWqKEtl+tR6JZkIK0W1Eb7FvtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=We7S907X; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DIag92XF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="We7S907X"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758744785;
+	s=mimecast20190719; t=1758745462;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9XpmxlVh0q9LfmAwZvGzQnST85VhCbH3gueNHp2B9SU=;
-	b=DIag92XFFCfi9qk6VSXcdcBFny5yf4TcMUJ2W0WQGbcgFtk0uIa6Mo+YLKS3/aX8DIsVOu
-	tdBgugHaA+Pe/qjMFFzQ3XKSrgzErXpq1NttwbeAcaG4yvcpmwCdEd8oKQaEagBgE/1WEh
-	Zqku10IfpepqBnTondt/KO66iNkk4jI=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+xaqOlBFi7L8dawPbYmNgdJpPm+rXLdVyCm8JwnPS9Y=;
+	b=We7S907X/2gsYlwlQX/wZRKCe/3LEiyGAAPdjSsjF75OtMIw0S+N8WYGjZDTg67LWcFGsR
+	sviwpQyA0jqxNXvQaV1g9+dPJItcZxEIdk8Gs25u0sIVzwFxBUIOCoyJ+3eB0pdJviT8G/
+	nLcx9YxGu3yV+wYrfo0d+uqaIAgCXAQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-Ii7K1i5fOU6KSO6bPnVLqw-1; Wed, 24 Sep 2025 16:13:04 -0400
-X-MC-Unique: Ii7K1i5fOU6KSO6bPnVLqw-1
-X-Mimecast-MFC-AGG-ID: Ii7K1i5fOU6KSO6bPnVLqw_1758744783
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-85a0492b5feso84865485a.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 13:13:03 -0700 (PDT)
+ us-mta-219-QhY7akg3MO2tB8rphbHgIg-1; Wed, 24 Sep 2025 16:24:21 -0400
+X-MC-Unique: QhY7akg3MO2tB8rphbHgIg-1
+X-Mimecast-MFC-AGG-ID: QhY7akg3MO2tB8rphbHgIg_1758745460
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-78e4e07aa39so3522326d6.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 13:24:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758744783; x=1759349583;
+        d=1e100.net; s=20230601; t=1758745460; x=1759350260;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9XpmxlVh0q9LfmAwZvGzQnST85VhCbH3gueNHp2B9SU=;
-        b=gTfOKnnHyLGBK7id9seGRgI5GfQ3nLAhMFDBP7x7lj2IsrdEBYSnOcbnu5mMVWl7L/
-         GUB/0rEUWt4OVyqh3uMElrrIwB05Lmj8NUN9MASuLLUhKRTT4cX5AcnvrakOWK9BqLVi
-         chlaIl5KnrHYmD677IPzDR/T8vRWpabevhbo1X2dBcn68WGa3lZLsE9MvLtAXi1wWj6J
-         t8R7eS1t3imkKVS8276B93NPJ54KBPHkR5bvZTv/RFFYE16ZxBXj2zFikt3iST63xoXX
-         hy0Kjn3pj2k7bluTMeYQm2Cblax9NiAzLMKGQ4RrZwjJs2pzg16v/LRUYE/a+krMw96M
-         JkcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxVPC0QvGTV9Q5P61o/Mnqlp+y/n3Igr2X6qNPA+yhWme7QxO2JCL2DgE2G/zJXGrb6kyU/u3OlqZrnU62RQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9L0DMhqTteqa2X62x0riR6mg6CGKdARjDzUq2RjE/S0GvkZBE
-	quXJAvbyLbS+81HY5iETlHFM40WKtll+1UYbujyJaTLQ4Eso3w9TtIf1MzNRiY0sJcvc2J0ZRGs
-	NWOe1YXgMvl2kQn+u+VNpVKpBCaDlg7wKTRn0SCI1zZqUX94D4oDSkhb67PreaUYbX16q
-X-Gm-Gg: ASbGnctuQzkovizOT9BkcclJQsBzr6R4bV2HuDdaRIJVTtHO/9rOlQt3TqeEnMJqlkz
-	hBgze0vY1OHSrkKv0O3vfl05m2I2TjxzBQCeDDbuEu5I/3riR2lB7s8HK5bLvCKlmnwkQZiaST5
-	CXVOIvdPgD02BK2uWYrN8YxIhXSejZ8Ri+Yv4o0dppCBQtVUyrgowdcneggy6Tkvf2xu4MWq8s6
-	pAHXbeCrQsmc/8fPbzxJUvtoLGLqMXBHWI6V94djb8uDmRt0/fUvEAgqra6MnVKNycXz+qrIdCo
-	oFRu3y7SFWz9u8sDsb6nGifHFKTqCwN3wPAHbha3Ezdm8W9YXiTSXQsrsPs2SyGTA95eruhYhdm
-	wqs0J+ugsjWvO
-X-Received: by 2002:a05:620a:7109:b0:854:c365:104a with SMTP id af79cd13be357-85aeeeddd62mr133094485a.72.1758744783219;
-        Wed, 24 Sep 2025 13:13:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKsOD7JxsP8ZyulkafWq3Uzf4Ao7hE1h9PXeRUvMwSSm3xvR+xIyPZvLD6N+zHOUcsvxXwog==
-X-Received: by 2002:a05:620a:7109:b0:854:c365:104a with SMTP id af79cd13be357-85aeeeddd62mr133087685a.72.1758744782459;
-        Wed, 24 Sep 2025 13:13:02 -0700 (PDT)
+        bh=+xaqOlBFi7L8dawPbYmNgdJpPm+rXLdVyCm8JwnPS9Y=;
+        b=Gc8uXawNuJgNCrqHGy0pUUBN0wr0+RqrzjBNlDP2phwnwcUif3AxSMvI1PUPRhaQPS
+         BROFlIzUjFh2GPcawEWKFCsSqrGl8cU4wzB1I7P3GTdCj37XJoRuTOVF/5XznRIRMbi8
+         jIWg5wxec2D/UVyXvviDGJb0wfDai/cskgefE7pSUd3eEp+mcicQbtEQrqkDGpmRy3Go
+         Vxtccs+sbL0gaR2KHRl3RyJlbOTn4/uFtcwcutatUCVhXy9lbC9OyiyNPUaT2taoIJ64
+         gAmreAxnORm1mYcJvG/JTGX1AU3pUdHgVpESlLYEWwEDzeV3hy0n8ev1X2O317rWYye6
+         TwAw==
+X-Forwarded-Encrypted: i=1; AJvYcCX29fvWRQOz4EBB1w9Sja4laYE5ulind7M1C1Y6trsSavRK2ksuJzmJiX9TdU9COuSoUEv/pRzQrL9ikmhHfQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUTbb7NNWPICkTzEkerrmzDa8ESECCWFN0kOBqRsMEDhG9xkry
+	hdDLT7aHWchobb14zvmOmsLRLWH58rBZzJNjUJfxkLYrQrwi45q+amDQhnw705PVqDAlOk729z9
+	W/n4Hk3H1kbLFi0EXN4hccp7I9FiVbx17EuJ5Il9PKeX+OGh2AG9qMrcpgJIDWI7mehuU
+X-Gm-Gg: ASbGncsqEBzfxnDr9M57yiobuZ6iajfpN0Jsc7prAfBVlY2YGOxOoK5QtSljiMTG1bq
+	hVXxzrZTqFZDSuDidC2STAZzTsYT+EezKtoDMi4o9X39msp3nEdhP/l/vrymr57pjB5zfCIOqQP
+	qxavKDrjTKsAxWkXfU9kGjJHKLUO00my1ZEggGAsrCyR6FmADo8hr5WcbasdHhNrBR0D3xIOVFC
+	rGRoVkmwFXeL5bcil0ktNd1cB0NMACI5qk6cx6I3iyWHVCypbHxjvmQdyw7pLyTP63a3VA3Mnv0
+	kBjQryk+V9fGwqHzccmN7NgZrhwYhUgdVwDscHKPm5SE0KywwA5smO26xyuBpJ2/ru2xBg+XyB+
+	nuRkK9xCqNWJa
+X-Received: by 2002:a05:6214:2a8f:b0:7d2:e1e6:f79f with SMTP id 6a1803df08f44-7fc3c913d21mr19874096d6.47.1758745460538;
+        Wed, 24 Sep 2025 13:24:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxAcP8zeKZjOALMSjWCgQ96uiFG3vOtO1v8pUexa4bc35T4yGcWrIvQ+U/kszENiIX0whGQg==
+X-Received: by 2002:a05:6214:2a8f:b0:7d2:e1e6:f79f with SMTP id 6a1803df08f44-7fc3c913d21mr19873676d6.47.1758745459962;
+        Wed, 24 Sep 2025 13:24:19 -0700 (PDT)
 Received: from [192.168.8.208] (pool-108-49-39-135.bstnma.fios.verizon.net. [108.49.39.135])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-836263ab544sm1238559885a.9.2025.09.24.13.13.00
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-80135968d5esm595956d6.12.2025.09.24.13.24.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 13:13:01 -0700 (PDT)
-Message-ID: <8c754dd68b7caba32888a5b33fac4e4c5c8d6991.camel@redhat.com>
-Subject: Re: [PATCH v2 02/10] gpu: nova-core: Create initial Gsp
+        Wed, 24 Sep 2025 13:24:19 -0700 (PDT)
+Message-ID: <e024e964c5e79b1c86dadcb8c19d14d175bcb0a7.camel@redhat.com>
+Subject: Re: [PATCH v2 03/10] gpu: nova-core: gsp: Create wpr metadata
 From: Lyude Paul <lyude@redhat.com>
 To: Alistair Popple <apopple@nvidia.com>, rust-for-linux@vger.kernel.org, 
 	dri-devel@lists.freedesktop.org, dakr@kernel.org, acourbot@nvidia.com
@@ -81,10 +81,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  <jhubbard@nvidia.com>,  Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi
  <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
 	nouveau@lists.freedesktop.org
-Date: Wed, 24 Sep 2025 16:13:00 -0400
-In-Reply-To: <20250922113026.3083103-3-apopple@nvidia.com>
+Date: Wed, 24 Sep 2025 16:24:17 -0400
+In-Reply-To: <20250922113026.3083103-4-apopple@nvidia.com>
 References: <20250922113026.3083103-1-apopple@nvidia.com>
-	 <20250922113026.3083103-3-apopple@nvidia.com>
+	 <20250922113026.3083103-4-apopple@nvidia.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42)
 Precedence: bulk
@@ -94,280 +94,267 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: IsNEzw_bAfr1pz9AIvTLxApxYSHqxtxXexFn5kKpsJk_1758744783
+X-Mimecast-MFC-PROC-ID: ZR08kEox0adCXQQ18TQe3O2EZurCrT5kyx1k9Wyuzag_1758745460
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Some comments down below
-
 On Mon, 2025-09-22 at 21:30 +1000, Alistair Popple wrote:
-> The GSP requires several areas of memory to operate. Each of these have
-> their own simple embedded page tables. Set these up and map them for DMA
-> to/from GSP using CoherentAllocation's. Return the DMA handle describing
-> where each of these regions are for future use when booting GSP.
+> The GSP requires some pieces of metadata to boot. These are passed in a
+> struct which the GSP transfers via DMA. Create this struct and get a
+> handle to it for future use when booting the GSP.
 >=20
 > Signed-off-by: Alistair Popple <apopple@nvidia.com>
 >=20
 > ---
 >=20
 > Changes for v2:
->=20
->  - Renamed GspMemOjbects to Gsp as that is what they are
->  - Rebased on Alex's latest series
+>  - Rebased on Alex's latest version
 > ---
->  drivers/gpu/nova-core/gpu.rs                  |  2 +-
->  drivers/gpu/nova-core/gsp.rs                  | 80 +++++++++++++++++--
->  drivers/gpu/nova-core/gsp/fw.rs               | 39 +++++++++
->  .../gpu/nova-core/gsp/fw/r570_144/bindings.rs | 19 +++++
->  4 files changed, 131 insertions(+), 9 deletions(-)
+>  drivers/gpu/nova-core/fb.rs                   |  1 -
+>  drivers/gpu/nova-core/firmware/gsp.rs         |  3 +-
+>  drivers/gpu/nova-core/firmware/riscv.rs       |  6 +-
+>  drivers/gpu/nova-core/gsp.rs                  |  1 +
+>  drivers/gpu/nova-core/gsp/boot.rs             |  7 +++
+>  drivers/gpu/nova-core/gsp/fw.rs               | 63 ++++++++++++++++++-
+>  .../gpu/nova-core/gsp/fw/r570_144/bindings.rs |  2 +
+>  7 files changed, 75 insertions(+), 8 deletions(-)
 >=20
-> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-> index 5da9ad726483..c939b3868271 100644
-> --- a/drivers/gpu/nova-core/gpu.rs
-> +++ b/drivers/gpu/nova-core/gpu.rs
-> @@ -221,7 +221,7 @@ pub(crate) fn new<'a>(
+> diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
+> index 4d6a1f452183..5580498ba2fb 100644
+> --- a/drivers/gpu/nova-core/fb.rs
+> +++ b/drivers/gpu/nova-core/fb.rs
+> @@ -87,7 +87,6 @@ pub(crate) fn unregister(&self, bar: &Bar0) {
+>  ///
+>  /// Contains ranges of GPU memory reserved for a given purpose during th=
+e GSP boot process.
+>  #[derive(Debug)]
+> -#[expect(dead_code)]
+>  pub(crate) struct FbLayout {
+>      /// Range of the framebuffer. Starts at `0`.
+>      pub(crate) fb: Range<u64>,
+> diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-cor=
+e/firmware/gsp.rs
+> index 9654810834d9..67b85e1db27d 100644
+> --- a/drivers/gpu/nova-core/firmware/gsp.rs
+> +++ b/drivers/gpu/nova-core/firmware/gsp.rs
+> @@ -127,7 +127,7 @@ pub(crate) struct GspFirmware {
+>      /// Size in bytes of the firmware contained in [`Self::fw`].
+>      pub size: usize,
+>      /// Device-mapped GSP signatures matching the GPU's [`Chipset`].
+> -    signatures: DmaObject,
+> +    pub signatures: DmaObject,
+>      /// GSP bootloader, verifies the GSP firmware before loading and run=
+ning it.
+>      pub bootloader: RiscvFirmware,
+>  }
+> @@ -212,7 +212,6 @@ pub(crate) fn new<'a, 'b>(
+>          }))
+>      }
 > =20
->              sec2_falcon: Falcon::new(pdev.as_ref(), spec.chipset, bar, t=
-rue)?,
-> =20
-> -            gsp <- Gsp::new(),
-> +            gsp <- Gsp::new(pdev)?,
-> =20
->              _: { gsp.boot(pdev, bar, spec.chipset, gsp_falcon, sec2_falc=
-on)? },
-> =20
+> -    #[expect(unused)]
+>      /// Returns the DMA handle of the radix3 level 0 page table.
+>      pub(crate) fn radix3_dma_handle(&self) -> DmaAddress {
+>          self.level0.dma_handle()
+> diff --git a/drivers/gpu/nova-core/firmware/riscv.rs b/drivers/gpu/nova-c=
+ore/firmware/riscv.rs
+> index b90acfc81e78..dec33d2b631a 100644
+> --- a/drivers/gpu/nova-core/firmware/riscv.rs
+> +++ b/drivers/gpu/nova-core/firmware/riscv.rs
+> @@ -53,11 +53,11 @@ fn new(bin_fw: &BinFirmware<'_>) -> Result<Self> {
+>  #[expect(unused)]
+>  pub(crate) struct RiscvFirmware {
+>      /// Offset at which the code starts in the firmware image.
+> -    code_offset: u32,
+> +    pub code_offset: u32,
+>      /// Offset at which the data starts in the firmware image.
+> -    data_offset: u32,
+> +    pub data_offset: u32,
+>      /// Offset at which the manifest starts in the firmware image.
+> -    manifest_offset: u32,
+> +    pub manifest_offset: u32,
+>      /// Application version.
+>      app_version: u32,
+>      /// Device-mapped firmware image.
 > diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-> index 503ce8ee0420..0185f66971ff 100644
+> index 0185f66971ff..2daa46f2a514 100644
 > --- a/drivers/gpu/nova-core/gsp.rs
 > +++ b/drivers/gpu/nova-core/gsp.rs
-> @@ -1,27 +1,91 @@
->  // SPDX-License-Identifier: GPL-2.0
-> =20
->  mod boot;
-> -
-> -use kernel::prelude::*;
-> -
->  mod fw;
-> =20
->  pub(crate) use fw::{GspFwWprMeta, LibosParams};
-> =20
-> +use kernel::device;
-> +use kernel::dma::CoherentAllocation;
-> +use kernel::dma_write;
-> +use kernel::pci;
-> +use kernel::prelude::*;
+> @@ -13,6 +13,7 @@
 >  use kernel::ptr::Alignment;
-> +use kernel::transmute::{AsBytes, FromBytes};
-> +
-> +use fw::LibosMemoryRegionInitArgument;
+>  use kernel::transmute::{AsBytes, FromBytes};
+> =20
+> +use crate::fb::FbLayout;
+>  use fw::LibosMemoryRegionInitArgument;
 > =20
 >  pub(crate) const GSP_PAGE_SHIFT: usize =3D 12;
->  pub(crate) const GSP_PAGE_SIZE: usize =3D 1 << GSP_PAGE_SHIFT;
->  pub(crate) const GSP_HEAP_ALIGNMENT: Alignment =3D Alignment::new::<{ 1 =
-<< 20 }>();
+> diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gs=
+p/boot.rs
+> index fb22508128c4..1d2448331d7a 100644
+> --- a/drivers/gpu/nova-core/gsp/boot.rs
+> +++ b/drivers/gpu/nova-core/gsp/boot.rs
+> @@ -1,6 +1,8 @@
+>  // SPDX-License-Identifier: GPL-2.0
 > =20
->  /// GSP runtime data.
-> -///
-> -/// This is an empty pinned placeholder for now.
->  #[pin_data]
-> -pub(crate) struct Gsp {}
-> +pub(crate) struct Gsp {
-> +    libos: CoherentAllocation<LibosMemoryRegionInitArgument>,
-> +    pub loginit: CoherentAllocation<u8>,
-> +    pub logintr: CoherentAllocation<u8>,
-> +    pub logrm: CoherentAllocation<u8>,
-> +}
-> +
-> +/// Creates a self-mapping page table for `obj` at its beginning.
-> +fn create_pte_array(obj: &mut CoherentAllocation<u8>) {
-> +    let num_pages =3D obj.size().div_ceil(GSP_PAGE_SIZE);
-
-Unfortunately there's a bit of a gotcha here - we can't actually use functi=
-ons
-like div_ceil as-is, because a number of 32 bit architectures do not suppor=
-t
-u64 / u64 natively. The problem is we don't have __aeabi_uldivmod implement=
-ed
-because we also don't want people to be defaulting to 64 bit division. Sinc=
-e
-GSP_PAGE_SIZE can be 32 bits here, normally in C you would want to use
-DIV_U64_ROUND_UP.
-
-FWIW: I bumped the conversation thread on fixing this again ("General" =E2=
-=86=92 "64-
-bit division" in the rust for linux zulip) since we've had 64 bit division
-come up a couple of times now for rust in a few different places, so it's
-probably good we come up with a solution for this so people don't keep havi=
-ng
-to do workarounds :P.
-
-> +    let handle =3D obj.dma_handle();
-> +
-> +    // SAFETY:
-> +    //  - By the invariants of the CoherentAllocation ptr is non-NULL.
-> +    //  - CoherentAllocation CPU addresses are always aligned to a
-> +    //    page-boundary, satisfying the alignment requirements for
-> +    //    from_raw_parts_mut()
-> +    //  - The allocation size is at least as long as 8 * num_pages as
-> +    //    GSP_PAGE_SIZE is larger than 8 bytes.
-> +    let ptes =3D unsafe {
-> +        let ptr =3D obj.start_ptr_mut().cast::<u64>().add(1);
-> +        core::slice::from_raw_parts_mut(ptr, num_pages)
-> +    };
-> +
-> +    for (i, pte) in ptes.iter_mut().enumerate() {
-> +        *pte =3D handle + ((i as u64) << GSP_PAGE_SHIFT);
-> +    }
-> +}
-> +
-> +/// Creates a new `CoherentAllocation<A>` with `name` of `size` elements=
-, and
-> +/// register it into the `libos` object at argument position `libos_arg_=
-nr`.
-> +fn create_coherent_dma_object<A: AsBytes + FromBytes>(
-> +    dev: &device::Device<device::Bound>,
-> +    name: &'static str,
-> +    size: usize,
-> +    libos: &mut CoherentAllocation<LibosMemoryRegionInitArgument>,
-> +    libos_arg_nr: usize,
-> +) -> Result<CoherentAllocation<A>> {
-> +    let obj =3D CoherentAllocation::<A>::alloc_coherent(dev, size, GFP_K=
-ERNEL | __GFP_ZERO)?;
-> +
-> +    dma_write!(libos[libos_arg_nr] =3D LibosMemoryRegionInitArgument::ne=
-w(name, &obj))?;
-> +
-> +    Ok(obj)
-> +}
+>  use kernel::device;
+> +use kernel::dma::CoherentAllocation;
+> +use kernel::dma_write;
+>  use kernel::pci;
+>  use kernel::prelude::*;
 > =20
->  impl Gsp {
-> -    pub(crate) fn new() -> impl PinInit<Self> {
-> -        pin_init!(Self {})
-> +    pub(crate) fn new(pdev: &pci::Device<device::Bound>) -> Result<impl =
-PinInit<Self, Error>> {
-> +        let dev =3D pdev.as_ref();
-> +        let mut libos =3D CoherentAllocation::<LibosMemoryRegionInitArgu=
-ment>::alloc_coherent(
-> +            dev,
-> +            GSP_PAGE_SIZE / size_of::<LibosMemoryRegionInitArgument>(),
-> +            GFP_KERNEL | __GFP_ZERO,
-> +        )?;
-> +        let mut loginit =3D create_coherent_dma_object::<u8>(dev, "LOGIN=
-IT", 0x10000, &mut libos, 0)?;
-> +        create_pte_array(&mut loginit);
-> +        let mut logintr =3D create_coherent_dma_object::<u8>(dev, "LOGIN=
-TR", 0x10000, &mut libos, 1)?;
-> +        create_pte_array(&mut logintr);
-> +        let mut logrm =3D create_coherent_dma_object::<u8>(dev, "LOGRM",=
- 0x10000, &mut libos, 2)?;
-> +        create_pte_array(&mut logrm);
+> @@ -14,6 +16,7 @@
+>      FIRMWARE_VERSION,
+>  };
+>  use crate::gpu::Chipset;
+> +use crate::gsp::GspFwWprMeta;
+>  use crate::regs;
+>  use crate::vbios::Vbios;
+> =20
+> @@ -132,6 +135,10 @@ pub(crate) fn boot(
+>              bar,
+>          )?;
+> =20
+> +        let wpr_meta =3D
+> +            CoherentAllocation::<GspFwWprMeta>::alloc_coherent(dev, 1, G=
+FP_KERNEL | __GFP_ZERO)?;
+> +        dma_write!(wpr_meta[0] =3D GspFwWprMeta::new(&gsp_fw, &fb_layout=
+))?;
+
+Not something I think we need to block this series on, but this line does m=
+ake
+me wonder if we should have a variant of dma_write!() that uses
+CoherentAllocation::write(), since I think that would actually be faster th=
+en
+calling dma_write!() here.
+
 > +
-> +        Ok(try_pin_init!(Self {
-> +            libos,
-> +            loginit,
-> +            logintr,
-> +            logrm,
-> +        }))
+>          Ok(())
 >      }
 >  }
 > diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/=
 fw.rs
-> index 181baa401770..dd1e7fc85d85 100644
+> index dd1e7fc85d85..7f4fe684ddaf 100644
 > --- a/drivers/gpu/nova-core/gsp/fw.rs
 > +++ b/drivers/gpu/nova-core/gsp/fw.rs
-> @@ -7,8 +7,10 @@
-> =20
+> @@ -8,12 +8,14 @@
 >  use core::ops::Range;
 > =20
-> +use kernel::dma::CoherentAllocation;
->  use kernel::ptr::Alignable;
->  use kernel::sizes::SZ_1M;
-> +use kernel::transmute::{AsBytes, FromBytes};
+>  use kernel::dma::CoherentAllocation;
+> -use kernel::ptr::Alignable;
+> -use kernel::sizes::SZ_1M;
+> +use kernel::ptr::{Alignable, Alignment};
+> +use kernel::sizes::{SZ_128K, SZ_1M};
+>  use kernel::transmute::{AsBytes, FromBytes};
 > =20
+> +use crate::firmware::gsp::GspFirmware;
 >  use crate::gpu::Chipset;
 >  use crate::gsp;
-> @@ -99,3 +101,40 @@ pub(crate) fn wpr_heap_size(&self, chipset: Chipset, =
-fb_size: u64) -> u64 {
->  /// addresses of the GSP bootloader and firmware.
+> +use crate::gsp::FbLayout;
+> =20
+>  /// Dummy type to group methods related to heap parameters for running t=
+he GSP firmware.
+>  pub(crate) struct GspFwHeapParams(());
+> @@ -102,6 +104,63 @@ pub(crate) fn wpr_heap_size(&self, chipset: Chipset,=
+ fb_size: u64) -> u64 {
 >  #[repr(transparent)]
 >  pub(crate) struct GspFwWprMeta(bindings::GspFwWprMeta);
-> +
-> +#[repr(transparent)]
-> +pub(crate) struct LibosMemoryRegionInitArgument(bindings::LibosMemoryReg=
-ionInitArgument);
-> +
+> =20
 > +// SAFETY: Padding is explicit and will not contain uninitialized data.
-> +unsafe impl AsBytes for LibosMemoryRegionInitArgument {}
+> +unsafe impl AsBytes for GspFwWprMeta {}
 > +
 > +// SAFETY: This struct only contains integer types for which all bit pat=
 terns
 > +// are valid.
-> +unsafe impl FromBytes for LibosMemoryRegionInitArgument {}
+> +unsafe impl FromBytes for GspFwWprMeta {}
 > +
-> +impl LibosMemoryRegionInitArgument {
-> +    pub(crate) fn new<A: AsBytes + FromBytes>(
-> +        name: &'static str,
-> +        obj: &CoherentAllocation<A>,
-> +    ) -> Self {
-> +        /// Generates the `ID8` identifier required for some GSP objects=
-.
-> +        fn id8(name: &str) -> u64 {
-> +            let mut bytes =3D [0u8; core::mem::size_of::<u64>()];
+> +type GspFwWprMetaBootResumeInfo =3D r570_144::GspFwWprMeta__bindgen_ty_1=
+;
+> +type GspFwWprMetaBootInfo =3D r570_144::GspFwWprMeta__bindgen_ty_1__bind=
+gen_ty_1;
 > +
-> +            for (c, b) in name.bytes().rev().zip(&mut bytes) {
-> +                *b =3D c;
-> +            }
-> +
-> +            u64::from_ne_bytes(bytes)
-> +        }
-> +
-> +        Self(bindings::LibosMemoryRegionInitArgument {
-> +            id8: id8(name),
-> +            pa: obj.dma_handle(),
-> +            size: obj.size() as u64,
-> +            kind: bindings::LibosMemoryRegionKind_LIBOS_MEMORY_REGION_CO=
-NTIGUOUS as u8,
-> +            loc: bindings::LibosMemoryRegionLoc_LIBOS_MEMORY_REGION_LOC_=
-SYSMEM as u8,
+> +impl GspFwWprMeta {
+> +    pub(crate) fn new(gsp_firmware: &GspFirmware, fb_layout: &FbLayout) =
+-> Self {
+> +        Self(bindings::GspFwWprMeta {
+> +            magic: GSP_FW_WPR_META_MAGIC as u64,
+> +            revision: u64::from(GSP_FW_WPR_META_REVISION),
+> +            sysmemAddrOfRadix3Elf: gsp_firmware.radix3_dma_handle(),
+> +            sizeOfRadix3Elf: gsp_firmware.size as u64,
+> +            sysmemAddrOfBootloader: gsp_firmware.bootloader.ucode.dma_ha=
+ndle(),
+> +            sizeOfBootloader: gsp_firmware.bootloader.ucode.size() as u6=
+4,
+> +            bootloaderCodeOffset: u64::from(gsp_firmware.bootloader.code=
+_offset),
+> +            bootloaderDataOffset: u64::from(gsp_firmware.bootloader.data=
+_offset),
+> +            bootloaderManifestOffset: u64::from(gsp_firmware.bootloader.=
+manifest_offset),
+
+JFYI ^ you can use .into() here instead of the full u64::from(=E2=80=A6)
+
+Besides those two bits:
+
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+
+> +            __bindgen_anon_1: GspFwWprMetaBootResumeInfo {
+> +                __bindgen_anon_1: GspFwWprMetaBootInfo {
+> +                    sysmemAddrOfSignature: gsp_firmware.signatures.dma_h=
+andle(),
+> +                    sizeOfSignature: gsp_firmware.signatures.size() as u=
+64,
+> +                },
+> +            },
+> +            gspFwRsvdStart: fb_layout.heap.start,
+> +            nonWprHeapOffset: fb_layout.heap.start,
+> +            nonWprHeapSize: fb_layout.heap.end - fb_layout.heap.start,
+> +            gspFwWprStart: fb_layout.wpr2.start,
+> +            gspFwHeapOffset: fb_layout.wpr2_heap.start,
+> +            gspFwHeapSize: fb_layout.wpr2_heap.end - fb_layout.wpr2_heap=
+.start,
+> +            gspFwOffset: fb_layout.elf.start,
+> +            bootBinOffset: fb_layout.boot.start,
+> +            frtsOffset: fb_layout.frts.start,
+> +            frtsSize: fb_layout.frts.end - fb_layout.frts.start,
+> +            gspFwWprEnd: fb_layout
+> +                .vga_workspace
+> +                .start
+> +                .align_down(Alignment::new::<SZ_128K>()),
+> +            gspFwHeapVfPartitionCount: fb_layout.vf_partition_count,
+> +            fbSize: fb_layout.fb.end - fb_layout.fb.start,
+> +            vgaWorkspaceOffset: fb_layout.vga_workspace.start,
+> +            vgaWorkspaceSize: fb_layout.vga_workspace.end - fb_layout.vg=
+a_workspace.start,
 > +            ..Default::default()
 > +        })
 > +    }
 > +}
+> +
+> +pub(crate) use r570_144::{
+> +    // GSP firmware constants
+> +    GSP_FW_WPR_META_MAGIC,
+> +    GSP_FW_WPR_META_REVISION,
+> +};
+> +
+>  #[repr(transparent)]
+>  pub(crate) struct LibosMemoryRegionInitArgument(bindings::LibosMemoryReg=
+ionInitArgument);
+> =20
 > diff --git a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs b/drivers/=
 gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> index 0407000cca22..6a14cc324391 100644
+> index 6a14cc324391..392b25dc6991 100644
 > --- a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
 > +++ b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> @@ -124,3 +124,22 @@ fn default() -> Self {
->          }
->      }
->  }
-> +pub type LibosAddress =3D u64_;
-> +pub const LibosMemoryRegionKind_LIBOS_MEMORY_REGION_NONE: LibosMemoryReg=
-ionKind =3D 0;
-> +pub const LibosMemoryRegionKind_LIBOS_MEMORY_REGION_CONTIGUOUS: LibosMem=
-oryRegionKind =3D 1;
-> +pub const LibosMemoryRegionKind_LIBOS_MEMORY_REGION_RADIX3: LibosMemoryR=
-egionKind =3D 2;
-> +pub type LibosMemoryRegionKind =3D ffi::c_uint;
-> +pub const LibosMemoryRegionLoc_LIBOS_MEMORY_REGION_LOC_NONE: LibosMemory=
-RegionLoc =3D 0;
-> +pub const LibosMemoryRegionLoc_LIBOS_MEMORY_REGION_LOC_SYSMEM: LibosMemo=
-ryRegionLoc =3D 1;
-> +pub const LibosMemoryRegionLoc_LIBOS_MEMORY_REGION_LOC_FB: LibosMemoryRe=
-gionLoc =3D 2;
-> +pub type LibosMemoryRegionLoc =3D ffi::c_uint;
-> +#[repr(C)]
-> +#[derive(Debug, Default, Copy, Clone)]
-> +pub struct LibosMemoryRegionInitArgument {
-> +    pub id8: LibosAddress,
-> +    pub pa: LibosAddress,
-> +    pub size: LibosAddress,
-> +    pub kind: u8_,
-> +    pub loc: u8_,
-> +    pub __bindgen_padding_0: [u8; 6usize],
-> +}
+> @@ -9,6 +9,8 @@
+>  pub const GSP_FW_HEAP_SIZE_OVERRIDE_LIBOS2_MAX_MB: u32 =3D 256;
+>  pub const GSP_FW_HEAP_SIZE_OVERRIDE_LIBOS3_BAREMETAL_MIN_MB: u32 =3D 88;
+>  pub const GSP_FW_HEAP_SIZE_OVERRIDE_LIBOS3_BAREMETAL_MAX_MB: u32 =3D 280=
+;
+> +pub const GSP_FW_WPR_META_REVISION: u32 =3D 1;
+> +pub const GSP_FW_WPR_META_MAGIC: i64 =3D -2577556379034558285;
+>  pub type __u8 =3D ffi::c_uchar;
+>  pub type __u16 =3D ffi::c_ushort;
+>  pub type __u32 =3D ffi::c_uint;
 
 --=20
 Cheers,
