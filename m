@@ -1,334 +1,260 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010017.outbound.protection.outlook.com [52.101.201.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6E28834;
-	Wed, 24 Sep 2025 17:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758735993; cv=fail; b=Eb8wOpL7JqCZlh0rlGDeDLZgAOk2WlncEiSTGkDROpIQETnw9Ke0mezFApgfc4E+2TcaWWIt/9ql/foVZoErfGdWc8eqfs6LNbBAL+MN6bzC0YQZC0dBomXudAoY2+fF4gBo6sO8IoBlakY0u6m/gMOnc+2fYVd13U/K1+Q1SHM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758735993; c=relaxed/simple;
-	bh=ZwwfRdRPanME116zwaKCRP6rQM/H9u41ZA6cipdOfS4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ye/yScgvbLC/gn93nsSCO4Ed3zwRaPQlL1OReK02EOVUyq+xqlv8sr37tlUrCw/gfgbkrNdJ12SsEr5MhTJ6L8oz/4b3fuvV8JQ5eAZAVCNr3onKycC9GlRCqmvIlzhdh1uo1bNzPfnLMzocE3PWcVh2GPRYpX5H2Xn1hfB5rQY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iKnZE+de; arc=fail smtp.client-ip=52.101.201.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA79199230
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 18:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758739222; cv=none; b=dOvXWgZKS2FDLRq294+m1mlti/krS0Xi2S6rjRLk0qI60gfAtLN+M9J/t3bPXXJNkysgdm5e951GmRo/AzMNoIFXSfD/Do42kVr2TlE9xWucIMntAgE6x2ij+fxb2TP2fui0q0gypbjY64tSSgGaXLzHU3FWryheSiH/Fmt6SvY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758739222; c=relaxed/simple;
+	bh=Lz5nNPc99WsglaCwylBBNPoIg34qFlQe9Q2dS/0RE9A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SNj7deHIn4U+rVh0olHp/C6dRh3bpr2vAPRogwFKKu4juZDolACLfZ8zd887s2m1w7MA6y/zLrtHB/gVjDnhn8UQozGGlYm3dAPfCquMalM9IBSKRRcVr9PNDTMIn7C1+eM161eBDGa8FqlCIoBLo4Ex1CDq5WXFTirSyjuDtfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=VsuONNpA; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iKnZE+de"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KBm7nXijZG7EVTY4LnLyTUdCWHutAuyK7Xq3bFErDDXzX1hsx2X4B5nYLpo9A5KC1nvzciSRmbhR08ebKVLsrKhq3oNGTHL03wIuywMwXJNt+KNZHA6HBg0OndsjchrEuB/Ol2ZYtoQbgD0oeuJDe9PiVXXoJPIERSVRG5u719asdG9bjzH1CifmIiX3ulmO29BJxlwE6efZlx9BZHBF30JmA2pSundPaHsjiJNdGfV5NDgWPZ+pxBjfC4xyWXkaIduS8AMmXDla5pkzjLpktQil4uvZkUE9mK+8dI/qanP48AqKVCxK7EuWGMHm8NCMu2ugn/K9vfoYoIWAKIpbJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AfBU/26vx5iUxmA6p8bQ3bGqeUzfH5nqJoeUwbZCo68=;
- b=XvxU9xVkdij87oC8Q8OMgKlvw0iv5l+h1vFLiz5BQVoWSZi46RWKJsOLLExrS8SG1pnJTTC0qTUDWdXfko/Vi6C+6urxTXMb/nYoJLd76fp5Jbcs4D/TpjVwU3MPj22R0XR8kKXZnyoWSFNganGyb+qlTOweCg1C+GWZ+5XKJYN/HmSc/5X3PhrYnoM0mGMYbhPT/6LJrZeAaA608/X4s7FBUJE5RSsfZmy/cnz2LRwQ0RgydnLYgLchFJ7wNuwHYQY6rjEXKFC4v2AzqlLtATXOWgpyO//FKXiUp4qDop1OirHaak6PGKvBYZ0g0ecOvDtz/fcvN20FhkxWZHqUwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AfBU/26vx5iUxmA6p8bQ3bGqeUzfH5nqJoeUwbZCo68=;
- b=iKnZE+detI7xXJiPudzm/LXSx32cqTHVHyv4IoGfWeb/AzTB5tmYE5Fui4oksWm45s9S1WCdWLLe0+KSTUnQycQKgG0A8gi38TquGjXjdK1FZWF5OwYWG8pTlQuJ/IxNRtPVNpMiTsb8KwYGNbqnlbCrHaCdn/edOq3Jnpfui0L6yj+vYicUKDN3q11pkudiiR3iusC3bzQpmD5SXG7GAjuJTIHV7zkxxsh6aJK6Ah39FK6Uh7jnMeahqr/+oLTXUr43e8f+zim+Q8fG+qpo7fDJ8eUoHTVTpSaTHNLUzfl6q1apdzbsBsXvN1+LzlQbkvGdqcgtJNU1pmaoxyjoQg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by CY8PR12MB7732.namprd12.prod.outlook.com (2603:10b6:930:87::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Wed, 24 Sep
- 2025 17:46:25 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9137.018; Wed, 24 Sep 2025
- 17:46:25 +0000
-Message-ID: <2979b6b8-ebdb-43cf-ba3a-5d428101f74b@nvidia.com>
-Date: Wed, 24 Sep 2025 19:46:19 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/6] nova-core: bitfield: Move bitfield-specific code
- from register! into new macro
-To: Yury Norov <yury.norov@gmail.com>, Greg KH <gregkh@linuxfoundation.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, acourbot@nvidia.com,
- Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>, nouveau@lists.freedesktop.org
-References: <20250920182232.2095101-1-joelagnelf@nvidia.com>
- <20250920182232.2095101-2-joelagnelf@nvidia.com>
- <2025092157-pauper-snap-aad1@gregkh> <DCYHCLM67KRZ.366VS9PDKLYKY@kernel.org>
- <2025092125-urban-muppet-1c2f@gregkh> <DCYIX8URVIWM.2ZK3GHH3J82XQ@kernel.org>
- <2025092432-entrust-citizen-0232@gregkh> <aNQCVslEIHHSm8f5@yury>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <aNQCVslEIHHSm8f5@yury>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PA7P264CA0135.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:36e::6) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="VsuONNpA"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-279e2554b5fso799935ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 11:40:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1758739219; x=1759344019; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CmJ3vOxzWTYE+jCZQu9PTb3XdXqCFWVRNB5Wst4HaN8=;
+        b=VsuONNpAqu0JaeJsXkucyiqb9txr3bCS6eMsNg+mtgnll/4/do/YTAXwbIyojoI4KP
+         j+aJOz3rEKSSRpgmZHUVnZKCi9/XhkAV3j0BiTPTsZtuprVpmd1yMXMQlSZ52aFNxqtE
+         q8/GtB++wZ8Tct12HaAs2r/ncjI2DHX5o0WrnmMeYden8OXB2DVC3QC3vF05elVIYlOd
+         nphQIBnz0WEHObPM71Jhk5FzNnASKuXbPc7gKdEfwgkkrtelMCo1/DZvIf+unmXbbiaL
+         xat7KaZeSKCHYyaxZ0iOqqxQvjgvj04bmbAoaU4xe4e5NdegVdtXsbtNGoiDdbv2ERBO
+         iESQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758739219; x=1759344019;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CmJ3vOxzWTYE+jCZQu9PTb3XdXqCFWVRNB5Wst4HaN8=;
+        b=eBQehOhHxPC+iVZq+D6TohAIZISTpgIkf3R90NNfZNeRDlMREiCEWofpNDWG2JJZag
+         5v3FESZdxngJf/QvCkHwpJJ883XnREp9tg7ywlPdv0ksDvet8aE2YkGEVsyG9DOjw0Fc
+         Kv9gdu3Yp6QoGsvxljcqP+60v8J5XE8YdviPzQ0RgP9enomOOQeS0IHkGmc+iu1S1d6w
+         guHg1tly0YzRhfcMBSYSqM4id2fM8vMR95hNeJBd3xggBPDGnWwROI7kOr/4zpnYSenq
+         HJiOIgsAQwYinUiBLxNllF1O+dTKX97biOx/ya05VnF+YvWnBCf7Yu25gRZDOZ6twjN9
+         0C+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXRX5ZucNmDZsPQFVsoxyvZeGs4INbFEEkrk5mEVdK880sYa8rtHrMaergypobIzG2QH3F+27Zquf5gjvFk4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMmeftXDZUvOF27ewVsYdr+udsPZH6Jiq8UZSVvMY+wKHkg6Vy
+	x9reD9UeqGbU3x/I0N5NKwit44edBEGj1yVxLhwhyH2FWH4OxjP366TIz+wz1rc/07o=
+X-Gm-Gg: ASbGncuo7siZ5yhYsVTrJiIWpqKcLfky8YA82pN1oyAnoeWl8uo2hMRoh3cw90ejc10
+	5QXkqya9NnEE9RaeHHBkBBg3rBkmxhIX42vFISt3stgzIs7/8Ah59kzRrEGGQL/EqA5HEG2j2mC
+	IHRnvi/J8EpploHwwOr001FS1l4TmWmcjos1kI7ULv0dTwoBm3k12z5I6bazdnh+A1ir5BVGQsg
+	P0t7Q+97qEOzdRbABm/pl8IyiGRY8WlpwRi9BkGkdl7Tq0/1s00MQqIcyDzUhZ6bf+SMKwkX87H
+	MjyajeATNy82De4zYnBW1YKzvQRJzpXqutnSK1sGnsBFINv32XtSX35chcUscgHiCpoRX6jFFKh
+	SspY/BnHc69YtZHsEU6GQEZ3P+Y+/ir3N
+X-Google-Smtp-Source: AGHT+IGXuHXHBWPf+oE+Ln4Jp/4CaKr0teMjK8nrYhSg666HYgvhIXatAPi5gWQsQGiN1OujHcfx1A==
+X-Received: by 2002:a17:902:e790:b0:24b:270e:56d4 with SMTP id d9443c01a7336-27ed4c67b42mr6992845ad.4.1758739219414;
+        Wed, 24 Sep 2025 11:40:19 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698035ddcasm198787335ad.142.2025.09.24.11.40.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 11:40:18 -0700 (PDT)
+Date: Wed, 24 Sep 2025 11:40:15 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Paul Walmsley <pjw@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
+	richard.henderson@linaro.org, jim.shu@sifive.com,
+	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com,
+	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com,
+	cleger@rivosinc.com, alexghiti@rivosinc.com,
+	samitolvanen@google.com, broonie@kernel.org,
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+	Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>,
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+	Florian Weimer <fweimer@redhat.com>, bharrington@redhat.com,
+	Aurelien Jarno <aurel32@debian.org>
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+Message-ID: <aNQ7D6_ZYMhCdkmL@debug.ba.rivosinc.com>
+References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+ <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|CY8PR12MB7732:EE_
-X-MS-Office365-Filtering-Correlation-Id: 939f0585-e9d0-4d22-73e6-08ddfb924828
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UHp6OHZkMWtNSmR2SWJ3ZVhZc21SZUszdCt0MXMxMCtjU3pORmp0ZWpTUHFO?=
- =?utf-8?B?MDlQbXY4YWZqRERWYndhZlc5a0JBa1QyRitaemMvL3pjWVpjNVNVYjRvOXhJ?=
- =?utf-8?B?aE5oZGc1MTQwREY1Z1FMT1Z3K2dGbFFpOUdCUTUwVUZsZWMyZDdFdDQyV1pO?=
- =?utf-8?B?Q2lVYUlldnlBZ0FhdUlsMTBNUWdVSGsydDdmU2FXOHpzTUpKTlFXdk9PNzc0?=
- =?utf-8?B?QVpjdGdUNWZnY1IvcThIRkFJdDhRK0NpZHNzNm5hOEFEZWcwY3FUaFNNZVZk?=
- =?utf-8?B?c0Frd3JZU3JUVkdpSk5yWXhwaG14RFF2VXZtUWJFWnFnai8yQ0V3WFFpb2Y0?=
- =?utf-8?B?cWRneThKZW5iRW52Wkh3cFVzZldSVWZ4aExJZEhDSHp1eWFndTRiMVM3c2lT?=
- =?utf-8?B?NDhFYVJQWFArSG0zNmZuL1M4TC85Z1BpRDRyUW5qZTl4TkNkd3U3RkZacG9n?=
- =?utf-8?B?MERpMzQ4a0djakVjOEgxYmtMa0FmU1Y4UEpvTklnWEpYOVV1eVRIUXpkUWJJ?=
- =?utf-8?B?Mjg4QnloRlZKL01hbzBzTG9wWHZqY2JvMENsUHFUUDVUWlFkYVpYcmo2d253?=
- =?utf-8?B?OTE0RFBqYWJ1Q2M1S0JxMzlBUDdLVEVRWllXUjVNbVVQL3RPR0ptNzFPWnpP?=
- =?utf-8?B?QXZjWXp3cUE1Q3dxdXpHZHYwUTdsTDhKM3UzVEtrTW9BSmRZV2JlTUxBd09p?=
- =?utf-8?B?S0pNZGRFbXVUdGV5VFJkaVVQR0R3cUg2RnBZNzR6Q2lKUWFLK0ErU0xWamZT?=
- =?utf-8?B?NXRsRy9Rb25ENWZUODkxV3M1dFdIdHdQYmIyV1A3NGtxNFI5eDdLTHN6ZGpr?=
- =?utf-8?B?NFpOdTlJYko0Vk9McG1pK242dUdRR2p5OFRpNnU5VE5qYVRicXZDWU5yTnhH?=
- =?utf-8?B?NE95Zm9zMW16b20rOHRzN1h3RFdFVU1UclA0RTlEUy9ENy96QXNaRG5GdDZ6?=
- =?utf-8?B?b1NFcHdvU1dCalZGVUh3UjZHaC9jNzVsVmJMbWhydE05RHovbUo4N0lEOGZG?=
- =?utf-8?B?bEJJNDh3REFHTVQxUDBMdmVaN005ZzJ5SExVQXFMS0hEb3BrYmV2UzdsVGVv?=
- =?utf-8?B?anVpWStYcUVsUkhDY3M0aVNEMFVZcGwxTzJQZXhTb1ZxOUUrTk5XZmR3WFph?=
- =?utf-8?B?U0NWTW5uS3M2N2UvSExZVGlFcUtkWElIYzJVWENjbUdZRWVVTFpTMFg3cGY5?=
- =?utf-8?B?YUxtUmR1WmJhMi9GWmNxLzluSHE3NDVsL2F2VE9wMzloaVhqVjBkUGVEaEFa?=
- =?utf-8?B?ZFNmaFQ5Vm5XUkJSbXRoNzJTOU83TDh6Lzk5OHNIWUc0TnREQ1BEUWxITXVE?=
- =?utf-8?B?bTJkZGJuY1dDR0E2WTNnSDVRaTdibGpaNm5aMWs2K01UN3FaMHVoK3JNSEU4?=
- =?utf-8?B?MEhWblBSQUR4L2V4SVJPdlhkZS81WlZYU0FtUkZzTWgyY2dNSjh0UEJVeTRX?=
- =?utf-8?B?WlFYU2dnMnlmQzYvTHByeHZkN3FhempXd2RsWHpGVHFMK1ZKM3E2RVlsaTFD?=
- =?utf-8?B?UUFESTFSMnFzNzNKQnplUTFXcjJIS24xRmVCMHNNUzF6MmR4WTU0TGNKRlpD?=
- =?utf-8?B?WDBoN2NDejV5VjNGQXVCYm4zUGxqYXB6WlM5RUNqbFBGSGJGNjJreXpkKzRq?=
- =?utf-8?B?WUxJUWNSU1dPZGlYeG5CZHdINXdtOGNhbUtTZndNRm9hNllmYTF6RXA0V0JH?=
- =?utf-8?B?RmJ1WXlkUy9jSjZWdHF0MEVkSGE5Rk5zSkpNNDVvUDdUQk5PMDZtMUtwcm1o?=
- =?utf-8?B?TlVDSGJ1eTY0OVJMeVN1NXk2VkJkUFpWVS84bG5nbGppSmJKV3g5WUJKOVJ5?=
- =?utf-8?B?dnhjcDRkSWZWWENIczhBbVNIN1RVWDJMMHlIaFJTc3IzNjMwVFJRZlpKcU1m?=
- =?utf-8?B?LzJJR0NuaXd1bmRJc1RqeXBVT1RENm05YndJZk8ydXFaelVMbTZpMGhBSk1Y?=
- =?utf-8?Q?s/T6pr6wtSs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eU9IOCs3bk14b29UUi9lajZtTDEvMCs1Y0ZUOGlvdVFvUE1TL3FrTzJ5L1Zy?=
- =?utf-8?B?OWQwSGhTRlRLZmhSaDJJSS9VaXRZWGJkTHBXNEtlOVVRU1hYdGRkUWZMdFFs?=
- =?utf-8?B?eWtzbFdQdjZDcXFEcGVJSWEyRTFKMUtwU3J6bVB4bGxLNm9RQ1oxcWVDb1Vr?=
- =?utf-8?B?UEVRTCtwQlQyUjN1VERUbHFtRUllSzFKZ1JYZnRvbFBXalpkNXE5a2VNYWFF?=
- =?utf-8?B?WXR4UE4xNmFHY0VqZlQ3WWo4QTRQTE8vOGxJU0VuNFg2TXJKUkdYZzJENXNx?=
- =?utf-8?B?b2hyT0ZJWnNWczY3RFRwRFN6WDd5TVljSXQxdTNNbXVOZGxTZXZFQXoyWWZa?=
- =?utf-8?B?MDVpcTB5MnZVOVZLb3l0Z29ldFV3akJNajBSclJ5K2plYmw2YjFKY2NWVmJa?=
- =?utf-8?B?OVZMeDVPVVorYlVUT1ZDMnE4UnBJdzl1OVlRTUdmS2M1YmZncW13UVlRcjlO?=
- =?utf-8?B?K1VWWVFvQmI5S0dVYzkzOGkyVUhHWEIyVmhQUnJqVHYzd1NiN2FrQ0dIQ3Jj?=
- =?utf-8?B?ZWJSbEFhdEx0SzRwOExTN0cxMVVJbW1BbDd1VFRpOUVVb1l3OXEweGxMUTlU?=
- =?utf-8?B?bG5sK1I1b1JjejBhYzNFN1ZhYmRvZU5XeU8rM3gzelNWMG5iLzFjMVFKT2dy?=
- =?utf-8?B?aGdOR0ZPN09tUjZjRm5qQWFQcGEzQit2MmlkMmF0NzBBNGtlaEpwVlNuUkZJ?=
- =?utf-8?B?ZThLSEJHTDJocHJ6NzNiQ0JzdTkrYUF4Zjd2ZHFKYStiOWFWeGN4TVNlalpo?=
- =?utf-8?B?UnNNZm40eVFMdVJLU29FVXY5clluUXJrZlc5T1JKZ1YyQ3FLS2RkUDlUWjRX?=
- =?utf-8?B?cG1qNG05R3pOSmFWbiszUjkvcDFyRzUvUUF2VlZwUUdJRUF6Mmd3K0t3ZDV6?=
- =?utf-8?B?MEswaFBLU3RmOXd3bVpHdWxLRjR0TzI0b3hnWUJqQ3NyVW9SckNrVEhGaGJX?=
- =?utf-8?B?SXNzVCtUeGR5WXJiMnoxNU1tQXlkTlFGdkpST3pENUtPWmZYSEF0c2tVMVFT?=
- =?utf-8?B?YWdJSGlrSDRyQ09rZC9iK0syVTRoNjQxZjZnVDBMK0J0YnVIMmM4YXJtUVZn?=
- =?utf-8?B?Zmd4czFNQzh0R1NpWUl4YVYva3JmMFRvMWZXMWRSZGlkUDlCT0FEK2RtMGZR?=
- =?utf-8?B?akROYXZtNWFIWjRHTk1MdXE5b0sxZ3g4d1ZZa0pMeWNYRmE3R1N1a0NWcDAy?=
- =?utf-8?B?dmFrQ2lPWi95V2VvWlErWnRieXpiSmt0Ti9mWTB5ZTR2WGlxZFgrdGJqUnNJ?=
- =?utf-8?B?bTkxVTRoUE5HdHdhQmxTMVRhbUo4eVNXN1VXWHduUHFZdEduOTBBaVllbW1h?=
- =?utf-8?B?WGN0SHAvZlN0RnFIZWJ1WGQ1YUxiMzdncHZQL2EzdnVWb3ZpOTY2aGxBcXlO?=
- =?utf-8?B?blRsSmk0Y1RUTTUyTGtsUmREak5selUzNnprZEFLTm9XcFFSZlVhMlp5Yk45?=
- =?utf-8?B?QWhvZTh1Vmx2R1d5bEd6cTUwK0IwanVBYVZremFXdEovSnFjMjBuQjBoL0dZ?=
- =?utf-8?B?Nko2LzFKY080aS92Vkw0bWtPWVlDNTFIMVd6eHZmandhZGpCOUorQU5sOUNT?=
- =?utf-8?B?LzlVbXpoY3RIQVhvdHlYTHZ4RnBNTjV0Unlibzh0N2NoNHcySXpWdktMSmxm?=
- =?utf-8?B?a3p1cmNZMWYvNWw4VmYwVEM2UllOVkJyM2JjaUx0Mm45STZRWXdBRDNUUzUw?=
- =?utf-8?B?a1RUM0RxdjZsZHRnZ3dEQXVjUVA2NW9IK0tsNmVyODI2M2pnUk1yOVVIT1RQ?=
- =?utf-8?B?SE03a2R1VEc3MjI1blY0b1JQSW4xL0d3bVdaTGNKR1phQXNZZDhRN0VIdmxM?=
- =?utf-8?B?akpiRjFKaDcyeWdJSENDSmQ4UzNTWWx4V0lqbFJwdWI0SFlIdjJmYlhMcyts?=
- =?utf-8?B?ZUJ2V2FtYWNhR29ITmd2UkhucG9hbWFEWHZkTkZ0M0xYNE5ES1pHQTlQeG1D?=
- =?utf-8?B?MlNaR3RmWkJPdVpqSHIxdEJmdDRrRnpSWkRjSDR2QUhJV0pzcU5sV2EzTk5j?=
- =?utf-8?B?SW54WXFrYWloV0JnRFlKaEdicXdNMGpkMnA5Z1Z4UzMvOWg1allGcjk3bHVx?=
- =?utf-8?B?ZWJkRXgvQ0xmVUQzT0tHeTlxVTg0bC8rNjJzS0g5bkVGUVJKRXBjVzNpOEw5?=
- =?utf-8?Q?sVpF4PfKtGBZOw8o4nMSLhM8M?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 939f0585-e9d0-4d22-73e6-08ddfb924828
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2025 17:46:25.3779
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VUMJvr+b2IJeWpMfoJUePk+wv3w1JZr4VSI0hm+C3VMwW0k0heXN6uWsUiD4VN0qEo39pVBYR22T1e1Ysfwd7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7732
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+
+On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
+>Hi,
+>
+>On Thu, 31 Jul 2025, Deepak Gupta wrote:
+>
+>[ ... ]
+>
+>> vDSO related Opens (in the flux)
+>> =================================
+>>
+>> I am listing these opens for laying out plan and what to expect in future
+>> patch sets. And of course for the sake of discussion.
+>>
+>
+>[ ... ]
+>
+>> How many vDSOs
+>> ---------------
+>> Shadow stack instructions are carved out of zimop (may be operations) and if CPU
+>> doesn't implement zimop, they're illegal instructions. Kernel could be running on
+>> a CPU which may or may not implement zimop. And thus kernel will have to carry 2
+>> different vDSOs and expose the appropriate one depending on whether CPU implements
+>> zimop or not.
+>
+>If we merge this series without this, then when CFI is enabled in the
+>Kconfig, we'll wind up with a non-portable kernel that won't run on older
+>hardware.  We go to great lengths to enable kernel binary portability
+>across the presence or absence of other RISC-V extensions, and I think
+>these CFI extensions should be no different.
+>
+>So before considering this for merging, I'd like to see at least an
+>attempt to implement the dual-vDSO approach (or something equivalent)
+>where the same kernel binary with CFI enabled can run on both pre-Zimop
+>and post-Zimop hardware, with the existing userspaces that are common
+>today.
+
+Added some distro folks in this email chain.
+
+After patchwork meeting today, I wanted to continue discussion here. So thanks
+Paul for looking into it and initiating a discussion here.
+
+This patch series has been in the queue for quite a long time and we have had
+deliberations on vDSO topic earlier as well and after those deliberations it
+was decided to go ahead with merge and it indeed was sent for 6.17 merge
+window. Unfortunatley due to other unforeseen reasons, entirety of riscv
+changes were not picked. So it's a bit disappointing to see back-paddling on
+this topic.
+
+Anyways, we are here. So I'll provide a bit of context for the list about
+deliberations and discussions we have been having for so many merge windows.
+This so that a holistic discussion can happen on this before we make a
+decision.
+
+Issue
+======
+
+Instructions in RISC-V shadow stack extension (zicfiss - [1]) are carved out of
+"may be ops" aka zimop extension [2]. "may be ops" are illegal on non-RVA23
+hardware. This means any existing riscv CPU or future CPU which isn't RVA23
+compliant and not implementing zimop will treat these encodings as illegal.
+
+Current kernel patches enable shadow stack and landing pad support for
+userspace using config `CONFIG_RISCV_USER_CFI`. If this config is selected then
+vDSO that will be exposed to user space will also have shadow stack
+instructions in them. Kernel compiled with `CONFIG_RISCV_USER_CFI`, for sake of
+this discussion lets call it RVA23 compiled kernel.
+
+Issue that we discussed earlier and even today is "This RVA23 compiled kernel
+won't be able to support non-RVA23 userspace on non-RVA23 hardware because".
+Please note that issue exists only on non-RVA23 hardware (which is existing
+hardware and future hardware which is not implementing zimop). RVA23 compiled
+kernel can support any sort of userspace on RVA23 hardware.
 
 
+Discussion
+===========
 
-On 9/24/2025 4:38 PM, Yury Norov wrote:
-> On Wed, Sep 24, 2025 at 12:52:41PM +0200, Greg KH wrote:
->> On Sun, Sep 21, 2025 at 03:47:55PM +0200, Danilo Krummrich wrote:
->>> On Sun Sep 21, 2025 at 2:45 PM CEST, Greg KH wrote:
->>>> Again, regmap handles this all just fine, why not just make bindings to
->>>> that api here instead?
->>>
->>> The idea is to use this for the register!() macro, e.g.
->>>
->>> 	register!(NV_PMC_BOOT_0 @ 0x00000000, "Basic revision information about the GPU" {
->>> 	    28:24   architecture_0 as u8, "Lower bits of the architecture";
->>> 	    23:20   implementation as u8, "Implementation version of the architecture";
->>> 	    8:8     architecture_1 as u8, "MSB of the architecture";
->>> 	    7:4     major_revision as u8, "Major revision of the chip";
->>> 	    3:0     minor_revision as u8, "Minor revision of the chip";
->>> 	});
->>>
->>> (More examples in [1].)
->>
->> Wonderful, but I fail to see where the endian-ness of this is set
->> anywhere.  Am I just missing that?  The regmap api enforces this idea,
->> and so the 
->>
->>>
->>> This generates a structure with the relevant accessors; we can also implement
->>> additional logic, such as:
->>>
->>> 	impl NV_PMC_BOOT_0 {
->>> 	    /// Combines `architecture_0` and `architecture_1` to obtain the architecture of the chip.
->>> 	    pub(crate) fn architecture(self) -> Result<Architecture> {
->>> 	        Architecture::try_from(
->>> 	            self.architecture_0() | (self.architecture_1() << Self::ARCHITECTURE_0_RANGE.len()),
->>> 	        )
->>> 	    }
->>> 	
->>> 	    /// Combines `architecture` and `implementation` to obtain a code unique to the chipset.
->>> 	    pub(crate) fn chipset(self) -> Result<Chipset> {
->>> 	        self.architecture()
->>> 	            .map(|arch| {
->>> 	                ((arch as u32) << Self::IMPLEMENTATION_RANGE.len())
->>> 	                    | u32::from(self.implementation())
->>> 	            })
->>> 	            .and_then(Chipset::try_from)
->>> 	    }
->>> 	}
->>>
->>> This conviniently allows us to read the register with
->>>
->>> 	let boot0 = regs::NV_PMC_BOOT_0::read(bar);
->>>
->>> and obtain an instance of the entire Chipset structure with
->>>
->>> 	let chipset = boot0.chipset()?;
->>>
->>> or pass it to a constructor that creates a Revision instance
->>>
->>> 	let rev = Revision::from_boot0(boot0);
->>>
->>> Analogously it allows us to modify and write registers without having to mess
->>> with error prone shifts, masks and casts, because that code is generated by the
->>> register!() macro. (Of course, unless we have more complicated cases where
->>> multiple fields have to be combined as illustrated above.)
->>>
->>> Note that bar is of type pci::Bar<BAR0_SIZE> where BAR0_SIZE in our case is
->>> SZ_16M.
->>>
->>> However, the type required by read() as generated by the register!() macro
->>> actually only requires something that implements an I/O backend, i.e
->>> kernel::io::Io<SIZE>.
->>>
->>> pci::Bar is a specific implementation of kernel::io::Io.
->>>
->>> With this we can let the actual I/O backend handle the endianness of the bus.
->>
->> Ok, great, but right now it's not doing that from what I am seeing when
->> reading the code.  Shouldn't IoMem::new() take that as an argument?
->>
->> But, that feels odd as our current iomem api in C doesn't care about
->> endian issues at all because it "assumes" that the caller has already
->> handle this properly and all that the caller "wants" is to write/read to
->> some memory chunk and not twiddle bits.
->>
->>> (Actually, we could even implement an I/O backend that uses regmap.)
->>
->> That would probably be best to do eventually as most platform drivers
->> use regmap today as it's the sanest api we have at the moment.
->>
->>> So, I think the register!() stuff is rather orthogonal.
->>
->> I think it's very relevant as people seem to just be "assuming" that all
->> the world (hardware and cpus) are little-endian, while in reality, they
->> are anything but.  As proof, the code that uses this register!() logic
->> today totally ignores endian issues and just assumes that it is both
->> running on a little-endian system, AND the hardware is little-endian.
->>
->> As a crazy example, look at the USB host controllers that at runtime,
->> have to be queried to determine what endian they are running on and the
->> kernel drivers have to handle this "on the fly".  Yes, one can argue
->> that the hardware developers who came up with that should be forced to
->> write the drivers as penance for such sins, but in the end, it's us that
->> has to deal with it...
->>
->> So ignoring it will get us quite a ways forward with controlling sane
->> hardware on sane systems, but when s390 finally realizes they can be
->> writing their drivers in rust, we are going to have to have these
->> conversations again :)
-> 
-> Hi Greg, all,
-> 
-> Endianess is not the only problem when dealing with registers mapped
-> to the memory, right?
-> 
-> I recall some built-in 12-bit ADCs in 8-bit AVR microcontrollers. That
-> required to read 4-bit LO register before 8-bit HI, if you didn't want to
-> loose those 4 bits.
-> 
-> Bitfields don't address that issue as well. In my understanding, it's
-> done on purpose: bitfields encapsulate shifts and masks, and don't
-> pretend that they are suitable for direct access to a hardware.
-> 
-> Notice another rust bitfield project. It tries to account for endianess
-> and everything else:
-> 
-> https://docs.rs/bitfield-struct/latest/bitfield_struct/
-> 
-> I didn't ask explicitly, and maybe it's a good time to ask now: Joel,
-> Danilo and everyone, have you considered adopting this project in
-> kernel?
-> 
-> The bitfield_struct builds everything into the structure:
-> 
->         use bitfield_struct::bitfield;
->         
->         #[bitfield(u8, order = Msb)]
->         struct MyMsbByte {
->             /// The first field occupies the *most* significant bits
->             #[bits(4)]
->             kind: usize,
->             system: bool,
->             #[bits(2)]
->             level: usize,
->             present: bool
->         }
+So the issue is not really shadow stack instructions but rather may be op
+instructions in codegen (binaries and vDSO) which aren't hidden behind any
+flag (to hide them if hardware doesn't support). And if I can narrow down
+further, primary issue we are discussing is that if cfi is enabled during
+kernel compile, it is bringing in a piece of code (vDSO) which won't work
+on existing hardware. But the counter point is if someone were to deploy
+RVA23 compiled kernel on non-RVA23 hardware, they must have compiled
+rest of the userspace without shadow stack instructions in them for such
+a hardware. And thus at this point they could simply choose *not* to turn on
+`CONFIG_RISCV_USER_CFI` when compiling such kernel. It's not that difficult to
+do so.
 
-Thanks for raising this. The syntax seems quite different from what we need, in
-particular since register! macro is based on our bitfield! macro, this syntax is
-incompatible with the need to specify bit ranges, not just the number of bits.
-In other words, it appears the out-of-crate does not satisfy the requirement.
-They have to specific 'order' property mainly because they don't have the notion
-of bitfield index, just number of bits.
+Any distro who is shipping userspace (which all of them are) along with kernel
+will not be shipping two different userspaces (one with shadow stack and one
+without them). If distro are shipping two different userspaces, then they might
+as well ship two different kernels. Tagging some distro folks here to get their
+take on shipping different userspace depending on whether hardware is RVA23 or
+not. @Heinrich, @Florian, @redbeard and @Aurelien.
 
-Regarding endianness in that crate, it appears to be configurable based on
-user's requirement so we can make it such if needed for any kernel usecases. But
-the default in that crate is native-endianness just like our implementation right?
+Major distro's have already drawn a distinction here that they will drop
+support for hardware which isn't RVA23 for the sake of keeping binary
+distribution simple.
 
-Thanks.
+Only other use case that was discussed of a powerful linux user who just wants
+to use a single kernel on all kinds of riscv hardware. I am imagining such a
+user knows enough about kernel and if is really dear to them, they can develop
+their own patches and send it upstream to support their own usecase and we can
+discuss them out. Current patchset don't prevent such a developer to send such
+patches upstream.
 
+I heard the argument in meeting today that "Zbb" enabling works similar for
+kernel today. I looked at "Zbb" enabling. It's for kernel usage and it's
+surgically placed in kernel using asm hidden behind alternatives. vDSO isn't
+compiled with Zbb. Shadow stack instructions are part of codegen for C files
+compiled into vDSO.
+
+Furthermore,
+
+Kernel control flow integrity will introduce shadow stack instructions all
+over the kernel binary. Such kernel won't be deployable on non-RVA23 hardware.
+How to deal with this problem for a savvy kernel developer who wants to run
+same cfi enabled kernel binary on multiple hardware?
+
+Coming from engineering and hacker point of view, I understand the desire here
+but I still see that it's complexity enforced on rest of the kernel from a user
+base which anyways can achieve such goals. For majority of usecases, I don't
+see a reason to increase complexity in the kernel for build, possibly runtime
+patching and thus possibly introduce more issues and errors just for the sake
+of a science project.
+
+Being said that, re-iterating that currently default for `CONFIG_RISCV_USER_CFI`
+is "n" which means it won't be breaking anything unless a user opts "Y". So even
+though I really don't see a reason and usability to have complexity in kernel to
+carry multiple vDSOs, current patchsets are not a hinderance for such future
+capability (because current default is No) and motivated developer is welcome
+to build on top of it. Bottomline is I don't see a reason to block current
+patchset from merging in v6.18.
+
+
+[1] - https://github.com/riscv/riscv-isa-manual/blob/main/src/unpriv-cfi.adoc#shadow-stack-zicfiss
+[2] - https://github.com/riscv/riscv-isa-manual/blob/main/src/zimop.adoc
+
+>
+>thanks Deepak,
+>
+>- Paul
