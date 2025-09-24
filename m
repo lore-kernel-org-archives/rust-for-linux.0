@@ -1,87 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7363126C2;
-	Tue, 23 Sep 2025 22:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B311F09AD
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 01:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758666911; cv=none; b=o11DE4qh0n6OUQ/NVp3Ig3p5symG4/OKqGj7JNPZMKayj5yNkbNveOl6T+4YOyEPi8pZtDkS7gtEBT5l5sCDhZ8L11o6vfvgHL//1Lt/VOScc6dn2A6v0Jtg5iKHRsgvJAbWCmzzyhXeXOpIr8MA2ny5hjff0KG0BuFtdZxZuyE=
+	t=1758676173; cv=none; b=Mf2jesjFisXl9F4MpsbwpGs+4qNq/b1A1zzAsIlHbVHMdSDaucm8qa1RUK/UVTriEFrkwkDWPLzl8Jvt5/gCPPJeKrZ10GF1a6hwZ9P0SctsIQVjHEnBgsrFHWzOXrDkJ2umbnJqbJnlvnsBK14sIiRp3TjPfjQfQBkn9LNrqyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758666911; c=relaxed/simple;
-	bh=K+REPAt7YGROMU060Sut8pDiJmmKCZ4JFkal1RQOmGs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SGVSv1ixIMK5NF8QkOFVTqi4vlcTY9kZ+CbdbS6Ls64tVmpulhVxdGnuuzgUOrGUbevDHdY62IdEQ+qzcbjrX7809l9kyqrFSbibe+L8kZA38nCeluQ8/XNofLElWEB0YH4u3CQud1OaWI/qE6vy+5H6x301CmSLDEo3GOpZmdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NfvKLIEC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758676173; c=relaxed/simple;
+	bh=Blu+tUHawvRU8Xs0DUcuclzoQyPlfz7B1WyF4IU8+1A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JYi7j7FzeDcUw9/ZW+AbhDq0bmex0aMhVp0eTeCG0RSsWPLtjiCESdGojvjz0HqG8oW6FVF2YAkHf+iSNTmzdluJZikVnEt6Lb1YHTeg4cDqmUXdxItLUFlYtUQz6VTPQ7g6a6fZACzANRSWH7C9kmsGEcC7+ps4zLR/5XV8LzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S0wWEKd5; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NfvKLIEC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E0DC4CEF5;
-	Tue, 23 Sep 2025 22:35:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758666911;
-	bh=K+REPAt7YGROMU060Sut8pDiJmmKCZ4JFkal1RQOmGs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NfvKLIECePVJSfIsLMzuzmM3Lfkth90P9jpbucNQ1bDMKtxnUUxV5JFtKuhdhpmWb
-	 Cw3GZEX3eQpIT/PWZ/yXnZMG824R5TCQPjlm98ugF9huAG8DeaThH3gkBcbwr/TZuE
-	 vm/De9fznWxi8yL9W3hbwpzVsdSjYKdJINx4sFLGsP2083YAha5J9C5fBwD4MqMtXT
-	 ir+xFYNttlpYqZZmrRAZCSLQPAaJ5po2rCCjv7hee+rH9n2nEI6G7JOlhDYZQf0/X1
-	 1DkImokD6CqYRTWU50ZSiWc781Xdx+oofE6BqZqS50/4CeH67G98lYY+2B9ZA6UvmX
-	 2kJmK3McZDdRg==
-Date: Tue, 23 Sep 2025 16:35:07 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <aNMgm33W7gh75h3t@kbusch-mbp>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
- <20250912090327.GU341237@unreal>
- <aM1_9cS_LGl4GFC5@kbusch-mbp>
- <20250920155352.GH10800@unreal>
- <aM9LH6WSeOPGeleY@kbusch-mbp>
- <20250923170936.GA2614310@nvidia.com>
- <aNLnXwAJveHIqfz0@kbusch-mbp>
- <20250923222216.GC2617119@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S0wWEKd5"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-36d77de259bso9594001fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Sep 2025 18:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758676170; x=1759280970; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Lll/ssUUyzpdCEieMHN7OfODTvGl3B3jSAMJ3V0c2x4=;
+        b=S0wWEKd5l5xg9+5BT7CtUUnlPtSeIXHUVRrCS/B2kYs8vbq/7gGFbyipX43FY9PcHF
+         xbUG6hq2GWpWc0GJn02dDjiTSnrfgOX/ieQr8ZHdSDdY/nBrRXO0+IxhHd+g46Q1sWyc
+         O1u4whV2pC6W2isSvBdztI8wUjY4201oA0pI0Ditxaka559vPt5CAvmhWePiyRpvaoT7
+         Vmox6YJUamxAMjt9MrqNASyLNjLzgjOlPE0APHIrhTrIs6bfxt/CpsHx4DBfIIP4HiSd
+         X2EmsSOx8fo0/j3917nGqDqYAmyKkHw4JrFJ2F+tRWDxi50jqOkodBlX9rMmIHmm8Hpa
+         y59A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758676170; x=1759280970;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Lll/ssUUyzpdCEieMHN7OfODTvGl3B3jSAMJ3V0c2x4=;
+        b=vcMGB+alnsDXGa3xfhwtZAgD8Pmimvn+7n14WJcKrwzwCVjCbnIhMsI5Vr3vvFp/5l
+         tLf/AjYuslzgPzUE0ezZ7jwEiAEofDSCnWbDMEmM5ungbDh2HLA0SdaihO3ZRg54D/wY
+         yJiMQuWf50qYXc76WS46HddwhZB8fOfFohzK8tPzps8dcvDOhdiL5l4PvOUEGb3+4FW9
+         A0fBNmmem5xHuIKw89//EnrPk5OQ+QGEacRUSSfxoDuyz2p7wvy+Qv0rTj37CBCaRcjK
+         M18lcgKm+4i/TMkQQjDFvEG0aa5L3vmLCUTP9BzDaUDvoCSVMnlp1gl6nBNNraf3p/b2
+         tD8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVgqXr21bJVOJQzBEcKfSBN1wZ1lEOcOrh5+WPp38zpFJWnnWAAus1SJ0Z5Fj3BaQiljJ8AUbAagVj6pHYm5w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzdy4sCi/nbv5Nrd+ahJsNXXfcGRCg/VJ6dRtiTkyuID1zs6+zn
+	IowM6X9UX172mlXZYf38U/mpNycn7yPDr/DvxjR0zkJbOym4vwNfRQR3XDePZUyg8CF0gK/uBsj
+	VsBJjdkCipx4wBafM5oPGhtFFFnd+S9U=
+X-Gm-Gg: ASbGncvyp/Tq0mFUKvxc0AVD/hsI8mwESfwsa6jaIBx6VFyRimfd1OAZruUkmip7AAj
+	16ZAwXZGFkLwcVEIkerLS0cw5dOVCSQAaS6W6QlZ/btBT2TkaK9J01SFrCbvVvo4dm6fY3O3G4i
+	sKPgobdW5eU3PMK5+IhEvXpiB7LH+//3w2BM0hwqoMAwLRbtKiF/L4Zit97bPHnerKwOT2zyDZI
+	CcsdNO9qiUKHRK00ND6Nr6vFtdMQ2mBIm5YUObrtkU1JWs6+qKFxqvdggJ3Kn5mVAUtXrweLtcl
+	Jny8elxlsWWk+HjD+eEt2Q==
+X-Google-Smtp-Source: AGHT+IHbXAiH1s8VtlmDbsaNP/syoKVWdCeZZCRV8zDEN53vF6lttuESXWuJKlJaexy/SVsmDvyy4M/m2cASKJkmK3E=
+X-Received: by 2002:a05:651c:4088:b0:338:bb4:6d6f with SMTP id
+ 38308e7fff4ca-36d177d8cf8mr8960551fa.44.1758676169573; Tue, 23 Sep 2025
+ 18:09:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250923222216.GC2617119@nvidia.com>
+References: <20250813-core-cstr-fanout-1-v3-0-a15eca059c51@gmail.com>
+ <20250813-core-cstr-fanout-1-v3-9-a15eca059c51@gmail.com> <DC1ZLP61HJAL.3I2YF82Y4T7L9@kernel.org>
+In-Reply-To: <DC1ZLP61HJAL.3I2YF82Y4T7L9@kernel.org>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 24 Sep 2025 10:08:53 +0900
+X-Gm-Features: AS18NWB5wsxS2a7jxyLos1K4bMIsLFjDF8Ocsoy_wDtXVwMvZmga8KSuS7D7hNE
+Message-ID: <CAJ-ks9=9V5Ex-VuSV7Er-jTLHyMCyVWYOiWF7wpYB9V_F=+QQg@mail.gmail.com>
+Subject: Re: [PATCH v3 9/9] rust: device: use `kernel::{fmt,prelude::fmt!}`
+To: Benno Lossin <lossin@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 23, 2025 at 07:22:16PM -0300, Jason Gunthorpe wrote:
-> Very rare is a different perspective, I mis-thought it was happening
-> reproducible all the time..
+On Thu, Aug 14, 2025 at 4:54=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
+>
+> On Wed Aug 13, 2025 at 5:39 PM CEST, Tamir Duberstein wrote:
+> > Reduce coupling to implementation details of the formatting machinery b=
+y
+> > avoiding direct use for `core`'s formatting traits and macros.
+> >
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+>
+> > ---
+> >  rust/kernel/device/property.rs | 23 ++++++++++++-----------
+> >  1 file changed, 12 insertions(+), 11 deletions(-)
+>
+> > @@ -413,9 +414,9 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> =
+core::fmt::Result {
+> >                  // SAFETY: `fwnode_get_name_prefix` returns null or a
+> >                  // valid C string.
+> >                  let prefix =3D unsafe { CStr::from_char_ptr(prefix) };
+> > -                write!(f, "{prefix}")?;
+> > +                fmt::Display::fmt(prefix, f)?;
+> >              }
+> > -            write!(f, "{}", fwnode.display_name())?;
+>
+> So we're not able to use `write!` with our `Display` or did you also
+> write a `FmtAdapter` wrapper for that? (don't think we need it now, just
+> wanted to know if we have this issue possibly in the future)
 
-Yes, sorry for the false alarm. I think we got unlucky and hit it on one
-of the first boots from testing linux-next, so knee-jerk reaction was to
-suspect the new code that showed up in the stack.
+Correct; we cannot use `write!` with our `Display`.
+
+Apologies for the late reply - I had sent this back in August but was
+still being throttled by gmail :(
