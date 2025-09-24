@@ -1,72 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4D62A1BF
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 20:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608CB328565
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 20:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758745465; cv=none; b=pMNcOpnw/nFyEJgU92kMyBuRBPJ9rRUQ5IwDasTAxLo3r5f71pmD3TWoxvMZOSgtWcQkWOW/Yx+OpgNoAwhtU1NexnVV24m20ayo2Rl9hBiKbeDG9/3PXdOTVuJFVWeAeWGBuZrRc509IwJWoK78AKVHgapxeN3PbGYYGv19pYI=
+	t=1758746207; cv=none; b=RzrwBHHHAMQns6LreUD/mr4ntRRMSc1xrvf3xpvzC2KAZVkRfJOd/KvVpJYf2lDXbijK5FNsooQvplkCjZAFsuxnJYSYATfZsLKaK6mdzEEBhVNuQC5c6cwY3h4Sf10GhAyZJoSyK9xOH6XOk1EhiCK/RSLg1V6RgrhkZU+ucHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758745465; c=relaxed/simple;
-	bh=pBdZ3zbCJQ8PptkYvlJ1YtPe9eCnkGlU9qqoDL0FKNw=;
+	s=arc-20240116; t=1758746207; c=relaxed/simple;
+	bh=f9QFF60EaxUk9yHAfEs3+As7scqBybQBl5FAanvayc8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T+Ol/fb+CitVhne1ATweD1Hc8hmgXWakdI5INktL9+6iMqAchWQeQatuxIU8eLT3jDHNprxW3KuHyrGmyTEQGRzf9NOvD51OlrhwGEEgVosF/4wpaTySkTmzj+GpXNMPY4LYSN2chpnT1tKWNrWqKEtl+tR6JZkIK0W1Eb7FvtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=We7S907X; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=PpTUz5Luh2Lk1CFgOd+Ey+MfgmUJ9s3xA0u2PUoKQ9ClnSRqzwdX82Ipd2FQIFT6Ecfv1baU23x9DDaJ8X48qTPQzU+1sAZijhW9ZdTtrv32AhTTCL8PWHeLvlqGco/Gz1VH7gXHkm1X7kq47DZOAuhjBIg0elZdx46PeXFC7JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PW4VmAPF; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="We7S907X"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PW4VmAPF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758745462;
+	s=mimecast20190719; t=1758746204;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+xaqOlBFi7L8dawPbYmNgdJpPm+rXLdVyCm8JwnPS9Y=;
-	b=We7S907X/2gsYlwlQX/wZRKCe/3LEiyGAAPdjSsjF75OtMIw0S+N8WYGjZDTg67LWcFGsR
-	sviwpQyA0jqxNXvQaV1g9+dPJItcZxEIdk8Gs25u0sIVzwFxBUIOCoyJ+3eB0pdJviT8G/
-	nLcx9YxGu3yV+wYrfo0d+uqaIAgCXAQ=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=8+UKZ3KfRBRvD3O5jFSumwS/WKEN7fnb54wULQV0qrw=;
+	b=PW4VmAPFuSuZFRJuvPUfwJIt+llu7paJfMccNqaScTz2eKUIr+Ixo8Ot+vwuW7By454I7X
+	wD4SRqQY+zzRQE866yMRCvKn3UVwVyQWdHb8rkqlKg6QQ0Mzrp8kZSqWHgMbVqxWavTavN
+	sWjTUv1pbbD6ntnypUXWV4ZwQ5xZn/E=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-QhY7akg3MO2tB8rphbHgIg-1; Wed, 24 Sep 2025 16:24:21 -0400
-X-MC-Unique: QhY7akg3MO2tB8rphbHgIg-1
-X-Mimecast-MFC-AGG-ID: QhY7akg3MO2tB8rphbHgIg_1758745460
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-78e4e07aa39so3522326d6.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 13:24:21 -0700 (PDT)
+ us-mta-66-A1EPqluoMui-VBVAtzudyA-1; Wed, 24 Sep 2025 16:36:37 -0400
+X-MC-Unique: A1EPqluoMui-VBVAtzudyA-1
+X-Mimecast-MFC-AGG-ID: A1EPqluoMui-VBVAtzudyA_1758746196
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-81312a26ea3so62482885a.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 13:36:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758745460; x=1759350260;
+        d=1e100.net; s=20230601; t=1758746196; x=1759350996;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+xaqOlBFi7L8dawPbYmNgdJpPm+rXLdVyCm8JwnPS9Y=;
-        b=Gc8uXawNuJgNCrqHGy0pUUBN0wr0+RqrzjBNlDP2phwnwcUif3AxSMvI1PUPRhaQPS
-         BROFlIzUjFh2GPcawEWKFCsSqrGl8cU4wzB1I7P3GTdCj37XJoRuTOVF/5XznRIRMbi8
-         jIWg5wxec2D/UVyXvviDGJb0wfDai/cskgefE7pSUd3eEp+mcicQbtEQrqkDGpmRy3Go
-         Vxtccs+sbL0gaR2KHRl3RyJlbOTn4/uFtcwcutatUCVhXy9lbC9OyiyNPUaT2taoIJ64
-         gAmreAxnORm1mYcJvG/JTGX1AU3pUdHgVpESlLYEWwEDzeV3hy0n8ev1X2O317rWYye6
-         TwAw==
-X-Forwarded-Encrypted: i=1; AJvYcCX29fvWRQOz4EBB1w9Sja4laYE5ulind7M1C1Y6trsSavRK2ksuJzmJiX9TdU9COuSoUEv/pRzQrL9ikmhHfQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUTbb7NNWPICkTzEkerrmzDa8ESECCWFN0kOBqRsMEDhG9xkry
-	hdDLT7aHWchobb14zvmOmsLRLWH58rBZzJNjUJfxkLYrQrwi45q+amDQhnw705PVqDAlOk729z9
-	W/n4Hk3H1kbLFi0EXN4hccp7I9FiVbx17EuJ5Il9PKeX+OGh2AG9qMrcpgJIDWI7mehuU
-X-Gm-Gg: ASbGncsqEBzfxnDr9M57yiobuZ6iajfpN0Jsc7prAfBVlY2YGOxOoK5QtSljiMTG1bq
-	hVXxzrZTqFZDSuDidC2STAZzTsYT+EezKtoDMi4o9X39msp3nEdhP/l/vrymr57pjB5zfCIOqQP
-	qxavKDrjTKsAxWkXfU9kGjJHKLUO00my1ZEggGAsrCyR6FmADo8hr5WcbasdHhNrBR0D3xIOVFC
-	rGRoVkmwFXeL5bcil0ktNd1cB0NMACI5qk6cx6I3iyWHVCypbHxjvmQdyw7pLyTP63a3VA3Mnv0
-	kBjQryk+V9fGwqHzccmN7NgZrhwYhUgdVwDscHKPm5SE0KywwA5smO26xyuBpJ2/ru2xBg+XyB+
-	nuRkK9xCqNWJa
-X-Received: by 2002:a05:6214:2a8f:b0:7d2:e1e6:f79f with SMTP id 6a1803df08f44-7fc3c913d21mr19874096d6.47.1758745460538;
-        Wed, 24 Sep 2025 13:24:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxAcP8zeKZjOALMSjWCgQ96uiFG3vOtO1v8pUexa4bc35T4yGcWrIvQ+U/kszENiIX0whGQg==
-X-Received: by 2002:a05:6214:2a8f:b0:7d2:e1e6:f79f with SMTP id 6a1803df08f44-7fc3c913d21mr19873676d6.47.1758745459962;
-        Wed, 24 Sep 2025 13:24:19 -0700 (PDT)
+        bh=8+UKZ3KfRBRvD3O5jFSumwS/WKEN7fnb54wULQV0qrw=;
+        b=PPh1U80Ih6bvYQP63DsOUaSNMkmhDfHC4YD0Y33u0JEYeBooFf8f3zkAmKzHoMe7YD
+         16CLmyJfJhR78/pbHXX0d8sbtnOx5s91/6z6rH4KvuwYr8A18tJXB0oRpSjpW11aUMWZ
+         TAQ8l2Zt/4qMp3mh6CKRRkjTrV+RMaNpXcmC2smULXfmquSO5YIWUNJ9wso3QXe2Yb2O
+         cO6CAhMzV5rKs+C+OKrlPXo9Ti3RoXgMS068tppW2efFOOyHkxVhQ3SL+UyrpljAoAAw
+         D5AudFVYtiftTT4lI/w9/kS4Nx74x4SCjrzaLGDcXpvnVuXdthZsLN5MBMXuXBPkBymQ
+         i72g==
+X-Forwarded-Encrypted: i=1; AJvYcCWEkPG/Lb8EjwpcOsALbbiAcSdDOAiqbqoL2FWmgH6OuP5LNz9CDMCn/J3FZRiiCKFMB4RsBvvtDsG4nLoJRQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2zSWaoSaWrFoltu+WP064xqq/kfHepm4e0QkSjemiZrLwAL7/
+	uVMmDYVEolnykmTKnMJApss35VU8YKnipC5eQOhHTRqjvfl8Vo0ZkDi1jzUSMHC3femL6Meh2gw
+	Dor2UqpQ8YJYk0cTEuM22R8Gx6RjMyg1x/p2WQsQrRUnLrAtYihRODN431HvjYS1Wxd2J
+X-Gm-Gg: ASbGncssUPqw6lpq0BQucCaNQBHZ/SoRzYqOYFdycU+Unr2FHAZ3TLsKt+VmZ1EP2QR
+	MsF1+zOSbUqPjV7On/m1R8bOhPKvRMOo5yaOyuFEXKyaXoUVc9I4SSldC1/hRIdzrPKgIAGIcTD
+	IUeqNObuboaT5QVsQGvfU2ezNOc80rEsmTev6/oGC5fBjqSDPglvHjzJH8IIzFpgVGtIiKIj8Oe
+	uiwAniu3DQO/B6/tvvDpHTnh3PYCcG4Rur8W3nv+BmD6DSXBlO2vBr73Si7HrBAhofawUAYfRkB
+	gzHuIgDdnDOZ3S8QqjWfxBtPuCThctv4Txvl6vJySOaZZmhEWgCjnJG2oymwgk4kOH8KBHfTFhT
+	+3mmVDY15nSK6
+X-Received: by 2002:a05:620a:19a5:b0:812:f9a7:e903 with SMTP id af79cd13be357-85ae033d4e5mr146717685a.32.1758746196526;
+        Wed, 24 Sep 2025 13:36:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWkmK1idc3zaOu8tHWhe4rJQaiYfm4PHawTVQ+fIlIOa8JiuJ7ZbTU4GXlG1+nz9D1zo88Lw==
+X-Received: by 2002:a05:620a:19a5:b0:812:f9a7:e903 with SMTP id af79cd13be357-85ae033d4e5mr146713485a.32.1758746195890;
+        Wed, 24 Sep 2025 13:36:35 -0700 (PDT)
 Received: from [192.168.8.208] (pool-108-49-39-135.bstnma.fios.verizon.net. [108.49.39.135])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-80135968d5esm595956d6.12.2025.09.24.13.24.18
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8363344e970sm1237594085a.61.2025.09.24.13.36.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 13:24:19 -0700 (PDT)
-Message-ID: <e024e964c5e79b1c86dadcb8c19d14d175bcb0a7.camel@redhat.com>
-Subject: Re: [PATCH v2 03/10] gpu: nova-core: gsp: Create wpr metadata
+        Wed, 24 Sep 2025 13:36:35 -0700 (PDT)
+Message-ID: <57fae3bf4bcfa78c094680814b2f9a523fe517b8.camel@redhat.com>
+Subject: Re: [PATCH v2 04/10] gpu: nova-core: Add a slice-buffer (sbuffer)
+ datastructure
 From: Lyude Paul <lyude@redhat.com>
 To: Alistair Popple <apopple@nvidia.com>, rust-for-linux@vger.kernel.org, 
 	dri-devel@lists.freedesktop.org, dakr@kernel.org, acourbot@nvidia.com
@@ -81,10 +82,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  <jhubbard@nvidia.com>,  Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi
  <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
 	nouveau@lists.freedesktop.org
-Date: Wed, 24 Sep 2025 16:24:17 -0400
-In-Reply-To: <20250922113026.3083103-4-apopple@nvidia.com>
+Date: Wed, 24 Sep 2025 16:36:34 -0400
+In-Reply-To: <20250922113026.3083103-5-apopple@nvidia.com>
 References: <20250922113026.3083103-1-apopple@nvidia.com>
-	 <20250922113026.3083103-4-apopple@nvidia.com>
+	 <20250922113026.3083103-5-apopple@nvidia.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42)
 Precedence: bulk
@@ -94,267 +95,280 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZR08kEox0adCXQQ18TQe3O2EZurCrT5kyx1k9Wyuzag_1758745460
+X-Mimecast-MFC-PROC-ID: 7T2qZ3IIGya8cmW7Gxynpna2odw1G8KH9blUHZAcHaE_1758746196
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Mon, 2025-09-22 at 21:30 +1000, Alistair Popple wrote:
-> The GSP requires some pieces of metadata to boot. These are passed in a
-> struct which the GSP transfers via DMA. Create this struct and get a
-> handle to it for future use when booting the GSP.
+> From: Joel Fernandes <joelagnelf@nvidia.com>
 >=20
+> A data structure that can be used to write across multiple slices which
+> may be out of order in memory. This lets SBuffer user correctly and
+> safely write out of memory order, without error-prone tracking of
+> pointers/offsets.
+>=20
+>  let mut buf1 =3D [0u8; 3];
+>  let mut buf2 =3D [0u8; 5];
+>  let mut sbuffer =3D SBuffer::new([&mut buf1[..], &mut buf2[..]]);
+>=20
+>  let data =3D b"hellowo";
+
+OwO!!!
+
+>  let result =3D sbuffer.write(data);
+>=20
+> An internal conversion of gsp.rs to use this resulted in a nice -ve delta=
+:
+> gsp.rs: 37 insertions(+), 99 deletions(-)
+>=20
+> Co-developed-by: Alistair Popple <apopple@nvidia.com>
 > Signed-off-by: Alistair Popple <apopple@nvidia.com>
->=20
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 > ---
+>  drivers/gpu/nova-core/nova_core.rs |   1 +
+>  drivers/gpu/nova-core/sbuffer.rs   | 191 +++++++++++++++++++++++++++++
+>  2 files changed, 192 insertions(+)
+>  create mode 100644 drivers/gpu/nova-core/sbuffer.rs
 >=20
-> Changes for v2:
->  - Rebased on Alex's latest version
-> ---
->  drivers/gpu/nova-core/fb.rs                   |  1 -
->  drivers/gpu/nova-core/firmware/gsp.rs         |  3 +-
->  drivers/gpu/nova-core/firmware/riscv.rs       |  6 +-
->  drivers/gpu/nova-core/gsp.rs                  |  1 +
->  drivers/gpu/nova-core/gsp/boot.rs             |  7 +++
->  drivers/gpu/nova-core/gsp/fw.rs               | 63 ++++++++++++++++++-
->  .../gpu/nova-core/gsp/fw/r570_144/bindings.rs |  2 +
->  7 files changed, 75 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
-> index 4d6a1f452183..5580498ba2fb 100644
-> --- a/drivers/gpu/nova-core/fb.rs
-> +++ b/drivers/gpu/nova-core/fb.rs
-> @@ -87,7 +87,6 @@ pub(crate) fn unregister(&self, bar: &Bar0) {
->  ///
->  /// Contains ranges of GPU memory reserved for a given purpose during th=
-e GSP boot process.
->  #[derive(Debug)]
-> -#[expect(dead_code)]
->  pub(crate) struct FbLayout {
->      /// Range of the framebuffer. Starts at `0`.
->      pub(crate) fb: Range<u64>,
-> diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-cor=
-e/firmware/gsp.rs
-> index 9654810834d9..67b85e1db27d 100644
-> --- a/drivers/gpu/nova-core/firmware/gsp.rs
-> +++ b/drivers/gpu/nova-core/firmware/gsp.rs
-> @@ -127,7 +127,7 @@ pub(crate) struct GspFirmware {
->      /// Size in bytes of the firmware contained in [`Self::fw`].
->      pub size: usize,
->      /// Device-mapped GSP signatures matching the GPU's [`Chipset`].
-> -    signatures: DmaObject,
-> +    pub signatures: DmaObject,
->      /// GSP bootloader, verifies the GSP firmware before loading and run=
-ning it.
->      pub bootloader: RiscvFirmware,
->  }
-> @@ -212,7 +212,6 @@ pub(crate) fn new<'a, 'b>(
->          }))
->      }
+> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/n=
+ova_core.rs
+> index fffcaee2249f..a6feeba6254c 100644
+> --- a/drivers/gpu/nova-core/nova_core.rs
+> +++ b/drivers/gpu/nova-core/nova_core.rs
+> @@ -11,6 +11,7 @@
+>  mod gpu;
+>  mod gsp;
+>  mod regs;
+> +mod sbuffer;
+>  mod util;
+>  mod vbios;
 > =20
-> -    #[expect(unused)]
->      /// Returns the DMA handle of the radix3 level 0 page table.
->      pub(crate) fn radix3_dma_handle(&self) -> DmaAddress {
->          self.level0.dma_handle()
-> diff --git a/drivers/gpu/nova-core/firmware/riscv.rs b/drivers/gpu/nova-c=
-ore/firmware/riscv.rs
-> index b90acfc81e78..dec33d2b631a 100644
-> --- a/drivers/gpu/nova-core/firmware/riscv.rs
-> +++ b/drivers/gpu/nova-core/firmware/riscv.rs
-> @@ -53,11 +53,11 @@ fn new(bin_fw: &BinFirmware<'_>) -> Result<Self> {
->  #[expect(unused)]
->  pub(crate) struct RiscvFirmware {
->      /// Offset at which the code starts in the firmware image.
-> -    code_offset: u32,
-> +    pub code_offset: u32,
->      /// Offset at which the data starts in the firmware image.
-> -    data_offset: u32,
-> +    pub data_offset: u32,
->      /// Offset at which the manifest starts in the firmware image.
-> -    manifest_offset: u32,
-> +    pub manifest_offset: u32,
->      /// Application version.
->      app_version: u32,
->      /// Device-mapped firmware image.
-> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-> index 0185f66971ff..2daa46f2a514 100644
-> --- a/drivers/gpu/nova-core/gsp.rs
-> +++ b/drivers/gpu/nova-core/gsp.rs
-> @@ -13,6 +13,7 @@
->  use kernel::ptr::Alignment;
->  use kernel::transmute::{AsBytes, FromBytes};
-> =20
-> +use crate::fb::FbLayout;
->  use fw::LibosMemoryRegionInitArgument;
-> =20
->  pub(crate) const GSP_PAGE_SHIFT: usize =3D 12;
-> diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gs=
-p/boot.rs
-> index fb22508128c4..1d2448331d7a 100644
-> --- a/drivers/gpu/nova-core/gsp/boot.rs
-> +++ b/drivers/gpu/nova-core/gsp/boot.rs
-> @@ -1,6 +1,8 @@
->  // SPDX-License-Identifier: GPL-2.0
-> =20
->  use kernel::device;
-> +use kernel::dma::CoherentAllocation;
-> +use kernel::dma_write;
->  use kernel::pci;
->  use kernel::prelude::*;
-> =20
-> @@ -14,6 +16,7 @@
->      FIRMWARE_VERSION,
->  };
->  use crate::gpu::Chipset;
-> +use crate::gsp::GspFwWprMeta;
->  use crate::regs;
->  use crate::vbios::Vbios;
-> =20
-> @@ -132,6 +135,10 @@ pub(crate) fn boot(
->              bar,
->          )?;
-> =20
-> +        let wpr_meta =3D
-> +            CoherentAllocation::<GspFwWprMeta>::alloc_coherent(dev, 1, G=
-FP_KERNEL | __GFP_ZERO)?;
-> +        dma_write!(wpr_meta[0] =3D GspFwWprMeta::new(&gsp_fw, &fb_layout=
-))?;
-
-Not something I think we need to block this series on, but this line does m=
-ake
-me wonder if we should have a variant of dma_write!() that uses
-CoherentAllocation::write(), since I think that would actually be faster th=
-en
-calling dma_write!() here.
-
+> diff --git a/drivers/gpu/nova-core/sbuffer.rs b/drivers/gpu/nova-core/sbu=
+ffer.rs
+> new file mode 100644
+> index 000000000000..e768e4f1cb7d
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/sbuffer.rs
+> @@ -0,0 +1,191 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
->          Ok(())
->      }
->  }
-> diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/=
-fw.rs
-> index dd1e7fc85d85..7f4fe684ddaf 100644
-> --- a/drivers/gpu/nova-core/gsp/fw.rs
-> +++ b/drivers/gpu/nova-core/gsp/fw.rs
-> @@ -8,12 +8,14 @@
->  use core::ops::Range;
-> =20
->  use kernel::dma::CoherentAllocation;
-> -use kernel::ptr::Alignable;
-> -use kernel::sizes::SZ_1M;
-> +use kernel::ptr::{Alignable, Alignment};
-> +use kernel::sizes::{SZ_128K, SZ_1M};
->  use kernel::transmute::{AsBytes, FromBytes};
-> =20
-> +use crate::firmware::gsp::GspFirmware;
->  use crate::gpu::Chipset;
->  use crate::gsp;
-> +use crate::gsp::FbLayout;
-> =20
->  /// Dummy type to group methods related to heap parameters for running t=
-he GSP firmware.
->  pub(crate) struct GspFwHeapParams(());
-> @@ -102,6 +104,63 @@ pub(crate) fn wpr_heap_size(&self, chipset: Chipset,=
- fb_size: u64) -> u64 {
->  #[repr(transparent)]
->  pub(crate) struct GspFwWprMeta(bindings::GspFwWprMeta);
-> =20
-> +// SAFETY: Padding is explicit and will not contain uninitialized data.
-> +unsafe impl AsBytes for GspFwWprMeta {}
+> +use core::ops::Deref;
 > +
-> +// SAFETY: This struct only contains integer types for which all bit pat=
-terns
-> +// are valid.
-> +unsafe impl FromBytes for GspFwWprMeta {}
+> +use kernel::alloc::KVec;
+> +use kernel::error::code::*;
+> +use kernel::prelude::*;
 > +
-> +type GspFwWprMetaBootResumeInfo =3D r570_144::GspFwWprMeta__bindgen_ty_1=
-;
-> +type GspFwWprMetaBootInfo =3D r570_144::GspFwWprMeta__bindgen_ty_1__bind=
-gen_ty_1;
+> +/// A buffer abstraction for discontiguous byte slices.
+> +///
+> +/// This allows you to treat multiple non-contiguous `&mut [u8]` slices
+> +/// as a single stream-like read/write buffer.
+> +///
+> +/// Example:
+> +///
+> +/// let mut buf1 =3D [0u8; 3];
+> +/// let mut buf2 =3D [0u8; 5];
+> +/// let mut sbuffer =3D SWriteBuffer::new([&buf1, &buf2]);
+> +///
+> +/// let data =3D b"hellowo";
+> +/// let result =3D sbuffer.write_all(0, data);
+> +///
+> +/// A sliding window of slices to proceed.
+> +///
+> +/// Both read and write buffers are implemented in terms of operating on=
+ slices of a requested
+> +/// size. This base class implements logic that can be shared between th=
+e two to support that.
+> +///
+> +/// `S` is a slice type, `I` is an iterator yielding `S`.
+> +pub(crate) struct SBuffer<I: Iterator> {
+> +    /// `Some` if we are not at the end of the data yet.
+> +    cur_slice: Option<I::Item>,
+> +    /// All the slices remaining after `cur_slice`.
+> +    slices: I,
+> +}
 > +
-> +impl GspFwWprMeta {
-> +    pub(crate) fn new(gsp_firmware: &GspFirmware, fb_layout: &FbLayout) =
--> Self {
-> +        Self(bindings::GspFwWprMeta {
-> +            magic: GSP_FW_WPR_META_MAGIC as u64,
-> +            revision: u64::from(GSP_FW_WPR_META_REVISION),
-> +            sysmemAddrOfRadix3Elf: gsp_firmware.radix3_dma_handle(),
-> +            sizeOfRadix3Elf: gsp_firmware.size as u64,
-> +            sysmemAddrOfBootloader: gsp_firmware.bootloader.ucode.dma_ha=
-ndle(),
-> +            sizeOfBootloader: gsp_firmware.bootloader.ucode.size() as u6=
-4,
-> +            bootloaderCodeOffset: u64::from(gsp_firmware.bootloader.code=
-_offset),
-> +            bootloaderDataOffset: u64::from(gsp_firmware.bootloader.data=
-_offset),
-> +            bootloaderManifestOffset: u64::from(gsp_firmware.bootloader.=
-manifest_offset),
+> +impl<'a, I> SBuffer<I>
+> +where
+> +    I: Iterator,
+> +{
+> +    #[expect(unused)]
+> +    pub(crate) fn new_reader(slices: impl IntoIterator<IntoIter =3D I>) =
+-> Self
+> +    where
+> +        I: Iterator<Item =3D &'a [u8]>,
+> +    {
+> +        Self::new(slices)
+> +    }
+> +
+> +    #[expect(unused)]
+> +    pub(crate) fn new_writer(slices: impl IntoIterator<IntoIter =3D I>) =
+-> Self
+> +    where
+> +        I: Iterator<Item =3D &'a mut [u8]>,
+> +    {
+> +        Self::new(slices)
+> +    }
+> +
+> +    fn new(slices: impl IntoIterator<IntoIter =3D I>) -> Self
+> +    where
+> +        I::Item: Deref<Target =3D [u8]>,
+> +    {
+> +        let mut slices =3D slices.into_iter();
+> +
+> +        Self {
+> +            // Skip empty slices to avoid trouble down the road.
+> +            cur_slice: slices.find(|s| !s.deref().is_empty()),
+> +            slices,
+> +        }
+> +    }
+> +
+> +    fn get_slice_internal(
+> +        &mut self,
+> +        len: usize,
+> +        mut f: impl FnMut(I::Item, usize) -> (I::Item, I::Item),
+> +    ) -> Option<I::Item>
+> +    where
+> +        I::Item: Deref<Target =3D [u8]>,
+> +    {
+> +        match self.cur_slice.take() {
+> +            None =3D> None,
+> +            Some(cur_slice) =3D> {
+> +                if len >=3D cur_slice.len() {
+> +                    // Caller requested more data than is in the current=
+ slice, return it entirely
+> +                    // and prepare the following slice for being used. S=
+kip empty slices to avoid
+> +                    // trouble.
+> +                    self.cur_slice =3D self.slices.find(|s| !s.deref().i=
+s_empty());
 
-JFYI ^ you can use .into() here instead of the full u64::from(=E2=80=A6)
+Do we actually need deref() here? I would have assumed !s.is_empty() would =
+be
+enough (and if not, we could just do *s instead of calling deref().
 
-Besides those two bits:
+With that addressed:
 
 Reviewed-by: Lyude Paul <lyude@redhat.com>
 
-> +            __bindgen_anon_1: GspFwWprMetaBootResumeInfo {
-> +                __bindgen_anon_1: GspFwWprMetaBootInfo {
-> +                    sysmemAddrOfSignature: gsp_firmware.signatures.dma_h=
-andle(),
-> +                    sizeOfSignature: gsp_firmware.signatures.size() as u=
-64,
-> +                },
-> +            },
-> +            gspFwRsvdStart: fb_layout.heap.start,
-> +            nonWprHeapOffset: fb_layout.heap.start,
-> +            nonWprHeapSize: fb_layout.heap.end - fb_layout.heap.start,
-> +            gspFwWprStart: fb_layout.wpr2.start,
-> +            gspFwHeapOffset: fb_layout.wpr2_heap.start,
-> +            gspFwHeapSize: fb_layout.wpr2_heap.end - fb_layout.wpr2_heap=
-.start,
-> +            gspFwOffset: fb_layout.elf.start,
-> +            bootBinOffset: fb_layout.boot.start,
-> +            frtsOffset: fb_layout.frts.start,
-> +            frtsSize: fb_layout.frts.end - fb_layout.frts.start,
-> +            gspFwWprEnd: fb_layout
-> +                .vga_workspace
-> +                .start
-> +                .align_down(Alignment::new::<SZ_128K>()),
-> +            gspFwHeapVfPartitionCount: fb_layout.vf_partition_count,
-> +            fbSize: fb_layout.fb.end - fb_layout.fb.start,
-> +            vgaWorkspaceOffset: fb_layout.vga_workspace.start,
-> +            vgaWorkspaceSize: fb_layout.vga_workspace.end - fb_layout.vg=
-a_workspace.start,
-> +            ..Default::default()
-> +        })
+> +
+> +                    Some(cur_slice)
+> +                } else {
+> +                    // The current slice can satisfy the request, split =
+it and return a slice of
+> +                    // the requested size.
+> +                    let (ret, next) =3D f(cur_slice, len);
+> +                    self.cur_slice =3D Some(next);
+> +
+> +                    Some(ret)
+> +                }
+> +            }
+> +        }
 > +    }
 > +}
 > +
-> +pub(crate) use r570_144::{
-> +    // GSP firmware constants
-> +    GSP_FW_WPR_META_MAGIC,
-> +    GSP_FW_WPR_META_REVISION,
-> +};
+> +/// Provides a way to get non-mutable slices of data to read from.
+> +impl<'a, I> SBuffer<I>
+> +where
+> +    I: Iterator<Item =3D &'a [u8]>,
+> +{
+> +    /// Returns a slice of at most `len` bytes, or `None` if we are at t=
+he end of the data.
+> +    ///
+> +    /// If a slice shorter than `len` bytes has been returned, the calle=
+r can call this method
+> +    /// again until it returns `None` to try and obtain the remainder of=
+ the data.
+> +    fn get_slice(&mut self, len: usize) -> Option<&'a [u8]> {
+> +        self.get_slice_internal(len, |s, pos| s.split_at(pos))
+> +    }
 > +
->  #[repr(transparent)]
->  pub(crate) struct LibosMemoryRegionInitArgument(bindings::LibosMemoryReg=
-ionInitArgument);
-> =20
-> diff --git a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs b/drivers/=
-gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> index 6a14cc324391..392b25dc6991 100644
-> --- a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> +++ b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> @@ -9,6 +9,8 @@
->  pub const GSP_FW_HEAP_SIZE_OVERRIDE_LIBOS2_MAX_MB: u32 =3D 256;
->  pub const GSP_FW_HEAP_SIZE_OVERRIDE_LIBOS3_BAREMETAL_MIN_MB: u32 =3D 88;
->  pub const GSP_FW_HEAP_SIZE_OVERRIDE_LIBOS3_BAREMETAL_MAX_MB: u32 =3D 280=
-;
-> +pub const GSP_FW_WPR_META_REVISION: u32 =3D 1;
-> +pub const GSP_FW_WPR_META_MAGIC: i64 =3D -2577556379034558285;
->  pub type __u8 =3D ffi::c_uchar;
->  pub type __u16 =3D ffi::c_ushort;
->  pub type __u32 =3D ffi::c_uint;
+> +    /// Ideally we would implement `Read`, but it is not available in `c=
+ore`.
+> +    /// So mimic `std::io::Read::read_exact`.
+> +    #[expect(unused)]
+> +    pub(crate) fn read_exact(&mut self, mut dst: &mut [u8]) -> Result {
+> +        while !dst.is_empty() {
+> +            match self.get_slice(dst.len()) {
+> +                None =3D> return Err(ETOOSMALL),
+> +                Some(src) =3D> {
+> +                    let dst_slice;
+> +                    (dst_slice, dst) =3D dst.split_at_mut(src.len());
+> +                    dst_slice.copy_from_slice(src);
+> +                }
+> +            }
+> +        }
+> +
+> +        Ok(())
+> +    }
+> +
+> +    /// Read all the remaining data into a `KVec`.
+> +    ///
+> +    /// `self` will be empty after this operation.
+> +    #[expect(unused)]
+> +    pub(crate) fn read_into_kvec(&mut self, flags: kernel::alloc::Flags)=
+ -> Result<KVec<u8>> {
+> +        let mut buf =3D KVec::<u8>::new();
+> +
+> +        if let Some(slice) =3D core::mem::take(&mut self.cur_slice) {
+> +            buf.extend_from_slice(slice, flags)?;
+> +        }
+> +        for slice in &mut self.slices {
+> +            buf.extend_from_slice(slice, flags)?;
+> +        }
+> +
+> +        Ok(buf)
+> +    }
+> +}
+> +
+> +/// Provides a way to get mutable slices of data to write into.
+> +impl<'a, I> SBuffer<I>
+> +where
+> +    I: Iterator<Item =3D &'a mut [u8]>,
+> +{
+> +    /// Returns a mutable slice of at most `len` bytes, or `None` if we =
+are at the end of the data.
+> +    ///
+> +    /// If a slice shorter than `len` bytes has been returned, the calle=
+r can call this method
+> +    /// again until it returns `None` to try and obtain the remainder of=
+ the data.
+> +    fn get_slice_mut(&mut self, len: usize) -> Option<&'a mut [u8]> {
+> +        self.get_slice_internal(len, |s, pos| s.split_at_mut(pos))
+> +    }
+> +
+> +    /// Ideally we would implement `Write`, but it is not available in `=
+core`.
+> +    /// So mimic `std::io::Write::write_all`.
+> +    #[expect(unused)]
+> +    pub(crate) fn write_all(&mut self, mut src: &[u8]) -> Result {
+> +        while !src.is_empty() {
+> +            match self.get_slice_mut(src.len()) {
+> +                None =3D> return Err(ETOOSMALL),
+> +                Some(dst) =3D> {
+> +                    let src_slice;
+> +                    (src_slice, src) =3D src.split_at(dst.len());
+> +                    dst.copy_from_slice(src_slice);
+> +                }
+> +            }
+> +        }
+> +
+> +        Ok(())
+> +    }
+> +}
+> +
+> +impl<'a, I> Iterator for SBuffer<I>
+> +where
+> +    I: Iterator<Item =3D &'a [u8]>,
+> +{
+> +    type Item =3D u8;
+> +
+> +    fn next(&mut self) -> Option<Self::Item> {
+> +        // Returned slices are guaranteed to not be empty so we can safe=
+ly index the first entry.
+> +        self.get_slice(1).map(|s| s[0])
+> +    }
+> +}
 
 --=20
 Cheers,
