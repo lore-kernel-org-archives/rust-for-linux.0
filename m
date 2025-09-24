@@ -1,72 +1,73 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516C01EF091
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 22:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5326C21C16E
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 22:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758751541; cv=none; b=MzmHcsRd5SSZ4hDyiTWvzNQaI/jAWz+Q44p0qgqnSq4hT7YT0M4HAmOaZ1OX/RUR0hcBp5HsZV5m9/pOT/ce4SlGF+blUfhVkAhpu9Q/ExIjL4EDAyFYYFm+3Kr/2TiW8/X0Sy6q6XvfnQ+rGgTC66l1PAZY3HSL3UVHB9nOpnM=
+	t=1758751922; cv=none; b=KDwNpadNhbYNwvsFrUR3m1oYljrIXSWJTP48TRcSqsxUZCD6fbIDivR0Es3o24HFdgF1Brx+8MGZ95pUvjbynxjy/scO2V1fX2S4mNWXfq/uDS1D283Fl5/MhqBWiD9x+8rIDdlXpjsD6EEwN3O0+0GvtdxWP0U4FYALTV10wWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758751541; c=relaxed/simple;
-	bh=TcKik9tMdZguufjiP1g+g0ZI0vjiDQGhjWT9A48oeQs=;
+	s=arc-20240116; t=1758751922; c=relaxed/simple;
+	bh=bvq9fAO7OvrzIIBdoDfrG9x3HlcQx51+JRI7kBj4JA4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=af87yb9VwhjREq6Vyk2XdoOelO8w/BbCcB0tXkRkhAbprPsPZPqLzurfQ90vyaplGD1xwTzvzYjKP71LDzTBK2WK3sIZbzRnc32yvOODUg+hziTOrP6sNhAOwb+3oupznDTJZNmVSsDgmYfh1K73TTR4ThdIsyn46QJVb/mq9Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KjYAZH/J; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=oJSz0ilksn7YzZumyfJPSg+aNSH9AB3PPYfPV8kaACTJyj1/l2OU2jYSMG8qneQJPGAdqpTdKgZyM1bCsNnCyzxJr9FHVVBzegN5P6NyMD9uetCvR6di5q+D+bu3cqBps763k0locjn6hQHqELJY+f+9WAI0i/jAk9N9mt7pVUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bXij27Ny; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KjYAZH/J"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bXij27Ny"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758751538;
+	s=mimecast20190719; t=1758751919;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ScvHmm1FWauwM7q+b3uRwKwhYw1kjlrJzCWgrrWKAoU=;
-	b=KjYAZH/JaEeTXiJOHoQQAH5WdUPifBQWRqeXAIr5aiuv82BuLs1GnHGEGGIi7ZrBYwherR
-	mJHyMAM95QMy/a07tmjbz0cZhdcUMzsLHD3JV2C8W4gIG0NFZ/B9jDYy/6Fa6ln+uswRNt
-	BbrPRqpLO6en9djDi53kTcR+PTZpc18=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JFbroX1ssNByVfo3ooeuZ0V0f5xfZuude+1cZO/2xik=;
+	b=bXij27NyjzeOMnIbha3chEhGN2qwV4331d8MdwKSSHL0F9Udj3xAz5bS0IQNariZsivR18
+	d+xz/fnUx+399LKLDv3W5naK3ZimkwzbMagpvcv0bCv3mvzfoF1GRBP9BC6UYsYjZ5AFMv
+	n6viPLUZ/zrwwiKQXULozXB0HqbZRno=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-84-K65QBoPiPou0C0F-LyVFrA-1; Wed, 24 Sep 2025 18:05:35 -0400
-X-MC-Unique: K65QBoPiPou0C0F-LyVFrA-1
-X-Mimecast-MFC-AGG-ID: K65QBoPiPou0C0F-LyVFrA_1758751535
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4b633847b94so7932191cf.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 15:05:35 -0700 (PDT)
+ us-mta-30-2vyNcp2BMI2-AdnY69FZzg-1; Wed, 24 Sep 2025 18:11:58 -0400
+X-MC-Unique: 2vyNcp2BMI2-AdnY69FZzg-1
+X-Mimecast-MFC-AGG-ID: 2vyNcp2BMI2-AdnY69FZzg_1758751917
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4cdcff1c0b1so10761721cf.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 15:11:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758751535; x=1759356335;
+        d=1e100.net; s=20230601; t=1758751917; x=1759356717;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ScvHmm1FWauwM7q+b3uRwKwhYw1kjlrJzCWgrrWKAoU=;
-        b=tNE0YZc9vY8Hn3GQXLciIpNeNfXDG8f4ER4a7HnuozJPfPWEUjcLYiG2tyi1ARTo8F
-         FJ13fmFlXtbZOFEgvlH2UfRbMb+2uOvJgpH+yBe4wG0Ce5sDCMH2+X/xDrv2dFzX4UC5
-         PAGzFKmpzbxpnq5Cz51PY+v8vCig9ADTSc8bCcvCOZeETKLIhYjkQOCXpH6exhmY/9oN
-         iRlKFCtZHZJWYl/QYs2t7J6p/Xen2ghQ/7jRsfXaUW/CLS4nsT3Kv5B7zVf08dnU9G2I
-         ZUM3iXp9vvbTvPIyvkKOl2pdwmITMtLtLohifHb4HSimyqOf2nc0hdbmwJsQzG61vVot
-         KaFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtAW6w1tCeM+AqlVl0FGknlvBqrcoISamHSWl48T3HyclSDqx/qv0Fe+2Z8vkL2dOzhfCCSg2v/9LLIjywJg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHBiEo2Ehzrc5vEvuIhKi/+fOZxczuyJnFmyUu8MU6LDxcww6z
-	REfx+5WixdjYxZ9ICnEF5lxnbbGLsV/gopQyPKVMSwEtRySd88VSx6sxeCVqZ+N1aTiy+MEBFlo
-	Q8cI+d3jVwgdMDMcA4Xok21zDy6wYK2D5ChaYSfPWk5NahTnNd4Y68bKXI8e+22Aop0jn
-X-Gm-Gg: ASbGnct8b8GMAb3iLpMx1f4MrKg3mOKzc06x8J/1hEirAakNiOSoK6s2xnxga0FbiNt
-	TwUfeWR/IB0DSTCa5ilbstwgHbT4L09nYB+aPNOM+DQiOnE8o9LVv+sSW+J+XzUVLfWPp4lK+zY
-	KyfdlA7whe6ZBhuRxncpP2W3d6RRef85TLn+ii3NvjyaKvEOwBtHsjo4tMEssEjj6FChQeAnVm+
-	el78IHiVLSDxxsvxJXCmInjnAFfVUO4qnUrMIdO8+FlE5lhiPbzVHFP3rKf3boELC7HJ+e3I3ke
-	YTFmO7sZBpNrdS0wmrA5ihwQwCj57Y5kU0lYpqGwTrvMDchHF+taaMK1uNy5i1T/XQLgVdWGWPO
-	LAYCLW1YomvOo
-X-Received: by 2002:ac8:7d8e:0:b0:4b7:aa52:a6f3 with SMTP id d75a77b69052e-4da4b42ccebmr18620011cf.39.1758751535204;
-        Wed, 24 Sep 2025 15:05:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGI5uk0KXWRq0QwxAyOb8RJjwiJtHIQqt9P2bsBHvbBE8pJv74f28bazgNIPhENiZJPCLQccQ==
-X-Received: by 2002:ac8:7d8e:0:b0:4b7:aa52:a6f3 with SMTP id d75a77b69052e-4da4b42ccebmr18619451cf.39.1758751534511;
-        Wed, 24 Sep 2025 15:05:34 -0700 (PDT)
+        bh=JFbroX1ssNByVfo3ooeuZ0V0f5xfZuude+1cZO/2xik=;
+        b=cTgaLew1MY75o00fpajolm1JjxVSsJOlGUI3YbMQm/5xcXURqDJRZCk+ohWAWnVg1B
+         SFtDTI0NYnMORFVxGBYbvpuhG1llL9D4YeCeKDg7YtvNcQoO10Io6Q+dkiJ8xzlau1mW
+         QBDqMsfQnUsQf94kMJuHbiXWKLCdGmUZ7g+XA8ZSoy0asL/jKdNBLs2z+/6uA/ilXOnl
+         D0F84/YYtThLJkPTF+P9jMy14Kg0+K06zbFNLjFtkvm5rCjhUMBCpKTGejEtddsEjFVR
+         KnlEEkg1rCvN55XNQZE6wNb0oZX3KhwiG2sR1oo/UWiLA5DovCitz5oEcAGF2Gn1xQ9/
+         AH4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUH68sxCZflWvbYe6DhhwZOk8KyrOAvjfoKQqxs8Lz3w6WE5RhVnG0fN3uQKDGiKXNjhL/0tw7+iuzlqdCRJg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq7uwUuKl2JHQA7B3kBQSTC9NLpFgchJYhroSbXiXcjxNayKBu
+	F92AchzOpYkQTf+TzrK2rnIlfOxcvVSBVR+pts3EBFa/ZPp4lPHD1bRvu+ubzfWmEOo/K54mLtJ
+	QiX9L9sDrfHu5IoeeVPnnTKr3YyusB7sZzOGNYIsVWKKXyVCRh6W9evYLFEUfsF2w3rZX
+X-Gm-Gg: ASbGncvuUZOe0fu7/GkYf0wIl2NW3IDrplIH8hrwkBU8WXEuZJ28wtu/4T0bWRhLuzg
+	ealfnv38C6nXZ204BQtanIwu9TgHDNBl+WZ2tNgxNykOEPDGoeicD7r1TY6i6qkPLws+8tY8tXK
+	dg4Nxms5a/PNX+qm9BYfDDKvOPpqeVFfh8WbGxncYk3rkUij8I/hV7N2Hb/UZvmEyq5UvvOJmxn
+	gD5HhASkfZJTJNYn/7yJ7KU5I7wAMV+Pb7g/94NHDhSreoMEHiiQrQVhZIc/4qaNoqbeY9S2+M9
+	9YrcgLWaKhqLbAWcihlN48+ZtkECZm8Uae4tIRVqobywE5l//8fbeTWKJqoRO8QedIplWktoGHw
+	Th+Ep0r1V4PnZ
+X-Received: by 2002:a05:622a:4c17:b0:4c7:81b4:a114 with SMTP id d75a77b69052e-4da4c77bd8fmr18605961cf.55.1758751917246;
+        Wed, 24 Sep 2025 15:11:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IETE1+FfP78WnEYRXnH1exR1o4Uexqmbm1Z3S3a25OlI1EP4MTsNCgpvFSxh9qNYZK0azqp+A==
+X-Received: by 2002:a05:622a:4c17:b0:4c7:81b4:a114 with SMTP id d75a77b69052e-4da4c77bd8fmr18604201cf.55.1758751916525;
+        Wed, 24 Sep 2025 15:11:56 -0700 (PDT)
 Received: from [192.168.8.208] (pool-108-49-39-135.bstnma.fios.verizon.net. [108.49.39.135])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-80136c84338sm2007276d6.10.2025.09.24.15.05.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-85c2718e1basm10068085a.1.2025.09.24.15.11.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 15:05:33 -0700 (PDT)
-Message-ID: <71019580bfc922ed45a3c90b544dcac1356eff11.camel@redhat.com>
-Subject: Re: [PATCH v2 06/10] gpu: nova-core: gsp: Create rmargs
+        Wed, 24 Sep 2025 15:11:55 -0700 (PDT)
+Message-ID: <ebee2cd9743462ee9bb607dcf8a4b4c990c4e359.camel@redhat.com>
+Subject: Re: [PATCH v2 07/10] gpu: nova-core: gsp: Create RM registry and
+ sysinfo commands
 From: Lyude Paul <lyude@redhat.com>
 To: Alistair Popple <apopple@nvidia.com>, rust-for-linux@vger.kernel.org, 
 	dri-devel@lists.freedesktop.org, dakr@kernel.org, acourbot@nvidia.com
@@ -81,10 +82,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  <jhubbard@nvidia.com>,  Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi
  <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
 	nouveau@lists.freedesktop.org
-Date: Wed, 24 Sep 2025 18:05:32 -0400
-In-Reply-To: <20250922113026.3083103-7-apopple@nvidia.com>
+Date: Wed, 24 Sep 2025 18:11:54 -0400
+In-Reply-To: <20250922113026.3083103-8-apopple@nvidia.com>
 References: <20250922113026.3083103-1-apopple@nvidia.com>
-	 <20250922113026.3083103-7-apopple@nvidia.com>
+	 <20250922113026.3083103-8-apopple@nvidia.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42)
 Precedence: bulk
@@ -94,7 +95,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: rUOu0V0vYGcqxtCkCzP_DeomjM-Rw0PUtlL-Lyaa9Tc_1758751535
+X-Mimecast-MFC-PROC-ID: XNUWD2min6u2PfE1-D818MggVF6JseU_wmGzrUWR5O8_1758751917
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -102,231 +103,502 @@ Content-Transfer-Encoding: quoted-printable
 Reviewed-by: Lyude Paul <lyude@redhat.com>
 
 On Mon, 2025-09-22 at 21:30 +1000, Alistair Popple wrote:
-> Initialise the GSP resource manager arguments (rmargs) which provide
-> initialisation parameters to the GSP firmware during boot. The rmargs
-> structure contains arguments to configure the GSP message/command queue
-> location.
+> Add the RM registry and system information commands that enable the host
+> driver to configure GSP firmware parameters during initialization.
 >=20
-> These are mapped for coherent DMA and added to the libos data structure
-> for access when booting GSP.
+> The RM registry is serialized into a packed format and sent via the
+> command queue. For now only two parameters which are required to boot
+> GSP are hardcoded. In future a kernel module parameter will be added to
+> enable other parameters to be added.
+>=20
+> Also add the system info command, which provides required hardware
+> information to the GSP. These commands use the GSP command queue
+> infrastructure to issue commands to the GSP which is read during GSP
+> boot.
 >=20
 > Signed-off-by: Alistair Popple <apopple@nvidia.com>
 >=20
 > ---
 >=20
 > Changes for v2:
->  - Rebased on Alex's latest series
+>=20
+>  - Rebased on Alex's latest tree
 > ---
->  drivers/gpu/nova-core/gsp.rs                  | 29 +++++++++++++++-
->  drivers/gpu/nova-core/gsp/cmdq.rs             | 14 ++++++--
->  drivers/gpu/nova-core/gsp/fw.rs               | 19 +++++++++++
->  .../gpu/nova-core/gsp/fw/r570_144/bindings.rs | 33 +++++++++++++++++++
->  4 files changed, 91 insertions(+), 4 deletions(-)
+>  drivers/gpu/nova-core/gsp.rs                  |   1 +
+>  drivers/gpu/nova-core/gsp/boot.rs             |   6 +-
+>  drivers/gpu/nova-core/gsp/cmdq.rs             |   1 -
+>  drivers/gpu/nova-core/gsp/commands.rs         | 140 ++++++++++++++++
+>  drivers/gpu/nova-core/gsp/fw.rs               |  18 +++
+>  .../gpu/nova-core/gsp/fw/r570_144/bindings.rs | 149 ++++++++++++++++++
+>  drivers/gpu/nova-core/sbuffer.rs              |   1 -
+>  7 files changed, 313 insertions(+), 3 deletions(-)
+>  create mode 100644 drivers/gpu/nova-core/gsp/commands.rs
 >=20
 > diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-> index 3d4028d67d2e..bb08bd537ec4 100644
+> index bb08bd537ec4..1f7427a530e5 100644
 > --- a/drivers/gpu/nova-core/gsp.rs
 > +++ b/drivers/gpu/nova-core/gsp.rs
-> @@ -17,7 +17,10 @@
->  use crate::fb::FbLayout;
->  use crate::gsp::cmdq::GspCmdq;
-> =20
-> -use fw::LibosMemoryRegionInitArgument;
-> +use fw::{
-> +    LibosMemoryRegionInitArgument, GSP_ARGUMENTS_CACHED, GSP_SR_INIT_ARG=
-UMENTS,
-> +    MESSAGE_QUEUE_INIT_ARGUMENTS,
-> +};
+> @@ -23,6 +23,7 @@
+>  };
 > =20
 >  pub(crate) mod cmdq;
+> +pub(crate) mod commands;
 > =20
-> @@ -33,6 +36,7 @@ pub(crate) struct Gsp {
->      pub logintr: CoherentAllocation<u8>,
->      pub logrm: CoherentAllocation<u8>,
->      pub cmdq: GspCmdq,
-> +    rmargs: CoherentAllocation<GSP_ARGUMENTS_CACHED>,
->  }
+>  pub(crate) const GSP_PAGE_SHIFT: usize =3D 12;
+>  pub(crate) const GSP_PAGE_SIZE: usize =3D 1 << GSP_PAGE_SHIFT;
+> diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gs=
+p/boot.rs
+> index 1d2448331d7a..0b306313ec53 100644
+> --- a/drivers/gpu/nova-core/gsp/boot.rs
+> +++ b/drivers/gpu/nova-core/gsp/boot.rs
+> @@ -16,6 +16,7 @@
+>      FIRMWARE_VERSION,
+>  };
+>  use crate::gpu::Chipset;
+> +use crate::gsp::commands::{build_registry, set_system_info};
+>  use crate::gsp::GspFwWprMeta;
+>  use crate::regs;
+>  use crate::vbios::Vbios;
+> @@ -105,7 +106,7 @@ fn run_fwsec_frts(
+>      ///
+>      /// Upon return, the GSP is up and running, and its runtime object g=
+iven as return value.
+>      pub(crate) fn boot(
+> -        self: Pin<&mut Self>,
+> +        mut self: Pin<&mut Self>,
+>          pdev: &pci::Device<device::Bound>,
+>          bar: &Bar0,
+>          chipset: Chipset,
+> @@ -139,6 +140,9 @@ pub(crate) fn boot(
+>              CoherentAllocation::<GspFwWprMeta>::alloc_coherent(dev, 1, G=
+FP_KERNEL | __GFP_ZERO)?;
+>          dma_write!(wpr_meta[0] =3D GspFwWprMeta::new(&gsp_fw, &fb_layout=
+))?;
 > =20
->  /// Creates a self-mapping page table for `obj` at its beginning.
-> @@ -90,12 +94,35 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>) =
--> Result<impl PinInit<Self
-> =20
->          // Creates its own PTE array
->          let cmdq =3D GspCmdq::new(dev)?;
-> +        let rmargs =3D
-> +            create_coherent_dma_object::<GSP_ARGUMENTS_CACHED>(dev, "RMA=
-RGS", 1, &mut libos, 3)?;
-> +        let (shared_mem_phys_addr, cmd_queue_offset, stat_queue_offset) =
-=3D cmdq.get_cmdq_offsets();
+> +        set_system_info(&mut self.cmdq, pdev, bar)?;
+> +        build_registry(&mut self.cmdq, bar)?;
 > +
-> +        dma_write!(
-> +            rmargs[0].messageQueueInitArguments =3D MESSAGE_QUEUE_INIT_A=
-RGUMENTS {
-> +                sharedMemPhysAddr: shared_mem_phys_addr,
-> +                pageTableEntryCount: cmdq.nr_ptes,
-> +                cmdQueueOffset: cmd_queue_offset,
-> +                statQueueOffset: stat_queue_offset,
-> +                ..Default::default()
-> +            }
-> +        )?;
-> +        dma_write!(
-> +            rmargs[0].srInitArguments =3D GSP_SR_INIT_ARGUMENTS {
-> +                oldLevel: 0,
-> +                flags: 0,
-> +                bInPMTransition: 0,
-> +                ..Default::default()
-> +            }
-> +        )?;
-> +        dma_write!(rmargs[0].bDmemStack =3D 1)?;
-> =20
->          Ok(try_pin_init!(Self {
->              libos,
->              loginit,
->              logintr,
->              logrm,
-> +            rmargs,
->              cmdq,
->          }))
+>          Ok(())
 >      }
+>  }
 > diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
 p/cmdq.rs
-> index a9ba1a4c73d8..9170ccf4a064 100644
+> index 9170ccf4a064..27d40c5ed23a 100644
 > --- a/drivers/gpu/nova-core/gsp/cmdq.rs
 > +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-> @@ -99,7 +99,6 @@ fn new(dev: &device::Device<device::Bound>) -> Result<S=
-elf> {
->          Ok(Self(gsp_mem))
+> @@ -243,7 +243,6 @@ fn calculate_checksum<T: Iterator<Item =3D u8>>(it: T=
+) -> u32 {
+>          ((sum64 >> 32) as u32) ^ (sum64 as u32)
 >      }
 > =20
 > -    #[expect(unused)]
->      fn dma_handle(&self) -> DmaAddress {
->          self.0.dma_handle()
->      }
-> @@ -218,7 +217,7 @@ pub(crate) struct GspCmdq {
->      dev: ARef<device::Device>,
->      seq: u32,
->      gsp_mem: DmaGspMem,
-> -    pub _nr_ptes: u32,
-> +    pub nr_ptes: u32,
->  }
-> =20
->  impl GspCmdq {
-> @@ -231,7 +230,7 @@ pub(crate) fn new(dev: &device::Device<device::Bound>=
-) -> Result<GspCmdq> {
->              dev: dev.into(),
->              seq: 0,
->              gsp_mem,
-> -            _nr_ptes: nr_ptes as u32,
-> +            nr_ptes: nr_ptes as u32,
->          })
->      }
-> =20
-> @@ -382,6 +381,15 @@ pub(crate) fn receive_msg_from_gsp<M: GspMessageFrom=
-Gsp, R>(
->              .advance_cpu_read_ptr(msg_header.rpc.length.div_ceil(GSP_PAG=
-E_SIZE as u32));
->          result
->      }
+>      pub(crate) fn send_gsp_command<M: GspCommandToGsp>(
+>          &mut self,
+>          bar: &Bar0,
+> diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-cor=
+e/gsp/commands.rs
+> new file mode 100644
+> index 000000000000..2df0dbc6f0b5
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/gsp/commands.rs
+> @@ -0,0 +1,140 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +    pub(crate) fn get_cmdq_offsets(&self) -> (u64, u64, u64) {
-> +        (
-> +            self.gsp_mem.dma_handle(),
-> +            core::mem::offset_of!(Msgq, msgq) as u64,
-> +            (core::mem::offset_of!(GspMem, gspq) - core::mem::offset_of!=
-(GspMem, cpuq)
-> +                + core::mem::offset_of!(Msgq, msgq)) as u64,
-> +        )
+> +use kernel::build_assert;
+> +use kernel::device;
+> +use kernel::pci;
+> +use kernel::prelude::*;
+> +use kernel::transmute::{AsBytes, FromBytes};
+> +
+> +use super::fw::{
+> +    GspSystemInfo, NV_VGPU_MSG_FUNCTION_GSP_SET_SYSTEM_INFO, NV_VGPU_MSG=
+_FUNCTION_SET_REGISTRY,
+> +    PACKED_REGISTRY_ENTRY, PACKED_REGISTRY_TABLE, REGISTRY_TABLE_ENTRY_T=
+YPE_DWORD,
+> +};
+> +use crate::driver::Bar0;
+> +use crate::gsp::cmdq::GspCmdq;
+> +use crate::gsp::cmdq::GspCommandToGsp;
+> +use crate::gsp::GSP_PAGE_SIZE;
+> +use crate::sbuffer::SBuffer;
+> +
+> +// SAFETY: These structs don't meet the no-padding requirements of AsByt=
+es but
+> +//         that is not a problem because they are not used outside the k=
+ernel.
+> +unsafe impl AsBytes for GspSystemInfo {}
+> +
+> +// SAFETY: These structs don't meet the no-padding requirements of FromB=
+ytes but
+> +//         that is not a problem because they are not used outside the k=
+ernel.
+> +unsafe impl FromBytes for GspSystemInfo {}
+> +
+> +const GSP_REGISTRY_NUM_ENTRIES: usize =3D 2;
+> +struct RegistryEntry {
+> +    key: &'static str,
+> +    value: u32,
+> +}
+> +
+> +struct RegistryTable {
+> +    entries: [RegistryEntry; GSP_REGISTRY_NUM_ENTRIES],
+> +}
+> +
+> +impl GspCommandToGsp for PACKED_REGISTRY_TABLE {
+> +    const FUNCTION: u32 =3D NV_VGPU_MSG_FUNCTION_SET_REGISTRY;
+> +}
+> +
+> +impl RegistryTable {
+> +    fn write_payload<'a, I: Iterator<Item =3D &'a mut [u8]>>(
+> +        &self,
+> +        mut sbuffer: SBuffer<I>,
+> +    ) -> Result {
+> +        let string_data_start_offset =3D size_of::<PACKED_REGISTRY_TABLE=
+>()
+> +            + GSP_REGISTRY_NUM_ENTRIES * size_of::<PACKED_REGISTRY_ENTRY=
+>();
+> +
+> +        // Array for string data.
+> +        let mut string_data =3D KVec::new();
+> +
+> +        for entry in self.entries.iter().take(GSP_REGISTRY_NUM_ENTRIES) =
+{
+> +            sbuffer.write_all(
+> +                PACKED_REGISTRY_ENTRY {
+> +                    nameOffset: (string_data_start_offset + string_data.=
+len()) as u32,
+> +                    type_: REGISTRY_TABLE_ENTRY_TYPE_DWORD as u8,
+> +                    __bindgen_padding_0: Default::default(),
+> +                    data: entry.value,
+> +                    length: 0,
+> +                }
+> +                .as_bytes(),
+> +            )?;
+> +
+> +            let key_bytes =3D entry.key.as_bytes();
+> +            string_data.extend_from_slice(key_bytes, GFP_KERNEL)?;
+> +            string_data.push(0, GFP_KERNEL)?;
+> +        }
+> +
+> +        sbuffer.write_all(string_data.as_slice())
 > +    }
->  }
-> =20
->  fn decode_gsp_function(function: u32) -> &'static str {
+> +
+> +    fn size(&self) -> usize {
+> +        let mut key_size =3D 0;
+> +        for i in 0..GSP_REGISTRY_NUM_ENTRIES {
+> +            key_size +=3D self.entries[i].key.len() + 1; // +1 for NULL =
+terminator
+> +        }
+> +        GSP_REGISTRY_NUM_ENTRIES * size_of::<PACKED_REGISTRY_ENTRY>() + =
+key_size
+> +    }
+> +}
+> +
+> +pub(crate) fn build_registry(cmdq: &mut GspCmdq, bar: &Bar0) -> Result {
+> +    let registry =3D RegistryTable {
+> +        entries: [
+> +            RegistryEntry {
+> +                key: "RMSecBusResetEnable",
+> +                value: 1,
+> +            },
+> +            RegistryEntry {
+> +                key: "RMForcePcieConfigSave",
+> +                value: 1,
+> +            },
+> +        ],
+> +    };
+> +
+> +    cmdq.send_gsp_command::<PACKED_REGISTRY_TABLE>(bar, registry.size(),=
+ |table, sbuffer| {
+> +        // TODO: we need a constructor for this...
+> +        *table =3D PACKED_REGISTRY_TABLE {
+> +            numEntries: GSP_REGISTRY_NUM_ENTRIES as u32,
+> +            size: registry.size() as u32,
+> +            entries: Default::default(),
+> +        };
+> +
+> +        registry.write_payload(sbuffer)
+> +    })
+> +}
+> +
+> +impl GspCommandToGsp for GspSystemInfo {
+> +    const FUNCTION: u32 =3D NV_VGPU_MSG_FUNCTION_GSP_SET_SYSTEM_INFO;
+> +}
+> +
+> +pub(crate) fn set_system_info(
+> +    cmdq: &mut GspCmdq,
+> +    dev: &pci::Device<device::Bound>,
+> +    bar: &Bar0,
+> +) -> Result {
+> +    build_assert!(size_of::<GspSystemInfo>() < GSP_PAGE_SIZE);
+> +    cmdq.send_gsp_command::<GspSystemInfo>(bar, 0, |info, _| {
+> +        info.gpuPhysAddr =3D dev.resource_start(0)?;
+> +        info.gpuPhysFbAddr =3D dev.resource_start(1)?;
+> +        info.gpuPhysInstAddr =3D dev.resource_start(3)?;
+> +        info.nvDomainBusDeviceFunc =3D u64::from(dev.dev_id());
+> +
+> +        // Using TASK_SIZE in r535_gsp_rpc_set_system_info() seems wrong=
+ because
+> +        // TASK_SIZE is per-task. That's probably a design issue in GSP-=
+RM though.
+> +        info.maxUserVa =3D (1 << 47) - 4096;
+> +        info.pciConfigMirrorBase =3D 0x088000;
+> +        info.pciConfigMirrorSize =3D 0x001000;
+> +
+> +        info.PCIDeviceID =3D (u32::from(dev.device_id()) << 16) | u32::f=
+rom(dev.vendor_id());
+> +        info.PCISubDeviceID =3D
+> +            (u32::from(dev.subsystem_device_id()) << 16) | u32::from(dev=
+.subsystem_vendor_id());
+> +        info.PCIRevisionID =3D u32::from(dev.revision_id());
+> +        info.bIsPrimary =3D 0;
+> +        info.bPreserveVideoMemoryAllocations =3D 0;
+> +
+> +        Ok(())
+> +    })?;
+> +
+> +    Ok(())
+> +}
 > diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/=
 fw.rs
-> index 2e4255301e58..06841b103328 100644
+> index 06841b103328..c6c751b95717 100644
 > --- a/drivers/gpu/nova-core/gsp/fw.rs
 > +++ b/drivers/gpu/nova-core/gsp/fw.rs
-> @@ -158,9 +158,15 @@ pub(crate) fn new(gsp_firmware: &GspFirmware, fb_lay=
-out: &FbLayout) -> Self {
+> @@ -158,6 +158,9 @@ pub(crate) fn new(gsp_firmware: &GspFirmware, fb_layo=
+ut: &FbLayout) -> Self {
 >  }
 > =20
 >  pub(crate) use r570_144::{
-> +    GSP_ARGUMENTS_CACHED,
+> +    // Core GSP structures
+> +    GspSystemInfo,
 > +
->      // GSP firmware constants
->      GSP_FW_WPR_META_MAGIC,
->      GSP_FW_WPR_META_REVISION,
-> +    GSP_SR_INIT_ARGUMENTS,
-> +
-> +    // RM message queue parameters
-> +    MESSAGE_QUEUE_INIT_ARGUMENTS,
+>      GSP_ARGUMENTS_CACHED,
 > =20
->      // GSP events
->      NV_VGPU_MSG_EVENT_GSP_INIT_DONE,
-> @@ -313,3 +319,16 @@ pub(crate) fn new(sequence: u32, cmd_size: usize, fu=
-nction: u32) -> Self {
->          }
->      }
->  }
+>      // GSP firmware constants
+> @@ -198,6 +201,11 @@ pub(crate) fn new(gsp_firmware: &GspFirmware, fb_lay=
+out: &FbLayout) -> Self {
+>      NV_VGPU_MSG_FUNCTION_NOP,
+>      NV_VGPU_MSG_FUNCTION_SET_GUEST_SYSTEM_INFO,
+>      NV_VGPU_MSG_FUNCTION_SET_REGISTRY,
 > +
-> +// SAFETY: Padding is explicit and will not contain uninitialized data.
-> +unsafe impl AsBytes for GSP_ARGUMENTS_CACHED {}
+> +    // RM registry structures
+> +    PACKED_REGISTRY_ENTRY,
+> +    PACKED_REGISTRY_TABLE,
+> +    REGISTRY_TABLE_ENTRY_TYPE_DWORD,
+>  };
+> =20
+>  #[repr(transparent)]
+> @@ -332,3 +340,13 @@ unsafe impl AsBytes for MESSAGE_QUEUE_INIT_ARGUMENTS=
+ {}
+> =20
+>  // SAFETY: Padding is explicit and will not contain uninitialized data.
+>  unsafe impl AsBytes for GSP_SR_INIT_ARGUMENTS {}
 > +
 > +// SAFETY: This struct only contains integer types for which all bit pat=
 terns
 > +// are valid.
-> +unsafe impl FromBytes for GSP_ARGUMENTS_CACHED {}
+> +unsafe impl FromBytes for PACKED_REGISTRY_TABLE {}
 > +
 > +// SAFETY: Padding is explicit and will not contain uninitialized data.
-> +unsafe impl AsBytes for MESSAGE_QUEUE_INIT_ARGUMENTS {}
+> +unsafe impl AsBytes for PACKED_REGISTRY_TABLE {}
 > +
 > +// SAFETY: Padding is explicit and will not contain uninitialized data.
-> +unsafe impl AsBytes for GSP_SR_INIT_ARGUMENTS {}
+> +unsafe impl AsBytes for PACKED_REGISTRY_ENTRY {}
 > diff --git a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs b/drivers/=
 gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> index 3d96d91e5b12..b87c4e6cb857 100644
+> index b87c4e6cb857..7ad1981e471c 100644
 > --- a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
 > +++ b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> @@ -319,6 +319,39 @@ fn fmt(&self, fmt: &mut ::core::fmt::Formatter<'_>) =
--> ::core::fmt::Result {
->  pub const NV_VGPU_MSG_EVENT_NUM_EVENTS: _bindgen_ty_3 =3D 4131;
+> @@ -42,6 +42,7 @@ fn fmt(&self, fmt: &mut ::core::fmt::Formatter<'_>) -> =
+::core::fmt::Result {
+>  pub const GSP_FW_HEAP_SIZE_OVERRIDE_LIBOS3_BAREMETAL_MAX_MB: u32 =3D 280=
+;
+>  pub const GSP_FW_WPR_META_REVISION: u32 =3D 1;
+>  pub const GSP_FW_WPR_META_MAGIC: i64 =3D -2577556379034558285;
+> +pub const REGISTRY_TABLE_ENTRY_TYPE_DWORD: u32 =3D 1;
+>  pub type __u8 =3D ffi::c_uchar;
+>  pub type __u16 =3D ffi::c_ushort;
+>  pub type __u32 =3D ffi::c_uint;
+> @@ -320,6 +321,138 @@ fn fmt(&self, fmt: &mut ::core::fmt::Formatter<'_>)=
+ -> ::core::fmt::Result {
 >  pub type _bindgen_ty_3 =3D ffi::c_uint;
 >  #[repr(C)]
-> +#[derive(Debug, Default, Copy, Clone)]
-> +pub struct MESSAGE_QUEUE_INIT_ARGUMENTS {
-> +    pub sharedMemPhysAddr: u64_,
-> +    pub pageTableEntryCount: u32_,
-> +    pub __bindgen_padding_0: [u8; 4usize],
-> +    pub cmdQueueOffset: u64_,
-> +    pub statQueueOffset: u64_,
+>  #[derive(Debug, Default, Copy, Clone)]
+> +pub struct DOD_METHOD_DATA {
+> +    pub status: u32_,
+> +    pub acpiIdListLen: u32_,
+> +    pub acpiIdList: [u32_; 16usize],
 > +}
 > +#[repr(C)]
 > +#[derive(Debug, Default, Copy, Clone)]
-> +pub struct GSP_SR_INIT_ARGUMENTS {
-> +    pub oldLevel: u32_,
-> +    pub flags: u32_,
-> +    pub bInPMTransition: u8_,
+> +pub struct JT_METHOD_DATA {
+> +    pub status: u32_,
+> +    pub jtCaps: u32_,
+> +    pub jtRevId: u16_,
+> +    pub bSBIOSCaps: u8_,
+> +    pub __bindgen_padding_0: u8,
+> +}
+> +#[repr(C)]
+> +#[derive(Debug, Default, Copy, Clone)]
+> +pub struct MUX_METHOD_DATA_ELEMENT {
+> +    pub acpiId: u32_,
+> +    pub mode: u32_,
+> +    pub status: u32_,
+> +}
+> +#[repr(C)]
+> +#[derive(Debug, Default, Copy, Clone)]
+> +pub struct MUX_METHOD_DATA {
+> +    pub tableLen: u32_,
+> +    pub acpiIdMuxModeTable: [MUX_METHOD_DATA_ELEMENT; 16usize],
+> +    pub acpiIdMuxPartTable: [MUX_METHOD_DATA_ELEMENT; 16usize],
+> +    pub acpiIdMuxStateTable: [MUX_METHOD_DATA_ELEMENT; 16usize],
+> +}
+> +#[repr(C)]
+> +#[derive(Debug, Default, Copy, Clone)]
+> +pub struct CAPS_METHOD_DATA {
+> +    pub status: u32_,
+> +    pub optimusCaps: u32_,
+> +}
+> +#[repr(C)]
+> +#[derive(Debug, Default, Copy, Clone)]
+> +pub struct ACPI_METHOD_DATA {
+> +    pub bValid: u8_,
 > +    pub __bindgen_padding_0: [u8; 3usize],
+> +    pub dodMethodData: DOD_METHOD_DATA,
+> +    pub jtMethodData: JT_METHOD_DATA,
+> +    pub muxMethodData: MUX_METHOD_DATA,
+> +    pub capsMethodData: CAPS_METHOD_DATA,
 > +}
 > +#[repr(C)]
 > +#[derive(Debug, Default, Copy, Clone)]
-> +pub struct GSP_ARGUMENTS_CACHED {
-> +    pub messageQueueInitArguments: MESSAGE_QUEUE_INIT_ARGUMENTS,
-> +    pub srInitArguments: GSP_SR_INIT_ARGUMENTS,
-> +    pub gpuInstance: u32_,
-> +    pub bDmemStack: u8_,
+> +pub struct BUSINFO {
+> +    pub deviceID: u16_,
+> +    pub vendorID: u16_,
+> +    pub subdeviceID: u16_,
+> +    pub subvendorID: u16_,
+> +    pub revisionID: u8_,
+> +    pub __bindgen_padding_0: u8,
+> +}
+> +#[repr(C)]
+> +#[derive(Debug, Default, Copy, Clone)]
+> +pub struct GSP_VF_INFO {
+> +    pub totalVFs: u32_,
+> +    pub firstVFOffset: u32_,
+> +    pub FirstVFBar0Address: u64_,
+> +    pub FirstVFBar1Address: u64_,
+> +    pub FirstVFBar2Address: u64_,
+> +    pub b64bitBar0: u8_,
+> +    pub b64bitBar1: u8_,
+> +    pub b64bitBar2: u8_,
+> +    pub __bindgen_padding_0: [u8; 5usize],
+> +}
+> +#[repr(C)]
+> +#[derive(Debug, Default, Copy, Clone)]
+> +pub struct GSP_PCIE_CONFIG_REG {
+> +    pub linkCap: u32_,
+> +}
+> +#[repr(C)]
+> +#[derive(Debug, Default, Copy, Clone)]
+> +pub struct GspSystemInfo {
+> +    pub gpuPhysAddr: u64_,
+> +    pub gpuPhysFbAddr: u64_,
+> +    pub gpuPhysInstAddr: u64_,
+> +    pub gpuPhysIoAddr: u64_,
+> +    pub nvDomainBusDeviceFunc: u64_,
+> +    pub simAccessBufPhysAddr: u64_,
+> +    pub notifyOpSharedSurfacePhysAddr: u64_,
+> +    pub pcieAtomicsOpMask: u64_,
+> +    pub consoleMemSize: u64_,
+> +    pub maxUserVa: u64_,
+> +    pub pciConfigMirrorBase: u32_,
+> +    pub pciConfigMirrorSize: u32_,
+> +    pub PCIDeviceID: u32_,
+> +    pub PCISubDeviceID: u32_,
+> +    pub PCIRevisionID: u32_,
+> +    pub pcieAtomicsCplDeviceCapMask: u32_,
+> +    pub oorArch: u8_,
 > +    pub __bindgen_padding_0: [u8; 7usize],
-> +    pub profilerArgs: GSP_ARGUMENTS_CACHED__bindgen_ty_1,
+> +    pub clPdbProperties: u64_,
+> +    pub Chipset: u32_,
+> +    pub bGpuBehindBridge: u8_,
+> +    pub bFlrSupported: u8_,
+> +    pub b64bBar0Supported: u8_,
+> +    pub bMnocAvailable: u8_,
+> +    pub chipsetL1ssEnable: u32_,
+> +    pub bUpstreamL0sUnsupported: u8_,
+> +    pub bUpstreamL1Unsupported: u8_,
+> +    pub bUpstreamL1PorSupported: u8_,
+> +    pub bUpstreamL1PorMobileOnly: u8_,
+> +    pub bSystemHasMux: u8_,
+> +    pub upstreamAddressValid: u8_,
+> +    pub FHBBusInfo: BUSINFO,
+> +    pub chipsetIDInfo: BUSINFO,
+> +    pub __bindgen_padding_1: [u8; 2usize],
+> +    pub acpiMethodData: ACPI_METHOD_DATA,
+> +    pub hypervisorType: u32_,
+> +    pub bIsPassthru: u8_,
+> +    pub __bindgen_padding_2: [u8; 7usize],
+> +    pub sysTimerOffsetNs: u64_,
+> +    pub gspVFInfo: GSP_VF_INFO,
+> +    pub bIsPrimary: u8_,
+> +    pub isGridBuild: u8_,
+> +    pub __bindgen_padding_3: [u8; 2usize],
+> +    pub pcieConfigReg: GSP_PCIE_CONFIG_REG,
+> +    pub gridBuildCsp: u32_,
+> +    pub bPreserveVideoMemoryAllocations: u8_,
+> +    pub bTdrEventSupported: u8_,
+> +    pub bFeatureStretchVblankCapable: u8_,
+> +    pub bEnableDynamicGranularityPageArrays: u8_,
+> +    pub bClockBoostSupported: u8_,
+> +    pub bRouteDispIntrsToCPU: u8_,
+> +    pub __bindgen_padding_4: [u8; 6usize],
+> +    pub hostPageSize: u64_,
 > +}
 > +#[repr(C)]
 > +#[derive(Debug, Default, Copy, Clone)]
-> +pub struct GSP_ARGUMENTS_CACHED__bindgen_ty_1 {
-> +    pub pa: u64_,
-> +    pub size: u64_,
+>  pub struct MESSAGE_QUEUE_INIT_ARGUMENTS {
+>      pub sharedMemPhysAddr: u64_,
+>      pub pageTableEntryCount: u32_,
+> @@ -517,6 +650,22 @@ pub struct LibosMemoryRegionInitArgument {
+>  }
+>  #[repr(C)]
+>  #[derive(Debug, Default, Copy, Clone)]
+> +pub struct PACKED_REGISTRY_ENTRY {
+> +    pub nameOffset: u32_,
+> +    pub type_: u8_,
+> +    pub __bindgen_padding_0: [u8; 3usize],
+> +    pub data: u32_,
+> +    pub length: u32_,
 > +}
 > +#[repr(C)]
->  #[derive(Copy, Clone)]
->  pub union rpc_message_rpc_union_field_v03_00 {
->      pub spare: u32_,
+> +#[derive(Debug, Default)]
+> +pub struct PACKED_REGISTRY_TABLE {
+> +    pub size: u32_,
+> +    pub numEntries: u32_,
+> +    pub entries: __IncompleteArrayField<PACKED_REGISTRY_ENTRY>,
+> +}
+> +#[repr(C)]
+> +#[derive(Debug, Default, Copy, Clone)]
+>  pub struct msgqTxHeader {
+>      pub version: u32_,
+>      pub size: u32_,
+> diff --git a/drivers/gpu/nova-core/sbuffer.rs b/drivers/gpu/nova-core/sbu=
+ffer.rs
+> index e6b18ecb7a55..b1b8c4536d2f 100644
+> --- a/drivers/gpu/nova-core/sbuffer.rs
+> +++ b/drivers/gpu/nova-core/sbuffer.rs
+> @@ -159,7 +159,6 @@ fn get_slice_mut(&mut self, len: usize) -> Option<&'a=
+ mut [u8]> {
+> =20
+>      /// Ideally we would implement `Write`, but it is not available in `=
+core`.
+>      /// So mimic `std::io::Write::write_all`.
+> -    #[expect(unused)]
+>      pub(crate) fn write_all(&mut self, mut src: &[u8]) -> Result {
+>          while !src.is_empty() {
+>              match self.get_slice_mut(src.len()) {
+> --=20
+> 2.50.1
 
 --=20
 Cheers,
