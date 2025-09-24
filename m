@@ -1,448 +1,253 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BC227A47F
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 09:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B982D8DD9;
+	Wed, 24 Sep 2025 10:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758705808; cv=none; b=ZHBf1n5AP25bA+2AT+q0VGENcoVcNwFewIpywwSIOuRsfJn9W/GJwnLY1+lbfTvw15s13V14MvorIpv3982CjOE8jFOZYKx8G5iX+Gndv9exL3usp2gboVN3fci/x1Bz9ioHqqgM6bRdgpQETsE+AMxJkNA9FhWDB7cboBXY+hM=
+	t=1758710454; cv=none; b=Z2vZVmO9rIkRSuY1LBFevPF2U3/nk8avCg7g8znqHwM3yMXvKCSEtkcYqqn1df/gx85tmT6PUi6z65qAs7FGv1F61CeBFCV0YSNMLLDWAEwDqM2o1zJ7BRQkEHM7osr9v+BdR58EzpvBHwi8HuPOF3m7UPuJ9mUrxvfNRHCrHCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758705808; c=relaxed/simple;
-	bh=czvfMGDkk5Ga/xXu3Kdhj5gXIl/wcjzBSe81pzlz8Go=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aUIYDDRMFrh1QW4s3JeLFGAfSLNMlydPraZ7t3fbGtpdUc3n9osiLxxbS49CM9TNcxRNpsnuZR5+2hn+Mz/2xYW4pMp6e13MAZ2x76uz5O2CTt/pNyBaGkxGxtTnF6ZmZ/J7B/cPsVtiFfEt0bJrotIuNUPHKlc/JNCWElZPhQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Rmw0qhTV; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=TIn9hZXS; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1758710454; c=relaxed/simple;
+	bh=WLTg6YhgypSTinJluMxh2Q1bjm4WVEf8y8wZlXZnQg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WBPAdNNKeX7dWrxiBxrliD5cjtATGl8vpc2fLHX9xxnMpJZcMLEfAvpAMKfvQB4rBFQm9vt2VuXZFM1UrklmW6Wvb/4k9tR9aAPouiOeYDWopULZje1KRNbRQMbHRwLCeKHvxFCU0fE/lM1LW6wCxzTKQyFyUzvbd5stGeepOPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKFMqXQP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Rmw0qhTV";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="TIn9hZXS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1758705800; x=1759310600;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=8hQAmdgsj56lWZqQa4snfcTxmVBqhzBEMqIVUh7ap20=;
-	b=Rmw0qhTV/Eia148x7JHjY9Fa6dUs1crqJwLdK1Y7ngO4RDOnV/nq+Uj+UMdGlnlOI7X4fhOKRW9ba
-	 HZp6diEex6mrViqExA9m54tzS1HyoPgkox6LFRA3wHz/yOkd9jjG0VPwJ5jwziyU1D38XVJEb2Q9jM
-	 w5KI+lyRqPcvOr6xalzL1dG1eu5v43WvGLX85oB4BgmWyif/vICQwgptthZnjX3HQJsesjXBbBj/zs
-	 pE9XHfCoXme0YIQeqa+MyYs9orsdw+KoVk7q89XqM64aqSIZW40ORMJuJR+2cY8RA/HklvOoSjWVX2
-	 7lqH6l80I73bTvJ83K2kL1AGUb/Ukwg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1758705800; x=1759310600;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=8hQAmdgsj56lWZqQa4snfcTxmVBqhzBEMqIVUh7ap20=;
-	b=TIn9hZXS9Ua9ogFH9ICjrfAm3/5xFx+rhcRvnC+8q529qtc4M1wVP6OhVis1ytn80CJ9yFZYT0Q4V
-	 QMIyT6FAQ==
-X-HalOne-ID: 19dcd115-9928-11f0-bdd8-e90f2b8e16ca
-Received: from [192.168.10.245] (host-90-233-199-55.mobileonline.telia.com [90.233.199.55])
-	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 19dcd115-9928-11f0-bdd8-e90f2b8e16ca;
-	Wed, 24 Sep 2025 09:23:18 +0000 (UTC)
-Message-ID: <d01074e3-600c-4ceb-95b6-d10fd9c253a4@konsulko.se>
-Date: Wed, 24 Sep 2025 11:23:16 +0200
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKFMqXQP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA070C4CEE7;
+	Wed, 24 Sep 2025 10:40:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758710453;
+	bh=WLTg6YhgypSTinJluMxh2Q1bjm4WVEf8y8wZlXZnQg0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LKFMqXQPRy4tKUX1osFG2qJmVgiVfCn4hrzZTfy6Hc0iDau9ChwwRcHsb93S7dFAq
+	 CRjAvxRLq0kPwdCkoQLeE0j+q2YFfAlMZn9y4CW022IV53eEvOkL0JkiErBgqoIvF3
+	 gH2uTYZs0FsR1VNgjSgu0uwikqlKDIqvfuwRbeIs=
+Date: Wed, 24 Sep 2025 12:40:50 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	dakr@kernel.org, acourbot@nvidia.com,
+	Alistair Popple <apopple@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com, Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
+	Yury Norov <yury.norov@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	nouveau@lists.freedesktop.org
+Subject: Re: [PATCH v4 1/6] nova-core: bitfield: Move bitfield-specific code
+ from register! into new macro
+Message-ID: <2025092425-sinuous-playoff-3618@gregkh>
+References: <20250920182232.2095101-1-joelagnelf@nvidia.com>
+ <20250920182232.2095101-2-joelagnelf@nvidia.com>
+ <2025092157-pauper-snap-aad1@gregkh>
+ <DCYHCLM67KRZ.366VS9PDKLYKY@kernel.org>
+ <2025092125-urban-muppet-1c2f@gregkh>
+ <20250923222434.GA2479829@joelbox2>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] rust: zpool: add abstraction for zpool drivers
-To: Benno Lossin <lossin@kernel.org>, linux-mm@kvack.org,
- rust-for-linux@vger.kernel.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed
- <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org
-References: <20250923102547.2545992-1-vitaly.wool@konsulko.se>
- <20250923102702.2552392-1-vitaly.wool@konsulko.se>
- <DD0IEU4DSZVI.32SU7U5B4AOGE@kernel.org>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <DD0IEU4DSZVI.32SU7U5B4AOGE@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250923222434.GA2479829@joelbox2>
 
-
-
-On 9/23/25 23:49, Benno Lossin wrote:
-> On Tue Sep 23, 2025 at 12:27 PM CEST, Vitaly Wool wrote:
->> diff --git a/rust/kernel/zpool.rs b/rust/kernel/zpool.rs
->> new file mode 100644
->> index 000000000000..53a0dc0607e6
->> --- /dev/null
->> +++ b/rust/kernel/zpool.rs
->> @@ -0,0 +1,366 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Implementation of Rust interface towards zpool API.
->> +
->> +use crate::{error::Result, kernel::alloc::Flags, str::CString, types::ForeignOwnable};
->> +use core::ptr::NonNull;
->> +use kernel::alloc::NumaNode;
->> +
->> +/// The Rust representation of zpool handle.
+On Tue, Sep 23, 2025 at 06:24:34PM -0400, Joel Fernandes wrote:
+> Hi Greg,
 > 
-> Would be great to explain what this means, what's the handle used for?
-
-Sorry, do you mean explaining it here or in the code?
-
->> +pub struct ZpoolHandle(usize);
->> +
->> +impl ZpoolHandle {
->> +    /// Create `ZpoolHandle` from the raw representation.
->> +    pub fn from_raw(h: usize) -> Self {
->> +        Self(h)
->> +    }
->> +
->> +    /// Get the raw representation of the handle.
->> +    pub fn as_raw(self) -> usize {
->> +        self.0
->> +    }
+> On Sun, Sep 21, 2025 at 02:45:27PM +0200, Greg KH wrote:
+> > On Sun, Sep 21, 2025 at 02:33:56PM +0200, Benno Lossin wrote:
+> > > On Sun Sep 21, 2025 at 11:36 AM CEST, Greg KH wrote:
+> > > > On Sat, Sep 20, 2025 at 02:22:27PM -0400, Joel Fernandes wrote:
+> > > >> The bitfield-specific into new macro. This will be used to define
+> > > >> structs with bitfields, similar to C language.
+> > > >> 
+> > > >> Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
+> > > >> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> > > >> ---
+> > > >>  drivers/gpu/nova-core/bitfield.rs    | 314 +++++++++++++++++++++++++++
+> > > >>  drivers/gpu/nova-core/nova_core.rs   |   3 +
+> > > >>  drivers/gpu/nova-core/regs/macros.rs | 259 +---------------------
+> > > >>  3 files changed, 327 insertions(+), 249 deletions(-)
+> > > >>  create mode 100644 drivers/gpu/nova-core/bitfield.rs
+> > > >> 
+> > > >> diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bitfield.rs
+> > > >> new file mode 100644
+> > > >> index 000000000000..ba6b7caa05d9
+> > > >> --- /dev/null
+> > > >> +++ b/drivers/gpu/nova-core/bitfield.rs
+> > > >> @@ -0,0 +1,314 @@
+> > > >> +// SPDX-License-Identifier: GPL-2.0
+> > > >> +
+> > > >> +//! Bitfield library for Rust structures
+> > > >> +//!
+> > > >> +//! Support for defining bitfields in Rust structures. Also used by the [`register!`] macro.
+> > > >> +//!
+> > > >> +//! # Syntax
+> > > >> +//!
+> > > >> +//! ```rust
+> > > >> +//! #[derive(Debug, Clone, Copy)]
+> > > >> +//! enum Mode {
+> > > >> +//!     Low = 0,
+> > > >> +//!     High = 1,
+> > > >> +//!     Auto = 2,
+> > > >> +//! }
+> > > >> +//!
+> > > >> +//! impl TryFrom<u8> for Mode {
+> > > >> +//!     type Error = u8;
+> > > >> +//!     fn try_from(value: u8) -> Result<Self, Self::Error> {
+> > > >> +//!         match value {
+> > > >> +//!             0 => Ok(Mode::Low),
+> > > >> +//!             1 => Ok(Mode::High),
+> > > >> +//!             2 => Ok(Mode::Auto),
+> > > >> +//!             _ => Err(value),
+> > > >> +//!         }
+> > > >> +//!     }
+> > > >> +//! }
+> > > >> +//!
+> > > >> +//! impl From<Mode> for u32 {
+> > > >> +//!     fn from(mode: Mode) -> u32 {
+> > > >> +//!         mode as u32
+> > > >> +//!     }
+> > > >> +//! }
+> > > >> +//!
+> > > >> +//! #[derive(Debug, Clone, Copy)]
+> > > >> +//! enum State {
+> > > >> +//!     Inactive = 0,
+> > > >> +//!     Active = 1,
+> > > >> +//! }
+> > > >> +//!
+> > > >> +//! impl From<bool> for State {
+> > > >> +//!     fn from(value: bool) -> Self {
+> > > >> +//!         if value { State::Active } else { State::Inactive }
+> > > >> +//!     }
+> > > >> +//! }
+> > > >> +//!
+> > > >> +//! impl From<State> for u32 {
+> > > >> +//!     fn from(state: State) -> u32 {
+> > > >> +//!         state as u32
+> > > >> +//!     }
+> > > >> +//! }
+> > > >> +//!
+> > > >> +//! bitfield! {
+> > > >> +//!     struct ControlReg {
+> > > >> +//!         3:0       mode        as u8 ?=> Mode;
+> > > >> +//!         7         state       as bool => State;
+> > > >> +//!     }
+> > > >> +//! }
+> > > >
+> > > > As discussed at the conference this week, I do object to this as it
+> > > > will allow the same mistakes to happen that we used to do in the kernel
+> > > > for a long time before the regmap() api happened, along with GENMASK().
+> > > 
+> > > Have you read the following macro arm of the implementation?
+> > > 
+> > >     // Generates the accessor methods for a single field.
+> > >     (
+> > >         @leaf_accessor $name:ident $hi:tt:$lo:tt $field:ident
+> > >             { $process:expr } $to_type:ty => $res_type:ty $(, $comment:literal)?;
+> > >     ) => {
+> > >         ::kernel::macros::paste!(
+> > >         const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
+> > >         const [<$field:upper _MASK>]: u32 = ((((1 << $hi) - 1) << 1) + 1) - ((1 << $lo) - 1);
+> > >         const [<$field:upper _SHIFT>]: u32 = Self::[<$field:upper _MASK>].trailing_zeros();
+> > >         );
+> > >     
+> > >         $(
+> > >         #[doc="Returns the value of this field:"]
+> > >         #[doc=$comment]
+> > >         )?
+> > >         #[inline(always)]
+> > >         pub(crate) fn $field(self) -> $res_type {
+> > >             ::kernel::macros::paste!(
+> > >             const MASK: u32 = $name::[<$field:upper _MASK>];
+> > >             const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
+> > >             );
+> > >             let field = ((self.0 & MASK) >> SHIFT);
+> > > 
+> > > Here you can see that it's just a mask + shift operation internally to
+> > > access the field.
+> > >     
+> > >             $process(field)
+> > >         }
+> > >     
+> > >         ::kernel::macros::paste!(
+> > >         $(
+> > >         #[doc="Sets the value of this field:"]
+> > >         #[doc=$comment]
+> > >         )?
+> > >         #[inline(always)]
+> > >         pub(crate) fn [<set_ $field>](mut self, value: $to_type) -> Self {
+> > >             const MASK: u32 = $name::[<$field:upper _MASK>];
+> > >             const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
+> > >             let value = (u32::from(value) << SHIFT) & MASK;
+> > >             self.0 = (self.0 & !MASK) | value;
+> > >     
+> > >             self
+> > >         }
+> > >         );
+> > >     };
+> > 
+> > Yes, that's great, but that is all done in "native cpu" endian, and
+> > might not actually represent what the hardware does at all, which is
+> > what I was trying to get at here, sorry for not being more specific.
+> > 
+> > > Now I too would like to see how exactly this will be used to read data
+> > > from hardware. But at least in theory if the conversion from hardware
+> > > endianness to native endianness is done correctly, this will do the
+> > > right thing :)
+> > 
+> > That's great, so we are close, but it's not quite correct.  How about
+> > something like:
+> > 
+> > 	0:7	reg_X	as __le32
+> > 	8:15	reg_y	as __le32
 > 
-> Hmm this seems a bit weird, because now users of Zpools can manufacture
-> their own handles? Not sure as to how we could still allow Zpool
-> implementers to create these while preventing other users from doing
-> creating them though...
+> I don't think we should force endianness requirements within specific fields in
+> the bitfield rust library itself, it is upto the user. bitfields are not only
+> for registers even in C. If you see on the C side, we have rcu_special union
+> which uses 'u32' and does not enforce endianness within the fields or bytes
+> of the struct with respect to the fields. Its all native CPU endian and works
+> fine. You're basically saying in terms of C that, the designers of the C
+> bitfield in C standard force the C language to use endianness in the types, no
+> they can't / shouldn't be forced to.
 
-This is a good question indeed. The thing is, an allocation backend 
-(these implementing zpool api) is to provide an opaque handle which is 
-usize, and since it has the best knowledge how to compose it, we need to 
-let it do that. OTOH I am not too happy with this straightforward 
-approach (from_raw()/as_raw()) either.
+For "cpu native" structures, just use the bit and genmask macros we have
+today, on top of a normal variable type and you should be fine.  The
+only place you need/want to do stuff like what is being proposed here is
+when you are trying to match up a data structure that is in hardware to
+be able to split the values out of it safely.
 
-Would making ZpoolHandle opaque here and defining a trait that a backend 
-must implement for ZpoolHandle work better? The example backend would 
-then do something like
+And when dealing with data that goes outside of the kernel (i.e. to/from
+hardware), you HAVE to specify the endianness of that data as the
+hardware is the one that defines this, NOT the cpu that the kernel is
+running on.
 
-struct MyZpoolHandle {
-     ptr: *mut u8,
-     pow: usize,
-}
-type ZpoolHandle = MyZpoolHandle;
+So you should NEVER see a bitfield structure that is defined just as a
+"u32" and expect that to work properly when read/written to hardware
+because while little-endian is what seems to have "won" the recent
+battles on this topic it's not always the case for many places that
+Linux runs on today.
 
-trait AsRawHandle {
-     fn as_raw_handle(&self) -> usize;
-}
+> For the separate issue of enforcing endianness with respect to (across)
+> multiple fields, I agree with you that if the user's backend (the consumer of
+> the data) is not doing such conversion, say via regmap, then that becomes a
+> problem. But that problem is orthogonal/different and cannot be solved here.  
 
-impl AsRawHandle for ZpoolHandle {
-     fn as_raw_handle(&self) -> usize {
-         (self.ptr as usize) | self.pow
-     }
-}
+But that is exactly what these macros are being defined here for, so to
+ignore that is going to cause problems :)
 
-Would that make sense?
+thanks,
 
->> +
->> +/// Zpool API.
->> +///
->> +/// The [`ZpoolDriver`] trait serves as an interface for Zpool drivers implemented in Rust.
->> +/// Such drivers implement memory storage pools in accordance with the zpool API.
->> +///
->> +/// # Example
->> +///
->> +/// A zpool driver implementation which uses KVec of 2**n sizes, n = 6, 7, ..., PAGE_SHIFT.
->> +/// Every zpool object is packed into a KVec that is sufficiently large, and n (the
->> +/// denominator) is saved in the least significant bits of the handle, which is guaranteed
->> +/// to be at least 2**6 aligned by kmalloc.
->> +///
->> +/// ```
->> +/// use core::ptr::{NonNull, copy_nonoverlapping};
->> +/// use core::sync::atomic::{AtomicU64, Ordering};
->> +/// use kernel::alloc::{Flags, flags, KBox, KVec, NumaNode};
->> +/// use kernel::page::PAGE_SHIFT;
->> +/// use kernel::prelude::EINVAL;
->> +/// use kernel::str::CString;
->> +/// use kernel::zpool::*;
->> +///
->> +/// struct MyZpool {
->> +///     name: CString,
->> +///     bytes_used: AtomicU64,
->> +/// }
->> +///
->> +/// struct MyZpoolDriver;
->> +///
->> +/// impl ZpoolDriver for MyZpoolDriver {
->> +///     type Pool = KBox<MyZpool>;
->> +///
->> +///     fn create(name: CString, gfp: Flags) -> Result<KBox<MyZpool>> {
->> +///         let my_pool = MyZpool { name, bytes_used: AtomicU64::new(0) };
->> +///         let pool = KBox::new(my_pool, gfp)?;
->> +///
->> +///         pr_debug!("Pool {:?} created\n", pool.name);
->> +///         Ok(pool)
->> +///     }
->> +///
->> +///     fn malloc(pool: &MyZpool, size: usize, _gfp: Flags, _nid: NumaNode) -> Result<ZpoolHandle> {
->> +///         let pow = size.next_power_of_two().trailing_zeros().max(6);
->> +///         match pow {
->> +///             0 => Err(EINVAL),
->> +///             m if m > PAGE_SHIFT as u32 => Err(ENOSPC),
->> +///             _ => {
->> +///                 let vec = KVec::<u8>::with_capacity(1 << pow, GFP_KERNEL)?;
->> +///                 let (ptr, _len, _cap) = vec.into_raw_parts();
->> +///
->> +///                 // We assume that kmalloc-64, kmalloc-128 etc. kmem caches will be used for
->> +///                 // our allocations, so it's actually `1 << pow` bytes that we have consumed.
->> +///                 pool.bytes_used.fetch_add(1 << pow, Ordering::Relaxed);
->> +///
->> +///                 // `kmalloc` guarantees that an allocation of size x*2^n is 2^n aligned.
->> +///                 // Therefore the 6 lower bits are zeros and we can use these to store `pow`.
->> +///                 Ok(ZpoolHandle::from_raw(ptr as usize | (pow as usize - 6)))
->> +///             }
->> +///         }
->> +///     }
->> +///
->> +///     unsafe fn free(pool: &MyZpool, handle: ZpoolHandle) {
->> +///         let h = handle.as_raw();
->> +///         let n = (h & 0x3F) + 6;
->> +///         let uptr = h & !0x3F;
->> +///
->> +///         // SAFETY:
->> +///         // - we derive `uptr` from handle by zeroing 6 lower bits where we store the power
->> +///         //   denominator for the vector capacity. As noted above, the result will be exactly the
->> +///         //   pointer to the area allocated by `KVec`. Thus, uptr is a valid pointer pointing to
->> +///         //   the vector allocated by `alloc` function above.
->> +///         // - 1 << n == capacity and is coming from the first 6 bits of handle.
->> +///         let vec = unsafe { KVec::<u8>::from_raw_parts(uptr as *mut u8, 0, 1 << n) };
->> +///         drop(vec);
->> +///         pool.bytes_used.fetch_sub(1 << n, Ordering::Relaxed);
->> +///     }
->> +///
->> +///     unsafe fn read_begin(_pool: &MyZpool, handle: ZpoolHandle) -> NonNull<u8> {
->> +///         let uptr = handle.as_raw() & !0x3F;
->> +///         // SAFETY:
->> +///         // - we derive `uptr` from handle by zeroing 6 lower bits where we store the power
->> +///         //   denominator for the vector capacity. As noted above, the result will be exactly the
->> +///         //   pointer to the area allocated by `KVec`. Thus, uptr is a valid pointer pointing to
->> +///         //   the vector allocated by `alloc` function above.
->> +///         unsafe { NonNull::new_unchecked(uptr as *mut u8) }
->> +///     }
->> +///
->> +///     unsafe fn read_end(_pool: &MyZpool, _handle: ZpoolHandle, _handle_mem: NonNull<u8>) {}
->> +///
->> +///     unsafe fn write(_p: &MyZpool, handle: ZpoolHandle, h_mem: NonNull<u8>, mem_len: usize) {
->> +///         let uptr = handle.as_raw() & !0x3F;
->> +///         // SAFETY:
->> +///         // - `h_mem` is a valid non-null pointer provided by zswap.
->> +///         // - `uptr` is derived from handle by zeroing 6 lower bits where we store the power
->> +///         //   denominator for the vector capacity. As noted above, the result will be exactly the
->> +///         //   pointer to the area allocated by `KVec`. Thus, uptr is a valid pointer pointing to
->> +///         //   the vector allocated by `alloc` function above.
->> +///         unsafe {
->> +///             copy_nonoverlapping(h_mem.as_ptr().cast(), uptr as *mut c_void, mem_len)
->> +///         };
->> +///     }
->> +///
->> +///     fn total_pages(pool: &MyZpool) -> u64 {
->> +///         pool.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
->> +///     }
->> +/// }
->> +///
->> +/// // Uncomment this for compile time registration (disabled to avoid build error when KUNIT
->> +/// // tests and zsmalloc are enabled):
->> +/// // kernel::DECLARE_ZPOOL!(MyZpoolDriver);
->> +/// ```
->> +///
->> +pub trait ZpoolDriver {
->> +    /// Opaque Rust representation of `struct zpool`.
->> +    type Pool: ForeignOwnable;
-> 
-> Also what happened to my comment on v4 of this patchset?
-> 
-> https://lore.kernel.org/all/DCLK1YG1L5TZ.1VMGX131LII9V@kernel.org:
-> 
->>> It can indeed but then the ZpoolDriver trait will have to be extended
->>> with functions like into_raw() and from_raw(), because zpool expects
->>> *mut c_void, so on the Adapter side it will look like
->>>
->>>       extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void {
->>>           // SAFETY: the memory pointed to by name is guaranteed by zpool
->>> to be a valid string
->>>           let pool = unsafe { T::create(CStr::from_char_ptr(name),
->>> Flags::from_raw(gfp)) };
->>>           match pool {
->>>               Err(_) => null_mut(),
->>>               Ok(p) => T::into_raw(p).cast(),
->>>           }
->>>       }
->>>
->>> The question is, why does this make it better?
->>
->> No, thanks for sharing that function. Then the question becomes, do you
->> really need `ForeignOwnable`? Or is `KBox` enough? Do you really want
->> people to use `Arc<MyZPool>`? Because `BorrowedMut` of `Arc` is the same
->> as it's `Borrowed` variant (it's read-only after all).
->>
->> If you can get away with just `Box` (you might want people to choose
->> their allocator, which is fine IMO), then I'd do so.
-> 
-> I still think that if you can use `Box<Self>` the trait is going to be
-> much easier to understand.
-
-Okay, thanks, I'll work on that.
-
->> +
->> +    /// Create a pool.
->> +    fn create(name: CString, gfp: Flags) -> Result<Self::Pool>;
->> +
->> +    /// Allocate an object of `size` bytes from `pool`, with the allocation flags `gfp` and
->> +    /// preferred NUMA node `nid`. If the allocation is successful, an opaque handle is returned.
->> +    fn malloc(
->> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
->> +        size: usize,
->> +        gfp: Flags,
->> +        nid: NumaNode,
->> +    ) -> Result<ZpoolHandle>;
->> +
->> +    /// Free an object previously allocated from the `pool`, represented by `handle`.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `handle` must be a valid handle previously returned by `malloc`.
->> +    /// - `handle` must not be used any more after the call to `free`.
->> +    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: ZpoolHandle);
->> +
->> +    /// Make all the necessary preparations for the caller to be able to read from the object
->> +    /// represented by `handle` and return a valid pointer to that object's memory to be read.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `handle` must be a valid handle previously returned by `malloc`.
->> +    /// - `read_end` with the same `handle` must be called for each `read_begin`.
->> +    unsafe fn read_begin(
->> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
->> +        handle: ZpoolHandle,
->> +    ) -> NonNull<u8>;
->> +
->> +    /// Finish reading from a previously allocated `handle`. `handle_mem` must be the pointer
->> +    /// previously returned by `read_begin`.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `handle` must be a valid handle previously returned by `malloc`.
->> +    /// - `handle_mem` must be the pointer previously returned by `read_begin`.
->> +    unsafe fn read_end(
->> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
->> +        handle: ZpoolHandle,
->> +        handle_mem: NonNull<u8>,
->> +    );
->> +
->> +    /// Write to the object represented by a previously allocated `handle`. `handle_mem` points
->> +    /// to the memory to copy data from, and `mem_len` defines the length of the data block to
->> +    /// be copied.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// - `handle` must be a valid handle previously returned by `malloc`.
->> +    /// - `handle_mem` must be a valid pointer into the allocated memory aread represented by
->> +    ///   `handle`.
->> +    /// - `handle_mem + mem_len - 1` must not point outside the allocated memory area.
->> +    unsafe fn write(
->> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
->> +        handle: ZpoolHandle,
->> +        handle_mem: NonNull<u8>,
->> +        mem_len: usize,
->> +    );
->> +
->> +    /// Get the number of pages used by the `pool`.
->> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -> u64;
->> +}
->> +
->> +/// Provide a zpool allocator to zswap
->> +#[macro_export]
->> +macro_rules! DECLARE_ZPOOL {
-> 
-> Why all caps and not snake case?
-
-C style, sorry :) Will fix.
-
->> +    ($t: ident) => {
->> +        use core::ptr::null_mut;
->> +        use kernel::error::from_result;
->> +        use kernel::types::ForeignOwnable;
-> 
-> Macros shouldn't have `use` statements in a non-local area (so inside
-> `const` bodies and modules is fine).
-> 
->> +
->> +        const __LOG_PREFIX: &[u8] = b"zpool_rust\0";
-> 
-> This seems wrong. Why do you need to generate this? Shouldn't the user
-> still invoke `module!` or a similar macro?
-
-Unfortunately not. As we have discussed at Kangrejos, the zpool 
-implementation as a driver is on its way out [1] and there has to be 
-more voices against that for it to be stopped. If we now are dealing 
-with the build time API (i. e. a wrapper over zsmalloc functions) then 
-we have to define a build time macro, be that DECLARE_ZPOOL or 
-DeclareZpool :)
-
->> +
->> +        fn handle_from_result<T, F>(f: F) -> T
->> +        where
->> +            T: From<usize>,
->> +            F: FnOnce() -> Result<T>,
->> +        {
->> +            match f() {
->> +                Ok(v) => v,
->> +                Err(e) => T::from(0),
->> +            }
->> +        }
-> 
-> Why is this function inside the macro?
-
-Doesn't seem to be needed elsewhere. I could put it in a separate patch 
-for error.rs as a complement to from_result() but I thought no one was 
-interested in this case.
-
->> +
->> +        /// Create a pool.
->> +        #[no_mangle]
->> +        pub unsafe extern "C" fn zpool_create_pool(name: *const c_uchar) -> *mut c_void {
-> 
-> Missing safety docs.
-> 
->> +            match (|| -> Result<<$t as ZpoolDriver>::Pool> {
->> +                // SAFETY: the memory pointed to by name is guaranteed by `zpool` to be a valid
->> +                // string.
->> +                let name_r = unsafe { CStr::from_char_ptr(name).to_cstring() }?;
->> +                $t::create(name_r, flags::GFP_KERNEL)
->> +            })() {
->> +                Err(_) => null_mut(),
->> +                Ok(pool) => <$t as ZpoolDriver>::Pool::into_foreign(pool),
->> +            }
->> +        }
->> +
->> +        /// Destroy the pool.
->> +        #[no_mangle]
->> +        pub unsafe extern "C" fn zpool_destroy_pool(pool: *mut c_void) {
->> +            // SAFETY: The pointer originates from an `into_foreign` call.
->> +            drop(unsafe { <$t as ZpoolDriver>::Pool::from_foreign(pool) })
->> +        }
-> 
-> Have you tried to use the same pattern that we use for the many
-> different `Registration` types in the kernel? For example take a look at
-> `Adapter<T>` from `rust/kernel/net/phy.rs`. That way you don't need a
-> macro and can make the registration a function that takes a generic `T:
-> ZpoolDriver`.
-
-That's what was in the previous version. Unfortunately it won't work any 
-more for the reason described above, see also [1].
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/mm?h=mm-stable&id=2ccd9fecd9163f168761d4398564c81554f636ef
+greg k-h
