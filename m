@@ -1,73 +1,73 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534EA21C16E
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 22:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E0C21C16E
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 22:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758751971; cv=none; b=QvBGWkzTgFRhLoJOrHQs4ICLykM+JrC7BS1ddOEcv5a4w3M8g8SK0bQQH4Ko+hNY1Lb6mBajwIjWqMxXAojySGz8HUY3qr10m5MtHDXMIp5rBvD7b56sxh3cHFo4dsP2XsP1f5nRVd0iu/YfXY3Cfmo18oJWbhI9HZyyr2pDKgI=
+	t=1758752046; cv=none; b=d84kV6l3auTkHC9wGmdaiL/qHx8BOMbH5jPF2UsqsAJNtGGENuA0XV2euBznJIxX/F2oEsf///SjhuIVGpKQzhHXKePcVdNtHFfnehIqGILK2vmniGfRJ8bAAT7qTKSwInZ6WNTzyj8z0UdiksLvMcyMXoKIwUU+wLXSBDqXNO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758751971; c=relaxed/simple;
-	bh=5fDCCiNAiJPXKb3pYSzYxtYE0JwVPZWXdYibROteZ2E=;
+	s=arc-20240116; t=1758752046; c=relaxed/simple;
+	bh=3WQK398yoIIxsMcBMA/nyN2X2GhMDXANs0sQqaRcN/c=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TbN0M1oVLf3NafiAdhMuGPhYNiN65M2UNuTj4CpxZyNe3aIieD6ysGVtEmYlSKNKO+5+GuxvUi5SeeHLrgAEbSX8fFF0U+rI0U6h97Y+vS3/qJSD9T0OaFz6//Fv7RIP+i89wf7SpbjFRJqfA7RLtfNj5CGXC6yapK48uAL4WUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D+u5Clg1; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=LBhayMhC+/JsEEOxa/3RPD8XiqZzClLhMMKH9p1M2or5Qp98Lz13t/8m+udEL3YPidO5sRH9+37PNbIRmE7exxZ8oRdVRBDmS2B8RfLi65lcks33YDY6rQux767m62hukiFR1JLyy3tWKepPFhY4Q4i2lpZjcZ+ySAluTISpODk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a2fJNOoH; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D+u5Clg1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a2fJNOoH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758751969;
+	s=mimecast20190719; t=1758752044;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tCucFY/8qMQ74h31+RyvyAB9MvTUqdmenxnV6GU9LgE=;
-	b=D+u5Clg1HMWGP7a1fJooyP7BfmBuhNR0HIQ/I5hSxXlNYR0jW9zUciBzbW2eg8JSSYGEjF
-	7r9+GCPUL/pXqCEeAzJBQfcxWwvq+3vW3quAI1fMXvEoV1PPiQLA53mqoMwItrBzCw0ZX2
-	LN745rrZi2Q8wWCLbQ6YmCKPb0G+XLQ=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=o8j7iV5FkPl2M9dbIOEmHdBWpWPt1HoMdUONe8SN81I=;
+	b=a2fJNOoH+cX6qrlp3dIx3lWN8IX3YIk9sjDe6n2r19TTS6Ls6beRb4avar1McyDV+KKWRq
+	o1aKj+I4a1/J+Yhp4SI59t+5nWQvOCbL+c0gimugHXCoWAXS7kiBVLWPs+e2l9oj5lLx7A
+	knhqTT03QycPl4YuUh40/WjC4LKfNJg=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-88-jQLq6J7AOECVc0E5rsLLXg-1; Wed, 24 Sep 2025 18:12:48 -0400
-X-MC-Unique: jQLq6J7AOECVc0E5rsLLXg-1
-X-Mimecast-MFC-AGG-ID: jQLq6J7AOECVc0E5rsLLXg_1758751967
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-7e90f268f62so3957936d6.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 15:12:48 -0700 (PDT)
+ us-mta-688-UQDpaR4pPtesyXlqxCEMfg-1; Wed, 24 Sep 2025 18:14:03 -0400
+X-MC-Unique: UQDpaR4pPtesyXlqxCEMfg-1
+X-Mimecast-MFC-AGG-ID: UQDpaR4pPtesyXlqxCEMfg_1758752042
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-7f78d761f74so5357746d6.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 15:14:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758751967; x=1759356767;
+        d=1e100.net; s=20230601; t=1758752042; x=1759356842;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tCucFY/8qMQ74h31+RyvyAB9MvTUqdmenxnV6GU9LgE=;
-        b=qhONQg3wBg7+CtCDbyBPnu/yzUO9BjroEFwYkvfzdRhqXm8O19UblXjbF8EqPaAldB
-         MYmMUM72wEX3rUX2mwdYquvFfxIXcsMh80G45zjFCexQu1hYd0G1hm29uz7QFLsiEHz8
-         1WNVoRJX9cPaFNqWPGiy35wCp/hoyDQ8fRtRpHtPSUO/etAeerHFT7ETQGAYqp0X9DAx
-         12igEqEXCNOA4AhDzNiBapFMLfE0A4ZcNtpS4+Y1NrjcL8qOA3NyK/rJs5sRvGK6bMeB
-         I+wkMad1a/yMxmbR3clVtVHLbZx6VDRM9kXNgvYvoTxZSBogszt+e5/eTJjY+yGlZe/1
-         lYcw==
-X-Forwarded-Encrypted: i=1; AJvYcCWn6LKBG9JDmh0rQ0D+gVpFnZS1WgXpMWFjsIw7y6q+jGz49u4mZAkq9QPkBFRTvFVPe5nrQI6cG0mWvv8tbg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvIK16Fv3b2HpkOjA+X9HkUU3MutwVu0FAECO2R2v0nV2yr/mN
-	k3pdiZSkJml/QVEmYSJKN3N0lgHRhPMjlG6XhPIoTC1B0zE0l1wBe74YQ0j76iMYIIhoV7QZ5SS
-	Dmg/cvBizz6PFXOgkZlfQ900/hjOFXMou7JoD7XnD9HNUMKzvfSuwUYYqgfRj85Y5Jif2
-X-Gm-Gg: ASbGncsMIzx2y5DY2HAXqOMcFxV/F+n4n9ThJsghwsaUf7G7u3seCZBhMgT03jWvQFE
-	AB3OfuZRzE/g408dfEr0kPNMtug1+mCFVhf89RjVP9dgeEvGQ0/MvisXjxttSE0buEUXfWS68dz
-	Q7XLoc/3NoqinDAO6i8fUOjqtBk8gocDNXkdUEFnTHLu6tju1gTy0wdIA4e+XvsR3km+ytSGIh3
-	ng6w18J0Im3mk/cTckmr7+2g2AR6qTtaHcHCAHfMTp6+iH4YrMVcrTnS48IyIZsJm24MOavm6Wu
-	ZQxT+BKXRxW3eWKfl3i0oaytagQvDmSnqWf4R33lAPsvsZpT77PuQLBtyRJHCjkEBpzRb+8r5c5
-	Q3blegYoTTQkg
-X-Received: by 2002:a05:622a:1905:b0:4ce:9cdc:6f2f with SMTP id d75a77b69052e-4da481d81e3mr20121111cf.13.1758751967456;
-        Wed, 24 Sep 2025 15:12:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsCldtS7YCUoXRYkGz/STaYHNRtquxJvrgbzjFXE8dmQ042GIsExYIplPOQtNTW8kf+oqL0A==
-X-Received: by 2002:a05:622a:1905:b0:4ce:9cdc:6f2f with SMTP id d75a77b69052e-4da481d81e3mr20120771cf.13.1758751967087;
-        Wed, 24 Sep 2025 15:12:47 -0700 (PDT)
+        bh=o8j7iV5FkPl2M9dbIOEmHdBWpWPt1HoMdUONe8SN81I=;
+        b=lTTeq3Wjxftv+DQgpB/QriIBehPk+SZ4buPVEnJR1gQSt5wL4OUU7BMnjk9BLNF7ui
+         43eP013IkshpbO1gM3nWE0esZYIrodh28G2oNxi0tqR9r8ZB9NrNDnN7C3/d/fyKTNoH
+         k+Iq684iT/T4m+6JiPjxq67P6kr3YO+zMLmXIkCrOxeElrmfaRJe2O44it/dwxy8C7KA
+         0Jo6rEKk1nzlf8YNVjjhRQWi2yyqCo4yCczv+Sd3urqVdaFQPOwJgdFHn/4DU3A+rKvN
+         /0GrgOHkT01wS1/x3gWMtQ7GL5HJzP4V1ggzyVXmRYVG7TbAnPymBuFDJzxKteys4Qcx
+         Pr7A==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Peby0Sfdk9LUWUj9gnA1q0JtqPY2gLDZRtTZzRGwZ/9DjFmRcfXlq72eJYLL1jD1jIjmqQO+LW0yAtKMwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSi4G5t11cmeNcZp3uAi931Z1NxbiilGYMr7Qj+7imMqhhbCGf
+	G78pUQTzUgSxulzzoCnK2wzdQ/gONaof/UV+2Pc/4a+1xW5U3oR2pI9zI8jE6cJtv/c+WthDH46
+	arHArAi6SHORHDFUJhEeoZALPjNMba4efEJjpbpOYUUKAzMqTCOQxNjoeu7r5m8MRPXwb
+X-Gm-Gg: ASbGnctqAxMjw1i+cN24zoAayJtw3zNgtgQqyAq/86m6IDpkKxPWgDeGw+jRBuoYrg7
+	tBfytXxkZMh7GdAWE/y6FoDBtrFoezqbirA/5EUKZnknD4KuYWGVj3NJOIoMGsUTLuE+BxwvbcV
+	rPJvQBHrCyEQIPMcBStY8xXDX5s6jelwwuUwk9E0sMXbGxxsFoh8W5RZWGdImYPvxjc457lpwRI
+	nXrc8Tl+CHFweq7vsWaJtqn8MJFUZphLUlvaSHASoV3cFx9+3wkziJqKC1XTl5JTtGrQMlEK1dW
+	8QjRe4hmxodqrIwVGMWU94eJRA2ny6ndfs9YifpGhVQ7GmX4fAXOE2T++qiI3qzwJoKSr+FvfW4
+	kPuEVnxtXxshU
+X-Received: by 2002:ad4:5c8c:0:b0:77f:2966:c30a with SMTP id 6a1803df08f44-7fc4bd90845mr21389426d6.57.1758752042504;
+        Wed, 24 Sep 2025 15:14:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH06d8tFJJU/5/C4IFK2xkuHc6eirsKQRzUChX6AUNqxxj7G9XBeE0SQfU4U/rHINQCIfEP9A==
+X-Received: by 2002:ad4:5c8c:0:b0:77f:2966:c30a with SMTP id 6a1803df08f44-7fc4bd90845mr21389076d6.57.1758752041998;
+        Wed, 24 Sep 2025 15:14:01 -0700 (PDT)
 Received: from [192.168.8.208] (pool-108-49-39-135.bstnma.fios.verizon.net. [108.49.39.135])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4db108726a2sm177821cf.34.2025.09.24.15.12.45
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8013ca1f1desm2124606d6.23.2025.09.24.15.14.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 15:12:46 -0700 (PDT)
-Message-ID: <d067b6a45722c763b5c5434a276eb416faff03b8.camel@redhat.com>
-Subject: Re: [PATCH v2 08/10] nova-core: falcon: Add support to check if
- RISC-V is active
+        Wed, 24 Sep 2025 15:14:01 -0700 (PDT)
+Message-ID: <929da04e71b03884a5e9b48168db1131449c9435.camel@redhat.com>
+Subject: Re: [PATCH v2 09/10] nova-core: falcon: Add support to write
+ firmware version
 From: Lyude Paul <lyude@redhat.com>
 To: Alistair Popple <apopple@nvidia.com>, rust-for-linux@vger.kernel.org, 
 	dri-devel@lists.freedesktop.org, dakr@kernel.org, acourbot@nvidia.com
@@ -82,10 +82,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  <jhubbard@nvidia.com>,  Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi
  <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
 	nouveau@lists.freedesktop.org
-Date: Wed, 24 Sep 2025 18:12:44 -0400
-In-Reply-To: <20250922113026.3083103-9-apopple@nvidia.com>
+Date: Wed, 24 Sep 2025 18:14:00 -0400
+In-Reply-To: <20250922113026.3083103-10-apopple@nvidia.com>
 References: <20250922113026.3083103-1-apopple@nvidia.com>
-	 <20250922113026.3083103-9-apopple@nvidia.com>
+	 <20250922113026.3083103-10-apopple@nvidia.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42)
 Precedence: bulk
@@ -95,63 +95,65 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: P2o6WNutfc50jBWiK3sz4t-8VwF7ic1_OWwN_F2QCqg_1758751967
+X-Mimecast-MFC-PROC-ID: zWpNQsGgcdwvaHkrsWlPZReCdzAaIJr_q3TuY_DiKfQ_1758752042
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
+Reviewed-b: Lyude Paul <lyude@redhat.com>
 
 On Mon, 2025-09-22 at 21:30 +1000, Alistair Popple wrote:
 > From: Joel Fernandes <joelagnelf@nvidia.com>
 >=20
-> Add definition for RISCV_CPUCTL register and use it in a new falcon API
-> to check if the RISC-V core of a Falcon is active. It is required by
-> the sequencer to know if the GSP's RISCV processor is active.
+> This will be needed by both the GSP boot code as well as GSP resume code
+> in the sequencer.
 >=20
 > Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 > ---
 >  drivers/gpu/nova-core/falcon.rs | 9 +++++++++
->  drivers/gpu/nova-core/regs.rs   | 5 +++++
->  2 files changed, 14 insertions(+)
+>  drivers/gpu/nova-core/regs.rs   | 6 ++++++
+>  2 files changed, 15 insertions(+)
 >=20
 > diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falc=
 on.rs
-> index 37e6298195e4..c7907f16bcf4 100644
+> index c7907f16bcf4..0cb7821341ed 100644
 > --- a/drivers/gpu/nova-core/falcon.rs
 > +++ b/drivers/gpu/nova-core/falcon.rs
-> @@ -610,4 +610,13 @@ pub(crate) fn signature_reg_fuse_version(
->          self.hal
->              .signature_reg_fuse_version(self, bar, engine_id_mask, ucode=
-_id)
+> @@ -619,4 +619,13 @@ pub(crate) fn is_riscv_active(&self, bar: &Bar0) -> =
+Result<bool> {
+>          let cpuctl =3D regs::NV_PRISCV_RISCV_CPUCTL::read(bar, &E::ID);
+>          Ok(cpuctl.active_stat())
 >      }
 > +
-> +    /// Check if the RISC-V core is active.
-> +    ///
-> +    /// Returns `true` if the RISC-V core is active, `false` otherwise.
-> +    #[expect(unused)]
-> +    pub(crate) fn is_riscv_active(&self, bar: &Bar0) -> Result<bool> {
-> +        let cpuctl =3D regs::NV_PRISCV_RISCV_CPUCTL::read(bar, &E::ID);
-> +        Ok(cpuctl.active_stat())
+> +    /// Write the application version to the OS register.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn write_os_version(&self, bar: &Bar0, app_version: u32) =
+-> Result<()> {
+> +        regs::NV_PFALCON_FALCON_OS::default()
+> +            .set_value(app_version)
+> +            .write(bar, &E::ID);
+> +        Ok(())
 > +    }
 >  }
 > diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.r=
 s
-> index 0585699ae951..5df6a2bf42ad 100644
+> index 5df6a2bf42ad..d9212fa50197 100644
 > --- a/drivers/gpu/nova-core/regs.rs
 > +++ b/drivers/gpu/nova-core/regs.rs
-> @@ -324,6 +324,11 @@ pub(crate) fn mem_scrubbing_done(self) -> bool {
+> @@ -215,6 +215,12 @@ pub(crate) fn vga_workspace_addr(self) -> Option<u64=
+> {
+>      31:0    value as u32;
+>  });
 > =20
->  // PRISCV
-> =20
-> +register!(NV_PRISCV_RISCV_CPUCTL @ PFalconBase[0x00001388] {
-> +    7:7     active_stat as bool;
-> +    0:0     halted as bool;
+> +// Used to store version information about the firmware running
+> +// on the Falcon processor.
+> +register!(NV_PFALCON_FALCON_OS @ PFalconBase[0x00000080] {
+> +    31:0    value as u32;
 > +});
 > +
->  register!(NV_PRISCV_RISCV_BCR_CTRL @ PFalconBase[0x00001668] {
->      0:0     valid as bool;
->      4:4     core_select as bool =3D> PeregrineCoreSelect;
+>  register!(NV_PFALCON_FALCON_RM @ PFalconBase[0x00000084] {
+>      31:0    value as u32;
+>  });
 
 --=20
 Cheers,
