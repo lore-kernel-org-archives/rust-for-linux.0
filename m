@@ -1,309 +1,168 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA2A302CDB
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Sep 2025 12:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B10E1A0728;
+	Thu, 25 Sep 2025 12:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758803425; cv=none; b=SxAdyYanwCFziGFjPFWcmQxkt6YWZgQS+3WxtULB3+6Acvap1PDHslWGrp2APoizavWIoolPwc11JU4CVYTIjUf35Ps54ITl+CbPd/yXWnIG4AZPJp/cdp4dqdq31LhprDTK2jJTn1v6xB6u2Ny4WiGMXRgYDRTKFHR6SVSg+og=
+	t=1758804768; cv=none; b=CBKq06sixaLFliaje6agmyGUCOm6OMDZE/IokI5hBxY5H5Sw1VGxaRwLzkbzR9qEXa+NOAY5E8Z8DbAdm54UUPFdojpwUxLMZEDWkXDOhvJdaBXrM17eOINqejmsfO5HnOrsKQHEKw27v2t7uHlVrckHY8I+r2Zn5cbW/hF3vRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758803425; c=relaxed/simple;
-	bh=gRqU1xzOrRjzeCyUuiZjwTh+L281vaPrDr8rLgP04ww=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GiCtZnQAfntzMoIbKyqydBeGqTX/ipsUnPhG/JeUqx+iJa6wMdzc8ZUyPNAFYr3Zedvm0Fm4EGkrCb5fFHL6/kXw8nQ8RUhpOxjeJ3jrTrWL6B85EVzd3EKeP2sPQpPq/+o/uoaxYVIpxglHTr0Wc3HfOkGdpqfOTe2TC1TzC+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffYFF3rp; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758804768; c=relaxed/simple;
+	bh=IWvjH/2hxWZ4IGGoOvrciyFGdQxIWa5UlPDx6lJac2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g40UzsfiNBbhl8FMT64qoqpV0VgoSqhjTTNDA5mCXrNmQXYROexkZSciEBF+Gv58+wqN6x9raATOhBHc1ch8MPGOFCBWBVxQh/7fF0TTS9Qot8rHuq4MT1i/oVN80OoJznt5CjUs/GW9hJND4BhzNXiuZ2ker0wiMQMuSMzt5MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmkGRZ2k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffYFF3rp"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-62105d21297so1856793a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Sep 2025 05:30:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758803421; x=1759408221; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cpogRHSrLfl51nWywJppLMZXYXi2KQs1G3uCf0+H8cQ=;
-        b=ffYFF3rpF3AtyiFCyhGdMTyzBqauIB99fkowWzKLiUQg8JbTkpM5ilCUyQ7yPuBs7n
-         QV8Z4QOnuXWptDCnA+w5Efe3QDyi+WpC4lhCcvW/CaOCpJ3W0XY29BVJSNONJu66NuIk
-         YDKfUdXBcol8z9+TONQ3MbW4OJJP3So9Renu4heqxxzLsu91l0ukzfV3/cilH6bPaK3H
-         A5fohQqqDR/u2+BmukgkTWnEBSwskjoSylmz/VfIiAyQCJbUXc9dE4ZDVSDKHtw2A1b6
-         XnZI6lUq8vhSO9hnI7fpo2jMnLG+ub3wS5ldkEfKl8cZLgi+VhGb+D4cOlTS5I6qVqgX
-         mUIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758803421; x=1759408221;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cpogRHSrLfl51nWywJppLMZXYXi2KQs1G3uCf0+H8cQ=;
-        b=vWSdoDTeMXv9465sZLK65+OXQzsilI/qcyEFYOdt4YpCQ/amA+vjO9fp8hnt1tMpDn
-         GTcuCvHNh4wrZOzgD36rch5WAHYHCPEMfY1/wCmlA6sDqh1fdF5WIEbdld9c/OZB3REB
-         PGL0uHUGBa6tLs/G8GHpTqUSM6G3Q+Y3Mjgi7jo9+GPDrarLblWyJMsMCOl3FznY9jmP
-         Uo8gxfJu22u4X0WQlWgJ+1T5KCkV8xbfkPxmYiB4NZoLjMuchLgxK7pl0bT126qtLR6Q
-         oEXRwGUvIt7Bb9c9aJkrX0Yr/exQvTrTIkS3hwxBO/rp589PJ/uN/J6CzVNZnn3Qcmcv
-         7MkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUG54pQi31PUkwOV58IQ6hTLS0xViqI7fM8yTs6AWtiTlupbM88RNRKZohgc6mPXMrSLJ2lAOQxrck0yIUK+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7t7AjxwVLA4Hi6cM1rgy7p6GQ9G0Gu8lLljMQi8h8oohdpkKo
-	0Woor177m1M7CY/MxUUGfdbzf0j2EW4rdY8jdqw3p9KV/wDbtzXLsBYrNnJpWR2u58NWln6t0Vd
-	t3Yf5xsCL9pdjPvn5XFJu1zAOqJhb9hg=
-X-Gm-Gg: ASbGncvzLH2BZQ3wXVzhR7QaHMKSIJSmJSsL0qvzLaBRC1+i+1uPV1l0US9I9IJ6l9x
-	33MJCYTDaR6nCWmxslWuOwnPH5ML7m1twl/yh1AQ1MwFvhwdYHiXMO59t7gpOlyHlaAwwsvcUtp
-	wET6MWadBDpStRrX/SCODlrDKgy/hz0n0IYJaNevveNZGG+z1U6JDCtMaovlfF0GUavk5cHUKSc
-	49i
-X-Google-Smtp-Source: AGHT+IGrMTtF3rO6PyqglimJ6kWsoCOnyf9RbZPnOG2/Nl32fMXOunJIE5E6zYa1d9+08xohVhzghLhulRn9g+pvf4U=
-X-Received: by 2002:a17:907:3f87:b0:b09:2331:f150 with SMTP id
- a640c23a62f3a-b34b84aba85mr396036566b.16.1758803420120; Thu, 25 Sep 2025
- 05:30:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmkGRZ2k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319F0C4CEF0;
+	Thu, 25 Sep 2025 12:52:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758804767;
+	bh=IWvjH/2hxWZ4IGGoOvrciyFGdQxIWa5UlPDx6lJac2c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EmkGRZ2kQytjqgPTdAFBbhOXZGdaqexBWnvDkyj/P6lu/u4UefCw9Ql52Aya25zej
+	 Q296+vH2Oj4msA8HwcpkMm0C+zkATX1TVPzBYFfG8mJ3vU6+OtVZncL8TL6Xc3R+jh
+	 KvEjDj9VmkoSNShgI2v00PDWxaMeYJpcszQx9rGM=
+Date: Thu, 25 Sep 2025 14:52:44 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 0/2] rust: usb: add initial USB abstractions
+Message-ID: <2025092520-sharply-everyone-4a5d@gregkh>
+References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
- <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org> <aNQ7D6_ZYMhCdkmL@debug.ba.rivosinc.com>
-In-Reply-To: <aNQ7D6_ZYMhCdkmL@debug.ba.rivosinc.com>
-From: Andy Chiu <andybnac@gmail.com>
-Date: Thu, 25 Sep 2025 07:30:08 -0500
-X-Gm-Features: AS18NWByhWo0dHTSYL4t2oFRcok3gmrZ-pBxSOOqriMBIQLUznFC4iXNOpyJQRE
-Message-ID: <CAFTtA3Nxq0UmXcuN7jmQOiuTbrenKbR4ihH027ya1WWybgLq4Q@mail.gmail.com>
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, kito.cheng@sifive.com, 
-	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
-	cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
-	broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>, 
-	David Hildenbrand <david@redhat.com>, Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
-	Florian Weimer <fweimer@redhat.com>, bharrington@redhat.com, 
-	Aurelien Jarno <aurel32@debian.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
 
-Hi Deepak,
+On Mon, Aug 25, 2025 at 03:18:04PM -0300, Daniel Almeida wrote:
+> This adds initial support for USB Rust drivers, not only because I see a
+> widespread use of module_usb_driver() in media (which is a subsystem I
+> aim to support) but also because I want to learn about USB in general
+> and this is a nice opportunity to start doing so.
+> 
+> I tried to keep things as consistent with pci.rs and platform.rs as
+> possible and tested it by manually binding a device (i.e.: my Logitech
+> mouse) to the sample driver via:
+> 
+> /sys/bus/usb/drivers/rust_driver_usb/new_id
+> 
+> This initial patch is therefore comprised of the same patterns that are
+> known to work for pci and platform already.
+> 
+> Physically disconnecting the device also worked, i.e.: nothing bad
+> showed up in dmesg.
+> 
+> Note that I did not touch MAINTAINERS at all. The objective is to
+> kickstart the discussion of what to do there here in v1.
 
-On Wed, Sep 24, 2025 at 1:40=E2=80=AFPM Deepak Gupta <debug@rivosinc.com> w=
-rote:
->
-> On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
-> >Hi,
-> >
-> >On Thu, 31 Jul 2025, Deepak Gupta wrote:
-> >
-> >[ ... ]
-> >
-> >> vDSO related Opens (in the flux)
-> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>
-> >> I am listing these opens for laying out plan and what to expect in fut=
-ure
-> >> patch sets. And of course for the sake of discussion.
-> >>
-> >
-> >[ ... ]
-> >
-> >> How many vDSOs
-> >> ---------------
-> >> Shadow stack instructions are carved out of zimop (may be operations) =
-and if CPU
-> >> doesn't implement zimop, they're illegal instructions. Kernel could be=
- running on
-> >> a CPU which may or may not implement zimop. And thus kernel will have =
-to carry 2
-> >> different vDSOs and expose the appropriate one depending on whether CP=
-U implements
-> >> zimop or not.
-> >
-> >If we merge this series without this, then when CFI is enabled in the
-> >Kconfig, we'll wind up with a non-portable kernel that won't run on olde=
-r
-> >hardware.  We go to great lengths to enable kernel binary portability
-> >across the presence or absence of other RISC-V extensions, and I think
-> >these CFI extensions should be no different.
-> >
-> >So before considering this for merging, I'd like to see at least an
-> >attempt to implement the dual-vDSO approach (or something equivalent)
-> >where the same kernel binary with CFI enabled can run on both pre-Zimop
-> >and post-Zimop hardware, with the existing userspaces that are common
-> >today.
->
-> Added some distro folks in this email chain.
->
-> After patchwork meeting today, I wanted to continue discussion here. So t=
-hanks
-> Paul for looking into it and initiating a discussion here.
->
-> This patch series has been in the queue for quite a long time and we have=
- had
-> deliberations on vDSO topic earlier as well and after those deliberations=
- it
-> was decided to go ahead with merge and it indeed was sent for 6.17 merge
-> window. Unfortunatley due to other unforeseen reasons, entirety of riscv
-> changes were not picked. So it's a bit disappointing to see back-paddling=
- on
-> this topic.
->
-> Anyways, we are here. So I'll provide a bit of context for the list about
-> deliberations and discussions we have been having for so many merge windo=
-ws.
-> This so that a holistic discussion can happen on this before we make a
-> decision.
->
-> Issue
-> =3D=3D=3D=3D=3D=3D
->
-> Instructions in RISC-V shadow stack extension (zicfiss - [1]) are carved =
-out of
-> "may be ops" aka zimop extension [2]. "may be ops" are illegal on non-RVA=
-23
-> hardware. This means any existing riscv CPU or future CPU which isn't RVA=
-23
-> compliant and not implementing zimop will treat these encodings as illega=
-l.
->
-> Current kernel patches enable shadow stack and landing pad support for
-> userspace using config `CONFIG_RISCV_USER_CFI`. If this config is selecte=
-d then
-> vDSO that will be exposed to user space will also have shadow stack
-> instructions in them. Kernel compiled with `CONFIG_RISCV_USER_CFI`, for s=
-ake of
-> this discussion lets call it RVA23 compiled kernel.
->
-> Issue that we discussed earlier and even today is "This RVA23 compiled ke=
-rnel
-> won't be able to support non-RVA23 userspace on non-RVA23 hardware becaus=
-e".
-> Please note that issue exists only on non-RVA23 hardware (which is existi=
-ng
-> hardware and future hardware which is not implementing zimop). RVA23 comp=
-iled
-> kernel can support any sort of userspace on RVA23 hardware.
->
->
-> Discussion
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> So the issue is not really shadow stack instructions but rather may be op
-> instructions in codegen (binaries and vDSO) which aren't hidden behind an=
-y
-> flag (to hide them if hardware doesn't support). And if I can narrow down
-> further, primary issue we are discussing is that if cfi is enabled during
-> kernel compile, it is bringing in a piece of code (vDSO) which won't work
-> on existing hardware. But the counter point is if someone were to deploy
-> RVA23 compiled kernel on non-RVA23 hardware, they must have compiled
-> rest of the userspace without shadow stack instructions in them for such
-> a hardware. And thus at this point they could simply choose *not* to turn=
- on
-> `CONFIG_RISCV_USER_CFI` when compiling such kernel. It's not that difficu=
-lt to
-> do so.
->
-> Any distro who is shipping userspace (which all of them are) along with k=
-ernel
-> will not be shipping two different userspaces (one with shadow stack and =
-one
-> without them). If distro are shipping two different userspaces, then they=
- might
-> as well ship two different kernels. Tagging some distro folks here to get=
- their
-> take on shipping different userspace depending on whether hardware is RVA=
-23 or
-> not. @Heinrich, @Florian, @redbeard and @Aurelien.
->
-> Major distro's have already drawn a distinction here that they will drop
-> support for hardware which isn't RVA23 for the sake of keeping binary
-> distribution simple.
->
-> Only other use case that was discussed of a powerful linux user who just =
-wants
-> to use a single kernel on all kinds of riscv hardware. I am imagining suc=
-h a
-> user knows enough about kernel and if is really dear to them, they can de=
-velop
-> their own patches and send it upstream to support their own usecase and w=
-e can
-> discuss them out. Current patchset don't prevent such a developer to send=
- such
-> patches upstream.
->
-> I heard the argument in meeting today that "Zbb" enabling works similar f=
-or
-> kernel today. I looked at "Zbb" enabling. It's for kernel usage and it's
-> surgically placed in kernel using asm hidden behind alternatives. vDSO is=
-n't
-> compiled with Zbb. Shadow stack instructions are part of codegen for C fi=
-les
-> compiled into vDSO.
->
-> Furthermore,
->
-> Kernel control flow integrity will introduce shadow stack instructions al=
-l
-> over the kernel binary. Such kernel won't be deployable on non-RVA23 hard=
-ware.
-> How to deal with this problem for a savvy kernel developer who wants to r=
-un
-> same cfi enabled kernel binary on multiple hardware?
->
-> Coming from engineering and hacker point of view, I understand the desire=
- here
-> but I still see that it's complexity enforced on rest of the kernel from =
-a user
-> base which anyways can achieve such goals. For majority of usecases, I do=
-n't
-> see a reason to increase complexity in the kernel for build, possibly run=
-time
-> patching and thus possibly introduce more issues and errors just for the =
-sake
-> of a science project.
->
-> Being said that, re-iterating that currently default for `CONFIG_RISCV_US=
-ER_CFI`
-> is "n" which means it won't be breaking anything unless a user opts "Y". =
-So even
-> though I really don't see a reason and usability to have complexity in ke=
-rnel to
-> carry multiple vDSOs, current patchsets are not a hinderance for such fut=
-ure
-> capability (because current default is No) and motivated developer is wel=
-come
-> to build on top of it. Bottomline is I don't see a reason to block curren=
-t
-> patchset from merging in v6.18.
+Ok, as this seems to now be at least building properly for me, I have
+taken it into my char-misc branch for the next -rc1 merge window.
 
-Sorry for reiterating, I have been gone for a while, so maybe I lost a
-bit of context.
+BUT it has shown that it still needs some work to get "correct" and it
+really doesn't do much quite yet, so I have applied the patch below to
+pretty much just "disable" it entirely from the build at this point in
+time.
 
-In that case, should we add a comment in the Kconfig that says "it
-breaks userspace on older-than RVA23 platforms"?
+I'll go and revert this commit after -rc1 is out, in my usb-next branch,
+so that we can start to build on top of it and ensure that it doesn't
+break, but for 6.18, I don't think it's quite ready to be there.
 
-Perhaps a very ugly way to make RVA23-compiled kernel compatible with
-pre-RVA23 platforms is to decode maybe-ops in the illegal exception
-handler...
+Yes, this is not a normal way that bindings will probably be merged into
+the tree, but as I consulted deeply with the USB maintainer about this
+topic while eating some good Paris pizza and French wine this week while
+at the Kernel Recipes conference, I think that this deserves an
+exception as they agree this can be merged now and they will be
+responsible for any fallout.[1]
 
-Btw, I don't think kenrel-level shadow stack should be an argument
-here, as kernel-level APIs are more flexible by nature.
+thanks,
 
-Thanks,
-Andy
+greg k-h
+
+From c1785be6395031f92b62badb27665f80f0a7794c Mon Sep 17 00:00:00 2001
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Thu, 25 Sep 2025 14:42:40 +0200
+Subject: USB: disable rust bindings from the build for now
+
+The rust USB bindings as submitted are a good start, but they don't
+really seem to be correct in a number of minor places, so just disable
+them from the build entirely at this point in time.  When they are ready
+to be re-enabled, this commit can be reverted.
+
+Cc: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ rust/bindings/bindings_helper.h | 1 -
+ rust/helpers/helpers.c          | 1 -
+ rust/kernel/lib.rs              | 2 --
+ samples/rust/Kconfig            | 2 +-
+ 4 files changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 41cd42cd286f..9b3a4ab95818 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -74,7 +74,6 @@
+ #include <linux/slab.h>
+ #include <linux/task_work.h>
+ #include <linux/tracepoint.h>
+-#include <linux/usb.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+ #include <linux/xarray.h>
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 04103ab1a349..8e8277bdddca 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -48,7 +48,6 @@
+ #include "task.c"
+ #include "time.c"
+ #include "uaccess.c"
+-#include "usb.c"
+ #include "vmalloc.c"
+ #include "wait.c"
+ #include "workqueue.c"
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 004ca70b816d..99dbb7b2812e 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -127,8 +127,6 @@
+ pub mod tracepoint;
+ pub mod transmute;
+ pub mod types;
+-#[cfg(CONFIG_USB = "y")]
+-pub mod usb;
+ pub mod uaccess;
+ pub mod workqueue;
+ pub mod xarray;
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index 6d6e4d8c88cb..865a62a93ddc 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -85,7 +85,7 @@ config SAMPLE_RUST_DRIVER_PLATFORM
+ 
+ config SAMPLE_RUST_DRIVER_USB
+ 	tristate "USB Driver"
+-	depends on USB = y
++	depends on USB = y && BROKEN
+ 	help
+ 	  This option builds the Rust USB driver sample.
+ 
+-- 
+2.51.0
+
+
+[1] For those not getting the sarcasm here, I'm that maintainer, and
+    yes, Paris has some very good pizza :)
