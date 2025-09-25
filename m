@@ -1,171 +1,183 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010014.outbound.protection.outlook.com [40.93.198.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6547B2773D8
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 23:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758757878; cv=none; b=YASCE/DSrROEWV8xZ6cnWGoJiwuUjYqEoxt95NcQ3HbLkVlkqFO7lzMx9EV2uMhDBX5hSq8ukOI9BljqBoviI6kzoxIOEZAfaM6trN8AoyH+ju1dxnOOv/f0f9Cp6Qm+2l8Wl3eGOhf5Kv1bNTY7xIMr3UDvLvIWzRKNMJDu2+M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758757878; c=relaxed/simple;
-	bh=bywdX0nhtg4X6nDuC8jT0AaJN0Y+9epl5eMqmA1AZnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZpMsFSMlkjx2gamq6sRNNecIimwookDnI79HCYUdkYcIOxRLxRx/oO89LoW62CYrH/1ZkkD9FZiDtitNfeyQYKne0Je73fjcIREGU/A4G9VdsSRQVDo70UGvwfeVwUTZn8TR+EU0Dy15F0INvXxjjoE4vK2ZhYzXe6KvUB4oI5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YD4zubMq; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5594F1E487;
+	Thu, 25 Sep 2025 01:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758764049; cv=fail; b=uIstPlAFuu8nBVLaAbACJUwVmsgPSBfTvwJuvJ6Pipq08DsqI/IX50g7pqLs8TVN4BW6/FwVfbjSVxCZu3qPwjpHbU3VvgDtp3eiBtyhoxozyrRlHiC0/Csq3oe9N+liyCjosVypXKoJ5Pakn8ICexRYpPOh6233xmlzxNZl+pU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758764049; c=relaxed/simple;
+	bh=0slJ2uhILqOYGWgXolXkgSEEtqC1KLdvOy+zfK2ZRBg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=q9tXyLZD0B3DjFtpVsvWn35yvz9cYvTB97pqbzJmIubzlCFKANVKHrdEr+HnsprvGZASLO+3kfEXwszPt849GbM+z7Yg5oZ4gi6iGzWPQSVm3u2phhH1C8keINoId2EuWdlhTupbdbSvQrbcJy3K5gIlu0eaN5XK3VE2VTuvUHE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PDsEDwOG; arc=fail smtp.client-ip=40.93.198.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YD4zubMq"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-267fa729a63so612905ad.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Sep 2025 16:51:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758757877; x=1759362677; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BcrUofB0dKCSsQ7o/jnuwGUrQDlTZKMr766pxf4U7ew=;
-        b=YD4zubMqj4y/2E16KpijgN6eCpK8QBLzKiSZYb1fSsk6qzhncDbT/rbQdAJv+HOm85
-         0/EEG/xP51Q03P/pirH8g/rLFPU8KsF+CFD2CsSA59vkDNk5wIu+lwgs66KUqVGPtIr7
-         OsJ+ptI45sdzVdEIP8ZpuZO+AdsHMwhmVOkbIw4EvAR/9ts7YZ0mRepPO+QeZbLz/jVN
-         eXec79exBuyuAAdCFIB0SjUPNK4yS294WiF0AsQvacrIJOttlPT2+xJM+UYK7NO1tgAe
-         dpOY9O7hehsil3PU2C+mZb80OXn2smkB8Z+9nqiZFLOag+5kiSEuoN9juzL8xPDrRXL9
-         OH2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758757877; x=1759362677;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BcrUofB0dKCSsQ7o/jnuwGUrQDlTZKMr766pxf4U7ew=;
-        b=KV3xL6bG1ji4rHJDqmJC7GUEjWK42SEZQ3BbS+qwjJcr3TmQRsdu9MKMM6+1rq0LLn
-         IKED2UpeSLoYqGqV+Neys5DG6xYCFxcEwCoVlfa6is+hMwFdJGc5xZ/CYwl4O6meeryW
-         Rryf61qUSdJIkqnkkrNrp07ij+W3yWN/hzgC3NrTUmpDiD2pbPhlBOM+XWulxiqYSrKH
-         QiA5EG13jrNeoshMOMw4gTIwLQaT/C3my1qQAwZ0ZOvfqNIUTACeZiFGdCRFxBJCayBM
-         So3zigWrLsRPEl3gqbR9xzdfNk3Q3xD29S1qJ1I4aOCfPePfkrrtnFnHrHvcmPdfpYve
-         5QJw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5a4zxqJ6pC/JQeVyH8WqDjWV0uM2HBuRzvVt5dynhEpa2W9V3txm5iMc568EoEMs333F3oVXNynqi9gZCyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSDXu2HZ56wVNg4iiZPoZvJeZNci9oBmL7Qr03J3UHYVZ88M/a
-	8LEIt0TtDl48i7ACjqaO8WMaIcuiI7h45sd9dH9R+FHzXXv5dipYoUzx
-X-Gm-Gg: ASbGncszQmgymuaBFAbnTRTnsg7WQucFuZz/2fJs5GLLudhiQNjerQ7yAe7s1CAl99U
-	44sHzVRl7g78VFQJAq876t07veFSL8PAWOQQnnYVcf+bL5Ycwd6h+EAjiTeoT2aHhnxicMpMw7+
-	zfryTt/dPQ2bzfNkuNVQGMU978kL6zuM4iY5O9eiJaPsHaVQ7PRd2u7hsktFl71EHqMh/czzXQn
-	KYp2s0tN4zXjBGtQzdqDNxRINGc3vEW0h/zMwS1puJa+UEoK+mv3xnmN2L/1ZUUvBd4c35p3QC/
-	jdQF8sgjwGWTfr4e/z8MziV99eLNrKEW3tL032v/r8SvfJ/TiuUdV9ELagk1vOZ6d2+wMrwgaTD
-	hCvPDlgoAhZ2eOTZBWSY=
-X-Google-Smtp-Source: AGHT+IF5/ZHYCLfHMWUKUiXIO0yoi5GrlItBDfQAqCKn6V4VH3FNSKCX4czQoTpWgFwCnc41W0qgng==
-X-Received: by 2002:a17:902:e812:b0:266:914a:2e7a with SMTP id d9443c01a7336-27ed4a7e84amr9318595ad.6.1758757876373;
-        Wed, 24 Sep 2025 16:51:16 -0700 (PDT)
-Received: from localhost ([104.249.174.141])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed69bc273sm4296695ad.124.2025.09.24.16.51.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 16:51:15 -0700 (PDT)
-From: Ben Guo <benx.guo@gmail.com>
-To: alexs@kernel.org,
-	si.yanteng@linux.dev,
-	dzm91@hust.edu.cn,
-	corbet@lwn.net,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org
-Cc: hust-os-kernel-patches@googlegroups.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH] docs/zh_CN: Update Rust index translation and add reference label
-Date: Wed, 24 Sep 2025 23:51:12 +0000
-Message-ID: <20250924235114.209967-1-benx.guo@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PDsEDwOG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Vpt6Tb/cs3PoULyOUQ6oX6VPGQHzppuPvOzBp1jr+zmDd5j+IB4WlOZvyyTukNgq+lhA511AT8oAhIXyv8ZjGoRq+YapEWBwTKJLyp9hsAu/Q/t53SbUnp/rWE1PvInzoJOop6YA+1f4zlulu1LE0C+QH8Ctz/uSCMyUd0zKgn0drH+zLybzdvXtBjlbi41IC/2TTwwQiDlvKZIdshI0kH5v6jPkQOONuIzY6yD2n5CkGszwhcS8tohyqRxnLwDlazooGmIh18e1ycSqKv36doYfvrv7+HOLlcs8gFt70jVTqyA9PYCf9eoso/7aQr74yBdfsceZqAjOkVOgTjNaJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PE0yM8nj+df6/CYTPO6BAJnBRtNQswQRbb5RMMmS5Qs=;
+ b=gtfl6BQg2vCdORK8xa7NlKm94G4ABmBGZATOM9Za7q3SYOlBoS/pOEpD2kGib3TEU4aMDvRLis6BF4xSx8iWU8BtZMl5M/CUr8/jGqMYbUb4WagNA5buhe7WLhmoBz6QwA6xS2k0a/LosMTBPu/lOxy5XO4JZADmt5kLeGq9iwOZe38WQIG3Su8uwU/0iG631A16m0tV7Nz1m4/NHYgEwPTXXjcbfnvTlTCjurDUgAmTduhf2Hg6zPs1HlcvLVYLB3bcLSavADHD2FejlwGqz8DW+XerVeQc3rHftn49y4dKr7i7ytalQ/Rsfn4RH2KiKEjfCUT/9PV3GDnvReq2uA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PE0yM8nj+df6/CYTPO6BAJnBRtNQswQRbb5RMMmS5Qs=;
+ b=PDsEDwOG+XniPpXeYrMuqgzUrG4sUodcJdGnseauLgfxiGqdBv48GkFW54KvPzXfj1Y5rohuX3KpnKgZQr6y4OusHVVQ3ScsDpYEzm/lAMi/AHMI4wnahu7JwC6O5L2ev1fq5IwWPa7P8Mlaa6ynYZuiK3LUbk8TVzEVcOZv2QDlcvrZLFdzEHGRZXRGXX371+xLmt+laWYuDqhaSKBw0YugJ32TWU0AyAC8s88s/S32VjvhcPX4DZEMaVrB/JrEBzmKp6z7QQvcZxX8E9MPazwd9le8O08E3cRSwpWK2eGiIcqcK7wMzY+inqzQrRL13DPyH33BUXmwfFDKsEDu8g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by SJ0PR12MB6879.namprd12.prod.outlook.com (2603:10b6:a03:484::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Thu, 25 Sep
+ 2025 01:34:05 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9137.018; Thu, 25 Sep 2025
+ 01:34:05 +0000
+From: John Hubbard <jhubbard@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	nouveau@lists.freedesktop.org,
+	linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH 0/2] rust: pci: display symbolic PCI vendor and class names
+Date: Wed, 24 Sep 2025 18:33:57 -0700
+Message-ID: <20250925013359.414526-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.51.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY3PR04CA0024.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::29) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|SJ0PR12MB6879:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9daf4552-7baa-4cbb-ad05-08ddfbd39d1e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?DlYvCMc/Q80mLjgZ3864M8Cen++a6zGUYi6q9T7Y3DroZPNFpTz9iMg3tMfb?=
+ =?us-ascii?Q?yf5/eTwyLh5wVBBsGQZM30fMYHpVshbNvaNHiGwud20lBOGVcBqhAsUYDmL4?=
+ =?us-ascii?Q?ZOWu40F1vSoWslOSMOmcpidiLgrwtgWMRhfEqmIvAQbISY3fc0Q+KZ9J3vOJ?=
+ =?us-ascii?Q?S7e6SptMfrRW7DQeUQ4R8k2zF+6YFRTzSZ+DmtobDcl5guNgClF/jB4oji9u?=
+ =?us-ascii?Q?lDUUY+4KjoztdQhpQXlgi5BVsGsDIWRtrefXqkCu7K9UZAoGdYcSKiOKn/Dv?=
+ =?us-ascii?Q?yX5QNKbdk6cx0+n+10T1lVVmP5QsaXuxM9wUBwbe/41dCW/S1MRn62oAh8dr?=
+ =?us-ascii?Q?OjuV51e7T4z8pu/9z4r9SmRsD9PsqUhYrSKSXK7oti2unpln/GmpBVL6VWx6?=
+ =?us-ascii?Q?2Hfms3RSCEzz2Dw7g9RU9Ji70pdm4sy5EdmqaDCuTFbtGsLGeX37J3sdDhaA?=
+ =?us-ascii?Q?G7uSVIKWF2w6ABVPwKDgCKYxQUzXIKon0Gwh4JgBrAa6KraR8Co+W024fsk+?=
+ =?us-ascii?Q?l/jDKE6wWpo8HCXko28n26Q35whX67VZOff9ZVGYg9v7Ov06bfmKAbODeiPT?=
+ =?us-ascii?Q?WmpZkEGjggnZ9yGBv2y/j61QcHrZfRpo1bxXdY+SdZMfQf/EVPfI+grf4bCw?=
+ =?us-ascii?Q?nb/L1FXiJj2i+90DUOVDdww3fMCD7yLM6oZU/qYCBPsna2Jju5T24/RT1bUB?=
+ =?us-ascii?Q?D5ygRrlWQah5W7wmztaLxu8anUcCudftdf+JEwNW2hc0hFQlG+4GZS+PDWCu?=
+ =?us-ascii?Q?E7cE1v2APDrpJlm8mo55ReBBAf+ylKlFgyk6ePgZaKBeDiZXIYxXdXjkv3YT?=
+ =?us-ascii?Q?aeZ1mFg/eZa9fQpsPHbNY17PDS7e99o45tUrwC8aBdEaGtCoSjtnkv5eudOD?=
+ =?us-ascii?Q?Q0YcRgEDA+4NcNW+ENjaYTSCjtWThgRkjt9tz7JCM/lHzMUXp0ir+cDmsPmF?=
+ =?us-ascii?Q?ab4cuUruiPtfc/kfRw446O/ya7r0F1TcAGFtYe0eXBX+fOF/apqxNAeYb7mK?=
+ =?us-ascii?Q?iDwISkYwY6+L0gtFKRaKkDgN+Ry5rn2VOYszRG4DDwsaVwFWo+B0UkYEfpjL?=
+ =?us-ascii?Q?dmrB6v10a7VijJu7jUYDSL9w7UXFjc+X8RCYdtaiB0DXMMlndKbp1UzWlecQ?=
+ =?us-ascii?Q?BmNzz2MpqVARzTpVmegXKeqg/YalqiSMBvEQHPOui03OmcuUDVUiUAIP1Kqq?=
+ =?us-ascii?Q?JibMEhXK/v6fDNY/I1kICLDzW4x8LpnxzzTwt+rccpuHYMJku0IUFUfG97Gz?=
+ =?us-ascii?Q?ForSraeRbf2emYlKv9mI96d0vsFUIhBKEQI5nqOxHVp5tjJ3+WAqpjyAkcXE?=
+ =?us-ascii?Q?qpiSluvBvNPIYtQ91oSZ85t29+5DLMYRlClEkgJ0BoYgl6dZWW7cp/50WJFo?=
+ =?us-ascii?Q?/Hch5BcoF7kBIpkP8osn/1v9OYEiHLTKFPccbabGjqEBaQJZ0lthsw6o6P7o?=
+ =?us-ascii?Q?I8IaE6UeRlbPk4Da3STiI2oJBcwkXk0k1XpLF9Rooq3wc8ooBqmqoQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6A0xxrCOSakYWWfaLJmSQCk01SRm8k5NYbxkxpLdKspDzhTDqCz501BzQBwf?=
+ =?us-ascii?Q?COJf9pY6GSSa3lCq9GVnBN5wLajkbk0dXddkweItxhAwXGuunXYyB4cA3/y4?=
+ =?us-ascii?Q?1XMOQW8MslUgubVs6+6vLiLzdUBcyrFDFWYWjeBzjMym/rqIZ535G8RfbrGj?=
+ =?us-ascii?Q?05co6Gu6toevCHZ6iaNSHsUa6dtBpQtyAEKlGHaYRnDISxEeyD9g8mV0s4rW?=
+ =?us-ascii?Q?eob5K2nZDnyyvh++p+7NIP09tAF4XwsQfEHId9/SvhvNaVgCB9QjUgvwnp/j?=
+ =?us-ascii?Q?wEMtcm2VQZ6+3k1GD0WgA0zFiajcTFDG8Ph2XTgSY8VsddNn9fdu5BafpMS/?=
+ =?us-ascii?Q?Ew+U/AJHPqNuIWShoQsQ2z8zrX2xvxEFyz1RMMIzxC0/uQVixukPe5Q2mU7i?=
+ =?us-ascii?Q?pf8o2eXxKxgtJnwsQmFoRc1ChsApTGnYh7tCg2ykhMilALxYSo2aWoRlmUkp?=
+ =?us-ascii?Q?WYCNF7mq+sXGnHT6O8O2NfSlhLVa1pHQVu4p2t2IFW+w9Vm/auIZGfbF2iYo?=
+ =?us-ascii?Q?Y+vElM1bHPBnQaow532KSvwxRywAeiqTZ3Tem1vrmSlLgedNQOtiux7bkG6i?=
+ =?us-ascii?Q?tWPFj3sEkLo6DF0NsrAce80J6KJ+imXJ4nfPSgKLQKra68ifUnpVNdIpY3ZJ?=
+ =?us-ascii?Q?JtTkmqHZwa3diBUbYelavk7HTVcUZ9YO27Mm2ilDKsbwGzN3Or1y/TzoIWRt?=
+ =?us-ascii?Q?fY+PrxmDLGOCyat5Ie+zNxdkJN7iAjDmr2gAJeR9JlSjhEfedbmOOxGCVeu1?=
+ =?us-ascii?Q?mGfC0uhzAnlH9K1O0c15aiewJCCDwep1G/h2wEXYV0jLoidXMsofroq2hKVx?=
+ =?us-ascii?Q?vJRD/dsmveLbmNlYqGXEalEJWUJKfPEIHrudkwcpz6fjQL05Wl2H4NtcJkXy?=
+ =?us-ascii?Q?p5jIO4FGtmsXTQRwIeL9hc04SCUl6MFP27gMN5EnxxlfMOw6+sELG9PkwPpI?=
+ =?us-ascii?Q?oS+RdlvKGtXzmMSkIaAiQ+0vdxiDo7xq9ytp5o9AsIqgU9wRjZg97c2zPYt/?=
+ =?us-ascii?Q?m8RqeiyJTHmfO/EjYYDz8ulswU6hgijySV24IrwCD6QBGBcWDU9GQ0zfcNDS?=
+ =?us-ascii?Q?/7WVN+BdUgjTrnFB+9QYA71V4sbhvrOZXoCkPlf0fp+8juB3fzeAXBAbqD3j?=
+ =?us-ascii?Q?MxzgFlsVqt3V4E+LsUswTxkY5u0fFNv29cABgRoEL1N1voOZzQFU85afHoIg?=
+ =?us-ascii?Q?ONYD5QVz2THPvG2eSyawAb3uVkZdWtpaSp7VtPd2RMAMmnkc5DS3xeNmbbMZ?=
+ =?us-ascii?Q?aeqKftvW6QV+zIR9b1rmOQRO+R5UmGb3eu7TweBfFObCc3xczO3azx3NKmwE?=
+ =?us-ascii?Q?9qm8vYTEj9P5usCZ/xOSvcALasJ1W+YyUr2JwgSt408bLAPQbzQSZiZOtoEY?=
+ =?us-ascii?Q?bvVFOpy8ndmwzjLxaLwxHiCSN0uAA96V1pcGMHxViYk9V4HsTLzGAm+szf2b?=
+ =?us-ascii?Q?wrTBskosJObG0nP576ESJ4UsfjvoaUkZdBaYZSmM8PIlfyrvtUEeEFTX2DHu?=
+ =?us-ascii?Q?WVlFdP4w2S4lmC2+crtWMtEWwJLpCyDycf/QafulXokpHuXwtn6ALb0Y11Xh?=
+ =?us-ascii?Q?eJDUeo7GXKDt8atb98gRhrFWoEZkHZWlFcVUgFMu?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9daf4552-7baa-4cbb-ad05-08ddfbd39d1e
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 01:34:05.0880
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PyYsQ/Svybeh508DDQb39fJBUtu5SAojz/siZ71KxFN07UC6JzPGbjBHQmrJQnfmXPU5yHHGyaj+8CE015IlNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6879
 
-Update the translated rust/index.rst with new contents,
-and add a reference label in rust/general-information.rst so
-that index.rst can link to it properly.
+Hi,
 
-Fixes in rust/index.rst:
-- Fixed broken quick-start.rst cross-reference
+This applies to:
 
-Update the translation through commit d0b343605f1b
-("kernel-docs: Add new section for Rust learning materials")
+  https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
 
-Signed-off-by: Ben Guo <benx.guo@gmail.com>
----
- .../zh_CN/rust/general-information.rst        |  1 +
- .../translations/zh_CN/rust/index.rst         | 32 ++++++++++++++++++-
- 2 files changed, 32 insertions(+), 1 deletion(-)
+It's a small follow up to these commits in that same branch:
 
-diff --git a/Documentation/translations/zh_CN/rust/general-information.rst b/Documentation/translations/zh_CN/rust/general-information.rst
-index 251f6ee2bb44..9b5e37e13f38 100644
---- a/Documentation/translations/zh_CN/rust/general-information.rst
-+++ b/Documentation/translations/zh_CN/rust/general-information.rst
-@@ -13,6 +13,7 @@
- 
- 本文档包含了在内核中使用Rust支持时需要了解的有用信息。
- 
-+.. _rust_code_documentation_zh_cn:
- 
- 代码文档
- --------
-diff --git a/Documentation/translations/zh_CN/rust/index.rst b/Documentation/translations/zh_CN/rust/index.rst
-index b01f887e7167..10413b0c17c0 100644
---- a/Documentation/translations/zh_CN/rust/index.rst
-+++ b/Documentation/translations/zh_CN/rust/index.rst
-@@ -10,7 +10,35 @@
- Rust
- ====
- 
--与内核中的Rust有关的文档。若要开始在内核中使用Rust，请阅读quick-start.rst指南。
-+与内核中的Rust有关的文档。若要开始在内核中使用Rust，请阅读 quick-start.rst 指南。
-+
-+Rust 实验
-+---------
-+Rust 支持在 v6.1 版本中合并到主线，以帮助确定 Rust 作为一种语言是否适合内核，
-+即是否值得进行权衡。
-+
-+目前，Rust 支持主要面向对 Rust 支持感兴趣的内核开发人员和维护者，
-+以便他们可以开始处理抽象和驱动程序，并帮助开发基础设施和工具。
-+
-+如果您是终端用户，请注意，目前没有适合或旨在生产使用的内置驱动程序或模块，
-+并且 Rust 支持仍处于开发/实验阶段，尤其是对于特定内核配置。
-+
-+代码文档
-+--------
-+
-+给定一个内核配置，内核可能会生成 Rust 代码文档，即由 ``rustdoc`` 工具呈现的 HTML。
-+
-+.. only:: rustdoc and html
-+
-+   该内核文档使用 `Rust 代码文档 <rustdoc/kernel/index.html>`_ 构建。
-+
-+.. only:: not rustdoc and html
-+
-+   该内核文档不使用 Rust 代码文档构建。
-+
-+预生成版本提供在：https://rust.docs.kernel.org。
-+
-+请参阅 :ref:`代码文档 <rust_code_documentation_zh_cn>` 部分以获取更多详细信息。
- 
- .. toctree::
-     :maxdepth: 1
-@@ -20,6 +48,8 @@ Rust
-     coding-guidelines
-     arch-support
- 
-+你还可以在 :doc:`../../../process/kernel-docs` 中找到 Rust 的学习材料。
-+
- .. only::  subproject and html
- 
-    Indices
+commit 5e20962a9fc8 ("rust: pci: provide access to PCI Vendor values")
+commit ed78a01887e2 ("rust: pci: provide access to PCI Class and Class-related items")
+
+Danilo, I've added your Suggested-by to these.
+
+John Hubbard (2):
+  rust: pci: display symbolic PCI class names
+  rust: pci: display symbolic PCI vendor names
+
+ rust/kernel/pci/id.rs | 36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
+
+
+base-commit: d4a5d397c7fb1ca967e0da202cac196e7324f4ea
 -- 
-2.43.0
+2.51.0
 
