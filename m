@@ -1,116 +1,114 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F337214658D
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Sep 2025 17:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DB423A9B3;
+	Thu, 25 Sep 2025 17:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758820840; cv=none; b=WUaCJmy3IJqut6UfaBesKNjc3tGCIR2DRoArXaukTehU9M50v7e++AvmM/sIJY2i9e49xg2MoIp9YT5+d8GTVzMlRRyI1Q60Xo93Xsim5Z3UE2gOcyIaH2dTomrrxRkDcU0/e9OUO8MLQql7zma/CRl2uu0XDEH6mOA9++YDIDE=
+	t=1758821906; cv=none; b=lJB/5VJN4yMUzb4+0rZ/7nRZl3uLXSBe+G/0Rq291NjuQFkFYLkXccssDDZJJrow7co36lVkfp8XjvzzIDpD4fZbvKhpJCSxdtVDB4LgZ0zMgNuUZyOGdT3KDRAjPIfu5jyL2dN/WXbVPhBhU/IsFktOBm0zvhSyxfgs6bAe5FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758820840; c=relaxed/simple;
-	bh=97iUBxcczrc8d4ZjA8iMJpyUnogsQG3SuufPU6f2ca0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hMudNOFyP4zhYXiwPtM4b3WDVlvEsT+Say5PAHQdBbzqeUdet518eKpzMiYpHhCav31JTQ/Vmk3IUMO17v3qVKVhXJyXGIKAbic+VtqjA75WW8j6ZU8gHm+nH3nRPpUuGtlwq8pG/ln3vytVL/ZlN1dMRGNlGdhir9tLFoDGJMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=elijahs.space; spf=pass smtp.mailfrom=elijahs.space; dkim=pass (2048-bit key) header.d=elijahs.space header.i=@elijahs.space header.b=VhtuGPKN; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=R4Pwbk/D; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=elijahs.space
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=elijahs.space
+	s=arc-20240116; t=1758821906; c=relaxed/simple;
+	bh=1LH556iOEvDvaNX9cAl8yXja5P0kvfvek8B+Iho9Lfk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h1MS9OD0XIX6rYHPvg2KMXhwuvE6yB97r+VTDVE3ZXeBSJXR2wsOM5XKvPvmWzvRtw1yKZa3/5rtzVH74pkKEIfaDTZtnlpOxWN3g3I2y0fSX3w8ehR7PDjC0jV0BMLUuZVBA7i8J2GYcShY8Tp3pWQktGWtmZBBwLixz8K/mNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LECEnIDu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=elijahs.space header.i=@elijahs.space header.b="VhtuGPKN";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="R4Pwbk/D"
-Authentication-Results: purelymail.com; auth=pass
-DKIM-Signature: a=rsa-sha256; b=VhtuGPKN+ofn4I8WGP0GkYmDMBmyLJdRXM8GhaHAkMsxRw8oMqH7q7350yJDTUbHyK1e+7b9vfft8bnL+YKirFTJD+l7eRwyNgxTqoOVpNfibMYy1i7OPrsmO0FikERsv1QzGycVfjTVLnK+38a7oofcABek8kvO1nH8m8Cue00F1BbCHr8OOsXjC8hO59i9VBmo/twYVWB4asO6+8QzpM/p0o5GVma+9okSV/0NHuGsnWVYBAxmEaK5elRhsVFm/arVDUC6qmzOJdCwlZViB3slKY2HQ3xUP3HdY5hkaJTj98lwuqhuCeoSJP0CwE7ZdVoOD4nJnF6HM/Xn0s3lQA==; s=purelymail2; d=elijahs.space; v=1; bh=97iUBxcczrc8d4ZjA8iMJpyUnogsQG3SuufPU6f2ca0=; h=Received:Date:Subject:To:From;
-DKIM-Signature: a=rsa-sha256; b=R4Pwbk/D+8Y/tpVxz1UD8WEKrmqbA1h2GH4KbnVGeeySbeDisfO8qO3fvelzJbOJ1GQM0IUB1lAcZqtoNhdWY9lsXo9bfhPHW31qumeUiphzJ1GQJXxxnsYwCtvZez47QBUsWLwtmtdU6pv/YmH7ioxgQPykEMFls79gAAuvo7LawcnDhTg9Zc0shEJbwCxlJjp+XwVfKqG1dGgmZu+gk0InSlSG2DACOjX4b6rkaVYaulLmCDOeOOxYA29hIeriQ6YgQA4cHtQCIYBt+Ebu+iRF0dPhPID5tumsI3rtrwN55+NOkja+EFaDwCb93TOgXu6BGvB9LMoq7et39OzB4Q==; s=purelymail2; d=purelymail.com; v=1; bh=97iUBxcczrc8d4ZjA8iMJpyUnogsQG3SuufPU6f2ca0=; h=Feedback-ID:Received:Date:Subject:To:From;
-Feedback-ID: 26912:4866:null:purelymail
-X-Pm-Original-To: rust-for-linux@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1074361899;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Thu, 25 Sep 2025 17:20:15 +0000 (UTC)
-Message-ID: <73d7d53f-439b-44a9-98ca-0b1c8fbc1661@elijahs.space>
-Date: Thu, 25 Sep 2025 10:20:13 -0700
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LECEnIDu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD7AC4CEF0;
+	Thu, 25 Sep 2025 17:38:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758821905;
+	bh=1LH556iOEvDvaNX9cAl8yXja5P0kvfvek8B+Iho9Lfk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LECEnIDudWUhi7SL8s8T5/iKw58kUPxai3/4HEYfO6tGmbiafc7XTh/ftk3VUNgim
+	 UzLtxhOcSlUnUrShJyIRb1FBg9gP3JPQ5TJoXjSU04dpps7qOQPNbhovANWCc12Dx/
+	 bTHrze6gLuPVAaGQcWk77b/sOyTOR5MFYUC9gNeo=
+Date: Thu, 25 Sep 2025 19:38:22 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH 0/2] rust: usb: add initial USB abstractions
+Message-ID: <2025092529-schilling-impeach-c71a@gregkh>
+References: <20250825-b4-usb-v1-0-7aa024de7ae8@collabora.com>
+ <2025092520-sharply-everyone-4a5d@gregkh>
+ <DD1X19KZHSEF.1W9SU66HVJM9V@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: slab: add basic slab module
-To: Danilo Krummrich <dakr@kernel.org>, Elijah Wright <git@elijahs.space>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
- linux-mm@kvack.org
-References: <20250924193643.4001-1-git@elijahs.space>
- <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
-Content-Language: en-US
-From: Elijah <me@elijahs.space>
-In-Reply-To: <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DD1X19KZHSEF.1W9SU66HVJM9V@kernel.org>
 
-I was thinking of maybe creating something like KBox for kmem_cache but 
-I didn't want to touch allocator code yet, I figured I would just create 
-the groundwork for that to exist. rbtree.rs uses KBox now but I'm not 
-sure it should, at least if it's going to scale to many nodes
+On Thu, Sep 25, 2025 at 03:29:25PM +0200, Danilo Krummrich wrote:
+> On Thu Sep 25, 2025 at 2:52 PM CEST, Greg Kroah-Hartman wrote:
+> > Yes, this is not a normal way that bindings will probably be merged into
+> > the tree, but as I consulted deeply with the USB maintainer about this
+> > topic while eating some good Paris pizza and French wine this week while
+> > at the Kernel Recipes conference, I think that this deserves an
+> > exception as they agree this can be merged now and they will be
+> > responsible for any fallout.[1]
+> 
+> If you rather have it "staging" in-tree that's of course up to you. :)
+> 
+> But, I'd prefer not to expose the incorrect conversion between a
+> &usb::Interface<Ctx> and a &usb::Device<Ctx> for a full release in Linus' tree.
+> 
+> Besides other implications, this conversation also implies that
+> &usb::Device<Core> can be derived from &usb::Interface<Core>, which semantically
+> means that if the USB interface's device lock is held we infer that the device
+> lock of the USB device is held as well.
+> 
+> I know the code isn't even built, but I don't want people reading the code to
+> take wrong conclusions from that.
+> 
+> Also, it's dead code anyways, so maybe just apply the following hunk?
+> 
+> Thanks,
+> Danilo
+> 
+> diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
+> index 8899e7520b58..9bc3478cf561 100644
+> --- a/rust/kernel/usb.rs
+> +++ b/rust/kernel/usb.rs
+> @@ -340,18 +340,6 @@ fn as_ref(&self) -> &device::Device<Ctx> {
+>      }
+>  }
+> 
+> -impl<Ctx: device::DeviceContext> AsRef<Device<Ctx>> for Interface<Ctx> {
+> -    fn as_ref(&self) -> &Device<Ctx> {
+> -        // SAFETY: `self.as_raw()` is valid by the type invariants. For a valid interface,
+> -        // the helper should always return a valid USB device pointer.
+> -        let usb_dev = unsafe { bindings::interface_to_usbdev(self.as_raw()) };
+> -
+> -        // SAFETY: The helper returns a valid interface pointer that shares the
+> -        // same `DeviceContext`.
+> -        unsafe { &*(usb_dev.cast()) }
+> -    }
+> -}
+> -
+>  // SAFETY: Instances of `Interface` are always reference-counted.
+>  unsafe impl AlwaysRefCounted for Interface {
+>      fn inc_ref(&self) {
 
-On 9/25/2025 2:54 AM, Danilo Krummrich wrote:
-> What's the motivation?
-> 
-> I mean, we will need kmem_cache soon. But the users will all be drivers, e.g.
-> the GPU drivers that people work on currently.
-> 
-> Drivers shouldn't use "raw" allocators (such as Kmalloc [1] or Vmalloc [2]), but
-> the corresponding "managed" allocation primitives, such as KBox [3], VBox [4],
-> KVec, etc.
-> 
-> Therefore, the code below shouldn't be used by drivers directly, hence the
-> question for motivation.
-> 
-> In any case, kmem_cache is a special allocator (special as in it can have a
-> non-static lifetime in contrast to other kernel allocators) and should be
-> integrated with the existing infrastructure in rust/kernel/alloc/.
-> 
-> I think there are multiple options for that; (1) isn't really an option, but I
-> think it's good to mention anyways:
-> 
->    (1) Allow for non-zero sized implementations of the Allocator trait [3], such
->        that we can store a reference count to the KmemCache. This is necessary to
->        ensure that a Box<T, KmemCache> can't out-live the KmemCache itself.
-> 
->        The reason why I said it's not really an option is because it discards the
->        option for dynamic dispatch of the generic Box type.
-> 
->    (2) Same as (1), but with a custom Box type. This keeps dynamic dispatch for
->        the generic Box type (i.e. KBox, VBox, KVBox), but duplicates quite some
->        code and still doesn't allow for dynamic dispatch for the KmemCacheBox.
-> 
->    (3) Implement a macro to generate a custom KmemCache Allocator trait
->        implementation for every KmemCache instance with a static lifetime.
-> 
->        This makes KmemCache technically equivalent to the other allocators, such
->        as Kmalloc, etc. but obviously has the downside that the KmemCache might
->        live much longer than required.
-> 
->        Technically, most KmemCache instances live for the whole module lifetime,
->        so it might be fine though.
-> 
->        (This is what I think Alice proposed.)
-> 
->    (4) Solve the problem on the C side and let kmem_cache_alloc() take care of
->        acquiring a reference count to the backing kmem_cache. The main question
->        here would be where to store the pointer for decreasing the reference
->        count on kmem_cache_free().
-> 
->        Theoretically, it could be stored within the allocation itself, but it's a
->        bit of a yikes.
-> 
->        However, it would resolve all the mentioned problems above.
-> 
-> I'd like to see (3) or (4), also depending on what the MM folks think.
+Cool, I'll be glad to apply this, can you resend it with a real
+signed-off-by line?
 
+And we can always submit fixes during the -rc cycle for 6.18, for stuff
+like this, so there's no immediate rush at the moment to get this
+"perfect".
+
+thanks,
+
+greg k-h
