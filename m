@@ -1,580 +1,309 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6042FABE9
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Sep 2025 11:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA2A302CDB
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Sep 2025 12:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758800009; cv=none; b=fjb1jeh7+Y+Kp+sp2k0lctWxOvSOp5mvjvDwKlIJ2AFuii2v1AmuLyCpKMgaGxu4oLKiYg+lhghENCblLUZJjkOis0qgjR5b/kcWnSraO7uMzp4aj0MC+HcHeNE8aorv70ROcUwrkmj/TbDaDrouSQ4CJT6y1SyFh1QWWT7ELAE=
+	t=1758803425; cv=none; b=SxAdyYanwCFziGFjPFWcmQxkt6YWZgQS+3WxtULB3+6Acvap1PDHslWGrp2APoizavWIoolPwc11JU4CVYTIjUf35Ps54ITl+CbPd/yXWnIG4AZPJp/cdp4dqdq31LhprDTK2jJTn1v6xB6u2Ny4WiGMXRgYDRTKFHR6SVSg+og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758800009; c=relaxed/simple;
-	bh=tWPOJ54fBiTdw0gvZyVcZpoXiuKoSj+4PGphxIupgUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=LuXDnQ16Ascj2p3nEbukMvB9RsZM7H3q4nKWvSlxKicPUR6su34WAowjW7XJ62WnWIEj6YoNnGDKk0IXqZ3p+Q8T4go597qM3KCxDvckxXv3UvMOoZ8KvetDclzgdKlPEpgbDrnkGlHMph0/3d4unRzBmibWsWJ6CYA133+5E+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=QYQxthQS; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1758803425; c=relaxed/simple;
+	bh=gRqU1xzOrRjzeCyUuiZjwTh+L281vaPrDr8rLgP04ww=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GiCtZnQAfntzMoIbKyqydBeGqTX/ipsUnPhG/JeUqx+iJa6wMdzc8ZUyPNAFYr3Zedvm0Fm4EGkrCb5fFHL6/kXw8nQ8RUhpOxjeJ3jrTrWL6B85EVzd3EKeP2sPQpPq/+o/uoaxYVIpxglHTr0Wc3HfOkGdpqfOTe2TC1TzC+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffYFF3rp; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="QYQxthQS"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250925113319euoutp01c886c1748904f7fb4169f5d6d9972f7c~og0ffHF-W1944619446euoutp01C
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Sep 2025 11:33:19 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250925113319euoutp01c886c1748904f7fb4169f5d6d9972f7c~og0ffHF-W1944619446euoutp01C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1758799999;
-	bh=P9Ec1jWSnugXGZ5AkUhPYGjEOqiEduJxMg/sOLnZKhE=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=QYQxthQSgPfwqLeihsdey0uww1aNQ/9yFDm+tAB3lJqkpE258tUh1PNxcdB4tKExy
-	 rt+xsxspMKiKg6h1O8Hvag6ddBsa1m6iaoFVFkajmnAIwMsoHQHVKg2NstM+GgAwBe
-	 GEhYX3l3mp+AESfELWYqTSfj4uzVfnTmgFb8zBg4=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250925113318eucas1p2941e2087b8992d315bf1349a6221fb45~og0e1T7Gk2754227542eucas1p2V;
-	Thu, 25 Sep 2025 11:33:18 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250925113317eusmtip294bf20309d95bb94e0b2138a8a118478~og0dvyGCE0683706837eusmtip2-;
-	Thu, 25 Sep 2025 11:33:17 +0000 (GMT)
-Message-ID: <3c0ce788-0e31-4cde-bfc2-e4add5818348@samsung.com>
-Date: Thu, 25 Sep 2025 13:33:17 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffYFF3rp"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-62105d21297so1856793a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Sep 2025 05:30:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758803421; x=1759408221; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cpogRHSrLfl51nWywJppLMZXYXi2KQs1G3uCf0+H8cQ=;
+        b=ffYFF3rpF3AtyiFCyhGdMTyzBqauIB99fkowWzKLiUQg8JbTkpM5ilCUyQ7yPuBs7n
+         QV8Z4QOnuXWptDCnA+w5Efe3QDyi+WpC4lhCcvW/CaOCpJ3W0XY29BVJSNONJu66NuIk
+         YDKfUdXBcol8z9+TONQ3MbW4OJJP3So9Renu4heqxxzLsu91l0ukzfV3/cilH6bPaK3H
+         A5fohQqqDR/u2+BmukgkTWnEBSwskjoSylmz/VfIiAyQCJbUXc9dE4ZDVSDKHtw2A1b6
+         XnZI6lUq8vhSO9hnI7fpo2jMnLG+ub3wS5ldkEfKl8cZLgi+VhGb+D4cOlTS5I6qVqgX
+         mUIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758803421; x=1759408221;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cpogRHSrLfl51nWywJppLMZXYXi2KQs1G3uCf0+H8cQ=;
+        b=vWSdoDTeMXv9465sZLK65+OXQzsilI/qcyEFYOdt4YpCQ/amA+vjO9fp8hnt1tMpDn
+         GTcuCvHNh4wrZOzgD36rch5WAHYHCPEMfY1/wCmlA6sDqh1fdF5WIEbdld9c/OZB3REB
+         PGL0uHUGBa6tLs/G8GHpTqUSM6G3Q+Y3Mjgi7jo9+GPDrarLblWyJMsMCOl3FznY9jmP
+         Uo8gxfJu22u4X0WQlWgJ+1T5KCkV8xbfkPxmYiB4NZoLjMuchLgxK7pl0bT126qtLR6Q
+         oEXRwGUvIt7Bb9c9aJkrX0Yr/exQvTrTIkS3hwxBO/rp589PJ/uN/J6CzVNZnn3Qcmcv
+         7MkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUG54pQi31PUkwOV58IQ6hTLS0xViqI7fM8yTs6AWtiTlupbM88RNRKZohgc6mPXMrSLJ2lAOQxrck0yIUK+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7t7AjxwVLA4Hi6cM1rgy7p6GQ9G0Gu8lLljMQi8h8oohdpkKo
+	0Woor177m1M7CY/MxUUGfdbzf0j2EW4rdY8jdqw3p9KV/wDbtzXLsBYrNnJpWR2u58NWln6t0Vd
+	t3Yf5xsCL9pdjPvn5XFJu1zAOqJhb9hg=
+X-Gm-Gg: ASbGncvzLH2BZQ3wXVzhR7QaHMKSIJSmJSsL0qvzLaBRC1+i+1uPV1l0US9I9IJ6l9x
+	33MJCYTDaR6nCWmxslWuOwnPH5ML7m1twl/yh1AQ1MwFvhwdYHiXMO59t7gpOlyHlaAwwsvcUtp
+	wET6MWadBDpStRrX/SCODlrDKgy/hz0n0IYJaNevveNZGG+z1U6JDCtMaovlfF0GUavk5cHUKSc
+	49i
+X-Google-Smtp-Source: AGHT+IGrMTtF3rO6PyqglimJ6kWsoCOnyf9RbZPnOG2/Nl32fMXOunJIE5E6zYa1d9+08xohVhzghLhulRn9g+pvf4U=
+X-Received: by 2002:a17:907:3f87:b0:b09:2331:f150 with SMTP id
+ a640c23a62f3a-b34b84aba85mr396036566b.16.1758803420120; Thu, 25 Sep 2025
+ 05:30:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 4/7] pwm: Add Rust driver for T-HEAD TH1520 SoC
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Guo Ren
-	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
-	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
-	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, Benno
-	Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
-	Drew Fustini <fustini@kernel.org>, Daniel Almeida
-	<daniel.almeida@collabora.com>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <ca2ftwfducf4swuoondajiid642mctilh4lt3grgxpnup3nhag@tyuwyasfw4uj>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250925113318eucas1p2941e2087b8992d315bf1349a6221fb45
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250820083544eucas1p2be0157353ec1201b0651292792429aa4
-X-EPHeader: CA
-X-CMS-RootMailID: 20250820083544eucas1p2be0157353ec1201b0651292792429aa4
-References: <20250820-rust-next-pwm-working-fan-for-sending-v14-0-df2191621429@samsung.com>
-	<CGME20250820083544eucas1p2be0157353ec1201b0651292792429aa4@eucas1p2.samsung.com>
-	<20250820-rust-next-pwm-working-fan-for-sending-v14-4-df2191621429@samsung.com>
-	<ca2ftwfducf4swuoondajiid642mctilh4lt3grgxpnup3nhag@tyuwyasfw4uj>
+References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+ <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org> <aNQ7D6_ZYMhCdkmL@debug.ba.rivosinc.com>
+In-Reply-To: <aNQ7D6_ZYMhCdkmL@debug.ba.rivosinc.com>
+From: Andy Chiu <andybnac@gmail.com>
+Date: Thu, 25 Sep 2025 07:30:08 -0500
+X-Gm-Features: AS18NWByhWo0dHTSYL4t2oFRcok3gmrZ-pBxSOOqriMBIQLUznFC4iXNOpyJQRE
+Message-ID: <CAFTtA3Nxq0UmXcuN7jmQOiuTbrenKbR4ihH027ya1WWybgLq4Q@mail.gmail.com>
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, kito.cheng@sifive.com, 
+	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
+	cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
+	broonie@kernel.org, rick.p.edgecombe@intel.com, 
+	rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>, 
+	David Hildenbrand <david@redhat.com>, Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
+	Florian Weimer <fweimer@redhat.com>, bharrington@redhat.com, 
+	Aurelien Jarno <aurel32@debian.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Deepak,
 
+On Wed, Sep 24, 2025 at 1:40=E2=80=AFPM Deepak Gupta <debug@rivosinc.com> w=
+rote:
+>
+> On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
+> >Hi,
+> >
+> >On Thu, 31 Jul 2025, Deepak Gupta wrote:
+> >
+> >[ ... ]
+> >
+> >> vDSO related Opens (in the flux)
+> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >>
+> >> I am listing these opens for laying out plan and what to expect in fut=
+ure
+> >> patch sets. And of course for the sake of discussion.
+> >>
+> >
+> >[ ... ]
+> >
+> >> How many vDSOs
+> >> ---------------
+> >> Shadow stack instructions are carved out of zimop (may be operations) =
+and if CPU
+> >> doesn't implement zimop, they're illegal instructions. Kernel could be=
+ running on
+> >> a CPU which may or may not implement zimop. And thus kernel will have =
+to carry 2
+> >> different vDSOs and expose the appropriate one depending on whether CP=
+U implements
+> >> zimop or not.
+> >
+> >If we merge this series without this, then when CFI is enabled in the
+> >Kconfig, we'll wind up with a non-portable kernel that won't run on olde=
+r
+> >hardware.  We go to great lengths to enable kernel binary portability
+> >across the presence or absence of other RISC-V extensions, and I think
+> >these CFI extensions should be no different.
+> >
+> >So before considering this for merging, I'd like to see at least an
+> >attempt to implement the dual-vDSO approach (or something equivalent)
+> >where the same kernel binary with CFI enabled can run on both pre-Zimop
+> >and post-Zimop hardware, with the existing userspaces that are common
+> >today.
+>
+> Added some distro folks in this email chain.
+>
+> After patchwork meeting today, I wanted to continue discussion here. So t=
+hanks
+> Paul for looking into it and initiating a discussion here.
+>
+> This patch series has been in the queue for quite a long time and we have=
+ had
+> deliberations on vDSO topic earlier as well and after those deliberations=
+ it
+> was decided to go ahead with merge and it indeed was sent for 6.17 merge
+> window. Unfortunatley due to other unforeseen reasons, entirety of riscv
+> changes were not picked. So it's a bit disappointing to see back-paddling=
+ on
+> this topic.
+>
+> Anyways, we are here. So I'll provide a bit of context for the list about
+> deliberations and discussions we have been having for so many merge windo=
+ws.
+> This so that a holistic discussion can happen on this before we make a
+> decision.
+>
+> Issue
+> =3D=3D=3D=3D=3D=3D
+>
+> Instructions in RISC-V shadow stack extension (zicfiss - [1]) are carved =
+out of
+> "may be ops" aka zimop extension [2]. "may be ops" are illegal on non-RVA=
+23
+> hardware. This means any existing riscv CPU or future CPU which isn't RVA=
+23
+> compliant and not implementing zimop will treat these encodings as illega=
+l.
+>
+> Current kernel patches enable shadow stack and landing pad support for
+> userspace using config `CONFIG_RISCV_USER_CFI`. If this config is selecte=
+d then
+> vDSO that will be exposed to user space will also have shadow stack
+> instructions in them. Kernel compiled with `CONFIG_RISCV_USER_CFI`, for s=
+ake of
+> this discussion lets call it RVA23 compiled kernel.
+>
+> Issue that we discussed earlier and even today is "This RVA23 compiled ke=
+rnel
+> won't be able to support non-RVA23 userspace on non-RVA23 hardware becaus=
+e".
+> Please note that issue exists only on non-RVA23 hardware (which is existi=
+ng
+> hardware and future hardware which is not implementing zimop). RVA23 comp=
+iled
+> kernel can support any sort of userspace on RVA23 hardware.
+>
+>
+> Discussion
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> So the issue is not really shadow stack instructions but rather may be op
+> instructions in codegen (binaries and vDSO) which aren't hidden behind an=
+y
+> flag (to hide them if hardware doesn't support). And if I can narrow down
+> further, primary issue we are discussing is that if cfi is enabled during
+> kernel compile, it is bringing in a piece of code (vDSO) which won't work
+> on existing hardware. But the counter point is if someone were to deploy
+> RVA23 compiled kernel on non-RVA23 hardware, they must have compiled
+> rest of the userspace without shadow stack instructions in them for such
+> a hardware. And thus at this point they could simply choose *not* to turn=
+ on
+> `CONFIG_RISCV_USER_CFI` when compiling such kernel. It's not that difficu=
+lt to
+> do so.
+>
+> Any distro who is shipping userspace (which all of them are) along with k=
+ernel
+> will not be shipping two different userspaces (one with shadow stack and =
+one
+> without them). If distro are shipping two different userspaces, then they=
+ might
+> as well ship two different kernels. Tagging some distro folks here to get=
+ their
+> take on shipping different userspace depending on whether hardware is RVA=
+23 or
+> not. @Heinrich, @Florian, @redbeard and @Aurelien.
+>
+> Major distro's have already drawn a distinction here that they will drop
+> support for hardware which isn't RVA23 for the sake of keeping binary
+> distribution simple.
+>
+> Only other use case that was discussed of a powerful linux user who just =
+wants
+> to use a single kernel on all kinds of riscv hardware. I am imagining suc=
+h a
+> user knows enough about kernel and if is really dear to them, they can de=
+velop
+> their own patches and send it upstream to support their own usecase and w=
+e can
+> discuss them out. Current patchset don't prevent such a developer to send=
+ such
+> patches upstream.
+>
+> I heard the argument in meeting today that "Zbb" enabling works similar f=
+or
+> kernel today. I looked at "Zbb" enabling. It's for kernel usage and it's
+> surgically placed in kernel using asm hidden behind alternatives. vDSO is=
+n't
+> compiled with Zbb. Shadow stack instructions are part of codegen for C fi=
+les
+> compiled into vDSO.
+>
+> Furthermore,
+>
+> Kernel control flow integrity will introduce shadow stack instructions al=
+l
+> over the kernel binary. Such kernel won't be deployable on non-RVA23 hard=
+ware.
+> How to deal with this problem for a savvy kernel developer who wants to r=
+un
+> same cfi enabled kernel binary on multiple hardware?
+>
+> Coming from engineering and hacker point of view, I understand the desire=
+ here
+> but I still see that it's complexity enforced on rest of the kernel from =
+a user
+> base which anyways can achieve such goals. For majority of usecases, I do=
+n't
+> see a reason to increase complexity in the kernel for build, possibly run=
+time
+> patching and thus possibly introduce more issues and errors just for the =
+sake
+> of a science project.
+>
+> Being said that, re-iterating that currently default for `CONFIG_RISCV_US=
+ER_CFI`
+> is "n" which means it won't be breaking anything unless a user opts "Y". =
+So even
+> though I really don't see a reason and usability to have complexity in ke=
+rnel to
+> carry multiple vDSOs, current patchsets are not a hinderance for such fut=
+ure
+> capability (because current default is No) and motivated developer is wel=
+come
+> to build on top of it. Bottomline is I don't see a reason to block curren=
+t
+> patchset from merging in v6.18.
 
-On 9/19/25 09:10, Uwe Kleine-König wrote:
-> Hello,
-> 
-> actually I intended to give my feedback as a patch, but I'm not fluent
-> enough in Rust yet :-\, so here come my thoughts in text only.
+Sorry for reiterating, I have been gone for a while, so maybe I lost a
+bit of context.
 
-Hi,
-Thanks, will do my best to address the comments
+In that case, should we add a comment in the Kconfig that says "it
+breaks userspace on older-than RVA23 platforms"?
 
-> 
-> On Wed, Aug 20, 2025 at 10:35:39AM +0200, Michal Wilczynski wrote:
->> Introduce a PWM driver for the T-HEAD TH1520 SoC, written in Rust and
->> utilizing the safe PWM abstractions from the preceding commit.
->>
->> The driver implements the pwm::PwmOps trait using the modern waveform
->> API (round_waveform_tohw, write_waveform, etc.) to support configuration
->> of period, duty cycle, and polarity for the TH1520's PWM channels.
->>
->> Resource management is handled using idiomatic Rust patterns. The PWM
->> chip object is allocated via pwm::Chip::new and its registration with
->> the PWM core is managed by the pwm::Registration RAII guard. This
->> ensures pwmchip_remove is always called when the driver unbinds,
->> preventing resource leaks. Device managed resources are used for the
->> MMIO region, and the clock lifecycle is correctly managed in the
->> driver's private data Drop implementation.
->>
->> The driver's core logic is written entirely in safe Rust, with no unsafe
->> blocks, except for the Send and Sync implementations for the driver
->> data, which are explained in the comments.
->>
->> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
->> ---
->>  MAINTAINERS               |   1 +
->>  drivers/pwm/Kconfig       |  11 ++
->>  drivers/pwm/Makefile      |   1 +
->>  drivers/pwm/pwm_th1520.rs | 355 ++++++++++++++++++++++++++++++++++++++++++++++
-> 
-> For consistency I would prefer this file to be named pwm-th1520.rs. I
-> tried to fix that but then the compiler was unhappy. I guess a minus in
-> a filename just doesn't work for Rust?
+Perhaps a very ugly way to make RVA23-compiled kernel compatible with
+pre-RVA23 platforms is to decode maybe-ops in the illegal exception
+handler...
 
-In Rust by default the Rust module is called the same as the file. And
-the module names can't contain hyphens. I think technically this could
-be overridden by 'path' attribute, but it's probably just better to use
-underscores '_' like other Rust drivers.
+Btw, I don't think kenrel-level shadow stack should be an argument
+here, as kernel-level APIs are more flexible by nature.
 
-> 
->>  4 files changed, 368 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 5d7c0676c1d00a02b3d7db2de88b039c08c99c6e..d79dc21f22d143ca8cde6a06194545fbc640e695 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -21741,6 +21741,7 @@ F:	drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
->>  F:	drivers/pinctrl/pinctrl-th1520.c
->>  F:	drivers/pmdomain/thead/
->>  F:	drivers/power/sequencing/pwrseq-thead-gpu.c
->> +F:	drivers/pwm/pwm_th1520.rs
->>  F:	drivers/reset/reset-th1520.c
->>  F:	include/dt-bindings/clock/thead,th1520-clk-ap.h
->>  F:	include/dt-bindings/power/thead,th1520-power.h
->> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
->> index 2b608f4378138775ee3ba4d53f682952e1914118..dd6db01832ee985e2e588a413a13df869a029d3d 100644
->> --- a/drivers/pwm/Kconfig
->> +++ b/drivers/pwm/Kconfig
->> @@ -729,6 +729,17 @@ config PWM_TEGRA
->>  	  To compile this driver as a module, choose M here: the module
->>  	  will be called pwm-tegra.
->>  
->> +config PWM_TH1520
->> +	tristate "TH1520 PWM support"
->> +	depends on RUST
->> +	select RUST_PWM_ABSTRACTIONS
->> +	help
->> +	  This option enables the driver for the PWM controller found on the
->> +	  T-HEAD TH1520 SoC.
->> +
->> +	  To compile this driver as a module, choose M here; the module
->> +	  will be called pwm-th1520. If you are unsure, say N.
->> +
->>  config PWM_TIECAP
->>  	tristate "ECAP PWM support"
->>  	depends on ARCH_OMAP2PLUS || ARCH_DAVINCI_DA8XX || ARCH_KEYSTONE || ARCH_K3 || COMPILE_TEST
->> diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
->> index ff4f47e5fb7a0dbac72c12de82c3773e5582db6d..5c15c95c6e49143969389198657eed0ecf4086b2 100644
->> --- a/drivers/pwm/Makefile
->> +++ b/drivers/pwm/Makefile
->> @@ -67,6 +67,7 @@ obj-$(CONFIG_PWM_STMPE)		+= pwm-stmpe.o
->>  obj-$(CONFIG_PWM_SUN4I)		+= pwm-sun4i.o
->>  obj-$(CONFIG_PWM_SUNPLUS)	+= pwm-sunplus.o
->>  obj-$(CONFIG_PWM_TEGRA)		+= pwm-tegra.o
->> +obj-$(CONFIG_PWM_TH1520)	+= pwm_th1520.o
->>  obj-$(CONFIG_PWM_TIECAP)	+= pwm-tiecap.o
->>  obj-$(CONFIG_PWM_TIEHRPWM)	+= pwm-tiehrpwm.o
->>  obj-$(CONFIG_PWM_TWL)		+= pwm-twl.o
->> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..5ef887b1b5dfed92c5d4b87a7d48f673352a257e
->> --- /dev/null
->> +++ b/drivers/pwm/pwm_th1520.rs
->> @@ -0,0 +1,355 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +// Copyright (c) 2025 Samsung Electronics Co., Ltd.
->> +// Author: Michal Wilczynski <m.wilczynski@samsung.com>
->> +
->> +//! Rust T-HEAD TH1520 PWM driver
->> +//!
->> +//! Limitations:
->> +//! - The period and duty cycle are controlled by 32-bit hardware registers,
->> +//!   limiting the maximum resolution.
->> +//! - The driver supports continuous output mode only; one-shot mode is not
->> +//!   implemented.
->> +//! - The controller hardware provides up to 6 PWM channels.
->> +//! - Reconfiguration is glitch free - new period and duty cycle values are
->> +//!   latched and take effect at the start of the next period.
->> +//! - Polarity is handled via a simple hardware inversion bit; arbitrary
->> +//!   duty cycle offsets are not supported.
->> +//! - Disabling a channel is achieved by configuring its duty cycle to zero to
->> +//!   produce a static low output. Clearing the `start` does not reliably
->> +//!   force the static inactive level defined by the `INACTOUT` bit. Hence
->> +//!   this method is not used in this driver.
->> +//!
->> +
->> +use core::ops::Deref;
->> +use kernel::{
->> +    c_str,
->> +    clk::Clk,
->> +    device::{Bound, Core, Device},
->> +    devres,
->> +    io::mem::IoMem,
->> +    of, platform,
->> +    prelude::*,
->> +    pwm, time,
->> +};
->> +
->> +const TH1520_MAX_PWM_NUM: u32 = 6;
->> +
->> +// Register offsets
->> +const fn th1520_pwm_chn_base(n: u32) -> usize {
->> +    (n * 0x20) as usize
->> +}
->> +
->> +const fn th1520_pwm_ctrl(n: u32) -> usize {
->> +    th1520_pwm_chn_base(n)
->> +}
->> +
->> +const fn th1520_pwm_per(n: u32) -> usize {
->> +    th1520_pwm_chn_base(n) + 0x08
->> +}
->> +
->> +const fn th1520_pwm_fp(n: u32) -> usize {
->> +    th1520_pwm_chn_base(n) + 0x0c
->> +}
->> +
->> +// Control register bits
->> +const TH1520_PWM_START: u32 = 1 << 0;
->> +const TH1520_PWM_CFG_UPDATE: u32 = 1 << 2;
->> +const TH1520_PWM_CONTINUOUS_MODE: u32 = 1 << 5;
->> +const TH1520_PWM_FPOUT: u32 = 1 << 8;
->> +
->> +const TH1520_PWM_REG_SIZE: usize = 0xB0;
->> +
->> +fn ns_to_cycles(ns: u64, rate_hz: u64) -> u64 {
->> +    const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
->> +
->> +    (match ns.checked_mul(rate_hz) {
->> +        Some(product) => product,
->> +        None => u64::MAX,
->> +    }) / NSEC_PER_SEC_U64
->> +}
->> +
->> +fn cycles_to_ns(cycles: u64, rate_hz: u64) -> u64 {
->> +    const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
->> +
->> +    // Round up
->> +    let Some(numerator) = cycles
->> +        .checked_mul(NSEC_PER_SEC_U64)
->> +        .and_then(|p| p.checked_add(rate_hz - 1))
->> +    else {
->> +        return u64::MAX;
->> +    };
->> +
->> +    numerator / rate_hz
-> 
-> Does cycles_to_ns(18446744074, 66000000) yield u64::MAX or u64::MAX /
-> 66000000? Reading through the docs I found I think it's the former. I
-> guess we don't reach these spheres in the driver, but conceptually the
-> latter would be better and I think that's relevant as this is the first
-> Rust driver and so very likely will be the blueprint for further
-> drivers.
-> 
-> Further below you're using saturating_sub(), is there a similar variant
-> for multiplication that could simplify this function to
-> 
-> 	let numerator = cyles
-> 	  .saturating_mul(NSEC_PER_SEC_U64)
-> 	  .saturating_add(rate_hz - 1);
-> 
-> 	numerator / rate_hz
-> 
-> ?
-
-Yeah I think this would work
-
-> 
-> Additionally I'd add a comment that this should be replaced by
-> mul_u64_u64_div_u64_roundup() once that exists in Rust. (Sigh, I just
-> notice we still don't have that in C yet.)
-
-Sure
-
-> 
->> +}
->> +
->> +/// Hardware-specific waveform representation for TH1520.
->> +#[derive(Copy, Clone, Debug, Default)]
->> +struct Th1520WfHw {
->> +    period_cycles: u32,
->> +    duty_cycles: u32,
->> +    ctrl_val: u32,
->> +    enabled: bool,
->> +}
->> +
->> +/// The driver's private data struct. It holds all necessary devres managed resources.
->> +#[pin_data(PinnedDrop)]
->> +struct Th1520PwmDriverData {
->> +    #[pin]
->> +    iomem: devres::Devres<IoMem<TH1520_PWM_REG_SIZE>>,
->> +    clk: Clk,
->> +}
->> +
->> +// This `unsafe` implementation is a temporary necessity because the underlying `kernel::clk::Clk`
->> +// type does not yet expose `Send` and `Sync` implementations. This block should be removed
->> +// as soon as the clock abstraction provides these guarantees directly.
->> +// TODO: Remove those unsafe impl's when Clk will support them itself.
->> +
->> +// SAFETY: The `devres` framework requires the driver's private data to be `Send` and `Sync`.
->> +// We can guarantee this because the PWM core synchronizes all callbacks, preventing concurrent
->> +// access to the contained `iomem` and `clk` resources.
->> +unsafe impl Send for Th1520PwmDriverData {}
->> +
->> +// SAFETY: The same reasoning applies as for `Send`. The PWM core's synchronization
->> +// guarantees that it is safe for multiple threads to have shared access (`&self`)
->> +// to the driver data during callbacks.
->> +unsafe impl Sync for Th1520PwmDriverData {}
->> +
->> +impl pwm::PwmOps for Th1520PwmDriverData {
->> +    type WfHw = Th1520WfHw;
->> +
->> +    fn round_waveform_tohw(
->> +        chip: &pwm::Chip<Self>,
->> +        _pwm: &pwm::Device,
->> +        wf: &pwm::Waveform,
->> +    ) -> Result<pwm::RoundedWaveform<Self::WfHw>> {
->> +        let data = chip.drvdata();
->> +
->> +        if wf.period_length_ns == 0 {
-> 
-> Please add a dev_dbg! here for consistency with the wf.period_length_ns
-> != 0 case here.
-> 
->> +            return Ok(pwm::RoundedWaveform {
->> +                status: 0,
->> +                hardware_waveform: Th1520WfHw {
->> +                    enabled: false,
->> +                    ..Default::default()
->> +                },
->> +            });
->> +        }
->> +
->> +        let rate_hz = data.clk.rate().as_hz() as u64;
->> +
->> +        let period_cycles = ns_to_cycles(wf.period_length_ns, rate_hz).min(u64::from(u32::MAX));
-> 
-> What happens if you get period_cycles = 0 here?
-
-How about add an if for early return ? Like below:
-	if period_cycles == 0 {
-            dev_dbg!(
-                chip.device(),
-                "Requested period {} ns is too small for clock rate {} Hz, disabling PWM.\n",
-                wf.period_length_ns,
-                rate_hz
-            );
-
-            return Ok(pwm::RoundedWaveform {
-                status: 0,
-                hardware_waveform: Th1520WfHw {
-                    enabled: false,
-                    ..Default::default()
-                },
-            });
-        }
-
-
-> 
->> +        let mut duty_cycles = ns_to_cycles(wf.duty_length_ns, rate_hz).min(u64::from(u32::MAX));
->> +
->> +        let mut ctrl_val = TH1520_PWM_CONTINUOUS_MODE;
->> +
->> +        let is_inversed = wf.duty_length_ns > 0
->> +            && wf.duty_offset_ns > 0
->> +            && wf.duty_length_ns + wf.duty_offset_ns >= wf.period_length_ns;
-> 
-> For
-> 	duty_length_ns =   0x8000000000000000
-> 	duty_offset_ns =   0x8000000000000000
-> 	period_length_ns = 0xffffffffffffffff
-> 
-> this should evaluate to true (right?) but if + overflows in the same way
-> in Rust as it does in C, you get is_inversed = false here.
-> 
-> The safe condition is
-> 
-> 	wf.duty_offset_ns >= wf.period_length_ns - wf.duty_length_ns
-> 
-> here.
-
-OK will change it thanks.
-
-> 
->> +        if is_inversed {
->> +            duty_cycles = period_cycles - duty_cycles;
->> +        } else {
->> +            ctrl_val |= TH1520_PWM_FPOUT;
->> +        }
->> +
->> +        let wfhw = Th1520WfHw {
->> +            period_cycles: period_cycles as u32,
->> +            duty_cycles: duty_cycles as u32,
-> 
-> This casts period_cycles and duty_cycles from an u64 to an u32, right?
-> Can you please add a comment that shortly explains why these values fit
-> into an u32?
-
-Will add a comment.
-
-> 
->> +            ctrl_val,
->> +            enabled: true,
->> +        };
->> +
->> +        dev_dbg!(
->> +            chip.device(),
->> +            "clk_rate: {}Hz Requested: period {}ns, duty {}ns, offset {}ns -> HW: period {} cyc, duty {} cyc, ctrl 0x{:x}\n",
-> 
-> " " before the units please.
-> 
-> I want to establish
-> 
-> 	"{}/{} [+{}]", duty_length_ns, period_length_ns, duty_offset_ns
-> 
-> as the typical way to emit a waveform. Please use that consistently.
-
-Sure, thanks
-
-> 
->> +            rate_hz,
->> +            wf.period_length_ns,
->> +            wf.duty_length_ns,
->> +            wf.duty_offset_ns,
->> +            wfhw.period_cycles,
->> +            wfhw.duty_cycles,
->> +            wfhw.ctrl_val
->> +        );
->> +
->> +        Ok(pwm::RoundedWaveform {
->> +            status: 0,
->> +            hardware_waveform: wfhw,
->> +        })
->> +    }
->> +
->> +    fn round_waveform_fromhw(
->> +        chip: &pwm::Chip<Self>,
->> +        _pwm: &pwm::Device,
->> +        wfhw: &Self::WfHw,
->> +        wf: &mut pwm::Waveform,
->> +    ) -> Result {
->> +        let data = chip.drvdata();
->> +        let rate_hz = data.clk.rate().as_hz() as u64;
->> +
->> +        wf.period_length_ns = cycles_to_ns(u64::from(wfhw.period_cycles), rate_hz);
-> 
-> Here I wonder again about wfhw.period_cycles = 0.
-> 
->> +        let duty_cycles = u64::from(wfhw.duty_cycles);
->> +
->> +        if (wfhw.ctrl_val & TH1520_PWM_FPOUT) != 0 {
->> +            wf.duty_length_ns = cycles_to_ns(duty_cycles, rate_hz);
->> +            wf.duty_offset_ns = 0;
->> +        } else {
->> +            let period_cycles = u64::from(wfhw.period_cycles);
->> +            let original_duty_cycles = period_cycles.saturating_sub(duty_cycles);
->> +
->> +            // For an inverted signal, `duty_length_ns` is the high time (period - low_time).
->> +            wf.duty_length_ns = cycles_to_ns(original_duty_cycles, rate_hz);
->> +            // The offset is the initial low time, which is what the hardware register provides.
->> +            wf.duty_offset_ns = cycles_to_ns(duty_cycles, rate_hz);
->> +        }
->> +
->> +        Ok(())
->> +    }
->> +
->> +    fn read_waveform(
->> +        chip: &pwm::Chip<Self>,
->> +        pwm: &pwm::Device,
->> +        parent_dev: &Device<Bound>,
->> +    ) -> Result<Self::WfHw> {
->> +        let data = chip.drvdata();
->> +        let hwpwm = pwm.hwpwm();
->> +        let iomem_accessor = data.iomem.access(parent_dev)?;
->> +        let iomap = iomem_accessor.deref();
->> +
->> +        let ctrl = iomap.try_read32(th1520_pwm_ctrl(hwpwm))?;
->> +        let period_cycles = iomap.try_read32(th1520_pwm_per(hwpwm))?;
->> +        let duty_cycles = iomap.try_read32(th1520_pwm_fp(hwpwm))?;
->> +
->> +        let wfhw = Th1520WfHw {
->> +            period_cycles,
->> +            duty_cycles,
->> +            ctrl_val: ctrl,
->> +            enabled: duty_cycles != 0,
->> +        };
->> +
->> +        dev_dbg!(
->> +            chip.device(),
->> +            "PWM-{}: read_waveform: Read hw state - period: {}, duty: {}, ctrl: 0x{:x}, enabled: {}",
->> +            hwpwm,
->> +            wfhw.period_cycles,
->> +            wfhw.duty_cycles,
->> +            wfhw.ctrl_val,
->> +            wfhw.enabled
->> +        );
->> +
->> +        Ok(wfhw)
->> +    }
->> +
->> +    fn write_waveform(
->> +        chip: &pwm::Chip<Self>,
->> +        pwm: &pwm::Device,
->> +        wfhw: &Self::WfHw,
->> +        parent_dev: &Device<Bound>,
->> +    ) -> Result {
->> +        let data = chip.drvdata();
->> +        let hwpwm = pwm.hwpwm();
->> +        let iomem_accessor = data.iomem.access(parent_dev)?;
->> +        let iomap = iomem_accessor.deref();
->> +        let was_enabled = pwm.state().enabled();
-> 
-> The driver would be a tad more robust if was_enabled is determined from
-> the hardware registers instead. (And also it helps not to add another
-> dependency on pwm.state which I'd like to get rid of in the long run
-> with waveforms being the canonical representation internally.)
-
-I checked and it seems to me like I can make it work with HW registers,
-will include that in next revision.
-
-> 
->> +
->> +        if !wfhw.enabled {
-> 
-> dev_dbg! here for consistence please.
-> 
->> +            if was_enabled {
->> +                iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
->> +                iomap.try_write32(0, th1520_pwm_fp(hwpwm))?;
->> +                iomap.try_write32(wfhw.ctrl_val | TH1520_PWM_CFG_UPDATE, th1520_pwm_ctrl(hwpwm))?;
->> +            }
->> +            return Ok(());
->> +        }
->> +
->> +        iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
->> +        iomap.try_write32(wfhw.period_cycles, th1520_pwm_per(hwpwm))?;
->> +        iomap.try_write32(wfhw.duty_cycles, th1520_pwm_fp(hwpwm))?;
->> +        iomap.try_write32(wfhw.ctrl_val | TH1520_PWM_CFG_UPDATE, th1520_pwm_ctrl(hwpwm))?;
->> +
->> +        // The `TH1520_PWM_START` bit must be written in a separate, final transaction, and
->> +        // only when enabling the channel from a disabled state.
->> +        if !was_enabled {
->> +            iomap.try_write32(wfhw.ctrl_val | TH1520_PWM_START, th1520_pwm_ctrl(hwpwm))?;
->> +        }
->> +
->> +        dev_dbg!(
->> +            chip.device(),
->> +            "PWM-{}: Wrote (per: {}, duty: {})",
->> +            hwpwm,
->> +            wfhw.period_cycles,
->> +            wfhw.duty_cycles,
->> +        );
->> +
->> +        Ok(())
->> +    }
->> +}
-> 
-> Best regards
-> Uwe
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+Thanks,
+Andy
