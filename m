@@ -1,227 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DD22D837E;
-	Thu, 25 Sep 2025 08:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A422E4A1E;
+	Thu, 25 Sep 2025 08:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758787311; cv=none; b=FpN5Iv8ydBfPnpDK8wOntuwPj1gkiS9PoKeq3T3RwHv4igDuyc/W4N5KPWh2xYu9an/9qNYcHbEB7vpnIWo64SvaGP4ZUQoR6kJtvUNJ9et75Rzt/DJV5smSiD/oZRrqzA9eBTv+3IQhIFALwA/D9yzpevfMw47bm8awX85U7Ww=
+	t=1758789101; cv=none; b=oNHphkNisc662ajEeMLzHTNUz9mroIIcJvLJv+Aiq2mVYgm2m7fW0Z/lJRoD1vNd93J+nnfV/6W5zaHsG9mGWz5ylLQsyIngihMGKNVIVS/enx6ufdU1e7pTo74cVfFmUVkt2sDD4Hnc3Y/d/J6KK41JjL+cqe6HXsYJEUbARAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758787311; c=relaxed/simple;
-	bh=iAU0uiNoQj5hhOwkGdRtu/4eZ7nc3wdX4SxiskKYSOs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Subject:
-	 References:In-Reply-To; b=DSpIJPOR19/aSe7It6AbQMASuDQl6pHytJIrQ+O+k6J5/YHX7eTyH6o0pbniYH9q8yaD6cMAlrJkuS8pqoGSsgQIaCAty/BkRfXkgJ0PaIEfYL7MCda/UzwhHsllB6OhfB2GHo9Dy1k2ekTMgHHryDc6OI3qbqva3cb04JrH6t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNWpu5Mv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758789101; c=relaxed/simple;
+	bh=yFYhkPuT/6A+p396/AaW7nUVSxNun1mpGc9c2AuPclQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UNmFUD/SvZc/CTlAAJ87H4CF6kgqfDD+O+DxdQRlVNZTKkjf7LDG+9FY27+IUNR2yLL2Q8u9AehrnJcuu1xjUZHxzLIuQmGSlBFVSOz5fKvRHsITOvtl7sYEQDXzhs1i1JYvWWH2G4bgGwyBd11Hy4GiQTZqf98rNm/a+BL3qt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=T+IJyVVN; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNWpu5Mv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03781C4CEF0;
-	Thu, 25 Sep 2025 08:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758787311;
-	bh=iAU0uiNoQj5hhOwkGdRtu/4eZ7nc3wdX4SxiskKYSOs=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=cNWpu5MvVrEZCA45YXVbDt771uQbxc+xJ9ME4qLjqM9wS97gfUfzLLF+eaWWPMX+u
-	 4IXDoUfN2nk98vFpzgO7M5OdZPYI9oxPLD8gckzaw7tOA9d1KhJ4dhBKcyczesRENF
-	 3suREGqCnNtNB1Q8UIuwj4NYe29YF5gDytCTGpISmjqpH+2w07yDDQlIGr8mPlfUzo
-	 R0++KY0dTlbwLA5PKafFNBfmSXi+e2ctDVBQ5qijyL3te1epCaoXQIAkspb1HopDYe
-	 fS8AwHlWUab8BNlTqh3V9KM2aFuRLfuuUytJBb0+NSaB4Ag2xOKO3JG2W+GurTTUHK
-	 5Pt6Jz668mU6Q==
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="T+IJyVVN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1758789091; x=1759048291;
+	bh=HpijlZHR5DUt6PmUIjo0upRoVIpNNUVq0oY9+LHi5f4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=T+IJyVVNaWWoXP4nthGqcQO5fwDpdXCD8l3nXgAWY6N7pVBlh5shN/8oaS/llryh6
+	 tK/BqU0hN3bjgNk/i5QivujHIWqKUJJAJYYCkBuW8INeB9duy5xnkbmF6E+fXVFBu1
+	 JOVAI1NyvnV29d6FmFDaKgMIAroUEdgCrj0fh699rGDUNnW4azEC8OtzKt1lvk4az9
+	 K07jeMkKbh3PdbNNmlQP4pVgztgoaqYJgUaIiEbjUtnbTp5VwvxRaMBEYkOZKkwXrF
+	 b66SLa0hP7l0NFObLLSesxnVTiuLhYeujnpA31e0QUAbcJFwHCfFKg6C1jdT2xJb/b
+	 i3GFQEY4CQQyg==
+Date: Thu, 25 Sep 2025 08:31:28 +0000
+To: Benno Lossin <lossin@kernel.org>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+Message-ID: <aNT92mzGsXfOsg2j@mango>
+In-Reply-To: <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org>
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 870cca1f6b9d5e243eceb95fbee6f6457768dce3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 25 Sep 2025 10:01:43 +0200
-Message-Id: <DD1Q2D6DJXZQ.34HUUS27GNI2Y@kernel.org>
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Elijah Wright" <git@elijahs.space>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: slab: add basic slab module
-X-Mailer: aerc 0.21.0
-References: <20250924193643.4001-1-git@elijahs.space>
-In-Reply-To: <20250924193643.4001-1-git@elijahs.space>
 
-On Wed Sep 24, 2025 at 9:36 PM CEST, Elijah Wright wrote:
-> this patch adds a basic slab module for kmem_cache, primarily wrapping
-> kmem_cache_create, kmem_cache_alloc, kmem_cache_free, and kmem_cache_dest=
-roy.
+Hi,
 
-IIRC, Alice had an idea for how to use our allocator API to create
-idiomatic kmem_cache abstractions. So we might want to explore that too?
+I finally found time to seriously work on completing this.
 
-> Signed-off-by: Elijah Wright <git@elijahs.space>
-> ---
->  rust/helpers/slab.c | 10 ++++++
->  rust/kernel/lib.rs  |  1 +
->  rust/kernel/slab.rs | 85 +++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 96 insertions(+)
->  create mode 100644 rust/kernel/slab.rs
->
-> diff --git a/rust/helpers/slab.c b/rust/helpers/slab.c
-> index a842bfbddcba..799de7bc1405 100644
-> --- a/rust/helpers/slab.c
-> +++ b/rust/helpers/slab.c
-> @@ -13,3 +13,13 @@ rust_helper_kvrealloc(const void *p, size_t size, gfp_=
-t flags)
->  {
->  	return kvrealloc(p, size, flags);
->  }
-> +
-> +struct kmem_cache * rust_helper_kmem_cache_create(const char *name, unsi=
-gned int size, unsigned int align, gfp_t flags, void (*ctor)(void *))
-> +{
-> +	return kmem_cache_create(name, size, align, flags, NULL);
-> +}
-> +
-> +void * rust_helper_kmem_cache_alloc(struct kmem_cache *cachep, gfp_t fla=
-gs)
-> +{
-> +	return kmem_cache_alloc(cachep, flags);
-> +}
-> \ No newline at end of file
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index fef97f2a5098..bd76eadbe297 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -116,6 +116,7 @@
->  pub mod security;
->  pub mod seq_file;
->  pub mod sizes;
-> +pub mod slab;
->  mod static_assert;
->  #[doc(hidden)]
->  pub mod std_vendor;
-> diff --git a/rust/kernel/slab.rs b/rust/kernel/slab.rs
-> new file mode 100644
-> index 000000000000..8b418f9db7cb
-> --- /dev/null
-> +++ b/rust/kernel/slab.rs
-> @@ -0,0 +1,85 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Slab bindings.
-> +//!
-> +//! C header: [`include/linux/slab.h`](srctree/include/linux/slab.h)
-> +
-> +use core::{marker::PhantomData, mem, ptr::NonNull};
-> +
-> +use crate::{
-> +    alloc::Flags,
-> +    bindings,
-> +    error::{code::ENOMEM, Result},
-> +    str::CStr,
-> +};
-> +
-> +/// A wrapper for kmem_cache that allocates objects of type `T`.
-> +#[repr(transparent)]
-> +pub struct Slab<T> {
-> +    cache: NonNull<bindings::kmem_cache>,
+There a few questions that turned up for me, though.
 
-You need an invariant for this pointer to point at a valid
-kmem_cache for values of layout `T`.
+On 250702 1303, Benno Lossin wrote:
+>=20
+> We shouldn't call this a reference. Also we should start the first
+> paragraph with how this trait enables the usage of `Owned<Self>`.
 
-> +    _p: PhantomData<T>,
-> +}
-> +
-> +impl<T> Slab<T> {
-> +    /// Creates a cache for objects of type `T`.
-> +    pub fn try_new(name: &CStr, flags: Flags) -> Result<Self> {
-> +        let size =3D mem::size_of::<T>();
-> +        let align =3D mem::align_of::<T>();
-> +        debug_assert!(size <=3D usize::MAX);
-> +        debug_assert!(align <=3D usize::MAX);
+Did you come up with any  suggesting what to call it? `Owned<T>` holds a
+pointer to `T`. C++ would call it a smart pointer, but I guess that's also
+not a good name in Rust.
 
-These are always true? Did you mean to use `u32::MAX`?
+>=20
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Implementers must ensure that:
+> > +/// - The [`release()`](Ownable::release) method leaves the underlying=
+ object in a state which the
+> > +///   kernel expects after ownership has been relinquished (i.e. no da=
+ngling references in the
+> > +///   kernel is case it frees the object, etc.).
+>=20
+> This invariant sounds weird to me. It's vague "a state which the kernel
+> expects" and difficult to use (what needs this invariant?).
 
-> +
-> +        // SAFETY: `flags` is a valid impl, `name` is a valid C string, =
-and
-> +        // other arguments are plain values.
+The whole matter of what exactly are the safety conditions here is a bit
+confusing, I find:
 
-But you also care about them being correct for the invariant I mentioned
-above.
+- That the passed `T` is (and stays) valid is a requirement on
+  `Owned::from_raw`.
+- That `Ownable::release()` is called with a live and unused `T` is a
+  requirement for that function call.
 
-> +        let cache =3D unsafe {
-> +            bindings::kmem_cache_create(
-> +                name.as_char_ptr(),
-> +                size as u32,
-> +                align as u32,
+I understand things like this then, that implementing `Ownable` is unsafe
+because `Owned<T>::drop()` calls the unsafe `T::release()`.
 
-What do you do if they don't fit in u32? This will just produce wrong
-code? I think you should return `EINVAL`. (maybe use `TryFrom` & then
-convert the error)
+So the requirement is basically:
 
-> +                flags.as_raw(),
-> +                None,
-> +            )
-> +        };
-> +
-> +        NonNull::new(cache)
-> +            .map(|c| Slab {
-> +                cache: c,
-> +                _p: PhantomData,
-> +            })
-> +            .ok_or(ENOMEM)
-> +    }
-> +
-> +    /// Allocates one object from the cache with the given gfp flags.
-> +    #[inline]
-> +    pub fn alloc(&self, flags: Flags) -> Result<NonNull<T>> {
-> +        // SAFETY: `self.cache` is a valid pointer obtained from
-> +        // `kmem_cache_create` and still alive because `self` is borrowe=
-d.
-> +        let ptr =3D unsafe { bindings::kmem_cache_alloc(self.cache.as_pt=
-r(), flags.as_raw()) };
-> +        NonNull::new(ptr.cast()).ok_or(ENOMEM)
-> +    }
+- it is safe to call `T::release()` _once_ on a `T` stored on an `Owned<T>`
+  if the `Owned<T>` isn't used anymore afterwards.
 
-I don't like that this API makes the user handle `NonNull` directly...
+Not sure how to phrase that in a non-confusing way.
 
-> +
-> +    /// Frees an object previously returned by `alloc()`.
-> +    ///
-> +    /// # Safety
-> +    /// The caller must guarantee that `obj` was allocated from this cac=
-he and
-> +    /// is no longer accessed afterwards.
-> +    #[inline]
-> +    pub unsafe fn free(&self, obj: NonNull<T>) {
-> +        // SAFETY: By the safety contract the pointer is valid and uniqu=
-e at
-> +        // this point.
-> +        unsafe { bindings::kmem_cache_free(self.cache.as_ptr(), obj.cast=
-().as_ptr()) };
-> +    }
+I went with this now:
 
-This similarly looks bad, we should have some kind of `KmemCacheBox` or
-use the approach that Alice had in mind.
+"Implementers must ensure that the [`release()`](Self::release) function
+frees the underlying object in the correct way for a valid, owned object
+of this type."
 
----
-Cheers,
-Benno
+> Maybe we should give `Ownable` the task to document the exact ownership
+> semantics of `T`?
 
-> +
-> +    /// Returns the raw mutable pointer to the cache
-> +    #[inline]
-> +    pub fn as_ptr(&self) -> *mut bindings::kmem_cache {
-> +        self.cache.as_ptr()
-> +    }
-> +}
-> +
-> +impl<T> Drop for Slab<T> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: `self.cache` is valid and we are the final owner beca=
-use
-> +        // of ownership rules.
-> +        unsafe { bindings::kmem_cache_destroy(self.cache.as_ptr()) };
-> +    }
-> +}
+> > +pub struct Owned<T: Ownable> {
+> > +    ptr: NonNull<T>,
+> > +    _p: PhantomData<T>,
+> > +}
+> > +
+> > +// SAFETY: It is safe to send `Owned<T>` to another thread when the un=
+derlying `T` is `Send` because
+> > +// it effectively means sending a `&mut T` (which is safe because `T` =
+is `Send`).
+>=20
+> How does this amount to sending a `&mut T`?
+
+Right, good point. I have to guess, but likely the reasoning was, that
+Owned<T> is a wrapper around `*T` and has exclusive access, so somehow
+equivalent to `&mut T`.
+
+> I guess this also needs to be guaranteed by `Owned::from_raw`... ah the
+> list grows...
+>=20
+> I'll try to come up with something to simplify this design a bit wrt the
+> safety docs.
+
+I added "`ptr` points to a valid instance of `T`" to the safety
+requirements of `Owned::from_raw`. I think this should imply such things,
+because a valid instance of `T` clearly has to be Send/Sync, if it is
+implemented for the type `T`, no?
+
+> > +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
+> > +
+> > +// SAFETY: It is safe to send `&Owned<T>` to another thread when the u=
+nderlying `T` is `Sync`
+> > +// because it effectively means sharing `&T` (which is safe because `T=
+` is `Sync`).
+>=20
+> Same here.
+
+Isn't it okay here? All you can do with an `&Owned<T>` is to obtain a `&T`
+from it.
+
+Best regards,
+
+Oliver
 
