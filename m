@@ -1,148 +1,138 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A422E4A1E;
-	Thu, 25 Sep 2025 08:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4A138FA6;
+	Thu, 25 Sep 2025 09:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758789101; cv=none; b=oNHphkNisc662ajEeMLzHTNUz9mroIIcJvLJv+Aiq2mVYgm2m7fW0Z/lJRoD1vNd93J+nnfV/6W5zaHsG9mGWz5ylLQsyIngihMGKNVIVS/enx6ufdU1e7pTo74cVfFmUVkt2sDD4Hnc3Y/d/J6KK41JjL+cqe6HXsYJEUbARAY=
+	t=1758794067; cv=none; b=YpJoT2xgqzoO35gI3myOLW0fgI9Vtdnvdn3+tIsIXI/XNBgD1ZFvZZl01vNBQI49+rO5l9+LP18xI5gBYLwv+zPXNox5WfE9hUuiD1BcgBXPgLMbGaCkX7bHcYtpLwAX2nETzTL+9eGKCIMj8AqfQz+MU4zUP96dYsoL7KNxrxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758789101; c=relaxed/simple;
-	bh=yFYhkPuT/6A+p396/AaW7nUVSxNun1mpGc9c2AuPclQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UNmFUD/SvZc/CTlAAJ87H4CF6kgqfDD+O+DxdQRlVNZTKkjf7LDG+9FY27+IUNR2yLL2Q8u9AehrnJcuu1xjUZHxzLIuQmGSlBFVSOz5fKvRHsITOvtl7sYEQDXzhs1i1JYvWWH2G4bgGwyBd11Hy4GiQTZqf98rNm/a+BL3qt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=T+IJyVVN; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1758794067; c=relaxed/simple;
+	bh=xfXQiQFl7Tui7XJKKsNvDs46qyN1OX4PNUAUOBUQd2g=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=GoRtLJQxVi/DUn6ZxGaT03AdOtNw8WNA4zpCaQJW7rKYEuwywsXq8N4cSDDtcz02/ioL0MFY5EwJo/LbXcK1CR73XGHdZYmYfk6eoNsKF76Fzq+mLQ+0kDbzvyuL4ZWJXe55E7tvOiDjXxhCAf6B1cooylrtRjqu7CSya3krOAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GhLOPzA9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="T+IJyVVN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1758789091; x=1759048291;
-	bh=HpijlZHR5DUt6PmUIjo0upRoVIpNNUVq0oY9+LHi5f4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=T+IJyVVNaWWoXP4nthGqcQO5fwDpdXCD8l3nXgAWY6N7pVBlh5shN/8oaS/llryh6
-	 tK/BqU0hN3bjgNk/i5QivujHIWqKUJJAJYYCkBuW8INeB9duy5xnkbmF6E+fXVFBu1
-	 JOVAI1NyvnV29d6FmFDaKgMIAroUEdgCrj0fh699rGDUNnW4azEC8OtzKt1lvk4az9
-	 K07jeMkKbh3PdbNNmlQP4pVgztgoaqYJgUaIiEbjUtnbTp5VwvxRaMBEYkOZKkwXrF
-	 b66SLa0hP7l0NFObLLSesxnVTiuLhYeujnpA31e0QUAbcJFwHCfFKg6C1jdT2xJb/b
-	 i3GFQEY4CQQyg==
-Date: Thu, 25 Sep 2025 08:31:28 +0000
-To: Benno Lossin <lossin@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-Message-ID: <aNT92mzGsXfOsg2j@mango>
-In-Reply-To: <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org>
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 870cca1f6b9d5e243eceb95fbee6f6457768dce3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GhLOPzA9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED149C4CEF4;
+	Thu, 25 Sep 2025 09:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758794067;
+	bh=xfXQiQFl7Tui7XJKKsNvDs46qyN1OX4PNUAUOBUQd2g=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=GhLOPzA967PCCw7XlP2pnKVSM5E+BTjPS6wrBIWagHaG22BtnNAJ47vSD6MdEN+Le
+	 sPUGTUs/mQ63cxS7ROkrSbvKIRPxTMmOF1G/DqVcDWqCSkFchLyXlwk9YpeZqJdJ+j
+	 Iw1iT63w/VyKZIZKY+ux1OyQPI4BhRsEkgoipDw8AULKU2PbMRruJ719exxqHv8I++
+	 Hq3vbsMq4GoKJ4F3/c9RphxH9HKhg1PnLaqmQjMhm+v6CK5AewuXriViXLLFzmoCpd
+	 J4w3utXUms1jrsVhkuU3jNSutwtGPVnN7KAIwOaPNlPcLIBvqxL4ueoiORRqfSghzk
+	 qiNmNBTMhP45g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 25 Sep 2025 11:54:22 +0200
+Message-Id: <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
+Subject: Re: [PATCH] rust: slab: add basic slab module
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Elijah Wright" <git@elijahs.space>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250924193643.4001-1-git@elijahs.space>
+In-Reply-To: <20250924193643.4001-1-git@elijahs.space>
 
-Hi,
+(+Cc: Lorenzo, Vlastimil, Liam, Uladzislau, MM)
 
-I finally found time to seriously work on completing this.
+On Wed Sep 24, 2025 at 9:36 PM CEST, Elijah Wright wrote:
+> this patch adds a basic slab module for kmem_cache, primarily wrapping
+> kmem_cache_create, kmem_cache_alloc, kmem_cache_free, and kmem_cache_dest=
+roy.
 
-There a few questions that turned up for me, though.
+What's the motivation?
 
-On 250702 1303, Benno Lossin wrote:
->=20
-> We shouldn't call this a reference. Also we should start the first
-> paragraph with how this trait enables the usage of `Owned<Self>`.
+I mean, we will need kmem_cache soon. But the users will all be drivers, e.=
+g.
+the GPU drivers that people work on currently.
 
-Did you come up with any  suggesting what to call it? `Owned<T>` holds a
-pointer to `T`. C++ would call it a smart pointer, but I guess that's also
-not a good name in Rust.
+Drivers shouldn't use "raw" allocators (such as Kmalloc [1] or Vmalloc [2])=
+, but
+the corresponding "managed" allocation primitives, such as KBox [3], VBox [=
+4],
+KVec, etc.
 
->=20
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Implementers must ensure that:
-> > +/// - The [`release()`](Ownable::release) method leaves the underlying=
- object in a state which the
-> > +///   kernel expects after ownership has been relinquished (i.e. no da=
-ngling references in the
-> > +///   kernel is case it frees the object, etc.).
->=20
-> This invariant sounds weird to me. It's vague "a state which the kernel
-> expects" and difficult to use (what needs this invariant?).
+Therefore, the code below shouldn't be used by drivers directly, hence the
+question for motivation.
 
-The whole matter of what exactly are the safety conditions here is a bit
-confusing, I find:
+In any case, kmem_cache is a special allocator (special as in it can have a
+non-static lifetime in contrast to other kernel allocators) and should be
+integrated with the existing infrastructure in rust/kernel/alloc/.
 
-- That the passed `T` is (and stays) valid is a requirement on
-  `Owned::from_raw`.
-- That `Ownable::release()` is called with a live and unused `T` is a
-  requirement for that function call.
+I think there are multiple options for that; (1) isn't really an option, bu=
+t I
+think it's good to mention anyways:
 
-I understand things like this then, that implementing `Ownable` is unsafe
-because `Owned<T>::drop()` calls the unsafe `T::release()`.
+  (1) Allow for non-zero sized implementations of the Allocator trait [3], =
+such
+      that we can store a reference count to the KmemCache. This is necessa=
+ry to
+      ensure that a Box<T, KmemCache> can't out-live the KmemCache itself.
 
-So the requirement is basically:
+      The reason why I said it's not really an option is because it discard=
+s the
+      option for dynamic dispatch of the generic Box type.
 
-- it is safe to call `T::release()` _once_ on a `T` stored on an `Owned<T>`
-  if the `Owned<T>` isn't used anymore afterwards.
+  (2) Same as (1), but with a custom Box type. This keeps dynamic dispatch =
+for
+      the generic Box type (i.e. KBox, VBox, KVBox), but duplicates quite s=
+ome
+      code and still doesn't allow for dynamic dispatch for the KmemCacheBo=
+x.
 
-Not sure how to phrase that in a non-confusing way.
+  (3) Implement a macro to generate a custom KmemCache Allocator trait
+      implementation for every KmemCache instance with a static lifetime.
 
-I went with this now:
+      This makes KmemCache technically equivalent to the other allocators, =
+such
+      as Kmalloc, etc. but obviously has the downside that the KmemCache mi=
+ght
+      live much longer than required.
 
-"Implementers must ensure that the [`release()`](Self::release) function
-frees the underlying object in the correct way for a valid, owned object
-of this type."
+      Technically, most KmemCache instances live for the whole module lifet=
+ime,
+      so it might be fine though.
 
-> Maybe we should give `Ownable` the task to document the exact ownership
-> semantics of `T`?
+      (This is what I think Alice proposed.)
 
-> > +pub struct Owned<T: Ownable> {
-> > +    ptr: NonNull<T>,
-> > +    _p: PhantomData<T>,
-> > +}
-> > +
-> > +// SAFETY: It is safe to send `Owned<T>` to another thread when the un=
-derlying `T` is `Send` because
-> > +// it effectively means sending a `&mut T` (which is safe because `T` =
-is `Send`).
->=20
-> How does this amount to sending a `&mut T`?
+  (4) Solve the problem on the C side and let kmem_cache_alloc() take care =
+of
+      acquiring a reference count to the backing kmem_cache. The main quest=
+ion
+      here would be where to store the pointer for decreasing the reference
+      count on kmem_cache_free().
 
-Right, good point. I have to guess, but likely the reasoning was, that
-Owned<T> is a wrapper around `*T` and has exclusive access, so somehow
-equivalent to `&mut T`.
+      Theoretically, it could be stored within the allocation itself, but i=
+t's a
+      bit of a yikes.
 
-> I guess this also needs to be guaranteed by `Owned::from_raw`... ah the
-> list grows...
->=20
-> I'll try to come up with something to simplify this design a bit wrt the
-> safety docs.
+      However, it would resolve all the mentioned problems above.
 
-I added "`ptr` points to a valid instance of `T`" to the safety
-requirements of `Owned::from_raw`. I think this should imply such things,
-because a valid instance of `T` clearly has to be Send/Sync, if it is
-implemented for the type `T`, no?
+I'd like to see (3) or (4), also depending on what the MM folks think.
 
-> > +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
-> > +
-> > +// SAFETY: It is safe to send `&Owned<T>` to another thread when the u=
-nderlying `T` is `Sync`
-> > +// because it effectively means sharing `&T` (which is safe because `T=
-` is `Sync`).
->=20
-> Same here.
+- Danilo
 
-Isn't it okay here? All you can do with an `&Owned<T>` is to obtain a `&T`
-from it.
-
-Best regards,
-
-Oliver
-
+[1] https://rust.docs.kernel.org/kernel/alloc/allocator/struct.Kmalloc.html
+[2] https://rust.docs.kernel.org/kernel/alloc/allocator/struct.Vmalloc.html
+[3] https://rust.docs.kernel.org/kernel/alloc/kbox/type.KBox.html
+[4] https://rust.docs.kernel.org/kernel/alloc/kbox/type.VBox.html
+[5] https://rust.docs.kernel.org/kernel/alloc/trait.Allocator.html
