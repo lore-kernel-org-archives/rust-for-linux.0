@@ -1,99 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B56315D3F;
-	Thu, 25 Sep 2025 19:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B6346B5;
+	Thu, 25 Sep 2025 22:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758827080; cv=none; b=RQ2BRdKaCHGjOPTaJFKk7XIT4i0mWnbPftYUBEZxb1p1i7wyn99XkkpWuyYW/pNZ+eNKYozSZJ6KvFi6kuJCe/fnd6sdWwRhimD46Ye6pttC4YHAkxz+aranWr2V9yjdV6TYdjpxW56XM/FNlC1j5AzPtg9p523vCtj9nMW4CeY=
+	t=1758838302; cv=none; b=f1P0xSmET5tmdZabVxpDd/LJh+uwYleSKfUxhLyydkB4w7iVfwzQl2w86qgnT/1Wjtfx9MZbyKXONqzCVqVPNKn9G56Gu/fuSs+2hfmQcTWhfB3udluavtWq3eZcNpS/AczG1C0V7s8UPBZWMEY8Lg1eIrIwWDlMxMpqddqveik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758827080; c=relaxed/simple;
-	bh=zFXFUcJmngO1/FA8jEXMP3GTYy3YhFwybmtErYXXRvg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCLJFog0dhgBb0Ox3lZ0rLULRJreg9VwQYi27bSuq5sS/9ElvJ02VRE6ybrbpqXtEOjrPG9Oa+QrclPq84CKOiOdg3qAzjWZA6UU7v/FZxmI0JbHODxPOC98d9s3Bm3z6ZthU/NznICrjXRhDYj7eEwkQ0mUejNduhKce9TuXns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y7y1HB/1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758838302; c=relaxed/simple;
+	bh=46nzcX7EQ1S87NIV3BIAH28q83fRnfEoERyE5l8Fjo4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=YtZjFoKf9QLUAyyGKWNuJjyN8fho1QgGZwLyWezUtRZwWaQcParehA9mY9gG9SwJoxWkfOORVOypeoletQydI+Ki7uziZ/9niGTDZHG7NWrwuQ33rVfZZf+bsQ7oPiNWCyF+g88XnrGeeCwtofryaf0IoH0Dty7z1pibylmahCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NuXuIxvn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y7y1HB/1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F710C4CEF0;
-	Thu, 25 Sep 2025 19:04:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NuXuIxvn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E06C4CEF0;
+	Thu, 25 Sep 2025 22:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758827079;
-	bh=zFXFUcJmngO1/FA8jEXMP3GTYy3YhFwybmtErYXXRvg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7y1HB/1L/LBI34o3GnLTzKDuD5uzuYVahx1jelqh84wlETcRdUMqW2tQJcAaHMnP
-	 26tNUpx6kFyZnMasgpzFPMQkZmCmQBAPtGkJMdwSemhuGazNLFniyvG3AwZGVJ+hVF
-	 0CduWg8JUUaeMJMAawe7GSFfk6PvT8hdSuxeVa0/RI46TR0EPk63qK+OybS3j0hYyr
-	 zDbkZ9SzwDmvL3SGMhl3C1TT2llQYAuLt/SAczEnjAXDKS1BsdbdZDbEKuFU+aFakJ
-	 hb9lrGS8CR2GyH8VWxDlpq8TRU7AnITxmNlxMuh9sz0D40oT17eVOnHKDeDUZ5n9XB
-	 IDLk/VglixPVQ==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	stern@rowland.harvard.edu,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	daniel.almeida@collabora.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 2/2] rust: usb: keep usb::Device private for now
-Date: Thu, 25 Sep 2025 20:59:27 +0200
-Message-ID: <20250925190400.144699-2-dakr@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250925190400.144699-1-dakr@kernel.org>
-References: <20250925190400.144699-1-dakr@kernel.org>
+	s=k20201202; t=1758838301;
+	bh=46nzcX7EQ1S87NIV3BIAH28q83fRnfEoERyE5l8Fjo4=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=NuXuIxvn0ye2HTMcv75rNTWm8m+Cc++4iReWGWXWgxaf2MmLsKeGGZn6kEg+XSbgB
+	 mpsA5BLBT4UgfCwPgfzKrllHYqJhqMP7V1sGtIsWivwcRgyexywtuR84H0dYs2IVMT
+	 KRdOWLzvTMFhYGOLcKMihIhcf6oHmMJY9gdwsf4qd2/dm6EhvgxFkLwa2MYkLHAcgS
+	 2ro8OmJp4AleP74o9E+YbWUKuynWJmB5urJfRirBpVj9sxyyCaOgejeRXzJD3GQaqd
+	 Zg2FbutDNdn0D7417+tr7dR3fxzP28dzmyWk3seLggMCElNPWT48roSQ3ONmRYJdjF
+	 q/5zUiW4Ocv7g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 26 Sep 2025 00:11:34 +0200
+Message-Id: <DD2851XYSIGT.1FV9R7M15XS8F@kernel.org>
+Subject: Re: [PATCH v16 1/3] samples: rust: platform: remove trailing commas
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>, "Russ Weight"
+ <russ.weight@linux.dev>, "Peter Zijlstra" <peterz@infradead.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Will Deacon" <will@kernel.org>, "Waiman Long"
+ <longman@redhat.com>, "Nathan Chancellor" <nathan@kernel.org>, "Nick
+ Desaulniers" <nick.desaulniers+lkml@gmail.com>, "Bill Wendling"
+ <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>, "Christian
+ Brauner" <brauner@kernel.org>, "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Jan Kara" <jack@suse.cz>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <llvm@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20250925-cstr-core-v16-0-5cdcb3470ec2@gmail.com>
+ <20250925-cstr-core-v16-1-5cdcb3470ec2@gmail.com>
+In-Reply-To: <20250925-cstr-core-v16-1-5cdcb3470ec2@gmail.com>
 
-The USB abstractions target to support USB interface drivers.
+On Thu Sep 25, 2025 at 3:42 PM CEST, Tamir Duberstein wrote:
+> This prepares for the next commit in which we introduce a custom
+> formatting macro; that macro doesn't handle these spurious commas, so
+> just remove them.
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-While internally the abstraction has to deal with the interface's parent
-USB device, there shouldn't be a need for users to deal with the parent
-USB device directly.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
-Functions, such as for preparing and sending USB URBs, can be
-implemented for the usb::Interface structure directly. Whether this
-internal implementation has to deal with the parent USB device can
-remain transparent to USB interface drivers.
-
-Hence, keep the usb::Device structure private for now, in order to avoid
-confusion for users and to make it less likely to accidentally expose
-APIs with unnecessary indirections.
-
-Should we start supporting USB device drivers, or need it for any other
-reason we do not foresee yet, it should be trivial to make it public
-again.
-
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- rust/kernel/usb.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Cheers,
+Benno
 
-diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
-index 955fd93b6f52..14ddb711bab3 100644
---- a/rust/kernel/usb.rs
-+++ b/rust/kernel/usb.rs
-@@ -386,7 +386,7 @@ unsafe impl Sync for Interface {}
- ///
- /// [`struct usb_device`]: https://www.kernel.org/doc/html/latest/driver-api/usb/usb.html#c.usb_device
- #[repr(transparent)]
--pub struct Device<Ctx: device::DeviceContext = device::Normal>(
-+struct Device<Ctx: device::DeviceContext = device::Normal>(
-     Opaque<bindings::usb_device>,
-     PhantomData<Ctx>,
- );
--- 
-2.51.0
-
+> ---
+>  samples/rust/rust_driver_platform.rs | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
