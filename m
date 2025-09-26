@@ -1,199 +1,128 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B009C2D542F
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 16:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51D8308F14;
+	Fri, 26 Sep 2025 16:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758904336; cv=none; b=Q7TILxEKHSyHI9jQTEI+EAvkBLM3Yfgrzl0QMuzfpS3kpfy3YopwSUzX80Zz/x0HJ2tNp9FbtwOtdyibrQ5e251OfrjOdazt1Yfily6JZMr7LKNO7N3tMfipM/lQ/bCyXt+fH3bO0hSifVW8gtvGYXeZk03aGrJNEQXlUF1pTtw=
+	t=1758905891; cv=none; b=TJonlDGPH7JdAkMrMjA/pcYeqpJTpj1NlJe+uVptNad9R1Gbir3x+DsWJu45/JPeKV4MLCocJUNle0d+11BcLXQWWqqjPXxp0A0PXkL0zzrnXy8DJL9mtQMUOA7qPoepI16fL5w92jCSGaIVG00idp9ay8rWAZFih5ydh/ZgB3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758904336; c=relaxed/simple;
-	bh=xSSx4IuPIkoSM8FeSqWp8VjwRfN0I5ECGkYTaWjg9zo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BT0ZaVmnITQ27AXMVL547AvfDzfvPjAy2Sa7/0w8wpREbpG1yad0FfL2vMQjm1u9KjItTFTNZm/uvqrAxaRgdp3sqUopXSyrDKglGvmcYMjmziXluvxorkmIvgCMsRy0PDtO3ZxnXuDhUVVPPUfUtECfscBfhcU00/UnT+o9prs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=1bjT9Dgg; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=v3x5dWDs; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=1bjT9Dgg; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=v3x5dWDs; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1758905891; c=relaxed/simple;
+	bh=jVJK8LGegwhqO+0VtnrfQPb/RxRKwtl+yfaKeB1SOzw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=fiji/sLEvI3PD3/TrULn+9qLJ8r0SASLcmtO38TI9KrX70aluGavtjzHKdQj4xWd7VOF+COFKMaxDqpdRvVWZI2X/rf7e43/kXf6ceo9pKlpUyR9h9Qi6arz+0BYL+Ftj94WDfABlF1vBk/eKnGEw3mtReH5yUlPorF3nDDpotA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPZBN41d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="1bjT9Dgg";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="v3x5dWDs";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="1bjT9Dgg";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="v3x5dWDs"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4B9A4243E1;
-	Fri, 26 Sep 2025 16:32:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758904322; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=++3RPss8tkNMIueGBaayAZaz5nmpmygwhQ2OcWCTOH4=;
-	b=1bjT9Dggyy4vaeHcTGPGSNoQDV72hf/p9M/oU59RlRU3ONgrHJ9v4hBYWXYwCLRCLpF2mm
-	KufAscfRjqNdNJS4mBME8ayLYTT+REA0bQ+ibvWI4mvD7i0CpQXf4anZG4UAA+iXB5eqV4
-	yS2ZPrd5V8VMGJuh9Mtfh8Gl1KGOD00=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758904322;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=++3RPss8tkNMIueGBaayAZaz5nmpmygwhQ2OcWCTOH4=;
-	b=v3x5dWDskwXHex4TOwIaXMfrG4SqkjXD8uw3xjznSINafXy4jCMgpWUgFlgb3PiSG2EWNK
-	A/OptQhSZH/FgQBg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758904322; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=++3RPss8tkNMIueGBaayAZaz5nmpmygwhQ2OcWCTOH4=;
-	b=1bjT9Dggyy4vaeHcTGPGSNoQDV72hf/p9M/oU59RlRU3ONgrHJ9v4hBYWXYwCLRCLpF2mm
-	KufAscfRjqNdNJS4mBME8ayLYTT+REA0bQ+ibvWI4mvD7i0CpQXf4anZG4UAA+iXB5eqV4
-	yS2ZPrd5V8VMGJuh9Mtfh8Gl1KGOD00=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758904322;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=++3RPss8tkNMIueGBaayAZaz5nmpmygwhQ2OcWCTOH4=;
-	b=v3x5dWDskwXHex4TOwIaXMfrG4SqkjXD8uw3xjznSINafXy4jCMgpWUgFlgb3PiSG2EWNK
-	A/OptQhSZH/FgQBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2757B1373E;
-	Fri, 26 Sep 2025 16:32:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fUhHCQLA1mgcFQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 26 Sep 2025 16:32:02 +0000
-Message-ID: <1f5ae3bd-db21-4042-b177-55464644ce2e@suse.cz>
-Date: Fri, 26 Sep 2025 18:32:01 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPZBN41d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702C0C4CEF4;
+	Fri, 26 Sep 2025 16:58:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758905891;
+	bh=jVJK8LGegwhqO+0VtnrfQPb/RxRKwtl+yfaKeB1SOzw=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=jPZBN41d8N96n+QGhajTpesnYkcN2IRpa1XMCib2BywYLEKk1Spw3TAKs3LwC1b2M
+	 qY0Z+dgyIpC8LGOS6ZL/Cn/+lAulX1IZ09FjtYhdqQuqusr+SGmUM+3Ddpc9L9e51r
+	 UZ1o2GEs1kuCWhKKkDqsYfsa0aJjDdWyQJLYPcIsPCnfxtBgw3oZM8SjC5ropmpM8o
+	 7Eof93GrxvT2tMPOAffuYTLrEIofYzBFq0WwvQRJ7bgsn1UM3BEekBngPtpCau5goe
+	 sZr+Ex9RQ+W6LsAJibJ0AtFLre7el6+KhvUr5S/3+ljfXBv4uoLJV2bkNaR+WXCbws
+	 QO4mGuPklEuGg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 26 Sep 2025 18:58:06 +0200
+Message-Id: <DD2W3LCC7FWA.2X90YAPLI1FGC@kernel.org>
+To: "Vlastimil Babka" <vbabka@suse.cz>
+From: "Danilo Krummrich" <dakr@kernel.org>
 Subject: Re: [PATCH] rust: slab: add basic slab module
-Content-Language: en-US
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Elijah Wright <git@elijahs.space>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org
+Cc: "Elijah Wright" <git@elijahs.space>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Uladzislau Rezki" <urezki@gmail.com>, <linux-mm@kvack.org>
 References: <20250924193643.4001-1-git@elijahs.space>
  <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
  <5f09b7f5-e7de-4333-8de5-322eb6d93aa9@suse.cz>
  <DD2UB5P01XW7.1GW33112S22Y@kernel.org>
  <DD2URCNO2P88.168J48GHSJRRL@kernel.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <DD2URCNO2P88.168J48GHSJRRL@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[elijahs.space,kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,oracle.com,kvack.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
+ <1f5ae3bd-db21-4042-b177-55464644ce2e@suse.cz>
+In-Reply-To: <1f5ae3bd-db21-4042-b177-55464644ce2e@suse.cz>
 
-On 9/26/25 17:55, Danilo Krummrich wrote:
-> On Fri Sep 26, 2025 at 5:33 PM CEST, Danilo Krummrich wrote:
->> The only thing we need on the Rust side is that existing allocations remain
->> valid even if the cache is destroyed. Or the other way around the cache is
->> silently kept alive internally.
-> 
-> Or to express it in C code:
-> 
-> 	struct kmem_cache *cache = kmem_cache_create();
-> 	struct Foo *foo = kmem_cache_alloc();
-> 
-> 	// After this call cache will never be accessed; leaves a zombie cache,
-> 	// since foo is still alive.
-> 	kmem_cache_destroy(cache);
+On Fri Sep 26, 2025 at 6:32 PM CEST, Vlastimil Babka wrote:
+> On 9/26/25 17:55, Danilo Krummrich wrote:
+>> On Fri Sep 26, 2025 at 5:33 PM CEST, Danilo Krummrich wrote:
+>>> The only thing we need on the Rust side is that existing allocations re=
+main
+>>> valid even if the cache is destroyed. Or the other way around the cache=
+ is
+>>> silently kept alive internally.
+>>=20
+>> Or to express it in C code:
+>>=20
+>> 	struct kmem_cache *cache =3D kmem_cache_create();
+>> 	struct Foo *foo =3D kmem_cache_alloc();
+>>=20
+>> 	// After this call cache will never be accessed; leaves a zombie cache,
+>> 	// since foo is still alive.
+>> 	kmem_cache_destroy(cache);
+>
+> This will cause a WARN.
+>
+>> 	// This must still be valid.
+>> 	foo->bar =3D 42;
+>
+> Yes this will be safe.
 
-This will cause a WARN.
+That's great!
 
-> 	// This must still be valid.
-> 	foo->bar = 42;
+>> 	// Frees foo and causes the "zombie" cache to actually be destroyed.
+>> 	kmem_cache_free(foo);
+>
+> The free will be fine. But not cause the cache destruction, as that would
+> require checks on each free. But should be fine wrt safety if we only lea=
+k
+> some memory due to a wrong usage, no?
 
-Yes this will be safe.
+Yes, technically that's safe, but we wouldn't prevent the leak, which still
+is not desirable (and not our ambition for a Rust API).
 
-> 	// Frees foo and causes the "zombie" cache to actually be destroyed.
-> 	kmem_cache_free(foo);
+From a C standpoint, both the warning and the cache leak could be solved by
+making kmem_cache_destroy() fallible as you mentioned previously.
 
-The free will be fine. But not cause the cache destruction, as that would
-require checks on each free. But should be fine wrt safety if we only leak
-some memory due to a wrong usage, no?
+On the Rust side the cache would be represented with a struct KmemCache<T>
+(where T is the type that should be allocated by the cache).
+
+kmem_cache_destroy() would be called from KmemCache<T>::drop(), which is no=
+t
+fallible. But even if it were, we can't enforce that users keep the KmemCac=
+he
+instance alive as long as there are allocations.
+
+So, either we always keep the KmemCache<T> alive for the whole module lifet=
+ime
+(which depending on whether its built-in or not could be considered a memor=
+y
+leak as well). Or we ensure that the last kmem_cache_free() also frees the =
+cache
+if kmem_cache_destroy() was called previously.
+
+OOC, does the cache pointer remain valid if kmem_cache_destroy() is called =
+while
+allocations still exist? I.e. is this, except for the WARN(), valid code?
+
+	kmem_cache_destroy(cache);
+	kmem_cache_free(foo);
+	kmem_cache_destroy(cache);
+
+At a quick glance it appears to me that things would go south in
+kmem_cache_release(). Anyways, I don't think it would help, if it would be =
+the
+case.
