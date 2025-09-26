@@ -1,75 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8FF2741AC;
-	Fri, 26 Sep 2025 19:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7C727E05B
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 19:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758913268; cv=none; b=hq+IBrx9yw8p2Tar4egrs8Z/hQGTF/ZdpZmDR/+JvZcfH5EqW7FSBP2TevfBOUnI4KrD0nBimgBofMBKsdu1/24kOAJSwZvjdWyYNXHBJCr9bqWf86B4k4UYqdkyp+MffITMcyIz0CzznFiquak8qRUI1N2+gOV6tUrc+E9TlVk=
+	t=1758914995; cv=none; b=psz8WjoMyt6WpDnhCQIcyLGOVu/b9ZpOS7T0+Iuj7gz6V5GsC3s7JJBTjagLULmx9uOWnOlkxbqf8CxRGGUZrxIX5PksFXP6F4jsW/annlXL+sw5ZfB5MFXJ6B12ccYdjDxU8V6E/j43qwUs/sDIyIu9WAX6tZxd+qyJ9ahVzIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758913268; c=relaxed/simple;
-	bh=E4rfPYVBSuJlFFzEr4OCEKQss3vgw3o4JIy7YvbOK0E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=UlGHjA4ULU24ZH70WI5OEvlw7OtuNLbmBlpy4KugH2kCyJu2r9W/iw08dOlhEjIh2EQtv8Wq9vJ0kRJGNnmQ2TDBbZpuHAkcOSgVLvC7rtLZMUzAXK8f/35nJFkD1SfK60E/m9ZF6nHmiRZhT09ZsbWldfE/pS0yhoBtPyXIZmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IyKPOXGg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758914995; c=relaxed/simple;
+	bh=PhmFWhMKz0Lpt+jlfUJ0TYkmXMX8vl2curJz5SvJkTo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eU64LrUOxYavTlPGg3QK0mJoAm8Ns+rRaCeZ9p9aVcDiFdRLYIID+j6wQTef3IaeWBnWQEsL6gDdhlWDEQvjKQC1cnnG9aMloNRo4Lsx0ho7TArOaPlOPP+cEfacQTJV/Jma9lPnnO7yiIeRGOhr1nJcvHDhReFsI3nWpN0yrK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FGqmObbE; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IyKPOXGg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C21C4CEF4;
-	Fri, 26 Sep 2025 19:01:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758913267;
-	bh=E4rfPYVBSuJlFFzEr4OCEKQss3vgw3o4JIy7YvbOK0E=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=IyKPOXGgQmHBwfgnZgG+IY1ENE+o5qSwKicZbwt3OzyUr6pM8MKgo+lpt2ltR4MhK
-	 x2vmCQC8qJQy7uX0g4pLPrC6pnMXgJsIxA6xW9EtSJ1hNkSmCf3jmjrFGqY3r1vHaS
-	 NZ9OLfvEG7wPa72y8JsDJNmX1Fs36cPdwIX1bm5bhmUcYo2TBH0e+uyhkCH6bQ04rn
-	 ljmhSRdPsh4DW47pRsdkOy4PARpzVou3y0Q2jhJAoqwzvVX+O6k2cYkQDrkVg8Ulwl
-	 PmVj7RQjhxEJITZtGe9jr4wcap7U3uImOcz5uBR232g6RoVMZsO0ej+x2H5rLxfuu4
-	 /CUx4cU1NXPuQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FGqmObbE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758914992;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qJkwxIyAJhe7Z2sYVZyMCylwQN+VGhF0dp+d12hJfX4=;
+	b=FGqmObbEFH/Pl2RBgeHxiCQOqWeZHYD7SZHY/tF6U2wVAE8Jx8tGxCNtZgOR2xEZmd9o2i
+	+6OmmIY1r93TyRQC8exs57o/3OuT5k+fAZvXVt9mgV9LXGV7PTVXCp6Rhej4MxH6pGExNS
+	e2UTHD0KYzk0mPSbNOWLpsEGaBJ0Akg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-_QGioLbVNH60aFABUpxHhw-1; Fri,
+ 26 Sep 2025 15:29:47 -0400
+X-MC-Unique: _QGioLbVNH60aFABUpxHhw-1
+X-Mimecast-MFC-AGG-ID: _QGioLbVNH60aFABUpxHhw_1758914986
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EB2C01800378;
+	Fri, 26 Sep 2025 19:29:45 +0000 (UTC)
+Received: from cmirabil.redhat.com (unknown [10.22.90.77])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 572901800115;
+	Fri, 26 Sep 2025 19:29:34 +0000 (UTC)
+From: Charles Mirabile <cmirabil@redhat.com>
+To: pjw@kernel.org
+Cc: Liam.Howlett@oracle.com,
+	a.hindborg@kernel.org,
+	akpm@linux-foundation.org,
+	alex.gaynor@gmail.com,
+	alexghiti@rivosinc.com,
+	aliceryhl@google.com,
+	alistair.francis@wdc.com,
+	andybnac@gmail.com,
+	aou@eecs.berkeley.edu,
+	arnd@arndb.de,
+	atishp@rivosinc.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	bp@alien8.de,
+	brauner@kernel.org,
+	broonie@kernel.org,
+	charlie@rivosinc.com,
+	cleger@rivosinc.com,
+	conor+dt@kernel.org,
+	conor@kernel.org,
+	corbet@lwn.net,
+	dave.hansen@linux.intel.com,
+	david@redhat.com,
+	debug@rivosinc.com,
+	devicetree@vger.kernel.org,
+	ebiederm@xmission.com,
+	evan@rivosinc.com,
+	gary@garyguo.net,
+	hpa@zytor.com,
+	jannh@google.com,
+	jim.shu@sifive.com,
+	kees@kernel.org,
+	kito.cheng@sifive.com,
+	krzk+dt@kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	lorenzo.stoakes@oracle.com,
+	lossin@kernel.org,
+	mingo@redhat.com,
+	ojeda@kernel.org,
+	oleg@redhat.com,
+	palmer@dabbelt.com,
+	paul.walmsley@sifive.com,
+	peterz@infradead.org,
+	richard.henderson@linaro.org,
+	rick.p.edgecombe@intel.com,
+	robh@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	samitolvanen@google.com,
+	shuah@kernel.org,
+	tglx@linutronix.de,
+	tmgross@umich.edu,
+	vbabka@suse.cz,
+	x86@kernel.org,
+	zong.li@sifive.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+Date: Fri, 26 Sep 2025 15:29:19 -0400
+Message-ID: <20250926192919.349578-1-cmirabil@redhat.com>
+In-Reply-To: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Sep 2025 21:01:02 +0200
-Message-Id: <DD2YPPZ08RMC.2FCYC3HPWY3IC@kernel.org>
-To: "Vlastimil Babka" <vbabka@suse.cz>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: slab: add basic slab module
-Cc: "Elijah Wright" <git@elijahs.space>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Uladzislau Rezki" <urezki@gmail.com>, <linux-mm@kvack.org>
-References: <20250924193643.4001-1-git@elijahs.space>
- <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
- <5f09b7f5-e7de-4333-8de5-322eb6d93aa9@suse.cz>
- <DD2UB5P01XW7.1GW33112S22Y@kernel.org>
- <DD2URCNO2P88.168J48GHSJRRL@kernel.org>
- <1f5ae3bd-db21-4042-b177-55464644ce2e@suse.cz>
- <DD2W3LCC7FWA.2X90YAPLI1FGC@kernel.org>
- <57b01f59-f4b1-4f5f-bb63-fd8eea19b7ba@suse.cz>
-In-Reply-To: <57b01f59-f4b1-4f5f-bb63-fd8eea19b7ba@suse.cz>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Fri Sep 26, 2025 at 7:11 PM CEST, Vlastimil Babka wrote:
-> The rust wrapper side could do that so we don't have to add that check in
-> all kmem_cache_free() calls, maybe?
-> Also either way it could perhaps be difficult/expensive (memory barriers
-> etc) to properly handle a racing kmem_cache_free() and kmem_cache_destroy=
-()
-> in a way that ensures the cache is always being destroyed, and not have t=
-he
-> kmem_cache_destroy() observe the destroy was premature, while the racing
-> kmem_cache_free() doesn't yet observe that destroy was attempted, and not
-> try to remove it.
+Hi - 
 
-Yeah, it's probably not much better than just using a reference count, but =
-more
-error prone.
+Hoping that I got everything right with git-send-email so that this is
+delivered alright...
+
+Wanted to jump in to head off a potential talking past one another / 
+miscommunication situation I see here.
+
+On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
+> Hi,
+> 
+> On Thu, 31 Jul 2025, Deepak Gupta wrote:
+> 
+> [ ... ]
+> 
+> > vDSO related Opens (in the flux)
+> > =================================
+> > 
+> > I am listing these opens for laying out plan and what to expect in future
+> > patch sets. And of course for the sake of discussion.
+> > 
+> 
+> [ ... ]
+> 
+> > How many vDSOs
+> > ---------------
+> > Shadow stack instructions are carved out of zimop (may be operations) and if CPU
+> > doesn't implement zimop, they're illegal instructions. Kernel could be running on
+> > a CPU which may or may not implement zimop. And thus kernel will have to carry 2
+> > different vDSOs and expose the appropriate one depending on whether CPU implements
+> > zimop or not.
+> 
+> If we merge this series without this, then when CFI is enabled in the 
+> Kconfig, we'll wind up with a non-portable kernel that won't run on older 
+> hardware.  We go to great lengths to enable kernel binary portability 
+> across the presence or absence of other RISC-V extensions, and I think 
+> these CFI extensions should be no different.
+
+That is not true, this series does not contain the VDSO changes so it can
+be merged as is.
+
+> 
+> So before considering this for merging, I'd like to see at least an 
+> attempt to implement the dual-vDSO approach (or something equivalent) 
+> where the same kernel binary with CFI enabled can run on both pre-Zimop 
+> and post-Zimop hardware, with the existing userspaces that are common 
+> today.
+
+I agree that when the VDSO patches are submitted for inclusion they should
+be written in a way that avoids limiting the entire kernel to either
+pre-Zimop or post-Zimop hardware based on the config, but I think it
+should be quite possible to perform e.g. runtime patching of the VDSO
+to replace the Zimop instructions with nops if the config is enabled but
+the hardware does not support Zimop.
+
+However, that concern should not hold up this patch series. Raise it again
+when the VDSO patches are posted.
+
+> 
+> thanks Deepak,
+> 
+> - Paul
+
+Best - Charlie
+
