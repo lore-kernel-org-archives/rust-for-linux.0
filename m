@@ -1,124 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22538296BDF;
-	Fri, 26 Sep 2025 12:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC512857C2
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 13:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758888009; cv=none; b=ZgwBmuVAXCpvTmAuz63IAMBd5SqeV56BFufw5sLM6VvaI+gg0fOIyXzAEb9jvBURTJ+eDE8iBcjDUeLOoTk8OU0ifdadRz1hzB4bGFeznbIpPMpBHiESk2H86Xem59cBohl2+R4ZFmmnO9Dmt8IxPtOKdjWDQMv/Pged4AxJLgw=
+	t=1758891995; cv=none; b=tY6TB/sOVVAcgSxG06x4O1qgcKv34mtDTiB8NSSXKWbv7mgVMgaU4DkXatzmDWOtEml8qe1CmU3MqKK+1z9RBGGk11MdB/AfoPrL+VFurv1MJ1FqzSoKKrTuCK2JY6GRflMbfz+986sAVdBrIlxqDstQ3uUZKFHocJqrLRLoEXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758888009; c=relaxed/simple;
-	bh=SxKEpvT1xfQHA95My4WDzhWTJSuoe5gKWO8GLmU6P/4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=YYuAvaaiH7BVKcjjQevMgLDUziCAyea+V8Mhd5gBOZZWxtmb6MdeISDot7o2mY3dly3scZPTF4AypeekdPSBG+v9CjEWfNyJ4lGXRslJ/rHlK3I8b4K/UkecGj3QRuPQPtJOvuDSYulWc4mHR3Xt1rTuiSMir8Co3QakC0H4FX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tnw2Ux0F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758891995; c=relaxed/simple;
+	bh=uMQrPsVoatO/qweCSMz0PCGRojzxgqhUQv+HHNkqOI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QbCsrGh64uFrpEBOjIFU0cWBCaMeyicuo/iDIjEwc8tmOgOU9gGnOUJ2L4sd4WPdSX3v7F70vrq6VegO6T8PcSemSuBu24bi1iKrfmMGSEkQgHcbOx5FDuKTxGDC4X5yLrUhTlMmBWV+x8uuOBzQOdLwg2EZW2XZncBZmqTPeZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irpcXReg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tnw2Ux0F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DEAC4CEF4;
-	Fri, 26 Sep 2025 12:00:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="irpcXReg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8998C4CEF4;
+	Fri, 26 Sep 2025 13:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758888007;
-	bh=SxKEpvT1xfQHA95My4WDzhWTJSuoe5gKWO8GLmU6P/4=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=Tnw2Ux0FXaCZhG83mBnRs5GzQ2vXUEIMniK7JrrcK5fARqbzP5qZ5mW02eke7Jzcm
-	 ZKthAQLJPdnvYpSUIEIcvMeS7KPuoq3XbIvqXO43QWeNU+4Ui4WD+BjSi37u+JhkQb
-	 F8dKR4fyEyI9yb0ZmrlODwNyZxHP9fBOIo2hkmQrDeEf/COMrfD5oncP/gk0Do+OOp
-	 I1pTwnfu5Ily1OmwrnNHcJe24td5/dAXD2TDke5WxoPj3WBnyXYFpIDy+z4Hd6BbdD
-	 bj2H2XVCsKRYHpS9wr/N4o18onL+ecm6fnxWY+oxaCtUiTkwVdArjlo0Gq8mN+siYr
-	 DhXhyFiOOkK7g==
+	s=k20201202; t=1758891994;
+	bh=uMQrPsVoatO/qweCSMz0PCGRojzxgqhUQv+HHNkqOI8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=irpcXRegHZNeVzJBfCg/jIR8wxf6/oVqgxaiB6V0Q/cyj9+EmZWTakiKgZbJzy0Ip
+	 o21j97FRZ8IfrSh2njzSPd5zJhlm5hVy2ZI4H+TrZtymOmkGx6CUPdReynRoicTHPs
+	 AqlWqfJiwodstpP6SN5cjD3LYGo61cgxA4xkqvrYM+qAy4SFYU6zdoR/Y085/o+1ov
+	 VhnEby7Mn2ReKFId6o+nJooi6GpE5+2dlUzLC/oNy3Tt6v0AXs1xW7f/S2yrFXqswM
+	 KAF9cCXgzrZdfXLX5+POEf4+xvwZScmo0mO6kv5OYEeODTcGHDy/aXmT9HKdbdBk+H
+	 oJHZ5owLoFCyw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: acourbot@nvidia.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 1/2] gpu: nova-core: gsp: remove useless conversion
+Date: Fri, 26 Sep 2025 15:05:52 +0200
+Message-ID: <20250926130623.61316-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Sep 2025 14:00:01 +0200
-Message-Id: <DD2PRD2XEZRE.1YACAPZWRYLZO@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 01/10] gpu: nova-core: Set correct DMA mask
-Cc: "John Hubbard" <jhubbard@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <nouveau@lists.freedesktop.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-References: <20250922113026.3083103-1-apopple@nvidia.com>
- <20250922113026.3083103-2-apopple@nvidia.com>
- <7fb081e9-e607-401b-937f-f4e3a78a2874@kernel.org>
- <0dbc8f78-5cee-4741-8d33-df3358dd5383@nvidia.com>
- <eblaubjmsesi6gh64ekm74qyzvfk23vjcmotc33upkc5w6edin@rbsezy6f7bai>
-In-Reply-To: <eblaubjmsesi6gh64ekm74qyzvfk23vjcmotc33upkc5w6edin@rbsezy6f7bai>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Sep 23, 2025 at 6:29 AM CEST, Alistair Popple wrote:
-> On 2025-09-23 at 12:16 +1000, John Hubbard <jhubbard@nvidia.com> wrote...
->> On 9/22/25 9:08 AM, Danilo Krummrich wrote:
->> > On 9/22/25 1:30 PM, Alistair Popple wrote:
->> >> +        // SAFETY: No DMA allocations have been made yet
->> >=20
->> > It's not really about DMA allocations that have been made previously, =
-there is
->> > no unsafe behavior in that.
->> >=20
->> > It's about the method must not be called concurrently with any DMA all=
-ocation or
->> > mapping primitives.
->> >=20
->> > Can you please adjust the comment correspondingly?
->
-> Sure.
->
->> >> +        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<47>()=
-)? };
->> >=20
->> > As Boqun mentioned, we shouldn't have a magic number for this. I don't=
- know if
->> > it will change for future chips, but maybe we should move this to gpu:=
-:Spec to
->>=20
->> It changes to 52 bits for GH100+ (Hopper/Blackwell+). When I post those
->> patches, I'll use a HAL to select the value.
->>=20
->> > be safe.
->> >=20
->> > At least, create a constant for it (also in gpu::Spec?); in Nouveau I =
-named this
->> > NOUVEAU_VA_SPACE_BITS back then. Not a great name, if you have a bette=
-r idea,
->> > please go for it. :)
->
-> Well it's certainly not the VA_SPACE width ... that's a different address=
- space :-)
+Meanwhile nova-core depends on CONFIG_64BIT and a raw DmaAddress is
+always a u64, hence remove the now actually useless conversion.
 
-I mean, sure. But isn't the limitation of 47 bits coming from the MMU and h=
-ence
-defines the VA space width and the DMA bit width we can support?
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ drivers/gpu/nova-core/firmware/gsp.rs | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> I thought from the context that the magic number was pretty obviously the
-> supported DMA address width in bits, especially given the extra decoratio=
-n
-> of the DmaMask type. Certainly that's been the accepted practice for the =
-rest
-> of the kernel where pretty much all drivers just use something of the for=
-m
-> dma_set_mask(drm_dev->dev, DMA_BIT_MASK(44)) or whatever DMA address widt=
-hs
-> they support.
->
->> GPU_DMA_BIT_WIDTH, for now?
->
-> Works for me.
->
->> thanks,
->> --=20
->> John Hubbard
->>=20
+diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-core/firmware/gsp.rs
+index 9b70095434c6..ca785860e1c8 100644
+--- a/drivers/gpu/nova-core/firmware/gsp.rs
++++ b/drivers/gpu/nova-core/firmware/gsp.rs
+@@ -202,8 +202,7 @@ pub(crate) fn new<'a, 'b>(
+                 let mut level0_data = kvec![0u8; GSP_PAGE_SIZE]?;
+ 
+                 // Fill level 1 page entry.
+-                #[allow(clippy::useless_conversion)]
+-                let level1_entry = u64::from(level1.iter().next().unwrap().dma_address());
++                let level1_entry = level1.iter().next().unwrap().dma_address();
+                 let dst = &mut level0_data[..size_of_val(&level1_entry)];
+                 dst.copy_from_slice(&level1_entry.to_le_bytes());
+ 
+
+base-commit: 299eb32863e584cfff7c6b667c3e92ae7d4d2bf9
+-- 
+2.51.0
 
