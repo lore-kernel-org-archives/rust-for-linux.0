@@ -1,375 +1,163 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012011.outbound.protection.outlook.com [52.101.53.11])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632229994B;
-	Fri, 26 Sep 2025 07:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758871634; cv=fail; b=PeQ9WI0Q6SHeuTIReU7puMlaVz/U774U9YYk4A3mv0RsIgvyxFQ4nhmEsT0BE47tGooga0jUdElJlfGqFWHGcXA+liAtoPT6E3gwSM0kskmYubIyOl4L3le5gSNkdCOy/okBDvwp51MaZiYaaFk547oPRFBPOvPN16+2XPQFXv4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758871634; c=relaxed/simple;
-	bh=ohBX6fp4RGZUkDqBBqafodcrV4BwX1/JM6chdo30w+0=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=DLlRxgEfOHpp4fBSEdPC+94WJes8JqhpTS1aZsF4AqUr+AfDNEKcHiBI5xCZlbKYQK/jMf482lTq+fQ04PIkLyT9Zl313yoNIYcWZeu1Ph20yXo3WJjc9LIo5dXikaTCa0xuIageFhsl20NJp4v/r2558s+LDmepQMfXe6LfvI8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bjkECtuH; arc=fail smtp.client-ip=52.101.53.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BA326FA4E;
+	Fri, 26 Sep 2025 08:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758876504; cv=none; b=dRHHDOgsqdDdBLaZ1j3mAO5kwy608xYCM+mYwyEt3TvgXiFpwjoT9JJWr4DZxnAeeXDiFjLGdr/MfSEcA0P/RKTEazxPwoog52AQZ16AghnAzlamsOpdB87Imk18Q5tD1BkNYBFH7a+hOCvpSxqpSkZ7W6NrrEumgFYMLCeEBOU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758876504; c=relaxed/simple;
+	bh=7De3nQZm4PVTdWyp59mYSwiaxDz6Qyhn9LYb89sbxxg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Lo322fKVlEoHP/l5T1kKsBe89E/Y1r7sxh3Q+JWNS424c4N0cnXnyBZNIHb62S6bPSdeXSSnKPoWWu39HeDZ49sIY35YIvjWdHgKQoTElEyWMTlV8VIyBVQ05zkqGW1yBxYvHdl5iReKtWrTCQNvGzY0PTdpcliIYDR43Nxfn2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=oewmB4a8; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bjkECtuH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Myv8Q/jV6TWD+UVyFmW3v3h39UvHNp7AJLqDgDaO75tq2iIkztAnPYARxE1R9tY1i39pD0oWpJEtFip+hb0pE581Bmpuw1mKpiTCfEMCETqnHv+PyLu8xs+yMNYF/hOlYptmiz5rjgy7Q1EUlZGA+2log/nxXTE8KcZ5W0dvtPMicqAQ782IjGA7DkJNBgdlXJzuaZiA0vhgxQJEXO7neKmXOLIuQL6YuZeB3S9HBMqZapTfErZ1pHDN2T6HEKYcaAvq1pXBMYF8pY8Agi8IJiFYd00l5draXKoDzOm4eJ4pij3nZBMbkbmIHh4J693BveHruGUyk2Z9cuf9K0AVFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hdmmqo8oIyf9zXoifUCZtJMVlRm9Vvnekmaurv6kF8I=;
- b=tyaGrZZ08ugGFYoVLXtfL4Y41sSkYv7LwPiHJXAm90CkbKU7gmEFYHWOJxftkMULBAOK/7Jm8+VLi6keCTiuVfOGEafni0w4zDqAO2h6zHCa91ZZz+DWqQ6FOreTaB7pE9Yt5UN5VU4ZhbSWCLPh5xC5tPLzcF4xK1gt4z2Js3abEyhZc4mvNKqzPBhwB7uX+STfzyx5sRnyrhlphnojO2UwiL5+rdJ0iSFA5qjxPqOG3wTq3qNknQYoBxbam4I5THJCKv6K/BZMCbqL22yjSMOy3+PPIKRfKsHJuaVmgcI5bigueKo6MVXtfhFpO/B419Yc29mNiY+1RTXFaSicoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hdmmqo8oIyf9zXoifUCZtJMVlRm9Vvnekmaurv6kF8I=;
- b=bjkECtuHUuPv4Oslt3FjFHUVIam7s0OrUNxaWC94wa/z+WNqb2en0NbEUkQVOFfo384Rtyzj8a2MFByCsTM+7HuoKk475wdNUD/3LirmbwX9yMWMplYTnLiK8m5xOn5leshoPqGdv0kIUwAeNqVF6KmrKGEKa4/ZW59QxfxR+bW5Wbs4cqL4UMzFhaZpxoJCYqZOGtJGzI3djzIpaki7IoYs6KaKWCYcVPuYfEP45T1je/C6m3juI9CMKKYPYI/iZ3TsYjNVELyt/3Sjc50+OPetjvMuHtpmYf940og0oOd4+d+6TY0cbziJJQEIx2nVk3Pqxh/CIf1vtL2+iBEq/Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA0PR12MB7604.namprd12.prod.outlook.com (2603:10b6:208:438::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Fri, 26 Sep
- 2025 07:27:08 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9137.018; Fri, 26 Sep 2025
- 07:27:08 +0000
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="oewmB4a8"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cY44243YHz9st3;
+	Fri, 26 Sep 2025 10:48:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1758876498; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7De3nQZm4PVTdWyp59mYSwiaxDz6Qyhn9LYb89sbxxg=;
+	b=oewmB4a8fvEjTKbGN/DAs/n7MBgg9RL9DiXgxDoYuwrY9a6lV0LDNw6hF3+0nR9hXA+6je
+	cIvS2p05i6RvXBKFYs0lbZSaRNAiwuQXBdDzYQieJtLK+G1hVZSc3mwBekxUfjGsAKc/gO
+	gBYbiN5IhJjZcx1BHnbtZxChkf6rG6VfoNmz6YgzIRPRLnSG1GWtzolVcvfeBNxEtLmEti
+	bAwIebXzzwxtIljpNiA/zhyDL+Kmghl8qlMpO+SdCd0Jej/4NjaEV1wOo8kXJ8a8CXBDMw
+	aozeNUa8SAm0VHmRzk/Rom5JKxPnlq/MGxCrCSGKG4mk64KC5xilz9uhtTqPBg==
+Message-ID: <12c09de235023c99a8a864b17b2f797c7339bb7b.camel@mailbox.org>
+Subject: Re: [RFC PATCH] rust: sync: Add dma_fence abstractions
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Boqun Feng <boqun.feng@gmail.com>, Philipp Stanner <phasta@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>,  Ingo Molnar <mingo@redhat.com>, Will
+ Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Nathan
+ Chancellor <nathan@kernel.org>, Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
+ Stitt <justinstitt@google.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,  Viresh Kumar
+ <viresh.kumar@linaro.org>, Asahi Lina <lina+kernel@asahilina.net>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
+ <tamird@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, FUJITA
+ Tomonori <fujita.tomonori@gmail.com>, Krishna Ketan Rai
+ <prafulrai522@gmail.com>, Lyude Paul <lyude@redhat.com>, Mitchell Levy
+ <levymitchell0@gmail.com>, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+ dri-devel@lists.freedesktop.org
+Date: Fri, 26 Sep 2025 10:48:06 +0200
+In-Reply-To: <aMwOoYe1xGDBg0Zv@tardis-2.local>
+References: <20250918123100.124738-2-phasta@kernel.org>
+	 <aMwOoYe1xGDBg0Zv@tardis-2.local>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Sep 2025 16:27:04 +0900
-Message-Id: <DD2JYDPBOKA8.2QCK0P7CR1T3V@nvidia.com>
-Subject: Re: [PATCH v2 06/10] gpu: nova-core: gsp: Create rmargs
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Alistair Popple" <apopple@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <dakr@kernel.org>, <acourbot@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20250922113026.3083103-1-apopple@nvidia.com>
- <20250922113026.3083103-7-apopple@nvidia.com>
-In-Reply-To: <20250922113026.3083103-7-apopple@nvidia.com>
-X-ClientProxiedBy: TYWPR01CA0032.jpnprd01.prod.outlook.com
- (2603:1096:400:aa::19) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA0PR12MB7604:EE_
-X-MS-Office365-Filtering-Correlation-Id: dfdc7d99-0b6d-4297-5edd-08ddfcce1985
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SHdDUkxPZ1ZXblErcHVCbWhnRm9ocXdxc3dUdjdmWktVWnI3RmMxM2huVGdE?=
- =?utf-8?B?Uzg5ZkdXRjBjeXh2a2xDNnRWTURUV1M4b2RWdjVsUFQyOWRXVytWQVZ0Mml0?=
- =?utf-8?B?ZkdwaXZSRUF0RVdlbGFqWUJBTHlrTzNWS0RyR3JYVXZMQlQ0dWRpb250THRV?=
- =?utf-8?B?by9MV0wrUE1ENzZMLytDcTZaZTljZFhFaUE1MEZxK01iWGhqa1ZaZDRPSXNy?=
- =?utf-8?B?cFBnVjZsLzQ3ejJuUThkNE12M2hLTzg3QU5YbW9jaFpzTnRMN2hUWE5IZmdw?=
- =?utf-8?B?SmtrbHFHWHEwV1VIQmp2ODNwME5zeGRtdjIzZTFsZTlKRDVxd0Y1MUhhOWlv?=
- =?utf-8?B?SzR2WjFyMFR1bGdOV3BFWDBRTXp2NWsvMURja2ZKN0FVTmNINnJhRmhBT1Zy?=
- =?utf-8?B?UWJ5Y25sUkxmYVV3R2pmNTJTbGRYTTFOd0hUa0hneFJSeFE0SnJGRDl3Tkhs?=
- =?utf-8?B?MS9QeU9iRVRVVW9Ea3lldDhYQUFLT01NaW5CRVlobDF6QmRtNG5ZaFhLZHBH?=
- =?utf-8?B?YytBcTNaUnRVNFJVbzN3YUc1VDI3anRpa21VWlExeXhqMTJvbFpMRWVySVRx?=
- =?utf-8?B?eWhvTHdZZHNVTWdEdkpMYVBPODFOVHp6RkxUNHV6RmppUzZLNXJQU0p6bGdm?=
- =?utf-8?B?TTk0UHZwYjRpQkRwcWM1REJ2dWtqQVZFL0Nkc1FMcVJVM0NQZDIveWF4RlU2?=
- =?utf-8?B?NGU4TGsvTXVpSmVmaUtFWCt4YzY2NkEyeDg5NXk4eVhHSkZ1Qjdxa25ZNytr?=
- =?utf-8?B?cmRXWmgzU2F4Q0FJSFFoOXdZZjhSL2lLSk80blNrUW9vRFhnRVI2R2MwdXAw?=
- =?utf-8?B?UlREeGhBMHZvM2JFU0UzS1E0N0xnWjRGOGdMMTZndlFaM2ZFak9RZ1FHcDBI?=
- =?utf-8?B?b3AwUUlnbWdqZzVQVEJpRHU1V05iQ0tqL1BGbFlvaWVuT1cyL1pBNUU1OHpU?=
- =?utf-8?B?M1FjVjJLc1p0c2xkeTVjaXZQMkdtUldDNUtjSE93SDNnY0Q5R1ZubWFCeWc2?=
- =?utf-8?B?aVNid1IzRWU1M2F0S2dTLzBmUDdGaG5yQ2NZbzNQVGdZbS9HYStlNmxjWUw4?=
- =?utf-8?B?d05LaHpYSUpJaWJnbHl1a3VDZTRiNTcvUFZuYWx2QUxldWhRekM5S1d1bDNk?=
- =?utf-8?B?RHM5V1NtZlZScnRmZHUrS21mTHp0eFI1MXA3czJnUDFENTFIZHRCV25CZGov?=
- =?utf-8?B?alFCdUVuVVpNNW5PVHlXN3NTZ0RqcFUxNy9CWUdCZ2FXSGpWRi8ra1kvR09X?=
- =?utf-8?B?K1MvL09lSDhjV0EyZ1N4elZkdUxVVUxFVFRjdENMMnFmbjQvUXdCMUY0S2Vj?=
- =?utf-8?B?QWRJb1VJTU40azNTR3JRL3NLQ09VcTFEamFYZlhZRWhNM3FtY3Z5NFRLNVdR?=
- =?utf-8?B?L3BNalZhVmdNZ2lMVkUwUzMwM2ZRSjN6RFFkUFcvUnZNWkZuc2VkcS9obHZT?=
- =?utf-8?B?Ym11bGpoSTJISGxEWFVwRkdFVGRhQzBYNE4wcFpuTk5TTDVhSkF0cUZMOCs2?=
- =?utf-8?B?Q3B5Tmw4MVRhMjJQbFhlalhqeC9xeEVudVVqZFN6YUVNMEw0KzFpS2NpVzgx?=
- =?utf-8?B?Z3g4WGNBNDRlRGllWGVneEY4T2lURTJLMktLT3l1bW53aTJFaGEyMXd6dmg0?=
- =?utf-8?B?TDhSNXplRkRkL2NvZnRreE15TG85RHkvNkc3NDZNcnkyOEU0VkRvQ2FsU3JJ?=
- =?utf-8?B?aXYzMUNpTHdKN2pRd1hUWFBQVnFFV0tQUVp3ZWkvRTlLeVhuRVVJWEo1NGk2?=
- =?utf-8?B?bmwwS1JmNENVV0E5SG91NzRzYTJLZ29MN3RnQlI5NFdUS0s1Vk1kd0g4TFV6?=
- =?utf-8?B?WnpkQnF0dTRmRUc0L2ZueUxEV1h6ejljdzd5d21ybXhUTXZCSE1SdDcwMjdm?=
- =?utf-8?B?bjQ0OGwyNXI1SlA0dTIvbWc4azMwV2pUUktUdFRjcGxnUWk2MEFzOHdBOGxk?=
- =?utf-8?Q?DiJbSot58cc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MllDM0c3bU5KYktHVW90dmRrWGxOTzdNMmJtY3dOZnNCaUNRdGpuMi83aTBC?=
- =?utf-8?B?R3RJVVBRSDRDUTdETHlXUkpUQWZ4aHhIenp1Skl0aUtOeUlwZmJ6bG5Pei9i?=
- =?utf-8?B?Zk1zMkhQOHBLQjVxNC9MU2dtNzBUcEpwVUpRd2xGY3Ftei80cmNHNWJSMTl1?=
- =?utf-8?B?bHpSU3JVandNZXFKT3V5cnBQeEFoUXhWblE2WUwrL0E1T05wWU5zUkFWTVNX?=
- =?utf-8?B?YWpaV054dDNETUpseEU0VVNYbzVlS2s3eWVOTWpJM2t3Q3RJSWVrODl0Y1Nj?=
- =?utf-8?B?U3JTakZTNFdBdkNPZ05uS2ZsTUJHWU1odVZnd0tNaVpxU0RrM0pRYnBTR0xW?=
- =?utf-8?B?NGlOTlhyaEJLRjdXa2NVKzZXZDk5cDR6UlVCVFhGY2pxQ2FGeENyV3BaOHJh?=
- =?utf-8?B?M3VibnM4K1RTVlNHd0M3NDFtOWxITGNEN2cxOTBlRE50Mnc1ekZCY2RZSkJR?=
- =?utf-8?B?alI1bVRLMWY3L09kVWlQSTErYUtsUG1DNGZjbUk2ZHZMTklDZlpSQjQzS2pD?=
- =?utf-8?B?cTRJYks2NW1RazhGQ1hpK05wUUltWFRMbkF0aUpPYkV1RFJxT2VJTTJiOTdI?=
- =?utf-8?B?SkluWXFzbWduRGRkMFc3SW5nZERkSlRqeXNMMExBVmExL1c5NTEvS0RRZGtX?=
- =?utf-8?B?aXJzdFlIZ3NkSXBFR013bW1veEoySGpiZHZZS28xdmEzQnhmZVVVdHAwWi9L?=
- =?utf-8?B?bkd5dXVnbkpiSmFnUzdic0Z0WGtrL1hHWU42cTd0S1BjRmJQYlMvdk9GUVZY?=
- =?utf-8?B?b2ZaeDUzcFdIRG9JS3VoV0FoY2NieU1LTGtNeFdPS2hJV0kxMFYvRS9lVGs3?=
- =?utf-8?B?ZnhMbVhXanhCMVRpYU9KVURiZmFQVU52LzZDUC9iV3FNZlZXYjRnTEdub2pq?=
- =?utf-8?B?aFdtWHpOSk92UU8rSHgxRkJSaHNnZGU0MCtkbmtVWWdmZXlWT2xOUUlmbDVU?=
- =?utf-8?B?WGdSeGZZY1FBTmEvN1dSa2hwdEpTdE16NUlmdmtna0VJYWNkSitRM1lIVHpu?=
- =?utf-8?B?ZTBvSXhZWjRWVkQ5VkhQbjg2RFA5OHpUbzZ5RGtVQ3lHN1d0V1BoSWJxcTJw?=
- =?utf-8?B?OHRZK2Y0Zjl6b3F2eFNpT2VrR1N1Vk1QakFydHpJcUZUaXhzRkhuMjRZNjQ0?=
- =?utf-8?B?U2x3cHpVSWxMNXpqb29xS2lwdzFCeElQdWhqUUFHZkswb01zeWdFRWV4TWc5?=
- =?utf-8?B?dnUzL2lwV2orNFMxL1c2bCtYYzMxWHZTdlFxUVlRWmdMaDNhOEVNSm0weERN?=
- =?utf-8?B?YldTbENNOWo3VlVSYU40cUVQeTNOR2Nia1MrTjRydm5tdStMTENKQ3Uva1NP?=
- =?utf-8?B?ZG52eHowVzVXaVcwMFRvVFh1YldyMERaeGxzNTBTZ2Z4dVlhUVJBSWhGSnRY?=
- =?utf-8?B?dTlrQkNvanppMlQvem9VdEoySytqbnNVYUVlZ2lxVnQ5SmVwVFBQSHFiaC9B?=
- =?utf-8?B?RlVpSjFjTnJ6OSt6dkZYKzQzblphdHE4ajFMQlJGWlJiUXpKQkZIZG16V2lP?=
- =?utf-8?B?elRTV3J5OWlhOGRKbFB1N2VwelRtMGw0RWVIMmk4UElpZUR0MzB3T0VaOXQ5?=
- =?utf-8?B?TjcwR2ozNGU3ZEM4U0FGcVI4UVVhSVFmMUNHQTRYNC9vN3pDZ1lzbDV4Mm0r?=
- =?utf-8?B?NS9LR2hmcENUQmY4bDEyUytWditzK2dYOW45US9VRFMzalJocU9GOXluZ3RT?=
- =?utf-8?B?MGQ1TVdYTGlMK3gvY2dWNDk4cjRsNGVUeGFDT1ViMmRQMDRoRmpBMGFkNDdQ?=
- =?utf-8?B?M0FtdVpmamNrRFVWazZCUlFDRXAyd1lUYjJGY3BWbjFITFRxVG9TZHA1VUdh?=
- =?utf-8?B?RVlYakg1aisxUWtCS3lWV2M2Z0h2OGpqUVpKV1dKU29xaFNLc000aVlHV3FI?=
- =?utf-8?B?Q1A4YWMwbUQ0TmZTY3dDTGtmOHFLd1A2K3REYWFRa1N1aHdmaHdnNE5UT0NY?=
- =?utf-8?B?RHFuNlVxSStMY0VpbXZvQUFGbDA4SlBBdlI1ZHdiekNnT2VpZDV6K0hrUkM5?=
- =?utf-8?B?Vk9HNmtuUWNpdlp0UkNQRlpCL2pNMWZxMVVoeUFHT1NCa3RJV012MmR2akov?=
- =?utf-8?B?SjVuOE5KWjhuYldnZTQ0dFNiT0szR0FuMWVpOVp2MlVEaUJNY3lTcTBwTHJx?=
- =?utf-8?B?UFN3WVdlZGVQVE1pZ0psNlhmRGU0bHNaeTVrUVZRRVY4ejEwb2dnQi91dG1J?=
- =?utf-8?Q?L35D8QwTc2obOxMxcdGFSw0rnk0GWGWoP9QUOer9f6pe?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dfdc7d99-0b6d-4297-5edd-08ddfcce1985
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 07:27:08.3739
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2jRyyZfxeFjD/XvBaOW9TvVV2IfhSwT0vXpDs4Qjkz4XyM7PAqyWi70O1ZUJIaNfVvh9SeHi4mIXIuBwU+zQGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7604
+X-MBO-RS-ID: dcc294d54bd9f90528a
+X-MBO-RS-META: c53m4ic87syjzwty5tfmxisedsq4b4ff
 
-On Mon Sep 22, 2025 at 8:30 PM JST, Alistair Popple wrote:
-> Initialise the GSP resource manager arguments (rmargs) which provide
-> initialisation parameters to the GSP firmware during boot. The rmargs
-> structure contains arguments to configure the GSP message/command queue
-> location.
->
-> These are mapped for coherent DMA and added to the libos data structure
-> for access when booting GSP.
->
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
->
-> ---
->
-> Changes for v2:
->  - Rebased on Alex's latest series
-> ---
->  drivers/gpu/nova-core/gsp.rs                  | 29 +++++++++++++++-
->  drivers/gpu/nova-core/gsp/cmdq.rs             | 14 ++++++--
->  drivers/gpu/nova-core/gsp/fw.rs               | 19 +++++++++++
->  .../gpu/nova-core/gsp/fw/r570_144/bindings.rs | 33 +++++++++++++++++++
->  4 files changed, 91 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-> index 3d4028d67d2e..bb08bd537ec4 100644
-> --- a/drivers/gpu/nova-core/gsp.rs
-> +++ b/drivers/gpu/nova-core/gsp.rs
-> @@ -17,7 +17,10 @@
->  use crate::fb::FbLayout;
->  use crate::gsp::cmdq::GspCmdq;
-> =20
-> -use fw::LibosMemoryRegionInitArgument;
-> +use fw::{
-> +    LibosMemoryRegionInitArgument, GSP_ARGUMENTS_CACHED, GSP_SR_INIT_ARG=
-UMENTS,
-> +    MESSAGE_QUEUE_INIT_ARGUMENTS,
-> +};
-> =20
->  pub(crate) mod cmdq;
-> =20
-> @@ -33,6 +36,7 @@ pub(crate) struct Gsp {
->      pub logintr: CoherentAllocation<u8>,
->      pub logrm: CoherentAllocation<u8>,
->      pub cmdq: GspCmdq,
-> +    rmargs: CoherentAllocation<GSP_ARGUMENTS_CACHED>,
->  }
-> =20
->  /// Creates a self-mapping page table for `obj` at its beginning.
-> @@ -90,12 +94,35 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>) =
--> Result<impl PinInit<Self
-> =20
->          // Creates its own PTE array
->          let cmdq =3D GspCmdq::new(dev)?;
-> +        let rmargs =3D
-> +            create_coherent_dma_object::<GSP_ARGUMENTS_CACHED>(dev, "RMA=
-RGS", 1, &mut libos, 3)?;
-> +        let (shared_mem_phys_addr, cmd_queue_offset, stat_queue_offset) =
-=3D cmdq.get_cmdq_offsets();
-> +
-> +        dma_write!(
-> +            rmargs[0].messageQueueInitArguments =3D MESSAGE_QUEUE_INIT_A=
-RGUMENTS {
-> +                sharedMemPhysAddr: shared_mem_phys_addr,
-> +                pageTableEntryCount: cmdq.nr_ptes,
-> +                cmdQueueOffset: cmd_queue_offset,
-> +                statQueueOffset: stat_queue_offset,
-> +                ..Default::default()
-> +            }
-> +        )?;
-> +        dma_write!(
-> +            rmargs[0].srInitArguments =3D GSP_SR_INIT_ARGUMENTS {
-> +                oldLevel: 0,
-> +                flags: 0,
-> +                bInPMTransition: 0,
-> +                ..Default::default()
-> +            }
-> +        )?;
-> +        dma_write!(rmargs[0].bDmemStack =3D 1)?;
+On Thu, 2025-09-18 at 15:52 +0200, Boqun Feng wrote:
+> On Thu, Sep 18, 2025 at 02:30:59PM +0200, Philipp Stanner wrote:
+> [...]
+> > ---
+> > So. =C2=A1Hola!
+> >=20
+> > This is a highly WIP RFC. It's obviously at many places not yet
+> > conforming very well to Rust's standards.
+> >=20
+> > Nevertheless, it has progressed enough that I want to request comments
+> > from the community.
+> >=20
+> > There are a number of TODOs in the code to which I need input.
+> >=20
+> > Notably, it seems (half-)illegal to use a shared static reference to an
+> > Atomic, which I currently use for the dma_fence unit test / docstring
+>=20
+> The `CHECKER` static you mean? If so, it should be a `static CHECKER`
+> instead of `static mut CHECKER`, also for future versions please use
+> LKMM (Linux Kernel Memory Model) atomics [1] instead of Rust native
+> atomics (you probably need to define `CHECKER` as `Atomic<i32>` because
+> AtomicBool is not supported by LKMM and potentially sub-optimial in some
+> cases).
 
-Wrapping our bindings is going to help clean up this code as well.
+Thanks.
 
-First, types named in CAPITALS_SNAKE_CASE are not idiomatic Rust and
-look like constants. And it's not even like the bindings types are
-consistently named that way, since we also have e.g. `GspFwWprMeta` - so
-let's give them a proper public name and bring some consistency at the
-same time.
+Thinking about it I realized that for that example code I don't even
+need atomics. So I'll drop them for now.
 
-This will make all the fields from `GSP_ARGUMENTS_CACHED` invisible to
-this module as they should be, so the wrapping `GspArgumentsCached` type
-should then have a constructor that receives a referene to the command
-queue and takes the information is needs from it, similarly to
-`GspFwWprMeta`. This will reduce the 3 `dma_write!` into a single one.
+>=20
+> > test. I'm willing to rework that if someone suggests how.
+> > (Still, shouldn't changing a global Atomic always be legal? It can race=
+,
+> > of course. But that's kind of the point of an atomic)
+> >=20
+> > What I want comments on the most is the design of the callbacks. I thin=
+k
+> > it's a great opportunity to provide Rust drivers with rust-only
+> > callbacks, so that they don't have to bother about the C functions.
+> >=20
+> > dma_fence wise, only the most basic callbacks currently get implemented=
+.
+> > For Nova, AFAICS, we don't need much more than signalling fences and
+> > registering callbacks.
+> >=20
+> >=20
+> > Another, solvable, issue I'm having is designing the
+> > dma_fence_begin_signallin() abstractions. There are TODOs about that in
+> > the code. That should ideally be robust and not racy. So we might want
+> > some sort of synchronized (locked?) way for using that abstraction.
+> >=20
+> >=20
+> > Regarding the manually created spinlock of mine: I so far never need
+> > that spinlock anywhere in Rust and wasn't sure what's then the best way
+> > to pass a "raw" spinlock to C.
+> >=20
+>=20
+> You can use `SpinLock<()>` for this purpose, no need to add new
+> bindings.
 
-Then we should remove `get_cmdq_offsets`, which is super confusing. I am
-also not fond of `cmdq.nr_ptes`. More on them below.
+The dma_fence C backend needs a spinlock pointer, given to it by the
+driver (so Rust code).
 
-> =20
->          Ok(try_pin_init!(Self {
->              libos,
->              loginit,
->              logintr,
->              logrm,
-> +            rmargs,
->              cmdq,
->          }))
->      }
-> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
-p/cmdq.rs
-> index a9ba1a4c73d8..9170ccf4a064 100644
-> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
-> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-> @@ -99,7 +99,6 @@ fn new(dev: &device::Device<device::Bound>) -> Result<S=
-elf> {
->          Ok(Self(gsp_mem))
->      }
-> =20
-> -    #[expect(unused)]
->      fn dma_handle(&self) -> DmaAddress {
->          self.0.dma_handle()
->      }
-> @@ -218,7 +217,7 @@ pub(crate) struct GspCmdq {
->      dev: ARef<device::Device>,
->      seq: u32,
->      gsp_mem: DmaGspMem,
-> -    pub _nr_ptes: u32,
-> +    pub nr_ptes: u32,
->  }
-> =20
->  impl GspCmdq {
-> @@ -231,7 +230,7 @@ pub(crate) fn new(dev: &device::Device<device::Bound>=
-) -> Result<GspCmdq> {
->              dev: dev.into(),
->              seq: 0,
->              gsp_mem,
-> -            _nr_ptes: nr_ptes as u32,
-> +            nr_ptes: nr_ptes as u32,
->          })
->      }
-> =20
-> @@ -382,6 +381,15 @@ pub(crate) fn receive_msg_from_gsp<M: GspMessageFrom=
-Gsp, R>(
->              .advance_cpu_read_ptr(msg_header.rpc.length.div_ceil(GSP_PAG=
-E_SIZE as u32));
->          result
->      }
-> +
-> +    pub(crate) fn get_cmdq_offsets(&self) -> (u64, u64, u64) {
-> +        (
-> +            self.gsp_mem.dma_handle(),
-> +            core::mem::offset_of!(Msgq, msgq) as u64,
-> +            (core::mem::offset_of!(GspMem, gspq) - core::mem::offset_of!=
-(GspMem, cpuq)
-> +                + core::mem::offset_of!(Msgq, msgq)) as u64,
-> +        )
-> +    }
+How do I pass a SpinLock<()> to a C function? AFAICS SpinLock doesn't
+implement as_raw(), so I'd have to implement it, wouldn't I?
 
-So this thing returns 3 u64s, one of which is actually a DMA handle,
-while the two others are technically constants. The only thing that
-needs to be inferred at runtime is the DMA handle - all the rest is
-static.
+Or rather, as it looks, I'd have to implement it for SpinLockBackend?
 
-So we can make the two last returned values associated constants of
-`GspCmdq`:
 
-  impl GspCmdq {
-      /// Offset of the data after the PTEs.
-      const POST_PTE_OFFSET: usize =3D core::mem::offset_of!(GspMem, cpuq);
+P.
 
-      /// Offset of command queue ring buffer.
-      pub(crate) const CMDQ_OFFSET: usize =3D core::mem::offset_of!(GspMem,=
- cpuq)
-          + core::mem::offset_of!(Msgq, msgq)
-          - Self::POST_PTE_OFFSET;
+>=20
+> [1]: https://lore.kernel.org/rust-for-linux/20250905044141.77868-1-boqun.=
+feng@gmail.com/
+>=20
+> Regards,
+> Boqun
+>=20
+> >=20
+> > So much from my side. Hope to hear from you.
+> >=20
+> > (I've compiled and tested this with the unit test on the current -rc3)
+> >=20
+> > Philipp
+> > ---
+> [...]
 
-      /// Offset of message queue ring buffer.
-      pub(crate) const STATQ_OFFSET: usize =3D core::mem::offset_of!(GspMem=
-, gspq)
-          + core::mem::offset_of!(Msgq, msgq)
-          - Self::POST_PTE_OFFSET;
-
-`GspArgumentsCached::new` can then import `GspCmdq` and use these to
-initialize its corresponding members.
-
-Remains `nr_ptes`. It was introduced in the previous patch as follows:
-
-    let nr_ptes =3D size_of::<GspMem>() >> GSP_PAGE_SHIFT;
-
-Which turns out to also be a constant! So let's add it next to the others:
-
-impl GspCmdq {
-    ...
-    /// Number of page table entries for the GSP shared region.
-    pub(crate) const NUM_PTES: usize =3D size_of::<GspMem>() >> GSP_PAGE_SH=
-IFT;
-
-And you can remove `GspCmdq::nr_ptes` altogether.
-
-With this, `GspArgumentsCached::new` can take a reference to the
-`GspCmdq` to initialize from, grab its DMA handle, and initialize
-everything else using the constants we defined above. We remove a bunch
-of inconsistently-named imports from `gsp.rs`, and replace
-firmware-dependent incantations to initialize our GSP arguments with a
-single constructor call that tells exactly what it does in a single
-line.
