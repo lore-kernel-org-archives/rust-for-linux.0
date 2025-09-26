@@ -1,81 +1,80 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1481F5433
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 14:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CBC20CCE4
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 15:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758896845; cv=none; b=kCy1VebqhO5q8dFGajj4NKXKCZ7pFc8ZW5uBtIqo3xjZDzo8uzxKp7YKC0WtCfKOvL7rxycqclNgD4ubVUUMd4HUVAZRlgz98RKf2RZjOEYWs/O4gYU9DaVFFtPvkqX+UBq0eSOtUkLwkK4eVBf59vOSnBSE/3JeyH+EhfvwVIU=
+	t=1758898809; cv=none; b=MdRkgIkUyN6LR2s6ihEN6RsVbLpUGjZEcgi8arPp4xkIhvjZpeOf0q1RqhuRYKhg5aF9MWW3dLmC/dZZot3xKXDF/9eIppHprpgpvY4+9lfQ1gfmuU0QEzVq9CaFuW3NMFR76lx/XIlhKWdyGnzGeYBPDmd7OSH6I9Wb5Ahbl/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758896845; c=relaxed/simple;
-	bh=K76jz/H2Fo2gmJVDsUiFqUdfhGl+kusT8vt5ziZsz1M=;
+	s=arc-20240116; t=1758898809; c=relaxed/simple;
+	bh=CmbSomVZRveW/2dDOBiZe3eFLvryq4NMIHwN5P32t6M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wxy2sYxK3ag0Yaj8vheD2O+wMrTXO5eP9typ3AAfDPALG62SgcTS4QABJHpI5+L85iEYXQvPasUKKbgFnfVwFJKVr9yk9FpbuuhReVr0uUyeMJTDY5Xq/M9g4sE2ySdn7z27/u3uRvWn4NWrGNvaD0A7rTIvPZ0iLEsC3nCyT8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mHqFnV3z; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=o3fzeac6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mHqFnV3z; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=o3fzeac6; arc=none smtp.client-ip=195.135.223.131
+	 In-Reply-To:Content-Type; b=FC7cu8nTAZQNXx/eAD5dAcv5p2cmcq3j3bMYP9DkDhW875esV/BgGqGqbtXLMCqCebqusun9/azDHkOKY/5wy0K0Pa/AsxOzxmgXWYK0edLWwjOzQrHv5TNQME6awdrOnNqybqyqn+Ghq01QaBGnNsFRpf88A9ggkneGaSeDNXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Amc9kWCv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9QkMHzaM; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=1fdNvOQv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=VcUsi8RY; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mHqFnV3z";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="o3fzeac6";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mHqFnV3z";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="o3fzeac6"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Amc9kWCv";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9QkMHzaM";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="1fdNvOQv";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="VcUsi8RY"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 223696886F;
-	Fri, 26 Sep 2025 14:27:21 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8B7C13425F;
+	Fri, 26 Sep 2025 15:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758896841; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1758898804; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MW2kEKB150iY4GBcI+DbTA9hS/ZtCe8tdNa+w40U92Q=;
-	b=mHqFnV3zMZJf46R7B06/zjVqbSItZVdPMmyWUjknI+X0m0C9ZWCSh8zWXNb82Qgs6aLSiD
-	AOt1P93PW6hDvoV1wVTpYxVOFHIrPefnNh0Zf6s2WMVGfLVBwcHEn/wwj5+FYsCXR8JaTs
-	rvOkfxFxDs5SlK4UaVJzPA8/D1UEZGM=
+	bh=O/y2VxxdsRCyCO8bBQV6lvU0+2k2Q684722/aBmOhEU=;
+	b=Amc9kWCv0nJPkBvPUi11/UPACVXbOoycDet/IA/iUAOo/lt6UjMJrlfnFMz2Zo9hdGTTQy
+	+rq5hBeQ3fMj97lJNasNlaXkU6q8fliuP7CZBhCNffO55WOd6bx6VCIo6ww3/bEHX7+Cyq
+	ToMLlbZC/4nqptajuTmw6I821m3lc48=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758896841;
+	s=susede2_ed25519; t=1758898804;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MW2kEKB150iY4GBcI+DbTA9hS/ZtCe8tdNa+w40U92Q=;
-	b=o3fzeac6Gu3iBGiDSXNUY8K2BqXlWMT4JyYNT6Ce3MhnWhMW6qUpTH9dmglkRaWBEH+CRw
-	64BSjjrMYOn4L3Aw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mHqFnV3z;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=o3fzeac6
+	bh=O/y2VxxdsRCyCO8bBQV6lvU0+2k2Q684722/aBmOhEU=;
+	b=9QkMHzaMkD+iw+twa9HwIj1NaNWJQn5HL3g+eIUdok3UvP4pNYMbIMy/6s4UAc32vnd+MK
+	YrOykDVzpomAreBg==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758896841; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1758898803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MW2kEKB150iY4GBcI+DbTA9hS/ZtCe8tdNa+w40U92Q=;
-	b=mHqFnV3zMZJf46R7B06/zjVqbSItZVdPMmyWUjknI+X0m0C9ZWCSh8zWXNb82Qgs6aLSiD
-	AOt1P93PW6hDvoV1wVTpYxVOFHIrPefnNh0Zf6s2WMVGfLVBwcHEn/wwj5+FYsCXR8JaTs
-	rvOkfxFxDs5SlK4UaVJzPA8/D1UEZGM=
+	bh=O/y2VxxdsRCyCO8bBQV6lvU0+2k2Q684722/aBmOhEU=;
+	b=1fdNvOQvhWePkW2jQ5Fmyi2AL/H6ZHQhyzkw1mpvj2lUbGkJ/SNmJgNM7SJC2BNTvgUz76
+	x8mbeQPFQJY6Ufw/C3GyAmzMt/4O3d2m4Gg2vJQHndSPqGon4D2QaPCaGQtq7GWaYbnrg4
+	FxHId0v5IJADCIGXxGUSblKnGS8n9FY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758896841;
+	s=susede2_ed25519; t=1758898803;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MW2kEKB150iY4GBcI+DbTA9hS/ZtCe8tdNa+w40U92Q=;
-	b=o3fzeac6Gu3iBGiDSXNUY8K2BqXlWMT4JyYNT6Ce3MhnWhMW6qUpTH9dmglkRaWBEH+CRw
-	64BSjjrMYOn4L3Aw==
+	bh=O/y2VxxdsRCyCO8bBQV6lvU0+2k2Q684722/aBmOhEU=;
+	b=VcUsi8RYNl5DhqAjTUeSQFM4cIQ2E7McY7V3hEs5e6nrif2Av15E+a0+NYJ6Zh02UOf5G/
+	F3bDnYffv9FBn7Cg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E36591373E;
-	Fri, 26 Sep 2025 14:27:20 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6E5F11386E;
+	Fri, 26 Sep 2025 15:00:03 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Y9c3N8ii1mgybAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 26 Sep 2025 14:27:20 +0000
-Message-ID: <3cbe68f0-c449-4634-b5a1-690b3eaf33ca@suse.cz>
-Date: Fri, 26 Sep 2025 16:27:20 +0200
+	id NWiHGnOq1mhhdgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 26 Sep 2025 15:00:03 +0000
+Message-ID: <5f09b7f5-e7de-4333-8de5-322eb6d93aa9@suse.cz>
+Date: Fri, 26 Sep 2025 17:00:03 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,26 +82,20 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot ci] Re: rust: zpool: add API for C and Rust
+Subject: Re: [PATCH] rust: slab: add basic slab module
 Content-Language: en-US
-To: Nhat Pham <nphamcs@gmail.com>, Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- syzbot ci <syzbot+cica6a1c285444b25f@syzkaller.appspotmail.com>,
- a.hindborg@kernel.org, akpm@linux-foundation.org, alex.gaynor@gmail.com,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- chengming.zhou@linux.dev, dakr@kernel.org, david@redhat.com,
- gary@garyguo.net, gregkh@linuxfoundation.org, liam.howlett@oracle.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, lossin@kernel.org, mhocko@suse.com,
- minchan@kernel.org, ojeda@kernel.org, rppt@kernel.org,
- rust-for-linux@vger.kernel.org, senozhatsky@chromium.org, surenb@google.com,
- tmgross@umich.edu, yosry.ahmed@linux.dev, syzbot@lists.linux.dev,
- syzkaller-bugs@googlegroups.com
-References: <20250923102547.2545992-1-vitaly.wool@konsulko.se>
- <68d2cfc2.a70a0220.4f78.000a.GAE@google.com>
- <20250923215929.GA1122379@cmpxchg.org>
- <aabca3ff-3cbe-468a-9b65-290d5239d987@konsulko.se>
- <CAKEwX=P18Krj-+rXvTSCocRt+Q3o07Ghisv4nJLRCJ8tLus54Q@mail.gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>, Elijah Wright <git@elijahs.space>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org
+References: <20250924193643.4001-1-git@elijahs.space>
+ <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -143,62 +136,122 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <CAKEwX=P18Krj-+rXvTSCocRt+Q3o07Ghisv4nJLRCJ8tLus54Q@mail.gmail.com>
+In-Reply-To: <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 223696886F
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
 	SUSPICIOUS_RECIPS(1.50)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
+	TAGGED_RCPT(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,oracle.com,kvack.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	FREEMAIL_TO(0.00)[gmail.com,konsulko.se];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	FREEMAIL_CC(0.00)[cmpxchg.org,syzkaller.appspotmail.com,kernel.org,linux-foundation.org,gmail.com,google.com,protonmail.com,linux.dev,redhat.com,garyguo.net,linuxfoundation.org,oracle.com,vger.kernel.org,kvack.org,suse.com,chromium.org,umich.edu,lists.linux.dev,googlegroups.com];
-	RCVD_TLS_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[cica6a1c285444b25f];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	R_RATELIMIT(0.00)[to_ip_from(RL7z7y9whu5c77jgra59km7rz7)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:mid]
-X-Spam-Score: -3.01
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
 
-On 9/24/25 19:38, Nhat Pham wrote:
-> On Tue, Sep 23, 2025 at 10:46 PM Vitaly Wool <vitaly.wool@konsulko.se> wrote:
->>
->> LOL, no, forgot to run git commit --amend so came up with a wrong version.
->>
->> The Rust version is correct though.
->>
->> > This also still proposes an API with no in-kernel user.
->>
->> That's not correct, zsmalloc is the user.
+On 9/25/25 11:54, Danilo Krummrich wrote:
+> (+Cc: Lorenzo, Vlastimil, Liam, Uladzislau, MM)
 > 
-> A single user does not an API make.
+> On Wed Sep 24, 2025 at 9:36 PM CEST, Elijah Wright wrote:
+>> this patch adds a basic slab module for kmem_cache, primarily wrapping
+>> kmem_cache_create, kmem_cache_alloc, kmem_cache_free, and kmem_cache_destroy.
+> 
+> What's the motivation?
+> 
+> I mean, we will need kmem_cache soon. But the users will all be drivers, e.g.
+> the GPU drivers that people work on currently.
+> 
+> Drivers shouldn't use "raw" allocators (such as Kmalloc [1] or Vmalloc [2]), but
+> the corresponding "managed" allocation primitives, such as KBox [3], VBox [4],
+> KVec, etc.
+> 
+> Therefore, the code below shouldn't be used by drivers directly, hence the
+> question for motivation.
+> 
+> In any case, kmem_cache is a special allocator (special as in it can have a
+> non-static lifetime in contrast to other kernel allocators) and should be
+> integrated with the existing infrastructure in rust/kernel/alloc/.
+> 
+> I think there are multiple options for that; (1) isn't really an option, but I
+> think it's good to mention anyways:
+> 
+>   (1) Allow for non-zero sized implementations of the Allocator trait [3], such
+>       that we can store a reference count to the KmemCache. This is necessary to
+>       ensure that a Box<T, KmemCache> can't out-live the KmemCache itself.
+> 
+>       The reason why I said it's not really an option is because it discards the
+>       option for dynamic dispatch of the generic Box type.
+> 
+>   (2) Same as (1), but with a custom Box type. This keeps dynamic dispatch for
+>       the generic Box type (i.e. KBox, VBox, KVBox), but duplicates quite some
+>       code and still doesn't allow for dynamic dispatch for the KmemCacheBox.
+> 
+>   (3) Implement a macro to generate a custom KmemCache Allocator trait
+>       implementation for every KmemCache instance with a static lifetime.
+> 
+>       This makes KmemCache technically equivalent to the other allocators, such
+>       as Kmalloc, etc. but obviously has the downside that the KmemCache might
+>       live much longer than required.
 
-IIRC what was suggested is to implement the zsmalloc API directly. What does
-the extra inline function layer get us in case of a compile-time switch?
+I don't know enough of Rust to follow why is that. What does mean "much longer"?
 
-And do you need the Rust abstraction or just can make it part of the zblock
-itself? You don't expect there to be more Rust-based backends than zblock, no?
+>       Technically, most KmemCache instances live for the whole module lifetime,
+>       so it might be fine though.
+
+I think so, yeah.
+
+>       (This is what I think Alice proposed.)
+> 
+>   (4) Solve the problem on the C side and let kmem_cache_alloc() take care of
+>       acquiring a reference count to the backing kmem_cache. The main question
+>       here would be where to store the pointer for decreasing the reference
+>       count on kmem_cache_free().
+
+Pointer to what, the ref counter? If it's part of struct kmem_cache, then we
+have pointer to that in kmem_cache_free(). Even when kfree() is used, it can
+be (or rather already is) obtained. So that's not the issue (unless I
+misunderstand).
+
+But we wouldn't want to pay the cost of the atomic updates of the refcount
+for all caches. If done only for Rust-created caches, the implementation
+also would better not to add branches to all allocation/free fastpaths.
+
+But also why is this refcounting needed? What would happen on the Rust side
+if someone destroyed the cache too early? In the underlying C implementation
+we notice it (reliably AFAICT), warn and abort the destroy (leaving it as a
+kind of zombie) so I'd say it's safe. So if Rust needs to know if the
+destroy was successful or premature, we could probably just return the
+result instead of the current void.
+
+>       Theoretically, it could be stored within the allocation itself, but it's a
+>       bit of a yikes.
+> 
+>       However, it would resolve all the mentioned problems above.
+> 
+> I'd like to see (3) or (4), also depending on what the MM folks think.
+> 
+> - Danilo
+> 
+> [1] https://rust.docs.kernel.org/kernel/alloc/allocator/struct.Kmalloc.html
+> [2] https://rust.docs.kernel.org/kernel/alloc/allocator/struct.Vmalloc.html
+> [3] https://rust.docs.kernel.org/kernel/alloc/kbox/type.KBox.html
+> [4] https://rust.docs.kernel.org/kernel/alloc/kbox/type.VBox.html
+> [5] https://rust.docs.kernel.org/kernel/alloc/trait.Allocator.html
 
