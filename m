@@ -1,49 +1,49 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7C727E05B
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 19:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD08284672
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 19:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758914995; cv=none; b=psz8WjoMyt6WpDnhCQIcyLGOVu/b9ZpOS7T0+Iuj7gz6V5GsC3s7JJBTjagLULmx9uOWnOlkxbqf8CxRGGUZrxIX5PksFXP6F4jsW/annlXL+sw5ZfB5MFXJ6B12ccYdjDxU8V6E/j43qwUs/sDIyIu9WAX6tZxd+qyJ9ahVzIE=
+	t=1758916369; cv=none; b=F1vymPQMFU3fOBijU4q/jqqIxxWHMwKxHWPpYeOdE+4QRZlO37US/Ra7sJv9poI6fi8TrDY4Q54c4rDmezn4msATkIzMCM3JUY7w7v1Q7Mxs9/wjq6J7bhidKuVYxemJHCpBtZqAyodFEXXhqBxC6/vdQJrgmPmqW4xyK4sFPCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758914995; c=relaxed/simple;
-	bh=PhmFWhMKz0Lpt+jlfUJ0TYkmXMX8vl2curJz5SvJkTo=;
+	s=arc-20240116; t=1758916369; c=relaxed/simple;
+	bh=oO+7zCRCpcn8afztGwY+HzbQXwPySfZfX7HQqZPBq4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eU64LrUOxYavTlPGg3QK0mJoAm8Ns+rRaCeZ9p9aVcDiFdRLYIID+j6wQTef3IaeWBnWQEsL6gDdhlWDEQvjKQC1cnnG9aMloNRo4Lsx0ho7TArOaPlOPP+cEfacQTJV/Jma9lPnnO7yiIeRGOhr1nJcvHDhReFsI3nWpN0yrK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FGqmObbE; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=pPPR3EPHw68QJDD6WTWdblyURbO3MLUqZOevQ43PfJIKdT8udSMno4VpTddWsRWnbksxSfkQIkpxt61oVhhhQPNH0c8RRF25v06kmRuA8y5W/uSbaWmfvgWBYKuOqIOacg9qvEtAAOLXyfRg6hkfPxqcj2XEB0/zCSiHB53078A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eRHhKXJT; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FGqmObbE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eRHhKXJT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758914992;
+	s=mimecast20190719; t=1758916366;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qJkwxIyAJhe7Z2sYVZyMCylwQN+VGhF0dp+d12hJfX4=;
-	b=FGqmObbEFH/Pl2RBgeHxiCQOqWeZHYD7SZHY/tF6U2wVAE8Jx8tGxCNtZgOR2xEZmd9o2i
-	+6OmmIY1r93TyRQC8exs57o/3OuT5k+fAZvXVt9mgV9LXGV7PTVXCp6Rhej4MxH6pGExNS
-	e2UTHD0KYzk0mPSbNOWLpsEGaBJ0Akg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=XHvwAIHkoSzj/0sM3EQyAOJu3zkKVKdDZuOCGzwODmg=;
+	b=eRHhKXJTjouWf/y91w+UTVWCgXOMJrFz9jv7vQYWD8JbcWbZCS/7PT9iQ6P3jS4suZUuc7
+	PXPNiIwyF09alRL+wqMiutZ8SkhPnGdfOY6djzTWmlxEzXm/R8spXL/QDpv0Fri4hUAAlP
+	16HiBbatRZFAaMouzl6J4jKGkh1VbUg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-_QGioLbVNH60aFABUpxHhw-1; Fri,
- 26 Sep 2025 15:29:47 -0400
-X-MC-Unique: _QGioLbVNH60aFABUpxHhw-1
-X-Mimecast-MFC-AGG-ID: _QGioLbVNH60aFABUpxHhw_1758914986
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-41-t223hT9KN56yp_SnsKdUYg-1; Fri,
+ 26 Sep 2025 15:52:43 -0400
+X-MC-Unique: t223hT9KN56yp_SnsKdUYg-1
+X-Mimecast-MFC-AGG-ID: t223hT9KN56yp_SnsKdUYg_1758916362
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EB2C01800378;
-	Fri, 26 Sep 2025 19:29:45 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B7A41800452;
+	Fri, 26 Sep 2025 19:52:42 +0000 (UTC)
 Received: from cmirabil.redhat.com (unknown [10.22.90.77])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 572901800115;
-	Fri, 26 Sep 2025 19:29:34 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 71B901800446;
+	Fri, 26 Sep 2025 19:52:30 +0000 (UTC)
 From: Charles Mirabile <cmirabil@redhat.com>
-To: pjw@kernel.org
+To: cmirabil@redhat.com
 Cc: Liam.Howlett@oracle.com,
 	a.hindborg@kernel.org,
 	akpm@linux-foundation.org,
@@ -93,6 +93,7 @@ Cc: Liam.Howlett@oracle.com,
 	palmer@dabbelt.com,
 	paul.walmsley@sifive.com,
 	peterz@infradead.org,
+	pjw@kernel.org,
 	richard.henderson@linaro.org,
 	rick.p.edgecombe@intel.com,
 	robh@kernel.org,
@@ -105,10 +106,10 @@ Cc: Liam.Howlett@oracle.com,
 	x86@kernel.org,
 	zong.li@sifive.com
 Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Date: Fri, 26 Sep 2025 15:29:19 -0400
-Message-ID: <20250926192919.349578-1-cmirabil@redhat.com>
-In-Reply-To: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
-References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+Date: Fri, 26 Sep 2025 15:52:24 -0400
+Message-ID: <20250926195224.351862-1-cmirabil@redhat.com>
+In-Reply-To: <20250926192919.349578-1-cmirabil@redhat.com>
+References: <20250926192919.349578-1-cmirabil@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -116,70 +117,89 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hi - 
+Hi -
 
-Hoping that I got everything right with git-send-email so that this is
-delivered alright...
+Sorry for my previous email, I realized I was mistaken...
 
-Wanted to jump in to head off a potential talking past one another / 
-miscommunication situation I see here.
-
-On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
-> Hi,
+On Fri, Sep 26, 2025 at 03:29:19PM -0400, Charles Mirabile wrote:
+> Hi - 
 > 
-> On Thu, 31 Jul 2025, Deepak Gupta wrote:
+> Hoping that I got everything right with git-send-email so that this is
+> delivered alright...
 > 
-> [ ... ]
+> Wanted to jump in to head off a potential talking past one another / 
+> miscommunication situation I see here.
 > 
-> > vDSO related Opens (in the flux)
-> > =================================
+> On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
+> > Hi,
 > > 
-> > I am listing these opens for laying out plan and what to expect in future
-> > patch sets. And of course for the sake of discussion.
+> > On Thu, 31 Jul 2025, Deepak Gupta wrote:
 > > 
+> > [ ... ]
+> > 
+> > > vDSO related Opens (in the flux)
+> > > =================================
+> > > 
+> > > I am listing these opens for laying out plan and what to expect in future
+> > > patch sets. And of course for the sake of discussion.
+> > > 
+> > 
+> > [ ... ]
+> > 
+> > > How many vDSOs
+> > > ---------------
+> > > Shadow stack instructions are carved out of zimop (may be operations) and if CPU
+> > > doesn't implement zimop, they're illegal instructions. Kernel could be running on
+> > > a CPU which may or may not implement zimop. And thus kernel will have to carry 2
+> > > different vDSOs and expose the appropriate one depending on whether CPU implements
+> > > zimop or not.
+> > 
+> > If we merge this series without this, then when CFI is enabled in the 
+> > Kconfig, we'll wind up with a non-portable kernel that won't run on older 
+> > hardware.  We go to great lengths to enable kernel binary portability 
+> > across the presence or absence of other RISC-V extensions, and I think 
+> > these CFI extensions should be no different.
 > 
-> [ ... ]
-> 
-> > How many vDSOs
-> > ---------------
-> > Shadow stack instructions are carved out of zimop (may be operations) and if CPU
-> > doesn't implement zimop, they're illegal instructions. Kernel could be running on
-> > a CPU which may or may not implement zimop. And thus kernel will have to carry 2
-> > different vDSOs and expose the appropriate one depending on whether CPU implements
-> > zimop or not.
-> 
-> If we merge this series without this, then when CFI is enabled in the 
-> Kconfig, we'll wind up with a non-portable kernel that won't run on older 
-> hardware.  We go to great lengths to enable kernel binary portability 
-> across the presence or absence of other RISC-V extensions, and I think 
-> these CFI extensions should be no different.
+> That is not true, this series does not contain the VDSO changes so it can
+> be merged as is.
 
-That is not true, this series does not contain the VDSO changes so it can
-be merged as is.
-
-> 
-> So before considering this for merging, I'd like to see at least an 
-> attempt to implement the dual-vDSO approach (or something equivalent) 
-> where the same kernel binary with CFI enabled can run on both pre-Zimop 
-> and post-Zimop hardware, with the existing userspaces that are common 
-> today.
-
-I agree that when the VDSO patches are submitted for inclusion they should
-be written in a way that avoids limiting the entire kernel to either
-pre-Zimop or post-Zimop hardware based on the config, but I think it
-should be quite possible to perform e.g. runtime patching of the VDSO
-to replace the Zimop instructions with nops if the config is enabled but
-the hardware does not support Zimop.
-
-However, that concern should not hold up this patch series. Raise it again
-when the VDSO patches are posted.
+Oops... no sorry, it looks like it does. See 19/27. I was misled by the
+cover letter which said to pick that patch separately. I completely agree
+that that needs to not be included if this is to be merged.
 
 > 
-> thanks Deepak,
+> > 
+> > So before considering this for merging, I'd like to see at least an 
+> > attempt to implement the dual-vDSO approach (or something equivalent) 
+> > where the same kernel binary with CFI enabled can run on both pre-Zimop 
+> > and post-Zimop hardware, with the existing userspaces that are common 
+> > today.
 > 
-> - Paul
+> I agree that when the VDSO patches are submitted for inclusion they should
+> be written in a way that avoids limiting the entire kernel to either
+> pre-Zimop or post-Zimop hardware based on the config, but I think it
+> should be quite possible to perform e.g. runtime patching of the VDSO
+> to replace the Zimop instructions with nops if the config is enabled but
+> the hardware does not support Zimop.
+> 
+> However, that concern should not hold up this patch series. Raise it again
+> when the VDSO patches are posted.
+
+@Deepak, would it be possible to just resend this without the VDSO patch?
+
+Or to rework as I had alluded to to check for the presense of the extension
+and remove the instructions from the VDSO at boot if it is not found?
+
+> 
+> > 
+> > thanks Deepak,
+> > 
+> > - Paul
+> 
+> Best - Charlie
+> 
 
 Best - Charlie
 
