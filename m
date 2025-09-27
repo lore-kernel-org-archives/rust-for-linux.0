@@ -1,177 +1,130 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1CF2E22AB
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Sep 2025 14:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704BB242D97
+	for <rust-for-linux@vger.kernel.org>; Sat, 27 Sep 2025 16:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758981825; cv=none; b=JK2x6RpcD33LC5Tllyk2Zh12lljxFOfUVIYIbToHV5Wt8ro2Cis9IqjQ/g/MjkAmcSoRdXYicmVEiSLkQOo2W/crf3wBXWVf9LruZDtvDHxGnBvO/T/6rAkQNBj89qvGHTw/YM4sYl8dEciO3k/UsP5q6A9OyRhAerjl28GNCzo=
+	t=1758991431; cv=none; b=dgFOhb00bZasedDQeD9UdporDVGP0MdQkZJEb7pCCd+ktxLcJ0x03l8v8bZIfxAzr+AiA/XU0wxDwdFL1JBSueSYY3hoKGu+Mpz7qk+D05MBcAzW1WcPZZD9qixr6DmmNHV2W4MZmpGPUEO43EhVw4u9vU7qO80iVZT8kXMS4Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758981825; c=relaxed/simple;
-	bh=iZIouQAWI0nC2znsT3y23S97+/Gt8E8XVf9A0+wMI68=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A1K35VDNPQtSoe2jNdNdNRIb6xKIyw9T4yeUPUv7Fo+1q/+GzJl/rYJOpC7rgNwlvjXF+dFNFC+DfthpnUvkHsgDb0iOcEu6FBXS0yytbsVCS/BSfWurNdfjoY3gsfiR1hFsGnnNbTGVyDCu84/Ya6oZtz1rBL7sMJ+ekapd20c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pdu/Li2e; arc=none smtp.client-ip=209.85.222.171
+	s=arc-20240116; t=1758991431; c=relaxed/simple;
+	bh=vKpTRRRmpkwvD+RKQ8Vdg4UWvE2ebw01JOfwjsbS5Qs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pKzQnUQPtBCMCdje/dbqc5CRkLDH0GOI79DrMpcG4PO19Nl+DPGUpJXB1s9OJlgaQ46yVtVkCjmToAAl7GAoj+9S4Qfl0ag7Vzlvtuq3jYC6YgETOhPc5LBvyPJTs8Q73uHJLqwhsZ5CANpNDsMeKHUp8f5R/1wti3TvSTCBgys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YtRyPe0K; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pdu/Li2e"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-858183680b4so409564185a.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 27 Sep 2025 07:03:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YtRyPe0K"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-46e37d6c21eso20342605e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 27 Sep 2025 09:43:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758981823; x=1759586623; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1RowTgROwHl16yIt+/YH6L82gef48dxD9rHygNzwZv8=;
-        b=Pdu/Li2ezlqIt8JEvn2C7/xnHjfuP5EauZ+eLkqElJ640trRwjvGJC1CCIzMjqxtzN
-         HY0rVDTRJyJk54g9Jo4gJ4PxGkF9mcJPkl4xiZDcyO1etW7dKkFDqRSrtXLdQhxBo/QJ
-         tobLP3y+/t6mW0Gzj3prUmkRNRRDa2OyahXtEcQajJ9NFHgDtb/vGluWBlJ+IZNuRsNS
-         tc2fmZ3eYCixVIiSm9RC/0uW78S8NVvlKFveI5vfTmIzv8Z7RHzRbd3mjeVCKu+v7ye8
-         619eyPg858tv0pX4f87gs040WA3ywmehsca8z+3/J1JbbHjn7Y4TJVXSmXsIxoqKHeMp
-         YCsw==
+        d=gmail.com; s=20230601; t=1758991428; x=1759596228; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OOF0Bc+2gNxqDcWN5Q3dw7KfEBLw6JtH3pzFUg7pzQA=;
+        b=YtRyPe0KtIa0kjup/zwBrbRwDVnHi0WaXzFiFg3Xpcv4wPgKFH0wRWujllvtkPNRdz
+         XYtlSv/KbJKF7nb908fZSjIqZAz6KEcXP/XLJf96tITazZooRfdPtIyfQH6QtJqRh9ye
+         CuDsmLQrWBcjZdQhw1N7+JsLNsbd0KZVAGxwNlt9QFEqniMapvCxuOG601Wlq890W3ap
+         EBF7st/PVk0VSgQjCbhA/XQXhhOrWK+n+vtyZibHAj7lQrM6pqpxBreS1hKc33d1wCu/
+         6xeqqB9RzApBQ4FU3cRvinwq950uAvq29uehlLsrocBKWbpWkjbiHAvY5Ei9oOaKAHsm
+         SyXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758981823; x=1759586623;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1RowTgROwHl16yIt+/YH6L82gef48dxD9rHygNzwZv8=;
-        b=jlFMRjL6lIUhmxshlteDlgXKJWJXVDCvK//R+SeS0D4wsq4Z2o4caM/yYnzA+zgp8H
-         6MgzE1ZZLI+/8HIQ3POZoWBsgQ49gmlBCVtCnJxn9vqQ1YtZ4auVxykJzLWs+o8DCcPB
-         6bhuXmukgt8I+wWwmIy1KmhLTqwVssXB73WkaGetax9ebwDfrx8wc+czbtZsGB7ORJVb
-         CBqF60JlAn/pvRVxnA+1UfJowLNjA/wZkIIB8oZbdKgEhx1gPHfq9LdT+5eWeVxdV0A0
-         ew6hXRFQdDPPlTGcUIkrxj7K5TKMKmS6jURcZ8rERH0kI9KeWTiedeIo8m2MnLOpPKOj
-         AamA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpbXBhBeWZWrCAvVXSX0ynMbCoChcHUzJuSOgiQrTJuT66FQTtowKoDVVskbretHF0xGjJSXm0YcnGrNdkOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyl4+warSNTVS6nvIjqxuJqQ8o7oSVRczSiOcPYU3z/24E6w0BX
-	aoGGMAangtiiTQsAX4ZEIHjzyAYftWsvxgBRwfik3YEn7b/TBvZ/or+X
-X-Gm-Gg: ASbGncspMpIZTXeGOWm7NznaBIq9LTo3gb0Wj8K5FuphfbpXP3I353pW1jfJ+62LMb5
-	Fq/j1XU3k2vSE5Cb3lRq/uAwYeZyjl9tHVBJ9WNUArwMiqX/DjANqmDZD+vCo/lsLW0MDE5h61D
-	fuZyFRN3auTxWQphjtSkqFwwu9ZTTNPYCd9INhMQG0OmTZ1Vz80rAftvI+C612XwO7RfwzQjoTJ
-	zN/UGhJzFiQ/hEq1NPdcEQYCtGInmD0aOB0153TwpD5WsawU7XOCpSqLmzdHiZnyZcdG3+0eHAo
-	xKVH2qBI6n06kJE1hp5LWulk0O/xCxh6/0eS5pqA6YvxlLASYg14lGnCwRuhCcr1345O6Zyugrw
-	vuYPiZEHffnyzHSvQCS6A2lMZAOSpU+nF6UCyIHNkWndl7Cr4TnanS/Pf1tcebY+P2PO/Lbuxgc
-	9LOZXK2NGwUwQzcephbEppvZCtUpTGJUfXF8M2VXLA3DKX
-X-Google-Smtp-Source: AGHT+IEjsLJZDcVKW7VjD94SJTTQGuy7D2CuSP0XnP5QiF1Og6sVMZnEnghTHukI4UHYi90JuQhxLA==
-X-Received: by 2002:a05:620a:2681:b0:862:79a9:eae9 with SMTP id af79cd13be357-86279a9ed9bmr629769085a.85.1758981821539;
-        Sat, 27 Sep 2025 07:03:41 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-85c3218ed08sm441368585a.50.2025.09.27.07.03.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Sep 2025 07:03:41 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 32CA4F40068;
-	Sat, 27 Sep 2025 10:03:40 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Sat, 27 Sep 2025 10:03:40 -0400
-X-ME-Sender: <xms:vO7XaOkakHRJvsqWLHFtsaCue-4lER0uhhpEdVDiyTQvM-clt7JAqA>
-    <xme:vO7XaMowdZoBt1ZvjERssLFIFryVG6xQlckUYy7sujr3aDmGX-PYQHGF_hsK0c2Eo
-    Uf2Ova8XFCQsgJX-tw5Pi7_C00N46SUWNM8sWlOBezUOL3bv9Px4g>
-X-ME-Received: <xmr:vO7XaFnYgBEE1kaYfoB7fpYi3AmmkijMgLG346jOoVPulJcBdMp3lcmUy8uvHHgxYgCXjKLneOcKzE4rmXrE-KkgUEMVrpF5>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdejvdegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgesthekrodttddtjeenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeffleekfedutefhkefhheekhfelvdejgfegvdejjeffudelkedtffeiveejteet
-    udenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepfeeipdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehmihhguhgvlhdrohhjvggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtoh
-    hmpdhrtghpthhtohepphhhrghsthgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeho
-    jhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhr
-    tghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpth
-    htoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggs
-    ohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhooh
-    hglhgvrdgtohhm
-X-ME-Proxy: <xmx:vO7XaFbfSe5rN_-sdK1GxSVnOKVKQrMFGfq8HBxu5s7_wZIGPoqLrw>
-    <xmx:vO7XaBHfE2uJGEmOZHTQaFl02_Nu9BhbWcr63y4RVIA07jBGfwUAgA>
-    <xmx:vO7XaIOoeTYs7_ZW_lDvrSrb4vXqP73TEUrfIfWq1jCcuhcOx4YGkQ>
-    <xmx:vO7XaHyutnwLGGZJM2FwjIsFy6LBiPy67EPfnCl-UBGlO2ywf0aDhQ>
-    <xmx:vO7XaFn7RDDlFLjCS5q9t1KCy6953tiUDCyGEEqgOuXe_UslZGYeGqpK>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 27 Sep 2025 10:03:39 -0400 (EDT)
-Date: Sat, 27 Sep 2025 07:03:38 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,	Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>,	Waiman Long <longman@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,	Justin Stitt <justinstitt@google.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Krishna Ketan Rai <prafulrai522@gmail.com>,
-	Lyude Paul <lyude@redhat.com>,	Mitchell Levy <levymitchell0@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev, dri-devel@lists.freedesktop.org
-Subject: Re: [RFC PATCH] rust: sync: Add dma_fence abstractions
-Message-ID: <aNfuulKIiLfjHRma@tardis.local>
-References: <20250918123100.124738-2-phasta@kernel.org>
- <aNa7BDpKS2KA__4M@tardis.local>
- <CANiq72=6pGtKKr3XeZXLVrJTNMv7YbGzbezSUrZ7A43MJQLwJg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1758991428; x=1759596228;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OOF0Bc+2gNxqDcWN5Q3dw7KfEBLw6JtH3pzFUg7pzQA=;
+        b=jbnldeDHP5FzNaiV8whgodIvMNMaBNjjUDgbvRbCQZxWKndd8yI3Q/hkzb9KYDv+qM
+         6KBhyWyU/eU/gvncsUVYBbcDGv+hNPaRCNVgREmv3I3hef1fXfpbEsa2+XYG4TSnxUud
+         PW9mTPMRjZwpsmjrLG80D7sFJEsaTQtAMVBK+KW7dKvd6yedTI/quJenUtU2OtpeAoxq
+         xPL1InNz21Qu48yP3nWVcvVkNA3kBg7zQQl9hnKEvw5NNAvPCh5ZQ/djaTtc2dsUJHVr
+         DessgdxL7Ef0qdczGan6Ci6/zLKRLm7/UoGPrU9tI2q7nmh78pyfxsOJ8rSbNxNFDtEe
+         9K+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUPJ7OgnZnhUubBjVowQGWekue8gA/YehkGhDoXAw9uMe9feDZRwd2B3trjNZr0vO6jBGYfx6O6lTAMvkLmtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3FIhN031eYlJFBMaRGDNWucyxDpXacfWNnWB71kad54+uWcFd
+	n/yxccHjdTdRB6RlSaZ4F6Xm+DaOzt7f34eZtZI8salyh6iaift/18s5
+X-Gm-Gg: ASbGncumn11SF4truPSqUYSG34r2mhiKwinziu5bPkHMSGnujeH16JOOaqsCPAHrbb1
+	IMOphjTgjymvvSSaiAlR7SZyZvoYsvalNt4qmjtA4l+PB38nRupRn8d/z5UPo/u9n1CtQPHp5h7
+	E/x2DU1AN/CsgHzCFuGbYGDpOFQY+KtEaVR8/h9pu6+If2EP/ISnO3wSBXtEBzGUzd1Y43wHi7K
+	HltRhXd2Yo9h5BGQ8aZCef8b/1Yp/3bolMHMurXLcNRcc8PAt7bMgKFZuooXZbQwwb2efoNpn65
+	LoTNRGPBxRF2Se8EIYKl8YaSx84kCRIrR9vnCZslr8LLoy/5OLMluDom7ur05jf/L8YbBNrDh1J
+	nM9zNy8nwMmUWf3i384nLURNtjB4gOz/83iC60KSl9HGOGzuzqmR0GnkfVgicQbCnQR5EYDXTT3
+	njNlccdqPRbxnpyurU1ilBjFTs6ElVqA==
+X-Google-Smtp-Source: AGHT+IFIv5xrxFaIIFhGL3xlayHFyRiak61vxIYfE2UYyGSdIiQTfaA3TXu6JLuem0D6Pr7aB35E1Q==
+X-Received: by 2002:a05:6000:400b:b0:3f0:4365:1d36 with SMTP id ffacd0b85a97d-40e4354dfddmr11267608f8f.16.1758991427482;
+        Sat, 27 Sep 2025 09:43:47 -0700 (PDT)
+Received: from ?IPV6:2a02:c7c:8b21:7400:a8dc:c580:efa:e675? ([2a02:c7c:8b21:7400:a8dc:c580:efa:e675])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb72fbb27sm11247673f8f.4.2025.09.27.09.43.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Sep 2025 09:43:47 -0700 (PDT)
+Message-ID: <f65c9cc0-318a-4c0a-9d0c-9c1a3d58d2b9@gmail.com>
+Date: Sat, 27 Sep 2025 17:43:43 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=6pGtKKr3XeZXLVrJTNMv7YbGzbezSUrZ7A43MJQLwJg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/3] rust: i2c: add manual I2C device creation
+ abstractions
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Hung <alex.hung@amd.com>,
+ Tamir Duberstein <tamird@gmail.com>,
+ Xiangfei Ding <dingxiangfei2009@gmail.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-i2c@vger.kernel.org
+References: <20250911154717.96637-1-igor.korotin.linux@gmail.com>
+ <20250911155015.97250-1-igor.korotin.linux@gmail.com>
+ <DCQ9AXZ5APKN.1835AK0PVA3S5@kernel.org>
+Content-Language: en-US
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+In-Reply-To: <DCQ9AXZ5APKN.1835AK0PVA3S5@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Sep 27, 2025 at 02:14:22PM +0200, Miguel Ojeda wrote:
-> On Fri, Sep 26, 2025 at 6:10 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > Thoughts? Miguel, Greg, Danilo and Lyude, any idea or suggestion?
+Hello Danilo
+
+On 9/11/2025 9:34 PM, Danilo Krummrich wrote:
+> On Thu Sep 11, 2025 at 5:50 PM CEST, Igor Korotin wrote:
+>> +impl I2cAdapter {
+>> +    /// Gets pointer to an `i2c_adapter` by index.
+>> +    pub fn get(index: i32) -> Result<ARef<Self>> {
 > 
-> Either way sounds OK.
+> Where do we get this index usually from? OF, ACPI, etc. I assume? I feel like it
+> could make sense to wrap it into a new type. Even though it is not safety
+> relevant it eliminates a source for mistakes.
+
+It usually comes as predefined magic number in a platform driver info.
+I'll define a specific type for this number for clearance.
+
+>> +    }
+>> +}
+>> +
+>> +impl<Ctx: device::DeviceContext> AsRef<I2cAdapter<Ctx>> for I2cAdapter<Ctx> {
+>> +    fn as_ref(&self) -> &I2cAdapter<Ctx> {
+>> +        &self
+>> +    }
+>> +}
 > 
-> More generally, one thing to consider nowadays is whether we will want
-> something to eventually live in its own crate etc., but for this I
-> don't think it applies and being in the `kernel` crate is fine.
-> 
+> This AsRef implementation doesn't seem to do anything?
 
-Being in the `kernel` crate is fine to me as well assuming dma-buf is
-also in the `kernel` crate, but I think it's not fine to put it in
-kernel::sync (see my reply to Philipp) as it is.
+I misunderstood the concept of the ARef<T> a little bit and used this 
+as_ref() instead of just getting a reference by &adapter. I'll remove 
+this in the next drop
 
-IMO, we have a few other issues of file hierarchy as well, so I'm trying
-to avoid more.
+Thanks for the review. All other comments are noted. I'll address them 
+in the next drop as well
 
-For example:
-
-- It may actually make more sense to revocable.rs in kernel::sync.
-- device_id.rs and devres.rs may be better in kernel::device?
-- maybe we should create a kernel::bus and put auxiliary.rs, faux.rs,
-  pci.rs and platform.rs into it?
-- cpumask.rs could be in kernel::cpu?
-
-Regards,
-Boqun
-
-> By the way, should Gustavo and -media be Cc'd?
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+Cheers
+Igor
