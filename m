@@ -1,332 +1,206 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012070.outbound.protection.outlook.com [52.101.53.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851F48834
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 21:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758920832; cv=none; b=OkhUwrE6kEOIU4rFEP4MPRUL0VvYnPRNyAHVUNa0sTKsTqpkzHQqBbNVuEDP1aFLR0EP80RV9OwYZVhf5c/N17Gi1JwQ6PoDON/DNr5qGMcm+pCkFyINJuaKoM/oxgNyLqQIMtcwRxJaPoZUFioBTM/E37FuJyvdNaXIHjKYZoE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758920832; c=relaxed/simple;
-	bh=zNQpeKWP6iuGOhZinBW1XMutuiMBR/+q9XOpc4A9o9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kwsi+rSB27qv2Akw7WEi+Gs+8Aqn/ie+Q4N0SUyaWjO+e1YngXAlybmUaAJ86i5jveTK50FL+kxjPfncPJbTL33j2YMvU5ZRjt+u7uYYDLBFqcpiVkFJzWPMjnJkRjgU1Nzzv5x+CAU0D6DyUD5D45b1J2AVUuggEMWp7OCGCAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=OzgAM4Wl; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277DE13B284
+	for <rust-for-linux@vger.kernel.org>; Sat, 27 Sep 2025 00:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758933081; cv=fail; b=C0cmTo/zskY4FJ7DbkhYMyRKRz9W8Lwuj0yDr8pp3kS3QJXdg5BWUMckQQE55Sbgb52y31oBsiDOWYdIfTFc1CqcF0c3utLSHsNg6G/zIxqaY/A1P19BsL7Kjg1zIxoy1NT3I/lmT3ULIdMg4K2dbyp6GbNt9wj0ih1otdzE+kA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758933081; c=relaxed/simple;
+	bh=KnjSVQOnOaIPEISJbE1EtMTGhGGChVvFNr5vwSNyHw0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=HtEVASmtr2/S3v9ACbZ/k88nj8RlqbxtPiAtP093J5y1Nu+I+oJK0+4dLYgMBK1YXejsuaVNTe+2kkyKE5RvaK07p6qyDseY8PR/cWR5cVm6YNn6BFQog7dhnBZUewmGC/43vp9pq2zmRkkf793Qk13lLSZbX/PvDggE9/IXhwc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ofdzw2cy; arc=fail smtp.client-ip=52.101.53.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="OzgAM4Wl"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b54c86f3fdfso2973795a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Sep 2025 14:07:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1758920830; x=1759525630; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KnypQUg3EKrzG9RmKnVPYdoI8/tvp78hXYQJseWkeXU=;
-        b=OzgAM4WlyfVg9esUCQ4S1VEi1fOPIK50vw3dEzYQ1l+AL9Bd9Ddmxkik9sPhvlzUsy
-         kWbdsip8BH4UA84c9wULgngKuSsZBEzXZi2t5EkPtRi/Pq/FFRq51G6i330QjhQyhVeY
-         szDCMgnXAb7MjRFan5dbj6cD/xp77ecGBCgBtH3FbpPMQy6wlwi/gKrbFJq9Lwkm8ORM
-         mAvzPIbDmm2QkG9atD75FdAnFneJUp2E2TFENu9AUS9D5wh1JvsSqxluARHcfTJkKNPr
-         pXI8Ce/SEPqCivghS51B88JfxzVqzbFYSCn1+7XBsKLAMNBsPVXCJaf/ydB4U4jS7mJb
-         +rUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758920830; x=1759525630;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KnypQUg3EKrzG9RmKnVPYdoI8/tvp78hXYQJseWkeXU=;
-        b=PX7GGnV5VC/BKT+OIWC3UvJe52CZErrtMp9yUjgwV3oSkCXnulj2jp1Qj3AsfKEijh
-         TgVCuE2KHQx9zPZWYrjn3s5qaSZARIUYI0mydNd8gdTDap00Gd7kOMDAf5508n7iAZuk
-         d/uPm4CpUNfSrvdVm+m4GGH/fYNiVzX0BUQaQzXlIgBxBa1EG7I710Fc8HjoFDgQdvvH
-         kIMoXd84HeevVUwFACZdp0TWXfh/0FokBwbsHZmFC/wZM1eI6mfAIa0XNbktnkF7Dxcm
-         Cecxr26JWhNGfapJHTK6FN8jlB25LPTmtogHVmBN0pVua9561YuYZ03X67Fk63vo4qKu
-         UWgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0Il2mU1x5lgCE+Dunr7+ESYfL14naz9Tkr+WyBj0Zd6xKbt60lSPsaJkq7W86K8dx/N35w1n3t/GdiGOUeg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9Er3/QVQzP3rLzjt7sqQrK0IOqFm7kQzm+k9/BPEHzX8u8N99
-	mAkMs0SBH4J6MkGFGlyCcTOwTkLs/TLTPXzAgeNZObo/F62yjxPIWkCqE8fEIMCUVsU=
-X-Gm-Gg: ASbGnctPyNstCGbLPz1PA5Q2EOMopntoLZLuN94MLGpmeN3IIqutRMZOfZSokBkACot
-	+iN/MIzDALLahgCS2TvxC0ZSzqyakW1VVltpNOzghrLXAqRbqL7+iHLri6FEogdQonIxUOXnYIz
-	6JP4hLZUVtpYYa/ojbEF3TPo86Re8HlTNU5c52Ij7upXc3tffMeavGB9Dezf8sWiaahq1krJGJf
-	tZ1rErK8fHe7/u7AuwNqXZf6IY6cFW9lbUGOr3vodaVQVOzWkhHhsIbPIplhunqPpuKWu9xzIwD
-	JAyLagZ1wnLjs5p7GJlzf1O0PI+56YGEJMlnw8LgHhYFMhZQPWpajLfoL8SuPi0UOvoRY77ZOhh
-	kJZmhArvwO9fK+fYLd6PwEdCXaLsU3is++Erlp02GSFc=
-X-Google-Smtp-Source: AGHT+IHn6NeY5dtoWojDFn95+d6BgY2U1yoTg8Yib4J+bRdePmMEhyGi2ikTPsB6k/JjLKsrf4UQUQ==
-X-Received: by 2002:a17:90b:17ce:b0:32e:7340:a7fe with SMTP id 98e67ed59e1d1-336b3ca1d27mr750014a91.12.1758920829689;
-        Fri, 26 Sep 2025 14:07:09 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b57c55a2c45sm5436382a12.45.2025.09.26.14.07.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Sep 2025 14:07:09 -0700 (PDT)
-Date: Fri, 26 Sep 2025 14:07:06 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Charles Mirabile <cmirabil@redhat.com>
-Cc: pjw@kernel.org, Liam.Howlett@oracle.com, a.hindborg@kernel.org,
-	akpm@linux-foundation.org, alex.gaynor@gmail.com,
-	alexghiti@rivosinc.com, aliceryhl@google.com,
-	alistair.francis@wdc.com, andybnac@gmail.com, aou@eecs.berkeley.edu,
-	arnd@arndb.de, atishp@rivosinc.com, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, bp@alien8.de, brauner@kernel.org,
-	broonie@kernel.org, charlie@rivosinc.com, cleger@rivosinc.com,
-	conor+dt@kernel.org, conor@kernel.org, corbet@lwn.net,
-	dave.hansen@linux.intel.com, david@redhat.com,
-	devicetree@vger.kernel.org, ebiederm@xmission.com,
-	evan@rivosinc.com, gary@garyguo.net, hpa@zytor.com,
-	jannh@google.com, jim.shu@sifive.com, kees@kernel.org,
-	kito.cheng@sifive.com, krzk+dt@kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, lorenzo.stoakes@oracle.com,
-	lossin@kernel.org, mingo@redhat.com, ojeda@kernel.org,
-	oleg@redhat.com, palmer@dabbelt.com, paul.walmsley@sifive.com,
-	peterz@infradead.org, richard.henderson@linaro.org,
-	rick.p.edgecombe@intel.com, robh@kernel.org,
-	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
-	shuah@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
-	vbabka@suse.cz, x86@kernel.org, zong.li@sifive.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Message-ID: <aNcAela5tln5KTUI@debug.ba.rivosinc.com>
-References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
- <20250926192919.349578-1-cmirabil@redhat.com>
- <aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
- <CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ofdzw2cy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AsauvG0z4pqW7HUD/91ALPZwkbYpetcdj/hx9/WK9S70SKcCaBglhvQV7WC844L/zAQbV0i9E96Aqd8GKTqhj4pP8V6S3mZLsXlRiLRE8StKwY8zAebh3Tjsk9VJW4TX4D8+iyb5WlGG58RjLThPb+C1zOuD6iMWmh4wr+k1rPjatV2w+sZZ5K2+FehFkKiAGxNjpbz4UhLSrY0QncLJBpcDczYWxgxwjZABtyAE6du9+GsAEx9QWigJNIwZOqpYskELL+ibgA9ElpzUhQEP0/WNWJKX5rcPw73ZgS/K2QXJBp0tmJKYdzeisx/fSCnDi6IKJirSmrmuZj1dfMTEdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dAXbEIr4xoIBrre9x5kBqybP0BchS/JCt6mVegot7ks=;
+ b=Anlu+m36vfiiDtVibNW6D/H/pJ3TxiMzEsI5QjVgADTp/dTDnfjFAGgqJKqtQ8UZzhFZthsq65OqmGgYFmS1dZJGjJJzqfi/h3w9hoLHT9NUnHxnj1XBu6ZPVwx1n1kGxY8snSOm9/FwFgw/RXwplMC9yqO39h1Yg7014i5Vwi2gISjM1BLAziB6CvRqQ2V4aYe2UQJOr53vSz1kescJxtiP80dnCsVRwTsV8VdDfSVh/ZSjVGLZ/cHJYitBRvkdYXc1+/X23jaxU74Lma2wWyW3uHt0cbeG6+jOnNz/IfJ4vxW9vYlkfU6RnxhzDGVKgRAyYcAZuRI2atvJDdtBCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dAXbEIr4xoIBrre9x5kBqybP0BchS/JCt6mVegot7ks=;
+ b=Ofdzw2cyocl0D7qJvI/8eHKppFu9vQowgRMfnkZ0PNpzt/kclOHf3xiQRoKMc/UreEEzDoLbEk2WQehZne0m4u1zc8JNcEPUjnGEibIV9OJSeFl3YHfLlcp7Roeqn6JZrbVZQt9GS3/vEIPdirKwhyAw6GWQxjgc9l47rJHqIt7uLR/tD6VmmM3E1QRSUU4rPdIuzQ927wyGfBb7TS0MWGBYzagG0a+lZHqGiTSI0WUYPTJ7X4E0yHm7wdrfkeBuGIT/XbmyxDpNUxee6H3SKMVrtUHIa6YdcDf1Pni6HybxdvGZsJeGbqHi+e1U9aa23xWj0+LM5RIYZNuNbU4ebg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB4127.namprd12.prod.outlook.com (2603:10b6:208:1d1::24)
+ by DM4PR12MB5818.namprd12.prod.outlook.com (2603:10b6:8:62::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.13; Sat, 27 Sep
+ 2025 00:30:45 +0000
+Received: from MN2PR12MB4127.namprd12.prod.outlook.com
+ ([fe80::a0ad:4e23:765e:7cb6]) by MN2PR12MB4127.namprd12.prod.outlook.com
+ ([fe80::a0ad:4e23:765e:7cb6%4]) with mapi id 15.20.9137.018; Sat, 27 Sep 2025
+ 00:30:45 +0000
+Message-ID: <d2003100-82df-4c72-b6f8-0d995c82a9f0@nvidia.com>
+Date: Fri, 26 Sep 2025 17:30:40 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] gpu: nova-core: gsp: remove useless conversion
+To: Danilo Krummrich <dakr@kernel.org>, acourbot@nvidia.com,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org
+References: <20250926130623.61316-1-dakr@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20250926130623.61316-1-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR05CA0147.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d::32) To MN2PR12MB4127.namprd12.prod.outlook.com
+ (2603:10b6:208:1d1::24)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB4127:EE_|DM4PR12MB5818:EE_
+X-MS-Office365-Filtering-Correlation-Id: d524f361-9ba4-4ac2-72f7-08ddfd5d1860
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RnNjNGpZR2JKdTRBcnlKbG9aV2VscEJXSEE2ajFDSVlhZ3NjUUZ3OU0vOFpi?=
+ =?utf-8?B?M29Obm1JUTcxQWVra3JveW82c2lCcVR4d0RXRmRXdnFzUWFjb0JIbldWeFJT?=
+ =?utf-8?B?QVFpNEFmTU5DdWdQU05IQ1pERnkvaGY2M1RkQ01vbW5RT2pUemd2ajZaZ3k5?=
+ =?utf-8?B?REVQVEdtbktZRzJoczVneVZBOFhuNXhqbnNPOExkUEdVeks0NVpoMmg0dEcx?=
+ =?utf-8?B?ckczemhTZ0JETHlMeGIvYWhsZ2FvSlVsQ2g3VWFKZlFTTU92V3Z2REx3bTFF?=
+ =?utf-8?B?QnNRS1Fzd2x2TEx2a2Rid3VFTDBIT3dZOTVYbGtCK2s0a1hpR01zUHFTWTdK?=
+ =?utf-8?B?eGMyUldLaVpsWFA4YVhGUXptMGV5bEhLRlp0R2d6NGFHSmtOOUdxWUlBZmxD?=
+ =?utf-8?B?TVhjU09NK1BFZVErUUZsUlY4WHB2ay9ud2JpaGNEZmVDS3BacVExcm5BZlFj?=
+ =?utf-8?B?Z1F2bUwvUDdTSC9jOS9DSW9FSkVNZ1RBVXhMMkF5YjJLYnVWSk5zYVNEdWRB?=
+ =?utf-8?B?NVk0bnlMdWlzbkVjb01rWHhnRG1LR1NTaEFNUEk4SmRpUXdCQytybFFyc2x0?=
+ =?utf-8?B?Z1hQUS93VUpGaHd0WDdWNHZ6YVVMRDB4dmFWN3RsTlo0T2FMRXN6bFhiQ1Q0?=
+ =?utf-8?B?M1ErN0E2MUcvWWtQR2N5bUhSaEh6SU5MaFM5ODQ5ZjQ1dmNCc0lYRTBwOUNZ?=
+ =?utf-8?B?anczMTRpYWpQbWNmUUxwWW92S3V4WGZJcWs3L3JHYloxaU9URGNFVDRQcXNN?=
+ =?utf-8?B?SlNHR3lkanhLUGgvMGY5dGVvWDJQS3FybGFldGhyRkwrZW14eEhrZ0IxMmRq?=
+ =?utf-8?B?bkdUalZZSENoUTFwUHl6dFdFSmRZcjlyU2o0L2gwYklNZUsxM2VVZllZSk9H?=
+ =?utf-8?B?OWJidVdEWE1VMEJ4bWZlU2FJMCtiUXU1OGpRRDVQRXkzQVJaTmJ3ZEZ3Wlpa?=
+ =?utf-8?B?cTBuR2x2YlFIRmtZRTZMVHBndksyNDVvUk1EU0RUM052L0l2eVVuK2Y4UEYy?=
+ =?utf-8?B?VWVXR3RnSmhzYXdjMDhlbWhSSFlidWU3NkFnY2gzZUwrd2hIcURhRFQ5dnZj?=
+ =?utf-8?B?WmhCYU90MzlQUUtDdjRwTDZKNEE3WEVkSXE2SVZnQWtxMUtpT1NZM3FvMjV5?=
+ =?utf-8?B?QTZreWZsZFFnSmczdCtQTTFRSFJVMTJLQlJDMDZRWU00N2JvcG5LNXFENkdS?=
+ =?utf-8?B?ejY0SFpGVk9tRlV2RVBObk9kUFg1OVp4bWNvRmlsWTFRVVkvU1kwN0RMNmx3?=
+ =?utf-8?B?ZEs5OUg3VEgxSXY1b0xqZG5KZjcxYk5pWUhPUXJldzVjRmR0Z3RBV2ZIaTBl?=
+ =?utf-8?B?ZlRvcjRPOXJ4NTU0YUo3aTVDaWI5VHpKNlQ4WlUxWklKbmlIUmsrbjg2blVh?=
+ =?utf-8?B?K1V4MjdpUWtqMHIrd29ISjFST2N2cGF6Tm0yQWlFMUV6NXFxdTN2YTFlM3Rj?=
+ =?utf-8?B?NkdBQmIvR1J3VjVzcllQZWpyRTFWOTRVaS96aVZCa2VZZlY3M3ZxUU8xb0dO?=
+ =?utf-8?B?c05IMXVIUGZDd1hENFJCZXZCeTZuUEJaaS9WU1MzRnNXRUNjK1Y0VmpHb0N4?=
+ =?utf-8?B?VmxOQWdZSnVXRG9Fc2xkNm92L0Uzd0dnRnJWUDgvM1R6bjFrYzNnUDBOalZi?=
+ =?utf-8?B?aXE3dk9UdE5tWXFTaDhrZStZZjlIMXpmR3ZHcERhNnNvZkUxaTdkZ3BjTnlx?=
+ =?utf-8?B?MktnOUJSRzBJaVZrZ1cwT1BkY1FNTHNGY29PNXR1Mmh2cDMxaXk1bU9vMFhB?=
+ =?utf-8?B?RlhQSkdnZDlVYVlGRFV6TkpZSmgySG1KVnh2ZFhQNXl4TkdBN0Fsc3o1SXlH?=
+ =?utf-8?B?WDI4dmpIbE1wTllsOTdGS2NXSEFqZHhLWk5hM2FZOHppbm9GTnY0TnV6OWRS?=
+ =?utf-8?B?R0VPR2wvVWNSbGF6WVpjRTBsdXVLQ0lucEFtUG5JY0JXbnNTWVZ5SHBiYUhP?=
+ =?utf-8?B?Ry85VmZ2aThkNW1SdWd6bkZGNWFWZkk1WjE5QXlBVDNTYlg2K2dpMVRoQS8w?=
+ =?utf-8?Q?8ci66l92U+eJ3df16YjUZHLbxr2ZTM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4127.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OUVmTXVNai9EMEhzK3A4NU1ZNXIvMGF1Mm5oRXhpQ0VESldSUEpTU1lDWlRS?=
+ =?utf-8?B?OEJKNEtLcm1ZUmIxNGQ0c216ajE1RU45NHVtT2Q4SHpta2o1UHFDbXZEcEY5?=
+ =?utf-8?B?WlllcHJGOXN2WjNTY1F6MllDMmh3L05xZ3FWZmdrS0dvbzhJVlZ3RTQwM2Y5?=
+ =?utf-8?B?Z2gzeW4wc21NY2drRWFvdmdqZEN6aUhpcHZJN0QxV2ozYjFEMnArUnJOTlp0?=
+ =?utf-8?B?MmhqU2NGTnBiSzhwMVNIK2QvVmRibDNET1Yzd21BNkJTd0F5WDdteitWMHJW?=
+ =?utf-8?B?NWNRRXY3UHJzVzdlRnlyL05EbEY4dDk1ZkJycFJuUTg3dW5aeTA5UWlDVDJE?=
+ =?utf-8?B?SjJIRS9nM3lyL1V2amJRSjMzaDdsQUpZVFp0RVBVNWJPWDUwcmsxK1NtL0FD?=
+ =?utf-8?B?NEJDdm5FeUV1M25kOHgweWRVUC80NVlzZFY0b3dNaGNRYk1ZeWVlSGZHYTBR?=
+ =?utf-8?B?MTI1UkI1aGxtSE0yeE5Ic3BxSWZoeUd3MGN0RGpDdHBLcWgvTUVhZ0NwU1pX?=
+ =?utf-8?B?NXNTTVlJRkk0VDV5aEJzZFdtdGorQVlod3NMRUtpc1M0b3FDR2phbjlPZWVi?=
+ =?utf-8?B?T0I0ckkzRkZJblN5TkJWSEREOEVURWJlOFBjVDZ1RGt6VDd0Wlh5YnRJWUpp?=
+ =?utf-8?B?eVJCOGVsNzl5VEQ0TlZmam9pTnQ1djVYQW5jcDFYKzZHcXB2V1pwbDZBaFd0?=
+ =?utf-8?B?c0RqSVB0cnRNaERUQnVWZEx5cjBNN0pKaXBiSjdOMU1WWWxtTlZrVTZRcTBN?=
+ =?utf-8?B?bmE2N00xUlRPNXBxZHBCRk9vbXRMZ2tOcGV6bWF5VjM5WmJZbUVrakxneVVp?=
+ =?utf-8?B?dEZON2FCeTZGUTZwOVpocURiZHFYNFFDNEJRRkxGc3ovOWRVZFczeDdiNkl2?=
+ =?utf-8?B?eEtzZDllQ2ZjQ0xPbFFueUEzbkthUlNSVjJNNGpEMG95TkFOekZRNC9UWUZr?=
+ =?utf-8?B?b096d09zclBwKzYyYXA5V0lmbFVFN1luWjlCV0llSzk0Um5RNi9jUk90UWVi?=
+ =?utf-8?B?NzRMRGJmVEo2RGtjbGdJcUw4MEM3UzFzT1RLRERQTmp0dlNjdjMzdFl4dllG?=
+ =?utf-8?B?VjV4K0hPR1dERkkxamd2MmVMREI3UzFONFlKQXdBUDBmeE9HazRScklJRW14?=
+ =?utf-8?B?d3dUQVExSzZVdTlqZlNQMW85V0d6ZCtvc2RXRUg3NnFtdTg3OEpTenlVTzBh?=
+ =?utf-8?B?VnZtQmNWWUdlU0dxdC9xSXNTdEhwL0hGSTdpQTBZMjB1SkVFTUxmZ3A1amJF?=
+ =?utf-8?B?eldkdEw5T1dlcExWd3JjbWFxRXh6ZnB4U3FNZGwvVHNQL0QydjJyK1RpZ3F5?=
+ =?utf-8?B?aGxFQzFzc05WdlFmdStqTW80czIvd2Y5ZEpWY0NtaDFma252RUlQOTZKNTVC?=
+ =?utf-8?B?RDBYRGR6UWF1MW4vdnpRZ2JKZVNiakhxZTU0MjdvZDd2VlR2Q09uMzg4aHVR?=
+ =?utf-8?B?WW14d0lyOERzaVpHT2trMFgrUzRPVDVWWlFSWWRjZnI3d0ZyYkdzb1R3akM2?=
+ =?utf-8?B?S3h1ejB2U0J3UUtjSmk5V1BBM0NmU3ZHaGU2Q1EvRk9vUFNQc1N4ZVl0TDR4?=
+ =?utf-8?B?MkZxWFBpZ2hNcGIvZW1GT2h0RjAwYTVKTHBYRmRpVnNJOTFOMWdsRjQ0K3FZ?=
+ =?utf-8?B?Y3FhRTlZQkpUU2xMSXBzc09OOTlkS2RobVJBWU5sdXc4cHhkSHJmTkRnMjVR?=
+ =?utf-8?B?QWJTRW1sSFQ2elI0UmVxY1g2UjRQallTSWFuWGNnYmJrYkc5eFU4SWFIRnZY?=
+ =?utf-8?B?ZG8wNlJzWGM3QXI2NHFjR3BMQWtFUWZYWHRjbkk1Vnh5cEwydVFSUnJiWmhs?=
+ =?utf-8?B?WVBXRWFtaE1hTzBrYzFUNElhbVB6dThOMWhMclA5UVc2R1MwMFVoMWk2ODBF?=
+ =?utf-8?B?RnhoUDdJeno2ekhQZG9pV1ZZeEN2OTErdW43Sjg4eFp6b0h6UEcrMHExVmRB?=
+ =?utf-8?B?R1NjeWFvS0NlWWcrSVFLZFNMN3Z0YWpubWRvaXN4WVFVL3JoNDdDbFFmdGNn?=
+ =?utf-8?B?Q2xZYXFKdTRRcW1JMnh4RTZoendEcW90dnhGUGhxZGVHMVJhd1kyR09aOVhm?=
+ =?utf-8?B?ZTlUTHhtWE15SDZqa0hXWEFSUm45aWpqaStwRWdZMU4rRHhlZW85ZHFvUCtD?=
+ =?utf-8?Q?pyp/yKLF5RkxoqzNJGqbVolpF?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d524f361-9ba4-4ac2-72f7-08ddfd5d1860
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB4127.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2025 00:30:45.2174
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9CK6ophGHtvZxhY4E1hp1ZizwdJb0ohrO6ZWXchrdYCY1LYQ1UK11X326cXIxi1Jc+nkbYIekfUEesFI5Q0CLA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5818
 
-On Fri, Sep 26, 2025 at 04:28:58PM -0400, Charles Mirabile wrote:
->Hi Deepak -
->
->On Fri, Sep 26, 2025 at 3:57 PM Deepak Gupta <debug@rivosinc.com> wrote:
->>
->> Hi Charles,
->>
->> Thanks for response. Rest inline
->>
->> On Fri, Sep 26, 2025 at 03:29:19PM -0400, Charles Mirabile wrote:
->> >Hi -
->> >
->> >Hoping that I got everything right with git-send-email so that this is
->> >delivered alright...
->> >
->> >Wanted to jump in to head off a potential talking past one another /
->> >miscommunication situation I see here.
->> >
->> >On Wed, Sep 24, 2025 at 08:36:11AM -0600, Paul Walmsley wrote:
->> >> Hi,
->> >>
->> >> On Thu, 31 Jul 2025, Deepak Gupta wrote:
->> >>
->> >> [ ... ]
->> >>
->> >> > vDSO related Opens (in the flux)
->> >> > =================================
->> >> >
->> >> > I am listing these opens for laying out plan and what to expect in future
->> >> > patch sets. And of course for the sake of discussion.
->> >> >
->> >>
->> >> [ ... ]
->> >>
->> >> > How many vDSOs
->> >> > ---------------
->> >> > Shadow stack instructions are carved out of zimop (may be operations) and if CPU
->> >> > doesn't implement zimop, they're illegal instructions. Kernel could be running on
->> >> > a CPU which may or may not implement zimop. And thus kernel will have to carry 2
->> >> > different vDSOs and expose the appropriate one depending on whether CPU implements
->> >> > zimop or not.
->> >>
->> >> If we merge this series without this, then when CFI is enabled in the
->> >> Kconfig, we'll wind up with a non-portable kernel that won't run on older
->> >> hardware.  We go to great lengths to enable kernel binary portability
->> >> across the presence or absence of other RISC-V extensions, and I think
->> >> these CFI extensions should be no different.
->> >
->> >That is not true, this series does not contain the VDSO changes so it can
->> >be merged as is.
->>
->> Look at patch 23/27. It does have vDSO change. Although shadow stack
->> instruction are inserted as compiled flag for vDSO only when cfi config is
->> selected by user. Right now default is "No". So it won't impact anyone unles
->> user explicitly says "Yes".
->
->Yes sorry I caught that after hitting send and replied to my own email
->(but then I said 19/27 instead of 23/27 *facepalm*)
->
->>
->> >
->> >>
->> >> So before considering this for merging, I'd like to see at least an
->> >> attempt to implement the dual-vDSO approach (or something equivalent)
->> >> where the same kernel binary with CFI enabled can run on both pre-Zimop
->> >> and post-Zimop hardware, with the existing userspaces that are common
->> >> today.
->> >
->> >I agree that when the VDSO patches are submitted for inclusion they should
->> >be written in a way that avoids limiting the entire kernel to either
->> >pre-Zimop or post-Zimop hardware based on the config, but I think it
->> >should be quite possible to perform e.g. runtime patching of the VDSO
->> >to replace the Zimop instructions with nops if the config is enabled but
->> >the hardware does not support Zimop.
->>
->> Why kernel need to do this extra work of carry two binaries and patching it
->> runtime?
->>
->> If for instance we do this, and then this allow this kernel to be taken to
->> pre-Zimop hardware, it is assumed that entire userspace for such hardware
->> was compiled without shadow stack (thus no zimop). In that case, kernel
->> should have been compiled without CFI option.
->
->You raise a good point, it just breaks the tradition of runtime
->detection and backwards compat that has been the standard for riscv
->extensions in the kernel so far.
+On 9/26/25 6:05 AM, Danilo Krummrich wrote:
+> Meanwhile nova-core depends on CONFIG_64BIT and a raw DmaAddress is
+> always a u64, hence remove the now actually useless conversion.
+> 
 
-riscv (and others arches) have been able to do that because of "alternatives".
-It's just that due to composable nature of riscv, alternatives are just spread
-everywhere in the code and feels like riscv is doing something unique here.
-Whenever there is a surgical placement of certain instructions in kernel, it
-could be hidden behind alternatives and be patched in runtime.
+Because I'm already here and have at least mild OCD, I'll suggest
+saying it like this:
 
-However situations where instructions are emitted as part of codegen, there is
-no hiding. Either it works or it doesn't. If we have auto vectorization enabled
-in usermode, such a binary won't run on hardware which doesn't implement vector.
+"Because nova-core depends on CONFIG_64BIT and a raw DmaAddress is
+always a u64, we can remove the now actually useless conversion."
 
-In case of shadow stack, it similar situation. If enabled compiler decides to
-insert sspush and sspopchk. They necessarily won't be prologue or epilogue but
-somewhere in function body as deemed fit by compiler, thus increasing the
-complexity of runtime patching.
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  drivers/gpu/nova-core/firmware/gsp.rs | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-More so, here are wishing for kernel to do this patching for usermode vDSO when
-there is no guarantee of such of rest of usermode (which if was compiled with
-shadow stack would have faulted before vDSO's sspush/sspopchk if ran on
-pre-zimop hardware)
+Either way, it's clearly correct, so:
 
->
->It would be nice if a kernel could be built that would run on both
->pre-Zimop and post-Zimop hardware and be able to offer CFI to
->userspace when running on hardware with Zimop (and Zicfiss / Zicfilp)
->but agree that it is a burden.
->
->>
->> Just for sake of thought exercise, let's say Fedora 43 is first release with
->> RVA23 compatiblity (zimop and shadow stack), there is no way this and future
->> release will be able to run on pre-zimop hardware. Unless redhat is going to
->> start two different binary distribution. One for pre-zimop and one for
->> post-zimop. If that would be the case, then compiling two different kernel for
->> such two different hardware would be least of the worry.
->
->It would be one thing if there were hardware supporting
->Zimop/Zicfiss/Zicfilp readily available, but I am not aware of any
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
 
-And that's the reason currently default is "No" for cfi config in kernel.
-Hope is whenever we have hardware, we can start lighting up and take decision
-how to proceed. I keep reiterting, door isn't closed yet but we gotta approach
-the door.
 
->platform other than qemu to test this code. 
+thanks,
+John Hubbard
 
-I have tested this with qemu in following configurations
+> 
+> diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-core/firmware/gsp.rs
+> index 9b70095434c6..ca785860e1c8 100644
+> --- a/drivers/gpu/nova-core/firmware/gsp.rs
+> +++ b/drivers/gpu/nova-core/firmware/gsp.rs
+> @@ -202,8 +202,7 @@ pub(crate) fn new<'a, 'b>(
+>                  let mut level0_data = kvec![0u8; GSP_PAGE_SIZE]?;
+>  
+>                  // Fill level 1 page entry.
+> -                #[allow(clippy::useless_conversion)]
+> -                let level1_entry = u64::from(level1.iter().next().unwrap().dma_address());
+> +                let level1_entry = level1.iter().next().unwrap().dma_address();
+>                  let dst = &mut level0_data[..size_of_val(&level1_entry)];
+>                  dst.copy_from_slice(&level1_entry.to_le_bytes());
+>  
+> 
+> base-commit: 299eb32863e584cfff7c6b667c3e92ae7d4d2bf9
 
-qemu implements cfi extensions:
-Kernel with cfi enable is able to host userspace with and without cfi compiled.
-Kernel with cfi enable is able to host userspace with cfi but disabled (default
-to zimop)
-Kernel without cfi enable is able to host userspace with cfi (default to zimop)
-and without cfi.
 
-qemu doesn't implement cfi extension:
-- Kernel without cfi enable is able to host userspace without cfi compiled in.
-- Kernel without cfi enable hosting userspace with cfi compiled in faults in
-   libc/ld on first sspush.
-- Kernel with cfi enable trying to host userspace with cfi faults in libc/ld on
-   first sspush.
-- Kernel with cfi enable trying to host userspace without cfi faults in vDSO on
-   first sspush.
-
-Last case is the only breaking case, rest all compatibilities stories work.
-In order to solve this last compatiblity story, I am fearful that we might be
-adding un-necessary complexity in kernel which isn't desired because rest of
-the userspace won't be signing up for that complexity of patching and making
-it work with single binary.
-
-> Since it breaks
->compatibility with hardware I am not sure anyone will be able to do
->anything with this config option and it moves the burden on to each
->distro to go in and specifically enabling it vs just making things
->work to get important security improvements if the hardware has
->support and not if it doesn't in a backwards compatible way.
-
-I wished that shadow stack instructions came out of HINT space. But it is
-what it is. Perhaps distro should give this feedback to RVI. But here we
-are.
-
-zimop is backward compatible only RVA23 onwards. That's why it's important
-for distro to make a decision on this. Once they compile for RVA23 profile,
-it assumed a clean break from previous hardware. Future extensions will also
-take encodings out of zimop and thus I believe its better to take that decision
-now with first user of zimop.
-
->
->>
->> Only other usecase is of a seasoned kernel developer or build your own stuff
->> in embedded environment, those users can anyways are advanced users. But it
->> forces complexity on rest of kernel. There will be more extensions taking zimop
->> encodings in future, we will end up patching vDSO and keep this complexity
->> while rest of the userspace will not be patched and will be separate binary
->> distribution (if OS distros endup distributing multiple binaries per release)
->>
->> >
->> >However, that concern should not hold up this patch series. Raise it again
->> >when the VDSO patches are posted.
->>
->> As I said earlier, these changes default cfi config to No. So whenever this
->> is selected "Yes" by a distro, they can drive such patches (if there is a real
->> need)
->
->If we did the patching we could make this config default to yes to
->that you are building a kernel that is set up to be able to offer CFI
->when running on hardware which supports it as long as you have a
->toolchain that recognizes the extensions which I think would be good
->for moving this important security feature forward.
-
-Again, Why kernel should be doing this when rest of the userspace isn't
-patchable on pre-zimop hardware (thats the only scenario patching is needed)?
-
-Are distro's distributing different binary for with autovec and without autovec
-for different kind of riscv hardware?
-
-Giving example of Fedora 43, once it is compiled in with cfi enabling, kernel is
-also compiled in with the feature. Its not like there is going to "Fedora
-43_rv64gc" release. If there is going to be a "Fedora 43_rv64gc" release, it'll
-be much easier to no select CFI for that release's kernel compile rather than
-kernel doing patching in runtime (rest of userspace is not doing any patching)
-
->
->>
->> >
->> >>
->> >> thanks Deepak,
->> >>
->> >> - Paul
->> >
->> >Best - Charlie
->> >
->>
->
->Sorry for stirring the pot on this. I really appreciate your work on
->this patch series.
->
->I agree that this is a difficult call, and I could see it going either
->way but I lean towards trying to maintain the backwards compatibility
->because the hardware doesn't exist yet.
->
->Best - Charlie
->
