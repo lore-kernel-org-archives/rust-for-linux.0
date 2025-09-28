@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7141A3FE7;
-	Sun, 28 Sep 2025 14:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705F6A927;
+	Sun, 28 Sep 2025 15:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759070867; cv=none; b=swdLSX3CmAGifklRrdi8cqWiLeIAphps+wlNpmuWTTtm7zsHUlBCCyRamjpcFNntB4M4uEtsn9gWIlanmY99rVQf96JUqmIcxlHLYF09TlbQm+Jroey3gLAPaDD3Jij543q89UCtqVo7gxcxUrBKzdlu5GF+E4xA19dxg9ADwsY=
+	t=1759072867; cv=none; b=hrPG2Q5Lvpu4eBgrGDL98vvGZ+hCdKGY7XDIBDR77ERE9lsG2d7V2rxjK9crUCKlDbABapZvszOajIjCLt459+l6mUVKfYsPu+dQWNjP+awelw5DYIvDksTLJ+HMD95cRYdB2CEFQpPGbJ9s0lJ/KrhpO2fe+v5OWuj+xJkiSqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759070867; c=relaxed/simple;
-	bh=vvNwfQ/2Efdxogg3wf2Xq+cs+e22mGauJxHdeTezgIo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=HwsTGhJpnfuGxx4RF93FKUIeR17hLkU1Cxa/zX8611raVotYwHrn//IAz0/NRlirKGj/q8d49JVNujG7ir0rqTAiNqqXcJ7byc3aBtcif5yytKkzBXZ4LR7SsIxWCWKlkUmzznqIDe1xvkiKA1ebfXIWHhz/AVpS2LJTzF4BOU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CvPXqnCr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759072867; c=relaxed/simple;
+	bh=Qy13vn/0xGJisCs8MfBrt3Mi0jPcM5ZsRRMAKMd4hds=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=kEtfiLwBOZjgQ/QQfsV1lXjZeCOjVy8NvoKv8Y5/idh51l9G/Letr9SQ3Sszxtgl7AOBixb7OkLtWCWdPmfY5DT7rDTzgg3JZhILwhn8wXYfE+cJP37uwrpI93JahO7ogqnu48y6Zb2xHYpq8a6kMjgdC3nXd7/Ol9qXbHYzOWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0SM9na7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CvPXqnCr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93ADC4CEF0;
-	Sun, 28 Sep 2025 14:47:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0SM9na7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D785C4CEF0;
+	Sun, 28 Sep 2025 15:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759070867;
-	bh=vvNwfQ/2Efdxogg3wf2Xq+cs+e22mGauJxHdeTezgIo=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=CvPXqnCrkzZPSVVaZJKnQZOCfXZvPQAiWaz7udbp3rkaHKddCoEDBU5xg6BP9g9sS
-	 NEZ8+LLM6bS4O57MhmCgoMguvqYfPXcb3iVLE/LQ0F2T2ESOVD4CIvZYeqah6aNoFm
-	 acZdXEQCH5F5SPtOKSxUPXwJ54Xq9m2rZG5gUhwIpg4xADsqrvuNBUQaGpwj08V9Fr
-	 1y/4J1PYCL/aCunNd0CmYa0odmBx/ThHY8IBSZKVwSaa33W81hfzZlOXjwn9Z2987C
-	 CMAyiKgmFJqbbjmKEkMjX/z3ChWec6QnGiFL61d8LinWqtsT4rYIujULfvBxrm8t1f
-	 WHM1yv80HwxYA==
+	s=k20201202; t=1759072867;
+	bh=Qy13vn/0xGJisCs8MfBrt3Mi0jPcM5ZsRRMAKMd4hds=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=e0SM9na7g5z+/YmdwtIrWAvqZlqdauEPixsNjBAEuutoSLqXcYLvyWLQZOAq6GSck
+	 2fLuaOmmlsxhdaMkKMWYf4qmEjLed3qy/qbkDnMfHxM4WXdvduT1+s1ZMRqqMmXg0S
+	 EgirIm3T1nkz0fW3RLyvEtoD2fs/vZwRtI71Sjp2UsrXsVwk26j8Xyry0Syg3dQiD6
+	 t+P5uQ5ITRG5VoxNEqsOj2MbGawm1apTKPRDq0eSPpuOCQJaODbTqjJy26K+AqA8fp
+	 4Rb07T4rKlSWoAAHjcHVbiTQHLzi0dOloAmX6EiRFwG2wMrTv9/UdUqccz9FSXwAXX
+	 iOV61NQUDgQyQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,45 +34,58 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 28 Sep 2025 16:47:42 +0200
-Message-Id: <DD4IKU7O94WN.2VALE9M80XGQ7@kernel.org>
-Subject: Re: [PATCH] rust: slab: add basic slab module
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+Date: Sun, 28 Sep 2025 17:20:59 +0200
+Message-Id: <DD4JABIXIZLT.120ZAR2GODC1O@kernel.org>
+Cc: "Philipp Stanner" <phasta@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- <linux-mm@kvack.org>
-To: "Elijah Wright" <git@elijahs.space>
+ "Trevor Gross" <tmgross@umich.edu>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Waiman Long" <longman@redhat.com>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
+ "Bill Wendling" <morbo@google.com>, "Justin Stitt"
+ <justinstitt@google.com>, "Sumit Semwal" <sumit.semwal@linaro.org>,
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>, "Asahi Lina" <lina+kernel@asahilina.net>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@gmail.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Krishna Ketan Rai"
+ <prafulrai522@gmail.com>, "Lyude Paul" <lyude@redhat.com>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <llvm@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250924193643.4001-1-git@elijahs.space>
- <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
-In-Reply-To: <DD1SGLU4180C.361W5XLH76XNC@kernel.org>
+Subject: Re: [RFC PATCH] rust: sync: Add dma_fence abstractions
+References: <20250918123100.124738-2-phasta@kernel.org>
+ <aNa7BDpKS2KA__4M@tardis.local>
+In-Reply-To: <aNa7BDpKS2KA__4M@tardis.local>
 
-On Thu Sep 25, 2025 at 11:54 AM CEST, Danilo Krummrich wrote:
->   (3) Implement a macro to generate a custom KmemCache Allocator trait
->       implementation for every KmemCache instance with a static lifetime.
+On Fri Sep 26, 2025 at 6:10 PM CEST, Boqun Feng wrote:
+> I missed this part, and I don't think kernel::sync is where dma_fence
+> should be, as kernel::sync is mostly for the basic synchronization
+> between threads/irqs. dma_fence is probably better to be grouped with
+> dma-buf and other dma related primitives. Maybe in kernel::dma? Like:
 
-Thinking about it a bit more, I think we should go with option (3) for now.
+I agree, kernel::sync may be a bit misleading.
 
-With its only limitation being that it always binds the lifetime of a kmemc=
-ache
-to the module lifetime, it still seems to be the best option, considering t=
-hat
-the alternatives require additional synchronization in hot paths, may *sile=
-ntly*
-leak the kmemcache, cause significant code duplication or break dynamic
-dispatch.
+> rust/kernel/dma.rs
+> rust/kernel/dma/dma_buf.rs
+> rust/kernel/dma/dma_fence.rs
+>
+> Thoughts? Miguel, Greg, Danilo and Lyude, any idea or suggestion?
 
-Tieing the kmemcache to the module lifetime should cover the vast majority =
-of
-use-cases; should we ever really need something else we can still revisit t=
-he
-options.
+To me it depends on if we want to maintain the code under a global
+DMA MAPPING & SCATTERLIST API entry or if it will just be added to the
+DMA BUFFER SHARING FRAMEWORK entry.
 
-Thanks,
-Danilo
+In case of the latter I'd go for rust/kernel/dma-buf/, analogous to
+drivers/dma-buf/. (Though, I'm not sure why this is under drivers/, there's
+nothing like dma-buf drivers; I think kernel/dma/ would have been the bette=
+r
+fit.)
+
+In any case, the target tree would probably be the drm-rust tree.
