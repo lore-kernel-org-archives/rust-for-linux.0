@@ -1,324 +1,298 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD61F221DAE;
-	Sun, 28 Sep 2025 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A501D5150;
+	Sun, 28 Sep 2025 19:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759080958; cv=none; b=dBJeE8w/W0mjWD5EvNhxYQ2PHbb1ucQNZLIBlGtiOjhP8boExLcZD7PxPoVa7cBDBlMpzX/AqxtTDnHdfIJklmcgUzZ4kbhgJa8fJIDbEPz2c1QH9qT8l6N22NC6MzA2xW57h0Ge8VUMPDpwthcf3mlDhUw5dAx6SGUxw5gCay8=
+	t=1759088908; cv=none; b=qykN0S+iE3XziJo9NpNVYOHVcaCnwUbhMqrRaltibs72ay+oNgCRGUqNe64f8n+Rvxr8CUxf72DDnYLIXkQw1T+1ttcZvgZvATdMxe/SVJpVcJycFYpyMdO8JGR41kTCqH61B3t+kQsGewggU2YU9KADyWX4PzWod8vexEJhoBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759080958; c=relaxed/simple;
-	bh=ZDDoSQHfUfGlV5GTCCz5MrXChE3PkwoLjvorvdmzaHY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=akk8x1i6Dmvmq4k/X/6Oi8RumlHtLLjEqcTsgu51RwkUXEx4FTspdmcJgK5j4qmMcs65daRSgugfGzABFWV5gHC+cp/IPAqz7I67LvMPGtA3P5gD9DktBtanh3Up6FkRriW5TM+jgFCW6hcZHbrG0pY6DQp/tRVebPKxQwpD4uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XobWPXQZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759088908; c=relaxed/simple;
+	bh=FiCN47fJtQb18mY9IAgpHRnPcAAnBTX9SMBd6wgZt2Q=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:Mime-Version; b=VtHfI4tEI3LPELM5mcAwvgM6h+UJRf4mKrBu5As1lGkhM9K4vcfONFUpn4xtufcxNaYKWqOMe+eLUsbjmLzTZFbtO/dBGvhgT0pubazC4o7w5V32sWvEsQ5Upwul8kOr4ocQ/wxxCLAUs2ZPIs9WcR0TUGNCQnNgf60oAS/KFo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nI1N2sOf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XobWPXQZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E763C4CEF0;
-	Sun, 28 Sep 2025 17:35:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nI1N2sOf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98775C4CEF0;
+	Sun, 28 Sep 2025 19:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759080958;
-	bh=ZDDoSQHfUfGlV5GTCCz5MrXChE3PkwoLjvorvdmzaHY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=XobWPXQZa9osT//YvtFffPGE800IwVqpG3b9bXLAReVbjwNJgmD8GfOK3R7YlGYSx
-	 Vy6jIAjbbK0FqvBeAQl/PTMctS1yxFTaSs5R48U0h/jmu85cpYvNcDk90+St6NUEPU
-	 riClis+tr60aijt02YjTjQbPf56+9ATSIBMlPNuqR8y/0BUplNZAhygHyrj4Z8Qbnx
-	 32YaIhbgJpM7jDFvYoQj/K0nHHZkh97X4Y7sHoHRn0kxS67Xg2jSjTeW5z3I0eMZW6
-	 3XXuBg3KB740t+Xf4oasjDkKypqj5eGBCqUVNXbhPjAoqaFXmpJuuwFgdEE7h7PesB
-	 L1opgXulb1KrQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust for 6.18
-Date: Sun, 28 Sep 2025 19:35:40 +0200
-Message-ID: <20250928173541.229298-1-ojeda@kernel.org>
+	s=k20201202; t=1759088908;
+	bh=FiCN47fJtQb18mY9IAgpHRnPcAAnBTX9SMBd6wgZt2Q=;
+	h=Date:Subject:Cc:To:From:From;
+	b=nI1N2sOfs4BOeMIIQDRPpKl3jA3yoMGrOdp7WHeJZ4mhBiXzpe+kklFC+XT3FR+JE
+	 npIt2dLbMllcgLjRMNaNSZT4HP5XNaxTsXaDp1WDij/BeRfzDUjPVflN0pRpNfLFtf
+	 K8JVCmNPecvTe+JQ6kGoGICTu8cma6JUPKc7B6g0NiXfZ3Yt2nvt/2g5ZjIh8wwKf7
+	 zmD2OckR0LMcqv7XAgkJag7p6KfxS1b8qhfGDXTUmeeunX7jGPH5B6CS2TijS2LNi0
+	 PHN1gdflOLGSijOTX9xeocfZKZtAirbYgDeylbrupUozlbdc80foUY/qAtuQduIE9P
+	 DJgDH1RRPacqQ==
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 28 Sep 2025 21:48:24 +0200
+Message-Id: <DD4OZ2NDSZ6E.2KDADLOEY69TI@kernel.org>
+Subject: [GIT PULL] Driver core changes for 6.18-rc1
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Saravana Kannan" <saravanak@google.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: aerc 0.20.1
 
 Hi Linus,
 
-This is the next round of the Rust support.
+Please pull these driver-core changes.
 
-A small one this time. One of the trees I merge (pin-init) is going this
-cycle through DRM for convenience.
+I did a test merge pulling in Miguel's Rust tree and found two trivial incl=
+ude
+conflicts -- otherwise no conflicts expected.
 
-No conflicts expected at this time. Nevertheless, I did a test merge and
-tested it a bit and it seems fine.
+All changes have been in linux-next for at least six rounds (except for two
+minor patches that change the Display implementation of pci::Vendor and
+pci::Class to print the actual vendor and class name).
 
-When you merge other trees, you will have some. The resolutions in -next
-should be fine, except for a `rustfmt` issue in one, so please remember
-to double-check that on your merges (it may be solved by the time you
-get to it).
+- Danilo
 
-All commits have been in linux-next for at least four rounds, most for
-two weeks or more.
+The following changes since commit f83ec76bf285bea5727f478a68b894f5543ca76e=
+:
 
-Please pull for v6.18 -- thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c:
-
-  Linux 6.17-rc5 (2025-09-07 14:22:57 -0700)
+  Linux 6.17-rc6 (2025-09-14 14:21:14 -0700)
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-6.18
+  git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git=
+ tags/driver-core-6.18-rc1
 
-for you to fetch changes up to f3f6b3664302e16ef1c6b91034a72df5564d6b8a:
+for you to fetch changes up to 6d97171ac6585de698df019b0bfea3f123fd8385:
 
-  gpu: nova-core: use Alignment for alignment-related operations (2025-09-22 23:56:06 +0200)
-
-----------------------------------------------------------------
-Rust changes for v6.18
-
-Toolchain and infrastructure:
-
- - Derive 'Zeroable' for all structs and unions generated by 'bindgen'
-   where possible and corresponding cleanups. To do so, add the
-   'pin-init' crate as a dependency to 'bindings' and 'uapi'.
-
-   It also includes its first use in the 'cpufreq' module, with more to
-   come in the next cycle.
-
- - Add warning to the 'rustdoc' target to detect broken 'srctree/' links
-   and fix existing cases.
-
- - Remove support for unused (since v6.16) host '#[test]'s, simplifying
-   the 'rusttest' target. Tests should generally run within KUnit.
-
-'kernel' crate:
-
- - Add 'ptr' module with a new 'Alignment' type, which is always a power
-   of two and is used to validate that a given value is a valid
-   alignment and to perform masking and alignment operations:
-
-       // Checked at build time.
-       assert_eq!(Alignment::new::<16>().as_usize(), 16);
-
-       // Checked at runtime.
-       assert_eq!(Alignment::new_checked(15), None);
-
-       assert_eq!(Alignment::of::<u8>().log2(), 0);
-
-       assert_eq!(0x25u8.align_down(Alignment::new::<0x10>()), 0x20);
-       assert_eq!(0x5u8.align_up(Alignment::new::<0x10>()), Some(0x10));
-       assert_eq!(u8::MAX.align_up(Alignment::new::<0x10>()), None);
-
-   It also includes its first use in Nova.
-
- - Add 'core::mem::{align,size}_of{,_val}' to the prelude, matching
-   Rust 1.80.0.
-
- - Keep going with the steps on our migration to the standard library
-   'core::ffi::CStr' type (use 'kernel::{fmt, prelude::fmt!}' and use
-   upstream method names).
-
- - 'error' module: improve 'Error::from_errno' and 'to_result'
-   documentation, including examples/tests.
-
- - 'sync' module: extend 'aref' submodule documentation now that it
-   exists, and more updates to complete the ongoing move of 'ARef' and
-   'AlwaysRefCounted' to 'sync::aref'.
-
- - 'list' module: add an example/test for 'ListLinksSelfPtr' usage.
-
- - 'alloc' module:
-
-   - Implement 'Box::pin_slice()', which constructs a pinned slice of
-     elements.
-
-   - Provide information about the minimum alignment guarantees of
-     'Kmalloc', 'Vmalloc' and 'KVmalloc'.
-
-   - Take minimum alignment guarantees of allocators for
-     'ForeignOwnable' into account.
-
-   - Remove the 'allocator_test' (including 'Cmalloc').
-
-   - Add doctest for 'Vec::as_slice()'.
-
-   - Constify various methods.
-
- - 'time' module:
-
-   - Add methods on 'HrTimer' that can only be called with exclusive
-     access to an unarmed timer, or from timer callback context.
-
-   - Add arithmetic operations to 'Instant' and 'Delta'.
-
-   - Add a few convenience and access methods to 'HrTimer' and
-     'Instant'.
-
-'macros' crate:
-
- - Reduce collections in 'quote!' macro.
-
-And a few other cleanups and improvements.
+  rust: pci: display symbolic PCI vendor names (2025-09-25 15:52:00 +0200)
 
 ----------------------------------------------------------------
-Alexandre Courbot (2):
-      rust: add `Alignment` type
-      gpu: nova-core: use Alignment for alignment-related operations
+Driver core changes for 6.18-rc1
 
-Alice Ryhl (3):
-      rust: alloc: specify the minimum alignment of each allocator
-      rust: alloc: take the allocator into account for FOREIGN_ALIGN
-      rust: alloc: implement Box::pin_slice()
+- Auxiliary:
+   - Drop call to dev_pm_domain_detach() in auxiliary_bus_probe()
+   - Optimize logic of auxiliary_match_id()
 
-Benno Lossin (4):
-      rust: add `pin-init` as a dependency to `bindings` and `uapi`
-      rust: derive `Zeroable` for all structs & unions generated by bindgen where possible
-      rust: cpufreq: replace `MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`
-      rust: sync: extend module documentation of aref
+- Rust:
+  - Auxiliary:
+    - Use primitive C types from prelude
 
-Boqun Feng (1):
-      rust: list: Add an example for `ListLinksSelfPtr` usage
+  - DebugFs:
+    - Add debugfs support for simple read/write files and custom callbacks
+      through a File-type-based and directory-scope-based API
+    - Sample driver code for the File-type-based API
+    - Sample module code for the directory-scope-based API
+
+  - I/O:
+    - Add io::poll module and implement Rust specific read_poll_timeout()
+      helper
+
+  - IRQ:
+    - Implement support for threaded and non-threaded device IRQs based on
+      (&Device<Bound>, IRQ number) tuples (IrqRequest)
+    - Provide &Device<Bound> cookie in IRQ handlers
+
+  - PCI:
+    - Support IRQ requests from IRQ vectors for a specific pci::Device<Boun=
+d>
+    - Implement accessors for subsystem IDs, revision, devid and resource s=
+tart
+    - Provide dedicated pci::Vendor and pci::Class types for vendor and cla=
+ss
+      ID numbers
+    - Implement Display to print actual vendor and class names; Debug to pr=
+int
+      the raw ID numbers
+    - Add pci::DeviceId::from_class_and_vendor() helper
+    - Use primitive C types from prelude
+    - Various minor inline and (safety) comment improvements
+
+  - Platform:
+    - Support IRQ requests from IRQ vectors for a specific
+      platform::Device<Bound>
+
+  - Nova:
+    - Use pci::DeviceId::from_class_and_vendor() to avoid probing
+      non-display/compute PCI functions
+
+  - Misc:
+    - Add helper for cpu_relax()
+    - Update ARef import from sync::aref
+
+- sysfs:
+  - Remove bin_attrs_new field from struct attribute_group
+  - Remove read_new() and write_new() from struct bin_attribute
+
+- Misc:
+  - Document potential race condition in get_dev_from_fwnode()
+  - Constify node_group argument in software node registration functions
+  - Fix order of kernel-doc parameters in various functions
+  - Set power.no_pm flag for faux devices
+  - Set power.no_callbacks flag along with the power.no_pm flag
+  - Constify the pmu_bus bus type
+  - Minor spelling fixes
+
+----------------------------------------------------------------
+Abhinav Ananthu (2):
+      rust: auxiliary: Use `c_` types from prelude instead of
+      rust: pci: use c_* types via kernel prelude
+
+Alice Ryhl (1):
+      rust: irq: add &Device<Bound> argument to irq callbacks
+
+Alistair Popple (2):
+      rust: Update PCI binding safety comments and add inline compiler hint
+      rust: Add several miscellaneous PCI helpers
+
+Claudiu Beznea (1):
+      driver core: auxiliary bus: Drop dev_pm_domain_detach() call
+
+Daniel Almeida (6):
+      rust: irq: add irq module
+      rust: irq: add flags module
+      rust: irq: add support for non-threaded IRQs and handlers
+      rust: irq: add support for threaded IRQs and handlers
+      rust: platform: add irq accessors
+      rust: pci: add irq accessors
 
 Danilo Krummrich (1):
-      rust: alloc: add ARCH_KMALLOC_MINALIGN to bindgen blocklist
+      driver core: get_dev_from_fwnode(): document potential race
 
-Hui Zhu (2):
-      rust: alloc: kvec: add doc example for as_slice method
-      rust: alloc: kvec: simplify KUnit test module name to "rust_kvec"
+Dmitry Torokhov (1):
+      software node: Constify node_group in registration functions
 
-Lyude Paul (9):
-      rust: hrtimer: Document the return value for HrTimerHandle::cancel()
-      rust: hrtimer: Add HrTimerInstant
-      rust: hrtimer: Add HrTimer::raw_forward() and forward()
-      rust: hrtimer: Add HrTimerCallbackContext and ::forward()
-      rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
-      rust: time: Add Instant::from_ktime()
-      rust: hrtimer: Add HrTimer::expires()
-      rust: time: Implement Add<Delta>/Sub<Delta> for Instant
-      rust: time: Implement basic arithmetic operations for Delta
+FUJITA Tomonori (2):
+      rust: Add cpu_relax() helper
+      rust: Add read_poll_timeout function
 
-Miguel Ojeda (10):
-      rust: kernel: remove support for unused host `#[test]`s
-      rust: alloc: remove `allocator_test`
-      Merge tag 'alloc-next-v6.18-2025-09-04' of https://github.com/Rust-for-Linux/linux into rust-next
-      rust: block: fix `srctree/` links
-      rust: drm: fix `srctree/` links
-      rust: warn if `srctree/` links do not exist
-      rust: prelude: re-export `core::mem::{align,size}_of{,_val}`
-      rust: error: improve `Error::from_errno` documentation
-      rust: error: improve `to_result` documentation
-      Merge tag 'rust-timekeeping-v6.18' of https://github.com/Rust-for-Linux/linux into rust-next
+Gil Fine (1):
+      driver core: Fix order of the kernel-doc parameters
 
-Onur Özkan (3):
-      rust: make `ArrayLayout::new_unchecked` a `const fn`
-      rust: make `kvec::Vec` functions `const fn`
-      rust: error: add C header links
+Greg Kroah-Hartman (2):
+      Merge 6.17-rc3 into driver-core-next
+      Merge 6.17-rc6 into driver-core-next
 
-Ritvik Gupta (1):
-      rust: kernel: cpu: mark `CpuId::current()` inline
+John Hubbard (8):
+      rust: pci: provide access to PCI Class and Class-related items
+      rust: pci: provide access to PCI Vendor values
+      rust: pci: add DeviceId::from_class_and_vendor() method
+      gpu: nova-core: avoid probing non-display/compute PCI functions
+      rust: pci: use pci::Vendor instead of bindings::PCI_VENDOR_ID_*
+      rust: pci: inline several tiny functions
+      rust: pci: display symbolic PCI class names
+      rust: pci: display symbolic PCI vendor names
 
-Shankari Anand (3):
-      rust: dma: Update ARef and AlwaysRefCounted imports from sync::aref
-      rust: sync: Update ARef and AlwaysRefCounted imports from sync::aref
-      rust: task: update ARef and AlwaysRefCounted imports from sync::aref
+Matthew Maurer (7):
+      rust: debugfs: Add initial support for directories
+      rust: debugfs: Add support for read-only files
+      rust: debugfs: Add support for writable files
+      rust: debugfs: Add support for callback-based files
+      samples: rust: Add debugfs sample driver
+      rust: debugfs: Add support for scoped directories
+      samples: rust: Add scoped debugfs sample driver
 
-Tamir Duberstein (21):
-      gpu: nova-core: use `kernel::{fmt,prelude::fmt!}`
-      rust: alloc: use `kernel::{fmt,prelude::fmt!}`
-      rust: block: use `kernel::{fmt,prelude::fmt!}`
-      rust: device: use `kernel::{fmt,prelude::fmt!}`
-      rust: file: use `kernel::{fmt,prelude::fmt!}`
-      rust: kunit: use `kernel::{fmt,prelude::fmt!}`
-      rust: seq_file: use `kernel::{fmt,prelude::fmt!}`
-      rust: sync: use `kernel::{fmt,prelude::fmt!}`
-      rust: device: use `kernel::{fmt,prelude::fmt!}`
-      drm/panic: use `core::ffi::CStr` method names
-      rust: auxiliary: use `core::ffi::CStr` method names
-      rust: configfs: use `core::ffi::CStr` method names
-      rust: cpufreq: use `core::ffi::CStr` method names
-      rust: drm: use `core::ffi::CStr` method names
-      rust: firmware: use `core::ffi::CStr` method names
-      rust: kunit: use `core::ffi::CStr` method names
-      rust: miscdevice: use `core::ffi::CStr` method names
-      rust: net: use `core::ffi::CStr` method names
-      rust: of: use `core::ffi::CStr` method names
-      rust: acpi: use `core::ffi::CStr` method names
-      rust: macros: reduce collections in `quote!` macro
+Miguel Ojeda (1):
+      MAINTAINERS: add "DEVICE I/O & IRQ [RUST]" entry
 
- Documentation/gpu/nova/core/todo.rst |   1 -
- drivers/block/rnull.rs               |   2 +-
- drivers/gpu/drm/drm_panic_qr.rs      |   2 +-
- drivers/gpu/nova-core/fb.rs          |   6 +-
- drivers/gpu/nova-core/gpu.rs         |   3 +-
- drivers/gpu/nova-core/regs/macros.rs |   6 +-
- drivers/gpu/nova-core/vbios.rs       |   4 +-
- rust/Makefile                        |  29 ++---
- rust/bindgen_parameters              |   5 +
- rust/bindings/bindings_helper.h      |   1 +
- rust/bindings/lib.rs                 |   8 ++
- rust/kernel/acpi.rs                  |   7 +-
- rust/kernel/alloc.rs                 |  15 +--
- rust/kernel/alloc/allocator.rs       |   8 ++
- rust/kernel/alloc/allocator_test.rs  | 124 -------------------
- rust/kernel/alloc/kbox.rs            |  92 +++++++++++++-
- rust/kernel/alloc/kvec.rs            |  24 ++--
- rust/kernel/alloc/kvec/errors.rs     |   2 +-
- rust/kernel/alloc/layout.rs          |   2 +-
- rust/kernel/auxiliary.rs             |   4 +-
- rust/kernel/block/mq.rs              |   2 +-
- rust/kernel/block/mq/gen_disk.rs     |   4 +-
- rust/kernel/block/mq/raw_writer.rs   |   3 +-
- rust/kernel/configfs.rs              |   4 +-
- rust/kernel/cpu.rs                   |   1 +
- rust/kernel/cpufreq.rs               |   6 +-
- rust/kernel/device.rs                |   6 +-
- rust/kernel/device/property.rs       |  23 ++--
- rust/kernel/dma.rs                   |   2 +-
- rust/kernel/drm/device.rs            |   6 +-
- rust/kernel/drm/driver.rs            |   2 +-
- rust/kernel/drm/file.rs              |   2 +-
- rust/kernel/drm/gem/mod.rs           |   2 +-
- rust/kernel/drm/ioctl.rs             |   2 +-
- rust/kernel/error.rs                 |  66 ++++++++--
- rust/kernel/firmware.rs              |   2 +-
- rust/kernel/fs/file.rs               |   5 +-
- rust/kernel/kunit.rs                 |  14 +--
- rust/kernel/lib.rs                   |   5 +-
- rust/kernel/list.rs                  | 120 ++++++++++++++++++
- rust/kernel/miscdevice.rs            |   2 +-
- rust/kernel/net/phy.rs               |   2 +-
- rust/kernel/of.rs                    |   2 +-
- rust/kernel/prelude.rs               |   5 +-
- rust/kernel/ptr.rs                   | 228 +++++++++++++++++++++++++++++++++++
- rust/kernel/seq_file.rs              |   6 +-
- rust/kernel/sync/arc.rs              |   8 +-
- rust/kernel/sync/aref.rs             |  17 ++-
- rust/kernel/task.rs                  |   7 +-
- rust/kernel/time.rs                  | 163 ++++++++++++++++++++++++-
- rust/kernel/time/hrtimer.rs          | 152 ++++++++++++++++++++++-
- rust/kernel/time/hrtimer/arc.rs      |   9 +-
- rust/kernel/time/hrtimer/pin.rs      |   9 +-
- rust/kernel/time/hrtimer/pin_mut.rs  |  12 +-
- rust/kernel/time/hrtimer/tbox.rs     |   9 +-
- rust/macros/quote.rs                 | 104 ++++++++--------
- rust/uapi/lib.rs                     |   2 +
- samples/rust/rust_configfs.rs        |   2 +-
- samples/rust/rust_dma.rs             |   2 +-
- scripts/generate_rust_analyzer.py    |   4 +-
- scripts/rustdoc_test_gen.rs          |   2 +-
- 61 files changed, 1054 insertions(+), 315 deletions(-)
- delete mode 100644 rust/kernel/alloc/allocator_test.rs
- create mode 100644 rust/kernel/ptr.rs
+Rafael J. Wysocki (2):
+      driver core: faux: Set power.no_pm for faux devices
+      driver core/PM: Set power.no_callbacks along with power.no_pm
+
+Rahul Rameshbabu (2):
+      rust: pci: fix incorrect platform reference in PCI driver unbind doc =
+comment
+      rust: pci: fix incorrect platform reference in PCI driver probe doc c=
+omment
+
+Ricardo B. Marliere (1):
+      perf: make pmu_bus const
+
+Shankari Anand (1):
+      rust: driver-core: Update ARef and AlwaysRefCounted imports from sync=
+::aref
+
+Thomas Wei=C3=9Fschuh (2):
+      sysfs: remove bin_attribute::read_new/write_new()
+      sysfs: remove attribute_group::bin_attrs_new
+
+Xichao Zhao (1):
+      drivers: base: fix "publically"->"publicly"
+
+Zijun Hu (1):
+      driver core: auxiliary bus: Optimize logic of auxiliary_match_id()
+
+ MAINTAINERS                              |  20 ++++
+ drivers/base/auxiliary.c                 |  25 +++--
+ drivers/base/core.c                      |  27 +++++-
+ drivers/base/cpu.c                       |   2 +-
+ drivers/base/faux.c                      |   1 +
+ drivers/base/swnode.c                    |   5 +-
+ drivers/gpu/nova-core/driver.rs          |  33 ++++++-
+ fs/sysfs/file.c                          |  22 +----
+ include/linux/device.h                   |   3 +
+ include/linux/property.h                 |   4 +-
+ include/linux/sysfs.h                    |  11 +--
+ kernel/events/core.c                     |   2 +-
+ rust/bindings/bindings_helper.h          |   2 +
+ rust/helpers/helpers.c                   |   2 +
+ rust/helpers/irq.c                       |   9 ++
+ rust/helpers/pci.c                       |  18 ++++
+ rust/helpers/processor.c                 |   8 ++
+ rust/kernel/auxiliary.rs                 |   4 +-
+ rust/kernel/debugfs.rs                   | 594 +++++++++++++++++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
++++++++++
+ rust/kernel/debugfs/callback_adapters.rs | 122 +++++++++++++++++++++++
+ rust/kernel/debugfs/entry.rs             | 164 +++++++++++++++++++++++++++=
+++++
+ rust/kernel/debugfs/file_ops.rs          | 247 +++++++++++++++++++++++++++=
++++++++++++++++++++
+ rust/kernel/debugfs/traits.rs            | 102 +++++++++++++++++++
+ rust/kernel/device.rs                    |   7 +-
+ rust/kernel/devres.rs                    |   4 +-
+ rust/kernel/io.rs                        |   1 +
+ rust/kernel/io/poll.rs                   | 104 ++++++++++++++++++++
+ rust/kernel/irq.rs                       |  24 +++++
+ rust/kernel/irq/flags.rs                 | 124 +++++++++++++++++++++++
+ rust/kernel/irq/request.rs               | 507 +++++++++++++++++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs                       |   3 +
+ rust/kernel/pci.rs                       | 180 +++++++++++++++++++++++++++=
++++----
+ rust/kernel/pci/id.rs                    | 578 +++++++++++++++++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+ rust/kernel/platform.rs                  | 178 +++++++++++++++++++++++++++=
++++++-
+ rust/kernel/processor.rs                 |  14 +++
+ samples/rust/Kconfig                     |  22 +++++
+ samples/rust/Makefile                    |   2 +
+ samples/rust/rust_debugfs.rs             | 151 +++++++++++++++++++++++++++=
++
+ samples/rust/rust_debugfs_scoped.rs      | 134 +++++++++++++++++++++++++
+ samples/rust/rust_dma.rs                 |   6 +-
+ samples/rust/rust_driver_auxiliary.rs    |  12 +--
+ samples/rust/rust_driver_pci.rs          |   9 +-
+ samples/rust/rust_driver_platform.rs     |   2 +-
+ 43 files changed, 3391 insertions(+), 98 deletions(-)
+ create mode 100644 rust/helpers/irq.c
+ create mode 100644 rust/helpers/processor.c
+ create mode 100644 rust/kernel/debugfs.rs
+ create mode 100644 rust/kernel/debugfs/callback_adapters.rs
+ create mode 100644 rust/kernel/debugfs/entry.rs
+ create mode 100644 rust/kernel/debugfs/file_ops.rs
+ create mode 100644 rust/kernel/debugfs/traits.rs
+ create mode 100644 rust/kernel/io/poll.rs
+ create mode 100644 rust/kernel/irq.rs
+ create mode 100644 rust/kernel/irq/flags.rs
+ create mode 100644 rust/kernel/irq/request.rs
+ create mode 100644 rust/kernel/pci/id.rs
+ create mode 100644 rust/kernel/processor.rs
+ create mode 100644 samples/rust/rust_debugfs.rs
+ create mode 100644 samples/rust/rust_debugfs_scoped.rs
