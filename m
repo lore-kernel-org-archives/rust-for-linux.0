@@ -1,126 +1,243 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC17C22D4DE
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Sep 2025 18:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA01E2550A4;
+	Sun, 28 Sep 2025 03:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758997260; cv=none; b=a7P5uZp7VPXmbqTniiL7Fp5MHreQpOw7rsSbB54UE4P3EsTLVF+rb/gXd8wYJCC7tsFS6y2aZ8jhVV1fAWbBhWzEj7Rprori3rKKQrurkWqOI39QS2yVgJqbLsZhFB3vKtOhZB6DWHNIMKDIZMsyhdN4smI59/d8UiCJOcDGPlg=
+	t=1759029890; cv=none; b=cHIbyfVBZUoodztTvDqGuZHydRcn5LKFGEXe+KvnBKQZD3xEGh28unvs8e4qkId+m3AyQ2qcFhp7RaZRE6MKS/L1hHdYRKrMJBcRZ0zmHw2ygtfgrSCnQhxvNT9j6YN8oojnVGMVt62tc5u0KN0pt10BkCaYiaMTAh0CnEkszag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758997260; c=relaxed/simple;
-	bh=ZZsUqsXlT+NxuLRa0wHvGFSehTMZVHpC3xtckn2HDG0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QVuFzwj6igmakAa1QPpk5Ep4GHiGngMbUR2p9wJ9wZzErUoYlIjZT/U1BktmsrxnJKHiyWmvLVV8DoX121LG3OVQ1aZP0ZlrxDOCzlBjMP0hJGORKe6b+RwSlEaZIA/2kqSUtHWcf1CTMHGuOmtYwtfNtw1GdW+hn2iOkOcmfWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jh8CVj6V; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759029890; c=relaxed/simple;
+	bh=TWmhlvIWxfUJ6FpEK14T98mwbqozPpRlHWEu0H3w9V8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oYRNb2pM3tny4N1dubpXlcHBnEO09tMIh/i6CiPJP4T+ZsoqkOeO5Bm7R3OpnD4kSVVQGHWPRUH+aY17ktUm3bcJH6xljTGbx7M2RpjHX4ufbT5GCkqA5lBQc8XDbqJvzduG47LQdm7gG8U+XQ/q/0iVzJVX9vbuqqHYnrFkbak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TxkO2Kh7; arc=none smtp.client-ip=1.95.21.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jh8CVj6V"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3f0ae439bc3so1580549f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 27 Sep 2025 11:20:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758997257; x=1759602057; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UiTGFZwhz927PRv0PGaGJg7Lawc0Y6HmusWqcFMWBM4=;
-        b=jh8CVj6VciDNgdMg7TjOEkX77wode/Z6L/VUCMS9qMBqLQqEqR1MR67B/yEwzE0m4y
-         UEmErRoyQH6Eir6z3AW69/0d6/BflBpErrmO5OeF3He5UdKYBc5KJF2rEGcbwudYgjGO
-         e07npljPffC59CUgc48OdnPdW0gInNF7XFQ2vgbyV1xvv7TcOOURT0x6aSNHtf9hinXV
-         e++HYZqc9S8sMBCUcwU5JpFb2oVwaWIWt77lrUV7V37Dwktnoa61Unlsz0yjNpdYSXd7
-         5O6MEBBZaS4MduWYQbuvKs2icRwJ+xwcKCYKHrLKiCqapEnqQAr5c75SPqhFl146xHRM
-         2lMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758997257; x=1759602057;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UiTGFZwhz927PRv0PGaGJg7Lawc0Y6HmusWqcFMWBM4=;
-        b=JmvkM3E5rx+OuK2qvLCrMH6x9Hkt0iODsNOBQUfQK2d9Eza1cIFPnX+5Tf5A9CkDrR
-         +fe1sxcfraO0FUdCSOZqu6pSkYLGSa/YKPvtw6MiX3+a/dAUQl0q86135w7ighG/LKjl
-         DgYG7DaSU9exnRN4+VZimaSvSfcQyVDnqzwEPMMXarzhOl29E73rrctr2lggfB3rzOfb
-         rBnuDX4RbVReksgpa8rpQ8Ghf3VSuj2x115BtsIZG2bRidr3kvXCfgOinlEoOkxesn8i
-         GH74U+l3PewsFNK3budD0dph6U0fQpdXZbJ76Ov31Ln1gdxGE3FMZ+XQ1vXuN63aBAy7
-         Nwtg==
-X-Forwarded-Encrypted: i=1; AJvYcCVatilCF93SmhvLyo7ZaDNPSy0FLILZu+RV9fjiO8cIT3Gz8oivHC40JVqAAE+xdy54kGrcQL4RiO0ZxEivCA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKrqfBW9208tqWnoT5e7V5an1UvQhgDwBsMVuZo+RyQwdhiV/l
-	B5JrTtNXfbMQlMCWdUNfnNGCjg0p7+BZvRARqANdazH83sP5hDZFAZtc
-X-Gm-Gg: ASbGncui/5yPiI9cBssav2Eo7Lr0KPkGy97BFgsnhuYzKZYeyjC5tELFgM1HrNTJmtK
-	fCwrRexwuiICRqc8wG7Gk3GZ6cFmcIPenFk42pjP0sIOEOwcdCbrV1PM2ny4KytryBklpqT03UT
-	7WQgTm4+htjUECBj35qgrvnTjp5ezZNksT7Weo8nDDOG8Alk4xkRomzJ4SICxAIT7+zqA3Y4BBH
-	6JYtM/7Vt73DL4Tu4kpLLN3nLbvWEQ700lTkwStvn2mnwvZzrH/JzYrVQG4gbA6ONpL8a0DNHL6
-	JiSzVxTTIqsk976+4z2bZPa8VKRmoRuv0o52ngnRHutVI+kCBVoTKt3FtMVW3bWlFybUXf37iiC
-	KIYCBGV5naOmjpxmZyKrCywZ8mhBk6wYuwMXJ1XiBQWh5K6MIG87PfJK4KilKrM8tx57M62xrkg
-	SmBdebdqFS8PAqLqoqxjk=
-X-Google-Smtp-Source: AGHT+IEtiFdCtMagiN2PlJIlHgX907vHybIZWjwyy/+2hiQWsMBj67930e8VQK2WHaA903g/oabW4w==
-X-Received: by 2002:a05:6000:40df:b0:3ea:c893:95a7 with SMTP id ffacd0b85a97d-40e4adce88amr9868281f8f.31.1758997256826;
-        Sat, 27 Sep 2025 11:20:56 -0700 (PDT)
-Received: from ?IPV6:2a02:c7c:8b21:7400:a8dc:c580:efa:e675? ([2a02:c7c:8b21:7400:a8dc:c580:efa:e675])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5603356sm11601993f8f.30.2025.09.27.11.20.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 27 Sep 2025 11:20:56 -0700 (PDT)
-Message-ID: <10637103-7e15-406a-8e9c-0eee3c5c4922@gmail.com>
-Date: Sat, 27 Sep 2025 19:20:52 +0100
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TxkO2Kh7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=+0zMhTc6UmTn8nHcjcW7yaUfPpkltRIjpHMr/T4Ct9M=;
+	b=TxkO2Kh7+KkFu3mUH40GrngtNucmX2IFrrX03WyLL4fZEFN/FJDFPd/qNBG9Zg
+	NZpXTgv+TReQ9PjoMI90OxGKKM19FvexgtQlyDZWk+3uyWIJMiA2fWQc296rQNOD
+	GXb/lFBnZRzcWgEsJyid8cr5t7NVyKhh4GxPj1cM7FUag=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCnFdtOqthoBYWDBQ--.42004S3;
+	Sun, 28 Sep 2025 11:24:00 +0800 (CST)
+Date: Sun, 28 Sep 2025 11:23:57 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Qais Yousef <qyousef@layalina.io>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Pierre Gondois <pierre.gondois@arm.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Linux ACPI <linux-acpi@vger.kernel.org>,
+	Jie Zhan <zhanjie9@hisilicon.com>, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Subject: Re: [PATCH v3 1/4] cpufreq: Make drivers using CPUFREQ_ETERNAL
+ specify transition latency
+Message-ID: <aNiqTYZai83Yguqt@dragon>
+References: <5069803.31r3eYUQgx@rafael.j.wysocki>
+ <2264949.irdbgypaU6@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] samples: rust: add Rust I2C sample driver
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Hung <alex.hung@amd.com>,
- Tamir Duberstein <tamird@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-i2c@vger.kernel.org
-References: <20250911154717.96637-1-igor.korotin.linux@gmail.com>
- <20250911155048.97364-1-igor.korotin.linux@gmail.com>
- <DCQ9K980YX1W.HZIQI6S5MST9@kernel.org>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <DCQ9K980YX1W.HZIQI6S5MST9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2264949.irdbgypaU6@rafael.j.wysocki>
+X-CM-TRANSID:Ms8vCgCnFdtOqthoBYWDBQ--.42004S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtFyUZrW7ZF4DKrWUCw4DArb_yoWxtrWfpF
+	WUXw42ya4kJa1qgw1Ikw48u34FvanrZ347Ka4j9wnYvrW7JFn0ga4qgay5tFZ8C34kAws0
+	qFyqy347GF4UArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07URKZAUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxfWZWjYN8nd5wAAsb
 
-Hello Danilo
-
-On 9/11/2025 9:46 PM, Danilo Krummrich wrote:
-> On Thu Sep 11, 2025 at 5:50 PM CEST, Igor Korotin wrote:
->> +// NOTE: The code below is expanded macro module_i2c_driver. It is not used here
->> +//       because we need to manually create an I2C client in `init()`. The macro
->> +//       hides `init()`, so to demo client creation on adapter SAMPLE_I2C_ADAPTER_INDEX
->> +//       we expand it by hand.
->> +type Ops<T> = kernel::i2c::Adapter<T>;
+On Fri, Sep 26, 2025 at 12:12:37PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Not a huge fan of this type alias, but up to you. :)
-
-I literally just unwrapped module_driver! macro to get to the init 
-function.
-This type was part of that macro. I do not see it necessary, so I'll 
-remove it
-in the next drop.
-  >> +
->> +                i2c::Registration::new(adapter.as_ref(), &BOARD_INFO)
+> Commit a755d0e2d41b ("cpufreq: Honour transition_latency over
+> transition_delay_us") caused platforms where cpuinfo.transition_latency
+> is CPUFREQ_ETERNAL to get a very large transition latency whereas
+> previously it had been capped at 10 ms (and later at 2 ms).
 > 
-> Does i2c_new_client_device() grab a reference count of the adapter? If not, you
-> have to store an ARef<I2cAdapter> within your i2c::Registration as well.
+> This led to a user-observable regression between 6.6 and 6.12 as
+> described by Shawn:
+> 
+> "The dbs sampling_rate was 10000 us on 6.6 and suddently becomes
+>  6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these platforms
+>  because the default transition delay was dropped [...].
+> 
+>  It slows down dbs governor's reacting to CPU loading change
+>  dramatically.  Also, as transition_delay_us is used by schedutil
+>  governor as rate_limit_us, it shows a negative impact on device
+>  idle power consumption, because the device gets slightly less time
+>  in the lowest OPP."
+> 
+> Evidently, the expectation of the drivers using CPUFREQ_ETERNAL as
+> cpuinfo.transition_latency was that it would be capped by the core,
+> but they may as well return a default transition latency value instead
+> of CPUFREQ_ETERNAL and the core need not do anything with it.
+> 
+> Accordingly, introduce CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS and make
+> all of the drivers in question use it instead of CPUFREQ_ETERNAL.  Also
+> update the related Rust binding.
+> 
+> Fixes: a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
+> Closes: https://lore.kernel.org/linux-pm/20250922125929.453444-1-shawnguo2@yeah.net/
+> Reported-by: Shawn Guo <shawnguo@kernel.org>
+> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+> Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
+> Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> 
+> v1 -> v3:
+>    * Add updates of the Rust version of cpufreq-dt and Rust binding
+>    * Update the changelog
+>    * Add tags from Mario Limonciello and Jie Zhan
+> 
+> ---
+>  drivers/cpufreq/cpufreq-dt.c          |    2 +-
+>  drivers/cpufreq/imx6q-cpufreq.c       |    2 +-
+>  drivers/cpufreq/mediatek-cpufreq-hw.c |    2 +-
+>  drivers/cpufreq/rcpufreq_dt.rs        |    2 +-
+>  drivers/cpufreq/scmi-cpufreq.c        |    2 +-
+>  drivers/cpufreq/scpi-cpufreq.c        |    2 +-
+>  drivers/cpufreq/spear-cpufreq.c       |    2 +-
+>  include/linux/cpufreq.h               |    3 +++
+>  rust/kernel/cpufreq.rs                |    7 ++++---
+>  9 files changed, 14 insertions(+), 10 deletions(-)
+> 
+> --- a/drivers/cpufreq/cpufreq-dt.c
+> +++ b/drivers/cpufreq/cpufreq-dt.c
+> @@ -104,7 +104,7 @@ static int cpufreq_init(struct cpufreq_p
+>  
+>  	transition_latency = dev_pm_opp_get_max_transition_latency(cpu_dev);
+>  	if (!transition_latency)
+> -		transition_latency = CPUFREQ_ETERNAL;
+> +		transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+>  
+>  	cpumask_copy(policy->cpus, priv->cpus);
+>  	policy->driver_data = priv;
+> --- a/drivers/cpufreq/imx6q-cpufreq.c
+> +++ b/drivers/cpufreq/imx6q-cpufreq.c
+> @@ -442,7 +442,7 @@ soc_opp_out:
+>  	}
+>  
+>  	if (of_property_read_u32(np, "clock-latency", &transition_latency))
+> -		transition_latency = CPUFREQ_ETERNAL;
+> +		transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+>  
+>  	/*
+>  	 * Calculate the ramp time for max voltage change in the
+> --- a/drivers/cpufreq/mediatek-cpufreq-hw.c
+> +++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
+> @@ -309,7 +309,7 @@ static int mtk_cpufreq_hw_cpu_init(struc
+>  
+>  	latency = readl_relaxed(data->reg_bases[REG_FREQ_LATENCY]) * 1000;
+>  	if (!latency)
+> -		latency = CPUFREQ_ETERNAL;
+> +		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+>  
+>  	policy->cpuinfo.transition_latency = latency;
+>  	policy->fast_switch_possible = true;
+> --- a/drivers/cpufreq/rcpufreq_dt.rs
+> +++ b/drivers/cpufreq/rcpufreq_dt.rs
+> @@ -123,7 +123,7 @@ impl cpufreq::Driver for CPUFreqDTDriver
+>  
+>          let mut transition_latency = opp_table.max_transition_latency_ns() as u32;
+>          if transition_latency == 0 {
+> -            transition_latency = cpufreq::ETERNAL_LATENCY_NS;
+> +            transition_latency = cpufreq::DEFAULT_TRANSITION_LATENCY_NS;
+>          }
+>  
+>          policy
+> --- a/drivers/cpufreq/scmi-cpufreq.c
+> +++ b/drivers/cpufreq/scmi-cpufreq.c
+> @@ -294,7 +294,7 @@ static int scmi_cpufreq_init(struct cpuf
+>  
+>  	latency = perf_ops->transition_latency_get(ph, domain);
+>  	if (!latency)
+> -		latency = CPUFREQ_ETERNAL;
+> +		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+>  
+>  	policy->cpuinfo.transition_latency = latency;
+>  
+> --- a/drivers/cpufreq/scpi-cpufreq.c
+> +++ b/drivers/cpufreq/scpi-cpufreq.c
+> @@ -157,7 +157,7 @@ static int scpi_cpufreq_init(struct cpuf
+>  
+>  	latency = scpi_ops->get_transition_latency(cpu_dev);
+>  	if (!latency)
+> -		latency = CPUFREQ_ETERNAL;
+> +		latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+>  
+>  	policy->cpuinfo.transition_latency = latency;
+>  
+> --- a/drivers/cpufreq/spear-cpufreq.c
+> +++ b/drivers/cpufreq/spear-cpufreq.c
+> @@ -182,7 +182,7 @@ static int spear_cpufreq_probe(struct pl
+>  
+>  	if (of_property_read_u32(np, "clock-latency",
+>  				&spear_cpufreq.transition_latency))
+> -		spear_cpufreq.transition_latency = CPUFREQ_ETERNAL;
+> +		spear_cpufreq.transition_latency = CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
+>  
+>  	cnt = of_property_count_u32_elems(np, "cpufreq_tbl");
+>  	if (cnt <= 0) {
+> --- a/include/linux/cpufreq.h
+> +++ b/include/linux/cpufreq.h
+> @@ -32,6 +32,9 @@
+>   */
+>  
+>  #define CPUFREQ_ETERNAL			(-1)
+> +
+> +#define CPUFREQ_DEFAULT_TANSITION_LATENCY_NS	NSEC_PER_MSEC
 
-Well, as far as I traced the C code, `adapter->dev` is a 
-`client->dev->parent`. Inside of the i2c_new_client_device the new 
-created client device is being registered and as part of this 
-registration device's parent reference count is being incremented.
+Typo of TANSITION, should be CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS.
 
-A big thanks for the review and comments.
+Shawn
 
-Regards
-Igor
+> +
+>  #define CPUFREQ_NAME_LEN		16
+>  /* Print length for names. Extra 1 space for accommodating '\n' in prints */
+>  #define CPUFREQ_NAME_PLEN		(CPUFREQ_NAME_LEN + 1)
+> --- a/rust/kernel/cpufreq.rs
+> +++ b/rust/kernel/cpufreq.rs
+> @@ -39,7 +39,8 @@ use macros::vtable;
+>  const CPUFREQ_NAME_LEN: usize = bindings::CPUFREQ_NAME_LEN as usize;
+>  
+>  /// Default transition latency value in nanoseconds.
+> -pub const ETERNAL_LATENCY_NS: u32 = bindings::CPUFREQ_ETERNAL as u32;
+> +pub const DEFAULT_TRANSITION_LATENCY_NS: u32 =
+> +        bindings::CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS as u32;
+>  
+>  /// CPU frequency driver flags.
+>  pub mod flags {
+> @@ -400,13 +401,13 @@ impl TableBuilder {
+>  /// The following example demonstrates how to create a CPU frequency table.
+>  ///
+>  /// ```
+> -/// use kernel::cpufreq::{ETERNAL_LATENCY_NS, Policy};
+> +/// use kernel::cpufreq::{DEFAULT_TRANSITION_LATENCY_NS, Policy};
+>  ///
+>  /// fn update_policy(policy: &mut Policy) {
+>  ///     policy
+>  ///         .set_dvfs_possible_from_any_cpu(true)
+>  ///         .set_fast_switch_possible(true)
+> -///         .set_transition_latency_ns(ETERNAL_LATENCY_NS);
+> +///         .set_transition_latency_ns(DEFAULT_TRANSITION_LATENCY_NS);
+>  ///
+>  ///     pr_info!("The policy details are: {:?}\n", (policy.cpu(), policy.cur()));
+>  /// }
+> 
+> 
+> 
+
