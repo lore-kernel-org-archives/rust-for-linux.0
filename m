@@ -1,92 +1,71 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4367D309F1E
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 14:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7F82FBDE7;
+	Mon, 29 Sep 2025 14:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759155895; cv=none; b=ehJl8mig/VKHahm13rJMT++tPlhG2/F8EMYROG/ODQ+S1Gnsd8ESKjjW1au5GcWB/9vJy2gZ0nxlx+AVmAcsyd+npwqZC2xbX9ZeScbc1MbxU1xA1SMDYlG5NsYsT0dvgUrOx7OL2a1Kf6il/mmOAhNFhYIO/pt5XBMOjGm3KvA=
+	t=1759156314; cv=none; b=MQ4/gQ72OFG2lSuve1366eP8hv+jyOxBlW8GNtG6H1eEtYHXWnlL6++LQR8dYhOF3abP0NQR3/iyXHQJXULuuaz5CG7WMlO+HpHalgzfbsHTuBagK6URecL0r8OTHZIYgOE4X7tefxgD7saRQFZxwldrup2XC2+0i2zbtAfXxfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759155895; c=relaxed/simple;
-	bh=ot8hcRKjG+GhZEktY+15kwYYzRMRN2qEVMOH15R9us0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EfcZjzgdSlpDTroVxP9760a9Z7i+xaxkd8Uepyl9Wy+FLkdf5XOQ6GXPgJlLaG0Od6yh4hd/5U0sGPAenBRaLiK0+Wk8fVFQJLG1pnxVb3xPy96vWsqN/MZK4kCACoYwRKL//bu5m29I81W7Mgu9MB/Y3ha0KF8Il+6xTMhgRbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1ZqkmIc; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759156314; c=relaxed/simple;
+	bh=nh9XYzrgUVb65hFURDDJgJ3UccIVJD/bwJub2TKeuS0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=fuacNPXFUlypPWKfU89uHUu7D6FravwhXeDRA+UDMlsh3WlX2UNP6D234hM/J+1MZZpF3GEnQ5SmsDX4iW0qaR9BIW5RIeJbEkDBRzWiyk7U4G1NjnPv7A9jHGgYbXWCd+sekwg5UxSCFB5vDBtOigT/OMtVErgSGLQUMg4SXhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rH9HmTCk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1ZqkmIc"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2697051902fso10930205ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 07:24:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759155893; x=1759760693; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ot8hcRKjG+GhZEktY+15kwYYzRMRN2qEVMOH15R9us0=;
-        b=d1ZqkmIckNX2lrSGeU65Xhu7nXJ+Z+ZnTEmzt6NMRbmj3/E9L5tISrwe5o55miaXQ6
-         r++e70H5FvP/3JdDWtBasjP3AR/Ey+el2NBIdjr5LydY78DIyQ3Vj8nmYXiFPDh1EKJx
-         mBbVyBHRY7glXEnIgxwR2mcFB+VyrdjKUe2hehIRq/LZYiMT+AghUrR0uAlDCYdPlwNI
-         TexgbRig4GjOtU6JJJleHkynApCOjRLUw/9vwNSFDGna5TDsYvY/Kqb50lawiTQVeRxj
-         Y6kfkKzSdG3tH03EwI/DZeCIdCMEmmHCy0QpV5bmD3TwYx/tMqMOKaFNX3/8CDEOOIm5
-         65Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759155894; x=1759760694;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ot8hcRKjG+GhZEktY+15kwYYzRMRN2qEVMOH15R9us0=;
-        b=lvnALP04WBQ2jGLM8Mr5zsLGVjFFAvvOmS59zZZfJ4uFKWx7irlkdngokm53NGjW1h
-         whP5Jv6EEAmeFA25A/6b9xhs+2g3zxA4A7ljtSyID84xGqbQ6n0Oy55uEwHAhj5O2+XR
-         W/JIxfyjTjjG4T/QAWWGCkjgbhZBCaG8IleSF1Uq3GIb7ehwua2L+gpmvzl81Jq+5Qh5
-         zL+5cX7yDJlHydR+54vKpcf1qcvXIyg5Ql7WKfUcYQCtWPbvqNNAB3LyEDkkoec4oRtd
-         mEpySAgGkzG4nwY5czbaIGyF/Fyer1hr9d4vfs3jS8+mTrFVjWJ9ssERxniD+NeOV2b2
-         yn+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW/eCG5pmu2l01sdzG+DLMK6WdAc1c+cl1NQzqLlQIK7prRynhxPAai3NyOhNmVW5Z1A4lb3C87zOfb3i9URA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEaEgiX180HJB0E2RphKyn4d2edbSFnXutV8AyzM0CyzsR0QL1
-	IssXxMO//MnhgLYgolQETj6Is4vzhMobME1grNFePuyUqLQGq7l8Jo0iDREyNLFWDXt/vVIda5b
-	cGhP3NMOQNGGeFyBsnQAzMtFH41l6oTw=
-X-Gm-Gg: ASbGncsntRHyUvXKykBQEHVo93B9EkyLnW8/rV71jog3yiKUHCSD2TEof33yyVoMuV6
-	pvNN4FWUzINDnlUd/+LZK/HM6xH1c7z6YTiOBkLDCbpAPk7stcIXhabnov8MGlnLm08Ds0xxNh4
-	Wrg1JT1ywE4DQDqnqjatZrLoat5Yi0y/JM0i9dCincplQMIZzUgz0Ox6taurTGU6xkMK8pakutH
-	Rvaoifth1FqAUSPCgF0OUOxD2Qy4eq4iBAtSiBQMx8TdmVXw1cDxzFwzFIpnodMmjr3GYZ5rHBc
-	qc4d5bm1oYgXWOO0mnchiuHFUoHS+ihob53H
-X-Google-Smtp-Source: AGHT+IFO+CKcOfhjq3yagbAUNFRqtJ2JQPPv6IOGwZ4Z+4FHLSqV7RrX0bFPoMZ075YnvnY3rrn95mijVFVOb6eOUBY=
-X-Received: by 2002:a17:902:a507:b0:25a:4437:dbb7 with SMTP id
- d9443c01a7336-27ed49d5fedmr70259715ad.4.1759155893602; Mon, 29 Sep 2025
- 07:24:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rH9HmTCk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47868C4CEF4;
+	Mon, 29 Sep 2025 14:31:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759156313;
+	bh=nh9XYzrgUVb65hFURDDJgJ3UccIVJD/bwJub2TKeuS0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=rH9HmTCkpNEk3oaXGhNZDapOz8VMLU9tvgmJbL8C+bnxihX19WR0UXw+lnzXChB/x
+	 h+HCcSfsFPgJr7GtlUSiZwc/sdIHJ8CfQi8Y1e+gPGc4zHHCwq7+9KFW4dG8Ze/zpR
+	 kdjfaMHa+I1yQdXnsj9C2KvrCk6gNFV8kHg6YPu2AjUPXlatw9Mtuhsxk9IC5angsC
+	 JboAhsjgMvXlsvN2Yu0wahcTBIUG7m+2sYK2BwKSe6mE0jh0uVTQq9q1gKfkVd+rRh
+	 /xK8Nt0GPaNjns0j1SIj+5TjC1L1IqmpGP4tmfiCb++HJVlV5uRmpOAqgdZGvF6oU5
+	 RfIoEBapmw1Hw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cover.1754228164.git.y.j3ms.n@gmail.com> <DBWXJA6XF1VS.3PNHRWH030H0J@nvidia.com>
-In-Reply-To: <DBWXJA6XF1VS.3PNHRWH030H0J@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 29 Sep 2025 16:24:39 +0200
-X-Gm-Features: AS18NWAQUPZbXtjWExl55E-tjUwblkbPBQ5uQeLCMefcIVbUSmtt91RPmlpmau8
-Message-ID: <CANiq72na_d6JQdyZ1S22mus3oom_jz93rpY+ubr4yOuvMY_fSA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] rust: add `TryFrom` and `Into` derive macros
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 29 Sep 2025 16:31:49 +0200
+Message-Id: <DD5CV7ZXZDTA.26QKFT8OJO6SN@kernel.org>
+Subject: Re: [PATCH v2] rust: of: Add basic DeviceNode abstractions,
+Cc: <devicetree@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Saravana Kannan" <saravanak@google.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
+To: "Markus Probst" <markus.probst@posteo.de>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <09c855b24873ba71b1c1e968d0b6d0c010843699.camel@posteo.de>
+In-Reply-To: <09c855b24873ba71b1c1e968d0b6d0c010843699.camel@posteo.de>
 
-On Fri, Aug 8, 2025 at 11:13=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
+On Mon Sep 29, 2025 at 4:00 PM CEST, Markus Probst wrote:
+> Add a safe wrapper arround `struct device_node`, which is capable of:
 >
-> I have tried this series on nova-core and it allowed me to remove 150
-> lines of boiletplate just like that. As far as nova-core is concerned,
-> this is a perfect fit.
+> * reading string, u32 and bool properties
+>
+> * iterating over children
+>
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
 
-It would be nice to see the (possibly RFC) patch if you have it around!
+Can you please expand on the commit message a bit? What's the motivation? W=
+hy
+can't you use device/fwnode properties instead?
 
-Cheers,
-Miguel
+Also, the patch seems mangled by your mail client, the corresponding MTA, e=
+tc.
+Please have a look into fixing this up. You can also try to send a patch to
+yourself first and see if it still applies for this purpose.
+
+Thanks,
+Danilo
