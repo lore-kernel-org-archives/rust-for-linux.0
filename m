@@ -1,131 +1,187 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE1B2FF678
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 11:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A644414;
+	Mon, 29 Sep 2025 12:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759143759; cv=none; b=tfAuGetNWLRHiunOY7N0kjY8ErH9Wtarb1cb7bokUVGz7b7e3eH4ZJ3TwhOUainCMO7B6IKhHqAqLt4pxBwcAREH47xhLd27E2VSHsRXvEY1yuBuWpifQG5gfhVrTh9Qqvn8kaRLKzOLcGCpYAi5f+SK0fnPevdiT5xNNsycVaw=
+	t=1759150182; cv=none; b=DP+kS6DswVihWRpPBypDrM2G2evWasbgDislIz3cIRjBj9Ur7QX3s8WwQtjB8338hWl+ZoyVRcmwtpyWcc8xi9EBx/ubh+PTBQgpw4R+VwMnlZDuTLp/BxJgQ/JBw0PJOGauRkb59vCngOdTcEKBrSdgqFJ2rz4t1QGEXsw6CHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759143759; c=relaxed/simple;
-	bh=GCP8LuYtl1jmZq2NZKQmVEw9gQOGAcyHtezJJOCLTAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=smdODoCCcv1DM92v/s3VS8eHR7PaSxTcl6ECM5IRESDEMn3xbcCThGR2DKTpFyYbeKcA+0demczCNGKwGrFLf+73d23bCQ3YF50y9s0bvx4Z1MxsemNjGyr2b/FeBbcGNzw5oFgW7bAoVxRFlI3jVhSMwVEIZedModXCBllmXhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hTA98byZ; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1759150182; c=relaxed/simple;
+	bh=g9LISi377z68weUApT7rlrGLz0VrlT0E61wPfG+gzYQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ZhlJFJgHBjfPlb5usVgTxWNF11M7uQv0geNJMk7kDbyoVauhyzBcjt+gCZbJMju9VfZYAUZhs4qCNfC9HSS7iRbvxSJxgRq7CSckkqg8hA92uqdCxvJIsaZ/s32qWzMl+Mcv9kyi/dMOR4yxzjZhfpVgGHAzP9+EOxLFtpncBTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JuxIws05; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hTA98byZ"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b54a74f9150so3895624a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 04:02:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759143757; x=1759748557; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ArXlIKa0bCAPRpe0CickijlhXS7XHZf7jcmbVv++sWo=;
-        b=hTA98byZ22UWb35+btzTO/cP7WX2yWJUQJdqVXOaWI4yfwh3itcySFQZORmWu5BZEE
-         mIxzN4NcF2TJHkFs+aXwMBacELqodzwOXFW0UnPLbwl8PFOgZ5RZL9AgUXYh5hEHNPK4
-         wY59vZxyerFGgBN9zDbFitnnK0t4Z55jo+9Ou0nIOpr5JeFMa0mvlNFsewyqC8gN6Aht
-         xPKlL+u/pkGOtNm4v56I5dYtJkgBxFemFBrR22bJzFF1m0aJ0MqPGZV+g/DKCpdVQGZB
-         p7oNzAfJEFMXYzNEy5uoipsB8cjB+0rJIUBtDASZLEHeByK1kGoD3ct6HqwpfH0GQhDa
-         gaAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759143757; x=1759748557;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ArXlIKa0bCAPRpe0CickijlhXS7XHZf7jcmbVv++sWo=;
-        b=WHKo9MSN6hIH7Jt/6Gs+/qJaul3hFnTz4Kjm3wciDANZFTGcHriVBEmwGRT2hpenGe
-         seG+8TSbCCQiq6r7jHO1d7a/wJBgbP/Yrb+BtxrMNRDKL061TX21QX77EzLkJqmiH3KS
-         Hs7MS+SA5Vh1ANuU90h7drKs2kF0XyepL08hYaKthvAhw0ECMGYEoiVG4xzR5hjWUmI6
-         oxkfXjwr8fSzcuoXlcdxMRMVe2kfuyDIti4uwMH2T98aXJY9TtWmU4FJvVEHT9W4WQ9L
-         CR6c30YhX43Zba5S3kBA1FF/4ivBbme2cS4KqUAbXBUsPqnAEZIj+1bFloJFsgRLdxzv
-         8wtA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKbv/+JKljRIF//z5UiGoxffhzeCjdzdEx1TxkmhclbJ0exD3YQTT7nCJVWVTHaR3dazSQUX5eqv9JBmrwGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ8sFl4X93MmNn/W/xFU6cEF4yFLEFOPOgaxmWlYsb3AA4Y+RU
-	E+gEoR8KLx4ceFJjJ5P2e7i1vJV1fOeL0dCTnzlBoKYTX3ws36OZj7DyWvqBXKq3zOA=
-X-Gm-Gg: ASbGncuF/4ABuJgD/x90uLGzSIEOUishHNuCN1NndOUet+beLUI8m7B1UoRv1kPXA7C
-	ySbJzzFAMYSIUQX3+U1bNMYi+NYWJE+cjyqShXFUHFuTGP/BWjt0kp3m9K9Pa4hNmXmtuBdzaEE
-	6M0E8Rg6KFHwmPxfisgkguotPD5dh1GnKmPrYr3+NB4vJz1gw/DqqwGOUqal5YlAjqCvgiRS3+V
-	GVZoMniaRyub7ueeZlO+VrGzXjMBSjMnwrjrXPXb92dwLAhfs4f0IU/ZH5236XQP4h/b8va3QJC
-	1u13E6q+bx+r7O7ZC0pggeT0J1FD/lI5PGdav+Vlz2tfzbcJxX/ILqF2EsvrPLOrfvC3Uy1wns7
-	/thDi4bErIpDv8VYIk6wVjm7K
-X-Google-Smtp-Source: AGHT+IFJ8tBd5DbfKm01y+6YhQUicmi46JD7jPOYKxXSxgRsT1oHLX0ubEnEv3SeXFYfJc1oZPUmzA==
-X-Received: by 2002:a17:902:c409:b0:269:96db:939 with SMTP id d9443c01a7336-27ed4af3882mr193698795ad.58.1759143757073;
-        Mon, 29 Sep 2025 04:02:37 -0700 (PDT)
-Received: from localhost ([122.172.87.183])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed6ac274csm124914185ad.134.2025.09.29.04.02.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 04:02:36 -0700 (PDT)
-Date: Mon, 29 Sep 2025 16:32:34 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: cpufreq: streamline find_supply_names
-Message-ID: <20250929110234.ukgwsnxyrvsimhst@vireshk-i7>
-References: <20250915135954.2329723-2-thorsten.blum@linux.dev>
- <CAH5fLgg0_NBtfVMNBwXOe4BpyUKz_S=v0CiDxyKNYZcS9j7WHw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JuxIws05"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C51CC4CEF4;
+	Mon, 29 Sep 2025 12:49:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759150181;
+	bh=g9LISi377z68weUApT7rlrGLz0VrlT0E61wPfG+gzYQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=JuxIws05uY4HtJ81XyI9ZQtSzRZTOboStYFx0zFrD5Q0hxskSYJnJO8CfoZq3XW7h
+	 PGNbKCIJp0GWyWAcJ8kkxfCQVJ2CZK4io1aDU7YYGxBUmP9jDDL7VnIf+qWC6djEeL
+	 dZhLPJpc4gRJGEwAzAmp9jaI2pMiUCTgbnzoWTsvp2tJ/NAuCgF1LLrIqvXMHl27CG
+	 XiJPykGxL4dFDCqzwzpQdb1ek1L9DRJyazoM9YtnxCd2SCCtIINPtPweVhtKu+hM2H
+	 TcEaMfVcPy94MaPwM82PLzUNLp/n5zxI3tC3+g4HLeBFP7iUkax5G4hFY6x24vKhsr
+	 taL6Udjnm9anQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAH5fLgg0_NBtfVMNBwXOe4BpyUKz_S=v0CiDxyKNYZcS9j7WHw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 29 Sep 2025 14:49:35 +0200
+Message-Id: <DD5AOYADIBSX.O3CFPGMX9M9J@kernel.org>
+Subject: Re: [PATCH v2 01/10] gpu: nova-core: Set correct DMA mask
+Cc: "John Hubbard" <jhubbard@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <nouveau@lists.freedesktop.org>
+To: "Alistair Popple" <apopple@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250922113026.3083103-1-apopple@nvidia.com>
+ <20250922113026.3083103-2-apopple@nvidia.com>
+ <7fb081e9-e607-401b-937f-f4e3a78a2874@kernel.org>
+ <0dbc8f78-5cee-4741-8d33-df3358dd5383@nvidia.com>
+ <eblaubjmsesi6gh64ekm74qyzvfk23vjcmotc33upkc5w6edin@rbsezy6f7bai>
+ <DD2PRD2XEZRE.1YACAPZWRYLZO@kernel.org>
+ <um3463eyjtecebxdgjpegankwxgezqgeiqff6xy5wducnv7ayf@pnjhxbro2sh5>
+ <DD53EE5HJUZY.2EMREPXQ9P090@kernel.org>
+ <e2twlxdothcm4vbg3vytxppdpjdocx2l54mfnvhn7dbdncbxhx@ut4kpu7qwwe7>
+In-Reply-To: <e2twlxdothcm4vbg3vytxppdpjdocx2l54mfnvhn7dbdncbxhx@ut4kpu7qwwe7>
 
-On 29-09-25, 11:38, Alice Ryhl wrote:
-> This is a pre-existing issue, but ... this treats allocation failure
-> and non-existence the same way. That sounds wrong.
+On Mon Sep 29, 2025 at 9:39 AM CEST, Alistair Popple wrote:
+> On 2025-09-29 at 17:06 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
+>> On Mon Sep 29, 2025 at 2:19 AM CEST, Alistair Popple wrote:
+>> > On 2025-09-26 at 22:00 +1000, Danilo Krummrich <dakr@kernel.org> wrote=
+...
+>> >> On Tue Sep 23, 2025 at 6:29 AM CEST, Alistair Popple wrote:
+>> >> > On 2025-09-23 at 12:16 +1000, John Hubbard <jhubbard@nvidia.com> wr=
+ote...
+>> >> >> On 9/22/25 9:08 AM, Danilo Krummrich wrote:
+>> >> >> > On 9/22/25 1:30 PM, Alistair Popple wrote:
+>> >> >> >> +        // SAFETY: No DMA allocations have been made yet
+>> >> >> >=20
+>> >> >> > It's not really about DMA allocations that have been made previo=
+usly, there is
+>> >> >> > no unsafe behavior in that.
+>> >> >> >=20
+>> >> >> > It's about the method must not be called concurrently with any D=
+MA allocation or
+>> >> >> > mapping primitives.
+>> >> >> >=20
+>> >> >> > Can you please adjust the comment correspondingly?
+>> >> >
+>> >> > Sure.
+>> >> >
+>> >> >> >> +        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::=
+<47>())? };
+>> >> >> >=20
+>> >> >> > As Boqun mentioned, we shouldn't have a magic number for this. I=
+ don't know if
+>> >> >> > it will change for future chips, but maybe we should move this t=
+o gpu::Spec to
+>> >> >>=20
+>> >> >> It changes to 52 bits for GH100+ (Hopper/Blackwell+). When I post =
+those
+>> >> >> patches, I'll use a HAL to select the value.
+>> >> >>=20
+>> >> >> > be safe.
+>> >> >> >=20
+>> >> >> > At least, create a constant for it (also in gpu::Spec?); in Nouv=
+eau I named this
+>> >> >> > NOUVEAU_VA_SPACE_BITS back then. Not a great name, if you have a=
+ better idea,
+>> >> >> > please go for it. :)
+>> >> >
+>> >> > Well it's certainly not the VA_SPACE width ... that's a different a=
+ddress space :-)
+>> >>=20
+>> >> I mean, sure. But isn't the limitation of 47 bits coming from the MMU=
+ and hence
+>> >> defines the VA space width and the DMA bit width we can support?
+>> >
+>> > Not at all. The 47 bit limitation comes from what the DMA engines can =
+physically
+>> > address, whilst the MMU converts virtual addresses to physical DMA add=
+resses.
+>>=20
+>> I'm well aware -- what I'm saying is that the number given to
+>> dma_set_mask_and_coherent() does not necessarily only depend on the phys=
+ical bus
+>> and DMA controller capabilities.
+>>=20
+>> It may also depend on the MMU, since we still need to be able to map DMA=
+ memory
+>> in the GPU's virtual address space.
+>
+> Sure, I'm probably being a bit loose with terminology - I'm not saying it
+> doesn't depend on the MMU capabilities just that the physical addressing =
+limits
+> are independent of the virtual addressing limits so setting the DMA mask =
+based
+> on VA_SPACE_BITS (ie. virtual addressing limits) seems incorrect.
 
-What about this over the current patch:
+I think no one said that physical addressing limits depend on virtual addre=
+ssing
+limits.
 
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-index 224d063c7cec..e509b46b64c7 100644
---- a/drivers/cpufreq/rcpufreq_dt.rs
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -26,13 +26,17 @@ fn find_supply_name_exact(dev: &Device, name: &str) -> Option<CString> {
- }
+What I'm saying is that the DMA mask may depend on more than the physical
+addressing limits or the DMA controller limits -- that's a different statem=
+ent.
 
- /// Finds supply name for the CPU from DT.
--fn find_supply_names(dev: &Device, cpu: cpu::CpuId) -> Option<KVec<CString>> {
-+fn find_supply_names(dev: &Device, cpu: cpu::CpuId) -> Result<Option<KVec<CString>>> {
-     // Try "cpu0" for older DTs, fallback to "cpu".
--    (cpu.as_u32() == 0)
-+    let name = (cpu.as_u32() == 0)
-         .then(|| find_supply_name_exact(dev, "cpu0"))
-         .flatten()
--        .or_else(|| find_supply_name_exact(dev, "cpu"))
--        .and_then(|name| kernel::kvec![name].ok())
-+        .or_else(|| find_supply_name_exact(dev, "cpu"));
-+
-+    Ok(match name {
-+        None => None,
-+        Some(n) => Some(kernel::kvec![n]?),
-+    })
- }
+>> > So the two address spaces are different and can have different widths.=
+ Indeed
+>> > most of our current GPUs have a virtual address space of 49 bits whils=
+t only
+>> > supporting 47 bits of DMA address space.
+>>=20
+>> Now, it seems that in this case the DMA engine is the actual limiting fa=
+ctor,
+>> but is this the case for all architectures or may we have cases where th=
+e MMU
+>> (or something else) becomes the limiting factor, e.g. in future architec=
+tures?
+>
+> Hmm. I'm not sure I follow - the virtual addressing capabilities of the G=
+PU MMU
+> are entirely indepedent of the DMA addressing capabilities of the GPU and=
+ bus.
+> For example you can still use 49-bit GPU virtual addresses with 47-bits o=
+f DMA
+> bits or less and vice-versa.
+>
+> So the DMA address mask has nothing to do with the virtual address (ie.
+> VA_SPACE) width AFAICT? But maybe we've got slightly different terminolog=
+y?
 
- /// Represents the cpufreq dt device.
-@@ -68,7 +72,7 @@ fn init(policy: &mut cpufreq::Policy) -> Result<Self::PData> {
+Again, no one said it has anything to do with virtual address space width, =
+but
+it has something to do with the physical addresses the MMU can handle.
 
-         mask.set(cpu);
+Otherwise, let me answer with a question: What do we set the DMA mask to if=
+ the
+DMA controller supports wider addresses than the MMU does? We still want to=
+ be
+able to map DMA buffers in the GPU's virtual address space, no?
 
--        let token = find_supply_names(dev, cpu)
-+        let token = find_supply_names(dev, cpu)?
-             .map(|names| {
-                 opp::Config::<Self>::new()
-                     .set_regulator_names(names)?
+In other words, the value for the DMA mask may depend on multiple device
+capabilities, i.e. physical bus, DMA controller, MMU, etc.
 
--- 
-viresh
+Hence, the DMA mask should be the minimum of all of those.
+
+Whether we define all of them and compute the minimum, or just create a glo=
+bal
+constant is a different question. But should at least document it cleanly.
