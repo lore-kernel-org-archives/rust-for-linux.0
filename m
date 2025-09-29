@@ -1,135 +1,344 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F8D2F1FD0
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 15:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5908F3090C6
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 16:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759159620; cv=none; b=OM/uG1NMfjmqDqF5SbFeYslKLrclkxMwMOu3h2rcMWCRWcAxGr3WLhQr31nVzx4uO7wP87+SBlRbvng6Bd7qOHTqPk55ovP3VhsjH2YLXpHa5KfnF+LYl7nauurHt3Yb3T4r+Ayt69/yJvzqyMkLGbfeywM0QJD+pYoJz25ugsE=
+	t=1759163752; cv=none; b=kwimIgChhO70F6hIEK+I5R2Zxll/0lDUEB++MFyc0fK4Skw+D3EpgOuu3Lr8A8HEQCVVPoTLw3avp3aLI0xRFHYf/3A+DNEtatca3qP8MW5w07kM19Wl/Om51YyfX3r/WDZv0wCuVfKmUO83ZyWLIse+G0TUBu9P8JTGsIjiWM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759159620; c=relaxed/simple;
-	bh=l81tY4NGxQltzYJgqWgsKH1IyY8O4rKYq2p2qmygu1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nl0aIaxolbZP+UIwNRPUyCBIbrWkNM9bnlNMBBqPedyFFbG7jjI/hv5C7jPzOanrWcYqiz7n0o3OCOc4dwWcYe43Z+8lkQQwyRYtTd2ULJdSXa067LtnmCVQDSt+m1q05Vh8LOihPsEbxsgLMbAE4Ein2izSff5bRolp9ctnrwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kAwTDv4Q; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1759163752; c=relaxed/simple;
+	bh=nxi3r8PydOEfc0wEkxbwOLWzqmSfQiGA5eB8DVA5Hic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dBNRV6t8CvUaoNWJdr4U8zL3nYiU1WQ09wNjH6BAmT9yrPLGeVK+5L8S6UM0r1vgzypxTdz6SmXL6EbAjSdDJ7lGEyhZx6ldpJspjljCLJF8VBfmhdZqwGeH+4QZxIjdKv2VGfkj5YF51nWLLVZ1T1NQMNXIy/bxsYDT6SPIIzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B6EJoEMQ; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kAwTDv4Q"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b57bf560703so3569936a12.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 08:26:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B6EJoEMQ"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7841da93a1aso152776b3a.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 09:35:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759159618; x=1759764418; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QUFfHCZ9kPQnI/DGEJ/PgzLIjVfpKbTJMrrLjEY+ghE=;
-        b=kAwTDv4QVZddVayfRs0hOX9ii3BE62T5c6iKDd/yjTVrTSso3+vxnufv0sEJGNGwy1
-         fKD5Y81QAsvCcsnKnkBXeJ+cyUUJ+kqCNzeXk+w03stzFmPXtQwgrnUhMBzw1UWPb4D/
-         +kCdPdlAXd3mKJMp+4RfA4SYP/BrPnhr04n/DJfQYzQuwDG6a3u+J9nYGB7NutrE3x0V
-         Bn7+2ndMRkhDRm+BmtI5C7UyRJ1xttyLSvKuokUQ8jV9FCpVWW4lPPgmLWAc8ikYPib5
-         p6fidflqWjhGfDNVZVIY05mD0LSorW5EFF4h+f5FtQXsOjtl2HQng1MphknHKeSIQlVu
-         EI5Q==
+        d=gmail.com; s=20230601; t=1759163750; x=1759768550; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jl0TJzOw7c1N6d488hhXazm3UzzWpEQY1F2z0NOrldo=;
+        b=B6EJoEMQbV7kmk89mcb1eQp0Y8Ha22tRcCxu6SIbC2eiIPwo0XZMZlrKhJvAKYvdp+
+         4VTAwKvasEEj6QJMSr+dhfX9SN/8EXvq0273J9UPSOK+odwFB8RiND7T/rcmmAoFXO0w
+         LpbVTdK4wce5ivL39fDEcew9+NwYteItbA+e8+2WxrBGCAfewJV+aRG/lHvLSY6Uwry/
+         T4irLIXvMG5NOWzJR8bxia9n4Qejqw8LFrxTsbmDWuAs2nQQXFno2EQktpLGgtY/hOik
+         t3ms4qpk7/nhcKyscydOsaZj8JqHcDd2sfXOf8m04U0tHdgj5iR54x4EHc0MKiZw7XQX
+         3iqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759159618; x=1759764418;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUFfHCZ9kPQnI/DGEJ/PgzLIjVfpKbTJMrrLjEY+ghE=;
-        b=Y2BNmK9WlWDyDfLQF7cvuXxUic1RAk8ySl3udyI0+VV+CCkTj6U2pp7qBovh+m7ura
-         1XyVCEbGaZUnUyoU2eQVTH5MbEU5IbV+ISQ0bEhD+I5Q2klDG0+tuauSdygEtuxh3Fad
-         JDbtIiOkCP8Q5oVYvMqrFsExGYHlLwv/pE9O7mrjxrEW7GedCGSkTbI1EKFcw4RzNEug
-         iLL5017Qim5wrVwVYxlD9YSI8A+c7WAfqrmhD+4Bi2uMIdlPfrOJSyUx5bS0hMXJPsnF
-         CWkz93Rcr76K8o1/1X+RqagruWkV2jq/g2fXjlsJ6HLMULQrhPSAdS4gV57XOMfhyd+X
-         Qk6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUirXpR6gffemwHG8tDUYhRUAh4NkT/PJhZWu8O9bQqaUb8TCpHDjzv5RninMgUnM3Y6tcqBEmNttdrxGUIWg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjgU6nWnOD5KwniRiRsz/dWpqLLhTzoDSOS5vJ406fsgwFxEYb
-	9XStCMaPGhUAuh0X+dUe3YTlMWJiXC97Vb12Yng2OqEW3d8t2jrsVKNx
-X-Gm-Gg: ASbGncvcIPDbZZhBFHYUXVxfpd9aX5QED0Bd1bVdncDij0Uavoaw2XkMjKoom6ns99b
-	SkYyu5LSQ67dhg6vDgqdDCcs6Pvp6Zt5igOJPZVxRmyNTXvggHnm9idYG/q2D0tAx8WBhakTzYN
-	QMNSthByRE1ZvpbJBQ2M7THARZTMHPOET9wDHmSaVJYgPovGieluhRSw3tBY/l+jJuzUCO0IHyt
-	b9P7qtWgIrlH5NRZAD8YrvqtfFl1r80oDqhm6RnRSnirIn+js4fTI9tAQ5CVee/nY2/fJWJSYF8
-	z2jfD7m9GQP33AR8TcE0F7SQvMQN1cyTTjpl1jvTBiBt/pc5z65uZCPGKb3W0wh+zu8xFdOtLqX
-	hU05ent/YL/EFdb5fRw7zTX/U3PBljzqS/UzJ1TTku5c=
-X-Google-Smtp-Source: AGHT+IGlrXcMqMEE95Bpk6Fvp2Z3JkSBS53/nlBPtQ4p3saTyAp/aYHA69EYxK3FJ+53fX34h/VJMw==
-X-Received: by 2002:a17:902:f786:b0:240:3b9e:dd65 with SMTP id d9443c01a7336-27ed4aab57bmr188196505ad.38.1759159618299;
-        Mon, 29 Sep 2025 08:26:58 -0700 (PDT)
-Received: from localhost ([216.228.125.130])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed66d37casm134991565ad.8.2025.09.29.08.26.57
+        d=1e100.net; s=20230601; t=1759163750; x=1759768550;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jl0TJzOw7c1N6d488hhXazm3UzzWpEQY1F2z0NOrldo=;
+        b=aQ763JX9eKK5sItu2WJacSoPLqceH18CXA5ca35GeCVK/sNHK/8NX+2XVzmnu5YXe4
+         gvUR4963yYeIUa03zVmaWHsXH5ohGSiEV1PuyWmYvM+a50yvqYrYw4GEwkSvW+hkuDZs
+         P7VRIjEprjscZv4MchEoNfXhXwjqbv9oPjQ/1vrULBdR4FHiL+w0QEs0r1NShAyrJchS
+         OiPnP9XZFvVec8hDItLrf67RCm3WEqdKfAQR5grGNVRL+dAdNCt5q8jmJWiPLQiswh/X
+         gxdXmzrhzTRkUbDYhoFC2Yq3zC8VPqCTRnpXjfwuGqMN5d8Z44VwOhuGl3xC7plOt660
+         yeTg==
+X-Forwarded-Encrypted: i=1; AJvYcCUVZIAHzTgjS7Zn34agmNBHLq7fnioTnZPKbJTUh3LAa3vzWWX/pfAcVLXUxh7Sg62RdGZy+9pL2ThtxyVDHg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzw/C4wK56/nPhqdPrB7dRda+XC8P97ebXcRpG8r4JwFw3dxkks
+	tqormolv9xkL6x4OHlVD8Sq1Jp2wU+wEIA01npqeEC07KvSPmxvLEskM
+X-Gm-Gg: ASbGncs6L6SMF2Z6MlOhmEyQeyf9zw96lUg5fOnlRsUozrtB5ROOWWCFjU2c9D5fIuT
+	HHnjYT/9T/I7UzY+pOxKf845kIS5FBLiicGKAq3Ow1+XSB1nZZluL5wW05AeOFEurW99Rs5dL/3
+	5dXjPMKzuxvlJmaF8ZFxVQco/Smnn5dyYWlf3rm/D2MlQgYj3m/XTpVocd/eQkkMMzcJJGzIrSw
+	CHkkJz1EW1ISvYzxLshJLTUb8MDiLiwuTPuFpNzlPvABrSOhbJynEiP+qeRCjXunDoioLyJqh1C
+	/JOjiNib+mWWn6SiYqzFTOdQzuHhslP3zkQZkeVs3fVxd5gsfmvtru3YxzNOo3uITL5acUlf7FN
+	3tRbA97QXAUuOYRzdN/E=
+X-Google-Smtp-Source: AGHT+IEe+mX5IHvRExB5eT7AjFhwBaVoLoo+nHJ/qfUKuNGScUHifc8/eCXvOh7oNHJaVtFlxJ8dFg==
+X-Received: by 2002:a05:6a20:4324:b0:24e:2cee:957a with SMTP id adf61e73a8af0-2e7a69e5299mr11973213637.0.1759163749495;
+        Mon, 29 Sep 2025 09:35:49 -0700 (PDT)
+Received: from localhost ([104.249.174.141])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78102c06fe8sm11438810b3a.77.2025.09.29.09.35.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 08:26:57 -0700 (PDT)
-Date: Mon, 29 Sep 2025 11:26:55 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	dakr@kernel.org, acourbot@nvidia.com,
-	Alistair Popple <apopple@nvidia.com>,
+        Mon, 29 Sep 2025 09:35:49 -0700 (PDT)
+From: Ben Guo <benx.guo@gmail.com>
+To: Alex Shi <alexs@kernel.org>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	nouveau@lists.freedesktop.org
-Subject: Re: [PATCH v4 6/6] rust: bitfield: Use 'as' operator for setter type
- conversion
-Message-ID: <aNqlPzZn9jUjSKfE@yury>
-References: <20250920182232.2095101-1-joelagnelf@nvidia.com>
- <20250920182232.2095101-7-joelagnelf@nvidia.com>
- <CANiq72k3kE-6KPkKwiDLgfkGHCQj4a2K7h9c4T13WMa5b4BAnQ@mail.gmail.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+Cc: hust-os-kernel-patches@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH] docs/zh_CN: Add translation of rust/testing.rst
+Date: Mon, 29 Sep 2025 16:35:15 +0000
+Message-ID: <20250929163531.376092-1-benx.guo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72k3kE-6KPkKwiDLgfkGHCQj4a2K7h9c4T13WMa5b4BAnQ@mail.gmail.com>
 
-On Mon, Sep 29, 2025 at 03:59:32PM +0200, Miguel Ojeda wrote:
-> On Sat, Sep 20, 2025 at 8:23 PM Joel Fernandes <joelagnelf@nvidia.com> wrote:
-> >
-> > The bitfield macro's setter currently uses the From trait for type
-> > conversion, which is overly restrictive and prevents use cases such as
-> > narrowing conversions (e.g., u32 storage size to u8 field size) which
-> > aren't supported by From.
-> 
-> Being restrictive is a good thing -- it would be nice to know more
-> context about this change, like Alexandre points out.
-> 
-> In particular, the line:
-> 
->     .set_nibble(0x12345678_u32)    // truncated to 0x8
-> 
-> sounds fairly alarming, and not what we usually want. Why cannot the
-> caller cast on their side, if they really want that?
+Complete the translation of rust/testing.rst and add the testing TOC entry
+to rust/index.rst.
 
-It was my suggestion to relax the type requirement. The reasoning is
-as follows.
+Add the translation based on commit a3b2347343e0
+("Documentation: rust: testing: add docs on the new KUnit `#[test]` tests").
 
-Consider a bitfield bf with bits 5:3 described as field1. The storage
-for bf is u8, but the type is u32. This is OK, because storage and
-representation are simply different matters. And no matter how you
-declare the field inside the bitfield, you can't prevent overflow
-followed by silent truncation by just syntax measures.
+Signed-off-by: Ben Guo <benx.guo@gmail.com>
+---
+ .../translations/zh_CN/rust/index.rst         |   1 +
+ .../translations/zh_CN/rust/testing.rst       | 215 ++++++++++++++++++
+ 2 files changed, 216 insertions(+)
+ create mode 100644 Documentation/translations/zh_CN/rust/testing.rst
 
-I suggested to relax the requirement that field representation must
-match (not exceed in fact) storage type, and instead bring explicit
-check in the setter. With the check, if user tries to overflow the
-field, we either throw a warning, or panic if hardening is enabled,
-or do nothing in performance-critical builds.
+diff --git a/Documentation/translations/zh_CN/rust/index.rst b/Documentation/translations/zh_CN/rust/index.rst
+index b01f887e7167..efc2126f6307 100644
+--- a/Documentation/translations/zh_CN/rust/index.rst
++++ b/Documentation/translations/zh_CN/rust/index.rst
+@@ -19,6 +19,7 @@ Rust
+     general-information
+     coding-guidelines
+     arch-support
++    testing
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/translations/zh_CN/rust/testing.rst b/Documentation/translations/zh_CN/rust/testing.rst
+new file mode 100644
+index 000000000000..ca81f1cef6eb
+--- /dev/null
++++ b/Documentation/translations/zh_CN/rust/testing.rst
+@@ -0,0 +1,215 @@
++.. SPDX-License-Identifier: GPL-2.0
++.. include:: ../disclaimer-zh_CN.rst
++
++:Original: Documentation/rust/testing.rst
++
++:翻译:
++
++ 郭杰 Ben Guo <benx.guo@gmail.com>
++
++测试
++====
++
++本文介绍了如何在内核中测试 Rust 代码。
++
++有三种测试类型：
++
++- KUnit 测试
++- ``#[test]`` 测试
++- Kselftests
++
++KUnit 测试
++----------
++
++这些测试来自 Rust 文档中的示例。它们会被转换为 KUnit 测试。
++
++使用
++****
++
++这些测试可以通过 KUnit 运行。例如，在命令行中使用 ``kunit_tool`` （ ``kunit.py`` ）::
++
++	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
++
++或者，KUnit 也可以在内核启动时以内置方式运行。获取更多 KUnit 信息，请参阅
++Documentation/dev-tools/kunit/index.rst。
++关于内核内置与命令行测试的详细信息，请参阅 Documentation/dev-tools/kunit/architecture.rst。
++
++要使用这些 KUnit 文档测试，需要在内核配置中启用以下选项::
++
++	CONFIG_KUNIT
++	   Kernel hacking -> Kernel Testing and Coverage -> KUnit - Enable support for unit tests
++	CONFIG_RUST_KERNEL_DOCTESTS
++	   Kernel hacking -> Rust hacking -> Doctests for the `kernel` crate
++
++KUnit 测试即文档测试
++********************
++
++文档测试（ *doctests* ）一般用于展示函数、结构体或模块等的使用方法。
++
++它们非常方便，因为它们就写在文档旁边。例如：
++
++.. code-block:: rust
++
++	/// 求和两个数字。
++	///
++	/// ```
++	/// assert_eq!(mymod::f(10, 20), 30);
++	/// ```
++	pub fn f(a: i32, b: i32) -> i32 {
++	    a + b
++	}
++
++在用户空间中，这些测试由 ``rustdoc`` 负责收集并运行。单独使用这个工具已经很有价值，
++因为它可以验证示例能否成功编译（确保和代码保持同步），
++同时还可以运行那些不依赖内核 API 的示例。
++
++然而，在内核中，这些测试会转换成 KUnit 测试套件。
++这意味着文档测试会被编译成 Rust 内核对象，从而可以在构建的内核环境中运行。
++
++通过与 KUnit 集成，Rust 的文档测试可以复用内核现有的测试设施。
++例如，内核日志会显示::
++
++	KTAP version 1
++	1..1
++	    KTAP version 1
++	    # Subtest: rust_doctests_kernel
++	    1..59
++	    # rust_doctest_kernel_build_assert_rs_0.location: rust/kernel/build_assert.rs:13
++	    ok 1 rust_doctest_kernel_build_assert_rs_0
++	    # rust_doctest_kernel_build_assert_rs_1.location: rust/kernel/build_assert.rs:56
++	    ok 2 rust_doctest_kernel_build_assert_rs_1
++	    # rust_doctest_kernel_init_rs_0.location: rust/kernel/init.rs:122
++	    ok 3 rust_doctest_kernel_init_rs_0
++	    ...
++	    # rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
++	    ok 59 rust_doctest_kernel_types_rs_2
++	# rust_doctests_kernel: pass:59 fail:0 skip:0 total:59
++	# Totals: pass:59 fail:0 skip:0 total:59
++	ok 1 rust_doctests_kernel
++
++文档测试中，也可以正常使用 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符，例如：
++
++.. code-block:: rust
++
++	/// ```
++	/// # use kernel::{spawn_work_item, workqueue};
++	/// spawn_work_item!(workqueue::system(), || pr_info!("x\n"))?;
++	/// # Ok::<(), Error>(())
++	/// ```
++
++这些测试和普通代码一样，也可以在 ``CLIPPY=1`` 条件下通过 Clippy 进行编译，
++因此可以从额外的 lint 检查中获益。
++
++为了便于开发者定位文档测试出错的具体行号，日志会输出一条 KTAP 诊断信息。
++其中标明了原始测试的文件和行号（不是 ``rustdoc`` 生成的临时 Rust 文件位置）::
++
++	# rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
++
++Rust 测试中常用的断言宏是来自 Rust 标准库（ ``core`` ）中的 ``assert!`` 和 ``assert_eq!`` 宏。
++内核提供了一个定制版本，这些宏的调用会被转发到 KUnit。
++和 KUnit 测试不同的是，这些宏不需要传递上下文参数（ ``struct kunit *`` ）。
++这使得它们更易于使用，同时文档的读者无需关心底层用的是什么测试框架。
++此外，这种方式未来也许可以让我们更容易测试第三方代码。
++
++当前有一个限制：KUnit 不支持在其他任务中执行断言。
++因此，如果断言真的失败了，我们只是简单地把错误打印到内核日志里。
++另外，文档测试不适用于非公开的函数。
++
++作为文档中的测试示例，应当像 “实际代码” 一样编写。
++例如：不要使用 ``unwrap()`` 或 ``expect()``，请使用 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符。
++更多背景信息，请参阅：
++
++	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
++
++``#[test]`` 测试
++----------------
++
++此外，还有 ``#[test]`` 测试。与文档测试类似，这些测试与用户空间中的测试方式也非常相近，并且同样会映射到 KUnit。
++
++这些测试通过 ``kunit_tests`` 过程宏引入，该宏将测试套件的名称作为参数。
++
++例如，假设想要测试前面文档测试示例中的函数 ``f``，我们可以在定义该函数的同一文件中编写：
++
++.. code-block:: rust
++
++	#[kunit_tests(rust_kernel_mymod)]
++	mod tests {
++	    use super::*;
++
++	    #[test]
++	    fn test_f() {
++	        assert_eq!(f(10, 20), 30);
++	    }
++	}
++
++如果我们执行这段代码，内核日志会显示::
++
++	    KTAP version 1
++	    # Subtest: rust_kernel_mymod
++	    # speed: normal
++	    1..1
++	    # test_f.speed: normal
++	    ok 1 test_f
++	ok 1 rust_kernel_mymod
++
++与文档测试类似， ``assert!`` 和 ``assert_eq!`` 宏被映射回 KUnit 并且不会发生 panic。
++同样，支持 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符，
++测试函数可以什么都不返回（单元类型 ``()``）或 ``Result`` （任何 ``Result<T, E>``）。例如：
++
++.. code-block:: rust
++
++	#[kunit_tests(rust_kernel_mymod)]
++	mod tests {
++	    use super::*;
++
++	    #[test]
++	    fn test_g() -> Result {
++	        let x = g()?;
++	        assert_eq!(x, 30);
++	        Ok(())
++	    }
++	}
++
++如果我们运行测试并且调用 ``g`` 失败，那么内核日志会显示::
++
++	    KTAP version 1
++	    # Subtest: rust_kernel_mymod
++	    # speed: normal
++	    1..1
++	    # test_g: ASSERTION FAILED at rust/kernel/lib.rs:335
++	    Expected is_test_result_ok(test_g()) to be true, but is false
++	    # test_g.speed: normal
++	    not ok 1 test_g
++	not ok 1 rust_kernel_mymod
++
++如果 ``#[test]`` 测试可以对用户起到示例作用，那就应该改用文档测试。
++即使是 API 的边界情况，例如错误或边界问题，放在示例中展示也同样有价值。
++
++``rusttest`` 宿主机测试
++-----------------------
++
++这类测试运行在用户空间，可以通过 ``rusttest`` 目标在构建内核的宿主机中编译并运行::
++
++	make LLVM=1 rusttest
++
++当前操作需要内核 ``.config``。
++
++目前，它们主要用于测试 ``macros`` crate 的示例。
++
++Kselftests
++----------
++
++Kselftests 可以在 ``tools/testing/selftests/rust`` 文件夹中找到。
++
++测试所需的内核配置选项列在 ``tools/testing/selftests/rust/config`` 文件中，
++可以借助 ``merge_config.sh`` 脚本合并到现有配置中::
++
++	./scripts/kconfig/merge_config.sh .config tools/testing/selftests/rust/config
++
++Kselftests 会在内核源码树中构建，以便在运行相同版本内核的系统上执行测试。
++
++一旦安装并启动了与源码树匹配的内核，测试即可通过以下命令编译并执行::
++
++	make TARGETS="rust" kselftest
++
++请参阅 Documentation/dev-tools/kselftest.rst 文档以获取更多信息。
+-- 
+2.43.0
 
-As far as I can say, Joel scheduled this in v5.
-
-Thanks,
-Yury
