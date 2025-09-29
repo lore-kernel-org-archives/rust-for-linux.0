@@ -1,116 +1,270 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C40A17597
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 07:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B416F17597;
+	Mon, 29 Sep 2025 07:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759130262; cv=none; b=g/WRxhUzn8JyqtUPccl84v6IkgruE2LuOg3iBvEhz+Vx+5ezx5jXWh7iqcRL2+2ABnR+/4xMFGZnM3BtgvvigDorcwv5yCC+2g/5gz0q+R1rDVgOuGaNjSXdgNXRDVFhhTOxT8ny/RVaukIyftau+8mZdn49NQE58zyptji+bEg=
+	t=1759130339; cv=none; b=TyXDrY69oMbrOKok6Iv0EyHokQMUiNvOGISMkrjzkdMYetksIIF9XmJZ7pioNWcP8uu57p0cEjWaOdVdLf5pldGnCEjoApVr73fmPQ9L135/L44lMOGdL1DNKY7dDCnytjAupwdAubH2L7/QUbrq3/if2Rgtrn95HZLnkhCdNKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759130262; c=relaxed/simple;
-	bh=1UONtrMtUK6yS11ONBetAASIgkCOBLj7c71vQ9l/8yU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SpWqPk/uM9JvOwBNVJiNFAdodt8ynXNWSyDd1NrreGjeeemCBzRlpYKJh3jJkzbPBUmp+8vXA3alx0gjIx6UECQrapxiW0mtiu+ldGTaLXnOlOM8+nEAncRKLfR9/kp05ruTnVNjGMMo7ecgkHTYgGfFP4Kou2snZeQnFTi8KY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UGdYCiy3; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1759130339; c=relaxed/simple;
+	bh=fkCFAKqmnEB7GXdZAgr1rfARjSCT5mvAOm5qmdONesk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=jCTUJExyIZu5JUsWFkwhPoIwjXf01WrUGP+wQljuYHuA+3A+Hj6/IuJmxAOdSIFD1tEgDtSzuGGmrwVDw87mOVlERYkocfkG2oSgQMY4IZc869d/aKCcEMB+E/qkAinW4K2qvuz446DwPwuxtn7/MYA0C6ipDJNCvuCaT0iAdkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVs59kA9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UGdYCiy3"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so3702885b3a.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Sep 2025 00:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759130260; x=1759735060; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=41vJGsYig9j0s4aHFjZZ4NIfyKzXW40xnJZnpcg+MSw=;
-        b=UGdYCiy3WRwBz2vQ20mkgVgYtLKL+crLRn1iCihueEx5OTg+8xiIdi25+WXrQHGOUD
-         MIhyvlhuzPN76eGG/+mYt0GuKqeOhTQUIqYr+gn/CjvdpoK3GHRtdp2oLXfI6EOWloEo
-         85uxVjGidwPfHzFMf74IhbylJ+ZECPUIExnoY4Qd/YL6PBjM803wBglcyIHMWXJzh4lB
-         FqiTINsXT21PfqeZcOTd8a7qYh+vaDywJ/eYOxIkQvExd8bBZctaNJTI1VnD7GPmi/Rg
-         N24aht3WeB61zTpxQ6TuEUnB/4Aa/k/CSmMcBhMasiVSo/bRRuXaCX9WerY8d1ab4yG0
-         Jvmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759130260; x=1759735060;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=41vJGsYig9j0s4aHFjZZ4NIfyKzXW40xnJZnpcg+MSw=;
-        b=ohi4x6t/3CmO3Lb5pEs4Xv9pFj9JeFiAhK7pbEKlmEqvIVCR7gIA0U6wweQOFfAkQ8
-         Ue9YSgfWL3C4sgLEf6C2SkSVQYnLlImYJ25hjOoVX4vzMRmrvez+eCN5Ja9VKtIjruTq
-         hbWWg52tBi4exVjthxlRegg29MVpJj6784LfOVIPx5BY4eMoAipgFVUVqDdFpqTHgsZs
-         5zegxsQpPCPsP6BYp4M3Dx5CSaQx4xOr3QElwaayYHzulsI5Sy4HpxXAckGWiUz9h76F
-         4fJjup2fNLFV626fD2WuJknphK2G/MjykBTcmGL4iB0V9xxxu9xZkjE9YRWY3QT6NyXU
-         F0fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU1ksDTrpdYt1SoNauazbPFeMbKLJ94zIB1ixc9cSOk80e2yRlsxBQLvEHtbQh2AkxIoywzQ5pGEesZJnPhyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl6rKxxxKY4j/kpcnHEYjVeM1kS/ATDKreuEzjvjHFn73yfv4i
-	ZRdoLqCvbdC9d3RHP3eNRL466rAw5meb40EmTd5KWtglMJAfuzuF3EJIlrE4JA/spno=
-X-Gm-Gg: ASbGnctp/Z5o2z8lifXqQN2htZdRhPfskjzPXZhJ27jEMID0BDZE1Owq6dFk93olA+s
-	Sc2ZzsDwomvmrfWcOTf9ASTolGclgs2tH9t/8PWfLGVpj0Ti016Jbct/o7tfVMTfNrIPOZFffOy
-	TxiLNDb8YTx7wOtdqifK8VPniRUd5K6HpXKAi3xlnxV3mT0jDVJXnYT9J7ZQteKiQvpusI4Fn7p
-	1wUuKsutX+aCOl5N3aMXTDjvwpHqiNfx1tegPF4c2jABKWHYxjxWT4Pi/6r5wSa6Wb3NaFkAmm/
-	ngjdV8f49t/sXBe3Ztj1DrnlDQ4bT9+NJuRBSh/fJnfLKKPQNpT+v0XBdom+7znQAFLGMHO8mZh
-	X5NbNfaFaTc8wffjn0VVE1WvD8eaHddVyvmQ=
-X-Google-Smtp-Source: AGHT+IG7dVzj7OVwB2z2s20w3z/Vil+iqfjNgNFet75tvLeZ3CVhPERBC3rci3CvPwp2drAdqpVuEQ==
-X-Received: by 2002:a05:6a00:248d:b0:781:1110:f175 with SMTP id d2e1a72fcca58-7811110f459mr11198689b3a.14.1759130260198;
-        Mon, 29 Sep 2025 00:17:40 -0700 (PDT)
-Received: from localhost ([122.172.87.183])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-781023c1867sm10412113b3a.35.2025.09.29.00.17.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 00:17:39 -0700 (PDT)
-Date: Mon, 29 Sep 2025 12:47:37 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Trevor Chan <trev@trevrosa.dev>, alex.gaynor@gmail.com,
-	ojeda@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
-	dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
-	aliceryhl@google.com, vireshk@kernel.org, nm@ti.com,
-	sboyd@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org, david.m.ertman@intel.com,
-	ira.weiny@intel.com, leon@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, bhelgaas@google.com,
-	kwilczynski@kernel.org, jack@suse.cz
-Subject: Re: [PATCH v3] rust: aref: make `AlwaysRefCounted::inc_ref` an
- associated function
-Message-ID: <20250929071737.cyql6ucz6xtwdmiy@vireshk-i7>
-References: <20250924052442.9259-1-trev@trevrosa.dev>
- <CANiq72nrn55Zz7wzwVpiNT9=kF1jJXDMEkhOfhAtKjgHMtjr=A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVs59kA9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0036BC4CEF4;
+	Mon, 29 Sep 2025 07:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759130339;
+	bh=fkCFAKqmnEB7GXdZAgr1rfARjSCT5mvAOm5qmdONesk=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=fVs59kA9BHVDlhFsctihOnF2LXp6HxxhIQjlIa4m0i6zy4PExJ+tfnri/UXhP/a4U
+	 NUihftuV6xGkj3ulEm22VNVAE6858cMSInYHt2ndTTh1LOt8Op7eGXKXJlK40qiAoN
+	 7A163hBqOwSy9F+ky1/INnmnh8uz8oN+Zn+l0HJW+kmliJCB1F0iyNIXAdN6r0wWPg
+	 bcJbUII6XWK5v9xmO3bQfvjEjIf87zFsle1rxpECOHPqgnf/b7PVRJ5V2ON/daTAVB
+	 B9Ve7ziJ6OelaH971R2EQUYLK2URPkgzrNp6owiumbaJMNE3krYNExW0x2kSH/xcWz
+	 ht3r9r+yHT7kg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nrn55Zz7wzwVpiNT9=kF1jJXDMEkhOfhAtKjgHMtjr=A@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 29 Sep 2025 09:18:53 +0200
+Message-Id: <DD53NQP11F11.1JAJXDG2NQRU7@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 06/10] gpu: nova-core: gsp: Create rmargs
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Timur Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>
+To: "Alistair Popple" <apopple@nvidia.com>
+References: <20250922113026.3083103-1-apopple@nvidia.com>
+ <20250922113026.3083103-7-apopple@nvidia.com>
+ <DD2JYDPBOKA8.2QCK0P7CR1T3V@nvidia.com>
+ <q2ehvle73bvop6muga44cebwzgpm2g5tghf2txq2orvgsaryh2@hfmxjcymhsrl>
+In-Reply-To: <q2ehvle73bvop6muga44cebwzgpm2g5tghf2txq2orvgsaryh2@hfmxjcymhsrl>
 
-On 24-09-25, 10:31, Miguel Ojeda wrote:
-> On Wed, Sep 24, 2025 at 7:24 AM Trevor Chan <trev@trevrosa.dev> wrote:
-> >
-> >  rust/kernel/auxiliary.rs        |  4 ++--
-> >  rust/kernel/block/mq/request.rs |  4 ++--
-> >  rust/kernel/cred.rs             |  4 ++--
-> >  rust/kernel/device.rs           |  4 ++--
-> >  rust/kernel/device/property.rs  |  4 ++--
-> >  rust/kernel/drm/device.rs       |  4 ++--
-> >  rust/kernel/drm/gem/mod.rs      |  4 ++--
-> >  rust/kernel/fs/file.rs          |  8 ++++----
-> >  rust/kernel/mm.rs               |  8 ++++----
-> >  rust/kernel/mm/mmput_async.rs   |  4 ++--
-> >  rust/kernel/opp.rs              |  4 ++--
-> >  rust/kernel/pci.rs              |  4 ++--
-> >  rust/kernel/pid_namespace.rs    |  4 ++--
-> >  rust/kernel/platform.rs         |  4 ++--
-> >  rust/kernel/task.rs             |  4 ++--
-> 
-> Acked-by's from maintainers appreciated!
+On Mon Sep 29, 2025 at 8:36 AM CEST, Alistair Popple wrote:
+> On 2025-09-26 at 17:27 +1000, Alexandre Courbot <acourbot@nvidia.com> wro=
+te...
+>> On Mon Sep 22, 2025 at 8:30 PM JST, Alistair Popple wrote:
+>> > @@ -33,6 +36,7 @@ pub(crate) struct Gsp {
+>> >      pub logintr: CoherentAllocation<u8>,
+>> >      pub logrm: CoherentAllocation<u8>,
+>> >      pub cmdq: GspCmdq,
+>> > +    rmargs: CoherentAllocation<GSP_ARGUMENTS_CACHED>,
+>> >  }
+>> > =20
+>> >  /// Creates a self-mapping page table for `obj` at its beginning.
+>> > @@ -90,12 +94,35 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound=
+>) -> Result<impl PinInit<Self
+>> > =20
+>> >          // Creates its own PTE array
+>> >          let cmdq =3D GspCmdq::new(dev)?;
+>> > +        let rmargs =3D
+>> > +            create_coherent_dma_object::<GSP_ARGUMENTS_CACHED>(dev, "=
+RMARGS", 1, &mut libos, 3)?;
+>> > +        let (shared_mem_phys_addr, cmd_queue_offset, stat_queue_offse=
+t) =3D cmdq.get_cmdq_offsets();
+>> > +
+>> > +        dma_write!(
+>> > +            rmargs[0].messageQueueInitArguments =3D MESSAGE_QUEUE_INI=
+T_ARGUMENTS {
+>> > +                sharedMemPhysAddr: shared_mem_phys_addr,
+>> > +                pageTableEntryCount: cmdq.nr_ptes,
+>> > +                cmdQueueOffset: cmd_queue_offset,
+>> > +                statQueueOffset: stat_queue_offset,
+>> > +                ..Default::default()
+>> > +            }
+>> > +        )?;
+>> > +        dma_write!(
+>> > +            rmargs[0].srInitArguments =3D GSP_SR_INIT_ARGUMENTS {
+>> > +                oldLevel: 0,
+>> > +                flags: 0,
+>> > +                bInPMTransition: 0,
+>> > +                ..Default::default()
+>> > +            }
+>> > +        )?;
+>> > +        dma_write!(rmargs[0].bDmemStack =3D 1)?;
+>>=20
+>> Wrapping our bindings is going to help clean up this code as well.
+>>=20
+>> First, types named in CAPITALS_SNAKE_CASE are not idiomatic Rust and
+>> look like constants. And it's not even like the bindings types are
+>> consistently named that way, since we also have e.g. `GspFwWprMeta` - so
+>> let's give them a proper public name and bring some consistency at the
+>> same time.
+>
+> I think there are two aspects to the bindings - one which was addressed i=
+n
+> the comments for patch 5 is how to abstract them. The other is that the w=
+ay we
+> currently generate them results in some  ugly name.
+>
+> Given we want to generate these from our internal IDL eventually I would =
+favour
+> fixing this naming ugliness by touching up the currently generated bindin=
+gs. So
+> maybe I will do that for the next revision.
 
-I (and Alice) already Acked the V2 version. Trevor, please add the
-already collected tags in the newer versions.
+It's not about fixing the name of the generated C bindings, it's about not
+leaking firmware specific structures into core code of the driver.
 
--- 
-viresh
+Please hide it in an abstraction that can deal with differences between fir=
+mware
+version internally; see also [1].
+
+[1] https://lore.kernel.org/all/DCUAYNNP97QI.1VOX5XUS9KP7K@kernel.org/
+
+>> This will make all the fields from `GSP_ARGUMENTS_CACHED` invisible to
+>> this module as they should be, so the wrapping `GspArgumentsCached` type
+>> should then have a constructor that receives a referene to the command
+>> queue and takes the information is needs from it, similarly to
+>> `GspFwWprMeta`. This will reduce the 3 `dma_write!` into a single one.
+>>=20
+>> Then we should remove `get_cmdq_offsets`, which is super confusing. I am
+>> also not fond of `cmdq.nr_ptes`. More on them below.
+>
+> I will admit that was a bit of a hack.
+>
+>> > =20
+>> >          Ok(try_pin_init!(Self {
+>> >              libos,
+>> >              loginit,
+>> >              logintr,
+>> >              logrm,
+>> > +            rmargs,
+>> >              cmdq,
+>> >          }))
+>> >      }
+>> > diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core=
+/gsp/cmdq.rs
+>> > index a9ba1a4c73d8..9170ccf4a064 100644
+>> > --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+>> > +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+>> > @@ -99,7 +99,6 @@ fn new(dev: &device::Device<device::Bound>) -> Resul=
+t<Self> {
+>> >          Ok(Self(gsp_mem))
+>> >      }
+>> > =20
+>> > -    #[expect(unused)]
+>> >      fn dma_handle(&self) -> DmaAddress {
+>> >          self.0.dma_handle()
+>> >      }
+>> > @@ -218,7 +217,7 @@ pub(crate) struct GspCmdq {
+>> >      dev: ARef<device::Device>,
+>> >      seq: u32,
+>> >      gsp_mem: DmaGspMem,
+>> > -    pub _nr_ptes: u32,
+>> > +    pub nr_ptes: u32,
+>> >  }
+>> > =20
+>> >  impl GspCmdq {
+>> > @@ -231,7 +230,7 @@ pub(crate) fn new(dev: &device::Device<device::Bou=
+nd>) -> Result<GspCmdq> {
+>> >              dev: dev.into(),
+>> >              seq: 0,
+>> >              gsp_mem,
+>> > -            _nr_ptes: nr_ptes as u32,
+>> > +            nr_ptes: nr_ptes as u32,
+>> >          })
+>> >      }
+>> > =20
+>> > @@ -382,6 +381,15 @@ pub(crate) fn receive_msg_from_gsp<M: GspMessageF=
+romGsp, R>(
+>> >              .advance_cpu_read_ptr(msg_header.rpc.length.div_ceil(GSP_=
+PAGE_SIZE as u32));
+>> >          result
+>> >      }
+>> > +
+>> > +    pub(crate) fn get_cmdq_offsets(&self) -> (u64, u64, u64) {
+>> > +        (
+>> > +            self.gsp_mem.dma_handle(),
+>> > +            core::mem::offset_of!(Msgq, msgq) as u64,
+>> > +            (core::mem::offset_of!(GspMem, gspq) - core::mem::offset_=
+of!(GspMem, cpuq)
+>> > +                + core::mem::offset_of!(Msgq, msgq)) as u64,
+>> > +        )
+>> > +    }
+>>=20
+>> So this thing returns 3 u64s, one of which is actually a DMA handle,
+>> while the two others are technically constants. The only thing that
+>> needs to be inferred at runtime is the DMA handle - all the rest is
+>> static.
+>
+> Thanks! That is a useful observation for cleaning these up.
+
+Please also make sure to use the DmaAddress type instead of a raw u64 for D=
+MA
+addresses.
+
+>> So we can make the two last returned values associated constants of
+>> `GspCmdq`:
+>>=20
+>>   impl GspCmdq {
+>>       /// Offset of the data after the PTEs.
+>>       const POST_PTE_OFFSET: usize =3D core::mem::offset_of!(GspMem, cpu=
+q);
+>>=20
+>>       /// Offset of command queue ring buffer.
+>>       pub(crate) const CMDQ_OFFSET: usize =3D core::mem::offset_of!(GspM=
+em, cpuq)
+>>           + core::mem::offset_of!(Msgq, msgq)
+>>           - Self::POST_PTE_OFFSET;
+>>=20
+>>       /// Offset of message queue ring buffer.
+>>       pub(crate) const STATQ_OFFSET: usize =3D core::mem::offset_of!(Gsp=
+Mem, gspq)
+>>           + core::mem::offset_of!(Msgq, msgq)
+>>           - Self::POST_PTE_OFFSET;
+>>=20
+>> `GspArgumentsCached::new` can then import `GspCmdq` and use these to
+>> initialize its corresponding members.
+>>=20
+>> Remains `nr_ptes`. It was introduced in the previous patch as follows:
+>>=20
+>>     let nr_ptes =3D size_of::<GspMem>() >> GSP_PAGE_SHIFT;
+>>=20
+>> Which turns out to also be a constant! So let's add it next to the other=
+s:
+>>=20
+>> impl GspCmdq {
+>>     ...
+>>     /// Number of page table entries for the GSP shared region.
+>>     pub(crate) const NUM_PTES: usize =3D size_of::<GspMem>() >> GSP_PAGE=
+_SHIFT;
+>>=20
+>> And you can remove `GspCmdq::nr_ptes` altogether.
+>>=20
+>> With this, `GspArgumentsCached::new` can take a reference to the
+>> `GspCmdq` to initialize from, grab its DMA handle, and initialize
+>> everything else using the constants we defined above. We remove a bunch
+>> of inconsistently-named imports from `gsp.rs`, and replace
+>> firmware-dependent incantations to initialize our GSP arguments with a
+>> single constructor call that tells exactly what it does in a single
+>> line.
+>
+> So this would also live in `fw.rs`? What I'm really concerned about is th=
+at if
+> we're not allowed access the C bindings outside of `fw.rs` then everythin=
+g ends
+> up in `fw.rs`, and worse still `fw.rs` basically ends up importing everyt=
+hing as
+> well, tightly coupling everything into one big blob.
+
+You can (and probably should) extend the module structure, i.e. add a
+sub-directory ./gsp/fw/ and structure things accordingly.
