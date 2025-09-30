@@ -1,170 +1,106 @@
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56491EBA14
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Sep 2025 07:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE829A326
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Sep 2025 09:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759216649; cv=none; b=SdRAEnN7yPOpBS7+06LUiq6a/q1kVc+dy2x8ACQKizxzWeUh9SI3EUQkHobE8cowtADQoUdX/yKl4RNLoT8/uC7ZVU5CgRx6s+rbrO5+e4QUFC/okzQSNnFZgu9ff0M0b8riRmKBG5OpfBAdhrIAzPXYno/JaZwMh/Jcc1jkzVE=
+	t=1759224060; cv=none; b=XAG84P/5vemmxAMf/OVc+JT23aJgpyoYIybxzkEd2cdINLxxfpHiB0bZSSfIxy/fMfEosuXO/WAR7IHeLX7oxBZFyo+TBOT99J1uFsoSqocVnw+sb9lDOkAQH9+I8J49aRsEfqSZOlNd5fIgJCDFcbhrkqbQwLs8InkQN4FdPtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759216649; c=relaxed/simple;
-	bh=/D4lC7F+UGZr7Evn4mblI8m68a87qPsLaGhGWlKJem8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vDj9EOP/5uKiVfwJ98M178pF8Cqnfovs15p8JFPszzKkwJbdJIvIgGrksJvv0KqJnuRhFB+dPaWq2DWgRk63SE7afPuwi2KD9m599B1rw5U4jEvn5S4OApy3qBpuUirmnNYvVStI8vsFbHmNZ1A7cP3QYt+gz2XCxdoFRzhsloQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V1Re8VBC; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759224060; c=relaxed/simple;
+	bh=9lQSfvfcTNySF441awH7y9u1KuhzkH5FEbQXswdQdkk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=p/qlTq4GadhMFv7hKFc9uORlHEFfHv5oTpKF0whHbMilbFMhTCDHTKs0EL6pHvNeFM6iD4cWqNESMDns4SQi50qdLfkx6DehTcgON8tXpXzx+f1tdClqgQbKHR2sUK6K/wgiLsFB90LAtdBG0dW3n8IRluP4xBKI8OlT5FxH8KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q2cKba2a; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V1Re8VBC"
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-4242bb22132so54561435ab.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Sep 2025 00:17:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759216647; x=1759821447; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M/RLYL9C2/J8Q8nWHpTOfcWgDV+Di6Gs1p9meRtJDAk=;
-        b=V1Re8VBCkLcujQ649mKT7PUex8rLkfwEadFAqBSS7qyMebIr3qkCNMLAwDnuz6b2S9
-         ilPTfkKU4xaZv8rCY7VyMfGsuIYpmpnKtdzFS0sDCEBmZVbuj64D4ZkRzYBokL59E1th
-         Y4a9bcMN8te6lftPvU7rfo7zu7CPF0JGBYimNOpcsSgnnI1I9tU9AgxG7lUqTbQN3nEm
-         fbbXL5a2PBKGWKdI/ySqdhzKs2DB0VG/4Cdh2N/SygnuYU8GWBkDbiOCVw6wgJu6ywvE
-         JLOejQDCfk0NoVPMohg/Cr+yOuyxuEhVTekZBN8Rkg94PHZGh+I+SCFPV2M7++PCvCxU
-         v45A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759216647; x=1759821447;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M/RLYL9C2/J8Q8nWHpTOfcWgDV+Di6Gs1p9meRtJDAk=;
-        b=WzMv785hgyhX/En159kzC01cPbzAUld6n5KSXWJW/n7a1Ru/xnNsMXGF4DNQ/qFdUa
-         1iyvcW9HR3rZr1L17iCbR5r3owa+gZFY/G7fdtGVZkW0fY+X06Wx7sjJopXbOtnMZO7q
-         DzRzMb4PeT85ccYFmmf+1/0s4k8QL4cUJs/sQlhtkcDi55g7Yyb7TmX+pg/Bta2wJy7G
-         EjZY+S9cEqEPuhdgxhIWOh6myi6XxJCsmYE3KSZyLuV1Kut6oy6A0YbDrcAazMf3mUER
-         5zIVImCJRbWb2eY3vXJdq0ubipT2jeLLJPecEJAIMVVXh5hMprz3+RLa/gJvEbU19rRO
-         rx5A==
-X-Forwarded-Encrypted: i=1; AJvYcCWJvR+7Elybo8QePAZHInT3sftgLC3Q2oxCOCrU1XqvCfSyWlx3uLQM0H6AhDX+QLtTwgZJhf9yfeJgwi5o8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+VtgL5NLrCYcW7qwrJjvPNLp9QVoEk49rJ6SrXcqNQYS2e0Dy
-	c+xWQdMoB413eEZqAOfE7nMZJRzwXghSz1ZHVV7V+WoCPxoHp7UPCnl7PJwDf30h4J1OwEQUTbM
-	4FnxEgut6hmcPGVQH5XdEhVv05QbolrE=
-X-Gm-Gg: ASbGncvJJLFiX2D5lPuxvugcWzYppuzCzzyQWkx8Fkl4AEBwKjPbUno7aB4zFzrYLXy
-	FKVQJGzS9R5N80tUe1UY/UddIcoTofq1PsN9yBUGpRi9PjamTj5J6/qB7gVxX9s3yyFRA+GFzxU
-	htm7YO6uT3WJKySPbDxy4zFMIyTJV1fkRDG58kPIcC0WgA4ZXBP5tz/FpA5aWTyaIuVIxXfqIgC
-	ja8eBB4EWniGCh4kGKexNRlhfwkVtbvcZwSUum8dA==
-X-Google-Smtp-Source: AGHT+IF6oX4c1oT2QtGdImEkUmXn1fXUlDQYi0f+7OA8UeT8rnRYJ0Dbg7DVj5ZgRDIjPNT7QjcBtGER6b7SwehrbY4=
-X-Received: by 2002:a05:6e02:1686:b0:427:511c:f86f with SMTP id
- e9e14a558f8ab-42bfab93823mr84067065ab.17.1759216646727; Tue, 30 Sep 2025
- 00:17:26 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q2cKba2a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759224057;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9lQSfvfcTNySF441awH7y9u1KuhzkH5FEbQXswdQdkk=;
+	b=Q2cKba2aUiNkGEnG1OFv+AGAxRUMQGgNxyTHvOhC7HrjjpFlPMBjRRP85oFpyH9I6IDAPZ
+	GNu1NPzDTYXyn/ZnDw6te4h+JVggHcyl7ZE/tO+F7J5njwlkm0vi2x25LhjR0RGyIu9JSp
+	aPR0DSIeiu35/tvVWBEBvP8jvsOVFKE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-njD2j-MWOdSpapmyRlXfEg-1; Tue,
+ 30 Sep 2025 05:20:53 -0400
+X-MC-Unique: njD2j-MWOdSpapmyRlXfEg-1
+X-Mimecast-MFC-AGG-ID: njD2j-MWOdSpapmyRlXfEg_1759224052
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0C2A919560B8;
+	Tue, 30 Sep 2025 09:20:52 +0000 (UTC)
+Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.33.56])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 051C1180035E;
+	Tue, 30 Sep 2025 09:20:34 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Charles Mirabile <cmirabil@redhat.com>,  pjw@kernel.org,
+  Liam.Howlett@oracle.com,  a.hindborg@kernel.org,
+  akpm@linux-foundation.org,  alex.gaynor@gmail.com,
+  alexghiti@rivosinc.com,  aliceryhl@google.com,  alistair.francis@wdc.com,
+  andybnac@gmail.com,  aou@eecs.berkeley.edu,  arnd@arndb.de,
+  atishp@rivosinc.com,  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,
+  bp@alien8.de,  brauner@kernel.org,  broonie@kernel.org,
+  charlie@rivosinc.com,  cleger@rivosinc.com,  conor+dt@kernel.org,
+  conor@kernel.org,  corbet@lwn.net,  dave.hansen@linux.intel.com,
+  david@redhat.com,  devicetree@vger.kernel.org,  ebiederm@xmission.com,
+  evan@rivosinc.com,  gary@garyguo.net,  hpa@zytor.com,  jannh@google.com,
+  jim.shu@sifive.com,  kees@kernel.org,  kito.cheng@sifive.com,
+  krzk+dt@kernel.org,  linux-arch@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
+  lorenzo.stoakes@oracle.com,  lossin@kernel.org,  mingo@redhat.com,
+  ojeda@kernel.org,  oleg@redhat.com,  palmer@dabbelt.com,
+  paul.walmsley@sifive.com,  peterz@infradead.org,
+  richard.henderson@linaro.org,  rick.p.edgecombe@intel.com,
+  robh@kernel.org,  rust-for-linux@vger.kernel.org,
+  samitolvanen@google.com,  shuah@kernel.org,  tglx@linutronix.de,
+  tmgross@umich.edu,  vbabka@suse.cz,  x86@kernel.org,  zong.li@sifive.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+In-Reply-To: <aNcAela5tln5KTUI@debug.ba.rivosinc.com> (Deepak Gupta's message
+	of "Fri, 26 Sep 2025 14:07:06 -0700")
+References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+	<20250926192919.349578-1-cmirabil@redhat.com>
+	<aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
+	<CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
+	<aNcAela5tln5KTUI@debug.ba.rivosinc.com>
+Date: Tue, 30 Sep 2025 11:20:32 +0200
+Message-ID: <lhu3484i9en.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1755235180.git.y.j3ms.n@gmail.com> <948a28f26a0e9924d82eb1d8d377e3ddc7335b24.1755235180.git.y.j3ms.n@gmail.com>
- <DD5VAPG2QFWA.2A58AL13VHPN2@nvidia.com>
-In-Reply-To: <DD5VAPG2QFWA.2A58AL13VHPN2@nvidia.com>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Tue, 30 Sep 2025 16:17:15 +0900
-X-Gm-Features: AS18NWCt4CiaOBLLw6E3ZJGY5ZpvbTCUTklAJf6rpPrTAabktBULuqhmTF6POuo
-Message-ID: <CA+tqQ4L9PN9n0e2A5BfGhn4n02v8LKSK+BRpHcfbK_fNUKBJPA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] rust: macros: extend custom `quote!()` macro
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi,
+* Deepak Gupta:
 
-On Tue, Sep 30, 2025 at 1:58=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
-[...]
-> On Fri Aug 15, 2025 at 2:32 PM JST, Jesung Yang wrote:
-> > Extend the `quote_spanned!()` macro to support additional punctuation
-> > tokens: `->`, `<`, `>`, and `=3D=3D`. This symbols are commonly needed =
-when
-> > dealing with functions, generic bounds, and equality comparisons.
-> >
-> > Tested-by: Alexandre Courbot <acourbot@nvidia.com>
-> > Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
-> > ---
+> In case of shadow stack, it similar situation. If enabled compiler
+> decides to insert sspush and sspopchk. They necessarily won't be
+> prologue or epilogue but somewhere in function body as deemed fit by
+> compiler, thus increasing the complexity of runtime patching.
 >
-> Note that this patch doesn't apply cleanly in `rust-next`, I've had to
-> add the following on top of it.
+> More so, here are wishing for kernel to do this patching for usermode
+> vDSO when there is no guarantee of such of rest of usermode (which if
+> was compiled with shadow stack would have faulted before vDSO's
+> sspush/sspopchk if ran on pre-zimop hardware)
 
-Thanks for pointing out the conflict. I see that the commit
-9578c3906c7d ("rust: macros: reduce collections in `quote!` macro") was
-added after my patch series.
+I think this capability is desirable so that you can use a distribution
+kernel during CFI userspace bringup.
 
-> I suggest waiting for -rc1 to be released and using it as a base for a
-> new version - hopefully this will also give time for more feedback to
-> come.
+Thanks,
+Florian
 
-Sure, happy to wait until -rc1 and perhaps we'll get more feedback by
-then. Once it's out, I'll rebase on top of it and send v3.
-
-Best Regards,
-Jesung
-
->
-> diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
-> index 76a99f7e01c4..bb6970fd2a26 100644
-> --- a/rust/macros/quote.rs
-> +++ b/rust/macros/quote.rs
-> @@ -147,33 +147,33 @@ macro_rules! quote_spanned {
->          quote_spanned!(@proc $v $span $($tt)*);
->      };
->      (@proc $v:ident $span:ident -> $($tt:tt)*) =3D> {
-> -        $v.push(::proc_macro::TokenTree::Punct(
-> +        $v.extend([::proc_macro::TokenTree::Punct(
->                  ::proc_macro::Punct::new('-', ::proc_macro::Spacing::Joi=
-nt)
-> -        ));
-> -        $v.push(::proc_macro::TokenTree::Punct(
-> +        )]);
-> +        $v.extend([::proc_macro::TokenTree::Punct(
->                  ::proc_macro::Punct::new('>', ::proc_macro::Spacing::Alo=
-ne)
-> -        ));
-> +        )]);
->          quote_spanned!(@proc $v $span $($tt)*);
->      };
->      (@proc $v:ident $span:ident < $($tt:tt)*) =3D> {
-> -        $v.push(::proc_macro::TokenTree::Punct(
-> +        $v.extend([::proc_macro::TokenTree::Punct(
->                  ::proc_macro::Punct::new('<', ::proc_macro::Spacing::Alo=
-ne)
-> -        ));
-> +        )]);
->          quote_spanned!(@proc $v $span $($tt)*);
->      };
->      (@proc $v:ident $span:ident > $($tt:tt)*) =3D> {
-> -        $v.push(::proc_macro::TokenTree::Punct(
-> +        $v.extend([::proc_macro::TokenTree::Punct(
->                  ::proc_macro::Punct::new('>', ::proc_macro::Spacing::Alo=
-ne)
-> -        ));
-> +        )]);
->          quote_spanned!(@proc $v $span $($tt)*);
->      };
->      (@proc $v:ident $span:ident =3D=3D $($tt:tt)*) =3D> {
-> -        $v.push(::proc_macro::TokenTree::Punct(
-> +        $v.extend([::proc_macro::TokenTree::Punct(
->                  ::proc_macro::Punct::new('=3D', ::proc_macro::Spacing::J=
-oint)
-> -        ));
-> -        $v.push(::proc_macro::TokenTree::Punct(
-> +        )]);
-> +        $v.extend([::proc_macro::TokenTree::Punct(
->                  ::proc_macro::Punct::new('=3D', ::proc_macro::Spacing::A=
-lone)
-> -        ));
-> +        )]);
->          quote_spanned!(@proc $v $span $($tt)*);
->      };
->      (@proc $v:ident $span:ident # $($tt:tt)*) =3D> {
