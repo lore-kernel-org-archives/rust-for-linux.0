@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B7E260569;
-	Tue, 30 Sep 2025 13:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7EF303A28;
+	Tue, 30 Sep 2025 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759238989; cv=none; b=LLls8KWWjOvsxXdK6njNYm6W2rDfYxPGqLEmrDVcBVev3QqqbgYvOyRvIn6mEVknRVifstwx6S473vMrwRqqyhM++taCGYd8HLVIhMMwYONayKAjjnPE5NGryG8KI1TYUTCm4ZgOp86tWvEcMtp4trBvHp+Au6XGx90uTttIGFU=
+	t=1759239202; cv=none; b=W6SHi5NzGESAAi6ml18NO/jyAHdyacx4KJiR30G3mkuim/xzawMkOvg+k3McxyahbRHa+pZHBj6Ar/Foan0U4XjEayzPz0RkszF6pFJEtNti+6oOWdoN9Tzho/5g+H76hgntVVFZjlhyI8fC0lgbgktAXXm3UVpXVrTgDJQy5OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759238989; c=relaxed/simple;
-	bh=2mNRkO9895KuplaO7v8bPeKZOuVQGEIkzl/k8sMNe6s=;
+	s=arc-20240116; t=1759239202; c=relaxed/simple;
+	bh=NY2y7Jz5GgASnYRyJboqRCOUSD4T65Ns4wrXLNI5n+o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oUflAHB371FchaBwTw4jdiZCqzaCK7+2Hg3D8IwmaybDM1yyf6e+B0GdSdfgZxfvDYuegB72FIOgmyox99YzuGXZl7fnPeRBDXbGIyO/WChoPzuS0RixEQq41cJY4rjGAiEL2X6oFmXqxXLhd7rfMYrREIsKNIlGXUxyJhNLNY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9x7ZUq5; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=Z45QnDEmfvLn6YqRzk/8+JX+myedxkX1bXw9aqJoJlLoVyX14fl234YH5bjZLDzxmD01aUFHVH/Z1dtqgJDYUNooKLhXiDMpu7vTR6rD/4Ukz1mczEgMwRf22gYkwgdr9d2/SZcnguYEuMxVdwwS9OM3Qu8F1/WNLF3DCeGO4E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVg3YPvJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9x7ZUq5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855C9C4CEF0;
-	Tue, 30 Sep 2025 13:29:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVg3YPvJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6581FC4CEF0;
+	Tue, 30 Sep 2025 13:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759238987;
-	bh=2mNRkO9895KuplaO7v8bPeKZOuVQGEIkzl/k8sMNe6s=;
+	s=k20201202; t=1759239199;
+	bh=NY2y7Jz5GgASnYRyJboqRCOUSD4T65Ns4wrXLNI5n+o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=O9x7ZUq5o9iok8ZSoYSD3MeFOL8wFGM/+3o8IGsH8vIbhMoKyXUbAvCkPohxzsPMe
-	 NAX9a/Ri6mfQYXWz3e7T3qAWjKWvNlTE/f+zRWgIT1arWSYmBSP7n0lryE9UskNAhy
-	 lUyj0VM5/dnhReNfmz2Hj4nGA+5bNExU6rOTeL4Mw0cuUuD7HpAacW0BV3kDV+LSQG
-	 JyZIjIacD6YZ+JfRw03VvUdjrnEaZU3IWXvOAHMIwBrldSUQvTXJmsXL2McDqb7O9N
-	 dVoFCukBipxWDvYRSNP6Rx2+KXVqUVrKwYqF789RAbds5fifyRyhfXi2yZhtXnTcPl
-	 jGGvxvHqPjvsQ==
-Message-ID: <94bbd268-efbe-4ff6-ba09-e6254709d981@kernel.org>
-Date: Tue, 30 Sep 2025 15:29:41 +0200
+	b=EVg3YPvJCc2gS1ugHk6BS2W/KEICBXpEe1SI6JQtpLRH+ZuKL7FW8Yu/lPFS/aQc4
+	 5YKn6t4ac5QdR3F4pGwY6oCk2gs/3c6jE4FoxW+BQsqZbTiZ7zpJwheP4vgNx7od/Z
+	 ZAUTQJD11urfAHI7QyQ6MtCHtRv6sJ6YjJPO1I/7JhAeeTDhn3PNm+Q3zHeTSZW1Xm
+	 KHEIQ/c9uyuKEoAw2v/ucxn7hwE1NTiFbTwQxkcj7cqIS2gGU9Y4LnPDJqMtLJl6ZV
+	 Ese7mMZBAPa1tg6yqBC3tGJuwVahzGVHoOLQSG1EE0ZVUYT2bh62fmg+m8PrBX1yLc
+	 xmgOqFAyOu0TA==
+Message-ID: <5bd04709-55ff-4d4d-9559-3ae55fb42c9a@kernel.org>
+Date: Tue, 30 Sep 2025 15:33:13 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,7 +35,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/13] gpu: nova-core: Set correct DMA mask
+Subject: Re: [PATCH v3 05/13] gpu: nova-core: Add GSP command queue bindings
 To: Alistair Popple <apopple@nvidia.com>
 Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
  acourbot@nvidia.com, Miguel Ojeda <ojeda@kernel.org>,
@@ -51,18 +51,23 @@ Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
  Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
  nouveau@lists.freedesktop.org
 References: <20250930131648.411720-1-apopple@nvidia.com>
- <20250930131648.411720-2-apopple@nvidia.com>
+ <20250930131648.411720-6-apopple@nvidia.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20250930131648.411720-2-apopple@nvidia.com>
+In-Reply-To: <20250930131648.411720-6-apopple@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/30/25 3:16 PM, Alistair Popple wrote:
-> +        // SAFETY: No DMA allocations have been made yet
-> +        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<47>())? };
+> +impl GspRpcHeader {
+> +    pub(crate) fn new(cmd_size: u32, function: u32) -> Self {
+> +        Self(bindings::rpc_message_header_v {
+> +            // TODO: magic number
+> +            header_version: 0x03000000,
+> +            signature: bindings::NV_VGPU_MSG_SIGNATURE_VALID,
+> +            function,
+> +            // We don't ever expect to send a command large enough to overflow.
+> +            length: (size_of::<Self>() as u32).checked_add(cmd_size).unwrap(),
 
-I think you forgot to derive the value from the relevant sources, i.e. physical
-bus, DMA controller and MMU capabilities.
-
-I assume not all GPU architectures / generations have the exact same capabilities?
+This is pretty much equivalent to "we never expect to make any mistakes, hence
+just crash the kernel". Please handle errors gracefully.
