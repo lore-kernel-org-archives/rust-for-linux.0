@@ -1,106 +1,128 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECED2F49E9
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Sep 2025 09:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59E62F363E;
+	Tue, 30 Sep 2025 10:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759225499; cv=none; b=lCC3RYKYRD6Eu7Z/mq8e++Q8om2kgIMquQrK+H7piu2IL+WYPJhqeF6u5Do6ycHi9W3QX0o9QYW+UUHjzmZ1NtR4bNqpXrONr1AEFeGADrxJ+QQp3Ea6u1lBXkmpFy/kIlWJtBBvK7GeBLiGlt58cdEuj4KkCt7cX0Tqrwq+d2c=
+	t=1759228399; cv=none; b=bwsSUE/IEYVZf8/zY4QY6OF0AUdL9xgx8ITyj0KlyQ2JJ0K/gTg8k2FPRSm1T2d3Fykx0TCKpIXK8EfWK9vSO8kBuaeznPL+78qBBiDP2ck+nVXZRYzxFU7Ff5bckgx1R/vCjapWiP29coNukdbc8/YwWtJPbGYGqq7eodBJJtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759225499; c=relaxed/simple;
-	bh=EOpvFLC0DM+CJsSaiaGKaJte91AVZz5/fq5Fn3S7jSA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j7E9/TPaldt763Q279GYRncoKpQnl/9YSfdt6nU8/1sJyXMuDpU8ALlQCRQQzjBlGUMMaWa5t5rPbPARr98Fk0xEAD7VzFP9nF7UP3GusDBPO8rRs2WoQcHcBT4EXKe/cTOGML9gTOAnWKPbf5i+Vz54YFA9U9n+KyS6TfbCbo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gt8nxaTF; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759228399; c=relaxed/simple;
+	bh=9kytHiFrpM4nP2m+PtHjF+LmiM13fFvF27ssloeTfnA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=MiA+Gw0gCtm/DxzPCyqlxOvv3MzmUqo/0ol2jxgt6FACEuKtoqMZxpZOlbh2u3/j+HEfQBOI8M9Qzz/mVSaqjkGlrW1fMNwgmt4Cr4LvmpyBoNBSnY1D1EANZqaCL0tqPJOJo8eUsl+e0/aBaAf+FDUUtSO4qki2ghmfOr3tZNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGvpomiq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gt8nxaTF"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-269ba651d06so11299785ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Sep 2025 02:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759225497; x=1759830297; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EOpvFLC0DM+CJsSaiaGKaJte91AVZz5/fq5Fn3S7jSA=;
-        b=Gt8nxaTF074tFW0h5JNFPey4oRRMLfGERSBWyZRPg+aPXWhHaqD9nuJRQjzK6shPpr
-         Y62YOuWCe+br11LvhtrxrNNi3txt600AwTFQNITmJCw6f8rQy/uTTHVPa0v78Xw8fcWV
-         8vQrg9KYuGzmt8A16r0nBfoHdftkWC7naUX/2dflseDxxS/n3mPvJjGkf0BDb8lCZUFL
-         6vd5rhxUrUGuaZbdN/9BRJnAeMM6wyqHCqBnUCMjla9G/YybF5rbY2wmKj1oOa8CJ4FE
-         Va9ZhsZelXXX9FwecomCRDCQ1Zszk/2o7INaZlR6tdVH9n5LNkySSq97ZERiOuPVQiw/
-         Ku8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759225497; x=1759830297;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EOpvFLC0DM+CJsSaiaGKaJte91AVZz5/fq5Fn3S7jSA=;
-        b=Wgs7YY0FAyPoRIB/AEXBQwvN+hRSK6UKk7jpJ5WoNP4zfbIK+CV7iX8i/isKB3Ltux
-         cv9v0TiavUDK4mOgB6Ccdwn4B72tgIVci+kCrJvbYR98aaGdZd6mvXzS7bSgVx8Zvprr
-         zYg7aBs8w+ZQfncg6cTRdiKad+9+hbXUSIgP1D5n6jNVNPGSe18IqMih65RqTdlzv+wi
-         dQeUOpi30yHbnFI3b7OTTs2arIWIqrA7eT8FAIAgvyHZ9QHVgloSVG8kHIMDd0csaVCB
-         QWpieODe7QoByqq9Xo4CVe/EktQc+8m65JxTgl1vZSET39VgF7fN2r4Imx5zb5ji8Wf4
-         q+8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXPxLtGcV/9OkIJmOyBXhwVyRcRrQksyXJkGNpQpnrp14tpZaHxQxipEzBhqe2bStjCbvM8oMK3e5rzaraZtw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXRt0aPRvf4Zt+CamwGpBfZD3rm8OOjn5QN6BeCl163LBpzqEh
-	qBdhSaI21u4zwPTHR6NsWdi0Tqd5LJhr8T7oUVOqM0KM6pmHuthtIeRX30MTgDai+MpmjVHebKg
-	GD5WU2s0r29A49vHT8wHFK1P+pmWFSR0=
-X-Gm-Gg: ASbGncsQe3oNR2SNrCKYl3ku5asBpTap5RkdccSrwGYRk0lNiAB61Ic71pDGMeCY84o
-	U106Lkifi2BFScEgN9vLTPXgxrB1QKNlvt4p1KNXlZ/9zjqZRvIOkIFD8gWVeGCcXSm51MI5XuO
-	4mVx38xfw3w5GxATwaqtZCsDQk1LCX5bKATs1a8g+XqrPnekZOI/pJoDuHSuy3DUFRxVyyc7qd9
-	xv58rOpWWsoLQsiOqXFVRKfl9R1fYxZa6nEXkwGRZ6YlBlbtwoguzKbd3h9ldWt1/l08YHwI699
-	qY95lVpQHgkJO/1ZDXbVSbxK2j0WcOW/F+YVZTq47dNLvJToczo7fD8pGayS
-X-Google-Smtp-Source: AGHT+IEEaqHs/3HkDXBnqrL9QSlh9L07a1Lvl4D0CKgF1YiEc7T7bXF4kQ71S21yp9VQu4QZCMUstMX7WeLtxkHU1G4=
-X-Received: by 2002:a17:902:d508:b0:269:96d2:9c96 with SMTP id
- d9443c01a7336-27ed5b0a538mr130702225ad.0.1759225497483; Tue, 30 Sep 2025
- 02:44:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGvpomiq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28729C4CEF0;
+	Tue, 30 Sep 2025 10:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759228398;
+	bh=9kytHiFrpM4nP2m+PtHjF+LmiM13fFvF27ssloeTfnA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=HGvpomiqFwr6mmm3CTLEpr3OrLb899zID3z1pPal1usJfbgNesB2/WJAqEDIDlJsW
+	 160yrqK94HbRLXvGVzgHfzRboKzvTF99D0kfk1j+JVtvby9T2qE+MHjeXYMISdiIHd
+	 thgGQrhJo0MW2qdOJgW9PiCBI/dFFoALC8U8DwLWh8HZPqCWxNTbr+vRKoZyvYUN+Q
+	 qSU6V1sRE3niWCkNIkpkndDhb/lkDMIZBmxV2nH/9zc6H5TK260ZafJLPt3UrksB6W
+	 VK4IkLfCbtP79/qz8dyziPWsbQAlqU5YoBiPdDCrH0dV/ZYq6+6ivJGGavEwNuzGj7
+	 F125oQ8CI2xaw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250930092603.284384-1-djfkvcing117@gmail.com>
-In-Reply-To: <20250930092603.284384-1-djfkvcing117@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 30 Sep 2025 11:44:45 +0200
-X-Gm-Features: AS18NWBTBbrXx8bhYvQxjR6yhdZAGCwAVpYFbCZHNQGuhnogYHcg3b42SpfZvTs
-Message-ID: <CANiq72n+tBB=NasbJr95YJ=HPgSc35uwKALRyHDOyh4nG6xUOA@mail.gmail.com>
-Subject: Re: [PATCH] rust: file: add intra-doc link for 'EBADF'
-To: djfkvcing117@gmail.com
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Onur Ozkan <work@onurozkan.dev>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 30 Sep 2025 12:33:12 +0200
+Message-Id: <DD62F2EK4XHL.3QT9NHS42Q55R@kernel.org>
+Subject: Re: [PATCH v2 05/10] gpu: nova-core: gsp: Add GSP command queue
+ handling
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Timur Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>
+To: "Alistair Popple" <apopple@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250922113026.3083103-1-apopple@nvidia.com>
+ <20250922113026.3083103-6-apopple@nvidia.com>
+ <DD2GCDGQ7Q4W.1CSFYSETFSN5H@nvidia.com>
+ <7brvf66smc3ltqrw7tm7smth6wnefeqykdm2n4qahi5xnr6d5o@4l5xfdbznlp3>
+ <DD5CXDR294YD.2RL474PWBDWTV@nvidia.com>
+ <qwqmek35wzu3chimtfsoftqvt4lw4g7btbvqzoc6qb4hoce3zq@pdu57fdxfb23>
+In-Reply-To: <qwqmek35wzu3chimtfsoftqvt4lw4g7btbvqzoc6qb4hoce3zq@pdu57fdxfb23>
 
-On Tue, Sep 30, 2025 at 11:27=E2=80=AFAM <djfkvcing117@gmail.com> wrote:
->
-> From: Tong Li <djfkvcing117@gmail.com>
->
-> Suggested-by: Onur =C3=96zkan <work@onurozkan.dev>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1186
-> Signed-off-by: Tong Li <djfkvcing117@gmail.com>
+On Tue Sep 30, 2025 at 2:36 AM CEST, Alistair Popple wrote:
+> I feel like this is largely where the confusion/disagreement lies - what =
+the
+> `gsp` module provides versus what the `fw` module provides. My thinking i=
+s that
+> the types don't leak outside the `gsp` module, the `fw` is really just pr=
+oviding
+> raw binding information that the `gsp` module turns into something nice/a=
+bstract
+> for the rest of nova-core in the form of functions (or types) to do whate=
+ver
+> is needed.
 
-Normally commits cannot have an empty message -- this one is trivial,
-so it is not a big deal, but maintainers in general may complain. Up
-to them, of course.
+The goal is that firmware specific structures (and the majority of their
+implementation details) don't leak into the business logic of the driver co=
+de.
 
-What you should normally do is explain the "why" of a change, i.e. why
-we want to add an intra-doc link, its benefits.
+Of course, due to its nature the `gsp` module can't be entirely independent=
+ from
+firmware specifics. However, think of it in different layers:
 
-Other than that, it seems like the formatting is good. If you fix the
-From: header, then the From: line in the body is not needed and Git
-should not add it anymore, but it is not a blocker.
+If we encapsulate the layout of firmware specific structures in new types (=
+i.e.
+wrap firmware structures into new types in the `fw` module), all changes to=
+ the
+layout of a structure, new features, etc. are local to and can be handled
+transparently by this abstraction layer.
 
-Thanks!
+Once we actually introduce a second firmware version, we will also introduc=
+e the
+corresponding proc macros to annotate those structures accordingly with
+`#[versions(GSP)]` and let the proc macro generate the version specific
+structures, which subsequently allows us to treat the new types in the `fw`
+module as if they'd be existing only once (and not per firmware version).
 
-Cheers,
-Miguel
+Hence, all the other code in the GSP module can be left untouched unless a =
+new
+firmware version introduces semantical changes (which should be rare).
+
+This is not only a major advantage when it comes to maintainability (which =
+is
+one of the major motivations for the Nova project to begin with), but also =
+leads
+to a much cleaner structure and naturally separates the layout of data from=
+ its
+semantics.
+
+Yes, it does require a bit more code to set it up to begin with, but it avo=
+ids a
+horrible mess leaking trivial firmware changes into the semantic layers of =
+the
+GSP implementation.
+
+But even if that would never happen and the firmware interface would never
+change (which I think will not and should not happen), the separation of ho=
+w to
+lay out data and the implementation of the semantics by itself adds clarity=
+ and
+helps with maintainability.
+
+The feedback Alex gave in this context looks pretty in line with the above.
+
+I hope this helps.
+
+- Danilo
