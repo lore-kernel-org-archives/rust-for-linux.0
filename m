@@ -1,137 +1,84 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339EB2475D0
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Sep 2025 23:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAF3139E;
+	Wed,  1 Oct 2025 00:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759276127; cv=none; b=iXDQyXHZcl12rlzKDng5PtRO+jx4RM2D7WSr34GHzNkq5iJgZ+f9vNylEUNgT9LhRVadD0DlQlQhU/wM2KFCU95n9ITpLxbKXYZbcdacuW6FH2YaT+qQ+dfYoi6sr3+bd7btf/BgoqikCOK0m58zUlV0YjMadFhgzHW7sRbEDM8=
+	t=1759276874; cv=none; b=F4neBTNeP99vQDzZf7456tu7C2Y2vFBY9bGrdkeGN9U6bdJ5nGhfMGIfKlOJxh5koQhFA/wF02gNMO1DpYgOMbW9BK0h43V1TYa3ulBgYchkRlyOW+vFaizAaUetM9J8c5DZug5Hxj4NTTU+Z2hSJGx7pN/pwh7cDOr3pkR6wb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759276127; c=relaxed/simple;
-	bh=4bm7dBKTe7VHUpax5O4A5sblWjBcLkrJbyIa/W7uP1A=;
+	s=arc-20240116; t=1759276874; c=relaxed/simple;
+	bh=OS51U7OU5GJ0yf/o9GaQhMdAvaYjkphStJrxtY7XLnM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=geDGUtLPuaCOo9Sy5UmUj9NX5B6U/ReZIU5VV2vs3RMWKDOsKs32nQ0R4EPsEmRwa4YJuWD2Y7LwPOIf1B13qby8RDoiV5aF+H8w3EY6Injj1i2YVPU5O3lepHjR1tCG99m5/o95uwVlHU8KbXoWojzJiblRvuo9cMkjo1PAAws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=NwodKnn3; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=SI5q1jBs96O+g0DHcntZpmzKO/Siq34KS3TEUKEG2NvhxYq/9KxVoiIhRW+RoAi95aK34Id2HWF9FbRsHeZfJIBfUQfwW/SRikxK/KiRBeEAjowQ5x4wN1wQ5ueMjOhKQOsrvN/SBEnLPlzuNxLPqmy0VzeKbo89buJpPA8eEfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AdK7wDUh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="NwodKnn3"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b54a74f9150so5755003a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Sep 2025 16:48:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1759276125; x=1759880925; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4bm7dBKTe7VHUpax5O4A5sblWjBcLkrJbyIa/W7uP1A=;
-        b=NwodKnn39OQecdVF6d8bOQQDGJ3Gwu3/er8rraGYUv3SuTXqM7jJoNUUTX1ncfQeNO
-         aVL4BoTscyDkvFc/witRmX7H6DznBmneHqFSGq3Gw/pALqTtgcSRSchoeu47dGxoazx1
-         vqzpdHAOZHplVP0PIE4cJJloFy+YxjIo6e6/dS1lqIhFdxN4cJggB67Lvl3YcPYVKqIO
-         t9iibATEJDpJ6slDDzqH5n/R/L9p/WJP9toJHOK5HynjH+6rGAsd3nQ7A2Dn0wRPOdoJ
-         ivtTlLJXlIqfICiwwgqY4RDnnVBPjUZkF97UFWMXLGl4JJCZRaYbJ1HTv2rAzyPZyCdN
-         B3uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759276125; x=1759880925;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4bm7dBKTe7VHUpax5O4A5sblWjBcLkrJbyIa/W7uP1A=;
-        b=gHWvXefgRw8cUH9z+tG3T9jL6m0XE6XzOjHtDsxebaAPv6ME9l1fayQPi5QBBvjNNh
-         TPyaXzk4mJDBnwwtOtGv8osX+aKhIBMsiSEBGGQV7l9NTkhRmyz+GCoDbQGGNyt9EQxj
-         vaFsXvjB/2fm1hvCybyGIohp6moAYFEXOGCF0vkaUN5Lz1AL/EPAmi0jR6PN4M6Me9gY
-         MJUlYMcldYcMc2vkS4mY4Un9NIQnuMJ8e4lKQKUgOFQBSSeaHoXj4YfSSEFZo+PrHB16
-         V6y4A+rNODBp+MQWAPbk64lf2/thp0ajm1UsWDCd3p9sL22A80nrU/hfVBsGaZc9pkeO
-         Zwbg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3H+1uB9/T0cpK0zte3H77uJQmCYBpt4x8ocVL3rh5NTLLJ4Fax6rsKc7q1Yk+gjTfBQ0cBCABEvTJWtiBJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPkPQZBGPgsIyKJht9W0WypqWRyTIY71Biez6KgxVeC45oCITH
-	HocajQVylCTpScMOksWHrEZgOzhhJSOFsEMJVUDJasbzQ50oFBmfknaDqWQ3gwRJPsE=
-X-Gm-Gg: ASbGncsh9QSlTOXazILQ1ZY+EXml04hVFUQ7VXt2QwTDPs44zXWXootOVY3fX5iOWjI
-	22McLl1uXFSp1ZmBDRMwhVkxHXZGLWJOsltcaD9CFp4s8TRaxahBL9N6M0G7TutLx/zz6AC0abm
-	csu4I91F5tWyOSv93GcyWfmCbpt9jKWnAper9lrnIRGIe7VmHww8GJOHx+nr/DEcW2+N+oWM7Dv
-	kLnRBHzP53HyyP2pAwT7nURulfi6qiLjPuF/ZAfC/graBDTMQEzYm2vMR71+VQsd8GraHZjH650
-	soLULEZryIBxSkAroiyR0Dj0D2VI1D17R4j3rlTso86s3kOD9U9rhIjaLfy/0jUfHep5zQyMn2f
-	gxLNdII6AHN8JEqinEdCANmksChJb1HqozI8beDXvQmT6msjLCqpR9E0O
-X-Google-Smtp-Source: AGHT+IHuRRsekWNjgE7yCPLG9pq3eS/GOyyUhj/f2Q9rAEjbYAirvs/e72q2qhgNkEK8PrNvRevQ9g==
-X-Received: by 2002:a17:903:3d06:b0:27e:ea82:5ce8 with SMTP id d9443c01a7336-28e7f291db3mr15309515ad.14.1759276125338;
-        Tue, 30 Sep 2025 16:48:45 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed6882133sm171972415ad.89.2025.09.30.16.48.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 16:48:44 -0700 (PDT)
-Date: Tue, 30 Sep 2025 16:48:41 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Florian Weimer <fweimer@redhat.com>
-Cc: Charles Mirabile <cmirabil@redhat.com>, pjw@kernel.org,
-	Liam.Howlett@oracle.com, a.hindborg@kernel.org,
-	akpm@linux-foundation.org, alex.gaynor@gmail.com,
-	alexghiti@rivosinc.com, aliceryhl@google.com,
-	alistair.francis@wdc.com, andybnac@gmail.com, aou@eecs.berkeley.edu,
-	arnd@arndb.de, atishp@rivosinc.com, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, bp@alien8.de, brauner@kernel.org,
-	broonie@kernel.org, charlie@rivosinc.com, cleger@rivosinc.com,
-	conor+dt@kernel.org, conor@kernel.org, corbet@lwn.net,
-	dave.hansen@linux.intel.com, david@redhat.com,
-	devicetree@vger.kernel.org, ebiederm@xmission.com,
-	evan@rivosinc.com, gary@garyguo.net, hpa@zytor.com,
-	jannh@google.com, jim.shu@sifive.com, kees@kernel.org,
-	kito.cheng@sifive.com, krzk+dt@kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, lorenzo.stoakes@oracle.com,
-	lossin@kernel.org, mingo@redhat.com, ojeda@kernel.org,
-	oleg@redhat.com, palmer@dabbelt.com, paul.walmsley@sifive.com,
-	peterz@infradead.org, richard.henderson@linaro.org,
-	rick.p.edgecombe@intel.com, robh@kernel.org,
-	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
-	shuah@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
-	vbabka@suse.cz, x86@kernel.org, zong.li@sifive.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Message-ID: <aNxsWYYnj22G5xuX@debug.ba.rivosinc.com>
-References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
- <20250926192919.349578-1-cmirabil@redhat.com>
- <aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
- <CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
- <aNcAela5tln5KTUI@debug.ba.rivosinc.com>
- <lhu3484i9en.fsf@oldenburg.str.redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AdK7wDUh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E64C4CEF0;
+	Wed,  1 Oct 2025 00:01:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759276873;
+	bh=OS51U7OU5GJ0yf/o9GaQhMdAvaYjkphStJrxtY7XLnM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AdK7wDUhqAanqU5rG9sXWDlEBCTU3CexIcGMHyiKw0YKz/JijEWlO59/TSW74OgXD
+	 BZlO5Nwdwd/OIoyB68U8hG11JOyLJWTOyVPrhFiiTvLnzJMKJ5o+9YXZH5CCkBWqO5
+	 OmQKto6Kx3VWX/IvEa+ea8whSIqr1PJoxOMrV61jzV3UmYA1mYlWy1alF+PvBeHccX
+	 Pj0L3iNJzg86fdKGykOFi6+p0bpWvrhhkOmrmuIgNQ/DnJZLPpEsFbcV5kzcjc34RE
+	 pTFSuiN+m9sEa3haCPGUtFrJuQRDoKqWJednXnht0UBdX3QSCmpDeLvw0fbBUmzwkz
+	 d8aqFwpcOLxpw==
+Date: Tue, 30 Sep 2025 17:01:11 -0700
+From: Drew Fustini <fustini@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Elle Rhumsaa <elle@weathered-steel.dev>
+Subject: Re: [PATCH v15 5/7] dt-bindings: pwm: thead: Add T-HEAD TH1520 PWM
+ controller
+Message-ID: <aNxvR5eNAB3NKbtT@x1>
+References: <20250930-rust-next-pwm-working-fan-for-sending-v15-0-5661c3090877@samsung.com>
+ <CGME20250930122735eucas1p1c49ed11a4a48155c123ead6aec4b64a2@eucas1p1.samsung.com>
+ <20250930-rust-next-pwm-working-fan-for-sending-v15-5-5661c3090877@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <lhu3484i9en.fsf@oldenburg.str.redhat.com>
+In-Reply-To: <20250930-rust-next-pwm-working-fan-for-sending-v15-5-5661c3090877@samsung.com>
 
-On Tue, Sep 30, 2025 at 11:20:32AM +0200, Florian Weimer wrote:
->* Deepak Gupta:
->
->> In case of shadow stack, it similar situation. If enabled compiler
->> decides to insert sspush and sspopchk. They necessarily won't be
->> prologue or epilogue but somewhere in function body as deemed fit by
->> compiler, thus increasing the complexity of runtime patching.
->>
->> More so, here are wishing for kernel to do this patching for usermode
->> vDSO when there is no guarantee of such of rest of usermode (which if
->> was compiled with shadow stack would have faulted before vDSO's
->> sspush/sspopchk if ran on pre-zimop hardware)
->
->I think this capability is desirable so that you can use a distribution
->kernel during CFI userspace bringup.
+On Tue, Sep 30, 2025 at 02:20:36PM +0200, Michal Wilczynski wrote:
+> Add the Device Tree binding documentation for the T-HEAD
+> TH1520 SoC PWM controller.
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Tested-by: Drew Fustini <fustini@kernel.org>
 
-I didn't get it, can you elaborate more.
+Minor comment: if you do end doing another rev for other reasons, then
+please remove the Tested-by and use this instead:
 
-Why having kernel carry two vDSO (one with shadow stack and one without) would
-be required to for CFI userspace bringup?
+Acked-by: Drew Fustini <fustini@kernel.org>
 
-If Distro is compiling for RVA23 CONFIG_RISCV_USERCFI has to be selected yes,
-kernel can have vDSO with shadow stack. Distro can light this option only when
-its compiling entire distro for RVA23.
-
-If distro is not compiling for RVA23, then anyways CONFIG_RISCV_USERCFI is by
-default "N". This would simply build vDSO without shadow stack.
-
->
->Thanks,
->Florian
->
+Thanks,
+Drew
