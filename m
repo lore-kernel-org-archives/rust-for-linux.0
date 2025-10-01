@@ -1,64 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx-out1.startmail.com (mx-out1.startmail.com [145.131.90.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647F1253F03;
-	Wed,  1 Oct 2025 18:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9776E1946AA;
+	Wed,  1 Oct 2025 20:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.131.90.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759344161; cv=none; b=c5Lj9OBZOAH7598fbEg1Jc0OI6jCcWQwTHSfZwHnY1e04AaoUp+UWPZfHrJE2aQBSUR/sr/9NdDsI8C5cbvT6a1wZUE+LNcdVA+olgc1arMd0JGQii+/GBqmE/dqzCyI5G2BrSMmCii8UZMb3yhs3ImnMJq65dKM4zzEj1Aum3I=
+	t=1759351892; cv=none; b=j66Z7VWqmu2KBsSFFNvXdxO7qNGQQS2/sByXtMPwJr3yIzXyZXMF1+AV6asRI6Kv6Gm6oYu9f2WOUJPQ3CJIgnmGJ6hZKJuh0IJgtwAcYSvBPAjBTcQ3LawZ11fXhrBmZ0lfcES1cwcuHxKzw5hwKb29P0sYre/QeJrkeEl/pE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759344161; c=relaxed/simple;
-	bh=Xpz59ba4Aa5zWBDEyp33avm7wQNDiu78F8XIenapZDw=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=WQsx54NyGi1dZoK7UrsHy2CSJ4FDoW07O8MFELSUCbcORYBzE5+BZB64OVIWj7CUJ+Yvv2n9ipRyHBmbpd8PSkK4CE5YIhcnt+vq/otWgnMVASEOEPtlmdefJ6aYnyJ1ircixY/l3Nbm15ACz1wqwOu2EmQIoRSxV1iDyFY141g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qWrexVhI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759351892; c=relaxed/simple;
+	bh=VPaXP4qHSspQ17XY5CPQB+lhfh+9TEuQQnadpD+XA7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KJ6JA/VhrdqQHadV0EYCrzA9Iwuqwp30mUzsqq0sIuIXqhoyyfG5zRYASwCYL9zRrPFzGJD/wiDv1T/6AunVdt/8Mva7GYhBf1iucJ771/ZuhBl2dd1PQafHprH+LGnqz6sxfsrR79CVGMEaIHtZQAZOnEjWrob1/u4XTyCjqK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=ImUQ+auC; arc=none smtp.client-ip=145.131.90.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qWrexVhI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417C0C4CEF1;
-	Wed,  1 Oct 2025 18:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759344161;
-	bh=Xpz59ba4Aa5zWBDEyp33avm7wQNDiu78F8XIenapZDw=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=qWrexVhIbAKN/MGp6ME2HK4Nadr9PSO9iyiTQ7p2CO17WUDCHcN1vvXeP2mHv/JOy
-	 6/Mlf29mr2sofQUCjqO1Ayd1TR/r/WvJcRFSQSVOAy29cnzixJ8DtZ2FrG/M3XpLs7
-	 cxhv6HV8s9rb+WwDhhyJOB2COTQikkVPFQlhBgz9FaDgcF5EESmhrl9QTXxkBqs1X1
-	 me6DuM/KPNnvLMjy8vqwJHF9pD0fFlnSlzyIOP0+juG7L9yStpCuetTpxy+VKaF1Lu
-	 RqcnHUI8/BU+81B+1l7Gm0l49TPDYwbP8WisZKVAl3J+TUPRcmtlEaK02JBJLdsFex
-	 QX38s752bQSag==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB17939D0C3F;
-	Wed,  1 Oct 2025 18:42:34 +0000 (UTC)
-Subject: Re: [GIT PULL] Driver core changes for 6.18-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <DD4OZ2NDSZ6E.2KDADLOEY69TI@kernel.org>
-References: <DD4OZ2NDSZ6E.2KDADLOEY69TI@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <DD4OZ2NDSZ6E.2KDADLOEY69TI@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git tags/driver-core-6.18-rc1
-X-PR-Tracked-Commit-Id: 6d97171ac6585de698df019b0bfea3f123fd8385
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: eb3289fc474f74105e0627bf508e3f9742fd3b63
-Message-Id: <175934415349.2574344.9735092221232368913.pr-tracker-bot@kernel.org>
-Date: Wed, 01 Oct 2025 18:42:33 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Saravana Kannan <saravanak@google.com>, Andrew
- Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="ImUQ+auC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
+	s=startmail1; t=1759351881;
+	bh=QbcGgb5EQSRVJLoUkXO4xyhEsG9J13OKh/OXOofe7G8=;
+	h=Date:From:To:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:From:Subject:To:Date:
+	 Sender:Content-Type:Content-Transfer-Encoding:Content-Disposition:
+	 Mime-Version:Reply-To:In-Reply-To:References:Message-Id:
+	 List-Unsubscribe:List-Unsubscribe-Post:Autocrypt;
+	b=ImUQ+auCIzrbzgelzjZy/hT/6tYbxImGUQmh64wCOdKDUl20Co1kP7cTJ9lhFDrbR
+	 qQ4QZlSxRPKLJxwjRAbiuePe78ERBtTjj3yUHwpj56F9g4Lcw7rD1f4TPANFVG6jzA
+	 F8rvWj2+w96g7boCQZFbxZUGtuIibAjiT8peB42+PcniofccflsEr6bINEsaBUNBqe
+	 +VCQyDAPoOkVF6bO0L4BKQEtA7NcZZXU1+GXhmBxJrgTAIP/l2WYOWAw2drtpyeLBx
+	 ZsINN8ZnA3JZrn9ueU0l92T0EVFjY1yF5FNaIT+VMSk6FtfjKRBYPfKM8y5CggJ8Dg
+	 fI1MewDrYAc9w==
+Date: Wed, 1 Oct 2025 20:51:16 +0000
+From: Elle Rhumsaa <elle@weathered-steel.dev>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Drew Fustini <fustini@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v15 1/7] pwm: Export `pwmchip_release` for external use
+Message-ID: <aN2T-IZKQfqcd7I4@archiso>
+References: <20250930-rust-next-pwm-working-fan-for-sending-v15-0-5661c3090877@samsung.com>
+ <CGME20250930122730eucas1p11afe23eee92daac1023a826768b1f92d@eucas1p1.samsung.com>
+ <20250930-rust-next-pwm-working-fan-for-sending-v15-1-5661c3090877@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250930-rust-next-pwm-working-fan-for-sending-v15-1-5661c3090877@samsung.com>
 
-The pull request you sent on Sun, 28 Sep 2025 21:48:24 +0200:
+On Tue, Sep 30, 2025 at 02:20:32PM +0200, Michal Wilczynski wrote:
+> The upcoming Rust abstraction layer for the PWM subsystem uses a custom
+> `dev->release` handler to safely manage the lifetime of its driver
+> data.
+> 
+> To prevent leaking the memory of the `struct pwm_chip` (allocated by
+> `pwmchip_alloc`), this custom handler must also call the original
+> `pwmchip_release` function to complete the cleanup.
+> 
+> Make `pwmchip_release` a global, exported function so that it can be
+> called from the Rust FFI bridge. This involves removing the `static`
+> keyword, adding a prototype to the public header, and exporting the
+> symbol.
+> 
+> Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
+> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+> ---
+>  drivers/pwm/core.c  | 3 ++-
+>  include/linux/pwm.h | 6 ++++++
+>  2 files changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+> index 0d66376a83ec350e0c3718959f4d794efd71595a..a33da3dff608fdff91251e5fd07b0dbd295be022 100644
+> --- a/drivers/pwm/core.c
+> +++ b/drivers/pwm/core.c
+> @@ -1600,12 +1600,13 @@ void pwmchip_put(struct pwm_chip *chip)
+>  }
+>  EXPORT_SYMBOL_GPL(pwmchip_put);
+>  
+> -static void pwmchip_release(struct device *pwmchip_dev)
+> +void pwmchip_release(struct device *pwmchip_dev)
+>  {
+>  	struct pwm_chip *chip = pwmchip_from_dev(pwmchip_dev);
+>  
+>  	kfree(chip);
+>  }
+> +EXPORT_SYMBOL_GPL(pwmchip_release);
+>  
+>  struct pwm_chip *pwmchip_alloc(struct device *parent, unsigned int npwm, size_t sizeof_priv)
+>  {
+> diff --git a/include/linux/pwm.h b/include/linux/pwm.h
+> index 8cafc483db53addf95591d1ac74287532c0fa0ee..d86061024b52172edf3845bf9252a966f120e365 100644
+> --- a/include/linux/pwm.h
+> +++ b/include/linux/pwm.h
+> @@ -485,6 +485,12 @@ int __pwmchip_add(struct pwm_chip *chip, struct module *owner);
+>  #define pwmchip_add(chip) __pwmchip_add(chip, THIS_MODULE)
+>  void pwmchip_remove(struct pwm_chip *chip);
+>  
+> +/*
+> + * For FFI wrapper use only:
+> + * The Rust PWM abstraction needs this to properly free the pwm_chip.
+> + */
+> +void pwmchip_release(struct device *dev);
+> +
+>  int __devm_pwmchip_add(struct device *dev, struct pwm_chip *chip, struct module *owner);
+>  #define devm_pwmchip_add(dev, chip) __devm_pwmchip_add(dev, chip, THIS_MODULE)
+>  
+> 
+> -- 
+> 2.34.1
+> 
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git tags/driver-core-6.18-rc1
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/eb3289fc474f74105e0627bf508e3f9742fd3b63
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
