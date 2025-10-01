@@ -1,142 +1,174 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010035.outbound.protection.outlook.com [52.101.56.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA113433AD
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Oct 2025 04:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759293972; cv=none; b=WaFe8JqHLRUjunvyZFE+qrZHLThEfpMZkQEKl53UlvFTljqPE67EsJFZtP230CXcLi4ni4tH/DWGkJtvjcDt8OrzrMMaR9MdKkcAgoDJXL2K3H9w1aQdr+6mL6GuOnC4C5ddZAvg0ZAW2qxZsOqS2w+0OLJ7Pi6XrsKKuay1z78=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759293972; c=relaxed/simple;
-	bh=W9aE/h0MCF2uj9dBQXAmWE6NxDahP+VqHyrnxKfSqKI=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SDo2aKSafXUSOORlCFd5mTJFJVPCjq3B871r38SevcJi9bh1m79sZERk++hswvOSO6Z4T8KawqczfLxRS/X4MrKkyiQH4upDWjYCN0wO0KLd1sXqDE/59Xg1kdePtD3ieLcEyv5tfi1lY38JDu6XL4V+kB6jkyBRslzVUeDEtVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=elijahs.space; spf=pass smtp.mailfrom=elijahs.space; dkim=pass (2048-bit key) header.d=elijahs.space header.i=@elijahs.space header.b=BVY13p2N; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=sbFVLOys; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=elijahs.space
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=elijahs.space
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4089227EA8;
+	Wed,  1 Oct 2025 05:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759298073; cv=fail; b=jELmQp6GQco1B35JggrEBtIVye6np5sBTNGCJBMUS3fd2sLT+lMtLuhX0wNxWGfKBLW84O+Nf68eX1ImADnHA2Y4cRUO574Eg9kKopIWEV/L1KHMuOOLusqFi2mDdZaUPOYn+z9bFhCUlZs8XQvICAHwoT9PHrx5Ok6ueFwv/TQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759298073; c=relaxed/simple;
+	bh=cJC8PW2oyIXjcHd3A8Fu1En/6JYg2CFboQqw4ffKTKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=AVVFqReJHALPWjPMN+G8Y5bAp0dgxd54zwNR3T6MkIwZlu73LF+gkQbtFh+9IjkpUR3QENKXRj63pFWdZX+cEbP4yt7LVJDnBPL8vmiSOom+ewRGztIF0yWvQZVT5ju/wyLkVditT7S/Zvu1uiMTl4UsoCbA5TbRDwQTdMvlj0U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Rd8DgxMM; arc=fail smtp.client-ip=52.101.56.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=elijahs.space header.i=@elijahs.space header.b="BVY13p2N";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="sbFVLOys"
-Authentication-Results: purelymail.com; auth=pass
-DKIM-Signature: a=rsa-sha256; b=BVY13p2N/J3gxB4vcQ9vaRwkpICVSGS0Wg6rMVgrnHn43OzsTUq8aa3vKO4E1Q98CwPKLz42Sh3UlxbgS6E2dqKO0d1JXhlWPLQ4wP/etM5iRzgY1yNKpg86ZWDL98DD2yiHNUZH7y1MvCXtBOxgpS/Cg90xqMAZg5lyTCs2+B0Eac0ZW9Tt9hgWmGY6hRRn6GOr+LzuuAQQMZyoiLNlOIhEVekzBTi1bz0j3GoYilS4+dBqqVYjvqfTtJX5muWc2RpD0cqeZ6nZS9JtE8kD6WqmKoDpLigTN8ZshnQ0YMZEvH2isqhGYJErXJHCNjxD72gUJKXm8GYmYlHoF8Ro/g==; s=purelymail3; d=elijahs.space; v=1; bh=W9aE/h0MCF2uj9dBQXAmWE6NxDahP+VqHyrnxKfSqKI=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=sbFVLOysOH+HRfWWENrNx001woaBDpzpoQnXyPe7Dm5sNgrt5iTQaULT8fqQbLwmp7xE5BVFTnX9JdbZcwfvZlgTg+ZpuuxaXIcaCEw72xMz135jxKjj3rEIIbAuvvk8DTdakrD4i33EcifpCrYrwdqE7ohadn0dKwCaYRSbMr3c5Rj+aO2gjD3cLSFLqfm2zgT2lzeF2LMGfnR2e5CST0hw9XDh/V2zYHBCtO6GFWIMD0b5cpuK4uz8FDPLCFWMI/0DA7vf6hCUc9RdzX2IL5GTxR0xannQyrn7xEcKE7XU4uTjVICThplaIy9l5wpV59gc8jQyxGjmTz3eqeBVEw==; s=purelymail3; d=purelymail.com; v=1; bh=W9aE/h0MCF2uj9dBQXAmWE6NxDahP+VqHyrnxKfSqKI=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 147366:4866:null:purelymail
-X-Pm-Original-To: rust-for-linux@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1637358726;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Wed, 01 Oct 2025 04:45:34 +0000 (UTC)
-From: Elijah Wright <git@elijahs.space>
-To: Elijah Wright <git@elijahs.space>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	linux-mm@kvack.org
-Subject: [PATCH v2] rust: slab: add basic slab module
-Date: Tue, 30 Sep 2025 21:44:21 -0700
-Message-ID: <20251001044508.23126-1-git@elijahs.space>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250924193643.4001-1-git@elijahs.space>
-References: <20250924193643.4001-1-git@elijahs.space>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Rd8DgxMM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bGetsMlozuuUDhdAHdAcdRhqbKEzpb3YSN3SDeKyu2/Z6racOUJt9qBs3DNZERS2NwEosqqBZTHfSYKyXCT3jE9a8DPGDcZNIzkI6OpD9O4Sbq3GxkYCFHKK0l67mqd8nfNQW4HyKXqzYub4h6dHM1hnTpbXG5IYM2CbmsO+dkxMBzriis5ULPnLJoMbq+7KXjPcYsVPVlTeyxmqCBr14QXiqEm6xaagilnsCj2VJ2b3Ta1rWsA9qNUyEvL7zSRexDnL5J+o8rHU9RgxXD4h5Quo9eGgH97mMRB048+/rtxdzAU6Oxt+s7lTXnfVIHTURI9YDWQUiwnyt7pGJZfTxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m5tqe33OnkQDXfYejllPg35VfGVR1SrmkH8+NJIgTaw=;
+ b=HfYweWa+XRZlUSHyGs6JIwhyUBu4u8i6zp8hea5pBMTztVRADzJMjUcNPYsRtIP2fiI54Hl6hBYJQPXVHycEv17/wlJpMtjntT+yTSYuKQfeDI1AFKozx/L+7WPBPFNnZQCpzuG9fNbttseexBaIxdQXKAhZum0heVcLU5UC5Iyc7uzfPqqroPiBvl2z3ElAcL00CkulEKG+H6H1rWDKNhhIQav1lnn8IqzNNk03QMF5gWHxVIw9HC+k5vEA93JDSP7X7KPTTIoWGhPzubA2tv+L9LbM60+E7Qq463HFAL+oE3P+GcKgIS8wlmGJntNtskcS39NXIU8biQyah5S7rQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m5tqe33OnkQDXfYejllPg35VfGVR1SrmkH8+NJIgTaw=;
+ b=Rd8DgxMMNhfjRhK79BSuf0nJAAAWjzRzIEKsgMVW09X+N5z4Qn+rACC0imSEmSKucyCOfOaJ6DOS2TR+J8jWiJlbu9F5VlS+xtXvrAIVrutpFyDxvVCZMVLXb85q7vjmyzzARXNuB9nfBobVOx3yN90Wombz0/JtvZIBPk4xZ/u0t4Pzytl5lIKFEkBwRXmvkuSbIrx4rd7XzUqvWQwT5dKm3lTW/o+mJVczrWhN5bggqp6lGaQ0gu+UZ2CxUbxmWNBrm2cNB28jPJ5yieHkvXbwgtMCBeENkBTMn6AnZp7zdegwhGUqRx6azdfIm8J7obebMdvBdlR8pEUVunG4Ew==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SJ2PR12MB8926.namprd12.prod.outlook.com (2603:10b6:a03:53b::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9160.18; Wed, 1 Oct 2025 05:54:28 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9160.015; Wed, 1 Oct 2025
+ 05:54:28 +0000
+Date: Wed, 1 Oct 2025 15:54:23 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	dakr@kernel.org, acourbot@nvidia.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
+	nouveau@lists.freedesktop.org
+Subject: Re: [PATCH v3 00/13] gpu: nova-core: Boot GSP to RISC-V active
+Message-ID: <ymocqvbgqyf54fsmeorol5thd5kuglg2mf4fdue4mp72cms5tp@a7clilzgcnnd>
+References: <20250930131648.411720-1-apopple@nvidia.com>
+ <f285b6e1-775e-47da-bcd9-b9ad7e218a98@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f285b6e1-775e-47da-bcd9-b9ad7e218a98@nvidia.com>
+X-ClientProxiedBy: SY6PR01CA0107.ausprd01.prod.outlook.com
+ (2603:10c6:10:111::22) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
-Content-Type: text/plain; charset=UTF-8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SJ2PR12MB8926:EE_
+X-MS-Office365-Filtering-Correlation-Id: ab83f0c1-6d81-4ebe-edf5-08de00aefba2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?d5LtOo9t9skV/0u72M4FP7yQLcRW2bdYn84UlGxk482KV7ujHReFDuiIDIgk?=
+ =?us-ascii?Q?wQYpp9rJTAt1pnvwUfpezHNXkRW+DDV+Ypc7+iVBcyWF4rfuoLmzjJuoh7MN?=
+ =?us-ascii?Q?tUToMJGpfv7/ZamIICbBGSARJhMwSl2eK9ToYddkNr+qbPHTXX0aVGbtF2rl?=
+ =?us-ascii?Q?6ZzYddIz8b6aBtjpE9iigsj811s1/mN6dggPBIwrIZLadQUWIiwLgRXMYAKg?=
+ =?us-ascii?Q?hNBuWL8Fp9A1xKUMugVKnCZL3lnXYt0+zK8o2e1jXN5D+BT0jJVnJMqHAKEq?=
+ =?us-ascii?Q?sMaW3C++XzNriSX0ETGIZGXWmEw+TLLbeQVQLVyxq77plmgpP5dbbj7QmpiR?=
+ =?us-ascii?Q?+U0CTW0tcVsO6IKFvpUHTBj91uvcLaL2zxOPaKUuS9MreWMXCz37CT8nNfyx?=
+ =?us-ascii?Q?+uaNiYA+gBkag+aAfDIC0s4XFcZBRzRTFZNMxFRahdjgmAgwoeytoM+/45Yn?=
+ =?us-ascii?Q?BQD9THWnjS97JCo/CNUZBbv6Qyvf6+O8OYMIdtH7UxImLd1Jcj/rp6LMIe6u?=
+ =?us-ascii?Q?WCtDhvIFf6hWNkZAzUY1JBlocOKZdBfIEQQFZCZuZ3ZJsY/c03P9r5CGNbbs?=
+ =?us-ascii?Q?sQoNpEu5zsWU/6zesFMVOa2V8hcCcVGEYg2ifjUFdus2rFZd/olUyzlckq0d?=
+ =?us-ascii?Q?QoDlJ3IXrD2/9RpAGQHSxy29AstZwuDP7iH5jSZb0PLS/1Pi19TKOG4a/8zI?=
+ =?us-ascii?Q?g+QoA+CI3yfjuRMbjPg7miRvYtu0JdroR5+Mv4S3qREhbQ5/QSUkdxcAW+oN?=
+ =?us-ascii?Q?cW2ViiWpzwADvu/aJfCqYhYpoJzXN23TexjLFHMSrnSmak+od9vBriIPLyEr?=
+ =?us-ascii?Q?TW51MgurourBbI63ip1QpQMNq+lJ1lq6Pgh/MZDjGsqT25mXDBwddW8QNh3J?=
+ =?us-ascii?Q?g/5uJaZTbSD8rRM2Lf7Gc8OfdBJIpXWL+ut6D1RDQp2NSqLLqzcmsDIKIZcw?=
+ =?us-ascii?Q?I/t3er43wvIVR4owQofA3tXHaBd+lR7Emc5nFOJiWlAM+Jq9OeH9u/tsZW3H?=
+ =?us-ascii?Q?KvBuHpzCzEp0JJSybP1BYafxpDJfaBISj5fOWcqmvSTpqn29KWX+oOzwcAke?=
+ =?us-ascii?Q?/OGd0PbzdNYyF+Tb+Hpg3kj0QgUIqqwE4lzt3dwImLm6U+VWIKzBGFz/Wf0p?=
+ =?us-ascii?Q?oPYox40EIqJime1TH3IvhpCwiMSYylcGb1iCDVckU+OzE/Blk5ktc+EgO3JI?=
+ =?us-ascii?Q?TI4DRBZ657iQ/C01twMHcuEHCd+bppPoIe8fvW0zC/hINYmU64vF42fFn71q?=
+ =?us-ascii?Q?AbMb8vFvS/A+OK4D7zq6JO9S1BcuKe32zOp7iFevdHAfpFJHQyM8myRIrFUu?=
+ =?us-ascii?Q?vjHwbKNXnHnEASYpco6abHG8UNb6weZwDuVhmPUXdRApQiu4jxjh2o6RZa52?=
+ =?us-ascii?Q?2ojJt8yZqFbKBtbTRSh1JCF9lBENH1962mtEckZ1ffxMXygkNxAc77XpOpRk?=
+ =?us-ascii?Q?PEIunXOJi8EPp8X2d/VR9AjJLdsjUqNkfbn+GB38MDY27X7ubLnomw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2cygizmDVrLUId20MWliFnc6RykPv+FMqdd7GcmUGtAcfwkSxNAyvAAlIx5h?=
+ =?us-ascii?Q?USkbmEZE91vAlFoID7hEdumkaUTaV3qiocwMrpNAWJHzoLjC6Lhof12xRjvJ?=
+ =?us-ascii?Q?ZGZDGGNrt/m6eKyznSvbBinzXNryvyDcwswUSHv5bsqtD+tqcBOYFmSGc/jo?=
+ =?us-ascii?Q?FqENlkK4A3Wo0ZrASjRw/YIuRQCV9yWcmA81viFEdzwfa9G06wUewoY647DE?=
+ =?us-ascii?Q?qlPaXdvHL9OFLFcPjL/9iEgd1KnH8d6uzUXrbJ5Cvfa/9B0tY4VH/ugvLdlV?=
+ =?us-ascii?Q?f0MCPgqb4lEpJSZQscBL/EeVByR2tITwq2m9Es1WItrlmEfslizo9HsVQSGg?=
+ =?us-ascii?Q?nMZXQE6j59Vo624wOCNHeOC44beyone9IOgSNxR+mhBtS8IJ9auM/0QbHGlP?=
+ =?us-ascii?Q?2MM27OOpB422EEVR8w0mUjnXUlU2NvJoQFwEDDLhyYL9rmZTSu782RxgVQD0?=
+ =?us-ascii?Q?eJXkM+soNG7c+Mw+nwUDiITqmYOOSAi/bso1dOh4cpzqDgTKhbXl1E2VHYTT?=
+ =?us-ascii?Q?YvpDahMFRQRNfeBuLDgUGaaXuoXm9f0i7BwBpHhQP4RPqHi6F25dfOIrqzxf?=
+ =?us-ascii?Q?A/Sc0VUC5IcpuAp9pHWc5rKLGbh0KKiYSze7MWet+Vclv2QXsqUGRDYBH0ju?=
+ =?us-ascii?Q?6MGJxfDXSntgd++4ElkWyIL6DUuiwJS6L6I/H4TkBiMeEyx92/9KiVydgW6n?=
+ =?us-ascii?Q?ce8lZAt4c/gaqJzlMD8+dfcLLf/h4IfM/qUJlZlehQO8Sio2M40smgQz1sYX?=
+ =?us-ascii?Q?3R7jMN20aoiUt1vmCon/mvSD5miKeVFD4JgELYTwJ8QRYr1jWdxBH/qj78oh?=
+ =?us-ascii?Q?qPLWEb73dsH5maN0X0a36vyAmW3jcE9JCHc5G1BITa7hZinZTi96U6uQCOSn?=
+ =?us-ascii?Q?gFh5N8smgP/Sh83PQubG6b7+J0EKvMlW/xmhGOmxSJ/8Riy7+4Q4IweCv0ds?=
+ =?us-ascii?Q?BQ4hKvtlwTEptYy7apeFz13eRW70csWrfh0fk2ibHOeRp63IO8IGOWWclNi3?=
+ =?us-ascii?Q?PA2BCi0KXuZh0KNRY4xufFIcLNBXWEO2tHbsz9J2kF2xTHOr0jpRfNVYRoVe?=
+ =?us-ascii?Q?vasx8ZBSZLMDPWZf527C8WMmTcYw22Z165SiZSwsZmrN5Fq7n17QesqaAsc8?=
+ =?us-ascii?Q?pjdpps/vEFoBnPvOt4hUT4skhZ2xW1TOKSHVNzhRfFGUL991i2T9lJANCjbX?=
+ =?us-ascii?Q?WRs2jApO5exz89Qqj/xBfnwixf8hnfaBIz4ICzz9yUbVkUqHjWQPRLq7L8X+?=
+ =?us-ascii?Q?GrGQCMJ+UjbkYMavRFiDvH5EKkdx4gICfUcgc5UqtVh3iUos+y5M6Nani4u0?=
+ =?us-ascii?Q?CyCiMZp11zWFh7fz4SuXSFfhTSMwUUnL9KMZPSrtCH8vwBb9gnhgFnDZ9Kjz?=
+ =?us-ascii?Q?sQcFuXubA5H3JDGfZngxSwRK/vN3F+Q4+awVwtYBKlKK9GmqaPXt0hZrMZa6?=
+ =?us-ascii?Q?RTeusKyXcn3jrtTYfYd2KeL+/ldrIFq2Cyb3fCKA1x58XlzkquSzBWEiEq6t?=
+ =?us-ascii?Q?cFZ6YcY8sSPz9A7kSwWEy75zKPRKPI6CsuGEvSNXhBb6IHu45SWUfaTvaWsF?=
+ =?us-ascii?Q?jovcx0+IQZsCje8xHAfNHXFgrYKf7VMp3eaFVOOJ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab83f0c1-6d81-4ebe-edf5-08de00aefba2
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2025 05:54:28.0956
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sfO3TG4Q++2wY07Id0/MEb8Aso39aXHt52g5GwpJe6g1CF+IhEVC8vtmLUC03EGjYjwINP4x+cea67ZaNdJDoA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8926
 
-this revision adds gen_kmem_cache_allocator, a macro that implements
-Allocator::realloc for kmem_cache. the one concern that I did have was real=
-loc()
-for resizing, since that obviously isn't possible for slab
+On 2025-10-01 at 12:02 +1000, John Hubbard <jhubbard@nvidia.com> wrote...
+> On 9/30/25 6:16 AM, Alistair Popple wrote:
+> > Changes since v2:
+> > 
+> > The main change since v2 has been to make all firmware bindings
+> > completely opaque. It has been made clear this is a pre-requisite for
+> 
+> Any hints about where to see this aspect would be welcome. 
 
-Signed-off-by: Elijah Wright <git@elijahs.space>
----
- rust/kernel/slab.rs | 52 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+The changes to fw.rs in patch 5 for example.
 
-diff --git a/rust/kernel/slab.rs b/rust/kernel/slab.rs
-index 8b418f9db7cb..3f1310f309c5 100644
---- a/rust/kernel/slab.rs
-+++ b/rust/kernel/slab.rs
-@@ -83,3 +83,55 @@ fn drop(&mut self) {
-         unsafe { bindings::kmem_cache_destroy(self.cache.as_ptr()) };
-     }
- }
-+
-+// SAFETY: The pointer does not change after creation, so `Slab<T>` may
-+// be used from multiple threads.
-+unsafe impl<T> Send for Slab<T> {}
-+unsafe impl<T> Sync for Slab<T> {}
-+
-+/// Generates a zero-sized allocator type that allocates from a given
-+/// `Slab<T>`.
-+#[macro_export]
-+macro_rules! gen_kmem_cache_allocator {
-+    (struct $name:ident for $cache:expr $(,)?) =3D> {
-+        #[derive(Clone, Copy, Default)]
-+        pub struct $name;
-+
-+        // SAFETY: Allocation and free happen through kernel APIs which
-+        // provide guarantees. The ZST carries no state, so it can be
-+        // duplicated freely.
-+        unsafe impl $crate::alloc::Allocator for $name {
-+            #[inline]
-+            unsafe fn realloc(
-+                ptr: Option::<::core::ptr::NonNull<u8>>,
-+                layout: ::core::alloc::Layout,
-+                old_layout: ::core::alloc::Layout,
-+                flags: $crate::alloc::Flags,
-+            ) -> ::core::result::Result<::core::ptr::NonNull<[u8]>, $crate=
-::alloc::AllocError> {
-+                if layout.size() =3D=3D 0 {
-+                    if let Some(p) =3D ptr {
-+                        // SAFETY: Caller promises `p` came from this allo=
-cator.
-+                        unsafe {
-+                            $crate::bindings::kmem_cache_free($cache.as_pt=
-r(), p.as_ptr().cast());
-+                        }
-+                    }
-+                    let dang =3D $crate::alloc::dangling_from_layout(layou=
-t);
-+                    let slice =3D ::core::ptr::NonNull::slice_from_raw_par=
-ts(dang, 0);
-+                    return Ok(slice);
-+                }
-+
-+                if ptr.is_some() {
-+                    return Err($crate::alloc::AllocError);
-+                }
-+
-+                let raw_ptr =3D unsafe {
-+                    $crate::bindings::kmem_cache_alloc($cache.as_ptr(), fl=
-ags.as_raw())
-+                };
-+                let nn =3D ::core::ptr::NonNull::new(raw_ptr.cast())
-+                    .ok_or($crate::alloc::AllocError)?;
-+                let slice =3D ::core::ptr::NonNull::slice_from_raw_parts(n=
-n.cast::<u8>(), layout.size());
-+                Ok(slice)
-+            }
-+        }
-+    };
-+}
-\ No newline at end of file
---=20
-2.49.1
+> ...
+> 
+> > A full tree including the prerequisites for this patch series is available
+> > at https://github.com/apopple-nvidia/linux/tree/nova-core-for-upstream.
+> > 
+> > [1] - https://lore.kernel.org/rust-for-linux/20250911-nova_firmware-v5-0-5a8a33bddca1@nvidia.com/
+> > [2] - https://github.com/apopple-nvidia/linux/tree/nova-core-for-upstream-v2
+> 
+> Could you maybe push up a nova-core-for-upstream-v3 branch please?
 
+Done.
+ 
+> thanks,
+> -- 
+> John Hubbard
+> 
