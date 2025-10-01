@@ -1,110 +1,135 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074B727B339
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Oct 2025 09:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580828F935;
+	Wed,  1 Oct 2025 10:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759310964; cv=none; b=Nbe6WGOYw1ptfQ1Agm7L3ReyomHXtodN/Pi4cFQX2Nh1MSrbORm8GzETXpknmTLDns4WkxXkPCmwxCmV6haZhd4qak/jTyY9guWfsqoaStiNO5EotOJBYMZXxGKhpEPcU1Cb5j1OFpblShpsVumb2XKhbm2ImL2L14u9RZ3fLh8=
+	t=1759314731; cv=none; b=N74K4r/NA7J0tvZu4fCCiIraL0UIJtrktZWuzqpVLpqspVAq6nJck7O4PKfDTsDEdZeh++8AJpNUaBI7o5l+hddnVKBQHIl15YUYjVTYRbNrRnShBzQUgzWPja0jTKEaj2hb/mPKkNW2/fCiti2W43dGXvljFe8P90xVXssUXS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759310964; c=relaxed/simple;
-	bh=eWhaWIh1Ch5W+HrhvE/7nWxIJ4BqD2s5kUI/3gBmyEA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nb48X/aV2FfmR1vpSVXjJPbtZyXyIhPwxLjNIr4xN+D0YYOzMWDAwmEo4ZLaw8CrM7P8VzxUN2y79H6RZkxMdhiNHC3eRLYfPHQyikRB/W6AnlB4A1JH8hyEa/Ri0MMAkZHGQrAEMZAADnDb1PMaxgC4ygkqCQjRD8av3jn7ypI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TVBaEkyI; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1759314731; c=relaxed/simple;
+	bh=P+YFqwjAsyQVj+ajZA/B1KBSZKrqZK9v+m3Wiyc2kV0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=nKJkltrwx5ICbdouXDiXS0l0yUg1XJQP1Dby6K5UnH4pSmf8WbYKVZ2iTnmvd3ebfAZ5rrQHk5Ezakxs5bxqEBGlnGzpvvPkLlWp3shyH9HznneVR9qVdxHZ63GkoBFVEwE/lV/xrebFhRu/9e9Cgy5CmEcs9lKt+WFV72V3+Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tKoY2KnL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TVBaEkyI"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3ece1102998so4745855f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Oct 2025 02:29:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759310961; x=1759915761; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eWhaWIh1Ch5W+HrhvE/7nWxIJ4BqD2s5kUI/3gBmyEA=;
-        b=TVBaEkyIVsWpPgc25PthN0dgMizQ6ejHVgbgY4cBzyNmtAMFUxALL2/XSvvKJkBJsb
-         nDMVrtUeFd3OpEfW3EoEcn7zKGgKwSzKK6TBOSXbDglCX4YaAdh419jxyWs9gSIew1u7
-         br3pPtBGPK+11HqzUpIOPf0//hSkV2Qmie5YLPhJ5K/5BYBVZH17YsA1yhe0dQRlNJti
-         Rp26I6LcqZUn5saUboAhSALCKrU0y0bvtQl3gk/xIzSlF6laY9r6Y6+h2zODmLkxIDEm
-         Yul6SYPIAC96/iUa230+xFVkC1Ne7w6ghfm0lj7XZyxe0v7vCRrHZWnlBDr0k3Plu8Ci
-         C4KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759310961; x=1759915761;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eWhaWIh1Ch5W+HrhvE/7nWxIJ4BqD2s5kUI/3gBmyEA=;
-        b=bKq0rqOJLaHEDJfCMy0sIkAhEoJh/54+us5ttlLmPzuQI4p6/Gi16goF+QtQjfUxZd
-         bpz+CX/mhbu4cgsOkvHv4NHj865oDIKJsk1D4MhU17ej3GiiY5eVF7qmVfBym764f8Ud
-         Kaj2SYK8xo038iE+vK0craBtW59mKbtxYB9GImeTpwYYZR3nwjZ4GpbrM3lq8Z2L0Ys7
-         DPDeD0cXTg9rAEhhVcYrP/aGgL+WSJ+bR9wF/uSEXqxqdU9vN4QxHoyQSgmqWSGa9HQe
-         kHj5VBZf03RK4ueezNDG6Vh0ZSotIOZDOyJGHYSq0td3E7BiRa6yQiXpEg93a73po7RB
-         hM7A==
-X-Forwarded-Encrypted: i=1; AJvYcCXBCtDZGK/p6Kx4TAnIf/Ynx35JS0N3lwkgpkqdyz6ndGyKxjkBn9Ee+yX97xw8kJZ8+XfSGEjhVAJL+z4aIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBn1kOloluFpFX7D1spML6sxbu7W+hIBB42ar+UvfG9vQxSQne
-	D/wPURW7TFnXRBLVC9Dax7PJevXipv4ZVC8kZ/G8JioA7kCWMWljXS7RlrNXazkefJ+D7Us5S4l
-	faM2hFQM7pzIS7TMubbgzgkknhIZFCSYyMlnVzSaC
-X-Gm-Gg: ASbGncvEmnAuDjTZK1YowvGohBa942wQmI3kxkyj6oIAwAsGoVzZw7gUgrnmdbydZ2E
-	iiEZmFp1quMxLvIliKu1rYuVR1/SB5ZDsS+cpMUOt2DqupyeAlZ98ecZRsR1tfHBMRAx5T8kexo
-	mJxCvcMmUFEnR84OZAAhf8o+yAA2JEVNeMBzQldeugiEnyXvwzrV80l9R3+4KKF9QBsXsawQ6Lx
-	TlYiBdGRXU2RdF3LRkjrzT3EwsKgc9kCepqPO7ze5t4N/HzBBcR6l6hADxVFgT5Sfb4
-X-Google-Smtp-Source: AGHT+IEGTvzQBJ51h7EDzxRa/Kisf+BfY+7cpvTrlEhl/iMUN4+q2HPEwsb4ysW4cM34kR4mPUadGwVDBMTe2U90ivY=
-X-Received: by 2002:a05:6000:610:b0:408:9c48:e27b with SMTP id
- ffacd0b85a97d-42557820c81mr2042096f8f.62.1759310960773; Wed, 01 Oct 2025
- 02:29:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tKoY2KnL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AD1C4CEF4;
+	Wed,  1 Oct 2025 10:32:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759314728;
+	bh=P+YFqwjAsyQVj+ajZA/B1KBSZKrqZK9v+m3Wiyc2kV0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=tKoY2KnL8Xj76oTVo6g45E3T5ntWA8T8f6WWl5EpA50rhnXgrX2/kqqr0xjJ19izW
+	 P/6MMZw0S7kFN2T7z2C8MLi4fVhnnuZD7wriXPiBnITh2FI7KK0KUG5HwPOeYshj13
+	 9pxzZtdM8rWiQA4U6VX0A7np0iOnn+5Jhb89q/+sRJWc7B3yFTiWDN4B5MebDNe4Vf
+	 zor/ax/V2JBHOiqkIKrHVcylkoDQdbldtm/B6vWL4nB8R3YPW7/3TddnoIbjNl7LGH
+	 SrZEE7ds/mGwl3LLCQtgGhwpbCgTRGEQdEADKiHn0J50zuq8zcDPsCawnFe3YSiNs3
+	 cuTjOCLJqxG8A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250925-core-cstr-cstrings-v2-0-78e0aaace1cd@gmail.com> <20250925-core-cstr-cstrings-v2-19-78e0aaace1cd@gmail.com>
-In-Reply-To: <20250925-core-cstr-cstrings-v2-19-78e0aaace1cd@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 1 Oct 2025 11:29:08 +0200
-X-Gm-Features: AS18NWCOfBcX2Vbfhr-fnk5GPcApSeOL4C5SAm45sMYmzlcHM8gTiQQ5VZSiyfk
-Message-ID: <CAH5fLggd09hodiDAdNRy6aXK9ANCP==YSJwy-GMbhNAAMm731A@mail.gmail.com>
-Subject: Re: [PATCH v2 19/19] rust: regulator: replace `kernel::c_str!` with C-Strings
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Breno Leitao <leitao@debian.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Jens Axboe <axboe@kernel.dk>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
-	linux-clk@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 01 Oct 2025 12:32:02 +0200
+Message-Id: <DD6X0PXA0VAO.101O3FEAHJUH9@kernel.org>
+Subject: Re: [PATCH 0/2] rust: pci: expose is_virtfn() and reject VFs in
+ nova-core
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Surath Mitra" <smitra@nvidia.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <nouveau@lists.freedesktop.org>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250930220759.288528-1-jhubbard@nvidia.com>
+ <h6jdcfhhf3wuiwwj3bmqp5ohvy7il6sfyp6iufovdswgoz7vul@gjindki2pyeh>
+ <e77bbcda-35a3-4ec6-ac24-316ab34a201a@nvidia.com>
+In-Reply-To: <e77bbcda-35a3-4ec6-ac24-316ab34a201a@nvidia.com>
 
-On Thu, Sep 25, 2025 at 3:56=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
+On Wed Oct 1, 2025 at 3:22 AM CEST, John Hubbard wrote:
+> On 9/30/25 5:29 PM, Alistair Popple wrote:
+>> On 2025-10-01 at 08:07 +1000, John Hubbard <jhubbard@nvidia.com> wrote..=
+.
+>>> Post-Kangrejos, the approach for NovaCore + VFIO has changed a bit: the
+>>> idea now is that VFIO drivers, for NVIDIA GPUs that are supported by
+>>> NovaCore, should bind directly to the GPU's VFs. (An earlier idea was t=
+o
+>>> let NovaCore bind to the VFs, and then have NovaCore call into the uppe=
+r
+>>> (VFIO) module via Aux Bus, but this turns out to be awkward and is no
+>>> longer in favor.) So, in order to support that:
+>>>
+>>> Nova-core must only bind to Physical Functions (PFs) and regular PCI
+>>> devices, not to Virtual Functions (VFs) created through SR-IOV.
+>>>
+>>> Add a method to check if a PCI device is a Virtual Function (VF). This
+>>> allows Rust drivers to determine whether a device is a VF created
+>>> through SR-IOV. This is required in order to implement VFIO, because
+>>> drivers such as NovaCore must only bind to Physical Functions (PFs) or
+>>> regular PCI devices. The VFs must be left unclaimed, so that a VFIO
+>>> kernel module can claim them.
+>>=20
+>> Curiously based on a quick glance I didn't see any other drivers doing t=
+his
+>> which makes me wonder why we're different here. But it seems likely thei=
+r
+>> virtual functions are supported by the same driver rather than requiring=
+ a
+>> different VF specific driver (or I glanced too quickly!).
 >
-> C-String literals were added in Rust 1.77. Replace instances of
-> `kernel::c_str!` with C-String literals where possible.
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> I haven't checked into that, but it sounds reasonable.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+There are multiple cases:
+
+Some devices have different PCI device IDs for their physical and virtual
+functions and different drivers handling then. One example for that is Inte=
+l
+IXGBE.
+
+But there are also some drivers, which do a similar check and just stop pro=
+bing
+if they detect a virtual function.
+
+So, this patch series does not do anything uncommon.
+
+>> I'm guessing the proposal is to fail the probe() function in nova-core f=
+or
+>> the VFs - I'm not sure but does the driver core continue to try probing =
+other
+>> drivers if one fails probe()? It seems like this would be something best
+>> filtered on in the device id table, although I understand that's not pos=
+sible
+>> today.
+
+Yes, the driver core keeps going until it finds a driver that succeeds prob=
+ing
+or no driver is left to probe. (This behavior is also the reason for the na=
+me
+probe() in the first place.)
+
+However, nowadays we ideally know whether a driver fits a device before pro=
+be()
+is called, but there are still exceptions; with PCI virtual functions we've=
+ just
+hit one of those.
+
+Theoretically, we could also indicate whether a driver handles virtual func=
+tions
+through a boolean in struct pci_driver, which would be a bit more elegant.
+
+If you want I can also pick this up with my SR-IOV RFC which will probably =
+touch
+the driver structure as well; I plan to send something in a few days.
