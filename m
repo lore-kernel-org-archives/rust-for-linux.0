@@ -1,134 +1,154 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245902BE652
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Oct 2025 10:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94C2227EA8
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Oct 2025 10:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759315102; cv=none; b=j0jYHA6jK4NDb0XRRjMZg0p1+BDRSPQGYV5eMm2i/h9ZQ80BBeHN7V0/41PmyeA6rsSSLfIHdCHXrpcuEfnMSTzAS/1qGL8sito7bci8iG+BYhjL8vULqoZa1UN5cLAvDa/Q97COrbHqHhH9avG/5gwBxIr1kO2Wn85UYZ/Q6eg=
+	t=1759315312; cv=none; b=XP1iemIs4ET/8xJVMpYTjEwR5YjTeUo9X7rQ3RaPDiYuadZiV/LfuislF8vTLKjrZhdALK29NNRzwa23fIJ2QTP4zRvkFSPWRoo1OhsToIQaRZY6LrtXPGZaKiEVtawW3JubsLCCMS4V4bIWOwhr3eLI2ICxNnKPwCFuykNxPiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759315102; c=relaxed/simple;
-	bh=6WpRzUY1xB9VvC/VEjbYbB5z3j3GxfQ6hBgggjbZ6EA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uydSVFSXYoRfedONEnE4KHUzQvmEKTqWWgyn75xYeq7PdLN9nJp5Jy0zdRr6zpDKirIwaPslpmseYdmhXmKVGwa9oslg1GhMSeKJQIGBnv76UpExW5qwrI1z50KhF7YJzpWUBGHV2uPLn2WpdJRVrxUMRdE9nq7B2NJSgs7L2WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=layalina.io; spf=pass smtp.mailfrom=layalina.io; dkim=pass (2048-bit key) header.d=layalina-io.20230601.gappssmtp.com header.i=@layalina-io.20230601.gappssmtp.com header.b=y+Qrg6t2; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=layalina.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=layalina.io
+	s=arc-20240116; t=1759315312; c=relaxed/simple;
+	bh=CYKvLAiGqs++D4GTcDP3BiBOeQPlODqXyzh5jaw8M0o=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mrj2spii4scHHWFKluIsIioDCVB7xh5O+kQwuIauklxweDmknd5NES/EN0e5hs2wOBiBZRaH3kQ7msdOyXtwjgErFGuaumNV8rT2r+x8+/cu+SokSTHHl0+9Z2zSzhQlhueSU7xgffx0zBqavtbG2nn3UKcybaKDYGx5sTPLj/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zhyHhjKK; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=layalina-io.20230601.gappssmtp.com header.i=@layalina-io.20230601.gappssmtp.com header.b="y+Qrg6t2"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ee64bc6b85so6258520f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Oct 2025 03:38:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zhyHhjKK"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e36686ca1so55323175e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Oct 2025 03:41:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=layalina-io.20230601.gappssmtp.com; s=20230601; t=1759315097; x=1759919897; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4mF0RoLdx3iYd2wCJGbdBLKsyAovYaRReQN2weBYtMg=;
-        b=y+Qrg6t2+x2XATp4qoY42IpRtEEqTMo+ykgdzwd5GUoPd95dWiV0NKZVydDwFCv5TT
-         5EOiYYiElupqnYTbg6ahOFnzxnRnpRmyVQhpkIWiJkoI0XJhvBOZha9MoPxLBmEUAQih
-         7OiC5JbiOch7qdXoOnM7o5KH/2vwFlbgnkUxlw0JCOkxpNjvfjSfrfsijG33waVj9rp3
-         EgaXwCD6ivCBUpb3vb7ZrEuU4G4Ru5ovUfhZB/46618+I+TUP6BeITd5QuIeod+CqLG+
-         f9HUHKzdome3ICyoaRlY59BztYhqNTuYCTW/d/swcoDc+wS3iLXDv3smiC/9tMSLOFLe
-         p4Uw==
+        d=google.com; s=20230601; t=1759315308; x=1759920108; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=q4AkcJXKNZTBwi85jKp+KXwdlDEEaE6EAE6141OGSoI=;
+        b=zhyHhjKKHDbzGc6eUN9uKktehzgz7cBP0LSh0ilZwVEOS4sM0LKphQfUSbICTBLHM1
+         oW203otNkVj4zB7hW9v4pfEEkvTtIB2+XyBRKXwu6f1G45f719JmexBsUSbJyUJzb3nB
+         QRNKi5SGJo2FWM7WT74rTKDKXwEm3g6u62BkFKE7iTfPvZbwPTPpldBTSDCPLA03Iv+D
+         hDbRUjMRlvXExREujpjmwjUEcVlQbPgrFYf6w0joMTxYI5JjLQN22xrz+owxGnNSCGtc
+         T0IFS0mP7tDFxXUWTnGQ1e29F7FJCr1F1JgfznaPcY+vN16KtlMHZ0Ume1zBq88y6b1T
+         9FMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759315097; x=1759919897;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4mF0RoLdx3iYd2wCJGbdBLKsyAovYaRReQN2weBYtMg=;
-        b=Lr505gQUset9blYkT1lKa5MF8qbjzhPN6y97c0Gn2utOUJXaI9lydbrNc7hx6i8+5J
-         oieaVjzF5jHssXo4Ahq/aMywZ1g7SY4XzUoFMwN1B58uIDJjhkb5Qm24x27RqQghXrYh
-         O9CN1UY2tty11vfqaKVuvs2Kec8BgEG10uAffVsnnQ7iAYpXbxOs+9+COU+utObTk9iV
-         IhAguJJNdrD7Y5ak5rUltBhvjuUnX0pj1xhmYQdkkWgeiWSXaPErlOzlsylQVW2RfJV6
-         W9LpPLN2J+RHT3Vom28djR1fb3S632dGoV4shgjo5HD5ixE4DEbX6B7uup9geyvze9jZ
-         dtfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQV+7lu0th4Uu3hSlQ5N9UtqvWhcf/CrBl0UzEZy8340A2Z+kn2F9CN32V2M49/vrbkKbua93PsAlYpz8p7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQfEzmUNGjGH5u/PxJkT9STKHPxAQSM5XLCY8RprpJe5hNJX0j
-	fnPSfnZaneURjxtlLdzbwIDIuF1Q38cjGxI9DbnOQntuRv1kmQQaf9Y2c2ZnC0/C6rs=
-X-Gm-Gg: ASbGncs7iziVLZOZZGM5ZjVAnA44PPaJF1XU6vV1+3onYJm0TnX8nWnyIUs7XHQZfRD
-	EqCBtF9Nm7htktWzCunPVlkT+8vXS7V2CVBmhfM4G7c43+WXHSDMzvCk0Ytv2P9t7GQlo+ooA66
-	dWbjk0/3s/PM1lPZ55pCsmSeih2XDMapqX9Qg4LebyKqa8ONdfNnLuzuoL5PARPLFFErRb6PZKv
-	HEqpBfkdIMMsUOtANkRfMVFlB27As3Y2VnZEinXgqYeo65wafhJlW5msHxbQicB4w/O/B1bKQvo
-	JorApQ/0vu93XgilHxd9e85AqIwv2mUUOtoWhsvjCyBhmzMRvGDwueIUPtllpNsMqd25NizD11v
-	c6lblj2EXXAdVMxIawAU9q8nwl/gMS6O1J8+7Ev9+/Lmhpnch2SSHAtthJJXexGgEDOcLbmReOQ
-	sPCpp03aVihKNeyvJwaWVpXAVYCTs=
-X-Google-Smtp-Source: AGHT+IEaer9MYyjKdjU2yY0Pc7X/yiVBoIWcheLdIRRZJC17ULlWTNZ7OJDYC5pxYdi3TVVVua5g6A==
-X-Received: by 2002:a05:6000:2086:b0:410:3a4f:1298 with SMTP id ffacd0b85a97d-425577f3522mr2447321f8f.15.1759315097237;
-        Wed, 01 Oct 2025 03:38:17 -0700 (PDT)
-Received: from airbuntu (host86-146-64-97.range86-146.btcentralplus.com. [86.146.64.97])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc7e2c6b3sm28297378f8f.54.2025.10.01.03.38.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 03:38:16 -0700 (PDT)
-Date: Wed, 1 Oct 2025 11:38:15 +0100
-From: Qais Yousef <qyousef@layalina.io>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Linux ACPI <linux-acpi@vger.kernel.org>,
-	Jie Zhan <zhanjie9@hisilicon.com>, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Subject: Re: [PATCH v3 1/4] cpufreq: Make drivers using CPUFREQ_ETERNAL
- specify transition latency
-Message-ID: <20251001103815.a57cc3wyasyhmrmt@airbuntu>
-References: <5069803.31r3eYUQgx@rafael.j.wysocki>
- <2264949.irdbgypaU6@rafael.j.wysocki>
+        d=1e100.net; s=20230601; t=1759315308; x=1759920108;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q4AkcJXKNZTBwi85jKp+KXwdlDEEaE6EAE6141OGSoI=;
+        b=HQJXOrEr8RK5sFeBgLrx1R1s4xJKF8zrsEwK3xEuYnsq5QNAehbZV8HAiFBnxNZmCH
+         GQq1JRT1No+nihGiKtQug16tvZ9Jw0eyCMViutC+wG/aejYmT9kxYbLgvId0w6OnxLtj
+         sP98n96oisuAPDfqwYRkUEIFzQqDE1+mF99uu9pXNLM6xsh8MElRJpaExzilvTTgXc7t
+         iigkXcFeI7kuVrH1qpi0bQCbnSeBGpuJ9te2LbhL2KyBKiGMuBbm+IP2DbbDdIFAIw/o
+         A+/AoIn490GtzEA46gtKzE2tJDYtSrSGv2MUyHT7xpiaL02yu/H/7t+SMgrwTZMFcVub
+         tVkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUe/3wmG8J+T/oR1pmT5jqz4KHfsBPfzFoHiG1NBPtRr/tNuUWp3trU1g1/tE0PkDgNs7Q7bMLZpwCa00RWPg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHLhOfPiKw7mhGv68G52FTGUh/WJenOyJ3VnHmXWpfyMwRprCN
+	wzH2TIhlZyL7ZCj0mjeF82fBmFzkn8W431zUrwfyzqkSxjICJuMAH8Z6e+5eTMRSeJZjnRy1KeY
+	IHfc6rA7zRdZGuXSRFQ==
+X-Google-Smtp-Source: AGHT+IGcmZb44kUZq9xm+3p/jxi0dJbJMOnTYuGcLSzG5k94a12SYjK9rXC/hs1AahMddzAyDeqHtr6Uml54uVQ=
+X-Received: from wmhn17.prod.google.com ([2002:a05:600c:3051:b0:46e:4c7c:5162])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:5009:b0:46e:436c:2191 with SMTP id 5b1f17b1804b1-46e612dad75mr26829995e9.25.1759315308065;
+ Wed, 01 Oct 2025 03:41:48 -0700 (PDT)
+Date: Wed, 01 Oct 2025 10:41:35 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2264949.irdbgypaU6@rafael.j.wysocki>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAF8F3WgC/23MSw6DIBSF4a2YOy4ND6nQUffRdIByUZIqBhrSx
+ rj3oqOadHhO8v0LJIweE1yrBSJmn3yYyhCnCrrBTD0Sb8sGTrmkmkqSxzYQiw4jEc44Ta3izEk
+ oYI7o/HuP3R9lDz69Qvzs7cy2928mM0JJY5AZoXh7aepbH0L/xHMXRtg6mf9afbC8WK2EtI2oN VX6YNd1/QKo59qP4QAAAA==
+X-Change-Id: 20250905-vmbo-defer-3faf90d821f5
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2783; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=CYKvLAiGqs++D4GTcDP3BiBOeQPlODqXyzh5jaw8M0o=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBo3QVlY/GHVqJ/AVp07a8vNu/sGadftMNeocEXI
+ xHxNOEhvQqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaN0FZQAKCRAEWL7uWMY5
+ RkUvD/wL0NxeTLlUXgmCpoqQuEkfJtg+jiefX3y8GEOK55Q/rzQGJRI5dgeoJN1jwzO6eKi2oul
+ iO1zo72lQo3sKnlksRBEd9nXquUYdm1EtInbRdCqpCCzgiwl0cqjvZnGfTIPfer53XkjVxFgmtG
+ QIMaGcXhtCckI3WcwKhkNVlWSUTRq08dERIBWGE3a6yEa/F6aJZW8hphUgAvbPN/n623fdvystt
+ OpXo17yocNkUWBxz+iU2qV5gbnZaB6up8ONo935QGBxWQOzK2BRsEpkNe74+Nrl/J247MJfuB+I
+ sAj9wCK9+uxfbp3LthFHU0SffeZQvnpnR0cDepUI0lSGry6S1lCcyscINuDqU+wbs23epZr+kGY
+ yzMrMG3Mdipor6G8UcZKq3Bc/oFfudwjObAEEB4a9CAMfnrrFWBB+6hTU8ZcllpUlVB7eKHio9g
+ 4rYdaFC4cytGEGlVsNDzAQ+Y1GDnuDdlF3whVi1e9becd7+gHiH2VH7ZU+dpx2amyrVdfqIUMJp
+ 4EGtRez8xTrvMv3zseWpyhEPaHYGthWCLVm0EKNT9BabO2BDC/JiuL82tRZHssS2kPI43dNi000
+ hgda664j1McYDESA3yVlmnck8iE+RR/edmhLjG2gsfIg5n4IFaCoECz61eYAaNysbSonemAbXMO f4L+/q/FXFoKoDw==
+X-Mailer: b4 0.14.2
+Message-ID: <20251001-vmbo-defer-v3-0-a3fe6b6ae185@google.com>
+Subject: [PATCH v3 0/2] Defer vm_bo cleanup in GPUVM with DRM_GPUVM_IMMEDIATE_MODE
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	"=?utf-8?q?Thomas_Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 09/26/25 12:12, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Commit a755d0e2d41b ("cpufreq: Honour transition_latency over
-> transition_delay_us") caused platforms where cpuinfo.transition_latency
-> is CPUFREQ_ETERNAL to get a very large transition latency whereas
-> previously it had been capped at 10 ms (and later at 2 ms).
-> 
-> This led to a user-observable regression between 6.6 and 6.12 as
-> described by Shawn:
-> 
-> "The dbs sampling_rate was 10000 us on 6.6 and suddently becomes
->  6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these platforms
->  because the default transition delay was dropped [...].
-> 
->  It slows down dbs governor's reacting to CPU loading change
->  dramatically.  Also, as transition_delay_us is used by schedutil
->  governor as rate_limit_us, it shows a negative impact on device
->  idle power consumption, because the device gets slightly less time
->  in the lowest OPP."
-> 
-> Evidently, the expectation of the drivers using CPUFREQ_ETERNAL as
-> cpuinfo.transition_latency was that it would be capped by the core,
-> but they may as well return a default transition latency value instead
-> of CPUFREQ_ETERNAL and the core need not do anything with it.
-> 
-> Accordingly, introduce CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS and make
-> all of the drivers in question use it instead of CPUFREQ_ETERNAL.  Also
-> update the related Rust binding.
-> 
-> Fixes: a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
-> Closes: https://lore.kernel.org/linux-pm/20250922125929.453444-1-shawnguo2@yeah.net/
-> Reported-by: Shawn Guo <shawnguo@kernel.org>
-> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-> Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
-> Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+There are two main ways that GPUVM might be used:
 
-The whole series LGTM. I think this is clearer now without the CPUFREQ_ETERNAL.
+* staged mode, where VM_BIND ioctls update the GPUVM immediately so that
+  the GPUVM reflects the state of the VM *including* staged changes that
+  are not yet applied to the GPU's virtual address space.
+* immediate mode, where the GPUVM state is updated during run_job(),
+  i.e., in the DMA fence signalling critical path, to ensure that the
+  GPUVM and the GPU's virtual address space has the same state at all
+  times.
 
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Currently, only Panthor uses GPUVM in immediate mode, but the Rust
+drivers Tyr and Nova will also use GPUVM in immediate mode, so it is
+worth to support both staged and immediate mode well in GPUVM. To use
+immediate mode, we must manage the vm_bos and vas during the fence
+signalling critical path.
 
+The first part of that work was the introduction of a fence signalling
+safe mutex for the GEMs GPUVA list in commit e7fa80e2932c ("drm_gem: add
+mutex to drm_gem_object.gpuva").
 
-Cheers
+This is series the second part of that work: Dropping a vm_bo object in
+the fence signalling critical path is problematic for two reasons:
 
---
-Qais Yousef
+* When using DRM_GPUVM_RESV_PROTECTED, you cannot remove the vm_bo from
+  the extobj/evicted lists during the fence signalling path.
+* Dropping a vm_bo could lead to the GEM object getting destroyed.
+  The requirement that GEM object cleanup is fence signalling safe is
+  dubious and likely to be violated in practice.
+
+Panthor already has its own custom implementation of postponing vm_bo
+cleanup. Take inspiration from that by moving the logic into GPUVM, and
+adjust Panthor to use the new GPUVM logic.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Unpin in panthor on drm_gpuvm_bo_create() failure.
+- Use llist for bo_defer list.
+- Rename drm_gpuvm_bo_is_dead() to drm_gpuvm_bo_is_zombie().
+- Rename drm_gpuvm_bo_defer() to drm_gpuvm_bo_defer_free().
+- Link to v2: https://lore.kernel.org/r/20250909-vmbo-defer-v2-0-9835d7349089@google.com
+
+Changes in v2:
+- Fix missing kfree in Panthor.
+- Rework mutex_lock() calls to be less confusing.
+- Add note about resv lock in drm_gpuvm_bo_is_dead() docs.
+- Link to v1: https://lore.kernel.org/r/20250905-vmbo-defer-v1-0-7ae1a382b674@google.com
+
+---
+Alice Ryhl (2):
+      drm/gpuvm: add deferred vm_bo cleanup
+      panthor: use drm_gpuva_unlink_defer()
+
+ drivers/gpu/drm/drm_gpuvm.c           | 184 ++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/panthor/panthor_mmu.c | 110 ++++----------------
+ include/drm/drm_gpuvm.h               |  16 +++
+ 3 files changed, 219 insertions(+), 91 deletions(-)
+---
+base-commit: b2ec5ca9d5c2c019e2316f7ba447596d1dcd8fde
+change-id: 20250905-vmbo-defer-3faf90d821f5
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
