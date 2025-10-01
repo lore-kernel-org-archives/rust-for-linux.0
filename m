@@ -1,159 +1,196 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012047.outbound.protection.outlook.com [52.101.48.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9777262D14;
-	Wed,  1 Oct 2025 15:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759331634; cv=none; b=rU8Kjp5yX+nYPgIybalEcE/+N9tB8sFolaEEwWBn0W4JCalWOY3h7ctGMPpBiQDA1SrPiL3Gu5ddUMGgA+Pz7no4I9cE5zJS1zR6z8dI4ay8koK7Vbh0kvkOsR4Uvcrs5es1fNoHEsTKJO3B/rnc2lLHdqheaSVPM5rzf4a00uk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759331634; c=relaxed/simple;
-	bh=f2pt9BkEMx3ptqqD1vPp/R/QxVaCY72d5ngPAgE3eBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X4hHCnfRjObScMbPTLc/LyYvz1TRAEUKODbzQ3uMOTNSMBxPbXxJYBhG6n6ShyH7CnUxn45W0xPae9BmGszN458o9JU2T4E+r5nWjWXt+uqwONut+6haorhfa4cYMOhiZMkagW4EbGffHyjV723stDuPrTVyzlWd4UEZxGIEBNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=acDYKDlk; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8761D416E;
+	Wed,  1 Oct 2025 16:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759337212; cv=fail; b=D+nN9YUHeSh4yj9Dwjagzv2njaR5OK4aWReXdUhpWUylnxez0/2A2U+nXSzKUhKWM9BqNeqzsGCvZLDGnuYeBZcsqyvb+fjsBSDbnVGTUp8Ev56L6JRoxUf5dK/5j+WMM6Mwyo6zyDd4eS89O2VORwBP26WkMaec7qcnznaGipI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759337212; c=relaxed/simple;
+	bh=HvdzynR94Pq7VOa7XHDjTnASyGv4LD2/k/oLC3P4WnA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QlaVnEWPiXLtxQtMFEVFH6mRYuRyn+kRZJxG8+ixAko512NpZl2iiULxEA8uzd5s3oDxiW9Jj0LcEMe4c1nlvnmBOOQDKyx24CidbDDpHEgMAtweDpXEFjGa4/Wb9MDjjjWQvvzFSCi0i6o5sbVYXAFZVmvTcRCALrq9p9+RhrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pwnpYRtb; arc=fail smtp.client-ip=52.101.48.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="acDYKDlk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759331630;
-	bh=f2pt9BkEMx3ptqqD1vPp/R/QxVaCY72d5ngPAgE3eBk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=acDYKDlkavcHRTzLkn/2F3viCrcT5C3gxkQI8w6NbKYUivdOE+k8p4mKn+Z+AnPyj
-	 NZOps7NkQFBOgDLf+67YMDBwOhpfcP/tkj6X1JDyW90qYMicj8agdrAA283txmP86O
-	 7hk9H382WT75Mw2r18rEAQPe+G9jN8AHEdJjylgf3BKL+xZZD9ZAIPE7HsMx2iAZ3B
-	 LKTLXqNhsOVzDe9XnPJRMQqrPrZEnQDvDbMPGeSEmB0GrA+Q9C21teczc0K+xqsPW0
-	 IsqvmCBHKHwUiqmoSA3fLKR9kqFaAdsegCnuZ+31vx8+GpH53idtntYsk83i0f+mHc
-	 Xts20/pO9ymWA==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 47DF217E0AC3;
-	Wed,  1 Oct 2025 17:13:50 +0200 (CEST)
-Date: Wed, 1 Oct 2025 17:13:46 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
- <matthew.brost@intel.com>, Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=
- <thomas.hellstrom@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Steven Price <steven.price@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau
- <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] drm/gpuvm: add deferred vm_bo cleanup
-Message-ID: <20251001171346.482142eb@fedora>
-In-Reply-To: <CAH5fLghM_fmaHn561_e7StHAwdV=8gPxAwUToDxPQiBY8E+aVA@mail.gmail.com>
-References: <20251001-vmbo-defer-v3-0-a3fe6b6ae185@google.com>
-	<20251001-vmbo-defer-v3-1-a3fe6b6ae185@google.com>
-	<DD71GUKZKFPR.2OVPQ9KOI89YG@kernel.org>
-	<CAH5fLghM_fmaHn561_e7StHAwdV=8gPxAwUToDxPQiBY8E+aVA@mail.gmail.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pwnpYRtb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZwIrlW3lfE5SFoE3mQkIQ7Kf+1bnz0gzNQeRSjEvgAfZIJbV4UMnjkDcX1doXktdJPhtSmeCKQF/oduaiQX4N/trOhJ+aQDrrJ4iFZb4uQkkQ24g5OvL5SGznYXySvfnHdFqJxvRymD8XJUAXILbjVFxi94Ci2cuOIb2fxMcSROqmzO02euFevO40IbSRn6Mnu9uOwkQSzaQ36R8vsADAu8M+O9zad4jzJ13/2iMduSfrfkTFC97Qfk/gDCSG6MwS7UlMYxDLqCPQnU5V33Qt3vND9vkAEIge7UscflSNeacBXCQp54kLEzheJzh1CdvU777eQbNyTAR22A9bn33Hg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HvdzynR94Pq7VOa7XHDjTnASyGv4LD2/k/oLC3P4WnA=;
+ b=g8iZagH0MnGpTpEB9EhkmmdyM9dVtYjyiKxe5Ger7inuGzZXEMN8k62ZRVPXxIx4CKSxNL6GFPXogfkKaW6weaYySvNVgNLiBLLBG9m3w9H/6doNgphkkEtdAjN3I2GjLay8EUrX+903t0vHXicBKUfes5V2FYPR2bbAI+u7icuqHzBUMY8h54RNoX7aLXb+E/4cAMUbFfJeVIihtsP1JScQPP3h8tSXLvwXFydh73CKlvGXlkZFWh1CPL4USc0bLqmNJweSaB7CVqbuHI5QL6fsgDIFOEBZkVBvIOYfxG7ygB3i1DAiBfF6rAOghCzTOrRbXHd+bDApwQsP57j/zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HvdzynR94Pq7VOa7XHDjTnASyGv4LD2/k/oLC3P4WnA=;
+ b=pwnpYRtbql+kQOkdJ476KysePq7UFGj15daBcHOtDDrXIP7bdxWC7OTopBdjOjxauDlswEehvPj8erdGMvXEs6iBWVdyGsTJ6WofTai52OhzsjxtKdgA/0kUSoTVx3+CzbhZPmYUMmsabeSIl0ToxXW3Pm38lb+dG4PWQft5wufS3y/Zmn1MN4b8a8FIzWCrr0VfRBpfRwVBqblByN6jEyaE8VA4fKUtgiAq6nXuUgSuVJt6ao8kR5we+A8gH19DwP8vlFi8TS5F8HM+D+umaoZM2EUZyWzsI5O8Tuv2sIe9j8dPnOGv9uZcYx4karThYqFT6zDylKzGY+95UgcWxg==
+Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
+ by PH0PR12MB5631.namprd12.prod.outlook.com (2603:10b6:510:144::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Wed, 1 Oct
+ 2025 16:46:47 +0000
+Received: from CY5PR12MB6526.namprd12.prod.outlook.com
+ ([fe80::d620:1806:4b87:6056]) by CY5PR12MB6526.namprd12.prod.outlook.com
+ ([fe80::d620:1806:4b87:6056%3]) with mapi id 15.20.9160.015; Wed, 1 Oct 2025
+ 16:46:46 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	Alistair Popple <apopple@nvidia.com>, Alexandre Courbot
+	<acourbot@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+CC: "lossin@kernel.org" <lossin@kernel.org>, "ojeda@kernel.org"
+	<ojeda@kernel.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, "tzimmermann@suse.de"
+	<tzimmermann@suse.de>, "tmgross@umich.edu" <tmgross@umich.edu>,
+	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "simona@ffwll.ch"
+	<simona@ffwll.ch>, "mripard@kernel.org" <mripard@kernel.org>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, John Hubbard
+	<jhubbard@nvidia.com>, "nouveau@lists.freedesktop.org"
+	<nouveau@lists.freedesktop.org>, "bjorn3_gh@protonmail.com"
+	<bjorn3_gh@protonmail.com>, "airlied@gmail.com" <airlied@gmail.com>,
+	"aliceryhl@google.com" <aliceryhl@google.com>, Joel Fernandes
+	<joelagnelf@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>,
+	"lyude@redhat.com" <lyude@redhat.com>
+Subject: Re: [PATCH v3 10/13] gpu: nova-core: gsp: Create RM registry and
+ sysinfo commands
+Thread-Topic: [PATCH v3 10/13] gpu: nova-core: gsp: Create RM registry and
+ sysinfo commands
+Thread-Index: AQHcMgyfpL8Jj0HjREWVuyTz4FiX2LStgdiA
+Date: Wed, 1 Oct 2025 16:46:46 +0000
+Message-ID: <944d69d9916e53f76e4180b02c63e0f94b2c8950.camel@nvidia.com>
+References: <20250930131648.411720-1-apopple@nvidia.com>
+	 <20250930131648.411720-11-apopple@nvidia.com>
+In-Reply-To: <20250930131648.411720-11-apopple@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|PH0PR12MB5631:EE_
+x-ms-office365-filtering-correlation-id: 91dfe188-9add-47c2-18ee-08de010a1c2f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?V1d2RjhTSDltRDFxdm1KM3RWTS9uZDdZd3hLWjZBSW05R2lTRE9LUDJKSFJr?=
+ =?utf-8?B?UUU1cW9UNE4xU3dUbmdsTkdIRkNkTnNjOUtmaXFxTzN6V08vSGVxUTA3K3hQ?=
+ =?utf-8?B?a2JBSXI0dng5S2hQTzk3aXhsajF6LzFUdnF6V2hOVzZwT1MwNk1COEJ6ZCsw?=
+ =?utf-8?B?cGl4QzVSY05sVlBuMmlIbzM1aDl4Sjh2RlFDMjJ2dysvaTFjRVFHNlRJWDVS?=
+ =?utf-8?B?VForKzFCbWI5TTJJOFI4cXJ4L3N5ZXNVTlRIWVR1WXN1NVA0a3U3ME90bjJZ?=
+ =?utf-8?B?T2thSW1SQnE2LzZZVStvNkxLNzh5cjRiUDlQVUNCb0JMbmdNNHRmWURjUWhC?=
+ =?utf-8?B?dGxsQ0lQYVM3OVROWFFMTVNWbFdOd21aY2lFb2l0UnljRWNzTkd0SHNMb0o2?=
+ =?utf-8?B?YjA0a2NkYkZkSkpPV0dQenlhdGRsVHRIOWx4OUdIMXAvcTNETVkyQ2hUdm04?=
+ =?utf-8?B?alVFazJsc0lPcUdYRGg5SlNUWXZtWVQ3YUE5anJSUnFRb2NTZjV2OVg2bjRG?=
+ =?utf-8?B?bXpIUmY5NVd5aTFpOTJGRHVqL3B6WFVHZ3JsdVlCcG93M1h4Nmp4eGRKa0hY?=
+ =?utf-8?B?K0xUNld5TTF3OTRRcW1rQzN3aXF0cmpzMTBJYXk2enR4R25VQjMvMUJRb2xQ?=
+ =?utf-8?B?bVdVbFRmUk9UWFMyNXQ5T21mSEpDT2t3VWFJRVl1QWtBV05aQUFlM3NndDc3?=
+ =?utf-8?B?N3RDMEhKaCtPQmY2ODVDczVPY3I3SlAzWmZoUXhSL1JLWnAwUkZhRDl2MWZU?=
+ =?utf-8?B?TUt3LzQ0cG5TdVd0NWJyTDUxMjZxVis5NkR6VHlScVVIenJuZXNCMzk2TktH?=
+ =?utf-8?B?ektnSWI5dkN0T3JTampncnB6UFhNamNxSWU5aSt3LzNGSjZnanVhenlkVUE1?=
+ =?utf-8?B?bVRaU1pUN2w1eHI4WWtselBXUllmZ0pmYXF0SC9pODQ2L2srOU5sWnoxTlI5?=
+ =?utf-8?B?QVlFOEZtSS9KMFZUTCt3aEZXV29BK2FiU2d3RHBrSE5iaCtIV210MU9CeGM2?=
+ =?utf-8?B?ZWI2Y0I3VURjZDlHZnZGTGZKeWh2VnovU3JoNGk4bkdndll4UjhiZDdXMm5E?=
+ =?utf-8?B?cndBbEw1K2RtSFArRVpqVStCbmg0ak93QW05cDMrK1dhYVNtbWE1RmFBRURh?=
+ =?utf-8?B?Wk1GVEdWbkhRRGhOcDBwMnlicFIwY2wvQUNGTlV6a3M2WFF3RmoxQnNsNUVP?=
+ =?utf-8?B?bHNwbzFWVUJnRjhCV1RYbDVwa1NINXh1L2NRaDc1MnZHeDhxV1lEYmg5TkQ2?=
+ =?utf-8?B?cmN6ODVtWXQrWjYzSnBpeTA2c0lERTZsZUtIK1hIT0s0RWpOSnZDWkFDajR1?=
+ =?utf-8?B?QlRld3lVTXRsaDJ3aDJLdmlqOFpjOFppOFh1WWpqNG16MzBXNkJxVGVIMnZw?=
+ =?utf-8?B?MHpGcjFVc3lPTE9jZ3pEeDRJc0RLakYvTjVTSTNoRVJ2dXdIZXN1VDlFS20r?=
+ =?utf-8?B?UUV5Tm9rWFBCbENkc3NJdkx0Y3NlaVhFWCtpY2VtZ0k2M1ZJUGxhV2pnMVZP?=
+ =?utf-8?B?Zktjck11TjlPWEZwcnpzdUdCVk5CdUFEU2wyaGdTb2hQYmxBcjlMU25CeXRn?=
+ =?utf-8?B?ZXh0T2JZc05MV3ZZN1BnZjc1cUQwODRXbVltRy9uY2lGcXhBSW16a1JZRGZR?=
+ =?utf-8?B?OVVmckx4cEFmZjMzQndWb0NxS2hrdUsvMHV2UGV4NmMxeEFyVjVNcTJydEV1?=
+ =?utf-8?B?S0N3WmtrL2wwelZSMHh0MzB5K2xVNG5DcGR4UzJEdzdVcFJVenhvZ01hV2pB?=
+ =?utf-8?B?RmZ1NzlBYWZWSWdTOFZURVRaaTcvYlVrcGFxT2tJcjNOblUzclVHOTV4cFZJ?=
+ =?utf-8?B?RUFOdTg1c1greFhxU3hWREx1R0k3cys0SnlUdE92UEFHNWduclNuRkd5K3hm?=
+ =?utf-8?B?MG0wZFN2cUI4UFkwV1B0Mi9iV09Nbk5kdU93QWtjQUNNSUhaNGpuY1E1Slh5?=
+ =?utf-8?B?bXFJM0IxT0dmdHZicEtnVWwxN0x5d0dSOHpKbEo5MTFHNDJDUHZ6ZFdxbEJw?=
+ =?utf-8?B?clk1MEZsZjRBTjdoK3g5U2xNa3ZnRklvUzFRTnZpYXcwT3V0TTVHb0M2Uml2?=
+ =?utf-8?Q?nQarzm?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?UkZrRSs2NVJyZ2ZUNldkZVpsdDRaVHNjOVlyZU9yTEpPUVVUSWxtWHNVcHc0?=
+ =?utf-8?B?bTlnR0R0M1BTKzV2NTN2VEZIZjFOR2o2TEJiWnZ0TElNbUx1ek5ENzVPNHdM?=
+ =?utf-8?B?UjVYNlhxUEIxWHFGWWRIWjRveU9SbWJqMHNHMVhmVUIzcDF5NFdUaWdvMGNH?=
+ =?utf-8?B?TnowVzVHTjVkV0pldFNNRFlOWEpYWUxFVzBteHFtbkt2VDJUYjlKQXdFY1Ja?=
+ =?utf-8?B?bGljSVorT3NYWkFXS3ZlVzZTMjVqL3VpU090RndSTndueDZZeXlveFh2Nk9x?=
+ =?utf-8?B?K3FKWi9PTFlvOS9QeDJ6M0VpZVNaaGNGNUtYRFZrN1BlQXJ2Nmd0d3pJZCtR?=
+ =?utf-8?B?MVA3YkFEc1ZtMnhOYzZ1LytkcmFuekRYOWRoNy9pWllvNmFnMkoweDMvNC9m?=
+ =?utf-8?B?c3pXVFR6a2wrZDhFMER6WkFyL2N2UWJUOVp1R014ais3anJ1M0lPbXkrVGh4?=
+ =?utf-8?B?bVdJdDN2OXg0QVlWYkJQWjdPeHd4NmEwMXBHaU1WRnE1ZDJ5TVFyS09SRGdU?=
+ =?utf-8?B?eXdrR25LcW94TGJtKzZreDladjRrbnN0N3VUaU1yTXBPSG9SVWMzMGY3SXlI?=
+ =?utf-8?B?TTBvS0dxMkxkb01FYU95cWE0RWhLUElPWFRLTHhVaG54UVdLS3MxbTFzVnFj?=
+ =?utf-8?B?Tmk0ZHl2alBlMVAvOGdMVjN0KzVEVExTUnYzOCsrNmJvN01BYXI5V1k2UDhO?=
+ =?utf-8?B?WXVYTjdRd0JBT1FsT2dob3pjeHV4QS9rNnFLVlRick5FTVhEei9sbzJYbWRS?=
+ =?utf-8?B?VGNPb2N0UnhUaUtZUUZWSTV6bEhBYlp5cFFJL1NENEdhSUxTY0Q0UWhpKzdr?=
+ =?utf-8?B?T3I1ekNHY1NMZHo2NlQ2VDBRbGpXNVdoYTgxTnZtTzM1Q2RlR0VzVmdTNmFX?=
+ =?utf-8?B?TnFkeFJnMHBoMEFqUlhKK0dwRnIwaE5TUUJrZ3AxazFnemtiNmFkalZIeHBN?=
+ =?utf-8?B?emRCVk9nSHBic3NjS1JTTkpWU29uOGFKcWY4M1I4WHJGeGJvdkNwUnk4cWRT?=
+ =?utf-8?B?anhHeFZ3dDdyT3VQSEN0UE83b2VwVW1wOGc2SzNzZWJtaEFQbHJMdTlCN2Ir?=
+ =?utf-8?B?NGJRMHhJT0J5VWRQYUNIT2VDcU5PSEVUanl1MDhGRkxJanFOeCtSUHRjSHlL?=
+ =?utf-8?B?aW40ZjZTYWtyV1RFN1R1UFBkeko2bW4zYTUySDJ4VXdvY1ZQUzN6bHFuaGtj?=
+ =?utf-8?B?UWhFOVloT2VDWlJkSU5DRXBRMVBqa1NobzBWbzdSblk5c1pRbG51aWhxd2Y5?=
+ =?utf-8?B?am1jVGU2c3FkVGpsSml6MEN1eE9jaW4xNHZxMnR6eEtJTlU5SS9IN0pobFdW?=
+ =?utf-8?B?UEdBM0g3ZUNHOG15WUk3di9vRXdQbGxLdHBmWktYTUsxZ0hobVFTdlFTbjBI?=
+ =?utf-8?B?U2JXajFObmhVOWdycjdnU3VlK0JudlluT2h0TkVqRnRyUTl3bnk5K1VtZUFQ?=
+ =?utf-8?B?Q0xad2lsWkZ2RDVEKzZIbHBlQ2lpeW1DTG1FSlFzaUlhNmkwdjczTmdzeUJv?=
+ =?utf-8?B?WnR2a3VFV3lLUDhWZGRhOUZDZktCakhWQmo4NS8yRzhvdnZXbGVBQmJqeVBO?=
+ =?utf-8?B?cm9BOGduUW5UVEZCejVyZHRWUXlIYlV4c1RLRERUajJhcENCQkhlOGpZS2Rt?=
+ =?utf-8?B?UDFac0VYK0haOEdYTm1ucDZWS1ltM1JaL090NnRZdThCZWUzTWpQV2dKQXEw?=
+ =?utf-8?B?YmhSclV4YXZOZ2t4VUxBY2p6VzZJU09ZNGhRbGUrMGFFVGxIMmhvejh2UTF6?=
+ =?utf-8?B?ZzdVV1JGQzlMRTJKR0hvaUV0eWkzaTVnNjRjREZua0RrTjJ2d0FYelMydWhs?=
+ =?utf-8?B?aksvS2psdVEyVE9vZGxwWVZrbERXTGFXNXdqcisxclMyU2JwYXllSXoxM3dH?=
+ =?utf-8?B?M3RtdFk2dlh5eTArTHVBWkRraHRyTnR3T204dU9jTGVEV3NKMU9FYUdOR3pV?=
+ =?utf-8?B?ckJxb3NoaEI4Q01GaTdETXppWVVkK0lwcjVQRGRqRUY2bjRGT2RSams4NTZq?=
+ =?utf-8?B?dVVuaUFHemRyQUZkbHh5Qm0yOWNSZmlEbHMwLy9ITmlFdUdvOXAwOTBhdU1D?=
+ =?utf-8?B?ckxZelJWUnpUMkxxZEJnZ25EZVU5aGZSRlp0ekZhRTlsUWdIUmVBeFBEY2t6?=
+ =?utf-8?Q?q8FvxVYrbSmpnTw4TMEHjCMI4?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <70B548FEA8D0E147BAC19BA08A16A75B@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91dfe188-9add-47c2-18ee-08de010a1c2f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2025 16:46:46.6752
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DVpXRIhQ/tzgZTi0mxfWs31gDU4E0AJUgWf6X69oW1wWkOpJAOCS75LQhr5x0W7AfWK2q3bvBLokVGU/d+YqWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5631
 
-On Wed, 1 Oct 2025 16:42:35 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> On Wed, Oct 1, 2025 at 4:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
-> >
-> > On Wed Oct 1, 2025 at 12:41 PM CEST, Alice Ryhl wrote: =20
-> > > +/*
-> > > + * Must be called with GEM mutex held. After releasing GEM mutex,
-> > > + * drm_gpuvm_bo_defer_free_unlocked() must be called.
-> > > + */
-> > > +static void
-> > > +drm_gpuvm_bo_defer_free_locked(struct kref *kref)
-> > > +{
-> > > +     struct drm_gpuvm_bo *vm_bo =3D container_of(kref, struct drm_gp=
-uvm_bo,
-> > > +                                               kref);
-> > > +     struct drm_gpuvm *gpuvm =3D vm_bo->vm;
-> > > +
-> > > +     if (!drm_gpuvm_resv_protected(gpuvm)) {
-> > > +             drm_gpuvm_bo_list_del(vm_bo, extobj, true);
-> > > +             drm_gpuvm_bo_list_del(vm_bo, evict, true);
-> > > +     }
-> > > +
-> > > +     list_del(&vm_bo->list.entry.gem);
-> > > +}
-> > > +
-> > > +/*
-> > > + * GEM mutex must not be held. Called after drm_gpuvm_bo_defer_free_=
-locked().
-> > > + */
-> > > +static void
-> > > +drm_gpuvm_bo_defer_free_unlocked(struct drm_gpuvm_bo *vm_bo)
-> > > +{
-> > > +     struct drm_gpuvm *gpuvm =3D vm_bo->vm;
-> > > +
-> > > +     llist_add(&vm_bo->list.entry.bo_defer, &gpuvm->bo_defer);
-> > > +}
-> > > +
-> > > +static void
-> > > +drm_gpuvm_bo_defer_free(struct kref *kref)
-> > > +{
-> > > +     struct drm_gpuvm_bo *vm_bo =3D container_of(kref, struct drm_gp=
-uvm_bo,
-> > > +                                               kref);
-> > > +
-> > > +     mutex_lock(&vm_bo->obj->gpuva.lock);
-> > > +     drm_gpuvm_bo_defer_free_locked(kref);
-> > > +     mutex_unlock(&vm_bo->obj->gpuva.lock);
-> > > +
-> > > +     /*
-> > > +      * It's important that the GEM stays alive for the duration in =
-which we
-> > > +      * hold the mutex, but the instant we add the vm_bo to bo_defer,
-> > > +      * another thread might call drm_gpuvm_bo_deferred_cleanup() an=
-d put
-> > > +      * the GEM. Therefore, to avoid kfreeing a mutex we are holding=
-, we add
-> > > +      * the vm_bo to bo_defer *after* releasing the GEM's mutex.
-> > > +      */
-> > > +     drm_gpuvm_bo_defer_free_unlocked(vm_bo);
-> > > +} =20
-> >
-> > So, you're splitting drm_gpuvm_bo_defer_free() into two functions, one =
-doing the
-> > work that is required to be called with the gpuva lock held and one tha=
-t does
-> > the work that does not require a lock, which makes perfect sense.
-> >
-> > However, the naming chosen for the two functions, i.e.
-> > drm_gpuvm_bo_defer_free_unlocked() and drm_gpuvm_bo_defer_free_locked()=
- is
-> > confusing:
-> >
-> > What you mean semantically mean is "do part 1 with lock held" and "do p=
-art 2
-> > without lock held", but the the chosen names suggest that both function=
-s are
-> > identical, with the only difference that one takes the lock internally =
-and the
-> > other one requires the caller to take the lock.
-> >
-> > It's probably better to name them after what they do and not what they'=
-re part
-> > of. If you prefer the latter, that's fine with me too, but please choos=
-e a name
-> > that makes this circumstance obvious. =20
->=20
-> Fair point. Do you have naming suggestions? Otherwise I can name them
-> drm_gpuvm_bo_defer_free_part1() and drm_gpuvm_bo_defer_free_part2().
-> :)
-
-drm_gpuvm_bo_free_deferral_extract_locked() and
-drm_gpuvm_bo_free_deferral_enqueue()? Definitely not short names though.
+T24gVHVlLCAyMDI1LTA5LTMwIGF0IDIzOjE2ICsxMDAwLCBBbGlzdGFpciBQb3BwbGUgd3JvdGU6
+Cj4gK3B1YihjcmF0ZSkgZm4gYnVpbGRfcmVnaXN0cnkoY21kcTogJm11dCBDbWRxLCBiYXI6ICZC
+YXIwKSAtPiBSZXN1bHQgewo+ICvCoMKgwqAgbGV0IHJlZ2lzdHJ5ID0gUmVnaXN0cnlUYWJsZSB7
+Cj4gK8KgwqDCoMKgwqDCoMKgIGVudHJpZXM6IFsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBS
+ZWdpc3RyeUVudHJ5IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGtleTogIlJN
+U2VjQnVzUmVzZXRFbmFibGUiLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdmFs
+dWU6IDEsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfSwKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBSZWdpc3RyeUVudHJ5IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGtl
+eTogIlJNRm9yY2VQY2llQ29uZmlnU2F2ZSIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB2YWx1ZTogMSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9LAo+ICvCoMKgwqDCoMKg
+wqDCoCBdLAo+ICvCoMKgwqAgfTsKCllvdSBmb3Jnb3QgdG8gaW5jbHVkZSBhbnkgb2YgbXkgY29t
+bWVudHMgZnJvbSB2MjoKCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3J1c3QtZm9yLWxpbnV4L2Q4
+N2JmZjBjNjRmYjJhNTQ5OTIwMzU0YzhiMDlmNzY0ZTE0NWE0OTIuY2FtZWxAbnZpZGlhLmNvbS8K
+IAo=
