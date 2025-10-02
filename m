@@ -1,127 +1,150 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BFA24A076
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 11:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F762ED866;
+	Thu,  2 Oct 2025 11:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759405577; cv=none; b=MlRRg3GnmxwD0j3R3biTLlNtQnwQnvIXWdjlz0Lsc9iJFZpd3okf67laN4wHxGk5xKRAevMHLQ5OkmsYzpS9guPDEc+jbKrnft0/iI/EFzZVyoE7e6ohPFHnAleeefd3zB85rQWCXzOmm1fuCZF0Dl7yQdq6tT0vLlCfnMO24f4=
+	t=1759405784; cv=none; b=nyGE/zdXPiomsXsFhSTbQ+nUm4MsdIRinrbGfr7oxk0Fmxm9PmVc82M2N7BDk+C4JUzuZb4BadaI/mA4NV9TPF8L+uormnF+EQTIvKGgqeAhumdQHFqrSxR+jTrgWPvfMCEDOpj2IQfuykBIIadg6K7hGS25PuuKfvzWf230ti4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759405577; c=relaxed/simple;
-	bh=XAW7j/GiCX4Ldk1pbIGoe/EzygOj7TZ3MCMZKOX1tCA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LRGhXkcmPNK9RC+yCJZe0CoWN0GBuRJouaEkCFtOXTUDt80d7yIO57G/AJW0kFLziuJ38c4mr/d22ntTrPRIW32VDatu+rP1cktiTue17mPpjoa66fZ/HXa1ViWP13hRoWtukPYb3Mfeljn0/FPKjTGkC4oPp1hrTzXPkzvJHq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P6Q//6Wb; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1759405784; c=relaxed/simple;
+	bh=oJQ7C3Km27dzf9R9tsuKLeHkk518hp3tLVzdWr3kU0w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=d4bGBDFPheXh17M5VNJNigK8+6gWbmvrmiwv64aZ1YSyWV7T4PtcJ92PY/gYhlrVDsVYzjqbFpJpvPCkxlGVy0ykToXRb7NYW5nWzb1Xq3b0ioJHXQQwcuERYHt8K9nhsMn0yYKHJ2CUiK59IY6N5ZNso0CfQNpPnjw+y7EOtUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVLsTUV1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P6Q//6Wb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759405575;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XAW7j/GiCX4Ldk1pbIGoe/EzygOj7TZ3MCMZKOX1tCA=;
-	b=P6Q//6WbxvOPrmOAakylzN2FYlQJiTvZhwV3xK/RfoLPJNFM7eJSJo5SdrQt6GR3WXwYOt
-	9mWpCJvSYJhJNUXan84fdGinOpi+Y+4mMdZfxeLgddt365FHBpL0tGtXtgCgivB/QUFevk
-	W6TaAQgKiCuhtgMu9Fvp0WbhOLok3hk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-r_CZXO_aN_O1Oc8BoJrm0Q-1; Thu,
- 02 Oct 2025 07:46:11 -0400
-X-MC-Unique: r_CZXO_aN_O1Oc8BoJrm0Q-1
-X-Mimecast-MFC-AGG-ID: r_CZXO_aN_O1Oc8BoJrm0Q_1759405570
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 49A29180034D;
-	Thu,  2 Oct 2025 11:46:10 +0000 (UTC)
-Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.32.225])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83FCA300018D;
-	Thu,  2 Oct 2025 11:45:51 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Charles Mirabile <cmirabil@redhat.com>,  pjw@kernel.org,
-  Liam.Howlett@oracle.com,  a.hindborg@kernel.org,
-  akpm@linux-foundation.org,  alex.gaynor@gmail.com,
-  alexghiti@rivosinc.com,  aliceryhl@google.com,  alistair.francis@wdc.com,
-  andybnac@gmail.com,  aou@eecs.berkeley.edu,  arnd@arndb.de,
-  atishp@rivosinc.com,  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,
-  bp@alien8.de,  brauner@kernel.org,  broonie@kernel.org,
-  charlie@rivosinc.com,  cleger@rivosinc.com,  conor+dt@kernel.org,
-  conor@kernel.org,  corbet@lwn.net,  dave.hansen@linux.intel.com,
-  david@redhat.com,  devicetree@vger.kernel.org,  ebiederm@xmission.com,
-  evan@rivosinc.com,  gary@garyguo.net,  hpa@zytor.com,  jannh@google.com,
-  jim.shu@sifive.com,  kees@kernel.org,  kito.cheng@sifive.com,
-  krzk+dt@kernel.org,  linux-arch@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
-  lorenzo.stoakes@oracle.com,  lossin@kernel.org,  mingo@redhat.com,
-  ojeda@kernel.org,  oleg@redhat.com,  palmer@dabbelt.com,
-  paul.walmsley@sifive.com,  peterz@infradead.org,
-  richard.henderson@linaro.org,  rick.p.edgecombe@intel.com,
-  robh@kernel.org,  rust-for-linux@vger.kernel.org,
-  samitolvanen@google.com,  shuah@kernel.org,  tglx@linutronix.de,
-  tmgross@umich.edu,  vbabka@suse.cz,  x86@kernel.org,  zong.li@sifive.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-In-Reply-To: <aNxsWYYnj22G5xuX@debug.ba.rivosinc.com> (Deepak Gupta's message
-	of "Tue, 30 Sep 2025 16:48:41 -0700")
-References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
-	<20250926192919.349578-1-cmirabil@redhat.com>
-	<aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
-	<CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
-	<aNcAela5tln5KTUI@debug.ba.rivosinc.com>
-	<lhu3484i9en.fsf@oldenburg.str.redhat.com>
-	<aNxsWYYnj22G5xuX@debug.ba.rivosinc.com>
-Date: Thu, 02 Oct 2025 13:45:48 +0200
-Message-ID: <lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVLsTUV1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA28C4CEF4;
+	Thu,  2 Oct 2025 11:49:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759405783;
+	bh=oJQ7C3Km27dzf9R9tsuKLeHkk518hp3tLVzdWr3kU0w=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=PVLsTUV1a8WRDlRxHPAmCIkBmj3obBmxbDxNYZSsbc2ZvZ8Ex0eE+dPqumkvfX+Y5
+	 ZLbLL+c3EwpOyZIhMGHEIttkZWQZLp2w3gFwGloTSQWH7VXDTlzmKUNiCaS5cl0QMN
+	 Vdp+EBndJ6v6lgBdMCOjbdiwz6nGGWZKC+qKMso1XQoagkDE/m2+tdfZP59aufIrfc
+	 y7yQgwAuBMwMco4RFjuBaIxmrgpur+IBcvk3++Xqm6IBS+wu/fETAmUhEDtSC1ZhJ4
+	 oXZ2j1vOjTRZpNbeZQuyg2M3oBXho93bPSF4UwFDF7OFWxxT0muhjtAYZcvXp6QuIk
+	 3LLgxjwXD+qkg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 02 Oct 2025 13:49:37 +0200
+Message-Id: <DD7TANT8PB1W.2SVA4TOU80BFN@kernel.org>
+Subject: Re: [PATCH v2 1/2] rust: pci: skip probing VFs if driver doesn't
+ support VFs
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Surath Mitra"
+ <smitra@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Alex Williamson" <alex.williamson@redhat.com>, "Jason
+ Gunthorpe" <jgg@nvidia.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251002020010.315944-1-jhubbard@nvidia.com>
+ <20251002020010.315944-2-jhubbard@nvidia.com>
+In-Reply-To: <20251002020010.315944-2-jhubbard@nvidia.com>
 
-* Deepak Gupta:
-
-> On Tue, Sep 30, 2025 at 11:20:32AM +0200, Florian Weimer wrote:
->>* Deepak Gupta:
->>
->>> In case of shadow stack, it similar situation. If enabled compiler
->>> decides to insert sspush and sspopchk. They necessarily won't be
->>> prologue or epilogue but somewhere in function body as deemed fit by
->>> compiler, thus increasing the complexity of runtime patching.
->>>
->>> More so, here are wishing for kernel to do this patching for usermode
->>> vDSO when there is no guarantee of such of rest of usermode (which if
->>> was compiled with shadow stack would have faulted before vDSO's
->>> sspush/sspopchk if ran on pre-zimop hardware)
->>
->>I think this capability is desirable so that you can use a distribution
->>kernel during CFI userspace bringup.
+On Thu Oct 2, 2025 at 4:00 AM CEST, John Hubbard wrote:
+> Add a "supports_vf" flag to struct pci_driver to let drivers declare
+> Virtual Function (VF) support. If a driver does not support VFs, then
+> the PCI driver core will not probe() any VFs for that driver's devices.
 >
-> I didn't get it, can you elaborate more.
+> On the Rust side, add a const "SUPPORTS_VF" Driver trait, defaulting to
+> false: drivers must explicitly opt into VF support.
 >
-> Why having kernel carry two vDSO (one with shadow stack and one without) would
-> be required to for CFI userspace bringup?
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Joel Fernandes <joelagnelf@nvidia.com>
+> Cc: Zhi Wang <zhiw@nvidia.com>
+> Cc: Alex Williamson <alex.williamson@redhat.com>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  drivers/pci/pci-driver.c | 3 +++
+>  include/linux/pci.h      | 1 +
+>  rust/kernel/pci.rs       | 4 ++++
+>  3 files changed, 8 insertions(+)
 >
-> If Distro is compiling for RVA23 CONFIG_RISCV_USERCFI has to be selected yes,
-> kernel can have vDSO with shadow stack. Distro can light this option only when
-> its compiling entire distro for RVA23.
+> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> index 63665240ae87..588666cc7254 100644
+> --- a/drivers/pci/pci-driver.c
+> +++ b/drivers/pci/pci-driver.c
+> @@ -412,6 +412,9 @@ static int __pci_device_probe(struct pci_driver *drv,=
+ struct pci_dev *pci_dev)
+>  	if (drv->probe) {
+>  		error =3D -ENODEV;
+> =20
+> +		if (pci_dev->is_virtfn && !drv->supports_vf)
+> +			return error;
+> +
+>  		id =3D pci_match_device(drv, pci_dev);
+>  		if (id)
+>  			error =3D pci_call_probe(drv, pci_dev, id);
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 59876de13860..92510886a086 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -983,6 +983,7 @@ struct pci_driver {
+>  	struct device_driver	driver;
+>  	struct pci_dynids	dynids;
+>  	bool driver_managed_dma;
+> +	bool supports_vf;	/* Will bind to Virtual Functions */
 
-I think it boils down to whether you want CFI bringup contributions from
-people who do not want to or cannot build their own custom RVA23
-kernels.
+I don't see any driver changes in this patch, are we sure this doesn't brea=
+k any
+existing drivers given that this defaults to false?
 
-Another use case would be running container images with CFI on a
-distribution kernel which supports pre-RVA23 hardware.
+Obviously, the safe call would be to invert the logic, such that it default=
+s to
+VFs being supported, though I clearly do prefer the opt-in.
 
-Thanks,
-Florian
+Also, in C this always defaults to false, whereas in Rust we have the choic=
+e to
+make it true by default, hence in C we'd need to invert the semantics, whic=
+h is
+not desirable either.
+
+>  };
+> =20
+>  #define to_pci_driver(__drv)	\
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 7fcc5f6022c1..c5d036770e65 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -47,6 +47,7 @@ unsafe fn register(
+>              (*pdrv.get()).probe =3D Some(Self::probe_callback);
+>              (*pdrv.get()).remove =3D Some(Self::remove_callback);
+>              (*pdrv.get()).id_table =3D T::ID_TABLE.as_ptr();
+> +            (*pdrv.get()).supports_vf =3D T::SUPPORTS_VF;
+>          }
+> =20
+>          // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> @@ -268,6 +269,9 @@ pub trait Driver: Send {
+>      /// The table of device ids supported by the driver.
+>      const ID_TABLE: IdTable<Self::IdInfo>;
+> =20
+> +    /// Whether the driver supports Virtual Functions.
+> +    const SUPPORTS_VF: bool =3D false;
+> +
+>      /// PCI driver probe.
+>      ///
+>      /// Called when a new pci device is added or discovered. Implementer=
+s should
+> --=20
+> 2.51.0
 
