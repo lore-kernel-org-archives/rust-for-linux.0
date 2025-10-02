@@ -1,205 +1,264 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010020.outbound.protection.outlook.com [52.101.193.20])
+Received: from mx-out1.startmail.com (mx-out1.startmail.com [145.131.90.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B59017A2EA;
-	Thu,  2 Oct 2025 02:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759370423; cv=fail; b=BCJvImtuP6nJhmBI6xh/JpQHBWMHKXS2nTzLXkdA+/S+j9L4O9XE1nW/1HTPMNbhbNtQLoeVyor3YgYb3UNgyG44aI/CzjVERjdbprHRddKDnxbJvJKPFLFMgOsZJ3Ok4xAGxjvlCpElua/0VdgBYpSkrRDdZ1lVtQ3CNAMjZV0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759370423; c=relaxed/simple;
-	bh=wrP+X9LQrRQA5C3UBZzae4t6LLa3PhTUJKVzTmjRxFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D/sNHgaSgn7eysF1Oq78vz8C9/sWQx9NqJVthY1FpUYQqdQ5V8YHBYT/jJ4wC0hAx4yAMAvQ/WHB1SSAjYSZ5pLLallF+DhUvUVBlvUJmfcozWoAYtSX4Fen+R1Ag1l1Sil/kR7xF0IfzdMVr02plW6b2PWInfEZoYn4x/XI29A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pk/YAQ58; arc=fail smtp.client-ip=52.101.193.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE85A55;
+	Thu,  2 Oct 2025 02:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.131.90.139
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759371389; cv=none; b=Qc8A/KnJ0Su4r4g4KlOvRNFYSGf9nlYuF0wXJlX3T2H+V4a5we1pKqEWzkte4Dj6JfOroA+05Uy6JRZ499MWSRkK4rUjzCBanimyCao+4AImh4n+iCPr/PSsf2/9wO+LBAqX+2OmuYjNsYFqq3hxZuVbuPh8VYLChD3ba6veNik=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759371389; c=relaxed/simple;
+	bh=iZc6kprg/Rvqa9NXHDb1sVZWpl4trqgaXnkz7c90+CE=;
+	h=Message-ID:Date:Mime-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=urjIBJz6KNGMbUaUHeIrQXAcWRH3G2u2R1LRRbLvuJpNUgUo+i9ljFyl4bytOQXUQy6+cq5PR9iYu7RtCIUta1WZOFebk0KcZMDQusqXPfGwYp8kG0ZNYec4JBWcicXsSPYrhhtWyvsxPgHri0l5hpf+PV2D8OfPisUZlRUsCuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev; spf=pass smtp.mailfrom=weathered-steel.dev; dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b=dEiCNUlN; arc=none smtp.client-ip=145.131.90.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weathered-steel.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weathered-steel.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pk/YAQ58"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uzmiFwfapxAAGN0fiNnHnWksXuXF46a8gDqTzLkFfvOxJRQ6rTAGPP4xIefwk2gdMV7nWAwWRWOoX7J9iIdescv1tUEyb6emY0OJTqERCz9thbG0I67voXOvF5DiRDW12OFOsQjQa/0ARewKF1XYGQMSQO6dnKbUwD5VsehNxhOz16H9i4UIc+k8N2fKcEnF/hQXXFewZT5xSbLjy/LRu9JlmtAQ3B/mI8NT+Ma4XxE1CnVfqvnxPi48OOtkc3G4Z4T4C30m1GRhkFkEZQJDPBdgnbDmgSU8Uu21ry3kMME2FCBr+5hde6S9TQ12PtquvKjojwEgKZgNXE0MV3tMag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BZkaVaapca93yNTCmDdV/53wYl6g6n8jwWRZRuj21Oo=;
- b=tqaGbc46NN3w7fahRA0J50n9MPV6S12CH9v2eBkluL2fjKP8NQV26JQVXMSRuzw5QKCY9AeFeVPIyjPzu1cCrZY2OxkjIctq+/aD4Y81sjIE4yLBWZ6QlezYsgkpJngMMxSOqf/aOUy/4GerNzviwcMMIAF2ENOFtZZh+bNdz41s/MankwbXKMJ1v9jsbtBFHD2c6FGWoI+DQVBrHRYlkSOf7ZRBTwMM3BRouJPwm2PmBkWXisberFCFPcoTf5xXLt0fvGiVA9dNq0OOfXCjCbx25KOT/no9kfOWbKw0FY2axrr3xGQwGaAya2HfYbg6OcW86emZXqB4Lz2ed/R8Bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BZkaVaapca93yNTCmDdV/53wYl6g6n8jwWRZRuj21Oo=;
- b=pk/YAQ589/RYrYQFUeWu0XDy64FjsAUsL0TgA3fqKG54lXho3aRrPuwF9f5BQsSZk+SxlMG0oUU7X2ZCcW06+xpLCG3KVIQO2iPjWEKj6bM46GKgUFN29cGaAvemz32qrm3ILjW7A4dqMrepI33UvYZSsX0isW9OBFAmOP4G4zzR/rULTYSUHqpSYoYv4CwH63kMf8xubWUn92PBGJeXNT+tiR8fHCDLU3YPL/SVvek5adlnCAJceZEkwy/jF0lDgr+GkmoqhO/Vm30bb7HKwHtCCpAt5IXmR2ODTrY2VIAA1koU5PvfGEWsA1JX2fNbl+2KZmF1Bpp42qklwt7/ag==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
- by SJ2PR12MB8927.namprd12.prod.outlook.com (2603:10b6:a03:547::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Thu, 2 Oct
- 2025 02:00:14 +0000
-Received: from BY5PR12MB4116.namprd12.prod.outlook.com
- ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
- ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9160.017; Thu, 2 Oct 2025
- 02:00:14 +0000
-From: John Hubbard <jhubbard@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>,
-	Surath Mitra <smitra@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	nouveau@lists.freedesktop.org,
-	linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v2 2/2] gpu: nova-core: declare that VFs are not (yet) supported
-Date: Wed,  1 Oct 2025 19:00:10 -0700
-Message-ID: <20251002020010.315944-3-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251002020010.315944-1-jhubbard@nvidia.com>
-References: <20251002020010.315944-1-jhubbard@nvidia.com>
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0P220CA0021.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::8) To BY5PR12MB4116.namprd12.prod.outlook.com
- (2603:10b6:a03:210::13)
+	dkim=pass (2048-bit key) header.d=weathered-steel.dev header.i=@weathered-steel.dev header.b="dEiCNUlN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=weathered-steel.dev;
+	s=startmail1; t=1759371385;
+	bh=cg5vUyT7oDKdkucLj/bIi19jBd516XoDYIn8kEEdYI8=;
+	h=Message-ID:Date:Mime-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:From:Subject:To:
+	 Date:Sender:Content-Type:Content-Transfer-Encoding:
+	 Content-Disposition:Mime-Version:Reply-To:In-Reply-To:References:
+	 Message-Id:List-Unsubscribe:List-Unsubscribe-Post:Autocrypt;
+	b=dEiCNUlNXjY+9iO0E55l3UVhW2vWmsGPSVzF69DIQSDfnZZMEtbcH7KgTACiceju7
+	 r/eiG4JkYY6i7Puje4zLsqNplpaz4hnD3133o6PwA+tePFXUL5kDjxF/R/8z28NtDh
+	 y8Wtxuh9zhrUw0LgEBMbXDgjv+m6e/jBQGVkmsBI5phccCCIs80NLi/+zq6+GFzgXA
+	 CbR62/tD+6HQkR8rMNhjCjP8dMXTRLs0fDYNaSg2l5/Vg3nLdS1BqMM7dm78oHR/+G
+	 qiCbFBXFvUcb6dFFyROnik43TLpUM6YZ+8NgYPHzJfkIUntIlFGEq3iMTxouyYIn9w
+	 fHIHhDze6Psyw==
+Message-ID: <d238d9b7-8ec5-4063-8217-885d951d2f0c@weathered-steel.dev>
+Date: Thu, 2 Oct 2025 02:16:16 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|SJ2PR12MB8927:EE_
-X-MS-Office365-Filtering-Correlation-Id: 364078e5-826b-4324-a385-08de01576d94
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3G++OrWpwy5WB7JASdLK4O0E9u8qIU3Boe8qcEWyl1ABVDWYFYFyNyJu9r4V?=
- =?us-ascii?Q?MEGLJi3MN63dlcr1hFKqdAvlxONJ8zcn21cvhWuhF/5d2ghl6gUy/KuS+hRy?=
- =?us-ascii?Q?M2jDVFGZUavcfswMWdpuOFmfJeX4Pm50deX1Wy2t0LyS5OO10bjJY2ONjF9/?=
- =?us-ascii?Q?V4PLGSogL16GTFKAap/IU2kSCeSr9Hxws3/Soh5m+Qk7Asr0XZiULKqeUe0w?=
- =?us-ascii?Q?y3Fj/DB0QrV792dbAtU6+6Zw++WOfFsLHEYFMNs0vvEpqRKSav2GE6LzPENM?=
- =?us-ascii?Q?DZBjhVUv4WGAGvqrqsGTYusHih1/g0i297o8hn/JnZ+4XF4KcRLTL3km9i26?=
- =?us-ascii?Q?DyFoOwZ1QdEoHHSK6WlggCW3O5em0p+BryW83gBwM4rLbXIwkQ60tcyzURbN?=
- =?us-ascii?Q?6WGICS71Gf2MhmAMp1ZnL2XGfW3mX+RkmT1wpb60mkglQwF3h9vVjQOMM3Ch?=
- =?us-ascii?Q?RhEeBFfRdMCZAKlhaKwp3vHDjwuEfX6AWIYues3H+/WGk7hLPcOrOGW27qWU?=
- =?us-ascii?Q?K7P7RvS64J0Uk3VFDg/9JELIqOUBWPdFNvvmz6wnl1vEkDr37zQCkPvfoBNv?=
- =?us-ascii?Q?kwMGyUUAElR/Mb2KRwiNrEi8xkRD7tSIwFjF5WoRa/wgDgfXEG7EiPveBwz/?=
- =?us-ascii?Q?5zmFjFkpmp500TEIQlz7VHTkthyE0u9GN0+6pazjzOnKFL1Zt1S2SusAyRO4?=
- =?us-ascii?Q?XbuKsUQdbqmWnRX+epntonxKHF8Hi03Ooh4gAly6EgcDF9iN0oFb1qQgHIOW?=
- =?us-ascii?Q?R4U/gmZ7Dct1v2Y6AuE4hrY5FODg6EPHeTcfPZ/olaIkM8OMYGA2zIky00a6?=
- =?us-ascii?Q?wG20Qv8IaWgOEbadlBrEkyDrwUwce93tB+eR2OSf2znkID4Fez6PV6YoF/hc?=
- =?us-ascii?Q?5yG9tZRGaYANOO4jbp4jvaEifvu9DcPHV1BVaBv8sxoJSo5pg9PaaKSoQggf?=
- =?us-ascii?Q?95C3cxRWFKFu79XfXTb6a9lM+oXPwPdRYfM0PtkhckI02ApjVQorqXOhmC3H?=
- =?us-ascii?Q?QjpL436KOGF8VJ5BOEMt0wM6+AGvvPd75viisD3CeBYvC5wX5RoY5PP7+ouu?=
- =?us-ascii?Q?qkK0R5+PFsxT5p41lCVUImFYeK15/55x/HtDuuRQJu11CU1Hvq5T9XLf8qNI?=
- =?us-ascii?Q?4/BIOaEvjmfKyFk5jHRBy9GwmpvziP9wDc26VJ/KwCwMSvRP7xtpossvfBTs?=
- =?us-ascii?Q?OTrFJNJgcw3Hx72HPyGrYu2/ie6CRFXzRTAS6L9UBVgDHHGACe/7siKPUJiR?=
- =?us-ascii?Q?Q+g/UjnRk4OE2sGR7g3Zto8YS3pz7bsATPikPDCh+Kv0lBgSPrvU8luJDBEB?=
- =?us-ascii?Q?X6XjN/soobESPX+BjeDvh/+E8D5fJ1Z0Ai9aVqSKxt9+Dm7NgEdMM1Va4Ic+?=
- =?us-ascii?Q?15+DfqWZWT0rHv9QHx4XzzeM78gMrAPBmFos2rYAPGd8QD2/u/V42o3axYcb?=
- =?us-ascii?Q?3R0KnKBubOHfhgHc/DR6M5tTAVHpyLEu?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MHo1SWl6196HapI5QUf+bCPSbTBlDIisISvYk9VzwMRIHdKLAfyCldT6o9i2?=
- =?us-ascii?Q?xymn0xfhehPi0Lu7QRYZZp68q2y4/Rk53KSY3rw/oA0mR5w4qw72AHa1Q9oy?=
- =?us-ascii?Q?1qdBgzZpV2Y0VXBEg29vz/kl7cfRswEM8kxkKbZ1lvYSM8o4oVh7S2XvapaG?=
- =?us-ascii?Q?TcF+eTW8jA3Mun57ILbeXfpesK+P/5MQHEgtWKdM5WLGPQhPolEZ386nfOyT?=
- =?us-ascii?Q?MsenOnJJtWYQOkHJbK5H6uj4QlqIzAHI7LLtxMyZeho/u4z/jidaVAvgplz4?=
- =?us-ascii?Q?C5l1WSDqh/rEd5IJchUVZb0Q3TETCiuTCDxQl5IAg2jNX/kG4iKSqOr3w/CC?=
- =?us-ascii?Q?cdWDcw0DgyU5gLzMGCstgh7EoJ23/nQuXDtOq8U0XWwTw9kM9yspV3iShGWF?=
- =?us-ascii?Q?gt5YklwD+ZHZQ0Eb6oZd8y2rymRV1IJkMnObw2H1u9DZRauCTP3qT2bVyQd3?=
- =?us-ascii?Q?tr3A4SfCw0idB+4ahQyf18Gxw+qnxEVmCwKEjrbsuqj2PKX78CTG4JQzZ0hj?=
- =?us-ascii?Q?DqqlsXMNeN/Pn7R2VWFOZWR3/6THEH+HFJZj4IDXtotdPrBrXuE2DyiVEGxV?=
- =?us-ascii?Q?sEEPmDwt+VKdAvcyS2HQJNFDMhENh9FoO2Zn4uluFwsSnSsVe9uMHEsHLbB2?=
- =?us-ascii?Q?k6QepIdNRIZ577PFjC2eiAeyLcuZgMQ7hs1559CPCVXja7ubNB51r3ls+pGH?=
- =?us-ascii?Q?/5JAX+aMQqYTFcGrwlisRC4j/xciIcn6Mqpci3OevRxzlOUuddb72sl37TxZ?=
- =?us-ascii?Q?Pg98A1mvZoPk04QE4laDq6xOjcYvT2cSrVS0GwtXZxO7XRrboaeApDitdvBf?=
- =?us-ascii?Q?fKKspES3bRgbYv4GTuBB+NkUGY4lesi/NBu55HT9dGspKKdzj4JDqr2jgquG?=
- =?us-ascii?Q?jnGWQOMggmxPlp8iQbcFBIzRysJuoTY4vs21bOjVlxLWMrrRmopqD1T3ACpQ?=
- =?us-ascii?Q?7+A3AzKL6kx9hf/8nxkuxP0YCxkivyrkLlTCkFew+orvNGCnEPj56JDC2SKL?=
- =?us-ascii?Q?JcZTRplDM9RskvKRZ+XI0DYsREn21hB9l04vGsYa95C+X/T3rxuR0hRI5IOe?=
- =?us-ascii?Q?70FeHXjpeBbD/LcG9/8NL5X5Y6FgjqXXRuOUofUABp0y5Fnli9nV4xiLVgAU?=
- =?us-ascii?Q?tpOvRcQu/sMOEvbuw19ciYp9xjC60WRovnSGLFThrJxKl2ufyVGKMOyGK1lR?=
- =?us-ascii?Q?g+CviLyGL7JhvHabsxBygA18zSX/DU64O4dkk0qDXsPEezvCwx6a0FQYOULy?=
- =?us-ascii?Q?EStsTvJyDrMTWBulLwIUMm7FCqZuQ0B/hSr8NG1Y+EPnnqik279HGZF2Wj+A?=
- =?us-ascii?Q?nUyBslSmxm1atosN0iymkuBuDxloRdQwU8EhB9b7j1dGpYsQnp632GGL2+Rd?=
- =?us-ascii?Q?g9yXIv8dREz6tYe42tuCIOWfTJeUMM3c67/8LREwkB56wvQMeNTlcmfbELGP?=
- =?us-ascii?Q?jNjfPMY8bjvAgDUjS/J8wulYV8+pJu4jLmx8Eknulr+wlN7ZBFQByuQHhhqi?=
- =?us-ascii?Q?aVYSAsFzYS3qPFDX1m4ELUZtckrnA8Nw4dfws+/W9pBiKlN5cG5+B/iwiyIE?=
- =?us-ascii?Q?aMrGNUaMDHad4qg7DAY3skiYZPBA09xtO8prca5N?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 364078e5-826b-4324-a385-08de01576d94
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2025 02:00:14.6719
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: udxyOTd/Z61Aa9tdLHozXP7e4eB1FczpDdCYQzIMbDEFWqWgq3zjxkYlsgMuc+hoJ4HRF6Gz3H/mAA0PH7EG1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8927
+Mime-Version: 1.0
+Subject: Re: [PATCH v5 6/9] rust: bitfield: Add KUNIT tests for bitfield
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ dakr@kernel.org
+Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ joel@joelfernandes.org, Yury Norov <yury.norov@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Andrea Righi <arighi@nvidia.com>, nouveau@lists.freedesktop.org
+References: <20250930144537.3559207-1-joelagnelf@nvidia.com>
+ <20250930144537.3559207-7-joelagnelf@nvidia.com>
+ <DD7GCYCZU3P3.1KK174S7MQ5BW@nvidia.com>
+Content-Language: en-US
+From: Elle Rhumsaa <elle@weathered-steel.dev>
+In-Reply-To: <DD7GCYCZU3P3.1KK174S7MQ5BW@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-nova-core does not yet support PCIe Virtual Functions (VFs). Until it
-does, declare to the Rust PCI driver core that VFs are not supported.
+On 10/2/25 1:41 AM, Alexandre Courbot wrote:
 
-Because the Rust PCI driver core defaults to Driver::SUPPORTS_VF =
-false, this change is not strictly necessary for functionality. Its
-purpose is to provide a self-documentating line of code that can be
-easily changed, when VF support is being added.
+> On Tue Sep 30, 2025 at 11:45 PM JST, Joel Fernandes wrote:
+>> Add KUNIT tests to make sure the macro is working correctly.
+>>
+>> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+>> ---
+>>   rust/kernel/bitfield.rs | 321 ++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 321 insertions(+)
+>>
+>> diff --git a/rust/kernel/bitfield.rs b/rust/kernel/bitfield.rs
+>> index fed19918c3b9..9a20bcd2eb60 100644
+>> --- a/rust/kernel/bitfield.rs
+>> +++ b/rust/kernel/bitfield.rs
+>> @@ -402,3 +402,324 @@ fn default() -> Self {
+>>           }
+>>       };
+>>   }
+>> +
+>> +#[::kernel::macros::kunit_tests(kernel_bitfield)]
+>> +mod tests {
+>> +    use core::convert::TryFrom;
+>> +
+>> +    // Enum types for testing => and ?=> conversions
+>> +    #[derive(Debug, Clone, Copy, PartialEq)]
+>> +    enum MemoryType {
+>> +        Unmapped = 0,
+>> +        Normal = 1,
+>> +        Device = 2,
+>> +        Reserved = 3,
+>> +    }
+>> +
+>> +    impl Default for MemoryType {
+>> +        fn default() -> Self {
+>> +            MemoryType::Unmapped
+>> +        }
+>> +    }
+> Tip: you can add `Default` to the `#[derive]` marker of `MemoryType` and
+> mark the variant you want as default with `#[default]` instead of
+> providing a full impl block:
+>
+>      #[derive(Debug, Default, Clone, Copy, PartialEq)]
+>      enum MemoryType {
+>          #[default]
+>          Unmapped = 0,
+>          Normal = 1,
+>          Device = 2,
+>          Reserved = 3,
+>      }
 
-Cc: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Zhi Wang <zhiw@nvidia.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- drivers/gpu/nova-core/driver.rs | 5 +++++
- 1 file changed, 5 insertions(+)
+I would alternatively recommend to provide a `MemoryType::new` impl with 
+a `const` definition:
 
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 5d23a91f51dd..4c19b0067862 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -51,6 +51,11 @@ impl pci::Driver for NovaCore {
-     type IdInfo = ();
-     const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
- 
-+    // PCI probe() will report the same device ID for a PF and its associated VFs. This will cause
-+    // failures when trying to bind to the VFs, until NovaCore adds support to handle that
-+    // situation. Until then, tell the PCI driver core that we don't support VFs.
-+    const SUPPORTS_VF: bool = false;
-+
-     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-         dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
- 
--- 
-2.51.0
+```rust
+impl MemoryType {
+     pub const fn new() -> Self {
 
+         Self::Unmapped
+
+     }
+}
+
+impl Default for MemoryType {
+     fn default() -> Self {
+         Self::new()
+     }
+}
+```
+
+This pattern allows using `MemoryType::new()` in `const` contexts, while 
+also providing the `Default` impl using the same default. It's somewhat 
+of a workaround until we get `const` traits.
+
+>> +
+>> +    impl TryFrom<u8> for MemoryType {
+>> +        type Error = u8;
+>> +        fn try_from(value: u8) -> Result<Self, Self::Error> {
+>> +            match value {
+>> +                0 => Ok(MemoryType::Unmapped),
+>> +                1 => Ok(MemoryType::Normal),
+>> +                2 => Ok(MemoryType::Device),
+>> +                3 => Ok(MemoryType::Reserved),
+>> +                _ => Err(value),
+>> +            }
+>> +        }
+>> +    }
+>> +
+>> +    impl From<MemoryType> for u64 {
+>> +        fn from(mt: MemoryType) -> u64 {
+>> +            mt as u64
+>> +        }
+>> +    }
+>> +
+>> +    #[derive(Debug, Clone, Copy, PartialEq)]
+>> +    enum Priority {
+>> +        Low = 0,
+>> +        Medium = 1,
+>> +        High = 2,
+>> +        Critical = 3,
+>> +    }
+>> +
+>> +    impl Default for Priority {
+>> +        fn default() -> Self {
+>> +            Priority::Low
+>> +        }
+>> +    }
+>> +
+>> +    impl From<u8> for Priority {
+>> +        fn from(value: u8) -> Self {
+>> +            match value & 0x3 {
+>> +                0 => Priority::Low,
+>> +                1 => Priority::Medium,
+>> +                2 => Priority::High,
+>> +                _ => Priority::Critical,
+>> +            }
+>> +        }
+>> +    }
+>> +
+>> +    impl From<Priority> for u16 {
+>> +        fn from(p: Priority) -> u16 {
+>> +            p as u16
+>> +        }
+>> +    }
+>> +
+>> +    bitfield! {
+>> +        struct TestPageTableEntry(u64) {
+>> +            0:0       present     as bool;
+>> +            1:1       writable    as bool;
+>> +            11:9      available   as u8;
+>> +            13:12     mem_type    as u8 ?=> MemoryType;
+>> +            17:14     extended_type as u8 ?=> MemoryType;  // For testing failures
+>> +            51:12     pfn         as u64;
+>> +            51:12     pfn_overlap as u64;
+>> +            61:52     available2  as u16;
+>> +        }
+>> +    }
+>> +
+>> +    bitfield! {
+>> +        struct TestControlRegister(u16) {
+>> +            0:0       enable      as bool;
+>> +            3:1       mode        as u8;
+>> +            5:4       priority    as u8 => Priority;
+>> +            7:4       priority_nibble as u8;
+>> +            15:8      channel     as u8;
+>> +        }
+>> +    }
+>> +
+>> +    bitfield! {
+>> +        struct TestStatusRegister(u8) {
+>> +            0:0       ready       as bool;
+>> +            1:1       error       as bool;
+>> +            3:2       state       as u8;
+>> +            7:4       reserved    as u8;
+>> +            7:0       full_byte   as u8;  // For entire register
+>> +        }
+>> +    }
+>> +
+>> +    #[test]
+>> +    fn test_single_bits() {
+>> +        let mut pte = TestPageTableEntry::default();
+>> +
+>> +        assert!(!pte.present());
+>> +        assert!(!pte.writable());
+>> +
+>> +        pte = pte.set_present(true);
+>> +        assert!(pte.present());
+>> +
+>> +        pte = pte.set_writable(true);
+>> +        assert!(pte.writable());
+>> +
+>> +        pte = pte.set_writable(false);
+>> +        assert!(!pte.writable());
+>> +
+>> +        assert_eq!(pte.available(), 0);
+>> +        pte = pte.set_available(0x5);
+>> +        assert_eq!(pte.available(), 0x5);
+> I'd suggest testing the actual raw value of the register on top of
+> invoking the getter. That way you also test that:
+>
+> - The right field is actually written (i.e. if the offset is off by one,
+>    the getter will return the expected result even though the bitfield
+>    has the wrong value),
+> - No other field has been affected.
+>
+> So something like:
+>
+>      pte = pte.set_present(true);
+>      assert!(pte.present());
+>      assert(pte.into(), 0x1u64);
+>
+>      pte = pte.set_writable(true);
+>      assert!(pte.writable());
+>      assert(pte.into(), 0x3u64);
+>
+> It might look a bit gross, but it is ok since these are not doctests
+> that users are going to take as a reference, so we case improve test
+> coverage at the detriment of readability.
+>
