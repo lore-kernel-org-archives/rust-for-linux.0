@@ -1,168 +1,158 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2521F4C87
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 16:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A47236A70
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 16:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759422686; cv=none; b=louErFTbgzULzDJM7ZTel9Auy8Y3hHbt6rtxrg4wJgQiWPd/45uTswT7zAwjbeP7OuhJ8JeO84ShbnEdHp2c0SoNyEzgDiU7leVhVtDiob2NGGnmS+CTGCTYr0fbts4rAAwd5Ohhh10WF86EVn0r4RejHdBflpBYJV7w0JB/ed8=
+	t=1759423546; cv=none; b=ZUNg7K+rWIUKTNTONvtULVcz0fbu6V/FpB43T+K5PL8w40Ho4WlVMQmoH0zsjtl/0IIRw3kfLqNzCm8yhfHb02kAPDsZTUMtNNyeqwUvMcyza9295laJjG/SDcuZUspEY29jcSboF39BWEyPIJhMNMZTaGLRnPuLUVJMbeZKsiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759422686; c=relaxed/simple;
-	bh=8vOEb57v4DeDgKuQVBnG41w5FOouthhDLWBteN3W0uw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u6ko7S/RGEmxzRh6BURPrRX16SsZJPJtDDtcAAsxg8whAigOrUutgHVf9U2RbnHAuWRuU4Tt6DowCuf7I70+WWuC6gGiZa/um7U3NW7ATlogV2VEOwhfo5m5h11+FCdjol3lVxeB6/zrk6Ms6sSEgp6y200P77cBE/2zKsNmDwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYlJG3L/; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759423546; c=relaxed/simple;
+	bh=1A9QR3g98F/jojxQcsQCrmr26ivi3VklZB9Uaf1MTlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nO2OXIhx3wC30oq3M2IdAws56rsduLup1vHLHLZrZ1ld1cMfdOMv8KSg2ZC5Qz47BzslKcc0jMyYFW3tRYv8DylwIY9s/QrZgDpMTP3XSfyM0U5pjFAosgxG3V8QxKBAOGlY5ORYwVb5udQPKYWSi45qPIKcgJMUqw3co/qUYBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=MnCNTtKy; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYlJG3L/"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-33082aed31dso1468609a91.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Oct 2025 09:31:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="MnCNTtKy"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-33274fcf5c1so1329614a91.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Oct 2025 09:45:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759422684; x=1760027484; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wNacPF8Btbu5WhlG5yDeVxMJj9MDP6Ps9hs4rcuLvfU=;
-        b=FYlJG3L/F6HFKKDMR6FFsyPWlPlKvC9ndFSLCHiZrneCSrMnSwiyTxMsKsnT0KrCbT
-         ZQ03xrUiHgK7qPK+6Fmq+b2+tS/KiD08A+T78qBJrQJIHbyfkLoTy4S9cFz2lJM5ARh8
-         4u+M1ZvXUmNDsZDM7bG40ulf7dFQj0LnotOoBEgZuMCWB/8/ypgBrSOkT98A+41r4nGu
-         21jRfoskZQ7gKxzauvggO8xlmzSaI49bWQ5aKIFM9fo22EpapVx7OOYpCRvoqLjCuA4C
-         c5Unc0TKZnKlZJ60B2Wcp6agsBeZtqvRjcSoheBJ7MowWf96HCvr/HyCkyhNjVXUdNqx
-         KGJw==
+        d=rivosinc.com; s=google; t=1759423544; x=1760028344; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1A9QR3g98F/jojxQcsQCrmr26ivi3VklZB9Uaf1MTlU=;
+        b=MnCNTtKyaUFuYYeEXqZEKsPn1vNDgYmRgHmoSDQ8pqXwUSDg16tnaJOgTbmxgYCSvL
+         ttR2mJcpVSyIWsNEzqKaewCXI+Uay0LF2DDWupFbx5qC+TzrL3zZWA9hdFKOXXZVA5qK
+         Y1FaX6+H91TwLVFtSs9nB4NLFg/L8P8mEIWc7t+8xMfrysxek/vB8TIdxtYPttEjse2z
+         Y55kKHaAckwEyWi/CGg8BQ2bDzcVi95jfBDWStSUhFArx5zXdaw2gxxGx45GVeMuVQ4x
+         DVR4wQa2JaTxA7N3eLWIVOtBzIDk3bxnp+uXhzQhEyT9dpbD3pRdCf9WzKl7ERe2SexX
+         7DcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759422684; x=1760027484;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wNacPF8Btbu5WhlG5yDeVxMJj9MDP6Ps9hs4rcuLvfU=;
-        b=u3i+DqBfXGB6QcQi7QRLoKM9H24aB+KwmkQcha08AUqRiBpZl30GTnh5Ds+fvFD1h1
-         IEERhVmH/op3fM5k8rzDdAKFTivoxIoU2OMmUewJ38D16inlNLvmMYJkNv0HopGYOb0x
-         BIo6htIwV+YMyB3JrDXCpTzEgdQWvgV7mBMTVjlMCJzXu0nrqMimgYqDj0mvXx13fzEO
-         VLrKPfCr11S5wBlYgWd/ml8ZO8khvp1o8urM5wPQc3RjjGHzVHGK0x8YdxK1/pueFwz5
-         PY6lRuJPdYIoQkwu4cR1cRl+C7P9gQcjhbBZ99Cpj4Wl2m0g8kjO+iqTnnM8OXDreqJ1
-         gF/A==
-X-Forwarded-Encrypted: i=1; AJvYcCX4wV2FMQs3Sy98hEGT5kZtP3jvS46riaLbQBvGdyiHQ4QLd/QIdg6T2Aat/XjBdEoJFYsunxQBztgiN/PHEQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoHQ7mBMHIihdxZ5qFeHr/kX9yczdcN8JMhyKjvN8hNLQM3bTs
-	Mx734JGccoKd1Ov4AaFZ0sFuwUD7aml+iu2PcAPio9H5vR3UC/ErfX5aCjzSwpDWBgscRHIUZtD
-	o9vJ5E1Y8EXtgVN4zmDrTfBkCH7YlwLI=
-X-Gm-Gg: ASbGncu03vtjGxrNNjPPmIAhBX33v6fd8IWgHrGaKmLVcEOAouY5MFAPo5gAQDDaNfU
-	kvRlRGadUgjaHmTyTQXBoPhTJOpWv9dJ960jHDtGPtpKHiKmc2GoVt/8w6Y1E8OOeDKC/e0fLF/
-	56ApBLZBvX6YygivuWUdDQrPj0lUc74NZqf+AzLX0Ma8vIZWz4PXTB4pjh3pkdT1neES8L5JtKb
-	USwAF2VLQvTA9yElBaNtlB42k3pKW4=
-X-Google-Smtp-Source: AGHT+IFnwnujcKRfK6SHtM+CXGmRj6y07MeK5a3YjdSerJUGN6mjdRxCw90XvSKFtGaY+E6xs5ra+2dbd8UIevjGgJ4=
-X-Received: by 2002:a17:90b:4d06:b0:30a:4874:5397 with SMTP id
- 98e67ed59e1d1-339a6ea3208mr9156539a91.9.1759422684485; Thu, 02 Oct 2025
- 09:31:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759423544; x=1760028344;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1A9QR3g98F/jojxQcsQCrmr26ivi3VklZB9Uaf1MTlU=;
+        b=q/wINza/Ku4s7D9CbuAyUY8OnwucRdLXZFYjgwQnL4T10X8iMZM06OOYkGYWZ7Utnd
+         VVPOdX3RbYdyKcXMVpejNRUZOiRNg2Ms/B53Ex8266bJa179TWxtu9hHaYQl2s2+oE4p
+         piBrni9U1WpxTr2JJfRZ0H/9W8uSOkqHRfCF0+3jwNyhEgszdUsV446wfBTUfxKNmZuS
+         T/oTILfpfTw19DdDbOB0/H9akdHIY4A9X8hQ+F/6uLsGz4Ilbk1OPcu5z9HRXxZNpnBV
+         +l1WwrNkZyLl3/I0Gdpikl4k8uV034t94x41mC4nZ8oRAD+BLGq3CkzsFpqGc3Jgwu0p
+         ML7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXvUqp/4jX+u9ZxVw1qbnRxWM/ZqI+fI9qhfh5vGD/ruBmIRJD1j4qR6mU/nNhv7NUf6aL1H/Wh2FsYg9Po1Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhCy+ZApY8DIMaWXQVmJR4nSBhnAB8QSnGVFKumwTdx4HQmiPk
+	vdiT2Km0+GCv4DkVP+K7xY6Z/1UjMkYNO1eNvHQEBRgjWQOJBfu+O9oFd5N83KFqXvk=
+X-Gm-Gg: ASbGnct/6gsT8emdGncH+wfurgPw2rsSC+Tu8IadiXWX+WUZA3lQTX3eFZON0Vyz9ui
+	+BnMMFqkshEYKgh8cF27mf5T5SQ+52f1x64gkwTjRJbWc6Ys4as8+HF9TaORl015ZziFPOrDKY2
+	FdZnXtFNZ4gBYJ3CDzNW9esyT1Edk8zo3UoEsu5mm/EX993IbzRGvE8Af6R0N6fM53qoeX1nFrL
+	rDrjefmA93349DMX7p/fl3yuSa74sMpj/t+9hhqojI2Icf5botCh7Tv6bWp7eRX73pebqPUow8O
+	Z1RPE0RFpFFlroiu0ionUsjSJd7dQ7zECH1HKrdkuQgPALjNGe8mn12dqMp9bH3B3QMLzSlPehZ
+	g/2DfW0ZuJMaXlzMKI35UdI4mblJWq9b6iUz8X931Pvc0VZjDghaSfpyg
+X-Google-Smtp-Source: AGHT+IGOeNAivntNqMaBDACXUIJXINgHBVnHmalDozgA9lIHXQF1UAZCwzUqmrzChLzk9pEqivj7cA==
+X-Received: by 2002:a17:90a:e70f:b0:32e:e186:726d with SMTP id 98e67ed59e1d1-339c27a1901mr8380a91.31.1759423544003;
+        Thu, 02 Oct 2025 09:45:44 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339b4f3ceedsm2812742a91.18.2025.10.02.09.45.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Oct 2025 09:45:43 -0700 (PDT)
+Date: Thu, 2 Oct 2025 09:45:40 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Florian Weimer <fweimer@redhat.com>
+Cc: Charles Mirabile <cmirabil@redhat.com>, pjw@kernel.org,
+	Liam.Howlett@oracle.com, a.hindborg@kernel.org,
+	akpm@linux-foundation.org, alex.gaynor@gmail.com,
+	alexghiti@rivosinc.com, aliceryhl@google.com,
+	alistair.francis@wdc.com, andybnac@gmail.com, aou@eecs.berkeley.edu,
+	arnd@arndb.de, atishp@rivosinc.com, bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com, bp@alien8.de, brauner@kernel.org,
+	broonie@kernel.org, charlie@rivosinc.com, cleger@rivosinc.com,
+	conor+dt@kernel.org, conor@kernel.org, corbet@lwn.net,
+	dave.hansen@linux.intel.com, david@redhat.com,
+	devicetree@vger.kernel.org, ebiederm@xmission.com,
+	evan@rivosinc.com, gary@garyguo.net, hpa@zytor.com,
+	jannh@google.com, jim.shu@sifive.com, kees@kernel.org,
+	kito.cheng@sifive.com, krzk+dt@kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, lorenzo.stoakes@oracle.com,
+	lossin@kernel.org, mingo@redhat.com, ojeda@kernel.org,
+	oleg@redhat.com, palmer@dabbelt.com, paul.walmsley@sifive.com,
+	peterz@infradead.org, richard.henderson@linaro.org,
+	rick.p.edgecombe@intel.com, robh@kernel.org,
+	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
+	shuah@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
+	vbabka@suse.cz, x86@kernel.org, zong.li@sifive.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+Message-ID: <aN6sNFBzx8NPU3Th@debug.ba.rivosinc.com>
+References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+ <20250926192919.349578-1-cmirabil@redhat.com>
+ <aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
+ <CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
+ <aNcAela5tln5KTUI@debug.ba.rivosinc.com>
+ <lhu3484i9en.fsf@oldenburg.str.redhat.com>
+ <aNxsWYYnj22G5xuX@debug.ba.rivosinc.com>
+ <lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250817044724.3528968-1-fujita.tomonori@gmail.com> <20250817044724.3528968-2-fujita.tomonori@gmail.com>
-In-Reply-To: <20250817044724.3528968-2-fujita.tomonori@gmail.com>
-From: ChaosEsque Team <chaosesqueteam@gmail.com>
-Date: Thu, 2 Oct 2025 12:36:21 -0400
-X-Gm-Features: AS18NWCOZJHPj9tkWYtN2k_ZmTorz1-zLbhHclnL_v_aOBMm4r-sY983njbIS20
-Message-ID: <CALC8CXdU4PkSK3yy_tGi-ygRhFQG9UT2jLTmbv6q-RtESUPVjg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: Add cpu_relax() helper
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, ojeda@kernel.org, 
-	aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, 
-	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
-	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
-	tglx@linutronix.de, tmgross@umich.edu, acourbot@nvidia.com, 
-	daniel.almeida@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
 
-PaX/Grsecurity did everything you are attempting to do, 20 years ago,
-and applied to all running programs on the system, and the kernel.
-Ofcourse it went proprietary and you cowards didn't even sue.
-(And yes you could have, and could still do it)
-Pieces of fucking shit.
+On Thu, Oct 02, 2025 at 01:45:48PM +0200, Florian Weimer wrote:
+>* Deepak Gupta:
+>
+>> On Tue, Sep 30, 2025 at 11:20:32AM +0200, Florian Weimer wrote:
+>>>* Deepak Gupta:
+>>>
+>>>> In case of shadow stack, it similar situation. If enabled compiler
+>>>> decides to insert sspush and sspopchk. They necessarily won't be
+>>>> prologue or epilogue but somewhere in function body as deemed fit by
+>>>> compiler, thus increasing the complexity of runtime patching.
+>>>>
+>>>> More so, here are wishing for kernel to do this patching for usermode
+>>>> vDSO when there is no guarantee of such of rest of usermode (which if
+>>>> was compiled with shadow stack would have faulted before vDSO's
+>>>> sspush/sspopchk if ran on pre-zimop hardware)
+>>>
+>>>I think this capability is desirable so that you can use a distribution
+>>>kernel during CFI userspace bringup.
+>>
+>> I didn't get it, can you elaborate more.
+>>
+>> Why having kernel carry two vDSO (one with shadow stack and one without) would
+>> be required to for CFI userspace bringup?
+>>
+>> If Distro is compiling for RVA23 CONFIG_RISCV_USERCFI has to be selected yes,
+>> kernel can have vDSO with shadow stack. Distro can light this option only when
+>> its compiling entire distro for RVA23.
+>
+>I think it boils down to whether you want CFI bringup contributions from
+>people who do not want to or cannot build their own custom RVA23
+>kernels.
 
-On Sun, Aug 17, 2025 at 12:49=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+How will they contribute to CFI bringup without having a CFI compiled usersapce?
+If their userspace is compiled with shadow stack instructions and they can't take
+this userspace to old hardware else it'll start faulting as soon as control is
+given to userspace (first sspush or sspopcheck in userspace).
+
 >
-> Add cpu_relax() helper in preparation for supporting
-> read_poll_timeout().
+>Another use case would be running container images with CFI on a
+>distribution kernel which supports pre-RVA23 hardware.
+
+Container image with CFI will have glibc and ld (and all other userspace) also
+compiled with shadow stack instructions in it. As soon as you take this
+container image to a pre-RVA23 hardware, you won't even reach vDSO. It'll break
+much before that, unless kernel is taking a trap on all sspush/sspopchk
+instructions in prologue/epilogue of functions in userspace (glibc, ld, etc)
+
 >
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/helpers/helpers.c   |  1 +
->  rust/helpers/processor.c |  8 ++++++++
->  rust/kernel/lib.rs       |  1 +
->  rust/kernel/processor.rs | 14 ++++++++++++++
->  4 files changed, 24 insertions(+)
->  create mode 100644 rust/helpers/processor.c
->  create mode 100644 rust/kernel/processor.rs
->
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 7cf7fe95e41d..04598665e7c8 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -34,6 +34,7 @@
->  #include "pid_namespace.c"
->  #include "platform.c"
->  #include "poll.c"
-> +#include "processor.c"
->  #include "property.c"
->  #include "rbtree.c"
->  #include "rcu.c"
-> diff --git a/rust/helpers/processor.c b/rust/helpers/processor.c
-> new file mode 100644
-> index 000000000000..d41355e14d6e
-> --- /dev/null
-> +++ b/rust/helpers/processor.c
-> @@ -0,0 +1,8 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/processor.h>
-> +
-> +void rust_helper_cpu_relax(void)
-> +{
-> +       cpu_relax();
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index ed53169e795c..c098c47c1817 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -110,6 +110,7 @@
->  pub mod platform;
->  pub mod prelude;
->  pub mod print;
-> +pub mod processor;
->  pub mod rbtree;
->  pub mod regulator;
->  pub mod revocable;
-> diff --git a/rust/kernel/processor.rs b/rust/kernel/processor.rs
-> new file mode 100644
-> index 000000000000..85b49b3614dd
-> --- /dev/null
-> +++ b/rust/kernel/processor.rs
-> @@ -0,0 +1,14 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Processor related primitives.
-> +//!
-> +//! C header: [`include/linux/processor.h`](srctree/include/linux/proces=
-sor.h)
-> +
-> +/// Lower CPU power consumption or yield to a hyperthreaded twin process=
-or.
-> +///
-> +/// It also happens to serve as a compiler barrier.
-> +#[inline]
-> +pub fn cpu_relax() {
-> +    // SAFETY: Always safe to call.
-> +    unsafe { bindings::cpu_relax() }
-> +}
-> --
-> 2.43.0
->
+>Thanks,
+>Florian
 >
