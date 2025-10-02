@@ -1,152 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784433BB44;
-	Thu,  2 Oct 2025 21:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3FA29A1
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 21:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759440772; cv=none; b=FCUtGzxpGKLRFCLwcrgUYO5K5pmnbEtFRLZpF1o6dbW6YdDBvSoLnVD1E7jJ+NgJsH4sIkIGSALuWva3gNhk2MxAM/TW+cSMzUC1fX+2DNKzHyGCh+GrCnL9BZTcuSL9XW+vuuG4+resRzPGhoqEeX758e013zvClNFMVByMKqk=
+	t=1759440924; cv=none; b=VLhCJTwb1jvp03/wcS/9wBeDx7kN74KLhmjeeX6UXZ83YYu74IBzQGF4kfM5SCFSHE03AIIJ3xyMAZ0yItUSat+XGcL21TSXKGMIyLVJlY7QE6rpdlm/pYTTila00bSCaj7b+WdpIATxE63hKWGwHiQ5JYZOJGHgqKbm1iUaBLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759440772; c=relaxed/simple;
-	bh=L6sLUDYC2mIpeZa6zlf8RaB7dU8gXnHoIwa5yefwsIA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=K/2AsPUhZoUyuCeEUrVJRIvjffQFkIFNKJkIPJdX78VCDKhmCXhRYmpjtqDfQpa4Lso+2atF6rdl68NXBFgkhbGONT5t6xgpYWpHYzC+74V0J39m7wgiJyAvGipyKzsflvl0ilkcMysRPFsQ9np7wxoYsRpnKrckF2HXYQWqZpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FT5tGjTv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759440924; c=relaxed/simple;
+	bh=AVVFwwOZs/J59otbhwfw4JT56nx06ai60RPEpmvIzvM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lQ+lWvt95OnE8/hML69m7Yq+6SddcNJWmOJ9NBzHOJdQ/C/b5wd0GbdIwz/k5QEQpvTN+acOpn19ePCWbLv9kp9cMYE+cY5x9ZlxrEBiFY71WxOZ4x3g8Wx9FSj/3wrA2ZV63jRTEsKhuUocywp033yOn2w2ZzVrOQpm0wVG2RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HShZiSmn; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FT5tGjTv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080D4C4CEF4;
-	Thu,  2 Oct 2025 21:32:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759440771;
-	bh=L6sLUDYC2mIpeZa6zlf8RaB7dU8gXnHoIwa5yefwsIA=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=FT5tGjTvx9anXGJJZpqlUnzmhZVCLjbzfE1uMbfa+yvW3vpSEUISyuS3xg1dIv2zB
-	 Ug/A9nye/60ZJHaC8Uur30OfmfTXXctJ/1NcI44k4R4hvj/AJXhAaiSuorhoDFRSzg
-	 K9Th1cKcBjuyTQq7fO6ceOe+M2R2LClT7qdM5r5J8uQX+PCI/JnexJVt70S2IEbqdg
-	 qNhAsrYT2DTFuZKHGKRhGPLXESxvX0EGGlpmzE7dRWFotM7v8pyO9vjQe8HliEYrRr
-	 DjrXdwtBp408hV864FHu2X+RvVsJeccvNzVqD+zpe/JQrNnZc4cRLBfKF/Sc6zUfZy
-	 fjviCRYDin/ZQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HShZiSmn"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-26808b24a00so2223495ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Oct 2025 14:35:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759440923; x=1760045723; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N4oFCmF2MJYP82Tx26J9+m0tH7yujIZ19Q3AuUhH2Vw=;
+        b=HShZiSmngGwwkbMzDFmKm2X5l/FxURwI4DMKGUulJc0vXxtlAbtP88DTeGYbRiClE8
+         CBol9/OirXLiqYuRDqjvjDpL+K2pFKcsYVqPqo5z2w17XveWdwRDp87SemhbUj8h/B8L
+         b5IsA/9wmmrfQqLq/SQdcnp6rTNlsoZj51rgYKwwLcpZGk06rveeYHExfvrjN2tVv83x
+         +SRkjvL3kBGE8LCVAnn2+s+8PPHTwKkMlEAtsL2vC3oh/Eu9erT38SHaPDOIq2EWvEyt
+         vhRmWxseE+vuwiyxgyWRf7laXDUk5N8BS0teY3E8nkQakW4NQOif5IaTk+30sUWFAVqe
+         x1lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759440923; x=1760045723;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N4oFCmF2MJYP82Tx26J9+m0tH7yujIZ19Q3AuUhH2Vw=;
+        b=UDosRPNtEWufrGwu80MOXw4tNt/iTpbh/5XPHsp9651xJ/whHOvmJJ+HeAJPneDzo+
+         6J2hIajE6kPPqPS8+qOmvTMNErl5Q4JiFz0Q6p0gyxe3eS9pLB1Ykas/cUxL41f4yFnf
+         SJiHOE68goA7MlE/VqAvzLRaOpXH5lk+XqxSpv5Otb1y5y9OODhAHgGbEgOhfxZT/IYD
+         r1qeEXXpjjXVQUPfnMc5/pG/sb9y8lUB1nAfQb/1uB6jPwZ9S+8efgj7pb8nHTx8SB00
+         C0Bcf7XT1zgXPbp0YdlFK8WRlNVhaDOD3bkQxfRod/bscjXlXI2aoa/n2/L2k+woG3N8
+         VCGA==
+X-Gm-Message-State: AOJu0YzLM3M0+RobNt7rKlA6GRC1FlcnsU3HAK3y12SSc/7uiaXMkr6/
+	lOaVcKNi5d3zwlJFjgrmEL44beDIphDTiRCu8lxY1rXfEFmUQ8AsowtH7HKgrRXpx4MVD9FDBiE
+	2ef216WKnlhfPXSJ9IPRRYQeynPct3EoSanm2
+X-Gm-Gg: ASbGncu8V6e20Xk3IxQRCWA4xEm/ERHd51eCRfmWh3Fp0xWGKI6e2aViRlsrVjrQ3Ek
+	tVwyWJss7PranNpbBf6CV+gRaheGynZJPTMRRGM8jQYedxsJb87N+XImt+Ksb/IYa0lrx4/7Mbf
+	xhm2DPOqXTlFjmq9FaooemP9p2w8tZ5DTXA1gdfsHQsJ1WChO2C6ANuaxGM96YE2mYDX6nrZDB1
+	H2s9SIXZwRvTGIJS+bk181onqVYBo+rv/Yuh1CngwJEdewtoT/sfKrhjgzmZCHYrfhPSFmflLUe
+	tH+Se/KvRLMGHIs81aWvkqPR3bTLH71UzcthUJZvYL4cDdwdwA==
+X-Google-Smtp-Source: AGHT+IG/xHpb8vODrMK0iW2dO7jnh1RpIn7FOgY3FtTrp6iPO2ruZi3ef2cbGbqIJ/HrnJZyknLRRFb1B6+7lSVn0Sc=
+X-Received: by 2002:a17:902:e802:b0:269:85aa:3776 with SMTP id
+ d9443c01a7336-28e9a6e3c9fmr4516935ad.11.1759440922764; Thu, 02 Oct 2025
+ 14:35:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <aN6qWFc6hIcbRU1o@sirena.org.uk> <aN7cRUOxq-zwCoZN@stanley.mountain>
+In-Reply-To: <aN7cRUOxq-zwCoZN@stanley.mountain>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 2 Oct 2025 23:35:10 +0200
+X-Gm-Features: AS18NWBdoHHZzscWUqRPxLm5RbUpvjG-fyzvyu5Mm6idZH8fsQtFe8T5gS5qDp4
+Message-ID: <CANiq72mDsU3W5Qfyf=sKhbad4tAHJYF8WnY+4VPz2J0paA2gTw@mail.gmail.com>
+Subject: Re: linux-next: Tree for Oct 2
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: rust-for-linux@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Linux Next Mailing List <linux-next@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Oct 2025 23:32:44 +0200
-Message-Id: <DD85P4NV5B5Y.367RGWFHBR0RF@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: pci: skip probing VFs if driver doesn't
- support VFs
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Zhi
- Wang" <zhiw@nvidia.com>, "Surath Mitra" <smitra@nvidia.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alex Williamson"
- <alex.williamson@redhat.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <linux-pci@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
-To: "Jason Gunthorpe" <jgg@nvidia.com>
-References: <20251002170506.GA3299207@nvidia.com>
- <DD80P7SKMLI2.1FNMP21LJZFCI@kernel.org>
- <DD80R10HBCHR.1BZNEAAQI36LE@kernel.org>
- <af4b7ce4-eb13-4f8d-a208-3a527476d470@nvidia.com>
- <20251002180525.GC3299207@nvidia.com>
- <3ab338fb-3336-4294-bd21-abd26bc18392@kernel.org>
- <20251002183114.GD3299207@nvidia.com>
- <56daf2fe-5554-4d52-94b3-feec4834c5be@kernel.org>
- <20251002185616.GG3299207@nvidia.com>
- <DD837Z9VQY0H.1NGRRI2ZRLG4F@kernel.org>
- <20251002210433.GH3299207@nvidia.com>
- <bba17237-2401-4e9b-912b-29d31af748e1@kernel.org>
-In-Reply-To: <bba17237-2401-4e9b-912b-29d31af748e1@kernel.org>
 
-On Thu Oct 2, 2025 at 11:14 PM CEST, Danilo Krummrich wrote:
-> On 10/2/25 11:04 PM, Jason Gunthorpe wrote:
->> On Thu, Oct 02, 2025 at 09:36:17PM +0200, Danilo Krummrich wrote:
->>> If we want to obtain the driver's private data from a device outside th=
-e scope
->>> of bus callbacks, we always need to ensure that the device is guarantee=
-d to be
->>> bound and we also need to prove the type of the private data, since a d=
-evice
->>> structure can't be generic over its bound driver.
->>=20
->> pci_iov_get_pf_drvdata() does both of these things - this is what it
->> is for. Please don't open code it :(
+On Thu, Oct 2, 2025 at 10:10=E2=80=AFPM Dan Carpenter <dan.carpenter@linaro=
+.org> wrote:
 >
-> It makes no sense to use it, both of those things will be ensured in a mo=
-re
-> generic way in the base device implementation already (which is what I me=
-ant
-> with layering).
+>   RUSTC L rust/core.o
+> error: cannot find a built-in macro with name `define_opaque`
+>     --> /usr/lib/rustlib/src/rust/library/core/src/macros/mod.rs:1757:5
+>      |
+> 1757 | /     pub macro define_opaque($($tt:tt)*) {
+> 1758 | |         /* compiler built-in */
+> 1759 | |     }
+>      | |_____^
 >
-> Both requirements are not specific to PCI, or the specific VF -> PF use-c=
-ase.
->
-> In order to guarantee soundness both of those things have to be guarantee=
-d for
-> any access to the driver's private data.
 
-Actually, let me elaborate a bit more on this:
+Thanks Dan.
 
-In C when a driver calls dev_get_drvdata() it asserts two things:
+Hmm... Strange, it is the `core` library, which comes with the
+compiler and thus should always work.
 
-  (1) The device is bound to the driver calling this function.
-  (2) It casts the returned void * to the correct type.
+So it sounds like a mismatch between the binary used and the sources
+of the standard library (or perhaps other kind of mismatch, like the
+wrong edition being passed, but from a quick look it doesn't seem like
+it).
 
-Obviously, relying on this in Rust would be fundamentally unsafe.
+I will try to reproduce it. Did you happen to recently upgrade the
+toolchain(s) or something like that, by chance? Are you using the
+Debian packages?
 
-Hence, the idea is to implement Device::drvdata_borrow::<T>(), which takes =
-a
-&Device<Bound> as argument, which proves that the device must be bound.
+Thanks!
 
-The T must be the driver specific driver type, i.e. the type that implement=
-s
-e.g. the pci::Driver trait.
-
-With that, Device::drvdata_borrow() can internally check whether the assert=
-ed
-type T matches the unique type ID that we store in the device in probe().
-
-This way we can prove that the device is actually bound and that we cast to=
- the
-correct type.
-
-Furthermore, the returned reference to the driver's private data can't out-=
-live
-the lifetime of the given &Device<Bound>, so we're also guaranteed that the
-device won't be unbound while we still have a reference to the driver's pri=
-vate
-data.
-
-So, when we call pdev.physfn().drvdata_borrow::<NovaCore>() the checks are
-included already.
-
-> I will send some patches soon, I think this will make it obvious. :)
->>>> Certain conditions may be workable, some drivers seem to have
->>>> preferences not to call disable, though I think that is wrong :\
->>>
->>> I fully agree! I was told that this is because apparently some PF drive=
-rs are
->>> only loaded to enable SR-IOV and then removed to shrink the potential a=
-ttack
->>> surface. Personally, I think that's slightly paranoid, if the driver wo=
-uld not
->>> do anything else than enable / disable SR-IOV, but I think we can work =
-around
->>> this use-case if people really want it.
->>=20
->> I've heard worse reasons than that. If that is the interest I'd
->> suggest they should just use VFIO and leave a userspace stub
->> process..
->
-> I'm not sure I follow your proposal, can you elaborate?
-
+Cheers,
+Miguel
