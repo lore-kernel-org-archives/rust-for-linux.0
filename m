@@ -1,158 +1,121 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A47236A70
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 16:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A1F15853B
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 16:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759423546; cv=none; b=ZUNg7K+rWIUKTNTONvtULVcz0fbu6V/FpB43T+K5PL8w40Ho4WlVMQmoH0zsjtl/0IIRw3kfLqNzCm8yhfHb02kAPDsZTUMtNNyeqwUvMcyza9295laJjG/SDcuZUspEY29jcSboF39BWEyPIJhMNMZTaGLRnPuLUVJMbeZKsiU=
+	t=1759424360; cv=none; b=svdTdgQafjoJTmAXu/QzLZZRYn6t+zBspvQbg65Jr5PlnT9ISmEUJUd+BvKsHtIhZbgp4Xul96yKD8wYL2GfCW+/b/pqTT5vpz9nk9HaBLlQWV/3zr6mcNt+uHjgUG5iT7YT1glkkaAFKImTY11amPKPmnR4FL67sgBIet5Njrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759423546; c=relaxed/simple;
-	bh=1A9QR3g98F/jojxQcsQCrmr26ivi3VklZB9Uaf1MTlU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nO2OXIhx3wC30oq3M2IdAws56rsduLup1vHLHLZrZ1ld1cMfdOMv8KSg2ZC5Qz47BzslKcc0jMyYFW3tRYv8DylwIY9s/QrZgDpMTP3XSfyM0U5pjFAosgxG3V8QxKBAOGlY5ORYwVb5udQPKYWSi45qPIKcgJMUqw3co/qUYBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=MnCNTtKy; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	s=arc-20240116; t=1759424360; c=relaxed/simple;
+	bh=DWjHOxomjkRfeDYzYnh8WXVeqpwtYa01c6QSgT2bshE=;
+	h=Message-ID:Content-Type:Mime-Version:Subject:From:In-Reply-To:
+	 Date:Cc:References:To; b=V8wZYZfuue01inyhSMJ4z0oe2c2RSPwvYVu/Rz3RwFXDwaBVSPeq4170pDlRZmm+b49dSfvVUbnTZFq9mc89j2mFQCq/HVgAd9L2Wk6KBGNWyybnJOKIs/GYt8nNWkvG1srm06ZO3ARndc1q2WjINIJDphfac3ukext7Mp4S728=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=HnO5iPrN; arc=none smtp.client-ip=162.62.57.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="MnCNTtKy"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-33274fcf5c1so1329614a91.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Oct 2025 09:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1759423544; x=1760028344; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1A9QR3g98F/jojxQcsQCrmr26ivi3VklZB9Uaf1MTlU=;
-        b=MnCNTtKyaUFuYYeEXqZEKsPn1vNDgYmRgHmoSDQ8pqXwUSDg16tnaJOgTbmxgYCSvL
-         ttR2mJcpVSyIWsNEzqKaewCXI+Uay0LF2DDWupFbx5qC+TzrL3zZWA9hdFKOXXZVA5qK
-         Y1FaX6+H91TwLVFtSs9nB4NLFg/L8P8mEIWc7t+8xMfrysxek/vB8TIdxtYPttEjse2z
-         Y55kKHaAckwEyWi/CGg8BQ2bDzcVi95jfBDWStSUhFArx5zXdaw2gxxGx45GVeMuVQ4x
-         DVR4wQa2JaTxA7N3eLWIVOtBzIDk3bxnp+uXhzQhEyT9dpbD3pRdCf9WzKl7ERe2SexX
-         7DcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759423544; x=1760028344;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1A9QR3g98F/jojxQcsQCrmr26ivi3VklZB9Uaf1MTlU=;
-        b=q/wINza/Ku4s7D9CbuAyUY8OnwucRdLXZFYjgwQnL4T10X8iMZM06OOYkGYWZ7Utnd
-         VVPOdX3RbYdyKcXMVpejNRUZOiRNg2Ms/B53Ex8266bJa179TWxtu9hHaYQl2s2+oE4p
-         piBrni9U1WpxTr2JJfRZ0H/9W8uSOkqHRfCF0+3jwNyhEgszdUsV446wfBTUfxKNmZuS
-         T/oTILfpfTw19DdDbOB0/H9akdHIY4A9X8hQ+F/6uLsGz4Ilbk1OPcu5z9HRXxZNpnBV
-         +l1WwrNkZyLl3/I0Gdpikl4k8uV034t94x41mC4nZ8oRAD+BLGq3CkzsFpqGc3Jgwu0p
-         ML7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXvUqp/4jX+u9ZxVw1qbnRxWM/ZqI+fI9qhfh5vGD/ruBmIRJD1j4qR6mU/nNhv7NUf6aL1H/Wh2FsYg9Po1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhCy+ZApY8DIMaWXQVmJR4nSBhnAB8QSnGVFKumwTdx4HQmiPk
-	vdiT2Km0+GCv4DkVP+K7xY6Z/1UjMkYNO1eNvHQEBRgjWQOJBfu+O9oFd5N83KFqXvk=
-X-Gm-Gg: ASbGnct/6gsT8emdGncH+wfurgPw2rsSC+Tu8IadiXWX+WUZA3lQTX3eFZON0Vyz9ui
-	+BnMMFqkshEYKgh8cF27mf5T5SQ+52f1x64gkwTjRJbWc6Ys4as8+HF9TaORl015ZziFPOrDKY2
-	FdZnXtFNZ4gBYJ3CDzNW9esyT1Edk8zo3UoEsu5mm/EX993IbzRGvE8Af6R0N6fM53qoeX1nFrL
-	rDrjefmA93349DMX7p/fl3yuSa74sMpj/t+9hhqojI2Icf5botCh7Tv6bWp7eRX73pebqPUow8O
-	Z1RPE0RFpFFlroiu0ionUsjSJd7dQ7zECH1HKrdkuQgPALjNGe8mn12dqMp9bH3B3QMLzSlPehZ
-	g/2DfW0ZuJMaXlzMKI35UdI4mblJWq9b6iUz8X931Pvc0VZjDghaSfpyg
-X-Google-Smtp-Source: AGHT+IGOeNAivntNqMaBDACXUIJXINgHBVnHmalDozgA9lIHXQF1UAZCwzUqmrzChLzk9pEqivj7cA==
-X-Received: by 2002:a17:90a:e70f:b0:32e:e186:726d with SMTP id 98e67ed59e1d1-339c27a1901mr8380a91.31.1759423544003;
-        Thu, 02 Oct 2025 09:45:44 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339b4f3ceedsm2812742a91.18.2025.10.02.09.45.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 09:45:43 -0700 (PDT)
-Date: Thu, 2 Oct 2025 09:45:40 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Florian Weimer <fweimer@redhat.com>
-Cc: Charles Mirabile <cmirabil@redhat.com>, pjw@kernel.org,
-	Liam.Howlett@oracle.com, a.hindborg@kernel.org,
-	akpm@linux-foundation.org, alex.gaynor@gmail.com,
-	alexghiti@rivosinc.com, aliceryhl@google.com,
-	alistair.francis@wdc.com, andybnac@gmail.com, aou@eecs.berkeley.edu,
-	arnd@arndb.de, atishp@rivosinc.com, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, bp@alien8.de, brauner@kernel.org,
-	broonie@kernel.org, charlie@rivosinc.com, cleger@rivosinc.com,
-	conor+dt@kernel.org, conor@kernel.org, corbet@lwn.net,
-	dave.hansen@linux.intel.com, david@redhat.com,
-	devicetree@vger.kernel.org, ebiederm@xmission.com,
-	evan@rivosinc.com, gary@garyguo.net, hpa@zytor.com,
-	jannh@google.com, jim.shu@sifive.com, kees@kernel.org,
-	kito.cheng@sifive.com, krzk+dt@kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, lorenzo.stoakes@oracle.com,
-	lossin@kernel.org, mingo@redhat.com, ojeda@kernel.org,
-	oleg@redhat.com, palmer@dabbelt.com, paul.walmsley@sifive.com,
-	peterz@infradead.org, richard.henderson@linaro.org,
-	rick.p.edgecombe@intel.com, robh@kernel.org,
-	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
-	shuah@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
-	vbabka@suse.cz, x86@kernel.org, zong.li@sifive.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Message-ID: <aN6sNFBzx8NPU3Th@debug.ba.rivosinc.com>
-References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
- <20250926192919.349578-1-cmirabil@redhat.com>
- <aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
- <CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
- <aNcAela5tln5KTUI@debug.ba.rivosinc.com>
- <lhu3484i9en.fsf@oldenburg.str.redhat.com>
- <aNxsWYYnj22G5xuX@debug.ba.rivosinc.com>
- <lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="HnO5iPrN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1759424347; bh=DWjHOxomjkRfeDYzYnh8WXVeqpwtYa01c6QSgT2bshE=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To;
+	b=HnO5iPrN0n/X3UHLsiPqs3vqj5td2EG4srAt6hFrVouBp747/R1khrwOpzVtTYnq2
+	 7mPO14dEa2ItiC3Iylwd33QKIVnmE6SSZeDtFscKZPLMlP8G5TpZ1AoWMjMTW4OUzQ
+	 Hgb5yDhaQh86JOufh4qQTlA48EYOdVgHX/F4HEec=
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-XMAILINFO: NaU0Z4p7r7ol0COpNLy7a5OaU4GYJn3OsjzcIqj5LBSL+p7qfrU/MTIFXTnMhM
+	 4HoxUw/H7q7+g8X/MbCQFD3pO+gr5gfie3S7RVLXQK7R8OgPKoxmyB0T4QvE/wyeKNT3fDSj4rvBU
+	 UT/76zz6GsRnGImu4hWeF4Oe8ltH8lEVXZIyMOXKBJYK4705ejppM2M591gXunv2SrknYS8H0GjDz
+	 NQkQfTY+rqW4Dqe/Co6ZKVAL+MQbQ0fuvRLkf6wQ6qi4jVHToFmbq9+sj4yYhaqS9Q1Tj96XJid8M
+	 iUr4DT6cVxwE+WXrnYHFL2EgSC0luiTis+4sNmhSlehvYDmRDOpGXyWp/RZ5TgjVJsInZl8Kjo9oV
+	 eNLXkdAhXJBqBkUaE4BkMsiGj5p9cNQTAI4XuMJWMNSaTFhhRt9ijqbY1ry0U+ATq52HEBeFp/Ia2
+	 fomnRIWgmCZcAdIqsD0ayj8Xw81UgpW/wIzlX8HHf0976DrANVs54M09OZGM3FaVCLimePBjZPhMd
+	 pZ5R9PCBhsS7xrsHm6utlf+j8cp4ei8X7wMaOIfl8r+L51esdb4aNjQFME0pY884bTf9Tg+b3nkao
+	 +DoW2UsWuFxVxz88wOnMgovJ1b/VmCROhADO472fWD31bfdYzdLK3egdRMdpwf/mGLu/oCT5/1JTq
+	 85OS+T9fNDuUILVsUB8YKAX+eZc0nd0pVYaKT1ugVv8rezBtVD4F5IqA2o6p3za88CRR/+E+5BrPZ
+	 Je3wWMcjnn9mOJfVOP8oHj17jsZwYi2+pkMVmNauRmvDG17kT87+IZknvMo+YCQhgDYvEB93l1+Wh
+	 BnWmBWtA5VUnQdF5kk198lgqdAEY8xxYyIVSH4eu/UeFMBOPzcWbT9EzGZOHk0tp9OEw/aOufuvpV
+	 m0if+gROC4EicI8t3UTaL/GjRGiP8tFXX+FQk9/2AFQsaETY/IwKDZkHnTEbQMtkgruWQMtuTRzus
+	 gxy5EeA8BFLpdnnZo5kGsEoAGUC2/nxscPhem/a3X8BdQu0e9f2CdUKJiSvgrR6xza3BucOQMqjRL
+	 Dx4oSVyDhH2qVoAk2Rwpwzxj/2CTW0FxvYeJekLCBleEdHuFwBAyLLXm33tg0vgEL4Il3b1Cf6BY1
+	 Y40iULQd2tsE1g==
+Received: from smtpclient.apple ([113.102.238.209])
+	by newxmesmtplogicsvrsza36-0.qq.com (NewEsmtp) with SMTP
+	id D2D18C4C; Fri, 03 Oct 2025 00:52:45 +0800
+X-QQ-mid: xmsmtpt1759423965tovxuwfdv
+Message-ID: <tencent_6D46195D9B796BFA443B81B519A9DFE5A306@qq.com>
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.100.1.1.5\))
+Subject: Re: [PATCH] rust: bindings: add `rust_helper_wait_for_completion`
+ helper function
+From: Guangbo Cui <2407018371@qq.com>
+In-Reply-To: <CANiq72ngvZSL72GQ+CwFoaE4ZfakZSPcZk1zrXqyaKEZLWDf-g@mail.gmail.com>
+Date: Fri, 3 Oct 2025 00:52:34 +0800
+Cc: byungchul@sk.com,
+ Liam.Howlett@oracle.com,
+ amir73il@gmail.com,
+ andi.shyti@kernel.org,
+ andrii@kernel.org,
+ "boqun.feng" <boqun.feng@gmail.com>,
+ bsegall@google.com,
+ gregkh <gregkh@linuxfoundation.org>,
+ linaro-mm-sig@lists.linaro.org,
+ link@vivo.com,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ mark.rutland@arm.com,
+ masahiroy@kernel.org,
+ mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com,
+ max.byungchul.park@gmail.com,
+ mcgrof@kernel.org,
+ melissa.srw@gmail.com,
+ mgorman@suse.de,
+ mhocko@kernel.org,
+ minchan@kernel.org,
+ oleg@redhat.com,
+ paulmck@kernel.org,
+ penberg@kernel.org,
+ peterz <peterz@infradead.org>,
+ petr.pavlu@suse.com,
+ torvalds@linux-foundation.org,
+ vincent.guittot@linaro.org,
+ will <will@kernel.org>,
+ yeoreum.yun@arm.com,
+ ysk@kzalloc.com,
+ rust-for-linux <rust-for-linux@vger.kernel.org>,
+ ojeda <ojeda@kernel.org>,
+ gary <gary@garyguo.net>,
+ lossin@kernel.org,
+ "a.hindborg" <a.hindborg@kernel.org>,
+ aliceryhl <aliceryhl@google.com>,
+ dakr@kernel.org,
+ "alex.gaynor" <alex.gaynor@gmail.com>,
+ bjorn3_gh <bjorn3_gh@protonmail.com>
+Content-Transfer-Encoding: 7bit
+X-OQ-MSGID: <C77927A0-0A1C-4492-97F2-FF6502AAC8B9@qq.com>
+References: <20251002081247.51255-37-byungchul@sk.com>
+ <tencent_13F1EDE0D6B7A44697F31AE274C8E664E908@qq.com>
+ <CANiq72ngvZSL72GQ+CwFoaE4ZfakZSPcZk1zrXqyaKEZLWDf-g@mail.gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: Apple Mail (2.3864.100.1.1.5)
 
-On Thu, Oct 02, 2025 at 01:45:48PM +0200, Florian Weimer wrote:
->* Deepak Gupta:
->
->> On Tue, Sep 30, 2025 at 11:20:32AM +0200, Florian Weimer wrote:
->>>* Deepak Gupta:
->>>
->>>> In case of shadow stack, it similar situation. If enabled compiler
->>>> decides to insert sspush and sspopchk. They necessarily won't be
->>>> prologue or epilogue but somewhere in function body as deemed fit by
->>>> compiler, thus increasing the complexity of runtime patching.
->>>>
->>>> More so, here are wishing for kernel to do this patching for usermode
->>>> vDSO when there is no guarantee of such of rest of usermode (which if
->>>> was compiled with shadow stack would have faulted before vDSO's
->>>> sspush/sspopchk if ran on pre-zimop hardware)
->>>
->>>I think this capability is desirable so that you can use a distribution
->>>kernel during CFI userspace bringup.
->>
->> I didn't get it, can you elaborate more.
->>
->> Why having kernel carry two vDSO (one with shadow stack and one without) would
->> be required to for CFI userspace bringup?
->>
->> If Distro is compiling for RVA23 CONFIG_RISCV_USERCFI has to be selected yes,
->> kernel can have vDSO with shadow stack. Distro can light this option only when
->> its compiling entire distro for RVA23.
->
->I think it boils down to whether you want CFI bringup contributions from
->people who do not want to or cannot build their own custom RVA23
->kernels.
+On Thu, Oct 02, 2025 at 12:39:44PM +0200, Miguel Ojeda wrote:
+> issue if any -- I don't see it in linux-next, so I imagine it is not
+> applied, but "changed" sounds like it was? If it was actually applied,
+> please also provide a Fixes: tag.
 
-How will they contribute to CFI bringup without having a CFI compiled usersapce?
-If their userspace is compiled with shadow stack instructions and they can't take
-this userspace to old hardware else it'll start faulting as soon as control is
-given to userspace (first sspush or sspopcheck in userspace).
+Yeah, it's not applied yet, this should be squashed into [1].
 
->
->Another use case would be running container images with CFI on a
->distribution kernel which supports pre-RVA23 hardware.
+Sorry, I forgot to check the commit message.
 
-Container image with CFI will have glibc and ld (and all other userspace) also
-compiled with shadow stack instructions in it. As soon as you take this
-container image to a pre-RVA23 hardware, you won't even reach vDSO. It'll break
-much before that, unless kernel is taking a trap on all sspush/sspopchk
-instructions in prologue/epilogue of functions in userspace (glibc, ld, etc)
+Thanks,
+Guangbo
 
->
->Thanks,
->Florian
->
+[1] https://lore.kernel.org/all/20251002081247.51255-37-byungchul@sk.com/
+
