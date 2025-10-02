@@ -1,104 +1,127 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F62FDC51
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 10:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BFA24A076
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 11:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759401599; cv=none; b=T6w6OvE2FW6tM2sVetQrIwlxhHrbX1t9IqvLsqdGtIJwm5cRKEMtHqTFJAncQz+JOcyaVnljzuLOS925mleVQNyhr3B8L6M1qPtNdb6l/4acLA9O56TSiL1U1ld5ETyFNjngc9lssdFrD96fW1/j/JCWaXFezk97Wh8SjUCg9Ws=
+	t=1759405577; cv=none; b=MlRRg3GnmxwD0j3R3biTLlNtQnwQnvIXWdjlz0Lsc9iJFZpd3okf67laN4wHxGk5xKRAevMHLQ5OkmsYzpS9guPDEc+jbKrnft0/iI/EFzZVyoE7e6ohPFHnAleeefd3zB85rQWCXzOmm1fuCZF0Dl7yQdq6tT0vLlCfnMO24f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759401599; c=relaxed/simple;
-	bh=5zqSShRm39AvEZ2mdKxWsxXrw2ZA/BSSQMCMwPSXcG4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n7jNLBAAPP36NL4lBcTNOSzVu/xFzK0A4vBR7Obm1v/THxqe6KoOoO3/gUhQlu0S6hnqqQ+4ZTHPPs1o7nAL9BoP/qtxIQKDfwshp93Ql/OtNsQQ/zGTjD51SIqZgEDMiefziW1u/tZFXH0eLoTtk/6N1L9Bcwdq4yFMgS5//F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CmPEFMSO; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759405577; c=relaxed/simple;
+	bh=XAW7j/GiCX4Ldk1pbIGoe/EzygOj7TZ3MCMZKOX1tCA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LRGhXkcmPNK9RC+yCJZe0CoWN0GBuRJouaEkCFtOXTUDt80d7yIO57G/AJW0kFLziuJ38c4mr/d22ntTrPRIW32VDatu+rP1cktiTue17mPpjoa66fZ/HXa1ViWP13hRoWtukPYb3Mfeljn0/FPKjTGkC4oPp1hrTzXPkzvJHq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P6Q//6Wb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmPEFMSO"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-26808b24a00so1352135ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Oct 2025 03:39:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759401597; x=1760006397; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5zqSShRm39AvEZ2mdKxWsxXrw2ZA/BSSQMCMwPSXcG4=;
-        b=CmPEFMSOnGGiEyaf93xOVryqjDnjYQJfZj+A2BDJszUDRQwG1OEKqCLgyWRiOd5PW9
-         5XuC70qYAP21pjCQQQxCX12yLMOwmEf9BoCqNwKtZCL21wgSKx3L56ee7vSTWLZ6DNy2
-         p0uDGvz9IiQr1YR+6rwfQVWMXTbL1doYWcOjDP/z7B1In4EfPWM8qW8fYey4iKbExKYX
-         Ai9fVsXc+6rGeqS+lWEFcKZe5m/PrnmLEiCB/7C7HDd9lAPfieB8xhY829psSPxc/MTB
-         ViHq8pjawgoNz98/GsBcl1JNt3QtbwH8Pdu7/4MWEoSx0GQVMwdyFCmJjZq61K68I7Up
-         Sdfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759401597; x=1760006397;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5zqSShRm39AvEZ2mdKxWsxXrw2ZA/BSSQMCMwPSXcG4=;
-        b=R0e80A0ivY/6SNUvahAYFopfg345XVzChl1xwBapEXiwTHFU3SUE0ETGi8f7zJVYAY
-         X/FAqd7/05Qeun8usoBhW0w3yIM4+3FOc9jcH/TPZviNaoHT7jEsUMMtIxQAYuk9mu8f
-         51y1tvo1HYZyvE/wrqzQQ4FfbCQiclOkKZN24DsbpilSdVxGq4IvX5aUtqlWjEKObcjs
-         Kj22fkb6Bv9tvwTTTYC/IJPUBcDAOaA0m14jr0grzigNJl85Sb6aa//kMzDqvH9EN3pr
-         i2+E3xfbujVyzTDQ0xq5nY2o/EqSF1ozHkkgV+uvmpzMZIO9PaoPVpK5kHi6BEyRK8qG
-         KTTA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK7RmFLMcYCfNOjEP3+oH1tlUHAQTS39xDQhCOaNMTvKY8F6/BQSTGbrl1XajnQHD8JYYBs0ocwXt5mz0nig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkvL5GodOePQWa99fF/Lxhnp/hV7A9UJB2z0xYlzwYOQey5OaN
-	zhEb9hsWxQqjrdGozDAv5iicUedgaFVv0GOVitquf2N4mMshRG7i84uTdrvJfqLFyWpM7e4OfF2
-	QMhuAcDpNYJNcAR+OhorQ7wGI3zq83HM=
-X-Gm-Gg: ASbGncvOF9XIztCjyaRNKQZiurrXXJ2Lkp2tlvly2MSITSmV/7Ywpl+XtbTMhy/x/aS
-	bqReKu/WocpV5q4cnx+WSAunqJr7izIme5uTP6pIXnCrMt6LvEZJ0q5AF3z+DKXnFwliQCWMdGb
-	nd0qHPFXi85m5eyPgBsbEoARezb6TpkaX6g5mC5jXCUzSEGSY2KPzCXGNsAYM2Yvl/6SQegO95D
-	64frF4aw5ohbGtUQmdiwjOOqLrzLqfZ8syJpXTb3lOeD7VjV99NLhVxqbPAcnoSB8jqmMCwU1o0
-	m1O3mPA84b2jCq3rnpA0TPXr21vigT/s6tRO9R3/nPUBu1WSLQ==
-X-Google-Smtp-Source: AGHT+IHFLND1P6O8TdHjmnKikosiXvhXOIfnx1PV0ljjYUmm/N/aJM7ueeeJ1F4XTf3eavFywQQD7J67z/yFzofBPI0=
-X-Received: by 2002:a17:903:2f83:b0:24e:af92:70de with SMTP id
- d9443c01a7336-28e7f33482dmr45430085ad.7.1759401597241; Thu, 02 Oct 2025
- 03:39:57 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P6Q//6Wb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759405575;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XAW7j/GiCX4Ldk1pbIGoe/EzygOj7TZ3MCMZKOX1tCA=;
+	b=P6Q//6WbxvOPrmOAakylzN2FYlQJiTvZhwV3xK/RfoLPJNFM7eJSJo5SdrQt6GR3WXwYOt
+	9mWpCJvSYJhJNUXan84fdGinOpi+Y+4mMdZfxeLgddt365FHBpL0tGtXtgCgivB/QUFevk
+	W6TaAQgKiCuhtgMu9Fvp0WbhOLok3hk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-r_CZXO_aN_O1Oc8BoJrm0Q-1; Thu,
+ 02 Oct 2025 07:46:11 -0400
+X-MC-Unique: r_CZXO_aN_O1Oc8BoJrm0Q-1
+X-Mimecast-MFC-AGG-ID: r_CZXO_aN_O1Oc8BoJrm0Q_1759405570
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 49A29180034D;
+	Thu,  2 Oct 2025 11:46:10 +0000 (UTC)
+Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.32.225])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83FCA300018D;
+	Thu,  2 Oct 2025 11:45:51 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Charles Mirabile <cmirabil@redhat.com>,  pjw@kernel.org,
+  Liam.Howlett@oracle.com,  a.hindborg@kernel.org,
+  akpm@linux-foundation.org,  alex.gaynor@gmail.com,
+  alexghiti@rivosinc.com,  aliceryhl@google.com,  alistair.francis@wdc.com,
+  andybnac@gmail.com,  aou@eecs.berkeley.edu,  arnd@arndb.de,
+  atishp@rivosinc.com,  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,
+  bp@alien8.de,  brauner@kernel.org,  broonie@kernel.org,
+  charlie@rivosinc.com,  cleger@rivosinc.com,  conor+dt@kernel.org,
+  conor@kernel.org,  corbet@lwn.net,  dave.hansen@linux.intel.com,
+  david@redhat.com,  devicetree@vger.kernel.org,  ebiederm@xmission.com,
+  evan@rivosinc.com,  gary@garyguo.net,  hpa@zytor.com,  jannh@google.com,
+  jim.shu@sifive.com,  kees@kernel.org,  kito.cheng@sifive.com,
+  krzk+dt@kernel.org,  linux-arch@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
+  lorenzo.stoakes@oracle.com,  lossin@kernel.org,  mingo@redhat.com,
+  ojeda@kernel.org,  oleg@redhat.com,  palmer@dabbelt.com,
+  paul.walmsley@sifive.com,  peterz@infradead.org,
+  richard.henderson@linaro.org,  rick.p.edgecombe@intel.com,
+  robh@kernel.org,  rust-for-linux@vger.kernel.org,
+  samitolvanen@google.com,  shuah@kernel.org,  tglx@linutronix.de,
+  tmgross@umich.edu,  vbabka@suse.cz,  x86@kernel.org,  zong.li@sifive.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+In-Reply-To: <aNxsWYYnj22G5xuX@debug.ba.rivosinc.com> (Deepak Gupta's message
+	of "Tue, 30 Sep 2025 16:48:41 -0700")
+References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+	<20250926192919.349578-1-cmirabil@redhat.com>
+	<aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
+	<CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
+	<aNcAela5tln5KTUI@debug.ba.rivosinc.com>
+	<lhu3484i9en.fsf@oldenburg.str.redhat.com>
+	<aNxsWYYnj22G5xuX@debug.ba.rivosinc.com>
+Date: Thu, 02 Oct 2025 13:45:48 +0200
+Message-ID: <lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251002081247.51255-37-byungchul@sk.com> <tencent_13F1EDE0D6B7A44697F31AE274C8E664E908@qq.com>
-In-Reply-To: <tencent_13F1EDE0D6B7A44697F31AE274C8E664E908@qq.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 2 Oct 2025 12:39:44 +0200
-X-Gm-Features: AS18NWBvN_Cs7ivtqpv2OaNBhg_Klbjg_5caE3pe8g8RPQqJWvaoaACfChLj4F8
-Message-ID: <CANiq72ngvZSL72GQ+CwFoaE4ZfakZSPcZk1zrXqyaKEZLWDf-g@mail.gmail.com>
-Subject: Re: [PATCH] rust: bindings: add `rust_helper_wait_for_completion`
- helper function
-To: Guangbo Cui <2407018371@qq.com>
-Cc: byungchul@sk.com, Liam.Howlett@oracle.com, amir73il@gmail.com, 
-	andi.shyti@kernel.org, andrii@kernel.org, boqun.feng@gmail.com, 
-	bsegall@google.com, gregkh@linuxfoundation.org, 
-	linaro-mm-sig@lists.linaro.org, link@vivo.com, linux-kernel@vger.kernel.org, 
-	mark.rutland@arm.com, masahiroy@kernel.org, mathieu.desnoyers@efficios.com, 
-	matthew.brost@intel.com, max.byungchul.park@gmail.com, mcgrof@kernel.org, 
-	melissa.srw@gmail.com, mgorman@suse.de, mhocko@kernel.org, minchan@kernel.org, 
-	oleg@redhat.com, paulmck@kernel.org, penberg@kernel.org, peterz@infradead.org, 
-	petr.pavlu@suse.com, torvalds@linux-foundation.org, 
-	vincent.guittot@linaro.org, will@kernel.org, yeoreum.yun@arm.com, 
-	ysk@kzalloc.com, rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
-	gary@garyguo.net, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, dakr@kernel.org, alex.gaynor@gmail.com, 
-	bjorn3_gh@protonmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Thu, Oct 2, 2025 at 12:12=E2=80=AFPM Guangbo Cui <2407018371@qq.com> wro=
-te:
+* Deepak Gupta:
+
+> On Tue, Sep 30, 2025 at 11:20:32AM +0200, Florian Weimer wrote:
+>>* Deepak Gupta:
+>>
+>>> In case of shadow stack, it similar situation. If enabled compiler
+>>> decides to insert sspush and sspopchk. They necessarily won't be
+>>> prologue or epilogue but somewhere in function body as deemed fit by
+>>> compiler, thus increasing the complexity of runtime patching.
+>>>
+>>> More so, here are wishing for kernel to do this patching for usermode
+>>> vDSO when there is no guarantee of such of rest of usermode (which if
+>>> was compiled with shadow stack would have faulted before vDSO's
+>>> sspush/sspopchk if ran on pre-zimop hardware)
+>>
+>>I think this capability is desirable so that you can use a distribution
+>>kernel during CFI userspace bringup.
 >
-> The DEPT patch series changed `wait_for_completion` into a macro.
+> I didn't get it, can you elaborate more.
+>
+> Why having kernel carry two vDSO (one with shadow stack and one without) would
+> be required to for CFI userspace bringup?
+>
+> If Distro is compiling for RVA23 CONFIG_RISCV_USERCFI has to be selected yes,
+> kernel can have vDSO with shadow stack. Distro can light this option only when
+> its compiling entire distro for RVA23.
 
-Thanks!
+I think it boils down to whether you want CFI bringup contributions from
+people who do not want to or cannot build their own custom RVA23
+kernels.
 
-In general, it is useful to provide a Link: to Lore to the right patch
-(i.e. context is good), and please clarify in which tree you found the
-issue if any -- I don't see it in linux-next, so I imagine it is not
-applied, but "changed" sounds like it was? If it was actually applied,
-please also provide a Fixes: tag.
+Another use case would be running container images with CFI on a
+distribution kernel which supports pre-RVA23 hardware.
 
-Cheers,
-Miguel
+Thanks,
+Florian
+
