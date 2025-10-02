@@ -1,229 +1,215 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012069.outbound.protection.outlook.com [40.93.195.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9355C19992C;
-	Thu,  2 Oct 2025 17:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759424717; cv=fail; b=O8lmGpUenrCI7CXKp/UAA+nLj60vlOTn1ZdLfYAVY8YZmN5/WYJVCh9mVNBITmBN8pU+1nJHQujV1ZRLUPgL7sDxNJx/KF1LSLEqJUe9BWumBw6TNRh3/v4wyTPhxrx4wyZjOsDTZLgSEUzUnPvPy/95uWjxCIJNq8a2x4oi3aA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759424717; c=relaxed/simple;
-	bh=1BTRiquymZsHpJD5779pZyju+joZqP8EazwjGkciDzc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=k4Vh3Tc9g1JvSzU8QhX29tDTo5C+M6+lZV+o/VMhY/vvyNYDBNQshzkNt/Mu+kS/n/4i+1QcuTZW9rMqKQDPX/f5gGLncEE0bPzcS+js2B6ckQgNRprEFhFaKp7yma3Zju44l+76XKUkmzlOZSKoUVONnB3PtK8CL30xutPzXok=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DqSb7uzU; arc=fail smtp.client-ip=40.93.195.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BAD26F2A0
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Oct 2025 17:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759426078; cv=none; b=HJhIxUgAKUcTjJyyQ8StupYNN1FSH5NGBg4AJ/DAe3mFx7q5SzRwf8/wfTxb++xTClFT6BFOSu7Zxz6ib4pTrhCl361gdz4pd74yHe9y0n2EfJ3mhMKL9wGlQBXP3QFL9TPkn59JeJlMj401WiRSP3+50wCkTvUgseoNcdFeda0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759426078; c=relaxed/simple;
+	bh=cWzC3kpiFoS7bFlguX/uWdST2iyXc6tjOoVur7QElWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HA1EOOaXc8oGRdMZ05H9R4rn5jiDuverN+ukMUOxTiXst3pG44bT0AGR9o9ebgEbikBaILn7UAAvtK+LGpvQvgo6rderzNVrBI6Ewin4hXEmSo6Ywbw28XxhNsgCD/FLhtJaw/KeM0gNbiVudGn+FPZUJPnsx/FgsbJQCPUsPjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UFKkt5dR; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DqSb7uzU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KW2k7iTU8pMaYEUVhtnBdutWWnu0doOpGZag5QLkezT3B+JGMP35hpdCiRUN6i0HMgUU/lcjCoCTZ4PhD6LPy7Ow9urRMebUqs8Vr9nIsP8kcE1cZIB4784nWfuLfgXPTcR0cmqzLLM4RFsqcoh5+v7W9hh7ulIMOL8U2HQuatVIBb+GG3850DvCi55nh93U8Jen+2jhDSw3Q8ttHvBuIcI7GMme669y0SNaJCApVvPoMTdRQPu+6nOu2E9SjHZ6+n0csabfJnrcIlnjD62bovQXGS6x1Od1MF5JTf37M3fQSnYxeL0y5YJjd32/xSwPckNANQ2kH115PTBjFelMFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XqHQ8LHeFVcoIoI9Klr2X9mw56KQ0kpRTytvrDMDqQA=;
- b=flpGjEY2EDyjkrb8wl7FHojdmwWg34vui9NF1rwYZWTZxefYXm6E7Q1fuMoi1gasPiaBMW+hfiB0U/JJzhqMLR7fJO3TREFW0s6A/Z14bR8XRhmZOlf8ozoVggWPL4QiJuS2u+tg3VjG+KHuGTUFWDBilpyuTff5aa1GpD9P97s/YcK/DIugy9P1obtKdjJIZ89XCcDrUVgDfwQZ+NKOIBV9MdnguBtSRzNBo1gikpKcrO7FkvhQFLqobKKx8b7vfMMNYZILRKoqotH/obM+AcAPHSoHcoOpl4xVoBN3+7bcoGEapeCRYoaK4saogVFShl37cphMssxNQhFmTj83WA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XqHQ8LHeFVcoIoI9Klr2X9mw56KQ0kpRTytvrDMDqQA=;
- b=DqSb7uzU1LKAJlLrknsSdOFDlY2ztKXsve5aJ9+pp/kBHrd0CR+vlj0mtnNkfPMtvWwMRmzoz4g842eBham8URTrwEplTl1s0Yjv7qQZ4tnSYyrDnlDfjRt+5NfgEUGvOtYVaFN2L8fhH74QsuPp2H0JFRMwK3GyLGKRx5415R0D9UozQ5XO9LSfRnRKMRLEqTDLZz0UlsndpxbHwc0/zWsxEQothsiy/lpojyWL3uY5eSsNURsq7KJ85k4AV6/u1k3/Ff9n7n+P9kS7lcUvO1T6TmK28Cjs+v37Cf9i4Bq88ItGZy0uxLfrJtOUmntMu4Y5Rmc8AoHCEMZGexwlkg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
- by CY8PR12MB7586.namprd12.prod.outlook.com (2603:10b6:930:99::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Thu, 2 Oct
- 2025 17:05:08 +0000
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9160.015; Thu, 2 Oct 2025
- 17:05:08 +0000
-Date: Thu, 2 Oct 2025 14:05:06 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: John Hubbard <jhubbard@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>, Surath Mitra <smitra@nvidia.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	nouveau@lists.freedesktop.org, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: pci: skip probing VFs if driver doesn't
- support VFs
-Message-ID: <20251002170506.GA3299207@nvidia.com>
-References: <20251002020010.315944-1-jhubbard@nvidia.com>
- <20251002020010.315944-2-jhubbard@nvidia.com>
- <20251002121110.GE3195801@nvidia.com>
- <DD7TWUPD83M9.5IO0VX7PP1UK@kernel.org>
- <20251002123921.GG3195801@nvidia.com>
- <DD7UVCEVB21H.SQ00WZLLPINP@kernel.org>
- <20251002135600.GB3266220@nvidia.com>
- <DD7XKV6T2PS7.35C66VPOP6B3C@kernel.org>
- <20251002152346.GA3298749@nvidia.com>
- <DD7YQK3PQIA1.15L4J6TTR9JFZ@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DD7YQK3PQIA1.15L4J6TTR9JFZ@kernel.org>
-X-ClientProxiedBy: MN2PR01CA0044.prod.exchangelabs.com (2603:10b6:208:23f::13)
- To PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UFKkt5dR"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8572d7b2457so150974285a.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Oct 2025 10:27:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759426075; x=1760030875; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qTM0UQL/8j7dglCka3v9L9QTEMlq52c4L0JAQ1Z24Bs=;
+        b=UFKkt5dRE2vSV2G87hBC3WxGnPx1MawlU9NxW/NYyxeZxLV2V5jKPR/prEJFTnSpWk
+         Vd5ct8UmGbOtF74RyXlUV9IT9RSHsRWk8SshJBiZyBUfdBqPkQ5lzIvcNSnJWH1UIaFV
+         sYysib3MTvCcqQw+NqHJliCKRdUwl4lspbJ3qG+qycWohIRD2OlydF5tRDANlmEcfdWs
+         gRiYW646/gq/9mME0+1RPkaTW5zhVPxvpasxMHYnO4auCf3niRLg81pluLDlO7oUuUjK
+         7i44MVZYtsxZ4oezNgJzzDwM1izWv1x9bHbcr6nvom17tdi8Yhr3afgulEk56D6AwY29
+         hqXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759426075; x=1760030875;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qTM0UQL/8j7dglCka3v9L9QTEMlq52c4L0JAQ1Z24Bs=;
+        b=hC+dDp4dpdZ4MY+skJbAfGXd1scSnifmVkeashJN9cRbH8wCwDZFzfn31jXw5Nu2qR
+         VgxTzcBZu/HER67xWxjc3PYX5THUDSjyfMQTttPpbvHZrOOZKs77ErXtdDuWYNn8uqZA
+         7/J/2e0tgP8ssXaAE/q3tOiTDSwjLAZI8a8tWPRktKYk4TQ1+w2vewTKChKignDs0boX
+         1IuWfMxrdsRPK83UPb3khqFwhK52EhnUxjrwRlH1HJrOuaxfl3FAhUZlm3n0qSAimo4Q
+         H8knPGcO1Cptgrhmg4L91kE4P183wtkkmA0mbbrwM4ZxvPE/jorBIQyvESLiZlJgIv+T
+         uROg==
+X-Forwarded-Encrypted: i=1; AJvYcCWplJpVt34ElKWR1MtbnrJIMY3kLmcj2L6BL1a2p2YnwlYx59uDRI2xm0zIsTmF9lpl1CoxjYzS+SsvKRY1Ow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFa3Ha9Oh8OgqP/ntjLMBQsLSS2AKImd5nYJ9FO4EAGyIKU98Q
+	p41lggqte0TlMgs1SP/N9hsweLHsYw4Bbkh/3WLNXDe9BxchJh22jIhR
+X-Gm-Gg: ASbGncuwXi7iOa6xqfm9+kmMYpTEffFCuLuao7/vwnEh0uSyUF37Xbm+nZZJ/8/7blZ
+	D1RgJ1Q/IMxC1YElED8UAHKnemC0jQ3LSYqza184J51VzaZw3/Wv5HBM92P9Y31Dj8BVYMxcNj7
+	Qq2ka4Z2KCWDgHW2QWnYL6gX60dNBhJUxm/4Gpzc97AeYQ4RmfRtYRkt6V79crLEyIQnp/NMT/O
+	PsRJ2cqGdpS7sy7Z+yng/3aGcIOAVKFqWWrYEzsHDA/q4mnsO//VF+g/zS52U3ZqGpj18BH50CE
+	ViPpPGGdFjYsJ2/gbg8d758sXNxBm4vRWjj18MbzXO2teh3Gsyef4o7KXoQxD2C/Hfm67Wn8o9N
+	i4iBiq+UD3rUK+fOioobOocfDuns4kPjj7OCNJBP4hQfZTQwOYC+Vbqlcy7QIzD5KczbdTsx4PP
+	6d0bY3bdXM0YYLCp5gdcrpa0TBmN/JQeeGh86wIrjPF8k7MiY=
+X-Google-Smtp-Source: AGHT+IEccWf95m9em/uI+dQlqBiU53wpoCpSc5+xQyyCCz3DNyftc7RYyrlZ2VQKH150B9/39RYCLg==
+X-Received: by 2002:a05:620a:4542:b0:80b:bb34:371c with SMTP id af79cd13be357-87765c0283amr556367685a.4.1759426074903;
+        Thu, 02 Oct 2025 10:27:54 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-87771129f10sm250580785a.9.2025.10.02.10.27.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Oct 2025 10:27:54 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 64F31F40069;
+	Thu,  2 Oct 2025 13:27:53 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Thu, 02 Oct 2025 13:27:53 -0400
+X-ME-Sender: <xms:GbbeaA47QkWtwwPWv6vtzqHqLGFsZJYXwawRT5GZ7ove-YTVfKveog>
+    <xme:GbbeaLRKare3YFvYQ8IM-3q6zMpvcmvJN3fBupwOyYuvxHTzciEIpTEH6HTjCtMJz
+    Ui03Aoj6wC_x9XxdjVLoZXrwD3h3lyNY_1pwER6F99ybfMZqbhZ>
+X-ME-Received: <xmr:GbbeaIkFcpyNXJiJ2YkRCL5cDJkQz13nP_ZUKR3iXf7c09R20thn7hUns-BrtUcx7vb5zVggjK5D7CpuHdVyLFtfmFh1oXW9>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekieeiudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
+    dtvdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgr
+    ihhlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhf
+    elleeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonh
+    grlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghnghep
+    pehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepgedupd
+    hmohguvgepshhmthhpohhuthdprhgtphhtthhopedvgedtjedtudekfeejudesqhhqrdgt
+    ohhmpdhrtghpthhtohepsgihuhhnghgthhhulhesshhkrdgtohhmpdhrtghpthhtoheplh
+    hirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopegrmhhirhej
+    fehilhesghhmrghilhdrtghomhdprhgtphhtthhopegrnhguihdrshhhhihtiheskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheprghnughrihhisehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegsshgvghgrlhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehgrhgvgh
+    hkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnrghr
+    ohdqmhhmqdhsihhgsehlihhsthhsrdhlihhnrghrohdrohhrgh
+X-ME-Proxy: <xmx:GbbeaIKfrjD-eqlOsaEu8oupAwCNL5B3v_jSdUHcY24JYHPWjN5_tQ>
+    <xmx:GbbeaOSZC2NlhdVwmqKBdbD4NIwKEaTDKckNg4nutrEqyq1jJ65JtQ>
+    <xmx:GbbeaPMPlfhxRayyy1Im8WpdH8DW6D_tTVsqfNIfnjn98KI1eVpWSA>
+    <xmx:GbbeaPaxaAKzS_UqYZsc_slWPxKZim7zmb4NsaNtun6TSMRkIYCuOw>
+    <xmx:GbbeaDDpRUzAmACJHoEs-WQm9-qedNFlV-mfcoTZk1unrpqOZiNLvsDC>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 2 Oct 2025 13:27:52 -0400 (EDT)
+Date: Thu, 2 Oct 2025 10:27:51 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Guangbo Cui <2407018371@qq.com>
+Cc: byungchul@sk.com, Liam.Howlett@oracle.com, amir73il@gmail.com,
+	andi.shyti@kernel.org, andrii@kernel.org, bsegall@google.com,
+	gregkh@linuxfoundation.org, linaro-mm-sig@lists.linaro.org,
+	link@vivo.com, linux-kernel@vger.kernel.org, mark.rutland@arm.com,
+	masahiroy@kernel.org, mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com, max.byungchul.park@gmail.com,
+	mcgrof@kernel.org, melissa.srw@gmail.com, mgorman@suse.de,
+	mhocko@kernel.org, minchan@kernel.org, oleg@redhat.com,
+	paulmck@kernel.org, penberg@kernel.org, peterz@infradead.org,
+	petr.pavlu@suse.com, torvalds@linux-foundation.org,
+	vincent.guittot@linaro.org, will@kernel.org, yeoreum.yun@arm.com,
+	ysk@kzalloc.com, rust-for-linux@vger.kernel.org, ojeda@kernel.org,
+	gary@garyguo.net, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, dakr@kernel.org, alex.gaynor@gmail.com,
+	bjorn3_gh@protonmail.com
+Subject: Re: [PATCH] rust: bindings: add `rust_helper_wait_for_completion`
+ helper function
+Message-ID: <aN62F8t493R7UmCT@tardis.local>
+References: <20251002081247.51255-37-byungchul@sk.com>
+ <tencent_13F1EDE0D6B7A44697F31AE274C8E664E908@qq.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|CY8PR12MB7586:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc884af4-ad81-4632-9e7a-08de01d5d6ce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FdLdjOA+JIuvRJaUEib8OH58+AWqJQVwBgeTVUCwm2bAy/5tIfjIpXwJXAXR?=
- =?us-ascii?Q?aInpZGOLn/D8aXc42kxLyND0kSVs1JlYdDAiD/lJqGFcBf2FAGnkMyYttMc8?=
- =?us-ascii?Q?uVjetTxDXI5Te5eGgrl+hq1MRK2Gc9DYH3D2pH7SFZY9KHvXNubjAtLEuUd8?=
- =?us-ascii?Q?pGcp90nD/E95SwiacPsZQizEoW6gpT2uDkJ8Q9Xfr21UV8xHzAPRjOCLCxE+?=
- =?us-ascii?Q?9/IxH9NM0bl6uod89iDppKA/CzpcIRDnrnHaDjGfQUt9oGpnNP+6HGYRppf8?=
- =?us-ascii?Q?GYtNqfNOph01ko9Y5jxa+W58+EFtAh6TSD1tEsQ/w6ZJ+rptDT4SNIcfUaU6?=
- =?us-ascii?Q?YXkvcjWAnD35AJkZsBGqlrDRZATWdsapnb7jv6PVhu27uR/4o1QHqmpwb5Ij?=
- =?us-ascii?Q?gqH1eI5Yalh45pyO/BrEqf/nYUDjISuEC/mMYGk9smXNph+rPkufADj6HbiX?=
- =?us-ascii?Q?8P03K6fadWdxWf8dHPYalREqVFWKw3RwPEZU7elJDmQSsCkZEOskQRR2YF+K?=
- =?us-ascii?Q?dtTahOnm5kGe7y7n7tUVPam48jYjuEosjpbfJOOAMZeDhD++pMRQQtnfRV2i?=
- =?us-ascii?Q?2LdlE2cryvGXmgInJhpgJGbPCRhHotwkUbLte5YJFdnLmjihZWfzkxMJXks0?=
- =?us-ascii?Q?9/0v1K+ssMZPwB2idVYEHmm2X3FLUZ26Cz932/s/SpeMq21keeZVjwvSB7J9?=
- =?us-ascii?Q?4FC/W7znKMDXuXaLxWUC9aFeNKkZBIRxvXnVqaMtwK4BOmwF9K9ORqEAsGSb?=
- =?us-ascii?Q?qvTnfYffxn6mmL6AX4Aq8xlioHJJk4P+ErI/xX2iYDwGB3j9bbZVZ4yZpLAU?=
- =?us-ascii?Q?sSC/4MWse79WyCO3UAF/v41WQTlAJIb51JmWfgtFwDmRnVNOD6RuhR7uFazQ?=
- =?us-ascii?Q?xiuOQU9JFb5xUDq2ML5cvLSNAV0lR4lollGi6KOCK5GOVnhLjvjoimdtlTNH?=
- =?us-ascii?Q?k83+/ZtsIgJPYwFAxXiNwgFYefG+OLtVV155O9WregdlnKAkaFT5YNz6kzbd?=
- =?us-ascii?Q?tyc0M8MUjzz7HZNQplWsiuGZ1PGMAvb2KGlt26JA0idEMx1urEcrBTKSFaIe?=
- =?us-ascii?Q?7AfP9VFQIoWWA49Kqh3dO5l7VoukVctm4pvFXZvyCZrwkP8KiWxBnJm0OL1T?=
- =?us-ascii?Q?s1rd4T+Xg2APYcpKcZpotnNx7ZRql6zY2R7sVXEuhyqM9ukaG0bSlNn6DDO4?=
- =?us-ascii?Q?aXWVj1LUVBGFGYIE4/PM2ZvckYkl7W5MHtLrSsOQeaEM/0E+sGsEiaS95zil?=
- =?us-ascii?Q?vvm+0UB3DQ+695teMWdMN1cNp+kxbadS9ESmcPOysOqgywMeWUbuFV1VO/Ic?=
- =?us-ascii?Q?1rooIFGnx38/Vc/18GcxzC5/rtB7DeIFTHr40RsirfctM2IoGgRceSxfxvYY?=
- =?us-ascii?Q?rJeEJtd82inv2qQI9ghirwnAWuzCjmNMXfh0fm/DNAtkQ3hNGCRfDX3UfEYl?=
- =?us-ascii?Q?mpNeLk58k6um0y4zM+QCrneQ1vJuC0xS?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NbyFV+Xj67tgBplnQjMgQR4nmIxseyLysk79Xaj3+Q+eSYtqaUbkGDirwAl7?=
- =?us-ascii?Q?VpQh+ahH/5ybE9FagZ0Nj+NG2xv0iapTS2OrirbX8NLtg1p+uSt5YLRLA3Q/?=
- =?us-ascii?Q?ahVUil23q9pqanXZN66/yjEIevtJvwkJVjbWspVCuijKCaL00ypZRwy32vuU?=
- =?us-ascii?Q?tciWIUMaUvdrmIkFtKsNZkRgofyTZ8TURKppMgipylPRGs/9M7qSeDEY+bkG?=
- =?us-ascii?Q?oiHVsa6qyF+m8JamHtls4jcIvxZkn0fYBh9k4oZqu1rO2w69UpSjaFPveyf/?=
- =?us-ascii?Q?BF4vHGz2A1MDMFgKUiJVvxa83HVSi9K6Ct45XYRpIg0OBT5NIvXOUY0Xl/tj?=
- =?us-ascii?Q?NegiWyFFOedH6oRI+KVuaLLdzdke9a8P9qXGO7ZakRs1BayTRy2SBQ5Otqg5?=
- =?us-ascii?Q?QOT14ZUQdGW1oxwwSVfHtF1WVoSfRSLVOvWty7JGHyNbOL2EJJ1yxjXDtnbl?=
- =?us-ascii?Q?h25kEuDxNIXilJrpKswptnZkMc1FR4PptXvmPLa2c5R3HJ2OdaTFVwsGBtVe?=
- =?us-ascii?Q?nhBkoItYpuyLX+9jYdEN5bV8CqGBzM7cm572FiAc1aSmG/xM22do15hdx2tr?=
- =?us-ascii?Q?k+Kd0BWKndkeYoTiChH7aZe68HmSf8s8cqDwJyJibLfhEByXX8Rx4ayTEUBW?=
- =?us-ascii?Q?Exwv7/i15ba44Tb2xkhkZqbSz0x9fwcmMB51Z1JXGK1tNvAC18Va5kV0bftR?=
- =?us-ascii?Q?doAlWpQpBstcgzpjMw0d7fvoJeOImJtN3JnyP/PX9q14wxkhCwtOH0q8OxQS?=
- =?us-ascii?Q?oHAuaf1Nha+tQkt/2u7NJ5vtBKdg8cJlz6Khqu4NzVQywqfkSc129IC8siCO?=
- =?us-ascii?Q?33PelANi9FxYnwcK7sMryIiIZRTKvKNWkEH2QTtsbEy/XZJaqakjQ3txPEZ5?=
- =?us-ascii?Q?nBTzb3b2HW3eTKjKIHfZHDSzpDs/pB/O+09RHtkorRIeVAOvBlTnGK3ayuzB?=
- =?us-ascii?Q?i1+YqjBXYCt9Hzu4gZeHQjXvcK/au/yZ2BSwhu0DeCCd5AtcBnECtg7o29B9?=
- =?us-ascii?Q?eahI1944r4m2qJhNcyFNR/ZVzPuImAbqHRfxSqg6HJOXXYK0NvBRV9d5982q?=
- =?us-ascii?Q?oPwVEJHYmcEA5VQUorfLGUJBblM44Xb8bTHAvmP2c6EOxg3VpJZWMVT54jPO?=
- =?us-ascii?Q?t46vqqQDbuS3XgVVEZRJMJrv3jsEPS/cGnPlXbraa+TCjlWM/kd9cr4Ndp4s?=
- =?us-ascii?Q?i0kb5N9e5kFLNidNqNTrClWkV9lsoDNxn6Q8dUkQnSBg38EQlRUHJRckXWnA?=
- =?us-ascii?Q?7mO4Tfg/KmSts4HlxKOukL3m/1IGGk0vIkcCQ7PXCKYncoqtcjM5RzfLPP7c?=
- =?us-ascii?Q?T2hp8QX6wY6GhmBtMmener/amMICxOMNAMR/sF0YxqM3cWKmDmEcf0G896sy?=
- =?us-ascii?Q?NN5R/CefJDmGBP8mzT7kEG8NfyPNqwi5HKnBMeWksF4je+p+i7h5NC7lbA3V?=
- =?us-ascii?Q?Nf0Xg9h3shRZ2IJkbNqCzrf/UcLaQLjH2H1p0NDU1l583Y085e9tnoOvwGv8?=
- =?us-ascii?Q?YKEM8srlBTXWZBKuocgEDpZxOAl7IUFysT0kakLyrsklIlbimTOLtNuJtCld?=
- =?us-ascii?Q?hExnfg11rgw0g64YzDE=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc884af4-ad81-4632-9e7a-08de01d5d6ce
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2025 17:05:07.8953
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gZD66SV0R24KoKtHNKPtlkhPtMSBYPibfM1fJMgZjsf+VwHsWuuXHezDxlNhiCV4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7586
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_13F1EDE0D6B7A44697F31AE274C8E664E908@qq.com>
 
-On Thu, Oct 02, 2025 at 06:05:28PM +0200, Danilo Krummrich wrote:
-> On Thu Oct 2, 2025 at 5:23 PM CEST, Jason Gunthorpe wrote:
-> > This is not what I've been told, the VF driver has significant
-> > programming model differences in the NVIDIA model, and supports
-> > different commands.
+On Thu, Oct 02, 2025 at 10:06:17AM +0000, Guangbo Cui wrote:
+> > -extern void wait_for_completion(struct completion *);
+> > -extern void wait_for_completion_io(struct completion *);
+> > -extern int wait_for_completion_interruptible(struct completion *x);
+> > -extern int wait_for_completion_killable(struct completion *x);
+> > -extern int wait_for_completion_state(struct completion *x, unsigned int state);
+> > -extern unsigned long wait_for_completion_timeout(struct completion *x,
+> > +extern void __wait_for_completion(struct completion *);
+> > +extern void __wait_for_completion_io(struct completion *);
+> > +extern int __wait_for_completion_interruptible(struct completion *x);
+> > +extern int __wait_for_completion_killable(struct completion *x);
+> > +extern int __wait_for_completion_state(struct completion *x, unsigned int state);
+> > +extern unsigned long __wait_for_completion_timeout(struct completion *x,
+> >  						   unsigned long timeout);
+> > -extern unsigned long wait_for_completion_io_timeout(struct completion *x,
+> > +extern unsigned long __wait_for_completion_io_timeout(struct completion *x,
+> >  						    unsigned long timeout);
+> > -extern long wait_for_completion_interruptible_timeout(
+> > +extern long __wait_for_completion_interruptible_timeout(
+> >  	struct completion *x, unsigned long timeout);
+> > -extern long wait_for_completion_killable_timeout(
+> > +extern long __wait_for_completion_killable_timeout(
+> >  	struct completion *x, unsigned long timeout);
+> >  extern bool try_wait_for_completion(struct completion *x);
+> >  extern bool completion_done(struct completion *x);
+> > @@ -139,4 +134,79 @@ extern void complete(struct completion *);
+> >  extern void complete_on_current_cpu(struct completion *x);
+> >  extern void complete_all(struct completion *);
+> >  
+> > +#define wait_for_completion(x)						\
+> > +({									\
+> > +	sdt_might_sleep_start_timeout(NULL, -1L);			\
+> > +	__wait_for_completion(x);					\
+> > +	sdt_might_sleep_end();						\
+> > +})
 > 
-> Ok, that means there are some more fundamental differences between the host PF
-> and the "VM PF" code that we have to deal with.
-
-That was my understanding.
- 
-> But that doesn't necessarily require that the VF parts of the host have to be in
-> nova-core as well, i.e. with the information we have we can differentiate
-> between PF, VF and PF in the VM (indicated by a device register).
-
-I'm not entirely sure what you mean by this..
-
-The driver to operate the function in "vGPU" mode as indicated by the
-register has to be in nova-core, since there is only one device ID.
-
-> > If you look at the VFIO driver RFC it basically does no mediation, it
-> > isn't intercepting MMIO - the guest sees the BARs directly. Most of
-> > the code is "profiling" from what I can tell. Some config space
-> > meddling.
+> The DEPT patch series changed `wait_for_completion` into a macro.
+> Because bindgen cannot handle function-like macros, this caused
+> Rust build errors. Add a helper function to fix it.
 > 
-> Sure, there is no mediation in that sense, but it needs quite some setup
-> regardless, no?
->
-> I thought there is a significant amount of semantics that is different between
-> booting the PF and the VF on the host.
+> ```
+> error[E0425]: cannot find function `wait_for_completion` in crate `bindings`
+>      --> rust/kernel/sync/completion.rs:110:28
+>       |
+>   110 |         unsafe { bindings::wait_for_completion(self.as_raw()) };
+>       |                            ^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `__wait_for_completion`
+>       |
+>      ::: /root/linux/rust/bindings/bindings_generated.rs:33440:5
+>       |
+> 33440 |     pub fn __wait_for_completion(arg1: *mut completion);
+>       |     ---------------------------------------------------- similarly named function `__wait_for_completion` defined here
+> 
+> error: aborting due to 1 previous error
+> 
+> For more information about this error, try `rustc --explain E0425`.
+> ```
+> 
 
-I think it would be good to have Zhi clarify more of this, but from
-what I understand are at least three activites comingled all together:
+I think Danilo already made it clear, please fold this the existing
+patch. Moreover, since this patchset doesn't adjust init_completion()
+from the Rust side, the result is Rust code will also use the same dept
+key for completion, which has to be fixed if dept wants to be in-tree.
 
- 1) Boot the PF in "vGPU" mode so it can enable SRIOV
- 2) Enable SRIOV and profile VFs to allocate HW resources to them
- 3) VFIO variant driver to convert the VF into a "VM PF" with whatever
-    mediation and enhancement needed
+Regards,
+Boqun
 
-From a broad perspective we in the kernel have put #2 outside VFIO
-because all of that is actually run through the PF and doesn't use the
-VF at all.
-
-#3 is the vfio driver and I would like it if vfio drivers restrained
-themselves to focus on the mediation, live migration and things like
-that which are directly related to VFIO..
-
-> Also, the idea was to use a layered approach, i.e. let nova-core
-> serve as an abstraction layer, where the DRM and VFIO parts can be
-> layered on top of.
-
-Yes, I think everyone is good with some version of this..
-
-A big question in my mind is where do you put #2, and what uapi does
-it provide. It has to layer on top of nova-core because it has to use
-the PF to do profiling.
-
-I'm not a fan of the vfio based sysfs as uAPI for #2, for reasons
-touched on in this thread.
-
-NIC drivers are using fwctl and devlink for profiling, managed by the
-PF driver. I think I'd want to here reasons why those interfaces
-cannot be used here.
-
-Jason
+> Signed-off-by: Guangbo Cui <2407018371@qq.com>
+> ---
+>  rust/helpers/completion.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
+> index b2443262a2ae..5bae5e749def 100644
+> --- a/rust/helpers/completion.c
+> +++ b/rust/helpers/completion.c
+> @@ -6,3 +6,8 @@ void rust_helper_init_completion(struct completion *x)
+>  {
+>  	init_completion(x);
+>  }
+> +
+> +void rust_helper_wait_for_completion(struct completion *x)
+> +{
+> +	wait_for_completion(x);
+> +}
+> -- 
+> 2.43.0
+> 
