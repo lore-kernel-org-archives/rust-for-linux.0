@@ -1,131 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBD62DC77F;
-	Fri,  3 Oct 2025 18:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0CA203706
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Oct 2025 19:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759514408; cv=none; b=gAaDmhj7E4DJIcyqBuwePIm4xzXMQZrdxJELfK+bAtWNbG2UDDnl5oh/uDRuTcPJ2O1Bw8g9Y6/MFdqYZYcHvZ7UTsD1BWcxOgjFiRTlj6SBkLnLmC6UAUPjzaUt460Dmr+HqI6zbVsxnnMwJ7lRuvEip1Xi4BeG+enPeOz+yQ4=
+	t=1759518985; cv=none; b=FwuJ/3bBIj/UI5IZQPfz5aLzq9zaOyXIYw6hr1ScgW02XVQbd2hRiT/zocKKZXLY9o9KuU0KMxIeBtegcNmX20SCyYBUHEZK9VFgqSI31EMxmYX58Y1/WkcrK43JT8iik18YIkFOJsJ8lnFrSaxcWtdWXee9sDBiLbIlKkWXgho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759514408; c=relaxed/simple;
-	bh=I/qWDMKQv5qKzeMlqK751O9Q0IyCyXsvYmApunFN05k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=VYgWQOwg1+9TU7XvhwaBCcMP7752PTYUDbqyDp0hmojahoUtVc/dQ93VuQLrn2U5cPR+KD98MnOpw6jBSSMOca9vaTaamAXLpAY7v8QZK5/iejsNj8pWsLTM6PWsDnxCxvsw8vxO39uy8SBUXCBs5Veqg0vc7NqqRtM5Neusyjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wid78YSd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759518985; c=relaxed/simple;
+	bh=tVL9p+nxl4y9c+ghVq3bDJ/Nc31UcENUohwqCzhd3MA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i9rMWLI4Ey4bseXh0anb8Dw/OPx6G1XWvIK1ljOVylVFQ/tieIEJr+Cp/6wziXwNuzVvPQbaHdeESFYK5+EWA9dxiY/EAMaJOwevIo+fmQO5/f5hs3WC2gYTCFTzy3s1XC2KbM2abpV6n5fBnJn68XfSwsQtlNsm34PqfgW0Ckg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gkGQ0oWh; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wid78YSd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB1DC4CEF5;
-	Fri,  3 Oct 2025 18:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759514406;
-	bh=I/qWDMKQv5qKzeMlqK751O9Q0IyCyXsvYmApunFN05k=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Wid78YSdBNA2CatxdLycAAbOphm7XEZslawm5fH4LIcQ9Y5wuvC1tWARj1iZ74ZTb
-	 lxuTv20ujrbyvMnZ4WAUUVxxW+Z8JeFmPiUqqj6ra2InZMI9Eu/JI0Pmj/HyywN/Fj
-	 yrh24wr0xbb+HWsMjUBznlus80UmGWPmix4KPmdBVv3hp4MxCta8vjhhPGinVHgKg3
-	 9p8GItUsDDrJDUrLuffAXf+IYA2FisGjbs4ptSPi+XerKmrs+KtQc+kdOjNlAGi8JO
-	 JOs6yg8i74hieXqEjbc20ojq7tYJ1hOBMwuS0yl6IKU2ULGrcdWjLaq7+aJZ6o9VG9
-	 J7Va0OTAjeQLg==
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gkGQ0oWh"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-46e2c3b6d4cso21238595e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 03 Oct 2025 12:16:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1759518982; x=1760123782; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CokE/k3sp2q5WMd7ECWNZXq4ObJTrjeetW4zf4kEWnA=;
+        b=gkGQ0oWhqqkicVvhl/wFrNDqchmoEXRkcnXCSuEO8zVP+R7ygdOD23Ax5ujlX7iLLX
+         W9lffsbkvFmc5XQvcj+1x0mArr67JqWrVRCyaHu6y0SYJbQFdthybHDyElGBBs4FJoLi
+         7LKQURLzFq4DbD90hwsKwh5uYn8szWWceEKWYsbPeZtLAEddTeYPaUc2Oz9qbUZbIXJe
+         FBoeGzHFvWB4zmVScg/ArFgqgESi07ulID1NemZEKAGihRU9tWsKEmJGByyxLIHTBFO6
+         seou0XKxhrn8OuF07KsjyAV5a4K7HgjzV+QjG3KUvFnb/7CTbgkaYa7AVIPAo+I1qcx6
+         Rbiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759518982; x=1760123782;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CokE/k3sp2q5WMd7ECWNZXq4ObJTrjeetW4zf4kEWnA=;
+        b=b0H99LRTy1zRT0eSCNRNrdTW892rAVFUdZgA3iuOxZsgPEUJ5OHMwiaiLEEVuws9oF
+         suashUs7JFTrDP79mge0ldFBA/Fb2C7kcHOtzAAY7XsW6pqql3TlWB54T7rawg+ny0by
+         Pm85FLPN/6pdKlhATrx9MgE6l926R4pNNv7YG/Kz/ASYiVkGDnwjnLYiRZ3Wd4Xkkca7
+         J2ZFrimndemCIb6RtwBV86x0KN2i+qAcON5kiym6qXpBoTp3DD9AiybLzMpINA1C6HZ+
+         M6C5x/JYw/xCln7hj+yLd6Vg+N5dhPf+mCYHeHoEKXqqVO8JLRnEHYaOwrCReggx4vhG
+         4r4g==
+X-Gm-Message-State: AOJu0YwgnDNKnou6QcZAY7ZXyNAHLOnp6xxMwk4cAclLiRV7aXgNH3YR
+	Z9nuLh+H71zBwb6UhmRwWNALjlhECjKmcy1CbBJ+Ej5TiYZnoM8fjs8IcRt8TljqH5sOU+nqz1I
+	s7aiy
+X-Gm-Gg: ASbGncsudR15VYeLkQOz/mWC1GkiJgD4VCbKn+i2TR8vYH7cUkXl0tU/1TGdtm3PSL3
+	RnH+86p++XeuD84Brru1PtEi3efVc7My+m693+G6ddCPDnxH1e/JxUbs5epLPw0Tyqjb/CDU1s8
+	J1DRa2ZP8zXoOWxZUGyt0v327BROoEo8sTvBgbgXIwSuEpkvKBli65uOAGpY0o9O/bVlpBcmU3X
+	wIBnSxA5rnvwDhPooPZ8t39KSyB95EhAYqW3Q+EyRtb5yn9A6twfND1DHj+Gr9JaXhjzmPdnDvK
+	i8MrJJ84ZhklV/TuKLpaXBbk8qDQE9/hY/NaRoYOeCTmJX0YibpKeDwVz/UV6ebmfMMX/Bu3BtP
+	vM7IVV2ufnmcEDkoQVAM94uJx559hbbQbH1iLF/cJc27cMIsF7Q8/u+Me
+X-Google-Smtp-Source: AGHT+IFLZ0QvjwytGIsmgaGtzccZXtbd+f+pX+ocyHIDpS87vpgHFmVAbVGZfoGdGaZFuMKKHMJw+g==
+X-Received: by 2002:a05:600c:c4aa:b0:46d:ba6d:65bb with SMTP id 5b1f17b1804b1-46e71146819mr29095885e9.31.1759518982081;
+        Fri, 03 Oct 2025 12:16:22 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-46e619b8507sm140813195e9.3.2025.10.03.12.16.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Oct 2025 12:16:21 -0700 (PDT)
+Date: Fri, 3 Oct 2025 22:16:17 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: linux-next: Tree for Oct 2
+Message-ID: <aOAhAaUQdrFjJMk9@stanley.mountain>
+References: <aN6qWFc6hIcbRU1o@sirena.org.uk>
+ <aN7cRUOxq-zwCoZN@stanley.mountain>
+ <CANiq72mDsU3W5Qfyf=sKhbad4tAHJYF8WnY+4VPz2J0paA2gTw@mail.gmail.com>
+ <aN91pwLmB_2TwK77@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Oct 2025 19:59:59 +0200
-Message-Id: <DD8VSSFRFC46.X5BFWEV3JAH2@kernel.org>
-Subject: Re: [PATCH v3 08/13] gpu: nova-core: Add bindings and accessors for
- GspSystemInfo
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Janne Grunau" <j@jannau.net>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <dakr@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0
-References: <20250930131648.411720-1-apopple@nvidia.com>
- <20250930131648.411720-9-apopple@nvidia.com>
- <DD7VU4239GS2.2MKVFPBFEY1R4@nvidia.com>
- <DD8TZ3TU57L3.2958OTC9UP4VF@kernel.org>
- <20251003172517.GA1574227@robin.jannau.net>
-In-Reply-To: <20251003172517.GA1574227@robin.jannau.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aN91pwLmB_2TwK77@stanley.mountain>
 
-On Fri Oct 3, 2025 at 7:25 PM CEST, Janne Grunau wrote:
-> On Fri, Oct 03, 2025 at 06:34:12PM +0200, Benno Lossin wrote:
->> On Thu Oct 2, 2025 at 3:49 PM CEST, Alexandre Courbot wrote:
->> > Hi Alistair, (+Benno as this concerns the `init!` macros)
->> >
->> > On Tue Sep 30, 2025 at 10:16 PM JST, Alistair Popple wrote:
->> >> Adds bindings and an in-place initialiser for the GspSystemInfo struc=
-t.
->> >>
->> >> Signed-off-by: Alistair Popple <apopple@nvidia.com>
->> >>
->> >> ---
->> >>
->> >> It would be good to move to using the `init!` macros at some point, b=
-ut
->> >> I couldn't figure out how to make that work to initialise an enum rat=
-her
->> >> than a struct as is required for the transparent representation.
+On Fri, Oct 03, 2025 at 10:05:11AM +0300, Dan Carpenter wrote:
+> On Thu, Oct 02, 2025 at 11:35:10PM +0200, Miguel Ojeda wrote:
+> > On Thu, Oct 2, 2025 at 10:10 PM Dan Carpenter <dan.carpenter@linaro.org> wrote:
+> > >
+> > >   RUSTC L rust/core.o
+> > > error: cannot find a built-in macro with name `define_opaque`
+> > >     --> /usr/lib/rustlib/src/rust/library/core/src/macros/mod.rs:1757:5
+> > >      |
+> > > 1757 | /     pub macro define_opaque($($tt:tt)*) {
+> > > 1758 | |         /* compiler built-in */
+> > > 1759 | |     }
+> > >      | |_____^
+> > >
+> > 
+> > Thanks Dan.
+> > 
+> > Hmm... Strange, it is the `core` library, which comes with the
+> > compiler and thus should always work.
+> > 
+> > So it sounds like a mismatch between the binary used and the sources
+> > of the standard library (or perhaps other kind of mismatch, like the
+> > wrong edition being passed, but from a quick look it doesn't seem like
+> > it).
+> > 
+> > I will try to reproduce it. Did you happen to recently upgrade the
+> > toolchain(s) or something like that, by chance? Are you using the
+> > Debian packages?
+> 
+> Yes.  I am using the debian packages.  To be honest, I don't know it I
+> broke it with an update.  It's possible.  I am all the way updated with
+> `apt dist-upgrade`.
+> 
+> I'm on rustc version 1.87.0+dfsg1-1.
+> 
 
-Oh by the way, enums are not supported due to a language limitation,
-see:
+It's fixed in today's linux-next.
 
-    https://github.com/Rust-for-Linux/pin-init/issues/59
+I did go back and confirm that it was definitely something in the kernel
+yesterday.  But it's fixed now, so no worries.
 
->> > Indeed we have to jump through a few (minor) hoops.
->> >
->> > First the `init!` macros do not seem to support tuple structs. They
->> > match a `{` after the type name, which is not present in
->> > `GspSystemInfo`. By turning it into a regular struct with a single
->> > field, we can overcome this, and it doesn't affect the layout the
->> > `#[repr(transparent)]` can still be used.
->>=20
->> Yeah that's the correct workaround at the moment. I'm tracking support
->> for tuple structs in [1]. Essentially the problem is that it requires
->> lots of effort to parse tuple structs using declarative macros. We will
->> get `syn` this cycle, which will enable me to support several things,
->> including tuple structs.
->>=20
->> [1]: https://github.com/Rust-for-Linux/pin-init/issues/85
->>=20
->> > Then, due to a limitation with declarative macros, `init!` interprets
->> > `::` as a separator for generic arguments, so `bindings::GspSystemInfo=
-`
->> > also doesn't parse. Here the trick is to use a local type alias.
->>=20
->> This one will also be solved when we switch to syn.
->
-> I was planning to submit
-> https://github.com/AsahiLinux/linux/commit/2d95fd3b6c359634a0976f27f7a3c6=
-67826256da
-> https://github.com/AsahiLinux/linux/commit/515638cb47cf0ebdac378686fcbbdc=
-6a8364096a
-> from the asahi downstream tree after 6.18-rc1. Does that still make
-> sense timing wise?
+regards,
+dan carpenter
 
-Probably not, since I'll depend on the syn patches this cycle which will
-mean that pin-init supports tuples in 6.19.
-
-> Types with type paths are used extensively in the asahi driver but I can
-> initially work around that.
-
-Yeah they should be supported simply by moving to syn, hope it doesn't
-introduce too much pain in the next cycle.
-
----
-Cheers,
-Benno
