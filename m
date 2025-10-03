@@ -1,47 +1,47 @@
 Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011038.outbound.protection.outlook.com [52.101.62.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D2228727D;
-	Fri,  3 Oct 2025 15:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCEA28751B;
+	Fri,  3 Oct 2025 15:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.38
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759506491; cv=fail; b=JCtWpZwq25jeIpFg/DFhBNS9wF21CqqlBIm4XI+oi4+dBcn7+MBX9DDr/15hq8Xv1kIARbfegcTjt+CekRIEMKi23doNGj9kxX3vEjjII6Q0seABxXPyzD4Rx7jK7V3HCe4lrKbuLm09rQBJzlI9R68603xT83iTJ/cdQkHK1Kw=
+	t=1759506493; cv=fail; b=CaGY+Xwbo0pj6T/qKVtvu+XBkIYfgh3AR+yR51jpDMJqo3z75ulclcsrvon9UkRyucjHIXWLxfEjVzxaYw071Ee3jkHxoMgfNNnqLLorq94fN/5J6ydaStuJtGh+3ECTwIFkhk+OcVpgLvx83xtfSxoNS1mWQ9GxLzoCv0XF46w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759506491; c=relaxed/simple;
-	bh=TnB6Ezt22MrS++9N+lZpiOdl0AC6/XoL+NtfNcPLgP4=;
+	s=arc-20240116; t=1759506493; c=relaxed/simple;
+	bh=nOnRd2EX88BCR4MT9YisoEXoBcPGYW4ZBGP6WnoXDE0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z29muk84nzKCyORiO2mslBYNQ9q+k/DD+Epm23/sp+AoSk5YkK9RByOy2bdg1nzgktOJk5KfXmQMwFCEG500K6SELJuI14bKU5DDFKhAFkfXO+BZ49bonTeePGuYdxqZ59CThLZlMdWEzdGsoVD18RErCuaOelt0wpfThVY7ApM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EJUBFZSE; arc=fail smtp.client-ip=52.101.62.38
+	 Content-Type:MIME-Version; b=PUb1G84UjKlTwbWIHb9g7toAQIVD+N/iq2DdQvrS3aTjNag+0efuUYx7JWtBZna1QiTMQDCu4JhLBrULvd9XABBiTj0gaJu5m7A/6MFeblH4QXPzIGZP6WqAr23qAin0vcNnWPUnC2pOpKX6jsoxHU97fyzkkhdEC/HWag49ahs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lz/ZBOUC; arc=fail smtp.client-ip=52.101.62.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EJUBFZSE"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lz/ZBOUC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ENA3jw1TnnUJ1xafBjxkjf2Ny0OofbrY7YJwV18SKCHSPEQPWS9KC0eMlri4jWJv5VSg5esBKEmirQxGuV1qhFxwuyh5BX8K2i7v3Z7qBBNmNM9ZgvV0aW2d7b7T9CzcsWTOnZckHCLjd2MwVk76DSGtvpzHo1vDKTlHM54YltAW9P5ozMoRFYHri+SNtEpsLCrglX8OO5XXXjQ2XKACC1viM+0S+tY4CLjerVqgolIK+L812dcx7U5ONmbI6aqeyQLQTPtnJlGnhxkyU7MoPjAD4eB6Uf/wKa8lHb5OMZKM0gyASv/3fYKFntYTRgmZYGdLjpOkK/RnOF/Id75a+A==
+ b=D+8LvHn89dENH8Q/e+XYDFEfnepJ/fBFBauLKPEnMdrlXtJajXu5AKY15KJWVQ3osth3yJTSbo68XKqn/a7o8rjpQt3f8Y5NnBVinFZ8rQF/ccNEqoU9kABmsxXJY78KRHi8DPxywCq99Ecy02vqGIUrZdlDgIYTqmPSdsRk4N+99aiukE+JfauxscV3lDTy+jTu3vHooVzeJSYPNqYGsr4cIl98BtcoPDq7YF4HP8QEmU6KPo9ufS2BlUbTDl/tKoNa/Zqw4Yh0nn6mvAW5Nd1+VuofuoPA4IGbrM5JqhyCSKHpmab4J5PmbSECk5tiuN7h3rf15O9HdmKqnh3fQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9Zu4WnKxS81fwCLW/6lfcz7srFLvC/+CJNK2p1fwATo=;
- b=i6v9hds9BaC9qamAIIOPu56XiwK4XL0jdeit5P+zt/wSvzGc0QIO8qPr6G+o5JyHjf9J+vmQhJPMhYBfkkeqxbXHzmi4nGgj9oBxKsYrkBHZJWlrsWrs6SUKB70FiOcAGF2iWSsyqQ8Td6pVrVxFo7vU/73dSJeL3R4qnTsNv9Wx0QXMyWE/QpVmKaIoLeBXrOnoL2VYfar7uzmaK875zBJDCgRrYEv4BKHfFPSWKxS2dqA4EfV2U2374hi6n2cYWJnjhcU/KT08PIwQPFizeyE9L1gBV/NdYqdD4O7808yphfBpdP/n+pJUc5fa6QcdJbAeYKz4y8URhHCmHc9COw==
+ bh=7WtHuucVr0mioG8hMK3CYr/acoECPocCMbDaWYL6yQc=;
+ b=NS8tGEAcNWrYwbB3Joglp7GHOmWt/BOccINr3SX5s/Tc7nvBClgW0AfW93BViCvcq38ErW8lOhkJvhIIF90oqjJ40gLLgzIURW1fUMPPRbCIdAhxpy5o4rgFEBdUdjrtWodfUrwBFgKyMZ3WsTV9EpCaVM3A0c8YGtYEZgndyC+B1C5X/YLaEHkCWu0vjPgB8HnPuoxzaH7LTWg/N6kapLE16ysDt5Z83EURwrI3jsuTZ2ppp1u19OnTgVxuHUXXRKW3kTe8eXHnT+yWDZhh3E4QfaafRmzLvvoRr/cQs57DlJKZLGGD7KlLdW4t4JJgL7Uq+xeUpX4xMpvoe+enKw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9Zu4WnKxS81fwCLW/6lfcz7srFLvC/+CJNK2p1fwATo=;
- b=EJUBFZSEM46tXW0Gl5ypnEPgezCQS+9P84GvslHGNlpF0Cpn6crC48XSXTUgMf69mAx7ck1sjzItE0i3yrF09QsvzGFo/ZTicDr4DNzTGUeglxfTxeVA8CSJocBFbopiOGAuDqSaH3LIQydrm1MPPegbrhEro5trfgtIhR8UAVqALWd30TJ5245zQ+CVqEnQ5J2kYWPt+IAboxwqWZ4amGcCkdAWSlQu7NURpjnhhsCwQVpn3PCXi8QQWGB0Z/DfCdFm8YpArf+BfMdoURmplY2CNHD/pErvqLArP1IixDANSP9RDJzhD4UOOUHNAILQRcLdPwAoGL4c5KE9uw8qaA==
+ bh=7WtHuucVr0mioG8hMK3CYr/acoECPocCMbDaWYL6yQc=;
+ b=lz/ZBOUCAuPfuRb0uzs45Ofhz1J5oWFhBwB39Ig8zWlVJNR38elMwqZ/ziw/VXzoQ55D2JOd4QZb9vYyrFDgMPJNMFmmo53o1Ox9WGgDQnCaky0nBtwMVtsnYZrLuQf1GaDNZgiWe6LtDn+usmQVWxFMjjrwsXxzJTZFy/RVCTeQr+CfoPv79bUM1T3JZBU6hib4h/EaGq2Y8H15vunaxWMTMBCqToy74axwatsJcuqOJw3sK1XHPJg68mS+jQ7rulP714NNJHM/YX84FGucnXgwJEloPiC0jRY+aODj+OEvu3U3YP3sc4cWNG1UFtR6JDpnkMr8eW3aw2WKuBA92A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
  by PH0PR12MB8152.namprd12.prod.outlook.com (2603:10b6:510:292::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.16; Fri, 3 Oct
- 2025 15:47:55 +0000
+ 2025 15:47:59 +0000
 Received: from SN7PR12MB8059.namprd12.prod.outlook.com
  ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
  ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9160.017; Fri, 3 Oct 2025
- 15:47:55 +0000
+ 15:47:59 +0000
 From: Joel Fernandes <joelagnelf@nvidia.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -72,16 +72,16 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Andrea Righi <arighi@nvidia.com>,
 	nouveau@lists.freedesktop.org
-Subject: [PATCH v6 1/5] nova-core: bitfield: Move bitfield-specific code from register! into new macro
-Date: Fri,  3 Oct 2025 11:47:44 -0400
-Message-Id: <20251003154748.1687160-2-joelagnelf@nvidia.com>
+Subject: [PATCH v6 3/5] nova-core: bitfield: Add support for custom visiblity
+Date: Fri,  3 Oct 2025 11:47:46 -0400
+Message-Id: <20251003154748.1687160-4-joelagnelf@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251003154748.1687160-1-joelagnelf@nvidia.com>
 References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BN0PR04CA0029.namprd04.prod.outlook.com
- (2603:10b6:408:ee::34) To SN7PR12MB8059.namprd12.prod.outlook.com
+X-ClientProxiedBy: BN9P223CA0024.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:408:10b::29) To SN7PR12MB8059.namprd12.prod.outlook.com
  (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -91,758 +91,337 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|PH0PR12MB8152:EE_
-X-MS-Office365-Filtering-Correlation-Id: f252f711-0c4c-45ae-bbb2-08de029437d2
+X-MS-Office365-Filtering-Correlation-Id: 088bd8cd-c219-4822-ee74-08de02943a55
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xlwTS7hDRpp4WcFn++vUp8wPXAxmRaV41S+tt8QFZ/q5bLwXgy3IOLdIb9vE?=
- =?us-ascii?Q?GJ5KuSLyPRV+90OLPwipGqAoGmSDY50mExAGIvB014YPQoVytF/eJZtYLw4u?=
- =?us-ascii?Q?NKI17iPD0Lc7NgjG3sRU6ZLHyNBBRA6oWRMHruwCO/+WfHwc+kBxZRc1/XUF?=
- =?us-ascii?Q?OQwkYQ9bcsDGwvszFh5T1WCoaoSYsQyXCHWyGGEU4dlAqkA60DAgQbGLEeDH?=
- =?us-ascii?Q?JHorBkSyeCMZ82lV+dLxeZ+iOsR1HA1JiyhZoL3N+JQxFgjz1sLUPu8avMDV?=
- =?us-ascii?Q?FR3XO69/0kCHu3Y4zaOZNgbSzXt4P1/Cog40/Ol4bMgZh32O7NOIpjMUfHoy?=
- =?us-ascii?Q?bMLBRCkTIg9kd0kFf124lP22Ezxvz7v/2e9n6kjnIXzQImZSXbSotboEyHCe?=
- =?us-ascii?Q?/fFKm15cM3hOXGTEy3tFebDJteiu2R7BhhroJqNox7OKhX4fkejBnJ0GbPKW?=
- =?us-ascii?Q?e8DobvhGyBBHXeQoVTL0T3cVpaE5US+Bi6q9a0QHNxdccwYS2gUc8VPyJnKw?=
- =?us-ascii?Q?sEQtWbqwWOuznhXFMcoQL4H91qz2Z/p50Z/sFuG0kG6D/bobpnDgGmMMT7+k?=
- =?us-ascii?Q?GMw/QHjbK61jw5X+U8YOz1zP0GiOX7zUcaHKygizsndaRo5JZvA7j5vAIFx0?=
- =?us-ascii?Q?cvCK+vn+1GLR2t5KHW3neInKlvnTTmdk7oFpsDFogzjgM1oMy/NvRKGGSuI0?=
- =?us-ascii?Q?rLRPOCr4SKen7luzxMb3097ZxMBh8n0p/CqUDJhmtJGxbVHWQXlb8DbQMecR?=
- =?us-ascii?Q?AGVargsFlaDsdHpFYGc6ruTe58UTozduTk50yvjMJocTgMf0HfvFsvpUXLGi?=
- =?us-ascii?Q?u67ejWcmB42YXLoQsnyRKVEN8g4UQ9E5sQ0Qw58TxUUdCuPohatfTKXVFJca?=
- =?us-ascii?Q?+GUBrBq60QDYhQJoxCUm3zofJ/tJSzvO7pfhBi6vCFoll6BMzESNTY/Sqpyi?=
- =?us-ascii?Q?G9LcV3I9mXI8iX9w51a4UMnZzTmEBaz8mfJSUMhs71Is5qMzDHdzGyA7q7wR?=
- =?us-ascii?Q?xlLd9QyGXURz/8V67nNNIBzBiT8i3teEJkSeXWZTLEyaknO+f+yfnd9ekJbO?=
- =?us-ascii?Q?7yLOnzhnpjiIfkQunnXvliWu1Oh1QWToRm14cYcl6VQSbdWq5FhMq2eCShbV?=
- =?us-ascii?Q?lomUjtx5DdSsD2B2VEeVl41O+4/JkH83HFegLH+RwE6JaYSUSNit3VhuhQIx?=
- =?us-ascii?Q?arBjXREUV36LslZXIJVNk7onFL1aJe79utjPeMXafdOduhSpPpfAjJa1HWUp?=
- =?us-ascii?Q?pjuiUflT5+JH++1RhnNl5l4NCrLy0TyTKUnyNQmjUPx3jQQtg1LBU+IEsnfd?=
- =?us-ascii?Q?RVtg9fGbgOfytZmW0/zxAGDrObtuaOWFOaUiABoVDur3/RUGmKHwuYmxNetx?=
- =?us-ascii?Q?SfxiVpkqj1XXmOs8MpOttTu/eY4FlCu84rHioH13CLYf+VQr7eXG5TqSABzS?=
- =?us-ascii?Q?fxfiJSeIPUwXCK3mkt10yPbJDQ5AyakT?=
+	=?us-ascii?Q?0j6PKnmBa6hyVeLasbw/li9Qpi4T9BcoFIRL+dsVRxqJQy1w+qHSclDbgujk?=
+ =?us-ascii?Q?LC5ny2L0byG4PreHHNcdcchHbfDPDrXuw0KtdpcTpgh+6po+GeQ4vyV3cJtk?=
+ =?us-ascii?Q?JICPgKMiT2U1utvXQv+6VcKu05rhrviBD20CxfliXGE+qPsd4T37DSGIJJtK?=
+ =?us-ascii?Q?hqIzWEUWfTjyXYuXbfkXbOT04FDRnH/yRUnzdPG/YYW4XfxsmHfh4w9x+W5S?=
+ =?us-ascii?Q?U7pSW5FDp0vHn5zN0PZnXtF0wE6a/Kog9CzD41pkbahmKLeNJBZbWWTFjOKo?=
+ =?us-ascii?Q?BjBJCvRT35O1JljrxJ3UFrZe0v7qNzHwvZ+3fHV6rbd7hlSwks2Br/Zrhir2?=
+ =?us-ascii?Q?kWS323DhrNEkdQX3UxMXCkEVmQ3JxVgarii1JIW9uqFoMS4mPZr8UrZMPITJ?=
+ =?us-ascii?Q?/DcXb2GHFZnghvOMANnm99wGdNSivTUWQZEfr+rjLGDSZl/+F5sQfwQPn43M?=
+ =?us-ascii?Q?DGULAS/5HcnIDRu940vsWzJZ7IgUP29I8K2qPt/PKnlbh6vUrvraWmBoZ8/q?=
+ =?us-ascii?Q?lMrjwlSogsZy/k2V7YztE2kXbZJQjKL4VPAPxx+4kZ1YtbIvdshm58nsFcit?=
+ =?us-ascii?Q?Et25+nVuvL7qRYL6vdZsGnPA5HJ3/YRoeXgX+JdYWN4oz2ENGaKxoJem5plQ?=
+ =?us-ascii?Q?E8lEAxfHJvSeVuUSuq0y/206CCxnuPIJ2EN0KqvzwX04Qi/hHDKGRgrHJq2v?=
+ =?us-ascii?Q?P+xD1lUtTQkM+dNcZQxzvZc83GZ+j7IqAxhGOz82J/UNzHnkkyhgwcSz/LXf?=
+ =?us-ascii?Q?mmtnt4N9Vwj4Av9GPVvjyFcQKZmqbz2EsbFrr94NzFAJfKU7c9DZxMvW5MhD?=
+ =?us-ascii?Q?JNcAuJQR6PVRaHYVCge9JYXDeLYXG2Fzsfnf4G3jePkcyqc+IIadzxoq9gGB?=
+ =?us-ascii?Q?8g0nxSpI5fCiDgioSDFBVoXL9xYQ3WpOveB14koeuruLj/+odzQdaDXE0U/p?=
+ =?us-ascii?Q?h3Trybzn7JSA2KcQ1+zj9SUM4xITUaasitSEV6/DN8xAaK0ljPSL/M7spG95?=
+ =?us-ascii?Q?F3gHqUy0IhQy3kO0rtEASeLtoXuaqWX2NrfYzM87y7p3pQFxZ4Wc0iqlcKfT?=
+ =?us-ascii?Q?TrcDU1vIr3JhDo8H2j32a1nYns3OKblL9khJK/M9ILEwGLvTo4V+kPa024r8?=
+ =?us-ascii?Q?h/4Zczx/BnIOqzpLGpBuiSXLBdDN2m2S6PONC7dl5k7JeBiQUJdq8XdhLaKh?=
+ =?us-ascii?Q?atVIg5eLPKK22o7PVdYbKo9Ri1FhXrp0r2l8RcRUJb5GhVO/0G28CiR8VO+3?=
+ =?us-ascii?Q?x1IFssGfldNkOOGnPLZibQovrKbAI8vJa79BHIr9Jno44hk0Mz6EcGFkWwSG?=
+ =?us-ascii?Q?ZADHFFSOUhvV5q6NbR1pZRA0qeUDYDEZTWe9ARSBoiIa1e3pDbR03KxspdYN?=
+ =?us-ascii?Q?KvZwPvd4JV9qL2Mf6JRKxeBQ1T5urRhxX28CCNkmg1NIrk4/4LxO4m4jWUT+?=
+ =?us-ascii?Q?GrE2qcjRqKNPtghUvJnUd/NKOgftSTx7?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TxOJyjtgeCt208FW88INEC90LI3X4mh8zVoWEQq+0Bdhb3gmVFF02PiyQ81Q?=
- =?us-ascii?Q?47QiPDN2MCmOUrTPwNLIRjApl/qDpJGKy3kMVEdbMiDi1uxpV3u06cvxwzyM?=
- =?us-ascii?Q?KeukABLurnKHZ/+FKITELuMLII5YTouhnTDE7Ahkks7CFo5W+A5kKo/HauEv?=
- =?us-ascii?Q?SrUD2OUErY29VuhhsStpopKq+b19I5pUkc3AwlNxhTcyL/zXsJgUgl3yYHFM?=
- =?us-ascii?Q?OtafuruQG+Pm9Llbpa9dZtP8A6JQIy4HZEOber2GcHWIp3qesj+M5KtMYlrT?=
- =?us-ascii?Q?Adqlu6cr36xPlF869//ss9AWjpv689zUojbW3FaCR7NTKFZz8TRqcgtPTwx9?=
- =?us-ascii?Q?+o7HLhPVbRXubiAkmPyJfKylY6oSVMk1MolkjEEtd1KlIyirKsFhZEA+U1+v?=
- =?us-ascii?Q?atwvpk5P9If/2+7WSb1U0Cjp4Cx56MODS8IuHbeoooqlzOzEssl4QDZFt3h+?=
- =?us-ascii?Q?A21QIfQZCbBf8HnO7RgMxVFr6PxUmzM/UAOFYn9rfnX7EOWyQ1vhH5/NOCuw?=
- =?us-ascii?Q?K8kpxzYsPpIKzK5EYPK9MQpcBPCgd3pfFailERCdo52GbBmB8UeFmfwfoFS+?=
- =?us-ascii?Q?dYUeCPBNJq9z6SPASyPUPTJJPYdgvrXTG3kF+S7u+SvmgWaJwC4PNFWY+Nfs?=
- =?us-ascii?Q?sF1gq6fg6RaBbzOLvkOd0TpkcSGWdZYEghhPqyS6LT+pqvHetnHtLuvuhIkB?=
- =?us-ascii?Q?6wEAoTgbfUk2hon8v4EDlHSgwDKl67DHLNcG7+aV71s/jjAopHANtkqk0h9z?=
- =?us-ascii?Q?l93b5CjUnz+f6NOq946VG+3Lf3HGydLORpRViQHSI4DtSJGCIFLIyydU0dGV?=
- =?us-ascii?Q?86fAxlHEExuWXgNj5CsiYV6oE6kRYlskwipvMaz7fuKEiC9UGxjSHTiN1oLj?=
- =?us-ascii?Q?4Z1SpZQSjw3vWjOZlZkwXKxyXUUtJYVG9O5/CdksxFkrWWXk9/Qr6kZIy5Ar?=
- =?us-ascii?Q?jU0DKV4aU6XF21SQ2XmUMGR3np6/mVjLvl1W5jEa9QNetgA2munwsfA7Tx67?=
- =?us-ascii?Q?aL3pQc+lkJm4U3RpmVtvZFsztfO4rGQoxkhD9H7W+yxeT2B057lWMlOwIjtu?=
- =?us-ascii?Q?PA0kzc3gOG8usQCTYMiGEfhdkn0QiccEY1NhhiPdZPNQC6V3DCkYc0n6wkgc?=
- =?us-ascii?Q?3ui2aNO32uhuIOGZIJctKm4zWgeSIv7sOGeGl2DR+q2Y1CqYF13aenAB2M4y?=
- =?us-ascii?Q?gUXDpMccc5z/Xas3uaNvVQjDowTCHbE1XedHIW25Msj2Aji5Fe69eay0dVXv?=
- =?us-ascii?Q?hlgUlZgtCP9pb5U/fc2PoZRf64RGuumPgOEhr3wBLYSfG2bwr65/tm3X2vX/?=
- =?us-ascii?Q?NrKyNPNkLPPYY9XalqZMQYMbKWX7y7mBp8US0ddLGkJjWXaL0ahJREYu2Rw6?=
- =?us-ascii?Q?zCn3pmEfus3FYU81aF1NLtVSwmNoj+XsmZtbBNJeJ7Xng8Ze+NSfasmF6GYF?=
- =?us-ascii?Q?cIGOrLNxI7mSXIPBTy2xDqr9KJqHf1N1ZWGLkOE9/8pcSFEM77eVrqncYPbA?=
- =?us-ascii?Q?oQquvdYYXWVRRdkyXplsw92uSQZR6dn65Mi1kA2RceSoyGVvtJ7dS7HydBtz?=
- =?us-ascii?Q?C2BS9jtYdbytP5TAkpGiOokJXHFge+KJDVMne9iq?=
+	=?us-ascii?Q?e+zkdSFWI1WB/Q3OUsGiHwjV5sNUe3sdBC8TzFgXeMXa9M+3C8kmrWb6btnf?=
+ =?us-ascii?Q?Dw5KNpncWoueL0C1/M6S952AtUmU7k079B0E7lOuqcayAuGmh3FNGFFDzr5p?=
+ =?us-ascii?Q?DBQ8ThS4FZtPj2LxFcsN6J+ZsLfnth+9uWTkkBZX7Qwsq/UEs/rTxn+J88Dd?=
+ =?us-ascii?Q?j4L3wtYu9buF5ZMW8pezY3Ag8R5W/HJBZZM2yT1r2o+YCxuIC+nV4lQlqGAO?=
+ =?us-ascii?Q?d4v1x5BbDEeIziZlztwYcRHxJUtawxVMGshsk5vSI2miEClKJNU1i0uxDw9Y?=
+ =?us-ascii?Q?8ybZ8y3uTeFdWLrbQ9jfqQ8DeU8fhbpXHBjsMPlO0WTU8JG6peCAmUOKPNF1?=
+ =?us-ascii?Q?phYOA0VbZItE+pu2C6BG4ZCedZwva82dh7Nd//BXZNVo7UI1ju/Ayyjk4hzM?=
+ =?us-ascii?Q?ZzxsZ4LfV+DjjMEbE9+gYCNA4MvMt1NSkxPgnpsPHH+kdpYg2d6gYb4YErCs?=
+ =?us-ascii?Q?XqntHv5Pi1R7WTEOO567ou8CqkUkmSu84kBZVxYsbG9aRA/BnBpbpVRb9ppu?=
+ =?us-ascii?Q?rKe7rVIHt/h37b9++k/hnGXMgpc+x4hZUnBNcwJYDM//60PnsqOa0iM4zNqa?=
+ =?us-ascii?Q?872KV+biMrC/ZK9FyQdSPxh+KwC4NrEFFqtPvEQe7Ae/W4uPNeWXpA7or5LK?=
+ =?us-ascii?Q?FEs+3Jk07HrxYsCJlMoo1BUOTRo39+0n2qaqHQbWdUc3nKcIUtDa5vPp/3z2?=
+ =?us-ascii?Q?LhCFcPh465OLxw/Dhxf+OlVBqAdhd/McaEIsdZw/5G+Wg2B2lDuyfnzrsAdb?=
+ =?us-ascii?Q?u86Szs/tgRK9WR1MaOfcoObuvZYPpz1cCapQEsxf15f0qAbSkrifId/GTXQW?=
+ =?us-ascii?Q?XElT1xq7snaCXx5ZdY2zC8ha2T2BVIZL53nmR2RVDosUp6DPaxW/9s6PUKlj?=
+ =?us-ascii?Q?3VY52Ym4IqhYKo2BY1UHkyzbspmBq510XwIUcQiJHothpKChW+cL1IraePzW?=
+ =?us-ascii?Q?rFxyJjNjTwMsM7vMas9+Ct7s/qMVTFI/6KTI1ZD6nly3ZkOk9Yf58rX7RbpT?=
+ =?us-ascii?Q?xjUW+PUHHz+p8EzLaeLk2bDDnpKrcsxaqUpa2BbXZAZ5u4CT/N2iK5JMOlym?=
+ =?us-ascii?Q?mfMsRhhOsFgGsLGH7W+xJAbnzHKVZs4AjS/8iKzh+ZkQ1zQhph1MULmu8FGX?=
+ =?us-ascii?Q?0Iw5d3je+S71jvaVGi3q172VEZCdCUjeYrUtdIeNKRcnBW8E09UOzxu55a/G?=
+ =?us-ascii?Q?R41BoYSkV+5VoO4xk4Lo4HYvRpFalbPnbXuUz+JZT3ueaofdzAtGT0FSmvUq?=
+ =?us-ascii?Q?TCyOS3VPzjXu9+XXzl6vy4JcHkZDFNB1S7JRzRNzDEoa8eKOKGMV2Q2ro8yU?=
+ =?us-ascii?Q?vWy3auREiQrzn3fQ+5pk5etx7RGtlETbBZQD+2tHS18wXSu5jUR4lTjRwJRQ?=
+ =?us-ascii?Q?oC8RGWLw6abqwywb2xkJd2gbJz2bUXzl4v6MqlCszb4is3jzWZ/nBPqwhX4F?=
+ =?us-ascii?Q?1NhbjyP2vxZ4uTPdMdMRmrW7r+1LtF/GS2YWYf55WXY4/VSffbL4uHjWiMwO?=
+ =?us-ascii?Q?8uSgYPZL7q7GcFuPuSr6r601mJOq8u3SUq7dOa8Z+Q3YVhEqYQf+BkjMa/75?=
+ =?us-ascii?Q?8ZqmQX1dLAK5BBshA9VCFr1OyAGVTcrcJrowNBow?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f252f711-0c4c-45ae-bbb2-08de029437d2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 088bd8cd-c219-4822-ee74-08de02943a55
 X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2025 15:47:55.0304
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2025 15:47:59.2386
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I5CTIsFmhoY9+yBpjkn1OS7JzKDijEUbPLRaNsL4ZVdZH2BkkX6G6Dko95NVWeSVjm62/Xj6rOsoerzeNHWHUw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: aP1Zl45JViJHhmgKJmwIxLbnp1A5b8Y5C9C27qvfVVpnKsaJ7HZAEm97H4a0sxPfXzYZudyluq/jMpSN2Md2CA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8152
 
-The bitfield-specific into new macro. This will be used to define
-structs with bitfields, similar to C language.
+Add support for custom visiblity to allow for users to control visibility
+of the structure and helpers.
 
-Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
 Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
 Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 ---
- drivers/gpu/nova-core/bitfield.rs    | 316 +++++++++++++++++++++++++++
- drivers/gpu/nova-core/nova_core.rs   |   3 +
- drivers/gpu/nova-core/regs/macros.rs | 259 +---------------------
- 3 files changed, 329 insertions(+), 249 deletions(-)
- create mode 100644 drivers/gpu/nova-core/bitfield.rs
+ drivers/gpu/nova-core/bitfield.rs    | 49 +++++++++++++++-------------
+ drivers/gpu/nova-core/regs/macros.rs | 16 ++++-----
+ 2 files changed, 34 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bitfield.rs
-new file mode 100644
-index 000000000000..dd0ef2016ff8
---- /dev/null
+index 75de1c0fcb3b..cbedbb0078f6 100644
+--- a/drivers/gpu/nova-core/bitfield.rs
 +++ b/drivers/gpu/nova-core/bitfield.rs
-@@ -0,0 +1,316 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Bitfield library for Rust structures
-+//!
-+//! Support for defining bitfields in Rust structures. Also used by the [`register!`] macro.
-+
-+/// Defines a struct with accessors to access bits within an inner unsigned integer.
+@@ -57,7 +57,7 @@
+ /// }
+ ///
+ /// bitfield! {
+-///     struct ControlReg(u32) {
++///     pub struct ControlReg(u32) {
+ ///         3:0 mode as u8 ?=> Mode;
+ ///         7:7 state as bool => State;
+ ///     }
+@@ -71,6 +71,9 @@
+ ///   struct's storage size.
+ /// - Debug and Default implementations.
+ ///
++/// Note: Field accessors and setters inherit the same visibility as the struct itself.
++/// In the example above, both `mode()` and `set_mode()` methods will be `pub`.
 +///
-+/// # Syntax
-+///
-+/// ```rust
-+/// use nova_core::bitfield;
-+///
-+/// #[derive(Debug, Clone, Copy, Default)]
-+/// enum Mode {
-+///     #[default]
-+///     Low = 0,
-+///     High = 1,
-+///     Auto = 2,
-+/// }
-+///
-+/// impl TryFrom<u8> for Mode {
-+///     type Error = u8;
-+///     fn try_from(value: u8) -> Result<Self, Self::Error> {
-+///         match value {
-+///             0 => Ok(Mode::Low),
-+///             1 => Ok(Mode::High),
-+///             2 => Ok(Mode::Auto),
-+///             _ => Err(value),
-+///         }
-+///     }
-+/// }
-+///
-+/// impl From<Mode> for u32 {
-+///     fn from(mode: Mode) -> u32 {
-+///         mode as u32
-+///     }
-+/// }
-+///
-+/// #[derive(Debug, Clone, Copy, Default)]
-+/// enum State {
-+///     #[default]
-+///     Inactive = 0,
-+///     Active = 1,
-+/// }
-+///
-+/// impl From<bool> for State {
-+///     fn from(value: bool) -> Self {
-+///         if value { State::Active } else { State::Inactive }
-+///     }
-+/// }
-+///
-+/// impl From<State> for u32 {
-+///     fn from(state: State) -> u32 {
-+///         state as u32
-+///     }
-+/// }
-+///
-+/// bitfield! {
-+///     struct ControlReg {
-+///         3:0 mode as u8 ?=> Mode;
-+///         7:7 state as bool => State;
-+///     }
-+/// }
-+/// ```
-+///
-+/// This generates a struct with:
-+/// - Field accessors: `mode()`, `state()`, etc.
-+/// - Field setters: `set_mode()`, `set_state()`, etc. (supports chaining with builder pattern).
-+/// - Debug and Default implementations.
-+///
-+/// Fields are defined as follows:
-+///
-+/// - `as <type>` simply returns the field value casted to <type>, typically `u32`, `u16`, `u8` or
-+///   `bool`. Note that `bool` fields must have a range of 1 bit.
-+/// - `as <type> => <into_type>` calls `<into_type>`'s `From::<<type>>` implementation and returns
-+///   the result.
-+/// - `as <type> ?=> <try_into_type>` calls `<try_into_type>`'s `TryFrom::<<type>>` implementation
-+///   and returns the result. This is useful with fields for which not all values are valid.
-+macro_rules! bitfield {
-+    // Main entry point - defines the bitfield struct with fields
-+    (struct $name:ident $(, $comment:literal)? { $($fields:tt)* }) => {
-+        bitfield!(@core $name $(, $comment)? { $($fields)* });
-+    };
-+
-+    // All rules below are helpers.
-+
-+    // Defines the wrapper `$name` type, as well as its relevant implementations (`Debug`,
-+    // `Default`, `BitOr`, and conversion to the value type) and field accessor methods.
-+    (@core $name:ident $(, $comment:literal)? { $($fields:tt)* }) => {
-+        $(
-+        #[doc=$comment]
-+        )?
-+        #[repr(transparent)]
-+        #[derive(Clone, Copy)]
-+        pub(crate) struct $name(u32);
-+
-+        impl ::core::ops::BitOr for $name {
-+            type Output = Self;
-+
-+            fn bitor(self, rhs: Self) -> Self::Output {
-+                Self(self.0 | rhs.0)
-+            }
-+        }
-+
-+        impl ::core::convert::From<$name> for u32 {
-+            fn from(val: $name) -> u32 {
-+                val.0
-+            }
-+        }
-+
-+        bitfield!(@fields_dispatcher $name { $($fields)* });
-+    };
-+
-+    // Captures the fields and passes them to all the implementers that require field information.
-+    //
-+    // Used to simplify the matching rules for implementers, so they don't need to match the entire
-+    // complex fields rule even though they only make use of part of it.
-+    (@fields_dispatcher $name:ident {
-+        $($hi:tt:$lo:tt $field:ident as $type:tt
-+            $(?=> $try_into_type:ty)?
-+            $(=> $into_type:ty)?
-+            $(, $comment:literal)?
-+        ;
-+        )*
-+    }
-+    ) => {
-+        bitfield!(@field_accessors $name {
-+            $(
-+                $hi:$lo $field as $type
-+                $(?=> $try_into_type)?
-+                $(=> $into_type)?
-+                $(, $comment)?
-+            ;
-+            )*
-+        });
-+        bitfield!(@debug $name { $($field;)* });
-+        bitfield!(@default $name { $($field;)* });
-+    };
-+
-+    // Defines all the field getter/setter methods for `$name`.
-+    (
-+        @field_accessors $name:ident {
-+        $($hi:tt:$lo:tt $field:ident as $type:tt
-+            $(?=> $try_into_type:ty)?
-+            $(=> $into_type:ty)?
-+            $(, $comment:literal)?
-+        ;
-+        )*
-+        }
-+    ) => {
-+        $(
-+            bitfield!(@check_field_bounds $hi:$lo $field as $type);
-+        )*
-+
-+        #[allow(dead_code)]
-+        impl $name {
-+            $(
-+            bitfield!(@field_accessor $name $hi:$lo $field as $type
-+                $(?=> $try_into_type)?
-+                $(=> $into_type)?
-+                $(, $comment)?
-+                ;
-+            );
-+            )*
-+        }
-+    };
-+
-+    // Boolean fields must have `$hi == $lo`.
-+    (@check_field_bounds $hi:tt:$lo:tt $field:ident as bool) => {
-+        #[allow(clippy::eq_op)]
-+        const _: () = {
-+            ::kernel::build_assert!(
-+                $hi == $lo,
-+                concat!("boolean field `", stringify!($field), "` covers more than one bit")
-+            );
-+        };
-+    };
-+
-+    // Non-boolean fields must have `$hi >= $lo`.
-+    (@check_field_bounds $hi:tt:$lo:tt $field:ident as $type:tt) => {
-+        #[allow(clippy::eq_op)]
-+        const _: () = {
-+            ::kernel::build_assert!(
-+                $hi >= $lo,
-+                concat!("field `", stringify!($field), "`'s MSB is smaller than its LSB")
-+            );
-+        };
-+    };
-+
-+    // Catches fields defined as `bool` and convert them into a boolean value.
-+    (
-+        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as bool => $into_type:ty
-+            $(, $comment:literal)?;
-+    ) => {
-+        bitfield!(
-+            @leaf_accessor $name $hi:$lo $field
-+            { |f| <$into_type>::from(if f != 0 { true } else { false }) }
-+            $into_type => $into_type $(, $comment)?;
-+        );
-+    };
-+
-+    // Shortcut for fields defined as `bool` without the `=>` syntax.
-+    (
-+        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as bool $(, $comment:literal)?;
-+    ) => {
-+        bitfield!(@field_accessor $name $hi:$lo $field as bool => bool $(, $comment)?;);
-+    };
-+
-+    // Catches the `?=>` syntax for non-boolean fields.
-+    (
-+        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as $type:tt ?=> $try_into_type:ty
-+            $(, $comment:literal)?;
-+    ) => {
-+        bitfield!(@leaf_accessor $name $hi:$lo $field
-+            { |f| <$try_into_type>::try_from(f as $type) } $try_into_type =>
-+            ::core::result::Result<
-+                $try_into_type,
-+                <$try_into_type as ::core::convert::TryFrom<$type>>::Error
-+            >
-+            $(, $comment)?;);
-+    };
-+
-+    // Catches the `=>` syntax for non-boolean fields.
-+    (
-+        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as $type:tt => $into_type:ty
-+            $(, $comment:literal)?;
-+    ) => {
-+        bitfield!(@leaf_accessor $name $hi:$lo $field
-+            { |f| <$into_type>::from(f as $type) } $into_type => $into_type $(, $comment)?;);
-+    };
-+
-+    // Shortcut for non-boolean fields defined without the `=>` or `?=>` syntax.
-+    (
-+        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as $type:tt
-+            $(, $comment:literal)?;
-+    ) => {
-+        bitfield!(@field_accessor $name $hi:$lo $field as $type => $type $(, $comment)?;);
-+    };
-+
-+    // Generates the accessor methods for a single field.
-+    (
-+        @leaf_accessor $name:ident $hi:tt:$lo:tt $field:ident
-+            { $process:expr } $to_type:ty => $res_type:ty $(, $comment:literal)?;
-+    ) => {
-+        ::kernel::macros::paste!(
-+        const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
-+        const [<$field:upper _MASK>]: u32 = ((((1 << $hi) - 1) << 1) + 1) - ((1 << $lo) - 1);
-+        const [<$field:upper _SHIFT>]: u32 = Self::[<$field:upper _MASK>].trailing_zeros();
-+        );
-+
-+        $(
-+        #[doc="Returns the value of this field:"]
-+        #[doc=$comment]
-+        )?
-+        #[inline(always)]
-+        pub(crate) fn $field(self) -> $res_type {
-+            ::kernel::macros::paste!(
-+            const MASK: u32 = $name::[<$field:upper _MASK>];
-+            const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
-+            );
-+            let field = ((self.0 & MASK) >> SHIFT);
-+
-+            $process(field)
-+        }
-+
-+        ::kernel::macros::paste!(
-+        $(
-+        #[doc="Sets the value of this field:"]
-+        #[doc=$comment]
-+        )?
-+        #[inline(always)]
-+        pub(crate) fn [<set_ $field>](mut self, value: $to_type) -> Self {
-+            const MASK: u32 = $name::[<$field:upper _MASK>];
-+            const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
-+            let value = (u32::from(value) << SHIFT) & MASK;
-+            self.0 = (self.0 & !MASK) | value;
-+
-+            self
-+        }
-+        );
-+    };
-+
-+    // Generates the `Debug` implementation for `$name`.
-+    (@debug $name:ident { $($field:ident;)* }) => {
-+        impl ::core::fmt::Debug for $name {
-+            fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-+                f.debug_struct(stringify!($name))
-+                    .field("<raw>", &format_args!("{:#x}", &self.0))
-+                $(
-+                    .field(stringify!($field), &self.$field())
-+                )*
-+                    .finish()
-+            }
-+        }
-+    };
-+
-+    // Generates the `Default` implementation for `$name`.
-+    (@default $name:ident { $($field:ident;)* }) => {
-+        /// Returns a value for the bitfield where all fields are set to their default value.
-+        impl ::core::default::Default for $name {
-+            fn default() -> Self {
-+                #[allow(unused_mut)]
-+                let mut value = Self(Default::default());
-+
-+                ::kernel::macros::paste!(
-+                $(
-+                value.[<set_ $field>](Default::default());
-+                )*
-+                );
-+
-+                value
-+            }
-+        }
-+    };
-+}
-diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-index fffcaee2249f..112277c7921e 100644
---- a/drivers/gpu/nova-core/nova_core.rs
-+++ b/drivers/gpu/nova-core/nova_core.rs
-@@ -2,6 +2,9 @@
+ /// Fields are defined as follows:
+ ///
+ /// - `as <type>` simply returns the field value casted to <type>, typically `u32`, `u16`, `u8` or
+@@ -81,21 +84,21 @@
+ ///   and returns the result. This is useful with fields for which not all values are valid.
+ macro_rules! bitfield {
+     // Main entry point - defines the bitfield struct with fields
+-    (struct $name:ident($storage:ty) $(, $comment:literal)? { $($fields:tt)* }) => {
+-        bitfield!(@core $name $storage $(, $comment)? { $($fields)* });
++    ($vis:vis struct $name:ident($storage:ty) $(, $comment:literal)? { $($fields:tt)* }) => {
++        bitfield!(@core $vis $name $storage $(, $comment)? { $($fields)* });
+     };
  
- //! Nova Core GPU Driver
+     // All rules below are helpers.
  
-+#[macro_use]
-+mod bitfield;
-+
- mod dma;
- mod driver;
- mod falcon;
+     // Defines the wrapper `$name` type, as well as its relevant implementations (`Debug`,
+     // `Default`, `BitOr`, and conversion to the value type) and field accessor methods.
+-    (@core $name:ident $storage:ty $(, $comment:literal)? { $($fields:tt)* }) => {
++    (@core $vis:vis $name:ident $storage:ty $(, $comment:literal)? { $($fields:tt)* }) => {
+         $(
+         #[doc=$comment]
+         )?
+         #[repr(transparent)]
+         #[derive(Clone, Copy)]
+-        pub(crate) struct $name($storage);
++        $vis struct $name($storage);
+ 
+         impl ::core::ops::BitOr for $name {
+             type Output = Self;
+@@ -111,14 +114,14 @@ fn from(val: $name) -> $storage {
+             }
+         }
+ 
+-        bitfield!(@fields_dispatcher $name $storage { $($fields)* });
++        bitfield!(@fields_dispatcher $vis $name $storage { $($fields)* });
+     };
+ 
+     // Captures the fields and passes them to all the implementers that require field information.
+     //
+     // Used to simplify the matching rules for implementers, so they don't need to match the entire
+     // complex fields rule even though they only make use of part of it.
+-    (@fields_dispatcher $name:ident $storage:ty {
++    (@fields_dispatcher $vis:vis $name:ident $storage:ty {
+         $($hi:tt:$lo:tt $field:ident as $type:tt
+             $(?=> $try_into_type:ty)?
+             $(=> $into_type:ty)?
+@@ -127,7 +130,7 @@ fn from(val: $name) -> $storage {
+         )*
+     }
+     ) => {
+-        bitfield!(@field_accessors $name $storage {
++        bitfield!(@field_accessors $vis $name $storage {
+             $(
+                 $hi:$lo $field as $type
+                 $(?=> $try_into_type)?
+@@ -142,7 +145,7 @@ fn from(val: $name) -> $storage {
+ 
+     // Defines all the field getter/setter methods for `$name`.
+     (
+-        @field_accessors $name:ident $storage:ty {
++        @field_accessors $vis:vis $name:ident $storage:ty {
+         $($hi:tt:$lo:tt $field:ident as $type:tt
+             $(?=> $try_into_type:ty)?
+             $(=> $into_type:ty)?
+@@ -158,7 +161,7 @@ fn from(val: $name) -> $storage {
+         #[allow(dead_code)]
+         impl $name {
+             $(
+-            bitfield!(@field_accessor $name $storage, $hi:$lo $field as $type
++            bitfield!(@field_accessor $vis $name $storage, $hi:$lo $field as $type
+                 $(?=> $try_into_type)?
+                 $(=> $into_type)?
+                 $(, $comment)?
+@@ -192,11 +195,11 @@ impl $name {
+ 
+     // Catches fields defined as `bool` and convert them into a boolean value.
+     (
+-        @field_accessor $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as bool => $into_type:ty
++        @field_accessor $vis:vis $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as bool => $into_type:ty
+             $(, $comment:literal)?;
+     ) => {
+         bitfield!(
+-            @leaf_accessor $name $storage, $hi:$lo $field
++            @leaf_accessor $vis $name $storage, $hi:$lo $field
+             { |f| <$into_type>::from(if f != 0 { true } else { false }) }
+             $into_type => $into_type $(, $comment)?;
+         );
+@@ -204,17 +207,17 @@ impl $name {
+ 
+     // Shortcut for fields defined as `bool` without the `=>` syntax.
+     (
+-        @field_accessor $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as bool $(, $comment:literal)?;
++        @field_accessor $vis:vis $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as bool $(, $comment:literal)?;
+     ) => {
+-        bitfield!(@field_accessor $name $storage, $hi:$lo $field as bool => bool $(, $comment)?;);
++        bitfield!(@field_accessor $vis $name $storage, $hi:$lo $field as bool => bool $(, $comment)?;);
+     };
+ 
+     // Catches the `?=>` syntax for non-boolean fields.
+     (
+-        @field_accessor $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as $type:tt ?=> $try_into_type:ty
++        @field_accessor $vis:vis $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as $type:tt ?=> $try_into_type:ty
+             $(, $comment:literal)?;
+     ) => {
+-        bitfield!(@leaf_accessor $name $storage, $hi:$lo $field
++        bitfield!(@leaf_accessor $vis $name $storage, $hi:$lo $field
+             { |f| <$try_into_type>::try_from(f as $type) } $try_into_type =>
+             ::core::result::Result<
+                 $try_into_type,
+@@ -225,24 +228,24 @@ impl $name {
+ 
+     // Catches the `=>` syntax for non-boolean fields.
+     (
+-        @field_accessor $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as $type:tt => $into_type:ty
++        @field_accessor $vis:vis $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as $type:tt => $into_type:ty
+             $(, $comment:literal)?;
+     ) => {
+-        bitfield!(@leaf_accessor $name $storage, $hi:$lo $field
++        bitfield!(@leaf_accessor $vis $name $storage, $hi:$lo $field
+             { |f| <$into_type>::from(f as $type) } $into_type => $into_type $(, $comment)?;);
+     };
+ 
+     // Shortcut for non-boolean fields defined without the `=>` or `?=>` syntax.
+     (
+-        @field_accessor $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as $type:tt
++        @field_accessor $vis:vis $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident as $type:tt
+             $(, $comment:literal)?;
+     ) => {
+-        bitfield!(@field_accessor $name $storage, $hi:$lo $field as $type => $type $(, $comment)?;);
++        bitfield!(@field_accessor $vis $name $storage, $hi:$lo $field as $type => $type $(, $comment)?;);
+     };
+ 
+     // Generates the accessor methods for a single field.
+     (
+-        @leaf_accessor $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident
++        @leaf_accessor $vis:vis $name:ident $storage:ty, $hi:tt:$lo:tt $field:ident
+             { $process:expr } $to_type:ty => $res_type:ty $(, $comment:literal)?;
+     ) => {
+         ::kernel::macros::paste!(
+@@ -265,7 +268,7 @@ impl $name {
+         #[doc=$comment]
+         )?
+         #[inline(always)]
+-        pub(crate) fn $field(self) -> $res_type {
++        $vis fn $field(self) -> $res_type {
+             ::kernel::macros::paste!(
+             const MASK: $storage = $name::[<$field:upper _MASK>];
+             const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
+@@ -281,7 +284,7 @@ pub(crate) fn $field(self) -> $res_type {
+         #[doc=$comment]
+         )?
+         #[inline(always)]
+-        pub(crate) fn [<set_ $field>](mut self, value: $to_type) -> Self {
++        $vis fn [<set_ $field>](mut self, value: $to_type) -> Self {
+             const MASK: $storage = $name::[<$field:upper _MASK>];
+             const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
+             let value = (<$storage>::from(value) << SHIFT) & MASK;
 diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
-index 754c14ee7f40..945d15a2c529 100644
+index ffd7d5cb73bb..c0a5194e8d97 100644
 --- a/drivers/gpu/nova-core/regs/macros.rs
 +++ b/drivers/gpu/nova-core/regs/macros.rs
-@@ -8,7 +8,8 @@
- //!
- //! The `register!` macro in this module provides an intuitive and readable syntax for defining a
- //! dedicated type for each register. Each such type comes with its own field accessors that can
--//! return an error if a field's value is invalid.
-+//! return an error if a field's value is invalid. Please look at the [`bitfield`] macro for the
-+//! complete syntax of fields definitions.
- 
- /// Trait providing a base address to be added to the offset of a relative register to obtain
- /// its actual offset.
-@@ -54,15 +55,6 @@ pub(crate) trait RegisterBase<T> {
- /// BOOT_0::alter(&bar, |r| r.set_major_revision(3).set_minor_revision(10));
- /// ```
- ///
--/// Fields are defined as follows:
--///
--/// - `as <type>` simply returns the field value casted to <type>, typically `u32`, `u16`, `u8` or
--///   `bool`. Note that `bool` fields must have a range of 1 bit.
--/// - `as <type> => <into_type>` calls `<into_type>`'s `From::<<type>>` implementation and returns
--///   the result.
--/// - `as <type> ?=> <try_into_type>` calls `<try_into_type>`'s `TryFrom::<<type>>` implementation
--///   and returns the result. This is useful with fields for which not all values are valid.
--///
- /// The documentation strings are optional. If present, they will be added to the type's
- /// definition, or the field getter and setter methods they are attached to.
- ///
-@@ -284,25 +276,25 @@ pub(crate) trait RegisterBase<T> {
+@@ -276,25 +276,25 @@ pub(crate) trait RegisterBase<T> {
  macro_rules! register {
      // Creates a register at a fixed offset of the MMIO space.
      ($name:ident @ $offset:literal $(, $comment:literal)? { $($fields:tt)* } ) => {
--        register!(@core $name $(, $comment)? { $($fields)* } );
-+        bitfield!(struct $name $(, $comment)? { $($fields)* } );
+-        bitfield!(struct $name(u32) $(, $comment)? { $($fields)* } );
++        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
          register!(@io_fixed $name @ $offset);
      };
  
      // Creates an alias register of fixed offset register `alias` with its own fields.
      ($name:ident => $alias:ident $(, $comment:literal)? { $($fields:tt)* } ) => {
--        register!(@core $name $(, $comment)? { $($fields)* } );
-+        bitfield!(struct $name $(, $comment)? { $($fields)* } );
+-        bitfield!(struct $name(u32) $(, $comment)? { $($fields)* } );
++        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
          register!(@io_fixed $name @ $alias::OFFSET);
      };
  
      // Creates a register at a relative offset from a base address provider.
      ($name:ident @ $base:ty [ $offset:literal ] $(, $comment:literal)? { $($fields:tt)* } ) => {
--        register!(@core $name $(, $comment)? { $($fields)* } );
-+        bitfield!(struct $name $(, $comment)? { $($fields)* } );
+-        bitfield!(struct $name(u32) $(, $comment)? { $($fields)* } );
++        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
          register!(@io_relative $name @ $base [ $offset ]);
      };
  
      // Creates an alias register of relative offset register `alias` with its own fields.
      ($name:ident => $base:ty [ $alias:ident ] $(, $comment:literal)? { $($fields:tt)* }) => {
--        register!(@core $name $(, $comment)? { $($fields)* } );
-+        bitfield!(struct $name $(, $comment)? { $($fields)* } );
+-        bitfield!(struct $name(u32) $(, $comment)? { $($fields)* } );
++        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
          register!(@io_relative $name @ $base [ $alias::OFFSET ]);
      };
  
-@@ -313,7 +305,7 @@ macro_rules! register {
+@@ -305,7 +305,7 @@ macro_rules! register {
          }
      ) => {
          static_assert!(::core::mem::size_of::<u32>() <= $stride);
--        register!(@core $name $(, $comment)? { $($fields)* } );
-+        bitfield!(struct $name $(, $comment)? { $($fields)* } );
+-        bitfield!(struct $name(u32) $(, $comment)? { $($fields)* } );
++        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
          register!(@io_array $name @ $offset [ $size ; $stride ]);
      };
  
-@@ -334,7 +326,7 @@ macro_rules! register {
+@@ -326,7 +326,7 @@ macro_rules! register {
              $(, $comment:literal)? { $($fields:tt)* }
      ) => {
          static_assert!(::core::mem::size_of::<u32>() <= $stride);
--        register!(@core $name $(, $comment)? { $($fields)* } );
-+        bitfield!(struct $name $(, $comment)? { $($fields)* } );
+-        bitfield!(struct $name(u32) $(, $comment)? { $($fields)* } );
++        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
          register!(@io_relative_array $name @ $base [ $offset [ $size ; $stride ] ]);
      };
  
-@@ -356,7 +348,7 @@ macro_rules! register {
+@@ -348,7 +348,7 @@ macro_rules! register {
          }
      ) => {
          static_assert!($idx < $alias::SIZE);
--        register!(@core $name $(, $comment)? { $($fields)* } );
-+        bitfield!(struct $name $(, $comment)? { $($fields)* } );
+-        bitfield!(struct $name(u32) $(, $comment)? { $($fields)* } );
++        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
          register!(@io_relative $name @ $base [ $alias::OFFSET + $idx * $alias::STRIDE ] );
      };
  
-@@ -365,241 +357,10 @@ macro_rules! register {
+@@ -357,7 +357,7 @@ macro_rules! register {
      // to avoid it being interpreted in place of the relative register array alias rule.
      ($name:ident => $alias:ident [ $idx:expr ] $(, $comment:literal)? { $($fields:tt)* }) => {
          static_assert!($idx < $alias::SIZE);
--        register!(@core $name $(, $comment)? { $($fields)* } );
-+        bitfield!(struct $name $(, $comment)? { $($fields)* } );
+-        bitfield!(struct $name(u32) $(, $comment)? { $($fields)* } );
++        bitfield!(pub(crate) struct $name(u32) $(, $comment)? { $($fields)* } );
          register!(@io_fixed $name @ $alias::OFFSET + $idx * $alias::STRIDE );
      };
  
--    // All rules below are helpers.
--
--    // Defines the wrapper `$name` type, as well as its relevant implementations (`Debug`,
--    // `Default`, `BitOr`, and conversion to the value type) and field accessor methods.
--    (@core $name:ident $(, $comment:literal)? { $($fields:tt)* }) => {
--        $(
--        #[doc=$comment]
--        )?
--        #[repr(transparent)]
--        #[derive(Clone, Copy)]
--        pub(crate) struct $name(u32);
--
--        impl ::core::ops::BitOr for $name {
--            type Output = Self;
--
--            fn bitor(self, rhs: Self) -> Self::Output {
--                Self(self.0 | rhs.0)
--            }
--        }
--
--        impl ::core::convert::From<$name> for u32 {
--            fn from(reg: $name) -> u32 {
--                reg.0
--            }
--        }
--
--        register!(@fields_dispatcher $name { $($fields)* });
--    };
--
--    // Captures the fields and passes them to all the implementers that require field information.
--    //
--    // Used to simplify the matching rules for implementers, so they don't need to match the entire
--    // complex fields rule even though they only make use of part of it.
--    (@fields_dispatcher $name:ident {
--        $($hi:tt:$lo:tt $field:ident as $type:tt
--            $(?=> $try_into_type:ty)?
--            $(=> $into_type:ty)?
--            $(, $comment:literal)?
--        ;
--        )*
--    }
--    ) => {
--        register!(@field_accessors $name {
--            $(
--                $hi:$lo $field as $type
--                $(?=> $try_into_type)?
--                $(=> $into_type)?
--                $(, $comment)?
--            ;
--            )*
--        });
--        register!(@debug $name { $($field;)* });
--        register!(@default $name { $($field;)* });
--    };
--
--    // Defines all the field getter/methods methods for `$name`.
--    (
--        @field_accessors $name:ident {
--        $($hi:tt:$lo:tt $field:ident as $type:tt
--            $(?=> $try_into_type:ty)?
--            $(=> $into_type:ty)?
--            $(, $comment:literal)?
--        ;
--        )*
--        }
--    ) => {
--        $(
--            register!(@check_field_bounds $hi:$lo $field as $type);
--        )*
--
--        #[allow(dead_code)]
--        impl $name {
--            $(
--            register!(@field_accessor $name $hi:$lo $field as $type
--                $(?=> $try_into_type)?
--                $(=> $into_type)?
--                $(, $comment)?
--                ;
--            );
--            )*
--        }
--    };
--
--    // Boolean fields must have `$hi == $lo`.
--    (@check_field_bounds $hi:tt:$lo:tt $field:ident as bool) => {
--        #[allow(clippy::eq_op)]
--        const _: () = {
--            ::kernel::build_assert!(
--                $hi == $lo,
--                concat!("boolean field `", stringify!($field), "` covers more than one bit")
--            );
--        };
--    };
--
--    // Non-boolean fields must have `$hi >= $lo`.
--    (@check_field_bounds $hi:tt:$lo:tt $field:ident as $type:tt) => {
--        #[allow(clippy::eq_op)]
--        const _: () = {
--            ::kernel::build_assert!(
--                $hi >= $lo,
--                concat!("field `", stringify!($field), "`'s MSB is smaller than its LSB")
--            );
--        };
--    };
--
--    // Catches fields defined as `bool` and convert them into a boolean value.
--    (
--        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as bool => $into_type:ty
--            $(, $comment:literal)?;
--    ) => {
--        register!(
--            @leaf_accessor $name $hi:$lo $field
--            { |f| <$into_type>::from(if f != 0 { true } else { false }) }
--            $into_type => $into_type $(, $comment)?;
--        );
--    };
--
--    // Shortcut for fields defined as `bool` without the `=>` syntax.
--    (
--        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as bool $(, $comment:literal)?;
--    ) => {
--        register!(@field_accessor $name $hi:$lo $field as bool => bool $(, $comment)?;);
--    };
--
--    // Catches the `?=>` syntax for non-boolean fields.
--    (
--        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as $type:tt ?=> $try_into_type:ty
--            $(, $comment:literal)?;
--    ) => {
--        register!(@leaf_accessor $name $hi:$lo $field
--            { |f| <$try_into_type>::try_from(f as $type) } $try_into_type =>
--            ::core::result::Result<
--                $try_into_type,
--                <$try_into_type as ::core::convert::TryFrom<$type>>::Error
--            >
--            $(, $comment)?;);
--    };
--
--    // Catches the `=>` syntax for non-boolean fields.
--    (
--        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as $type:tt => $into_type:ty
--            $(, $comment:literal)?;
--    ) => {
--        register!(@leaf_accessor $name $hi:$lo $field
--            { |f| <$into_type>::from(f as $type) } $into_type => $into_type $(, $comment)?;);
--    };
--
--    // Shortcut for non-boolean fields defined without the `=>` or `?=>` syntax.
--    (
--        @field_accessor $name:ident $hi:tt:$lo:tt $field:ident as $type:tt
--            $(, $comment:literal)?;
--    ) => {
--        register!(@field_accessor $name $hi:$lo $field as $type => $type $(, $comment)?;);
--    };
--
--    // Generates the accessor methods for a single field.
--    (
--        @leaf_accessor $name:ident $hi:tt:$lo:tt $field:ident
--            { $process:expr } $to_type:ty => $res_type:ty $(, $comment:literal)?;
--    ) => {
--        ::kernel::macros::paste!(
--        const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
--        const [<$field:upper _MASK>]: u32 = ((((1 << $hi) - 1) << 1) + 1) - ((1 << $lo) - 1);
--        const [<$field:upper _SHIFT>]: u32 = Self::[<$field:upper _MASK>].trailing_zeros();
--        );
--
--        $(
--        #[doc="Returns the value of this field:"]
--        #[doc=$comment]
--        )?
--        #[inline(always)]
--        pub(crate) fn $field(self) -> $res_type {
--            ::kernel::macros::paste!(
--            const MASK: u32 = $name::[<$field:upper _MASK>];
--            const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
--            );
--            let field = ((self.0 & MASK) >> SHIFT);
--
--            $process(field)
--        }
--
--        ::kernel::macros::paste!(
--        $(
--        #[doc="Sets the value of this field:"]
--        #[doc=$comment]
--        )?
--        #[inline(always)]
--        pub(crate) fn [<set_ $field>](mut self, value: $to_type) -> Self {
--            const MASK: u32 = $name::[<$field:upper _MASK>];
--            const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
--            let value = (u32::from(value) << SHIFT) & MASK;
--            self.0 = (self.0 & !MASK) | value;
--
--            self
--        }
--        );
--    };
--
--    // Generates the `Debug` implementation for `$name`.
--    (@debug $name:ident { $($field:ident;)* }) => {
--        impl ::core::fmt::Debug for $name {
--            fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
--                f.debug_struct(stringify!($name))
--                    .field("<raw>", &format_args!("{:#x}", &self.0))
--                $(
--                    .field(stringify!($field), &self.$field())
--                )*
--                    .finish()
--            }
--        }
--    };
--
--    // Generates the `Default` implementation for `$name`.
--    (@default $name:ident { $($field:ident;)* }) => {
--        /// Returns a value for the register where all fields are set to their default value.
--        impl ::core::default::Default for $name {
--            fn default() -> Self {
--                #[allow(unused_mut)]
--                let mut value = Self(Default::default());
--
--                ::kernel::macros::paste!(
--                $(
--                value.[<set_ $field>](Default::default());
--                )*
--                );
--
--                value
--            }
--        }
--    };
--
-     // Generates the IO accessors for a fixed offset register.
-     (@io_fixed $name:ident @ $offset:expr) => {
-         #[allow(dead_code)]
 -- 
 2.34.1
 
