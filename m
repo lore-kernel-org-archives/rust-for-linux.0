@@ -1,116 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C343E2882D3;
-	Fri,  3 Oct 2025 22:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED05203710;
+	Fri,  3 Oct 2025 22:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759530484; cv=none; b=WPjq4B20E1HiyRWvHbBAnZNz49RYNPuwOQ89CuL1WxKie/L37LzQVMHGKvoGxAyI7qBUiRVKG6L4uiEuamL9amu720RiSMZnzBnrgqVcW5sFNNDWk8/0Em0AiDZMvhpnSDV8HrzLMg3AV9VTJRO1t3dPssXs2Yclfkhk74Jydwc=
+	t=1759532248; cv=none; b=eveGzYCrQjpABLss6lxJ6HCroYAUbT7F6uh+SOKfNN5smlKoITXKje1Zqcajr33Bj9UrDs5RXUVZAh1drrO+sWScthN0yAYZy9JZBgb8yf11sTSkOarKNhSlM/9za9W6wEDNE5XHq0/euoNTNSWsga+BpaFcmhqa+K8NZm7pBSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759530484; c=relaxed/simple;
-	bh=aDaaWLZWxHoJ8yRtUHn3xfnO38OT1PRhYVazKvf9Jn8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpMr4yQkahRxDSsb1X2nnDzNh+ceNUc9IxNJ3wfrjetI3Erf4dulWlz3dWapKkhZ5Lx8x02R7QFcUx8xjvj9Oz9sL5Q2CNSjG+SOKxH5OD4K0dJOatjD4v/2IWD+SPfSD2nFDBDkP8gkTbI8pna+lRAH/bicg7FDVlJmS5jOztk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PM2scPTp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759532248; c=relaxed/simple;
+	bh=QlnUffNjLbcmqEw64x2x55MGPaaNVTMhAgdaSwOtFU0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=daD+0YUR6J3tRjuiFKO5dJoDP/3xPFcXdCEDzwplCSBccm5kIwsf93u6egL3eMD3F+3ocomOZ4tqy8d+jJHDOvcY6UoVydpMrPnOOcz9S395HUUEqEd2VBElttdnxWtfiEMifHSQvg5U58n0PZpwvYxba27xxUh8Ont/K3QNyKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kuZrqr3V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PM2scPTp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6D8C4CEF5;
-	Fri,  3 Oct 2025 22:28:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kuZrqr3V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E65C4CEF5;
+	Fri,  3 Oct 2025 22:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759530484;
-	bh=aDaaWLZWxHoJ8yRtUHn3xfnO38OT1PRhYVazKvf9Jn8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PM2scPTpX4mPaC4KOPuJqno8K3q8PjltayT6nBnwIv+jZa5NSAUp2/fEZHF/sImTo
-	 i76YsL0apNCONjEnGpISCH8Fzv9KoLk1u8jzATZS14e0U0gz8hiFJsVQCxWw9iXM5g
-	 tB5H8r5bLSDRBhAfpPnhhWNYhmAf2jeqYZsJXWyuh8VjW3RFTWFPlad+vgrVBjNSX2
-	 A2STlFQqdr/RspvxUEIyl7ZVDI3zcsllBdxYoCfXs+b2m3vkXWZ8VjrHMWkvn4z1lc
-	 /76f9urGJ4kOh3GuiU1A0cq+TdQjXGuTJQDyUOZ5/bqx9x7soEEVpco0e2vJfTY2C2
-	 7GTdMUST73oog==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	mmaurer@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 7/7] samples: rust: debugfs_scoped: add example for blobs
-Date: Sat,  4 Oct 2025 00:26:44 +0200
-Message-ID: <20251003222729.322059-8-dakr@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251003222729.322059-1-dakr@kernel.org>
-References: <20251003222729.322059-1-dakr@kernel.org>
+	s=k20201202; t=1759532248;
+	bh=QlnUffNjLbcmqEw64x2x55MGPaaNVTMhAgdaSwOtFU0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=kuZrqr3VFx4YNSicaWCcRbCoY4HQnuUCtSr5ZdtRryFOCgSRlD1pM9GIlqBBr3FC3
+	 e8AK5mzhO6yQnWpl2MztppA8v2dJJVTTsT8gH52beE+NpPn2lvaabZrPYv2Av689kc
+	 rXyAxReuEnl+IB9s+mi5dDyg5TvQ4ZbEH5s2Od6+Q/FaI/h9zgG2y66xva3MV8Ezoy
+	 xfwIWuT7GVmV93a7fc2ZvHYu6zq/aLZT/CRf0KbpFmSV9P3RO6fTs9MkQ6t+2bUWVE
+	 lKci0+LSh75RjoffLWeJXPaiK9yo3Vgk+jrvNIVqTy+wPCuwH/yKp9DgopUJRBiuSD
+	 KQVza0Yw4zRyg==
+Date: Fri, 3 Oct 2025 16:57:22 -0600 (MDT)
+From: Paul Walmsley <pjw@kernel.org>
+To: Conor Dooley <conor@kernel.org>
+cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+    linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
+    stable@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, 
+    Sami Tolvanen <samitolvanen@google.com>, 
+    Matthew Maurer <mmaurer@google.com>, 
+    "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+    linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v1] rust: cfi: only 64-bit arm and x86 support
+ CFI_CLANG
+In-Reply-To: <20251003-viewing-residency-d4f849c6fbe6@spud>
+Message-ID: <71b9ca7a-3847-72d9-b9d1-c748f301450f@kernel.org>
+References: <20250908-distill-lint-1ae78bcf777c@spud> <CANiq72mw36RzCtNVax650fJ=+cYjuGNF722_Mn2Oy1FAvxWc8Q@mail.gmail.com> <20251003-viewing-residency-d4f849c6fbe6@spud>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-567175886-1759532248=:870847"
 
-Extend the rust_debugfs_scoped sample to demonstrate how to export a
-large binary object through a ScopedDir.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- samples/rust/rust_debugfs_scoped.rs | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+--8323329-567175886-1759532248=:870847
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-diff --git a/samples/rust/rust_debugfs_scoped.rs b/samples/rust/rust_debugfs_scoped.rs
-index b0c4e76b123e..c80312cf168d 100644
---- a/samples/rust/rust_debugfs_scoped.rs
-+++ b/samples/rust/rust_debugfs_scoped.rs
-@@ -9,6 +9,7 @@
- use core::sync::atomic::AtomicUsize;
- use kernel::debugfs::{Dir, Scope};
- use kernel::prelude::*;
-+use kernel::sizes::*;
- use kernel::sync::Mutex;
- use kernel::{c_str, new_mutex, str::CString};
- 
-@@ -66,18 +67,22 @@ fn create_file_write(
-             GFP_KERNEL,
-         )?;
-     }
-+    let blob = KBox::pin_init(new_mutex!([0x42; SZ_4K]), GFP_KERNEL)?;
- 
-     let scope = KBox::pin_init(
--        mod_data
--            .device_dir
--            .scope(DeviceData { name, nums }, &file_name, |dev_data, dir| {
-+        mod_data.device_dir.scope(
-+            DeviceData { name, nums, blob },
-+            &file_name,
-+            |dev_data, dir| {
-                 for (idx, val) in dev_data.nums.iter().enumerate() {
-                     let Ok(name) = CString::try_from_fmt(fmt!("{idx}")) else {
-                         return;
-                     };
-                     dir.read_write_file(&name, val);
-                 }
--            }),
-+                dir.read_write_binary_file(c_str!("blob"), &dev_data.blob);
-+            },
-+        ),
-         GFP_KERNEL,
-     )?;
-     (*mod_data.devices.lock()).push(scope, GFP_KERNEL)?;
-@@ -110,6 +115,7 @@ fn init(device_dir: Dir) -> impl PinInit<Self> {
- struct DeviceData {
-     name: CString,
-     nums: KVec<AtomicUsize>,
-+    blob: Pin<KBox<Mutex<[u8; SZ_4K]>>>,
- }
- 
- fn init_control(base_dir: &Dir, dyn_dirs: Dir) -> impl PinInit<Scope<ModuleData>> + '_ {
--- 
-2.51.0
+On Fri, 3 Oct 2025, Conor Dooley wrote:
 
+> On Mon, Sep 08, 2025 at 04:36:09PM +0200, Miguel Ojeda wrote:
+> > On Mon, Sep 8, 2025 at 3:13 PM Conor Dooley <conor@kernel.org> wrote:
+> > >
+> > > From: Conor Dooley <conor.dooley@microchip.com>
+> > >
+> > > The kernel uses the standard rustc targets for non-x86 targets, and out
+> > > of those only 64-bit arm's target has kcfi support enabled. For x86, the
+> > > custom 64-bit target enables kcfi.
+> 
+> Hopefully someone can take it! I was hoping it'd be 6.18 material, can
+> someone grab it for fixes please?
+
+Will pick it up for early v6.18-rc fixes, thanks.
+
+
+- Paul
+--8323329-567175886-1759532248=:870847--
