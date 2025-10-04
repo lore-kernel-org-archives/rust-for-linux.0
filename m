@@ -1,81 +1,80 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51B72571BD
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Oct 2025 10:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4262B25DB12
+	for <rust-for-linux@vger.kernel.org>; Sat,  4 Oct 2025 10:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759572494; cv=none; b=Ta/INBMUxQcUuN5GYUnXFGeXsLj41ae9qOKuOtr6yrzxMkwXd5oGuBLchzP/t6h0njZBq1WpDMXIISFpKwErTgBAZU/rG3uBS9EU35/usTFIItN8wmkrHijAOMW3XO38mr8X/F492U9UL3EcIcXC/BOC2ELNVyDJXNdfqgN8+UQ=
+	t=1759572494; cv=none; b=WmQMEZegEg7i+GpGlB1o4TdEhIkZshucnB6O/b1XRM1+Fl0aE7k7l4feT37n3wKegMstvyankvSYQsuRmtUI5gU1rc00MFbdr7VeI0fgIHHn1GcasblhxLPMRrhmZA274R7P6MSkokzCUmP6TtIW/rhyZFYupACEv+gPSZ+mEUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759572494; c=relaxed/simple;
-	bh=QpvyhwnXAfXkQ7I1kL3n8PvNh/8XJMhS30c4xnByIew=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=I/DFpljmcRygqr/lo15eyfe2SP+JQz2Crhc4vE8ILfmF4QiBOlZz2eMpIE+aCebRBxEVj63A8K+llm2QTBmES7g8qc9Vjs6iEpEBdEzFYt7RXqCi9y9XI1XzaoUe38JNdtKJoV/RG7uPBJMFo2266SuXeJdgS6zYeWv1viEYuG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oRnheWsC; arc=none smtp.client-ip=209.85.128.73
+	bh=rxYAtyid3LYmOuRl8wpk1tM7TAKIizNZVXtfQcpHRYQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DV/t5Y6I5vUUOzkLV5+rqAB2g7wAa7U7WK2d3ropdt7bu6ripXfHPyFutyu1nHIVlyqNELasV5tZbxbE8+RVuH4MBKy8ci2rd6SIZA8Jopc1fw0FMbkg+P+pVbIikcOg+LaC/kB8xiGulIayRT5v08NLQHaRWb80VcKhgYYzTb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a0+GOVzS; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oRnheWsC"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e2c11b94cso14702995e9.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 04 Oct 2025 03:08:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a0+GOVzS"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-40cfb98eddbso1817643f8f.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 04 Oct 2025 03:08:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759572491; x=1760177291; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PD7m4V3LcOsNmzAyutP1ZogMCH/P0pzhxL44mJuhTQw=;
-        b=oRnheWsCZyEFN93F7UvCuGK1xktE3zqnvyTizF6HGa+CHmthLoX+GHPt6BhoHPOYKR
-         XLxgpfQBjsnaLXJcJnCDu3ezvDbqbjkC170pv84LNv4MmEGr8QFHbOXEkYhYuOcInRp4
-         EA/qrDAWZL5mk07DjtVrXK97rz8LoGjz8Tnrq/oGTlqJUGJVJExbmd4/hH5tDb3jf6XQ
-         Q91B8FlLdDlHnl1IQ2MLpg/wgv9Kgr69bJhjXS4ufSyfl+lSloFn1pQpUKl+7DzDlKVB
-         T7K0uIWD1zA+Qdg43jKzcojov00WHIjv8hnf6OJeUiQufURjK11PdkoIxwIC0vYTtQ0G
-         9nLg==
+        d=google.com; s=20230601; t=1759572488; x=1760177288; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WVIuvVBnzwKoCzO6yMXyafp9Rc9VJ6OOswjgWIjSnTc=;
+        b=a0+GOVzSSNtewBME3QXxG+uZSZrcbaxV2iDJ12EowpS4cOjs1/omDLh/syaM8NWmAe
+         v87Xqs+2X0U5hfaBJkIl+0ioUKcKPzwZL/UKXu7V/HrczeyFXsSIxk/Fqk0uinBa9xsK
+         Ep8Ww2IHqexMLF5ZyiLgTeX5JsJn1dDaBD58N56v6EIDX7J9xSMWXQNDiPBeEwfWksDg
+         u16E09GY//2mYnpuJYCnf/3AfJkDsPOIO3nk991hExNd/M7nG0ck14EnBtC6bhVlKyPV
+         3JulD4nJ+fp2M9azQ0fUXig7RIl9cZQl7yaYv1CgfxTpsArckZYusNPYvxm6P8iPJYRv
+         TVJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759572491; x=1760177291;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PD7m4V3LcOsNmzAyutP1ZogMCH/P0pzhxL44mJuhTQw=;
-        b=eVEAgXeL8K8LHW63I5tBCwTz+PCcNUMhPTSbtGq74evDhtgUA91ywj+5OLODEeubYR
-         0EStd9+rJG81CI+F9x1TW3LxJZTYLQVxejdv0qtBE+OkGf9pOMPumfR0lht/xL0ZvwHe
-         Xm75OOlkHbh+B/vlMlIMk4DW74EwZ5ywb77oedeG25ewfG5BVYEOtYBP99SgyxDywpxw
-         3KXDw+uGJDc9pOlxrM8x53pp7hiJjYP7xUOFclrcL0tYZEbQ5rHO3F/q9q4WzvXeDMfV
-         A6X3SYch5MXIMtX/Ytnl22QbPpawqBfdKh67TQMfPHCkh6p6a2Q3xvJ2r15MwqXZloaK
-         FCoA==
-X-Forwarded-Encrypted: i=1; AJvYcCUee/++UYZachxPqY5LG9wboZS6Iu8u7xI5JPbPYsea7lFfqv5l1FJnYwU+4TPEyyetTReygu1Zmehc2ePf3g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5jMKOf81YSKWqgrZpZ+X5XDOtSSEcOwToeIYM+KpRh9gvLZPc
-	IeeUn/Jxhgrb5CwQFSvCaDTSo8Irn80ZujOXtxxLs2z5gBslJMw6tJWWfGH6HlpbVhP5aLXdmQu
-	6+gMfIoXimad8hkt+Mg==
-X-Google-Smtp-Source: AGHT+IHWzxbv1MfbNVfAzWAdE5QTxwCdIUKUjX678W8xOCLxpm4vp7vvoUtDz03xKEL+YbtZBPohG4HU9IXusuA=
-X-Received: from wmbju1.prod.google.com ([2002:a05:600c:56c1:b0:46e:2f78:5910])
+        d=1e100.net; s=20230601; t=1759572488; x=1760177288;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WVIuvVBnzwKoCzO6yMXyafp9Rc9VJ6OOswjgWIjSnTc=;
+        b=WXfzdH8q3ZvhoxsmN/JXPsGhEx2t+OLzh4Vk2pQ90lu5nVlgo2/DnNQOgeuqnddBqq
+         nlLPlARkhL+U+FUY67odCwgnXvwZsjTnFWVb9tkzQ7VYtKATHTIeYOAalYNxbcxIDiH6
+         gzygwElHJoFkgqV00q7MS+tlcv3M4fElPnpTbXuT+WLZmwLEV/jtaD3ieqkiQYgUpPAC
+         ZYBLcArLtT4/mh+oBVg3NqIplhMqV5Ixyq44AqbL+F+vpZbfmW21t+cwqTv7aPh3q0Hg
+         qJS98R0BeLTo9Wg9BpDRbNLBW/O6psYFPT0f/cuGIbV2ParQuXbjfvycfb6k8R8chmgV
+         9TiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVl5S2RFxgWi4yXM4MeuJzidUTOZyJ9wFF8QalqTXNDDv3SMNqA/vr6xuOKRT43hmBV2kCBzC6v3hEL0gk3Wg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YymoLkRadPY5PhBsA9XURoMv+Mc7BSEnMQfmlDWzSdRm8aggjh3
+	XjC/wa2eXfwW06Lo+VxaWvHo8C30dKaSOFdnNic4Qh/4cpWLPpJMThoHVgqTnU1QfHzqjjk9Pik
+	6lLoo2QwZBcZBCiXcKw==
+X-Google-Smtp-Source: AGHT+IEcB48GqwbX4Yyi2l+MC2gYcLLuDnsEZsDjgz/TdiIQIi6gPeCZjrFd92e9KCaZ+pGhUA8Tzj7qdCbI4mc=
+X-Received: from wmbc10.prod.google.com ([2002:a7b:c00a:0:b0:45d:e2f3:c626])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b08:b0:46e:396b:f5ae with SMTP id 5b1f17b1804b1-46e7110cf6fmr45919975e9.16.1759572491043;
- Sat, 04 Oct 2025 03:08:11 -0700 (PDT)
-Date: Sat, 04 Oct 2025 10:07:58 +0000
-In-Reply-To: <20251004-binder-freeze-v1-0-fb9fcdcf2b73@google.com>
+ 2002:a05:600c:41d2:b0:459:d577:bd24 with SMTP id 5b1f17b1804b1-46e68bb076bmr41864985e9.7.1759572488510;
+ Sat, 04 Oct 2025 03:08:08 -0700 (PDT)
+Date: Sat, 04 Oct 2025 10:07:56 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251004-binder-freeze-v1-0-fb9fcdcf2b73@google.com>
+X-B4-Tracking: v=1; b=H4sIAPzx4GgC/x3MQQqAIBBG4avErBPMirCrRIvS35qNxQgRSXdPW
+ n6L9zIlCCPRWGUSXJz4iAVNXZHbl7hBsS8mo03faG3UytFDVBDggQrWwrTedcMaqDSnIPD9/6b 5fT8QEhJwXwAAAA==
+X-Change-Id: 20251002-binder-freeze-f99e23dc47bf
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2076; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=QpvyhwnXAfXkQ7I1kL3n8PvNh/8XJMhS30c4xnByIew=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBo4PIHCX7G0wS+ULmlB1Pj5EtReUQCUcOKsgMTS
- UN+IVXoMyCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaODyBwAKCRAEWL7uWMY5
- RqnZD/4scx2V0Zg3OUESuXeBN+lwHTPLcNynvK7Nre7ZltCpjeVUDKCjVJvh2IEXOMCuV0JCLF1
- SEhG9nb66U/bHg2RK2Bz1nKNK5jadFFNPR3vWZZLo4Aw2g40eoMMltFAZJOosU4CZsGBBGKwxl4
- pgcjPl68xWY7k5L0C5qEg6dnfVQdn4UQ1X+a0RgoesOzjY4DhgVLAzldOjp5y7tpql75WipzQbY
- OfOSTaSJWJLBDlSqm6kX0eJ3hA0APYBo84MoZW38uc/4VzawtgKqXBPQwquy38xkQOZFhnBzL+V
- BNDiuiDxuzET/OsMmIuVh9ugSh3S1Q1U/yi+Gt7V+YmIB651KsU3ypDsTYNd4Xdgns1mpESRzrk
- RAAfr7T9Uh4ewY5hhWewGt+CgW+RdVFWxDvZ1tM3s9X3q2VLDtKOJRjvLyEENbvZ3jOsh/5ZH1x
- WzhH+Jr2n7F1nZeqbsoyymFAMb/0f/o0ziTFn0s3sJQC/LQtVkLLibQYs3+NldbBNKljV95HNqL
- 9MXDU2DCrHo/uKb7AxLTijf0e9FsWMegnoaO7VFCkbw8BY9QJ9dDSrAd0Ax5n3Lg/l2OomRBIvR
- ZP0xef+zAeuLjv2D/9b979vg1BeE81sKfu7EVFYsnEh5qyO3/k0WfFFvxYjDLK5vkY51+SXxG4D WY+FgAaPbtntJ+A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=534; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=rxYAtyid3LYmOuRl8wpk1tM7TAKIizNZVXtfQcpHRYQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBo4PIBT67b7BxScAKiQhafihtYQUUED5EVCH7EP
+ PiggT5hJpuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaODyAQAKCRAEWL7uWMY5
+ Rs+CD/9nmkSRWMoREYRSHmP5AmsU8YfHiV2zBzDHqMTuHpudo8MX/Nxv8xm0AfEw/ORGAWFV4kf
+ qey2abwbhL3nwGpSFGLLLuatnJrTVfKDooWfDRJ65bsIYAZRhOw73+3iU0gM/QSLjJmCqWVdE8V
+ eW2388xDvJSeuLBmgoronzSRk5vDzPN4hhd8q/Y7O4D0fSqUAwQ7bBDQ8IIifwVzUKMtwlH8jAT
+ jWJETy0s088hiFJ5Eu2YXbCCQk9YOvyxuHQxxvTjismAZhFGfTyogH/pGf1SPwuPnQbdu7gaskT
+ m3n7wYtIeNjGqnH4pRuKlmmk8ixYLj31+YW3LPKeAQqTuT1czAeNVn3h+VxC8f0xxjeeTiCJHMx
+ rO9pSUBya1/L0Hof5wSpgGnLZFDfR0jtSZpxe4aYdMkNejNDjp0anbPevKrljGv+ZLAtPELfF8u
+ wU38bW0EELeAKQbT6EYdU2ih20jlE4Do/zKgj1ZKixomHfKH9rg8YkvzPX7F7K9CUn1dgb4LwsI
+ +lL0cjNFpSKHJgVBmurC1n1oqRKTHjqnkfq8RNmamU2T7FjGaaRuGTMWW/hTiTGwVm51I/Iqebm
+ Fm+QZEAdFjYjtNC5ghXAKP3iARRNG2ezSlWqLQKu+ryjzo781dM7VZW38V9183wTKGdiL4DOed7 fVT0HqVXGUYCU5g==
 X-Mailer: b4 0.14.2
-Message-ID: <20251004-binder-freeze-v1-2-fb9fcdcf2b73@google.com>
-Subject: [PATCH 2/2] rust_binder: don't delete FreezeListener if there are
- pending duplicates
+Message-ID: <20251004-binder-freeze-v1-0-fb9fcdcf2b73@google.com>
+Subject: [PATCH 0/2] Fix two issues with freeze listeners
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
@@ -85,50 +84,21 @@ Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@
 	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-When userspace issues commands to a freeze listener, it identifies it
-using a cookie. Normally this cookie uniquely identifies a freeze
-listener, but when userspace clears a listener with the intent of
-deleting it, it's allowed to "regret" clearing it and create a new
-freeze listener for the same node using the same cookie. (IMO this was
-an API mistake, but userspace relies on it.)
-
-Currently if the active freeze listener gets fully deleted while there
-are still pending duplicates, then the code incorrectly deletes the
-pending duplicates too. To fix this, do not delete the entry if there
-are still pending duplicates.
-
-Since the current data structure requires a main freeze listener, we
-convert one pending duplicate into the primary listener in this
-scenario.
+See each commit message for details.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/freeze.rs | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Alice Ryhl (2):
+      rust_binder: freeze_notif_done should resend if wrong state
+      rust_binder: don't delete FreezeListener if there are pending duplicates
 
-diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
-index 74bebb8d4d9b24860eed34363ce69b1c6df58028..e304aceca7f31c15444cf67bb13488cd144345e6 100644
---- a/drivers/android/binder/freeze.rs
-+++ b/drivers/android/binder/freeze.rs
-@@ -106,7 +106,16 @@ fn do_work(
-             return Ok(true);
-         }
-         if freeze.is_clearing {
--            _removed_listener = freeze_entry.remove_node();
-+            kernel::warn_on!(freeze.num_cleared_duplicates != 0);
-+            if freeze.num_pending_duplicates > 0 {
-+                // The primary freeze listener was deleted, so convert a pending duplicate back
-+                // into the primary one.
-+                freeze.num_pending_duplicates -= 1;
-+                freeze.is_pending = true;
-+                freeze.is_clearing = true;
-+            } else {
-+                _removed_listener = freeze_entry.remove_node();
-+            }
-             drop(node_refs);
-             writer.write_code(BR_CLEAR_FREEZE_NOTIFICATION_DONE)?;
-             writer.write_payload(&self.cookie.0)?;
+ drivers/android/binder/freeze.rs | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+---
+base-commit: eafedbc7c050c44744fbdf80bdf3315e860b7513
+change-id: 20251002-binder-freeze-f99e23dc47bf
 
+Best regards,
 -- 
-2.51.0.618.g983fd99d29-goog
+Alice Ryhl <aliceryhl@google.com>
 
