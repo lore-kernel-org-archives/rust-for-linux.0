@@ -1,213 +1,105 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012040.outbound.protection.outlook.com [52.101.48.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAE84A3C;
-	Sat,  4 Oct 2025 00:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759538302; cv=fail; b=tAs29C5y0jAJe1/1Q+Da+ESuTBmSrQTwCwZHqGM7iD7UligDRDTNVhEPL2/LfC2pEWJtz31ZttSXsb1+RgPU9bX2Rcpx7v5zkSDaOIbpatNDNJfHDKq2HntqTW/nFAOdRryrHD8A6QbU1T427TESQRm1YYh+rWVWmmDPasmAfr0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759538302; c=relaxed/simple;
-	bh=kkbetpEQJgt4n1ACuaCahyHpAqh/NOAglSI++JrnBkQ=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=caGlc2Xpre6ZzY5ACTeSYbcys4wojaSVLmlY04f3KKOotB3ScIsqGmwVpHzl7Mau+OBAHDXtZG/jWLEsDu7Zkd7Z6bFRLaf/d96J4scK13Yaaqt827FJMhVdhTyA/mcOViwVXm41Nl8+5BkhG5NJDsyLLl4syEFEUBVgD1xd3ig=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=d6qPECVt; arc=fail smtp.client-ip=52.101.48.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA101E9B1C
+	for <rust-for-linux@vger.kernel.org>; Sat,  4 Oct 2025 03:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759549168; cv=none; b=Gp8YHFZjfWsJwcEYzyzZVgU1lBcNnAA98Il3p1pwuf6lVJ7VbKBouy2Ntbe30KrpWYeBUeBmZL2GLLe5rTwwTn5fe161cOw/lyRDLj2yibsprRXmmmisu6BVFPJHJx2ydw8DOyNB9UnXDI5UQQVFvElJ8sVhVq3M4pJj0nsB17g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759549168; c=relaxed/simple;
+	bh=adLGxos5qmqRuJMEHd5iRNMuue96SjLLdXgZKG7WDNU=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=GkzpgPzMv9TfqLM5ZTbvUakaG8Ag5+Uo2M9FTCIgjCTFBjV8Ou0hYmsjWoK8mbxZTugW5SenlECVAaCR74Xj2RnF90Ixs0Ib/V9yZ1lVEFg7xmsJEljSThQJxUtgl6jtsTzBL2z4aAUr6UbHhtzXuxoBcgpXodyl18uqkfPXaXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ijbnwCKS; arc=none smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="d6qPECVt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AjROHFdBpi4hzojmg8jqDgrjTvg8kXE8uHr/7gCnZjyVFNOl84gy3LRg6C9rcOHNq8VPaU5risPMtoJOB1mT4aEn/Y1O1+eM4fkU2vWkS6UPU+Spkweo5VZ32vYj1jOM/KL6hQArZz+PItxbqlRLIjFxJHUFMMryvtYvgH/oJGiA58wyRdPw3hwZU0q+OWBYiffnKIo4qL5jCck9GgaIf4V8ZQ6hnUOMqWOtnUZbc1sJMDnNHGvbvaC3tCsZNJ+h6pZDt2rryo3OodUi/ZUpCfgRq13jq0TEmANm+kqp0sZTOTyHlbGtgEvW5zRxvdbHyVJKIaHr3vWZd5UMjtp2Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b6OgpW9NJ39YobOhSbH1bmd/bhO03EwwVD3pLlJ5iiA=;
- b=Di61QEsKGuuu/XzbuxCLHr/UQxljvXHKM2cruK9LWT8AFGaQWM6LYVBvRcCGUPtV4EgF704fyEeNx/PNwP2Uw6Euzl9ry6JyaltWhZ9NxtP2tV0GNR6cbgrbJdlX4ij18QZIJCex3zy+7Qx97H8pL2/iz11sJnF2vAECN7g50NRoeSLoSIJv7VdhIkvVMbfkDapKMl/oKXFIICuRY8AIQcqxMD48B4kpVwtia48QXP7TytgGwX2UXYrUvgkUz58NfMm8LysPYiFyUH2xgP428MBI4KtJxlmQeoFgv9dKCso9WHG28ab0cdvptaV9RB4m+3VZKB3hTu064zZcLYLf9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b6OgpW9NJ39YobOhSbH1bmd/bhO03EwwVD3pLlJ5iiA=;
- b=d6qPECVtNSpyHDXTWDxSYYvzUSowcNwGJau065kqeUpDLGPUhaieb1PmZa6o5BKPNiaK1migCXdNQrqfh4ycwVRXURSZ6LaBqVcp2XNapR9e7LFFznBd9cyBr6HGVOGQAY8IVt0I+KauCmI+NZIDYpXhln4CTfY1L7oRUT3xKllzjlE6yFQiyM+iFeNX1pDtLPVBNHC4+vIn5oKwviR7DDvNqvfxpERn6MO4ND5C3gTAM5BJUloiJFs2pr1K07ke7XjKbGlnrVGvP4NBJZQfczblocSa4zLTgwinDu9l39ftl+jqpIJXDv9MGZciDirOX3UlhucDqZ6Adh/MSDYhag==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA1PR12MB6353.namprd12.prod.outlook.com (2603:10b6:208:3e3::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Sat, 4 Oct
- 2025 00:38:16 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9160.017; Sat, 4 Oct 2025
- 00:38:16 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 04 Oct 2025 09:38:12 +0900
-Message-Id: <DD949OHGD5WP.1X9TCLIEKSHGB@nvidia.com>
-Subject: Re: [PATCH v5 6/9] rust: bitfield: Add KUNIT tests for bitfield
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <dakr@kernel.org>
-Cc: "Alistair Popple" <apopple@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>, "Yury
- Norov" <yury.norov@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Andrea Righi" <arighi@nvidia.com>,
- <nouveau@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20250930144537.3559207-1-joelagnelf@nvidia.com>
- <20250930144537.3559207-7-joelagnelf@nvidia.com>
- <DD7GCYCZU3P3.1KK174S7MQ5BW@nvidia.com>
- <81490b32-6ea2-400f-a97e-ad2e33e6daab@nvidia.com>
-In-Reply-To: <81490b32-6ea2-400f-a97e-ad2e33e6daab@nvidia.com>
-X-ClientProxiedBy: TYXPR01CA0055.jpnprd01.prod.outlook.com
- (2603:1096:403:a::25) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ijbnwCKS"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6353e91a04aso3497211d50.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 03 Oct 2025 20:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759549166; x=1760153966; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XJ9GrKZlJAkRDs8pcuNoL9OYf934YYPQgeZ31YeNojQ=;
+        b=ijbnwCKSjmh93f+3B5NjXA3YApQGjbSMrCTTBqcz9lgUIYoEhPIKC+tDbqfCu0Bcgv
+         riw6d4l6DN1nJ0ioFPUwHC+RuETdYdy5pKtdTG9EK97iQyLUNt3emX2MUDRG+yLjtvlx
+         LS8LSqwzUpr6k8kP2rklHSjsLgGfNtCwrewYgPM4yCkTzQ5eCW7ho8X/Mxi96oqa1o5G
+         17GgA+5KQsD15RhvpuUA2HOskmqpnLmGOry/2cD79SP+1p1xKiaNqA7Ki0YnCk5fCBbq
+         XbaQ8JY2i657fAYW/piUKWa6crRk6yE13C0t/Om2ROBxE5lltoWUCiFxe3gsHdc9IJ4J
+         nEXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759549166; x=1760153966;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XJ9GrKZlJAkRDs8pcuNoL9OYf934YYPQgeZ31YeNojQ=;
+        b=wDVxMNMFn1qykspYGfUbtCnP/Tcwr0VjBI8kAyhQBWzINmXlR1L/cPtj4Ep3I6T9Gm
+         5CyZ1Td8rE0+CapGV4145DN4Dm8Vlz5HOKAf6EpRuynNN5QPwqST7hva7k/xtbga6mts
+         /cv3stnoOng6oUczabcmEWAcAT8BDTtkjineunUEhpkspoRfTCd9ECdzGN1L8aA/u29y
+         RqhoSUREvpVU/Afm96ukNpxpqgsDvK81mCzBf9gV/zXV+wwlO0Jx4TpHERaO4s1WIL6O
+         Mo+S5tq7hvmxmji0V3YKJ5w5tRrSJYI1iP+96Kw+N5SgrLF4jnCzTkVbSS8Bi6WQ97VT
+         BzxQ==
+X-Gm-Message-State: AOJu0Yz0im0ILTbb8x5bdMOgr2NCaPAsOw3WMRDZB6+iKtsxMnHha9i3
+	CVyCv71Q/5JJcyr/e8G2dxxR9EQFsugY2R9wBtckPkB52VFc/lTU02AB
+X-Gm-Gg: ASbGncsKo724MnbP9njVq/lVvH0XkbqyU1PXarsnXf2zBX1R6doUgFmGFxBp9mAQ8sv
+	TEQUbCt/jPaUQ+7mmkihpW5RT+Ldk29MyV7lnVTLmTU9o0Ne5HTyfQVuxerLvk68IX8rznnvJnY
+	//zMxoPuIppy36qvSi8XqlSZiW577wWIWkxlQyhz2Dvn0nd6cNZkrOKiJ98M+REI2ESFfziXYRI
+	+2p+fMIXUNlandcBVIIuWgSaxYcaaJXIuaN2hzUVFTX5TNJNqwKAgLucgwywahNHBdmyB4GD53O
+	mOVYVnQCj3ZRFaTgImp6X49sYojZ9W81YCR6XZfhNBA7azsTDNtkr+/AftK0RHdY2KjJ8mJIi2U
+	LTJ7QkjTXVCAD2JM3i5eIqy9BWwwp7BfmxUoGrFkiquGMye9H3616BLq4I0xSX77ixNvRmgHPm6
+	BC
+X-Google-Smtp-Source: AGHT+IEKZvWN4IhopDHTsskInMYzN0OVIkAxgqusRW8r17U6C+PiDNXpSR1wTVqdnpL2FZWd78muIg==
+X-Received: by 2002:a05:690c:4c0e:b0:749:d874:e66e with SMTP id 00721157ae682-77f945ef5c3mr72382767b3.24.1759549165127;
+        Fri, 03 Oct 2025 20:39:25 -0700 (PDT)
+Received: from [192.168.1.209] (74.211.99.176.16clouds.com. [74.211.99.176])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63b846c9bcdsm2324131d50.31.2025.10.03.20.39.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Oct 2025 20:39:24 -0700 (PDT)
+From: Asuna <spriteovo@gmail.com>
+X-Google-Original-From: Asuna <SpriteOvO@gmail.com>
+Message-ID: <b5efc638-ab7c-4639-ae7c-c0f8f8b4e765@gmail.com>
+Date: Sat, 4 Oct 2025 11:39:17 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB6353:EE_
-X-MS-Office365-Filtering-Correlation-Id: 349f5a2b-cd34-4335-17f8-08de02de4ec4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZEVUWjhSbHk2ellWS1RLTGxnTlN1cG8zbGRxR1hBMXZEU2dBWEF3RmpiN0dW?=
- =?utf-8?B?TjM3S25DeUViL081VjR0YTdaR0NxQ0dFM21wSWM1Nmp5Q250T3FKMW5xZnls?=
- =?utf-8?B?bm1QMXpzMkVwZnRZTlJVclYvMk0wSXhHZDlxcVpUSWlXMGxVWHRFU3AzMDNO?=
- =?utf-8?B?Qko1cWljRTY5eTRBU3RmWE4xM0loTFR6NUovV3lSQWNka3BaL1JCakZKUk9B?=
- =?utf-8?B?N3V2cllkZkNtMmd5Qmhua1hocHREVzcrRlZva29VS1hobDhwNmt3b2Z2SFZK?=
- =?utf-8?B?M3I1aWs0eWFCekZ3NEtzY1pFbDhJOTI0L0VmNGpsVGljN2dSai8vNEM5QVhk?=
- =?utf-8?B?QWFMME5EcGM1RHZxdktwN3ZkWkZHNHF2cnFVazhldDlPZnFYWGwzN09nSkJ5?=
- =?utf-8?B?WUNwOXhLTXRxcXYrRVRpY0VETWJkc0VKZGNoZHlDYmF3cGZRMytEVWcxaGph?=
- =?utf-8?B?TERxWjZHb2s2R3JOdlh2RTFubEtJV3lhRjBwK3lpSFcvWSs4ZS9VTFhRSmVv?=
- =?utf-8?B?Vm5mcjhodTh6L1lkVVR6UmNCOEtRZjZqZ0o5eW9BL09jTk9sWG9RRjVqUGcr?=
- =?utf-8?B?bzhjWVZPQ0NRNG44WEpqTnVva051cHF3L0ZSa2V3aWp2NldMZGlIMEgwOHY5?=
- =?utf-8?B?b1pvWXNVdStVVjVCRDljQ3RQUUR5a2JBeWJrUnhScE5xaGMyZjlWdDF0dFhq?=
- =?utf-8?B?cS9taVBlZ3BFM3J5T1pabjR5dHNEZk1lR3dCVGZBN0M5K1ZPUnRsVEcyNGlt?=
- =?utf-8?B?cG9VREdhK1JvNGhaa29yejhRQkVyb1dybXNwQlRPc1BKNXRjdzVlOWJRL1hI?=
- =?utf-8?B?dnZhWXBodWhwbGZVaXExOTFudDQzbGxObGdXclk4VEpGMDZaTFM2SlNJaXFJ?=
- =?utf-8?B?aVdRY05sU3ZuYkoyNFhTQStQY2FQVjNjVXpZNTJOUjM0QXAwUDd4U2hKbHRt?=
- =?utf-8?B?M1pDeGRidGlWMTVWUzQxRlNpNWpWR1pVR1VlZkRmM3RhRmIwWUVWaytmdmYz?=
- =?utf-8?B?ZU1NZGhMR3U1TTFadXRySmlaRVZoZ2ZEejlTekQ4ekh0OWVRVlBPbUxaOVFK?=
- =?utf-8?B?SFlGNGpsRTl1KzlLekRhUmlmeDZTalBPM3VGMS9aSUtTSXh6UnVpTmw3NTJT?=
- =?utf-8?B?cFkxVWQvZGN4ZEVOZ1FmbEl5K2szSFBsNk9NemxPZUFGSyt5OUdRdWxISzVs?=
- =?utf-8?B?VkV1dnJIZlBZb3lBd3l2VkloZkUwclZYa1IwOE5oTG14czRURkdDTU54L1ZH?=
- =?utf-8?B?STFRZmM0bFVvSWN0TTc0UlBzY21uWnM0Y2JNT3NiTjJOZWxNNTlkVW93K3A4?=
- =?utf-8?B?UDREYnhEdnN2MTJVSmZsUDRWWklnTGovbUJGTmFOa29EK0tlckZhdXhMSjRm?=
- =?utf-8?B?VFdRYnNsOWxqUUhzcU92S2dlUUVmbWtQSmhGck1YYUxOVjNkVitSM1N4Z0NC?=
- =?utf-8?B?Q0YvN09QQjQzME42aG02OE53eitkMEc1NE91eVNISVYxdjg2U29XUUc1S3p0?=
- =?utf-8?B?dGFJbi9rT3pXdlBIZ0VCT2V1c2c0WkZNdEJFVjBJQ0YvWS9LSUZnZ2dOWENs?=
- =?utf-8?B?Wjk1a21SWU5hQ2d4MmJtbHBGT3lVc3c3WW5lbUFmODlIOU9LWlVjOC9GUm4y?=
- =?utf-8?B?M0RFZ251ak9VQ0lUVFU4cERaK3dPUHJFN3BIZmJOYlBMOGNBT1lHYkdaNVlK?=
- =?utf-8?B?V0R5dzVCR3ZJZ1A2aGpuNHU0aURrVCtwbmVTeVZpVHQyaUdaZGYzQjRFOHVp?=
- =?utf-8?B?MUNzMmZGaFhteEZLMUR2bGpLUktjcml6RGtTU3NJd2FobzRrVDRoUVZJc0lH?=
- =?utf-8?B?b2luSGh3L2VaMzlyWGhRMmtIZXU1WlBiWUNOby9id1AvbWpGUHZGNUZROWlD?=
- =?utf-8?B?a0w2RmJ3MmZ0bk82bUpPNHI5WUt2ejVjKzVtYnRjekRiZldDcEhid0U1SE4x?=
- =?utf-8?Q?kVyjk1h66JfgrKpQOGJ9xwPME28cY09U?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dW5KUnlNTE5PQldSNmlEaGttN3I2SmRNZmYxaUkzbkVQbDVIYXpQM0tsb0lN?=
- =?utf-8?B?U25Xb3NYdnhsbEcwZksyd1hScXRUeXRnOVQyVmRNOWNSd1dzcVZsSHhFMFJ1?=
- =?utf-8?B?bEFod0paU1NGcmkwU04vQ2ZZcWVBWGx2eVVkMlFDL0pvc0hpZ3hVVFhKWENo?=
- =?utf-8?B?Y09RUENyMmhOaGg3bGVpRFhteDFnNXZLaS9zeWpxT1FoMXo5a2hxT2U0MVR2?=
- =?utf-8?B?dTNkc1FxSXhVeE1BWW1Cd2wxM3o2MlhuYkw5dTNzUUNwOWcvSXovM2poZDk4?=
- =?utf-8?B?OXBNUjU0NzVPeXE1RUJpUDlGbytvZTZrUW9vSVVxdkpqbjdLOVdvL0xqWnNB?=
- =?utf-8?B?TVZPK3Fwb2szTmF6cmRERnhMdWR2NFZmdUZ2ODhnSnB0YlVuc0FjVVhneHRY?=
- =?utf-8?B?MndLaEpXMjVvVnl1UW5Vc3lNNDFuL3FMTnNwVDdicSt3VEF1VDVKeWdwdEVX?=
- =?utf-8?B?NHJWRkFoYTZqNUF5SG9nTkpWL2p1U3phK3FrZDNtUlRqcXdnNlgxakE0Kys5?=
- =?utf-8?B?RGk3bHlRY0tvK1lUa3Z4c0tWckF3RzBmaXdCTW9PRklkTkJDOUREOURnQ2FD?=
- =?utf-8?B?UDIxbjRWN0VHeEpWSlFvYS9FM1dXWGY4dkxCa0QzSWlFaE8rUFp3ZzJKMGRw?=
- =?utf-8?B?VFEwcDE3MlFyQzJlZWxWY3FCenhzNjRhQ3dMOWZOYk5Gd3JxVTdiUDRzM2k1?=
- =?utf-8?B?UG91TVFEaGdGd0VZc0NTaDFpb05xWTQxRys0c2toNExrMmx2cnlQNE5ROXF3?=
- =?utf-8?B?R24zek8ySXk3TDQ0WjlRRDN3dWVKSENNWTNwYzVMcTNkRCsxbDZldUYyNFoy?=
- =?utf-8?B?OCtyZFQ3NTVGWGpsblY5bFl3UWJub004ZTdyS0NZMXhGRU9hN2RpbnBmREll?=
- =?utf-8?B?NFNMQlZHcExDNGFRV0pXOHRva1BlOWhFeC9zT1FaakNqT2h0Nnd6MG1Wbm4v?=
- =?utf-8?B?TVF1bUhSTGNVbXhVYnZvOHUvM0pSTkZhYUIwSVZ3RkRWQVRJZncrUWNTbEha?=
- =?utf-8?B?YUF3WE8vTUg2U21nZCthWTBkV1JuOEJLRXNEZWpPS0UvZ3FIMzBWOHM5emQy?=
- =?utf-8?B?VTZHeDhKd3I4aHBYNml5UGJkZlVvYkpKeXIwRC9DYi9VZ1ZOSnYrem5XR1hx?=
- =?utf-8?B?ZmlzcTlkcmdoNXdyT2I2SnNhdFVmdnVmQm1QaUJvRGpESWtGeVA0T0UvTGpE?=
- =?utf-8?B?bTV2c2NKNVVzdFhxdEppWjZzZTNOMVJZNEd5OEs5UFJBZTlpTE5MbXQ2ZFZo?=
- =?utf-8?B?Qkc1MlBOTzh6Sk5kSVZwM01KYnhkQ2xEcUhmSXNaUTdySGJON3hDY0JiWTc2?=
- =?utf-8?B?M1czcW5CRnVvd2tVM243SnVYSVk3bHJYcGJTZzA2RGVKdHFNRE82cU5Wb2Ny?=
- =?utf-8?B?SXQ0ZzFlNVRBQVU2SHFUTERpakFPS0NHbEtEclRTTGI5Wkk0eDRhbnVPd2J2?=
- =?utf-8?B?RFdWcW8vblpPc2FjaStZSFBUZmJQaVVyTGtqOTR1YWE5dFJVcVNzTjY2NzRZ?=
- =?utf-8?B?Ym5qVlIrWG81VDFTT0xkancyNWozS2F3SkRoaFljbGV1V0kzVUtIRVJFejlt?=
- =?utf-8?B?MURVMEhFY0lOeFFKdzJWdGdDQlM2TEIybTJBVzJuM0NIQTVKbjFpdE4zT1Rh?=
- =?utf-8?B?aXMzVUNBR1Roc3U4dHVUZkZYaG0zbXZEelpvZ0RLeTBUbVNpRWNnM0JSeUkv?=
- =?utf-8?B?S2tnUWU1RU5OUjRZaWd6V1FTWUNRVllFYUhWd3AzNlRjQXJhQ21oVnM3RlRE?=
- =?utf-8?B?YzdCaUFXaER3OGROcjJkdkY0dlZsemxrZEN0ZmF1eVFUOGVpb1FHNmNhVjdX?=
- =?utf-8?B?UmN5ZE9NQ1pnM3NBallvYnEwbDFvYkkxK3JHc1k0V2V6QUJQb29IOWtvVHZa?=
- =?utf-8?B?VDV1MkJYN25leEx2TE5YL3F5Tld2V0JJd1JvTnNwQ1lNWXpGQitwb1RtbUJG?=
- =?utf-8?B?cWJ6bFJvVVdSU0YwVXVJYUN6QjZXTmVwcTRDNG1vWHFpN0V5UXg2cEdmYnlO?=
- =?utf-8?B?K3dvYnNSMmpoc2N2WENjeGNMUWtWa1NBNjZvWS9ocGxKSVhoYnROZ3pYL2Zv?=
- =?utf-8?B?Q0lSNHJFOXIvd0tEeVFmWndwUy8yQkFTWm5zdU1tcGlhalFCMHV3WGN6emtl?=
- =?utf-8?B?ZGJ6aktFOGZRRG00YldqOHVRdjVzMWRIREVpckdlVjU5Q2VZNkpYYy80UUJq?=
- =?utf-8?Q?wqG/ao2pOzqHOJ/vJciX9KQ0r7hx7ePXM4SkqLSwSLu0?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 349f5a2b-cd34-4335-17f8-08de02de4ec4
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2025 00:38:16.4022
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NLubFsyUM+8AmJouqdZJppWI6m4P5fKRss8dSAQM7qqkMhsrSroMYynI9jiFP/xw5XhwNMkUieoqt0mbZHU8hA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6353
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] RISC-V: re-enable gcc + rust builds
+To: Vivian Wang <wangruikang@iscas.ac.cn>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Han Gao <rabenda.cn@gmail.com>, Jason Montleon <jmontleo@redhat.com>,
+ Conor Dooley <conor@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+References: <20250914-gcc-rust-v3-v3-1-34d4d5864144@gmail.com>
+ <73d55231-d1e5-400d-9446-1914a78c0db8@iscas.ac.cn>
+Content-Language: en-US
+In-Reply-To: <73d55231-d1e5-400d-9446-1914a78c0db8@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat Oct 4, 2025 at 12:23 AM JST, Joel Fernandes wrote:
->> - The right field is actually written (i.e. if the offset is off by one,
->>   the getter will return the expected result even though the bitfield
->>   has the wrong value),
->> - No other field has been affected.
->>=20
->> So something like:
->>=20
->>     pte =3D pte.set_present(true);
->>     assert!(pte.present());
->>     assert(pte.into(), 0x1u64);
->>=20
->>     pte =3D pte.set_writable(true);
->>     assert!(pte.writable());
->>     assert(pte.into(), 0x3u64);
->>=20
->> It might look a bit gross, but it is ok since these are not doctests
->> that users are going to take as a reference, so we case improve test
->> coverage at the detriment of readability.
->>=20
+On 9/19/25 1:20 PM, Vivian Wang wrote:
+> I think instead of testing libclang version, it would make more sense to
+> feature test if bindgen the binary supports these flags, like what we
+> already do with $(cc-option,...).
 >
-> Ack. I will add these.
->
-> Thanks for the review! (I am assuming with these changes you're Ok with m=
-e
-> carrying your Reviewed-by tag on this patch as well, but please let me kn=
-ow if
-> there is a concern.)
+> Same for all the other version tests.
 
-Please do not add tags that haven't been explicitly given. If we start
-assuming one another's stance about patches, the trust we can have in
-these tags is significantly reduced.
-
-Doing so also doesn't achieve anything in terms of efficiency; if I am
-ok with v3 I can give my Reviewed-by on it, and the tag can be picked up
-along with the patch when it is applied.
+This is another direction worth trying, but unfortunately I probably 
+won't have time to refactor this patch towards that direction until the 
+end of the month. Sorry for that.
