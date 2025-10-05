@@ -1,327 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904182773F7;
-	Sun,  5 Oct 2025 12:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2DA189F20;
+	Sun,  5 Oct 2025 20:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759668975; cv=none; b=Bc7NEOIUl7IxXFTxBx/+W8pGt3AdCmfjLXH+bTVe+pfzwhW8LxkYtOuMjjOnbULqArfIXIAVV98zNbnOSrpJULjqkLqTmGKNMJKmtqCF78xGbC4gq+QHKVZt4eCLmUY1S44vBZrnQuShWzUlfZA3FMz8Zq5/1zaT1O3lGyVY7ac=
+	t=1759697622; cv=none; b=qS56G0Bau22vI2ePfGsnqOvIgJOxvxjazpjPS5TXBl773qtpmzQYdxmVsRQC5GJcbn3dtEjMamVKj6PYmVyOT7TvG6OUvdGs5nFVQuznqONq9SMmP4rME1s0gIv4DJV8KaafN8+YpUw3zso7DQZuGqEU2lmvrJEPUVBu2Q6ERdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759668975; c=relaxed/simple;
-	bh=2dWQPeBmfuCIMPI8LT0IPUyJaGtEuhcG7d4a+m1kWHs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=jbZnTFOxOzVriN6/6wHUwpb1QEWkf6b9EZXrOUTSoBEcufq6qclDVtSHSxg6hwJcXn6CLlzccua8936qUgY4l2H76bLUplHhLnrbjMAwvlWOmAn+Eafsq+U8tHkeiHdUXuHtA/gv2dBAocph6uhIMLEU/daRVUWjeLDr7WmNvqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4bFxHk+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759697622; c=relaxed/simple;
+	bh=ZD6JLg3KrZgfGi/1eaPkNK2H/VSQ1r+ZOetHeCSLRhg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pxKbYFso+DVRC9FOFiUeCRzjO5dBFE3D4DzVG4qVHAr/rEBDivQj1GaldM80qxXlAf4z97AsrhN2BSN3/lcFzNqN21ebrOhVlKRA8wbDazv+T+tMSjIkexx79hlta8WFVP35Rn4MWY4ynQ/3ROmQ+gq/V0Ls11TnzM7rXuLGxgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Od9wYGu0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4bFxHk+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70800C4CEF4;
-	Sun,  5 Oct 2025 12:56:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Od9wYGu0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E5AC4CEF4;
+	Sun,  5 Oct 2025 20:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759668975;
-	bh=2dWQPeBmfuCIMPI8LT0IPUyJaGtEuhcG7d4a+m1kWHs=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=f4bFxHk+quP1JF210mDDlL9TCVKpGGccU9y+5XwqDlIA4j8aEkmc2dwo/w+FiccQV
-	 k3UW9lTihn/StIeqmtzX4XG3VaHtgMRmK5yhijokglmC1pSwvDWQsIR60Kf8jrkIW0
-	 oGRf898QGoD6NE9q/SyWhs1+9h5myxxtYgVwcAtxlXgDAyRoz2q8RXfwse9995rd5/
-	 tSGuXQ2J//EUkpogJhdM7Gx0Sw/zOYuJT3AObg7+kMJuyTT54YwjIZx16RnQ5bxoJM
-	 HyEq1W9V5JRuu2rcQ7nQ7kPopWTbdhN4AewkeKJxykNQs5f/FT2XSVeNfdkACuBuMX
-	 ywBqJLBMWIfFQ==
+	s=k20201202; t=1759697622;
+	bh=ZD6JLg3KrZgfGi/1eaPkNK2H/VSQ1r+ZOetHeCSLRhg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Od9wYGu0ppjoge+u2bGm5ofHQpyFvInbTisvOJlrC5mFNjx7FMIEY8FgOMPbmWHZD
+	 W5lPutki1QaO8+PcmbhJI6j/qab/DdDMHm1Trqc4HJPlKgUwvAXUqf8LdHKaqVGp4Q
+	 n43hSxs5i3Zi6JdWiW7XgV+02DVtljqRxDyaBDx3aJaPu3vEWiraInVn991zqjIoQR
+	 CaRAkPmUzS8TMNyjKEgltShg7zpS2f8bQ2BkMckSwhkSlcQV6FJxe59ChhNcB73CiK
+	 D9GGtC0Ai4t3DSQHSoCaYu7oFFD47ypzn6wHPUg0L2kqWQnPJTmN3lXid26pxzXPB+
+	 LuQinR7aGSSsg==
+Date: Sun, 5 Oct 2025 13:53:35 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
+	gary@garyguo.net, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, sam@gentoo.org
+Subject: Re: [PATCH v2 6/6] kbuild: enable -Werror for hostprogs
+Message-ID: <20251005205335.GA2561157@ax162>
+References: <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
+ <20251005011100.1035272-1-safinaskar@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 05 Oct 2025 14:56:08 +0200
-Message-Id: <DDAEL8DQFWKX.1BSBDMMN9I5B0@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <acourbot@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, <joel@joelfernandes.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] rust: pci: Allocate and manage PCI interrupt vectors
-References: <20251002183912.1096508-1-joelagnelf@nvidia.com>
-In-Reply-To: <20251002183912.1096508-1-joelagnelf@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251005011100.1035272-1-safinaskar@gmail.com>
 
-On Thu Oct 2, 2025 at 8:39 PM CEST, Joel Fernandes wrote:
-> Add support to PCI rust module to allocate, free and manage IRQ vectors.
-> Integrate with devres for managing the allocated resources.
->
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> ---
-> Previous patch was here:
-> https://lore.kernel.org/all/20250910035415.381753-1-joelagnelf@nvidia.com=
-/
->
->  rust/kernel/pci.rs | 199 ++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 186 insertions(+), 13 deletions(-)
->
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index 78271bf88cea..f97a6a36cf5e 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -6,8 +6,9 @@
-> =20
->  use crate::{
->      bindings, container_of, device,
-> +    device::Bound,
->      device_id::{RawDeviceId, RawDeviceIdIndex},
-> -    devres::Devres,
-> +    devres::{self, Devres},
->      driver,
->      error::{from_result, to_result, Result},
->      io::{Io, IoRaw},
-> @@ -19,7 +20,7 @@
->  };
->  use core::{
->      marker::PhantomData,
-> -    ops::Deref,
-> +    ops::{Deref, RangeInclusive},
->      ptr::{addr_of_mut, NonNull},
->  };
->  use kernel::prelude::*;
-> @@ -28,6 +29,59 @@
-> =20
->  pub use self::id::{Class, ClassMask, Vendor};
-> =20
-> +/// IRQ type flags for PCI interrupt allocation.
-> +#[derive(Debug, Clone, Copy)]
-> +pub enum IrqType {
-> +    /// Legacy INTx interrupts
-> +    Legacy,
+Hi Askar,
 
-Like Bjorn said, I'd go with INTx too, also given that the C define is
-PCI_IRQ_INTX.
+On Sun, Oct 05, 2025 at 04:10:47AM +0300, Askar Safin wrote:
+> "Thomas Weiﬂschuh" <thomas.weissschuh@linutronix.de>:
+> > Enable -Werror unconditionally
+> 
+> Please, drop this patch.
 
-> +    /// Message Signaled Interrupts (MSI)
-> +    Msi,
-> +    /// Extended Message Signaled Interrupts (MSI-X)
-> +    MsiX,
-> +}
-> +
-> +impl IrqType {
-> +    /// Convert to the corresponding kernel flags
+This is already merged into Linus's tree so it cannot be dropped, it
+would need to be reverted. However...
 
-Please end with a period, here and in multiple other places.
+> Never enable -Werror unconditionally for any part of build.
+> 
+> I often bisect Linux. And to do this, I often need to build very old
+> Linux commits (with modern compiler). Unconditional -Werror will make
+> this impossible.
+> 
+> For example, recently I found this regression:
+> 
+> https://lore.kernel.org/regressions/197f290e30b.eaadc7bc7913.7315623184036672946@zohomail.com/T/#u
+> 
+> The regression caused by commits happened in 2019.
+> 
+> So to bisect it, I had to build 2019 trees using modern compiler.
 
-> +    const fn as_raw(self) -> u32 {
-> +        match self {
-> +            IrqType::Legacy =3D> bindings::PCI_IRQ_INTX,
-> +            IrqType::Msi =3D> bindings::PCI_IRQ_MSI,
-> +            IrqType::MsiX =3D> bindings::PCI_IRQ_MSIX,
-> +        }
-> +    }
-> +}
-> +
-> +/// Set of IRQ types that can be used for PCI interrupt allocation.
-> +#[derive(Debug, Clone, Copy, Default)]
-> +pub struct IrqTypes(u32);
-> +
-> +impl IrqTypes {
-> +    /// Create a set containing all IRQ types (MSI-X, MSI, and Legacy)
-> +    pub const fn all() -> Self {
-> +        Self(bindings::PCI_IRQ_ALL_TYPES)
-> +    }
-> +
-> +    /// Build a set of IRQ types
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```ignore
-> +    /// // Create a set with only MSI and MSI-X (no legacy interrupts)
-> +    /// let msi_only =3D IrqTypes::default()
-> +    ///     .with(IrqType::Msi)
-> +    ///     .with(IrqType::MsiX);
-> +    /// ```
-> +    pub const fn with(mut self, irq_type: IrqType) -> Self {
-> +        self.0 |=3D irq_type.as_raw();
-> +        self
+I do my fair share of bisecting old Linux trees with a modern compiler,
+so I do understand that pain. While it is easy enough to avoid this
+behavior with HOSTCFLAGS=-Wno-error or HOSTCFLAGS=-w and there are other
+places that the kernel enables -Werror unconditionally, I do not want
+this to be a major pain point for random people doing bisected,
+especially when the host tools are fairly battle tested so warnings may
+not be a big deal.
 
-NIT: I'd probably write this as:
-=09
-	Self(self.0 | irq_type.as_raw())
+In looking further into this, I noticed that in its current state,
+-Werror is not getting applied to scripts/basic/fixup or
+scripts/kconfig/*.o files (seems $(include-y) happens to late?), which
+was one of the reasons to avoid making it depend on CONFIG_WERROR or
+W=e. If that's the case, we could probably make it opt in like the rest
+of the warnings for the kernel, which should be a fair compromise
+between wanting to make potential issues more obvious while not
+impacting people who build old sources with new compilers.
 
-> +    }
-> +
-> +    /// Get the raw flags value
-> +    const fn as_raw(self) -> u32 {
-> +        self.0
-> +    }
-> +}
-> +
->  /// An adapter for the registration of PCI drivers.
->  pub struct Adapter<T: Driver>(T);
-> =20
-> @@ -516,6 +570,76 @@ pub fn pci_class(&self) -> Class {
->      }
->  }
-> =20
-> +/// Represents an allocated IRQ vector for a specific PCI device.
-> +///
-> +/// This type ties an IRQ vector to the device it was allocated for,
-> +/// ensuring the vector is only used with the correct device.
-> +#[derive(Clone, Copy)]
-> +pub struct IrqVector<'a> {
-> +    dev: &'a Device<Bound>,
-> +    index: u32,
-> +}
-> +
-> +impl<'a> IrqVector<'a> {
-> +    /// Creates a new `IrqVector` for the given device and index.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `index` must be a valid IRQ vector index for `dev`.
-> +    unsafe fn new(dev: &'a Device<Bound>, index: u32) -> Self {
-> +        Self { dev, index }
-> +    }
-> +
-> +    /// Returns the raw vector index.
-> +    fn index(&self) -> u32 {
-> +        self.index
-> +    }
-> +}
-> +
-> +/// Represents an IRQ vector allocation for a PCI device.
-> +///
-> +/// This type ensures that IRQ vectors are properly allocated and freed =
-by
-> +/// tying the allocation to the lifetime of this registration object.
-> +struct IrqVectorRegistration {
-> +    dev: ARef<Device>,
-> +}
-> +
-> +impl IrqVectorRegistration {
-> +    /// Allocate IRQ vectors for the given PCI device.
-> +    ///
-> +    /// Returns the registration object and a range of valid IRQ vectors=
-.
-> +    fn new<'a>(
-> +        dev: &'a Device<Bound>,
-> +        min_vecs: u32,
-> +        max_vecs: u32,
-> +        irq_types: IrqTypes,
-> +    ) -> Result<(Self, RangeInclusive<IrqVector<'a>>)> {
-> +        // SAFETY: `dev.as_raw()` is guaranteed to be a valid pointer to=
- a `struct pci_dev`
-> +        // by the type invariant of `Device`.
-> +        // `pci_alloc_irq_vectors` internally validates all parameters a=
-nd returns error codes.
+Thomas and Nicolas, thoughts?
 
-"all other parameters"?
+Cheers,
+Nathan
 
-Please also format multiple statements in a safety comment as list.
-
-> +        let ret =3D unsafe {
-> +            bindings::pci_alloc_irq_vectors(dev.as_raw(), min_vecs, max_=
-vecs, irq_types.as_raw())
-> +        };
-> +
-> +        to_result(ret)?;
-> +        let count =3D ret as u32;
-> +
-> +        // SAFETY: Vectors are 0-based, so valid indices are [0, count-1=
-].
-> +        // pci_alloc_irq_vectors guarantees count >=3D min_vecs > 0, so =
-count - 1 is valid.
-
-This is a justification why the range makes sense (which makes sense to kee=
-p as
-a separate comment), but it doesn't justify the safety requirement of
-IrqVector::new().
-
-> +        let range =3D unsafe { IrqVector::new(dev, 0)..=3DIrqVector::new=
-(dev, count - 1) };
-> +
-> +        Ok((Self { dev: dev.into() }, range))
-> +    }
-> +}
-> +
-> +impl Drop for IrqVectorRegistration {
-> +    fn drop(&mut self) {
-> +        // SAFETY: `self.dev` is a valid ARef to a `struct pci_dev` that=
- has successfully
-> +        // allocated IRQ vectors.
-
-The "successfully allocated IRQ vectors" part should be a type invariant.
-
-NIT: s/ARef/`ARef`/
-
-> +        unsafe { bindings::pci_free_irq_vectors(self.dev.as_raw()) };
-> +    }
-> +}
-
-<snip>
-
-> +    /// Allocate IRQ vectors for this PCI device with automatic cleanup.
-> +    ///
-> +    /// Allocates between `min_vecs` and `max_vecs` interrupt vectors fo=
-r the device.
-> +    /// The allocation will use MSI-X, MSI, or legacy interrupts based o=
-n the `irq_types`
-> +    /// parameter and hardware capabilities. When multiple types are spe=
-cified, the kernel
-> +    /// will try them in order of preference: MSI-X first, then MSI, the=
-n legacy interrupts.
-> +    ///
-> +    /// The allocated vectors are automatically freed when the device is=
- unbound, using the
-> +    /// devres (device resource management) system.
-> +    ///
-> +    /// # Arguments
-> +    ///
-> +    /// * `min_vecs` - Minimum number of vectors required
-> +    /// * `max_vecs` - Maximum number of vectors to allocate
-> +    /// * `irq_types` - Types of interrupts that can be used
-> +    ///
-> +    /// # Returns
-> +    ///
-> +    /// Returns a range of IRQ vectors that were successfully allocated,=
- or an error if the
-> +    /// allocation fails or cannot meet the minimum requirement.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```ignore
-> +    /// // Allocate using any available interrupt type in the order ment=
-ioned above.
-> +    /// let vectors =3D dev.alloc_irq_vectors(1, 32, IrqTypes::all())?;
-> +    ///
-> +    /// // Allocate MSI or MSI-X only (no legacy interrupts)
-> +    /// let msi_only =3D IrqTypes::default()
-> +    ///     .with(IrqType::Msi)
-> +    ///     .with(IrqType::MsiX);
-> +    /// let vectors =3D dev.alloc_irq_vectors(4, 16, msi_only)?;
-> +    /// ```
-> +    pub fn alloc_irq_vectors(
-> +        &self,
-> +        min_vecs: u32,
-> +        max_vecs: u32,
-> +        irq_types: IrqTypes,
-> +    ) -> Result<RangeInclusive<IrqVector<'_>>> {
-> +        let (irq_vecs, range) =3D IrqVectorRegistration::new(self, min_v=
-ecs, max_vecs, irq_types)?;
-> +
-> +        devres::register(self.as_ref(), irq_vecs, GFP_KERNEL)?;
-
-If we move the call to devres::register() into IrqVectorRegistration::new()
-(which I'd call IrqVectorRegistration::register() then) we can enforce the
-guarantee that an IrqVectorRegistration must not out-live the device / driv=
-er
-binding internally.
-
-> +        Ok(range)
-> +    }
->  }
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 1434cb6208cb..1a29598cf7cb 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -223,9 +223,11 @@ KBUILD_USERCFLAGS	+= -Werror
+ KBUILD_USERLDFLAGS	+= -Wl,--fatal-warnings
+ KBUILD_RUSTFLAGS	+= -Dwarnings
+ 
+-endif
+-
+-# Hostprog flags are used during build bootstrapping and can not rely on CONFIG_ symbols.
++# While hostprog flags are used during build bootstrapping (thus can not use on
++# CONFIG_ symbols), -Werror should be opted into, so only apply -Werror to
++# hostprogs built after the initial Kconfig bootstrap.
+ KBUILD_HOSTCFLAGS	+= -Werror
+ KBUILD_HOSTLDFLAGS	+= -Wl,--fatal-warnings
+ KBUILD_HOSTRUSTFLAGS	+= -Dwarnings
++
++endif
