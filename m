@@ -1,290 +1,327 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9711426B973
-	for <rust-for-linux@vger.kernel.org>; Sun,  5 Oct 2025 10:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904182773F7;
+	Sun,  5 Oct 2025 12:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759659835; cv=none; b=Ouvh+JZSYDzWZlwRTaLah4qx0T1QgPrqeLHCDAomyzfYGsJDUDUQ92joAmLVuqabyk6Z+XdJwscGCfMAcb+mmLDQWZWyWMq1twKWv65PEr3LS5KEzEzaN2CVK39UxDXSJtepVP3bpZ+22qickHryJ1uVDlEYLfmAHAypaT6HUyU=
+	t=1759668975; cv=none; b=Bc7NEOIUl7IxXFTxBx/+W8pGt3AdCmfjLXH+bTVe+pfzwhW8LxkYtOuMjjOnbULqArfIXIAVV98zNbnOSrpJULjqkLqTmGKNMJKmtqCF78xGbC4gq+QHKVZt4eCLmUY1S44vBZrnQuShWzUlfZA3FMz8Zq5/1zaT1O3lGyVY7ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759659835; c=relaxed/simple;
-	bh=q+WTdvd20EQ+5LcFvIvTRIFw16rgVBtHz4Xy4O5ISho=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/EasipPEKXsImg7S8RDpnrUUCYGsvAmrUawd8jVo/bztbkUKXMpoEhYN3YvxjAeDZqeuUw2ln4kC7qDRhTLuDSzn6FtK2/yPsLutI46an/dg09656piTXrSi0n5z7UikB/HxzBZAp9iGTFPYyp3L+MTpVNwhlQG5g7S0Terr0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NxXWL8Ui; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759668975; c=relaxed/simple;
+	bh=2dWQPeBmfuCIMPI8LT0IPUyJaGtEuhcG7d4a+m1kWHs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=jbZnTFOxOzVriN6/6wHUwpb1QEWkf6b9EZXrOUTSoBEcufq6qclDVtSHSxg6hwJcXn6CLlzccua8936qUgY4l2H76bLUplHhLnrbjMAwvlWOmAn+Eafsq+U8tHkeiHdUXuHtA/gv2dBAocph6uhIMLEU/daRVUWjeLDr7WmNvqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4bFxHk+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NxXWL8Ui"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-46e4f2696bdso47664785e9.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 05 Oct 2025 03:23:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759659832; x=1760264632; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ngfEm+DQ3DVDPW9zq8FsaUOLCfe9b0eQ1gcmjeKbeXc=;
-        b=NxXWL8Ui0iyQDJS/Tt9EnonWCpThJG+zUaWwkDD9ZVB3/PKZUESCCx0NcjcSYOFkyj
-         uxL5ODk0TrtL66mJ9D9gCDD8NXObDx0h6n/S25onR1kY1fvHD3UK30onI3UbK3OEVmkF
-         ieOPrRMg3/szBVNl6MeBlddATjckfQD9iu65cW9ZsJYbshBYJ9VKXoGdEG7tqeSBPoGC
-         at8FYdO4JD45gJOfLHghtknwUBxUt34sM3MuvOkczazjzxb5EhrW2Ie3k8pOYeMb6Udu
-         SRbXj99iLWUIr4XC9mOc69KpUFDMTnSqDJ260Emt5seNegA2bJ2mKIALilHsXU/ICUAT
-         KTPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759659832; x=1760264632;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ngfEm+DQ3DVDPW9zq8FsaUOLCfe9b0eQ1gcmjeKbeXc=;
-        b=EZba/Lq49DeCFgaJ8m+SZ9hjXykbliRIilQeEaR3HMN81qWkNg7p0DiS7ZJcq1lKgM
-         n8DrXE70U6cFco2xD9Y95Qd5FaTwgyXpIycF0nTLyc13VKU2cI3eBOXxlOnoxgYno0th
-         Ur3FGWEeJHD+MrFVuLfFR3ajgzMEVe0go3ozmAB5NcUZ1WyWDhvKZgAzcOCEnDjBKw+o
-         MBJKOHQM7UVTvjmXQaz6fy7Jvq8so5sXlLyo5pDLgaru9CuTQKdVuKT9aHIEzEa7M9OY
-         l/bpT+KvJaVwLXMA0rMBJxAfsA05T8EcFGLlV7O+iNrL9hvzgQI6nJR+2u5XH0iUslqw
-         sp8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUSTPER3891GBDizDRWuEvik4n3jTKKzMiETEkmJ4zevFxYMUQE0a0H8VUMIAnGdwzBtwPUuXF3MXt6FA3meA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrNnZhJPz2bvEAICsxu4wnZdyfbOyoeY1Ap8rqG/jRWpNVp261
-	tcLJ4uTsIygEXdV+XifJmXq9CWn4OPkSetiiEgIpMILeRwBc0RHhQ5ch
-X-Gm-Gg: ASbGncsc/9BXK2zvfayYQYUHB3DXySqNBWWTnVeK8x2GbVGuCafa0Q+yUm62ABkjj/l
-	onQBwtMk+EoQMuVKDGEpgycWa5ME34E8dhuJVTUeGqexpib3L0LNq72BnUfc6OsKxc8ZHjix778
-	Yb1nUDoRS7aSY1BDcmtAWWzjUwBUgtAiwfWW//Cjfzd0p1nqd8hbRH0jZgvjJ5va42xt12ctfA9
-	WBcmKbpmwNrMwgMeMV4pX+PQ0jVN3VWXgm+02pUTds/ZiYzQyTpWJWZSzJUA9FQ+OYgVRu36hEc
-	Ct9A9Ph/Z7+v7gBNTyxJO3Ch4V+1v+fHNbNHBxb2Z/pxtui69H2oPcGTNzVetnWfXYoZm23xuNb
-	NNG1t0gf9HIRXu64xhCN4B+/ncLJtDzlCBEK9ex591upISL3MOyKvx082vMmtEjjzTLY=
-X-Google-Smtp-Source: AGHT+IF17RBTJIOkohlNDQohlW0bXClHHtsE7aCBssZ9CCNLPAILpVfcFgHOU0RfquJetXJuGo/2oQ==
-X-Received: by 2002:a05:6000:603:b0:3ee:1461:165f with SMTP id ffacd0b85a97d-42567194bb2mr5418875f8f.31.1759659831787;
-        Sun, 05 Oct 2025 03:23:51 -0700 (PDT)
-Received: from Vasilio.Home ([2.127.51.206])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8e9703sm16055425f8f.30.2025.10.05.03.23.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Oct 2025 03:23:51 -0700 (PDT)
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH v6 3/3] samples: rust: add Rust I2C sample driver
-Date: Sun,  5 Oct 2025 11:23:48 +0100
-Message-ID: <20251005102348.41935-1-igor.korotin.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251005102226.41876-1-igor.korotin.linux@gmail.com>
-References: <20251005102226.41876-1-igor.korotin.linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4bFxHk+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70800C4CEF4;
+	Sun,  5 Oct 2025 12:56:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759668975;
+	bh=2dWQPeBmfuCIMPI8LT0IPUyJaGtEuhcG7d4a+m1kWHs=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=f4bFxHk+quP1JF210mDDlL9TCVKpGGccU9y+5XwqDlIA4j8aEkmc2dwo/w+FiccQV
+	 k3UW9lTihn/StIeqmtzX4XG3VaHtgMRmK5yhijokglmC1pSwvDWQsIR60Kf8jrkIW0
+	 oGRf898QGoD6NE9q/SyWhs1+9h5myxxtYgVwcAtxlXgDAyRoz2q8RXfwse9995rd5/
+	 tSGuXQ2J//EUkpogJhdM7Gx0Sw/zOYuJT3AObg7+kMJuyTT54YwjIZx16RnQ5bxoJM
+	 HyEq1W9V5JRuu2rcQ7nQ7kPopWTbdhN4AewkeKJxykNQs5f/FT2XSVeNfdkACuBuMX
+	 ywBqJLBMWIfFQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 05 Oct 2025 14:56:08 +0200
+Message-Id: <DDAEL8DQFWKX.1BSBDMMN9I5B0@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <acourbot@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>,
+ "Timur Tabi" <ttabi@nvidia.com>, <joel@joelfernandes.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2] rust: pci: Allocate and manage PCI interrupt vectors
+References: <20251002183912.1096508-1-joelagnelf@nvidia.com>
+In-Reply-To: <20251002183912.1096508-1-joelagnelf@nvidia.com>
 
-Add a new `rust_driver_i2c` sample, showing how to create a new
-i2c client using `i2c::Registration` and bind a driver to it
-via legacy I2C-ID table.
+On Thu Oct 2, 2025 at 8:39 PM CEST, Joel Fernandes wrote:
+> Add support to PCI rust module to allocate, free and manage IRQ vectors.
+> Integrate with devres for managing the allocated resources.
+>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> ---
+> Previous patch was here:
+> https://lore.kernel.org/all/20250910035415.381753-1-joelagnelf@nvidia.com=
+/
+>
+>  rust/kernel/pci.rs | 199 ++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 186 insertions(+), 13 deletions(-)
+>
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 78271bf88cea..f97a6a36cf5e 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -6,8 +6,9 @@
+> =20
+>  use crate::{
+>      bindings, container_of, device,
+> +    device::Bound,
+>      device_id::{RawDeviceId, RawDeviceIdIndex},
+> -    devres::Devres,
+> +    devres::{self, Devres},
+>      driver,
+>      error::{from_result, to_result, Result},
+>      io::{Io, IoRaw},
+> @@ -19,7 +20,7 @@
+>  };
+>  use core::{
+>      marker::PhantomData,
+> -    ops::Deref,
+> +    ops::{Deref, RangeInclusive},
+>      ptr::{addr_of_mut, NonNull},
+>  };
+>  use kernel::prelude::*;
+> @@ -28,6 +29,59 @@
+> =20
+>  pub use self::id::{Class, ClassMask, Vendor};
+> =20
+> +/// IRQ type flags for PCI interrupt allocation.
+> +#[derive(Debug, Clone, Copy)]
+> +pub enum IrqType {
+> +    /// Legacy INTx interrupts
+> +    Legacy,
 
-Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
----
- MAINTAINERS                     |   1 +
- samples/rust/Kconfig            |  11 +++
- samples/rust/Makefile           |   1 +
- samples/rust/rust_driver_i2c.rs | 126 ++++++++++++++++++++++++++++++++
- 4 files changed, 139 insertions(+)
- create mode 100644 samples/rust/rust_driver_i2c.rs
+Like Bjorn said, I'd go with INTx too, also given that the C define is
+PCI_IRQ_INTX.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c44c7ac317b1..2654a7ea0c80 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11523,6 +11523,7 @@ R:	Daniel Almeida <daniel.almeida@collabora.com>
- L:	rust-for-linux@vger.kernel.org
- S:	Maintained
- F:	rust/kernel/i2c.rs
-+F:	samples/rust/rust_driver_i2c.rs
- 
- I2C SUBSYSTEM HOST DRIVERS
- M:	Andi Shyti <andi.shyti@kernel.org>
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 7f7371a004ee..28dae070b365 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -62,6 +62,17 @@ config SAMPLE_RUST_DMA
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_I2C
-+	tristate "I2C Driver"
-+	depends on I2C=y
-+	help
-+	  This option builds the Rust I2C driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_i2c.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_DRIVER_PCI
- 	tristate "PCI Driver"
- 	depends on PCI
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index bd2faad63b4f..141d8f078248 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
- obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
- obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_I2C)		+= rust_driver_i2c.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
-diff --git a/samples/rust/rust_driver_i2c.rs b/samples/rust/rust_driver_i2c.rs
-new file mode 100644
-index 000000000000..b2d1d234b077
---- /dev/null
-+++ b/samples/rust/rust_driver_i2c.rs
-@@ -0,0 +1,126 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust I2C driver sample.
-+//!
-+//! This module shows how to:
-+//!
-+//! 1. Manually create an `i2c_client` at address `SAMPLE_I2C_CLIENT_ADDR`
-+//!    on the adapter with index `SAMPLE_I2C_ADAPTER_INDEX`.
-+//!
-+//! 2. Register a matching Rust-based I2C driver for that client.
-+//!
-+//! # Requirements
-+//!
-+//! - The target system must expose an I2C adapter at index
-+//!   `SAMPLE_I2C_ADAPTER_INDEX`.
-+//!
-+//! - To emulate an adapter for testing, you can load the
-+//!   `i2c-stub` kernel module with an option `chip_addr`
-+//!   For example for this sample driver to emulate an I2C device with
-+//!   an address 0x30 you can use:
-+//!      `modprobe i2c-stub chip_addr=0x30`
-+//!
-+
-+use kernel::{
-+    acpi, c_str,
-+    device::Core,
-+    i2c, of,
-+    prelude::*,
-+    types::ARef,
-+};
-+
-+const SAMPLE_I2C_CLIENT_ADDR: u16 = 0x30;
-+const SAMPLE_I2C_ADAPTER_INDEX: i32 = 0;
-+const BOARD_INFO: i2c::I2cBoardInfo =
-+    i2c::I2cBoardInfo::new(c_str!("rust_driver_i2c"), SAMPLE_I2C_CLIENT_ADDR);
-+
-+struct SampleDriver {
-+    idev: ARef<i2c::I2cClient>,
-+}
-+
-+kernel::acpi_device_table! {
-+    ACPI_TABLE,
-+    MODULE_ACPI_TABLE,
-+    <SampleDriver as i2c::Driver>::IdInfo,
-+    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), 0)]
-+}
-+
-+kernel::i2c_device_table! {
-+    I2C_TABLE,
-+    MODULE_I2C_TABLE,
-+    <SampleDriver as i2c::Driver>::IdInfo,
-+    [(i2c::DeviceId::new(c_str!("rust_driver_i2c")), 0)]
-+}
-+
-+kernel::of_device_table! {
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <SampleDriver as i2c::Driver>::IdInfo,
-+    [(of::DeviceId::new(c_str!("test,rust_driver_i2c")), 0)]
-+}
-+
-+impl i2c::Driver for SampleDriver {
-+    type IdInfo = u32;
-+
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
-+    const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe(idev: &i2c::I2cClient<Core>, info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>> {
-+        let dev = idev.as_ref();
-+
-+        dev_info!(dev, "Probe Rust I2C driver sample.\n");
-+
-+        if let Some(info) = info {
-+            dev_info!(dev, "Probed with info: '{}'.\n", info);
-+        }
-+
-+        let drvdata = KBox::new(Self { idev: idev.into() }, GFP_KERNEL)?;
-+
-+        Ok(drvdata.into())
-+    }
-+
-+    fn shutdown(idev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
-+        dev_info!(idev.as_ref(), "Shutdown Rust I2C driver sample.\n");
-+    }
-+}
-+
-+impl Drop for SampleDriver {
-+    fn drop(&mut self) {
-+        dev_info!(self.idev.as_ref(), "Remove Rust I2C driver sample.\n");
-+    }
-+}
-+
-+// NOTE: The code below is expanded macro module_i2c_driver. It is not used here
-+//       because we need to manually create an I2C client in `init()`. The macro
-+//       hides `init()`, so to demo client creation on adapter SAMPLE_I2C_ADAPTER_INDEX
-+//       we expand it by hand.
-+#[pin_data]
-+struct DriverModule {
-+    #[pin]
-+    _driver: kernel::driver::Registration<i2c::Adapter<SampleDriver>>,
-+    _reg: i2c::Registration,
-+}
-+
-+impl kernel::InPlaceModule for DriverModule {
-+    fn init(
-+        module: &'static kernel::ThisModule,
-+    ) -> impl ::pin_init::PinInit<Self, kernel::error::Error> {
-+        kernel::try_pin_init!(Self {
-+            _reg <- {
-+                let adapter = i2c::I2cAdapter::get(SAMPLE_I2C_ADAPTER_INDEX)?;
-+
-+                i2c::Registration::new(&adapter, &BOARD_INFO)
-+            },
-+            _driver <- kernel::driver::Registration::new(<Self as kernel::ModuleMetadata>::NAME,module,),
-+        })
-+    }
-+}
-+
-+kernel::prelude::module! {
-+    type: DriverModule,
-+    name: "rust_driver_i2c",
-+    authors: ["Igor Korotin"],
-+    description: "Rust I2C driver",
-+    license: "GPL v2",
-+}
--- 
-2.43.0
+> +    /// Message Signaled Interrupts (MSI)
+> +    Msi,
+> +    /// Extended Message Signaled Interrupts (MSI-X)
+> +    MsiX,
+> +}
+> +
+> +impl IrqType {
+> +    /// Convert to the corresponding kernel flags
 
+Please end with a period, here and in multiple other places.
+
+> +    const fn as_raw(self) -> u32 {
+> +        match self {
+> +            IrqType::Legacy =3D> bindings::PCI_IRQ_INTX,
+> +            IrqType::Msi =3D> bindings::PCI_IRQ_MSI,
+> +            IrqType::MsiX =3D> bindings::PCI_IRQ_MSIX,
+> +        }
+> +    }
+> +}
+> +
+> +/// Set of IRQ types that can be used for PCI interrupt allocation.
+> +#[derive(Debug, Clone, Copy, Default)]
+> +pub struct IrqTypes(u32);
+> +
+> +impl IrqTypes {
+> +    /// Create a set containing all IRQ types (MSI-X, MSI, and Legacy)
+> +    pub const fn all() -> Self {
+> +        Self(bindings::PCI_IRQ_ALL_TYPES)
+> +    }
+> +
+> +    /// Build a set of IRQ types
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```ignore
+> +    /// // Create a set with only MSI and MSI-X (no legacy interrupts)
+> +    /// let msi_only =3D IrqTypes::default()
+> +    ///     .with(IrqType::Msi)
+> +    ///     .with(IrqType::MsiX);
+> +    /// ```
+> +    pub const fn with(mut self, irq_type: IrqType) -> Self {
+> +        self.0 |=3D irq_type.as_raw();
+> +        self
+
+NIT: I'd probably write this as:
+=09
+	Self(self.0 | irq_type.as_raw())
+
+> +    }
+> +
+> +    /// Get the raw flags value
+> +    const fn as_raw(self) -> u32 {
+> +        self.0
+> +    }
+> +}
+> +
+>  /// An adapter for the registration of PCI drivers.
+>  pub struct Adapter<T: Driver>(T);
+> =20
+> @@ -516,6 +570,76 @@ pub fn pci_class(&self) -> Class {
+>      }
+>  }
+> =20
+> +/// Represents an allocated IRQ vector for a specific PCI device.
+> +///
+> +/// This type ties an IRQ vector to the device it was allocated for,
+> +/// ensuring the vector is only used with the correct device.
+> +#[derive(Clone, Copy)]
+> +pub struct IrqVector<'a> {
+> +    dev: &'a Device<Bound>,
+> +    index: u32,
+> +}
+> +
+> +impl<'a> IrqVector<'a> {
+> +    /// Creates a new `IrqVector` for the given device and index.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `index` must be a valid IRQ vector index for `dev`.
+> +    unsafe fn new(dev: &'a Device<Bound>, index: u32) -> Self {
+> +        Self { dev, index }
+> +    }
+> +
+> +    /// Returns the raw vector index.
+> +    fn index(&self) -> u32 {
+> +        self.index
+> +    }
+> +}
+> +
+> +/// Represents an IRQ vector allocation for a PCI device.
+> +///
+> +/// This type ensures that IRQ vectors are properly allocated and freed =
+by
+> +/// tying the allocation to the lifetime of this registration object.
+> +struct IrqVectorRegistration {
+> +    dev: ARef<Device>,
+> +}
+> +
+> +impl IrqVectorRegistration {
+> +    /// Allocate IRQ vectors for the given PCI device.
+> +    ///
+> +    /// Returns the registration object and a range of valid IRQ vectors=
+.
+> +    fn new<'a>(
+> +        dev: &'a Device<Bound>,
+> +        min_vecs: u32,
+> +        max_vecs: u32,
+> +        irq_types: IrqTypes,
+> +    ) -> Result<(Self, RangeInclusive<IrqVector<'a>>)> {
+> +        // SAFETY: `dev.as_raw()` is guaranteed to be a valid pointer to=
+ a `struct pci_dev`
+> +        // by the type invariant of `Device`.
+> +        // `pci_alloc_irq_vectors` internally validates all parameters a=
+nd returns error codes.
+
+"all other parameters"?
+
+Please also format multiple statements in a safety comment as list.
+
+> +        let ret =3D unsafe {
+> +            bindings::pci_alloc_irq_vectors(dev.as_raw(), min_vecs, max_=
+vecs, irq_types.as_raw())
+> +        };
+> +
+> +        to_result(ret)?;
+> +        let count =3D ret as u32;
+> +
+> +        // SAFETY: Vectors are 0-based, so valid indices are [0, count-1=
+].
+> +        // pci_alloc_irq_vectors guarantees count >=3D min_vecs > 0, so =
+count - 1 is valid.
+
+This is a justification why the range makes sense (which makes sense to kee=
+p as
+a separate comment), but it doesn't justify the safety requirement of
+IrqVector::new().
+
+> +        let range =3D unsafe { IrqVector::new(dev, 0)..=3DIrqVector::new=
+(dev, count - 1) };
+> +
+> +        Ok((Self { dev: dev.into() }, range))
+> +    }
+> +}
+> +
+> +impl Drop for IrqVectorRegistration {
+> +    fn drop(&mut self) {
+> +        // SAFETY: `self.dev` is a valid ARef to a `struct pci_dev` that=
+ has successfully
+> +        // allocated IRQ vectors.
+
+The "successfully allocated IRQ vectors" part should be a type invariant.
+
+NIT: s/ARef/`ARef`/
+
+> +        unsafe { bindings::pci_free_irq_vectors(self.dev.as_raw()) };
+> +    }
+> +}
+
+<snip>
+
+> +    /// Allocate IRQ vectors for this PCI device with automatic cleanup.
+> +    ///
+> +    /// Allocates between `min_vecs` and `max_vecs` interrupt vectors fo=
+r the device.
+> +    /// The allocation will use MSI-X, MSI, or legacy interrupts based o=
+n the `irq_types`
+> +    /// parameter and hardware capabilities. When multiple types are spe=
+cified, the kernel
+> +    /// will try them in order of preference: MSI-X first, then MSI, the=
+n legacy interrupts.
+> +    ///
+> +    /// The allocated vectors are automatically freed when the device is=
+ unbound, using the
+> +    /// devres (device resource management) system.
+> +    ///
+> +    /// # Arguments
+> +    ///
+> +    /// * `min_vecs` - Minimum number of vectors required
+> +    /// * `max_vecs` - Maximum number of vectors to allocate
+> +    /// * `irq_types` - Types of interrupts that can be used
+> +    ///
+> +    /// # Returns
+> +    ///
+> +    /// Returns a range of IRQ vectors that were successfully allocated,=
+ or an error if the
+> +    /// allocation fails or cannot meet the minimum requirement.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```ignore
+> +    /// // Allocate using any available interrupt type in the order ment=
+ioned above.
+> +    /// let vectors =3D dev.alloc_irq_vectors(1, 32, IrqTypes::all())?;
+> +    ///
+> +    /// // Allocate MSI or MSI-X only (no legacy interrupts)
+> +    /// let msi_only =3D IrqTypes::default()
+> +    ///     .with(IrqType::Msi)
+> +    ///     .with(IrqType::MsiX);
+> +    /// let vectors =3D dev.alloc_irq_vectors(4, 16, msi_only)?;
+> +    /// ```
+> +    pub fn alloc_irq_vectors(
+> +        &self,
+> +        min_vecs: u32,
+> +        max_vecs: u32,
+> +        irq_types: IrqTypes,
+> +    ) -> Result<RangeInclusive<IrqVector<'_>>> {
+> +        let (irq_vecs, range) =3D IrqVectorRegistration::new(self, min_v=
+ecs, max_vecs, irq_types)?;
+> +
+> +        devres::register(self.as_ref(), irq_vecs, GFP_KERNEL)?;
+
+If we move the call to devres::register() into IrqVectorRegistration::new()
+(which I'd call IrqVectorRegistration::register() then) we can enforce the
+guarantee that an IrqVectorRegistration must not out-live the device / driv=
+er
+binding internally.
+
+> +        Ok(range)
+> +    }
+>  }
