@@ -1,39 +1,39 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A81B20FA9C;
-	Mon,  6 Oct 2025 11:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFC1272E6D;
+	Mon,  6 Oct 2025 11:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759750728; cv=none; b=aPOxFjoliA+qe7oIb3B4wz08g40A5GS3UGqBsC63W1moZmoDqnMOnO2K1ZcNj1LJ2uemN74J9YwwYrym5Weass9WA2QCcngiSB7p14UerGSmYrKgf+pxUDXBABMWNKxVx2Wz46YAGfkjZbu66NSe79QVmR4k4cswI8AtO/o4dSk=
+	t=1759750877; cv=none; b=TF//LM2oQUFW7ZTxb95kLmS1G43s5PatLQXWoZm7zNvMPyycFS2F3cIIEfkP1yM/MFGgiBgGbYDhCEAbZ5EX6xTV/7zFmcZH7lQbjGwSyfAmFkLdGoWPZ2LYbj3T6JsG1Uw/LNJKsNgLq83IF/mRgC68fKyzVJiKxM62cKjBwzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759750728; c=relaxed/simple;
-	bh=lUyf8dRTZJ7H+iCSUJCsHO6JJYThEWG8/fGHYur8uXI=;
+	s=arc-20240116; t=1759750877; c=relaxed/simple;
+	bh=hUUotr5MYYM9aMcAKjEfjPvHV8s0XExBA23OlR2mXR8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IBN7wcHK2Sbh2ceMD2Ka/3x5tZ+n2pFgDf2SMVZ8Wxux8CtWilcjv48bV23R5GTePrOZTlCR61RmWjp7t1nPlDhKWDjrjL0bIvneyYO0gAYBwAKHbNoTbVoC/N/kZoBxwpyUZkyHaMqQoZsXEM4NLJsSoMgRiKLdtpdbhWwiqzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=KggantfS; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=YSvjeayWm4khGgXNiBZFTyVqZw+QaA6J8TUL1rzPm7d/uRb0XZg5hk/Lh9gkfAcq1MGEpM3wK6oGpVqrWMyoPcc6TvIxBtUjtBjqWwZ+i3zk4dwZkOrEGr/TQL51wI1YzagzIQ9rJs+UR+oekzr3uj6BQ7U7RltiN6lFBGiu36k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=my/QQ51+; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="KggantfS"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="my/QQ51+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759750724;
-	bh=lUyf8dRTZJ7H+iCSUJCsHO6JJYThEWG8/fGHYur8uXI=;
+	s=mail; t=1759750873;
+	bh=hUUotr5MYYM9aMcAKjEfjPvHV8s0XExBA23OlR2mXR8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KggantfSacRddPWuPTYjy0Vo9SJFsnxyKDMjdMxtJA2lOfn+8ZbuYwYYTtsw+LFpm
-	 TWC7DcRAVyQlPNFNQh2aTWTmcDHwqVPY0zzo1curXryvy1HFC1PhctEqUXy0kkGQdp
-	 7oSZEzx2fxof7oSJUuMWAGwXvNwUbLaYlJvgLgm8chzhSu/HU3dCybidZMPtzwc9Ar
-	 rCQ6w4Fxe86teKnTm3zJIwrMzq1APHGTHuIuYH2TnmaKXTA2xKlhRguo245AcDchv4
-	 oeEEbnadKNn3WfFesMDILKQ2Migox/dXrpwPgZAQVicdFDGj4tq5i2BdHwSoXmxhdx
-	 0VonwL9gEWhIw==
+	b=my/QQ51+SkDZGZdItelA0xu/CEBqSp22WzT1IV5M1OPTHxOkMK8+apad66Cjsxg+W
+	 T4xtxfXbS+xvPvoYGT/tTH0nnaG5f52Mp5aOlYynlMTFNPxOi2qzmryOc9In4dZJsZ
+	 4RM7bu6U69cW0f8mLkXssfSUorbb3qsrAyMssRdQg4ivFXBdTyIzMdJpe2OCHK4Q9H
+	 tGopfrl/BgQTfH9NrdnjyOzo6ZROCiOAepaJy592ls/mDmMBFpYWsbi9K/45JvyDvD
+	 k673KzmXvbXjihnvpeJHcuqDTC7AozU6SVeEhNpeteAVsvdtwB1cwmm4We9dZyfJbY
+	 0V5PQ8GrXQOzw==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 5229717E0AC3;
-	Mon,  6 Oct 2025 13:38:44 +0200 (CEST)
-Date: Mon, 6 Oct 2025 13:38:32 +0200
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 143C917E0AC3;
+	Mon,  6 Oct 2025 13:41:13 +0200 (CEST)
+Date: Mon, 6 Oct 2025 13:41:08 +0200
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
@@ -46,11 +46,14 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost
  <liviu.dudau@arm.com>, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v3 1/2] drm/gpuvm: add deferred vm_bo cleanup
-Message-ID: <20251006133832.6d385b23@fedora>
-In-Reply-To: <CAH5fLgipghDp3W+Gr0YfHT0HOp3vcF+mfBAbtiAiLOKRYt43Sw@mail.gmail.com>
+Message-ID: <20251006134108.6a5cdcb7@fedora>
+In-Reply-To: <CAH5fLgjteqdWVBfzU_2iq2v=9MV9rD+s3z6i2ZjrmqBUq6_byQ@mail.gmail.com>
 References: <20251001-vmbo-defer-v3-0-a3fe6b6ae185@google.com>
 	<20251001-vmbo-defer-v3-1-a3fe6b6ae185@google.com>
-	<CAH5fLgipghDp3W+Gr0YfHT0HOp3vcF+mfBAbtiAiLOKRYt43Sw@mail.gmail.com>
+	<DD71GUKZKFPR.2OVPQ9KOI89YG@kernel.org>
+	<CAH5fLghM_fmaHn561_e7StHAwdV=8gPxAwUToDxPQiBY8E+aVA@mail.gmail.com>
+	<20251001171346.482142eb@fedora>
+	<CAH5fLgjteqdWVBfzU_2iq2v=9MV9rD+s3z6i2ZjrmqBUq6_byQ@mail.gmail.com>
 Organization: Collabora
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -62,36 +65,114 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 6 Oct 2025 13:30:59 +0200
+On Mon, 6 Oct 2025 13:31:51 +0200
 Alice Ryhl <aliceryhl@google.com> wrote:
 
-> On Wed, Oct 1, 2025 at 12:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
+> On Wed, Oct 1, 2025 at 5:13=E2=80=AFPM Boris Brezillon
+> <boris.brezillon@collabora.com> wrote:
 > >
-> > When using GPUVM in immediate mode, it is necessary to call
-> > drm_gpuvm_unlink() from the fence signalling critical path. However,
-> > unlink may call drm_gpuvm_bo_put(), which causes some challenges:
+> > On Wed, 1 Oct 2025 16:42:35 +0200
+> > Alice Ryhl <aliceryhl@google.com> wrote:
+> > =20
+> > > On Wed, Oct 1, 2025 at 4:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.=
+org> wrote: =20
+> > > >
+> > > > On Wed Oct 1, 2025 at 12:41 PM CEST, Alice Ryhl wrote: =20
+> > > > > +/*
+> > > > > + * Must be called with GEM mutex held. After releasing GEM mutex,
+> > > > > + * drm_gpuvm_bo_defer_free_unlocked() must be called.
+> > > > > + */
+> > > > > +static void
+> > > > > +drm_gpuvm_bo_defer_free_locked(struct kref *kref)
+> > > > > +{
+> > > > > +     struct drm_gpuvm_bo *vm_bo =3D container_of(kref, struct dr=
+m_gpuvm_bo,
+> > > > > +                                               kref);
+> > > > > +     struct drm_gpuvm *gpuvm =3D vm_bo->vm;
+> > > > > +
+> > > > > +     if (!drm_gpuvm_resv_protected(gpuvm)) {
+> > > > > +             drm_gpuvm_bo_list_del(vm_bo, extobj, true);
+> > > > > +             drm_gpuvm_bo_list_del(vm_bo, evict, true);
+> > > > > +     }
+> > > > > +
+> > > > > +     list_del(&vm_bo->list.entry.gem);
+> > > > > +}
+> > > > > +
+> > > > > +/*
+> > > > > + * GEM mutex must not be held. Called after drm_gpuvm_bo_defer_f=
+ree_locked().
+> > > > > + */
+> > > > > +static void
+> > > > > +drm_gpuvm_bo_defer_free_unlocked(struct drm_gpuvm_bo *vm_bo)
+> > > > > +{
+> > > > > +     struct drm_gpuvm *gpuvm =3D vm_bo->vm;
+> > > > > +
+> > > > > +     llist_add(&vm_bo->list.entry.bo_defer, &gpuvm->bo_defer);
+> > > > > +}
+> > > > > +
+> > > > > +static void
+> > > > > +drm_gpuvm_bo_defer_free(struct kref *kref)
+> > > > > +{
+> > > > > +     struct drm_gpuvm_bo *vm_bo =3D container_of(kref, struct dr=
+m_gpuvm_bo,
+> > > > > +                                               kref);
+> > > > > +
+> > > > > +     mutex_lock(&vm_bo->obj->gpuva.lock);
+> > > > > +     drm_gpuvm_bo_defer_free_locked(kref);
+> > > > > +     mutex_unlock(&vm_bo->obj->gpuva.lock);
+> > > > > +
+> > > > > +     /*
+> > > > > +      * It's important that the GEM stays alive for the duration=
+ in which we
+> > > > > +      * hold the mutex, but the instant we add the vm_bo to bo_d=
+efer,
+> > > > > +      * another thread might call drm_gpuvm_bo_deferred_cleanup(=
+) and put
+> > > > > +      * the GEM. Therefore, to avoid kfreeing a mutex we are hol=
+ding, we add
+> > > > > +      * the vm_bo to bo_defer *after* releasing the GEM's mutex.
+> > > > > +      */
+> > > > > +     drm_gpuvm_bo_defer_free_unlocked(vm_bo);
+> > > > > +} =20
+> > > >
+> > > > So, you're splitting drm_gpuvm_bo_defer_free() into two functions, =
+one doing the
+> > > > work that is required to be called with the gpuva lock held and one=
+ that does
+> > > > the work that does not require a lock, which makes perfect sense.
+> > > >
+> > > > However, the naming chosen for the two functions, i.e.
+> > > > drm_gpuvm_bo_defer_free_unlocked() and drm_gpuvm_bo_defer_free_lock=
+ed() is
+> > > > confusing:
+> > > >
+> > > > What you mean semantically mean is "do part 1 with lock held" and "=
+do part 2
+> > > > without lock held", but the the chosen names suggest that both func=
+tions are
+> > > > identical, with the only difference that one takes the lock interna=
+lly and the
+> > > > other one requires the caller to take the lock.
+> > > >
+> > > > It's probably better to name them after what they do and not what t=
+hey're part
+> > > > of. If you prefer the latter, that's fine with me too, but please c=
+hoose a name
+> > > > that makes this circumstance obvious. =20
+> > >
+> > > Fair point. Do you have naming suggestions? Otherwise I can name them
+> > > drm_gpuvm_bo_defer_free_part1() and drm_gpuvm_bo_defer_free_part2().
+> > > :) =20
 > >
-> > 1. drm_gpuvm_bo_put() often requires you to take resv locks, which you
-> >    can't do from the fence signalling critical path.
-> > 2. drm_gpuvm_bo_put() calls drm_gem_object_put(), which is often going
-> >    to be unsafe to call from the fence signalling critical path.
-> >
-> > To solve these issues, add a deferred version of drm_gpuvm_unlink() that
-> > adds the vm_bo to a deferred cleanup list, and then clean it up later.
-> >
-> > The new methods take the GEMs GPUVA lock internally rather than letting
-> > the caller do it because it also needs to perform an operation after
-> > releasing the mutex again. This is to prevent freeing the GEM while
-> > holding the mutex (more info as comments in the patch). This means that
-> > the new methods can only be used with DRM_GPUVM_IMMEDIATE_MODE.
-> >
-> > Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com> =20
+> > drm_gpuvm_bo_free_deferral_extract_locked() and
+> > drm_gpuvm_bo_free_deferral_enqueue()? Definitely not short names though=
+. =20
 >=20
-> In this version, I got rid of the kref_put_mutex() usage, but I
-> realized that maybe we should bring it back. With the current code,
-> it's actually possible to observe a zombie vm_bo in the GEM's list
-> because we don't drop the refcount while holding the mutex.
+> With those names I have to do some additional line breaks. How about:
+>=20
+> drm_gpuvm_bo_into_zombie()
+> drm_gpuvm_bo_defer_zombie()
 
-Alright, let's get back to the kref_put_mutex() approach then.
+Sounds good. I think I'd prefer if the second one was called
+drm_gpuvm_bo_defer_zombie_cleanup() to make clear what the deferral is
+about, but feel free to ignore this if you think it's too long.
