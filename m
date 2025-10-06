@@ -1,95 +1,111 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D856221FD0
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Oct 2025 11:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7083321576E
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Oct 2025 11:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759750068; cv=none; b=dqMqWgR7nLPadttdTQKSMkO0x0e/aV9qTlXcBqrE1qYYnhOtM9mPLdqqRA0tjWc+IZUYZkPWoaGNPPE4c0r/mybVB1ppOJzVNzdVisouq4roO+haZn2iVwzncPC8yn5PtKaHqd85izgEUJajnK/ohj3QFa8q7JiNfc5/8g1kB2E=
+	t=1759750276; cv=none; b=UMIyA4M1Iunn2CHslNExv+FPrOsqhF2Mz5RFIQuOGmhD1AA6wzP74If9IMG4SroYtnpfjZKwyVPTvXh7t+NdVt+30uEDrbmAn2IKk/FcabXcZxEQj48PizZCYCU8gJnQOd5w1n6Mx/T26xz6Y2Yof1Naw8w4Kwt77NaCa4OZp5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759750068; c=relaxed/simple;
-	bh=E/FPw0fY1WNiYy4hyNh9nlCHleoKAmsLZkg3ptd5JBE=;
+	s=arc-20240116; t=1759750276; c=relaxed/simple;
+	bh=KBB8bLmnKxiKJBgmqu9qRxSybSoobmjy5KqsgBWgLSM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cgrBVia5G2JVem2DeCs+tvB+K0i5wk16W6/Np4JJaIBfPgYNloe+kWQmVRdNVaXPUeLxdxzoAMoiuG63xQqu0EFWC878z6GE4ouFUqL8ZlnFp8BjLhHAxQe1vacBbXCbFAIKZkyEYs1R/qp5/WmpUz428WauAAkno5tTByTLiEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ii9hZK/A; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=D3sHybkn8pfJDbr0VeBypH7S6OFMwko2NdROLjtqkOqrnaUJJTgQ0LEdzhBKAXjm75/hZUPnTyAzhseweib4XFNJny0Zg4+ep2TNiCiBf1/BrDrl+59S1nA+mZ1q1ZNuNpTlhvsKX8HZDUSN5cn0dD6yMGg6cN6mFHIiR0otPRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XHi2K8pb; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ii9hZK/A"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-32ebcef552eso1078079a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Oct 2025 04:27:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XHi2K8pb"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ee15505cdeso3685982f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Oct 2025 04:31:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759750066; x=1760354866; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1759750273; x=1760355073; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E/FPw0fY1WNiYy4hyNh9nlCHleoKAmsLZkg3ptd5JBE=;
-        b=ii9hZK/AUgJGOk0I8YPiYshKZ9iCAW29phYwM1KVj+qUqT4tNScpOcq+plPVv2MtiA
-         AVkf0ZYudHlZmjk2ao32OTnXqTtRh+kMfppatE0M7R3BSkG4z0kT/bp/9AsqlxJzEC0p
-         hzlVJQbNvI14fp/PhMdcdJDDwNrHtpuUHD0wOv6KSlAbK5mSUBFg5msXnnRfiqhom/CA
-         abpJ7XO6yhXN0d9EaQJWN8UXLJokutMHpbvTDWFYL9hvKH5ieZrTGDt8nhGZZ99psIeV
-         dqNbmtEvySGD9tueSk5zgMFkZiQyaLzTFGCqGP+IX4bxVOzJZxQpAgRCYevYmVFFy+Me
-         Sh3w==
+        bh=hynuoczeLJTVBLZvXLTFWBQJF44SryF2C9fl7xOgImY=;
+        b=XHi2K8pbu77Tj39tSC6V4GuIDOHXqZCLVi7qVWTMpcU8NIBDN0hFvnWlIi5koXLoP8
+         pLmy6/9mPfysCmCIu1Xea1v/EKaKmRfCAXspcNW0YjEYN7Uyt4TjWPh9OKdbFTdlXNwX
+         RWGV9hNz/B4Q5DU9Vui2eOIgOKGQeBS9zHEAl5ul537Zl8xbgHSq6ePOCrufNlhxBB/q
+         2VQ4VhzkbCVSFcKF30wbKh8pmkB++jxMNcm+dJLoUhJpnvihsSTEYQ3DaGcCTC70SEJs
+         W40TCgQyTU8Hu1bcs8pRItp5Yahc22K3TvjeQ1FPkBIVrpjovY2wvgB1WGxXC5S/O7N5
+         VKoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759750066; x=1760354866;
+        d=1e100.net; s=20230601; t=1759750273; x=1760355073;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=E/FPw0fY1WNiYy4hyNh9nlCHleoKAmsLZkg3ptd5JBE=;
-        b=jsvKQG0oSgXIULyFamHCmNfSqvTiI5l4aMfSHZrc6Hgk7RqmyXL5SYgECSnzLYcckt
-         uBBgr7HOu9NCvaat7NNv9uxyD935Zvwhz70yeZyr/pBVhe56LEnlfE/f8k6a3WN9NyM7
-         u6V2hHUPJGyAhpjKNOBJmz46xqPN3Rry3H5TYLqn4QujrWLt+ZHD+U501YSNANcgfzQ8
-         5sBUIMW+LKfK0hE4KSJThpUxuNDSRjCc3crrLu4XrcB7Hn/imwAzyw8+2zzzPjqdXrO7
-         324jMm8hnnZgeDhUSCx688sNxPcIkM6gPWdum5I6X1YjwrzB1tGjfvdjsuM5mCJar+MV
-         7emQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMCdnohPxz4+cT8XlF3sxiXcd17v8hYJTtcTkHsHZJXVStkX9nzD/mf3L29kQn8TwsQrEXcuyf4X4l53FDvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCEJBzSKU5yFY64Tq6y6qm7sl45k0FfE1oPzM/gPGI8e8ZIXYc
-	dJkdozB7Wr2cZkURR1f8vQbsf6UJGcdVXiyeIpgf1+OvzD18ysFl9MvyYhNT7JHz2hhhIHEo49b
-	aMSWeKkoUPc4QSIG9CN0qjinkXMZ+nIE=
-X-Gm-Gg: ASbGncv8Cb09/33iSGflo6CZ7en7GqffOH9a3lei+e8e6AeGAb+YM27zP5F4nOaaHd2
-	26wjPMEUvesCcS7Z84pc5FB9DKU72be7NwTd8GqsMoZD2c0XDzO0G1Et/PPgrEucfg/lsxld0dC
-	ldZHmivblzi7SYBMFlE5dH0MgE39uyr3q2QS7wyNZZwBG4xWRPmrQLFjWsCoDnL9lGyKpeftvj9
-	m5fl/38x5Je0+Hdq69dTdOmA036DLsTPfU/JD6727QfpXADGd1tPB7lIQLgiP22s58kHB6TvxX+
-	H35b2kFOPcXYcGPwRqrISyQUaY9JWKNwRU+GF+1/OHFuo9iE2c0RN0L4XLz2C9yx2IfrArg=
-X-Google-Smtp-Source: AGHT+IGU552WBlNxXYsiZP3k+YaYGnd0eztZK4BBARL/9cAMbZoEa5fIfV4DQMF8tLrK1/G2rwbinID+IDLRpUaG874=
-X-Received: by 2002:a17:903:18b:b0:257:3283:b859 with SMTP id
- d9443c01a7336-28e9a6ce25fmr71533365ad.9.1759750066264; Mon, 06 Oct 2025
- 04:27:46 -0700 (PDT)
+        bh=hynuoczeLJTVBLZvXLTFWBQJF44SryF2C9fl7xOgImY=;
+        b=FXws1gNfmZPScRFKf7xL4iJKPUlni9xZTWk4zAAgp0QOhBpri8mZcl7t61EUFzBBmN
+         vNMj+SA38xbvlE8hvhuaK1L23T1EA7DxoUm+ZCzhZzzQdDBwYax6OxGs9qr6WibRZhdN
+         w1aT+Dzf8pR/CZOA0qpsCJXXFOf36BJ1KykYcRiNdOaP1QJ5Y+x9mfcZq3PslzQ9jl4q
+         WCGwcuDkSQ7lHKybyWO1agMCwE2MnlE10oz8fG2c7Dv5ge1IglIxFRiXD74+sAAUThyx
+         k+4q/t+yJiWgSGyAoDjnCeYC7D4/RbjAXqmcAaMA3adwYoETmNrh07DEoGWPORGmmzv7
+         uN0A==
+X-Forwarded-Encrypted: i=1; AJvYcCW7bKd59m3kNpPD/52m1VXLVxYsullEfx4qjmlh8p7SUspKUQclN3nUsR3cEv3lybK23qZeliXcjdbMhwStJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFdmfE/+cuZ2jpByogIsiNliVAnIJy4fH9JZSK48MAezLI7ErD
+	ja17dp3lCZwDZYRzoQirwUrz9pdyCuNfKe5Vta4x+P0St+F0T9HispXSeClDKt5rmK6joRj4N5Y
+	tXkbVc6qFNfXJ2FJj5LB6niggE3GTmuaXqhftaVkj
+X-Gm-Gg: ASbGnctXv47pgZaFSrrIwehEZtWSSSEvMEwTZq0K3Lcz9KsVk5nsFahB+JK+3mp6xGb
+	zmx26XkqGBMfoL/ljYxl1pvQ+AQ4Em9oWo08qmCLTuqCMDB9PHIPa5gAxxrM5FDKvMbaYDqK7Hv
+	LttF+bXZaJjCBhxAaa3HKTfQIfCzEeBpWRA6s9ykdOwPzOowI0W9KP6zSWbap46yTbqi12cDDNt
+	szh4yMIJTQHB485p0QTKsodfj4KTkXEFy3GMm1SlWCVCcXBbR1FmoI00ix+HxybjLp0bTjFsglm
+	vL4=
+X-Google-Smtp-Source: AGHT+IHvyJbvN6G9/V2BAekCb/eczdhEbJ4N40IyXAkqljeVImgzHiqmjBf+48NckaYcxwY7yRHMElzQvdgz8RRqA3o=
+X-Received: by 2002:a05:6000:43c5:10b0:425:70cb:9ba8 with SMTP id
+ ffacd0b85a97d-42570cb9bd8mr4248192f8f.1.1759750272637; Mon, 06 Oct 2025
+ 04:31:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
- <20251005011100.1035272-1-safinaskar@gmail.com> <20251005205335.GA2561157@ax162>
-In-Reply-To: <20251005205335.GA2561157@ax162>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 6 Oct 2025 13:27:33 +0200
-X-Gm-Features: AS18NWADaxVflRFqTezzJZlF2JybUbasQ-cTILinYfyS9GRIdfm3RSh3CWudziU
-Message-ID: <CANiq72kDT_uDpmvMyMEXodSXP3rsevjzW7G134H9A7Pmx6_7nA@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] kbuild: enable -Werror for hostprogs
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Askar Safin <safinaskar@gmail.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Nicolas Schier <nsc@kernel.org>, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, gary@garyguo.net, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, sam@gentoo.org
+References: <20251001-vmbo-defer-v3-0-a3fe6b6ae185@google.com> <20251001-vmbo-defer-v3-1-a3fe6b6ae185@google.com>
+In-Reply-To: <20251001-vmbo-defer-v3-1-a3fe6b6ae185@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 6 Oct 2025 13:30:59 +0200
+X-Gm-Features: AS18NWDt63QT61YPNpzRLuOD6qlBzTV_WQ7rT6iD_6SVfpk6AHE4bvqw1ogfIKI
+Message-ID: <CAH5fLgipghDp3W+Gr0YfHT0HOp3vcF+mfBAbtiAiLOKRYt43Sw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] drm/gpuvm: add deferred vm_bo cleanup
+To: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 5, 2025 at 10:53=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
-g> wrote:
+On Wed, Oct 1, 2025 at 12:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> Thomas and Nicolas, thoughts?
+> When using GPUVM in immediate mode, it is necessary to call
+> drm_gpuvm_unlink() from the fence signalling critical path. However,
+> unlink may call drm_gpuvm_bo_put(), which causes some challenges:
+>
+> 1. drm_gpuvm_bo_put() often requires you to take resv locks, which you
+>    can't do from the fence signalling critical path.
+> 2. drm_gpuvm_bo_put() calls drm_gem_object_put(), which is often going
+>    to be unsafe to call from the fence signalling critical path.
+>
+> To solve these issues, add a deferred version of drm_gpuvm_unlink() that
+> adds the vm_bo to a deferred cleanup list, and then clean it up later.
+>
+> The new methods take the GEMs GPUVA lock internally rather than letting
+> the caller do it because it also needs to perform an operation after
+> releasing the mutex again. This is to prevent freeing the GEM while
+> holding the mutex (more info as comments in the patch). This means that
+> the new methods can only be used with DRM_GPUVM_IMMEDIATE_MODE.
+>
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I think it would be good to eventually split the hostprog flags into 2
-sets: the ones that are used for bootstrapping, and the ones that go
-after that.
+In this version, I got rid of the kref_put_mutex() usage, but I
+realized that maybe we should bring it back. With the current code,
+it's actually possible to observe a zombie vm_bo in the GEM's list
+because we don't drop the refcount while holding the mutex.
 
-That way, we can get the best of both worlds, if I understand correctly.
-
-Cheers,
-Miguel
+Alice
