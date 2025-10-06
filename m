@@ -1,189 +1,98 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012071.outbound.protection.outlook.com [40.107.200.71])
+Received: from forward100d.mail.yandex.net (forward100d.mail.yandex.net [178.154.239.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619CD27E066;
-	Mon,  6 Oct 2025 12:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759753422; cv=fail; b=GfvRx1IGdqU0nD/R7M32UfQAni5bq/crBi/fPLpS5eetrU7Q61+/RwZyPKCvnKDqOKWGIKPWlPmtKg2MNjL2W33OZPOhnNjsokqmegd+g5fxbHMNmq1+wzdsTzJEew2L4tBkf+5sMkr6kJNnlBSqwGG35NpoE4ncAR+/TKUmpms=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759753422; c=relaxed/simple;
-	bh=3iqkri08HK6ZFpqRk3p4ML+apgEgXTTTNZPfW89veFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eCnVcXfJ+vAkM7LuQ2wiWpDt7/A3RJsRW+fTulm/t4KJ8qWWrkJjq0ft/3F33iZfvnE2IMvXGfO94CYEGX7NmD6MxEfO0Zb+p5NiNZXh41wkAQNpO5ubQ66JqsVVvuQ7cjKNOx3XZqd2VlHB1JcxtgXIPTxelc9DPGTbKp5wJAQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=StnkxfXW; arc=fail smtp.client-ip=40.107.200.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9340921CC68;
+	Mon,  6 Oct 2025 16:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.211
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759768298; cv=none; b=bfUo3Ar3dWtqjW6vfke7WxUfWrqGoLd5gYLqryV6EuYvauZHdD9SEZOeLWcgoXTOypacJIGtUvKZ68C4ZKD7+x4X8u42gt5rvkEUYcqyPfC+l/qAoZysq+sogz+Uc3u0rZSojoTeSF7fXzmNJ4F4U4NiXm8B0UMuf/lQvyv193w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759768298; c=relaxed/simple;
+	bh=2uY5NoijnwdLmleoPPRrn2yh0v/tr1KGjdpZ1mjviHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ofbE2RBFHBM0grYW96ciZDuZFWpkQhnG1v5qmXQgrka3ej9ptFuFEEl64b3YDJkIvDtpVyOxQ/Z6OveTv4DO/q40+2fotIVRBOoLSmRAk0p7TRUard6WFjK4vbS3Q/SGLEg9aJbAD21ff8aguPbn0BMDDrmGNgCNFzXYGVkwaVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=G1ndKLox; arc=none smtp.client-ip=178.154.239.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="StnkxfXW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WOoFKZf0w9jHyhVVKYg3035KmakBPNYcZ0j2833VDcXPY6LCtT+6frW8aXkOgmhIy/us9gIvA4pwVg6ujYyLijoYHmrrrod+AUAct6mZ4ag/qJKehhytg0dny413W38fsbyX/elXHsTQx9XRr/QOUh8r/rqNSh3x9y8Z16UxOsqdaPzZtQCISWhPsBatVWe/DnY6AfIhhi2h+aD0QYYoWTUjPhfPvT0msjxzFlXgP5NdYRG5tpSPN0vufTSRrzLFo/hn2zI9OxIdThYxXLmDh+/qe+BCWlOlj5zYtvxIcZkbG/KIddtSLzAKa1seb1fc3t7xPVKjBEXVm6qjc77MLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1Ygn5fHCdx2XW0lnzgqEG49sJkZrQf0+4p9qBQnVR7o=;
- b=FXVrGiEK1O90A/BG6/fRmF0I9/xEDr7teaBl5lYqghCKipW9xLdTFpNUwnK5XkVSyiA+CE275IcT+m5I2HgBEn3O/yxEPxRQHN9CJjk2OspuhqzzVRDo35Z0DxU2GrlfGhyFy2KKgU6cEOp7/8XNI3Vw9B/tmyxTpezK+Sr9CJWsn+XIe6MO1/uN1gbpfmofthwWdYkc7ktU4NHDyi9hEm0E5AJHmVa100L++P9Z5GXVXHKlEfJ/s8JcOt8MfPX/X8EqqvLtHwz0YW9tfK1qa/CXDr430fW6HB4eaZaY9QUYpZSB45jy1d+iB/YMmrwT8ktLL4TSpF1dLAGD+hxFiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1Ygn5fHCdx2XW0lnzgqEG49sJkZrQf0+4p9qBQnVR7o=;
- b=StnkxfXWhJ11ElkV+ABQT01sqIdn4un4tYpcO3AdaszYIxnx2DYYCKjjyGf89kK8mT1Ouzgu8Sik090n6RdmkFBWHd3fvLCgJYJBcLvLx/OXlLPTcZt9l0srEIRRCGjVZP1SbjiOKq/pX6hJw0d8t+3xffEJzXIuX7w4WHcNxzRSnD3JMbad46N8/OOEBNVwUzIchsfsLNSKIjnNBVKsoazEM1AJ8JHDCsIbFjImtkDaeXYA4/Mg8Ck8frgaMVJc11ql6wWJ3oOB78YAJBn8glHln+xNiVdWOWGuUPeMTNrQetACWOUbT1lFaFTrsxC+T+9crohqsL2m0B3LvzZslQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by LV2PR12MB5822.namprd12.prod.outlook.com (2603:10b6:408:179::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Mon, 6 Oct
- 2025 12:23:32 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9182.017; Mon, 6 Oct 2025
- 12:23:32 +0000
-Date: Mon, 6 Oct 2025 08:23:30 -0400
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, dakr@kernel.org,
-	Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
-	Yury Norov <yury.norov@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Andrea Righi <arighi@nvidia.com>, nouveau@lists.freedesktop.org
-Subject: Re: [PATCH] nova-core: vbios: Rework BiosImage composition to use
- AsRef and traits
-Message-ID: <20251006122330.GA2205242@joelbox2>
-References: <20251005220847.805405-1-joelagnelf@nvidia.com>
- <DDB0EGNAS7N8.X5GFDGYLHUPX@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDB0EGNAS7N8.X5GFDGYLHUPX@nvidia.com>
-X-ClientProxiedBy: BN9PR03CA0654.namprd03.prod.outlook.com
- (2603:10b6:408:13b::29) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="G1ndKLox"
+Received: from mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:4985:0:640:840f:0])
+	by forward100d.mail.yandex.net (Yandex) with ESMTPS id D9B68C005A;
+	Mon, 06 Oct 2025 19:31:27 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id QUnb3i1LqqM0-XVWqGg8c;
+	Mon, 06 Oct 2025 19:31:27 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1759768287;
+	bh=2uY5NoijnwdLmleoPPRrn2yh0v/tr1KGjdpZ1mjviHk=;
+	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
+	b=G1ndKLoxp0HthVEGilprHO0MELdxRUCDGzMNXK722hlgEHv2TlozqZcpu9fdxYum7
+	 WPvKhNCZARfJO19jqPqutmnoSaasoRsiTYrThQ1WipEFAqPUUTy918nZWPYchkG4rn
+	 DrExsazmvePLYvvRrY/m1vvoo791ckQBM/+nZdUQ=
+Authentication-Results: mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	linux-kernel@vger.kernel.org,
+	acourbot@nvidia.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	corbet@lwn.net,
+	lyude@redhat.com,
+	linux-doc@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH 3/3] remove completed task from nova-core task list
+Date: Mon,  6 Oct 2025 19:30:24 +0300
+Message-ID: <20251006163024.18473-4-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251006163024.18473-1-work@onurozkan.dev>
+References: <20251006163024.18473-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|LV2PR12MB5822:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee6fa2cf-76a1-4639-0150-08de04d32a05
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?O+sNuoA3syux/K/o46MfT1cjju5vy3Rpb5FkpjdSjBMfPMUy10edTLtM14+s?=
- =?us-ascii?Q?fU4G92dmDBRxgg/j2mNiGpnbs/X+S5lkDHyblLg7GwqKZQ/pjqppHOiNHTgL?=
- =?us-ascii?Q?qFHUuTvvE6uNDLyakC3r+2xvfnrK4g2fMDpp9/1v6D6cI7Iquu5VEBruRZD1?=
- =?us-ascii?Q?C4EqJHLLdwiF3+wBKMc9mhUI6GEe5ddBcXJ+ab0PO/VV1H0Iuk7s2VWKujkF?=
- =?us-ascii?Q?sErT9KskZYcaERLKVey1kzEz5OsTJIDnBapGkQfDBaZSG0vneNHCPRjHojg3?=
- =?us-ascii?Q?ara22Je4S/xw6h7TvswdA8JsgMGBDClXLva5K1g1FGeBMXsg3NJl35ckU5IQ?=
- =?us-ascii?Q?6xG+9wOg5jzslwuSIM3hI3ZTLCOwl1GkMYy3g0X2ibqHfwhTeptnhyXobWNq?=
- =?us-ascii?Q?/4d/PR+XGgn5NmlsiEA9G0J7SRN5+WimxtfOm7PpxONyQ1XOOqB2Wwezvv9Y?=
- =?us-ascii?Q?8w0cUQVP6My0wluqxsYOChL4Nb2cMVin1QK8r4VNP058WTHaSK7fTMzhqABP?=
- =?us-ascii?Q?pguSWqqwS15DYP/5zn/lNE/bsbngeSpkBbeWZ3sQtTIaoZFvK50OxGwHLqYx?=
- =?us-ascii?Q?Hzeg9DwKvdjo0K1ReRPJKuMS4BUl+YBvV78OywxadVjc/PQpnBrsSni9LU0n?=
- =?us-ascii?Q?E9HIhUYkgC2gxjY5Gzy64+OvGjhOrm/Egd02NICYP0pN2hdy7srQdsEKA4lP?=
- =?us-ascii?Q?Sg4bZFsbzVGmvisQkNCT6t+FN/X5/SciqDE7o6ZiNRMtmoZIEiHwFd7GJxnb?=
- =?us-ascii?Q?CFK2AsVgR/j/DB83iuJFYJ92Fl0MOWrN3aNXWyo+NLEO8sgjfOW/oySRlKXs?=
- =?us-ascii?Q?h+Xk+kf0UchL1GWyu3mhfO4u5k5GynLZwlChKUpOovTXBQFgNqztzsHrEu7E?=
- =?us-ascii?Q?eT4uELdS+T3YP6IXzCf37J2ngvIjzIBcZa6SNosKQZUxS3fS5QBobVDJT8DR?=
- =?us-ascii?Q?Xh8AUJtjYx3GryHb8yhOwrV69bkJgqRHGoXzBhpOQI6q3TH3YAU/6O3KnWy2?=
- =?us-ascii?Q?Z80o2iwmRigcx5mCJb+z7vRbHeUro1EbXHnW7Mm+y5G/5wKdR7IeOymoRIPe?=
- =?us-ascii?Q?Bw+nmpF6RS8JwE5l1EQnx98Jt2hufZ6ElMrMjXSlhluonNuzLPlDXK3nSIr3?=
- =?us-ascii?Q?9OsWR1GrPp6pynziD/EUaInIsVQpDpSsj6QxDsJyB2kNCGxgOEtFHTI8C1Ja?=
- =?us-ascii?Q?7/gRYU3KEgwmzRJ3IslBUiZRkN7JPXF+788VbU+d/VufhMpuvdUOuD7vWD6k?=
- =?us-ascii?Q?ro5LGuDX31yEkfAsp9NPXPcgR43hYbvhyNYFRL/umjDEbR+9K2Dxt1x3qUFz?=
- =?us-ascii?Q?9JI2vuTP9ocdRXlzGaQDXVWMUNfPhkyJGy1CMda+PnAepmLFVYym5Hhun4Yw?=
- =?us-ascii?Q?S3Pmyu50SOd6avvC7XAul75wmr36ZebF0e73fkMbpg2YWPQ6nnuzqvuFemIY?=
- =?us-ascii?Q?GMHcD5nxkMi3+a7O/PInWnGyshzmQlXw?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DJ34gxFLZ8fE0ur2oU5F/TQfN76Eirws26+M13q+YDYe+w4eFEVRCUcfuHlI?=
- =?us-ascii?Q?KwEEGqeaIhwNzbDzPIULC1ayXrmvfqZfmMsI2vcuIIJy2I+UaTak4mdOxw3R?=
- =?us-ascii?Q?2Fq/nBRZo01cA183AY8Ist3Mfl1l2aoiL4OGRo2GTXEXXAlCed7qacfRlJGd?=
- =?us-ascii?Q?3o/JJZwNquPlq1Liy0NvxjFYiSsbjKRPfdXpTU+6CpHNDdFK2rUd2JnH/Zqr?=
- =?us-ascii?Q?yrtSfgb34wftmtwdU7RCMNZ1BU+/To/mmyAZzg3/gzIYqy6g075ZurhmYYYj?=
- =?us-ascii?Q?KOp17qK73mfKkWmjKJMxmylkV7AxfLpzN/ZCHSUoZ7Rrr5scvzgOvLPFnaPX?=
- =?us-ascii?Q?vUrzwYO3xqV4XfPg+4GOfhjqANMZAEo8UmoNkSHeJ0PJsgdxzqat2y6mWmtI?=
- =?us-ascii?Q?Fsx7YEwo5b/dnYemLmKYJfPUwkQ3Y1fCaH9mKCbGUf5HyUzRjK4QSBozD1Mp?=
- =?us-ascii?Q?bYxLAuqASc5OnyxYWgU35dLtcMydn9qTjUpK4YSatmvh/T02/1cUv2bn7dLx?=
- =?us-ascii?Q?9IcXfO+NgXO+ahKgQQF7rbUZhnplTkT0vp4J33cqRAuMIMSXVHVGpRkW7kCe?=
- =?us-ascii?Q?XxxUMYewYcOwomnTpvXPDRi/tRdPOahqpsNbSrkojrzdQ+WoRRr2glg42v8b?=
- =?us-ascii?Q?Xfo67XBtWE4B3Evv/nNAALlWWNiArHna6zwpeBI7TeTD5/dIDp2KJvgWm8bb?=
- =?us-ascii?Q?++92MrgmS1SrJhgTHoP1yRMGKXMIDe5SEV8TsVlEdr1xNqGTYrJnkQv17BIa?=
- =?us-ascii?Q?JsJhz8l2dvF6aVG+CJtHXqOCZatU3nZI10fh5fyL5xpOwVCnPau7lH5f0QEZ?=
- =?us-ascii?Q?OBjhxnCQgABxH/RgbE0Mzr0g3P307n0O7zAVlXdMs3m6Opk7zw/5/dfEDoNZ?=
- =?us-ascii?Q?xQOgMR5baJ8bDNwWi06OJhO47znwkCsY9R48Cf3+O8qh1JFyG+D/o0qfnef/?=
- =?us-ascii?Q?Yx+gImWY/tr/LwGujlTKGcrC1iIo6efqpjXDpr6k7ISpDlSpCAqRGB1BpsT3?=
- =?us-ascii?Q?sjxC9zRPnRsrYf5AEcI2oFgJDakpTggFQHFQ6X/uQB3EXvHwLEjsorOPrv6p?=
- =?us-ascii?Q?fkfIzmE+De5Oo7IO9z5FsDoO3awi4Q/vKoaS7uozHoXAb8SsAlKhPFuf52un?=
- =?us-ascii?Q?2ZFpfnmKiJsbdOINEWA91wM5xdHkNYO8KMB9dTkWpcQ/aqAZR49giakonwK0?=
- =?us-ascii?Q?Z+M+ZSSvdhUtp58F9dT+gTT4buTNr6/hFou58NxnFVEfmujo8xirjoh4XZY4?=
- =?us-ascii?Q?JMRBcMSunhYOgqGGEUBJKm4Kcm+YJOz/DXjOK+DRDZf7RP8PK+8V8mYzpnM+?=
- =?us-ascii?Q?69v2GM7YMvMN0L9giOyxpOaRjMljO5K4Cnr8gsFIg2sgURLu7tx9ZrClTc7S?=
- =?us-ascii?Q?diUn0OfjBxpLggpCGY7XSD91rMVP1iFkEyBuSAPkhOuSjCoesCO3hMOS7mnC?=
- =?us-ascii?Q?RBcpomIETRwtf8jivZ+trykCQzFGhUjma9CG7SR01u/G7YhYriQ//bdKzfiq?=
- =?us-ascii?Q?KX65p7Dq/D0puignRXaWcrNuLS86mdi28EEuj9Q+M4W0BvOdeb/P0oTrT7Fa?=
- =?us-ascii?Q?BTGvPVdz+cEk6lLpSI8Xj5M6Vd5y44GUfe981DkL?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee6fa2cf-76a1-4639-0150-08de04d32a05
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2025 12:23:32.4461
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YuuLEEAPOqqdTSInZxOupDF50qslW2S9R9ghum3KXRwAE4pHLXHtI6B161XjQwKZFmjAUgZFcWwvhuFLrbI3sQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5822
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 06, 2025 at 03:01:42PM +0900, Alexandre Courbot wrote:
-> Hi Joel,
-> 
-> On Mon Oct 6, 2025 at 7:08 AM JST, Joel Fernandes wrote:
-> <snip>
-> > +/// Trait for all BIOS image types
-> > +#[expect(dead_code)]
-> > +trait BiosImageTrait: AsRef<BiosImage> {
-> 
-> I see that this trait is implemented 4 times, but it has no user.
-> Actually I can remove the trait definition, its implementations, and the
-> `AsRef` implementations added by this patch, and the code builds just
-> fine - only with 50 less lines of code. Is this needed at all?
-> 
+The task is completed in this series.
 
-Indeed! So in the previous edition of this code, the pattern was: iterate
-over specific image types and then call the common methods, from the main
-loop. Now the pattern is iterate over the common type and firectly call the
-common methods.
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ Documentation/gpu/nova/core/todo.rst | 8 --------
+ 1 file changed, 8 deletions(-)
 
-So I inadvertently simplified the usecase thus removing the need for the
-"function routing" in the first place!
+diff --git a/Documentation/gpu/nova/core/todo.rst b/Documentation/gpu/nova/core/todo.rst
+index 0972cb905f7a..de70a857fcfd 100644
+--- a/Documentation/gpu/nova/core/todo.rst
++++ b/Documentation/gpu/nova/core/todo.rst
+@@ -210,14 +210,6 @@ capability, MSI API abstractions.
 
-That is good news, so I will just submit a new patch reworking this without
-the new traits and AsRef.
+ | Complexity: Beginner
 
-That will result in 50 lines lesser as you mentioned! So please discard
-this patch, thanks! Should we need routing to common methods, we can always
-add that in the future.
+-XArray bindings [XARR]
+-----------------------
+-
+-We need bindings for `xa_alloc`/`xa_alloc_cyclic` in order to generate the
+-auxiliary device IDs.
+-
+-| Complexity: Intermediate
+-
+ Debugfs abstractions
+ --------------------
 
-(Just to note, we can discard another 20 or so lines once we have the support
-to generate the enum TryFrokm boilerplate).
+--
+2.51.0
+
