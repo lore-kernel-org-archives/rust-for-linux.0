@@ -1,84 +1,91 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD9B223DF6;
-	Mon,  6 Oct 2025 10:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60A72153EA;
+	Mon,  6 Oct 2025 10:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759746039; cv=none; b=HKIzbpGOJ7QSUY8NsR3XRBoh+LMMESiN0Ci4TSrrv/RdRsE1JyQ6QgSmXwpKEbdI9u/3G840aNWcU+99j5Em7/AnbvutkrqWKd7ep+T4c0OvU3hIsX4g1IHhw0Hdr63Egz/tpVOkq4bpHClBCZjgcDIE1PP49mbvdZ6Su954268=
+	t=1759746896; cv=none; b=IDtVRrFaPhyUS53G85sU//d/DJvXDlpKQB+7uDhEsHOgoNEL0jZnk5tmjyf4liWWNI5KSbQrSxqxSwiL/AQ9CfsEC095O7CLL8ePXDrodWH+pXJBnFXiXIoUVTyuxgIti6kGuaqPh6WcEueKQnIAwFPrxbkQU4Dlv2t9dmeCxZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759746039; c=relaxed/simple;
-	bh=7tUIVOnBx2u/uu7Z13kNQw14prnwiGlGx7B9Lxz4QB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f6/c90QDC+C4X5V4Cfns0ymI+C7//8H2iDBQW/QwYeyQjKO2OYk/st4LibAI9v5ZU2VyEe/DtMxr82J5Cen+QqIhBSdll+2npnGIJAzOose4fo84mRs1rdkVwV6ErW8r0ocSEVR6S3FqlgWu3xbmGr6zm1K714Yzxx2gGv+6tFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iBtFvHCr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BI3bW8fZ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1759746896; c=relaxed/simple;
+	bh=T1iv863cqpbYgIRCNRsUsJwO2QAocd0RGlh9y8gcaWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k3b7vD6XgdGC0NOFJKSIIOS0NQZa1JvEswmoIYrKhRC7eYzlYCW1/zOmpNWQcHA/mUYWp7dFPeEmqhQqvjeY6AeHbtpAGgcnLFDoOj7m0qDv0aW4LFuGu/aYzCwERTMc7KR04mrzFX0K8LMZsJm9JDCZmaqaJQANW/HNuzhvEOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k0IIgcMu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iBtFvHCr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BI3bW8fZ"
-Date: Mon, 6 Oct 2025 12:20:35 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1759746035;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7pwVoSdv1X5HI3eQKvSi2SkXzIB5AnrHLTDBFpfnXxs=;
-	b=iBtFvHCr+HAlrc15Bs6fFMlAo9ESmAfL/Ty/LFZZWke/WgqQTbsc5MTIxW6rfqX9b7pK0S
-	Ezq+i5UzVx3Cd10aci7LOV/eJzcJIBR14WRMYCXE9F8fBmjOms7Sz/cmhXyquYXtREvMin
-	UlAYAv9+sGoWy7ecqoeinRleLzOJVx8FcUFZJyzzHh+Gaw8P/zOICCd7qiMxJSNsKLH0HH
-	UAy0glOl7BQjFdgVdeS+78EIBgXenZ/ceT22ApyuSLcYFYQvtCC0fNyBXARRNLfn45nxgv
-	NRERiDQsd2+R7BnwCiXBkn916ZJaZCVStNrcmT6NuRlDEjXd+lr91xc86IELxw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1759746035;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7pwVoSdv1X5HI3eQKvSi2SkXzIB5AnrHLTDBFpfnXxs=;
-	b=BI3bW8fZsx40S1pOx7Kc7phTjbm5TW9S1wOL3g2UUn9Wzifj4/EMnVgBwf449rsw/OdrUq
-	T2PXqUFnHjayWhAg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Askar Safin <safinaskar@gmail.com>, Nicolas Schier <nsc@kernel.org>, 
-	a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, gary@garyguo.net, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, lossin@kernel.org, 
-	ojeda@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	sam@gentoo.org
-Subject: Re: [PATCH v2 6/6] kbuild: enable -Werror for hostprogs
-Message-ID: <20251006121330-1ca87091-ad31-4691-b3e8-a08ec02cd15b@linutronix.de>
-References: <20250814-kbuild-werror-v2-6-c01e596309d2@linutronix.de>
- <20251005011100.1035272-1-safinaskar@gmail.com>
- <20251005205335.GA2561157@ax162>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k0IIgcMu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54744C4CEF5;
+	Mon,  6 Oct 2025 10:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759746896;
+	bh=T1iv863cqpbYgIRCNRsUsJwO2QAocd0RGlh9y8gcaWE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=k0IIgcMuU6KSBWOL9n/PFX7hjO8gADDVGnf1+1IfSiCjhBi89fDoM9roahXYZzx45
+	 +9QrrVSL3bWqg93q0lP7k0jRePhAZ0IiLK5tqlkvAQ5QQo7mmR1jFz0+G8Dz9Z2/Yw
+	 MG9Sct5UdV40PXJGKc5TbrFcu73qd2Fwi7VTwpP2xQroThCYfAQYFZ16xrcdOd125F
+	 hBVCTzExkexRPYKA+DtKCrAna7ZGoaRdw1SsAyEKjrTnOzNmY0zUA3Ijw7XVzI9hhW
+	 +i6R6T/Av5evceYg59bxT3k5UzJ3bX8obn1bLG9NQUwliwZ8KdoAzvvKhgL4hbwsq6
+	 gp8oxui97X/Jg==
+From: Christian Brauner <brauner@kernel.org>
+To: Tong Li <djfkvcing117@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v2] rust: file: add intra-doc link for 'EBADF'
+Date: Mon,  6 Oct 2025 12:34:44 +0200
+Message-ID: <20251006-leben-anfechtbar-f6862b1a35de@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250930110258.23827-1-djfkvcing117@gmail.com>
+References: <20250930110258.23827-1-djfkvcing117@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251005205335.GA2561157@ax162>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1108; i=brauner@kernel.org; h=from:subject:message-id; bh=T1iv863cqpbYgIRCNRsUsJwO2QAocd0RGlh9y8gcaWE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ8nu1ZM4f9DmNYDZeFUPVN/x1/PdVvfDnot+DO8bKLP YIir5aFdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykWYLhf/K3RrUTQU5CKdIl Dx3uvTp2t8TjvdT88NQGpRkfr81yl2P4n37n9PmdL347NvHwqRlmxgW6Htz2csNS3h2lDV952rP +MAAA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 05, 2025 at 01:53:35PM -0700, Nathan Chancellor wrote:
-
-(...)
-
-> In looking further into this, I noticed that in its current state,
-> -Werror is not getting applied to scripts/basic/fixup or
-> scripts/kconfig/*.o files (seems $(include-y) happens to late?), which
-> was one of the reasons to avoid making it depend on CONFIG_WERROR or
-> W=e. If that's the case, we could probably make it opt in like the rest
-> of the warnings for the kernel, which should be a fair compromise
-> between wanting to make potential issues more obvious while not
-> impacting people who build old sources with new compilers.
+On Tue, 30 Sep 2025 19:02:58 +0800, Tong Li wrote:
+> The `BadFdError` doc comment mentions the `EBADF` constant but does
+> not currently provide a navigation target for readers of the
+> generated docs. Turning the references into intra-doc links matches
+> the rest of the module and makes the documentation easier to
+> explore.
 > 
-> Thomas and Nicolas, thoughts?
+> 
+> [...]
 
-Yeah, fixdep and script/kconfig seem to be specifically handled in the
-'ifdef config-build' block in Makefile. And this happens explicitly
-before 'include .../auto.conf'. So your diff below looks like the
-correct solution. Thanks for taking a look!
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Thomas
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] rust: file: add intra-doc link for 'EBADF'
+      https://git.kernel.org/vfs/vfs/c/2b0b5bcc45a0
