@@ -1,142 +1,207 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281151E3DCD;
-	Tue,  7 Oct 2025 21:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759873371; cv=pass; b=ngEQw4HbNaOxI5F4lvJVqktcjePa6MvdA7jxtKkDkgqTUaE3Mv5S4aS4GO4AnczHl7OUUoVMMzZ5zWTytsBl1VxkJP+aIA27lo5ddAP6ihAb44BO1b8W7hVFtQB51mcFp3/CKAolh58AzFaqwux9l/gum0kLS9TLZriaM60SGuk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759873371; c=relaxed/simple;
-	bh=n1UoTe1AZhGigHQGV0CdR2wm8Fae8Pl6fd/EfxVHScs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=cCp3Vnja9B6bBqdKqS45D5QmR4VBhubXnYTwz4xSFOHWxStLc9p/hHspBFzb7HibTHi5UYhykgJa2p3/Vzwhe+PZf1Dq64KvBGqYI6lDq0hKKEvbofUilXcBSVvFPxa2Hx/ZM5jTfBtw+/PEoYNPtAGm1MABFkDOpXHA8i3yu/I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=hJtnTpJL; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88653246760
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Oct 2025 21:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759873996; cv=none; b=RW5hS7XyamRxiaR6XoF0IUYYc1GfcyNHLzOvI1vVe/95iebO3YeRX0XSv9y3vC0heZu6RbViruh8AN1wN3akzmcMkOLMxKWBSDEexCMfweSZECnfgmmzZDxQplcpDzoIPR+O2bYe/RAondv0Cwttl43YVbODgN5djVziQh9o+nA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759873996; c=relaxed/simple;
+	bh=TjMBIpJuIncye64KaQHjQxNkiHmv0nM5WF2NYhgM1sA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EVLH3I11BrljxVbzbFjOClBK2jsQ/+/OWn+66dmz66rGqwKQYtkQDvv0oY+xzFjA+D542QcQUTxRRpcCTjwkcA6Y+ZBnxo0XMS6/MPQTPgwCQjJi3amWDXQql5BjCeoDy5aP6+YL5R5bAbLZnhdlu4q2n61a8fKv/JKDZCgbLBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fVRFCfnD; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="hJtnTpJL"
-ARC-Seal: i=1; a=rsa-sha256; t=1759873340; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Jst9tLl0g+DcTTlm/uVGfOB9ROwdCUi7usrrGGQVClyuDi4MQyJGwH6TaKFrdgm/gXJKrNbMvHS+zVDSqClilECD0vc0KVcJTXqP2YSuAb3JOjVyyeeWN3aSGdNn/tGFs6tGCam1/wgPkLrriBy/iBkMzaRlwlf0HfyRYBv8OXg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1759873340; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=n1UoTe1AZhGigHQGV0CdR2wm8Fae8Pl6fd/EfxVHScs=; 
-	b=HM6Ucj+Q+zpu/4kYaw4cbG8KHvY4QHDBeC2jrWIYvg893luy0+R3E0Lqnoi3c4eLe7koUZBTDJWOd9qXfP6baaBNhIyffGjVMwLehaBvv1PXRuBjmmXFK9NMsd1uRZGmpmtCNq74Yd6oqcL5ZArzAAtX+TPo2Lw4CVDI3tJ+B2k=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759873340;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=n1UoTe1AZhGigHQGV0CdR2wm8Fae8Pl6fd/EfxVHScs=;
-	b=hJtnTpJL+1bUSqKnHuxIApEBBKHhanxQbg9Kr9G8lvhe/+ZZUuni2inz/HCDHVbx
-	E00Ejbfke0hp6M/0Swy4+ZIweFIJxZ4W33s3OL5j7iOmMHZqLlnXZKChJ8XSanpj0x+
-	UMgsU6pRjTT33p/LJ2+Caao2sMivBq0cercIkMds=
-Received: by mx.zohomail.com with SMTPS id 1759873339080158.75028192472178;
-	Tue, 7 Oct 2025 14:42:19 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fVRFCfnD"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-780fc3b181aso3845537b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Oct 2025 14:53:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759873994; x=1760478794; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UF4S4+6DAZK2WY4k347BiCLNNSJST0g53tyGQcJmqTg=;
+        b=fVRFCfnDqZIGLnU+2Cpkb63qKhdqkfFewNKgWFqh/mwIhIvlcOdjXm3VwuGhKidVyd
+         43iOkBoOfZeGWPxCyUkTJYrakAFhfTx1vbEROfVeK9o/1nkBsuZCJLsnHX2CjSJQH6m6
+         ezpCeRqHp7618tgZZQzfhjQZnIHtQmKHpVqNUjN6XDjbjCq+VxLmZKBeZoX1OdOCVGTm
+         tH61NFLM3On5VgK9BjxLSqyVrvcZIm3Cy6eyXyWcg0Oo5lw74k2ZB83Rlmta1FM2xgNM
+         5Jpr5FgHLCLjKxRGKBrH4EjbNzF2T6jPYcuh+vFzrf8TILy5WV9WCPFSaGFR5LThDbTZ
+         LI5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759873994; x=1760478794;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UF4S4+6DAZK2WY4k347BiCLNNSJST0g53tyGQcJmqTg=;
+        b=JAUSDNoX5ZSeJl4Hhtc4z+BMYDN2K6RyYoqnc75c3D7m+0ONhvG3QjlOwJAUX9lI13
+         kIGXZ1D8iwjtDGj23eUGBh43NjE9BnPPKLrYR8PZcyOmYdU9adrLJNhQtPz0Zd3/ML39
+         M2GgMX/2Kt5EFQ1XQlaSrMvr9pmr864wB5+ajVZXsQSfNkUYe14MCdtp1+k/9u1jEIqP
+         tdizIpTcNQXjJ2VzyJVlVUWJHaVhObeDP7R/s+F01pitM8xxuR00GK11W/bqhqV5U1ly
+         reJVTETM6XTU9hvmaDLU0C3pKTKU8ptYGFMJeAVnFbmhWaFs+pQy88EGHscrryW+9FIE
+         IdNA==
+X-Forwarded-Encrypted: i=1; AJvYcCXuFNpKL1Jqfu5Nh/D16iDm44V53OCmrxRwcYc8pTFZ1n6oO+WxP2c79JiiBIZwdm5pbnT5yw4qEf1TDI2iIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyK6ra5rYP5J+zUxNCnUk7x4frmOnYfgxO/fOGyyaJS69KdzsiC
+	4el/nEMMRf0NnP8BTdYENYGQ4CRXkVTSyQhpN8HhXgT0eCCv4LwGdZwy
+X-Gm-Gg: ASbGncuNH6KhY4lKVzqDGVO8RG5o1R22CAjumg36AZiCwEdHbZ+uImPnk8uDyiUy3ar
+	bjbtiZ6GWHR7MmnKPI6QySnNIUtztQOu+YFFC+Kc+MryUWvVNhvIN5HBujTNt7elzd66o/D13Zo
+	0UYEXnibS0iUnzgsoNz5ypsO6uL6y+UNQJ+54l8xwxiruJ/2GYer+awaZKQ/mtqYE601bcUl1fB
+	L3dqaVGC6DXftLM4m/KdBq50rLEXh7Vw3Y1+0fI7BcMEs6i7yU5jhapNyzZyfLLlc7fLG7hFeHv
+	BjtTNyneZmf1Lr4HeIw/4WkLcrmTLYf5HZLClZRtbvq+3VA/K9Qt7D0x25U8Qnxo85oc186Jg+Y
+	/UVifrLu/rrRL8ha4QLeebYuTlhFGaAZdhh0EVJREEZ2C
+X-Google-Smtp-Source: AGHT+IFYbxCcTc1tDhHXGe1RXgH8ceXy4oTaoEh00Tiq0z7+C2qi5X12WI3y1o8uxGTjgYA4NeNgDQ==
+X-Received: by 2002:a05:6a20:3ca7:b0:32b:6e08:e545 with SMTP id adf61e73a8af0-32da839f237mr1455108637.36.1759873993430;
+        Tue, 07 Oct 2025 14:53:13 -0700 (PDT)
+Received: from fedora ([2405:201:5501:4861:363c:cb7e:a622:4141])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b02053767sm16687579b3a.52.2025.10.07.14.53.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Oct 2025 14:53:12 -0700 (PDT)
+From: Ritvik Gupta <ritvikfoss@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: skhan@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v6] rust: kernel: introduce `unsafe_precondition_assert!` macro
+Date: Wed,  8 Oct 2025 03:20:28 +0530
+Message-ID: <20251007215034.213779-1-ritvikfoss@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to
- rust/kernel/
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aOU0joJQZiU61GBB@yury>
-Date: Tue, 7 Oct 2025 18:41:58 -0300
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- dakr@kernel.org,
- Alistair Popple <apopple@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- bjorn3_gh@protonmail.com,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org,
- Elle Rhumsaa <elle@weathered-steel.dev>,
- Andrea Righi <arighi@nvidia.com>,
- nouveau@lists.freedesktop.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D421296D-FFF3-4998-B467-8E079AEB7499@collabora.com>
-References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
- <aORCwckUwZspBMfv@yury> <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
- <aOU0joJQZiU61GBB@yury>
-To: Yury Norov <yury.norov@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Introduce a new `safety` module containing `unsafe_precondition_assert!`
+macro. It is a wrapper around `debug_assert!`, intended for validating
+pre-conditions of unsafe function.
 
-First and foremost I=E2=80=99d like to say sorry for not having the =
-bandwidth to
-chime in here earlier. I=E2=80=99ve been pretty consumed by Tyr itself =
-lately.
+When `CONFIG_RUST_DEBUG_ASSERTIONS` flag is enabled, this macro performs
+runtime checks to ensure that the preconditions for unsafe function hold.
+Otherwise, the macro is a no-op.
 
-> On 7 Oct 2025, at 12:41, Yury Norov <yury.norov@gmail.com> wrote:
->=20
-> On Tue, Oct 07, 2025 at 07:36:21PM +0900, Alexandre Courbot wrote:
->> Hi Yuri,
->>=20
->> On Tue Oct 7, 2025 at 7:29 AM JST, Yury Norov wrote:
->> <snip>
->>> Regardless, I don't think that this is the right path to move the
->>> bitfields into the core. The natural path for a feature that has
->>> been originally developed on driver side is to mature in there and
->>> get merged to core libraries after a while. Resctrl from Intel is =
-one
->>> recent example.
->>>=20
->>> With that said, I'm OK if you move the bitfields as a whole, like =
-you
->>> do in v5, and I'm also OK if you split out the part essential for =
-nova
->>> and take it into the driver. In that case the bitfields will stay in=20=
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1162
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/topic/.60unsafe_precondition_assert.60.20macro/with/528457452
+Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
+---
 
->>> drivers and you'll be able to focus on the features that _you_ need,
->>> not on generic considerations.
->>>=20
->>> I'm not OK to move bitfields in their current (v6) incomplete form =
-in
->>> rust/kernel. We still have no solid understanding on the API and
->>> implementation that we've been all agreed on.
->>=20
->> Initially the plan was indeed to give this code some more time to =
-mature
->> in nova-core before moving it out.
->>=20
->> The reason for the early move is that we have another driver (Tyr) =
-who
->> wants to start using the register macro. Without it, they would be =
-left
->> with the option of either reinventing the wheel, or poking at =
-registers
->> the old-fashioned way, which I think we can agree is not going to be =
-any
->> safer than the current macro. :)
->>=20
+Changes in v6:
+ - Move variable names into format arguments in the doc example.
+ - Move closing brace ('}') to new line in the macro.
+ - Link to v5: https://lore.kernel.org/rust-for-linux/20250827060013.6874-1-ritvikfoss@gmail.com/
 
-Tyr could use both register!() and bitfield!() today FYI. If you move it =
-out, I can
-follow with an actual patch to do so.
+Changes in v5:
+ - Change doc example
+ - Use re-exported `kernel::prelude::fmt!` instead of `core::format_args!`
+ - Link to v4: https://lore.kernel.org/rust-for-linux/20250808192005.209188-1-ritvikfoss@gmail.com/
 
-=E2=80=94 Daniel=
+Changes in v4:
+ - Change doc example
+ - Add `no_run` attribute to the doc example
+ - Link to v3: https://lore.kernel.org/rust-for-linux/20250731111234.28602-1-ritvikfoss@gmail.com/
+
+Changes in v3:
+ - Change doc example
+ - Link to v2: https://lore.kernel.org/all/20250730181420.6979b4f1@eugeo/T/#m9cd35a8fc02a18bd03934c7ecdcffe8667b5fbbd
+
+Changes in v2:
+ - Wrap `debug_assert!` internally instead of using `pr_err!` with `assert!` + `cfg!(debug_assertions)
+ - Print “unsafe precondition(s) violated” only on assertion failure (no longer always printed)
+ - Use `# Safety` section instead of comment in the example
+ - Rename module-level doc
+ - Link to v1: https://lore.kernel.org/rust-for-linux/20250716045957.39732-1-ritvikfoss@gmail.com/
+
+---
+ rust/kernel/lib.rs    |  1 +
+ rust/kernel/safety.rs | 53 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+)
+ create mode 100644 rust/kernel/safety.rs
+
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 3dd7bebe7888..40c82d227314 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -124,6 +124,7 @@
+ pub mod rbtree;
+ pub mod regulator;
+ pub mod revocable;
++pub mod safety;
+ pub mod scatterlist;
+ pub mod security;
+ pub mod seq_file;
+diff --git a/rust/kernel/safety.rs b/rust/kernel/safety.rs
+new file mode 100644
+index 000000000000..3ff78cef2e02
+--- /dev/null
++++ b/rust/kernel/safety.rs
+@@ -0,0 +1,53 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Safety related APIs.
++
++/// Checks that preconditions of an unsafe function are followed.
++///
++/// The check is enabled at runtime if debug assertions (`CONFIG_RUST_DEBUG_ASSERTIONS`)
++/// are enabled. Otherwise, this macro is no-op.
++///
++/// # Examples
++///
++/// ```no_run
++/// use kernel::unsafe_precondition_assert;
++///
++/// struct RawBuffer<T: Copy, const N: usize> {
++///     data: [T; N],
++/// }
++///
++/// impl<T: Copy, const N: usize> RawBuffer<T, N> {
++///     /// # Safety
++///     ///
++///     /// The caller must ensure that `index` is less than `N`
++///     unsafe fn set_unchecked(&mut self, index: usize, value: T) {
++///         unsafe_precondition_assert!(
++///             index < N,
++///             "RawBuffer::set_unchecked requires index ({index}) < N ({N})"
++///         );
++///
++///         // SAFETY: By the safety requirements of this function, `index` is valid
++///         unsafe {
++///             *self.data.get_unchecked_mut(index) = value;
++///         }
++///     }
++/// }
++/// ```
++///
++/// # Panics
++///
++/// Panics if the expression is evaluated to `false` at runtime.
++#[macro_export]
++macro_rules! unsafe_precondition_assert {
++    ($cond:expr $(,)?) => {
++        $crate::unsafe_precondition_assert!(@inner $cond, ::core::stringify!($cond))
++    };
++
++    ($cond:expr, $($arg:tt)+) => {
++        $crate::unsafe_precondition_assert!(@inner $cond, $crate::prelude::fmt!($($arg)+))
++    };
++
++    (@inner $cond:expr, $msg:expr) => {
++        ::core::debug_assert!($cond, "unsafe precondition(s) violated: {}", $msg)
++    };
++}
+
+base-commit: c746c3b5169831d7fb032a1051d8b45592ae8d78
+-- 
+2.51.0
+
