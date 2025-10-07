@@ -1,112 +1,227 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11BE2E0B74
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Oct 2025 16:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32FD2E54DA
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Oct 2025 16:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759853542; cv=none; b=g/QIJh3+CRtvmU34x64q0eppDdhOIqiYIw81vN2dlUpuqX5ep/xhoK3SSm3hUUlAjEgOdKZ7e0lOdoGmPIZsJcWukgjR3UUeuUnD1ZbxX7lT7GVVOCwhZrz8Ps6VlFXV2UtkDnjt06wzXLVQ8EovKi3tmND9kBDNnC4xiA1bGMc=
+	t=1759854118; cv=none; b=UrgRUoUTho7VlBZ1NcyzAJwQmhRsrOvVpdnX+/qlh2VIlg9vjfwBfLb1KHSlyoGmoHWc6Md+cUGkabD2NQ8GnDNhNVbaQsjG7HnylKKUao+mMbzJg0d55zCgL3FkJkif97nNQcAPXBC2uhLTF/033jqGsXOU/oG85jgvyYgFzNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759853542; c=relaxed/simple;
-	bh=5E7iWUmZ2vIjSTqtzT1C1NtPApyBCh7aJPO7S699wwM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lnuyfOV699XWa2x1KAZNRjLZvOa5lIyHfFyBldrpLQoGE1tOFpV75cIIADHzZFTXovYHH3dwRxTJXvivwI8b7hBB4X6zAIwuSF74Wbmdo6WeWn33tGxjxf0cjoAwyyGSDJQh34TIrJBVDuTXWuRKSYAunQ/P831koSn0IJbaNoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4j1ajkS; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759854118; c=relaxed/simple;
+	bh=lvPYZKSeQucFx2SgeOdYOtw4O2ksAxgo0FsweuBHcec=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=c3M0xIYyeaFg5TQ4iy/DwqTrDNT0wXuQ+3oHRfztyU+qx7A2eiH/YPgVG8Mu92gf6K2f0ucW0kZAt8dLUPaWD0YOPfHeRi20tIQ8mAewbmlJQnDm3KxupnaiQgqqzCchzsWrp5AtDN5r2DRMrsgAIFrsimPq8RsOuxETQeG4ryo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RTO/FuVc; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4j1ajkS"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b62d9d5ca13so68241a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Oct 2025 09:12:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RTO/FuVc"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e39567579so28556255e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Oct 2025 09:21:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759853540; x=1760458340; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5E7iWUmZ2vIjSTqtzT1C1NtPApyBCh7aJPO7S699wwM=;
-        b=i4j1ajkSaru1Tajh0Lkssq02qK/t5OvL34epDzJ4uw17i2bkr8Dxw2hyqqCi4oOEja
-         drtjTchNNWxn9R15xc94/32bir5I7Lr3M3gHp0OZkBmVPkSXxFT/l4OMv1NIsRzcG7yE
-         zofizUV34i6A0tygfL2SfZJg8M/bJRcIZ3ZwFZupw/wXQCjH1jQDF2yIlEHBG6D0wrR2
-         cde33VTCxOAjxwtI36wfqJRCZJWDQYv9BsnB/gWTdAZ+YnGhrgB0TUb6Szch/1/DYhSx
-         4A6sO7g+W1UqmUAJwSpbCBXq2CFH1WdppFvlEz7lHnZDyn2ZJRBOsRolP9d23OVHuBr/
-         2Smg==
+        d=google.com; s=20230601; t=1759854115; x=1760458915; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JPke7s3EpbXC6ErmX/FPvC/unGHuc//hg1lOBj1qibA=;
+        b=RTO/FuVcWAZEL7PyaNzslaeUaM2MzZd2AkBd4aCwmY/eTVfp7SC7HJ1ssF0PXWT08e
+         maZManOa5G3BTLFmqySoNEw3vwwlVwoNXIAxXCNrsWAOjv3SOVw07aBFhUiFB77wXtz3
+         6nhD2+W0v88ruT10Aig3zmbiv0c0nFaQ6eTDlcToDuP9tb8F9SbODraysTlHVItw6RP1
+         A1XEvtCN3aEgO6ciA9e2aLZLR8rnAVxuHPyI5hzvTnpKt1VoigO81QBdrYn6xPUlMwTH
+         p6sxaNchGfarQYj6DmEzhcNtoeIkgaKzHbiY5wn8o3E3F16Zq4WvO4unMKqAYwhA9Ohx
+         ueJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759853540; x=1760458340;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5E7iWUmZ2vIjSTqtzT1C1NtPApyBCh7aJPO7S699wwM=;
-        b=LGO7Zp9dizs4EY/g+z+tDOd3uKIspWknUE58PN8KlQ29n4umkow8OQZtFCby9FQmM1
-         5LFzZkaJO4YdO6ZVe35otnDoMEbHokkUNLV5wK+ef+fRcaeBZ+SRK3goVi91w7cgE0HN
-         lP+bt4DHbJEom0v6Z9vd2yU+Tfm4dEJ72lAzt9Kbt4+k2jFgtXQKC7GTjM2p+wS9zDJZ
-         CmDVu6JHfHulGRg3PJ7ZdwalFEQbuDFfNKiW6753hxce6WegASYEGDlDXiNxrHzGVQob
-         gCUXh5yXwsH2CLBAAAk/9FLDB7D0Y/4TpRpoPx+DLnNHcXeffUNWGy7x6T3Ts3dvpuqj
-         5tHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWd2nJiPpmeDDxP6B32IHYpGm2vskGp+84r+DSKVM+8pKUvn2LLJcLpiFRniA14N5N7L7HQYw405oF7SQGDwA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YysAi9XAgjPAJwWv+yifA9T1mDKH+mYirX8kkuXHQoQbTcR8/nX
-	ihUdZodzymrN9YEMDq1RQcIdJ+DYu08b7exTostGMHDalQrXcYGnu3HHDILFqOuhKJa5Gjn29N7
-	Txt5KiynYg9APMAzvWNDDjItVxC3XN0I=
-X-Gm-Gg: ASbGncvXTXfnpn5u1+ziVGtEufX5yaOAdBHRFHsWM3KkHBkz3dd3bgVlyeS/h49y83J
-	FAMdmd0r9XzzI/e1mSWEJeVbXjQHSli1LGT6qrLqJ7XeEdhhFTPzQ/NXFAc4i25eTTgqRQKXUW+
-	NDJ+IZwbuxLiLhwLvW3XuJV9pCfT/NrmCzS2SjVeowvbr7cWXkIdGu8PtzRQZyGp2vblvHRJj1F
-	t0U25On8bXUfS6m70G3grlicA0hQA4CoEBYs3sBwAEpyV689ArrUBM9oDWnVs26mIU/fMYEhVgD
-	zttcrjNGaGdHJGjpO9hi378dsY8SmDzIME0/h/cD2+gKLFi9BQ==
-X-Google-Smtp-Source: AGHT+IFCzHpcrXLGR1ie60smXpk8UuckeKOb000I2PbnwCKR7UoPdsv6hdVQqjL0vFW9FH9QZdEfImMvB9toz+HjmvQ=
-X-Received: by 2002:a17:903:1a68:b0:274:944f:9d84 with SMTP id
- d9443c01a7336-2902733fb0dmr2059795ad.11.1759853540296; Tue, 07 Oct 2025
- 09:12:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759854115; x=1760458915;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JPke7s3EpbXC6ErmX/FPvC/unGHuc//hg1lOBj1qibA=;
+        b=JdMLAMbwYycv2eSO8KryJYJwDewsn5o/X3OimhzebKQPpohtBvbT0uWWl/CphyY9eF
+         zBPHfEFA3lhoONnvxmhnTHqY6TlsRYUXIx0X1VZrfxMPq4gXJXAcVi7ilIHAS7UGklMA
+         bTsJhExnDMAowfW9qaqzPZkzgbOwUL0h4qoKR7x9jw6aT5xq34YnHuCJvo+3GdYtXdxh
+         hmQ9PaY8/hQKTRD2UeqVla7sZpR0AdJLS3LA6hIiezw/HT8bZVNGXjNPXdfQ9RSRiPJw
+         j0y8i6elIY+zuYWwHBf3IhT40cfbDJpfuyxorrmdMZWFiwSAyPfur7DCKTYch7QW4JgI
+         vk9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUFwC3XFycCv4CadX4AbxbNtszrmacCX07/xAWDSBr3/rj7nO2j8CLlpBF4yCEU3t6zkDoXOM2QZGPNQ3jhvA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYbH4ijC8Ok2bqf1+UbONjSO2gQan5nj3v1GJsWfSI2LrZ0c86
+	E62Pc4iqvhO6YlGlGtOjSSwmm4gf61TCg66ZDM+2wbyDOLXPmYYEDkNzjSxtiYfJ3hRdslrekda
+	DioB8AoVPTdLwq4FCaA==
+X-Google-Smtp-Source: AGHT+IH9zRUnvVJnJ2rKg3ul1/L1v9CwXrOUbkfQHeRTwHBdeUKC3Y5EGru7TMDFalytr+scT+ACzRCj8l6otsM=
+X-Received: from wmri12-n1.prod.google.com ([2002:a05:600c:8a0c:10b0:46e:1110:d730])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1395:b0:46e:27fb:17f0 with SMTP id 5b1f17b1804b1-46fa9aa204cmr1824285e9.9.1759854115350;
+ Tue, 07 Oct 2025 09:21:55 -0700 (PDT)
+Date: Tue,  7 Oct 2025 16:21:36 +0000
+In-Reply-To: <20251002075202.11306-1-acsjakub@amazon.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
- <aORCwckUwZspBMfv@yury> <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
- <CANiq72m1eiGVJHNyym+JwM=tQ9bGnmoW0+OuKQ3Vxo_AQOy5dg@mail.gmail.com> <DDC4DA0BPHRC.3P5M2CXSJYYTI@nvidia.com>
-In-Reply-To: <DDC4DA0BPHRC.3P5M2CXSJYYTI@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 7 Oct 2025 18:12:07 +0200
-X-Gm-Features: AS18NWAPdykPHVe-VPSk9QmwsEQUF86AhW888gSoYNbxgNmy_9MCu-o1i7ygLqA
-Message-ID: <CANiq72kykzwdv2fOmRMeJ_FPztkkU2a=PFDH1fo9+XbGAeKsaQ@mail.gmail.com>
-Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to rust/kernel/
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, dakr@kernel.org, 
-	Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Andrea Righi <arighi@nvidia.com>, 
-	nouveau@lists.freedesktop.org
+Mime-Version: 1.0
+References: <20251002075202.11306-1-acsjakub@amazon.de>
+X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
+Message-ID: <20251007162136.1885546-1-aliceryhl@google.com>
+Subject: [PATCH] mm: use enum for vm_flags
+From: Alice Ryhl <aliceryhl@google.com>
+To: acsjakub@amazon.de
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
+	chengming.zhou@linux.dev, david@redhat.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, peterx@redhat.com, 
+	xu.xin16@zte.com.cn, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 7, 2025 at 3:21=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
-om> wrote:
->
-> Ack - how do you expect things to work in terms of code flow? Do we need
-> to have a dedicated tree and send you pull requests? If so, should we
-> host it under the Rust-for-Linux Github org?
+The bindgen tool is better able to handle BIT(_) declarations when used
+in an enum.
 
-In general, if there is a better tree (i.e. an existing C subsystem),
-then what we always do is ask those maintainers first.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Hi Jakub,
 
-But, otherwise, if there is no good choice because it is something too
-generic/core, then yes, what you propose would be ideal (and it should
-be easy since you are already maintainers of other trees etc.).
+what do you think about modifying the patch like this to use an enum? It
+resolves the issues brought up in
+	https://lore.kernel.org/all/CAH5fLghTu-Zcm9e3Hy07nNtvB_-hRjojAWDoq-hhBYGE7LPEbQ@mail.gmail.com/
 
-If the amount of patches ends up being very low, we can skip the tree
-and I can take the patches, but PRs are simpler and scale better for
-me.
+Feel free to squash this patch into your patch.
 
-Thanks!
+ include/linux/mm.h              | 90 +++++++++++++++++----------------
+ rust/bindings/bindings_helper.h |  1 -
+ 2 files changed, 46 insertions(+), 45 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 7916d527f687..69da7ce13e50 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -273,57 +273,58 @@ extern unsigned int kobjsize(const void *objp);
+  * vm_flags in vm_area_struct, see mm_types.h.
+  * When changing, update also include/trace/events/mmflags.h
+  */
+-#define VM_NONE		0
++enum {
++	VM_NONE		= 0,
+ 
+-#define VM_READ		BIT(0)		/* currently active flags */
+-#define VM_WRITE	BIT(1)
+-#define VM_EXEC		BIT(2)
+-#define VM_SHARED	BIT(3)
++	VM_READ		= BIT(0),		/* currently active flags */
++	VM_WRITE	= BIT(1),
++	VM_EXEC		= BIT(2),
++	VM_SHARED	= BIT(3),
+ 
+ /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
+-#define VM_MAYREAD	BIT(4)		/* limits for mprotect() etc */
+-#define VM_MAYWRITE	BIT(5)
+-#define VM_MAYEXEC	BIT(6)
+-#define VM_MAYSHARE	BIT(7)
++	VM_MAYREAD	= BIT(4),		/* limits for mprotect() etc */
++	VM_MAYWRITE	= BIT(5),
++	VM_MAYEXEC	= BIT(6),
++	VM_MAYSHARE	= BIT(7),
+ 
+-#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
++	VM_GROWSDOWN	= BIT(8),		/* general info on the segment */
+ #ifdef CONFIG_MMU
+-#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
++	VM_UFFD_MISSING	= BIT(9),		/* missing pages tracking */
+ #else /* CONFIG_MMU */
+-#define VM_MAYOVERLAY	BIT(9)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
++	VM_MAYOVERLAY	= BIT(9),		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+ #define VM_UFFD_MISSING	0
+ #endif /* CONFIG_MMU */
+-#define VM_PFNMAP	BIT(10)		/* Page-ranges managed without "struct page", just pure PFN */
+-#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
+-
+-#define VM_LOCKED	BIT(13)
+-#define VM_IO           BIT(14)		/* Memory mapped I/O or similar */
+-
+-					/* Used by sys_madvise() */
+-#define VM_SEQ_READ	BIT(15)		/* App will access data sequentially */
+-#define VM_RAND_READ	BIT(16)		/* App will not benefit from clustered reads */
+-
+-#define VM_DONTCOPY	BIT(17)		/* Do not copy this vma on fork */
+-#define VM_DONTEXPAND	BIT(18)		/* Cannot expand with mremap() */
+-#define VM_LOCKONFAULT	BIT(19)		/* Lock the pages covered when they are faulted in */
+-#define VM_ACCOUNT	BIT(20)		/* Is a VM accounted object */
+-#define VM_NORESERVE	BIT(21)		/* should the VM suppress accounting */
+-#define VM_HUGETLB	BIT(22)		/* Huge TLB Page VM */
+-#define VM_SYNC		BIT(23)		/* Synchronous page faults */
+-#define VM_ARCH_1	BIT(24)		/* Architecture-specific flag */
+-#define VM_WIPEONFORK	BIT(25)		/* Wipe VMA contents in child. */
+-#define VM_DONTDUMP	BIT(26)		/* Do not include in the core dump */
++	VM_PFNMAP	= BIT(10),		/* Page-ranges managed without "struct page", just pure PFN */
++	VM_UFFD_WP	= BIT(12),		/* wrprotect pages tracking */
++
++	VM_LOCKED	= BIT(13),
++	VM_IO           = BIT(14),		/* Memory mapped I/O or similar */
++
++						/* Used by sys_madvise() */
++	VM_SEQ_READ	= BIT(15),		/* App will access data sequentially */
++	VM_RAND_READ	= BIT(16),		/* App will not benefit from clustered reads */
++
++	VM_DONTCOPY	= BIT(17),		/* Do not copy this vma on fork */
++	VM_DONTEXPAND	= BIT(18),		/* Cannot expand with mremap() */
++	VM_LOCKONFAULT	= BIT(19),		/* Lock the pages covered when they are faulted in */
++	VM_ACCOUNT	= BIT(20),		/* Is a VM accounted object */
++	VM_NORESERVE	= BIT(21),		/* should the VM suppress accounting */
++	VM_HUGETLB	= BIT(22),		/* Huge TLB Page VM */
++	VM_SYNC		= BIT(23),		/* Synchronous page faults */
++	VM_ARCH_1	= BIT(24),		/* Architecture-specific flag */
++	VM_WIPEONFORK	= BIT(25),		/* Wipe VMA contents in child. */
++	VM_DONTDUMP	= BIT(26),		/* Do not include in the core dump */
+ 
+ #ifdef CONFIG_MEM_SOFT_DIRTY
+-# define VM_SOFTDIRTY	BIT(27)		/* Not soft dirty clean area */
++	VM_SOFTDIRTY	= BIT(27),		/* Not soft dirty clean area */
+ #else
+ # define VM_SOFTDIRTY	0
+ #endif
+ 
+-#define VM_MIXEDMAP	BIT(28)		/* Can contain "struct page" and pure PFN pages */
+-#define VM_HUGEPAGE	BIT(29)		/* MADV_HUGEPAGE marked this vma */
+-#define VM_NOHUGEPAGE	BIT(30)		/* MADV_NOHUGEPAGE marked this vma */
+-#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
++	VM_MIXEDMAP	= BIT(28),		/* Can contain "struct page" and pure PFN pages */
++	VM_HUGEPAGE	= BIT(29),		/* MADV_HUGEPAGE marked this vma */
++	VM_NOHUGEPAGE	= BIT(30),		/* MADV_NOHUGEPAGE marked this vma */
++	VM_MERGEABLE	= BIT(31),		/* KSM may merge identical pages */
+ 
+ #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+ #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+@@ -333,14 +334,15 @@ extern unsigned int kobjsize(const void *objp);
+ #define VM_HIGH_ARCH_BIT_4	36	/* bit only usable on 64-bit architectures */
+ #define VM_HIGH_ARCH_BIT_5	37	/* bit only usable on 64-bit architectures */
+ #define VM_HIGH_ARCH_BIT_6	38	/* bit only usable on 64-bit architectures */
+-#define VM_HIGH_ARCH_0	BIT(VM_HIGH_ARCH_BIT_0)
+-#define VM_HIGH_ARCH_1	BIT(VM_HIGH_ARCH_BIT_1)
+-#define VM_HIGH_ARCH_2	BIT(VM_HIGH_ARCH_BIT_2)
+-#define VM_HIGH_ARCH_3	BIT(VM_HIGH_ARCH_BIT_3)
+-#define VM_HIGH_ARCH_4	BIT(VM_HIGH_ARCH_BIT_4)
+-#define VM_HIGH_ARCH_5	BIT(VM_HIGH_ARCH_BIT_5)
+-#define VM_HIGH_ARCH_6	BIT(VM_HIGH_ARCH_BIT_6)
++	VM_HIGH_ARCH_0	= BIT(VM_HIGH_ARCH_BIT_0),
++	VM_HIGH_ARCH_1	= BIT(VM_HIGH_ARCH_BIT_1),
++	VM_HIGH_ARCH_2	= BIT(VM_HIGH_ARCH_BIT_2),
++	VM_HIGH_ARCH_3	= BIT(VM_HIGH_ARCH_BIT_3),
++	VM_HIGH_ARCH_4	= BIT(VM_HIGH_ARCH_BIT_4),
++	VM_HIGH_ARCH_5	= BIT(VM_HIGH_ARCH_BIT_5),
++	VM_HIGH_ARCH_6	= BIT(VM_HIGH_ARCH_BIT_6),
+ #endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
++};
+ 
+ #ifdef CONFIG_ARCH_HAS_PKEYS
+ # define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 2e43c66635a2..04b75d4d01c3 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -108,7 +108,6 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
+ 
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
+-const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
+ 
+ #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
+ #include "../../drivers/android/binder/rust_binder.h"
+-- 
+2.51.0.618.g983fd99d29-goog
+
