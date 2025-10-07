@@ -1,226 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123B13C33;
-	Tue,  7 Oct 2025 17:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE002E62C6
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Oct 2025 17:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759856518; cv=none; b=DLn5meBspGvH8xzvNbF4qTyb61KB7xp2cXqHZVc3CiuI9aQMgAY4a/pFbhb97685wb3rvOfBT/2ZqjzsFU+btfdTnc0Zq+cQKnYLiQuwM9ZmytnhRLVKPMfnn1EPxn1rhKjYm0JJBV9443x2QjPA453NsNDYhaZ8i254X19ULo8=
+	t=1759858126; cv=none; b=IeYwzY350GNHme2Dh7l4sO6r+HhQKXi0rkzJYCs17SazYsuoJaTzhmeujST5kkTPuEk2RpTBAgSIvLaA2kB+fGHDPASKGnc6EZwGGr2eSigvD+rzLbJXAeapkVQ9/KHcUroawBF3ezzbWY9to7dvdmTNaNt4M+fe128emi3Pw4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759856518; c=relaxed/simple;
-	bh=MR5qWTAOW1zVyTLdPwwD9muosMP83f5qZfp7s+T/8Hw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J1ikM1yooxaCS6SmrlGF9i4qT7lykQWwTdBm4abgAUyeMKtwf/1f421XujnRROkgAjbc54RRiQ8ZMgenwdUXyASB7vtOrogcl4OFmBkfQtanazPOdR6X5ju1hjykLkIi5m4T9+/JZIugixmHY5yNExWaKzukKmrUjMjeMxNVNuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GVsXKOAn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759858126; c=relaxed/simple;
+	bh=2iGA8velqQRRCZJfqt1BqaTxz6Dq18/F9B0OZGpk+AA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m8ZL+GL8lgC8I1QtS2M1k+bESboExkXzOQIiLesVznsgGMEEa1hQkNp2wBp0msXsLQcmXz3ay6MzAEhT1kZV4nBIq9nYJ37MjejS9v8ThpKSiBxVGyVLaOvWq0IKxfF619vg3oiRmBVyxYtSedQOKvqIG1nRzv4OgIMFtR84p8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FCCKVWet; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GVsXKOAn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8520DC4CEF1;
-	Tue,  7 Oct 2025 17:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759856517;
-	bh=MR5qWTAOW1zVyTLdPwwD9muosMP83f5qZfp7s+T/8Hw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GVsXKOAnGQWHMUvRXJC+HD5Ptm4rKk3wxOY0m04k1/vuFPLEHYh1doW38jWqMNOMW
-	 L/7qM0gkru7kkBntPfDcFUXYAL1plH+dhqEAgp+KQ6vTxlekXWdDnfOns9KPwLbeXH
-	 Elolz6FA56YCumDWpBov0HylXOdE0TORtEJ8uImPWRAVl/pzLNrlxZgxIFye24JnY2
-	 J5+nyBymaFOYpMgWzoep6qXlaii0EaJtnDWnfxt+SO/HNj+0bkgOqNlQbtV/G+dOlz
-	 GeHfdBkrc7bZc9x2Nx172su4AQjqB0A+lLDzUAZQS0AUQTskSrERr7EU1U5QnEltLP
-	 5wtZOGCn+mO5w==
-Date: Tue, 7 Oct 2025 10:01:56 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: acsjakub@amazon.de, akpm@linux-foundation.org, axelrasmussen@google.com,
-	chengming.zhou@linux.dev, david@redhat.com,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, peterx@redhat.com, xu.xin16@zte.com.cn,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] mm: use enum for vm_flags
-Message-ID: <20251007170156.GQ1587915@frogsfrogsfrogs>
-References: <20251002075202.11306-1-acsjakub@amazon.de>
- <20251007162136.1885546-1-aliceryhl@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FCCKVWet"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2698d47e6e7so12098625ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Oct 2025 10:28:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759858124; x=1760462924; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F+z1+ZFlIhihDnc0DazYJHSsjaq/b1tc4ebSOM/fyJo=;
+        b=FCCKVWetR7ns15iFkRfydXfrwIXjbirMEWatFdr5VVb0+V7sRzxiZ9G1OiMe+wIe2e
+         HC5mU5WZgQJJQjbRkx6sLRe0M5HcIi+W9KM76LXww5gVZ5REDy3FHMxKjCrsL2cyFoLx
+         qhzs0ygACpIleRp4JRvmky1N5a45VVNXOnc/EfcOE2TeZy6f1/B43KbVU2IREAzxm655
+         HPnPqQ+h9flGa+9wHgeIrp15YY4Ffu+GVu4stLBx/+8pns1i/1ioH66dA46iBhYUvuVK
+         1xzhdXWba+kAmwSEKXfkkCnDmETOA15mlw9w3zyBgPAR3j0MabDvi/PaChARaFcj8bmP
+         Q12Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759858124; x=1760462924;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F+z1+ZFlIhihDnc0DazYJHSsjaq/b1tc4ebSOM/fyJo=;
+        b=ioCejimUTU+2DzeZBJLgd6uxJJknnhfCH87SuE4KSvTzRWEXSlwPOTnTrlaB44iB0+
+         njWq9w+v92rV4xUG4dKUowbmncFlLAXC9DL0qd48gpeA+qEqmGW2E1tT3yuCO/157k+l
+         yCwDCrwBI8bzJ6SKRYwjsRk5ZPrToSV9FjPNX3cy9l1RhO0kCOUioQIHAIWvfwEedoJw
+         cfxn5iIJO65IWedYmfGj9NwdXh/rSCrgrIXMrxSCbFHdekknqNXrbYNtyAbIiW452+YD
+         6nFQdWflzoXy6wycb1GsicdoyBzkq24ZsfQIvG7+MuWjeCuZwMfe/UKUGnpFX51T5rNM
+         GNyg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/RkJPQ9cSYf3LIsWHIx8umFTLiX1YLi1hWuD0T14r94lOvvCDsQNBx7OeXBXzCVzHtz27RwQMu0DXfTsk0g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyu8YaZTybZlzjLoI2dkyIb3VdAhbhgLFWTe4zQn6cmzLs7K3gP
+	FSGLZP+uAjf+/Qz7nhVexeBhyap4nxw+TckhB1OA5IUikPPDWbbAcLZo7T9QxLeWZc5JuxmtNpP
+	MK6TJri/itA3Q6efixMuN321E5kujiCA=
+X-Gm-Gg: ASbGncuYjxPQmxf2XDRsaI0Nqh9202YXFePLI0mbowea3AUx/TqkmYb53onKnn5LjWS
+	fWcychxd0caP66VVo0rzTRcfN0sfMi97KYZXWvt6nSDErvpa/MO+2NV/w/11v4eB+3t1eoB6VQt
+	ltLdSas8JdUkwltahUEno3bV3vw3ZLRJf+a43FzR9L5vjf9NeV11JUzGAhBfM0TipfZvlGmZWKW
+	he7QOI0RGcQ8SLGyREUunIgFdm06uJ/wvIXsPSGFyNUMqrTT53ORCdhilzX1q2nGTSnfeIZqE76
+	0YUALvlj1qCHBwwB2u69Mt5h0jpRqGXQpxuijXsL4enPLJUY8R/Dq7A6xYq7
+X-Google-Smtp-Source: AGHT+IGSC3vYYX3XNS4moOyGgDDt00n4NuuDIcKIpjVCiEkfgzJtsytjtTtPmpkZMn1rRbkUYIK9juPhDi0k8/UeVwE=
+X-Received: by 2002:a17:902:f68c:b0:267:c4fa:e269 with SMTP id
+ d9443c01a7336-290273c4cb6mr3742675ad.1.1759858124355; Tue, 07 Oct 2025
+ 10:28:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251007162136.1885546-1-aliceryhl@google.com>
+References: <20251006163024.18473-1-work@onurozkan.dev> <20251006163024.18473-3-work@onurozkan.dev>
+ <aOTx-Oj_VN6fVV_s@google.com> <20251007152724.2b33a899@nimda.home>
+In-Reply-To: <20251007152724.2b33a899@nimda.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 7 Oct 2025 19:28:31 +0200
+X-Gm-Features: AS18NWADYkZvc6vCbj1UuDcLWaZRX69N2MiK2vPEu5TbDOY6IxUVYA4ThBJP1cc
+Message-ID: <CANiq72m8t2j3+XoELfYFG9ivymueOGdwpZnFhRVZ8f3Xw9ygiA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: xarray: abstract `xa_alloc_cyclic`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu, 
+	dakr@kernel.org, linux-kernel@vger.kernel.org, acourbot@nvidia.com, 
+	airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 07, 2025 at 04:21:36PM +0000, Alice Ryhl wrote:
-> The bindgen tool is better able to handle BIT(_) declarations when used
-> in an enum.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Hi Jakub,
-> 
-> what do you think about modifying the patch like this to use an enum? It
-> resolves the issues brought up in
-> 	https://lore.kernel.org/all/CAH5fLghTu-Zcm9e3Hy07nNtvB_-hRjojAWDoq-hhBYGE7LPEbQ@mail.gmail.com/
-> 
-> Feel free to squash this patch into your patch.
-> 
->  include/linux/mm.h              | 90 +++++++++++++++++----------------
->  rust/bindings/bindings_helper.h |  1 -
->  2 files changed, 46 insertions(+), 45 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 7916d527f687..69da7ce13e50 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -273,57 +273,58 @@ extern unsigned int kobjsize(const void *objp);
->   * vm_flags in vm_area_struct, see mm_types.h.
->   * When changing, update also include/trace/events/mmflags.h
->   */
-> -#define VM_NONE		0
-> +enum {
-> +	VM_NONE		= 0,
->  
-> -#define VM_READ		BIT(0)		/* currently active flags */
-> -#define VM_WRITE	BIT(1)
-> -#define VM_EXEC		BIT(2)
-> -#define VM_SHARED	BIT(3)
-> +	VM_READ		= BIT(0),		/* currently active flags */
-> +	VM_WRITE	= BIT(1),
-> +	VM_EXEC		= BIT(2),
-> +	VM_SHARED	= BIT(3),
+On Tue, Oct 7, 2025 at 7:19=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev>=
+ wrote:
+>
+> Why do we not like to use the bindings type directly?
 
-mmflags.h contains ... a lot of macros, but I think if you change the
-vmflags to an enum, you have to wrap every value of that enum in a
-TRACE_DEFINE_ENUM or else __print_flags on an array(?) of {value,
-string} pairs stops working.
+For public APIs, we generally try to avoid exposing C types:
 
-Concretely, I think show_vma_flags (which uses __def_vmaflag_names) will
-stop working here.  I'm no ftrace magician here, but AFAICT the third
-argument to __print_flags is stored verbatim in the tracefs format file,
-and the userspace ftrace tools use that to convert the raw data into a
-user friendly string.  For whatever reason, enumerations aren't
-converted to their underlying integer values by default, so the
-userspace program can't do the translation.  TRACE_DEFINE_ENUM is a
-magic that makes that happen.
+    https://docs.kernel.org/rust/general-information.html#abstractions-vs-b=
+indings
 
-<shrug> Don't mind me :)
+Sometimes it still makes sense, of course, e.g. a method may return
+an inner type so that it gets used by other abstractions to call into
+C. But generally we want to avoid exposing those for drivers and other
+abstractions wherever possible.
 
---D
-
->  
->  /* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
-> -#define VM_MAYREAD	BIT(4)		/* limits for mprotect() etc */
-> -#define VM_MAYWRITE	BIT(5)
-> -#define VM_MAYEXEC	BIT(6)
-> -#define VM_MAYSHARE	BIT(7)
-> +	VM_MAYREAD	= BIT(4),		/* limits for mprotect() etc */
-> +	VM_MAYWRITE	= BIT(5),
-> +	VM_MAYEXEC	= BIT(6),
-> +	VM_MAYSHARE	= BIT(7),
->  
-> -#define VM_GROWSDOWN	BIT(8)		/* general info on the segment */
-> +	VM_GROWSDOWN	= BIT(8),		/* general info on the segment */
->  #ifdef CONFIG_MMU
-> -#define VM_UFFD_MISSING	BIT(9)		/* missing pages tracking */
-> +	VM_UFFD_MISSING	= BIT(9),		/* missing pages tracking */
->  #else /* CONFIG_MMU */
-> -#define VM_MAYOVERLAY	BIT(9)		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
-> +	VM_MAYOVERLAY	= BIT(9),		/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
->  #define VM_UFFD_MISSING	0
->  #endif /* CONFIG_MMU */
-> -#define VM_PFNMAP	BIT(10)		/* Page-ranges managed without "struct page", just pure PFN */
-> -#define VM_UFFD_WP	BIT(12)		/* wrprotect pages tracking */
-> -
-> -#define VM_LOCKED	BIT(13)
-> -#define VM_IO           BIT(14)		/* Memory mapped I/O or similar */
-> -
-> -					/* Used by sys_madvise() */
-> -#define VM_SEQ_READ	BIT(15)		/* App will access data sequentially */
-> -#define VM_RAND_READ	BIT(16)		/* App will not benefit from clustered reads */
-> -
-> -#define VM_DONTCOPY	BIT(17)		/* Do not copy this vma on fork */
-> -#define VM_DONTEXPAND	BIT(18)		/* Cannot expand with mremap() */
-> -#define VM_LOCKONFAULT	BIT(19)		/* Lock the pages covered when they are faulted in */
-> -#define VM_ACCOUNT	BIT(20)		/* Is a VM accounted object */
-> -#define VM_NORESERVE	BIT(21)		/* should the VM suppress accounting */
-> -#define VM_HUGETLB	BIT(22)		/* Huge TLB Page VM */
-> -#define VM_SYNC		BIT(23)		/* Synchronous page faults */
-> -#define VM_ARCH_1	BIT(24)		/* Architecture-specific flag */
-> -#define VM_WIPEONFORK	BIT(25)		/* Wipe VMA contents in child. */
-> -#define VM_DONTDUMP	BIT(26)		/* Do not include in the core dump */
-> +	VM_PFNMAP	= BIT(10),		/* Page-ranges managed without "struct page", just pure PFN */
-> +	VM_UFFD_WP	= BIT(12),		/* wrprotect pages tracking */
-> +
-> +	VM_LOCKED	= BIT(13),
-> +	VM_IO           = BIT(14),		/* Memory mapped I/O or similar */
-> +
-> +						/* Used by sys_madvise() */
-> +	VM_SEQ_READ	= BIT(15),		/* App will access data sequentially */
-> +	VM_RAND_READ	= BIT(16),		/* App will not benefit from clustered reads */
-> +
-> +	VM_DONTCOPY	= BIT(17),		/* Do not copy this vma on fork */
-> +	VM_DONTEXPAND	= BIT(18),		/* Cannot expand with mremap() */
-> +	VM_LOCKONFAULT	= BIT(19),		/* Lock the pages covered when they are faulted in */
-> +	VM_ACCOUNT	= BIT(20),		/* Is a VM accounted object */
-> +	VM_NORESERVE	= BIT(21),		/* should the VM suppress accounting */
-> +	VM_HUGETLB	= BIT(22),		/* Huge TLB Page VM */
-> +	VM_SYNC		= BIT(23),		/* Synchronous page faults */
-> +	VM_ARCH_1	= BIT(24),		/* Architecture-specific flag */
-> +	VM_WIPEONFORK	= BIT(25),		/* Wipe VMA contents in child. */
-> +	VM_DONTDUMP	= BIT(26),		/* Do not include in the core dump */
->  
->  #ifdef CONFIG_MEM_SOFT_DIRTY
-> -# define VM_SOFTDIRTY	BIT(27)		/* Not soft dirty clean area */
-> +	VM_SOFTDIRTY	= BIT(27),		/* Not soft dirty clean area */
->  #else
->  # define VM_SOFTDIRTY	0
->  #endif
->  
-> -#define VM_MIXEDMAP	BIT(28)		/* Can contain "struct page" and pure PFN pages */
-> -#define VM_HUGEPAGE	BIT(29)		/* MADV_HUGEPAGE marked this vma */
-> -#define VM_NOHUGEPAGE	BIT(30)		/* MADV_NOHUGEPAGE marked this vma */
-> -#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
-> +	VM_MIXEDMAP	= BIT(28),		/* Can contain "struct page" and pure PFN pages */
-> +	VM_HUGEPAGE	= BIT(29),		/* MADV_HUGEPAGE marked this vma */
-> +	VM_NOHUGEPAGE	= BIT(30),		/* MADV_NOHUGEPAGE marked this vma */
-> +	VM_MERGEABLE	= BIT(31),		/* KSM may merge identical pages */
->  
->  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
->  #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
-> @@ -333,14 +334,15 @@ extern unsigned int kobjsize(const void *objp);
->  #define VM_HIGH_ARCH_BIT_4	36	/* bit only usable on 64-bit architectures */
->  #define VM_HIGH_ARCH_BIT_5	37	/* bit only usable on 64-bit architectures */
->  #define VM_HIGH_ARCH_BIT_6	38	/* bit only usable on 64-bit architectures */
-> -#define VM_HIGH_ARCH_0	BIT(VM_HIGH_ARCH_BIT_0)
-> -#define VM_HIGH_ARCH_1	BIT(VM_HIGH_ARCH_BIT_1)
-> -#define VM_HIGH_ARCH_2	BIT(VM_HIGH_ARCH_BIT_2)
-> -#define VM_HIGH_ARCH_3	BIT(VM_HIGH_ARCH_BIT_3)
-> -#define VM_HIGH_ARCH_4	BIT(VM_HIGH_ARCH_BIT_4)
-> -#define VM_HIGH_ARCH_5	BIT(VM_HIGH_ARCH_BIT_5)
-> -#define VM_HIGH_ARCH_6	BIT(VM_HIGH_ARCH_BIT_6)
-> +	VM_HIGH_ARCH_0	= BIT(VM_HIGH_ARCH_BIT_0),
-> +	VM_HIGH_ARCH_1	= BIT(VM_HIGH_ARCH_BIT_1),
-> +	VM_HIGH_ARCH_2	= BIT(VM_HIGH_ARCH_BIT_2),
-> +	VM_HIGH_ARCH_3	= BIT(VM_HIGH_ARCH_BIT_3),
-> +	VM_HIGH_ARCH_4	= BIT(VM_HIGH_ARCH_BIT_4),
-> +	VM_HIGH_ARCH_5	= BIT(VM_HIGH_ARCH_BIT_5),
-> +	VM_HIGH_ARCH_6	= BIT(VM_HIGH_ARCH_BIT_6),
->  #endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
-> +};
->  
->  #ifdef CONFIG_ARCH_HAS_PKEYS
->  # define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 2e43c66635a2..04b75d4d01c3 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -108,7 +108,6 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
->  
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
-> -const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
->  
->  #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
->  #include "../../drivers/android/binder/rust_binder.h"
-> -- 
-> 2.51.0.618.g983fd99d29-goog
-> 
-> 
+Cheers,
+Miguel
