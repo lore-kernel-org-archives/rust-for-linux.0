@@ -1,84 +1,98 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1272AD2F;
-	Tue,  7 Oct 2025 12:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFC934BA34;
+	Tue,  7 Oct 2025 13:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759841233; cv=none; b=IC4HHkfDmeMgfKYrD+kfoaQk8JlDcyyeBmRhGGcpyxorvMiV95I9dHMRRaxTJ0Q6E94vb2KA4uKONEgaeFocc4NHnYelUzl3ZZdWH9M0ngpEwByqMe0rPzn2n1UMCzh4grqTVg4sNycKayxGaqaloMxGd5X5QpsJH/kf4Lliw5M=
+	t=1759843003; cv=none; b=f1uPDSSROMaaWD5Oh0gV7K8lgL9E2GVEoHjTe8pIYckmi6P69JUDWaROOxZ+of7f49ZbHnZYS36O9r5S0ztGqteB2I40wD8lC0Hh8QnoMD9iurHMUpe669b/Z4g/hD0x3pq1aT0TCLVFYyyXwxSMeBVNBZNupdWPpdTDzOemH0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759841233; c=relaxed/simple;
-	bh=c+6ev8lGVHIuS9Fgc9kpY0G1q7d2ENYk5Qma+GHfWjs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gdik1RLClQadYnWT+FdTbW2JCX/cxydJXSyUDpqp/Ylq+sdE1Q9IdD60GH7TtW7WudlHKKQrFNjskd+J16Lay7C5UjGHVnIJcvbps8Qg67xpxgeQSnSVy4QkVWEkjZZ5XxWFNc4Nrmkv6GXueYxrzoBsF0OleGkPYKQdYA5XEE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=e3ICVuOR; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1759843003; c=relaxed/simple;
+	bh=6UjzVlz1EtzKDtCcbFvNlSfCTmDJhScI63/zH3jvfVA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qoakepgld4I0c0uisGmUu/ap01Ucfe7L4mTrdRWTCqSSFbzKl7HoAnMu2W+IjbeTFpC+21dioo+IMawhBqyMrejbqQBJHkMKSKQNuAPyZuz7vfOFthi9OUrf+4naqLozn3xIYyn6v6qIBumD7pKmMZWbgxMPnnlnZdGsvikith4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DhEl/zG+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="e3ICVuOR"
-Received: from mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net [IPv6:2a02:6b8:c18:3ea3:0:640:1894:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id E06628160F;
-	Tue, 07 Oct 2025 15:37:39 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id YbkbHRALx0U0-zfyy7dBX;
-	Tue, 07 Oct 2025 15:37:38 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1759840658;
-	bh=11vCPpW2xiVEBFoImljy4JjSFQTqP7bkvs9j7Br2/Mk=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=e3ICVuORs9C+my8Q4paC3iw7po2weA4/sPgA8kr0UcCeJQ11xCs4lwhBoCCRugNJH
-	 nXY330+btQrs2B6CM0B4tecKGrUREwLu0V79g2OCk6bHX++VHyLams0xp+j8elFTG+
-	 6Q/GYrgBQHBmZBupNep1FoDmC3Fl4voPUrrdR8oU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 7 Oct 2025 15:37:32 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, tmgross@umich.edu, dakr@kernel.org,
- linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com,
- simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH 0/3] rust: xarray: abstract `xa_alloc` and
- `xa_alloc_cyclic`
-Message-ID: <20251007153732.654b9c6b@nimda.home>
-In-Reply-To: <aOTzJyLA49xdckRr@google.com>
-References: <20251006163024.18473-1-work@onurozkan.dev>
-	<aOTzJyLA49xdckRr@google.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DhEl/zG+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB19C4CEF1;
+	Tue,  7 Oct 2025 13:16:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759843003;
+	bh=6UjzVlz1EtzKDtCcbFvNlSfCTmDJhScI63/zH3jvfVA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=DhEl/zG+D7xFgqiPWQVAdl3fHwTnoe02BBj4mm/Hut3L3AvLtiropA6iQKNKR9ihj
+	 PrDT+saQAFcMRAX90RlVlIsHlT5aSWD0Jun9zUaMYd1q0lm11iY0q4xTAH5bxq4BzW
+	 Imdfn0O0PVR1fezkl+US2ZbE2qKJrPd/JvACcmAJ1AWQ/bYAqYbptM3BiMKz9A/Pjz
+	 PJJVjtZ2YgwVK6RnK+i2UHpCyuoGHIuHRXM+fGJdFvf5pO/XqgZPh524KbGltDXMkm
+	 CsvbFYPZOYFlGn0tc6e7yh9a/XT4R/XE4NsqkLutt3X0cyrbsD5Uz8knxfBlMfKmMZ
+	 5QT6K/RWDIkbw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 07 Oct 2025 15:16:36 +0200
+Message-Id: <DDC49ZIRX79X.2Q4KW0UY7WUF3@kernel.org>
+Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to
+ rust/kernel/
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, "Alistair Popple" <apopple@nvidia.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Andrea Righi"
+ <arighi@nvidia.com>, <nouveau@lists.freedesktop.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "Joel Fernandes" <joelagnelf@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
+ <aORCwckUwZspBMfv@yury> <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
+In-Reply-To: <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
 
-On Tue, 7 Oct 2025 11:01:59 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Tue Oct 7, 2025 at 12:36 PM CEST, Alexandre Courbot wrote:
+> Because letting it fully mature within nova-core also has the drawback
+> that we might miss the perspective of other potential users, which may
+> make us draw ourselves into a corner that will make the macro less
+> useful generally speaking. We are at a stage where we can still make
+> design changes if needed, but we need to hear from other users, and
+> these won't come as long as the macro is in nova-core.
 
-> On Mon, Oct 06, 2025 at 07:30:21PM +0300, Onur =C3=96zkan wrote:
-> > Initial version of xa_alloc and xa_alloc_cyclic abstraction
-> > patch series.
-> >=20
-> > Onur =C3=96zkan (3):
-> >   rust: xarray: abstract `xa_alloc`
-> >   rust: xarray: abstract `xa_alloc_cyclic`
-> >   remove completed task from nova-core task list
-> >=20
-> >  Documentation/gpu/nova/core/todo.rst |  8 ---
-> >  rust/kernel/xarray.rs                | 82
-> > ++++++++++++++++++++++++++++ 2 files changed, 82 insertions(+), 8
-> > deletions(-)
->=20
-> We should send xarray patches to the linux-mm@kvack.org too.
->=20
-> Alice
+There are two different things here that are getting mixed up a bit.
 
-I suppose it should be added to the MAINTAINERS file? `get_maintainer.pl
-rust/kernel/xarray.rs` doesn't give that address right now.
+  (1) Moving the register!() code out of nova-core to make it accessible fo=
+r
+      other drivers.
 
-Thanks,
-Onur
+  (2) Generalize the bitfield implementation that so far is baked into the
+      register!() code.
+
+Both of those make sense, but they don't have to happen at the same time
+necessarily.
+
+Now, I'm not saying that we necessarily have to change the approach here. T=
+he
+current merge window isn't even closed, so we have plently of time left, i.=
+e.
+there's no rush with with patch series.
+
+However, if it helps, I'm perfectly fine to take the register!() implementa=
+tion
+into the I/O entry in a first step and in a second step generalize the bitf=
+ield
+implementation and move it out of the register!() code.
+
+Again, there's no rush as far as I'm concerned, yet the latter approach mig=
+ht
+add a bit more structure and hence run a bit smoother.
+
+- Danilo
