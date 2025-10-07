@@ -1,103 +1,131 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D0E2D47F4
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Oct 2025 10:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB302D9499
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Oct 2025 10:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759833776; cv=none; b=NcxYiWpgnAPKGb0yEoGDGsE7XyeVmiOazHd7m354HWw6178aftZ3HNVI+HkYElw4SSS1ZljK4i5L6y8GEiDmbYP06DEaJI3iMw0cREVL/e/3UJX06EDLOQjOzSegJD7WL9r1g7KxvIYBXjatfUtdzpsd5Gd5aTxgjGIO9v5t4GM=
+	t=1759834622; cv=none; b=opHtihyRrGewvcbZQn30pI/yHhwWzXVXOQDzeRbqEXCy13F4PdWqwtUinlVXgCMfFEbaLJsqMEgn/nYXle4tjsGasV7e1vVBjPxHF+TAYx6+kk8AYDmvJYzTtu2AOPOTyKz/58YCE1GPA1RWnLiL+UhDBWCd33AjxNgBAdSGgkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759833776; c=relaxed/simple;
-	bh=t48xr98QD61VaWXPvBpaZ2yaPisBwVUmg9uYlxv8ngk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ie5csAJN/Z37+VMZbQUP46cYKnpjoyvo7Szno4hbWjKhxEvnvupcAgP2StILw6hx6/FVvTXd09cu9qulsx2syPLRK0YZAJkOb6BgKjSriC1aOwtUejfWOAQCKrwtgMbN9iy78QjluC07HDFc1SIZ79EYl19NoPMASVfy6eHa7/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pw5qDQij; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759834622; c=relaxed/simple;
+	bh=vUkY0LBxAjC+01n8OpO7QSDbN37dvum9xul2QzmKHpo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Sm4OvGlssRo4h6PkLYmCWidclcbisblYrI956Pid4PNqausBh9ZOwXuDAOfDKoITbeR4kUFpO7voiiQaWB8A0yGOdPoeaUhiuO/3k3mNXKWWrj0Mm1nPMgVN6Mn+o4hy5K+rCoVu+fYmTfwn8vl4JR91RoR7yRRS0jSwDakpyrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sR15f379; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pw5qDQij"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-27eca7297a7so8297825ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Oct 2025 03:42:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sR15f379"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e3e177893so33093255e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Oct 2025 03:56:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759833774; x=1760438574; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t48xr98QD61VaWXPvBpaZ2yaPisBwVUmg9uYlxv8ngk=;
-        b=Pw5qDQij8MARyxaJey5UfIJzutLT+inpNsHmY6VzuKFbvLpOE65FzWAXr6k9IPqlcE
-         UoQU3irYMW2e+/JjIhW5BS/2hUF34wijzBdvRIhPjYj6/UUI1ByiM+dgBLzrr70UFDxB
-         u9liFpXeVMvsxRmN6FgnJ6KYj2st/S4pu+aTXwrNf4T0eztrSC9L4qMjIqrRyjBzb6wW
-         T9+Fpm/tqYjDFBhQNU3K503QQwCb2bW2XnEtBqN5+fAKVdgYZp8SDFeP9rVjI8QEyhtv
-         O0yFBER6kX4HqljDxvJ1w6eWR+L1iqdb9/CAcyJNzceofePdx8AZTICTBTaBMCQ6ko2f
-         CdFg==
+        d=google.com; s=20230601; t=1759834618; x=1760439418; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TQQAIlxYbdWuvuYTPGUIT4drPlYe0TwcyAZ7bEOHsPc=;
+        b=sR15f37995rv7vXZavVI9s6XLhUo+Suau2wUL5oW6vm2NQgmgvOgRZWMNNs9i1FHoP
+         Po0/CiyVufDWMB9eqWuwPz6i66bisCis+rXysh0unre4nOkq2QHj9bMagRuSre+QEOre
+         +uQVhHmhUhaCLVIRVR+ASjmF/+lcgmsWAXJN3x+8Iq237oXFWtf58YGBK1YZp21NCOKy
+         3vx4iLPT2up5tYnyhGg4pBeHKeVenYsOSmCi1VQOuOkvCoRimhqjIq3MmFjwWuyb67it
+         8Mg9xgQNr6XBwE8qfizomyQTx4+SWkZXh0sQ52nPl4qgo0jgRUaxnGu1ZmzqUvYIg1Lo
+         6vHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759833774; x=1760438574;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t48xr98QD61VaWXPvBpaZ2yaPisBwVUmg9uYlxv8ngk=;
-        b=D3JfN6NKOEH9BsCIMbaHYkwFy3uYjK7udO3yUCXxoOBDYO72PER/71SdkDjURkG55p
-         yJ8n6ZmIlqxm3NvXx6EOkXhXMbHt4IQmh5jFY/aP2JrD3bVzXp2dBq9o775VNG5/rY5m
-         foCsa0Tx1GAs5BGtTTyFq2daNcuBCKLevwgES/OGR6/KqUdNKBoUeCUDJWFJAWuvR84D
-         cdFBORnfmCB+za0xmijt9KqOS03zLJ5gJyjSoDz9JEsM7OdzjO0RoCAi3aJJho9aJuaN
-         73UbB7Y0OplVu7P9TKG3XFY5iP9TYiCdAOjMCi+n1Bz5qZe+4oVu7lKs8eKKLdAkchml
-         gdcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVX6Bv3LrBZuSI/zt4/Ii20cOtYolT1HySm7kJ7KQr4aqr6akd6BySGBPRJN2b2SXq6yb8X3lUOqgCVzrKCaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbEO4aUjeymXKO68JCxLX8uIYEEjS9HluW9NmTJU/LJoINOQ9f
-	iXZJgUNQNJRnsE21meVE0BKai1odk8vWhjJMsn4VVRGA01gTydo30DiS989StheDsVNRZyh2sRX
-	bMOU3EDiM/buL9mV97k49ogd99UWPq1I=
-X-Gm-Gg: ASbGncv+au+3Ium6NBS8oKzxqbPtuPYvyepG/yc+0TGGRJFqqyqwTrSlOp9q2oV89vP
-	LIC8gPAG00bb8MCp74NTpzj+KESUdcDvfqthRx7QKtP3PWAzlYjvbUUL+0+9KeTUQY/8z5d77AO
-	FZkW5FIq6W+ExtExFHnYATpsEzh+0IDVPb8cSYU2nepD+Iw3PIb2oQKGyYY9HCvTC74baY/5i0Q
-	Rk+lSqwhT0F/2REc5sGXHFPr0gzCqsnXoiA5DnA8jQ7V4eBg41w4FjmbVeV5+VMYXxGSzroqY2q
-	B8FlyGKSQCD1Tg45TfRBsYytuW8L11VrDbPUBp+jRwsfnb50eA==
-X-Google-Smtp-Source: AGHT+IG/tceer4xDFHi1fbtvymQWQEX0cfdjfz7qa3VEV1S1lLa9ROogqCppnvlWvrXrppWg7CAeyI7raGFpenio+L4=
-X-Received: by 2002:a17:903:1a68:b0:272:2bf1:6a1f with SMTP id
- d9443c01a7336-28e9a5a2ea2mr112471585ad.4.1759833774205; Tue, 07 Oct 2025
- 03:42:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759834618; x=1760439418;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TQQAIlxYbdWuvuYTPGUIT4drPlYe0TwcyAZ7bEOHsPc=;
+        b=cbWlN2FNn845C8vP8Om4YU5z+OPA1Ow9zzHP/hfgkx2PgdsatudIvFxP4oVAs5EHbt
+         8IuErV/FcoA+w+5V1brnrcb6AJ58Cik/7OlGBCAT7dSzHJB9YQrpbh7fzQB4fQ2+/uQN
+         VIKRqvfNwZl1PBXj+YYTPOxvACo1jD5WWjyYJT5IDOrHihqtLdeUnWYguElN23FQ6qQ4
+         00CTkYPKD954l30rdWXJHCDZIDhAJcG/mKbvH2PfGx2qku76IcSZpSElZ3nDzC72kk7Y
+         Pzp/R2nNNkwqh/UwiSUzYTwVKLJha0McO61JWuea/HJaOefdba20D3CkX/95he+0wxp1
+         nJJw==
+X-Gm-Message-State: AOJu0YxU1yaSf/JCXji8iqnXgpvHlE34NmuExh3FRvoDfLu4pKJy5VxU
+	TC50x3gAWKy9lsHgYk/kWBxBnoav6HagvGlIZy/7Hu08JvB7o09rUzYQYrmb5L25sQCBKTNkGRZ
+	cj0PEq4hTa2F1nH4Y1g==
+X-Google-Smtp-Source: AGHT+IElIwg1aSS1OnCndwEEVrqrYBTpVUjbbOKp+wuEHxYn6Q0yHYCleycgScMtGRMAnWQ4U5k/Dz3Y9aV1s5w=
+X-Received: from wmoh10.prod.google.com ([2002:a05:600c:314a:b0:45f:28dd:87d9])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600d:4392:b0:46e:74bb:6bc with SMTP id 5b1f17b1804b1-46e74bb07ecmr73042095e9.5.1759834618591;
+ Tue, 07 Oct 2025 03:56:58 -0700 (PDT)
+Date: Tue, 7 Oct 2025 10:56:56 +0000
+In-Reply-To: <20251006163024.18473-3-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
- <aORCwckUwZspBMfv@yury> <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
-In-Reply-To: <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 7 Oct 2025 12:42:41 +0200
-X-Gm-Features: AS18NWDpvGktuowJke8BSxfgUaurFD3miGBpRkLVS9T4zoCecLy6NtllLzWGBNs
-Message-ID: <CANiq72m1eiGVJHNyym+JwM=tQ9bGnmoW0+OuKQ3Vxo_AQOy5dg@mail.gmail.com>
-Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to rust/kernel/
-To: Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	dakr@kernel.org, Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Andrea Righi <arighi@nvidia.com>, 
-	nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20251006163024.18473-1-work@onurozkan.dev> <20251006163024.18473-3-work@onurozkan.dev>
+Message-ID: <aOTx-Oj_VN6fVV_s@google.com>
+Subject: Re: [PATCH 2/3] rust: xarray: abstract `xa_alloc_cyclic`
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 7, 2025 at 12:36=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> We can assume maintainership of this of course, but is there a problem
-> if this falls under the core Rust umbrella? As this is a pretty core
-> functionality. Miguel and other core folks, WDYT?
+On Mon, Oct 06, 2025 at 07:30:23PM +0300, Onur =C3=96zkan wrote:
+> Implements `alloc_cyclic` function to `XArray<T>` that
+> wraps `xa_alloc_cyclic` safely.
+>=20
+> Resolves a task from the nova/core task list under the "XArray
+> bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
+> file.
+>=20
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
+>  rust/kernel/xarray.rs | 43 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+>=20
+> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> index 1b882cd2f58b..4c2fdf53c7af 100644
+> --- a/rust/kernel/xarray.rs
+> +++ b/rust/kernel/xarray.rs
+> @@ -305,6 +305,49 @@ pub fn alloc(
+>=20
+>          Ok(id)
+>      }
+> +
+> +    /// Allocates an empty slot within the given `limit`, storing `value=
+` and cycling from `*next`.
+> +    ///
+> +    /// May drop the lock if needed to allocate memory, and then reacqui=
+re it afterwards.
+> +    ///
+> +    /// On success, returns the allocated id.
+> +    ///
+> +    /// On failure, returns the element which was attempted to be stored=
+.
+> +    pub fn alloc_cyclic(
+> +        &mut self,
+> +        limit: bindings::xa_limit,
 
-I think what Yury may mean is that this should get an explicit
-`MAINTAINERS` subentry even if it falls under `rust/kernel/` -- I
-agree that is a good idea.
+Could we use a Range<u32> type or similar here? I don't think we want a
+bindings type.
 
-Thanks!
+> +        next: &mut u32,
 
-Cheers,
-Miguel
+So this is a mutable reference because it writes `*id + 1` to next,
+taking wrap-around into account? The docs should probably explain that.
+
+> +        value: T,
+> +        gfp: alloc::Flags,
+> +    ) -> Result<u32, StoreError<T>> {
+> +        build_assert!(
+> +            T::FOREIGN_ALIGN >=3D 4,
+> +            "pointers stored in XArray must be 4-byte aligned"
+> +        );
+
+It should be enough to have this in the constructor. I don't think it's
+needed here.
+
+Alice
