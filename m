@@ -1,160 +1,112 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB9EF9D6
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Oct 2025 07:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB66C165F16
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Oct 2025 09:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759821353; cv=none; b=o0wlOC4jnJ3xYvQ2COoURdG10zbvx4phBwhjD5lcDSTwHD5fIJDOvQ0+89+K7hM1eUL8jl2VHSjUURIVF05tCHkWYA7MJcSeo4sQZksDZvpABHtZZG1L5v6Xs+dUjSZ7uwcjCgGGeEIU5DbMa77LNIgjafi8tH0Sd0KUuekhiTc=
+	t=1759829999; cv=none; b=Hb/03MzQQGIQbds8jGGzQB+YBgwx56Gf3zsNo2haByC6I6FPiVAkqsZdQuKwcqoUgfUrxU1qexrBwyrTmyR3LNd8PGQeGbC6Qzax6DeMPLkaJMKnip7YX2OPJXWcwCDwhCBQE80/5lgWjhAm3NRnQ0qMjnGpNvDCA9zhnQV6GKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759821353; c=relaxed/simple;
-	bh=z9ZXgLsIETBZdYU+Z0pJbtRnOe6ikC0HYb6Bt41W6xU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oaipeTgiSMKQ8ykO/Rc/U99P25kuo7zFu9RZNWDT6qDJbMm/OfLTPuc08dymFsbUIMOo74wH881EJ92m494SAEkCQsBopnTPmBUqnGS4hq1YEhQuTjgHqXJIFYd6AIC60AqjmogmU+H1qyAqgU/S4iYsmN7d0pPmtXK9+4UK/0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D67G2puQ; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1759829999; c=relaxed/simple;
+	bh=YJ4l8YO6+oXjEOidGVwHWzcVddJ2TcaRCjmIlq6mC5k=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ew0q0D62duRur+xL+N2IE3cL4V0OzuD7Z6vN4OI7s3WyJ253kL/yCVjyEgXdLLzecCvWN1EACAms58g+U6LzIEdNN1bS8poeVP7+cIwO27t6LFk1bl1NQV6U39PqEj2741OaxmXusIfT9yFeOrDiUZzLew2IiEtZoB2uvVbqtKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=STy3dpPl; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D67G2puQ"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-46e6a6a5e42so29333895e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Oct 2025 00:15:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="STy3dpPl"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3efa77de998so3576383f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Oct 2025 02:39:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759821350; x=1760426150; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lEDZ0FsctXTT25PdUb7+D7imSwt4Fuc+97g/5BQFmmw=;
-        b=D67G2puQYF2osXmdG2tRmCyWzVWMYN+Mdmha6i76MnX+jNUgxWGR5ww6T4A3cnJBte
-         PUlBWpggd7rtznR8LATM0mVUnCC4qtUVkXHPBGcEPkFi6mJR9A5mcApvuRy9ohg7Vk+K
-         WXsLJ7CY7AV8vOKheD/9TNmqoHGZvEY4PVY/TcIYOBX7fpPq4Cfae0QDsMi2pNmkE6cB
-         YsSxhaDWkz+UIu5pQT06MopKPqr2AAeU7EtOQT/LdNkHPRpEuFtYlMZDR2ZmO3hV2KL1
-         kiunotVw1IWKapRyeqylGn4unDjxTQb5h++LJgDCDvhCkGfn+PVZ3n7M9LbGUWdsbubb
-         767Q==
+        d=google.com; s=20230601; t=1759829996; x=1760434796; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FmSwAXOxZKUOz9AOH50gpoq+A3qgk8C+jOU4GTuqrho=;
+        b=STy3dpPl9Xhi3iu2LiXEkKDT2Eoont7dMyNDlsZvNuKxu7ToXtBaEy68Sib4111Dsu
+         Sb9WepWNzuhRM1zIhM7kO8AlsZDSTBNp4VD1+sNcdGkyAgFHfLlDj6vPg9DBijshI5+t
+         cYXBZnoshkgpXj3KG5EZvSXswbdLzvzNbPWQa20kagefQKP2D+GQJJh+Ci4ToOnItVSY
+         g3HTZFGCtUdWt9a4SYZuFASc2ZnU0Y32jIeOlc1RB2AKprVswT8f1tlpiABUSOkF4fPi
+         lXCHwsr/OgHkxZo19p6lMj9OzhWcYDyOM8C9VDyxSXtsHSOtZZJ/TZVxoFDAfNuzcxzY
+         i6mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759821350; x=1760426150;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lEDZ0FsctXTT25PdUb7+D7imSwt4Fuc+97g/5BQFmmw=;
-        b=ZzVaG5A9IYzc+P+Gz/L0kYcXnV8vkN2bes8/nOzjMsyHJpynPyY8FNOcCFTHJ7kotT
-         v1EG2ofZvR3QGOhHWSsol4lz1Zbc2x5Zn1qtpfaok+zP4U+BlFMjvGcpefiz7QM7QX/O
-         xkOIcQlTYrFsnB22wAsiWjUTwTtWDNl+p6RKfhOE2lsnD6dqTwsvh4nKT9Z4l1F4i+B+
-         TDFy5L3e7byrSj4cHVj8ST+M+ZrAf1TptztHpcAA0BlyOYvN6NBoZsk+ceMGjQ5zq7mM
-         X1T3JZ5bkOdxbm1mmdPqN7SDGYc4LjBPayOZT56+FrJiu5BJJ47kj9/xOdpzRRPsEX/j
-         yGrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWd4j9s9w+lyf9/G2GB0uIjgITywyVjO7TfzrYq64xXDQYYGssV1HNsdAoyD/c5iEM6/rq111JzAiZ7wBDrBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx24zfkJOI42g+iqNxPvYDnRtYFf28PBKPLyiYoYXP3wYy+cYUr
-	CZ4EDWy44k/7NiYgrIMJQRplZVh8tJQyV4mmgqt0rEfhfhw0Y4koA51Omz11EvqlOoZEgLKpyZe
-	scLpoRZBXPkAsK6HfYLkCuvR0YYqy2330KXgQ+1+z
-X-Gm-Gg: ASbGnct/u+FjQ6e8/gbJ980hWOXo0H1kAa5WLSCt+sguArgj10EKGpyJ1Anu2BMkPdD
-	gSjHFtwDD00oqvNvCQW42TuAqp8J1s2T2i+StSIL2zkzfROtWRJf8Y+Cy8MiXT7zjtVhWJyPvbv
-	Ug7JgH+tr0ppA61GU+J+OLdvxBHCdYUsmlPPBW3FeQ9UYOtteT3FQrPCaJ9Zh2bTH0aon7y4KIU
-	0dpOe3MSMVhL7vvDrmRc/UTkA02ptsBLPDNfGt9Q2NAgnu7vGmhqPluH+OfNXAIbB030UTKbjp1
-	dw==
-X-Google-Smtp-Source: AGHT+IHN82I6u9PV3m3T4AyeGxqQDcrMtP+2C7gcRrU3bk8X8rWbSiECp23jl+rfoqveFg745pQlgqV3AFCycsCdTp4=
-X-Received: by 2002:a05:600c:1f8d:b0:46e:4581:6634 with SMTP id
- 5b1f17b1804b1-46e7114684bmr95963215e9.29.1759821350287; Tue, 07 Oct 2025
- 00:15:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759829996; x=1760434796;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FmSwAXOxZKUOz9AOH50gpoq+A3qgk8C+jOU4GTuqrho=;
+        b=I80VgZ5kD02pQBd425QZTRz4DNWDOCOur6RbhIfK3cIlXR5sR66OYAF8aGNSik3UfR
+         e13OtInGMpBLAVysOFCdsS1c55I3MCLFnrapU6DdM3CHsLfBJMxwX1YQUw5EPQJ3b1U8
+         mDtncz7C+7EvSPbfPaQTgTdo1iqRZD1UMrumV+OOZuE2KHL5B3bUZzFdWVDalSkUz89Z
+         U0I77l0uHPX/okC/NKTnYPsyY99UnEFny0xTuJqeJkB6tDRCOOIR0ErBpF04giEl2U2P
+         SPir1Z8Yri8LeokaUYEBes5O/F87TxcovsMRLhB5oo+lUMgFM73IqmJWNZBjltJG0/6Z
+         KOew==
+X-Forwarded-Encrypted: i=1; AJvYcCVF54gK0l9PRvO1UKd3RJZr2zaHyzhj2jehRuTdIf5pdor0SEQo9VNuiaPNrF/EYsckMidEKXWqneIvVUyHhQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCziOOze0P6x5xN8z56ZzNJ9TZERencWvryLxpiv0zL1DPk4/x
+	rMSOxSReMMcQZjTFITX40qpbc8Z/xKZpwIYaPA8y5mjuBsncc9nHAlP8kvPQGO2dLBALO0Nfaa4
+	NWLWh6gDVENmUN63Wrg==
+X-Google-Smtp-Source: AGHT+IH9mV4n0lSExlu3FWYpv4Mx9IbTkfdC7gum/bBTbtYumGPaxNtiTvGoi4bA+x/MdMJOo0Dus7tFTRbpL7M=
+X-Received: from wruv15.prod.google.com ([2002:a5d:678f:0:b0:3de:7346:de21])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:5f47:0:b0:415:7a6c:6a38 with SMTP id ffacd0b85a97d-425671c3bcdmr9683097f8f.59.1759829996366;
+ Tue, 07 Oct 2025 02:39:56 -0700 (PDT)
+Date: Tue, 07 Oct 2025 09:39:50 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <202510030449.VfSaAjvd-lkp@intel.com> <20251002141925.ab86656b1d50f6e27f216209@linux-foundation.org>
- <CANiq72kOhRdGtQe2UVYmDLdbw6VNkiMtdFzkQizsfQV0gLY1Hg@mail.gmail.com>
- <20251002152753.c756678dfdcf739e2fbf74f7@linux-foundation.org>
- <CANiq72kWWPAZ3gq2ktMpVeMKpWOU1nAmYi-4d-BgbuDti77ggg@mail.gmail.com>
- <20251002154323.ca15e98421255ae2978e8d6b@linux-foundation.org>
- <cd2ea7d4-6b12-4933-b1ae-cd4db18d3671@nvidia.com> <20251007070611.GA88971@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
-In-Reply-To: <20251007070611.GA88971@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAObf5GgC/13MQQrCMBCF4auUWRtJ00qJK+8hXZhkJh3QRBIJa
+ sndjQU3Lv8H71shY2LMcOxWSFg4cwwt1K4Du1yCR8GuNSipDr2UShgODpOghPhGQVqjGpwdJ0P QPveExM/NO8+tF86PmF4bX/rv+pPGP6n0QgoymqyzpMw0nHyM/op7G28w11o/IQg1NKsAAAA=
+X-Change-Id: 20251002-binder-freeze-f99e23dc47bf
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=892; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=YJ4l8YO6+oXjEOidGVwHWzcVddJ2TcaRCjmIlq6mC5k=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBo5N/qX3xFHhbOaJLoreqfLBGBEG7JYzjxBBPl8
+ pRre/Fl9MaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaOTf6gAKCRAEWL7uWMY5
+ Rk3eD/0f8Krqvn+ehSx/aGgx/Z+jrHzHgRtE++NieYt4mvpXcKEPsfvaOKDxwFTVFPV9DV5kzJV
+ TstX2/turYRCm0YZCrQ+LiXfudTuXEIyfhNjGQgjqRD8pP8xIlEwidLd8yeMF06a0w7C3IlGnoX
+ Thoyo5fR7UubjX04nJMMdeXDBWPhaH+F6xaygp7S3+l4hiWhZjhVT6scfMklKbNoplswK0F0Ve/
+ hQqJym3Qnb1beaBHbfG0wMY7VGTYSqr5x90Lrk+SmrI1iHFyzJFjGaFl6Pag0q2O0wRx+GXEaWx
+ NjG9BTB3K5y6yNQXJGJXOakaJjyrPy8DXgv5ExRlfI8XJtRAg+4jHyjFZvWzMGAPfcQSDAqCC+B
+ lHAcx2JRE6vkg7cAKRAQUExmP0sXGSICxY51yBiNgkN05Y87Xu1paJSGH7ERS0WyooaFOpJU0dN
+ 08kIETVJ60y6pG9pxx+Ac9B5xUrRTedpgixCofVmK2o1Ot9GLTWY9uHZxRDaviL3up3Jj8YJG9p
+ bVooruyZIpqEao4fgCbTP9E7Enqj9y8/gm+G+kf4X6aeb0AlVdD0G8kuny1mGIfLdGbCEIGqrR+
+ UdaNbYp56bd4tDTIMeLOuVnZtzNsJ4Do3EnIWkvtbohUCVS2TpYTYSWt5Gyr95sWVQJMYftfaCD +XqNhuEhsWjzvIg==
+X-Mailer: b4 0.14.2
+Message-ID: <20251007-binder-freeze-v2-0-5376bd64fb59@google.com>
+Subject: [PATCH v2 0/3] Fix three issues with freeze listeners
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 7 Oct 2025 09:15:37 +0200
-X-Gm-Features: AS18NWAypYnO3FSMvWWPHzph4WyVFTzlcHH5O53Vehnkv-a0YVg6GpPRGHeldOA
-Message-ID: <CAH5fLghTu-Zcm9e3Hy07nNtvB_-hRjojAWDoq-hhBYGE7LPEbQ@mail.gmail.com>
-Subject: Re: [linux-next:master 13069/13300] error[E0425]: cannot find value
- `VM_MERGEABLE` in crate `bindings`
-To: Jakub Acs <acsjakub@amazon.de>
-Cc: John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, kernel test robot <lkp@intel.com>, llvm@lists.linux.dev, 
-	oe-kbuild-all@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Oct 7, 2025 at 9:07=E2=80=AFAM Jakub Acs <acsjakub@amazon.de> wrote=
-:
->
-> On Thu, Oct 02, 2025 at 05:24:48PM -0700, John Hubbard wrote:
-> > On 10/2/25 3:43 PM, Andrew Morton wrote:
-> > > On Fri, 3 Oct 2025 00:39:16 +0200 Miguel Ojeda <miguel.ojeda.sandonis=
-@gmail.com> wrote:
-> > >> On Fri, Oct 3, 2025 at 12:27=E2=80=AFAM Andrew Morton <akpm@linux-fo=
-undation.org> wrote:
-> > ...
-> > > From: Andrew Morton <akpm@linux-foundation.org>
-> > > Subject: mm-ksm-fix-flag-dropping-behavior-in-ksm_madvise-fix
-> > > Date: Thu Oct  2 03:37:47 PM PDT 2025
-> > >
-> > > Rust bindgen wasn't able to handle the BIT() macro.  Add a helper (fr=
-om
-> > > Miguel) to fix this.
-> > >
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202510030449.VfSaAjvd-l=
-kp@intel.com/
-> > > Cc: Axel Rasmussen <axelrasmussen@google.com>
-> > > Cc: Chengming Zhou <chengming.zhou@linux.dev>
-> > > Cc: David Hildenbrand <david@redhat.com>
-> > > Cc: Jakub Acs <acsjakub@amazon.de>
-> > > Cc: Peter Xu <peterx@redhat.com>
-> > > Cc: SeongJae Park <sj@kernel.org>
-> > > Cc: Xu Xin <xu.xin16@zte.com.cn>
-> > > Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> > > Cc: Alice Ryhl <aliceryhl@google.com>
-> > > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > > ---
-> > >
-> > >  rust/bindings/bindings_helper.h |    1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > --- a/rust/bindings/bindings_helper.h~mm-ksm-fix-flag-dropping-behavi=
-or-in-ksm_madvise-fix
-> > > +++ a/rust/bindings/bindings_helper.h
-> > > @@ -99,3 +99,4 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRE
-> > >
-> > >  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC =3D XA_FLAGS_ALLOC;
-> > >  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 =3D XA_FLAGS_ALLOC1;
-> > > +const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE =3D VM_MERGEABLE;
-> > > _
-> >
-> > Yes, this fixes the build on my system too, so:
-> >
-> > Tested-by: John Hubbard <jhubbard@nvidia.com>
-> >
-> > ...of course, we'll have to undo this later, as part of the fix
-> > for the Rust for Linux build system, to handle BIT() and similar
-> > macros in bindgen.
-> >
->
-> Hi,
->
-> sorry for the issues this has caused. We're also changing the other
-> defines to BIT() for consistency, it was applied to mm-new in [1]. I
-> assume this will have the same breaking effect. Not sure what is the
-> solution - whether to wait for the fix mentioned by John or add similar
-> defintions to a/rust/bindings/bindings_helper.h for all consts?
->
-> [1]: https://lore.kernel.org/all/20251002202112.C2293C4CEF4@smtp.kernel.o=
-rg/
+See each commit message for details.
 
-You have two options: either add all of the constants to
-bindings_helper.h, or use an enum similar to commit 3634783be125
-("binder: use enum for binder ioctls").
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Add fully frozen fix (patch 3).
+- Link to v1: https://lore.kernel.org/r/20251004-binder-freeze-v1-0-fb9fcdcf2b73@google.com
 
-Regarding John's mention, don't expect that for a while. It requires
-support in bindgen, which is shipped by your distribution, not Linux.
-Therefore, it takes time for improvements to become available to
-everyone.
+---
+Alice Ryhl (3):
+      rust_binder: freeze_notif_done should resend if wrong state
+      rust_binder: don't delete FreezeListener if there are pending duplicates
+      rust_binder: report freeze notification only when fully frozen
 
-Alice
+ drivers/android/binder/freeze.rs      | 18 +++++++++++---
+ drivers/android/binder/process.rs     | 46 ++++++++++++++++++++++++++++-------
+ drivers/android/binder/transaction.rs |  6 ++---
+ 3 files changed, 54 insertions(+), 16 deletions(-)
+---
+base-commit: eafedbc7c050c44744fbdf80bdf3315e860b7513
+change-id: 20251002-binder-freeze-f99e23dc47bf
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
