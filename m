@@ -1,171 +1,86 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011061.outbound.protection.outlook.com [52.101.52.61])
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F139454652;
-	Wed,  8 Oct 2025 05:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759900611; cv=fail; b=d4tizQjFTkiA8rHFQs5bbT79o4674u0Df3vkc+Z2Uqsj7cCvz4WXx6+5W4dFrxAucjX6J6p2w9Z7cY3FvBHo1uuW6aNjDep9m3hIsDs8jO7Zgj2zYHYjbTmctxoEp3w0wq85MBd1xkIf9o5kmSU4V8UPtLEF5s5oucJL06QYkuk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759900611; c=relaxed/simple;
-	bh=g8noL/5suIPlLolkhjmmpkhAAIeMePIIQq0CUreLbXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=u7jwUxmUkYQ1eCBRzo6/IZmOaTSm6SSZ3iXz0S1xUP9yLcRvVORmYevhnxABXVVNO9hCpRVuUEb5mjjSyE9XqptnQVneJ0RGznYx6nwfS0gsipj54/3TZYA157e4T6K11n87ocRrHzwWQem8MgAYIRfTTXE177koXIbXF3IFwo0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eQnmDOhV reason="signature verification failed"; arc=fail smtp.client-ip=52.101.52.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F831FECAB;
+	Wed,  8 Oct 2025 05:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759901645; cv=none; b=K/DlouPWmFD91pedVCIfVxns5HyNAsrlJDVb1cNGsJhl7X0XBtLL7OwqK1Ne8GLrDHpaEqNkP+ttcLINRb5RUtMTX5jeADDuwJSMO5VWcS9+nsjd2TRgX3MR9Uko7oBhD9odUuA8I/3ELoiFyXskXZU6FSe5HupP+QC9P8wPYsk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759901645; c=relaxed/simple;
+	bh=HTVYCQyDMrBag0JqlevpI1fMUY4FDOO8k6AmG5PTpJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z7Kkg22n5UPY2PpDkzE7KxzN1f+6oFqS0jZBAgBDUMhA0HMU+F7escv22Rv6SSe24usKMCrG5mJj2LzzrAfa0pgPZRng7gH2+DZRlXARBHPejsa44mKivAxIKp5yNGKxXNNVNNv4d+JtT2Jhpm6x0g064xmppqCDy9kbmpR0f+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Oi7k3OwQ; arc=none smtp.client-ip=178.154.239.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eQnmDOhV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QZKZXbT91LmtSGgvW0x5t2FimMzzpN8lXSu8LZzL/r5U7SV3fq/aWEBMuMRpqAnBSS6rrdQUelBUoLcUIhkXbV6w53yH0xcl8LT7v8pa+MhUFu9FGFtXUtdreCuWpNAZyH6uSMjgvZ3fTKDUFkJnstbKLQ9KOrB7b6jENU6xJ/1UAXT/p0BH7uRyb7nuRleYyECbBE9G5z8ZeYDq6nfK6KjCsyBnCeNv4sKLmC8NjQiTEQfafxWkN6wTbWIBaCt/2RiHX11d0TOA0U8F3cgl5Gs2joywlsrYpLa7UvwfPj3GQ5+t7i/kvODoM0EBh0GfXq640nwUWlOui7a5+htBrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jnMhS8J0pU37AuKDKpXj2xoIgm7hTaRGeUYiRxVnuNs=;
- b=lYgxjy1O/171FVyOwdM4eICNdT5tu6qoSMVv3J1HQFpQTJZXf4joIiV2SRNBxzJmSdgpOlmgh2SW3klomU5NB4b+aGJnZieMvFAXoGOk7f31ZwDaBWwSTCKhTFaKxh80ar8SB+HWnMBxXj/5GzHT65w0NTR2fQwsovml+x4f8bDsD4KbztiPrUP/mHUxk5m7xs1izEbyQF5/FXU5uwsHhE7JbgbRdsbm5shEYdSfon4Q7wvv/OUmEO6cdpbwaNK0p8uy9obDw2CeQNC/2A4J1jGfuaduPQrLXy51qEpp5edqDUO8dK2MsPczGJp+qfh+yg1l773Mh6QZ8xipqND1cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jnMhS8J0pU37AuKDKpXj2xoIgm7hTaRGeUYiRxVnuNs=;
- b=eQnmDOhVJw2kyEsdcY0kM+uCmP+wqBj3Ap02e6jfQ5Rs+ntKoUHcRNrjrEzvQach3wUbKooMtUFsbtkwtOR8n6Ld+Kkag65/xOl0EODCZo+ubLLTP1nXiBq9egQAho3URfWrT7v33AZtGA/oVSr6leQoI2d1BStuhrn6LBxNGO20L3jrdZsCErhaFBtjwkCBPtt0jVEtBP07T4TeyfTdm80sKF1SYhTG/oLEq5/2tfXVaK9G0QenBT+No3W+uP1AfnGbnsvOBQgwsmjUa333sTPLZWW77rmXaZmQWPqJdvToUTIXT73fXlxuiLr6+ZHFq9LZpffHJVvhDTDRtAxQ+Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- CY5PR12MB6346.namprd12.prod.outlook.com (2603:10b6:930:21::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9203.9; Wed, 8 Oct 2025 05:16:42 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9182.017; Wed, 8 Oct 2025
- 05:16:42 +0000
-Date: Wed, 8 Oct 2025 16:16:37 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lossin@kernel.org" <lossin@kernel.org>, 
-	"ojeda@kernel.org" <ojeda@kernel.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
-	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, "tzimmermann@suse.de" <tzimmermann@suse.de>, 
-	"tmgross@umich.edu" <tmgross@umich.edu>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
-	"simona@ffwll.ch" <simona@ffwll.ch>, "mripard@kernel.org" <mripard@kernel.org>, 
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>, 
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "airlied@gmail.com" <airlied@gmail.com>, 
-	"aliceryhl@google.com" <aliceryhl@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	"gary@garyguo.net" <gary@garyguo.net>, "lyude@redhat.com" <lyude@redhat.com>
-Subject: Re: [PATCH v4 12/13] nova-core: falcon: Add support to write
- firmware version
-Message-ID: <5kxodbtwdynnvdats34aroj423nphas7jw2s3n3eh5eiwkbp7s@dyzoc2lzkkky>
-References: <20251008001253.437911-1-apopple@nvidia.com>
- <20251008001253.437911-13-apopple@nvidia.com>
- <aaf218306186aa8959d8f3971a62afb9f229548b.camel@nvidia.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aaf218306186aa8959d8f3971a62afb9f229548b.camel@nvidia.com>
-X-ClientProxiedBy: SY5PR01CA0094.ausprd01.prod.outlook.com
- (2603:10c6:10:207::19) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Oi7k3OwQ"
+Received: from mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:63d4:0:640:7fb:0])
+	by forward500a.mail.yandex.net (Yandex) with ESMTPS id 9658A81DEE;
+	Wed, 08 Oct 2025 08:26:58 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id pQeM59JLtKo0-ggYUaLP8;
+	Wed, 08 Oct 2025 08:26:57 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1759901217;
+	bh=GRs7GB4aRJ8yeDgtBXvZS/vdrRPxkhyCtpTVwFyur+0=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=Oi7k3OwQcSYkDUFtwNNKIHVWUixUGHLsehdVlt0Sv+AguDGOBwjWONqv9GTFs3cey
+	 jcc6ecoRlyyfj91BU5FwZ6SXNH//RFKI3RFkTbR2tUrnsjkNp5qcEzrtQLfsozagOL
+	 sXsudjNPnJWhcz6IEAiacq+wuGPV1VIMO0TV4Xus=
+Authentication-Results: mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Wed, 8 Oct 2025 08:26:49 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ tmgross@umich.edu, dakr@kernel.org, linux-kernel@vger.kernel.org,
+ acourbot@nvidia.com, airlied@gmail.com, simona@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ corbet@lwn.net, lyude@redhat.com, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 2/3] rust: xarray: abstract `xa_alloc_cyclic`
+Message-ID: <20251008082649.1f9cacd0@nimda.home>
+In-Reply-To: <CANiq72m8t2j3+XoELfYFG9ivymueOGdwpZnFhRVZ8f3Xw9ygiA@mail.gmail.com>
+References: <20251006163024.18473-1-work@onurozkan.dev>
+	<20251006163024.18473-3-work@onurozkan.dev>
+	<aOTx-Oj_VN6fVV_s@google.com>
+	<20251007152724.2b33a899@nimda.home>
+	<CANiq72m8t2j3+XoELfYFG9ivymueOGdwpZnFhRVZ8f3Xw9ygiA@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CY5PR12MB6346:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bda385c-9fd4-497e-fb28-08de0629ddc6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?t0ibq9sBs5FGD36/fg2aWFqjx68HTTGYIINC/bd06ORd6oqXVqiKE4zhYh?=
- =?iso-8859-1?Q?G4LjIXbNLVI+nOJ3zzbYMVa4CQCF08o8NU7zj/mxzeulxpv6r9JyZeg6vJ?=
- =?iso-8859-1?Q?9xhg3Um6H0CW74Ddo7jYN2aPNqqn+D501GpkcyU99MZD8KkUe7YJB5HtXn?=
- =?iso-8859-1?Q?gGf0prScjOxk1jchZjC+B4AxxgdpdOlfGbjjm61cmvallGquqns0slmGH3?=
- =?iso-8859-1?Q?i3/mnMkeZSGM09kwcuK9gSZPPTWCxtCK7c400AjWW+QW5U4lN3lDiiVKxv?=
- =?iso-8859-1?Q?RhfIuBjXi+etwEn9hyKFAC1Q28QvK2sGLsND7udmLjow+wvtjOpYfBQpTJ?=
- =?iso-8859-1?Q?bGPHg2i+7lsJmAUN8oziBIYVsKfIlgUBbFlmHkFrD6oEiNe9bfFNbYrTwx?=
- =?iso-8859-1?Q?O/UPkrnhkioNHONp8bkG52mw63kQ+P6faXUrAndp2ZziyvuLEUSkV/320d?=
- =?iso-8859-1?Q?o7HmjJr1RlH2pJE6X0M8ELQD+Ii3bP76z5s1y2/zllrF44U2MYAOHYhEpe?=
- =?iso-8859-1?Q?LXJu9CMoe5xs6Qrts2+w/zjBUES2oT5JD3+JQH3MCqjtPGeBwiCLMrGg/H?=
- =?iso-8859-1?Q?vXBKeTyiye4f6wuDv2mfHrSusiWeZd1mLJpyApjCheLdMUG2FVP6rPXFXH?=
- =?iso-8859-1?Q?IXjp4BNPS4vxe3Yem+3Ypiuj7xDs37GMvvoMltEZagrkFoPiwIF+WMUPjh?=
- =?iso-8859-1?Q?cGL/+aIJihYFz3o+1hx33ef3EXbbxmkniAihrZb0blHAPEa1FqSOlmhLgx?=
- =?iso-8859-1?Q?DROMHb0mF2QEdNQ85IcEbIYRct9bKoBQaZ/rc3I8r3O5LQ4kIgl3B4Dop0?=
- =?iso-8859-1?Q?Kl6N1zT4BiJUXGgfkcCGuVXQ1WpPVQYanZJhCHpsW/ObNROw3OxTr9YFp3?=
- =?iso-8859-1?Q?qZE6wDhe00mEFVgV6IokLpMDHNhXsBEjTZINfAvk/eRsKwccCuF6LWMx3T?=
- =?iso-8859-1?Q?42zIDkTAENOZvyRAKVhlcpTrw/KxuMBsACa6xCz+WsOF7K+5wlnAUaDoeW?=
- =?iso-8859-1?Q?Qu7pfMOHVP53s9Bpd0H0IwBh3WWjN/LTvnnh/76J6KgxtrVgnZ0769Vb2s?=
- =?iso-8859-1?Q?CT5mjZUlbSkX1xbVWUJV1qymdKKBvUG3xnj4/hwCGCeNxeI2dlMGiiGj0R?=
- =?iso-8859-1?Q?wqTPBMwhODYkCZ2u53lFJeDzaOgMNq9L34XTw6TKfHIq5LOaFqz9qC3GLK?=
- =?iso-8859-1?Q?ahg42JXT2Y55+HKIySpWQA0akFMptuDOousk87AsRhXslNLouIOtCmceEJ?=
- =?iso-8859-1?Q?JS29mDLewgKwNuYj+UlRlQJPDpWE+Uus8WQpAsDjFn2nB28n3xxNbHlEtN?=
- =?iso-8859-1?Q?sd7Y2F2v+ysfqNOFSJrlkeQ2lVs4XmxK401AY7fzwTo7ca6VrGBZjEE4zB?=
- =?iso-8859-1?Q?fq1Yhn+XoTOlR38dsbcBs+06yaMWoWDvj+jDDVcSTi9H4vnad0vm8cO6i4?=
- =?iso-8859-1?Q?BGlVJiKCV8Ey/uUHueZIRzFCFOIKAP1nQD1QkqvnCJXjt/QpTnyUleRrM4?=
- =?iso-8859-1?Q?zNFSJDa4BMLnPVZ/SM2wU/?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?EHm0klG9ug2Qj2y+d2otjDHHONz36YP7EuQklhn4CY0vCjz9GaQk5kZVr5?=
- =?iso-8859-1?Q?DiJlWeB5JW/tiP8g/JCbe6tV6K+FhJGCmQlT9FoivOzAnd6Zu/5QV/IbYD?=
- =?iso-8859-1?Q?+2nqhw7zQMKyUJUs4JHfeeypwBIyLRhn6CA0j1QbypOu3SzHRUaLRh5NXG?=
- =?iso-8859-1?Q?CN2DyC1V+ujQy51AfOuyPz6FQ2h5BdiquLZ1J3S2haddPPh8XdVqCzA9ir?=
- =?iso-8859-1?Q?XuGjYcSj+rniaFHTjLM7KDELXK6Of2h9ycz7YTU3p7SBjJJ33wJur42+y0?=
- =?iso-8859-1?Q?N2eWo4YgZciEjKazVw5ILqA8YswgIUlrw2gjdDUwasMkgJTY2Ld7V3VUBn?=
- =?iso-8859-1?Q?W+9BVN+HRv2sj2bVuqNhRGyWaR8d5lW9zMbtGyva6N+FNpcawTL7nCfk9l?=
- =?iso-8859-1?Q?CDHu0w5fjLk7INQtQ2NDm/1KC0ZyEi3XaEl/rptH0FcFopAJx8F4Rgrjhy?=
- =?iso-8859-1?Q?RT9z+jaXlI5ZC/2LeJofTi9lh82a0tNsRgDw9TvPW3u2kJDbGStVbNdXBE?=
- =?iso-8859-1?Q?LgHKrKL/Di4kxMBXHNZ8Zbwng7HkhMIGF0pbutERLQKpeH5NMK5zafcG91?=
- =?iso-8859-1?Q?xTe5CRcwfu6em8hsflw1WFoBDVPtOwmygL0WHF9v9RNt8UzCo00ttjBALt?=
- =?iso-8859-1?Q?zs8hiyYnEknQ40urlMXij4w1wJmlpKf/cNIQw0/4ogFUjE7XI47ahmewZs?=
- =?iso-8859-1?Q?PsgXsL3cF18Lg3y4QpanyM5zIB+Zfq+YKKQCR+tQAC7UdtuHUqxU4tZjhn?=
- =?iso-8859-1?Q?mkis0V8nsdiN9YQrbqrQAV+6wloqkBNjaLp8FAHgqMSF9/73JgVBFO6Kw8?=
- =?iso-8859-1?Q?u9a2j7kc4XPLgigqgGWThHuxpKWoDnoLqFDHnqGc/83vCNw+46GHfy8a/c?=
- =?iso-8859-1?Q?oo3KGUvj2WxJYgkJvU3k5PRxzHCB9U+lFo0O2awmGu36ZekmU04A+mWBEt?=
- =?iso-8859-1?Q?XusORdA++blaktlHW/yus++BPbPqlPJVfIqS50MIPFI/OuUZDLiTjofVKh?=
- =?iso-8859-1?Q?xxsFcTM8pnCzuklV+KQ9orHbQ5+vQSqFspCc85zn2gxWQU2of6q2XyFKaQ?=
- =?iso-8859-1?Q?Amp3+qxNxM8wBB0dNUE8M2I9af5F/ugVaREWjF4UeZFS0EgJ1pOb55jPJ1?=
- =?iso-8859-1?Q?4+FdhK5jYgHFgtpwhO6gZX9w/7GK2S7STeCzPWMmIU2VL5GVgYlB+v9ECX?=
- =?iso-8859-1?Q?Jj67+1dFfbh3RAhJdl8CKycLopTUrJe1YnyXj+tO8Y60CJwzM3sDBw/a3T?=
- =?iso-8859-1?Q?flVUoyh4KOjirpZeQ6P0cZ8mQCWGoiq8ZxHlVipW2giF2E2X8Sl8PnVtHn?=
- =?iso-8859-1?Q?mPl/7kvUnqKT4LDAEBHbiPEaTDtUlqHlAgyjgznH7NyrmSHFCf1/6Oh9ju?=
- =?iso-8859-1?Q?ufCJXxej20/xU5XIP06+V2BlrGDrAd9Y6dn6tO8I0aT3zqEPSaeESf79PU?=
- =?iso-8859-1?Q?mIpGR8xYgDw/cT/M0QVlRomGJ6R52sNLXfES+KdOZ8ALwioWo2nbhRGeDu?=
- =?iso-8859-1?Q?fcieNZF/QAkHpuIyuLHyhd5tDqjIZ1M58eOQ6p4fyKQ35TGhBN6ycuFdyN?=
- =?iso-8859-1?Q?kUpsJ56+8jMYfJvK7JMWnFkuzt8hPAolX3Q/XZhaZBoXFOtUOx/8KnwfXW?=
- =?iso-8859-1?Q?KXuQ9VL0ZDb09xLP2Y2VSED08qEp0VIpdq?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bda385c-9fd4-497e-fb28-08de0629ddc6
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2025 05:16:41.9161
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fhBDVH6DQhn5n9S/HI+fLVKuHep8nhBmMFEsCnPOAFoLjikmXxvVbNZp82tjdRBTmRhwJT15xeSxWwT8nwskNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6346
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2025-10-08 at 14:21 +1100, Timur Tabi <ttabi@nvidia.com> wrote...
-> On Wed, 2025-10-08 at 11:12 +1100, Alistair Popple wrote:
-> > +
-> > +    /// Write the application version to the OS register.
-> > +    #[expect(dead_code)]
-> > +    pub(crate) fn write_os_version(&self, bar: &Bar0, app_version: u32) -> Result<()> {
-> > +        regs::NV_PFALCON_FALCON_OS::default()
-> > +            .set_value(app_version)
-> > +            .write(bar, &E::ID);
-> > +        Ok(())
-> > +    }
-> 
-> I should have noticed this in v3, but why return Result here?  This is just like is_riscv_active
-> -- this function cannot fail.
+On Tue, 7 Oct 2025 19:28:31 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-Oh phooey. I recall noticing this but must've missed it when splitting the
-fixes. There will almost certainly be a v5 so will fix it then. Thanks.
+> On Tue, Oct 7, 2025 at 7:19=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.de=
+v> wrote:
+> >
+> > Why do we not like to use the bindings type directly?
+>=20
+> For public APIs, we generally try to avoid exposing C types:
+>=20
+>     https://docs.kernel.org/rust/general-information.html#abstractions-vs=
+-bindings
+>=20
+> Sometimes it still makes sense, of course, e.g. a method may return
+> an inner type so that it gets used by other abstractions to call into
+> C. But generally we want to avoid exposing those for drivers and other
+> abstractions wherever possible.
+>=20
+> Cheers,
+> Miguel
+
+Thank you for explaining it, I will drop the bindings type in the next
+version.
+
+Regards,
+Onur
