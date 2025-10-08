@@ -1,109 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0F82F7AB0;
-	Wed,  8 Oct 2025 12:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058FE246BB6;
+	Wed,  8 Oct 2025 12:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759925437; cv=none; b=ZyQc9Jku7Fkm+xaVc3WfG+bA4fy5BK1SeaalEfZcv3KYK5iBD9vhUf/hp3/1u293aZUXhN8/jtkUy2tOAMbDwgYrSBzsAAg/t+VX2wE3X4DSw2BcIl0LlyMEJX2wagdq3frpHksDkFb3BY8pc4IHvUG0a7XmrquoBSYuOCkxeFc=
+	t=1759927658; cv=none; b=OAyLTtC0eS5KWDwMH8usVqF7mbtgEOkeJLtBpuAI5izchpay+AzOIdlz8PhcrCaKcWp7sBA1r1LLiDxQnKOvrVUgEO4JQ4WNmF/ekD1o9cRutpHg8ohBULbHcwRPRa0oUTj8i8qAH/c3rGrrRPJqhgyjVWiHj7nZOsGlx8eCtvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759925437; c=relaxed/simple;
-	bh=cHcn54MZlD9CmMA74ZkRflfKDvMUVrqscxyiMadNXCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dmYYBfO0uFmlownbR8aDXPwZcz5/VAVNiG9PZfZWv0Gg6KhW1UbSYzpCLlcmX2My7pCofJPnz/Aaq9Wu8c1JTEiw7jn1hdsR92DeiZSeVrKFE+g1jEaLi9UlOwgaqcp1RYT03mCzp8bMPJS1ndHESmJjlZruaZ++b9NFn0FoqD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl4HFcOE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759927658; c=relaxed/simple;
+	bh=2uY5NoijnwdLmleoPPRrn2yh0v/tr1KGjdpZ1mjviHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cbtyzh0ELSteywkPPrBFvudCTGKl3hvyVU9Y2tpiUVBnThmZSva920b4SCstPWNq/CDEa6cd9VyHbqoSUNwlMNMP62rl/FUPFpG4e9MHqwguDcBQF09F+845MXC1o2u5CLQslxvacb0cFBMw8Hnxe+j/SWp6LrH7hI/TVK8tp/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=jZIETUWJ; arc=none smtp.client-ip=178.154.239.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl4HFcOE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6630CC4CEF4;
-	Wed,  8 Oct 2025 12:10:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759925436;
-	bh=cHcn54MZlD9CmMA74ZkRflfKDvMUVrqscxyiMadNXCw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bl4HFcOEZOkTbcUWtQlLMYgTcGlgpf4BQKM62qPEuZGJrgc4TDKddl0vVlifds9GA
-	 hlY9he3JgQSq2DYZBfdIy2tPCTsXnU46us+GGopyApDvFalYTSuiLrQAmbsp75oUqr
-	 BIsRnPN82YVA4pJScECn3g/eIZsO8uQB16OOIlV0=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: rust-for-linux@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH] Revert "USB: disable rust bindings from the build for now"
-Date: Wed,  8 Oct 2025 14:10:28 +0200
-Message-ID: <2025100827-divorcee-steadier-b40b@gregkh>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="jZIETUWJ"
+Received: from mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net [IPv6:2a02:6b8:c1b:3715:0:640:1185:0])
+	by forward100b.mail.yandex.net (Yandex) with ESMTPS id 35F5880732;
+	Wed, 08 Oct 2025 15:47:34 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id LklD46OLveA0-D59SuP6u;
+	Wed, 08 Oct 2025 15:47:32 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1759927653;
+	bh=2uY5NoijnwdLmleoPPRrn2yh0v/tr1KGjdpZ1mjviHk=;
+	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
+	b=jZIETUWJfKDZBha4rR9GU61rEsPoWRPnta/4npIBviypEjNMjfHwAtG2UCmdOVi91
+	 Nh0XBjQafoKH2JbdN8iFqoHwDoAr2Zd4V3BH7YEEL5cSxf6d12TSqfXdUxlo9sjnJK
+	 eM9hO3IRO2qqHBHcAQdLQsw38NhuKv1MwLbKWFYw=
+Authentication-Results: mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	linux-kernel@vger.kernel.org,
+	acourbot@nvidia.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	corbet@lwn.net,
+	lyude@redhat.com,
+	linux-doc@vger.kernel.org,
+	linux-mm@kvack.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v2 4/4] remove completed task from nova-core task list
+Date: Wed,  8 Oct 2025 15:46:19 +0300
+Message-ID: <20251008124619.3160-5-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251008124619.3160-1-work@onurozkan.dev>
+References: <20251008124619.3160-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1946; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=cHcn54MZlD9CmMA74ZkRflfKDvMUVrqscxyiMadNXCw=; b=owGbwMvMwCRo6H6F97bub03G02pJDBnPQjZ7O2oannQoDuZS5WlbVbhiy9e4XcyHFzEs6vxUm 33xcMe3jlgWBkEmBlkxRZYv23iO7q84pOhlaHsaZg4rE8gQBi5OAZiI3laGWczfT28R1/N54fbD X0X7d6x45/49ZgwL5tSEieRmn2qZIyGu/SjguOuGuMwzAA==
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This reverts commit c584a1c7c8a192c13637bc51c7b63a9f15fe6474.
+The task is completed in this series.
 
-It brings the rust bindings for USB back into the build so that we can
-work off of this for future kernel releases.
-
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
 ---
- rust/bindings/bindings_helper.h | 1 +
- rust/helpers/helpers.c          | 1 +
- rust/kernel/lib.rs              | 2 ++
- samples/rust/Kconfig            | 2 +-
- 4 files changed, 5 insertions(+), 1 deletion(-)
+ Documentation/gpu/nova/core/todo.rst | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 04b75d4d01c3..ee2264df562e 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -80,6 +80,7 @@
- #include <linux/slab.h>
- #include <linux/task_work.h>
- #include <linux/tracepoint.h>
-+#include <linux/usb.h>
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- #include <linux/xarray.h>
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 551da6c9b506..16049d6e713f 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -56,6 +56,7 @@
- #include "task.c"
- #include "time.c"
- #include "uaccess.c"
-+#include "usb.c"
- #include "vmalloc.c"
- #include "wait.c"
- #include "workqueue.c"
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 3dd7bebe7888..9cf4ca0ae7a1 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -138,6 +138,8 @@
- pub mod tracepoint;
- pub mod transmute;
- pub mod types;
-+#[cfg(CONFIG_USB = "y")]
-+pub mod usb;
- pub mod uaccess;
- pub mod workqueue;
- pub mod xarray;
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index c376eb899b7a..c1cc787a9add 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -107,7 +107,7 @@ config SAMPLE_RUST_DRIVER_PLATFORM
- 
- config SAMPLE_RUST_DRIVER_USB
- 	tristate "USB Driver"
--	depends on USB = y && BROKEN
-+	depends on USB = y
- 	help
- 	  This option builds the Rust USB driver sample.
- 
--- 
+diff --git a/Documentation/gpu/nova/core/todo.rst b/Documentation/gpu/nova/core/todo.rst
+index 0972cb905f7a..de70a857fcfd 100644
+--- a/Documentation/gpu/nova/core/todo.rst
++++ b/Documentation/gpu/nova/core/todo.rst
+@@ -210,14 +210,6 @@ capability, MSI API abstractions.
+
+ | Complexity: Beginner
+
+-XArray bindings [XARR]
+-----------------------
+-
+-We need bindings for `xa_alloc`/`xa_alloc_cyclic` in order to generate the
+-auxiliary device IDs.
+-
+-| Complexity: Intermediate
+-
+ Debugfs abstractions
+ --------------------
+
+--
 2.51.0
 
