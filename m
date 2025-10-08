@@ -1,113 +1,116 @@
-Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387E5284885;
-	Wed,  8 Oct 2025 12:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF3E26D4C3
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 12:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759928123; cv=none; b=T9fY3kpZzXpoWpRAppY/101SKGHhFN/6B9MhARL6MD5FS1FinHBNh94s3FouvDr932jwRUqqzNG/XvtxI+grjpHDoXuUl/euVPh4M1mh/1FdNBBBgf/ioVgWDyeSsh7Sg50pRZsw3/NEvRRM93lXuv/qZLJUhGt0qRQpcZla0BE=
+	t=1759928396; cv=none; b=eN2dw9MfHcRa0fwbByvxOiA4dwJij7iRjOCHbPM6CRwk0ieIh9bpyzsHHsckbNurMQEBCEyyOjbTTN7bkm4QZ/50GdIHUEnpwM6jorinoEHdTI5ZZz5IifIMMY9/2YmzOz0rSz863OQF1UfkbMPeEabNUgIJNh1gWQEdUQshOOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759928123; c=relaxed/simple;
-	bh=HxTRL/2YUDkd+jfqLc4AsJdmH4OhaTVmob1ir2avKXg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kqTQruCtskRijhuw39PL+kSokLGN/aQJFHEJP49IhRUtInfjElfFPpeqX7o8BbnpLNvevcokFHD4qJkIp0s98Rxb1Ri6GWup3UvRtlibTkbLvJCPg/dRDsL6XMTfB7r9OzKXkwzo3ZTUZmNe4yXIBLq1ZGttBlXdLec2FjmdK1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=MgT5Yb+L; arc=none smtp.client-ip=178.154.239.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1759928396; c=relaxed/simple;
+	bh=rpvnoiwVgRwtp5vtftIIzY6dMvIEVla5by01D+997ns=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Q1xHjhFzHRBp+qYyf9UqI5nalhonH37PDbBDFMz09aIYeNmoRhSABlbHjCqJpj94eVTMZE+UaSsixBDiuTyaNA7WSuIPCDq9w7yzBbbs5avgG5VjXvs0km9ZOgsa4XbUWXNZa4/pfkNfN6vVc7nwzXvasQHZmfDXTtoCFIQ3+Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dpRejHo/; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="MgT5Yb+L"
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d100])
-	by forward205b.mail.yandex.net (Yandex) with ESMTPS id 36AB4865AD;
-	Wed, 08 Oct 2025 15:47:33 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net [IPv6:2a02:6b8:c1b:3715:0:640:1185:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id B3F9480B32;
-	Wed, 08 Oct 2025 15:47:24 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id LklD46OLveA0-vcNxUOCh;
-	Wed, 08 Oct 2025 15:47:23 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1759927643;
-	bh=Sx8MdAac7N2yRtDh9OtiumveZ9iIOg++0ZjBT22o1ik=;
-	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=MgT5Yb+LosHUAisg1Uh1kBtUZGUdnJuH3GhpvLh7WaHR28VkajITt2YoL51B/zxqE
-	 YE33Ys3mbPaMaFucKNc028ZZ7sK0jArll4MISoiKSRZuhe1ugiZux/RaZGuLmdHhrV
-	 54fq2xS2TSg0SiZ8DsAMhP4257tRZRND03hyavj4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	linux-kernel@vger.kernel.org,
-	acourbot@nvidia.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	corbet@lwn.net,
-	lyude@redhat.com,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 1/4] rust: xarray: move pointer check into `XArray::new`
-Date: Wed,  8 Oct 2025 15:46:16 +0300
-Message-ID: <20251008124619.3160-2-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251008124619.3160-1-work@onurozkan.dev>
-References: <20251008124619.3160-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dpRejHo/"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e502a37cdso45449935e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 05:59:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1759928393; x=1760533193; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R/gB/5AyaPSdIrAxreQ3UUV2P7u+LQ2v1uTWQNbCwJQ=;
+        b=dpRejHo/mzII+Oob0KBLVp4UFi/iy+ErDgbo+ic76LeBOdDXnMS2W1MWoMfOitj9wg
+         HC7MnjTNSqoGco4KuhjfxCTmZm6AhQv5Xm6C0piTXPeNPF6+HzOOZ+sc6+ucD5h+F6s2
+         nmltKcy4Eklg8XefgQAvQhf9M0LscTIJjmRgoQ3Ied9q9YzSUefhhFrX3uzvQPOv0Hu8
+         lzE2CPlXyFykkE0UnTfadBla4OE+x6Wz4yxtUMCfuWdExOsr2pCNhlD/P7Dad8SykF0z
+         4WjgR9mKOUcY/7aUWE39ZWu3m8HqWR3llgku8HvP0ExosKr1ehicjPcMNDWakd3pXBt+
+         3Rqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759928393; x=1760533193;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=R/gB/5AyaPSdIrAxreQ3UUV2P7u+LQ2v1uTWQNbCwJQ=;
+        b=pXuxQ1EKbA1GKh2Njpyw+sc7a2IsHNNNWOZusfzLWlYd0NE6+BFYQudIgVX+Q7xa36
+         WzY1QzCRfMY3Bsa/RL+2DHiNdAfW7sDPAF9YFw24GbB9pRPipqddSE6CEsYXzC1I8u18
+         yyJqWY9EbPUiMKle9xuGQx5HuV79+Wh+Zt6M2Qdd0PSxbl0H1ZcUoVGe05sWjqHdWTpn
+         b//TkGSE2v6/VkVOK1PWnuUYA9/EcMV37ncNAYENoM9YD6kNXSVtqcYZAc+QS8BWS8mL
+         KhBP61KWC4x7+p8U0vvCccWAU6LkGQvYVWjhD+oEain4V2gT4EqmEYrNyYhQJEUxT9tq
+         dYww==
+X-Forwarded-Encrypted: i=1; AJvYcCVSnzW+BwbpwicYn/eeMu0nJIQMOn2hECPWVQ7JLFmw7YIttxEvDNWcWuKcASk2Ju1WGLShmtBHX3w3rwTqMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRX4izcP9NMGRYL7zvl5wGfISZ9a3jR+0qUXZ1OVFdncBncIdO
+	0rydhqAGgX/vUd2Sb3VeMdAta7NVpCJ4WP2IILOHpyLRjrwdsJuSf16pFOeALDvNJUGbY5SL2Lk
+	Vtll3FrSuEFK+5sn0bg==
+X-Google-Smtp-Source: AGHT+IHzaS5ipgkkAY1+ObaRaQ9zgsFXNgdU7+XqYJiEUNYrRwbKTaDYoUOFMMqh18xBSjuEhXUBg0G2wiNXGC0=
+X-Received: from wmvw6.prod.google.com ([2002:a05:600d:42c6:b0:46f:aa50:d703])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8718:b0:46e:731b:db0f with SMTP id 5b1f17b1804b1-46fa9b08f09mr20915055e9.28.1759928392960;
+ Wed, 08 Oct 2025 05:59:52 -0700 (PDT)
+Date: Wed, 8 Oct 2025 12:59:51 +0000
+In-Reply-To: <20250908160224.376634-2-marco.crivellari@suse.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250908160224.376634-1-marco.crivellari@suse.com> <20250908160224.376634-2-marco.crivellari@suse.com>
+Message-ID: <aOZgR7X5ZyXZh_jc@google.com>
+Subject: Re: [PATCH v2 1/2] rust: replace use of system_unbound_wq with system_dfl_wq
+From: Alice Ryhl <aliceryhl@google.com>
+To: Marco Crivellari <marco.crivellari@suse.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-There will be multiple functions that will store into XArray.
-It's not ideal to duplicate this check in all of them. Moving it
-into the constructor function will remove the need for duplication.
+On Mon, Sep 08, 2025 at 06:02:23PM +0200, Marco Crivellari wrote:
+> Currently if a user enqueue a work item using schedule_delayed_work() the
+> used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+> WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+> schedule_work() that is using system_wq and queue_work(), that makes use
+> again of WORK_CPU_UNBOUND.
+> 
+> This lack of consistentcy cannot be addressed without refactoring the API.
+> 
+> system_unbound_wq should be the default workqueue so as not to enforce
+> locality constraints for random work whenever it's not required.
+> 
+> Adding system_dfl_wq to encourage its use when unbound work should be used.
+> 
+> The old system_unbound_wq will be kept for a few release cycles.
+> 
+> Suggested-by: Tejun Heo <tj@kernel.org>
+> Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+> ---
+>  rust/kernel/workqueue.rs | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index f98bd02b838f..01e331a1f11b 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -667,11 +667,18 @@ pub fn system_long() -> &'static Queue {
+>  /// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
+>  /// are executed immediately as long as `max_active` limit is not reached and resources are
+>  /// available.
+> +///
+> +/// Note: `system_unbound_wq` will be removed in a future release cycle. Use [`system_dfl_wq`] instead.
+>  pub fn system_unbound() -> &'static Queue {
+>      // SAFETY: `system_unbound_wq` is a C global, always available.
+>      unsafe { Queue::from_raw(bindings::system_unbound_wq) }
+>  }
+>  
+> +pub fn system_dfl() -> &'static Queue {
+> +    // SAFETY: `system_dfl_wq` is a C global, always available.
+> +    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
+> +}
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/xarray.rs | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Please add documentation to the new methods, similar to the
+documentation that existing methods already have.
 
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index a49d6db28845..90e27cd5197e 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -87,6 +87,12 @@ pub enum AllocKind {
- impl<T: ForeignOwnable> XArray<T> {
-     /// Creates a new initializer for this type.
-     pub fn new(kind: AllocKind) -> impl PinInit<Self> {
-+        // Ensure pointers stored in XArray are suitably aligned.
-+        build_assert!(
-+            T::FOREIGN_ALIGN >= 4,
-+            "pointers stored in XArray must be 4-byte aligned"
-+        );
-+
-         let flags = match kind {
-             AllocKind::Alloc => bindings::XA_FLAGS_ALLOC,
-             AllocKind::Alloc1 => bindings::XA_FLAGS_ALLOC1,
-@@ -230,10 +236,6 @@ pub fn store(
-         value: T,
-         gfp: alloc::Flags,
-     ) -> Result<Option<T>, StoreError<T>> {
--        build_assert!(
--            T::FOREIGN_ALIGN >= 4,
--            "pointers stored in XArray must be 4-byte aligned"
--        );
-         let new = value.into_foreign();
-
-         let old = {
---
-2.51.0
-
+Alice
