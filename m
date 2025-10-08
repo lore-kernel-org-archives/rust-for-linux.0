@@ -1,297 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FFE2BE62B;
-	Wed,  8 Oct 2025 16:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4AC34BA37
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 16:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759941707; cv=none; b=XZsJz9u7fqBlx4czFp4tUFdfcUNNSZ2WK7qyN4uQavUGJa+owBGy49C70zYOFtenXK42hZASOoem4RKTpQvP+lQh0Id68BB43CjHvVNH5X+vI9/oQP2ohdztg2Zq6p58blDYAvWtwzBtZIavsG6754mjWeKafNTf/J6qVuobC0I=
+	t=1759942381; cv=none; b=NPtwdKLgoGpOVNDIsw1UF6xusmpa1M3tQaNNC888arvi9aCI0sWRvA1zVmzP1+GFsymNaV0EOtaxi3qMGw50P29eCiEPSy6Bced41s8WVl/jW6RbS3HGOjV+vFyJU2EIh4AaZBWnVUN662uG8gfL4M3Pu5W1n+T0wWMbZSllChI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759941707; c=relaxed/simple;
-	bh=ZCuUWIclcqNJeWG599oCSgcV0BgUA7XbogaaKwuAE0s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=QDOI1IXBGkp2g5cNtzMSFpYDviBLPaLom/bT0zZ78hSow4ClLjQVAsmeV252cTnaKeWlpmVhnPeEXQ9o/CKGoVYVA52RqlixLE3GZ11TmfKMy7UT+cCPNHBRZKjK0iMykvb1QqFz/zUZD/5eZjXToagoqeiED/LJpvHrMsv4oj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8bh0ChY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759942381; c=relaxed/simple;
+	bh=Cdk/aO6tvlVhTXsrhkMkGMbUJJ5f1Z/oxjXW1lCVoNM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rzYYkxXv62pda4m4guSKNVTI0EOFSkRQb3vrw5QsiSAVwm677u23D2IvQ07GFYiig9sWBMYlhoFMbcM6L8F9cr/EAP2vVQPztM6ai60HTSXbiuqz7ClTO6ZAUpCmoUzmG6o754IRCP+UJdQdX2hsszng083YwxPq+/1CNKpnSEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WpXuJgJN; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8bh0ChY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBED0C4CEE7;
-	Wed,  8 Oct 2025 16:41:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759941706;
-	bh=ZCuUWIclcqNJeWG599oCSgcV0BgUA7XbogaaKwuAE0s=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=b8bh0ChYn7uLF6+StVjoNP6k6GjQ4TRvai01V+kzmJ78GsrtGlYD+nMocmA6FKeFQ
-	 cc8HO/9hHgRAQ+kI5s9dLQEim77ZsWvnlFLXWXwkAB5yPDleY154E3GYoI8twI+Lnb
-	 M4UekNe7DZTxV7WTL1XvoRNK/oX0OAdkQtqL5ZjkEKuG0asIUzab/poxdeXZHV+Vdf
-	 G0bP6np4YmpDUxqYy6CJrNP8I2tcCG/BBDua+zvWr520Y7CPx7A4v7heMNQM3nl1tB
-	 aU/0lhthbdAH1ngVw4GvwuKAP6L2ibOt/uoUu4ZEMCJ/EqcixOp5RerkhMQhRSTam2
-	 skK2CVxaRDDPQ==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WpXuJgJN"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-27d67abd215so6165ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 09:53:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1759942379; x=1760547179; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9EYeVWKaJLduXJ1zMxIN+V+sOd/pgipLt8fA/AHC3Rs=;
+        b=WpXuJgJNhFxZEfHytsC5VXISlsJ2pdwIgosJZ8kZELide//0nbRS/8tlNq+gSXunMV
+         4HXImnh6tdmR9FOA/oAa9xkjG9rU/Zw3/zAfJZIGIDFVR28qb0cbvY1NZAmU9Rr3z0ME
+         NvudjCLuCpOyj/JyihaI2YSn7Qxy05k/zdRU/Lt73eHoSlQjEbawbSK6WZFjZ7vBJvLm
+         r9lCqE8wTrSUzrBmX5Db1knklxe1QhP37B7VxdEyk9z5XHEDS7e9q0cCNXghQt/eiSRe
+         +HuQ1rA5+5tH16mbAmEXbx4/eP13YHWzd1nRHSqKgb/jdJsnEkYVRM0UjPvoA9FpfC8Z
+         gZKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759942379; x=1760547179;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9EYeVWKaJLduXJ1zMxIN+V+sOd/pgipLt8fA/AHC3Rs=;
+        b=PQo99pJrEapXXW1P7bdX3BCwngILOMdbTb77e6gF2WjEJrRvSAyfUdyjJbLbFPvmNa
+         RT3my++sqv1V3V/ua8ZN3HRq3vuh5DNFW/v/82xtP6NgJ2cT7RCu1+TQrY6qlDGw7xAg
+         wEC+vzpaMQbZ7TbNj3u81Uwc3YJFes+g9Hglb/R3s+MDrmdvy5xfqdSND6leKODy2hkH
+         Y5q7AAGbzdbDeg+Hq5jPeE8RdlME863n3Sr9tCdpm5d7C0KTXnPWeTyhC4+zgCYsP2Zg
+         MENc7xbdD28Dm3vu0HWxoty9Qb8ir1Zgw6K/rzFjVgdPSre0mUIhJ9q96ADw1tsQgTc3
+         9OQA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyMNz3NpuuG4hOnYjFHr4ArGz/Q6p8nlh5j7BM7dkuLroHHvvixHJsAa37IY4JbbYdpQgcg473dNpVX4VMPA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTnnUt+zF+Irfx9AlGW2V3fFm9D/i+Ao2XX0vkviwSHnZF1qSb
+	3+6KuAsDCXw4Hx18rLMYX1gb6K4tG3F+DNDuVhRZ5YhHYj4ROUn+0bhnVP4CX6WBrw==
+X-Gm-Gg: ASbGncudsku17YaX+Jlby5at954+H5Is3IkKCeCp677BVLiZ0dhL5jbnnZz7Uewf7Ms
+	LEhI2XSkZHyAIzpPBpGj1nsnnQJGvkhL0gBNEORoDLPoU/8+lOZ1W1G0bwoBrvNssLoJN5i/lGa
+	pCXMLyO1VLyeuj5x0KHlAWvCkmLJjn/u9NforgRhDO7jfG0IY3ITufCZuKo3aDbQz3xYZDLZwKT
+	3fkotOv9Peyolw6GtEHL9/VxstUFkWAXUIXtvLvNp9QDJzW+yDqmafa7n00tpT5SWI+5KOm3oYd
+	95ENuNMvlhBucY/ARv+Yz+2UZNxYd5EXRp5c+BtoryJLSWrtvOsLFBWtvRChBtq5GG876AMcr5o
+	lDZvdziRsot8Q3wphfcJagXGgLcFB1OGBTSsYkUvVJyUe+3Gh8zkmb5gU6hkD+gLNUw2Tm8s1km
+	9hSaXk+dho3xybnxXTesGSGV/rbLs73ki6rZtuJ8nRsUdzruOw7U3ioBOGvyeDafn6CVXirMB2m
+	g==
+X-Google-Smtp-Source: AGHT+IHzTEcwMHKZKFietSiNe1qUQn1vA6hRSbT6ZocFw4Y26Trifqiyl9kKxaDDNqG25VyOHaKKZQ==
+X-Received: by 2002:a17:902:ecd2:b0:26e:ac44:3b44 with SMTP id d9443c01a7336-2902768e4c9mr6564885ad.10.1759942379209;
+        Wed, 08 Oct 2025 09:52:59 -0700 (PDT)
+Received: from google.com (235.215.125.34.bc.googleusercontent.com. [34.125.215.235])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b62e121e0afsm15752127a12.25.2025.10.08.09.52.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Oct 2025 09:52:58 -0700 (PDT)
+Date: Wed, 8 Oct 2025 16:52:54 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] rust_binder: freeze_notif_done should resend if
+ wrong state
+Message-ID: <aOaW5s30sRc6gPnA@google.com>
+References: <20251007-binder-freeze-v2-0-5376bd64fb59@google.com>
+ <20251007-binder-freeze-v2-1-5376bd64fb59@google.com>
+ <aOaSA0dPnY2I4a_D@google.com>
+ <CAH5fLgiChj29SbwN-5vHhCNzaUa7wewOXe1D8mN3XFfyZr33gw@mail.gmail.com>
+ <aOaTgDMY-VvM_r6m@google.com>
+ <CAH5fLgha8DdiZ=XyyNRx8Y+GS6SCO2DHF4qMgKwMoq8tUXc3LQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Oct 2025 18:41:40 +0200
-Message-Id: <DDD39JHAI4ED.2BGLWYNIRA987@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v4 04/13] gpu: nova-core: Add a slice-buffer (sbuffer)
- datastructure
-Cc: <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <acourbot@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, "Lyude Paul" <lyude@redhat.com>
-To: "Alistair Popple" <apopple@nvidia.com>
-References: <20251008001253.437911-1-apopple@nvidia.com>
- <20251008001253.437911-5-apopple@nvidia.com>
-In-Reply-To: <20251008001253.437911-5-apopple@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgha8DdiZ=XyyNRx8Y+GS6SCO2DHF4qMgKwMoq8tUXc3LQ@mail.gmail.com>
 
-On Wed Oct 8, 2025 at 2:12 AM CEST, Alistair Popple wrote:
-> diff --git a/drivers/gpu/nova-core/sbuffer.rs b/drivers/gpu/nova-core/sbu=
-ffer.rs
-> new file mode 100644
-> index 000000000000..e82f9d97ad21
-> --- /dev/null
-> +++ b/drivers/gpu/nova-core/sbuffer.rs
-> @@ -0,0 +1,191 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +use core::ops::Deref;
-> +
-> +use kernel::alloc::KVec;
-> +use kernel::error::code::*;
-> +use kernel::prelude::*;
-> +
-> +/// A buffer abstraction for discontiguous byte slices.
-> +///
-> +/// This allows you to treat multiple non-contiguous `&mut [u8]` slices
-> +/// as a single stream-like read/write buffer.
-> +///
-> +/// Example:
-> +///
-> +/// let mut buf1 =3D [0u8; 3];
-> +/// let mut buf2 =3D [0u8; 5];
-> +/// let mut sbuffer =3D SWriteBuffer::new([&buf1, &buf2]);
-> +///
-> +/// let data =3D b"hellowo";
+On Wed, Oct 08, 2025 at 06:41:20PM +0200, Alice Ryhl wrote:
+> On Wed, Oct 8, 2025 at 6:38 PM Carlos Llamas <cmllamas@google.com> wrote:
+> >
+> > On Wed, Oct 08, 2025 at 06:34:54PM +0200, Alice Ryhl wrote:
+> > > On Wed, Oct 8, 2025 at 6:32 PM Carlos Llamas <cmllamas@google.com> wrote:
+> > > >
+> > > > On Tue, Oct 07, 2025 at 09:39:51AM +0000, Alice Ryhl wrote:
+> > > > > Consider the following scenario:
+> > > > > 1. A freeze notification is delivered to thread 1.
+> > > > > 2. The process becomes frozen or unfrozen.
+> > > > > 3. The message for step 2 is delivered to thread 2 and ignored because
+> > > > >    there is already a pending notification from step 1.
+> > > > > 4. Thread 1 acknowledges the notification from step 1.
+> > > > > In this case, step 4 should ensure that the message ignored in step 3 is
+> > > > > resent as it can now be delivered.
+> > > >
+> > > > hmmm, I wonder what happens with 3 threads involved where the state goes
+> > > > back to the (unconsumed) initial freeze notification. Userspace will
+> > > > probably see two separate notifications of the same state?
+> > >
+> > > The way I implemented it, the work items report the current state when
+> > > the work item is *executed*, and they do nothing if there's no change
+> > > since last notification.
+> >
+> > Oh I see, then that means the 2nd and 3rd notifications would do nothing
+> > as the state went back to the last notification, correct?
+> 
+> Yeah.
+> 
+> If the state flips quickly, userspace might not get told about that if
+> it's too slow to receive the update, but that's no different from C
+> Binder.
 
-Not that it matters, but "hellowo"? :)
+I believe the difference is C binder doesn't report the current state at
+the time of consuming the notification. So I'm thinking that it would
+report two notifications regardless of the state, even if they are both
+the same. Oh well.
 
-> +/// let result =3D sbuffer.write_all(0, data);
-> +///
-> +/// A sliding window of slices to proceed.
-> +///
-> +/// Both read and write buffers are implemented in terms of operating on=
- slices of a requested
-> +/// size. This base class implements logic that can be shared between th=
-e two to support that.
-> +///
-> +/// `S` is a slice type, `I` is an iterator yielding `S`.
-> +pub(crate) struct SBuffer<I: Iterator> {
-> +    /// `Some` if we are not at the end of the data yet.
-> +    cur_slice: Option<I::Item>,
-> +    /// All the slices remaining after `cur_slice`.
-> +    slices: I,
-> +}
-
-Does it make sense to split SBuffer into itself and a separate SBufferIter =
-that
-keeps a reference to the SBuffer? If not, I'd rename it to SBufferIter to m=
-ake
-it obvious to the user that it is an iterator type.
-
-> +impl<'a, I> SBuffer<I>
-> +where
-> +    I: Iterator,
-> +{
-> +    #[expect(unused)]
-> +    pub(crate) fn new_reader(slices: impl IntoIterator<IntoIter =3D I>) =
--> Self
-> +    where
-> +        I: Iterator<Item =3D &'a [u8]>,
-> +    {
-> +        Self::new(slices)
-> +    }
-> +
-> +    #[expect(unused)]
-> +    pub(crate) fn new_writer(slices: impl IntoIterator<IntoIter =3D I>) =
--> Self
-> +    where
-> +        I: Iterator<Item =3D &'a mut [u8]>,
-> +    {
-> +        Self::new(slices)
-> +    }
-
-Please add some documentation for the constructors.
-
-> +    fn new(slices: impl IntoIterator<IntoIter =3D I>) -> Self
-> +    where
-> +        I::Item: Deref<Target =3D [u8]>,
-> +    {
-> +        let mut slices =3D slices.into_iter();
-> +
-> +        Self {
-> +            // Skip empty slices to avoid trouble down the road.
-> +            cur_slice: slices.find(|s| !s.deref().is_empty()),
-> +            slices,
-> +        }
-> +    }
-> +
-> +    fn get_slice_internal(
-> +        &mut self,
-> +        len: usize,
-> +        mut f: impl FnMut(I::Item, usize) -> (I::Item, I::Item),
-> +    ) -> Option<I::Item>
-> +    where
-> +        I::Item: Deref<Target =3D [u8]>,
-> +    {
-> +        match self.cur_slice.take() {
-> +            None =3D> None,
-> +            Some(cur_slice) =3D> {
-> +                if len >=3D cur_slice.len() {
-> +                    // Caller requested more data than is in the current=
- slice, return it entirely
-> +                    // and prepare the following slice for being used. S=
-kip empty slices to avoid
-> +                    // trouble.
-> +                    self.cur_slice =3D self.slices.find(|s| !s.is_empty(=
-));
-> +
-> +                    Some(cur_slice)
-> +                } else {
-> +                    // The current slice can satisfy the request, split =
-it and return a slice of
-> +                    // the requested size.
-> +                    let (ret, next) =3D f(cur_slice, len);
-> +                    self.cur_slice =3D Some(next);
-> +
-> +                    Some(ret)
-> +                }
-> +            }
-> +        }
-> +    }
-> +}
-> +
-> +/// Provides a way to get non-mutable slices of data to read from.
-> +impl<'a, I> SBuffer<I>
-> +where
-> +    I: Iterator<Item =3D &'a [u8]>,
-> +{
-> +    /// Returns a slice of at most `len` bytes, or `None` if we are at t=
-he end of the data.
-> +    ///
-> +    /// If a slice shorter than `len` bytes has been returned, the calle=
-r can call this method
-> +    /// again until it returns `None` to try and obtain the remainder of=
- the data.
-> +    fn get_slice(&mut self, len: usize) -> Option<&'a [u8]> {
-> +        self.get_slice_internal(len, |s, pos| s.split_at(pos))
-> +    }
-> +
-> +    /// Ideally we would implement `Read`, but it is not available in `c=
-ore`.
-> +    /// So mimic `std::io::Read::read_exact`.
-> +    #[expect(unused)]
-> +    pub(crate) fn read_exact(&mut self, mut dst: &mut [u8]) -> Result {
-> +        while !dst.is_empty() {
-> +            match self.get_slice(dst.len()) {
-> +                None =3D> return Err(ETOOSMALL),
-
-ETOOSMALL is an NFS error code (it should also never be exposed to userspac=
-e). I
-suggest to implement a custom error type instead and make it resolve to ENO=
-SPC
-or probably just EINVAL instead.
-
-> +                Some(src) =3D> {
-> +                    let dst_slice;
-> +                    (dst_slice, dst) =3D dst.split_at_mut(src.len());
-> +                    dst_slice.copy_from_slice(src);
-> +                }
-> +            }
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +
-> +    /// Read all the remaining data into a `KVec`.
-> +    ///
-> +    /// `self` will be empty after this operation.
-> +    #[expect(unused)]
-> +    pub(crate) fn read_into_kvec(&mut self, flags: kernel::alloc::Flags)=
- -> Result<KVec<u8>> {
-> +        let mut buf =3D KVec::<u8>::new();
-> +
-> +        if let Some(slice) =3D core::mem::take(&mut self.cur_slice) {
-> +            buf.extend_from_slice(slice, flags)?;
-> +        }
-> +        for slice in &mut self.slices {
-> +            buf.extend_from_slice(slice, flags)?;
-> +        }
-> +
-> +        Ok(buf)
-> +    }
-> +}
-> +
-> +/// Provides a way to get mutable slices of data to write into.
-> +impl<'a, I> SBuffer<I>
-> +where
-> +    I: Iterator<Item =3D &'a mut [u8]>,
-> +{
-> +    /// Returns a mutable slice of at most `len` bytes, or `None` if we =
-are at the end of the data.
-> +    ///
-> +    /// If a slice shorter than `len` bytes has been returned, the calle=
-r can call this method
-> +    /// again until it returns `None` to try and obtain the remainder of=
- the data.
-> +    fn get_slice_mut(&mut self, len: usize) -> Option<&'a mut [u8]> {
-> +        self.get_slice_internal(len, |s, pos| s.split_at_mut(pos))
-> +    }
-> +
-> +    /// Ideally we would implement `Write`, but it is not available in `=
-core`.
-> +    /// So mimic `std::io::Write::write_all`.
-> +    #[expect(unused)]
-> +    pub(crate) fn write_all(&mut self, mut src: &[u8]) -> Result {
-> +        while !src.is_empty() {
-> +            match self.get_slice_mut(src.len()) {
-> +                None =3D> return Err(ETOOSMALL),
-> +                Some(dst) =3D> {
-> +                    let src_slice;
-> +                    (src_slice, src) =3D src.split_at(dst.len());
-> +                    dst.copy_from_slice(src_slice);
-> +                }
-> +            }
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl<'a, I> Iterator for SBuffer<I>
-> +where
-> +    I: Iterator<Item =3D &'a [u8]>,
-> +{
-> +    type Item =3D u8;
-> +
-> +    fn next(&mut self) -> Option<Self::Item> {
-> +        // Returned slices are guaranteed to not be empty so we can safe=
-ly index the first entry.
-> +        self.get_slice(1).map(|s| s[0])
-> +    }
-> +}
-> --=20
-> 2.50.1
-
+Thanks,
+Carlos Llamas
