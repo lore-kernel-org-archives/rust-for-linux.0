@@ -1,113 +1,131 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9374B2BEC23
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 16:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADFF2EBB9E
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 16:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759942627; cv=none; b=TRPn5gz7CtZ6veCEjv/FmpWXP2MrwliGe+FMVS1jt9qZpiwe0/n1MK/vATFkDDYyk77JAyZEf7ntty78mcRQaiV4qF2ebHexEAghIWdJWJ/phk1TVqZ2po6315xkuuvXutqjQnBt8MvTvGmQ7dkJQ/goMp6PNLgQAnLPnsg9kyY=
+	t=1759942792; cv=none; b=ekYhR1uRD9oUGcqe8WcCRVkJrQVtXO6gpBJOOaAX3lwrlVb+roOErzuYeqbtMh51rLrBq9sIF6gx8mCXAuIo1L9Zumu0EDp6fFqISPzjIXIHMuKAD6k/tcuTazFuR2E9nKaojCwxFfjf3GGjylMe6kYL2zVIpVVdguOClvQwGEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759942627; c=relaxed/simple;
-	bh=HDU1bF3pytAw2bYvWqTIIrNFDsE3a9r1wsIR+RF0I38=;
+	s=arc-20240116; t=1759942792; c=relaxed/simple;
+	bh=U6T66WCwAVe2p4J0jyxKKXb5H7i7GwEg7i80OTReVgg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QOuJh8E/IbpLLJBdxY7OgfFX0tdL1oP2zphIIPTi/MDjyxj/GkNZWyKXq2Rc7flwsLPlfVtYaL/p9RPYmxLqk8lFmzfojpoghc8RrMM+ZjvQY9yGYZFTANfhaiu+m5Yq8dR8L0mLKBCKQ+IcNNcm6fJ3hhHLrpoqwavqW37gEdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GyLm4jwx; arc=none smtp.client-ip=209.85.215.172
+	 To:Cc:Content-Type; b=m4PG4Q+CcFNFadejR3jqRTqiLJpDttK2pJBfdbjLuAd26JBIzKO+OR9gxPEcLnE/rgC+v69IWtuKzIasF+O0oRdv0lfF5uQ1+krIrBhQ95Gprjknsjbw6so3L+JpuasVHNPHlABKijZ86Ot9cS3E4fEldmPkd3VY/V41LvOcaJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i9Lpz4ZJ; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GyLm4jwx"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b4fb891df86so205a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 09:57:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i9Lpz4ZJ"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3737d09d123so74796881fa.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 09:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759942625; x=1760547425; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1759942789; x=1760547589; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BtxsZvw7ZUfiZlsMlvMyfedw4t0xzCAElKBhmmA01y8=;
-        b=GyLm4jwxP/0XOX/w7UicKMISUGzxHtO0dqsU6LQK80hEuat6u1aUXOOW9eNN2lZYVu
-         tQDLyhJO5/zOMFTN/x+vw+HGp8pBDbKstSccHf5Ar/h/EDkAS+k7/3Xx+IYOkzjonloP
-         Z8pq3u1rmaFKyKARwuNSmVtWHDrwP7GrvryzqfwT1Csw7V0TriGGIhsjHJRiGVoaP4n3
-         6vF/lw0JxGr1KumjhP+p3EN7/KwCYWLhqi8buTE2WYzH9CgXyc1U4aqt1/k/i3PYsXrk
-         TGHADTPfN4H7jFRua9VyWln9bgEQgdYQVCM4i5PXZvYK45cWhrju/M8pEpx/45W6utpe
-         HYfw==
+        bh=tbyHQEVZUWM5+b8hXROM9euWoMjNsVjY1q+gc+HNpdk=;
+        b=i9Lpz4ZJj6FKCaKoPdaH6Dt3SKPGXD6VuF9P8ZjiEdc8U0Dggs8yav0uSzlw3JPEYB
+         1WFSd2V3sRgWMbdqOX8hHU53pNAZKNBt4piO1wY2Z5EoO6GSLCeMrWChf6rtv+wOo5WZ
+         5QHjq4V5Z5UCH/n2yfZjjs6L/AFc3UVhC87gP2/gC88WC8pJtg/QCbHCby+ibMyDthjJ
+         NlimmlOmlpThIL8inrrJ98gqaZbSJoVoGRX4rpG76bFr5dItIE/C/YLRG+o3x/8nk/SI
+         iklWxA3Hn3w3N0jUbPjyohs+e+/9TpL42fFetfT8+HBwmUTFVsyFtKCHIg+LRxi2UcsL
+         KSVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759942625; x=1760547425;
+        d=1e100.net; s=20230601; t=1759942789; x=1760547589;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BtxsZvw7ZUfiZlsMlvMyfedw4t0xzCAElKBhmmA01y8=;
-        b=Y7A239rbdI/JWFYZUWSZbzXIr5AMsmMEsiofvNsdj4WHOeK/J0AzJwLbjAAxyPEtIu
-         /KDYvELXehy6gZZ3rUx8dxgc4B/mfRZ+rRdS3R1vpz/0FCItfoYOHQt0L89hnyGvEnY0
-         SH3lez2buZb7dNkdcSC7Qtiv/LLZylQi4nc8kQoNx/hRfieaPeKmNPVsCT0BonFe/EbP
-         owt4hiAMgKIwid/7RiO4/6S/txlg5tgrIF1pbV30iXwG/SGvUlTVZzveVNSsbgdBE93X
-         oO7eLCcFOZHFNI/Zmk4XurYXI1xW5jB1j/0iKW+jhBE32KsWrS5esH5Yw/v/obEZTv0y
-         IcNQ==
-X-Gm-Message-State: AOJu0Yy0GFvW7RjRNt00K8kRYo/igFhm9uPHoyoUTSa91tzLMgqdk9gm
-	Vghq/hzyiQOFHCoPo8ZqIB7+XSGuUGtFmcz5KOUmbDc8JBjW/4zVLXkbFV4nJazbBUUjXO7yMlf
-	XONwIjTdf8td4To44TssQZGwl1xC1grFDYqSoank=
-X-Gm-Gg: ASbGncslS++zAGamod6xZzmytLums5psln8Cu+JMTU18duFPONMHf4guTBxqaVXxGI4
-	iUvJfmqwXL8sTMdNH6kQNLNnGizdeRizilHMfI12CMAWAYLf23Kf26ZHf6F2Ta0P0cA9fFwWpts
-	dTtly9vTWQTVphqXs2chXYrIwO7EPLwlwsj1WxZO0eouDySb50Kbz3xzrdsUFPhltIw6rX+9P2O
-	eYbMhjw8+XwdCjxGa6doyUb0pgvyf5eL4CH6vtFGYeqdxhp8Hzz+6kVZPax0/7dzmbFUBKVKt3M
-	FrxDP1SRUXCm7Z/DxIDhy5A56GXNZrUQBKibsOvS0YCVRVc2CA==
-X-Google-Smtp-Source: AGHT+IE+hV5XvZK2LLA5Zj8MS65c8DKZNoLYsUmppQ2+DVDFH0vWuOn4hQEUZM9Ru/QEpwQVpwGiPDgdVyGxI0qTssQ=
-X-Received: by 2002:a17:902:d4d2:b0:25c:9c28:b425 with SMTP id
- d9443c01a7336-2902745c0a2mr34349905ad.11.1759942624756; Wed, 08 Oct 2025
- 09:57:04 -0700 (PDT)
+        bh=tbyHQEVZUWM5+b8hXROM9euWoMjNsVjY1q+gc+HNpdk=;
+        b=iH2AnikwLpDLvcgj4Lt1yvaXslNZOkLuqH4PBJe1q10JPQ/SRMnuNcMcLrabwHrGS7
+         ht+peurnSDRyIuavKEJ3PmBaPaMCKmnK3lmkAJnuEzvSb++zJLD09CPTr5RMlI2FsSiU
+         N0zS/0dIhwtx1SfFUwWMhqvE70Q59oVwVZnGiCfJXqnDOfU9fA2St2UmD8GJbk3sFPtK
+         +6kdaw/KDM1uOsDxpQg+h6VDljdPPhxFWbPc4n8Pm/E9aHpO5OqlcXxHD7jpn9kIuK9a
+         ccQOeVsHE6fyFL5OcwJ2hm6oZsH8z+bzb4fvG5SC2usbwhi/jy53Tqn/d9an2AEPn9QE
+         Xm6g==
+X-Gm-Message-State: AOJu0YwgehpbaDeo69d7Co11+xdHfCqFTNp2FhYSbJ5GO3dZ1K1XWCIJ
+	FBVRPBpe6Aq/TNh0yr5sU9y34DF7JFdYN5Wd9wYS8wZ1rCNG5/R2vZxqvEyr6uztAiKRpBikfjM
+	oW3hOZd8uv+ncb9/+OQkv2ts7HdKGcZ4=
+X-Gm-Gg: ASbGncuwtfoQlKL7HQBxM+wS7QSjnNF0IEkU7uoWOzaq9hhXHmWsjck+zgr9zb4SJpD
+	of0r9B4vJdYxhkB9woy6SUtIOlzBgQRYfYGiWTk7X07f39zdmxXKTWpbL7Umk+JMZ2z4N51gH7v
+	h3BhN1HFoTKwbGZiCsuDIxM8kvO8A0662ycdfq1PuFpA8pvvDKMIgwBESyM8HsCQvIj07mMGZiQ
+	P9hIxuSDz4guQbcBkI3h0Tb6msQ6Syf4sxYZtmYqUahnqtYgoQveQQtsLoIgrUHajGvulKOrwMk
+	5MrNjlUSIJiiGQD/JOTugK0FZYa43780qdmmj8ATccGPLVW8pXA/bRM=
+X-Google-Smtp-Source: AGHT+IGwE31TEki+9bgtGRuJBI0XpflFmiVXP2InI4RexshP1L9r4vs0K8grtJNFkGtKKh4judP6Mucbj50jbGgWQT0=
+X-Received: by 2002:a05:651c:12c3:b0:336:6c93:9726 with SMTP id
+ 38308e7fff4ca-37609cc1c50mr12805851fa.4.1759942788553; Wed, 08 Oct 2025
+ 09:59:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251008001253.437911-1-apopple@nvidia.com> <20251008001253.437911-5-apopple@nvidia.com>
-In-Reply-To: <20251008001253.437911-5-apopple@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 8 Oct 2025 18:56:52 +0200
-X-Gm-Features: AS18NWBIne5rc-AVIeVWCfebGQh2r5eidrg652ppzGpIdVO4I8s2bzW85Um8QvY
-Message-ID: <CANiq72k5f3f8Kys40sRmaKR8eeq8-4DsDkWDkwMPZ0A1JSFj8g@mail.gmail.com>
-Subject: Re: [PATCH v4 04/13] gpu: nova-core: Add a slice-buffer (sbuffer) datastructure
-To: Alistair Popple <apopple@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	dakr@kernel.org, acourbot@nvidia.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, John Hubbard <jhubbard@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
-	nouveau@lists.freedesktop.org, Lyude Paul <lyude@redhat.com>
+References: <20251008124619.3160-1-work@onurozkan.dev> <20251008124619.3160-3-work@onurozkan.dev>
+In-Reply-To: <20251008124619.3160-3-work@onurozkan.dev>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 8 Oct 2025 09:59:12 -0700
+X-Gm-Features: AS18NWB_7cIMONd68nAMOTgSvZDlnnuuRjeTROznbec4OLsuftEiYVOVmU_FLrg
+Message-ID: <CAJ-ks9mtfVmP+SwZvBVuQSwViiqo2ZngSGQuU5Y7A-Q_JSwjKQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 8, 2025 at 2:13=E2=80=AFAM Alistair Popple <apopple@nvidia.com>=
+On Wed, Oct 8, 2025 at 6:05=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev>=
  wrote:
 >
-> +/// Example:
-> +///
-> +/// let mut buf1 =3D [0u8; 3];
-> +/// let mut buf2 =3D [0u8; 5];
-> +/// let mut sbuffer =3D SWriteBuffer::new([&buf1, &buf2]);
-> +///
-> +/// let data =3D b"hellowo";
-> +/// let result =3D sbuffer.write_all(0, data);
-> +///
-> +/// A sliding window of slices to proceed.
+> Implements `alloc` function to `XArray<T>` that wraps
+> `xa_alloc` safely, which will be used to generate the
+> auxiliary device IDs.
+>
+> Resolves a task from the nova/core task list under the "XArray
+> bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
+> file.
+>
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
+>  rust/kernel/xarray.rs | 41 ++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 40 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> index 90e27cd5197e..0711ccf99fb4 100644
+> --- a/rust/kernel/xarray.rs
+> +++ b/rust/kernel/xarray.rs
+> @@ -10,7 +10,7 @@
+>      ffi::c_void,
+>      types::{ForeignOwnable, NotThreadSafe, Opaque},
+>  };
+> -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
+> +use core::{iter, marker::PhantomData, ops::Range, pin::Pin, ptr::NonNull=
+};
+>  use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
+>
+>  /// An array which efficiently maps sparse integer indices to owned obje=
+cts.
+> @@ -268,6 +268,45 @@ pub fn store(
+>              Ok(unsafe { T::try_from_foreign(old) })
+>          }
+>      }
+> +
+> +    /// Allocates an empty slot within the given `limit` and stores `val=
+ue` there.
+> +    ///
+> +    /// May drop the lock if needed to allocate memory, and then reacqui=
+re it afterwards.
+> +    ///
+> +    /// On success, returns the allocated index.
 
-Please write documentation in the expected format, i.e. using a code
-block and a header:
+Returning the index is not a very good abstraction. Would the
+reservation API meet your needs?
 
-    https://docs.kernel.org/rust/coding-guidelines.html#code-documentation
+https://lore.kernel.org/all/20250713-xarray-insert-reserve-v2-3-b939645808a=
+2@gmail.com/
 
-Eventually, this documentation will get rendered just like the
-`kernel` crate (and the examples building/running as tests etc.),
-which requires following the expected conventions.
-
-By the way, is the sentence "A sliding window of slices to proceed." cut?
-
-Thanks!
-
-Cheers,
-Miguel
+If yes, I would appreciate your tags there.
