@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29811242D69;
-	Wed,  8 Oct 2025 10:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C462571DA;
+	Wed,  8 Oct 2025 10:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759919916; cv=none; b=dU7n6P0Xrf49t2zaoNv0QlYEaxuWivuLsG7KAuZAG7Mx5BIyIlK6LRB1Z1qH2neb/p6HgRbiPrkgrtie14blYx6b2F7v5L/15rT3Z6Ktq6i/ihD+etFvcUgYxcmGdfmEgP81f9eJDn+N8nyALXV+agvsDIbIvP7kYekjhbJuNus=
+	t=1759920078; cv=none; b=T2UasRlQ2pPiOWUWkM+L6UZ544F6CdBz8mmqwwBjy1NgTXwQaGaXpWajkjAZhF5O7pqkJHzEz7yJI2cJ+EB7MWqSZPnQgHbrLgn1oCGiaySP4Rt4iO1QwXB2j1EAcRiLT/zSWV44nvh9pTL5uOy3q7NrF68zw7nbTCGqc/W+jzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759919916; c=relaxed/simple;
-	bh=8PAxUp2DZdH2TSqIsiP6A2jShMUr6FjTKJktfSZKqP8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QvnAb/DN7g8kdWS4Qpf1vR5AHzxwff/y+osEkhbQWFbikgEnr9VdvLG4q56gIzhtW0VWxSQPLUVuRuLG1jwWU7wclahyms37hND0CiaRC8EziJDG3XtEP1SBghuwdHz1MrWg2sTmOSH3bALqGgB2TdFGQXy7ywlCfaM0mND6zDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AJkWGDP9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759920078; c=relaxed/simple;
+	bh=YatX5O63Ff4zVnHnAT/CplF1NLfDnBDH5HmwjIgR74c=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ZlnGePF+lGCyLGWAn5WGS90/9Kji+6Qfi0WZj6mEp/7MaDmA0aMV685MbWqtY6WI0PcOJzSWFTLgE36v7HiDEV5ocPrc6aMQSxZSFFsbx/ktqmbIQyb5yvRaG0QNP/FFQPHQ4RxEMtYQYoj9iI9sl3Aji1cibJvEqMlGtqy0lqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvbuXq/H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJkWGDP9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9953EC4CEF4;
-	Wed,  8 Oct 2025 10:38:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvbuXq/H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6B2C4CEF4;
+	Wed,  8 Oct 2025 10:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759919915;
-	bh=8PAxUp2DZdH2TSqIsiP6A2jShMUr6FjTKJktfSZKqP8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AJkWGDP9M9cVW5EYTToUzi+sV7Wq4oxJXEDmUb/x4ntaEKP7dS4Txm9Hf/xf2GJTw
-	 d0wSuu9CwO0KDgqpxG+gzp+3Nb5ur5GVNHznvbhsutYKimwLX5RbCksNxNS7jK5ZGF
-	 zaAuvbdN3+oq18Zm4j7oblEB88vTX3aOYFXYmOi42w6Xnc/peQYWZdaEFEQjDprbhK
-	 pzrnnJ+XOBEnEDdr/TXZfqm6IJ33DQrFGbXmimCEnbwV41nZeL/46fGaUJEHeKH8Ni
-	 UT11AmAMsSwhwmAqNU+GoSHjKVDqvyCKX6zxsRoTa9U642F7gYQvCbFU9ZbLkvehMf
-	 0UnjuhhbIYpVA==
-Message-ID: <17dd5928-f06f-4747-b36c-195be4ac5082@kernel.org>
-Date: Wed, 8 Oct 2025 12:38:29 +0200
+	s=k20201202; t=1759920077;
+	bh=YatX5O63Ff4zVnHnAT/CplF1NLfDnBDH5HmwjIgR74c=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=RvbuXq/HH76eVY2ILF5zuYaBDIL6RqA/dEAriJusY0TlAl5qwo5b5WThl6AQLelU8
+	 +0571aA96HW0Eh6f0Vu6d0FYE4BFmKcKQ0+OAuS2x7bfI+vs+bzJGQasfpOcRMPZ0w
+	 AmhxXL9VppZY9QcyUwE005GicsWdw7Ns8cEBcCRLbqkA4oH+H1qhCUfRv0kl2p5/PF
+	 +pUm+PyiF3Lcy4+xVh6K1uxfAnLtRP3Sq3j3dlpIpGrpUbqHdD1Qhnj4uLPyHFGtgP
+	 OshtBBA9kdIFzxslM7dfkUMccTx3j+dq/ybIWfzRnfJPpU4w86lQrY43nN8kP2Z7BF
+	 B8z2tIjfyukdQ==
+Message-ID: <d3246f19-e2b8-487f-b896-3bef1ee0174b@kernel.org>
+Date: Wed, 8 Oct 2025 12:41:11 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,6 +36,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 00/13] gpu: nova-core: Boot GSP to RISC-V active
+From: Danilo Krummrich <dakr@kernel.org>
 To: Alistair Popple <apopple@nvidia.com>
 Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
  acourbot@nvidia.com, Miguel Ojeda <ojeda@kernel.org>,
@@ -51,18 +52,24 @@ Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
  Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
  nouveau@lists.freedesktop.org
 References: <20251008001253.437911-1-apopple@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
+ <17dd5928-f06f-4747-b36c-195be4ac5082@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251008001253.437911-1-apopple@nvidia.com>
+In-Reply-To: <17dd5928-f06f-4747-b36c-195be4ac5082@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/8/25 2:12 AM, Alistair Popple wrote:
-> A full tree including the prerequisites for this patch series is available
-> at https://github.com/apopple-nvidia/linux/tree/nova-core-for-upstream.
+On 10/8/25 12:38 PM, Danilo Krummrich wrote:
+> On 10/8/25 2:12 AM, Alistair Popple wrote:
+>> A full tree including the prerequisites for this patch series is available
+>> at https://github.com/apopple-nvidia/linux/tree/nova-core-for-upstream.
+> 
+> The prerequisites in this branch seem to be upstream. When submitting patch
+> series, please base your changes on the corresponding upstream branch (i.e.
+> drm-rust-next, on Linus' tree in this case) and make sure to include the base
+> revision (git format-patch --base). If it depends on other pending patch series,
+> b4 can help to track those dependencies.
 
-The prerequisites in this branch seem to be upstream. When submitting patch
-series, please base your changes on the corresponding upstream branch (i.e.
-drm-rust-next, on Linus' tree in this case) and make sure to include the base
-revision (git format-patch --base). If it depends on other pending patch series,
-b4 can help to track those dependencies.
+I just noticed that you have version nova-core-for-upstream branches, but v4
+seems to be missing.
+
+Without the any base revision I can't apply the series for testing purposes. :(
