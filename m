@@ -1,127 +1,90 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DA723D29F
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 13:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE3027932F
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 13:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759928656; cv=none; b=kwILjrGLdKP2IAWWG/egU4ugGsn6CBMW8mfxuMKhtW2nOqCgKXCASMMJOtIGSG++D+s/S1DJAaWbtzTc590JB56vUr/J7IGglLDuQHztZgygMJjz4k7VIUqLGYuhsX2tx+uzxZaKU2xUNpgfl4RSvTuWN4ugrOMTOS9yFdbIN2Q=
+	t=1759928910; cv=none; b=VLWG2lLNR8lpItLgnOYELiSG7rUB58KOFntdvW576T1w9ILf36Swdr/ezEt9ikN+JoHX2NakP9syu5hlR+m80WoR5H+nqUqcZSzJ67juhinWiMAA1PgU/yHN04+abjwZmZumQEU5/yXBxL1/gtOMZF29+hdgScVficoMuwo8Knk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759928656; c=relaxed/simple;
-	bh=iombOkx6RZ049iGmftkrgMRMmszUv7qM3smVLV5UOqk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lbSblFealw+pVME9fZxZB+KCzttlro0VXpKOLlNoeyjoz9Q4vDuFw/OLpw520Biw7ZsN4WaxSF1bnPvgNgkz3agJ4lW+LxIK+nft/j05UTIVM1tIFII83u3YXFJpwHXDANbwbmTt26ajPrM4J7YygIWhbm1Cd7GaebS269eAFGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tFmk/2X8; arc=none smtp.client-ip=209.85.218.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1759928910; c=relaxed/simple;
+	bh=hCEpujIAQjzq+71JO1DtwhcA8vBsjBZGICHvXjHGXsw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o8ynhor4RIXKRUwKrk0Zz/uWaLdm5K5lpw5p2vC7TttXiMpOGNMYY8YOYzECG5FguejA5t4ckY5xxLBL+4otMgkU40s0NYSFXUpi96CQuBnGYkqMKmB612gAc9wOYwxZpSB7OGvBzTnUX3727anL/qOG+rZMQzZuR8FNF0JEXpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=XUCwiSES; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tFmk/2X8"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b3d525fb67eso703125466b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 06:04:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="XUCwiSES"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-373a1ab2081so61788871fa.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 06:08:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759928653; x=1760533453; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UqAM5J5K6OQvQzOQHzxihWMwPVqmYeUpdruR6N5ZdUg=;
-        b=tFmk/2X8iExVa094zCS3dmlp+I9iU9nfzN6z9RHO8wwtjoKJppXfZdmLZHEI6bYIQU
-         zbGcL/pdCWlhkJ3hApwh/ZjUEgoEdhrHB8/y0ezt+mdnBt2FfyvtYAG88wAXQj5pta0+
-         oDDCiW0ESbkXijvhNB6RZUE8//iEZ9rGUNmnIaf1WtcsC7JkMspY9o2IBFPLTCNy3Gac
-         OuiTmrMbZCJ0SnR5fqFAel1DrnRITcUUbVqiNzAjXLpOYzWlFxHoSswjQwOHKX13JeCn
-         oBp1qczBZt2wz4VS3NToa7yjgz9HG3efh0MHTgi65X2Y19s0Pm0Rf9WyPRR48qigVPn6
-         29qw==
+        d=suse.com; s=google; t=1759928906; x=1760533706; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hCEpujIAQjzq+71JO1DtwhcA8vBsjBZGICHvXjHGXsw=;
+        b=XUCwiSESE+Yotrpsv8pPW/FW3Cs9vJToe9gNGoWlCm2Dw8Pp4BkWO6Bd/DfB7qgyjG
+         O4hL0SQPXWrJDNfrNTIL8GMC9zG/YT1Bqcb2pn70Tcp1kjGpkJN9gHCQ02Wc+ry0SB04
+         Rfehh74eKgT1hbjQKbcmaC8upPNe8N4XAb4Asjy7PfkQ8o+y4PsyJT8H2BthVOcL4Dks
+         j2FbIl1sPUqi92Zho093nNT8AiRLWP1kULtV1I3GTK35SHDJFoVoPTP9R0OQcTQH09rH
+         Sd/nomktOOOeLW3UHQaHstOt4cTM29iubdPwnwyysNJu/BVRh2VSLQXh0Aq1CUVm+A4N
+         9xDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759928653; x=1760533453;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UqAM5J5K6OQvQzOQHzxihWMwPVqmYeUpdruR6N5ZdUg=;
-        b=KOrG6I/xy24TLl+POzpFasLwBL33faOI6BlfsKGCTI/9F8tlpgYHuwngEdsb2o1Cyt
-         kBBOVb4Eb7mLM0EDUR1wRr7f/ks86srhW+i4bIMzP7/3auO2xl8Zd8m3pBJBRS7mKE55
-         k1o47Aij3ZUkUQ/vJoOlOfGFRIpOivBmA8NzVkjB8J2N9OwoTgouQjm6X2iurtr+MBcK
-         5SxRmWH/7M1KUiohP0XLacFY/yUJ0cDEVML/ZVliqB4XVhG9Z9wfv2cVJipHzbgvcV0v
-         uVaMuwzbDCYqhzE/NwfGTnUEMX9cgvLkqs93zBE1HW4XQ3ERu31n8JwgxtUP/MIH/vy3
-         eiXw==
-X-Gm-Message-State: AOJu0YyGiKeCD9LgoEmdiT8qPAf4YdNor9tcapA13yeFWDQmcwUhCctw
-	mlfRHS0IW32L0RudZRM0/QMaqqSR9dU7Lnm1q9iujBGMfmgxyVggO9xXYiV/27RgVJLfGAywM0b
-	3iPbf8Abaz7uI0kdjLw==
-X-Google-Smtp-Source: AGHT+IEwDtKAOG3+0GlDuiqWNfaiYirepvfQDt/Qk9gvr2w2apCZsFLWkE0cR2CwoYx8kDzMVpCqB89Jb5iURts=
-X-Received: from edbde21.prod.google.com ([2002:a05:6402:3095:b0:62f:d279:8fa2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:40cf:b0:636:23c2:e61f with SMTP id 4fb4d7f45d1cf-639d5c5a38dmr3342530a12.26.1759928652918;
- Wed, 08 Oct 2025 06:04:12 -0700 (PDT)
-Date: Wed, 8 Oct 2025 13:04:11 +0000
-In-Reply-To: <20251008124619.3160-3-work@onurozkan.dev>
+        d=1e100.net; s=20230601; t=1759928906; x=1760533706;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hCEpujIAQjzq+71JO1DtwhcA8vBsjBZGICHvXjHGXsw=;
+        b=n6+lmKRyBLmb9BQ7SL5EGfd2zVqRB0yt9ieKNxYuE+gtQlJChPEk7G/+0850wub4jc
+         L0G0tuMwSEwiuhnN+1TPv/WNsnkO1Ewff2pE9n700HcFm1cSX8fZ9SY8xKzl0Z8tLjJV
+         8PHf1CdJuE37OqgnYdR7jej0QdsALT0t8qUnoEEd/r1XSbd3KCo2JuOn0PCsX/2Cvu4H
+         hBa7ozEaL5hyScG097HQ67Suwqp4AdW17orxDtzym1/dPZMj7j7pROYRpanH6aO1EIgT
+         9u9WDA3o/U35LViJyMTOaN+L+kO/Fd+sQhAAuu12KhpyVbebeV9itqIQS+4T4NQdcpSh
+         /IJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxjuBpqIwTfkY3UiOnopFAb9a6mfKYSIV899dBt6niJrOG1I7wuY/VEsyLrz45Rg8nIsn2EYQ8iXYjqLHg2Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxptUA8o1hW4xbEOA5VLa7VZPMlCV2chL8t2AdfUxkcOEaWoi8V
+	w1LD78Z/M9mAnbNFtX0usOvrQEmKNXrBXuL6sF0A69NRePZfiIUAIpRAV28B5QooIQZ6GyFJ2o+
+	Xgn4DN3kmoC4qwwKQJNU+I2eUgiARglWD3BJyOqdLA6FWEjMuQkG9
+X-Gm-Gg: ASbGncuulgudJPLh+/uiG1aIfjtzDL58RnTUUF+zTMI5uzWmZ1rBUtAlvLW2a0GHGJA
+	q3qTG71mCxovIRqu0D9I2kADA0JU6VKjzD5jCWC4ek1H6vqgIJC90X+XNajcHMYI2pGeQucQBD2
+	vdRwe7Lhm7id41dIBDuL+joHmRpR3O8VRLAg4jsXuut1DXLWkrUoskb0EdIU7Uo3s+fAFx7gZG1
+	GbK7DF5ivln0gru5UmDKb35YKxfCF82wYkI3lH4OIeXi3SkX0MQCGhuqVQbmx7A
+X-Google-Smtp-Source: AGHT+IFee/L1ihvsJoJN8qn9mdf5cQv75y1ErzWOfzWMnIXy8m5xgcvGSMTnVzjnBNArGE8jLQiNlkQeXTXf0/ONVM4=
+X-Received: by 2002:a05:651c:1990:b0:363:d806:7d5b with SMTP id
+ 38308e7fff4ca-37609a1a8e8mr7197091fa.0.1759928906448; Wed, 08 Oct 2025
+ 06:08:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251008124619.3160-1-work@onurozkan.dev> <20251008124619.3160-3-work@onurozkan.dev>
-Message-ID: <aOZhS9nTDnH3Zh7N@google.com>
-Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20250908160224.376634-1-marco.crivellari@suse.com>
+ <20250908160224.376634-2-marco.crivellari@suse.com> <aOZgR7X5ZyXZh_jc@google.com>
+In-Reply-To: <aOZgR7X5ZyXZh_jc@google.com>
+From: Marco Crivellari <marco.crivellari@suse.com>
+Date: Wed, 8 Oct 2025 15:08:15 +0200
+X-Gm-Features: AS18NWCy8lu9sYT938kbcqk4cxkt4xkSfqGFbSwCDaUGQeBgodxXuFjXFCcOXyQ
+Message-ID: <CAAofZF74M3jrWJNZOy3KLyVg7mS7yKzofOUQ+gmmyxYoXbqBSg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: replace use of system_unbound_wq with system_dfl_wq
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 08, 2025 at 03:46:17PM +0300, Onur =C3=96zkan wrote:
-> Implements `alloc` function to `XArray<T>` that wraps
-> `xa_alloc` safely, which will be used to generate the
-> auxiliary device IDs.
->=20
-> Resolves a task from the nova/core task list under the "XArray
-> bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
-> file.
->=20
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
->  rust/kernel/xarray.rs | 41 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 40 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index 90e27cd5197e..0711ccf99fb4 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -10,7 +10,7 @@
->      ffi::c_void,
->      types::{ForeignOwnable, NotThreadSafe, Opaque},
->  };
-> -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
-> +use core::{iter, marker::PhantomData, ops::Range, pin::Pin, ptr::NonNull=
-};
->  use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
->=20
->  /// An array which efficiently maps sparse integer indices to owned obje=
-cts.
-> @@ -268,6 +268,45 @@ pub fn store(
->              Ok(unsafe { T::try_from_foreign(old) })
->          }
->      }
-> +
-> +    /// Allocates an empty slot within the given `limit` and stores `val=
-ue` there.
-> +    ///
-> +    /// May drop the lock if needed to allocate memory, and then reacqui=
-re it afterwards.
-> +    ///
-> +    /// On success, returns the allocated index.
-> +    ///
-> +    /// On failure, returns the element which was attempted to be stored=
-.
-> +    pub fn alloc(
-> +        &mut self,
-> +        limit: Range<u32>,
+On Wed, Oct 8, 2025 at 2:59=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+> Please add documentation to the new methods, similar to the
+> documentation that existing methods already have.
 
-The Range type is inclusive/exclusive but xa_limit is
-inclusive/inclusive. They should match to avoid confusion.
+Sure, thanks for the feedback.
 
-Alice
+--=20
+
+Marco Crivellari
+
+L3 Support Engineer, Technology & Product
