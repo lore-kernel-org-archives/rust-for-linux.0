@@ -1,122 +1,110 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFF02BD001
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 14:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46312ECD2E;
+	Wed,  8 Oct 2025 15:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759933700; cv=none; b=s/MsIregJEzwUXalg/dzPRRNoeyOfcXgmgJT5QL/JmZK8q7s82iAbR4Y7MN/xO2PZr13ixyC84rpiPFg1ZvIsYZBr50zk4XwyzjCrPMsU1xf+lFjkFndCu0xTkWZBJH4h5gt3mzrG7VEuvmoqraBvPXVsPJmbiP5wmSAgVGRDwI=
+	t=1759935609; cv=none; b=K0/Ejqupsf+7vQ9tLVy1QbBMgrKhsjL/JbN69fu1CPKLoyjZbP+NBqhm/tyDVNd+AE4zHH9fc3g4fXKVbHWDfyucIWLvGeGStqh0Uqm76vjCWXs89+ElC5xUN4i/17k5IIr/TC2Gbv5Us/RAZGITnkeGwsz6NBI7UV6qnuSBsME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759933700; c=relaxed/simple;
-	bh=npeNAX2mCK+rMgur8NO9qYg1axnlP5BBo0aD7CnTOqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tks0Bow2NXHXSrI1qlQEOxFLab+a28PYF+meUMV8afpWXGxg51KsVWE24WtTCLV/QlSNxvAuxvzXOdNAoBvoHt3UMcMZOZpccwlbE5ltCKI8WGPNpMvyc1HnEdkMMpwBRxA08MeyfGUKloDWzXTblsXpsIvK5wIkmgDKQLAPiGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nOuYBZT1; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759935609; c=relaxed/simple;
+	bh=Zq4M4h4026xT+BGlmoGtIh/JGWUmGo07HG7ivwnX4b0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Hh0E8jw20EY6YiJHJaotUsVawLrIm2g4IqO202IyOJqkVEMvwviPvRT52lGvs3BSSPaHUbVQWLoI3CChwvwkfnqF9Rw6YW2SpI1jnUc0p5UAGTiYyEiVTmV6NBgFyUJiZY1SlKUvZuKoMNm8RozL0RBkQ+WW8IUweDlo3tCZ+9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izyx4qeJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nOuYBZT1"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-791875a9071so73520216d6.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 07:28:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759933698; x=1760538498; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C3nyMQNps0AyLL97xzttuk+phB0DdoZh7JjDzOjB4po=;
-        b=nOuYBZT10rtSjCIA3eSb2fQbRuCk5nauQ44yq+9ziXhPdkvKKN3xaK1J0EqWelvcr8
-         23asps50SsoDCyfXolqp1sf8M3j5tV5t0DyzDtnwxAMI86y6fSqa9LqD2TwMp2rO7lDm
-         5VyhNA7K5KoRYoQh0VP6IJUE4Uua0FoKVjWs0dUtD5USmqFdNIsGaJOYudVI6OJSzaan
-         z4wId0Zs8NfDp5Ab9ncZrxUGphvuiW8O8rL8N08KFB02LofKJdpfOZFNgaV+GAGIeRx2
-         qMfZyYhgpQ0ZPNSibf+77xpUKdhPnrh4d91cUQ18kSQgydJIuhoazapGs2bqNejnbPd8
-         +i0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759933698; x=1760538498;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C3nyMQNps0AyLL97xzttuk+phB0DdoZh7JjDzOjB4po=;
-        b=g/eD59sVhUPo0t198Nt5XS/sfm7b5k42m5EGekOYiAJxxplcTm814mTMOpGkm4d6hb
-         L71c3wvG9DcVnLGyfuswnRvarWXUfPsCSvCL8ZgnKEI0wTReXXBpEvrU7uevx+L1g6+/
-         +mECf+yg30eikLj0VpnGvhj9AwqO1X0Wj19NwDzwgT4BX9GWB4BylItPq92nuueIWmNg
-         4CyML9P7+uC26M1S91xZmfeQNrdAh9l/5OmjGTk8xW6YLMi4QlD3jMZSyBM4cMvDRqQb
-         CUw9PpaMeGFctCKSTUo+ZLY5x+BbN8RGNFBFiTASXGC8bbKOEjFi+nfIQKH7OdTI4n6W
-         z+Og==
-X-Forwarded-Encrypted: i=1; AJvYcCWUusAmiAl7YsZ/iWuRok6p9RppTziXrJ/FqEXnhBO988ivgh2mwBjtDNsgaxXWnLuskmLCMBzm2Jb+mHjRSA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyD++e+33FCrHdNfJbCI0PLhfgl9ZEkBjkQbpATDf5fBHy5/Uxt
-	RmrDc3wglwQIEbpdKXTHB+VwhqOHVsJlJeRrVVADZ5km4aJ8P5sBke/z
-X-Gm-Gg: ASbGnct24NUxxyGeI7jy61rl/CAkuLCbj1W10ymu3d/RTU4ehnOMwzkpE5pN5lhYQj7
-	ZbLK5bWbhaoEm6fTCtdkIXIYnPvbFA3cgc83jXTTjwmHA2JBIKLgNJF+fnUrJBsaIg7VcRfsTDs
-	2Oq/IirLfT1D//2g0sbfSkHhqz+NGrkBy+VZGmTHRklSBcmO6cWLoGZpoqR/06d1hrdclXBlE/h
-	cGtsTrxJxWY5NHPs6SzfB52q77M0KMHnrIGhZV6x7Qkox5BaE7LdVc+IDkBOGV1cxSq9DCkUEAQ
-	vbNrXiumVpqf/nQmRJqit6XqiQV+VVKY3spFS9EYTKxF8Rz+s+A4OgAtwudJ02so8dxpajx1eKL
-	LAkq63Sm2L71XQB8sBftoCEVo7npHONHEQnrMhZ+vpdE=
-X-Google-Smtp-Source: AGHT+IFntZefp3Ss0mi+6jECEAXuwb7eOj/bzue7nh8gRQKVbgbOiMWHYq2oEKWHI2USmbbKcqsDDg==
-X-Received: by 2002:a05:6214:2a87:b0:789:d698:d384 with SMTP id 6a1803df08f44-87b2103104bmr48809406d6.20.1759933697907;
-        Wed, 08 Oct 2025 07:28:17 -0700 (PDT)
-Received: from localhost ([12.22.141.131])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878be61f6bcsm163723216d6.65.2025.10.08.07.28.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 07:28:17 -0700 (PDT)
-Date: Wed, 8 Oct 2025 10:28:15 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Andrea Righi <arighi@nvidia.com>, nouveau@lists.freedesktop.org
-Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to
- rust/kernel/
-Message-ID: <aOZ0_7YQw81lyMWt@yury>
-References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
- <aORCwckUwZspBMfv@yury>
- <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
- <DDC49ZIRX79X.2Q4KW0UY7WUF3@kernel.org>
- <faa99188-7ccb-4c7c-b705-3a207f5acd17@nvidia.com>
- <DDCFLM3P5MCC.NEBRVTU7X2G3@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izyx4qeJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45284C4CEE7;
+	Wed,  8 Oct 2025 15:00:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759935608;
+	bh=Zq4M4h4026xT+BGlmoGtIh/JGWUmGo07HG7ivwnX4b0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=izyx4qeJQb2C5pEgtTwRd/dt0xDjWrxPxH8kFxMtHeiiYKekpB8WovdQserdiWVhd
+	 WOo8964xcCQppMRCby6GiMdy3k/9W9KueVb4PjVc0TbTV2r2qhay+jSZxbQPEUQEXt
+	 BNeKJsyP43lV8j6MTXpe7eNCCLDDdNYQW2MmEfDDNcS3Rml/gQ9ej2+1l+mP/iyCDf
+	 hweGdyr1kKNpG9WbuhWi+TMj7zOmro6ptx9WXG/Hs1/oxvFcdKaGVC9W9zScrvfgjw
+	 W3gzBvZLqQbJHyqegaPD1TBtEpyUSdM5DWxRWfath0BAxZ46fkIvwfiikI5d2S+GXB
+	 mNg8GebtPo/cQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDCFLM3P5MCC.NEBRVTU7X2G3@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 Oct 2025 17:00:01 +0200
+Message-Id: <DDD13PUEPSZO.ALDND33ZFFC7@kernel.org>
+Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to
+ rust/kernel/
+Cc: "Joel Fernandes" <joelagnelf@nvidia.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ "Alistair Popple" <apopple@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Andrea Righi"
+ <arighi@nvidia.com>, <nouveau@lists.freedesktop.org>
+To: "Yury Norov" <yury.norov@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
+ <aORCwckUwZspBMfv@yury> <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
+ <DDC49ZIRX79X.2Q4KW0UY7WUF3@kernel.org>
+ <faa99188-7ccb-4c7c-b705-3a207f5acd17@nvidia.com>
+ <DDCFLM3P5MCC.NEBRVTU7X2G3@kernel.org> <aOZ0_7YQw81lyMWt@yury>
+In-Reply-To: <aOZ0_7YQw81lyMWt@yury>
 
-On Wed, Oct 08, 2025 at 12:08:59AM +0200, Danilo Krummrich wrote:
+On Wed Oct 8, 2025 at 4:28 PM CEST, Yury Norov wrote:
+> On Wed, Oct 08, 2025 at 12:08:59AM +0200, Danilo Krummrich wrote:
+>
+>> Regarding the bitfields for page table management: Are we
+>> sure that we can use raw bitfields for this?
+>
+> As per my current understanding we can't. Bitfields are not suitable for
+> direct I/O and considered as a data storage. In the current scheme:
+>
+>         regs::NV_PFALCON_FALCON_DMATRFBASE::default()
+>             .set_base((dma_start >> 8) as u32)
+>             .write(bar, &E::ID);
+>
+> we account for endianess in the .write() method, which would be a part
+> of register API, not bitfields.
 
-> Regarding the bitfields for page table management: Are we
-> sure that we can use raw bitfields for this?
+I know, I proposed this register API design about a year ago, and Alex came=
+ up
+with an awesome implementation for it. :)
 
-As per my current understanding we can't. Bitfields are not suitable for
-direct I/O and considered as a data storage. In the current scheme:
+And yes, your understanding is correct, the idea is that the I/O backend th=
+at
+knows about the underlying bus, etc. takes care of the endianess.
 
-        regs::NV_PFALCON_FALCON_DMATRFBASE::default()
-            .set_base((dma_start >> 8) as u32)
-            .write(bar, &E::ID);
+However, we might still be able to use bitfields natively for page table
+management structures: In [1] I asked for the NV_PMC_BOOT_1 register, which
+might provide some endianess switch to ensure that we always match CPU
+endianess.
 
-we account for endianess in the .write() method, which would be a part
-of register API, not bitfields.
+> FYI: ARM64 is in process of dropping BE, and Linus announced the end
+> of BE support for RISC-V:
 
-FYI: ARM64 is in process of dropping BE, and Linus announced the end
-of BE support for RISC-V:
+Yeah, I'm aware of the thread. Also note that for RISC-V it was also clarif=
+ied
+that if it turns out that BE for RISC-V becomes relevant it would also find=
+ its
+way into the kernel. If that's likely is of course a different question.
 
-https://lore.kernel.org/all/CAHk-=wgYcOiFvsJzFb+HfB4n6Wj6zM5H5EghUMfpXSCzyQVSfA@mail.gmail.com/
+However, there are still architectures such as s390x that could be supporte=
+d.
 
-Thanks,
-Yury
+So, long story short, my question from above is more meant to challenge if =
+we
+can really always guarantee that CPU and GPU endianess match for nova-core.
+
+[1] https://lore.kernel.org/lkml/DDCV84IJHUML.126CB1CT0XMX5@kernel.org/
