@@ -1,127 +1,68 @@
-Received: from forward502b.mail.yandex.net (forward502b.mail.yandex.net [178.154.239.146])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBC81F12E9;
-	Wed,  8 Oct 2025 13:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A4D285CAE;
+	Wed,  8 Oct 2025 13:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759930063; cv=none; b=Ylyi2fvxTM/6rKWXvyECgtuyv4KSr6/MPPMCUPiSazwNOBRH7A8HiUfIqfCIaKhK+GZFV4/a5Iyp2TDwfXWo3ueifsUwLZkCELwWIAioN+fsCqCLuinDLTG7ipHnMgDo8kNapbTPvWew8rcvtTOuUEwsAcpqO999wyQ5MnI1Epk=
+	t=1759930825; cv=none; b=FQL9m9Br+0iH7NqNaghUKKVtRgRbJFU8qYTKS1RZULUZXbYIlBfMpX5t3GuXInZGZ/4TP01LoLO5TZSBi9BN2BIjvomIp5u8MotwmHfR+GZckU9IEaRYhockUYyKqN7OsawalNKS2kVbt2cEacUyPc/VGx2CXWcevE2q4cBfLXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759930063; c=relaxed/simple;
-	bh=48tBRZ4UObr9hdBTbxUPKO25q+0h3XVgD5hTqQX+b10=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NonTau2CEY1oMOmWKiwzh88Jh4kQdXzFhZD6UsNaLrMd6pbVXPKYxsJzUFOvraRX2p7cV/qv+TjR9R4X3PCiyb/4/18N7lrAYhHbcSC2oinOOa0HFweMAG5h9X/DVk9y4zzDefDNgmBvscZCBrobpeD9PwTanzdx7LHXKXx2K2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=oIcsj5TS; arc=none smtp.client-ip=178.154.239.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1759930825; c=relaxed/simple;
+	bh=gHADV8HsikuF0mjbOGzY/svo7rZ6VJOBPJdv1nScmLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J6fCj0ODGfpROgde8I8hAoa5znfcSd58GMPwXeMA79Yoi8OgCPzJrVy5rNR232M4FGpJPDaZJL2/Vv/DhXtHlesAdhfN62lesRoFRICHuOLb0SiBcA51S5KSkohqNjHPXxABDAtD3bEoimtHFWhI4gq648wbMOgITK/VST89FbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GBcbjOBR; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="oIcsj5TS"
-Received: from mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:2908:0:640:b877:0])
-	by forward502b.mail.yandex.net (Yandex) with ESMTPS id 7CA2481A79;
-	Wed, 08 Oct 2025 16:22:09 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3MmpYOILNmI0-h2DvORhn;
-	Wed, 08 Oct 2025 16:22:08 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1759929728;
-	bh=PuyYnJGb4e3zcRscqjbRMizi4amoHlbd7ZcZT1x5DhY=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=oIcsj5TSZ9PMFLRbqWRxmJ6LIdAHCf5ARsxnWQWOjyTPxakdUyXG7t70nU3XGzCCw
-	 ngBtReOrO5zTPbtHBM+1Ud8GsE0Rrer/P8g4zkail6xtKbdQlYgchVdNIpfHLlrbUx
-	 ETNsrbGFjJPru6hCq/CmItHZWodD36HJesFlRC2g=
-Authentication-Results: mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 8 Oct 2025 16:22:01 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GBcbjOBR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lSR+OAicaMJG7hAOQdZGFYmQwq4m25NNDfS7Fm4FF1A=; b=GBcbjOBRjpqcrTolR56nJh8rzY
+	yWqLurKTHGY7dnX/f1klPuUKfN3G7Al+8qWBSQwWjwhFFtCYwTapWKcfGEtEjS0GkF8HwFxg1F+hD
+	HNYiwuvhwlOG98YBjchx/OCD/xFUWhMKltbqtP7rqbIgS+eavY+zM6E13GqkaiG5eDTvuII2B7uVg
+	DznQMKemRqpDeWyUVu4qtobekFIItRHUANiz4OGms8xyeG4kl4aaAwWAGzhtJqdlwVukcFlmtVAtJ
+	2yTGjOX8w73JyzRF6ijRJ4d1u7e+wCmvDRvV5l75uwkGJPtNbAEX0FjJ6pP0EkQyTatslFQG1o5Ki
+	kiwvdtPA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v6UOv-000000064WR-2h34;
+	Wed, 08 Oct 2025 13:40:17 +0000
+Date: Wed, 8 Oct 2025 14:40:17 +0100
+From: Matthew Wilcox <willy@infradead.org>
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Benno Lossin <lossin@kernel.org>, rust-for-linux@vger.kernel.org,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, tmgross@umich.edu,
- dakr@kernel.org, linux-kernel@vger.kernel.org, acourbot@nvidia.com,
- airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: xarray: abstract `xa_alloc`
-Message-ID: <20251008162201.79e76046@nimda.home>
-In-Reply-To: <aOZgrhsNrKpxM_PW@google.com>
-References: <20251006163024.18473-1-work@onurozkan.dev>
-	<20251006163024.18473-2-work@onurozkan.dev>
-	<DDBHMNEIU9HJ.68MGF28IF58I@kernel.org>
-	<aOTyVzpJNDOaxxs6@google.com>
-	<DDCV43KW9OGL.27I8HP4TSTQ6N@kernel.org>
-	<aOZgrhsNrKpxM_PW@google.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+Cc: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
+	dakr@kernel.org, linux-kernel@vger.kernel.org, acourbot@nvidia.com,
+	airlied@gmail.com, simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
+Message-ID: <aOZpwUD50MwSBycB@casper.infradead.org>
+References: <20251008124619.3160-1-work@onurozkan.dev>
+ <20251008124619.3160-3-work@onurozkan.dev>
+ <aOZhS9nTDnH3Zh7N@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aOZhS9nTDnH3Zh7N@google.com>
 
-On Wed, 8 Oct 2025 13:01:34 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Wed, Oct 08, 2025 at 01:04:11PM +0000, Alice Ryhl wrote:
+> > +        limit: Range<u32>,
+> 
+> The Range type is inclusive/exclusive but xa_limit is
+> inclusive/inclusive. They should match to avoid confusion.
 
-> On Wed, Oct 08, 2025 at 12:18:24PM +0200, Benno Lossin wrote:
-> > On Tue Oct 7, 2025 at 12:58 PM CEST, Alice Ryhl wrote:
-> > > On Mon, Oct 06, 2025 at 09:31:43PM +0200, Benno Lossin wrote:
-> > >> On Mon Oct 6, 2025 at 6:30 PM CEST, Onur =C3=96zkan wrote:
-> > >> > Implements `alloc` function to `XArray<T>` that wraps
-> > >> > `xa_alloc` safely.
-> > >> >
-> > >> > Resolves a task from the nova/core task list under the "XArray
-> > >> > bindings [XARR]" section in
-> > >> > "Documentation/gpu/nova/core/todo.rst" file.
-> > >> >
-> > >> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > >> > ---
-> > >> >  rust/kernel/xarray.rs | 39
-> > >> > +++++++++++++++++++++++++++++++++++++++ 1 file changed, 39
-> > >> > insertions(+)
-> > >> >
-> > >> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> > >> > index a49d6db28845..1b882cd2f58b 100644
-> > >> > --- a/rust/kernel/xarray.rs
-> > >> > +++ b/rust/kernel/xarray.rs
-> > >> > @@ -266,6 +266,45 @@ pub fn store(
-> > >> >              Ok(unsafe { T::try_from_foreign(old) })
-> > >> >          }
-> > >> >      }
-> > >> > +
-> > >> > +    /// Allocates an empty slot within the given limit range
-> > >> > and stores `value` there.
-> > >> > +    ///
-> > >> > +    /// May drop the lock if needed to allocate memory, and
-> > >> > then reacquire it afterwards.
-> > >> > +    ///
-> > >> > +    /// On success, returns the allocated id.
-> > >> > +    ///
-> > >> > +    /// On failure, returns the element which was attempted
-> > >> > to be stored.
-> > >> > +    pub fn alloc(
-> > >> > +        &mut self,
-> > >> > +        limit: bindings::xa_limit,
-> > >> > +        value: T,
-> > >> > +        gfp: alloc::Flags,
-> > >> > +    ) -> Result<u32, StoreError<T>> {
-> > >>=20
-> > >> I think it would be a good idea to make the id a newtype wrapper
-> > >> around u32. Maybe not even allow users to manually construct it
-> > >> or even inspect it if possible.
-> > >
-> > > What? People need to know what the assigned index is.
-> >=20
-> > The documentation says "allocated id", so I assumed that it was some
-> > internal, implementation-dependent thing, not an index. In that
-> > case we should change the docs instead.
->=20
-> An xarray is a map from integer to pointer. The allocated id the key
-> in this map. The alloc method picks the smallest unused key in a given
-> range.
->=20
-> Alice
-
-Perhaps we should document it as "allocated key" or "allocated id (key)"
-?
-
--Onur
+... and xa_limit is inclusive at the top end to be sure that we can
+actually allocate 2^32-1.  Or does Range handle that by using 0 to mean
+that 2^32-1 is allowed?
+> 
