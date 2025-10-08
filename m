@@ -1,34 +1,37 @@
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
+Received: from forward206b.mail.yandex.net (forward206b.mail.yandex.net [178.154.239.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058FE246BB6;
-	Wed,  8 Oct 2025 12:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF7422576E;
+	Wed,  8 Oct 2025 12:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759927658; cv=none; b=OAyLTtC0eS5KWDwMH8usVqF7mbtgEOkeJLtBpuAI5izchpay+AzOIdlz8PhcrCaKcWp7sBA1r1LLiDxQnKOvrVUgEO4JQ4WNmF/ekD1o9cRutpHg8ohBULbHcwRPRa0oUTj8i8qAH/c3rGrrRPJqhgyjVWiHj7nZOsGlx8eCtvo=
+	t=1759927992; cv=none; b=h+bzvCEwohWXh5THwxm3Zg94Q0/pwDn1CJ0ysaqse0Ay2J3VPic+9yXPtiu02v03VOaakM4whGEj1fZQ6bk8Y4RCGEU9jmxpSkbf7vh5zf9Q9398tLfXPRB177anFc2UIfP5RQ569/taeFc5HjmyzExGEWQIkXeyOjHBgQf+duM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759927658; c=relaxed/simple;
-	bh=2uY5NoijnwdLmleoPPRrn2yh0v/tr1KGjdpZ1mjviHk=;
+	s=arc-20240116; t=1759927992; c=relaxed/simple;
+	bh=M4vQ/ICTS7HOdkm3Eyry1Ae2cRQyR4+iqQSeG7AUovY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cbtyzh0ELSteywkPPrBFvudCTGKl3hvyVU9Y2tpiUVBnThmZSva920b4SCstPWNq/CDEa6cd9VyHbqoSUNwlMNMP62rl/FUPFpG4e9MHqwguDcBQF09F+845MXC1o2u5CLQslxvacb0cFBMw8Hnxe+j/SWp6LrH7hI/TVK8tp/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=jZIETUWJ; arc=none smtp.client-ip=178.154.239.147
+	 MIME-Version:Content-Type; b=kXACXgyF7MyocUs3xBl/U7r/YtxxBq+MVURazG2taapNylDHcp1Ydyn798/hSjUKoGct9yXyK+xVEs+ktZ5aFjcyOnUHOEFgFBbvflVnTB8L7WNVoSq4VPWWWHyjxD9l/UrYHEdvfM0Tj5TttfeujcjUwhhvy/1Rnrrs3zCKzmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=d94HbiTA; arc=none smtp.client-ip=178.154.239.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="jZIETUWJ"
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="d94HbiTA"
+Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d101])
+	by forward206b.mail.yandex.net (Yandex) with ESMTPS id 3EDE38371D;
+	Wed, 08 Oct 2025 15:47:36 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net [IPv6:2a02:6b8:c1b:3715:0:640:1185:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id 35F5880732;
-	Wed, 08 Oct 2025 15:47:34 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id LklD46OLveA0-D59SuP6u;
-	Wed, 08 Oct 2025 15:47:32 +0300
+	by forward101b.mail.yandex.net (Yandex) with ESMTPS id 1F57CC008F;
+	Wed, 08 Oct 2025 15:47:28 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id LklD46OLveA0-F6jyaQdz;
+	Wed, 08 Oct 2025 15:47:26 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1759927653;
-	bh=2uY5NoijnwdLmleoPPRrn2yh0v/tr1KGjdpZ1mjviHk=;
+	s=mail; t=1759927646;
+	bh=9zjv8cFRBo9Unx3PUTFt2Dg057u0swwLrQZWxNbSWj4=;
 	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=jZIETUWJfKDZBha4rR9GU61rEsPoWRPnta/4npIBviypEjNMjfHwAtG2UCmdOVi91
-	 Nh0XBjQafoKH2JbdN8iFqoHwDoAr2Zd4V3BH7YEEL5cSxf6d12TSqfXdUxlo9sjnJK
-	 eM9hO3IRO2qqHBHcAQdLQsw38NhuKv1MwLbKWFYw=
+	b=d94HbiTA+/qglKjJNUP8UVu3bp8xKNT88f5lgUR+fkNWhAJlK+ztEZp8TWsToIzAw
+	 MhBlPnbG3663GBUWrs07fyw2dKY3CHazNA7NRMOHgF/ci1zgL6+7VvLLhPLp2R4uVI
+	 Iko7lWPUHDqcjZXLTjT99r3iXrE4YdTbi+G4E+kU=
 Authentication-Results: mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rust-for-linux@vger.kernel.org
@@ -53,9 +56,9 @@ Cc: ojeda@kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-mm@kvack.org,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 4/4] remove completed task from nova-core task list
-Date: Wed,  8 Oct 2025 15:46:19 +0300
-Message-ID: <20251008124619.3160-5-work@onurozkan.dev>
+Subject: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
+Date: Wed,  8 Oct 2025 15:46:17 +0300
+Message-ID: <20251008124619.3160-3-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251008124619.3160-1-work@onurozkan.dev>
 References: <20251008124619.3160-1-work@onurozkan.dev>
@@ -68,32 +71,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The task is completed in this series.
+Implements `alloc` function to `XArray<T>` that wraps
+`xa_alloc` safely, which will be used to generate the
+auxiliary device IDs.
+
+Resolves a task from the nova/core task list under the "XArray
+bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
+file.
 
 Signed-off-by: Onur Özkan <work@onurozkan.dev>
 ---
- Documentation/gpu/nova/core/todo.rst | 8 --------
- 1 file changed, 8 deletions(-)
+ rust/kernel/xarray.rs | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/gpu/nova/core/todo.rst b/Documentation/gpu/nova/core/todo.rst
-index 0972cb905f7a..de70a857fcfd 100644
---- a/Documentation/gpu/nova/core/todo.rst
-+++ b/Documentation/gpu/nova/core/todo.rst
-@@ -210,14 +210,6 @@ capability, MSI API abstractions.
+diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+index 90e27cd5197e..0711ccf99fb4 100644
+--- a/rust/kernel/xarray.rs
++++ b/rust/kernel/xarray.rs
+@@ -10,7 +10,7 @@
+     ffi::c_void,
+     types::{ForeignOwnable, NotThreadSafe, Opaque},
+ };
+-use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
++use core::{iter, marker::PhantomData, ops::Range, pin::Pin, ptr::NonNull};
+ use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
 
- | Complexity: Beginner
+ /// An array which efficiently maps sparse integer indices to owned objects.
+@@ -268,6 +268,45 @@ pub fn store(
+             Ok(unsafe { T::try_from_foreign(old) })
+         }
+     }
++
++    /// Allocates an empty slot within the given `limit` and stores `value` there.
++    ///
++    /// May drop the lock if needed to allocate memory, and then reacquire it afterwards.
++    ///
++    /// On success, returns the allocated index.
++    ///
++    /// On failure, returns the element which was attempted to be stored.
++    pub fn alloc(
++        &mut self,
++        limit: Range<u32>,
++        value: T,
++        gfp: alloc::Flags,
++    ) -> Result<u32, StoreError<T>> {
++        let new = value.into_foreign();
++        let mut id: u32 = 0;
++
++        let limit = bindings::xa_limit {
++            min: limit.start,
++            max: limit.end,
++        };
++
++        // SAFETY:
++        // - `self.xa.xa` is valid by the type invariant.
++        // - `new` came from `T::into_foreign`.
++        let ret =
++            unsafe { bindings::__xa_alloc(self.xa.xa.get(), &mut id, new, limit, gfp.as_raw()) };
++
++        if ret < 0 {
++            // SAFETY: `__xa_alloc` doesn't take ownership on error.
++            let value = unsafe { T::from_foreign(new) };
++            return Err(StoreError {
++                value,
++                error: Error::from_errno(ret),
++            });
++        }
++
++        Ok(id)
++    }
+ }
 
--XArray bindings [XARR]
------------------------
--
--We need bindings for `xa_alloc`/`xa_alloc_cyclic` in order to generate the
--auxiliary device IDs.
--
--| Complexity: Intermediate
--
- Debugfs abstractions
- --------------------
-
+ // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
 --
 2.51.0
 
