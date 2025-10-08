@@ -1,131 +1,187 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADFF2EBB9E
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 16:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BD52BE625
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 18:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759942792; cv=none; b=ekYhR1uRD9oUGcqe8WcCRVkJrQVtXO6gpBJOOaAX3lwrlVb+roOErzuYeqbtMh51rLrBq9sIF6gx8mCXAuIo1L9Zumu0EDp6fFqISPzjIXIHMuKAD6k/tcuTazFuR2E9nKaojCwxFfjf3GGjylMe6kYL2zVIpVVdguOClvQwGEc=
+	t=1759947054; cv=none; b=AvfQ5A9m2d6xAQdduJN07+PDuc1m4Ubs187jP2Fg62pvr/VFVOPZGGm+ayEh+6AxHBGsnNs2DPn6Z2DSCfjsBLrXk/qpe+00udyUo3TQhAyd0JIte6G0P0tf0AUC7M1vh+DLl69n92/NUiSSF7+ZonkkBiTxEa0bPUDD/aF0O8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759942792; c=relaxed/simple;
-	bh=U6T66WCwAVe2p4J0jyxKKXb5H7i7GwEg7i80OTReVgg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m4PG4Q+CcFNFadejR3jqRTqiLJpDttK2pJBfdbjLuAd26JBIzKO+OR9gxPEcLnE/rgC+v69IWtuKzIasF+O0oRdv0lfF5uQ1+krIrBhQ95Gprjknsjbw6so3L+JpuasVHNPHlABKijZ86Ot9cS3E4fEldmPkd3VY/V41LvOcaJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i9Lpz4ZJ; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759947054; c=relaxed/simple;
+	bh=SaGxqTldM1xsGEyQJzMNlPIGiii+/O+77EXJ3kOV6yA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VY5knalhGIOlgHoFMGugzJ0C1NhuX04HkIAosI9hehDe+ClBw2wKQFA6DEuA+NNLewnASuyqdAem7I1yJ/zwPOueQw5cHwX7qHjo/Fl4ibJzyv72IhKTxj03oBELy2SIAPwYq3Zjbjdxs0oHPZRf5BaDSl/0jSF5dKSu4UnuV/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=m5AngRcT; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i9Lpz4ZJ"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3737d09d123so74796881fa.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 09:59:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759942789; x=1760547589; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tbyHQEVZUWM5+b8hXROM9euWoMjNsVjY1q+gc+HNpdk=;
-        b=i9Lpz4ZJj6FKCaKoPdaH6Dt3SKPGXD6VuF9P8ZjiEdc8U0Dggs8yav0uSzlw3JPEYB
-         1WFSd2V3sRgWMbdqOX8hHU53pNAZKNBt4piO1wY2Z5EoO6GSLCeMrWChf6rtv+wOo5WZ
-         5QHjq4V5Z5UCH/n2yfZjjs6L/AFc3UVhC87gP2/gC88WC8pJtg/QCbHCby+ibMyDthjJ
-         NlimmlOmlpThIL8inrrJ98gqaZbSJoVoGRX4rpG76bFr5dItIE/C/YLRG+o3x/8nk/SI
-         iklWxA3Hn3w3N0jUbPjyohs+e+/9TpL42fFetfT8+HBwmUTFVsyFtKCHIg+LRxi2UcsL
-         KSVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759942789; x=1760547589;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tbyHQEVZUWM5+b8hXROM9euWoMjNsVjY1q+gc+HNpdk=;
-        b=iH2AnikwLpDLvcgj4Lt1yvaXslNZOkLuqH4PBJe1q10JPQ/SRMnuNcMcLrabwHrGS7
-         ht+peurnSDRyIuavKEJ3PmBaPaMCKmnK3lmkAJnuEzvSb++zJLD09CPTr5RMlI2FsSiU
-         N0zS/0dIhwtx1SfFUwWMhqvE70Q59oVwVZnGiCfJXqnDOfU9fA2St2UmD8GJbk3sFPtK
-         +6kdaw/KDM1uOsDxpQg+h6VDljdPPhxFWbPc4n8Pm/E9aHpO5OqlcXxHD7jpn9kIuK9a
-         ccQOeVsHE6fyFL5OcwJ2hm6oZsH8z+bzb4fvG5SC2usbwhi/jy53Tqn/d9an2AEPn9QE
-         Xm6g==
-X-Gm-Message-State: AOJu0YwgehpbaDeo69d7Co11+xdHfCqFTNp2FhYSbJ5GO3dZ1K1XWCIJ
-	FBVRPBpe6Aq/TNh0yr5sU9y34DF7JFdYN5Wd9wYS8wZ1rCNG5/R2vZxqvEyr6uztAiKRpBikfjM
-	oW3hOZd8uv+ncb9/+OQkv2ts7HdKGcZ4=
-X-Gm-Gg: ASbGncuwtfoQlKL7HQBxM+wS7QSjnNF0IEkU7uoWOzaq9hhXHmWsjck+zgr9zb4SJpD
-	of0r9B4vJdYxhkB9woy6SUtIOlzBgQRYfYGiWTk7X07f39zdmxXKTWpbL7Umk+JMZ2z4N51gH7v
-	h3BhN1HFoTKwbGZiCsuDIxM8kvO8A0662ycdfq1PuFpA8pvvDKMIgwBESyM8HsCQvIj07mMGZiQ
-	P9hIxuSDz4guQbcBkI3h0Tb6msQ6Syf4sxYZtmYqUahnqtYgoQveQQtsLoIgrUHajGvulKOrwMk
-	5MrNjlUSIJiiGQD/JOTugK0FZYa43780qdmmj8ATccGPLVW8pXA/bRM=
-X-Google-Smtp-Source: AGHT+IGwE31TEki+9bgtGRuJBI0XpflFmiVXP2InI4RexshP1L9r4vs0K8grtJNFkGtKKh4judP6Mucbj50jbGgWQT0=
-X-Received: by 2002:a05:651c:12c3:b0:336:6c93:9726 with SMTP id
- 38308e7fff4ca-37609cc1c50mr12805851fa.4.1759942788553; Wed, 08 Oct 2025
- 09:59:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="m5AngRcT"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id CC6C1240101
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 20:10:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1759947044; bh=g9UUqZTuO/pVU1g1HZjC8FVIAQ6keeZB0dh+9qZDMYs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Autocrypt:OpenPGP:From;
+	b=m5AngRcTsImkVuHPJ+AjNSmEDhETeQ6YrkI5NRxY9rI3Lcpk+QtIX2+P9Tuwtwiz1
+	 GKcs5+xEXOYQ7N9vq9yBYJC+sjSAG7l+52gNGjoJSxLsQKwoqwVXYOUO71SEptaX+v
+	 lNHwgBZ1yy2zPDIkH++Xuz2cgfJFrYMvmKU8MCJr9JKnkXqTlrdQ9UCgd+Op+gVCOK
+	 ZkedOAoKWokMFE9QnWfKvh2tZYLRvDGr9MESG6rw1UBRufe5HeROV3y4LbKUf3NLQl
+	 4Z3R0iAAIwPWDGc4xn6vURtfSJ5CzO4rBKpg+O54xVtTlBRqnZviGkeuB7HXcEeuSG
+	 MYIFpg/YqOvBQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4chgzQ0ZwKz9rxY;
+	Wed,  8 Oct 2025 20:10:42 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+To: Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: Markus Probst <markus.probst@posteo.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	linux-leds@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/4] rust: i2c: add read and write byte data abstractions
+Date: Wed, 08 Oct 2025 18:10:43 +0000
+Message-ID: <20251008181027.662616-2-markus.probst@posteo.de>
+In-Reply-To: <20251008181027.662616-1-markus.probst@posteo.de>
+References: <20251008181027.662616-1-markus.probst@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251008124619.3160-1-work@onurozkan.dev> <20251008124619.3160-3-work@onurozkan.dev>
-In-Reply-To: <20251008124619.3160-3-work@onurozkan.dev>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 8 Oct 2025 09:59:12 -0700
-X-Gm-Features: AS18NWB_7cIMONd68nAMOTgSvZDlnnuuRjeTROznbec4OLsuftEiYVOVmU_FLrg
-Message-ID: <CAJ-ks9mtfVmP+SwZvBVuQSwViiqo2ZngSGQuU5Y7A-Q_JSwjKQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] rust: xarray: abstract `xa_alloc`
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Wed, Oct 8, 2025 at 6:05=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev>=
- wrote:
->
-> Implements `alloc` function to `XArray<T>` that wraps
-> `xa_alloc` safely, which will be used to generate the
-> auxiliary device IDs.
->
-> Resolves a task from the nova/core task list under the "XArray
-> bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
-> file.
->
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
->  rust/kernel/xarray.rs | 41 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 40 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index 90e27cd5197e..0711ccf99fb4 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -10,7 +10,7 @@
->      ffi::c_void,
->      types::{ForeignOwnable, NotThreadSafe, Opaque},
->  };
-> -use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
-> +use core::{iter, marker::PhantomData, ops::Range, pin::Pin, ptr::NonNull=
-};
->  use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
->
->  /// An array which efficiently maps sparse integer indices to owned obje=
-cts.
-> @@ -268,6 +268,45 @@ pub fn store(
->              Ok(unsafe { T::try_from_foreign(old) })
->          }
->      }
-> +
-> +    /// Allocates an empty slot within the given `limit` and stores `val=
-ue` there.
-> +    ///
-> +    /// May drop the lock if needed to allocate memory, and then reacqui=
-re it afterwards.
-> +    ///
-> +    /// On success, returns the allocated index.
+In addition to the core abstractions, implement
 
-Returning the index is not a very good abstraction. Would the
-reservation API meet your needs?
+* `i2c::I2cClient::read_byte` - read a byte from the i2c client
+* `i2c::I2cClient::write_byte` - write a byte to the i2c client
 
-https://lore.kernel.org/all/20250713-xarray-insert-reserve-v2-3-b939645808a=
-2@gmail.com/
+* `i2c::I2cClient::read_byte_data` - read byte data from the i2c client
+* `i2c::I2cClient::write_byte_data` - write byte data to the i2c client
 
-If yes, I would appreciate your tags there.
+* `i2c::I2cClient::read_word_data` - read word data from the i2c client
+* `i2c::I2cClient::write_word_data` - write word data to the i2c client
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+ rust/kernel/i2c.rs | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+
+diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+index 73858aecc131..57b02b65f90f 100644
+--- a/rust/kernel/i2c.rs
++++ b/rust/kernel/i2c.rs
+@@ -463,6 +463,51 @@ impl<Ctx: device::DeviceContext> I2cClient<Ctx> {
+     fn as_raw(&self) -> *mut bindings::i2c_client {
+         self.0.get()
+     }
++
++    /// Reads a byte from the i2c client
++    pub fn read_byte(&self) -> Result<u8> {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
++        // `struct i2c_client`.
++        let value = unsafe { bindings::i2c_smbus_read_byte(self.as_raw()) };
++        to_result(value).map(|()| value as u8)
++    }
++
++    /// Writes a byte to the i2c client
++    pub fn write_byte(&self, value: u8) -> Result<()> {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
++        // `struct i2c_client`.
++        to_result(unsafe { bindings::i2c_smbus_write_byte(self.as_raw(), value) })
++    }
++
++    /// Reads byte data from the i2c client
++    pub fn read_byte_data(&self, reg: u8) -> Result<u8> {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
++        // `struct i2c_client`.
++        let value = unsafe { bindings::i2c_smbus_read_byte_data(self.as_raw(), reg) };
++        to_result(value).map(|()| value as u8)
++    }
++
++    /// Writes byte data to the i2c client
++    pub fn write_byte_data(&self, reg: u8, value: u8) -> Result<()> {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
++        // `struct i2c_client`.
++        to_result(unsafe { bindings::i2c_smbus_write_byte_data(self.as_raw(), reg, value) })
++    }
++
++    /// Reads word data from the i2c client
++    pub fn read_word_data(&self, reg: u8) -> Result<u16> {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
++        // `struct i2c_client`.
++        let value = unsafe { bindings::i2c_smbus_read_word_data(self.as_raw(), reg) };
++        to_result(value).map(|()| value as u16)
++    }
++
++    /// Writes word data to the i2c client
++    pub fn write_word_data(&self, reg: u8, value: u16) -> Result<()> {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
++        // `struct i2c_client`.
++        to_result(unsafe { bindings::i2c_smbus_write_word_data(self.as_raw(), reg, value) })
++    }
+ }
+ 
+ // SAFETY: `I2cClient` is a transparent wrapper of a type that doesn't depend on `I2cClient`'s generic
+-- 
+2.49.1
+
