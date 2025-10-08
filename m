@@ -1,110 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46312ECD2E;
-	Wed,  8 Oct 2025 15:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9E32ECE96
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 15:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759935609; cv=none; b=K0/Ejqupsf+7vQ9tLVy1QbBMgrKhsjL/JbN69fu1CPKLoyjZbP+NBqhm/tyDVNd+AE4zHH9fc3g4fXKVbHWDfyucIWLvGeGStqh0Uqm76vjCWXs89+ElC5xUN4i/17k5IIr/TC2Gbv5Us/RAZGITnkeGwsz6NBI7UV6qnuSBsME=
+	t=1759936574; cv=none; b=clHpBIYxSGy8o/vs2uqgp22ek0OpPaMK2N2Qi8HfYhORv11xwaTcBZ3TxnFd30n/qjCSNLkrDfZhPEPYhocirBLa5KHk0gbpDtxj3e3WiZeMDNKVqltJ8mOAd+NU0hYDEl/A28GWz6T6yYiPyZSzCrMgzdyXcWwBT1M5kSHYYXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759935609; c=relaxed/simple;
-	bh=Zq4M4h4026xT+BGlmoGtIh/JGWUmGo07HG7ivwnX4b0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Hh0E8jw20EY6YiJHJaotUsVawLrIm2g4IqO202IyOJqkVEMvwviPvRT52lGvs3BSSPaHUbVQWLoI3CChwvwkfnqF9Rw6YW2SpI1jnUc0p5UAGTiYyEiVTmV6NBgFyUJiZY1SlKUvZuKoMNm8RozL0RBkQ+WW8IUweDlo3tCZ+9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izyx4qeJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759936574; c=relaxed/simple;
+	bh=NlnLqAEEYjD2IqgaKAO3MM+UKt9glTRY5F/bnfqHehQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A4azPW499P71AdbcCgIVtmh82Se03VaSTWV2r2ClODHsR6kr6hlQCTeSqD57m5bxeRQNopVSkEVUIUiOFyVtj+kBtkg/hjxkiwaNJ4fPfLxrxkPt1Wowwmn2wPXpTKkGfqDpevj/RPyBhEWiqqj1tvrMNT6ioioYLYu9xx96SM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=g+Z0Y4l7; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izyx4qeJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45284C4CEE7;
-	Wed,  8 Oct 2025 15:00:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759935608;
-	bh=Zq4M4h4026xT+BGlmoGtIh/JGWUmGo07HG7ivwnX4b0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=izyx4qeJQb2C5pEgtTwRd/dt0xDjWrxPxH8kFxMtHeiiYKekpB8WovdQserdiWVhd
-	 WOo8964xcCQppMRCby6GiMdy3k/9W9KueVb4PjVc0TbTV2r2qhay+jSZxbQPEUQEXt
-	 BNeKJsyP43lV8j6MTXpe7eNCCLDDdNYQW2MmEfDDNcS3Rml/gQ9ej2+1l+mP/iyCDf
-	 hweGdyr1kKNpG9WbuhWi+TMj7zOmro6ptx9WXG/Hs1/oxvFcdKaGVC9W9zScrvfgjw
-	 W3gzBvZLqQbJHyqegaPD1TBtEpyUSdM5DWxRWfath0BAxZ46fkIvwfiikI5d2S+GXB
-	 mNg8GebtPo/cQ==
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="g+Z0Y4l7"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-46faa5b0372so8254525e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 08:16:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1759936570; x=1760541370; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XqyXBvURAsE3+8/zFllMyhdxli5Va7fIbB+nLoRS42M=;
+        b=g+Z0Y4l7FERzQIrH09IOyO0I/malCdC+K7MCUEzIKr5twuo9aP7FTUb2NfoZdJTTzd
+         xLp6QoFcOe89zN1p7XqGFIUBpI3Rg9EBFKiLg2v+TzZwVc6HdS+cKzbNQhT1QOS80MY3
+         D8G1pUB07z85x3CGbUX9BNsKQn70cJDLiSG8OCJs8V53ohZJw5DKbi8DuxHmPxbSY7py
+         ufZ7+/+BOTUpS/IgGlAypTbBmjhXhThe80vyYQGlft+CBbrF0f8zR7//Ajsbw3CgUJVO
+         AsVyzVczvgzyd2Rr2Y4EPPJSECut9j9jF9tl/kAAR41E1FyylZv4q1tkOh9dU5x/gwWs
+         xF/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759936570; x=1760541370;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XqyXBvURAsE3+8/zFllMyhdxli5Va7fIbB+nLoRS42M=;
+        b=fPRZV6GnD0jsBHCF8rctmsS+FQOyDKKooncBl4jJLy5wMJF4d3hPSInrQ5fQ5g5mIZ
+         jEyNieDx/vgJGZ4+aJ125Bb6k0w99qaqUsGbkEN4PAXuZpnTuaGnnRPOyNr21OmHEr5X
+         zmUbwYAMC6EJx2KDjqkSQjjWyEjdB0YX1/TPnUQjyIOvUmiyhbF8mMVK7Z7k1gEi/ZEN
+         fYGaEEb57upeeDF64WTB3lEPvu/UovBeJpBT1wGjOQzOulMzUfTf6ochtqhedg7BDzfW
+         WJtsxFcYQ05ri1FJLxr913Y0SCB6cA8oxl3zoWKPU/WADgeF4ghAlzN91GgxnD7ccGS4
+         R/Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCVRZLV7CGBzuex2T8hTfWmJM9rFKUsqzdFXhgqE3KavFDEjCTw/74C4cDn1dMEnAYevBWwAVi5uJM6P1OTUeg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHQ0HZ80TcpSpWOspAUglnhwQqLttpLGo2WjkN/51VCN0d2SCe
+	WIYSl1hyuwcfzReVmmul0VKD9klvfTqGCO4QtgD62wLc18y06HskZUJVPZN6PnXTOLM=
+X-Gm-Gg: ASbGncvJW/8DNW/e7d+2eHSFbHHpELLey1a3H2BjNu+9JHNqf5CJOF1iYkQMWU/qWs/
+	yGul6JAH8Pty2Kkp+PczI7cJZG17Q8A47H3xTiEkVTcSrNRik3lMTkQlXvX7GQPiSfNcP2Vsa15
+	/vbDrwJLGIjsE7L1JPegSyiD4y4iL0XzwYT769gqftNYbwfK3ekMhyaKSKPLcFvYSp8rw9GlkB5
+	4i/KxUJGu63WR3WBnjFTyX0FZo+xcbseJm+lVRovAF7npis1ISivuiXFoKpgJ6JvYUsBEHoGLO4
+	ImfHRImU9fB3rn77+ObmgpUKf/1UCIUblYMOLgAAcFTudftO2iDY4Wy47ZFBjnuoauEzZIInKs3
+	z2IbS7UXwGt45wL/6LatVsZaGFwiCCP0Ni3Vci78pcdaB3KQds3esN90Z+su/4TE=
+X-Google-Smtp-Source: AGHT+IGxUZ69RSaAr72i0Jlq1CRq84UjMRAHUoPSowy6BpE7V0vBY1W4lUxIlK3QHaHD8JCFgPtc+A==
+X-Received: by 2002:a05:600c:609b:b0:456:13b6:4b18 with SMTP id 5b1f17b1804b1-46fa9b106cbmr31182115e9.31.1759936569983;
+        Wed, 08 Oct 2025 08:16:09 -0700 (PDT)
+Received: from linux.fritz.box ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9bf8288sm42480555e9.2.2025.10.08.08.16.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Oct 2025 08:16:09 -0700 (PDT)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH v3 0/2] rust: add new workqueue functions
+Date: Wed,  8 Oct 2025 17:15:52 +0200
+Message-ID: <20251008151554.340806-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Oct 2025 17:00:01 +0200
-Message-Id: <DDD13PUEPSZO.ALDND33ZFFC7@kernel.org>
-Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to
- rust/kernel/
-Cc: "Joel Fernandes" <joelagnelf@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- "Alistair Popple" <apopple@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
- Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Andrea Righi"
- <arighi@nvidia.com>, <nouveau@lists.freedesktop.org>
-To: "Yury Norov" <yury.norov@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
- <aORCwckUwZspBMfv@yury> <DDC0VAHL5OCP.DROT6CPKE5H5@nvidia.com>
- <DDC49ZIRX79X.2Q4KW0UY7WUF3@kernel.org>
- <faa99188-7ccb-4c7c-b705-3a207f5acd17@nvidia.com>
- <DDCFLM3P5MCC.NEBRVTU7X2G3@kernel.org> <aOZ0_7YQw81lyMWt@yury>
-In-Reply-To: <aOZ0_7YQw81lyMWt@yury>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed Oct 8, 2025 at 4:28 PM CEST, Yury Norov wrote:
-> On Wed, Oct 08, 2025 at 12:08:59AM +0200, Danilo Krummrich wrote:
->
->> Regarding the bitfields for page table management: Are we
->> sure that we can use raw bitfields for this?
->
-> As per my current understanding we can't. Bitfields are not suitable for
-> direct I/O and considered as a data storage. In the current scheme:
->
->         regs::NV_PFALCON_FALCON_DMATRFBASE::default()
->             .set_base((dma_start >> 8) as u32)
->             .write(bar, &E::ID);
->
-> we account for endianess in the .write() method, which would be a part
-> of register API, not bitfields.
+Hi,
 
-I know, I proposed this register API design about a year ago, and Alex came=
- up
-with an awesome implementation for it. :)
+Recently the workqueue code has been changed introducing two new workqueue,
+system_percpu_wq and system_dfl_wq, as a future replacement for system_wq and
+system_unbound_wq respectively.
 
-And yes, your understanding is correct, the idea is that the I/O backend th=
-at
-knows about the underlying bus, etc. takes care of the endianess.
+The change has been introduced by:
+    'commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")'
 
-However, we might still be able to use bitfields natively for page table
-management structures: In [1] I asked for the NV_PMC_BOOT_1 register, which
-might provide some endianess switch to ensure that we always match CPU
-endianess.
+The old workqueue(s) will be removed in a next release cycle.
 
-> FYI: ARM64 is in process of dropping BE, and Linus announced the end
-> of BE support for RISC-V:
+=== Introduced Changes by this series ===
 
-Yeah, I'm aware of the thread. Also note that for RISC-V it was also clarif=
-ied
-that if it turns out that BE for RISC-V becomes relevant it would also find=
- its
-way into the kernel. If that's likely is of course a different question.
+1) [P 1-2] Add wrapper for the new workqueues
+  -   This change introduce two new Rust functions in order to add a wrapper for
+      the new wq(s) defined in the C code.
 
-However, there are still architectures such as s390x that could be supporte=
-d.
 
-So, long story short, my question from above is more meant to challenge if =
-we
-can really always guarantee that CPU and GPU endianess match for nova-core.
+Thanks!
 
-[1] https://lore.kernel.org/lkml/DDCV84IJHUML.126CB1CT0XMX5@kernel.org/
+---
+Changes in v3:
+- added a proper comment documenting the new added functions.
+
+Changes in v2:
+- added system_percpu() and system_dfl() in order to use the new
+  wq defined in the C code.
+
+- fixed misleading paragraph in the commit log (no warnings are currently
+  present).
+
+Marco Crivellari (2):
+  rust: replace use of system_unbound_wq with system_dfl_wq
+  rust: replace use of system_wq with system_percpu_wq
+
+ rust/kernel/workqueue.rs | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+-- 
+2.51.0
+
