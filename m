@@ -1,116 +1,136 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF3E26D4C3
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 12:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFFF20DD72
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 13:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759928396; cv=none; b=eN2dw9MfHcRa0fwbByvxOiA4dwJij7iRjOCHbPM6CRwk0ieIh9bpyzsHHsckbNurMQEBCEyyOjbTTN7bkm4QZ/50GdIHUEnpwM6jorinoEHdTI5ZZz5IifIMMY9/2YmzOz0rSz863OQF1UfkbMPeEabNUgIJNh1gWQEdUQshOOM=
+	t=1759928498; cv=none; b=e1qSL1pgGoWIgQTAfZx8R5uttHk6vzX/Atq0T0J2Gt4FniBNhJJUjWq5yUC5+CM8ZpmIXbaNyPx/heEbKHHVRZJcETV67qmRM3EqgnTLBULzSlVHlHhXCqH1iqeCjE/3N38sXdUvrPRRAh29EiyriMtrfu61A5lKOm8j12dzdpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759928396; c=relaxed/simple;
-	bh=rpvnoiwVgRwtp5vtftIIzY6dMvIEVla5by01D+997ns=;
+	s=arc-20240116; t=1759928498; c=relaxed/simple;
+	bh=U8gluw6AjhGk5C4G3GGmOk26ZsDpNCj6rdIo4rIN0as=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Q1xHjhFzHRBp+qYyf9UqI5nalhonH37PDbBDFMz09aIYeNmoRhSABlbHjCqJpj94eVTMZE+UaSsixBDiuTyaNA7WSuIPCDq9w7yzBbbs5avgG5VjXvs0km9ZOgsa4XbUWXNZa4/pfkNfN6vVc7nwzXvasQHZmfDXTtoCFIQ3+Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dpRejHo/; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=LnFRBOhl9i+VgmOpDDW1cGK48AOihDU2RBPuBGUbOtE4SWfeHBbNehqxS3D+x1vOet5XJIi6WGyQmOcGu9+4WCO8ZuVuDldE8pDwbUKkNv/ImHJTO50jUUuD/BJaykijDTYYXOYVatNpQfn6+2VpFj0WINM7suuRLlzFSY76t8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IfzrqvhN; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dpRejHo/"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e502a37cdso45449935e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 05:59:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IfzrqvhN"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e44b9779eso28276825e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Oct 2025 06:01:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759928393; x=1760533193; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R/gB/5AyaPSdIrAxreQ3UUV2P7u+LQ2v1uTWQNbCwJQ=;
-        b=dpRejHo/mzII+Oob0KBLVp4UFi/iy+ErDgbo+ic76LeBOdDXnMS2W1MWoMfOitj9wg
-         HC7MnjTNSqoGco4KuhjfxCTmZm6AhQv5Xm6C0piTXPeNPF6+HzOOZ+sc6+ucD5h+F6s2
-         nmltKcy4Eklg8XefgQAvQhf9M0LscTIJjmRgoQ3Ied9q9YzSUefhhFrX3uzvQPOv0Hu8
-         lzE2CPlXyFykkE0UnTfadBla4OE+x6Wz4yxtUMCfuWdExOsr2pCNhlD/P7Dad8SykF0z
-         4WjgR9mKOUcY/7aUWE39ZWu3m8HqWR3llgku8HvP0ExosKr1ehicjPcMNDWakd3pXBt+
-         3Rqg==
+        d=google.com; s=20230601; t=1759928495; x=1760533295; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GegBdW6/vqVWwJUxJt/HTrMkbdqIQ76CzJgwPMuKcI0=;
+        b=IfzrqvhN3k8D6tCmwFAOMXIZ3zUH1wfHtLoqS5Ycotmv2wVVC1liSJSKg6UcjPYrGk
+         GejJ65Z1FTci3WtVkyIrzK7OOmACpsz+CIPDL8GrRTnnDVO5aS5eyMCtAGk12IMXaIg2
+         k7SdSY2Ew0qmYJlwMlsh/YmVMQyHWh0fJaWOGFZSwvy97t+JLrkxkQeQMXl/0PhhiaD6
+         6+xnH36AJHw/6QP4e9rv/A9Oz4JlOLuhSQRwPOeepWURUkr0dYYhLDIiElpwwd6GwIG6
+         yf9YfcQ1uxC7AlSrybO/tGi+KlkWfhor0JePVMW7vSUNLFmfKCA2+X2K2fQMvo02JpjW
+         wbfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759928393; x=1760533193;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R/gB/5AyaPSdIrAxreQ3UUV2P7u+LQ2v1uTWQNbCwJQ=;
-        b=pXuxQ1EKbA1GKh2Njpyw+sc7a2IsHNNNWOZusfzLWlYd0NE6+BFYQudIgVX+Q7xa36
-         WzY1QzCRfMY3Bsa/RL+2DHiNdAfW7sDPAF9YFw24GbB9pRPipqddSE6CEsYXzC1I8u18
-         yyJqWY9EbPUiMKle9xuGQx5HuV79+Wh+Zt6M2Qdd0PSxbl0H1ZcUoVGe05sWjqHdWTpn
-         b//TkGSE2v6/VkVOK1PWnuUYA9/EcMV37ncNAYENoM9YD6kNXSVtqcYZAc+QS8BWS8mL
-         KhBP61KWC4x7+p8U0vvCccWAU6LkGQvYVWjhD+oEain4V2gT4EqmEYrNyYhQJEUxT9tq
-         dYww==
-X-Forwarded-Encrypted: i=1; AJvYcCVSnzW+BwbpwicYn/eeMu0nJIQMOn2hECPWVQ7JLFmw7YIttxEvDNWcWuKcASk2Ju1WGLShmtBHX3w3rwTqMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRX4izcP9NMGRYL7zvl5wGfISZ9a3jR+0qUXZ1OVFdncBncIdO
-	0rydhqAGgX/vUd2Sb3VeMdAta7NVpCJ4WP2IILOHpyLRjrwdsJuSf16pFOeALDvNJUGbY5SL2Lk
-	Vtll3FrSuEFK+5sn0bg==
-X-Google-Smtp-Source: AGHT+IHzaS5ipgkkAY1+ObaRaQ9zgsFXNgdU7+XqYJiEUNYrRwbKTaDYoUOFMMqh18xBSjuEhXUBg0G2wiNXGC0=
-X-Received: from wmvw6.prod.google.com ([2002:a05:600d:42c6:b0:46f:aa50:d703])
+        d=1e100.net; s=20230601; t=1759928495; x=1760533295;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GegBdW6/vqVWwJUxJt/HTrMkbdqIQ76CzJgwPMuKcI0=;
+        b=Pt1qKR0bv6L6etDVPJsLh9H5NBluCu2LN0UfT84FMKV6p9hEskARJvMCMNfAm0MB7C
+         wo/u9w3RYpyP9teIfKNjZ2Eo0OcG/5GmTeWD6arKeloVE6Tc2R+IcELdpJZvuOsuSLvu
+         GOryI3lM6uLc5J/45Hrywy9FRm1qNQcTwXAMtpTUCwxIp9xQQGYUaZdQ6/zJ07tm+YjT
+         aq1r993u93CXF0vVrEPu9ewe3Wr8TeqQoe3YWtzf52dN1koB6ty5hwtCrDgXwPCCid/7
+         EfVQBH217nOf0PnO+kiSQXAZZbR6XK3GOkkPdajfBuxbzS2WPD/P39oPw0P0r7yfRzGL
+         9/kA==
+X-Forwarded-Encrypted: i=1; AJvYcCUa8q1qop8qHhz8mI/IAvbcXStIheabtfi0jO13ITqHmK3rtvzm/E9fX0hCpGgK+8ihvLxyhrkPPayjQrKBlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcafZWCyIA/PpGrFAfcTPer1be0x+TlKjBNB6BbF5N6O8ywxw1
+	yuhoEDw9uHYQ8NyZfRgpL66+un5VA0cRcX1QLfx6ReKsGcE6Kd6xHJbN/rDFuXT3dvvwUemZ/CN
+	0Roc60gk+Eu7kXEj1Rw==
+X-Google-Smtp-Source: AGHT+IFOSiOdV5yhuZ0ZB6MFGcVW4EY/P9vvGB1lbHla91Nrf6b7CfBCTOLrpELNIGe52y3C6X6BGL/q+rKkFJc=
+X-Received: from wmpu15.prod.google.com ([2002:a05:600c:4d0f:b0:46f:aa50:d6ff])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8718:b0:46e:731b:db0f with SMTP id 5b1f17b1804b1-46fa9b08f09mr20915055e9.28.1759928392960;
- Wed, 08 Oct 2025 05:59:52 -0700 (PDT)
-Date: Wed, 8 Oct 2025 12:59:51 +0000
-In-Reply-To: <20250908160224.376634-2-marco.crivellari@suse.com>
+ 2002:a05:600c:3546:b0:46e:33a6:46b2 with SMTP id 5b1f17b1804b1-46fa9a96a70mr22790175e9.12.1759928495174;
+ Wed, 08 Oct 2025 06:01:35 -0700 (PDT)
+Date: Wed, 8 Oct 2025 13:01:34 +0000
+In-Reply-To: <DDCV43KW9OGL.27I8HP4TSTQ6N@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250908160224.376634-1-marco.crivellari@suse.com> <20250908160224.376634-2-marco.crivellari@suse.com>
-Message-ID: <aOZgR7X5ZyXZh_jc@google.com>
-Subject: Re: [PATCH v2 1/2] rust: replace use of system_unbound_wq with system_dfl_wq
+References: <20251006163024.18473-1-work@onurozkan.dev> <20251006163024.18473-2-work@onurozkan.dev>
+ <DDBHMNEIU9HJ.68MGF28IF58I@kernel.org> <aOTyVzpJNDOaxxs6@google.com> <DDCV43KW9OGL.27I8HP4TSTQ6N@kernel.org>
+Message-ID: <aOZgrhsNrKpxM_PW@google.com>
+Subject: Re: [PATCH 1/3] rust: xarray: abstract `xa_alloc`
 From: Alice Ryhl <aliceryhl@google.com>
-To: Marco Crivellari <marco.crivellari@suse.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, tmgross@umich.edu, dakr@kernel.org, 
+	linux-kernel@vger.kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, corbet@lwn.net, lyude@redhat.com, 
+	linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 08, 2025 at 06:02:23PM +0200, Marco Crivellari wrote:
-> Currently if a user enqueue a work item using schedule_delayed_work() the
-> used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
-> WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
-> schedule_work() that is using system_wq and queue_work(), that makes use
-> again of WORK_CPU_UNBOUND.
-> 
-> This lack of consistentcy cannot be addressed without refactoring the API.
-> 
-> system_unbound_wq should be the default workqueue so as not to enforce
-> locality constraints for random work whenever it's not required.
-> 
-> Adding system_dfl_wq to encourage its use when unbound work should be used.
-> 
-> The old system_unbound_wq will be kept for a few release cycles.
-> 
-> Suggested-by: Tejun Heo <tj@kernel.org>
-> Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-> ---
->  rust/kernel/workqueue.rs | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index f98bd02b838f..01e331a1f11b 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -667,11 +667,18 @@ pub fn system_long() -> &'static Queue {
->  /// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
->  /// are executed immediately as long as `max_active` limit is not reached and resources are
->  /// available.
-> +///
-> +/// Note: `system_unbound_wq` will be removed in a future release cycle. Use [`system_dfl_wq`] instead.
->  pub fn system_unbound() -> &'static Queue {
->      // SAFETY: `system_unbound_wq` is a C global, always available.
->      unsafe { Queue::from_raw(bindings::system_unbound_wq) }
->  }
->  
-> +pub fn system_dfl() -> &'static Queue {
-> +    // SAFETY: `system_dfl_wq` is a C global, always available.
-> +    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
-> +}
+On Wed, Oct 08, 2025 at 12:18:24PM +0200, Benno Lossin wrote:
+> On Tue Oct 7, 2025 at 12:58 PM CEST, Alice Ryhl wrote:
+> > On Mon, Oct 06, 2025 at 09:31:43PM +0200, Benno Lossin wrote:
+> >> On Mon Oct 6, 2025 at 6:30 PM CEST, Onur =C3=96zkan wrote:
+> >> > Implements `alloc` function to `XArray<T>` that wraps
+> >> > `xa_alloc` safely.
+> >> >
+> >> > Resolves a task from the nova/core task list under the "XArray
+> >> > bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
+> >> > file.
+> >> >
+> >> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> >> > ---
+> >> >  rust/kernel/xarray.rs | 39 +++++++++++++++++++++++++++++++++++++++
+> >> >  1 file changed, 39 insertions(+)
+> >> >
+> >> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> >> > index a49d6db28845..1b882cd2f58b 100644
+> >> > --- a/rust/kernel/xarray.rs
+> >> > +++ b/rust/kernel/xarray.rs
+> >> > @@ -266,6 +266,45 @@ pub fn store(
+> >> >              Ok(unsafe { T::try_from_foreign(old) })
+> >> >          }
+> >> >      }
+> >> > +
+> >> > +    /// Allocates an empty slot within the given limit range and st=
+ores `value` there.
+> >> > +    ///
+> >> > +    /// May drop the lock if needed to allocate memory, and then re=
+acquire it afterwards.
+> >> > +    ///
+> >> > +    /// On success, returns the allocated id.
+> >> > +    ///
+> >> > +    /// On failure, returns the element which was attempted to be s=
+tored.
+> >> > +    pub fn alloc(
+> >> > +        &mut self,
+> >> > +        limit: bindings::xa_limit,
+> >> > +        value: T,
+> >> > +        gfp: alloc::Flags,
+> >> > +    ) -> Result<u32, StoreError<T>> {
+> >>=20
+> >> I think it would be a good idea to make the id a newtype wrapper aroun=
+d
+> >> u32. Maybe not even allow users to manually construct it or even inspe=
+ct
+> >> it if possible.
+> >
+> > What? People need to know what the assigned index is.
+>=20
+> The documentation says "allocated id", so I assumed that it was some
+> internal, implementation-dependent thing, not an index. In that case we
+> should change the docs instead.
 
-Please add documentation to the new methods, similar to the
-documentation that existing methods already have.
+An xarray is a map from integer to pointer. The allocated id the key in
+this map. The alloc method picks the smallest unused key in a given
+range.
 
 Alice
