@@ -1,37 +1,36 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672212C08BA
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 18:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389BF2C0F7A
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 18:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759947056; cv=none; b=F/NoWR236/+dzMo15cbRcH+rBNLSWEnFpd3mW2KXM1lbkkgjz9NfEtnKKl2FbS6Xkj0QYTDvJkAVeT7f3tpGpAyHZpA7S1Gggv80cKE6+/4DiGQs4WUkKJKyd6vj4+uO+FtAzawC81/I0nLiHl2fYs0zVpdJ4u0xXbHkjl0he8Y=
+	t=1759947057; cv=none; b=ZXIRtkFqXH9ZaMiyTbgLWAYvl++nBAidKKkLTaMd7YYoAnH9exp210c9fBNrpnlI4jPItmyiCYkDLSMYW3NEs9midxfQLCZCVfLpjkSpt/i5mjZsQwXRUt4DOJd+JoBiMk2fF6u7wRsvidI0LZdPs2uyhDxPhNmdI86LI/K/TTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759947056; c=relaxed/simple;
-	bh=TensFLUA81g/x9L5G6Z4Yuw/GBe3HW5Htj5vNxykNyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHigG6d0nQ9wciCqad8NrAgmGDBfhwjeLSGE8GR7tHDpVAZRklUGLnFNhIOTx1ems9dSJZ6P/ZdwW7u9Oqqm4EHSoYGNGtPp2PHcc1WXH5swI2OlwogQaLocn1LTce9yDtPT+Jm8pMKlBz+hPYvyyNUwFrZ5ReA+TGaWHlG3KMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=Ld0DaSOq; arc=none smtp.client-ip=185.67.36.65
+	s=arc-20240116; t=1759947057; c=relaxed/simple;
+	bh=c2hc+fmf/izOaFAd97rHa6VeWLubfQfOeJhQz8oQcG0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hmIGXcpZakNVf9o+/BoA5CyvAltFooivKqKG899u7LuBU65LF5M1upjqG7YHk4ThrwLXQjy29fJn/acddb2t9z52953SMcwcNRGeta1h2EpUU8juq1ityrrhvm69Qfwor79yied1Lh3UiIJ7EgN9tpKW7Y4MRNCOgstm9/mjy2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=DEBwRB6S; arc=none smtp.client-ip=185.67.36.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="Ld0DaSOq"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="DEBwRB6S"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 795D1240027
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 20:10:49 +0200 (CEST)
+	by mout02.posteo.de (Postfix) with ESMTPS id 12EB9240103
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Oct 2025 20:10:43 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1759947049; bh=6o5KG45PmF3kRE1S0MtEmvCsqg21dTOW7EJNjlfw1yY=;
+	t=1759947043; bh=bz5I0bfrS47v6XjHM6K8VutZ5ZE8ALuRAqGU6IUzCZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:
 	 Content-Transfer-Encoding:Autocrypt:OpenPGP:From;
-	b=Ld0DaSOqpJtr+0h9qcB2L/VXhbl+reTlMopC2ij3Jr8Mc0NuQkiIbiFIS1lVdpaVW
-	 yFfCCbNdnf792JlHSx2k5hsaaTQN3gGsSKLjrgew+HJOayFp3MpmUJ7Ik+RqHnJaV7
-	 eanB3nsKTDR4ACfZN5XBI/syqtZLqZbwO64F3erXOTrDwCFQrKMwnQXbglapqQwXH9
-	 NO0sBinsWqyeXd7yaIHNIGDzT0DkQ7qD2pgrjiDNb0Lwat9hGYL87YCY9GJl0mHtej
-	 ipuzAaR8F/5mtiVzIpd7zGVQhZqnS5dqthKxdzCaN9fc2by5fxR4jfPVT7Hv2acKAt
-	 2mS73TLVgbPdQ==
+	b=DEBwRB6SvWFCMusrAu7tKe1y8zj7s62q+ak1zJcfCRSIZjWqovr238TX5bHjBRbjB
+	 w0CdA47/Uw5tR3P2Cp49Q7YTwJOuttN6/+XtwUtECH0t8BUGFCkEW64IH6IEX462Z9
+	 /KZSZbsDT7MCjljeskjv61LNUhZeAZAUy8D0h3GBBRlHB6KBwrt7lbq3Lx0rogcY2T
+	 Y8JlNOFlersUHitgqcPYEH0lKdat/Q7PwbBMjfbcQQIgw6kMkiTjQeje2cCnQHQDkO
+	 afj81mwcilhW/NX7g/h7PFFW/IVYYVo0ddsYOknSkQkx+qD1+eoLf6I37thH5PBhIL
+	 O5WDte8U3KuWA==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4chgzT6Jcvz9rxX;
-	Wed,  8 Oct 2025 20:10:45 +0200 (CEST)
+	by submission (posteo.de) with ESMTPSA id 4chgzM70WHz9rxS;
+	Wed,  8 Oct 2025 20:10:39 +0200 (CEST)
 From: Markus Probst <markus.probst@posteo.de>
 To: Lee Jones <lee@kernel.org>,
 	Pavel Machek <pavel@kernel.org>,
@@ -55,13 +54,9 @@ Cc: Markus Probst <markus.probst@posteo.de>,
 	linux-leds@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] rust: leds: add basic led classdev abstractions
-Date: Wed, 08 Oct 2025 18:10:47 +0000
-Message-ID: <20251008181027.662616-4-markus.probst@posteo.de>
-In-Reply-To: <20251008181027.662616-3-markus.probst@posteo.de>
-References: <20251008181027.662616-1-markus.probst@posteo.de>
- <20251008181027.662616-2-markus.probst@posteo.de>
- <20251008181027.662616-3-markus.probst@posteo.de>
+Subject: [PATCH 0/4] Add first led driver written in Rust
+Date: Wed, 08 Oct 2025 18:10:42 +0000
+Message-ID: <20251008181027.662616-1-markus.probst@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -112,339 +107,50 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Implement the core abstractions needed for led class devices, including:
+This patch series adds the first led driver written in Rust to the
+kernel.
 
-* `led::LedHandler` - the trait for handling leds, including
-  `brightness_set`
+The following changes were made:
+* extends the not-yet-merged i2c patch series (see below) to include
+  abstractions for reading and writing to i2c clients.
 
-* `led::LedInitData` - data set for the led class device
+* add a wrapper of Vec, that allows to initialize PinInit items with
+  the gurantee that these will never be moved.
 
-* `led::LedClassDev` - a safe wrapper arround `led_classdev`
+* add basic led classdev abstractions to register and unregister leds
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- rust/kernel/led.rs | 299 +++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs |   1 +
- 2 files changed, 300 insertions(+)
+* add a driver for the atmega1608 microcontroller used in synology
+  devices.
+
+This patch series requires and is based on:
+https://lore.kernel.org/rust-for-linux/20251005102226.41876-1-igor.korotin.linux@gmail.com/T/#t
+
+Atmega1608 is a programmable microcontroller. It has been preprogrammed
+to allow leds being controlled via the i2c bus. This driver can only be
+used on synology devices using this microcontroller.
+
+Information on how to interact with it, has been gained by viewing the
+drivers/leds/leds-atmega1608.c file licensed under GPL found here (thats the only documentation):
+https://global.synologydownload.com/download/ToolChain/Synology%20NAS%20GPL%20Source/7.2-72806/r1000/linux-4.4.x.txz
+
+Markus Probst (4):
+  rust: i2c: add read and write byte data abstractions
+  rust: add pinned wrapper of Vec
+  rust: leds: add basic led classdev abstractions
+  leds: add driver for synology atmega1608 controlled LEDs
+
+ MAINTAINERS                     |   6 +
+ drivers/leds/Kconfig            |   9 +
+ drivers/leds/Makefile           |   1 +
+ drivers/leds/leds_atmega1608.rs | 377 ++++++++++++++++++++++++++++++++
+ rust/kernel/alloc/kvec.rs       |  86 ++++++++
+ rust/kernel/i2c.rs              |  45 ++++
+ rust/kernel/led.rs              | 299 +++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 8 files changed, 824 insertions(+)
+ create mode 100644 drivers/leds/leds_atmega1608.rs
  create mode 100644 rust/kernel/led.rs
 
-diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-new file mode 100644
-index 000000000000..14f09a2c8c3b
---- /dev/null
-+++ b/rust/kernel/led.rs
-@@ -0,0 +1,299 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Abstractions for the leds driver model.
-+//!
-+//! C header: [`include/linux/leds.h`](srctree/include/linux/leds.h)
-+
-+use core::pin::Pin;
-+
-+use pin_init::{pin_data, pinned_drop, PinInit};
-+
-+use crate::{
-+    alloc::KBox,
-+    container_of,
-+    device::{property::FwNode, Device},
-+    error::{code::EINVAL, from_result, to_result, Error, Result},
-+    prelude::GFP_KERNEL,
-+    str::{CStr, CString},
-+    try_pin_init,
-+    types::{ARef, Opaque},
-+};
-+
-+/// The led class device representation.
-+///
-+/// This structure represents the Rust abstraction for a C `struct led_classdev`.
-+#[pin_data(PinnedDrop)]
-+pub struct LedClassDev {
-+    default_trigger: Option<CString>,
-+    parent: Option<ARef<Device>>,
-+    handler: KBox<dyn LedHandlerImpl>,
-+    #[pin]
-+    classdev: Opaque<bindings::led_classdev>,
-+}
-+
-+/// The led init data representation.
-+///
-+/// This structure represents the Rust abstraction for a C `struct led_init_data`.
-+#[derive(Default)]
-+pub struct LedInitData<'a> {
-+    fwnode: Option<&'a FwNode>,
-+    default_label: Option<&'a CStr>,
-+    devicename: Option<&'a CStr>,
-+    devname_mandatory: bool,
-+}
-+
-+impl LedInitData<'static> {
-+    /// Creates a new [`LedInitData`]
-+    pub fn new() -> Self {
-+        Self::default()
-+    }
-+}
-+
-+impl<'a> LedInitData<'a> {
-+    /// Sets the firmware node
-+    pub fn fwnode<'b, 'c>(self, fwnode: &'b FwNode) -> LedInitData<'c>
-+    where
-+        'a: 'c,
-+        'b: 'c,
-+    {
-+        LedInitData {
-+            fwnode: Some(fwnode),
-+            ..self
-+        }
-+    }
-+
-+    /// Sets a default label
-+    pub fn default_label<'b, 'c>(self, label: &'b CStr) -> LedInitData<'c>
-+    where
-+        'a: 'c,
-+        'b: 'c,
-+    {
-+        LedInitData {
-+            default_label: Some(label),
-+            ..self
-+        }
-+    }
-+
-+    /// Sets the device name
-+    pub fn devicename<'b, 'c>(self, devicename: &'b CStr) -> LedInitData<'c>
-+    where
-+        'a: 'c,
-+        'b: 'c,
-+    {
-+        LedInitData {
-+            devicename: Some(devicename),
-+            ..self
-+        }
-+    }
-+
-+    /// Sets if a device name is mandatory
-+    pub fn devicename_mandatory(self, mandatory: bool) -> Self {
-+        Self {
-+            devname_mandatory: mandatory,
-+
-+            ..self
-+        }
-+    }
-+}
-+
-+/// The led handler trait.
-+///
-+/// # Examples
-+///
-+///```
-+/// # use kernel::{c_str, led, alloc::KBox, error::{Result, code::ENOSYS}};
-+/// # use core::pin::Pin;
-+///
-+/// struct MyHandler;
-+///
-+///
-+/// impl led::LedHandler for MyHandler {
-+///     const BLOCKING = false;
-+///     const MAX_BRIGHTNESS = 255;
-+///
-+///     fn brightness_set(&self, _brightness: u32) -> Result<()> {
-+///         // Set the brightness for the led here
-+///         Ok(())
-+///     }
-+/// }
-+///
-+/// fn register_my_led() -> Result<Pin<KBox<led::LedClassDev>>> {
-+///     let handler = MyHandler;
-+///     KBox::pin_init(led::LedClassDev::new(
-+///         None,
-+///         None,
-+///         led::LedInitData::new()
-+///             .default_label(c_str!("my_led")),
-+///         handler,
-+///     ))
-+/// }
-+///```
-+/// Led drivers must implement this trait in order to register and handle a [`LedClassDev`].
-+pub trait LedHandler {
-+    /// If set true, [`LedHandler::brightness_set`] and [`LedHandler::blink_set`] must not sleep
-+    /// and perform the operation immediately.
-+    const BLOCKING: bool;
-+    /// Set this to true, if [`LedHandler::blink_set`] is implemented.
-+    const BLINK: bool = false;
-+    /// The max brightness level
-+    const MAX_BRIGHTNESS: u32;
-+
-+    /// Sets the brightness level
-+    ///
-+    /// See also [`LedHandler::BLOCKING`]
-+    fn brightness_set(&self, brightness: u32) -> Result<()>;
-+
-+    /// Activates hardware accelerated blinking.
-+    ///
-+    /// delays are in milliseconds. If both are zero, a sensible default should be chosen.
-+    /// The caller should adjust the timings in that case and if it can't match the values
-+    /// specified exactly. Setting the brightness to 0 will disable the hardware accelerated
-+    /// blinking.
-+    ///
-+    /// See also [`LedHandler::BLOCKING`]
-+    fn blink_set(&self, _delay_on: &mut usize, _delay_off: &mut usize) -> Result<()> {
-+        Err(EINVAL)
-+    }
-+}
-+
-+trait LedHandlerImpl {
-+    fn brightness_set(&self, brightness: u32) -> Result<()>;
-+    fn blink_set(&self, delay_on: &mut usize, delay_off: &mut usize) -> Result<()>;
-+}
-+
-+impl<T: LedHandler> LedHandlerImpl for T {
-+    fn brightness_set(&self, brightness: u32) -> Result<()> {
-+        T::brightness_set(self, brightness)
-+    }
-+
-+    fn blink_set(&self, delay_on: &mut usize, delay_off: &mut usize) -> Result<()> {
-+        T::blink_set(self, delay_on, delay_off)
-+    }
-+}
-+
-+// SAFETY: A `LedClassDev` can be unregistered from any thread.
-+unsafe impl Send for LedClassDev {}
-+
-+// SAFETY: `LedClassDev` can be shared among threads because all methods of `LedClassDev`
-+// are thread safe.
-+unsafe impl Sync for LedClassDev {}
-+
-+impl LedClassDev {
-+    /// Registers a new led classdev.
-+    ///
-+    /// The [`LedClassDev`] will be unregistered and drop.
-+    pub fn new<'a, T: LedHandler + 'static>(
-+        parent: Option<&Device>,
-+        default_trigger: Option<CString>,
-+        init_data: LedInitData<'a>,
-+        handler: T,
-+    ) -> impl PinInit<Self, Error> + use<'a, T> {
-+        let parent_ptr = parent.map_or(core::ptr::null_mut(), Device::as_raw);
-+        let parent = parent.map(ARef::from);
-+        try_pin_init!(Self {
-+            default_trigger,
-+            parent,
-+            handler <- {
-+                let handler: KBox<dyn LedHandlerImpl> = KBox::<T>::new(handler, GFP_KERNEL)?;
-+                Ok::<_, Error>(handler)
-+            },
-+            classdev <- Opaque::try_ffi_init(|ptr: *mut bindings::led_classdev| {
-+                // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write.
-+                unsafe { ptr.write(bindings::led_classdev {
-+                    max_brightness: T::MAX_BRIGHTNESS,
-+                    brightness_set: T::BLOCKING.then_some(
-+                        brightness_set as unsafe extern "C" fn(*mut bindings::led_classdev, u32)
-+                    ),
-+                    brightness_set_blocking: (!T::BLOCKING).then_some(
-+                        brightness_set_blocking
-+                            as unsafe extern "C" fn(*mut bindings::led_classdev,u32) -> i32
-+                    ),
-+                    blink_set: T::BLINK.then_some(
-+                        blink_set
-+                            as unsafe extern "C" fn(*mut bindings::led_classdev, *mut usize,
-+                                                    *mut usize) -> i32
-+                    ),
-+                    .. bindings::led_classdev::default()
-+                }) };
-+
-+                let mut init_data = bindings::led_init_data {
-+                    fwnode: init_data.fwnode.map_or(core::ptr::null_mut(), FwNode::as_raw),
-+                    default_label: init_data.default_label
-+                                            .map_or(core::ptr::null(), CStr::as_char_ptr),
-+                    devicename: init_data.devicename.map_or(core::ptr::null(), CStr::as_char_ptr),
-+                    devname_mandatory: init_data.devname_mandatory,
-+                };
-+                // SAFETY:
-+                // - `parent_ptr` is guaranteed to be a pointer to a valid `device`
-+                //    or a null pointer.
-+                // - `ptr` is guaranteed to be a pointer to an initialized `led_classdev`.
-+                to_result(unsafe {
-+                    bindings::led_classdev_register_ext(parent_ptr, ptr, &mut init_data)
-+                })
-+            }),
-+        })
-+    }
-+}
-+
-+extern "C" fn brightness_set(led_cdev: *mut bindings::led_classdev, brightness: u32) {
-+    // SAFETY: `led_cdev` is a valid pointer to a `led_classdev` stored inside a `LedClassDev`.
-+    let classdev = unsafe {
-+        &*container_of!(
-+            led_cdev.cast::<Opaque<bindings::led_classdev>>(),
-+            LedClassDev,
-+            classdev
-+        )
-+    };
-+    let _ = classdev.handler.brightness_set(brightness);
-+}
-+
-+extern "C" fn brightness_set_blocking(
-+    led_cdev: *mut bindings::led_classdev,
-+    brightness: u32,
-+) -> i32 {
-+    // SAFETY: `led_cdev` is a valid pointer to a `led_classdev` stored inside a `LedClassDev`.
-+    let classdev = unsafe {
-+        &*container_of!(
-+            led_cdev.cast::<Opaque<bindings::led_classdev>>(),
-+            LedClassDev,
-+            classdev
-+        )
-+    };
-+    from_result(|| {
-+        classdev.handler.brightness_set(brightness)?;
-+        Ok(0)
-+    })
-+}
-+
-+extern "C" fn blink_set(
-+    led_cdev: *mut bindings::led_classdev,
-+    delay_on: *mut usize,
-+    delay_off: *mut usize,
-+) -> i32 {
-+    // SAFETY: `led_cdev` is a valid pointer to a `led_classdev` stored inside a `LedClassDev`.
-+    let classdev = unsafe {
-+        &*container_of!(
-+            led_cdev.cast::<Opaque<bindings::led_classdev>>(),
-+            LedClassDev,
-+            classdev
-+        )
-+    };
-+    from_result(|| {
-+        classdev.handler.blink_set(
-+            // SAFETY: `delay_on` is guaranteed to be a valid pointer to usize
-+            unsafe { &mut *delay_on },
-+            // SAFETY: `delay_on` is guaranteed to be a valid pointer to usize
-+            unsafe { &mut *delay_off },
-+        )?;
-+        Ok(0)
-+    })
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for LedClassDev {
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: The existence of `self` guarantees that `self.classdev` has previously been
-+        // successfully registered with `led_classdev_register_ext`
-+        unsafe { bindings::led_classdev_unregister(self.classdev.get()) };
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index e5247f584ad2..f42c60da21ae 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -97,6 +97,7 @@
- pub mod jump_label;
- #[cfg(CONFIG_KUNIT)]
- pub mod kunit;
-+pub mod led;
- pub mod list;
- pub mod miscdevice;
- pub mod mm;
 -- 
 2.49.1
 
