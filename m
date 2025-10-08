@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1383F2E8B80;
-	Wed,  8 Oct 2025 10:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13C82F5A28;
+	Wed,  8 Oct 2025 10:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759918711; cv=none; b=qIY67VmKCMJatqMumPf2rM8VtJVbCrXJFdzgfDHgCxFDX3narCAwcA/HkN6eZdUhLPzK91vPWFpHwSl/If7ly0EE8KiludDqUD6EcnvG70Idi+bUmJwVfvspPe8KND9gKvaBL4FOFFyst92wns0BBtjjmBDemxFUOJrhrEjQRVs=
+	t=1759919029; cv=none; b=k8hw0FW0Qty+brCPR7fWllABpA2dw30s6WwSi87Rxb8jGO0i/uHsUZjA48tDD43BwptwDU63V1nkpiZS93X6sZPVkx8Jj4LE2kGtr9htuTOYuHVG3mf05RKQSOYHs+rdSe/8/OhKWT1OeaKqcGzuJhga/HxN1TVgwfszvBUyj7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759918711; c=relaxed/simple;
-	bh=b/FTtui6gRJ0e8SceFeHMggEt9pTm3eBkrK95al13n4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=noDzglgPftmCrq8mdm3P6BONYjd27vefncrzaeGKvgX1L26ZWiJT9+FB6Tna7fgYcIfQZeEPcGAU9qdZvRjqmcmhvAKhPK38ITmmWeW/7Mt1P9S0Fjt1Ul2n2RYe7HhXYQFbNj1vu1e7t5tsQ3cJxhn1CC3sJVmz0/3SkbiQmBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNIFBteU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759919029; c=relaxed/simple;
+	bh=pgyDd5U4lx90hBvX9nM6Mbf+EYCdvQf0+HPHy40vgt8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=OQ6aPlHgggx3HnIy9uKt50dIFjDSa9Pe1UVHLsCrDn/EyKcBIACPFO1nBsbebI7I8mA61AAsDWs0vrd65FtTDVU7sIh26O5kEI2yhWBO4NY1f6nGBCwHeeaXoWvSN/YDft7WF/RNQvIS0NcUTyyxfslrFzsghsFZu19zHPoj2NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mS8v4XQi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNIFBteU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A85C116C6;
-	Wed,  8 Oct 2025 10:18:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mS8v4XQi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29291C4CEF4;
+	Wed,  8 Oct 2025 10:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759918710;
-	bh=b/FTtui6gRJ0e8SceFeHMggEt9pTm3eBkrK95al13n4=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=fNIFBteU5oXqlXy5snUMg4wnv4ymZxQNvlmghhT3xY3rBznehwKbSRFDnStR9p4s6
-	 r48i2oLx463jKd4eYL6LBAJ25yLSDXfiJBiFNknLJUmOVYvDcSW+sjp1CCnZfkKLb/
-	 rH+rM75edc1xTbEDnAJb6uS5iZLCp92bV/nSrDo7bhiYEeXwwgyXH0dhkJznNGQi39
-	 JDmF1yRptuK0FKjfZEXbn2f0pD8ngnETbmCoPbATpRnBbjw6l2ecFN7E46RZty2j9+
-	 jBjyHPTkReCELApres82FOslhT8aapoU+cbWDq90GSGhtYEWJZcxumKi3+7WLIKRBZ
-	 j3YMjO8sVWLJg==
+	s=k20201202; t=1759919027;
+	bh=pgyDd5U4lx90hBvX9nM6Mbf+EYCdvQf0+HPHy40vgt8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=mS8v4XQiuMI+8/hdm6D67HTsv1lFRpRqd/9dRgiHCxvNhfGJGffAnfXAyBU3f1KF4
+	 B+UnqCXC9/h9TkG8O9cV6GDttVb0OzlwKlnXZ2oyTsxn62YX++8u0zrsFjvSL/9fNC
+	 yLK8DnXfSEnCCg4ZPFT/WChXNGS+7N0Z+DeUrhF6Ap+7DkD1GUibu7rNr3FAh0cp4F
+	 ywYU+xVIL85CcLiofN7oZKB2g4vpo0hyWk6foZJygmi0aymK1mmahHFQJ5ieY2dVfS
+	 1n/MiYDhJfv4gmQ2s5L5F3AmGTToHgoSPiSaP4FBDtEStM8KSqboEWwyobwR4Zr7Pf
+	 NdWDLDJHhQylA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,76 +34,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Oct 2025 12:18:24 +0200
-Message-Id: <DDCV43KW9OGL.27I8HP4TSTQ6N@kernel.org>
-Cc: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <linux-kernel@vger.kernel.org>, <acourbot@nvidia.com>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <maarten.lankhorst@linux.intel.com>,
- <mripard@kernel.org>, <tzimmermann@suse.de>, <corbet@lwn.net>,
- <lyude@redhat.com>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH 1/3] rust: xarray: abstract `xa_alloc`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-X-Mailer: aerc 0.21.0
-References: <20251006163024.18473-1-work@onurozkan.dev>
- <20251006163024.18473-2-work@onurozkan.dev>
- <DDBHMNEIU9HJ.68MGF28IF58I@kernel.org> <aOTyVzpJNDOaxxs6@google.com>
-In-Reply-To: <aOTyVzpJNDOaxxs6@google.com>
+Date: Wed, 08 Oct 2025 12:23:40 +0200
+Message-Id: <DDCV84IJHUML.126CB1CT0XMX5@kernel.org>
+Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to
+ rust/kernel/
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
+ <dri-devel@lists.freedesktop.org>, "Alistair Popple" <apopple@nvidia.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "joel@joelfernandes.org" <joel@joelfernandes.org>, "Elle Rhumsaa"
+ <elle@weathered-steel.dev>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Andrea Righi" <arighi@nvidia.com>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <695CCDCE-A205-4557-AA15-6F102B8CCF0C@nvidia.com>
+In-Reply-To: <695CCDCE-A205-4557-AA15-6F102B8CCF0C@nvidia.com>
 
-On Tue Oct 7, 2025 at 12:58 PM CEST, Alice Ryhl wrote:
-> On Mon, Oct 06, 2025 at 09:31:43PM +0200, Benno Lossin wrote:
->> On Mon Oct 6, 2025 at 6:30 PM CEST, Onur =C3=96zkan wrote:
->> > Implements `alloc` function to `XArray<T>` that wraps
->> > `xa_alloc` safely.
->> >
->> > Resolves a task from the nova/core task list under the "XArray
->> > bindings [XARR]" section in "Documentation/gpu/nova/core/todo.rst"
->> > file.
->> >
->> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
->> > ---
->> >  rust/kernel/xarray.rs | 39 +++++++++++++++++++++++++++++++++++++++
->> >  1 file changed, 39 insertions(+)
->> >
->> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
->> > index a49d6db28845..1b882cd2f58b 100644
->> > --- a/rust/kernel/xarray.rs
->> > +++ b/rust/kernel/xarray.rs
->> > @@ -266,6 +266,45 @@ pub fn store(
->> >              Ok(unsafe { T::try_from_foreign(old) })
->> >          }
->> >      }
->> > +
->> > +    /// Allocates an empty slot within the given limit range and stor=
-es `value` there.
->> > +    ///
->> > +    /// May drop the lock if needed to allocate memory, and then reac=
-quire it afterwards.
->> > +    ///
->> > +    /// On success, returns the allocated id.
->> > +    ///
->> > +    /// On failure, returns the element which was attempted to be sto=
-red.
->> > +    pub fn alloc(
->> > +        &mut self,
->> > +        limit: bindings::xa_limit,
->> > +        value: T,
->> > +        gfp: alloc::Flags,
->> > +    ) -> Result<u32, StoreError<T>> {
->>=20
->> I think it would be a good idea to make the id a newtype wrapper around
->> u32. Maybe not even allow users to manually construct it or even inspect
->> it if possible.
->
-> What? People need to know what the assigned index is.
+On Wed Oct 8, 2025 at 1:37 AM CEST, Joel Fernandes wrote:
+> The Nvidia GPU architecture is little-endian (including MMU structures in=
+ VRAM).
 
-The documentation says "allocated id", so I assumed that it was some
-internal, implementation-dependent thing, not an index. In that case we
-should change the docs instead.
+Yes, I'm aware (and I'd assume that there is no reason to ever change that)=
+.
 
----
-Cheers,
-Benno
+Just for the complete picture, there's also some endianness switch in the
+NV_PMC_BOOT_1 register I think?
+
+> All the CPU architectures our drivers support are expected to be little-e=
+ndian.
+
+Technically, all Rust supported architectures are indeed little-endian.
+
+However, the only constraint for the Nova project as by now is 64-bit only.
