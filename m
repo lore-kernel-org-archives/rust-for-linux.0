@@ -1,100 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward500d.mail.yandex.net (forward500d.mail.yandex.net [178.154.239.208])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A295F2D321A;
-	Thu,  9 Oct 2025 12:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E592E3360;
+	Thu,  9 Oct 2025 12:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760014456; cv=none; b=F7HMpHROvPwD37p9lGTIdU0p5lH0NvpSzGsrXvzSy7CnByYarBl5nF7KZDoWr1MyuDSKostxKX1P3hM2lqoWsnXnGyRh/d9FpDDhreBzJ9JnWOl3mpYmdDnt23Oi9ZGZz6jJMoEl/yrAzAH9A+yemz4pWQYUeX2SDaUYa0a0zx8=
+	t=1760014518; cv=none; b=ZY4xi28gyQ5/f2bAZmuvgeA++A6y7CfwpwG3c8hHhpHue/PYH7jIx0creTWdIdE1YdoGUnu/gd/QGcNH2XBawKe1ioK1F6aXr5KtD7f7B5JGvk0j/O9h6SDUqlTdbTIGKU+BQGrhAo0YvKwO+kYSgY62+NukanlTyq9Km/Gu/4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760014456; c=relaxed/simple;
-	bh=R1TORzTxYknOCobqa5N2Ym/eV3oIkS/TL69ydYBPELo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=du6tMM+iD1HkC7wnDozUezIDlc0FnLRN5AQVz2eOGJe5zZ2bXrWKJMBGJb0ctJLjDGrKnl4nvbWBOGFMzFPqmooiRDhpr1ooUIY3r+Tf6MTuydnBEmcW44JTVHEhBX/sDKPgeds5nMNXPO2yVaVJj99NPH6ClrCW10asfxVf4VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHOtDTn5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760014518; c=relaxed/simple;
+	bh=jIhFOtKQU/lkJrJyL1qYj5eWE6G/dTbmIE7eefjITeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m1IvSDmeIP42MN7cfF/OTrUNeL+/2EhyMdRaPfkq9WwhdXjUwagc1Q9KZOCNKGjaDwjACxSqLx6yJ8sEhahXGe9iipYmpPCZOsxAyhzO6DZOOAceKgUgFsUgFO9Ra0gdglYPpEqEDRmrIGp+KF2wmi/c3MFx0epM5QVOa9K4y/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=HneMV+IP; arc=none smtp.client-ip=178.154.239.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHOtDTn5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AF2C4CEE7;
-	Thu,  9 Oct 2025 12:54:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760014456;
-	bh=R1TORzTxYknOCobqa5N2Ym/eV3oIkS/TL69ydYBPELo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZHOtDTn5E5ki97MoLFbg/hqT6PHek9RAtK++CrFn/XyiyBMbFi4k1QwsKrqf6cJKG
-	 4NQyQB7rM4j5LUn3I7Ys3/kuTjEPoWBu9aTR/zvv9riMPS3x2YvltdyvnRqojfieOK
-	 w6Kd53MaLy02LrSMe/3oprCkG0+IX+Q6aGG8DWk+loOmJOi8ohYdfRorqkbx0BRAlc
-	 NxskVlGcPMtrsq1gKH6OV7Nu4UCO2YYDRSG/SPJ2VZJvOr3qSttg6EqXMSJ0OLAXCa
-	 V7Kw4G3OmpyPjie7YjAsSnCTxT9lQ7jK8k4ro7YPK2UIU4IuSQ3I1CTkdWLzScVUNX
-	 hKULQMpCJMzGA==
-Message-ID: <807fe91b-acc6-4faf-834c-ced0dead2605@kernel.org>
-Date: Thu, 9 Oct 2025 14:54:09 +0200
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="HneMV+IP"
+Received: from mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:86a2:0:640:3ad2:0])
+	by forward500d.mail.yandex.net (Yandex) with ESMTPS id 38CFB815F9;
+	Thu, 09 Oct 2025 15:55:04 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id xsJu6IYL0Os0-O1ne5mTO;
+	Thu, 09 Oct 2025 15:55:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1760014503;
+	bh=k6NY8fK5kcU51JaRhSM3lV4/Sq3mMVoFn+plnqG/WAk=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=HneMV+IPrgEvAj9n1M1PN3lzYeCuaZEafbljot05ZpMxmg4ZP3x1H2ASjEgrodzyG
+	 L8N649AXqsaGE9/Fb1y8VvNONWbuBNFjiwfqsZBPw2ydbuZC934Cz+5KtF5uFWIeO9
+	 VAYmLXCFSeKNTcPYDxn5vc/hKhMkr6bbqJUnrtKA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Thu, 9 Oct 2025 15:54:57 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org, nathan@kernel.org, nicolas.schier@linux.dev,
+ masahiroy@kernel.org, aliceryhl@google.com,
+ thomas.weissschuh@linutronix.de, tamird@gmail.com,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ tmgross@umich.edu, dakr@kernel.org
+Subject: Re: [PATCH v2 0/1] rust: add `rustcheck` make target for check-only
+ builds
+Message-ID: <20251009155457.22131e41@nimda.home>
+In-Reply-To: <20250915115311.3025-1-work@onurozkan.dev>
+References: <20250915115311.3025-1-work@onurozkan.dev>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] rust: Move register and bitfield macros out of
- Nova
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
- Yury Norov <yury.norov@gmail.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Andrea Righi <arighi@nvidia.com>, nouveau@lists.freedesktop.org
-References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
- <20251003154748.1687160-5-joelagnelf@nvidia.com>
- <5a5bd549-f5b7-41ec-b493-bda427d1218f@de.bosch.com>
- <DDDQZ8LM2OGP.VSEG03ZE0K04@kernel.org>
- <DDDR8DIW6K4L.21F81P26KM64W@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DDDR8DIW6K4L.21F81P26KM64W@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 10/9/25 1:28 PM, Alexandre Courbot wrote:
-> On Thu Oct 9, 2025 at 8:16 PM JST, Danilo Krummrich wrote:
->> On Thu Oct 9, 2025 at 8:59 AM CEST, Dirk Behme wrote:
->>> Assuming that register.rs is supposed to become the "generic" way to 
->>> access hardware registers I started to have a look to it. Some weeks 
->>> back testing interrupts I used some quite simple timer with 4 registers 
->>> [1]. Now, thinking about converting it to register!() I have three 
->>> understanding / usage questions:
->>>
->>> * At the moment register!() is for 32-bit registers, only? So it can't 
->>> be used for my example having 8-bit and 16-bit registers as well?
->>
->> Yes, currently the register!() macro always generates a 32-bit register type
->> (mainly because nova-core did not need anything else). However, this will of
->> course be generalized (which should be pretty straight forward).
->>
->> Having a brief look at the TMU datasheet it looks like you should be able to
->> treat TSTR and TCR as 32-bit registers without any issues for testing the
->> register!() macro today. I.e. you can just define it as:
->>
->> 	register!(TSTR @ 0x04, "Timer Start Register" {
->> 	    2:2    str2 as bool, "Specifies whether TCNT2 is operated or stopped.";
->> 	    1:1    str1 as bool, "Specifies whether TCNT1 is operated or stopped.";
->> 	    0:0    str0 as bool, "Specifies whether TCNT0 is operated or stopped.";
->> 	});
->>
->> Same for TCR.
-> 
-> Patch 2 of this series actually adds support for 16 and 8 bit register
-> storage.
+On Mon, 15 Sep 2025 14:53:10 +0300
+Onur =C3=96zkan <work@onurozkan.dev> wrote:
 
-Heh! I knew I saw a patch for this already somewhere, seems like I missed the
-forest for the trees. :)
+> Changes in v2:
+>   - Couple of indentation fixes in rust/Makefile.
+>=20
+> Onur =C3=96zkan (1):
+>   rust: add `rustcheck` make target for check-only builds
+>=20
+>  Makefile      |  7 +++++
+>  rust/Makefile | 73
+> +++++++++++++++++++++++++++++++++++++++++++++++++++ 2 files changed,
+> 80 insertions(+)
+>=20
+
+A friendly ping on this patch. It's been over two weeks with no
+feedback, would appreciate any thoughts or suggestions.
+
+Regards,
+Onur
