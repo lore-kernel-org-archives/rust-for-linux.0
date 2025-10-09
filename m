@@ -1,106 +1,135 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118DF2C2340
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Oct 2025 11:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF36F2DCC04
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Oct 2025 11:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760008674; cv=none; b=LpV3cwXtjLv9mr1mdmF4JQEpGHwMLLGDIqEUkizwnAGvbLKR2h825AqcflA5k4kVY6waa9lWPNF6r3WMTa4WGc1mKqtclhPrLsKO09RMjGBXrFJidteX6GTgc9o+5JzZHgO+mzqTh57Utu/nBZpbjGJ2Ui29MvHLoA2Nc95zeOY=
+	t=1760008792; cv=none; b=FZFjUEc+GxZJ74M2KZgXZLUqGeivxiY72DPOiMES+uKklUPkHOn1Khr1KLoFVmB44Y/OVlQ57/6+9+9LFBBtCNDQY0Fc7JeN/947gF0FuEhYCVGl4A2BAi2g85fPCr2xW4VqNWriqrI06vV2p3OoEbFhn0lGwNBtT5JNnEHGukA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760008674; c=relaxed/simple;
-	bh=WCD/CAfB1G/FRBM8fWx7yMrkRvfIIG1WNz92HG5xPeQ=;
+	s=arc-20240116; t=1760008792; c=relaxed/simple;
+	bh=RzE7qmTe7VW1DwA3fxirB0NZxAahBI8Q2RnBonVma7w=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MYLRr3fbgkbH+zaCiNjfS17avFzGzhAwYBrq0AD3Moe6nZRdJXTGmosvcw3+lYh+e+ocwstE9ZD9Lc7fiT0wyAu/2/k7uKdIgp+ZHP47kNSj+vHTkVh9o99Mto7k3KdcF5B1QVcu3Zmekt+EvVDXG3e5IdQ2YoZJTUcIE5+ht9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h/Bh1hRY; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=BYmjyMyRH47VOQGNOQ75eQt+edk9jQ7MH5OMTyXx1U9+I4v2Sxx7zWzan2bsRhRU6jKr5zwDlJlyL8Nyz8w7Yv+b1T2vq0m5E3QUZ6F2ng2RuTVLfaKwXq5KHQw5PPheFyFTZcU8keuqA9TEkt3jtvHF1oOTJWpYB1ifjmKY1Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jnJhDsKo; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h/Bh1hRY"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e3d9bf9e1so4985465e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 09 Oct 2025 04:17:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jnJhDsKo"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e4fa584e7so4137735e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Oct 2025 04:19:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760008671; x=1760613471; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9V+rmx7EVh5VI0c3HgYqM0kYENxMSiiGZS93FmTbvHY=;
-        b=h/Bh1hRYFwCy//G9bitEyswKpWz6jclO5gwlOMlAErhNWutwR9pMiUFhDEVplEva+O
-         yNh7RrDWpU42iqZp07U14xmPHz4aLVBTWfE4doBgLL72rjH7tyEwOTlG36gNhMdSv/5o
-         7W1PwvphuDrKEpSi71RtQD222H245pzI2OXRNd6/fytAMqlEIt8UZ3g8zpEjO42is3wn
-         t6XJVuuqEqyGdrdt9z8T/URUZwhHL1Ya6wlg3zXi4hC24Bzy0tSb/Y6KAaJ3WzEr/Ja0
-         JhKpP2wV4mfel41RUqwWO6YOz+dr6lhJYoryiJglcK/W8CEMTJQn3oxxTXWOzotD/xy5
-         wEzw==
+        d=google.com; s=20230601; t=1760008789; x=1760613589; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2DUd84J0qxU625unTGoQRcfxjZI7PthQsRTwRgbjUIs=;
+        b=jnJhDsKouKH/2v8ag22OrYmiNA+LN5wqg5z1Jvz9EgKTvAUEQ+dAR+83C0pf8H/t50
+         0Vh6DTyL3my8UhIyPz9i26H71oUYkoQGQ6kHha2otMhNilb0saru1XEmoofMWUcVNtch
+         wthrPY37vpcajuI0bkLUvykuMKqDFjkFwvUHHejxTjAL6wOnMOcNnHwgsdn7Idub04tw
+         uZw3Dqe+7n9QplNHSS4v4svul2HdbYHL8+qfZDf/LQ+JOhEWzNtwaKu4ms/PuhmdUjnG
+         qexiHrk+PyHgzLorW1Jhrog962xFL8cYegghqb4/GiN8xhdbw2tJ8hXK7+mFFxQOd03Y
+         YXuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760008671; x=1760613471;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9V+rmx7EVh5VI0c3HgYqM0kYENxMSiiGZS93FmTbvHY=;
-        b=VJfVJUcZn2XqYCRpMR7Azou+eC1AV38NK812j4VmAiLCLqzqrN3BwpbzDQ/ARI9yHG
-         D5KLB+jXxm7kN6nxbzRfG/uc6A3M5/iROUSX8hJJQl8ZO28N2D13Swpa56K6pkE7OQaj
-         p8XJyo3Q99mAnM1IUY+GcEoYPU7LdDD6XoDPy7/oZe6nm3U0C+NOvAMJY+MLVdqdwg1T
-         nBJj4lPDpkcZaKozDND3lLXbGScYdbqqjYYEngVqIVJFzhxkii6HWt/QqsUCqZ71QF+i
-         pLYptPT3N0hu9+uPQvvUBicRryFL7Dmyjw7zljJckWrm1hAO+zpLunVqCpxgE91HYHmG
-         vsfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVBPdo22V0BDGZw4ap++GUe68UIDn6w7tl4AlbXqAxTPaYRSiU+pchFPC8EM/ecVjjgW8n4Yoa/kgjqSulJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1sm06yM+dl+J8K4zSCmARZrPHMBeblkuo9jUxP2ll/D8EoH8a
-	5kkPqkT5qNqLFA6/v9sP97Rkyoxsgi4miBCW36Y6M94MPBBNYy4BTB2efFZKdcc0LlBtlpNilf6
-	YfhAO5qbaMLmZ4s6R+g==
-X-Google-Smtp-Source: AGHT+IHQw/K1TucPKWkYddnQPYm60dywH4XygHGaugmTTi9j0hJVxv8XQQDUDwaI/iz2G9F3qXxpGXrzXS4lbaU=
-X-Received: from wmcm4.prod.google.com ([2002:a7b:ce04:0:b0:45d:cfa4:ce19])
+        d=1e100.net; s=20230601; t=1760008789; x=1760613589;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2DUd84J0qxU625unTGoQRcfxjZI7PthQsRTwRgbjUIs=;
+        b=dwv9JYay/lB4BDwPBLZ80g9maYL8QAwYz7ehXtKy85sO5OUi1ug/yD9ISblYpJv6eP
+         X2BbTU4ctXRPhEmg4ckEw7AIDbfOJuG6+P7BxyL0y8dGivRptLITzpi8cyh+4L5c5Rhe
+         Ssl899ZAb2iMAYzkv34BXFFSBoKInN0awev62FTPuC7bX2RNPH6S4/dosU6OIukern/A
+         kSxorjfpQyIu5bwAjEOHG5O9HPkfA/DicbON+EIk5fdTTOh8MdqqLHedGCdN4nrIyjpE
+         VybH5KlMthjd2EkW6wY9qiZBHwY7CxiiYaxMVb99soWovz6zAuD2JLvknSAC3b8wry+C
+         DXcA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7Xd1r5XOlFClmQl6wBYbxbl+wKFzps9hoEI7lec9LOKeTOCI/iEyajYdm8sfMCfYBLm7YwnQuZlDo95zbow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzZVMy/9cEMy0neOEl7HgIGCU+r86ZM+Fc/LLzDToULYqdfW1A
+	VY4FcTcd2wGmr1Ajk673V3PR/tT2rOHLb7OeEfQTUBLwBMva1yNmc/V2dKrzWd51jRHeFlFK+Ev
+	5E314/qPHmHLgfY+odQ==
+X-Google-Smtp-Source: AGHT+IHDNiC37K6gv5N9rlmQWR84UKoo8mya5NIGmasE//q5bLN74a4a6FScJ09rff60l5B8yC3SZYWSCfFYwx4=
+X-Received: from wmro18.prod.google.com ([2002:a05:600c:3792:b0:45d:dc32:3d4a])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:502c:b0:46e:3d41:5fe6 with SMTP id 5b1f17b1804b1-46fa9a9ebb8mr46744985e9.9.1760008671266;
- Thu, 09 Oct 2025 04:17:51 -0700 (PDT)
-Date: Thu, 9 Oct 2025 11:17:50 +0000
-In-Reply-To: <aOaJlHEPzHcAdcUx@tardis-2.local>
+ 2002:a05:600c:314b:b0:46e:2109:f435 with SMTP id 5b1f17b1804b1-46fa9a966f6mr49436855e9.11.1760008789266;
+ Thu, 09 Oct 2025 04:19:49 -0700 (PDT)
+Date: Thu, 9 Oct 2025 11:19:48 +0000
+In-Reply-To: <aOaW5s30sRc6gPnA@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251008151554.340806-1-marco.crivellari@suse.com>
- <20251008151554.340806-3-marco.crivellari@suse.com> <aOaJlHEPzHcAdcUx@tardis-2.local>
-Message-ID: <aOeZ3ho6SHjmaw_2@google.com>
-Subject: Re: [PATCH v3 2/2] rust: add system_percpu() around the new system_percpu_wq
+References: <20251007-binder-freeze-v2-0-5376bd64fb59@google.com>
+ <20251007-binder-freeze-v2-1-5376bd64fb59@google.com> <aOaSA0dPnY2I4a_D@google.com>
+ <CAH5fLgiChj29SbwN-5vHhCNzaUa7wewOXe1D8mN3XFfyZr33gw@mail.gmail.com>
+ <aOaTgDMY-VvM_r6m@google.com> <CAH5fLgha8DdiZ=XyyNRx8Y+GS6SCO2DHF4qMgKwMoq8tUXc3LQ@mail.gmail.com>
+ <aOaW5s30sRc6gPnA@google.com>
+Message-ID: <aOeaVMHC2SWzg_Fe@google.com>
+Subject: Re: [PATCH v2 1/3] rust_binder: freeze_notif_done should resend if
+ wrong state
 From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>, Tejun Heo <tj@kernel.org>
-Cc: Marco Crivellari <marco.crivellari@suse.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 08, 2025 at 08:56:04AM -0700, Boqun Feng wrote:
-> On Wed, Oct 08, 2025 at 05:15:54PM +0200, Marco Crivellari wrote:
-> > The C code defines 2 new workqueues: system_percpu_wq and system_dfl_wq,
-> > respectively the futures replacement for system_wq and system_unbound_wq.
-> > 
-> > This change introduce system_percpu(), that use the new system_percpu_wq.
-> > 
-> > system_wq will be replaced in a future release cycle and should
-> > not be used.
-> > 
-> > Suggested-by: Tejun Heo <tj@kernel.org>
-> > Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-> 
-> If we were to expose the system_percpu_wq to Rust, then we should also
-> add queue_work_on() API to Rust, otherwise it's kinda pointless IMO.
-> 
-> PS. We can use the CpuId abstraction:
-> 
-> 	http://rust.docs.kernel.org/kernel/cpu/struct.CpuId.html
-> 
-> and have an API like:
-> 
->     ipml Queue {
->         pub fn queue_on(&self, cpu: CpuId, w: W) -> W::EqueueOutput
->     }
-> 
-> or maybe a different new type `PerCpuQueue`?
-> 
-> Regards,
-> Boqun
+On Wed, Oct 08, 2025 at 04:52:54PM +0000, Carlos Llamas wrote:
+> On Wed, Oct 08, 2025 at 06:41:20PM +0200, Alice Ryhl wrote:
+> > On Wed, Oct 8, 2025 at 6:38=E2=80=AFPM Carlos Llamas <cmllamas@google.c=
+om> wrote:
+> > >
+> > > On Wed, Oct 08, 2025 at 06:34:54PM +0200, Alice Ryhl wrote:
+> > > > On Wed, Oct 8, 2025 at 6:32=E2=80=AFPM Carlos Llamas <cmllamas@goog=
+le.com> wrote:
+> > > > >
+> > > > > On Tue, Oct 07, 2025 at 09:39:51AM +0000, Alice Ryhl wrote:
+> > > > > > Consider the following scenario:
+> > > > > > 1. A freeze notification is delivered to thread 1.
+> > > > > > 2. The process becomes frozen or unfrozen.
+> > > > > > 3. The message for step 2 is delivered to thread 2 and ignored =
+because
+> > > > > >    there is already a pending notification from step 1.
+> > > > > > 4. Thread 1 acknowledges the notification from step 1.
+> > > > > > In this case, step 4 should ensure that the message ignored in =
+step 3 is
+> > > > > > resent as it can now be delivered.
+> > > > >
+> > > > > hmmm, I wonder what happens with 3 threads involved where the sta=
+te goes
+> > > > > back to the (unconsumed) initial freeze notification. Userspace w=
+ill
+> > > > > probably see two separate notifications of the same state?
+> > > >
+> > > > The way I implemented it, the work items report the current state w=
+hen
+> > > > the work item is *executed*, and they do nothing if there's no chan=
+ge
+> > > > since last notification.
+> > >
+> > > Oh I see, then that means the 2nd and 3rd notifications would do noth=
+ing
+> > > as the state went back to the last notification, correct?
+> >=20
+> > Yeah.
+> >=20
+> > If the state flips quickly, userspace might not get told about that if
+> > it's too slow to receive the update, but that's no different from C
+> > Binder.
+>=20
+> I believe the difference is C binder doesn't report the current state at
+> the time of consuming the notification. So I'm thinking that it would
+> report two notifications regardless of the state, even if they are both
+> the same. Oh well.
 
-How is it ... can we cleanly separate queues into those where you must
-specify the cpuid, and those where you shouldn't?
+Yeah, I guess if it only toggles once, then C Binder will report that.
+On the other hand, if it toggles multiple times, then C Binder might not
+report it that many times.
+
+We could make Rust Binder faithfully report the callback the right
+number of times in the face of toggling, but it seems not worth it.
 
 Alice
