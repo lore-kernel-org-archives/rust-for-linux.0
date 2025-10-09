@@ -1,276 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38342ED843;
-	Thu,  9 Oct 2025 15:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E09A21578F
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Oct 2025 16:41:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760025531; cv=none; b=VTnU7aggNUcD6LTbF6RxRqjsS09Y6HyxbQzd1JJpjb81LSxZ9fI3tR+GcdQLOyRKqBehlhLNycASufUGisGaP/pOeQG4gK4xJv6WPZaHRN/5NHzImMKfZbTVx+WQAiQGVtRP3qHdt7xzZnfSoiYFGzfGZo32QdXLJiUszF27UFE=
+	t=1760028063; cv=none; b=fIEginPoPDv3Ee2PSRvxnufZ/CEdrEoiiKIA8UIT8JJczBe68J3HxfFgy5nojt2xxXspCQgIaaH4P3ORb1xzdz9dCHU9cSsRXL++b7z9XubkgBL4aUAB4oBHtItGz4XPTPMEuNeCK6lBoNcCZRgWYkfHNMlh7ON570L2O3PfIMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760025531; c=relaxed/simple;
-	bh=cWfVExySnxg9HveIFDJ5+KXFgjKH4j/0JNkeqQkZ+4g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qfnHkFW+NfF9gjlMvHrpFQGz9OP2aFFxnqu5uoUHru32Cg0+F6Unkliw/PHerTqJJQfmzujL7aXxUZp96MA0oZM7SPHOYQGIxzx91sZg+9ljt8//guyWNPbCLHGQQOTpDt2AR06IaQ6fbInAjDLc1l+9KXG0dmYWuGPiSutH2JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FGfWLkcz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760028063; c=relaxed/simple;
+	bh=N0XZnJZoSG+AyMpHWEeT3UptHpjumJYot0RUpOXd7Y4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PXLs3Gb8A1jaBAImTBspve+JQmuEljLApS5PJC9jEa02R4GlGgKogykFP7pb9LzDRHBn/5tPFKTCV45AiArPrZlun2KgR6HIiXgu6WayXWjHdJr5kwSx4MWTbEvIsk3yva5wooRQjjA+PUaZ9xg2f3Dt5KKMqXvhr0dvvaTpgBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qr9DVMtX; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FGfWLkcz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52425C4CEE7;
-	Thu,  9 Oct 2025 15:58:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760025531;
-	bh=cWfVExySnxg9HveIFDJ5+KXFgjKH4j/0JNkeqQkZ+4g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGfWLkczKgq0uPQeq+LHAi839mJ8de+3Bf4laRrDURJwec87Nyk7LP6sb0KhNjSkx
-	 3+CWb0P7b1dXz8BqABwYlAiSJU+hgueQIpZmBSeYnb5wM68G/oiaf8XSGsfctMeBsi
-	 1Glv2yrLgHxjaCXrJj1dhdBHuNFymhKxyGGb362UL5G6zmJy5Bm7UIVUPQ+zlsPw8j
-	 o6ZLuD3uwaF4Y7fb0PNxj2AJaSUfomABjswe6wORTAV/1ugCG+F2LsjYkX0PxGwX5x
-	 ZBEX3u0IwACU5MenKNBAF/Hgdr2T/fMCcYvdkVcsuPVhA4z81fY+TQLXkDBQAbS57n
-	 BfOpJlLkuD+8A==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Kaibo Ma <ent3rm4n@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	brendan.higgins@linux.dev,
-	alex.gaynor@gmail.com,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qr9DVMtX"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-71d71bcab69so11212427b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Oct 2025 09:41:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760028060; x=1760632860; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OEYS4ZG7BzvAgxNTt2hNL73MyYfFtHwZYP++pTe5XoE=;
+        b=Qr9DVMtXkfGidX9j0CsQuskN5P08J+XcXoUysoilq0WJ7TNgTLfqiimPNI2eMfL/V7
+         W0EdgdD3zUZKPk/cB3z8YqPbpfMjZvnTChpET7UALUoggFggeP0qWrP+fNyq8cH0edop
+         6fYMmoF9Te+YbSNia+C0XuzuG6n7KF4t2ZdZWkCGaxzGi79RB9cZsHVx5Soer4xoDZ9X
+         VHzee/tPF+klhuRdBoWZ9CxDbcb0V+TwOldFYkJT/49BO6i1gaCp3mWN2yCrBcdUmKmf
+         x63MxeMdO8PHT/T3QIGrhSazGQ2DZh3Td4gjUd592A3smI5fAhszJEshpgwcSDnfkNA2
+         WPEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760028060; x=1760632860;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OEYS4ZG7BzvAgxNTt2hNL73MyYfFtHwZYP++pTe5XoE=;
+        b=AN1seTH+53Yjk1IbDTR114vYc3B06cMlufTNvONUBoHdLZaSGJHkGvbQm0Ji51cyCa
+         b4anYKKjsP4OyNd1P1smAILT0p9NWDyqJ9L68iK7qy8nW2PTkmLwlxdZoJ4C88LiahEV
+         5pPYCJjIZgRkiWbFKYOx88EdI8YzDjxzHBDAAijR9zhJSkamryox5RkuSPAH9APuKg3E
+         nWaz7+w+IHTbgjxSQ87k47MN4SPqSCmarewkxMJ8ikj7230km/6RcrvOU3nbiwLrnQa6
+         AnpPIirXTASp8a0mIZ5wVIqLL5B+TZFjw56CbAruubMjCJ0ZPGzOwGD8oJFMYXLQ1Wpt
+         3xGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDvhEQ1mSCffVJ7Fkoi2y8VRyg17YztrrCgFmYxC0/XtWdJquwx0NwQpetsMZF7Rjrc2XWQRn61LhY6Tc9sA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEWBWK37meJTcMWs84EZb4OCz+Dag+rILNXPjeGq+HqEPYzK87
+	f1Qnn2PihC1aizJCrFQEpE6ZmRZhtHRyiT9y/b4I90U+N/T/c4xgYftI
+X-Gm-Gg: ASbGncu/lrJnpn+f/O7ggBm3hyQsqkbJXsq87Qbi8utsGkXOz6aKwiu5gs/tsKSbYVQ
+	2J8ielHa0SCI6Do7VLkDZIdCj/kOslDb04sG9K8AOjPto1gB6zyfOwQh2dRcyBRc35bvZC3QCuu
+	6okoQyr0+rNptXp6O3WIU8dwKLRlWOlOXc7JxVBjzgAHp4u4wC8UR5U7Tro5amcZfMrFLlLpf4A
+	jyVyLAwMutJyQtEKGcCVEus15pJg0m761tKeM9GSxrb1gutYND74J54tWa015CuaDF/7m7Vu8Dz
+	qD4Sd7jr8wEvs3IWs2KemSrO2wClkLz4MS/FG4YJVIwdzB9ySi4AYu4xIKskG0AZM/xlIw05PTN
+	4WXnM2NLDNaKWOfyCaEsy9kfXwqHtktIUWSRIpaebHJEoHRW0LK7r3vpAzbNItPaSSi6XiNKuhv
+	mwAjA=
+X-Google-Smtp-Source: AGHT+IE4I8ejY06OQV5+iuuha8UY69T0yHmq+uCkeg2u0Wguug06p8yYPejnOQd8b6WXnlG7VNxZFg==
+X-Received: by 2002:a05:690c:4d43:b0:76c:e8b7:a625 with SMTP id 00721157ae682-780e1476fbdmr110455167b3.21.1760028059826;
+        Thu, 09 Oct 2025 09:40:59 -0700 (PDT)
+Received: from localhost (c-73-105-0-253.hsd1.fl.comcast.net. [73.105.0.253])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-77f81e4d6dbsm74906357b3.59.2025.10.09.09.40.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Oct 2025 09:40:59 -0700 (PDT)
+Date: Thu, 9 Oct 2025 12:40:58 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feong@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-6.16] rust: kunit: allow `cfg` on `test`s
-Date: Thu,  9 Oct 2025 11:54:58 -0400
-Message-ID: <20251009155752.773732-32-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251009155752.773732-1-sashal@kernel.org>
-References: <20251009155752.773732-1-sashal@kernel.org>
+Subject: Re: [PATCH RFC v2 3/3] gpu: nova-core: use BoundedInt
+Message-ID: <aOflmmHe8O6Nx9Hp@yury>
+References: <20251009-bounded_ints-v2-0-ff3d7fee3ffd@nvidia.com>
+ <20251009-bounded_ints-v2-3-ff3d7fee3ffd@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.17.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251009-bounded_ints-v2-3-ff3d7fee3ffd@nvidia.com>
 
-From: Kaibo Ma <ent3rm4n@gmail.com>
+Hi Alexandre,
 
-[ Upstream commit c652dc44192d96820d73a7ecd89d275ca7e4355d ]
+On Thu, Oct 09, 2025 at 09:37:10PM +0900, Alexandre Courbot wrote:
+> Use BoundedInt with the register!() macro and adapt the nova-core code
+> accordingly. This makes it impossible to trim values when setting a
+> register field, because either the value of the field has been inferred
+> at compile-time to fit within the bounds of the field, or the user has
+> been forced to check at runtime that it does indeed fit.
 
-The `kunit_test` proc macro only checks for the `test` attribute
-immediately preceding a `fn`. If the function is disabled via a `cfg`,
-the generated code would result in a compile error referencing a
-non-existent function [1].
+In C23 we've got _BitInt(), which works like:
 
-This collects attributes and specifically cherry-picks `cfg` attributes
-to be duplicated inside KUnit wrapper functions such that a test function
-disabled via `cfg` compiles and is marked as skipped in KUnit correctly.
+        unsigned _BitInt(2) a = 5; // compile-time error
 
-Link: https://lore.kernel.org/r/20250916021259.115578-1-ent3rm4n@gmail.com
-Link: https://lore.kernel.org/rust-for-linux/CANiq72==48=69hYiDo1321pCzgn_n1_jg=ez5UYXX91c+g5JVQ@mail.gmail.com/ [1]
-Closes: https://github.com/Rust-for-Linux/linux/issues/1185
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Suggested-by: David Gow <davidgow@google.com>
-Signed-off-by: Kaibo Ma <ent3rm4n@gmail.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Can you consider a similar name and syntax in rust?
 
-LLM Generated explanations, may be completely bogus:
+> The use of BoundedInt actually simplifies register fields definitions,
+> as they don't need an intermediate storage type (the "as ..." part of
+> fields definitions). Instead, the internal storage type for each field
+> is now the bounded integer of its width in bits, which can optionally be
+> converted to another type that implements `From`` or `TryFrom`` for that
+> bounded integer type.
+> 
+> This means that something like
+> 
+>   register!(NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
+>       3:3     status_valid as bool,
+>       31:8    addr as u32,
+>   });
+> 
+> Now becomes
+> 
+>   register!(NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
+>       3:3     status_valid => bool,
+>       31:8    addr,
+>   });
 
-YES
+That looks nicer, really. But now that you don't make user to provide
+a representation type, how would one distinguish signed and unsigned
+fields? Assuming that BoundedInt is intended to become a generic type,
+people may want to use it as a storage for counters and other
+non-bitfield type of things. Maybe:
 
-- User-visible bug fixed. Without this change, a Rust KUnit test
-  function annotated with a cfg which disables the function causes a
-  compile error because the generated wrapper still references a non-
-  existent function. In v6.17, the macro only looks for a “[test]”
-  immediately followed by “fn” and blindly emits a wrapper which calls
-  the function (see rust/macros/kunit.rs:1-80 and
-  rust/macros/kunit.rs:112-132 in v6.17). The tree itself even carries a
-  workaround comment noting “Kunit #[test]s do not support `cfg` yet”
-  and gates inside the function body instead of on the attribute
-  (rust/kernel/bitmap.rs:554-569).
-
-- Small, contained fix in the Rust KUnit macro. The patch augments only
-  the KUnit proc-macro and sample tests:
-  - Attribute collection: It now collects consecutive attributes and
-    tracks them by name, specifically picking up “cfg” next to “test” so
-    it can be reused (rust/macros/kunit.rs:42-71). This makes test
-    detection tolerant to attribute ordering while still requiring a
-    “test” attribute.
-  - Wrapper guarding + skip semantics: The generated wrapper sets the
-    test status to SKIPPED by default, then encloses the test call
-    inside the copied cfg-guard. If the cfg disables the test, the
-    guarded block is not compiled and the wrapper reports SKIPPED;
-    otherwise it sets SUCCESS and runs the test, with failures correctly
-    recorded via KUnit’s assert mapping (rust/macros/kunit.rs:116-133).
-    The array size computation is slightly refactored but functionally
-    identical (rust/macros/kunit.rs:162-168).
-  - A disabled example test is added to validate the behavior
-    (rust/kernel/kunit.rs:365-371).
-
-- No architectural or ABI changes; limited blast radius.
-  - This affects only the Rust KUnit test infrastructure and is active
-    only when KUnit is enabled: the module is `#[cfg(CONFIG_KUNIT="y")]`
-    (rust/macros/kunit.rs:73-78).
-  - Production kernels without KUnit are unaffected. Runtime code paths
-    are unchanged; only test wrappers and macro expansion change.
-
-- Correctness and behavior details.
-  - The new wrapper’s pre-set status to SUCCESS before the assert is
-    benign: KUnit assert macros report failures and abort the test,
-    overriding status (see kunit_assert! and related handling in
-    rust/kernel/kunit.rs:55-151). When cfg is false, the function symbol
-    is not referenced because the guarded block is not compiled,
-    avoiding the previous compile error entirely.
-  - Only cfg attributes are duplicated into the wrapper, leaving other
-    attributes intact on the original function; the macro still strips
-    only the #[test] attribute from the function body
-    (rust/macros/kunit.rs:176-195).
-
-- Stable backport considerations.
-  - Clean backport target: v6.17.y and newer. v6.17 already has KUnit’s
-    Rust assert mapping and the `is_test_result_ok()` plumbing that this
-    wrapper uses (rust/macros/kunit.rs:112-156 in v6.17;
-    rust/kernel/kunit.rs:169-192). The patch slots in cleanly there.
-  - Older stable series (e.g., v6.15.y/v6.16.y) use an earlier version
-    of the macro (e.g., rust/macros/kunit.rs in v6.15) lacking assert
-    mapping and absolute paths. Backporting to those would require
-    additional prerequisite commits (“use absolute paths in macros
-    referencing core and kernel”, KUnit assert mapping, and Result
-    support). Without those prerequisites, this patch won’t apply or
-    compile as-is. For those older trees, either adapt the patch to that
-    macro baseline or avoid backporting.
-  - No explicit “Cc: stable@vger.kernel.org” in the commit, but this is
-    a low-risk build fix for KUnit/Rust that prevents compile errors and
-    reports disabled tests correctly as SKIPPED. It aligns with stable
-    policies for important, contained fixes in test infrastructure.
-
-- Risk assessment.
-  - Low regression risk: confined to test macro expansion with KUnit
-    enabled; no impact on production code paths.
-  - Attribute scanning remains conservative: it still requires a #[test]
-    attribute and does not broaden test discovery beyond that. It only
-    improves tolerance to preceding attributes and adds cfg duplication
-    for correctness.
-
-Given the above, this is a good candidate for backporting to stable
-trees which already contain the modern Rust KUnit macro (notably
-v6.17.y+).
-
- rust/kernel/kunit.rs |  7 +++++++
- rust/macros/kunit.rs | 48 +++++++++++++++++++++++++++++++++-----------
- 2 files changed, 43 insertions(+), 12 deletions(-)
-
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 41efd87595d6e..32640dfc968fe 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -357,4 +357,11 @@ fn rust_test_kunit_example_test() {
-     fn rust_test_kunit_in_kunit_test() {
-         assert!(in_kunit_test());
-     }
-+
-+    #[test]
-+    #[cfg(not(all()))]
-+    fn rust_test_kunit_always_disabled_test() {
-+        // This test should never run because of the `cfg`.
-+        assert!(false);
-+    }
- }
-diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index 81d18149a0cc9..b395bb0536959 100644
---- a/rust/macros/kunit.rs
-+++ b/rust/macros/kunit.rs
-@@ -5,6 +5,7 @@
- //! Copyright (c) 2023 José Expósito <jose.exposito89@gmail.com>
+   register!(NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
+       s 3:0     cnt,
+         7:4     flags, // implies unsigned - ?
+       u 31:8    addr,
+   });
  
- use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
-+use std::collections::HashMap;
- use std::fmt::Write;
- 
- pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-@@ -41,20 +42,32 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     // Get the functions set as tests. Search for `[test]` -> `fn`.
-     let mut body_it = body.stream().into_iter();
-     let mut tests = Vec::new();
-+    let mut attributes: HashMap<String, TokenStream> = HashMap::new();
-     while let Some(token) = body_it.next() {
-         match token {
--            TokenTree::Group(ident) if ident.to_string() == "[test]" => match body_it.next() {
--                Some(TokenTree::Ident(ident)) if ident.to_string() == "fn" => {
--                    let test_name = match body_it.next() {
--                        Some(TokenTree::Ident(ident)) => ident.to_string(),
--                        _ => continue,
--                    };
--                    tests.push(test_name);
-+            TokenTree::Punct(ref p) if p.as_char() == '#' => match body_it.next() {
-+                Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Bracket => {
-+                    if let Some(TokenTree::Ident(name)) = g.stream().into_iter().next() {
-+                        // Collect attributes because we need to find which are tests. We also
-+                        // need to copy `cfg` attributes so tests can be conditionally enabled.
-+                        attributes
-+                            .entry(name.to_string())
-+                            .or_default()
-+                            .extend([token, TokenTree::Group(g)]);
-+                    }
-+                    continue;
-                 }
--                _ => continue,
-+                _ => (),
-             },
-+            TokenTree::Ident(i) if i.to_string() == "fn" && attributes.contains_key("test") => {
-+                if let Some(TokenTree::Ident(test_name)) = body_it.next() {
-+                    tests.push((test_name, attributes.remove("cfg").unwrap_or_default()))
-+                }
-+            }
-+
-             _ => (),
-         }
-+        attributes.clear();
-     }
- 
-     // Add `#[cfg(CONFIG_KUNIT="y")]` before the module declaration.
-@@ -100,11 +113,22 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     let mut test_cases = "".to_owned();
-     let mut assert_macros = "".to_owned();
-     let path = crate::helpers::file();
--    for test in &tests {
-+    let num_tests = tests.len();
-+    for (test, cfg_attr) in tests {
-         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
--        // An extra `use` is used here to reduce the length of the message.
-+        // Append any `cfg` attributes the user might have written on their tests so we don't
-+        // attempt to call them when they are `cfg`'d out. An extra `use` is used here to reduce
-+        // the length of the assert message.
-         let kunit_wrapper = format!(
--            "unsafe extern \"C\" fn {kunit_wrapper_fn_name}(_test: *mut ::kernel::bindings::kunit) {{ use ::kernel::kunit::is_test_result_ok; assert!(is_test_result_ok({test}())); }}",
-+            r#"unsafe extern "C" fn {kunit_wrapper_fn_name}(_test: *mut ::kernel::bindings::kunit)
-+            {{
-+                (*_test).status = ::kernel::bindings::kunit_status_KUNIT_SKIPPED;
-+                {cfg_attr} {{
-+                    (*_test).status = ::kernel::bindings::kunit_status_KUNIT_SUCCESS;
-+                    use ::kernel::kunit::is_test_result_ok;
-+                    assert!(is_test_result_ok({test}()));
-+                }}
-+            }}"#,
-         );
-         writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
-         writeln!(
-@@ -139,7 +163,7 @@ macro_rules! assert_eq {{
-     writeln!(
-         kunit_macros,
-         "static mut TEST_CASES: [::kernel::bindings::kunit_case; {}] = [\n{test_cases}    ::kernel::kunit::kunit_case_null(),\n];",
--        tests.len() + 1
-+        num_tests + 1
-     )
-     .unwrap();
- 
--- 
-2.51.0
+> (here `status_valid` is infallibly converted to a bool for convenience
+> and to remain compatible with the previous semantics)
+> 
+> The field setter/getters are also simplified. If a field has no target
+> type, then its setter expects any type that implements `Into` to the
+> field's bounded integer type. Due to the many `From` implementations for
+> primitive types, this means that most calls can be left unchanged. If
+> the caller passes a value that is potentially larger than the field's
+> capacity, it must use the `try_` variant of the setter, which returns an
+> error if the value cannot be converted at runtime.
+> 
+> For fields that use `=>` to convert to another type, both setter and
+> getter are always infallible.
+> 
+> For fields that use `?=>` to fallibly convert to another type, only the
+> getter needs to be fallible as the setter always provide valid values by
+> design.
 
+Can you share a couple examples? Not sure I understand this part,
+especially how setters may not be fallible, and getters may fail.
+ 
+> Outside of the register macro, the biggest changes occur in `falcon.rs`,
+> which defines many enums for fields - their conversion implementations
+> need to be changed from the original primitive type of the field to the
+> new corresponding bounded int type. Hopefully the TryFrom/Into derive
+> macros [1] can take care of implementing these, but it will need to be
+> adapted to support bounded integers... :/
+> 
+> But overall, I am rather happy at how simple it was to convert the whole
+> of nova-core to this.
+> 
+> Note: This RFC uses nova-core's register!() macro for practical
+> purposes, but the hope is to move this patch on top of the bitfield
+> macro after it is split out [2].
+> 
+> [1] https://lore.kernel.org/rust-for-linux/cover.1755235180.git.y.j3ms.n@gmail.com/
+> [2] https://lore.kernel.org/rust-for-linux/20251003154748.1687160-1-joelagnelf@nvidia.com/
+> 
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+
+...
+
+>          regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+> -            .set_base((dma_start >> 40) as u16)
+> +            .try_set_base(dma_start >> 40)?
+>              .write(bar, &E::ID);
+
+Does it mean that something like the following syntax is possible?
+
+        regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+            .try_set_base1(base1 >> 40)?        // fail here
+            .try_set_base2(base2 >> 40)?        // skip
+            .write(bar, &E::ID) else { pr_err!(); return -EINVAL };
+
+This is my main concern: Rust is advertised a as runtime-safe language
+(at lease safer than C), but current design isn't safe against one of
+the most common errors: type overflow.
+
+If your syntax above allows to handle errors in .try_set() path this way
+or another, I think the rest is manageable. 
+
+As a side note: it's a huge pain in C to grep for functions that
+defined by using a macro. Here you do a similar thing. One can't
+easily grep the 'try_set_base' implementation, and would have to
+make a not so pleasant detour to the low-level internals. Maybe
+switch it to:
+        
+        regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+            .try_set(base, dma_start >> 40)?
+            .write(bar, &E::ID);
+
+Thanks,
+Yury
