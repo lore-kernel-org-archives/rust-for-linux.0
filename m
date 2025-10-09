@@ -1,112 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F6A19E967;
-	Thu,  9 Oct 2025 12:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A295F2D321A;
+	Thu,  9 Oct 2025 12:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760013716; cv=none; b=Z9V06rG+eEWZd2YkPK47JC6CdGja1Mxrdva+xESebIFmRRfWE0NAnK7YJXC+ow5IGk8szxZR4MTltGzvqr+UpqzOyKQX6nm77G5kGM9XMCiBub9dabmgX8TGTmDrD7dmwNzN7uxQksYU6y71H8x5PfSl995TNSfDDMztRf4+oSE=
+	t=1760014456; cv=none; b=F7HMpHROvPwD37p9lGTIdU0p5lH0NvpSzGsrXvzSy7CnByYarBl5nF7KZDoWr1MyuDSKostxKX1P3hM2lqoWsnXnGyRh/d9FpDDhreBzJ9JnWOl3mpYmdDnt23Oi9ZGZz6jJMoEl/yrAzAH9A+yemz4pWQYUeX2SDaUYa0a0zx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760013716; c=relaxed/simple;
-	bh=ThYRaiM1/P/U9DRfd5DuqT2AdjamSnICzMwo8iwj1dY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Hrw3kaPHwecKpBCjHIeILzhPEzqCpkBBY+oGx56XYO9r5bA/OwWi/ouV6lcfmzRja9khil7HO1X13r66/N184SxQ1eiazk0Xyah5ZSH48k/I5rs7t10O+6LcbSeIIRbQXP+exgUvJsRWEeeLTlMsUQbSsuzN7Y8APk4QGUPkyCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=px7rsuKA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760014456; c=relaxed/simple;
+	bh=R1TORzTxYknOCobqa5N2Ym/eV3oIkS/TL69ydYBPELo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=du6tMM+iD1HkC7wnDozUezIDlc0FnLRN5AQVz2eOGJe5zZ2bXrWKJMBGJb0ctJLjDGrKnl4nvbWBOGFMzFPqmooiRDhpr1ooUIY3r+Tf6MTuydnBEmcW44JTVHEhBX/sDKPgeds5nMNXPO2yVaVJj99NPH6ClrCW10asfxVf4VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHOtDTn5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="px7rsuKA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BCAC4CEE7;
-	Thu,  9 Oct 2025 12:41:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHOtDTn5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AF2C4CEE7;
+	Thu,  9 Oct 2025 12:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760013716;
-	bh=ThYRaiM1/P/U9DRfd5DuqT2AdjamSnICzMwo8iwj1dY=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=px7rsuKA2weU3PF6ofKBjlufluWoXztWZSvGQGxgT0xcALPhzQcFAPUhfxEcqBQLP
-	 ic9+JXm+5HM4Hg5kz08NtLwWbZTd9RwAtfTgD3g7eD4GMoPKlQ+otRp0YyYJPthzVA
-	 l/lygAKOoPH667ixN6vH1ZFDxZSojevaDa4R1aT9TEURxiaSA4G/ano9twpPBivHtU
-	 +oaFvgA2i4i66R8lX3uATZjuzSZbT4eyNxvaaHgd4OVnNaGgCTK92/Z8nplQc/U56j
-	 yrJ9vyf0mNZBvu42ebzpwx1fxVMt/YEFpCIptwOi3Uh4InRVDgzIAGPaL2ng2lASy/
-	 lrNfZie54AojQ==
+	s=k20201202; t=1760014456;
+	bh=R1TORzTxYknOCobqa5N2Ym/eV3oIkS/TL69ydYBPELo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZHOtDTn5E5ki97MoLFbg/hqT6PHek9RAtK++CrFn/XyiyBMbFi4k1QwsKrqf6cJKG
+	 4NQyQB7rM4j5LUn3I7Ys3/kuTjEPoWBu9aTR/zvv9riMPS3x2YvltdyvnRqojfieOK
+	 w6Kd53MaLy02LrSMe/3oprCkG0+IX+Q6aGG8DWk+loOmJOi8ohYdfRorqkbx0BRAlc
+	 NxskVlGcPMtrsq1gKH6OV7Nu4UCO2YYDRSG/SPJ2VZJvOr3qSttg6EqXMSJ0OLAXCa
+	 V7Kw4G3OmpyPjie7YjAsSnCTxT9lQ7jK8k4ro7YPK2UIU4IuSQ3I1CTkdWLzScVUNX
+	 hKULQMpCJMzGA==
+Message-ID: <807fe91b-acc6-4faf-834c-ced0dead2605@kernel.org>
+Date: Thu, 9 Oct 2025 14:54:09 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/5] rust: Move register and bitfield macros out of
+ Nova
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
+ Yury Norov <yury.norov@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Andrea Righi <arighi@nvidia.com>, nouveau@lists.freedesktop.org
+References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
+ <20251003154748.1687160-5-joelagnelf@nvidia.com>
+ <5a5bd549-f5b7-41ec-b493-bda427d1218f@de.bosch.com>
+ <DDDQZ8LM2OGP.VSEG03ZE0K04@kernel.org>
+ <DDDR8DIW6K4L.21F81P26KM64W@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <DDDR8DIW6K4L.21F81P26KM64W@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 09 Oct 2025 14:41:50 +0200
-Message-Id: <DDDSSGI3H08V.1L6YQN2Q5C8TE@kernel.org>
-Subject: Re: [PATCH 4/4] leds: add driver for synology atmega1608 controlled
- LEDs
-Cc: "Lee Jones" <lee@kernel.org>, "Pavel Machek" <pavel@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Igor
- Korotin" <igor.korotin.linux@gmail.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, <linux-leds@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Markus Probst" <markus.probst@posteo.de>, "Alexandre Courbot"
- <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251008181027.662616-1-markus.probst@posteo.de>
- <20251008181027.662616-2-markus.probst@posteo.de>
- <20251008181027.662616-3-markus.probst@posteo.de>
- <20251008181027.662616-4-markus.probst@posteo.de>
- <20251008181027.662616-5-markus.probst@posteo.de>
- <DDDSCBNFRLG9.26UA3ZEOA9LJH@kernel.org>
- <53fd34386cefd4a789c56a6e6d7c5618c06c531b.camel@posteo.de>
-In-Reply-To: <53fd34386cefd4a789c56a6e6d7c5618c06c531b.camel@posteo.de>
+Content-Transfer-Encoding: 7bit
 
-(Cc: Alex)
+On 10/9/25 1:28 PM, Alexandre Courbot wrote:
+> On Thu Oct 9, 2025 at 8:16 PM JST, Danilo Krummrich wrote:
+>> On Thu Oct 9, 2025 at 8:59 AM CEST, Dirk Behme wrote:
+>>> Assuming that register.rs is supposed to become the "generic" way to 
+>>> access hardware registers I started to have a look to it. Some weeks 
+>>> back testing interrupts I used some quite simple timer with 4 registers 
+>>> [1]. Now, thinking about converting it to register!() I have three 
+>>> understanding / usage questions:
+>>>
+>>> * At the moment register!() is for 32-bit registers, only? So it can't 
+>>> be used for my example having 8-bit and 16-bit registers as well?
+>>
+>> Yes, currently the register!() macro always generates a 32-bit register type
+>> (mainly because nova-core did not need anything else). However, this will of
+>> course be generalized (which should be pretty straight forward).
+>>
+>> Having a brief look at the TMU datasheet it looks like you should be able to
+>> treat TSTR and TCR as 32-bit registers without any issues for testing the
+>> register!() macro today. I.e. you can just define it as:
+>>
+>> 	register!(TSTR @ 0x04, "Timer Start Register" {
+>> 	    2:2    str2 as bool, "Specifies whether TCNT2 is operated or stopped.";
+>> 	    1:1    str1 as bool, "Specifies whether TCNT1 is operated or stopped.";
+>> 	    0:0    str0 as bool, "Specifies whether TCNT0 is operated or stopped.";
+>> 	});
+>>
+>> Same for TCR.
+> 
+> Patch 2 of this series actually adds support for 16 and 8 bit register
+> storage.
 
-On Thu Oct 9, 2025 at 2:30 PM CEST, Markus Probst wrote:
-> On Thu, 2025-10-09 at 14:20 +0200, Danilo Krummrich wrote:
->> (Not a full review (let's work out the dependencies first), but
->> there's one
->> thing that stood out to me.)
->>=20
->> On Wed Oct 8, 2025 at 8:10 PM CEST, Markus Probst wrote:
->> > +struct Atmega1608Led {
->> > +=C2=A0=C2=A0=C2=A0 addr: Atmega1608LedAddress,
->> > +=C2=A0=C2=A0=C2=A0 id: Atmega1608LedId,
->> > +
->> > +=C2=A0=C2=A0=C2=A0 client: ARef<I2cClient>,
->> > +
->> > +=C2=A0=C2=A0=C2=A0 mode_lock: Arc<Mutex<()>>,
->>=20
->> Mutex<()> raises an eyebrow, since a mutex that doesn't protect
->> anything is
->> pointless. So, I assume it is protecting some data, but in an unsound
->> way.
->>=20
->> > +impl Atmega1608Led {
->> > +=C2=A0=C2=A0=C2=A0 fn update_mode(&self, mode: Atmega1608LedMode) ->
->> > Result<Atmega1608LedMode> {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let _guard =3D self.mode_l=
-ock.lock();
->>=20
->> What exactly does the mutex protect in the code below?
-> Otherwise there would be a race condition. Each register has 8 bits,
-> each led has 2 bits. If the led mode is updated at the same time with
-> another one in the same register, it could lead to the first action
-> being overwritten by the second.
-> Meaning if two actions run at the same time:
-> - led0 reads from the register
-> - led1 reads from the register
-> - led0 writes to the register
-> - led1 writes to the register (the changes for led0 have been
-> overwritten here, as it did read the register before led0 has written
-> to it)
-
-Ok, so you need exclusive access to a register. I think this is something t=
-he
-register abstraction I also mentioned in [1] could support.
-
-@Alex: Have you thought about this already?
-
-[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kerne=
-l.org/
+Heh! I knew I saw a patch for this already somewhere, seems like I missed the
+forest for the trees. :)
