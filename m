@@ -1,77 +1,91 @@
-Received: from forward500d.mail.yandex.net (forward500d.mail.yandex.net [178.154.239.208])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E592E3360;
-	Thu,  9 Oct 2025 12:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97D711713;
+	Thu,  9 Oct 2025 13:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760014518; cv=none; b=ZY4xi28gyQ5/f2bAZmuvgeA++A6y7CfwpwG3c8hHhpHue/PYH7jIx0creTWdIdE1YdoGUnu/gd/QGcNH2XBawKe1ioK1F6aXr5KtD7f7B5JGvk0j/O9h6SDUqlTdbTIGKU+BQGrhAo0YvKwO+kYSgY62+NukanlTyq9Km/Gu/4M=
+	t=1760014968; cv=none; b=N4ylLmV19N/J4Ffd2CyzVbp+7BZvanvw1jOvvCKReFPEc2GUoIbRB7R4UYE6j3z92P2HXxfIrztzGdXcFrPVcSglp53qqog72Z9GgERxH1o+ANZvbzi/tbXRvzhZ9KzMS0tHuAYEp21f4wM7NUaPgEHpoJQ30akzl5KgGQqqBL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760014518; c=relaxed/simple;
-	bh=jIhFOtKQU/lkJrJyL1qYj5eWE6G/dTbmIE7eefjITeE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m1IvSDmeIP42MN7cfF/OTrUNeL+/2EhyMdRaPfkq9WwhdXjUwagc1Q9KZOCNKGjaDwjACxSqLx6yJ8sEhahXGe9iipYmpPCZOsxAyhzO6DZOOAceKgUgFsUgFO9Ra0gdglYPpEqEDRmrIGp+KF2wmi/c3MFx0epM5QVOa9K4y/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=HneMV+IP; arc=none smtp.client-ip=178.154.239.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1760014968; c=relaxed/simple;
+	bh=PuBhH69ek7xCWvm0d6VlgDo84TLqDlLMyWF4mF3IQws=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=E7PaWS6ZdZNAz2oYtiMg8hTGmuOeIhEQOXZgArLi1s9Ui0AHrCqU5nGimrHNZFpCJcgCyeZU6rbAaMS+n2aJ3GouL2ZOtVPLwN+OJbrj5IqIqTdKitjOgLCrcBCMMgLiwUKCiDBxe86/M0FM+nKYx2mRIV4Lq+oL8LouqFEb+uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U66bVbG+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="HneMV+IP"
-Received: from mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:86a2:0:640:3ad2:0])
-	by forward500d.mail.yandex.net (Yandex) with ESMTPS id 38CFB815F9;
-	Thu, 09 Oct 2025 15:55:04 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id xsJu6IYL0Os0-O1ne5mTO;
-	Thu, 09 Oct 2025 15:55:03 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1760014503;
-	bh=k6NY8fK5kcU51JaRhSM3lV4/Sq3mMVoFn+plnqG/WAk=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=HneMV+IPrgEvAj9n1M1PN3lzYeCuaZEafbljot05ZpMxmg4ZP3x1H2ASjEgrodzyG
-	 L8N649AXqsaGE9/Fb1y8VvNONWbuBNFjiwfqsZBPw2ydbuZC934Cz+5KtF5uFWIeO9
-	 VAYmLXCFSeKNTcPYDxn5vc/hKhMkr6bbqJUnrtKA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 9 Oct 2025 15:54:57 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org, nathan@kernel.org, nicolas.schier@linux.dev,
- masahiroy@kernel.org, aliceryhl@google.com,
- thomas.weissschuh@linutronix.de, tamird@gmail.com,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- tmgross@umich.edu, dakr@kernel.org
-Subject: Re: [PATCH v2 0/1] rust: add `rustcheck` make target for check-only
- builds
-Message-ID: <20251009155457.22131e41@nimda.home>
-In-Reply-To: <20250915115311.3025-1-work@onurozkan.dev>
-References: <20250915115311.3025-1-work@onurozkan.dev>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U66bVbG+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B61CC4CEF5;
+	Thu,  9 Oct 2025 13:02:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760014966;
+	bh=PuBhH69ek7xCWvm0d6VlgDo84TLqDlLMyWF4mF3IQws=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=U66bVbG+u9ZGnv56xEL2UQJ9Tl/4GNHCEj+Mqn80qMl6u9YpHbHHwbLkJqIiiPnEk
+	 lgex3EvWzBOUt2UBiZ+zZTgSvL3x6OFmKMs/BLkJ+lQ2uCfye6y1ks+CoM1fc0PZsy
+	 7CSCR2AKg6/RSufXN1Id4LxgRJ8quweikpk2FFbqYnrIVpM7+kAQzzaA5r9dmEkAfo
+	 Av3xe7vwtYVfUWcvGcmwcaMTqMQUWeJoWUe8EpPIU8eF+eYW0gK9cy3v0XiiQkdECY
+	 vscTpXwzqBp3P1M7QC/W830ChoVgOg536Rsq4B9iJ2gSGwLt2mKm81pdNZSXYm3PFn
+	 VPxBVMjj0sS6A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 09 Oct 2025 15:02:39 +0200
+Message-Id: <DDDT8EEG7E8B.27YT6QAFIS9GK@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v6 0/5] Introduce bitfield and move register macro to
+ rust/kernel/
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
+ <dri-devel@lists.freedesktop.org>, "Alistair Popple" <apopple@nvidia.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "joel@joelfernandes.org" <joel@joelfernandes.org>, "Elle Rhumsaa"
+ <elle@weathered-steel.dev>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Andrea Righi" <arighi@nvidia.com>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>
+References: <695CCDCE-A205-4557-AA15-6F102B8CCF0C@nvidia.com>
+ <DDCV84IJHUML.126CB1CT0XMX5@kernel.org>
+ <22e8c33c-b444-4f58-b7ec-6374475e05be@nvidia.com>
+In-Reply-To: <22e8c33c-b444-4f58-b7ec-6374475e05be@nvidia.com>
 
-On Mon, 15 Sep 2025 14:53:10 +0300
-Onur =C3=96zkan <work@onurozkan.dev> wrote:
+On Thu Oct 9, 2025 at 2:24 AM CEST, Joel Fernandes wrote:
+> On 10/8/2025 6:23 AM, Danilo Krummrich wrote:
+>> On Wed Oct 8, 2025 at 1:37 AM CEST, Joel Fernandes wrote:
+>>> The Nvidia GPU architecture is little-endian (including MMU structures =
+in VRAM).
+>>=20
+>> Yes, I'm aware (and I'd assume that there is no reason to ever change th=
+at).
+>>=20
+>> Just for the complete picture, there's also some endianness switch in th=
+e
+>> NV_PMC_BOOT_1 register I think?
+>
+> You are referring to old GPUs. NV_PMC_BOOT_1 does not have endianness swi=
+tch for
+> Turing and later.
 
-> Changes in v2:
->   - Couple of indentation fixes in rust/Makefile.
->=20
-> Onur =C3=96zkan (1):
->   rust: add `rustcheck` make target for check-only builds
->=20
->  Makefile      |  7 +++++
->  rust/Makefile | 73
-> +++++++++++++++++++++++++++++++++++++++++++++++++++ 2 files changed,
-> 80 insertions(+)
->=20
+Ok, then there's no point in considering big-endian CPUs.
 
-A friendly ping on this patch. It's been over two weeks with no
-feedback, would appreciate any thoughts or suggestions.
+> If we want to add a Kconfig patch enabling Nova only on x86/ARM, that'll =
+be Ok
+> with me.
 
-Regards,
-Onur
+I don't see why we'd constrain it to x86 and ARM, but we should indeed cons=
+train
+it to little-endian architectures.
