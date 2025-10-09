@@ -1,142 +1,152 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A87725392D
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Oct 2025 18:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318A738D
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Oct 2025 18:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760033571; cv=none; b=QNJb3zwNygMBiSdOZ1WtSzWxUBlS0ZL2i0z/oE5NLIDKw0On3lbpsgRij8SO2iZS/v0HsYhavCNRdHMBHptERP06T7AqB5x7dZDNKBNAjwfS/M8NAOHEew3K+C99mte2fZC+CxKt7xc9RwkVOt79qsn3KjFwBQ+KnzwyNk/S1Fk=
+	t=1760034494; cv=none; b=NZ7h6bJqh4AQjPCLRhPls+9WtW3N3dhY4k3Fd8e3CqCDMOideXXEEZdTlxW/zXYmZySucxvUZko76F6B2NZhbqe0IDn5jw3tClBHvfd6mQ6agSI/4fceRYTKrXgyPi0AL/1Kz48AgWSOCLSIMs67ka6vtyV3pzMR4tlg6QLW1Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760033571; c=relaxed/simple;
-	bh=fgeK4opmCKlBAPy6sRUe54YvmCfIf21KVKHebdewAOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bKVVnl9X88egdlucMymPdmzWvkHty6fan5I8VOZuHcmouuXhPNI76U35jL4zWr/UlV64eZYafZrBNtw+I9P7EPNzwiEHmLq6NZvGDwKnRPNFNrZJ9xPip5fYTHYUOJX75E1404qzc4xky7zFo39J5nyMxrFqfrhd0qN929dOOlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=AW70aLvw; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1760034494; c=relaxed/simple;
+	bh=Jm+Pvp7IGU0rRjl/vbRGRN6axsBYqg1WFn7zJ0a9kaY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VakOeNJNwrfSHK4R9laGwIJOtFpX1I+7eiTNInhAtDW3ARvCHhHY4UoM7Tf/BmbynF2vtyy0dQOEl1yr1VtJGSAXr8Ty0qV1ymwUUyEuYqFHOs7kJELkC7z+akji3iCW1G4kgOIVwCMINe0UDVeDL93YfSLPiV+zXf8xb5HfePI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WaatG0VG; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="AW70aLvw"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 54B24240101
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Oct 2025 20:12:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1760033562; bh=BwPkZELU5O8AP9BxBBNxXxk1X8rL+vbT7rHOfPTZPm8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Autocrypt:OpenPGP:From;
-	b=AW70aLvwEP6I3G0aEP+Ta7dcgKV8fWYgWidciN8TUdwSOzPoP33POnHdHrUlMyCac
-	 csFjQ23xoL5fYPZUO1SrzuJD0GYClfgdjRR2DQSzIQemPdDHs5vzMDnUbCoRLYPJIO
-	 a4Pb7zoGY9wRZmS9fxWs0ieI5ke935xockRiZolXXE5DmKICJjx+yWuO6WgzNSQ6Q7
-	 Bfd7Dq2CZyG/PHEX/RFFd7WU89yhxfxPVg44tTKkMSSFuoTflvpFTjxAegbWBkPrzM
-	 sNlobmYGyM0wBWhdS4TSWBBG0ThgvQL8smKbxCSOETC+PqUwUXnOtiz76HfOkcEwPE
-	 DG3vDNMLI5mBg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4cjHz26y17z9rxW;
-	Thu,  9 Oct 2025 20:12:30 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WaatG0VG"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4da7a3d0402so18313171cf.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Oct 2025 11:28:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760034492; x=1760639292; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=m5CEm/k2cKSkdb8l0Unz1Qn9/RiaqPf8uIpBe3eDtIE=;
+        b=WaatG0VGIHMqVHvg0ZLjDjfZ1m7anQ8Owbt4T2K8cHTus/MYr2Uinj6ku3bMv6cb67
+         Q0okGFSMPLk84J+4RGGFGhRPCMRxpxZR1/w2vBPOPWuSW/dQs/WbDk3jJJLraSuV/mUI
+         4vAybVrvPA3sK0Z0jLjKpqi2VkTsbXqC6b70vbg5YubV5V87gRG1p7bkEMIb4zkVGJ40
+         SJvAkJJz5hArKvQZcnY92ZosSKgKgT57Nip9e73M+qDTPrZeH7CoeRh9LI1rtIUbhHL+
+         fb0hu3/5mymiFZApZB6gBBD9Hz6Ezcu5xMrSeC7kn5Dm0hurN4cnKGrrokHZgvQUzKP0
+         aHew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760034492; x=1760639292;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m5CEm/k2cKSkdb8l0Unz1Qn9/RiaqPf8uIpBe3eDtIE=;
+        b=I0wnhkmSTSn4dAwt5JeNgmn/nawo631t75T2OwtT/t7jcYxRzGKy59N7QWKaHY++Uo
+         wAyr8rPkbtyo3zq+gWkxuVHO0eIT0nYiMphZg8SLGa8BohN/waXzwYxoz+zAXLc4doDw
+         OZfeVpjUV0k5QNsxE5CJs5kcFNmHdoKXAoO1/FqdSomrZMWZuOPpgzmuERYHxCspk0Cu
+         LmvTUGCGMDslWCJRBIVMBNVdY6e6JcFjym8PTwt+pgdVJUB973ogVqSxA0XF/miawYGg
+         VlgsjKumDqBHEnCeCGgg3g1lwYWnKVWFoo+zzmeg8ZOpky6XleoOz3C2wtJkIXmw/+0T
+         lzHg==
+X-Forwarded-Encrypted: i=1; AJvYcCXmwZDc/VcYpBwhrZuYILzkuAO/ofPilqGj1ivl2XgsTv4ZedkdZhu0IeIguWsgCNwqkHXALg0kOwXlfRciPQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ6D/CiSv+DZJe2lgyEN63jyHQz2avyQp5CWJDCPmNCpeFs0I8
+	MEmCyTrQ7FpZ456yi869MISKQ9x7EP9pTorvuHc3Wl7d1mlDEctoQFni
+X-Gm-Gg: ASbGncsN04Rcgep6papg4DwvPT+8CHtM3zyNda9EJl6AEsh9PPnXNVZh24lYP6fxJxM
+	idVXqX12Akg0C8wc6dDQ6QtWH8MESCvsSAPtVTMbCkSKSYbnHLTvQIDTML9YA9mdcIAK67aOElP
+	R9zbOtCFmy9YwnhC/e+xRPSG67apzN3H0Y8LfYGmnN43dP7QmzJpGxEocN5f28jn8nxUhG7GUJG
+	V7pP7B18V1+/ol28GyhIpcLBIebe86wz0+1cFYcOgCPh0Yqxxd7QcbcS9fn0Finy4LTcncQsX/A
+	LidJaXnJ+XUJdS37kSKdd/YcSRrWDVQHDcU/t0AAhB9JsrovRCz6/1kWQlg5w1Xbl1bi9hQyWqX
+	msEJxsZsAZ9cnZmDPKDuJngr9aRSjaoZg1EA2sTYX9KxGFMESCj3VuQ==
+X-Google-Smtp-Source: AGHT+IF00kjXS/Ks4W3W0yL60FVuYiaJ0yikXglyJUl4wFsoNXCdTMygWhDLSE1zqjZH94GRSgJ02Q==
+X-Received: by 2002:ac8:5d4d:0:b0:4d2:ba6f:28fa with SMTP id d75a77b69052e-4e6de8b5d39mr194435231cf.34.1760034491694;
+        Thu, 09 Oct 2025 11:28:11 -0700 (PDT)
+Received: from localhost ([12.22.141.131])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e706b96a97sm2841951cf.5.2025.10.09.11.28.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Oct 2025 11:28:11 -0700 (PDT)
+Date: Thu, 9 Oct 2025 14:28:09 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
+	Boqun Feng <boqun.feong@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Markus Probst <markus.probst@posteo.de>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org
-Subject: [PATCH v2 0/2] rust: leds: add led classdev abstractions
-Date: Thu, 09 Oct 2025 18:12:32 +0000
-Message-ID: <20251009181203.248471-1-markus.probst@posteo.de>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH RFC v2 3/3] gpu: nova-core: use BoundedInt
+Message-ID: <aOf-s-XuhbN7MUlx@yury>
+References: <20251009-bounded_ints-v2-0-ff3d7fee3ffd@nvidia.com>
+ <20251009-bounded_ints-v2-3-ff3d7fee3ffd@nvidia.com>
+ <aOflmmHe8O6Nx9Hp@yury>
+ <DDDYOBOZTF7Q.124VJDF4C76B6@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DDDYOBOZTF7Q.124VJDF4C76B6@kernel.org>
 
-This patch series has previously been contained in
-https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
-which added a rust written led driver for a microcontroller via i2c.
+On Thu, Oct 09, 2025 at 07:18:33PM +0200, Danilo Krummrich wrote:
+> On Thu Oct 9, 2025 at 6:40 PM CEST, Yury Norov wrote:
+> > On Thu, Oct 09, 2025 at 09:37:10PM +0900, Alexandre Courbot wrote:
+> >> Use BoundedInt with the register!() macro and adapt the nova-core code
+> >> accordingly. This makes it impossible to trim values when setting a
+> >> register field, because either the value of the field has been inferred
+> >> at compile-time to fit within the bounds of the field, or the user has
+> >> been forced to check at runtime that it does indeed fit.
+> >
+> > In C23 we've got _BitInt(), which works like:
+> >
+> >         unsigned _BitInt(2) a = 5; // compile-time error
+> >
+> > Can you consider a similar name and syntax in rust?
+> 
+> Rust is a different language and has its own syntax, I think we should not try
+> to use C syntax instead.
 
-As the reading and writing to the i2c client via the register!
-macro has not been implemented yet [1], the patch series will only
-contain the additional abstractions required.
+Up to you guys. But having in mind that C is the only language that
+really works for system engineering, I would rather consider to stay
+in line with it on semantic level.
 
-[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
+If your goal is to make rust adopted by system engineers, you may
+want to make your language somewhat familiar to what people already
+know.
+ 
+> >>          regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+> >> -            .set_base((dma_start >> 40) as u16)
+> >> +            .try_set_base(dma_start >> 40)?
+> >>              .write(bar, &E::ID);
+> >
+> > Does it mean that something like the following syntax is possible?
+> >
+> >         regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+> >             .try_set_base1(base1 >> 40)?        // fail here
+> 
+> Note that try_set_base1() returns a Result [1], which is handled immediately by
+> the question mark operator [2]. I.e. if try_set_base1() returns an error it is
+> propagated to the caller right away without executing any of the code below.
 
-The following changes were made:
-* add basic Pin<Vec<T, A>> abstractions, that allow to initialize PinInit items with
-  the guarantee that these will never be moved.
+Thanks for the links. I am definitely the very beginning on the
+learning curve for this.
+ 
+> >             .try_set_base2(base2 >> 40)?        // skip
+> >             .write(bar, &E::ID) else { pr_err!(); return -EINVAL };
+> >
+> > This is my main concern: Rust is advertised a as runtime-safe language
+> > (at lease safer than C), but current design isn't safe against one of
+> > the most common errors: type overflow.
+> 
+> Where do you see a potential runtime overflows in the register!() code?
 
-* add basic led classdev abstractions to register and unregister leds
+Assuming base is 10-bit,
+        
+        let ret = some_c_wrapper()      // 0..1024 or -EINVAL
+        regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+             .try_set_base1(ret)
 
-Changes since v1:
-* fixed typos noticed by Onur Özkan
+Or maybe I misunderstood the question, because if there's no possibility
+to overflow a field, what for the .try_set_xxx() is needed at all?
 
-Markus Probst (2):
-  rust: add basic Pin<Vec<T, A>> abstractions
-  rust: leds: add basic led classdev abstractions
-
- rust/kernel/alloc.rs      |   1 +
- rust/kernel/alloc/kvec.rs |  86 +++++++++++
- rust/kernel/led.rs        | 296 ++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs        |   1 +
- rust/kernel/prelude.rs    |   2 +-
- 5 files changed, 385 insertions(+), 1 deletion(-)
- create mode 100644 rust/kernel/led.rs
-
--- 
-2.49.1
-
+> [1] https://rust.docs.kernel.org/kernel/error/type.Result.html
+> [2] https://doc.rust-lang.org/reference/expressions/operator-expr.html?highlight=question%20mark#the-question-mark-operator
