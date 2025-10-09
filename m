@@ -1,210 +1,102 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E09A21578F
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Oct 2025 16:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39E2235045;
+	Thu,  9 Oct 2025 17:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760028063; cv=none; b=fIEginPoPDv3Ee2PSRvxnufZ/CEdrEoiiKIA8UIT8JJczBe68J3HxfFgy5nojt2xxXspCQgIaaH4P3ORb1xzdz9dCHU9cSsRXL++b7z9XubkgBL4aUAB4oBHtItGz4XPTPMEuNeCK6lBoNcCZRgWYkfHNMlh7ON570L2O3PfIMM=
+	t=1760029523; cv=none; b=gZTdeC1+pG8EVb9AUfwU1/VqQ/MDRFgy1vp/W4g6XyrQnizpdf5rapqskAc4p0Aj7Hd7ID80Jq5hItztD2vJYtUtMbDEqmzJQFRp5GZ0CRiDD+mmlEZX5XC1gZNqSszeWw/76YLTouQxlHQvDvGZdqonN2THMQeBF5+Qsh9lSME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760028063; c=relaxed/simple;
-	bh=N0XZnJZoSG+AyMpHWEeT3UptHpjumJYot0RUpOXd7Y4=;
+	s=arc-20240116; t=1760029523; c=relaxed/simple;
+	bh=K/920CR2Ytam1wn7N7JUroePPcHUf353y47OxV5zx1Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PXLs3Gb8A1jaBAImTBspve+JQmuEljLApS5PJC9jEa02R4GlGgKogykFP7pb9LzDRHBn/5tPFKTCV45AiArPrZlun2KgR6HIiXgu6WayXWjHdJr5kwSx4MWTbEvIsk3yva5wooRQjjA+PUaZ9xg2f3Dt5KKMqXvhr0dvvaTpgBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qr9DVMtX; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=rpKwv3g0I2tNy8ClmF5gvkNOExP/Ay8pZQvZzZLAr1QLALvetzU0eVyxiAA6VXzEWqZxtIjMuAjLr63C9wYmKMxjPFZYWdt5jBTCq2aEw57r2BohuXPRjSbNp7UGhJqn0c3mmQE9i8Z0HXyz3w0UCodJTsudwkgetRp6cBJUqvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSDSAwKi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qr9DVMtX"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-71d71bcab69so11212427b3.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 09 Oct 2025 09:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760028060; x=1760632860; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OEYS4ZG7BzvAgxNTt2hNL73MyYfFtHwZYP++pTe5XoE=;
-        b=Qr9DVMtXkfGidX9j0CsQuskN5P08J+XcXoUysoilq0WJ7TNgTLfqiimPNI2eMfL/V7
-         W0EdgdD3zUZKPk/cB3z8YqPbpfMjZvnTChpET7UALUoggFggeP0qWrP+fNyq8cH0edop
-         6fYMmoF9Te+YbSNia+C0XuzuG6n7KF4t2ZdZWkCGaxzGi79RB9cZsHVx5Soer4xoDZ9X
-         VHzee/tPF+klhuRdBoWZ9CxDbcb0V+TwOldFYkJT/49BO6i1gaCp3mWN2yCrBcdUmKmf
-         x63MxeMdO8PHT/T3QIGrhSazGQ2DZh3Td4gjUd592A3smI5fAhszJEshpgwcSDnfkNA2
-         WPEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760028060; x=1760632860;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OEYS4ZG7BzvAgxNTt2hNL73MyYfFtHwZYP++pTe5XoE=;
-        b=AN1seTH+53Yjk1IbDTR114vYc3B06cMlufTNvONUBoHdLZaSGJHkGvbQm0Ji51cyCa
-         b4anYKKjsP4OyNd1P1smAILT0p9NWDyqJ9L68iK7qy8nW2PTkmLwlxdZoJ4C88LiahEV
-         5pPYCJjIZgRkiWbFKYOx88EdI8YzDjxzHBDAAijR9zhJSkamryox5RkuSPAH9APuKg3E
-         nWaz7+w+IHTbgjxSQ87k47MN4SPqSCmarewkxMJ8ikj7230km/6RcrvOU3nbiwLrnQa6
-         AnpPIirXTASp8a0mIZ5wVIqLL5B+TZFjw56CbAruubMjCJ0ZPGzOwGD8oJFMYXLQ1Wpt
-         3xGg==
-X-Forwarded-Encrypted: i=1; AJvYcCUDvhEQ1mSCffVJ7Fkoi2y8VRyg17YztrrCgFmYxC0/XtWdJquwx0NwQpetsMZF7Rjrc2XWQRn61LhY6Tc9sA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEWBWK37meJTcMWs84EZb4OCz+Dag+rILNXPjeGq+HqEPYzK87
-	f1Qnn2PihC1aizJCrFQEpE6ZmRZhtHRyiT9y/b4I90U+N/T/c4xgYftI
-X-Gm-Gg: ASbGncu/lrJnpn+f/O7ggBm3hyQsqkbJXsq87Qbi8utsGkXOz6aKwiu5gs/tsKSbYVQ
-	2J8ielHa0SCI6Do7VLkDZIdCj/kOslDb04sG9K8AOjPto1gB6zyfOwQh2dRcyBRc35bvZC3QCuu
-	6okoQyr0+rNptXp6O3WIU8dwKLRlWOlOXc7JxVBjzgAHp4u4wC8UR5U7Tro5amcZfMrFLlLpf4A
-	jyVyLAwMutJyQtEKGcCVEus15pJg0m761tKeM9GSxrb1gutYND74J54tWa015CuaDF/7m7Vu8Dz
-	qD4Sd7jr8wEvs3IWs2KemSrO2wClkLz4MS/FG4YJVIwdzB9ySi4AYu4xIKskG0AZM/xlIw05PTN
-	4WXnM2NLDNaKWOfyCaEsy9kfXwqHtktIUWSRIpaebHJEoHRW0LK7r3vpAzbNItPaSSi6XiNKuhv
-	mwAjA=
-X-Google-Smtp-Source: AGHT+IE4I8ejY06OQV5+iuuha8UY69T0yHmq+uCkeg2u0Wguug06p8yYPejnOQd8b6WXnlG7VNxZFg==
-X-Received: by 2002:a05:690c:4d43:b0:76c:e8b7:a625 with SMTP id 00721157ae682-780e1476fbdmr110455167b3.21.1760028059826;
-        Thu, 09 Oct 2025 09:40:59 -0700 (PDT)
-Received: from localhost (c-73-105-0-253.hsd1.fl.comcast.net. [73.105.0.253])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-77f81e4d6dbsm74906357b3.59.2025.10.09.09.40.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 09:40:59 -0700 (PDT)
-Date: Thu, 9 Oct 2025 12:40:58 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feong@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RFC v2 3/3] gpu: nova-core: use BoundedInt
-Message-ID: <aOflmmHe8O6Nx9Hp@yury>
-References: <20251009-bounded_ints-v2-0-ff3d7fee3ffd@nvidia.com>
- <20251009-bounded_ints-v2-3-ff3d7fee3ffd@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSDSAwKi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E870BC4CEE7;
+	Thu,  9 Oct 2025 17:05:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760029522;
+	bh=K/920CR2Ytam1wn7N7JUroePPcHUf353y47OxV5zx1Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YSDSAwKixJwAcuHpinVRh5i8UjuDftvpwmX8U+4+hsr3pjU0Kbr04cRyidWCCnkKM
+	 0Zjz/FeI+Ghya5Hv1eFFXoyr2eNZIcuCC1Rgs9j5NzmzqKQcRH0rNdrDwWL8L4FPlc
+	 12dmobDe6OngdQ5rB86UsySfUB3ZwpGiX9MhYMHlO2DlkXCuNys8WYxZbOrZU7DXq6
+	 2ORjBMXNo7aZziGRzAzMsbtE7rQNSvZXAcexQzPtX4GsFPF+oPa4dnSVExXvVg4EGk
+	 1YAqe20JovGVMdObbjqS2teB6rD0y/UbPgM7xVj0Q3ahKEZSDk64uxCety8RxbxE6n
+	 ipKVeFwUr/wpw==
+Date: Thu, 9 Oct 2025 19:05:20 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Elle Rhumsaa <elle@weathered-steel.dev>
+Cc: Michal Wilczynski <m.wilczynski@samsung.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Benno Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Drew Fustini <fustini@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v15 3/7] rust: pwm: Add complete abstraction layer
+Message-ID: <pxwzgjl4men4ia2jfky6i4pcpzmlxnuorzltfsurrosz27atbz@n2x7bt77nd5n>
+References: <20250930-rust-next-pwm-working-fan-for-sending-v15-0-5661c3090877@samsung.com>
+ <CGME20250930122733eucas1p1017471af8564a40f60be74c5ae50bbc4@eucas1p1.samsung.com>
+ <20250930-rust-next-pwm-working-fan-for-sending-v15-3-5661c3090877@samsung.com>
+ <aN2Vrf97-uCR41x9@archiso>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5mhwlegpqwr4uy3k"
 Content-Disposition: inline
-In-Reply-To: <20251009-bounded_ints-v2-3-ff3d7fee3ffd@nvidia.com>
+In-Reply-To: <aN2Vrf97-uCR41x9@archiso>
 
-Hi Alexandre,
 
-On Thu, Oct 09, 2025 at 09:37:10PM +0900, Alexandre Courbot wrote:
-> Use BoundedInt with the register!() macro and adapt the nova-core code
-> accordingly. This makes it impossible to trim values when setting a
-> register field, because either the value of the field has been inferred
-> at compile-time to fit within the bounds of the field, or the user has
-> been forced to check at runtime that it does indeed fit.
+--5mhwlegpqwr4uy3k
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v15 3/7] rust: pwm: Add complete abstraction layer
+MIME-Version: 1.0
 
-In C23 we've got _BitInt(), which works like:
+Hello Elle,
 
-        unsigned _BitInt(2) a = 5; // compile-time error
+On Wed, Oct 01, 2025 at 08:57:17PM +0000, Elle Rhumsaa wrote:
+> On Tue, Sep 30, 2025 at 02:20:34PM +0200, Michal Wilczynski wrote:
+> > [... 700+ lines trimmed]
+>=20
+> Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
 
-Can you consider a similar name and syntax in rust?
+Can you please trim the quoted part when you reply to only contain the
+relevant part? Having to scroll several pages to see your one-line reply
+is not a good use of my time. Multiply that by the number of recipients
+of your mail.
 
-> The use of BoundedInt actually simplifies register fields definitions,
-> as they don't need an intermediate storage type (the "as ..." part of
-> fields definitions). Instead, the internal storage type for each field
-> is now the bounded integer of its width in bits, which can optionally be
-> converted to another type that implements `From`` or `TryFrom`` for that
-> bounded integer type.
-> 
-> This means that something like
-> 
->   register!(NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
->       3:3     status_valid as bool,
->       31:8    addr as u32,
->   });
-> 
-> Now becomes
-> 
->   register!(NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
->       3:3     status_valid => bool,
->       31:8    addr,
->   });
+Thanks
+Uwe
 
-That looks nicer, really. But now that you don't make user to provide
-a representation type, how would one distinguish signed and unsigned
-fields? Assuming that BoundedInt is intended to become a generic type,
-people may want to use it as a storage for counters and other
-non-bitfield type of things. Maybe:
+--5mhwlegpqwr4uy3k
+Content-Type: application/pgp-signature; name="signature.asc"
 
-   register!(NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
-       s 3:0     cnt,
-         7:4     flags, // implies unsigned - ?
-       u 31:8    addr,
-   });
- 
-> (here `status_valid` is infallibly converted to a bool for convenience
-> and to remain compatible with the previous semantics)
-> 
-> The field setter/getters are also simplified. If a field has no target
-> type, then its setter expects any type that implements `Into` to the
-> field's bounded integer type. Due to the many `From` implementations for
-> primitive types, this means that most calls can be left unchanged. If
-> the caller passes a value that is potentially larger than the field's
-> capacity, it must use the `try_` variant of the setter, which returns an
-> error if the value cannot be converted at runtime.
-> 
-> For fields that use `=>` to convert to another type, both setter and
-> getter are always infallible.
-> 
-> For fields that use `?=>` to fallibly convert to another type, only the
-> getter needs to be fallible as the setter always provide valid values by
-> design.
+-----BEGIN PGP SIGNATURE-----
 
-Can you share a couple examples? Not sure I understand this part,
-especially how setters may not be fallible, and getters may fail.
- 
-> Outside of the register macro, the biggest changes occur in `falcon.rs`,
-> which defines many enums for fields - their conversion implementations
-> need to be changed from the original primitive type of the field to the
-> new corresponding bounded int type. Hopefully the TryFrom/Into derive
-> macros [1] can take care of implementing these, but it will need to be
-> adapted to support bounded integers... :/
-> 
-> But overall, I am rather happy at how simple it was to convert the whole
-> of nova-core to this.
-> 
-> Note: This RFC uses nova-core's register!() macro for practical
-> purposes, but the hope is to move this patch on top of the bitfield
-> macro after it is split out [2].
-> 
-> [1] https://lore.kernel.org/rust-for-linux/cover.1755235180.git.y.j3ms.n@gmail.com/
-> [2] https://lore.kernel.org/rust-for-linux/20251003154748.1687160-1-joelagnelf@nvidia.com/
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmjn600ACgkQj4D7WH0S
+/k5XeAgAnu0TfZoOsdkntucLzQ0zg0HTTAqaoe7N7MdLgsQQHxRpQxck6cJb3Vw+
+1J8jo8DQzCi+lwytWM5iubVukxGFCxFV5h4Qp0bW7/eYCK/fTscZ7g7uuKO+GS0D
+7s0Lr6MOsfe1MjqHyqAMKZYHWQjwZresPWVJCpyuInAhCoV60f1SSEoWsrwkpdZX
+CFREtKf1Gn5yYj0cNQHl8ubNIZ3uW4tlbvj93wZjztMXQROG/8tvJ29vcUTdSqDR
+UbF+xPvIu1hVRAtLjGwm3PBioLnwB01cV0g427s3pDSwNRUrsEC4flnJAqKa9r1g
+PvYN7XNxSwfgteGrqDjFVby3Ap8cBw==
+=Y2eC
+-----END PGP SIGNATURE-----
 
-...
-
->          regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
-> -            .set_base((dma_start >> 40) as u16)
-> +            .try_set_base(dma_start >> 40)?
->              .write(bar, &E::ID);
-
-Does it mean that something like the following syntax is possible?
-
-        regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
-            .try_set_base1(base1 >> 40)?        // fail here
-            .try_set_base2(base2 >> 40)?        // skip
-            .write(bar, &E::ID) else { pr_err!(); return -EINVAL };
-
-This is my main concern: Rust is advertised a as runtime-safe language
-(at lease safer than C), but current design isn't safe against one of
-the most common errors: type overflow.
-
-If your syntax above allows to handle errors in .try_set() path this way
-or another, I think the rest is manageable. 
-
-As a side note: it's a huge pain in C to grep for functions that
-defined by using a macro. Here you do a similar thing. One can't
-easily grep the 'try_set_base' implementation, and would have to
-make a not so pleasant detour to the low-level internals. Maybe
-switch it to:
-        
-        regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
-            .try_set(base, dma_start >> 40)?
-            .write(bar, &E::ID);
-
-Thanks,
-Yury
+--5mhwlegpqwr4uy3k--
