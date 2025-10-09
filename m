@@ -1,200 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B5917A30A;
-	Thu,  9 Oct 2025 11:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118DF2C2340
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Oct 2025 11:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760008607; cv=none; b=gAEKdGoMNt2lkCNX+7N7ZRkFm/gCFCfUVzCm2o/5NGSF8XoDO/RsOXkg4SrTFe3DZxWBlSyqYhCCqFa73pMw32Gq9X/EvNEtbkIP9bTS89E4eoQHxS6geHUMN2Ugp/nGJotAtoFmTEAe9nHQoLRfYMFc/bBwfNjNZlbisMCgGeA=
+	t=1760008674; cv=none; b=LpV3cwXtjLv9mr1mdmF4JQEpGHwMLLGDIqEUkizwnAGvbLKR2h825AqcflA5k4kVY6waa9lWPNF6r3WMTa4WGc1mKqtclhPrLsKO09RMjGBXrFJidteX6GTgc9o+5JzZHgO+mzqTh57Utu/nBZpbjGJ2Ui29MvHLoA2Nc95zeOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760008607; c=relaxed/simple;
-	bh=NvnFH5fFMQlfkVMuPWti/OYzM0/+PyGHmbs5QNfgrNI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=RJ7qLCIDr//rv++7kA3gV55CMF+aAo8m6SpafGOftdKS1SBPHnnyd9/T+3POcHl9XJZnXLxCjFuewW2AI3tkmcZIqrdppvAv9oImRRaSw+9jaN9j2v4DXAwc07TRFq2V1IUfIjc/NkYJGfFnxyeNW/tvJG8atsMPkHJ3Q9n7cG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHiXdRUB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760008674; c=relaxed/simple;
+	bh=WCD/CAfB1G/FRBM8fWx7yMrkRvfIIG1WNz92HG5xPeQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MYLRr3fbgkbH+zaCiNjfS17avFzGzhAwYBrq0AD3Moe6nZRdJXTGmosvcw3+lYh+e+ocwstE9ZD9Lc7fiT0wyAu/2/k7uKdIgp+ZHP47kNSj+vHTkVh9o99Mto7k3KdcF5B1QVcu3Zmekt+EvVDXG3e5IdQ2YoZJTUcIE5+ht9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h/Bh1hRY; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHiXdRUB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B916C4CEE7;
-	Thu,  9 Oct 2025 11:16:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760008606;
-	bh=NvnFH5fFMQlfkVMuPWti/OYzM0/+PyGHmbs5QNfgrNI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=FHiXdRUB//Rz1OI/dzkHif7nW0zmpkYr0fQ8K87690DYj2qDidMcGlWTajyGVus5n
-	 53NHp8MmzaP51UjX0UKF4GBs8O4vCb3IT1pp/9jYFmHfeiHHcEv14Vk9SCB4D00QqE
-	 FHEhyFcvBOdhzjN5gOdLEyElZ9gZCcLCefEXhX2GpUPq/iceSKw/LWrkXsYhuF/bzp
-	 OIXFpXITbZ/1bcr+ZOEXIdPE5w8hyRx9LMDWCxMaRi9L+QWvAY0swMHtuZ/r4tH+Bh
-	 /REu+bue1A5QNeyg/MV2+MJCBdDqL6R4nhqLqLdT4GsKpXpYfZe/NEM/Z0b/Da14r5
-	 1MXW8zJk7JOlg==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h/Bh1hRY"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e3d9bf9e1so4985465e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Oct 2025 04:17:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760008671; x=1760613471; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9V+rmx7EVh5VI0c3HgYqM0kYENxMSiiGZS93FmTbvHY=;
+        b=h/Bh1hRYFwCy//G9bitEyswKpWz6jclO5gwlOMlAErhNWutwR9pMiUFhDEVplEva+O
+         yNh7RrDWpU42iqZp07U14xmPHz4aLVBTWfE4doBgLL72rjH7tyEwOTlG36gNhMdSv/5o
+         7W1PwvphuDrKEpSi71RtQD222H245pzI2OXRNd6/fytAMqlEIt8UZ3g8zpEjO42is3wn
+         t6XJVuuqEqyGdrdt9z8T/URUZwhHL1Ya6wlg3zXi4hC24Bzy0tSb/Y6KAaJ3WzEr/Ja0
+         JhKpP2wV4mfel41RUqwWO6YOz+dr6lhJYoryiJglcK/W8CEMTJQn3oxxTXWOzotD/xy5
+         wEzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760008671; x=1760613471;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9V+rmx7EVh5VI0c3HgYqM0kYENxMSiiGZS93FmTbvHY=;
+        b=VJfVJUcZn2XqYCRpMR7Azou+eC1AV38NK812j4VmAiLCLqzqrN3BwpbzDQ/ARI9yHG
+         D5KLB+jXxm7kN6nxbzRfG/uc6A3M5/iROUSX8hJJQl8ZO28N2D13Swpa56K6pkE7OQaj
+         p8XJyo3Q99mAnM1IUY+GcEoYPU7LdDD6XoDPy7/oZe6nm3U0C+NOvAMJY+MLVdqdwg1T
+         nBJj4lPDpkcZaKozDND3lLXbGScYdbqqjYYEngVqIVJFzhxkii6HWt/QqsUCqZ71QF+i
+         pLYptPT3N0hu9+uPQvvUBicRryFL7Dmyjw7zljJckWrm1hAO+zpLunVqCpxgE91HYHmG
+         vsfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVBPdo22V0BDGZw4ap++GUe68UIDn6w7tl4AlbXqAxTPaYRSiU+pchFPC8EM/ecVjjgW8n4Yoa/kgjqSulJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1sm06yM+dl+J8K4zSCmARZrPHMBeblkuo9jUxP2ll/D8EoH8a
+	5kkPqkT5qNqLFA6/v9sP97Rkyoxsgi4miBCW36Y6M94MPBBNYy4BTB2efFZKdcc0LlBtlpNilf6
+	YfhAO5qbaMLmZ4s6R+g==
+X-Google-Smtp-Source: AGHT+IHQw/K1TucPKWkYddnQPYm60dywH4XygHGaugmTTi9j0hJVxv8XQQDUDwaI/iz2G9F3qXxpGXrzXS4lbaU=
+X-Received: from wmcm4.prod.google.com ([2002:a7b:ce04:0:b0:45d:cfa4:ce19])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:502c:b0:46e:3d41:5fe6 with SMTP id 5b1f17b1804b1-46fa9a9ebb8mr46744985e9.9.1760008671266;
+ Thu, 09 Oct 2025 04:17:51 -0700 (PDT)
+Date: Thu, 9 Oct 2025 11:17:50 +0000
+In-Reply-To: <aOaJlHEPzHcAdcUx@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 09 Oct 2025 13:16:39 +0200
-Message-Id: <DDDQZ8LM2OGP.VSEG03ZE0K04@kernel.org>
-Subject: Re: [PATCH v6 4/5] rust: Move register and bitfield macros out of
- Nova
-Cc: "Joel Fernandes" <joelagnelf@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <acourbot@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
- Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>, "Yury
- Norov" <yury.norov@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Andrea Righi" <arighi@nvidia.com>,
- <nouveau@lists.freedesktop.org>
-To: "Dirk Behme" <dirk.behme@de.bosch.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
- <20251003154748.1687160-5-joelagnelf@nvidia.com>
- <5a5bd549-f5b7-41ec-b493-bda427d1218f@de.bosch.com>
-In-Reply-To: <5a5bd549-f5b7-41ec-b493-bda427d1218f@de.bosch.com>
+References: <20251008151554.340806-1-marco.crivellari@suse.com>
+ <20251008151554.340806-3-marco.crivellari@suse.com> <aOaJlHEPzHcAdcUx@tardis-2.local>
+Message-ID: <aOeZ3ho6SHjmaw_2@google.com>
+Subject: Re: [PATCH v3 2/2] rust: add system_percpu() around the new system_percpu_wq
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>, Tejun Heo <tj@kernel.org>
+Cc: Marco Crivellari <marco.crivellari@suse.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu Oct 9, 2025 at 8:59 AM CEST, Dirk Behme wrote:
-> Assuming that register.rs is supposed to become the "generic" way to=20
-> access hardware registers I started to have a look to it. Some weeks=20
-> back testing interrupts I used some quite simple timer with 4 registers=
-=20
-> [1]. Now, thinking about converting it to register!() I have three=20
-> understanding / usage questions:
->
-> * At the moment register!() is for 32-bit registers, only? So it can't=20
-> be used for my example having 8-bit and 16-bit registers as well?
+On Wed, Oct 08, 2025 at 08:56:04AM -0700, Boqun Feng wrote:
+> On Wed, Oct 08, 2025 at 05:15:54PM +0200, Marco Crivellari wrote:
+> > The C code defines 2 new workqueues: system_percpu_wq and system_dfl_wq,
+> > respectively the futures replacement for system_wq and system_unbound_wq.
+> > 
+> > This change introduce system_percpu(), that use the new system_percpu_wq.
+> > 
+> > system_wq will be replaced in a future release cycle and should
+> > not be used.
+> > 
+> > Suggested-by: Tejun Heo <tj@kernel.org>
+> > Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+> 
+> If we were to expose the system_percpu_wq to Rust, then we should also
+> add queue_work_on() API to Rust, otherwise it's kinda pointless IMO.
+> 
+> PS. We can use the CpuId abstraction:
+> 
+> 	http://rust.docs.kernel.org/kernel/cpu/struct.CpuId.html
+> 
+> and have an API like:
+> 
+>     ipml Queue {
+>         pub fn queue_on(&self, cpu: CpuId, w: W) -> W::EqueueOutput
+>     }
+> 
+> or maybe a different new type `PerCpuQueue`?
+> 
+> Regards,
+> Boqun
 
-Yes, currently the register!() macro always generates a 32-bit register typ=
-e
-(mainly because nova-core did not need anything else). However, this will o=
-f
-course be generalized (which should be pretty straight forward).
+How is it ... can we cleanly separate queues into those where you must
+specify the cpuid, and those where you shouldn't?
 
-Having a brief look at the TMU datasheet it looks like you should be able t=
-o
-treat TSTR and TCR as 32-bit registers without any issues for testing the
-register!() macro today. I.e. you can just define it as:
-
-	register!(TSTR @ 0x04, "Timer Start Register" {
-	    2:2    str2 as bool, "Specifies whether TCNT2 is operated or stopped."=
-;
-	    1:1    str1 as bool, "Specifies whether TCNT1 is operated or stopped."=
-;
-	    0:0    str0 as bool, "Specifies whether TCNT0 is operated or stopped."=
-;
-	});
-
-Same for TCR.
-
-> * In my example I used io.try_write*() and io.try_read*() for the=20
-> register access. What is the relationship between these and the=20
-> register!() accessors (e.g. from the examples BOOT_0::read(&bar);)? Will=
-=20
-> both stay? When to use which?
-
-The try_*() variants should only be used of the offset of the register is n=
-ot
-known at compile time.
-
-If it is known at compile time (such as in your case) you should use the
-infallible variants that perform a range check at compile time.
-
-For this to work you need to specify the minimum MMIO range your driver exp=
-ects,
-i.e. instead of
-
-	let iomem =3D Arc::pin_init(request.iomap()?, GFP_KERNEL)?;
-
-you call
-
-	let iomem =3D Arc::pin_init(request.iomap_sized::<TMU_MMIO_SIZE>()?, GFP_K=
-ERNEL)?;
-
-where TMU_MMIO_SIZE is the minimum MMIO region size your driver is able to
-operate on. In your case this would be 0x12, given that TCR has a width of
-16-bit. However, if you treat it as 32-bit register it would be 0x14.
-
-Even without the register!() macro this would be a huge improvement. For
-instance, your IRQ handler from [1] can do
-
-	let tcr =3D io.read16_relaxed(TCR);
-	if tcr & (0x1 << 8) !=3D 0 {
-	    io.write16_relaxed(tcr & !(0x1 << 8), TCR);
-	}
-
-instead of
-
-	let tcr =3D io.try_read16_relaxed(TCR).unwrap_or(0);
-	if tcr & (0x1 << 8) !=3D 0 {
-	    io.try_write16_relaxed(tcr & !(0x1 << 8), TCR).unwrap_or(());
-	}
-
-And with the register macro it becomes
-
-	let tcr =3D TCR::read(io);
-	if tcr.underflow() {
-		tcr.set_underflow(false);
-		tcr.write(io);
-	}
-
-Note that you can also extend the generated TCR type accordingly, for insta=
-nce:
-
-	impl TCR {
-	    fn handle_underflow<const SIZE: usize, T>(io: &T)
-	    where
-	        T: Deref<Target =3D Io<SIZE>>,
-	    {
-	        let this =3D Self::read(io);
-	        if this.underflow() {
-	            this.set_underflow(false);
-	            this.write(io);
-	        }
-	    }
-	}
-
-and then from your IRQ handler you can just call
-
-	TCR::handle_underflow();
-
-> Note: Due to the file move obviously not the full content of the "new"=20
-> file register.rs is shown in this patch. Therefore, let me try it this=20
-> way, citing from register.rs:
->
-> -- cut --
-> ...
-> /// This defines a `BOOT_0` type which can be read or written from=20
-> offset `0x100` of an `Io`
-> /// region
-> ....
-> /// ```ignore
-> /// // Read from the register's defined offset (0x100).
-> /// let boot0 =3D BOOT_0::read(&bar);
-> -- cut --
->
-> * What is "&bar" in this example? Is it the `Io` region the explanation=
-=20
-> talks about?
-
-Yes, it's the I/O backend (a pci::Bar in this case). However, we should pro=
-bably
-use a more generic name in the examples.
-
-> [1]=20
-> https://lore.kernel.org/rust-for-linux/dd34e5f4-5027-4096-9f32-129c8a067d=
-0a@de.bosch.com/
->
-> The registers:
->
-> const TSTR: usize =3D  0x4; //  8 Bit register
-> const TCOR: usize =3D  0x8; // 32 Bit register
-> const TCNT: usize =3D  0xC; // 32 Bit register
-> const TCR:  usize =3D 0x10; // 16 Bit register
+Alice
