@@ -1,189 +1,146 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B03120ADD6;
-	Fri, 10 Oct 2025 18:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550AC30148E;
+	Fri, 10 Oct 2025 18:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760121394; cv=none; b=tN+q3NfQ2IoyLofnSmi9uWGHZYNs6fQLC5bnvxN4Y8aswV92JvKdvSnDHnmIjjjZxtdrLySkAq1UJC/9MpN5A5A8uiktX6nL9ukI72Zvyy9Ngnlu6giUrhgwopvjgI7pvfvmS2ftH/SeGNWrJ36OkuPGmVT9agUyoR23ICfkdlo=
+	t=1760122637; cv=none; b=jT/G/JxHeKJXsrLkjE7xufI0GxcTuwxIgRHpMy4hfB/1iOAppQiKqHtelc755/++qK5BtNWdW5icBfvVUbfNgag4MqmdsfTv6eEPcRxvO6oLU/TobHS5/pMc2RMND52w14UtiuFp904Oo0Yv04SzXuhiZKJlJBnIgTIuVtjKwJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760121394; c=relaxed/simple;
-	bh=0d23nITmragJ2EOxqTsvZ6bKKUTCo9RRSpL0qcqnsBI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=sHemkgrZPLNcHV+rPjHrnrTXt/x7yruJxHoWdYwPzxl8/BNG2fa0Ack0McW1bhIeeRvINTGh2eOh3/Y4gC+dUGwsqYrjtJlA867X0klXWK89FPzpHnzvY98WxZPt1f1TV4mesdv0xxGynnZxxL37K25zOBM259DCkJDzlKjo0Z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIvthomQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760122637; c=relaxed/simple;
+	bh=+MExs7bA7bO+eT+6/H1zG9nDTxVIAMDn8sQnB8ynYxU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qRr2/gALHL2UsXs0oF1VIfMfP4/zHJdNAEH8ixSiPXKHeHuQNLIgsDDhYo3Ih25oC8NROGYwEq9d2Ve9+YU9RLKl+waUMRgsnNbrrgaLU8yC1aIAnohBES1Ol2Rw6jBOOJ3YqHdG57ChxRn9qIA0nksYPj8HCp8rNIGKsBazeMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQTBFOq4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIvthomQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15058C4CEF1;
-	Fri, 10 Oct 2025 18:36:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQTBFOq4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84736C4CEFE;
+	Fri, 10 Oct 2025 18:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760121393;
-	bh=0d23nITmragJ2EOxqTsvZ6bKKUTCo9RRSpL0qcqnsBI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=LIvthomQNLEKLQGjtchwt2oL06l90lNeySupVhvDdmEDjYAs+1nhwq+oJqP5Honnm
-	 Dh9QVHBpSAdsyl/TcJgmkdMmr+i4HBQcoLnKpH/hWO+ROklYC9hyK3rjTqJA3taynS
-	 uWo2v6f49d6YEBgqyJhO9TBARfjXisN/jl8cGoqdf6OCHQrscgFuYLhtmnJhYZ3ga0
-	 IFo910v+RH/kAyAojuNhS0sNUp4q7sJc5aDaWb+pJ4X6tKd4iGIcMGp6LI6CDtcYFH
-	 y1jwJ94JSuCi+cTjl1haC7XYpGsE4vzAIvyqdhQjcCUjaXXzaH7uxmPkRtHxBiRJaW
-	 7C+a0EAwVZqDw==
+	s=k20201202; t=1760122636;
+	bh=+MExs7bA7bO+eT+6/H1zG9nDTxVIAMDn8sQnB8ynYxU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hQTBFOq4vAwDmDZRWxSS1ZLWG50EsuKofUCKDSct8YjptAE7V+OEfE9K53Tlyomej
+	 BllZ27hbICD4Tq1nSvXWkh3Y33jzcWVZu7IYCx58ZBfGrK5S1HEnxTW/J9FusBdBIA
+	 zxV6dMRF2SQOYiRrz8ZmnZ7li6yFsUGRYlLfILHaEpYqD9aVUODe2Q8TPCF1QlpfWh
+	 JpI6Fwd3zB3YxU2Mv+RN9o+8OfzIMafZd8ull+tSxkSEA61oBMNFc5oUnIMciMBlL6
+	 AM/IdZn2MibmFu2hAgJRAGhxuqfgnGp3wVf3zfD3Hu0MVNDdTIeYq5Z/uBpLr27l3c
+	 zbnAcEfDMuCaA==
+Date: Fri, 10 Oct 2025 20:56:29 +0200
+From: Nicolas Schier <nsc@kernel.org>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
+	masahiroy@kernel.org, aliceryhl@google.com,
+	thomas.weissschuh@linutronix.de, tamird@gmail.com,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, dakr@kernel.org
+Subject: Re: [PATCH v2 1/1] rust: add `rustcheck` make target for check-only
+ builds
+Message-ID: <aOlW3RFO9sm6IsIB@levanger>
+References: <20250915115311.3025-1-work@onurozkan.dev>
+ <20250915115311.3025-2-work@onurozkan.dev>
+ <20250922-demonic-raccoon-of-will-1adb52@bergen>
+ <20250923064720.0b2ea467@nimda>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Oct 2025 20:36:28 +0200
-Message-Id: <DDEUYJ3RLBO0.3BI35RYL7OUU6@kernel.org>
-Subject: Re: [PATCH 2/2] rust: leds: add basic led classdev abstractions
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Lee Jones" <lee@kernel.org>, "Pavel Machek"
- <pavel@kernel.org>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-leds@vger.kernel.org>
-To: "Markus Probst" <markus.probst@posteo.de>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251009170739.235221-1-markus.probst@posteo.de>
- <20251009170739.235221-3-markus.probst@posteo.de>
-In-Reply-To: <20251009170739.235221-3-markus.probst@posteo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250923064720.0b2ea467@nimda>
 
-On Thu Oct 9, 2025 at 7:07 PM CEST, Markus Probst wrote:
-> +/// The led class device representation.
-> +///
-> +/// This structure represents the Rust abstraction for a C `struct led_c=
-lassdev`.
-> +#[pin_data(PinnedDrop)]
-> +pub struct Device {
-> +    handler: KBox<dyn HandlerImpl>,
+On Tue, Sep 23, 2025 at 06:47:20AM +0300, Onur Özkan wrote:
+> On Mon, 22 Sep 2025 08:02:36 +0200
+> Nicolas Schier <nicolas.schier@linux.dev> wrote:
+> 
+> > On Mon, Sep 15, 2025 at 02:53:11PM +0300, Onur Özkan wrote:
+> > > Adds a new `rustcheck` make target to run a check-only build
+> > > similar to `cargo check`. This allows us to verify that the Rust
+> > > sources can build without building/linking final artifacts,
+> > > which speeds up the iteration (a lot) during development.
+> > > 
+> > > The target also supports the CLIPPY flag (e.g., `make LLVM=1
+> > > rustcheck CLIPPY=1) to run Clippy in a faster way.
+> > > 
+> > > Also, unlike `make LLVM=1`, it doesn't compile large amounts of C
+> > > code (on a fresh checkout) when the goal is only to check that
+> > > Rust builds are not broken after some changes.
+> > > 
+> > > Suggested-by: Benno Losin <lossin@kernel.org>
+> > > Link:
+> > > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/near/539103602
+> > > Signed-off-by: Onur Özkan <work@onurozkan.dev> ---
+> > >  Makefile      |  7 +++++
+> > >  rust/Makefile | 73
+> > > +++++++++++++++++++++++++++++++++++++++++++++++++++ 2 files
+> > > changed, 80 insertions(+)
+> > > 
+> > > diff --git a/Makefile b/Makefile
+> > > index cf37b9407821..7812cdc72938 100644
+> > > --- a/Makefile
+> > > +++ b/Makefile
+> > > @@ -1716,6 +1716,8 @@ help:
+> > >  	@echo  '		    is formatted, printing a diff
+> > > otherwise.' @echo  '  rustdoc	  - Generate Rust
+> > > documentation' @echo  '		    (requires kernel
+> > > .config)'
+> > > +	@echo  '  rustcheck       - Check that the Rust code
+> > > builds'
+> > > +	@echo  '                    (requires kernel .config)'
+> > >  	@echo  '  rusttest        - Runs the Rust tests'
+> > >  	@echo  '                    (requires kernel .config;
+> > > downloads external repos)' @echo  '  rust-analyzer	  -
+> > > Generate rust-project.json rust-analyzer support file' @@ -1821,6
+> > > +1823,11 @@ PHONY += rustdoc rustdoc: prepare
+> > >  	$(Q)$(MAKE) $(build)=rust $@
+> > >  
+> > > +# Checking Rust sources.
+> > > +PHONY += rustcheck
+> > > +rustcheck: prepare0
+> > 
+> > Why do you let rustcheck depend on prepare0 instead of prepare?
+> > 
+> 
+> Because "prepare" does more job which isn't necessary (therefore waste
+> of time) for "rustcheck".
+> 
+> > > +	$(Q)$(MAKE) $(build)=rust $@
+> > > +
+> > >  # Testing target
+> > >  PHONY += rusttest
+> > >  rusttest: prepare
+> > > diff --git a/rust/Makefile b/rust/Makefile
+> > > index bfa915b0e588..b45878870207 100644
+> > > --- a/rust/Makefile
+> > > +++ b/rust/Makefile
+> > > @@ -265,6 +265,79 @@ rusttest-kernel: $(src)/kernel/lib.rs
+> > > rusttestlib-ffi rusttestlib-kernel \ rusttestlib-uapi
+> > > rusttestlib-pin_init FORCE +$(call if_changed,rustc_test)
+> > >  
+> > > +## Check-only compilation (similar to `cargo check`)
+> > > +quiet_cmd_rustc_check_library = $(RUSTC_OR_CLIPPY_QUIET) CHECK $<
+> > > +      cmd_rustc_check_library = \
+> > > +        OBJTREE=$(abspath $(objtree)) \
+> > 
+> > Have you tried this?
+> > 
+> >         OBJTREE=$(CURDIR) \
+> > 
+> > or
+> > 
+> >         OBJTREE=$(abs_output) \
+> > 
+> > I'd favor using one of these instead.
+> > 
+> 
+> I don't have a strong opinion on any of them. I followed the existing
+> approach from the other use cases used in the same file.
 
-The corresponding callbacks already exist in struct led_classdev, please us=
-e
-them instead.
+well, you're right, it's not really consistent right now.
 
-> +    #[pin]
-> +    classdev: Opaque<bindings::led_classdev>,
-> +}
-
-<snip>
-
-> +// SAFETY: A `led::Device` can be unregistered from any thread.
-> +unsafe impl Send for Device {}
-> +
-> +// SAFETY: `led::Device` can be shared among threads because all methods=
- of `led::Device`
-> +// are thread safe.
-> +unsafe impl Sync for Device {}
-> +
-> +impl Device {
-> +    /// Registers a new led classdev.
-> +    ///
-> +    /// The [`Device`] will be unregistered and drop.
-> +    pub fn new<'a, T: Handler + 'static>(
-> +        parent: Option<&'a device::Device>,
-
-This should not be an Option, all LED devices should have a parent (bus) de=
-vice.
-
-Also, it should be a &Device<Bound>, i.e. a device that is guaranteed to be
-bound to a driver.
-
-> +        init_data: InitData<'a>,
-> +        handler: T,
-> +    ) -> impl PinInit<Self, Error> + use<'a, T> {
-
-This will not compile for all supported compiler versions. For now it just =
-has
-to be:
-
-	impl PinInit<Self, Error> + 'a
-
-Besides that, this should return impl PinInit<Devres<Self>, Error> + 'a ins=
-tead.
-This will allow you to let callbacks, such as blink_set(), to provide the p=
-arent
-device as &Device<Bound>.
-
-Please see also the PWM abstractions for reference [1]. There's one differe=
-nce between
-LED and PWM though. Unlike PWM (and most other class device implementations=
-) LED
-combines initialization and registration of the device, hence PWM is slight=
-ly
-different in its implementation details, but semantically it's the same.
-
-[1] https://lore.kernel.org/all/20250930-rust-next-pwm-working-fan-for-send=
-ing-v15-3-5661c3090877@samsung.com/
-
-> +        try_pin_init!(Self {
-> +            handler <- {
-> +                let handler: KBox<dyn HandlerImpl> =3D KBox::<T>::new(ha=
-ndler, GFP_KERNEL)?;
-> +                Ok::<_, Error>(handler)
-> +            },
-> +            classdev <- Opaque::try_ffi_init(|ptr: *mut bindings::led_cl=
-assdev| {
-> +                // SAFETY: `try_ffi_init` guarantees that `ptr` is valid=
- for write.
-> +                unsafe { ptr.write(bindings::led_classdev {
-
-This looks very odd at a first glance, but it is indeed correct. It would b=
-e
-good to add a comment that the parts of struct led_classdev that need to be
-initialized in place (e.g. the struct mutex and struct list_head) are
-initialized by led_classdev_register_ext() (which is not exactly straight
-forward).
-
-> +                    max_brightness: T::MAX_BRIGHTNESS,
-> +                    brightness_set: T::BLOCKING.then_some(
-> +                        brightness_set as unsafe extern "C" fn(*mut bind=
-ings::led_classdev, u32)
-> +                    ),
-> +                    brightness_set_blocking: (!T::BLOCKING).then_some(
-> +                        brightness_set_blocking
-> +                            as unsafe extern "C" fn(*mut bindings::led_c=
-lassdev,u32) -> i32
-> +                    ),
-> +                    blink_set: T::BLINK.then_some(
-> +                        blink_set
-> +                            as unsafe extern "C" fn(*mut bindings::led_c=
-lassdev, *mut usize,
-> +                                                    *mut usize) -> i32
-> +                    ),
-> +                    .. bindings::led_classdev::default()
-> +                }) };
-> +
-> +                let mut init_data =3D bindings::led_init_data {
-> +                    fwnode: init_data.fwnode.map_or(core::ptr::null_mut(=
-), FwNode::as_raw),
-> +                    default_label: init_data.default_label
-> +                                            .map_or(core::ptr::null(), C=
-Str::as_char_ptr),
-> +                    devicename: init_data.devicename.map_or(core::ptr::n=
-ull(), CStr::as_char_ptr),
-> +                    devname_mandatory: init_data.devname_mandatory,
-> +                };
-> +
-> +                let parent =3D parent
-> +                    .map_or(core::ptr::null_mut(), device::Device::as_ra=
-w);
-> +
-> +                // SAFETY:
-> +                // - `parent` is guaranteed to be a pointer to a valid `=
-device`
-> +                //    or a null pointer.
-> +                // - `ptr` is guaranteed to be a pointer to an initializ=
-ed `led_classdev`.
-> +                to_result(unsafe {
-> +                    bindings::led_classdev_register_ext(parent, ptr, &mu=
-t init_data)
-> +                })
-> +            }),
-> +        })
-> +    }
-> +}
+Acked-by: Nicolas Schier <nsc@kernel.org>
