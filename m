@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77392701B6;
-	Fri, 10 Oct 2025 17:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B03120ADD6;
+	Fri, 10 Oct 2025 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760119137; cv=none; b=GdHbIGoClfG/H2qbRUb/f/LssfMR/X6+AxeriM0flh0F0OAc7FhRkfUg2lRW/rk1kFCWB7+cfUm2gxB04woTLhVbn1TbHtPV3NBT5VShX/PuSs9ELc3LAbCGd2DzsSbJIyQNSF64qT3ou9+3XhjSA+wpSKdzdKk8xoK4Q9/mpdA=
+	t=1760121394; cv=none; b=tN+q3NfQ2IoyLofnSmi9uWGHZYNs6fQLC5bnvxN4Y8aswV92JvKdvSnDHnmIjjjZxtdrLySkAq1UJC/9MpN5A5A8uiktX6nL9ukI72Zvyy9Ngnlu6giUrhgwopvjgI7pvfvmS2ftH/SeGNWrJ36OkuPGmVT9agUyoR23ICfkdlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760119137; c=relaxed/simple;
-	bh=UlxrUPQWLbNjQIvsmFeBw06etFvGFPS6Aq9zWL2yWmE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=f83n8URPj9VVVn6Iavju6ZhlwE1JzqLiCxo7RH8Q58Eo6EE+AWXJV3jvHE7TRJDszd8zesssjfzHTUjQaO5tCVHu3t/1yymJNIIvmKI0Jmgr3gOK4x3Hh31hXLC3/vAee4R/Cghj6lifSn/G4RKR7Uj/1mwjxyayfASKJD8F/v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qwBmfGq9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760121394; c=relaxed/simple;
+	bh=0d23nITmragJ2EOxqTsvZ6bKKUTCo9RRSpL0qcqnsBI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=sHemkgrZPLNcHV+rPjHrnrTXt/x7yruJxHoWdYwPzxl8/BNG2fa0Ack0McW1bhIeeRvINTGh2eOh3/Y4gC+dUGwsqYrjtJlA867X0klXWK89FPzpHnzvY98WxZPt1f1TV4mesdv0xxGynnZxxL37K25zOBM259DCkJDzlKjo0Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIvthomQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qwBmfGq9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F59C4CEF1;
-	Fri, 10 Oct 2025 17:58:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIvthomQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15058C4CEF1;
+	Fri, 10 Oct 2025 18:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760119137;
-	bh=UlxrUPQWLbNjQIvsmFeBw06etFvGFPS6Aq9zWL2yWmE=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=qwBmfGq96lSO4LetfL8i48rlqARdeMOtsZqvd8Q6W6C4At+wHzv1560PF9kLB69ag
-	 jaCf/YH5rTLfWTRbkldjulxhJFoqf4Ag6nq2Wlx2Pz5IvPjvIvjeBgFmk0fX8fRHPR
-	 ktr1qOuTDTBc7Xsz4zpbBiF40XbwsR+T3g0tuwCsmNDOR0hpdgRG3n/PT+GnRtd/R6
-	 A3FAUgJewl9nzsJmVLUChIoHe3aIQQmY5Ixk+CyCe/NNTThbuIUnwr6yJ/33Qusaiq
-	 RyGghhPBxxZb1w+WQ8AtBgRvo8JzrQyM+DWCA6GHa+lcCxOV88nIHG0jgV5qIz90cq
-	 5kD8xgIB41G7A==
+	s=k20201202; t=1760121393;
+	bh=0d23nITmragJ2EOxqTsvZ6bKKUTCo9RRSpL0qcqnsBI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=LIvthomQNLEKLQGjtchwt2oL06l90lNeySupVhvDdmEDjYAs+1nhwq+oJqP5Honnm
+	 Dh9QVHBpSAdsyl/TcJgmkdMmr+i4HBQcoLnKpH/hWO+ROklYC9hyK3rjTqJA3taynS
+	 uWo2v6f49d6YEBgqyJhO9TBARfjXisN/jl8cGoqdf6OCHQrscgFuYLhtmnJhYZ3ga0
+	 IFo910v+RH/kAyAojuNhS0sNUp4q7sJc5aDaWb+pJ4X6tKd4iGIcMGp6LI6CDtcYFH
+	 y1jwJ94JSuCi+cTjl1haC7XYpGsE4vzAIvyqdhQjcCUjaXXzaH7uxmPkRtHxBiRJaW
+	 7C+a0EAwVZqDw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,143 +34,156 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Oct 2025 19:58:52 +0200
-Message-Id: <DDEU5QUB5PYN.3VIIA2TISYD7X@kernel.org>
-To: "Yury Norov" <yury.norov@gmail.com>
+Date: Fri, 10 Oct 2025 20:36:28 +0200
+Message-Id: <DDEUYJ3RLBO0.3BI35RYL7OUU6@kernel.org>
+Subject: Re: [PATCH 2/2] rust: leds: add basic led classdev abstractions
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Lee Jones" <lee@kernel.org>, "Pavel Machek"
+ <pavel@kernel.org>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-leds@vger.kernel.org>
+To: "Markus Probst" <markus.probst@posteo.de>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH RFC v2 3/3] gpu: nova-core: use BoundedInt
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Jesung Yang" <y.j3ms.n@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feong@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-References: <20251009-bounded_ints-v2-0-ff3d7fee3ffd@nvidia.com>
- <20251009-bounded_ints-v2-3-ff3d7fee3ffd@nvidia.com>
- <aOflmmHe8O6Nx9Hp@yury> <DDEJ3X0C2RNH.13YEXJI3CTSPF@nvidia.com>
- <aOlAQaDo5HwlvRUk@yury>
-In-Reply-To: <aOlAQaDo5HwlvRUk@yury>
+References: <20251009170739.235221-1-markus.probst@posteo.de>
+ <20251009170739.235221-3-markus.probst@posteo.de>
+In-Reply-To: <20251009170739.235221-3-markus.probst@posteo.de>
 
-On Fri Oct 10, 2025 at 7:20 PM CEST, Yury Norov wrote:
-> On Fri, Oct 10, 2025 at 06:19:17PM +0900, Alexandre Courbot wrote:
->> On Fri Oct 10, 2025 at 1:40 AM JST, Yury Norov wrote:
->     register!(NV_PDISP_VGA_WORKSPACE_BASE @ 0x00625f04 {
->         3:0     cnt =3D> i8,
->         7:4     flags, // implied unsigned
->         31:8    addr,  // implied unsigned
->     });
->
-> That answers my question. Can you please highlight this use case
-> in commit message?
->
-> And just to wrap up:
->
->  - all fields by default are unsigned integers;
->  - one may use '=3D>' to switch to signed integers, enums or booleans;
->  - all other types are not allowed.
+On Thu Oct 9, 2025 at 7:07 PM CEST, Markus Probst wrote:
+> +/// The led class device representation.
+> +///
+> +/// This structure represents the Rust abstraction for a C `struct led_c=
+lassdev`.
+> +#[pin_data(PinnedDrop)]
+> +pub struct Device {
+> +    handler: KBox<dyn HandlerImpl>,
 
-We do allow other types.
-
-In Rust we have the From [1] and TryFrom [2] traits (analogously Into and
-TryInto).
-
-This way, if some type T implements, for instance, From<u8> it means that w=
+The corresponding callbacks already exist in struct led_classdev, please us=
 e
-can always derive an instance of T from any u8.
+them instead.
 
-Similarly, if T implements TryFrom<u8> we can always derive a Result<T>, wh=
-ich
-either contains a valid instance of T or some error that we can handle inst=
-ead.
+> +    #[pin]
+> +    classdev: Opaque<bindings::led_classdev>,
+> +}
 
-Hence, the following is valid is well:
+<snip>
 
-	register!(NV_PFALCON_FALCON_HWCFG1 @ PFalconBase[0x0000012c] {
-	    3:0     core_rev ?=3D> FalconCoreRev, "Core revision";
-	    5:4     security_model ?=3D> FalconSecurityModel, "Security model";
-	    7:6     core_rev_subversion as ?=3D> FalconCoreRevSubversion, "Core re=
-vision subversion";
-	});
+> +// SAFETY: A `led::Device` can be unregistered from any thread.
+> +unsafe impl Send for Device {}
+> +
+> +// SAFETY: `led::Device` can be shared among threads because all methods=
+ of `led::Device`
+> +// are thread safe.
+> +unsafe impl Sync for Device {}
+> +
+> +impl Device {
+> +    /// Registers a new led classdev.
+> +    ///
+> +    /// The [`Device`] will be unregistered and drop.
+> +    pub fn new<'a, T: Handler + 'static>(
+> +        parent: Option<&'a device::Device>,
 
-The '?=3D>' notation means TryFrom, hence the generated accessor method - e=
-.g.
-security_model() - returns a Result<FalconCoreRevSubversion>.
+This should not be an Option, all LED devices should have a parent (bus) de=
+vice.
 
-In this exaple all three types are actually enums, but it would be the exac=
-t
-same for structs.
+Also, it should be a &Device<Bound>, i.e. a device that is guaranteed to be
+bound to a driver.
 
-In fact, enums in Rust are very different than enums in C anyways and can b=
+> +        init_data: InitData<'a>,
+> +        handler: T,
+> +    ) -> impl PinInit<Self, Error> + use<'a, T> {
+
+This will not compile for all supported compiler versions. For now it just =
+has
+to be:
+
+	impl PinInit<Self, Error> + 'a
+
+Besides that, this should return impl PinInit<Devres<Self>, Error> + 'a ins=
+tead.
+This will allow you to let callbacks, such as blink_set(), to provide the p=
+arent
+device as &Device<Bound>.
+
+Please see also the PWM abstractions for reference [1]. There's one differe=
+nce between
+LED and PWM though. Unlike PWM (and most other class device implementations=
+) LED
+combines initialization and registration of the device, hence PWM is slight=
+ly
+different in its implementation details, but semantically it's the same.
+
+[1] https://lore.kernel.org/all/20250930-rust-next-pwm-working-fan-for-send=
+ing-v15-3-5661c3090877@samsung.com/
+
+> +        try_pin_init!(Self {
+> +            handler <- {
+> +                let handler: KBox<dyn HandlerImpl> =3D KBox::<T>::new(ha=
+ndler, GFP_KERNEL)?;
+> +                Ok::<_, Error>(handler)
+> +            },
+> +            classdev <- Opaque::try_ffi_init(|ptr: *mut bindings::led_cl=
+assdev| {
+> +                // SAFETY: `try_ffi_init` guarantees that `ptr` is valid=
+ for write.
+> +                unsafe { ptr.write(bindings::led_classdev {
+
+This looks very odd at a first glance, but it is indeed correct. It would b=
 e
-complex types, such as:
+good to add a comment that the parts of struct led_classdev that need to be
+initialized in place (e.g. the struct mutex and struct list_head) are
+initialized by led_classdev_register_ext() (which is not exactly straight
+forward).
 
-	enum Message {
-	    Quit,
-	    Move { x: i32, y: i32 },
-	    Write(String),
-	    ChangeColor(i32, i32, i32),
-	}
-
-[1] https://rust.docs.kernel.org/core/convert/trait.From.html
-[2] https://rust.docs.kernel.org/core/convert/trait.TryFrom.html
-
-> I still have a question regarding compile-time flavor of the setter.
-> In C we've got a builtin_constant_p, and use it like:
->        =20
->    static inline int set_base(unsigned int base)
->    {
->         BUILD_BUG_ON_ZERO(const_true(base > MAX_BASE));
->
->         // Eliminated for compile-time 'base'
->         if (base > MAX_BASE)
->                 return -EOVERFLOW;
->
->         __set_base(base);
->
->         return 0;
->    }
->
-> Can we do the same trick in rust? Would be nice to have a single
-> setter for both compile and runtime cases.
-
-Technically, we could, but it would be very inefficient: Even if the functi=
-on /
-method is called in an infallible way it would still return a Result<T> ins=
-tead
-of just T, which the caller would need to handle.
-
-Analogously, for a setter the function / method would still return a Result=
-,
-which must be handled.
-
-Ignoring a returned Result causes a compiler warning:
-
-	warning: unused `core::result::Result` that must be used
-	  --> drivers/gpu/nova-core/driver.rs:64:9
-	   |
-	64 |         foo();
-	   |         ^^^^^
-	   |
-	   =3D note: this `Result` may be an `Err` variant, which should be handle=
-d
-	   =3D note: `#[warn(unused_must_use)]` on by default
-	help: use `let _ =3D ...` to ignore the resulting value
-	   |
-	64 |         let _ =3D foo();
-	   |         +++++++
-=09
-	warning: 1 warning emitted
-
-This is intentional, users should not be able to ignore error conditions
-willy-nilly:
-
-It is a potential source for bugs if errors are ignored. For instance, a ca=
-ller
-might not check the returned Result initially because a compile time check =
-is
-expected. However, when changed later on to derive the value at runtime it =
-is
-easy to forget handling the Result instead.
+> +                    max_brightness: T::MAX_BRIGHTNESS,
+> +                    brightness_set: T::BLOCKING.then_some(
+> +                        brightness_set as unsafe extern "C" fn(*mut bind=
+ings::led_classdev, u32)
+> +                    ),
+> +                    brightness_set_blocking: (!T::BLOCKING).then_some(
+> +                        brightness_set_blocking
+> +                            as unsafe extern "C" fn(*mut bindings::led_c=
+lassdev,u32) -> i32
+> +                    ),
+> +                    blink_set: T::BLINK.then_some(
+> +                        blink_set
+> +                            as unsafe extern "C" fn(*mut bindings::led_c=
+lassdev, *mut usize,
+> +                                                    *mut usize) -> i32
+> +                    ),
+> +                    .. bindings::led_classdev::default()
+> +                }) };
+> +
+> +                let mut init_data =3D bindings::led_init_data {
+> +                    fwnode: init_data.fwnode.map_or(core::ptr::null_mut(=
+), FwNode::as_raw),
+> +                    default_label: init_data.default_label
+> +                                            .map_or(core::ptr::null(), C=
+Str::as_char_ptr),
+> +                    devicename: init_data.devicename.map_or(core::ptr::n=
+ull(), CStr::as_char_ptr),
+> +                    devname_mandatory: init_data.devname_mandatory,
+> +                };
+> +
+> +                let parent =3D parent
+> +                    .map_or(core::ptr::null_mut(), device::Device::as_ra=
+w);
+> +
+> +                // SAFETY:
+> +                // - `parent` is guaranteed to be a pointer to a valid `=
+device`
+> +                //    or a null pointer.
+> +                // - `ptr` is guaranteed to be a pointer to an initializ=
+ed `led_classdev`.
+> +                to_result(unsafe {
+> +                    bindings::led_classdev_register_ext(parent, ptr, &mu=
+t init_data)
+> +                })
+> +            }),
+> +        })
+> +    }
+> +}
