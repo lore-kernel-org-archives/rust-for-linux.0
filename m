@@ -1,146 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550AC30148E;
-	Fri, 10 Oct 2025 18:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44BD34BA59;
+	Fri, 10 Oct 2025 20:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760122637; cv=none; b=jT/G/JxHeKJXsrLkjE7xufI0GxcTuwxIgRHpMy4hfB/1iOAppQiKqHtelc755/++qK5BtNWdW5icBfvVUbfNgag4MqmdsfTv6eEPcRxvO6oLU/TobHS5/pMc2RMND52w14UtiuFp904Oo0Yv04SzXuhiZKJlJBnIgTIuVtjKwJs=
+	t=1760128278; cv=none; b=sNb2v+sJQmSJKO+iav8R/E3QEkpmalbYWjyhX7DQhlADTNgsp9oPhIj8GzIDi3jyT0MnMhv98k+uRFWAr8dWqWfP4rv7b30YkoJrdoYq9aTr9OIZ+zMOG+4P9Q+ULcq1Poe8LKBCyElLjJW1m+e6sn4VlVrdkwCA3Am087kQbhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760122637; c=relaxed/simple;
-	bh=+MExs7bA7bO+eT+6/H1zG9nDTxVIAMDn8sQnB8ynYxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qRr2/gALHL2UsXs0oF1VIfMfP4/zHJdNAEH8ixSiPXKHeHuQNLIgsDDhYo3Ih25oC8NROGYwEq9d2Ve9+YU9RLKl+waUMRgsnNbrrgaLU8yC1aIAnohBES1Ol2Rw6jBOOJ3YqHdG57ChxRn9qIA0nksYPj8HCp8rNIGKsBazeMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQTBFOq4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760128278; c=relaxed/simple;
+	bh=eggSn5LlxKRQWD7Ws1HDr05Ffg355jCEdHCW7vcC0Zs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=nc7JXJvBNWMrrmd+f75q7qMxjncSCzTDd5zYXsbPIeWZT97Z9SD60U9SBuTl6nAkIfJovxDHTZt6LyAq5CwLUjx/T4v9oNwstEvCTAE4YIzIalGJqaEgAUlyNsyBPx4kwOZArbksSbwKN0CUW34i9lHemmU5KKErftju7WpOkEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqanuGgL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQTBFOq4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84736C4CEFE;
-	Fri, 10 Oct 2025 18:57:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqanuGgL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C332C4CEFE;
+	Fri, 10 Oct 2025 20:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760122636;
-	bh=+MExs7bA7bO+eT+6/H1zG9nDTxVIAMDn8sQnB8ynYxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hQTBFOq4vAwDmDZRWxSS1ZLWG50EsuKofUCKDSct8YjptAE7V+OEfE9K53Tlyomej
-	 BllZ27hbICD4Tq1nSvXWkh3Y33jzcWVZu7IYCx58ZBfGrK5S1HEnxTW/J9FusBdBIA
-	 zxV6dMRF2SQOYiRrz8ZmnZ7li6yFsUGRYlLfILHaEpYqD9aVUODe2Q8TPCF1QlpfWh
-	 JpI6Fwd3zB3YxU2Mv+RN9o+8OfzIMafZd8ull+tSxkSEA61oBMNFc5oUnIMciMBlL6
-	 AM/IdZn2MibmFu2hAgJRAGhxuqfgnGp3wVf3zfD3Hu0MVNDdTIeYq5Z/uBpLr27l3c
-	 zbnAcEfDMuCaA==
-Date: Fri, 10 Oct 2025 20:56:29 +0200
-From: Nicolas Schier <nsc@kernel.org>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, nathan@kernel.org,
-	masahiroy@kernel.org, aliceryhl@google.com,
-	thomas.weissschuh@linutronix.de, tamird@gmail.com,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, dakr@kernel.org
-Subject: Re: [PATCH v2 1/1] rust: add `rustcheck` make target for check-only
- builds
-Message-ID: <aOlW3RFO9sm6IsIB@levanger>
-References: <20250915115311.3025-1-work@onurozkan.dev>
- <20250915115311.3025-2-work@onurozkan.dev>
- <20250922-demonic-raccoon-of-will-1adb52@bergen>
- <20250923064720.0b2ea467@nimda>
+	s=k20201202; t=1760128276;
+	bh=eggSn5LlxKRQWD7Ws1HDr05Ffg355jCEdHCW7vcC0Zs=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=EqanuGgLmqxFTxbDMfJJqTBcVItfxgdbHgHJrZ1pz2HvxB8pFWBaB8mmDk8pqEnXf
+	 tplXxPiEvU3RP6eAh4bU7r51qaELqX2AW5n7s0zUlOIoOh6gP0gc10L4kOj5T2AfK8
+	 h7x6b27nIoRw/IZ5GR7IpuNQzpdXzZ8LW3dawvZQC7t062UBBdIMP+vw/GmJpG7MDb
+	 k3uktIBtziZcJ1apQAC09nyx9vpbJIRfbVsNZYEZOh2XG+cAwSYJXEofxiqXrOfsjD
+	 Y/tBSm2TBlU29IbGZfLT6aeOxrAevFT78FWfNZa3Vh9DmSKjDZm5aHt6kQBe0FoK3b
+	 ULHj2KlLhOung==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250923064720.0b2ea467@nimda>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 10 Oct 2025 22:31:11 +0200
+Message-Id: <DDEXED467W7D.ZK32X871Y1TL@kernel.org>
+Cc: "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
+Subject: Re: [PATCH 0/3] Clean `rustfmt` formatting and define imports style
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>
+X-Mailer: aerc 0.21.0
+References: <20251010174351.948650-1-ojeda@kernel.org>
+In-Reply-To: <20251010174351.948650-1-ojeda@kernel.org>
 
-On Tue, Sep 23, 2025 at 06:47:20AM +0300, Onur Özkan wrote:
-> On Mon, 22 Sep 2025 08:02:36 +0200
-> Nicolas Schier <nicolas.schier@linux.dev> wrote:
-> 
-> > On Mon, Sep 15, 2025 at 02:53:11PM +0300, Onur Özkan wrote:
-> > > Adds a new `rustcheck` make target to run a check-only build
-> > > similar to `cargo check`. This allows us to verify that the Rust
-> > > sources can build without building/linking final artifacts,
-> > > which speeds up the iteration (a lot) during development.
-> > > 
-> > > The target also supports the CLIPPY flag (e.g., `make LLVM=1
-> > > rustcheck CLIPPY=1) to run Clippy in a faster way.
-> > > 
-> > > Also, unlike `make LLVM=1`, it doesn't compile large amounts of C
-> > > code (on a fresh checkout) when the goal is only to check that
-> > > Rust builds are not broken after some changes.
-> > > 
-> > > Suggested-by: Benno Losin <lossin@kernel.org>
-> > > Link:
-> > > https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/near/539103602
-> > > Signed-off-by: Onur Özkan <work@onurozkan.dev> ---
-> > >  Makefile      |  7 +++++
-> > >  rust/Makefile | 73
-> > > +++++++++++++++++++++++++++++++++++++++++++++++++++ 2 files
-> > > changed, 80 insertions(+)
-> > > 
-> > > diff --git a/Makefile b/Makefile
-> > > index cf37b9407821..7812cdc72938 100644
-> > > --- a/Makefile
-> > > +++ b/Makefile
-> > > @@ -1716,6 +1716,8 @@ help:
-> > >  	@echo  '		    is formatted, printing a diff
-> > > otherwise.' @echo  '  rustdoc	  - Generate Rust
-> > > documentation' @echo  '		    (requires kernel
-> > > .config)'
-> > > +	@echo  '  rustcheck       - Check that the Rust code
-> > > builds'
-> > > +	@echo  '                    (requires kernel .config)'
-> > >  	@echo  '  rusttest        - Runs the Rust tests'
-> > >  	@echo  '                    (requires kernel .config;
-> > > downloads external repos)' @echo  '  rust-analyzer	  -
-> > > Generate rust-project.json rust-analyzer support file' @@ -1821,6
-> > > +1823,11 @@ PHONY += rustdoc rustdoc: prepare
-> > >  	$(Q)$(MAKE) $(build)=rust $@
-> > >  
-> > > +# Checking Rust sources.
-> > > +PHONY += rustcheck
-> > > +rustcheck: prepare0
-> > 
-> > Why do you let rustcheck depend on prepare0 instead of prepare?
-> > 
-> 
-> Because "prepare" does more job which isn't necessary (therefore waste
-> of time) for "rustcheck".
-> 
-> > > +	$(Q)$(MAKE) $(build)=rust $@
-> > > +
-> > >  # Testing target
-> > >  PHONY += rusttest
-> > >  rusttest: prepare
-> > > diff --git a/rust/Makefile b/rust/Makefile
-> > > index bfa915b0e588..b45878870207 100644
-> > > --- a/rust/Makefile
-> > > +++ b/rust/Makefile
-> > > @@ -265,6 +265,79 @@ rusttest-kernel: $(src)/kernel/lib.rs
-> > > rusttestlib-ffi rusttestlib-kernel \ rusttestlib-uapi
-> > > rusttestlib-pin_init FORCE +$(call if_changed,rustc_test)
-> > >  
-> > > +## Check-only compilation (similar to `cargo check`)
-> > > +quiet_cmd_rustc_check_library = $(RUSTC_OR_CLIPPY_QUIET) CHECK $<
-> > > +      cmd_rustc_check_library = \
-> > > +        OBJTREE=$(abspath $(objtree)) \
-> > 
-> > Have you tried this?
-> > 
-> >         OBJTREE=$(CURDIR) \
-> > 
-> > or
-> > 
-> >         OBJTREE=$(abs_output) \
-> > 
-> > I'd favor using one of these instead.
-> > 
-> 
-> I don't have a strong opinion on any of them. I followed the existing
-> approach from the other use cases used in the same file.
+On Fri Oct 10, 2025 at 7:43 PM CEST, Miguel Ojeda wrote:
+> Hi Linus,
+>
+> Please see these commits, especially the documentation one. It is a
+> follow-up of the discussion on `rustfmt`.
+>
+> If you are OK with it, please pick them up for -rc1 -- this should make
+> CIs green and let people work easily after -rc1, which would help even
+> if we decide to do something differently later on.
+>
+> I can send a quick PR if you prefer.
+>
+> Thanks!
+>
+> Miguel Ojeda (3):
+>   docs: rust: add section on imports formatting
+>   rust: alloc: employ a trailing comment to keep vertical layout
+>   rust: cpufreq: fix formatting
+>
+>  Documentation/rust/coding-guidelines.rst | 75 ++++++++++++++++++++++++
+>  rust/kernel/alloc/kvec.rs                |  2 +-
+>  rust/kernel/cpufreq.rs                   |  3 +-
+>  3 files changed, 77 insertions(+), 3 deletions(-)
 
-well, you're right, it's not really consistent right now.
+For the series:
 
-Acked-by: Nicolas Schier <nsc@kernel.org>
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+---
+Cheers,
+Benno
