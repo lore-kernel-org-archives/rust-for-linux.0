@@ -1,479 +1,455 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC454279907
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Oct 2025 22:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2562163;
+	Sat, 11 Oct 2025 00:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760136841; cv=none; b=lAbLYOPEKvJ/rqWkY18/6Nteb5w5WiUptZHudwTW6eAbFs1F1JA9kn1c4jt7tT4BTI/IMujtsAp/BDbPDodRYI20e3/s/z0GtYLiyx4LuPWM2iPowUs2OxVsO2r+B47Wy5eHHdmLkXXtFVN/ps0Z2uX98ZpLHAICm9cpvS6py+c=
+	t=1760141932; cv=none; b=eowNIN85gwlCRMXHXgRZ0XD2/mh/FypT7GAT+G1UCzkZ6bjVAFsnxZUknGt3Z1Te5+iTDi+EMYRp1cRiqjR8B/MU8cD8Agey2WfZ8vVQ5KPjjCZhtM2tEN5kfw++k5ZXqDj6QBU7qxt/f5vKAEWvsMAE4D2MPy32sH3INSWaKow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760136841; c=relaxed/simple;
-	bh=TtpRZew8nBO1RLo6hOpzrTr+ya1HsbkgbkHpVhG5Cuk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=umB58smgf7i1v4Fm3zi6EouwgAqwD7nb+raPUFDSdqk+wuKkIPnH3t8TPNwV8Se/yXU4Rp5adC6vcGacO0yWnGzwhp3t2k//Q/iXrTCHL7MkowcqqFLNfD1DWgbEDm2+edS67vFWRrWkPzbLRVEdJQTZg7ppQ794St6yJdFl7dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=iN6vUFpW; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1760141932; c=relaxed/simple;
+	bh=Z1HLkPNLXqEx6CBzT/O1i1dvLfQ37fBJBeUJtUKcJZI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cFyt+N3EmREpN2rwf5p5ni4tpNEcXS9NyyAUkwBkyU/txtHmzGVirYdbthzakITrLxN3OaQu5nqp3IROexa4uhnnDJKaSqCl7jPuq81R5C8cvWlWhGZqwaAUy2mnXrkPgjTiUgLDWmNIuCo3U2lq9gELv2o7Bu9FLc0tNJKANio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AZR3PGBL; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="iN6vUFpW"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 29CFF240106
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Oct 2025 00:53:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1760136837; bh=++GcwuVSuN7C+IBkzeNVpR985xqCXRp0tLupa7tdUzw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Autocrypt:OpenPGP:From;
-	b=iN6vUFpWiL0sj9n5oHDlqu9c5h4NiarYFN2R2EbbH4IsQ9Lk+knvbMA94VrEQ/wWQ
-	 AuiHzK2qOAscakpjY1BrkN3QUuUo1x1YeuXJUO8wOLLCKWFg/OvBlY8kngyF/1nsMx
-	 5iRU7xo7OEAtYCQ6MiRiYwl6qordttjAN3+vTv7YY5DbeqQFt8bK5uS9LUyYoqj1wC
-	 w3tE6kgjiGHaBN44V/FeZwCh8AsPy/yZ9ktbsswdpcohJ31zZgu3/d/Jbs102Viv/a
-	 FZetV5CUoTrJDuuJA9dKIPnkUjqsp7fKqILsgNTI9xv0QeOddt6Y11dm+41FsC0HSB
-	 m0qKgOuy48+Mw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4ck29H3xvSz6tvd;
-	Sat, 11 Oct 2025 00:53:55 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Markus Probst <markus.probst@posteo.de>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org
-Subject: [PATCH v3 2/2] rust: leds: add basic led classdev abstractions
-Date: Fri, 10 Oct 2025 22:53:56 +0000
-Message-ID: <20251010225349.734350-3-markus.probst@posteo.de>
-In-Reply-To: <20251010225349.734350-1-markus.probst@posteo.de>
-References: <20251010225349.734350-1-markus.probst@posteo.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AZR3PGBL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760141929; x=1791677929;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Z1HLkPNLXqEx6CBzT/O1i1dvLfQ37fBJBeUJtUKcJZI=;
+  b=AZR3PGBLALf4+ZUkdtbzR02d7pLr2IadsnPkR2/FveAsBX676eoaMkiI
+   dhdZIQDfICJRMZ37Tw+EVsBPj/5tu3HoPF/K6mHWmKBtE/QXr0qwl6w9t
+   /5QYSBHFJ4/t8RZBR/9joiZvlxEmrZH0Nj5xrqsKtHwOg6GNKV1fnumYJ
+   Vz6926cdZKyqIPKheDUPLCn13qJCorVZqX8kMR5DPXXF2R4eA7vXORuc6
+   byyL56czldn5A0Fjy6MOs750MS+EAi7uxRko44vZX/q9aWUf2m/bWonvG
+   ycFfVtvCFICrr2JWMnkYVZIzHWqNIQb+0E1VoDGEFBTvUFXZHb7NQ4Qfu
+   g==;
+X-CSE-ConnectionGUID: rYnolmNYRHaiOfvUHCVR7Q==
+X-CSE-MsgGUID: 9O9cZeRFT+6/wvP+PTCchQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11578"; a="64985411"
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="64985411"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 17:18:49 -0700
+X-CSE-ConnectionGUID: oiYJHhVPRGaaZ9r7c+Bjnw==
+X-CSE-MsgGUID: P4E/t/uQToq3ZX6uIrXbbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="186217447"
+Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 10 Oct 2025 17:18:44 -0700
+Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v7NJq-0003K3-0l;
+	Sat, 11 Oct 2025 00:18:42 +0000
+Date: Sat, 11 Oct 2025 08:18:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jakub Acs <acsjakub@amazon.de>, aliceryhl@google.com, djwong@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, jhubbard@nvidia.com, acsjakub@amazon.de,
+	akpm@linux-foundation.org, axelrasmussen@google.com,
+	chengming.zhou@linux.dev, david@redhat.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, peterx@redhat.com,
+	rust-for-linux@vger.kernel.org, xu.xin16@zte.com.cn
+Subject: Re: [PATCH] mm: use enum for vm_flags
+Message-ID: <202510110743.9G4osLTr-lkp@intel.com>
+References: <20251008125427.68735-1-acsjakub@amazon.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251008125427.68735-1-acsjakub@amazon.de>
 
-Implement the core abstractions needed for led class devices, including:
+Hi Jakub,
 
-* `led::LedOps` - the trait for handling leds, including
-  `brightness_set`, `brightness_get` and `blink_set`
+kernel test robot noticed the following build errors:
 
-* `led::InitData` - data set for the led class device
+[auto build test ERROR on akpm-mm/mm-everything]
 
-* `led::Device` - a safe wrapper around `led_classdev`
+url:    https://github.com/intel-lab-lkp/linux/commits/Jakub-Acs/mm-use-enum-for-vm_flags/20251010-124738
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251008125427.68735-1-acsjakub%40amazon.de
+patch subject: [PATCH] mm: use enum for vm_flags
+config: s390-randconfig-001-20251011 (https://download.01.org/0day-ci/archive/20251011/202510110743.9G4osLTr-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 9.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251011/202510110743.9G4osLTr-lkp@intel.com/reproduce)
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- rust/kernel/led.rs | 332 +++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs |   1 +
- 2 files changed, 333 insertions(+)
- create mode 100644 rust/kernel/led.rs
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510110743.9G4osLTr-lkp@intel.com/
 
-diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-new file mode 100644
-index 000000000000..feac509bda3f
---- /dev/null
-+++ b/rust/kernel/led.rs
-@@ -0,0 +1,332 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Abstractions for the leds driver model.
-+//!
-+//! C header: [`include/linux/leds.h`](srctree/include/linux/leds.h)
-+
-+use core::{marker::PhantomData, pin::Pin, ptr::NonNull};
-+
-+use pin_init::{pin_data, pinned_drop, PinInit};
-+
-+use crate::{
-+    build_error, container_of,
-+    device::{self, property::FwNode, Bound},
-+    devres::Devres,
-+    error::{from_result, to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-+    macros::vtable,
-+    str::CStr,
-+    try_pin_init,
-+    types::{ARef, Opaque},
-+};
-+
-+/// The led class device representation.
-+///
-+/// This structure represents the Rust abstraction for a C `struct led_classdev`.
-+#[pin_data(PinnedDrop)]
-+pub struct Device<T: LedOps> {
-+    ops: T,
-+    #[pin]
-+    classdev: Opaque<bindings::led_classdev>,
-+}
-+
-+/// The led init data representation.
-+///
-+/// This structure represents the Rust abstraction for a C `struct led_init_data`.
-+#[derive(Default)]
-+pub struct InitData<'a> {
-+    fwnode: Option<&'a FwNode>,
-+    default_label: Option<&'a CStr>,
-+    devicename: Option<&'a CStr>,
-+    devname_mandatory: bool,
-+}
-+
-+impl InitData<'static> {
-+    /// Creates a new [`InitData`]
-+    pub fn new() -> Self {
-+        Self::default()
-+    }
-+}
-+
-+impl<'a> InitData<'a> {
-+    /// Sets the firmware node
-+    pub fn fwnode<'b, 'c>(self, fwnode: &'b FwNode) -> InitData<'c>
-+    where
-+        'a: 'c,
-+        'b: 'c,
-+    {
-+        InitData {
-+            fwnode: Some(fwnode),
-+            ..self
-+        }
-+    }
-+
-+    /// Sets a default label
-+    pub fn default_label<'b, 'c>(self, label: &'b CStr) -> InitData<'c>
-+    where
-+        'a: 'c,
-+        'b: 'c,
-+    {
-+        InitData {
-+            default_label: Some(label),
-+            ..self
-+        }
-+    }
-+
-+    /// Sets the device name
-+    pub fn devicename<'b, 'c>(self, devicename: &'b CStr) -> InitData<'c>
-+    where
-+        'a: 'c,
-+        'b: 'c,
-+    {
-+        InitData {
-+            devicename: Some(devicename),
-+            ..self
-+        }
-+    }
-+
-+    /// Sets if a device name is mandatory
-+    pub fn devicename_mandatory(self, mandatory: bool) -> Self {
-+        Self {
-+            devname_mandatory: mandatory,
-+
-+            ..self
-+        }
-+    }
-+}
-+
-+/// Trait defining the operations for a LED driver.
-+///
-+/// # Examples
-+///
-+///```
-+/// # use kernel::{c_str, led, alloc::KBox, error::Result, macros::vtable};
-+/// # use core::pin::Pin;
-+///
-+/// struct MyLedOps;
-+///
-+///
-+/// #[vtable]
-+/// impl led::LedOps for MyLedOps {
-+///     const BLOCKING = false;
-+///     const MAX_BRIGHTNESS = 255;
-+///
-+///     fn brightness_set(&self, _brightness: u32) -> Result<()> {
-+///         // Set the brightness for the led here
-+///         Ok(())
-+///     }
-+/// }
-+///
-+/// fn register_my_led() -> Result<Pin<KBox<led::Device>>> {
-+///     KBox::pin_init(led::Device::new(
-+///         None,
-+///         None,
-+///         led::InitData::new()
-+///             .default_label(c_str!("my_led")),
-+///         MyLedOps,
-+///     ))
-+/// }
-+///```
-+/// Led drivers must implement this trait in order to register and handle a [`Device`].
-+#[vtable]
-+pub trait LedOps: Send + 'static + Sized {
-+    /// If set true, [`LedOps::brightness_set`] and [`LedOps::blink_set`] must not sleep
-+    /// and perform the operation immediately.
-+    const BLOCKING: bool;
-+    /// The max brightness level
-+    const MAX_BRIGHTNESS: u32;
-+
-+    /// Sets the brightness level.
-+    ///
-+    /// See also [`LedOps::BLOCKING`]
-+    fn brightness_set(&self, brightness: u32) -> Result<()>;
-+
-+    /// Gets the current brightness level.
-+    fn brightness_get(&self) -> u32 {
-+        build_error!(VTABLE_DEFAULT_ERROR)
-+    }
-+
-+    /// Activates hardware accelerated blinking.
-+    ///
-+    /// delays are in milliseconds. If both are zero, a sensible default should be chosen.
-+    /// The caller should adjust the timings in that case and if it can't match the values
-+    /// specified exactly. Setting the brightness to 0 will disable the hardware accelerated
-+    /// blinking.
-+    ///
-+    /// See also [`LedOps::BLOCKING`]
-+    fn blink_set(&self, _delay_on: &mut usize, _delay_off: &mut usize) -> Result<()> {
-+        build_error!(VTABLE_DEFAULT_ERROR)
-+    }
-+}
-+
-+// SAFETY: A `led::Device` can be unregistered from any thread.
-+unsafe impl<T: LedOps + Send> Send for Device<T> {}
-+
-+// SAFETY: `led::Device` can be shared among threads because all methods of `led::Device`
-+// are thread safe.
-+unsafe impl<T: LedOps + Sync> Sync for Device<T> {}
-+
-+impl<T: LedOps> Device<T> {
-+    /// Registers a new led classdev.
-+    ///
-+    /// The [`Device`] will be unregistered on drop.
-+    pub fn new<'a>(
-+        parent: &'a device::Device<Bound>,
-+        init_data: InitData<'a>,
-+        ops: T,
-+    ) -> impl PinInit<Devres<Self>, Error> + 'a {
-+        Devres::new(
-+            parent,
-+            try_pin_init!(Self {
-+                ops,
-+                classdev <- Opaque::try_ffi_init(|ptr: *mut bindings::led_classdev| {
-+                    // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write.
-+                    // `led_classdev` gets fully initialized in-place by
-+                    // `led_classdev_register_ext` including `mutex` and `list_head`.
-+                    unsafe { ptr.write(bindings::led_classdev {
-+                        max_brightness: T::MAX_BRIGHTNESS,
-+                        brightness_set: T::BLOCKING
-+                            .then_some(Adapter::<T>::brightness_set_callback),
-+                        brightness_set_blocking: (!T::BLOCKING)
-+                            .then_some(Adapter::<T>::brightness_set_blocking_callback),
-+                        brightness_get: T::HAS_BRIGHTNESS_GET
-+                            .then_some(Adapter::<T>::brightness_get_callback),
-+                        blink_set: T::HAS_BLINK_SET
-+                            .then_some(Adapter::<T>::blink_set_callback),
-+                        .. bindings::led_classdev::default()
-+                    }) };
-+
-+                    let fwnode = init_data.fwnode.map(ARef::from);
-+
-+                    let mut init_data = bindings::led_init_data {
-+                        fwnode: fwnode.as_ref()
-+                            .map_or(core::ptr::null_mut(), |fwnode| fwnode.as_raw()),
-+                        default_label: init_data.default_label
-+                                                .map_or(core::ptr::null(), CStr::as_char_ptr),
-+                        devicename: init_data.devicename
-+                            .map_or(core::ptr::null(), CStr::as_char_ptr),
-+                        devname_mandatory: init_data.devname_mandatory,
-+                    };
-+
-+                    // SAFETY:
-+                    // - `parent.as_raw()` is guaranteed to be a pointer to a valid `device`
-+                    //    or a null pointer.
-+                    // - `ptr` is guaranteed to be a pointer to an initialized `led_classdev`.
-+                    to_result(unsafe {
-+                        bindings::led_classdev_register_ext(parent.as_raw(), ptr, &mut init_data)
-+                    })?;
-+
-+                    core::mem::forget(fwnode); // keep the reference count incremented
-+
-+                    Ok::<_, Error>(())
-+                }),
-+            }),
-+        )
-+    }
-+
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    unsafe fn from_raw<'a>(led_cdev: *mut bindings::led_classdev) -> &'a Self {
-+        // SAFETY: The function's contract guarantees that `led_cdev` points to a `led_classdev`
-+        // field embedded within a valid `led::Device`. `container_of!` can therefore
-+        // safely calculate the address of the containing struct.
-+        unsafe { &*container_of!(Opaque::cast_from(led_cdev), Self, classdev) }
-+    }
-+}
-+
-+struct Adapter<T: LedOps> {
-+    _p: PhantomData<T>,
-+}
-+
-+impl<T: LedOps> Adapter<T> {
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    /// This function is called on setting the brightness of a led.
-+    unsafe extern "C" fn brightness_set_callback(
-+        led_cdev: *mut bindings::led_classdev,
-+        brightness: u32,
-+    ) {
-+        // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
-+        // `led_classdev` embedded within a `led::Device`.
-+        let _ = unsafe { Device::<T>::from_raw(led_cdev) }
-+            .ops
-+            .brightness_set(brightness);
-+    }
-+
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    /// This function is called on setting the brightness of a led immediately.
-+    unsafe extern "C" fn brightness_set_blocking_callback(
-+        led_cdev: *mut bindings::led_classdev,
-+        brightness: u32,
-+    ) -> i32 {
-+        from_result(|| {
-+            // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
-+            // `led_classdev` embedded within a `led::Device`.
-+            unsafe { Device::<T>::from_raw(led_cdev) }
-+                .ops
-+                .brightness_set(brightness)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    /// This function is called on getting the brightness of a led.
-+    unsafe extern "C" fn brightness_get_callback(led_cdev: *mut bindings::led_classdev) -> u32 {
-+        // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
-+        // `led_classdev` embedded within a `led::Device`.
-+        unsafe { Device::<T>::from_raw(led_cdev) }
-+            .ops
-+            .brightness_get()
-+    }
-+
-+    /// # Safety
-+    /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-+    /// `led::Device`.
-+    /// `delay_on` and `delay_off` must be valid pointers to `usize` and have
-+    /// exclusive access for the period of this function.
-+    /// This function is called on enabling hardware accelerated blinking.
-+    unsafe extern "C" fn blink_set_callback(
-+        led_cdev: *mut bindings::led_classdev,
-+        delay_on: *mut usize,
-+        delay_off: *mut usize,
-+    ) -> i32 {
-+        from_result(|| {
-+            // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
-+            // `led_classdev` embedded within a `led::Device`.
-+            unsafe { Device::<T>::from_raw(led_cdev) }.ops.blink_set(
-+                // SAFETY: The function's contract guarantees that `delay_on` points to a `usize`
-+                // and is exclusive for the period of this function.
-+                unsafe { &mut *delay_on },
-+                // SAFETY: The function's contract guarantees that `delay_off` points to a `usize`
-+                // and is exclusive for the period of this function.
-+                unsafe { &mut *delay_off },
-+            )?;
-+            Ok(0)
-+        })
-+    }
-+}
-+
-+#[pinned_drop]
-+impl<T: LedOps> PinnedDrop for Device<T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        let raw = self.classdev.get();
-+        // SAFETY: The existence of `self` guarantees that `self.classdev.get()` is a pointer to a
-+        // valid `struct led_classdev`.
-+        let dev: &device::Device = unsafe { device::Device::from_raw((*raw).dev) };
-+
-+        let _fwnode = dev
-+            .fwnode()
-+            // SAFETY: the reference count of `fwnode` has previously been
-+            // incremented in `led::Device::new`.
-+            .map(|fwnode| unsafe { ARef::from_raw(NonNull::from(fwnode)) });
-+
-+        // SAFETY: The existence of `self` guarantees that `self.classdev` has previously been
-+        // successfully registered with `led_classdev_register_ext`.
-+        unsafe { bindings::led_classdev_unregister(self.classdev.get()) };
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index e5247f584ad2..f42c60da21ae 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -97,6 +97,7 @@
- pub mod jump_label;
- #[cfg(CONFIG_KUNIT)]
- pub mod kunit;
-+pub mod led;
- pub mod list;
- pub mod miscdevice;
- pub mod mm;
+All error/warnings (new ones prefixed by >>):
+
+   In file included from arch/s390/include/asm/mmu_context.h:11,
+                    from arch/s390/include/asm/elf.h:178,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/node.h:18,
+                    from include/linux/cpu.h:17,
+                    from include/linux/static_call.h:135,
+                    from include/linux/tracepoint.h:22,
+                    from include/linux/mm.h:39,
+                    from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+   arch/s390/include/asm/pgalloc.h: In function 'p4d_alloc_one_noprof':
+>> arch/s390/include/asm/pgalloc.h:62:2: error: implicit declaration of function 'pagetable_p4d_ctor' [-Werror=implicit-function-declaration]
+      62 |  pagetable_p4d_ctor(virt_to_ptdesc(table));
+         |  ^~~~~~~~~~~~~~~~~~
+>> arch/s390/include/asm/pgalloc.h:62:21: error: implicit declaration of function 'virt_to_ptdesc'; did you mean 'virt_to_kpte'? [-Werror=implicit-function-declaration]
+      62 |  pagetable_p4d_ctor(virt_to_ptdesc(table));
+         |                     ^~~~~~~~~~~~~~
+         |                     virt_to_kpte
+   arch/s390/include/asm/pgalloc.h: In function 'p4d_free':
+>> arch/s390/include/asm/pgalloc.h:73:2: error: implicit declaration of function 'pagetable_dtor'; did you mean 'page_table_free'? [-Werror=implicit-function-declaration]
+      73 |  pagetable_dtor(virt_to_ptdesc(p4d));
+         |  ^~~~~~~~~~~~~~
+         |  page_table_free
+   arch/s390/include/asm/pgalloc.h: In function 'pud_alloc_one_noprof':
+>> arch/s390/include/asm/pgalloc.h:84:2: error: implicit declaration of function 'pagetable_pud_ctor' [-Werror=implicit-function-declaration]
+      84 |  pagetable_pud_ctor(virt_to_ptdesc(table));
+         |  ^~~~~~~~~~~~~~~~~~
+   arch/s390/include/asm/pgalloc.h: In function 'pmd_alloc_one_noprof':
+>> arch/s390/include/asm/pgalloc.h:106:7: error: implicit declaration of function 'pagetable_pmd_ctor' [-Werror=implicit-function-declaration]
+     106 |  if (!pagetable_pmd_ctor(mm, virt_to_ptdesc(table))) {
+         |       ^~~~~~~~~~~~~~~~~~
+   arch/s390/include/asm/pgalloc.h: In function 'pgd_alloc_noprof':
+>> arch/s390/include/asm/pgalloc.h:143:2: error: implicit declaration of function 'pagetable_pgd_ctor' [-Werror=implicit-function-declaration]
+     143 |  pagetable_pgd_ctor(virt_to_ptdesc(table));
+         |  ^~~~~~~~~~~~~~~~~~
+   In file included from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+   include/linux/mm.h: At top level:
+>> include/linux/mm.h:3011:30: error: conflicting types for 'virt_to_ptdesc'
+    3011 | static inline struct ptdesc *virt_to_ptdesc(const void *x)
+         |                              ^~~~~~~~~~~~~~
+   In file included from arch/s390/include/asm/mmu_context.h:11,
+                    from arch/s390/include/asm/elf.h:178,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/node.h:18,
+                    from include/linux/cpu.h:17,
+                    from include/linux/static_call.h:135,
+                    from include/linux/tracepoint.h:22,
+                    from include/linux/mm.h:39,
+                    from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+   arch/s390/include/asm/pgalloc.h:62:21: note: previous implicit declaration of 'virt_to_ptdesc' was here
+      62 |  pagetable_p4d_ctor(virt_to_ptdesc(table));
+         |                     ^~~~~~~~~~~~~~
+   In file included from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+>> include/linux/mm.h:3152:20: warning: conflicting types for 'pagetable_dtor'
+    3152 | static inline void pagetable_dtor(struct ptdesc *ptdesc)
+         |                    ^~~~~~~~~~~~~~
+>> include/linux/mm.h:3152:20: error: static declaration of 'pagetable_dtor' follows non-static declaration
+   In file included from arch/s390/include/asm/mmu_context.h:11,
+                    from arch/s390/include/asm/elf.h:178,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/node.h:18,
+                    from include/linux/cpu.h:17,
+                    from include/linux/static_call.h:135,
+                    from include/linux/tracepoint.h:22,
+                    from include/linux/mm.h:39,
+                    from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+   arch/s390/include/asm/pgalloc.h:73:2: note: previous implicit declaration of 'pagetable_dtor' was here
+      73 |  pagetable_dtor(virt_to_ptdesc(p4d));
+         |  ^~~~~~~~~~~~~~
+   In file included from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+>> include/linux/mm.h:3274:20: error: conflicting types for 'pagetable_pmd_ctor'
+    3274 | static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
+         |                    ^~~~~~~~~~~~~~~~~~
+   In file included from arch/s390/include/asm/mmu_context.h:11,
+                    from arch/s390/include/asm/elf.h:178,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/node.h:18,
+                    from include/linux/cpu.h:17,
+                    from include/linux/static_call.h:135,
+                    from include/linux/tracepoint.h:22,
+                    from include/linux/mm.h:39,
+                    from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+   arch/s390/include/asm/pgalloc.h:106:7: note: previous implicit declaration of 'pagetable_pmd_ctor' was here
+     106 |  if (!pagetable_pmd_ctor(mm, virt_to_ptdesc(table))) {
+         |       ^~~~~~~~~~~~~~~~~~
+   In file included from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+>> include/linux/mm.h:3303:20: warning: conflicting types for 'pagetable_pud_ctor'
+    3303 | static inline void pagetable_pud_ctor(struct ptdesc *ptdesc)
+         |                    ^~~~~~~~~~~~~~~~~~
+>> include/linux/mm.h:3303:20: error: static declaration of 'pagetable_pud_ctor' follows non-static declaration
+   In file included from arch/s390/include/asm/mmu_context.h:11,
+                    from arch/s390/include/asm/elf.h:178,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/node.h:18,
+                    from include/linux/cpu.h:17,
+                    from include/linux/static_call.h:135,
+                    from include/linux/tracepoint.h:22,
+                    from include/linux/mm.h:39,
+                    from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+   arch/s390/include/asm/pgalloc.h:84:2: note: previous implicit declaration of 'pagetable_pud_ctor' was here
+      84 |  pagetable_pud_ctor(virt_to_ptdesc(table));
+         |  ^~~~~~~~~~~~~~~~~~
+   In file included from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+>> include/linux/mm.h:3308:20: warning: conflicting types for 'pagetable_p4d_ctor'
+    3308 | static inline void pagetable_p4d_ctor(struct ptdesc *ptdesc)
+         |                    ^~~~~~~~~~~~~~~~~~
+>> include/linux/mm.h:3308:20: error: static declaration of 'pagetable_p4d_ctor' follows non-static declaration
+   In file included from arch/s390/include/asm/mmu_context.h:11,
+                    from arch/s390/include/asm/elf.h:178,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/node.h:18,
+                    from include/linux/cpu.h:17,
+                    from include/linux/static_call.h:135,
+                    from include/linux/tracepoint.h:22,
+                    from include/linux/mm.h:39,
+                    from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+   arch/s390/include/asm/pgalloc.h:62:2: note: previous implicit declaration of 'pagetable_p4d_ctor' was here
+      62 |  pagetable_p4d_ctor(virt_to_ptdesc(table));
+         |  ^~~~~~~~~~~~~~~~~~
+   In file included from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+>> include/linux/mm.h:3313:20: warning: conflicting types for 'pagetable_pgd_ctor'
+    3313 | static inline void pagetable_pgd_ctor(struct ptdesc *ptdesc)
+         |                    ^~~~~~~~~~~~~~~~~~
+>> include/linux/mm.h:3313:20: error: static declaration of 'pagetable_pgd_ctor' follows non-static declaration
+   In file included from arch/s390/include/asm/mmu_context.h:11,
+                    from arch/s390/include/asm/elf.h:178,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/node.h:18,
+                    from include/linux/cpu.h:17,
+                    from include/linux/static_call.h:135,
+                    from include/linux/tracepoint.h:22,
+                    from include/linux/mm.h:39,
+                    from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/s390/include/asm/stacktrace.h:7,
+                    from arch/s390/kernel/asm-offsets.c:15:
+   arch/s390/include/asm/pgalloc.h:143:2: note: previous implicit declaration of 'pagetable_pgd_ctor' was here
+     143 |  pagetable_pgd_ctor(virt_to_ptdesc(table));
+         |  ^~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+   make[3]: *** [scripts/Makefile.build:182: arch/s390/kernel/asm-offsets.s] Error 1 shuffle=2098624972
+   make[3]: Target 'prepare' not remade because of errors.
+   make[2]: *** [Makefile:1280: prepare0] Error 2 shuffle=2098624972
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:248: __sub-make] Error 2 shuffle=2098624972
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2 shuffle=2098624972
+   make: Target 'prepare' not remade because of errors.
+
+
+vim +/virt_to_ptdesc +3011 include/linux/mm.h
+
+522abd92279a8e Matthew Wilcox (Oracle  2025-09-08  3010) 
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07 @3011) static inline struct ptdesc *virt_to_ptdesc(const void *x)
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3012) {
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3013) 	return page_ptdesc(virt_to_page(x));
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3014) }
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3015) 
+90ec2df9dd3165 Matthew Wilcox (Oracle  2025-09-08  3016) /**
+90ec2df9dd3165 Matthew Wilcox (Oracle  2025-09-08  3017)  * ptdesc_address - Virtual address of page table.
+90ec2df9dd3165 Matthew Wilcox (Oracle  2025-09-08  3018)  * @pt: Page table descriptor.
+90ec2df9dd3165 Matthew Wilcox (Oracle  2025-09-08  3019)  *
+90ec2df9dd3165 Matthew Wilcox (Oracle  2025-09-08  3020)  * Return: The first byte of the page table described by @pt.
+90ec2df9dd3165 Matthew Wilcox (Oracle  2025-09-08  3021)  */
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3022) static inline void *ptdesc_address(const struct ptdesc *pt)
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3023) {
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3024) 	return folio_address(ptdesc_folio(pt));
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3025) }
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3026) 
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3027) static inline bool pagetable_is_reserved(struct ptdesc *pt)
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3028) {
+522abd92279a8e Matthew Wilcox (Oracle  2025-09-08  3029) 	return test_bit(PT_reserved, &pt->pt_flags.f);
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3030) }
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3031) 
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3032) /**
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3033)  * pagetable_alloc - Allocate pagetables
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3034)  * @gfp:    GFP flags
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3035)  * @order:  desired pagetable order
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3036)  *
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3037)  * pagetable_alloc allocates memory for page tables as well as a page table
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3038)  * descriptor to describe that memory.
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3039)  *
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3040)  * Return: The ptdesc describing the allocated page tables.
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3041)  */
+2c321f3f70bc28 Suren Baghdasaryan      2024-04-14  3042  static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3043) {
+2c321f3f70bc28 Suren Baghdasaryan      2024-04-14  3044  	struct page *page = alloc_pages_noprof(gfp | __GFP_COMP, order);
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3045) 
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3046) 	return page_ptdesc(page);
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3047) }
+2c321f3f70bc28 Suren Baghdasaryan      2024-04-14  3048  #define pagetable_alloc(...)	alloc_hooks(pagetable_alloc_noprof(__VA_ARGS__))
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3049) 
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3050) /**
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3051)  * pagetable_free - Free pagetables
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3052)  * @pt:	The page table descriptor
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3053)  *
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3054)  * pagetable_free frees the memory of all page tables described by a page
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3055)  * table descriptor and the memory for the descriptor itself.
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3056)  */
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3057) static inline void pagetable_free(struct ptdesc *pt)
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3058) {
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3059) 	struct page *page = ptdesc_page(pt);
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3060) 
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3061) 	__free_pages(page, compound_order(page));
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3062) }
+bf2d4334f72e4e Vishal Moola (Oracle    2023-08-07  3063) 
+394290cba9664e David Hildenbrand       2024-07-26  3064  #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
+597d795a2a786d Kirill A. Shutemov      2013-12-20  3065  #if ALLOC_SPLIT_PTLOCKS
+b35f1819acd924 Kirill A. Shutemov      2014-01-21  3066  void __init ptlock_cache_init(void);
+f5ecca06b3a5d0 Vishal Moola (Oracle    2023-08-07  3067) bool ptlock_alloc(struct ptdesc *ptdesc);
+6ed1b8a09deb0b Vishal Moola (Oracle    2023-08-07  3068) void ptlock_free(struct ptdesc *ptdesc);
+539edb5846c740 Peter Zijlstra          2013-11-14  3069  
+1865484af6b2ce Vishal Moola (Oracle    2023-08-07  3070) static inline spinlock_t *ptlock_ptr(struct ptdesc *ptdesc)
+539edb5846c740 Peter Zijlstra          2013-11-14  3071  {
+1865484af6b2ce Vishal Moola (Oracle    2023-08-07  3072) 	return ptdesc->ptl;
+539edb5846c740 Peter Zijlstra          2013-11-14  3073  }
+597d795a2a786d Kirill A. Shutemov      2013-12-20  3074  #else /* ALLOC_SPLIT_PTLOCKS */
+b35f1819acd924 Kirill A. Shutemov      2014-01-21  3075  static inline void ptlock_cache_init(void)
+b35f1819acd924 Kirill A. Shutemov      2014-01-21  3076  {
+b35f1819acd924 Kirill A. Shutemov      2014-01-21  3077  }
+b35f1819acd924 Kirill A. Shutemov      2014-01-21  3078  
+f5ecca06b3a5d0 Vishal Moola (Oracle    2023-08-07  3079) static inline bool ptlock_alloc(struct ptdesc *ptdesc)
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3080  {
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3081  	return true;
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3082  }
+539edb5846c740 Peter Zijlstra          2013-11-14  3083  
+6ed1b8a09deb0b Vishal Moola (Oracle    2023-08-07  3084) static inline void ptlock_free(struct ptdesc *ptdesc)
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3085  {
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3086  }
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3087  
+1865484af6b2ce Vishal Moola (Oracle    2023-08-07  3088) static inline spinlock_t *ptlock_ptr(struct ptdesc *ptdesc)
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3089  {
+1865484af6b2ce Vishal Moola (Oracle    2023-08-07  3090) 	return &ptdesc->ptl;
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3091  }
+597d795a2a786d Kirill A. Shutemov      2013-12-20  3092  #endif /* ALLOC_SPLIT_PTLOCKS */
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3093  
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3094  static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3095  {
+1865484af6b2ce Vishal Moola (Oracle    2023-08-07  3096) 	return ptlock_ptr(page_ptdesc(pmd_page(*pmd)));
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3097  }
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3098  
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3099  static inline spinlock_t *ptep_lockptr(struct mm_struct *mm, pte_t *pte)
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3100  {
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3101  	BUILD_BUG_ON(IS_ENABLED(CONFIG_HIGHPTE));
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3102  	BUILD_BUG_ON(MAX_PTRS_PER_PTE * sizeof(pte_t) > PAGE_SIZE);
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3103  	return ptlock_ptr(virt_to_ptdesc(pte));
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3104  }
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3105  
+75b25d49ca6638 Vishal Moola (Oracle    2023-08-07  3106) static inline bool ptlock_init(struct ptdesc *ptdesc)
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3107  {
+4c21e2f2441dc5 Hugh Dickins            2005-10-29  3108  	/*
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3109  	 * prep_new_page() initialize page->private (and therefore page->ptl)
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3110  	 * with 0. Make sure nobody took it in use in between.
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3111  	 *
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3112  	 * It can happen if arch try to use slab for page table allocation:
+1d798ca3f16437 Kirill A. Shutemov      2015-11-06  3113  	 * slab code uses page->slab_cache, which share storage with page->ptl.
+4c21e2f2441dc5 Hugh Dickins            2005-10-29  3114  	 */
+75b25d49ca6638 Vishal Moola (Oracle    2023-08-07  3115) 	VM_BUG_ON_PAGE(*(unsigned long *)&ptdesc->ptl, ptdesc_page(ptdesc));
+75b25d49ca6638 Vishal Moola (Oracle    2023-08-07  3116) 	if (!ptlock_alloc(ptdesc))
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3117  		return false;
+75b25d49ca6638 Vishal Moola (Oracle    2023-08-07  3118) 	spin_lock_init(ptlock_ptr(ptdesc));
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3119  	return true;
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3120  }
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3121  
+394290cba9664e David Hildenbrand       2024-07-26  3122  #else	/* !defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+4c21e2f2441dc5 Hugh Dickins            2005-10-29  3123  /*
+4c21e2f2441dc5 Hugh Dickins            2005-10-29  3124   * We use mm->page_table_lock to guard all pagetable pages of the mm.
+4c21e2f2441dc5 Hugh Dickins            2005-10-29  3125   */
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3126  static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3127  {
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3128  	return &mm->page_table_lock;
+49076ec2ccaf68 Kirill A. Shutemov      2013-11-14  3129  }
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3130  static inline spinlock_t *ptep_lockptr(struct mm_struct *mm, pte_t *pte)
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3131  {
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3132  	return &mm->page_table_lock;
+5f75cfbd6bb022 David Hildenbrand       2024-08-01  3133  }
+b35f1819acd924 Kirill A. Shutemov      2014-01-21  3134  static inline void ptlock_cache_init(void) {}
+75b25d49ca6638 Vishal Moola (Oracle    2023-08-07  3135) static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
+6ed1b8a09deb0b Vishal Moola (Oracle    2023-08-07  3136) static inline void ptlock_free(struct ptdesc *ptdesc) {}
+394290cba9664e David Hildenbrand       2024-07-26  3137  #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+4c21e2f2441dc5 Hugh Dickins            2005-10-29  3138  
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3139) static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3140) {
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3141) 	return compound_nr(ptdesc_page(ptdesc));
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3142) }
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3143) 
+11e2400b21a3e2 Kevin Brodsky           2025-01-03  3144  static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+2f569afd9ced9e Martin Schwidefsky      2008-02-08  3145  {
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3146) 	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+7e11dca14b27e1 Vishal Moola (Oracle    2023-08-07  3147) 
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3148) 	__SetPageTable(ptdesc_page(ptdesc));
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3149) 	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
+2f569afd9ced9e Martin Schwidefsky      2008-02-08  3150  }
+2f569afd9ced9e Martin Schwidefsky      2008-02-08  3151  
+db6b435d731a8d Qi Zheng                2025-01-08 @3152  static inline void pagetable_dtor(struct ptdesc *ptdesc)
+7e11dca14b27e1 Vishal Moola (Oracle    2023-08-07  3153) {
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3154) 	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+7e11dca14b27e1 Vishal Moola (Oracle    2023-08-07  3155) 
+7e11dca14b27e1 Vishal Moola (Oracle    2023-08-07  3156) 	ptlock_free(ptdesc);
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3157) 	__ClearPageTable(ptdesc_page(ptdesc));
+f0c92726e89f5c Matthew Wilcox (Oracle  2025-09-08  3158) 	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
+7e11dca14b27e1 Vishal Moola (Oracle    2023-08-07  3159) }
+7e11dca14b27e1 Vishal Moola (Oracle    2023-08-07  3160) 
+
 -- 
-2.49.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
