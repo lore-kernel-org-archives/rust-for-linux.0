@@ -1,98 +1,166 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8C9228C99
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Oct 2025 10:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEC327EFEB
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Oct 2025 14:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760178798; cv=none; b=QLaE/5mmGBPhOEkrimesGkhob5WjJOHy7LuPcIgyriYajZZc39zBXzsw7uKtYu9G36czn7k/maxrX1fbSGK/EyGjd8oFq5QYGDZAl2amwzOMx1HjuAoMtHgLwc0xXWgdWNisLmVZZWLLakomNH5Kohfl9ldZBWZSDgoLQssJtzo=
+	t=1760194395; cv=none; b=pEGJuSElrqGD70n0yUTQmKDHnhdBZsaX9YXHzBfhRffu222oRp+HGpF8wtkzvU/YnhrgebZCCkCXQsZf4rfcfIZMn1Bpx+b7yhG49lyHpdgVZR+kxuBrVZnR3+5HpC2rP028tPyuipOLI8NOICM2DzbDdHWiuTaKQvfudcEBAq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760178798; c=relaxed/simple;
-	bh=KWJNoifW9mKZ2m7atmfernWYiEqoHW9QI0fSKHHtBbQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CNLbOcVpzRTYnxVNEK5j7VMJRsiKkYd8/pGnvy6PJqtWX30MwAmYyKGPE9M+il4hPHHwXOUF9ZJc9lJo/U/O3jVROOP9yHWkJVuoaI4LKW2iq9p+n5x2QDzXNKm7Vhm/zk4lDfZyaAPR3OOnNcDTEs1iyNPst0ZYeIbywVbhef8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m7JDfBnb; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1760194395; c=relaxed/simple;
+	bh=deCTSpq54gpA3efQXgVanMT20C+waxkdc3m30B3Qeo4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZPnlUyem2yx6xb1i4eCyJaRipTXOKJ07JFBkdMuXW+OJFhtB+VMKn5RGfgRE69I+fwNXMEAa2r+J45Q9PZ2cEA7NH5MhTJwqKV74y/2H+jIz8xEmqx2u6UwGRKzGmCbmci8TMBluyYmV3vA6gdm+q65i3c+EFPF7W30bIvHQfhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Adck1bBh; arc=none smtp.client-ip=209.85.166.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m7JDfBnb"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e38957979so14771495e9.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Oct 2025 03:33:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Adck1bBh"
+Received: by mail-io1-f43.google.com with SMTP id ca18e2360f4ac-91f6ccdbfc8so150673939f.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Oct 2025 07:53:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760178791; x=1760783591; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UEMAqpRvkk1CnOEEkWJ/ybbuyMvUoPKtuwUvs4qymvU=;
-        b=m7JDfBnbU4E9OeEKfYdEAV/J8LniUpq6spCzUl8FcswFo+uHZiikqGCAToF+1XU7t0
-         dLTn1YLfYyvutnQSLnfZRiy6CZwJkGHD/2SapnowvRdCvSFWBZZQJwjCxT0ZmOREnzt/
-         2acm0S9QfcPxyX7eaPrecIy245LfpdKRVlnDXB8qm/kcRHXE8BtSZSnuopKVs6DzDKZd
-         qcXlrJkxI0xXKYCIr4QqFMYQLoS8+jxGlkQmbNX6xX+DJ/3aFC0UA2tqkBsORbh1Musz
-         LYO6y1RV1MgWe+DCvu7he2ZUoWMCgM+kCBU5y12dBYxrfKZNbw1XaaFYzHay93C6nXQU
-         e/RA==
+        d=gmail.com; s=20230601; t=1760194392; x=1760799192; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ax786NHBHHpTg8NhBwV3RBjSy/8C3s4oYnbb7WT6QLw=;
+        b=Adck1bBh2gOUppzn/MguotEOxYEK/ShSzRmf0FLf2D7rjA9VxLcopILGT5arTDLld+
+         feyhrgqOqyGqn5yH5Cx4uiRv8kXbuQpd+X8Wmshid0NCiSJn/EKBJszbbiFCOXWvSiL+
+         zDK45L1jWMu1D3XFLwFpPp2vBsOwHHr9Uoia/FhCasPMYFbIDS51PqFvr24uLguHxX5r
+         ZiMLq1BnVzXAi/wvOFqpN/lKfIpCLSCuDOw/iN5vOrH/iJckszUBPph6D4virHeQl/RY
+         wCmM9dPgbg9OtYW8swpwXbEFu54QdLD1E1h4bTeXvBMCtzRHRw5M+C8jYeZLghQnanR/
+         ktEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760178791; x=1760783591;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UEMAqpRvkk1CnOEEkWJ/ybbuyMvUoPKtuwUvs4qymvU=;
-        b=r+MzMBgDlo5M0qLAyhuTJjWU58wLEm64PM1bBVuCvuniiYThnNOjGD3cUH1XBY4y6k
-         CfSBHMw5mQExrQVvnQJnWpwWhkUvj81rCqqKgGE+OT+1/sBohMFmyL+inTc0UkB8UcqQ
-         t5ABJ9//y1GKg5m5soLEEvV5nTb1H5lDTUPlfrQXsdwGNv6GSw2NyQmqrV1O64+754qu
-         thDjDfJvMOglikICK2N0ZtzBZet7hSPSZWMj87vSXg416E6RcOgRqBV/RFrSc6L2v/1p
-         O+/eSwUFJze4FWRf/VehL196PTYeKw85PqJRXz4gbTzMXsLkVdwvaISSth/3siH8XI0l
-         TRcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVronnFqJMZmgjwdOGGuHKhDlfsBKoKellzRYB5PKwtBWVHEdWtduivMSLi4aybACM8XKS02VJgtSoB3MfGqQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuirbkWVJaQix+/TKFUt265HywQ5QuVDQ53cVzbumlNRC0QSm+
-	O73ByJyv4poGc9I0DVOfyfxXCtlXgpXLdC4W1R82mSGkdEeoE3MmjSG3LXMEgcEMHpplRdvV7nE
-	zoHdwBRnOdsqZ+FWNIg==
-X-Google-Smtp-Source: AGHT+IE95szyP/U8+8WhwLLID98VXllUKscYx6ym55wS0AieLc/ikoex6vLfoIyhhX1iRrMI6+QUlbXsF49wksQ=
-X-Received: from wmcn2.prod.google.com ([2002:a05:600c:c0c2:b0:45f:28dd:87d9])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:416b:b0:46e:3dc3:b645 with SMTP id 5b1f17b1804b1-46fa9a87f3emr103546595e9.3.1760178791259;
- Sat, 11 Oct 2025 03:33:11 -0700 (PDT)
-Date: Sat, 11 Oct 2025 10:33:10 +0000
-In-Reply-To: <20251009-bounded_ints-v2-2-ff3d7fee3ffd@nvidia.com>
+        d=1e100.net; s=20230601; t=1760194392; x=1760799192;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ax786NHBHHpTg8NhBwV3RBjSy/8C3s4oYnbb7WT6QLw=;
+        b=vTuXbnHH0CtanLKv+Wc8r5tR8Bh34nCfQyHLtXIPNtUqhDn50N3bZ4EBFamK0vrFjD
+         RRM5RFHx+IJ3WRNMvGLqHs11GktBw1Kcmldhdk6mDMqFhWA3uO4ECyDo22x4rTEglzwM
+         8T+dajRWuqbm9Iz6JchU2RQX/dTCJR6BKVpEU10bwGR2NR78ZEpk8NcGaeQ8EELzOH69
+         2JOHLQcFytABphxAJ06bbBz8Pxa23OyDFC2GE5NozkZYapLmWYTbdgEczsGZG99fTbIv
+         oRyA5o0Zp02WZRZh5gIOylwOI2K5/5pb7PBFaV8PtUPzA/K0zF38aM8BJPLXyV4SNTr5
+         wqYg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBFA5AsTwFAVBZxJqkxsvJkEXRVTfa2EHkQvIf8ka0gpEgqXUxsLNWlwEVi+gPTN1Tx82u88BvXQ+8Bxq+TQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylcRhk081VnA5IJ7f0+eoimWXU413bc2HZT33Syz39xsjCDpo+
+	oAsLHzo4UrS4uimToPnHJ/E8InmYnDV/5HlxRBkBSfayncoZhJ7WtmdL1V7d/Nqrz1EoYlV1qeH
+	RXok1g+CxVShQYTs1DcsHvHfClL7E41E=
+X-Gm-Gg: ASbGnctoGP+pOUJbIhX//Qf/tSsc7/VtOMxVQ9jsj4IzslAYDybB+HC3QZPyYtgbHLm
+	7G+JBawcx0y9R8jtoAfotr3TFUDrUEg4kQZ+SekoQJwbuEm1U/MF+6iMBPjnwhtMonBRRRE+utm
+	xkUPGegGzU/EVGAVhXmJUXuEzZ8sOcSV03o89BkcOpYlGmeunP/kvnOrImGAoVOYsYM6AcyA+vh
+	cxzFVfqj0HG2eIZqyRBgez4zDVUIrU7OljQVrhSZVE0B9U8o7rK
+X-Google-Smtp-Source: AGHT+IGelNAChiwvd1QIIsVjXT8otgdB/o8fUu1FJvzWGsfqv3ACbWv9Myx5ycGYbMHeIh8AcUX+c3ga6qd1PGeON+w=
+X-Received: by 2002:a05:6e02:148d:b0:42f:9708:168f with SMTP id
+ e9e14a558f8ab-42f9708183emr109556905ab.16.1760194392237; Sat, 11 Oct 2025
+ 07:53:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251009-bounded_ints-v2-0-ff3d7fee3ffd@nvidia.com> <20251009-bounded_ints-v2-2-ff3d7fee3ffd@nvidia.com>
-Message-ID: <aOoySkWjPcJLVDrG@google.com>
-Subject: Re: [PATCH RFC v2 2/3] rust: kernel: add bounded integer types
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Yury Norov <yury.norov@gmail.com>, Jesung Yang <y.j3ms.n@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+MIME-Version: 1.0
+References: <cover.1755235180.git.y.j3ms.n@gmail.com> <CANiq72nbERSOWKRUTJ96YYKCDeAoHLBuiVP+XkDUKg7JYkoyiA@mail.gmail.com>
+ <CA+tqQ4KG98XcWh3rkAxEOiACSUtPf7KM0Wqh9Af=POgVDHJzzw@mail.gmail.com> <CANiq72kE89ukxpf3L0_jFOdv51TDtjjj3r=1mjJzdGWJwmAbaQ@mail.gmail.com>
+In-Reply-To: <CANiq72kE89ukxpf3L0_jFOdv51TDtjjj3r=1mjJzdGWJwmAbaQ@mail.gmail.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Sat, 11 Oct 2025 23:53:00 +0900
+X-Gm-Features: AS18NWBxitqWPgx67xtxY0Tu7rDxhSjoDZ4dv9U5mH8wQ6n3kHU_eUVN0pCdWYk
+Message-ID: <CA+tqQ4J7_z7_NmUNojJttF1e8GRR8Ua9w0Rap1t-U4gYPhQ1Yg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] rust: add `TryFrom` and `Into` derive macros
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, nouveau@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 09, 2025 at 09:37:09PM +0900, Alexandre Courbot wrote:
-> Add the BoundedInt type, which restricts the number of bits allowed to
-> be used in a given integer value. This is useful to carry guarantees
-> when setting bitfields.
-> 
-> Alongside this type, many `From` and `TryFrom` implementations are
-> provided to reduce friction when using with regular integer types. Proxy
-> implementations of common integer traits are also provided.
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Hi,
 
-> +    pub const fn enlarge<const NEW_NUM_BITS: u32>(self) -> BoundedInt<T, NEW_NUM_BITS>
-> +    where
-> +        T: Boundable<NEW_NUM_BITS>,
-> +        T: Copy,
-> +    {
-> +        build_assert!(NEW_NUM_BITS >= NUM_BITS);
+On Fri, Oct 10, 2025 at 10:04=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+[...]
+> But what case do you think we cannot assert? We can always take the
+> discriminant and reject whatever inputs (e.g. ranges) we decide, no?
+> And we know what type we are going into, so we can always decide what
+> the values to check will be, i.e. we could in principle even support
+> infallible conversions of the discriminant to other types like, say,
+> the bounded integers or powers of two.
+>
+> Maybe the issue is in what you say at "the discriminant value
+> interpreted as the target type" -- I am not sure what you mean by
+> "interpreted", i.e. I would think of this as accepting only some bit
+> patterns, i.e. working with in the discriminant space, not the target
+> type one.
+>
+> I may be missing something, but in any case, at the end of the day,
+> within a proc macro "everything" should be possible one way or another
+> -- even if we had to inspect manually the literals :) And it seems
+> worth to remove the pitfall.
+>
+> If really needed, we can always drop support for certain combinations.
+> We already do, in the sense that we don't cover every single other
+> type out there, like the ones I mention above, e.g. `Alignment`. But,
+> just in case, I assume with that approach you mean skipping some
+> combinations early (the ones that cannot be checked) and then still
+> asserting the discriminants, right? Otherwise the caveat is still
+> there.
 
-This assertion can be evaluated in const context.
+Sorry about the confusion -- the rough sketch I shared earlier had
+several mistakes.
 
-const {
-    assert!(NEW_NUM_BITS >= NUM_BITS);
-}
+My actual intention was to emit a compile-time error using
+`compile_error!()` whenever a conversion could overflow. With this
+approach, the caveat wouldn't exist, since proc macro users wouldn't be
+able to generate `TryFrom` or `Into` (`From`) implementations that
+could potentially cause overflow issues. For example:
 
-Alice
+    // This emits a compile-time error because not all `i128` values
+    // can be converted to `u128`, even though 0 and 1 are valid `u128`
+    // values.
+    #[derive(TryFrom, Into)]
+    #[try_from(u128)]
+    #[into(u128)]
+    #[repr(i128)]
+    enum MyEnum {
+        A =3D 0,
+        B =3D 1,
+    }
+
+To make this idea work as intended, I should have revised the earlier
+sketch as follows:
+
+- const U128_ALLOWED: [&str; 9] =3D
+-     ["u8", "i8", "u16", "i16", "i32", "u32", "u64", "i64", "u128"];
+- const I128_ALLOWED: [&str; 9] =3D
+-     ["u8", "i8", "u16", "i16", "i32", "u32", "u64", "i64", "i128"];
++ // Allowed helper inputs when `repr(u128)` is used.
++ const U128_ALLOWED: [&str; 1] =3D ["u128"];
++ // Allowed helper inputs when `repr(i128)` is used.
++ const I128_ALLOWED: [&str; 1] =3D ["i128"];
+
+The downside of this approach is that, as you can see, it is overly
+restrictive for large target types such as `u128` and `i128`, because
+the remaining numeric types cannot accommodate their full range. As a
+result, the macros could reject some valid use cases, for example when
+the actual discriminants can be converted without overflow, since the
+check operates at the type level rather than on specific discriminants.
+
+Considering this, and as you suggested, I think the right direction is
+to introduce a compile-time check for each discriminant. I initially
+thought it would be difficult, but after some exploration, it seems
+doable.
+
+Thanks a lot for your feedback, I really appreciate it!
+
+Best Regards,
+Jesung
+
+> Thanks!
+>
+> Cheers,
+> Miguel
