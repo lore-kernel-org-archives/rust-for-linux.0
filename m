@@ -1,192 +1,158 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473EA1A9F8F
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Oct 2025 14:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F15A28D8E8
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Oct 2025 14:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760278826; cv=none; b=MVN4UqnkW6Wf06UlFOLp5DHpNkau6jomj+0sk6ydwIV9bxqEQgO7Sq15zKYsoe/BWvNo31SjM4iqouqT4If5tt++QkV9e0b6LlzYMbgvaf1e6FKN4rn1migpdH4wJ0nToXzC3vAEQADmgiiruAbk27qQsTH09moKX4M1woy23Zk=
+	t=1760280761; cv=none; b=eXcSSa/mRZ4BNNltp9DtGtyCWBaE6nlZR2ZI5TiGTHC4CpEL05O8tG1uy/JjQeHyrQKVduwPW1hjhS7q0S4gpcF9fgNNay4FZ0FA97WR8S/AwH0sb47kKDcAtasgdDRCs5xYMtesqu35pHC5cti/vvQzXLTdTNZs+oC3T6RV1WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760278826; c=relaxed/simple;
-	bh=2k6zfbV5v2cf+4wgu/XCSpdhWf+Wu46HVvzRy5EuNf8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=adr5QiHHYNokpWmN/Ec3wFvgcuCyzB2gtjadngWHb7W1T0/dnJ4LlWIl6OE3MKLkyKAU3n1FqZAJl8TNZLK8NELjA5atYeV3mD0O2lEMO9cHSK1+ZzgYTxtnWaZvG2ASRdKvlZPut1nNixp3nU+YRuunapIit9KgNrfzlL0dy6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Co8vOhR4; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760280761; c=relaxed/simple;
+	bh=OjnznvjdDlY8BsevM3US5Hf/cBBDXmCjWvAolFjeI7w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=owtgkKvH2QI6RLjn/8uR/ONKF5obGYslwT/7TJq1GOwPgdSK58hHksoHNoQrZGy0VWUM7CQhhCd3rgWoBEwEavXGPufMqHxiXGZdgO2f91gy5uwoMD08pRMKoUCcnPjCyuLiTaOo7bFFnNWd6zEYqd3YzyB37bTZz8RGmYHaLKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=GGS5vwA0; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Co8vOhR4"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-27c369f898fso47016315ad.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 Oct 2025 07:20:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760278824; x=1760883624; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hfkmdzafh7+VHjG0RAeg5sF4FBAljqq3jIvcOzngZlg=;
-        b=Co8vOhR4jNm0dn3Aoz4mtvMDX+V3QoxoynHZgrs3wbB7HQ2mTAI/77rJPCTa3ldC2J
-         o9HkYQfL7s7fD/xprG06pkSlybgXnnbF+aTXrt6is8hrCOcfgE76euD/tQ1+TDld5Qcf
-         PmFIeiCp/EgefscWXP9AKCQKLDUcD3EFmwmiXwL1LlPLxKGVP7lWFpRyMFvD/0qcJA5q
-         mu2Jrbd7cVWTRQQRC4ZU/ggQUPBf7AkyLmT0XqtyHgsyQGBWsXeNfPW14TmRmwhQR7p/
-         ii7Aib7KVOI7wG0dc7eYhwLShseVFT+/eiHLlriKcIrnONnokn84BNUe/e/3N5V6V7mF
-         4ouQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760278824; x=1760883624;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hfkmdzafh7+VHjG0RAeg5sF4FBAljqq3jIvcOzngZlg=;
-        b=sNr4IUIbu8qzzeLr9udUOaFgJGRHZ3ZRdTDTl2wBeCdKvLjPBAAI5PzaXribzZoWhz
-         kSSONHqNe5HcwZoOcteycpE2hCryAtGBkBa3RV6e16wxr5lYDahONCWH1dgB+Ni0B0oO
-         RI9NohHMPvnFiqGj5kvEPiRNSveCWYm0IX5HL5KR7W73zXku2CHtBleOXOOe7bC0BC4M
-         WrvBnOZ52JONTcBEg8DkMhOKVFAGY4K8UjgWDVkCzh7pXw79Sss3L+H79xlAvPoxXqTH
-         qJCOP3xDXMd310qC4gyyTQD4ijSZ9y8B9PTAXI0uuUkpvx4ARkcsppH70m5G+JYYNreo
-         JCsg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCEiEzGUivmM73BnlhmMSY9tNyqgDmqmL8EYd/skFseZOW9ASXh0ajyk/9snM5VTH6dOp3bLoGltRENgaj2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg9RiwYobSTHr/pdVzKrlKU6KE6Ie5AFGO7sLakV0xUKeJwJop
-	xO1nSGqAhkTqaalIswOC9xtUZzATs3sPCPOm4MN8dUQWOSnuJggdODGb
-X-Gm-Gg: ASbGncvY/vtjj+/czHd5TORvbSYeLjGuOLP9RQ98flewUDsfSvxzGcN74pl4oE0jNkY
-	MdZGwnlbo7s+DkbRQPrqyKb7vRbkBKk3rRWj7EWo5tVMeYoTzZ0shd/t5InoztYXo0UiP5Fuklh
-	gw11flLXwEXIIvjZCBG34xQZk9HWeVl7SGJnThUI04C/kusNlcwPbFGRujasV6gNFUWHetrZOb7
-	7nXUUrKkdxtfoTgUIo0R4mSVy589KcIC2vy5lglLroxV8emFtN9m/Ch71YuAlEgILf72Ay0t+zE
-	X020sNsByxyffIALWh8SHMV9RAZZY/T3WtLF4wHTkXa9LLfR3RmemPX7FGKuaIAgeEwirlxAQhl
-	h8mhRa9tDdrb6BCRMk1lhy/jR+68VnSvILCfXKqVpxuWpVT+KRnhfkOvWzQ==
-X-Google-Smtp-Source: AGHT+IFjutP7obK0TADVT6/jr5reX7v34JHSR9gBVaHhK88qEC2UiRaBIKkiBy1t0yjPHCjcIVALCw==
-X-Received: by 2002:a17:902:e786:b0:26e:7468:8a99 with SMTP id d9443c01a7336-290272c18e1mr224136745ad.36.1760278824509;
-        Sun, 12 Oct 2025 07:20:24 -0700 (PDT)
-Received: from shankari-IdeaPad.. ([49.128.169.246])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f089a3sm108167325ad.76.2025.10.12.07.20.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Oct 2025 07:20:24 -0700 (PDT)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="GGS5vwA0"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id B5EE824002A
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Oct 2025 16:52:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1760280757; bh=vg7pZNXm2zy1bdDd2Eaw4KEo612gXQLiEvrc4MulVnw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Autocrypt:OpenPGP:From;
+	b=GGS5vwA0tijhykKYjFhpJhI6puBftHDHG9sU/TsWzftOJZtb3/7PcB7+hmOOemaoW
+	 qTZMvwYlmxDWqVnG1wOns2J5yAhJEY8wkDBVGd0KimyWnFJk3ZWprRjuOY0oeOMUBo
+	 dwiVMZQpqQRvqcpIS6Ixxv20Xs+A3F7/E3D0exxRPlGVUzGlFiKWjRj8SglHQM6Cgl
+	 gXhcwm872XLi14cDGsHzT/8flIu3R5IOjJGIBwvpmR2uCTWAJsAtoO56hZoIo1U3Z8
+	 dT9Oe9/+Sq/4De4vslXM2yE873K9NJ963714QZo+jBORtZVTCwTDoNgsyTeahHkTYF
+	 tgTojmLpp3OfQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4cl3Nz164Tz6txc;
+	Sun, 12 Oct 2025 16:52:35 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+To: Danilo Krummrich <dakr@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	bjorn3_gh@protonmail.com,
 	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH v2] rust: block: update ARef and AlwaysRefCounted imports from sync::aref
-Date: Sun, 12 Oct 2025 19:50:12 +0530
-Message-Id: <20251012142012.166230-1-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Markus Probst <markus.probst@posteo.de>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org
+Subject: [PATCH v4 0/2] rust: leds: add led classdev abstractions
+Date: Sun, 12 Oct 2025 14:52:36 +0000
+Message-ID: <20251012145221.172116-1-markus.probst@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Update call sites in the block subsystem to import `ARef` and
-`AlwaysRefCounted` from `sync::aref` instead of `types`.
+This patch series has previously been contained in
+https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
+which added a rust written led driver for a microcontroller via i2c.
 
-This aligns with the ongoing effort to move `ARef` and
-`AlwaysRefCounted` to sync.
+As the reading and writing to the i2c client via the register!
+macro has not been implemented yet [1], the patch series will only
+contain the additional abstractions required.
 
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1173
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
----
-Changelog:
-v1 -> v2:
-Rebased it on top of the latest linux-next upstream commit
-Dropped 1/7 from the subject as it might lead to confusion of it being a series
-Link of v1: https://lore.kernel.org/lkml/20250716090712.809750-1-shankari.ak0208@gmail.com/
+[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
 
-The original patch of moving ARef and AlwaysRefCounted to sync::aref is here:
-(commit 07dad44aa9a93)
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+The following changes were made:
+* add basic Pin<Vec<T, A>> abstractions, that allow to initialize PinInit items with
+  the guarantee that these will never be moved.
 
+* add basic led classdev abstractions to register and unregister leds
 
-Gradually the re-export from types.rs will be eliminated in the
-future cycle.
----
- 
- drivers/block/rnull/rnull.rs       | 3 +--
- rust/kernel/block/mq.rs            | 5 ++---
- rust/kernel/block/mq/operations.rs | 4 ++--
- rust/kernel/block/mq/request.rs    | 8 ++++++--
- 4 files changed, 11 insertions(+), 9 deletions(-)
+Changes since v3:
+* fixed kunit tests failing because of example in documentation
 
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 1ec694d7f1a6..a9d5e575a2c4 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -17,8 +17,7 @@
-     error::Result,
-     pr_info,
-     prelude::*,
--    sync::Arc,
--    types::ARef,
-+    sync::{aref::ARef, Arc},
- };
- use pin_init::PinInit;
- 
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index 637018ead0ab..1fd0d54dd549 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -20,7 +20,7 @@
- //! The kernel will interface with the block device driver by calling the method
- //! implementations of the `Operations` trait.
- //!
--//! IO requests are passed to the driver as [`kernel::types::ARef<Request>`]
-+//! IO requests are passed to the driver as [`kernel::sync::aref::ARef<Request>`]
- //! instances. The `Request` type is a wrapper around the C `struct request`.
- //! The driver must mark end of processing by calling one of the
- //! `Request::end`, methods. Failure to do so can lead to deadlock or timeout
-@@ -61,8 +61,7 @@
- //!     block::mq::*,
- //!     new_mutex,
- //!     prelude::*,
--//!     sync::{Arc, Mutex},
--//!     types::{ARef, ForeignOwnable},
-+//!     sync::{aref::ARef, Arc, Mutex},
- //! };
- //!
- //! struct MyBlkDevice;
-diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index f91a1719886c..8ad46129a52c 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -9,8 +9,8 @@
-     block::mq::{request::RequestDataWrapper, Request},
-     error::{from_result, Result},
-     prelude::*,
--    sync::Refcount,
--    types::{ARef, ForeignOwnable},
-+    sync::{aref::ARef, Refcount},
-+    types::ForeignOwnable,
- };
- use core::marker::PhantomData;
- 
-diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index c5f1f6b1ccfb..ce3e30c81cb5 100644
---- a/rust/kernel/block/mq/request.rs
-+++ b/rust/kernel/block/mq/request.rs
-@@ -8,8 +8,12 @@
-     bindings,
-     block::mq::Operations,
-     error::Result,
--    sync::{atomic::Relaxed, Refcount},
--    types::{ARef, AlwaysRefCounted, Opaque},
-+    sync::{
-+        aref::{ARef, AlwaysRefCounted},
-+        atomic::Relaxed,
-+        Refcount,
-+    },
-+    types::Opaque,
- };
- use core::{marker::PhantomData, ptr::NonNull};
+Changes since v2:
+* return `Devres` on `led::Device` creation
+* replace KBox<T> with T in struct definition
+* increment and decrement reference-count of fwnode
+* make a device parent mandatory for led classdev creation
+* rename `led::Handler` to `led::LedOps`
+* add optional `brightness_get` function to `led::LedOps`
+* use `#[vtable]` instead of `const BLINK: bool`
+* use `Opaque::cast_from` instead of casting a pointer
+* improve documentation
+* improve support for older rust versions
+* use `&Device<Bound>` for parent
 
-base-commit: 2b763d4652393c90eaa771a5164502ec9dd965ae 
+Changes since v1:
+* fixed typos noticed by Onur Özkan
+
+Markus Probst (2):
+  rust: add basic Pin<Vec<T, A>> abstractions
+  rust: leds: add basic led classdev abstractions
+
+ rust/kernel/alloc.rs      |   1 +
+ rust/kernel/alloc/kvec.rs |  86 ++++++++++
+ rust/kernel/led.rs        | 333 ++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/prelude.rs    |   2 +-
+ 5 files changed, 422 insertions(+), 1 deletion(-)
+ create mode 100644 rust/kernel/led.rs
+
 -- 
-2.34.1
+2.49.1
 
