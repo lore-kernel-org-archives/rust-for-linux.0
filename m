@@ -1,108 +1,176 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E8E8F54
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Oct 2025 18:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE184BE49;
+	Sun, 12 Oct 2025 21:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760292094; cv=none; b=WDYEH9yxUg2VivYGFdqHwbYwznHMQ1rZC6ZROA6iEAKfoyilIk5FfQ6E8t2adAB29lrQx9ZUPANgNs39yUNun7Ge1vqBl3pGUdEH4+AtC49rjrnK8wPWbOcsdGeQMm9GwUQ6Ie0a5gdLxYHPAIqFNVEuF+GTYwKyn7h2A2bpwUE=
+	t=1760304715; cv=none; b=fXte267ZGCeM+SMq93xfG+ojNG2y2se38986th61iK2yDHUTSZ04y0vip3eo4UgQuhHIDi1UTNKTAlgbCV5RPiE/6okV3OWT61894UmfJLTZ9Po976DrH69wTQzystz/j7SE0BQUMf3KXM7UmkP0ftggM2e362+t/bHaOTzEoU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760292094; c=relaxed/simple;
-	bh=4fayUwMhvNCuwkW+8rNVem+fLCn52jNvzMtaSiWAkLg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nZkEE+TxIx7FYpa8SA7JQ4kCQExyqHO/eVfrqVzvlFgMWb+6A50SEoQw1ciyVJhyH+enN4PwC0JBduVARuqguqiNYWaXfSV/BuyOctpzrUsBj8z0ZtkDJP8tQ6Ke0DhDUNnT8wQTrbCUFRiQD6qDlo2Ga29EpvFzljknTxDLYKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KOwgGBbw; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760304715; c=relaxed/simple;
+	bh=fbT54186VjkUDXY7U0Duys4FLq0KRJ5Rvgvyy7ATokk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Aj/37GZDOWxlsAkottmlPVygRRLBeO4/86OCOGLDissjEFCS+EXpVR7uekpxrMuAIHHXdCPetKxrcCqi6DzcvRDrGau3qruGgId7LJzA6Ui52GxN+kuRPVaMb5Y7YZCvQMUstFd2WpfhDx8weuiRwyM+VzrZQ49n38uAKP5+2OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qRK/gecj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KOwgGBbw"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-26e81c17d60so7854825ad.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 Oct 2025 11:01:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760292092; x=1760896892; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4fayUwMhvNCuwkW+8rNVem+fLCn52jNvzMtaSiWAkLg=;
-        b=KOwgGBbwqNWEeHxP/ZMjx2TuWDiRiVnut5hGcNGRblR4r7qC26m97EL0/LM5DwxLLx
-         0+ASJqz9LrjseUtmTtV903OQyg2WH5bDmo5IeaCLY/dHK+8BRnVNGQFreiTHQabvrq5Y
-         QaOh/o7K+zojYNHDBNVAP5Mwl1N15Olw7cCdVXbez1SZ2BgaC9r/Ynvr1iNlSrqs+5sv
-         gEad0pnv5ldo4tYa4wcMuVbJSC388Z/2Pw6Q0ryBXBHeERGKFlmOvypcqy4TNx1uPXjS
-         k1EDkgtDKd1V2PWQuxPrQd2mBO//nSpGsLrWQVD0Hr26lMMbA38MeqzwrLYShX3VbTcv
-         wFKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760292092; x=1760896892;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4fayUwMhvNCuwkW+8rNVem+fLCn52jNvzMtaSiWAkLg=;
-        b=kSAFLwZO2YUlDspy1wjPv45iGiSDhmYnYKVxfKKeRifFYeWHtoyO3oRdZSKYdfabLd
-         6SIvWvODSjJgiF/dZEbkB2quaJoXv0I9eK41q5d7Ea6IsFfJx9aMFT/kfG2ZwBHb5p70
-         n+9aH25EHpEFvrvgOaBmIZ5CtxRhz3JaKAz/fAw04TMDQwGvZQHkHoK1AtTWHoveWah0
-         tL/cxvJRicFcq3y3/11EnapvLCy9J57rpfgRi/m+HVvNqPJ9KlghhcBkBDAcoGBTO1AZ
-         r+L+nPHGFFV2fSCnGtwa3rPOnN9RP7wc7KPEk4yPkunvUnIU0AgI/f4k7HasgD2IZ/jP
-         gg1w==
-X-Forwarded-Encrypted: i=1; AJvYcCXSvQNLtXuE7iVyRCPp5lgIFku4NTtp8teqAPbCNQRdj4e25C8iPCRjgh0cuH6TlZPv98iH074NDP8NGUzDWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx75pGz0s2BJNB/YfpmMrBleJJzGmGlQiDIylgGAMCPYu/hHK0V
-	Omg/v0AO8SCYENEfDTLsVZ9hfmIUwPORRvpMLsspRVaWK85sucE04EL28BPRnHZNjMRCp+GV/88
-	7YpMEkI/eDnc+AT7zmL2dGaDeBoBbrvw=
-X-Gm-Gg: ASbGncu5Miw4vzhcgQ80fFvIofhHQoy572t9XFOt/kPDOYbAtFmjjx6q3mPwuMHyDpO
-	q1NT4WUMXEK3wBWZRbYuH8fFIY7aiACPkF4sVlC+kQW/JguInRuOf1WmHD04KTA7/ulCPfS+Yw9
-	rOnHpVU6gvZucBGMJlRfkIEA7dEap0P8VDF5TgUnteXWG5+5dmoyCetvGND6V8ca47WXNTAe+rp
-	LOXbI8SHkO2qhndPxrvOkZzayFCfaimPxhkADLmOB3GXO/2TTDCikfE+4Zw5m20dVqqQY2O0632
-	F2VGfBGqHO4hu8N+kf6zOhQJn+9n++TgZUOPVC5TRw9i
-X-Google-Smtp-Source: AGHT+IHYH8KB551DFy/1CS7sVwLsfOMU6Z0zgv1Of6oPsAllrb8RWF6/5SDkS+dRRNp5FM5qU9kgMEXU6hEBhHvJ/v0=
-X-Received: by 2002:a17:902:d2c4:b0:273:a653:bacf with SMTP id
- d9443c01a7336-2902725d2ebmr144860115ad.0.1760292091934; Sun, 12 Oct 2025
- 11:01:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qRK/gecj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2182C4CEE7;
+	Sun, 12 Oct 2025 21:31:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760304714;
+	bh=fbT54186VjkUDXY7U0Duys4FLq0KRJ5Rvgvyy7ATokk=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=qRK/gecj4jZgT2O4KXO7kHAPoJuyPTsWAhNcj2xrDWidsd0MipLtoQIlzXqrMMTjn
+	 NdHgtTDLPuzN5DUROu8rCRvFH9QtL3olkf7eDa1OQ0l0JylTPPS5H3S5kki2LR5XI/
+	 0FOqJjZEz03OQE0iHU6Ts4O66AjL2hRO6rEjTLS17YzD1ARkbSvNerY18HZNxfb7tZ
+	 r/ETOJrF+KAt6j/kmJ2HLFyRuwTPjMcv1ROXJMqJ8wTFsFbWAmwo4JnJSUOI0ei8Ew
+	 r9aowFU2FMxS0jj2ccvNOpxVTs9YpUv++PVHQWKOF7uZdSOBj9MpGAGGlp1A4knWY6
+	 r2smo/nT/k4PQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CANiq72=ox809CAhMijbvxvy_-tx4QgJ=pGbbWfCcZR8J8XFrkg@mail.gmail.com>
- <20251012140451.155219-1-shankari.ak0208@gmail.com>
-In-Reply-To: <20251012140451.155219-1-shankari.ak0208@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 12 Oct 2025 20:01:19 +0200
-X-Gm-Features: AS18NWDeTKrh-JDZioC1DogND9yn9-Ck_Lq9XxawqjsuxcO889ag6EhHA-dF5Qk
-Message-ID: <CANiq72=hSTpAj7w8bvcwoJkivxD_FPKnx9jD6iNvhsENnnXBzg@mail.gmail.com>
-Subject: Re: [PATCH 1/7] rust: block: update ARef and AlwaysRefCounted imports
- from sync::aref
-To: Shankari Anand <shankari.ak0208@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 12 Oct 2025 23:31:48 +0200
+Message-Id: <DDGNXV9KS3RS.2WHS4OOYM6DOP@kernel.org>
+Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
+ <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
+ Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-leds@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] rust: add basic Pin<Vec<T, A>> abstractions
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Markus Probst" <markus.probst@posteo.de>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Lee Jones" <lee@kernel.org>, "Pavel Machek"
+ <pavel@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20251012145221.172116-1-markus.probst@posteo.de>
+ <20251012145221.172116-2-markus.probst@posteo.de>
+ <DDGHGF4XOJQG.2MVGBMPK0KUQE@kernel.org>
+ <e550b0862e9ea87e50688d1ec8f623638d170a3a.camel@posteo.de>
+In-Reply-To: <e550b0862e9ea87e50688d1ec8f623638d170a3a.camel@posteo.de>
 
-On Sun, Oct 12, 2025 at 4:05=E2=80=AFPM Shankari Anand
-<shankari.ak0208@gmail.com> wrote:
->
-> I'll resend it on top of -rc1.
+On Sun Oct 12, 2025 at 6:57 PM CEST, Markus Probst wrote:
+> From what I can tell, there is no way to get a `Pin<&mut Vec<T, A>>`
+> from a `&mut Pin<Vec<T, A>>`. We can only get `Pin<&mut [T]>` which is
+> not usable in our case.
 
-Yeah, please, thanks! (in v2 I think you say it is on top of
-linux-next -- did you mean -rc1?).
+Hmm yeah that's true.
 
-> I also noticed that several files have received new commits using
-> types::ARef or types::AlwaysRefCounted.
-> I wanted to check if it would make sense to update the documentation
-> to reflect their new file location.
-> Without clear documentation, it might become increasingly difficult
-> to remove the re-export as soon as possible, especially as more such comm=
-its are added.
->
-> Let me know what you think.
+> If there is way, without the extension trait or an extra struct, I
+> would be happy to implement it.
 
-I think it is simpler if I apply (even if temporarily) a commit that
-moves everything and removes the re-export in linux-next -- that way
-people will notice when they try to introduce the code during the
-cycle.
+So I tried to look for the usage site of this and I found this usage in
+your v1:
 
+    +        let mut leds =3D KPinnedVec::with_capacity(
+    +            Atmega1608LedAddress::VALUES.len() * Atmega1608LedId::VALU=
+ES.len(),
+    +            GFP_KERNEL,
+    +        )?;
+    +
+    +        let mut i =3D 0;
+    +        for addr in Atmega1608LedAddress::VALUES {
+    +            let mode_lock =3D Arc::pin_init(new_mutex!(()), GFP_KERNEL=
+)?;
+    +
+    +            for id in Atmega1608LedId::VALUES {
+    +                let Some(child) =3D
+    +                    fwnode.get_child_by_name(&CString::try_from_fmt(fm=
+t!("led@{i}"))?)
+    +                else {
+    +                    continue;
+    +                };
+    +
+    +                let client =3D ARef::clone(&client);
+    +                let mode_lock =3D Arc::clone(&mode_lock);
+    +
+    +                leds.push_pin_init(LedClassDev::new(
+    +                    Some(idev),
+    +                    None,
+    +                    LedInitData::new().fwnode(&child),
+    +                    Atmega1608Led {
+    +                        addr,
+    +                        id,
+    +                        client,
+    +
+    +                        mode_lock,
+    +                    },
+    +                ))?;
+    +                i +=3D 1;
+    +            }
+    +        }
+    +        Ok(KBox::new(Self { client, leds }, GFP_KERNEL)?.into())
+
+And I think using `Vec` for this is just wrong. `Vec` is a data
+structure that supports growing and shrinking the allocation. But you
+just need a fixed size buffer that holds all your data. Do you think
+that `Pin<Box<[LedClassDev]>>` would suffice if it had proper support
+from pin-init?
+
+Also, please don't top-post [1] and take a look at your mail client
+configuration, it puts lots of extra `> ` at the end which looks pretty
+strange [2].
+
+[1]: https://docs.kernel.org/process/submitting-patches.html#use-trimmed-in=
+terleaved-replies-in-email-discussions
+[2]: https://lore.kernel.org/all/e550b0862e9ea87e50688d1ec8f623638d170a3a.c=
+amel@posteo.de
+
+---
 Cheers,
-Miguel
+Benno
+
+> Thanks
+> - Markus Probst
+>
+> On Sun, 2025-10-12 at 18:26 +0200, Benno Lossin wrote:
+>> On Sun Oct 12, 2025 at 4:52 PM CEST, Markus Probst wrote:
+>> > @@ -109,6 +111,21 @@ pub struct Vec<T, A: Allocator> {
+>> > =C2=A0=C2=A0=C2=A0=C2=A0 _p: PhantomData<A>,
+>> > =C2=A0}
+>> > =C2=A0
+>> > +/// Extension for Pin<Vec<T, A>>
+>> > +pub trait PinnedVecExt<T> {
+>>=20
+>> Why is this an extension trait? Couldn't we directly implement this
+>> on
+>> `Vec<T>` with `self: Pin<&mut Self>`?
+>>=20
+>> ---
+>> Cheers,
+>> Benno
+>>=20
+>> > +=C2=A0=C2=A0=C2=A0 /// Pin-initializes P and appends it to the back o=
+f the
+>> > [`Vec`] instance without reallocating.
+>> > +=C2=A0=C2=A0=C2=A0 fn push_pin_init<E: From<PushError<P>>, P: PinInit=
+<T, E>>(&mut
+>> > self, init: P) -> Result<(), E>;
+>> > +
+>> > +=C2=A0=C2=A0=C2=A0 /// Shortens the vector, setting the length to `le=
+n` and drops
+>> > the removed values.
+>> > +=C2=A0=C2=A0=C2=A0 /// If `len` is greater than or equal to the curre=
+nt length,
+>> > this does nothing.
+>> > +=C2=A0=C2=A0=C2=A0 ///
+>> > +=C2=A0=C2=A0=C2=A0 /// This has no effect on the capacity and will no=
+t allocate.
+>> > +=C2=A0=C2=A0=C2=A0 fn truncate(&mut self, len: usize);
+>> > +
+>> > +=C2=A0=C2=A0=C2=A0 /// Removes the last element from a vector and dro=
+ps it
+>> > returning true, or false if it is empty.
+>> > +=C2=A0=C2=A0=C2=A0 fn pop(&mut self) -> bool;
+>> > +}
+>> > +
+>> > =C2=A0/// Type alias for [`Vec`] with a [`Kmalloc`] allocator.
+>> > =C2=A0///
+>> > =C2=A0/// # Examples
