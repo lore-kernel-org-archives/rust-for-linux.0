@@ -1,94 +1,55 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward204b.mail.yandex.net (forward204b.mail.yandex.net [178.154.239.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536952FE05B
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 10:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51072690E7
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 12:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760351443; cv=none; b=QCypPMlHHN0sjc48p82SN7XHHSsOHzMcGRj4kcvLV+bzgSjICAQD4j3skPHWn9UNMXz21FcN7VYEtP7kAgvrOdtRl9pXXd/DMITNyVhri1RB7fbDT/MMvI/tY59easYqals9AHasH+0A7Q6IKHdwTkX2E3c6LzPzZnlwQ53hvkg=
+	t=1760359397; cv=none; b=fF++U8mDsb6/tdmF/Reg6vmNUAl5/6hoRbxj+5rivgp2ZXvg4Qr1Yb1nNv03iB9sJyXPCGbhvr3tHcvibbqw5te+jE6Usq9Cydm9+wP6BWV5en/E7i1G7PQHjr6Pu3oxUUnnHn4Zi7OJUwf1EXxtMERD7V+FzU0c7J2XBIh6bTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760351443; c=relaxed/simple;
-	bh=jiFRFs/pzEd9dRu7mmnIj+h3VvAGP09WSi9bmQ+XQXE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NXraWyhSUc/XGpubWhd7Z6ZI4BS/LiPaJFnHFN5PXqmpu1T8M8ReldL3YDXsjoRmJjkK8XXsJX/QktKGXrc5pVOycsAWXH1SogvA1A6OpYB/dIJ0/XNjYTmu8FTfbTVx7A0vHULTzieM5sHkvqbS0qntyZ0qwoCBHdrBn5UiJN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jI3Y+wNq; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760359397; c=relaxed/simple;
+	bh=yyDx7qEKd4D90NCAHBjGsIPtpghtJxaLED9u2DyfYpc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lEEA2/ssnpM4vOirz+M80tRnOPWfRTzc2tIKhhxtJnvWL2u2w0g+UxSPzWbSpNp3CjcvHU4gDhzAEKJm2uyYf31cVKw2HgcQ+5qfBwVB2xySf1GzPJiMFVvbFk085GCcS4aXZa++6lsc9Jc3kTlkCF9GlYAjgfzUA9A2QRomx8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=E/Nz38NV; arc=none smtp.client-ip=178.154.239.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jI3Y+wNq"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b63117fb83dso143856a12.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 03:30:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760351441; x=1760956241; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jiFRFs/pzEd9dRu7mmnIj+h3VvAGP09WSi9bmQ+XQXE=;
-        b=jI3Y+wNqOfXqZkNirPIqMZYHa+OmAAWQsYhgvZlJScZ9FppHiMAO8uMcZ9717WT+xb
-         ksqxuO6gkeSir3rTHYr7nEH2J0CTFzwK+2KDMAHjLSuwuOT4Uob+8Vh18imgit1tQUv9
-         8Z9PQlJUpTGFbrfcaB60TppZw2994o5Q6qh+vYEZKYAVSabZzaiWNLONFDLhoAZK4of8
-         wMgjGFk7ltREgkjq3YAvg/Fdo48Co77ASnp9/JrmkypzsUcmuRa2oeESd/uyfgvPWCi8
-         CKoWM0/I0pT+6uSd096Bn0GqduRk+pcSJtmPKh0rdtuPMnhn2/w4BAy7HNBNmRsSMMuV
-         LzeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760351441; x=1760956241;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jiFRFs/pzEd9dRu7mmnIj+h3VvAGP09WSi9bmQ+XQXE=;
-        b=VWRRButeBGh79qz9290bxGsSHNlwArRD5JDLvUXHH3Aoctb96YIYI9hq2yccpNQC5/
-         MW9aHeZo+8uUSDwTCbFWt5mC61ESEdtRLRLUuqLpnTSl7T7201sqcq7wztWWnUj+LN2P
-         RrJ2bO4FEKRh3DlEIaN4Gf2hTPp6WRvXdoRxg8jN1xKzO8bDZGsOSy1hBSkBkfyVeBBW
-         4LO5a2aDlDLWwXCz+Wp7x2UcsUuBAWPmnxcRdBQKPswcglzN9ZUJFQH3x2ya9WX+V9u2
-         qMMJcNE6tFerAXjwS2uG3aw3bZGe2MscWxVXGDU0ioHZvp+dcWaPlEG5WtmSdPNicJ+I
-         EOKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXSOdXdw7FBf678swNpI2av4CyJ7RrClsp21NF0AE+W3bk9Yo4t2IR0irANK+elJqwBOuiJy288i/vwe7NTIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSlk8eVgvvaiFBSuYG6z4RIaC/gSS8R6nrp2wT369FvtJ9BNfU
-	jX1NoRvosJXstCpxNuUdNlOZq3HOsT0NKPwYAvgYfuRKmlEYT3fiL9Dv
-X-Gm-Gg: ASbGncsi0L51vmw+hsMsiCzWp69PX6FnIp+GJckD7cCEuW8Y65NqFWb+wOdMJwG+DGz
-	PmaSpNuFpK077M2+JPeQk1Ce3s+8GJdueqopwW0Zw5M+R9bzE2afoEsjP1qssCsg5emrZRIvV+v
-	rVqSD07TWEvsLLQnixRXfrNKm0FR3fYVHCRbAAqSo8NzNXpAyAcugqvoneS1CFC/461zg9PURxp
-	Ox4JUx0L8ONZn0AY9+r8xae56ymX0Jtj1Ovi5B9oDWsWeZIZw+/oYHCx0gtEQuf333ooLtA8/b0
-	pvmZP1Ra+fALQjavNd5S+1hoIRzh6dg7eaaM8MxbDxxgwE5fbBIHzK9jCoLXc7pvWSch2XO24Co
-	46aueI+h+UGZl/p1HEr1kkb3WyHuz6Mt5GwVsMw==
-X-Google-Smtp-Source: AGHT+IGzKbSk+xpeuhcRPxXprhrHKgWgl+TgyFJOpJO1QcWS3vLYIUxy1cm46/h9evTFKRIrqkRaaw==
-X-Received: by 2002:a05:6a20:9383:b0:2b0:ff55:f838 with SMTP id adf61e73a8af0-32da83782b4mr14502989637.3.1760351441359;
-        Mon, 13 Oct 2025 03:30:41 -0700 (PDT)
-Received: from localhost ([104.249.174.141])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b626d284bsm11467729a91.18.2025.10.13.03.30.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 03:30:40 -0700 (PDT)
-From: Ben Guo <benx.guo@gmail.com>
-To: aliceryhl@google.com
-Cc: a.hindborg@kernel.org,
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="E/Nz38NV"
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
+	by forward204b.mail.yandex.net (Yandex) with ESMTPS id 2BF1083F18
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 15:43:07 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-87.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-87.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:2f3c:0:640:7ca0:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id 1C487C008C;
+	Mon, 13 Oct 2025 15:42:59 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-87.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id efN1GCWLNW20-uPXEq6To;
+	Mon, 13 Oct 2025 15:42:58 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1760359378;
+	bh=NZOpdN7NVrmHLaSWR1NXTiizWB0mgeuNXR5L7hU7Wno=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=E/Nz38NV0xzIhjPHsuhwpLU1a54MxLZcHYaFCoRri0UE+mJHmtEtjUlAp5URhP3Qt
+	 YnrxoeAvKSfon3Bf/XztYDbyWdFUkl6e318n8rYRT2TEteFjzfCiolrVQE5YOzEH6N
+	 K9Hdqbn0xzTMJaJ1eqKj6Cybg62px0JaBclIXyQs=
+Authentication-Results: mail-nwsmtp-smtp-production-main-87.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
 	alex.gaynor@gmail.com,
-	alexs@kernel.org,
-	benx.guo@gmail.com,
-	bjorn3_gh@protonmail.com,
 	boqun.feng@gmail.com,
-	corbet@lwn.net,
-	dakr@kernel.org,
-	dzm91@hust.edu.cn,
 	gary@garyguo.net,
-	hust-os-kernel-patches@googlegroups.com,
-	justinstitt@google.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
+	bjorn3_gh@protonmail.com,
 	lossin@kernel.org,
-	morbo@google.com,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	si.yanteng@linux.dev,
-	tmgross@umich.edu
-Subject: Re: [PATCH v2] docs/zh_CN: Add translation of rust/testing.rst
-Date: Mon, 13 Oct 2025 10:30:31 +0000
-Message-ID: <20251013103037.44979-1-benx.guo@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAH5fLgi4C454xG67vN-T5rRV1X4-rAGEj_ftnHqTOoN61wtcKw@mail.gmail.com>
-References: <CAH5fLgi4C454xG67vN-T5rRV1X4-rAGEj_ftnHqTOoN61wtcKw@mail.gmail.com>
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	tamird@gmail.com,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v3 0/2] rust: refactor `to_result`
+Date: Mon, 13 Oct 2025 15:41:37 +0300
+Message-ID: <20251013124139.18809-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -98,13 +59,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Mon, 13 Oct 2025 11:45:39 +0200 Alice Ryhl <aliceryhl@google.com> wrote:
->When posting a new version, you should start a new thread.
+Changes in v3:
+  - New trait `error::ToResult` added and implemented it on isize and
+    i32 types (first patch).
+  - Removed `error::to_result` entirely and replaced its usage with
+    `error::ToResult` (second patch).
 
->Alice
+Changes in v2:
+  - Removed `map(|_| ())` calls from v1 and replaced them with
+    `to_result(...)?` and `Ok(())` (except miscdevice.rs, as it
+    required `Ok::<(), Error>(())` which is less clean).
 
-Thanks, Alice, for the reminder.
-I’ll post v3 as a new thread.
+  - Rebased on latest regulator/for-next and fixed the build error.
 
-Thanks,
-Ben Guo
+Onur Özkan (2):
+  rust: add `ToResult` trait
+  rust: drop `error::to_result` and utilize `ToResult`
+
+ drivers/android/binder/rust_binder_main.rs |   3 +-
+ rust/kernel/auxiliary.rs                   |   9 +-
+ rust/kernel/block/mq/gen_disk.rs           |  12 +--
+ rust/kernel/block/mq/tag_set.rs            |   5 +-
+ rust/kernel/clk.rs                         |  18 +++-
+ rust/kernel/configfs.rs                    |   9 +-
+ rust/kernel/cpufreq.rs                     |  12 ++-
+ rust/kernel/device/property.rs             |  12 +--
+ rust/kernel/devres.rs                      |  13 ++-
+ rust/kernel/dma.rs                         |  18 ++--
+ rust/kernel/drm/driver.rs                  |   4 +-
+ rust/kernel/drm/gem/mod.rs                 |  12 ++-
+ rust/kernel/error.rs                       | 113 +++++++++++++--------
+ rust/kernel/fs/file.rs                     |   4 +-
+ rust/kernel/irq/request.rs                 |  10 +-
+ rust/kernel/maple_tree.rs                  |  12 ++-
+ rust/kernel/miscdevice.rs                  |   6 +-
+ rust/kernel/mm/virt.rs                     |   6 +-
+ rust/kernel/net/phy.rs                     |  43 +++++---
+ rust/kernel/net/phy/reg.rs                 |  22 ++--
+ rust/kernel/opp.rs                         |  72 +++++++------
+ rust/kernel/pci.rs                         |  13 ++-
+ rust/kernel/platform.rs                    |   6 +-
+ rust/kernel/regulator.rs                   |  32 ++++--
+ rust/kernel/scatterlist.rs                 |  13 +--
+ rust/kernel/security.rs                    |  23 +++--
+ rust/kernel/str.rs                         |   5 +-
+ rust/kernel/uaccess.rs                     |  15 ++-
+ rust/kernel/usb.rs                         |   9 +-
+ 29 files changed, 324 insertions(+), 207 deletions(-)
+
+-- 
+2.51.0
+
