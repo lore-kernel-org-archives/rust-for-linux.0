@@ -1,77 +1,56 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42A630BF58
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 15:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0F130C340
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 15:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370852; cv=none; b=RwY+Uz7fkxpk0+57rg/dYCF8yiWmP2U3E7kVIsGoP6Q8RwMoRzzMDG/YOWB5Z3gQvhxvz4w/YZ1snKKQS5RYRjeP2s2tu7lq4J4iAANO8DbQjw7/PQU10robJB4ynLR4xsKHmJzZl94bogdhXpfvk22VcstSHVtT0rj9A0N+YMw=
+	t=1760370860; cv=none; b=QgB29idak4HEEA2aWGo3GQ4FXayRASNOWfjq9w5Sm/BaXydhM4xSz1M/Ll0qUG7AYq42oXhiuAQGgQvd8a3OIoD5wEOs+UyoD84+3YyxNo+ZsKT5H7M6pFGi2PfGHnhS+rPOKjBaYnbvDRrELt771w2loioHaerTM52dx0evJbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370852; c=relaxed/simple;
-	bh=OvzJovNv1ctaRAi0qWxBvnsOPU9DoRZIj3SLiUKtWkA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAlouNtgkyvAHD+N9Iztmr8BFgE9S5ajoeokznVg74Xpe7CticQxFunBbmvH07mn92eDGCJD7ulBzAF+cxX4iX71J2YTnDpN1wVszjVXLXCH7wSDF855dzZA/LR4O5FTBz5iBnnxsW6YKCCpjdPUKiv+kRKNw40pS9lPBzW8tOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H1Ery4GN; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1760370860; c=relaxed/simple;
+	bh=Sr2zSAWp/KGYw6WaiNnxX7Z/IpWgNhxXIr6TD5JxX5g=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u/ouzZrkPfSsK/gd0k2Ms6H3zBs5Ry8AgjV3P4bKhPHtALQWW/xM3ZoFTutp5nf0+2PV1Hf7wQv0p0offXSFBcTwCCHnIOe/6sb+40BwNU9TZXfAiDZ9cQsblD1N/8REjN6Wai4baAwxiIbFxKq0WD8bL6yUmpVHbcDTu20gd6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S9QkKeSe; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H1Ery4GN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S9QkKeSe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760370850;
+	s=mimecast20190719; t=1760370858;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wVWnS0RcSrifKORRkaxSlEBfAdbDlyJkXOwnKgyyCWE=;
-	b=H1Ery4GNWaTQt44idTDIRD/6BQjfFEA2QYkV0b8h4Ss71woR3hsx51Vx27rCr/JZMLbpsi
-	aMKGuR4jokU+vQ6FjSTCqXEVCM4ThdkdcTG7beP+SCQSnQ2gE+RvVka9cKtXhdSsifRsLC
-	vp42kHMzE8QQqbY7eyPPq+QjbUsQ23Y=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=ihbGN0n4ZjeRyq9wFH/xJp+DT7ttUlyQ4B7QQXTOa0w=;
+	b=S9QkKeSe0TGz29vocbzl/ItlARd+x91Rl1PLK63p8Tq3aTuF1bwJRHWt7rnYredn0Q+Kjm
+	i4+5rU/0MnPWGzvntYIl2XfowRHUgwVae29ncRQFFVWra3WEjSI5p652Vkg5Odt155cuEv
+	g63EW4j5AXrroRzsYiJ6dDGz6DIB9Hs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-hoQr19x9MGeShnhZzexXCg-1; Mon,
- 13 Oct 2025 11:54:05 -0400
-X-MC-Unique: hoQr19x9MGeShnhZzexXCg-1
-X-Mimecast-MFC-AGG-ID: hoQr19x9MGeShnhZzexXCg_1760370842
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-mn3dUqCWMLWC2pMyEJsJ9A-1; Mon,
+ 13 Oct 2025 11:54:14 -0400
+X-MC-Unique: mn3dUqCWMLWC2pMyEJsJ9A-1
+X-Mimecast-MFC-AGG-ID: mn3dUqCWMLWC2pMyEJsJ9A_1760370852
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D86331954105;
-	Mon, 13 Oct 2025 15:54:01 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D1180180034A;
+	Mon, 13 Oct 2025 15:54:12 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.81.1])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9BC8E30002D0;
-	Mon, 13 Oct 2025 15:53:56 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8FFF23000384;
+	Mon, 13 Oct 2025 15:54:11 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Juergen Christ <jchrist@linux.ibm.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)),
-	linux-s390@vger.kernel.org (open list:S390 ARCHITECTURE),
-	linux-arch@vger.kernel.org (open list:GENERIC INCLUDE/ASM HEADER FILES)
-Subject: [PATCH v13 04/17] preempt: Introduce __preempt_count_{sub, add}_return()
-Date: Mon, 13 Oct 2025 11:48:06 -0400
-Message-ID: <20251013155205.2004838-5-lyude@redhat.com>
+Subject: [PATCH v13 06/17] irq: Add KUnit test for refcounted interrupt enable/disable
+Date: Mon, 13 Oct 2025 11:48:08 -0400
+Message-ID: <20251013155205.2004838-7-lyude@redhat.com>
 In-Reply-To: <20251013155205.2004838-1-lyude@redhat.com>
 References: <20251013155205.2004838-1-lyude@redhat.com>
 Precedence: bulk
@@ -80,142 +59,151 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-From: Boqun Feng <boqun.feng@gmail.com>
+While making changes to the refcounted interrupt patch series, at some
+point on my local branch I broke something and ended up writing some kunit
+tests for testing refcounted interrupts as a result. So, let's include
+these tests now that we have refcounted interrupts.
 
-In order to use preempt_count() to tracking the interrupt disable
-nesting level, __preempt_count_{add,sub}_return() are introduced, as
-their name suggest, these primitives return the new value of the
-preempt_count() after changing it. The following example shows the usage
-of it in local_interrupt_disable():
-
-	// increase the HARDIRQ_DISABLE bit
-	new_count = __preempt_count_add_return(HARDIRQ_DISABLE_OFFSET);
-
-	// if it's the first-time increment, then disable the interrupt
-	// at hardware level.
-	if (new_count & HARDIRQ_DISABLE_MASK == HARDIRQ_DISABLE_OFFSET) {
-		local_irq_save(flags);
-		raw_cpu_write(local_interrupt_disable_state.flags, flags);
-	}
-
-Having these primitives will avoid a read of preempt_count() after
-changing preempt_count() on certain architectures.
-
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 ---
-V10:
-* Add commit message I forgot
-* Rebase against latest pcpu_hot changes
-V11:
-* Remove CONFIG_PROFILE_ALL_BRANCHES workaround from
-  __preempt_count_add_return()
+V13:
+* Add missing MODULE_DESCRIPTION/MODULE_LICENSE lines
+* Switch from kunit_test_suites(…) to kunit_test_suite(…)
 
- arch/arm64/include/asm/preempt.h | 18 ++++++++++++++++++
- arch/s390/include/asm/preempt.h  | 10 ++++++++++
- arch/x86/include/asm/preempt.h   | 10 ++++++++++
- include/asm-generic/preempt.h    | 14 ++++++++++++++
- 4 files changed, 52 insertions(+)
+ kernel/irq/Makefile                  |   1 +
+ kernel/irq/refcount_interrupt_test.c | 109 +++++++++++++++++++++++++++
+ 2 files changed, 110 insertions(+)
+ create mode 100644 kernel/irq/refcount_interrupt_test.c
 
-diff --git a/arch/arm64/include/asm/preempt.h b/arch/arm64/include/asm/preempt.h
-index 932ea4b620428..0dd8221d1bef7 100644
---- a/arch/arm64/include/asm/preempt.h
-+++ b/arch/arm64/include/asm/preempt.h
-@@ -55,6 +55,24 @@ static inline void __preempt_count_sub(int val)
- 	WRITE_ONCE(current_thread_info()->preempt.count, pc);
- }
- 
-+static inline int __preempt_count_add_return(int val)
-+{
-+	u32 pc = READ_ONCE(current_thread_info()->preempt.count);
-+	pc += val;
-+	WRITE_ONCE(current_thread_info()->preempt.count, pc);
+diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
+index 6ab3a40556670..7b5bb5510b110 100644
+--- a/kernel/irq/Makefile
++++ b/kernel/irq/Makefile
+@@ -20,3 +20,4 @@ obj-$(CONFIG_SMP) += affinity.o
+ obj-$(CONFIG_GENERIC_IRQ_DEBUGFS) += debugfs.o
+ obj-$(CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR) += matrix.o
+ obj-$(CONFIG_IRQ_KUNIT_TEST) += irq_test.o
++obj-$(CONFIG_KUNIT) += refcount_interrupt_test.o
+diff --git a/kernel/irq/refcount_interrupt_test.c b/kernel/irq/refcount_interrupt_test.c
+new file mode 100644
+index 0000000000000..d10375743142f
+--- /dev/null
++++ b/kernel/irq/refcount_interrupt_test.c
+@@ -0,0 +1,109 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * KUnit test for refcounted interrupt enable/disables.
++ */
 +
-+	return pc;
++#include <kunit/test.h>
++#include <linux/spinlock.h>
++
++#define TEST_IRQ_ON() KUNIT_EXPECT_FALSE(test, irqs_disabled())
++#define TEST_IRQ_OFF() KUNIT_EXPECT_TRUE(test, irqs_disabled())
++
++/* ===== Test cases ===== */
++static void test_single_irq_change(struct kunit *test)
++{
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
 +}
 +
-+static inline int __preempt_count_sub_return(int val)
++static void test_nested_irq_change(struct kunit *test)
 +{
-+	u32 pc = READ_ONCE(current_thread_info()->preempt.count);
-+	pc -= val;
-+	WRITE_ONCE(current_thread_info()->preempt.count, pc);
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
 +
-+	return pc;
++	local_interrupt_enable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
 +}
 +
- static inline bool __preempt_count_dec_and_test(void)
- {
- 	struct thread_info *ti = current_thread_info();
-diff --git a/arch/s390/include/asm/preempt.h b/arch/s390/include/asm/preempt.h
-index 6ccd033acfe52..5ae366e26c57d 100644
---- a/arch/s390/include/asm/preempt.h
-+++ b/arch/s390/include/asm/preempt.h
-@@ -98,6 +98,16 @@ static __always_inline bool should_resched(int preempt_offset)
- 	return unlikely(READ_ONCE(get_lowcore()->preempt_count) == preempt_offset);
- }
- 
-+static __always_inline int __preempt_count_add_return(int val)
++static void test_multiple_irq_change(struct kunit *test)
 +{
-+	return val + __atomic_add(val, &get_lowcore()->preempt_count);
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++
++	local_interrupt_enable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
++
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
 +}
 +
-+static __always_inline int __preempt_count_sub_return(int val)
++static void test_irq_save(struct kunit *test)
 +{
-+	return __preempt_count_add_return(-val);
++	unsigned long flags;
++
++	local_irq_save(flags);
++	TEST_IRQ_OFF();
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_OFF();
++	local_irq_restore(flags);
++	TEST_IRQ_ON();
++
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_irq_save(flags);
++	TEST_IRQ_OFF();
++	local_irq_restore(flags);
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
 +}
 +
- #define init_task_preempt_count(p)	do { } while (0)
- /* Deferred to CPU bringup time */
- #define init_idle_preempt_count(p, cpu)	do { } while (0)
-diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
-index 578441db09f0b..1220656f3370b 100644
---- a/arch/x86/include/asm/preempt.h
-+++ b/arch/x86/include/asm/preempt.h
-@@ -85,6 +85,16 @@ static __always_inline void __preempt_count_sub(int val)
- 	raw_cpu_add_4(__preempt_count, -val);
- }
- 
-+static __always_inline int __preempt_count_add_return(int val)
++static struct kunit_case test_cases[] = {
++	KUNIT_CASE(test_single_irq_change),
++	KUNIT_CASE(test_nested_irq_change),
++	KUNIT_CASE(test_multiple_irq_change),
++	KUNIT_CASE(test_irq_save),
++	{},
++};
++
++/* (init and exit are the same */
++static int test_init(struct kunit *test)
 +{
-+	return raw_cpu_add_return_4(__preempt_count, val);
++	TEST_IRQ_ON();
++
++	return 0;
 +}
 +
-+static __always_inline int __preempt_count_sub_return(int val)
++static void test_exit(struct kunit *test)
 +{
-+	return raw_cpu_add_return_4(__preempt_count, -val);
++	TEST_IRQ_ON();
 +}
 +
- /*
-  * Because we keep PREEMPT_NEED_RESCHED set when we do _not_ need to reschedule
-  * a decrement which hits zero means we have no preempt_count and should
-diff --git a/include/asm-generic/preempt.h b/include/asm-generic/preempt.h
-index 51f8f3881523a..c8683c046615d 100644
---- a/include/asm-generic/preempt.h
-+++ b/include/asm-generic/preempt.h
-@@ -59,6 +59,20 @@ static __always_inline void __preempt_count_sub(int val)
- 	*preempt_count_ptr() -= val;
- }
- 
-+static __always_inline int __preempt_count_add_return(int val)
-+{
-+	*preempt_count_ptr() += val;
++static struct kunit_suite refcount_interrupt_test_suite = {
++	.name = "refcount_interrupt",
++	.test_cases = test_cases,
++	.init = test_init,
++	.exit = test_exit,
++};
 +
-+	return *preempt_count_ptr();
-+}
-+
-+static __always_inline int __preempt_count_sub_return(int val)
-+{
-+	*preempt_count_ptr() -= val;
-+
-+	return *preempt_count_ptr();
-+}
-+
- static __always_inline bool __preempt_count_dec_and_test(void)
- {
- 	/*
++kunit_test_suite(refcount_interrupt_test_suite);
++MODULE_AUTHOR("Lyude Paul <lyude@redhat.com>");
++MODULE_DESCRIPTION("Refcounted interrupt unit test suite");
++MODULE_LICENSE("GPL");
 -- 
 2.51.0
 
