@@ -1,89 +1,80 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16062FD1C6
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 09:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42A826290;
+	Mon, 13 Oct 2025 09:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760347348; cv=none; b=Rq7FkVXtWD848oEuLmcADnb/54JmVZr7/Vr0Y586LkXtzj9s4FAgktvIk0p4LaRGAB04QKTpcXJEUNIW8R0cje4GpCAWOIN8ysQx8aG+DefJ8dD+7drNDRufxUwSQ0d4uGdRZBOrYD39ayFA5FEpUwpevQT6pDrGNaHmnvZzC5E=
+	t=1760348382; cv=none; b=IWAVyacMYZUxR5oXuFzYsqZMTekQqZlm1KOmXzPustSWtdg2f79oKReRxIT2FZvGBntashcAGbjRDJqflf7Y05ii7WD07c4WieBq6PgKRwQCH+Hsfw+FFLwBysMZzhDW8l6Ar+T7EgpYvu3QHp47kni7L7PMCcZD+oRs7Lh62Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760347348; c=relaxed/simple;
-	bh=YcL+pfwHaciAhA+DIE3esJzDqXvZMrvSN+Utrx9QEv0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tW6Kmi0qw7VTxWwll5KkEOEsu77QVpoSyLlz/Y6Wf1rXYHUY89fmuLoeqv6ucYTjkNrZKnmegcI0IKjwKk1yIcaVE3O8prWFAjzKz3WIdzxyIuu3nsKVVT5t3zHO6nzsK9e77a2dQnoA/Fdyfa6dm86hAL9yHpR/GdJCeGua4jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W6437GWE; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1760348382; c=relaxed/simple;
+	bh=hE0FwrSOKh3dm7K6R9z5HaueZzkmymUbPTbI75tC6Zo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=u9GBdXkY25HiIjAwxZzYxvlNAqtVpBekjkFUv8sOhapJhg0pTA1lSxfD5clcrWV1m4ETGirWNzf4KDenunbhZg/3J293lrf6cc0+xK32Z+hoHMSujuf59wTPaQPsn6275gF5DSOTIbbLxXobY/4IIRjpU9u7dEirtOcGy7zUdJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4fgicOI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W6437GWE"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42558f501adso3182883f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 02:22:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760347345; x=1760952145; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RQVd9PQAMr1vRmq9PA7Kb7qWQrANWRTDb6YrEyD4+/0=;
-        b=W6437GWEvEw7fPLxJWpDAjGCreJ/JnP3hKC8alR22Tc8Lvm9D3Q+Gd5GoGikdDrUVA
-         D/BI09RpRIzAIJ9El+tyOAQ5pONtfWMQBDt260BcYnnf6+wLL8InKBYCP3XAJHgSOmbq
-         cxF/dJEM9pZdZ3voNssVPB82jZfrfNoglfKP6C3755Zyn1aVZdyWG9mOdqWTX4CgKIIr
-         /UbveKPyj/xI4GevQzsQJnJGQIqxi5M589qIM+qtpRNvsX563mxW3pTa8MVcwFGiwbe0
-         NE2BGQXzI04trz1YbK0HWP8cOULOuZFt050UuY8ziGjWlc13goz8IghTR0FF1p4PM2fF
-         Edgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760347345; x=1760952145;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RQVd9PQAMr1vRmq9PA7Kb7qWQrANWRTDb6YrEyD4+/0=;
-        b=CZbMUmBeZzIZBLj08Xu9v7yO5jZsv7w7+Gr3bmMsRg0FQJ8oYZgEp8iSzp87kFjZIA
-         9N50vFFUXkpo6a49fvCjF3qyy80ripyEXMYRhOd1mqVErI70TiGtRNk3g1d+f3nRbPB2
-         Jwe1Z0NqEi0ZAJljwF/RfpoubFdETtxIb9VCv56NCNj/biCqerE/PtFO/nSnpyaP6mBK
-         j/3ppt0zTxg8bW2mxPTZbtJ8KvcnyGEYTeU/kj/RogQrJdE3NVtMkb5Gx616SJb+RmC+
-         7SW2tljsdE4PHhLxgSJ+aizg4hLILhIOnrbe8r82EAluLWs9XlXPRBZ7/ovTsQW9/R2H
-         PYLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXeE8jNbhKgutLiAVuZT0Ks64uOeWvfFLuO/+a2VzU/1a+/Hcmp11X+iz+UdwJ3tNyV+2ZGE2GxhC872pehzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2Tol+sN9NWklBOx59fWJUc+p185SO4dMhpJ5+Z+EBfb1T9xxw
-	1eN6oBpWurwHmHchsahnuntxSOJeU93qoiEcp9VDIFMLweVEgplQqpwgritmsQ4B0uIfTkTRNmU
-	Vzu65W8DCwmC+IuKv6Q==
-X-Google-Smtp-Source: AGHT+IFhyQPEWSetqelza7/DFTbXzpX+DQ4Q5PhuLc71xjCRewxMXg+EPLK2L6PIkVQZIbscZLpNoWZoH5pGl7Q=
-X-Received: from wrue9.prod.google.com ([2002:a5d:4e89:0:b0:40f:b976:8cba])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:22c7:b0:425:8546:6870 with SMTP id ffacd0b85a97d-42667177d60mr12376827f8f.21.1760347345039;
- Mon, 13 Oct 2025 02:22:25 -0700 (PDT)
-Date: Mon, 13 Oct 2025 09:22:23 +0000
-In-Reply-To: <DDH1DE35H7L0.1Z2R655P701HR@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4fgicOI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F45DC4CEE7;
+	Mon, 13 Oct 2025 09:39:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760348381;
+	bh=hE0FwrSOKh3dm7K6R9z5HaueZzkmymUbPTbI75tC6Zo=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=k4fgicOIBKTh7tew1kfCuccFT7HLc0VUfVB9UwM35UMNADRxc4O+y4ITi3kUssZZk
+	 8kIK8skSp+uJczWdPSVc8WSHYP5vQWyG11MSPiipKb2nQrm3GGpVrEIEOnNt9lGnsv
+	 4rFT053qUc/hKRhu16/a5PqVbpMaiO1EN20HFURgqmhWTTDrm3Y234dzmj/JPtqRuf
+	 atUYWnFcMFp08/j4MuL9r9rVNXCA89NLFdAwKfspXPekHxQFGKWqtppp3YFFAgj8yI
+	 efwdBLU/tj5NTpMPQhe1/cSlZ0u/b1x/kXkLxv+yb9Q7ArOYvyJPSEmuFzIbKMB55b
+	 PdORK07DY4G/w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251012145221.172116-1-markus.probst@posteo.de>
- <20251012145221.172116-2-markus.probst@posteo.de> <DDGHGF4XOJQG.2MVGBMPK0KUQE@kernel.org>
- <e550b0862e9ea87e50688d1ec8f623638d170a3a.camel@posteo.de>
- <DDGNXV9KS3RS.2WHS4OOYM6DOP@kernel.org> <2a31fcd045582382987c8c1da7c4b7d58a1dff61.camel@posteo.de>
- <DDH1DE35H7L0.1Z2R655P701HR@kernel.org>
-Message-ID: <aOzEz23fWxHZbvdh@google.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Oct 2025 11:39:35 +0200
+Message-Id: <DDH3F3QRN81U.2A00K8U33PSKA@kernel.org>
+Cc: "Markus Probst" <markus.probst@posteo.de>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Lee Jones" <lee@kernel.org>, "Pavel Machek"
+ <pavel@kernel.org>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-leds@vger.kernel.org>
 Subject: Re: [PATCH v4 1/2] rust: add basic Pin<Vec<T, A>> abstractions
-From: Alice Ryhl <aliceryhl@google.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Markus Probst <markus.probst@posteo.de>, Danilo Krummrich <dakr@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Lee Jones <lee@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	bjorn3_gh@protonmail.com, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+X-Mailer: aerc 0.21.0
+References: <20251012145221.172116-1-markus.probst@posteo.de>
+ <20251012145221.172116-2-markus.probst@posteo.de>
+ <DDGHGF4XOJQG.2MVGBMPK0KUQE@kernel.org>
+ <e550b0862e9ea87e50688d1ec8f623638d170a3a.camel@posteo.de>
+ <DDGNXV9KS3RS.2WHS4OOYM6DOP@kernel.org>
+ <2a31fcd045582382987c8c1da7c4b7d58a1dff61.camel@posteo.de>
+ <DDH1DE35H7L0.1Z2R655P701HR@kernel.org> <aOzEz23fWxHZbvdh@google.com>
+In-Reply-To: <aOzEz23fWxHZbvdh@google.com>
 
-On Mon, Oct 13, 2025 at 10:03:19AM +0200, Benno Lossin wrote:
-> And `Vec::pin_init_slice` would have the following signature:
-> 
->     fn pin_init_slice<T, I, E>(this: Vec<I>, flags: alloc::Flags) -> Result<Pin<Box<[T]>>>
->     where
->         I: PinInit<T, E>,
->         Error: From<E>;
+On Mon Oct 13, 2025 at 11:22 AM CEST, Alice Ryhl wrote:
+> On Mon, Oct 13, 2025 at 10:03:19AM +0200, Benno Lossin wrote:
+>> And `Vec::pin_init_slice` would have the following signature:
+>>=20
+>>     fn pin_init_slice<T, I, E>(this: Vec<I>, flags: alloc::Flags) -> Res=
+ult<Pin<Box<[T]>>>
+>>     where
+>>         I: PinInit<T, E>,
+>>         Error: From<E>;
+>
+> We already have Box::pin_slice().
 
-We already have Box::pin_slice().
+Oh that's perfect :) I still think that the helper vec function above
+would be useful, if we want to use this pattern (collecting initializers
+in a vec) more broadly.
 
-Alice
+---
+Cheers,
+Benno
