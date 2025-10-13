@@ -1,101 +1,89 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CB72FBDF7
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 09:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16062FD1C6
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 09:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760347219; cv=none; b=TL/9fuiFSKCIHO0vXjFAgRgIpOR1gtCb3Ht7ibg1FBvqMJKuX4QSMg+dQ7N5QXEli9cLKpIDVCuOqAgwac3BpO2euNDzBxKNY7iW1rruIcVxoRc11Pcd5xmCkVRJsw8j9Aj1HRmMHFU6zTAcR5pGjTKKX86at86eDu0vmB3VOC4=
+	t=1760347348; cv=none; b=Rq7FkVXtWD848oEuLmcADnb/54JmVZr7/Vr0Y586LkXtzj9s4FAgktvIk0p4LaRGAB04QKTpcXJEUNIW8R0cje4GpCAWOIN8ysQx8aG+DefJ8dD+7drNDRufxUwSQ0d4uGdRZBOrYD39ayFA5FEpUwpevQT6pDrGNaHmnvZzC5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760347219; c=relaxed/simple;
-	bh=QauuifBIivV0CnP0lZumGXahaU8WwHf1ZmuHKkcj6i0=;
+	s=arc-20240116; t=1760347348; c=relaxed/simple;
+	bh=YcL+pfwHaciAhA+DIE3esJzDqXvZMrvSN+Utrx9QEv0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XyWaVnrdC2ftZP5ECFnIm/OspYdg9jAaM4EG1GjdpQE64y2oc/8d1hEbg0vCKWA5Kc+X6vyGRe/vOXvzfny5E7UQdfOmqcJxhvCxuG8tGyvilbRfO3gqGwCB25/JMEkgIL0DGCKJVsNXP/2RmaU3IlCj04P70bljB9Kge5TUz+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IcrXebxS; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=tW6Kmi0qw7VTxWwll5KkEOEsu77QVpoSyLlz/Y6Wf1rXYHUY89fmuLoeqv6ucYTjkNrZKnmegcI0IKjwKk1yIcaVE3O8prWFAjzKz3WIdzxyIuu3nsKVVT5t3zHO6nzsK9e77a2dQnoA/Fdyfa6dm86hAL9yHpR/GdJCeGua4jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W6437GWE; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IcrXebxS"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e41c32209so21555735e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 02:20:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W6437GWE"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42558f501adso3182883f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 02:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760347217; x=1760952017; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1760347345; x=1760952145; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/YLIXxu3r1bT61bpUEMmybN5f7kCfaViovXYFbL3SjM=;
-        b=IcrXebxSEc584xSJhl1w0zCtaFY68KOOBdmnVh0TtpOO9+CpYFnvOjqK16SvQt6Pha
-         yS0KTnELubYytvxtAnFOxvL86uI73P8myh3QJ7D6pIhW74hPskA+mdSGqkFkCznygF9A
-         +dguVKf9rwBmKuXMlH1CtAhYWibo5jvbGS8WQxqCRxwKMvqtC8sy+GKmlg7rhytAzyov
-         ZT8bdQBpKMEW4WgUAhfeXpcHC/4nBDB9ISQD4RORJ/7qxuelSz9kCy/uP2lNCmcSuF91
-         7uPD3mRAjbMDRFBAcjCbN7bhsQ1jfoksXmNANgoerQ+NXyi0gNFaCLDBN2GAwJuBfKDx
-         mEaA==
+        bh=RQVd9PQAMr1vRmq9PA7Kb7qWQrANWRTDb6YrEyD4+/0=;
+        b=W6437GWEvEw7fPLxJWpDAjGCreJ/JnP3hKC8alR22Tc8Lvm9D3Q+Gd5GoGikdDrUVA
+         D/BI09RpRIzAIJ9El+tyOAQ5pONtfWMQBDt260BcYnnf6+wLL8InKBYCP3XAJHgSOmbq
+         cxF/dJEM9pZdZ3voNssVPB82jZfrfNoglfKP6C3755Zyn1aVZdyWG9mOdqWTX4CgKIIr
+         /UbveKPyj/xI4GevQzsQJnJGQIqxi5M589qIM+qtpRNvsX563mxW3pTa8MVcwFGiwbe0
+         NE2BGQXzI04trz1YbK0HWP8cOULOuZFt050UuY8ziGjWlc13goz8IghTR0FF1p4PM2fF
+         Edgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760347217; x=1760952017;
+        d=1e100.net; s=20230601; t=1760347345; x=1760952145;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/YLIXxu3r1bT61bpUEMmybN5f7kCfaViovXYFbL3SjM=;
-        b=LFWcqsEB83TehhiqYm8IGXxzrtnTbkliYfhTD+CFhswunIGwe2SbFYs2gs0jGCBt/r
-         j0Jt6gq4E2RocExtvldu+J2GXXY0I5e2oVp2Jl4EImmDqn3oGkKwpA/8TnE/EvftLrdw
-         xmMIWHDglQA7/V1vMxG9LyLw4Pm/bRvI9LS2WC4Tft2AUx3clOqTXGouBZ80eHIPASPq
-         iCesLoYzbbQe1RN6XZ17PPe8+6N22VLrbzXgCkz5vUNPATpcQTv9njJRU2C50Jh/7W0H
-         pLNFt5c/LL0pNEocoMXUg7iLhzWv8jcMTsovREjrPM3TQ9G0G3MELiv3mA3v4w3VKOOc
-         7ThA==
-X-Forwarded-Encrypted: i=1; AJvYcCX7SdpI9ElnQWriOxBIuTidh0fOgd6tiyWZUy1W01nOLC+7gnfRi7EMJTwu7oTfNlNL3Ddqb7EYbSrMfWPAUw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKjVLf5pfOVstpVPn4DZXt4MrZGxV1Q7kOQfJZ7XdhD4MPEqc6
-	nOgFEiOW/1kEKGQzIr/mutnENbhiEHhCZfDsF/jbDzPaUNrGoX39zz/Pb4qfTPgn/V7d6Sps0GD
-	/Ou2DWVczO+OrZmSXhw==
-X-Google-Smtp-Source: AGHT+IHb6VBFw+s5vLpdfRpV683e8ptVQHwXIXwalC0rZp9VrZA2JvEvy5kZ5UvL/xduE9r47vW5HXPH+BxtecY=
-X-Received: from wmlu17.prod.google.com ([2002:a05:600c:2111:b0:46e:2eb4:38d])
+        bh=RQVd9PQAMr1vRmq9PA7Kb7qWQrANWRTDb6YrEyD4+/0=;
+        b=CZbMUmBeZzIZBLj08Xu9v7yO5jZsv7w7+Gr3bmMsRg0FQJ8oYZgEp8iSzp87kFjZIA
+         9N50vFFUXkpo6a49fvCjF3qyy80ripyEXMYRhOd1mqVErI70TiGtRNk3g1d+f3nRbPB2
+         Jwe1Z0NqEi0ZAJljwF/RfpoubFdETtxIb9VCv56NCNj/biCqerE/PtFO/nSnpyaP6mBK
+         j/3ppt0zTxg8bW2mxPTZbtJ8KvcnyGEYTeU/kj/RogQrJdE3NVtMkb5Gx616SJb+RmC+
+         7SW2tljsdE4PHhLxgSJ+aizg4hLILhIOnrbe8r82EAluLWs9XlXPRBZ7/ovTsQW9/R2H
+         PYLw==
+X-Forwarded-Encrypted: i=1; AJvYcCXeE8jNbhKgutLiAVuZT0Ks64uOeWvfFLuO/+a2VzU/1a+/Hcmp11X+iz+UdwJ3tNyV+2ZGE2GxhC872pehzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2Tol+sN9NWklBOx59fWJUc+p185SO4dMhpJ5+Z+EBfb1T9xxw
+	1eN6oBpWurwHmHchsahnuntxSOJeU93qoiEcp9VDIFMLweVEgplQqpwgritmsQ4B0uIfTkTRNmU
+	Vzu65W8DCwmC+IuKv6Q==
+X-Google-Smtp-Source: AGHT+IFhyQPEWSetqelza7/DFTbXzpX+DQ4Q5PhuLc71xjCRewxMXg+EPLK2L6PIkVQZIbscZLpNoWZoH5pGl7Q=
+X-Received: from wrue9.prod.google.com ([2002:a5d:4e89:0:b0:40f:b976:8cba])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4510:b0:46d:d949:daba with SMTP id 5b1f17b1804b1-46fa9a8f275mr139441695e9.4.1760347216682;
- Mon, 13 Oct 2025 02:20:16 -0700 (PDT)
-Date: Mon, 13 Oct 2025 09:20:15 +0000
-In-Reply-To: <20251013001422.1168581-1-ojeda@kernel.org>
+ 2002:a05:6000:22c7:b0:425:8546:6870 with SMTP id ffacd0b85a97d-42667177d60mr12376827f8f.21.1760347345039;
+ Mon, 13 Oct 2025 02:22:25 -0700 (PDT)
+Date: Mon, 13 Oct 2025 09:22:23 +0000
+In-Reply-To: <DDH1DE35H7L0.1Z2R655P701HR@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251013001422.1168581-1-ojeda@kernel.org>
-Message-ID: <aOzET46lagm-p8go@google.com>
-Subject: Re: [PATCH] rust: bitmap: clean Rust 1.92.0 `unused_unsafe` warning
+References: <20251012145221.172116-1-markus.probst@posteo.de>
+ <20251012145221.172116-2-markus.probst@posteo.de> <DDGHGF4XOJQG.2MVGBMPK0KUQE@kernel.org>
+ <e550b0862e9ea87e50688d1ec8f623638d170a3a.camel@posteo.de>
+ <DDGNXV9KS3RS.2WHS4OOYM6DOP@kernel.org> <2a31fcd045582382987c8c1da7c4b7d58a1dff61.camel@posteo.de>
+ <DDH1DE35H7L0.1Z2R655P701HR@kernel.org>
+Message-ID: <aOzEz23fWxHZbvdh@google.com>
+Subject: Re: [PATCH v4 1/2] rust: add basic Pin<Vec<T, A>> abstractions
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Burak Emir <bqe@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
+To: Benno Lossin <lossin@kernel.org>
+Cc: Markus Probst <markus.probst@posteo.de>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Lee Jones <lee@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	bjorn3_gh@protonmail.com, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Oct 13, 2025 at 02:14:22AM +0200, Miguel Ojeda wrote:
-> Starting with Rust 1.92.0 (expected 2025-12-11), Rust allows to safely
-> take the address of a union field [1][2]:
+On Mon, Oct 13, 2025 at 10:03:19AM +0200, Benno Lossin wrote:
+> And `Vec::pin_init_slice` would have the following signature:
 > 
->       CLIPPY L rust/kernel.o
->     error: unnecessary `unsafe` block
->        --> rust/kernel/bitmap.rs:169:13
->         |
->     169 |             unsafe { core::ptr::addr_of!(self.repr.bitmap) }
->         |             ^^^^^^ unnecessary `unsafe` block
->         |
->         = note: `-D unused-unsafe` implied by `-D warnings`
->         = help: to override `-D warnings` add `#[allow(unused_unsafe)]`
-> 
->     error: unnecessary `unsafe` block
->        --> rust/kernel/bitmap.rs:185:13
->         |
->     185 |             unsafe { core::ptr::addr_of_mut!(self.repr.bitmap) }
->         |             ^^^^^^ unnecessary `unsafe` block
-> 
-> Thus allow both instances to clean the warning in newer compilers.
-> 
-> Link: https://github.com/rust-lang/rust/issues/141264 [1]
-> Link: https://github.com/rust-lang/rust/pull/141469 [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+>     fn pin_init_slice<T, I, E>(this: Vec<I>, flags: alloc::Flags) -> Result<Pin<Box<[T]>>>
+>     where
+>         I: PinInit<T, E>,
+>         Error: From<E>;
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+We already have Box::pin_slice().
 
+Alice
