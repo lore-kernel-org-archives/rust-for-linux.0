@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558882D9EDF;
-	Mon, 13 Oct 2025 20:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DF72DD5EF;
+	Mon, 13 Oct 2025 20:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760385782; cv=none; b=QU7haE2C1sQHBIYxN/XnjIgjs+pqIbAycUJr4SwrW5vq59NKi9anZLKQkAvxI2Kxjh+cjeiQM+qGoTmjc9KauwiSjPLK+KfnU1vN4WNl3BQyFeNDN5oQgOXxyBNngHG8UGbz3BwrbUL9Q+CIj0K1hFr7xlsXrlnICtoF8rji1ok=
+	t=1760386280; cv=none; b=GPL13OIGi3fsMMbuqAirFqfFKQ/f9AaTKx/slULB8miRBdkldTuC1vlvfv4WfFJS+IRL4L4HbRMUVEBg/rC7kzq+rq/gBX9kZE/B1d/qARk5fRNGmhk+J7Vow36vN+YKYzG3LcNVIZiCZueO/v08aUXfSOs9Zhxz61saCRgvS+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760385782; c=relaxed/simple;
-	bh=OEzmpW8gwiC+PBF+ovOPfuvy/Qf06cEgA6omJZRqpDw=;
+	s=arc-20240116; t=1760386280; c=relaxed/simple;
+	bh=tZQgx2DdMtTPUTPXKKDWr/eIk6lu79PDjdeIsNK+WvU=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=SOVjjWvuLuN4jewiWSCDb7pq4YOnTSRgWZjiZta6kGNIeAFH/y3ImAL3mf1y2HkDkhhSM9gr8H/zUj9OyClbV9MvX4nr5107as4Q6SGhKgiYM5Sdck3QO9L1U1X27Rc9Au3IfJwjeNlSGaDQYSgnGuJMFAneezEE9mzgTt0KDpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7Ou5ZpQ; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=nMYLMusdEPFxD3Mct6iTrAl9G09kHrl2NgXryIDZH84v0Ru/8di0IYyUyXvBWaOZ9uEnwGoTZGr8Qr2CIw9+be985U+XZke4kLTQ7uW51NlSka4xGsExQ08GrUtInhTJXxu7COVACSGZtnSYeLD26nkYOvgdLpmTtWQ2fbvorZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JuyrSFDV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7Ou5ZpQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD533C4CEE7;
-	Mon, 13 Oct 2025 20:02:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JuyrSFDV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A02C4CEE7;
+	Mon, 13 Oct 2025 20:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760385781;
-	bh=OEzmpW8gwiC+PBF+ovOPfuvy/Qf06cEgA6omJZRqpDw=;
+	s=k20201202; t=1760386280;
+	bh=tZQgx2DdMtTPUTPXKKDWr/eIk6lu79PDjdeIsNK+WvU=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=s7Ou5ZpQzxGFzobcQ8kByjKFNNPFY3c4jXYwjbEdCtvOE0MvY0aWLM5FNool/iPEM
-	 TMqvHj//MrvkDZ5U98eUef72i3kuq/O6DDKBTkiNZVpdGiQ8HPpW/M+dVuL6Cqg0iV
-	 2W0NtQKHVMylx4lTZ7ylY809J4MUsxGaebo84KjUzfJVWLT6EOga/Z/bbJyC6tWt2F
-	 hJKLiPBZjHjmWwAwXpfQFf5LNlvMDGUS50Uug4MX8QprjfTkR3cTrLY1x6hOBTenkO
-	 2Anl56g2ysFH8xB/vXXvyVsiwkygbVsBlw5OMVZexKDtaIz+nP7pW2+QMJlC+twdcv
-	 JBDoVZjcGuYCg==
+	b=JuyrSFDVR08C3I7iaETbjtr4rGnex91U7WPgT90UTxKS/lveBFlc2Ggt1SL8CWWWZ
+	 tcyGovTq4TmBzD6W19wGKrYCBB7KwWwoSoM3x0udKCK3cNmJWvPSeJu8ZlD2ctsvz8
+	 PfvH8A8ObdbngpklN2BF5YELuoDLWDh9qPMdrBaFVY6CbOe26EW49UkLBBv7V/ApSJ
+	 lJd+df4y5BfrF2mpO5XtmNjxxH2wOSHvklMOUVCq48jLQzMYRQ01w1xf4EcvIwiHcJ
+	 GsAm1PlqmqZV8v2GLV0XWYaYxjHd3PTaA1i8itGas3oFQRPMgkoU+8tJ+G3lS9uGjt
+	 H2LudypgZno3g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,90 +34,86 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Oct 2025 22:02:55 +0200
-Message-Id: <DDHGOCNZJRND.129VXJYMXMCZW@kernel.org>
-Subject: Re: [RFC 0/6] rust: pci: add config space read/write support
-Cc: <rust-for-linux@vger.kernel.org>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <zhiwang@kernel.org>, <acourbot@nvidia.com>,
- <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <markus.probst@posteo.de>
-To: "Zhi Wang" <zhiw@nvidia.com>
+Date: Mon, 13 Oct 2025 22:11:14 +0200
+Message-Id: <DDHGUQ9B4J2K.X1VXMMU6O5O4@kernel.org>
+Subject: Re: [PATCH v4 2/2] rust: leds: add basic led classdev abstractions
+Cc: "Markus Probst" <markus.probst@posteo.de>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Lee Jones"
+ <lee@kernel.org>, "Pavel Machek" <pavel@kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-leds@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251010080330.183559-1-zhiw@nvidia.com>
- <DDHB2T3G9BUA.18YWV70J82Z01@kernel.org>
- <20251013212518.555a19ad.zhiw@nvidia.com>
-In-Reply-To: <20251013212518.555a19ad.zhiw@nvidia.com>
+References: <20251012145221.172116-1-markus.probst@posteo.de>
+ <20251012145221.172116-3-markus.probst@posteo.de>
+ <aO1GM4WXs37Zpm0G@google.com>
+In-Reply-To: <aO1GM4WXs37Zpm0G@google.com>
 
-On Mon Oct 13, 2025 at 8:25 PM CEST, Zhi Wang wrote:
-> I was considering the same when writing this series. The concern is
-> mostly about having to change the drivers' MMIO code to adapt to the
-> re-factor.
-
-For this you need to adjust the register macro to take something that
-dereferences to `T: Io` instead of something that dereferences to `Io`.
-
-This change should be trivial.
-
-> IMHO, if we are seeing the necessity of this re-factor, we should do it
-> before it got more usage. This could be the part 1 of the next spin.
-
-Yes, you can do it in a separete series. But I'd also be fine if you do bot=
-h in
-a single one. The required code changes shouldn't be crazy.
-
-> and adding pci::Device<Bound>::config_space() could be part 2 and
-> register! marco could be part 3.
-
-Part 3 has to happen with part 1 anyways, otherwise it breaks compilation.
-
-> I think the size of standard configuration space falls in "falliable
-> accessors", and the extended configuration space falls in "infalliable"
-> parts
-
-Both can be infallible. The standard configuration space size is constant, =
-hence
-all accesses to the standard configuration space with constant offsets can =
-be
-infallible.
-
-For the extended space it depends what a driver can assert, just like for a=
-ny
-MMIO space.
-
-However, you seem to talk about whether a physical device is still present.
-
-> But for the "infallible" part in PCI configuration space, the device
-> can be disconnected from the PCI bus. E.g. unresponsive device. In that
-> case, the current PCI core will mark the device as "disconnected" before
-> they causes more problems and any access to the configuration space
-> will fail with an error code. This can also happen on access to
-> "infalliable" part.
+On Mon Oct 13, 2025 at 8:34 PM CEST, Alice Ryhl wrote:
+> On Sun, Oct 12, 2025 at 02:52:39PM +0000, Markus Probst wrote:
+>> Implement the core abstractions needed for led class devices, including:
+>>=20
+>> * `led::LedOps` - the trait for handling leds, including
+>>   `brightness_set`, `brightness_get` and `blink_set`
+>>=20
+>> * `led::InitData` - data set for the led class device
+>>=20
+>> * `led::Device` - a safe wrapper around `led_classdev`
+>>=20
+>> Signed-off-by: Markus Probst <markus.probst@posteo.de>
 >
-> How should we handle this case in "infallible" accessors of PCI
-> configuration space? Returning Result<> seems doesn't fit the concept
-> of "infallible", but causing a rust panic seems overkill...
+>> +pub trait LedOps: Send + 'static + Sized {
+>> +    /// If set true, [`LedOps::brightness_set`] and [`LedOps::blink_set=
+`] must not sleep
+>> +    /// and perform the operation immediately.
+>> +    const BLOCKING: bool;
+>> +    /// The max brightness level
+>> +    const MAX_BRIGHTNESS: u32;
+>> +
+>> +    /// Sets the brightness level.
+>> +    ///
+>> +    /// See also [`LedOps::BLOCKING`]
+>> +    fn brightness_set(&self, brightness: u32) -> Result<()>;
+>> +
+>> +    /// Gets the current brightness level.
+>> +    fn brightness_get(&self) -> u32 {
+>> +        build_error!(VTABLE_DEFAULT_ERROR)
+>> +    }
+>> +
+>> +    /// Activates hardware accelerated blinking.
+>> +    ///
+>> +    /// delays are in milliseconds. If both are zero, a sensible defaul=
+t should be chosen.
+>> +    /// The caller should adjust the timings in that case and if it can=
+'t match the values
+>> +    /// specified exactly. Setting the brightness to 0 will disable the=
+ hardware accelerated
+>> +    /// blinking.
+>> +    ///
+>> +    /// See also [`LedOps::BLOCKING`]
+>> +    fn blink_set(&self, _delay_on: &mut usize, _delay_off: &mut usize) =
+-> Result<()> {
+>> +        build_error!(VTABLE_DEFAULT_ERROR)
+>> +    }
+>
+> These functions should probably take a &Device<Bound> argument so that
+> they can use methods that require a bound device (such as IO).
 
-Panics are for the "the machine is unrecoverably dead" case, this clearly i=
-sn't
-one of them. :)
+Indeed!
 
-I think we should do the same as with "normal" MMIO and just return the val=
-ue,
-i.e. all bits set (PCI_ERROR_RESPONSE).
+@Markus: Note that this guarantee is given by the LED device registration b=
+eing
+lifetime controlled by devres, while led_classdev_unregister() is synchroni=
+zed
+against those callbacks.
 
-The window between physical unplug and the driver core unbinds the driver s=
-hould
-be pretty small and drivers have to be able to deal with garbage values rea=
-d
-from registers anyways.
-
-If we really want to handle it, you can only implement the try_*() methods =
-and
-for the non-try_*() methods throw a compile time error, but I don't see a r=
-eason
-for that.
+For the latter, please double check that this is actually the case -- I'm n=
+ot
+familiar with the LED subsystem, I'm reviewing from driver-core perspective=
+. But
+from a quick look it should be the case. :)
