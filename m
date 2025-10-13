@@ -1,129 +1,111 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D251299949
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 16:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26ED22C0283
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 17:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760374322; cv=none; b=qUHF3TEw2Za/k9msYh3gBqC18mLx4OzJVwUYNQO6LifHchwm6MsXoXxUsKCmxlc9lQMFmFF+nkL/e8wjeGN3Vs4+eYDe+GFP9sUvfO/R7EEIqzrLKNjr5UjT3AhkQhTj6MrIEl7RpG3P3GtsTeW2iFyv8iHa/vVwsVHwdDkbzTk=
+	t=1760375064; cv=none; b=c7vT5xizsq8GjxuKpZxGrTZRQWTFsD2DT6D2H+8sAicKY1H6/gU31+OUG/HUzJs4cVWdQHbXT+cuiWmU7z7Zlf+egYYpD7UhjoQK+k8VmfMrQTA5JV8wjR9VBQ5ibHv01wvRVvS8ZA8COcoUxPMT5TM0lXZy+OzzEtMD6U+s+cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760374322; c=relaxed/simple;
-	bh=30sreQz6G6DfZJ5WOLIWvFnnyfh/rndubyHqDj2DbdE=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i64f7ZzHE0rKZl4EYEUfB5XT8c0DfDZTwMXRsnYeOQRgpkjqDRxvNrP4FrFHpNAuncJd3Fm5/4BheMtcoTBIfVHSXjBYR5tdznMh3lyKFoqgCLtX56c7Fq49WUKMQCoPt6xnUYdaqv0FBOmUQXM4c1wsDTWOnrVLFxP1ksannCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZnqeGWe1; arc=none smtp.client-ip=209.85.222.182
+	s=arc-20240116; t=1760375064; c=relaxed/simple;
+	bh=P+QO+F6gSER8aboabNBOzW8gkwLtVxAf+Z52RNFKZgY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e8caCKFAfOwyyDj5KIqiD5hgphY9Ml7UeFDCO9cOQIUOXjjYRGYNAnvjxIoHE//wosIqRHbIvKVJWXi1130QjVpOJnRtOodB25pc8sKrTp1dLRM/3sV6U0ZRQN3lfWKR3pCnPpF3ofOy9sEIf2WhsZJ4oZVElogX7iURNDV2WAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ky14A5CD; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZnqeGWe1"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-856cbf74c4aso841108585a.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 09:52:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ky14A5CD"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-789b93e9971so401836b3a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 10:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760374320; x=1760979120; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:feedback-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kVqiO8bJmyKRwpNi1+CsN+SwowAbNzLzKhKqUaZQaQ0=;
-        b=ZnqeGWe1enS744VhX4SezoVz64xK4kVjzj9XT4072f1b98vPpZzABzGu3EU7Irjlcz
-         5bA2k/wS8nNbqkUuzFrZOEOOwlNcVSwZ3vhpHQIYlovhfYmzBBp/czwl+7Zx9pT+e7KQ
-         cOwhuJssd/iXgiDWI8jDRtKaPTet1NHDURafvf7IVrREMNUOzFC1gws8aKNT5YvUR9oD
-         6gPxysYzpNMXSjTXVdIvTTTQHn9Y+HywwJdOHDgzMRMIL9Ug8ex4FAQBz5goRdF1zdoh
-         Gy9oBKWrjB7/OMDIlkaeznRA7YqPgyy2UFDQ5tTA3sXXC9GVpAFlmXLH6xuuSol9HvII
-         Ji6Q==
+        d=gmail.com; s=20230601; t=1760375062; x=1760979862; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6fJcX2OUoXOGZsGeV/FmQ9wOPH6foIrQk9i+R6pKW2o=;
+        b=ky14A5CDWiLJHFTvbk9s6H1RiDbLy7H5LqK2SZCIMGMQtwgH7+Ccg22Z53LuUd7mR2
+         t7Nalgjj7u01WUiGtt1ZS8WtrejyDbddP/dIaEDO890tEXFA0BbRj2yhlQY23w9SjtMH
+         Qbz45FDrJyGRfkzlccXoa6NoYfxUHoa7lU6naWP9bHQPTo9qGG9TdYrIsJpt7RIibh8i
+         /F+a1BZm2WoE4Ex84AvjQucTLjelbpaZklf0hqY7I392Ka5E0ldbSsbOEQ5BtiACS7Wy
+         WQO48O4canb8CQgertgLc865rTgFSLECX7UHBYenxA6+wqIvdiuKN7d4x5l9x/X/mVgJ
+         8Gvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760374320; x=1760979120;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1760375062; x=1760979862;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kVqiO8bJmyKRwpNi1+CsN+SwowAbNzLzKhKqUaZQaQ0=;
-        b=gjKXOENuLV8GAqhOPkmhmuWCHh5QAiQJHTesth4sPMq/ByWVPjs/zFxOVkI+ZKgV3v
-         UIHc6/xlzY12ZIzgUXshKwt/B3gQmNwMzicdNYmjG/jIJg+FBK73n/x6YjombG65a3FB
-         Zaz1b+NTz4cN5vIQJYfqrd9edQMw4vBNBpsi5pQ7+vfs0wL2JLo4FQ3D0Z1L/WoLgAwb
-         MYBWguJyd0hmQ2OmyhMWnpuv+yocQGhpaE427vDO4TWlBICKWXr6T9n/nFe0nsytQruz
-         r3h0cIxZoRHN865aS0NJ3iB86Qe0m793JdOvKXUudzsDCRv+9lVabRDKe7YNWd/zQRju
-         z0cw==
-X-Gm-Message-State: AOJu0YxCdaEqkGghSSX1t3kqVkwTWesSnoXH0XrjpQffXOlC8Y9qwS2T
-	xrmNINl9PLLKEyA2zhX23DVJLnHfpD3f08dbxqhq0Tq3XKF5G6S8kWyYmvk5lQ==
-X-Gm-Gg: ASbGncsjKsLXSxmXsKJo9fsI6ShGosln8fVFdM1PXWJJeCzyjZUvwYQ9R/+0jBxlkzo
-	8CZTCkTYyOh09xlrCw8U6fBsJj3t+XM853nFeQ5gsgjohprp5JBql/Oj1YhgtO9SMC/a4h80buw
-	nBNPE9yhtmgf8LjxaQEu2zHnfGa+J7WHee7cCjbRqmu4gXypvscJWg+CfaJXoT4QxF4JgyMcpAt
-	78Ae7vrV2NyOiGYWWm4fD6h4d1FV5A/rg2KUxekecaVqhh+TTr04gnrfkscGRdKzjMiEqx/DR1a
-	7KTrQdCGUYqgyKGJ+DVtMdKhoNT3xSmqwIvu2hmT4VMCKKiuoMlesok+jHl4SYOUKC9RH9PS4co
-	UXSlGpaHjhq6efYdql8MtyT4Psw6rdm2nIQoelKmZgRCpy0dBt6Z5hken47BSjpQKsCtUb2h93s
-	5OAGB3EBgog3of2O6t0fpICBTcsSJPsMHwrdDEdlfDryn5LdlO2hfi
-X-Google-Smtp-Source: AGHT+IHznjBkMq8oqhOOAShlCFF3P0nvkg8QNBAkmxsRf3kc/ONsudnxbuDH8PHIIKsumalQf/JELg==
-X-Received: by 2002:a05:620a:17ac:b0:85e:5022:33a2 with SMTP id af79cd13be357-88353c28688mr3502633685a.39.1760374319706;
-        Mon, 13 Oct 2025 09:51:59 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-884a2272670sm1026751185a.42.2025.10.13.09.51.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 09:51:59 -0700 (PDT)
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D8689F4006F;
-	Mon, 13 Oct 2025 12:51:58 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 13 Oct 2025 12:51:58 -0400
-X-ME-Sender: <xms:Li7taOqjku9ZQ2uiVdKom9d-ogYuBqOtFiiDKoZo3fJyx83IypKOkw>
-    <xme:Li7taCqm_6BdBHjgtV9Fb2Ki-Q7-KQNO263tW2nL5BEvEOnImAQl_9NuqQCkzEHtg
-    A2bkeK1_rbkiz7wSPlCumvVW1rt8luOnx7St7RxhESQXHH5Aw0J1Q>
-X-ME-Received: <xmr:Li7taA1yJAsjty4T2FKT4zb8F4f9Rb1xpViITyFB4I28AH_g-BBpPrwDhCmv8UNgibq9R-wr7pGEHlhIT9_uMGv-bi3n1TRy>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduudekudekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvuffkfhggtggujgesthdtredttd
-    dtvdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgr
-    ihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtefftdelgffgheegfeffteeiuefhie
-    ejkeffgeevjeeffffhtddtkeeghedtheenucffohhmrghinhepghhoohhglhgvrdgtohhm
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:Li7taJCG0g5iqpBhoBjkXAJssf5jodZNWy4V-OiliGk5sjw185m7Kw>
-    <xmx:Li7taAcpD0vZtRwRpZThq7F2N6Xu0s5h_Zu2DUWsrhbU6ra9P3Ex1w>
-    <xmx:Li7taGitXBaiduEz-xQd1TVj1AUDzHBUQtqPM26rmeXJ0p6zk929UA>
-    <xmx:Li7taAr4tbDXiteJMXk3-vBm7m74oOZwLZFsdNsHiNzcKyEJg1vWMw>
-    <xmx:Li7taOGPXcHN1dvk1hSnv6cLiIgM7uatqdij0EafNhVlglHalKb3p8QV>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Oct 2025 12:51:58 -0400 (EDT)
-Date: Mon, 13 Oct 2025 09:51:56 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Open Meeting at Oct 15
-Message-ID: <aO0uLL8dZF6MuRib@tardis.local>
-References: <ZUk14802ZWGpR2iM@boqun-archlinux>
- <Za_9bJxeyW0pddKL@boqun-archlinux>
- <ZgHBE8yRuZ5_8Bwi@boqun-archlinux>
- <ZlX_KOjdd65k9Jkw@boqun-archlinux>
- <ZqpWRo2M2SaTWU76@Boquns-Mac-mini.home>
- <Z1ClkseCwaEXS6GE@boqun-archlinux>
- <Z6IvhjRFU9R32jHV@Mac.home>
- <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
- <aEXLAPOV_FrH7Q5C@tardis.local>
- <aJtkNLp1pETbl9UI@Mac.home>
+        bh=6fJcX2OUoXOGZsGeV/FmQ9wOPH6foIrQk9i+R6pKW2o=;
+        b=r9NZisRlo77jAg2DGWDQwBGhRc34iccljP6o0ARbJAxYbsL7KnURDPZS9j8lCXGb4z
+         3Vv2u9qpsTkbT3Gm/0vGXocjoQJlfFg1Jja89elTZYRT+22zZvnDiL8Zx20685c91H9V
+         wZaoNJLnBJfrOqWzC6jOUjlQDVSWxjXiJYz215LP8TfLCnYOM7QEfxnHhi4zZbDOrkiX
+         frBh95YFESXHXwfYWJr5qm15zkccSBYHsINpWb0dXZiZpH6a8IUdJj2ZI5upCr1fQfqd
+         8B/e385lb/H/6TRmCquLKuUjwY1upEI5mcDLN68IGEwCFVmJieARk3EAKx5VIVwK1+/X
+         rYHQ==
+X-Gm-Message-State: AOJu0YwZ520tLrEcxnSIdmWYuh2y8Uz04yicvjxDeGrWG1S7QjxF20pw
+	Fa6gjgfwMjPXnqgt9+9yFWFA2FDNiKbgjkOvRvVsKQyHLnhA+gZub8tuGIZsyhH/9lvZfUeVjRN
+	DAYdZfVjCbsDHHscgVAOCOeilesIT+GQ=
+X-Gm-Gg: ASbGncsiGEkZNHsTxDUzGi1aKzcE/Pg6eKDqfuCSd+Kg8krx7ppkIDBdNJ+/Hnzvgdu
+	A0Yc4M/NerFHa8mvrcpxqaH4HWu6gcpiqoP7WtQC4nZEjeqMpFhSw/sUBUwZXF3hgySmGqHhI0z
+	Jn5UZLclBS1bgLR9IbgLAtYF2EYD+g0/e83uEdijpxBXBZiD8Sq3uj24KaaEGxspBYvcx4Baq8X
+	t4vm1rtBi09Gt+UxDaGWcKcsIa49Txl/V+W7MPvmtqXzntKGVbuRXgaAD/aIrQhjnwZU4jN00Rg
+	WSSumG0EXGIIATrviHuwhshF5TisrAkQujpuNMFHkiKhPTPVLKZwhlDk5twKk0ZUPQ==
+X-Google-Smtp-Source: AGHT+IFd8AtzhzxKXNVFCDx2dJi59F046sIYPsG2Iz0R4PgwCPQCMefiWNFNMhH+QP94xBl7TiDN1AkB26w3KuqmS2Q=
+X-Received: by 2002:a17:902:ea08:b0:28d:1904:6e77 with SMTP id
+ d9443c01a7336-2902726698dmr157257585ad.3.1760375062253; Mon, 13 Oct 2025
+ 10:04:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJtkNLp1pETbl9UI@Mac.home>
+References: <20251013124139.18809-1-work@onurozkan.dev> <20251013124139.18809-3-work@onurozkan.dev>
+In-Reply-To: <20251013124139.18809-3-work@onurozkan.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 13 Oct 2025 19:04:09 +0200
+X-Gm-Features: AS18NWCY3sNfP2BHo396B5-dfXepLNGPyFJstD4wIsXER4rWpGCCFZT_UGhLh4Y
+Message-ID: <CANiq72kvNWT1fXYkXUwmyC5jHfYufdx+koD6Y2xsWzE9YhLLEg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] rust: drop `error::to_result` and utilize `ToResult`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, tamird@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+On Mon, Oct 13, 2025 at 2:43=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev=
+> wrote:
+>
+>  29 files changed, 253 insertions(+), 210 deletions(-)
 
-This is probably the last open meeting of this year because the next one
-will likely be in Linux Plumbers/Christmas/New Year time. So feel free
-to come to the open meeting at Wednesday (Oct 15, 2025) 18:00 UTC and
-share what you have done and what you want to do in the next year in
-Rust-for-Linux:
+Something like this will be hard to merge if we wait for all
+Acked-bys. It is best to do the migration over time and split it per
+subsystem.
 
-	https://meet.google.com/cik-xrih-wij
+Also, you should Cc all the relevant maintainers/reviewers -- you are
+touching quite a few subsystems. :)
 
-If you plan to present something cool, feel free to let us know
-ahead of the time ;-)
+> I haven't included all the improvements made possible by the new design
+> since that could conflict with other ongoing patches [2]. Once this patch
+> is approved and applied, I am planning to follow up with creating a
+> "good first issue" on [3] for those additional changes.
 
-Regards,
-Boqun
+I would suggest including a few examples of the improvements in an RFC
+patch on top. In other words, we need to show the improvements (or at
+least some key examples) to justify a change, rather than doing it
+later.
+
+For instance, with the changes in this patch, I see a lot of `Ok(())`
+added because now one needs to discard the value, which isn't great...
+It indicates that the common case may not be keeping the value, and
+thus we may want two APIs for this.
+
+Thus, similarly, we may be able to spot a similar pattern in those examples=
+ too.
+
+Thanks!
+
+Cheers,
+Miguel
