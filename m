@@ -1,109 +1,102 @@
-Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA462C0F87
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 19:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5636C1D618E;
+	Mon, 13 Oct 2025 20:00:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760382204; cv=none; b=SuPTDTEwAy60bG1+yKCZol4YO3nldN2Z/dRtt5+iO+g5PIkz2X6apKX6JAlMDEbO2H7fGaGD/sP/9+iE5cYx8Dy1wJsJFWM9IAVco88m3W65ywDNGc1u1bWlTOyjba7ag5xAbQxSESKy2/GuqJmMpfWq8hmtfi9BF9m1ts8GpnQ=
+	t=1760385658; cv=none; b=r0CRkmxeMCEop/9WELGG3DZIlUJoRphfMLFO2cpbcjVtN7+GsTJPyiUKZvbUZXdI5g0WkP3XmK4fwCaQVAZQT431mFzSua69WXBbqfoo5+auEslJWUElalnzDoTrD3u3EZh0ZvnpZdbGyqm4ey7Ps2EagCkLH32ypFFUgK5MgT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760382204; c=relaxed/simple;
-	bh=k2OWhU1lGGwJ3iHr0MRl7hFteOM1d7W97pCqpxIyPdA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fz7U9AYmQbsP1gJgj2IEQ6dMYs/7mJvE1J3r8QLBFE1y3qXG4Zh/M4/8lGnfX2UjQXR/l2POQXyesGNJV7A2h4zyYmm4tmN+VyRvjYIrx3wWrzpT1ju10ApVr7UlH/aXlgR4vxFunB7tzQDf467WmReUQE827BOgxR/K07kYb9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=pjWeBZ0i; arc=none smtp.client-ip=178.154.239.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1760385658; c=relaxed/simple;
+	bh=zK/h1j9uSm+vtfJpmxcjfhnJmJ+TGvAA6H86W0HuMYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ApIv6loivTwyv4vfOW7ELfE/pgdH2jRFBE19MJNzZbsxnjM5QagCoLNXiqJQiU549ytSmXLWIjDqJx+mAAXHb0AQLUmTE9Tc3CzSfDndp+b4SQ5FUiBEDk/GJFQ7rU5yWnHDuJnSy7THEaPuXXxJIJXRVCOThdCks+P+lAo3TD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GSBwjuFS; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="pjWeBZ0i"
-Received: from mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:290e:0:640:f317:0])
-	by forward502a.mail.yandex.net (Yandex) with ESMTPS id B430181282;
-	Mon, 13 Oct 2025 22:03:11 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 63UdC3TL5Os0-OnU847Gd;
-	Mon, 13 Oct 2025 22:03:10 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1760382190;
-	bh=WCzISYGccMu5qhMqmS75TZUU/EKntQEWIbpOVk9rLuw=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=pjWeBZ0iQUZXKpri74Y6cg+fZeaEo6vd0gULnpFI8+jaHufoEwqSINtDtFrwEbEGT
-	 NLnL7Ers47otlQqE+GhTRS7K8cEHCEm5j9XI85ud0Klm+Cijzqvv01f8Mm1GTzZoXs
-	 rON/og/eWj4ufO7qtM2utUgs+VAzbYgTm3XMivuo=
-Authentication-Results: mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Mon, 13 Oct 2025 22:03:03 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, tamird@gmail.com
-Subject: Re: [PATCH v3 2/2] rust: drop `error::to_result` and utilize
- `ToResult`
-Message-ID: <20251013220303.15f95186@nimda.home>
-In-Reply-To: <CANiq72kvNWT1fXYkXUwmyC5jHfYufdx+koD6Y2xsWzE9YhLLEg@mail.gmail.com>
-References: <20251013124139.18809-1-work@onurozkan.dev>
-	<20251013124139.18809-3-work@onurozkan.dev>
-	<CANiq72kvNWT1fXYkXUwmyC5jHfYufdx+koD6Y2xsWzE9YhLLEg@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GSBwjuFS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lEm7yIMBT7J/1bIdNVjWS9w3zLGCQP6Egg4jF75zs68=; b=GSBwjuFS9ascXsK+XO3fdWLhUM
+	NRvd0kvKUjENPZwoCqPMEV3NIq2w0Uqwc8SstTx26HH7X2bOBjV/M5T3QlMuRSD3PwSgZ8FSlivke
+	ZGFY/jPwSL8tWM74/ipoV2W96GRztQAGk4otKSL8OO+AZ9GAs9/khnxICPb/7wW8drchMB099IAIU
+	zfyKTQPitOQBGECf9JAeRzXDfe1A+EvC+xgyDzPqy+mlAI3npD6MUw8FRhpnra9pR+1BYT/cpTklq
+	DPhpEtWF1nWlN1/gIZLjDRBfTzZ4vIkZR+D2h1sQQCSGk/Uu3PFv3RwCsAALVgnAPqtawyhmzEgnL
+	S2MLGDkg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v8Oij-00000004bXP-0UgF;
+	Mon, 13 Oct 2025 20:00:37 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 2D908300212; Mon, 13 Oct 2025 22:00:36 +0200 (CEST)
+Date: Mon, 13 Oct 2025 22:00:35 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"open list:CPU FREQUENCY SCALING FRAMEWORK" <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v13 01/17] preempt: Track NMI nesting to separate per-CPU
+ counter
+Message-ID: <20251013200035.GD2734756@noisy.programming.kicks-ass.net>
+References: <20251013155205.2004838-1-lyude@redhat.com>
+ <20251013155205.2004838-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251013155205.2004838-2-lyude@redhat.com>
 
-On Mon, 13 Oct 2025 19:04:09 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+On Mon, Oct 13, 2025 at 11:48:03AM -0400, Lyude Paul wrote:
+> From: Joel Fernandes <joelagnelf@nvidia.com>
+> 
+> Move NMI nesting tracking from the preempt_count bits to a separate per-CPU
+> counter (nmi_nesting). This is to free up the NMI bits in the preempt_count,
+> allowing those bits to be repurposed for other uses.  This also has the benefit
+> of tracking more than 16-levels deep if there is ever a need.
+> 
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Joel Fernandes <joelaf@google.com>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+>  include/linux/hardirq.h   | 17 +++++++++++++----
+>  kernel/softirq.c          |  2 ++
+>  rust/kernel/alloc/kvec.rs |  5 +----
+>  rust/kernel/cpufreq.rs    |  3 +--
+>  4 files changed, 17 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
+> index d57cab4d4c06f..177eed1de35cc 100644
+> --- a/include/linux/hardirq.h
+> +++ b/include/linux/hardirq.h
+> @@ -10,6 +10,8 @@
+>  #include <linux/vtime.h>
+>  #include <asm/hardirq.h>
+>  
+> +DECLARE_PER_CPU(unsigned int, nmi_nesting);
 
-> On Mon, Oct 13, 2025 at 2:43=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.d=
-ev> wrote:
-> >
-> >  29 files changed, 253 insertions(+), 210 deletions(-)
->=20
-> Something like this will be hard to merge if we wait for all
-> Acked-bys. It is best to do the migration over time and split it per
-> subsystem.
-
-Sure. To do that, I need to keep the current `error::to_result`
-untouched. I guess that would be fine.
-
-> Also, you should Cc all the relevant maintainers/reviewers -- you are
-> touching quite a few subsystems. :)
->=20
-
-Right, sorry.
-
-> > I haven't included all the improvements made possible by the new
-> > design since that could conflict with other ongoing patches [2].
-> > Once this patch is approved and applied, I am planning to follow up
-> > with creating a "good first issue" on [3] for those additional
-> > changes.
->=20
-> I would suggest including a few examples of the improvements in an RFC
-> patch on top. In other words, we need to show the improvements (or at
-> least some key examples) to justify a change, rather than doing it
-> later.
->=20
-> For instance, with the changes in this patch, I see a lot of `Ok(())`
-> added because now one needs to discard the value, which isn't great...
-> It indicates that the common case may not be keeping the value, and
-> thus we may want two APIs for this.
->=20
-> Thus, similarly, we may be able to spot a similar pattern in those
-> examples too.
->=20
-
-Thank you for your feedback Miguel. I will wait sometime to collect more
-feedback and then I will prepare an RFC based on all the input. I would
-feel more confident sending the RFC after receiving more feedback from
-more Rust kernel developers.
-
--Onur
-
-> Thanks!
->=20
-> Cheers,
-> Miguel
-
+Urgh, and it isn't even in the same cacheline as the preempt_count :/
