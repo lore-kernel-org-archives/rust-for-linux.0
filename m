@@ -1,183 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DED7283CA3;
-	Mon, 13 Oct 2025 16:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D251299949
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 16:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760374101; cv=none; b=H72mj2PVLDyf6v66qW+OkDLjOZW6fhs09wVKSmbzDVjK77hlNt2E0GZ5uh63Kg4dQP1iQooqWXXTWseGIUW4uSySG1UfI+GExXefxWtjQkmZlZx3RbwlNDiNlPQsJ2Iifg8sPo6/7GWgPuGs076Iic62WNqx6W6W9wPzundpkyc=
+	t=1760374322; cv=none; b=qUHF3TEw2Za/k9msYh3gBqC18mLx4OzJVwUYNQO6LifHchwm6MsXoXxUsKCmxlc9lQMFmFF+nkL/e8wjeGN3Vs4+eYDe+GFP9sUvfO/R7EEIqzrLKNjr5UjT3AhkQhTj6MrIEl7RpG3P3GtsTeW2iFyv8iHa/vVwsVHwdDkbzTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760374101; c=relaxed/simple;
-	bh=elwGg7bAxs37xxGUqiUArj6P97nHlNxZfgLS3Wd1CyQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NE9mAN/ulYxkITFXtAy+l1gahrcB2KXB2lD173ERrFc6xFT/mjcZegGXfENccV8K0410boy3td2yxB9yh+3gs3Z9G9W24zDX54xEFs/4VMtojfNP8FNTts2hABZElff7Vjkps1z/ONzaShu6DcLCecCFWl05PQXN3k3MdQZahXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0ik8Aj+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760374322; c=relaxed/simple;
+	bh=30sreQz6G6DfZJ5WOLIWvFnnyfh/rndubyHqDj2DbdE=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i64f7ZzHE0rKZl4EYEUfB5XT8c0DfDZTwMXRsnYeOQRgpkjqDRxvNrP4FrFHpNAuncJd3Fm5/4BheMtcoTBIfVHSXjBYR5tdznMh3lyKFoqgCLtX56c7Fq49WUKMQCoPt6xnUYdaqv0FBOmUQXM4c1wsDTWOnrVLFxP1ksannCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZnqeGWe1; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0ik8Aj+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D31C4CEFE;
-	Mon, 13 Oct 2025 16:48:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760374101;
-	bh=elwGg7bAxs37xxGUqiUArj6P97nHlNxZfgLS3Wd1CyQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u0ik8Aj+3Zh2hpmVrK05uKhSNXSQFg5mKOv+1ewCFmP5D3O4Yc5gnx/5rZdpHsUpa
-	 dWAx1WMi4mEu+Y4n9qsIi5IFrDql7U3b/ztL3E20N93kp3O+8o2vxlJiU/lYg5Zo6o
-	 a90s4pErWdUT8xZ/M0L3b6us4lXWRobDbyp3DV0OXNCNSEc/QqU69m9y7K/VnrScdn
-	 SZhQRZ82zsyBv08zwajcNUgzIONvqyPiMiY0qk6f/DM7crPcettPkvZhB0kuljToT3
-	 JW5pvDr92ge+VIYxzr0L2tgo5UJ5C/80RUoTG8vYMUhz+93KkFlNBh2UVV0MqYlNql
-	 1+x+kvSxfmowg==
-Date: Mon, 13 Oct 2025 18:48:18 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Benno Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Drew Fustini <fustini@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	Elle Rhumsaa <elle@weathered-steel.dev>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v15 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-Message-ID: <ayuqnx7fjfe3zwicvdbdr3qsgb4w6s2gwjt7r3m5ikzrylmium@hsrxazwelnvp>
-References: <CGME20250930122729eucas1p2c4f1c07a4a504a59ba691b407a39420d@eucas1p2.samsung.com>
- <20250930-rust-next-pwm-working-fan-for-sending-v15-0-5661c3090877@samsung.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZnqeGWe1"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-856cbf74c4aso841108585a.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 09:52:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760374320; x=1760979120; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:feedback-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kVqiO8bJmyKRwpNi1+CsN+SwowAbNzLzKhKqUaZQaQ0=;
+        b=ZnqeGWe1enS744VhX4SezoVz64xK4kVjzj9XT4072f1b98vPpZzABzGu3EU7Irjlcz
+         5bA2k/wS8nNbqkUuzFrZOEOOwlNcVSwZ3vhpHQIYlovhfYmzBBp/czwl+7Zx9pT+e7KQ
+         cOwhuJssd/iXgiDWI8jDRtKaPTet1NHDURafvf7IVrREMNUOzFC1gws8aKNT5YvUR9oD
+         6gPxysYzpNMXSjTXVdIvTTTQHn9Y+HywwJdOHDgzMRMIL9Ug8ex4FAQBz5goRdF1zdoh
+         Gy9oBKWrjB7/OMDIlkaeznRA7YqPgyy2UFDQ5tTA3sXXC9GVpAFlmXLH6xuuSol9HvII
+         Ji6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760374320; x=1760979120;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kVqiO8bJmyKRwpNi1+CsN+SwowAbNzLzKhKqUaZQaQ0=;
+        b=gjKXOENuLV8GAqhOPkmhmuWCHh5QAiQJHTesth4sPMq/ByWVPjs/zFxOVkI+ZKgV3v
+         UIHc6/xlzY12ZIzgUXshKwt/B3gQmNwMzicdNYmjG/jIJg+FBK73n/x6YjombG65a3FB
+         Zaz1b+NTz4cN5vIQJYfqrd9edQMw4vBNBpsi5pQ7+vfs0wL2JLo4FQ3D0Z1L/WoLgAwb
+         MYBWguJyd0hmQ2OmyhMWnpuv+yocQGhpaE427vDO4TWlBICKWXr6T9n/nFe0nsytQruz
+         r3h0cIxZoRHN865aS0NJ3iB86Qe0m793JdOvKXUudzsDCRv+9lVabRDKe7YNWd/zQRju
+         z0cw==
+X-Gm-Message-State: AOJu0YxCdaEqkGghSSX1t3kqVkwTWesSnoXH0XrjpQffXOlC8Y9qwS2T
+	xrmNINl9PLLKEyA2zhX23DVJLnHfpD3f08dbxqhq0Tq3XKF5G6S8kWyYmvk5lQ==
+X-Gm-Gg: ASbGncsjKsLXSxmXsKJo9fsI6ShGosln8fVFdM1PXWJJeCzyjZUvwYQ9R/+0jBxlkzo
+	8CZTCkTYyOh09xlrCw8U6fBsJj3t+XM853nFeQ5gsgjohprp5JBql/Oj1YhgtO9SMC/a4h80buw
+	nBNPE9yhtmgf8LjxaQEu2zHnfGa+J7WHee7cCjbRqmu4gXypvscJWg+CfaJXoT4QxF4JgyMcpAt
+	78Ae7vrV2NyOiGYWWm4fD6h4d1FV5A/rg2KUxekecaVqhh+TTr04gnrfkscGRdKzjMiEqx/DR1a
+	7KTrQdCGUYqgyKGJ+DVtMdKhoNT3xSmqwIvu2hmT4VMCKKiuoMlesok+jHl4SYOUKC9RH9PS4co
+	UXSlGpaHjhq6efYdql8MtyT4Psw6rdm2nIQoelKmZgRCpy0dBt6Z5hken47BSjpQKsCtUb2h93s
+	5OAGB3EBgog3of2O6t0fpICBTcsSJPsMHwrdDEdlfDryn5LdlO2hfi
+X-Google-Smtp-Source: AGHT+IHznjBkMq8oqhOOAShlCFF3P0nvkg8QNBAkmxsRf3kc/ONsudnxbuDH8PHIIKsumalQf/JELg==
+X-Received: by 2002:a05:620a:17ac:b0:85e:5022:33a2 with SMTP id af79cd13be357-88353c28688mr3502633685a.39.1760374319706;
+        Mon, 13 Oct 2025 09:51:59 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-884a2272670sm1026751185a.42.2025.10.13.09.51.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Oct 2025 09:51:59 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D8689F4006F;
+	Mon, 13 Oct 2025 12:51:58 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 13 Oct 2025 12:51:58 -0400
+X-ME-Sender: <xms:Li7taOqjku9ZQ2uiVdKom9d-ogYuBqOtFiiDKoZo3fJyx83IypKOkw>
+    <xme:Li7taCqm_6BdBHjgtV9Fb2Ki-Q7-KQNO263tW2nL5BEvEOnImAQl_9NuqQCkzEHtg
+    A2bkeK1_rbkiz7wSPlCumvVW1rt8luOnx7St7RxhESQXHH5Aw0J1Q>
+X-ME-Received: <xmr:Li7taA1yJAsjty4T2FKT4zb8F4f9Rb1xpViITyFB4I28AH_g-BBpPrwDhCmv8UNgibq9R-wr7pGEHlhIT9_uMGv-bi3n1TRy>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduudekudekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvuffkfhggtggujgesthdtredttd
+    dtvdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgr
+    ihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtefftdelgffgheegfeffteeiuefhie
+    ejkeffgeevjeeffffhtddtkeeghedtheenucffohhmrghinhepghhoohhglhgvrdgtohhm
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedvpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:Li7taJCG0g5iqpBhoBjkXAJssf5jodZNWy4V-OiliGk5sjw185m7Kw>
+    <xmx:Li7taAcpD0vZtRwRpZThq7F2N6Xu0s5h_Zu2DUWsrhbU6ra9P3Ex1w>
+    <xmx:Li7taGitXBaiduEz-xQd1TVj1AUDzHBUQtqPM26rmeXJ0p6zk929UA>
+    <xmx:Li7taAr4tbDXiteJMXk3-vBm7m74oOZwLZFsdNsHiNzcKyEJg1vWMw>
+    <xmx:Li7taOGPXcHN1dvk1hSnv6cLiIgM7uatqdij0EafNhVlglHalKb3p8QV>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 13 Oct 2025 12:51:58 -0400 (EDT)
+Date: Mon, 13 Oct 2025 09:51:56 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Open Meeting at Oct 15
+Message-ID: <aO0uLL8dZF6MuRib@tardis.local>
+References: <ZUk14802ZWGpR2iM@boqun-archlinux>
+ <Za_9bJxeyW0pddKL@boqun-archlinux>
+ <ZgHBE8yRuZ5_8Bwi@boqun-archlinux>
+ <ZlX_KOjdd65k9Jkw@boqun-archlinux>
+ <ZqpWRo2M2SaTWU76@Boquns-Mac-mini.home>
+ <Z1ClkseCwaEXS6GE@boqun-archlinux>
+ <Z6IvhjRFU9R32jHV@Mac.home>
+ <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
+ <aEXLAPOV_FrH7Q5C@tardis.local>
+ <aJtkNLp1pETbl9UI@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ixctn32fehw7zduh"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250930-rust-next-pwm-working-fan-for-sending-v15-0-5661c3090877@samsung.com>
+In-Reply-To: <aJtkNLp1pETbl9UI@Mac.home>
 
+Hi all,
 
---ixctn32fehw7zduh
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v15 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-MIME-Version: 1.0
+This is probably the last open meeting of this year because the next one
+will likely be in Linux Plumbers/Christmas/New Year time. So feel free
+to come to the open meeting at Wednesday (Oct 15, 2025) 18:00 UTC and
+share what you have done and what you want to do in the next year in
+Rust-for-Linux:
 
-Hello,
+	https://meet.google.com/cik-xrih-wij
 
-my diff on top of your changes looks as follows:
+If you plan to present something cool, feel free to let us know
+ahead of the time ;-)
 
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index dd6db01832ee..e7f770ecfe84 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -812,9 +812,8 @@ config PWM_XILINX
- 	  will be called pwm-xilinx.
-=20
-  config RUST_PWM_ABSTRACTIONS
--	bool "Rust PWM abstractions support"
-+	bool
- 	depends on RUST
--	depends on PWM=3Dy
- 	help
- 	  This option enables the safe Rust abstraction layer for the PWM
- 	  subsystem. It provides idiomatic wrappers and traits necessary for
-
-i.e. make RUST_PWM_ABSTRACTIONS invisible, it is only supposed to be
-selected and there is little (or even no?) use to enable it without a
-selector.
-
-diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-index c9fd1d8d17bc..a5666052b7ce 100644
---- a/drivers/pwm/pwm_th1520.rs
-+++ b/drivers/pwm/pwm_th1520.rs
-@@ -121,6 +121,7 @@ fn round_waveform_tohw(
-         wf: &pwm::Waveform,
-     ) -> Result<pwm::RoundedWaveform<Self::WfHw>> {
-         let data =3D chip.drvdata();
-+        let status =3D 0;
-=20
-         if wf.period_length_ns =3D=3D 0 {
-             dev_dbg!(chip.device(), "Requested period is 0, disabling PWM.=
-\n");
-@@ -141,18 +142,13 @@ fn round_waveform_tohw(
-         if period_cycles =3D=3D 0 {
-             dev_dbg!(
-                 chip.device(),
--                "Requested period {} ns is too small for clock rate {} Hz,=
- disabling PWM.\n",
-+                "Requested period {} ns is too small for clock rate {} Hz,=
- rounding up.\n",
-                 wf.period_length_ns,
-                 rate_hz
-             );
-=20
--            return Ok(pwm::RoundedWaveform {
--                status: 0,
--                hardware_waveform: Th1520WfHw {
--                    enabled: false,
--                    ..Default::default()
--                },
--            });
-+            period_cycles =3D 1;
-+            status =3D 1;
-         }
-=20
-         let mut duty_cycles =3D ns_to_cycles(wf.duty_length_ns, rate_hz).m=
-in(u64::from(u32::MAX));
-
-i.e. round up for too small period requests ...
-
-@@ -189,7 +185,7 @@ fn round_waveform_tohw(
-         );
-=20
-         Ok(pwm::RoundedWaveform {
--            status: 0,
-+            status: status,
-             hardware_waveform: wfhw,
-         })
-     }
-
-=2E.. and return 1 then
-
-@@ -355,7 +351,7 @@ fn probe(
-                 "Clock rate {} Hz is too high, not supported.\n",
-                 rate_hz
-             );
--            return Err(ERANGE);
-+            return Err(EINVAL);
-         }
-=20
-         let chip =3D pwm::Chip::new(
-
-at least pwm-stm32 uses EINVAL. Having said that, I wonder if this check
-is sensible here at all. pwm-stm32 does it to ensure that
-mul_u64_u64_div_u64() does the right thing, but this exact issue doesn't
-exist here.
-
-Otherwise looks fine I think.
-
-Best regards
-Uwe
-
---ixctn32fehw7zduh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmjtLU8ACgkQj4D7WH0S
-/k4oaggAhdfagEFpKozser/0n1q4mr04hh5Zneh1XD8FkXH3oRpDUZVb8r4ePsFA
-8VTDCq/Es7HpPe5XowvaKMybERSkXoV2ixoJFwtZx381Tdc6uqptStUKGMfzltsN
-u8j6b213lzwtg9WgBM6hk+rUUzm9rzJ/Iz0VrEgGF+iIt0l7MBSInjZ+I0JDmbMu
-bL6/wiWdHBVvcq+QAX4Edf3RHMX/a9s1htv/+uxWRbFf4/xRn+1gOuDBjJbTqA0j
-44JY4XEZiBlBTvxMR+CiI/pq/K5ttn9kpOttYIgVfYiru6YPMLyozSLAL4zpxQDP
-TRJOj1WQexbASB2Smr3Z4MgE60NYlw==
-=gshz
------END PGP SIGNATURE-----
-
---ixctn32fehw7zduh--
+Regards,
+Boqun
