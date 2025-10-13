@@ -1,120 +1,224 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01E921018A
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 14:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8E212DDA1;
+	Mon, 13 Oct 2025 14:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760365835; cv=none; b=GCFMmXMSxEOnEdab+Cpsqxiq/NkqUSYMr3zSuH+pFa9d8w3IIYB2ImwEXiwS5/aqxMAxiz1mdnzjgH3hRuWn6wPifd4nEpwMM3rBlCdYbMXTHfeBvW4wC/z5E8guaOIUCGiBEEQA6RhMtaSkcvJaUoxjmmga2oo0l4dhF7zcYkU=
+	t=1760366831; cv=none; b=dnB6Lh6B6jQhSdJX0dcq8NTe5I/TRm2V9aZ6zu/VRLdN6VPilIByVA8MpWxRfm5/f/mrzNkIDlklLZZdkNs6XMLirmbHeR8E524WpdAM7JBAhYwckGdxLvgks6lp81FPelewUsDoTUdFTfkNGmiwwRgQt8kPTRba0QrXaOb/nYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760365835; c=relaxed/simple;
-	bh=p7OPEdJE5ToR35hajbcxBsZGseYV7ErRLMU40tXYi4w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HO3eLbjQmH+e1xDiEyhgXG+5aWSU8EFN5wS8w7IXEgUO+hIftRBjZx53cMJSU8NTuj9mhOXCcR08s+bQMa6YByb5kLcZXOhcjh8eI/N7QXjtDQNFU+jT9433e4zE49s6PitKovw0lwLX1ihV7375hyaZa2NZlH9k9LEwZqiZglM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XP2lp9S3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1760366831; c=relaxed/simple;
+	bh=UszqnfPExzN/pXDJzghixK2YWh4rh+o850/Us1oA9dw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=soG3d5Cn9iKj4K8gQlJosrSUGiNfCz154HUjVViWOvlRKI4xSOJuJjoUui0ijBXQTI+kWlWQ2Td0h9rxZclYAZ5viLXTTMTdE6Zb89UR5Vv91bdmS7AX8yYuD22DtueIXvVNIAjXDjanTg8W1MXn5BiRy44bpH8CIRNZLT+IN+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GNrFiN1A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XP2lp9S3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760365832;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BTlu2d/OCa7smgTdfnf6rps6xmzbDobGt8v/NuBgfVM=;
-	b=XP2lp9S32YvCbbC0fKysNEj7BC1yAuXYcBh5hd3FkWrDD1UAg94oq8NkN4sJosDxuc4hx/
-	7p9LxFDlF3WTHQG3Wc+lKAtjbSArXF6I3ximmC/9bFtLQVrLcP08ptdpEoqPoI6oBjdWSR
-	MjqYXbwLo3ph3eJhgNN9t1XXhYanndA=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-UK0ZfmzoNZq1a4f8nqpaHA-1; Mon,
- 13 Oct 2025 10:30:31 -0400
-X-MC-Unique: UK0ZfmzoNZq1a4f8nqpaHA-1
-X-Mimecast-MFC-AGG-ID: UK0ZfmzoNZq1a4f8nqpaHA_1760365830
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA96519560AE;
-	Mon, 13 Oct 2025 14:30:29 +0000 (UTC)
-Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.32.50])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 414E01954107;
-	Mon, 13 Oct 2025 14:30:12 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Charles Mirabile <cmirabil@redhat.com>,  pjw@kernel.org,
-  Liam.Howlett@oracle.com,  a.hindborg@kernel.org,
-  akpm@linux-foundation.org,  alex.gaynor@gmail.com,
-  alexghiti@rivosinc.com,  aliceryhl@google.com,  alistair.francis@wdc.com,
-  andybnac@gmail.com,  aou@eecs.berkeley.edu,  arnd@arndb.de,
-  atishp@rivosinc.com,  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,
-  bp@alien8.de,  brauner@kernel.org,  broonie@kernel.org,
-  charlie@rivosinc.com,  cleger@rivosinc.com,  conor+dt@kernel.org,
-  conor@kernel.org,  corbet@lwn.net,  dave.hansen@linux.intel.com,
-  david@redhat.com,  devicetree@vger.kernel.org,  ebiederm@xmission.com,
-  evan@rivosinc.com,  gary@garyguo.net,  hpa@zytor.com,  jannh@google.com,
-  jim.shu@sifive.com,  kees@kernel.org,  kito.cheng@sifive.com,
-  krzk+dt@kernel.org,  linux-arch@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
-  lorenzo.stoakes@oracle.com,  lossin@kernel.org,  mingo@redhat.com,
-  ojeda@kernel.org,  oleg@redhat.com,  palmer@dabbelt.com,
-  paul.walmsley@sifive.com,  peterz@infradead.org,
-  richard.henderson@linaro.org,  rick.p.edgecombe@intel.com,
-  robh@kernel.org,  rust-for-linux@vger.kernel.org,
-  samitolvanen@google.com,  shuah@kernel.org,  tglx@linutronix.de,
-  tmgross@umich.edu,  vbabka@suse.cz,  x86@kernel.org,  zong.li@sifive.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-In-Reply-To: <aN6sNFBzx8NPU3Th@debug.ba.rivosinc.com> (Deepak Gupta's message
-	of "Thu, 2 Oct 2025 09:45:40 -0700")
-References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
-	<20250926192919.349578-1-cmirabil@redhat.com>
-	<aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
-	<CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
-	<aNcAela5tln5KTUI@debug.ba.rivosinc.com>
-	<lhu3484i9en.fsf@oldenburg.str.redhat.com>
-	<aNxsWYYnj22G5xuX@debug.ba.rivosinc.com>
-	<lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
-	<aN6sNFBzx8NPU3Th@debug.ba.rivosinc.com>
-Date: Mon, 13 Oct 2025 16:30:09 +0200
-Message-ID: <lhujz0yoowe.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GNrFiN1A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B802AC4CEE7;
+	Mon, 13 Oct 2025 14:47:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760366831;
+	bh=UszqnfPExzN/pXDJzghixK2YWh4rh+o850/Us1oA9dw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GNrFiN1AEOx+bZoxRfYZiZX1EMEvEqOA655+X++QtbuICKYQoQx73zLPiJyHbPYqh
+	 fYTpl4Q1GU/d/f/Q0nwHrV4yCqYlfogaKsLCNphTW6bajntgUqOXeybgv09Z5trv1y
+	 8acIr9SzOceKudAYWhziAHQNN6sOKART3DEdH9AulyQh3i1ZOStHIFdUTxhct4Iiwt
+	 eVMB0Z1X7NYRtTVq9xZKzT2a/uyBerMGPHtfx4pDEpfEo+4PnjbG52uggioJukCRxz
+	 5D4HAZepf4NyEWSfMJDIZgxLqEcC3Ar9Et/N7n9rvmAoAGLYP9+EVt2CX1ce86R12b
+	 Cer6ifyem1Idg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Oct 2025 16:47:05 +0200
+Message-Id: <DDH9YJEJVF3V.I1SQK1WZ775R@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Markus Probst" <markus.probst@posteo.de>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Lee Jones" <lee@kernel.org>, "Pavel Machek"
+ <pavel@kernel.org>
+Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
+ <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
+ Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-leds@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] rust: add basic Pin<Vec<T, A>> abstractions
+X-Mailer: aerc 0.21.0
+References: <20251012145221.172116-1-markus.probst@posteo.de>
+ <20251012145221.172116-2-markus.probst@posteo.de>
+ <DDGHGF4XOJQG.2MVGBMPK0KUQE@kernel.org>
+ <e550b0862e9ea87e50688d1ec8f623638d170a3a.camel@posteo.de>
+ <DDGNXV9KS3RS.2WHS4OOYM6DOP@kernel.org>
+ <2a31fcd045582382987c8c1da7c4b7d58a1dff61.camel@posteo.de>
+ <DDH1DE35H7L0.1Z2R655P701HR@kernel.org>
+ <4bfba51907578cc0f4f25368240720f4148a2736.camel@posteo.de>
+In-Reply-To: <4bfba51907578cc0f4f25368240720f4148a2736.camel@posteo.de>
 
-* Deepak Gupta:
-
-> How will they contribute to CFI bringup without having a CFI compiled
-> usersapce?
-
-Build glibc themselves and then proceed one library at the time.
-
->>Another use case would be running container images with CFI on a
->>distribution kernel which supports pre-RVA23 hardware.
+On Mon Oct 13, 2025 at 3:43 PM CEST, Markus Probst wrote:
+> On Mon, 2025-10-13 at 10:03 +0200, Benno Lossin wrote:
+>> On Mon Oct 13, 2025 at 12:11 AM CEST, Markus Probst wrote:
+>> > On Sun, 2025-10-12 at 23:31 +0200, Benno Lossin wrote:
+>> > > On Sun Oct 12, 2025 at 6:57 PM CEST, Markus Probst wrote:
+>> > > > From what I can tell, there is no way to get a `Pin<&mut Vec<T,
+>> > > > A>>`
+>> > > > from a `&mut Pin<Vec<T, A>>`. We can only get `Pin<&mut [T]>`
+>> > > > which
+>> > > > is
+>> > > > not usable in our case.
+>> > >=20
+>> > > Hmm yeah that's true.
+>> > >=20
+>> > > > If there is way, without the extension trait or an extra
+>> > > > struct, I
+>> > > > would be happy to implement it.
+>> > >=20
+>> > > So I tried to look for the usage site of this and I found this
+>> > > usage
+>> > > in
+>> > > your v1:
+>> > >=20
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let m=
+ut leds =3D KPinnedVec::with_capacity(
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 Atmega1608LedAddress::VALUES.len() *
+>> > > Atmega1608LedId::VALUES.len(),
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 GFP_KERNEL,
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 )?;
+>> > > =C2=A0=C2=A0=C2=A0 +
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let m=
+ut i =3D 0;
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for a=
+ddr in Atmega1608LedAddress::VALUES {
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 let mode_lock =3D Arc::pin_init(new_mutex!(()),
+>> > > GFP_KERNEL)?;
+>> > > =C2=A0=C2=A0=C2=A0 +
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 for id in Atmega1608LedId::VALUES {
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let Some(child) =3D
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+>> > > fwnode.get_child_by_name(&CString::try_from_fmt(fmt!("led@{i}"))?
+>> > > )
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 else {
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 continue=
+;
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+>> > > =C2=A0=C2=A0=C2=A0 +
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let client =3D ARef::clone(&clie=
+nt);
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let mode_lock =3D Arc::clone(&mo=
+de_lock);
+>> > > =C2=A0=C2=A0=C2=A0 +
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 leds.push_pin_init(LedClassDev::=
+new(
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Some(ide=
+v),
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 None,
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 LedInitD=
+ata::new().fwnode(&child),
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Atmega16=
+08Led {
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 addr,
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 id,
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 client,
+>> > > =C2=A0=C2=A0=C2=A0 +
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 mode_lock,
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 },
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ))?;
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i +=3D 1;
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 }
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>> > > =C2=A0=C2=A0=C2=A0 +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ok(KB=
+ox::new(Self { client, leds },
+>> > > GFP_KERNEL)?.into())
+>> > >=20
+>> > > And I think using `Vec` for this is just wrong. `Vec` is a data
+>> > > structure that supports growing and shrinking the allocation. But
+>> > > you
+>> > > just need a fixed size buffer that holds all your data. Do you
+>> > > think
+>> > > that `Pin<Box<[LedClassDev]>>` would suffice if it had proper
+>> > > support
+>> > > from pin-init?
+>> > As you can see in v1, the number of leds (or vec entries) depends
+>> > on
+>> > the fwnode (see the continue statement there). I don't think that
+>> > counts as fixed size. `Pin<KBox<[Option<LedClassDev>]>>` could
+>> > potentially be used instead of `Pin<KVec<LedClassDev>>` in my
+>> > scenario,
+>> > but that would require an extra byte of allocation for the max leds
+>> > of
+>> > 24 each and the code would look more ugly. At the point I use
+>> > Option in
+>> > the slice, its basically an unoptimized Vec (instead of storing the
+>> > length, it stores if an item in the buffer is present or not).
+>>=20
+>> You can just make the length of the slice be the desired length?
+> That would work, but creates another allocation on the heap (Vec<I>)
+> that could have been avoided. I don't think it would make `Pin<Vec<T,
+> A>>` obsolete.
 >
-> Container image with CFI will have glibc and ld (and all other
-> userspace) also compiled with shadow stack instructions in it. As soon
-> as you take this container image to a pre-RVA23 hardware, you won't
-> even reach vDSO. It'll break much before that, unless kernel is taking
-> a trap on all sspush/sspopchk instructions in prologue/epilogue of
-> functions in userspace (glibc, ld, etc)
+> Or would you rather say, such allocations don't matter?
 
-The idea is that you can use a stock distribution kernel to run CFI
-images (potentially form a different distribution or version of the
-distribution).
+No, but you're already allocating once per inner loop invocation, the
+`CString::try_from_fmt` function allocates :)
 
-But maybe none of this really matters.  How far out is CFI-checking
-hardware?  Is it going to arrive much later than the RVA23 flag day
-that people are suggesting?
+I don't know the kind of application that you're writing, does
+performance matter? If yes, then just run your benchmark suite on both
+versions and look at the difference. If you don't have a benchmark
+suite, then perf probably isn't important enough.
 
-Thanks,
-Florian
+Also if you really want to avoid the allocation, then you probably could
+first query the length and store only that in a local var and then
+create the initializers on-demand. But then again to query that you're
+creating a string every loop iteration, which allocates :)
 
+>> (also,
+>> `i` is never incremented in the `continue` case, so it will act like
+>> a
+>> `break`?)
+> You just found a bug in v1.
+
+:)
+
+> Thanks
+> - Markus Probst
+>
+> [1] https://docs.rs/arrayvec/latest/arrayvec/struct.ArrayString.html
+
+Did you forget to put a reference to this?
+
+---
+Cheers,
+Benno
