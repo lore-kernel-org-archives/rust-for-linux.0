@@ -1,897 +1,348 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B213311C06
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 21:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2202D248C
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 23:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760392625; cv=none; b=e6P0j5BoRXGTTTWHHUgu8Mom+bD3aQFch45JjDvvzO6cSkMfQezLBKdTzY4Zu4i+76wu4P6ESHOLtULM5ICZBTXXU1Yyii0FsbRqOr8DM2nkA/pKz3RX6+EvKbVIh82jhTbpQFh/GHxIXPGHa66amWgAb9hObvytQByJ/Dbjmb4=
+	t=1760399087; cv=none; b=XIwPX07L3oMd38d54CjA5FJZrHTAnlw4Ci1LkNFjFDBbS6Mq145IJLMtrlo3+W7cU2dfVY56GpUAIpPW61Q0eB5LxZzI+ieVt8xwH4VjQ7d/lb3vIBJrGJ6BebDRw4gSbTtoksbnkt5TuoFtma7HyhlGb5kePocDDMkY3YUWvVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760392625; c=relaxed/simple;
-	bh=lU90yAzVrmdZTEFZnF9vDU0rwQqgpOpnn/welasyifg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TkYlZAe5TucnnBVKbwq5mPS1q5PyRVbffOpXhzk52W/99OLVLnGtccp0wSLeajJBf90hzPDmsmP0pqR5oa53tIAgnz7KWaiQdLfRKH8RivgxmFALjROeRSOb91G/cPvQvqs0ODpYZFpxz9PDI3oBI4QdqlqcI3oIZQRMxZ7ilnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=DEySL8oV; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	s=arc-20240116; t=1760399087; c=relaxed/simple;
+	bh=vxmwWQ0DoVc1VJfpKsoyjTQLj22NklEz073s7lF3ARU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VutrxFMkGKEK1n5AgEsiAvbG6qXSSC6VWa8rIFGat9mE2ZI+x3KMIHuqi8msRRhGO9EyMzQiOeiebyVA2nh//FjX8WHpQvFNo2EHgqwtGSuV9VxBFydX+cvdNr5KvrNsNyW5XfZiQ2Ct9d4BuL1fuBZ/46VY4P9MdOQg0n5Jp+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxVw4jmG; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="DEySL8oV"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7811a02316bso3256433b3a.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 14:57:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxVw4jmG"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b5509894ee9so131363a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 16:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1760392621; x=1760997421; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tiO9C5CKCCKloBn/52mfoKbE3jtuDM2WhM6jV239TRE=;
-        b=DEySL8oVRdVJmCYFPP4MC7wVRrszqeLmyPjDpqmjtL86bJeziCvKpXS+Qc6hwcZhMz
-         iYg9EHv9UMKIKWRYvDAy3Iz03v++N6nOmzyYbLtyiQ2PwuTe0C/szGm46oO9NzbH2H5s
-         OA43ifYO8oQqXuqLDH857W1B/QfPnJrYH13Hg3ayv+l56bAu9mtOoUvlsxHDDr5Tet9w
-         2UYvsg8xABm9TiNDkG5kpLJOFsE86CKv32fdLqEqYPl83H6RDxza8RRe0UsdjaOlKYik
-         bJ/zacnLYqBD046+MqRs5vR5Sw4ZP3kNGy/d5BkJe/S/2i9rrBlC3QrWsAszGJ2pDIq0
-         v32g==
+        d=gmail.com; s=20230601; t=1760399085; x=1761003885; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=25uGdd6TkjAY7Zck7/QAhkxlHv/+kj+Cc6pIb4oafgM=;
+        b=hxVw4jmGGb/0GDkQp2p9TB+ETw1Oh7n4L2VEs0mi45Xl4Z2KWYFV2xouz2bXwwkQA9
+         y3Q1GESz2DIvDGxcqgfesjqO5Adr3AnLEkD4qdgMXjYr0EAIE1OkutvpV46/OzKhL74D
+         LBqSZHGqm36MClZzL/m+7e4kbWHuZpQH58BfdM+t0EmCVTujhoNm5xnIlRo7sWOD1nkM
+         yeMAR5f6Y/BnRwUegYnxF0Ol5xIUUUUMHJ+n6nGV8wza/ilzIfUpF+52cNetP1B8FNDL
+         2qMXDNoAbwh04EwQOoEIhq+7/wd8Ywk+iDwjEf9BTBp9RRfRgBAwYohjzTH9yexaFerN
+         EIJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760392621; x=1760997421;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tiO9C5CKCCKloBn/52mfoKbE3jtuDM2WhM6jV239TRE=;
-        b=K95lAr5Y1cRTY5qTaNyh0O7CNDoekYDYkw3x9bYPyWg3n5XGm5404ZL+cwIv6J8NR1
-         EGb5NfW+ylhypNFK8hqtncPiCW+yeVRwLWc5gzRADvl1wi/p88nQtbw60UiIKIeUC3y/
-         ZgsA1eY1Ur9rUPkxeiPZHNRwcnHiHAuruBHBcManZahr+Iej2ynSBwx3iTUsFnoAizCP
-         rxbXTtj+iPE5OexGkUTzo21zedrgThBvMszUUR07/fV+P/8KMX0RDXwhHeyG6rYxYZ4T
-         sj/yS7Zsi0FY/VIns8qrQWTO9t/yNmPO3eB8gaJgbXFb9fDLAMzk/OS4MHBHkVzYnvil
-         rFbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXlSrhcOCCW71k7B3uBtmtoxO78YiaaWgaeDGLUGslm20fyxsDd1bA6dM80ZwpPcN4+ZokVTr8f+BxvIWkwPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgvrGuSienIkZopJtmNU0ZukKMB+s1iKQ3u9KIgPFQy1k6Y/BI
-	GTaNwEcAsLZm32I91Iy/MaqZs2UTsKgoDEhvDVgAbONgLrPAVl2KZYH2Ffe5etNxJaY=
-X-Gm-Gg: ASbGnct5aBgkb9MCCRILwZar4fJXBLGHZ8KXweYHiZ1BFZSLZNtH9XrQWjqRl6gl+KM
-	XnOmsRhNf8ntHVvqyOuO4sROl89zHfpUIg/5SrRs3dDnT5Kxq8hMQ+F7uQPCIQ/exK9jOHfkuF2
-	t8bFnSR8/fBVJmM8YPaOwfXDHtXPpi3xkZiCZaYriU7P/w+T9Wa6Exf2UrnmYNOSch61q00umq0
-	BmRwpYLl6sUCnOrysH1jFZnrbqgRIYLr1Dztu/OipYWfgImUlmtwdgGgznR+AlHouY3lT2GX3s+
-	ZVBbQa28A5svgx1el4OCiXm85j3AESxVkaMcJ3x7RE2oIxUR3kPBfT+9Wm3etVl52yf8sc2L80A
-	URZLX8gE9MvTf89lQq4Six4obBYnntXChIH1hbjtZ8xkwH7IMfzoxAtVX1TxchA==
-X-Google-Smtp-Source: AGHT+IH+3lQijGt7y8J7FJlumm4VHtJd+GQSqGYYHJpEiO78GhLy4UySBcXxj3KCk9A+C08j4EmOCA==
-X-Received: by 2002:a17:903:3c4d:b0:269:b6c4:1005 with SMTP id d9443c01a7336-2902730331amr278507405ad.55.1760392621205;
-        Mon, 13 Oct 2025 14:57:01 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b626bb49esm13143212a91.12.2025.10.13.14.56.59
+        d=1e100.net; s=20230601; t=1760399085; x=1761003885;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=25uGdd6TkjAY7Zck7/QAhkxlHv/+kj+Cc6pIb4oafgM=;
+        b=f9g+d9bKhxWckDa5/okwWD4U6CzHlKSm8g8K9C9jNdzS2B0Q04w6WSqEXXiKO0XQzQ
+         MOXdsuE56CP9z3JTxBXlj7Ylq9lJiqjaBNGlceY1SB5EpozNjrmYCtCaXu2ze+QdUWln
+         27tLAmF5IT/cgTQrjvtm+pVh2RZIu9LUBumQvYByN79pe0EVy4euhUcr1JWOWqe0uL5j
+         vkmIU18Thxdm56s3Nfal9KCEMErIw+eMTGmGkI9NL+DRke1F0dQ6CGvxXU/Y588j1NE4
+         22DaY7EsvAZr70M8VjdHRYyACxNCMEiimtgL7wFdOxI1KvF0u8ZQvLl9qqMk86KjwmUd
+         qRWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUn+eiTYz/CWhaGUeXp6MXGYACfG6Y30SqmBf89fmsD9fwr5NvUNVA+/xDApfWhQCft/gmi6rcO7wmOhSYbFw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHP67TTmJuyFlYg1eooRZneqP7nKWb1T9cmT9tr/T15fruzCyb
+	CYgcpVwhvWBSkHSy+3dMNSeOHklu5+krpwUSDlUmonBMFKMuxwxjdDVm
+X-Gm-Gg: ASbGncvBn3jI//VJee8UnzGompPsoOlrOzS3i7x+tgJbW3rj0T0zVelo0Dhke4heFkK
+	IURgdb/TwAAk/jehDc/HhNDphwGWN35buM8d1Z4E4TNYjjkqLSXhi6UtYuNQ1y4oWfCMo6N+E2f
+	2TozqykrOLAlFb/QkDyMxmSm9o5G0WrM1M9tQmNh6pJ0Dkl06SXFwNAzEF+ZFonIgrkvlDTZLFo
+	E88KgLEp6/7ASymKknVjgebFMtVly0ADw4HeR9yCLkIsjC8bCogibvmF8iQ7krz6VRFfJc1NHu5
+	KCPPmiYoUWRrk5mu6iAB3ZNYxS0XBhpupovncpX3Y0KDxN5IYSx7P+GUDHci/oTrCbey7mSbNyL
+	YcoHuSrhPtxyws6WlMi65ZmFlVgUtrSzOPaXtxQ==
+X-Google-Smtp-Source: AGHT+IHH2YaH2IA8SuLALE8JFm3JwRZhtF8KoJEy6Fp7EtPm+VJaZetsmBqbeL7ypSSJIOxasJruEg==
+X-Received: by 2002:a05:6a00:2e04:b0:781:8ddb:f6c0 with SMTP id d2e1a72fcca58-793876369d2mr14310553b3a.5.1760399084598;
+        Mon, 13 Oct 2025 16:44:44 -0700 (PDT)
+Received: from localhost ([104.249.174.141])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992b0604cfsm13084588b3a.9.2025.10.13.16.44.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 14:57:00 -0700 (PDT)
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Mon, 13 Oct 2025 14:56:20 -0700
-Subject: [PATCH v20 28/28] kselftest/riscv: kselftest for user mode cfi
+        Mon, 13 Oct 2025 16:44:44 -0700 (PDT)
+From: Ben Guo <benx.guo@gmail.com>
+To: Alex Shi <alexs@kernel.org>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+Cc: hust-os-kernel-patches@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v3] docs/zh_CN: Add translation of rust/testing.rst
+Date: Mon, 13 Oct 2025 23:44:01 +0000
+Message-ID: <20251013234416.6172-1-benx.guo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251013-v5_user_cfi_series-v20-28-b9de4be9912e@rivosinc.com>
-References: <20251013-v5_user_cfi_series-v20-0-b9de4be9912e@rivosinc.com>
-In-Reply-To: <20251013-v5_user_cfi_series-v20-0-b9de4be9912e@rivosinc.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
- Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Deepak Gupta <debug@rivosinc.com>
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Adds kselftest for RISC-V control flow integrity implementation for user
-mode. There is not a lot going on in kernel for enabling landing pad for
-user mode. cfi selftest are intended to be compiled with zicfilp and
-zicfiss enabled compiler. Thus kselftest simply checks if landing pad /
-shadow stack for the process are enabled or not and executes ptrace
-selftests on cfi. selftest then register a signal handler for SIGSEGV.
-Any control flow violation are reported as SIGSEGV with si_code =
-SEGV_CPERR. Test will fail on receiving any SEGV_CPERR. Shadow stack part
-has more changes in kernel and thus there are separate tests for that
+Complete the translation of rust/testing.rst and add the testing TOC entry
+to rust/index.rst.
 
-- Exercise `map_shadow_stack` syscall
-- `fork` test to make sure COW works for shadow stack pages
-- gup tests
-  Kernel uses FOLL_FORCE when access happens to memory via
-  /proc/<pid>/mem. Not breaking that for shadow stack.
-- signal test. Make sure signal delivery results in token creation on
-  shadow stack and consumes (and verifies) token on sigreturn
-- shadow stack protection test. attempts to write using regular store
-  instruction on shadow stack memory must result in access faults
-- ptrace test: adds landing pad violation, clears ELP and continues
+Add the translation based on commit a3b2347343e0
+("Documentation: rust: testing: add docs on the new KUnit `#[test]` tests").
 
-In case toolchain doesn't support cfi extension, cfi kselftest wont
-get built.
-
-Test outut
-==========
-
-"""
-TAP version 13
-1..5
-  This is to ensure shadow stack is indeed enabled and working
-  This is to ensure shadow stack is indeed enabled and working
-ok 1 shstk fork test
-ok 2 map shadow stack syscall
-ok 3 shadow stack gup tests
-ok 4 shadow stack signal tests
-ok 5 memory protections of shadow stack memory
-"""
-
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Suggested-by: Charlie Jenkins <charlie@rivosinc.com>
+Signed-off-by: Ben Guo <benx.guo@gmail.com>
 ---
- tools/testing/selftests/riscv/Makefile             |   2 +-
- tools/testing/selftests/riscv/cfi/.gitignore       |   3 +
- tools/testing/selftests/riscv/cfi/Makefile         |  16 +
- tools/testing/selftests/riscv/cfi/cfi_rv_test.h    |  82 +++++
- tools/testing/selftests/riscv/cfi/riscv_cfi_test.c | 173 +++++++++
- tools/testing/selftests/riscv/cfi/shadowstack.c    | 385 +++++++++++++++++++++
- tools/testing/selftests/riscv/cfi/shadowstack.h    |  27 ++
- 7 files changed, 687 insertions(+), 1 deletion(-)
+v2->v3: Resend without In-Reply-To header (no code changes).
+v1->v2: Rebased onto docs-next (no code changes).
+ .../translations/zh_CN/rust/index.rst         |   1 +
+ .../translations/zh_CN/rust/testing.rst       | 215 ++++++++++++++++++
+ 2 files changed, 216 insertions(+)
+ create mode 100644 Documentation/translations/zh_CN/rust/testing.rst
 
-diff --git a/tools/testing/selftests/riscv/Makefile b/tools/testing/selftests/riscv/Makefile
-index 099b8c1f46f8..5671b4405a12 100644
---- a/tools/testing/selftests/riscv/Makefile
-+++ b/tools/testing/selftests/riscv/Makefile
-@@ -5,7 +5,7 @@
- ARCH ?= $(shell uname -m 2>/dev/null || echo not)
+diff --git a/Documentation/translations/zh_CN/rust/index.rst b/Documentation/translations/zh_CN/rust/index.rst
+index 10413b0c17c0..5347d4729588 100644
+--- a/Documentation/translations/zh_CN/rust/index.rst
++++ b/Documentation/translations/zh_CN/rust/index.rst
+@@ -47,6 +47,7 @@ Rust 支持在 v6.1 版本中合并到主线，以帮助确定 Rust 作为一种
+     general-information
+     coding-guidelines
+     arch-support
++    testing
  
- ifneq (,$(filter $(ARCH),riscv))
--RISCV_SUBTARGETS ?= abi hwprobe mm sigreturn vector
-+RISCV_SUBTARGETS ?= abi hwprobe mm sigreturn vector cfi
- else
- RISCV_SUBTARGETS :=
- endif
-diff --git a/tools/testing/selftests/riscv/cfi/.gitignore b/tools/testing/selftests/riscv/cfi/.gitignore
+ 你还可以在 :doc:`../../../process/kernel-docs` 中找到 Rust 的学习材料。
+ 
+diff --git a/Documentation/translations/zh_CN/rust/testing.rst b/Documentation/translations/zh_CN/rust/testing.rst
 new file mode 100644
-index 000000000000..82545863bac6
+index 000000000000..ca81f1cef6eb
 --- /dev/null
-+++ b/tools/testing/selftests/riscv/cfi/.gitignore
-@@ -0,0 +1,3 @@
-+cfitests
-+riscv_cfi_test
-+shadowstack
-diff --git a/tools/testing/selftests/riscv/cfi/Makefile b/tools/testing/selftests/riscv/cfi/Makefile
-new file mode 100644
-index 000000000000..55165a93845f
---- /dev/null
-+++ b/tools/testing/selftests/riscv/cfi/Makefile
-@@ -0,0 +1,16 @@
-+CFLAGS += -I$(top_srcdir)/tools/include
++++ b/Documentation/translations/zh_CN/rust/testing.rst
+@@ -0,0 +1,215 @@
++.. SPDX-License-Identifier: GPL-2.0
++.. include:: ../disclaimer-zh_CN.rst
 +
-+CFLAGS += -march=rv64gc_zicfilp_zicfiss -fcf-protection=full
++:Original: Documentation/rust/testing.rst
 +
-+ifeq ($(shell $(CC) $(CFLAGS) -nostdlib -xc /dev/null -o /dev/null > /dev/null 2>&1; echo $$?),0)
-+TEST_GEN_PROGS := cfitests
++:翻译:
 +
-+include ../../lib.mk
++ 郭杰 Ben Guo <benx.guo@gmail.com>
 +
-+$(OUTPUT)/cfitests: riscv_cfi_test.c shadowstack.c
-+	$(CC) -o$@ $(CFLAGS) $(LDFLAGS) $^
-+else
-+include ../../lib.mk
++测试
++====
 +
-+$(shell echo "Toolchain doesn't support CFI, skipping CFI kselftest." >&2)
-+endif
-diff --git a/tools/testing/selftests/riscv/cfi/cfi_rv_test.h b/tools/testing/selftests/riscv/cfi/cfi_rv_test.h
-new file mode 100644
-index 000000000000..1c8043f2b778
---- /dev/null
-+++ b/tools/testing/selftests/riscv/cfi/cfi_rv_test.h
-@@ -0,0 +1,82 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++本文介绍了如何在内核中测试 Rust 代码。
 +
-+#ifndef SELFTEST_RISCV_CFI_H
-+#define SELFTEST_RISCV_CFI_H
-+#include <stddef.h>
-+#include <sys/types.h>
-+#include "shadowstack.h"
++有三种测试类型：
 +
-+#define CHILD_EXIT_CODE_SSWRITE		10
-+#define CHILD_EXIT_CODE_SIG_TEST	11
++- KUnit 测试
++- ``#[test]`` 测试
++- Kselftests
 +
-+#define my_syscall5(num, arg1, arg2, arg3, arg4, arg5)			\
-+({									\
-+	register long _num  __asm__ ("a7") = (num);			\
-+	register long _arg1 __asm__ ("a0") = (long)(arg1);		\
-+	register long _arg2 __asm__ ("a1") = (long)(arg2);		\
-+	register long _arg3 __asm__ ("a2") = (long)(arg3);		\
-+	register long _arg4 __asm__ ("a3") = (long)(arg4);		\
-+	register long _arg5 __asm__ ("a4") = (long)(arg5);		\
-+									\
-+	__asm__ volatile(						\
-+		"ecall\n"						\
-+		: "+r"							\
-+		(_arg1)							\
-+		: "r"(_arg2), "r"(_arg3), "r"(_arg4), "r"(_arg5),	\
-+		  "r"(_num)						\
-+		: "memory", "cc"					\
-+	);								\
-+	_arg1;								\
-+})
++KUnit 测试
++----------
 +
-+#define my_syscall3(num, arg1, arg2, arg3)				\
-+({									\
-+	register long _num  __asm__ ("a7") = (num);			\
-+	register long _arg1 __asm__ ("a0") = (long)(arg1);		\
-+	register long _arg2 __asm__ ("a1") = (long)(arg2);		\
-+	register long _arg3 __asm__ ("a2") = (long)(arg3);		\
-+									\
-+	__asm__ volatile(						\
-+		"ecall\n"						\
-+		: "+r" (_arg1)						\
-+		: "r"(_arg2), "r"(_arg3),				\
-+		  "r"(_num)						\
-+		: "memory", "cc"					\
-+	);								\
-+	_arg1;								\
-+})
++这些测试来自 Rust 文档中的示例。它们会被转换为 KUnit 测试。
 +
-+#ifndef __NR_prctl
-+#define __NR_prctl 167
-+#endif
++使用
++****
 +
-+#ifndef __NR_map_shadow_stack
-+#define __NR_map_shadow_stack 453
-+#endif
++这些测试可以通过 KUnit 运行。例如，在命令行中使用 ``kunit_tool`` （ ``kunit.py`` ）::
 +
-+#define CSR_SSP 0x011
++	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
 +
-+#ifdef __ASSEMBLY__
-+#define __ASM_STR(x)    x
-+#else
-+#define __ASM_STR(x)    #x
-+#endif
++或者，KUnit 也可以在内核启动时以内置方式运行。获取更多 KUnit 信息，请参阅
++Documentation/dev-tools/kunit/index.rst。
++关于内核内置与命令行测试的详细信息，请参阅 Documentation/dev-tools/kunit/architecture.rst。
 +
-+#define csr_read(csr)							\
-+({									\
-+	register unsigned long __v;					\
-+	__asm__ __volatile__ ("csrr %0, " __ASM_STR(csr)		\
-+				: "=r" (__v) :				\
-+				: "memory");				\
-+	__v;								\
-+})
++要使用这些 KUnit 文档测试，需要在内核配置中启用以下选项::
 +
-+#define csr_write(csr, val)						\
-+({									\
-+	unsigned long __v = (unsigned long)(val);			\
-+	__asm__ __volatile__ ("csrw " __ASM_STR(csr) ", %0"		\
-+				: : "rK" (__v)				\
-+				: "memory");				\
-+})
++	CONFIG_KUNIT
++	   Kernel hacking -> Kernel Testing and Coverage -> KUnit - Enable support for unit tests
++	CONFIG_RUST_KERNEL_DOCTESTS
++	   Kernel hacking -> Rust hacking -> Doctests for the `kernel` crate
 +
-+#endif
-diff --git a/tools/testing/selftests/riscv/cfi/riscv_cfi_test.c b/tools/testing/selftests/riscv/cfi/riscv_cfi_test.c
-new file mode 100644
-index 000000000000..486a2e779053
---- /dev/null
-+++ b/tools/testing/selftests/riscv/cfi/riscv_cfi_test.c
-@@ -0,0 +1,173 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++KUnit 测试即文档测试
++********************
 +
-+#include "../../kselftest.h"
-+#include <sys/signal.h>
-+#include <asm/ucontext.h>
-+#include <linux/prctl.h>
-+#include <errno.h>
-+#include <linux/ptrace.h>
-+#include <sys/wait.h>
-+#include <linux/elf.h>
-+#include <sys/uio.h>
-+#include <asm-generic/unistd.h>
++文档测试（ *doctests* ）一般用于展示函数、结构体或模块等的使用方法。
 +
-+#include "cfi_rv_test.h"
++它们非常方便，因为它们就写在文档旁边。例如：
 +
-+/* do not optimize cfi related test functions */
-+#pragma GCC push_options
-+#pragma GCC optimize("O0")
++.. code-block:: rust
 +
-+void sigsegv_handler(int signum, siginfo_t *si, void *uc)
-+{
-+	struct ucontext *ctx = (struct ucontext *)uc;
-+
-+	if (si->si_code == SEGV_CPERR) {
-+		ksft_print_msg("Control flow violation happened somewhere\n");
-+		ksft_print_msg("PC where violation happened %lx\n", ctx->uc_mcontext.gregs[0]);
-+		exit(-1);
++	/// 求和两个数字。
++	///
++	/// ```
++	/// assert_eq!(mymod::f(10, 20), 30);
++	/// ```
++	pub fn f(a: i32, b: i32) -> i32 {
++	    a + b
 +	}
 +
-+	/* all other cases are expected to be of shadow stack write case */
-+	exit(CHILD_EXIT_CODE_SSWRITE);
-+}
++在用户空间中，这些测试由 ``rustdoc`` 负责收集并运行。单独使用这个工具已经很有价值，
++因为它可以验证示例能否成功编译（确保和代码保持同步），
++同时还可以运行那些不依赖内核 API 的示例。
 +
-+bool register_signal_handler(void)
-+{
-+	struct sigaction sa = {};
++然而，在内核中，这些测试会转换成 KUnit 测试套件。
++这意味着文档测试会被编译成 Rust 内核对象，从而可以在构建的内核环境中运行。
 +
-+	sa.sa_sigaction = sigsegv_handler;
-+	sa.sa_flags = SA_SIGINFO;
-+	if (sigaction(SIGSEGV, &sa, NULL)) {
-+		ksft_print_msg("Registering signal handler for landing pad violation failed\n");
-+		return false;
++通过与 KUnit 集成，Rust 的文档测试可以复用内核现有的测试设施。
++例如，内核日志会显示::
++
++	KTAP version 1
++	1..1
++	    KTAP version 1
++	    # Subtest: rust_doctests_kernel
++	    1..59
++	    # rust_doctest_kernel_build_assert_rs_0.location: rust/kernel/build_assert.rs:13
++	    ok 1 rust_doctest_kernel_build_assert_rs_0
++	    # rust_doctest_kernel_build_assert_rs_1.location: rust/kernel/build_assert.rs:56
++	    ok 2 rust_doctest_kernel_build_assert_rs_1
++	    # rust_doctest_kernel_init_rs_0.location: rust/kernel/init.rs:122
++	    ok 3 rust_doctest_kernel_init_rs_0
++	    ...
++	    # rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
++	    ok 59 rust_doctest_kernel_types_rs_2
++	# rust_doctests_kernel: pass:59 fail:0 skip:0 total:59
++	# Totals: pass:59 fail:0 skip:0 total:59
++	ok 1 rust_doctests_kernel
++
++文档测试中，也可以正常使用 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符，例如：
++
++.. code-block:: rust
++
++	/// ```
++	/// # use kernel::{spawn_work_item, workqueue};
++	/// spawn_work_item!(workqueue::system(), || pr_info!("x\n"))?;
++	/// # Ok::<(), Error>(())
++	/// ```
++
++这些测试和普通代码一样，也可以在 ``CLIPPY=1`` 条件下通过 Clippy 进行编译，
++因此可以从额外的 lint 检查中获益。
++
++为了便于开发者定位文档测试出错的具体行号，日志会输出一条 KTAP 诊断信息。
++其中标明了原始测试的文件和行号（不是 ``rustdoc`` 生成的临时 Rust 文件位置）::
++
++	# rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
++
++Rust 测试中常用的断言宏是来自 Rust 标准库（ ``core`` ）中的 ``assert!`` 和 ``assert_eq!`` 宏。
++内核提供了一个定制版本，这些宏的调用会被转发到 KUnit。
++和 KUnit 测试不同的是，这些宏不需要传递上下文参数（ ``struct kunit *`` ）。
++这使得它们更易于使用，同时文档的读者无需关心底层用的是什么测试框架。
++此外，这种方式未来也许可以让我们更容易测试第三方代码。
++
++当前有一个限制：KUnit 不支持在其他任务中执行断言。
++因此，如果断言真的失败了，我们只是简单地把错误打印到内核日志里。
++另外，文档测试不适用于非公开的函数。
++
++作为文档中的测试示例，应当像 “实际代码” 一样编写。
++例如：不要使用 ``unwrap()`` 或 ``expect()``，请使用 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符。
++更多背景信息，请参阅：
++
++	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
++
++``#[test]`` 测试
++----------------
++
++此外，还有 ``#[test]`` 测试。与文档测试类似，这些测试与用户空间中的测试方式也非常相近，并且同样会映射到 KUnit。
++
++这些测试通过 ``kunit_tests`` 过程宏引入，该宏将测试套件的名称作为参数。
++
++例如，假设想要测试前面文档测试示例中的函数 ``f``，我们可以在定义该函数的同一文件中编写：
++
++.. code-block:: rust
++
++	#[kunit_tests(rust_kernel_mymod)]
++	mod tests {
++	    use super::*;
++
++	    #[test]
++	    fn test_f() {
++	        assert_eq!(f(10, 20), 30);
++	    }
 +	}
 +
-+	return true;
-+}
++如果我们执行这段代码，内核日志会显示::
 +
-+long ptrace(int request, pid_t pid, void *addr, void *data);
++	    KTAP version 1
++	    # Subtest: rust_kernel_mymod
++	    # speed: normal
++	    1..1
++	    # test_f.speed: normal
++	    ok 1 test_f
++	ok 1 rust_kernel_mymod
 +
-+bool cfi_ptrace_test(void)
-+{
-+	pid_t pid;
-+	int status, ret = 0;
-+	unsigned long ptrace_test_num = 0, total_ptrace_tests = 2;
++与文档测试类似， ``assert!`` 和 ``assert_eq!`` 宏被映射回 KUnit 并且不会发生 panic。
++同样，支持 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符，
++测试函数可以什么都不返回（单元类型 ``()``）或 ``Result`` （任何 ``Result<T, E>``）。例如：
 +
-+	struct user_cfi_state cfi_reg;
-+	struct iovec iov;
++.. code-block:: rust
 +
-+	pid = fork();
++	#[kunit_tests(rust_kernel_mymod)]
++	mod tests {
++	    use super::*;
 +
-+	if (pid == -1) {
-+		ksft_exit_fail_msg("%s: fork failed\n", __func__);
-+		exit(1);
++	    #[test]
++	    fn test_g() -> Result {
++	        let x = g()?;
++	        assert_eq!(x, 30);
++	        Ok(())
++	    }
 +	}
 +
-+	if (pid == 0) {
-+		/* allow to be traced */
-+		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-+		raise(SIGSTOP);
-+		asm volatile (
-+		"la a5, 1f\n"
-+		"jalr a5 \n"
-+		"nop \n"
-+		"nop \n"
-+		"1: nop\n"
-+		: : : "a5");
-+		exit(11);
-+		/* child shouldn't go beyond here */
-+	}
++如果我们运行测试并且调用 ``g`` 失败，那么内核日志会显示::
 +
-+	/* parent's code goes here */
-+	iov.iov_base = &cfi_reg;
-+	iov.iov_len = sizeof(cfi_reg);
++	    KTAP version 1
++	    # Subtest: rust_kernel_mymod
++	    # speed: normal
++	    1..1
++	    # test_g: ASSERTION FAILED at rust/kernel/lib.rs:335
++	    Expected is_test_result_ok(test_g()) to be true, but is false
++	    # test_g.speed: normal
++	    not ok 1 test_g
++	not ok 1 rust_kernel_mymod
 +
-+	while (ptrace_test_num < total_ptrace_tests) {
-+		memset(&cfi_reg, 0, sizeof(cfi_reg));
-+		waitpid(pid, &status, 0);
-+		if (WIFSTOPPED(status)) {
-+			errno = 0;
-+			ret = ptrace(PTRACE_GETREGSET, pid, (void *)NT_RISCV_USER_CFI, &iov);
-+			if (ret == -1 && errno)
-+				ksft_exit_fail_msg("%s: PTRACE_GETREGSET failed\n", __func__);
-+		} else
-+			ksft_exit_fail_msg("%s: child didn't stop, failed\n", __func__);
++如果 ``#[test]`` 测试可以对用户起到示例作用，那就应该改用文档测试。
++即使是 API 的边界情况，例如错误或边界问题，放在示例中展示也同样有价值。
 +
-+		switch (ptrace_test_num) {
-+#define CFI_ENABLE_MASK (PTRACE_CFI_LP_EN_STATE |	\
-+			PTRACE_CFI_SS_EN_STATE |	\
-+			PTRACE_CFI_SS_PTR_STATE)
-+		case 0:
-+			if ((cfi_reg.cfi_status.cfi_state & CFI_ENABLE_MASK) != CFI_ENABLE_MASK)
-+				ksft_exit_fail_msg("%s: ptrace_getregset failed, %llu\n", __func__,
-+				cfi_reg.cfi_status.cfi_state);
-+			if (!cfi_reg.shstk_ptr)
-+				ksft_exit_fail_msg("%s: NULL shadow stack pointer, test failed\n",
-+				__func__);
-+			break;
-+		case 1:
-+			if (!(cfi_reg.cfi_status.cfi_state & PTRACE_CFI_ELP_STATE))
-+				ksft_exit_fail_msg("%s: elp must have been set\n", __func__);
-+			/* clear elp state. not interested in anything else */
-+			cfi_reg.cfi_status.cfi_state = 0;
++``rusttest`` 宿主机测试
++-----------------------
 +
-+			ret = ptrace(PTRACE_SETREGSET, pid, (void *)NT_RISCV_USER_CFI, &iov);
-+			if (ret == -1 && errno)
-+				ksft_exit_fail_msg("%s: PTRACE_GETREGSET failed\n", __func__);
-+			break;
-+		default:
-+			ksft_exit_fail_msg("%s: unreachable switch case\n", __func__);
-+			break;
-+		}
-+		ptrace(PTRACE_CONT, pid, NULL, NULL);
-+		ptrace_test_num++;
-+	}
++这类测试运行在用户空间，可以通过 ``rusttest`` 目标在构建内核的宿主机中编译并运行::
 +
-+	waitpid(pid, &status, 0);
-+	if (WEXITSTATUS(status) != 11)
-+		ksft_print_msg("%s, bad return code from child\n", __func__);
++	make LLVM=1 rusttest
 +
-+	ksft_print_msg("%s, ptrace test succeeded\n", __func__);
-+	return true;
-+}
++当前操作需要内核 ``.config``。
 +
-+int main(int argc, char *argv[])
-+{
-+	int ret = 0;
-+	unsigned long lpad_status = 0, ss_status = 0;
++目前，它们主要用于测试 ``macros`` crate 的示例。
 +
-+	ksft_print_header();
++Kselftests
++----------
 +
-+	ksft_print_msg("Starting risc-v tests\n");
++Kselftests 可以在 ``tools/testing/selftests/rust`` 文件夹中找到。
 +
-+	/*
-+	 * Landing pad test. Not a lot of kernel changes to support landing
-+	 * pad for user mode except lighting up a bit in senvcfg via a prctl
-+	 * Enable landing pad through out the execution of test binary
-+	 */
-+	ret = my_syscall5(__NR_prctl, PR_GET_INDIR_BR_LP_STATUS, &lpad_status, 0, 0, 0);
-+	if (ret)
-+		ksft_exit_fail_msg("Get landing pad status failed with %d\n", ret);
++测试所需的内核配置选项列在 ``tools/testing/selftests/rust/config`` 文件中，
++可以借助 ``merge_config.sh`` 脚本合并到现有配置中::
 +
-+	if (!(lpad_status & PR_INDIR_BR_LP_ENABLE))
-+		ksft_exit_fail_msg("Landing pad is not enabled, should be enabled via glibc\n");
++	./scripts/kconfig/merge_config.sh .config tools/testing/selftests/rust/config
 +
-+	ret = my_syscall5(__NR_prctl, PR_GET_SHADOW_STACK_STATUS, &ss_status, 0, 0, 0);
-+	if (ret)
-+		ksft_exit_fail_msg("Get shadow stack failed with %d\n", ret);
++Kselftests 会在内核源码树中构建，以便在运行相同版本内核的系统上执行测试。
 +
-+	if (!(ss_status & PR_SHADOW_STACK_ENABLE))
-+		ksft_exit_fail_msg("Shadow stack is not enabled, should be enabled via glibc\n");
++一旦安装并启动了与源码树匹配的内核，测试即可通过以下命令编译并执行::
 +
-+	if (!register_signal_handler())
-+		ksft_exit_fail_msg("Registering signal handler for SIGSEGV failed\n");
++	make TARGETS="rust" kselftest
 +
-+	ksft_print_msg("Landing pad and shadow stack are enabled for binary\n");
-+	cfi_ptrace_test();
-+
-+	execute_shadow_stack_tests();
-+
-+	return 0;
-+}
-+
-+#pragma GCC pop_options
-diff --git a/tools/testing/selftests/riscv/cfi/shadowstack.c b/tools/testing/selftests/riscv/cfi/shadowstack.c
-new file mode 100644
-index 000000000000..53387dbd9cf5
---- /dev/null
-+++ b/tools/testing/selftests/riscv/cfi/shadowstack.c
-@@ -0,0 +1,385 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include "../../kselftest.h"
-+#include <sys/wait.h>
-+#include <signal.h>
-+#include <fcntl.h>
-+#include <asm-generic/unistd.h>
-+#include <sys/mman.h>
-+#include "shadowstack.h"
-+#include "cfi_rv_test.h"
-+
-+static struct shadow_stack_tests shstk_tests[] = {
-+	{ "shstk fork test\n", shadow_stack_fork_test },
-+	{ "map shadow stack syscall\n", shadow_stack_map_test },
-+	{ "shadow stack gup tests\n", shadow_stack_gup_tests },
-+	{ "shadow stack signal tests\n", shadow_stack_signal_test},
-+	{ "memory protections of shadow stack memory\n", shadow_stack_protection_test }
-+};
-+
-+#define RISCV_SHADOW_STACK_TESTS ARRAY_SIZE(shstk_tests)
-+
-+/* do not optimize shadow stack related test functions */
-+#pragma GCC push_options
-+#pragma GCC optimize("O0")
-+
-+void zar(void)
-+{
-+	unsigned long ssp = 0;
-+
-+	ssp = csr_read(CSR_SSP);
-+	ksft_print_msg("Spewing out shadow stack ptr: %lx\n"
-+			"  This is to ensure shadow stack is indeed enabled and working\n",
-+			ssp);
-+}
-+
-+void bar(void)
-+{
-+	zar();
-+}
-+
-+void foo(void)
-+{
-+	bar();
-+}
-+
-+void zar_child(void)
-+{
-+	unsigned long ssp = 0;
-+
-+	ssp = csr_read(CSR_SSP);
-+	ksft_print_msg("Spewing out shadow stack ptr: %lx\n"
-+			"  This is to ensure shadow stack is indeed enabled and working\n",
-+			ssp);
-+}
-+
-+void bar_child(void)
-+{
-+	zar_child();
-+}
-+
-+void foo_child(void)
-+{
-+	bar_child();
-+}
-+
-+typedef void (call_func_ptr)(void);
-+/*
-+ * call couple of functions to test push pop.
-+ */
-+int shadow_stack_call_tests(call_func_ptr fn_ptr, bool parent)
-+{
-+	ksft_print_msg("dummy calls for sspush and sspopchk in context of %s\n",
-+		       parent ? "parent" : "child");
-+
-+	(fn_ptr)();
-+
-+	return 0;
-+}
-+
-+/* forks a thread, and ensure shadow stacks fork out */
-+bool shadow_stack_fork_test(unsigned long test_num, void *ctx)
-+{
-+	int pid = 0, child_status = 0, parent_pid = 0, ret = 0;
-+	unsigned long ss_status = 0;
-+
-+	ksft_print_msg("Exercising shadow stack fork test\n");
-+
-+	ret = my_syscall5(__NR_prctl, PR_GET_SHADOW_STACK_STATUS, &ss_status, 0, 0, 0);
-+	if (ret) {
-+		ksft_exit_skip("Shadow stack get status prctl failed with errorcode %d\n", ret);
-+		return false;
-+	}
-+
-+	if (!(ss_status & PR_SHADOW_STACK_ENABLE))
-+		ksft_exit_skip("Shadow stack is not enabled, should be enabled via glibc\n");
-+
-+	parent_pid = getpid();
-+	pid = fork();
-+
-+	if (pid) {
-+		ksft_print_msg("Parent pid %d and child pid %d\n", parent_pid, pid);
-+		shadow_stack_call_tests(&foo, true);
-+	} else {
-+		shadow_stack_call_tests(&foo_child, false);
-+	}
-+
-+	if (pid) {
-+		ksft_print_msg("Waiting on child to finish\n");
-+		wait(&child_status);
-+	} else {
-+		/* exit child gracefully */
-+		exit(0);
-+	}
-+
-+	if (pid && WIFSIGNALED(child_status)) {
-+		ksft_print_msg("Child faulted, fork test failed\n");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+/* exercise `map_shadow_stack`, pivot to it and call some functions to ensure it works */
-+#define SHADOW_STACK_ALLOC_SIZE 4096
-+bool shadow_stack_map_test(unsigned long test_num, void *ctx)
-+{
-+	unsigned long shdw_addr;
-+	int ret = 0;
-+
-+	ksft_print_msg("Exercising shadow stack map test\n");
-+
-+	shdw_addr = my_syscall3(__NR_map_shadow_stack, NULL, SHADOW_STACK_ALLOC_SIZE, 0);
-+
-+	if (((long)shdw_addr) <= 0) {
-+		ksft_print_msg("map_shadow_stack failed with error code %d\n",
-+			       (int)shdw_addr);
-+		return false;
-+	}
-+
-+	ret = munmap((void *)shdw_addr, SHADOW_STACK_ALLOC_SIZE);
-+
-+	if (ret) {
-+		ksft_print_msg("munmap failed with error code %d\n", ret);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+/*
-+ * shadow stack protection tests. map a shadow stack and
-+ * validate all memory protections work on it
-+ */
-+bool shadow_stack_protection_test(unsigned long test_num, void *ctx)
-+{
-+	unsigned long shdw_addr;
-+	unsigned long *write_addr = NULL;
-+	int ret = 0, pid = 0, child_status = 0;
-+
-+	ksft_print_msg("Exercising shadow stack protection test (WPT)\n");
-+
-+	shdw_addr = my_syscall3(__NR_map_shadow_stack, NULL, SHADOW_STACK_ALLOC_SIZE, 0);
-+
-+	if (((long)shdw_addr) <= 0) {
-+		ksft_print_msg("map_shadow_stack failed with error code %d\n",
-+			       (int)shdw_addr);
-+		return false;
-+	}
-+
-+	write_addr = (unsigned long *)shdw_addr;
-+	pid = fork();
-+
-+	/* no child was created, return false */
-+	if (pid == -1)
-+		return false;
-+
-+	/*
-+	 * try to perform a store from child on shadow stack memory
-+	 * it should result in SIGSEGV
-+	 */
-+	if (!pid) {
-+		/* below write must lead to SIGSEGV */
-+		*write_addr = 0xdeadbeef;
-+	} else {
-+		wait(&child_status);
-+	}
-+
-+	/* test fail, if 0xdeadbeef present on shadow stack address */
-+	if (*write_addr == 0xdeadbeef) {
-+		ksft_print_msg("Shadow stack WPT failed\n");
-+		return false;
-+	}
-+
-+	/* if child reached here, then fail */
-+	if (!pid) {
-+		ksft_print_msg("Shadow stack WPT failed: child reached unreachable state\n");
-+		return false;
-+	}
-+
-+	/* if child exited via signal handler but not for write on ss */
-+	if (WIFEXITED(child_status) &&
-+	    WEXITSTATUS(child_status) != CHILD_EXIT_CODE_SSWRITE) {
-+		ksft_print_msg("Shadow stack WPT failed: child wasn't signaled for write\n");
-+		return false;
-+	}
-+
-+	ret = munmap(write_addr, SHADOW_STACK_ALLOC_SIZE);
-+	if (ret) {
-+		ksft_print_msg("Shadow stack WPT failed: munmap failed, error code %d\n",
-+			       ret);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+#define SS_MAGIC_WRITE_VAL 0xbeefdead
-+
-+int gup_tests(int mem_fd, unsigned long *shdw_addr)
-+{
-+	unsigned long val = 0;
-+
-+	lseek(mem_fd, (unsigned long)shdw_addr, SEEK_SET);
-+	if (read(mem_fd, &val, sizeof(val)) < 0) {
-+		ksft_print_msg("Reading shadow stack mem via gup failed\n");
-+		return 1;
-+	}
-+
-+	val = SS_MAGIC_WRITE_VAL;
-+	lseek(mem_fd, (unsigned long)shdw_addr, SEEK_SET);
-+	if (write(mem_fd, &val, sizeof(val)) < 0) {
-+		ksft_print_msg("Writing shadow stack mem via gup failed\n");
-+		return 1;
-+	}
-+
-+	if (*shdw_addr != SS_MAGIC_WRITE_VAL) {
-+		ksft_print_msg("GUP write to shadow stack memory failed\n");
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
-+bool shadow_stack_gup_tests(unsigned long test_num, void *ctx)
-+{
-+	unsigned long shdw_addr = 0;
-+	unsigned long *write_addr = NULL;
-+	int fd = 0;
-+	bool ret = false;
-+
-+	ksft_print_msg("Exercising shadow stack gup tests\n");
-+	shdw_addr = my_syscall3(__NR_map_shadow_stack, NULL, SHADOW_STACK_ALLOC_SIZE, 0);
-+
-+	if (((long)shdw_addr) <= 0) {
-+		ksft_print_msg("map_shadow_stack failed with error code %d\n", (int)shdw_addr);
-+		return false;
-+	}
-+
-+	write_addr = (unsigned long *)shdw_addr;
-+
-+	fd = open("/proc/self/mem", O_RDWR);
-+	if (fd == -1)
-+		return false;
-+
-+	if (gup_tests(fd, write_addr)) {
-+		ksft_print_msg("gup tests failed\n");
-+		goto out;
-+	}
-+
-+	ret = true;
-+out:
-+	if (shdw_addr && munmap(write_addr, SHADOW_STACK_ALLOC_SIZE)) {
-+		ksft_print_msg("munmap failed with error code %d\n", ret);
-+		ret = false;
-+	}
-+
-+	return ret;
-+}
-+
-+volatile bool break_loop;
-+
-+void sigusr1_handler(int signo)
-+{
-+	break_loop = true;
-+}
-+
-+bool sigusr1_signal_test(void)
-+{
-+	struct sigaction sa = {};
-+
-+	sa.sa_handler = sigusr1_handler;
-+	sa.sa_flags = 0;
-+	sigemptyset(&sa.sa_mask);
-+	if (sigaction(SIGUSR1, &sa, NULL)) {
-+		ksft_print_msg("Registering signal handler for SIGUSR1 failed\n");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+/*
-+ * shadow stack signal test. shadow stack must be enabled.
-+ * register a signal, fork another thread which is waiting
-+ * on signal. Send a signal from parent to child, verify
-+ * that signal was received by child. If not test fails
-+ */
-+bool shadow_stack_signal_test(unsigned long test_num, void *ctx)
-+{
-+	int pid = 0, child_status = 0, ret = 0;
-+	unsigned long ss_status = 0;
-+
-+	ksft_print_msg("Exercising shadow stack signal test\n");
-+
-+	ret = my_syscall5(__NR_prctl, PR_GET_SHADOW_STACK_STATUS, &ss_status, 0, 0, 0);
-+	if (ret) {
-+		ksft_print_msg("Shadow stack get status prctl failed with errorcode %d\n", ret);
-+		return false;
-+	}
-+
-+	if (!(ss_status & PR_SHADOW_STACK_ENABLE))
-+		ksft_print_msg("Shadow stack is not enabled, should be enabled via glibc\n");
-+
-+	/* this should be caught by signal handler and do an exit */
-+	if (!sigusr1_signal_test()) {
-+		ksft_print_msg("Registering sigusr1 handler failed\n");
-+		exit(-1);
-+	}
-+
-+	pid = fork();
-+
-+	if (pid == -1) {
-+		ksft_print_msg("Signal test: fork failed\n");
-+		goto out;
-+	}
-+
-+	if (pid == 0) {
-+		while (!break_loop)
-+			sleep(1);
-+
-+		exit(11);
-+		/* child shouldn't go beyond here */
-+	}
-+
-+	/* send SIGUSR1 to child */
-+	kill(pid, SIGUSR1);
-+	wait(&child_status);
-+
-+out:
-+
-+	return (WIFEXITED(child_status) &&
-+		WEXITSTATUS(child_status) == 11);
-+}
-+
-+int execute_shadow_stack_tests(void)
-+{
-+	int ret = 0;
-+	unsigned long test_count = 0;
-+	unsigned long shstk_status = 0;
-+	bool test_pass = false;
-+
-+	ksft_print_msg("Executing RISC-V shadow stack self tests\n");
-+	ksft_set_plan(RISCV_SHADOW_STACK_TESTS);
-+
-+	ret = my_syscall5(__NR_prctl, PR_GET_SHADOW_STACK_STATUS, &shstk_status, 0, 0, 0);
-+
-+	if (ret != 0)
-+		ksft_exit_fail_msg("Get shadow stack status failed with %d\n", ret);
-+
-+	/*
-+	 * If we are here that means get shadow stack status succeeded and
-+	 * thus shadow stack support is baked in the kernel.
-+	 */
-+	while (test_count < RISCV_SHADOW_STACK_TESTS) {
-+		test_pass = (*shstk_tests[test_count].t_func)(test_count, NULL);
-+		ksft_test_result(test_pass, shstk_tests[test_count].name);
-+		test_count++;
-+	}
-+
-+	ksft_finished();
-+
-+	return 0;
-+}
-+
-+#pragma GCC pop_options
-diff --git a/tools/testing/selftests/riscv/cfi/shadowstack.h b/tools/testing/selftests/riscv/cfi/shadowstack.h
-new file mode 100644
-index 000000000000..0be510167de3
---- /dev/null
-+++ b/tools/testing/selftests/riscv/cfi/shadowstack.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef SELFTEST_SHADOWSTACK_TEST_H
-+#define SELFTEST_SHADOWSTACK_TEST_H
-+#include <stddef.h>
-+#include <linux/prctl.h>
-+
-+/*
-+ * a cfi test returns true for success or false for fail
-+ * takes a number for test number to index into array and void pointer.
-+ */
-+typedef bool (*shstk_test_func)(unsigned long test_num, void *);
-+
-+struct shadow_stack_tests {
-+	char *name;
-+	shstk_test_func t_func;
-+};
-+
-+bool shadow_stack_fork_test(unsigned long test_num, void *ctx);
-+bool shadow_stack_map_test(unsigned long test_num, void *ctx);
-+bool shadow_stack_protection_test(unsigned long test_num, void *ctx);
-+bool shadow_stack_gup_tests(unsigned long test_num, void *ctx);
-+bool shadow_stack_signal_test(unsigned long test_num, void *ctx);
-+
-+int execute_shadow_stack_tests(void);
-+
-+#endif
++请参阅 Documentation/dev-tools/kselftest.rst 文档以获取更多信息。
 
+base-commit: 344657696e9aa7bf89e48e1848fe0ce551bd1f4a
 -- 
 2.43.0
 
