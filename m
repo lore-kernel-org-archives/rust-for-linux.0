@@ -1,153 +1,109 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62E02D6E5A
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 18:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA462C0F87
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 19:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760380471; cv=none; b=knNTypAKNYExSc0kyerYFJY9zUtswkwZIIq9uKqUNDNDLMkAQlxCr4k3rPQ3ZFrYr0+7Eqkfxy5hI/pV2AChp2Cz7w8+nmltuMK7YQNfMTSSsO8i4sMVDHXLVN+WHB7vjtgaiEWfgdeCKyfI9E7x4m3xiFMsu1UYr1aF8jdcgmY=
+	t=1760382204; cv=none; b=SuPTDTEwAy60bG1+yKCZol4YO3nldN2Z/dRtt5+iO+g5PIkz2X6apKX6JAlMDEbO2H7fGaGD/sP/9+iE5cYx8Dy1wJsJFWM9IAVco88m3W65ywDNGc1u1bWlTOyjba7ag5xAbQxSESKy2/GuqJmMpfWq8hmtfi9BF9m1ts8GpnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760380471; c=relaxed/simple;
-	bh=MhcnUYIzW/AjzXhn2E+PvO698S4Cf6FqeCfg4+Wjp0k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bosKXuhycPIk3lUzViDcHKj37ejPRta917OUfjbhRng9Mp+KdbadUp3ATh8lB3jfVqy9d0qMcrFEREYo31UipVAUtc5k+Pvy18Nua+36ZpsU9AAXUdcIrzp5eRkVyI1hcB9GZBFpIafg6wvLGy2KikexYz8lqhjury3xZWi1jtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ym8M83Gj; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1760382204; c=relaxed/simple;
+	bh=k2OWhU1lGGwJ3iHr0MRl7hFteOM1d7W97pCqpxIyPdA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Fz7U9AYmQbsP1gJgj2IEQ6dMYs/7mJvE1J3r8QLBFE1y3qXG4Zh/M4/8lGnfX2UjQXR/l2POQXyesGNJV7A2h4zyYmm4tmN+VyRvjYIrx3wWrzpT1ju10ApVr7UlH/aXlgR4vxFunB7tzQDf467WmReUQE827BOgxR/K07kYb9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=pjWeBZ0i; arc=none smtp.client-ip=178.154.239.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ym8M83Gj"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b5a8827e692so68029666b.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 11:34:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760380468; x=1760985268; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ay88j/QH+hyyaDBYdXcO1dx59pcNYIrbAIsPI7MQ/r0=;
-        b=ym8M83GjNWGwF+4tsGmYsHLbaPw+5Q9ol66z0+BSv49SO2oEAvVk0y9EDa/WyxIv11
-         i5R0F1Nc26odJPK0HVY8O94K7oUEXSeVXAbvDb/GpZBzlAC4547cUecaYabC3e3bim3c
-         UVwAJ5mGmA1FqmR1OneRzlQVpbNhyZYqdNZI1VUMB6ygLh8lhun8FDksBYlzR/b6MRuR
-         a7HAH3tHmQbE5LhVgiClt62YbVp3CfK2bkWPyI0VVMh+RqGGBLrEFVIZKNPukDtAFJE3
-         +HRyzafHZEE1jCnV8WVP511z1nFi6XHzq8zbxOmUC5Ac2XLsmfuU5yXgjQP6tvmHrU7q
-         8wmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760380468; x=1760985268;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ay88j/QH+hyyaDBYdXcO1dx59pcNYIrbAIsPI7MQ/r0=;
-        b=Mr2GxD65GfjkXJIjZetGu9akaJueyqXyJcGoEUrB2SVrzCPD9YaF2gG4Ab6vclGZ2Y
-         8yOtmhh7AwvDbNYPKlWRsz10/cIeq0Rgj7FJToLCyGpEe9q3PzpGaNkpwn50qDVtba6m
-         zprOtPrzvYzO9ApqQI1ttkF0t3W6zAZsHtp7eZ/lm1GGXvyqCqBgvejzn673TzWNK5Ye
-         64KzsE6dEDkT+E2GpjDq1mho9E9FO1LLoCuf0g1r19hmy6SbcMxsR/XXPQAtX5Xr4Jq3
-         zwE2hFeiolMbVGzSJ21oiqTbR2KM37t6DIV7UDZzQD1gblhDjhmTuYoVXmCV8L91oTmo
-         4DAw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8azjF87hNNDYC/WJfpO6sAkl5jP/DQj85ytT7z8LHqevYSK7dtNmgwTG/EvhnHLa5000uf2i4LUfGW12uTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/kIdS56fA/QwqGjY04lF3P1CAtSOaoIr2C8lJbOQG6ilvtH7X
-	671iSI4Y3LHXofKXwajwxRnJRSOkBZa3J2Aw3PPG7MccbmQ0dSfWb9iicWcJbc7Lugwn0mfjFM+
-	yRWnWw86muXFvgA6fMQ==
-X-Google-Smtp-Source: AGHT+IGe1qNQN2z1oRXedOyQR3Zfee2RXdyhLUdBm0dMR5H6rdNOgRFmc0Gkgty5AvsElHYqpi3+spY3mX20Te0=
-X-Received: from ejn19.prod.google.com ([2002:a17:906:593:b0:b3c:12c2:d0dd])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:2689:b0:b3e:bb87:772c with SMTP id a640c23a62f3a-b50aab9c912mr2457025366b.17.1760380467851;
- Mon, 13 Oct 2025 11:34:27 -0700 (PDT)
-Date: Mon, 13 Oct 2025 18:34:27 +0000
-In-Reply-To: <20251012145221.172116-3-markus.probst@posteo.de>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="pjWeBZ0i"
+Received: from mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:290e:0:640:f317:0])
+	by forward502a.mail.yandex.net (Yandex) with ESMTPS id B430181282;
+	Mon, 13 Oct 2025 22:03:11 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 63UdC3TL5Os0-OnU847Gd;
+	Mon, 13 Oct 2025 22:03:10 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1760382190;
+	bh=WCzISYGccMu5qhMqmS75TZUU/EKntQEWIbpOVk9rLuw=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=pjWeBZ0iQUZXKpri74Y6cg+fZeaEo6vd0gULnpFI8+jaHufoEwqSINtDtFrwEbEGT
+	 NLnL7Ers47otlQqE+GhTRS7K8cEHCEm5j9XI85ud0Klm+Cijzqvv01f8Mm1GTzZoXs
+	 rON/og/eWj4ufO7qtM2utUgs+VAzbYgTm3XMivuo=
+Authentication-Results: mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Mon, 13 Oct 2025 22:03:03 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, tamird@gmail.com
+Subject: Re: [PATCH v3 2/2] rust: drop `error::to_result` and utilize
+ `ToResult`
+Message-ID: <20251013220303.15f95186@nimda.home>
+In-Reply-To: <CANiq72kvNWT1fXYkXUwmyC5jHfYufdx+koD6Y2xsWzE9YhLLEg@mail.gmail.com>
+References: <20251013124139.18809-1-work@onurozkan.dev>
+	<20251013124139.18809-3-work@onurozkan.dev>
+	<CANiq72kvNWT1fXYkXUwmyC5jHfYufdx+koD6Y2xsWzE9YhLLEg@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251012145221.172116-1-markus.probst@posteo.de> <20251012145221.172116-3-markus.probst@posteo.de>
-Message-ID: <aO1GM4WXs37Zpm0G@google.com>
-Subject: Re: [PATCH v4 2/2] rust: leds: add basic led classdev abstractions
-From: Alice Ryhl <aliceryhl@google.com>
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 12, 2025 at 02:52:39PM +0000, Markus Probst wrote:
-> Implement the core abstractions needed for led class devices, including:
-> 
-> * `led::LedOps` - the trait for handling leds, including
->   `brightness_set`, `brightness_get` and `blink_set`
-> 
-> * `led::InitData` - data set for the led class device
-> 
-> * `led::Device` - a safe wrapper around `led_classdev`
-> 
-> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+On Mon, 13 Oct 2025 19:04:09 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-> +pub trait LedOps: Send + 'static + Sized {
-> +    /// If set true, [`LedOps::brightness_set`] and [`LedOps::blink_set`] must not sleep
-> +    /// and perform the operation immediately.
-> +    const BLOCKING: bool;
-> +    /// The max brightness level
-> +    const MAX_BRIGHTNESS: u32;
-> +
-> +    /// Sets the brightness level.
-> +    ///
-> +    /// See also [`LedOps::BLOCKING`]
-> +    fn brightness_set(&self, brightness: u32) -> Result<()>;
-> +
-> +    /// Gets the current brightness level.
-> +    fn brightness_get(&self) -> u32 {
-> +        build_error!(VTABLE_DEFAULT_ERROR)
-> +    }
-> +
-> +    /// Activates hardware accelerated blinking.
-> +    ///
-> +    /// delays are in milliseconds. If both are zero, a sensible default should be chosen.
-> +    /// The caller should adjust the timings in that case and if it can't match the values
-> +    /// specified exactly. Setting the brightness to 0 will disable the hardware accelerated
-> +    /// blinking.
-> +    ///
-> +    /// See also [`LedOps::BLOCKING`]
-> +    fn blink_set(&self, _delay_on: &mut usize, _delay_off: &mut usize) -> Result<()> {
-> +        build_error!(VTABLE_DEFAULT_ERROR)
-> +    }
+> On Mon, Oct 13, 2025 at 2:43=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.d=
+ev> wrote:
+> >
+> >  29 files changed, 253 insertions(+), 210 deletions(-)
+>=20
+> Something like this will be hard to merge if we wait for all
+> Acked-bys. It is best to do the migration over time and split it per
+> subsystem.
 
-These functions should probably take a &Device<Bound> argument so that
-they can use methods that require a bound device (such as IO).
+Sure. To do that, I need to keep the current `error::to_result`
+untouched. I guess that would be fine.
 
-> +impl<T: LedOps> Device<T> {
-> +    /// Registers a new led classdev.
-> +    ///
-> +    /// The [`Device`] will be unregistered on drop.
-> +    pub fn new<'a>(
-> +        parent: &'a device::Device<Bound>,
-> +        init_data: InitData<'a>,
-> +        ops: T,
-> +    ) -> impl PinInit<Devres<Self>, Error> + 'a {
-> +        Devres::new(
-> +            parent,
-> +            try_pin_init!(Self {
-> +                ops,
-> +                classdev <- Opaque::try_ffi_init(|ptr: *mut bindings::led_classdev| {
-> +                    // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write.
-> +                    // `led_classdev` gets fully initialized in-place by
-> +                    // `led_classdev_register_ext` including `mutex` and `list_head`.
-> +                    unsafe { ptr.write(bindings::led_classdev {
-> +                        max_brightness: T::MAX_BRIGHTNESS,
-> +                        brightness_set: T::BLOCKING
-> +                            .then_some(Adapter::<T>::brightness_set_callback),
-> +                        brightness_set_blocking: (!T::BLOCKING)
-> +                            .then_some(Adapter::<T>::brightness_set_blocking_callback),
-> +                        brightness_get: T::HAS_BRIGHTNESS_GET
-> +                            .then_some(Adapter::<T>::brightness_get_callback),
-> +                        blink_set: T::HAS_BLINK_SET
-> +                            .then_some(Adapter::<T>::blink_set_callback),
-> +                        .. bindings::led_classdev::default()
-> +                    }) };
+> Also, you should Cc all the relevant maintainers/reviewers -- you are
+> touching quite a few subsystems. :)
+>=20
 
-This doesn't look like something rustfmt would output? Could you run
-rustfmt if you haven't already. If it doesn't do anything, then please
-format it outside of the macro and move it back in.
+Right, sorry.
 
-Alice
+> > I haven't included all the improvements made possible by the new
+> > design since that could conflict with other ongoing patches [2].
+> > Once this patch is approved and applied, I am planning to follow up
+> > with creating a "good first issue" on [3] for those additional
+> > changes.
+>=20
+> I would suggest including a few examples of the improvements in an RFC
+> patch on top. In other words, we need to show the improvements (or at
+> least some key examples) to justify a change, rather than doing it
+> later.
+>=20
+> For instance, with the changes in this patch, I see a lot of `Ok(())`
+> added because now one needs to discard the value, which isn't great...
+> It indicates that the common case may not be keeping the value, and
+> thus we may want two APIs for this.
+>=20
+> Thus, similarly, we may be able to spot a similar pattern in those
+> examples too.
+>=20
+
+Thank you for your feedback Miguel. I will wait sometime to collect more
+feedback and then I will prepare an RFC based on all the input. I would
+feel more confident sending the RFC after receiving more feedback from
+more Rust kernel developers.
+
+-Onur
+
+> Thanks!
+>=20
+> Cheers,
+> Miguel
+
