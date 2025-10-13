@@ -1,217 +1,144 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010012.outbound.protection.outlook.com [52.101.85.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9A42D4B6D;
-	Mon, 13 Oct 2025 18:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760379950; cv=fail; b=kb16VEp0zIt+N9Ta1EEteCLSqMzWlePVbigwkI02LNEu1m8KU7htLCNIf54TEMfKxrMEUodBox+gfT9MeTWnh6wKbeTz5z2jmW30Fk4TdBabwMS9coid6lSXSY1A1lkgsSMnMOsDRTYRLM6QycZTvUZVvtQ8i3ggph05XgvSDk0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760379950; c=relaxed/simple;
-	bh=qFDyzMePWjTwadprEf9bg5ZEqPSMA5H/es2tHXv+EDk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NdnxE2W/DmmF3GuX+g5E/RcwkgWAM4k2/d8kzf5PVP0RScVnPo4Bpr4iGgFsvwDjWE6I5KHwcL8GXN1pTOzJm1CAVr8+TW31L5faxxI4JRUYLYi1tk5JVzjNOZsObV0GForI8e6dWa+5ZGqaGqZ4lurcc3ySHOjWKbca+EDNgeM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tvMXstnU; arc=fail smtp.client-ip=52.101.85.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2937A27A477
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 18:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760380163; cv=none; b=Mfyx5aXdQ3S1F2nApD3K6z7dR+EAzKGZb/vlQ9QgT3cd3EszWnWBH5bIOuriGssnN7ofGqtFTFLzBbAFPd/4mZXXeK62PQmYgRw5vbFbe6xjCVnuDSv/HJ4mG5xkTlWB9MkpbojsUND2NN2lk7nCyIXl39a1hIuXxyFy7YeTImI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760380163; c=relaxed/simple;
+	bh=zYL+0K31QKoc5g18VBqsETSHnU+/6xRE94vFn5O+hv8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nbpsCiLAhJSvk8+OUt9lhrzRT/UKzu60pNlZWo62rFBpJnPh8LoIQU//AJNoDyYtsNoNGCT7EACsNkoKHDl4KYYDy/mSPUraZ86JfchaA4p9Uoq3uBvhwzZTCC2OVIShXAoChE5Pfz2NAFt1okn+bUE/gZsDr3GHUn3DFwW2Qvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ekv/tpIC; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tvMXstnU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uGtZsjCwuWnyoHkniyodCq69x4rS42HNglwHcVYwhtfNekZGgEMT2rU1Ei3ivnDo5w36fzMApt0P+V7kizpQOHUwtIvK2bfe3WIA4f1xvyA+NvENdKgst33bUBP1juIzmnF6jyUprbe8oG2FosmZMLLDEi4LKodR1rCpG87U/62J23LCoYSOig2ihYidJtpt2kMaO7LTOW2dZFz0d1reGKxPUhDh1XOPto83GlA/4SI5bZ4h26czn+irLYpNmJ51nN82bMXHl3Gw9cSYU3Gn/msm9hMiGtsbs6fGtgPUHMoFFg9s5cYvJ1zBlgFYcE6lfyoLwi/OxjChDba3c5m4OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A/7y1yLOCXob2ZHuDkHM2q2kQPkRRspDSJ/TF/N5e3Q=;
- b=hRGl7zxDFjCs9BV0A50ti1Y1pkXdfGMnhAtS9aTx+D6/K00JfGSf6bt7zpTgsYnv4tiMrhF5xnMI1x/JN5X/KzMMuiflIf6Y/Cx+QdvLMaN9SJ32l1m1qkUr9h+TVNmr0x/CRJYH7mk8mG8PoKHTscW6nVy05xQuDFAo1VRtPjxZSZcR4cdZ/w6p/NwwTJX20Lq6wlmTiYNKaEe8Ycga57DhrJQKKvb0AuR5vtygsenrBeQhA96xZLZ9T83Ly9cYU7wwH8tXew5E9HiA8kz2syDTzEBs2nig/q/lP2sfThZeoVy0wOIsR54JYvRNmWrugP+LNn0Ogg+Deilnbrgfeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A/7y1yLOCXob2ZHuDkHM2q2kQPkRRspDSJ/TF/N5e3Q=;
- b=tvMXstnU4Czl8FnlEWG4e7aUo3F/X17PTPtC9pkdhpHavMUScylWC5EjKPu6Kn7PlDDplCAXraUdfHMa75vSJUy4UP5Key94lf+uFLlLQXJFnRRU8j8yILEtwKKdNeKJ7ZlPDXfpoLk8mnjJ/VMYCztNnY8ip+wxrewPgXM9OL8byAvEKbN4XvSFd/WDNO5R2kkqqQW3sReuwooG3aUYj8MEfzTK3Kw8AOjb7SHrih9CmKg1BxhNqSky56jYRVUTGYThl0UkS3N+hDIlG1z6IsdMFIdgpwIuuwV/xXzxQdDU+b5WbhkbKfGb6bgCxj9Ivgn+c7YYknuuhqi4eU+bDQ==
-Received: from BN0PR04CA0140.namprd04.prod.outlook.com (2603:10b6:408:ed::25)
- by BY5PR12MB4322.namprd12.prod.outlook.com (2603:10b6:a03:20a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.13; Mon, 13 Oct
- 2025 18:25:42 +0000
-Received: from BN2PEPF000055DD.namprd21.prod.outlook.com
- (2603:10b6:408:ed:cafe::24) by BN0PR04CA0140.outlook.office365.com
- (2603:10b6:408:ed::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9203.12 via Frontend Transport; Mon,
- 13 Oct 2025 18:25:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BN2PEPF000055DD.mail.protection.outlook.com (10.167.245.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.0 via Frontend Transport; Mon, 13 Oct 2025 18:25:41 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 13 Oct
- 2025 11:25:25 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 13 Oct 2025 11:25:25 -0700
-Received: from inno-thin-client (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Mon, 13 Oct 2025 11:25:19 -0700
-Date: Mon, 13 Oct 2025 21:25:18 +0300
-From: Zhi Wang <zhiw@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-CC: <rust-for-linux@vger.kernel.org>, <bhelgaas@google.com>,
-	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
-	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
-	<lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
-	<tmgross@umich.edu>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <cjia@nvidia.com>, <smitra@nvidia.com>,
-	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
-	<targupta@nvidia.com>, <zhiwang@kernel.org>, <acourbot@nvidia.com>,
-	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <markus.probst@posteo.de>
-Subject: Re: [RFC 0/6] rust: pci: add config space read/write support
-Message-ID: <20251013212518.555a19ad.zhiw@nvidia.com>
-In-Reply-To: <DDHB2T3G9BUA.18YWV70J82Z01@kernel.org>
-References: <20251010080330.183559-1-zhiw@nvidia.com>
-	<DDHB2T3G9BUA.18YWV70J82Z01@kernel.org>
-Organization: NVIDIA
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ekv/tpIC"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e407c600eso32739205e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Oct 2025 11:29:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760380160; x=1760984960; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7bD6YmmdQTenqw0okYBiQ7W3RmItenU8G7xdrmKJ69M=;
+        b=ekv/tpICQkn+DcpI2KvSP+/Y9hwJ+NGYYxo+ATN3t9vheSfquJX/thXOjtY7QSjVGA
+         KMxwLH0wAq4ZCNIcqdWPe0l0jVeTRNEyndPvtBag4mip8KUrUJrqy9LpzC+xh/58gXEM
+         MiFN2p4eG55/oBXxS/letJg8b6e/heVI+THRFZCFZtDHieAKzgaEKq/eJJfRWu2IKhAR
+         7E67MtFsR/yT5RdzJDJKXJ/hJF/tkUvyOEPVHU7hxIxd1YY82JEtgpXYKrM3/MrHouwv
+         yWHIeDaBJsY5tC06VafA8/Vdy4+EDG3QP5/VxgChpZVrnQcIExwJUgIso0Cl85FtyYa4
+         LR5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760380160; x=1760984960;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7bD6YmmdQTenqw0okYBiQ7W3RmItenU8G7xdrmKJ69M=;
+        b=SNnMEevUhecRKY4QN2NdxLETZ9atMx35GBj/8qGqv37x7UYsK8EMXdPtJmQBVuuPBx
+         vWWfT5nPDgQ3J4F08bUHVYf8taCGqx7M0c+DM9YqeW5wMVZIqECTYwHi11aCJcc5nTYU
+         QaT00f88gcpGfGfhtUO2OR2qn7iEteZZRJiJWH2bGDSWMyfk+L1Bvs2YqYk8HWxJHLPK
+         VqRxL0HLRgqS0OphD3yfRbKDeg+tUPMKgGb5Kb8ShRfGZcXk7QoZw6f2QQk6Tg4hb5i4
+         slWB7nnDlknFZTRziIDLZ3TpL/4pGO1ZTUWvM3BYuQiM4I3KJPZ1+2XzEWhkr/5sR+24
+         cimg==
+X-Gm-Message-State: AOJu0Yy6MLnXButeJAwTIFxP0Woxi/4Rbne9Ep5P0dk1nXKAu0uhtZeX
+	7Do54JnmXv5NbKcwoXUv3x3UxrICFxNQJvpWSB/YzVkpOW1U1CfTdKwwxjOa1iVlPDrtVYiUnh8
+	PGbFb9kW8otSLSi0cHQ==
+X-Google-Smtp-Source: AGHT+IFNKtLrbphIS4PoyrnDJH9HejlloM+is74jPThCg9CXwvLc2SaQaccD/56Q5dEx1PAKJ/kbu5gPzH8MdFw=
+X-Received: from wrrm18.prod.google.com ([2002:adf:fa12:0:b0:425:f04a:4d8b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:64c4:0:b0:425:75ce:9f5f with SMTP id ffacd0b85a97d-4266e8de573mr12388546f8f.48.1760380160506;
+ Mon, 13 Oct 2025 11:29:20 -0700 (PDT)
+Date: Mon, 13 Oct 2025 18:29:19 +0000
+In-Reply-To: <20251013124139.18809-3-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055DD:EE_|BY5PR12MB4322:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ace9911-0dff-4b83-d67d-08de0a85eae3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|36860700013|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?O/Vfn5VLgCbwR2QytBH5pumI3R+T0a8Zfe/D3YednzUFCSUlm40UbT9KocG0?=
- =?us-ascii?Q?annMM3TEVBvI0ItdSXP45u0v6GMrPMoy1Afa/9rQASiZ5QSqAiA5Rbdl4Baq?=
- =?us-ascii?Q?pB2N02wLYuQhSGMcoaNB2ZpoJtJlB8Dd6b1UbomWHiYB+sSn3XdfzcNAern0?=
- =?us-ascii?Q?A8QYlv1JZAkVow0A3RFLHH2AOptyt8gjrZuU6/Go8BYxP0jNIuHIBUd4EQJh?=
- =?us-ascii?Q?E0XqbvUQuEMKIHSDasehdLLQfQEN8HsmvhN+ZzbDTpRHMALbf/JXYc8Krugn?=
- =?us-ascii?Q?nU1inz5Vakli8SsGhP0Sma/8CBrCTwIY0JYFSRPEGLmftiEOQ3QXMbIrhDAg?=
- =?us-ascii?Q?K5zNFpZ0qhnojE6xPgR+j1YQYp6X5Jtf0c1VtncPTHzJK7MDMqKLKSsE7yXm?=
- =?us-ascii?Q?o09jLYdkRM/K36Xd7TnBE7fgbbx15nfxUvk7SIxhHiTvZ4HPMVBcsV2PG/iM?=
- =?us-ascii?Q?1hU8VjOX4yxTMGkNt7mlai00RuAcgvC4A4wts0WLDcyivLsuPRLUzFDoWL//?=
- =?us-ascii?Q?d4U6jRIk9KwpmEmC+EcJNHyzMr1+s5mC1ofp8rzOEY+QZA0dP/Z7Uus3hXLT?=
- =?us-ascii?Q?73jaDLZrgVI4s+KFiBwo9ECqpIxIvJ8WP1sr1si0p8HSSrRQ1cf9QZQfD6Q+?=
- =?us-ascii?Q?QyWtYdj4WdVnqY84UNmtz3WsAjWgqHZKkc8Oo6YTyRMn++j/+OCsg5ZcvK/K?=
- =?us-ascii?Q?7oa6QtYxRLfk04hFqNwgGSBJodIt0Zy70j74QdqBgr/4XXqNQptTmAsaDnk1?=
- =?us-ascii?Q?q3gDDJL9HZrtggZuPeVjiVHV1YnlPhPDlGd36u5VVGNUSvSOtKWFkskxI+AC?=
- =?us-ascii?Q?6nsBApOd//Dy7DNMC/z7K736qJK4/nUxkLPWvhDO9RPT2abbOyKA/paNtX4/?=
- =?us-ascii?Q?hR+MQq+UKcH8OteCnvQA9nRsIIpxQEDmSAjGpWlW60NaIliS37GnrPzsYTa5?=
- =?us-ascii?Q?vYZf1XuImrOOPUnvsKgyGth602hxwNJ9veSzlWzb8RglgROfbaklijo4qb6Y?=
- =?us-ascii?Q?Cc1ABGVZLLIiDK3t6hulV17qA5eF7q1r8EHjHnxnWnVHGMQU/IN0S9/siYCE?=
- =?us-ascii?Q?Kb++7v64b5F7LUV2mmJoaSQPgBRJ50mVKSAikEs9IzAS/r+paFwCOZq2FvDt?=
- =?us-ascii?Q?w2y4O+NEVo+x6lqYxWSkBXiYr7/Am0XY3ugk57m8jjTDcTT6rMEr75tt6Mkc?=
- =?us-ascii?Q?UOh6uVI2mPIA0K0Us7MUw0eSU2GWiW/MHovn9CI+Aw10g2Fd3ODKefv9+aDo?=
- =?us-ascii?Q?NOXLQj+lHiitf2sc4U4CJRXOgRaD+V/8WGCIx4JFRHrOR4xN17ajfRcQpWiA?=
- =?us-ascii?Q?zIQUtwv4x3PATnZAoF2t8wCmBphaqcAlwGr3psft3oUOScdacsKe4NY7+aI1?=
- =?us-ascii?Q?ATT0loZurxsuT9crlHi8snpIJIoLAgNVUoBBzOjKGeIRFuGPlwqjQ0f12WOl?=
- =?us-ascii?Q?i2X82WMbRwtJfDPgVKBUoD+tQsUe+Vufw5zNWvAuc4xTEJICj3WELajVJRM3?=
- =?us-ascii?Q?3UhPfCYxFCWC8lwsuDDf/IpsK+XwCLFDW/UQuFxhBFd7fgsi+/FxTNWP3mKQ?=
- =?us-ascii?Q?ofYSf9Juvz2x3LqJKdI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(36860700013)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 18:25:41.9250
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ace9911-0dff-4b83-d67d-08de0a85eae3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000055DD.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4322
+Mime-Version: 1.0
+References: <20251013124139.18809-1-work@onurozkan.dev> <20251013124139.18809-3-work@onurozkan.dev>
+Message-ID: <aO1E_-KdnvpG5vXl@google.com>
+Subject: Re: [PATCH v3 2/2] rust: drop `error::to_result` and utilize `ToResult`
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+	tamird@gmail.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 13 Oct 2025 17:39:41 +0200
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+On Mon, Oct 13, 2025 at 03:41:39PM +0300, Onur =C3=96zkan wrote:
+> Current `to_result` helper takes a `c_int` and returns `Ok(())` on
+> success and this has some issues like:
+>=20
+>     - Callers lose the original return value and often have to store
+> 	it in a temporary variable before calling `to_result`.
+>=20
+>     - It only supports `c_int`, which makes callers to unnecessarily
+> 	cast when working with other types (e.g. `u16` in phy
+> 	abstractions). We even have some places that ignore to use
+> 	`to_result` helper because the input doesn't fit in `c_int`
+> 	(see [1]).
+>=20
+> [1]: https://lore.kernel.org/all/20250822080252.773d6f54@nimda.home/
+>=20
+> This patch removes the `error::to_result` function and replaces it
+> with a more advanced helper, `ToResult` trait. This change brings
+> three main benefits:
+>=20
+>     - A better calling convention. Instead of wrapping function calls
+> 	with `to_result`, we can now call `.to_result()` directly as an
+> 	extension function.
+>=20
+>     - The returned value is preserved as an unsigned integer on success
+> 	which was previously discarded by error::to_result.
+>=20
+>     - It's no longer limited with a single input type. E.g., right now we
+> 	can call to_result on isize without manually casting them into i32.
+>=20
+> So that the code that previously looked like:
+>=20
+>     let ret =3D unsafe { bindings::some_ffi_call() };
+>     to_result(ret).map(|()| SomeType::new(ret))
+>=20
+> can now be written more directly as:
+>=20
+>     unsafe { bindings::some_ffi_call() }.to_result()
+> 	.map(SomeType::new)
+>=20
+> Similarly, code such as:
+>=20
+>     let res: isize =3D unsafe { bindings::some_ffi_call() };
+>     if res < 0 {
+> 	    return Err(Error::from_errno(res as i32));
+>     }
+>=20
+> can be done without manually casting into i32:
+>=20
+>     unsafe { bindings::some_ffi_call() }.to_result()?;
+>=20
+> This patch only fixes the callers that broke after changes on `to_result`=
+.
+> I haven't included all the improvements made possible by the new design
+> since that could conflict with other ongoing patches [2]. Once this patch
+> is approved and applied, I am planning to follow up with creating a
+> "good first issue" on [3] for those additional changes.
+>=20
+> [2]: https://lore.kernel.org/rust-for-linux/?q=3Dto_result
+> [3]: https://github.com/Rust-for-Linux/linux
+>=20
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x=
+/near/536374456
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 
-> Hi Zhi,
-> 
-> (Cc: Alex, Joel, John, Markus)
-> 
-> On Fri Oct 10, 2025 at 10:03 AM CEST, Zhi Wang wrote:
-> > This ideas of this series are:
-> >
-> > - Factor out a common trait IoRegion for other accessors to share
-> > the same compiling/runtime check like before.  
-> 
-> Yes, this is something we want to have in general:
-> 
-> Currently, we have a single I/O backend (struct Io) which is used for
-> generic MMIO. However, we should make Io a trait instead and require
-> a new MMIO type to implement the trait, where the trait methods would
-> remain to be {try_}{read,write}{8,16,..}().
-> 
+I think we should keep the function call syntax and just change its
+return type based on the new trait.
 
-I was considering the same when writing this series. The concern is
-mostly about having to change the drivers' MMIO code to adapt to the
-re-factor.
+Or maybe even introduce a new method to keep the existing method that
+returns Result<()>. Many functions only return 0 or an error, and I
+don't want to map from int to () either.
 
-IMHO, if we are seeing the necessity of this re-factor, we should do it
-before it got more usage. This could be the part 1 of the next spin.
-
-and adding pci::Device<Bound>::config_space() could be part 2 and
-register! marco could be part 3.
-
-ditto
-
-> 
-> > The current kernel::Io MMIO read/write doesn't return a failure,
-> > because {read, write}{b, w, l}() are always successful. This is not
-> > true in pci_{read, write}_config{byte, word, dword}() because a PCI
-> > device can be disconnected from the bus. Thus a failure is
-> > returned.  
-> 
-> This is in fact also true for the PCI configuration space. The PCI
-> configuration space has a minimum size that is known at compile time.
-> All registers within this minimum size can be access in an infallible
-> way with the non try_*() methods.
-> 
-> The main idea behind the fallible and infallible accessors is that
-> you can assert a minimum expected size of an I/O backend (e.g. a PCI
-> bar). I.e. drivers know their minimum requirements of the size of the
-> I/O region. If the I/O backend can fulfill the request we can be sure
-> about the minimum size and hence accesses with offsets that are known
-> at compile time can be infallible (because we know the minimum
-> accepted size of the I/O backend at compile time as well).
-> 
-
-For PCI configuration space. Standard configuration space should be
-readable and to access the extended configuration space, the MCFG
-should be enabled beforehand and the enabling is system-wide.
-
-I think the size of standard configuration space falls in "falliable
-accessors", and the extended configuration space falls in "infalliable"
-parts
-
-But for the "infallible" part in PCI configuration space, the device
-can be disconnected from the PCI bus. E.g. unresponsive device. In that
-case, the current PCI core will mark the device as "disconnected" before
-they causes more problems and any access to the configuration space
-will fail with an error code. This can also happen on access to
-"infalliable" part.
-
-How should we handle this case in "infallible" accessors of PCI
-configuration space? Returning Result<> seems doesn't fit the concept
-of "infallible", but causing a rust panic seems overkill...
-
-Z.
+Alice
