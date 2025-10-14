@@ -1,319 +1,267 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010025.outbound.protection.outlook.com [52.101.85.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142D215E97
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 02:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760408697; cv=none; b=lJ1RsMSdbp3nnElhMHMhMsgyNyRAGy+mC8E+NOTJjbq2limTpDYUBmarSSLe0pW7+7vU/sWZu4zxWiRhPey3sm4SeZdey7rBpPFZQLOwiBauxphvHLtfI137TNooQ82c0dys9Sq3ccuTakU6dxn7vlv8xVT+wVHIYOyWoavl4Gk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760408697; c=relaxed/simple;
-	bh=sNJUcp+yMKDI0ltf93BaTrl48i0hprVOkdUvZo+ECO4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZmtTGxTC4F361cEgLRBOM7Ayl+H6p5ZJdHHHpltZbQtY7bLMbhRUmz7T16w3IyzGimSFhQ4UkzJnhAh+Uky8yaWcQ1FORqn2IMoGVa6zYHY1GGG718CJkyzHbJPZj/Yslo7FjJ3YYpEG/sTyux/kLp13TwOtPQgfM1Jvp3bAYHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R+xYdbe7; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968C419D07E;
+	Tue, 14 Oct 2025 06:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760423732; cv=fail; b=SsbpdacFXVsQP+PSX5SmQ2zAf6Mze7K2GCKVwoOyZWHJWq+nwNqtoNU06lxOHtjYr3kPuzyxJN5SDqehVSv9l1RO1hBFaYm69dtS8Xd6BHibG+SlYLLjOuzx7cKOGgtWCe9IBnt787LlSBfJ5G86+ORA2Cp9o653wCCQDSmaIKY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760423732; c=relaxed/simple;
+	bh=DHRcajhS8HBNf9ln8Gmbr8ZLeUBwo3ruio3XtFYZmD8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=eV9ocqzpfyDDMaBvgllcMKiPIvr2OAJisXz3vFpFBsGtYIe4sx3Z5Ybx8K2c8afluJ/qVubr8yPCTN5uwcnF2qf1JLvEakdF6u9P1MZpgJaAW3xC9tA3O8msLC2Xyn0/mdcpoQ/IMpyQqIlubTLKY02XazC8RvwYnSxs1mkaj+Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=g4s57gtu; arc=fail smtp.client-ip=52.101.85.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R+xYdbe7"
-Message-ID: <4011ea47-ce74-4a0c-a45d-e8ded75f45a8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760408683;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OF3rKewz7wX2n3FJZqd/foNJ6TH2t9WmFQxeFbMlfHw=;
-	b=R+xYdbe7i4OJpzYoXUXpXYPtS31s0/Z5Dy/ozMorWtHbqPpAs7adrnnKQeP0iGyDVCBsZ+
-	bN988ii16gLhChP7aB9GEXufqQQG65Zf0CNFc+l9+0kqI9mf8w4cZFUiOj216aSxbnJ+Ph
-	vzyvDkSjgv26z3EipI0s9DuOb/DaMHU=
-Date: Tue, 14 Oct 2025 10:24:33 +0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="g4s57gtu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mq9Dr8Wx7yXv6lk5Bs4SDNV1vMwFz8BqOyoPXJsj0Ady4N8ISiP27mMPQHzi+6hD+nSUqMnEqC15cWx/4kqcVXK0fxMWbBzTwPvieQWg3aHChYEwLTiR6NP32eIvsl1+7x+F4QxNxWO8++ZYSShJyEze27FM6dTrASTj6m72Xc91X1nUEJfgicAO6ts0e8wU+uV2dJQ5Vf62R3N2m1UeoZ0xyMQgpXDgUxU5wDBHa+EtJAkZPpy4iD66v+iAQAvaeU3mBYQ4UbVwNjNmkqMSHhstotKUnQ/9zX4GXYIQSHo8tIwwNViRULaLAscBS+jKUegPeSKQbAbahZvIeOXp5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uLI/NhfsOu0+ERQ5imltfLksnvkHaLZjUDB9X7QcsnQ=;
+ b=sOaREfxNcWFZ4bq9pKqxI38Ta7HfvACRHRxn7k/DJ4njSArZogO1bkQzug+Z4Q0mGSLmU6eB4JbjpG3lfyRB0ILRnKSkg7KI7ttywaOrXAjDEU/FLEUWQQnBDMXV0XlkP9rb/cqe4nlY3bF9ZMK9dnMpQa0KcFtHpFr3zpl+YO4dnMeZN2qlc5e7PghW2V+Rpe3FxnqkZo4oCqgmMo8qoat3Nar9ys4otn84mkbAENMNlqch5l8G5IzEje6aRR9c5Ajk+ADeK1aF8eNE8DDs5CpkpUu6a2W6Ku/MqVWuNjX5a1RdzO7dCAuLR+YwlXk/T0BriCmNWZt+VS0JsoINaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uLI/NhfsOu0+ERQ5imltfLksnvkHaLZjUDB9X7QcsnQ=;
+ b=g4s57gtuH64x9igYKbtnh2sJHd0YvT7e+8wAQUZq1nq+PcDZqRFYcMUiz1BOSRzGJIlOvq9CJfE5Olc/SuXMLi4Rm14+df4Ia2M9HH+BcOY0l4qutP7DWLWJdemFXqXlRr+3depfwUz95UHMNZ3Ss6cmsCvqPfRMzNebyplJPHmKYSiAbtRfAeO422+nB0OKdAya84ycWTkZ19gf2eI9t5ky3rE2+K+mnAsxpvjTlqZh2RNviYwnpLourrRl2dt6+wRpquaMP1N6xcJcgnssfZWzZAHs3pga6QdG0avKADdEO8YdSz6MqCT4mJ9j1y5sUx5Ffak/uvMiVq63TkfM7A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SA1PR12MB7319.namprd12.prod.outlook.com (2603:10b6:806:2b5::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Tue, 14 Oct
+ 2025 06:35:26 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
+ 06:35:26 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 14 Oct 2025 15:35:22 +0900
+Message-Id: <DDHU4LL4GGIY.16OJMIL7ZK58P@nvidia.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
+Subject: Re: [PATCH v2 0/5] rust: add `TryFrom` and `Into` derive macros
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Jesung Yang" <y.j3ms.n@gmail.com>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <cover.1755235180.git.y.j3ms.n@gmail.com>
+ <CANiq72nbERSOWKRUTJ96YYKCDeAoHLBuiVP+XkDUKg7JYkoyiA@mail.gmail.com>
+ <CA+tqQ4KG98XcWh3rkAxEOiACSUtPf7KM0Wqh9Af=POgVDHJzzw@mail.gmail.com>
+ <CANiq72kE89ukxpf3L0_jFOdv51TDtjjj3r=1mjJzdGWJwmAbaQ@mail.gmail.com>
+ <CA+tqQ4J7_z7_NmUNojJttF1e8GRR8Ua9w0Rap1t-U4gYPhQ1Yg@mail.gmail.com>
+In-Reply-To: <CA+tqQ4J7_z7_NmUNojJttF1e8GRR8Ua9w0Rap1t-U4gYPhQ1Yg@mail.gmail.com>
+X-ClientProxiedBy: TY4P286CA0086.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:369::16) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] docs/zh_CN: Add translation of rust/testing.rst
-To: Ben Guo <benx.guo@gmail.com>, Alex Shi <alexs@kernel.org>,
- Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: hust-os-kernel-patches@googlegroups.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- llvm@lists.linux.dev
-References: <20251013234416.6172-1-benx.guo@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yanteng Si <si.yanteng@linux.dev>
-In-Reply-To: <20251013234416.6172-1-benx.guo@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB7319:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11c37c96-afa3-49f9-e78b-08de0aebdbed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NE42aFk4TjV3SU52T0l3YzBRdm0rZUptQ1BRckp3NDFYakpGODM1VTV1cGx6?=
+ =?utf-8?B?TkwyOGhLVmk1eEM1QlhPQ1cvQVlXV2NIQjl6a3VQZktuWFdoTUdpVUUxM1lw?=
+ =?utf-8?B?cHhibUkrS0hxUGNkZGNJb2dDVXhqSkRtQUhjb0hUWE0xWWhMVUlPSjZIbjZp?=
+ =?utf-8?B?NitTZnR1NndTUTkrak5XUlJoV2JuOUtRWU90OU5QMnE3YkVjdlI0ditzalRV?=
+ =?utf-8?B?ZzBWZlJLVlFqR054eFVlVmNIV0JjZ0pCQk1ST1Z0M2NXazFIYkp1MWJxWDJQ?=
+ =?utf-8?B?SiswUndockJVdWdmN21MZEtSd2Vua1BwUjE4cmREckVhem9lL0xMMXZOWGM0?=
+ =?utf-8?B?UWpBSHJBNERtYW0wTlpEUFUvVkE3eEY5WCtpZUgrMzA3WmRSQTZsL0R6R1dQ?=
+ =?utf-8?B?VUU5TGx0WEFTWXVza3FQRjVuK0NSY1g3TGY5S3F4TGNaZUx4eWkwdUVUeTkv?=
+ =?utf-8?B?bkk2VDNmb2tpaXpjOEpRZldvVmUvZmI1WDdodkJtbEpuZWtDcWRqY3E0Vzlm?=
+ =?utf-8?B?RW1tNUlzd1ZiZi8vMHJzUDdLakQ2VVY0bFhnRmZtUTIvZ3BjRU9LcWpRd0Rt?=
+ =?utf-8?B?Qmd4RVB1d0FQSDlYbFZKejN5Y3Myd1ducGhvWUhVSUxubFVTZ1JPRzFwTkdo?=
+ =?utf-8?B?YlB0UVJ0RHAyZDB5MDUzTjh1aFBOT2FES1E3cDhoNWgxMW1rUnc1UTR0MWpX?=
+ =?utf-8?B?WjMybGNKUFcrUVNNOThQMmFodnhDaUZmQ0RjSGVmSWR3bDIreDJLRTJKa1N0?=
+ =?utf-8?B?bUVpMGlOSUxLSlQ1QUxRSVBHTmRaM3l5WnhPWDgzQUdZMTZYMmsvcC9DWWsw?=
+ =?utf-8?B?ZjN1dDIzYWsrSmN5cnFIRk5XV0FIZk5WUllzb2ZYdUZrRjJ3T2RCcm91elI3?=
+ =?utf-8?B?VVo4U2x0N205QVVpc3JxNTFXTmNIdHVxalYxelR6NmxScTJRR2ljMGF2OHdW?=
+ =?utf-8?B?bHN2OVgxdzZOWGFMZnEzckZ1RnRvTWswRm1QM3RLNWcrZDBqSnZwZG9zMUVh?=
+ =?utf-8?B?M3NSc2FHRVFVNE5wVU5GK0xtZFRkVmhKdXBOalM1Ky80WTZtV0w2dGJIdXZz?=
+ =?utf-8?B?eEJOY2l5K2JtZ1BHRkUzb1IwTEc3UjY0MmxBY2hwd1psbTBHSGNsdCtUSmJU?=
+ =?utf-8?B?MnZGMUZoRDlvbVFxZ3lrS1BzbERBNGN3STRhbHFiSTNHZnhVWW0rYk9GMkFj?=
+ =?utf-8?B?ZjY2eFFGYlNkcnNJcnJLVkdXUk5SMFZLWHNiQnkxdnY2dzlDSTB6dGJlMm54?=
+ =?utf-8?B?c0pNei9ud24wM0hzN3NyWEZUYjd0YWdEV1JGcDFzVG95endUYlBWMnk5TjBt?=
+ =?utf-8?B?MHVidVR3T0dXYllySHBmRUFWb1NLclZkRW9jOTJrNUxHSnVRWll5dTFub2xi?=
+ =?utf-8?B?bStrMlNGbGpCTkFCTHBXRitMWTVyWDkwajhnM28vaE9rcDY1ak5QUDFrL2V2?=
+ =?utf-8?B?MzJQeFh4WUVCUUNlL0o0NXJkUTN3d0JpUHNTTFByQU9Lb0x1TFJMTWhLNTNa?=
+ =?utf-8?B?QVV0S3VoWGhzSHpPOWVGWlNLRytQUHhLTVJsTVRZZ2p5ZnBlalFiKzZwNitv?=
+ =?utf-8?B?cjFoekFDVlcvbi9CMmRiVk56ajV5SnUyZFlSSmpGUEUzVDl5OGQ0Umh6UGs2?=
+ =?utf-8?B?RWcweW9KM050R0JPMlcrOXg3Z1FUTnVzdDdzNGV6NnlWc1FoNzlFaGk3cG1p?=
+ =?utf-8?B?a0dFcW83alZmZjViVTB6QlNybzUrOHBWdmZNbGFGZWpnd0RkcmJZbmFxcXhP?=
+ =?utf-8?B?TmlEM3E4OUx4Q2JMaG44bitrOFkzSmxrODFUeHd6TEo1QkQ2bjRjTUx2VDNq?=
+ =?utf-8?B?NnppR0JFQ1FUeldUdDh1N2ZSQUYxbDV6TUw2b0NSZFJmYUVwY1NnWDAvL25s?=
+ =?utf-8?B?bFQrQ1g0VVVqMko0bU45ak9DeERJR2FwZGFtNnIyOXRTUlNWS21ZVFBHdlVv?=
+ =?utf-8?Q?FDduHHoHSP5+vOEOuOVyx3i84Ju+Izi6?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qm9wVlA2YjgyMmFvS3Z0V2hraW13SXJubGJxbzBubFlMZ0huY2Zqd0pxZTJv?=
+ =?utf-8?B?QXlJd2NraGZ1M3pFYTlsNCtYQzI2T0c5MDIxTnVqcHNxV2NkRHE0QW9HSE4r?=
+ =?utf-8?B?b2YydVIyTFJxbUx6SkkyNE04ZUhDUkJIaDVjd1RPWFR3MlRtcTFrK0FidE1F?=
+ =?utf-8?B?cXpTOXJTSlkyOUNaYThmMkFiaU4zeDdSRDVqM1o3YWgrd3NvZ0w3SXNUWUtv?=
+ =?utf-8?B?YkhPYU5RaSsraS9VemNVbFRZVHdRdlp3YXRrd0ZGR09TOXV1dEdLeWtEV200?=
+ =?utf-8?B?YWt3RU5ya3M5TUNTQmVKYTBSc0QzeTVaWkMyWndwYUtJMVlocDZtekVUTXZa?=
+ =?utf-8?B?RFlXQnlxWkZ0ZnptYUlLNTNYRE5vMkdTM1JneDdnUEEwSUliUVhYbEQ1Y1VL?=
+ =?utf-8?B?SEhIb0hKWnV5cTRHUXA5UUZ0bTk1NnBGajFwWUpoVDB5VGVvOHhmTGlYZ29z?=
+ =?utf-8?B?QTNGM0VCMlErbmNaMTdqaE0yUGk0QzZhU09nUTcwK3djOVhpYlFBUmJTYXoz?=
+ =?utf-8?B?VWM4RDVSeVM1amp6SkpCWUZpZ0YvaVhXaW1UaThzRTdsQnIvUnM3cDZibnBp?=
+ =?utf-8?B?c1FEalRqQWJIWkVoWGVVcDc5RE9jaEhpbVQzZEpFeTFGWEZLdThkREVaZXNi?=
+ =?utf-8?B?TGtkYXVBNG0vZlFqdUp1ZzNtS2R2OWxGV2tkQVRYc0dWUzNnSVBhS0Z4QVhS?=
+ =?utf-8?B?a1hVcC9UU3NlTmR6ekZvaVRiaGNnNEg2c0VBdzJaQ0Y4YU9zeU4wQ3kxcXFv?=
+ =?utf-8?B?cEVIZXcwcisxYlJKM1JYRVFsU1FLaXRxeGgzQU03TG1TaDNvVk9zRFJCTHB0?=
+ =?utf-8?B?ZkJscHFnWmZNYmlUeEVSb3BKUXc3S0ZSVGpXU2RhcW1lWkFCamVMc0U4N1VO?=
+ =?utf-8?B?cmZSdWtmeFRldkpRUWJLdldIWktIQjdnMVdNS1NVWEZKZUEwNE94RndOa2Z5?=
+ =?utf-8?B?Wmh6dEZNUVhqanRVMkQ0czJMTGpDWkZLWDExb2pJaFpOUEJwcExFN3RmYlFN?=
+ =?utf-8?B?RGI2VDdKNDcwUEsvbGFOMnhSNG0zNFdYdE1pYWhOb1dDVHBibzJGdFg4eVAx?=
+ =?utf-8?B?TnNCSjlqL0JMTXRQamtTdkV5TWQvOFZiTkdxNzJ3RGI4eFdxUytnYWtVTmpa?=
+ =?utf-8?B?ZTFoWkR4NkF5aWpNNVRPYWlpYUdxekpjMEZuNTVDTWNsTDBOVnprZFVpWmlr?=
+ =?utf-8?B?aXpHUW5zUnlkTDRGaGRVWVFHSGxFamhEaHVVL1lzenN4VGZDc1NkWDYzVzhm?=
+ =?utf-8?B?Zk5Kb2M1NVVwU09Yb1hKWVpnT2t2VFRmbzBjVWhIZEo3TjE2eHh3YWVxMVhP?=
+ =?utf-8?B?M2gycnlnM2lzU2tmYTR1ZGF6OU1uNll1d1RYU2RNMW9EWWp0K0NzWG9zSCta?=
+ =?utf-8?B?ZVBpNXFCczF0OFJvZmUwVEorNy9rOXltdXJ3OEFHU2VGWnRUMVozOHVwaTVV?=
+ =?utf-8?B?QzFxcEJDREVpNFdGNzlVWXJ0d21IZ2w5MVFjb09sQUh2d2xNTlZreEFnTEZC?=
+ =?utf-8?B?dTdOV0trdEsrVkl0ZjRabVRFeHVDcG5UbHRBdWdWdTFDYTRMQ2pteng1Wm92?=
+ =?utf-8?B?bURhcktwN20rVk05OFFORmhsTDdyclcwQWtXajhoYjlnTTZRTENKWnlFSlBV?=
+ =?utf-8?B?c280cFBvZXNWL1NhYnFHY002b2ZPVGgwZkY2M3dETmQ1TzI3dGpWMlU1Z0dm?=
+ =?utf-8?B?RG45UnpUbUtmaFJsYkNJSmdRL0FYWHJZaThHSVVmbFJxVmhPNVp3M1lSU2dy?=
+ =?utf-8?B?MVlJUklzc1pES256Z0l3OGlwMFBrMnZzOGhGTHZmL29UcFkzb0JGL1ZuUmFv?=
+ =?utf-8?B?YTNEUHB1MGcxdTFuV1diTGY4UENxZk9HK2ZSWElpUEpReTFtZEx5VDB3Tkpr?=
+ =?utf-8?B?OTEyaGtMSUhTcFFnTUFwdXpwN0swRUh4dmZ0Vng5NnRyRVVXZ3dvY0dUbUNZ?=
+ =?utf-8?B?Vmxqa3A2R0pxK2hUamg0cnVhZ2V6T0FmVlN1N251c3lROFJSMVZhZ3JaWE1a?=
+ =?utf-8?B?eExDQ2lFYk1sQnp3a0p3YVFPY2ZmWjVLNnlMYTJBWWJWcWZwcjN4T09yMjZy?=
+ =?utf-8?B?S0RLM2lBMDFQMXhsRmhydXdZbm9jNGFsbjFMNXh3eVErZnhLL0kwZGVmQjVk?=
+ =?utf-8?B?NGJUcVdkSmJHcVFSVmc1cEV5NWtTOWo4YVJGM2tORCtvejkyRXBmaGJZTzMw?=
+ =?utf-8?Q?EQwlDYNyIToIHmA1zr2rEZXvLFsGv0RrVs/QDt9Uspkl?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11c37c96-afa3-49f9-e78b-08de0aebdbed
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 06:35:26.2265
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tFuDusVnxK/LQ6lVojKY8WNT4Xb5DA3AKWLvudNqZNn+2TkQV0e53s/nGHu2zyTbtqa+y87TAOtFI1QzrFOYfA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7319
 
-
-在 2025/10/14 上午7:44, Ben Guo 写道:
-> Complete the translation of rust/testing.rst and add the testing TOC entry
-> to rust/index.rst.
+On Sat Oct 11, 2025 at 11:53 PM JST, Jesung Yang wrote:
+> Hi,
 >
-> Add the translation based on commit a3b2347343e0
-> ("Documentation: rust: testing: add docs on the new KUnit `#[test]` tests").
+> On Fri, Oct 10, 2025 at 10:04=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> [...]
+>> But what case do you think we cannot assert? We can always take the
+>> discriminant and reject whatever inputs (e.g. ranges) we decide, no?
+>> And we know what type we are going into, so we can always decide what
+>> the values to check will be, i.e. we could in principle even support
+>> infallible conversions of the discriminant to other types like, say,
+>> the bounded integers or powers of two.
+>>
+>> Maybe the issue is in what you say at "the discriminant value
+>> interpreted as the target type" -- I am not sure what you mean by
+>> "interpreted", i.e. I would think of this as accepting only some bit
+>> patterns, i.e. working with in the discriminant space, not the target
+>> type one.
+>>
+>> I may be missing something, but in any case, at the end of the day,
+>> within a proc macro "everything" should be possible one way or another
+>> -- even if we had to inspect manually the literals :) And it seems
+>> worth to remove the pitfall.
+>>
+>> If really needed, we can always drop support for certain combinations.
+>> We already do, in the sense that we don't cover every single other
+>> type out there, like the ones I mention above, e.g. `Alignment`. But,
+>> just in case, I assume with that approach you mean skipping some
+>> combinations early (the ones that cannot be checked) and then still
+>> asserting the discriminants, right? Otherwise the caveat is still
+>> there.
 >
-> Signed-off-by: Ben Guo <benx.guo@gmail.com>
-
-Reviewed-by: Yanteng Si <siyanteng@cqsoftware.com.cm>
-
-
-Thanks,
-
-Yanteng
-
-> ---
-> v2->v3: Resend without In-Reply-To header (no code changes).
-> v1->v2: Rebased onto docs-next (no code changes).
->   .../translations/zh_CN/rust/index.rst         |   1 +
->   .../translations/zh_CN/rust/testing.rst       | 215 ++++++++++++++++++
->   2 files changed, 216 insertions(+)
->   create mode 100644 Documentation/translations/zh_CN/rust/testing.rst
+> Sorry about the confusion -- the rough sketch I shared earlier had
+> several mistakes.
 >
-> diff --git a/Documentation/translations/zh_CN/rust/index.rst b/Documentation/translations/zh_CN/rust/index.rst
-> index 10413b0c17c0..5347d4729588 100644
-> --- a/Documentation/translations/zh_CN/rust/index.rst
-> +++ b/Documentation/translations/zh_CN/rust/index.rst
-> @@ -47,6 +47,7 @@ Rust 支持在 v6.1 版本中合并到主线，以帮助确定 Rust 作为一种
->       general-information
->       coding-guidelines
->       arch-support
-> +    testing
->   
->   你还可以在 :doc:`../../../process/kernel-docs` 中找到 Rust 的学习材料。
->   
-> diff --git a/Documentation/translations/zh_CN/rust/testing.rst b/Documentation/translations/zh_CN/rust/testing.rst
-> new file mode 100644
-> index 000000000000..ca81f1cef6eb
-> --- /dev/null
-> +++ b/Documentation/translations/zh_CN/rust/testing.rst
-> @@ -0,0 +1,215 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +.. include:: ../disclaimer-zh_CN.rst
-> +
-> +:Original: Documentation/rust/testing.rst
-> +
-> +:翻译:
-> +
-> + 郭杰 Ben Guo <benx.guo@gmail.com>
-> +
-> +测试
-> +====
-> +
-> +本文介绍了如何在内核中测试 Rust 代码。
-> +
-> +有三种测试类型：
-> +
-> +- KUnit 测试
-> +- ``#[test]`` 测试
-> +- Kselftests
-> +
-> +KUnit 测试
-> +----------
-> +
-> +这些测试来自 Rust 文档中的示例。它们会被转换为 KUnit 测试。
-> +
-> +使用
-> +****
-> +
-> +这些测试可以通过 KUnit 运行。例如，在命令行中使用 ``kunit_tool`` （ ``kunit.py`` ）::
-> +
-> +	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
-> +
-> +或者，KUnit 也可以在内核启动时以内置方式运行。获取更多 KUnit 信息，请参阅
-> +Documentation/dev-tools/kunit/index.rst。
-> +关于内核内置与命令行测试的详细信息，请参阅 Documentation/dev-tools/kunit/architecture.rst。
-> +
-> +要使用这些 KUnit 文档测试，需要在内核配置中启用以下选项::
-> +
-> +	CONFIG_KUNIT
-> +	   Kernel hacking -> Kernel Testing and Coverage -> KUnit - Enable support for unit tests
-> +	CONFIG_RUST_KERNEL_DOCTESTS
-> +	   Kernel hacking -> Rust hacking -> Doctests for the `kernel` crate
-> +
-> +KUnit 测试即文档测试
-> +********************
-> +
-> +文档测试（ *doctests* ）一般用于展示函数、结构体或模块等的使用方法。
-> +
-> +它们非常方便，因为它们就写在文档旁边。例如：
-> +
-> +.. code-block:: rust
-> +
-> +	/// 求和两个数字。
-> +	///
-> +	/// ```
-> +	/// assert_eq!(mymod::f(10, 20), 30);
-> +	/// ```
-> +	pub fn f(a: i32, b: i32) -> i32 {
-> +	    a + b
-> +	}
-> +
-> +在用户空间中，这些测试由 ``rustdoc`` 负责收集并运行。单独使用这个工具已经很有价值，
-> +因为它可以验证示例能否成功编译（确保和代码保持同步），
-> +同时还可以运行那些不依赖内核 API 的示例。
-> +
-> +然而，在内核中，这些测试会转换成 KUnit 测试套件。
-> +这意味着文档测试会被编译成 Rust 内核对象，从而可以在构建的内核环境中运行。
-> +
-> +通过与 KUnit 集成，Rust 的文档测试可以复用内核现有的测试设施。
-> +例如，内核日志会显示::
-> +
-> +	KTAP version 1
-> +	1..1
-> +	    KTAP version 1
-> +	    # Subtest: rust_doctests_kernel
-> +	    1..59
-> +	    # rust_doctest_kernel_build_assert_rs_0.location: rust/kernel/build_assert.rs:13
-> +	    ok 1 rust_doctest_kernel_build_assert_rs_0
-> +	    # rust_doctest_kernel_build_assert_rs_1.location: rust/kernel/build_assert.rs:56
-> +	    ok 2 rust_doctest_kernel_build_assert_rs_1
-> +	    # rust_doctest_kernel_init_rs_0.location: rust/kernel/init.rs:122
-> +	    ok 3 rust_doctest_kernel_init_rs_0
-> +	    ...
-> +	    # rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
-> +	    ok 59 rust_doctest_kernel_types_rs_2
-> +	# rust_doctests_kernel: pass:59 fail:0 skip:0 total:59
-> +	# Totals: pass:59 fail:0 skip:0 total:59
-> +	ok 1 rust_doctests_kernel
-> +
-> +文档测试中，也可以正常使用 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符，例如：
-> +
-> +.. code-block:: rust
-> +
-> +	/// ```
-> +	/// # use kernel::{spawn_work_item, workqueue};
-> +	/// spawn_work_item!(workqueue::system(), || pr_info!("x\n"))?;
-> +	/// # Ok::<(), Error>(())
-> +	/// ```
-> +
-> +这些测试和普通代码一样，也可以在 ``CLIPPY=1`` 条件下通过 Clippy 进行编译，
-> +因此可以从额外的 lint 检查中获益。
-> +
-> +为了便于开发者定位文档测试出错的具体行号，日志会输出一条 KTAP 诊断信息。
-> +其中标明了原始测试的文件和行号（不是 ``rustdoc`` 生成的临时 Rust 文件位置）::
-> +
-> +	# rust_doctest_kernel_types_rs_2.location: rust/kernel/types.rs:150
-> +
-> +Rust 测试中常用的断言宏是来自 Rust 标准库（ ``core`` ）中的 ``assert!`` 和 ``assert_eq!`` 宏。
-> +内核提供了一个定制版本，这些宏的调用会被转发到 KUnit。
-> +和 KUnit 测试不同的是，这些宏不需要传递上下文参数（ ``struct kunit *`` ）。
-> +这使得它们更易于使用，同时文档的读者无需关心底层用的是什么测试框架。
-> +此外，这种方式未来也许可以让我们更容易测试第三方代码。
-> +
-> +当前有一个限制：KUnit 不支持在其他任务中执行断言。
-> +因此，如果断言真的失败了，我们只是简单地把错误打印到内核日志里。
-> +另外，文档测试不适用于非公开的函数。
-> +
-> +作为文档中的测试示例，应当像 “实际代码” 一样编写。
-> +例如：不要使用 ``unwrap()`` 或 ``expect()``，请使用 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符。
-> +更多背景信息，请参阅：
-> +
-> +	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
-> +
-> +``#[test]`` 测试
-> +----------------
-> +
-> +此外，还有 ``#[test]`` 测试。与文档测试类似，这些测试与用户空间中的测试方式也非常相近，并且同样会映射到 KUnit。
-> +
-> +这些测试通过 ``kunit_tests`` 过程宏引入，该宏将测试套件的名称作为参数。
-> +
-> +例如，假设想要测试前面文档测试示例中的函数 ``f``，我们可以在定义该函数的同一文件中编写：
-> +
-> +.. code-block:: rust
-> +
-> +	#[kunit_tests(rust_kernel_mymod)]
-> +	mod tests {
-> +	    use super::*;
-> +
-> +	    #[test]
-> +	    fn test_f() {
-> +	        assert_eq!(f(10, 20), 30);
-> +	    }
-> +	}
-> +
-> +如果我们执行这段代码，内核日志会显示::
-> +
-> +	    KTAP version 1
-> +	    # Subtest: rust_kernel_mymod
-> +	    # speed: normal
-> +	    1..1
-> +	    # test_f.speed: normal
-> +	    ok 1 test_f
-> +	ok 1 rust_kernel_mymod
-> +
-> +与文档测试类似， ``assert!`` 和 ``assert_eq!`` 宏被映射回 KUnit 并且不会发生 panic。
-> +同样，支持 `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_ 运算符，
-> +测试函数可以什么都不返回（单元类型 ``()``）或 ``Result`` （任何 ``Result<T, E>``）。例如：
-> +
-> +.. code-block:: rust
-> +
-> +	#[kunit_tests(rust_kernel_mymod)]
-> +	mod tests {
-> +	    use super::*;
-> +
-> +	    #[test]
-> +	    fn test_g() -> Result {
-> +	        let x = g()?;
-> +	        assert_eq!(x, 30);
-> +	        Ok(())
-> +	    }
-> +	}
-> +
-> +如果我们运行测试并且调用 ``g`` 失败，那么内核日志会显示::
-> +
-> +	    KTAP version 1
-> +	    # Subtest: rust_kernel_mymod
-> +	    # speed: normal
-> +	    1..1
-> +	    # test_g: ASSERTION FAILED at rust/kernel/lib.rs:335
-> +	    Expected is_test_result_ok(test_g()) to be true, but is false
-> +	    # test_g.speed: normal
-> +	    not ok 1 test_g
-> +	not ok 1 rust_kernel_mymod
-> +
-> +如果 ``#[test]`` 测试可以对用户起到示例作用，那就应该改用文档测试。
-> +即使是 API 的边界情况，例如错误或边界问题，放在示例中展示也同样有价值。
-> +
-> +``rusttest`` 宿主机测试
-> +-----------------------
-> +
-> +这类测试运行在用户空间，可以通过 ``rusttest`` 目标在构建内核的宿主机中编译并运行::
-> +
-> +	make LLVM=1 rusttest
-> +
-> +当前操作需要内核 ``.config``。
-> +
-> +目前，它们主要用于测试 ``macros`` crate 的示例。
-> +
-> +Kselftests
-> +----------
-> +
-> +Kselftests 可以在 ``tools/testing/selftests/rust`` 文件夹中找到。
-> +
-> +测试所需的内核配置选项列在 ``tools/testing/selftests/rust/config`` 文件中，
-> +可以借助 ``merge_config.sh`` 脚本合并到现有配置中::
-> +
-> +	./scripts/kconfig/merge_config.sh .config tools/testing/selftests/rust/config
-> +
-> +Kselftests 会在内核源码树中构建，以便在运行相同版本内核的系统上执行测试。
-> +
-> +一旦安装并启动了与源码树匹配的内核，测试即可通过以下命令编译并执行::
-> +
-> +	make TARGETS="rust" kselftest
-> +
-> +请参阅 Documentation/dev-tools/kselftest.rst 文档以获取更多信息。
+> My actual intention was to emit a compile-time error using
+> `compile_error!()` whenever a conversion could overflow. With this
+> approach, the caveat wouldn't exist, since proc macro users wouldn't be
+> able to generate `TryFrom` or `Into` (`From`) implementations that
+> could potentially cause overflow issues. For example:
 >
-> base-commit: 344657696e9aa7bf89e48e1848fe0ce551bd1f4a
+>     // This emits a compile-time error because not all `i128` values
+>     // can be converted to `u128`, even though 0 and 1 are valid `u128`
+>     // values.
+>     #[derive(TryFrom, Into)]
+>     #[try_from(u128)]
+>     #[into(u128)]
+>     #[repr(i128)]
+>     enum MyEnum {
+>         A =3D 0,
+>         B =3D 1,
+>     }
+>
+> To make this idea work as intended, I should have revised the earlier
+> sketch as follows:
+>
+> - const U128_ALLOWED: [&str; 9] =3D
+> -     ["u8", "i8", "u16", "i16", "i32", "u32", "u64", "i64", "u128"];
+> - const I128_ALLOWED: [&str; 9] =3D
+> -     ["u8", "i8", "u16", "i16", "i32", "u32", "u64", "i64", "i128"];
+> + // Allowed helper inputs when `repr(u128)` is used.
+> + const U128_ALLOWED: [&str; 1] =3D ["u128"];
+> + // Allowed helper inputs when `repr(i128)` is used.
+> + const I128_ALLOWED: [&str; 1] =3D ["i128"];
+>
+> The downside of this approach is that, as you can see, it is overly
+> restrictive for large target types such as `u128` and `i128`, because
+> the remaining numeric types cannot accommodate their full range. As a
+> result, the macros could reject some valid use cases, for example when
+> the actual discriminants can be converted without overflow, since the
+> check operates at the type level rather than on specific discriminants.
+>
+> Considering this, and as you suggested, I think the right direction is
+> to introduce a compile-time check for each discriminant. I initially
+> thought it would be difficult, but after some exploration, it seems
+> doable.
+>
+> Thanks a lot for your feedback, I really appreciate it!
+
+Note that if we adopt the bounded integer types [1], this problem might
+get exacerbated.
+
+The initial motivation for these macros was automatically generate the
+conversions between register fields and their Rust enum. This was
+working fine as long as the fields were represented using primitive
+integers, but we will likely switch to more restrictive types where only
+a given set of bits is valid. So it is highly desirable to support
+conversion from/to these bounded types as well.
+
+This might not be too difficult to shoehorn as there is an
+`is_in_bounds!` macro (which we can turn into a const method if that's
+more suitable) that your proc macro could leverage, but I can't help but
+thing that maybe there is a better, more general solution than
+special-casing this?
+
+[1] https://lore.kernel.org/rust-for-linux/20251009-bounded_ints-v2-0-ff3d7=
+fee3ffd@nvidia.com/
