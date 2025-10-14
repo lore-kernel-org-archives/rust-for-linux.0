@@ -1,198 +1,118 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE4E3009F0
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 15:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B088630103E
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 16:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760456583; cv=none; b=b6IOU/FqasNEg+surNnetNM/+ss/KxWFc53u41tubg+bc6BKu/nzE5VW9kXJ5E9gwBXq8qMQ1zVwrEZXntApf83s7z3iFtdioCWugpgNP45C7BhAaD1z7SbOzhd0pckxPLJgnUI/kGinjWM4FOkMppRpqtStmc3EJE1h6aPsTl0=
+	t=1760458155; cv=none; b=fCjOMbBuwqF7FGVGbzKf2M0rSU8A/5S9BX0ogwoH/e2NpFwQhnxXePgmgAwd6RUJb7HS6NePop2MGYbClIaf8hMFIha7Ox2wBDWqNaelORdLK8GhRu5sX9gHThmVE+JB0FAtDhPnCy6qzhs/Aal/rtmWWloT63FLLcAZ7MCwvYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760456583; c=relaxed/simple;
-	bh=IOXA3e/PDxwKtBuHJSVeF2wtx7tvydH9ilKWTo1uicY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=upeEd6djoZ0y1tyDuno0YhSxZUpqj0vr4sKCAzeq5nGww2kgPAMWQXoWUQEwbS2ob3HYU4IlRPZdUh0YYZ8eZ/XPb3ujS9Ic8dBacaafMrH+1XRAXaPTK2Ji43iVVXtO4NctvRAfbhWxIX52MM490V+uzyxj1nxS2nFc5Rckh3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VtPjpuH6; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1760458155; c=relaxed/simple;
+	bh=MyDZ+5xbfpDbRdcjNPPtRkhMLKRMmMRRRYNXyrRIfp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NRMS5XWlqW7RleZAoCM97+qZx7V50FNyDH6/cI9OgRKOaHMgpjX9P8OJOXkfZ3S+ORHdekpe4rCeIwYgQ5RxEEllbNwi1X4tSbcE3B8OZdgBYzeKR8kZWZsW35spC7eCxBLolT/7+0zzLQdudNliiR47XuaXTBdlVvsq/HArMwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AAFGSV5A; arc=none smtp.client-ip=209.85.222.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VtPjpuH6"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-33450918e4fso855355a91.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 08:43:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AAFGSV5A"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-855d525cd00so962944285a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 09:09:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760456580; x=1761061380; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yYGjzSlUY1ujV4XJxs44Nj4rVMv7fyzJ9xw4OWViBdY=;
-        b=VtPjpuH6F17RQ/tK+T8F//BEn5Imv4KUJUaWz72zAxqpL7wEzbhicIc3eG3HXovILA
-         u6LImFLvSQ18eqe8MOmRVAi4TpZ8JPdobdY8Mg2VbeKseSVFcHGcGSQTBYJCsI0QG0Hl
-         AjNtjXW9vlU6a0w9wSIii/vXjBWGH5JkF5jrLpkPXePE7/5WzKH8x5gz8+nYUekzyZ3P
-         KE1/ApP0+e12A8xSlDmVUv1nK92gIpvcPoSHSN2k/TfwYHrRCvjIfOq5c4WCHNo5wXi8
-         pjnzF/k9XzeuFFbOyT0MnBPZNdKWmzl942bhV9k9+ua0AwBovkJSm1G0eRbncBfZPut+
-         Xxow==
+        d=gmail.com; s=20230601; t=1760458151; x=1761062951; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=N4lRqPExRAyMWRp9Rfjmg4SkkmqlcZGNh8vWt5+XF28=;
+        b=AAFGSV5A7gtxhBTm2GLz6kIfyMee2NNo+qC3TWlq/erdxS7U3zcNl+nZJDyzf/Wp9h
+         vKzQul6e/lfjtDgqtngaFtoDZSDZtzKKSN/0DUdjFMJ3DGaJFmDIu72EswHd/cMD9c8y
+         oLg7YBR0tWdVCHowsUe71bSy/Dn13vqyofgyiE0wffQcODRrT5W40tL3w22gwpq+Ylol
+         XjgoxEq4moS3FyBK6YoW7Y+cRigs0126KMW6qpISoKqG2UOURzpEWiLeM+fbUYldhBF3
+         6sS1gCwLTfTK96tfj6zGEi9uMJ4L/408x2yJv/mmXRiToXPNL8JGHz1mmtTcwB6KjHXe
+         yz1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760456580; x=1761061380;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yYGjzSlUY1ujV4XJxs44Nj4rVMv7fyzJ9xw4OWViBdY=;
-        b=HKnu37Qd+Cn0Usj0QIGvuFCerxL2LN/Hc1ydjwSZ2fEbxO7uOWvfUPffVKqjpOKDyN
-         v/G4E0I/YnNANj1Vaaot4OxEcM6CO2A9xteHo6K9NrKvcNE0tTa9G6bwYHI9mOLZgwEn
-         ycuU7L2aXy2FbPhjCl4550FQCMj3zjVNO8z39d9BzlJcoTttRtYjwdJRjpLMLT0IZdyz
-         QiYBhkvfWkiTRx5WaTj4QLM3/rCZu8O9z1NPllaclmfGqV29oqTtf5cmVRx/FqwEwZOi
-         0AezRWdGVOHpddV1u2pvK5MjWVs3ayXMATQdGmmmsjPPwKGxQrqpBUAlKjlMNXLCDCEA
-         wA8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWm58YT0WdfHNz0ImsP0IWztIYDg+c58rMzABRR1SZGMqrY9GJKW9iroTF44XZzIewxKS+y5eguz4vNs9+Cnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YytOXqss+84pm9ayFOFgTUIyoxff6oYGJCu0hcnP80UrPM+Ev92
-	e+A2IImL1/oTEoMHNdCBnylbixL1l4zK3UqlldBB726Ge/FsABjT2M3o+mYBrLrUHrHV81xZQjg
-	mTqjXe446djUmwqBHRoRSQ9gQdOCOIbE=
-X-Gm-Gg: ASbGncvWzQpf3/QdM4gD97mqTFQKyGPd9CZnii7HkSKvpe74f6PzhpGDsKetOXOUto9
-	gP/t5n3sx+zKQnukx7N4StvzXCbTC9ZpqUoHHp+g/1t3A0WtibE0oLddGfLxpDhMXieGMlNMJqN
-	IVe1D8a2NqxGT6PhNsPS3+V+x8GdO7zzV0gxni7xgnHLrYkgQlJ9dlpgAsPu2qCFJmoAA/ajZZV
-	Jxd/dmf4/jK8M7iYysxBssBWnEncGAIWq0/B8+g2TzZ+Lwa4+vhJwKEWoNnBZth65SVWR+Nklva
-	XQiG+h7byBYMe38PwDsz7nXoauCsXGxHwoV7XLgjNY7HUs665dxFsG8=
-X-Google-Smtp-Source: AGHT+IHdmYpg3wJ6be58RKxCOo6in3Fuo+5g91PKk58rXhf3xgTcwnJDb2Ds8EFLQGYTf/b7850DkE7uVldiW6rM2ew=
-X-Received: by 2002:a17:903:18b:b0:27d:6f24:ceb9 with SMTP id
- d9443c01a7336-290273e17b2mr176408215ad.3.1760456580016; Tue, 14 Oct 2025
- 08:43:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760458151; x=1761062951;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N4lRqPExRAyMWRp9Rfjmg4SkkmqlcZGNh8vWt5+XF28=;
+        b=C0DfKHyCytrWtRXnFNbze7pFenVCMaMPy0+1a7I/b9+5kkDPF4PLMJis4FjRBQQhMC
+         jZ1P3SROwSpyLY8xehG9PJtsShAZayg8uR+78pMgxykQKhRqkvYqBaqEhTs6Wnp43fxT
+         PryEtLnpTzJG3pxyX7baLFYOlC4XE4b45wTxsw8TlFMoVYKeJNetJhlrQL/6SIDDofnI
+         8R/+J5l9Wo6GLTENcxNtxtlnKUWtQhrdwEaTtXZIlro5aRNTtq6GuS8zDEnuCHH/odxz
+         yKr56W6aA82q8+IOcaIqwEdZgeqsGK8QHO/KVvzDCfs5f/e8N7+YFFnNNbTBhdrxKseN
+         eoKw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmutTFdup00/LdQDQM+mKadMaBwqVkvkRSrnzg6lui+UWBY3r77bRlADXyHY+gtQRKkzC0Db8qP3TsIcjDsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdsJyhfp73EAVtrcqECnce10AY0UM7mPBLMnSsw0Bh7jma5whg
+	3kOUIB2Htuj1rmQBjWU0+lbbbLKGl5ycQJFeD58Btx4YBqPx4rcoHYTT
+X-Gm-Gg: ASbGncvWIOUl9RW7IJ1GTgKmSv8sktink39hwD+ZYEDXLkKT/PBaXBom09+qitOzt/D
+	m3GbQ8dw4QLvuByWzkrr7yBkIV8fnCn2Wqw2dRtfgZ+uamvly538ue6NqrBvntKBS54gPwNOwOY
+	20miPcmZEIdUA3HyNoEQ2Xd1mDLrkrpSGLkRMZWuT5ggO/uk9e9Cp5+YR41qLBA3kq3W93Gir2F
+	VdMWeUMENoyBPWV1FuBG6h+2HkvEoKtVB8aLt+Nmjm+mN9gakpiOgv1d/c0AbI0N7qBUn6Rtlkl
+	dIaOZCy6+8sSmhU8RXZNwwP8mImtBE8FGlYviZcJdZw5g7Q4nFLblTEgF7By7e/NiNc1g3NTwjl
+	4fNB7ffUYfAzLcY3ui9RUV9XANiSX4jrzhdrMFX8dNr15cd71
+X-Google-Smtp-Source: AGHT+IEoehLXwqxEN/cc9TnKoWCH0/efz6jmoKuyzf/OPOzqS4tT8DPcYGiD2jioZTZbNhTh/I2HrA==
+X-Received: by 2002:a05:620a:a515:b0:886:ea5d:9270 with SMTP id af79cd13be357-886ea5d939fmr1674523285a.72.1760458151266;
+        Tue, 14 Oct 2025 09:09:11 -0700 (PDT)
+Received: from localhost ([12.22.141.131])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8849f3d70easm1249358885a.12.2025.10.14.09.09.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 09:09:10 -0700 (PDT)
+Date: Tue, 14 Oct 2025 12:09:09 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Burak Emir <bqe@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] rust: bitmap: clean Rust 1.92.0 `unused_unsafe` warning
+Message-ID: <aO51pV5WSmqnT4rL@yury>
+References: <20251013001422.1168581-1-ojeda@kernel.org>
+ <aOzET46lagm-p8go@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251014094511.627258-1-gtucker@gtucker.io> <20251014094511.627258-2-gtucker@gtucker.io>
- <CANiq72nVxPY8xB9xEnkZ=zNFh0EfQvaMAPH4ygRr-yEwpK=OWg@mail.gmail.com> <fe53ad80-6eeb-495a-a870-9c42b71f9887@gtucker.io>
-In-Reply-To: <fe53ad80-6eeb-495a-a870-9c42b71f9887@gtucker.io>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 14 Oct 2025 17:42:45 +0200
-X-Gm-Features: AS18NWCSQqZ2k7klTl6uHaYshU7c7i07coesJc6h6yK0Ke4SUtcLPlKDjwbeVfg
-Message-ID: <CANiq72m1EKmNM4QQ_A08vC2w-4QbHhO5UEG4F68tRGKEgZ9p6g@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] kbuild: add Makefile.container with CONTAINER option
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	automated-testing@lists.yoctoproject.org, Arnd Bergmann <arnd@arndb.de>, 
-	workflows@vger.kernel.org, llvm@lists.linux.dev, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aOzET46lagm-p8go@google.com>
 
-On Tue, Oct 14, 2025 at 4:31=E2=80=AFPM Guillaume Tucker <gtucker@gtucker.i=
-o> wrote:
->
-> This is what the CONTAINER_COMMAND variable is for.  You can easily
-> set it in the environment e.g. `export CONTAINER_COMMAND=3Dpodman` or
-> anything and be done with it.  The default is set to `docker`.
+On Mon, Oct 13, 2025 at 09:20:15AM +0000, Alice Ryhl wrote:
+> On Mon, Oct 13, 2025 at 02:14:22AM +0200, Miguel Ojeda wrote:
+> > Starting with Rust 1.92.0 (expected 2025-12-11), Rust allows to safely
+> > take the address of a union field [1][2]:
+> > 
+> >       CLIPPY L rust/kernel.o
+> >     error: unnecessary `unsafe` block
+> >        --> rust/kernel/bitmap.rs:169:13
+> >         |
+> >     169 |             unsafe { core::ptr::addr_of!(self.repr.bitmap) }
+> >         |             ^^^^^^ unnecessary `unsafe` block
+> >         |
+> >         = note: `-D unused-unsafe` implied by `-D warnings`
+> >         = help: to override `-D warnings` add `#[allow(unused_unsafe)]`
+> > 
+> >     error: unnecessary `unsafe` block
+> >        --> rust/kernel/bitmap.rs:185:13
+> >         |
+> >     185 |             unsafe { core::ptr::addr_of_mut!(self.repr.bitmap) }
+> >         |             ^^^^^^ unnecessary `unsafe` block
+> > 
+> > Thus allow both instances to clean the warning in newer compilers.
+> > 
+> > Link: https://github.com/rust-lang/rust/issues/141264 [1]
+> > Link: https://github.com/rust-lang/rust/pull/141469 [2]
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Yeah, that is what I mean, i.e. you have to more variables to make it
-do what you want.
+Added in bitmap-for-next.
 
-At that point, a user could also equally set up an alias or a quick
-one liner script to call the real command with whatever setup they
-need. That would be more flexible too with essentially the same
-complexity on their side.
-
-> As
-> far as I know, there's no need for anything else than the container
-> command and image name.  So it's not more hard-coded than say, the
-> default $(CC) executable.
-
-There is the `src` path there, no? e.g. I use upstream distro images
-to test some builds.
-
-> Then I was only suggesting using a minimalist alias e.g.:
->
->      alias kmake=3D'make -f scripts/Makefile.container'
-
-Yeah, what I was trying to say is that, at that point, you can just
-have an alias (or a one liner script etc.) for the real command.
-
-The user still needs to know how to use Docker/Podman/... anyway, i.e.
-I would see the benefit if somehow this was the only command they
-would need or if this handled some extra logic.
-
-> hand with a volume and then run make inside.  It reduces the scope
-> for differences and makes builds more reproducible, for example you
-> can just share your command line and others will be using the exact
-> same toolchain and build environment as you.  This is also to enable
-> developers to easily reproduce builds from CI bots.  It's been one of
-> the driving principles behind tuxmake except I'm looking at it from a
-> neutral point of view here.  In other words, it's a step towards
-> increasing quality control upstream.
-
-Definitely, I am not saying containers are a bad idea (I use them
-myself), i.e. I am only talking about what is the best way to provide
-this (e.g. documentation, a script, this new file, directly in the
-main `Makefile`...).
-
-> A related topic which was covered at Plumbers is to have first-party
-> container images, with Containerfiles maintained upstream to
-> facilitate using the kernel.org toolchains.  It's not a requirement
-> for this patch but both ideas enhance each other.
-
-kernel.org images would be nice, indeed.
-
-> Yes, I did think of writing a documentation page alongside this patch
-> but eventually made the RFC with a cover letter instead to keep it
-> more as an open discussion.  Any solution to run containerized builds
-> would need to be documented, even if they're trivial to use.  I think
-> the Makefile approach is the most elegant one but if others aren't
-> convinced by it then starting with just some documentation might help
-> getting to the bottom of this and decide what to do next.
-
-Yeah, docs would be nice regardless of the way of wrapping it.
-
-> Right but then I think we would have to deal with the variables
-> handled by `make` which can be passed either via the environment or
-> on the command line, so that's similar to the issues with an alias.
-
-The script may be more involved, i.e. similar to the KUnit one, but
-then you also gain the ability to provide more functionality/logic.
-
-Say, for instance, the ability to test with a set of container images
-that you define in the config file, to run certain things with the
-built kernel (possibly in another container), and so on and so forth.
-
-> We could do something like with Android builds (build/envsetup.sh)
-> with a file to source:
->
->      . scripts/containerize
->      m CONTAINER=3Dkorg-clang:21 defconfig
->
-> where `m` is just an arbitrary alias name obviously :)
-
-Personally, for a new script, I would use a normal `--flags` like
-interface, and leave the Make-like one if one wants to pass the actual
-Make ones. I would also allow the user to define a default image too
-in their config file too, and things like that.
-
-In other words, the idea is that you can actually easily use it
-without typing a lot, e.g.
-
-    scripts/container b defconfig
-
-(Possibly aliasing `scripts/container` itself to something shorter locally)
-
-Or even more high-level operations like the "build with my set of
-toolchain images", "build patch by patch this range of commits inside
-the container", etc.
-
-But I know this may be way out of scope :) After all, it gets into the
-realm of essentially a lot of the custom tooling/scripts that
-different subsystems build for themselves over time.
-
-In fact, another possibility to think about is generalizing the
-existing KUnit one to support containers.
-
-> Thank you for your feedback.  I can spend some time investigating
-> alternative approaches if they seem worthwhile.  I'd be interested to
-> know what others think of this too.
-
-You're welcome! I hope that helped at least.
-
-Cc'ing David/Rae/Shuah as well for the KUnit bits.
-
-Cheers,
-Miguel
+Thanks,
+Yury
