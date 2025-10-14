@@ -1,182 +1,198 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58532F99AD
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 14:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE4E3009F0
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 15:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760453206; cv=none; b=NBcy6NG1QR7gPCYm80NA9KBNW7TU3SA1prM+cFDMfU+ubcXnNvvS1NGQwCgmMbh77FxApZ7b6IpUHLKmwPtkwA2d3aMNhN91uujImaAsIAHIB4R4/jj76aSZjQGGHPNaRv8DLjRo9ejufd5A/mqHF/c3UX/lu1EppemMGOegP6Y=
+	t=1760456583; cv=none; b=b6IOU/FqasNEg+surNnetNM/+ss/KxWFc53u41tubg+bc6BKu/nzE5VW9kXJ5E9gwBXq8qMQ1zVwrEZXntApf83s7z3iFtdioCWugpgNP45C7BhAaD1z7SbOzhd0pckxPLJgnUI/kGinjWM4FOkMppRpqtStmc3EJE1h6aPsTl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760453206; c=relaxed/simple;
-	bh=mQD076zqipwjL0zhWvp4jYIm/DeAQnP22lZJv1kJu3s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VEeCEE3anlH/TEgSWCFkGkaoBc+pu5sMBiuUz7H5BXaFbxwnLV6bbkPdjVzSVV5jF/ptazcy7lf3SVzX1adVj6AfHer/48MqnaVf/z6fzgdUJhj2TkIN+YcoXhKj7P3NdNvMdawbh+KbO6gkxP9Rd/jahGykvwAFP8PD+VOHOq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=O4XD0DHQ; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1760456583; c=relaxed/simple;
+	bh=IOXA3e/PDxwKtBuHJSVeF2wtx7tvydH9ilKWTo1uicY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=upeEd6djoZ0y1tyDuno0YhSxZUpqj0vr4sKCAzeq5nGww2kgPAMWQXoWUQEwbS2ob3HYU4IlRPZdUh0YYZ8eZ/XPb3ujS9Ic8dBacaafMrH+1XRAXaPTK2Ji43iVVXtO4NctvRAfbhWxIX52MM490V+uzyxj1nxS2nFc5Rckh3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VtPjpuH6; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="O4XD0DHQ"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 2C6FD240106
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 16:46:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1760453203; bh=mQD076zqipwjL0zhWvp4jYIm/DeAQnP22lZJv1kJu3s=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:Autocrypt:OpenPGP:From;
-	b=O4XD0DHQilBK/3qihxb2hOZfYSUf2PAIBMQhQSdzIO7p6S8RbDwG5cC9Wi5ciTEv3
-	 wf1jpPQ6CJftIE7ixYsUUJaKGxNY+oCOZ1yR6Yx1vrFIDz+Px7nJETOsF81O5L2iGJ
-	 JFZX7+omfWzT4bsE8bvWmVf0dOM67c7aVJFHRQa8mXYSsmokN/bYa+3bPF/LURGgdM
-	 tXVhv7x0MFu31iO62TeQ4OGM0VbU+MBJgOj6R9pJuiPgENqqgBYOQpYZE3bv/DVDF2
-	 HGrZzPX6eZ7jjv3hBglpNhvkH8HyIoHBd89gWrUDrD6vOldZxK5UBTql/I4eYwTdGZ
-	 Ti/PrMlIIftUw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4cmH9D2NQyz6v1l;
-	Tue, 14 Oct 2025 16:46:40 +0200 (CEST)
-Message-ID: <d3e51448678bf5a94746cc34825c35073c02d00e.camel@posteo.de>
-Subject: Re: [PATCH v4 2/2] rust: leds: add basic led classdev abstractions
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Lorenzo
- Stoakes	 <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki
- <urezki@gmail.com>, Boqun Feng	 <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, bjorn3_gh@protonmail.com,  Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, 	rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-leds@vger.kernel.org
-Date: Tue, 14 Oct 2025 14:46:42 +0000
-In-Reply-To: <DDHGUQ9B4J2K.X1VXMMU6O5O4@kernel.org>
-References: <20251012145221.172116-1-markus.probst@posteo.de>
-	 <20251012145221.172116-3-markus.probst@posteo.de>
-	 <aO1GM4WXs37Zpm0G@google.com> <DDHGUQ9B4J2K.X1VXMMU6O5O4@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VtPjpuH6"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-33450918e4fso855355a91.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 08:43:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760456580; x=1761061380; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yYGjzSlUY1ujV4XJxs44Nj4rVMv7fyzJ9xw4OWViBdY=;
+        b=VtPjpuH6F17RQ/tK+T8F//BEn5Imv4KUJUaWz72zAxqpL7wEzbhicIc3eG3HXovILA
+         u6LImFLvSQ18eqe8MOmRVAi4TpZ8JPdobdY8Mg2VbeKseSVFcHGcGSQTBYJCsI0QG0Hl
+         AjNtjXW9vlU6a0w9wSIii/vXjBWGH5JkF5jrLpkPXePE7/5WzKH8x5gz8+nYUekzyZ3P
+         KE1/ApP0+e12A8xSlDmVUv1nK92gIpvcPoSHSN2k/TfwYHrRCvjIfOq5c4WCHNo5wXi8
+         pjnzF/k9XzeuFFbOyT0MnBPZNdKWmzl942bhV9k9+ua0AwBovkJSm1G0eRbncBfZPut+
+         Xxow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760456580; x=1761061380;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yYGjzSlUY1ujV4XJxs44Nj4rVMv7fyzJ9xw4OWViBdY=;
+        b=HKnu37Qd+Cn0Usj0QIGvuFCerxL2LN/Hc1ydjwSZ2fEbxO7uOWvfUPffVKqjpOKDyN
+         v/G4E0I/YnNANj1Vaaot4OxEcM6CO2A9xteHo6K9NrKvcNE0tTa9G6bwYHI9mOLZgwEn
+         ycuU7L2aXy2FbPhjCl4550FQCMj3zjVNO8z39d9BzlJcoTttRtYjwdJRjpLMLT0IZdyz
+         QiYBhkvfWkiTRx5WaTj4QLM3/rCZu8O9z1NPllaclmfGqV29oqTtf5cmVRx/FqwEwZOi
+         0AezRWdGVOHpddV1u2pvK5MjWVs3ayXMATQdGmmmsjPPwKGxQrqpBUAlKjlMNXLCDCEA
+         wA8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWm58YT0WdfHNz0ImsP0IWztIYDg+c58rMzABRR1SZGMqrY9GJKW9iroTF44XZzIewxKS+y5eguz4vNs9+Cnw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YytOXqss+84pm9ayFOFgTUIyoxff6oYGJCu0hcnP80UrPM+Ev92
+	e+A2IImL1/oTEoMHNdCBnylbixL1l4zK3UqlldBB726Ge/FsABjT2M3o+mYBrLrUHrHV81xZQjg
+	mTqjXe446djUmwqBHRoRSQ9gQdOCOIbE=
+X-Gm-Gg: ASbGncvWzQpf3/QdM4gD97mqTFQKyGPd9CZnii7HkSKvpe74f6PzhpGDsKetOXOUto9
+	gP/t5n3sx+zKQnukx7N4StvzXCbTC9ZpqUoHHp+g/1t3A0WtibE0oLddGfLxpDhMXieGMlNMJqN
+	IVe1D8a2NqxGT6PhNsPS3+V+x8GdO7zzV0gxni7xgnHLrYkgQlJ9dlpgAsPu2qCFJmoAA/ajZZV
+	Jxd/dmf4/jK8M7iYysxBssBWnEncGAIWq0/B8+g2TzZ+Lwa4+vhJwKEWoNnBZth65SVWR+Nklva
+	XQiG+h7byBYMe38PwDsz7nXoauCsXGxHwoV7XLgjNY7HUs665dxFsG8=
+X-Google-Smtp-Source: AGHT+IHdmYpg3wJ6be58RKxCOo6in3Fuo+5g91PKk58rXhf3xgTcwnJDb2Ds8EFLQGYTf/b7850DkE7uVldiW6rM2ew=
+X-Received: by 2002:a17:903:18b:b0:27d:6f24:ceb9 with SMTP id
+ d9443c01a7336-290273e17b2mr176408215ad.3.1760456580016; Tue, 14 Oct 2025
+ 08:43:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+References: <20251014094511.627258-1-gtucker@gtucker.io> <20251014094511.627258-2-gtucker@gtucker.io>
+ <CANiq72nVxPY8xB9xEnkZ=zNFh0EfQvaMAPH4ygRr-yEwpK=OWg@mail.gmail.com> <fe53ad80-6eeb-495a-a870-9c42b71f9887@gtucker.io>
+In-Reply-To: <fe53ad80-6eeb-495a-a870-9c42b71f9887@gtucker.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 14 Oct 2025 17:42:45 +0200
+X-Gm-Features: AS18NWCSQqZ2k7klTl6uHaYshU7c7i07coesJc6h6yK0Ke4SUtcLPlKDjwbeVfg
+Message-ID: <CANiq72m1EKmNM4QQ_A08vC2w-4QbHhO5UEG4F68tRGKEgZ9p6g@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/1] kbuild: add Makefile.container with CONTAINER option
+To: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	automated-testing@lists.yoctoproject.org, Arnd Bergmann <arnd@arndb.de>, 
+	workflows@vger.kernel.org, llvm@lists.linux.dev, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Shuah Khan <shuah@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2025-10-13 at 22:11 +0200, Danilo Krummrich wrote:
-> On Mon Oct 13, 2025 at 8:34 PM CEST, Alice Ryhl wrote:
-> > On Sun, Oct 12, 2025 at 02:52:39PM +0000, Markus Probst wrote:
-> > > Implement the core abstractions needed for led class devices,
-> > > including:
-> > >=20
-> > > * `led::LedOps` - the trait for handling leds, including
-> > > =C2=A0 `brightness_set`, `brightness_get` and `blink_set`
-> > >=20
-> > > * `led::InitData` - data set for the led class device
-> > >=20
-> > > * `led::Device` - a safe wrapper around `led_classdev`
-> > >=20
-> > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> >=20
-> > > +pub trait LedOps: Send + 'static + Sized {
-> > > +=C2=A0=C2=A0=C2=A0 /// If set true, [`LedOps::brightness_set`] and
-> > > [`LedOps::blink_set`] must not sleep
-> > > +=C2=A0=C2=A0=C2=A0 /// and perform the operation immediately.
-> > > +=C2=A0=C2=A0=C2=A0 const BLOCKING: bool;
-> > > +=C2=A0=C2=A0=C2=A0 /// The max brightness level
-> > > +=C2=A0=C2=A0=C2=A0 const MAX_BRIGHTNESS: u32;
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0 /// Sets the brightness level.
-> > > +=C2=A0=C2=A0=C2=A0 ///
-> > > +=C2=A0=C2=A0=C2=A0 /// See also [`LedOps::BLOCKING`]
-> > > +=C2=A0=C2=A0=C2=A0 fn brightness_set(&self, brightness: u32) -> Resu=
-lt<()>;
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0 /// Gets the current brightness level.
-> > > +=C2=A0=C2=A0=C2=A0 fn brightness_get(&self) -> u32 {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 build_error!(VTABLE_DEFAU=
-LT_ERROR)
-> > > +=C2=A0=C2=A0=C2=A0 }
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0 /// Activates hardware accelerated blinking.
-> > > +=C2=A0=C2=A0=C2=A0 ///
-> > > +=C2=A0=C2=A0=C2=A0 /// delays are in milliseconds. If both are zero,=
- a sensible
-> > > default should be chosen.
-> > > +=C2=A0=C2=A0=C2=A0 /// The caller should adjust the timings in that =
-case and if
-> > > it can't match the values
-> > > +=C2=A0=C2=A0=C2=A0 /// specified exactly. Setting the brightness to =
-0 will
-> > > disable the hardware accelerated
-> > > +=C2=A0=C2=A0=C2=A0 /// blinking.
-> > > +=C2=A0=C2=A0=C2=A0 ///
-> > > +=C2=A0=C2=A0=C2=A0 /// See also [`LedOps::BLOCKING`]
-> > > +=C2=A0=C2=A0=C2=A0 fn blink_set(&self, _delay_on: &mut usize, _delay=
-_off: &mut
-> > > usize) -> Result<()> {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 build_error!(VTABLE_DEFAU=
-LT_ERROR)
-> > > +=C2=A0=C2=A0=C2=A0 }
-> >=20
-> > These functions should probably take a &Device<Bound> argument so
-> > that
-> > they can use methods that require a bound device (such as IO).
->=20
-> Indeed!
->=20
-> @Markus: Note that this guarantee is given by the LED device
-> registration being
-> lifetime controlled by devres, while led_classdev_unregister() is
-> synchronized
-> against those callbacks.
->=20
-> For the latter, please double check that this is actually the case --
-> I'm not
-> familiar with the LED subsystem, I'm reviewing from driver-core
-> perspective. But
-> from a quick look it should be the case. :)
+On Tue, Oct 14, 2025 at 4:31=E2=80=AFPM Guillaume Tucker <gtucker@gtucker.i=
+o> wrote:
+>
+> This is what the CONTAINER_COMMAND variable is for.  You can easily
+> set it in the environment e.g. `export CONTAINER_COMMAND=3Dpodman` or
+> anything and be done with it.  The default is set to `docker`.
 
-There is also the led_classdev->dev device, but I assume you mean the
-parent of the led classdev (the one being passed on register)?
+Yeah, that is what I mean, i.e. you have to more variables to make it
+do what you want.
 
-Thanks
-- Markus Probst
+At that point, a user could also equally set up an alias or a quick
+one liner script to call the real command with whatever setup they
+need. That would be more flexible too with essentially the same
+complexity on their side.
+
+> As
+> far as I know, there's no need for anything else than the container
+> command and image name.  So it's not more hard-coded than say, the
+> default $(CC) executable.
+
+There is the `src` path there, no? e.g. I use upstream distro images
+to test some builds.
+
+> Then I was only suggesting using a minimalist alias e.g.:
+>
+>      alias kmake=3D'make -f scripts/Makefile.container'
+
+Yeah, what I was trying to say is that, at that point, you can just
+have an alias (or a one liner script etc.) for the real command.
+
+The user still needs to know how to use Docker/Podman/... anyway, i.e.
+I would see the benefit if somehow this was the only command they
+would need or if this handled some extra logic.
+
+> hand with a volume and then run make inside.  It reduces the scope
+> for differences and makes builds more reproducible, for example you
+> can just share your command line and others will be using the exact
+> same toolchain and build environment as you.  This is also to enable
+> developers to easily reproduce builds from CI bots.  It's been one of
+> the driving principles behind tuxmake except I'm looking at it from a
+> neutral point of view here.  In other words, it's a step towards
+> increasing quality control upstream.
+
+Definitely, I am not saying containers are a bad idea (I use them
+myself), i.e. I am only talking about what is the best way to provide
+this (e.g. documentation, a script, this new file, directly in the
+main `Makefile`...).
+
+> A related topic which was covered at Plumbers is to have first-party
+> container images, with Containerfiles maintained upstream to
+> facilitate using the kernel.org toolchains.  It's not a requirement
+> for this patch but both ideas enhance each other.
+
+kernel.org images would be nice, indeed.
+
+> Yes, I did think of writing a documentation page alongside this patch
+> but eventually made the RFC with a cover letter instead to keep it
+> more as an open discussion.  Any solution to run containerized builds
+> would need to be documented, even if they're trivial to use.  I think
+> the Makefile approach is the most elegant one but if others aren't
+> convinced by it then starting with just some documentation might help
+> getting to the bottom of this and decide what to do next.
+
+Yeah, docs would be nice regardless of the way of wrapping it.
+
+> Right but then I think we would have to deal with the variables
+> handled by `make` which can be passed either via the environment or
+> on the command line, so that's similar to the issues with an alias.
+
+The script may be more involved, i.e. similar to the KUnit one, but
+then you also gain the ability to provide more functionality/logic.
+
+Say, for instance, the ability to test with a set of container images
+that you define in the config file, to run certain things with the
+built kernel (possibly in another container), and so on and so forth.
+
+> We could do something like with Android builds (build/envsetup.sh)
+> with a file to source:
+>
+>      . scripts/containerize
+>      m CONTAINER=3Dkorg-clang:21 defconfig
+>
+> where `m` is just an arbitrary alias name obviously :)
+
+Personally, for a new script, I would use a normal `--flags` like
+interface, and leave the Make-like one if one wants to pass the actual
+Make ones. I would also allow the user to define a default image too
+in their config file too, and things like that.
+
+In other words, the idea is that you can actually easily use it
+without typing a lot, e.g.
+
+    scripts/container b defconfig
+
+(Possibly aliasing `scripts/container` itself to something shorter locally)
+
+Or even more high-level operations like the "build with my set of
+toolchain images", "build patch by patch this range of commits inside
+the container", etc.
+
+But I know this may be way out of scope :) After all, it gets into the
+realm of essentially a lot of the custom tooling/scripts that
+different subsystems build for themselves over time.
+
+In fact, another possibility to think about is generalizing the
+existing KUnit one to support containers.
+
+> Thank you for your feedback.  I can spend some time investigating
+> alternative approaches if they seem worthwhile.  I'd be interested to
+> know what others think of this too.
+
+You're welcome! I hope that helped at least.
+
+Cc'ing David/Rae/Shuah as well for the KUnit bits.
+
+Cheers,
+Miguel
