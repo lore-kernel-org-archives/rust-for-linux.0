@@ -1,115 +1,114 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F2F1A5B9D;
-	Tue, 14 Oct 2025 08:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25172F0690;
+	Tue, 14 Oct 2025 09:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760430327; cv=none; b=gaUcJvTptybmTduKIKewyImboDDw6LQGom5rQCeO2hcil5qSCyn507LG3Se3QjoKFy/AVfPwMqCfv3F2ji/vO1tMG1jKAHquxW4xv6E/MF7NbOWxZsy+ydFh6TK1b93C5P0W/oaPeb2nB6TA5csswwP/unIGiTs1mJ/E9ByS3Kc=
+	t=1760435129; cv=none; b=gAv82kbiYhevrOTKBF/z8YJsRUNbT5GdXD4nhTimkMnPk95znzyNbbrks62h+c5J3wKtVKaLgk+jOpRFpSFQ4YFUA/hd1c61uX9id5/T+Sigm9AX7WnnZ5D3QJhmygXjheZ2VoNwhTFNxmDb2ZduBAt3dD4DUexlxZkUdOymzSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760430327; c=relaxed/simple;
-	bh=Oi0ajjaYBL5gibdlh3zTqQ6DqbKpKPwrJ8y6TwvUO2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OHVvdRKHgX/VLF4ReiCm+Vt/aN2naqMiF5TzB2NJeaaeLO/ZKUkuwOF0Qp2Zninhk4C9b+ZtTp3LJ/mFFPk4G3ezuJJfNH+Ia4483mrISCchy6yEoAp9KNeak7zyOKF/zpW8p8E1MlwIOPXiZVdCWagGtOhaiw5wmFLe1aF/rag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=iOHaqeGS; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1760435129; c=relaxed/simple;
+	bh=eh4ANO2d3smDKZZwIDnxm/MQXjsXiFsIqghETlox01s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LZ83S4/IUOTSXOlQWxhkuUsBRgjH5Kd+1M1Z2fH/51rdb/s+2TN/1Yj6BlYoV/pdaSkJMpx7+OywSFsZs2ubFSgQl64XxtFtWNyatmnFT/P3li4zZQ2rIWcyglkzYaXpbgu+2fWoVsHPd64JUqoZj3BcmSgKZ3d+rZDxMSMCzkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=J/rwQA1O; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iOHaqeGS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=PoMkE0drhoxkBRiaU8xKzH/vd2BHx+rbYA+VLALgslc=; b=iOHaqeGSq0SzlI/U9aXjYdWlC0
-	A9Xxfpx78nVmyCn2AovlkGm7QSS2jjmlyL6c5G3Hld7PODpnr0S7SRijWyUPFwAjd+0Ks/iiMclgL
-	8ZtG4w+DDMVYOdA31xn10oSTMjJdPL9pGtO3abjJWhodnMD/wz6P9U/ngsEDjwefuOlQp1rgpqnEH
-	fklQJLdQEcXiLvzO0v8ARhhFtmQKJQUwTRp9FEsPZN4CgmDz3/QGYPAoH+DiqjNaY9CEuZUy4m7ja
-	nld/l+FIOwmKPPowFxzOIK5TSPg9S5VZBMCPFiqnMxmo05F61547NxmqXoR65MFjLWfcoGK282UIL
-	Cy0pbqrg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8aLB-00000006eCP-41nE;
-	Tue, 14 Oct 2025 08:25:07 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 1087E300212; Tue, 14 Oct 2025 10:25:06 +0200 (CEST)
-Date: Tue, 14 Oct 2025 10:25:06 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="J/rwQA1O"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0FC321F745;
+	Tue, 14 Oct 2025 09:45:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1760435118;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vSi4m7GHZ1XhKbCHDk6/gXFjTYG4yzDfHQT53TiQIyI=;
+	b=J/rwQA1O6X/jO0+uRiWzutma2o99jVSY7lRhRdo3jBJc0LIZOPEY/8ra0n7s+g2mg3NRSv
+	h6MOE/HsbTJjJ6Cyj3QxtiNepOJ8Eyzs4iDe9i+UBrx0IznNASZPLfLfK0EdSq23chGNST
+	cmh5eRZ12iQGl9TxAQtLI4KyMHQDOM6J5/DUvWpNPgfo4NQeKmPsZ5deb6eLJjKROEubKu
+	9648ElaWCgGJDIYM7uV8KQ91G8JaDKs9+R5Q7RxrLXpFKDsiJV029Y/7Xn3/O8pm+Egown
+	oa6f+Zvdw2pHaZnFMVVgrGIyQrr/pDBbfXfKlBdjLzM7hkwEAUMZLt8G9rfzzw==
+From: Guillaume Tucker <gtucker@gtucker.io>
+To: Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>
+Cc: Guillaume Tucker <gtucker@gtucker.io>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"open list:CPU FREQUENCY SCALING FRAMEWORK" <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v13 01/17] preempt: Track NMI nesting to separate per-CPU
- counter
-Message-ID: <20251014082506.GO3245006@noisy.programming.kicks-ass.net>
-References: <20251013155205.2004838-1-lyude@redhat.com>
- <20251013155205.2004838-2-lyude@redhat.com>
- <20251013200035.GD2734756@noisy.programming.kicks-ass.net>
- <d481f196-703e-4ed0-8db1-dbc3822c349e@nvidia.com>
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	automated-testing@lists.yoctoproject.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	workflows@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [RFC PATCH 0/1] kbuild: introduce containerized builds
+Date: Tue, 14 Oct 2025 11:45:10 +0200
+Message-ID: <20251014094511.627258-1-gtucker@gtucker.io>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d481f196-703e-4ed0-8db1-dbc3822c349e@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: gtucker@gtucker.io
 
-On Mon, Oct 13, 2025 at 05:27:32PM -0400, Joel Fernandes wrote:
-> 
-> 
-> On 10/13/2025 4:00 PM, Peter Zijlstra wrote:
-> > On Mon, Oct 13, 2025 at 11:48:03AM -0400, Lyude Paul wrote:
-> >> From: Joel Fernandes <joelagnelf@nvidia.com>
-> >>
-> >> Move NMI nesting tracking from the preempt_count bits to a separate per-CPU
-> >> counter (nmi_nesting). This is to free up the NMI bits in the preempt_count,
-> >> allowing those bits to be repurposed for other uses.  This also has the benefit
-> >> of tracking more than 16-levels deep if there is ever a need.
-> >>
-> >> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> >> Signed-off-by: Joel Fernandes <joelaf@google.com>
-> >> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> >> ---
-> >>  include/linux/hardirq.h   | 17 +++++++++++++----
-> >>  kernel/softirq.c          |  2 ++
-> >>  rust/kernel/alloc/kvec.rs |  5 +----
-> >>  rust/kernel/cpufreq.rs    |  3 +--
-> >>  4 files changed, 17 insertions(+), 10 deletions(-)
-> >>
-> >> diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
-> >> index d57cab4d4c06f..177eed1de35cc 100644
-> >> --- a/include/linux/hardirq.h
-> >> +++ b/include/linux/hardirq.h
-> >> @@ -10,6 +10,8 @@
-> >>  #include <linux/vtime.h>
-> >>  #include <asm/hardirq.h>
-> >>  
-> >> +DECLARE_PER_CPU(unsigned int, nmi_nesting);
-> > 
-> > Urgh, and it isn't even in the same cacheline as the preempt_count :/
-> 
-> Great point. I will move this to DECLARE_PER_CPU_CACHE_HOT()
-> so it's co-located with preempt_count and run some tests. Let me know if that
-> works for you, thanks!
+This proposal emerged from an email discussion and a talk at Plumbers
+last year:
 
-Well, I hate how on entry we then end up incrementing both. How terrible
-would it be to make __preempt_count u64 instead?
+    https://lore.kernel.org/all/affb7aff-dc9b-4263-bbd4-a7965c19ac4e@gtucker.io/
+
+The aim is to facilitate reproducing builds for CI bots as well as
+developers using containers.  It's achieved by providing a wrapper
+around `make` in a separate Makefile.  Here's an illustrative example
+with a kernel.org toolchain in a Docker image from tuxmake:
+
+    $ make -f scripts/Makefile.container CONTAINER=tuxmake/korg-clang-21 LLVM=1 defconfig
+    Running in docker tuxmake/korg-clang-21
+      HOSTCC  scripts/basic/fixdep
+      HOSTCC  scripts/kconfig/conf.o
+    [...]
+      HOSTCC  scripts/kconfig/util.o
+      HOSTLD  scripts/kconfig/conf
+    *** Default configuration is based on 'x86_64_defconfig'
+    #
+    # configuration written to .config
+    #
+
+    $ make -f scripts/Makefile.container CONTAINER=tuxmake/korg-clang-21 LLVM=1 -j8
+    Running in docker tuxmake/korg-clang-21
+    make: warning: -j8 forced in submake: resetting jobserver mode.
+      SYNC    include/config/auto.conf
+      GEN     arch/x86/include/generated/asm/orc_hash.h
+      WRAP    arch/x86/include/generated/uapi/asm/bpf_perf_event.h
+      WRAP    arch/x86/include/generated/uapi/asm/errno.h
+    [...]
+      LD      arch/x86/boot/setup.elf
+      OBJCOPY arch/x86/boot/setup.bin
+      BUILD   arch/x86/boot/bzImage
+    Kernel: arch/x86/boot/bzImage is ready  (#1)
+
+The initial idea was to add an if-else block for when $(CONTAINER)
+was defined directly in the top-level Makefile but this seemed too
+intrusive, hence the approach here with a separate file.  It's easy
+enough to create an alias for development purposes if needed.
+
+While the example above uses a tuxmake image, I've also started
+preparing reference container images with kernel.org toolchains and
+no third-party dependencies other than the base Debian distro:
+
+    https://gitlab.com/gtucker/korg-containers
+
+These are convenient for exercising this feature but any arbitrary
+image may be used of course.
+
+Guillaume Tucker (1):
+  kbuild: add Makefile.container with CONTAINER option
+
+ scripts/Makefile.container | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+ create mode 100644 scripts/Makefile.container
+
+-- 
+2.47.3
+
