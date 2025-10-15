@@ -1,135 +1,233 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C702A306B33
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 19:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC4F28BA81;
+	Wed, 15 Oct 2025 20:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760557840; cv=none; b=YRDvQSzfWb4rw4OWkPZ804h94RnjlOPZiG3205J1ThWAJ0pvPZPgigWyD0M8lRIUKMH+oBb3HMpEX/IEsOFu3esA4tqNWXx4PgeWKSZkTfuI3yyPS74FD2A4FdgwYPf22PvVFgqVnHaPEI2DWDKL3i+jlq67w1NLZM8MG9RKT4Q=
+	t=1760558676; cv=none; b=rYFlU9cp/w2hWhh/R6/zFV+Ww7Td6qmqXairZ76g7HrTCLUY7ML7Wv8Df//vgP4eEEkDp8FlnwPrYYUAkPrSssWeOuMx6NAMyWWLmkZEYY/ZZmh1h+iV7gM6kO+4qL4V2+yV/6QjQD6QXzAOLJ5GwGpTunw4+dmPfXq1f0XxSXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760557840; c=relaxed/simple;
-	bh=2Y3BPewHzoxQrWYHdLQuOQCO1qXQbSKpHm7OmAV1I6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruvUzPjTCujez1Bm20b08FcVtIcnTUwEcadX+kuFAt1iWyEees40/rK0OMk7ktudcFnmx0B03K3kZ0+tZSW6785hiP2ow0tTSOIL6c+7ml4kajuHpi/APJbpcGMU7qcz0gS/LMeDaRda3nWnZwD9DlG0xxQiBnqFIPwf+yCp3nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LgPPaw/4; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760558676; c=relaxed/simple;
+	bh=cyqnG9m8jI8VahDq8BIoiXhfaLpfWMHxWNT4baxcHG0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aKQsZ//xrATQuDiX3esCmYrfRoXaLMuwp+uyu7CzjH3vWnEaPerCOYrK8M+Xfzwv5NIirGbEydLQat4pV/oHw1bHWV05RIf7VndAFI3gUznNQTa+VfI1pujhHF3wKvvzXceugmzxeEVsoUB/ehuf70Gu8LBgHhHlJJsdSi+jLFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G3zkL1SR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LgPPaw/4"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-426edfffc66so991221f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 12:50:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760557837; x=1761162637; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VFRVqaDMnH4SBXpwWtqNUxjwC6dLm5pDnJjbqzI+Vnc=;
-        b=LgPPaw/45pnYGQ7yfDSNXa9z2rIZetNGGnDfEbET6l+bCMR9eBcyZ8zkcxGT3Q2nAv
-         oqpi3MBObFjD+kAqXMblcMxAuPGfo4mTZxSK1jHGjnWPe7OqayWJ9jegJG6IxcXY2nlj
-         6IXTGd5OcX+X9oDnnBF5TvjInf4nVtmG2M1/NWcuboioOnNHSWv6gi72Y1UBVqalOW0q
-         m9tG9qTJLg4zI5G64XshZTfTjvT1BvdqehUMR8brVsEbZ0rV444ft0BPE+QhtUWeYF+B
-         9bs7Bj4MAcOVQBZNzDvOqthX84USGVWuXU6MzBA5qLbrO9KZDYrMt0wa7LcmI5kFw29p
-         3xgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760557837; x=1761162637;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VFRVqaDMnH4SBXpwWtqNUxjwC6dLm5pDnJjbqzI+Vnc=;
-        b=E4lhh8D4QGHSjEcHTADPmMX6bNOIS7tBojf96VtsF8zfzIja+13mAKPm+AAfy3KI+Z
-         ugBrNF9JKyJT55le87+c25/GwMFnA4frDdn3Jd8BdOyodtTfNY7j8WVMQLMFULOdbiwt
-         x3nhojf4G8ObukEHYSfkF03nvoRV+397hI948hj7LwYd7AviyvEsmPeb4vXRuNpW6bVv
-         AuTMqxp05c4OaI8/fyPJ0rGSnJEQTq3dmlTV+9eYoK3F971lLDRB2+MD+q92gK7k/dtZ
-         WeVMJDAMro1UCbxOjzXw15qFeJGEmJAZWcBCQsLvlNN4WUg0uydJDfnrLdH/ytjCjCUt
-         UhiA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6HODhyMZnZP1n6aWJi8sAGIR5tSidlBa5p55jY/5dj5DU9VvMxLYTuaXiXHNlrtWI9XDn0b0no62AcvxltQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1tr4fnTR0oa5q+XxYI6Me+DcmqbiQTMOmRBrjdQ9Haml7TQeK
-	NaHk/spXmbJzjxDenb6RvymbPH7QMRwdnkj9iI0FzJ07NzYWm0PuMoPI
-X-Gm-Gg: ASbGnctNkccGXuFxEY2BjXbNrgC46y+OSlrabOD4/Dr2lyfdheFEDbyeT14UYokeFPA
-	/0Pc+jLihW27JF+6NeS0Gs/wBQffdcp66wvcvxyVg+wFM8sZRynsvY0ZkmxZj85xMbIf3SLRtqD
-	1gUTC+cqZGRX5gZYAvzeQVwzPMxa0WkU64aZzDdnlpuxHkbbqJLh5jx+7TOkXJSa1fCLf/VHNWS
-	6XO2hveLUXA5z4DoPWkJlyfQgpSJkLET/62us1eZ8DORdYH3OzKjOv5AeIEyYfP9goNfPgZ5u2J
-	M4diGKJ8RtHcM5AyXdx7BTEWGfWT9A11v707EyaYxqhkl2Zq6iVvwPIZjt+jo2WgWVyTS1YlRHE
-	3GOQQk7PoU5dFtN5ukP4vOuShCI4V/KvBoQVFtn55N7z/vPWFhNvLk+0cHvovZOjVG1BqQ7lTKC
-	HtA62y77KY2VSnHbk=
-X-Google-Smtp-Source: AGHT+IFewXtBswgFkJ+PxuKCQAic+eavwTJGRRYaxnccnJwiMsIC69bQdFW+noWi4hvllo/GJsJtPQ==
-X-Received: by 2002:a05:6000:40db:b0:3ec:42f9:953e with SMTP id ffacd0b85a97d-426fb6a7131mr971099f8f.7.1760557837106;
-        Wed, 15 Oct 2025 12:50:37 -0700 (PDT)
-Received: from archito.cern.ch ([2a01:e0a:acc:bb60:756b:64e3:20ef:1d08])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fc155143fsm281464675e9.11.2025.10.15.12.50.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 12:50:36 -0700 (PDT)
-From: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
-Subject: [PATCH 2/2] Update the nova todo list
-Date: Wed, 15 Oct 2025 21:49:36 +0200
-Message-ID: <20251015194936.121586-2-delcastillodelarosadaniel@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251015194936.121586-1-delcastillodelarosadaniel@gmail.com>
-References: <20251015194936.121586-1-delcastillodelarosadaniel@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G3zkL1SR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9FAC4CEF8;
+	Wed, 15 Oct 2025 20:04:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760558675;
+	bh=cyqnG9m8jI8VahDq8BIoiXhfaLpfWMHxWNT4baxcHG0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=G3zkL1SRn1gY62J1obluivrTEiJWWoCBDVoDCDgyxSUyE/6aEpGvGj71GzyRDeE/e
+	 jvP6DbfHUOEipUR7/uQNUfm27cAyZ2BlLBq6p/5AxzCp7mOSFwzk9T8XEt/fpy2Ewk
+	 nBuZxzrVgXNVbp7xTU5ConkKncp3w+OcTIJ3uAyeFtkpdyDH/Y5VnUd/VJh9cK40FO
+	 CWrF4jP0Vv/aIyL0TmicuR3vDdavkMy+as+9VUIXjQKkH8MEV2FFn2mweEPie6PibP
+	 SKpRMgR+yiYZJurZOJcHpA8yO584g4JTlD+Cth0uBZaR74KUpdoJ9uWE8PFS2Fbt60
+	 oT7JDz0qiR81g==
+Message-ID: <409f2f03-2bc2-4cb8-9ca7-4e30f82077ff@kernel.org>
+Date: Wed, 15 Oct 2025 22:04:30 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] nova-core: Solve mentions of `CoherentAllocation`
+ improvements [COHA]
+To: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+References: <20251015194936.121586-1-delcastillodelarosadaniel@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251015194936.121586-1-delcastillodelarosadaniel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This small patch updates the nova todo list to
-remove some tasks that have been solved lately.
+Hi Daniel,
 
-Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
----
- Documentation/gpu/nova/core/todo.rst | 19 -------------------
- 1 file changed, 19 deletions(-)
+On 10/15/25 9:49 PM, Daniel del Castillo wrote:
+> This patch solves the existing mentions of COHA, a task
+> in the Nova task list about improving the `CoherentAllocation` API.
+> I confirmed by talking to Alexandre Courbot, that the reading/writing
+> methods in `CoherentAllocation` can never be safe, so
+> this patch doesn't actually change `CoherentAllocation`, but rather
+> tries to solve the existing references to [COHA].
 
-diff --git a/Documentation/gpu/nova/core/todo.rst b/Documentation/gpu/nova/core/todo.rst
-index 48b20656dcb1..be8063030d44 100644
---- a/Documentation/gpu/nova/core/todo.rst
-+++ b/Documentation/gpu/nova/core/todo.rst
-@@ -44,25 +44,6 @@ automatically generates the corresponding mappings between a value and a number.
- | Complexity: Beginner
- | Link: https://docs.rs/num/latest/num/trait.FromPrimitive.html
- 
--Conversion from byte slices for types implementing FromBytes [TRSM]
---------------------------------------------------------------------
--
--We retrieve several structures from byte streams coming from the BIOS or loaded
--firmware. At the moment converting the bytes slice into the proper type require
--an inelegant `unsafe` operation; this will go away once `FromBytes` implements
--a proper `from_bytes` method.
--
--| Complexity: Beginner
--
--CoherentAllocation improvements [COHA]
----------------------------------------
--
--`CoherentAllocation` needs a safe way to write into the allocation, and to
--obtain slices within the allocation.
--
--| Complexity: Beginner
--| Contact: Abdiel Janulgue
--
- Generic register abstraction [REGA]
- -----------------------------------
- 
--- 
-2.51.0
+This patch seems to address two different TODOs. Please split up the patch
+accordingly.
 
+> Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+> ---
+>  drivers/gpu/nova-core/dma.rs            |  20 ++---
+>  drivers/gpu/nova-core/firmware/fwsec.rs | 104 ++++++++++--------------
+>  2 files changed, 50 insertions(+), 74 deletions(-)
+> 
+> diff --git a/drivers/gpu/nova-core/dma.rs b/drivers/gpu/nova-core/dma.rs
+> index 94f44bcfd748..639a99cf72c4 100644
+> --- a/drivers/gpu/nova-core/dma.rs
+> +++ b/drivers/gpu/nova-core/dma.rs
+> @@ -25,21 +25,11 @@ pub(crate) fn new(dev: &device::Device<device::Bound>, len: usize) -> Result<Sel
+>      }
+>  
+>      pub(crate) fn from_data(dev: &device::Device<device::Bound>, data: &[u8]) -> Result<Self> {
+> -        Self::new(dev, data.len()).map(|mut dma_obj| {
+> -            // TODO[COHA]: replace with `CoherentAllocation::write()` once available.
+> -            // SAFETY:
+> -            // - `dma_obj`'s size is at least `data.len()`.
+> -            // - We have just created this object and there is no other user at this stage.
+> -            unsafe {
+> -                core::ptr::copy_nonoverlapping(
+> -                    data.as_ptr(),
+> -                    dma_obj.dma.start_ptr_mut(),
+> -                    data.len(),
+> -                );
+> -            }
+> -
+> -            dma_obj
+> -        })
+> +        let mut dma_obj = Self::new(dev, data.len())?;
+> +        // SAFETY: We have just created this object and there is no other user at this stage.
+
+The safety comment should rather confirm that it is guaranteed that the device
+won't access this memory concurrently.
+
+> +        unsafe { dma_obj.write(data, 0)? };
+> +
+> +        Ok(dma_obj)
+>      }
+>  }
+>  
+> diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
+> index 8edbb5c0572c..cc5a6200d0de 100644
+> --- a/drivers/gpu/nova-core/firmware/fwsec.rs
+> +++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+> @@ -11,12 +11,12 @@
+>  //! - The ucode signature, so the GSP falcon can run FWSEC in HS mode.
+>  
+>  use core::marker::PhantomData;
+> -use core::mem::{align_of, size_of};
+> +use core::mem::size_of;
+>  use core::ops::Deref;
+>  
+>  use kernel::device::{self, Device};
+>  use kernel::prelude::*;
+> -use kernel::transmute::FromBytes;
+> +use kernel::transmute::{AsBytes, FromBytes};
+>  
+>  use crate::dma::DmaObject;
+>  use crate::driver::Bar0;
+> @@ -70,6 +70,8 @@ struct FalconAppifDmemmapperV3 {
+>  }
+>  // SAFETY: any byte sequence is valid for this struct.
+>  unsafe impl FromBytes for FalconAppifDmemmapperV3 {}
+> +// SAFETY: any byte sequence is valid and it contains no padding nor kernel pointers.
+> +unsafe impl AsBytes for FalconAppifDmemmapperV3 {}
+>  
+>  #[derive(Debug)]
+>  #[repr(C, packed)]
+> @@ -82,6 +84,8 @@ struct ReadVbios {
+>  }
+>  // SAFETY: any byte sequence is valid for this struct.
+>  unsafe impl FromBytes for ReadVbios {}
+> +// SAFETY: any byte sequence is valid and it contains no padding nor kernel pointers.
+
+The full safety requirement is "Values of this type may not contain any
+uninitialized bytes. This type must not have interior mutability.
+
+Additional NIT: Please start sentences with a capital letter (Unfortunately the
+comment above missed this as well).
+
+Same for the cases below.
+
+> +unsafe impl AsBytes for ReadVbios {}
+>  
+>  #[derive(Debug)]
+>  #[repr(C, packed)]
+> @@ -94,6 +98,8 @@ struct FrtsRegion {
+>  }
+>  // SAFETY: any byte sequence is valid for this struct.
+>  unsafe impl FromBytes for FrtsRegion {}
+> +// SAFETY: any byte sequence is valid and it contains no padding nor kernel pointers.
+> +unsafe impl AsBytes for FrtsRegion {}
+>  
+>  const NVFW_FRTS_CMD_REGION_TYPE_FB: u32 = 2;
+>  
+> @@ -104,6 +110,8 @@ struct FrtsCmd {
+>  }
+>  // SAFETY: any byte sequence is valid for this struct.
+>  unsafe impl FromBytes for FrtsCmd {}
+> +// SAFETY: any byte sequence is valid and it contains no padding nor kernel pointers.
+> +unsafe impl AsBytes for FrtsCmd {}
+>  
+>  const NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS: u32 = 0x15;
+>  const NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB: u32 = 0x19;
+> @@ -149,24 +157,9 @@ impl FirmwareSignature<FwsecFirmware> for Bcrt30Rsa3kSignature {}
+>  ///
+>  /// Callers must ensure that the region of memory returned is not written for as long as the
+>  /// returned reference is alive.
+> -///
+> -/// TODO[TRSM][COHA]: Remove this and `transmute_mut` once `CoherentAllocation::as_slice` is
+> -/// available and we have a way to transmute objects implementing FromBytes, e.g.:
+> -/// https://lore.kernel.org/lkml/20250330234039.29814-1-christiansantoslima21@gmail.com/
+> -unsafe fn transmute<'a, 'b, T: Sized + FromBytes>(
+> -    fw: &'a DmaObject,
+> -    offset: usize,
+> -) -> Result<&'b T> {
+> -    if offset + size_of::<T>() > fw.size() {
+> -        return Err(EINVAL);
+> -    }
+> -    if (fw.start_ptr() as usize + offset) % align_of::<T>() != 0 {
+> -        return Err(EINVAL);
+> -    }
+> -
+> -    // SAFETY: we have checked that the pointer is properly aligned that its pointed memory is
+> -    // large enough the contains an instance of `T`, which implements `FromBytes`.
+> -    Ok(unsafe { &*(fw.start_ptr().add(offset).cast::<T>()) })
+> +unsafe fn transmute<T: Sized + FromBytes>(fw: &DmaObject, offset: usize) -> Result<&T> {
+> +    // SAFETY: Guaranteed by the safety requirements of the function.
+
+Please mention what is guaranteed and how it is guaranteed by the safety
+requirements of the function (even if it seems trivial).
+
+> +    T::from_bytes(unsafe { fw.as_slice(offset, size_of::<T>())? }).ok_or(EINVAL)
+>  }
+>  
+>  /// Reinterpret the area starting from `offset` in `fw` as a mutable instance of `T` (which must
+> @@ -176,20 +169,12 @@ unsafe fn transmute<'a, 'b, T: Sized + FromBytes>(
+>  ///
+>  /// Callers must ensure that the region of memory returned is not read or written for as long as
+>  /// the returned reference is alive.
+> -unsafe fn transmute_mut<'a, 'b, T: Sized + FromBytes>(
+> -    fw: &'a mut DmaObject,
+> +unsafe fn transmute_mut<T: Sized + FromBytes + AsBytes>(
+> +    fw: &mut DmaObject,
+>      offset: usize,
+> -) -> Result<&'b mut T> {
+> -    if offset + size_of::<T>() > fw.size() {
+> -        return Err(EINVAL);
+> -    }
+> -    if (fw.start_ptr_mut() as usize + offset) % align_of::<T>() != 0 {
+> -        return Err(EINVAL);
+> -    }
+> -
+> -    // SAFETY: we have checked that the pointer is properly aligned that its pointed memory is
+> -    // large enough the contains an instance of `T`, which implements `FromBytes`.
+> -    Ok(unsafe { &mut *(fw.start_ptr_mut().add(offset).cast::<T>()) })
+> +) -> Result<&mut T> {
+> +    // SAFETY: Guaranteed by the safety requirements of the function.
+
+Same here.
+
+> +    T::from_bytes_mut(unsafe { fw.as_slice_mut(offset, size_of::<T>())? }).ok_or(EINVAL)
+>  }
