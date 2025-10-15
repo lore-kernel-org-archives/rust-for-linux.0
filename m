@@ -1,76 +1,57 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD43A31B819
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 10:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7F2307AE1
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 10:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760523640; cv=none; b=GzAsH5B3fUYwQjGO7GqfvmwntvnInU7wbTdzCG5cDIC5XuE7IK0UAcJuvLEEfrKpb3Y+7L/agDIsPSoxX+jINRGj+OMEIrkpcIboIXtW5r6DhEyDD6gRXaMq7QEjYQw9WVwrb47bsjo6u2Dy7htOtlbodHMSbbdjCu+DgerTdv0=
+	t=1760524329; cv=none; b=Y6dDaKwZLvfmLRQ3oZBCYoD9US2LmpKCu10VQinQuRsezDVPtr0g/Oe8udxhO1cLF6HRo8r0dTl7gHpdrwK+Tl/3duAzwI/VsEIXy7U/Rk8f8f2gxfA/jgYrHELyxHM60U/8U4eRc97TSW5En/+GBBA9rWAqpiaPJ7gy8o/oRHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760523640; c=relaxed/simple;
-	bh=syYNPVw3n/GpSLvcv0QAJA46VNrVDvZJVpL7ER+csm0=;
+	s=arc-20240116; t=1760524329; c=relaxed/simple;
+	bh=XnVyysyLvP1k2Hag45q9Dzv50TEW/Txkjea2iOLo95Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rc+4YOQ3tp27ucrZBQN9NmUf8dRNQ1FYQf7WTew0j4FkG3Fg/fQvdRLEmBL/W9yZY1VklUJc8gahO6zcPX/vlvxWHlMN+gctH6CW/aoOnhXEu02Oa6hgplFKy6u0oIZgLSOexOyMt71/ImnEOCm1zdwdjb7jmXkXkGTSzUzdUDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffPhRrF8; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=C/rCNeuSqABDFgHJ9KLlFcMKL94iT+t3BM9jChOplSVmJiTQSEqZyzzoNI2N2guGt8QL2+203WIKcfYFtju2DrREdNegAn7ExWAAcIctsWnykyCYIuxmON1EG/H1e+ahZH8dJ3wa906kRepwzCq0i/zHsZgvJU+vHnYBQ77rKIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYtwL/TV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffPhRrF8"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-26987b80720so14346865ad.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 03:20:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760523638; x=1761128438; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=syYNPVw3n/GpSLvcv0QAJA46VNrVDvZJVpL7ER+csm0=;
-        b=ffPhRrF8dz1vnrtvM1Mf5GlCLZEwKlIXh1m7o8X1EM56P/4UEJBo2+EeJWmE1XVEDu
-         7nNdRfgE4ylIYqDfcA/t950lNeyhLUMj1AQCbN34DQrtMGsKqFJIaQOLG6ydPwMMqVcT
-         cb/QvdTmSrer0Qcdv5cc3elm7Cm+wG9JzvPDhWbct25UDAj7h7ShDBACC1fd05FVppQH
-         CLW40zOV3smiYRfLIpJNYsGsxKAYWxdMKJq00EM0N2CUF25duw5SFAASShEScSksFeo3
-         WgXKistovQHqvNnS9Zbfy0g/1HsT9nmy9mpienHkJGGF0NlUPFYJlnXg5Ap1vyIvK/vX
-         +HmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760523638; x=1761128438;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=syYNPVw3n/GpSLvcv0QAJA46VNrVDvZJVpL7ER+csm0=;
-        b=sWhBbmkufexabt47uRF/8zDAIBAG4q9Z4hZ1+6yVGBQMblI1t+U6ffTHm0Mclt+ZWc
-         1XAhmSg/GQCRTD918b0en29MPUmjkdHLPUegS3R53EUD7fT9D8l9Cj9U7+Lolub2dEVD
-         MIT0lDE0PAqaHhFu+z3effg9qwpy4K71tlPEQfOchuW82kStvStz9DuQThFNNleworjY
-         cFMeQUhyCKN4n63JVcfp6aDojPEE5ZfL3q4EVxS6yP9pjA3TvHiLijh//P4fUc/63rQq
-         vbsNGPFx35Dw4RFZSV7rDCE76NpxF6543nAZoXoTVXXwQiPukxf+RwBhXrs/3RnsbwyJ
-         S/XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+OG7ON7U9iaelR9YzVDZXKNeD31lwXt0d3ZEnI8pCaHS4vMZquukx6QLP9H+zWN4f5UQfiwaa8CVnkiZMFA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeK4xY9QzGAS1XlWFU1rLpvr2scVV5UdeqMcBHLtVfRA9XfWo0
-	YYIo+JAvOK4fTMiE61BMn9FVZrfj3C3pjbGFYXxx6fn7wXSKdOypAdglR96YaNPAhkGegL0BdrF
-	lhT5Lxw8+TACS0KaSJuW2ieyAAvaN/RQ=
-X-Gm-Gg: ASbGncsmEEUCrTsMCE7SiLHYnW04gqV+7iCUEJFYwbByeHCeBJX08zkMOpD6j++ZiHi
-	duBUudJht1EqaRlw908YLpsBTVBS6z6xE3uzdZQML6/A1dSuq8ZC2qDZ0lRe9QTH7pIsiIIX+0R
-	hVkD3vwaOk/Hmh52YDi/WgQD7fQKBM9otAa7k1awK7y80bevG97BzyBV79y+EQkLh6arnO54TDm
-	3aqbmnCnjKasqX8ZfkMjJJSZql4WVTyWO2/VS2oAWUc++kRFrS7Fe1eqntcEh/gWVJc6J725tCW
-	p7UgD3z0Rxyw4v6Fk33AqIC4RieE29ClkwtrWDoplory5ZUv6spPFFeRvEWS95v4SQBZpDWOAPi
-	wy2FmO8CC4EI+EQ==
-X-Google-Smtp-Source: AGHT+IEuA+7KQXjMigiCtp80sJMmgdGJdPwk4cX3Jo5f+x0gzm6yiVWTi0fYh0LQRKdjtlu+kVhR87VUjMTsN2L8qLE=
-X-Received: by 2002:a17:902:d2c6:b0:27e:eb9b:b80f with SMTP id
- d9443c01a7336-29027215f8bmr182642905ad.2.1760523637786; Wed, 15 Oct 2025
- 03:20:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYtwL/TV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8699EC116C6
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 10:32:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760524328;
+	bh=XnVyysyLvP1k2Hag45q9Dzv50TEW/Txkjea2iOLo95Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=iYtwL/TVDy0Rt8BW4eYIJkeWkxsE6tN9UdHbo4XWzOIJfn7qlnDcPsuB9grO5h2zP
+	 XgE9oByHqWkceakqlv0Eq9J2IPV1Tn6DPDMuxDn6LBWutVbD8s9L+fV9hcg6GlV5le
+	 ulSOANxTNGkZG4i7mNynvxFe8znEV7i9i68qICBi1cPARcSm/L7sYWxsSLtcY26gdH
+	 PvGYQ0JJpLdJ0uGLwjMHbtzZpuLmYD1zquyUfkvlCulOTAn9T3O+6OyMk/059Ppj1g
+	 tvHHlvabgZSTKtLDEzI2H4dZiNALyvXDPvcjzz7+rkoSzu2mKuW4lEnedCQom+BcW2
+	 2DCpkW2J3hG7w==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6364eb29e74so11165093a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 03:32:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUaiY0DMoitRnO7Kt3KP8f8g7NXcwE85n52swt3xvuvAAMmLGST2W9mfn2wCpYPO5lddqB5QCcCOGPLayayNw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz4wybdh0EO28Ap18UfwDzku9761koL44wfd38HpaCSIx8l2yo
+	0lU5zDwZMniQGfBPJPGURe5o+6gbdgtd7geKrXbFr2TAU2Qc6AcrQFIz9LnMNnR/4QaeVNLek+p
+	1FoCdFug60yALd3B0AGLdVo5M6hGl+vI=
+X-Google-Smtp-Source: AGHT+IGoA/d5yhGrNUYlE45ck1RVZwOONyMj9xEP0O9ihtkTRuTRU0iB18owFQ5wHS2pOSIJrR8N9/DmGQJKXoFsmag=
+X-Received: by 2002:a05:6402:254f:b0:637:e4d1:aeff with SMTP id
+ 4fb4d7f45d1cf-639d5c3ebc3mr28694096a12.19.1760524327124; Wed, 15 Oct 2025
+ 03:32:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251015022037.14535-2-xry111@xry111.site>
-In-Reply-To: <20251015022037.14535-2-xry111@xry111.site>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 15 Oct 2025 12:20:24 +0200
-X-Gm-Features: AS18NWCGIGHAWk8P2w_fEJ0NHY0-lJvrQGuVtdn-YvHXyfUVHV1SbvXdcT-w3hE
-Message-ID: <CANiq72mvZy+X2ko_sxVCn-2cnsR29boAzPDrYn=S-Tp0xSvvHw@mail.gmail.com>
+References: <20251015022037.14535-2-xry111@xry111.site> <CANiq72mvZy+X2ko_sxVCn-2cnsR29boAzPDrYn=S-Tp0xSvvHw@mail.gmail.com>
+In-Reply-To: <CANiq72mvZy+X2ko_sxVCn-2cnsR29boAzPDrYn=S-Tp0xSvvHw@mail.gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 15 Oct 2025 18:31:56 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H55FMdfPwXbJKT0UkmJ_6KT=o4FQwuWb3iJwYQwj13cBw@mail.gmail.com>
+X-Gm-Features: AS18NWAnFzjUGbY0swZ8OT6uicP-yLzslkwfwIMvtdyG7-njmiNtH6w-d27pTVQ
+Message-ID: <CAAhV-H55FMdfPwXbJKT0UkmJ_6KT=o4FQwuWb3iJwYQwj13cBw@mail.gmail.com>
 Subject: Re: [PATCH] rust: Add -fno-isolate-erroneous-paths-dereference to bindgen_skip_c_flags
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: Nathan Chancellor <nathan@kernel.org>, loongarch@lists.linux.dev, 
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Xi Ruoyao <xry111@xry111.site>, Nathan Chancellor <nathan@kernel.org>, loongarch@lists.linux.dev, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -78,29 +59,35 @@ Cc: Nathan Chancellor <nathan@kernel.org>, loongarch@lists.linux.dev,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
 	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
-	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>, "open list:RUST" <rust-for-linux@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
 	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 15, 2025 at 4:21=E2=80=AFAM Xi Ruoyao <xry111@xry111.site> wrot=
-e:
+On Wed, Oct 15, 2025 at 6:20=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> It's used to work around an objtool issue since commit abb2a5572264
-> ("LoongArch: Add cflag -fno-isolate-erroneous-paths-dereference"), but
-> it's then passed to bindgen and cause an error because Clang does not
-> have this option.
+> On Wed, Oct 15, 2025 at 4:21=E2=80=AFAM Xi Ruoyao <xry111@xry111.site> wr=
+ote:
+> >
+> > It's used to work around an objtool issue since commit abb2a5572264
+> > ("LoongArch: Add cflag -fno-isolate-erroneous-paths-dereference"), but
+> > it's then passed to bindgen and cause an error because Clang does not
+> > have this option.
+> >
+> > Fixes: abb2a5572264 ("LoongArch: Add cflag -fno-isolate-erroneous-paths=
+-dereference")
+> > Signed-off-by: Xi Ruoyao <xry111@xry111.site>
 >
-> Fixes: abb2a5572264 ("LoongArch: Add cflag -fno-isolate-erroneous-paths-d=
-ereference")
-> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> Seems OK -- if you are taking it through LoongArch:
+>
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Queued, thanks.
 
-Seems OK -- if you are taking it through LoongArch:
-
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
-
-Cheers,
-Miguel
+Huacai
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
