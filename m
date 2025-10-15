@@ -1,133 +1,151 @@
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFFA1A9F93;
-	Wed, 15 Oct 2025 03:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28282DEA6E
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 04:03:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760498428; cv=none; b=A0fKz8+jSdNsCth3yyZHzl8uOyhK1p6Qzjrc10YqWVq5AH924Ap+nx2blvmXUSEmC7Lje+x7zAnGDLsO4HDgoRJpnaFtFNN1FDhUrNUuwPt7GrpWQdSn9fQbzqjDRNDuTm1dBfVPdfHulfmGAnsq3uLp/bmXhnObLbFCk6DElgA=
+	t=1760501004; cv=none; b=tPjY6J9h3nQ9ZF5fqZFPKzEKgpz43pCbusce3T4IEMKDRL53ybIQ5SQXcVMd8l9k2EBvCLC9qfQUUuSMPUqAxxahz7BjDWokIGhTcDAXvfaNmku4861NRLWPRFIamRMXMtm32ZpMd7E5gANr3Eym7287eTr0rX2fuJjqKb0fe3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760498428; c=relaxed/simple;
-	bh=fFWtcqbYqwSuAfaIbZBKUxXweqQB3D5s5ZgdU0zniP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ARzKKKjKasBgrNR4Cy+c+ZEVuYlYSjqeZVlXAbbvAwYCMe+Ly837I7Pvq7dP/rTB8Ia2zNQVzAK8kX6ACpPexNI4XJzOgCg9nS52BOBmVpa041N9224RXUnpd3n+LjutKscTf0qjkyfkm1dzrZanh2j9dMhpNk7TkO3VpT96ix8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=qWqRPe6t; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+	s=arc-20240116; t=1760501004; c=relaxed/simple;
+	bh=p04wSVedq5RYaX5Nmz9HRn5PNrsa31BCRLo0sVIHALg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=LHNVINunFWIAWxzJwd22xB8crcSQheBaSdVaK2HKGzZDwKjVL1m92Pbg04gZpasg86/csJWOaBY6soc7nwftJwcxLfeClVCT3e9Uv2RQR0jL0BRzsO8vG2mKkE3xi+n+l+41vR8IQKUQxUVAsySc9d97yypEHAUy5unj2UwkTDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MEic5kUV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="qWqRPe6t"
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 7B8FC2248E;
-	Wed, 15 Oct 2025 03:20:25 +0000 (UTC)
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [151.80.165.199])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id CB9A92636A;
-	Wed, 15 Oct 2025 03:20:16 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 932D03E88F;
-	Wed, 15 Oct 2025 03:20:08 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 3EFE740099;
-	Wed, 15 Oct 2025 03:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1760498406; bh=fFWtcqbYqwSuAfaIbZBKUxXweqQB3D5s5ZgdU0zniP0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qWqRPe6tMkyVt24L4TQxEokd9xxbIlS5nPQZHmqN93YdMm9uG4Vyi2MOpEzAAC5fU
-	 yms65895aXhnWBAYzlOyX4+QA5sNOUa+RQ/LRLgLIQuCS7z85svNozjlpvdOT/++T1
-	 edWLKoXTE5kAyCqm105Hi4a6rBlFhUWANv7W4VcY=
-Received: from [198.18.0.1] (unknown [223.76.243.206])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 40A7440D62;
-	Wed, 15 Oct 2025 03:20:00 +0000 (UTC)
-Message-ID: <7ead454c-8807-4e50-800c-5a646d88fa25@aosc.io>
-Date: Wed, 15 Oct 2025 11:19:52 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MEic5kUV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760501001;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=F0oQPy6sJALcjkJ1xdOgR0v6F24g1cMKqTRKvMpDOSk=;
+	b=MEic5kUVmC0D+DQJVmfuUeh3i0UO3fPiNFQtzSt4Ity+JaCCiU6YCHwD28QKa0FikFp6lQ
+	I9wZEj59vtzo8iEB2JD8ZSlDv2WJNfQ+I456Htq9yGPzVSRA8rIl7O4N4sywnB4z0sjYJH
+	b7lj+kLBYFTkCjTKgLnW8OJkLNQ5u1w=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-324-PWH4yWKKPe2biQXdDIO_mQ-1; Wed, 15 Oct 2025 00:03:18 -0400
+X-MC-Unique: PWH4yWKKPe2biQXdDIO_mQ-1
+X-Mimecast-MFC-AGG-ID: PWH4yWKKPe2biQXdDIO_mQ_1760500997
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-339d5dbf58aso22903195a91.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Oct 2025 21:03:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760500997; x=1761105797;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F0oQPy6sJALcjkJ1xdOgR0v6F24g1cMKqTRKvMpDOSk=;
+        b=CcFelalEGz1B77/QJiUbVrRI3EP1Ojp9nzQ1mnDWiAsAHFlNWMZfwwZcpQmtc+zvie
+         oKI6fJEHhC9+6OMzFPlixeG/+abqvEcja4A1/IXsKsH2LBuVL4JQR8EQDcY125wiexZ4
+         g4svmvVxNcJnom3suUF9YtPNghiVRiMIivNCtveivdAVpUzPygB4QD0g4Z70/v6GneKc
+         UpgZ/9ztRtKoWhigWAGKxwpm18ixovhxmukKh73YxwqY5zDbwEX0RAF1f2lVk0qKryIT
+         FmfpD96+Y66pOCgA1t3M8Ux2uPVsZgOpuSZKOzW+3tzIJt7AfUUL5RugIuD8VG8omteF
+         jYwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVO5pC1/G+btcf1uMDZbBovvsucKXtkXBMZ8vGia3TkIbQNBr4OgxZ7LNApTh6Oza3kBOEh6hGRj6qt0/3/Og==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLTV1bKt9IX602zaxeXlgjiX7CfOI033oq2Xm/zQfgTbuugunj
+	Ikfh8Toh0J9kGTGVrZqSSwHqRFqf1FFM68idKBEB+lay5ybu0Nj0q7oi+GRWv52D/nNgTmMGqyF
+	RwRf8ilnRG6HJMhKaCkj2lP9oSCtvYmFGlYBKnHPct49G0e2SIp0SjozdoMPXExt5FlOL
+X-Gm-Gg: ASbGnct46auhFdzzvwb3OvidbOIJuIu5/Nzk8sIQvrlvNuKPLB/ASH9cvQzFevXnhUN
+	SQ+hLO00uMYSnzzNMnda3b4ko7cMAAJ2OWoIZOcrk011T5BTZs4sRcy4Bcvp1ZlTyfzOa89UaSe
+	nmqsdmIN+X1W2WHYEetsdAZ+9UCNT8DHjcToEZus3kiFNFwjBfxCyAY1d8gJVGDbFw+aHV/GPCy
+	xRFd1z38yzbG75J36mjWrEudMLhvVAtBsS2moFbCBXwq1JLDYU9feFBQbPMuTDP/vswd/tfRRbO
+	RojRRfnNUG1r6+uQYp3d2g1u9vzwSMGTXd8=
+X-Received: by 2002:a17:90b:1806:b0:32d:db5b:7636 with SMTP id 98e67ed59e1d1-33b513cdaf5mr36389063a91.27.1760500997136;
+        Tue, 14 Oct 2025 21:03:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRFuxW1Voy1mECvxyxh5CgehQPp4dDoRICc/mU73XzzKeQ5F8jWZeJJVvKmOuyelAlOt4irw==
+X-Received: by 2002:a17:90b:1806:b0:32d:db5b:7636 with SMTP id 98e67ed59e1d1-33b513cdaf5mr36389041a91.27.1760500996718;
+        Tue, 14 Oct 2025 21:03:16 -0700 (PDT)
+Received: from zeus ([2405:6580:83a0:7600:6e93:a15a:9134:ae1f])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b978607cfsm608006a91.9.2025.10.14.21.03.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 21:03:16 -0700 (PDT)
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+To: arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz
+Cc: Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH rust-next v2 0/3] rust: miscdevice: add llseek support
+Date: Wed, 15 Oct 2025 13:02:40 +0900
+Message-ID: <20251015040246.151141-1-ryasuoka@redhat.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: Add -fno-isolate-erroneous-paths-dereference to
- bindgen_skip_c_flags
-To: Xi Ruoyao <xry111@xry111.site>, Nathan Chancellor <nathan@kernel.org>
-Cc: loongarch@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Huacai Chen <chenhuacai@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>,
- "open list:RUST" <rust-for-linux@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b"
- <llvm@lists.linux.dev>
-References: <20251015022037.14535-2-xry111@xry111.site>
-Content-Language: en-US
-From: Mingcong Bai <jeffbai@aosc.io>
-In-Reply-To: <20251015022037.14535-2-xry111@xry111.site>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4m6B0rGAtG9_rH_wj4EAJEKPY6aHOsJroCFlL-w6BiA_1760500997
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3EFE740099
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [1.40 / 10.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[lkml];
-	MID_RHS_MATCH_FROM(0.00)[];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail,xry111.xry111.site:server fail];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	FREEMAIL_CC(0.00)[lists.linux.dev,kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,loongson.cn,vger.kernel.org];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Action: no action
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi Ruoyao,
+Hi all,
 
-在 2025/10/15 10:20, Xi Ruoyao 写道:
-> It's used to work around an objtool issue since commit abb2a5572264
-> ("LoongArch: Add cflag -fno-isolate-erroneous-paths-dereference"), but
-> it's then passed to bindgen and cause an error because Clang does not
-> have this option.
-> 
-> Fixes: abb2a5572264 ("LoongArch: Add cflag -fno-isolate-erroneous-paths-dereference")
-> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-> ---
->   rust/Makefile | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 23c7ae905bd2..0676b1194a62 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -289,7 +289,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
->   	-fno-inline-functions-called-once -fsanitize=bounds-strict \
->   	-fstrict-flex-arrays=% -fmin-function-alignment=% \
->   	-fzero-init-padding-bits=% -mno-fdpic \
-> -	--param=% --param asan-%
-> +	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
->   
->   # Derived from `scripts/Makefile.clang`.
->   BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+This patch series add support for the llseek file operation to misc
+devices written in Rust.
 
-Tested good applied atop v6.18-rc1, which includes the aforementioned 
-abb2a5572264.
+The first patch introduces pos()/pos_mut() methods to LocalFile and
+File. These helpers allow to refer to the file's position, which is
+required for implementing lseek in misc_device.
 
-Tested-by: Mingcong Bai <jeffbai@aosc.io>
+The second patch adds the llseek hook to the MiscDevice trait, enabling
+Rust drivers to implement the seeking logic.
 
-Best Regards,
-Mingcong Bai
+The last one updates the rust_misc_device sample to demonstrate the
+usage of the new llseek hook, including a C test program that verifies
+the functionality.
+
+history of this patch:
+
+v2:
+- Introduce pos() and pos_mut() methods to get file positions,
+and use them in sample programs.
+- Add read, write and lseek in the userspace sample program. 
+- Remove unsafe block from the sample program. 
+- In this v2 patch, remove SEEK_END related codes from
+a sample program because it needs inode->i_size which has not
+implemented yet. The purpose of this patch is to introduce
+lseek(). Since implementing an 'inode wrap' requires more
+extensive discussion than adding llseek hook(), I just
+exclude it from this patch series. I believe that whether
+SEEK_END is supported or not has no impact on adding lseek()
+to MiscDevice.
+
+v1:
+https://lore.kernel.org/rust-for-linux/20250818135846.133722-1-ryasuoka@redhat.com/
+
+
+Ryosuke Yasuoka (3):
+  rust: fs: add pos/pos_mut methods for LocalFile struct
+  rust: miscdevice: add llseek support
+  rust: samples: miscdevice: add lseek samples
+
+ rust/kernel/fs/file.rs           | 61 ++++++++++++++++++++++++++++
+ rust/kernel/miscdevice.rs        | 36 +++++++++++++++++
+ samples/rust/rust_misc_device.rs | 68 ++++++++++++++++++++++++++++++++
+ 3 files changed, 165 insertions(+)
+
+
+base-commit: 98906f9d850e4882004749eccb8920649dc98456
+-- 
+2.51.0
 
