@@ -1,107 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B37F2836B5;
-	Wed, 15 Oct 2025 09:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD43A31B819
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 10:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760521716; cv=none; b=N3kcOPGsgGQgcrGkCwEuzNZxE7HXXs7A2EPhVdORPWI+bJjtdh4wL3/uS+g1pMqYgSPFjy2hkTKGUmXidzNUmdcGxcw5y3wle5UbAOweZI/7GiVTaDlh6VA16rlQqQ10TUs1stx5UqcMryaENsTkqfIdG63ABFqUn4QwHT2U7XY=
+	t=1760523640; cv=none; b=GzAsH5B3fUYwQjGO7GqfvmwntvnInU7wbTdzCG5cDIC5XuE7IK0UAcJuvLEEfrKpb3Y+7L/agDIsPSoxX+jINRGj+OMEIrkpcIboIXtW5r6DhEyDD6gRXaMq7QEjYQw9WVwrb47bsjo6u2Dy7htOtlbodHMSbbdjCu+DgerTdv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760521716; c=relaxed/simple;
-	bh=ci2GAK96GpSlDOtokEvI17IcFg1bYDVpieRXum3v43o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TUcXMcXgvPMpoelyg7UOsruivrPpKxJT7VK+je1Y2xCxoAlPhJ2LOW1ehAYmDa7fjVH0h2Ea25pEOF5alIcCTgXWFSe2RaWjw/bhbr+QQ8Ip8HodJ1uzgvDJD0ZLyPUuFXsVvsiqz2gLV4l6EiVjCSVxH7uJJqBz56l71FxeHtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B69C4CEF8;
-	Wed, 15 Oct 2025 09:48:24 +0000 (UTC)
-Date: Wed, 15 Oct 2025 10:48:21 +0100
-From: Mark Brown <broonie@debian.org>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Breno Leitao <leitao@debian.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Liam Girdwood <lgirdwood@gmail.com>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org, linux-clk@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 19/19] rust: regulator: replace `kernel::c_str!` with
- C-Strings
-Message-ID: <a6d606c0-716f-49b5-81cf-362b325b7872@sirena.org.uk>
-References: <20250925-core-cstr-cstrings-v2-0-78e0aaace1cd@gmail.com>
- <20250925-core-cstr-cstrings-v2-19-78e0aaace1cd@gmail.com>
+	s=arc-20240116; t=1760523640; c=relaxed/simple;
+	bh=syYNPVw3n/GpSLvcv0QAJA46VNrVDvZJVpL7ER+csm0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rc+4YOQ3tp27ucrZBQN9NmUf8dRNQ1FYQf7WTew0j4FkG3Fg/fQvdRLEmBL/W9yZY1VklUJc8gahO6zcPX/vlvxWHlMN+gctH6CW/aoOnhXEu02Oa6hgplFKy6u0oIZgLSOexOyMt71/ImnEOCm1zdwdjb7jmXkXkGTSzUzdUDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffPhRrF8; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffPhRrF8"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-26987b80720so14346865ad.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 03:20:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760523638; x=1761128438; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=syYNPVw3n/GpSLvcv0QAJA46VNrVDvZJVpL7ER+csm0=;
+        b=ffPhRrF8dz1vnrtvM1Mf5GlCLZEwKlIXh1m7o8X1EM56P/4UEJBo2+EeJWmE1XVEDu
+         7nNdRfgE4ylIYqDfcA/t950lNeyhLUMj1AQCbN34DQrtMGsKqFJIaQOLG6ydPwMMqVcT
+         cb/QvdTmSrer0Qcdv5cc3elm7Cm+wG9JzvPDhWbct25UDAj7h7ShDBACC1fd05FVppQH
+         CLW40zOV3smiYRfLIpJNYsGsxKAYWxdMKJq00EM0N2CUF25duw5SFAASShEScSksFeo3
+         WgXKistovQHqvNnS9Zbfy0g/1HsT9nmy9mpienHkJGGF0NlUPFYJlnXg5Ap1vyIvK/vX
+         +HmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760523638; x=1761128438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=syYNPVw3n/GpSLvcv0QAJA46VNrVDvZJVpL7ER+csm0=;
+        b=sWhBbmkufexabt47uRF/8zDAIBAG4q9Z4hZ1+6yVGBQMblI1t+U6ffTHm0Mclt+ZWc
+         1XAhmSg/GQCRTD918b0en29MPUmjkdHLPUegS3R53EUD7fT9D8l9Cj9U7+Lolub2dEVD
+         MIT0lDE0PAqaHhFu+z3effg9qwpy4K71tlPEQfOchuW82kStvStz9DuQThFNNleworjY
+         cFMeQUhyCKN4n63JVcfp6aDojPEE5ZfL3q4EVxS6yP9pjA3TvHiLijh//P4fUc/63rQq
+         vbsNGPFx35Dw4RFZSV7rDCE76NpxF6543nAZoXoTVXXwQiPukxf+RwBhXrs/3RnsbwyJ
+         S/XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+OG7ON7U9iaelR9YzVDZXKNeD31lwXt0d3ZEnI8pCaHS4vMZquukx6QLP9H+zWN4f5UQfiwaa8CVnkiZMFA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeK4xY9QzGAS1XlWFU1rLpvr2scVV5UdeqMcBHLtVfRA9XfWo0
+	YYIo+JAvOK4fTMiE61BMn9FVZrfj3C3pjbGFYXxx6fn7wXSKdOypAdglR96YaNPAhkGegL0BdrF
+	lhT5Lxw8+TACS0KaSJuW2ieyAAvaN/RQ=
+X-Gm-Gg: ASbGncsmEEUCrTsMCE7SiLHYnW04gqV+7iCUEJFYwbByeHCeBJX08zkMOpD6j++ZiHi
+	duBUudJht1EqaRlw908YLpsBTVBS6z6xE3uzdZQML6/A1dSuq8ZC2qDZ0lRe9QTH7pIsiIIX+0R
+	hVkD3vwaOk/Hmh52YDi/WgQD7fQKBM9otAa7k1awK7y80bevG97BzyBV79y+EQkLh6arnO54TDm
+	3aqbmnCnjKasqX8ZfkMjJJSZql4WVTyWO2/VS2oAWUc++kRFrS7Fe1eqntcEh/gWVJc6J725tCW
+	p7UgD3z0Rxyw4v6Fk33AqIC4RieE29ClkwtrWDoplory5ZUv6spPFFeRvEWS95v4SQBZpDWOAPi
+	wy2FmO8CC4EI+EQ==
+X-Google-Smtp-Source: AGHT+IEuA+7KQXjMigiCtp80sJMmgdGJdPwk4cX3Jo5f+x0gzm6yiVWTi0fYh0LQRKdjtlu+kVhR87VUjMTsN2L8qLE=
+X-Received: by 2002:a17:902:d2c6:b0:27e:eb9b:b80f with SMTP id
+ d9443c01a7336-29027215f8bmr182642905ad.2.1760523637786; Wed, 15 Oct 2025
+ 03:20:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qu2IBVFvaIEaH/yu"
-Content-Disposition: inline
-In-Reply-To: <20250925-core-cstr-cstrings-v2-19-78e0aaace1cd@gmail.com>
-X-Cookie: Sentient plasmoids are a gas.
+References: <20251015022037.14535-2-xry111@xry111.site>
+In-Reply-To: <20251015022037.14535-2-xry111@xry111.site>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 15 Oct 2025 12:20:24 +0200
+X-Gm-Features: AS18NWCGIGHAWk8P2w_fEJ0NHY0-lJvrQGuVtdn-YvHXyfUVHV1SbvXdcT-w3hE
+Message-ID: <CANiq72mvZy+X2ko_sxVCn-2cnsR29boAzPDrYn=S-Tp0xSvvHw@mail.gmail.com>
+Subject: Re: [PATCH] rust: Add -fno-isolate-erroneous-paths-dereference to bindgen_skip_c_flags
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: Nathan Chancellor <nathan@kernel.org>, loongarch@lists.linux.dev, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
+	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:CLANG/LLVM BUILD SUPPORT:Keyword:b(?i:clang|llvm)b" <llvm@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Oct 15, 2025 at 4:21=E2=80=AFAM Xi Ruoyao <xry111@xry111.site> wrot=
+e:
+>
+> It's used to work around an objtool issue since commit abb2a5572264
+> ("LoongArch: Add cflag -fno-isolate-erroneous-paths-dereference"), but
+> it's then passed to bindgen and cause an error because Clang does not
+> have this option.
+>
+> Fixes: abb2a5572264 ("LoongArch: Add cflag -fno-isolate-erroneous-paths-d=
+ereference")
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
 
---qu2IBVFvaIEaH/yu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Seems OK -- if you are taking it through LoongArch:
 
-On Thu, Sep 25, 2025 at 09:54:07AM -0400, Tamir Duberstein wrote:
-> C-String literals were added in Rust 1.77. Replace instances of
-> `kernel::c_str!` with C-String literals where possible.
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-This doesn't apply against current code, please check and resend.
+Thanks!
 
---qu2IBVFvaIEaH/yu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjvbeQACgkQJNaLcl1U
-h9Dt8Af/TLwPaPEPyJKhHTg8cZeHf70d+vVL0moyk8tdCcvNggPRPd8mXg0NT9mO
-qmJvoWmet4bQC3McxDEI2hDArwrV6orbVM8LsRyd78hdChnLNP1058/WMu4IMsm9
-2BDs6OT5Nma+7YMa+KS6S7fkuUmt9AG/CkBR9NAGDX0K6kGd/GQ1E9I11cf8Cdqs
-YFLT67SrYyxGv3ZGtK5IkUOmqn8vSKPTtrQiuzfeSkwR6iBWmy5jq1VR/Qh2Kycq
-c/7pMyRZK1HaRL+RnAGvZaPuru3c9bRia03t2TS0BaJJYl8QMaNG2TqmOxxHBHNP
-0Dagzm72apYtzPFYbdE9flnTkc2o/Q==
-=ofuh
------END PGP SIGNATURE-----
-
---qu2IBVFvaIEaH/yu--
+Cheers,
+Miguel
