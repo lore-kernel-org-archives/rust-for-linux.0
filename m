@@ -1,68 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AE72C21FC;
-	Wed, 15 Oct 2025 12:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02F62288CB
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 13:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760531399; cv=none; b=IZeySWnYCGzz3KZO2RLNIaEWYAaWD8riHbQjwGH/qolMlN9MR1UB4iNXfjOu7MtZDP7LX1iNkIBTcePm5M/Fq7x4SP3iIoySatdyejyVVPY3nLBbQI1sjTOZPPxUjwcNvSjjtAFNCOkvXUfMWkkqb1MFaTFdqs9T8g+lAHTtLSo=
+	t=1760535895; cv=none; b=foheMZ8tO1SycwDOBK9vjk6zqwmutPetJyOz3ZZ0+39mr+EnaBTp1Zg1rsRYMS8NOk8V0eHVLWk5N0SZtqAxcYYTUXFL4pVPnaH67ofrKgXUOxpZakG3D2EEYzSqjoBNcocq8akt1rURan3t3oWFwF0diRTtTgayhbd1tttLCZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760531399; c=relaxed/simple;
-	bh=PqJfoggt1kaUHs+pnswClZspb/rHacAJYxqaLklDo8Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=sReN39FR5Z/qWloQaVX35stMatlujTpx6H+x98+Rud0ycszJkIMSb9Ae24fQatALtoa6CCsSj2ug8ZlO8QrmQRhHJUHj8yo3//zx71EIC1aEOYzEF+Tz5W+H3WY6Yy7xsnT23UeDRu14EbDXtmEodQzOrXE/p9sKccchfX7c7W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNqwgQiy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760535895; c=relaxed/simple;
+	bh=lFAGPMOJGo/3aMHHyf3A9h5Mnxa9R2n5KMimlrUhYPI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Qu4CyYwln2KnjggSmqzBLT/5lxFeseuXvW+ylQ2CAgmb4feEIjc5KiEp4ERvzMZ5nQdg8NQse1Z3KYcuSXplm/HbamgHiBVahYMFjKshAg5h+Jj2zQlqHFL3oAsqogWYaBmwD3VMNNttIVjleClVC8COzK+oE4XnZtaEEUV6Hgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=bNqn54IK; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNqwgQiy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6304C113D0;
-	Wed, 15 Oct 2025 12:29:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760531398;
-	bh=PqJfoggt1kaUHs+pnswClZspb/rHacAJYxqaLklDo8Y=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=WNqwgQiyzevwYN1GxBKFMLtmBCihT0LReAj2GoSxetoHexRotvldlu7LuR65ar5Zi
-	 ox5OjVlssvP7quoPixt1JcJYYar6RhWuH7H0GxA7mEBtSHeiUxUWYoMKRKrJ0mDmVs
-	 YuY2AwkmYXssbFhBUj9VTCr49Jp/52cLVbMsksH66lNU4MzxsiAkt8FmCwoza9KYCe
-	 xC5AXlH65vP8aAPFFEHumkgDJl9nq6cxXxLFU965UsRTMzTsIk3oYaH/IJsf1jgaKL
-	 s8cXaFNTrtrtXumgQYNiMNu4zExL86eCOaqP+LU/2XVZ6y8sNwAWJKMooy2qgy5TOR
-	 yQA2lViwCuYsA==
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="bNqn54IK"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 0EA7A240028
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Oct 2025 15:44:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1760535886; bh=lFAGPMOJGo/3aMHHyf3A9h5Mnxa9R2n5KMimlrUhYPI=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:Autocrypt:OpenPGP:From;
+	b=bNqn54IK1u2UPNrpl92Xj3TJOTlx9B8csk+fT/EzilNqETV65nci5V/C18dQeIkwZ
+	 KHoj9tpE5vEzRH7eK3i7LVuxi/rsdfNK8PfjXih7HGHfcc32V0CUv6mX5syJwtZsAa
+	 gssv09nP5aaE+pln5KW3ETqLCM4CKx5ZRv5JXBpzfdxZ4gZGMkUwR4V5+u5Fqf15x/
+	 XmIkZ7h3zZ4bXT3Dz1VbpCo/dllg4DHH0KFxtkw78ybEvVjAHN2OQ6quVDk4CNLYNi
+	 8PgeGJtTP6JykIqxm9FwcEtmDliOz3qwGfrCzyovlBKVVr9sifnVe00wKmVK4UhdWh
+	 4pZ8jONNdxK+Q==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4cmslH4V8tz9rxM;
+	Wed, 15 Oct 2025 15:44:43 +0200 (CEST)
+Message-ID: <7de58fd25b52dd5195c8ac06ed4df5a1e60e5070.camel@posteo.de>
+Subject: Re: [PATCH v4 2/2] rust: leds: add basic led classdev abstractions
+From: Markus Probst <markus.probst@posteo.de>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Lee Jones <lee@kernel.org>, Pavel
+ Machek <pavel@kernel.org>,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"	
+ <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, Boqun Feng	
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ bjorn3_gh@protonmail.com,  Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-leds@vger.kernel.org
+Date: Wed, 15 Oct 2025 13:44:45 +0000
+In-Reply-To: <aO1GM4WXs37Zpm0G@google.com>
+References: <20251012145221.172116-1-markus.probst@posteo.de>
+	 <20251012145221.172116-3-markus.probst@posteo.de>
+	 <aO1GM4WXs37Zpm0G@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 15 Oct 2025 14:29:52 +0200
-Message-Id: <DDIWAK8RNEMY.2D4471L1K87QT@kernel.org>
-Subject: Re: [PATCH v3] rust: pci: Allocate and manage PCI interrupt vectors
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <acourbot@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
- Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- <nouveau@lists.freedesktop.org>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251008190726.823527-1-joelagnelf@nvidia.com>
-In-Reply-To: <20251008190726.823527-1-joelagnelf@nvidia.com>
+MIME-Version: 1.0
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Wed Oct 8, 2025 at 9:07 PM CEST, Joel Fernandes wrote:
-> Add support to PCI rust module to allocate, free and manage IRQ vectors.
-> Integrate with devres for managing the allocated resources.
->
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+T24gTW9uLCAyMDI1LTEwLTEzIGF0IDE4OjM0ICswMDAwLCBBbGljZSBSeWhsIHdyb3RlOgo+IE9u
+IFN1biwgT2N0IDEyLCAyMDI1IGF0IDAyOjUyOjM5UE0gKzAwMDAsIE1hcmt1cyBQcm9ic3Qgd3Jv
+dGU6Cj4gPiBJbXBsZW1lbnQgdGhlIGNvcmUgYWJzdHJhY3Rpb25zIG5lZWRlZCBmb3IgbGVkIGNs
+YXNzIGRldmljZXMsCj4gPiBpbmNsdWRpbmc6Cj4gPiAKPiA+ICogYGxlZDo6TGVkT3BzYCAtIHRo
+ZSB0cmFpdCBmb3IgaGFuZGxpbmcgbGVkcywgaW5jbHVkaW5nCj4gPiDCoCBgYnJpZ2h0bmVzc19z
+ZXRgLCBgYnJpZ2h0bmVzc19nZXRgIGFuZCBgYmxpbmtfc2V0YAo+ID4gCj4gPiAqIGBsZWQ6Oklu
+aXREYXRhYCAtIGRhdGEgc2V0IGZvciB0aGUgbGVkIGNsYXNzIGRldmljZQo+ID4gCj4gPiAqIGBs
+ZWQ6OkRldmljZWAgLSBhIHNhZmUgd3JhcHBlciBhcm91bmQgYGxlZF9jbGFzc2RldmAKPiA+IAo+
+ID4gU2lnbmVkLW9mZi1ieTogTWFya3VzIFByb2JzdCA8bWFya3VzLnByb2JzdEBwb3N0ZW8uZGU+
+Cj4gCj4gPiArcHViIHRyYWl0IExlZE9wczogU2VuZCArICdzdGF0aWMgKyBTaXplZCB7Cj4gPiAr
+wqDCoMKgIC8vLyBJZiBzZXQgdHJ1ZSwgW2BMZWRPcHM6OmJyaWdodG5lc3Nfc2V0YF0gYW5kCj4g
+PiBbYExlZE9wczo6Ymxpbmtfc2V0YF0gbXVzdCBub3Qgc2xlZXAKPiA+ICvCoMKgwqAgLy8vIGFu
+ZCBwZXJmb3JtIHRoZSBvcGVyYXRpb24gaW1tZWRpYXRlbHkuCj4gPiArwqDCoMKgIGNvbnN0IEJM
+T0NLSU5HOiBib29sOwo+ID4gK8KgwqDCoCAvLy8gVGhlIG1heCBicmlnaHRuZXNzIGxldmVsCj4g
+PiArwqDCoMKgIGNvbnN0IE1BWF9CUklHSFRORVNTOiB1MzI7Cj4gPiArCj4gPiArwqDCoMKgIC8v
+LyBTZXRzIHRoZSBicmlnaHRuZXNzIGxldmVsLgo+ID4gK8KgwqDCoCAvLy8KPiA+ICvCoMKgwqAg
+Ly8vIFNlZSBhbHNvIFtgTGVkT3BzOjpCTE9DS0lOR2BdCj4gPiArwqDCoMKgIGZuIGJyaWdodG5l
+c3Nfc2V0KCZzZWxmLCBicmlnaHRuZXNzOiB1MzIpIC0+IFJlc3VsdDwoKT47Cj4gPiArCj4gPiAr
+wqDCoMKgIC8vLyBHZXRzIHRoZSBjdXJyZW50IGJyaWdodG5lc3MgbGV2ZWwuCj4gPiArwqDCoMKg
+IGZuIGJyaWdodG5lc3NfZ2V0KCZzZWxmKSAtPiB1MzIgewo+ID4gK8KgwqDCoMKgwqDCoMKgIGJ1
+aWxkX2Vycm9yIShWVEFCTEVfREVGQVVMVF9FUlJPUikKPiA+ICvCoMKgwqAgfQo+ID4gKwo+ID4g
+K8KgwqDCoCAvLy8gQWN0aXZhdGVzIGhhcmR3YXJlIGFjY2VsZXJhdGVkIGJsaW5raW5nLgo+ID4g
+K8KgwqDCoCAvLy8KPiA+ICvCoMKgwqAgLy8vIGRlbGF5cyBhcmUgaW4gbWlsbGlzZWNvbmRzLiBJ
+ZiBib3RoIGFyZSB6ZXJvLCBhIHNlbnNpYmxlCj4gPiBkZWZhdWx0IHNob3VsZCBiZSBjaG9zZW4u
+Cj4gPiArwqDCoMKgIC8vLyBUaGUgY2FsbGVyIHNob3VsZCBhZGp1c3QgdGhlIHRpbWluZ3MgaW4g
+dGhhdCBjYXNlIGFuZCBpZgo+ID4gaXQgY2FuJ3QgbWF0Y2ggdGhlIHZhbHVlcwo+ID4gK8KgwqDC
+oCAvLy8gc3BlY2lmaWVkIGV4YWN0bHkuIFNldHRpbmcgdGhlIGJyaWdodG5lc3MgdG8gMCB3aWxs
+Cj4gPiBkaXNhYmxlIHRoZSBoYXJkd2FyZSBhY2NlbGVyYXRlZAo+ID4gK8KgwqDCoCAvLy8gYmxp
+bmtpbmcuCj4gPiArwqDCoMKgIC8vLwo+ID4gK8KgwqDCoCAvLy8gU2VlIGFsc28gW2BMZWRPcHM6
+OkJMT0NLSU5HYF0KPiA+ICvCoMKgwqAgZm4gYmxpbmtfc2V0KCZzZWxmLCBfZGVsYXlfb246ICZt
+dXQgdXNpemUsIF9kZWxheV9vZmY6ICZtdXQKPiA+IHVzaXplKSAtPiBSZXN1bHQ8KCk+IHsKPiA+
+ICvCoMKgwqDCoMKgwqDCoCBidWlsZF9lcnJvciEoVlRBQkxFX0RFRkFVTFRfRVJST1IpCj4gPiAr
+wqDCoMKgIH0KPiAKPiBUaGVzZSBmdW5jdGlvbnMgc2hvdWxkIHByb2JhYmx5IHRha2UgYSAmRGV2
+aWNlPEJvdW5kPiBhcmd1bWVudCBzbwo+IHRoYXQKPiB0aGV5IGNhbiB1c2UgbWV0aG9kcyB0aGF0
+IHJlcXVpcmUgYSBib3VuZCBkZXZpY2UgKHN1Y2ggYXMgSU8pLgpIb3cgYWJvdXQgaW5zdGVhZCBz
+b21ldGhpbmcgbGlrZQoKbW9kIGRldmljZSB7CgogIHVuc2FmZSB0cmFpdCBDb250YWluZXI8Q3R4
+OiBEZXZpY2VDb250ZXh0PjogQXNSZWY8RGV2aWNlPEN0eD4+IHsKICAgIGNvbnN0IE9mZnNldDog
+dXNpemU7CgogICAgdW5zYWZlIGZuIGZyb21fZGV2aWNlKGRldjogJkRldmljZTxDdHg+KSAtPiAm
+U2VsZiB7CiAgICAgICA8aW1wbGVtZW50YXRpb24gaGVyZT4KICAgIH0KICB9CgogIHVuc2FmZSBp
+bXBsIERldmljZTxDdHg+IGZvciBDb250YWluZXI8Q3R4PiB7CiAgICBjb25zdCBPZmZzZXQ6IHVz
+aXplID0gMDsKICB9Cgp9CgpBbmQgaW5zdGVhZCBvZiBwYXNzaW5nICZEZXZpY2U8Qm91bmQ+IHRv
+IHRoZSBmdW5jdGlvbnMsIHdlIHNob3VsZCBhZGQgYQp0eXBlIHBhcmFtZXRlciB0byBMZWRPcHMs
+IGUuZy46Cgp0cmFpdCBMZWRPcHM8VDogZGV2aWNlOjpDb250YWluZXI8ZGV2aWNlOjpCb3VuZD4+
+IHsKCiAgLi4uCgogIGZuIGJyaWdodG5lc3Nfc2V0KCZzZWxmLCBkZXY6ICZULCBicmlnaHRuZXNz
+OiB1MzIpIC0+IFJlc3VsdDwoKT47CgogIC4uLgoKfQoKaW1wbDxUOiBMZWRPcHM8RT4sIEU6IGRl
+dmljZTo6Q29udGFpbmVyPGRldmljZTo6Qm91bmQ+PiBEZXZpY2U8VD4gewoKICBwdWIgZm4gbmV3
+PCdhPigKICAgICAgICBwYXJlbnQ6ICYnYSBFLAogICAgICAgIGluaXRfZGF0YTogSW5pdERhdGE8
+J2E+LAogICAgICAgIG9wczogVCwKICAgICkgLT4gaW1wbCBQaW5Jbml0PERldnJlczxTZWxmPiwg
+RXJyb3I+ICsgJ2EgewogICAgIC4uLgogIH0KCiAgLi4uCgp9CgpJbiB0aGUgZXhhbXBsZSBvZiBp
+MmMgKG9yIGFueSBvdGhlciBjb250YWluZXIgZm9yIGBzdHJ1Y3QgZGV2aWNlYCksIHdlCmltcGxl
+bWVudCB0aGUgZGV2aWNlOjpDb250YWluZXIgdHJhaXQ6Cgptb2QgaTJjIHsKCiAgdW5zYWZlIGlt
+cGwgZGV2aWNlOjpDb250YWluZXIgZm9yIEkyY0NsaWVudCB7CiAgICBjb25zdCBPZmZzZXQ6IHVz
+aXplID0gb2Zmc2V0X29mIShiaW5kaW5nczo6aTJjX2NsaWVudCwgZGV2KTsKICB9Cgp9ClRoaXMg
+YWxsb3dzIHRoZSBMZWRPcHMgZnVuY3Rpb24gdG8gdXNlIGFueSBmdW5jdGlvbnMgZnJvbSB0aGUg
+STJjQ2xpZW50Cm9yIGFueSBvdGhlciBkZXZpY2UgY29udGFpbmVyIHdoaWNoIG1heSBiZSB1c2Vk
+IChyZW1vdmluZyB0aGUgbmVlZCB0bwpzdG9yZSBpdCBpbnNpZGUgdGhlIExlZE9wcyBpbXBsZW1l
+bnRhdGlvbnMgc3RydWN0KS4gSXQgc3RpbGwgYWxsb3dzCkRldmljZTxCb3VuZD4gdG8gYmUgdXNl
+ZCwgYXMgaXQgYWxzbyB3b3VsZCBpbXBsZW1lbnQgZGV2aWNlOjpDb250YWluZXIuCgpUaGFua3MK
+LSBNYXJrdXMgUHJvYnN0Cgo+IAo+ID4gK2ltcGw8VDogTGVkT3BzPiBEZXZpY2U8VD4gewo+ID4g
+K8KgwqDCoCAvLy8gUmVnaXN0ZXJzIGEgbmV3IGxlZCBjbGFzc2Rldi4KPiA+ICvCoMKgwqAgLy8v
+Cj4gPiArwqDCoMKgIC8vLyBUaGUgW2BEZXZpY2VgXSB3aWxsIGJlIHVucmVnaXN0ZXJlZCBvbiBk
+cm9wLgo+ID4gK8KgwqDCoCBwdWIgZm4gbmV3PCdhPigKPiA+ICvCoMKgwqDCoMKgwqDCoCBwYXJl
+bnQ6ICYnYSBkZXZpY2U6OkRldmljZTxCb3VuZD4sCj4gPiArwqDCoMKgwqDCoMKgwqAgaW5pdF9k
+YXRhOiBJbml0RGF0YTwnYT4sCj4gPiArwqDCoMKgwqDCoMKgwqAgb3BzOiBULAo+ID4gK8KgwqDC
+oCApIC0+IGltcGwgUGluSW5pdDxEZXZyZXM8U2VsZj4sIEVycm9yPiArICdhIHsKPiA+ICvCoMKg
+wqDCoMKgwqDCoCBEZXZyZXM6Om5ldygKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHBhcmVu
+dCwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRyeV9waW5faW5pdCEoU2VsZiB7Cj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG9wcywKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgY2xhc3NkZXYgPC0gT3BhcXVlOjp0cnlfZmZpX2luaXQofHB0cjogKm11
+dAo+ID4gYmluZGluZ3M6OmxlZF9jbGFzc2Rldnwgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIC8vIFNBRkVUWTogYHRyeV9mZmlfaW5pdGAgZ3VhcmFudGVlcyB0
+aGF0Cj4gPiBgcHRyYCBpcyB2YWxpZCBmb3Igd3JpdGUuCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgLy8gYGxlZF9jbGFzc2RldmAgZ2V0cyBmdWxseSBpbml0aWFs
+aXplZCBpbi0KPiA+IHBsYWNlIGJ5Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgLy8gYGxlZF9jbGFzc2Rldl9yZWdpc3Rlcl9leHRgIGluY2x1ZGluZwo+ID4gYG11
+dGV4YCBhbmQgYGxpc3RfaGVhZGAuCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgdW5zYWZlIHsgcHRyLndyaXRlKGJpbmRpbmdzOjpsZWRfY2xhc3NkZXYgewo+ID4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbWF4X2JyaWdo
+dG5lc3M6IFQ6Ok1BWF9CUklHSFRORVNTLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgYnJpZ2h0bmVzc19zZXQ6IFQ6OkJMT0NLSU5HCj4gPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gPiAu
+dGhlbl9zb21lKEFkYXB0ZXI6OjxUPjo6YnJpZ2h0bmVzc19zZXRfY2FsbGJhY2spLAo+ID4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYnJpZ2h0bmVzc19z
+ZXRfYmxvY2tpbmc6ICghVDo6QkxPQ0tJTkcpCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gPiAudGhlbl9zb21lKEFkYXB0ZXI6OjxU
+Pjo6YnJpZ2h0bmVzc19zZXRfYmxvY2tpbmdfY2FsbGJhY2spLAo+ID4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYnJpZ2h0bmVzc19nZXQ6IFQ6OkhBU19C
+UklHSFRORVNTX0dFVAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoAo+ID4gLnRoZW5fc29tZShBZGFwdGVyOjo8VD46OmJyaWdodG5lc3Nf
+Z2V0X2NhbGxiYWNrKSwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIGJsaW5rX3NldDogVDo6SEFTX0JMSU5LX1NFVAo+ID4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+ID4gLnRoZW5fc29tZShB
+ZGFwdGVyOjo8VD46OmJsaW5rX3NldF9jYWxsYmFjayksCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAuLiBiaW5kaW5nczo6bGVkX2NsYXNzZGV2Ojpk
+ZWZhdWx0KCkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9KSB9
+Owo+IAo+IFRoaXMgZG9lc24ndCBsb29rIGxpa2Ugc29tZXRoaW5nIHJ1c3RmbXQgd291bGQgb3V0
+cHV0PyBDb3VsZCB5b3UgcnVuCj4gcnVzdGZtdCBpZiB5b3UgaGF2ZW4ndCBhbHJlYWR5LiBJZiBp
+dCBkb2Vzbid0IGRvIGFueXRoaW5nLCB0aGVuCj4gcGxlYXNlCj4gZm9ybWF0IGl0IG91dHNpZGUg
+b2YgdGhlIG1hY3JvIGFuZCBtb3ZlIGl0IGJhY2sgaW4uCj4gCj4gQWxpY2UK
 
-Applied to driver-core-testing, thanks!
-
-    [ Add links in doc-comments; add missing invariant comment; re-format
-      multiple safety requirements as list and fix missing backticks;
-      refactor the example of alloc_irq_vectors() to compile. - Danilo ]
