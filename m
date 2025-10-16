@@ -1,174 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79783BB5A;
-	Thu, 16 Oct 2025 21:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59F72E3B11
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Oct 2025 21:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760648747; cv=none; b=m9/vJxhqTU64VIYwXwBwq1w7sOmxVGVm2FBOpWvQVGhxovisezx4vQiH+BTwmX3YEBz+tkRBNCdpGPNrel1miNdDo8rz66rjDRNfJw7MxzldzQEdeMl/E1ZTuuUqJWKBLT9m/uG2mb8eclH8EHIfvicb2d7yL1Leuf4jTNNsHRI=
+	t=1760649014; cv=none; b=DFQZPfLuU0VwO0+xsdAx0+GmoQci2LUBb6IR2BPO4JfeoLbZxC577GO4ICPD9G/YP9iJRthhudJZeJYRN3j5KmEbAbfpcN0fqWKqOYdcd0XICFTwwZAXsWakwOZhN2z8HIBbf5bVYWntCZsYWCIYlvFniH7xbzLbE1r2gSq1mJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760648747; c=relaxed/simple;
-	bh=KzjbcAo/PwUxext8umITliZVstWqP+nCRZJf+X0AXhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=id+O80XPhuuU5UP+v+kcoN6lb0a36wZUwejJY/7UMqJw1WKQ0NmlX8IfDTCqx9wD6z4S6gWNP6EVFd4wOHMV1w8LX/Wb6fJU65MKtpPJE/mQE+Sz8cK5Y2PzYVUNlhn6IQbAEvbqBi4aBm0bC0Spk7fwWMljhMbsZ5mSUe3ksRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+d/Dd0K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760649014; c=relaxed/simple;
+	bh=T9FTtMlFff8tAC8IJ+F6GFBMpLOgsviqQTDtvN9GyFc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FtX86mWUntvJtbW/7j4uH75g/+cxrTR0y47CFfXsfv9QlvRct3idWQzBFREtHuIjhiAKoesN42XPALW45AkjvY6Yhud5aS9QmLFoQYcgYpbWfAgS3jsa+JcFrHgTXVqqqyP1xRq+v3WsODI6S8g/cT1PvnF2HezuVjqPaVb45i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fb4M6qMT; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+d/Dd0K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A389C4CEF1;
-	Thu, 16 Oct 2025 21:05:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760648747;
-	bh=KzjbcAo/PwUxext8umITliZVstWqP+nCRZJf+X0AXhQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Y+d/Dd0KT1E643lExUM2uTgU5/Y6Y+fiHscI9ACyQG18AsO0O6B5SjcbTmwZejU0y
-	 4sbR94VZMMPbY4McWqvQyw/OXH9Ng8za/evK0/Pc2VEF4vQVvBTcFRD9/K2HZ0uKSR
-	 y8vz6IHtnQvKxOAMRltmTRjbcG8S1fKORsPsFB/Xvuq+jlNAYIxVWVrJwnKOqJrW3R
-	 xVPa5x6JVBKAHqT5PgYJZ7R4keOGtVwOBqk9b/2ObiHTOXOMnQjIBXvUuT85JwAIdI
-	 MgUCJ6FCMgYPeXnxN1Wa/jZ+nL26P/zXP8Hw9wQCVlonfbVsjCbz4qZpFGLBiFf13e
-	 A3co5k8Sol7Rw==
-From: Benno Lossin <lossin@kernel.org>
-To: Benno Lossin <lossin@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fb4M6qMT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760649011;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bSFtuYgH2BUE7b0Y6VbIld74OQ3SSNfLT2B5QuYLJi0=;
+	b=Fb4M6qMTRhHtlNWe2oblOeLq7RfMPl6Wb+1xaCCl8a2tFnva0nMSeYo24PYbOAv0iBz4kJ
+	u6sQAskRBwxuW5aidnHEUjnEr4Vf9/jpDh7nxee6IDNe6vKlWUjI4MPqBBTbX1ZZ/B5yJu
+	ohZkDtxaTNxdDsZ8m/HadUihSTcOaVw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-37rPDTwoOeKXzM6ciyYhUQ-1; Thu,
+ 16 Oct 2025 17:10:06 -0400
+X-MC-Unique: 37rPDTwoOeKXzM6ciyYhUQ-1
+X-Mimecast-MFC-AGG-ID: 37rPDTwoOeKXzM6ciyYhUQ_1760649004
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E615018002F9;
+	Thu, 16 Oct 2025 21:10:03 +0000 (UTC)
+Received: from chopper.lan (unknown [10.22.80.252])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B519D300019F;
+	Thu, 16 Oct 2025 21:10:01 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Fiona Behrens <me@kloenk.dev>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] add `[pin_]init_scope` to execute code before creating an initializer
-Date: Thu, 16 Oct 2025 23:05:39 +0200
-Message-ID: <20251016210541.650056-1-lossin@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v4 0/9] Rust bindings for gem shmem + iosys_map
+Date: Thu, 16 Oct 2025 17:08:13 -0400
+Message-ID: <20251016210955.2813186-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: rifpmye5y1Ex974ft16qFKLahVGOTQWIdJB8ru4W3UQ_1760649004
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In more complex cases, initializers need to run arbitrary code before
-assigning initializers to fields. While this is possible using the
-underscore codeblock feature (`_: {}`), values returned by such
-functions cannot be used from later field initializers.
+This is the next version of the shmem backed GEM objects series
+originally from Asahi, previously posted by Daniel Almeida.
 
-The two new functinos `[pin_]init_scope` allow users to first run some
-fallible code and then return an initializer which the function turns
-into a single initializer. This permits using the same value multiple
-times by different fields.
+One of the major changes in this patch series is a much better interface
+around vmaps, which we acheive by introducing a new set of rust bindings
+for iosys_map.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Benno Lossin <lossin@kernel.org>
----
- rust/pin-init/src/lib.rs | 87 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
+This patch applies to drm-rust-next with two additional commits from
+drm-misc-next:
 
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index dd553212836e..8dc9dd5ac6fd 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -1392,6 +1392,93 @@ pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
-     unsafe { pin_init_from_closure(init) }
- }
- 
-+/// Construct an initializer in a closure and run it.
-+///
-+/// Returns an initializer that first runs the closure and then the initializer returned by it.
-+///
-+/// See also [`init_scope`].
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use pin_init::*;
-+/// # #[pin_data]
-+/// # struct Foo { a: u64, b: isize }
-+/// # struct Bar { a: u32, b: isize }
-+/// # fn lookup_bar() -> Result<Bar, Error> { todo!() }
-+/// # struct Error;
-+/// fn init_foo() -> impl PinInit<Foo, Error> {
-+///     pin_init_scope(|| {
-+///         let bar = lookup_bar()?;
-+///         Ok(try_pin_init!(Foo { a: bar.a.into(), b: bar.b }? Error))
-+///     })
-+/// }
-+/// ```
-+///
-+/// This initializer will first execute `lookup_bar()`, match on it, if it returned an error, the
-+/// initializer itself will fail with that error. If it returned `Ok`, then it will run the
-+/// initializer returned by the [`try_pin_init!`] invocation.
-+pub fn pin_init_scope<T, E, F, I>(make_init: F) -> impl PinInit<T, E>
-+where
-+    F: FnOnce() -> Result<I, E>,
-+    I: PinInit<T, E>,
-+{
-+    // SAFETY:
-+    // - If `make_init` returns `Err`, `Err` is returned and `slot` is completely uninitialized,
-+    // - If `make_init` returns `Ok`, safety requirement are fulfilled by `init.__pinned_init`.
-+    // - The safety requirements of `init.__pinned_init` are fulfilled, since it's being called
-+    //   from an initializer.
-+    unsafe {
-+        pin_init_from_closure(move |slot: *mut T| -> Result<(), E> {
-+            let init = make_init()?;
-+            init.__pinned_init(slot)
-+        })
-+    }
-+}
-+
-+/// Construct an initializer in a closure and run it.
-+///
-+/// Returns an initializer that first runs the closure and then the initializer returned by it.
-+///
-+/// See also [`pin_init_scope`].
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use pin_init::*;
-+/// # struct Foo { a: u64, b: isize }
-+/// # struct Bar { a: u32, b: isize }
-+/// # fn lookup_bar() -> Result<Bar, Error> { todo!() }
-+/// # struct Error;
-+/// fn init_foo() -> impl Init<Foo, Error> {
-+///     init_scope(|| {
-+///         let bar = lookup_bar()?;
-+///         Ok(try_init!(Foo { a: bar.a.into(), b: bar.b }? Error))
-+///     })
-+/// }
-+/// ```
-+///
-+/// This initializer will first execute `lookup_bar()`, match on it, if it returned an error, the
-+/// initializer itself will fail with that error. If it returned `Ok`, then it will run the
-+/// initializer returned by the [`try_init!`] invocation.
-+pub fn init_scope<T, E, F, I>(make_init: F) -> impl Init<T, E>
-+where
-+    F: FnOnce() -> Result<I, E>,
-+    I: Init<T, E>,
-+{
-+    // SAFETY:
-+    // - If `make_init` returns `Err`, `Err` is returned and `slot` is completely uninitialized,
-+    // - If `make_init` returns `Ok`, safety requirement are fulfilled by `init.__init`.
-+    // - The safety requirements of `init.__init` are fulfilled, since it's being called from an
-+    //   initializer.
-+    unsafe {
-+        init_from_closure(move |slot: *mut T| -> Result<(), E> {
-+            let init = make_init()?;
-+            init.__init(slot)
-+        })
-+    }
-+}
-+
- // SAFETY: the `__init` function always returns `Ok(())` and initializes every field of `slot`.
- unsafe impl<T> Init<T> for T {
-     unsafe fn __init(self, slot: *mut T) -> Result<(), Infallible> {
+e3f4bdaf2c5b ("drm/gem/shmem: Extract drm_gem_shmem_init() from drm_gem_shmem_create()")
+c08c931060c7 ("drm/gem/shmem: Extract drm_gem_shmem_release() from drm_gem_shmem_free()")
 
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+The previous version of this patch series can be found here:
+
+  https://lwn.net/Articles/1035785/
+
+Asahi Lina (2):
+  rust: helpers: Add bindings/wrappers for dma_resv_lock
+  rust: drm: gem: shmem: Add DRM shmem helper abstraction
+
+Lyude Paul (7):
+  Partially revert "rust: drm: gem: Implement AlwaysRefCounted for all
+    gem objects automatically"
+  rust/drm: Add gem::impl_aref_for_gem_obj!
+  rust: drm: gem: Add raw_dma_resv() function
+  rust: gem: Introduce DriverObject::Args
+  rust: drm: gem: Introduce shmem::SGTable
+  rust: Introduce iosys_map bindings
+  rust: drm/gem: Add vmap functions to shmem bindings
+
+ drivers/gpu/drm/nova/gem.rs     |   5 +-
+ rust/bindings/bindings_helper.h |   3 +
+ rust/helpers/dma-resv.c         |  13 +
+ rust/helpers/drm.c              |  48 ++-
+ rust/helpers/helpers.c          |   2 +
+ rust/helpers/iosys_map.c        |  15 +
+ rust/kernel/drm/gem/mod.rs      |  85 ++--
+ rust/kernel/drm/gem/shmem.rs    | 427 ++++++++++++++++++++
+ rust/kernel/iosys_map.rs        | 686 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 10 files changed, 1259 insertions(+), 26 deletions(-)
+ create mode 100644 rust/helpers/dma-resv.c
+ create mode 100644 rust/helpers/iosys_map.c
+ create mode 100644 rust/kernel/drm/gem/shmem.rs
+ create mode 100644 rust/kernel/iosys_map.rs
+
+
+base-commit: 1d5cffebd930d61588c32198f85fbe541ab97b8f
+prerequisite-patch-id: ed9c46db079eee47b437d10234dac813197bc33e
+prerequisite-patch-id: a2c6c70700e6a333d0b4daf97978fd2e07e24156
 -- 
 2.51.0
 
