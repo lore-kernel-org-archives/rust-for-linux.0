@@ -1,109 +1,178 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083767E792;
-	Thu, 16 Oct 2025 08:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133DB305055
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Oct 2025 08:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760602572; cv=none; b=XvMqgB1T80RLHWcWrBqdxqgfzu+FbB5M6zDpuFSh19F8hFT6bDXb8ExGvLEwHDv6kfxcqA7XwCI/NPpBTCwUrCDCrdjwNoMmPudip18vuqLHrM9+3eARjO0eubeyP/csxTKJOT1YEwZQN96A0b+DMy8WgpK//eiFyOLScqpIIiY=
+	t=1760603404; cv=none; b=rAmVKeYIuE6dIvwmF5qDda0SctThsRVJuehzFVWnY2wpG1oCJIbM3rnJ1VFu7HuM8XQak1o5yqhm/MdCTQbRVB3wV5ZOSFNJ2PULD0oumrHpvwkNRnnRaF0vCvX5fFA0YeM4X165rd1iVcfmUGDrZ/Lno+67/H1LftjTbn0D5Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760602572; c=relaxed/simple;
-	bh=NS2bZgSCEjrsZCth2PmZak4yHidoIg5OCGTOdfjJmO0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HkK0AmZx3avv8QW3NBhcCok/2MFiMjn/oAo8LfXKhZkkfzAX1M7D2RCdEzL427B+mIOeOdNhjTHZq5c5jOQ0avtA6YlHnGaN2n07qfLgFoCRAh4TPC3gXkbdoK6ZTK82C/HnLImu3Qux7FRyohhISkRNJQYtwZkXQ1J24YmaVio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XOUK4p5P; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1760603404; c=relaxed/simple;
+	bh=k42KT1WkRBHWgkIIkqFIrWGAaoELe9bfpMASrrF8Y1A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ag2Ih7kfRbJDi0qxb4Yqdwap72+Acuh/eZfuEfbUSFyY44nsb5bLCh1UEnQK2djFXkH/LyCZ/6kez9PhRIMunPmS1Uc3AodFl/K0XhfnHpgu7BnHGBjHqC3V1pGHeJHyz3fymyI5uTyMNEhvlyzMhhj12NGGK3BOYRaNFuyQsuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=NUet8qN5; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XOUK4p5P"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7cAjm8Tz3LGb9mcUksWZLTLAnhVHMasRUPL8gTvLYQ8=; b=XOUK4p5PHmU8K8JqIcXQdSBtXH
-	5AKvRswG5FW5x7jmQElrXCdawlbq/iRcWEb6skhP3c+k58gC934RrqEKxIqjTj2uL1sRT0EqVIjiU
-	NoluWI0ugBHXMTdXHU7xg8iwrxs+M1s7dBCVvlw44OoXWiHZxkYV/Lo2ieYoo5itJTiFds3RqbElI
-	6cNYFyBZMctvkWx+eZMp3AwRv75lGM4CVAtcS830VIPA27i8s1OW8XjUKy+lvQXiwOUxp+ePnSsuZ
-	S2DiGF4n1IWMqOLkyCqjpeieGtQf4GcF0SzXFGM6ZVw0Y+/wg0x/5JWygYYNr5YIjkFoF6p5TEZoo
-	0zB31JNA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v9J8k-00000006am8-28IV;
-	Thu, 16 Oct 2025 08:15:17 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 6534E30023C; Thu, 16 Oct 2025 10:15:13 +0200 (CEST)
-Date: Thu, 16 Oct 2025 10:15:13 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: Re: [PATCH v13 05/17] irq & spin_lock: Add counted interrupt
- disabling/enabling
-Message-ID: <20251016081513.GB3289052@noisy.programming.kicks-ass.net>
-References: <20251013155205.2004838-1-lyude@redhat.com>
- <20251013155205.2004838-6-lyude@redhat.com>
- <7a98eb42-bc54-4f22-bc85-0f6d41f39fc7@acm.org>
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="NUet8qN5"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so681488a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Oct 2025 01:30:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1760603400; x=1761208200; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3dZ3zNJcojA/sJlGgESgs39Z0uRLTeXYPBFHIy0pECs=;
+        b=NUet8qN5qrIYpFMgTvxdLdaHAI3OmmhKtR6iYJUENg83HZukG96jRvxXWHpp7fsboa
+         duwILzd8rnxNUv4SU1zkws1Ubu68LmBtvJ+js4M1KWNXYmXN4aZxH2Hys3d17hGSe8QI
+         fncCtCpiimHCjHeGzhXiAOSFDhnHHLWQtz/cWbkzUdC9W4vDRsHwMC3Dw8GDvWA9phj5
+         anl4TlmUvZnmvsY76VWE395cAdPlRewMgJWu6C1ceDKOlrJs9dDkmHWFSYaXPULnwFFO
+         5bRjd9HJH8BvZ0JVkePiRFYyX8WskpSp4KqCDBErpH+sybEokKD8wbI66Po4KnAM0OsG
+         EIwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760603400; x=1761208200;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3dZ3zNJcojA/sJlGgESgs39Z0uRLTeXYPBFHIy0pECs=;
+        b=PCLv9FtQ1boeL1KocYM6U7RKG8+t4uZwhc3Hz/6Ds/1yxjqp2lTx+zsitAXwGnYcOU
+         I2ux1+e24q9cOdtmPyTx5gtWLRRAPzueNIAFEgE4F9L5qpc8bmeZCRhNeHndj02jZ6oL
+         JkfUCP3MsuBDgbkhwj+CCH3go2g5wFsaC6LkevlQlKU28J7dUgbpPpo+WRrFdAmw7oZy
+         uLUNzWzPHGR3YSzvkFAK8jXfLeNmt/EGH0tDe5+VebCAjaDoDK5e3r/ay8p8nUFL8JTU
+         5Cy8HBFVsi4b23YVNdNODCQDPDR+X5kPaPnT4Q99RaTmEwZ6sf0uUpmVHU5iOQIwqP72
+         VLwA==
+X-Forwarded-Encrypted: i=1; AJvYcCX/FdpdQIW/YB6gyeJ9xEUk7ZC3s6Z+lagZDNcXDfIj+fkWoITjKGnEIm4ojm83H6UKwRAUy1tre3SP2U5HmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSByeLjahxeW+W0KFxut3rP0+B4crDSkli2IcUMCjz0UqDhjvs
+	ueBQmw6oljgJi2ZnhcdjiFcCrPABM3RPjPoLowaKA9aNNi/IHPlsLjGna2tYukhPhnIKcELyEfD
+	hS7yHo4WEO8g7gfH7fcZN1sBfBd+cltCnqy1hLqValA==
+X-Gm-Gg: ASbGncutUzh1qcCUI3Ph+/kdvRoFj6vdRKOoHJTZwuXOWM19xwpVSYU7c34P8eRqrKl
+	h+vTYajRSkSVseYP0It16Cq1pC9TRmt8vaasPYYe02vCtp/I19z2obNq7R5BPo1g2wqGgvcTwVA
+	IzB7g8y/tIypUk+x1FUXfL3eB7Gc99fM9gsv7LnqPtzwrmZZnFYOWmNg0zXT9xKKbe2sz7HjBoh
+	l2SyuFYBU6n+ciHYSUF8hMKP3EpKSXQq6KYaGstkSN26By3lf0YT7hw8LJmv6yLkbK8d4LH0A==
+X-Google-Smtp-Source: AGHT+IGyB7jwp1R/sb2SSrLIrlHDUB3Rfhzku7rZfdn97lwiX7fw79YoDZXn2zqSu6ScM4J5e0VHXW4a+hMbV7/+6J0=
+X-Received: by 2002:a05:6402:35d2:b0:63b:dff7:8956 with SMTP id
+ 4fb4d7f45d1cf-63bdff78c26mr7390999a12.7.1760603400109; Thu, 16 Oct 2025
+ 01:30:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7a98eb42-bc54-4f22-bc85-0f6d41f39fc7@acm.org>
+References: <20251015-v5_user_cfi_series-v21-0-6a07856e90e7@rivosinc.com> <20251015-v5_user_cfi_series-v21-25-6a07856e90e7@rivosinc.com>
+In-Reply-To: <20251015-v5_user_cfi_series-v21-25-6a07856e90e7@rivosinc.com>
+From: Zong Li <zong.li@sifive.com>
+Date: Thu, 16 Oct 2025 16:29:48 +0800
+X-Gm-Features: AS18NWC3gX9SfykK7BeQoaaUJU9Tso-y_BcITA4tZMgogw7A7IijvQhu4Ma2nRQ
+Message-ID: <CANXhq0qHT=nnwG3SX3s_D3G2QqKGmQBbdzFwiQ5MMkimxCHJHQ@mail.gmail.com>
+Subject: Re: [PATCH v21 25/28] riscv: create a config for shadow stack and
+ landing pad instr support
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 15, 2025 at 01:54:05PM -0700, Bart Van Assche wrote:
+On Thu, Oct 16, 2025 at 2:14=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
+rote:
+>
+> This patch creates a config for shadow stack support and landing pad inst=
+r
+> support. Shadow stack support and landing instr support can be enabled by
+> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` wire=
+s
+> up path to enumerate CPU support and if cpu support exists, kernel will
+> support cpu assisted user mode cfi.
+>
+> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS`,
+> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
+>
+> Reviewed-by: Zong Li <zong.li@sifive.com>
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+> ---
+>  arch/riscv/Kconfig                  | 21 +++++++++++++++++++++
+>  arch/riscv/configs/hardening.config |  4 ++++
+>  2 files changed, 25 insertions(+)
+>
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 0c6038dc5dfd..aed033e2b526 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -1146,6 +1146,27 @@ config RANDOMIZE_BASE
+>
+>            If unsure, say N.
+>
+> +config RISCV_USER_CFI
+> +       def_bool y
+> +       bool "riscv userspace control flow integrity"
+> +       depends on 64BIT && $(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zic=
+fiss)
+> +       depends on RISCV_ALTERNATIVE
+> +       select RISCV_SBI
+> +       select ARCH_HAS_USER_SHADOW_STACK
+> +       select ARCH_USES_HIGH_VMA_FLAGS
+> +       select DYNAMIC_SIGFRAME
+> +       help
+> +         Provides CPU assisted control flow integrity to userspace tasks=
+.
+> +         Control flow integrity is provided by implementing shadow stack=
+ for
+> +         backward edge and indirect branch tracking for forward edge in =
+program.
+> +         Shadow stack protection is a hardware feature that detects func=
+tion
+> +         return address corruption. This helps mitigate ROP attacks.
+> +         Indirect branch tracking enforces that all indirect branches mu=
+st land
+> +         on a landing pad instruction else CPU will fault. This mitigate=
+s against
+> +         JOP / COP attacks. Applications must be enabled to use it, and =
+old user-
+> +         space does not get protection "for free".
+> +         default n.
 
-> > This also makes the wrapper of interrupt-disabling locks on Rust easier
-> > to design.
-> 
-> Is a new counter really required to fix the issues that exist in the
-> above examples? Has it been considered to remove the spin_lock_irqsave()
-> and spin_lock_irqrestore() definitions, to introduce a macro that saves
-> the interrupt state in a local variable and restores the interrupt state
-> from the same local variable? With this new macro, the first two examples
-> above would be changed into the following (this code has not been tested
-> in any way):
+Maybe it is default 'y' instead of 'n'
 
-So the thing is that actually frobbing the hardware interrupt state is
-relatively expensive. On x86 things like PUSHF/POPF/CLI/STI are
-definitely on the 'nice to avoid' side of things.
-
-Various people have written patches to avoid them on x86, and while none
-of them have made it, they did show benefit (notably PowerPC already
-does something tricky because for them it is *really* expensive).
-
-So in that regard, keeping this counter allows us to strictly reduce the
-places where we have to touch IF. The interface is nicer too, so a win
-all-round.
-
-My main objection to all this has been that they add to the interface
-instead of replace the interface. Ideally this would implement
-spin_lock_irq() and spin_lock_irqsave() in terms of the new
-spin_lock_irq_disable() and then we go do tree wide cleanups over a few
-cycles.
-
-The problem is that that requires non-trivial per architecture work and
-they've so far tried to avoid this...
+> +
+>  endmenu # "Kernel features"
+>
+>  menu "Boot options"
+> diff --git a/arch/riscv/configs/hardening.config b/arch/riscv/configs/har=
+dening.config
+> new file mode 100644
+> index 000000000000..089f4cee82f4
+> --- /dev/null
+> +++ b/arch/riscv/configs/hardening.config
+> @@ -0,0 +1,4 @@
+> +# RISCV specific kernel hardening options
+> +
+> +# Enable control flow integrity support for usermode.
+> +CONFIG_RISCV_USER_CFI=3Dy
+>
+> --
+> 2.43.0
+>
