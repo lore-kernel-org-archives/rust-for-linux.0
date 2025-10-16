@@ -1,128 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEB123741;
-	Thu, 16 Oct 2025 13:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99481339B30
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Oct 2025 13:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760621609; cv=none; b=fwmPET1RxBmhDQQh74PTtTyAv4tL3mcq55ta5UiYe8CpACX0ROCqGGVbkApeAJoN081Nf91r+vJB9y1U0FjQ2GfS6y7b9b2qTopOnwl9z30MBi4J4eCGsMO3vjiNfd/GO+Gvtm93zL7GYd/cqU0pTtfXgkGxcatBlL7U5raneBc=
+	t=1760621900; cv=none; b=X9JBJEpFOmKRbFR/Nu2OqzNM+6bVoUkcFLTSMvLEXA1lDwcoyUydusKyYCKpXRlNhjTehh78r0+xwf5ETM3P84RbFOdXrgXIT5pWnc96VbE2+oL7AxuWZVn5zYMboxzss4XFqEHbpUWVuyDQqR5lu1ig2hvrgBEqDL6USx7R8lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760621609; c=relaxed/simple;
-	bh=wA9mQjxPS+NhEiTEmHO4o/e94KReITMocNzUF2d7mNA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IuHMoL1lrKvbo7IsowJ+1WAAqrDeSpeTgO3cLZfea1edDCYqYHtmGG7Z4qmd99F/4Tr1IX0EwZaEmxN5KhUEWtrSsKAZYoIC8Z4SmJSIjTFH7gdjthYeCeJSCdY15rsi8peFlXaXH75QpHjQFWydgC/dEtOilF/YDjZYFd8+4j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezDFTnhI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760621900; c=relaxed/simple;
+	bh=NvJA+OvvqqDPKJCmfst2MXsWRWksJWnIw69DgMYVtX8=;
+	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
+	 Content-Type:References; b=VZ1v0Hn7SmKpm+ci+s9VRAZw77EcFZHXrrn8dn09K9D2Dhan98zk2Dv3xJYdTyJUQF4M3EOruCWycsJUXUp8EbvOpYF2Yb1VosHeivJ0B6I7QgqFANDauhI4BL9e6QPdQ7pFuL5xV2D4qSyjYMXcAZj9HVyA+aVgwVtn8asBV+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=WxZjjjw6; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezDFTnhI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9088C4CEF1;
-	Thu, 16 Oct 2025 13:33:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760621608;
-	bh=wA9mQjxPS+NhEiTEmHO4o/e94KReITMocNzUF2d7mNA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ezDFTnhIYVd0PhXaejrIrJQ/O2l1q1RdVjZVynSgQ2jPk7ww5DEgNeufhjx4t0GT1
-	 6S6Ed6tj6L9P6DdWy8Ve0rIp7zdl/bcMwwbNCyuu0Q8Bl4awpAgzLlinVNzBEFr9Pa
-	 WFKB4bPbX874Cj/YHj3IpH2Drdt7r6bv+Z9DzcfVujv91QNWnZmxZJvdeSkpTq/yZV
-	 Kgo8mOcFvoWdGZ9nwj852bSi07H40hU+dzPBMG2633w9xSphVwHbkQORJIYoHMiqLr
-	 lJDKsXOSEgMDNxGEkbJfBVCAGHsdedl5Nb665ZJNp0XiAHO5ggWiWArhuDxFBARrt2
-	 4lCohuSRnlctw==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	david.m.ertman@intel.com,
-	ira.weiny@intel.com,
-	leon@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] rust: device: fix device context of Device::parent()
-Date: Thu, 16 Oct 2025 15:31:44 +0200
-Message-ID: <20251016133251.31018-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="WxZjjjw6"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20251016133817euoutp025f55a617e2e7426046c1a0e4ab29871e~u-EmQoegK2255022550euoutp02A
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Oct 2025 13:38:17 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20251016133817euoutp025f55a617e2e7426046c1a0e4ab29871e~u-EmQoegK2255022550euoutp02A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1760621897;
+	bh=hzrq4YN2uxPOg/leJpiVtHnEWUk+dlsqQnLVVz66HuM=;
+	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
+	b=WxZjjjw6sWUb4PnNgYlnHMrYxYhTnNbXCL6vcZIwAGnXqGqQxkisuEQavXsKTryzA
+	 EBj5NsQ8Mueteh8zEKTCYC0UNFjdn0v6XkY6GONxbhCLt7COCdnV9rglhSQ7aktdEj
+	 mDYB4vA6+SEMV/G7g9/Edm/A8y+Nl9dbObblKLbI=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251016133816eucas1p1cf2b9498e4cedda601aaa73df353a03f~u-ElojZHD2477524775eucas1p1I;
+	Thu, 16 Oct 2025 13:38:16 +0000 (GMT)
+Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
+	[106.210.136.40]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251016133814eusmtip2c78e6e9672676ae6818c90c58f0ec878~u-Ej1lwtn2342023420eusmtip2U;
+	Thu, 16 Oct 2025 13:38:14 +0000 (GMT)
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+Date: Thu, 16 Oct 2025 15:38:01 +0200
+Subject: [PATCH v16 1/7] pwm: Export `pwmchip_release` for external use
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251016-rust-next-pwm-working-fan-for-sending-v16-1-a5df2405d2bd@samsung.com>
+In-Reply-To: <20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,  Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,  Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,  Michal
+	Wilczynski <m.wilczynski@samsung.com>, Guo Ren <guoren@kernel.org>,  Fu Wei
+	<wefu@redhat.com>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Paul Walmsley
+	<paul.walmsley@sifive.com>,  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>,  Alexandre Ghiti <alex@ghiti.fr>,  Marek Szyprowski
+	<m.szyprowski@samsung.com>,  Benno Lossin <lossin@kernel.org>,  Michael
+	Turquette <mturquette@baylibre.com>,  Drew Fustini <fustini@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>,  Benno Lossin
+	<lossin@kernel.org>, Drew Fustini <fustini@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	devicetree@vger.kernel.org, Elle Rhumsaa <elle@weathered-steel.dev>
+X-Mailer: b4 0.15-dev
+X-CMS-MailID: 20251016133816eucas1p1cf2b9498e4cedda601aaa73df353a03f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251016133816eucas1p1cf2b9498e4cedda601aaa73df353a03f
+X-EPHeader: CA
+X-CMS-RootMailID: 20251016133816eucas1p1cf2b9498e4cedda601aaa73df353a03f
+References: <20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com>
+	<CGME20251016133816eucas1p1cf2b9498e4cedda601aaa73df353a03f@eucas1p1.samsung.com>
 
-Regardless of the DeviceContext of a device, we can't give any
-guarantees about the DeviceContext of its parent device.
+The upcoming Rust abstraction layer for the PWM subsystem uses a custom
+`dev->release` handler to safely manage the lifetime of its driver
+data.
 
-This is very subtle, since it's only caused by a simple typo, i.e.
+To prevent leaking the memory of the `struct pwm_chip` (allocated by
+`pwmchip_alloc`), this custom handler must also call the original
+`pwmchip_release` function to complete the cleanup.
 
-	 Self::from_raw(parent)
+Make `pwmchip_release` a global, exported function so that it can be
+called from the Rust FFI bridge. This involves removing the `static`
+keyword, adding a prototype to the public header, and exporting the
+symbol.
 
-which preserves the DeviceContext in this case, vs.
-
-	 Device::from_raw(parent)
-
-which discards the DeviceContext.
-
-(I should have noticed it doing the correct thing in auxiliary::Device
-subsequently, but somehow missed it.)
-
-Hence, fix both Device::parent() and auxiliary::Device::parent().
-
-Cc: stable@vger.kernel.org
-Fixes: a4c9f71e3440 ("rust: device: implement Device::parent()")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
+Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
 ---
- rust/kernel/auxiliary.rs | 8 +-------
- rust/kernel/device.rs    | 4 ++--
- 2 files changed, 3 insertions(+), 9 deletions(-)
+ drivers/pwm/core.c  | 3 ++-
+ include/linux/pwm.h | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-index 4163129b4103..e12f78734606 100644
---- a/rust/kernel/auxiliary.rs
-+++ b/rust/kernel/auxiliary.rs
-@@ -217,13 +217,7 @@ pub fn id(&self) -> u32 {
- 
-     /// Returns a reference to the parent [`device::Device`], if any.
-     pub fn parent(&self) -> Option<&device::Device> {
--        let ptr: *const Self = self;
--        // CAST: `Device<Ctx: DeviceContext>` types are transparent to each other.
--        let ptr: *const Device = ptr.cast();
--        // SAFETY: `ptr` was derived from `&self`.
--        let this = unsafe { &*ptr };
--
--        this.as_ref().parent()
-+        self.as_ref().parent()
-     }
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index ea2ccf42e81441d00a349f6d8641c92143d94797..47c9333baaf6c7d752a71c26bb1957ea2fd17a50 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -1608,12 +1608,13 @@ void pwmchip_put(struct pwm_chip *chip)
  }
+ EXPORT_SYMBOL_GPL(pwmchip_put);
  
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 23a95324cb0f..343996027c89 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -256,7 +256,7 @@ pub(crate) fn as_raw(&self) -> *mut bindings::device {
+-static void pwmchip_release(struct device *pwmchip_dev)
++void pwmchip_release(struct device *pwmchip_dev)
+ {
+ 	struct pwm_chip *chip = pwmchip_from_dev(pwmchip_dev);
  
-     /// Returns a reference to the parent device, if any.
-     #[cfg_attr(not(CONFIG_AUXILIARY_BUS), expect(dead_code))]
--    pub(crate) fn parent(&self) -> Option<&Self> {
-+    pub(crate) fn parent(&self) -> Option<&Device> {
-         // SAFETY:
-         // - By the type invariant `self.as_raw()` is always valid.
-         // - The parent device is only ever set at device creation.
-@@ -269,7 +269,7 @@ pub(crate) fn parent(&self) -> Option<&Self> {
-             // - Since `parent` is not NULL, it must be a valid pointer to a `struct device`.
-             // - `parent` is valid for the lifetime of `self`, since a `struct device` holds a
-             //   reference count of its parent.
--            Some(unsafe { Self::from_raw(parent) })
-+            Some(unsafe { Device::from_raw(parent) })
-         }
-     }
+ 	kfree(chip);
+ }
++EXPORT_SYMBOL_GPL(pwmchip_release);
  
+ struct pwm_chip *pwmchip_alloc(struct device *parent, unsigned int npwm, size_t sizeof_priv)
+ {
+diff --git a/include/linux/pwm.h b/include/linux/pwm.h
+index 549ac4aaad59ba6d7ba58d818b46a58a8759e09c..148f056f336bbe17ffc3df22aa6b6bc3ad854e40 100644
+--- a/include/linux/pwm.h
++++ b/include/linux/pwm.h
+@@ -488,6 +488,12 @@ int __pwmchip_add(struct pwm_chip *chip, struct module *owner);
+ #define pwmchip_add(chip) __pwmchip_add(chip, THIS_MODULE)
+ void pwmchip_remove(struct pwm_chip *chip);
+ 
++/*
++ * For FFI wrapper use only:
++ * The Rust PWM abstraction needs this to properly free the pwm_chip.
++ */
++void pwmchip_release(struct device *dev);
++
+ int __devm_pwmchip_add(struct device *dev, struct pwm_chip *chip, struct module *owner);
+ #define devm_pwmchip_add(dev, chip) __devm_pwmchip_add(dev, chip, THIS_MODULE)
+ 
+
 -- 
-2.51.0
+2.34.1
 
