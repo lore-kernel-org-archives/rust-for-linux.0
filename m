@@ -1,90 +1,83 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E79534F471
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Oct 2025 13:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2085332EA3
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Oct 2025 13:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760707388; cv=none; b=P30fqjfRHEq29BkasrFAqUpJwglDVaRSUgG/nsfTcSMJCGgjMHOZKsg0ChNc+T8Z9T70Y2cy/vW5CU4ej7v8fn6As/2hv/UAl607Qb4IHv2lbbd0JNUJZ2A86NjGaEMVJhyP31Xfk9mlFRpfEcMgTWrhm3u1mXYlHUNYxw/aP7k=
+	t=1760707483; cv=none; b=N6C8j0Qi3sazC/QrEewkgkytj94BD3OG+3P3j6ZE1+D2w3a/HW94Ueq0GGE6ZEJZ5FR4Y1GZKu00yyxi4ry6k3TdP/fMvkYrf/LESpdrkJB9WlpvkdEfVKN4lhr5AF+J8WLf32/gRYLyuYXKVg+KvEqE3vaZOvPpON3+1eu3yxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760707388; c=relaxed/simple;
-	bh=FqUJZOxa6wftUR/btW/DFFPGj7yyzJyrFIh3F2Zge3M=;
+	s=arc-20240116; t=1760707483; c=relaxed/simple;
+	bh=GgEzp2Fj75nh7OEKAeNg1afv+M1lZPOXZ1gMVZJFyFU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=d7LDx3Sl+eKQyZp71eVFr5NgKfUAgCQDoDY6VtHdJRZX1RQMw0SWUOKKNTSXqyfmfHC1pOVwQIC0llvdiSvTGbU62bWLgul+yuQ5jAng+aGMM5el9txhpS6cdz4BP/b4Qj1vpVC2WdBM7TJ1iOllw1r5vNa6ULngQhFb8WIw7lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uRqb+eVM; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=EndrRdOAdc7l2XNyGqcerO7qlYZys9wUuV7roAj7EwTdlQVV6g5BIp7976guQYykZHGEnvPE2nHCXHS+wDsmpRsp9Ia0knhhmqKV5B4HwZhcEcWFQPD2fUhZnOaEZMAWfsYmbg+vyOqMkXxUWOcD/uWqG/2TxZhgsyIrSDuKE7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1vtlZY6U; arc=none smtp.client-ip=209.85.218.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uRqb+eVM"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47106720618so18720965e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Oct 2025 06:23:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1vtlZY6U"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b2f9dc3264bso307848066b.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Oct 2025 06:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760707385; x=1761312185; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1760707480; x=1761312280; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S5Yn8qbQoqMlqz8J8ZWtSvsw3x4TMtEW0q43wUSvDUs=;
-        b=uRqb+eVMv5CUd8vf5hIs4eCnSoZYmJ1Q3pb3+5vjLCppoRpspJGYR69zF2LGJqdI4N
-         EZczzhi7irn8HorOR3DzVfNzLCuGrND+RU/XNru2LLgN2tMtdZXg7qiJInIpiPjioLpG
-         IgtINKhXw0oZ5YEWIIEI+NwWbxBf9Qr4ilY0tVsZ6JyaO5qQOAj31yepaA8Nrlq/jcqc
-         J1o+WoeGf4QYxQKESzR1O/A1DZPaqpaHEibhKnUX8ggh07dFl5RXSXWce8l6M8ZHFIzo
-         k5tJuPECBg51cVc9YdxxvxfXn53l5PrR6zZQ3Dsl9X+mjDhBFZm6XwYt78K39x6Le1xb
-         OlOg==
+        bh=kAPzxmZAKRETv1aAgqTv/3Qe7/Q8DRU161MvWKOur7I=;
+        b=1vtlZY6U6avpJ1dQZ4DNVOEzuLGhC7CFo/DtvH65EalW54yjQB7wfyQckKTv4sm47v
+         +Kz80tBfIOarskHYsfphwM5bWs2Al/Y+hYSmM35mroZxi0bX7fET/BS2cfGRVslX7twh
+         DRZxZ1hvnScEkO8pH3F7WVGUfSosuCWxZHXqU7/yb4suP8Umelzh8BPytSW31cnyIZBh
+         V050aWGSha/hU7e4TBTh4dAGgo9uVqbjjfEe9dVJ32Q7jvYMtg5f31dajfJZFZtGOocS
+         fDblQyy4lott2QfHk6JRB4yZZZivr3zTCvcXm3kJChCA4pjfFz5723N2jl8ogrd7KNaZ
+         hadw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760707385; x=1761312185;
+        d=1e100.net; s=20230601; t=1760707480; x=1761312280;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S5Yn8qbQoqMlqz8J8ZWtSvsw3x4TMtEW0q43wUSvDUs=;
-        b=mIRJ6Byx9ACeI9kqrWpKmhFbzL0pJ2sbLrwD/4TxTNr7z00+Y6KpTh2CcXyqLconrn
-         8pjMd3gnFyIHqUpJcV9wPj5HCpQ1Z7T1wfOmhaF/a+htGzIRCheJQXr87UTsEhOfbkOM
-         JcLuSBvnuQ3vI4KBoQKSjbBWlIKG6mkMfA6jH/cVy/pjlMoSpOdoZNlBXnHpiu/lJr84
-         mrKYkgNq3GO0i9tXYkxDKp417u3vjiWrv+dHT73jC9UjfulD228DjhDwu1FN7VoavRDv
-         /Xc+Thxm6kWba2KqH7pWKKpdTce+5xz+vSTz/KV2JHmX/V3r6PwgaZyiYCVOiI8KENTg
-         eQVg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNsGafZ8Ki19whwyxgpVN0SRGTq/lsjM6yFJnZJQVxrnO6D/CuRCz/USjlGgsJ96NEwKClB1Y13+mktGsBow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbuN7efdQz4YrexKgUrqB1/hR7twlVBnlJhn+t1Mq5wrvAXN4S
-	cQo5NgC5mufwaq4xQaHb4qVNJUt0/HGV1e8onkvglTpNvPMgerWnZJbYJjobN6y4waOucZwU3l/
-	oOnmf8InJ4M0bw+7zDQ==
-X-Google-Smtp-Source: AGHT+IEYb4fFMQvjDzvyv+R6CQU79EQ8AAQbZcI28Pmog6TT3PGCHiGdYfpHiQEQ7liXGiI1hW8U/8CHkswY9G4=
-X-Received: from wmgb8.prod.google.com ([2002:a05:600c:1508:b0:46e:3190:9ce])
+        bh=kAPzxmZAKRETv1aAgqTv/3Qe7/Q8DRU161MvWKOur7I=;
+        b=GcIHUkDNRglVLlTMtL6PE7BFcDEtw98EeNuez460Rn/9BAkxY4hS529WCQdMhYn9q0
+         cx50q5/plk3AwUn9/DJcJAxFDl9/js9fKTK95GKYZxneEgQaV29UecnNMP8MeZHuBzIC
+         KSvpNfFlJmS6I8BJMJ2Co26yBPEKhrmVVzDQAU/knh5qI72UJsoRXv+EMxWZe0kNQgyq
+         QEblvVbSelxSGnTMGsDyGX43QmWcWsnA7DQp7Mv1EX5/Na3fdHdnsEjxuR8RHZN8bBV5
+         d9EY8NeLZcvJLbHQhkUYpT0o7bqsecxSCEjMcwwuwg1HAoVZWgq8kh7/8OWeRs75gleI
+         7QBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJDhmsuEI0JxxzpN6dm93XRZZ1Gy8JgBhc4Y6sR1v9c4zDnIEMbMQAxcK33vb+F1AU3u7aXtMq3yM23fgd8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YynUWX+A+JSgNzSt0/2bRKoAugpDWF3lQL7+FfNtbYCBaaZuw/G
+	nQMGHPzT6Ti9p9SeCDBWGSu24lDctlfA0w8UYyQ6V1uecHcDB39hQw/sT9eNv8VbSOBuhCdmuEg
+	irLeVgyjAoto8mP2f/w==
+X-Google-Smtp-Source: AGHT+IG+iL14vecShPyktC8BwMaW/uSlauMbjVXn7jXOXVhUbEdp41zM5x6FEcncWa9dDOidM50s71O00B81dbI=
+X-Received: from ejap10.prod.google.com ([2002:a17:906:228a:b0:b47:8176:fd79])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:811b:b0:471:13fa:1b84 with SMTP id 5b1f17b1804b1-4711787c803mr27313335e9.12.1760707385665;
- Fri, 17 Oct 2025 06:23:05 -0700 (PDT)
-Date: Fri, 17 Oct 2025 13:23:04 +0000
-In-Reply-To: <20251016210955.2813186-4-lyude@redhat.com>
+ 2002:a17:907:3e85:b0:b3a:7af8:c4a2 with SMTP id a640c23a62f3a-b6472b5f826mr440021066b.10.1760707476223;
+ Fri, 17 Oct 2025 06:24:36 -0700 (PDT)
+Date: Fri, 17 Oct 2025 13:24:35 +0000
+In-Reply-To: <20251016210955.2813186-6-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251016210955.2813186-1-lyude@redhat.com> <20251016210955.2813186-4-lyude@redhat.com>
-Message-ID: <aPJDOLvBldH_Km91@google.com>
-Subject: Re: [PATCH v4 3/9] rust: helpers: Add bindings/wrappers for dma_resv_lock
+References: <20251016210955.2813186-1-lyude@redhat.com> <20251016210955.2813186-6-lyude@redhat.com>
+Message-ID: <aPJDk2mEAOWoyZC7@google.com>
+Subject: Re: [PATCH v4 5/9] rust: gem: Introduce DriverObject::Args
 From: Alice Ryhl <aliceryhl@google.com>
 To: Lyude Paul <lyude@redhat.com>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Asahi Lina <lina@asahilina.net>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Asahi Lina <lina+kernel@asahilina.net>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Krishna Ketan Rai <prafulrai522@gmail.com>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:DMA BUFFER SHARING FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linux-media@vger.kernel.org>, 
-	"moderated list:DMA BUFFER SHARING FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linaro-mm-sig@lists.linaro.org>
+	Asahi Lina <lina+kernel@asahilina.net>, Shankari Anand <shankari.ak0208@gmail.com>, 
+	"open list:DRM DRIVER FOR NVIDIA GPUS [RUST]" <nouveau@lists.freedesktop.org>, open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Oct 16, 2025 at 05:08:16PM -0400, Lyude Paul wrote:
-> From: Asahi Lina <lina@asahilina.net>
+On Thu, Oct 16, 2025 at 05:08:18PM -0400, Lyude Paul wrote:
+> This is an associated type that may be used in order to specify a data-type
+> to pass to gem objects when construction them, allowing for drivers to more
+> easily initialize their private-data for gem objects.
 > 
-> This is just for basic usage in the DRM shmem abstractions for implied
-> locking, not intended as a full DMA Reservation abstraction yet.
-> 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
