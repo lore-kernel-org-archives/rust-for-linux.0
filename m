@@ -1,112 +1,134 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB6A21B9D2
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Oct 2025 13:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97452F690B;
+	Fri, 17 Oct 2025 14:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760707829; cv=none; b=hTUJyiMFgm6C8zeJZzgv/VYyaSwi53GMfYaj7o8dg2G6ouuzTRWjW+y/beCr47cRhgaxce+LF/kG9jmSyyg4yM8kcELyrr7JavJPA+6lZQW3NFuy1al3l/oU34iYgnZzJ+aCtWGgKCdvRypljwCDv4P53lSNODMGzlcBinHlTTs=
+	t=1760711874; cv=none; b=H92h4Do3C5DJT7GB7TtaKQiRklr/h2Azq21LMubsw8sMuZq3gEEVfUNKKea+I4fB6I8T2XCMOmHo8X347M9rLPOp/sm16CAr/SDEZyEV8wddegD8HuzgVLPWfcwjhLtnuFQxK6zdqzSyrTdvkpILYLjJ5MzBxn18FsYmMnFZQCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760707829; c=relaxed/simple;
-	bh=oYMU2S4GJJGC7aRx1cjLxEruylUZZplVDTmADd/KpGc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lzXtZgGRbzSeuxsHEJFiHDN9ozkIPPPHILn77X4FrRRiA5nVZNba1Jo0Totlnuo9WJd69aL3FF6VkbUfq2792EBEEBZzGInYvuLnHlU9tl8400sMoTzeUxaJ0yBSa2AcJmCfZ4yb66dAp+FqJoMyU7f9fEC868KuX4XDhNPc35E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dtMHYOTf; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1760711874; c=relaxed/simple;
+	bh=0qxIre/WeVkJIS/N7KH8ntjpRQspUV9n4A2lexaUEjY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=ii/5raN+3TJB+IDRugFrXt+5/3drwUS73obHSfo069uuaXVV4PbZAp2xfsEZi3hvuY/nvSzvJMxQZAvv0Yj8VO3S2/f8dOwk1RqFcG7ep35VSqEUaQPhjdqUkXNiEnGKVsWgfue3qCSkPbh8RJ1DIf8Aq3Hm+z7MD1tvxDUFers=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fArdjF6v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dtMHYOTf"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3ece0fd841cso1061021f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Oct 2025 06:30:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760707826; x=1761312626; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1ss1QlA7acXACZyHR7wiT2Nqcn1nIjx/VSZWA+hhjA4=;
-        b=dtMHYOTfb/1aKFH9AJQ2wo5Ii/2zLRA5Xw4HV4ThvbLnopFpUwHOMzoUSUZ+ggGGvL
-         KS9gZr/4GC6tKcF79kQl0P2NlhcH6MLctH+y4gPqh6hQd5uB8Eh383NngzlarkaPkKNA
-         nAoMLg3K8qUN38eolWRLGvKr7ovsu5Vo2RVJDw8UEpBzGP75VfNpE32c6K9qbi7CK0FZ
-         YcdSNnuTcyw80t62HgiwWCzqpigzcSZ79Ho4DmUx9jEQzS6a8JR0ge6Niu3YXSg9vnKG
-         BdPWzr52q+JoNTEYLjlfjOkBH3S8eUxedQ7lJk4go/QBbaY+6Gh5gz1XYfqN3rwMCues
-         z+qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760707826; x=1761312626;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1ss1QlA7acXACZyHR7wiT2Nqcn1nIjx/VSZWA+hhjA4=;
-        b=FwXmq8YEC0caDNu05jWdkqhh+Q3f5oP1dEb6KtxhcJisVw18NRhvaRWfGKpLtm9/qN
-         IQDKyI8530FmqO+irP0wwaTBJITJFtAgub941oZtRSKqqoFVCwQMyKnCEAPhIYiH61I6
-         egIEmy4ntf46VC92vRwFf3MsrCRq8D1UvzwNcTefugVrLwv9RjgUAGZOMdQBlxSLsRCk
-         w146XUqaK6MqLwfT0Y+pbx9aDISyFBBZ20BTJ25LmcPXZNyBQH6KwOhn6rrueYAl5y6l
-         jeLjuHPe9fzuQwyaG1P9CFONN9dXZaXj6ZLNoydNFqmfNrALqqWJgduLERJYqB9NnJEu
-         cShQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUC1xpXKFpUCcdmYpNqwBPFgOvTsN3ncRvXxUbZuZEFL/htGAY9+ejqgJlFmtKifbCseovNHiO6q+AwSrnwCg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMq0f6ettwfOvWVnOxzEEVOJPX+1IfkmHYIwxtqBNy5WLibFB0
-	5HnGX7WkRJvrwfSRJ/a3Wfa5zzeOuEX2B0FN/1I1SWxGJV+jcPnEePqnlYkO5skWawD0gCWS6ci
-	CsLEjzjQt2vXmrpkA7Q==
-X-Google-Smtp-Source: AGHT+IElTbDFCunvl+Q6VKcSJIGvmBa3dVuDKgt0GL3PK5Tj4PCBAZb9dyem+MFrgb18Jr5MVI9nNpg0yqNiOdc=
-X-Received: from wmcn16.prod.google.com ([2002:a05:600c:c0d0:b0:46f:aa50:d700])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:400d:b0:3ee:1461:1659 with SMTP id ffacd0b85a97d-42704d98980mr2657038f8f.31.1760707825710;
- Fri, 17 Oct 2025 06:30:25 -0700 (PDT)
-Date: Fri, 17 Oct 2025 13:30:24 +0000
-In-Reply-To: <20251016210955.2813186-7-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fArdjF6v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9A7C4CEE7;
+	Fri, 17 Oct 2025 14:37:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760711873;
+	bh=0qxIre/WeVkJIS/N7KH8ntjpRQspUV9n4A2lexaUEjY=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=fArdjF6voxuD1qN7Z6qV70VWmdpHspckKKeBE4gKMAD6qS8USNgMttR1w/e3b7C2z
+	 +XNBdIH94icY+JtPk+cf81q7rBNxw6pu5fpegYfj8P2pD95dwlkBl341C1Cm/lLiVg
+	 o6fiTezZJpCTYv3c0sfELavflu19ieD6+t+ko2dMqhGdwgL3etJizuxTbSgj2/zti6
+	 yNJ9isOAxXyh+OpOXFJCa5JjuF4H3ZswyJ0WGFL3xpbXxuYwEY7V5gP5rakrNVejnC
+	 22lW/Z+wT9ESbGyWFFkzw2YU4jUGMbSf6o87NPYgYX19lXVcbY9thU4G0wYO61ALnd
+	 QM5iSQavPcPXg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251016210955.2813186-1-lyude@redhat.com> <20251016210955.2813186-7-lyude@redhat.com>
-Message-ID: <aPJE8EC5OmlmSrYt@google.com>
-Subject: Re: [PATCH v4 6/9] rust: drm: gem: shmem: Add DRM shmem helper abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Lyude Paul <lyude@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Asahi Lina <lina@asahilina.net>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Asahi Lina <lina+kernel@asahilina.net>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Shankari Anand <shankari.ak0208@gmail.com>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 17 Oct 2025 16:37:48 +0200
+Message-Id: <DDKO9M4P06HS.3UMGG3QR7BX67@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 3/7] rust: debugfs: support for binary large objects
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <mmaurer@google.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20251003222729.322059-1-dakr@kernel.org>
+ <20251003222729.322059-4-dakr@kernel.org> <aPI9tNoh0I3KGDjl@google.com>
+In-Reply-To: <aPI9tNoh0I3KGDjl@google.com>
 
-On Thu, Oct 16, 2025 at 05:08:19PM -0400, Lyude Paul wrote:
-> From: Asahi Lina <lina@asahilina.net>
-> 
-> The DRM shmem helper includes common code useful for drivers which
-> allocate GEM objects as anonymous shmem. Add a Rust abstraction for
-> this. Drivers can choose the raw GEM implementation or the shmem layer,
-> depending on their needs.
-> 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> +impl<T: DriverObject> gem::IntoGEMObject for Object<T> {
-> +    fn as_raw(&self) -> *mut bindings::drm_gem_object {
-> +        // SAFETY: Our immutable reference is proof that this is are to dereference
-> +        unsafe { &raw mut (*self.obj.get()).base }
+On Fri Oct 17, 2025 at 2:59 PM CEST, Alice Ryhl wrote:
+> On Sat, Oct 04, 2025 at 12:26:40AM +0200, Danilo Krummrich wrote:
+>> Introduce support for read-only, write-only, and read-write binary files
+>> in Rust debugfs. This adds:
+>>=20
+>> - BinaryWriter and BinaryReader traits for writing to and reading from
+>>   user slices in binary form.
+>> - New Dir methods: read_binary_file(), write_binary_file(),
+>>   `read_write_binary_file`.
+>> - Corresponding FileOps implementations: BinaryReadFile,
+>>   BinaryWriteFile, BinaryReadWriteFile.
+>>=20
+>> This allows kernel modules to expose arbitrary binary data through
+>> debugfs, with proper support for offsets and partial reads/writes.
+>>=20
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>
+>> +extern "C" fn blob_write<T: BinaryReader>(
+>> +    file: *mut bindings::file,
+>> +    buf: *const c_char,
+>> +    count: usize,
+>> +    ppos: *mut bindings::loff_t,
+>> +) -> isize {
+>> +    // SAFETY:
+>> +    // - `file` is a valid pointer to a `struct file`.
+>> +    // - The type invariant of `FileOps` guarantees that `private_data`=
+ points to a valid `T`.
+>> +    let this =3D unsafe { &*((*file).private_data.cast::<T>()) };
+>> +
+>> +    // SAFETY: `ppos` is a valid `loff_t` pointer.
+>> +    let pos =3D unsafe { &mut *ppos };
+>> +
+>> +    let mut reader =3D UserSlice::new(UserPtr::from_ptr(buf.cast_mut().=
+cast()), count).reader();
+>> +
+>> +    let ret =3D || -> Result<isize> {
+>> +        let offset =3D (*pos).try_into()?;
+>
+> So offsets larger than the buffer result in Ok(0) unless the offset
+> doesn't fit in an usize, in which case it's an error instead? I think we
+> should treat offsets that are too large in the same manner no matter
+> how large they are.
 
-Typo.
+The offset being larger than thhe buffer is fine, userspace has to try to r=
+ead
+until the kernel indicates that there are no more bytes left to read by
+returning zero.
 
-Also, in principle, this should refer to a type invariant saying that
-`obj` is a valid shmem object.
+But if the offset is larger than a usize there isn't a chance this can ever=
+ be
+successful in the first place, hence I'd consider this an error.
 
-> +    }
-> +
-> +    unsafe fn from_raw<'a>(obj: *mut bindings::drm_gem_object) -> &'a Object<T> {
-> +        // SAFETY: The safety contract of from_gem_obj() guarantees that `obj` is contained within
-> +        // `Self`
-> +        unsafe {
-> +            let obj: *mut Opaque<_> =
-> +                container_of!(obj, bindings::drm_gem_shmem_object, base).cast();
+>> +        let read =3D this.read_from_slice(&mut reader, offset)?;
+>> +        *pos +=3D bindings::loff_t::try_from(read)?;
+>
+> This addition could overflow and panic the kernel.
 
-Please use Opaque::cast_from() instead of the unrestricted cast()
-operation.
+I don't see a real scenario where this could overflow when read_from_slice(=
+) was
+successful, but I (also) think this should be checked_add() instead.
 
-There are several instances of this throughout the file.
+>> +        Ok(read.try_into()?)
+>> +    }();
+>> +
+>> +    match ret {
+>> +        Ok(n) =3D> n,
+>> +        Err(e) =3D> e.to_errno() as isize,
+>> +    }
+>> +}
+>> +
+>> +pub(crate) trait BinaryWriteFile<T> {
+>> +    const FILE_OPS: FileOps<T>;
+>> +}
+>
+> Hmm ... this is inconsistent with how we do vtables in other parts of
+> `kernel`. Normally a struct is used instead of a trait (see e.g.
+> miscdevice or block). But the inconsistency is already present.
 
-Alice
+The reason I went with a trait is because that's consistent within the file=
+.
+
+Otherwise, I don't mind one or the other. If we always want to use a struct=
+, I'm
+fine with that. :)
