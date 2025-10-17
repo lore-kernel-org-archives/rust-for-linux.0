@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A9E283FE5;
-	Fri, 17 Oct 2025 08:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C44312811;
+	Fri, 17 Oct 2025 10:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760689610; cv=none; b=Uno9t+5N4HqqbxiO/5LaZJP+H8RXgnZwR4xrmoZifWPt+hy/tbkQWitbfkQrXgLP0UQXE9pjWhOSqcwPW+vm8BQPw0ge+9X59vEoyO5vS9m0jN8RHdwhjBa5OLrjcLp9aZjcOXzTkfgywI9rFTsEYRsgfwhJNTcZCRG8hRMr0Mo=
+	t=1760697588; cv=none; b=EaLWvgD4l6uKjo+pwiR1SrT6JaTBOrcXrG/e0XAV13U2BKn/CVRgs7ZpgcP79ymkgQc2TJ7FSJr+kjEwQLHdkjp2ewHGg5ZY/9EwFid+a3OZseEeGEwdQOa5obm6RpbJHTYsv5UPNU2KpGXIUCi7iSEpjltQox9scJysDYk1rpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760689610; c=relaxed/simple;
-	bh=kbYlbb2vWzoBZ20nmxTT1jLO3BgY9QweNZ2+SNF6NR8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=tduqd5ezMs13kKlO4Jl4CIi/NBGIlHL09bLPcftyvBJPejpSXmj+R/n5OHCSzosnvHXFBFhgU57CIR3WjSgir4npJ8BFNqw96bdgJNIDq9+bYBStjz3o/23IvYKKJZ0zeOOtHvUte58IHao1POatRQVauekmyTu/MbVTSWkxkj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/FOHOK/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760697588; c=relaxed/simple;
+	bh=RprQ24Rtq4TN2VnVsUyJn/KZ51hCTF6QCkb5xO6r6UQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=KSyWQGTKlP85h577W1S4vgwzLpDKRRiWDd3ADMzTgMxIf1p1H3MzhRKyClKQkluuokAInqKQJhOih73DDd5+KsGtmIiP/UQljq3snSuDSo7OBSX3OkuNJnHtHCZbSoLzrbWR7Gtu3ssuVxLlx3bNBbeQroB/Y+6P4PRkPloJ848=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OtfpcKa6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/FOHOK/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8C7C4CEF9;
-	Fri, 17 Oct 2025 08:26:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OtfpcKa6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF588C4CEE7;
+	Fri, 17 Oct 2025 10:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760689610;
-	bh=kbYlbb2vWzoBZ20nmxTT1jLO3BgY9QweNZ2+SNF6NR8=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=r/FOHOK/KV30W9AU1CLlFZr7Uo1nt7j3bZpfAoNf7pLarQJDffIexQ+Caee9cxKAE
-	 yWLtItXISda1kqRcnbW7Fq525yc0tSmY6FmHR+2l/kehCTieOvZViXTwGMODOBh0kO
-	 yhT4xZ7huZ4JJloh1JFwmwKqgu9MPcGketcuNCnak+Zuq7y4tSU7leFiIcH0xjMCeN
-	 66ezK0K71KhY90ckpGXCToE8maTmVN4O3KA9iqr+4nssdX6YAc1vZNVBSqjqAma1CB
-	 87r5pmy5mTtOmoEEQgZBEjNpZW2lTJ6WsSTyqMxPIOr2KJ7CtfbJAHJJ+KUmUHkLaH
-	 jcc1Oo3Qej4nw==
+	s=k20201202; t=1760697588;
+	bh=RprQ24Rtq4TN2VnVsUyJn/KZ51hCTF6QCkb5xO6r6UQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=OtfpcKa6PADCrYcmtw+fZoMJAbmridwn+1wDlyfExy4QDleWi4+KSH7EtJH27VPSa
+	 lUkD9tW/P81U2V7+3rnYZx9KSdSOQNvIfBdI++Z0z4mKAK3qQFtRJY8qoKuW52Rwyg
+	 9G3gfBMDP0LUB7wmtEB2xUmsWun9sw4m9iYO1LbY0nGPk4OpuoOlkT5nf1zuHoIYA2
+	 6D3015o9H3A0uLjHCVEl146PSYMEpP6weoXbiqFFF24m7aRTlPsC25t8lpKsWtl/ul
+	 eKhYzbJaoUXm0z1YmT3vexRnx5Vgx+VaNhfmmteutkS0moN/C5r4FVcJTrO34aLPf/
+	 74gzhxl5dxvbw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,66 +34,101 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 Oct 2025 10:26:43 +0200
-Message-Id: <DDKGDHEH4QOJ.2QCE60PQ5OJRM@kernel.org>
-Cc: <viresh.kumar@linaro.org>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <daniel.almeida@collabora.com>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <abdiel.janulgue@gmail.com>,
- <robin.murphy@arm.com>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-pm@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: driver: let probe() return impl PinInit<Self,
- Error>
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20251016125544.15559-1-dakr@kernel.org>
- <DDK8EYINVIKJ.2ZK04J2C06GGR@nvidia.com>
-In-Reply-To: <DDK8EYINVIKJ.2ZK04J2C06GGR@nvidia.com>
+Date: Fri, 17 Oct 2025 12:39:42 +0200
+Message-Id: <DDKJ7AWIL0CN.32FB27N70K2YS@kernel.org>
+Subject: Re: [PATCH v5 03/14] gpu: nova-core: gsp: Create wpr metadata
+Cc: "Alistair Popple" <apopple@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Timur Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251013062041.1639529-1-apopple@nvidia.com>
+ <20251013062041.1639529-4-apopple@nvidia.com>
+ <DDJJ4ECCSE2I.1EUAJRU9JBGNI@nvidia.com>
+ <zwaefk62to77b5nyakeiboyj53fge3lysc3z7arp54tyyherdo@nsqhuig7bmbc>
+ <DDK4KADWJHMG.1FUPL3SDR26XF@kernel.org>
+ <DDK6IHKS13RS.3UVIM301BBFUP@nvidia.com>
+ <ckwuxk7ohtkbpqk345kzypkafu6bkshwbgshie2bq2vzwhj4pv@5wu4u6htkcuq>
+ <DDK7OP7VPVD0.1G6XJ4WCFFF02@nvidia.com>
+In-Reply-To: <DDK7OP7VPVD0.1G6XJ4WCFFF02@nvidia.com>
 
-On Fri Oct 17, 2025 at 4:12 AM CEST, Alexandre Courbot wrote:
-> On Thu Oct 16, 2025 at 9:55 PM JST, Danilo Krummrich wrote:
->> The driver model defines the lifetime of the private data stored in (and
->> owned by) a bus device to be valid from when the driver is bound to a
-
->> device (i.e. from successful probe()) until the driver is unbound from
->> the device.
+On Fri Oct 17, 2025 at 3:38 AM CEST, Alexandre Courbot wrote:
+> On Fri Oct 17, 2025 at 10:15 AM JST, Alistair Popple wrote:
+>> On 2025-10-17 at 11:43 +1100, Alexandre Courbot <acourbot@nvidia.com> wr=
+ote...
+>>> On Fri Oct 17, 2025 at 8:11 AM JST, Danilo Krummrich wrote:
+>>> > On Fri Oct 17, 2025 at 1:03 AM CEST, Alistair Popple wrote:
+>>> >> On 2025-10-16 at 17:23 +1100, Alexandre Courbot <acourbot@nvidia.com=
+> wrote...
+>>> >>> On Mon Oct 13, 2025 at 3:20 PM JST, Alistair Popple wrote:
+>>> >>> > +impl GspFwWprMeta {
+>>> >>> > +    pub(crate) fn new(gsp_firmware: &GspFirmware, fb_layout: &Fb=
+Layout) -> Self {
+>>> >>> > +        Self(bindings::GspFwWprMeta {
+>>> >>> > +            magic: r570_144::GSP_FW_WPR_META_MAGIC as u64,
+>>> >>> > +            revision: u64::from(r570_144::GSP_FW_WPR_META_REVISI=
+ON),
+>>> >>> > +            sysmemAddrOfRadix3Elf: gsp_firmware.radix3_dma_handl=
+e(),
+>>> >>> > +            sizeOfRadix3Elf: gsp_firmware.size as u64,
+>>> >>>=20
+>>> >>> Very unfortunately I'm afraid we will need to replace the `as` in t=
+his
+>>> >>> method with `u64::try_from` and make it return a `Result` for now.
+>>> >>
+>>> >> And presumably most of the other `as` keywords in this function deal=
+ing with
+>>> >> usize as well? Have made the change but would you mind quickly expla=
+ining
+>>> >> why this is needed? Is the concern that usize might be more than 64 =
+bits or
+>>> >> something?
+>>>=20
+>>> Indeed, the concern is that `as` performs a lossy conversion without
+>>> warning, which could catch us off-guard if e.g. some type changes in th=
+e
+>>> bindings.
+>>>=20
+>>> >
+>>> > Since nova-core depends on CONFIG_64BIT, I think we want a helper fun=
+ction that
+>>> > converts usize to u64 infallibly.
+>>> >
+>>> > This helper function can simply generate a compile time error, when
+>>> > !CONFIG_64BIT, etc.
+>>> >
+>>> > We can do this locally in nova-core, but it could also find it's plac=
+e in the
+>>> > generic infrastructure. nova-core clearly won't be the last driver ru=
+nning into
+>>> > this inconvinience.
+>>>=20
+>>> That would definitely be the correct way to address this.
 >>
->> This is already taken care of by the Rust implementation of the driver
->> model. However, we still ask drivers to return a Result<Pin<KBox<Self>>>
->> from probe().
->>
->> Unlike in C, where we do not have the concept of initializers, but
->> rather deal with uninitialized memory, drivers can just return an
->> impl PinInit<Self, Error> instead.
->>
->> This contributed to more clarity to the fact that a driver returns it's
+>> Sure. Although I don't really have a problem with the binding constructo=
+rs being
+>> fallible as plenty of the others are anyway.
 >
-> nit: s/it's/its
->
->> device private data in probe() and the Rust driver model owns the data,
->> manages the lifetime and - considering the lifetime - provides (safe)
->> accessors for the driver.
->>
->> Hence, let probe() functions return an impl PinInit<Self, Error> instead
->> of Result<Pin<KBox<Self>>>.
->>
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->
-> Short anecdote: I was curious about measuring the footprint impact of
-> pin initializers, so I did a `size vmlinux` before and after this patch
-> to compare the size of the `text` section. This patch removes exactly 60
-> bytes of binary code, which I guess corresponds to the duplicated `KBox`
-> allocations that are now gone. It's great to confirm once again how Rust
-> abstractions are indeed zero-overhead! :)
+> I think we can address the non-fallible conversions as a separate task
+> (as there are many sites that could be similarly optimized in the
+> nova-core code), so fallible constructors are acceptable imho.
 
-Thanks for the test! If you find that at any point they aren't, let me
-know, then we can fix that :)
+The infallible conversion function is trivial to implement.
 
----
-Cheers,
-Benno
+If you prefer, we can also add it in nova-core first and subsequently move =
+it to
+generic infrastructure.
+
+I prefer not to introduce more as-casts or fallible conversions we have to =
+clean
+up subsequently.
