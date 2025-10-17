@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DC32BE03B;
-	Fri, 17 Oct 2025 11:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE9D22D7A5;
+	Fri, 17 Oct 2025 11:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760699521; cv=none; b=kt/pzfsG6QEAMTY9dYoI0hqjJs9UnaKDte4dTa0bIePAVZjMW9BgGwG5RwKEsNluTqaTAiufAVTIWgw1ZFfbXIJRVJldgeAc9Z0kqNvf42rUCgcHAmhnKG2NhEqjN9gbppYE4p/1MshXsvF7HnTn0+irBGA7MoKITVWFsILzuVY=
+	t=1760701843; cv=none; b=S3meLS63kyrV0y97VL3JpjJfqVpNTmGR8LH9iYaojxGvDWE8HeghEyTui6/XfWaH9hGpGPDO9xTZdNxYBhkmEhN0rcyIy+251zpVETDfxxvMRVZV8NtnNfK5gUrUKffDUqizBguL+B0OOW/sB4ezbySkvjtIb6DzaQ9XsLheoWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760699521; c=relaxed/simple;
-	bh=ncrXZRdjnegwC1tCZqNrti5BjJkwd5j1aJR1aarvJhY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=mgVSFY+yEn2oe1GNRf4xwWY1H6EDi7iFyS19Yiitl+HbSWY3zv5lcNIHlpz3Ae1gXW/cpvXQvAa7GTA5wcQJmYTtfUGtWoUteDNr4TSPk9z8fIm3DVImPdQCpogtZbWItKFRtkTYk8JcqR9unRq/zJfukxDSL0midJstoQnRs5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJbVcIe5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760701843; c=relaxed/simple;
+	bh=tRPS6Yh/B57pzNW/hzFZfeJcfANNr7/wpib3GCAHb6U=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=cdCkb8ZKtzPYOI2Eg6K2Kh6ojPzsp+uOtmmXRUgMm9CrvghNQS0unnTyf5u3Aj8XIE1V0RdZirbqRUh/b0vmKztGU/Z9qLr/IUr/DPYUsrNv7a0QexJMtVcdqnM6B6xzW/71Am9qhodNbb6al2SNvbqLWiPUPDVZr3lTLB4urUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QbntSiLD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJbVcIe5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2330AC4CEE7;
-	Fri, 17 Oct 2025 11:11:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QbntSiLD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6C3C4CEF9;
+	Fri, 17 Oct 2025 11:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760699520;
-	bh=ncrXZRdjnegwC1tCZqNrti5BjJkwd5j1aJR1aarvJhY=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=UJbVcIe5RRfvaKFPR4sBIgBQopg4lPddzojEs5zd42r67lvTSkk/uu/0upISJ5Rwg
-	 q3Zue9DNm2UdIXZep//MaRY1/AQuAH71H9se4fWMp6K7fZfdtYvflhYn6nunJTKlCI
-	 6vcMFFFyjeve0J+edd/5iBeLvvOPXWJ7u5jnmoD2Dfnxp4Em9OGvffjsP/cnXWweQJ
-	 Bk0ODaJUcznRLiDwHFB6MHpLrQweC1B1NaHwmAiImwmahCsePDRMRN+huZMhTKMni7
-	 RY9XKr6RHe2SwXh8DfRjrFo+9wHMODl6f921RcyaZ0JPL9a1DzxZOmiUzffKfw89GZ
-	 hb6FCmIWsTuzQ==
+	s=k20201202; t=1760701843;
+	bh=tRPS6Yh/B57pzNW/hzFZfeJcfANNr7/wpib3GCAHb6U=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=QbntSiLDZm3CeHotBXxvL+fl8G00btXuoN9r1i9FEpEtdiiuPeROx8qSPso6do79T
+	 dJfMW7q08umxDVtN/lgOQnbOFQS5wW0ahR+2HO/vbI0D4XB3GxU1KVP3cFPGsDENWz
+	 dgsPS6fJzubOduSdVNK92UAbYYJhR0VpwP0Xcq0Q2j3z9E/AXLi8koGjHk5yG9iElb
+	 Ela1M6dlomYDpzGpXalEakK+vkQirSBK7JV6QuI8QEicaw1NT25Yw+U/h/KCcE82R5
+	 66sRn2tEcEOhFEeVXhdZeIvaucFumOaMjzY6zihbJBEdXhUqDQVtbJOjSDDzV7cISY
+	 Vh/hSnHUDfG7A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,32 +34,70 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 Oct 2025 13:11:54 +0200
-Message-Id: <DDKJVYLSARXE.13S98Z9259AN4@kernel.org>
-Subject: Re: [PATCH v2 5/5] nova-core: test configuration routine.
-Cc: <rust-for-linux@vger.kernel.org>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <zhiwang@kernel.org>, <acourbot@nvidia.com>,
- <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <markus.probst@posteo.de>
-To: "Zhi Wang" <zhiw@nvidia.com>
+Date: Fri, 17 Oct 2025 13:50:38 +0200
+Message-Id: <DDKKPM9ICZRG.2S66MFUQJ38KC@kernel.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251016210250.15932-1-zhiw@nvidia.com>
- <20251016210250.15932-6-zhiw@nvidia.com>
- <20251017075522.6f662300.zhiw@nvidia.com>
-In-Reply-To: <20251017075522.6f662300.zhiw@nvidia.com>
+Subject: Re: [PATCH 1/7] rust: uaccess: add
+ UserSliceReader::read_slice_partial()
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <mmaurer@google.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+References: <20251003222729.322059-1-dakr@kernel.org>
+ <20251003222729.322059-2-dakr@kernel.org> <aPIkTuGpR7VX_HoD@google.com>
+In-Reply-To: <aPIkTuGpR7VX_HoD@google.com>
 
-On Fri Oct 17, 2025 at 6:55 AM CEST, Zhi Wang wrote:
-> On Thu, 16 Oct 2025 21:02:50 +0000
-> Zhi Wang <zhiw@nvidia.com> wrote:
+On Fri Oct 17, 2025 at 1:11 PM CEST, Alice Ryhl wrote:
+> On Sat, Oct 04, 2025 at 12:26:38AM +0200, Danilo Krummrich wrote:
+>> The existing read_slice() method is a wrapper around copy_from_user()
+>> and expects the user buffer to be larger than the destination buffer.
+>>=20
+>> However, userspace may split up writes in multiple partial operations
+>> providing an offset into the destination buffer and a smaller user
+>> buffer.
+>>=20
+>> In order to support this common case, provide a helper for partial
+>> reads.
+>>=20
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>> ---
+>>  rust/kernel/uaccess.rs | 13 +++++++++++++
+>>  1 file changed, 13 insertions(+)
+>>=20
+>> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+>> index a8fb4764185a..1b0b57e855c9 100644
+>> --- a/rust/kernel/uaccess.rs
+>> +++ b/rust/kernel/uaccess.rs
+>> @@ -287,6 +287,19 @@ pub fn read_slice(&mut self, out: &mut [u8]) -> Res=
+ult {
+>>          self.read_raw(out)
+>>      }
+>> =20
+>> +    /// Reads raw data from the user slice into a kernel buffer partial=
+ly.
+>> +    ///
+>> +    /// This is the same as [`Self::read_slice`] but considers the give=
+n `offset` into `out` and
+>> +    /// truncates the read to the boundaries of `self` and `out`.
+>> +    ///
+>> +    /// On success, returns the number of bytes read.
+>> +    pub fn read_slice_partial(&mut self, out: &mut [u8], offset: usize)=
+ -> Result<usize> {
+>> +        let end =3D offset.checked_add(self.len()).ok_or(EINVAL)?.min(o=
+ut.len());
 >
-> Hi guys:
->
-> To avoid misunderstanding, this is just meant for folks to test, not for
-> merging. I will drop this one in the next re-spin.
+> Should this be?
+> let end =3D offset.checked_add(self.len()).unwrap_or(out.len()).min(out.l=
+en());
 
-I suggest adding it to samples/rust/rust_driver_pci.rs instead. :)
+Yes, that seems reasonable.
+
+>> +        out.get_mut(offset..end)
+>> +            .map_or(Ok(0), |dst| self.read_slice(dst).map(|()| dst.len(=
+)))
+>
+> So if out.len() < offset, then we return Ok(0)?
+
+Yes, because it tells userspace that there are no more bytes left to read.
