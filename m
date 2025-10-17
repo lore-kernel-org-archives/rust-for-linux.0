@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E4B31AF18;
-	Fri, 17 Oct 2025 10:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AFC32F762;
+	Fri, 17 Oct 2025 11:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760698601; cv=none; b=RsmR4QgxPXCVcxNZnild+Ah8i0gIj/IcIVxCT5qUJlItlQF3yb1BEIVAZWQpkvAeQ+tWG3SK0p3fIJEZ0l4td6L8dXAapI+7GYYOcAa5u/d13CMpYjkkguw9dxdtjq+WsXy55Mvyc2djWJmteGRJ0p9VDq27m6wMfi+Rs559qN0=
+	t=1760698914; cv=none; b=ApXhE55fPn++MWVcQ0lZJRyWKOsKi/gadjhskLwoh5zg/M9f0fZx6q/uF4flyBSRzqKyybaiHE4s0793jcOITzQgHHG8WIbkaQ5AKOw/J/yUtKM4Tm/O4f7tb6AIWy2qTsIE70a+3A57BuxsnUXBO06tmIeju83VycEfGV2aN60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760698601; c=relaxed/simple;
-	bh=tyA/LHJlFit5K6PqK6XOjstXqHYpybUs0kAPdQMiMhA=;
+	s=arc-20240116; t=1760698914; c=relaxed/simple;
+	bh=RmzPIFaRdsrQ+NAnOXzWCQH/A77thF0b/z6YP9rVT6Q=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=iCvZhqzv2EgtDKsBSVExnSDQ27yF4z8Q2wUP38QFDcGtftNt2qg+IC+liCrwHQwg5qt6n4mGdIiMBknbhqyrZy5giuJwZbwxE7ztyY38f6FuiMFR6uiTdj7S1XB+dohGxga9VbZXyQyCC/TrGI8iWSOCiN7X/5e8xQfvRB8Bo30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTPJ8dU6; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=cfsWp2rID/aycnisHhe88NHvtP/oZ1HNUU+YQOqRcXD0c1+veRLbAR8JPtnGmrWoiGqPEYvr3Xta4RP77GEAEsWrjrTGe796Rfw5wuI4VnhpWks3jznzYPreFVo2xMaAXv+gzBovG0SGwEJ13J7u8konmIdk8pbvzjTll6ND6IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hciA4sIr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTPJ8dU6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041D3C4CEE7;
-	Fri, 17 Oct 2025 10:56:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hciA4sIr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA854C4CEE7;
+	Fri, 17 Oct 2025 11:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760698600;
-	bh=tyA/LHJlFit5K6PqK6XOjstXqHYpybUs0kAPdQMiMhA=;
+	s=k20201202; t=1760698913;
+	bh=RmzPIFaRdsrQ+NAnOXzWCQH/A77thF0b/z6YP9rVT6Q=;
 	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=VTPJ8dU6WcbYUPcgmJO4eOEz9CbPEBuxfrH3aIvi9nacKFwUZPFn8/nvXF2yDNdSC
-	 Vl7KULH8FxwarRMsXDzCnOamNPN+D70vPR9ttRAwha2OFr4SGEIiDpYpg+85o+fT/l
-	 gXfUNo1lcdXq3zEqHMTmN4uATBQWI+Eo00ePLUBtuTtHoObxaEhqj8/4qsdA/AYazp
-	 ZzHDpdNLsYPQa7KSDhC7fYvU1WA0E/+AWNazWf3zCPJjNGIn24qu85AJy1M5ZARGzf
-	 D3v0sPgfD6OBqEn6R2y88qMgTcw2bxFCAFS9lUyviKm43m5MCX7VZF4aaDGqQe9bqK
-	 Gjf/wdlj9ECLg==
+	b=hciA4sIrSqbIPYWwoz9zZmJzqGzlo67hqlZi2e6yl8yf+VLDHudVpvXiQ8UauAikG
+	 Ls0rMcbUfPlvusFqHHpw0fYbI4DG95KQX4XmnS311ORfsHiLZuPU+r7Q2zTqJhKDJr
+	 kG+xa1v9AllIoQ/W4DTukOz46XpkiRRAxEnGXHhOcpdp5Q/mjCnu8CQmFk0ZVEx8P1
+	 znbwZczr3JT8GW0Lr58Jg5hZ6rXEcifmFTyQnKOrCYyTykVTzwGlfzq+RMRJ/0IRbB
+	 RNjsTnZz7u0MYot6Rj8fteW7dvyN2EKBb6juIybyLO4Xm5epwB3W8oUtgRr9zNvCj6
+	 xiRaXmwu/OF5w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 Oct 2025 12:56:34 +0200
-Message-Id: <DDKJK7SXG83N.2YZYITMDGTHP@kernel.org>
+Date: Fri, 17 Oct 2025 13:01:46 +0200
+Message-Id: <DDKJO7HME02Z.2HXY61JBM3GZN@kernel.org>
 Cc: <rust-for-linux@vger.kernel.org>, <bhelgaas@google.com>,
  <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
  <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
@@ -47,56 +47,24 @@ Cc: <rust-for-linux@vger.kernel.org>, <bhelgaas@google.com>,
  <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <markus.probst@posteo.de>
 To: "Zhi Wang" <zhiw@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/5] rust/io: factor common I/O helpers into Io trait
- and specialize Mmio<SIZE>
+Subject: Re: [PATCH v2 2/5] rust: io: factor out MMIO read/write macros
 References: <20251016210250.15932-1-zhiw@nvidia.com>
- <20251016210250.15932-2-zhiw@nvidia.com>
-In-Reply-To: <20251016210250.15932-2-zhiw@nvidia.com>
+ <20251016210250.15932-3-zhiw@nvidia.com>
+In-Reply-To: <20251016210250.15932-3-zhiw@nvidia.com>
 
 On Thu Oct 16, 2025 at 11:02 PM CEST, Zhi Wang wrote:
-> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core=
-/regs/macros.rs
-> index 8058e1696df9..c2a6547d58cd 100644
-> --- a/drivers/gpu/nova-core/regs/macros.rs
-> +++ b/drivers/gpu/nova-core/regs/macros.rs
-> @@ -609,7 +609,7 @@ impl $name {
->              /// Read the register from its address in `io`.
->              #[inline(always)]
->              pub(crate) fn read<const SIZE: usize, T>(io: &T) -> Self whe=
-re
-> -                T: ::core::ops::Deref<Target =3D ::kernel::io::Io<SIZE>>=
-,
-> +                T: ::core::ops::Deref<Target =3D ::kernel::io::Mmio<SIZE=
->>,
+> @@ -122,10 +139,9 @@ macro_rules! define_read {
+>          $(#[$attr])*
+>          #[inline]
+>          pub fn $name(&self, offset: usize) -> $type_name {
+> -            let addr =3D self.io_addr_assert::<$type_name>(offset);
+> +            let _addr =3D self.io_addr_assert::<$type_name>(offset);
+> =20
+> -            // SAFETY: By the type invariant `addr` is a valid address f=
+or MMIO operations.
+> -            unsafe { bindings::$c_fn(addr as *const c_void) }
+> +            $call_macro!($c_fn, self, offset, $type_name, _addr).unwrap_=
+or(!0)
 
-This should be
-
-	T: ::core::ops::Deref<Target =3D I>,
-	I: ::kernel::io::Io<SIZE>,
-
-instead, otherwise register!() only works for MMIO, but it should work for =
-any
-I/O backend.
-
-> +impl<const SIZE: usize> Io<SIZE> for Mmio<SIZE> {
-> +    /// Returns the base address of this mapping.
-> +    #[inline]
-> +    fn addr(&self) -> usize {
-> +        self.0.addr()
-> +    }
-> +
-> +    /// Returns the maximum size of this mapping.
-> +    #[inline]
-> +    fn maxsize(&self) -> usize {
-> +        self.0.maxsize()
-> +    }
-> +}
-
-The I/O trait should contain the corresponding read/write accessors, otherw=
-ise
-we can't easily wire up the register!() macro with arbitrary I/O backends.
-
-I think more specific things, such as relaxed operations can remain MMIO
-specific, but all the {try_}{read,write}{8,16,32,64} accessors should be pa=
-rt of
-the I/O trait.
+This introduces unnecessary CPU cycles in the infallible case, I think the
+implementations of the try and non-try variants should remain separate.
