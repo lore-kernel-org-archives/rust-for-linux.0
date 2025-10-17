@@ -1,125 +1,75 @@
-Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12404334686;
-	Fri, 17 Oct 2025 05:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82AA30DED5;
+	Fri, 17 Oct 2025 05:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760679075; cv=none; b=jE10EKIvFqAKqIncgDYMaJAPOOTD3Ls1ghz0pyzQpBLrKXjoGKDnYdQL3JPYwWIceFLqE8AkDNzcq+gy38/PrSGqnzRTug6dOmEhfGAzEqatTjMj/9J+qg3NFZl1En+GWiwgn5YAmgxAqPRB1gFpljx6ZeNvPFO5vgnuGkthDQc=
+	t=1760679769; cv=none; b=E3U4LAAjlaffnMp3J0YneMlGnf3gt1m7dtvMNi/3ZII7ZY3xcTMatXOJRzJfIIRAIVCwCWQbwKajJPWHWcMbH/UW3YnwPssbSusG9EGhdFCmBY8D1mTptKj59NI3Hu4hYft+HFVB69E1i0sS1Rjf4AaKlrNfRAR6ODIPv57Pbbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760679075; c=relaxed/simple;
-	bh=zurkQXd73iOxFPNlY28GMQwOUwVAyJh3YsqSeKinVBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZoC9X/fOGMvBWHBhwV6ToC5Cg36s0c3DZRaCCbt+7qRN3gdBTa3FN/RFMJ6P3sCLRBo9eMG6c9xXf3TykYv0AvZAd8a6QB+wWjJNNHpTYJ/XLtER2lHzZw5ATgJaQsfe4VA6r1kCZ8vWXHpGkOVLtbQ8DWSBs2cnciQ7A7JCZSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Muf2OWsw; arc=none smtp.client-ip=178.154.239.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1760679769; c=relaxed/simple;
+	bh=aFl3GfsK6damjtbDnbwo3QQUpvXGIfwA5fi0P3XTtTI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=seNwZbGmlkx9TdQvUvKCk0ouSL+ru/MzetcubEGga2UAWLUcETsiu605NAj8Dfzjw+iGDo2WD+YU5/IN//Xh2Rq4NWqf0Uh9bi7HgHqMsfyc4sF4zg3FOMQNn6PUd2ZDffieM2BVPRSGQNJqzOEB9xn35Uxu6XxylT8wx9kohAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahJrewzb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Muf2OWsw"
-Received: from mail-nwsmtp-smtp-production-main-94.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-94.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:2646:0:640:add0:0])
-	by forward501d.mail.yandex.net (Yandex) with ESMTPS id A66B3817AB;
-	Fri, 17 Oct 2025 08:03:42 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-94.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Z3KcDv4LxuQ0-zG6YubSH;
-	Fri, 17 Oct 2025 08:03:41 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1760677421;
-	bh=N/70zilmjWSlGxxVYOa75HnCzjr/K5vl/WtNoIkvemo=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=Muf2OWswgGlQONxbsKtucbK1BulemXI0oCIGb18Z/89xVDec2mWLcfjEBm4RGsblF
-	 sMsPMu6cszUNRpQNn/pEmfnDVpjynHzVksLhp65DGY/wzpdm3R/gRJ7yrhVnxysuEf
-	 zadvgye9ZsGva8nPffL83F5+SRowD9zRvwGtOqDQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-94.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Fri, 17 Oct 2025 08:03:32 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- lossin@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
- peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com, daniel.almeida@collabora.com
-Subject: Re: [PATCH v6 0/7] rust: add `ww_mutex` support
-Message-ID: <20251017080332.121c65a5@nimda.home>
-In-Reply-To: <132e722c81391a7b99e340404374b5903a4759c3.camel@redhat.com>
-References: <20250903131313.4365-1-work@onurozkan.dev>
-	<132e722c81391a7b99e340404374b5903a4759c3.camel@redhat.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahJrewzb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F7EC4CEF9;
+	Fri, 17 Oct 2025 05:42:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760679768;
+	bh=aFl3GfsK6damjtbDnbwo3QQUpvXGIfwA5fi0P3XTtTI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ahJrewzbxHzTLlNyNy1xx3JcyzwIvZvzmzzaIs69CC5OcK2rFC/oXVRwwctRnshG/
+	 C9TSJuDTOJFsfAMJeNMsAe1uNLpTPuUIp/TUyJUEIRhE5r9rw0sgUSVDptGKSLQM37
+	 5InvhWFL3wTBUUPLDLZgzML/oRqooT0l5esJJEYE=
+Date: Fri, 17 Oct 2025 07:42:43 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, linux-usb@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] rust: usb: fix formatting
+Message-ID: <2025101758-mystified-prideful-8016@gregkh>
+References: <20251016231350.1418501-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251016231350.1418501-1-ojeda@kernel.org>
 
-On Thu, 16 Oct 2025 15:47:09 -0400
-Lyude Paul <lyude@redhat.com> wrote:
+On Fri, Oct 17, 2025 at 01:13:50AM +0200, Miguel Ojeda wrote:
+> We do our best to keep the repository `rustfmt`-clean, thus run the tool
+> to fix the formatting issue.
+> 
+> Link: https://docs.kernel.org/rust/coding-guidelines.html#style-formatting
+> Link: https://rust-for-linux.com/contributing#submit-checklist-addendum
+> Fixes: 9a55e0079258 ("Revert "USB: disable rust bindings from the build for now"")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> Greg: I am sending the `rustfmt` series to Linus to see if he is OK with
+> getting the tree back into a clean state:
+> 
+>     https://lore.kernel.org/rust-for-linux/20251010174351.948650-1-ojeda@kernel.org/
+> 
+> And I noticed that in linux-next this is wrongly formatted (i.e. bad
+> sorting).
+> 
+> Please feel free to just fix the original commit if you rebase, of
+> course. I am sending this as a patch in case it helps.
 
-> Hi! One thing I realized I forgot to ask the last time I reviewed
-> this: one of the things that seems to be missing is the ability to
-> use this API with locks and lock-acquisition mechanisms that already
-> exist on the C side of the kernel.
->=20
-> I think the simplest equivalent to this I can point to is how we have:
->=20
->  * Mutex::from_raw() (but only when the type protected by the mutex
-> is () )
->  * Guard::from_raw()
->=20
-> For ww mutexes we should have both of these as well, and also
-> ::from_raw() for WwAcquireCtx. This being said - as far as I can
-> tell, it doesn't look like it would be a big change for this series
-> at all.
+I don't rebase my public trees, so I'll queue this up after your changes
+land.
 
-Sounds doable, I will make sure to include them in the next version
-which I will be working on pretty soon. I couldn't allocate enough time
-to work on this due to other priorities.
+thanks,
 
->=20
-> Also - thank you for the work so far :)
-
-My pleasure :)
-
--Onur
-
->=20
-> On Wed, 2025-09-03 at 16:13 +0300, Onur =C3=96zkan wrote:
-> > Changes made in v6:
-> >   - Added `unpinned_new` constructor for `WwClass` and updated
-> > global macros.
-> >   - Changed all tests (and docs) to use Arc/KBox instead of
-> > `stack_pin_init` for `WwMutex` and `WwAcquireCtx`.
-> >   - Added `LockKind` and `lock_common` helper to unify locking
-> > logic.
-> >   - Added context-based and context-free locking functions for
-> > `WwMutex`.
-> >   - Added `ww_mutex/exec` module, a high-level API with auto
-> > `EDEADLK` handling mechanism.
-> >=20
-> > Onur =C3=96zkan (7):
-> >   rust: add C wrappers for ww_mutex inline functions
-> >   rust: implement `WwClass` for ww_mutex support
-> >   rust: implement `WwMutex`, `WwAcquireCtx` and `WwMutexGuard`
-> >   add KUnit coverage on Rust ww_mutex implementation
-> >   rust: ww_mutex: add context-free locking functions
-> >   rust: ww_mutex/exec: add high-level API
-> >   add KUnit coverage on ww_mutex/exec implementation
-> >=20
-> >  rust/helpers/helpers.c                 |   1 +
-> >  rust/helpers/ww_mutex.c                |  39 ++
-> >  rust/kernel/error.rs                   |   1 +
-> >  rust/kernel/sync/lock.rs               |   1 +
-> >  rust/kernel/sync/lock/ww_mutex.rs      | 634
-> > +++++++++++++++++++++++++ rust/kernel/sync/lock/ww_mutex/exec.rs |
-> > 324 +++++++++++++ 6 files changed, 1000 insertions(+)
-> >  create mode 100644 rust/helpers/ww_mutex.c
-> >  create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
-> >  create mode 100644 rust/kernel/sync/lock/ww_mutex/exec.rs
-> >=20
-> > --
-> > 2.50.0
->=20
-
+greg k-h
