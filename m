@@ -1,67 +1,67 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ACF26CE39
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 17:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8595F2765DC
+	for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 17:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760809543; cv=none; b=PQaEJScL4nZ1PUSZ5KH3Ylyhc/WzSWsJEl4Qye1mtKT1RBAXfZufqjJC+QN+eLKo3W2F3KWI5+hxmnwAmaVa1pPRbzMx6VkRqujsenJ/E8IZIvmAXIyh+pFGfsTflOQJHHkbpPA6QV1bDn03lChgN07VgW+i+KZ49gnJ81lXP9Q=
+	t=1760809547; cv=none; b=CyWphwHWNlQC/lv4ZDfhgDA1WuVXqBEPeRZqjZLWDwF58A5M7z5gAco+GdFMj9RjP02/bFJjhJCHg8hjMjjH0S2v9d8FkADdWOMJRPsg02Ip041L5OUkAG3536+4F6druiNI3TABjEq3kVkD0gWB0D1vCRs5FZRN12dg6K1XC/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760809543; c=relaxed/simple;
-	bh=6FtTg88GY2fWPari0/xVYIFZl0LtyM/QigeE2PMN1js=;
+	s=arc-20240116; t=1760809547; c=relaxed/simple;
+	bh=872/2/9eITdb9tB+ajd4McXNzNIKi7XLnXFm8ifjokI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EgEFCx6e6WYqaFFzJLnJrSte8GWJBv61yOE5qd9Ylv2QEpq1GC2PoSrf3ob5E1AvGNwPQUvm0tdnZ7XhjZS3mbv1jE/W6vZGfrN+jUxqrDMflvmVdlQFe4VPn7+gHcpNgjKYubrwfqT1k5GxcULKqV1v/CO9rx9LJtyFAAXQ39s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Te+AWMYG; arc=none smtp.client-ip=209.85.222.178
+	 In-Reply-To:To:Cc; b=rp2g5rMk7eyGCHN5RnxFU0M0xzgkKQOgyxrPP5Um71ZHN2MHQNgEJzsBVrtkcimt2LyHeyrpG8kPPMuXq9nW2YtV5ZnOKRNR4yiJ1Nd/H5N8/qOUKtAAte79PtuJd1YYGHUbXJHOEy/FC5rNUpKTaVqg6nSH+C7m2Pi1nDkmaVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PiUSbTna; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Te+AWMYG"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-88f79ae58d9so412161185a.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 10:45:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PiUSbTna"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-88f26db50b4so415189685a.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 10:45:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760809540; x=1761414340; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760809543; x=1761414343; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Y+vXAMQTTWEmkUojbXBO1de8JWN1eVf43j81u3Bw1Rg=;
-        b=Te+AWMYGSj4tmHOYBRMWH/F8IboP3Q+fCgELD0AZlUws+krH6RV8Uny5ukxQz3qZ1G
-         zDbf1wBO+WHp8uZTMxsS1tloD6Z/UZKm08XpSXPUBaGSTWS7u0A/wKUyjqmTY6QeXlES
-         gzGcPUk7ptrtj9pZGf6snFqyXY+xKP+nXh1Hqoo+v9OsfjizFEz+LOTrsuj5r1IN73hm
-         J2BbU41AcaAyLeo/vKhZ9bKj6HSUWrfbqY6szDlYK8JlSZCimx7J2ATI3auenrdl9xgg
-         7BSCJckw7gML719L6q9z9T7wBnIylAoeWwm7oeLl6AYbo5xBeP0fkGGG8o/yYj7GVhHu
-         1Wlg==
+        bh=WxxD2K5FdBz/EnZVjAulq7wLhETf3uBIbeo+/VSTI5o=;
+        b=PiUSbTnawi0Y2gAOle6WmnfWCMP15/NZEFmhoWZ/P8IE/4TCxmGjSoi53OpB/Yl7Lo
+         /Zswgw8ol5/9UeFvKlNkHdyWX81ZKlWnsSmTb9/L9ttW3D+7oojqWaXLXBm5IuaTAWAZ
+         zzx7mr2BpUeRb+HK/FjLv/xzNThgx2XnCClmTyRlPo6/twf/ocjqFQWg1IUcESd8hnVP
+         m1S44t3z4VO+iQ9fuLTi03/HdihgxNiTi9JqOcYIdKACT2i21syOexoVSijXEAZWEM/w
+         TBLUaURZjJI2t4IhEj9sagARG3zDp0VCz56QWREA0Z1RqrYl7Pz/sZAalkncJcCLNSGL
+         xVsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760809540; x=1761414340;
+        d=1e100.net; s=20230601; t=1760809543; x=1761414343;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y+vXAMQTTWEmkUojbXBO1de8JWN1eVf43j81u3Bw1Rg=;
-        b=aCpx8HQ2u/lP6VC8iZSAn2tNMkshKwhXRj/x1zJR5btnOE2emMtJY4QQmd9vms6OID
-         oi2rYHi0fc2FkemgwzUrba3+JFaRN6cQdSoezL/VKDVJvNsg0PQgFxgqfkzEU5U6y2tU
-         mHqGSIEhke4COm7XzpXIX8SIcpyCdjVFNULs0FHlCInn0Qa7gCNQK0XVw+8cfTjvozoh
-         iYbjbcV+6GbIq0SOfC1p4lGTzYqgW6Y9aOGawNl9ro3caFXGXeBXhWyMtHIyeRFYH+f7
-         Qik4lRRzVM0SLLUhLa/ZfZGF5jm8UHnY31qGckTY7NL0GAlB+9+dbgofZcBHXzu3WRSd
-         wGDg==
-X-Gm-Message-State: AOJu0YxhvBBH7edIpi6D2TdQiMgZ0C5+sK/AfFb7PZacO8likSHLo6EH
-	sBFaRQSpM87DLrRYBJvRXoUnJio96z1OsBrEKTEfXEDe0JTxO7Uma3dS
-X-Gm-Gg: ASbGncvk2EA64riCET1HVI4smjlkid4qdAoF556NXU+YfPFZhfeSHCBbaiIVVrIf/3/
-	m001JSgBJGULP/zhjiGMbGlhumL3j1o6/LRQwrj++YX8pyuC3B+l2FtlnAraIO8UtYXMq66P4wS
-	dBQDVP6csDc8zBrfLxMVLvGUZEAjnEv9T2KkAV0e726MFzFGsphmdLmTGjbs6dlVEGKvCc3ouXd
-	cUC4E6yzZU4POn40W/meSAj7iZbdumXztRDzSevgdj7s540wLS2n3W/kfoq0GdpjC11tiSg+tUV
-	l82d3Y/XXky3Bik2UL0sh8AUzj1eNzEEeEvHFYNHRlbOJKttUZWiBPGkBRmHKJdtJmHrWv4QHAx
-	N3jy8c0LBEDAeAgDsRV7yafII9YQk50UPDLs0ngfpLw3tNm1IttCqv/wZGpeEt3cTPnE0um2q5g
-	svGCJo786epotClhRpt+WVfIOlKM7EzuS7Q6VUwhEPraWT00TUM8jRTvgEBrSxaT+usKaS7DDRs
-	HGyhfCXpa9JU0Tk46jy8pdyuORuhLjArpNzJPA5WK6uwq7z5C9t
-X-Google-Smtp-Source: AGHT+IF2b+xiML9xjqA23uk9sgK2DYeECM9Ckm8gu0/pdYUA9bmcAEH6Tg4P0+oRe/HNA9P52OxDww==
-X-Received: by 2002:a05:620a:f04:b0:88e:991e:cf2a with SMTP id af79cd13be357-890709e6bbfmr1147502985a.44.1760809539813;
-        Sat, 18 Oct 2025 10:45:39 -0700 (PDT)
+        bh=WxxD2K5FdBz/EnZVjAulq7wLhETf3uBIbeo+/VSTI5o=;
+        b=rqTzKhhaj6Pw8q7nHYQDIP6KzNDVa4TqCTCvJcXIu82U6/jAL8TM6rlx1Cfg2+rlqV
+         qh/Wm2XY99pFefW/utwwJ03KKxWyA5mmZ4hOvJVM7uHGNKycdVmImVUGUL3wrhHU6R1s
+         oZKL1ipDsvqn4kDQzGmlsiEjdJi33ftD4JGfGfylsq7+gUOxTTlzNpGwAojR29HlJX6Q
+         zpaWqxPd2adc50c44DLFpNMr7VrpVYR+nDCEGE4o/kqkfmkviKpniIYL/gcc9wZHkRMT
+         iIteNv6Nsx1ucC00EYChj1eRIHgGrSu4mvGN6YtpOBmuApmqzFcMojqGaRGyqnMpOrMy
+         dx4Q==
+X-Gm-Message-State: AOJu0YzhyxgUgXFMl9e0G4gnEkIT4PbUaD7YGIO11GvKfHLp7FxCPrcg
+	ZuFmaFUapoB76MJ9x6S3dW586fC+KxQH1121J6rcBZpQ/BNJXh/qHgTi
+X-Gm-Gg: ASbGnct8m6bvf6IE0TbEfjEMArQYoGqAp+PReQ3EaHIT0Yr6o1nyYrsTPrbFTw99Sv5
+	bWDkXkLg2d9QU8OqlZp52SJcpSXyh3y1dyXwQ25cY6LbpVgAsg0WEiU1MUw5cPFEMwmskog+RTH
+	CzBFbhkKowrkN1FbVmh/5LaHlgJlNqV4gQQe9YlTo7CAlSBqcJYwIo2SgjS9QQcvWMO/e7+uK2G
+	+X/zTpvzSG3HE3306WoZOmQkcLHVHDtZP18Z+WfqZbxSpPweOI6gsOhB+zABOqnYEre5b3oTjzm
+	kATzyEprxaWrwmojGWVdYXjbA1txw7Y1VIzcwYuFVJMyM9d4b1nzHe86Ba16KcrFESIa7GoN0MV
+	3l3i5CYyEm8U8umZvsaz3t41KAlEJChNvyw7XuIrBnPsA3r75hthdOVIj2DagFKyOdbp0sq0VX7
+	5V0H7bENgzkihG6o4tuO/xb+24RPY9PRtWqMIJqanDmP5BJFUXVG8uzSYuaeHpP7k7N9aigphbV
+	QUknx2ecFfNi63FQmITvlYLbhGHQIGlvV7Qs8dgC9rn2Nzav5druvhl+gD1oy0=
+X-Google-Smtp-Source: AGHT+IFKKdVLl3mAPx5GW1O57JDFIbYY3aQNyGp5ohShtikkzbyW7xTlAHv9ByPokofKb8ncQ992Dw==
+X-Received: by 2002:a05:620a:28d0:b0:891:7def:94a5 with SMTP id af79cd13be357-8917def9615mr601979985a.89.1760809543355;
+        Sat, 18 Oct 2025 10:45:43 -0700 (PDT)
 Received: from 117.1.168.192.in-addr.arpa ([2600:4808:6353:5c00:1948:1052:f1e9:e23a])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8ab114132sm20445161cf.40.2025.10.18.10.45.35
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8ab114132sm20445161cf.40.2025.10.18.10.45.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 10:45:38 -0700 (PDT)
+        Sat, 18 Oct 2025 10:45:42 -0700 (PDT)
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 18 Oct 2025 13:45:13 -0400
-Subject: [PATCH v18 02/16] rust_binder: remove trailing comma
+Date: Sat, 18 Oct 2025 13:45:14 -0400
+Subject: [PATCH v18 03/16] rust_binder: use `kernel::fmt`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251018-cstr-core-v18-2-ef3d02760804@gmail.com>
+Message-Id: <20251018-cstr-core-v18-3-ef3d02760804@gmail.com>
 References: <20251018-cstr-core-v18-0-ef3d02760804@gmail.com>
 In-Reply-To: <20251018-cstr-core-v18-0-ef3d02760804@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -109,39 +109,51 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-pm@vger.kernel.org, linux-clk@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1760809526; l=981;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1760809526; l=1195;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=6FtTg88GY2fWPari0/xVYIFZl0LtyM/QigeE2PMN1js=;
+ bh=872/2/9eITdb9tB+ajd4McXNzNIKi7XLnXFm8ifjokI=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QDmUAuND6Y30l5/wiMpkJH4TDC04JmcQb3JxiK1A28k2upCho1xt+vnLZy55U4tUVIHHZi0W9Xs
- LsFR1ERakPA4=
+ QNpeE2O2veZx/WAQcXn2BPsuVFmwejvaIZ814PGVaIzTcLISv+9UjXgL3SnRuXBWt3P0YjfBZ5X
+ ySAtgUYGZcgw=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-This prepares for a later commit in which we introduce a custom
-formatting macro; that macro doesn't handle trailing commas so just
-remove this one.
+Reduce coupling to implementation details of the formatting machinery by
+avoiding direct use for `core`'s formatting traits and macros.
+
+This backslid in commit eafedbc7c050 ("rust_binder: add Rust Binder
+driver").
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- drivers/android/binder/process.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder/error.rs | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index f13a747e784c..d8111c990f21 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -596,7 +596,7 @@ pub(crate) fn debug_print(&self, m: &SeqFile, ctx: &Context, print_all: bool) ->
-                     "  ref {}: desc {} {}node {debug_id} s {strong} w {weak}",
-                     r.debug_id,
-                     r.handle,
--                    if dead { "dead " } else { "" },
-+                    if dead { "dead " } else { "" }
-                 );
-             }
-         }
+diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
+index 9921827267d0..b24497cfa292 100644
+--- a/drivers/android/binder/error.rs
++++ b/drivers/android/binder/error.rs
+@@ -2,6 +2,7 @@
+ 
+ // Copyright (C) 2025 Google LLC.
+ 
++use kernel::fmt;
+ use kernel::prelude::*;
+ 
+ use crate::defs::*;
+@@ -76,8 +77,8 @@ fn from(_: kernel::alloc::AllocError) -> Self {
+     }
+ }
+ 
+-impl core::fmt::Debug for BinderError {
+-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
++impl fmt::Debug for BinderError {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         match self.reply {
+             BR_FAILED_REPLY => match self.source.as_ref() {
+                 Some(source) => f
 
 -- 
 2.51.1
