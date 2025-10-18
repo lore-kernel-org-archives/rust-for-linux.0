@@ -1,67 +1,67 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A359624DCF6
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 17:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ACF26CE39
+	for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 17:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760809538; cv=none; b=mvhboGEZrjH8VfTB0I51dVjETIuSHJ3xOpCsGsy9tBSdgmarL5xoQrQEL8/pvccd7nztCT7gYi4o/76J+TzjHwNJIm73H9hXW1JiC8sR8bbCSaE3OHBUDEuCgL7Nz7P8CW3QlUvsS6/E9APa5B6kt+3bmd5EqPIdXGbcpCwo1s8=
+	t=1760809543; cv=none; b=PQaEJScL4nZ1PUSZ5KH3Ylyhc/WzSWsJEl4Qye1mtKT1RBAXfZufqjJC+QN+eLKo3W2F3KWI5+hxmnwAmaVa1pPRbzMx6VkRqujsenJ/E8IZIvmAXIyh+pFGfsTflOQJHHkbpPA6QV1bDn03lChgN07VgW+i+KZ49gnJ81lXP9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760809538; c=relaxed/simple;
-	bh=5IzviSKzcg5QXxBA9uZe2s664KTsV8Tne2rtRwo/bww=;
+	s=arc-20240116; t=1760809543; c=relaxed/simple;
+	bh=6FtTg88GY2fWPari0/xVYIFZl0LtyM/QigeE2PMN1js=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d3+nQ9GNww008qgT1nF1AxU9KlWIl40aIwccvee3kQVmt4QtGwMzWsZ2pyI2qdOawlHjq9mUlJ6svF1sBNeShrhmxRy1uLKCflmksUAer5PpyRGy5okOgO8aVcW8/JMFdFwqc+5BzKBarPDUnqOgLeyez7CDKaefBeJp7AP69c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJG3/6Gt; arc=none smtp.client-ip=209.85.219.41
+	 In-Reply-To:To:Cc; b=EgEFCx6e6WYqaFFzJLnJrSte8GWJBv61yOE5qd9Ylv2QEpq1GC2PoSrf3ob5E1AvGNwPQUvm0tdnZ7XhjZS3mbv1jE/W6vZGfrN+jUxqrDMflvmVdlQFe4VPn7+gHcpNgjKYubrwfqT1k5GxcULKqV1v/CO9rx9LJtyFAAXQ39s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Te+AWMYG; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJG3/6Gt"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-87c167c0389so46792046d6.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 10:45:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Te+AWMYG"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-88f79ae58d9so412161185a.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 10:45:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760809535; x=1761414335; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760809540; x=1761414340; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fmofoJkHkMxsaLhdlprPrmfRRb4k8Y1fAGmfllLm4kw=;
-        b=ZJG3/6Gteo9olAXqVARMktT7970S10Og5iqqXGvviBZaYI7d7JPC9qGIL2oEfjiZG5
-         mYlHT4avdv4V1Wpd6+UyqpW9iNhyWcQW2ca6sM2xFVQwmyqMqiMp+KtKmJYdLpwe96cf
-         ODKBILU4iiDrPrFQ9/uKAErgx/tY8aeHvvgiKSbk5e+WvoFfQNzjL71doWLDizZCYskw
-         8fuJVwd2DmII2uIBi5sP3NvtaCviOjkut1rDkDCXY9z9hvEYLWKUCh8mtjUWb9pEB2lX
-         gWAtNLdD2w5ahL5OY52OAj+D2WDOPQUfkkpStayU+9nNEaQdqGoFCUkuEDESUJZu42wh
-         5ubA==
+        bh=Y+vXAMQTTWEmkUojbXBO1de8JWN1eVf43j81u3Bw1Rg=;
+        b=Te+AWMYGSj4tmHOYBRMWH/F8IboP3Q+fCgELD0AZlUws+krH6RV8Uny5ukxQz3qZ1G
+         zDbf1wBO+WHp8uZTMxsS1tloD6Z/UZKm08XpSXPUBaGSTWS7u0A/wKUyjqmTY6QeXlES
+         gzGcPUk7ptrtj9pZGf6snFqyXY+xKP+nXh1Hqoo+v9OsfjizFEz+LOTrsuj5r1IN73hm
+         J2BbU41AcaAyLeo/vKhZ9bKj6HSUWrfbqY6szDlYK8JlSZCimx7J2ATI3auenrdl9xgg
+         7BSCJckw7gML719L6q9z9T7wBnIylAoeWwm7oeLl6AYbo5xBeP0fkGGG8o/yYj7GVhHu
+         1Wlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760809535; x=1761414335;
+        d=1e100.net; s=20230601; t=1760809540; x=1761414340;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fmofoJkHkMxsaLhdlprPrmfRRb4k8Y1fAGmfllLm4kw=;
-        b=seuE4pr+UOqZWRm3EeMlXp3mAF29dIERMRpiIq6ropZ2hVqJp+8KDwxxUebf7qEaMe
-         sdse2CcbYwo/202bcolA3aZO56Hu3wzVUC7bFEvvm5+DJU5ChAe325bM/+oXnWOsGGuC
-         x9/LXn7tkFBVND19rsKR8QvLZfJ6G64PPpP0vuQ1UiDr2uj6cp+Qm7BHANFmH/RNiuIR
-         0ThPbyaYRtEwoey5KmNxO8R7IwjK5Equ171hYFh2C3UQdk/HTCKEmvq/jimTQ74L/jMe
-         AEDC4z6HTW/FTKhDfalg6gf8Tv9MLaqC8a+jpYz64wOgfT6QZNv27nub0/GzO9oERLLH
-         /+4w==
-X-Gm-Message-State: AOJu0YxECZA3iTJwC9bmKUzjTQfDUaV/4Lcnzc+7uJDTM243S4cPbFUf
-	YAY6YX1ZHeWm9y+94ba6rF6oKH3qixv1X1B7GNaswFl9Ayj9PKcB422n
-X-Gm-Gg: ASbGnct1fziXoNMZv5SVOZdPrs00MWpaPPg49sqAKU44W1KilymGEM5u22jtKGHawKl
-	7VhonEb2MuiaP3p75z7DRZLItfhhzjpFCCUJLW+FgumE3Rx44RLtGJ64/4nhUO4UWM6tFvbAjPR
-	EzPNlU8Aiqm/A5Bt5J4fMIBS9VNsTYlM4qe2tVwnEUCwnjLupzlSOkGSQzuAiK3UqdHcy0UqpPN
-	fZ7HpBt1zfeyi7o0B6yMtiys3gKVvEFjn+a5BxjzB//b+jJZ6L7lwlMB8BOs+A0oOhuDM9u+fNg
-	xy41FtpLDI3KKZwmZ8I3kwnK+4gcTAlLnXOoDYXQ3+c9PMJEY5rzXxSb7rJfQuJZ2wsEhLz+Lbp
-	QJwNm5EWeD1BkkgAP0hA4gIALIFd+jyolCrqK2iLCfeWW0oLDcNzFf+HxyIWSdWxrxa7kJE4YvS
-	WLBpuuJWTgjzX5MhxeKel8XMVtrjNlt+Py0aAiNvCHDB4qTqgVKR6ucLkiBtlQb5VAypGTe1OKd
-	PGFKCaODdj0VC04AKNMNz3S1EJFHVnq6b/ewBeeDLnfjt6dj/q3
-X-Google-Smtp-Source: AGHT+IHGPyNylAC+NcjKR3LVCwruQ+XagK91t9ZK/AgOi9yexcJC3Bdqjt9T2UkkZHJl14b1ky8RWg==
-X-Received: by 2002:a05:622a:10:b0:4e8:a664:2cfa with SMTP id d75a77b69052e-4e8a66467efmr59406621cf.34.1760809535454;
-        Sat, 18 Oct 2025 10:45:35 -0700 (PDT)
+        bh=Y+vXAMQTTWEmkUojbXBO1de8JWN1eVf43j81u3Bw1Rg=;
+        b=aCpx8HQ2u/lP6VC8iZSAn2tNMkshKwhXRj/x1zJR5btnOE2emMtJY4QQmd9vms6OID
+         oi2rYHi0fc2FkemgwzUrba3+JFaRN6cQdSoezL/VKDVJvNsg0PQgFxgqfkzEU5U6y2tU
+         mHqGSIEhke4COm7XzpXIX8SIcpyCdjVFNULs0FHlCInn0Qa7gCNQK0XVw+8cfTjvozoh
+         iYbjbcV+6GbIq0SOfC1p4lGTzYqgW6Y9aOGawNl9ro3caFXGXeBXhWyMtHIyeRFYH+f7
+         Qik4lRRzVM0SLLUhLa/ZfZGF5jm8UHnY31qGckTY7NL0GAlB+9+dbgofZcBHXzu3WRSd
+         wGDg==
+X-Gm-Message-State: AOJu0YxhvBBH7edIpi6D2TdQiMgZ0C5+sK/AfFb7PZacO8likSHLo6EH
+	sBFaRQSpM87DLrRYBJvRXoUnJio96z1OsBrEKTEfXEDe0JTxO7Uma3dS
+X-Gm-Gg: ASbGncvk2EA64riCET1HVI4smjlkid4qdAoF556NXU+YfPFZhfeSHCBbaiIVVrIf/3/
+	m001JSgBJGULP/zhjiGMbGlhumL3j1o6/LRQwrj++YX8pyuC3B+l2FtlnAraIO8UtYXMq66P4wS
+	dBQDVP6csDc8zBrfLxMVLvGUZEAjnEv9T2KkAV0e726MFzFGsphmdLmTGjbs6dlVEGKvCc3ouXd
+	cUC4E6yzZU4POn40W/meSAj7iZbdumXztRDzSevgdj7s540wLS2n3W/kfoq0GdpjC11tiSg+tUV
+	l82d3Y/XXky3Bik2UL0sh8AUzj1eNzEEeEvHFYNHRlbOJKttUZWiBPGkBRmHKJdtJmHrWv4QHAx
+	N3jy8c0LBEDAeAgDsRV7yafII9YQk50UPDLs0ngfpLw3tNm1IttCqv/wZGpeEt3cTPnE0um2q5g
+	svGCJo786epotClhRpt+WVfIOlKM7EzuS7Q6VUwhEPraWT00TUM8jRTvgEBrSxaT+usKaS7DDRs
+	HGyhfCXpa9JU0Tk46jy8pdyuORuhLjArpNzJPA5WK6uwq7z5C9t
+X-Google-Smtp-Source: AGHT+IF2b+xiML9xjqA23uk9sgK2DYeECM9Ckm8gu0/pdYUA9bmcAEH6Tg4P0+oRe/HNA9P52OxDww==
+X-Received: by 2002:a05:620a:f04:b0:88e:991e:cf2a with SMTP id af79cd13be357-890709e6bbfmr1147502985a.44.1760809539813;
+        Sat, 18 Oct 2025 10:45:39 -0700 (PDT)
 Received: from 117.1.168.192.in-addr.arpa ([2600:4808:6353:5c00:1948:1052:f1e9:e23a])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8ab114132sm20445161cf.40.2025.10.18.10.45.32
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8ab114132sm20445161cf.40.2025.10.18.10.45.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 10:45:34 -0700 (PDT)
+        Sat, 18 Oct 2025 10:45:38 -0700 (PDT)
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 18 Oct 2025 13:45:12 -0400
-Subject: [PATCH v18 01/16] samples: rust: platform: remove trailing commas
+Date: Sat, 18 Oct 2025 13:45:13 -0400
+Subject: [PATCH v18 02/16] rust_binder: remove trailing comma
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251018-cstr-core-v18-1-ef3d02760804@gmail.com>
+Message-Id: <20251018-cstr-core-v18-2-ef3d02760804@gmail.com>
 References: <20251018-cstr-core-v18-0-ef3d02760804@gmail.com>
 In-Reply-To: <20251018-cstr-core-v18-0-ef3d02760804@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -109,49 +109,39 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-pm@vger.kernel.org, linux-clk@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1760809526; l=1642;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1760809526; l=981;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=5IzviSKzcg5QXxBA9uZe2s664KTsV8Tne2rtRwo/bww=;
+ bh=6FtTg88GY2fWPari0/xVYIFZl0LtyM/QigeE2PMN1js=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QDwRhntvVCGUiRlEkiv1zZeGhdA6rD6SNhGZH3QI1C43PlBagNvzfDvivxfFTU380ObMT25PMu4
- pe9SrdQ8j/g4=
+ QDmUAuND6Y30l5/wiMpkJH4TDC04JmcQb3JxiK1A28k2upCho1xt+vnLZy55U4tUVIHHZi0W9Xs
+ LsFR1ERakPA4=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
 This prepares for a later commit in which we introduce a custom
 formatting macro; that macro doesn't handle trailing commas so just
-remove them.
+remove this one.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- samples/rust/rust_driver_platform.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/android/binder/process.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-index 6473baf4f120..8a82e251820f 100644
---- a/samples/rust/rust_driver_platform.rs
-+++ b/samples/rust/rust_driver_platform.rs
-@@ -146,7 +146,7 @@ fn properties_parse(dev: &device::Device) -> Result {
- 
-         let name = c_str!("test,u32-optional-prop");
-         let prop = fwnode.property_read::<u32>(name).or(0x12);
--        dev_info!(dev, "'{name}'='{prop:#x}' (default = 0x12)\n",);
-+        dev_info!(dev, "'{name}'='{prop:#x}' (default = 0x12)\n");
- 
-         // A missing required property will print an error. Discard the error to
-         // prevent properties_parse from failing in that case.
-@@ -161,7 +161,7 @@ fn properties_parse(dev: &device::Device) -> Result {
-         let prop: [i16; 4] = fwnode.property_read(name).required_by(dev)?;
-         dev_info!(dev, "'{name}'='{prop:?}'\n");
-         let len = fwnode.property_count_elem::<u16>(name)?;
--        dev_info!(dev, "'{name}' length is {len}\n",);
-+        dev_info!(dev, "'{name}' length is {len}\n");
- 
-         let name = c_str!("test,i16-array");
-         let prop: KVec<i16> = fwnode.property_read_array_vec(name, 4)?.required_by(dev)?;
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index f13a747e784c..d8111c990f21 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -596,7 +596,7 @@ pub(crate) fn debug_print(&self, m: &SeqFile, ctx: &Context, print_all: bool) ->
+                     "  ref {}: desc {} {}node {debug_id} s {strong} w {weak}",
+                     r.debug_id,
+                     r.handle,
+-                    if dead { "dead " } else { "" },
++                    if dead { "dead " } else { "" }
+                 );
+             }
+         }
 
 -- 
 2.51.1
