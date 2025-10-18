@@ -1,197 +1,191 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010017.outbound.protection.outlook.com [40.93.198.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738AD1EF363;
-	Sat, 18 Oct 2025 13:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760794900; cv=fail; b=sLYUUsefoDX6j3U+Ohex8vCj/5Y0NyGxLoobwxCFStiSVnCAjnF1otDIPoOwNgoFjlW20nFTscCVxFpPKSj0T4vsrCA6rrZbduKOtKsBWosneHxf/oSsRoJUZz4GtfCcxvdl0i5RzS0acBSjtaE2IjB/q4TxZd+hInZ8ZqX4tqw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760794900; c=relaxed/simple;
-	bh=veTXDxv00cN8gDSTKP/vYlbQU9oRWf9c5Bj21yLAnq8=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ffYIEGakAvHmrO7K96mcuB58cNodpk6ZiBYIZ+SeoqEIFBMvQPRabe6R6gxLMaPOd9xTML7+0bjuuAcqS8Sa1BLF5gcMH9tgEunV43NgJ80l2a9PePDoTBrPvU00YOB+7IXfayT83bDCJxF4/djFs8zPngiPIJ2L3c5RpiwO/mk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NWKPcuND; arc=fail smtp.client-ip=40.93.198.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0E623D7DC
+	for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 17:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760806964; cv=none; b=lBIpeR1wadYA7M/oLiLJXa+PgrmJcKQd1B3ymnxyx3ZY7f3LWekHpV5aO9UyH4ahxozEV+2ZTHmU/GBU8vjT2Ea6+BUhITmD4Ru7XVujjXdF5gLN0OKRSuA9ULLi3CcMPpz1PwcY+jip+nnCNpi9OZcljn6aiygPuKqQyLOFxNo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760806964; c=relaxed/simple;
+	bh=K56Is2wx7UmVl17dRBrxY8Gx8J2Mj6XdngEuoaXN7is=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=D3UWJ9MOq5KtfZl/OlUShuVUW9I779RZOSY3+PvRMZ5YpblWxQFXDK8HZ8M85HPynkczuLqPK8FC5ehjhiD67hy+7mY0me7//egJpFV4BzuyVTmhiOluUBTxpz2w+ZIsU0E1N25HSujFagMpNteO2gyPOKtTsNEmxCqBfae4sKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rGtkPBlN; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NWKPcuND"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xk+PQ12JcNFQkxYUiT/EBzuHF7k+5PZy20pL8VK/3IgnPxiwPndOGDrNdJEIfLqKbE/Qy2recqjz8KPKWXbn208348C1OwVXDB6XvHNnE8mwOS42JQXv0TP9GJRLfDzmnqmosuO5SAj1tkbyx5bMpZzsGAZgEuSEDSEY3kaPl8OdXMNuSYRQsg0LlvV/f7mgRpfjANnXjI3uJS0TW+AsPsigg0vkuxYT5r952I2x7go3I4dEwE3isnhew3v6faApc2jKe7rBcaTHmTiDih/2NpNJv1BmjZTy0y5oh0sPLxwi3Ncc+Fzgnsskmdlc4Zo/i4675R/RWm+htRrsVXeTtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=veTXDxv00cN8gDSTKP/vYlbQU9oRWf9c5Bj21yLAnq8=;
- b=Lh1NG9nI0Pmj9u6TTpWpuQSvct3EqWrQlSYckRRK4wKGZH3mT1UVTSgX+lMf3+V0WeeGzmW2wyY3lEF4kbJ56F/eLy8LS2BmqbiKG3GLr2ds3HbaWtuts0ljERfTzAaSBgbso0UgQYIKx3a8AfIllKirZ8tgl9488m7woFJavnFbF/LEhDVzdEBAqrEZ08mq1PzflQ9LRQ6HsDclWg4Pzp2PAk2+cY/1Wjqioa1NfWTyx4lNkCswwTeGC2iAOj7H6yLbzib4UkliAaXyHVKIUSB0rbTCSEsZOBvBl21v6uk1em3urpAXRRO4N64Fd50T0GoOIMsKoR0jlSlgKJO7Sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=veTXDxv00cN8gDSTKP/vYlbQU9oRWf9c5Bj21yLAnq8=;
- b=NWKPcuND4bCe9cJi2GmelRKSUlcAKuvAkOYWEJLGRQR9ffqj8czlAy6Uu0mxH/R0QWNeBuLJ4FYTQmj5mLWCFNYH8lUGNqGksX0pjPwt97759Y8NkGGZmdIk/oH+SWWOn5hJNGiSprAwUyESyvoWQZSYTxyLPKQAkO2e6m/aTI2XJw+d6+lBvgDgFGz002pq/jqyZ+QO0o3WsgUKbVTEml+lnFNXTE2RTjzNCAW6TxsRH17vETs5ZaY71m5HSUkic3KjHeey+EA8YhpV2f5b6Ryqavg5RXNETM9fQg0Y+BoVRAg2XKthAV081ZmVbs+T+J6X3PtmMCsJeg8h1X3G0Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by BL3PR12MB6474.namprd12.prod.outlook.com (2603:10b6:208:3ba::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.12; Sat, 18 Oct
- 2025 13:41:33 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9228.011; Sat, 18 Oct 2025
- 13:41:33 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 18 Oct 2025 22:41:29 +0900
-Message-Id: <DDLHP1ABV9BA.3V0NXW3RWHGL6@nvidia.com>
-Cc: "Alistair Popple" <apopple@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>, "Yury
- Norov" <yury.norov@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, <nouveau@lists.freedesktop.org>
-Subject: Re: [PATCH v7.1 0/4] bitfield initial refactor within nova-core
- (RESEND)
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <dakr@kernel.org>, <acourbot@nvidia.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251016151323.1201196-1-joelagnelf@nvidia.com>
-In-Reply-To: <20251016151323.1201196-1-joelagnelf@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0362.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:79::16) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rGtkPBlN"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4710d174c31so31630395e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 18 Oct 2025 10:02:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760806960; x=1761411760; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QcEJMCPQNzNn4Sg/+enW3pY+1OtQDQh0FQ7gWamWR/8=;
+        b=rGtkPBlN65O/kO3nzZtauLZkBypZOGJZIqDcUrEkhvS8CQRrxy/5q3tnCqekG19lHT
+         WqTNFbv0ABQXBB6nylY850gDZN6gpr39hgg1dSb2xaEzWABV7fk4WOr6uKcS9LZMHtEF
+         R9+nbcXyrG24VEY02vb4opXaHorFhxu0+pOYKO8aT5nXjEWzeDmN8S+8PiZDazX4CK6Z
+         +eroFQ2h/4AHTYMJoAWfIrTpL3Uo/wc/DngP8G9iBSU1uRaCB+nQC9n3bXho0W8wOSqs
+         dU/JIJY/7e6qDGroeSwe8MwYRcv2FXCQX7fQkb/MfAlE/bpSjGa0lKOeNrTmYoG/A7k9
+         4aoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760806960; x=1761411760;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QcEJMCPQNzNn4Sg/+enW3pY+1OtQDQh0FQ7gWamWR/8=;
+        b=n3nJE8SOasmiAGlow/MnPSytYM19O4FkCBX+3rZabQJxiFuR4s5htvKavuhJzkvw8n
+         JkU3szviiqQSbFrgnO5u/D/2ygX93/8ExbCg5m1Q/DXP+UftvIBWjT1HGL0FAtdh5lsA
+         vXPb2QwmnkfevRAXnDiBLoxESOjpShvtDVoxKXMvaKu6adVsyvRKjDPZiVcIo/PoGdx7
+         VR4/SNWMLeDpZkpWosNp+WGYbEQL4BHajXTika8D6KC6swichw0UKgaUKPAzWa+/kgah
+         GDqmfcph2suWWLQT5SzHcRfPIaRt84u1iABw1LmfbH9YU9d2rjib8jQy9kKopyjzxvdH
+         XvJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUugkvmoM1DeZSiOJsBodiKRr4FKfat6v4Ur2jBX9/rFhGnOFf0CtFLExD8RVb2fr1a7Bp6yMijnUqxw28ZhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeYIWb3OCePWE0zRh2rP2j8EI19nJIIlEiNidPVYvKdBSls7WG
+	kiwnufTgirntTR3oBE5ESM1ajnxJEe1jwYCrglY414o1o2qLAYgOk0Po6Z6kUXBGwusGylaAJYx
+	y8p4Rx7J3LTUfL59EBQ==
+X-Google-Smtp-Source: AGHT+IG+XONBGTsyrZA2w5nXoym2WOeMmXEjzuALKqECWR/nae42PSy1vCNDSBfzkw7eA04iBiPKoZnTCFnDy3g=
+X-Received: from wmwo28.prod.google.com ([2002:a05:600d:439c:b0:46e:6605:3ac2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600d:6357:b0:46e:1a07:7bd5 with SMTP id 5b1f17b1804b1-47160987501mr15825585e9.29.1760806960228;
+ Sat, 18 Oct 2025 10:02:40 -0700 (PDT)
+Date: Sat, 18 Oct 2025 17:02:39 +0000
+In-Reply-To: <20251015-cstr-core-v17-0-dc5e7aec870d@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BL3PR12MB6474:EE_
-X-MS-Office365-Filtering-Correlation-Id: 806a1fcf-94e3-468d-1a49-08de0e4c0c9c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?L2lQOHVNWDNUVUUrVmNnSldxTHNaSEhyNHVLS2sxSXY2VzkreEpYaFVoM2g1?=
- =?utf-8?B?eFRaTXhWMEkvRFZWcWdBOXpVbWJhbXArNGorcUVYODZwbWJNQjhsM2xQcjhI?=
- =?utf-8?B?clJXczBtc1psTjUyQ2U2L1V4bnFkY1JGT3JBRlBLdDc3RHJQeEl1aEFlSVJ2?=
- =?utf-8?B?SlRCaERDcm11UmdDdG1SV2J5cEM2M25nYURVVGdGVzBlMmFSTVVEbWFpMkh2?=
- =?utf-8?B?ZStZSkVLUVhFMzRYK0NRaE8xN2pBOG5QMlNDUU5oVkkrbXdZVzFiYmtGZG1u?=
- =?utf-8?B?dWRhdHczNTdpOXZhNno3ZTNrTEp0d3pPemVjNVY2RVVpRDlURWFPaGcxd2pZ?=
- =?utf-8?B?RUFHM2Q3N1BodlFCckZPSUtRVHRicjF3Nm1YWWJmQng0MUYwNXJVUXNGbGFV?=
- =?utf-8?B?T1d3Szg0RnVqZERMbnp2akdyQTc2UUlwMko3Y2pCYXMwNTA2cHBZTldvMkRt?=
- =?utf-8?B?cjZRVG9iUEtVOFkwaFJ1Uk9ocEE1WlQ3V3F5TWN3QXBlTThwcXhSWFdTZ1pm?=
- =?utf-8?B?RjNYWWp6Q2lFbEFIVVcwM2VlNmV1dDJhYUNmT1J6ZFEybk5BSy80QVJPRUZh?=
- =?utf-8?B?YWpQdTNYWWdMZE1PRWMyRlFFOCt3K3hpck9rbXpxeFJlVXdCMlVIZGQ1bEJD?=
- =?utf-8?B?Q1YrSXhxcHJTc0xsNGNPeTAzSk9XVUsyNzIvUEVBRUdLdmJNT0MvRHNhaEFG?=
- =?utf-8?B?YjdhMVMzcGpNaTlKdmZRTGoxSWpKV0ZwVGk4YTVUV1pCaEQ3OVpBSE9JbEN2?=
- =?utf-8?B?OUc4QXhTeVpsV2MreElReXl4R1NzZVd1UzdTb1Qrd2s0L2ZZTk1yUzgrcDdN?=
- =?utf-8?B?REtNWnE3T1hwWXFON1NNaERQa0tEYXk3TXVlamtUS2g2YnQ5NFVjRlJNTlpk?=
- =?utf-8?B?ZGlDTDJ0VWNablN2ZGZmWWxmZThKNnBNNUlrZVgweUlEUUdrdmZoK1oyUXpC?=
- =?utf-8?B?YXpBSlNnVlFRZVlzNEtnUU10YkQ4Vk1sS3ZaN1M3ZE1xUmJjS3BEZldib21n?=
- =?utf-8?B?UHlJZitvVE1rQnl3SVdxL0xDUnQxRCtWbHFTVUFrbC91bkhqSWg0c0xsR0NC?=
- =?utf-8?B?RUR5NXQ3R2xGalArMnlPMVljSVBZc3pXMkVHYXFYTEduZ1Z5SWJMVktMZUxL?=
- =?utf-8?B?SkkzaWpKUkZqZ2dpdU1kbWxqMHRFaXVwVmgzU0NwYmc2OU03enllV1hYZWkw?=
- =?utf-8?B?K1hqcDJ2NVN5YTFMZG53SkR3MW0vSWxwZXJtRjB6ZDVnU0VaLzFRMGRUSnR4?=
- =?utf-8?B?azhGY1g3MVptd0VydkhJWDJCSmRCSjI0ZkliRkdnek44K0NxaGxUZE9XNTAv?=
- =?utf-8?B?WUVyVmJiUzNYcXd0RHRjb3JzbDFoU2VRWFVRZEdPRnBWYW90T09ZS0FRUG9P?=
- =?utf-8?B?a1crc0NrM3REQ2J5endyVmdlZFZFc2oxNXpKN09jRHh3cDRsNkFLNGhTM2t1?=
- =?utf-8?B?SWxVaXAweG9EREdsTTVwTE00cDEvNldnSEFKcFhkSThyN3BlUWNwSWZaQitl?=
- =?utf-8?B?V3d6V2dscjAzS3dwVjJZZHZ4amVxN3g4dzBkL1JQUTV4Y1YyRzgzbGVqSnV4?=
- =?utf-8?B?WmlIeXBtYkhhUFUxRkRZaGdrSVAzdXBRcC9lTW9GVElTTUhMQmhUQkc2SU1m?=
- =?utf-8?B?WGlWVldOcCtyYmo2enpia3NsQmFkaDFjcWZwcnB3V0dMTWVIU2ljWlVscjN3?=
- =?utf-8?B?N3NKTis3T0ZUSFpQV3JJVEZJQU5OdWtLZDBYRU1NOUZqb0huRzBkSldwZVhL?=
- =?utf-8?B?b1ltTytPNXZmcWVXZnFjSUJkaDhMVHlERStVNzBrQS9FZHZLcUx6UURUdFRj?=
- =?utf-8?B?VHlpR0w2THpzalBtcGFHVFFqMUdGdG9STWhocTNacC9Za09LRWQzRElGNjlY?=
- =?utf-8?B?Qmp6VmhjRzkwY2pSTFZlVm5jY0Y5aXcvZlgxR0FqYnNBNXpFd2hMeVA0ZjBH?=
- =?utf-8?Q?Si808C4uzrQY3l9u8obKoZPKNydtispZ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eGpUY1UwQUUvT1A2ZUtUN0dYTzBCSVRSWitBV2o4SDRBc3dGTUl1bGRzS0xa?=
- =?utf-8?B?Y1NuMnlRMjRzT1pVbktjejc0Y1Fsc21WR0o1MFR5ZnA1Z1gvcWVpY2IxaFBL?=
- =?utf-8?B?bEMzMGxySGNac0dKRHduSFlTNmJ4MXovKzhiZERycDU3UTMrRnhzeTVVWkhX?=
- =?utf-8?B?M2I1UjNOd0ZBbUJZRCsvZUpualhQWXRnQzFHOTNjUEMwOC9VV0tONXlEbnJ6?=
- =?utf-8?B?MGd4djJHZjI0WTlpRFBqaVYvWjV1K0l1eHN2dE52bjdVb0dlN1FDNTNBVWlC?=
- =?utf-8?B?T1dxTS9MaDRmU29GMzdRdlhJdUZCWUVLL0M3WUVselRIcU9ubUVTK2JhMVFR?=
- =?utf-8?B?cmI0NXVBY2xTbFJybjJaNmxpN2Z4NXUxOFo0UmRRcHd5R0NYSzYwbWVMVkVp?=
- =?utf-8?B?V2ROR1QxOFhvU0RmRWE3WkZYRDRURTVENTZIcGZreGE3T2RrVG9uRGE5VEpt?=
- =?utf-8?B?WjVoWjRFMGVTdThOUWdja1lZb2RIdWFuVkpLMVhHbWJKb01ueE9HUHErZnpr?=
- =?utf-8?B?bi9kZUR5U1A5RWVsZVF5aExzSjFyYjBjQnROUmhvMmRHVmRnRTRXWHVqTTFq?=
- =?utf-8?B?bHFhbytSd3B6blVSajgrM0tnZ05SQTlKRzUxeUYwQ1NXOXJoaWx1NnZFbFIv?=
- =?utf-8?B?RmlDbG56N2wwUTRvVFNqUTJjTEd5N2tsak1TaTVUaW1XbkZySWZNa2Qzd0hJ?=
- =?utf-8?B?TU52aEdFYWw0Q3VBMmF0WjdQWExLRUhWN2dIeURWRGpyYVZQMnRPRWwxOXJa?=
- =?utf-8?B?TC93ZzhUQ2g5VUtLSk9OZnA3bzhtM25sUXF3UzVNZ2l0V0wvM250cWVYQWJM?=
- =?utf-8?B?bHEra3dpR3JpY3plYm1mSW5SM214RTk4VGRCTU1PNTY5RFlyU2hMcVRTTC9T?=
- =?utf-8?B?QlhMZXBvNiszSkxyd0pKVjB3NUxYOWh4SjhjM0QrVVY3ZWRBODhSUEswMHhj?=
- =?utf-8?B?U2ZJTVVRYm1vNVVTU3B2Qi9hRjhlL0Y1RFJ5WjJ5UVVxeWNOWmhuUGJRQW8w?=
- =?utf-8?B?SzFrVEJOcU5PTjN4Si9FSkwwNWtaVXJzb2pQNy9VdGZVbE8rTFkzMVlocHdK?=
- =?utf-8?B?TFAzY0RhVUt4OU1hQTVnT0dKVWlLaHJPOUIzTDlzS1BpZHpvYWxDZmhHWWZP?=
- =?utf-8?B?UzEvTDQ3dkswN0Y3OVZBSnN4RkRmZlUxZ1lqOW9qZ3MzWmpjOWt3a3RUQUVS?=
- =?utf-8?B?Nzd3RVIrUmRKMDhCZHJlemJ1OWQ3clcyZkZjRkhGUm55OENyL1M4c2NWbXY5?=
- =?utf-8?B?T3pGUU9KbmVrR29TVjNhVFpqeHhYTzA5ODlPRm1PcVQ2TVQ5dS9oZ2MxUkpN?=
- =?utf-8?B?VHZ3ODhoeU4vZHRabERHeFZyMG5GWlRWUno0cWd4NzYycjFzZG9EaVJORWtS?=
- =?utf-8?B?blFPS2J0MHZLbzBvOFIwYlFheFRZNGNsVXd0K3NTWHBId3hsR0NWWm1obzJK?=
- =?utf-8?B?SWxOQ1pEU0lHaEhWZmxoVlY1cS91M3FiOFRaUkJqRTVBUGl5ZzA1SGJvVUVJ?=
- =?utf-8?B?WUx3dlp1WXZuVG1EV1pCUXoza2dkcE90dWlGK2huT3NWVjlMNXNkU0g2cGFp?=
- =?utf-8?B?bTJFVkM0V1lIVDhYYWdTWlpXSU1CQkp6cEhmWVFrdDZEOG00MVhxSWNjQVY4?=
- =?utf-8?B?VVFmakhMZFNyeDZGK1B1c0Z2N201aWdPTjVTRCtQV1BzVFI0SklpQ2s3Z0E5?=
- =?utf-8?B?NGFKMEpBaUlVcldSdHFwb3J2RTlmTjM4VzdJS0lxTUJsSklURUdCSSs5aHpy?=
- =?utf-8?B?RUlIWHFSQmR5WVBzVHlReG5ZN3pYNDVHNWtISXIyTHVic1NuaTZ6Y1RTVmRw?=
- =?utf-8?B?Z1F3Q0lFWjhWSDdJaVNqK1NVRVJNSC9qbzlJaXpNdHlXeUZLdy9BQ1BmK0w3?=
- =?utf-8?B?NUlyMmFyMFFhcjFXaWZpSm8ycUYveTRkWnhFeGZZcTF2SEFXVDRSb1Z5T0FN?=
- =?utf-8?B?NU1zdWxHWnY5eHVCY3gyTkxDMzlDZ3lMeWRtV2I4VlVLREtZSVFZVGdGR2dG?=
- =?utf-8?B?SXE5YjF3MDIzczUrNy9DdDM2M0tlbXFhNWVqN0lYc05nZWJ1ckk0d2I0VVVq?=
- =?utf-8?B?RmJmOUlDTncvUmVLYUg3SzdSK1ROOURpZXg4aXhJTVFQWUtjOEVYalM4aGN0?=
- =?utf-8?B?NFNQTWpjb3lrMEVGV00ybkhHTVY0NUZzNS9FQU1pUTNjb0NPY2lJd205YTdH?=
- =?utf-8?Q?6AE3HdNbOXsyINdF2/XlQBxAU9ddXVkXlaLtdfWfWECl?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 806a1fcf-94e3-468d-1a49-08de0e4c0c9c
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2025 13:41:33.1057
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NDY6avKYbXIc+1SIpW8CZQnULVij4qSx86umXZG7LPk5VMQnD0RX2iciSwlX9wUvmNLcBPVHJNOEPJ16s8UXHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6474
+Mime-Version: 1.0
+References: <20251015-cstr-core-v17-0-dc5e7aec870d@gmail.com>
+Message-ID: <aPPIL6dl8aYHZr8B@google.com>
+Subject: Re: [PATCH v17 00/11] rust: replace kernel::str::CStr w/ core::ffi::CStr
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Oct 17, 2025 at 12:13 AM JST, Joel Fernandes wrote:
-> (Resending due to some commit message mistakes (missing SOB etc). Thanks!=
-).
->
-> These patches implement the initial refactoring and few improvements to t=
-he
-> register and bitfield macros. Rebased on drm-rust-next.
->
-> Main difference from the previous series [1] is dropped the moving out of
-> nova-core pending BoundedInt changes:
-> https://lore.kernel.org/all/20251003154748.1687160-1-joelagnelf@nvidia.co=
-m/
-> Other than that, added tags, resolved conflict with kernel::fmt changes a=
-nd
-> rebased on drm-rust-next.
+On Wed, Oct 15, 2025 at 03:24:30PM -0400, Tamir Duberstein wrote:
+> This picks up from Michal Rostecki's work[0]. Per Michal's guidance I
+> have omitted Co-authored tags, as the end result is quite different.
+> 
+> This series is intended to be taken through rust-next. The final patch
+> in the series requires some other subsystems' `Acked-by`s:
+> - drivers/android/binder/stats.rs: rust_binder. Alice, could you take a
+>   look?
+> - rust/kernel/device.rs: driver-core. Already acked by gregkh.
+> - rust/kernel/firmware.rs: driver-core. Danilo, could you take a look?
+> - rust/kernel/seq_file.rs: vfs. Christian, could you take a look?
+> - rust/kernel/sync/*: locking-core. Boqun, could you take a look?
+> 
+> Link: https://lore.kernel.org/rust-for-linux/20240819153656.28807-2-vadorovsky@protonmail.com/t/#u [0]
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1075
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Thanks, this version is looking pretty good, and works as intended.
+You need a few more changes:
 
-I plan on pushing these 4 patches soonish after fixing the line length
-issues and the other few problems reported by checkpatch.
-
-Danilo, please let me know if you think this is premature, but imho it
-is good to set this part in stone to avoid merge conflicts with future
-patches that will want to modify the register macro.
+diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+index 1e6c8c42fb3a..c1cfaeaa36a2 100644
+--- a/rust/kernel/clk.rs
++++ b/rust/kernel/clk.rs
+@@ -136,7 +136,7 @@ impl Clk {
+         ///
+         /// [`clk_get`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_get
+         pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
+-            let con_id = name.map_or(ptr::null(), |n| n.as_ptr());
++            let con_id = name.map_or(ptr::null(), |n| n.as_char_ptr());
+ 
+             // SAFETY: It is safe to call [`clk_get`] for a valid device pointer.
+             //
+@@ -304,7 +304,7 @@ impl OptionalClk {
+         /// [`clk_get_optional`]:
+         /// https://docs.kernel.org/core-api/kernel-api.html#c.clk_get_optional
+         pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
+-            let con_id = name.map_or(ptr::null(), |n| n.as_ptr());
++            let con_id = name.map_or(ptr::null(), |n| n.as_char_ptr());
+ 
+             // SAFETY: It is safe to call [`clk_get_optional`] for a valid device pointer.
+             //
+diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+index 10f1547ca9f1..466fb7f40762 100644
+--- a/rust/kernel/configfs.rs
++++ b/rust/kernel/configfs.rs
+@@ -157,7 +157,7 @@ pub fn new(
+                     unsafe {
+                         bindings::config_group_init_type_name(
+                             &mut (*place.get()).su_group,
+-                            name.as_ptr(),
++                            name.as_char_ptr(),
+                             item_type.as_ptr(),
+                         )
+                     };
+diff --git a/rust/kernel/debugfs/entry.rs b/rust/kernel/debugfs/entry.rs
+index f99402cd3ba0..5de0ebc27198 100644
+--- a/rust/kernel/debugfs/entry.rs
++++ b/rust/kernel/debugfs/entry.rs
+@@ -2,8 +2,7 @@
+ // Copyright (C) 2025 Google LLC.
+ 
+ use crate::debugfs::file_ops::FileOps;
+-use crate::ffi::c_void;
+-use crate::str::CStr;
++use crate::prelude::*;
+ use crate::sync::Arc;
+ use core::marker::PhantomData;
+ 
+diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
+index b55a201e5029..65a4eb096cae 100644
+--- a/rust/kernel/regulator.rs
++++ b/rust/kernel/regulator.rs
+@@ -84,7 +84,7 @@ pub struct Error<State: RegulatorState> {
+ pub fn devm_enable(dev: &Device<Bound>, name: &CStr) -> Result {
+     // SAFETY: `dev` is a valid and bound device, while `name` is a valid C
+     // string.
+-    to_result(unsafe { bindings::devm_regulator_get_enable(dev.as_raw(), name.as_ptr()) })
++    to_result(unsafe { bindings::devm_regulator_get_enable(dev.as_raw(), name.as_char_ptr()) })
+ }
+ 
+ /// Same as [`devm_enable`], but calls `devm_regulator_get_enable_optional`
+@@ -102,7 +102,9 @@ pub fn devm_enable(dev: &Device<Bound>, name: &CStr) -> Result {
+ pub fn devm_enable_optional(dev: &Device<Bound>, name: &CStr) -> Result {
+     // SAFETY: `dev` is a valid and bound device, while `name` is a valid C
+     // string.
+-    to_result(unsafe { bindings::devm_regulator_get_enable_optional(dev.as_raw(), name.as_ptr()) })
++    to_result(unsafe {
++        bindings::devm_regulator_get_enable_optional(dev.as_raw(), name.as_char_ptr())
++    })
+ }
+ 
+ /// A `struct regulator` abstraction.
+@@ -268,7 +270,8 @@ pub fn get_voltage(&self) -> Result<Voltage> {
+     fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
+         // SAFETY: It is safe to call `regulator_get()`, on a device pointer
+         // received from the C code.
+-        let inner = from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_ptr()) })?;
++        let inner =
++            from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_char_ptr()) })?;
+ 
+         // SAFETY: We can safely trust `inner` to be a pointer to a valid
+         // regulator if `ERR_PTR` was not returned.
+-- 
