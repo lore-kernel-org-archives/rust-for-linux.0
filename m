@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA4D366;
-	Sun, 19 Oct 2025 12:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162CF2459EA;
+	Sun, 19 Oct 2025 14:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760875269; cv=none; b=eix0MTV8GnCJZ01pjpL3UoNoB83Fd4Nskndqv274FIOwQJtwASDugWlZJsrT+Zn3ksp6bv7m4bnb1wloX+0Xlxy3b2fYfwrhWrqlFGzhzSeEYArimB666FBNndFSphPxVu4jyJtgZZs7gLhEtTi9SG+MqyDEsc6WWf5vr6f1A3c=
+	t=1760884128; cv=none; b=uuje19fGo6gsunfKZX4qwT2ZefmT1Gm1QG4pq/JBY5Vb0j1uV2UrFAscFe+76adm4d3gXEbY5aL4Z8fzjTH90sIzKY2oLTORdNAohwciWEGbATr+OciaD6NGllazg0PSNypZ9/N1loTh4+1TdUYq3r3IRSNjD1vPneXmf2YPZig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760875269; c=relaxed/simple;
-	bh=wLrFfQpwX5AUQ4Kj9Hwv9ZUGP6NnwzbpnRrBBpfemSg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=oX2/yHb57hnbw/7LS/QNQrhDh2D99fL1F+Nwh8YfvcvaVXLUXdeLr3OjvLYjTRQMoy71V4Ueu+ZDIXD2XsWXVzjNlu8UflzHjLVTjVNgjzCqOGbX23t6TlaUgOdQN5E/fBzjdbbsZ5Pi1eX4p3WtyqqT8pk/K9k+XoT23/bp4GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZawG/+Ue; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760884128; c=relaxed/simple;
+	bh=2Lk3VteT5ZUYtGV3L7w6wKgSGuoqrZ/lGhL+exIXDm8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=Cc8IFpNXVqlSEP9dMgyjZwMJehP0YGanSKe0P+61FC3S4dpZqPLzi+CsytLqjvp0UZ9dwbzEjxc+CtZ4rBPECe2y0bmT4m/RjJrVLiUP95ctmTM+jnJKAMmVY9p2jpEeC5o1w2Ks2cvTDzafhx/H34NuoGb3GdqQM2N3tlIFxI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MP03uqEj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZawG/+Ue"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5288FC4CEE7;
-	Sun, 19 Oct 2025 12:01:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MP03uqEj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4830C4CEE7;
+	Sun, 19 Oct 2025 14:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760875268;
-	bh=wLrFfQpwX5AUQ4Kj9Hwv9ZUGP6NnwzbpnRrBBpfemSg=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=ZawG/+UeDCjvxPz3IEiLT2VWNi/cjkgmnXahV+otzDknn6x9tOZLVvidi9fOq2gmz
-	 fEPLc6j5nVSYJF8W0FIKM2NnwSc8V+O80LChD5RbOpfF8slDA5t1et3G553I3RSqes
-	 93/xNBk1/i4VhCzLAwmV6QjsPzW3gpAyVYRFchq62kEcnZvD4cAgPlKbDYaHEpXQ38
-	 ZqRuD1UfpolvZ+vXbTcm0Ab/GGuZZK/2juma2tSNxPyRwkZ0J5hgFe+S8EzyDfwsuR
-	 QovunS3QcRU9vMrz4BuS8Dw6B6zC6TwCLPB+lAqo5Zmdur2Jvw/sViqGG7rlcUHyq9
-	 LVNdyBefpdX9Q==
+	s=k20201202; t=1760884127;
+	bh=2Lk3VteT5ZUYtGV3L7w6wKgSGuoqrZ/lGhL+exIXDm8=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=MP03uqEjX3dT3tNfORhl0l847PRKqtZ5CKZZ6jtJVg/gObj2g3axOfyuXJAOL/CCd
+	 6et/er0QZsqeHeYSpFjj4gs7GCC/aN27fEpcA19izrrOOWBG6ctcuB4LNj6bo/64A+
+	 sLqp8CaLTIL7U1AU7IiuLT2oy/5MyqMyseRFgC1e54qOl27t6crh33k2F03oekgIWB
+	 SqylejnRdM1buwwgRTLQxtvicZHCu+9a2mLXT0EUTFLlyOuOYnn2gMZJsSK0+q8HLQ
+	 +bHhisezI8jZ+1eNnQnFqoNFtxSfVA2NgUUI9onNLltSFLTzrn+lhexkX0rX3mrp8x
+	 bDxQ2guleBZ2g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,55 +34,154 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 19 Oct 2025 14:01:03 +0200
-Message-Id: <DDMA6OR8V1L3.22YQDEKL20MB5@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <mmaurer@google.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
+Date: Sun, 19 Oct 2025 16:28:40 +0200
+Message-Id: <DDMDBPDZHN6G.KI90E7ZWWX39@kernel.org>
+To: "Markus Probst" <markus.probst@posteo.de>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 3/7] rust: debugfs: support for binary large objects
-References: <20251003222729.322059-1-dakr@kernel.org>
- <20251003222729.322059-4-dakr@kernel.org> <aPI9tNoh0I3KGDjl@google.com>
- <DDKO9M4P06HS.3UMGG3QR7BX67@kernel.org>
- <DDKOLD1897SY.84W93E6L8ITR@kernel.org> <aPSzE7DpA7DxTHmm@google.com>
-In-Reply-To: <aPSzE7DpA7DxTHmm@google.com>
+Subject: Re: [PATCH v5 1/2] rust: Add trait to convert a device reference to
+ a bus device reference
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Igor Korotin"
+ <igor.korotin.linux@gmail.com>, "Lee Jones" <lee@kernel.org>, "Pavel
+ Machek" <pavel@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>, "Ira
+ Weiny" <ira.weiny@intel.com>, "Leon Romanovsky" <leon@kernel.org>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-leds@vger.kernel.org>
+References: <20251018205912.1528811-1-markus.probst@posteo.de>
+ <20251018205912.1528811-2-markus.probst@posteo.de>
+In-Reply-To: <20251018205912.1528811-2-markus.probst@posteo.de>
 
-On Sun Oct 19, 2025 at 11:44 AM CEST, Alice Ryhl wrote:
-> On Fri, Oct 17, 2025 at 04:53:09PM +0200, Danilo Krummrich wrote:
->> On Fri Oct 17, 2025 at 4:37 PM CEST, Danilo Krummrich wrote:
->> > The reason I went with a trait is because that's consistent within the=
- file.
->> >
->> > Otherwise, I don't mind one or the other. If we always want to use a s=
-truct, I'm
->> > fine with that. :)
->>=20
->> Actually, there's another reason I forgot about since I sent the series.=
- :)
->>=20
->> We need it because we derive it from blanket implementations:
->>=20
->> 	impl<T: BinaryWriter + Sync> BinaryReadFile<T> for T
->> 	impl<T: BinaryReader + Sync> BinaryWriteFile<T> for T
->> 	impl<T: BinaryWriter + BinaryReader + Sync> BinaryReadWriteFile<T> for =
-T
+On Sat Oct 18, 2025 at 10:59 PM CEST, Markus Probst wrote:
+> Implement the `IntoBusDevice` trait for converting a `Device` reference t=
+o a
+> bus device reference for all bus devices. `Device` implements this trait =
+as a
+> fallback.
 >
-> You can still use a struct:
+> The `IntoBusDevice` trait allows abstractions to provide the bus device i=
+n
+> class device callbacks.
 >
-> struct BinaryWriterVtable<T: BinaryWriter + Sync>;
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
+>  rust/kernel/auxiliary.rs |  7 +++++++
+>  rust/kernel/device.rs    | 41 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/i2c.rs       |  7 +++++++
+
+i2c is not upstream yet, hence it should not be part of this patch. Instead=
+ you
+should include the platform bus though.
+
+>  rust/kernel/pci.rs       |  7 +++++++
+>  rust/kernel/usb.rs       |  6 ++++++
+>  5 files changed, 68 insertions(+)
 >
-> impl<T: BinaryWriter + Sync> BinaryWriterVtable<T> {
->     const VTABLE: bindings::foo =3D ...;
-> }
+> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+> index e11848bbf206..dea24265f549 100644
+> --- a/rust/kernel/auxiliary.rs
+> +++ b/rust/kernel/auxiliary.rs
+> @@ -15,6 +15,7 @@
+>  };
+>  use core::{
+>      marker::PhantomData,
+> +    mem::offset_of,
+>      ptr::{addr_of_mut, NonNull},
+>  };
+> =20
+> @@ -239,6 +240,12 @@ extern "C" fn release(dev: *mut bindings::device) {
+>      }
+>  }
+> =20
+> +// SAFETY: `auxilary::Device` is a transparent wrapper of `struct auxili=
+ary_device`.
+> +// The offset is guaranteed to point to a valid device field inside `aux=
+ilary::Device`.
+> +unsafe impl<Ctx: device::DeviceContext> device::IntoBusDevice<Ctx> for D=
+evice<Ctx> {
+> +    const OFFSET: usize =3D offset_of!(bindings::auxiliary_device, dev);
+> +}
+> +
+>  // SAFETY: `Device` is a transparent wrapper of a type that doesn't depe=
+nd on `Device`'s generic
+>  // argument.
+>  kernel::impl_device_context_deref!(unsafe { Device });
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 1321e6f0b53c..5527854a195f 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -511,6 +511,47 @@ impl DeviceContext for Core {}
+>  impl DeviceContext for CoreInternal {}
+>  impl DeviceContext for Normal {}
+> =20
+> +/// Bus devices can implement this trait to allow abstractions to provid=
+e the bus device in
+> +/// class device callbacks.
+> +///
+> +/// # Safety
+> +///
+> +/// `IntoBusDevice::OFFSET` must be a offset to a device field in the im=
+plemented struct.
 
-Yeah, but do we get something for adding yet another type in this case?
+I think we should also require that this must only be implemented by bus de=
+vice
+types.
 
-Another point to consider is if we want a more generic fops abstraction typ=
-e.
+> +pub(crate) unsafe trait IntoBusDevice<Ctx: DeviceContext>:
+> +    AsRef<Device<Ctx>>
 
-In any case, I'd like to add this as good first issue for the whole file to=
- be
-changed accordingly.
+We should probably name this AsBusDevice.
+
+> +{
+> +    /// The relative offset to the device field.
+> +    ///
+> +    /// Use `offset_of!(bindings, field)` macro to avoid breakage.
+> +    const OFFSET: usize;
+> +
+> +    /// Convert a reference to [`Device`] into `Self`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `dev` must be contained in `Self`.
+> +    unsafe fn from_device(dev: &Device<Ctx>) -> &Self
+
+As mentioned in the other thread, my concern remains that this could be abu=
+sed
+by drivers.
+
+For now the trait is pub(crate), but with the new build system coming soon,
+we're able to split things out of the kernel crate, and hence bus abstracti=
+ons
+and driver-core code may end up in different crates requiring this to becom=
+e
+public.
+
+We should at least document that this must not be used by drivers and is
+intended for bus and class device abstractions only.
+
+> +    where
+> +        Self: Sized,
+> +    {
+> +        let raw =3D dev.as_raw();
+> +        // SAFETY: `raw - Self::OFFSET` is guaranteed by the safety requ=
+irements
+> +        // to be a valid pointer to `Self`.
+> +        unsafe { &*raw.byte_sub(Self::OFFSET).cast::<Self>() }
+> +    }
+> +}
+> +
+> +// SAFETY: `Device` is a transparent wrapper of `device`.
+> +unsafe impl<Ctx: DeviceContext> IntoBusDevice<Ctx> for Device<Ctx> {
+> +    const OFFSET: usize =3D 0;
+> +}
+
+A generic device is not guaranteed to be a bus device. Also, I don't see a
+reason why class device abstractions would want to work with a generic devi=
+ce
+rather than the actual bus device parent. Hence, let's drop this impl.
