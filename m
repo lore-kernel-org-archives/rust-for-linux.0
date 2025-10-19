@@ -1,105 +1,125 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39631FA178
-	for <rust-for-linux@vger.kernel.org>; Sun, 19 Oct 2025 19:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD710224AEF
+	for <rust-for-linux@vger.kernel.org>; Sun, 19 Oct 2025 19:42:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760900486; cv=none; b=tcUJ/Xy2urG/dfberirUlfqVUN2CRHawN8fSaBA5khtYqIQ6Z0xZHamW0PB4DVSZJ6vEuY7vg5jO6ATEQGXNbm+j7ykE19WX/2s+JfDNP9OnVeJ1ndt2hN+EOZjFnE90f2anOACNTxJxegbIm3OMm9qWrZWxkqoA0l74wFZfS10=
+	t=1760902973; cv=none; b=hro9Uo5bXic7bT/1IUEsarKpb6/QiiQRf6goLh/pH+C4+OZLck3Z3l6CR6t9zkIeS6cjZ4mMr7Pjx5DXmPRr/ZxOem06LFoHhddRM4pl/dPVBZZkVLcp4P6Q11cSKtxqkW/ihwQfTYtZBzDjmcfpCLusjCC+oxzB4upwOaBE1ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760900486; c=relaxed/simple;
-	bh=N6oBlf88V+X4V5N7lbg0Z2/a2FgY0X2uO4yeWGr/fH4=;
+	s=arc-20240116; t=1760902973; c=relaxed/simple;
+	bh=JNX8fAvoW1lb8BmNOFmuJuXah+Wz1jHvbOkzj/xKGqE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hNWH0nFeQIUfY6s+QgSHGTTIvzehoszo+th+HZIh4SDZGViIKkrAG5OF2eH3hvlUmpNdqqCnYK/bsuEPJX39T/9a3VTGPhVq9C8WrTgfb2R0DDROWsk99ACsv4nm/NR/cEglDU/GZ9FSon5WjjI328H8EYVPTgGjIqWerc0WhbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aQsLGpmC; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=YvMs5dRjQ0USv1PgV+14uG4j/W+q1YcSQZj6NxRX0XNK5DzlMBfvNWbvV+Fgjzpg99v/S9pG11ic7w/9QkNz+Mhu0Rw1hTvGIjOTpiItPld+VreV4WoubZ7X2pvl6hZ7v0avHjAbT875ytCK40hpl7llg+UxKXhmHHc8XtR6ZsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XPmmZYxS; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aQsLGpmC"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-33450918e4fso506348a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 19 Oct 2025 12:01:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XPmmZYxS"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2699ef1b4e3so6182935ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 19 Oct 2025 12:42:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760900484; x=1761505284; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760902971; x=1761507771; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0EJ7gzHyhyTuLiaSvoYLggBrx/bbuMIAVpkTav441jk=;
-        b=aQsLGpmCdv4WcIoXK630QD0WMYCRFVHE+CFTs9LfjIK7h0LnYloDSnUtqQCyHc3jg1
-         2SrkhSVah/04BB9puD11J0YtkieVUdxQ4qLxF01IHCxTcKc2FMjmSvcm23Bvc9g8o5Pg
-         gasxOq/lKhIRpCnvvzKmEgYZKvjY6FpSFGgl7g8guPlVcEKranZVxDd2nRLwWrntKBwm
-         NC//4F50fV3VggQf2NYkH6LGGD1XuWSOfHhMEmv65zft0moGjMCBGXb/5dnAn+o7JKjS
-         tTp2tFGzTJ1C+hJM/lDiuwHyN6kE1Q27kpOsR3PYb+v4TdDbokoNBuzVUrSbYgsLd73l
-         lJvw==
+        bh=KqNBOqOH483MS8SL737JXQnsKORCT0z1++jLxbruyag=;
+        b=XPmmZYxSxYsxthaE2IXgPTMa7htjsLmr1fCPlr325yXrtH929kIkCzWQnhigru4vET
+         YZGVBCe33MWZvpER5+CdlN4jU9BWVGA5n3tIAJMC9WFxBtldy12UfYasHdSkHlBW/QA9
+         cfVWdXSoMF9/OLURzzCWUmv1WshQA9zViWkV+i5vAl/UdIBqdhd5NO5Ns2MGzL2A+y9n
+         3l0tGGwUQslGVUnROuGMFmdAletSqgIus6r7e/4dR+ZSyJOjAk6yHpaPtjp55HisgNgJ
+         j9hAqu8r3iFUaTgWXp7p42AaRqNOPwyRuFfTe+biiI70Lc/HiY1iTgBuPOS4vsUHXXfu
+         qjHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760900484; x=1761505284;
+        d=1e100.net; s=20230601; t=1760902971; x=1761507771;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0EJ7gzHyhyTuLiaSvoYLggBrx/bbuMIAVpkTav441jk=;
-        b=XtNFgxNly9UzIkus35HcJ6Y+za6karsDBK7Cuat43lRFdq1a/dYPApwK1kMoEC4BEW
-         UiIaXX5ozjsL+KVxqZwR9Ml2SrgREfx1boJvsXfJ3Lq8BLI0cp3RbW6UGPsEXJ47DM+J
-         0mceAkjPPo0fRmEUo0zeBp07Uc9GPpAO/hq45HeDftHLhXLQInIKzwJt2dTRRDVNvOwa
-         67lOPxy3l5nEmOv4H3/B6FnLWJ4ndBydRSlJFcz57wsgGzUwSstimtIFiCboyo+d4C6a
-         Sf0GefLarGZXgwDPUxSUxOK73jhenYgfZZBI+J/OtjGaSWOMxR9leENkLKPLjvim+EPm
-         c82Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWIlIbLsquqsxoNjGII/IxDpriJbrgq7Blk/wLoL0ioHEFwSuvCa1nzhm60eezrskQps9ROaqjh9sAtF73T9g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTWXrK1Esx1juBF/jUj97Yc7ooCv5XBzgwHrhK198a5CKb6mo3
-	KzVgwgJI9PIPM+MbQ9yD+leXgrdUIdFU6Wqtg+hJPxVc3nGyOeoyM+53K4hJlthLQ33hisK4uYY
-	WUrdUOdUMY4v1tg/2WDMa6tKNVQU/zA0=
-X-Gm-Gg: ASbGncvWuQ7S7JUMwK2CQHiSHy4+nPwjUTKF9Qz/xIAipyz7WSBBF+PstfifZuU4lqc
-	tv1POoZt85Rof/EeipJcvza/7yzVKeD0w8lcXEZyJ0lwQXaexWIhJMmymjEs8uE6JPTxM1kvJGh
-	zUjTvLHORLGU/p/TkD7PitgCZfyVL25GqKPGQvReFWy9IU48LMNM0+8zkjN6fayjW8/XTIr4VwT
-	gtZo+zX0HE8pDv+5a8aHkvTUWE2+KBAhpyW84OVPLP2TXVWjB0iBJ5h3rwNDn1bzuPB6TZn1D11
-	FQUnS4Ge5bChTySt82cjC/5e6QfEi2EFmhuUq9XksEyWahlYfGvqqmBbjio3uwuDPwNJJKhY6Mg
-	+Xg8=
-X-Google-Smtp-Source: AGHT+IH01Zp7Kv3YR610YIrHBC7qgKnb4bJrOZJOKSp2IPxLyP7uL/gDGXWoA6wL1HkkjvVFr8A00rAVeHz/QkcsVMc=
-X-Received: by 2002:a17:902:f550:b0:274:506d:7fe5 with SMTP id
- d9443c01a7336-290c9cfec04mr77331165ad.4.1760900484175; Sun, 19 Oct 2025
- 12:01:24 -0700 (PDT)
+        bh=KqNBOqOH483MS8SL737JXQnsKORCT0z1++jLxbruyag=;
+        b=hcF1byXwu7457rk8F4ejk0ueoYPygPtFG3Gb8AsM7iHA1vIeqbdsc32S/JQl7m8Cqa
+         3N4Xf9PkJ9opbIqC8D92rsURO4e8qzkAJOidz6iJ8mAldbFxuDjDWiM6anEzD89914SS
+         +YO2qbi6W3E+v4l3UVQxY5RNsBlH5JJGLQ2VFUdthiKnY9LFKRP8ouZf4xBEknoX7tfV
+         0QsFfsKXGX0H09fDsSlMS0JlUutxcsxKVGAuJHRFKFKzNkPUk/b8MGGDy4fOb2tQUn0c
+         wPBbUMml8OBeetglOAe4LLHvSs9HdqLyLaWrTj8naKuDTdKsmp0mMX6VqlcPWkZYvHZe
+         LJ5g==
+X-Forwarded-Encrypted: i=1; AJvYcCWwAGNsGwniXdnxnlMXAUZACnzP//Jm0+fMXdHQP8jB2Idck2F4Dvl4fYMtJpZytMztHUr5yAT57YzeO4/HUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2FyB1/Tzf/+zCWICi1io1G9KQdZxmvMCzl2sH6t9Jm/1WOoj7
+	e9uXG5KcZFzpul+8jOLOEkzyTz+eAb7KMJ7A6jPcIGMkGdXhArUfx1GPIkddXTq5wjPV/rgRVUP
+	AI1Tg6uH6OLM65OD8MGPGp8dWWrHY88k=
+X-Gm-Gg: ASbGncviUnDMQ8dH+GLLDyWipEKrPOYAAAVV2/mumRbduYZ38TT4N5gB8lj6iJ6nYnO
+	lwvaETUfPMLL+zLGXH2rNFBVF02lXc42rxshmHlLQyArrKYHp9su8mws3O8F6wBzAG74Fg3gheE
+	vjWgIIDJ/9mPhqq4y4JANDCMqlWKQlP3HPZC8Fn1jr2YPYihnW4g7yf+TWLJzwBHoBndIOtFd/K
+	qwYCC7KLpyIemz7e+jOqzi/ZJOluHqmYUjvrjH1QD3RYelGm7+fECf2eIF96AJa8pXNgQPTDERF
+	tORaWCjeex36Ne27u+g/VNEhkACuzHgjYLB2N3s+oAnGlxRw5eifnsgYHEcb8mc8dt+bsWaqFnB
+	Od3dQ/H27KbQIvg==
+X-Google-Smtp-Source: AGHT+IEE791LDmD0uUicQaiHB1HajSqjSkV/deOR3kpO21CqJ5IhdKFr58FA/7AR/uuGkG6Uz6DIWA3taxKjoxNzmS0=
+X-Received: by 2002:a17:903:3d0f:b0:274:944f:9d84 with SMTP id
+ d9443c01a7336-290ccaccc47mr69902025ad.11.1760902970962; Sun, 19 Oct 2025
+ 12:42:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251016232118.1419895-1-ojeda@kernel.org>
-In-Reply-To: <20251016232118.1419895-1-ojeda@kernel.org>
+References: <20251012213230.1139674-1-ojeda@kernel.org>
+In-Reply-To: <20251012213230.1139674-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 19 Oct 2025 21:01:12 +0200
-X-Gm-Features: AS18NWDyESJna8eLVVdolUWQrhFdWWW4rqvJ2M-P6m9yEz3NGpLoYYFNiU5MU9E
-Message-ID: <CANiq72nFr0rfNpGfXGMrRVnvGtk0RdeLowvF1MciJbhbTQwLxQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: bitmap: fix formatting
+Date: Sun, 19 Oct 2025 21:42:38 +0200
+X-Gm-Features: AS18NWB2z7Xk1h_mxd3wp5IozHJr98VqS3xSe5xmRLBQ1GuRbRwLAOkc00U5WGs
+Message-ID: <CANiq72=a2WMxQ0kKXp0_J8tnrJWb7pibWxZ2novB4SMV7gxcRQ@mail.gmail.com>
+Subject: Re: [PATCH] rust_binder: clean Clippy `mem-replace-with-default` warning
 To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Burak Emir <bqe@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Yury Norov <yury.norov@gmail.com>, 
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <christian@brauner.io>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 17, 2025 at 1:21=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Sun, Oct 12, 2025 at 11:32=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
 >
-> We do our best to keep the repository `rustfmt`-clean, thus run the tool
-> to fix the formatting issue.
+> Starting with Rust 1.87.0, Clippy reports:
 >
-> Link: https://docs.kernel.org/rust/coding-guidelines.html#style-formattin=
-g
-> Link: https://rust-for-linux.com/contributing#submit-checklist-addendum
-> Fixes: 0f5878834d6c ("rust: bitmap: clean Rust 1.92.0 `unused_unsafe` war=
-ning")
+>       CLIPPY     drivers/android/binder/rust_binder_main.o
+>     error: replacing a value of type `T` with `T::default()` is better ex=
+pressed using `core::mem::take`
+>        --> drivers/android/binder/node.rs:690:32
+>         |
+>     690 |             _unused_capacity =3D mem::replace(&mut inner.freeze=
+_list, KVVec::new());
+>         |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^ help: consider using: `core::mem::take(&mut inner.freeze=
+_list)`
+>         |
+>         =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/master/index.html#mem_replace_with_default
+>         =3D note: `-D clippy::mem-replace-with-default` implied by `-D wa=
+rnings`
+>         =3D help: to override `-D warnings` add `#[allow(clippy::mem_repl=
+ace_with_default)]`
+>
+> Thus clean it up as suggested.
+>
+> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> This one will go on top of:
->
->     https://lore.kernel.org/rust-for-linux/20251010174351.948650-1-ojeda@=
-kernel.org/
 
-For completeness: I applied this one together with the others and they
-got merged by Linus. The tree is now again `rustfmt`-clean.
+For completeness: this is a duplicate (from myself!) of
+
+    https://lore.kernel.org/all/20250924130510.752115-1-ojeda@kernel.org/
+
+which Greg already applied as commit 7e69a24b6b35 ("rust_binder: clean
+`clippy::mem_replace_with_default` warning"), in -next for a few days.
+
+It would be nice to get it to Linus soon, so that Clippy builds are clean.
 
 Thanks!
 
