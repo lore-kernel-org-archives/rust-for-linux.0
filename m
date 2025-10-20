@@ -1,320 +1,302 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011012.outbound.protection.outlook.com [52.101.62.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A852F0C79;
-	Mon, 20 Oct 2025 22:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760999743; cv=none; b=oQoaNDw9bHZ9YWSeCisSz8pmn8NW6o/amq4hODhCWeKbqTEOF4Lwb9p3G44GAzKAOWxvOMAdhpmyet/dM3BE/PKj1hOhG4XFL6txF1mYirWFveRaat6usuNQN9IkghnWeN67Vz7iwmfmwsS5HE2FzNWY+L9lQ5XY389Oht/E6Tc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760999743; c=relaxed/simple;
-	bh=qL5kYGECCC85OsPH4HQK2aOGaWUZce7Vw+aqubE50Xo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vznl0xL+8y6K8Ttx9BYbDIT75fVh9Ojc8XSUSnvbKCvgVY4/Ea1uGnoA+j0GTDs54/gWm0L3Qke4h6HuzXUVY5ro9xq9D85q142vyCFKRPEBKZQehLTG1gis90HY1SOPvga6TMy2ESlh3Rvl8EIoBnF0G6NrqbTPim1cO0coUPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YJXT7WZL; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4FF2F0C46;
+	Mon, 20 Oct 2025 22:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760999745; cv=fail; b=jGbdxewuLDkNC7E9cPaym+Oao9Sg257Ta2H2RMR2EKXXKxMIgLDNHAva7gUWuicdoVwbOBCxeDQm+vtmptVNpQv+y8Gof7pdXM78NxElLUDINhn6/LhTKSQQiOw1li1RLn8kVtXzI4mK/vuzQcahat/GhmOrm1Y2nw0gEwP0g+o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760999745; c=relaxed/simple;
+	bh=oe26FhfXkMdT/sznz4HSkncPPztQprkfWVdTqi3gSCw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=eOcGqj9i6VE5Gt5NsMRTYs80iutGeT3z6LAi4WTrWN/CBdGKFCUEYgSY8ACurQCHYbUatkLgptXtGR0zi90SuO22hxjF/+XQ70Qzgc/ZvOlSZXDrCOIRKqqPoniUY/YWobrlXA9j37WcWAg4z8V0Wdq1c5x7KD0c3BT9M6tz9o8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=O1p5icxr; arc=fail smtp.client-ip=52.101.62.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YJXT7WZL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FF0C4CEFB;
-	Mon, 20 Oct 2025 22:35:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760999743;
-	bh=qL5kYGECCC85OsPH4HQK2aOGaWUZce7Vw+aqubE50Xo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJXT7WZLqSX3pJoQZatlOO8k357fgcmwT50/a9+0bpSwms5XS4r5Q/DODhkcWyw9j
-	 2aMVPWmdph5X/WkyzB8MnJcIBX6uHBJ9mkRn1sEnO6EKLUOCsOmJLr59+hOslaFfhZ
-	 awAzqrJPVSd5u/YOjiLgFOQYi7zVUgYuH3Fe75j2X9MuXr37ZpMK9EbMEi5tOFPMzN
-	 eRNg71qoeswCCVxZiezMWVe1MhxtLH8AoEd2E06BqUCGC3XTOulnVxNTkuIqJwDRb4
-	 RYLL141ypcXvsSLDWkNyM5fxWQPDGHkKWzr0XOVKiwRzSyHtxzv0r/EXjmnDtsUJWT
-	 +wWNc+isw4ziw==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	david.m.ertman@intel.com,
-	ira.weiny@intel.com,
-	leon@kernel.org,
-	acourbot@nvidia.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	pcolberg@redhat.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 2/8] rust: device: introduce Device::drvdata()
-Date: Tue, 21 Oct 2025 00:34:24 +0200
-Message-ID: <20251020223516.241050-3-dakr@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020223516.241050-1-dakr@kernel.org>
-References: <20251020223516.241050-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="O1p5icxr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=d/CmHSnjLYn/aDVgewhMcTKag8nEQ/5A0abapRD3G1O5yrVo3H469HJEJ0J6ZW+lEIcV7Az280GmdTz5RzxM/CzyrHOiy1I1hqAI9IHIRCeB699/X/U9rdSo54yREHVdbqcbzdx0pnHq/cZEhP3IRimRW0WDQtL97hpnTIQVWtEZDzTMthLwplRHChZgZS02kTJr2z/Td5s1MjNawy9jxd04zNW+Rhcg3Z6/9KzD7XwdVM26EEi2kroTbraBbo1gnoe36xX9YQ6MeB9rap9KYXBMSGiAGSxgraCJiVjZClte+RPe9XaLnAEoyNylgMvZPgisLt3wGj+PosSjOPDZAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kz2wfVVq1OQ5va1YTf9IEEhU/fHeEHguPmQXsyymcPg=;
+ b=S85hnQTCrsKVC7A4dul20kImX3q3haQAoHITV62nux/yxKQ1KmNsXn4PWQesG2EWujRmg7L31WkFESPq6JbkGYb1S2dYSdL8AZrXePDKt29YQXY0CYcH5TwzP3BQQt1tkyUnVDVvklIAdpMjCoPSWRUVLCYz3vgk5hSHnmdM7EeWbiJRth4Fy2whjB57mE6ZtD/jwzBBufc+MffEFDNc3V29gaSv0tsEWjf8c/vrXdawwriZQkGRpTWQHFkui7Qglnm7ADi+Uhc7PID8/gONyu3MpLXWQgIWw2kMJitguMvultMiHXspbVob2vY5Bjpz8rwtcuCx0VmQ2+PWP34B2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kz2wfVVq1OQ5va1YTf9IEEhU/fHeEHguPmQXsyymcPg=;
+ b=O1p5icxreWTjtIhAusf4Z4itptIlf35sIl+Ehmw+PsReTjAD/+CVpUd5Z289O9IYPyX62kJydJMpN5ucXeGqkfOIP1L4Qu6Pg1qpm24iz3sYmJ+9KQAfdGDgHCoBrGqzKapj6L9Yu5EUIM83nklz35WgLslgnOjf0P5z7RZvIAaywq0H2UgXm1pA9WkYU41Wl1LUiaAOu/iGySta0P1GD6GVFNkFAAaerhPG86o4XFewKU/6YrueIH+wYSlpNZZqhjFXCUTLTI+Xpyus5Z1P4718vcS9Xtf1G2f2I+ljoUJycsVJvUMTCKIuGaGYqAk5z1mV5L9vgALbnOIWcj2zNQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by SA1PR12MB7222.namprd12.prod.outlook.com (2603:10b6:806:2bf::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
+ 2025 22:35:39 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
+ 22:35:39 +0000
+Message-ID: <4553a31a-fd13-41c4-8bcb-3b830cd7b661@nvidia.com>
+Date: Mon, 20 Oct 2025 15:35:03 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/7] gpu: nova-core: Add support for managing GSP falcon
+ interrupts
+To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ dakr@kernel.org, acourbot@nvidia.com
+Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org,
+ Elle Rhumsaa <elle@weathered-steel.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>, nouveau@lists.freedesktop.org
+References: <20251020185539.49986-1-joelagnelf@nvidia.com>
+ <20251020185539.49986-6-joelagnelf@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20251020185539.49986-6-joelagnelf@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ2PR07CA0012.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::13) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|SA1PR12MB7222:EE_
+X-MS-Office365-Filtering-Correlation-Id: dbc95ae9-12ba-4f7b-09e2-08de1028fef0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RGRrWUdLck9GckZ6cmZVYlVBOWVtYUZSclZWSXUwK1l4QXhmdmZRRy80bGxW?=
+ =?utf-8?B?VGlObjFpbDJ2V1g3cFJ6SDhpdmxPeFEzWXdQVElhWi9nd1hJYXFPZWZRVW5P?=
+ =?utf-8?B?My9tazNEME5MTTVDcDJsUXJwbjRvQllFelMxZXNaQzZ5Vm9neVpacHYvTGJC?=
+ =?utf-8?B?UmdJaFN2Q1ArRVVZNTFuL2RMRHEzNzcxZDluN2NRL1dwcHRxZ3F3M1lmV3NO?=
+ =?utf-8?B?TGF4Y05PejJtMEpsVWhqR2t3RVlGVEE4QWhYVkNyak1Xb3g1TnBwNDBYRVFq?=
+ =?utf-8?B?d1JtQm0vNGF0SGpKa0ZsQm1lS25GMnRTWXBtK3ZCTHM1SmkvZ0Y5REE0YVdh?=
+ =?utf-8?B?eEZ6eGp1NUppbFB6Y3krd2laRE9vTGl2M3BWdDBtMUlnKzJNeEhXRlFrTEZU?=
+ =?utf-8?B?YnRLRlUwOEdCTkVGeUNKSFNnUDNZazJOalA3eWRhUXFMZW4zUkpxM2lsM2NW?=
+ =?utf-8?B?aWlUcit1Umt4dlp1NVpJb0JDRzBXUU9wb3BNSllnYlVpWlhDNXFSYysxblE3?=
+ =?utf-8?B?QS8zc3BlZmdEQjh1clNyRlkwWUJhNXE3UXBmdGVXVFN0bHg0cjdpZTBhSzcw?=
+ =?utf-8?B?Y0czbGY5TlM4ZzduME5HYzA0aERyRVlrUXB2dEhMdGozcUpYWS95b2h2N3JK?=
+ =?utf-8?B?T3ozUWpHTGtUcEFrQWRpSzdwOUtEWXVnUElrbUJUaXVxZ2g4WGx0aGdWOGVj?=
+ =?utf-8?B?YTlEb004dng1ZjY2RlYxWGw3aEtrNGRKYkZERVNBS1N4Z2FCY2JsSyttendU?=
+ =?utf-8?B?b0RQdmx6UE90SVg0MXpSZzhMdVJ5WnpXM0txVGRsazFlSkV4dTJIT2F3SEMz?=
+ =?utf-8?B?eGo3UitVRzk0aDAyVTZvNHMzMFlJQWhYOHU1MnZpeHhmMlA1NkUyekpJUVN4?=
+ =?utf-8?B?WHdoeWtCamlwejU3VDc5aHRJaU9RSVVFVTZRNUpsMmIwZXlnckZueDRuRTl0?=
+ =?utf-8?B?LzM3aTYyRFh2TUxBMm5VVi9OV3gzSEoweGg4VlNLSTBaMThXa3lNRUQxZDk3?=
+ =?utf-8?B?TzlzNkwwYUxabnVlekgxdldnZWp5RTVOL0dJMUR5MUllTFo3a2F1bWc3WSs3?=
+ =?utf-8?B?aUVEL3ljbnhUUTRpZjQzOEs1Tis4U1dlY1JYeGRXeXdGQUNSQ0xaN3hhRkhJ?=
+ =?utf-8?B?YzhIQlRUbENYcHJwRkdoWHBDRitzUytya0tHc3JUenN4alRBbGhYY0M4eHhw?=
+ =?utf-8?B?TVJaWVVkekwrWTNnbFJuakNnU0N0RGU3NGJKcndPd0thYnFjcXk1NVpxWkJ6?=
+ =?utf-8?B?SmxIM0xzOVNtQWpIS1ZrdE9neUZ6bmtXcVZ0cndnbWtxaTg4bWlicGJManND?=
+ =?utf-8?B?eGg5UE9XZjZrWFVsYzZqOXNTS0dNYWRUeHR5NlJKY1UyWHFPQ3RFbW9qaDlX?=
+ =?utf-8?B?RTFMNGwyUDBRZCtnN1ROS2xBV0pOZEdBRkRRQ1FidnJ1K21PQjZuaTFuQU5Y?=
+ =?utf-8?B?NFYvZFY2NEE5MTJPeHBSSTVYbFBiamhwS1dTcktkQmx5ZVg1Uit3Sjl0Z2V6?=
+ =?utf-8?B?b0ZWMEZ2YjRYRHlaNnl4c3J1WWJ1eWtIbXVVS1ZwSjlhTGhKMDFTUlNJcmdN?=
+ =?utf-8?B?Y2VlaFY2bnFYR2pvRDZnR1YrcDBwclI4Znc0ejFjbjlKYmNWdjRlenNKUit0?=
+ =?utf-8?B?QUZuUEdNcTNnQm5uSEhwemtpaEtvMnF1akZCa1JkUmlXV0tBYzFLUWxFK1pn?=
+ =?utf-8?B?RFhjcXptUlN5MkRtSTFpUnFzbDluelRObEdoSmlJVE1qUUpJQlExcnF0QlRm?=
+ =?utf-8?B?eitVcTcyVWxTSmZVZ0pZZkpKdnlZMEtHMTE5c0FPdlJ6TWhyWDdBNW9NYTBF?=
+ =?utf-8?B?c2p0eDNOU1grTXRUK0F5UVdKc2NOaTJGS0ZWc2ZOUXVHUWZnRnVNNTlaU2FT?=
+ =?utf-8?B?SEVlZ0ZNY2haMXk3UUFsNWVaZCtiaStuanhxN1NjSzErN1B6aHFFTFdCeEdU?=
+ =?utf-8?Q?Bb4xGpnsxc9AxS/RFpi8RtwR9eJQGB50?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bStJVmlkcHZjUGdtY1N0cVp3bHpoMFJyNVJTTEtUNklSSEhZRFJnMXVuRGcx?=
+ =?utf-8?B?dnROdjhGQmJPVGlLTkluMmtadmpsbVVhTldEdHNobkc0clgrcHRHWFJ4UXdz?=
+ =?utf-8?B?WURkQksvbTdmN0VEZGNkaFNtOWx6S2RhYndPN0tXWTd1VXVLaU4vbjVwRWkx?=
+ =?utf-8?B?clhZV2hkS0RkeE1Yb2tOWnF6cDdObm03a1BxZnFPb0VOMzRlL1F3aXo4dzBY?=
+ =?utf-8?B?cnlVaFRlV0ozZzNZbDYzZ2hqK3A2aXhzRlhtYkJWS25oNEgwWWE5ZmNCMjFz?=
+ =?utf-8?B?NUt3TXBFVFZ2VkorUkZXck1nTW8zVDZXUzlBWGJGcHV3VmNMcUJzYThKUHEx?=
+ =?utf-8?B?Y0g3bTFkbkRRY24zL0YvRU9vQTIwU1hFK20zaTNWTnp3NTRkL3VxTUxQdmxi?=
+ =?utf-8?B?ME1obkppdnl2OHdjVTU2KzdNcStHbTFOczZJSGg2dytxZnNpYjFpTTZ4ZU0z?=
+ =?utf-8?B?YnNXYlVOakpEblVHYTFYd2lqM3pVLzYyb0NxL2dSY0g4a09CajF6a2FVeXd1?=
+ =?utf-8?B?WERRZTBmVmFMa21YK2Zzb2ZEeFpEWEtoUGE2SXMzdWV4OTJieHBJYnRyamFh?=
+ =?utf-8?B?ako1WWVlUHV0eC9yMFRSWEN1c3BIalo0bHNONDMxUU5OYWQ3WjJydXBONWZq?=
+ =?utf-8?B?cnJZTmpvaFpqemhrZFM4M2hKVHUvb2VDVkpDdWgwLzc0TG1RRk9PZ2poZlQx?=
+ =?utf-8?B?aGdhL2FlYnI2bEt0Q1hxZ0diRHk0SW9iQk5PS3cwOUJlV1ByWDVnbXdDdzIv?=
+ =?utf-8?B?NHJob0NUNjFkTXAvT3ZOM0VXRnJHR0dROXIva2NIRzRkUmZtTlhQbjMzT2JG?=
+ =?utf-8?B?WUdKYkN4WWhxR1VBWi8yRWJ1SGxzR2pMMStna1lOdEswMTYrS1NIdmpqc0ds?=
+ =?utf-8?B?YmVtYm9hdE1tSklqNFlCY0RsVHM3WDA5V1hVVFNxVnJnVVBIUUw2T09yTHVt?=
+ =?utf-8?B?MGgrZHFrWjNFS3hQT3ZVU2tLMEJDdkY5VlJqTUNMVkpYOG4vSzBWaFRtcXRV?=
+ =?utf-8?B?c1hjTU9OVHdqMHpzaWRTeGpXTnM0dlk0a1pzbnNlT3l3blhwYlJrL2VOK0Ey?=
+ =?utf-8?B?bXVQY0dTaXQ0RjBMOS80YmIzM1hyV2JZbEN2b0QxVDRaWGt4UlJRZ2pkaDNa?=
+ =?utf-8?B?OVhJY21ldjRNNDBGU2tKdURxT3NycHZWN2tOYlJHYjF5emJ3WkkrSHBBS0FX?=
+ =?utf-8?B?Smd5SU5RWDhhZ3IrZDMrVGNEdnZpRlFkM04rNzZvcmlBRDFCY0I3M1ZpRnNt?=
+ =?utf-8?B?TFJMemlHcUJld2ZzTXlYNWZXc3Y5YkZhWEJNQXB3Q0Q2c1VyQml5dlh2Z0Rw?=
+ =?utf-8?B?Zy9jV2l5Skp1bW5wSnpZV2I4azdHUklML29PU1hJdVR1SHJTQmthVkpLSmZx?=
+ =?utf-8?B?YXZuU0hkMVhnZHkyRXdCbFBtdFNpVnhuMUdPSEFtV1poS1JreU1iNGZ1aVNP?=
+ =?utf-8?B?OGg0Q2NGbnRPdk11UGxrYmU2UEpyekd0SUV0WlZKZmFnYzNEQUs2eGF3NGN6?=
+ =?utf-8?B?TlJ2dkZZOExIcXk4ak13T2RibWhsbG5oTVFvS2FOSXd3QTJkY3VJdFdMSmMv?=
+ =?utf-8?B?MmN0Y2ZKWWtuVE1JTVVJY2ZyMG16ZHBVUVYvYjVFQ2lTeUdkYkRZdkVTTzEw?=
+ =?utf-8?B?dytuSHFUWWx1YkV2MEsyY1Rxb0EwM1BKTS9kK1YwSXN3Y1dQTVFpSnc5MnQr?=
+ =?utf-8?B?S0cwRG9Id0cwRElJdHJORDg5ZW9RVytyL1RDeS9DSDYvVG5VckZydHhhRnlZ?=
+ =?utf-8?B?RGIxZXVPOUpvT296Wk9PUkVtc0JKQWhjMWNTSHNINjJ2d3ptNWFJY2NzdE5B?=
+ =?utf-8?B?cndiN05Uc2JwMDllMHV4RzczRVRPZU5XaDNiTXdPV0svODY2L3VwY0lNVWZ6?=
+ =?utf-8?B?Unl3VWtFd1JERFczendacDJ6NVRDcG95NGRRaWg2WHZreTNBOHhNcjVGVGI4?=
+ =?utf-8?B?MEl2SUdDdE1YY1U5RVZyekFZQ3VZckxnN1BzNXF5aXpMVng0Rm9STDVFc3E5?=
+ =?utf-8?B?L2FSZmFEaVlrOE0wdVNSb3l1TDlYU2NzMzhpeFdzN3gwekc1bUlJYkpyOFJk?=
+ =?utf-8?B?Q0dDeTJ1em82MkhGOWwwNmgvODJFU0xHeG1jV0tqYU55Z3U3S0U0OEJJZ2tz?=
+ =?utf-8?Q?OPl+EwMMXY7rtETttWl/1E75Z?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbc95ae9-12ba-4f7b-09e2-08de1028fef0
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 22:35:39.6146
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rtYxzwcKivuVgV8gQr78eQHPjiyt6Y7H4V0DIFVwFYDNYsZeWD7+cJZTJp4F7ywRadU7ep9x/FY5YiVeh9cs9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7222
 
-In C dev_get_drvdata() has specific requirements under which it is valid
-to access the returned pointer. That is, drivers have to ensure that
+On 10/20/25 11:55 AM, Joel Fernandes wrote:
+> Add support for managing GSP falcon interrupts. These are required for
+> GSP message queue interrupt handling.
+> 
+> Also rename clear_swgen0_intr() to enable_msq_interrupt() for
+> readability.
 
-  (1) for the duration the returned pointer is accessed the driver is
-      bound and remains to be bound to the corresponding device,
+Hi Joel,
 
-  (2) the returned void * is treated according to the driver's private
-      data type, i.e. according to what has been passed to
-      dev_set_drvdata().
+I have a few comments below, including one that doesn't apply to you,
+but to Alex Courbot.
 
-In Rust, (1) can be ensured by simply requiring the Bound device
-context, i.e. provide the drvdata() method for Device<Bound> only.
+Also, other than some trivia below, I can't find any problems with this
+patch, other than possibly the above commit message wording, so
+regardless of what we do with the .alter() method, please feel free to
+add:
 
-For (2) we would usually make the device type generic over the driver
-type, e.g. Device<T: Driver>, where <T as Driver>::Data is the type of
-the driver's private data.
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
 
-However, a device does not have a driver type known at compile time and
-may be bound to multiple drivers throughout its lifetime.
+> 
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/falcon/gsp.rs | 26 +++++++++++++++++++++++---
+>  drivers/gpu/nova-core/gpu.rs        |  2 +-
+>  drivers/gpu/nova-core/regs.rs       | 10 ++++++++++
+>  3 files changed, 34 insertions(+), 4 deletions(-)
 
-Hence, in order to be able to provide a safe accessor for the driver's
-device private data, we have to do the type check on runtime.
 
-This is achieved by letting a driver assert the expected type, which is
-then compared to a type hash stored in struct device_private when
-dev_set_drvdata() is called.
 
-Example:
+> 
+> diff --git a/drivers/gpu/nova-core/falcon/gsp.rs b/drivers/gpu/nova-core/falcon/gsp.rs
+> index f17599cb49fa..6da63823996b 100644
+> --- a/drivers/gpu/nova-core/falcon/gsp.rs
+> +++ b/drivers/gpu/nova-core/falcon/gsp.rs
+> @@ -22,11 +22,31 @@ impl FalconEngine for Gsp {
+>  }
+>  
+>  impl Falcon<Gsp> {
+> -    /// Clears the SWGEN0 bit in the Falcon's IRQ status clear register to
+> -    /// allow GSP to signal CPU for processing new messages in message queue.
+> -    pub(crate) fn clear_swgen0_intr(&self, bar: &Bar0) {
+> +    /// Enable the GSP Falcon message queue interrupt (SWGEN0 interrupt).
+> +    #[expect(dead_code)]
+> +    pub(crate) fn enable_msgq_interrupt(&self, bar: &Bar0) {
+> +        regs::NV_PFALCON_FALCON_IRQMASK::alter(bar, &Gsp::ID, |r| r.set_swgen0(true));
+> +    }
 
-	// `dev` is a `&Device<Bound>`.
-	let data = dev.drvdata::<SampleDriver>()?;
+Alex, this ".alter" method is misnamed, IMHO. Because for registers,
+The One True Way (or so I claim, haha) is to have the following methods:
 
-There are two aspects to note:
+    .read
+    .modify, also known as RMW (read-modify-write)
+    .write
 
-  (1) Technically, the same check could be achieved by comparing the
-      struct device_driver pointer of struct device with the struct
-      device_driver pointer of the driver struct (e.g. struct
-      pci_driver).
+"alter" never shows up in this naming scheme. I'm going to claim that
+this is a bit jarring for old hardware/kernel programmers.
 
-      However, this would - in addition the pointer comparison - require
-      to tie back the private driver data type to the struct
-      device_driver pointer of the driver struct to prove correctness.
+But it's not too late: these are only used in a very few places, and entirely
+within nova-core, too.
 
-      Besides that, accessing the driver struct (stored in the module
-      structure) isn't trivial and would result into horrible code and
-      API ergonomics.
+Can I *please* send a patch to rename "alter" to "modify", perhaps?
 
-  (2) Having a direct accessor to the driver's private data is not
-      commonly required (at least in Rust): Bus callback methods already
-      provide access to the driver's device private data through a &self
-      argument, while other driver entry points such as IRQs,
-      workqueues, timers, IOCTLs, etc. have their own private data with
-      separate ownership and lifetime.
 
-      In other words, a driver's device private data is only relevant
-      for driver model contexts (such a file private is only relevant
-      for file contexts).
+> +
+> +    /// Check if the message queue interrupt is pending.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn has_msgq_interrupt(&self, bar: &Bar0) -> bool {
+> +        regs::NV_PFALCON_FALCON_IRQSTAT::read(bar, &Gsp::ID).swgen0()
+> +    }
 
-Having that said, the motivation for accessing the driver's device
-private data with Device<Bound>::drvdata() are interactions between
-drivers. For instance, when an auxiliary driver calls back into its
-parent, the parent has to be capable to derive its private data from the
-corresponding device (i.e. the parent of the auxiliary device).
+Joel:
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- drivers/base/base.h             | 16 +++++++
- rust/bindings/bindings_helper.h |  6 +++
- rust/kernel/device.rs           | 79 +++++++++++++++++++++++++++++++--
- 3 files changed, 98 insertions(+), 3 deletions(-)
+I am guessing that there is never a situation in which we would *disable*
+these interrupts, right? Just thought I'd ask.
 
-diff --git a/drivers/base/base.h b/drivers/base/base.h
-index 86fa7fbb3548..430cbefbc97f 100644
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -85,6 +85,18 @@ struct driver_private {
- };
- #define to_driver(obj) container_of(obj, struct driver_private, kobj)
- 
-+#ifdef CONFIG_RUST
-+/**
-+ * struct driver_type - Representation of a Rust driver type.
-+ */
-+struct driver_type {
-+	/**
-+	 * @id: Representation of core::any::TypeId.
-+	 */
-+	u8 id[16];
-+} __packed;
-+#endif
-+
- /**
-  * struct device_private - structure to hold the private to the driver core portions of the device structure.
-  *
-@@ -100,6 +112,7 @@ struct driver_private {
-  * @async_driver - pointer to device driver awaiting probe via async_probe
-  * @device - pointer back to the struct device that this structure is
-  * associated with.
-+ * @driver_type - The type of the bound Rust driver.
-  * @dead - This device is currently either in the process of or has been
-  *	removed from the system. Any asynchronous events scheduled for this
-  *	device should exit without taking any action.
-@@ -116,6 +129,9 @@ struct device_private {
- 	const struct device_driver *async_driver;
- 	char *deferred_probe_reason;
- 	struct device *device;
-+#ifdef CONFIG_RUST
-+	struct driver_type driver_type;
-+#endif
- 	u8 dead:1;
- };
- #define to_device_private_parent(obj)	\
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 2e43c66635a2..a79fd111f886 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -85,6 +85,12 @@
- #include <linux/xarray.h>
- #include <trace/events/rust_sample.h>
- 
-+/*
-+ * The driver-core Rust code needs to know about some C driver-core private
-+ * structures.
-+ */
-+#include <../../drivers/base/base.h>
-+
- #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
- // Used by `#[export]` in `drivers/gpu/drm/drm_panic_qr.rs`.
- #include <drm/drm_panic.h>
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 106aa57a6385..36c6eec0ceab 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -10,13 +10,19 @@
-     sync::aref::ARef,
-     types::{ForeignOwnable, Opaque},
- };
--use core::{marker::PhantomData, ptr};
-+use core::{any::TypeId, marker::PhantomData, ptr};
- 
- #[cfg(CONFIG_PRINTK)]
- use crate::c_str;
- 
- pub mod property;
- 
-+// Compile-time checks.
-+const _: () = {
-+    // Assert that we can `read()` / `write()` a `TypeId` instance from / into `struct driver_type`.
-+    static_assert!(core::mem::size_of::<bindings::driver_type>() == core::mem::size_of::<TypeId>());
-+};
-+
- /// The core representation of a device in the kernel's driver model.
- ///
- /// This structure represents the Rust abstraction for a C `struct device`. A [`Device`] can either
-@@ -198,12 +204,29 @@ pub unsafe fn as_bound(&self) -> &Device<Bound> {
- }
- 
- impl Device<CoreInternal> {
-+    fn type_id_store<T: 'static>(&self) {
-+        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
-+        let private = unsafe { (*self.as_raw()).p };
-+
-+        // SAFETY: For a bound device (implied by the `CoreInternal` device context), `private` is
-+        // guaranteed to be a valid pointer to a `struct device_private`.
-+        let driver_type = unsafe { &raw mut (*private).driver_type };
-+
-+        // SAFETY: `driver_type` is valid for (unaligned) writes of a `TypeId`.
-+        unsafe {
-+            driver_type
-+                .cast::<TypeId>()
-+                .write_unaligned(TypeId::of::<T>())
-+        };
-+    }
-+
-     /// Store a pointer to the bound driver's private data.
-     pub fn set_drvdata<T: 'static>(&self, data: impl PinInit<T, Error>) -> Result {
-         let data = KBox::pin_init(data, GFP_KERNEL)?;
- 
-         // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
-         unsafe { bindings::dev_set_drvdata(self.as_raw(), data.into_foreign().cast()) };
-+        self.type_id_store::<T>();
- 
-         Ok(())
-     }
-@@ -235,7 +258,23 @@ pub unsafe fn drvdata_obtain<T: 'static>(&self) -> Pin<KBox<T>> {
-     ///   [`Device::drvdata_obtain`].
-     /// - The type `T` must match the type of the `ForeignOwnable` previously stored by
-     ///   [`Device::set_drvdata`].
--    pub unsafe fn drvdata_borrow<T: ForeignOwnable>(&self) -> T::Borrowed<'_> {
-+    pub unsafe fn drvdata_borrow<T: 'static>(&self) -> Pin<&T> {
-+        // SAFETY: `drvdata_unchecked()` has the exact same safety requirements as the ones
-+        // required by this method.
-+        unsafe { self.drvdata_unchecked() }
-+    }
-+}
-+
-+impl Device<Bound> {
-+    /// Borrow the driver's private data bound to this [`Device`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// - Must only be called after a preceding call to [`Device::set_drvdata`] and before
-+    ///   [`Device::drvdata_obtain`].
-+    /// - The type `T` must match the type of the `ForeignOwnable` previously stored by
-+    ///   [`Device::set_drvdata`].
-+    unsafe fn drvdata_unchecked<T: 'static>(&self) -> Pin<&T> {
-         // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
-         let ptr = unsafe { bindings::dev_get_drvdata(self.as_raw()) };
- 
-@@ -244,7 +283,41 @@ pub unsafe fn drvdata_borrow<T: ForeignOwnable>(&self) -> T::Borrowed<'_> {
-         //   `into_foreign()`.
-         // - `dev_get_drvdata()` guarantees to return the same pointer given to `dev_set_drvdata()`
-         //   in `into_foreign()`.
--        unsafe { T::borrow(ptr.cast()) }
-+        unsafe { Pin::<KBox<T>>::borrow(ptr.cast()) }
-+    }
-+
-+    fn type_id_match<T: 'static>(&self) -> Result {
-+        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
-+        let private = unsafe { (*self.as_raw()).p };
-+
-+        // SAFETY: For a bound device, `private` is guaranteed to be a valid pointer to a
-+        // `struct device_private`.
-+        let driver_type = unsafe { &raw mut (*private).driver_type };
-+
-+        // SAFETY:
-+        // - `driver_type` is valid for (unaligned) reads of a `TypeId`.
-+        // - A bound device guarantees that `driver_type` contains a valid `TypeId` value.
-+        let type_id = unsafe { driver_type.cast::<TypeId>().read_unaligned() };
-+
-+        if type_id != TypeId::of::<T>() {
-+            return Err(EINVAL);
-+        }
-+
-+        Ok(())
-+    }
-+
-+    /// Access a driver's private data.
-+    ///
-+    /// Returns a pinned reference to the driver's private data or [`EINVAL`] if it doesn't match
-+    /// the asserted type `T`.
-+    pub fn drvdata<T: 'static>(&self) -> Result<Pin<&T>> {
-+        self.type_id_match::<T>()?;
-+
-+        // SAFETY:
-+        // - The `Bound` device context guarantees that this is only ever call after a call
-+        //   to `set_drvdata()` and before `drvdata_obtain()`.
-+        // - We've just checked that the type of the driver's private data is in fact `T`.
-+        Ok(unsafe { self.drvdata_unchecked() })
-     }
- }
- 
+> +
+> +    /// Clears the message queue interrupt to allow GSP to signal CPU
+> +    /// for processing new messages.
+> +    pub(crate) fn clear_msgq_interrupt(&self, bar: &Bar0) {
+>          regs::NV_PFALCON_FALCON_IRQSCLR::default()
+>              .set_swgen0(true)
+>              .write(bar, &Gsp::ID);
+>      }
+> +
+> +    /// Acknowledge all pending GSP interrupts.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn ack_all_interrupts(&self, bar: &Bar0) {
+> +        // Read status and write the raw value to IRQSCLR to clear all pending interrupts.
+> +        let status = regs::NV_PFALCON_FALCON_IRQSTAT::read(bar, &Gsp::ID);
+> +        regs::NV_PFALCON_FALCON_IRQSCLR::from(u32::from(status)).write(bar, &Gsp::ID);
+> +    }
+>  }
+> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> index af20e2daea24..fb120cf7b15d 100644
+> --- a/drivers/gpu/nova-core/gpu.rs
+> +++ b/drivers/gpu/nova-core/gpu.rs
+> @@ -216,7 +216,7 @@ pub(crate) fn new<'a>(
+>                  bar,
+>                  spec.chipset > Chipset::GA100,
+>              )
+> -            .inspect(|falcon| falcon.clear_swgen0_intr(bar))?,
+> +            .inspect(|falcon| falcon.clear_msgq_interrupt(bar))?,
+>  
+>              sec2_falcon: Falcon::new(pdev.as_ref(), spec.chipset, bar, true)?,
+>  
+> diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
+> index 206dab2e1335..a3836a01996b 100644
+> --- a/drivers/gpu/nova-core/regs.rs
+> +++ b/drivers/gpu/nova-core/regs.rs
+> @@ -198,6 +198,16 @@ pub(crate) fn vga_workspace_addr(self) -> Option<u64> {
+>  
+>  // PFALCON
+>  
+> +register!(NV_PFALCON_FALCON_IRQMASK @ PFalconBase[0x00000014] {
+> +    4:4     halt as bool;
+> +    6:6     swgen0 as bool;
+> +});
+> +
+> +register!(NV_PFALCON_FALCON_IRQSTAT @ PFalconBase[0x00000008] {
+> +    4:4     halt as bool;
+> +    6:6     swgen0 as bool;
+> +});
+> +
+>  register!(NV_PFALCON_FALCON_IRQSCLR @ PFalconBase[0x00000004] {
+>      4:4     halt as bool;
+>      6:6     swgen0 as bool;
+
+thanks,
 -- 
-2.51.0
+John Hubbard
 
