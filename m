@@ -1,116 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2472F6196;
-	Mon, 20 Oct 2025 13:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE30286889;
+	Mon, 20 Oct 2025 13:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760965650; cv=none; b=MIk/s1xLmgzNr0YIAnK8x5urhesm91cX2EmNG/AP3FVXFw6McQiTlhPPfjqzGvdEGb0p6k+uPn2LHZSt8qgZ1vU/16MnryjBImEvkswx3PUoidjaEkKb3cXKkIfqY5qvBjhluW9eOlILALiNWTxMiUVuJP04Hu5scej30Mz3XA0=
+	t=1760965825; cv=none; b=hYjqwl+RMOHxSH9+DqwxL+c0FZVl/BLodfx0qF1TPg5qq2fdXG9Quwnf0IWUthnXOQJuUXyVbVprOwH5iaoZocd+43QM1UQGRgUVQ7fK5fX+bM6+4MKlOdX1GqvBgskCZjkqx1r+kTbEp479fD40GGwjI5oqSmO/zOdOvCl1xNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760965650; c=relaxed/simple;
-	bh=84ijlBcIXDyj2XxLW1M/v22FZDomhnAZOpBhwWY+gj8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MeoRqyyaXJPkExVPcQQeA4jh5LJTpcqam8tdTCOrR41QXL+KfI+qVzRFVKHX9T3ij9FC60dyhEMpPMOBz3Cz52bg9EHSwbKt3i0Tx22goF3sV3VEPvSvE4zP64sm1fFlhuhFTiXoXnEv/+86cnqT85qfdY3ymb3dj+rzk5uaz/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J+G04tYc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760965825; c=relaxed/simple;
+	bh=6Pc9UWszhKcAi8/KToVHt002Dk2g1lKSe+WvbjXwVI8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=FczyDMraP3/dtJUim75jipBB9T78quDfi0dREBb8zJGlh6zkEW+71bCCuyP5/O/T6sUb17FaVhmg0EJWOPSDq/dQ+/IXzngO43EinRK9XStuwV82AqVAosc495ZsMdFzMe1AsZQ7411UZuDzEnqBN8S/WDn6++dvBOwibsBTPTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OuBIY3x8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J+G04tYc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125E1C4CEF9;
-	Mon, 20 Oct 2025 13:07:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OuBIY3x8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103DAC4CEF9;
+	Mon, 20 Oct 2025 13:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760965649;
-	bh=84ijlBcIXDyj2XxLW1M/v22FZDomhnAZOpBhwWY+gj8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=J+G04tYckYKTK5Fv7opz/ARIwtEcpd1Me7sAxQb80crCGS/FF/ITXqC3DPVs/XH9j
-	 VaAWQZV8BEjj3yusnRMMb1GQBDUJ7oADlIX09X4ihVNIc7loysdtraUaIeFg47JlED
-	 XqvTqs9/cHF8dq5Fc+COhUL3f6wUCHm6+m0GbMP0gXeaYVJGEDCiqLhoI4Aui6jsIh
-	 Xe3C1NzeO7/7Pk6sUq8VJqxVlgdy7LNh3R5aEhQs1W0S3HztVbN0dhlfMnGusb86E/
-	 i+UctN8VRIOyvrIcCHmcJ97jz0nFgqt+bP+8m07lsnYVvMTIz4vl0l0etr9l9APkyC
-	 DnHeQwf9qWSfg==
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 20 Oct 2025 09:07:22 -0400
-Subject: [PATCH] rust: opp: simplify callers of `to_c_str_array`
+	s=k20201202; t=1760965825;
+	bh=6Pc9UWszhKcAi8/KToVHt002Dk2g1lKSe+WvbjXwVI8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=OuBIY3x8J5qZzQSjGUxQ4eCjq+K6khoqQ7MYbLGsyu7N/HZvEotU3uBcjoQZXBOCs
+	 561l/M4LCGkVn9ZE3M/FYGOLvGGAtArq3v2gfdSROclpygdXxcOe/wzY2WNYRwes8w
+	 qIh3JVVXN7ccpa2A83St5Um8s+coQ99sIBpPczPl7FuO4CpNrRZI18aiZWiHsNYSMu
+	 40N4qNDOH680/460peDWSbWHSwFvWTNEZRmRiuxysTLGl7jNtQGZ5/YRCIYOw1Fp0I
+	 PJ8KZ1GDgz6JVaLk6puxiGmzA6QZicoJtTb90Xm2GjZ6KXHeNUwhy5ipgY+txvhHOF
+	 IdxDQoxg/q9pA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251020-opp-simpler-code-v1-1-04f7f447712f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAk09mgC/x3MQQqAIBBA0avIrBtQKYuuEi1KpxqoFIUIxLsnL
- d/i/wyJIlOCUWSI9HBif1eoRoA9lnsnZFcNWupOSTWgDwETX+GkiNY7wm4wRluj+3VroWYh0sb
- vv5zmUj5a6oWMYgAAAA==
-X-Change-ID: 20251018-opp-simpler-code-58662c627bf4
-To: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
- Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1760965647; l=1850;
- i=tamird@kernel.org; h=from:subject:message-id;
- bh=84ijlBcIXDyj2XxLW1M/v22FZDomhnAZOpBhwWY+gj8=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
- MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QHFqjXyc3WyeybzGTMB6Px+KBZWl1fyMKfCJf97ch3/b5poABmNTmH423TIyOELROATh2hm8hsT
- tGJnVm37i5ww=
-X-Developer-Key: i=tamird@kernel.org; a=openssh;
- fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 20 Oct 2025 15:10:18 +0200
+Message-Id: <DDN6A90KU2TR.31NIJCY3TEDYG@kernel.org>
+Cc: <linux-acpi@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: acpi: replace `core::mem::zeroed` with
+ `pin_init::zeroed`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Siyuan Huang" <huangsiyuan@kylinos.cn>, <rafael@kernel.org>,
+ <lenb@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <dakr@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
+In-Reply-To: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
 
-Use `Option` combinators to make this a bit less noisy.
+On Mon Oct 20, 2025 at 5:12 AM CEST, Siyuan Huang wrote:
+> All types in `bindings` implement `Zeroable` if they can, so use
+> `pin_init::zeroed` instead of relying on `unsafe` code.
+>
+> If this ends up not compiling in the future, something in bindgen or on
+> the C side changed and is most likely incorrect.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1189
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
 
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
----
- rust/kernel/opp.rs | 25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+Thanks, great to see this.
 
-diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-index 9d6c58178a6f..b84786f45522 100644
---- a/rust/kernel/opp.rs
-+++ b/rust/kernel/opp.rs
-@@ -443,23 +443,14 @@ pub fn set_supported_hw(mut self, hw: KVec<u32>) -> Result<Self> {
-     ///
-     /// The returned [`ConfigToken`] will remove the configuration when dropped.
-     pub fn set(self, dev: &Device) -> Result<ConfigToken> {
--        let (_clk_list, clk_names) = match &self.clk_names {
--            Some(x) => {
--                let list = to_c_str_array(x)?;
--                let ptr = list.as_ptr();
--                (Some(list), ptr)
--            }
--            None => (None, ptr::null()),
--        };
--
--        let (_regulator_list, regulator_names) = match &self.regulator_names {
--            Some(x) => {
--                let list = to_c_str_array(x)?;
--                let ptr = list.as_ptr();
--                (Some(list), ptr)
--            }
--            None => (None, ptr::null()),
--        };
-+        let clk_names = self.clk_names.as_deref().map(to_c_str_array).transpose()?;
-+        let clk_names = clk_names.map_or(ptr::null(), |c| c.as_ptr());
-+        let regulator_names = self
-+            .regulator_names
-+            .as_deref()
-+            .map(to_c_str_array)
-+            .transpose()?;
-+        let regulator_names = regulator_names.map_or(ptr::null(), |c| c.as_ptr());
- 
-         let prop_name = self
-             .prop_name
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
----
-base-commit: a1ec674cd709fec213acbb567e699c5f6f58cb60
-change-id: 20251018-opp-simpler-code-58662c627bf4
+Cheers,
+Benno
 
-Best regards,
---  
-Tamir Duberstein <tamird@kernel.org>
-
+> ---
+>  rust/kernel/acpi.rs | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
