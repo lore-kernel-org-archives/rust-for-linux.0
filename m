@@ -1,50 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C741D3594A;
-	Mon, 20 Oct 2025 02:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89851F63CD;
+	Mon, 20 Oct 2025 03:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760926065; cv=none; b=Ewmy5nd2Y0jXVSKhKB18pkr+aD4Z82o7480TbYeAoY8pxgJzP0/0tw2ufAk4Oq10iXaRmzsUpljVcYiYAOf1C3DNoV5rDppJT/y96Z1xBvAJl7te/Opn3xEkBuQoackzYHFQ5YBrtRe7PQ7PPnryqCdcjinDYe+cjCkB8WnMEJE=
+	t=1760929944; cv=none; b=LqDToMh+Q4CfpruO1WTczm7rZd5eHRPS+YVR0qJ7W7USASl2lFjHp3TEKPA0AfPY+5lXZLV7MEy0z8P7IDG+penGKr8muhpMtVsjtV5aEQX+kIqrLUu4U3cpddL78CmmqeGaQxES8+j/zZs+HX4UzyLs3TYIOij/ehhyMFmzVuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760926065; c=relaxed/simple;
-	bh=rheH6Ia6DijJ7OprwEpFfSq6P7ogPSfbX6TYiHJYnvs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lx/ybaole9BAG67XERRfTbpp3sjtpy4TzHIyE5Lr6zXaL6VLR5HeGi7d121lEpjsHKp0+p1LbXJgCZokXnUJK00yx+ztDAX9hYhOrbJhgNceTqxfQoJro4cD2dVWre1/4qtaxGAoLwzhKrlbVCYMzye6QJdYpg094UvQ1I6tikY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kl4l2Izi; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kl4l2Izi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA61C4CEE7;
-	Mon, 20 Oct 2025 02:07:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760926065;
-	bh=rheH6Ia6DijJ7OprwEpFfSq6P7ogPSfbX6TYiHJYnvs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Kl4l2IziLW8kHFxHkhddlY0BAI82TlrFICtCwi6lmXdVXcmlXLYUJRdV6Ch2NxQgR
-	 jg9eFTQc32ZOmnELADfLFrd+K3Wah/AUiJz5AhEzpZbhep8QXiVxpssLDQakUxUPIJ
-	 zuv747Tvrex4uzl/DoqkMhJdaXEH7QY+WG3Bo+jqDfWfwAycM/ysxbiP5YnTK+gSM9
-	 A0SXW9yKhu7L0UNfHhLTYRfADgUfeERZF2JOltNyOCfxDrKOAvxFjl6mdin2kUb+9f
-	 NLVCLoql1vlvOkH9ocRWQunmc7EAtX3iIPWCT5MpUv2ItlmXsH36p2G2U1HkC3/Dn0
-	 2QTLSJPV8jIBw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+	s=arc-20240116; t=1760929944; c=relaxed/simple;
+	bh=f6IuFtSaQiz8+JQHGBTlFmc5TjNx/7yBYYh3Vm2K3FQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pRoDiBQx7ZyQC+qJPrOgIHz6/y9jw2EqJf7Q/BCCSYKBKP3BZjD7upHBkoGA6LKIPIOGZoG0uWQCtPKUhtLEcsbZI3GKBWb0nv5jK9VvJETmBXrYRWI0GFWXA7F5FzPKYEOIjDnjFExK60En7FlUPPzOmpwpp4zsRMDqdrehKZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 8febad8ead6211f0a38c85956e01ac42-20251020
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_UNTRUSTED, SA_UNFAMILIAR
+	SN_UNTRUSTED, SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	UD_TRUSTED
+X-CID-UNFAMILIAR: 1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:c28fa9b8-aaa1-4d53-b79b-a1a5ae9da1b0,IP:10,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:8,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:38
+X-CID-INFO: VERSION:1.3.6,REQID:c28fa9b8-aaa1-4d53-b79b-a1a5ae9da1b0,IP:10,URL
+	:0,TC:0,Content:-5,EDM:25,RT:0,SF:8,FILE:0,BULK:0,RULE:Release_HamU,ACTION
+	:release,TS:38
+X-CID-META: VersionHash:a9d874c,CLOUDID:c5a9f3683d2c2f19ed87449a4201ed05,BulkI
+	D:25102011121004M9IT46,BulkQuantity:0,Recheck:0,SF:16|19|24|38|44|66|78|10
+	2|850,TC:nil,Content:0|50,EDM:5,IP:-2,URL:1,File:nil,RT:nil,Bulk:nil,QS:ni
+	l,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:
+	0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_USA,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,
+	TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 8febad8ead6211f0a38c85956e01ac42-20251020
+X-User: huangsiyuan@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <huangsiyuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 2112434053; Mon, 20 Oct 2025 11:12:08 +0800
+From: Siyuan Huang <huangsiyuan@kylinos.cn>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org
+Cc: linux-acpi@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] objtool/rust: add one more `noreturn` Rust function
-Date: Mon, 20 Oct 2025 04:07:14 +0200
-Message-ID: <20251020020714.2511718-1-ojeda@kernel.org>
+	Siyuan Huang <huangsiyuan@kylinos.cn>
+Subject: [PATCH] rust: acpi: replace `core::mem::zeroed` with `pin_init::zeroed`
+Date: Mon, 20 Oct 2025 11:12:04 +0800
+Message-Id: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,56 +75,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Between Rust 1.79 and 1.86, under `CONFIG_RUST_KERNEL_DOCTESTS=y`,
-`objtool` may report:
+All types in `bindings` implement `Zeroable` if they can, so use
+`pin_init::zeroed` instead of relying on `unsafe` code.
 
-    rust/doctests_kernel_generated.o: warning: objtool:
-    rust_doctest_kernel_alloc_kbox_rs_13() falls through to next
-    function rust_doctest_kernel_alloc_kvec_rs_0()
+If this ends up not compiling in the future, something in bindgen or on
+the C side changed and is most likely incorrect.
 
-(as well as in rust_doctest_kernel_alloc_kvec_rs_0) due to calls to the
-`noreturn` symbol:
-
-    core::option::expect_failed
-
-from code added in commits 779db37373a3 ("rust: alloc: kvec: implement
-AsPageIter for VVec") and 671618432f46 ("rust: alloc: kbox: implement
-AsPageIter for VBox").
-
-Thus add the mangled one to the list so that `objtool` knows it is
-actually `noreturn`.
-
-This can be reproduced as well in other versions by tweaking the code,
-such as the latest stable Rust (1.90.0).
-
-Stable does not have code that triggers this, but it could have it in
-the future. Downstream forks could too. Thus tag it for backport.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1189
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
 ---
- tools/objtool/check.c | 1 +
- 1 file changed, 1 insertion(+)
+ rust/kernel/acpi.rs | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a5770570b106..3c7ab910b189 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -217,6 +217,7 @@ static bool is_rust_noreturn(const struct symbol *func)
- 	 * these come from the Rust standard library).
- 	 */
- 	return str_ends_with(func->name, "_4core5sliceSp15copy_from_slice17len_mismatch_fail")		||
-+	       str_ends_with(func->name, "_4core6option13expect_failed")				||
- 	       str_ends_with(func->name, "_4core6option13unwrap_failed")				||
- 	       str_ends_with(func->name, "_4core6result13unwrap_failed")				||
- 	       str_ends_with(func->name, "_4core9panicking5panic")					||
-
-base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
+index 7ae317368b00..f9488be9249c 100644
+--- a/rust/kernel/acpi.rs
++++ b/rust/kernel/acpi.rs
+@@ -42,9 +42,7 @@ pub const fn new(id: &'static CStr) -> Self {
+             "ID exceeds 16 bytes"
+         );
+         let src = id.as_bytes_with_nul();
+-        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
+-        // SAFETY: FFI type is valid to be zero-initialized.
+-        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
++        let mut acpi: bindings::acpi_device_id = pin_init::zeroed();
+         let mut i = 0;
+         while i < src.len() {
+             acpi.id[i] = src[i];
 -- 
-2.51.0
+2.25.1
 
