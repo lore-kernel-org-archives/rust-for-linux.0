@@ -1,119 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3098D21B9C5;
-	Mon, 20 Oct 2025 15:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760974054; cv=none; b=nji/QFr9RBzuusgYneYGtQOSmU350xoqrzmHilm/Yg87aWWoQKZBIqXZx3UJemi6+eNSm/UOs5pnIvsXVvo5CQLQIngg3HWHTsIGRSoA3Z+sPvzyAptVKRxlCG6wusvL1J/TKn84s8yW6V6fr7FjZaTc6UpDj6/OqI0Ul9pujrk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760974054; c=relaxed/simple;
-	bh=laqYjU2YEjT+EsRes/yYLVhr2HXH5lWPRM0SbrX/h4k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RfcFFivKqTu7aPNhOwa/0AIv3t7LwhKIorDxmKKq/t53/E2Niwt9xPTRtqs7zVSIT4VvGLXTgVxqZkVLpvGwmNa2H+1aT0Yvc/QrLhhWdKmv6cAQ5GoXPk7x4Qfpo8yTqOdEtDFRkyrdCk4RXHv+hRECuLGG3EgX4NZW0SpGzOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qW4NEmcD; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF4B242D9E;
+	Mon, 20 Oct 2025 15:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760974966; cv=pass; b=O1kqHPaPYKwdygiFDCPLluwGOuiQ+qnBZG4al1xPzozaI9zEt0+4cMixpTmiQpHknvkJx+xGi/58YkX2TPFrJvdKGF0hjAKl/++7e2jA/ZpMS3LRZ+T6wP4jrjAfxxHlMOx4TCt8yhdyivseI3QyJhNGNNRjzqiKtaDE20qbclA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760974966; c=relaxed/simple;
+	bh=+zCfMEaimnIQeBDYATDZG9tN7TJnlorbW9UQo+gSdbo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NvJnK6RdXg+HNhygS102ayPBmEX+Rtse85p0lVCarz86UxAn0Fm0OqftSLbIuzw34nH/xcpSwVU1xHV430aP1qFwsd2EeAbAeIt8YKvc1ni4a7a9DEjYn2sPDFu8fneqU8vNYCA5MNNi2ApE/wcmyEM1uj6OKqJmc/ipYQ5B8mc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=KBL/eZfM; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qW4NEmcD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5E8C4CEF9;
-	Mon, 20 Oct 2025 15:27:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760974053;
-	bh=laqYjU2YEjT+EsRes/yYLVhr2HXH5lWPRM0SbrX/h4k=;
-	h=From:Date:Subject:To:Cc:From;
-	b=qW4NEmcDj7ugpaqTo+vGQ004hJcMg0Ehsc8MblOJhkVEBP3L1eG66qhMXGKnK7yLp
-	 0emLMBbQWc40d+dcQvrQzRIkT7leJbxwVAq4KnU6X2Ht01oqTo0b7GSaIRQutj+V46
-	 fLIQrEhf7nEXjOj+bUZKXpwguyVOHFgxakvGUN5YYTP7hsJdoWQETtXu62BocJYNG+
-	 mtCw8/1R/4FFAtbWrrfa8LSyY8wu5HEuxqmej3wFLFQnOO5eGfnznWpT2beR+ReyRK
-	 LFTAwnwMRyfov48AmoZJIDTlV3OkpDfPE4I+SdN361WTOGaKCg33mK2sS3nxdD7I7f
-	 6SRFO11HsWJgA==
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 20 Oct 2025 11:27:28 -0400
-Subject: [PATCH] rust: fix tests under Rust 1.89.0's `CStr` `Debug` impl
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="KBL/eZfM"
+ARC-Seal: i=1; a=rsa-sha256; t=1760974820; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Ai6yEfvevnlicRnC6hUZILro9Xj58jvdixOTEejaTJAezMeYe2ReXvP5lgDe/WINSHWappBOFgEKq2//QLzV3b+ybSJd1N53dm9QBOeZUyqBWjfDkjkemswx40u7RhWcRhpjoxq72o2qvG8MdqeHNz7E7o1wMCgC4ipN2l4sh+s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1760974820; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=md/pBzoYcFzUHz80KevulIkZ5BiZWUg/YH97ioL+0fI=; 
+	b=HdM+49AnxQEKmoKUYQiZRIpVoAcA/DC0xlvRuxm8uf3W/fbDEia6nOs7GWoOtzoYE/UGda73iO9UBeIe/TCmPXDp0tkYKHbb1X3UKJZ0s7dPQMKxEWoXpALSm1wZ6mM2D4paCoug77yh/yogs5AUlLFDy+Dezq7mT6gkz4+RGiQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760974820;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=md/pBzoYcFzUHz80KevulIkZ5BiZWUg/YH97ioL+0fI=;
+	b=KBL/eZfMEc9QO++XN/8UsD5kyy7gAS7vSEROcPEP17Q3eWx1vZVA4+k0asFa5R0J
+	sTiiTblJtBEBMOtWvm98i8Kz/P/1W/M+5ncofRvrtjwyn46hZcH0B0AclLDJgq63STK
+	5Y/3Su2IZ1it6kk4ifqtXzfZAmYnm6mnjyTd48zQ=
+Received: by mx.zohomail.com with SMTPS id 1760974819040413.8982192024972;
+	Mon, 20 Oct 2025 08:40:19 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251020-cstr-debug-utf-8-v1-1-1933c0a6d6b9@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAN9U9mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDAyMD3eTikiLdlNSk0nTd0pI0XQtdi1TLZBPjRMMkc1NzJaC2gqLUtMw
- KsJHRsbW1AEFu9gdiAAAA
-X-Change-ID: 20251020-cstr-debug-utf-8-8e9c43a1b757
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Tamir Duberstein <tamird@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1760974050; l=1833;
- i=tamird@kernel.org; h=from:subject:message-id;
- bh=laqYjU2YEjT+EsRes/yYLVhr2HXH5lWPRM0SbrX/h4k=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
- MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QO94MP6//4/gXN06fOYflr7yBUZtP4A4RddSYIvuBliEb+OZxmlJA49jpSANQ48Wx7AveFJEZAZ
- 7QTSqaGnO4gc=
-X-Developer-Key: i=tamird@kernel.org; a=openssh;
- fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [RESEND PATCH v18 13/16] rust: regulator: use `CStr::as_char_ptr`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20251018-cstr-core-v18-13-9378a54385f8@gmail.com>
+Date: Mon, 20 Oct 2025 12:39:52 -0300
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>,
+ Martijn Coenen <maco@android.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Jens Axboe <axboe@kernel.dk>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Viresh Kumar <vireshk@kernel.org>,
+ Nishanth Menon <nm@ti.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Breno Leitao <leitao@debian.org>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ Russ Weight <russ.weight@linux.dev>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>,
+ Waiman Long <longman@redhat.com>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ linux-pm@vger.kernel.org,
+ linux-clk@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org,
+ llvm@lists.linux.dev,
+ Tamir Duberstein <tamird@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C487CA8E-E8B6-4294-8081-D629DDD80253@collabora.com>
+References: <20251018-cstr-core-v18-0-9378a54385f8@gmail.com>
+ <20251018-cstr-core-v18-13-9378a54385f8@gmail.com>
+To: Tamir Duberstein <tamird@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Starting with Rust 1.89.0, `<CStr as Debug>::fmt` prints UTF-8 sequences
-unescaped.
 
-Thus update our test to expect the new behavior starting with Rust
-1.89.0.
 
-Fixes: a1ec674cd709 ("rust: replace `CStr` with `core::ffi::CStr`")
-Link: https://github.com/rust-lang/rust/commit/a82062055af1ecdcb7f4d3371855aae843fc0ae3
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
----
-Hi Miguel, please feel free to rebase this in, if easier.
----
- init/Kconfig       | 3 +++
- rust/kernel/str.rs | 6 +++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+> On 18 Oct 2025, at 16:16, Tamir Duberstein <tamird@kernel.org> wrote:
+>=20
+> From: Tamir Duberstein <tamird@gmail.com>
+>=20
+> Replace the use of `as_ptr` which works through `<CStr as
+> Deref<Target=3D&[u8]>::deref()` in preparation for replacing
+> `kernel::str::CStr` with `core::ffi::CStr` as the latter does not
+> implement `Deref<Target=3D&[u8]>`.
+>=20
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+> rust/kernel/regulator.rs | 9 ++++++---
+> 1 file changed, 6 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
+> index b55a201e5029..65a4eb096cae 100644
+> --- a/rust/kernel/regulator.rs
+> +++ b/rust/kernel/regulator.rs
+> @@ -84,7 +84,7 @@ pub struct Error<State: RegulatorState> {
+> pub fn devm_enable(dev: &Device<Bound>, name: &CStr) -> Result {
+>     // SAFETY: `dev` is a valid and bound device, while `name` is a =
+valid C
+>     // string.
+> -    to_result(unsafe { =
+bindings::devm_regulator_get_enable(dev.as_raw(), name.as_ptr()) })
+> +    to_result(unsafe { =
+bindings::devm_regulator_get_enable(dev.as_raw(), name.as_char_ptr()) })
+> }
+>=20
+> /// Same as [`devm_enable`], but calls =
+`devm_regulator_get_enable_optional`
+> @@ -102,7 +102,9 @@ pub fn devm_enable(dev: &Device<Bound>, name: =
+&CStr) -> Result {
+> pub fn devm_enable_optional(dev: &Device<Bound>, name: &CStr) -> =
+Result {
+>     // SAFETY: `dev` is a valid and bound device, while `name` is a =
+valid C
+>     // string.
+> -    to_result(unsafe { =
+bindings::devm_regulator_get_enable_optional(dev.as_raw(), =
+name.as_ptr()) })
+> +    to_result(unsafe {
+> +        bindings::devm_regulator_get_enable_optional(dev.as_raw(), =
+name.as_char_ptr())
+> +    })
+> }
+>=20
+> /// A `struct regulator` abstraction.
+> @@ -268,7 +270,8 @@ pub fn get_voltage(&self) -> Result<Voltage> {
+>     fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> =
+{
+>         // SAFETY: It is safe to call `regulator_get()`, on a device =
+pointer
+>         // received from the C code.
+> -        let inner =3D from_err_ptr(unsafe { =
+bindings::regulator_get(dev.as_raw(), name.as_ptr()) })?;
+> +        let inner =3D
+> +            from_err_ptr(unsafe { =
+bindings::regulator_get(dev.as_raw(), name.as_char_ptr()) })?;
+>=20
+>         // SAFETY: We can safely trust `inner` to be a pointer to a =
+valid
+>         // regulator if `ERR_PTR` was not returned.
+>=20
+> --=20
+> 2.51.1
+>=20
+>=20
 
-diff --git a/init/Kconfig b/init/Kconfig
-index cab3ad28ca49..aa29eae7f14b 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -156,6 +156,9 @@ config RUSTC_HAS_SPAN_FILE
- config RUSTC_HAS_UNNECESSARY_TRANSMUTES
- 	def_bool RUSTC_VERSION >= 108800
- 
-+config RUSTC_HAS_CSTR_DEBUG_UTF8
-+	def_bool RUSTC_VERSION >= 108900
-+
- config RUSTC_HAS_FILE_WITH_NUL
- 	def_bool RUSTC_VERSION >= 108900
- 
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index da539e1f29d4..f2d60288eced 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -478,7 +478,11 @@ fn test_cstr_debug() -> Result {
-         let non_ascii = c"d\xe9j\xe0 vu";
-         assert_eq!(format!("{non_ascii:?}"), "\"d\\xe9j\\xe0 vu\"");
-         let good_bytes = c"\xf0\x9f\xa6\x80";
--        assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
-+        if cfg!(CONFIG_RUSTC_HAS_CSTR_DEBUG_UTF8) {
-+            assert_eq!(format!("{good_bytes:?}"), "\"🦀\"");
-+        } else {
-+            assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
-+        }
-         Ok(())
-     }
- 
-
----
-base-commit: a1ec674cd709fec213acbb567e699c5f6f58cb60
-change-id: 20251020-cstr-debug-utf-8-8e9c43a1b757
-
-Best regards,
---  
-Tamir Duberstein <tamird@kernel.org>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
