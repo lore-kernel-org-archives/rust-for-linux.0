@@ -1,248 +1,203 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011056.outbound.protection.outlook.com [52.101.62.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85E533CE87
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 20:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760993652; cv=none; b=LVaSnZgv2VAVKjkWIVSjsx7L/kzORSUm++R1kvKEly7VcJcBtPnhtYIjJ8M27S7vJs4eFjC+qlvp5hG8C26DXLiqPRE8QtAYf5xZYbMNiX1Y66M4AiKQtaXn1NSnYqXpMK/JRXByOdWlPvkV/VKOWzCUOnE9dmdMAPz5PY3UIpc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760993652; c=relaxed/simple;
-	bh=cLWo2uhDyVt9R1FCZMW60Uodtrv8YQrfhgpUR4+sGS4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GlWh95EH8FApv26T3GCnzXXIXyXQrcNrbYNCiMDWBxY0pNRjzZ4pGM73+ln/PFb2gKARmIBSaMnVSxN+6/1wFy5rrlX4DbYAYBrPV2IFnGuRIqZ6OtsTLq/hAqN4tL6U6H8XTwsalAbNcMCz2+n3yEHVRdd5Sdv5mLuR32rhOUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=XhlWzevL; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D142E2556E;
+	Mon, 20 Oct 2025 21:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760994029; cv=fail; b=e6rYgGgBlLHNFxN3fVuApo98qPPLoEJiiGOveOou68V/a9dOYPfKsdX0Y5fm1yF3nkjEn1Nof/pf2TxFD0KWQ4WgVPVmL1bqZz8w0rtpa3/XDAZ193u1COSq18WIE60bV+5+7XfOV7giHNOgkpvHE3CS4ebc8q9JPOvakgg6Fgk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760994029; c=relaxed/simple;
+	bh=AikHE1jNa+J238GQx3DZ4K+kgIJI/FMdSo+KP0sLFek=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=I2eCNWpanuDwvs6/B4Aid1cjkxAVoQvaNA/IhHSGhhDjtV2YItvo+c6Jb0hU4E1/4gq7Cd7gIuihKRCBzNqRGNIRktG15WObWu8Vf6XiBjR5Ls94aRCAi93Y5sdslYd/0oqn/hwGnDk+yapZ9TGt8XVbiTUvFCZGGWKtPIWK6YU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ka3FwPfB; arc=fail smtp.client-ip=52.101.62.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="XhlWzevL"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so4364449b3a.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 13:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1760993649; x=1761598449; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AJ8YuZo0JJXCWTlV3c5ln2FfCDj9ZwahQ+XrbVt5Sig=;
-        b=XhlWzevLar49zfKzuolIc5g7JQs20gsh8VldGsTK3GAkQ0tR0M0eH+bIDIaivecE/H
-         L+R/mMCbUz/DLFKX74adGKH16LgHkRXgJHfjJvXAx0KbPUnZjn+THo7VwV3w8Ci2kYk4
-         +okKtwSHzgv4Kh8ziD9fKFuRtyc4ocjtyR0H/fzcGxxEbSLKPviaAwzXbmSXM+f8FJzC
-         waHneVH/6VxzzYgoXDHLiS/j3OPLYnojMIkBNWpcn/RTJ5dVCk7SMrpjbcF0Q1WSXbAt
-         uZ5lZA/3RA0UKz+gegk4HjwVTyKNROk8XFVibJgYgp40VHkq4ZNOtEm4n1DhB6oE/jAo
-         Dfwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760993649; x=1761598449;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AJ8YuZo0JJXCWTlV3c5ln2FfCDj9ZwahQ+XrbVt5Sig=;
-        b=uKgHR3Qyg/fZWxfsojY3E/af8hxRmYuTJTgJvUqeyiJMbgyOXG/lR/K1vozh0tM+QU
-         P/sEEhx3ELpFlEiQ8ssQzx56LNspGItHT2ktt1rPxI2/VFES+LzEktMsv8Ty69QWCMkP
-         rEzj81e9DvdNqSKfNH/IcIrxm+5l73WkTpTDTyMPlB1mZMZYuh1+08c73KgDnjtQS4Y1
-         IxDdG1LB38mcj4oYDMG2DZu2LA5iW0oGRXQBLr8cbpgyQ9jFFnZIsDfkKJ4p1chliw+A
-         GuU9pzN0tywi54EqdGMSLQwH+eR3ikmjudOm0iCutGb6FIRtC/cj8U3PF1HZVWAv/ZuQ
-         XMyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5SgokILp7UclxC87CuXRhyefSPMpq7e3S2USZ3p83bE/gY9aQit7odMufO2gQZStQpFz1nsSSZnhiZ33SUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHjJmPwipYkT07Re5bVgr+VtzxqvwgnURfoHnTZuH09/IvXGqb
-	lK7MBHBEvBkDQ8v9vooudc0FsN1WS04Ad9SE8ngBdyXwQDXQIK9bVibbHnPz+IKHkl8=
-X-Gm-Gg: ASbGncsJYWgisA/7taaCvac4I6fyAG9WHb0YBJhB89/2ZEr9nUi8RR1CsHAr+kYFDZJ
-	oNh/pRY/Do7bcWkiRp9H3NdgwMCpPtPMpRf4GVFCJOxl6svb9QjvbMOTiwmtiXlUano38gm8vfF
-	bM3DVx1rsG6YXRCenXCCG+LMxodd7A9nTv8u2/vtXksIrmdlAYTMLdX43snrP3J3B6P8ircBhzj
-	U5lwghEApHZXk5A8b856GWRygV6RGsl2lk40BzfIRBRAqnkEtcKuHL+F0vG+Za40kCiALkv1QtG
-	OFKRdFurTSFbxfbSGpxBd0QkV0Y/+z2SWKmGdlpqkHMclkh34pu/R524cEMzuxk3TiWP1qwDhbR
-	ZvbG/HzCcmdakRqkD+JlJIZ/xjQw8/jjAIZt2WnMrQFoO+LBHkgRRpL1L+QAuspKUNwGhOnGRah
-	RrNkxHo0kagg==
-X-Google-Smtp-Source: AGHT+IFB+7tddu1swN+FPZnDNP9flYF+7I5jbpUR/5BtNJV0VX/Du8+wNTTID+AK6UwLh+2SCOPFPQ==
-X-Received: by 2002:a05:6a00:638a:b0:77f:9ab:f5 with SMTP id d2e1a72fcca58-7a210f95542mr14528712b3a.14.1760993649214;
-        Mon, 20 Oct 2025 13:54:09 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a22ff1591dsm9453867b3a.7.2025.10.20.13.54.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 13:54:08 -0700 (PDT)
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Mon, 20 Oct 2025 13:53:44 -0700
-Subject: [PATCH v22 15/28] riscv/traps: Introduce software check exception
- and uprobe handling
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ka3FwPfB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vWLxh1vtkBUmJ+UL0gz8iL4TWOBc0JVQaKGHzZO/D2t0Kct+iExVp7ZsaH5hirDyt+f4Xrzi265VRvYkwCu89YKjUjl7II2rLrbBCwWHhJBAJDXaSj9mgtx6AKp8tov/zCIQpzm8yaqvSudm050Ty5M7kZa7WK1G12rt8Q6YIOdud/CExndtgLXbECZlFk5Ghrycxaa+scP5xfcrAxfKOrBV990/O/l3gmqm2MsCVFj8zRtiRW77EShPuWNa1JKrUnJhWEwngj6bvsoPpmq3Z8N6T9P0c5TcvERfL6FRQxTD6ElhSbcQ4Z7mEc/RwYhxYYGXMu+1hpuVhLZAjw3Ouw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GVKxlfNC4y3oHBt5HEAy8JLz5wMNeCb1Kohzi4FnFNQ=;
+ b=isuswVVhI/nyxXH1Pl7P6dc4eOiT/wpkkKi9aaLnZnQUjULVLTEFKKu3XzZDyoDX6+Iut23R3os6H6a40GyvAOZIIU7R9na4BkEafVjxUxYCRnNSeIMN9+pgvjr2aY4Jr+mWlVHNVd4ALQXPOkk71dTbBail1ZbT3EW777mk7r+T0j9RUts74Xvj4uIgc6gkBif2UIIAWq7l2DWu/pPcEP0K7/spzwyGEFpyeFZHkReXdKqZHYgAaHbzVxb03NMzppKGL7povqfr7gruLzx0uV2CMVsswWI1xQ4eEUi2yuUYLmyFLa3xTb5dVArtGI6+5J6T765O13gJPpnWq/r9aw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GVKxlfNC4y3oHBt5HEAy8JLz5wMNeCb1Kohzi4FnFNQ=;
+ b=Ka3FwPfBzsBmsfm9iIIlUfLlMaWOvQMf7IYJVRPW2r6YP5fI19MxID2cBzQUrLjsOzLbanlL09QJXe2gPdN5Ogs77ciMbpyxmXZ9hyHAWDhznHLtYL+Hi5dBKPVf4DrxKnV4Js9a9WTKz/wbZRuAw+fxT7avoo+/Zq5K+m7nzSbj78iaaXQ87mJAh5DnfRo489xh4b0H9SfHuLZFpiSz04P6WEbWwv9xT0AEPwV5Q43sBovxM4CyAxTmWar7gO39H+G6SBLXeD3mDI/NLdzCJjowvulDtwd8Y6oiVIbRucJwvFP731q4qVLOkp7hdueI810V3mDnwjJzxLeRE1x2sw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by DS7PR12MB6213.namprd12.prod.outlook.com (2603:10b6:8:97::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
+ 2025 21:00:24 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
+ 21:00:23 +0000
+Message-ID: <8680705c-7298-4a33-979c-d91bd4e65b1c@nvidia.com>
+Date: Mon, 20 Oct 2025 13:59:37 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] nova-core: mm: Add data structures for page table
+ management
+To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ dakr@kernel.org, acourbot@nvidia.com
+Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org,
+ Elle Rhumsaa <elle@weathered-steel.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>, nouveau@lists.freedesktop.org
+References: <20251020185539.49986-1-joelagnelf@nvidia.com>
+ <20251020185539.49986-8-joelagnelf@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20251020185539.49986-8-joelagnelf@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0220.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::15) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251020-v5_user_cfi_series-v22-15-9ae5510d1c6f@rivosinc.com>
-References: <20251020-v5_user_cfi_series-v22-0-9ae5510d1c6f@rivosinc.com>
-In-Reply-To: <20251020-v5_user_cfi_series-v22-0-9ae5510d1c6f@rivosinc.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
- Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
-X-Mailer: b4 0.13.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|DS7PR12MB6213:EE_
+X-MS-Office365-Filtering-Correlation-Id: 269c744b-6fa6-4b8a-8f5d-08de101bb012
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WEtWZ3JPeUZKNTRvbjZQRjhVRGhrMXBOd1hYWFk1WWM5R0I1N0ZCaFQrcE9G?=
+ =?utf-8?B?ZnB5cHNZeFdTUDBkRFFXQ0krWXRPMDdIN05vRm1WNkxHdDllMmE1OGFhOGJP?=
+ =?utf-8?B?NlN5SVZtQnZ5SnZOUm5qZU1BYzYvNWNZYitGWStuN01HbDhHOEVITURtTUh1?=
+ =?utf-8?B?UTlPZE5zallnYjlHSG4zYlZIM1NHOTJvTlB2cmhiMkVXYWJMOFJiSDYrYWl6?=
+ =?utf-8?B?bWg0ejRCekwwOXYyVHpjREZNSG9BZWl5c1JqTGNvakZ5bmQ4Q3dBSkp6VWds?=
+ =?utf-8?B?M0FkK2JYR1R0QWZUZDFOWnIxazJFZmwzZ3J5bVlUMm1lNnhROFdKUlp3c3JP?=
+ =?utf-8?B?WnZMZUhnZlNsMklBTnFTb3cxNWxYME5yT3NQdGFNbDJSczJUMGdiejd3K2E5?=
+ =?utf-8?B?YS9OVzZTVUsxQnF3RjJ6RGNxQ0NGRmJuT05mdm4zOWJwQzBoK3haUjBmQVlE?=
+ =?utf-8?B?RFJBMHF6RW9telVmUTh3dHhMK28wN0d5cERwNFlNN1lROXVDSk0vWDUxU2d0?=
+ =?utf-8?B?dFowaUdTNmtwWWd3Ni9RdTdCRjY5bjlwM1Z1d2hGcW9HS3g3L2UrTTNpUmJp?=
+ =?utf-8?B?ZVZ0UzdiOVVNbzMrWTRGeG9HSHJtZHJ5czNRVzh5NXRwQkhSVzJCQWlxTEFX?=
+ =?utf-8?B?OEpoVlQxYzR1TTZqWVQ5USt5MkdlTEZRNTdEL0JWOVlzbDI1T1dpWS9GSnlE?=
+ =?utf-8?B?OTROSi9WK2duVE5MaGVNRm5OSzhqQnRMditMMTNvWFBKMGtNbHFJVXVhY3Zi?=
+ =?utf-8?B?elNHMm5zNjVDZEkreG1nMDZuUUhnTWVpbUIwa0hpNm5WUnl5ekZ0SWFJQmRM?=
+ =?utf-8?B?b3VQT3A5anNKQnJvR1B3Tk8rYzRST2Y5K29DUTRIUEFza0VuZExHcEc1RURK?=
+ =?utf-8?B?QUwvNlU3SFNqWDVwSkkxUnV2TGJxTnlqc2hPK1kxZCswSlVrRWdZc3ZxMVNP?=
+ =?utf-8?B?bE9SYWhEYVVtUVJDOUhySVZ5S1dUQmZMSTZ5TDlESnJHcWxCQndxTHBJRm9X?=
+ =?utf-8?B?V1Rtb05aREtzM3BIN3NzVm0xNEZPV05POCttejVqZEN2emxMLy84UGVNelJo?=
+ =?utf-8?B?UlJwanJCWUE2YVpQQkU5YlhZMFFZUXhaRlpYZGhLRFcxd3ZYaG5kWFBFblJ3?=
+ =?utf-8?B?WHlyNWNsR1pMaUd5SVdmbkI2dDZMbEg2Q1o3UjR6SUpYcDlsQnByek9RdE0y?=
+ =?utf-8?B?ZkR2UWp3TVV5TURsTVNib0tTODV6MW1XUGFWU1RqYXl3K2IvanM2SVVTRFh0?=
+ =?utf-8?B?Nng4ak1YV2xjajNEWWQzb1REdjd3UXN6ellKNm1MRDZoamFYQmJ6bHdjVGVU?=
+ =?utf-8?B?ZzVCT2JHZkJKRVRHbkxQSEF4MXNENUEwamFHeDlGeFlHci90WThoSlV0S2FU?=
+ =?utf-8?B?SUlKRWZZNjlzTTVGL3lzTmZEelpmWkdjRWZETm5USXlTc0ppUUMrbVNuMVRi?=
+ =?utf-8?B?c2txV3pMQ1VwTXV5cjBpZi9LbG1RVXpCSkFKbjl2QjhBU1lSSFkrY29oWStB?=
+ =?utf-8?B?azZUM1VEWjhNM0k1NDlEd3NMRTYwRGhhLzVNSFNIeHpoQ3Bpa1NMWnMyeXFn?=
+ =?utf-8?B?V0VKVmRZOHJiazUwL2F5NlozdHZISGx5VTRtK08rc1RaOW91NmZ1SEpJRHdy?=
+ =?utf-8?B?VFBEdUc5T3F1elI4RUNLQzEvSTRiYzNqOHBOa2NWYlhIWlhmSS9pbTFLVERz?=
+ =?utf-8?B?b3VvRHlaY3ZBQlpVQ0JNTmYvc0UxU0ZMVVNBTm1UaE5BcWQwZ1NaQWpWQUVT?=
+ =?utf-8?B?aWV1dVkrTFJLUGFKdTFMWHpUK1NTemNuekF6OGpQS0hTMWVWMStKVms2WHh0?=
+ =?utf-8?B?MGg1bEF1d0tKc0xFSWlZM3BjT2pkYk96N2VyRHp5eXNpclQ1VUtMWWprTVc5?=
+ =?utf-8?B?SjNpWTk0T0dkNFV5ZmRrY2F5NlpTTmg4MXFTZFk2Wkw1TkxDTlV0WmZtWDB4?=
+ =?utf-8?Q?5myOkT4iONw+L11qNcNZaZDpdqyjI+RI?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R2F5cUNyc2tPWVo4b1BDb3g4dFcwSERaK05Uc2QvN1BYcTZTWjNqOFQzYWdm?=
+ =?utf-8?B?Nkh2bzBBRUxuT1MraGprSVBOS1ZJMEhiQ2FuUHp5UnJwV1RBZ2c3WEROSkxI?=
+ =?utf-8?B?YmdVMU1RK1Boc0hDb1N4QWVSaFExOXRXOGI3aHFmL2xpYUdiTXV2c2V3anFF?=
+ =?utf-8?B?clBreTA4VXZDVDRxYXBob1ZReGNMaU1yL1NtdnAwaXIza0xBMEtSS2JNY0tY?=
+ =?utf-8?B?Z1ZEYld3Unk0OW9DTkQ3M0c5YlNoMjdhVVdwUG9jUld2bXZHMS9POHdGQXFS?=
+ =?utf-8?B?UXVtMnAvVm9ubzVhVGFoYlRQYVArTWpjT0F6aEU0dUdDTFFCYlNKN1ByOXNu?=
+ =?utf-8?B?VXhadkxMcjI5RXgzbTlvYWY3ZXNhNm91ckRqWm9Sak5tUzhvSTFEZmttNUto?=
+ =?utf-8?B?YktBN1RuVGhpdzNoSkNLOTNzZHc0RXlNK3NiV2JucXY0MWJVcE4raTYzdCth?=
+ =?utf-8?B?clI1RWhibG5VSXpQRDlKWHlLZGZFRGJZa29DS3JjMXl4L1lyQzA4eXRPMjdj?=
+ =?utf-8?B?NWdpVStaUWptTm1QWGR2VkVUSlozdldERFBJZ2tPYUhZUzNNdmpiajdseUlG?=
+ =?utf-8?B?bzR5SzBQZ042ZEdkTkZOR3JqZ3hnbzQzVS9qZ3VZRXM3cUI1L3BQYUlzRVlR?=
+ =?utf-8?B?T2piQStLVGtTWHlYVGluVkI5Y2hndDBpUFFxSFRlOXJEZy9xRFFYV0hUdGdW?=
+ =?utf-8?B?LzQvc21GWW1QT0VRdnliN3VudlJnZ2hzWE12V1ZBaWN3TjUzTFNoMjRWNklt?=
+ =?utf-8?B?NU9sMTRyekxSdm1BelBpQk1Zc3RVRUYvbEl2eGNsanJlUXlnd1hFdU1EeWZs?=
+ =?utf-8?B?UUJtdlNJZkJ4cVAwRmN0bWpBZDROa2pGRzZPYjIyTHBIS1ZxYzdMU3VGSS95?=
+ =?utf-8?B?UlNWYndvakhwM242Y1dGZXNEVDJwOEtDbkQ0dkNvNytxNDE3T0NxNFBpZWlP?=
+ =?utf-8?B?NUhIZXBMVWFpNEcxYVI4SWNSMXpyc0cyWXZ4U2g4VzY4aGhzaE1LRVQvdElw?=
+ =?utf-8?B?NGp2YUk2Yy9KOGdBR3hhSlc1ZHJhSzBnVHllSWVaZ1pLWWlUUXNZMWorRWVi?=
+ =?utf-8?B?bytyYUJZN2h0bG9sNFBUcEd4UnJOc1M4cW02T0JiTVhQeUViRHlaazlWYWFO?=
+ =?utf-8?B?VTJ5Sm9aTWxtTXl6WW1aSEsra093TDIzUVcreWlQNlZ2R21ja2piemxMaDdW?=
+ =?utf-8?B?LzRRZ1hXbHRzV2RPcFNSd0NLWVNncVNFeEZ3bW5RWDFDcDdpUGhEZ2QwbEt2?=
+ =?utf-8?B?L01tdmsyM0kxU3lQdE5sUVdtNCszVHNtSG5vN2I0UGpyMktLZFpvWFJpVXpB?=
+ =?utf-8?B?MW1zZG9YUzJWSFBmOVdTQmtFb2J5RWxmd1hmNGkzb0RxeUlQK2RrTjUwb1JJ?=
+ =?utf-8?B?d2Y0TStJZTlJQmlkNGZXYWhVLzJ6dVNWKy8ydE1ZZVVyZjN5YTU4WUZEeEIy?=
+ =?utf-8?B?S3RmbGk3NEkwU1hsbjE5aDJNU1ZyMFBTNnVCd000V1hLNDhxbDNvR1J4OEVt?=
+ =?utf-8?B?RFpIT1VGWVd4SUtBeXNJdndIcEY0c3NJT1ZEMVdLc09rZFF3YVB4a2pOUVRE?=
+ =?utf-8?B?NXVPU0xmeGpsVktQNVFIdGZYc1BXejVkT1kzbmo4OGo2ZFhlNERVa0xTN3Bm?=
+ =?utf-8?B?dVRQbFNZRHBZRUhIclJwcTZPQ1NXbFFDcTh3M051YnMyUjVUZlRmVnNDSkd5?=
+ =?utf-8?B?U1pwZWVjKy9WZ0xBeTN0NXZ2NmVJanFBVzJSZllucmc2OERRYXVoY1pDekxK?=
+ =?utf-8?B?TTNSc3M0SFkzQnJJRkY2NGdjQXJwUjlMRFZWTERqYlZIamV5VDY2SjVud2RI?=
+ =?utf-8?B?WWN6M3BBcUQ1aG5nL0pta3FXZjYyTEJoTlg3ZGEvaTNSSXZ6NlM4cXZHcTdB?=
+ =?utf-8?B?R3MzY0VRVytWZ0JPRkVWUnBxMDM1djRGOWsyUjBMaE9kdTUyVS9nZnV2WDQx?=
+ =?utf-8?B?S3pLd3VpbHptdmZmWHF3clFENFdwTU1odnIycWs2eGloSGlTU2V0T1V6dDdK?=
+ =?utf-8?B?bStzZHY5WWl4cDFwdytKanNwOGd0VFd6VXNIMVY1dlJ6U2xMaGU5VVQvbWt3?=
+ =?utf-8?B?NURmdTN2RlZCbXR5TC9iYysxQWtuS0x6dVhnMUFYZ1dnTWYzcmhCNi8zcmQ2?=
+ =?utf-8?Q?XLNcnYk8Yl3DONkzqZmGLZSV/?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 269c744b-6fa6-4b8a-8f5d-08de101bb012
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 21:00:23.8718
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dnW5DKW6SKptcVlylafVJIbIN/a2WETa2/U3j0hcHq/BjBTNtTgLeInbGsWv4JpH5wb/OccrDHQZLuOHBLKUhg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6213
 
-zicfiss / zicfilp introduces a new exception to priv isa `software check
-exception` with cause code = 18. This patch implements software check
-exception.
+On 10/20/25 11:55 AM, Joel Fernandes wrote:
+> Add data structures and helpers for page table management. Uses
+> bitfield for cleanly representing and accessing the bitfields in the
+> structures.
+> 
+...
+> +bitfield! {
+> +    pub(crate) struct Pte(u64), "Page Table Entry (PTE) to map virtual pages to physical frames." {
+> +        0:0     valid           as bool;    // (1 = valid for PTEs)
+> +        1:1     privilege       as bool;    // P - Privileged/kernel-only access
+> +        2:2     read_only       as bool;    // RO - Write protection
+> +        3:3     atomic_disable  as bool;    // AD - Disable atomic ops
+> +        4:4     encrypted       as bool;    // E - Encryption enabled
+> +        39:8    frame_number    as u64;     // PA[39:8] - Physical frame number (32 bits)
+> +        41:40   aperture        as u8 => AperturePte;   // Memory aperture type.
+> +        42:42   volatile        as bool;    // VOL - Volatile flag
+> +        50:43   kind            as u8;      // K[7:0] - Compression/tiling kind
+> +        63:51   comptag_line    as u16;     // CTL[12:0] - Compression tag line
+> +    }
+> +}
 
-Additionally it implements a cfi violation handler which checks for code
-in xtval. If xtval=2, it means that sw check exception happened because of
-an indirect branch not landing on 4 byte aligned PC or not landing on
-`lpad` instruction or label value embedded in `lpad` not matching label
-value setup in `x7`. If xtval=3, it means that sw check exception happened
-because of mismatch between link register (x1 or x5) and top of shadow
-stack (on execution of `sspopchk`).
+Hi Joel,
 
-In case of cfi violation, SIGSEGV is raised with code=SEGV_CPERR.
-SEGV_CPERR was introduced by x86 shadow stack patches.
+What GPUs is this good for? I ask because I seem to recall that
+the format has changed over the years, on a per-GPU-architecture
+basis...
 
-To keep uprobes working, handle the uprobe event first before reporting
-the CFI violation in software-check exception handler. Because when the
-landing pad is activated, if the uprobe point is set at the lpad
-instruction at the beginning of a function, the system triggers a software
--check exception instead of an ebreak exception due to the exception
-priority, then uprobe can't work successfully.
 
-Co-developed-by: Zong Li <zong.li@sifive.com>
-Reviewed-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
----
- arch/riscv/include/asm/asm-prototypes.h |  1 +
- arch/riscv/include/asm/entry-common.h   |  2 ++
- arch/riscv/kernel/entry.S               |  3 ++
- arch/riscv/kernel/traps.c               | 54 +++++++++++++++++++++++++++++++++
- 4 files changed, 60 insertions(+)
-
-diff --git a/arch/riscv/include/asm/asm-prototypes.h b/arch/riscv/include/asm/asm-prototypes.h
-index a9988bf21ec8..41ec5cdec367 100644
---- a/arch/riscv/include/asm/asm-prototypes.h
-+++ b/arch/riscv/include/asm/asm-prototypes.h
-@@ -51,6 +51,7 @@ DECLARE_DO_ERROR_INFO(do_trap_ecall_u);
- DECLARE_DO_ERROR_INFO(do_trap_ecall_s);
- DECLARE_DO_ERROR_INFO(do_trap_ecall_m);
- DECLARE_DO_ERROR_INFO(do_trap_break);
-+DECLARE_DO_ERROR_INFO(do_trap_software_check);
- 
- asmlinkage void ret_from_fork_kernel(void *fn_arg, int (*fn)(void *), struct pt_regs *regs);
- asmlinkage void ret_from_fork_user(struct pt_regs *regs);
-diff --git a/arch/riscv/include/asm/entry-common.h b/arch/riscv/include/asm/entry-common.h
-index b28ccc6cdeea..34ed149af5d1 100644
---- a/arch/riscv/include/asm/entry-common.h
-+++ b/arch/riscv/include/asm/entry-common.h
-@@ -40,4 +40,6 @@ static inline int handle_misaligned_store(struct pt_regs *regs)
- }
- #endif
- 
-+bool handle_user_cfi_violation(struct pt_regs *regs);
-+
- #endif /* _ASM_RISCV_ENTRY_COMMON_H */
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 036a6ca7641f..53c5aa0b6a16 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -495,6 +495,9 @@ SYM_DATA_START_LOCAL(excp_vect_table)
- 	RISCV_PTR do_page_fault   /* load page fault */
- 	RISCV_PTR do_trap_unknown
- 	RISCV_PTR do_page_fault   /* store page fault */
-+	RISCV_PTR do_trap_unknown /* cause=16 */
-+	RISCV_PTR do_trap_unknown /* cause=17 */
-+	RISCV_PTR do_trap_software_check /* cause=18 is sw check exception */
- SYM_DATA_END_LABEL(excp_vect_table, SYM_L_LOCAL, excp_vect_table_end)
- 
- #ifndef CONFIG_MMU
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 80230de167de..d939a8dbdb15 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -366,6 +366,60 @@ void do_trap_ecall_u(struct pt_regs *regs)
- 
- }
- 
-+#define CFI_TVAL_FCFI_CODE	2
-+#define CFI_TVAL_BCFI_CODE	3
-+/* handle cfi violations */
-+bool handle_user_cfi_violation(struct pt_regs *regs)
-+{
-+	unsigned long tval = csr_read(CSR_TVAL);
-+	bool is_fcfi = (tval == CFI_TVAL_FCFI_CODE && cpu_supports_indirect_br_lp_instr());
-+	bool is_bcfi = (tval == CFI_TVAL_BCFI_CODE && cpu_supports_shadow_stack());
-+
-+	/*
-+	 * Handle uprobe event first. The probe point can be a valid target
-+	 * of indirect jumps or calls, in this case, forward cfi violation
-+	 * will be triggered instead of breakpoint exception. Clear ELP flag
-+	 * on sstatus image as well to avoid recurring fault.
-+	 */
-+	if (is_fcfi && probe_breakpoint_handler(regs)) {
-+		regs->status &= ~SR_ELP;
-+		return true;
-+	}
-+
-+	if (is_fcfi || is_bcfi) {
-+		do_trap_error(regs, SIGSEGV, SEGV_CPERR, regs->epc,
-+			      "Oops - control flow violation");
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+/*
-+ * software check exception is defined with risc-v cfi spec. Software check
-+ * exception is raised when:-
-+ * a) An indirect branch doesn't land on 4 byte aligned PC or `lpad`
-+ *    instruction or `label` value programmed in `lpad` instr doesn't
-+ *    match with value setup in `x7`. reported code in `xtval` is 2.
-+ * b) `sspopchk` instruction finds a mismatch between top of shadow stack (ssp)
-+ *    and x1/x5. reported code in `xtval` is 3.
-+ */
-+asmlinkage __visible __trap_section void do_trap_software_check(struct pt_regs *regs)
-+{
-+	if (user_mode(regs)) {
-+		irqentry_enter_from_user_mode(regs);
-+
-+		/* not a cfi violation, then merge into flow of unknown trap handler */
-+		if (!handle_user_cfi_violation(regs))
-+			do_trap_unknown(regs);
-+
-+		irqentry_exit_to_user_mode(regs);
-+	} else {
-+		/* sw check exception coming from kernel is a bug in kernel */
-+		die(regs, "Kernel BUG");
-+	}
-+}
-+
- #ifdef CONFIG_MMU
- asmlinkage __visible noinstr void do_page_fault(struct pt_regs *regs)
- {
-
+thanks,
 -- 
-2.43.0
+John Hubbard
 
