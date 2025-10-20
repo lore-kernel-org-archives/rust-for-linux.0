@@ -1,145 +1,108 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECF4286D40
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 08:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC052D9EE1
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 08:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760948009; cv=none; b=Jd1jj6cXmbO72E4lfdbYfd2SXBhBRoSBup385bSckj+IAs0heGSK+FlYzvH+gehBRMJcZJ77vQlgLXxOZpx+9Glds1KnfbkGvI3uS+hG6jWzYBwX5vNkAU8zr87xnMpvidJgkvRQZ/txEKRWWljgmyWWqhS87l8wF1p3NJ4kXYc=
+	t=1760948240; cv=none; b=N+cdaitQNEw+WRfcs/QMZLA67AHUwqf3Zg3LWRRIo8THMy7KYDJ0A2aQZ8dkvI1hmFKKEjp+dC8vTZS0iIByKgefhksj0LLPd/sBFgSxZwJ2lNqAtNR+nsoR25D2j7Ea+XmEJRpaZoJhvxT2qYQtG6eR4NQFas8ANedRpxRitQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760948009; c=relaxed/simple;
-	bh=afK/Qx+z9RGas0HRzNSA5jN0ZqduIDpcSTfT6I/gQ7M=;
+	s=arc-20240116; t=1760948240; c=relaxed/simple;
+	bh=H0tga9DZv6zHPlXhb6ysF3xK2cSNnzfEhWaT6A6Prn0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Av2rDYuh3jk7mTy0t2r78SoAuvg/H4X0L7kPvde712G4dhZZFi0i4DcqyRYdAdSdgwvhsu0/whIdGUTdurjLNKwbp//x1wenlPHJ4tcfm01mrhkHFpdXYzfcAiwTWP2GIxTjlQwwnoSdCYQwKqQ7dZf/nkQLP06BDo3b6CPf2dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IcSmMvb9; arc=none smtp.client-ip=209.85.208.74
+	 To:Cc:Content-Type; b=uwaLB/OHaHtiWUygE3von1B9MP8CY+Mjvn33QcoSMEU+1FfQrg7t3AQSZ3wUdlWLYT0SnGIuEhNNSGzbjBA5YLnDablBjtlEwtOhRsbtiym3na490pO9gDIwtUhNBdoSxbO3GL7E+P4c90ETOdkxQsBg7spiCO4jEbWeH9BZ2so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jc/IrtFT; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IcSmMvb9"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-634700fe857so5776816a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 01:13:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jc/IrtFT"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e39567579so25385925e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 01:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760948006; x=1761552806; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1760948236; x=1761553036; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JomsFufr5VxruBAzGqqKWxKs5V3NjgNfh0Psh5CFJ6U=;
-        b=IcSmMvb92koeiNwE60G7rQY9Rk/HLBlbi+MC2+XVQX8NDX50dM4bh5D0aaffREy6iK
-         zy7hvBbRe/rG3fyMer7q/Jz4b5rMWFbq95zTDY4VLcLv6Oh10Mbz3V6ew2odtKA+eGtU
-         dj7XzoKrmSD87dQ9h8kXfwgF9FrCKwx6x/BO5npVuld7Sz0C1T90VUQI+BjOtuo9JQws
-         YajyNC2TLotKtheL4XGfP/GL5q4YTAiZ2xxaRXbXKXjLTllF56+Q+6fkHNh76jd7JFWn
-         ngGr7qyawbMxg8x+rDoX4aw3p4R0pVdzlBmIu7aaz7RA+DEo3/Tjg3CGZBX9wJkH0mUl
-         e4rQ==
+        bh=LjMEk6mNBH8WSN8eHPXPJ3fCRbx/T8IK9tLp1EWYzkM=;
+        b=jc/IrtFT9Ir9m6PYewmOL9GHlnHv9NaKjZGCw3ewMSVMJesMC3tGNxBA65wzsDHCiw
+         8cwdmtGgdgZtKf7FiWxab+lEuZpIAc4pHFCbBTlUjcOsrAZCQ9gDoFQNCYlW34pqFo9i
+         n7yE34OavRLQMAljgQqS1n/6ssRoVjBOk4UI0vg8prlMnzsmCHYjxCtv96q27MvKv0RA
+         lyTbj931DMHJB8BOCdkVb6UNQu/ofdubclUNM/beah41hdhVDHEYhPgHbgTir6RsAVUT
+         rEZ9BghEtbfj1mVD7I1ybLjqn49qxIXysd5rDf4Y3I1FjlJT/3NmUPZLkvE8exMF/fQL
+         4thQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760948006; x=1761552806;
+        d=1e100.net; s=20230601; t=1760948236; x=1761553036;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JomsFufr5VxruBAzGqqKWxKs5V3NjgNfh0Psh5CFJ6U=;
-        b=YvHWiVETMR2feoNpBMeCokogv6HQ8z9potsl3txELo+B+mEzXitAY9t5+DFbOoi0zt
-         CFEsEV2DP8jukXc16kVWJsGKCjyaxJPJnmJzfSPr20LhajXkFQ3Izmzo9loUd1hx0Y4v
-         M7JejIrZSN3PjtLIIjYaClb451Y0UMl3jHbSIk/4/vmlf1/x5IsLPZ0sIGm/WJc6/zoU
-         YK2HxQh+OJH2qX3NDhsat++/mG8A2jgvWVSwp2fXBxYbGeRirCHULl6oXSGkyfjvNwhm
-         tkRCzXmgQuvTslzzMwNUgWCjAMTo6y1QV44dqEDp32yqlq4rUQGgZTdKqNuxtL0kpIvZ
-         eJQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvOjy0eySPV/1dPjPPttN6KIfR0KPXt/H7cYbIWUuoenqDV5QW5QK8QnepDgEyvbw6hh/okgMoz85SkoCISQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5HkbZGl299QOGv0CtJzZ59HOjROzz50DIYIZu02lnaaYm4gix
-	yLigyPaDqDzRgoaLRCa26bQfvEjEsm1zekZx5luX2ZjzPxaywSkMlYtN5LZNyxSdo38dWhC/F55
-	y+4g/hqGP5axxvw6qlQ==
-X-Google-Smtp-Source: AGHT+IGFoqM8MMHqDFI1tOFZ3cdMbIGCKb5OPolPUgoN9eefeCogzXHPUsYXOsFsFsY4hvT2U3wlDipVU4GnZTE=
-X-Received: from edbet13.prod.google.com ([2002:a05:6402:378d:b0:63c:493e:3803])
+        bh=LjMEk6mNBH8WSN8eHPXPJ3fCRbx/T8IK9tLp1EWYzkM=;
+        b=q+5fj+gs4Tpu6xuv2bg5PvCI77VXhG0t9A+X0x5TOOj8lTJZoah8yiFM/H82gJVS1y
+         3Tjz4SqZyDq4NojXY7sr7vxPSZ9QMTrwznL60IgVJG1M+w7Sov20wg4IW5wvPLKceUbj
+         dS/ueb/eTVE51VDRxaddrHN+L3gpskhl966mG56hOQ2XhBT5nsnvS2i4ahSa5grbo/xb
+         T0h/epTt+q4a6LNUQoYBd0FSjagIxQhYRMn1/wfpc37M6/4TX38m6a/jQGJeNMIimFUA
+         tost+B6g7YibCwV7JSLuYCYtEetXpzrbb0tAC15IouWp88mt/fdh6FrkwnOlGeoFLi7G
+         4KFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2vwhnD22Gxmbrm5Ktw8x56nmWDDcpR86IE5c8gTdIjo6iEpJRtTbQjV88kLN09sDpbf0QNIEErpE+A9KVow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWF45RMlwW9sq/9lslQcu6zQoI9HH8oNg++wR8DRCXoWfHRPDp
+	i1wgpJQ6t/cH4OXC7L1ywYW6db0ffU7h/f/1hH/f1ZLGR5G5I2zUA8xrBfbwkZ28aDYF6sGw2z8
+	ke83GJZpuDgkdY5KsAg==
+X-Google-Smtp-Source: AGHT+IFFA8Am2fnybv9rvlh//I4Iw/BUP5vE4Qrvs/2x2IMy3Yp6BBWo4VkpWJV7hHHYkfYEkHZgL37ArvDw8k0=
+X-Received: from wmbdr13.prod.google.com ([2002:a05:600c:608d:b0:46f:aa50:d6ff])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:aa7:d698:0:b0:631:6acd:fa3a with SMTP id 4fb4d7f45d1cf-63bfcdd5015mr12313526a12.4.1760948005837;
- Mon, 20 Oct 2025 01:13:25 -0700 (PDT)
-Date: Mon, 20 Oct 2025 08:13:24 +0000
-In-Reply-To: <DDM9EDPP7XQN.2SW537AZ7DAZ9@kernel.org>
+ 2002:a05:600c:548a:b0:471:ff3:7514 with SMTP id 5b1f17b1804b1-47117877736mr89174955e9.12.1760948235873;
+ Mon, 20 Oct 2025 01:17:15 -0700 (PDT)
+Date: Mon, 20 Oct 2025 08:17:15 +0000
+In-Reply-To: <20251020020714.2511718-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251003222729.322059-1-dakr@kernel.org> <20251003222729.322059-4-dakr@kernel.org>
- <aPI9tNoh0I3KGDjl@google.com> <DDKO9M4P06HS.3UMGG3QR7BX67@kernel.org>
- <aPS0aTUUwDsXmHFN@google.com> <DDM9EDPP7XQN.2SW537AZ7DAZ9@kernel.org>
-Message-ID: <aPXvJPcSgZdNlGtB@google.com>
-Subject: Re: [PATCH 3/7] rust: debugfs: support for binary large objects
+References: <20251020020714.2511718-1-ojeda@kernel.org>
+Message-ID: <aPXwCwc4uevRO951@google.com>
+Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, mmaurer@google.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, Oct 19, 2025 at 01:24:05PM +0200, Danilo Krummrich wrote:
-> On Sun Oct 19, 2025 at 11:50 AM CEST, Alice Ryhl wrote:
-> > On Fri, Oct 17, 2025 at 04:37:48PM +0200, Danilo Krummrich wrote:
-> >> On Fri Oct 17, 2025 at 2:59 PM CEST, Alice Ryhl wrote:
-> >> > On Sat, Oct 04, 2025 at 12:26:40AM +0200, Danilo Krummrich wrote:
-> >> >> Introduce support for read-only, write-only, and read-write binary files
-> >> >> in Rust debugfs. This adds:
-> >> >> 
-> >> >> - BinaryWriter and BinaryReader traits for writing to and reading from
-> >> >>   user slices in binary form.
-> >> >> - New Dir methods: read_binary_file(), write_binary_file(),
-> >> >>   `read_write_binary_file`.
-> >> >> - Corresponding FileOps implementations: BinaryReadFile,
-> >> >>   BinaryWriteFile, BinaryReadWriteFile.
-> >> >> 
-> >> >> This allows kernel modules to expose arbitrary binary data through
-> >> >> debugfs, with proper support for offsets and partial reads/writes.
-> >> >> 
-> >> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> >> >
-> >> >> +extern "C" fn blob_write<T: BinaryReader>(
-> >> >> +    file: *mut bindings::file,
-> >> >> +    buf: *const c_char,
-> >> >> +    count: usize,
-> >> >> +    ppos: *mut bindings::loff_t,
-> >> >> +) -> isize {
-> >> >> +    // SAFETY:
-> >> >> +    // - `file` is a valid pointer to a `struct file`.
-> >> >> +    // - The type invariant of `FileOps` guarantees that `private_data` points to a valid `T`.
-> >> >> +    let this = unsafe { &*((*file).private_data.cast::<T>()) };
-> >> >> +
-> >> >> +    // SAFETY: `ppos` is a valid `loff_t` pointer.
-> >> >> +    let pos = unsafe { &mut *ppos };
-> >> >> +
-> >> >> +    let mut reader = UserSlice::new(UserPtr::from_ptr(buf.cast_mut().cast()), count).reader();
-> >> >> +
-> >> >> +    let ret = || -> Result<isize> {
-> >> >> +        let offset = (*pos).try_into()?;
-> >> >
-> >> > So offsets larger than the buffer result in Ok(0) unless the offset
-> >> > doesn't fit in an usize, in which case it's an error instead? I think we
-> >> > should treat offsets that are too large in the same manner no matter
-> >> > how large they are.
-> >> 
-> >> The offset being larger than thhe buffer is fine, userspace has to try to read
-> >> until the kernel indicates that there are no more bytes left to read by
-> >> returning zero.
-> >> 
-> >> But if the offset is larger than a usize there isn't a chance this can ever be
-> >> successful in the first place, hence I'd consider this an error.
-> >
-> > I don't really agree with this. Obviously we have to return Ok(0) if the
-> > position is equal to the buffer size. But for positions strictly larger
-> > than the buffer size I think it's reasonable to choose between Ok(0) or
-> > an error. But please, let's be consistent about whether we return Ok(0)
-> > or errors for positions larger than the buffer size.
+On Mon, Oct 20, 2025 at 04:07:14AM +0200, Miguel Ojeda wrote:
+> Between Rust 1.79 and 1.86, under `CONFIG_RUST_KERNEL_DOCTESTS=y`,
+> `objtool` may report:
 > 
-> There's not really a choice, it has to be Ok(0), otherwise we break userspace.
+>     rust/doctests_kernel_generated.o: warning: objtool:
+>     rust_doctest_kernel_alloc_kbox_rs_13() falls through to next
+>     function rust_doctest_kernel_alloc_kvec_rs_0()
 > 
-> However, you do have a point with how the offset conversion to usize should be
-> handled. We shouldn't try to convert it to usize in the first place, but rather
-> pass it through as it is and make it a common offset-larger-buffer case.
+> (as well as in rust_doctest_kernel_alloc_kvec_rs_0) due to calls to the
+> `noreturn` symbol:
+> 
+>     core::option::expect_failed
+> 
+> from code added in commits 779db37373a3 ("rust: alloc: kvec: implement
+> AsPageIter for VVec") and 671618432f46 ("rust: alloc: kbox: implement
+> AsPageIter for VBox").
+> 
+> Thus add the mangled one to the list so that `objtool` knows it is
+> actually `noreturn`.
+> 
+> This can be reproduced as well in other versions by tweaking the code,
+> such as the latest stable Rust (1.90.0).
+> 
+> Stable does not have code that triggers this, but it could have it in
+> the future. Downstream forks could too. Thus tag it for backport.
+> 
+> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+> for more details.
+> 
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
+> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-SGTM.
-
-> We probably also want a type alias for bindings::loff_t.
-
-I ended up using i64 for simple_read_from_buffer in iov.rs instead of
-loff_t. But if they can differ, then yeah let's introduce a loff_t type
-alias.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
