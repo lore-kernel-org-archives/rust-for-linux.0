@@ -1,290 +1,217 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011023.outbound.protection.outlook.com [52.101.52.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0982E62A4
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 20:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760991793; cv=none; b=ZZQCFm44I9Y8C+5aF5iFXNUkH250Qy1aWvQzzcni9k8Epmgva5xFYo2VEzNyV8nKV3zSjmlVxzwHFQJi0+52lH9OjL4KT6hm/Y//HCHwDo/S5mTlYJ+tbgRE1qvPUxBzwESq729RyzAr9uYLxjvzOmy/F2U2LcH96ZhURo5E3v8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760991793; c=relaxed/simple;
-	bh=9A8pB2A96T9JHpirVnzjfxFz4DTUqg4iDKeJ1kGUIE4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MbwhGb1GaJjX4V9XU4Qw2LPMbZJzYZgQ70KfpGhHU6d+wZUeQbuwbpq1kRGDgASjDDyfL6wxXJNEvrB3LOJ1Yx47Ie+fBKVP1c1pNQH/oGPF2EkbqxJFc2xxQBFA5t8TyB727Zvle1g35XvS5vKwAhLgatkjXXGGptKL3LHrVJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=QkCVpZeN; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4571E492A;
+	Mon, 20 Oct 2025 20:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760992942; cv=fail; b=QIsS16uOg4Fpoe2gB7SEuBRvLMdpQOhfRN4OAKSTLDPTDiOW/jRf4sJs8Iqt8iy/5ff0rdPG2ke2e0+tQzjSgFE+vLp/OyD1RA5VzNFrmb6OYWsY6OEDMH0yZMbsjg7ngzYxGO8EqINn9b0C3//cBqdY0kZ5kMa6QL/hEArcTW4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760992942; c=relaxed/simple;
+	bh=+nL581TClDDVt3pVfQoFfxLyGrDSKWOWfW/r8RG9n+E=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MfnwURpwzQUBbUOMS2sApRrveqTwtwwwNg0qei5WSN6R3kUa8FKeWcMmy4p2wqz3Apc4nFTIyIOvV1qksqUoUWVYtNr58b7uhatQQT5kvx+3rgCo0kQTVeyCz9+DixzJedU62r8ejfde6ZKIZWNNcpqwNAe71Zz546g6E1Z+/Eg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ifs7+tJH; arc=fail smtp.client-ip=52.101.52.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="QkCVpZeN"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7a213c3c3f5so6182756b3a.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 13:23:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1760991790; x=1761596590; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TCkPPrp9gQEUL0ggbSzTHBQGf1uIlxDvndQy0b8riqo=;
-        b=QkCVpZeNA6yOltp1ttwHuuUjhjqvk0yMo0Kd4QFKMP1rpFpl8zVizXG9LELIzX+zpa
-         2UwuZAuN23hZJ/91EnNjaV5OmGzdR5M97PbBMnaR5XifTJF2BBVzyKL20ma76m4dx0dB
-         2BQKpgks9an0tmyBRMbg5yydaClwwEq3KENFW6afBOAEYIRejuuQ5qxTMT6Lae6yiBXo
-         L/ZXk+Uh+0D9q10EGeE3IlSJi19892AFLqoFEOe3Ez28O1zM4JNvLZlXFGwZwiPyiO7u
-         fxQVwB4Ktw5X2zuLvHvKCv1zfm09bodkcV1HgaWjZil4Sy4Ivb4ShCs63QCyrUCuTFyH
-         403g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760991790; x=1761596590;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TCkPPrp9gQEUL0ggbSzTHBQGf1uIlxDvndQy0b8riqo=;
-        b=neu6a0V/KUyfBSjF0a1ESLZPv4BDwvdQlUI6bSnoBGgIV97mb2r5s+bOFB6I7QyzyF
-         sGTypWAboeiIAnKzhI0eGVrh5Bl6lA8EhqImWshOXMFZFT4MQTLLvRHEhPpY5RGm03bS
-         eryPF/Zwx2pOW0zwicV1OBcNT2yfNn4pXCXfvccAHqnPInCkXkhQ/oU1TlPPeJDfT2z5
-         ZgVi3Rq3q5DBzOtwRQ41sOlDBVi6gDWxAXSuAlfNM4Q5bFZvnJzRJpCuZplHITjFja//
-         8n0aDfHPQ01kv7ceyvXUGHsGnSqKwFy8IwIEoDQDDjBnmjkffxbNhIEmkzzG8Gsw42d3
-         +0jA==
-X-Forwarded-Encrypted: i=1; AJvYcCWkwEY55MWeqcGemcehhkinqy37IkS0QBkPzptzklqsCGOVqvOepmL5uLXXi8IwD2y8NRz3WuTo0RArH4QgHg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZzrDL3rfYtOf09gY5JkBsvAx4dlGvlagn4SeBIGlBpI/kQEgy
-	chI0Oa9FSU09YC97Bf/zHqGVIXnwKohOGsWVrGqy3vcnQxs1p/UT6p4+azOZAECmihA=
-X-Gm-Gg: ASbGncu9Nmo0riC8zv0RFrN1DXc4//oXlFw8axG49rQ4l4syv3eINxKllCbJ/NNkT93
-	jQpxnGmgzrdWY5MwPwQ7KCa+M8S5aeinouF+OU+R6Q96/IQH6K8qbn6YqIFLgCV2us0cNDt6iPc
-	P+GhDwVoCUD1WBP0X0S0Tf8YOvg2ZRamRkaXDBd5lCq3LtvbVLMGPPQZj4gfmOjluMdoY1pK7pD
-	k2H+MSeOWtuanFk3mDkjFY01h+q1U/YdoI3ppsvJ51O6onlz99+54LzOpyomJVviwliIKjmXw4w
-	PaCamEmFUJoO1H+EMdCvi7xeUeJB4KsqFtjQv9WHwi5kUaot5dhNwr1eUbspRByawjd/QSLrzix
-	f9aOTqhCBugLAV44GfxUfb8VyXaM2j4EIVKZKjaV5LdYMd7HCWqepMoHeghwZWhIB5k7usauJIk
-	qn7KxFlvva8FMtLipRViKo
-X-Google-Smtp-Source: AGHT+IFeAiK1pEjnzeQ76oKm8s3fmG8FE4Cb0oIxKjxN+P2vkwg0OCkygP5H08wijF/1nv8wkzENEQ==
-X-Received: by 2002:a05:6a21:6da1:b0:262:da1c:3bfb with SMTP id adf61e73a8af0-334a84854b9mr19250556637.7.1760991790129;
-        Mon, 20 Oct 2025 13:23:10 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a766745dasm8443240a12.14.2025.10.20.13.23.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 13:23:09 -0700 (PDT)
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Mon, 20 Oct 2025 13:22:43 -0700
-Subject: [PATCH v22 14/28] riscv: Implements arch agnostic indirect branch
- tracking prctls
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ifs7+tJH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PTkaK8YaRGTNq6JvExm3Nw4wv1SlnilJ+81a4Wb23gHgmwxfgGJFh+q3MY4z+Sbg/HMOCl1aDR/KYoW7QOr4Jbkn6OaKORM+hilabBGjxkKD9Mtx3u0VkWFayEF6vTtRdaxlKveEbu1mTjWQQOcPeTFb7D4a8FEDFk7dsfRW+A/xo+cLFOZU7APZN54+2NZDu+3q5RZFexM1QRplRcPc7atMWgprbFtPnMzboNEOWkdn59NzhCZNKre0gzhsgy2WsrXXovh3arSIZEWtV9zl5gmVgxoBklrW/6A4/ErMOLl1gyc9k/81C/wwgH2dYuAd4tu9Q7UWHZEudOeisLXmXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zfIjGmOJ0lZlZ2ypjy+qhDbBnl7LewpMTZbfpuIeL6o=;
+ b=DM3/vXOkOiHaFDVSUxMBrP8uHqqfMoPxI8W9Pihlqm14TWNRUrdP6E67GMWi9PF/OYkM9n7/+H3t7M2YY1mPG2SfvyenvQ+QVcdjAcz0A2ua1qGCTffOCDtO4YSJGJRBmNjJX878Uh7BmqyHYqv8Z4E872cEfIOXYKx/imtPwDLZDFin28nbyO1WBO9C2H9iPP0OAhOdhugow/FLtao4dZRbR5kbNPrpUtuoKnIICkkxgANVm8GRRDIhrnkVpi7XzQulC6rH2tpXMsNWdYz9A4NgB4KSX8wG/S2rqJKpraJwsNBnij3rU5Ol5sR0tXjdkYaWgT+C/yWQ3W0FS/X1EQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zfIjGmOJ0lZlZ2ypjy+qhDbBnl7LewpMTZbfpuIeL6o=;
+ b=Ifs7+tJHLs2WLllHPyUYmHuYSDVJQ1BfjTLpN73St//wMyGEeU/Qk7c2vHI7J/lON8B8KWZrwW4Aavr5rXwpycqrLi9uLqRB+aEP7bGtwpBKW/dPCwKibC5fBZwf/vWSB5M91Xf23XCxY1OcpNznPdo6Z4otwGy5PpaMu5WL0sXu+1NOxPdrGZ1d3BPsX1ASKObeBaeBysQ+xQ0V2g1aQWcVubYM3Ox1RzrzDNpEkvUyReGAbbh8GEcFlJ26B5ss0fkiVsK9dx3ld4dOHb4Rujde1l4wFs35raAbPnFB/5MTVVEssmgRvXwvqL4hNmqmofjle033rMMWPav8xYijgg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by IA0PR12MB8376.namprd12.prod.outlook.com (2603:10b6:208:40b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
+ 2025 20:42:17 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
+ 20:42:17 +0000
+Message-ID: <c65d6318-0de4-46cf-8f70-8a1c4aba179a@nvidia.com>
+Date: Mon, 20 Oct 2025 13:42:13 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] docs: gpu: nova-core: Document the PRAMIN aperture
+ mechanism
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "dakr@kernel.org" <dakr@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Timur Tabi <ttabi@nvidia.com>,
+ "joel@joelfernandes.org" <joel@joelfernandes.org>,
+ Elle Rhumsaa <elle@weathered-steel.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>
+References: <20251020185539.49986-1-joelagnelf@nvidia.com>
+ <20251020185539.49986-5-joelagnelf@nvidia.com>
+ <506e84b8-1a99-4548-b2c6-b502d790f4e1@nvidia.com>
+ <0B70DC73-6796-4114-9C2B-6B1B9AD560A5@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <0B70DC73-6796-4114-9C2B-6B1B9AD560A5@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR03CA0204.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::29) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251020-v5_user_cfi_series-v22-14-66732256ad8f@rivosinc.com>
-References: <20251020-v5_user_cfi_series-v22-0-66732256ad8f@rivosinc.com>
-In-Reply-To: <20251020-v5_user_cfi_series-v22-0-66732256ad8f@rivosinc.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
- Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
-X-Mailer: b4 0.13.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|IA0PR12MB8376:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1b27607-cc5d-4c64-a89c-08de10192868
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Nng0SzNlOForMktZYWZTdkdLbVcrVGkyZkNBL2NUcmdvbU5oYVl5TE9Obkx4?=
+ =?utf-8?B?enQySnFJNmU1UE1wQktoNzJqU0tkb3k3RkxIL2ZJVXJZTVlQbTF4NkJnUnl1?=
+ =?utf-8?B?OUFsM1pWZEV3Rys3bFAySlVxSStUaUZoSzliVTg1UVYyK2ZCNjJucFU0TytF?=
+ =?utf-8?B?MHdRa3pDR1hNRklXV0V6eUU1NThocmNWSmJ6K0F5a0hOYS9kVjJtbm15YVBs?=
+ =?utf-8?B?RXJKWmhaNzI1MVY2N01qWmliODJiaFYvS2lGVWVpTWowMzNNZUV4M1ZIU0l3?=
+ =?utf-8?B?dHZBUFJQK21ybnZMUkNYTm1mMURUbEVnS2U3eXRJZlVhcjdKb1NkY3cranRB?=
+ =?utf-8?B?TWxlZ0sybzloeDJsc2wxWmNaQjRWL0ZUR2VmZGxGazd4Ky95R2R1aGp0dE9E?=
+ =?utf-8?B?QmU4c2dsOWRSSm1mTTBxa04vUlB6MTdnTmVKQWMraCtGN28yb095MHZMSFpm?=
+ =?utf-8?B?TXYyckxPQjhpdFVKWHE5a1pOdFlIZ1JaRmNhSDFOSDlTK2VlR1F6VUJ5dDM0?=
+ =?utf-8?B?eGtHclJNMkhrcE02blBnOVlRL3QrRktxTDd2dDF4NXBEUmpUSVd6NVFKWXZY?=
+ =?utf-8?B?aFgzd0RLV2hRVkRrTmtielZtU1NHaVlOYy82N0lkSFM5cjFEWVVKY2FIbkVO?=
+ =?utf-8?B?eW5WNWZ6aTNLVnJEazF1Vk0zVjBhaisyOVNLSVpZRTE1b01oQjBGbVFpaDVn?=
+ =?utf-8?B?ZTdqZCtVQXJ3K1JoL1pXaGRrYVg2UHZtWDhUYXBNbXdLU0ZWZEpvVVg2emtj?=
+ =?utf-8?B?NXBleXpJajFsaytRV1RObmJMTjVkOTVEdHlEeDBXNWQwMW9oVzNLaXE5clFG?=
+ =?utf-8?B?TkcwUEo1QXJYZzhSa01GdmJNdmZWL1VYdkxaYWNaQ3dCSlpQMDFYQmpZZFho?=
+ =?utf-8?B?SGRyYVRudVhDbi9EY0cyMzJtSlFSWmx5Nnlob2FLNzJVS2RoVkx0WlJzZFh2?=
+ =?utf-8?B?NXRSNEcxeXN4UXdtOFBzVVB3a0VYa0pPUS9vWHFEZHVuODNmWitxRnNRRXVx?=
+ =?utf-8?B?YTJHVWp3YjM0RFVqRDMxcnpwcEI4N0dsdXd6cEpuUXpOVWVTNko2Zng3WlBT?=
+ =?utf-8?B?b2wrS3cwY3Y5ak52SHB6NnNCeHVnT1FpaCtzZkhWelNTa2F5OTc4WUlMc202?=
+ =?utf-8?B?b0JLUzYwVk5KUG5LaVROWUh6Z0cvb1JFSjE4TFl5MkdsMm5WdUR5OFYvYURW?=
+ =?utf-8?B?aGJ1VUFjZDlRTDlnRlp6bklFNkVQMEFnT0NiUmZqM2NQZFBMOW1EaDNjaEJ4?=
+ =?utf-8?B?TzlNRFpjMVVjTS9KWGp6R0FSTDgrUXJvYkNFd0pDRW9La2w2YjhtOFpBZ2lm?=
+ =?utf-8?B?WnF4V0hsRmxWTDgra3VySFkwTWxHUnAwaFhyajFJOWlKQ1BsRmV2ZDdwaTlv?=
+ =?utf-8?B?MEtGU1VsYTFScVFTY2hxYVJmNkczOWJXOHkyK1N0TUtYMTNyVlVlU1hsT21R?=
+ =?utf-8?B?bFdNRVZ6OEp6RDhYc2k2UjZtMUwwUTFxUU9FclV5VzFZcmdhOTlRQ1RqRSsv?=
+ =?utf-8?B?WUh0OXpVZzFuUGVMVGJ5REhDVElacVhoUzhqaGtwRUVTZHQ1ckVEemYxM3o2?=
+ =?utf-8?B?QVF0ejJPUndqakNHaVNRbk43THlsTXB2Uy9zZ3FHWEJ1VXdpUitBaXM2dExo?=
+ =?utf-8?B?cVljZEpnSnR6Q3FNVmV2ZldyaG5GcDFzK3hUZzViTGp6dFc2Y1AxdmtYS24x?=
+ =?utf-8?B?cFptMGR5dUJuaWswb04xY3g2Mm5tYnJkdjZlYkRIdEVOQ1dPWUwrZUowRWRF?=
+ =?utf-8?B?cStXZXVHQ05pTlNpbEFUdEZlVkV4UmlEbFp6OEpRRi91SUw1R3FQU05oSjdF?=
+ =?utf-8?B?NTd4alJHbEtCK3lsRVhJbkhaUFEwWVdIRlJ4dGw3eG92Snk3TTVNS1czeVY5?=
+ =?utf-8?B?Z0FoTkVZN3FnMXFUczU2eG1MOGtOL0krQkJ1Rk9SdDhaVHFXdlJTQUJFZm1Q?=
+ =?utf-8?Q?adShugLYIWQJ4AFJC+xzFM7PJDHq8L27?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aGtycUdheDM2dzhNbFFWNzZBdGo1K2hjVDZCd1hHTzhQVWNibGJIWG1ZNUhM?=
+ =?utf-8?B?ZlY1UksvM1FjWmZ1UThiWTJXY1d2OEtXS1R5cHpNajdpNjgwa0g5RTAvTk0x?=
+ =?utf-8?B?VlQ1bkp3L0g3UDdVUndYaTdtTzZ4Qk1CdkVkRm1lMFE4dkdKYThvbG9XdkpM?=
+ =?utf-8?B?NlRmN2xFOGw5YzZkZXJkWjR2Q2JmQUROc1k5aVE3Z3c5YXVFVHBDYlB6OFdp?=
+ =?utf-8?B?Y1YxZkhmYkxybmZOWGFIcTB1MUpSU1lJZHFTc1kyc2ZhcHNoZEt1RUZWWE4r?=
+ =?utf-8?B?dDhURFVpVmZSSjlOTmVUVkdvOEpDTlBhd1pydEJpZndvTE5vcHdQd0c3YzlS?=
+ =?utf-8?B?UWE2S1p0WGtyek9PL25sWm9GS0xvSFRIUExwQUo3dHNSM3htUDV0RXU0NnE3?=
+ =?utf-8?B?OEdDRDI2bjhQM1dpd3U2MGIrUnpKUGZIR2swZ0tuc2VmVWdBeVhFWkdrTW92?=
+ =?utf-8?B?ZTBKS1RmcTNLODZRbGRUVzh3WDd1dEZ1OGxvekVPYkRMU2tZODVqVHBwa20z?=
+ =?utf-8?B?NTFObUpPa1dOTlRJbmdvb2kvUEdxaEQ0b2VQVnIxYUJPQk1ERFI0N1dGb0xW?=
+ =?utf-8?B?OUVNclRMUVZWbXozZHkrcUxUakxMT0pZbmQ5djJqdHJtTDM3UVJlYnRNNjBq?=
+ =?utf-8?B?Wml5Ykh4R1hvYVJiZUlrMHZLU1pvUENqNlF0UjA3dkFtMk5raHRaclF5YXFO?=
+ =?utf-8?B?Y3Q5TCsrSmJmYWdidW9VVmpqaHNWclF5azVSaE9seTdrZUFURUc4Y2FRanYx?=
+ =?utf-8?B?bDVxRnl2aXRqL3pUSU1VRnJrdmg5aEpIYUUvQ3p0ZHZpV3ViallvS0srS3Rl?=
+ =?utf-8?B?NHM0c3lFZGN0a0laMTZjZFFESmdFbzNuaHZRRTRVWXNxbXVCdnVzY2JsaVdk?=
+ =?utf-8?B?UTJENDc5NkZ3OFdwc3Z2WEh2bzBGRzNEbFdPWWVFejFaelZqZ2k3b01aTGY4?=
+ =?utf-8?B?YVRYbEV0RzZYYWx5eVBRRkNjdmpIVXlRTWZPd0ZIeUc2eXJiQTNXdDhsTWVG?=
+ =?utf-8?B?K1ZEWG9ReUJFRXBXMkh1TE1SVFVGL0tqTU5VeFExbXFWMHFmWU01TkI3QUxU?=
+ =?utf-8?B?UGs1dmo3OW5OYW9VRDlvZU1XYUJsNE5FWkZTQ2srdWQ3MnVKUWk0R2hLMnVz?=
+ =?utf-8?B?OVErdmh5U3VLY28vTFVRTk5JZmorSDFsbTJYekc3cmRrRjFWSjM4L0JTQkc0?=
+ =?utf-8?B?cG1XUUZKWUdGTXVDc3RrSDRDb3cxU3AxNmFrVGUxbVJpWDRmZHVYbStNcUt3?=
+ =?utf-8?B?RHNmRzlYc2RzNmZiNmVsVWtEbUVDSW8xU1lPcWhFQU56bGZldEpqbjFLZlR1?=
+ =?utf-8?B?OThqM1lqdDN1ZmpUVU1FbVF3TFpaWHlYNG5vdzFtRWtrdjMxbk1kdnI0NlF5?=
+ =?utf-8?B?UHA3ZG9HS00ySUVmUTBMdDV5ZFB5S0hLeStMQ2JGb242Rmc3RHNLVzBCNGdZ?=
+ =?utf-8?B?cndpOHBOa09zbHl6UmJyOWlCME9VL0d3VXpWQlFrbC80cGt3dVNvZ29CUTJ3?=
+ =?utf-8?B?ZEtXRmZkWTR5Nzl5dmZDTUVLU3AyQU0waHNVVlpzTXR1MCtyMDhicnZDS1B4?=
+ =?utf-8?B?Tm9HUEtzdjRhTWFFTEFrZ2FpSkJBUWlLYkZqWjAzcXBWRWlUaStlZlBmRjVn?=
+ =?utf-8?B?Rjgyd2RtOHpmTWtZMTVzdXFCU1c1UUJJdlI3ZE83RkZ4VkxpanI2b3RzSFl1?=
+ =?utf-8?B?OEt2WU1wNG1IVDNqckt5VGdPMlRwOWkwQkp1eFByWFVnL0U0L0tvaEJaSndM?=
+ =?utf-8?B?MTJ1SmtDeGd2WWhpVTdVMDZ1OU95YTJZN2NQYUJpVEJJU3lzSDZSWUZHTFlN?=
+ =?utf-8?B?NkswRlRHN2pVclErUmc4TFJweXEvRGJybWNPWGxkMUZzTFV3OENqc1ZiSWh0?=
+ =?utf-8?B?SUdpeS9HeHFLWHVINWN3anBDMzlBeEtBZW9Ca0x6S1VMOUxNZlBqbUExYU13?=
+ =?utf-8?B?K0hLZGhjcE9YNHU4SE5ZTk9VWUlxMTdnTkw5S1hyWjRkM24yWWpvS2ozQTdl?=
+ =?utf-8?B?NDV2ZEgvN2tNK1NxRkoxeitsTEg0Z1FjbENvWWl3eENFLzFMQlhJTHhJaVBQ?=
+ =?utf-8?B?cTRWVDdkenZja3Y2QklXakZDVUl1Z1grK0Y0cTE0QWxMWFh0WkdtOWZBVHhn?=
+ =?utf-8?Q?fYb+GhMTu4rMj89LempDy2PLR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1b27607-cc5d-4c64-a89c-08de10192868
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 20:42:17.2763
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KlR8r7Bp737VFKlmz/o+JGK7xgpTWLGqV4YqpoaPa/rGfgpjqRJl89xxKkNpQdN+72hGEsaqPEtmYzS8RGGGFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8376
 
-prctls implemented are:
-PR_SET_INDIR_BR_LP_STATUS, PR_GET_INDIR_BR_LP_STATUS and
-PR_LOCK_INDIR_BR_LP_STATUS
+On 10/20/25 12:48 PM, Joel Fernandes wrote:
+> 
+> 
+>> On Oct 20, 2025, at 3:36 PM, John Hubbard <jhubbard@nvidia.com> wrote:
+>>
+>> ﻿On 10/20/25 11:55 AM, Joel Fernandes wrote:
+>> ...> +Logically, the PRAMIN aperture mechanism is implemented by the GPU's PBUS (PCIe Bus Controller Unit)
+>>> +and provides a CPU-accessible window into VRAM through the PCIe interface::
+>>> +
+>>> +    +-----------------+    PCIe     +------------------------------+
+>>> +    |      CPU        |<----------->|           GPU                |
+>>> +    +-----------------+             |                              |
+>>> +                                    |  +----------------------+    |
+>>> +                                    |  |       PBUS           |    |
+>>> +                                    |  |  (Bus Controller)    |    |
+>>> +                                    |  |                      |    |
+>>> +                                    |  |  +--------------.<------------ (window always starts at
+>>> +                                    |  |  |   PRAMIN     |    |    |     BAR0 + 0x700000)
+>>
+>> Quick question: does "window always starts at" actually mean "windows
+>> is always initialized to" ? Or something else?
+> 
+> It means start of the 1MB window (offset 0) is accessed from the BAR at that location.
+> 
+OK, yes. May I suggest this slightly tweaked wording:
 
-Reviewed-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
----
- arch/riscv/include/asm/usercfi.h | 14 +++++++
- arch/riscv/kernel/entry.S        |  4 ++
- arch/riscv/kernel/process.c      |  5 +++
- arch/riscv/kernel/usercfi.c      | 79 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 102 insertions(+)
+   (window into VRAM starts at BAR0 + 0x700000)
 
-diff --git a/arch/riscv/include/asm/usercfi.h b/arch/riscv/include/asm/usercfi.h
-index d71093f414df..4501d741a609 100644
---- a/arch/riscv/include/asm/usercfi.h
-+++ b/arch/riscv/include/asm/usercfi.h
-@@ -16,6 +16,8 @@ struct kernel_clone_args;
- struct cfi_state {
- 	unsigned long ubcfi_en : 1; /* Enable for backward cfi. */
- 	unsigned long ubcfi_locked : 1;
-+	unsigned long ufcfi_en : 1; /* Enable for forward cfi. Note that ELP goes in sstatus */
-+	unsigned long ufcfi_locked : 1;
- 	unsigned long user_shdw_stk; /* Current user shadow stack pointer */
- 	unsigned long shdw_stk_base; /* Base address of shadow stack */
- 	unsigned long shdw_stk_size; /* size of shadow stack */
-@@ -32,6 +34,10 @@ bool is_shstk_locked(struct task_struct *task);
- bool is_shstk_allocated(struct task_struct *task);
- void set_shstk_lock(struct task_struct *task);
- void set_shstk_status(struct task_struct *task, bool enable);
-+bool is_indir_lp_enabled(struct task_struct *task);
-+bool is_indir_lp_locked(struct task_struct *task);
-+void set_indir_lp_status(struct task_struct *task, bool enable);
-+void set_indir_lp_lock(struct task_struct *task);
- 
- #define PR_SHADOW_STACK_SUPPORTED_STATUS_MASK (PR_SHADOW_STACK_ENABLE)
- 
-@@ -57,6 +63,14 @@ void set_shstk_status(struct task_struct *task, bool enable);
- 
- #define set_shstk_status(task, enable) do {} while (0)
- 
-+#define is_indir_lp_enabled(task) false
-+
-+#define is_indir_lp_locked(task) false
-+
-+#define set_indir_lp_status(task, enable) do {} while (0)
-+
-+#define set_indir_lp_lock(task) do {} while (0)
-+
- #endif /* CONFIG_RISCV_USER_CFI */
- 
- #endif /* __ASSEMBLER__ */
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 8410850953d6..036a6ca7641f 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -174,6 +174,10 @@ SYM_CODE_START(handle_exception)
- 	 * or vector in kernel space.
- 	 */
- 	li t0, SR_SUM | SR_FS_VS
-+#ifdef CONFIG_64BIT
-+	li t1, SR_ELP
-+	or t0, t0, t1
-+#endif
- 
- 	REG_L s0, TASK_TI_USER_SP(tp)
- 	csrrc s1, CSR_STATUS, t0
-diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
-index a137d3483646..49f527e3acfd 100644
---- a/arch/riscv/kernel/process.c
-+++ b/arch/riscv/kernel/process.c
-@@ -163,6 +163,11 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
- 	set_shstk_status(current, false);
- 	set_shstk_base(current, 0, 0);
- 	set_active_shstk(current, 0);
-+	/*
-+	 * disable indirect branch tracking on exec.
-+	 * libc will enable it later via prctl.
-+	 */
-+	set_indir_lp_status(current, false);
- 
- #ifdef CONFIG_64BIT
- 	regs->status &= ~SR_UXL;
-diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
-index 08620bdae696..2ebe789caa6b 100644
---- a/arch/riscv/kernel/usercfi.c
-+++ b/arch/riscv/kernel/usercfi.c
-@@ -72,6 +72,35 @@ void set_shstk_lock(struct task_struct *task)
- 	task->thread_info.user_cfi_state.ubcfi_locked = 1;
- }
- 
-+bool is_indir_lp_enabled(struct task_struct *task)
-+{
-+	return task->thread_info.user_cfi_state.ufcfi_en;
-+}
-+
-+bool is_indir_lp_locked(struct task_struct *task)
-+{
-+	return task->thread_info.user_cfi_state.ufcfi_locked;
-+}
-+
-+void set_indir_lp_status(struct task_struct *task, bool enable)
-+{
-+	if (!cpu_supports_indirect_br_lp_instr())
-+		return;
-+
-+	task->thread_info.user_cfi_state.ufcfi_en = enable ? 1 : 0;
-+
-+	if (enable)
-+		task->thread.envcfg |= ENVCFG_LPE;
-+	else
-+		task->thread.envcfg &= ~ENVCFG_LPE;
-+
-+	csr_write(CSR_ENVCFG, task->thread.envcfg);
-+}
-+
-+void set_indir_lp_lock(struct task_struct *task)
-+{
-+	task->thread_info.user_cfi_state.ufcfi_locked = 1;
-+}
- /*
-  * If size is 0, then to be compatible with regular stack we want it to be as big as
-  * regular stack. Else PAGE_ALIGN it and return back
-@@ -371,3 +400,53 @@ int arch_lock_shadow_stack_status(struct task_struct *task,
- 
- 	return 0;
- }
-+
-+int arch_get_indir_br_lp_status(struct task_struct *t, unsigned long __user *status)
-+{
-+	unsigned long fcfi_status = 0;
-+
-+	if (!cpu_supports_indirect_br_lp_instr())
-+		return -EINVAL;
-+
-+	/* indirect branch tracking is enabled on the task or not */
-+	fcfi_status |= (is_indir_lp_enabled(t) ? PR_INDIR_BR_LP_ENABLE : 0);
-+
-+	return copy_to_user(status, &fcfi_status, sizeof(fcfi_status)) ? -EFAULT : 0;
-+}
-+
-+int arch_set_indir_br_lp_status(struct task_struct *t, unsigned long status)
-+{
-+	bool enable_indir_lp = false;
-+
-+	if (!cpu_supports_indirect_br_lp_instr())
-+		return -EINVAL;
-+
-+	/* indirect branch tracking is locked and further can't be modified by user */
-+	if (is_indir_lp_locked(t))
-+		return -EINVAL;
-+
-+	/* Reject unknown flags */
-+	if (status & ~PR_INDIR_BR_LP_ENABLE)
-+		return -EINVAL;
-+
-+	enable_indir_lp = (status & PR_INDIR_BR_LP_ENABLE);
-+	set_indir_lp_status(t, enable_indir_lp);
-+
-+	return 0;
-+}
-+
-+int arch_lock_indir_br_lp_status(struct task_struct *task,
-+				 unsigned long arg)
-+{
-+	/*
-+	 * If indirect branch tracking is not supported or not enabled on task,
-+	 * nothing to lock here
-+	 */
-+	if (!cpu_supports_indirect_br_lp_instr() ||
-+	    !is_indir_lp_enabled(task) || arg != 0)
-+		return -EINVAL;
-+
-+	set_indir_lp_lock(task);
-+
-+	return 0;
-+}
+? 
 
+This avoids "always" (because HW may change someday), and also
+gives a subtly stronger hint about how this is laid out.
+
+
+
+thanks,
 -- 
-2.45.0
+John Hubbard
 
