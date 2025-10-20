@@ -1,136 +1,108 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBD5261594
-	for <rust-for-linux@vger.kernel.org>; Sun, 19 Oct 2025 23:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C741D3594A;
+	Mon, 20 Oct 2025 02:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760915060; cv=none; b=DOiO+f6nOBByt7I50sDQaZl5MLEPl/PIPOELuAJVF6Np/J3TjBacPYR7P0jaOPzJUO9EyVLybu370R6z6bqpTTIaEcadXcei5mIpbi2vP8YBK5+odhAeZ8acnAD5ZnT6JCZ+QtT9zA8HxRtwF5Ab4FWOft6/yt43gZVJHRsBVjs=
+	t=1760926065; cv=none; b=Ewmy5nd2Y0jXVSKhKB18pkr+aD4Z82o7480TbYeAoY8pxgJzP0/0tw2ufAk4Oq10iXaRmzsUpljVcYiYAOf1C3DNoV5rDppJT/y96Z1xBvAJl7te/Opn3xEkBuQoackzYHFQ5YBrtRe7PQ7PPnryqCdcjinDYe+cjCkB8WnMEJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760915060; c=relaxed/simple;
-	bh=AnqY+dCYnc8UF5OuQ+qs8apE1qzRi+JPuhlLZjOnIyQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C6nv6eva36Inoyk0o+a+eHxkPevybfUM3a7jL/FKb83mJt4o40pZO87faXW0lD4c9fpeou4b3ItznE78ebQk0uLHsNGQYo/UVQ11wE5J7nVmQd9ZO3PRqe/QWT6IfAQiWlDBk4LAoz986oJSKn835UpADvZqndj1esN5yzzLn8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fB6efVB/; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760926065; c=relaxed/simple;
+	bh=rheH6Ia6DijJ7OprwEpFfSq6P7ogPSfbX6TYiHJYnvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lx/ybaole9BAG67XERRfTbpp3sjtpy4TzHIyE5Lr6zXaL6VLR5HeGi7d121lEpjsHKp0+p1LbXJgCZokXnUJK00yx+ztDAX9hYhOrbJhgNceTqxfQoJro4cD2dVWre1/4qtaxGAoLwzhKrlbVCYMzye6QJdYpg094UvQ1I6tikY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kl4l2Izi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fB6efVB/"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-339d7c401d8so968043a91.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 19 Oct 2025 16:04:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760915058; x=1761519858; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eOEeh6O4RXrjCbdM/YQb/OmkajAlxiTKW4cEYv2MTfU=;
-        b=fB6efVB/wMyoqtlHGiJA1Zoqf5c2xXR5EucDsSKcRvWwn3fOcOPtHd+2vcTfjHZuqH
-         l21nJfMQ8BbDIRhG5GOgS+6Uh9hFcKzP103UOZTb8/i7g93CShsDLYBYALas67zYGQeR
-         aF4O+RF95yyILPtpbP6fd0fjlbQOv7VEyEVB1KNYrGb60LAuvlFx1OF/RePoKrp/CFMg
-         +fwpYyimAt56Ck2PP13t4pNKFaokYcFlrNPFfgW/9ZSffUNceWe6qVD/WlihyPlw1aip
-         EDd/w3Twyez8kJqFJN1osB7vFoFlKrJZqrNm+uIdD2f/IfHogIdVPwt+1J7PwumjFyI1
-         BNog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760915058; x=1761519858;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eOEeh6O4RXrjCbdM/YQb/OmkajAlxiTKW4cEYv2MTfU=;
-        b=LmxHz9dbhGGO2tfxpxH7zR2e5sMLY1uBRjmV4IBqHTEOKO7TjVA4z0Say2cVot3Juq
-         fyL2Gk+YavI+OQgX+vCniflcwjLaXgXz7IoZSSC4Y3x1liyd9OkzApS1qbXAapHEYPOW
-         ppa/Y/bIhR3nUJSLQm+WbHUpzk1g/oCbj2d3Z+1svi8uQx7SIJaZKNs2gXhFCAjBOV0c
-         w/imXUbbdD7ZGSrAZ20jfh85NWV4B8asN7kfUEQv+RAwMb28zpA49BLrEGEryorHc14T
-         g+i9VRs/x7Y7l2Kh4T+B4WngJ3zpe2I/hIOA5VPBWYU4Y63aft70niS3r0wBXNVjqssL
-         Iu/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUPUhXMU37zy3uOvEZHch8WXym2WINTpD1KH/EV82y6P/wvp/6BJ5Kj8Yxnb3nssV+HTFIZeo6LQIIFlbouPA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEuv5shPjxAWsNqpq4KG4c6LgqEnxH5x5nM9xHuSAfCwMxH6Zu
-	+le4oqlMVkahxW/zbsDg6Wzvs8gXqWB9YyS7jDE7IFdRhx6khBve4Wr9to66mtIaxnKCKGaBsM0
-	N0pfruGRGiQ+V0XEEZTDUrsUVu5n+ktQ=
-X-Gm-Gg: ASbGnctXo03R8uei9rUXeBH+q1+BNHEuaQ31dp6N4uvqzZjJYkiNhTzRZ4TdxHliuma
-	8IIcMAWL8DTPmh15R72MNDCXI+ski1D20WxZQsu7f399osPtCTzE+GXW1Ao1hmUfjRsUdPPYOZe
-	5gjN/7txfhE1T5Up6/dmlnLtWNbA7oUbtLosD/4hGtDgfE0GSGG2aGu2t5vPC+XhF1m9Y3K1eZY
-	uInS6T3iTpWmJmFAVFcTj8P1Hj8up7Knf16BIsP3tvOLCU7ezDhW7jOPF0IJOTIOCNNOnf+jfU0
-	lYWgLcJe/B7L9uGXNl7mQbga0Ew9q84cvJH0BcChgmXjzgsqmeD5tS3bpQ30aDtJxZ6K+49/rR6
-	fHQnZtVkrWgp2nw==
-X-Google-Smtp-Source: AGHT+IEHoe7IdB8Fn4blPj1kZr2k1PDvwkLeFqEjMadUT99xbKyU7kwS9dgklhgQJkFrx7iKJ+XmLkdzgYdk7hZ0y1w=
-X-Received: by 2002:a17:903:b8b:b0:290:c5c5:57eb with SMTP id
- d9443c01a7336-290c9d2dd08mr74335675ad.3.1760915057866; Sun, 19 Oct 2025
- 16:04:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kl4l2Izi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA61C4CEE7;
+	Mon, 20 Oct 2025 02:07:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760926065;
+	bh=rheH6Ia6DijJ7OprwEpFfSq6P7ogPSfbX6TYiHJYnvs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Kl4l2IziLW8kHFxHkhddlY0BAI82TlrFICtCwi6lmXdVXcmlXLYUJRdV6Ch2NxQgR
+	 jg9eFTQc32ZOmnELADfLFrd+K3Wah/AUiJz5AhEzpZbhep8QXiVxpssLDQakUxUPIJ
+	 zuv747Tvrex4uzl/DoqkMhJdaXEH7QY+WG3Bo+jqDfWfwAycM/ysxbiP5YnTK+gSM9
+	 A0SXW9yKhu7L0UNfHhLTYRfADgUfeERZF2JOltNyOCfxDrKOAvxFjl6mdin2kUb+9f
+	 NLVCLoql1vlvOkH9ocRWQunmc7EAtX3iIPWCT5MpUv2ItlmXsH36p2G2U1HkC3/Dn0
+	 2QTLSJPV8jIBw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] objtool/rust: add one more `noreturn` Rust function
+Date: Mon, 20 Oct 2025 04:07:14 +0200
+Message-ID: <20251020020714.2511718-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251018-cstr-core-v18-0-9378a54385f8@gmail.com>
-In-Reply-To: <20251018-cstr-core-v18-0-9378a54385f8@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 20 Oct 2025 01:04:05 +0200
-X-Gm-Features: AS18NWBk6jlJf0RifcBoOPS6BkMb0c8T8AQmrZIWVCq_Mep36ZL7bfRUqV3fx64
-Message-ID: <CANiq72moW2VULd6EMQe9X4d1S+ftOG4Mcpp2_+V6zG7xVXj+qg@mail.gmail.com>
-Subject: Re: [RESEND PATCH v18 00/16] rust: replace kernel::str::CStr w/ core::ffi::CStr
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Jens Axboe <axboe@kernel.dk>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Breno Leitao <leitao@debian.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-fsdevel@vger.kernel.org, llvm@lists.linux.dev, 
-	Tamir Duberstein <tamird@gmail.com>, Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 18, 2025 at 9:16=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
-> wrote:
->
-> This picks up from Michal Rostecki's work[0]. Per Michal's guidance I
-> have omitted Co-authored tags, as the end result is quite different.
->
-> This series is intended to be taken through rust-next. The final patch
-> in the series requires some other subsystems' `Acked-by`s:
-> - drivers/android/binder/stats.rs: rust_binder. Alice, could you take a
->   look?
-> - rust/kernel/device.rs: driver-core. Already acked by gregkh.
-> - rust/kernel/firmware.rs: driver-core. Danilo, could you take a look?
-> - rust/kernel/seq_file.rs: vfs. Christian, could you take a look?
-> - rust/kernel/sync/*: locking-core. Boqun, could you take a look?
->
-> Link: https://lore.kernel.org/rust-for-linux/20240819153656.28807-2-vador=
-ovsky@protonmail.com/t/#u [0]
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1075
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Between Rust 1.79 and 1.86, under `CONFIG_RUST_KERNEL_DOCTESTS=y`,
+`objtool` may report:
 
-Tentatively applied to see how it goes in linux-next, but I will
-rebase for -rc2, so tags are very welcome!
+    rust/doctests_kernel_generated.o: warning: objtool:
+    rust_doctest_kernel_alloc_kbox_rs_13() falls through to next
+    function rust_doctest_kernel_alloc_kvec_rs_0()
 
-    [ Move safety comment below to support older Clippy. - Miguel ]
+(as well as in rust_doctest_kernel_alloc_kvec_rs_0) due to calls to the
+`noreturn` symbol:
 
-I included the additional patch I just sent. In addition, there is a
-`>` typo on the `Deref` commits -- I didn't fix it to avoid adding a
-note everywhere.
+    core::option::expect_failed
 
-Thanks everyone!
+from code added in commits 779db37373a3 ("rust: alloc: kvec: implement
+AsPageIter for VVec") and 671618432f46 ("rust: alloc: kbox: implement
+AsPageIter for VBox").
 
-Cheers,
-Miguel
+Thus add the mangled one to the list so that `objtool` knows it is
+actually `noreturn`.
+
+This can be reproduced as well in other versions by tweaking the code,
+such as the latest stable Rust (1.90.0).
+
+Stable does not have code that triggers this, but it could have it in
+the future. Downstream forks could too. Thus tag it for backport.
+
+See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+for more details.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ tools/objtool/check.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index a5770570b106..3c7ab910b189 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -217,6 +217,7 @@ static bool is_rust_noreturn(const struct symbol *func)
+ 	 * these come from the Rust standard library).
+ 	 */
+ 	return str_ends_with(func->name, "_4core5sliceSp15copy_from_slice17len_mismatch_fail")		||
++	       str_ends_with(func->name, "_4core6option13expect_failed")				||
+ 	       str_ends_with(func->name, "_4core6option13unwrap_failed")				||
+ 	       str_ends_with(func->name, "_4core6result13unwrap_failed")				||
+ 	       str_ends_with(func->name, "_4core9panicking5panic")					||
+
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+-- 
+2.51.0
+
