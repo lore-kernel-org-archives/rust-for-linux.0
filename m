@@ -1,78 +1,65 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5092F60DF
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 10:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695BF1D7E42;
+	Mon, 20 Oct 2025 10:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760954536; cv=none; b=DdxFvD/ZVj2SXPgvvs9vpAzd0s6vY/xKvwOSMAv/hOoQjgfvJmOXyfHs8Kbor23NF5t1nXTVNdA6a2fnEponBjtBJ0+sGoTH5hMPC5BPo8PmfGkGsT6rkLNNZGs0R700vUBtETMK+Qg4jU3D4PGlTf8tgKcCGkeZy8UPW74MOTg=
+	t=1760954870; cv=none; b=soUWl4NbpgJ7G2Noz8HV76CZeE8ZN3N8T612RZdOzyUAATeDvyeWEHCaoHsvUNhOmroPlZHNzTQozoI6A7M8S5LHnnxhdLbTCsuKDnw9x7morTgIhOO7V+cZ8IyeTBv/j3mDuu24mG6uJXkmP4gwwHKzImNyQTUUHeNjuzMIT74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760954536; c=relaxed/simple;
-	bh=YZmkiE6IYqORaoMB85+7KlwkNWG7iNkrs2r7JhIoc70=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aia1N8RoBB5xc2kKdnBSK6oHXWdU/G5nLbRTPnL2ZxcKWLUTEyf0VMtF/dCzA/qgqGFnjAlxBG4w/uNrGt5FAUdbancbZJGloIae6w6qoDXSVcBMKLldA+HM3Qg09PmY/pUY1abdr4C3R1ABmewYi2osFhwID6fWvU4kQAOkI4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mAjnA/rB; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1760954870; c=relaxed/simple;
+	bh=0M7psceSKNec+BNMfLQd3dOi35kp0PFPiLzND396b0c=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=adubLhPXCdyZcVDGImFswGH+gN85/Ciqi2im1FGRStw8oB/M7XtPkqOp1HAaIPkR5SfQeB7aDOHtkOVP9oZFQeRSmOZrArnjET5cp9iMb4cYKVZYI9rTC5GaAuTHXUQ00wgx5sUUlulx1XuOGhmT+NRdtZZ55Y2zZJ7MdHVslaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWTQj9Hu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mAjnA/rB"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4710d174c31so45521095e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 03:02:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760954534; x=1761559334; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ysWWL2E0S+o4/V8T/pUjhBkANb8o2B4A/OaGe1c7O/E=;
-        b=mAjnA/rBeGBR5DmmGPM8Snar/MNkeUrVWf8C0YkfclbNhrmVdCMfVgbFN1gvRgdTqk
-         s080PaWY3dk+t5JBweYqHoph6yHFHPFRWYYhlUU+Ei9RJRSDhzSrOZD+oBdck1ANhd83
-         kq6gnbfc40f8VCDVAEsOInjXbm4GpdS/MJ5s0Rsr4U63MhsqQed38zK3dInC1Dcndub5
-         aOIAyG81HlucO0yEsZn9cWAEWxU4GqLul2mMpJkn8mfxQC1Fae/1JwEgqX8sTqkKo90w
-         F1iANrlR7NnjPgH7BM0imdWBrn1N8Y6lqmkYn96KW8lzAlX6Bv1cYwg1fMCZSuf8OqLH
-         HDZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760954534; x=1761559334;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ysWWL2E0S+o4/V8T/pUjhBkANb8o2B4A/OaGe1c7O/E=;
-        b=Zz9xPELVMa9V3CgdEWkk2+rNW6L4+i+0sCialBppfgBpbG+fy/iJ50zmsmcwRMRxTP
-         LCVwKvGix1FGI2QL4gZ6XWXto4ZFJReRGSXACajJCxs6ha61yP7jMeoCLZ1iz0WM8zu5
-         9tPO3KSwJ91DDLDxeVM82EBRlK3tzuiLin0qlEuWuxJ+FrRb28+V3sGVlD5TylIa1Oh2
-         bA9MdXAhHoqG/IQxCLs+t9JL9vXI9HdmYla8enXKMSF29tqxgUMWAJEjqkwokvQ31rny
-         2qMEWAIjGACJW1HeaVesbPIiSlpHFjgoVyvtBKF961is65BMTYWwBuwFgxJHsfdEX6c5
-         7QBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+hHPiADnpj/u2m4fA+rfBabXU3yBG7YC7IvCLiAFoSOMSMv0lLl2G6lK2ABpua/wcmqVr++zpOM53iF+V5A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7djWKC/QIdXQN25XoGbVCk2ENcR5wmo7+rXLgdWTkd2evqyGi
-	dCcca9/7PjAxqGVi9f1xYwcBI0hiKBwBZSzN1K4MycT6IS+9V0XYycgK5SEbk3JjFw5gjA98vIs
-	E4B2F2Thrkx+abjNXfg==
-X-Google-Smtp-Source: AGHT+IE0ZXAqseWyjpLgReO0ii0OIASivJqIvkm0bcKlmn/cZWguLy7rH50N9m4LwhSIfhdDKruNbEc2euHhR/s=
-X-Received: from wmcn6.prod.google.com ([2002:a05:600c:c0c6:b0:45f:2437:5546])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e86:b0:46d:996b:828c with SMTP id 5b1f17b1804b1-47117879b8dmr83149175e9.10.1760954533559;
- Mon, 20 Oct 2025 03:02:13 -0700 (PDT)
-Date: Mon, 20 Oct 2025 10:02:12 +0000
-In-Reply-To: <20251003222729.322059-8-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWTQj9Hu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B68C4CEF9;
+	Mon, 20 Oct 2025 10:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760954869;
+	bh=0M7psceSKNec+BNMfLQd3dOi35kp0PFPiLzND396b0c=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=bWTQj9Huar+h/bXT8YwORnYlSdYowu0LZCXGtiX9QGAK9oR0xV4XoUw/SzQ/PMOBy
+	 Z8fxL/cWMhvs5YC87okar1saPvO/0Q2ABk8pYCJsk1xEMnE13ZxGHfOeMIQGtRYpUO
+	 1pQqeq/4jyZsTqWpnYZIYBPLwVUGS1WVajUS4jRBcTN/7XqfiUEf/TC87BwXtIVKhm
+	 ei6O6AdN8C9biKuJ9A3bb6wSgX3eJBB9lE9ITo0qdQsVlYXy4vyA+XxAhi3QRKroCL
+	 n6BrOLAmsvCetS8unVKIjnh4plrEHEp4gl9T1b5IQ0RGRNUQibnPXzhek2vftL7SkJ
+	 c9rfVWEPYcB9g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251003222729.322059-1-dakr@kernel.org> <20251003222729.322059-8-dakr@kernel.org>
-Message-ID: <aPYIpGv1wDaKw5kn@google.com>
-Subject: Re: [PATCH 7/7] samples: rust: debugfs_scoped: add example for blobs
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, mmaurer@google.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 20 Oct 2025 12:07:44 +0200
+Message-Id: <DDN2EGMDUX8W.19VJKCEIPAMXI@kernel.org>
+Subject: Re: [PATCH] gpu: nova-core: replace wait_on with kernel equivalents
+Cc: "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251020-nova_wait_on-v1-1-2eb87fb38d14@nvidia.com>
+In-Reply-To: <20251020-nova_wait_on-v1-1-2eb87fb38d14@nvidia.com>
 
-On Sat, Oct 04, 2025 at 12:26:44AM +0200, Danilo Krummrich wrote:
-> Extend the rust_debugfs_scoped sample to demonstrate how to export a
-> large binary object through a ScopedDir.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Mon Oct 20, 2025 at 8:09 AM CEST, Alexandre Courbot wrote:
+> wait_on was a temporary helper function waiting for a kernel crate
+> equivalent.
+>
+> Now that read_poll_timeout and fsleep are available, use them and remove
+> wait_on.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
