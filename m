@@ -1,86 +1,71 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013068.outbound.protection.outlook.com [40.107.201.68])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011000.outbound.protection.outlook.com [40.93.194.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8BE332EC4;
-	Mon, 20 Oct 2025 18:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5373DEAF9;
+	Mon, 20 Oct 2025 19:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760986573; cv=fail; b=X1rg9dquh680n6FJpQCh5RrkVXxPu5cl3EQkNjTlPEgdbTeQ3TunzmmEJO4Rso5pKf6Y5Uxb9FmMmmhVbQeIYe5otsHf9xHONUf4gyqPkRUSV8ccJSbbiofF7+3PK0/7LjayS9JSIEcAVOFFNAMXcoXm0wOmlZl0O3Sh2Rg5AA8=
+	t=1760988898; cv=fail; b=ZYE1pit2bMpvVyLHu2AgjxQKKY6WPJQ9OXnRysIvK2Q7Kx9yEPZgBQ5lmWJPFJ215YRayEUUlL3jNmVx3wWTflnLzmN7TMyJPI6VHDW5nqUFCohU/7/pt3filQaZPeWD5g2cMYiDc4tsDIerh8Pn7LrV2jKsH39keEVL+XtqBJs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760986573; c=relaxed/simple;
-	bh=kOwI9g9lyTC6dFS6q0jm3bgSabJjr/hdWZrC6quTu5M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=setRHDPJHWCdoofM5UFdc9uYiJPZcPNOU9XGOuE60kKdwAtmaQclTKrLLU6xhZ6xNX5r/902w07kgYu37ejcBdyi7SmA8aicJ/+sDUjW0zskQboUIF3jTNX71n0GmeaZFR6kRkEbEu1m7hPzPZHWVlmETGv18NqRnEBES5OGy38=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=b3hK4zM+; arc=fail smtp.client-ip=40.107.201.68
+	s=arc-20240116; t=1760988898; c=relaxed/simple;
+	bh=eCApuLu4oQbTPYuVahw5SMc6h/O8buspgUe06LXV0BU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bKZoAaEXr6OiHi/1v9VYpJIsCsHMAZqfs22DIoWfVBcrS9niC2fVoNwHkClraPm+STNa/1biTIMGNMrUt1E2CToSKgehnKUBENENWXFvEpQzAJzDf7Z4HVNbt4NSd7MfigYgSsjbp11nApFF/E1Q+Sz84tQ4nu7Q5nQrADyxKx0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XpHuM1gs; arc=fail smtp.client-ip=40.93.194.0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="b3hK4zM+"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XpHuM1gs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SH+WEIoFmH5GE5nrnnMnJJlgKG2qL12OJEDiV5SoHXMSoWBsBaCkQ2/yq0922Tm3qFwML8/naxNjVjalUGmEZz1qrJi5oPE1DbJYwjqS0lSv4N6LdXxvQbZsJq1tmm1+ejhGg4v6W4nUQLIa/g3h/qAxXD+LjU5DTLbZg+uaO24I7yW1D0A/5VWpnW0FhJpiUd/5beNyUJO7gUH58EcT2cvytjtwd2q2lamc1WhM345G+GYdX/VV4sDK6H1ooVlI9OVLgVTvpwxIb7nIKvsUaLZ5XxQUs532S0tw2GYfQxY1PJJseSiPXX0f1Gub8OWoG7qiyhZbthkGo0X08yUN3Q==
+ b=GUR7D3hBpnxB8emlP4U6DjYw4rkmps9f/RFM2+RcjsK+KBEPHjLwkLvsPzQw6MUZ/3Vqny6p8s3Yv7zBiV8GzU230nrJfaRav0eNi7XhWfIob1eN+IE5+FQO/UII9iml3I2iNyF67RDzuXUuEn4ANIeUZI5jCaetP1erALznY5aCbcaNVU5kD5HYAOyTZ1pIC6CjeL/S20eQqULdJhfi02kNNXTs1HuqHmX7EJIXMFrN+yldzBRfbg5FfnSI99xHKEm3YjwkcolVsjFwv7T3C7xGX7PLK5c0R5ezQYI8ivjVSoDdiNorwKY7hTznIssnu1k3sTPMS45rAo3HvW8olA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zOtV2OdowQxzPBO85qDcXejZnT4iXxuOeDwpN8lywtk=;
- b=ajdMi3BVqkRMiLvVAbib7FKqHeSbHW+fduro8iA/ksakExPO6jGBwTNCsFvvZy8hgMljuWx50NIq0ArqwPzz9zKQhv0eS62vjmrg+icqYHO/svUchls9iZBO7d7zvrb5tROlHSCOkCDNbYzIiIkapURR7DKvTDo2GLUinbh5IsBNUlR6+0MbWAjswzzsySfYyuK3BGLWmhOmKKcuZz0yLr6FpVfN7NpKcPcYKBXhMkpYO98Bmf78g88Ui7PXhQNZQausKQ9PDc/H9Br/tz4pd0kgXFiNL0CV47kysuSnnjx//63h9S22vcGdq09vp8/LLdCSmAXQptjIbZhUmhWGmw==
+ bh=e6OVW7ocIiGBRMFo+yfL6NHImDSHXrJT6f0Lifj90Vc=;
+ b=oZrsznDYket1EQCrbuF99f5hTqhI9AMM/fiwXtz5zJZLqR2PFD2HGrUPg8Qdko6LpQKDDtWR9GpTG8PiQdHKsKkkUuzWbwiV+oqPlnJTxVC8+83oFWAbUpQzhfN5qHrPiL1H1Iy7TFUXonfFhfXhI8JZE6Lbb/RyxtEruX4NEg0EQh8W0kpUMbABdCJVv+kdXxTpprLOt713PSiswW4irKbaUD2LqzaYE3yQLqVww0+3/40/ZJBZbW9imTuUX5bLMOhcOOul8DwJ6Js3z28Z/oOzPEYy1sHEYAsRRBZmgWUTqkPJXygbQ9tVnBWXsEnf550weTg13yiHEmK5OCS1Zg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zOtV2OdowQxzPBO85qDcXejZnT4iXxuOeDwpN8lywtk=;
- b=b3hK4zM+yXAxcJXcVef4bWtirayKH8fhgOrUekpFmY8cFS3W+qA9HEGsb/KqEaB7qSuT3uuMyskETBH516CecJDnozEOsvDLmjO3ww3V8yyKm0m7uLSkOB+p0saaq52C2bqcuclOUEjpmGDk9Z7mxoGTnriAerb12tnanA4006Wsqm0bH3zGKDm3lFqV7I+w4psSG6np2ZV1Xp9U59GHmwn8WJWt0pRKNioVEuQzeLWr8s2t+y3MV8WKzExJ3oskwN9MICzkSpnrR2Ixt7YK7CvcIjVbe6UH7magw8Ubx1F1IG5i903IK4BXv7zO0LqEl/n8RY1LGClM0fJjXSs0QA==
+ bh=e6OVW7ocIiGBRMFo+yfL6NHImDSHXrJT6f0Lifj90Vc=;
+ b=XpHuM1gsCvhAJJpzMhqnJtzh9hfoBDC0TsKw02H+pPpdzli8C+N10WJ0s6CaLgAfoAQg9BAWA/XNlSzYvbHsIkMMhKvDNrvkdyj3cE/NTfN79lQnm5CGIcZHDREFx3FKTWhkyy4xkZxGV5LSLTPxI3vU/TyKluyAFEdrnSUNLCImHGb/Yr7ULHh+TnefkpLJGXYVzh9Bm21iEx0uVGX4pP17Ve5T+9h7cOYtI3ghCjjqxpPJQbDJ7D6vFP1nIctE2LLMCVhSt1DnOQlMhscwRkLU5jHevPNI/Ejk+kx44Vq1WOfAhY/E4B4bYh0qN2zEDgjUzWM9nmDl5zuCnnohaA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by CH3PR12MB9316.namprd12.prod.outlook.com (2603:10b6:610:1ce::21) with
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by IA1PR12MB6433.namprd12.prod.outlook.com (2603:10b6:208:3af::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
- 2025 18:56:00 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
- 18:56:00 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	acourbot@nvidia.com
-Cc: Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org,
-	Elle Rhumsaa <elle@weathered-steel.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	nouveau@lists.freedesktop.org
-Subject: [PATCH 7/7] nova-core: mm: Add data structures for page table management
-Date: Mon, 20 Oct 2025 14:55:39 -0400
-Message-Id: <20251020185539.49986-8-joelagnelf@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251020185539.49986-1-joelagnelf@nvidia.com>
-References: <20251020185539.49986-1-joelagnelf@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0400.namprd13.prod.outlook.com
- (2603:10b6:208:2c2::15) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+ 2025 19:34:49 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
+ 19:34:49 +0000
+Message-ID: <191ec502-5873-4108-83fc-5ff6a67f90fa@nvidia.com>
+Date: Mon, 20 Oct 2025 12:34:42 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] rust/io: factor common I/O helpers into Io trait
+ and specialize Mmio<SIZE>
+To: Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org
+Cc: dakr@kernel.org, bhelgaas@google.com, kwilczynski@kernel.org,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, cjia@nvidia.com,
+ smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com,
+ kwankhede@nvidia.com, targupta@nvidia.com, zhiwang@kernel.org,
+ acourbot@nvidia.com, joelagnelf@nvidia.com, markus.probst@posteo.de
+References: <20251016210250.15932-1-zhiw@nvidia.com>
+ <20251016210250.15932-2-zhiw@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20251016210250.15932-2-zhiw@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0181.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::6) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,511 +73,638 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|CH3PR12MB9316:EE_
-X-MS-Office365-Filtering-Correlation-Id: 909afe73-7aae-400b-10ab-08de100a4f83
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|IA1PR12MB6433:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8bc4a269-8ea5-453b-1795-08de100fbb50
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xqscSW8zt+Hx89CIoHZXGC3INbTHrsXjU1F34fSpT0MnlB1VrLaRTh10RcVk?=
- =?us-ascii?Q?x8kJjps2H2OZkjtW2HMVQFK60upaEPc90yUJ21EfHv4/XvymNDT7n/VM9zYi?=
- =?us-ascii?Q?0Dtt1X3L7XZeHPlUulsdU0FiEUb9lqpkWga98Rp0nMSxQc660UjQ6z8p/xgD?=
- =?us-ascii?Q?lPHrqEVr33gJPqrExh/Bdrpxbhw0/yfVmpvIems9hzGr7S/sV3IceWPhG5jt?=
- =?us-ascii?Q?9paKIjSHFgDyysf22ng7ZVtoaXj6slhfquAiy68gpnktOMsKfmf96ZhkQEyI?=
- =?us-ascii?Q?ecR4CHCK4Rpee7PlQlj9pZ5coq4i/IGSSwwJ+/NYIcFLDWZlMrghc7QlY/ck?=
- =?us-ascii?Q?RJrhHOtDAabeTJK7/CMWDmAfCXP+zxpVV4aEFlp7kX6mtG6AQmxZjA3jIqCP?=
- =?us-ascii?Q?hlYjaFSpSgp+QD7RucTOPffzAkah7em5ynFVu4e2Eu9qa0Ppk8tholto9UTA?=
- =?us-ascii?Q?5LR/XJqCPuvZmAYBQ+9tYqB3yYkxbHo+JHWhMN5H2t+jMeVXDz+QCRimzjf1?=
- =?us-ascii?Q?isBPis5R/0Uel0HlMCTfPt2UlcMyceEEGspFrs4FCIYbif1zt+Q0wDfIIDZy?=
- =?us-ascii?Q?5kgO8hZUZXgykBX1O+nIn3imNIJCcX1UaSKx6iffTOVOeWEs1UFswwNfQ1F+?=
- =?us-ascii?Q?pD+dJXjbvXktScw7fl3Dotbze0dLBepXU93c18nSQTpWvI2+Oiq4ADBeUgfr?=
- =?us-ascii?Q?h6LBthVJ1S+vrkDFFhZHnyQM1vL6q+gnst6hT4eKxgU+ey4aaDohauZzMxxF?=
- =?us-ascii?Q?3De/uog+Hj4RsM/EKo4/FF87/wkty21pNSLYH6MYWM4GNRjwTTnh4YXRbbvc?=
- =?us-ascii?Q?8AbZiE/ir08Tg6U5rrtgNfDnr1PLP9gWuzzO9Ul41APutYb44B+HGWN/tnIL?=
- =?us-ascii?Q?owjPZgmkVRuXUOmqopN2uUuMe14ixsU56gMB8NYCGPlIz1C39XsXguJcOdtD?=
- =?us-ascii?Q?lq/PKhZsUla7a7Z9mlV8uJkrM0R/AWdEITlQ8niuclx737FtHY03grOfAZIQ?=
- =?us-ascii?Q?COvHAfwfr7gjbbEMjdFppW7yYgvkr6DOiRdFLlrf2YbyBYF5iR9XTfebeBGR?=
- =?us-ascii?Q?4guGC1Fpps6V+R6hVJ3xsBms7RRrVFDu17HKEY7yaqvrV0KmMVN+oVKb+IzM?=
- =?us-ascii?Q?U1VqyTa9InfAydFbYDjL0DljYf/imy7SAFRJbDGAnuL2bItfqKcHvMpvA9AP?=
- =?us-ascii?Q?1jKDlRfnggV9/WrLylqjdvzJm8oBpujjmcGhH4UaqnckuKgnzoZAqVAoSu4r?=
- =?us-ascii?Q?4ZLQWQ0N/nvtHJK4XyR0+KSrhDU/uJj3I1i/p/VZGY/LlG7dygCNHKCrkGTZ?=
- =?us-ascii?Q?oZdb/qjh27o/xKguwGgW5554hkJAtdl0Xemqp8TlQUx5iUS+sahY5Ocd0HAM?=
- =?us-ascii?Q?SXBeMpkiMcWg91MkyLHfMInTVBSYjv8o4MGBzmb3cve3csmoWcYjriaLf4IT?=
- =?us-ascii?Q?287Rsx8nGE6wb2g8qHR4nZ78xNaTnzz1?=
+	=?utf-8?B?aXVFb0o1RGo4Z2ozeHZjWmRDaEJEaGNTRVRwQk9FVFRpL3dDZmdPZUV2YS9m?=
+ =?utf-8?B?SWZpNWVRanJzdi9yVWVsSjJ1QWtjZnZZSE9ZTFV4R3lIbWNSK2NuNUx5Q3dk?=
+ =?utf-8?B?Sm8yRVR6a3k1NExhTjFkR0xBTnkzdHQvcHp0Y1Z3SS9NVXF3Nko0ZkN1ZHdI?=
+ =?utf-8?B?VllYenlvd0pySU5kd2FJUzB6bEpKaUZkNnBxaWxPUkFyY2hGeVNpdEZDRno0?=
+ =?utf-8?B?RGsvNndmbmNmUWVrTHExZm9LM0N3THJjbDErbFI2dHYxYnhVQ0hETEd1NDRX?=
+ =?utf-8?B?MDhPN2Z6d3paTktmTjNGVUNqSFdnS2VxT0N0bWpaSnFOaUxwenZOY2ZUT0Fv?=
+ =?utf-8?B?RDJ6MGdnNFFRbkVGNitFS1NFa2JxY0ZNbnZHaEZ5QTJSYUNnK1crM1hweHVT?=
+ =?utf-8?B?N2N2aWVIQUQwKzdQa1o4dkNpZkw0eVE3cWlZVW8wRnJnaEszb0NRdTZ6Nko2?=
+ =?utf-8?B?VjZJeTRNbHFLYWwzUldyTk4wa1E1UWpwRmlWTjBCVGUxQVJGV0cyOUpwU0U2?=
+ =?utf-8?B?ZkdySW1ZZUhxMFVRNDl2ZkZ1aVFvWUl6V2U0aVVOMDFzYVpQSWViRldFRjBa?=
+ =?utf-8?B?ajRoWFlRYkc5aXB6OHJXMXpNczVQU3BZMFhUY3M2bnYxN29heDhPZk50bGp6?=
+ =?utf-8?B?ZlUva3pBZFZpa3JBQVFHTlhRSkRnQkNVTVkrNU1HS0E2eUgzRkx4L2ZvUFNp?=
+ =?utf-8?B?dElUbCtKU3I5NzBPTTNVTU5NZU5VNHlRbHNLblViOW1NaVU1T3FWTmdab3ZM?=
+ =?utf-8?B?Wk1vUlhSMHZucXFXWnE2Tm85bEE0cVpUU1BCcVhla0ZHOXBTbjVVd0srUEhi?=
+ =?utf-8?B?d0ZUck55WDNWWGEvWWtVRVdveGVuUHdkamFXU1RFeGYyd0dCY3BBN253YlRR?=
+ =?utf-8?B?UGhHTzlkS0FoeVBTRExTUFNaUVdkeTg5aXJsNE43WTdDRlNBWjdhNUY3ckc1?=
+ =?utf-8?B?L0gwc21pUzc3c0YvZjdha0FHQ1k5R1hXdDgrVi9xNk9pNDNJQWtLT0hzdDIx?=
+ =?utf-8?B?akxXKzFQQ0J6dXpXM0M1S2FjMkY4Q1c2YXFmQ0VMdklNQ2l2c00xczQwWEJP?=
+ =?utf-8?B?ZnMrVWwwMGVySWg1NU9Ba1FRTzhSc3BxdmNwZkZwV21NNkNGR1BPWm9lSitO?=
+ =?utf-8?B?VERnUS8xU0VSQWJHbGNVUi9ObEkyTFg5eFRmc2x1Mm5hblROWHBkN2U4cXZl?=
+ =?utf-8?B?eTlOM3BPSEp3QXRCVGdTdmZNY2lma1ZrRFIrWXEvRmZPb1RnUmEwQ1ZiMVE5?=
+ =?utf-8?B?QXJaKzRwOGllM1RURWNBTkFqNHQ1N2JhWmNQWGNzaVh0Tm81bkpCdExya0sr?=
+ =?utf-8?B?TWlGdGZSa09MVGdhWDNDRVo0QVJnQys3bFRoTlhuVWQyYk4veG5LVmtITTds?=
+ =?utf-8?B?dG1lV0ZlWUxjYzBsS2FERFZUbi9GNmJaaE5KcE41M3hEazJJeHl4a0gvbWtD?=
+ =?utf-8?B?VzNOc0U3dnBFTDk1OE8xd1hYeTJyQkpXek9OS05nZnJvdW82cUwvdnJ0d1VI?=
+ =?utf-8?B?aVYycHMxRnNzVjBmdmY1Q0NjQm56a3h4amtReXhBbWl0RGFwQmNYWnhHWlJj?=
+ =?utf-8?B?ZFZSN2RxMWg5SHd0TmN0VmZIVlYxc1YyQkNUamdya3FSbHJreGN5U2lyU0Jp?=
+ =?utf-8?B?KzJzb1FkcFBPRi92ZE4zNG96VG5OK3FFVlR5TVpHcHVzSjZRMlpJQnZFWWVG?=
+ =?utf-8?B?YXZUZFFWWTRSd05RaWhNTHFraUthTU94RGx0NC9IWGw0TUJpUWVHeStSVWdJ?=
+ =?utf-8?B?MHB3NWZ6dmVCQmpsMkZKanlobXdoZUdDbmIrSEtjQS9wbEFhM2ZxSTRUdEJU?=
+ =?utf-8?B?ZS9jNkVoMUtmbE4yNzBuVDRDZHJRcTVzNzR0NEdKTElqeUxpM2FuN3JObVQy?=
+ =?utf-8?B?REIyK242WXZvUThPSDZ4U3hhQXgxeDdtNnJ0bWZ5V202SndVa0RldVRkaVJP?=
+ =?utf-8?Q?Axhtc324H+oImVsHCERTdJ/H9DdeTVuf?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dWBjzIRcL/wuJ2Ub3D/dpmM2GpEqMaPFC0BpPmPgVL9xKaYnHq1J8iFGfKKb?=
- =?us-ascii?Q?0fCEqMsFV8n4pJoCWMK7jZA2ZrBaM7nV3YwjCaBJWRSusxR6dLAppYhxO5un?=
- =?us-ascii?Q?SRS3MFXXd1/GyFAqPZ4tOGpkoyInBMPQM6nUesBv/aLFzHHW/X93R9ZRMDDS?=
- =?us-ascii?Q?E18O4lNeRnhenNDBoxuXrlt80gtEJYTUihrQK9iq4t/J3NeCdjZMc4tXg92j?=
- =?us-ascii?Q?bh7ys5fc7Th5bb7b3qWhiicgxzPdWxALU3sonQkjiolcayZLjOdv9J/Gmi1Q?=
- =?us-ascii?Q?hh9A0UBObF4VivNQXPI3FiaMYED3ePdKQ73D1PYFpnCeg7c2aAkYc2bWtfwG?=
- =?us-ascii?Q?2yJNGfNNGwdXex4eFPjlNX73nMuO8EuTqWnUp+XPkCBxg6P9i0Oy8owOk3oa?=
- =?us-ascii?Q?E7AwfalBdYH/0y3QIicxrAgVcSAZkzpRZ8IrbSBNtMEaHcr6kq2OKducY2pg?=
- =?us-ascii?Q?yivtluE9XkghaLHVM+5adan0NcubF7AfaFdz1EuxPYfpz1ggXqnhnZdkvQVr?=
- =?us-ascii?Q?WnB4krm6bE/NWi9VOEhJT2ARusB2w68yznCCFjXgylw0k3bzwYJ6OhPDnz7a?=
- =?us-ascii?Q?d1q86lP+VTvO9FYPzBGvGUiImxhix2U7uE7/lc6Aya9RU1xFwAgKcG2p+FWJ?=
- =?us-ascii?Q?xTMwaxkdKp9uEj2i3zC/QggxRL2pDc9/DICQtJ7C3YHhCWFax3rRnhWCZOdt?=
- =?us-ascii?Q?8dEHxHzNgEw2+8kl5+0iOVP7Mr+LrGsrDyoZXUqI+OWTpAsAOGOyOcZkGgu/?=
- =?us-ascii?Q?OJd5GUwGSy/NGGP5s7WpAyPK8T1yykTFLkgLFtLiFP7hehWUw2P/0qUJ02TA?=
- =?us-ascii?Q?rWJ0YVBPOZVWTSMUnE4BJEjgZLIVbZdoy8NeNVNm5IQri/lSWdvW46GMW1AN?=
- =?us-ascii?Q?MX5njuxqXKDwI18JiIIQHCOV560Vkqrvg2GPuOdp7/6i5PIpqNIQGZtYEFGQ?=
- =?us-ascii?Q?8jUZ74dETzyLNNGE7865sL0gl33NGxWfnKAuhsY1jpfnd+OhY8tnfToNMI+Y?=
- =?us-ascii?Q?PYBiW1E04IuESpX+HBom2M9E7sstvvx9eYOFv0EdSTMvLv6IjphnkW3sHFC2?=
- =?us-ascii?Q?p+tU0mqZXf5EItvEa+GitlCZJbfLpI5GFAOViw20xgLgHuVUTSLabbxWH2uO?=
- =?us-ascii?Q?wEwY5V6hQjlyrxJRFdqoiyQFxPg5UZ4We/sDcY16FTSUpeNIQDsENv3wRGKe?=
- =?us-ascii?Q?797GJvCHE5q0M7KA/rNYTLh6NInphO1Mfrw8UY7nLBNnH27h9J9MdLWfEFWz?=
- =?us-ascii?Q?zx9STJIueNqhun6io/FgJS7rp/hr0NH8hY591wYQiB0B73ls2URq+LjBFGck?=
- =?us-ascii?Q?1I/4MTgBmDmg9UYzKKKWQqdL9j69bizdLAgxxEGj/tL3Y1B8s4Wgs077e6Bz?=
- =?us-ascii?Q?qV/HdKsWy820JEZz7jY2SVlkL/4zA270JqkkZzfaxW22xxii2vyCZgJvoGFW?=
- =?us-ascii?Q?nqd1L0Gk9YwWTwYQ9r9/q3hLZbCmyV8f+jhI/8JL9H6FGfbQBajWWeRFGmzF?=
- =?us-ascii?Q?S1HTJn82mRL4t7FvIX/lRDt/mz/v0M3SDgHk2DUaVRU+7NL5fy+Hb+KwJIOS?=
- =?us-ascii?Q?M3ki9uUXSRZ53onmV2JR79ebrzicrcTP2EnvY0f3?=
+	=?utf-8?B?U0E3VUdWRXpZelJTUU54K1NQUnlYQlNXTXJQcFEyZWJNWUsyZUxoY0UzWTRX?=
+ =?utf-8?B?elVQaHpmQTg4WUZjYUg5UTJvaG9wYlVSaUszc3ExWXFyT0wrN0svckJzc2Yy?=
+ =?utf-8?B?NnhhY1lPWk1HVnI1QWg5TEw1NHE0ZVhGMTRIWkpoM1JlaC9ZSTh6NVRPZElo?=
+ =?utf-8?B?Yzhic2haV2Q3MHh1WVcrRHIrYkE4UG1JUGZ3QVlWbXkxRllzZ1NWSlg3L1FG?=
+ =?utf-8?B?T1ZSTnQwbVZVcHRzRWVNVjVqTE9wRERjNlBzd09UbVg5TWVIbHl2UzZVeEpT?=
+ =?utf-8?B?c0VoN28xTnF2MXB1eU9jZktjVzZ3amdobjNvcEovM3c1MXBnY1pDd0J1b0FC?=
+ =?utf-8?B?SEhENFlKTkpnV1NjQ0lKZHJKL3I2cUY3Z0NVRUk2TkRHaFIzY2ZnRkt2L011?=
+ =?utf-8?B?YlROUTlzZDYyUVNKUktKSjZ1WTQ4Rmg0d1B3UW1laGJTVmNRcnJ4STJaMEd6?=
+ =?utf-8?B?NmdVNEE3NkNzVHBVK0FUMTY2akpDakpFbWlKZ0o1RUZhOFlrU0M3ZWYzOUM4?=
+ =?utf-8?B?dXg2RGZpQmdPN2JQQzRiS2Q1WEdBVEVzZkF2eWxxZkw1THdaejBna3FiZ283?=
+ =?utf-8?B?Wm9KOFZOOXZIMWhxalB3bVJnUlpmWWFuR1o3eFJuSHo0amRHRFR0UEw3NnlQ?=
+ =?utf-8?B?bU9pUXVyc1FrSVFMbmxTR3ZpRGpqTHdTTjIzbE41bE9BK3Rqcy94MXI1K3Q1?=
+ =?utf-8?B?QTFmOElYVnBEZnpHaW9nenRNc3lRaTU0N2l2R1ZVMktNdDBqSnVVeEtCZ3Fh?=
+ =?utf-8?B?ZkloVzZjVHhlMHhCa0UrYktsNVZVSEx2RVFoMjRGRWNCTjJsRXNTak9HTnZ6?=
+ =?utf-8?B?WXMxS0VnY2UyVGt2R0hoT0RVQlhBejgzVmJ1Q3ltdVpQbXZLUFZoVHVzd0VF?=
+ =?utf-8?B?ZG4rZzcrMHlZWitrR0lRbERmcnpkck9zZ1RRQzFDaDBiOG9TeXFqTzV6SWo3?=
+ =?utf-8?B?bGhRK2QwWk93bHdaUUdkdStRNkdEK0NhM014c3h5NEhmWEM0cEc0Z1NVM2M4?=
+ =?utf-8?B?ZDFvL0Z1OUpMblJKa1VjOENTYnRqN3NUN1BhRmh6eUNuRXRSVmhoK2tJNUNF?=
+ =?utf-8?B?azNqaGtQNERGR2dpSjBWRVduOFdWMW5KSmNLMWkxbk5tSVp6SzEyV1RBdVI1?=
+ =?utf-8?B?NFhhVTYrdXc2eE4zYlFmemhQT2Y4WEZpYVE5c0NYdmhRRmlzZ3pmMkRNOTRD?=
+ =?utf-8?B?bjZGa2E2aHlxVjNVSjJUaGVha1VDOHY4aUVIcUhoWnk4RVI1elhSQkd2d0Yy?=
+ =?utf-8?B?NTZvM0hEcjhxcklvZnpLU0dlSnFCdnJkcVRERHFwdGplaHBybm0xVVVhVFVE?=
+ =?utf-8?B?ZEpnZFltTThJU2N1UWhEK1M4QWFIUlVNVVNYWHZpTS96V1FtTHB4RTJLWFVM?=
+ =?utf-8?B?YXRPVzR1RWFtRThUQ3JhVWE5bDhLRm9pUkF5ZWo2N2wxTm1MdVRTMkFjSDhT?=
+ =?utf-8?B?RnI4eXZxaTBrNFFlSmg0UStNRWIvR2d5NDQvYnlvYVpNOUkvajRHQWlSYTcr?=
+ =?utf-8?B?bFBsYnl0MjJGVTZvU0pHeEtNUncyWkZDKzNHTyt0aEpocTJDcmpBaWUyYmxB?=
+ =?utf-8?B?QlM0ZWs1Vnhkd0dzT2pNb2RnTlJSY1ptWHhjREdjYU4xT05vbm5ldzJnRng2?=
+ =?utf-8?B?Z2ovYWFwanZVN1JHUmhiUG5WZ1pacndLY1duVlIvOXpvc3R6R2pIekdVRytN?=
+ =?utf-8?B?dUhmcmJTZ2FTM0FLRHcrL3VLajlrOGwva00vbjNEcml5QlNXNEVwazJGU1Y0?=
+ =?utf-8?B?SkZSSHl1TFQwY3NLV1crN05mTk4yKzhaZWFoTTdEVGJEVUg0bHRZK01jd0Zp?=
+ =?utf-8?B?U00vT3VrZUVqY2JmWWNXVnlRLzdHUmRPdGVnRHRQL0d5TktSUkNMVlNhSVZi?=
+ =?utf-8?B?SG5JMWNuaEhBN25kQmZzbFRMNXlmTXZtazdFWUJDTVhpRDdHK2U5c2F2VnVt?=
+ =?utf-8?B?M3A0Y0tSc01pRmVsandkRStqUFdDb0pXYm9FVlczMEZMeSttalNpdnRGaENU?=
+ =?utf-8?B?dHl3UVUwdVRxc3NhUzFKNGVhT21iUzhUODgxNEFVaFJFT0pjQlNBK0lHcUdT?=
+ =?utf-8?B?L2NQNjhoY3B6K09iRWFkQzFJQWVKTG1nRGlsQ3E0bFFMNjQ2Y1VFSXNpOGZ6?=
+ =?utf-8?Q?QTCx0mGfw3lqcqYLEpFgJNBXc?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 909afe73-7aae-400b-10ab-08de100a4f83
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bc4a269-8ea5-453b-1795-08de100fbb50
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 18:56:00.4829
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 19:34:48.9164
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IDtWrVFdU2TxXQnuzDsPlEJMgeyoWhvmIhcaDUG79DN+fPs1P8CY2Vm2X5hKUU0wyzb3knSHrrH8PMWM6TDrMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9316
+X-MS-Exchange-CrossTenant-UserPrincipalName: wrmT/XvNpHG8YnwlcVej77muFliQNhOfmeBBuYcy0sVqHfXKsRpGywu+vafFEslHOSEfAu7yfEDvdNxbMlYQEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6433
 
-Add data structures and helpers for page table management. Uses
-bitfield for cleanly representing and accessing the bitfields in the
-structures.
+On 10/16/25 2:02 PM, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct.
+> 
+> To establish a cleaner layering between the I/O interface and its concrete
+> backends, paving the way for supporting additional I/O mechanisms in the
+> future, Io<SIZE> need to be factored.
+> 
+> Factor the common helpers into a new Io trait, and moves the MMIO-specific
+> logic into a dedicated Mmio<SIZE> type implementing that trait. Rename the
+> IoRaw to MmioRaw and pdate the bus MMIO implementations to use MmioRaw.
+> 
+> No functional change intended.
+> 
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/regs/macros.rs | 36 +++++------
+>  rust/kernel/io.rs                    | 89 +++++++++++++++++-----------
+>  rust/kernel/io/mem.rs                | 16 ++---
+>  rust/kernel/pci.rs                   | 10 ++--
+>  4 files changed, 87 insertions(+), 64 deletions(-)
 
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
----
- drivers/gpu/nova-core/mm/mod.rs   |   1 +
- drivers/gpu/nova-core/mm/types.rs | 405 ++++++++++++++++++++++++++++++
- 2 files changed, 406 insertions(+)
- create mode 100644 drivers/gpu/nova-core/mm/types.rs
+Hi Zhi,
 
-diff --git a/drivers/gpu/nova-core/mm/mod.rs b/drivers/gpu/nova-core/mm/mod.rs
-index 54c7cd9416a9..f4985780a8a1 100644
---- a/drivers/gpu/nova-core/mm/mod.rs
-+++ b/drivers/gpu/nova-core/mm/mod.rs
-@@ -1,3 +1,4 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- pub(crate) mod pramin;
-+pub(crate) mod types;
-diff --git a/drivers/gpu/nova-core/mm/types.rs b/drivers/gpu/nova-core/mm/types.rs
-new file mode 100644
-index 000000000000..0a2dec6b9145
---- /dev/null
-+++ b/drivers/gpu/nova-core/mm/types.rs
-@@ -0,0 +1,405 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Page table data management for NVIDIA GPUs.
-+//!
-+//! This module provides data structures for GPU page table management, including
-+//! address types, page table entries (PTEs), page directory entries (PDEs), and
-+//! the page table hierarchy levels.
-+//!
-+//! # Examples
-+//!
-+//! ## Creating and writing a PDE
-+//!
-+//! ```no_run
-+//! let new_pde = Pde::default()
-+//!     .set_valid(true)
-+//!     .set_aperture(AperturePde::VideoMemory)
-+//!     .set_table_frame_number(new_table.frame_number());
-+//! // Call a function to write PDE to VRAM address
-+//! write_pde(pde_addr, new_pde)?;
-+//! ```
-+//!
-+//! ## Given a PTE, Get or allocate a PFN (page frame number).
-+//!
-+//! ```no_run
-+//! fn get_frame_number(pte_addr: VramAddress) -> Result<Pfn> {
-+//!     // Call a function to read 64-bit PTE value from VRAM address
-+//!     let pte = Pte(read_u64_from_vram(pte_addr)?);
-+//!     if pte.valid() {
-+//!         // Return physical frame number from existing mapping
-+//!         Ok(Pfn::new(pte.frame_number()))
-+//!     } else {
-+//!         // Create new PTE mapping
-+//!         // Call a function to allocate a physical page, returning a Pfn
-+//!         let phys_pfn = allocate_page()?;
-+//!         let new_pte = Pte::default()
-+//!             .set_valid(true)
-+//!             .set_frame_number(phys_pfn.raw())
-+//!             .set_aperture(AperturePte::VideoMemory)
-+//!             .set_privilege(false)   // User-accessible
-+//!             .set_read_only(false);  // Writable
-+//!
-+//!         // Call a function to write 64-bit PTE value to VRAM address
-+//!         write_u64_to_vram(pte_addr, new_pte.raw())?;
-+//!         Ok(phys_pfn)
-+//!     }
-+//! }
-+//! ```
-+
-+#![expect(dead_code)]
-+
-+/// Memory size constants
-+pub(crate) const KB: usize = 1024;
-+pub(crate) const MB: usize = KB * 1024;
-+
-+/// Page size: 4 KiB
-+pub(crate) const PAGE_SIZE: usize = 4 * KB;
-+
-+/// Page Table Level hierarchy
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+pub(crate) enum PageTableLevel {
-+    Pdb, // Level 0 - Page Directory Base
-+    L1,  // Level 1
-+    L2,  // Level 2
-+    L3,  // Level 3 - Dual PDE (128-bit entries)
-+    L4,  // Level 4 - PTEs
-+}
-+
-+impl PageTableLevel {
-+    /// Get the entry size for this level.
-+    pub(crate) fn entry_size(&self) -> usize {
-+        match self {
-+            Self::L3 => 16, // 128-bit dual PDE
-+            _ => 8,         // 64-bit PDE/PTE
-+        }
-+    }
-+
-+    /// PDE levels constant array for iteration.
-+    const PDE_LEVELS: [PageTableLevel; 4] = [
-+        PageTableLevel::Pdb,
-+        PageTableLevel::L1,
-+        PageTableLevel::L2,
-+        PageTableLevel::L3,
-+    ];
-+
-+    /// Get iterator over PDE levels.
-+    pub(crate) fn pde_levels() -> impl Iterator<Item = PageTableLevel> {
-+        Self::PDE_LEVELS.into_iter()
-+    }
-+}
-+
-+/// Memory aperture for Page Directory Entries (PDEs)
-+#[repr(u8)]
-+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-+pub(crate) enum AperturePde {
-+    #[default]
-+    Invalid = 0,
-+    VideoMemory = 1,
-+    SystemCoherent = 2,
-+    SystemNonCoherent = 3,
-+}
-+
-+impl From<u8> for AperturePde {
-+    fn from(val: u8) -> Self {
-+        match val {
-+            1 => Self::VideoMemory,
-+            2 => Self::SystemCoherent,
-+            3 => Self::SystemNonCoherent,
-+            _ => Self::Invalid,
-+        }
-+    }
-+}
-+
-+impl From<AperturePde> for u8 {
-+    fn from(val: AperturePde) -> Self {
-+        val as u8
-+    }
-+}
-+
-+/// Memory aperture for Page Table Entries (PTEs)
-+#[repr(u8)]
-+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-+pub(crate) enum AperturePte {
-+    #[default]
-+    VideoMemory = 0,
-+    PeerVideoMemory = 1,
-+    SystemCoherent = 2,
-+    SystemNonCoherent = 3,
-+}
-+
-+impl From<u8> for AperturePte {
-+    fn from(val: u8) -> Self {
-+        match val {
-+            0 => Self::VideoMemory,
-+            1 => Self::PeerVideoMemory,
-+            2 => Self::SystemCoherent,
-+            3 => Self::SystemNonCoherent,
-+            _ => Self::VideoMemory,
-+        }
-+    }
-+}
-+
-+impl From<AperturePte> for u8 {
-+    fn from(val: AperturePte) -> Self {
-+        val as u8
-+    }
-+}
-+
-+/// Common trait for address types
-+pub(crate) trait Address {
-+    /// Get raw u64 value.
-+    fn raw(&self) -> u64;
-+
-+    /// Convert an Address to a frame number.
-+    fn frame_number(&self) -> u64 {
-+        self.raw() >> 12
-+    }
-+
-+    /// Get the frame offset within an Address.
-+    fn frame_offset(&self) -> u16 {
-+        (self.raw() & 0xFFF) as u16
-+    }
-+}
-+
-+bitfield! {
-+    pub(crate) struct VramAddress(u64), "Physical VRAM address representation." {
-+        11:0    offset          as u16;    // Offset within 4KB page
-+        63:12   frame_number    as u64;    // Frame number
-+    }
-+}
-+
-+impl Address for VramAddress {
-+    fn raw(&self) -> u64 {
-+        self.0
-+    }
-+}
-+
-+impl From<Pfn> for VramAddress {
-+    fn from(pfn: Pfn) -> VramAddress {
-+        VramAddress::default().set_frame_number(pfn.raw())
-+    }
-+}
-+
-+bitfield! {
-+    pub(crate) struct VirtualAddress(u64), "Virtual address representation for GPU." {
-+        11:0    offset      as u16;    // Offset within 4KB page
-+        20:12   l4_index    as u16;    // Level 4 index (PTE)
-+        29:21   l3_index    as u16;    // Level 3 index
-+        38:30   l2_index    as u16;    // Level 2 index
-+        47:39   l1_index    as u16;    // Level 1 index
-+        56:48   l0_index    as u16;    // Level 0 index (PDB)
-+
-+        63:12   frame_number as u64;   // Frame number (combination of levels).
-+    }
-+}
-+
-+impl VirtualAddress {
-+    /// Get index for a specific page table level.
-+    ///
-+    /// # Example
-+    ///
-+    /// ```no_run
-+    /// let va = VirtualAddress::default();
-+    /// let pte_idx = va.level_index(PageTableLevel::L4);
-+    /// ```
-+    pub(crate) fn level_index(&self, level: PageTableLevel) -> u16 {
-+        match level {
-+            PageTableLevel::Pdb => self.l0_index(),
-+            PageTableLevel::L1 => self.l1_index(),
-+            PageTableLevel::L2 => self.l2_index(),
-+            PageTableLevel::L3 => self.l3_index(),
-+            PageTableLevel::L4 => self.l4_index(),
-+        }
-+    }
-+}
-+
-+impl Address for VirtualAddress {
-+    fn raw(&self) -> u64 {
-+        self.0
-+    }
-+}
-+
-+impl From<Vfn> for VirtualAddress {
-+    fn from(vfn: Vfn) -> VirtualAddress {
-+        VirtualAddress::default().set_frame_number(vfn.raw())
-+    }
-+}
-+
-+bitfield! {
-+    pub(crate) struct Pte(u64), "Page Table Entry (PTE) to map virtual pages to physical frames." {
-+        0:0     valid           as bool;    // (1 = valid for PTEs)
-+        1:1     privilege       as bool;    // P - Privileged/kernel-only access
-+        2:2     read_only       as bool;    // RO - Write protection
-+        3:3     atomic_disable  as bool;    // AD - Disable atomic ops
-+        4:4     encrypted       as bool;    // E - Encryption enabled
-+        39:8    frame_number    as u64;     // PA[39:8] - Physical frame number (32 bits)
-+        41:40   aperture        as u8 => AperturePte;   // Memory aperture type.
-+        42:42   volatile        as bool;    // VOL - Volatile flag
-+        50:43   kind            as u8;      // K[7:0] - Compression/tiling kind
-+        63:51   comptag_line    as u16;     // CTL[12:0] - Compression tag line
-+    }
-+}
-+
-+impl Pte {
-+    /// Set the physical address mapped by this PTE.
-+    pub(crate) fn set_address(&mut self, addr: VramAddress) {
-+        self.set_frame_number(addr.frame_number());
-+    }
-+
-+    /// Get the physical address mapped by this PTE.
-+    pub(crate) fn address(&self) -> VramAddress {
-+        VramAddress::default().set_frame_number(self.frame_number())
-+    }
-+
-+    /// Get raw u64 value.
-+    pub(crate) fn raw(&self) -> u64 {
-+        self.0
-+    }
-+}
-+
-+bitfield! {
-+    pub(crate) struct Pde(u64), "Page Directory Entry (PDE) pointing to next-level page tables." {
-+        0:0     valid_inverted       as bool;    // V - Valid bit (0=valid for PDEs)
-+        2:1     aperture             as u8 => AperturePde;      // Memory aperture type
-+        3:3     volatile             as bool;    // VOL - Volatile flag
-+        39:8    table_frame_number   as u64;     // PA[39:8] - Table frame number (32 bits)
-+    }
-+}
-+
-+impl Pde {
-+    /// Check if PDE is valid.
-+    pub(crate) fn is_valid(&self) -> bool {
-+        !self.valid_inverted() && self.aperture() != AperturePde::Invalid
-+    }
-+
-+    /// The valid bit is inverted so add an accessor to flip it.
-+    pub(crate) fn set_valid(&self, value: bool) -> Pde {
-+        self.set_valid_inverted(!value)
-+    }
-+
-+    /// Set the physical table address mapped by this PDE.
-+    pub(crate) fn set_table_address(&mut self, addr: VramAddress) {
-+        self.set_table_frame_number(addr.frame_number());
-+    }
-+
-+    /// Get the physical table address mapped by this PDE.
-+    pub(crate) fn table_address(&self) -> VramAddress {
-+        VramAddress::default().set_frame_number(self.table_frame_number())
-+    }
-+
-+    /// Get raw u64 value.
-+    pub(crate) fn raw(&self) -> u64 {
-+        self.0
-+    }
-+}
-+
-+/// Dual PDE at Level 3 - 128-bit entry containing both LPT and SPT pointers.
-+/// Lower 64 bits = big/large page, upper 64 bits = small page.
-+///
-+/// # Example
-+///
-+/// ## Set the SPT (small page table) address in a Dual PDE
-+///
-+/// ```no_run
-+/// // Call a function to read dual PDE from VRAM address
-+/// let mut dual_pde: DualPde = read_dual_pde(dpde_addr)?;
-+/// // Call a function to allocate a page table and return its VRAM address
-+/// let spt_addr = allocate_page_table()?;
-+/// dual_pde.set_spt(Pfn::from(spt_addr), AperturePde::VideoMemory);
-+/// // Call a function to write dual PDE to VRAM address
-+/// write_dual_pde(dpde_addr, dual_pde)?;
-+/// ```
-+#[repr(C)]
-+#[derive(Debug, Clone, Copy)]
-+pub(crate) struct DualPde {
-+    pub lpt: Pde, // Large/Big Page Table pointer (2MB pages) - bits 63:0 (lower)
-+    pub spt: Pde, // Small Page Table pointer (4KB pages) - bits 127:64 (upper)
-+}
-+
-+impl DualPde {
-+    /// Create a new empty dual PDE.
-+    pub(crate) fn new() -> Self {
-+        Self {
-+            spt: Pde::default(),
-+            lpt: Pde::default(),
-+        }
-+    }
-+
-+    /// Set the Small Page Table address with aperture.
-+    pub(crate) fn set_small_pt_address(&mut self, addr: VramAddress, aperture: AperturePde) {
-+        self.spt = Pde::default()
-+            .set_valid(true)
-+            .set_table_frame_number(addr.frame_number())
-+            .set_aperture(aperture);
-+    }
-+
-+    /// Set the Large Page Table address with aperture.
-+    pub(crate) fn set_large_pt_address(&mut self, addr: VramAddress, aperture: AperturePde) {
-+        self.lpt = Pde::default()
-+            .set_valid(true)
-+            .set_table_frame_number(addr.frame_number())
-+            .set_aperture(aperture);
-+    }
-+
-+    /// Check if has valid Small Page Table.
-+    pub(crate) fn has_small_pt_address(&self) -> bool {
-+        self.spt.is_valid()
-+    }
-+
-+    /// Check if has valid Large Page Table.
-+    pub(crate) fn has_large_pt_address(&self) -> bool {
-+        self.lpt.is_valid()
-+    }
-+
-+    /// Set SPT (Small Page Table) using Pfn.
-+    pub(crate) fn set_spt(&mut self, pfn: Pfn, aperture: AperturePde) {
-+        self.spt = Pde::default()
-+            .set_valid(true)
-+            .set_aperture(aperture)
-+            .set_table_frame_number(pfn.raw());
-+    }
-+}
-+
-+/// Virtual Frame Number - virtual address divided by 4KB.
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+pub(crate) struct Vfn(u64);
-+
-+impl Vfn {
-+    /// Create a new VFN from a frame number.
-+    pub(crate) const fn new(frame_number: u64) -> Self {
-+        Self(frame_number)
-+    }
-+
-+    /// Get raw frame number.
-+    pub(crate) const fn raw(&self) -> u64 {
-+        self.0
-+    }
-+}
-+
-+impl From<VirtualAddress> for Vfn {
-+    fn from(vaddr: VirtualAddress) -> Self {
-+        Self(vaddr.frame_number())
-+    }
-+}
-+
-+/// Physical Frame Number - physical address divided by 4KB.
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+pub(crate) struct Pfn(u64);
-+
-+impl Pfn {
-+    /// Create a new PFN from a frame number.
-+    pub(crate) const fn new(frame_number: u64) -> Self {
-+        Self(frame_number)
-+    }
-+
-+    /// Get raw frame number.
-+    pub(crate) const fn raw(&self) -> u64 {
-+        self.0
-+    }
-+}
-+
-+impl From<VramAddress> for Pfn {
-+    fn from(addr: VramAddress) -> Self {
-+        Self(addr.frame_number())
-+    }
-+}
+This fails to build for me. Looking closer, I see that the doctests are
+failing, which implies that you must not be building them. 
+
+Can I suggest that you set this, so as to avoid this in the future:
+
+    CONFIG_RUST_KERNEL_DOCTESTS=y
+
+And here is a diff that fixes the build for me, with that config
+option set:
+
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 10a6a1789854..d35cd39e32bf 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -52,11 +52,11 @@ struct Inner<T: Send> {
+ /// # Examples
+ ///
+ /// ```no_run
+-/// # use kernel::{bindings, device::{Bound, Device}, devres::Devres, io::{Io, IoRaw}};
++/// # use kernel::{bindings, device::{Bound, Device}, devres::Devres, io::{Mmio, MmioRaw}};
+ /// # use core::ops::Deref;
+ ///
+ /// // See also [`pci::Bar`] for a real example.
+-/// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
++/// struct IoMem<const SIZE: usize>(MmioRaw<SIZE>);
+ ///
+ /// impl<const SIZE: usize> IoMem<SIZE> {
+ ///     /// # Safety
+@@ -71,7 +71,7 @@ struct Inner<T: Send> {
+ ///             return Err(ENOMEM);
+ ///         }
+ ///
+-///         Ok(IoMem(IoRaw::new(addr as usize, SIZE)?))
++///         Ok(IoMem(MmioRaw::new(addr as usize, SIZE)?))
+ ///     }
+ /// }
+ ///
+@@ -83,11 +83,11 @@ struct Inner<T: Send> {
+ /// }
+ ///
+ /// impl<const SIZE: usize> Deref for IoMem<SIZE> {
+-///    type Target = Io<SIZE>;
++///    type Target = Mmio<SIZE>;
+ ///
+ ///    fn deref(&self) -> &Self::Target {
+ ///         // SAFETY: The memory range stored in `self` has been properly mapped in `Self::new`.
+-///         unsafe { Io::from_raw(&self.0) }
++///         unsafe { Mmio::from_raw(&self.0) }
+ ///    }
+ /// }
+ /// # fn no_run(dev: &Device<Bound>) -> Result<(), Error> {
+diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
+index 613eb25047ef..835599085339 100644
+--- a/rust/kernel/io/poll.rs
++++ b/rust/kernel/io/poll.rs
+@@ -37,12 +37,12 @@
+ /// # Examples
+ ///
+ /// ```no_run
+-/// use kernel::io::{Io, poll::read_poll_timeout};
++/// use kernel::io::{Mmio, poll::read_poll_timeout};
+ /// use kernel::time::Delta;
+ ///
+ /// const HW_READY: u16 = 0x01;
+ ///
+-/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result<()> {
++/// fn wait_for_hardware<const SIZE: usize>(io: &Mmio<SIZE>) -> Result<()> {
+ ///     match read_poll_timeout(
+ ///         // The `op` closure reads the value of a specific status register.
+ ///         || io.try_read16(0x1000),
+
+
+
+thanks,
 -- 
-2.34.1
+John Hubbard
+
+> 
+> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
+> index 8058e1696df9..c2a6547d58cd 100644
+> --- a/drivers/gpu/nova-core/regs/macros.rs
+> +++ b/drivers/gpu/nova-core/regs/macros.rs
+> @@ -609,7 +609,7 @@ impl $name {
+>              /// Read the register from its address in `io`.
+>              #[inline(always)]
+>              pub(crate) fn read<const SIZE: usize, T>(io: &T) -> Self where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>              {
+>                  Self(io.read32($offset))
+>              }
+> @@ -617,7 +617,7 @@ pub(crate) fn read<const SIZE: usize, T>(io: &T) -> Self where
+>              /// Write the value contained in `self` to the register address in `io`.
+>              #[inline(always)]
+>              pub(crate) fn write<const SIZE: usize, T>(self, io: &T) where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>              {
+>                  io.write32(self.0, $offset)
+>              }
+> @@ -629,7 +629,7 @@ pub(crate) fn alter<const SIZE: usize, T, F>(
+>                  io: &T,
+>                  f: F,
+>              ) where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  F: ::core::ops::FnOnce(Self) -> Self,
+>              {
+>                  let reg = f(Self::read(io));
+> @@ -652,7 +652,7 @@ pub(crate) fn read<const SIZE: usize, T, B>(
+>                  #[allow(unused_variables)]
+>                  base: &B,
+>              ) -> Self where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>              {
+>                  const OFFSET: usize = $name::OFFSET;
+> @@ -673,7 +673,7 @@ pub(crate) fn write<const SIZE: usize, T, B>(
+>                  #[allow(unused_variables)]
+>                  base: &B,
+>              ) where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>              {
+>                  const OFFSET: usize = $name::OFFSET;
+> @@ -693,7 +693,7 @@ pub(crate) fn alter<const SIZE: usize, T, B, F>(
+>                  base: &B,
+>                  f: F,
+>              ) where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>                  F: ::core::ops::FnOnce(Self) -> Self,
+>              {
+> @@ -717,7 +717,7 @@ pub(crate) fn read<const SIZE: usize, T>(
+>                  io: &T,
+>                  idx: usize,
+>              ) -> Self where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>              {
+>                  build_assert!(idx < Self::SIZE);
+>  
+> @@ -734,7 +734,7 @@ pub(crate) fn write<const SIZE: usize, T>(
+>                  io: &T,
+>                  idx: usize
+>              ) where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>              {
+>                  build_assert!(idx < Self::SIZE);
+>  
+> @@ -751,7 +751,7 @@ pub(crate) fn alter<const SIZE: usize, T, F>(
+>                  idx: usize,
+>                  f: F,
+>              ) where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  F: ::core::ops::FnOnce(Self) -> Self,
+>              {
+>                  let reg = f(Self::read(io, idx));
+> @@ -767,7 +767,7 @@ pub(crate) fn try_read<const SIZE: usize, T>(
+>                  io: &T,
+>                  idx: usize,
+>              ) -> ::kernel::error::Result<Self> where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>              {
+>                  if idx < Self::SIZE {
+>                      Ok(Self::read(io, idx))
+> @@ -786,7 +786,7 @@ pub(crate) fn try_write<const SIZE: usize, T>(
+>                  io: &T,
+>                  idx: usize,
+>              ) -> ::kernel::error::Result where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>              {
+>                  if idx < Self::SIZE {
+>                      Ok(self.write(io, idx))
+> @@ -806,7 +806,7 @@ pub(crate) fn try_alter<const SIZE: usize, T, F>(
+>                  idx: usize,
+>                  f: F,
+>              ) -> ::kernel::error::Result where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  F: ::core::ops::FnOnce(Self) -> Self,
+>              {
+>                  if idx < Self::SIZE {
+> @@ -838,7 +838,7 @@ pub(crate) fn read<const SIZE: usize, T, B>(
+>                  base: &B,
+>                  idx: usize,
+>              ) -> Self where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>              {
+>                  build_assert!(idx < Self::SIZE);
+> @@ -860,7 +860,7 @@ pub(crate) fn write<const SIZE: usize, T, B>(
+>                  base: &B,
+>                  idx: usize
+>              ) where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>              {
+>                  build_assert!(idx < Self::SIZE);
+> @@ -881,7 +881,7 @@ pub(crate) fn alter<const SIZE: usize, T, B, F>(
+>                  idx: usize,
+>                  f: F,
+>              ) where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>                  F: ::core::ops::FnOnce(Self) -> Self,
+>              {
+> @@ -900,7 +900,7 @@ pub(crate) fn try_read<const SIZE: usize, T, B>(
+>                  base: &B,
+>                  idx: usize,
+>              ) -> ::kernel::error::Result<Self> where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>              {
+>                  if idx < Self::SIZE {
+> @@ -922,7 +922,7 @@ pub(crate) fn try_write<const SIZE: usize, T, B>(
+>                  base: &B,
+>                  idx: usize,
+>              ) -> ::kernel::error::Result where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>              {
+>                  if idx < Self::SIZE {
+> @@ -945,7 +945,7 @@ pub(crate) fn try_alter<const SIZE: usize, T, B, F>(
+>                  idx: usize,
+>                  f: F,
+>              ) -> ::kernel::error::Result where
+> -                T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
+> +                T: ::core::ops::Deref<Target = ::kernel::io::Mmio<SIZE>>,
+>                  B: crate::regs::macros::RegisterBase<$base>,
+>                  F: ::core::ops::FnOnce(Self) -> Self,
+>              {
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index ee182b0b5452..78413dc7ffcc 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -18,16 +18,16 @@
+>  /// By itself, the existence of an instance of this structure does not provide any guarantees that
+>  /// the represented MMIO region does exist or is properly mapped.
+>  ///
+> -/// Instead, the bus specific MMIO implementation must convert this raw representation into an `Io`
+> -/// instance providing the actual memory accessors. Only by the conversion into an `Io` structure
+> -/// any guarantees are given.
+> -pub struct IoRaw<const SIZE: usize = 0> {
+> +/// Instead, the bus specific MMIO implementation must convert this raw representation into an
+> +/// `Mmio` instance providing the actual memory accessors. Only by the conversion into an `Mmio`
+> +/// structure any guarantees are given.
+> +pub struct MmioRaw<const SIZE: usize = 0> {
+>      addr: usize,
+>      maxsize: usize,
+>  }
+>  
+> -impl<const SIZE: usize> IoRaw<SIZE> {
+> -    /// Returns a new `IoRaw` instance on success, an error otherwise.
+> +impl<const SIZE: usize> MmioRaw<SIZE> {
+> +    /// Returns a new `MmioRaw` instance on success, an error otherwise.
+>      pub fn new(addr: usize, maxsize: usize) -> Result<Self> {
+>          if maxsize < SIZE {
+>              return Err(EINVAL);
+> @@ -62,11 +62,11 @@ pub fn maxsize(&self) -> usize {
+>  /// # Examples
+>  ///
+>  /// ```no_run
+> -/// # use kernel::{bindings, ffi::c_void, io::{Io, IoRaw}};
+> +/// # use kernel::{bindings, ffi::c_void, io::{Mmio, MmioRaw}};
+>  /// # use core::ops::Deref;
+>  ///
+>  /// // See also [`pci::Bar`] for a real example.
+> -/// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
+> +/// struct IoMem<const SIZE: usize>(MmioRaw<SIZE>);
+>  ///
+>  /// impl<const SIZE: usize> IoMem<SIZE> {
+>  ///     /// # Safety
+> @@ -81,7 +81,7 @@ pub fn maxsize(&self) -> usize {
+>  ///             return Err(ENOMEM);
+>  ///         }
+>  ///
+> -///         Ok(IoMem(IoRaw::new(addr as usize, SIZE)?))
+> +///         Ok(IoMem(MmioRaw::new(addr as usize, SIZE)?))
+>  ///     }
+>  /// }
+>  ///
+> @@ -93,11 +93,11 @@ pub fn maxsize(&self) -> usize {
+>  /// }
+>  ///
+>  /// impl<const SIZE: usize> Deref for IoMem<SIZE> {
+> -///    type Target = Io<SIZE>;
+> +///    type Target = Mmio<SIZE>;
+>  ///
+>  ///    fn deref(&self) -> &Self::Target {
+>  ///         // SAFETY: The memory range stored in `self` has been properly mapped in `Self::new`.
+> -///         unsafe { Io::from_raw(&self.0) }
+> +///         unsafe { Mmio::from_raw(&self.0) }
+>  ///    }
+>  /// }
+>  ///
+> @@ -111,7 +111,7 @@ pub fn maxsize(&self) -> usize {
+>  /// # }
+>  /// ```
+>  #[repr(transparent)]
+> -pub struct Io<const SIZE: usize = 0>(IoRaw<SIZE>);
+> +pub struct Mmio<const SIZE: usize = 0>(MmioRaw<SIZE>);
+>  
+>  macro_rules! define_read {
+>      ($(#[$attr:meta])* $name:ident, $try_name:ident, $c_fn:ident -> $type_name:ty) => {
+> @@ -172,32 +172,24 @@ pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
+>      };
+>  }
+>  
+> -impl<const SIZE: usize> Io<SIZE> {
+> -    /// Converts an `IoRaw` into an `Io` instance, providing the accessors to the MMIO mapping.
+> -    ///
+> -    /// # Safety
+> -    ///
+> -    /// Callers must ensure that `addr` is the start of a valid I/O mapped memory region of size
+> -    /// `maxsize`.
+> -    pub unsafe fn from_raw(raw: &IoRaw<SIZE>) -> &Self {
+> -        // SAFETY: `Io` is a transparent wrapper around `IoRaw`.
+> -        unsafe { &*core::ptr::from_ref(raw).cast() }
+> -    }
+> -
+> +/// Represents a region of I/O space of a fixed size.
+> +///
+> +/// Provides common helpers for offset validation and address
+> +/// calculation on top of a base address and maximum size.
+> +///
+> +/// Types implementing this trait (e.g. MMIO BARs or PCI config
+> +/// regions) can share the same accessors.
+> +pub trait Io<const SIZE: usize> {
+>      /// Returns the base address of this mapping.
+> -    #[inline]
+> -    pub fn addr(&self) -> usize {
+> -        self.0.addr()
+> -    }
+> +    fn addr(&self) -> usize;
+>  
+>      /// Returns the maximum size of this mapping.
+> -    #[inline]
+> -    pub fn maxsize(&self) -> usize {
+> -        self.0.maxsize()
+> -    }
+> +    fn maxsize(&self) -> usize;
+>  
+> +    /// Checks whether an access of type `U` at the given `offset`
+> +    /// is valid within this region.
+>      #[inline]
+> -    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+> +    fn offset_valid<U>(offset: usize, size: usize) -> bool {
+>          let type_size = core::mem::size_of::<U>();
+>          if let Some(end) = offset.checked_add(type_size) {
+>              end <= size && offset % type_size == 0
+> @@ -206,6 +198,8 @@ const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+>          }
+>      }
+>  
+> +    /// Returns the absolute I/O address for a given `offset`.
+> +    /// Performs runtime bounds checks using [`offset_valid`]
+>      #[inline]
+>      fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+>          if !Self::offset_valid::<U>(offset, self.maxsize()) {
+> @@ -217,12 +211,41 @@ fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+>          self.addr().checked_add(offset).ok_or(EINVAL)
+>      }
+>  
+> +    /// Returns the absolute I/O address for a given `offset`,
+> +    /// performing compile-time bound checks.
+>      #[inline]
+>      fn io_addr_assert<U>(&self, offset: usize) -> usize {
+>          build_assert!(Self::offset_valid::<U>(offset, SIZE));
+>  
+>          self.addr() + offset
+>      }
+> +}
+> +
+> +impl<const SIZE: usize> Io<SIZE> for Mmio<SIZE> {
+> +    /// Returns the base address of this mapping.
+> +    #[inline]
+> +    fn addr(&self) -> usize {
+> +        self.0.addr()
+> +    }
+> +
+> +    /// Returns the maximum size of this mapping.
+> +    #[inline]
+> +    fn maxsize(&self) -> usize {
+> +        self.0.maxsize()
+> +    }
+> +}
+> +
+> +impl<const SIZE: usize> Mmio<SIZE> {
+> +    /// Converts an `MmioRaw` into an `Mmio` instance, providing the accessors to the MMIO mapping.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that `addr` is the start of a valid I/O mapped memory region of size
+> +    /// `maxsize`.
+> +    pub unsafe fn from_raw(raw: &MmioRaw<SIZE>) -> &Self {
+> +        // SAFETY: `Mmio` is a transparent wrapper around `MmioRaw`.
+> +        unsafe { &*core::ptr::from_ref(raw).cast() }
+> +    }
+>  
+>      define_read!(read8, try_read8, readb -> u8);
+>      define_read!(read16, try_read16, readw -> u16);
+> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+> index 6f99510bfc3a..93cad8539b18 100644
+> --- a/rust/kernel/io/mem.rs
+> +++ b/rust/kernel/io/mem.rs
+> @@ -11,8 +11,8 @@
+>  use crate::io;
+>  use crate::io::resource::Region;
+>  use crate::io::resource::Resource;
+> -use crate::io::Io;
+> -use crate::io::IoRaw;
+> +use crate::io::Mmio;
+> +use crate::io::MmioRaw;
+>  use crate::prelude::*;
+>  
+>  /// An IO request for a specific device and resource.
+> @@ -195,7 +195,7 @@ pub fn new<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> +
+>  }
+>  
+>  impl<const SIZE: usize> Deref for ExclusiveIoMem<SIZE> {
+> -    type Target = Io<SIZE>;
+> +    type Target = Mmio<SIZE>;
+>  
+>      fn deref(&self) -> &Self::Target {
+>          &self.iomem
+> @@ -209,10 +209,10 @@ fn deref(&self) -> &Self::Target {
+>  ///
+>  /// # Invariants
+>  ///
+> -/// [`IoMem`] always holds an [`IoRaw`] instance that holds a valid pointer to the
+> +/// [`IoMem`] always holds an [`MmioRaw`] instance that holds a valid pointer to the
+>  /// start of the I/O memory mapped region.
+>  pub struct IoMem<const SIZE: usize = 0> {
+> -    io: IoRaw<SIZE>,
+> +    io: MmioRaw<SIZE>,
+>  }
+>  
+>  impl<const SIZE: usize> IoMem<SIZE> {
+> @@ -247,7 +247,7 @@ fn ioremap(resource: &Resource) -> Result<Self> {
+>              return Err(ENOMEM);
+>          }
+>  
+> -        let io = IoRaw::new(addr as usize, size)?;
+> +        let io = MmioRaw::new(addr as usize, size)?;
+>          let io = IoMem { io };
+>  
+>          Ok(io)
+> @@ -270,10 +270,10 @@ fn drop(&mut self) {
+>  }
+>  
+>  impl<const SIZE: usize> Deref for IoMem<SIZE> {
+> -    type Target = Io<SIZE>;
+> +    type Target = Mmio<SIZE>;
+>  
+>      fn deref(&self) -> &Self::Target {
+>          // SAFETY: Safe as by the invariant of `IoMem`.
+> -        unsafe { Io::from_raw(&self.io) }
+> +        unsafe { Mmio::from_raw(&self.io) }
+>      }
+>  }
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 7fcc5f6022c1..77a8eb39ad32 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -10,7 +10,7 @@
+>      devres::Devres,
+>      driver,
+>      error::{from_result, to_result, Result},
+> -    io::{Io, IoRaw},
+> +    io::{Mmio, MmioRaw},
+>      irq::{self, IrqRequest},
+>      str::CStr,
+>      sync::aref::ARef,
+> @@ -313,7 +313,7 @@ pub struct Device<Ctx: device::DeviceContext = device::Normal>(
+>  /// memory mapped PCI bar and its size.
+>  pub struct Bar<const SIZE: usize = 0> {
+>      pdev: ARef<Device>,
+> -    io: IoRaw<SIZE>,
+> +    io: MmioRaw<SIZE>,
+>      num: i32,
+>  }
+>  
+> @@ -349,7 +349,7 @@ fn new(pdev: &Device, num: u32, name: &CStr) -> Result<Self> {
+>              return Err(ENOMEM);
+>          }
+>  
+> -        let io = match IoRaw::new(ioptr, len as usize) {
+> +        let io = match MmioRaw::new(ioptr, len as usize) {
+>              Ok(io) => io,
+>              Err(err) => {
+>                  // SAFETY:
+> @@ -403,11 +403,11 @@ fn drop(&mut self) {
+>  }
+>  
+>  impl<const SIZE: usize> Deref for Bar<SIZE> {
+> -    type Target = Io<SIZE>;
+> +    type Target = Mmio<SIZE>;
+>  
+>      fn deref(&self) -> &Self::Target {
+>          // SAFETY: By the type invariant of `Self`, the MMIO range in `self.io` is properly mapped.
+> -        unsafe { Io::from_raw(&self.io) }
+> +        unsafe { Mmio::from_raw(&self.io) }
+>      }
+>  }
+>  
 
