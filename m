@@ -1,135 +1,119 @@
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888EE23A58B
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 15:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3098D21B9C5;
+	Mon, 20 Oct 2025 15:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760972801; cv=none; b=RDHXcjTKhGFNEHGO6n8fYhRhN5AFGTN4EHdazhc2JYzFIiBPZTPzBny/tB4iZ/Lv1uW2QRq1ZRZBLin0SyZTP+oxcjowtffZ+y8H90pVOMXUSB9fTchlhaM8xvUzd5ljNcZ0uYGTd3zLTa+fk7qrRit3Oc+bjVDewVTcjqaMLjw=
+	t=1760974054; cv=none; b=nji/QFr9RBzuusgYneYGtQOSmU350xoqrzmHilm/Yg87aWWoQKZBIqXZx3UJemi6+eNSm/UOs5pnIvsXVvo5CQLQIngg3HWHTsIGRSoA3Z+sPvzyAptVKRxlCG6wusvL1J/TKn84s8yW6V6fr7FjZaTc6UpDj6/OqI0Ul9pujrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760972801; c=relaxed/simple;
-	bh=kMa+cTp7cVtK7Jj4wowRZ8VBCMhE7dbUzz+E3JS3cDI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jZACUvRmczlftZGtlDU4BSZ+A5qSmYAc3gDhXl+TjjWdQ1eYs3NaB28DoNVBMeeV/C7NNPg4y25h/ZiQz081nTwxjmDPcj4e5IhyMG+CON0mJF9JWzEmQgJplpilIyJvN1Lvz0RXRCJe+S2SQmptivMy+fks+IThON6MIU6+Zh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yi9/90Er; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1760974054; c=relaxed/simple;
+	bh=laqYjU2YEjT+EsRes/yYLVhr2HXH5lWPRM0SbrX/h4k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RfcFFivKqTu7aPNhOwa/0AIv3t7LwhKIorDxmKKq/t53/E2Niwt9xPTRtqs7zVSIT4VvGLXTgVxqZkVLpvGwmNa2H+1aT0Yvc/QrLhhWdKmv6cAQ5GoXPk7x4Qfpo8yTqOdEtDFRkyrdCk4RXHv+hRECuLGG3EgX4NZW0SpGzOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qW4NEmcD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yi9/90Er"
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-638135d9f65so1346394eaf.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 08:06:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760972798; x=1761577598; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8cvsTdM8sR9r6i/ag+L/0S0SgN8lzV9ZSbMcaKYBLhg=;
-        b=Yi9/90ErmWeO6r0Hx9UPFZFIyQxPZn0kHfpTrcPb/A+ieq0sLo3slBIqFxzcq+4J7R
-         3i6xw6SA/4xj3gVGBaIDP5zAlUGwenrKyB81GKFSMi5U00+vGs2pLyMtSaTs85eKRYSQ
-         g49oSdb2/NOPzsVPWHDCZ+8LvkEBCiefjxu7k3akhRUeBFH8ok6lv7eGowAcz/6cVdf4
-         AIJ2o+m+1t5PDJ4g8ul1cvC8PuJtHg6k0O/IEuBwmUrt8lvyncLC7K5uS8sBt5lzgtMx
-         kMUKLLCCAI0UdnjMvpHsGbvtSIr5cIT46KJFabw0/e/QVsj2dRiiHcOhhnlr2nOyQ48c
-         wg/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760972798; x=1761577598;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8cvsTdM8sR9r6i/ag+L/0S0SgN8lzV9ZSbMcaKYBLhg=;
-        b=qobKhA5L6QuCtUPrjeqy5tfpuGmnf1xN/0RTmR5i38SUH4wJcfuMY0uzVhVuS92nWx
-         H6jqw9k+4XUkAsDmEHEnlflWatzXjytZQ4FLbeheZCqTxdSoUVWXt823P5K1neB+3bIs
-         dfzo8maqEW9iddsWr0uTc/f7oMc+dktvS8171O+neY808KtAcgoP5YeQa9+OQc2Qk2F6
-         tKmdyGedz2egbUkpulWu3K4ZAQ83lLkRaIvQ9foIWO03N3U1sGdj4ia1T+IPPotvyLY1
-         crI60gJPDCCoV8TXNglIW8Ed0nXAsErOBg6nXjQNwdo3mZMRU7+Bx54+Z29JC3188dla
-         CMnw==
-X-Forwarded-Encrypted: i=1; AJvYcCWEHJTZKaEYwx2R7qetPFzapDcvyhznH8n2nUdbWaLfUZqLfdkIR965izxmfz/N8pbzi8vyloy41RkTohlSvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8/W4ddiwaMPBEvvIc2hw1C4u3gkKHasFYZnIJdF52rX6Vu4yS
-	emWag8pHmnMCDT9Yn0p4MegZLJ5swamvGe7SfvZU0p60eQUqwi7tRpC147KBbBCSctK4ws1muWt
-	E5IuQOQ7nV69zZmBlPDoUdcBl0SbN1YAbc9Yc4TWL
-X-Gm-Gg: ASbGncvrCVQInJSuzbZwKLpAfg5g+/E+YqoexVANG/o5D9lckSy/8yybWJDTrnKEv2h
-	sTonjCKg2rbW4/e4D1ddCaTHiL0cGUjzXRSNbSL53/Qdz2EEwBLiaq42CSMPVqRdR1lDEL0tBq+
-	jSg0PHcn8h/tc13lxaFuN3adLEfJkioDbA5tcVHxKjkWfVxbOkpf1SB81MNnSCMxWXi96E5FTyr
-	WTOVE3v4DxMBB6ZSGUvl5bFnYpYXDR5CdBZHL8+gbDdQtPuD09Va34App6YcCXrK29k8pdvKEIv
-	2jJ2cO35Ysz+0G8=
-X-Google-Smtp-Source: AGHT+IGLApVWeMQeO2fByoBO6Pij9zwwqsFyMyfj5mInanMo2LWamObX/M8HcZHeuRe16SDET/aQfPPnuwGDKLSGDRg=
-X-Received: by 2002:a05:6870:d915:b0:3c9:b8a0:943f with SMTP id
- 586e51a60fabf-3c9b8a0ef0bmr5166842fac.12.1760972798212; Mon, 20 Oct 2025
- 08:06:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qW4NEmcD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5E8C4CEF9;
+	Mon, 20 Oct 2025 15:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760974053;
+	bh=laqYjU2YEjT+EsRes/yYLVhr2HXH5lWPRM0SbrX/h4k=;
+	h=From:Date:Subject:To:Cc:From;
+	b=qW4NEmcDj7ugpaqTo+vGQ004hJcMg0Ehsc8MblOJhkVEBP3L1eG66qhMXGKnK7yLp
+	 0emLMBbQWc40d+dcQvrQzRIkT7leJbxwVAq4KnU6X2Ht01oqTo0b7GSaIRQutj+V46
+	 fLIQrEhf7nEXjOj+bUZKXpwguyVOHFgxakvGUN5YYTP7hsJdoWQETtXu62BocJYNG+
+	 mtCw8/1R/4FFAtbWrrfa8LSyY8wu5HEuxqmej3wFLFQnOO5eGfnznWpT2beR+ReyRK
+	 LFTAwnwMRyfov48AmoZJIDTlV3OkpDfPE4I+SdN361WTOGaKCg33mK2sS3nxdD7I7f
+	 6SRFO11HsWJgA==
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Mon, 20 Oct 2025 11:27:28 -0400
+Subject: [PATCH] rust: fix tests under Rust 1.89.0's `CStr` `Debug` impl
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251020-binder-bitmap-v1-0-879bec9cddc1@google.com> <20251020-binder-bitmap-v1-2-879bec9cddc1@google.com>
-In-Reply-To: <20251020-binder-bitmap-v1-2-879bec9cddc1@google.com>
-From: Burak Emir <bqe@google.com>
-Date: Mon, 20 Oct 2025 17:06:26 +0200
-X-Gm-Features: AS18NWDhszgBSdCYYXPR0bNQToESj1alhjrfmUHCoV3_XLimQiINBLGNymMG2fU
-Message-ID: <CACQBu=VLPGq0nx6PJSnw3YBhMe4QKHiiFG0k9_Kwayj9w6nfLQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust_binder: use bitmap for allocation of handles
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20251020-cstr-debug-utf-8-v1-1-1933c0a6d6b9@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAN9U9mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDAyMD3eTikiLdlNSk0nTd0pI0XQtdi1TLZBPjRMMkc1NzJaC2gqLUtMw
+ KsJHRsbW1AEFu9gdiAAAA
+X-Change-ID: 20251020-cstr-debug-utf-8-8e9c43a1b757
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Tamir Duberstein <tamird@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1760974050; l=1833;
+ i=tamird@kernel.org; h=from:subject:message-id;
+ bh=laqYjU2YEjT+EsRes/yYLVhr2HXH5lWPRM0SbrX/h4k=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QO94MP6//4/gXN06fOYflr7yBUZtP4A4RddSYIvuBliEb+OZxmlJA49jpSANQ48Wx7AveFJEZAZ
+ 7QTSqaGnO4gc=
+X-Developer-Key: i=tamird@kernel.org; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-On Mon, Oct 20, 2025 at 3:33=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> To find an unused Binder handle, Rust Binder currently iterates the
-> red/black tree from the beginning until it finds a gap in the keys. This
-> is extremely slow.
->
-> To improve the performance, add a bitmap that keeps track of which
-> indices are actually in use. This allows us to quickly find an unused
-> key in the red/black tree.
->
-> This logic matches the approach used by C Binder. It was chosen
-> partially because it's the most memory efficient solution.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  drivers/android/binder/process.rs | 110 +++++++++++++++++++++++++++++++-=
-------
->  1 file changed, 90 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/p=
-rocess.rs
-> index f13a747e784c84a0fb09cbf47442712106eba07c..357ba1b577c73ad3f2b525a85=
-73424420577e92d 100644
-> --- a/drivers/android/binder/process.rs
-> +++ b/drivers/android/binder/process.rs
-> @@ -16,6 +16,7 @@
->
->  use kernel::{
->      bindings,
-> +    bitmap::BitmapVec,
->      cred::Credential,
->      error::Error,
->      fs::file::{self, File},
-> @@ -367,6 +368,8 @@ impl ListItem<{Self::LIST_NODE}> for NodeRefInfo {
->  struct ProcessNodeRefs {
->      /// Used to look up nodes using the 32-bit id that this process know=
-s it by.
->      by_handle: RBTree<u32, ListArc<NodeRefInfo, { NodeRefInfo::LIST_PROC=
- }>>,
-> +    /// Used to quickly find unused ids in `by_handle`.
-> +    handle_present: BitmapVec,
+Starting with Rust 1.89.0, `<CStr as Debug>::fmt` prints UTF-8 sequences
+unescaped.
 
-Are you going to delete rust/kernel/id_pool.rs, too?
+Thus update our test to expect the new behavior starting with Rust
+1.89.0.
 
-I have no opinion on whether having an abstraction vs inlining the
-functionality is worth it. I mean just in order to avoid id_pool.rs
-hanging around as dead code.
+Fixes: a1ec674cd709 ("rust: replace `CStr` with `core::ffi::CStr`")
+Link: https://github.com/rust-lang/rust/commit/a82062055af1ecdcb7f4d3371855aae843fc0ae3
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+---
+Hi Miguel, please feel free to rebase this in, if easier.
+---
+ init/Kconfig       | 3 +++
+ rust/kernel/str.rs | 6 +++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-Cheers,
-Burak
+diff --git a/init/Kconfig b/init/Kconfig
+index cab3ad28ca49..aa29eae7f14b 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -156,6 +156,9 @@ config RUSTC_HAS_SPAN_FILE
+ config RUSTC_HAS_UNNECESSARY_TRANSMUTES
+ 	def_bool RUSTC_VERSION >= 108800
+ 
++config RUSTC_HAS_CSTR_DEBUG_UTF8
++	def_bool RUSTC_VERSION >= 108900
++
+ config RUSTC_HAS_FILE_WITH_NUL
+ 	def_bool RUSTC_VERSION >= 108900
+ 
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index da539e1f29d4..f2d60288eced 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -478,7 +478,11 @@ fn test_cstr_debug() -> Result {
+         let non_ascii = c"d\xe9j\xe0 vu";
+         assert_eq!(format!("{non_ascii:?}"), "\"d\\xe9j\\xe0 vu\"");
+         let good_bytes = c"\xf0\x9f\xa6\x80";
+-        assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
++        if cfg!(CONFIG_RUSTC_HAS_CSTR_DEBUG_UTF8) {
++            assert_eq!(format!("{good_bytes:?}"), "\"🦀\"");
++        } else {
++            assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
++        }
+         Ok(())
+     }
+ 
+
+---
+base-commit: a1ec674cd709fec213acbb567e699c5f6f58cb60
+change-id: 20251020-cstr-debug-utf-8-8e9c43a1b757
+
+Best regards,
+--  
+Tamir Duberstein <tamird@kernel.org>
+
