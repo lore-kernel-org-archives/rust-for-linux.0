@@ -1,95 +1,101 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE832F5A0A
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 09:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CE52F9DA7;
+	Mon, 20 Oct 2025 09:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760953191; cv=none; b=X9uAxg1j4h/PysIOCkfkVqLNR8RKYKUx7uGTy/lXh9EYb8bGFyuVx+jhVhBDdduew4Sk/Rx9EbMzpgEAGX1v7ERYeCdzID4xRYbKCiWkNCXnX+pSJL1o5FQ3EeWD1uAb4HXmQVaHgXxneO3gATK4tr1FB7CVNBhZ0/LmAFZpkWA=
+	t=1760953233; cv=none; b=ZvIwr5rlAslceFp6nNW3n+3P9CCLJVmDikQD+kMvCkC1/Fz2KC/5w/zpqwCSH9YzbtBRzvPoEJSnQvztOespsHM+nAhw59FKeTh++jOZEn9LTWhXDSg9sOJV4IPDVyyJPJXYR/CgBCRGWMlaj1upgcmwvN1kgr3JzNQj6ruO9CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760953191; c=relaxed/simple;
-	bh=rlReUiN8izqYmd/SmC7+ZVqul99jLDzgi/035/wGtbo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ttboxL7CKyv/ep3YXKfkV7ORkLPfzzOVFUX18nYQudCiSRe7c+Zy8ycEOXS67kUVjGlh17/AisRK/LKM916/kGRPyTrfbea5iwrgjIk9cC9U6WNz7O5deZvHk3GKkqpWdjSCAqZIVra10xa43RKNBBQEBiJ640nvfEq99SSMEM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y4jtNaxJ; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1760953233; c=relaxed/simple;
+	bh=Z1kaVO3Ed9EJ8fGuWa7kSlIV+SC1mWkBs/JeBs2k83Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=TjoLlrAaQbRytQNtdHZiQAdDPDG2m7Y/BROCaSJdktrQb3r7C5ON9fc7Z9SEc6LWCoUGL8Aws81ArfqRsi0L+owk5Lhyxj42pvhK/dfxxS84Vp48wIxrh6uhL63qWpRNug8o0R2eJjSLqZOExZ+/gxAi90gJ9lM9Y6+ouUSd/gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M66NK0n7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y4jtNaxJ"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47106720618so24234495e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 Oct 2025 02:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760953188; x=1761557988; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G4W5fx1xJzyywPWz2TPx9643bFzzuinQiyCivwzQn5o=;
-        b=Y4jtNaxJVPZWk8SH4JKF3xFR/zX7krmxiIAyt0dQRz7V5QjadhvCcB6sXEewKVHT16
-         fZWTkLA0s/7l1+sFOksomXThh37CuZqwJQj6MQhtZWaQ8dND9IemAEBVe9aSoqUWlmDk
-         bR2pyaDTgJIV2eLGIJ5B7cCD4U+9DhdpzHW/6uTkFUuUuscGF4p1SfCo4F9g5sazA9+B
-         CTuHK+6HcJ/9hBY/7U7Ohex36JM12B9DRQulEPpIXdLd140QzZsVfK0zWYqkK4kmA/Hz
-         +nG31MusMEVBsW0fY6fludhkW7+nxyJjy4vaoey5/Ga2znsjfQK/hwHnu0B5+Ot0ekvi
-         fLRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760953188; x=1761557988;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G4W5fx1xJzyywPWz2TPx9643bFzzuinQiyCivwzQn5o=;
-        b=sQg8U7rBqL7xJ9SQ5g+vh3oERPqZqmpnsH4sDFqobcRSmvPLDuw5YyilCG58C7yqMN
-         /fZlXU5BbdZsB3X5Mob52nEvlHXCje84uXIoNP6Y3rjx2is8bZdNJggJaOYqizTYY09m
-         QSnaG5Dz/IXCB0AxxLYSHBgMy8QC6pIviuZYRJBF4vy+yHyfXYYgOcU9ruWfA2qESljJ
-         F+WxhQs2RZzM/WjGXiiybDCq6M8LUD4FhDEiCXtv0MFsGx9crFaaxoqpXLVXwh2JD9yi
-         7KvoxkDi1Jifa7XZHlgrZWPSP2BSsNPFqUSuQNvu2qkOLP3fTCasHbHAUhgOsbicWt1N
-         llnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhg+n+jnChqPX6TRo99Firy6GnRfqZ94Pnmk7duJ8eTaMULlu+hREnoNprqYPTlVpyT/OKiTTyNSsirC5IaA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxITFA+sHf+QMqvMS1+YiwLyCYz0rlqdUU4tkUqtW6R88xdiIcd
-	J1batqsPnb1dgdf/Lpt0QolhP0Fda9WzQQ2ltj9/0yUZK5iF1lYy0iDjvQBlK4oUYgW3PSr9PsZ
-	7XE6PM5XynVFks7/GVg==
-X-Google-Smtp-Source: AGHT+IGDfA53NxhNSHfMk6oo7zPt81rPlpVd0hfiY49P2Ld6yI2Vye275tLp0hNs/aO1TCjCrUYUSSRhhc2pYnY=
-X-Received: from wmwm9.prod.google.com ([2002:a05:600d:6349:b0:46f:aa50:d70b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1914:b0:471:c72:c7f8 with SMTP id 5b1f17b1804b1-47117907a52mr85563345e9.21.1760953188498;
- Mon, 20 Oct 2025 02:39:48 -0700 (PDT)
-Date: Mon, 20 Oct 2025 09:39:47 +0000
-In-Reply-To: <DDN1PLK58C34.2XF7BCBQNAW5X@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M66NK0n7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD55AC4CEF9;
+	Mon, 20 Oct 2025 09:40:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760953232;
+	bh=Z1kaVO3Ed9EJ8fGuWa7kSlIV+SC1mWkBs/JeBs2k83Y=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=M66NK0n7kCPkczZVv5CJ0SN99cvs22UTtSJapV/hliT4wneK87ZS3VYhv3aEg6MuM
+	 sxBXAPVuPrUOvubD5Ban6A4Qzat2/L3OlQUGBqHYmE9sjKL07cGirQ2PaJoSDKBKRY
+	 uyIrxC8T2bjV5Zme0/scFP+4tMpMGkIaASpQoBhnlpQXvQ9NRkc0lTKh0fSZIfTHoI
+	 0K8egAAshl6DkfrGsz7UL5OTjFICMkUMTo6AT1g6t/qjbLgg8cFQ3XxxPKfYlLKGPc
+	 u4jArVK5MENoThiQhKmR81T2DFTZNuX3FqegOH/hT0l/lpkHsRvkprFg2C1g544Di+
+	 X8YOz4Po/BwEw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251003222729.322059-1-dakr@kernel.org> <20251003222729.322059-4-dakr@kernel.org>
- <aPI9tNoh0I3KGDjl@google.com> <DDKO9M4P06HS.3UMGG3QR7BX67@kernel.org>
- <aPS0aTUUwDsXmHFN@google.com> <DDM9EDPP7XQN.2SW537AZ7DAZ9@kernel.org>
- <aPXvJPcSgZdNlGtB@google.com> <DDN1PLK58C34.2XF7BCBQNAW5X@kernel.org>
-Message-ID: <aPYDY8mdHWjyOU3l@google.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 20 Oct 2025 11:40:28 +0200
+Message-Id: <DDN1TL0WE895.1R5Z8AR975ZJH@kernel.org>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <mmaurer@google.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
 Subject: Re: [PATCH 3/7] rust: debugfs: support for binary large objects
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, mmaurer@google.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+References: <20251003222729.322059-1-dakr@kernel.org>
+ <20251003222729.322059-4-dakr@kernel.org> <aPI9tNoh0I3KGDjl@google.com>
+ <DDKO9M4P06HS.3UMGG3QR7BX67@kernel.org>
+ <DDKOLD1897SY.84W93E6L8ITR@kernel.org> <aPSzE7DpA7DxTHmm@google.com>
+ <DDMA6OR8V1L3.22YQDEKL20MB5@kernel.org> <aPXu0FWUrbxyemPq@google.com>
+In-Reply-To: <aPXu0FWUrbxyemPq@google.com>
 
-On Mon, Oct 20, 2025 at 11:35:15AM +0200, Danilo Krummrich wrote:
-> On Mon Oct 20, 2025 at 10:13 AM CEST, Alice Ryhl wrote:
-> > I ended up using i64 for simple_read_from_buffer in iov.rs instead of
-> > loff_t. But if they can differ, then yeah let's introduce a loff_t type
-> > alias.
-> 
-> No, I don't think they can differ (I used i64 in earlier version that didn't
-> make it to the list as well), but I think it could still make sense to indicate
-> the relationship with loff_t. When I see an i64, an offset into a buffer is not
-> the first thing that comes to my mind.
-> 
-> What about uaccess::Offset?
+On Mon Oct 20, 2025 at 10:12 AM CEST, Alice Ryhl wrote:
+> On Sun, Oct 19, 2025 at 02:01:03PM +0200, Danilo Krummrich wrote:
+>> On Sun Oct 19, 2025 at 11:44 AM CEST, Alice Ryhl wrote:
+>> > On Fri, Oct 17, 2025 at 04:53:09PM +0200, Danilo Krummrich wrote:
+>> >> On Fri Oct 17, 2025 at 4:37 PM CEST, Danilo Krummrich wrote:
+>> >> > The reason I went with a trait is because that's consistent within =
+the file.
+>> >> >
+>> >> > Otherwise, I don't mind one or the other. If we always want to use =
+a struct, I'm
+>> >> > fine with that. :)
+>> >>=20
+>> >> Actually, there's another reason I forgot about since I sent the seri=
+es. :)
+>> >>=20
+>> >> We need it because we derive it from blanket implementations:
+>> >>=20
+>> >> 	impl<T: BinaryWriter + Sync> BinaryReadFile<T> for T
+>> >> 	impl<T: BinaryReader + Sync> BinaryWriteFile<T> for T
+>> >> 	impl<T: BinaryWriter + BinaryReader + Sync> BinaryReadWriteFile<T> f=
+or T
+>> >
+>> > You can still use a struct:
+>> >
+>> > struct BinaryWriterVtable<T: BinaryWriter + Sync>;
+>> >
+>> > impl<T: BinaryWriter + Sync> BinaryWriterVtable<T> {
+>> >     const VTABLE: bindings::foo =3D ...;
+>> > }
+>>=20
+>> Yeah, but do we get something for adding yet another type in this case?
+>>=20
+>> Another point to consider is if we want a more generic fops abstraction =
+type.
+>>=20
+>> In any case, I'd like to add this as good first issue for the whole file=
+ to be
+>> changed accordingly.
+>
+> Yes, keep it as-is for consistency with the rest of the file, even if
+> the file is inconsistent with the rest of `kernel`. Please go ahead and
+> file a good-first-issue for this.
 
-Hmm. That seems wrong. loff_t is a *file position*, so it should go in
-kernel::fs, right? We're only using it in uaccess/iov because they
-happen to have utility methods to help with implementing fops entries.
-None of the "base" uaccess/iov functions use loff_t for anything since
-they deal with sizes in the address space, for which usize is the
-correct type.
-
-Alice
+Before doing so, can you please answer the question above? While I'm all fo=
+r
+consistency, in this specific case it seems we'd need another indirection f=
+or
+that. And I'm not convinced that's an improvement.
