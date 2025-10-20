@@ -1,83 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBF1354AF2;
-	Mon, 20 Oct 2025 12:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2472F6196;
+	Mon, 20 Oct 2025 13:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760964331; cv=none; b=jotWm0LZIsEaWTpZri014HoAQQsj0j2BWrrQJXSe5T1TyN8j5c4xvG2f2UoeOGOKlrhUS2FTC0daR/UjTcNO0PgjnBM9rNmDR/GF93NzNCYrORoQndFN3BOwPcuB9CqVbXgjlPeNFaw+uVIHGBMk8a075EMB5N88QlYsrT1Y/vw=
+	t=1760965650; cv=none; b=MIk/s1xLmgzNr0YIAnK8x5urhesm91cX2EmNG/AP3FVXFw6McQiTlhPPfjqzGvdEGb0p6k+uPn2LHZSt8qgZ1vU/16MnryjBImEvkswx3PUoidjaEkKb3cXKkIfqY5qvBjhluW9eOlILALiNWTxMiUVuJP04Hu5scej30Mz3XA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760964331; c=relaxed/simple;
-	bh=E8/qid2gLwe8oEsR/E/h8omGhNsTE6MoxWDuMvOCa7o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=N9WGSdGJZfTsldgoANGBk5BHPyg8dvkCPzRPkh8Va3JOS9Mr8SCbDI6zKAm02O98uRiquIwfKP5upDrBXVw1S0OC8g4OA63Jb8KuYzviO2PE1LTBcjS/SCLw816YgD9LtHSdxDMhMToXTqlvuUVaKp0Rh3zpWgdW8U0H031iITg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vu6ZG5gM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760965650; c=relaxed/simple;
+	bh=84ijlBcIXDyj2XxLW1M/v22FZDomhnAZOpBhwWY+gj8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MeoRqyyaXJPkExVPcQQeA4jh5LJTpcqam8tdTCOrR41QXL+KfI+qVzRFVKHX9T3ij9FC60dyhEMpPMOBz3Cz52bg9EHSwbKt3i0Tx22goF3sV3VEPvSvE4zP64sm1fFlhuhFTiXoXnEv/+86cnqT85qfdY3ymb3dj+rzk5uaz/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J+G04tYc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vu6ZG5gM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68FBC4CEF9;
-	Mon, 20 Oct 2025 12:45:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J+G04tYc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125E1C4CEF9;
+	Mon, 20 Oct 2025 13:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760964331;
-	bh=E8/qid2gLwe8oEsR/E/h8omGhNsTE6MoxWDuMvOCa7o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Vu6ZG5gMwnWnP18yIjq2Coml/n0/etetWYWhQZndfqasBjVzf2+h5BcpQunp2EHn+
-	 wGk7ekgx863EYYacdpB1OViSJRoC/l+XSwl1uxM7EYG1sY2UggNWDXRgP0RB32Cmgj
-	 DYpE2VPAWFKtWebkc5BpwpHugLyOqiCYSQGnaLoYNivILMG7GpOKZwfRXenNfGijBK
-	 kdVZ6fLrKUefCxsbWH2QDLTtYHCOxzHkiFAe3sxmEx6ysXqBlcDPo+72hmNat+tBlr
-	 HjH1ho9WQs3EnNIXnmRbNVoOQu9DpFY8DL27jefzvOZemLusSCC7in5APibiIwOgZf
-	 ji8HRf0c9RL3Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, tamird@gmail.com
-Cc: Liam.Howlett@oracle.com, airlied@gmail.com, alex.gaynor@gmail.com,
- aliceryhl@google.com, arve@android.com, axboe@kernel.dk,
- bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- brauner@kernel.org, broonie@kernel.org, cmllamas@google.com,
- dakr@kernel.org, dri-devel@lists.freedesktop.org, gary@garyguo.net,
- gregkh@linuxfoundation.org, jack@suse.cz, joelagnelf@nvidia.com,
- justinstitt@google.com, kwilczynski@kernel.org, leitao@debian.org,
- lgirdwood@gmail.com, linux-block@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-pm@vger.kernel.org, llvm@lists.linux.dev, longman@redhat.com,
- lorenzo.stoakes@oracle.com, lossin@kernel.org, maco@android.com,
- mcgrof@kernel.org, mingo@redhat.com, mmaurer@google.com, morbo@google.com,
- mturquette@baylibre.com, nathan@kernel.org,
- nick.desaulniers+lkml@gmail.com, nm@ti.com, ojeda@kernel.org,
- peterz@infradead.org, rafael@kernel.org, russ.weight@linux.dev,
- rust-for-linux@vger.kernel.org, sboyd@kernel.org, simona@ffwll.ch,
- surenb@google.com, tkjos@android.com, tmgross@umich.edu, urezki@gmail.com,
- vbabka@suse.cz, vireshk@kernel.org, viro@zeniv.linux.org.uk,
- will@kernel.org
-Subject: Re: [PATCH v18 12/16] rust: configfs: use `CStr::as_char_ptr`
-In-Reply-To: <20251018180303.3615403-1-aliceryhl@google.com>
-References: <20251018-cstr-core-v18-0-ef3d02760804@gmail.com>
- <20251018180303.3615403-1-aliceryhl@google.com>
-Date: Mon, 20 Oct 2025 14:44:56 +0200
-Message-ID: <87ms5lspx3.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1760965649;
+	bh=84ijlBcIXDyj2XxLW1M/v22FZDomhnAZOpBhwWY+gj8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=J+G04tYckYKTK5Fv7opz/ARIwtEcpd1Me7sAxQb80crCGS/FF/ITXqC3DPVs/XH9j
+	 VaAWQZV8BEjj3yusnRMMb1GQBDUJ7oADlIX09X4ihVNIc7loysdtraUaIeFg47JlED
+	 XqvTqs9/cHF8dq5Fc+COhUL3f6wUCHm6+m0GbMP0gXeaYVJGEDCiqLhoI4Aui6jsIh
+	 Xe3C1NzeO7/7Pk6sUq8VJqxVlgdy7LNh3R5aEhQs1W0S3HztVbN0dhlfMnGusb86E/
+	 i+UctN8VRIOyvrIcCHmcJ97jz0nFgqt+bP+8m07lsnYVvMTIz4vl0l0etr9l9APkyC
+	 DnHeQwf9qWSfg==
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Mon, 20 Oct 2025 09:07:22 -0400
+Subject: [PATCH] rust: opp: simplify callers of `to_c_str_array`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251020-opp-simpler-code-v1-1-04f7f447712f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAk09mgC/x3MQQqAIBBA0avIrBtQKYuuEi1KpxqoFIUIxLsnL
+ d/i/wyJIlOCUWSI9HBif1eoRoA9lnsnZFcNWupOSTWgDwETX+GkiNY7wm4wRluj+3VroWYh0sb
+ vv5zmUj5a6oWMYgAAAA==
+X-Change-ID: 20251018-opp-simpler-code-58662c627bf4
+To: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1760965647; l=1850;
+ i=tamird@kernel.org; h=from:subject:message-id;
+ bh=84ijlBcIXDyj2XxLW1M/v22FZDomhnAZOpBhwWY+gj8=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QHFqjXyc3WyeybzGTMB6Px+KBZWl1fyMKfCJf97ch3/b5poABmNTmH423TIyOELROATh2hm8hsT
+ tGJnVm37i5ww=
+X-Developer-Key: i=tamird@kernel.org; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-Alice Ryhl <aliceryhl@google.com> writes:
+Use `Option` combinators to make this a bit less noisy.
 
-> From: Tamir Duberstein <tamird@gmail.com>
->
-> Replace the use of `as_ptr` which works through `<CStr as
-> Deref<Target=&[u8]>::deref()` in preparation for replacing
-> `kernel::str::CStr` with `core::ffi::CStr` as the latter does not
-> implement `Deref<Target=&[u8]>`.
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+---
+ rust/kernel/opp.rs | 25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+index 9d6c58178a6f..b84786f45522 100644
+--- a/rust/kernel/opp.rs
++++ b/rust/kernel/opp.rs
+@@ -443,23 +443,14 @@ pub fn set_supported_hw(mut self, hw: KVec<u32>) -> Result<Self> {
+     ///
+     /// The returned [`ConfigToken`] will remove the configuration when dropped.
+     pub fn set(self, dev: &Device) -> Result<ConfigToken> {
+-        let (_clk_list, clk_names) = match &self.clk_names {
+-            Some(x) => {
+-                let list = to_c_str_array(x)?;
+-                let ptr = list.as_ptr();
+-                (Some(list), ptr)
+-            }
+-            None => (None, ptr::null()),
+-        };
+-
+-        let (_regulator_list, regulator_names) = match &self.regulator_names {
+-            Some(x) => {
+-                let list = to_c_str_array(x)?;
+-                let ptr = list.as_ptr();
+-                (Some(list), ptr)
+-            }
+-            None => (None, ptr::null()),
+-        };
++        let clk_names = self.clk_names.as_deref().map(to_c_str_array).transpose()?;
++        let clk_names = clk_names.map_or(ptr::null(), |c| c.as_ptr());
++        let regulator_names = self
++            .regulator_names
++            .as_deref()
++            .map(to_c_str_array)
++            .transpose()?;
++        let regulator_names = regulator_names.map_or(ptr::null(), |c| c.as_ptr());
+ 
+         let prop_name = self
+             .prop_name
 
+---
+base-commit: a1ec674cd709fec213acbb567e699c5f6f58cb60
+change-id: 20251018-opp-simpler-code-58662c627bf4
 
 Best regards,
-Andreas Hindborg
-
+--  
+Tamir Duberstein <tamird@kernel.org>
 
