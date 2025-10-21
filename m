@@ -1,65 +1,65 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9AD334C38
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 14:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DB932B9B4
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 14:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761055246; cv=none; b=uM0NnZKCHRnRDgbFlQl+oeVqs9ZXMHdkNoWhA9oSMWA0zrJZHg80dG6ZXsuHZtrb7mO3EM1QFkRNXiJyuZCjhQIUi/i9hym9b8n6F1f43W/4VG7bskn9VF6c2jr976OkqZ3jnIeqoB4SQTTXGlBQ3iJdxQ8+JAiYL0AaaM1oDrE=
+	t=1761055398; cv=none; b=f34kh6xbgPbKJGnZUvbTJ+ECBJDl9G9Sm9FStFVGEUWdiHqGFtHPaHBUCRUg6jWnBMNBNsmn5uxYLoxkepWwj27/GTxpwsAGeQVx2BB6/0ItvpkUz1Tiye8jiWqs/blj1N7RjPZYf4w0Sn3GLi3xS0HgnoHNB4PnAf1NGJ5nSv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761055246; c=relaxed/simple;
-	bh=kiZCwxxshu6Lm69S6km65+B8UcKV+CURToWSIuLBfYA=;
+	s=arc-20240116; t=1761055398; c=relaxed/simple;
+	bh=7G4waim0VeJfYc5UImM1ILNYZsWnKxbZqSwSOW0PnuY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=E1qtcofcOGeF6V1OF+MpIANt3TT5OKdMtDivxmnDW8rj7dyE3s6b7cao+4ex6gdAKUGp8BMjOeI9vJUJG78PGvIc3KutamBEkbl/+cefC+DSk+D65nzGm6eupm/wO2h4HM/WjeQBQaWUyFzgah/DvphWfOKUxMRYNdRpWi2D7XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ClTinW1B; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=fn865/y4TDoGBoKm1Um5juwaHT9cHgwnxNnd1+I8Zoe3UBjdaPPmlp+kefEdIrUfvnhMWdUWyrwc5hF+99CC061vGPeCx2LWeco0G8WzO2ul5kNhuMndlLOq4tjAnhMSuqk2Q7rY7T/nVE9udT5BHxJYyIVlklAK8bCzU81RGdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P4ieSrPW; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ClTinW1B"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4284525aecbso2456323f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 07:00:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P4ieSrPW"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-470fd59d325so29228325e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 07:03:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761055243; x=1761660043; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1761055394; x=1761660194; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H1uPpgCzD3AeHCNNke18aEjl14Z6hp7FAEQ6jf9bPwA=;
-        b=ClTinW1B4CbR+P+Wl0MiOlFvDtyt8K8XGhkqBZMLPMV0s5LtPXodrkQWM7iSwVQKZb
-         lX7D6au114M2W/dN46NrqiYTqjQdKw5lw74bFWczSj4GzEaDB3PocB2BCpXEsK3lArDq
-         vCkWd1Lj2TVTDfxMPLfgOZldWJ4FohhvlHBY0Lj5sEJfvvCXSdS9m/EOEN6pCsrqomXy
-         PweOXZLgC7bkSGqhMb33wwzszkKYiyNcMdAebr9rEpiWee46VhQspKe2IOkqZJSSA5nT
-         CxR8jx6+zFNFi5f0/4I2ygW18BIZYdixBGbutzLb8IgFKoCSThrL1uYo+rU2OQrPFTm9
-         jYsw==
+        bh=shyGPfyT7UZA3DJZBC7WKsd1LwTAS0uHQ5zFBJIRGN8=;
+        b=P4ieSrPWVKoIm/lC3yWjg90PbSAHzu3T6Sau4hmFsN5Jl9CtRaakSvc7ZkOI6QTOQe
+         XKgoscI/r/u0QTnA7/0AkCw0Q/TLP0eduwPoMFecMAbE71mpni7DRRuzM8H/a5eXOv9a
+         rrpU7GG2nl0LREd8G0LXkWDNCxyF+MsYGCAsWojwBdraHihmkAx48xnyea76gWYHprS6
+         cWB0mVcViBFFvnr9x6hSSYEIGjRSzYvkCelD+okad2MoycQl8oOWJIqIZpObxJ24SEDc
+         pFG9P9g9dBAmKUUHgGVfpaOdGCSi8UyNmPSCoPdN5knzuXF0+0c9hN7CZEjIIAfbutbe
+         iQ8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761055243; x=1761660043;
+        d=1e100.net; s=20230601; t=1761055394; x=1761660194;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H1uPpgCzD3AeHCNNke18aEjl14Z6hp7FAEQ6jf9bPwA=;
-        b=o1xDOo2dinI54AMy7R08bwmo9l4byHhbIDnhwnGENnX2vvBJaVr2q4UxskHgb3Eg1m
-         z4pyl38WT0T30hb4IPPh14Z8LoUYYHMjNNro11gmgbVmHQ2AXYCTIqF2/NRK2I7SKYB+
-         wH0gXZH8Obs8lHQTRjiGdTnUKvvUDBqj3tKaFssNnSiJax3GFObYQHMsalcCUYlMU9dl
-         y4rSMBgcvftMxfLMu37R+B2rKyhWEW0H43xnQEC5c3JAys9UdbPFZ+aL9LoFxHMU7vjS
-         hKnZ+MTmq4z87Gdwj7EkPFJAtPBkwRxRGeXcuxvElszTaO+OtsGgvofNSPPY6JTk/TGM
-         7A9g==
-X-Forwarded-Encrypted: i=1; AJvYcCW288MZEZ4jQ9CIyfBh9A9RxKGHb0B6JN1DfXUcCrzT3KhohViZWKElrU3JTbdIe9cskwjTg212w/57mgKtLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq0LTILiTwuPPw/v0az4ZQvHKnYM2+RCMdCMRrd0LCurEwi91d
-	P6dF9yU5QFx505v1I1fT/Xd2VNqKuNT7pKehS29eDffnp1JfIeA3oX9UxWQ5IrGsqxG2oolMKCi
-	yhKWYkFHOcazefnQHzQ==
-X-Google-Smtp-Source: AGHT+IEtB1Qc0jTjwzDO8cS4TUljoRm79vtwAIZ5o+NF+DLCupiUBxJPL1hs+MOJ512/JaHGq8aPH6579INvszY=
-X-Received: from wroy9.prod.google.com ([2002:adf:f149:0:b0:3ec:e12a:e26])
+        bh=shyGPfyT7UZA3DJZBC7WKsd1LwTAS0uHQ5zFBJIRGN8=;
+        b=jC5er3vwf5LmnOnqtgUI8U5rGiDz4M6RcRfykjTwEgZ2nXVK7BbvkQ4h2+pN0N9i3s
+         1hrvNFgnu2rSuzbyPxNwBvFHzVkPhuxtzKUzqzNErA23NLRn+eVd9g6YTOdNuQoIdxmx
+         qHWi/sdxRSMScYoV0TXx59TJSGcO1Y8xs68/ZWIw4P3F2B/lIBqKMnKvcLQbjwBERXPS
+         asfJhpf5orR5gFTMEZkdLentOxJRkflZZ71d/8Qt3AIzZNQwpCDCK5PMNJnF4JqKlqo4
+         CxHzaZfcl0diZZp8ScA+3zjXEoPld5mg2u/MJ3tnaxR0koweU+3nK/t1ORsmvcvUOmea
+         ED+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVM9KnC0U+E7wVOas9bJ7/dO6t7rfJsh85wS1+ANUKVRWaXPimouZFA7jfTfFNPT1K5D+KNs4NATpZlf/oqYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YytHn/CDFdL7LK90FmapiojIiLkgpSsDk2RSW9f2ssmw4JJPCem
+	FgI/mGpaZVYzN8PvjVCXU6TRSWwwL1GJYJVyWClGzwxMOreFnDWx8uybdgnrv0hsL038oRkG4A1
+	9XCoBGLgVucI05Bx1Jw==
+X-Google-Smtp-Source: AGHT+IHLLpKviw22ar27K/HuMjAHYEeLK4Z0OurwlILZBXJxSn9ItdjvEht0eB96eARzWNyuDiLwIyb22ASCFMM=
+X-Received: from wmc7.prod.google.com ([2002:a05:600c:6007:b0:45f:2b4d:3c2b])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2084:b0:401:e7a8:5c8d with SMTP id ffacd0b85a97d-42704d83e2bmr10026051f8f.6.1761055242809;
- Tue, 21 Oct 2025 07:00:42 -0700 (PDT)
-Date: Tue, 21 Oct 2025 14:00:42 +0000
-In-Reply-To: <20251020222722.240473-4-dakr@kernel.org>
+ 2002:a05:600c:681b:b0:45f:2ed1:d1c5 with SMTP id 5b1f17b1804b1-47117925e39mr133621965e9.36.1761055394121;
+ Tue, 21 Oct 2025 07:03:14 -0700 (PDT)
+Date: Tue, 21 Oct 2025 14:03:13 +0000
+In-Reply-To: <20251020222722.240473-5-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251020222722.240473-1-dakr@kernel.org> <20251020222722.240473-4-dakr@kernel.org>
-Message-ID: <aPeSCuFNrV-_qvBf@google.com>
-Subject: Re: [PATCH v2 3/8] rust: uaccess: add UserSliceWriter::write_slice_partial()
+References: <20251020222722.240473-1-dakr@kernel.org> <20251020222722.240473-5-dakr@kernel.org>
+Message-ID: <aPeSoet6KY9kxzqX@google.com>
+Subject: Re: [PATCH v2 4/8] rust: debugfs: support for binary large objects
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
@@ -69,47 +69,32 @@ Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Oct 21, 2025 at 12:26:15AM +0200, Danilo Krummrich wrote:
-> The existing write_slice() method is a wrapper around copy_to_user() and
-> expects the user buffer to be larger than the source buffer.
+On Tue, Oct 21, 2025 at 12:26:16AM +0200, Danilo Krummrich wrote:
+> Introduce support for read-only, write-only, and read-write binary files
+> in Rust debugfs. This adds:
 > 
-> However, userspace may split up reads in multiple partial operations
-> providing an offset into the source buffer and a smaller user buffer.
+> - BinaryWriter and BinaryReader traits for writing to and reading from
+>   user slices in binary form.
+> - New Dir methods: read_binary_file(), write_binary_file(),
+>   `read_write_binary_file`.
+> - Corresponding FileOps implementations: BinaryReadFile,
+>   BinaryWriteFile, BinaryReadWriteFile.
 > 
-> In order to support this common case, provide a helper for partial
-> writes.
+> This allows kernel modules to expose arbitrary binary data through
+> debugfs, with proper support for offsets and partial reads/writes.
 > 
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->  rust/kernel/uaccess.rs | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
-> 
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index 2061a7e10c65..40d47e94b54f 100644
-> --- a/rust/kernel/uaccess.rs
-> +++ b/rust/kernel/uaccess.rs
-> @@ -463,6 +463,30 @@ pub fn write_slice(&mut self, data: &[u8]) -> Result {
->          Ok(())
->      }
->  
-> +    /// Writes raw data to this user pointer from a kernel buffer partially.
+
+> +/// Trait for types that can be constructed from a binary representation.
+> +pub trait BinaryReader {
+> +    /// Reads the binary form of `self` from `reader`.
 > +    ///
-> +    /// This is the same as [`Self::write_slice`] but considers the given `offset` into `data` and
-> +    /// truncates the write to the boundaries of `self` and `data`.
+> +    /// `offset` is the requested offset into the binary representation of `self`.
 > +    ///
-> +    /// On success, returns the number of bytes written.
-> +    pub fn write_slice_partial(&mut self, data: &[u8], offset: file::Offset) -> Result<usize> {
+> +    /// On success, returns the number of bytes read from `reader`.
+> +    fn read_from_slice(&self, reader: &mut UserSliceReader, offset: file::Offset) -> Result<usize>;
 
-I think for the current function signature, it's kind of weird to take a
-file::Offset parameter
-
-On one hand, it is described like a generic function for writing a
-partial slice, and if that's what it is, then I would argue it should
-take usize because it's an offset into the slice.
-
-On another hand, I think what you're actually trying to do is implement
-the simple_[read_from|write_to]_buffer utilities for user slices, but
-it's only a "partial" version of those utilities. The full utility takes
-a `&mut loff_t` so that it can also perform the required modification to
-the offset.
+Maybe this should just take a `&mut Offset` to fit what I suggested
+under the uaccess slice patch?
 
 Alice
