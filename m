@@ -1,76 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1C4265CBE;
-	Tue, 21 Oct 2025 16:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1252DECB0;
+	Tue, 21 Oct 2025 16:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761062565; cv=none; b=oor3H+lJlKALOkOKek0Hv+FVFvZpYY12OZYbFtbGWQ0wP4aRoq6ra5i0zSxrR13YyaKVBVX7T1y3JaV9Sdj6Ojn+dwIT3jk5S3TRP4pdB3m9rCf/fwn6OPdsd31z1Duf9LaZL+/+/jXnfWd+IaX7VgwSySpwk2M5oGqsh7mlFcM=
+	t=1761063919; cv=none; b=b676Xn2a5V33X7dhfK5XZCE0VMq6rL2CY9qiPfDebqhdG4xa++cJQcql8xBT9hlXU65RB/TY67zboZtLi+41BiQ8Cni3rbuERYb7SMfnXZSoBB/LXIGvD4Y8f+MYZElrcT72baRM3yMA3mJb65NPdFLHVSUASR55DRAAxn/4u3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761062565; c=relaxed/simple;
-	bh=l2aeHL1a3r8akGGXuumo6V4s/qnN5GJQkkV91RpEBHo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DMH0mN9Brk9Jnou3ZDLSZx6kmz6KWyH7LqSXo+uPlLnRXvjMgAH/N6tmGaN8ysNj8oae5fSBbDfDo4GMeZJsfVfrt8jl8q72leA8KZmBljXzW/hSrw7JVPfJQpXCS3bnzG22Hn2wLnGaLVnJtpqsd+G3714UzR1AFrHHRqu5gIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6neV8lq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761063919; c=relaxed/simple;
+	bh=GLITs9zjBdBSvzzK+ZY0HT3b2sXh0hAOul8PY5ytXgs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=gtDR/b037cTZJU2LmUlQchHVXdL0OC0VLGv6Yj6OyTw9NI0IUAcKE76U7dk33LhoSChuoL3jo1J3Yks+p7TD5kxMJW2aaq57ro8RkOOEuOILXXdwEqlhYxgQ4Pe1ckgMHGE0kiMgaj+Egfx0oN86If2SH/ulhupzTUnQonsTAFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIpUjTDk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6neV8lq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9639AC4CEF1;
-	Tue, 21 Oct 2025 16:02:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIpUjTDk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69490C113D0;
+	Tue, 21 Oct 2025 16:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761062565;
-	bh=l2aeHL1a3r8akGGXuumo6V4s/qnN5GJQkkV91RpEBHo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V6neV8lqKxsIQVsRaJyRWINv+4qnDvZkvPpSysBefxmtjY2dUWFj5WuVbI45jbvEz
-	 yCfKtMgmmRgA7ZT3p8jwwWAdixmefklTFJjb08u24Uy/v56JqmHbxNyeYlr5HEo6OI
-	 Q3BKpga0HC5UWzVntlMlghAj5L3J1gWldHirf3FSQ6ZAA6f37Dvo11lx4uBfvKRkU7
-	 4NeAU/P1eRzxiynqjVNsHYjF9dA+iRQK0hWI68ixk1rrCHhrpQ2Fwm3ke+lKK6IV2q
-	 SKVg9ICekHq18cNAZyDBx4GdfRqBtaaPFZQtrtIHwTNMICC3euf5BHbzDDDpSIpgIj
-	 SdEDj/Y5Zjs2g==
-Message-ID: <a5cca6ca-9147-4531-81d8-05af1333848b@kernel.org>
-Date: Tue, 21 Oct 2025 18:02:39 +0200
+	s=k20201202; t=1761063919;
+	bh=GLITs9zjBdBSvzzK+ZY0HT3b2sXh0hAOul8PY5ytXgs=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=BIpUjTDkqAI6vPrOLhNtZyWgzjiiBCif8978z7YcatrcV2X0hUk5Be/b66Be3dQhE
+	 D0lDE2f1v0HR/eFqOlFOrMIiMj1vFaiNfY9zngnT706UdrNlLK5kqWRxv75NTmPLl3
+	 QtKFOOdi0b9JLMl9jJJdtPhZisVzNdrUOcAVKckXX6gl66KUSHMl4mfAwgBVGkgKKA
+	 jFxogmhPnHq7V91cWMoWdagGpiDJf36eddEntQV+IfYriqCH/BPW8Wfin4Wi8fyymp
+	 EeYKIgh0e4JXZB0WUvcFwaxPX9Kya5N8f1nMqTr8WAh9JUteeGlWhTOtqUSBse4gO/
+	 uLiQgZDcraQdw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] rust: Add read_poll_count_atomic function
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
- daniel.almeida@collabora.com, a.hindborg@kernel.org, alex.gaynor@gmail.com,
- ojeda@kernel.org, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, frederic@kernel.org, gary@garyguo.net,
- jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org,
- lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org,
- tglx@linutronix.de, tmgross@umich.edu
-References: <20251021071146.2357069-1-fujita.tomonori@gmail.com>
- <20251021071146.2357069-3-fujita.tomonori@gmail.com>
- <DDO06754OMN5.G0AN9OCWTFLW@kernel.org> <aPeTFMeVoIuo8Lur@google.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <aPeTFMeVoIuo8Lur@google.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 21 Oct 2025 18:25:13 +0200
+Message-Id: <DDO521751WXE.11AAYWCL2CMP0@kernel.org>
+Subject: Re: [PATCH v2 1/8] rust: fs: add file::Offset type alias
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <mmaurer@google.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251020222722.240473-1-dakr@kernel.org>
+ <20251020222722.240473-2-dakr@kernel.org>
+ <CANiq72m_LSbyTOg2b0mvDz4+uN+77gpL8T_yiOqi1vKm+G4FzA@mail.gmail.com>
+ <DDO3T1NMVRJR.3OPF5GW5UQAGH@kernel.org>
+ <CANiq72k-_=nhJAfzSV3rX7Tgz5KcmTdqwU9+j4M9V3rPYRmg+A@mail.gmail.com>
+In-Reply-To: <CANiq72k-_=nhJAfzSV3rX7Tgz5KcmTdqwU9+j4M9V3rPYRmg+A@mail.gmail.com>
 
-On 10/21/25 4:05 PM, Alice Ryhl wrote:
-> On Tue, Oct 21, 2025 at 02:35:34PM +0200, Danilo Krummrich wrote:
->> Please replace the match statement with map().
+On Tue Oct 21, 2025 at 6:00 PM CEST, Miguel Ojeda wrote:
+> On Tue, Oct 21, 2025 at 5:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
 >>
->> 	read_poll_count_atomic(
->> 	    ...
->> 	)
->> 	.map(|_| ())
+>> Yeah, I don't think there's any value making this a new type in this cas=
+e. There
+>> are no type invariants, useful methods, etc.
 >>
-> 
-> IMO, this should instead be:
-> 
-> 	read_poll_count_atomic(
-> 	    ...
-> 	)?
-> 	Ok(())
+>> In fact, not even the type alias is strictly needed, as i64 would be suf=
+ficient
+>> as well.
+>
+> Even if there are no type invariants nor methods, newtypes are still
+> useful to prevent bad operations/assignments/...
+>
+> In general, it would be ideal to have more newtypes (and of course
+> avoid primitives for everything), but they come with source code
+> overhead, so I was wondering here, because it is usually one chance we
+> have to try to go with something stronger vs. the usual C way.
 
-I think map() has the advantage that it is a bit more explicit about the fact
-that the return value is discarded intentionally.
+We need arithmetic operations (e.g. checked_add()) and type conversions (e.=
+g.
+from/into usize). That'd be quite some code to write that just forwards to =
+the
+inner primitive.
 
-But I'm fine with either version.
+So, I think as by now a new type makes sense if there is some reasonable
+additional semantics to capture. Of course, if we'd have modular derive mac=
+ros I
+think it is reasonable and makes sense to also do it in cases like this one=
+.
+
+Maybe the action to take from this is to add this to the list of (good firs=
+t)
+issues (not sure this is actually a _good first_ issue though :).
