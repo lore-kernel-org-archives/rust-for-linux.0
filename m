@@ -1,132 +1,117 @@
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481B1285418
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 21:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5035428A1CC
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 21:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761081788; cv=none; b=MEls+Frao3+B6+RuXccjMhp83Q0Gzoe/a8b73MLku81zjOM1QUnuFiEqTRaJso+49kzkw2iOfrFdJCBTWlist88hiLumuXLVf5WQPoA1pV6ajOkRYEVQlDAXHle35wwGpu2hops/tIVlelBCcRuiIM0kEx1k7Pfh3SxcqWPzGGU=
+	t=1761081988; cv=none; b=NfsGAmsttIAIXv2doLewJWtonPZINZPsNbocrKhuLgoFMYQxFM6zxuQ873kTg5Q8jJ3xcsIHAGfb5ngsl5BXD5/S54PCgBOPkprQZif4uaVXzilroavGdRD4HVCTn5BcixNw78nZDg9mQ8Ft+WKPmFYl82yDRfejdRH/8Ko8/Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761081788; c=relaxed/simple;
-	bh=6sbV9/XpJvbBGLOwudZer6dO4izmcXo/K+Q90zcODo4=;
+	s=arc-20240116; t=1761081988; c=relaxed/simple;
+	bh=fk4uDHBJ7seBjI9wBGl6e9lK7q/Nv9TIYlYWxndM84s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mKUFmyIeQKh/CPOBQ1HQX79TfyCTCbKKNWXsOxDy2r4jinFdxab5/u0WIo9fLBWQptSniA57K2q2ApTwKqugE9DccKbH11yljNXN/rENrVHwpLryiMwktHHW4lnYBBX2SXLispOq/nBCG7NtQM78lp5EnYRpKoF5EKMTg4GUL48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mJXURHev; arc=none smtp.client-ip=209.85.160.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=qfY/vA1k2H5ncZ2YpWYUisj5Dncv5GORwseORJWBOapqwfDpjjieFJC0JSVyq+Bfg+3kydemtYdkCHhWoHGM00ZGuHOUN+Xi2uSpD+ZjcRs2MulCbLLFS1ZrSoODEyZGipEVZ2n0xagexMzwRz401LFAOUfwGrXBWPcovy4pnKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UZ97+p0r; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mJXURHev"
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-35ba7c71bfdso2085869fac.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 14:23:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UZ97+p0r"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-63c2b48c201so1659a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 14:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761081783; x=1761686583; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1761081985; x=1761686785; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6sbV9/XpJvbBGLOwudZer6dO4izmcXo/K+Q90zcODo4=;
-        b=mJXURHevDvLM52OAszuDO9PnopJHA+y6RU2YxteXxsbAbsaciJ7F/yXdQJPEp+F2Eo
-         Axr8/e/5BG8XHd56ZvoYOIrtFJD6oOf2POarunfsSrB0QgCgb9VglAQuu9ggftSUTWcp
-         I4sx8cVv9rft+q1iDZvtdG+Vayb4t0ifL8qnV9JACZcVGsiCfadpFcnS2iVgco00bTmA
-         L+cIhG81At/PWXZvKJdi8z7qkVxMwb78lcL5imOGn5FpkLiTG5tbuwYGEW8aLHy9DXwO
-         2b72N8ZdGP8byR+qW4ejYhFGx2jfDTq2kuVBdPUz4Ov9iS1A3fc3baJHxuQH3jsrghv0
-         fTxQ==
+        bh=fk4uDHBJ7seBjI9wBGl6e9lK7q/Nv9TIYlYWxndM84s=;
+        b=UZ97+p0roE8xztzXGDJzWe4bui6rJO4WpILhIXPHY2SG/i9k4LbD0uzC1NVa0Usvxa
+         4bWIzp1biTjkrCmJvYVAEj0HkF0wX9SwKCI8foGlJKbqzQjyYWydGMki66fuN5L+/RPx
+         5gNtmc/RN4d+h1xsvyadWMY9mPAPfg9L6kVfERpG9dmiJnh5pJdx6l0o8X5GFk21lJxN
+         8U+wr0p9FCYczU0YAa35dy1KmluPnUPYUx5KKqyoHUmvl+dIEDcK0n5U25gyc0yXm3HB
+         NKNZqC4sv3cpIJj7/otvG3Us3l+PefxCnDjdQVWGoURbPykTZSLvjLL9f1ia06fvfaif
+         40YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761081783; x=1761686583;
+        d=1e100.net; s=20230601; t=1761081985; x=1761686785;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6sbV9/XpJvbBGLOwudZer6dO4izmcXo/K+Q90zcODo4=;
-        b=dMRo/yIRN1a1fQTO4BR2HPmhJEOOY0QvcPK5dOz1XwKcVtT74uELok/I4vlXp03EF2
-         V68BdJbeOX8N1eECG9/D7QLYuiSx3vI+N2l7i5ccQK2VHvBuOHhcQ/7ld2vIQoePpw5D
-         rP+Oksy6L9tyAsg9NoyEHCKdKTxgKid4C6fMV7D14DwDOZOX362wTuDtsXdT45Ehvo4i
-         2Yx6Mz+fFGipRWUJq2GpZPVxbmkmwUWZ9V7br4mEYxqeryssmtcUEwLB5I9DRNMeDPRw
-         hsUZZo0jApxJcVwYxPLVwcw9vq5sK/2/1qpWF9ZMCjSD5mL0oXJuLrSkF5VVVTHcvkjQ
-         Mqzg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+ka2CtPQ55tAf10UEz02ot5roCH6Yw5MhSy25drTGKDBuDSc1Z71DVNIie6SMyWV24XWvHJfbAI5PAYUKGg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwCLH215JFwuvL8D1wCBZ68ypKjBkfqUOk9Buypu9Vlknr4XGG
-	Ef99NOntbPxeA89EuxWUoabm9iYzVNIjK+VYlpmVKHr8v+Xqe0kZx+JrIoNrxop1LJbLnPZfK2c
-	CeRLR/TeGa6fl4SgYFrAIR+wWaAtlzWs=
-X-Gm-Gg: ASbGnctadKviFBRvXczbUNnn+aMj6QS8xMJGAKrWVARDcE15Yknn36bQrTJLG/Ckbq7
-	4uBRRBO23UtSHXzdHSYxalEFBf/W6qjxmh6lU4+Gf7s4I5yfxfQd5s60XXclHsOgf3amBmCF0BZ
-	2CPhE+9gkc587jtTrTFXJFEFct2eoFZarmciD9BKxK72UnXU9lYiN83NA2exiFHiqH8Vq122XKI
-	5MfvrQeEPW0ZH9PIwUySWt5iffdKF9dTbNMko+4svXpNisNkeg6kdqz2o5jD4/7zzzxDZk28vfC
-	U1BtWXWaDIFn03OMKwFsN3jm4V2TOCh8iJXZjiP090DuMKU=
-X-Google-Smtp-Source: AGHT+IGrFMcxsEBMC1+cZHqPVMERtUNh0AgA0ux/VSHoiF3yQL27fKNA5xFCo+lM8nbxI6JXdnRVvyYtCCOqvRljsQY=
-X-Received: by 2002:a05:6870:a1a9:b0:345:b0cb:d097 with SMTP id
- 586e51a60fabf-3c98cf3f775mr8490270fac.4.1761081783250; Tue, 21 Oct 2025
- 14:23:03 -0700 (PDT)
+        bh=fk4uDHBJ7seBjI9wBGl6e9lK7q/Nv9TIYlYWxndM84s=;
+        b=MJTVedolRlzACqgut0DNIBB/OXBQ//l4icHXv2ulgE+AI2kXfKsk+T61qbiNF96kvC
+         d/LptyVTfoMFc66oMG8nLe80UhewnePpqfq4IXoHdyfV5sFis1LF0ea6vL5/8M2kgsti
+         HIqSpntiqPbe0zpyBQjJugRlB6XhwiMvsUiuomUAfpD4AN/98Pu3Er3yT7+gfYZkbM5r
+         uz7vAYPWuyjQ0WPV7MSW22+MzG96zhpNf1rdEpyNipKnwA5lYfdoP4pPITtcPPzWElzw
+         jcKUNT/r34qk8DbY7s6iDpXrBcUsaPlAxPiZbuC/XcfHisIoBDurM/LX0LmiYH6ikD7z
+         Pc7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVfXbSI88DHgt01eirTQmYjqzTHV6LTQmqYuBYz9km9IUtQUlh7MgptTHnUL/tGdeNDZ01f64/5FCHNrj0C+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYXhZ/LHk+62JbVi2O2xmvfRmqB+KXhfO2/yhiujwRb4MJ1rdb
+	kL9QnjZl+fGKYzaLZr++nFvRv/5sk5T4lo4MaomHWTP/xq1yqUwc9+0aiw5pQ7+SRUGw3FNW7kE
+	462RdnbmebWaFIM4sNnH+P6z07kCsFPULDi+bMHmf
+X-Gm-Gg: ASbGnctN317DZWsj5iGEWJ2Ya33Yx1zjsMGRU3lNW+TN2nXPFSa6fOfSIvtTNtjunMy
+	sX/H1mDPtL6DIqzWXr+i1KSxOUbth4ezGFzo40wakk7E2h9vVbC9pHG+fHuXM3zj05X5rDOE4qN
+	aQC/1+LvFURE/tstrTKKczlvlh6qHDUnhdx1YhbtfxsSpvBsYmBFRQ0l5+pph8FurgvHO05Q/y4
+	Wm+Z51aBrGg4UYIM5up6bRyGNIxBOzzbw/gXvJq2XQEm1xQm2CDIdkg2gmYhOwPL1W2cLo7RyFB
+	DrEISxFPyi37oi0=
+X-Google-Smtp-Source: AGHT+IHIK7LRKircy3o7ZXU64JDEZ1svJocF6KUfMmgbCGzy8S1rqeS98AsrhAAzTWhtg1sLGH+a+O1AV1PvLhW6NO8=
+X-Received: by 2002:a05:6402:a18e:b0:63c:11a5:3b24 with SMTP id
+ 4fb4d7f45d1cf-63e1d96bb8dmr8627a12.1.1761081984441; Tue, 21 Oct 2025 14:26:24
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <af7a8880-e166-4e1a-851d-31b731c2d2fa@gmail.com>
-In-Reply-To: <af7a8880-e166-4e1a-851d-31b731c2d2fa@gmail.com>
-From: Matthew Maurer <matthew.r.maurer@gmail.com>
-Date: Tue, 21 Oct 2025 14:22:52 -0700
-X-Gm-Features: AS18NWAe92xBPEbXA2vu2qIKbC1NnCBzxmcvhr2p94XoKdU80z2cE0Eyg6rEwv8
-Message-ID: <CAM22NNBbQ2w1GDT5ep-ccwV1zWP-OpfRiM=CvzbPoYdpie6rmw@mail.gmail.com>
-Subject: Re: Rust: Manual reimplementation of C unions and layout testing
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Benno Lossin <lossin@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, rust-for-linux@vger.kernel.org
+References: <20251020222722.240473-1-dakr@kernel.org> <2025102150-maturely-squiggle-f87e@gregkh>
+In-Reply-To: <2025102150-maturely-squiggle-f87e@gregkh>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 21 Oct 2025 14:26:12 -0700
+X-Gm-Features: AS18NWC-1jwJmoNEc6IBrfF-BcQRCnK47G8SMuewBFW-uaWirgjur0uX31H4tG0
+Message-ID: <CAGSQo00J6SjVLBDFHYqwVZ7x_5nT8L=RQEHTfAe43CoDuo0q3Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/8] Binary Large Objects for Rust DebugFS
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 21, 2025 at 2:04=E2=80=AFPM Igor Korotin
-<igor.korotin.linux@gmail.com> wrote:
+On Tue, Oct 21, 2025 at 12:10=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
 >
-> Hello all,
+> On Tue, Oct 21, 2025 at 12:26:12AM +0200, Danilo Krummrich wrote:
+> > This series adds support for exposing binary large objects via Rust deb=
+ugfs.
+> >
+> > The first two patches extend UserSliceReader and UserSliceWriter with p=
+artial
+> > read/write helpers.
+> >
+> > The series further introduces read_binary_file(), write_binary_file() a=
+nd
+> > read_write_binary_file() methods for the Dir and ScopedDir types.
+> >
+> > It also introduces the BinaryWriter and BinaryReader traits, which are =
+used to
+> > read/write the implementing type's binary representation with the help =
+of the
+> > backing file operations from/to debugfs.
+> >
+> > Additional to some more generic blanked implementations for the BinaryW=
+riter and
+> > BinaryReader traits it also provides implementations for common smart p=
+ointer
+> > types.
+> >
+> > Both samples (file-based and scoped) are updated with corresponding exa=
+mples.
+> >
+> > A branch containing the patches can be found in [1].
+> >
+> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/=
+?h=3Ddebugfs_blobs
 >
-> As you might know, I'm working on the Rust side of the I2C subsystem,
-> and currently looking into representing `struct i2c_algorithm`.
->
-> In C, this struct contains two anonymous unions for callbacks.
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-In the specific case of `struct i2c_algorithm`, all the unions are
-solely for the sake of supporting both a deprecated name and a new
-name, e.g.`master_xfer` (deprecated) vs `xfer` (current). Since the
-Rust bindings should never need to reference the deprecated name, you
-could consider proposing an `#ifdef __BINDGEN__` which removes the
-`union` and *only* includes the new name.
-
-> bindgen generates rather awkward names for them, which makes the Rust
-> bindings less readable and less stable.
-
-You should only need to reference the bindings name in exactly one
-location, when translating from your Rust representation to the
-bindings C representation or vice versa. You could also apply a
-wrapper struct and create accessors if you really don't want to be
-proxying between two types.
-
->
-> I'm considering declaring this structure manually in i2c.rs, effectively
-> copying the layout that bindgen would generate but renaming the union
-> fields for clarity. To avoid accidental ABI drift, I could add
-> compile-time assertions to ensure the Rust and C layouts remain compatibl=
-e.
-
-The problem is that those compile-time assertions will require to to
-reference the bindgen struct, or invoke some kind of C parser on the
-header or debug information, which is much more complex than just
-referencing the field.
-
->
-> Would that be an acceptable approach?
-> Any thoughts or preferences on how such layout checks should be done
-> in-tree?
-
-tl;dr: Such layout checks should be done by bindgen, and I don't think
-that unions where you only ever need to reference one arm ought to be
-considered complex enough that we try to implement custom layout
-checks.
-
->
-> Best regards,
-> Igor Korotin
->
+Reviewed-by: Matthew Maurer <mmaurer@google.com>
