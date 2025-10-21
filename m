@@ -1,110 +1,100 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C61337100
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 14:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C72D342CA5
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 15:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761058726; cv=none; b=sk+Lyki9K6MX+PY4dOESqCINRg3fpdMZ8efsvZxnfA2i+3unTybbyZDJDSpaE4eGmcOsA37ogc8Y/T9LR9KM1gsBjc1Er22VGioDh+vHEINStUkaRPeRRmrLz6ic8bgHc8YssFz6k4n6dt8d1U9iqJfIGol+VOh7B/oJRuWYP20=
+	t=1761059310; cv=none; b=hXHn1wYVyZ8m8X74UjBWApSPnlJjZMcS89sHhfq7bMoIVGRKSogONH59QQPBt78bRi6ENqUVNYNotr42Cj9oSLfC6IJD3dRsiYDfyHspldGlh1jcgfk50KoyMUOy6IG8pUiso/OgFP93zU6IpcAeWJFtvnJ/VW66uOJnsiZbYm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761058726; c=relaxed/simple;
-	bh=Gyq+NjhiKqVLnuujXH69Hqyu6MFhqZ78VaI+VUb+2E8=;
+	s=arc-20240116; t=1761059310; c=relaxed/simple;
+	bh=qFg4+yNAZ27UrKFa/0jY50pQQ/TyaCnL0WzY/AbT3Uk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V9ah3OZt2MEyhgkQ7D7zaqFcPqu+gMIg9jrBaYMMcOvIUUFzPuE/pcqSN/dGvCexHDnhJVWR85HYJJh8fdcdToHGP/t+nuOTK1kLFE1l2iQRxJ7eVE5ZYkE7zTQaCyIxO6tBgdUAs5enZsrLmnk7PijGdP4K+fN7suBwR1Wpvh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RVIOfilx; arc=none smtp.client-ip=209.85.214.170
+	 To:Cc:Content-Type; b=SOCiOg8NtETW+rFXKf91wIol/zdJ7nv5IapAaHbgrjn3DtSbk2OrnhEjRh0Skd1zqsrjRm5rgO4U5F+V8oARRb/Wt0tfyvxlwS3hnhHufJ0fu00KK1GF2ZBqQHeJiCJ+4yJCfbJA2UU1ASnTngE9d2ymvSSbb1IurA62icwjtdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GDmQNpyl; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RVIOfilx"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-26808b24a00so7274145ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 07:58:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GDmQNpyl"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b631a684a9fso420518a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 08:08:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761058724; x=1761663524; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761059308; x=1761664108; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Gyq+NjhiKqVLnuujXH69Hqyu6MFhqZ78VaI+VUb+2E8=;
-        b=RVIOfilxT7vxYb4x6snRYd8d/y6G/FudKfAxPUTZfn+2ZWZwDIwP5lAvAReELTbnqv
-         H4ybI72f5a0j6SOW268kgDXwTJ+eAVWlhEEnOyP26fplCqeYpqxTB7p/rfZb57Ibw7f8
-         re2rhVoNQIgZpO1qZsXSVrmQkLv9U0uJSZ6/loaxTAp2K2pO9PQjGxYwGbRqqq1N18ju
-         dIdRxiAt/nznHZOaOKT7LQYeK74ek/3E/23+WFmq7JVdn3XcBDcVHW7M7KrFtHoXenYD
-         E3ooBA4MslSofOwDX3wtlKIwkj1DTk/g2AxVKe0RiiPSek5jJ0OQsHsmP4EwFf5kNhg8
-         wfMg==
+        bh=qFg4+yNAZ27UrKFa/0jY50pQQ/TyaCnL0WzY/AbT3Uk=;
+        b=GDmQNpylqDx1ao5zQVD847VGaErTwC9mikxRVUvxuQkmWPTmtaWf00RSlc40/i+kQo
+         XKfjdgsq9RUAcjdjyrXvf+g7lvZwAmLrzH21U2JZsI8Xe4hG5BUajmvHwJ5B37tiri+e
+         VRviq/6rBOC0/4MIRCOD64U7lRo6Bndb/9TMH3MYtcRcp0Zr+B3gRkD6VV/pVOPwPrgr
+         X3Prcmrwnx3CHQz48nQJ/PlpbEwBdRWpL7hOFaNLxEyaXi0qJtkMkg86nlHDtJM7uIKG
+         iXtTUI3s3UWtP6mL5uqDpvIz1wlIaIfYgF5MYOon2T5l3wxvrI9N3G+9DPze33/14P75
+         MTEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761058724; x=1761663524;
+        d=1e100.net; s=20230601; t=1761059308; x=1761664108;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Gyq+NjhiKqVLnuujXH69Hqyu6MFhqZ78VaI+VUb+2E8=;
-        b=prwvUzIjQR2QyC+/+ztCBI2flHXA1633s5YoL8gAHPotFdibP/9dIhN58Lr6Fb53EF
-         5ulzTQZz4OnRwpypF6qFXJWl+kRGSgLFYWtsL2Ud7p7jwfNAuL6sV2PiKRcJuHdKb6qQ
-         bcIgcEN+Ej3b3sV4R5oE3OLudcSQig/23Ki51OI25+HFaPpeqeYunPcqG54IjSN+fL5B
-         0ZpvoZmUIocYekTxkewxc4CSaC7gWUbyUVdPNgVqIuwMPdHpRCX5c4lHupOYhjz+WjZn
-         dYiJHx+z7OkpQq2xi/OyumquaRHiZbBQcdIMS7YqfQ+EaZUPPAETo4+ZmWZ4LV/gEkD4
-         U9Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCX5V7VwZFdpCCxkhQJDvFKdreQjr/6m2O04Tofw8+uUXKaHszfKvFmBvJOMOYa6t/nmxeIZ0MPx4NNvKiVWSg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yymvzne6xQnVnSgKaCNLEh0ujGLonFK7jPP5aRK6EnPmAReIvfH
-	3jvQmzVPhq4tR0r4bFHMmC7GAZGQN7le9RlH/XgK7vQ2aH3Pq5m+tllaZF9eCeokL1D+rYJ584n
-	kn0xRmOHFUT/ag83QkWUZssVp3r7py8E=
-X-Gm-Gg: ASbGncucrr/NbssKC0imSB81UQ9atGs4fCG0+4aShZBex9z8jwNXKsU1Uw3sqgW/X7E
-	7bgub3GsnqymBzGQd9TjQx0iKu1AXCA/MUcMLJLrsWWNHgOqiDT464IAR29ax9Q5vC0EJTjdX4c
-	KNjAkCtQ27Ihw3ZDP47cxYFyW799qyX+JGol7PdgpgROzRg/DvLHlYGjcCg32S0YOS1hMtNZkF0
-	GnGpUjzgHQ3vgLl/vdMc0cDq8mMYMpQG9AjwXB5X5ZJzEUEgucav2dLekhLNYmHH8dfVLKb5YKE
-	Dh/+bglHboV1kUQo8Ojy3dTu9EN1GITvaeLbVNX76XnqQHkW0hmrZI/UK5CfSXDhqzBFSOl9huL
-	trv4=
-X-Google-Smtp-Source: AGHT+IF8U7aHVuqLNukPYI1Z6fbz7kccYaz5TMejDf5NetEDaXPajidIApPI7hCnWhm6BSXxWODHy3+BBqh1rlaFwGs=
-X-Received: by 2002:a17:903:2bcc:b0:269:85aa:3776 with SMTP id
- d9443c01a7336-292d3feca86mr22781715ad.11.1761058724495; Tue, 21 Oct 2025
- 07:58:44 -0700 (PDT)
+        bh=qFg4+yNAZ27UrKFa/0jY50pQQ/TyaCnL0WzY/AbT3Uk=;
+        b=xUTxgkx7txX4PEirYoO7rOGCJh52420sLlnuGMcrF5AdJyT0cRQGDpAaSEUSyz3gtg
+         R0kGTWydIsVRdDnaRB76EGKr8vXh+w2SKSBSWr+PFzSN4J2XvKYxPKx+hdclaVo/YChK
+         eFhWKMIuA3yRjHDxb99f3vru/SNu4TQDyYyuMEQlL0H+cVwN02kGJ2uqJOFT1oaJPrcn
+         oNG20Dgx8mbCF5UZ7VBizS4+I+1Guswib9c+bODHSOHDDOB4pQ3sCRsg1bwTU78/Ee4l
+         4Vwf4l1+wTmY0k1BmS/k3PwRu/WmwIXT3ZMIYei7H6bcPU6inzdH3SOBE2t3YAQbC+t4
+         g3aA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0prRkVvY68Myb02aDDVerDAkPNXZPtLf50E8Dqptd8K9XagaJ++Kir4EptKJjsGtuPsL53nkTavCxDrWpTg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLb6O0xkB1qNC59XgUeQsQR4Rjh+xne6pawN9DmmcbJm+J82+J
+	/WS2v/MG8lDz9QAi5D1pg4gZOsBDklYPbdVfUFE9I98q2J9SLGv/N7W2Gmd8FUVT6PnJens5FY6
+	d+1EwgzMRdiQ3MIb4wWq2FOj6Uu/sUPU=
+X-Gm-Gg: ASbGncuyxOBUShJFfhC0QCXHON2xwRFkGJbDh8JUpSrl6jNoC8lByFJ1cmczoBqtQnd
+	ITj/UnOdEY3MWMRiZqDvlGHbViRsTMq6d3JgWEZokro71sHqguAp4H0tN053Eid5+JT7Bg/ucrz
+	58mSnXMIJ21aEnOk9M6oJ6ttjGwkJ6pRperCFqLRQfPc6JS9Af341HPh/xclatoQR2M+tmXoZ9d
+	VixcxV9YyDw2qtNmiS33bvL+CO40KGBcRKtw29MPozcEcXpIQbyviqq+dIjupuzEmsJiTKbjFo7
+	cXZTNU1RFrM2RCh35+TWmX4xrvhHel06F6UGgRvIoKAKqbHg00ve0c1+HL7xPIKF52UrvWWpGCn
+	8wtc=
+X-Google-Smtp-Source: AGHT+IFreHdov+uVhNjI+vb4zuqGdoRtHfpLdbPpRiyIyY5EB+5Z0lQXG7LeNg1R8D52vs+phURtS3CNMV6Qy7+3LW0=
+X-Received: by 2002:a17:903:22cc:b0:26b:1871:1f70 with SMTP id
+ d9443c01a7336-292d3f7212amr26756455ad.5.1761059307987; Tue, 21 Oct 2025
+ 08:08:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251021071146.2357069-1-fujita.tomonori@gmail.com>
- <20251021071146.2357069-2-fujita.tomonori@gmail.com> <DDNZL452A8JR.K1AA7LHZEXW8@kernel.org>
- <CANiq72m+uAWyRf6y6vAKjCQnwsMqVVGQx3VrHW1yAp4a-5eWew@mail.gmail.com> <54328318-c235-413a-a069-5ea93f1dcb2b@kernel.org>
-In-Reply-To: <54328318-c235-413a-a069-5ea93f1dcb2b@kernel.org>
+References: <20251020222722.240473-1-dakr@kernel.org> <20251020222722.240473-2-dakr@kernel.org>
+In-Reply-To: <20251020222722.240473-2-dakr@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 21 Oct 2025 16:58:31 +0200
-X-Gm-Features: AS18NWB0fLmSfGSi59zQ3L8rJftxfYIoazmWWuxcCF_4YjbrFrne7KAPBys4oJA
-Message-ID: <CANiq72=eOYk=WM5xfMkHj-REYjedYiYNakVvfto-AUL5E0O8qA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: add udelay() function
+Date: Tue, 21 Oct 2025 17:08:14 +0200
+X-Gm-Features: AS18NWCCy2kjmOIA6ceL9V6OXhZcSR6v5l_FF-ORfDMjRgq5VddXOb7GOLYgjmY
+Message-ID: <CANiq72m_LSbyTOg2b0mvDz4+uN+77gpL8T_yiOqi1vKm+G4FzA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/8] rust: fs: add file::Offset type alias
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, aliceryhl@google.com, 
-	daniel.almeida@collabora.com, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	ojeda@kernel.org, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, frederic@kernel.org, gary@garyguo.net, 
-	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
-	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
-	tglx@linutronix.de, tmgross@umich.edu, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, mmaurer@google.com, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 21, 2025 at 4:46=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Tue, Oct 21, 2025 at 12:27=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
-> Given that we'd have a WARN() for any value passed that is > MAX_UDELAY_M=
-S, and
-> given that WARN() is considered a vulnerability if hit (Greg, please corr=
-ect me
-> if that's wrong), this would literally become a vulnerability generator. =
-:)
+> Add a type alias for file offsets, i.e. bindings::loff_t. Trying to
+> avoid using raw bindings types, this seems to be the better alternative
+> compared to just using i64.
 
-Yes, but only if hit in a way that can be triggered by an attacker,
-e.g. user actions, not in general.
+Would a newtype be too painful?
 
-i.e. that is why I was saying that someone could end up calculating a
-delay value based on something e.g. user controlled, and then gets an
-edge case wrong, and hits the `WARN()`, which is the "bad case" and a
-CVE would be assigned.
+Note: I didn't actually check if it is a sensible idea, but when I see
+an alias I tend to ask myself that so it would be nice to know the
+pros/cons (we could ideally mention why in the commit message in cases
+like this).
 
-A `pr_warn_once!` plus `debug_assert!` (or similar) should be a fine
-way for having EB in functions, which is a useful concept without
-leaving it UB liek in C nor going with a full `Result`. I can document
-that combo.
+Thanks!
 
 Cheers,
 Miguel
