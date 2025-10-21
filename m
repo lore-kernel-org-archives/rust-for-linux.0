@@ -1,211 +1,247 @@
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012052.outbound.protection.outlook.com [40.93.195.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E9A26CE34;
-	Tue, 21 Oct 2025 19:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761075802; cv=none; b=lgX93h+mL7fsbcCuX1Ce+eiQsiXAXGvBdE2tljCxmPXSFZ8LmP9OTBEH3fHxDjgJG6d9aoa9deAF1Ci/cTS3HbXWbjUIVjUQlsk+mGjXFGiGEp9qo7Jk2Us9fxOYBA6xWyPayHeQSdF/hbxf9g5zmhnCQS6PPoL+goIr+WeztlY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761075802; c=relaxed/simple;
-	bh=cF/2qvNbGtFEaf7MiC2FviRqJj6MFqKh2TuH/gNL7eg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cDDbwr+kmNzIR6jl/fdfS3GFmpGz+xQb6IS7vkLJSxIvizjipgpQGMrltv272ABsHfb9YCkh/QwJRJIGkivI2MlOeFpFk6uA2a7KV0iJMdF657evFtxdHSi5WUU6fH4EIC7KtutWiNDxbS0SG+52NfrbQen/tHjTpTga7zfHMwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Y7PiUUfk; arc=none smtp.client-ip=178.154.239.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E8926ACC;
+	Tue, 21 Oct 2025 20:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761078646; cv=fail; b=Xua4qGr1GAG/iec69birU7CIRHLgdU3GIBxbApS4d1WzuuJVMVm804dg+0u+QpKvY5v2SwAhgEX0wtdR/gUe6CkkudycnLVZZY819xgV0eSRqBl9UY7eaLpUT6pXNsf3d0+KKso/5/ulRUb62tuVkaVVbv5qWcbpNaudUeedN/I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761078646; c=relaxed/simple;
+	bh=vWpYL8HSZWbrcZEaB+Q6w/caWyp4bD/dPNMd7cbIas0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LLBoeTJARi/+dwfY5nxjKRzFwFKHx8Ytm+d6mCxVYTfs/goiaRTC8rM+HPqCQGSkB03jTiNSJWGybNyhptF6UkBXS+5aFZWhFSEqpGtKoNg4RaS4yAoATCI7sgq0HB8/A04H1dYzmov6owGoqiQ6svevqfL/+LkepW9MUG3Qf3s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=R9tqsHoY; arc=fail smtp.client-ip=40.93.195.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Y7PiUUfk"
-Received: from mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:1ba8:0:640:1638:0])
-	by forward500b.mail.yandex.net (Yandex) with ESMTPS id 48623C10F2;
-	Tue, 21 Oct 2025 22:36:30 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id NacLXP4R7qM0-90ID0sod;
-	Tue, 21 Oct 2025 22:36:29 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1761075389;
-	bh=k8bA4+TKeLiyStyiCxAgIP8Qak5Le/08vM/x7MqG1kQ=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=Y7PiUUfkUrK5IeD/sEEPyok1JtXbfxwOIaw7D31S9U29PPEmUEkC0ldVKbKIYaPZ7
-	 xbtnFR9Zmb+fLTFgfCKzrEBh1qpW21TZn4JTAzGoX3fVY4WfYnJgp3x69gIgP+XuV/
-	 4kClmfW5uV7W8vgPG94ECfRBwoKwgNISIDU80IdE=
-Authentication-Results: mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 21 Oct 2025 22:36:21 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com
-Subject: Re: [PATCH v6 6/7] rust: ww_mutex/exec: add high-level API
-Message-ID: <20251021223621.46a12324@nimda.home>
-In-Reply-To: <20250907113817.768acf3d@nimda.home>
-References: <20250903131313.4365-1-work@onurozkan.dev>
-	<20250903131313.4365-7-work@onurozkan.dev>
-	<6D30FEF7-07E7-4851-A7A2-76649AD0B217@collabora.com>
-	<20250906141310.2c29aa8e@nimda.home>
-	<2B16DBF4-1F6C-4025-8373-5651867B7D49@collabora.com>
-	<20250907112006.6bdbb478@nimda.home>
-	<20250907113817.768acf3d@nimda.home>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="R9tqsHoY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pZvWOgYc7UNnFSiupa2EvWYlBec5S9jPFtVZgVdenq5OKOY1xfpUXUO3sH2jxZ774yIOio6LuDzTRdxn4aOjDq63M+N82r+EaJRccEi1APgDPIZn23S7UapBrN+Cobi4cCMyzloI/vuV79QGGxGXEcGbaFeAhFREq1hjYpKSBfmvjQncVFjHusfrZ4clkHXHp5fMfzN5k8+575wIPXKHzyRCKZia9ZSMVia/Pr1Zoaw1FQxKU8Ut6NpltJ8NrdiQLN9COnQALX95n3bPZSRdIRGdKdiBEja9WSluN6sygsOPaBJmvYeOaGgQNZVH/VleTCgy56L85A3fbYO2lUpNKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EnYEMgmSq18dv4YOiejCaHGYyOmUS62yCN+5hd+QSk0=;
+ b=sJJxFwepR5lJdWOWwjM2bUozJaqmE8QGP/V6G9MLzKWfgn3vSj2slVxYKWFbJdJfwa/NkIn6SsXffLNR7lNlSaQbsJwdkNC3rEMmS6IHQFVSpkwk5vB8OhTJjK8ssc4PFqMSmekPXpWAZVjYhtxVRxYfvyv1oTZrfuIdEn46s8Te78rfGeD1n65/B0AmOgdkgx4+TuRbx115eSRA0XlQrxLol5j8DaBNmqvDWamXDrdgAzMrF5LTxpPqZKrLa2G4Va9dwN3GPgA+d0VxWpIZSK6i9fuFLlUX38NCwfhQ2GMnj7SkeEDR7ZaB8BHI9H6/+RtkxWYbyEhCJEMwx6mCVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EnYEMgmSq18dv4YOiejCaHGYyOmUS62yCN+5hd+QSk0=;
+ b=R9tqsHoYA3iTfHFiXx6YIIexdjGBqc7eAAvHWycJJMHkyKHH+Q31fdJo+6dGyy6sdR1Ha/b7tTu94Gkdeq5qQcp+7ay6PGpGW+bXyrcrJF4nDVSQbXbRyKxs54bOdMPkGs7BniEG344vDKgGeJFEp5SX9KdoeeswkzdtkGhxalLdtNahSU6vRgFzhEfuU7Teakx0FVNINXo1dn+GJiZXjV8yX3EGwmjIxd+JTI9kXDRNA1i5bUPJHPXGMRR7zY3Z8jHaJd86X2cGzb3jcbdlukoxU66sGFDfyr9P2v0ivtQt8eS7VuGgK4MY4A8pUaD9l+I+AikB+LBm/FJAokgVhQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by PH0PR12MB7095.namprd12.prod.outlook.com (2603:10b6:510:21d::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.17; Tue, 21 Oct
+ 2025 20:30:40 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9253.011; Tue, 21 Oct 2025
+ 20:30:40 +0000
+Message-ID: <fac90f9e-0389-41de-86b7-18b13832f413@nvidia.com>
+Date: Tue, 21 Oct 2025 13:30:33 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] nova-core: mm: Add data structures for page table
+ management
+To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ dakr@kernel.org, acourbot@nvidia.com
+Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org,
+ Elle Rhumsaa <elle@weathered-steel.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>, nouveau@lists.freedesktop.org
+References: <20251020185539.49986-1-joelagnelf@nvidia.com>
+ <20251020185539.49986-8-joelagnelf@nvidia.com>
+ <8680705c-7298-4a33-979c-d91bd4e65b1c@nvidia.com>
+ <a4241841-b9cc-46ce-baa8-91545c2aa4ee@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <a4241841-b9cc-46ce-baa8-91545c2aa4ee@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR05CA0042.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::17) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|PH0PR12MB7095:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e7b0071-9592-4992-08c5-08de10e0b333
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dGZjQ0dUYXVtNWVjQ21XNHF3ZGlnK3ZNd2FweVZGblhwSFVuTnlqTVplY2dj?=
+ =?utf-8?B?cHhBOVlsdlI4em15UHp1NlJ0WmJ4aThBTXdlSXZKNnRqZEpobVZvQlMwM3pz?=
+ =?utf-8?B?NUd0c3dvWWl0Q015M1JubDFJblZCTlB2ZEttVXdHSmF0M05Ta20rZHI3bW93?=
+ =?utf-8?B?THlWc3BYa1lzVlQ5cCtHTGt1OStFU2ZYYWFiUnFOWFZ5S2lFeUNqVDlmVmxn?=
+ =?utf-8?B?WVZoUXNJZlh1OWNUdmhZWE9zVjVSbndDQ0EySzcyMGZHQkJabjExS3prMDBE?=
+ =?utf-8?B?UFhvUXNTZFcvRTRScUQ2ekgrVGFURTIvN0pGWHBjazhmdk5jMHBnaXN5QTFl?=
+ =?utf-8?B?YjNEOXZYUUhzOER5TDFSMFhaa1B2S0M1S2FEaWlvdGN6K0t4ampaOVVqQ0g4?=
+ =?utf-8?B?Tmt3V2Rhc1JSeEg3MEUvT0xNYTZBdENMZlNDN3B6cHgyeUhRMkpYU1Vob1F0?=
+ =?utf-8?B?UTVDdHBkNm5NNW5VRUpmN2hmTjRGQWVOWVZ6K2hvNGxSWDdiVHVKalZtV09B?=
+ =?utf-8?B?TkhqMWhNUDhJdjFmV0RBcy9rV2xwaU5HM2JOWGRXbjVxc1BoU1JIZkFiQkVW?=
+ =?utf-8?B?NTR3SjV5QUthYnQxTzhJajVxWjR2cURYVzV0NUFZNVFFekFTakdIWUk4eXdC?=
+ =?utf-8?B?bWNOaTdad3dhU2ltb29zdkMwTFhsa3ViUk5SUExjVlQxeDNLRldlaVh2M3ph?=
+ =?utf-8?B?anoxUDdYdHZWQytiV0d0WVl2cnJoRElyUzc4ejJObXJJQ1BEbGpCNVFpRGdH?=
+ =?utf-8?B?aUZHQThaNjBuRE5ybmJwT1Bzam9nWlYrN2NydldyL01QaVVwRjNGSExJeG5D?=
+ =?utf-8?B?VHl4UGdSdGFzWnJyaGUzSzg3YnVDVzVaN2hZTTU2dmNlS0VEanYwcHJkRWNt?=
+ =?utf-8?B?MEpvZCtFVFhvclJJUnY5L1M1N2R1N2IxTWdLVDRwRWo0M2p6UHBQQ3orc0JB?=
+ =?utf-8?B?Yi9nNjJta1lza3h4QmlxQ0NOV2hoMXZoazRMcGgxQ2pEbkM3WGxKd1JDY1BH?=
+ =?utf-8?B?eVpDUTFyNm1GMWJENStCS05WTlRzY0FRY0VkZlJ3Qm9WaWVaUFFGTEtEMnNn?=
+ =?utf-8?B?eHl4L05DNGc4czJjT09xVHVibXRzaVhQN2M5N3FIaUZheitSRXVWdUJYTnBP?=
+ =?utf-8?B?dzc3RHVSNW1QWWdTL1BzckhaMStBR1FyR2xLWWtqaFJaN0RyUDFDQml3VjBj?=
+ =?utf-8?B?cGlTdWJuKy9QYlNNWTFyUVFPc2VrVlp6TnRFMWY1aCtqMU5Cck1hajhOTnpH?=
+ =?utf-8?B?SFRqREdrbDNQVmQ2OHN5alJDd1A3bXNuVmxFWlpUb1QvRHY3RThZNW5DVVJu?=
+ =?utf-8?B?Y1VKbGQ3N2E5cmdCUmxBUEE3c1hsU2MvS3hadTdDcUg5R2xkSUZyL3phcDBB?=
+ =?utf-8?B?enFzL1RRcWRORzJyRWF4UE91YjlPbmJma1ZjbGhWcmZCSVNMeEl5dkVybnNm?=
+ =?utf-8?B?UE44OThnLzh2K2cxVVRLclJNeFVPUTdycVdVUXNmUXBQckhubWpkSHB6UnpX?=
+ =?utf-8?B?QnJXVEtDSmozWnlOUVA2VW94VVdpS3J1bStrZnBNb09Ja3N5VkduRDdpbm1D?=
+ =?utf-8?B?RW9MNDBkZmpjMlJDTmQyQzRCc2FmWFQrZ0NsWExaZ0FTaFJIS3BiZmo3SzRJ?=
+ =?utf-8?B?ZW1MV2ZwVlh6R0g3dEFId1ZHa3Z6cVpuOE9QWTdGVEhZR2k4LzFXUmFEd1py?=
+ =?utf-8?B?d2JjWThFRWFyc3ZiZkhzVkxqT0ltdFdwRTg3NDJNc2NGS1FFbHB3eEl6UG14?=
+ =?utf-8?B?L2paSzNySGhJQnpxaElXeXNIbnZaSFZzVDdBUnpJY1lRb0pMcEduSUdjSFoy?=
+ =?utf-8?B?MjIyLzF0ZUVSOUhSVGxHU25Iem1xSzJZWUhZeG9lbHREYU5tTmJrTUtzT29l?=
+ =?utf-8?B?eXErd1lROWFRbGZQNDBzclBpdThIK25vN0NYc2p0MVZ5Ri9venVRV0RsakpF?=
+ =?utf-8?Q?NZyPY/i828FmRaf/wK7wG+5512glSwya?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RmpNaGRmVWtyQ1RYWjFjNkVvWnVFTEpKcWg4c3lYUC9yRmdYanhlR3BWYzE5?=
+ =?utf-8?B?TkhwN2RjUEhvSW9mRzhvSGtKWU9LVE0vTlkzdDA3WDNrVmJQbmZxT3NHTW9U?=
+ =?utf-8?B?QXIyV0l2T0QwWWJsMGlmU0hYbHNhb1VZSjVkSGxnYjFrWUxJYzVsQXlSWGVh?=
+ =?utf-8?B?TjJtU0VFd3BXUnY3bC82VmxtSENBWGo1NDBCL0JjS1dsNFN0VnZVaXFVd2o0?=
+ =?utf-8?B?bkd0dHo1QVdrMEFNZFk2eGJCRDlvVjlSMS9lT3l2M3FzUHcvL3AzUnFyWjQx?=
+ =?utf-8?B?Y00xQUVLblFkZFNPemRYdXFhaitsNUJtQVR0WklUL1NJZk9qRjBLNnNHZjNM?=
+ =?utf-8?B?WXBlQlRTSmRHYSttVVVSRm8weTdnSTVuUFkwNWd0UVZDblExV1duUzlZaTE0?=
+ =?utf-8?B?OUNkckhrekNPTFBaY3ppM2J2aVV1NWNZanhyZEI3NWI4MFc5YkQwbTlXLzdC?=
+ =?utf-8?B?T2VaTmpMdzlNcTFGOTRTKzRjc2VJSytUR3dzODNvVkt0ZlJzcmdZRkIvTmR2?=
+ =?utf-8?B?QUl1Y3ZTLzJueXhWYWQ0ckN0N0FBdWFlTVRlWUxrSzhPaE9qTVBCbDh5bU5p?=
+ =?utf-8?B?YWhST2hnY0twVlpNcFRmN01QM1pOMW9NTDIyN0VKTmRIalh4Vm52L2JZOXJm?=
+ =?utf-8?B?bmZ1czd0cGdLVTB4dURaa3kwYTJKa0hHdlBlNnRKUW5sT2VsdWwySGNMOFlj?=
+ =?utf-8?B?SDJtODlHT3VnS01tV3l3b3VGNUgySlB2eWJGa0dCMWJKL0ErQnRyT09OR0xU?=
+ =?utf-8?B?cHpJdkg5STZEc3hDU3ZabVV0YkpRb21Eb3hvR3R2ek9OUlg0ckNpNDdoZVF1?=
+ =?utf-8?B?SUhqSGVoWnRyeXB4MktieWhJRkxENEkzNVN3cm9tbzQ3bE9ER1dHSVdwMEVD?=
+ =?utf-8?B?YUFmUzdvOFFQRnNheFE2YzhaNnFHUFp6UjljMWNwV0RCZUxhTHRJQUgvUThy?=
+ =?utf-8?B?VG1Ua2g0SkxGZFliYkVEOVFOZkVrb1hhTmdlRXY0WUV2bjQ1SURLZmFiUHE5?=
+ =?utf-8?B?c3l4cThiM3JDVUNsSUE3R0pZNU9mTjBkYkdnSmpjZThxZGdXQ3BjTS83bUxH?=
+ =?utf-8?B?TDlTOU1MZnR3SmNwUSticVNudENiWkFUSFNwNWpmblphbDBYa3ViUU5OTGVH?=
+ =?utf-8?B?Yi9xbHpnUkxQeTlsdkJ5SHordHhlWEh4cTQwRUpKUlBBUGdickNxVE1NdUt3?=
+ =?utf-8?B?bVJUcG1tZFlRSnJiRGtOS3FUdmh5Z0Jxemh2QnIrZmRrYUFlU2hXdnhtdFY4?=
+ =?utf-8?B?VVI5Q3NWN0hXZ2R4bjNXZy9yb2FLYXl4ZmhrUkE1Rkc2cDJtV216ek1iTWJJ?=
+ =?utf-8?B?bEdBUi9sVUUyMmhhS0RKdmNPMVk0YTZoSjJCcW1HcSs4dUoyYTcwdEx2TGlG?=
+ =?utf-8?B?ODdKVG1TZEdmeU5CZUR4S1M3aFZsL2RWcDJKV0o4TTBscXRpVW1WUUFtTFVT?=
+ =?utf-8?B?dzIrQnk2UnB4K1VRMWRydmg4UzBSWkkyY0pPUkM4QXZhV0FsN0kvaDZubjhS?=
+ =?utf-8?B?d2JDQTFwd3lTZWhkS3NweWZLRStUZ0NyQ3pCa3JxVW52KzhEVkh0T0NqU2I1?=
+ =?utf-8?B?QkFDRGlYbHB5REs4ZmJPZys2ZmhlM1JraWs5ajAyQnZvV2tWNWxQaTV0Ti85?=
+ =?utf-8?B?TCtHem4yZHA1eDV5U1A2Uk9vY3lhYVFnMjFhWGQ3aW4zUUtrR3JKbUh2S3Vp?=
+ =?utf-8?B?M21rTW1Mc1Jtc1djT0k5bVpGZ2djSUVFUHd3N3RJTG9TVi9rTVppcVNmWVFF?=
+ =?utf-8?B?KzlLM2Znei9DelVDcmRyVE8wRUpzYkZEYnUxb3I0ZlVMS0JFdXV1WURWcTRU?=
+ =?utf-8?B?WCtWWCs1NjJCT0VWbVQyR29hY2dCWGFFWWhQSEdVZGw4NXVvVnRydkt2L2Iw?=
+ =?utf-8?B?NEVsVjg0NWhoTURYR0pvamdjdG1YY3VweTZvWHpKcTdnbm93MUtDVlJ5dGc5?=
+ =?utf-8?B?endnbjViZ2hxZ0tHSXdsOWRJSm0yNXA1a3QxcHJpRFFlamdCT3VSVzZwVjl5?=
+ =?utf-8?B?TVhQYzNyN2N2UlNqUjNZUldjOFBRYkhPeUJDY2hRR1pEcFZ6OUk2a3dYM3JS?=
+ =?utf-8?B?M0wyaS9MWGphOEJkYWxHYWRJNXU4UjVnQklCeFJJYjc3U3lVL1MxUlJ3YXJP?=
+ =?utf-8?Q?XHtA3wTEYYtECCJVWHsxkHqv5?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e7b0071-9592-4992-08c5-08de10e0b333
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 20:30:40.0878
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: I3KRm6qKaxVaHpYGUDu9O8pwLKw1INw/HhoU+Ms9Eb3LeJFuAyFGxmvPfRsknylLdiwVjG3u1yaAeFuqTNl4Ng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7095
 
-On Sun, 7 Sep 2025 11:38:17 +0300
-Onur <work@onurozkan.dev> wrote:
+On 10/21/25 11:26 AM, Joel Fernandes wrote:
+> On 10/20/2025 4:59 PM, John Hubbard wrote:
+>> On 10/20/25 11:55 AM, Joel Fernandes wrote:
+>> ...
+> Yes, there's different format versions.
+> 
+> This patch supports all Turing and later GPUs because all GPUs including Hopper+
+> are backward compatible with version 1. However they wont be able to use the
+> version 2 and 3 features with only this patch.
+> 
+> I kind of intentionally did this for a first cut. But yes, I could split it into
+> versions. The 3 MMU structures (PTE, PDE and Dual PDE) are versioned. Version 2
+> is Turing and later. Hopper+ is when Version 3 got introduced and it is also
 
-> On Sun, 7 Sep 2025 11:20:06 +0300
-> Onur <work@onurozkan.dev> wrote:
->=20
-> > On Sat, 6 Sep 2025 12:04:34 -0300
-> > Daniel Almeida <daniel.almeida@collabora.com> wrote:
-> >=20
-> > >=20
-> > >=20
-> > > > On 6 Sep 2025, at 08:13, Onur <work@onurozkan.dev> wrote:
-> > > >=20
-> > > > On Fri, 5 Sep 2025 16:42:09 -0300
-> > > > Daniel Almeida <daniel.almeida@collabora.com> wrote:
-> > > >=20
-> > > >> Hi Onur,
-> > > >>=20
-> > > >>> On 3 Sep 2025, at 10:13, Onur =C3=96zkan <work@onurozkan.dev>
-> > > >>> wrote:
-> > > >>>=20
-> > > >>> `ExecContext` is a helper built on top of ww_mutex
-> > > >>=20
-> > > >> Again, I wonder what people think about this particular name.
-> > > >>=20
-> > > >>> that provides a retrying interface for lock acquisition.
-> > > >>> When `EDEADLK` is hit, it drops all held locks, resets
-> > > >>> the acquire context and retries the given (by the user)
-> > > >>> locking algorithm until it succeeds.
-> > > >>>=20
-> > > >>> The API keeps track of acquired locks, cleans them up
-> > > >>> automatically and allows data access to the protected
-> > > >>> data through `with_locked()`. The `lock_all()` helper
-> > > >>> allows implementing multi-mutex algorithms in a simpler
-> > > >>> and less error-prone way while keeping the ww_mutex
-> > > >>> semantics.
-> > > >>>=20
-> > > >>=20
-> > > >> Great, this was exactly what I was looking for! :)
-> > > >>=20
-> > > >>> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > > >>> ---
-> > > >>> rust/kernel/sync/lock/ww_mutex.rs      |   2 +
-> > > >>> rust/kernel/sync/lock/ww_mutex/exec.rs | 176
-> > > >>> +++++++++++++++++++++++++ 2 files changed, 178 insertions(+)
-> > > >>> create mode 100644 rust/kernel/sync/lock/ww_mutex/exec.rs
-> > > >>>=20
-> > > >>> diff --git a/rust/kernel/sync/lock/ww_mutex.rs
-> > > >>> b/rust/kernel/sync/lock/ww_mutex.rs index
-> > > >>> b415d6deae9b..7de6578513e5 100644 ---
-> > > >>> a/rust/kernel/sync/lock/ww_mutex.rs +++
-> > > >>> b/rust/kernel/sync/lock/ww_mutex.rs @@ -16,6 +16,8 @@
-> > > >>> use core::cell::UnsafeCell;
-> > > >>> use core::marker::PhantomData;
-> > > >>>=20
-> > > >>> +pub mod exec;
-> > > >>> +
-> > > >>> /// Create static [`WwClass`] instances.
-> > > >>> ///
-> > > >>> /// # Examples
-> > > >>> diff --git a/rust/kernel/sync/lock/ww_mutex/exec.rs
-> > > >>> b/rust/kernel/sync/lock/ww_mutex/exec.rs new file mode 100644
-> > > >>> index 000000000000..2f1fc540f0b8
-> > > >>> --- /dev/null
-> > > >>> +++ b/rust/kernel/sync/lock/ww_mutex/exec.rs
-> > > >>> @@ -0,0 +1,176 @@
-> > > >>> +// SPDX-License-Identifier: GPL-2.0
-> > > >>> +
-> > > >>> +//! A high-level [`WwMutex`] execution helper.
-> > > >>> +//!
-> > > >>> +//! Provides a retrying lock mechanism on top of [`WwMutex`]
-> > > >>> and [`WwAcquireCtx`]. +//! It detects [`EDEADLK`] and handles
-> > > >>> it by rolling back and retrying the +//! user-supplied locking
-> > > >>> algorithm until success. +
-> > > >>> +use crate::prelude::*;
-> > > >>> +use crate::sync::lock::ww_mutex::{WwAcquireCtx, WwClass,
-> > > >>> WwMutex, WwMutexGuard}; +use core::ptr;
-> > > >>> +
-> > > >>> +/// High-level execution type for ww_mutex.
-> > > >>> +///
-> > > >>> +/// Tracks a series of locks acquired under a common
-> > > >>> [`WwAcquireCtx`]. +/// It ensures proper cleanup and retry
-> > > >>> mechanism on deadlocks and provides +/// type-safe access to
-> > > >>> locked data via [`with_locked`]. +///
-> > > >>> +/// Typical usage is through [`lock_all`], which retries a
-> > > >>> user-supplied +/// locking algorithm until it succeeds without
-> > > >>> deadlock. +pub struct ExecContext<'a> {
-> > > >>> +    class: &'a WwClass,
-> > > >>> +    acquire: Pin<KBox<WwAcquireCtx<'a>>>,
-> > > >>> +    taken: KVec<WwMutexGuard<'a, ()>>,
-> > > >>> +}
-> > > >>> +
-> > > >>> +impl<'a> Drop for ExecContext<'a> {
-> > > >>> +    fn drop(&mut self) {
-> > > >>> +        self.release_all_locks();
-> > > >>=20
-> > > >> If we move this to the acquire context, then we can do away
-> > > >> with this drop impl.
-> > > >>=20
-> > > >>> +    }
-> > > >>> +}
-> > > >>> +
-> > > >>> +impl<'a> ExecContext<'a> {
-> > > >>> +    /// Creates a new [`ExecContext`] for the given lock
-> > > >>> class.
-> > > >>> +    ///
-> > > >>> +    /// All locks taken through this context must belong to
-> > > >>> the same class.
-> > > >>> +    ///
-> > > >>> +    /// TODO: Add some safety mechanism to ensure classes are
-> > > >>> not different.
-> > > >>=20
-> > > >> core::ptr::eq()?
-> > > >>=20
-> > > >=20
-> > > > I was thinking more of a type-level mechanism to do ensure that.
-> > >=20
-> > > Why?
-> > >=20
-> >=20
-> > So that wait-wound and wait-die classes don't get mixed up in the
-> > same `ExecContext` by using type validation at compile time.
-> >=20
-> > Of course, `core::ptr::eq()` is still useful/required when the
-> > classes are of the same type but not exactly the same value. Maybe
-> > we can do both.
-> >=20
-> >=20
-> > Thanks,
-> > Onur
->=20
-> I will also look into whether it's possible to remove the class from
-> the mutex and instead derive it from ExecContext and WwAcquireCtx.
-> This would fix both issues at once in a better way.
+Ah, then we shouldn't even do version 1. We should take full advantage of
+the fact that Nova's earliest GPU is Turing.
 
-This is not possible due to limitations in the C implementation. :(
+> backward compatible with Version 2.
+> 
+> We could eventually support versions 2 and 3 (instead of just version 1 as I am
+> doing), however my working MMU translation prototype is based on version 1 (I
+> did not have to configure anything in the MMU to switch versions, this was default).
+> 
+> There are a couple of options:
+> 
+> 1. For starters, support only version 1. Drawback is, when/if we want to use
+> version 2 and 3 features, it may require some rework.
+> 
+> 2. Have the following hierarchy:
+> mm/types.rs - all common structures (stuff that is generic like Pfn).
+> mm/types/ver1.rs - Version 1 specific types.
+> mm/types/ver2.rs - Version 2 specific types.
+> mm/types/ver3.rs - Version 3 specific types.
 
-A mutex must be initialized with a specific class (or without one if
-it's just a regular mutex) and this cannot be changed later.
+Maybe a file/directory structure that more directly indicates page table
+formats. "mm/types" could be quite a few things.
 
-I noted this to revisit the C side and see if we can make this possible
-in the future (once this patch has landed).
+> The advantage of this is it keeps the structs namespaced. So it'd be
+> nova_core::mm:types::ver2::Pte or nova_core::mm:types::ver3::Pte. And the
+> nova-core MMU code can pick the correct version.
+> 
+> 3. Keep the single file types.rs and just suffix the structs with version
+> numbers. This is attractive because there are only 3 types that have version
+> flavors (pte, pde and dual pde). So instead of Pte, we would have PteVersion1,
+> PteVersion2 etc, and a helper abstraction can pick the correct struct.
+> 
+> 4. Any of the options 1-3, but dropping version 1 since Turing+ supports version
+> 2 and later. I do have to figure out how to configure the MMU to use a specific
 
-Regards,
-Onur
+Right, I see you already noticed that we can start with Turing. Good.
 
->=20
->  -Onur=20
->=20
+> version (which is reasonable).
+> 
+> 5. Your options here.
+> 
+> Btw, I used Nouveau as a reference as well, so likely Nouveau doesn't support
+> version 2 and 3 features. Not that that matters (we should support newer
+> features in nova-core), but just thought I'd mention it.
+> 
+> Other thoughts?
+
+Two things:
+
+1) Danilo is working on writing down locking requirements for Nova page
+tables, based on earlier experience with Nouveau page table locking
+problems, which were apparently very serious.
+
+2) Maybe it would be good to start with versions 2 and 3, so that we
+can see how to do >1 version?
+
+thanks,
+-- 
+John Hubbard
+
