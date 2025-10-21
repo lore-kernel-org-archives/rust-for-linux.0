@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090E41F584C;
-	Tue, 21 Oct 2025 17:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB9434C151;
+	Tue, 21 Oct 2025 17:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761068059; cv=none; b=OuBse//UxUi3BOJEQSUkUGEPemt2iEePxYbVS6DcWcbgMu5xJH1y71ifeCWgdN6elPTVgpYavCUVO4T5q1LZNK2oZiRMoWtzzPHpbLaEN1tdhB+H/EozyFND8eEGPFvN0fhlbE8PsL1pTMJPC4Hb4jGl6dhb88TX8S35J0/f4Tw=
+	t=1761068614; cv=none; b=dXkygYLtvbxif3yXztpABWXqLs0lMLaj27fuA5EJT6Dkf0Fj/gjE5tvUGyft36MaRFt4ZL33nKh8yamVK8r1mo29xWwvH2DON/A1EAezflI1Pyibk2rDlDonAFPTzDXqCXqowCw07f/rKYlSJLtcPNtzVQoyvJSYP06iB7XPSD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761068059; c=relaxed/simple;
-	bh=yZ5iFEeaaYVaI3L+acwknFPYoOVNKOCIcgEuvzYBv50=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=d4+2b3hsZvUcRV9ygcQvrn3pcvlRPhYZROLRVCPRS2yGbFJHGL9yd1fu+jgaUZ/9FozHsuxPr5ee+nIbIFKTa6IU4jcFZKnfAAU2rrTdLpgVAcJKdIUbLJRz0h+5BC1gi/KXAbBP7NdATdI0aX/RaeeirzMtWsYjgEGwoO7aTpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tHv9pwKM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761068614; c=relaxed/simple;
+	bh=xyrItL/Oko7IcvMF4j5xjyFM3GWwAEGO3Qw5Gma9kjI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=kYurQsWaAtFG515DDU32KoKuk3SZpTSwlQHgLoOCa5QyEmjQXbSXEYBoPunr+jZeDXhgBVjcQGbW0u/3jz+8I+bjcg5cRFXAyn/my55kGp0C9WnTxGUwAhiDF70iQ0N4RJDjItXjCrg0xJg/HZIkhW+8CuJQaSoufmHZMx+5eG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UrHSLIQN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tHv9pwKM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1090C4CEF1;
-	Tue, 21 Oct 2025 17:34:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UrHSLIQN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6D6C4CEF1;
+	Tue, 21 Oct 2025 17:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761068058;
-	bh=yZ5iFEeaaYVaI3L+acwknFPYoOVNKOCIcgEuvzYBv50=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=tHv9pwKMTLil8clUAW1faEeTmf5FikkTPHvroA4B4dqaiszSwgHhmP5jf4kbO/VvO
-	 wg+uvzXpGRE4rEZ1wq7dP4csBeMUbmqtiGPAN+nyI5r9ykjDr3dblQdM+s0UkL03ZZ
-	 wter9xjJgbYMOoBq7meeqskEIdcipkWBMn6YMrA6HJT0KDn7rkiRigY5c+W/4e1B4a
-	 VFj1WEReLuNg3bOOd6W+RfcaYqgcASAMUeSS69zMJJ9TY5xGmp/e1bBfYWVR8fM0i9
-	 Dce7wuzl2pCvOeN3QfSbUL/yHlHJ6UX4IEj2Io5WJKNqBgA9fwBL0wTZ1qvF7l/qlQ
-	 fO0ku3AANA6KA==
+	s=k20201202; t=1761068611;
+	bh=xyrItL/Oko7IcvMF4j5xjyFM3GWwAEGO3Qw5Gma9kjI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=UrHSLIQN5PEaFeked1+oIdxevYxeM9BzJ2LDUPwp2FhLCBu6jC0VPfHyjHKZ+D5Dc
+	 W1Bp1oAbknkPz1Ue6urijcb+730GCpS0VpCUQx1uUcMg39A4G/pTYoTSQ1ySK39qFR
+	 BTzXJnJ7+bmdS75YH6dTyfamlF7hj4zfMgAEjsITZBIJ8sbyh0FMXv8N9BbrapNZuz
+	 /4NOP7tkGDtE9KmDjWb4i+poh6P1mzs8rqK1gpLD2KBqwScuT5jP7jnMR/8ZKe2Www
+	 eTTammgrAVb20s3Tv2eYPRA+9Mcej3X2fy6lbgoMxGg6s6pP5P1SL3qy3FUskJH3hL
+	 Cfx98cfhLTW5g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,76 +34,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 Oct 2025 19:34:12 +0200
-Message-Id: <DDO6IUEAVBR0.14AZ0UXFYQF48@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <mmaurer@google.com>,
- <rust-for-linux@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 21 Oct 2025 19:43:27 +0200
+Message-Id: <DDO6PXJKZGOU.9AWQMAML1K7J@kernel.org>
+Subject: Re: [PATCH] add `[pin_]init_scope` to execute code before creating
+ an initializer
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Fiona Behrens" <me@kloenk.dev>, "Christian Schrefl"
+ <chrisi.schrefl@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/8] rust: fs: add file::Offset type alias
-References: <20251020222722.240473-1-dakr@kernel.org>
- <20251020222722.240473-2-dakr@kernel.org>
- <CANiq72m_LSbyTOg2b0mvDz4+uN+77gpL8T_yiOqi1vKm+G4FzA@mail.gmail.com>
- <DDO3T1NMVRJR.3OPF5GW5UQAGH@kernel.org>
- <CANiq72k-_=nhJAfzSV3rX7Tgz5KcmTdqwU9+j4M9V3rPYRmg+A@mail.gmail.com>
- <DDO521751WXE.11AAYWCL2CMP0@kernel.org>
- <CANiq72=N+--1bhg+nSTDhvx3mFDcvppXo9Jxa__OPQRiSgEo2w@mail.gmail.com>
-In-Reply-To: <CANiq72=N+--1bhg+nSTDhvx3mFDcvppXo9Jxa__OPQRiSgEo2w@mail.gmail.com>
+References: <20251016210541.650056-1-lossin@kernel.org>
+In-Reply-To: <20251016210541.650056-1-lossin@kernel.org>
 
-On Tue Oct 21, 2025 at 6:47 PM CEST, Miguel Ojeda wrote:
-> If it is just e.g. add/sub and a few from/into, then it sounds ideal
-> (i.e. I am worried if it wants to be used as essentially a primitive,
-> in which case I agree it would need to be automated to some degree).
-
-That's what I need for this patch series, I think the operations applicable=
- for
-this type are quite some more; not that far from a primitive.
-
-> To me, part of that is restricting what can be done with the type to
-> prevent mistakes.
+On Thu Oct 16, 2025 at 11:05 PM CEST, Benno Lossin wrote:
+> In more complex cases, initializers need to run arbitrary code before
+> assigning initializers to fields. While this is possible using the
+> underscore codeblock feature (`_: {}`), values returned by such
+> functions cannot be used from later field initializers.
 >
-> i.e. a type alias is essentially the wild west, and this kind of
-> type/concept is common enough that it sounds a good idea to pay the
-> price to provide a proper type for it.
-
-The reason why I said for this case I think it would be good to have derive
-macros first is that there's a lot of things that are valid to do with an o=
-ffset
-value.
-
-Of course, there's also a lot of things that don't make a lot of sense that=
- we
-could prevent (e.g. reverse_bits(), ilogX(), etc.).
-
-I think in this case there not a lot to gain from preventing this, consider=
-ing
-that we don't have derive macros yet.
-
-However, I understand where you're coming from. Even though there's not a h=
-uge
-gain here, it would be good to set an example -- especially if it's somethi=
-ng as
-cental as a file offset type.
-
-If this is what you have in mind, let me go ahead and do it right away (at =
-least
-for the things needed by this patch series), because that's a very good rea=
-son I
-think.
-
-> So I don't want to delay real work, and as long as we do it early
-> enough that we don't have many users, that sounds like a good idea to
-> me -- done:
+> The two new functinos `[pin_]init_scope` allow users to first run some
+> fallible code and then return an initializer which the function turns
+> into a single initializer. This permits using the same value multiple
+> times by different fields.
 >
->     https://github.com/Rust-for-Linux/linux/issues/1198
->
-> Also took the chance to ask for a couple examples/tests.
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
 
-Thanks a lot for creating the issue!
+Applied to driver-core-testing, thanks!
 
-(I mainly also thought of adding one for a derive macro.)
+    [ Fix typo in commit message: s/functinos/functions/. - Danilo ]
+
+Benno, thanks a lot for providing this patch as prerequisite for [1]; your =
+quick
+support with pin-init whenever something comes up is much appreciated!
+
+[1] https://lore.kernel.org/all/20251016125544.15559-1-dakr@kernel.org/
