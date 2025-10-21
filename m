@@ -1,55 +1,55 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91F53385AD
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 13:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0152D2DC353
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 13:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053602; cv=none; b=HVJLmvdhK8RLuIcQFt/wq6Vc3Bdnc0X7N/eFre5vhcU6/8ll/PV0ydowFE4yaRTlH+UxM2bpXtpjAxnVNT/WDk0J8Jr6cFJLOCaLJR+++AeoreHiChUUGWkxTsneLdQkDEkIG8NQYj2+IONBeR5/DcWKB9a14W1KIboMztU80do=
+	t=1761053604; cv=none; b=pGvtucUhgBdkynWEk1zMaeC9k6Fn5QyJm+OOUrNPHAP5I6eBlFsSFTdpXpcn8iKsg5+HYwqYNTLZaZy4Kt8pEVNrJKM+GRwqXuLsOh8TgPO3mzen5X4ZQlQwjtFzbCK8i1OgV/qr6qD+gZrMrKiGfeoyBiU6noSf3CSbRtjJVGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761053602; c=relaxed/simple;
-	bh=0XwGJ7KDobiszudqfhO29Z8TfiNZOYymA4jTezIL42U=;
+	s=arc-20240116; t=1761053604; c=relaxed/simple;
+	bh=qytksjZdLTISpFuZRyMOiiFkZgrPPHjKD+Mj5pS8yUg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SXRKSqmtNPIBGOpGv9HMRRkqMfXhkmAVgH6RJ8294018Pjn7lBxBAV7Nw4fsdGwNRUKjYp5n1FTwpTS9a3S8CP7DEYfv9SZCaFOp+mx9i8NLx5s8e7wWn/mhiupNr+v0P6xDCTXFErQhf1S/jkp9Nqe77GOuOSqCh8cQzGwwqSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RWVksaxu; arc=none smtp.client-ip=209.85.218.73
+	 To:Cc:Content-Type; b=G11aMy2ymFzlVLy/JuLLDXFdl4WCO5BU6NMwUh8WckqM8xQ3R7GO7M9/JrMKM2schkX7ZIfAU25xAdXsAbQLDtPdKYYUus3TuUPtkhRn+ZIQK9gCXZ5aEx8t1wcctTTxVFPstIze1Ep5+rEXSnZ7d7fMrz8H1c6b1/BNB66vQVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bgyzk8Qp; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RWVksaxu"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b56f1c14b71so199116666b.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 06:33:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bgyzk8Qp"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-470fd49f185so43996755e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 06:33:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761053595; x=1761658395; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1761053598; x=1761658398; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q6129u1iYIYEuovLQaBoD4UN49cUgQbvN63SjRIKPAc=;
-        b=RWVksaxuMDqj72Zr0ENwr/mCn92KnmNJcMuaSYtcE/AFcaTf58anW+Aq5pQfrm8TtY
-         QJ3sNntwX5qo9j2dvZ3/4sGoYCt1fFzSOl6WtrpnXWq4m+5ecjea0xCHaUyZtFcZbxca
-         1PmoakPLyCId3iPZJ7ljJaAk8HXViOAOL8k6rXmCRg6RD5ZRRo7ic4sc8V1PwFjJ+e6k
-         L7FYX5IehFgp0XsrUClsfiu6SRhqastBT/lLBGchm+GJ341NsDeafWd/00KBcar+PwHT
-         YdQvVHO5EAbJ33RFR+h3hYgPqyDst/s/51ojjv5X5LV9y675VMkeTucPUxS+iVpDW4//
-         ZcvQ==
+        bh=W7fDpabke6WhS46tT+T5FNys2Yr05OPqGRGg3toBdss=;
+        b=Bgyzk8Qp4xj47h46EXJA25pSISKghqSGZO6GhqEKpYVQEcsqBdK/Ubix3wx9iu0lE5
+         GgTilxXMZ1p0Pa38nL6FmNFVf/XCwyTATY9f4kMwHzTO2U2G+pV+HkXrqcA4gu0xZ0S9
+         Q0ycWtwynqGQxATB9OtrYMtBRuqoWc46HC7IUTNY5bb0tuY8qIB+xSD0rgpC7i2jIUc4
+         86Y+afobBhnD2wozWllDXWo+I+IfVoln/sCDOxoO/0sP6uGomdmjvlhgrB+PlvdGHqhn
+         9tUqZIos9Opz5IiCwB973Fa+UgubKPaO4/+zSgU7x040jqGL4paMTOreyo4+TwLO2HTu
+         WOSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761053595; x=1761658395;
+        d=1e100.net; s=20230601; t=1761053598; x=1761658398;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q6129u1iYIYEuovLQaBoD4UN49cUgQbvN63SjRIKPAc=;
-        b=efFB7qW2hVYiJyzjTidOWYpec0mo7+lySc2xlwQ06HUOv0/2IU92XfAevzEkOdgfuY
-         OULbcCNI1oQ5Jleu47P7zjhsRYu+UcEWpZ4Cxtvp7DnNmHu+mbR4OCzFGUGh4vB9kebM
-         iL4E6lqX8gBk0HaPPoekbzNcAXXvZVVyAOkcYYg4cg2S9YABO4TAgn1F1+aay6zlFCjT
-         NyNDDp89fhTC1AgfVveKCJyGCxmJgPA6J0GV8sH7D6CbC/FRtBrcDeDlLPjZfN73OSo8
-         O8cnxj7qY1c+T1cT8C6kUWWIcymI1XwfPXqRjE1hgZlwWNL/qri3isX4gMfrWYyS61DJ
-         XV+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUsw6dGeiYONmaKDdqwS7k+rL5w5+Sr8uVi4wMh1DDWnGBl/HSmHlKYBZ7KKI8v1PSqrOj4N807YyHNGi8tTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxrtRpEWHYNQdu05hldWuDbS26dbqJCU0uzxeDUpypfTsv2Het
-	wtRgUn4fXSyVCteOEF8SlUPBZx5qYgkaXR3NGqKyzvOUl0qaU1vMCKqN4x+e52ZmkOaM+qZBATV
-	uR/wcWXWYX9LoLSS4ow==
-X-Google-Smtp-Source: AGHT+IHthMiXGy80jMaZ8NO+FgSnNWOqiBcpthOR/vfMJffUIA/kav+FOdeCi5No06nwwHWSqxBb+3FBKrB/lAU=
-X-Received: from ejbgv24.prod.google.com ([2002:a17:906:f118:b0:b48:5a27:695a])
+        bh=W7fDpabke6WhS46tT+T5FNys2Yr05OPqGRGg3toBdss=;
+        b=iVlILBdDu3YbB8vd6/z8OQWkBy96YF0OzxgfvHqC/81x/ezIY6xTGkZGM6UczGAZV0
+         /lBbKyPqmDsH0i10j1ghX9mvHBrQttcK5qsTii6aQ5G9vnveaQ8FqXR9R456gz2IdsSA
+         hugdYgC7gocIgTNJMapgqCCSPs+qyoqlSpxBgSJNg7mjWD00bfop2OiBX7Q9BJ5Gr5ok
+         OouS3387H4zT0MUpB3aky26Lfn2cCdCGqaRfsL2ee8F/AOZdADZKhyAxKHBu8LJDwIZa
+         xYNtyPOA3cylJMmIKiNV1pzPilGOUTWSt0ZRUCi1NLszaO/GWjq0Aqhi4wcl1jS8hoU/
+         Z3sg==
+X-Forwarded-Encrypted: i=1; AJvYcCVDrZANzIr2L9ut0VRhM/AkVgiXd5BaVH+/TiRGWMv1WiZOvo8O2yQ8VyxpE6mIUFLYbFzZISFOB/HXVRl3tQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzT8pCQ/uA0W8RKcBXnPSDELReycHcEqwxtfCg2EAJ6rU9niIis
+	67fqZHDarSDVSq9UBI3dvFfBS762DAyrqdPonQC7Gj/Elv6VGB2FW3OI5+OZROJMuUE8255u6FE
+	KjSFCjldBB5gn2mq2uA==
+X-Google-Smtp-Source: AGHT+IHcH4JhLZmZhIV8KyVieSRjmkESC/bOub8ErG0T1qjHYU7NkdwZHbw5zRM/BUJluwKrwaIhdK6rgh5vdFU=
+X-Received: from wma6.prod.google.com ([2002:a05:600c:8906:b0:45c:d828:e351])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:6a1e:b0:afe:b92b:28e9 with SMTP id a640c23a62f3a-b647423f370mr2051191966b.49.1761053595245;
- Tue, 21 Oct 2025 06:33:15 -0700 (PDT)
-Date: Tue, 21 Oct 2025 13:32:44 +0000
+ 2002:a05:600c:4e0b:b0:46d:27b7:e7ff with SMTP id 5b1f17b1804b1-4711791f4e1mr119704175e9.36.1761053597714;
+ Tue, 21 Oct 2025 06:33:17 -0700 (PDT)
+Date: Tue, 21 Oct 2025 13:32:46 +0000
 In-Reply-To: <20251021-binder-bitmap-v2-0-e652d172c62b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251021-binder-bitmap-v2-0-e652d172c62b@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1143; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=0XwGJ7KDobiszudqfhO29Z8TfiNZOYymA4jTezIL42U=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBo94uX6Ot6RnX1kq5rBoe1JUBm01b6sLrSgsNH1
- eKsmbT+mcCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaPeLlwAKCRAEWL7uWMY5
- RjfND/9CZXLAKgrrXYLqvMdfR8KG2+6kgkJSVz/EOx4eNESv/IO6/C27XHCmPinb9KlxDcdav18
- aYSFcqBOpC46LSJbsy90DqSqte+m5GXPToraWHYXv82fGe4erjE3HsmuczbkSqj0NHbG4UZpaHh
- 69juPv50aIuU2SP2hJsIWsbVvv3NZOEb9/RCVRWs94HrTrX0CeqGBEKPQPpzC7fAE+EC8cCvn06
- R6WaDVrVLumwC4szYX73+tymfucNpeYh6UkYKlYB6uPlnVFBExPuCnqGL+nZJ6pZ8/9AjUGwrRi
- 2LyQK9ykynZk943Gi3dIKDt2PgFk7HlXmu7Qd3ylp69IzCWe0jLeZRa+2yj+B2m2LR0lchGfBp6
- JYVBwsoYEPsUZIGuiffHpPM9aPRghyptFWjLTV5OKlQdkEwqeELRm8WttpZTBavnbQajHZxdG7r
- ZGB1qWVLxoFGQ1HS6QlaffQcKJ+vABQUse+JfPnYrHHpkdhRw5qn3k55gn/atSodOjsUw+z1M/C
- 16DGa6f0WEbf5p3T0goHvB1JeDJUIuVx/QMA9ph2GgZxEbkHWHreI+q0/5mZq642VU0b+VKlcu1
- lVyKhDshbxDEmhvsCdUcUcM1T30endAzOjHOcz+c+4GRbZmxo+pVlat/t6bzT50UlPa/PxqfuxD +OM1cn2CppoUvww==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2867; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=qytksjZdLTISpFuZRyMOiiFkZgrPPHjKD+Mj5pS8yUg=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBo94uXiyeb+mK6EdxYRp+Hcgh6FeizN0nxE/D5L
+ mEzRRFiCEyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaPeLlwAKCRAEWL7uWMY5
+ RnDFD/91iGIfnnaWvFEPSgghqmXHMRCCEYUUtXrbWuW+fb6NiAuTxkp7WW0mYI2qzaFIxOA7pHw
+ DoHwg5ejs0NfdiljayEuy98e5XozbobC88QBzU0cCEp7jPBN+bzQtR2Zp5fbL16JF7+jRvANoDb
+ fqs+SsBT0KuMgBbgEamRsvc9V0DsbRws9TNxQGSYFHHyuZw7wO4lFeqw6zxpZU/gmkMIlT2ZbSe
+ JOHEfSvl5kWfFm9+4EoULvC995qzbpkP505x5hvXdfzLpDoQdMKqhY4UOcZelGiV9YeYSkchsaK
+ AoDLfwbfSKudmTAeCJL5gJMutgxbb2FcI6lPhhYFiMEWiX93E1IcKBWBKoXdOqab0Al1f7iKOCf
+ PLOTkNGXj4G4EGWl679ve40KJz7KTWOubKOGZt7/sd9qPn4s5rDRxS/dcyZ22TfGaPYo0hH5Z3M
+ Kphh8rJzhn5dX/OBYyuRjEZZbu0KnOOt4LrFteCxsN2TQtKjYdp5/yaBci42Wh8wtqzXsFkXkwn
+ SDemlcFVTPBysMm58t72SaKywIr2E8urVfIM2mnsXg+2lvwjO1niu8LnjZ4x6zx88QKVcBkxVPI
+ P4OAfTqbJFItDSsmrVJ2XL7UOlHX8B9NkTKKoLhd09yp2SI6jFykcBqm9F7nsz6uHiLqutODFfl HGKYPhMQhZ1n6LQ==
 X-Mailer: b4 0.14.2
-Message-ID: <20251021-binder-bitmap-v2-2-e652d172c62b@google.com>
-Subject: [PATCH v2 2/5] rust: bitmap: add BitmapVec::new_small()
+Message-ID: <20251021-binder-bitmap-v2-4-e652d172c62b@google.com>
+Subject: [PATCH v2 4/5] rust: id_pool: do not immediately acquire new ids
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>
 Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
@@ -88,35 +88,87 @@ Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@
 	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This constructor is useful when you just want to create a BitmapVec
-without allocating but don't care how large it is.
+When Rust Binder assigns a new ID, it performs various fallible
+operations before it "commits" to actually using the new ID. To support
+this pattern, change acquire_next_id() so that it does not immediately
+call set_bit(), but instead returns an object that may be used to call
+set_bit() later.
+
+The UnusedId type holds a exclusive reference to the IdPool, so it's
+guaranteed that nobody else can call find_unused_id() while the UnusedId
+object is live.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/bitmap.rs | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ rust/kernel/id_pool.rs | 44 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 8 deletions(-)
 
-diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-index 15fa23b45054b9272415fcc000e3e3b52c74d7c1..4ffe9eb0f208a3d62016e00297f5a0800aa33336 100644
---- a/rust/kernel/bitmap.rs
-+++ b/rust/kernel/bitmap.rs
-@@ -232,6 +232,16 @@ impl BitmapVec {
-     /// The maximum length that avoids allocating.
-     pub const NO_ALLOC_MAX_LEN: usize = BITS_PER_LONG;
+diff --git a/rust/kernel/id_pool.rs b/rust/kernel/id_pool.rs
+index 126e57f34c3407cb1dab3169417f01917e172dee..053ca417e8513fc33afc84c194d7899eafac8fec 100644
+--- a/rust/kernel/id_pool.rs
++++ b/rust/kernel/id_pool.rs
+@@ -199,18 +199,16 @@ pub fn grow(&mut self, mut resizer: PoolResizer) {
+         self.map = resizer.new;
+     }
  
-+    /// Constructs a new [`BitmapVec`] without allocating.
-+    #[inline]
-+    pub fn new_small() -> Self {
-+        // INVARIANT: `nbits <= NO_ALLOC_MAX_LEN`, so an inline bitmap is the right repr.
-+        BitmapVec {
-+            repr: BitmapRepr { bitmap: 0 },
-+            nbits: BitmapVec::NO_ALLOC_MAX_LEN,
-+        }
+-    /// Acquires a new ID by finding and setting the next zero bit in the
+-    /// bitmap.
++    /// Finds an unused ID in the bitmap.
+     ///
+     /// Upon success, returns its index. Otherwise, returns [`None`]
+     /// to indicate that a [`Self::grow_request`] is needed.
+     #[inline]
+-    pub fn acquire_next_id(&mut self, offset: usize) -> Option<usize> {
+-        let next_zero_bit = self.map.next_zero_bit(offset);
+-        if let Some(nr) = next_zero_bit {
+-            self.map.set_bit(nr);
+-        }
+-        next_zero_bit
++    pub fn find_unused_id(&mut self, offset: usize) -> Option<UnusedId<'_>> {
++        Some(UnusedId {
++            id: self.map.next_zero_bit(offset)?,
++            pool: self,
++        })
+     }
+ 
+     /// Releases an ID.
+@@ -220,6 +218,36 @@ pub fn release_id(&mut self, id: usize) {
+     }
+ }
+ 
++/// Represents an unused id in an [`IdPool`].
++pub struct UnusedId<'pool> {
++    id: usize,
++    pool: &'pool mut IdPool,
++}
++
++impl<'pool> UnusedId<'pool> {
++    /// Get the unused id as an usize.
++    ///
++    /// Be aware that the id has not yet been acquired in the pool. The
++    /// [`acquire`] method must be called to prevent others from taking the id.
++    pub fn as_usize(&self) -> usize {
++        self.id
 +    }
 +
-     /// Constructs a new [`BitmapVec`].
-     ///
-     /// Fails with [`AllocError`] when the [`BitmapVec`] could not be allocated. This
++    /// Get the unused id as an u32.
++    ///
++    /// Be aware that the id has not yet been acquired in the pool. The
++    /// [`acquire`] method must be called to prevent others from taking the id.
++    pub fn as_u32(&self) -> u32 {
++        // CAST: The maximum possible value in an IdPool is i32::MAX.
++        self.id as u32
++    }
++
++    /// Acquire the unused id.
++    pub fn acquire(self) {
++        self.pool.map.set_bit(self.id);
++    }
++}
++
+ impl Default for IdPool {
+     #[inline]
+     fn default() -> Self {
 
 -- 
 2.51.0.869.ge66316f041-goog
