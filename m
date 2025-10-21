@@ -1,134 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BE134C157
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 17:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF373557FA
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 17:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761067359; cv=none; b=GTu9EoA1nvMMziB2NbFcVvg2lag+vfIi/nsm36hYDoll1ASq0mlSaPdJj8C/2Hz0GqT0tZovUYmbQXShZlGZ7rd7jDtn534wVSqEmvNDKnwd9buzpUzmfxzYdx52BGl1gtcXWX+HcTivmAgRBiUKLs9QEjWA0Bfiyh11MEAF6KU=
+	t=1761067527; cv=none; b=N5KcX9SRqXBceCv/CWZ5Y80chTZ960xrXdml7KZeOFUZx+HhDCCpHDkjAnJF4qpMxQlzhLG4tg0JSyW3sF/UZnrSaL4oU2e8OwEdeQ39EF/EAmhKLTeucvgXOYNrBXYuzpOOoKg0a/6yTDR+R9vsXql43MLI3P25eCreC3Nejjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761067359; c=relaxed/simple;
-	bh=bwPOKX5PZI7Mj59bAoGxCiXrdi6zMchTri3Ym6fNPR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DQbdn5CiHkc0Oq8H3zg9wKmP6k8vuqH6nhkQWYwqNy4PAf2CzPoRsCWlQ/AdSsJRtL0/O134yBFGY4fYEqLToPEWrpDFZdQrSc057MgSSxUm3HGwZJoBH1Q3Hzs6PwzHvsOTkuC0c9IrZjlpsnXf9dhnZDGUYhgajrbivIEP22Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gx5RbGBq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761067527; c=relaxed/simple;
+	bh=Ibl9ipy62JVcPBrthO993ocd5vWDT0JLzxK8s7HQuv4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rjKtWy5L5kQG8W80an3DKDOuEeLf9wwHRnusa5e7fLDR5P6hJa3pe/ZtNXtmYRaWTi+WCyT8m+zGM4P5Vtg6acQpjfKrsmJC56GjvAX36yvMCpsOcywkWz3IihpNcUJ4m/v1ignLOY2DlZIRHfG6URdDfrPoukMt0k6f7WAAxgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHsPEzhv; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gx5RbGBq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761067356;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=cdSPcH+wHvNWj0StlLEMwA8RIMWmorG7W7FYDNP1txU=;
-	b=gx5RbGBqNhLuPtAkC3ays6TxzBPCTOIzr6QLxmuYXvHu1mQ3B45J9Jq8mkSB7LDlIjNp/t
-	tmEAARIqO5HWoslwpPiTLr191SlqpaBCH+uZ7T96DRlSaMLgnlUDqJEtPS09BICjuzsSID
-	EQGc73ecjECiY51WYTXxB728SV8nXpM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-Bn21VuWYNCCoPQv5bCC6Fw-1; Tue,
- 21 Oct 2025 13:22:30 -0400
-X-MC-Unique: Bn21VuWYNCCoPQv5bCC6Fw-1
-X-Mimecast-MFC-AGG-ID: Bn21VuWYNCCoPQv5bCC6Fw_1761067348
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4333518002C1;
-	Tue, 21 Oct 2025 17:22:28 +0000 (UTC)
-Received: from chopper.lan (unknown [10.22.81.81])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2C94E1800451;
-	Tue, 21 Oct 2025 17:22:23 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2] rust: drm/gem: Remove Object.dev
-Date: Tue, 21 Oct 2025 13:21:36 -0400
-Message-ID: <20251021172220.252558-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHsPEzhv"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b63117fb83dso248640a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 10:25:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761067524; x=1761672324; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RAf3KsXjFc/zQP1AJm1wtfxbLUgTjyr2ky6pgjmz4cM=;
+        b=KHsPEzhv9PnazcsMOs4hlJE2Vl9HIhNLf8vHqExNLD0kAG1qxJEsv27tm22+J8O8wj
+         RkjkRjC/jDM/qFsoL5b5t362+AobWncAZnCeVwaPk+z6D74+1OfKyHGiG1lLTtCOF+30
+         jkcBWIFuthLXPY770OFpr5VmMA0DTW4cMgsyHD2UmA2HTzWZHoZ89+rLE7PbKC4OiUs6
+         bnlYvxhe42RjZDMGBxVS6aSPaNqB/Q5AJzInEN3O7O2fCdz2GHHptArB/6xxFK6+Y/FE
+         r5r+EpJxRTudLOLlO+RH9mlwbUlm/Pzn+TU0W05YFHE11RqSDAMx2EBogC8hBBn3Lps7
+         9dIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761067524; x=1761672324;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RAf3KsXjFc/zQP1AJm1wtfxbLUgTjyr2ky6pgjmz4cM=;
+        b=HEAjv9Zdfymy3OD+PRCt5GA5NYoOQ45xkrEYSrkVDHeMQQB7l6OyYbH+Hhhkxqqvyu
+         it0GnNg5lsSJiFxlfyaIRN0xBPrIdIg83NqSp4pxDhSLzixQHYO2LEreg5jagq0AertQ
+         +53VbsR5Qdm7SdC3MD0ReKoTuKW3olrw16tw8uC7Pskn5mOolhnbF7RUC5mDsHSYo3Af
+         oUqMt/zOoAowGsMoPYsseg55xcBybIA85k5IwHUdKQwecmaY0X3n2rrzX61jJLEvK4Td
+         wqntQGz0OQiCjLbZ+9mo7tRWDnoxmm7ZFvrR4QqQFwaapj4wsZi3egWZ2u8nYigL4NFY
+         5oUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUVPhUfNJypaNwajMrVc8feRtjqPywrwmroD9bizu4I34FEvhJDqNGsaB5+eoHTrkfnaWXFSsbfkdRgtTtSGA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/lXEeMDSdiLNPrlPhFZjS+zqq9GrixqCW4kLW6LTiJIQS9vQa
+	oNjPbdHUtj5FiG6kFT1ezZWGxgPV3NJNfkNMuUfl1KwiNx4An9Ytb6WHvOCA8q1jLgYd/PrJ3bp
+	n1T5MjipSWJwaFNO9ipB4B3xG4Z4A6pE=
+X-Gm-Gg: ASbGncsC3qJvorVx7jWDDB/RD7UGe2vlkcpr+DjlPkcWmloo+xmryBwg+Riaeu3xeGM
+	0qwiBMsI7L9VwYWzWWY7KwVZ+JRDtFB5sLN1rL/FqKb8LYAgaOkaO75+fE4VzHayX5dJg4GjeIn
+	2WICWfcXANKCrwLoUdLWCegtFDnEiG1UMQET2mGwrWwcXrbf0HttS387gTPItvNPXWtRe3M1Mu1
+	slTTopb0woVnDS879soYFgyS9iqpx3jWmQgvMMPO5XBJJMQKTRqhR+f0TelEgu8ct13dDKRl6PI
+	9J+gvfUXpA4CqQ3nd6xnLTHaQ9Ua6d2qZghvBUtUsfb3FR9Q4IZshS+pwcwfAF5vmnDZ+KjZ8hs
+	jLsgIRfnoXXwxuw==
+X-Google-Smtp-Source: AGHT+IEWfCg0E0bwVttDNG0lql3yRpvV7id4seM/oa5UH+1sTXW5x3SO7M6tk+NNwv6wlch2bqa+yfg2OXtAPVMMHAk=
+X-Received: by 2002:a17:902:dace:b0:267:bd8d:1b6 with SMTP id
+ d9443c01a7336-292d3fbc72cmr30865725ad.6.1761067523987; Tue, 21 Oct 2025
+ 10:25:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+References: <20251020020714.2511718-1-ojeda@kernel.org> <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
+In-Reply-To: <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 21 Oct 2025 19:25:11 +0200
+X-Gm-Features: AS18NWCYSZSyVH4h_NBns8SoCWBqHms6Y7SdEmcHUYKM5xtVUbbF7ERZLvXjKs4
+Message-ID: <CANiq72n_AnCJYw6R2XecapW9wZqs_Saa4t8BNgrPub2u9=9_xA@mail.gmail.com>
+Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
+To: Peter Zijlstra <peterz@infradead.org>, Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I noticed by chance that there's actually already a pointer to this in
-struct drm_gem_object. So, no use in carrying this around!
+On Tue, Oct 21, 2025 at 7:19=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> I'll go stick it in tip/objtool/core; but I gotta ask, where are we with
+> the toolchain support for noreturn?
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
----
-V2:
-* Improve safety comment in Object.dev()
+Thanks Peter!
 
- rust/kernel/drm/gem/mod.rs | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+We discussed it with upstream Rust, and they understood the need, so
+we may get something like `--emit=3Dnoreturn` or similar, but it is
+still open (and not too high in the priority list since we can survive
+with this for now and we have other things that we really need them to
+get stabilized etc. But if you feel it should be prioritized more,
+please let me know).
 
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 30c853988b942..d984148403679 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -187,12 +187,10 @@ impl<T: IntoGEMObject> BaseObject for T {}
- /// Invariants
- ///
- /// - `self.obj` is a valid instance of a `struct drm_gem_object`.
--/// - `self.dev` is always a valid pointer to a `struct drm_device`.
- #[repr(C)]
- #[pin_data]
- pub struct Object<T: DriverObject + Send + Sync> {
-     obj: Opaque<bindings::drm_gem_object>,
--    dev: NonNull<drm::Device<T::Driver>>,
-     #[pin]
-     data: T,
- }
-@@ -222,9 +220,6 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
-             try_pin_init!(Self {
-                 obj: Opaque::new(bindings::drm_gem_object::default()),
-                 data <- T::new(dev, size),
--                // INVARIANT: The drm subsystem guarantees that the `struct drm_device` will live
--                // as long as the GEM object lives.
--                dev: dev.into(),
-             }),
-             GFP_KERNEL,
-         )?;
-@@ -247,9 +242,13 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
- 
-     /// Returns the `Device` that owns this GEM object.
-     pub fn dev(&self) -> &drm::Device<T::Driver> {
--        // SAFETY: The DRM subsystem guarantees that the `struct drm_device` will live as long as
--        // the GEM object lives, hence the pointer must be valid.
--        unsafe { self.dev.as_ref() }
-+        // SAFETY:
-+        // - `struct drm_gem_object.dev` is initialized and valid for as long as the GEM
-+        //   object lives.
-+        // - The device we used for creating the gem object is passed as &drm::Device<T::Driver> to
-+        //   Object::<T>::new(), so we know that `T::Driver` is the right generic parameter to use
-+        //   here.
-+        unsafe { drm::Device::from_raw((*self.as_raw()).dev) }
-     }
- 
-     fn as_raw(&self) -> *mut bindings::drm_gem_object {
+I have the status under "Export (somehow) a list of all noreturn symbols." =
+at:
 
-base-commit: 77ed4376d7c5de8be1f2612d6b4777077fb5fdb2
--- 
-2.51.0
+    https://github.com/Rust-for-Linux/linux/issues/355
 
+In particular, Gary proposed an alternative during those discussions:
+
+    "Gary proposed reading DWARF instead and wrote a quick Rust script
+for it via object and gimli, though DWARF would need to be available
+or generated on the fly just for that (and we cannot commit a fixed
+list since the kernel config may change and we support several Rust
+versions and so on):
+https://gist.github.com/nbdd0121/449692570622c2f46a29ad9f47c3379a."
+
+Cheers,
+Miguel
