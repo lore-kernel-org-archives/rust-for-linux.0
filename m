@@ -1,189 +1,211 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012018.outbound.protection.outlook.com [40.107.209.18])
+Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A617234D92E;
-	Tue, 21 Oct 2025 18:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761072129; cv=fail; b=J2Bu6J6ww/SrTdRNoU0l1ldAPJ/vXLRhbVBGldTxmauXISXq7FchWV5aH2sSWt80pK4XHCbg4tlM++XiPiTwTtCYfxCDF22sj2J0PbV8v4PrJmqP0d0+0Tybvjk7hWEmeMvTb+AA+EOpoSa/4x88gSf9zzQUfogTQx3qtF1sFSQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761072129; c=relaxed/simple;
-	bh=R38BCawy75fNOLMYk75wwSAmnZ/X2a9hjFdrvM24sMk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=mAikRGdnqpUDiZ2PoE2LPetyTADQY29/iIYvN1eBLpxBdqOd+whNf+Tmt6WmxB/pvc++vXb91wDHvhDlTxWZIRRRtKRVwvx75lbWS/1+UFBVCzHYrHeb+vXNpeQVKdwKbc6sYlrawcBfZU2qKD44h/9j/zjvE4vkbYAAPewIv8Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=I8oRWLDo; arc=fail smtp.client-ip=40.107.209.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E9A26CE34;
+	Tue, 21 Oct 2025 19:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761075802; cv=none; b=lgX93h+mL7fsbcCuX1Ce+eiQsiXAXGvBdE2tljCxmPXSFZ8LmP9OTBEH3fHxDjgJG6d9aoa9deAF1Ci/cTS3HbXWbjUIVjUQlsk+mGjXFGiGEp9qo7Jk2Us9fxOYBA6xWyPayHeQSdF/hbxf9g5zmhnCQS6PPoL+goIr+WeztlY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761075802; c=relaxed/simple;
+	bh=cF/2qvNbGtFEaf7MiC2FviRqJj6MFqKh2TuH/gNL7eg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cDDbwr+kmNzIR6jl/fdfS3GFmpGz+xQb6IS7vkLJSxIvizjipgpQGMrltv272ABsHfb9YCkh/QwJRJIGkivI2MlOeFpFk6uA2a7KV0iJMdF657evFtxdHSi5WUU6fH4EIC7KtutWiNDxbS0SG+52NfrbQen/tHjTpTga7zfHMwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Y7PiUUfk; arc=none smtp.client-ip=178.154.239.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="I8oRWLDo"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cFIJk8/mOtVGDuay8/yx9Chddv/xeFGYOgXfDrqspNslWD7Uj2bN2ifjpPgvB/L+UB/i26D4MhbsnrtrMifIbI0N1NvxlCf54ffZQH/4SXSo7UKApquiFrxfTU70CrfMzI5PknXSLLBKlPhgmQvgdmtqErY89W2S56Hg8wEWHWgWCutXdLKCjejl5XZ4gPaX547vhe1vT5GOfcbDDzEVlTSBzwlW4xDjAFGg5xf2j5cpVhBQZSkBiHemZH3iQmho+z5Zujpah4UpjWNGINC7NoHMNLarsH70h21JpbauWngOJ/fOhQN4NlvDQKow414GZmsD2MsrIYActUT8H0SXMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t3qn25PaHuas3fE1oGlu36O0E4AO8h29xsME/q68W44=;
- b=H/Rqanm9lRXlVsA3vCMjHJRje2Gtl2s5h5ehh/YBmzt+Fdpz1koPh9EWkvo6TNnoga178U7ntcdE0V9OfRNuU2sV2kRaFBBC8VPUSmziNeY0MSVEIHDlIqXylqXiuxf8QrHAtLuGROhU9J4VYQ1l4JWqxUhvDZxRWsFOHxN/05cUnH2zmkK0YrIphgUp522pPqQg5ETfYgBU8BebymCfoUkQ4fsWjzN3swdBHmHE+VrW0HnqfmvN1CzDWyLIE5ybyQCPgkgeB1RZ57nGjUpTG55N+cKoCaNSEX0NEv+Ld0xbJu+qXml3Eq8gv+Bu4lco0d6zFuLmqn+zz3gCVwVrSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t3qn25PaHuas3fE1oGlu36O0E4AO8h29xsME/q68W44=;
- b=I8oRWLDorX4ZTL9H0WT4kY5ntgxHuY3hubNzlg0D0853oauB5RteSSxKmasSCj/dNygfN5hwmj6P92f/TLRYpRXVN5Af2u+ld4d0oRGDb/FBj+yayn1xoKkLM5XnNJvRQttvb4CbX09GrNjBZAmA95alQsAe2Z6f2eGlAQChZ2DeLp+U/dWZHtAQ1ASvzfRROLE/B7ZToyf3uFcByfB/mt/N1uTlQ5FQq74dB3l8+pxxR2+Rfaaz84lj632uzZeF81POxNjT4fUgZVZBgz8DpRJhsyyT7qFtreY54cT/23sbzm3Mo/2S+HueZcMef0qZZZSvziDEGo0YmG8QSksgpg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by IA1PR12MB6236.namprd12.prod.outlook.com (2603:10b6:208:3e4::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Tue, 21 Oct
- 2025 18:42:04 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9228.015; Tue, 21 Oct 2025
- 18:42:04 +0000
-Message-ID: <11a41de2-752b-4091-8b76-954678d08efc@nvidia.com>
-Date: Tue, 21 Oct 2025 14:42:02 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] gpu: nova-core: Add support for managing GSP falcon
- interrupts
-To: John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- dakr@kernel.org, acourbot@nvidia.com
-Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org,
- Elle Rhumsaa <elle@weathered-steel.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>, nouveau@lists.freedesktop.org
-References: <20251020185539.49986-1-joelagnelf@nvidia.com>
- <20251020185539.49986-6-joelagnelf@nvidia.com>
- <4553a31a-fd13-41c4-8bcb-3b830cd7b661@nvidia.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <4553a31a-fd13-41c4-8bcb-3b830cd7b661@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR22CA0015.namprd22.prod.outlook.com
- (2603:10b6:208:238::20) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Y7PiUUfk"
+Received: from mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:1ba8:0:640:1638:0])
+	by forward500b.mail.yandex.net (Yandex) with ESMTPS id 48623C10F2;
+	Tue, 21 Oct 2025 22:36:30 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id NacLXP4R7qM0-90ID0sod;
+	Tue, 21 Oct 2025 22:36:29 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1761075389;
+	bh=k8bA4+TKeLiyStyiCxAgIP8Qak5Le/08vM/x7MqG1kQ=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=Y7PiUUfkUrK5IeD/sEEPyok1JtXbfxwOIaw7D31S9U29PPEmUEkC0ldVKbKIYaPZ7
+	 xbtnFR9Zmb+fLTFgfCKzrEBh1qpW21TZn4JTAzGoX3fVY4WfYnJgp3x69gIgP+XuV/
+	 4kClmfW5uV7W8vgPG94ECfRBwoKwgNISIDU80IdE=
+Authentication-Results: mail-nwsmtp-smtp-production-main-98.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 21 Oct 2025 22:36:21 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+ longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com
+Subject: Re: [PATCH v6 6/7] rust: ww_mutex/exec: add high-level API
+Message-ID: <20251021223621.46a12324@nimda.home>
+In-Reply-To: <20250907113817.768acf3d@nimda.home>
+References: <20250903131313.4365-1-work@onurozkan.dev>
+	<20250903131313.4365-7-work@onurozkan.dev>
+	<6D30FEF7-07E7-4851-A7A2-76649AD0B217@collabora.com>
+	<20250906141310.2c29aa8e@nimda.home>
+	<2B16DBF4-1F6C-4025-8373-5651867B7D49@collabora.com>
+	<20250907112006.6bdbb478@nimda.home>
+	<20250907113817.768acf3d@nimda.home>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|IA1PR12MB6236:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4945f82-d496-49a9-60d5-08de10d1878b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bHpSZGxjcCs2emJsczNSb3gycEpWRTFFR2h5QWhlbGFoL3NVSFdaTWJmZzlw?=
- =?utf-8?B?MkdTVGZDZFN2YWZVZU5LTVM5aTBkRFZBWUJDTi8rUzROWDZZTDNtaU01UkVO?=
- =?utf-8?B?V3BJVHVHQ2JkMWpwWG1PRnBJakZBTHJOL3hVRjFGWHZ3and2YVl0R1JMME91?=
- =?utf-8?B?WHBDZ1dVaWl0VWdQdDkrVDQya2lkRk9UekdYWmUveUc5NytQRFdqUC9tbGNz?=
- =?utf-8?B?VGtHZkJKTEZYd2llLzZtUnBEK1QrMlgyZkEvWTd1N3dHOGQ0Rms2SUNuMWtP?=
- =?utf-8?B?UWxaOTBwTStXL0xhdmtNUUZOemJCWHdFRmtrSkdFZGFMMUNCUVNzNC9KRUR6?=
- =?utf-8?B?Vk9lVnR5SkcxRHJOeVRYVnFhc0Qxbmt1RENuMjIwVkcyM0pSNmJ4NEN6dDlp?=
- =?utf-8?B?OThzTTR4RWhlUzZKSkROdE1lQk9HdzdJcTBDaU1XZ3FpbnUrM2JYVGVVTFNs?=
- =?utf-8?B?SFNJOGZGZE1UZGpHbkVzSUwwUU9zQnNRT2p3YytXRllRMUloM2k1S2paOGxz?=
- =?utf-8?B?RXRBSWRGc2lUb0QxYUFNcXgvRENSYVVkckkwYVhGM20wTTEyWUFxT2tzcGE4?=
- =?utf-8?B?S3hHRUZaMHNvTzVyOVhYRklyQ1ZEWDMycnYrRDJkOUFxdEQ4WW9JTVJIcktK?=
- =?utf-8?B?empCcThacVZoQTVQSUtCWTAvUmk2RUtWNjA3ejVMRXJ5MkRhakRCNGNmNDBx?=
- =?utf-8?B?VTdSakNvVjVud1pxaGR0a1V2dGVpSWpOYngxWm9qcytWMDN2MGY2RFh3Q1Z2?=
- =?utf-8?B?SElmcXBLaUhxb1dwOGN2Z2Q4RU5OdmhuMjhuRGpYOTVkUStJdGQvWE8yUnBz?=
- =?utf-8?B?aFYrb29lVG5qYVdTR2ZrWTZuU2dPZ0tVWnJFU1o3M2dsZ0tPWEtXSHhKcWFr?=
- =?utf-8?B?V3hlZnFqeW5JOHQrTTdKdnlCNEpjUnYxckVlRURXc0tHQVdpS2owNXowZms1?=
- =?utf-8?B?UFlLZVRTK1NWaHNybXg2RHo0VUxKb1RUR3VDd3U5dndOOGsrcVUzY2k2RFVD?=
- =?utf-8?B?WnJHZ3R1WjA5VjVoWVVzcWgwNkNZTnpiVWtWam9wcEs1OWsxVE84QVBaeFUw?=
- =?utf-8?B?TXZNMnZJNnZRZmcvL3Bqb3BTbVdNU3g1RTBwUDR0bkJjbUs4MmFKcE04cW5j?=
- =?utf-8?B?TklhRVJydHNtVmtqYjRiWVZMOXZza2V2Sis5TURxakZ5bTNsWTRXQ00yZDR0?=
- =?utf-8?B?ZXhkTnJ2WXN0SVdFWGpGWmlmMGs4T09SdU1IRFhTSUU0WmRPMG9KcDNtUmhK?=
- =?utf-8?B?VUtGeUNZcmExNHl4U0RvaHQ0Q1pqZFNpOVNnaGR3ZTV5QVlyTUU5RzFlNkNK?=
- =?utf-8?B?T0xFdHJpZisybVZpa3MvYUJrNVhkQUE5WU9EcTlGODM4c202ZnYyZmtod3dk?=
- =?utf-8?B?Q0R4UGdaWHpnbUVsWWlQNmZDVDdBMGNlTm9MU1pvTG9UdEdOejN6VVduU0hx?=
- =?utf-8?B?WFBOeFBIaWpnZGxjaW05OVZMYXExU2J1SldsdmhSbFJrWkkrQi9FRFNyUHJp?=
- =?utf-8?B?RHlCd0RSQndJVmczMjFKdEphM2tOZXZ2cU1lQUFNK2ZOdWd6dm9wb0k0ckVE?=
- =?utf-8?B?WDlzekhHRjlWT2NWZ2h6Q2hFNzFtbVFtZEZ2cHNqQklnUTVGL01SVVJyOWsy?=
- =?utf-8?B?WDgwcEZ0b3VFWUd2djRzNnE3Q3pRcWNsWTEzSlo2c2t4L3dWMGRsUGtkdkt0?=
- =?utf-8?B?VFVIcGlGNG1ZTUtPSGl0K1lsczhSQVdVU2ZCRlN3NG5ZcHhnSHh4cndTM1M0?=
- =?utf-8?B?WnhTT3VXK3lSVWk1QmI0anJ0V1hQMUl3bVBaenpXZGNwNE1TTk5hVm00VTRO?=
- =?utf-8?B?VWFIMWlZbGQrR3NQOGYrRi9Va3FIay9NNjBtN1RiSVRJUjdWS0pZVUR5RlJ3?=
- =?utf-8?B?ck82T3V4TFNXbXJpZk1YTWdodEpBSFBNYUZlSmZhbjZWUkVubTVCSEtvTVdX?=
- =?utf-8?Q?IVcl4uyfMCXfCZiG8DFgSxTj3Ab6DU9d?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WGJDSFpWQk9rTlBtMWYzTzcrcTRVeTNyd2dvM1FRdFFkMXBDTEhYRXZnMXhW?=
- =?utf-8?B?SFhsaVREemJvZlIyWDVlekZRZHdwbHc4Yk9Xa0IrVFVlVkMrUUppSkd1WWNT?=
- =?utf-8?B?U1p5RGIwUjdWb2ZYWGJRa2d4TVBiYSttOHRDNUdsbHY5Z1MrVWJXd1F4elFP?=
- =?utf-8?B?b0xYcHdYYnhUWFduMEViU0JRdmg1VVJHbnZUMzZxUXpGZmJ0ODZKNkZhcG9E?=
- =?utf-8?B?THJEQXc1eThKWjRKazhPN25kWktsZzBmOUNpdUVOZUw4OW9JQ205U0o2eDVE?=
- =?utf-8?B?dTR1VU50bXpXdjVJaDZjVXJDNVBya2J1dWQrUVVqeTlIRWJYdmNoSWJ6V0FL?=
- =?utf-8?B?UHNFZlBXS2F0UFJRdElqYjNySjhoSWJUUjlEOVVmTjgvSnZ1bnZyNHVuaHV1?=
- =?utf-8?B?V2V0YTYzVjZMNGtrYmZsbGxrK1JRaEYvd2k3ZHB5R3cybkI1bEFPVFlYeXE4?=
- =?utf-8?B?N0RlOW00V3RrTFljK0R5QVRweDM3ODNLaGRPNkF5WnBuOTdUejRnTi9MbVZt?=
- =?utf-8?B?bC84azloWTBiK3R2RDJrUGVMWjU1ZzRNY0JXd3ovQzF4dnBoWFJaUi9hYlhT?=
- =?utf-8?B?Uy9IdnVQb3pIemIreFdxakhQczR4NlorN0dLdUIxaHRoRXdPdkxuTGgxdXVj?=
- =?utf-8?B?NmpTc2lHeG8yb25XUE55UmlDb0lWMmhVV09RejdrQkhBMjdEQUVUTGhGUEox?=
- =?utf-8?B?bW42SjZqUkMzWCtBSGw2RllhMVFpSjVrbHBzK0QxSHkwYW1oTXdmM2JCTzRz?=
- =?utf-8?B?Qis2M2plbW16a2R2bnMzektPUnp4Z0oyeFNxU3YybzVBZlZ2dnRiV2ppbU1j?=
- =?utf-8?B?eWZITmdnaDhJQVZ5SDA5d04vSitVR3RId2swcG9YOFI2ZVY2KzlsL2psNWVv?=
- =?utf-8?B?NGZlZzRhWkpqRUJYd1QzVFVVYlh3d1l2UmNtc1NhcVE2SkNNME5sbnA2cnoy?=
- =?utf-8?B?NkdnWHFzU1dWMW1wZkNwU3BGMjRGY0J0c0YzSGIyakpDc1RQTkhHZU1OcStG?=
- =?utf-8?B?WlRzVWJBSEhJMEU1dGtyMG9BSTdaZkdVUjBWdFRWQS83VVV3M3pkL0NpVnFl?=
- =?utf-8?B?ZCtLUEc5UklXQTMwSHhjZEppSnI2emszSUZBV1dDZmZYNUFQS1A2ODlyRmtw?=
- =?utf-8?B?T2lIck90WFVGejUyZFlpRE03Ny9Rdk5BNTJlWVBRZUxidXlxTFNFRkhNOHV5?=
- =?utf-8?B?RmxRRCt2WHVvQ0ZrQUtqb1pHRFg3eWs5L29ONEF5dWdQeC9uZmFUUTFwaUxK?=
- =?utf-8?B?UFBFWWVVbE9vK2tTdXoxQTRPajQ0bG96S2NiekFmWnVQcytXNDNiMmMxdlcw?=
- =?utf-8?B?Y0lWZmpLMnZVRXFYNDBGNUVuY2VIUVRyS0xJVHpEbTl3bGlYWmZQWjZSOE1C?=
- =?utf-8?B?OFI5UXJyTWZzUXNDTDlEci9FcmhHMEdWblJOaEg0K0FzTW1yWmFLVXZrZzhl?=
- =?utf-8?B?V2RyRkY5UTZJVHlQTTk1ZEI0KzFaNWM3RXdmQ2xUWS9nRU9UVW5DNXI4N2FN?=
- =?utf-8?B?U0RHREthNVJWRWJSTnhzcHF5UFp5dnJaQ0cweTh5VyttTVBvVnQ4dnIzNVha?=
- =?utf-8?B?emtabGJwQkFkMTAvVmhyVENrMXROYXJZekFra3BCaHc0WDgvU2NDck1ZZDVY?=
- =?utf-8?B?V1lzSTRwZjBvYVZWcm9NZlpPM1cyLytxU3NQU0RUb2ZmUWVmdGpHOFZ5djVJ?=
- =?utf-8?B?akc5cGF5WmYrand2NlFyVzlodzBCSFN6bEJsb1ZTZ3dISUwwYlRJNERTbnUy?=
- =?utf-8?B?ZmZUaGE1dU81bE5GVHVpWE9FdGgxVmVzOWdpcTdKYU9ISjM2ZmxQZ3Z1Sm52?=
- =?utf-8?B?endzTFM3aHhpN05QOUJFakRiUU9tR2I3eHVhSFR5SlpnenFNMVlnenIvaHpy?=
- =?utf-8?B?RlR3Q1hZTzhadHNDUUkvNEdwZ2M0Y0lja0lkNWwrRGthZ2kvZ2YwSVpwMmVk?=
- =?utf-8?B?bnIvdU1mNkN6dkZpOFRKb2pGbXJCWlUyNU5MRXRIRlFvRVNZRSszVVVLSER0?=
- =?utf-8?B?K2hZVjRhVFVuYUcyNkZObFRsQ3VIZ1ovdGlwYW5YZ3YrN0l6OG8xTUVFQytJ?=
- =?utf-8?B?dkpPVnZSZ2luenJMVkxESVNjOVV6dEliU3BYNHVzODY1b1BYUk5paEdvUDlu?=
- =?utf-8?Q?ruouiXg894SeiBucjEfFdsjqm?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4945f82-d496-49a9-60d5-08de10d1878b
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 18:42:04.3573
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CZWVD6NBkd25n1ueFkoPKOZAfzaAYY55fWUs2PUBnAOF/6ug6AeMEVyZpS0AwEXE22I+s1PUwN7k9AxGartyvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6236
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi John,
+On Sun, 7 Sep 2025 11:38:17 +0300
+Onur <work@onurozkan.dev> wrote:
 
-On 10/20/2025 6:35 PM, John Hubbard wrote:
-[...]
-> Joel:
-> 
-> I am guessing that there is never a situation in which we would *disable*
-> these interrupts, right? Just thought I'd ask.
+> On Sun, 7 Sep 2025 11:20:06 +0300
+> Onur <work@onurozkan.dev> wrote:
+>=20
+> > On Sat, 6 Sep 2025 12:04:34 -0300
+> > Daniel Almeida <daniel.almeida@collabora.com> wrote:
+> >=20
+> > >=20
+> > >=20
+> > > > On 6 Sep 2025, at 08:13, Onur <work@onurozkan.dev> wrote:
+> > > >=20
+> > > > On Fri, 5 Sep 2025 16:42:09 -0300
+> > > > Daniel Almeida <daniel.almeida@collabora.com> wrote:
+> > > >=20
+> > > >> Hi Onur,
+> > > >>=20
+> > > >>> On 3 Sep 2025, at 10:13, Onur =C3=96zkan <work@onurozkan.dev>
+> > > >>> wrote:
+> > > >>>=20
+> > > >>> `ExecContext` is a helper built on top of ww_mutex
+> > > >>=20
+> > > >> Again, I wonder what people think about this particular name.
+> > > >>=20
+> > > >>> that provides a retrying interface for lock acquisition.
+> > > >>> When `EDEADLK` is hit, it drops all held locks, resets
+> > > >>> the acquire context and retries the given (by the user)
+> > > >>> locking algorithm until it succeeds.
+> > > >>>=20
+> > > >>> The API keeps track of acquired locks, cleans them up
+> > > >>> automatically and allows data access to the protected
+> > > >>> data through `with_locked()`. The `lock_all()` helper
+> > > >>> allows implementing multi-mutex algorithms in a simpler
+> > > >>> and less error-prone way while keeping the ww_mutex
+> > > >>> semantics.
+> > > >>>=20
+> > > >>=20
+> > > >> Great, this was exactly what I was looking for! :)
+> > > >>=20
+> > > >>> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> > > >>> ---
+> > > >>> rust/kernel/sync/lock/ww_mutex.rs      |   2 +
+> > > >>> rust/kernel/sync/lock/ww_mutex/exec.rs | 176
+> > > >>> +++++++++++++++++++++++++ 2 files changed, 178 insertions(+)
+> > > >>> create mode 100644 rust/kernel/sync/lock/ww_mutex/exec.rs
+> > > >>>=20
+> > > >>> diff --git a/rust/kernel/sync/lock/ww_mutex.rs
+> > > >>> b/rust/kernel/sync/lock/ww_mutex.rs index
+> > > >>> b415d6deae9b..7de6578513e5 100644 ---
+> > > >>> a/rust/kernel/sync/lock/ww_mutex.rs +++
+> > > >>> b/rust/kernel/sync/lock/ww_mutex.rs @@ -16,6 +16,8 @@
+> > > >>> use core::cell::UnsafeCell;
+> > > >>> use core::marker::PhantomData;
+> > > >>>=20
+> > > >>> +pub mod exec;
+> > > >>> +
+> > > >>> /// Create static [`WwClass`] instances.
+> > > >>> ///
+> > > >>> /// # Examples
+> > > >>> diff --git a/rust/kernel/sync/lock/ww_mutex/exec.rs
+> > > >>> b/rust/kernel/sync/lock/ww_mutex/exec.rs new file mode 100644
+> > > >>> index 000000000000..2f1fc540f0b8
+> > > >>> --- /dev/null
+> > > >>> +++ b/rust/kernel/sync/lock/ww_mutex/exec.rs
+> > > >>> @@ -0,0 +1,176 @@
+> > > >>> +// SPDX-License-Identifier: GPL-2.0
+> > > >>> +
+> > > >>> +//! A high-level [`WwMutex`] execution helper.
+> > > >>> +//!
+> > > >>> +//! Provides a retrying lock mechanism on top of [`WwMutex`]
+> > > >>> and [`WwAcquireCtx`]. +//! It detects [`EDEADLK`] and handles
+> > > >>> it by rolling back and retrying the +//! user-supplied locking
+> > > >>> algorithm until success. +
+> > > >>> +use crate::prelude::*;
+> > > >>> +use crate::sync::lock::ww_mutex::{WwAcquireCtx, WwClass,
+> > > >>> WwMutex, WwMutexGuard}; +use core::ptr;
+> > > >>> +
+> > > >>> +/// High-level execution type for ww_mutex.
+> > > >>> +///
+> > > >>> +/// Tracks a series of locks acquired under a common
+> > > >>> [`WwAcquireCtx`]. +/// It ensures proper cleanup and retry
+> > > >>> mechanism on deadlocks and provides +/// type-safe access to
+> > > >>> locked data via [`with_locked`]. +///
+> > > >>> +/// Typical usage is through [`lock_all`], which retries a
+> > > >>> user-supplied +/// locking algorithm until it succeeds without
+> > > >>> deadlock. +pub struct ExecContext<'a> {
+> > > >>> +    class: &'a WwClass,
+> > > >>> +    acquire: Pin<KBox<WwAcquireCtx<'a>>>,
+> > > >>> +    taken: KVec<WwMutexGuard<'a, ()>>,
+> > > >>> +}
+> > > >>> +
+> > > >>> +impl<'a> Drop for ExecContext<'a> {
+> > > >>> +    fn drop(&mut self) {
+> > > >>> +        self.release_all_locks();
+> > > >>=20
+> > > >> If we move this to the acquire context, then we can do away
+> > > >> with this drop impl.
+> > > >>=20
+> > > >>> +    }
+> > > >>> +}
+> > > >>> +
+> > > >>> +impl<'a> ExecContext<'a> {
+> > > >>> +    /// Creates a new [`ExecContext`] for the given lock
+> > > >>> class.
+> > > >>> +    ///
+> > > >>> +    /// All locks taken through this context must belong to
+> > > >>> the same class.
+> > > >>> +    ///
+> > > >>> +    /// TODO: Add some safety mechanism to ensure classes are
+> > > >>> not different.
+> > > >>=20
+> > > >> core::ptr::eq()?
+> > > >>=20
+> > > >=20
+> > > > I was thinking more of a type-level mechanism to do ensure that.
+> > >=20
+> > > Why?
+> > >=20
+> >=20
+> > So that wait-wound and wait-die classes don't get mixed up in the
+> > same `ExecContext` by using type validation at compile time.
+> >=20
+> > Of course, `core::ptr::eq()` is still useful/required when the
+> > classes are of the same type but not exactly the same value. Maybe
+> > we can do both.
+> >=20
+> >=20
+> > Thanks,
+> > Onur
+>=20
+> I will also look into whether it's possible to remove the class from
+> the mutex and instead derive it from ExecContext and WwAcquireCtx.
+> This would fix both issues at once in a better way.
 
-Thanks for double checking. At the moment, we don't have usecase to disable
-swgen0. I checked my prototype code and Nouveau as well and we never have to do
-this.
+This is not possible due to limitations in the C implementation. :(
 
-thanks,
+A mutex must be initialized with a specific class (or without one if
+it's just a regular mutex) and this cannot be changed later.
 
- - Joel
+I noted this to revisit the C side and see if we can make this possible
+in the future (once this patch has landed).
 
+Regards,
+Onur
+
+>=20
+>  -Onur=20
+>=20
