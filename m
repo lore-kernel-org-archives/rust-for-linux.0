@@ -1,55 +1,55 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C27333430
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 13:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C713385A0
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 13:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053604; cv=none; b=dRuK4sHZisrnN8mNURWYzehx/fG7TkPPSblMUoiFbGs0DB2IYTFWCQW/7+JURoiNuMCzRhSguwPhgHe0gilwdfEttem9vtz54VVpsVqoih1Z1Z2w0GpxnUslyNKq52n4gNFKhBTr32tlLJ1q4n9scyxABKqG4oxqpoObeIW2tzM=
+	t=1761053607; cv=none; b=Jj3NWvXznu6OIH0NQoKJN4hwP5NJJIzvJkVNM9dxOldit6zfNxDNti0cdd6Q9VL+LBdLZAqNyupYhYUqB3Sj+XG1RQyhWKf8z/rrcFJxM8kQvMFVHpCsWn7tWbVl61jenb/by4/mX8O10iK4uOvScihYiipJ6TnXpY+QaTBgQXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761053604; c=relaxed/simple;
-	bh=Jb0vnnnhfxGrNucsxP5BNXkOEu1a4p48ToRxxUSpaQE=;
+	s=arc-20240116; t=1761053607; c=relaxed/simple;
+	bh=PW4fXPFs25L80fF70NuTLXm2bMNHsJLF6jbykyCi4q4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Kl1vz0txuh5w843C5WN3ztzh4827zZMSWNNqxvHqUET4m22LAuroRFfUg1iVHvGundWN1AT4XKTuTk3ctnwT2Z/lWvjSk2QsYZncy+30c/qhjcRCr8w85Mlu3Wze8dNtmbz5xMhFovdPmfAUuYtqUtIjua1Iq+pvL/JGfmlGsPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FVDD/WG3; arc=none smtp.client-ip=209.85.208.74
+	 To:Cc:Content-Type; b=TmmvBMk3HMhDDzjNDDVdi5nebJwLCBjlWT+90p3L1w+toD12p9MjTF4voQL2uduvBlC/bbHBSTSa5M4FAN/1J8qjdfBNSghBf83XNHGxZMnA6w9aXF8gkKWRbR+YschIUZORsLkl+iY+772dZ7vpZ8sA91KjPja1Nb4lC81M6Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kPzY1oWX; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FVDD/WG3"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-63c41bc2dfcso4034977a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 06:33:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kPzY1oWX"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47106720618so35246775e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 06:33:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761053596; x=1761658396; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1761053599; x=1761658399; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fWdXzd7QdxlhFuF65XkScJdJM4lE4siYSCj2mHt57X8=;
-        b=FVDD/WG3UVOYCxRlX6VYpRZLwtGSb8GfnQTC77vw7gAiOr0ZE928l4ukPvn2WiTTJQ
-         cpgnqLpojx1CL5MIyhEryI0NUz7j3da4BrjF28f04bCXV7DWpjxMiEOOyp94i/Xsf6a7
-         Kb8yK+mWu4eLtLP8UQbH5DHEXrClSC/XwcJkme/I0RvRiCbIjDyxfIGbGj9Q1IcOmwru
-         5EcWYDysuFp/h6lHD/cek0QoPQ47QavNBWcqtngmDi8lwWP7iZva/MG3+U5u6ZNpoWt3
-         4EndkKiV652XUy0XJY27LHsXxyMNML4ldCTTlLNSqew7T+Kvm2GuGTh6rUQjqPidhydn
-         2ABQ==
+        bh=rTDltL3AAi/RgZ5a/oTDLo3q33+wUkHf+1m9k8QIy7s=;
+        b=kPzY1oWXI82SDyGSq54iSrA7W6TKFfjnH+GU5h5WZBfP5R1S8jN8AUs1vjU8LjyE7E
+         WpKF93vGMAX/uFr6ykdIjKkLOxXsnus1j3qF5hAuBXC4VwFecpAo+11elnCg0sMOaP3l
+         77jGDRyoDqGLATdB3Wsbtyey4VGNtFuwagnJesrEI/1ZGLWWtXXS2/mfUGKp2Me3+ouz
+         25OjTJbcCPBui+Xxsbag8BAJ9JpSMIJK+iqKNuLwPsCjWOWe60redVRzFKFMOOxaYMQw
+         Y7L4NeFi8MAPWO1sak/eon1IcujZqi4LJY/0s08e+079u+Vo/FMWM/+sWl9HOlF36AeZ
+         C7mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761053596; x=1761658396;
+        d=1e100.net; s=20230601; t=1761053599; x=1761658399;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fWdXzd7QdxlhFuF65XkScJdJM4lE4siYSCj2mHt57X8=;
-        b=YhpwCLhV+6fw0bTlCQ5d4uQw3XHTOO0wdoVEzNEye0FZmVOTGpMp1QO7eSdOTHQ7BS
-         3IkCr14f42ymx+2D7nWeha4EvDz7/OFRYIesjvVzpL2Mc/d9I7ZDNMoUcnnkoYXp4TFW
-         YnAuw2IKTU5es/nkJGIYm/sXrnKQwDZT3dSqAGrPQxDZsAuFdWLdXeh/5da/rHc1AyCd
-         s3U9nDvXEgj7b1Vu46/IRQZ1yLwDOnNpo63CgIekx4uKPSsz8RCTn2Z43LK5jW6scJin
-         G4hFJrR7P5wERUDB+9PfihsB6G/xbnwdzZ4ECz41zWr4R7n5IEsmr+jc6IpBjVsSKnjV
-         MKwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVD3upWTOL8Flis+NgtO6mQsRpfZJlCDNxMIyxzirfUPhXm8BzMa61hem8859WdOWSz/VjFzjcyPv8o+ENDsA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyccXu2HgUOLawH2MfIVfKdum+8M98Bs3k4lxF8Q6Mbw0Lc3+ra
-	LigB0b5h8GoefeouG0XVW6pK5CJURAEBhFMWakT9CJq8XCHb2DSwsxXjbinim2nMCtqOjxpaGwx
-	bJ3ORBHiBbTpmgRcYGw==
-X-Google-Smtp-Source: AGHT+IHnChQ6BjR2arpBtBJOLhvxyTqTIy9o0xi+8HCMJp18jJNKb80TyCIs9FpjfcNIp//pfUno9FHoyjIxuRY=
-X-Received: from edp13.prod.google.com ([2002:a05:6402:438d:b0:63b:fc78:ee0b])
+        bh=rTDltL3AAi/RgZ5a/oTDLo3q33+wUkHf+1m9k8QIy7s=;
+        b=pDhMlCEikBmJ2x7Qa639gdgB/+H76jkiwBOjTtVdbLF0iRcyh1dLQK3eWnKO9vSPXE
+         jxbRT9MzEUCQNi04rkx1iaW5o6Cw+rFgup/4yDutGAHiOS9hSU7sYcdQjflG2ewvAMJJ
+         jP/wK+zqQ2eo/uWoWr/hrP3AyRYwNoaTijZ+/XhG/BOHQSQxyzqjLIdCWJOeFQWofdTU
+         40SyiWS4I9y4uXK2X8AwF84x6UXH2tV++HtpjdGKZ9mwjST6xtwkmZ3LQp6L5IGKKvTA
+         DF8BNvuB0y/OCeJZyo70so41LadrMx2eQHGIh/hfbUlTVbVpkWGW3lkDFqVFUtLhvyPC
+         Jvvg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6uXBLEVOB6k3ig01i4eUgjkrHd55dwqlAn8vqzASneg0pcGgKVQ3pcsjRh1D1i0k2Ny4yemYUb63geHOqGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY8UA7InVAIl2WV/fe3DIoRUCVDsrlQRROX7BDzsJuAUFryAw6
+	oaTy4wXBj1dwfJEtL364lwJ2t5jWZ1PWwXp04GDxqFLTPZpEhaczDoHZIHD4st05i6zoTUevjfR
+	Abblb5XiyEgKSm+EMBA==
+X-Google-Smtp-Source: AGHT+IHbGsycRyExDTiNuYM7y3DxXLafgUs66DExEEUzWwCgEkrutWY1m8SaJ5WXpD9pbMyB1vK4A7vDVsl5Fdo=
+X-Received: from wmbhc8.prod.google.com ([2002:a05:600c:8708:b0:46e:49da:cb09])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:4304:b0:63b:efe5:f2b7 with SMTP id 4fb4d7f45d1cf-63c1f64fe10mr15861453a12.12.1761053596442;
- Tue, 21 Oct 2025 06:33:16 -0700 (PDT)
-Date: Tue, 21 Oct 2025 13:32:45 +0000
+ 2002:a05:600c:310e:b0:471:14f5:1268 with SMTP id 5b1f17b1804b1-47117907a77mr130498745e9.25.1761053598959;
+ Tue, 21 Oct 2025 06:33:18 -0700 (PDT)
+Date: Tue, 21 Oct 2025 13:32:47 +0000
 In-Reply-To: <20251021-binder-bitmap-v2-0-e652d172c62b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251021-binder-bitmap-v2-0-e652d172c62b@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1628; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Jb0vnnnhfxGrNucsxP5BNXkOEu1a4p48ToRxxUSpaQE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBo94uXf7oRZ5UX3A/HLX+AvAd8Ta5lw6EyeZra0
- 9Es5As7BCGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaPeLlwAKCRAEWL7uWMY5
- RsKREACpPZ/o7balEXqMDR0XFVp4wneltDDlP1/DDR0s7ishyKE2qzshZyKITzWKIEHRd83NNq+
- PwX0oPUmFBec6h/0bzBk+/2u0+pVQehFqJfRv8TRimsgNYx3OLTZFUzWOu+pCcpFx/sDOJhG2ob
- K1EjJJ1K1VPbfL+d3Bnhnr0wzXF+SzH817HhvWsbwCpK61Dks+/WEuEvh8xoVoJJiyJf2Cs1AB8
- EEV3Oxo0GP9YtwiR6OrlolcvrXGgmO1QToJSEaM+mIkZIiQloF6KS8p4D45jSIGW5ixp18db1Pa
- zc5UsNgW9tFjorDHL2FUFJ/KSBx83EmRzxHGCGNa3XUqvzwtnPep5E2tTVWpCGyS/sMKOOsvSf5
- opKtOJ1f/WBROoDzb4UZJkTK6XKztUCj7UyUMKPkwmTu27AbOTBjq2dllkdSG03tazlGqZZSCoj
- +we0byKKCcoIuYnbE+GV8B6FkfAl6m60sy9LuCqg5ckRCeSFdqft23hZgcdiPu/eFXIvmAOu6vE
- LjUFcHrzLO4r3zr8ru9VdNzNtvXxlvnYWE1QWwoWmYLWhduPNLRqvI4D7al3bDMhf6bkmP5j0oQ
- Mi5a+RKsPQvYajLMuL4LWuBzvsYYNfcmbYIy90Rc7eQkYgMa8WBcUIT09p+9qbTWJFIF/xllzvH exiRJ375cRmEEXg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6173; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=PW4fXPFs25L80fF70NuTLXm2bMNHsJLF6jbykyCi4q4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBo94uXSvZrdNt269KCZtQ1EMRnOYj4jE10+cR1a
+ rnYxaaJb2GJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaPeLlwAKCRAEWL7uWMY5
+ RkUHD/90F8j+1nVwohT77GrcF5m7/v0ucDFj5WnQJp+i4y8p8qPO3sjbQuzHH+B8SHCXGdj5QeP
+ QikErE2XXj3V/56RzL9Iohq0dY8bvdeNC3QejLmJXafAi2rninG5VqWCls+1EjRLDlmg7FyFYld
+ 8pq/m0VzWnKC4+dbQzCarEN0mQ3//GL16rrH7d7Cx3+5mtZxAfbiM1S6thAahHgz1c42ZeuL1j1
+ JLDoH+lXrqXtfjqw7JbDhUO5T/veK7tF265P0osBHmQug/0mYLEhecptO5Jfkp4+Nfu3UWomKi9
+ 0+85suAvZAiPofmvD9MXSnNAlRT0eV8INncE+BFZJzc36uobNdUuUWXt13gtacLA6MVhUIKmBRH
+ CnBSPNrspYOLiKJg+y0sbKtG+WTZ7e+dMjBdEQKLDfdnVzM1baR9xvxScab5+QtTDPYswRCTHCY
+ rz+Aw5SDfiLIRttPybmaaGXCyZvcSNK0aHTjNXoQEeQdgQWkzVj0l+9vfy0diPRg5dTSGfKaZj4
+ f8soJN1hgvxAkgOLjFHCrYvOJR8vEnM4flZ5tSqgQY5SbjjDtAxhlnw6vxb8CnUiAh4BK56yxvk
+ GWU/+VNchCf2rYVZqB37ZVxGjUWSBZo2LObWxUaNvRR35tFMOcuUuF6bJqwdOATW6lPFMJkBwZm m33GhNU8VhenUjg==
 X-Mailer: b4 0.14.2
-Message-ID: <20251021-binder-bitmap-v2-3-e652d172c62b@google.com>
-Subject: [PATCH v2 3/5] rust: id_pool: do not supply starting capacity
+Message-ID: <20251021-binder-bitmap-v2-5-e652d172c62b@google.com>
+Subject: [PATCH v2 5/5] rust_binder: use bitmap for allocation of handles
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>
 Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
@@ -88,52 +88,147 @@ Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@
 	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-When creating the initial IdPool, Rust Binder simply wants the largest
-value that does not allocate. Having to handle allocating error failures
-that cannot happen is inconvenient, so make the constructor infallible
-by removing the size argument.
+To find an unused Binder handle, Rust Binder currently iterates the
+red/black tree from the beginning until it finds a gap in the keys. This
+is extremely slow.
+
+To improve the performance, add a bitmap that keeps track of which
+indices are actually in use. This allows us to quickly find an unused
+key in the red/black tree.
+
+This logic matches the approach used by C Binder. It was chosen
+partially because it's the most memory efficient solution.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/id_pool.rs | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/android/binder/process.rs | 63 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 46 insertions(+), 17 deletions(-)
 
-diff --git a/rust/kernel/id_pool.rs b/rust/kernel/id_pool.rs
-index a41a3404213ca92d53b14c80101afff6ac8c416e..126e57f34c3407cb1dab3169417f01917e172dee 100644
---- a/rust/kernel/id_pool.rs
-+++ b/rust/kernel/id_pool.rs
-@@ -96,16 +96,11 @@ pub fn realloc(&self, flags: Flags) -> Result<PoolResizer, AllocError> {
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index f13a747e784c84a0fb09cbf47442712106eba07c..933b0f737b38ffac536b19c9330dfc63ffc72f2b 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -19,6 +19,7 @@
+     cred::Credential,
+     error::Error,
+     fs::file::{self, File},
++    id_pool::IdPool,
+     list::{List, ListArc, ListArcField, ListLinks},
+     mm,
+     prelude::*,
+@@ -367,6 +368,8 @@ impl ListItem<{Self::LIST_NODE}> for NodeRefInfo {
+ struct ProcessNodeRefs {
+     /// Used to look up nodes using the 32-bit id that this process knows it by.
+     by_handle: RBTree<u32, ListArc<NodeRefInfo, { NodeRefInfo::LIST_PROC }>>,
++    /// Used to quickly find unused ids in `by_handle`.
++    handle_is_present: IdPool,
+     /// Used to look up nodes without knowing their local 32-bit id. The usize is the address of
+     /// the underlying `Node` struct as returned by `Node::global_id`.
+     by_node: RBTree<usize, u32>,
+@@ -381,6 +384,7 @@ impl ProcessNodeRefs {
+     fn new() -> Self {
+         Self {
+             by_handle: RBTree::new(),
++            handle_is_present: IdPool::new(),
+             by_node: RBTree::new(),
+             freeze_listeners: RBTree::new(),
+         }
+@@ -775,7 +779,7 @@ pub(crate) fn get_node(
+     pub(crate) fn insert_or_update_handle(
+         self: ArcBorrow<'_, Process>,
+         node_ref: NodeRef,
+-        is_mananger: bool,
++        is_manager: bool,
+     ) -> Result<u32> {
+         {
+             let mut refs = self.node_refs.lock();
+@@ -794,7 +798,32 @@ pub(crate) fn insert_or_update_handle(
+         let reserve2 = RBTreeNodeReservation::new(GFP_KERNEL)?;
+         let info = UniqueArc::new_uninit(GFP_KERNEL)?;
  
- impl IdPool {
-     /// Constructs a new [`IdPool`].
--    ///
--    /// A capacity below [`BITS_PER_LONG`] is adjusted to
--    /// [`BITS_PER_LONG`].
--    ///
--    /// [`BITS_PER_LONG`]: srctree/include/asm-generic/bitsperlong.h
-     #[inline]
--    pub fn new(num_ids: usize, flags: Flags) -> Result<Self, AllocError> {
--        let num_ids = core::cmp::max(num_ids, BITS_PER_LONG);
--        let map = BitmapVec::new(num_ids, flags)?;
--        Ok(Self { map })
-+    pub fn new() -> Self {
-+        Self {
-+            map: BitmapVec::new_small(),
-+        }
-     }
- 
-     /// Returns how many IDs this pool can currently have.
-@@ -224,3 +219,10 @@ pub fn release_id(&mut self, id: usize) {
-         self.map.clear_bit(id);
-     }
- }
+-        let mut refs = self.node_refs.lock();
++        let mut refs_lock = self.node_refs.lock();
++        let mut refs = &mut *refs_lock;
 +
-+impl Default for IdPool {
-+    #[inline]
-+    fn default() -> Self {
-+        Self::new()
-+    }
-+}
++        let (unused_id, by_handle_slot) = loop {
++            // ID 0 may only be used by the manager.
++            let start = if is_manager { 0 } else { 1 };
++
++            if let Some(res) = refs.handle_is_present.find_unused_id(start) {
++                match refs.by_handle.entry(res.as_u32()) {
++                    rbtree::Entry::Vacant(entry) => break (res, entry),
++                    rbtree::Entry::Occupied(_) => {
++                        pr_err!("Detected mismatch between handle_is_present and by_handle");
++                        res.acquire();
++                        continue;
++                    }
++                }
++            }
++
++            let grow_request = refs.handle_is_present.grow_request().ok_or(ENOMEM)?;
++            drop(refs_lock);
++            let resizer = grow_request.realloc(GFP_KERNEL)?;
++            refs_lock = self.node_refs.lock();
++            refs = &mut *refs_lock;
++            refs.handle_is_present.grow(resizer);
++        };
++        let handle = unused_id.as_u32();
+ 
+         // Do a lookup again as node may have been inserted before the lock was reacquired.
+         if let Some(handle_ref) = refs.by_node.get(&node_ref.node.global_id()) {
+@@ -804,20 +833,9 @@ pub(crate) fn insert_or_update_handle(
+             return Ok(handle);
+         }
+ 
+-        // Find id.
+-        let mut target: u32 = if is_mananger { 0 } else { 1 };
+-        for handle in refs.by_handle.keys() {
+-            if *handle > target {
+-                break;
+-            }
+-            if *handle == target {
+-                target = target.checked_add(1).ok_or(ENOMEM)?;
+-            }
+-        }
+-
+         let gid = node_ref.node.global_id();
+         let (info_proc, info_node) = {
+-            let info_init = NodeRefInfo::new(node_ref, target, self.into());
++            let info_init = NodeRefInfo::new(node_ref, handle, self.into());
+             match info.pin_init_with(info_init) {
+                 Ok(info) => ListArc::pair_from_pin_unique(info),
+                 // error is infallible
+@@ -838,9 +856,10 @@ pub(crate) fn insert_or_update_handle(
+         // `info_node` into the right node's `refs` list.
+         unsafe { info_proc.node_ref2().node.insert_node_info(info_node) };
+ 
+-        refs.by_node.insert(reserve1.into_node(gid, target));
+-        refs.by_handle.insert(reserve2.into_node(target, info_proc));
+-        Ok(target)
++        refs.by_node.insert(reserve1.into_node(gid, handle));
++        by_handle_slot.insert(info_proc, reserve2);
++        unused_id.acquire();
++        Ok(handle)
+     }
+ 
+     pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult<NodeRef> {
+@@ -905,6 +924,16 @@ pub(crate) fn update_ref(
+                 let id = info.node_ref().node.global_id();
+                 refs.by_handle.remove(&handle);
+                 refs.by_node.remove(&id);
++                refs.handle_is_present.release_id(handle as usize);
++
++                if let Some(shrink) = refs.handle_is_present.shrink_request() {
++                    drop(refs);
++                    // This intentionally ignores allocation failures.
++                    if let Ok(new_bitmap) = shrink.realloc(GFP_KERNEL) {
++                        refs = self.node_refs.lock();
++                        refs.handle_is_present.shrink(new_bitmap);
++                    }
++                }
+             }
+         } else {
+             // All refs are cleared in process exit, so this warning is expected in that case.
 
 -- 
 2.51.0.869.ge66316f041-goog
