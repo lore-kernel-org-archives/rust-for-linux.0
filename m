@@ -1,134 +1,85 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6272DC353
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 13:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C03338586
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 13:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053828; cv=none; b=XudVWEul3ef1+FpKk+ccP5rAjKHOESnrKymJgCbPSXZOFs+wKw8nLTrGPR+YfEDwWAlNcdiA1HxB5HRe2HY625JECox8NRz+8SbVj9fkUFWzLhmbYSpKc7tWg6zWIaxuWGXoi+r6oO5miBaHcG5J5G3SPnmeIYTR/HdmTNJaHMY=
+	t=1761054021; cv=none; b=HC4FHNtnJERbL6WoStVGnBZuiaKgM0qpRwUpizDKUF3+X6yN74I6mcKxRi4Xkq6gqZ1r3KK/UQ1Olqrrl8bLmOdwRZuDB3COYnLXyYdVXr1u48iJDknq9tAp46xrNv+q0u3oBRC2vcBra7koAt402KiSxvs1xYerkix1aktLHTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761053828; c=relaxed/simple;
-	bh=AtVGhYFh437q8W5WmFUyTtQrh9cab72NfJvdwed6k/I=;
+	s=arc-20240116; t=1761054021; c=relaxed/simple;
+	bh=yCknDotFZEruiBosDMAm3ohbAowsDur9hp3qhsJ7LEc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=h8LHKp79CVHQ2IjKfNRMqo1o/rhRk1WWAM9bgmrOI7NnLS2bJT+S18fzEAQ8M3+Az/gOHKXOznVHRZeuLxyj8VdjaaypEdIb3CuxYF0K39CvJJS0S9uswEm520lCKONPEsy7ELzawoarS8Gf46XcT7cUQmHwyQwMhRd1HWoxYKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y/gtwCi7; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=jOQUnYAQfaQ9pmcgc80TmS/6KkodMaB918E/zXA6R0wrO53Z4EVQs6PsJprqqwLTxjWYDEVYLsLxt4foUJJXc+DqCL+AxUtD+wKBagAkl0ftNtePCEAgtC+qpnJSkrZ8QYEI0qdEj7jlaPSV3cC4Bz4JpcpEcTMUmZCWdmwK+f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xv7zzyab; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y/gtwCi7"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-471148ad64aso23295835e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 06:37:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xv7zzyab"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-472ce95ed1dso20323715e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 06:40:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761053825; x=1761658625; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+Kqt67P5hzlBZ//74kVgmzA6U5uQp3sNCk9uO9xfvb8=;
-        b=y/gtwCi7eNsbs7RLuuagvFTuqnQW2/gn7jbNln2yESKcC3Gms61cgjDVTUB886ae9K
-         aUQqCP+WLS7O3SwYWCkAQThHMvpVMGeS9ofBHEU9LF+feb8mdbwVEJgK0B0w9rdNs7wI
-         T81mFZAVCVSCa/dPmPUSpbHDtH+yZ036CfuJdPmSE8VFs+cWiJbUQATlx4GmjYwMg2aV
-         hF/IR9cSL9oxLzA5uv2MGbAd0nek0usmGqbmopU5eXNzprwuaWhKoCWpyy5UrbYSgOKY
-         rxsz7JO603vZObvtkGHk0NgDIZwsE+h2cjIi5oQNmithqne0tZntNgEsT/v9cwXq1imO
-         yzlg==
+        d=google.com; s=20230601; t=1761054018; x=1761658818; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OrLUW4qM+cn8czdjP/Pa/kJCbfN7pvqfFBtXogaAokg=;
+        b=Xv7zzyabgXefPJyzLd/TMox8FWzDGyOcyZdERxUWzaAm/Y/3Qmadpq8xT6lmx2lAfK
+         zWesBtPwUDm66q6m271xCNdFTOAu2n9SToPvn4ZqgTP/jD85TMdFxE2XunFZjYSAB0UL
+         zbd+RnpAo0spmPLZqE26ZoV7CihN/iQf6lueSmOHyXp2OWDO86T6h9GRp5tZFIJ6EtLh
+         cEp/8LRYF20nbfoD56phD2wT893dJ9IirtFbPdGgd0kXHMWrp5x/g6MsmCAgFgfTyUql
+         VvO+ru4+CnxXXR31Ng0X5kIZzBdtRZcHIVMkdqqcUAFxSl5BTT+uXLVyrZN8cHabxRco
+         NY0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761053825; x=1761658625;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+Kqt67P5hzlBZ//74kVgmzA6U5uQp3sNCk9uO9xfvb8=;
-        b=XjsiS9Cjkg95H1xhIBXpY23OFhXU9MSrmiDujBicCbE0izlFKJtXptB8DDXey3D/Cc
-         IGuyxewyFfRi4FZCh61fzgRTPVXNW0mjpvZlUPi3+9ADMvoWJbS38kJbddP5vN8NNeo0
-         VLBV8Iawypi5O2Xzg96ycCq2MURX2o7QPbAI60LfP4qMJAfbQL2n379BI0Loy295qoCS
-         3pGI5mQy4jM+gFgRwwV6OUwRuYJK0XTJb/5uRlwm062OpQ//MhglW0/4npJy7sbTYWrQ
-         DZ1roxK+DeHiimeJCLsTjKpncIdmyeN3IwquDN5qW8Ia4zJ+H0W9EvblppFc1BCByo/U
-         HlFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVbszDLh+zFkAyC2LkQYzntplWP/W8k2ey2Xhq2/7/ZChrV7SE6ZCCQkw6o52LypqKCZqFs7QywCaFU13Itow==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn/jJfK1b8olwl7ZjOOhd4Mp/y9xkD7NKe5T3//AzaLIg8pKn6
-	fEOSeOXUw1IN1hCgkaJFmLOy9/3wqBzhUklCBaaTw64Sv878op8HAsfa75PZsH+i3dFJsj0hbWF
-	q9vZJy24Fp9YOBcCfbw==
-X-Google-Smtp-Source: AGHT+IHRWWwYo+RUBWuqiEoo9mYQLp/w5WREpiW+BZGiWPDvEU4xwiB1VUEgH9NndADC6yrrO0oDwzHnhBOaEuc=
-X-Received: from wmvs1.prod.google.com ([2002:a05:600d:8221:b0:46e:2121:d406])
+        d=1e100.net; s=20230601; t=1761054018; x=1761658818;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OrLUW4qM+cn8czdjP/Pa/kJCbfN7pvqfFBtXogaAokg=;
+        b=GXZzzGQrvmo49yh28NewEJPwT0tk9jK4K7eFfl/9iqwVZcgn58oWHJbyZZa3B0jLXK
+         S1iVUJXBeKTvIS6pu4Fwb4GeC9+jP7Yau0Udm+QUNE+sDnAlVkgi4BMU987y+f6s0b0W
+         lePX2VNMdUjAIDTRVNjH9O5UTZ07ltVtZMnSTPSujqoITOcU9iGIdYUFHstSaKwVZAbD
+         BuzCYiPLWwgusKFmebImZJpIKYxctwHqBUmHgJ8hcvg+2pkEQSvAEN0aPtWTsnws33iD
+         Hf6kEGGgs3NmPx1NhnWleYnWpb/BbGQntBG70JksBaoQeqNngYs79jl37KlEK2Gie36l
+         TvyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxSraJWhmr3ZsnQryq01FA1E7ff612FuZoK3u8k4yqKg+Oxp0A5oi2bKk2j1LmUAI5IS3nhEmRvgZv9PVb+Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yztz3wMbKILVZCJcJQtSdRd/qHfuVaYo5lQqh54K1sWSChqRgEU
+	OWSMvKSbwIt9CQbuYWrFMlC+j07V8Lr79wCKd8WyWgozxMtW+nbMRLmneqLYB0axQi9M665ANUc
+	KNqGZyEK9U7zZydy4tg==
+X-Google-Smtp-Source: AGHT+IGyXHuIJb9pEC+yUkjKZFKKvH4sB7PMpDG624E6gHyNbBCvNk3e8BAAYh/eBkRuMgY4SrmZkhQaFvx3kuw=
+X-Received: from wmcn15.prod.google.com ([2002:a05:600c:c0cf:b0:46e:25c3:8f69])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1988:b0:471:1387:376a with SMTP id 5b1f17b1804b1-4711791c661mr135006705e9.28.1761053824704;
- Tue, 21 Oct 2025 06:37:04 -0700 (PDT)
-Date: Tue, 21 Oct 2025 13:37:03 +0000
-In-Reply-To: <CACQBu=VLPGq0nx6PJSnw3YBhMe4QKHiiFG0k9_Kwayj9w6nfLQ@mail.gmail.com>
+ 2002:a05:600c:5287:b0:471:1337:7220 with SMTP id 5b1f17b1804b1-47117874810mr123853485e9.3.1761054018123;
+ Tue, 21 Oct 2025 06:40:18 -0700 (PDT)
+Date: Tue, 21 Oct 2025 13:40:17 +0000
+In-Reply-To: <20251020222722.240473-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251020-binder-bitmap-v1-0-879bec9cddc1@google.com>
- <20251020-binder-bitmap-v1-2-879bec9cddc1@google.com> <CACQBu=VLPGq0nx6PJSnw3YBhMe4QKHiiFG0k9_Kwayj9w6nfLQ@mail.gmail.com>
-Message-ID: <aPeMf6C-dRI5OlTE@google.com>
-Subject: Re: [PATCH 2/2] rust_binder: use bitmap for allocation of handles
+References: <20251020222722.240473-1-dakr@kernel.org> <20251020222722.240473-2-dakr@kernel.org>
+Message-ID: <aPeNQQ725-Vdxh-9@google.com>
+Subject: Re: [PATCH v2 1/8] rust: fs: add file::Offset type alias
 From: Alice Ryhl <aliceryhl@google.com>
-To: Burak Emir <bqe@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, mmaurer@google.com, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 20, 2025 at 05:06:26PM +0200, Burak Emir wrote:
-> On Mon, Oct 20, 2025 at 3:33=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > To find an unused Binder handle, Rust Binder currently iterates the
-> > red/black tree from the beginning until it finds a gap in the keys. Thi=
-s
-> > is extremely slow.
-> >
-> > To improve the performance, add a bitmap that keeps track of which
-> > indices are actually in use. This allows us to quickly find an unused
-> > key in the red/black tree.
-> >
-> > This logic matches the approach used by C Binder. It was chosen
-> > partially because it's the most memory efficient solution.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  drivers/android/binder/process.rs | 110 ++++++++++++++++++++++++++++++=
-+-------
-> >  1 file changed, 90 insertions(+), 20 deletions(-)
-> >
-> > diff --git a/drivers/android/binder/process.rs b/drivers/android/binder=
-/process.rs
-> > index f13a747e784c84a0fb09cbf47442712106eba07c..357ba1b577c73ad3f2b525a=
-8573424420577e92d 100644
-> > --- a/drivers/android/binder/process.rs
-> > +++ b/drivers/android/binder/process.rs
-> > @@ -16,6 +16,7 @@
-> >
-> >  use kernel::{
-> >      bindings,
-> > +    bitmap::BitmapVec,
-> >      cred::Credential,
-> >      error::Error,
-> >      fs::file::{self, File},
-> > @@ -367,6 +368,8 @@ impl ListItem<{Self::LIST_NODE}> for NodeRefInfo {
-> >  struct ProcessNodeRefs {
-> >      /// Used to look up nodes using the 32-bit id that this process kn=
-ows it by.
-> >      by_handle: RBTree<u32, ListArc<NodeRefInfo, { NodeRefInfo::LIST_PR=
-OC }>>,
-> > +    /// Used to quickly find unused ids in `by_handle`.
-> > +    handle_present: BitmapVec,
->=20
-> Are you going to delete rust/kernel/id_pool.rs, too?
->=20
-> I have no opinion on whether having an abstraction vs inlining the
-> functionality is worth it. I mean just in order to avoid id_pool.rs
-> hanging around as dead code.
+On Tue, Oct 21, 2025 at 12:26:13AM +0200, Danilo Krummrich wrote:
+> Add a type alias for file offsets, i.e. bindings::loff_t. Trying to
+> avoid using raw bindings types, this seems to be the better alternative
+> compared to just using i64.
+> 
+> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-No I should be using it in Binder. I forgot to update the code to use
-it.
+Please consider also changing the instances of i64 in iov.rs.
 
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
