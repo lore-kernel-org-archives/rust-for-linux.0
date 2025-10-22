@@ -1,129 +1,169 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468DE18DF80
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 03:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EDB217F33
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 04:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761105442; cv=none; b=GsIT5WdH5WKago/A488Rfwu9mAVuugX7hae+9GV/pItpie5NxUBx7vWB9tfyTswbG8sKXlVwkh6oHLE5wb35Jt5hxZxBpAu/fesWNDtT058QYtyPmaaM0A6H4g/+9rNoz2mU9TEf++5bvjFa7zJCyMMeds88a6KCzADhncrxfOU=
+	t=1761105671; cv=none; b=E+c5yQuR/ZFL4gYkobL4CHBwowIwFLm18f2TPjXWNW883/dDpMqgYR5XU2YHoUwjL/bKe70Ikcc6enZcNswZR4CVq492h0Y9xbtuAQP+kQwYZzq5m11CCYr5/VablYWPQy8tPv4CXCub/IMtQepqmoq9xRwrnHQx94WDOeGO9Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761105442; c=relaxed/simple;
-	bh=qWU3gcv2n5vPIYTEv6u9o74rRMnYuUnMY2EGJgd5Hwg=;
+	s=arc-20240116; t=1761105671; c=relaxed/simple;
+	bh=1G25WWOEC3anIDwldLhC009T82/I/q9FTo0jvkxvu+w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cyVF1+WeVCyfCCJ5jrOrQhgjQoVSSufO86ivw7TKZdcSBr0SAtVXMEfgymV6bqpSDm2Z7cWgIZH9NP1mTvRcAGPEzVQoSYY4kMUK86hCougQzjyPFcnZXSIuj6numiiUAX7zw7FcBDF2XlLWq+lQJCK5sH15dtAkSSZmS2XIzHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Oe4dbb4W; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=dwCZOC7WhXR4r4M052oIfHH8a6DMp7fT2BHY6prmKgbsipNtIxPyUty67pLhqh/5mKFqP/9+XahZ+f35LQ82mX5HTn4iq3ItZ+KiYGrRdeCrcZ9/sUJ96nCj50Pd4bFVkYTRG+Ef06hZoBQu84FdujMeyP4UjZZX3oly4eRzxQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j9cipteh; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Oe4dbb4W"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3327f8ed081so7693791a91.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 20:57:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j9cipteh"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8923b2d9954so362926585a.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 21:01:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761105440; x=1761710240; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eJJGHuWNBUYeZe+bCjnWrKJ6vdZrDU3vtt+RVJeuIe8=;
-        b=Oe4dbb4WLq5HWWLw7/eEzqjc0fc8cLtpgEfIWgy0ems0U0m6UP8+pVy9YPBi5Vto/f
-         vLfMANNef3Hr47z6WdGUDtkL68RaMYKmho4B+iJ+bLopRzEdBgcVCfI+DYnQ5irOq5+N
-         rZ91QmTLY+8W1XmkC+XoGbmAZrpCcuWEOi7x6+EG9mqX/J264+THP2L23cgW+t7wHMCm
-         8VirNBtMOhVZfqE2CdIF8PKbqwext/T1H8sxDroBUaEwZG6PMUwLlegDyyu03+zFz139
-         GARdjDJBa/wtVjJb4IT5DXwPeMc3W/fqQ9DiZOBiwViTsBeLvTCyT88V0NIuy8pwk4QD
-         eaZg==
+        d=gmail.com; s=20230601; t=1761105667; x=1761710467; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n/FaidQFPNeI/+43osVNZD1Ak2WA6Z3FkGiSqeL52F0=;
+        b=j9ciptehjCcGvVkIJr9+EBzgvtg6RLc2ltFexUYf5SER1Ix3122h8dHCtyAkOk77TP
+         Tr+SK5Dmbu3cI9MEGacz5GM8qFO+UpYkmy172q4w6P5QbC/XBs29H4zwDyOUtiB5+kLt
+         bqVG+J7EpP0D202b6l/GC6ApQDXZ3SPLFfIitMSfbqDLGfva4fOUdZK+YWu/RSX0m2Ek
+         hnTw3G5Ve8058Jj9KrGMf2gh+YbBR5QCQwke6JsOSmYadWdxfNvZG6NCrdRyP+Klio+I
+         w4TCPrUIwlEu+iJsU/POe1hSyuh+Vzu40p5/x8g+SVNkNpWWVV88R+cd95Jn6V48Ua4B
+         vA9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761105440; x=1761710240;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eJJGHuWNBUYeZe+bCjnWrKJ6vdZrDU3vtt+RVJeuIe8=;
-        b=J8k2xts55XV9ktlQ/zhkr30ecRtM2KUBXN0ggGmxkOTQ85G0BdrdNJEjHp/68lmSzB
-         BBCJc3IatxoFd5CYwpPYe7Mufgg+NRi5rfhijjoD3GUMPfadmCeSILQ3Z75PGTA9ZSa/
-         HI4XzICHhdgnCQ6bOKU910RWDBGBS+LPxBDsdGT89yFjFbyVdpeZkJOanpwfCzRRbOR8
-         jiez7VStcA8MRfNhtuy0+6k6Eltizv704E3FIqqN/NXSn7CHk+ylrz9wMMZ6oUsY0frf
-         Dwcnzltt78xkdoxTweDIrD3Cfk68figgLgGe6G4uNOJScqLz/80pbWvaw9PGccOptHfO
-         MA8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUWSwLFVd7i9qqooGwHaGnEcJONQx1IY/Zb1kZQM0h2B7xdn5dZmEF2+Lvrv4vFJ2gLXuHjdUC4RJgovY+TVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxA/PMjzzoCvp4EOnEp9crKTCAv8uPduaFuB0NnCsfftMzN1GDM
-	tHCMrtm0wodbTlJeEwMqiDci1dLRhGNq/VXwngdrH2/2Ixb8AM+nzoL6NU0mgHyAPRU=
-X-Gm-Gg: ASbGncvQKiZVbv+DF7LdAfSEfPwCTmpA2LEzJnhwTg7Hc2uz13oZyW41IKmFR9J4Rmx
-	C6KXZ1bMjpcKDkIGLUv3VbyJDdQyNI8jKaF5jOoDuO2OZc09GNomx0NV+/uEWwtK4i1Z9ij3/Qb
-	RSfNrqSwJ+O+s3qqeFxZGNrpbwz39lN0vVHaA1M7gJwXVm3W4dj/m+xqDmEyzrrdvgCXkphlgOt
-	Ps1F6SLWaqmGp/m5kW0c/2dXIP9aOj+ml2LR09tpIGWI6ayO3Ie0NQjTWBrIafXz2+rKCIO59Gg
-	m0/ohfJ2LNMHvLEISUBv9slmajvldGMOuXFKhgxRxOy3WLtYbXcupX9+p1OPO8l+R+Gb4BIuCxX
-	EsfQxubmYNF4uT6ZYxw6i0XhT8c7803iQIa8RSi+QzBef2AkicH/pvO5uu8oQmhM5rePijmG9+Z
-	9aZA==
-X-Google-Smtp-Source: AGHT+IElJYs5hS03PBXdQxnYWI3VpdFMd3uudSGQGvl+AqJvx2HQM7kb+KxG1SNdziFnaV4FdnABlg==
-X-Received: by 2002:a17:90a:ec8b:b0:32e:9a24:2df9 with SMTP id 98e67ed59e1d1-33bcf86c09emr22277403a91.14.1761105439473;
-        Tue, 21 Oct 2025 20:57:19 -0700 (PDT)
-Received: from localhost ([122.172.87.183])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e223c7fb5sm1164284a91.2.2025.10.21.20.57.18
+        d=1e100.net; s=20230601; t=1761105667; x=1761710467;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n/FaidQFPNeI/+43osVNZD1Ak2WA6Z3FkGiSqeL52F0=;
+        b=e0d7ShvlVI/ZIbtfWqrKLMRfezmjkR8/D0y8T52uTXEW0S1pEwCKeL6vmaN8fUC4rl
+         ods8Xq1npgj/Jaa8ZsS+OyAkMnav+QEvwfkfji0ju2DlPvVKjfAYR4ZtoO/mMPc+4mOt
+         IkBceBIH9I5iWDhskOFme2Crv2ZowJOmC/IaanIjWu6Uw2OOecGRDjAD5Ya6jmL0OEXP
+         k/CS27J9VW8ofF4TqLRGTghikr14/yse8ewiHXRA6vA2jhquUh4BYUFBK8dgkV549DYd
+         lQm66ADBC6m+lg9hu6F2q16PbtKbhfmFraDXfTZw1sZHETKYyEWdeTWqcGkgShm/Px4t
+         gWjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWfvnFerrh6zN6z5nuxHhjzTJYixTzt3XKAfh8x4vWIKRvgzBxskNtV8b9skR5Y3S20HgPCWqJLwEjGGuNOxA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGGdkdfystBcBS+HtEYupIvUH7Y9iLiSEdfz7MUT8lDwzKHZYG
+	sCjpQuIXNB6f0Qq9XQ8c6UGr2oeduQvgyjKjjGXk4YhQq9rpRfG+Ylpn
+X-Gm-Gg: ASbGncu8c7//W6tPQou6nOPSHRfgqVCtFo7V1CreI6/rYtan+lHfeJ0V1tPC+DtV8p/
+	TrzZBvfCwAAXiprh0jgvi7o5dc+CDYhQS2pxXnTaYf891lwq6YonEr5B5pON5KUej7+R+s9wcy9
+	LIQV+myHyEtIJhhVH4ZM+xa14gG+x43TQv2iTsd6+yL8dnUsJI8r2NKwE7kX26KFA9hdamIkzRP
+	8XgnLuUr00FmkSUSx8wwfTSHvmyCmb50lUvaDYCFqXKjpMcEKxag+Cl5rsewBmQG7YFL1tcEBCQ
+	f3SSV9oTnsDmITALxR1bLNp0fL6zbgtxqcyJHq9ej7TGgjCA365DqwbXvVpohztYBugoE+pYsWr
+	vW0XbXZUW2xW5WIXeK3XKchAmqXDXUry+iE+nnNVYfVeOT/rPYIi8BM0mtSihnR5nEmlgwih4Ei
+	zJ74QbxclLKnjbPNq8+N8vQCe+6eGjxAzQk0GgIIML2DT1y/mA09TPWy/vveB8DiAe3GTIBvdmk
+	tY/fG4X5nnV/jE=
+X-Google-Smtp-Source: AGHT+IF17GZXlAb91Jfxy9pTlIJ3D2Nu7E7/sAFEgmx5LdDdbjZVwk2jSURHHw11tWRr3g2S4vjcZA==
+X-Received: by 2002:a05:620a:aa09:b0:890:c3c4:3e3a with SMTP id af79cd13be357-890c3c44015mr1786663385a.53.1761105667092;
+        Tue, 21 Oct 2025 21:01:07 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cefba740sm890066385a.29.2025.10.21.21.01.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 20:57:18 -0700 (PDT)
-Date: Wed, 22 Oct 2025 09:27:16 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Tamir Duberstein <tamird@kernel.org>, 
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Jens Axboe <axboe@kernel.dk>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, llvm@lists.linux.dev, 
-	Tamir Duberstein <tamird@gmail.com>
-Subject: Re: [RESEND PATCH v18 11/16] rust: opp: fix broken rustdoc link
-Message-ID: <4cweppdfmaei5isgmfg575eikx2qycjl457iggips2reuk247n@o242mrr5ghiy>
-References: <20251018-cstr-core-v18-0-9378a54385f8@gmail.com>
- <20251018-cstr-core-v18-11-9378a54385f8@gmail.com>
- <CANiq72==SKsYkogrQhKTzCXwxeYfbL3V5jOiQKiunwzLta5=Pw@mail.gmail.com>
+        Tue, 21 Oct 2025 21:01:06 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B8E38F40069;
+	Tue, 21 Oct 2025 23:54:34 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 21 Oct 2025 23:54:34 -0400
+X-ME-Sender: <xms:elX4aLC030pik770lyJw1HFjcHhqyIQCuX7ErQ8tEeMDyMPW77U4zA>
+    <xme:elX4aHFuicPpkoxsJp5LYea3TsD9TjB9AF0nDmV4PueIgEeCzsQnLRRb0phC9yXJ4
+    63hmf9p6YL4aXkHmnQTS0U5veVGGnt5M3cw23anj_2Mcd1fLzkiZvg>
+X-ME-Received: <xmr:elX4aAIUO52K9X5OO16y3Lm0NW6YVw4JpKN7pF4k-TBlLKfE10byJg6x3PuVpqgbLfVWWMdQslalBV5OGjkF-y1B3tZiLhdoF8Y>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugedvheehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucfrhhhishhhihhnghdqkffkrfgprhhtucdliedtjedmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedv
+    vdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphht
+    thhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvghrhihhlh
+    esghhoohhglhgvrdgtohhmpdhrtghpthhtohepmhhtuhhrqhhuvghtthgvsegsrgihlhhi
+    sghrvgdrtghomhdprhgtphhtthhopehssghohigusehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehvihhrvghshhdrkhhumhgrrheslhhinhgrrhhordhorhhgpdhrtghpthhtohep
+    ohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguh
+    hordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgt
+    ohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:elX4aOqOfxPrS7bIQrPHpyMAZ3qgOfzu0OR-QVZXCI1xbLdT_d-rCw>
+    <xmx:elX4aHgxagl4-Cqo6mXBsFVT4ONUZjri3TXtJuoL8vKaFsmi-kx1Wg>
+    <xmx:elX4aNYrr-a03aKUgmHn6Zkh6_s1le6y0FAnmyQxCd3KfL9kcuPGfw>
+    <xmx:elX4aPkrP2c0kHxTJ_QAlMhASriP_H8mB01-84kx2FIVio8gxC8qkw>
+    <xmx:elX4aDztK2sXpcUSk_9h29QmgNZW4jSkvB4MmB3vRsc84tpFYLXni4mj>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 21 Oct 2025 23:54:34 -0400 (EDT)
+Date: Tue, 21 Oct 2025 23:54:34 -0400
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] Implement Send and Sync for clk
+Message-ID: <aPhVehr_in20rqoY@tardis-2.local>
+References: <20251020-clk-send-sync-v2-0-44ab533ae084@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72==SKsYkogrQhKTzCXwxeYfbL3V5jOiQKiunwzLta5=Pw@mail.gmail.com>
+In-Reply-To: <20251020-clk-send-sync-v2-0-44ab533ae084@google.com>
 
-On 19-10-25, 23:25, Miguel Ojeda wrote:
-> On Sat, Oct 18, 2025 at 9:17 PM Tamir Duberstein <tamird@kernel.org> wrote:
-> >
-> > From: Tamir Duberstein <tamird@gmail.com>
-> >
-> > Correct the spelling of "CString" to make the link work.
-> >
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+On Mon, Oct 20, 2025 at 09:35:33AM +0000, Alice Ryhl wrote:
+> I added a patch to remove the Send/Sync impl for the Tyr driver as well.
+> I think it's fine for the Tyr patch to land through whichever tree takes
+> the clk patch, as there should be no non-trivial merge conflicts. Or we
+> can also take the clk patch through drm-rust where tyr patches normally
+> go if preferred by clk maintainers.
 > 
-> It is private, but it is good to have this done so that eventually we
-> can potentially enable a runtime toggle for private docs.
+> Regarding Daniel's patch [1], I suggest that Daniel sends his type-state
+> change rebased on top of this series (without including the patches in
+> this series in his).
 > 
-> However, this is independent of the series, so I would suggest that
-> Viresh et al. apply it independently.
+> [1]: https://lore.kernel.org/rust-for-linux/20250910-clk-type-state-v2-2-1b97c11bb631@collabora.com/
 > 
-> Fixes: ce32e2d47ce6 ("rust: opp: Add abstractions for the
-> configuration options")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Applied. Thanks.
+For the whole series:
 
--- 
-viresh
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
+
+> ---
+> Changes in v2:
+> - Rebase on v6.18-rc1.
+> - Add patch to tyr driver.
+> - Link to v1: https://lore.kernel.org/r/20250904-clk-send-sync-v1-1-48d023320eb8@google.com
+> 
+> ---
+> Alice Ryhl (2):
+>       rust: clk: implement Send and Sync
+>       tyr: remove impl Send/Sync for TyrData
+> 
+>  drivers/gpu/drm/tyr/driver.rs | 12 ------------
+>  rust/kernel/clk.rs            |  7 +++++++
+>  2 files changed, 7 insertions(+), 12 deletions(-)
+> ---
+> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+> change-id: 20250904-clk-send-sync-3cfa7f4e1ce2
+> 
+> Best regards,
+> -- 
+> Alice Ryhl <aliceryhl@google.com>
+> 
