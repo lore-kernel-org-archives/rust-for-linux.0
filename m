@@ -1,107 +1,124 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CC333DECB
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 14:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6393C35BDA4;
+	Wed, 22 Oct 2025 14:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761142317; cv=none; b=sDtzNrWxWm5sLz1fbxhO3cL+S7V0FmYpUXj2cKVhXZAGuoOdH4MBdvpqMMhpOMSCI3SJAiVQaTEdaboEpBGHuusW9Xr3BibS9KRQ2QvBGNX7TUctWspQnGy8tDEfASa30OTDuvQ1FbUDFYuPFKNr4UhYeyM59hZwjN+hQ+Zs4QU=
+	t=1761143530; cv=none; b=F5pzU+FEdskky+LPhJTYzJm7H8qdXa04A7r4NfbRZe5IVjXceGWfG5qoPolYlUBRpl4HQ/k8TDGwIR+yM9/NABNB4HrtbI3iTsmyls49SfPDKqtUHoBQJYnxyyjZA+A5mxP3w3k6N5Gm1/lBuaUX/xqY3XLLv6OHAt5emnqip4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761142317; c=relaxed/simple;
-	bh=bTXngrKwJAC0PgSgIdnFW1ls0SVJx0tCQFC0nZRMXb0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MrUReNd2hV7t1IwgJ4KmvJbH5o8K5DTgosNur9kZSz33pA+l3JQs6pL4BkJuusYXYA/Enf8X4lECV4HDpbH/fUOTZrbUnUHu8Su2Q4hbVuo2p/wFB8QvTyc615EDOc2+E8p1SJcgQgGsuyT2s6Yb1Co+c98pmZ3dz+iyPxf0I6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ddO0zmVf; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1761143530; c=relaxed/simple;
+	bh=x9G0mG7ea3UehmY1Y0onyHrWYHOdLLGXSTM3zHg/+9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DeHDg8SKfUmZg7giQyErhcwfLnZbThfAmWxJAZXhGNoPCngJHqhNlj6vEqAMqWjCIwm08Fqzi1mlPL1k8D13Vk6ZF3qq+UnU71n9CcceCLxup8+SoEE7ou5YXQN5HfFFbjVV9ljdwTh/fdst3gUCXz+CTD9DpHPqGMYtCd9fhSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQh14o3Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ddO0zmVf"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47105bfcf15so38079315e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 07:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761142314; x=1761747114; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JHfNryw5chUyQVL8AhFXOPzXxI8CaYFqteiEPSdeM9E=;
-        b=ddO0zmVf7/79yuNh8pvePb13YEe3FyEjahOMlGiODZ9Ti32RSlvUBP0q6GOG3FnJuq
-         gNyl4VhlRMXboqAMsbCAD68rAldJ7HZz67Mp4ggjhbC1tPdxsQDfVcDwfa+mqWhRBScd
-         j/Ga7Qig/3H8brYuUGItIhrPX8cjNgvTHXYNfzK7MOFc2ViZCaOJpjpmdfN83kS5lgbU
-         9VEyErnmtnB0giAZho63oEOkBKIaygoS9YWPZ1DsFA3d82om9xMG5WSqH0n8lyQ/ooi4
-         GzVpEnQHHzFLi+8GqPFvmzqdbdITEqBirZpdSQCvM5v6TCFokXctm6bW4XEFFOmTWGeo
-         oLyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761142314; x=1761747114;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JHfNryw5chUyQVL8AhFXOPzXxI8CaYFqteiEPSdeM9E=;
-        b=FfTuc9832e2T3NAPa+5VF7iPZXNqeIGnylwOz8eOz3FWx7chM65a0oPS7IRQ3Gf8F8
-         8vBKkf+CZORsaCtDMPffTQbU36VjUZ3HvA/yamSFwYSkRQojzCwlw9oGpZWNEY34O98H
-         dxDsHEnv3vFAxnAvbe6SYyEDWAlL9vRS8q4ntw1OFTTsZh75ly3hjJRQhoxESJ6lCW/5
-         7sBrvypsM4UbacP+ABMlEiOIoHBnB7mlPHg1lXAmUG33lRSt+YM9UL4uimk1ZJFjVT+A
-         F/ZgApHmQehrnxf2SHN98J00DDPV2aQRbUeUZVGGeiNRwaDXEnefDwKlJFT6x4oNie8a
-         zYjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXC8xkD1R720qrlFXho8eSJ9aLDA47oDCSWCAs7XxTjJDGwI/VKvOmnu5zePzFhxcNnzcj27lKqO+1fP2dcTw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbQ404HCjk5aaj9EoxqdrPwLupuYQhwauzEQRocP1RldrSmFyz
-	/tbkd6dVo0Ngrd+uy/D536GsSD/BcHSiZD4pYFBwgINSs+6rtE7MaM9zsv0kR66Db/cdQn+oKbV
-	bXcJk1M09YRrIFbpaJQ==
-X-Google-Smtp-Source: AGHT+IFkqdllbNl34eMzwvx7CHPnSm/L3O6tYExq+epl+LyNuTYeKLR1SA4LPS1EG/NgPCY4RiiyiMddZ+bZ2GI=
-X-Received: from wmbg1.prod.google.com ([2002:a05:600c:a401:b0:46f:aa50:d718])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:6357:b0:46e:3d41:5fe7 with SMTP id 5b1f17b1804b1-47160986ed2mr83729665e9.29.1761142314552;
- Wed, 22 Oct 2025 07:11:54 -0700 (PDT)
-Date: Wed, 22 Oct 2025 14:11:53 +0000
-In-Reply-To: <20251022.193230.585171330619599845.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQh14o3Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D68CC113D0;
+	Wed, 22 Oct 2025 14:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761143529;
+	bh=x9G0mG7ea3UehmY1Y0onyHrWYHOdLLGXSTM3zHg/+9w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tQh14o3YKZXLlqdH0gPijjjLy6gQsBPbmcF/YN/DFHyx9Eha1LuTP4/HaA7SbemiH
+	 DHRhNmqC/1Ltz4fFPrzn2kpwpOaBKllEmrKPetlhk23tO2g+6CqL4YGKe0fNqwRkTR
+	 BBZ8F8JNhiQxCqC574aWbbG4VbMOqBT0rDEdY2qXnW4XVdtlsV70KkGPX/MQZPu4lW
+	 VvBpwMIvMOuABehba2p45efgKs8z20UBXp+ycv36xfe1nzrUipXWtj/4TQqdvppBon
+	 i8yJBU7ixb9FKqQf6baoJi0+M6P32hsJVYWTVs/Ui/Kv3XlvI/N1q3hGujBQf+VbBD
+	 9YRFLjybgYjqA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	mmaurer@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v3 00/10] Binary Large Objects for Rust DebugFS
+Date: Wed, 22 Oct 2025 16:30:34 +0200
+Message-ID: <20251022143158.64475-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <DDO3G26SIZTK.1KV7Q0PQXHWTA@kernel.org> <CANiq72nUiizxo3YFgxUZ1jiczRNbY2ATao2YUBiCEC7k5hbv6Q@mail.gmail.com>
- <DDO3OMBHS8TB.2LDODR1AFRCU3@kernel.org> <20251022.193230.585171330619599845.fujita.tomonori@gmail.com>
-Message-ID: <aPjmKSrETqrchW_e@google.com>
-Subject: Re: [PATCH v2 1/2] rust: add udelay() function
-From: Alice Ryhl <aliceryhl@google.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: dakr@kernel.org, miguel.ojeda.sandonis@gmail.com, 
-	daniel.almeida@collabora.com, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	ojeda@kernel.org, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, frederic@kernel.org, gary@garyguo.net, 
-	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
-	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
-	tglx@linutronix.de, tmgross@umich.edu, gregkh@linuxfoundation.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 22, 2025 at 07:32:30PM +0900, FUJITA Tomonori wrote:
-> On Tue, 21 Oct 2025 17:20:41 +0200
-> "Danilo Krummrich" <dakr@kernel.org> wrote:
-> 
-> > On Tue Oct 21, 2025 at 5:13 PM CEST, Miguel Ojeda wrote:
-> >> i.e. if they aren't sure what the value is, then I would prefer they
-> >> clamp it explicitly on the callee side (or we provide an explicitly
-> >> clamped version if it is a common case, but it seems to me runtime
-> >> values are already the minority).
-> > 
-> > Absolutely! Especially given the context udelay() is introduced
-> > (read_poll_timeout_atomic()), the compile time checked version is what we really
-> > want.
-> > 
-> > Maybe we should even defer a runtime checked / clamped version until it is
-> > actually needed.
-> 
-> Then perhaps something like this?
-> 
-> #[inline(always)]
-> pub fn udelay(delta: Delta) {
->     build_assert!(
->         delta.as_nanos() >= 0 && delta.as_nanos() <= i64::from(bindings::MAX_UDELAY_MS) * 1_000_000
->     );
+This series adds support for exposing binary large objects via Rust debugfs.
 
-This is a bad idea. Using build_assert! assert for range checks works
-poorly, as we found for register index bounds checks.
+The first two patches extend UserSliceReader and UserSliceWriter with partial
+read/write helpers.
 
-If you really want to check it at compile-time, you'll need a wrapper
-type around Delta that can only be constructed with delays in the right
-range.
+The series further introduces read_binary_file(), write_binary_file() and
+read_write_binary_file() methods for the Dir and ScopedDir types.
 
-Alice
+It also introduces the BinaryWriter and BinaryReader traits, which are used to
+read/write the implementing type's binary representation with the help of the
+backing file operations from/to debugfs.
+
+Additional to some more generic blanked implementations for the BinaryWriter and
+BinaryReader traits it also provides implementations for common smart pointer
+types.
+
+Both samples (file-based and scoped) are updated with corresponding examples.
+
+A branch containing the patches can be found in [1].
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=debugfs_blobs
+
+Changes in v3:
+  - Add UserSliceReader::read_slice_file() and
+    UserSliceWriter::write_slice_file() taking an &mut file::Offset to
+    adjust it internally and make use of them.
+  - Add a new type file::Offset, rather than a type alias.
+  - Move affected delegate comments to previous patch.
+  - Add a brief comment for BinaryReadFile, BinaryWriteFile and
+    BinaryReadWriteFile.
+
+Changes in v2:
+  - Add file::Offset type alias.
+  - uaccess:
+    - Saturate at buffer length on offset overflow.
+    - Use file::Offset instead of usize.
+  - debugfs:
+    - Use file::Offset instead of usize.
+    - Handle potential overflow when updating ppos.
+    - Use &T::FILE_OPS directly if possible.
+    - Fix safety comment in BinaryReaderMut::read_from_slice_mut().
+
+Danilo Krummrich (10):
+  rust: fs: add new type file::Offset
+  rust: uaccess: add UserSliceReader::read_slice_partial()
+  rust: uaccess: add UserSliceReader::read_slice_file()
+  rust: uaccess: add UserSliceWriter::write_slice_partial()
+  rust: uaccess: add UserSliceWriter::write_slice_file()
+  rust: debugfs: support for binary large objects
+  rust: debugfs: support blobs from smart pointers
+  samples: rust: debugfs: add example for blobs
+  rust: debugfs: support binary large objects for ScopedDir
+  samples: rust: debugfs_scoped: add example for blobs
+
+ rust/kernel/debugfs.rs              | 110 ++++++++++++-
+ rust/kernel/debugfs/file_ops.rs     | 146 ++++++++++++++++-
+ rust/kernel/debugfs/traits.rs       | 238 +++++++++++++++++++++++++++-
+ rust/kernel/fs/file.rs              | 142 ++++++++++++++++-
+ rust/kernel/uaccess.rs              |  81 ++++++++++
+ samples/rust/rust_debugfs.rs        |  13 ++
+ samples/rust/rust_debugfs_scoped.rs |  14 +-
+ 7 files changed, 732 insertions(+), 12 deletions(-)
+
+
+base-commit: e6901808a3b28d8bdabfa98a618b2eab6f8798e8
+-- 
+2.51.0
+
