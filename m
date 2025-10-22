@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF853101A9;
-	Wed, 22 Oct 2025 09:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC5C3112C2;
+	Wed, 22 Oct 2025 09:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761123972; cv=none; b=MWSRxmmHi0xw8lKzK7Xh8FdeGTJB8Kk3fMqIVp3lC6XR7iG8ZEPEBjzf3lSgQy4W7bTVEcGC0oDJd1D7iKYsU2quiVepX9p9zcgVvh5d8xc8YZg2ikr44pFXVRHHH+as+zkLVSGfb6yGHYhCj+E/IiPBFiNvl3NahkYgnY3zEcs=
+	t=1761124079; cv=none; b=TjRoDk5PZd1iU5TgpQY0L7JyQppL0hySgwGnEjWKPrxXoRBUhhcCl18m2bqWZgpziWseDdMN5lrZb93QySoR3rpmQVOERixSY8Lbs/3gwiBvCklLHCHsTBm7WAKYgC68I5++boyb3C6aEdCcP6WseX3TcakApEoyS/qf3zCcy2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761123972; c=relaxed/simple;
-	bh=y8yIEnHW6sZtmscM6i6JXM4eAO1TU0btvfSdCrr/kqU=;
+	s=arc-20240116; t=1761124079; c=relaxed/simple;
+	bh=Sg+8YSm3mgraXdctLln1jDD9O/XHb8ICQQTmWrXOUws=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ER+7/r69IbI2anQB9m1TEZyNkyJEv0dR1akagTBYDs/xMKZfqbjHhcc3bqenHQUEe4idqGxTyUjn7CIM8fU2aDdXVcMUhDlQt/FDYOfU9s43hZK0ZsLZvmNkCzXNit33WKMeH9tJBeZTDtaIkhlikyX8DnifNjmYXcYm/POArag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRgIJyvl; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=hjokqSa2IdANNvG1bDuNABcfPchgmIkwjptL40WvAcXAQrwm4SzfD+j20Y0YIZvLjvmULFy2Jcqnhv1F4ML+9g8iH/gL5eRVe7B0RaWTMKIRA4NajvVei0YTZm/yHad0eX2Vz7wBg1OHzPKO0yfN8u78VH37+AdAyR38TE4wvFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aSxibAxx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRgIJyvl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A784FC4CEF5;
-	Wed, 22 Oct 2025 09:06:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aSxibAxx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42783C4CEF5;
+	Wed, 22 Oct 2025 09:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761123968;
-	bh=y8yIEnHW6sZtmscM6i6JXM4eAO1TU0btvfSdCrr/kqU=;
+	s=k20201202; t=1761124078;
+	bh=Sg+8YSm3mgraXdctLln1jDD9O/XHb8ICQQTmWrXOUws=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fRgIJyvl3PN1AL5JpHNqJon049Ba4Pzrs0cXcjfUBG+zvYwmBVTB10Hy6h2+3K1sN
-	 bcCSQjYVWBuUw0/aEZ8kneJ0gLPulqOJYo15tf7110L8pW7JPfe3ZKX6rTkCWxQFPf
-	 VHO+HioYlyd7eoOx+xmFjv6rV4+RG3JXyDXvJIrujrLTIS7HLEOMO3w5q+7/uhm/E1
-	 fMd64scOBfAeaOPZehi4C/IpvLBnexgWho9gyR7hrc/QwOeA/WesjcIFsDaM3s7yCY
-	 2DtZnud+ikNzy/5cQarJhgmtOtTcu5gVDA4SiHkqNADAUUH1+Zw9fRveHl9yus6din
-	 IQOhdvmzigBrw==
-Message-ID: <6720f5de-f3e0-4ae9-8b8d-7ae2029799ce@kernel.org>
-Date: Wed, 22 Oct 2025 11:06:03 +0200
+	b=aSxibAxxl1dFJ4WWqdnjtp/ca6ZwjmHGoBvhtsm9xfSI0kvBylldP2SDG1w0AiMcV
+	 yQ+EJbO0G47m2wTCieL2rJu8f2+Innvrq3s2b01JeWxM6UGKT9gZ7j7bAHkzKPu6+u
+	 RscTOIC16limfg11X5UdlXoI98lLnIkNcVeOdAhUbgj8DCpYL6lGLCO+e5YLjNy2Xa
+	 VrUx1rk3T3UQX8P2FnAD90P6s49YVm9pvLQm7wT6yLVcnAQ2UORYh4oP3Gq+RBrGJP
+	 jmF+H1LVs1Zdt3rvX6zLpsM7mepV2sL1f3wCVYLS/HOnqWL62/RWQQFfGpluaIvGH6
+	 CVycDHDJ0deHg==
+Message-ID: <4b556c24-cd4c-4c1a-a757-5df3a6782e11@kernel.org>
+Date: Wed, 22 Oct 2025 11:07:53 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,33 +35,35 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/8] rust: uaccess: add
- UserSliceWriter::write_slice_partial()
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- tmgross@umich.edu, mmaurer@google.com, rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251020222722.240473-1-dakr@kernel.org>
- <20251020222722.240473-4-dakr@kernel.org> <aPeSCuFNrV-_qvBf@google.com>
- <DDO29UN4UBVV.E90DEBURH63A@kernel.org> <aPeWOhycOIl_rlI-@google.com>
- <DDO2PI0D2L6Q.3OPXNQOV7Y0H6@kernel.org> <aPiUNmAfbefKW__4@google.com>
+Subject: Re: [PATCH] rust: debugfs: Implement Reader for Mutex<T> only when T
+ is Unpin
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Matthew Maurer <mmaurer@google.com>, Stephen Rothwell
+ <sfr@canb.auug.org.au>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, lossin@kernel.org,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+References: <aPhGo5WjbPM1Yu95@tardis-2.local>
+ <20251022034237.70431-1-boqun.feng@gmail.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <aPiUNmAfbefKW__4@google.com>
+In-Reply-To: <20251022034237.70431-1-boqun.feng@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/22/25 10:22 AM, Alice Ryhl wrote:
-> It's tricky. Perhaps if you make them standalone functions, then using
-> the simple_read_from_buffer naming is less confusing? Then it's just
-> kernel::uaccess::simple_read_from_buffer() and it takes a
-> UserSliceWriter.
+On 10/22/25 5:42 AM, Boqun Feng wrote:
+> Since we are going to make `Mutex<T>` structurally pin the data (i.e.
+> `T`), therefore `.lock()` function only returns a `Guard` that can
+> dereference a mutable reference to `T` if only `T` is `Unpin`, therefore
+> restrict the impl `Reader` block of `Mutex<T>` to that.
+> 
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-If we want to preserve the name, then that's probably the best option.
+I assume this can go through the driver-core tree, since it's only about a
+conflict in linux-next?
 
-However, given that write_slice() and read_slice() represent
-copy_{to,from}_user(), it also seems reasonable to give it a name that matches
-the UserSlice{Writer,Reader} naming scheme. Also because the implementation
-utilizes UserSlice{Writer,Reader} rather than doing the corresponding FFI call.
