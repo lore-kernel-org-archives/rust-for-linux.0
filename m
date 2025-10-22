@@ -1,88 +1,111 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EA13043CE
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 08:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70CE308F12
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 08:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761120876; cv=none; b=GyzYH5PNDkp27MTy+u/xqyQX+NdzYTUc93NOsynX6l35tzOzYQcPVdtIA50vSQAfOGlQJXM69jfLBUX5TifFsYSmdBU0/LMFyW1T9CyvofL8OtfrpQAWwHPxjNvA7oRSpRaMpYuiDd/vCSiN5+ZZ9cx8DA+/f7ot94NTLAGGguE=
+	t=1761121183; cv=none; b=PGvGRlAfXSxq56CS7UJDgBGzVt/SXz+cuCaOATMNoMM9NdMase5pr9qwWtsRLKoH99zXybOaf9BRdxpg4XNRLCL+xQhEE2XSfmLbExZNpBUGgHqbE0X0rdXKSsKrejhAK73XwMOPnshwLFlUSnzL7jXUTQleXTh1irR3e/1VHHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761120876; c=relaxed/simple;
-	bh=nDmcqom4nRH1kg8OrqhgJ/APXOzAvqbtVdtI9YTYb/w=;
+	s=arc-20240116; t=1761121183; c=relaxed/simple;
+	bh=RHEi92BrqYPevwcCSHph3ISxaBSTH5yv2OoBTfvdyOA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dvrHR2nVD+pVMlonaF+skDWqQ3WBvMtRguo/tk75VgtTM2fFgl2EcUXa0GPAv3+I5500kXFQvvYxIbGAqRo7W1nfEjOFV36YeGmtqVdduDfHZm12fjdoCGFA5PYzZNOKTXpan+bKK/ALeK8HW23i4vP3OH1KHioLRPDWBxP/aiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1VWLxkLz; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=QRmjFtPUnL0TvaCgWGVCEhfgC+YUngHSguI6D+Hr+dFlbZCew6YF58SRnN3hrHXihLGLwYh+SNQ7f6UEAasgpGWVPReWM7Xw/pI1AGA75rTi+/nqpsqeYIGpq6Q/qQbH+emIHkyHSgfJ+Euy7iTEYDVWNA/uD0/8/b+df5FXiJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V/YiIvEV; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1VWLxkLz"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46eee58d405so33215135e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 01:14:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V/YiIvEV"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4721b4f3afbso17707065e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 01:19:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761120873; x=1761725673; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1761121180; x=1761725980; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ogsn3X1mobn8/e1uiGkS9XQJsz3R6ivSIjiDXFm3+Q=;
-        b=1VWLxkLzd0y2N/vipoDX6gubUhI1J9Uq+NBzcVpmjU45fBdPQ8wI7HsotLqO/dEe5u
-         GxAfjYXzFhEgPDw6EhCb4UqLLTXUDoYJW7SwvkJp6z9u51+lmtEUJ8UMk4H43XMUZJjq
-         TM7udf/bDj1U2q8zPZel4UBB4olVLrWlnAiTjky8ov21Nv2uFzNJwGpsgtSbcdBoyyth
-         88zi6VAQZEH7KwLwnVRcPSKQjqX23KnmpDQZ8pwzbk5ry6Ypu4tCEqtp5TBtXeJ6kW6N
-         3KZcNHsOR8lKcqQhu0Atc1DWEvcyL6O3aRVi0a8wDuV1el91WWO8Guo702K483Qb8jkP
-         YG+w==
+        bh=wEK/i+XAkLQEgOG+ywHekwqAFjmlaiDFBYJQ7FDBQr0=;
+        b=V/YiIvEVvbIymPXqtJLPYRTu4QnlxPwJaj7UzB5jcs2VXVsyvnrPtwGNn2IBXwVoKc
+         q8lPuDNLUgUfYBNKFpMjtFJZC9Tx3bnnNylsXcyA1d/O+AXh/ADvunks/o/Gz/nsAUU0
+         QIhHnad9Vjz6T3BzhAPjVvuew70SHMNu/0BbKJhXqLny4Bwiedcphq6vkJBweYDcmQKg
+         YZEBYDP0N7pzX+xAAFeBN+l5AYSmFUgp45C/bUi7IG5V2YqFLISitjmDuRtD/seEeiOV
+         0MXlG7A+VGZPYYJ/6fowVvSW4JWe1N1YpDsqRsnTJY+DYvOCS0fhqeuMiujA+tQymzRV
+         BSzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761120873; x=1761725673;
+        d=1e100.net; s=20230601; t=1761121180; x=1761725980;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ogsn3X1mobn8/e1uiGkS9XQJsz3R6ivSIjiDXFm3+Q=;
-        b=Sf2kwX/QmB2y6XArFnizpFxj6K0Qa4YU1yAY03pKrP/LvojJzHMfDHfAEq5Gx5YV0/
-         ZJeEgxCNuadaoB93aMLCI815pNqI4OQuC3sZGUCQR/Hs36I8tBy9Cqg7pqvSZc+96vjY
-         YxSbzXkcDyiQFigp5TOrbu2nvrrhLBxtTyaHpDntmQ3bTPf46q1EJEFWWmqDo+IJ061E
-         QV1gwkbo+yoR1zESCMZIqaLCHijGpKu3F8VoKopxuaVsSqH8+jYm3oYWhxPxUF4UlTlf
-         zLEBISZCqLDlp7UNPBSER2vNDDmLpODfYYLeYl6bN/iqMG7xml1PZvQLPp4esYWdP2YE
-         aRsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVD5MQJsVYztp3HLzpUZLcmTYtKG2KT3gE/q4purOnx7wiTIzM9RIwtXNRgKkQQgUvPqdMMRhM1mmujHea29w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxkhO1rNrZgdvSWYyMJCHVVCU8kF0wNGPkddKvyHyRUwUeeMua
-	BKAokgul1KlylRRK43JKSQ7MqM45Zma1mt8Uy1bhJ4Z+CzJUOPNJ6b898PnG1p8itNaFcjPXBtj
-	aqWA4+t8XfzMTSkDcdg==
-X-Google-Smtp-Source: AGHT+IHVymDPMVFRxtz+pEpsqCDA+1l2F++eBCPDtyYxS79P5clFYGmutl6mMG3GyLc2Iqc0bUnGJy61wcbICgU=
-X-Received: from wmwr3.prod.google.com ([2002:a05:600d:8383:b0:46e:1f9e:6471])
+        bh=wEK/i+XAkLQEgOG+ywHekwqAFjmlaiDFBYJQ7FDBQr0=;
+        b=uR1YormE2nH0igMhaJKsspd2ZnC5+dMQsG9RFaNfZjM3W53nqPFrfZxYNdqXXQCxRo
+         gKe92NymU+qxT/IewCknh+ufR8BW5VrCBQwl3usz6U+M/WyjAqv1uO2Y+801mdWg3o+P
+         MDak/JLtBVvADGSXX7+UleAHf9BnX/1ODoho60yuHffnYpyhym6SaUGiPedIlk/ZyzHG
+         EP/qsr3zIC9LSXiUua2VOqitu5XFgwIzdc97VdoTMUS9EZNimFfPaOtmSbEsR1/URepU
+         zEFn1ICSL84ZZqBbITt2O6j8roVwcJQqKjJuSmY5eVtHzJVCtktcwtXlPhOs7a0+fOx3
+         kQnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWI/c3Z9GJkIdS/1EwpmmHbj1m7dvWfuRM7cDv+zDfl+/rVxU6CjhPZRfmEkokcTm5L1q1wSuALAjJa/fjnZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzakeY9kb6ug3Lj8z0S4Im3esDomRiFx71xZi0f/8vQV4Z1TPOm
+	0E7RLAvUTmemUJXI9YxZ+ug207vy3PE9XZ7W6vwEtDYzDWDoN+4pnzrPGFxhIEjHFCgWUjs3bwH
+	fZjpF7+wj26RxK+dMXA==
+X-Google-Smtp-Source: AGHT+IETajWDiqpRqa12EaVRu6fAxwYa+sMKITK3BOKL9H9yAMyU5Oa/ffCwAo+MISi9sybobSyD7GdOvUHfNzo=
+X-Received: from wmpv36.prod.google.com ([2002:a05:600c:4da4:b0:46e:2eb4:38d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b03:b0:471:15df:9fc7 with SMTP id 5b1f17b1804b1-47117906a72mr141554885e9.26.1761120872959;
- Wed, 22 Oct 2025 01:14:32 -0700 (PDT)
-Date: Wed, 22 Oct 2025 08:14:31 +0000
-In-Reply-To: <25717cdeac76376fbcf7ba10a1b2e855800d3778.camel@redhat.com>
+ 2002:a05:600c:8509:b0:471:16e5:6d7a with SMTP id 5b1f17b1804b1-4711787dca0mr106715285e9.13.1761121180045;
+ Wed, 22 Oct 2025 01:19:40 -0700 (PDT)
+Date: Wed, 22 Oct 2025 08:19:39 +0000
+In-Reply-To: <ghaqgzgnk6mkv6tm4inm2e24jyidsk7qhbff6zwc46kefojw5p@3jvwnn3q4bxw>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251016210955.2813186-1-lyude@redhat.com> <20251016210955.2813186-3-lyude@redhat.com>
- <aPJDGqsRFzuARlgP@google.com> <25717cdeac76376fbcf7ba10a1b2e855800d3778.camel@redhat.com>
-Message-ID: <aPiSZ_CGLD4o755q@google.com>
-Subject: Re: [PATCH v4 2/9] rust/drm: Add gem::impl_aref_for_gem_obj!
+References: <20251020-clk-send-sync-v2-0-44ab533ae084@google.com>
+ <20251020-clk-send-sync-v2-1-44ab533ae084@google.com> <ghaqgzgnk6mkv6tm4inm2e24jyidsk7qhbff6zwc46kefojw5p@3jvwnn3q4bxw>
+Message-ID: <aPiTm7Pb9WguOd9j@google.com>
+Subject: Re: [PATCH v2 1/2] rust: clk: implement Send and Sync
 From: Alice Ryhl <aliceryhl@google.com>
-To: Lyude Paul <lyude@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Asahi Lina <lina+kernel@asahilina.net>, Shankari Anand <shankari.ak0208@gmail.com>, 
-	open list <linux-kernel@vger.kernel.org>
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Oct 21, 2025 at 01:33:00PM -0400, Lyude Paul wrote:
-> On Fri, 2025-10-17 at 13:22 +0000, Alice Ryhl wrote:
-> > 1. Annotated with #[macro_export]
-> > 2. Export with `pub use impl_aref_for_gem_obj`
+On Wed, Oct 22, 2025 at 09:21:38AM +0530, Viresh Kumar wrote:
+> On 20-10-25, 09:35, Alice Ryhl wrote:
+> > These traits are required for drivers to embed the Clk type in their own
+> > data structures because driver data structures are usually required to
+> > be Send. Since the Clk type is thread-safe, implement the relevant
+> > traits.
+> > 
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/clk.rs | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+> > index 1e6c8c42fb3a321951e275101848b35e1ae5c2a8..0a290202da69669d670ddad2b6762a1d5f1d912e 100644
+> > --- a/rust/kernel/clk.rs
+> > +++ b/rust/kernel/clk.rs
+> > @@ -129,6 +129,13 @@ mod common_clk {
+> >      #[repr(transparent)]
+> >      pub struct Clk(*mut bindings::clk);
+> >  
+> > +    // SAFETY: It is safe to call `clk_put` on another thread than where `clk_get` was called.
+> > +    unsafe impl Send for Clk {}
+> > +
+> > +    // SAFETY: It is safe to call any combination of the `&self` methods in parallel, as the
+> > +    // methods are synchronized internally.
+> > +    unsafe impl Sync for Clk {}
+> > +
+> >      impl Clk {
+> >          /// Gets [`Clk`] corresponding to a [`Device`] and a connection id.
+> >          ///
 > 
-> I assume you meant pub(crate) here? (Since we don't really want to expose
-> impl_aref_for_gem_object! to users outside of the drm crate).
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-We will probably need it to be pub later when we split up kernel, but
-feel free to put pub(crate).
+I'm guessing this means you want me to take it through drm-rust? See
+what I put in the cover letter about choice of tree.
 
 Alice
