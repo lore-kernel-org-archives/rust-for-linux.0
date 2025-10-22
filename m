@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632D6311C22;
-	Wed, 22 Oct 2025 09:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7C126AAAB;
+	Wed, 22 Oct 2025 09:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761124210; cv=none; b=THyffi1ISoAunnnccHlq49HR19PPUPgmRF9IE3kQMDBH3xnXcOftncIttOk3H9sbq+0wo7cx1/DWG3wA7yUOgd6OIrMXnDaBU/FJZmMe4Gjz/eqZM/TO+BlbVMslKgHPS3jhnVCrXB7+wL5R6AhvDZnd5sCVE5bTLg46B6BoIeU=
+	t=1761124572; cv=none; b=SSXDw6kPL5a1vcHzLD3H96/LNMfW/LK199uU6Te9mFQq/NMWts5GUx0YyzYlRJ0qk1E2PO9Il6u+GtuxhdBhKJ3bgeD+fOYFzrcRMMDXmiXFdRgU6zSUQLYc/zDyb7tt9Ob/jd/U6OtbMyclCeQIb6rStiJGathuPv58BiHYxDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761124210; c=relaxed/simple;
-	bh=XBwcSKAt7pmMIAlH4P9UOJg9seAvmBafg4+HNgtE9uA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cAcTP/bduSSxuc+ZmOeLiBUO6YgSljVMp00rsc0qiTuce66D4rOFiB7EBOqVCEP2gSWsSCS8EM6Lrkp9UgQclevzs9sUGaGnGSXv1bg48A8dNO7LDBS9Q+s1aHU7uhbE2rSYGLQb67joPInKWIPJUCm962LvSsWCvEy9UQcSQ7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJNmji4J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761124572; c=relaxed/simple;
+	bh=mUqsZ/NHm2T4ZQHnrqEsg1PX9duhULKKJOquWhDfUlE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qh5vLe4rMuBFJJleMlur+i0T/Zuy+B2g7NeKn2soqPI2Jb5WX0BnXBJZ3ZaxlqGhHC1pwIBtc2sMsr+dPeAy73d9IwUvhQD3VqXzITutn6Mkab6mcZ0oKn02X4swjuqrA8pCqD8/Tn92TXVaUNLbz505ZGEU8V+d5SPAD2Fd7aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FF34KdIF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJNmji4J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7B0C4CEE7;
-	Wed, 22 Oct 2025 09:10:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FF34KdIF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3491C4CEE7;
+	Wed, 22 Oct 2025 09:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761124207;
-	bh=XBwcSKAt7pmMIAlH4P9UOJg9seAvmBafg4+HNgtE9uA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=tJNmji4J3S+RsYSsWOyEd44dMG2opN4PZ6QTDS9iGf412Ikx4VoOdlQurU1FUDAla
-	 oObwS5j8v51ltDfCZvv/jL7xqCte/Nqfirbd4qy9Pq5kOHd3epBvjxemzr+3QnpBWl
-	 te9XFfCxVnhEQynEi0Cm5sbcS9qCXXvB8S7cvoAoyJbbCE8ze84XPU7NtBRZuuVqmr
-	 A4BPIEzzCs4jMA5H5br2hzjYyBIHcLMc5zA0ehjOcFVk09pyp6Yzr/R4ika9b48lec
-	 nce7YuPUIW5+Zwz267GNLK3dndCsemwbTyyFy7ViVgq+egqXzhn/Itwhfy+pW6MBOd
-	 eNWFNYDAbniVQ==
-Message-ID: <e2c6bc90-9fa4-4880-adf4-212890cf0b51@kernel.org>
-Date: Wed, 22 Oct 2025 11:10:02 +0200
+	s=k20201202; t=1761124570;
+	bh=mUqsZ/NHm2T4ZQHnrqEsg1PX9duhULKKJOquWhDfUlE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FF34KdIFNWDaQD7gbwO9qq4HgrK+KDXsNDhRqLYidL8qQGs/UDPI6dtWztAfs8lgH
+	 DgxkkrQlt4KmBDGStixwr2L6yKVNtcQtcLKeesy5HH30Pm/PamY5c5jBuDGhRUM2Hj
+	 YhoNAwbthNuNGD/Uo9z6/qmia2tTc+FyZ2pw7oetpzeCh6kg22uSfEvDJa+5D/adDf
+	 deWFk+ZzemvPilGIhembB3P7B2TYmDblDv0AnrFJcmJGVobh/2SB5TgNBjUyC1UimO
+	 foXMFSsmNKmP1Y8ppAP5hipMu3mFP4Dnk+u99CzJVmdZ4PYCw/8/+UpOJEN8kQ4FLX
+	 O4Tfo39qpknTQ==
+Message-ID: <8e1ca6ac-fd35-464f-9b8e-19bdb2e7410a@kernel.org>
+Date: Wed, 22 Oct 2025 11:16:06 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,41 +35,31 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: debugfs: Implement Reader for Mutex<T> only when T
- is Unpin
+Subject: Re: [PATCH v2 1/2] rust: clk: implement Send and Sync
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>, linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251020-clk-send-sync-v2-0-44ab533ae084@google.com>
+ <20251020-clk-send-sync-v2-1-44ab533ae084@google.com>
 From: Danilo Krummrich <dakr@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Matthew Maurer <mmaurer@google.com>, Stephen Rothwell
- <sfr@canb.auug.org.au>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, lossin@kernel.org,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
-References: <aPhGo5WjbPM1Yu95@tardis-2.local>
- <20251022034237.70431-1-boqun.feng@gmail.com>
- <4b556c24-cd4c-4c1a-a757-5df3a6782e11@kernel.org>
 Content-Language: en-US
-In-Reply-To: <4b556c24-cd4c-4c1a-a757-5df3a6782e11@kernel.org>
+In-Reply-To: <20251020-clk-send-sync-v2-1-44ab533ae084@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/22/25 11:07 AM, Danilo Krummrich wrote:
-> On 10/22/25 5:42 AM, Boqun Feng wrote:
->> Since we are going to make `Mutex<T>` structurally pin the data (i.e.
->> `T`), therefore `.lock()` function only returns a `Guard` that can
->> dereference a mutable reference to `T` if only `T` is `Unpin`, therefore
->> restrict the impl `Reader` block of `Mutex<T>` to that.
->>
->> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+On 10/20/25 11:35 AM, Alice Ryhl wrote:
+> These traits are required for drivers to embed the Clk type in their own
+> data structures because driver data structures are usually required to
+> be Send. Since the Clk type is thread-safe, implement the relevant
+> traits.
 > 
-> I assume this can go through the driver-core tree, since it's only about a
-> conflict in linux-next?
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Sorry, I confused this, obviously your tree is broken without this change,
-please feel free to take it.
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
