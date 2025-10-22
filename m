@@ -1,111 +1,156 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC9721FF30
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 02:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E9E2D193F
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 03:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761100072; cv=none; b=f65Qbp3Qc7oUtAHZJnfhNLJasZzyIUH30RUmzBrbs3V9j33J6rOvVkGXQ1t2WejL3YVJeVJhRw8d1RPdk7eBL5wwnJKYEElyrfeY44JXR4jkOxyQHUEKV1QsimrAMju9gt/07/965+op7Aw2JTUdQmHQCuNFzDXUuczx/Jg8HC8=
+	t=1761104563; cv=none; b=VnXVIE+g9UuyiY/EIHLyqqgXK1/kezbNr9kfSXkBHImzUVknApA3wcRT3oZucFC0XtFOI3it9f5F9t4pHNR31Rv1TS6dhCdaMiGZyOpPuHQAMvpK88aEzoBXSE4Tzj3dpW4CWa9BuInvCdUs6gkxEwBzk2xduJvvGRCBD8lsau4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761100072; c=relaxed/simple;
-	bh=gtxXSsibCJLZR4eJo0X6XeizsPLCRJKnPsqSUiDcNsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UASISn+h7hEGY9Wy0pvbiIGvBW1jPnT/UB02iLuGhqzqBrNz771WOqk2h0D7NDfAZODMU0z5HRiwK62S9M/IG1uJ3FSp73qHQH4RsuvBJFbtipu/ZwJMAlYIdu6ZV+185f+meyZtVoBk0ShXodtCZacgq3nKVe82oCXe1xWXjas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ns7datzf; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1761104563; c=relaxed/simple;
+	bh=5dEMTKIfOwngad8bI+KVayrLiShgINPCGXdFjEovC1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QCg15tO2JTG9oFufeZ/oFsI2i8N98McnKRfz8GQKBKku0BEC0pwaNWLAt5DaWm9HMLEwYKx6k3QVxbWYBL+q72/4Y9DTPcX2uRELW54VfIGEITGoo0jEnxb9GcM66y5H3OrzeM+ryjkjTdSC+wbaEDYlTpHeywo+HE3U28hWo3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kBKNWn4A; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ns7datzf"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-793021f348fso5643188b3a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 19:27:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kBKNWn4A"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4e8b4e4ce70so7399991cf.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 20:42:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761100069; x=1761704869; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xqmP8PXFVjPtIGVNVJySqdODosEn/uc3qt8eNXsbPts=;
-        b=ns7datzf8icGOKTONAAVfZEYX2gMWHAvcdFwbStWebO0Rl/Du5QVFmBnXqRSoiZU6F
-         ptf5P7YAZ3aoE7s/Q6aHquXgljNMj4Z+TxXz/HRHggRHwGLOK6rVwuXlMjLRhzddmEyc
-         /a6aU+en3DTez+1SXNrDFb3/tQ6sHTGk02umTReHZF43Y/BdECOHhJXF60IYCuXL+cJN
-         NTZLYpFA7z5SJO5wFP7WkGsflKczPbG4jpAELRMI5vtL3D6j75XXzKArcmcPSy5dvNNL
-         kPHckmZcRpjqHq1jtHBqc67JbXw2PwDBNFk0/Ma9yM29KWvHwFt4UmMzb3KAngK/Rsi7
-         4FSw==
+        d=gmail.com; s=20230601; t=1761104560; x=1761709360; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SJGuMQr365bI1J+psUMsjzP+a8qVxLMJH41vnrHjg7o=;
+        b=kBKNWn4AIO8bgm3BrCuzo0hQFpkh89bFCIyaRWS4mXQEpAC7noIwiN7ATCj44HKx36
+         PQpvw0G0Dgl9sZiZIzsgWlsJhwTfPX2MCNKfKV9zg/+wO6ZE2NzzBC+FIHJI96gKF/8a
+         eWI4faMvjV1rRoJXucniJddQax4KrbeXd7ho2Zo5hbxSDm7DODNCVdKsvGUDqJzWSRcB
+         /gTSL4mDsH2rUTKlQVB1gQWazHVxGW4lwo5OiGVaOiICVutuZSkVGqrHbxVuqIO09bK+
+         WaoEjSJ71revuq3nBJnOpT0sCuE9nOQJV7GQ8vbIiE6tssO1jrq7MuUFt5bLPNuCDoS4
+         hHWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761100069; x=1761704869;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xqmP8PXFVjPtIGVNVJySqdODosEn/uc3qt8eNXsbPts=;
-        b=g1HMgk95WgZ7X5N3HIsn1suDx+HmeHvkAqZcFomtn/B1pHDbn1WHkOh0yErWvBmvwZ
-         r7RZKKusFF+Ck98vJzMcD7f3qJo2t67g+Kn2SgfpcAH/zQ0/j4Wb/vY993UhdyZgihQI
-         xNa+Mx062AUGLBUNdFSUPxQfuYq3aYo3/u6K2PY3LV+2muu4eZMgKNkn+HobmutYPJLf
-         fO1T1UVpXTmia3TzuCF3VgYS34vBeHpDI9zmkfAfvDVvl45QkVY6Vq5pmYBMDDzVXGLW
-         oH9PZPGRmOxSh4/bqstmXAlpVtexpvPYHIuYDhLlZU3vOUllZNVq7A+PipnAGgWtICmF
-         QSLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXcQr/q4uWn4AxP66PfoKNzk+CSsE6VYCCB9SrWkQVx5xCC4Lcyk4QGO+uP18FuUvLYT7BgQJ9+fUBJDBK/5Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR7hErIXpsBZP71pWtOcdpT4/IMOIucxF6pdwpBFD1O4gXe6Zl
-	tv/VwFG5htPLa+SJgNCyCsmm4zfoAhgdqg3TMOHnRJqmQX8mSXVtwHGdU7QzhjkgoPU=
-X-Gm-Gg: ASbGncsrWamflD0emJBpS1PmgJZucdNf3HM4dZ4ckRFl0bySZf6Pji+xEzvNFTTIxun
-	A/ftM1nS+SbxsCwlChP8gEm1ujZ/eYuSL0j6Gh0FKzCHOR1jtUsi2WvXMDjfyG0XABtmnCmse14
-	I13SbOBs6/pctxAXCifJK/ITsLE7uib5aGmqyUF8RWn0rrCYz66IFCuFcyak4jduLIQl28Qd8uT
-	IWTLZVte0mMq+DB+UXuQBepeqC/n6hlfXc7dULKItxzZcqfAHRoszLUV0/HcqXbtJGFPsUZnyI7
-	CtqHjRcS47sRh5Iu0egj20PsPGzHqlpmhCRTWRX1fJ8ldXP+ODhhXd5mcsjjxnyErcthMCK6piT
-	PhZB/bbGq3tth89iIRTaUshmDrBAYpl7vwIfTk80AVQHOedHGYVPYh9iK0hyc8FLOc3Kp5S+L5f
-	2qgA==
-X-Google-Smtp-Source: AGHT+IEkOxWVQSWldQc/gAwbJEjuX6oOPBwr0g1WUs0jQjHOfnCn6OF8lZVM21AQiTMGEA1gGzxfjQ==
-X-Received: by 2002:a05:6a20:9144:b0:334:3a1d:536 with SMTP id adf61e73a8af0-334a8536f36mr26023352637.17.1761100069036;
-        Tue, 21 Oct 2025 19:27:49 -0700 (PDT)
-Received: from localhost ([122.172.87.183])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e2247a7cfsm940817a91.11.2025.10.21.19.27.47
+        d=1e100.net; s=20230601; t=1761104560; x=1761709360;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SJGuMQr365bI1J+psUMsjzP+a8qVxLMJH41vnrHjg7o=;
+        b=GAiTGrl8epZoZp912udeZyfhVv0xj24lb58soZrvsYFgSht6Icjgs0FYMWw7ARj9Ss
+         C1zH2CEUr6uJvoeWDiGP68J6d6Lx+qRDRqPZZNGTIOlUEAKGAtELDZwS4TuVrH7irFCj
+         Fs8Xzu9DIfmSWf2IGJ8U/NRN6gylQ5CUq9r6xH3rqCkkNpL185BU1fSAyf7a7eYbktfh
+         wItlMOI8WgF5yrubcFhc40+0LBpKzdMM0ufHsopgu5xepuCpMYaQQ1nBJWMX2gJuYq9T
+         tTIaQEWaGu0vo/SftMcDLiDEadDGlaNzoJ8oCL37JDcJ4Dvcx8gPNuj72Sobvpd+chhu
+         yIlA==
+X-Forwarded-Encrypted: i=1; AJvYcCXe4Pt3DVCK2Cm4n7YUYcJ854cYgotC588blEC56kJkryzwp/ojhe4QtIvxI5vMPRVDUhInI3zTETGZCk7Q/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzW/a8ZTJszeHYjitLK61mMJ76oub1NP3SYOba7EoBGrcbIrPu0
+	2yEws0ajc93uQ1cPK6NLGPTKEVJ+7VsaXKcgslV2giBSIYOf3PU5yqMy
+X-Gm-Gg: ASbGncuPojDAh7E6MxrKQzpfC5w0oJqrhbEvxKawMm826n8LbpPaTMgAHNkvqw0PreE
+	HbMbIlhjjzRWysNCBAkWiIdrKSbs3SvCPOXgPoRz9/ev7uKCLvrjD2bhQhnPSCvjY0RpJbbzoRp
+	WwL6VtgRO0tAHs5/+8KBfbtLi8InVHGqf7Z5u6bKBAfDgkY0u+MdmiFFg9lkCY2N3/L/JdvI/K/
+	ouZ/AMwIb9MDjMtfoY9gezC0s3H6AMgyxouEQKlON8Y4L2X6XtA23WcDK3WDdKHFCLK6dT4CltH
+	pQIAiViKbJiKmZVbhVtaA5ivAuJi6P9c0rHUyOpbQMSvEGH53VGiDlT2DmQ0+rS0TxXm9JcYk6g
+	324ovigMhQWuC2eBJm/CWQNyuPk545qeTpl6YY5h0vvW7V5Iy/0Ar5T6hJNZqdZ26Og0Tp9z+gN
+	Mf9F164V1InZDKwqdOXBvxf6Xzo3Jmm1X4jelS8iLpCSeMbSYOXrMNSeTUeTKlHVmYspBVe8Iop
+	Akx84PeBhKN0kU=
+X-Google-Smtp-Source: AGHT+IHAHDqhswmuHSxLidHCb6p5/Sb+uIpxgMc78LsU29Gzg/ywZi3Pz/uTIePpOTnuBimWngpWjA==
+X-Received: by 2002:ac8:7f50:0:b0:4e8:999b:70a9 with SMTP id d75a77b69052e-4e89d4123dfmr213439791cf.72.1761104560306;
+        Tue, 21 Oct 2025 20:42:40 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87cf521c120sm80452916d6.20.2025.10.21.20.42.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 19:27:48 -0700 (PDT)
-Date: Wed, 22 Oct 2025 07:57:46 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: tamird@gmail.com, Liam.Howlett@oracle.com, a.hindborg@kernel.org, 
-	airlied@gmail.com, alex.gaynor@gmail.com, arve@android.com, axboe@kernel.dk, 
-	bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	brauner@kernel.org, broonie@kernel.org, cmllamas@google.com, dakr@kernel.org, 
-	dri-devel@lists.freedesktop.org, gary@garyguo.net, gregkh@linuxfoundation.org, jack@suse.cz, 
-	joelagnelf@nvidia.com, justinstitt@google.com, kwilczynski@kernel.org, 
-	leitao@debian.org, lgirdwood@gmail.com, linux-block@vger.kernel.org, 
-	linux-clk@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, llvm@lists.linux.dev, 
-	longman@redhat.com, lorenzo.stoakes@oracle.com, lossin@kernel.org, maco@android.com, 
-	mcgrof@kernel.org, mingo@redhat.com, mmaurer@google.com, morbo@google.com, 
-	mturquette@baylibre.com, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nm@ti.com, 
-	ojeda@kernel.org, peterz@infradead.org, rafael@kernel.org, russ.weight@linux.dev, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, simona@ffwll.ch, surenb@google.com, 
-	tkjos@android.com, tmgross@umich.edu, urezki@gmail.com, vbabka@suse.cz, 
-	vireshk@kernel.org, viro@zeniv.linux.org.uk, will@kernel.org
-Subject: Re: [PATCH v18 14/16] rust: clk: use `CStr::as_char_ptr`
-Message-ID: <rd2jyc57e5p6zjhypnxkfnjwsnihs5tsr7r55qnuwbho5jmkxh@53grgiitw725>
-References: <20251018-cstr-core-v18-0-ef3d02760804@gmail.com>
- <20251018180319.3615829-1-aliceryhl@google.com>
+        Tue, 21 Oct 2025 20:42:39 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4BB81F40067;
+	Tue, 21 Oct 2025 23:42:39 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Tue, 21 Oct 2025 23:42:39 -0400
+X-ME-Sender: <xms:r1L4aO5QuU6kJpY067CnYlWqcqvFmE97CXfTCzClaQLZDJiPplN1xA>
+    <xme:r1L4aHKBuyeyPZ6A0M2ZBJUx2UPme7CBDBva17QsqijCi72pVsMtpzWNVXUVSC58y
+    iSmCFpVVTz9qIBeGSRf8RFJkdkwU2dT7HIc7bPlOYZF91kVFqYv>
+X-ME-Received: <xmr:r1L4aAR-mawUh6bAFq7nD9CpjZm8SEHegqKG4rAtF71A4vzecRkMCCaB7Fqw2InofeOa1tdiXp2d1w5cNxhZPiguzeFlLfzJP-k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugedvheefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeegleejiedthedvheeggfejveefjeejkefgveffieeujefhueeigfegueehgeeg
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegurg
+    hnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehm
+    mhgruhhrvghrsehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepshhfrhestggrnhgsrdgruhhughdrohhrghdrrghupdhr
+    tghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinh
+    hgoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdp
+    rhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:r1L4aCoXFIUxhQtfFQp32XW5JUu2_liVczouQoBYXzSeDaa-A7VwjA>
+    <xmx:r1L4aGbhYbCXEGXXlOYEbZgzeUlNtYD1FqG9snCkpJm-9f19J_Sh5w>
+    <xmx:r1L4aFTrOSTxBO-8Uxr5_XqyD2gs6JKqwLSq5Uu3lPPWOa6pqE064A>
+    <xmx:r1L4aMeRmkj3bEUnBn9jW2fzDOjL_210EsEsjGynwE1_n0UYYBbqJA>
+    <xmx:r1L4aMnFrxF0cE9UEg_n0U0in5v_feXSpHtXqzDH9Q69-krVG2uNHnvx>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 21 Oct 2025 23:42:38 -0400 (EDT)
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Matthew Maurer <mmaurer@google.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org,
+	linux-next@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	lossin@kernel.org,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH] rust: debugfs: Implement Reader for Mutex<T> only when T is Unpin
+Date: Tue, 21 Oct 2025 23:42:37 -0400
+Message-ID: <20251022034237.70431-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <aPhGo5WjbPM1Yu95@tardis-2.local>
+References: <aPhGo5WjbPM1Yu95@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251018180319.3615829-1-aliceryhl@google.com>
+Content-Transfer-Encoding: 8bit
 
-On 18-10-25, 18:03, Alice Ryhl wrote:
-> From: Tamir Duberstein <tamird@gmail.com>
-> 
-> Replace the use of `as_ptr` which works through `<CStr as
-> Deref<Target=&[u8]>::deref()` in preparation for replacing
-> `kernel::str::CStr` with `core::ffi::CStr` as the latter does not
-> implement `Deref<Target=&[u8]>`.
-> 
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/clk.rs | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Since we are going to make `Mutex<T>` structurally pin the data (i.e.
+`T`), therefore `.lock()` function only returns a `Guard` that can
+dereference a mutable reference to `T` if only `T` is `Unpin`, therefore
+restrict the impl `Reader` block of `Mutex<T>` to that.
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+---
+ rust/kernel/debugfs/traits.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/rust/kernel/debugfs/traits.rs b/rust/kernel/debugfs/traits.rs
+index ab009eb254b3..ba7ec5a900b8 100644
+--- a/rust/kernel/debugfs/traits.rs
++++ b/rust/kernel/debugfs/traits.rs
+@@ -50,7 +50,7 @@ pub trait Reader {
+     fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result;
+ }
+ 
+-impl<T: FromStr> Reader for Mutex<T> {
++impl<T: FromStr + Unpin> Reader for Mutex<T> {
+     fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
+         let mut buf = [0u8; 128];
+         if reader.len() > buf.len() {
 -- 
-viresh
+2.51.0
+
