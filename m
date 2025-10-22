@@ -1,300 +1,129 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8292D5938
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 03:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468DE18DF80
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 03:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761105215; cv=none; b=YhQGWp1RrOdgDtVfr4AU7I5gJvf5cCoPe2yAG8qt8guTjDCeOWeLGYBqKP0TwAgf+p+uycJSx32NSrM1Z9rxxUV6weLSiitUn2xJge1aL7YaoXsUFz7pSucZJtAnnhaNj6Z8+DkM4vqweDBmmBj/xuUYKfGydaKY33KPsR0cWp4=
+	t=1761105442; cv=none; b=GsIT5WdH5WKago/A488Rfwu9mAVuugX7hae+9GV/pItpie5NxUBx7vWB9tfyTswbG8sKXlVwkh6oHLE5wb35Jt5hxZxBpAu/fesWNDtT058QYtyPmaaM0A6H4g/+9rNoz2mU9TEf++5bvjFa7zJCyMMeds88a6KCzADhncrxfOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761105215; c=relaxed/simple;
-	bh=4SXBTIbBzQS7trSo3Pqcoy4S5AvvRzAQgPXHxuFH5Cg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwLy88+N5jNIbRgCMgVSqkf+19SyYEShWzZAWbKSSlZSufdOWYYMVW31aOWNIMZKThnWpf52FLEaeM4GZVrTMpbMyOzF+7qKcyoDCa5wEgYnTF1hQT55wwkPZpYs1Lhw1tqWCwCDnzoHxpeYhssG8ZRnDIGARodgGjhIfDg4ck8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MwEXPuui; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761105442; c=relaxed/simple;
+	bh=qWU3gcv2n5vPIYTEv6u9o74rRMnYuUnMY2EGJgd5Hwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cyVF1+WeVCyfCCJ5jrOrQhgjQoVSSufO86ivw7TKZdcSBr0SAtVXMEfgymV6bqpSDm2Z7cWgIZH9NP1mTvRcAGPEzVQoSYY4kMUK86hCougQzjyPFcnZXSIuj6numiiUAX7zw7FcBDF2XlLWq+lQJCK5sH15dtAkSSZmS2XIzHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Oe4dbb4W; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MwEXPuui"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4e3117ea7a2so8766701cf.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 20:53:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Oe4dbb4W"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3327f8ed081so7693791a91.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 20:57:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761105212; x=1761710012; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xwi9pPyT3FBFmVEwx3v/HgUNb6syohg1ynYObmMc1N4=;
-        b=MwEXPuuiRJB2H3OGzGoZOBhDQ3eVLvBNA/noov/zNRvmizc+WVjJ1UcuMkDByyXMVQ
-         CXe/zJwAY1yxv2mIhhIFy5zkJ4Rzbcd9Dn/kwgdSjdlaS9mDk4K4OMu0wXlHALBTOGQw
-         a4NKOK6lGG2GSjUVHKMTsAGXoD1gL84no9X9x9BgjSVO3ugmRT8yf/HpOjaswqzZQaSW
-         +Xqp15e0c6uVK3YHGSNZXf6du62ZkqjpiIE4OqPAyjt3VRDYOnoU3wBqfEKCytQbM7+R
-         yW3sV+Xr9elMQqPwOtIxk/qOJCefP48vhAJRHVb62H3wQmvQB2Hdu+1zfn3eJW+RshSy
-         Vhkg==
+        d=linaro.org; s=google; t=1761105440; x=1761710240; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=eJJGHuWNBUYeZe+bCjnWrKJ6vdZrDU3vtt+RVJeuIe8=;
+        b=Oe4dbb4WLq5HWWLw7/eEzqjc0fc8cLtpgEfIWgy0ems0U0m6UP8+pVy9YPBi5Vto/f
+         vLfMANNef3Hr47z6WdGUDtkL68RaMYKmho4B+iJ+bLopRzEdBgcVCfI+DYnQ5irOq5+N
+         rZ91QmTLY+8W1XmkC+XoGbmAZrpCcuWEOi7x6+EG9mqX/J264+THP2L23cgW+t7wHMCm
+         8VirNBtMOhVZfqE2CdIF8PKbqwext/T1H8sxDroBUaEwZG6PMUwLlegDyyu03+zFz139
+         GARdjDJBa/wtVjJb4IT5DXwPeMc3W/fqQ9DiZOBiwViTsBeLvTCyT88V0NIuy8pwk4QD
+         eaZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761105212; x=1761710012;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xwi9pPyT3FBFmVEwx3v/HgUNb6syohg1ynYObmMc1N4=;
-        b=Ck09BW/HUIa8/77erX6zMbMg418oWphHlu7kF382DzTj7CY7UmcgIQ2I6cqrz2oQpQ
-         tu8UHAqNz5mKmxcG+BgVqEzGi9z+yemnkRM24L5RPhmUGw6qNW/jt03Gr+DjJmsphQj9
-         OIYtjSiD/l4wzoAl8b0L+PQBBHE93XofkYpzx6B2jKkyg+tI8KkheoxdrQWzPBJ0GLmG
-         zY8KiSA9MDCWhWLTpHzSTGS8+H+tmSZZ/BS/BPLwg/+QsO7faT3td1z5JH3iHOrksoi5
-         3h8CJC8lesNMW/9ehWdYtPblcKh6NmPitJvL2QDcTUmEKpUpwoQhVlHKko+mbv1Qj6kB
-         v9aA==
-X-Gm-Message-State: AOJu0YzVHZUb13tJVe33t0yCbYeflb+QHPZYHCtTbiKzQ/x0O01XDH45
-	QdsnngpxIL1RIeSTbTB888tH+PRsm9d2CjUFkMgP7QSBHxGmd1FMoHNj/YyDxA==
-X-Gm-Gg: ASbGncsHOImhfUrs/LEbfUD7jHpku4/e3JrN2IIZJ9c/hvO/EnHRoDpXhSbPXhaoetS
-	7/cE/oslhLC3GNOf6Dy/0DYkng7FgmJC5JZLqoe7SOr8fp8pTE8dM2BEuKxREubNB5T/Lg3/BU1
-	YJgK4zGdoIk6Yc9PFvlFx/o6cCG7qPr/OVufSIydoijnn1V3BorrjvJDJLlI93wMmt4ghKEipxr
-	OhCOUFT06PlLFXwQOH+lE+F6ta4Y9rcMAQrjFpXtq9x+mVL4ijDwplGEmJ4Ln2eBK+OWxFNoNJ1
-	iqs73fhUE/+UhJkVotXBvEgr6JqhIAGuHwPAWz1rI43j4dGuTVhvc5Syw10yfqVfa7svRzSzJ1O
-	IrNTdhwZNm70zrE4GDJAv14qNeH8aqkztJGvfdZIfOLMjY112fEP8w1HQgYkEXreOzArMcTYpBy
-	/2WJA3jtbxO1dEMSVTiY+T+RXLZFvJkaaQrd+rt9OavfkNXKFLdmwSXgYM7Thif8Wo6gMUPZyCy
-	vV3+/ORTBWskkI=
-X-Google-Smtp-Source: AGHT+IG/XJvd2aOX62N44Ph9hXSKDu373P+gXBwGZnNsgjDS/EyXbwt2p1XlwMEDfnCDOu06g6jH/g==
-X-Received: by 2002:ac8:4659:0:b0:4e8:a0bf:f5b5 with SMTP id d75a77b69052e-4e8a0bff828mr177242851cf.73.1761105212020;
-        Tue, 21 Oct 2025 20:53:32 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cd098591sm897850385a.15.2025.10.21.20.53.31
+        d=1e100.net; s=20230601; t=1761105440; x=1761710240;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eJJGHuWNBUYeZe+bCjnWrKJ6vdZrDU3vtt+RVJeuIe8=;
+        b=J8k2xts55XV9ktlQ/zhkr30ecRtM2KUBXN0ggGmxkOTQ85G0BdrdNJEjHp/68lmSzB
+         BBCJc3IatxoFd5CYwpPYe7Mufgg+NRi5rfhijjoD3GUMPfadmCeSILQ3Z75PGTA9ZSa/
+         HI4XzICHhdgnCQ6bOKU910RWDBGBS+LPxBDsdGT89yFjFbyVdpeZkJOanpwfCzRRbOR8
+         jiez7VStcA8MRfNhtuy0+6k6Eltizv704E3FIqqN/NXSn7CHk+ylrz9wMMZ6oUsY0frf
+         Dwcnzltt78xkdoxTweDIrD3Cfk68figgLgGe6G4uNOJScqLz/80pbWvaw9PGccOptHfO
+         MA8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUWSwLFVd7i9qqooGwHaGnEcJONQx1IY/Zb1kZQM0h2B7xdn5dZmEF2+Lvrv4vFJ2gLXuHjdUC4RJgovY+TVQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxA/PMjzzoCvp4EOnEp9crKTCAv8uPduaFuB0NnCsfftMzN1GDM
+	tHCMrtm0wodbTlJeEwMqiDci1dLRhGNq/VXwngdrH2/2Ixb8AM+nzoL6NU0mgHyAPRU=
+X-Gm-Gg: ASbGncvQKiZVbv+DF7LdAfSEfPwCTmpA2LEzJnhwTg7Hc2uz13oZyW41IKmFR9J4Rmx
+	C6KXZ1bMjpcKDkIGLUv3VbyJDdQyNI8jKaF5jOoDuO2OZc09GNomx0NV+/uEWwtK4i1Z9ij3/Qb
+	RSfNrqSwJ+O+s3qqeFxZGNrpbwz39lN0vVHaA1M7gJwXVm3W4dj/m+xqDmEyzrrdvgCXkphlgOt
+	Ps1F6SLWaqmGp/m5kW0c/2dXIP9aOj+ml2LR09tpIGWI6ayO3Ie0NQjTWBrIafXz2+rKCIO59Gg
+	m0/ohfJ2LNMHvLEISUBv9slmajvldGMOuXFKhgxRxOy3WLtYbXcupX9+p1OPO8l+R+Gb4BIuCxX
+	EsfQxubmYNF4uT6ZYxw6i0XhT8c7803iQIa8RSi+QzBef2AkicH/pvO5uu8oQmhM5rePijmG9+Z
+	9aZA==
+X-Google-Smtp-Source: AGHT+IElJYs5hS03PBXdQxnYWI3VpdFMd3uudSGQGvl+AqJvx2HQM7kb+KxG1SNdziFnaV4FdnABlg==
+X-Received: by 2002:a17:90a:ec8b:b0:32e:9a24:2df9 with SMTP id 98e67ed59e1d1-33bcf86c09emr22277403a91.14.1761105439473;
+        Tue, 21 Oct 2025 20:57:19 -0700 (PDT)
+Received: from localhost ([122.172.87.183])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e223c7fb5sm1164284a91.2.2025.10.21.20.57.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 20:53:31 -0700 (PDT)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 39F10F4006A;
-	Tue, 21 Oct 2025 23:53:31 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 21 Oct 2025 23:53:31 -0400
-X-ME-Sender: <xms:O1X4aJ7H1hFJWR8j4Vm_x8CDGSTUJiA16nXtzHpqEF75K_ggCN-YYw>
-    <xme:O1X4aC2xt-LdD4JcwZDijLjOogZtPfUtmVBaUi3UHWUrppc6mBr00McYbTkeGDZSk
-    4Z2dfUhzbQpGCLM77Xwd1L5d04IIsIlI35Vcu5pyJ4LHHyu-dtgrA>
-X-ME-Received: <xmr:O1X4aGl6wq86UG23L0ucXzdmcxDSzleVvsmbQCqxJEHryiJyvRYQOIZXzPZhL6-N8sDB4VxuavcxnjGFomyl9AxMxEnHJlvWmyc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugedvheehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeegleefhedtieefiedufeehhfevueejheefhefghfehfeevjedvveefhfetudet
-    veenucffohhmrghinheptghouhhnthgvrhdrshhtohhrvgdpphgrrhhsvgdrmhgrphenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
-    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
-    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
-    rghmvgdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgtphhtth
-    hopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgt
-    phhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrse
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtoh
-    epsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehg
-    rghrhihguhhordhnvght
-X-ME-Proxy: <xmx:O1X4aIhNOpnz7dFxrA22IREs4gSJNdFBiFmD5KjADtE7rGoeoXMyQg>
-    <xmx:O1X4aLTlmhUDT-i5PPE8dtpVR9qECUc6Y78aaFHBuv_y9srBLosNXw>
-    <xmx:O1X4aFghbNT-2SVRTGKkjv4ZwX4blky3lkY31ovfeCKFQn9ub0DEzw>
-    <xmx:O1X4aPhhvu_LNNA9Z-nd5ZzjJWtNPlXjeYCMLdgv3sjbSd54srLhYA>
-    <xmx:O1X4aNYdz-JzRgXlis8ktZ3NGgtJgUtTRJqBcNSHCtUeE7ct2IJ_f4mK>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Oct 2025 23:53:30 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Matthew Maurer <mmaurer@google.com>
-Subject: [PATCH 3/3] rust: debugfs: Replace the usage of Rust native atomics
-Date: Tue, 21 Oct 2025 23:53:24 -0400
-Message-ID: <20251022035324.70785-4-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251022035324.70785-1-boqun.feng@gmail.com>
-References: <20251022035324.70785-1-boqun.feng@gmail.com>
+        Tue, 21 Oct 2025 20:57:18 -0700 (PDT)
+Date: Wed, 22 Oct 2025 09:27:16 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Tamir Duberstein <tamird@kernel.org>, 
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Jens Axboe <axboe@kernel.dk>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, llvm@lists.linux.dev, 
+	Tamir Duberstein <tamird@gmail.com>
+Subject: Re: [RESEND PATCH v18 11/16] rust: opp: fix broken rustdoc link
+Message-ID: <4cweppdfmaei5isgmfg575eikx2qycjl457iggips2reuk247n@o242mrr5ghiy>
+References: <20251018-cstr-core-v18-0-9378a54385f8@gmail.com>
+ <20251018-cstr-core-v18-11-9378a54385f8@gmail.com>
+ <CANiq72==SKsYkogrQhKTzCXwxeYfbL3V5jOiQKiunwzLta5=Pw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72==SKsYkogrQhKTzCXwxeYfbL3V5jOiQKiunwzLta5=Pw@mail.gmail.com>
 
-Rust native atomics are not allowed to use in kernel due to the mismatch
-of memory model with Linux kernel memory model, hence remove the usage
-of Rust native atomics in debufs.
+On 19-10-25, 23:25, Miguel Ojeda wrote:
+> On Sat, Oct 18, 2025 at 9:17 PM Tamir Duberstein <tamird@kernel.org> wrote:
+> >
+> > From: Tamir Duberstein <tamird@gmail.com>
+> >
+> > Correct the spelling of "CString" to make the link work.
+> >
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> 
+> It is private, but it is good to have this done so that eventually we
+> can potentially enable a runtime toggle for private docs.
+> 
+> However, this is independent of the series, so I would suggest that
+> Viresh et al. apply it independently.
+> 
+> Fixes: ce32e2d47ce6 ("rust: opp: Add abstractions for the
+> configuration options")
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- rust/kernel/debugfs/traits.rs       | 53 +++++++++--------------------
- samples/rust/rust_debugfs.rs        | 12 +++----
- samples/rust/rust_debugfs_scoped.rs |  6 ++--
- 3 files changed, 25 insertions(+), 46 deletions(-)
+Applied. Thanks.
 
-diff --git a/rust/kernel/debugfs/traits.rs b/rust/kernel/debugfs/traits.rs
-index ab009eb254b3..1bcfb3b3dd2f 100644
---- a/rust/kernel/debugfs/traits.rs
-+++ b/rust/kernel/debugfs/traits.rs
-@@ -4,14 +4,11 @@
- //! Traits for rendering or updating values exported to DebugFS.
- 
- use crate::prelude::*;
-+use crate::sync::atomic::{Atomic, AtomicBasicOps, AtomicType, Relaxed};
- use crate::sync::Mutex;
- use crate::uaccess::UserSliceReader;
- use core::fmt::{self, Debug, Formatter};
- use core::str::FromStr;
--use core::sync::atomic::{
--    AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicU16, AtomicU32, AtomicU64,
--    AtomicU8, AtomicUsize, Ordering,
--};
- 
- /// A trait for types that can be written into a string.
- ///
-@@ -66,37 +63,21 @@ fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
-     }
- }
- 
--macro_rules! impl_reader_for_atomic {
--    ($(($atomic_type:ty, $int_type:ty)),*) => {
--        $(
--            impl Reader for $atomic_type {
--                fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
--                    let mut buf = [0u8; 21]; // Enough for a 64-bit number.
--                    if reader.len() > buf.len() {
--                        return Err(EINVAL);
--                    }
--                    let n = reader.len();
--                    reader.read_slice(&mut buf[..n])?;
-+impl<T: AtomicType + FromStr> Reader for Atomic<T>
-+where
-+    T::Repr: AtomicBasicOps,
-+{
-+    fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
-+        let mut buf = [0u8; 21]; // Enough for a 64-bit number.
-+        if reader.len() > buf.len() {
-+            return Err(EINVAL);
-+        }
-+        let n = reader.len();
-+        reader.read_slice(&mut buf[..n])?;
- 
--                    let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?;
--                    let val = s.trim().parse::<$int_type>().map_err(|_| EINVAL)?;
--                    self.store(val, Ordering::Relaxed);
--                    Ok(())
--                }
--            }
--        )*
--    };
-+        let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?;
-+        let val = s.trim().parse::<T>().map_err(|_| EINVAL)?;
-+        self.store(val, Relaxed);
-+        Ok(())
-+    }
- }
--
--impl_reader_for_atomic!(
--    (AtomicI16, i16),
--    (AtomicI32, i32),
--    (AtomicI64, i64),
--    (AtomicI8, i8),
--    (AtomicIsize, isize),
--    (AtomicU16, u16),
--    (AtomicU32, u32),
--    (AtomicU64, u64),
--    (AtomicU8, u8),
--    (AtomicUsize, usize)
--);
-diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
-index 82b61a15a34b..711faa07bece 100644
---- a/samples/rust/rust_debugfs.rs
-+++ b/samples/rust/rust_debugfs.rs
-@@ -32,14 +32,12 @@
- //! ```
- 
- use core::str::FromStr;
--use core::sync::atomic::AtomicUsize;
--use core::sync::atomic::Ordering;
- use kernel::c_str;
- use kernel::debugfs::{Dir, File};
- use kernel::new_mutex;
- use kernel::prelude::*;
-+use kernel::sync::atomic::{Atomic, Relaxed};
- use kernel::sync::Mutex;
--
- use kernel::{acpi, device::Core, of, platform, str::CString, types::ARef};
- 
- kernel::module_platform_driver! {
-@@ -59,7 +57,7 @@ struct RustDebugFs {
-     #[pin]
-     _compatible: File<CString>,
-     #[pin]
--    counter: File<AtomicUsize>,
-+    counter: File<Atomic<usize>>,
-     #[pin]
-     inner: File<Mutex<Inner>>,
- }
-@@ -109,7 +107,7 @@ fn probe(
-     ) -> Result<Pin<KBox<Self>>> {
-         let result = KBox::try_pin_init(RustDebugFs::new(pdev), GFP_KERNEL)?;
-         // We can still mutate fields through the files which are atomic or mutexed:
--        result.counter.store(91, Ordering::Relaxed);
-+        result.counter.store(91, Relaxed);
-         {
-             let mut guard = result.inner.lock();
-             guard.x = guard.y;
-@@ -120,8 +118,8 @@ fn probe(
- }
- 
- impl RustDebugFs {
--    fn build_counter(dir: &Dir) -> impl PinInit<File<AtomicUsize>> + '_ {
--        dir.read_write_file(c_str!("counter"), AtomicUsize::new(0))
-+    fn build_counter(dir: &Dir) -> impl PinInit<File<Atomic<usize>>> + '_ {
-+        dir.read_write_file(c_str!("counter"), Atomic::<usize>::new(0))
-     }
- 
-     fn build_inner(dir: &Dir) -> impl PinInit<File<Mutex<Inner>>> + '_ {
-diff --git a/samples/rust/rust_debugfs_scoped.rs b/samples/rust/rust_debugfs_scoped.rs
-index b0c4e76b123e..9f0ec5f24cda 100644
---- a/samples/rust/rust_debugfs_scoped.rs
-+++ b/samples/rust/rust_debugfs_scoped.rs
-@@ -6,9 +6,9 @@
- //! `Scope::dir` to create a variety of files without the need to separately
- //! track them all.
- 
--use core::sync::atomic::AtomicUsize;
- use kernel::debugfs::{Dir, Scope};
- use kernel::prelude::*;
-+use kernel::sync::atomic::Atomic;
- use kernel::sync::Mutex;
- use kernel::{c_str, new_mutex, str::CString};
- 
-@@ -62,7 +62,7 @@ fn create_file_write(
-     let file_name = CString::try_from_fmt(fmt!("{name_str}"))?;
-     for sub in items {
-         nums.push(
--            AtomicUsize::new(sub.parse().map_err(|_| EINVAL)?),
-+            Atomic::<usize>::new(sub.parse().map_err(|_| EINVAL)?),
-             GFP_KERNEL,
-         )?;
-     }
-@@ -109,7 +109,7 @@ fn init(device_dir: Dir) -> impl PinInit<Self> {
- 
- struct DeviceData {
-     name: CString,
--    nums: KVec<AtomicUsize>,
-+    nums: KVec<Atomic<usize>>,
- }
- 
- fn init_control(base_dir: &Dir, dyn_dirs: Dir) -> impl PinInit<Scope<ModuleData>> + '_ {
 -- 
-2.51.0
-
+viresh
