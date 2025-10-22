@@ -1,96 +1,97 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC38278158
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 03:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8292D5938
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 03:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761105214; cv=none; b=XOKm45sgReLN3vi7ykowB2JChphEN/zDXwEFmO4EIc/4lzA2MHvfZf49xPrLK4ONm/K3ZMG8grBnpCuehpGWg4B/+4g967/2KVAiYgAovZWH5/eiSAeJGkx1QXMPL649JXjW/+JHdVtMWQUhdT0afVi390cG7/XLdiG1vRo6QSE=
+	t=1761105215; cv=none; b=YhQGWp1RrOdgDtVfr4AU7I5gJvf5cCoPe2yAG8qt8guTjDCeOWeLGYBqKP0TwAgf+p+uycJSx32NSrM1Z9rxxUV6weLSiitUn2xJge1aL7YaoXsUFz7pSucZJtAnnhaNj6Z8+DkM4vqweDBmmBj/xuUYKfGydaKY33KPsR0cWp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761105214; c=relaxed/simple;
-	bh=NEOZ5UcQs9qWpUuFkJ3z//mwBi0OwNepB3WYde0vNFY=;
+	s=arc-20240116; t=1761105215; c=relaxed/simple;
+	bh=4SXBTIbBzQS7trSo3Pqcoy4S5AvvRzAQgPXHxuFH5Cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSVZpASskdIBA4KFgyLTZhRVB9BfwDlZZ1eKJmh2ziZyMf2yoJrNQ9ixLbLjCiFjNWou3tqzALREL4TOExRB7o0dK2qltaiSR9iX02J2RFDVkZ4KAo6kVb41h3viyBpMw6cUMyj9mtWJJOGvGrwwF23aEyJrOu0dA99Op9vK2lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lb9qpOFo; arc=none smtp.client-ip=209.85.222.169
+	 MIME-Version; b=VwLy88+N5jNIbRgCMgVSqkf+19SyYEShWzZAWbKSSlZSufdOWYYMVW31aOWNIMZKThnWpf52FLEaeM4GZVrTMpbMyOzF+7qKcyoDCa5wEgYnTF1hQT55wwkPZpYs1Lhw1tqWCwCDnzoHxpeYhssG8ZRnDIGARodgGjhIfDg4ck8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MwEXPuui; arc=none smtp.client-ip=209.85.160.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lb9qpOFo"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-88f86727622so915513885a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 20:53:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MwEXPuui"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4e3117ea7a2so8766701cf.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 20:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761105211; x=1761710011; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761105212; x=1761710012; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=UNHVbXF1l9vxAaVojg+MHbup3Odhk55doJucb7FZw8c=;
-        b=lb9qpOFoMKxxvDU4kP2Xljs56ANwI2kLj3ULkO10gL15qT8/9URJsJ3zRtQcRbEXe/
-         H3lJrXXk9WOX5ouyDXoqNDeW8hUnUt05D0kNc6y2niNZqOmIUKtkswmX+pB2ZAlMY50d
-         Dl7zA97nRIDTFBVlt6thvNP4259KlpqxDxOG+1xV80XYYKDRKVwGXznGpwt9W2P3lDZM
-         y15dbMVNx8ABa+0q7fZhAtl8ekF2BX8aY8WMrCWBWA9/H4eUmOIG2iFb03NdQUiFGZ7u
-         maLNo6g0IUTURjt6BilwkSicepq8+hbC9dAvuKF4YS0QdR3xyEPcgBwjFtqGBma89/82
-         5Pfw==
+        bh=xwi9pPyT3FBFmVEwx3v/HgUNb6syohg1ynYObmMc1N4=;
+        b=MwEXPuuiRJB2H3OGzGoZOBhDQ3eVLvBNA/noov/zNRvmizc+WVjJ1UcuMkDByyXMVQ
+         CXe/zJwAY1yxv2mIhhIFy5zkJ4Rzbcd9Dn/kwgdSjdlaS9mDk4K4OMu0wXlHALBTOGQw
+         a4NKOK6lGG2GSjUVHKMTsAGXoD1gL84no9X9x9BgjSVO3ugmRT8yf/HpOjaswqzZQaSW
+         +Xqp15e0c6uVK3YHGSNZXf6du62ZkqjpiIE4OqPAyjt3VRDYOnoU3wBqfEKCytQbM7+R
+         yW3sV+Xr9elMQqPwOtIxk/qOJCefP48vhAJRHVb62H3wQmvQB2Hdu+1zfn3eJW+RshSy
+         Vhkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761105211; x=1761710011;
+        d=1e100.net; s=20230601; t=1761105212; x=1761710012;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=UNHVbXF1l9vxAaVojg+MHbup3Odhk55doJucb7FZw8c=;
-        b=bCY/cXZ9fhxbLtUyABFc1eIJf27bemWfZMc1AC/avJi2L2eaeZqmAadJRyAlxAkdPV
-         m9RoorsMV8bb8Ua0XRAYafwmSPLhKXRgzNZtB8iYMGuI/pngvjAzB2RfaHqUYOGathnH
-         m5DQxBkVPF+PkmhP8uTypXSjra6oYy403ZPJ3gupFvBy1sEk4OzNcJjV6KUtVjOi0/nb
-         HsD+/W6BipN0kaXJR5ti9fNUlDFE6Yy9gvkSgaro4dWGB8eeyP1vroMY29dZrP+hEIKk
-         w3ar2z7eArkP1GEkx29BUO6DMKiN+mqNlG/fGD83VmiUICo/IQGsWUIUUuW9u5skf68A
-         wfOw==
-X-Gm-Message-State: AOJu0Yz2PgFq9UysNOhYfs5TnxHWXFxH4uniVd5l2qEllU3Nu0bjVIqI
-	4YE+dVb4vtTEuvR0PHNgbsRJZjKnvJwjKYGtQk3jmUZjo3kZUGJQ3JQG
-X-Gm-Gg: ASbGncs7PUxwDuki0rAYPK9exhXKzrDDn0lqPmGpa5xEJ0bMeQhkZFVXRogJVz+3ucO
-	pQ9FfxKf6ph2nlcW8XCPYckDE74b86KKi2rAy4vOAbP6NY9Kdo4Pi9ks+RlUyesD+7WkZaih1fH
-	48oYPjIBBV1pqev/YkwWezz6kniN7pGH6nkTupsmUg+2wwYcwDdeJ52Ts4Sn5R3BIv9xK1KwvH+
-	Zj6sOUdoeTSvog3/SMO+m2zXcZfBbchWuo5FIjyrB7J7XZ1auaj7xQjCRS8gK+F43KPECm25J45
-	w+iTgo1uvtbmoT57nRlrkhZur9AWh7RUiMeM7CKcPcmO9DFQhNeX05T5luLKglymydGzLcStQ0o
-	G//alAUf7Fauy7K7FNfozavEjf53mm7aNfF0z6Js1FaXFQNNaikZE5GuNDYZHpws8i4klugLV1h
-	7APcJG6x6F2mQIf1NqvC2A+/BF43HeyYBPBlf3DMvv/YSXlvBxfUKvKMgw/PJXqNCx1ZumOr8q0
-	UZAh0AiUF/F9Fg8r9vrML5NDA==
-X-Google-Smtp-Source: AGHT+IEK23rEbmImZjUjZqknwOE+XDHmtcXPf1FHlW5w+b2oVQdPahRq4eJRmv3aAqYbsDBgGjL/aQ==
-X-Received: by 2002:a05:620a:2886:b0:863:696d:e37a with SMTP id af79cd13be357-8907030c838mr2419098085a.44.1761105211504;
-        Tue, 21 Oct 2025 20:53:31 -0700 (PDT)
+        bh=xwi9pPyT3FBFmVEwx3v/HgUNb6syohg1ynYObmMc1N4=;
+        b=Ck09BW/HUIa8/77erX6zMbMg418oWphHlu7kF382DzTj7CY7UmcgIQ2I6cqrz2oQpQ
+         tu8UHAqNz5mKmxcG+BgVqEzGi9z+yemnkRM24L5RPhmUGw6qNW/jt03Gr+DjJmsphQj9
+         OIYtjSiD/l4wzoAl8b0L+PQBBHE93XofkYpzx6B2jKkyg+tI8KkheoxdrQWzPBJ0GLmG
+         zY8KiSA9MDCWhWLTpHzSTGS8+H+tmSZZ/BS/BPLwg/+QsO7faT3td1z5JH3iHOrksoi5
+         3h8CJC8lesNMW/9ehWdYtPblcKh6NmPitJvL2QDcTUmEKpUpwoQhVlHKko+mbv1Qj6kB
+         v9aA==
+X-Gm-Message-State: AOJu0YzVHZUb13tJVe33t0yCbYeflb+QHPZYHCtTbiKzQ/x0O01XDH45
+	QdsnngpxIL1RIeSTbTB888tH+PRsm9d2CjUFkMgP7QSBHxGmd1FMoHNj/YyDxA==
+X-Gm-Gg: ASbGncsHOImhfUrs/LEbfUD7jHpku4/e3JrN2IIZJ9c/hvO/EnHRoDpXhSbPXhaoetS
+	7/cE/oslhLC3GNOf6Dy/0DYkng7FgmJC5JZLqoe7SOr8fp8pTE8dM2BEuKxREubNB5T/Lg3/BU1
+	YJgK4zGdoIk6Yc9PFvlFx/o6cCG7qPr/OVufSIydoijnn1V3BorrjvJDJLlI93wMmt4ghKEipxr
+	OhCOUFT06PlLFXwQOH+lE+F6ta4Y9rcMAQrjFpXtq9x+mVL4ijDwplGEmJ4Ln2eBK+OWxFNoNJ1
+	iqs73fhUE/+UhJkVotXBvEgr6JqhIAGuHwPAWz1rI43j4dGuTVhvc5Syw10yfqVfa7svRzSzJ1O
+	IrNTdhwZNm70zrE4GDJAv14qNeH8aqkztJGvfdZIfOLMjY112fEP8w1HQgYkEXreOzArMcTYpBy
+	/2WJA3jtbxO1dEMSVTiY+T+RXLZFvJkaaQrd+rt9OavfkNXKFLdmwSXgYM7Thif8Wo6gMUPZyCy
+	vV3+/ORTBWskkI=
+X-Google-Smtp-Source: AGHT+IG/XJvd2aOX62N44Ph9hXSKDu373P+gXBwGZnNsgjDS/EyXbwt2p1XlwMEDfnCDOu06g6jH/g==
+X-Received: by 2002:ac8:4659:0:b0:4e8:a0bf:f5b5 with SMTP id d75a77b69052e-4e8a0bff828mr177242851cf.73.1761105212020;
+        Tue, 21 Oct 2025 20:53:32 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cefba763sm890414985a.30.2025.10.21.20.53.30
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cd098591sm897850385a.15.2025.10.21.20.53.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 21 Oct 2025 20:53:31 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9DF95F40068;
-	Tue, 21 Oct 2025 23:53:30 -0400 (EDT)
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 39F10F4006A;
+	Tue, 21 Oct 2025 23:53:31 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 21 Oct 2025 23:53:30 -0400
-X-ME-Sender: <xms:OlX4aKfwcUe7u6R_1b5TUBBOomhh6hnwzNOg5WSiArEoPx4c9YG7qw>
-    <xme:OlX4aAJA8r4LBTDjEzcW-DUkOSsoy85nL2R3EvfPfW6FnSYCt5YP6F4Tbvs-4LIJh
-    RO27y6D8FLF4fI58roWx-rdGffN6WJOMjCbtvy7BqEbOB4oHaNlCA>
-X-ME-Received: <xmr:OlX4aBqpYHPIR65WeXF4BytE_rsiCq-VOAJNiKzm06ryabRbUmFeZgOpuT8-EF5r_V5XD4dMKm5Q-e0g7K3MFKrd0W62R7_HG7c>
+  by phl-compute-04.internal (MEProxy); Tue, 21 Oct 2025 23:53:31 -0400
+X-ME-Sender: <xms:O1X4aJ7H1hFJWR8j4Vm_x8CDGSTUJiA16nXtzHpqEF75K_ggCN-YYw>
+    <xme:O1X4aC2xt-LdD4JcwZDijLjOogZtPfUtmVBaUi3UHWUrppc6mBr00McYbTkeGDZSk
+    4Z2dfUhzbQpGCLM77Xwd1L5d04IIsIlI35Vcu5pyJ4LHHyu-dtgrA>
+X-ME-Received: <xmr:O1X4aGl6wq86UG23L0ucXzdmcxDSzleVvsmbQCqxJEHryiJyvRYQOIZXzPZhL6-N8sDB4VxuavcxnjGFomyl9AxMxEnHJlvWmyc>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugedvheehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
     hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeegleejiedthedvheeggfejveefjeejkefgveffieeujefhueeigfegueehgeeg
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrgh
-    dprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggr
-    khhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghp
-    thhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrh
-    ihsehgrghrhihguhhordhnvght
-X-ME-Proxy: <xmx:OlX4aOU0s4psfU22edkNKXf1-YxQRWwT2tMp9hXZdK3T8JBWayziQw>
-    <xmx:OlX4aE32rnV6OL9MxgUIlKbnN98qCE-rmr7VRYa00MQybioKHahiOw>
-    <xmx:OlX4aH2o7L5ATeV0BtMVYgiE5jBjZOUxy_X97XhxcxX_MHaFnssEow>
-    <xmx:OlX4aLkq_-0jFOFrSYW-X3Xd0xACPlsVLVMAiGf2dufokMjuL0CKGw>
-    <xmx:OlX4aAP-rcjdFXfu7xw2QmiALn-fvLwZt5-gBFIN2LV0A0gyMR0I7UXP>
+    gvrhhnpeegleefhedtieefiedufeehhfevueejheefhefghfehfeevjedvveefhfetudet
+    veenucffohhmrghinheptghouhhnthgvrhdrshhtohhrvgdpphgrrhhsvgdrmhgrphenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvgdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgt
+    phhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtoh
+    epsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehg
+    rghrhihguhhordhnvght
+X-ME-Proxy: <xmx:O1X4aIhNOpnz7dFxrA22IREs4gSJNdFBiFmD5KjADtE7rGoeoXMyQg>
+    <xmx:O1X4aLTlmhUDT-i5PPE8dtpVR9qECUc6Y78aaFHBuv_y9srBLosNXw>
+    <xmx:O1X4aFghbNT-2SVRTGKkjv4ZwX4blky3lkY31ovfeCKFQn9ub0DEzw>
+    <xmx:O1X4aPhhvu_LNNA9Z-nd5ZzjJWtNPlXjeYCMLdgv3sjbSd54srLhYA>
+    <xmx:O1X4aNYdz-JzRgXlis8ktZ3NGgtJgUtTRJqBcNSHCtUeE7ct2IJ_f4mK>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
  21 Oct 2025 23:53:30 -0400 (EDT)
@@ -113,9 +114,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Matthew Maurer <mmaurer@google.com>
-Subject: [PATCH 2/3] rust: sync: atomic: Implement Debug for Atomic<Debug>
-Date: Tue, 21 Oct 2025 23:53:23 -0400
-Message-ID: <20251022035324.70785-3-boqun.feng@gmail.com>
+Subject: [PATCH 3/3] rust: debugfs: Replace the usage of Rust native atomics
+Date: Tue, 21 Oct 2025 23:53:24 -0400
+Message-ID: <20251022035324.70785-4-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251022035324.70785-1-boqun.feng@gmail.com>
 References: <20251022035324.70785-1-boqun.feng@gmail.com>
@@ -127,35 +128,173 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If `Atomic<T>` is `Debug` then it's a `debugfs::Writer`, therefore make
-it so since 1) debugfs needs to support `Atomic<T>` and 2) it's rather
-trivial to implement `Debug` for `Atomic<Debug>`.
+Rust native atomics are not allowed to use in kernel due to the mismatch
+of memory model with Linux kernel memory model, hence remove the usage
+of Rust native atomics in debufs.
 
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 ---
- rust/kernel/sync/atomic.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ rust/kernel/debugfs/traits.rs       | 53 +++++++++--------------------
+ samples/rust/rust_debugfs.rs        | 12 +++----
+ samples/rust/rust_debugfs_scoped.rs |  6 ++--
+ 3 files changed, 25 insertions(+), 46 deletions(-)
 
-diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index 0bc6e7b04d67..3afc376be42d 100644
---- a/rust/kernel/sync/atomic.rs
-+++ b/rust/kernel/sync/atomic.rs
-@@ -307,6 +307,15 @@ pub fn store<Ordering: ordering::ReleaseOrRelaxed>(&self, v: T, _: Ordering) {
+diff --git a/rust/kernel/debugfs/traits.rs b/rust/kernel/debugfs/traits.rs
+index ab009eb254b3..1bcfb3b3dd2f 100644
+--- a/rust/kernel/debugfs/traits.rs
++++ b/rust/kernel/debugfs/traits.rs
+@@ -4,14 +4,11 @@
+ //! Traits for rendering or updating values exported to DebugFS.
+ 
+ use crate::prelude::*;
++use crate::sync::atomic::{Atomic, AtomicBasicOps, AtomicType, Relaxed};
+ use crate::sync::Mutex;
+ use crate::uaccess::UserSliceReader;
+ use core::fmt::{self, Debug, Formatter};
+ use core::str::FromStr;
+-use core::sync::atomic::{
+-    AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicU16, AtomicU32, AtomicU64,
+-    AtomicU8, AtomicUsize, Ordering,
+-};
+ 
+ /// A trait for types that can be written into a string.
+ ///
+@@ -66,37 +63,21 @@ fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
      }
  }
  
-+impl<T: AtomicType + core::fmt::Debug> core::fmt::Debug for Atomic<T>
+-macro_rules! impl_reader_for_atomic {
+-    ($(($atomic_type:ty, $int_type:ty)),*) => {
+-        $(
+-            impl Reader for $atomic_type {
+-                fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
+-                    let mut buf = [0u8; 21]; // Enough for a 64-bit number.
+-                    if reader.len() > buf.len() {
+-                        return Err(EINVAL);
+-                    }
+-                    let n = reader.len();
+-                    reader.read_slice(&mut buf[..n])?;
++impl<T: AtomicType + FromStr> Reader for Atomic<T>
 +where
 +    T::Repr: AtomicBasicOps,
 +{
-+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-+        core::fmt::Debug::fmt(&self.load(Relaxed), f)
++    fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
++        let mut buf = [0u8; 21]; // Enough for a 64-bit number.
++        if reader.len() > buf.len() {
++            return Err(EINVAL);
++        }
++        let n = reader.len();
++        reader.read_slice(&mut buf[..n])?;
+ 
+-                    let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?;
+-                    let val = s.trim().parse::<$int_type>().map_err(|_| EINVAL)?;
+-                    self.store(val, Ordering::Relaxed);
+-                    Ok(())
+-                }
+-            }
+-        )*
+-    };
++        let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?;
++        let val = s.trim().parse::<T>().map_err(|_| EINVAL)?;
++        self.store(val, Relaxed);
++        Ok(())
 +    }
-+}
-+
- impl<T: AtomicType> Atomic<T>
- where
-     T::Repr: AtomicExchangeOps,
+ }
+-
+-impl_reader_for_atomic!(
+-    (AtomicI16, i16),
+-    (AtomicI32, i32),
+-    (AtomicI64, i64),
+-    (AtomicI8, i8),
+-    (AtomicIsize, isize),
+-    (AtomicU16, u16),
+-    (AtomicU32, u32),
+-    (AtomicU64, u64),
+-    (AtomicU8, u8),
+-    (AtomicUsize, usize)
+-);
+diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
+index 82b61a15a34b..711faa07bece 100644
+--- a/samples/rust/rust_debugfs.rs
++++ b/samples/rust/rust_debugfs.rs
+@@ -32,14 +32,12 @@
+ //! ```
+ 
+ use core::str::FromStr;
+-use core::sync::atomic::AtomicUsize;
+-use core::sync::atomic::Ordering;
+ use kernel::c_str;
+ use kernel::debugfs::{Dir, File};
+ use kernel::new_mutex;
+ use kernel::prelude::*;
++use kernel::sync::atomic::{Atomic, Relaxed};
+ use kernel::sync::Mutex;
+-
+ use kernel::{acpi, device::Core, of, platform, str::CString, types::ARef};
+ 
+ kernel::module_platform_driver! {
+@@ -59,7 +57,7 @@ struct RustDebugFs {
+     #[pin]
+     _compatible: File<CString>,
+     #[pin]
+-    counter: File<AtomicUsize>,
++    counter: File<Atomic<usize>>,
+     #[pin]
+     inner: File<Mutex<Inner>>,
+ }
+@@ -109,7 +107,7 @@ fn probe(
+     ) -> Result<Pin<KBox<Self>>> {
+         let result = KBox::try_pin_init(RustDebugFs::new(pdev), GFP_KERNEL)?;
+         // We can still mutate fields through the files which are atomic or mutexed:
+-        result.counter.store(91, Ordering::Relaxed);
++        result.counter.store(91, Relaxed);
+         {
+             let mut guard = result.inner.lock();
+             guard.x = guard.y;
+@@ -120,8 +118,8 @@ fn probe(
+ }
+ 
+ impl RustDebugFs {
+-    fn build_counter(dir: &Dir) -> impl PinInit<File<AtomicUsize>> + '_ {
+-        dir.read_write_file(c_str!("counter"), AtomicUsize::new(0))
++    fn build_counter(dir: &Dir) -> impl PinInit<File<Atomic<usize>>> + '_ {
++        dir.read_write_file(c_str!("counter"), Atomic::<usize>::new(0))
+     }
+ 
+     fn build_inner(dir: &Dir) -> impl PinInit<File<Mutex<Inner>>> + '_ {
+diff --git a/samples/rust/rust_debugfs_scoped.rs b/samples/rust/rust_debugfs_scoped.rs
+index b0c4e76b123e..9f0ec5f24cda 100644
+--- a/samples/rust/rust_debugfs_scoped.rs
++++ b/samples/rust/rust_debugfs_scoped.rs
+@@ -6,9 +6,9 @@
+ //! `Scope::dir` to create a variety of files without the need to separately
+ //! track them all.
+ 
+-use core::sync::atomic::AtomicUsize;
+ use kernel::debugfs::{Dir, Scope};
+ use kernel::prelude::*;
++use kernel::sync::atomic::Atomic;
+ use kernel::sync::Mutex;
+ use kernel::{c_str, new_mutex, str::CString};
+ 
+@@ -62,7 +62,7 @@ fn create_file_write(
+     let file_name = CString::try_from_fmt(fmt!("{name_str}"))?;
+     for sub in items {
+         nums.push(
+-            AtomicUsize::new(sub.parse().map_err(|_| EINVAL)?),
++            Atomic::<usize>::new(sub.parse().map_err(|_| EINVAL)?),
+             GFP_KERNEL,
+         )?;
+     }
+@@ -109,7 +109,7 @@ fn init(device_dir: Dir) -> impl PinInit<Self> {
+ 
+ struct DeviceData {
+     name: CString,
+-    nums: KVec<AtomicUsize>,
++    nums: KVec<Atomic<usize>>,
+ }
+ 
+ fn init_control(base_dir: &Dir, dyn_dirs: Dir) -> impl PinInit<Scope<ModuleData>> + '_ {
 -- 
 2.51.0
 
