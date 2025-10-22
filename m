@@ -1,100 +1,88 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAA3302CD7;
-	Wed, 22 Oct 2025 08:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EA13043CE
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 08:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761120820; cv=none; b=rsS1EvC9fD2SMLU8lK0Y7QieiMGBOZ5bfhhKj60Rhyt39Fz7+j9wC+s5gNwGtOlrNAn4HUHsElIygBer3lDEGXfI/wkuS4Cm4uBeB6cno46JfHaHdVZlTcDKJKWrUT/ZBJDDMHPkVujl9Oq5UdApv06vMCWvsX9Jo1ofroEb1fE=
+	t=1761120876; cv=none; b=GyzYH5PNDkp27MTy+u/xqyQX+NdzYTUc93NOsynX6l35tzOzYQcPVdtIA50vSQAfOGlQJXM69jfLBUX5TifFsYSmdBU0/LMFyW1T9CyvofL8OtfrpQAWwHPxjNvA7oRSpRaMpYuiDd/vCSiN5+ZZ9cx8DA+/f7ot94NTLAGGguE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761120820; c=relaxed/simple;
-	bh=wuFKp7wVKGv7PxIwB3wTcUJzK/cF02oGo1qGZ7cCaaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PQQ2qN2BOOCQQATHEx2I0RBPO/j6JjeMBwRPznVpocfx81ZqQOAt2l8Sx6F+yzixBaGtJiVOh+AMyJ4VqfJK0qSggUSieQ0pYzmyc+O5LKmsSgZmKW5Au4aO8HJWe5kUKuMWPaH2zYJW6XWiC+Eq6WuCdiDHcuAIPjIm/PjZOV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GZ9DMzin; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1761120876; c=relaxed/simple;
+	bh=nDmcqom4nRH1kg8OrqhgJ/APXOzAvqbtVdtI9YTYb/w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dvrHR2nVD+pVMlonaF+skDWqQ3WBvMtRguo/tk75VgtTM2fFgl2EcUXa0GPAv3+I5500kXFQvvYxIbGAqRo7W1nfEjOFV36YeGmtqVdduDfHZm12fjdoCGFA5PYzZNOKTXpan+bKK/ALeK8HW23i4vP3OH1KHioLRPDWBxP/aiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1VWLxkLz; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GZ9DMzin"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=Dg1Y08ybKAYmv4kbw7GmgeGRx4rZ+X8n9sBGCrSRBGU=; b=GZ9DMzin4MAQCShxEKq7jllj2o
-	6G2s8ConHG8zGICW8cFsNhPES60m2FRMTyN2udlPNKEdsL6Xt9v+JfXLsehLQ7H2sMCJiLTeu9Gu8
-	LwhLniGAdCyoFmur++KfC/tEE9UqEPlqzuMjKGaL82B0ZpMk7PPDR+EJG28gQSSW4izCE4AQUjjVc
-	2MmybLPDgfmcV0+HsSnaD+42KinoeLAbT+yIWfvUVm5zRuUJGe6zDa4VM+DKN69xVz0xxaJsCCGzo
-	UcY/VMdtWryQy+4K4udRQsCTwuf54j+Xd8kJa+u1uuEpguLFO2KTk2W72xdgJzNQpg8jkoUGXeviO
-	IzUAcQzw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBT6i-00000000Or0-0BCT;
-	Wed, 22 Oct 2025 07:18:04 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 4A0B830039F; Wed, 22 Oct 2025 10:13:31 +0200 (CEST)
-Date: Wed, 22 Oct 2025 10:13:31 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
-Message-ID: <20251022081331.GJ4067720@noisy.programming.kicks-ass.net>
-References: <20251020020714.2511718-1-ojeda@kernel.org>
- <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
- <CANiq72n_AnCJYw6R2XecapW9wZqs_Saa4t8BNgrPub2u9=9_xA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1VWLxkLz"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46eee58d405so33215135e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 01:14:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761120873; x=1761725673; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7ogsn3X1mobn8/e1uiGkS9XQJsz3R6ivSIjiDXFm3+Q=;
+        b=1VWLxkLzd0y2N/vipoDX6gubUhI1J9Uq+NBzcVpmjU45fBdPQ8wI7HsotLqO/dEe5u
+         GxAfjYXzFhEgPDw6EhCb4UqLLTXUDoYJW7SwvkJp6z9u51+lmtEUJ8UMk4H43XMUZJjq
+         TM7udf/bDj1U2q8zPZel4UBB4olVLrWlnAiTjky8ov21Nv2uFzNJwGpsgtSbcdBoyyth
+         88zi6VAQZEH7KwLwnVRcPSKQjqX23KnmpDQZ8pwzbk5ry6Ypu4tCEqtp5TBtXeJ6kW6N
+         3KZcNHsOR8lKcqQhu0Atc1DWEvcyL6O3aRVi0a8wDuV1el91WWO8Guo702K483Qb8jkP
+         YG+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761120873; x=1761725673;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7ogsn3X1mobn8/e1uiGkS9XQJsz3R6ivSIjiDXFm3+Q=;
+        b=Sf2kwX/QmB2y6XArFnizpFxj6K0Qa4YU1yAY03pKrP/LvojJzHMfDHfAEq5Gx5YV0/
+         ZJeEgxCNuadaoB93aMLCI815pNqI4OQuC3sZGUCQR/Hs36I8tBy9Cqg7pqvSZc+96vjY
+         YxSbzXkcDyiQFigp5TOrbu2nvrrhLBxtTyaHpDntmQ3bTPf46q1EJEFWWmqDo+IJ061E
+         QV1gwkbo+yoR1zESCMZIqaLCHijGpKu3F8VoKopxuaVsSqH8+jYm3oYWhxPxUF4UlTlf
+         zLEBISZCqLDlp7UNPBSER2vNDDmLpODfYYLeYl6bN/iqMG7xml1PZvQLPp4esYWdP2YE
+         aRsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVD5MQJsVYztp3HLzpUZLcmTYtKG2KT3gE/q4purOnx7wiTIzM9RIwtXNRgKkQQgUvPqdMMRhM1mmujHea29w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxkhO1rNrZgdvSWYyMJCHVVCU8kF0wNGPkddKvyHyRUwUeeMua
+	BKAokgul1KlylRRK43JKSQ7MqM45Zma1mt8Uy1bhJ4Z+CzJUOPNJ6b898PnG1p8itNaFcjPXBtj
+	aqWA4+t8XfzMTSkDcdg==
+X-Google-Smtp-Source: AGHT+IHVymDPMVFRxtz+pEpsqCDA+1l2F++eBCPDtyYxS79P5clFYGmutl6mMG3GyLc2Iqc0bUnGJy61wcbICgU=
+X-Received: from wmwr3.prod.google.com ([2002:a05:600d:8383:b0:46e:1f9e:6471])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3b03:b0:471:15df:9fc7 with SMTP id 5b1f17b1804b1-47117906a72mr141554885e9.26.1761120872959;
+ Wed, 22 Oct 2025 01:14:32 -0700 (PDT)
+Date: Wed, 22 Oct 2025 08:14:31 +0000
+In-Reply-To: <25717cdeac76376fbcf7ba10a1b2e855800d3778.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72n_AnCJYw6R2XecapW9wZqs_Saa4t8BNgrPub2u9=9_xA@mail.gmail.com>
+Mime-Version: 1.0
+References: <20251016210955.2813186-1-lyude@redhat.com> <20251016210955.2813186-3-lyude@redhat.com>
+ <aPJDGqsRFzuARlgP@google.com> <25717cdeac76376fbcf7ba10a1b2e855800d3778.camel@redhat.com>
+Message-ID: <aPiSZ_CGLD4o755q@google.com>
+Subject: Re: [PATCH v4 2/9] rust/drm: Add gem::impl_aref_for_gem_obj!
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Asahi Lina <lina+kernel@asahilina.net>, Shankari Anand <shankari.ak0208@gmail.com>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Oct 21, 2025 at 07:25:11PM +0200, Miguel Ojeda wrote:
-> On Tue, Oct 21, 2025 at 7:19 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > I'll go stick it in tip/objtool/core; but I gotta ask, where are we with
-> > the toolchain support for noreturn?
+On Tue, Oct 21, 2025 at 01:33:00PM -0400, Lyude Paul wrote:
+> On Fri, 2025-10-17 at 13:22 +0000, Alice Ryhl wrote:
+> > 1. Annotated with #[macro_export]
+> > 2. Export with `pub use impl_aref_for_gem_obj`
 > 
-> Thanks Peter!
-> 
-> We discussed it with upstream Rust, and they understood the need, so
-> we may get something like `--emit=noreturn` or similar, but it is
-> still open (and not too high in the priority list since we can survive
-> with this for now and we have other things that we really need them to
-> get stabilized etc. But if you feel it should be prioritized more,
-> please let me know).
+> I assume you meant pub(crate) here? (Since we don't really want to expose
+> impl_aref_for_gem_object! to users outside of the drm crate).
 
-Nah, as long as its not forgotten I suppose it'll show up at some point.
+We will probably need it to be pub later when we split up kernel, but
+feel free to put pub(crate).
 
-I would place including C headers in Rust at a *MUCH* higher priority
-than this. This bindgen nonsense is a giant pain in the arse.
-
-> I have the status under "Export (somehow) a list of all noreturn symbols." at:
-> 
->     https://github.com/Rust-for-Linux/linux/issues/355
-> 
-> In particular, Gary proposed an alternative during those discussions:
-> 
->     "Gary proposed reading DWARF instead and wrote a quick Rust script
-> for it via object and gimli, though DWARF would need to be available
-> or generated on the fly just for that (and we cannot commit a fixed
-> list since the kernel config may change and we support several Rust
-> versions and so on):
-> https://gist.github.com/nbdd0121/449692570622c2f46a29ad9f47c3379a."
-
-Right, the problem with DWARF is that you need to have DWARF and debug
-builds are *SLOW* :/ But perhaps rust compile times are such that that
-isn't noticable?
+Alice
