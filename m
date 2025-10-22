@@ -1,117 +1,129 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8A7350A02
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 23:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031C886340
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 01:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761088599; cv=none; b=QCVjVy9v3Mea2Nyl+42SJLIs0C+BcoVrM4XsNAlt9S2ytK53jBiZvjt1vWJARwYhT03FmUkKy3Y6PXBaWAI4KkAEsuwmOR9ymFxL6T+t2tgNa8MGNBhoHOHDeDgJI6wfvm+LS5ooxlTl1+sLP56LlP+OSVAU1uwiToNSNFoArAk=
+	t=1761097444; cv=none; b=C56CvX5dynfk9nghhMfCpzcGYgdKPgYevFshJHj4Sn0UIL1cVIRVrc55Up/l/RWrTnY2X0N3G4VXW2cXwkjxB+MbMknwXyJzKz8ZZ6uHHxE7oXKsFTgEqS8s7HLGJubCMgzW4hyPxDX60JaNaPtMnx/2ZRPk6kg7ZfuY8rN1RzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761088599; c=relaxed/simple;
-	bh=4Jm32qXMHIXKKOfLhgjYBhQWDQDVGDfzHihzO3VYXnM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EWchzAs+GSSyOu78yaEizJScVPrCOXb2el5mueQeMGvPXLlCiXM0FtWtlXszBmy/cogPrCGqbhEeEnocEbycBwsEN09Uj5TxE/tNWHYtdcArRECzrCtuWM5VXGwfLzRM1kwSp24Fs2DIymCVnXLx7Eedp4aT92p53Mvbixt1aBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OkStA10V; arc=none smtp.client-ip=209.85.214.175
+	s=arc-20240116; t=1761097444; c=relaxed/simple;
+	bh=DUuLbrrzupAYsLMVgQOeE0uyJfDJbicP/UZO1h7DRtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T/+cyobTBCZUWPAE8+OqpgtkdCJFuKOAQL7ilmf312Q3CJS7Wdxb3rI9ZzhbiksguRn55u7xTZWshFnXZ4NSF0FFmiRGWOAOcWvMVFRUhslyebU4YPfGFaQAdevnKUF8RHp7l6sRSm3jidbYrEpVIB4fbi7ImM1PE+YP6s1uOfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cg57tflv; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OkStA10V"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-27eca7297a7so8040495ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 16:16:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cg57tflv"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-796f9a8a088so5657365b3a.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 18:44:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761088597; x=1761693397; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Jm32qXMHIXKKOfLhgjYBhQWDQDVGDfzHihzO3VYXnM=;
-        b=OkStA10Vw3UWeBxyZJ0pQvU/iEkgE38lSXKaWoXic0SbRkNZXNv++Arxy7I8csNU3D
-         b0c7Fdkm+NdRhc1MZfP+EzYbpRXFHWcybsyPLabRslNczbXYpn/VdCkhMDOGQKzy7psi
-         /sKQW4/A1THyv8BGomLVfZmxoCxEJJjD1jiLDEAI+SN77qlyVttM6nK6fYpyd86ZRYCm
-         647UyhAh5yK89hfPIvNLlx4rUctTEq8e3FfyNfJp8ZqkC5ILKkvZ9bO1HBtHZ+xSoJYg
-         S6Gi/vMalFPnufve0j1SJcZAPWxilkM6nu7RIXw8h0lzrz48L2HVSMj5D15kGMUnVmO2
-         hqCA==
+        d=gmail.com; s=20230601; t=1761097442; x=1761702242; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S9onf5CBmbSk29wszlhfpjcFikIXhbvWOl4PnOQkDlo=;
+        b=cg57tflvIcbgIi+ywEF1kVUBPJwpxRPg57jNRB/UnKEAFwgFlizV9ye/ATPKB8U9HU
+         5L6fI+7SuV6nI41LYOg7at+jlmfmDIW/zcVkBL+qT2GL+YwvYVAf9NRTeyYSIVSYyuL0
+         g3HH79jQbiAPXIR4DDQfpBgkKJj5bKsYFG1u1jo2VWC1NsQQdwWzLxpQf0CZYcUCUQgl
+         Skfo9wskDRafcpdKXt74x1z/0P5GW5T0UFqCeuiGksaB3+kk/NMhqFqViOo9MgxnKyCu
+         S2wKeXHkb6Nd8sM0Kq/hP/jfTjm+aViM6a/gurJrfuPwwwEddRvRxF7NcjQtYx183u7U
+         gGFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761088597; x=1761693397;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4Jm32qXMHIXKKOfLhgjYBhQWDQDVGDfzHihzO3VYXnM=;
-        b=rz7tsQfMYFGrfyuhujF0tSYXvb4qTxkIZmqIce4/mGmVVSnOc3gyGkbNORyCMBALT1
-         f7WON8yZTHjaQf0X009dD7rbEWRAM3whPEDqHbi9EwmuaQEgz9L1G1TFXHpvSmnwYYxA
-         Skotsn4Sm+hLggni6eTYlqVrO2LVeDLChXHf9B8goR0/Qy97QDx9MR+4LYMUgXI7vkOu
-         6pUQYa+LLwIrJyfS1d+MNpwJtItf3C7PoLzaQNBMvyzwi/EdB3rSIZGRIWrCRmSr4w1H
-         tLZ4nf9w5XI2vj53Fhs9OaHjkKNaodTLSoHNpkFVUw9Fk8hToPoUv8HESy/o0KBjtjLA
-         0p6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVn+Bt+YoWJRKh2mgAJL3xMsI5Swkoja8kJLx6qMQ20Ljjeu7kkNK8UUay7jhxByT2uLMo/ud3JvhosVnlhVA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFkdFADPhNCyp9C0cuv5zEMbE3WtE+3nS60FlhGW9Gg21n0a8C
-	CYk7QaGTGQcm7sH7x0YXxRYu3+kxMEd2AdN7FQgoru+HLYsmMKCy9jYCVpaoAje1qG/4U1TJSwJ
-	y2AZUap0WQVgDs7pH2ytqIRxA2+NtDos=
-X-Gm-Gg: ASbGnct9y/txqur0748BkkXOKnrExsW4jHxkszywoYb5LqjaGlLpHhE9ZuRQL3me1yf
-	MM8rDf+WKhj+P5rAfcw8feS2qj3/BCq5zCn8RZS1SbAPhMOtRWuZv936ffWx6YyANc2N9mhsO1n
-	gzdZRaa1XvvBVtuxoViNQ36oSOGOAcjt4EkMdfmA1cPqxvcWBm5OrmfbS6aNelFQDNO7ROKWK0p
-	byLGM2TonMd711bTnGuDjh+wkNqb8APJ5o0QujzRhIFhZprotaNjE4twI1qOb/a5bJGirwZTr3Z
-	1Wio2c+JSqL++hsfycLNpkKn2D3GtxGyDhMnYjXgIeg1fhhPAQCQwmyWUJt6Yh61wzGttIIhWNM
-	3I4K2Vun72AjQMw==
-X-Google-Smtp-Source: AGHT+IF06VtyL76w1sSXtIw9bOE6xMloj8rrlvRiJ5iGqaR5hCWDZI+RDSI94yfKuWAc4TqZzzRiWCMUqEonx1/aW+A=
-X-Received: by 2002:a17:903:1ac8:b0:290:ccf2:9371 with SMTP id
- d9443c01a7336-292d3d97a7emr34673855ad.0.1761088597450; Tue, 21 Oct 2025
- 16:16:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761097442; x=1761702242;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S9onf5CBmbSk29wszlhfpjcFikIXhbvWOl4PnOQkDlo=;
+        b=HAY56/wW6gxpwLKp8BZgsr2x8la2eIyVRfZhRrUlz2vL4EJUNZOPgRI35UDXoRom7a
+         FTeshckSKKDPAtGrC/Ed6qN63khLFwIJHU8BqhEKe4qxbc3aAFy5UvsA5KrdK8hJqrij
+         a25SNUn4rWG+hnkQ1CCqODWTjSBkgaauq6UY7h4VmPZaYoPct34orKNfiVg+NwI4acbh
+         Itj8Ovcy3jlUebk+wqp2GGizCwTp00SqKz+N7snF7Xf5aX8omn6n4AOpbbsRJcjRk9Bv
+         baokU1AAccIBbVi/h+zp4sQ4HzOyPjG8grQ6+YdZCrn2LQ6W6As688Sjwxxg3XzGzKRq
+         lqPA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZrTAFqUdKIanB0N36shmFbXy376X3Oq55Vla9w0v95yIvtIqeVU9HnCYAU75QM7u9V2+5Po2/39gXhBuz+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmB8Z7duJdUYfxQWjycNpZCrgHdx2EnqtCw7BAZplHqrome2CG
+	mFzy2hXjWn7dpmrFSzil3sn/tObz04LtymzwYo1peTSB0uLFaOUR7Jby
+X-Gm-Gg: ASbGncsCCC0J4/DNjc1vDrweqgxg4acAirAfq4o6qtNT3QOXq5PlbaU04PjjvujhrJJ
+	GIV8kWQEB6Spx/2cdUMZIvB0FJdLZ2hAmPQODtWHgzcPV11znqopW3Uu6dhkP4kcbedSf2RDNq3
+	BYtgsDqiqcoBYkA6ZiJaJB1ua0BYGHRs9pwf1+aGW8Cs+DJRNA4bd9NHJEuz6satzXJ5AD3913+
+	pFEVOnltxp8xvv8EJrzNftVp011VyuBrbgMOJI/iKXWpratGkoObD2PzFGdS2/KYdsoWsQ4VEWC
+	2rmbjavhvaETnO8bzhuPTFw5RZJBUFFyCxxPydn2XKVZDHrCLHYmAMk8hBRl/+0Y8QdcuibwL8o
+	Wi2sXIGsHGyfZ9ab86nj5G1LyG076733FDBA5GgdIxy66TY6md+r/wdrY2K2kZ9Pbo5V9Dyv8f0
+	OxRV/gDfyVH/9h
+X-Google-Smtp-Source: AGHT+IHulmK78/tDjF6qU3+kx2KCP7ODYLsRFIvylR8jvaOVGxcaG7BUiBMgRTf0SD5dvUFXuEiNXg==
+X-Received: by 2002:a05:6a20:5493:b0:334:84f7:5646 with SMTP id adf61e73a8af0-334a8650262mr27706829637.58.1761097442076;
+        Tue, 21 Oct 2025 18:44:02 -0700 (PDT)
+Received: from archie.me ([103.124.138.80])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a2301211besm12631232b3a.68.2025.10.21.18.43.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 18:44:00 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id DA1874209E4B; Wed, 22 Oct 2025 08:43:57 +0700 (WIB)
+Date: Wed, 22 Oct 2025 08:43:57 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	dakr@kernel.org, acourbot@nvidia.com
+Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	nouveau@lists.freedesktop.org
+Subject: Re: [PATCH 3/7] docs: gpu: nova-core: Document GSP RPC message queue
+ architecture
+Message-ID: <aPg23d8wF6iVaWmv@archie.me>
+References: <20251020185539.49986-1-joelagnelf@nvidia.com>
+ <20251020185539.49986-4-joelagnelf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251020222722.240473-1-dakr@kernel.org> <20251020222722.240473-2-dakr@kernel.org>
- <CANiq72m_LSbyTOg2b0mvDz4+uN+77gpL8T_yiOqi1vKm+G4FzA@mail.gmail.com>
- <DDO3T1NMVRJR.3OPF5GW5UQAGH@kernel.org> <CANiq72k-_=nhJAfzSV3rX7Tgz5KcmTdqwU9+j4M9V3rPYRmg+A@mail.gmail.com>
- <DDO521751WXE.11AAYWCL2CMP0@kernel.org> <CANiq72=N+--1bhg+nSTDhvx3mFDcvppXo9Jxa__OPQRiSgEo2w@mail.gmail.com>
- <DDO6IUEAVBR0.14AZ0UXFYQF48@kernel.org>
-In-Reply-To: <DDO6IUEAVBR0.14AZ0UXFYQF48@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 22 Oct 2025 01:16:25 +0200
-X-Gm-Features: AS18NWA1db9xaE-Optx34cBClVs97tRs8EsVnoB259x46K9u88Yu8XRI6Dm9EB0
-Message-ID: <CANiq72kA8ZMf4ivQa4JTt0ZDmJ5bxWdpjgNb9bfW9n27HdTQ=A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/8] rust: fs: add file::Offset type alias
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, mmaurer@google.com, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iAC4hEmvDvNxfLM9"
+Content-Disposition: inline
+In-Reply-To: <20251020185539.49986-4-joelagnelf@nvidia.com>
+
+
+--iAC4hEmvDvNxfLM9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 21, 2025 at 7:34=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> However, I understand where you're coming from. Even though there's not a=
- huge
-> gain here, it would be good to set an example -- especially if it's somet=
-hing as
-> cental as a file offset type.
->
-> If this is what you have in mind, let me go ahead and do it right away (a=
-t least
-> for the things needed by this patch series), because that's a very good r=
-eason I
-> think.
+On Mon, Oct 20, 2025 at 02:55:35PM -0400, Joel Fernandes wrote:
+> +The split read/write pointer design allows bidirectional communication b=
+etween the
+> +CPU and GSP without synchronization (if it were a shared queue), for exa=
+mple, the
+                                        as if it is
+> +following diagram illustrates pointer updates, when CPU sends message to=
+ GSP::
+=20
+Thanks.
 
-Yeah, exactly, it should be fairly straightforward for at least the ones he=
-re.
+--=20
+An old man doll... just what I always wanted! - Clara
 
-Up to you, i.e. we can already start (the code you showed me offline
-looks good) or wait for someone to send the change (or since you
-started, they can still consider more operations and expand the type
-etc.).
+--iAC4hEmvDvNxfLM9
+Content-Type: application/pgp-signature; name=signature.asc
 
-I will send a small coding guidelines note on type aliases -- I can
-reference this example when added, since it is a good example I think.
-:)
+-----BEGIN PGP SIGNATURE-----
 
-Thanks!
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaPg22QAKCRD2uYlJVVFO
+o7HnAP4u7KGRLbe+oCN/YmXK+pEcCGjInjoec1YU6PfZzmPKqQD9E7LICAzFtTAr
+gFlcqzOanE9DrhfypJiAcTm9yVs4rA0=
+=gCXr
+-----END PGP SIGNATURE-----
 
-Cheers,
-Miguel
+--iAC4hEmvDvNxfLM9--
