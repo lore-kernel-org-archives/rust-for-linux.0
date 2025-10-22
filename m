@@ -1,132 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA80D336EC2
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 11:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2A7338921
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 11:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761132188; cv=none; b=d5OP9UuguvTnCBi1FWv4t2gnAQe0inZ/FIfrFkO8hG+9wtuz+pcqrFosE61inq3UAVN0LKs/JVUqmoEWLmsgyKId0zv10VLYJP4Hsu+kqM6XeM24xlY5AgttgPIYmm7V9FPAclQgUYssaE4pUPmrlWqCBJSrHTK2x4lyamW5QuY=
+	t=1761132492; cv=none; b=Jp54SoobpeT5f8WKmqXk5MYO23NY3Y8DWoTSlWTjtK6A3BrUCuxW3Y1hkqfCHA4bRVpF+6qwALgVnOGz47YzFQBb1dfArcHTtm8GzVI3+O5bCstgNuGwHKkTV9RPFFNDfG96X7kHgnH0G9LNQq5d2PPDhPUNJ/kOqvvAc4V/DgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761132188; c=relaxed/simple;
-	bh=U0afa7d7wN4Xz1LbwkrFQCZXyat5WIi7Xyd+OHpZ2ro=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TVrScVcPo/PT/iLOK2RPTpE4JXhpiuLnD3pPvCnZWAgdCItPRMSLWHi8uDEJ8iN2k+rLYzT3mxkUk9nucxBe78cgWj0TusJ9TJMAYtl3EkbhFAUTh6DUfFeHI1CYPtcKzpS0V0fKvtabbYMM6Iy4H/Fp6BqJTlk4diZl0bzbM4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iMEdatID; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761132492; c=relaxed/simple;
+	bh=GeYp5ENRNtZGT10yPqhZlLkA5ANkd2KNx9IryLw5koY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=k4y74pYGLiSJIvvXy0F3cClxpxleZjMTj0kxdfeQM0WpZup2DlBjBJsNvYC3DCkp7LNQOqkjQ9TZq8xX8a9TAXgYlbYQif01nJimJC9bv/LTy207gckKQQiUhQ/nkvzlU0FCZ/wqmukdrqwaE7bMlECYDNUlXPi58qJkwIZABaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aq4Vbwk9; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iMEdatID"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41568C4CEE7
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 11:23:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761132188;
-	bh=U0afa7d7wN4Xz1LbwkrFQCZXyat5WIi7Xyd+OHpZ2ro=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iMEdatID3HOuLP8OxKUNxtY/DGYO5fVTCGYNvclUj8yCdpVxPPCr9qaoTo1q6Me+9
-	 B/DJGe8a646tHOnuQnxC7Qb2fxtzOTPfSUWqGp0nFc9/SJlJz2F10lUXicDX8uOyuR
-	 lPOt0s/zY5MA+y8+wGq12Fe3zh/ae9i4mw+jPTtBHF9McrY5VqqC0DXsEjAVsWh2sj
-	 lyOAozkiKgS3xzJRH4kSHcwIbKrmBjkvzEeV0exhieqcbL9fkQqSZa5CnSP9IPT50L
-	 nj3fPNYrPMXN3I+T27GYn1Zwv0se6+MPxqk0HM0TxxK7XPjO04/iqpjK0MRZVwFQor
-	 ooYkQOL+nOvUg==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-363cb0cd8a1so82281561fa.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 04:23:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU16kDdRhONloX3jTeqnAQQ9/cWbVzJa+/DUgfYCmHnXoNMyoMmmm5Bwf+nqMX10xGczATM1nlXW8yp80+1dQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ5uCWn3U5+sXk23lAJEg56Xq4v61+/lel2oikPfuXi0+2mjEe
-	CI6qNn64Thnz3Fm5AD6xKvDZN6hM5IpeYaq/NWSQfEJwiBCYYXUsSlHqvc+U4r4gPGLzDxdDihI
-	Ql2itBLphrababjIjGRBtoHHcU4wG7lA=
-X-Google-Smtp-Source: AGHT+IEbfW6o3NNRtEXdirHPWU6pJ57k7CZI4qIRqa+ZAlqNl+Wj6afptSFsAfW1J/oIYaqkLaBi3TvCZ6hOEaHvc+o=
-X-Received: by 2002:a2e:a542:0:b0:337:e697:c9aa with SMTP id
- 38308e7fff4ca-3779777d21amr59192211fa.15.1761132186886; Wed, 22 Oct 2025
- 04:23:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aq4Vbwk9"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-290cd62acc3so63692155ad.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 04:28:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761132490; x=1761737290; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BqxPU3ybT0jcPtSpvtuctUbg2p7l0ybpoGGX4OXazrw=;
+        b=Aq4Vbwk9QcMPBwjRSfJ8fYXQwlFKWqKPBgHX+1pgX316vONZTB2U1oVm1owf7xvMwJ
+         rZ6ivxyMCC2ZFVG0QwHh+KkrYva1+zrR+gJdDY4n42TNqIcUlhV8dXxifBk2B+PEznpM
+         TcB7LXZNONQQCT1URzBH7Kgs9Kf38Ui7KKdk4MWaBf5IOz/E0R4qopDZEMpP+P4ekaTD
+         IY50LpsySBPp1JhAiWyvcP598uKZMQ7RYWGXQuIKZT9DWfLLhjt7gZjRLshYMu1YaZCe
+         8HAsy+B3fA8QXint2qjcSG0h2TmpD9SqFcXqoLw/bxKv72E77MgWBSDHrGOpRXqbrbpR
+         hs8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761132490; x=1761737290;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BqxPU3ybT0jcPtSpvtuctUbg2p7l0ybpoGGX4OXazrw=;
+        b=NPuHtXznkjANl+UCeOsMA7C44LcVmpYP382gHOo/CGOEhyj1Kya2cHc7/D6a4drFxG
+         bUNp2xaEjEzyKkB69v7EI++raQa5dA3w/Q0xl2Mrj7Q/PVLvICRBfyvsqc2xSR2sdK8x
+         YvAd6ILVCsYytDT9Qq0crB30NnyqPbRivdwbDK4nykW9rp2AQXLunPGAZUokBOfjgDbh
+         uFK01srYPI4ybEQtitUd7Xebed6aCLbjYIigY+ZUlB9SBfqcV0aUQlQCogmD0M969yJE
+         PADVk12o2UCldVKYdAGRqpIMGFYHCi7Cx2RSqIAspJg+6ZEbj/pY3isGMGxsjdMPYcWW
+         vcKA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/4cxX+cpeAnytBcgGl3IL582jJheN9yUTpLWLb45OgiSJx+rF6oNBN+mYaM0dPWDjvzHQeTQ3U6r6nKvgcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGrkCr9PewvZDIW0KmESNBcNboCAUX7UB61JnxTIL/nm5+JesO
+	GZowRVUnDTaMi+n2IC9Q2GQI+QGsasjPpSDOSzcf6EoLEPvWxVENMs/H
+X-Gm-Gg: ASbGnctFncejY2v659a9oqKqsWFDc/FOXhJke4uGn0UsSQh60oHrD8IkhjI+U5bXUQg
+	9EAdIm8pbj0tTbIG3D2zJyMdC1vbDval+e9N/o44cH5McTnt7KvNsYo26szfOfHQ3Bj9VgOHYIm
+	mhLR95cM9Ws79TQQwfKem0AA0DsSFj7oVfKYKp9ri/NGkTyz4tg9d2C++0sgaBPXMikjRjFZ0Nw
+	4EdGDwhsvMScZUV48hzNJslfJrCIWyTbRaniC/TgRWn2KcUdSgAoxoBf6mJG96CUQzBBcjLDEXy
+	Z0NcNF45EXUmQXu6R8viTBPhjskxM3XAmvdik2oYfKr2l+TCu9QZDtlDrduErW9Tp0UJdIgtKoc
+	oSM1oo1gOKpHwFi+ifAXr6sOTDFTN2NpdzPDd5cBEJ35ITMjHn3XqEk9pHtri74lbNNL7acttln
+	LCQVe8Gk3WtR5D97owOAJSxM6+VB4C/7FZqRgE2dVnNmBGgk47rut9Wq3Jx50AJG4S
+X-Google-Smtp-Source: AGHT+IHGaMtzm0oPfRLcVei5D22QVh6bUWN9a4cAiOtccRcsTBGutGIH9BwZOenuaOtlvKNrgysN9A==
+X-Received: by 2002:a17:903:138a:b0:290:26fb:2b91 with SMTP id d9443c01a7336-290c9bef53cmr248187565ad.0.1761132490409;
+        Wed, 22 Oct 2025 04:28:10 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29247219357sm135633135ad.111.2025.10.22.04.28.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Oct 2025 04:28:10 -0700 (PDT)
+Date: Wed, 22 Oct 2025 20:27:54 +0900 (JST)
+Message-Id: <20251022.202754.1583747778621840789.fujita.tomonori@gmail.com>
+To: dakr@kernel.org
+Cc: aliceryhl@google.com, fujita.tomonori@gmail.com,
+ daniel.almeida@collabora.com, a.hindborg@kernel.org,
+ alex.gaynor@gmail.com, ojeda@kernel.org, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, frederic@kernel.org,
+ gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org,
+ lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org,
+ sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu
+Subject: Re: [PATCH v2 2/2] rust: Add read_poll_count_atomic function
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <a5cca6ca-9147-4531-81d8-05af1333848b@kernel.org>
+References: <DDO06754OMN5.G0AN9OCWTFLW@kernel.org>
+	<aPeTFMeVoIuo8Lur@google.com>
+	<a5cca6ca-9147-4531-81d8-05af1333848b@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251020-opp-simpler-code-v1-1-04f7f447712f@kernel.org> <ms55ue7qqbvoyfhptzu2a5cuthusihtobremhuqfm7lyu7b62o@qasunalgkptl>
-In-Reply-To: <ms55ue7qqbvoyfhptzu2a5cuthusihtobremhuqfm7lyu7b62o@qasunalgkptl>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Wed, 22 Oct 2025 07:22:30 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9mKiXR-8m_9x_k6YcL64h+QWExkiWCHMFNJbdUYQvPsNA@mail.gmail.com>
-X-Gm-Features: AS18NWCWh65WLuww185GeoIVtS_Sp3w1lr2gaYX18mEhtaHFucdu4WNH68pAuMk
-Message-ID: <CAJ-ks9mKiXR-8m_9x_k6YcL64h+QWExkiWCHMFNJbdUYQvPsNA@mail.gmail.com>
-Subject: Re: [PATCH] rust: opp: simplify callers of `to_c_str_array`
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi Viresh,
+On Tue, 21 Oct 2025 18:02:39 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
 
-On Wed, Oct 22, 2025 at 1:40=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
->
-> Hi Tamir,
->
-> On 20-10-25, 09:07, Tamir Duberstein wrote:
-> > Use `Option` combinators to make this a bit less noisy.
-> >
-> > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-> > ---
-> >  rust/kernel/opp.rs | 25 ++++++++-----------------
-> >  1 file changed, 8 insertions(+), 17 deletions(-)
-> >
-> > diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-> > index 9d6c58178a6f..b84786f45522 100644
-> > --- a/rust/kernel/opp.rs
-> > +++ b/rust/kernel/opp.rs
-> > @@ -443,23 +443,14 @@ pub fn set_supported_hw(mut self, hw: KVec<u32>) =
--> Result<Self> {
-> >      ///
-> >      /// The returned [`ConfigToken`] will remove the configuration whe=
-n dropped.
-> >      pub fn set(self, dev: &Device) -> Result<ConfigToken> {
-> > -        let (_clk_list, clk_names) =3D match &self.clk_names {
-> > -            Some(x) =3D> {
-> > -                let list =3D to_c_str_array(x)?;
-> > -                let ptr =3D list.as_ptr();
-> > -                (Some(list), ptr)
-> > -            }
-> > -            None =3D> (None, ptr::null()),
-> > -        };
-> > -
-> > -        let (_regulator_list, regulator_names) =3D match &self.regulat=
-or_names {
-> > -            Some(x) =3D> {
-> > -                let list =3D to_c_str_array(x)?;
-> > -                let ptr =3D list.as_ptr();
-> > -                (Some(list), ptr)
-> > -            }
-> > -            None =3D> (None, ptr::null()),
-> > -        };
-> > +        let clk_names =3D self.clk_names.as_deref().map(to_c_str_array=
-).transpose()?;
-> > +        let clk_names =3D clk_names.map_or(ptr::null(), |c| c.as_ptr()=
-);
-> > +        let regulator_names =3D self
-> > +            .regulator_names
-> > +            .as_deref()
-> > +            .map(to_c_str_array)
-> > +            .transpose()?;
-> > +        let regulator_names =3D regulator_names.map_or(ptr::null(), |c=
-| c.as_ptr());
->
-> I had to keep _clk_list and _regulator_list earlier to make sure the list=
- isn't
-> freed while its pointer is still used (sent to dev_pm_opp_set_config()). =
-Won't
-> this change cause an issue here ?
+> On 10/21/25 4:05 PM, Alice Ryhl wrote:
+>> On Tue, Oct 21, 2025 at 02:35:34PM +0200, Danilo Krummrich wrote:
+>>> Please replace the match statement with map().
+>>>
+>>> 	read_poll_count_atomic(
+>>> 	    ...
+>>> 	)
+>>> 	.map(|_| ())
+>>>
+>> 
+>> IMO, this should instead be:
+>> 
+>> 	read_poll_count_atomic(
+>> 	    ...
+>> 	)?
+>> 	Ok(())
+> 
+> I think map() has the advantage that it is a bit more explicit about the fact
+> that the return value is discarded intentionally.
+> 
+> But I'm fine with either version.
 
-I believe the `{clk,regulator}_names` vector bindings remain alive for
-the whole scope, even if they are shadowed. See
-https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=3D2024&gi=
-st=3D800b334c514c2024d7b5e47fc54c1f2d.
+Then I'll go with 'Ok'.
 
-Cheers.
-Tamir
+I'll send to a different patch to update read_poll_wait's example for
+the same change.
