@@ -1,120 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5722D34BA3B;
-	Wed, 22 Oct 2025 14:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4582435BDAB
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 14:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761143567; cv=none; b=QsrE2Y+RYVOMIUD4tcpWJft4qi3FTd+9Y8yTTJmIdTg3x9C/LIBjSiQ/hR3AKn87i/3ZjapygxBIEpgPSxDPXL46rDfpmKsDdyUxCgdUxbal8EVYyb2E0uXphQvhLIv/eM4ElxIQuFeMqLv2k3tYETU1NAfsPwfLiGxRL5UGsCE=
+	t=1761143616; cv=none; b=Zz2TFnsIgSjE8aP9t8/WC8P8TlICb47eLpA+4sAS5DYCq9W8RpI+NBo5dMhyIQXdujvS5JFpaVBvqEchwKlvWWvlCzu9i87pketWiBAs7P8q4/LNhbs8Xc05uKGFZdeLYlNgaeupgVTbVptE9qCopZQjrUj2+kVxWPdPIVEhtC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761143567; c=relaxed/simple;
-	bh=sXQXAVOh9j2HCBx/MA+oC29Av/we7cIMQpnGv/8+4vU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brNkr3aadAzUf99beXxkwnAAdlfJDWAUUGzhfRNTvocIXWov611FscMCb+yK7s+pO7RX1bI09kejASvRj9axCGxDZCrd3ClJ6zty75OmfR6wpoXAkNJa3GxUKU5vW2M2vFOdMMN6QbELOziuzcuuv2gSX+LaveW1EwIJ85zWgEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZPzkN26; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761143616; c=relaxed/simple;
+	bh=vyWbS/ppesBx0rG6nt04vo4pgysQzY0IkznBF+vpUqM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=qpNhwn//iwn3NHNgImoZoJkkGNydKI3PezL68TcTKd/6orcg8WxbfuCyG6iHE5QTzDUNA3wH5WgJGMpsAJynp9mLTN5o1ajLwMkkStkFLwlOzJBfyTmc5XZpEzw4vzoPlrDjw+AhpRTKIj+bPhGEBlW/rQNQ6RaLxXlUBFkqJl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aq0B8ty2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZPzkN26"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DFDC4CEF5;
-	Wed, 22 Oct 2025 14:32:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aq0B8ty2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE18C4CEE7;
+	Wed, 22 Oct 2025 14:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761143566;
-	bh=sXQXAVOh9j2HCBx/MA+oC29Av/we7cIMQpnGv/8+4vU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZPzkN26cxvO1tn1HrD8/If7jFUGomb/f3RR3j9EWQLuKFJXp7QiZU7gRFXCWGjKd
-	 c/riLK/YZkX6QNHXjlNtLtSunc3SCkti0oOBlt1qPsjxxctGq9fyCcVh0Ft2dbMflM
-	 VrfyqIo4gfcbfvsU4Om0tnDduE3o/f+Lu6Vtoepzj+a4SL4S7xCcuFQ2ppW1guf9EK
-	 pq24bQTSu3J1KHvU5oeiVlWVRPDQd7g425J/vTUxp/myzWg9ubg7uW0bod2+K2C5/U
-	 gOal/fzzMIEf54h4Bz6mgNiyRF5/UWx+qzYz+Qx6XD7YQFp5xZE2c8prnZR5V8LbRt
-	 CRXWYrx0FZrqw==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	mmaurer@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v3 10/10] samples: rust: debugfs_scoped: add example for blobs
-Date: Wed, 22 Oct 2025 16:30:44 +0200
-Message-ID: <20251022143158.64475-11-dakr@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251022143158.64475-1-dakr@kernel.org>
-References: <20251022143158.64475-1-dakr@kernel.org>
+	s=k20201202; t=1761143615;
+	bh=vyWbS/ppesBx0rG6nt04vo4pgysQzY0IkznBF+vpUqM=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=Aq0B8ty2QQIHwPXeVpwK+phbL3Apg1bkOGylrJvB8F07GDuXfcZfd/K8rYspbVXWC
+	 IBrcg2yEeo3n7bymj9q8jDsgGOFJGuDqjyfingHPTR1jUNMZsHk1k7wSlyfU7sY0FQ
+	 6p9vBVX0mGT4Jgqf5Hj8/pxUnRS/0+68Kbu8/ABU012agSi5tIuWiJFby+qkF3/3mC
+	 ng0LnGfMUGUiiihPAc96IoCPIsBgaMnYzT0Y/SWbivonk4kkx3Q0YHNE7JZHZ/F0SM
+	 pRfgz0vr/+8snTeDk7RYBtn5lU1tA8le9uARpUQs0Vci43462UHMvkyh16p4gkKhiA
+	 xCFk4Fn3wkg7A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 22 Oct 2025 16:33:31 +0200
+Message-Id: <DDOXB23RR815.33KM5MWJ6LN4I@kernel.org>
+To: "Junzecao" <caojunze424@openatom.club>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/1] rust: fs: Add FileOffset instead "pub type Offset =
+ bindings::loff_t;" and FileOffset test
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>
+References: <20251022122518.457702-1-caojunze424@openatom.club>
+In-Reply-To: <20251022122518.457702-1-caojunze424@openatom.club>
 
-Extend the rust_debugfs_scoped sample to demonstrate how to export a
-large binary object through a ScopedDir.
+On Wed Oct 22, 2025 at 2:25 PM CEST, Junzecao wrote:
+> Reference issue(https://github.com/Rust-for-Linux/linux/issues/1198).
+> Only addition and subtraction operations on FileOffset are retained
+>
+> Signed-off-by: Junzecao <caojunze424@openatom.club>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://lore.kernel.org/r/20251020222722.240473-1-dakr@kernel.org
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Matthew Maurer <mmaurer@google.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- samples/rust/rust_debugfs_scoped.rs | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+Thanks for the patch!
 
-diff --git a/samples/rust/rust_debugfs_scoped.rs b/samples/rust/rust_debugfs_scoped.rs
-index b0c4e76b123e..c80312cf168d 100644
---- a/samples/rust/rust_debugfs_scoped.rs
-+++ b/samples/rust/rust_debugfs_scoped.rs
-@@ -9,6 +9,7 @@
- use core::sync::atomic::AtomicUsize;
- use kernel::debugfs::{Dir, Scope};
- use kernel::prelude::*;
-+use kernel::sizes::*;
- use kernel::sync::Mutex;
- use kernel::{c_str, new_mutex, str::CString};
- 
-@@ -66,18 +67,22 @@ fn create_file_write(
-             GFP_KERNEL,
-         )?;
-     }
-+    let blob = KBox::pin_init(new_mutex!([0x42; SZ_4K]), GFP_KERNEL)?;
- 
-     let scope = KBox::pin_init(
--        mod_data
--            .device_dir
--            .scope(DeviceData { name, nums }, &file_name, |dev_data, dir| {
-+        mod_data.device_dir.scope(
-+            DeviceData { name, nums, blob },
-+            &file_name,
-+            |dev_data, dir| {
-                 for (idx, val) in dev_data.nums.iter().enumerate() {
-                     let Ok(name) = CString::try_from_fmt(fmt!("{idx}")) else {
-                         return;
-                     };
-                     dir.read_write_file(&name, val);
-                 }
--            }),
-+                dir.read_write_binary_file(c_str!("blob"), &dev_data.blob);
-+            },
-+        ),
-         GFP_KERNEL,
-     )?;
-     (*mod_data.devices.lock()).push(scope, GFP_KERNEL)?;
-@@ -110,6 +115,7 @@ fn init(device_dir: Dir) -> impl PinInit<Self> {
- struct DeviceData {
-     name: CString,
-     nums: KVec<AtomicUsize>,
-+    blob: Pin<KBox<Mutex<[u8; SZ_4K]>>>,
- }
- 
- fn init_control(base_dir: &Dir, dyn_dirs: Dir) -> impl PinInit<Scope<ModuleData>> + '_ {
--- 
-2.51.0
+As Miguel pointed out as well, I already have a patch [1] that implements t=
+he
+parts needed by the debugfs series; also sent to the list [2].
 
+Can you please rebase your work on top of this and resend? Thanks!
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?=
+h=3Ddebugfs_blobs&id=3D91cbaa29cecaa86fe45ee08680cf19f451b77116
+[2] https://lore.kernel.org/lkml/20251022143158.64475-2-dakr@kernel.org/
