@@ -1,133 +1,115 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0702EC0BD
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 05:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DB2EAC7
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 05:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761111638; cv=none; b=GufRwc5gPMNxhD7PI1L+9QEy11vy9x2QiJzbigmqjTvuIkuTZri0LW0EtlpNED14dDMDwYvnEcpaywUNdU1yNenXUCnnyRcZSyOnvkN0U2CkJIDzh2UCPjWdsv0/k3Sy5Iw0jLB7+riqsfMAr4dmm2Zyj3ktV9CRG1qlsHgEZF8=
+	t=1761112302; cv=none; b=LntIf979YDWI1uFtJaFYrbUi0Tfze+nelCGZxTjJM2UNoAabBNwh34tO9pabILSaxVHlQsKhxhmfuIKeVLujgn+9/+dWEdSzVhu0SwqMQI5C/UBZ666CR3KrDtY/CyA8r1Vq9K4R8V/XTYWWHeixSNJ24+xJ7dvuGeoy2Ioztzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761111638; c=relaxed/simple;
-	bh=pJrhTqkYqYrDrHV69BMLI7l5fWeIbisLorjstsXX25A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RJIw9zfiFZTEJUkTjjo5C3tfw1gYZhpSyt/iq+/XUP/GiIOyCWedfjN50+bb1rjEBsqC96mhbX5VGQXE8Sb5zCrCF1dz6Ju1nsOnuOjNgfsZRJKhxQT/b7JO5VCBbzHERz3dCYXZ2MTkJhUvRyblJA+yy5Nk0yF9loBO0FU6o8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jZ0mgvFY; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1761112302; c=relaxed/simple;
+	bh=ucp7DRPRvHlKQ1ImYNBcM1swIw52ku73Waj6AkYdHBg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qlMPaic7eR2SQM3dI7+frW5ywfVTtI5AZ11u2ttTVpInCU4GmK1AaKTHIJoBMgvo7nS8O+NCIVsnATMxyFDA/xiotKh3e74J59hRYctUKDTxCteuc2Gq/PwjGsr5snTbGkQiR+gTeeRFODR0uMYzQIZvKU51XqS2++puM52HocM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=epN3avjR; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jZ0mgvFY"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-27eceb38eb1so65997845ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 22:40:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="epN3avjR"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-290a38a2fe4so6069935ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Oct 2025 22:51:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761111637; x=1761716437; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3iuqqBL1ouz7GRlykwDwM8a9PRkBS4+Fo5+nLag3W1Q=;
-        b=jZ0mgvFYrrBhUHTOr5Ax2Wy+e9v7GqNRGdZRazJrfu61DvsxLyAKslmBg6tytGg+PR
-         mTuvME0odwzbzdOhCRRHM+E5WeBTIJbzxHtSTXW5tpUQosv3og78D1gyn7tIS4m4AeFT
-         t8GkvMmzNtp2WzL/L0B6FovdhVhDnze4L3op66i7cnrrcyqdaEYnSrOvYrYczxZHpfk8
-         OEOwRAJqPtlG37eRSG02rnZJCxCddvbXul8DVicoGJNuUabtgsJ5jkbVNQYQTTOSVbc/
-         g5+AHDg+7cpTeLjqh9aRJ52elfbU8FShhaZiOHUO2ocw8tCvBgDxfj16teo8RfBAI9IG
-         9IcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761111637; x=1761716437;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1761112300; x=1761717100; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3iuqqBL1ouz7GRlykwDwM8a9PRkBS4+Fo5+nLag3W1Q=;
-        b=Wn8L4p0q/8hKqrc1+URtD5B9aq8G1Ik7SKI59E64cx6bo2v+3LLxKvB+ZXORB/ktpq
-         Ld5DNQcaRam/O03p6FX1UVBvbESw6WvcIhIReKTdF6UkPmkkSB1XigQhXYhXhv4qY4GQ
-         mOP3pjsdlPkCMkALCUEjSucXEF8HRZpVoX3no5D0YgDusi8A6YZv3X/OT/IIEvtMdE8a
-         vzRHz359v7XN7psjJDaqkia4J1blBETx9fABka7dQwbZGtxQSv1F6AFcESYMOOvwddNQ
-         k4Q5FeGHskLbsWQKRw75esp7PfthH7IVzZEnt8l6Ys44GoF0BqJhUjpi40bzZY4n3kTU
-         BZqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUoxoTpxB5JdMdFAFMECtCu7h3F8SS3c6PwVWj2yL0DWa49QxvtU6AcTGZ7gVhizKegj4SE65d8CVto/HGqYg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQCWyDCFTYq6t71zfiMn5QvrtdfkFsrOm8YzE1RkNvqyb6iI3o
-	LHg8cz8Gv2eOWSLyyafzJgDhRnNHsloC6rQOSWwb8oStw9IbX5ir6YxBj45v9ET+tiU=
-X-Gm-Gg: ASbGncvdoAqvDCz4o7MCkqC4DudoLS1bVdVlmHf7pP9RsXYgZkXdH94bCdDLhwIfhOc
-	kSUTWZSjLYusxAKR2i72sBjT35zhJFD0MGX21WkSvgto73jESro7vN/tvWEKyLYyvhOlWqKLFr7
-	WYL7SZF1qKqg7d/HW+wdRW5prC+SCUYVySXuzBLz1FAJWVzB61lh3PPaSuioVSmvPFgy1JS3ZtK
-	Xavj2p/qQT2le2kB1OGrcmtqJKK5h9ZfLuRqld0+LNy3EZ8gpm2EJh7CmueSIchyNmM1Km3NuX2
-	0Ksxm8+tdg0dybVRDoBsfW1o7KKArtfnXjip14Rqg+u000tr18cI6TRF30fvWvU8Z8VNQGUIyzw
-	YTka0J87h30oGCzOs0aEvbEjdKy4q4+MVghF70Ag7j8dX3QSlGu3oDAA1VWKh61oO1UbeWyta1B
-	JZoQt4gEr68vqQ
-X-Google-Smtp-Source: AGHT+IH3mz2S4uhTIWWRZrBsBMjC/WQ2iNPLucaIEk7+PMDLVPZ9t3rD8MK8J58F865tjsvy8UEZXQ==
-X-Received: by 2002:a17:903:8c7:b0:26b:3aab:f6bf with SMTP id d9443c01a7336-290cc2f83fcmr265736415ad.42.1761111636533;
-        Tue, 21 Oct 2025 22:40:36 -0700 (PDT)
-Received: from localhost ([122.172.87.183])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d5971sm126981835ad.56.2025.10.21.22.40.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 22:40:35 -0700 (PDT)
-Date: Wed, 22 Oct 2025 11:10:33 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: opp: simplify callers of `to_c_str_array`
-Message-ID: <ms55ue7qqbvoyfhptzu2a5cuthusihtobremhuqfm7lyu7b62o@qasunalgkptl>
-References: <20251020-opp-simpler-code-v1-1-04f7f447712f@kernel.org>
+        bh=lzCSS40w0uA4KnNFZqxxDzrNoeqUCAqBFU1DIktR0u0=;
+        b=epN3avjR2Eel9JYyx/QBPgE3S1bFbdtBh5dt9uFcSUtkcrjePiwdpp1BkM9ONRzPSG
+         AaDOOyZuBgnSjC7p4dT56PPdVpTJSSFkJEgLYlBd58/FtdNvucuY7TRQCKloVbz0zax9
+         J0U7UXdji56VW8x+cpxkpI7vtKq89CBhUtARE/raf4k9C/TvyOXJF3JmlMgbg0gTaoMz
+         WTNsMy/CJ3ty42k7/TW7JD7qIxUNEvuofmEXfMfKzsw8sisNYAodbWr1Laah1c5K8Fzc
+         T69d1izwljm3IiRrHD5dOCfYinl5gAp6zH8QESSrryGYPRdiUBYcFyWuBpYeBOrgl9xl
+         LWRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761112300; x=1761717100;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lzCSS40w0uA4KnNFZqxxDzrNoeqUCAqBFU1DIktR0u0=;
+        b=Nc0W9kRGGLfg6xqCRM7D4NgA+ShPLsb04UHGiVPDl2bWt15wKObIzelCtqCzaeawY2
+         xegEvHHBBwwrbsbRauehKWx8c+PosHlJzeGcYhB4vx+CekphnnD6/u8BMHGhohg7ewTz
+         Qz2qAhwybjKUxWPJL9562ETYGvjCgbReKFj70SS+tcMchqr0jaLHmLbRoNpH42L0xOFQ
+         bmb+3s1Hh+4vYSKAJveLZCoohbmSRg0TSECziDq9xY1nrjhxUdJvJujLV/bP1yRGuP8c
+         us31ildkz1VT4moUKDI2sdAdVbB9Yz387yaZK0lKayM/fUi/X1PGW8fM695TeqTE7N+u
+         EdEg==
+X-Forwarded-Encrypted: i=1; AJvYcCXgJBAfQc4l86yy//188VfSgU/ToeT/wXB6dNJB1N6QYMJnbe3GTOSBCKxnf15wkkCvqH6YvCauudBv8VwO+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxkkc6pQIi+5W9bmdRpDKr26+ZBjAVKWf7rkv4ArIId/M+8+LPx
+	hnri2RFW3wIk12AZXVxd/1CvTuljzatbkfqUQ15YiBip+2QTyt+x5PgRN32qYdaHFK/OrqTlk6m
+	lnT+DOrfE+EO+jBd9tnol0RwwYb0OCdE=
+X-Gm-Gg: ASbGncvp4QZnlOCnq7CBs0+iG9BAhdb6oMf2damtLQ8jBH1/tZP8KupEXVrdLw7EQS0
+	MvZ5HUxhWPLkgGaz+rLNZ5TTHSdxCLjD0pTezi/MU4KmjZrADIl9Fp4o+/mwoe+3itjv1LHztJj
+	9TdCbaOxnouSaPxSHMercbA63oPzrylItDpC0BJHns2/NemL98YnU9/osZKrPuLVyCI/2ZHhpCz
+	/dtPxNM43G43ZPeCSQTeGLsu/RX62fqelgyLYsBFNhCL1lS8NTmH1jJFoYqBJCstOO91SS0+qU1
+	cfkqJRjC4ISIjNo9aoIBeKD69u7RDV8nIHSruDN+KEzwbwMNHarJMjPDAzRrFU/MBjRcXAaQXax
+	lyBRUWatUmbI5bw==
+X-Google-Smtp-Source: AGHT+IFL/AlUAelBKUAAV2lgJId/DywOqoyxOM/upbkNU/Z4R83S4fX6yCXSYO1AvV8pIvJROMYrR3nU31E1ptU2DLs=
+X-Received: by 2002:a17:903:90d:b0:290:ab25:29a7 with SMTP id
+ d9443c01a7336-292d3f611a1mr35174355ad.5.1761112300109; Tue, 21 Oct 2025
+ 22:51:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251020-opp-simpler-code-v1-1-04f7f447712f@kernel.org>
+References: <20251020-cstr-debug-utf-8-v1-1-1933c0a6d6b9@kernel.org>
+In-Reply-To: <20251020-cstr-debug-utf-8-v1-1-1933c0a6d6b9@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 22 Oct 2025 07:51:27 +0200
+X-Gm-Features: AS18NWAMP3cE-lqZND8qnxVgW5VA3HNm9VtVw2nMIdotUhmYWrQh10vv7hgwlSw
+Message-ID: <CANiq72mM-scMGCFxogHXP=4Omr23uVEg4cBBsZARhSCt+9kHuQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: fix tests under Rust 1.89.0's `CStr` `Debug` impl
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Tamir,
-
-On 20-10-25, 09:07, Tamir Duberstein wrote:
-> Use `Option` combinators to make this a bit less noisy.
-> 
+On Mon, Oct 20, 2025 at 5:27=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
+>
+> Starting with Rust 1.89.0, `<CStr as Debug>::fmt` prints UTF-8 sequences
+> unescaped.
+>
+> Thus update our test to expect the new behavior starting with Rust
+> 1.89.0.
+>
+> Fixes: a1ec674cd709 ("rust: replace `CStr` with `core::ffi::CStr`")
+> Link: https://github.com/rust-lang/rust/commit/a82062055af1ecdcb7f4d33718=
+55aae843fc0ae3
 > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 > ---
->  rust/kernel/opp.rs | 25 ++++++++-----------------
->  1 file changed, 8 insertions(+), 17 deletions(-)
-> 
-> diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-> index 9d6c58178a6f..b84786f45522 100644
-> --- a/rust/kernel/opp.rs
-> +++ b/rust/kernel/opp.rs
-> @@ -443,23 +443,14 @@ pub fn set_supported_hw(mut self, hw: KVec<u32>) -> Result<Self> {
->      ///
->      /// The returned [`ConfigToken`] will remove the configuration when dropped.
->      pub fn set(self, dev: &Device) -> Result<ConfigToken> {
-> -        let (_clk_list, clk_names) = match &self.clk_names {
-> -            Some(x) => {
-> -                let list = to_c_str_array(x)?;
-> -                let ptr = list.as_ptr();
-> -                (Some(list), ptr)
-> -            }
-> -            None => (None, ptr::null()),
-> -        };
-> -
-> -        let (_regulator_list, regulator_names) = match &self.regulator_names {
-> -            Some(x) => {
-> -                let list = to_c_str_array(x)?;
-> -                let ptr = list.as_ptr();
-> -                (Some(list), ptr)
-> -            }
-> -            None => (None, ptr::null()),
-> -        };
-> +        let clk_names = self.clk_names.as_deref().map(to_c_str_array).transpose()?;
-> +        let clk_names = clk_names.map_or(ptr::null(), |c| c.as_ptr());
-> +        let regulator_names = self
-> +            .regulator_names
-> +            .as_deref()
-> +            .map(to_c_str_array)
-> +            .transpose()?;
-> +        let regulator_names = regulator_names.map_or(ptr::null(), |c| c.as_ptr());
+> Hi Miguel, please feel free to rebase this in, if easier.
 
-I had to keep _clk_list and _regulator_list earlier to make sure the list isn't
-freed while its pointer is still used (sent to dev_pm_opp_set_config()). Won't
-this change cause an issue here ?
+Thanks Tamir, yeah, I saw the test failing in my CI.
 
--- 
-viresh
+To keep things simple, I just removed that assert for the moment -- if
+we care about the escaping behavior on debug formatting to the point
+of testing the behavior on different Rust versions, then we can
+re-introduce it.
+
+    [ Removed assert that would now depend on the Rust version. - Miguel ]
+
+I took the chance to take the tags we got so far too.
+
+I appreciate that you took the time to put the link to the relevant
+commit upstream (in this case, it was yourself, but still :)
+
+Cheers,
+Miguel
