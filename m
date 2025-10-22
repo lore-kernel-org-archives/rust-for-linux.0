@@ -1,140 +1,224 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010067.outbound.protection.outlook.com [40.93.198.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917C72D3231;
-	Wed, 22 Oct 2025 10:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761130393; cv=none; b=jjqwtvC9cmtbZ0ha9L5PPnWpZefqGIRN++UCb49JE6ech1CLaN3o11e7qLA23ZACd2z7WBtEejte32hYhV0u7XGLd2OIE4czcxQ7iJBDQDcSpHIz91//9JVbbscjw1Ey8hKsQik/RWXUHQbU7g9CVRezmEgRQXFtarEI67GUcUE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761130393; c=relaxed/simple;
-	bh=zt8uxkdbqQzapKcBrVoV8/gQMIawtmzx5vveZrtl6qw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eQad4fOc8xUQkhGrJxKn7OPO8lzrb9FKiHtQG3+XpT5Ey9f5u1fsKSjtWZyzO9e6zZeVYF66R+jHIvsTLIx5RKLHNoeNACAnbiR0pJHAVE0tcX3Cmhb7z3LgD2q1E9rKOKXR88kTP/GyXbZA8EW1ZP1fu0xuELrODhqo+cfhRy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=PsoK9a3j; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A83332EA1;
+	Wed, 22 Oct 2025 11:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761131817; cv=fail; b=HINgooGH+olP2dxr7T5vZxM1s6DlkLdzAl8s9EPFR/BpeIw+k3EI1f6ojklWyZEl2skcGG371435MdKtu/y5+HTJiRYsAnkKr7Ic6stxvk+cqWfZChuQIRpxiVS9YWKqoclSrBOdiqNqHb/tbeYZ45Tzn1mSsopSrqjo0cTHBHI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761131817; c=relaxed/simple;
+	bh=ioEdcxcoLryFFf1Uk5t8PgdyjXEIn2tIntUyLo1i5cU=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=CHE/nZCqWgxxa2FlTj73lyz4TEwgf42C7+ksC7Z4xasQcgN2QqtseWQF16GrP4RTINIufMmMhYjJ7TCp9wGCsxu0yuXYW89/asYvJA9IxPGtI9r7PTRRgwlOp9hURoBS0Jmb5m5U4E/la0BYeKRX4jisPMESYK5y1AyiNnK6vEE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WUZZPhzK; arc=fail smtp.client-ip=40.93.198.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="PsoK9a3j"
-Received: from mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:84a0:0:640:dfd2:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 52399C0AE4;
-	Wed, 22 Oct 2025 13:47:18 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ClUg8fCR30U0-mFQIpW0b;
-	Wed, 22 Oct 2025 13:47:17 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1761130037;
-	bh=0E+EBgQsNDyNzTW4wNEOa6xsi+Q7o8SpYmABR6Q6Fyo=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=PsoK9a3jz9CNKVQ4TdaXf5yYRk7fByokatXx1pVBqMLm6NFr8QT1j9Sij2cLPm0DJ
-	 TzslpY++6DkRip6BvRX3Nu/lJuVOjVs62I+nx3AzatyOKyGk/lkJvgT+EEfGw9GXzx
-	 JGQ+Xe28aaXh4V6yOToeYk7W+dGGmA4KBWsuzzdk=
-Authentication-Results: mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 22 Oct 2025 13:47:11 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com
-Subject: Re: [PATCH v6 3/7] rust: implement `WwMutex`, `WwAcquireCtx` and
- `WwMutexGuard`
-Message-ID: <20251022134711.75194e08@nimda.home>
-In-Reply-To: <E98866AA-AE29-432E-B6D3-4625103B8D07@collabora.com>
-References: <20250903131313.4365-1-work@onurozkan.dev>
-	<20250903131313.4365-4-work@onurozkan.dev>
-	<886565B2-B5CD-49DA-9598-EBD60490C0DC@collabora.com>
-	<E98866AA-AE29-432E-B6D3-4625103B8D07@collabora.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WUZZPhzK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qpamofq+LWyGEMsworP/5jG4bv29gfttYA6EiAtVzWS7fAbob+E37Pfw/NOog2o7fAO2PGL+YPCBwhDh90l0i/N76USGbPZhxTvIPqfCm4lMTH8+zcmq9x+mVf2qY73Z0rGZm8Ax6B/hZwsToFdXPdVZIW/BOAiB9uq3c2rfXvfHVIVq4mEXuQEQBZMhT7X0ZjzdiChW45SdrPc4al2OaoRkLw4C6glKfjfWgpV5zIjEKiJvvUMEMy+AvFjNuWefsAMh2X4LIIc9GNJiOsSbrznWzzxah6IYV16/3YR/8ayK6l+hqNxJoizGIaHa/HhhXumVoOx4S2tZSrnmTpiooQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ioEdcxcoLryFFf1Uk5t8PgdyjXEIn2tIntUyLo1i5cU=;
+ b=FN2phYk077dRmY9RtwJTGf4KrgU9oBQ3LtJGkhzHKVB2dz9TR4eIPxuE6rPt6cJKRA7MDpRqY0Z2HNBom8uoEzfRVvPSzjNvuYQYh4c9+I2D5I/3kHcandmPGKFfCJip68zZzEW1blhoX8WFJdz2NMTqsIAojmg+6yY8je2SMeAcV30i4x/PAtig5kRVqgd9il7dPhF6kYVqfADuHuLKFelTKI+fKPRVmk/TQ4B20o+ZvzdPv09NVoCo8LDxMUiO92LH4rZlWFDfqBvl9B6d18uucUjVtQr1H785cFAoOFeFIfGL8F4RF/kYnBXpCNusi7xQF+8DlF3J6YvVL1Yjsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ioEdcxcoLryFFf1Uk5t8PgdyjXEIn2tIntUyLo1i5cU=;
+ b=WUZZPhzKgjiVdrd1eOeL/DVSFhkj3r8XAOHXrxdRkp8/GutLKdtxdWetTO34REaTY/KcAFuc0NFrerg4GQRODLTj0Zav1Vdc+HeE2UFz/p9v3cNmMdj1LaVXW/0ej0ahzylDLHkE5YRsz+XtuVzFumSMt/KVBBgiL1agqHBmyaUn/byvhntnBlQLdfZYWMTiIxJXqhNfHJcgZ3Nq1SbKWKLNxWuXZ12w/85ewjocbz0PCA1U5AwnGvBqcDIwqweBqjP0WZ4gG06TAU57RcyM69bhYVYAtC+nMQe6GQ5xwsEQejrj/oJuccI5IOsIqg7/KBvmqu9Jms57LWJxNgzQMw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SA1PR12MB7294.namprd12.prod.outlook.com (2603:10b6:806:2b8::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Wed, 22 Oct
+ 2025 11:16:52 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9253.011; Wed, 22 Oct 2025
+ 11:16:52 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 22 Oct 2025 20:16:48 +0900
+Message-Id: <DDOT4FSDBO47.31HWROO6FZXVB@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <dakr@kernel.org>, <acourbot@nvidia.com>
+Cc: "Alistair Popple" <apopple@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <nouveau@lists.freedesktop.org>
+Subject: Re: [PATCH 3/7] docs: gpu: nova-core: Document GSP RPC message
+ queue architecture
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251020185539.49986-1-joelagnelf@nvidia.com>
+ <20251020185539.49986-4-joelagnelf@nvidia.com>
+In-Reply-To: <20251020185539.49986-4-joelagnelf@nvidia.com>
+X-ClientProxiedBy: TYCPR01CA0091.jpnprd01.prod.outlook.com
+ (2603:1096:405:3::31) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB7294:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0da2eee8-8251-4aef-6bf7-08de115c8032
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TEVudWU1bUlNT2hvWDA3a200b2Q3U1dCcFFYVzZxSlBaQmo3d1hpZ1RtZlVS?=
+ =?utf-8?B?d1lKMlZDbzBBR3ZWNTV1K3FoUXhybnBVVnBXWmpFdEExWlorYXlWRVRYcENw?=
+ =?utf-8?B?V0E0cVpHbUR2eEJYdVdvVDRNS3ZrSG92a3NRVXIvVkhKOXlpYzNPZk42QnJa?=
+ =?utf-8?B?UDFQWEZ2M2JNckJmaVFMUlZOL1F0WHJrUTc5aVhLS1dVNWp2SDE3OHdZV3pM?=
+ =?utf-8?B?dUJrR3YybjM1bDNVZjl6NXZoQ0VYWmNrY05oQjNweERZbXBBODJFbncrcWxB?=
+ =?utf-8?B?VHFHOFhicGZ3NXorcDloTEdEMzNFMFhrWDhFTVRBSkpWcCsrQ204TFh5QUhr?=
+ =?utf-8?B?NW9Yd21YS2lXK1pWRWdkaS9paEoxN1ViU0c1aHFtVDQ0NjZFR09GWnV1U1ZD?=
+ =?utf-8?B?R3hEVkxOb0k1THZVVzlXbWxIblU0WTZ1bVlRbTFQaWtmVHAzR0Z2ZW96M2ts?=
+ =?utf-8?B?UzZtV3k3b1o3SWRWTkpCUnFGM3llNVVjM1Y0THNSUGYrNGZ6bW1idUx5emJr?=
+ =?utf-8?B?aU9pNk9Zb2FIYmFPbUJUSlUrNFZwWXEwdnNQL1UvTS9jRWp1dUFiZHJyTnJX?=
+ =?utf-8?B?emVnNDhROTlnMEVKWlk3TFpkV2RBR1lybVBsaVA5QTNrRFJBLzc0VGs2TGNl?=
+ =?utf-8?B?OFBQUHczNytMVzdaTktCNm9IckFKZDBlNmpOa2VFUFdNMTAvb3JFazBCdnVn?=
+ =?utf-8?B?bHhWYWRRUjVqOUJGRTVnNUJSYlByeDRRZlBqaWNwSkxEQUV3T0lKNWlndW8z?=
+ =?utf-8?B?MkVLSzY5VXhhVDJqT1J6OU5PVkZ2bkV5S2MxMVRUUjh2L2FXVU1IS2ZnbTBz?=
+ =?utf-8?B?R0F5VXFwNGhlZC9UTUpnSmIxNmpLZnN4Yit0R24zbGc3WWtOZEZzSGxyV3Ix?=
+ =?utf-8?B?RmFHZ1RRN1dEVk5uY3VzN0Z0akozMlBZMm1yVlJaSnhhc1F1ZjFwaDErVlk4?=
+ =?utf-8?B?SGUySHN1NXloTUNKQTliUTRwZVdTbUhER3NteE4rSUNqOUtZbDkyZTNJaGMv?=
+ =?utf-8?B?S01OcFEremtZTC9aSGxndlhpVTJhRGtFOVlyajRRVnZPcVpRZ09HbkQ5K1FV?=
+ =?utf-8?B?ZUVNcFhoeXZ0VWpiN1c3K1F5NlZhSllBU1NJdlBTMlFzdm43VDBLTFUxTGxq?=
+ =?utf-8?B?R0ZUV1MvZDVQcHM5clduWkUvci80TVJxZUdIQ2lGR2kzeWNOM2h2RC9uL3Zv?=
+ =?utf-8?B?RmlpMlB6RU14Tm5vSHdSMmhLRFptVFliakxZZGZYeEIzeWhkVHpPVjlHV2JD?=
+ =?utf-8?B?d0VoT3hnS2NyVnNxMmNDVnN4bVVLYmJmMkl3YXFJdC80OFZ4WThRV1lPSjNT?=
+ =?utf-8?B?MzU0aHNBNEtJUjBlZ1YzcDI4Y0pMZVNzUk95ZmVaVTlBUkcwaGt1NURPSnRF?=
+ =?utf-8?B?Z21LZmpSNnB0ZTljVzk2SUI3clAxdTZZU1U1dGpvNzQ2ZkRjRTlScU1UZ09X?=
+ =?utf-8?B?SlpIa2tmRS9IVW9oVTVQR2FyanhEZGljem5nWERyVWl5L01hek51d21jTFkz?=
+ =?utf-8?B?bXpZVEV4RzdrYjZkcnJ2T05DTUF4cXIrMmkxQ2tUZjlQR1RyakFmNzlUQnZ1?=
+ =?utf-8?B?RzZ1a3NRNnAxdzN5UEw1MWJMTTl2OUh5UWFjMXlHU0xNcnNGMkdDVlh1WW9D?=
+ =?utf-8?B?OGlUZTJjYlFhM2N3MHBRdHFNRW5UZlZhUXFJbXppRTFPcktnSm9GRDZhTTFW?=
+ =?utf-8?B?R2pnQkNYWnNFa3VHSDZmWUVzRjkwTWdKSnh1L1h1anpKU09qRlBPczVCNWcz?=
+ =?utf-8?B?Qm5Pa1dYdE9ZRDUzOXRoZitGc3lhVDJubWJqRUQxaXp2VkNTUHpjaGxDWWJR?=
+ =?utf-8?B?V0I3KzI2SHJIc3JkZ3RpNjIyNWg1OEYvWFpSRDJSTmFwT1ZyTGZtTEdCaHk4?=
+ =?utf-8?B?bEl6WTFWN29mQzkrYjliWlkwVXoyMncxL3pEMHo1K2ZYQWZZSWpuNVdTN3FV?=
+ =?utf-8?Q?UHMiERST8hp7iQRdy2n294pCAZzeMaM7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TmpXOUN0NmswNmtEbzdLMDlMVGxDbkRyK2xxTkN2ZEl3N3cza2gyL1dHUVNz?=
+ =?utf-8?B?VlRSaFVSTmNHRnJheVp3WlJkQy90a1UyRHBnMkI0MEZaUEpaZDNUNVVtU0ox?=
+ =?utf-8?B?S2d5Zzd5WUY3OE8xNCsyNFpwWmk4M095WHorcWZiSWJuRFcxZkdteUVIME9k?=
+ =?utf-8?B?L2JiclVPd0VUWkhlTW1WRjhwWXFqK1R2MTV3cGNPYWlZL25JMFVGMTlpRHhx?=
+ =?utf-8?B?a3NiTVRSMHVHN1BRaVU1OEtycEhXU0RMRldzWHRpSGJ2Ly84cVord3FFMFd5?=
+ =?utf-8?B?TmpvTlZwQWhsaFFid0I4aHJqdzkwanJIcHMwTFlWb1N2VWtXUys5WWJyUm9j?=
+ =?utf-8?B?cFZrcDNRbkN5NTV5TkJER2ZPMnBKSUQ3WW9yckI3RGdteDgvMFJibU9oR2ZH?=
+ =?utf-8?B?UFloWnErYjVxY2ZFRzRwZnV6NWliUCtJUE9FYStpcEcyV2gyRHphbm5vZ0lt?=
+ =?utf-8?B?S2owNGU3bzhncE9IR2dkMDRkU3pKUkVyMElTNkdTM09jOHJUT2tGQ0ZLa1hw?=
+ =?utf-8?B?b2ZCditsb3NPaEhsWDVFblBMSlNCWEhwdFdOZzZ6SkpPb3piNTJUbmYzQjM4?=
+ =?utf-8?B?SW1NaFB3eWxGWG1vUmk5ZFVzLytuZ21OVnhSNDgxSFBKaThZcktZeWhLYzB1?=
+ =?utf-8?B?b1NGMng3Q0g4Yjcvc3VaM3BLclJDdXN1SFprL1Y3MVhjZE9QZ3dwUVowU0hp?=
+ =?utf-8?B?QkxvSEQ2blNsdU53RkYvZkN6dHpJTEJGTWlZVVVJWS9kTUFWMFlYSjJoOTVP?=
+ =?utf-8?B?WHRqTnhMbWdzUnBhWVpYS1NiRTdLVVp2NGc2TjEza3BCUSt1NGoyc1pqMGEy?=
+ =?utf-8?B?Uk9kR1ZINkF6TXRFdkpwbXM2NmdoZG44T242OTVRdXYrbXd6eXNLZTk2RThB?=
+ =?utf-8?B?ZU1BaXhLYWJacnBCbkRiMGxjREJTMU5lbUVSNXFmT2lPNk9ocFljMmZiRGZC?=
+ =?utf-8?B?M3lxcitLSzY3dVNQcDFjUjI2VUJINmJoNkNsZFI2SFNMc3NpZEE0K1d1TEF6?=
+ =?utf-8?B?aXd2STZLNEVQSkNHQTd3MGJEaDYwSmNsVSsvZnJpRzhQeHFtZG5mRzNLeE12?=
+ =?utf-8?B?dW9KV1poWDZRUzIxcXR4emdHblRLbHk5YXE1d21kRHFhM1hpT1JjSFJTOHE4?=
+ =?utf-8?B?a2tHeC8xa0lWSVRtWTlqYkRVTUtROG5RNmxmaDlDMHNpTXBGT0tMamo2RVVP?=
+ =?utf-8?B?am1qT1hKdmNYa3V0d0FkdWRkKzJTaWNGd2dqc0tGSE5iM0NYcm9Sbi9uY2J2?=
+ =?utf-8?B?WC9FalNEeDQ5aTZneG5oMHVYQm50dlYxK3NrV3IzVjQrT0tudFZVMzNLOHNK?=
+ =?utf-8?B?TmFndGdKRHJvY3NqNVBmeWtNbzdTS015bjNZNEQrYXBuNDhaT2VHMXZrSEV0?=
+ =?utf-8?B?UVExRGNRSjE5ak1HQlRKN0hEUzBDYnZNMjFvRFpQTkdPNm8ydlo0NUhYbVRl?=
+ =?utf-8?B?VDF4MFJGUEZKTjJsZnJZWVhXUFN5K1VDVjdYOFFicmR5VW5WMlJDK3NvK0Fh?=
+ =?utf-8?B?RzJTNU9uYnVXeTlCeUNnejdwNFlXanVDcEZudHFBYytldS9aSVcvUVpCV3dw?=
+ =?utf-8?B?dDB1NXp6Uk1EajFWSVBsR0RMNDU1QTNKSnBEM0lOa1Y3dEhrSHoyZnpOVUtV?=
+ =?utf-8?B?a0k3dkhBeWdOOFZHR1RoMmcyaURHSXNrZlFwTUpUS3E5NHUrQzYwMXErM1Rh?=
+ =?utf-8?B?UGdvaTZuSHhNaS8yd29EVXZibnhiU1JWbkJSeWtOemg4dnY4enIwMzJ0ME5l?=
+ =?utf-8?B?ZUV3Q0M3WjFSczhMV2N3U1lYVEcvaFVCc0ZGNitEbmtaVlVtREJhMVBzY3VT?=
+ =?utf-8?B?OVF0c2hJU3NoOFJOOFFncG5xTWVwL1ZmNzVWMVNiZzAyTlVtTFpPalpYU09U?=
+ =?utf-8?B?bzA1OFgxeHNab24rSWpndW1aaEJ6QTFDaWIwRk1tc29ma0pxVDNaOGUwemlq?=
+ =?utf-8?B?L1hSdGl1b1Z4ZWU3WVRRVUpqbnVpVzhqb2JZUGpWaFUveHVwdlUvenN4cVJB?=
+ =?utf-8?B?MzhCbDJ1bTdHajRBQWZKcG42MEJXSjN1d1A5NllxT1N4YlFXN1BNVWp0SVhp?=
+ =?utf-8?B?cGxobHV2R3RQdldZenFER01tT3VZcldUUHpVM2lpY3hkNllNRzFYWXhhRUNJ?=
+ =?utf-8?B?dDdtWUE2TnBLWTNKZjBWZjI5Rm8yNUV1d0ZOa1h3UFpnS2FqTVdlMTF4YVJw?=
+ =?utf-8?Q?5Y6rg7g4VnAUD6/zLMcRcM1Q0bv4F+qUElcSi9ZJBqgV?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0da2eee8-8251-4aef-6bf7-08de115c8032
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 11:16:52.0437
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m9zJcir24zR/ucOgD1tuyFizYGYKKl6SvmpsXu918BAW5q2Am6k4jQrqiePEZbi6zSbfBCxM+/7th63QLpXDiA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7294
 
-On Fri, 5 Sep 2025 16:03:02 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+On Tue Oct 21, 2025 at 3:55 AM JST, Joel Fernandes wrote:
+<snip>
+> +When the CPU sends a message to the GSP, it writes the message to its ow=
+n
+> +queue (CPU queue) and updates the write pointer in its queue's TX header=
+. The GSP
+> +then reads the read pointer in its own queue's RX header and knows that =
+there are
+> +pending messages from the CPU because its RX header's read pointer is be=
+hind the
+> +CPU's TX header's write pointer. After reading the message, the GSP upda=
+tes its RX
+> +header's read pointer to catch up. The same happens in reverse.
 
-> [=E2=80=A6]
->=20
-> >=20
-> >> +///
-> >> +/// # Examples
-> >> +///
-> >> +/// ## Basic Usage
-> >> +///
-> >> +/// ```
-> >> +/// use kernel::c_str;
-> >> +/// use kernel::sync::Arc;
-> >> +/// use kernel::sync::lock::ww_mutex::{WwClass, WwAcquireCtx,
-> >> WwMutex }; +/// use pin_init::stack_pin_init;
-> >> +///
-> >> +/// stack_pin_init!(let class =3D
-> >> WwClass::new_wound_wait(c_str!("buffer_class"))); +/// let mutex =3D
-> >> Arc::pin_init(WwMutex::new(42, &class), GFP_KERNEL)?; +///
-> >> +/// let ctx =3D KBox::pin_init(WwAcquireCtx::new(&class),
-> >> GFP_KERNEL)?; +///
-> >> +/// let guard =3D ctx.lock(&mutex)?;
-> >> +/// assert_eq!(*guard, 42);
-> >> +///
-> >> +/// # Ok::<(), Error>(())
-> >> +/// ```
-> >> +///
-> >> +/// ## Multiple Locks
-> >> +///
-> >> +/// ```
-> >> +/// use kernel::c_str;
-> >> +/// use kernel::prelude::*;
-> >> +/// use kernel::sync::Arc;
-> >> +/// use kernel::sync::lock::ww_mutex::{WwClass, WwAcquireCtx,
-> >> WwMutex}; +/// use pin_init::stack_pin_init;
-> >> +///
-> >> +/// stack_pin_init!(let class =3D
-> >> WwClass::new_wait_die(c_str!("resource_class"))); +/// let mutex_a
-> >> =3D Arc::pin_init(WwMutex::new("Resource A", &class), GFP_KERNEL)?;
-> >> +/// let mutex_b =3D Arc::pin_init(WwMutex::new("Resource B",
-> >> &class), GFP_KERNEL)?; +/// +/// let ctx =3D
-> >> KBox::pin_init(WwAcquireCtx::new(&class), GFP_KERNEL)?; +///
-> >> +/// // Try to acquire both locks.
-> >> +/// let guard_a =3D match ctx.lock(&mutex_a) {
-> >> +///     Ok(guard) =3D> guard,
-> >> +///     Err(e) if e =3D=3D EDEADLK =3D> {
-> >> +///         // Deadlock detected, use slow path.
-> >=20
-> > You must release all other locks before calling this, except there
-> > aren=E2=80=99t any taken in your example.
-> >=20
-> > You should perhaps add a release_all() function to the context.
-> >=20
->=20
-> By the way, if we need a context in the first place to lock, it makes
-> sense to release_all() once this context is dropped.
+"The same happens in reverse" doesn't seem to be the full sentence (I
+guess you want to add "when the GSP sends a message to the CPU").
 
-I am going to need to implement release_all anyway since the C code [1]
-requires that all locks be released before calling ww_acquire_fini
-(which we already do in PinnedDrop and now in reinit (a new function)).
+> +
+> +Page-based message passing
+> +--------------------------
+> +The message queue is page-based, which means that the message is stored =
+in a
 
-To make that work, we need to keep track of the locks which is what
-ExecContext is currently doing. So I will probably just drop ExecContext
-entirely and fold that logic into WwAcquireCtx instead (like I
-mentioned a while back) for the next version in this week.
+"means that each message""
 
-[1]:
-https://github.com/torvalds/linux/blob/552c50713f27/include/linux/ww_mutex.=
-h#L195-L196
+> +page-aligned buffer. The page size is 4KB. Each message starts at the be=
+ginning of
+> +a page.
 
-Regards,
-Onur=20
+This last sentence is a repetition of the first one of this paragraph.
 
->=20
-> =E2=80=94 Daniel
->=20
->=20
->=20
+> If the message is shorter than a page, the remaining space in the page is
+> +wasted.
+
+I'd say "unused" instead of "wasted", since this is by design.
+
+>
+> The next message starts at the beginning of the next page no matter how
+> +small the previous message was.
+> +
+> +Note that messages larger than a page will span multiple pages. This mea=
+ns that
+> +it is possible that the first part of the message lands on the last page=
+, and the
+> +second part of the message lands on the first page, thus requiring out-o=
+f-order
+> +memory access. The SBuffer data structure in Nova tackles this use case.
+
+nit: enclose type names in ` (i.e. `SBuffer`).
 
