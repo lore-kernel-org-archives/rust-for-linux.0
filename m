@@ -1,95 +1,132 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786DE78F4A
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 09:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A0F78F4A;
+	Wed, 22 Oct 2025 09:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761125612; cv=none; b=jM53ErBhuaASVi3UbbNQy1e/VPmLcUK453KvS55Fpg17qL5IZ6Bi4BHgYgvtxAgPjEK/YalNgSEzDo68AgPiDDNkG4tEEfsDOEjOX8CcEZZ4zhBeWvyBAUnHbaRPOVJmTfIud7fdpWnJK+/GQgRqrm5ragboVbbKCYfjP6cVIv0=
+	t=1761125669; cv=none; b=ZtGkf2Utu2wTowJHNsMIeO/2urpqM1TdKmV4QVQt4n+OlQwbrnq+cOWCE8YT41TYFm+xMWmFhgS3etfBLEAPaXqI15IW/LnebFECz6Ns8MRA5jsyQOTcCjz/HSq0Zi9H19De695aqpcW88HX1dKuM6y8/mtQD735bYwiKBAZO3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761125612; c=relaxed/simple;
-	bh=bORZD0ftv7lafNnlIcD9A5BgmKTBJMkDSOwHEr6W5TA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IfJY2TPwg7gtcmOZ12EOebMhI/98JXido1amhexl/80CGgAJiQTlC0CpH0/4tWJgk+yHqcmPiTwms9xHUvuqaCIsMZwxpQZHfPzVFnmlpC4qj1j0SsNQYi2J5e1lBufUg93p7/+IKeu9y+BOorpi4S/NbMkSZHl+LuNgfRLSbWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J45qznwe; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1761125669; c=relaxed/simple;
+	bh=4xaiC4XhhkvyIH5pxwidU1FpKTe9W6nHx3lEZnopVOw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vF9IT7T7I5ZiWxwEZdFYo7xGVIJSeJiTUgemv08la0axEpeuJuR52sJcBalz9vu6tHPozDbXXnPgWDPQSrlBAhaTwkc/IP2KEF6Dp2qXjb2aORBov07UpR1ROLr/iWWyvFXTvRidXEqi5KY0Csksa00JHdb4VdE5nJ7YBJQ0oVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OyKM0r+3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J45qznwe"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b6a225b7e9eso4735193a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 02:33:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761125610; x=1761730410; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bZO3gd3aaKtlSHxfTafUpJfSGcnBTUPfcxPRHPTW+vk=;
-        b=J45qznwePGQb3za57aey8i0LRLc8xsfRXgWsBiyIB6dnYdgEJJaBUA+ya8/BZW7j8K
-         mNSETv8mnpBNyBNM/ImjFozXv5aYZL9hX0S3+0inWDw0VnHquhBV5wE7GkUrrboYUvNy
-         WAZ6JdDsaU7Kn/yQuBQx17u2kCvPdNxZj5n+yN7xyS0b3Tdj3JaeE/vAyIH68oZ02rUi
-         YkXU1S159J7Z6R11h1paEXdpIkz+iLmjk3ooNkd3gotvEfOSTsOAPnm+kgk9LA8BWZBQ
-         sMvxdA+jj5yGJ5xPHFgbX/xxbXLoIxCkRTQsBxzkzDqd8g0R1Rf+aKOAbjZX8sI67UoL
-         Wh8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761125610; x=1761730410;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bZO3gd3aaKtlSHxfTafUpJfSGcnBTUPfcxPRHPTW+vk=;
-        b=GTUL8lIqlFvnDGwLSLRvjK2WxTrqurfht8aj5qqUJeKzC/w/6i9DcO6bSDXWpiWWaF
-         0gzVwoonPu2D8bjstORNsEgXKOdh+P4vyind+4NRHcA30+OjcjY4xzAYQzW+I7/7Fy0z
-         yEnvsPJjhz04YYWGCTUCv4k7ehRxcjTS0tOQbVGJbBwZkeM6G3RLHhYlj7nS5ZaixjvR
-         DKTzQUtwxSqSnc1sZ58sPWA4kNfSs6AtvbFqgtEIgpke72Rjftar5mW+U8Ya+1GPAK9+
-         2HKmSrPJTL+NhEW4Am3/u3hksdaHTnhy+2YjUdvU8QamlPGpCdeiZl7zGsq8I98nShU0
-         Dy6A==
-X-Forwarded-Encrypted: i=1; AJvYcCV3Vavt/sZmw+yd+f8c952hsqpDrehjrOi5zX50Oc+ESYZkSNW84KxEzyUxzdpwMCvCX7bg9wAGZRWdu22pkw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrakrGEXRsyfpgn/P06nDkaLO6LDJiCCPjyXy5KH2o8T+XdTRJ
-	Fhzhlev8lpmB/glQ8aLijHyTwYkowwyoFLawpU0b7OTeMeXJ1UWHxYo0/D3maKWmeM0J/NatKxo
-	DpmUq
-X-Gm-Gg: ASbGncvQwcYWXGhxqS+6hqsmsyy/mTv9gEP4lf4x2LmmOVHNibTTe2vQw5+/pA+3JBO
-	N1+81TtbL1uGx2DLjDg+oJaLAfs00im3+rHCgqsXeAccY8BZYboSt9tf7PszUJoPPL1sH7UvxW1
-	vXY5IzxKjPAcBzHbth975pYrA70aJNhRVdnF8Wr/s75Qww9Lp+zmNtaN9fC2Xwt1K6aUNI1CPiA
-	iQe1x11DQXQ/Ox014pV9TtRc1pGSoB0Yn9qJl0yZ/RKtzfU5u8wqJ+l3d1pabESUkz5nVCrIxZp
-	skbAWxt0CT4yIARfKW69klaLq4I4qkulW1fZ7fZbkLWm1XRSm4KlOyVRDqTnW0CJbJaKQSW3jLC
-	37Chx44Nq1si1TRedM2hs30r6I0nJZkplG0+GvJHdptpxvE1CNTzBF9gK6fWYZqunOJGwpYt46S
-	050pMye2gS9I8R
-X-Google-Smtp-Source: AGHT+IG0h0QLiAXdO5f90+3enocmFMBYwXQQom51lDBPViwF3k673sJ3nLkZON4IZuqLIkcwKdYDtg==
-X-Received: by 2002:a17:902:d584:b0:275:f156:965c with SMTP id d9443c01a7336-290cb65b61dmr234660325ad.52.1761125609766;
-        Wed, 22 Oct 2025 02:33:29 -0700 (PDT)
-Received: from localhost ([122.172.87.183])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246fd5d76sm133879585ad.39.2025.10.22.02.33.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 02:33:29 -0700 (PDT)
-Date: Wed, 22 Oct 2025 15:03:26 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: clk: implement Send and Sync
-Message-ID: <jnpqitx2yup2cvt7ey4b3fgzsi62i2pkasjxgx6xfi2r45hhhn@qqle4nvlcbu2>
-References: <20251020-clk-send-sync-v2-0-44ab533ae084@google.com>
- <20251020-clk-send-sync-v2-1-44ab533ae084@google.com>
- <ghaqgzgnk6mkv6tm4inm2e24jyidsk7qhbff6zwc46kefojw5p@3jvwnn3q4bxw>
- <aPiTm7Pb9WguOd9j@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OyKM0r+3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A05C4CEE7;
+	Wed, 22 Oct 2025 09:34:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761125668;
+	bh=4xaiC4XhhkvyIH5pxwidU1FpKTe9W6nHx3lEZnopVOw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OyKM0r+3ijI80HxzqSS6g9XG0k4qDg+TMRlfBQ2wO1DsHTsXOA9aWBqF/APmfAw0X
+	 XuArhHvV04AAUssgdseccfs6o0BdzxL9AHatu1tPhQGTCc5Zj6BhVw4icO6UlHJlkG
+	 K55Z1JpMfKMxx5TUTSuvF+vhLJurLJR4J0QsStVaMply7zVOQxGkvEL17WPkqRIVHS
+	 tMNmiKAEaBMLuHRlbyj4dQJrQs7w2Ur1A2YLEdTaJ0vW0pIjgvGgqTcsDIBzEhMWg9
+	 Y85brb9z6CV51Ze0IrXedIawfZH2+PTJCh/np9P5w+tp1pufDN7VJOEO4AKabcLYOw
+	 Wa9JIedehUawA==
+Message-ID: <deb9881f-5ef2-4e6a-a63d-56695c822f80@kernel.org>
+Date: Wed, 22 Oct 2025 11:34:23 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPiTm7Pb9WguOd9j@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/8] rust: debugfs: support blobs from smart pointers
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, mmaurer@google.com,
+ rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251020222722.240473-1-dakr@kernel.org>
+ <20251020222722.240473-6-dakr@kernel.org>
+ <DDOMC4F138FF.30W347U04XWZ8@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <DDOMC4F138FF.30W347U04XWZ8@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 22-10-25, 08:19, Alice Ryhl wrote:
-> I'm guessing this means you want me to take it through drm-rust? See
-> what I put in the cover letter about choice of tree.
+On 10/22/25 7:57 AM, Alexandre Courbot wrote:
+> On Tue Oct 21, 2025 at 7:26 AM JST, Danilo Krummrich wrote:
+> <snip>
+>> @@ -51,12 +54,14 @@ pub trait BinaryWriter {
+>>      fn write_to_slice(&self, writer: &mut UserSliceWriter, offset: file::Offset) -> Result<usize>;
+>>  }
+>>  
+>> +// Base implementation for any `T: AsBytes`.
+>>  impl<T: AsBytes> BinaryWriter for T {
+>>      fn write_to_slice(&self, writer: &mut UserSliceWriter, offset: file::Offset) -> Result<usize> {
+>>          writer.write_slice_partial(self.as_bytes(), offset)
+>>      }
+>>  }
+>>  
+>> +// Delegate for `Mutex<T>`: Support a `T` with an outer mutex.
+> 
+> I guess these two comments belong in the previous patch?
 
-I was expecting Stephen to pick it up directly.
+I added them in this patch since it is where the comments become useful, but
+technically they can indeed go in the previous one.
 
--- 
-viresh
+>>  impl<T: BinaryWriter> BinaryWriter for Mutex<T> {
+>>      fn write_to_slice(&self, writer: &mut UserSliceWriter, offset: file::Offset) -> Result<usize> {
+>>          let guard = self.lock();
+>> @@ -65,6 +70,56 @@ fn write_to_slice(&self, writer: &mut UserSliceWriter, offset: file::Offset) ->
+>>      }
+>>  }
+>>  
+>> +// Delegate for `Box<T, A>`: Support a `Box<T, A>` with no lock or an inner lock.
+>> +impl<T, A> BinaryWriter for Box<T, A>
+>> +where
+>> +    T: BinaryWriter,
+>> +    A: Allocator,
+>> +{
+>> +    fn write_to_slice(&self, writer: &mut UserSliceWriter, offset: file::Offset) -> Result<usize> {
+>> +        self.deref().write_to_slice(writer, offset)
+>> +    }
+>> +}
+>> +
+>> +// Delegate for `Pin<Box<T, A>>`: Support a `Pin<Box<T, A>>` with no lock or an inner lock.
+>> +impl<T, A> BinaryWriter for Pin<Box<T, A>>
+>> +where
+>> +    T: BinaryWriter,
+>> +    A: Allocator,
+>> +{
+>> +    fn write_to_slice(&self, writer: &mut UserSliceWriter, offset: file::Offset) -> Result<usize> {
+>> +        self.deref().write_to_slice(writer, offset)
+>> +    }
+>> +}
+>> +
+>> +// Delegate for `Arc<T>`: Support a `Arc<T>` with no lock or an inner lock.
+>> +impl<T> BinaryWriter for Arc<T>
+>> +where
+>> +    T: BinaryWriter,
+>> +{
+>> +    fn write_to_slice(&self, writer: &mut UserSliceWriter, offset: file::Offset) -> Result<usize> {
+>> +        self.deref().write_to_slice(writer, offset)
+>> +    }
+>> +}
+> 
+> These 3 implementations are identical - can we replace some/all with
+> just an implementation for anything implementing `Deref<T>`?
+
+Unfortunately, this would lead to some ambiguity for the compiler. A type could
+match
+
+	impl<T: AsBytes> BinaryWriter for T {}
+
+and
+
+	impl<T, D> BinaryWriter for T
+	where
+    	    T: Deref<Target = D>,
+	    D: BinaryWriter,
+	{}
+
+at the same time.
+
