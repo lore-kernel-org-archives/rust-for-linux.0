@@ -1,114 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A82C3074AA;
-	Thu, 23 Oct 2025 10:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4842DA75A
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 10:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761215709; cv=none; b=kn0XVMpwmXQibPOB6YZxPLXojQWp2gAkjGFX8rDVfAobySp6nFNe1hYGZUOH9BedbXdbaVgXs5t+KeIaNy6iLY3dJGiBj6jaJq+50m+uwZkk9T8MzjlKDLwjYj4qMKOUyRmmzL9x4LWr5yVS9Orzg/1TPn8IJbiHsN5Kfxn/3pw=
+	t=1761215863; cv=none; b=V0c6+VwHHZLms9am40UAZaiTPvPBAF2iSY23cIBwwDtk3iv4ZH0FQvHHPba1GToieEoEkeycKQa6Qpdcpr4V4quLTYuxg613C9XvRfPMv0tQt/B8ZvpUmJRpX0gQA6ZUxkwPJ42jdkaWsetBtDv5ncrA6ocjhqtMsNLtmCZwHFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761215709; c=relaxed/simple;
-	bh=KWZesjALQXrvlEpZwW7w2wXe8TzRSwdkOj2ULLZbyCw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=OwN+uazb3tpcr/BkA33YbwoqrHJ6leNW62zv2cMIBQsaiT6PG70TJRkICI5PoIOJynk/yY3tAck5mI2BfvYob8qCRXYN2Vv8B0x3LcBfWkPf9VyLyFl2/N7dm9hayv9hsJzzmcEPRZiJRWAGpuRGeL/15Qjhj5KC47Mxst8+8KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q3jbtYKp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761215863; c=relaxed/simple;
+	bh=YYxfUPdfLOOxl7Euu9zdXiMarVpXjjOUqwtysvwPqAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iGOKs46OJdRV7vqqR+vCxCDGTLUsngHtnpCHH7x5rRwUbSFNlMYw5Re7wwOgkfMW9Glb8gbHDIyrx9KK0mDTSRx7K6XyxQ1OP7iw7Zp6i2aebpozixkjKzAxoJfNpn0aMYkdYTq/yN+ll0T+Vnp5Dd5iMyfuldNL4p7PFPFenNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JiaADP40; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q3jbtYKp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C9EC4CEF7;
-	Thu, 23 Oct 2025 10:35:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761215705;
-	bh=KWZesjALQXrvlEpZwW7w2wXe8TzRSwdkOj2ULLZbyCw=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=Q3jbtYKpzcsG6ejmQ1Hr1si5MCi+CfFZgIRELINxR5zSCDSqRVw0E1xRPTT4hLycD
-	 MveWF5cmaG/KpZQ1DUB8TJn2qtkjp2r6OQg0k2vuZd/rfWLqNrR8k1+hwZsVJR2ylc
-	 PlH9gjl6w63o/khCpF8T0zURis38wEuwuxOEBTRua8UzVTRbVifFCpvJ4Rdbay8rHe
-	 Qt1C6G51tJPiuTiALLcZ+JhmZTxI/unjrKaNnFJnj2lJuggScRhfRRd+0jMPwqkH3x
-	 rXa4h2WL897kpFvi3CWlByfSetQEwa2paMyYJc9xdUQuoMUps/QEOtmFq91wL2JKY3
-	 uZ4DPMTpyXA/w==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JiaADP40"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso633128f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 03:37:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761215859; x=1761820659; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wlbOJJaTUJl2R9AS5ER+G1wmL9urQDFVZkUedb+ly68=;
+        b=JiaADP40+cdDUse3X8lkAmhG/cK7DQllg6z2yNIapco8KiopK+kDSldASAADjDL0t8
+         3WD90uo635LI0L7l4X7Ody6moFNC9bEligxs5KZ+4CZ/bA8hORhbLCIIhxeh6KXwp+yi
+         iQKi3cqNgdCly5TLF1MypNGocpERPCg3b/hj/XPKjTC10sUOobS9UyCKXT2FOxDkDpkq
+         Gy3bQRcVWfBvGtKWLHbiyPabsFCgT3FVa7RWKiKds8I3aBC2dfhq6Rf1y/COWJmR+rTN
+         It5PvSEZZ3SJCfO84lmYe0ijJTHXOZTn21Wkfq+0gFGrFDAM6fyglraBoArWwsBkI+TY
+         SOog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761215859; x=1761820659;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wlbOJJaTUJl2R9AS5ER+G1wmL9urQDFVZkUedb+ly68=;
+        b=PH36JMC4RXjK8vdk9yJxOKoQXQLH9+QbLg7JKjMVqhed2lqRSSr/y1ca3NRL8HvNxr
+         SaDyV0MAibmwXUfaiDHT1ufz9eUBdyYFSf2XQMsCq/GNK1Vy3Id86T76BK/DZ86yVmwC
+         MG62LsflBdewpKP+uN7eqYO1lGx0VUS1OTvZwznJl3ZdZZMxN+IJw0ZRvrczPSQuBF/c
+         Ypdl/SVoSxUWwOgKGG2p9P7M3cBqMz9XnwqbV2kXc414+Ir+a0LP1WlstDw+YA2I/Mw9
+         /eMtBSDsYkfNLSn/XhBa9YGntWcmCoz68DWlxgIrXQ2XKfr6WGDw/WWKkVuy0TKbJ7o+
+         +d3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUMiAJL6ejZhdcYSEBE6JlbVELcQat4j8/N7ocHV4/PUXdpgj29WJN8vWveithbS9BoZemVXnrjl213SQtFEg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUZ+rUOc+AmmGa8IBdUs4jueWJT/5xbokbvnBqqVYk7gcutdI8
+	z/1O+sTVoPjJKk74AaUHEPMFPOwGayd0o5TH8EkPzYRwLSGwE9OCu3B68AMRaXYJHHjwd4YINLs
+	1023erhd9qrGfA81OY8RwuOPcOZrqCdUyfL+x9Qan
+X-Gm-Gg: ASbGncv1MaGowxOtYbPiac7cOY9fCckc6QzlCn8Rseilxzuli6D/y20XIhNt0uxgbvq
+	UAILYBRdRcq/gAfTxDzLaH+ltTkFYwnomuVavacZcU4LCRXmlHjaf2N+Cd1gWfyVIxf6No9PC9m
+	/qJOki6mEgqjnOnjD0wUilr/RKDQeKbtTAUA0tRZJYCWjivFTKeAqUlulLq4CuoZNooHCVPsLAh
+	lTLiJIoYe9LMB9zsQ30WNil3IIMLCt3WKjgRd++sWYDwFjMWwCJyPUU9d5kkQ==
+X-Google-Smtp-Source: AGHT+IF7maTSQiS4kZPLIabukQBdn/rZWFtqT50NtIAJr4GO0YjV9vbHGhXIn7kavPdqJnen7ikTwzQkeGILfRe8wuI=
+X-Received: by 2002:a05:6000:25fd:b0:427:587:d9ae with SMTP id
+ ffacd0b85a97d-4270587d9c1mr13312291f8f.9.1761215858529; Thu, 23 Oct 2025
+ 03:37:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251022143158.64475-1-dakr@kernel.org> <20251022143158.64475-6-dakr@kernel.org>
+ <aPnnkU3IWwgERuT3@google.com> <DDPMUZAEIEBR.ORPLOPEERGNB@kernel.org>
+In-Reply-To: <DDPMUZAEIEBR.ORPLOPEERGNB@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 23 Oct 2025 12:37:25 +0200
+X-Gm-Features: AWmQ_bnHmpaGJ5SXvKhXy7BPOYeRX2L2uNppxAQX8TK3YbD6TWoOM-Pb_fLGRa8
+Message-ID: <CAH5fLgiM4gFFAyOd3nvemHPg-pdYKK6ttx35pnYOAEz8ZmrubQ@mail.gmail.com>
+Subject: Re: [PATCH v3 05/10] rust: uaccess: add UserSliceWriter::write_slice_file()
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, mmaurer@google.com, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 23 Oct 2025 12:35:00 +0200
-Message-Id: <DDPMUZAEIEBR.ORPLOPEERGNB@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <mmaurer@google.com>,
- <rust-for-linux@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 05/10] rust: uaccess: add
- UserSliceWriter::write_slice_file()
-References: <20251022143158.64475-1-dakr@kernel.org>
- <20251022143158.64475-6-dakr@kernel.org> <aPnnkU3IWwgERuT3@google.com>
-In-Reply-To: <aPnnkU3IWwgERuT3@google.com>
 
-On Thu Oct 23, 2025 at 10:30 AM CEST, Alice Ryhl wrote:
-> On Wed, Oct 22, 2025 at 04:30:39PM +0200, Danilo Krummrich wrote:
->> Add UserSliceWriter::write_slice_file(), which is the same as
->> UserSliceWriter::write_slice_partial() but updates the given
->> file::Offset by the number of bytes written.
->>=20
->> This is equivalent to C's `simple_read_from_buffer()` and useful when
->> dealing with file offsets from file operations.
->>=20
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->> ---
->>  rust/kernel/uaccess.rs | 24 ++++++++++++++++++++++++
->>  1 file changed, 24 insertions(+)
->>=20
->> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
->> index 539e77a09cbc..20ea31781efb 100644
->> --- a/rust/kernel/uaccess.rs
->> +++ b/rust/kernel/uaccess.rs
->> @@ -495,6 +495,30 @@ pub fn write_slice_partial(&mut self, data: &[u8], =
-offset: usize) -> Result<usiz
->>              .map_or(Ok(0), |src| self.write_slice(src).map(|()| src.len=
-()))
->>      }
->> =20
->> +    /// Writes raw data to this user pointer from a kernel buffer parti=
-ally.
->> +    ///
->> +    /// This is the same as [`Self::write_slice_partial`] but updates t=
-he given [`file::Offset`] by
->> +    /// the number of bytes written.
->> +    ///
->> +    /// This is equivalent to C's `simple_read_from_buffer()`.
->> +    ///
->> +    /// On success, returns the number of bytes written.
->> +    pub fn write_slice_file(&mut self, data: &[u8], offset: &mut file::=
-Offset) -> Result<usize> {
->> +        if offset.is_negative() {
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        let Ok(offset_index) =3D (*offset).try_into() else {
->> +            return Ok(0);
->> +        };
->> +
->> +        let written =3D self.write_slice_partial(data, offset_index)?;
->> +
->> +        *offset =3D offset.saturating_add_usize(written);
+On Thu, Oct 23, 2025 at 12:35=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
-> This addition should never overflow:
+> On Thu Oct 23, 2025 at 10:30 AM CEST, Alice Ryhl wrote:
+> > On Wed, Oct 22, 2025 at 04:30:39PM +0200, Danilo Krummrich wrote:
+> >> Add UserSliceWriter::write_slice_file(), which is the same as
+> >> UserSliceWriter::write_slice_partial() but updates the given
+> >> file::Offset by the number of bytes written.
+> >>
+> >> This is equivalent to C's `simple_read_from_buffer()` and useful when
+> >> dealing with file offsets from file operations.
+> >>
+> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> >> ---
+> >>  rust/kernel/uaccess.rs | 24 ++++++++++++++++++++++++
+> >>  1 file changed, 24 insertions(+)
+> >>
+> >> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> >> index 539e77a09cbc..20ea31781efb 100644
+> >> --- a/rust/kernel/uaccess.rs
+> >> +++ b/rust/kernel/uaccess.rs
+> >> @@ -495,6 +495,30 @@ pub fn write_slice_partial(&mut self, data: &[u8]=
+, offset: usize) -> Result<usiz
+> >>              .map_or(Ok(0), |src| self.write_slice(src).map(|()| src.l=
+en()))
+> >>      }
+> >>
+> >> +    /// Writes raw data to this user pointer from a kernel buffer par=
+tially.
+> >> +    ///
+> >> +    /// This is the same as [`Self::write_slice_partial`] but updates=
+ the given [`file::Offset`] by
+> >> +    /// the number of bytes written.
+> >> +    ///
+> >> +    /// This is equivalent to C's `simple_read_from_buffer()`.
+> >> +    ///
+> >> +    /// On success, returns the number of bytes written.
+> >> +    pub fn write_slice_file(&mut self, data: &[u8], offset: &mut file=
+::Offset) -> Result<usize> {
+> >> +        if offset.is_negative() {
+> >> +            return Err(EINVAL);
+> >> +        }
+> >> +
+> >> +        let Ok(offset_index) =3D (*offset).try_into() else {
+> >> +            return Ok(0);
+> >> +        };
+> >> +
+> >> +        let written =3D self.write_slice_partial(data, offset_index)?=
+;
+> >> +
+> >> +        *offset =3D offset.saturating_add_usize(written);
+> >
+> > This addition should never overflow:
+>
+> It probably never will (which is why this was a + operation in v1).
+>
+> >       offset + written <=3D data.len() <=3D isize::MAX <=3D Offset::MAX
+>
+> However, this would rely on implementation details you listed, i.e. the
+> invariant that a slice length should be at most isize::MAX and what's the
+> maximum size of file::Offset::MAX.
 
-It probably never will (which is why this was a + operation in v1).
+It's not an implementation detail. All Rust allocations are guaranteed
+to fit in isize::MAX bytes:
+https://doc.rust-lang.org/stable/std/ptr/index.html#allocation
 
-> 	offset + written <=3D data.len() <=3D isize::MAX <=3D Offset::MAX
-
-However, this would rely on implementation details you listed, i.e. the
-invariant that a slice length should be at most isize::MAX and what's the
-maximum size of file::Offset::MAX.
-
-Even though I don't expect any of the above to change any time soon
-saturating_add_usize() seems reasonable to me.
-
-> I can't help but think that maybe this should be a + operation instead?
+Alice
