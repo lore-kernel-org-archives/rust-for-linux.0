@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F97C2C326C
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 21:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE9E2C11FB
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 21:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761254784; cv=none; b=CNsfYkLPB/CnQkM1ke3CMh+0xSo7EJsXL49zxPEh7oBQzzia9zCfg5vMXB6LYj+sFMjEcIPwEAqdZiHoKEfr0igVv2tVt6VcDmCOkhiEK9890ELjjXdaF1Q1+Oo0jYd1/kJ/lyG9eGXJik5DQj4H5rage+B3oY1fvWWqcUVM4Sk=
+	t=1761254794; cv=none; b=Zegw76EphcSf/MmFHQEB5RXg+nnfuuYhXI4j2a7HVhYMXATqVuLBgPCxWCFt7Jak+fITvAJh4Cj15/H9iIvwJ0sGzY0ABnPP1xxE3J8NDbxdclApoXVhmAbCiWFQ0wDsbZfts4sONDmFugXdVQn9FB7ykwb/XGnV3yk60iz9Q3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761254784; c=relaxed/simple;
-	bh=VqxoTE/YG4alKlsCQm0qmglo0PmWMRVx2BhkMcpqMrE=;
+	s=arc-20240116; t=1761254794; c=relaxed/simple;
+	bh=3TV+OPhKNYm8JAI7/3/zYXvkQdnZC44wHnaKEf17WwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twx3xLdLadeNmEmUSHsmlu8KpRSBGH2edudS8xQACiKU91La+p/wW5ydD91AUCVLAMuGIsMDz4UJRHiZB9WIX8djkWFCb95CNyS/GzdU+nLJWdeqerapvkb0RnZXX1BBoCcas8n1n0cRZCiA61Dr+rC7LtjtQ74hD4xVf/vr3u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JIk44XDZ; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=gIgHZWS4BI57fcX7+7kjVLzjff+TP5rkVbS1HsAxvyXLrnauuGyVS2BnzFTRg0HWQwmzaI/cI0RrnsQ/lRJ2RXmM32tf9rdUVZLuK5i/iwdSRC8mZmJp78ZIFPC3YyXzjTowbozSEy8CEuIdk7FRhuOoJkBibPS+oUhrmsi4Hu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gOtgnzEl; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JIk44XDZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gOtgnzEl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761254781;
+	s=mimecast20190719; t=1761254791;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qfraVObzTsQp66zjzlSBba4zEC8R0p7WTc8r0hvFWO8=;
-	b=JIk44XDZ0y+VvMLv+Z7S4SN/yVXLBvxsPSit17/w5e2ducsuBwng7pZXD9FBBmRpIA+/+i
-	bx1LH3mLMNKtEcoXoVwZA+D8qggI/wTT6suOhrQnhPFeZDmYSRJWJZsPG5nDFszv1/A5w2
-	byTmqGJBBaWLIRLlRxU0zndd+e4h6t8=
+	bh=M8362CJTazJcHQoi+7kcx7uVRGkAE0Hkf1B4q+QXnus=;
+	b=gOtgnzEl7l4EBEQ0Lb+bJLPUUcHX8RYP/Mc0m0O1eBbZkI8Hia/dCmY/opXO+EziC2npgT
+	XyB9tja/9u3swNWfTeM2A6G9FfD3PFQRH8O3Tcp7H3Qt/1tLsOOdij/+Y1FkqoFVoOoVO+
+	v0vii5we/xTGtKKPtfqDwkuxUvyxXU4=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-313-2f0XLN9lO7aoKLT1ALMJ7A-1; Thu,
- 23 Oct 2025 17:26:20 -0400
-X-MC-Unique: 2f0XLN9lO7aoKLT1ALMJ7A-1
-X-Mimecast-MFC-AGG-ID: 2f0XLN9lO7aoKLT1ALMJ7A_1761254777
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-flIUhbKhMhat7l0uuzzOIg-1; Thu,
+ 23 Oct 2025 17:26:26 -0400
+X-MC-Unique: flIUhbKhMhat7l0uuzzOIg-1
+X-Mimecast-MFC-AGG-ID: flIUhbKhMhat7l0uuzzOIg_1761254784
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 556ED18001E3;
-	Thu, 23 Oct 2025 21:26:17 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 199B518002C1;
+	Thu, 23 Oct 2025 21:26:24 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.64.235])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1CF1530002DB;
-	Thu, 23 Oct 2025 21:26:11 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3991030002DB;
+	Thu, 23 Oct 2025 21:26:20 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
@@ -59,15 +59,12 @@ Cc: David Airlie <airlied@gmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Asahi Lina <lina+kernel@asahilina.net>,
 	Shankari Anand <shankari.ak0208@gmail.com>,
-	linux-media@vger.kernel.org (open list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b),
-	linaro-mm-sig@lists.linaro.org (moderated list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b)
-Subject: [PATCH v5 3/8] rust: drm: gem: Add raw_dma_resv() function
-Date: Thu, 23 Oct 2025 17:22:05 -0400
-Message-ID: <20251023212540.1141999-4-lyude@redhat.com>
+	nouveau@lists.freedesktop.org (open list:DRM DRIVER FOR NVIDIA GPUS [RUST])
+Subject: [PATCH v5 4/8] rust: gem: Introduce DriverObject::Args
+Date: Thu, 23 Oct 2025 17:22:06 -0400
+Message-ID: <20251023212540.1141999-5-lyude@redhat.com>
 In-Reply-To: <20251023212540.1141999-1-lyude@redhat.com>
 References: <20251023212540.1141999-1-lyude@redhat.com>
 Precedence: bulk
@@ -79,39 +76,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-For retrieving a pointer to the struct dma_resv for a given GEM object. We
-also introduce it in a new trait, BaseObjectPrivate, which we automatically
-implement for all gem objects and don't expose to users outside of the
-crate.
+This is an associated type that may be used in order to specify a data-type
+to pass to gem objects when construction them, allowing for drivers to more
+easily initialize their private-data for gem objects.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/drm/gem/mod.rs | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
+---
+V3:
+* s/BaseDriverObject/DriverObject/
+V4:
+* Fix leftover reference to BaseObjectDriver in rustdoc for
+  DriverObject::Args
+
+ drivers/gpu/drm/nova/gem.rs |  5 +++--
+ rust/kernel/drm/gem/mod.rs  | 13 ++++++++++---
+ 2 files changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
+index 2760ba4f3450b..173077eeb2def 100644
+--- a/drivers/gpu/drm/nova/gem.rs
++++ b/drivers/gpu/drm/nova/gem.rs
+@@ -18,8 +18,9 @@ pub(crate) struct NovaObject {}
+ 
+ impl gem::DriverObject for NovaObject {
+     type Driver = NovaDriver;
++    type Args = ();
+ 
+-    fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, Error> {
++    fn new(_dev: &NovaDevice, _size: usize, _args: Self::Args) -> impl PinInit<Self, Error> {
+         try_pin_init!(NovaObject {})
+     }
+ }
+@@ -33,7 +34,7 @@ pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self
+             return Err(EINVAL);
+         }
+ 
+-        gem::Object::new(dev, aligned_size)
++        gem::Object::new(dev, aligned_size, ())
+     }
+ 
+     /// Look up a GEM object handle for a `File` and return an `ObjectRef` for it.
 diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 32bff2e8463f4..67813cfb0db42 100644
+index 67813cfb0db42..d448c65fe5e13 100644
 --- a/rust/kernel/drm/gem/mod.rs
 +++ b/rust/kernel/drm/gem/mod.rs
-@@ -200,6 +200,18 @@ fn create_mmap_offset(&self) -> Result<u64> {
+@@ -65,8 +65,15 @@ pub trait DriverObject: Sync + Send + Sized {
+     /// Parent `Driver` for this object.
+     type Driver: drm::Driver;
  
- impl<T: IntoGEMObject> BaseObject for T {}
++    /// The data type to use for passing arguments to [`DriverObject::new`].
++    type Args;
++
+     /// Create a new driver data object for a GEM object of a given size.
+-    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl PinInit<Self, Error>;
++    fn new(
++        dev: &drm::Device<Self::Driver>,
++        size: usize,
++        args: Self::Args,
++    ) -> impl PinInit<Self, Error>;
  
-+/// Crate-private base operations shared by all GEM object classes.
-+#[expect(unused)]
-+pub(crate) trait BaseObjectPrivate: IntoGEMObject {
-+    /// Return a pointer to this object's dma_resv.
-+    fn raw_dma_resv(&self) -> *mut bindings::dma_resv {
-+        // SAFETY: `as_gem_obj()` always returns a valid pointer to the base DRM gem object
-+        unsafe { (*self.as_raw()).resv }
-+    }
-+}
-+
-+impl<T: IntoGEMObject> BaseObjectPrivate for T {}
-+
- /// A base GEM object.
- ///
- /// Invariants
+     /// Open a new handle to an existing object, associated with a File.
+     fn open(_obj: &<Self::Driver as drm::Driver>::Object, _file: &DriverFile<Self>) -> Result {
+@@ -247,11 +254,11 @@ impl<T: DriverObject> Object<T> {
+     };
+ 
+     /// Create a new GEM object.
+-    pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
++    pub fn new(dev: &drm::Device<T::Driver>, size: usize, args: T::Args) -> Result<ARef<Self>> {
+         let obj: Pin<KBox<Self>> = KBox::pin_init(
+             try_pin_init!(Self {
+                 obj: Opaque::new(bindings::drm_gem_object::default()),
+-                data <- T::new(dev, size),
++                data <- T::new(dev, size, args),
+                 // INVARIANT: The drm subsystem guarantees that the `struct drm_device` will live
+                 // as long as the GEM object lives.
+                 dev: dev.into(),
 -- 
 2.51.0
 
