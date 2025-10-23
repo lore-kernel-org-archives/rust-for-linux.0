@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808F833FE26;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7783342169;
 	Thu, 23 Oct 2025 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761238270; cv=none; b=HN3Yca70cAaJadzrOZOHT4ZBeqmtmbjLsqrQWmyQJuXAljfz36I1/Fw4sqYS8nrZnbok64cJ3pIEpWm0FZvnPfhWsiUyG1Sf1DbtrNzu5t5xmB7nSjgaryWzlRluIiVSnOI1cZGUKwlVc39SgzV4o1nQZZi7jHyVYqmkoNaD++4=
+	t=1761238270; cv=none; b=iq86BhQqnxAYvVtSyb4hnha8oNNL4B8HVjN+iWCo86n3l2KVVH7aLVx/kqdQGyqqt+mrzH3Rq+0b/vK56EP8vO0jqP5r1yajEl0V7Vi/5zkJuoV5wigVDJ0efqO2fcUUKQPgsksqvlR79iFv88Olnk4ZyUi/p7nmO5aQWMduggI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761238270; c=relaxed/simple;
-	bh=jfi/tBpf4uppa0Lsww7t4vNIORLQ7w31XNrfEZ1Fvxk=;
+	bh=F5ju6oKJAylkflMB3tXqXcd6vIuwrr/MPiKJ+B9Ss3Y=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cvgs61G2VBNP5zk+lMPcTcidnUY6nlGbxYyljqOmGdR0c/P56Hj2st2kgZ9raycFY22RwdgUr/hsnOhP3m1siEOPmD+epHc9uHzerl3N8Tp9VhyvH22QyHfuB78qmwMIVKGNFKGE0GPJ6akvrK3np/Ivj7ZPD7dTFMAbnae57rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNpbFPI3; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=MFZJFyztDJPzG5DP0xS3KavmiqpuGNEf0X+106j0HijVlD/QEy3DH9wkCINHrLIp6NXM9AnRBawnqhIlZSEHKhtE2z4j88AUXq2WNWV59YPgjd+2olBG0dIde+wncNfmRZzOSRiPLyC71Wlsye+H1G4Pp6tmgUrfqih8VGHRlws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hB38mnwV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNpbFPI3"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2D3C2C116B1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hB38mnwV"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8185FC4AF4D;
 	Thu, 23 Oct 2025 16:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761238270;
-	bh=jfi/tBpf4uppa0Lsww7t4vNIORLQ7w31XNrfEZ1Fvxk=;
+	bh=F5ju6oKJAylkflMB3tXqXcd6vIuwrr/MPiKJ+B9Ss3Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jNpbFPI3zHJ61LqWyHXQ1svtatEX8huvKCgO3B46751FGEWkxqJYea5bgaWIQBSxK
-	 tTw/lQk0+SrkIescu7VxzrmTiRtZFienQmNxoBMPfjsfUuOQsJuKYIy05XKqCEVa0v
-	 jK36OhpGOpCPtFf0SWleDdIfdUTnut4TlY8lFg6jQ1CGtxoz7262LzTrlavSp8DVfZ
-	 wo+NPqhA7Jza1u9If62CNFf9lkzwGFzdJYpKDkFLNinXOmQ0IWEwInFaJQTtWqm2VA
-	 brrUs0P+BWmvrYmkXkzKphdMOauSzfdqQNPQzGLFOnhTCMpkkMkJz+uTW7TBP1y+6X
-	 l4s/2uHVJnNdA==
+	b=hB38mnwVB4iSc4U7WceEGAPxYIoQXtuvh/qLqmFMSno7Lg9kC1dbWLTSN50cSRFAv
+	 nokoc3Ywv0M/nt0XhF6tMjg2zuZxjlIr0Mc9UZ9B390Lp6AymoWQB800DEHGUAfTHf
+	 0yHxKeit5+6PtekFnJg9ZPEWL9A4aCHfNPfxlXMkQZvHIqWJhCkG8MYKl9DgR3O3uM
+	 FbQzNKxLkffKf+omorGPrDmTTlqNDI7LuWiY/eznSexT0Pd/FR1DmTM6Tvj6Dl8u3X
+	 43Mo/BqCRWxlfwPwhj7ActmhZrGqv8uSXezUTem/kJ+zbEfPx13/S7ZWvb/GBY6q1J
+	 s4oyV0aVGWTFQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FACECCD193;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CDAACCD1BE;
 	Thu, 23 Oct 2025 16:51:10 +0000 (UTC)
 From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Thu, 23 Oct 2025 09:51:11 -0700
-Subject: [PATCH v22 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ |
- VM_WRITE
+Date: Thu, 23 Oct 2025 09:51:14 -0700
+Subject: [PATCH v22 09/28] riscv/mm: write protect and shadow stack
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-v5_user_cfi_series-v22-6-1935270f7636@rivosinc.com>
+Message-Id: <20251023-v5_user_cfi_series-v22-9-1935270f7636@rivosinc.com>
 References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
 In-Reply-To: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -76,11 +75,11 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
  Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761238267; l=4219;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761238267; l=2474;
  i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=lpSh/4YF4b6DV2vqO7uhXaAxm8ZQQfhDo9tNU1Zgc2g=;
- b=0EylOW1HFcIz/5REMir3O/jSROrnVVUk5arLG4UzCxrsPyagp0KCSw051bXWgRu0w/V5QIP59
- g3KUekTmgpwAXR3nS2Bj03Wx2+Ir/1Z/wbGjSWUq8l95BYeMUQF6vu0
+ bh=zG1PvbsubgVB7UstpLjRtN915FxsRLFbcnYegAn0YwA=;
+ b=MOYH+M9XiFkmQH5an8qIwtNnNTe1iJrM5qBubNaFXeuZXU4mI0i4qcQSg1NxEzkrxbT0MUI7S
+ ITCfjXuPAzxDXT5Plujjm5jZbk7IyOgVCHGjcXR9u7LZ4cfKuG1++rd
 X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
  pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
 X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
@@ -90,113 +89,61 @@ Reply-To: debug@rivosinc.com
 
 From: Deepak Gupta <debug@rivosinc.com>
 
-`arch_calc_vm_prot_bits` is implemented on risc-v to return VM_READ |
-VM_WRITE if PROT_WRITE is specified. Similarly `riscv_sys_mmap` is
-updated to convert all incoming PROT_WRITE to (PROT_WRITE | PROT_READ).
-This is to make sure that any existing apps using PROT_WRITE still work.
+`fork` implements copy on write (COW) by making pages readonly in child
+and parent both.
 
-Earlier `protection_map[VM_WRITE]` used to pick read-write PTE encodings.
-Now `protection_map[VM_WRITE]` will always pick PAGE_SHADOWSTACK PTE
-encodings for shadow stack. Above changes ensure that existing apps
-continue to work because underneath kernel will be picking
-`protection_map[VM_WRITE|VM_READ]` PTE encodings.
+ptep_set_wrprotect and pte_wrprotect clears _PAGE_WRITE in PTE.
+Assumption is that page is readable and on fault copy on write happens.
 
-Reviewed-by: Zong Li <zong.li@sifive.com>
+To implement COW on shadow stack pages, clearing up W bit makes them XWR =
+000. This will result in wrong PTE setting which says no perms but V=1 and
+PFN field pointing to final page. Instead desired behavior is to turn it
+into a readable page, take an access (load/store) fault on sspush/sspop
+(shadow stack) and then perform COW on such pages. This way regular reads
+would still be allowed and not lead to COW maintaining current behavior
+of COW on non-shadow stack but writeable memory.
+
+On the other hand it doesn't interfere with existing COW for read-write
+memory. Assumption is always that _PAGE_READ must have been set and thus
+setting _PAGE_READ is harmless.
+
 Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Zong Li <zong.li@sifive.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/include/asm/mman.h    | 26 ++++++++++++++++++++++++++
- arch/riscv/include/asm/pgtable.h |  1 +
- arch/riscv/kernel/sys_riscv.c    | 10 ++++++++++
- arch/riscv/mm/init.c             |  2 +-
- 4 files changed, 38 insertions(+), 1 deletion(-)
+ arch/riscv/include/asm/pgtable.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/include/asm/mman.h b/arch/riscv/include/asm/mman.h
-new file mode 100644
-index 000000000000..0ad1d19832eb
---- /dev/null
-+++ b/arch/riscv/include/asm/mman.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_MMAN_H__
-+#define __ASM_MMAN_H__
-+
-+#include <linux/compiler.h>
-+#include <linux/types.h>
-+#include <linux/mm.h>
-+#include <uapi/asm/mman.h>
-+
-+static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
-+						   unsigned long pkey __always_unused)
-+{
-+	unsigned long ret = 0;
-+
-+	/*
-+	 * If PROT_WRITE was specified, force it to VM_READ | VM_WRITE.
-+	 * Only VM_WRITE means shadow stack.
-+	 */
-+	if (prot & PROT_WRITE)
-+		ret = (VM_READ | VM_WRITE);
-+	return ret;
-+}
-+
-+#define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
-+
-+#endif /* ! __ASM_MMAN_H__ */
 diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 29e994a9afb6..4c4057a2550e 100644
+index b03e8f85221f..df4a04b64944 100644
 --- a/arch/riscv/include/asm/pgtable.h
 +++ b/arch/riscv/include/asm/pgtable.h
-@@ -182,6 +182,7 @@ extern struct pt_alloc_ops pt_ops __meminitdata;
- #define PAGE_READ_EXEC		__pgprot(_PAGE_BASE | _PAGE_READ | _PAGE_EXEC)
- #define PAGE_WRITE_EXEC		__pgprot(_PAGE_BASE | _PAGE_READ |	\
- 					 _PAGE_EXEC | _PAGE_WRITE)
-+#define PAGE_SHADOWSTACK       __pgprot(_PAGE_BASE | _PAGE_WRITE)
+@@ -415,7 +415,7 @@ static inline int pte_special(pte_t pte)
  
- #define PAGE_COPY		PAGE_READ
- #define PAGE_COPY_EXEC		PAGE_READ_EXEC
-diff --git a/arch/riscv/kernel/sys_riscv.c b/arch/riscv/kernel/sys_riscv.c
-index 795b2e815ac9..22fc9b3268be 100644
---- a/arch/riscv/kernel/sys_riscv.c
-+++ b/arch/riscv/kernel/sys_riscv.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/syscalls.h>
- #include <asm/cacheflush.h>
-+#include <asm-generic/mman-common.h>
- 
- static long riscv_sys_mmap(unsigned long addr, unsigned long len,
- 			   unsigned long prot, unsigned long flags,
-@@ -16,6 +17,15 @@ static long riscv_sys_mmap(unsigned long addr, unsigned long len,
- 	if (unlikely(offset & (~PAGE_MASK >> page_shift_offset)))
- 		return -EINVAL;
- 
-+	/*
-+	 * If PROT_WRITE is specified then extend that to PROT_READ
-+	 * protection_map[VM_WRITE] is now going to select shadow stack encodings.
-+	 * So specifying PROT_WRITE actually should select protection_map [VM_WRITE | VM_READ]
-+	 * If user wants to create shadow stack then they should use `map_shadow_stack` syscall.
-+	 */
-+	if (unlikely((prot & PROT_WRITE) && !(prot & PROT_READ)))
-+		prot |= PROT_READ;
-+
- 	return ksys_mmap_pgoff(addr, len, prot, flags, fd,
- 			       offset >> (PAGE_SHIFT - page_shift_offset));
+ static inline pte_t pte_wrprotect(pte_t pte)
+ {
+-	return __pte(pte_val(pte) & ~(_PAGE_WRITE));
++	return __pte((pte_val(pte) & ~(_PAGE_WRITE)) | (_PAGE_READ));
  }
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index d85efe74a4b6..62ab2c7de7c8 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -376,7 +376,7 @@ pgd_t early_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
- static const pgprot_t protection_map[16] = {
- 	[VM_NONE]					= PAGE_NONE,
- 	[VM_READ]					= PAGE_READ,
--	[VM_WRITE]					= PAGE_COPY,
-+	[VM_WRITE]					= PAGE_SHADOWSTACK,
- 	[VM_WRITE | VM_READ]				= PAGE_COPY,
- 	[VM_EXEC]					= PAGE_EXEC,
- 	[VM_EXEC | VM_READ]				= PAGE_READ_EXEC,
+ 
+ /* static inline pte_t pte_mkread(pte_t pte) */
+@@ -611,7 +611,15 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+ static inline void ptep_set_wrprotect(struct mm_struct *mm,
+ 				      unsigned long address, pte_t *ptep)
+ {
+-	atomic_long_and(~(unsigned long)_PAGE_WRITE, (atomic_long_t *)ptep);
++	pte_t read_pte = READ_ONCE(*ptep);
++	/*
++	 * ptep_set_wrprotect can be called for shadow stack ranges too.
++	 * shadow stack memory is XWR = 010 and thus clearing _PAGE_WRITE will lead to
++	 * encoding 000b which is wrong encoding with V = 1. This should lead to page fault
++	 * but we dont want this wrong configuration to be set in page tables.
++	 */
++	atomic_long_set((atomic_long_t *)ptep,
++			((pte_val(read_pte) & ~(unsigned long)_PAGE_WRITE) | _PAGE_READ));
+ }
+ 
+ #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
 
 -- 
 2.43.0
