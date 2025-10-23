@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E61526E6EB
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 21:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5472A2C15AE
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 21:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761254770; cv=none; b=mYnYblcZO1hb+paVsSmwxjiGwypfbsfTGHH4upjYPtDNHbIEOw1lO6JNFpSxUffkruwBd+9qvsEQ7Bm5Th19VJDc8SDgx98r9IrjJlvvGyDiXcovbZDQPJiFC6HZwYVodNpc7uS0zT3qX1NVMvqtwDiZdL0JTVBJ3iFxEDWsdZs=
+	t=1761254779; cv=none; b=BNR6/FTT3akimlAXHnx1SnJJjn77roDl/g8+b2WLrtTfEovbQVkshEmBJZcdq/nCeYbwIZbVqeJsEDOLVkrOiprBwzCquogw82IYDniKAFWo/iKfsFuIc7uoFWTdqVYoSr0T8lR7SE0NqGEOoJ68KnC/rs76b5ROZni69+/e9qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761254770; c=relaxed/simple;
-	bh=lwDclK5zyxp1awpvPaJAKW/PWA9pPm0C7jX9Z+AxEaU=;
+	s=arc-20240116; t=1761254779; c=relaxed/simple;
+	bh=8IH6u17Bf6UMu+UJoSDGO6p0qZjeVFKihLao9s658Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UPxsmkryh4M6b+DoZkFf0d13ZTG0L8GLUJUuqgEYVS7nuw7XL81sQKrOxpZYRmaKVn1r1JT9hQ/rfnmnpKhcnzz1G+WZMYVLHBu5x/BOYprmdaOBBBcVjQl8InDOESfQyA32NPPCwWjHK1W05QG7A+sDJJdQeXceAUXA02LV5NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W0N622Mc; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=DuIp8WYRBUjl1KYkwIqtB2ktLw4S/Bd//yZ5zzmBuRK2XzH728NykLN4sb9k3JsIK5EPP1B2Hj9JrT4X4/zLZNaRNNa1UV/azv3EE7pYFp1Z2ZZ4OZFQuTAw6QveajMrf7ERSzY8mxmI8/Edgx5pIb8u1dAbSyHYpQQUjoHmKbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OwMKFLCW; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W0N622Mc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OwMKFLCW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761254767;
+	s=mimecast20190719; t=1761254777;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tojreo2SCeXW/AFAiQR1a/N+EZ+cx5QocDZTELD04Hw=;
-	b=W0N622McajjzarfmDclf8czrhP8qpMwu1KjQAVtvSAZBChqH/hJc/1sezQHPsbm801DkJU
-	QhEECGp2GHkn+KenGV39jkAGwUezTAZuW/vbBbVdbaY1xd8u5WbhcR7P2grygvLXZh29Ot
-	5W2q0/NQClkNT8XlujS4DW7GR8WkVzY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=YJB3O0IxSeB2TEy9+wLYaow+jm2Lp5gpdA5YwObW84Q=;
+	b=OwMKFLCWr6Y/1H+vFCPxochlb4voR/0Fhr/UW24ScUD3gRI0pqUrkrsewCWfJmsiEjpT5q
+	MPj83yOlQcdLRqg7JE4AF3U+rACH0DwBeTuKXXa9rc3Q4OL0KsJUftFdccymDEiqQVkBSJ
+	HgtVFSPrQMLAPD1NairPFL+6jwDUkwE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-bgxhGK6HM7qRBtyz1apc3Q-1; Thu,
- 23 Oct 2025 17:26:03 -0400
-X-MC-Unique: bgxhGK6HM7qRBtyz1apc3Q-1
-X-Mimecast-MFC-AGG-ID: bgxhGK6HM7qRBtyz1apc3Q_1761254761
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-qtjIiVRXNGCD4PYf4KBpOQ-1; Thu,
+ 23 Oct 2025 17:26:12 -0400
+X-MC-Unique: qtjIiVRXNGCD4PYf4KBpOQ-1
+X-Mimecast-MFC-AGG-ID: qtjIiVRXNGCD4PYf4KBpOQ_1761254769
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14FFF1800D89;
-	Thu, 23 Oct 2025 21:26:01 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F3ADF1956089;
+	Thu, 23 Oct 2025 21:26:08 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.64.235])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5975B30002E1;
-	Thu, 23 Oct 2025 21:25:56 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7E63C30002E1;
+	Thu, 23 Oct 2025 21:26:03 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
@@ -49,8 +49,7 @@ To: dri-devel@lists.freedesktop.org,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org
-Cc: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
+Cc: Asahi Lina <lina@asahilina.net>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -59,11 +58,18 @@ Cc: David Airlie <airlied@gmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Asahi Lina <lina+kernel@asahilina.net>,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH v5 1/8] rust/drm: Add gem::impl_aref_for_gem_obj!
-Date: Thu, 23 Oct 2025 17:22:03 -0400
-Message-ID: <20251023212540.1141999-2-lyude@redhat.com>
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	linux-media@vger.kernel.org (open list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b),
+	linaro-mm-sig@lists.linaro.org (moderated list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b)
+Subject: [PATCH v5 2/8] rust: helpers: Add bindings/wrappers for dma_resv_lock
+Date: Thu, 23 Oct 2025 17:22:04 -0400
+Message-ID: <20251023212540.1141999-3-lyude@redhat.com>
 In-Reply-To: <20251023212540.1141999-1-lyude@redhat.com>
 References: <20251023212540.1141999-1-lyude@redhat.com>
 Precedence: bulk
@@ -75,94 +81,65 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-In the future we're going to be introducing more GEM object types in rust
-then just gem::Object<T>. Since all types of GEM objects have refcounting,
-let's introduce a macro that we can use in the gem crate in order to copy
-this boilerplate implementation for each type: impl_aref_for_gem_obj!().
+From: Asahi Lina <lina@asahilina.net>
 
+This is just for basic usage in the DRM shmem abstractions for implied
+locking, not intended as a full DMA Reservation abstraction yet.
+
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Lyude Paul <lyude@redhat.com>
-
 ---
-V5:
-* Move .as_raw() call to `let obj` in dec_ref, to ensure that the reference
-  to object is not live by the time that we call drm_gem_object_put().
-* Add missing #[macro_export] annotation
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/dma-resv.c         | 13 +++++++++++++
+ rust/helpers/helpers.c          |  1 +
+ 3 files changed, 15 insertions(+)
+ create mode 100644 rust/helpers/dma-resv.c
 
- rust/kernel/drm/gem/mod.rs | 54 +++++++++++++++++++++++++++-----------
- 1 file changed, 39 insertions(+), 15 deletions(-)
-
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 20c2769a8c9d6..32bff2e8463f4 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -15,6 +15,44 @@
- };
- use core::{ops::Deref, ptr::NonNull};
- 
-+/// A macro for implementing [`AlwaysRefCounted`] for any GEM object type.
-+///
-+/// Since all GEM objects use the same refcounting scheme.
-+#[macro_export]
-+macro_rules! impl_aref_for_gem_obj {
-+    (
-+        impl $( <$( $tparam_id:ident ),+> )? for $type:ty
-+        $(
-+            where
-+                $( $bind_param:path : $bind_trait:path ),+
-+        )?
-+    ) => {
-+        // SAFETY: All gem objects are refcounted
-+        unsafe impl $( <$( $tparam_id ),+> )? $crate::types::AlwaysRefCounted for $type
-+        $(
-+            where
-+                $( $bind_param : $bind_trait ),+
-+        )?
-+        {
-+            fn inc_ref(&self) {
-+                // SAFETY: The existence of a shared reference guarantees that the refcount is
-+                // non-zero.
-+                unsafe { bindings::drm_gem_object_get(self.as_raw()) };
-+            }
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 2e43c66635a2c..07f79e125c329 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -48,6 +48,7 @@
+ #include <linux/cpumask.h>
+ #include <linux/cred.h>
+ #include <linux/debugfs.h>
++#include <linux/dma-resv.h>
+ #include <linux/device/faux.h>
+ #include <linux/dma-direction.h>
+ #include <linux/dma-mapping.h>
+diff --git a/rust/helpers/dma-resv.c b/rust/helpers/dma-resv.c
+new file mode 100644
+index 0000000000000..05501cb814513
+--- /dev/null
++++ b/rust/helpers/dma-resv.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+            unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
-+                // SAFETY: `obj` is a valid pointer to an `Object<T>`.
-+                let obj = unsafe { obj.as_ref() }.as_raw();
++#include <linux/dma-resv.h>
 +
-+                // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-+                unsafe { bindings::drm_gem_object_put(obj) };
-+            }
-+        }
-+    };
++int rust_helper_dma_resv_lock(struct dma_resv *obj, struct ww_acquire_ctx *ctx)
++{
++	return dma_resv_lock(obj, ctx);
 +}
 +
-+pub(crate) use impl_aref_for_gem_obj;
-+
- /// A type alias for retrieving a [`Driver`]s [`DriverFile`] implementation from its
- /// [`DriverObject`] implementation.
- ///
-@@ -253,21 +291,7 @@ extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
-     }
- }
- 
--// SAFETY: Instances of `Object<T>` are always reference-counted.
--unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for Object<T> {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
--    }
--
--    unsafe fn dec_ref(obj: NonNull<Self>) {
--        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
--        let obj = unsafe { obj.as_ref() };
--
--        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
--        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
--    }
--}
-+impl_aref_for_gem_obj!(impl<T> for Object<T> where T: DriverObject);
- 
- impl<T: DriverObject> super::private::Sealed for Object<T> {}
- 
++void rust_helper_dma_resv_unlock(struct dma_resv *obj)
++{
++	dma_resv_unlock(obj);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 551da6c9b5064..36d40f911345c 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -25,6 +25,7 @@
+ #include "cred.c"
+ #include "device.c"
+ #include "dma.c"
++#include "dma-resv.c"
+ #include "drm.c"
+ #include "err.c"
+ #include "irq.c"
 -- 
 2.51.0
 
