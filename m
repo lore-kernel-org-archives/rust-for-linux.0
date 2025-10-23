@@ -1,146 +1,94 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4842DA75A
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 10:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CE82FB966
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 10:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761215863; cv=none; b=V0c6+VwHHZLms9am40UAZaiTPvPBAF2iSY23cIBwwDtk3iv4ZH0FQvHHPba1GToieEoEkeycKQa6Qpdcpr4V4quLTYuxg613C9XvRfPMv0tQt/B8ZvpUmJRpX0gQA6ZUxkwPJ42jdkaWsetBtDv5ncrA6ocjhqtMsNLtmCZwHFg=
+	t=1761217126; cv=none; b=IgxMp6rh0MdB9UOOseb0uqHJbnbgZdjXz6jjOm85FrBoq0jDlSJvUKobowuy97/jh86XQ93ojXhtnS15NRsohe2wPpoL1DvX3BDJHaHsMibwQU/McccFgfrBmegtFfe9zQCYGuCK63lTAL0KcuZfKw1C8hpezWEHMyLILkXyol0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761215863; c=relaxed/simple;
-	bh=YYxfUPdfLOOxl7Euu9zdXiMarVpXjjOUqwtysvwPqAg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iGOKs46OJdRV7vqqR+vCxCDGTLUsngHtnpCHH7x5rRwUbSFNlMYw5Re7wwOgkfMW9Glb8gbHDIyrx9KK0mDTSRx7K6XyxQ1OP7iw7Zp6i2aebpozixkjKzAxoJfNpn0aMYkdYTq/yN+ll0T+Vnp5Dd5iMyfuldNL4p7PFPFenNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JiaADP40; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1761217126; c=relaxed/simple;
+	bh=/8FfLimdwTSQJKMzq9wL0PSXBLCeaEIcv6Fh1DDZFns=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ObnJNKTC0cGK5RY/qsDB8Fsu+JRPdmIKeha7a+LZ4MH2Ar0u5OnwTpr+zdUAMNdyYjicyMmOajLYluvozx0252sKkp8xGm+8tOqmrPLQn03PVFHjbrolA5eW9D9IkxxvbasgC1cp8rW473W5NPCmn9FfCXjzhROlG5PH/wY/V6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ezzk7vGd; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JiaADP40"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso633128f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 03:37:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ezzk7vGd"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-33b9dc8d517so761892a91.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 03:58:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761215859; x=1761820659; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wlbOJJaTUJl2R9AS5ER+G1wmL9urQDFVZkUedb+ly68=;
-        b=JiaADP40+cdDUse3X8lkAmhG/cK7DQllg6z2yNIapco8KiopK+kDSldASAADjDL0t8
-         3WD90uo635LI0L7l4X7Ody6moFNC9bEligxs5KZ+4CZ/bA8hORhbLCIIhxeh6KXwp+yi
-         iQKi3cqNgdCly5TLF1MypNGocpERPCg3b/hj/XPKjTC10sUOobS9UyCKXT2FOxDkDpkq
-         Gy3bQRcVWfBvGtKWLHbiyPabsFCgT3FVa7RWKiKds8I3aBC2dfhq6Rf1y/COWJmR+rTN
-         It5PvSEZZ3SJCfO84lmYe0ijJTHXOZTn21Wkfq+0gFGrFDAM6fyglraBoArWwsBkI+TY
-         SOog==
+        d=gmail.com; s=20230601; t=1761217125; x=1761821925; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/8FfLimdwTSQJKMzq9wL0PSXBLCeaEIcv6Fh1DDZFns=;
+        b=Ezzk7vGdj9Q/BM9+QBwGATIZ0/N/rwd0R2F/7pVerZtpw6rfUGttNRyIvxG+cZFkY4
+         FqJSwW/SuUpfjEHbaNbz9LFnq870MUA7gWqsOTnVTDwsuLZKvxJZcL6dWON2edA/haKp
+         A9R02bRhfe6i3L+z4p5bGaB8Iv/emXkngX3m4Mqh0FhCYwDdwAg4TZADwUFf+1Eltm8u
+         vBUjBsawxnczTfgOv+7CUp8eFP3obAfn7oNGZsPtHg+R9NAExR9uv8ARaTcziqN2HW9O
+         2G29tMHzQsU+L3q7rGIicYETEztdIrU5DXELR0mZParHHVYdPL8bf9thF2eqTfi6xIHm
+         9LOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761215859; x=1761820659;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wlbOJJaTUJl2R9AS5ER+G1wmL9urQDFVZkUedb+ly68=;
-        b=PH36JMC4RXjK8vdk9yJxOKoQXQLH9+QbLg7JKjMVqhed2lqRSSr/y1ca3NRL8HvNxr
-         SaDyV0MAibmwXUfaiDHT1ufz9eUBdyYFSf2XQMsCq/GNK1Vy3Id86T76BK/DZ86yVmwC
-         MG62LsflBdewpKP+uN7eqYO1lGx0VUS1OTvZwznJl3ZdZZMxN+IJw0ZRvrczPSQuBF/c
-         Ypdl/SVoSxUWwOgKGG2p9P7M3cBqMz9XnwqbV2kXc414+Ir+a0LP1WlstDw+YA2I/Mw9
-         /eMtBSDsYkfNLSn/XhBa9YGntWcmCoz68DWlxgIrXQ2XKfr6WGDw/WWKkVuy0TKbJ7o+
-         +d3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUMiAJL6ejZhdcYSEBE6JlbVELcQat4j8/N7ocHV4/PUXdpgj29WJN8vWveithbS9BoZemVXnrjl213SQtFEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUZ+rUOc+AmmGa8IBdUs4jueWJT/5xbokbvnBqqVYk7gcutdI8
-	z/1O+sTVoPjJKk74AaUHEPMFPOwGayd0o5TH8EkPzYRwLSGwE9OCu3B68AMRaXYJHHjwd4YINLs
-	1023erhd9qrGfA81OY8RwuOPcOZrqCdUyfL+x9Qan
-X-Gm-Gg: ASbGncv1MaGowxOtYbPiac7cOY9fCckc6QzlCn8Rseilxzuli6D/y20XIhNt0uxgbvq
-	UAILYBRdRcq/gAfTxDzLaH+ltTkFYwnomuVavacZcU4LCRXmlHjaf2N+Cd1gWfyVIxf6No9PC9m
-	/qJOki6mEgqjnOnjD0wUilr/RKDQeKbtTAUA0tRZJYCWjivFTKeAqUlulLq4CuoZNooHCVPsLAh
-	lTLiJIoYe9LMB9zsQ30WNil3IIMLCt3WKjgRd++sWYDwFjMWwCJyPUU9d5kkQ==
-X-Google-Smtp-Source: AGHT+IF7maTSQiS4kZPLIabukQBdn/rZWFtqT50NtIAJr4GO0YjV9vbHGhXIn7kavPdqJnen7ikTwzQkeGILfRe8wuI=
-X-Received: by 2002:a05:6000:25fd:b0:427:587:d9ae with SMTP id
- ffacd0b85a97d-4270587d9c1mr13312291f8f.9.1761215858529; Thu, 23 Oct 2025
- 03:37:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761217125; x=1761821925;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/8FfLimdwTSQJKMzq9wL0PSXBLCeaEIcv6Fh1DDZFns=;
+        b=RYqyUIiBbXy3bL4iZMh885hNwM03fnsorDJW4aMNUg+n0dBOfZ43b+gg9OwWjaKmSU
+         8t/rolkVnjSbFQpIoTQlJddDTX/QePYAFv27CGlpzAXsLLL7O9OqWCF4MJ3f87p4MtZe
+         agFetxurPgXb4MsnUIUvU/uXJfAVzkER+w0pcsPWv2VK+6so1+A9YKCB7IaEjArZj100
+         Ed76X/p8pYXDXLHE9qo/doQ4N6NJR+eG6FxM5sc5V/eyFYTkiaqNEpBuZkVelZcfH4SK
+         ZBcDlCouNBgujP955WrXqNAW7I1Sqw+ROfaqx8xX2FInk0SMyFO56jDUS7OxeCtwo721
+         OiCA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0K8poW078HkBNLs9pxbQr4+6aummCngB5JcblMs6boAk2kB7C2wPAc4KRqrnekPKWQGb0zfmjiPE9uxQDoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxl1RjB+kMkZp43KHC1DTgIgMf47ZgV7tixYmfDCbryWs0/3InY
+	xK/kY4XHxoqJWQzHMYJ88da5Hk7rD73iEiuOXcq6cp2yXe0BVjCaFMBk
+X-Gm-Gg: ASbGnctucVVUmBsvwl8YJmZs+cyz5jJjv7VjA50D4HMC8z2Cfh3WAbLKX+1QybwkIRv
+	OU5YGoAkB+qjWbggqe0UFJeiXZMxFcsD8p4cW/rRL7fx2/5cYUUmKzg3DRhfF2nYtAeeJmWD7n5
+	ev3Th1OlQWseyXt/tcs2BTBmLJDaltjQmKpseWXNLwnDQJNdMYjCv8jleMectUW2TyLX3/hag/I
+	fNTOsMFGilTGQusv0IG+FVTm9eQbpiMsfUmTJLFZlT8Bjy7gusiBuJUURpzxzzIDjekRhmgEcTu
+	pitfDSui1uhllXXdn4FMjAXkV8XRKoFM0ANttYcc+l/eQt5BXcTEUCn79GcNGR1wagUT4fIeq2I
+	Snc1wK5VCcD2nhQgZfBHPYphXV94zS7qL7hQ8K0ssyk9Dzk2rfmC3FM3hqcZFYnCRiBbUGi7+Py
+	wVOv+w/TIoQr5XDKwyHwmPQP4SrP+cbo/qOPJIbYPCu58AjKLjFf6ZlFOB6mM77yIgL/IK7KRNP
+	eM=
+X-Google-Smtp-Source: AGHT+IEtJtpkQDQZMATtX5gEoTyjcU/SlVNaxbFiH9+cQdwIt/WrTow5bb9bZtmwCvX5K9H0qTyrIA==
+X-Received: by 2002:a17:90b:1801:b0:330:4604:3ae8 with SMTP id 98e67ed59e1d1-33bcf8ea23emr29132041a91.21.1761217124762;
+        Thu, 23 Oct 2025 03:58:44 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33faff37afesm2027630a91.1.2025.10.23.03.58.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 03:58:44 -0700 (PDT)
+Date: Thu, 23 Oct 2025 19:58:33 +0900 (JST)
+Message-Id: <20251023.195833.1671468354093515571.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com, dakr@kernel.org,
+ daniel.almeida@collabora.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+ a.hindborg@kernel.org, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
+ tmgross@umich.edu
+Subject: Re: [PATCH v1] rust: simplify read_poll_timeout's example code
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72n6J16yyPdhNAzDn0LXVBeiaZBcka9WztaZhqMF16CY-A@mail.gmail.com>
+References: <20251023061124.2582749-1-fujita.tomonori@gmail.com>
+	<CANiq72n6J16yyPdhNAzDn0LXVBeiaZBcka9WztaZhqMF16CY-A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251022143158.64475-1-dakr@kernel.org> <20251022143158.64475-6-dakr@kernel.org>
- <aPnnkU3IWwgERuT3@google.com> <DDPMUZAEIEBR.ORPLOPEERGNB@kernel.org>
-In-Reply-To: <DDPMUZAEIEBR.ORPLOPEERGNB@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 23 Oct 2025 12:37:25 +0200
-X-Gm-Features: AWmQ_bnHmpaGJ5SXvKhXy7BPOYeRX2L2uNppxAQX8TK3YbD6TWoOM-Pb_fLGRa8
-Message-ID: <CAH5fLgiM4gFFAyOd3nvemHPg-pdYKK6ttx35pnYOAEz8ZmrubQ@mail.gmail.com>
-Subject: Re: [PATCH v3 05/10] rust: uaccess: add UserSliceWriter::write_slice_file()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, mmaurer@google.com, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On Thu, Oct 23, 2025 at 12:35=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->
-> On Thu Oct 23, 2025 at 10:30 AM CEST, Alice Ryhl wrote:
-> > On Wed, Oct 22, 2025 at 04:30:39PM +0200, Danilo Krummrich wrote:
-> >> Add UserSliceWriter::write_slice_file(), which is the same as
-> >> UserSliceWriter::write_slice_partial() but updates the given
-> >> file::Offset by the number of bytes written.
-> >>
-> >> This is equivalent to C's `simple_read_from_buffer()` and useful when
-> >> dealing with file offsets from file operations.
-> >>
-> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> >> ---
-> >>  rust/kernel/uaccess.rs | 24 ++++++++++++++++++++++++
-> >>  1 file changed, 24 insertions(+)
-> >>
-> >> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> >> index 539e77a09cbc..20ea31781efb 100644
-> >> --- a/rust/kernel/uaccess.rs
-> >> +++ b/rust/kernel/uaccess.rs
-> >> @@ -495,6 +495,30 @@ pub fn write_slice_partial(&mut self, data: &[u8]=
-, offset: usize) -> Result<usiz
-> >>              .map_or(Ok(0), |src| self.write_slice(src).map(|()| src.l=
-en()))
-> >>      }
-> >>
-> >> +    /// Writes raw data to this user pointer from a kernel buffer par=
-tially.
-> >> +    ///
-> >> +    /// This is the same as [`Self::write_slice_partial`] but updates=
- the given [`file::Offset`] by
-> >> +    /// the number of bytes written.
-> >> +    ///
-> >> +    /// This is equivalent to C's `simple_read_from_buffer()`.
-> >> +    ///
-> >> +    /// On success, returns the number of bytes written.
-> >> +    pub fn write_slice_file(&mut self, data: &[u8], offset: &mut file=
-::Offset) -> Result<usize> {
-> >> +        if offset.is_negative() {
-> >> +            return Err(EINVAL);
-> >> +        }
-> >> +
-> >> +        let Ok(offset_index) =3D (*offset).try_into() else {
-> >> +            return Ok(0);
-> >> +        };
-> >> +
-> >> +        let written =3D self.write_slice_partial(data, offset_index)?=
-;
-> >> +
-> >> +        *offset =3D offset.saturating_add_usize(written);
-> >
-> > This addition should never overflow:
->
-> It probably never will (which is why this was a + operation in v1).
->
-> >       offset + written <=3D data.len() <=3D isize::MAX <=3D Offset::MAX
->
-> However, this would rely on implementation details you listed, i.e. the
-> invariant that a slice length should be at most isize::MAX and what's the
-> maximum size of file::Offset::MAX.
-
-It's not an implementation detail. All Rust allocations are guaranteed
-to fit in isize::MAX bytes:
-https://doc.rust-lang.org/stable/std/ptr/index.html#allocation
-
-Alice
+T24gVGh1LCAyMyBPY3QgMjAyNSAxMTo1NDoyNiArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBUaHUsIE9jdCAyMywgMjAy
+NSBhdCA4OjEy4oCvQU0gRlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwu
+Y29tPiB3cm90ZToNCj4+DQo+PiAtIERyb3AgdW5uZWNlc3NhcnkgUmVzdWx0J3MgJzwoKT4nDQo+
+PiAtIFVzZSAnPycgaW5zdGVhZCBvZiBtYXRjaA0KPiANCj4gVGhpcyBhbHNvIGRyb3BzIHRoZSBj
+b21tZW50LCBzaG91bGQgaXQgKG9yIHBhcnQgb2YgaXQpIGJlIG1vdmVkIGFib3ZlDQo+IHRoZSBm
+aW5hbCBgT2soKCkpYCBvciByZW1vdmVkIGxpa2UgdGhlIHBhdGNoIGRvZXM/ICh5b3UgYWRkZWQg
+aXQNCj4gb3JpZ2luYWxseSwgc28gSSBndWVzcyB5b3UgYXJlIGZpbmUgd2l0aCByZW1vdmluZyBp
+dCkNCg0KWWVzLCBJIHRob3VnaHQgaXQgd2FzIGNsZWFyIGVub3VnaCB3aXRob3V0IHRoZSBjb21t
+ZW50Lg0K
