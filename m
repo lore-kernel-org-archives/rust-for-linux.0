@@ -1,64 +1,63 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9A71DE4CA
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 17:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A72E30AAC2
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 17:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761240788; cv=none; b=NSA7et0HRWsYc2ApU2NK3q61wR/7GIM+aeoep7rBjwU0Jq/jY/UErzouEUFCCXFWcH26eHaz0DW2InB0egawTy072y6CS9XR2e2rZca8pEx9RCj9E02ljh0qgoNUSux278eNw4uzD4fO8HPfV2IyJTUgx2VdErZ2syd0/7+ieb8=
+	t=1761241029; cv=none; b=Y5N6UF2ANfxx2gVmInqHMbt6k6/72FxOopHkYw5VqDNLGDYDlYwEA/u64B1cTCvnBwZqD9Lnq6s/BSCttiost5Few6cslbibmWMEocI+8JSSERCSPU5YwBXN89EYOYa8EvCDdDZkWqTSt6mfVUIp2Ov7Plti3pdscylqzXcbUaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761240788; c=relaxed/simple;
-	bh=cpJw1OTejKmslWFrWwUMdhq1fDUlcga/3sUJOW+TusQ=;
+	s=arc-20240116; t=1761241029; c=relaxed/simple;
+	bh=06HirvpsHA5H88Oq8EDHNR5z5ZUq/iRoinMQ2IvxnIM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZO1SDVTb2H2SCnfU110d0hk8MsjpknW64ySXqYgam/9EdgUKV2g1RZ+B4Nhb/BtrrJ1bmsJFdUQpM1slTS91q5vokyfLgW31LuzKgmF2UsURdUYRnRo4uYGuZvCwmFr9KBTK4E2TtxdKHXFkhHgd4suAdg7xAJT9FvW+KhySduw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GFt3W8CW; arc=none smtp.client-ip=209.85.219.53
+	 Content-Type:Content-Disposition:In-Reply-To; b=TcROqkm8WZASkpxBiulaAzHsq/N9JpLTHzwSqgHhWQwa8LCN21YQ0tH117lQLioBbs3kQ/36hkBsGpvVBjurh2G34WeslDOgGeh72GPOhBO9fj2ucUCXT/k3Q79KDl30v4hleXDE5VKmv33usOiKWgf9otDdit7M46FTx6efNqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hoq81g00; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GFt3W8CW"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-87c20106cbeso14922476d6.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 10:33:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hoq81g00"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-87d8fa51993so12925746d6.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 10:37:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761240785; x=1761845585; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761241027; x=1761845827; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zp4a9eCi2a7gc094Itg0UZRLr0/XIELDNFAexyvEGk0=;
-        b=GFt3W8CWGyplFkojZQPFcCSUSeeoJISe/JKwWC/3dgg09+fajCuHZo7jmKZIywK7yc
-         ObeRKCtlnPYX94g6BfmL40PZg/DcouwM9pO7oRhnxUCcHB3Ds7OMetES1daoScL9lIk4
-         9MXnOvnIKJZr87JXgV9n1tbhCiu78FNO8slyzp0i/RJIaJKs35fDdeONZ08die65g4Cu
-         u5Tw465ZMWX7tn5AzXSHP7UzJiQEp9VLHmtzw3tWhF/xScwW5j7SssH6PKuzt+An5A+9
-         DDPe/rfhzSSUoNutMwpAJqVTdSdTcnjxiurN2FWfqot+UnzpYAc+rlptYKI+6aFh98Pj
-         9YOw==
+        bh=JjYGgrMz5T0b5VMHHukppf7f8eh1tUQ0s02E0HEP3gQ=;
+        b=hoq81g00yPo/qkg8hcNs4fqB7icCRXh+JMft1ovNKc5W0iK4zEUw746giIUkLOPk+i
+         JhD9JZepO7qWzPtNyjX8kUPVvThfM/sp129R/yhTesQW6Ihq3MKF5xg20avTjWK/8gtU
+         D5Fa65TBBq8+Qx70DochSrbCI6fNF5ebXSJ2uPMY3ZcEn4IYNaUnWuzMF7SS4uyUBzlG
+         2hUWf4zAPi4+LISPlr8QWbsD/ruSKx4dpxdxj1/Gi2F2n3Z+bVnKoaD9HJz1hB6nFiiC
+         ChtjjlywiWlnvsAU/L+J1hsia2t7hqS/gO82v6ugVTzUgGnVXtzUkFxCUvYy9VBpVOI2
+         wWLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761240785; x=1761845585;
+        d=1e100.net; s=20230601; t=1761241027; x=1761845827;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zp4a9eCi2a7gc094Itg0UZRLr0/XIELDNFAexyvEGk0=;
-        b=Ms+B6qujzuo6EKDGgoPjomgPU9JQd9ZrzwOwOr5VBJd7f0EMT+uy5ubf5VdwZlBFLy
-         Lc8h/7ZfdrJUwKJE/R+1/miHOZ9zro/fIEL5uFq50vSavGVXDggP67n0ERwe8CKFpZq8
-         LOKpo/ekBJKXodxWTyunVd3C1m6uzPkdqtap67G4KXyQPCLMZBaKZJeaTMYu9DPdpXxc
-         SFnZCuWQUMQU4uk0ODl/Rj/e0NygOcIBJ4R8dUkEVD+0HnIxd7JVPKIG77MTrdrKk8dp
-         jqQbahQe3B9CjVIE5EWwvb625Eso4eblxPGYGGZhbRnG0vDYTCMF2cxGdKYbhI438O32
-         nc2A==
-X-Forwarded-Encrypted: i=1; AJvYcCW27N3Or9T3Mc97qMxm9GSUNG9oQvbD/rRxQfacDhz6w/Bh+Z6EZfXdoYVT+CPCVWcfrtMD5CwPvC8aQNgRrA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywzkl3aPq74q33/N+rYFWkRu/MJE30Xuq5IwjgmhyHUfRINgm9Y
-	QJVzT5z5AR4GbkjYx7q4fJyAvgY9F8bLBkQr4J2FtXDhn7UDBYXcX7s6
-X-Gm-Gg: ASbGncuxtBqfB1y5xjHcILPmPMCmwbXRxHOaKNcIRTdxAznP19v/13wqR+BOGuwi7zV
-	OnqsBn2Y9Fmxq9OW8bkZQZMYF4Cp3UKZODBLmHsXdWGbyKUWs8F9DaRGnebI2+fzT2NpV9bupkp
-	tF+Cpdq6/LRiRt2h7bv3EdzBFwt5ZOBl39UW9hUryPxUDzl1BVPi+TrLyOfS6qYiGlOq5ugN7Ek
-	Iog9tKilUxm3MoCXgfRUgcCz/gwR20qlIZ0g4GZgLUsHe5Coiy+OUJUmzEJ8igqg8VdCitJ6rka
-	GSbTWNN9ycE1nneUzcNIfZjANsyip6nsK1Xu1KiUaJVJ8hWoi09O3Nm8hcQs/QacLfhc6a5LJZz
-	Lfq9u6edFnVQhznuBrojJv6lVg8W07Lg2AUQ7cRYN9mNUyby6cIWNYT1jPf1cN+s1inK02fkOks
-	fo9xqyQQhzi8HWiuGQiA==
-X-Google-Smtp-Source: AGHT+IGHYqbeAL8vbTPvgY90m2GDo8z8aBpxsit+v6Rm+Fgk3PNH7z2lbMi924Eefb4cUQvvhl8tbw==
-X-Received: by 2002:a05:6214:31a1:b0:87c:21d8:1243 with SMTP id 6a1803df08f44-87c21d8180amr257680096d6.40.1761240785312;
-        Thu, 23 Oct 2025 10:33:05 -0700 (PDT)
+        bh=JjYGgrMz5T0b5VMHHukppf7f8eh1tUQ0s02E0HEP3gQ=;
+        b=wSFbU5qSk50hDMhUsQa50GkhImVjSxodr7n928yptowQpfyd9NpK9dydFhTNbrEXrn
+         oOnWcCyC3ttj39Nxu6es5AICkvD86bp8ciTux+C5QpWD1eqrB0yYP3KALEY9jZK+u6Jj
+         0hEqzJN04xU8Yg246Oy4OwM65SqQorDNn+aOR6VN2v3dv5/1EJxh8TZxsJhHkcESFs1T
+         sjXMGMgtSIJnByeNH7a0pXnOu+ArtOTP1QiqZafIj0Rfb6Q7dC+/HIkdRwg1TaZLBw2t
+         gTN/0QQzqDK0z+VudTgNDdNwjR2gHG0cYypSMfnQ3355v53sQdf0SJkU6izimg+i9sQg
+         JrWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW40w7KhvuFebEqinjGzlwnDetWZxKtFnrnJ+AQ1gY4jzxjG3hS7k0HQagggoOHxv3AeFf8aypWvPbonMAHCw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiWJyYvtyeLBrLMsrrN8FvXruN69wj5CovT1Woj+NOhWFfVs6N
+	MKe+ffSXF5OMb5+R4t7JtYofpGE/mW1KV0cRMR603cj8hNn6PB7euO4o
+X-Gm-Gg: ASbGncssMI+35iF1oCmjW5MxIx1lsUlK+Xv+bth9t+mwwcCPOAR91WdY7OLx05QkJvo
+	DB4EVaiL9bnQNB+VdPxq1DMtZskdtntpVbEyOCCyN08UqXpbVb8PK/cr20ytOhuZYhVneEW1qtU
+	pu2oU3IXkpT4Nb0N6XzrKFJn9i2oY4gJYVOEDBJKKyJZmCfN+in7ewzIsNnwvWnuBdA8lLd8XWJ
+	eJdTEoQyEnOriVLPkHBr2P/gngxjIOH+PVXZ62XnqfbmLur3LZSzwQqU+yQBsv2m9yFg9dHF+4L
+	kKMf+MhL38NZpoaLx2cTqgkp6v6dCOK4FgcXtLfw7LDUdkxfri/3HU+M1/0Zf6HCbYMc3P2JzTp
+	ijj/oxcBfwgk2NQ4cKFxEcdp4eAgmjPP5kPNM9YdETJHtuZJ3h7AGXrMBmzHTgp7jxdfZlnz0
+X-Google-Smtp-Source: AGHT+IFAGIHHoYhhCFsRnrO4Ko8G5PM5fRjatDHknRXVMiCASWYuq5FB5OcIT9AF7oflvkgJXcABAg==
+X-Received: by 2002:a05:6214:4e01:b0:87c:21db:cbbe with SMTP id 6a1803df08f44-87c21dbcdfamr282156576d6.26.1761241027082;
+        Thu, 23 Oct 2025 10:37:07 -0700 (PDT)
 Received: from localhost ([12.22.141.131])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87f8fb6b1c1sm19113796d6.6.2025.10.23.10.33.04
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87f9e7d254csm19085796d6.32.2025.10.23.10.37.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 10:33:04 -0700 (PDT)
-Date: Thu, 23 Oct 2025 13:33:03 -0400
+        Thu, 23 Oct 2025 10:37:06 -0700 (PDT)
+Date: Thu, 23 Oct 2025 13:37:05 -0400
 From: Yury Norov <yury.norov@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -76,10 +75,10 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] rust: bitmap: add BitmapVec::new_small()
-Message-ID: <aPpmxy_oYoJeeqfr@yury>
+Subject: Re: [PATCH v2 3/5] rust: id_pool: do not supply starting capacity
+Message-ID: <aPpnwXGo4P4-WI6v@yury>
 References: <20251021-binder-bitmap-v2-0-e652d172c62b@google.com>
- <20251021-binder-bitmap-v2-2-e652d172c62b@google.com>
+ <20251021-binder-bitmap-v2-3-e652d172c62b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,64 +87,65 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251021-binder-bitmap-v2-2-e652d172c62b@google.com>
+In-Reply-To: <20251021-binder-bitmap-v2-3-e652d172c62b@google.com>
 
-On Tue, Oct 21, 2025 at 01:32:44PM +0000, Alice Ryhl wrote:
-> This constructor is useful when you just want to create a BitmapVec
-> without allocating but don't care how large it is.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/bitmap.rs | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-> index 15fa23b45054b9272415fcc000e3e3b52c74d7c1..4ffe9eb0f208a3d62016e00297f5a0800aa33336 100644
-> --- a/rust/kernel/bitmap.rs
-> +++ b/rust/kernel/bitmap.rs
-> @@ -232,6 +232,16 @@ impl BitmapVec {
->      /// The maximum length that avoids allocating.
->      pub const NO_ALLOC_MAX_LEN: usize = BITS_PER_LONG;
->  
-> +    /// Constructs a new [`BitmapVec`] without allocating.
-> +    #[inline]
-> +    pub fn new_small() -> Self {
+On Tue, Oct 21, 2025 at 01:32:45PM +0000, Alice Ryhl wrote:
+> When creating the initial IdPool, Rust Binder simply wants the largest
+> value that does not allocate. Having to handle allocating error failures
 
-Nit: maybe:
+That "value that does not allocate" wording is pretty confusing.
+Maybe:
+        Rust binder is initially created with an arbitrary capacity
+        such that the underlying bitmap is held inplace.
 
-        /// Construct a longest possible inline [`BitmapVec`].
-        #[inline]
-        pub fn new_inline() ...
-
-This 'small vs large' lingo is internal to bitmaps. I don't think it
-is worth to expose it in the interfaces. 'Inline' or 'inplace' sounds
-better to me.
-
-With that,
+Regardless:
 
 Acked-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 
-> +        // INVARIANT: `nbits <= NO_ALLOC_MAX_LEN`, so an inline bitmap is the right repr.
-> +        BitmapVec {
-> +            repr: BitmapRepr { bitmap: 0 },
-> +            nbits: BitmapVec::NO_ALLOC_MAX_LEN,
-
-A side note: after merging bitfields, we may switch inline bitmaps to to
-
-        bitfield!() {
-                0:31    nbits;
-                32:64   bitmap;
-        }
-
-Thanks,
-Yury
-
+> that cannot happen is inconvenient, so make the constructor infallible
+> by removing the size argument.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/id_pool.rs | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
+> 
+> diff --git a/rust/kernel/id_pool.rs b/rust/kernel/id_pool.rs
+> index a41a3404213ca92d53b14c80101afff6ac8c416e..126e57f34c3407cb1dab3169417f01917e172dee 100644
+> --- a/rust/kernel/id_pool.rs
+> +++ b/rust/kernel/id_pool.rs
+> @@ -96,16 +96,11 @@ pub fn realloc(&self, flags: Flags) -> Result<PoolResizer, AllocError> {
+>  
+>  impl IdPool {
+>      /// Constructs a new [`IdPool`].
+> -    ///
+> -    /// A capacity below [`BITS_PER_LONG`] is adjusted to
+> -    /// [`BITS_PER_LONG`].
+> -    ///
+> -    /// [`BITS_PER_LONG`]: srctree/include/asm-generic/bitsperlong.h
+>      #[inline]
+> -    pub fn new(num_ids: usize, flags: Flags) -> Result<Self, AllocError> {
+> -        let num_ids = core::cmp::max(num_ids, BITS_PER_LONG);
+> -        let map = BitmapVec::new(num_ids, flags)?;
+> -        Ok(Self { map })
+> +    pub fn new() -> Self {
+> +        Self {
+> +            map: BitmapVec::new_small(),
 > +        }
-> +    }
+>      }
+>  
+>      /// Returns how many IDs this pool can currently have.
+> @@ -224,3 +219,10 @@ pub fn release_id(&mut self, id: usize) {
+>          self.map.clear_bit(id);
+>      }
+>  }
 > +
->      /// Constructs a new [`BitmapVec`].
->      ///
->      /// Fails with [`AllocError`] when the [`BitmapVec`] could not be allocated. This
+> +impl Default for IdPool {
+> +    #[inline]
+> +    fn default() -> Self {
+> +        Self::new()
+> +    }
+> +}
 > 
 > -- 
 > 2.51.0.869.ge66316f041-goog
