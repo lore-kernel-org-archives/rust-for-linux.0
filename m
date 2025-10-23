@@ -1,138 +1,122 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234301F63F9
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 20:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75A326E6EB
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 21:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761252723; cv=none; b=C9/OIZaz1mCN71/SRIUTT8FHxdV/G4EniNdh9Zf4vf3P8UBa9fAEOvPRzXB1RAJ53Vn3mYy60ZlgEzWEKPCUaVw9NQD4tm5imO0ZbmYKiHzQGq++MGaU5PgcC3sNuPPzB7+3YTaIq6r7NYGCoRyI1VNO6mYXIEXLbfQv2qqeUNQ=
+	t=1761254760; cv=none; b=gq210e+phDc7jZdjQAyoPsKtq/RPk9npRIsiXOYLs+qtMXAb4b9+G3ZMOKw2TW4NXWvPvyfrp219b2+IO42tzsOM8FLzhIfG+cnuFd//5juo0dEXpW1Ifn8gm0V9FTQDjFHbzk2T7ELKshInFHwDP/pZpNTtK7wL74wtzUV0QrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761252723; c=relaxed/simple;
-	bh=DbEVDp/1daO+lIxwr/wlCt81cejMYnz/EAuVZ6biFZ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+3cevWw1UCLndRqYP/JZgRsVgFL+u1S2kVubW8Xgk03OildwDxQr9fkfosudk0RIlk1GE3baYGWUBUhy0X+iFB7mVZQ1rtVKW7zmKlkv7EJFlHx5/6nko6n5JMl8/cCOR3ArTr3Rleb+s6TQF9cfVw1eUFO12PKTmXca6YmxAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ItMuDfsE; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761254760; c=relaxed/simple;
+	bh=oM9E3x8Q//oN29bjoNgeJ6s7bj14MX3tem/nnOEWG0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bKyDsp3dwl+om1S1WWD/TbkfUCmbz0ydYfQtvOB7qIMls7rBkFgmJ3FEVICc6NM7YrvF5mTkhrRVeQSWs7Z5KcXFZzxDlPes1Y14vSqvebZ3LeDOxc+CLCHrht5L/S71LcEu4rwXlPcdh4h//+Pz6rJfqREeCK7LNMLJQTyt558=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O9CzeMmu; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ItMuDfsE"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-63c556b4e0cso2579900a12.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 13:51:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761252716; x=1761857516; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4UlHNTGv7yFHhaTac79ENYscEry1rz6cX/llqQj2Xi4=;
-        b=ItMuDfsE40bhK4d0C1KnUxRcaqHSxB66UXgLtYAMWZs4GHdHYnss1q+ghF62UTzYg7
-         UGn5teQvECvyJrXN/4oCZqO4wx1gQ5FJwjlrdDYNO9tkzYZ3qon4QkAgECxwtTx7EbwH
-         hLcH7Vh+9jhLTxuLdL7p6hR71q3hGBRKvSeOebudrMl6EaOZUlY2SE1rEiLWlccLiVGo
-         VTK/NMyoWEL44vqAoRBvFaxIrEWQlLWCu8HJBAMlRV9j1SEZzKFpCF2jxxmrIfDk48fM
-         3GnRxe1zvy+kq7XdB4leG5QjkYD4G3+mlOYN60ckuTd6gM1L1PVH6ZKrC/g6NTVjdQUC
-         aKcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761252716; x=1761857516;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4UlHNTGv7yFHhaTac79ENYscEry1rz6cX/llqQj2Xi4=;
-        b=aeXLhPt9T9eO414cEkMT6Vxw3R3v4nsS0qoocRj3NyWScmgX0oAfCAqFwQ/PxpB64u
-         pPoJ/nTjntxaI6yFDb2defBEeYf07BSi00HnrQkl7zNbMv4O0GGIMZXISCieF8yl0eCP
-         9zxnpSCSYywXhROZ0xpe0ccW54HfC7Qxx/4v2h9h35iiUr8V7GpEqHvpB8xnPqi1oLFu
-         lM3WbypDlJzTOUQL6dmcMxiMlvMqz2CbNjjt+0ENVIlzGrBeqDTjMpnOmRu0t/Qif1EO
-         a7bh9sulz4v4x4OrwaNjSfhOlr6zVCHVZ1g0+Ypw73APEw1VZgdNZZJCaTljYQ4FpzPQ
-         CKsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTfZvwX6C9Z+VTV2dQFCbH7J9iKAS/nPksgJ7kf1pQtxYOgqdDYwcQHP/9wcO5+WJtTpaE7zLihut2uoeFxA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBQZZim8G0kjpgwoCqJxRPF0v9+nZ/VX8hOpUV1jf8W006Sjd0
-	fc6sHrIp7o6pJOOTI6PlYOQ2ctFRq/VAaqbSAKzFq+Wycc9uq31wNsK7
-X-Gm-Gg: ASbGncvbrG5UePyBe3f2dLDyPQCZpLzBuSETT/fRXHEyYSVwmkYDUhLX2vU8BvH1FOI
-	idaNz/grqkN0x22tr3AfTVyJvI6XKiPR4sEySVdywLHOOfg4hRFUU34D2JBGszxdw8GkBFvOImy
-	om5uhi0Gy+kxA2InuxrTbXr6QV+QXRRCpImhZbLP0yg7zqHImr26+0pLWqoD6fEupNrzB8p7lz5
-	fWLFhougEd2GNtQPZ2WCMS6MVguCW1sKrffPzT+1elywDljm0YG+D4nt0K4LPDtMyj8ijoEZD0+
-	PDgUFBwQgDDi5YGFMfy27UFa5AhGTRF0eDQlY5mJhJdk4CHzOmPjsgNLbvs0FomWTKTpyp9addK
-	5rnEx7B0D2k9DVjGpOPhBwsKUhMFbjwlM4idSF/MQm3nIuFqUmpbh66xzC0vRieoCbn62KkFitM
-	2JonecgtHX3r1xI53+ug==
-X-Google-Smtp-Source: AGHT+IFX0S8naZatH+IeZ+gFwMfUpBUu0mzJ5xLs/IvrcDwpmdXZobGQxw0XYiP34F1iyLjV8n51aQ==
-X-Received: by 2002:a05:6402:50cb:b0:63b:ef0e:dfa7 with SMTP id 4fb4d7f45d1cf-63c1f62ccccmr27493360a12.6.1761252716410;
-        Thu, 23 Oct 2025 13:51:56 -0700 (PDT)
-Received: from archito ([2a01:e0a:acc:bb60:756b:64e3:20ef:1d08])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e3ebb3299sm2564120a12.2.2025.10.23.13.51.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 13:51:56 -0700 (PDT)
-From: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O9CzeMmu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761254757;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=T7EXhjseSIPKV3IEY+lfev6ijZOQWgDXogt/oOdDlqU=;
+	b=O9CzeMmu3rDVhoey5uhNuGxlrzT5AQUvtszURzRM7qjaHb5ZGmLNLjP97ErdReWooAWlJ7
+	cs2aRNsh8+M1cgBZsT2DGO+r2/P+ZLCYAsjbsHHAAwlLrn1nyLle/ckeb+VzoHu+R03XEL
+	wNmmOYIfklDVp0PgC0EWULJDQRssau8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-_RL9-eOrMTmmmVGJks3ghw-1; Thu,
+ 23 Oct 2025 17:25:56 -0400
+X-MC-Unique: _RL9-eOrMTmmmVGJks3ghw-1
+X-Mimecast-MFC-AGG-ID: _RL9-eOrMTmmmVGJks3ghw_1761254754
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2498F1800451;
+	Thu, 23 Oct 2025 21:25:54 +0000 (UTC)
+Received: from chopper.lan (unknown [10.22.64.235])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1349530002DB;
+	Thu, 23 Oct 2025 21:25:50 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
-Subject: [PATCH v2 2/3] nova-core: Simplify `DmaObject::from_data` in nova-core/dma.rs
-Date: Thu, 23 Oct 2025 22:51:36 +0200
-Message-ID: <20251023205146.196042-2-delcastillodelarosadaniel@gmail.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251023205146.196042-1-delcastillodelarosadaniel@gmail.com>
-References: <20251023205146.196042-1-delcastillodelarosadaniel@gmail.com>
+	Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH v5 0/8] Rust bindings for gem shmem + iosys_map
+Date: Thu, 23 Oct 2025 17:22:02 -0400
+Message-ID: <20251023212540.1141999-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-This patch solves one of the existing mentions of COHA, a task
-in the Nova task list about improving the `CoherentAllocation` API.
-It uses the `write` method from `CoherentAllocation`.
+This is the next version of the shmem backed GEM objects series
+originally from Asahi, previously posted by Daniel Almeida.
 
-Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+One of the major changes in this patch series is a much better interface
+around vmaps, which we achieve by introducing a new set of rust bindings
+for iosys_map.
 
----
+This patch applies to drm-rust-next with two additional commits from
+drm-misc-next:
 
-V1 -> V2: Split previous patch into two. One per reference to COHA.
-          Added more details in Safety comment. Let me know your thoughts
-          Kept the original map to avoid a temporary variable
----
- drivers/gpu/nova-core/dma.rs | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+e3f4bdaf2c5b ("drm/gem/shmem: Extract drm_gem_shmem_init() from drm_gem_shmem_create()")
+c08c931060c7 ("drm/gem/shmem: Extract drm_gem_shmem_release() from drm_gem_shmem_free()")
 
-diff --git a/drivers/gpu/nova-core/dma.rs b/drivers/gpu/nova-core/dma.rs
-index 94f44bcfd748..620d31078858 100644
---- a/drivers/gpu/nova-core/dma.rs
-+++ b/drivers/gpu/nova-core/dma.rs
-@@ -26,18 +26,9 @@ pub(crate) fn new(dev: &device::Device<device::Bound>, len: usize) -> Result<Sel
- 
-     pub(crate) fn from_data(dev: &device::Device<device::Bound>, data: &[u8]) -> Result<Self> {
-         Self::new(dev, data.len()).map(|mut dma_obj| {
--            // TODO[COHA]: replace with `CoherentAllocation::write()` once available.
--            // SAFETY:
--            // - `dma_obj`'s size is at least `data.len()`.
--            // - We have just created this object and there is no other user at this stage.
--            unsafe {
--                core::ptr::copy_nonoverlapping(
--                    data.as_ptr(),
--                    dma_obj.dma.start_ptr_mut(),
--                    data.len(),
--                );
--            }
--
-+            // SAFETY: We have just allocated the DMA memory, we are the only users and
-+            // we haven't made the device aware of the handle yet.
-+            unsafe { dma_obj.write(data, 0)? }
-             dma_obj
-         })
-     }
+The previous version of this patch series can be found here:
+
+  https://patchwork.freedesktop.org/series/156093/
+
+Asahi Lina (2):
+  rust: helpers: Add bindings/wrappers for dma_resv_lock
+  rust: drm: gem: shmem: Add DRM shmem helper abstraction
+
+Lyude Paul (6):
+  rust/drm: Add gem::impl_aref_for_gem_obj!
+  rust: drm: gem: Add raw_dma_resv() function
+  rust: gem: Introduce DriverObject::Args
+  rust: drm: gem: Introduce shmem::SGTable
+  rust: Introduce iosys_map bindings
+  rust: drm/gem: Add vmap functions to shmem bindings
+
+ drivers/gpu/drm/nova/gem.rs     |   5 +-
+ rust/bindings/bindings_helper.h |   3 +
+ rust/helpers/dma-resv.c         |  13 +
+ rust/helpers/drm.c              |  48 ++-
+ rust/helpers/helpers.c          |   2 +
+ rust/helpers/iosys_map.c        |  15 +
+ rust/kernel/drm/gem/mod.rs      |  80 +++-
+ rust/kernel/drm/gem/shmem.rs    | 433 ++++++++++++++++++++
+ rust/kernel/iosys_map.rs        | 705 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 10 files changed, 1284 insertions(+), 21 deletions(-)
+ create mode 100644 rust/helpers/dma-resv.c
+ create mode 100644 rust/helpers/iosys_map.c
+ create mode 100644 rust/kernel/drm/gem/shmem.rs
+ create mode 100644 rust/kernel/iosys_map.rs
+
+
+base-commit: 5ae65bdcb867555540169ef57876658262a67d87
+prerequisite-patch-id: ed9c46db079eee47b437d10234dac813197bc33e
+prerequisite-patch-id: a2c6c70700e6a333d0b4daf97978fd2e07e24156
 -- 
-2.51.1
+2.51.0
 
