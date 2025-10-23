@@ -1,107 +1,129 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F8E2571DE
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 05:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C44D280018
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 06:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761197090; cv=none; b=fS6poketsDgdwpjtSrX98bKpRZBb5Fgzu5Ldw8ceo/sh/8lYrUX/h6Tp3i0utcL/uyf9o3Tf6NibfbDbbxXKdcnBOfyCQh+1HYFVaAhyn5Yb48fY5Dga84fZMuI5SzsjfdJBkAPdTmYUuOJ/X/ctqYk0rmeqlcSc5GU1avmNiz0=
+	t=1761199975; cv=none; b=Uk11a0oJ1zUo2mV4bTvziXFWsghinoBST7/HniKO3EwenL0Gujq/TIbSFjpO/B/l9WyoN73TTrOz+r1tLiO4G+KVBMCoX4DAZltiqMUg1T0+L7MwwPSSZzrLtjfycKEoMRLEuTJXu9oMtRwg/KhKS1yhZxuezusTwMc2m1LzCMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761197090; c=relaxed/simple;
-	bh=j0XTF8bkSe6ikG3g7yHZm8qwPavF1sthFe6fQphUOuc=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=mMx7iGXtUzFXXI7viEkiwvCEk+jsqnhiy7nTtkMbyItGEoxh3LuMwJePpKpka+oY5PR/kLamSyBqFLax7cCzBSouJVPxsXQdkI+PCl2S9eBw5rnUJzVEgmfsrboW/KbfjKlyXtGxCDF6j1DHQ5nc2lbnNcbSakkAqXRwtivcKFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayuD+ztQ; arc=none smtp.client-ip=209.85.210.175
+	s=arc-20240116; t=1761199975; c=relaxed/simple;
+	bh=KoATpDXgD0eICdcJM5inRvL2fvIiA3i0kNJNlPHqUSc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zs+P/6PrMwe3Zb3QeecWQgg7XbZeXcK59RRViYNzhYwgQJex43QkyfOVFKFehNbQLIh9/RpEKYaBFpOiQcdPepYKnu7vAIp2cNDRNbVdahJvr2z+vzWqoSvkDV06M+Wv/DPJUeTxUh9OCBEr1Y6lwY5uzP36EzvH3Loq+S4XSxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MZVlYTuJ; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayuD+ztQ"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-78af743c232so417407b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 22:24:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MZVlYTuJ"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b6ce696c18bso379310a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Oct 2025 23:12:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761197089; x=1761801889; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5oNpa+wx0CyGzJvIM5hXk0JHmhQrmwUkkmYD7/WM9d8=;
-        b=ayuD+ztQCkoIhmO9Cb+okBQdqN8x429oLLEV9l3jbLUXXt1IXyZVb3LmQHnXiIEhJf
-         lGYDcWoKWQGoL4NJaRlSvZYTi41h/b5FVyt6iq1iiMgqP15KSGKArBgVi+rsqStTqWju
-         tN6DcH0KYOqyL0vq1nRjNH5MrTe9uzPC27t7Hml2vMQ2DK9BZXxhNlf1np+7JaHFN4aN
-         oVIfN7nkGgcv9YTqgNPUlE8Tms4+ioyVCK3A9eqiTFDMVU293ir+YjpvENgo3qGZgj1+
-         g5oycMGbFHORU0k64rfCgEbt9jUqTWwYFpx9r3MBP7/UB+avw3dOuMeOEH1Lz1pSrN4F
-         ObdA==
+        d=gmail.com; s=20230601; t=1761199972; x=1761804772; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NADfuFtteUA7bCNNPpUSoQKsHB22B6aekqVwkYXKY6Y=;
+        b=MZVlYTuJNTXbgrQTL7ijPqREhF4M0b9H84nLoykoFNb9FWwjksuqnZgTRfNRTY6w3K
+         47RM4+T6ufXawC+rrI1CCat2IIvEoqdzjr7oSPdNTCky5I8jSpMOawQ5KRNVl6NgQr3d
+         q5ae1OOyymkNeyWpv7GVvGWMe8tY4tfv5YJaZ0WqT39SldLhn5RFund0+E55RtUSGlAh
+         FJ3uxGV3egwKiZscr0Msv7Li8k2Bgd+KX+MRcAAWLUtMWTQ3hyKMeNe/7aESmO2X+LdQ
+         LU8hiIoK6A2aAy36LDftqIONZsSdazVkgfB7keNlPrNXqmAaN60rKdCP55CWL82rH83N
+         3xag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761197089; x=1761801889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5oNpa+wx0CyGzJvIM5hXk0JHmhQrmwUkkmYD7/WM9d8=;
-        b=dthHE/Acc5r524WruFnNfBywNuZ61fxKioi40m59aCTvbMMsQNBnFbuNpKPexJZSVz
-         XMMvZUhZMzHvSCBS9zvhbDmkkH29RbXDFdEeMv5fO/ilJlmPBedgeJRuKv4lYYa5oS4g
-         cUGT/gNQ2BlgOs+24fUFWmkeZEFedl/CK/FuKVwhCgcBRn0Gbe2uM4m1QDrLoHMwsALh
-         bc6uae5ZR169N//5fN0ClbSETFT8Cu0a9Le9gefgoU5Eq978B3MFTUAnK1+/TnOXK8i5
-         Wqg/vLUqIFxhl3AvYpCVv6bfRFQTNpmnw5J1gHvQ741A8M1y/ts1ACNRarinYxmvrR8b
-         4L6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV81vXzJSPRbScbYBddBtszZXM8Mr+CaU9wENnKWJPGV+ym2nL+eI6EI6UdJrLg3wCbvMx3nWAQDlEJZV0rBQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVkar0c7atl1m6GhejAlym9tcsyiFNHmvvvtuXqfHgNDzbvItx
-	W+qujXHYIhl1EYqLyprWbdgRURjmrr7Ed5prshhhOUZZ8QSGXC2mZuLJ
-X-Gm-Gg: ASbGnct+6OrF/4mTxNN9IvGFZbcolWAQW559QCGFTKZpML4dNSdORqKkNbN4+2LGhtY
-	DPieDgYMnFJiiNOwugc/Mkix+62xZqFA0ltOcYz4fRIOyCsbZ5RyZlcmXTBslIzwkCCUqqQ0LOV
-	7c9Lj56yTWkVz8JSgvN/rYFuAJ9HJ5CuTewRSMulTCFw2HepsbmDEGxvyWfXLUrCyQK2Kl4iLZb
-	WXcKZ7mw8ESZ6ruh2zp5E7pR+P5wtgdUfy+f4xraNMRtn5q1+KTv450BSyYDKYgy5a1X+I0S8ef
-	KTW6BbHi7rHnmgdRTuw5hQSx2u+wKIsTzT5NWGHOozH7giXAhQ/meKQ+Fykxl56J0W31/m0JIEr
-	zhBiFnOnurK4fEY62TYVetfbwmOzKkeC/u/WeDUlO/DpIsr4N7VmjxPk5+kz/R5+VN1ay0lUBtg
-	IT//l1DlrkQKjzNctNYqxLrBxmiM1qUkW6Q1HZTC275xe58/HznqdOl2ngIDB7dGww
-X-Google-Smtp-Source: AGHT+IF4qkDoU5lkl1JwIY6tYkhMEOfi1NPq5q0a4rThKNKpEfb+Yvc5sPgbgd4QNXib4OX4nW4Q4g==
-X-Received: by 2002:a05:6a00:194b:b0:77f:2978:30b0 with SMTP id d2e1a72fcca58-7a220a3c2afmr27034261b3a.11.1761197088758;
-        Wed, 22 Oct 2025 22:24:48 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a274a9e580sm1136913b3a.17.2025.10.22.22.24.43
+        d=1e100.net; s=20230601; t=1761199972; x=1761804772;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NADfuFtteUA7bCNNPpUSoQKsHB22B6aekqVwkYXKY6Y=;
+        b=xNId1O/HRj61107xCZX6+I4tj3BbaW96Hpm/bSFx2sicdSNKlgYrRJzslYxi/bJ5Ly
+         TwbnLAoyEZb5+7KUbL/+4bebH5f/JZU9tPkCiZNR0PCZB5Q3lnWvulkay1Kuv2Bp5kIt
+         VIUwPV7ZWQ5/6QkxoFebK6ZeXafo3nRSOPz44D+gMQ8W1T+Zo/CV+FOqDUU/MQU9wIHl
+         kKE78NQnQa9JoNETwfI4Q7dtt4PpR9ANpPdA7IWknz7M5pGy4mmJkKB+SvlH8cHUdEEo
+         Bv9PGeUupKTPjLMCc4CvD3vgIFSdlaD7JlT8LLUr8HO50DJtxkCozgX0sWY8My50d3Ld
+         wRiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUkvb+npRqRK+XjBHFmI/XMkiuQr7YLcDUsQ2Lrg1KMonvNtLYGVx68TfL4AcNzgCtK+5aJ9/l3Umb/s4t2Dw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3XZYZMSqku9npQLgnJO+UEsoXDcSx645e3uO36vvj2gS21sln
+	o50eG4tUiuZMYlqOBNGSBqEfGHywOaoLXPOi4vIqkQKKS+avUpjluxzT
+X-Gm-Gg: ASbGnctjZKQdPsixOnW6swvbJCtyJzeOc4KPklhDM/SI7DpSz3dFzeH04kNxp16+nSe
+	zMogQvnN7eMO+OmDggh/xl0VNQ9i8r/GxUiYSCXfax6IlR2Id0PCcQ8U7DRPGLMzbPn+gCwzM7K
+	F76prcNAq8uJPNgO04vAhqQV0vjzUEoyaesrnmVq4tLPdsvUWve4I7MoXcoZ/1qjIjYA+NmTSxJ
+	6BqYgTAxPhUz+v9TV3UaMT1rggSGWRswzU+zC3S3ZxD5DLFNHriA+uqUnb+C/Dbsc3fhCtnWT9B
+	MnQSjHDFAlJIGqUYpoJg5VML+2wkpmpVYRNYoEbkmx/CMXRkTrMiMGP90DttjOfqfqxgw5DurOH
+	1oBDIUVx7NNx8x16V0ttsCJebSqUYUKMS0uTGimJIwj0X+D7hR27Yvziheg7zYZRAMBgTecWURq
+	efLvI/D5ri2jErBx07FkJoSiwbUtluYBASxfFfxwg7vq5uHp3y
+X-Google-Smtp-Source: AGHT+IHSXdbLU0tL8k9h8r5tSVaUPj6efh7Pr+tdaBBKoXSuQZ8Sf66MxxP6tm4nocpzwXTiSdWirw==
+X-Received: by 2002:a17:902:e5c8:b0:290:c5c8:941d with SMTP id d9443c01a7336-290caf851a8mr364554975ad.39.1761199971663;
+        Wed, 22 Oct 2025 23:12:51 -0700 (PDT)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946de10b53sm11453255ad.23.2025.10.22.23.12.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 22:24:47 -0700 (PDT)
-Date: Thu, 23 Oct 2025 14:24:42 +0900 (JST)
-Message-Id: <20251023.142442.2120786567125816704.fujita.tomonori@gmail.com>
-To: dakr@kernel.org
-Cc: fujita.tomonori@gmail.com, aliceryhl@google.com,
- daniel.almeida@collabora.com, a.hindborg@kernel.org,
- alex.gaynor@gmail.com, ojeda@kernel.org, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, frederic@kernel.org,
- gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org,
- lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org,
- sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu
-Subject: Re: [PATCH v2 2/2] rust: Add read_poll_count_atomic function
+        Wed, 22 Oct 2025 23:12:50 -0700 (PDT)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <DDO06754OMN5.G0AN9OCWTFLW@kernel.org>
-References: <20251021071146.2357069-1-fujita.tomonori@gmail.com>
-	<20251021071146.2357069-3-fujita.tomonori@gmail.com>
-	<DDO06754OMN5.G0AN9OCWTFLW@kernel.org>
+To: aliceryhl@google.com,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com
+Cc: a.hindborg@kernel.org,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: [PATCH v1] rust: simplify read_poll_timeout's example code
+Date: Thu, 23 Oct 2025 15:11:24 +0900
+Message-ID: <20251023061124.2582749-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 21 Oct 2025 14:35:34 +0200
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+- Drop unnecessary Result's '<()>'
+- Use '?' instead of match
 
->> +pub fn read_poll_count_atomic<Op, Cond, T>(
-> 
-> I understand why you renamed the function, but read_poll_timeout_atomic() would
-> still be accurate -- it does perform a timeout in every iteration. Let's keep
-> the original name please.
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/kernel/io/poll.rs | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-Ok, I'll revert the name.
+diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
+index 613eb25047ef..8f8886543f34 100644
+--- a/rust/kernel/io/poll.rs
++++ b/rust/kernel/io/poll.rs
+@@ -42,8 +42,8 @@
+ ///
+ /// const HW_READY: u16 = 0x01;
+ ///
+-/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result<()> {
+-///     match read_poll_timeout(
++/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result {
++///     read_poll_timeout(
+ ///         // The `op` closure reads the value of a specific status register.
+ ///         || io.try_read16(0x1000),
+ ///         // The `cond` closure takes a reference to the value returned by `op`
+@@ -51,14 +51,8 @@
+ ///         |val: &u16| *val == HW_READY,
+ ///         Delta::from_millis(50),
+ ///         Delta::from_secs(3),
+-///     ) {
+-///         Ok(_) => {
+-///             // The hardware is ready. The returned value of the `op` closure
+-///             // isn't used.
+-///             Ok(())
+-///         }
+-///         Err(e) => Err(e),
+-///     }
++///     )?;
++///     Ok(())
+ /// }
+ /// ```
+ #[track_caller]
 
->> +    mut op: Op,
->> +    mut cond: Cond,
->> +    delay_delta: Delta,
->> +    count: usize,
-> 
-> Maybe retry would be a slightly better fit compared to count. If we want to be a
-> bit more verbose, I suggest retry_count. :)
-
-Sure, I'll go with 'retry'.
+base-commit: 6d0ef68955d30be1e218caf160ec32eec23ebc6e
+-- 
+2.43.0
 
