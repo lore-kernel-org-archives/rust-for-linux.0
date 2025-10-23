@@ -1,140 +1,120 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DBB1FA272
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 11:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D262F1FE6;
+	Thu, 23 Oct 2025 12:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761219160; cv=none; b=WxIYEIIDPE5d7//o99qCWHBiCewVVg3nQW3NXql3H4QR8bIjd05qsibyWFciBLlIHz0j4sEvhThJ4eELEgd5dpTgr7ez4ZjsERiMO0IKw9rMe9/Bkt9vHUVYWfNbTp1D5hf+1QHAY1MAZiJfZWU6NgiUUpjLgA9XW4Y6QhmthHI=
+	t=1761223405; cv=none; b=enT6hE5gWH3fHy3RBZQEN8SUb8G2x8545c3ihIPJHuaO8VmGOpDHpeeyLurSEwdvJu1iYNmzgimLFd4yUs03zCNlcsHkrX2/NhQUhGZL/UWCo9Oi7lAWB9Q7jUxd6RmOHp0Oh5V03zo/QBUL0J9xaFcR77eXv0SKvblIk10uyDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761219160; c=relaxed/simple;
-	bh=azN9cFPaIK+LJvezpMi4n8W0xzLhUdTsw6rk/82Y4Pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qUh6U5s++wiKb2uuZua3QZzC6uv+g6f1Ec7y2P+WWjTJDIqYcy8agGyX6ACw2EkOCCfk3QMi32NA5MOqN0IVYs9eGqcX0v00SCWqzlIb3hlcYn0aQVktEEoisUyIVTM4DpcFFyiUutyYllT2o+S6X98O5V7aGxpdhBkL9gPzOwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GzjIwAqF; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1761223405; c=relaxed/simple;
+	bh=al+DPQz4YQhivF4SLVa2PpT/m2RtlvnEATBY44DPTiI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Rw++uUSqMTEqOW7qltJTI3q26xuBGFIGSXaS4Om/rr9rRoaWRk5EOn/Bx1gKaJbYlU9/UrLTkyl5FV9qj55k3XP1rT4M2iMtTmi//2DLaoJAEhUia6YG38Pu3byTJX/Kam5vGZtq9A09CBMth77qZvTkVK3D2QKLaui+bJYTnVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iczP/9oC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GzjIwAqF"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3327f8ed081so946521a91.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 04:32:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761219158; x=1761823958; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QbT+vL0Cn4CTb6yElLpwHZ54WgDRlKCx3aWeBMwUJrQ=;
-        b=GzjIwAqFeZ4Us1IkLeYKFX/B9rnMtdcwRA3Z7JWlL1EeRxoTIPVbXGclFmtVkpycPY
-         pEyXmgDZuzqaCmnlV7kzyOoRSlMV+4sKlRsdP9M7W6EtBbVoyD4VtoA48E5+EB+Mmo5M
-         +rPeLnkCrh8ua9Vrk7+U3o8pxLOxATEtFFdA3YUC2ngtWANcdBbhG53LtbEbu4WnjrR3
-         8if8sTwBEOHGJzAZ/aEdThe1U6V2FpJS5HPA3gk1GDjliGqQFXpHezuS76IoxX0TyJyT
-         LQZQ/YcCGpNBxop0WV+RdxVXJZJ5XAmfSKSs8cU/oLzgoea+Vg8S0DImMmP+GeRoDGDf
-         9NdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761219158; x=1761823958;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QbT+vL0Cn4CTb6yElLpwHZ54WgDRlKCx3aWeBMwUJrQ=;
-        b=CHkhlbQhAfMSFDQd08WZObniTuJw6kXxPtw/FB5JN/utjyvXqJRA0GG3XfM0vwF+JQ
-         EMBOVfB6qZGb0+reKXZFpspzc2keqb1ohqUVW365mruJ1oXvNfXT190p2egzrx7r1wFZ
-         S/iokjohke6M3Z1SHjPYLTp7AfEMi/Yrzx0mz5SPT/tTpwvsLMvcPfNquwYcB6DRA76e
-         D1dgFR2CRQcSYo54aoEGVX01T7Ys49Xgf2mVlbL/Bq/iaxlaCpP5imGi/pZxQwXZNEgg
-         kyxg19o7XLx4eIYp/6sq/+OinUR6eQ4Xxbsoudexr4kV0gi6kOQHDBK3pqJcmifsmyN4
-         mebA==
-X-Forwarded-Encrypted: i=1; AJvYcCWXKIKmCOt+ZbzH2anXRcvKuVrVc7EhuD4MK0s+gkyQE++BDwjXtrW0iI6FpERHKOWdI+ofa2OK4elhhp0BLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWdMygeIx2ttpcg8gpwv+8KvgkYUqAI+v41YbCWGc20UFV80g8
-	2KSNAhK92voBrAEz/9+/i5S77rv2ghyK0u654nLuem0L7naNr3YI7bDuwqzzcBvW0NQ=
-X-Gm-Gg: ASbGncuavu/kWJcaazEmFqnaQ1XI6/DTaJDw5WjCwQQn7ibizY+N5ez1z2BtNWD2UvA
-	HtwUZ1BUIhPnRgplZENfw39GllSncyPiNd4riG8IIQG4tiwDwL1HH4jVaJnLLppKgSNs08qi+bz
-	2DJ+5Ob5D5SUuL1ifxRiYJLz/PBPOfD0NdNahl4KJ+yxpsVyqfP6IllbferYp1Gferr05oZf1GB
-	SV7jt6lthF+gnBC/0HAoUCH4rKcr4cYVuEO0+M6nix+zjVP1q5MiB3EQRfkv0XtchCuilgydXbk
-	ePIoRRM6I2qSYobwLd9CXToYviR+nhHIB8Nr8fn3Td47HpxnWRH60gSF6j/p+tje6xC/hpT+4K6
-	ZvHcAMRayVodmKHLjeaDqXgOSQBPNuGe6djvDdm3p90ItCt659NC7Bd94EHi/+j2qIACa3/045E
-	Vryg==
-X-Google-Smtp-Source: AGHT+IG9Mwz3D5ODuzsbIDuuLt6IzRd6uufkDmvzSlsw4AlqElvO+VEf4ssfLY/szdToC/ms2IV8tg==
-X-Received: by 2002:a17:90b:4c05:b0:339:ec9c:b275 with SMTP id 98e67ed59e1d1-33bcf84e181mr35547160a91.6.1761219158271;
-        Thu, 23 Oct 2025 04:32:38 -0700 (PDT)
-Received: from localhost ([122.172.87.183])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33dff3c1f8csm4042462a91.4.2025.10.23.04.32.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 04:32:37 -0700 (PDT)
-Date: Thu, 23 Oct 2025 17:02:35 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: opp: simplify callers of `to_c_str_array`
-Message-ID: <44k7h2wzksrp4eghvdim5kiq5tsul3p7yhy44d3eii7hyvivch@xx3x762acknd>
-References: <20251020-opp-simpler-code-v1-1-04f7f447712f@kernel.org>
- <ms55ue7qqbvoyfhptzu2a5cuthusihtobremhuqfm7lyu7b62o@qasunalgkptl>
- <CAJ-ks9mKiXR-8m_9x_k6YcL64h+QWExkiWCHMFNJbdUYQvPsNA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iczP/9oC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4511AC4CEE7;
+	Thu, 23 Oct 2025 12:43:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761223405;
+	bh=al+DPQz4YQhivF4SLVa2PpT/m2RtlvnEATBY44DPTiI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=iczP/9oC06j/N3i3MMv7wHOJW80UuCo914UVvhM65AlK9aX+pC3sgC7k3nwd/knxk
+	 XqdOpVMYMAolMvOeFz9rbXvNLaK5Dz+A1EGG4reTOowWEDggHCq3xW9GG+jlu7AsH9
+	 eECpkvQN7Lys0hHjVulvzMlHMaTChXQx7uSsRqH6xcr3X0CLnUddrMUgtU2hDwLnx5
+	 4VQAld5cS1LmmYsveBLqS3P2fkgB1uDnqra6+qpzLY9qCxKoXKO78iF/P5JCmMOyRW
+	 WaWDcJg2MlEuDq99kGQ/Ex/csPot+fy7kKKvH+ng9bn35BL6DFErJ4/UBOSMGeV1SN
+	 A4uUdNIQhs+DA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9mKiXR-8m_9x_k6YcL64h+QWExkiWCHMFNJbdUYQvPsNA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Oct 2025 14:43:20 +0200
+Message-Id: <DDPPL8HKEERV.2JXDADIJPM6NY@kernel.org>
+Subject: Re: [PATCH v3 05/10] rust: uaccess: add
+ UserSliceWriter::write_slice_file()
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <mmaurer@google.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251022143158.64475-1-dakr@kernel.org>
+ <20251022143158.64475-6-dakr@kernel.org> <aPnnkU3IWwgERuT3@google.com>
+ <DDPMUZAEIEBR.ORPLOPEERGNB@kernel.org>
+ <CAH5fLgiM4gFFAyOd3nvemHPg-pdYKK6ttx35pnYOAEz8ZmrubQ@mail.gmail.com>
+ <DDPNGUVNJR6K.SX999PDIF1N2@kernel.org> <aPoPbFXGXk_ohOpW@google.com>
+In-Reply-To: <aPoPbFXGXk_ohOpW@google.com>
 
-On 22-10-25, 07:22, Tamir Duberstein wrote:
-> I believe the `{clk,regulator}_names` vector bindings remain alive for
-> the whole scope, even if they are shadowed. See
-> https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=800b334c514c2024d7b5e47fc54c1f2d.
+On Thu Oct 23, 2025 at 1:20 PM CEST, Alice Ryhl wrote:
+> I would love to have infallible conversions from usize to u64 (and u32
+> to usize), but we can't really modify the stdlib to add them.
 
-I tried to print the name of the regulator and clk in the C code:
+We can (and probably should) implement a kernel specific infallible one.
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index d67d392e16d4..89b65fe07b99 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -2565,6 +2565,8 @@ int dev_pm_opp_set_config(struct device *dev, struct dev_pm_opp_config *config)
-                goto err;
-        }
+I think we also want a helper for `slice::len() as isize`.
 
-+       pr_info("%s: %d: %s: %s\n", __func__, __LINE__, config->clk_names[0], config->regulator_names[0]);
+> But even if we had them, it wouldn't help here since the target type is
+> i64, not u64. And there are usize values that don't fit in i64 - it's
+> just that in this case the usize fits in isize.
 
-and I get this:
+Sure, it doesn't change the code required for this case. Yet, I think that =
+if we
+agree on having a kernel specific infallible conversions for usize -> u64 a=
+nd
+isize -> i64, it makes this + operation formally more consistent.
 
-[    2.358437] core: dev_pm_opp_set_config: 2568: �<��y����<��y���x��: �<��y����<��y���x��
+Here's the diff I'd apply:
 
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index 681b8a9e5d52..63478dd7deb8 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -125,6 +125,22 @@ pub fn saturating_sub_usize(self, rhs: usize) -> Offse=
+t {
+     }
+ }
 
++impl core::ops::Add<isize> for Offset {
++    type Output =3D Offset;
++
++    #[inline]
++    fn add(self, rhs: isize) -> Offset {
++        Offset(self.0 + rhs as bindings::loff_t)
++    }
++}
++
++impl core::ops::AddAssign<isize> for Offset {
++    #[inline]
++    fn add_assign(&mut self, rhs: isize) {
++        self.0 +=3D rhs as bindings::loff_t;
++    }
++}
++
+ impl From<bindings::loff_t> for Offset {
+     #[inline]
+     fn from(v: bindings::loff_t) -> Self {
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index 20ea31781efb..44ee334c4507 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -514,7 +514,8 @@ pub fn write_slice_file(&mut self, data: &[u8], offset:=
+ &mut file::Offset) -> Re
 
-With following diff applied over your patch, it works again:
+         let written =3D self.write_slice_partial(data, offset_index)?;
 
-diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-index 743080e14292..02cb754c4abd 100644
---- a/rust/kernel/opp.rs
-+++ b/rust/kernel/opp.rs
-@@ -444,13 +444,13 @@ pub fn set_supported_hw(mut self, hw: KVec<u32>) -> Result<Self> {
-     /// The returned [`ConfigToken`] will remove the configuration when dropped.
-     pub fn set(self, dev: &Device) -> Result<ConfigToken> {
-         let clk_names = self.clk_names.as_deref().map(to_c_str_array).transpose()?;
--        let clk_names = clk_names.map_or(ptr::null(), |c| c.as_ptr());
-+        let clk_names = clk_names.as_ref().map_or(ptr::null(), |c| c.as_ptr());
-         let regulator_names = self
-             .regulator_names
-             .as_deref()
-             .map(to_c_str_array)
-             .transpose()?;
--        let regulator_names = regulator_names.map_or(ptr::null(), |c| c.as_ptr());
-+        let regulator_names = regulator_names.as_ref().map_or(ptr::null(), |c| c.as_ptr());
+-        *offset =3D offset.saturating_add_usize(written);
++        // OVERFLOW: `offset + written <=3D data.len() <=3D isize::MAX <=
+=3D Offset::MAX`
++        *offset +=3D written as isize;
 
-         let prop_name = self
-             .prop_name
+         Ok(written)
+     }
 
-
-and I get:
-
-[    2.460149] core: dev_pm_opp_set_config: 2568: dummy_clk: dummy_reg
-
--- 
-viresh
