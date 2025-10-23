@@ -1,91 +1,101 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948533090D9
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 09:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6892FB99B;
+	Thu, 23 Oct 2025 10:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761213280; cv=none; b=pLbvkaXrfiVPzPN5iHu6VlGgyV/6l2P6ketvSlPLKyXbc2JdJJ/MBnCIT8jpepKwDrdYV3K4ergQAFwn8Dh183dK591lWhGyU43iRAroDT8YuaHyTH78aIJbYPsT3c1DIsqQuwWDabypu+51CtGG689Ew0EhtPoUG8FJmUkl774=
+	t=1761214199; cv=none; b=DLij0lTZAREFrgKKKjWAve6LYJdyLO+N8BBCTubsjx4mQyld1zM8xpn6RzqSPjHEk2QA7hh/zFJnc1QqhIpvo9zRLtVVjWjAnu/TRrSohJLW2ETctYnp2uca+YzCNUFx+G0wabHX5RSIfTOYQEEUVLcEfXtDuJI9Px1UEoisaEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761213280; c=relaxed/simple;
-	bh=8y38CTfP+8bs2zGjp25uWvL+vEiIfP6AVWmvCPg1cVs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CvbixCnEtKXCj6estRcyngtQba2KmPVDS28sHyC7IXkFwuvBCUj2BQD/zbS2T0O8FaOI1qJGROAJics92wq6QCv+1+w4XB1evJfmY2H0RgG0ikZ2MdhtWmFT0HJCAF4yMahf3l4wncShfoPD5NVIXROMBn01/Cp36MOYVu2YYy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W693FFUI; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761214199; c=relaxed/simple;
+	bh=7khVb0M8RKeetCTJkkf/If8a4rZrOUrez+Hz6QaX/+M=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=CYDrItG+XEchyTbMBf9q1uMLuAWQ47/j0OcH87w8bIW7F8oSJpc00JVcXLB2oPaAw+Wp95kc4/Z6R+fUKG1zcMxo5OprXQ8pvBoBezI1KzeV5HqYc3OAR3FqamwX4nGE3GKHjZA4X/GYvkXNkfcdI7f0nxKRlHC4vAfrw5THmJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N72g76qk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W693FFUI"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-290a33bfea6so960105ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 23 Oct 2025 02:54:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761213279; x=1761818079; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8y38CTfP+8bs2zGjp25uWvL+vEiIfP6AVWmvCPg1cVs=;
-        b=W693FFUI1FCzqsgDJx9okyc4+mQPp1lIcQbjYYYnmGrKb3XxNkyWND36ZfgXs3UNUo
-         RlWBw0zb1IXnkuBrq4aQ8jaSytphWzn6AG00Hi3H5DAHyeTpGsyhXQnNTCCzfF2tB9Lo
-         nlQCeOs/A+iw5hLI3akrmbhOYJwoPFwDs1fUo2iSMuQVp1K8ddNHFspoNVJjmRrqp3YL
-         jxQ7vYNzVsNlPy3O+3i9Q87nDmFhBbqGR5wi5cgZrLGtxRzwfUc/WKJQ8npE33+p0WYQ
-         0yHoXVUeMeeWIteYq6p3ssQp6JoXJlwfFdUtE8AppKKUXZAawA0GKXVzpCBE6R/WX5dX
-         HyNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761213279; x=1761818079;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8y38CTfP+8bs2zGjp25uWvL+vEiIfP6AVWmvCPg1cVs=;
-        b=jZjKg0tPC4zm3UWijbxwU+zxh6OA+qhytAHQfppcVjODZoeYttjmL2m+rM1TfG/G0Z
-         /Cg+z2dmwvGqO2LKp+9ZbFN1CisYCJqy5/pqowKepY3p8dKsZr5gMe+kWHxzwdwMY2RV
-         DJ90wqW/N1lrzmkrqAjvmR6cGAcJVMF/jL37REKyrYRZDpEiPe1IKL/UW/Bbuw4QdssM
-         r0qOYwiOyMDM4s1CbtK2UrfzaKBKda9IDsz1p60tD4N862yU/+0kQF1Iq9MLql38NfLo
-         o3IKiIIEQYv4UYwJAPtFpWhx6TXaV1rZ7EkpDmljlsNkTygVG44n+iJHalXfOeJDerDz
-         BFnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRlV4s8LKOnX+6IF+e6oY2DA8xtOe+OOQwLYabnhMnTRH8Fvd43Ub633sY4HBzabbNUo4JE5QMiESVQKDhcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY8V5Gc4nwQmeZAl0+RKCZ0XnTQNwWvAJCKeFYEPi0aFxEaO2Z
-	uj3Cyziw3U4SBjN24bG+YmfZRa9bYOo/NdYkgmlcmZJntHzjK4uJRoIBuwoMKZ3pmMiES4lrvTt
-	qJPzmdd76vQWbHzgihNp5JuNbuUwVIsg=
-X-Gm-Gg: ASbGncvhw6DSMqifJZ0hTmyb+BnCAjSUumgmJ4HImiIQeomwBQidBMi7C/JZJG7S7Tx
-	e1ThEoqHPSw6UW75ccS1LG0ZskdfV2yUhl7QVe9pyXILYL1cMX2ZvlV8jsNze9ugw969XHQymjd
-	zniS1T29nKEi9E4/Tdb7rEqQT5LgTVKMbRKczKIQvFJvt37R09T7d1NjZctqirTI31Ok5RwKI3/
-	c4JVknFj2DudYNYuCyn5pNsjceriF+RgtZ/JQ8Vae5QfArTFq2JGxD2NLcJV3KygXAMZEWAci/g
-	URa0vFdNyA99aCyHM0+Y9HjJGgVZcqJTptdJT18Tgk2M4we2x3myYXBBbQBW/mdsiHteBpJP4PY
-	NUrYIawB9+ulyqA==
-X-Google-Smtp-Source: AGHT+IGzIuFClkjRzQSxWXfGZEcIXJCdcB93tuu+9Aw1VCEyDz/vaHUr/NAB13qNXBZ+vuJxUwwE8kPTIoI9sAd9BTY=
-X-Received: by 2002:a17:902:ec82:b0:25c:b66e:9c2a with SMTP id
- d9443c01a7336-290cb757692mr173621745ad.6.1761213278867; Thu, 23 Oct 2025
- 02:54:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N72g76qk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FB2C4CEF7;
+	Thu, 23 Oct 2025 10:09:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761214198;
+	bh=7khVb0M8RKeetCTJkkf/If8a4rZrOUrez+Hz6QaX/+M=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=N72g76qkuquJIwQO3RB8nKCnZsrg9KRBlxIlG0h5Qbbdx7kWNY0u+SX0QI+BYZAF3
+	 Wu1D/MVOonocLyuJSrr2FlMq1ey2G5/Cp+aFqLMp7u0dGIINlEeVtbJl17fDgqlfKM
+	 MkPHdA/IP6aHIHcY29svvsubH8EqS1utcBkywGIXUpZm92yT2pFgEA941PNh23bOEv
+	 pC2jB+0FMVdTg23LxNdnt87l0erPGw6hcnOD9gyH24w322WQ6e9dN+Qg95pKViFQDA
+	 hthgq5n0JxAs1UHz2UbY1LaJ0rdUcKjTA+31JbFsBSIAjbsDV+8ZkZi89SinroWm+b
+	 nTZF6InBDnfiA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251023061124.2582749-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20251023061124.2582749-1-fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 23 Oct 2025 11:54:26 +0200
-X-Gm-Features: AWmQ_bkamiJAG-KnAVJQdlAoyXrMlmaL3T5Qv2VUhB08-5-Q4Cp3XmozQWRcVBQ
-Message-ID: <CANiq72n6J16yyPdhNAzDn0LXVBeiaZBcka9WztaZhqMF16CY-A@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: simplify read_poll_timeout's example code
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, dakr@kernel.org, daniel.almeida@collabora.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, a.hindborg@kernel.org, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	lossin@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Oct 2025 12:09:54 +0200
+Message-Id: <DDPMBR9EUYJ6.23AYG1B27BUEN@kernel.org>
+Subject: Re: [PATCH v3 06/10] rust: debugfs: support for binary large
+ objects
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <mmaurer@google.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251022143158.64475-1-dakr@kernel.org>
+ <20251022143158.64475-7-dakr@kernel.org> <aPnmriUUdbsQAu3e@google.com>
+In-Reply-To: <aPnmriUUdbsQAu3e@google.com>
 
-On Thu, Oct 23, 2025 at 8:12=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Thu Oct 23, 2025 at 10:26 AM CEST, Alice Ryhl wrote:
+> On Wed, Oct 22, 2025 at 04:30:40PM +0200, Danilo Krummrich wrote:
+>> Introduce support for read-only, write-only, and read-write binary files
+>> in Rust debugfs. This adds:
+>>=20
+>> - BinaryWriter and BinaryReader traits for writing to and reading from
+>>   user slices in binary form.
+>> - New Dir methods: read_binary_file(), write_binary_file(),
+>>   `read_write_binary_file`.
+>> - Corresponding FileOps implementations: BinaryReadFile,
+>>   BinaryWriteFile, BinaryReadWriteFile.
+>>=20
+>> This allows kernel modules to expose arbitrary binary data through
+>> debugfs, with proper support for offsets and partial reads/writes.
+>>=20
+>> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Reviewed-by: Matthew Maurer <mmaurer@google.com>
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 >
-> - Drop unnecessary Result's '<()>'
-> - Use '?' instead of match
+>> +extern "C" fn blob_read<T: BinaryWriter>(
+>> +    file: *mut bindings::file,
+>> +    buf: *mut c_char,
+>> +    count: usize,
+>> +    ppos: *mut bindings::loff_t,
+>> +) -> isize {
+>> +    // SAFETY:
+>> +    // - `file` is a valid pointer to a `struct file`.
+>> +    // - The type invariant of `FileOps` guarantees that `private_data`=
+ points to a valid `T`.
+>> +    let this =3D unsafe { &*((*file).private_data.cast::<T>()) };
+>> +
+>> +    // SAFETY:
+>> +    // `ppos` is a valid `file::Offset` pointer.
+>> +    // We have exclusive access to `ppos`.
+>> +    let pos =3D unsafe { file::Offset::from_raw(ppos) };
+>> +
+>> +    let mut writer =3D UserSlice::new(UserPtr::from_ptr(buf.cast()), co=
+unt).writer();
+>> +
+>> +    let ret =3D || -> Result<isize> {
+>> +        let written =3D this.write_to_slice(&mut writer, pos)?;
+>> +
+>> +        Ok(written.try_into()?)
+>
+> Hmm ... a conversion? Sounds like write_to_slice() has the wrong return
+> type.
 
-This also drops the comment, should it (or part of it) be moved above
-the final `Ok(())` or removed like the patch does? (you added it
-originally, so I guess you are fine with removing it)
-
-Cheers,
-Miguel
+write_to_slice() returns the number of bytes written as usize, which seems
+correct, no?
