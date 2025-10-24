@@ -1,111 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B0D2FC88C;
-	Fri, 24 Oct 2025 08:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACC1304969;
+	Fri, 24 Oct 2025 08:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761294195; cv=none; b=Ymiy+XTIvyoDWjm77BNapwErzGX5kmMAYgzilyb+75E2htJI1OGedZHMaCF9r4xsU4qca5ISxeeQrycig+4ceIVx1QyVgbX8/0yREifspsXZdSb/3wpQWaR8mtrsf7LdhZED3CBbVrNIUy6PZ7Z+tMb7bNbc4OlQbMGSvTyeTOE=
+	t=1761294316; cv=none; b=qymupwaTzhTxBhDspPpnMwyW5L7diF1WFO4OC2NS82wXDyWzKgSG8eimwXFzok063a1dp9VVVL0jq2WL+RYv/EtB57KUC0wGIOsJ32ELaZIWa/EDaAxrJQJJFkV52Su80vBlUvekezgw77PauXtb3ILN/vutKPSDySIsShu7ksc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761294195; c=relaxed/simple;
-	bh=f7IiCtdsMP9fzUEEFAOVEDHBt8eRbabg5W2VbyP0LKE=;
+	s=arc-20240116; t=1761294316; c=relaxed/simple;
+	bh=SXBdpcMk2TDYEoZXQ/iMgZKyh1Q8zdM0q3pF+Ul1UgY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kSSxpLG1ggTU7hEB0pqzpfYgtq9fqj3Yib2oRlMct8Z6CZVd00M1NCFaei4sMRtBgPA9yE/7gQkt1Qmw0tJ93Y1akq7U747dEjRS3xUj+O7WcH6PuBttFWD5X0Vn20w+YQwuhHZSDaR5tNwihO3jhJNU5Nh3S9knTBxDafopEXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TsYUin82; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=M+iVZtC/FS1V2ZhsfMeRQE1KgYcAvyYSvnQoH/Ndu6A/d1mH2xrcVLI3fC/8bUaby3ANum4ihWBhn8Gdyq4oXy4wgPbHAP5/crjJxgnQ9eEx00N68OBk6NrnIwp9Clj38JPUP2yAeudr06KbWt1lVPNL4qE0pZYX0/x0/Ty5fLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eaLng0N+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TsYUin82"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9380C4CEF1;
-	Fri, 24 Oct 2025 08:23:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eaLng0N+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA050C4CEF1;
+	Fri, 24 Oct 2025 08:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761294195;
-	bh=f7IiCtdsMP9fzUEEFAOVEDHBt8eRbabg5W2VbyP0LKE=;
+	s=k20201202; t=1761294316;
+	bh=SXBdpcMk2TDYEoZXQ/iMgZKyh1Q8zdM0q3pF+Ul1UgY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TsYUin82qZvPIMvVAMj+2viHwFtr/OdOgFKW6F87cNwzjpQdTFVG9W0VrbVyo0/PW
-	 pKLTOLX6H7Z18a+zJSMb9/YEeHHmZn2fRae8oZ5ruAqgkp/S/3yvJfCoceCQCqRsp6
-	 wNihpd0vE4QqPT/nHH+WpQzThpPDjhVCENf0BizVmn1xg/C1yeNAfUTsudo5fcNsid
-	 mm9fBPdiodoGBu3f0+MBathiIKzVjt5gU3qWwN8/Ozk5DN8J7CxzxWoqVaj7geOX/7
-	 1N3yGR5WUmXgBu7Kv7gRbQCjTo1iOeD2AH7XPQARZUcFG+0iNS+ttcL517ilqbX3Le
-	 CdauNLQJExzjA==
+	b=eaLng0N+ouTdoVQeWVRFNjvUdJ3i6m3xg8pLrwM1gC41ZXzXCchS/jeNWi/o+oyNI
+	 FS5e8SYTAIHtC39Ml9ANl1EOG3uBlTkb3VSJ90TxJKwW4HTOMdFoE6KXNgvvdrhKiz
+	 gpVTS+jnuKenw3fakJJK1mbgDAHtDfQzeThAxLxekq7OtZ9nGUh8nh4VD2cFfCAzCC
+	 1y0YI4tsZELZiBgVM+udKTvVlgWOHJ7TFgh9AlXrnDJrt3j5pRz1BDIl2LI8bAsivY
+	 I4KdL/xXk6drMbKUvV6mK3Ci2lMeFH6MVVTWAj10XhK/xDlfWoApmx08E0WSA1RMRF
+	 N2TRGxoQv/oHA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, aliceryhl@google.com,
- dakr@kernel.org, miguel.ojeda.sandonis@gmail.com
-Cc: fujita.tomonori@gmail.com, daniel.almeida@collabora.com,
- alex.gaynor@gmail.com, ojeda@kernel.org, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, frederic@kernel.org,
- gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org,
- lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org,
- sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu,
- gregkh@linuxfoundation.org
-Subject: Re: [PATCH v2 1/2] rust: add udelay() function
-In-Reply-To: <20251023.141909.400243634709519102.fujita.tomonori@gmail.com>
-References: <DDO3OMBHS8TB.2LDODR1AFRCU3@kernel.org>
- <20251022.193230.585171330619599845.fujita.tomonori@gmail.com>
- <aPjmKSrETqrchW_e@google.com>
- <v19-iFZczROFeW5CLs5unJeqiFWIX0oFV1ekc7pY-uzN8DDyoe_SVQqX6ARPdY3WbNjys5ffGs-8Cpisdk3h2g==@protonmail.internalid>
- <20251023.141909.400243634709519102.fujita.tomonori@gmail.com>
-Date: Fri, 24 Oct 2025 10:23:03 +0200
-Message-ID: <874irohfo8.fsf@t14s.mail-host-address-is-not-set>
+To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ daniel.almeida@collabora.com, alex.gaynor@gmail.com, ojeda@kernel.org,
+ anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+ frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
+ linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
+ rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de,
+ tmgross@umich.edu
+Subject: Re: [PATCH v2 2/2] rust: Add read_poll_count_atomic function
+In-Reply-To: <aPeTFMeVoIuo8Lur@google.com>
+References: <20251021071146.2357069-1-fujita.tomonori@gmail.com>
+ <20251021071146.2357069-3-fujita.tomonori@gmail.com>
+ <DDO06754OMN5.G0AN9OCWTFLW@kernel.org>
+ <h4wUwTMyHx85K0_CDEI0TkQoZFaEof5pJhADCtIUn01egSGxEcBVfQ6Y613ocOd0gU_j6X9g1agE9ealXqnE-A==@protonmail.internalid>
+ <aPeTFMeVoIuo8Lur@google.com>
+Date: Fri, 24 Oct 2025 10:25:05 +0200
+Message-ID: <871pmshfku.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-> On Wed, 22 Oct 2025 14:11:53 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
->
->> On Wed, Oct 22, 2025 at 07:32:30PM +0900, FUJITA Tomonori wrote:
->>> On Tue, 21 Oct 2025 17:20:41 +0200
->>> "Danilo Krummrich" <dakr@kernel.org> wrote:
->>>
->>> > On Tue Oct 21, 2025 at 5:13 PM CEST, Miguel Ojeda wrote:
->>> >> i.e. if they aren't sure what the value is, then I would prefer they
->>> >> clamp it explicitly on the callee side (or we provide an explicitly
->>> >> clamped version if it is a common case, but it seems to me runtime
->>> >> values are already the minority).
->>> >
->>> > Absolutely! Especially given the context udelay() is introduced
->>> > (read_poll_timeout_atomic()), the compile time checked version is wha=
-t we really
->>> > want.
->>> >
->>> > Maybe we should even defer a runtime checked / clamped version until =
-it is
->>> > actually needed.
->>>
->>> Then perhaps something like this?
->>>
->>> #[inline(always)]
->>> pub fn udelay(delta: Delta) {
->>>     build_assert!(
->>>         delta.as_nanos() >=3D 0 && delta.as_nanos() <=3D i64::from(bind=
-ings::MAX_UDELAY_MS) * 1_000_000
->>>     );
+> On Tue, Oct 21, 2025 at 02:35:34PM +0200, Danilo Krummrich wrote:
+>> On Tue Oct 21, 2025 at 9:11 AM CEST, FUJITA Tomonori wrote:
+>> > +/// Polls periodically until a condition is met, an error occurs,
+>> > +/// or the attempt limit is reached.
+>> > +///
+>> > +/// The function repeatedly executes the given operation `op` closure and
+>> > +/// checks its result using the condition closure `cond`.
+>> > +///
+>> > +/// If `cond` returns `true`, the function returns successfully with the result of `op`.
+>> > +/// Otherwise, it performs a busy wait for a duration specified by `delay_delta`
+>> > +/// before executing `op` again.
+>> > +///
+>> > +/// This process continues until either `op` returns an error, `cond`
+>> > +/// returns `true`, or the attempt limit specified by `count` is reached.
+>> > +///
+>> > +/// # Errors
+>> > +///
+>> > +/// If `op` returns an error, then that error is returned directly.
+>> > +///
+>> > +/// If the attempt limit specified by `count` is reached, then
+>> > +/// `Err(ETIMEDOUT)` is returned.
+>> > +///
+>> > +/// # Examples
+>> > +///
+>> > +/// ```no_run
+>> > +/// use kernel::io::{Io, poll::read_poll_count_atomic};
+>> > +/// use kernel::time::Delta;
+>> > +///
+>> > +/// const HW_READY: u16 = 0x01;
+>> > +///
+>> > +/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result {
+>> > +///     match read_poll_count_atomic(
+>> > +///         // The `op` closure reads the value of a specific status register.
+>> > +///         || io.try_read16(0x1000),
+>> > +///         // The `cond` closure takes a reference to the value returned by `op`
+>> > +///         // and checks whether the hardware is ready.
+>> > +///         |val: &u16| *val == HW_READY,
+>> > +///         Delta::from_micros(50),
+>> > +///         1000,
+>> > +///     ) {
+>> > +///         Ok(_) => {
+>> > +///             // The hardware is ready. The returned value of the `op` closure
+>> > +///             // isn't used.
+>> > +///             Ok(())
+>> > +///         }
+>> > +///         Err(e) => Err(e),
+>> > +///     }
 >>
->> This is a bad idea. Using build_assert! assert for range checks works
->> poorly, as we found for register index bounds checks.
+>> Please replace the match statement with map().
+>>
+>> 	read_poll_count_atomic(
+>> 	    ...
+>> 	)
+>> 	.map(|_| ())
+>>
 >
-> Oh, I didn=E2=80=99t know about that. Do you have a pointer or some detai=
-ls I
-> could look at?
+> IMO, this should instead be:
 >
->
->> If you really want to check it at compile-time, you'll need a wrapper
->> type around Delta that can only be constructed with delays in the right
->> range.
->
-> You meant that introducing a new type like UdelayDelta, right?
->
-> read_poll_timeout() and read_poll_timeout_atomic() use different Delta
-> types... I'm not sure it's a good idea.
+> 	read_poll_count_atomic(
+> 	    ...
+> 	)?
+> 	Ok(())
 
-I would assume we keep this type private and only construct it in
-`udelay`. @Alice, could you give a pointer on this approach?
+It does not really matter to me. Why do you prefer one to the other?
 
 
 Best regards,
