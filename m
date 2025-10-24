@@ -1,124 +1,141 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8C91FFC7B
-	for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 09:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D807C28314A
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 10:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761298053; cv=none; b=Ws+GmXun6UkQClU1KLX4FLhOPBiLkyWfz+FydITC31QbLOQJNxd/lKXDdSSnQ3M+6B8JujWBdVSGmrU/m8GJzSA/t4mTeMt0F9cY9hKXN5hFAl5IS4ZZBvCPHx6YTlljBkvUwyuPbS/Rh+vt4PPZ9Efj5drr56hIjwmIZPFosFk=
+	t=1761302219; cv=none; b=cxgv28g6gIXB/be8CsIzFArFpPIc6803wZqAkPT44CMpbHOdq2qtGHsJRplV+ow+i144y8fiVRcn4StCelclLGpNsa24/PcwzS5+GaXNAxSwxny98s/24sggq69TgKVYgFiuZ+rlhoEeezP+j31aLVbZsIKzhaV9qkEMt2I6SG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761298053; c=relaxed/simple;
-	bh=jz3r6IG//8UpNyt5YK3+fvQAu9iJEiCU7Jg/ynlHlE4=;
+	s=arc-20240116; t=1761302219; c=relaxed/simple;
+	bh=s2FO8pnEV/7szb+dOJiq08LSuK/rb7I+nZ2d4KW8ctI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FP/+0WlXXJ/k+dj20aq4e6BTczvFZNWyfv+kSDtibtHUnMde4hAMFxf4YdnO9i/B43KZXn0U7vVl45efQyuTn3UUyToX5PNR09bpnvcFSHzILw8NR4QvVlQin92VhMl+LzH7zDxYLcK2XyHeQVzRYDR/GGYNgpUZUN4d8HTZCFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KOx5z8x8; arc=none smtp.client-ip=209.85.218.74
+	 To:Cc:Content-Type; b=hLsfpzx3yIHaD7egOlA9FurBK7+oGAEnxGGeRv+bb+m0tENasmIubHNRet0HBFqi7wh/RovIJrYAITSPfpjrUTdSt+105pNvxDyilmrUzcHOG79FJsKT/wmqcJC062eR2yl8loNfTdH5/yRNHNmeU+6FQijoMImynu1mgbfPQX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MSz7tjwg; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KOx5z8x8"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b6d3fd5b2b8so141675066b.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 02:27:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MSz7tjwg"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46fa88b5760so6496495e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 03:36:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761298050; x=1761902850; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JkKniSG37xTx1eVGmGkTV5Ir1JTVe3QhsEKcXT38Iss=;
-        b=KOx5z8x8cAkXV44T0yNxAZlxB7iTtqw1eiNZ612Fl9igMi9zjKEdyclYw05F4AGM9Q
-         iIMszdAX4Fq2G9G0cCYz628rzrpUcUAMNvUNjFQrfyPM6nwtAT+c2y1RbJVb1owDAEeQ
-         vkUfCjuf4qY00sR6CIVv447mbUXK/paYc3qgG2a5zIhi7zEEbW/0SFD0yXIkan7D7Hgq
-         N2wVTIP3rU9M5ttW15U5+h2nGRWs+HT3QctGHV+q0U1p5zahEeNaQI0icSbaOUEzAX1y
-         j6paiUXU2kjGw6K8yysmbaI2L9pVV68fXogsxGUWqdCKzJZlm7XZVw+LOLYMcVc5/UuY
-         czBg==
+        d=google.com; s=20230601; t=1761302216; x=1761907016; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c5WckZjr4qpmTV+gX2VgoGwpr/mWfENYA9Da0Yb01PI=;
+        b=MSz7tjwgyvFZkXvDVUUXgaxwns48UJXrL6dnuTQzZ43x3DlchEM61p71kMIuz64ph9
+         suiSlWxDC2AcqvZESe7730GIUlX1KntWwl+gUZ+7e4CY+rcdMDN2iDQQ5yNUngCDTQjf
+         FhlGmFNnfYQke2YQC/LcnvN9KAXP03bV7aiWOxaiLeVuTSYWvza+5Ec2Of1RFoJAYNWf
+         cvZbUaszI4w394upLVxOhNSATrn9+PqqGfEIaPcg1f4CLxX+tRaUiFCLVSXHAw8qpGkm
+         Nmg/DjVkc0N+3j9E17j1Z5bCoviefd4Cd/uNGcQWB61yVFMHTrrN7tNy1lHwaQPE5ppL
+         A6GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761298050; x=1761902850;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JkKniSG37xTx1eVGmGkTV5Ir1JTVe3QhsEKcXT38Iss=;
-        b=RZPA9qZS77krmILuyCJ+uuzvqWuzGJRNLhkSb1L6hKlOX4dL7BlD0PCWpKsDZ7Rwcg
-         5AJq6Od7Lw+z3sP4sVYTxRiw8OHsaZggHn9rKKOCsIcIwwIKzdi2U75MJPrvdl4d68LL
-         IEu6jR7sN3MtWozG15+UWHXLju8nfcudu5cZpIR+BU3SGjUxhnBIUk92B28uJKKhZ3mK
-         6UxnEQhECk2Z/FZC+T6dyOxpGqoNGAsBsbCWuUEB2zI3/15+EdPnc34YsrjfAAJo04cM
-         /XQ5QcSiCTxl+buI8hH2jPCFHjo/uW9qMkBXinpyQKC+kCf2BTQubNzsVGyyD0yzZw9X
-         Jq3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWY2BRFRgUBS0keXNSxA4zb5sxIa9ZpTcY+juw/k//jaYFIfshPm4ig6Qq6g3ZPfy7h/P7niKG47U7HrY/PSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz75Uv3MmvIm+u2v2F/e+tZLJnAhsOefUDGTgabILVGegnz37n/
-	PM7bAhqQ/aW8c/b097LErgxefD3fOjksbXd+fOwPaG8hVnm1epiHWIxc6AYsCu2/WmS3+huHnyU
-	8e1ix0ZAXKHippb+xwg==
-X-Google-Smtp-Source: AGHT+IGfllOsRSovrXNjZ4P8vLQLDZn7m27advgrGNGOThiOpA4iYZmKtTm5wFMwSkiRyWwhbQxA8qGpfZt0JVE=
-X-Received: from edp28.prod.google.com ([2002:a05:6402:439c:b0:63b:54ec:172e])
+        d=1e100.net; s=20230601; t=1761302216; x=1761907016;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=c5WckZjr4qpmTV+gX2VgoGwpr/mWfENYA9Da0Yb01PI=;
+        b=UC6KeeH+ECCE1FsU15V89q2tgbkHRij+8G7b4/HSsoYLspgVzJpTuTNwR1DkcENMCB
+         XPX0oKbukvJxhVtWzHYAeoMpjTvk3653KmJ+icIPIX0ALb5VxBJbLGasXWZKaf9ompqw
+         8P3a8sJ8giSfzo7LtvwssIUgVvLD56QikvPnEljZ92RugCqbhzGCnDapQRHVTjW8b4nN
+         1by2EQ0wSSSJY65y7BPsCUdM6tlApwbjdwU92jUQOm9dDJtNzRWBoVFwprjEaf8DJ6sO
+         oCBTc5+iw0Yw5HeLD9ZDswmMLz43BX0QRMqYX5/AKPjDGGgfZZKRLylOg4lU37GLQiE5
+         fgZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmbJ6/QDpgB00w5YfmfXyR5BbcK3IFKZm76LES69AY937cK6YGSTU1s+t8ehqpEb0VxwJQ7G/hXb2Lfwk7/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz45GDE0P07FpENptQ/dkzwvcwt0x+yHpsPnA6zLmCtQrXGJPu+
+	Pdp9k8nJ/fy24r9KNRNmQV3OZi2OqZadCP2U8oDnO3+KHtu4kU/BBPmSgNOvA98tRbZTOwmjYAW
+	tTCcYagBt/Hvn0sLT4Q==
+X-Google-Smtp-Source: AGHT+IF6Mgy1YsJz+7QCsPHpP9ik7YMhi0K8WjvdltQv05VpchJvsZPKXTgJ4bEGg+tkcUMZROs5PhBuuxH4BSw=
+X-Received: from wmsm9.prod.google.com ([2002:a05:600c:3b09:b0:46e:684e:1977])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:5c9:b0:b04:25ae:6c76 with SMTP id a640c23a62f3a-b6473f3feeamr3050584666b.47.1761298049771;
- Fri, 24 Oct 2025 02:27:29 -0700 (PDT)
-Date: Fri, 24 Oct 2025 09:27:28 +0000
-In-Reply-To: <877bwkhfrr.fsf@t14s.mail-host-address-is-not-set>
+ 2002:a05:600c:524f:b0:46e:74cc:42b8 with SMTP id 5b1f17b1804b1-471178a6e99mr195067895e9.17.1761302216346;
+ Fri, 24 Oct 2025 03:36:56 -0700 (PDT)
+Date: Fri, 24 Oct 2025 10:36:55 +0000
+In-Reply-To: <CAH5fLghiEqqccH-0S9-GD7pJaNuVpuo_NecMMmGVF+zR7Xs_dA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <DDO3G26SIZTK.1KV7Q0PQXHWTA@kernel.org> <CANiq72nUiizxo3YFgxUZ1jiczRNbY2ATao2YUBiCEC7k5hbv6Q@mail.gmail.com>
- <DDO3OMBHS8TB.2LDODR1AFRCU3@kernel.org> <20251022.193230.585171330619599845.fujita.tomonori@gmail.com>
- <vTqqW7yepc41IJ7rUH2GAcWAJ1HHAUQ2_NeQ_os6L5MKNZ-acMHFwH9u3m0oRDumL2YQPnZ6Qu58-iLlAv0Tew==@protonmail.internalid>
- <aPjmKSrETqrchW_e@google.com> <877bwkhfrr.fsf@t14s.mail-host-address-is-not-set>
-Message-ID: <aPtGgNajcXKWpji0@google.com>
-Subject: Re: [PATCH v2 1/2] rust: add udelay() function
+References: <20251022143158.64475-1-dakr@kernel.org> <20251022143158.64475-7-dakr@kernel.org>
+ <aPnmriUUdbsQAu3e@google.com> <DDPMBR9EUYJ6.23AYG1B27BUEN@kernel.org> <CAH5fLghiEqqccH-0S9-GD7pJaNuVpuo_NecMMmGVF+zR7Xs_dA@mail.gmail.com>
+Message-ID: <aPtWx4i3WuIlcWEM@google.com>
+Subject: Re: [PATCH v3 06/10] rust: debugfs: support for binary large objects
 From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, dakr@kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, daniel.almeida@collabora.com, 
-	alex.gaynor@gmail.com, ojeda@kernel.org, anna-maria@linutronix.de, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, frederic@kernel.org, 
-	gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org, 
-	lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org, 
-	sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu, 
-	gregkh@linuxfoundation.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, mmaurer@google.com, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 24, 2025 at 10:20:56AM +0200, Andreas Hindborg wrote:
-> "Alice Ryhl" <aliceryhl@google.com> writes:
-> 
-> > On Wed, Oct 22, 2025 at 07:32:30PM +0900, FUJITA Tomonori wrote:
-> >> On Tue, 21 Oct 2025 17:20:41 +0200
-> >> "Danilo Krummrich" <dakr@kernel.org> wrote:
-> >>
-> >> > On Tue Oct 21, 2025 at 5:13 PM CEST, Miguel Ojeda wrote:
-> >> >> i.e. if they aren't sure what the value is, then I would prefer they
-> >> >> clamp it explicitly on the callee side (or we provide an explicitly
-> >> >> clamped version if it is a common case, but it seems to me runtime
-> >> >> values are already the minority).
-> >> >
-> >> > Absolutely! Especially given the context udelay() is introduced
-> >> > (read_poll_timeout_atomic()), the compile time checked version is what we really
-> >> > want.
-> >> >
-> >> > Maybe we should even defer a runtime checked / clamped version until it is
-> >> > actually needed.
-> >>
-> >> Then perhaps something like this?
-> >>
-> >> #[inline(always)]
-> >> pub fn udelay(delta: Delta) {
-> >>     build_assert!(
-> >>         delta.as_nanos() >= 0 && delta.as_nanos() <= i64::from(bindings::MAX_UDELAY_MS) * 1_000_000
-> >>     );
+On Thu, Oct 23, 2025 at 12:21:24PM +0200, Alice Ryhl wrote:
+> On Thu, Oct 23, 2025 at 12:09=E2=80=AFPM Danilo Krummrich <dakr@kernel.or=
+g> wrote:
 > >
-> > This is a bad idea. Using build_assert! assert for range checks works
-> > poorly, as we found for register index bounds checks.
-> 
-> What was the issue you encountered here?
+> > On Thu Oct 23, 2025 at 10:26 AM CEST, Alice Ryhl wrote:
+> > > On Wed, Oct 22, 2025 at 04:30:40PM +0200, Danilo Krummrich wrote:
+> > >> Introduce support for read-only, write-only, and read-write binary f=
+iles
+> > >> in Rust debugfs. This adds:
+> > >>
+> > >> - BinaryWriter and BinaryReader traits for writing to and reading fr=
+om
+> > >>   user slices in binary form.
+> > >> - New Dir methods: read_binary_file(), write_binary_file(),
+> > >>   `read_write_binary_file`.
+> > >> - Corresponding FileOps implementations: BinaryReadFile,
+> > >>   BinaryWriteFile, BinaryReadWriteFile.
+> > >>
+> > >> This allows kernel modules to expose arbitrary binary data through
+> > >> debugfs, with proper support for offsets and partial reads/writes.
+> > >>
+> > >> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > >> Reviewed-by: Matthew Maurer <mmaurer@google.com>
+> > >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > >
+> > >> +extern "C" fn blob_read<T: BinaryWriter>(
+> > >> +    file: *mut bindings::file,
+> > >> +    buf: *mut c_char,
+> > >> +    count: usize,
+> > >> +    ppos: *mut bindings::loff_t,
+> > >> +) -> isize {
+> > >> +    // SAFETY:
+> > >> +    // - `file` is a valid pointer to a `struct file`.
+> > >> +    // - The type invariant of `FileOps` guarantees that `private_d=
+ata` points to a valid `T`.
+> > >> +    let this =3D unsafe { &*((*file).private_data.cast::<T>()) };
+> > >> +
+> > >> +    // SAFETY:
+> > >> +    // `ppos` is a valid `file::Offset` pointer.
+> > >> +    // We have exclusive access to `ppos`.
+> > >> +    let pos =3D unsafe { file::Offset::from_raw(ppos) };
+> > >> +
+> > >> +    let mut writer =3D UserSlice::new(UserPtr::from_ptr(buf.cast())=
+, count).writer();
+> > >> +
+> > >> +    let ret =3D || -> Result<isize> {
+> > >> +        let written =3D this.write_to_slice(&mut writer, pos)?;
+> > >> +
+> > >> +        Ok(written.try_into()?)
+> > >
+> > > Hmm ... a conversion? Sounds like write_to_slice() has the wrong retu=
+rn
+> > > type.
+> >
+> > write_to_slice() returns the number of bytes written as usize, which se=
+ems
+> > correct, no?
+>=20
+> Yes, you're right, I think usize is the right value. The cast is
+> unfortunate, but it can't really be avoided. In practice it should
+> never fail because slice lengths always fit in an isize, but isize
+> isn't the right type.
+>=20
+> Alice
 
-Basically, the problem is that it's too unreliable. The code does not
-build unless the compiler can optimize out the build_error() call.
-For range checks, seemingly unrelated code changes turn out to affect
-these optimizations and break the code.
-
-To make matters worse, the error message when a build_assert!() fails is
-terrible. But even if it wasn't, the optimization issue is enough for me
-to say we should not use it for range checks.
-
-There have already been at least two instances where someone wasted a
-lot of time and had to ask for help trying to debug a failing
-build_assert!() used for bounds checks.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
