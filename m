@@ -1,116 +1,221 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E041FC7C5;
-	Fri, 24 Oct 2025 16:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5AC22541B
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 16:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761322617; cv=none; b=gpnL8BFnh6RlKyF1P++qltb4e+nRRa2QIb+5HU3soYn+M5WxtfssWBQhrUHh/JLRwZJi+ILjBG7g8Jka1fupn0LGCnp77OsUWCy9SfxEb5rJNUUo+kNmsFZYttJrgkC5hh8Fvs8Axw8yowd363sXtfByIezQ6pIeTWrmShVvfvg=
+	t=1761322673; cv=none; b=qryqwvuurz1EgZNfN9IMScEKguun6tOmk0yxKhg0p5B9Y1Mav+zeXViFfA1t1dkodF1m0gjvvA8Mc4dfg1Wy3E2nGzQQfF5Z2fTNq/zu0hYIWVPVFFObF1YxeAjYdxtEYUCY+oFeRa8e/WIp8Hnc6Q/EhYfyBfwDuBaaYcOrV80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761322617; c=relaxed/simple;
-	bh=K7yYTqiR0royI2noh1oE3d68mswInGqVewIkm4N72qo=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=X3wFDBE50DKeRWV7RLiEP7HHW36Lt74p4egB4GE9jMP7claB2UHuQBg5VplXRKPjQGQqLhN/zRg7BK+XN4m9WQJGMUFjiu6/FFkojOqMdBIw90MoCXnGTdv00A+ekI2zysRYNiFyLZ8W4Y47Myg2Mm2Ar8Gt5CyV1LKpmXBD5pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=YsMGk5G2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CYUcwwKJ; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1761322673; c=relaxed/simple;
+	bh=tOkgTJRdKnwh7l0mFsUVoENRh2qDXisSIfppjwcwMGg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=tyqrmWllUgF/c+nTn4BLLcespHgoUjRTGv2RAolDc9DaaXEWjiqUl92yjXOQbZtL21xnaV5E9R0LkBtBrj4VDNyGjoKJJb5w3xSgyPOGB+ZVWyxWP0zn5fb8kDwZVNKyYq0+ORVF+YB1WIQFUsR1GEgeNNCOJ5ye0810B/2a4Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=k/jSHwlo; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="YsMGk5G2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CYUcwwKJ"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 781AF1D0019E;
-	Fri, 24 Oct 2025 12:16:53 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Fri, 24 Oct 2025 12:16:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1761322613;
-	 x=1761409013; bh=K7yYTqiR0royI2noh1oE3d68mswInGqVewIkm4N72qo=; b=
-	YsMGk5G2q4dVUrpCgzfG5eqHj97P4kyC8OJdMqmdHiKPcBItAhQkQDSXU/fa3JyB
-	UMwWLiSQBr92YQlWGfbJddnQE8/JvzlW7o1I9m1o6Uwchm7CqoLEL30V8kh6OrqP
-	Yw2I0Kry0+NzkbFdOKud878bTaxfqfu+GEXYntbAs+49/OiPmvv/1tHahBJ2cTTF
-	BzK9E7WS4giFELLQNNA1YfJU90Tgb95TRLWg6LlHfX4jy7eJts5PS+uxUXI4wI6M
-	1JtgIj25Wf7I5HIucqC73OgK4fRqrt+M+ODtZK+PA45iAOhVpwNw5nU31Nt6izLg
-	x2GCrwrjoa5UxnFyNe6+xA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1761322613; x=
-	1761409013; bh=K7yYTqiR0royI2noh1oE3d68mswInGqVewIkm4N72qo=; b=C
-	YUcwwKJLyg6RiRsB3VrlF7J7ztHWb5PB1D9i2YhN+ODmpKIPlUVOawd6Kxx5RfuM
-	3QaGRlEqM3hNWtnWjXA4DrOWqQxiQRer5bjwJhIhP/aM16J05+k2yS+NOe3ATxw+
-	a1yjs/gP1FELnYZS1o3NpuOhC86TWDjIWtMqIcmx9NRMFlFaIsHpYC5Xo74BwGU4
-	lvzGkX94TS7+Jq2tsoRkmz9mYW2IMLahNN0RZbtgHsQ8M9w6J1hSq49fVtW00vDm
-	28lTxhbD2fsTniu4kEgWc5GDWCJPUoBqzBQ3cbZtLq+kp706b1cchcJcwd57cXiw
-	Hd/9Tly5I7kBoupohHG/g==
-X-ME-Sender: <xms:dKb7aPOx6HtXEO2SLCwHEa4KvykLgvvlqV6B_uyc3kMuv98HHs2qMw>
-    <xme:dKb7aEzqhnN5M-mbHHeFB8MvLZzmH8VzCchpmP6QqDl-ow_zTGAY7esK4qtWsQbjw
-    auWTT4hnXFMApDVVY1Oqhf8ygOj7lO3Ay6Up4HvaqIXPSmSfO_pkQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeelkedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegrlh
-    gvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghoqhhunhdrfhgv
-    nhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohephihurhihrdhnohhrohhvsehgmhgrih
-    hlrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhr
-    tghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    gurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:dKb7aDJtH3r47w9024dGM0W1XMMMdvrU8Mjh0B2yDqncbW8axxe2Pw>
-    <xmx:dKb7aGmO-1zLejQOV-B20r9CRWBjiYEJMrKgFcrUJ1NrmWu_did_DA>
-    <xmx:dKb7aMz9BIR3ulg4qQS0aTiFVNXnWjtFzlExuapYgiXqw1gJitsn1g>
-    <xmx:dKb7aAvL38X570dcAPLwUWJj0fWUJw37R9hY5tZJWfHIJHVCi3Zimw>
-    <xmx:dab7aAUGClVJWwoNlPGZxpZd_9_LFGvmHJ4p-tLO628aR64iXgh--z9->
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 9711C700054; Fri, 24 Oct 2025 12:16:52 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="k/jSHwlo"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20251024161749euoutp023a46b06b6498248d4619910b218fec47~xeaLC9zBB3213532135euoutp02d
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 16:17:49 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20251024161749euoutp023a46b06b6498248d4619910b218fec47~xeaLC9zBB3213532135euoutp02d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1761322669;
+	bh=4PztA7zevOPqcZ45Mj+9kAi61mRD2l7rMSjHCR1zJjo=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=k/jSHwloFZU2MSW6MgfbmET5vpqUP7ha0eqP9bHTJN2HQ7qMS1yqo9m16uMb4jdEv
+	 BIohBBFP6C/+ovZhd8v6YlUWY5+Ctx9MWcaOESEnFG4zhqb8VorGNly3KoG5Lz9kmF
+	 /7hqPxwMdGvhX/+6mQObh4cUxQp4s/xW7zH4zfQo=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20251024161747eucas1p232c73d8cbf4cda89571193714279df1e~xeaJ2q_gt2872228722eucas1p2a;
+	Fri, 24 Oct 2025 16:17:47 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251024161746eusmtip181c8b0d66d145b6fc0382af657d5c8de~xeaItjh0p0255002550eusmtip1G;
+	Fri, 24 Oct 2025 16:17:46 +0000 (GMT)
+Message-ID: <9f38bb32-9160-4acd-83d7-902d3e1cad72@samsung.com>
+Date: Fri, 24 Oct 2025 18:17:46 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A9Ox7Xt16jvc
-Date: Fri, 24 Oct 2025 18:16:29 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- "John Hubbard" <jhubbard@nvidia.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Message-Id: <64e953b7-bec9-404c-88b6-b3febd238afc@app.fastmail.com>
-In-Reply-To: <20251024154754.99768-1-yury.norov@gmail.com>
-References: <20251024154754.99768-1-yury.norov@gmail.com>
-Subject: Re: [PATCH v2] uaccess: decouple INLINE_COPY_FROM_USER and CONFIG_RUST
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 0/7] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Guo Ren
+	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
+	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, Benno
+	Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
+	Drew Fustini <fustini@kernel.org>, Daniel Almeida
+	<daniel.almeida@collabora.com>, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, Elle Rhumsaa
+	<elle@weathered-steel.dev>, Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <p5addblaeofj6xdbgmvrknoozrxh75lsle6uqh4g2qku745ayw@uls3uoftpmuw>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251024161747eucas1p232c73d8cbf4cda89571193714279df1e
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251016133814eucas1p199cb62658c016e84e34d525e7c87f16e
+X-EPHeader: CA
+X-CMS-RootMailID: 20251016133814eucas1p199cb62658c016e84e34d525e7c87f16e
+References: <CGME20251016133814eucas1p199cb62658c016e84e34d525e7c87f16e@eucas1p1.samsung.com>
+	<20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com>
+	<3f9ab01c-470e-48b5-a309-71325ecc4906@samsung.com>
+	<p5addblaeofj6xdbgmvrknoozrxh75lsle6uqh4g2qku745ayw@uls3uoftpmuw>
 
-On Fri, Oct 24, 2025, at 17:47, Yury Norov (NVIDIA) wrote:
-> Commit 1f9a8286bc0c ("uaccess: always export _copy_[from|to]_user with
-> CONFIG_RUST") exports _copy_{from,to}_user() unconditionally, if RUST
-> is enabled. This pollutes exported symbols namespace, and spreads RUST
-> ifdefery in core files.
->
-> It's better to declare a corresponding helper under the rust/helpers,
-> similarly to how non-underscored copy_{from,to}_user() is handled.
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Tested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+
+On 10/24/25 16:09, Uwe Kleine-König wrote:
+> Hello Michael,
+> 
+> On Wed, Oct 22, 2025 at 10:34:42AM +0200, Michal Wilczynski wrote:
+>> Since you mentioned last time that you were happy with the code, would
+>> you please consider picking up this series for linux-next? It would be
+>> great to get it in for wider testing to ensure everything is solid.
+> 
+> I took another look, and just being able to compile and understanding
+> very little Rust, I came up with:
+> 
+> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+> index 79fbb13cd47f..c8f9f5b61bfa 100644
+> --- a/rust/kernel/pwm.rs
+> +++ b/rust/kernel/pwm.rs
+> @@ -15,38 +15,7 @@
+>      prelude::*,
+>      types::{ARef, AlwaysRefCounted, Opaque},
+>  };
+> -use core::{convert::TryFrom, marker::PhantomData, ptr::NonNull};
+> +use core::{marker::PhantomData, ptr::NonNull};
+> -
+> -/// PWM polarity. Mirrors [`enum pwm_polarity`](srctree/include/linux/pwm.h).
+> -#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+> -pub enum Polarity {
+> -    /// Normal polarity (duty cycle defines the high period of the signal).
+> -    Normal,
+> -
+> -    /// Inversed polarity (duty cycle defines the low period of the signal).
+> -    Inversed,
+> -}
+> -
+> -impl TryFrom<bindings::pwm_polarity> for Polarity {
+> -    type Error = Error;
+> -
+> -    fn try_from(polarity: bindings::pwm_polarity) -> Result<Self, Error> {
+> -        match polarity {
+> -            bindings::pwm_polarity_PWM_POLARITY_NORMAL => Ok(Polarity::Normal),
+> -            bindings::pwm_polarity_PWM_POLARITY_INVERSED => Ok(Polarity::Inversed),
+> -            _ => Err(EINVAL),
+> -        }
+> -    }
+> -}
+> -
+> -impl From<Polarity> for bindings::pwm_polarity {
+> -    fn from(polarity: Polarity) -> Self {
+> -        match polarity {
+> -            Polarity::Normal => bindings::pwm_polarity_PWM_POLARITY_NORMAL,
+> -            Polarity::Inversed => bindings::pwm_polarity_PWM_POLARITY_INVERSED,
+> -        }
+> -    }
+> -}
+>  
+>  /// Represents a PWM waveform configuration.
+>  /// Mirrors struct [`struct pwm_waveform`](srctree/include/linux/pwm.h).
+> @@ -89,22 +58,6 @@ fn from(wf: Waveform) -> Self {
+>      }
+>  }
+>  
+> -/// Wrapper for PWM state [`struct pwm_state`](srctree/include/linux/pwm.h).
+> -#[repr(transparent)]
+> -pub struct State(bindings::pwm_state);
+> -
+> -impl State {
+> -    /// Creates a `State` wrapper by taking ownership of a C `pwm_state` value.
+> -    pub(crate) fn from_c(c_state: bindings::pwm_state) -> Self {
+> -        State(c_state)
+> -    }
+> -
+> -    /// Returns `true` if the PWM signal is enabled.
+> -    pub fn enabled(&self) -> bool {
+> -        self.0.enabled
+> -    }
+> -}
+> -
+>  /// Describes the outcome of a `round_waveform` operation.
+>  #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+>  pub enum RoundingOutcome {
+> @@ -164,13 +117,6 @@ pub fn label(&self) -> Option<&CStr> {
+>          Some(unsafe { CStr::from_char_ptr(label_ptr) })
+>      }
+>  
+> -    /// Gets a copy of the current state of this PWM device.
+> -    pub fn state(&self) -> State {
+> -        // SAFETY: `self.as_raw()` gives a valid pointer. `(*self.as_raw()).state`
+> -        // is a valid `pwm_state` struct. `State::from_c` copies this data.
+> -        State::from_c(unsafe { (*self.as_raw()).state })
+> -    }
+> -
+>      /// Sets the PWM waveform configuration and enables the PWM signal.
+>      pub fn set_waveform(&self, wf: &Waveform, exact: bool) -> Result {
+>          let c_wf = bindings::pwm_waveform::from(*wf);
+> 
+> Does that make sense?
+
+Hi Uwe,
+
+Yes, that makes perfect sense.
+
+I agree with your patch. I initially thought the State wrapper might be
+necessary for the TH1520 driver, but I was able to refactor it to work
+without it.
+
+On reflection, both Polarity and State are really remnants of the older,
+legacy API. Removing them is a good cleanup; it ensures future Rust
+drivers will use the modern waveform API and avoids potential confusion.
+
+> 
+> I consider applying your series and put the above space on top, to
+> create my first Rust patch :-)
+
+Great ! Congratulations on your first Rust patch :-)
+
+On a related note there is this diff necessary to make CLIPPY happy:
+diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+index 0ad38b78be85..a6c3b6025152 100644
+--- a/drivers/pwm/pwm_th1520.rs
++++ b/drivers/pwm/pwm_th1520.rs
+@@ -185,7 +185,7 @@ fn round_waveform_tohw(
+         );
+ 
+         Ok(pwm::RoundedWaveform {
+-            status: status,
++            status,
+             hardware_waveform: wfhw,
+         })
+     }
+
+I could re-send the patchset, but since you're making a patch anyway
+maybe you would also like to pick this ?
+
+> 
+> Best regards
+> Uwe
+
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
