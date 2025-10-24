@@ -1,122 +1,196 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E29D304BC2
-	for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 13:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9519631DDA9;
+	Fri, 24 Oct 2025 14:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761314072; cv=none; b=hfHi2nUolzAW0l60ZZXKac8TiHapuf8V+RJx/kCIZLhOFcGtcmUU3f73/3WdU9q3LjtvY6SfLOg1X4UB2bTjQ7+vsDIUcaeJ4TFo+8IGwLYc5g90timm7yKXO1C8C+B4QUZisuV2YT/xzt2Opgz2lj/GNr9Ss6mjgVKxYRVjcYA=
+	t=1761314993; cv=none; b=ebCa17a2qSPmAzeejPtY0Ex2rUI14NZQwJudhapxIglmAwdQIYAp4ZXC6dQ7+NVjAYt9FIHQSn9rc3u5yZARQwHXsRcsd0pGHjKThtQJFwq9+DIQQ9/xIQelpRCZ9SScALebJ8J5PSK19FsuwuK73kBKIdxgLuA/G4W7riTKkvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761314072; c=relaxed/simple;
-	bh=mFPqZ7lcHU6mlGWmcBgsIkS8SwEYC/BkyAYxUSkXwmA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BT6LjXMv+oMS8o7YD73tfR2z/tcIopY6a9CNBTN1o2iAycvnc1ZUQfT63b22jrtka47cqd6XhkczRBRxfTYbwso4dxSOpiqXyyoOkuxoqH1KvbHbcCT5LAACvNV7TxPMWgrYjpDcDr+mjNF9f/87SGkgjQVmX+2QgAnXxu3V7Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xG7xPBUd; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1761314993; c=relaxed/simple;
+	bh=qEnNl4yAb28piqxRvBDsROmZ5MOV09FzzL0cqQOOLgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=etJDPElxSAN6Nik7PLov29vNmAsUEpVf5faOsmlvmIjIkinotG0ezExAWL/VU+9S4uWALXWtLanJE6LV3mF4hWTBCkJbD6z5s/q69ID+gSGZtbythD1u3EyfJmlaqBOFrWwEuihvelV0tHaEVc4Tr8MPwB7vJMkru0GnMsyEtEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdB13bXm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xG7xPBUd"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42701b29a7eso1125724f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 06:54:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761314069; x=1761918869; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N3YVGaDHPIrEF0+J3rTjwqQ0+SMuiEnEMlyAprP2W6Q=;
-        b=xG7xPBUdgLOcH6TVd2yzs2a7VfHR7A7Ez3NDCtuWkMXG3X+SrPPp+iVDIVKY44iLFu
-         bWL+NXBE/VE1WQB2pw4X2XTPrdd773HlWxJps6Mpj1ukAFA4i4dLsZ6ZPXjIJw/KvMtA
-         kKF8Hg4dyfW5af+wZT9rPCmG7l/rfiC2bv1nRMBiPAue6DbBglV1pWkjGtFjRoXHaSmM
-         tL2MAGoci53APnQAtjd6uOpjqaZ4WQol0DecTbHmCvy/fFujZn3rfoJOZADGgN7Mff9N
-         fUzAkee6AHR5H3P22gv0PdGlEp5OrZQHn/zL4AB4no0hIgjKNtg84sD4x9Vv6RxpNyoh
-         XEaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761314069; x=1761918869;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N3YVGaDHPIrEF0+J3rTjwqQ0+SMuiEnEMlyAprP2W6Q=;
-        b=nBnYnaD6gPN2u4bqo/RF1skb9KzqoWWiDR+2fSAfJZc5kgDny+03tEnobWXTyWfX9I
-         nsPb68OWzXO4YE2Z/2bWgMNYvfH3HJcICFlcBEtpa5cglrjndwON16zKkCgjk0wvUN9p
-         SNR2FH9D6/ixfzaikIKEbYlZk0zYfXYNQtEtSbsSpvZELJYousnHnD2t13GXKbSLltFn
-         zIBOw0N+mDdjw+nVTYbLSTfbWjukg6+kvi1zjXMFTcAtdx8i+WAGZb0VfsnD1WNd6LXV
-         Bptq7BQBhrryIbHl6BlmHJIcSNBKBj+CQLW84DTI/U8trj9Ei+1gMk3UzW71wOM/OfB/
-         0uNA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQk0UMBjCGoo0q4kdykJZowUPunbxlPiJUBMtqOBRyDGNnQkbFG5QRHbAOZcex00eMJoC1AFBNFY3tMdpuBw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywds3aAAJLNU5Rm99MRrhlkzTaVc/sz+xP2iKqeYjuvw/z3iudc
-	3MpfHEYCtYnhIjzB5hvBvravFSivz3JCl5OLEbMPntoEr0zz9L39t0tiY1QnZd7KThb2aGTb0hJ
-	OX08VzGD1XxawAdAu7NbCmU9TcHV3XiCBa9oGT2Cd
-X-Gm-Gg: ASbGncvb03Ztw9qEnTSVVzHFM32RXr9FNTpH6In4Meyb36jSGHsCroq+X0OypGnY9r5
-	L74zR6RFJLYtkaHINsIygvEUP3+lrZ1qshbjPpDR4jUWRadr65HMUIjl5oWvNaueNjHAiXwHC0o
-	iIc5/CA4G9zSHBhvkDop6Ec1aUZTciQVObMSZF/I3MEO/iEOOhPJ9I6I8IfCBLvjVWDbvdil/KC
-	yJs52rdluoAwesEBZ7okVolw4PREllMmLSK5fvoQG16TnAg3eq0Fp5Z1HYB6AZ024o9RPBqx4YS
-	EMyk+RRwdO1hO0pGDp1yNHXr
-X-Google-Smtp-Source: AGHT+IF1N0olLw8fHHUXcLBLBTrI5wHRX9b98LtLqIwPO0KsTyMtAix3pFN0UXTb0/rflAGbmRtHLcOX9gDCgX9YamI=
-X-Received: by 2002:a05:6000:2512:b0:428:56c5:b305 with SMTP id
- ffacd0b85a97d-4298f50e774mr2481458f8f.6.1761314068545; Fri, 24 Oct 2025
- 06:54:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdB13bXm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9255EC4CEF1;
+	Fri, 24 Oct 2025 14:09:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761314993;
+	bh=qEnNl4yAb28piqxRvBDsROmZ5MOV09FzzL0cqQOOLgU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OdB13bXm15bW8P4kG+yyeBVSDJMp30yf5dz0qvSutbcf+82PO6jgm69hKRwpcOweG
+	 XDllLkMdF44QQH9QAoIh6/ZB7wGDBP/TFZ73itifaGkr+T/Rpvqg3fL98RnHv4xgmX
+	 kFoPJWBcr3QfBq1eY1ZJO53o+OYWdWEuNTIkP4N9vms89VxF1vaQZWaSVLX2yAUBH8
+	 MtdWWlC9gXNSHeF5vEs8KRGyce2aB/qvk/INGHwKeNE4TC8Diec89ExuLIbVYxOvSm
+	 ATapuCnGUWVpXB18xcpeeIIKXjVlUQ9YLINfJoHltzohyjhBTRTpg1h3HFZ1sD70S4
+	 wLc1/qYBgVQBg==
+Date: Fri, 24 Oct 2025 16:09:50 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Benno Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Drew Fustini <fustini@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	Elle Rhumsaa <elle@weathered-steel.dev>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v16 0/7] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+Message-ID: <p5addblaeofj6xdbgmvrknoozrxh75lsle6uqh4g2qku745ayw@uls3uoftpmuw>
+References: <CGME20251016133814eucas1p199cb62658c016e84e34d525e7c87f16e@eucas1p1.samsung.com>
+ <20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com>
+ <3f9ab01c-470e-48b5-a309-71325ecc4906@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251023171607.1171534-1-yury.norov@gmail.com>
- <aPtDGA0JjmfDvxXd@google.com> <aPuDAHzirb3Arl6h@yury>
-In-Reply-To: <aPuDAHzirb3Arl6h@yury>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 24 Oct 2025 15:54:16 +0200
-X-Gm-Features: AWmQ_bmARHYHLoEV_J-uEMCd6W0X1CxW0NvhAoJk5wl_hQq0CvBggKOiQaJ51I4
-Message-ID: <CAH5fLgha=6v1voHc3pF9aSOUz4Bain0k3Xhvn0rh8m9+oL_7iA@mail.gmail.com>
-Subject: Re: [PATCH] uaccess: decouple INLINE_COPY_FROM_USER and CONFIG_RUST
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	John Hubbard <jhubbard@nvidia.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="s5lrbho5664iqhra"
+Content-Disposition: inline
+In-Reply-To: <3f9ab01c-470e-48b5-a309-71325ecc4906@samsung.com>
+
+
+--s5lrbho5664iqhra
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v16 0/7] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+MIME-Version: 1.0
 
-On Fri, Oct 24, 2025 at 3:45=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
-rote:
->
-> On Fri, Oct 24, 2025 at 09:12:56AM +0000, Alice Ryhl wrote:
-> > On Thu, Oct 23, 2025 at 01:16:06PM -0400, Yury Norov (NVIDIA) wrote:
-> > > Commit 1f9a8286bc0c ("uaccess: always export _copy_[from|to]_user wit=
-h
-> > > CONFIG_RUST") exports _copy_{from,to}_user() unconditionally, if RUST
-> > > is enabled. This pollutes exported symbols namespace, and spreads RUS=
-T
-> > > ifdefery in core files.
-> > >
-> > > It's better to declare a corresponding helper under the rust/helpers,
-> > > similarly to how non-underscored copy_{from,to}_user() is handled.
-> > >
-> > > Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-> >
-> > Overall LGTM:
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Tested-by: Alice Ryhl <aliceryhl@google.com>
-> >
-> >
-> > In include/linux/uaccess.h there is the comment:
-> >
-> >       Rust code always uses the extern definition.
-> >
-> > I think we should reword this comment as part of this change. You can
-> > say that Rust accesses _inline_copy_from_user() through a helper, or
-> > similar.
-> >
-> > After all, when using LTO or other mechanism to inline helpers, it is n=
-o
-> > longer the case that Rust always uses the a function call.
->
-> It is actually worth to just drop the rust part of the comment - with
-> this patch there's nothing special in managing the _copy_from_user().
+Hello Michael,
 
-Yeah, makes sense.
+On Wed, Oct 22, 2025 at 10:34:42AM +0200, Michal Wilczynski wrote:
+> Since you mentioned last time that you were happy with the code, would
+> you please consider picking up this series for linux-next? It would be
+> great to get it in for wider testing to ensure everything is solid.
 
-Alice
+I took another look, and just being able to compile and understanding
+very little Rust, I came up with:
+
+diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+index 79fbb13cd47f..c8f9f5b61bfa 100644
+--- a/rust/kernel/pwm.rs
++++ b/rust/kernel/pwm.rs
+@@ -15,38 +15,7 @@
+     prelude::*,
+     types::{ARef, AlwaysRefCounted, Opaque},
+ };
+-use core::{convert::TryFrom, marker::PhantomData, ptr::NonNull};
++use core::{marker::PhantomData, ptr::NonNull};
+-
+-/// PWM polarity. Mirrors [`enum pwm_polarity`](srctree/include/linux/pwm.=
+h).
+-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+-pub enum Polarity {
+-    /// Normal polarity (duty cycle defines the high period of the signal).
+-    Normal,
+-
+-    /// Inversed polarity (duty cycle defines the low period of the signal=
+).
+-    Inversed,
+-}
+-
+-impl TryFrom<bindings::pwm_polarity> for Polarity {
+-    type Error =3D Error;
+-
+-    fn try_from(polarity: bindings::pwm_polarity) -> Result<Self, Error> {
+-        match polarity {
+-            bindings::pwm_polarity_PWM_POLARITY_NORMAL =3D> Ok(Polarity::N=
+ormal),
+-            bindings::pwm_polarity_PWM_POLARITY_INVERSED =3D> Ok(Polarity:=
+:Inversed),
+-            _ =3D> Err(EINVAL),
+-        }
+-    }
+-}
+-
+-impl From<Polarity> for bindings::pwm_polarity {
+-    fn from(polarity: Polarity) -> Self {
+-        match polarity {
+-            Polarity::Normal =3D> bindings::pwm_polarity_PWM_POLARITY_NORM=
+AL,
+-            Polarity::Inversed =3D> bindings::pwm_polarity_PWM_POLARITY_IN=
+VERSED,
+-        }
+-    }
+-}
+=20
+ /// Represents a PWM waveform configuration.
+ /// Mirrors struct [`struct pwm_waveform`](srctree/include/linux/pwm.h).
+@@ -89,22 +58,6 @@ fn from(wf: Waveform) -> Self {
+     }
+ }
+=20
+-/// Wrapper for PWM state [`struct pwm_state`](srctree/include/linux/pwm.h=
+).
+-#[repr(transparent)]
+-pub struct State(bindings::pwm_state);
+-
+-impl State {
+-    /// Creates a `State` wrapper by taking ownership of a C `pwm_state` v=
+alue.
+-    pub(crate) fn from_c(c_state: bindings::pwm_state) -> Self {
+-        State(c_state)
+-    }
+-
+-    /// Returns `true` if the PWM signal is enabled.
+-    pub fn enabled(&self) -> bool {
+-        self.0.enabled
+-    }
+-}
+-
+ /// Describes the outcome of a `round_waveform` operation.
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub enum RoundingOutcome {
+@@ -164,13 +117,6 @@ pub fn label(&self) -> Option<&CStr> {
+         Some(unsafe { CStr::from_char_ptr(label_ptr) })
+     }
+=20
+-    /// Gets a copy of the current state of this PWM device.
+-    pub fn state(&self) -> State {
+-        // SAFETY: `self.as_raw()` gives a valid pointer. `(*self.as_raw()=
+).state`
+-        // is a valid `pwm_state` struct. `State::from_c` copies this data.
+-        State::from_c(unsafe { (*self.as_raw()).state })
+-    }
+-
+     /// Sets the PWM waveform configuration and enables the PWM signal.
+     pub fn set_waveform(&self, wf: &Waveform, exact: bool) -> Result {
+         let c_wf =3D bindings::pwm_waveform::from(*wf);
+
+Does that make sense?
+
+I consider applying your series and put the above space on top, to
+create my first Rust patch :-)
+
+Best regards
+Uwe
+
+--s5lrbho5664iqhra
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmj7iJ8ACgkQj4D7WH0S
+/k6hYQgAhlp1k8GnQOshRf5MFOCWXtHvmPFyzN7GPGmVJw3NHwuKc4Gzrp7Y+B7Q
+ZMh/RD1laNttxYcKljd1THglHWTj49XvkzVVLw1sZ6V+iMYJefsYGQuWl60Y/pJV
+AW3tZtwOl0ea7cS1kyif7QvpobCTQVlIfs/mE2z5BxGvNPJIHFR/bW3a1m0hzjyM
+Nz3s4s5LKStwW1EZVpFVaW9YBTvlsbuPdOK+KbeoITs3FQW4+wpRGk5Cm8qNFbAe
+LaK06/87BrDvVpkHCuBNRwOGDucMxjf1CaQ4Ap/QZ/Pc0yh6ha46yv4YLxPDJwuu
+q+rdvj7mq0Y3w4nlQi9Ui0FUKQadkg==
+=trqv
+-----END PGP SIGNATURE-----
+
+--s5lrbho5664iqhra--
