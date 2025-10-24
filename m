@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A241C225408;
-	Fri, 24 Oct 2025 14:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B7030EF62;
+	Fri, 24 Oct 2025 14:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761317310; cv=none; b=GgX04guSGj9MZtqd1M49OSEzmzadwKiyFRZmfv2zQ+ZCvSIA248+lyrjEW87m1d1Hmv4An+hOK5yupRmBSGhiBrcblTEw9kqsAEA1Fq2KEsfUkIpZl7nyMaG+OoNyMvdxNO2uRFJAFvBchbPEBog1WXGkx542rtEdIRTwrUfhFw=
+	t=1761317848; cv=none; b=Xaavi6aLIHMCmbQjCqUv1/2a8sYdWE1IcPc+g3fs8f6NAHTcR05Aix+5CcbEkiHIOZkNS1NFh1SOc7LAJTzcB1ccjVDYnbgglij7ZtyOIodFpFT/wnWgBqlSdy3CDrhi6w/hvss21CQhxnNtsKdzE0FX2NVh+cqbD+Cnj6kdsqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761317310; c=relaxed/simple;
-	bh=yucRPWpBAlIw6K56FcWbTwUYy1dZ38yWYpep+C7FIzA=;
+	s=arc-20240116; t=1761317848; c=relaxed/simple;
+	bh=ckGShd3HSTRH6YBTlCk+dpeQP+1/q+Dixe18TS1J2YE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RXNvvkJHhDSVEpuGyFWQ/TFJUWbFiUHcYMf0qmCZWFNW++pPoV/+b8UhBIfmqaBJmCwPRuFKLB/BAetS1LDqwnxZXvkaE0bAD5bNo6n+uVFsONcShARcriDc7/wQNc+aNSayiSI/Ceowvg1lVo1b+eF5zNUfdOFNvtTYCmYtZj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ry+1iy3O; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=jFhSC/KNuHsrf5wpqvkt6OViOZPIfU2F70dkCNMzE0j6q2wHaX799Jnj801brXefP3PO4MYLPjma7xjzhRh5e7KKzn1MRCpVN6GZNhc8ehko/vHWty55/gqbiCSRKd1ZoC2PAhHisZ12/zGFuWVunsm7l6u7PdGduz7PZQod3uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K//ufyrb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ry+1iy3O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69A6C4CEF5;
-	Fri, 24 Oct 2025 14:48:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K//ufyrb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92911C4CEF1;
+	Fri, 24 Oct 2025 14:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761317310;
-	bh=yucRPWpBAlIw6K56FcWbTwUYy1dZ38yWYpep+C7FIzA=;
+	s=k20201202; t=1761317847;
+	bh=ckGShd3HSTRH6YBTlCk+dpeQP+1/q+Dixe18TS1J2YE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ry+1iy3Ox8jeQMi1uEURaTgK+r191tZ80ALpEgM9G1mQ/eGlR8yJBslECtG5lV+J1
-	 S3rXfE0BaHHAo56TE7p3HFYYHKNdC+cL9xTJYA/dCzOOXlrWG7PcYcrdQ+VTj9ysvW
-	 6a5Z4eCk2TIwNXiZdU9Uz9Cu38F1q900W6fNX+2xXd/NnFrY46XxldkO71yQdbpydY
-	 yRWS5K2/HUp0dm2Ap2y4iy+Y0lWC80oIPJXX/UkBfaenHYE+wTKd9oiRR3Ng+BnyAJ
-	 iNFYoj4kEMnkB++r+McplCgmU6Q0hsCw0JqxhYOS3ssUFzC7h2Lungxhsb1og9d/qD
-	 e5k4u7uRq70KQ==
-Message-ID: <c2becbdf-1258-4a33-9fa9-3b63b53ad099@kernel.org>
-Date: Fri, 24 Oct 2025 16:48:23 +0200
+	b=K//ufyrbHR+YI7mo1zmUMQyv7Q1B7V4AXedFU0PK2l7GtfwIal6gWCYcsOK5Ibef2
+	 qFF3vZZ38sCQ69GP44WX/fLkFhI6YfVtUhwi3TGAPg1J9R5ZoBfr4g2YhDr2IncIai
+	 2zWIUjD09tZkh2N3fDkKQGG04+I1Vg/YIPPUrmmEjn1YuMpiZvjoz2icOqlgvYGtEV
+	 FBQQiD5cqJqJw4kvVeQ+yeseZK9wtl044UBDhuxr9W/v1QPU/aY4axq4IEqrpk3sNd
+	 4OEL5jttbmqo5NvjZ7I8WbeBRcTY44Xa2PSibqBc87KbosuJXiWBuM2wYTePLWN9dl
+	 tEFr0v7ao6dMw==
+Message-ID: <ad655011-d695-4dca-bc60-902aeffe73a9@kernel.org>
+Date: Fri, 24 Oct 2025 16:57:22 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,76 +35,29 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/2] rust: Add trait to convert a device reference to a
- bus device reference
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Dave Ertman <david.m.ertman@intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251023172803.730677-1-markus.probst@posteo.de>
- <20251023172803.730677-2-markus.probst@posteo.de>
+Subject: Re: [PATCH 0/3] Remove the usage of Rust native atomics in debugfs
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Mark Rutland <mark.rutland@arm.com>, Matthew Maurer <mmaurer@google.com>
+References: <20251022035324.70785-1-boqun.feng@gmail.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251023172803.730677-2-markus.probst@posteo.de>
+In-Reply-To: <20251022035324.70785-1-boqun.feng@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/23/25 7:28 PM, Markus Probst wrote:
-> +// SAFETY: `auxilary::Device` is a transparent wrapper of `struct auxiliary_device`.
-> +// The offset is guaranteed to point to a valid device field inside `auxilary::Device`.
+On 10/22/25 5:53 AM, Boqun Feng wrote:
+> Boqun Feng (3):
+>   rust: sync: atomic: Make Atomic*Ops pub(crate)
+>   rust: sync: atomic: Implement Debug for Atomic<Debug>
+>   rust: debugfs: Replace the usage of Rust native atomics
 
-s/auxilary/auxiliary/
-
-> +unsafe impl<Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for Device<Ctx> {
-> +    const OFFSET: usize = offset_of!(bindings::auxiliary_device, dev);
-> +}
-
-<snip>
-
-> +/// Bus devices can implement this trait to allow abstractions to provide the bus device in
-> +/// class device callbacks.
-
-In the first line, please briefly mention what the trait represents.
-Subsequently, you can mention the use-case below as a more general description.
-
-> +///
-> +/// This must not be used by drivers and is intended for bus and class device abstractions only.
-> +///
-> +/// # Safety
-> +///
-> +/// `AsBusDevice::OFFSET` must be a offset to a device field in the implemented struct.
-
-"... the offset of the embedded base `struct device` field within a bus device
-structure"
-
-> +pub(crate) unsafe trait AsBusDevice<Ctx: DeviceContext>: AsRef<Device<Ctx>> {
-> +    /// The relative offset to the device field.
-> +    ///
-> +    /// Use `offset_of!(bindings, field)` macro to avoid breakage.
-> +    const OFFSET: usize;
-> +
-> +    /// Convert a reference to [`Device`] into `Self`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `dev` must be contained in `Self`.
-> +    unsafe fn from_device(dev: &Device<Ctx>) -> &Self
-> +    where
-> +        Self: Sized,
-> +    {
-> +        let raw = dev.as_raw();
-> +        // SAFETY: `raw - Self::OFFSET` is guaranteed by the safety requirements
-> +        // to be a valid pointer to `Self`.
-> +        unsafe { &*raw.byte_sub(Self::OFFSET).cast::<Self>() }
-> +    }
-> +}
-
+I ack'd patch three for you to pick it up, but I now wonder if you want me to
+pick it up through the driver-core tree?
