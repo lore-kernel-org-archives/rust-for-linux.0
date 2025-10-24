@@ -1,127 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACC1304969;
-	Fri, 24 Oct 2025 08:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59BD3090CA
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 09:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761294316; cv=none; b=qymupwaTzhTxBhDspPpnMwyW5L7diF1WFO4OC2NS82wXDyWzKgSG8eimwXFzok063a1dp9VVVL0jq2WL+RYv/EtB57KUC0wGIOsJ32ELaZIWa/EDaAxrJQJJFkV52Su80vBlUvekezgw77PauXtb3ILN/vutKPSDySIsShu7ksc=
+	t=1761297180; cv=none; b=njiVzok6W8NT0OrxPHCl2QsAkaJtSbbUt2hmIf8KXegDbqWG+G65iZOMi3+JRnLxiGpWlyfV3JBD4gdQRHjn90uDNskBQ0D2ftsVBU86EiA7adNl6owFlFvg6FGuLoWV4wWg0XYXF6cCgPfikOQctQz6b+WcNbzVc3Q1eHB271U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761294316; c=relaxed/simple;
-	bh=SXBdpcMk2TDYEoZXQ/iMgZKyh1Q8zdM0q3pF+Ul1UgY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=M+iVZtC/FS1V2ZhsfMeRQE1KgYcAvyYSvnQoH/Ndu6A/d1mH2xrcVLI3fC/8bUaby3ANum4ihWBhn8Gdyq4oXy4wgPbHAP5/crjJxgnQ9eEx00N68OBk6NrnIwp9Clj38JPUP2yAeudr06KbWt1lVPNL4qE0pZYX0/x0/Ty5fLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eaLng0N+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761297180; c=relaxed/simple;
+	bh=Py5QyIQVFVTx1zENh9xQwV4btqftsrDbHkuKSIYauzM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cc5jjKMV8psvIM04PYarrF9K+U5mp2h/wAJ456uPPjC1OvIgiPneHefXJ/sbKcPUjZZwvtS0W+BP6vdyAMrMq9u1VnjV48Ad2OZ75UxxxqXsPzslomwsTU0dPHez65vWpSm5IvaJLJQcuHPu8PsYgrrkyiQ/vdZviF3GFXdWGlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cxEZX7pB; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eaLng0N+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA050C4CEF1;
-	Fri, 24 Oct 2025 08:25:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761294316;
-	bh=SXBdpcMk2TDYEoZXQ/iMgZKyh1Q8zdM0q3pF+Ul1UgY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=eaLng0N+ouTdoVQeWVRFNjvUdJ3i6m3xg8pLrwM1gC41ZXzXCchS/jeNWi/o+oyNI
-	 FS5e8SYTAIHtC39Ml9ANl1EOG3uBlTkb3VSJ90TxJKwW4HTOMdFoE6KXNgvvdrhKiz
-	 gpVTS+jnuKenw3fakJJK1mbgDAHtDfQzeThAxLxekq7OtZ9nGUh8nh4VD2cFfCAzCC
-	 1y0YI4tsZELZiBgVM+udKTvVlgWOHJ7TFgh9AlXrnDJrt3j5pRz1BDIl2LI8bAsivY
-	 I4KdL/xXk6drMbKUvV6mK3Ci2lMeFH6MVVTWAj10XhK/xDlfWoApmx08E0WSA1RMRF
-	 N2TRGxoQv/oHA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
- daniel.almeida@collabora.com, alex.gaynor@gmail.com, ojeda@kernel.org,
- anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
- linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
- rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de,
- tmgross@umich.edu
-Subject: Re: [PATCH v2 2/2] rust: Add read_poll_count_atomic function
-In-Reply-To: <aPeTFMeVoIuo8Lur@google.com>
-References: <20251021071146.2357069-1-fujita.tomonori@gmail.com>
- <20251021071146.2357069-3-fujita.tomonori@gmail.com>
- <DDO06754OMN5.G0AN9OCWTFLW@kernel.org>
- <h4wUwTMyHx85K0_CDEI0TkQoZFaEof5pJhADCtIUn01egSGxEcBVfQ6Y613ocOd0gU_j6X9g1agE9ealXqnE-A==@protonmail.internalid>
- <aPeTFMeVoIuo8Lur@google.com>
-Date: Fri, 24 Oct 2025 10:25:05 +0200
-Message-ID: <871pmshfku.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cxEZX7pB"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-471148ad64aso10498025e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 24 Oct 2025 02:12:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761297177; x=1761901977; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ulo3Id84Le+yseyETzGns1OxvWpuudj7+L+eKB87WfM=;
+        b=cxEZX7pBkAACAuCU4lcVeGsAh6yLq4skBY4Rg8Ht0/tFqALP/6TQuDIbieMqyt65Q+
+         WFQzBcc/Ovsqh8XV+mTqugAE7vWoWNs1LJ4Me0MpY5UY5reqUNNYnPmShdXUaAeHMBQ9
+         ip07pZrZb4uB/CRAjMyHN5U2nyMrg1b1wXoCim0/I196VEub3Jwnktl2R0QdIukkA1Ys
+         PdXM8bhe8FcJD+ABx84e167UX4otd4ThSc7NWb4R5qmwcOtqkHf93D4i6rBpDxiIX1LS
+         PrjZ62JPI10X29+sPaU0glc8TbmuqB9YXN45mHOrhUrTTJzP3vY63q1wsT9AYIYsJak/
+         m7Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761297177; x=1761901977;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ulo3Id84Le+yseyETzGns1OxvWpuudj7+L+eKB87WfM=;
+        b=qiymmZnycdwjUcyHh32T8kh5Uk/nYeIw2zrhVMUZIib0xyzlHXiaJLo4x1JCOKEaXF
+         zPAJ6CREu/PeujAi+9Cpv/voCpDgAxaitSAFzu+uoE91pZAJo982p5scrZGILertGkiC
+         JGzf74+h+oqjVXqFQP9ZzmXU0ItCBepFi8DNryCMtEGebcNlcCI/lxLuYQ+dtWJ9uh9n
+         Tf41SmO3Cq5+V+AyoWAWUosxD0kIxImkCBXlso6qsXmezdMF6VFhZQSi0Pd462ysGtie
+         rvblnz3t+1bqNWotY/NhPEv/Gl/L7liZsMa+wfdrHMLuOsMQ0Wm152+C/HLktGF1izjw
+         r+Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCWX8Tmop9bARhEWDtPfD0MJPlKOZJ8KmUBj+D2mxBhus7kYQD7utN6E/xEchrRFDLJBYjVIIZXkU9GD32+jGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy34SXoTAGwtbavb7VmchByeKLlIUKkGN9uphNGW4UKzNdnezl3
+	UhpN+MpH6sH2OAgIOxxZeXJLmc59H6Um/DBYOIhKun20oipT4Z03QoFXikBegMqSA/gyubGOmXq
+	MDHXeH03hFyP6Bwdy4A==
+X-Google-Smtp-Source: AGHT+IE9kXnufXu+7tMdDMKWy6sLQPlsvxtyBst07CdXVQmNvgRG+EcaYQNuGz8TSy0rvIW8NN75riZMgHZERlY=
+X-Received: from wmbf9.prod.google.com ([2002:a05:600c:5949:b0:46f:aa50:d711])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3b8d:b0:46e:4883:27d with SMTP id 5b1f17b1804b1-4711791c8d3mr219334345e9.30.1761297177194;
+ Fri, 24 Oct 2025 02:12:57 -0700 (PDT)
+Date: Fri, 24 Oct 2025 09:12:56 +0000
+In-Reply-To: <20251023171607.1171534-1-yury.norov@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20251023171607.1171534-1-yury.norov@gmail.com>
+Message-ID: <aPtDGA0JjmfDvxXd@google.com>
+Subject: Re: [PATCH] uaccess: decouple INLINE_COPY_FROM_USER and CONFIG_RUST
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	John Hubbard <jhubbard@nvidia.com>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+On Thu, Oct 23, 2025 at 01:16:06PM -0400, Yury Norov (NVIDIA) wrote:
+> Commit 1f9a8286bc0c ("uaccess: always export _copy_[from|to]_user with
+> CONFIG_RUST") exports _copy_{from,to}_user() unconditionally, if RUST
+> is enabled. This pollutes exported symbols namespace, and spreads RUST
+> ifdefery in core files.
+> 
+> It's better to declare a corresponding helper under the rust/helpers,
+> similarly to how non-underscored copy_{from,to}_user() is handled.
+> 
+> Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 
-> On Tue, Oct 21, 2025 at 02:35:34PM +0200, Danilo Krummrich wrote:
->> On Tue Oct 21, 2025 at 9:11 AM CEST, FUJITA Tomonori wrote:
->> > +/// Polls periodically until a condition is met, an error occurs,
->> > +/// or the attempt limit is reached.
->> > +///
->> > +/// The function repeatedly executes the given operation `op` closure and
->> > +/// checks its result using the condition closure `cond`.
->> > +///
->> > +/// If `cond` returns `true`, the function returns successfully with the result of `op`.
->> > +/// Otherwise, it performs a busy wait for a duration specified by `delay_delta`
->> > +/// before executing `op` again.
->> > +///
->> > +/// This process continues until either `op` returns an error, `cond`
->> > +/// returns `true`, or the attempt limit specified by `count` is reached.
->> > +///
->> > +/// # Errors
->> > +///
->> > +/// If `op` returns an error, then that error is returned directly.
->> > +///
->> > +/// If the attempt limit specified by `count` is reached, then
->> > +/// `Err(ETIMEDOUT)` is returned.
->> > +///
->> > +/// # Examples
->> > +///
->> > +/// ```no_run
->> > +/// use kernel::io::{Io, poll::read_poll_count_atomic};
->> > +/// use kernel::time::Delta;
->> > +///
->> > +/// const HW_READY: u16 = 0x01;
->> > +///
->> > +/// fn wait_for_hardware<const SIZE: usize>(io: &Io<SIZE>) -> Result {
->> > +///     match read_poll_count_atomic(
->> > +///         // The `op` closure reads the value of a specific status register.
->> > +///         || io.try_read16(0x1000),
->> > +///         // The `cond` closure takes a reference to the value returned by `op`
->> > +///         // and checks whether the hardware is ready.
->> > +///         |val: &u16| *val == HW_READY,
->> > +///         Delta::from_micros(50),
->> > +///         1000,
->> > +///     ) {
->> > +///         Ok(_) => {
->> > +///             // The hardware is ready. The returned value of the `op` closure
->> > +///             // isn't used.
->> > +///             Ok(())
->> > +///         }
->> > +///         Err(e) => Err(e),
->> > +///     }
->>
->> Please replace the match statement with map().
->>
->> 	read_poll_count_atomic(
->> 	    ...
->> 	)
->> 	.map(|_| ())
->>
->
-> IMO, this should instead be:
->
-> 	read_poll_count_atomic(
-> 	    ...
-> 	)?
-> 	Ok(())
-
-It does not really matter to me. Why do you prefer one to the other?
+Overall LGTM:
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Alice Ryhl <aliceryhl@google.com>
 
 
-Best regards,
-Andreas Hindborg
+In include/linux/uaccess.h there is the comment:
 
+	Rust code always uses the extern definition.
 
+I think we should reword this comment as part of this change. You can
+say that Rust accesses _inline_copy_from_user() through a helper, or
+similar.
 
+After all, when using LTO or other mechanism to inline helpers, it is no
+longer the case that Rust always uses the a function call.
+
+Alice
