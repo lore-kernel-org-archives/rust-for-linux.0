@@ -1,134 +1,92 @@
-Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CAF2E8894;
-	Sat, 25 Oct 2025 12:43:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913EB1DDC08
+	for <rust-for-linux@vger.kernel.org>; Sat, 25 Oct 2025 12:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761396197; cv=none; b=RNB/cYFI0AD+sgx32pFx2q6ATJ6RbGLvYjNa1Y973rHKfaq1X80e4uh1T7YO8ndZWOR7lsfc9rpgzPbVmagA+jTxf4vcF2mtzX6hLZZSEcQcZsKpb3hw2Ewz4vYf5k1aM8KWmdhiHH+8Jq+cQco0rIXujeIhKDyyk25Msd5Br0g=
+	t=1761396304; cv=none; b=NUP0yr8J76mmFDR2gP/eZ8zs26tZIir9yXTGb/uyRhOMoSN7R/bzWAmQDvSEqg5XeIfmMODfxjkTyvvh6jqRC2LBGqANdKtJVYV7zxSzcoLFqnWPsGevmd61yq5r1r8GWio2YGB5q5bSknAqqumMFyBZqF0UPskAUKJuZ3HM/uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761396197; c=relaxed/simple;
-	bh=3TvDjbq4mKxAYjolp70z7LwGV2DiC4QHoYxb659SfR4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a2N9ZD6c74v7nedX3oPDwiyYDm0IiSWGBaN5hrEKkC7Uz54OtgMoFMMU4FRGxziSnCZtxJQHIbwuYEoY7kd1jJBbv8PWXlEe3vh0w9S7JTRrbF48no2JweynfxBa1S5Nh22ajVtSCDTEl4LYMQ4SHdppMTWtTckhIbvALExa6wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=mnSgGn3A; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Aivx50Lu; arc=none smtp.client-ip=202.12.124.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+	s=arc-20240116; t=1761396304; c=relaxed/simple;
+	bh=C7RCMPYJxiHbIff6uyGxXLWmOareJd5pab4+KHZQmA0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ccRMJagD9Uk1hocDDRxNTc1BpBkvS5l+cEqnCpDn+f2YdwlUNJd67idPF3GPv2jzvIVBC/ZDeutZxwhmei3n34gPOroVjSR0Ht2aE4cbvKKB5zcsJoB+II5HKqYqkRXalOFpnPudp7bR9kYltlhCGoZxz/2Ddrw1FGDcGfMazFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKI9Hrav; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="mnSgGn3A";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Aivx50Lu"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id 28A3B13000F7;
-	Sat, 25 Oct 2025 08:43:14 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Sat, 25 Oct 2025 08:43:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm2; t=1761396194; x=1761399794; bh=zAFQucylvBENicdiTBkdA
-	9Z5rlZ3eaoQYdr+2ewyF+8=; b=mnSgGn3ASF+MeFqjqtTJoYkF0yx3fvXo520AS
-	4fpf/8fONPrgqtf8m4zgzagFnJYlwH95gD5BV8dNTA8e5U/3gVEVF+EimZ5puX7i
-	8+yw4mad/yuMsBTOVqwu0+ymcOedfh6p9NbjkHrPveRY/oUftLLAZPe3Sv5BisDJ
-	geghPZh8aBtPJtFcBNTOgQMMUwVu5dXkuZ2vOzD5HT89++PZOMHx4NDq/ibwqUuR
-	Iyor8jMSwjlcdGdtfhJ55tklqHjGfJsuNGB9ymaab7iSl+bEK5CDa/tssHG9g4Yf
-	k0F19QPMJdFx663vn92aOkQDkbmImbSzHfGHlN0N3jsmA9ezA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761396194; x=1761399794; bh=zAFQucylvBENicdiTBkdA9Z5rlZ3eaoQYdr
-	+2ewyF+8=; b=Aivx50LuPTohrcelggQRiRRrh+5TFhURGovTc/M4yGQszi7MMtw
-	5JENZkCD3i1mty7JElPAe2fNgn3H1non6AstqgDupiCyTP7WrXeCrBBCIHY26qQM
-	v2d4WL+yoFp/hylZA875nagiScONnaDOGFupGhmNGCUekFlixDJSHJsgQk3ansbB
-	0G0oqAEZFdFRpkVLUbbWZuodhiQo6yAYhYGjCxOZQuSXsIhfQcE/EaDwU9IDASf+
-	9C/19Cf9mye1mJgK8E9GW7jrpFue6NX2PlM0WPzkbqjEU8BkDIZ2U0xNTSCRuC4S
-	a0QgdQ/pb3CjRk21WDND590VRfu5k7y1cMw==
-X-ME-Sender: <xms:4cX8aHNHjr2Z-NZ_E8vbQL4Oo44V66HMQwHeVzfFChZTAIfvfuN6Pw>
-    <xme:4cX8aBbiMD2eHqfTBkTEfqDMMhrh6aTC6DVG4BRuEiDtZJLiLjFATpR1kqxZlcKMT
-    7d_tqGlszvjSu-N9zrLIrgoEdCOhpQbmyPexLDahEXRJmErDvoTs8w>
-X-ME-Received: <xmr:4cX8aHUMYw22Rbv83heAH7nn8vr3e6BbpWa1ZnHqZUCUxvxYIq5MXxAAgp7AlFMxfBzmtyMElBM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduhedvvdehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertdertd
-    dtnecuhfhrohhmpegjihiihhgvucfuuhhnuceoshhunhihihiihhgvsehfrghsthhmrghi
-    lhdrtghomheqnecuggftrfgrthhtvghrnhepjefhffdvfeeigfegueejuedujeduueeugf
-    egveekuddufeetuedtfeffgfdvfedunecuffhomhgrihhnpehgihhthhhusgdrtghomhen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsuhhnhi
-    hiiihhvgesfhgrshhtmhgrihhlrdgtohhmpdhnsggprhgtphhtthhopeduhedpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphht
-    thhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhmgh
-    hrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegs
-    jhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhssh
-    hinheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:4cX8aADf49XoIH9Ttb1IAe-SpzNbxBY460hFqHJpejWNE1BkdFJ1mQ>
-    <xmx:4cX8aDJjQ8GICWH1jpQ8KRST2DkorhPOJns2apwbatvuvSpiie9Vow>
-    <xmx:4cX8aOv3efnRBo-FcK9xxgfTEngMhmAuyWNDAPcsd0rJNqrEhPpkRA>
-    <xmx:4cX8aLW7-j7QkvOADOEy07-Gj5lf9K0F3KlBOQd27Rjfi8b4RgZpPQ>
-    <xmx:4cX8aHwyWRxciF3klThowkMB6cK9lpPBgJuecCwTcBqevhnt-D4Yx4YK>
-Feedback-ID: i1736481b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 25 Oct 2025 08:43:08 -0400 (EDT)
-From: Yizhe Sun <sunyizhe@fastmail.com>
-To: fujita.tomonori@gmail.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com
-Cc: tmgross@umich.edu,
-	netdev@vger.kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	dakr@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yizhe Sun <sunyizhe@fastmail.com>
-Subject: [PATCH] rust: phy: replace `MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`
-Date: Sat, 25 Oct 2025 20:42:18 +0800
-Message-ID: <20251025124218.33951-1-sunyizhe@fastmail.com>
-X-Mailer: git-send-email 2.51.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKI9Hrav"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-290aaff26c1so7336575ad.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 25 Oct 2025 05:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761396303; x=1762001103; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C7RCMPYJxiHbIff6uyGxXLWmOareJd5pab4+KHZQmA0=;
+        b=QKI9HravYuYwQwLhsLKCL/dtmWKTJGul9bgAzNPvQrM/7AA4dcM/TtsWIsMDQFi29u
+         2b9c3DPlRrA4NCfp0gARe2ghRnyoum/ZtV5UHHXMKF+K9wyntg1GfzCgFQUoPTeJoypL
+         rpKkVGPOTNuvUj4bHVdt1MT5SN/R1wH6TA07kPTqKL/+ElyLA9fDpYul1jvox6DZADlR
+         dOn46Qajidb96sNRuhLmWaaQZNlObM3jCG3mdatsRLJvczrPN6lfzizk/Kkphf1Wolt8
+         qjjuWJkaX7IpqP7qqKWZLhyNBeb/QV/1dyLnfLzFtECdzK3w9B84CTKYDS/C2YpRhJ79
+         dUuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761396303; x=1762001103;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C7RCMPYJxiHbIff6uyGxXLWmOareJd5pab4+KHZQmA0=;
+        b=KXQ4ux0ogBJ1q5nEbrg6zRtU9ogHj0b69eu+9H5yxvPKHPIIw4U1QlowCLtv1e8S/Q
+         JL0UPKG+M1c6ruuY7Yzd6GR4R4rUlQ/2oK8YxU0vOoj1qSvQf/+I59wDi1PZJEIt1kta
+         2ZF8hN8P0ff+ZW543jLDh6vPHPQulgPb97HdENJfJQnLCkF1ORoKqqpcD+E3dVCtaI27
+         zoUr8r/cikvmhUSt5YIpDBMT0d/o05ECHjCKInPZyH32TM4MqrmibszI6dR/rumVfFWY
+         Xs9bsclSn7n2049z+i3zeM7xHOLquQ86dQ5vucg8XUJiduQyxijHArkasKJk1DGfBq8g
+         dBPA==
+X-Forwarded-Encrypted: i=1; AJvYcCW0UNWoBLciKWYN0GOeI3Sf1uIT1954qN12k24b1rv1sAbrAq6c3+u0MFXQJXZPgUGhnkivnMQ3EyLJdvY/Cg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylVqcjMX0Np7UAebcQrrqu5+7/4cIiXOQwNAzOQO9nqBdFKXka
+	IZq4IHS/pE12vofLhGbUhdjVlRaJEjRgY+27hQBOjYWxby5T3B0rWjDbGnViPeufEVzmb2PFRZg
+	zHUdeKJ+ne86+BXhFttwEn2fnalHyXVc=
+X-Gm-Gg: ASbGnctMsD89TgLCB+77+ET8OUq2Vq8VWvzgWsgEQrMbvY1dUEl61Ooz3NvXABYs2Yo
+	Xe2jPhVJbxgqybXYSefdt1xW/lRE7AjwG+zu9derJ8aP5Rlzu4IPiB23RxgJgxkkyhJptBE2BIM
+	xA3pY2hko0fImuZJkDMK/pBwIsxzsAmZPbJIDGYoglQWE3P+0Qu99Zo3b9MH9JkZefmx70VMFPE
+	f37C2xP6WBCmcjB9Ma1Kp4MIUPeSBVrBFMZqmb2mRU+dDj43pFbSBQb2ortppkPjOK/57Ms1OTH
+	/JXd2VA2a/w/IDPOiNw5T4e5SrguZP3SIEurqCxuqBP+t9KFgydgusQDnnYXfzwx0I03VFHp/E8
+	WP8Zudmeq0qpImg==
+X-Google-Smtp-Source: AGHT+IFnwtuPM1t4cSFlyMdWfosAkAQDsFe7ldATnnuYeEiyjQeUZlc+gbfwi5fU05sJQRiLpWnjw94QHjb7v+hqPPU=
+X-Received: by 2002:a17:903:1212:b0:264:cda8:7fd3 with SMTP id
+ d9443c01a7336-292d3fb7f7dmr114055105ad.6.1761396302912; Sat, 25 Oct 2025
+ 05:45:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251025124218.33951-1-sunyizhe@fastmail.com>
+In-Reply-To: <20251025124218.33951-1-sunyizhe@fastmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 25 Oct 2025 14:44:49 +0200
+X-Gm-Features: AWmQ_bnwo3M8FN9w1gVNfQEyRU5EK1H9Fv1DoP63Bar4frG5RXkcOVmvftK9y80
+Message-ID: <CANiq72=d0zXWAryVXHUKLUkcM_dPoC_uPM2drMXAVB7kh1YSjg@mail.gmail.com>
+Subject: Re: [PATCH] rust: phy: replace `MaybeUninit::zeroed().assume_init()`
+ with `pin_init::zeroed()`
+To: Yizhe Sun <sunyizhe@fastmail.com>
+Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	tmgross@umich.edu, netdev@vger.kernel.org, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, dakr@kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Benno Lossin <lossin@kernel.org>
+On Sat, Oct 25, 2025 at 2:43=E2=80=AFPM Yizhe Sun <sunyizhe@fastmail.com> w=
+rote:
+>
+> From: Benno Lossin <lossin@kernel.org>
 
-All types in `bindings` implement `Zeroable` if they can, so use
-`pin_init::zeroed` instead of relying on `unsafe` code.
+This looks wrong -- is the Git commit under his authorship?
 
-If this ends up not compiling in the future, something in bindgen or on
-the C side changed and is most likely incorrect.
+Thanks!
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Yizhe Sun <sunyizhe@fastmail.com>
----
- rust/kernel/net/phy.rs | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index bf6272d87a7b..46c693c5768a 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -553,9 +553,7 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
-         } else {
-             None
-         },
--        // SAFETY: The rest is zeroed out to initialize `struct phy_driver`,
--        // sets `Option<&F>` to be `None`.
--        ..unsafe { core::mem::MaybeUninit::<bindings::phy_driver>::zeroed().assume_init() }
-+        ..pin_init::zeroed()
-     }))
- }
- 
--- 
-2.51.1
-
+Cheers,
+Miguel
