@@ -1,101 +1,117 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748402C08CF
-	for <rust-for-linux@vger.kernel.org>; Sat, 25 Oct 2025 09:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8BD2E8E00;
+	Sat, 25 Oct 2025 10:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761382997; cv=none; b=uS6Hjfi7vKpugcAgS1brB6hAHEsZCGc9tsUXjicVNtZ1B8NRy1mkWNFXUXRP4hmRc0dZ7RDkD3qcioCOVxNlMLKdoKEKktGZvyDI8gEKRPrVVs7iy/WqFKCbr6fCkZ/5nvdAUS5FTodTivJiPSDCEpolS35GeG/2xdDKpw2JbG0=
+	t=1761386493; cv=none; b=FFfGJYfPSoKXzbqUuzvayiFbbzE4ApG3aj3OpQLF6qemdhhB1GuRsCXE31f/xiWDkNSYxyAdFjpxsW2tAwWtMfZdG5KhPPzB2N/gW3o37j8LrslWZQ/GPvSBpg8dXfRGo13rQJJnC/8fCpeR/fpAoJ1DUD4kEJ707PupRzhtMh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761382997; c=relaxed/simple;
-	bh=tgrnk8ZuUzx0LKigibkG0ibZjMkNuclNIw3cerFPueE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=jk9wPmUgtJKWsDRdzxO8SxB1yfbtB8OOyifOY7XT9Gd9dUG22J6djNdBxosc5k4WkGDQ07Ic173yESnBa7n1Yz5eV8XDZt5c9nTa2pM3zOkVZVgiFSjyxTJgH97UJQI5RLsUvHtC4ykt+a47G/4gNgre6FxS1dtFGY2a72sE3pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=deAvh1br; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=dshXT3kk; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1761386493; c=relaxed/simple;
+	bh=exaezNJbwCRy7/a3GSg00pdq1sFZuuQu+e000B45S1Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=C8htbdR5DWCjIIPwvpeAXDD3qZkU4pCPj7eqwXfpYO6B6pzceqq0P1c0L5QqByo7Gj2GTbAX7VMZGB7DNe5zh50E8nPvAIqVlOLdvmfLdvx26VaeEHjnvM9gLQwRNEN3V82gw3HaDpxD7ADPhfa7Mq1Q9nxYs9mASzlAq9OqhCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ym4RSbc3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="deAvh1br";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="dshXT3kk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1761382924; x=1761987724;
-	d=konsulko.se; s=rsa2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=tgrnk8ZuUzx0LKigibkG0ibZjMkNuclNIw3cerFPueE=;
-	b=deAvh1br0tHehIGIPF7/aghlwGicCKSHKa4trsuoG40HIwkEgcIXYcEuJsaIBcyYp/IahmnLb1l4I
-	 epLwzDb5GUGLhRh1ctat0H5jDvpxrXaoh6BKoUhQjRgXcPFaCxnjMC2gPGGgYWB3CXVBneSblN0PBG
-	 7KO7hfmWHJEL2hFjZxuCdfM0eLY1p00eV4EkQhiAlIGn8DEyzkKBLmeZ7supZfMiSXZCooeVHuTugW
-	 1TWCcO55AqLc+NUqERZgfzKaTGs/ywECC9/DV4mu6F/FQzwnSI2wgY65xxmcmZ/apbkxCydzgAOsTt
-	 5HefkmPrNoHS80ji6g9WyQHm1LCIGlg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1761382924; x=1761987724;
-	d=konsulko.se; s=ed2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=tgrnk8ZuUzx0LKigibkG0ibZjMkNuclNIw3cerFPueE=;
-	b=dshXT3kkGcC+BMy3f8jF5SP7WoexND/l4LCuBsu72T8w1lCtFN88TakJlAVj0i4ngxZXov3EJSJNP
-	 LLN+XOkDw==
-X-HalOne-ID: 45f74865-b181-11f0-8d26-f3c0f7fef5ee
-Received: from smtpclient.apple (host-95-203-14-151.mobileonline.telia.com [95.203.14.151])
-	by mailrelay4.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 45f74865-b181-11f0-8d26-f3c0f7fef5ee;
-	Sat, 25 Oct 2025 09:02:04 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ym4RSbc3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3F5C4CEF5;
+	Sat, 25 Oct 2025 10:01:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761386492;
+	bh=exaezNJbwCRy7/a3GSg00pdq1sFZuuQu+e000B45S1Y=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=Ym4RSbc3ADDOpHv1struL2v3muUXzUhNR0dPS+sv4e+YAw2zcNzJxNOUNbIss70PZ
+	 YU0A5ufafJ3xGGiuPOp95ObuqXePVAweyHhzUy9J2Dnq9rmsVAaO1EeZ2ysbgWg80h
+	 ivPtQZd0B3s6BZ16cKkYdOyiGUPtWCu7nhUL3wEmcZ+FrWZkdYg+F/5WFSS2qaq+LY
+	 GCm313JcAtrrcSsOmY4iU+2FHN/Ve4n/+2rGeZNnnUGHBIirwyqi/OB9wdjXhMMN78
+	 mPwavLA+vDsOaWUYOxWjXqgdlBvFiVcVmimEufP3PiKvxrhbOv1x/ljz96Gy0baZXD
+	 ubcWKrphwDoiw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v5] rust: rbtree: add immutable cursor
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <aO9Uds521WM1n8_X@google.com>
-Date: Sat, 25 Oct 2025 11:01:53 +0200
-Cc: rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5A8E1769-C405-4B6E-8DC2-1E96CF186494@konsulko.se>
-References: <20251014123339.2492210-1-vitaly.wool@konsulko.se>
- <aO9Uds521WM1n8_X@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.200.121)
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 25 Oct 2025 12:01:26 +0200
+Message-Id: <DDRBED7J0QGR.2LOZZJOYYONIS@kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/2] gpu: nova: remove Spec and Revision types
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+References: <20251025001459.491983-1-jhubbard@nvidia.com>
+ <20251025001459.491983-2-jhubbard@nvidia.com>
+In-Reply-To: <20251025001459.491983-2-jhubbard@nvidia.com>
 
+On Sat Oct 25, 2025 at 2:14 AM CEST, John Hubbard wrote:
+> In the fullness of time, it has become clear that these two types are
+> not actually needed for anything, after all. Remove them both, and use
+> boot0.chipset directly, instead.
 
+What has become clear is that we don't use the spec field in struct Gpu so =
+far,
+which is not a surprise given that all efforts focus on the initialization =
+path.
 
-> On Oct 15, 2025, at 9:59=E2=80=AFAM, Alice Ryhl <aliceryhl@google.com> =
-wrote:
->=20
-> On Tue, Oct 14, 2025 at 02:33:39PM +0200, Vitaly Wool wrote:
->> Sometimes we may need to iterate over, or find an element in a read
->> only (or read mostly) red-black tree, and in that case we don't need =
-a
->> mutable reference to the tree, which we'll however have to take to be
->> able to use the current (mutable) cursor implementation.
->>=20
->> This patch adds a simple immutable cursor implementation to RBTree,
->> which enables us to use an immutable tree reference. The existing
->> (fully featured) cursor implementation is renamed to CursorMut,
->> while retaining its functionality.
->>=20
->> The only existing user of the [mutable] cursor for RBTrees (binder) =
-is
->> updated to match the changes.
->>=20
->> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
->=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+But even if we forsee that we do not have a reason to store the spec field =
+in
+struct Gpu, it doesn't mean that the structure itself is useless, see more
+below.
 
-@Miguel: is there anything else missing in this one or is it good to go?=20=
+>  /// Structure holding the resources required to operate the GPU.
+>  #[pin_data]
+>  pub(crate) struct Gpu {
+> -    spec: Spec,
+> +    chipset: Chipset,
+>      /// MMIO mapping of PCI BAR 0
+>      bar: Arc<Devres<Bar0>>,
+>      /// System memory page required for flushing all pending GPU-side me=
+mory writes done through
+> @@ -191,16 +153,21 @@ pub(crate) fn new<'a>(
+>          devres_bar: Arc<Devres<Bar0>>,
+>          bar: &'a Bar0,
+>      ) -> impl PinInit<Self, Error> + 'a {
+> +        let boot0 =3D regs::NV_PMC_BOOT_0::read(bar);
+> +
+>          try_pin_init!(Self {
+> -            spec: Spec::new(bar).inspect(|spec| {
+> +            chipset: {
+> +                let chipset =3D boot0.chipset()?;
+>                  dev_info!(
+>                      pdev.as_ref(),
+> -                    "NVIDIA (Chipset: {}, Architecture: {:?}, Revision: =
+{})\n",
+> -                    spec.chipset,
+> -                    spec.chipset.arch(),
+> -                    spec.revision
+> +                    "NVIDIA (Chipset: {}, Architecture: {:?}, Revision: =
+{:x}.{:x})\n",
+> +                    chipset,
+> +                    chipset.arch(),
+> +                    boot0.major_revision(),
+> +                    boot0.minor_revision()
 
+Now you have to open code reading the register, get the Chipset instance an=
+d
+manually format the revision, which was previously done through a Display i=
+mpl
+of Revision. And the subsequent patch introduces even more open coded logic=
+ in
+the constructor of struct Gpu.
 
-~Vitaly=
+Instead of removing Spec, we should improve it by giving it its own Display
+impl, such that this code can become:
+
+	dev_info!(pdev.as_ref(), "{}\n", spec);
