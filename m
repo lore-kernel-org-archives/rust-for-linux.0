@@ -1,106 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4DF1DE2A7;
-	Sat, 25 Oct 2025 12:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CAF2E8894;
+	Sat, 25 Oct 2025 12:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761395195; cv=none; b=pM0y53YkEgYYfGx4ooLOZfXiKOc2Z9Qm7rlj6yGqUV1owK+gUC+mljsGxQzVgpGjYCbgRo4tvXrcLtaJNXDZDvJOVcYObhXnk0FfCkduK7O6j+D2HWxJPvyP/VXU7IkiRDab1fqnS+OM7YV+Db3+wYRZ8dF/3/QH2WuMFKz+My8=
+	t=1761396197; cv=none; b=RNB/cYFI0AD+sgx32pFx2q6ATJ6RbGLvYjNa1Y973rHKfaq1X80e4uh1T7YO8ndZWOR7lsfc9rpgzPbVmagA+jTxf4vcF2mtzX6hLZZSEcQcZsKpb3hw2Ewz4vYf5k1aM8KWmdhiHH+8Jq+cQco0rIXujeIhKDyyk25Msd5Br0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761395195; c=relaxed/simple;
-	bh=XA0LBs60d1Gvp183PYeVpoLINndtx657oSRL5oD+WDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O3c0exkxlfm43REDKaY5eIhiWAcJ4Up1/52VJsSkIbDv1BPZ99zDgqi5yN7GDjDfdHeMULbqPQKgerSpIdohH8TO4FgrP43R5ciYYXuoS45Qc4qJCC8bc1q/ACRaH1+x/bLTPZX3P5P4d6yKdcNbL6e9UKbCHfVAfL2Vto5U6vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q83Pe8v0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761396197; c=relaxed/simple;
+	bh=3TvDjbq4mKxAYjolp70z7LwGV2DiC4QHoYxb659SfR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a2N9ZD6c74v7nedX3oPDwiyYDm0IiSWGBaN5hrEKkC7Uz54OtgMoFMMU4FRGxziSnCZtxJQHIbwuYEoY7kd1jJBbv8PWXlEe3vh0w9S7JTRrbF48no2JweynfxBa1S5Nh22ajVtSCDTEl4LYMQ4SHdppMTWtTckhIbvALExa6wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=mnSgGn3A; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Aivx50Lu; arc=none smtp.client-ip=202.12.124.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q83Pe8v0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9938C4CEF5;
-	Sat, 25 Oct 2025 12:26:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761395194;
-	bh=XA0LBs60d1Gvp183PYeVpoLINndtx657oSRL5oD+WDA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q83Pe8v00HZSQX7uT5MUCkv+RSQ0sCD2ZvTt+39uUCtCxY2Q5M3ONxRjtbJ+nLhcw
-	 H96l3nQpb3HCrmkwHvUCLROfeQsp9O24gFbw5x2/Sqgy+aN9JdIURBTdBThyEua9L2
-	 3vFneTX6dits3KSah7JKehEWXFu4woLfrdttgWSzCDpRT48ZfrJAQTHooLhQ5Dp40q
-	 y/TxnimxmWT5jSZBP6YvYF7ADSr9NkX2B7K2vZ/36MJuSe9vbi+T73j4ocC9sak8Ff
-	 HX88tCY3ZiQhVI1V6SUV92Vl+Qp8yYsb8rliJELdHADX/FWHUnXl4tvaQeF1DUhBgs
-	 Z1Xjj2MNgNZMQ==
-Date: Sat, 25 Oct 2025 14:26:31 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Benno Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Drew Fustini <fustini@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	Elle Rhumsaa <elle@weathered-steel.dev>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v16 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-Message-ID: <47ut33rck4xoh3d7d6t3d7twqag3u7eusbruc2i2veqf2umpga@ipamilvshysw>
-References: <CGME20251016133814eucas1p199cb62658c016e84e34d525e7c87f16e@eucas1p1.samsung.com>
- <20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com>
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="mnSgGn3A";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Aivx50Lu"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.stl.internal (Postfix) with ESMTP id 28A3B13000F7;
+	Sat, 25 Oct 2025 08:43:14 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Sat, 25 Oct 2025 08:43:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm2; t=1761396194; x=1761399794; bh=zAFQucylvBENicdiTBkdA
+	9Z5rlZ3eaoQYdr+2ewyF+8=; b=mnSgGn3ASF+MeFqjqtTJoYkF0yx3fvXo520AS
+	4fpf/8fONPrgqtf8m4zgzagFnJYlwH95gD5BV8dNTA8e5U/3gVEVF+EimZ5puX7i
+	8+yw4mad/yuMsBTOVqwu0+ymcOedfh6p9NbjkHrPveRY/oUftLLAZPe3Sv5BisDJ
+	geghPZh8aBtPJtFcBNTOgQMMUwVu5dXkuZ2vOzD5HT89++PZOMHx4NDq/ibwqUuR
+	Iyor8jMSwjlcdGdtfhJ55tklqHjGfJsuNGB9ymaab7iSl+bEK5CDa/tssHG9g4Yf
+	k0F19QPMJdFx663vn92aOkQDkbmImbSzHfGHlN0N3jsmA9ezA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1761396194; x=1761399794; bh=zAFQucylvBENicdiTBkdA9Z5rlZ3eaoQYdr
+	+2ewyF+8=; b=Aivx50LuPTohrcelggQRiRRrh+5TFhURGovTc/M4yGQszi7MMtw
+	5JENZkCD3i1mty7JElPAe2fNgn3H1non6AstqgDupiCyTP7WrXeCrBBCIHY26qQM
+	v2d4WL+yoFp/hylZA875nagiScONnaDOGFupGhmNGCUekFlixDJSHJsgQk3ansbB
+	0G0oqAEZFdFRpkVLUbbWZuodhiQo6yAYhYGjCxOZQuSXsIhfQcE/EaDwU9IDASf+
+	9C/19Cf9mye1mJgK8E9GW7jrpFue6NX2PlM0WPzkbqjEU8BkDIZ2U0xNTSCRuC4S
+	a0QgdQ/pb3CjRk21WDND590VRfu5k7y1cMw==
+X-ME-Sender: <xms:4cX8aHNHjr2Z-NZ_E8vbQL4Oo44V66HMQwHeVzfFChZTAIfvfuN6Pw>
+    <xme:4cX8aBbiMD2eHqfTBkTEfqDMMhrh6aTC6DVG4BRuEiDtZJLiLjFATpR1kqxZlcKMT
+    7d_tqGlszvjSu-N9zrLIrgoEdCOhpQbmyPexLDahEXRJmErDvoTs8w>
+X-ME-Received: <xmr:4cX8aHUMYw22Rbv83heAH7nn8vr3e6BbpWa1ZnHqZUCUxvxYIq5MXxAAgp7AlFMxfBzmtyMElBM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduhedvvdehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertdertd
+    dtnecuhfhrohhmpegjihiihhgvucfuuhhnuceoshhunhihihiihhgvsehfrghsthhmrghi
+    lhdrtghomheqnecuggftrfgrthhtvghrnhepjefhffdvfeeigfegueejuedujeduueeugf
+    egveekuddufeetuedtfeffgfdvfedunecuffhomhgrihhnpehgihhthhhusgdrtghomhen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsuhhnhi
+    hiiihhvgesfhgrshhtmhgrihhlrdgtohhmpdhnsggprhgtphhtthhopeduhedpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhmgh
+    hrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
+    homhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegs
+    jhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhssh
+    hinheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:4cX8aADf49XoIH9Ttb1IAe-SpzNbxBY460hFqHJpejWNE1BkdFJ1mQ>
+    <xmx:4cX8aDJjQ8GICWH1jpQ8KRST2DkorhPOJns2apwbatvuvSpiie9Vow>
+    <xmx:4cX8aOv3efnRBo-FcK9xxgfTEngMhmAuyWNDAPcsd0rJNqrEhPpkRA>
+    <xmx:4cX8aLW7-j7QkvOADOEy07-Gj5lf9K0F3KlBOQd27Rjfi8b4RgZpPQ>
+    <xmx:4cX8aHwyWRxciF3klThowkMB6cK9lpPBgJuecCwTcBqevhnt-D4Yx4YK>
+Feedback-ID: i1736481b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 25 Oct 2025 08:43:08 -0400 (EDT)
+From: Yizhe Sun <sunyizhe@fastmail.com>
+To: fujita.tomonori@gmail.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com
+Cc: tmgross@umich.edu,
+	netdev@vger.kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	dakr@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yizhe Sun <sunyizhe@fastmail.com>
+Subject: [PATCH] rust: phy: replace `MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`
+Date: Sat, 25 Oct 2025 20:42:18 +0800
+Message-ID: <20251025124218.33951-1-sunyizhe@fastmail.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ue2aydelqwngvqlb"
-Content-Disposition: inline
-In-Reply-To: <20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com>
+Content-Transfer-Encoding: 8bit
 
+From: Benno Lossin <lossin@kernel.org>
 
---ue2aydelqwngvqlb
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH v16 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-MIME-Version: 1.0
+All types in `bindings` implement `Zeroable` if they can, so use
+`pin_init::zeroed` instead of relying on `unsafe` code.
 
-Hello,
+If this ends up not compiling in the future, something in bindgen or on
+the C side changed and is most likely incorrect.
 
-On Thu, Oct 16, 2025 at 03:38:00PM +0200, Michal Wilczynski wrote:
-> Michal Wilczynski (7):
->       pwm: Export `pwmchip_release` for external use
->       rust: pwm: Add Kconfig and basic data structures
->       rust: pwm: Add complete abstraction layer
->       pwm: Add Rust driver for T-HEAD TH1520 SoC
->       dt-bindings: pwm: thead: Add T-HEAD TH1520 PWM controller
->       riscv: dts: thead: Add PWM controller node
->       riscv: dts: thead: Add PWM fan and thermal control
+Link: https://github.com/Rust-for-Linux/linux/issues/1189
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Yizhe Sun <sunyizhe@fastmail.com>
+---
+ rust/kernel/net/phy.rs | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-I applied patches #1-#5 to
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index bf6272d87a7b..46c693c5768a 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -553,9 +553,7 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
+         } else {
+             None
+         },
+-        // SAFETY: The rest is zeroed out to initialize `struct phy_driver`,
+-        // sets `Option<&F>` to be `None`.
+-        ..unsafe { core::mem::MaybeUninit::<bindings::phy_driver>::zeroed().assume_init() }
++        ..pin_init::zeroed()
+     }))
+ }
+ 
+-- 
+2.51.1
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for-next
-
-. If I should take the riscv dts changes, too, please tell me.
-
-Best regards
-Uwe
-
---ue2aydelqwngvqlb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmj8wfQACgkQj4D7WH0S
-/k7+mQgArnA+n9XWQ7YH1TKmkOxj0p/41RfGGWkpSKUxrKtQrhlFAky5iBDQddtZ
-L5w7qHIIRJQLc8P1MuUe1zyfX4iodXGazEiFpz7I0wAS3xft3Aa4rqB0qFRFIxGv
-bgM2exfnJvjiM21WwGXTniDq/GsDHCYqeazwECCb5+/4amap245Rw1ZWtTDZGIm1
-YX7SsPJrZ3X+L38nZN0n/SeVNH3VU5b1e6yXyaQKf7lGOLFutchQqYdLE6Vno+5k
-Ul7eJiVK+Zlrl5LKNHdvjMCvi71GBoNbqZZj1xvSLRINwq1lZQgJg6yVI5w9sr/m
-F44ES2C4FsgmuPqY74u/UnfUJw8yVw==
-=WOZX
------END PGP SIGNATURE-----
-
---ue2aydelqwngvqlb--
