@@ -1,92 +1,104 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913EB1DDC08
-	for <rust-for-linux@vger.kernel.org>; Sat, 25 Oct 2025 12:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5B81419A9;
+	Sat, 25 Oct 2025 12:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761396304; cv=none; b=NUP0yr8J76mmFDR2gP/eZ8zs26tZIir9yXTGb/uyRhOMoSN7R/bzWAmQDvSEqg5XeIfmMODfxjkTyvvh6jqRC2LBGqANdKtJVYV7zxSzcoLFqnWPsGevmd61yq5r1r8GWio2YGB5q5bSknAqqumMFyBZqF0UPskAUKJuZ3HM/uQ=
+	t=1761396644; cv=none; b=FAxS10xPwGg8Y9tL6aiP8o1URYcpdH8gK9UoeM7JRKXhisKOLeMKtX6GY3zjULeOryEdBNw18AaxI0w7ZQwdareeySFHBomQN2zFMcpfwqUcF3+CfJmBhrtYlJkwHdEJzZ19Z72AhPL7MX40NBbxxjz3ONT07cCPDD+3TWkN4dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761396304; c=relaxed/simple;
-	bh=C7RCMPYJxiHbIff6uyGxXLWmOareJd5pab4+KHZQmA0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ccRMJagD9Uk1hocDDRxNTc1BpBkvS5l+cEqnCpDn+f2YdwlUNJd67idPF3GPv2jzvIVBC/ZDeutZxwhmei3n34gPOroVjSR0Ht2aE4cbvKKB5zcsJoB+II5HKqYqkRXalOFpnPudp7bR9kYltlhCGoZxz/2Ddrw1FGDcGfMazFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKI9Hrav; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761396644; c=relaxed/simple;
+	bh=yG712vw414D5AtL6ZYP5lsIGRrMPveLDAiLIP/Pt66s=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=kXlZ90NaZvrlhQL/lpZ7vf1RRiJCVDSHUVsWOLbLBob3jFym2SIkbDsBz1YqkewNGgNhcNdXfKWWB4nuZqXbdqmt5TvVNoatlnzRq95GiEhnxUVTlxm5EGePKsbkLXPMY1CLAU9dx5DN4iI+isp5zTtT8Ny+QwMTmVuynuYCLSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=rzvGIrvF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LVhyyA4x; arc=none smtp.client-ip=202.12.124.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKI9Hrav"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-290aaff26c1so7336575ad.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 25 Oct 2025 05:45:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761396303; x=1762001103; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C7RCMPYJxiHbIff6uyGxXLWmOareJd5pab4+KHZQmA0=;
-        b=QKI9HravYuYwQwLhsLKCL/dtmWKTJGul9bgAzNPvQrM/7AA4dcM/TtsWIsMDQFi29u
-         2b9c3DPlRrA4NCfp0gARe2ghRnyoum/ZtV5UHHXMKF+K9wyntg1GfzCgFQUoPTeJoypL
-         rpKkVGPOTNuvUj4bHVdt1MT5SN/R1wH6TA07kPTqKL/+ElyLA9fDpYul1jvox6DZADlR
-         dOn46Qajidb96sNRuhLmWaaQZNlObM3jCG3mdatsRLJvczrPN6lfzizk/Kkphf1Wolt8
-         qjjuWJkaX7IpqP7qqKWZLhyNBeb/QV/1dyLnfLzFtECdzK3w9B84CTKYDS/C2YpRhJ79
-         dUuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761396303; x=1762001103;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C7RCMPYJxiHbIff6uyGxXLWmOareJd5pab4+KHZQmA0=;
-        b=KXQ4ux0ogBJ1q5nEbrg6zRtU9ogHj0b69eu+9H5yxvPKHPIIw4U1QlowCLtv1e8S/Q
-         JL0UPKG+M1c6ruuY7Yzd6GR4R4rUlQ/2oK8YxU0vOoj1qSvQf/+I59wDi1PZJEIt1kta
-         2ZF8hN8P0ff+ZW543jLDh6vPHPQulgPb97HdENJfJQnLCkF1ORoKqqpcD+E3dVCtaI27
-         zoUr8r/cikvmhUSt5YIpDBMT0d/o05ECHjCKInPZyH32TM4MqrmibszI6dR/rumVfFWY
-         Xs9bsclSn7n2049z+i3zeM7xHOLquQ86dQ5vucg8XUJiduQyxijHArkasKJk1DGfBq8g
-         dBPA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0UNWoBLciKWYN0GOeI3Sf1uIT1954qN12k24b1rv1sAbrAq6c3+u0MFXQJXZPgUGhnkivnMQ3EyLJdvY/Cg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YylVqcjMX0Np7UAebcQrrqu5+7/4cIiXOQwNAzOQO9nqBdFKXka
-	IZq4IHS/pE12vofLhGbUhdjVlRaJEjRgY+27hQBOjYWxby5T3B0rWjDbGnViPeufEVzmb2PFRZg
-	zHUdeKJ+ne86+BXhFttwEn2fnalHyXVc=
-X-Gm-Gg: ASbGnctMsD89TgLCB+77+ET8OUq2Vq8VWvzgWsgEQrMbvY1dUEl61Ooz3NvXABYs2Yo
-	Xe2jPhVJbxgqybXYSefdt1xW/lRE7AjwG+zu9derJ8aP5Rlzu4IPiB23RxgJgxkkyhJptBE2BIM
-	xA3pY2hko0fImuZJkDMK/pBwIsxzsAmZPbJIDGYoglQWE3P+0Qu99Zo3b9MH9JkZefmx70VMFPE
-	f37C2xP6WBCmcjB9Ma1Kp4MIUPeSBVrBFMZqmb2mRU+dDj43pFbSBQb2ortppkPjOK/57Ms1OTH
-	/JXd2VA2a/w/IDPOiNw5T4e5SrguZP3SIEurqCxuqBP+t9KFgydgusQDnnYXfzwx0I03VFHp/E8
-	WP8Zudmeq0qpImg==
-X-Google-Smtp-Source: AGHT+IFnwtuPM1t4cSFlyMdWfosAkAQDsFe7ldATnnuYeEiyjQeUZlc+gbfwi5fU05sJQRiLpWnjw94QHjb7v+hqPPU=
-X-Received: by 2002:a17:903:1212:b0:264:cda8:7fd3 with SMTP id
- d9443c01a7336-292d3fb7f7dmr114055105ad.6.1761396302912; Sat, 25 Oct 2025
- 05:45:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="rzvGIrvF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LVhyyA4x"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailflow.stl.internal (Postfix) with ESMTP id 4559913004BA;
+	Sat, 25 Oct 2025 08:50:41 -0400 (EDT)
+Received: from phl-imap-17 ([10.202.2.105])
+  by phl-compute-12.internal (MEProxy); Sat, 25 Oct 2025 08:50:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1761396641;
+	 x=1761400241; bh=yG712vw414D5AtL6ZYP5lsIGRrMPveLDAiLIP/Pt66s=; b=
+	rzvGIrvFDc/cPLlWYsZx3yPRoR4GoW7sDqdwuammobq7uVloJcs/98+RmhfnPw7o
+	ZjvCxxzOpH212G6vRv3MdNJo9yspgERsj6bLLVMPh9GEZdav56X8OfPuqqq1uA7Y
+	CMdLiidLF0Hr0P/tjLsLtc4n6fhlALOWVspd6XHkbbny9odqthggzEGbNH5+8bId
+	FN4m/EK6hq0/i+lg9+dx0vNYcLOCedd4QO9q/yXrn+j3AEa3phb4hXeijsjNgWbN
+	SKnecYV7C2NuFZ7gvPPiUf/TvIhx8b52GqtCWxKFB7SkusMfL3w14oau/CsWEFvu
+	Mv+7z4jBTsC/l3+83gniyQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1761396641; x=
+	1761400241; bh=yG712vw414D5AtL6ZYP5lsIGRrMPveLDAiLIP/Pt66s=; b=L
+	VhyyA4xfMCU0jWBKv+LfGxDfEG0/Z6oTDql2qnJhZYm5KubETPNB5I0wGHupjKpp
+	KEaDDZC+gDajD4Eao6fL+Klmr4NQ4XHAg1w4ZLaeIahIKknuFzTKOp7HO9N90mt5
+	SogY2Yym8WKdXPX37igS9EwIkNWjyE2Yd0ZrhpJw3Y7jA+BxHeG25W1jlrJgJIDy
+	w+7HdEmav8rSsndpZOX1eMp0QxDhE8nRPtQb+Y6R/iGTQ3ujLEWkVWlMzXVFtajw
+	daNXJgrs2KuYTVC3CXMkUn8PxiaDPvf7buiq3bF/8BdWhJ3xDIIVYYykH3D3fl0u
+	dhs+F1iQ3kNXBxvFH/fog==
+X-ME-Sender: <xms:oMf8aDLHRZJWt96F8JUlxxrjnsdsN1hdNc-u2lEM7nF_upeZihTMsQ>
+    <xme:oMf8aB-QU9Lse_ezumgpIMoP489z3288BJZaZvUYSipVNEoJQHaXOT27_c-2fgYZH
+    CjnP0meu-L17RfG0UHaN6YvtVfRR7iR1_Mdbg9ARXywrWtjB5nkZy4p>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduhedvvdejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpefoggffhffvvefkjghfufgtgfesthejre
+    dtredttdenucfhrhhomhepfdgjihiihhgvucfuuhhnfdcuoehsuhhnhihiiihhvgesfhgr
+    shhtmhgrihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefgveegvdefteduteelffdvhf
+    etgeduiedujeffjefgheegvdevudekheeiheekkeenucevlhhushhtvghrufhiiigvpedt
+    necurfgrrhgrmhepmhgrihhlfhhrohhmpehsuhhnhihiiihhvgesfhgrshhtmhgrihhlrd
+    gtohhmpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoheprghlvgigrdhgrgihnh
+    horhesghhmrghilhdrtghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghi
+    lhdrtghomhdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrd
+    gtohhmpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhishesghhm
+    rghilhdrtghomhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
+    dprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhsshhinheskhgvrh
+    hnvghlrdhorhhg
+X-ME-Proxy: <xmx:oMf8aCMRQ8CdgaXO8qKWnvkPNgipwEIwhMSSoOna2MCWPGswqHwHmg>
+    <xmx:oMf8aBYx4ned-pknjqt_kU6w8p8jBPWQsgAzyKUUO47x_CvD5aPfsQ>
+    <xmx:oMf8aJAalPjV81FQGXXSGont4yVCob03Uo0hIxkPyZjBhr_dqD_0fA>
+    <xmx:oMf8aPF-PpoQMxoP6b0kv4aCld2yVmg5VcllDDbcCBsCYei3erv94g>
+    <xmx:ocf8aNSzPTMrfYcsX3JI0wl3YOL9ZI1I8OKVqlQIE34rY5qBq2r-iET->
+Feedback-ID: i1736481b:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 79ABDC40054; Sat, 25 Oct 2025 08:50:40 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-ThreadId: Af90A_dFOI9Z
+Date: Sat, 25 Oct 2025 20:49:43 +0800
+From: "Yizhe Sun" <sunyizhe@fastmail.com>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+ tmgross@umich.edu, netdev@vger.kernel.org, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, aliceryhl@google.com, dakr@kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <68b53c52-9834-41f9-8e40-ad27f00436a4@app.fastmail.com>
+In-Reply-To: 
+ <CANiq72=d0zXWAryVXHUKLUkcM_dPoC_uPM2drMXAVB7kh1YSjg@mail.gmail.com>
 References: <20251025124218.33951-1-sunyizhe@fastmail.com>
-In-Reply-To: <20251025124218.33951-1-sunyizhe@fastmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 25 Oct 2025 14:44:49 +0200
-X-Gm-Features: AWmQ_bnwo3M8FN9w1gVNfQEyRU5EK1H9Fv1DoP63Bar4frG5RXkcOVmvftK9y80
-Message-ID: <CANiq72=d0zXWAryVXHUKLUkcM_dPoC_uPM2drMXAVB7kh1YSjg@mail.gmail.com>
-Subject: Re: [PATCH] rust: phy: replace `MaybeUninit::zeroed().assume_init()`
- with `pin_init::zeroed()`
-To: Yizhe Sun <sunyizhe@fastmail.com>
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	tmgross@umich.edu, netdev@vger.kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, dakr@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CANiq72=d0zXWAryVXHUKLUkcM_dPoC_uPM2drMXAVB7kh1YSjg@mail.gmail.com>
+Subject: Re: [PATCH] rust: phy: replace `MaybeUninit::zeroed().assume_init()` with
+ `pin_init::zeroed()`
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Sat, Oct 25, 2025 at 2:43=E2=80=AFPM Yizhe Sun <sunyizhe@fastmail.com> w=
-rote:
->
-> From: Benno Lossin <lossin@kernel.org>
+> This looks wrong -- is the Git commit under his authorship?
 
-This looks wrong -- is the Git commit under his authorship?
-
-Thanks!
-
-Cheers,
-Miguel
+It is. He requested to have his patches re-sent because he didn't have time. This is my first time participating in kernel development, so please tell me if I did something wrong.
