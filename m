@@ -1,107 +1,103 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC512E8B8B
-	for <rust-for-linux@vger.kernel.org>; Sun, 26 Oct 2025 14:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2465C96
+	for <rust-for-linux@vger.kernel.org>; Sun, 26 Oct 2025 14:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761489006; cv=none; b=UXTb9lrzdOQ2pZ2ZmTaXMuBwSWcIOFx2B/LeXx9plYYpCfJzl/rZxDR2L8qZAIfM6NPx/JNQntG/LFDZOUprgEw85p25TGUuNBnuSWEaAEbYGTJQCtc8FlQnEFvpaTzz8UUz2y6vwdYiwwaTbIVU/42lRDq2j8TVzu/OcfEyxXg=
+	t=1761489387; cv=none; b=vD5jIz+9m/KuCscg6RdDBaC2eWWCXrC/tziWz5X6izbjoWBjKK8cNwovoAHBoXsK2GwU1yV+eaw3dWxOYFk2AMTOZBu1AKGM9QOovE129J9W1Ycsni7aVrU4bG8dTxg2cdH45aOszkI2wQn00dSk/NKja4OUajl0CmAXzNOtZ8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761489006; c=relaxed/simple;
-	bh=ZMBASMVtnBa1PP4cxjX6NifaX9MKgfOlfcgiWr85ZqA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=crMbBwKFjF6z3IG0pUWlXy35rP8TSGu1GoZS1/RptwlVAK8sO2O7RLZFqKM96jmjLYRSIr5pjX+NGpP4TpgzhRlTK1y7rahd06hnf4Y/xiX2w3S1cVTCgme0ZhH/RDzMVErLXlu6W0wPxK/GwaYVdfXFwzdEMOIIg5A61ddVcaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ge46rBGU; arc=none smtp.client-ip=209.85.128.172
+	s=arc-20240116; t=1761489387; c=relaxed/simple;
+	bh=bfoyaV7fTySChzd8P59MrJSB//MaEELP8QuOboq49AI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GUnJdiXpGpV2RUWYBcdFGhN8NdzI7xvBPsqiOF/N1lo4lQGjeN/Q0r6O6nfwhz9kApZbF0l09clzjsDoTv20kmXDMGQTqVYbIbgXRxGScKZ86pcseMZwxQpIE+TdjuyveM9sHTeITIgL9qGY9X2CEvTJtkULk6QyZQetgkTKJvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQAeo93U; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ge46rBGU"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-78356c816fdso38023017b3.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 26 Oct 2025 07:30:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZQAeo93U"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-33fc9550f68so643418a91.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Oct 2025 07:36:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761489004; x=1762093804; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761489385; x=1762094185; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMBASMVtnBa1PP4cxjX6NifaX9MKgfOlfcgiWr85ZqA=;
-        b=Ge46rBGU368OWN2kmYi0CdXtoGzJ62U+I38pRGjNODlU66NQK780PkZ4gwdeA/twBX
-         Dspqzb0NCQQDPTrdvz5ww5LtswnNVgYUQYZi+jSKZZ11oeds3bxFhI5MjITiAeF+IAGl
-         eo38n0V8fwfG4XbrKq7fav+y64FBNtSPFZIvb1VuVqtsj981yPHeJuwokHWAfaYLweJB
-         yeA8aD/qLL9oQDgPr9wtef8KQIf0y8b/huqQiBe40KUMs/sz7W0wWNv+Q4NV79TwfXq2
-         AjaqwyRBxgDXiOzEqvWP7Xac8EF/jbMzsOH31x8cCZQ2iMcPUjE5heMMUBcSYKEy7axV
-         1jjw==
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bfoyaV7fTySChzd8P59MrJSB//MaEELP8QuOboq49AI=;
+        b=ZQAeo93Us11vtF87iN9bk9lQ/T9k15adBvNdbj3aB01YqVX/2pxeYugHa96FA/kpfn
+         tODejB5gL5uirMo4uKRcgX+WyLB9d1F9Sc3cUXgJLxSMpEQ8yjYuGE5pcg9RGaFn26Qt
+         xnQflWASDS/O56IKTpWX+NKg1AwBzyVIeJVbzvI+qnMXRSPW2vxrB9/+XwF4vWTatdP0
+         icc3nSERjsjJ42X4omY557GpMb3y00r3o/gKujtKA+JlB8cVVu7PLSD6LeGZRCIS7/WH
+         pnJ12X0p6k9aYhwHVL2DT2WH2iur3+b4YBsqgKrzvO3/KtPsRsPypkcDL7AN15/k554n
+         wxVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761489004; x=1762093804;
+        d=1e100.net; s=20230601; t=1761489385; x=1762094185;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZMBASMVtnBa1PP4cxjX6NifaX9MKgfOlfcgiWr85ZqA=;
-        b=Q3BaZq64+bBrhJWOVq8wGYwr40jfUnN4f1e3SEbangDexarRGD6i/aOAcYG8rjbM64
-         /03jg3euwiLuEXmVqyi8PK0d6X4cDFH9ZWcwCtQjSjID5aRIJQLxHtMxE4ggkZSfOGYB
-         DlwXkGVGEr3jSst5hpkKdnvvlDbbB7mkTuOOGb9h5y9BzkjP88GD9GnXheik48y5XxFG
-         +kEqArXR8Wteu/bqrYhAPjxbgpo5oNWjEP1JGsa+sM1Wu/Bo0GfS39S4VsCxA9dm0FHJ
-         +gx9XBGIB34EFh28ZUOi1sf5UlFKYK1JzBm5ICoXC3DlwK7Zj/X3prarq6ivkYlepab2
-         5c9w==
-X-Gm-Message-State: AOJu0Yzn2h4MhiiVsqcdfAQoLL4PSIKnOOPJ+mlWRBXwhGGi3+mYCF+X
-	fikj1UADhQfUdC+n3mBTKfEOrqC+HpxXcfXKKYqhd+7/U1pjgwxOo5+AwBIVaAYmOtNtXUINkus
-	TMEcAx93r4ZLVksFe3kWmEJ6ZrzLLFphlfmBr
-X-Gm-Gg: ASbGnctP8+tH9YMCpdjPLunK5khCcGzS033agvSh4FyQK/t/WzX70y+URwLPSfB2OmN
-	Iyh6tTfJ9sL6n3y1lJ3b4pYu9haW/ybZi3hoFGyvyZEkAo9tv9+qosD06CmN7J3puwnLOInEhKa
-	Sfll3oYPi4PCft2k6OTEkm8v+30B1yhVmy3XVqixRCchqQCvJpUPRbxPl6i62GIJy8sae2a/hGo
-	c1v8jm5S2kX89CxAH0mNfRlceKpI1sE8ugS/u6uziSSd5MJURDx8VOGxABKfUanAHC680+Xw/Xi
-	TYIwwOrG16U+yJn+Ejhq/U/8EEaHy68/oLc=
-X-Google-Smtp-Source: AGHT+IFplHhxxhepVtWBvu6tNgqK95auQg5sHnU1QHolP/4r4XhVH2q9CWaTT0gnl3dFh8Qxvm/3lmn9BOtV9jwBKEk=
-X-Received: by 2002:a05:690e:4287:10b0:636:1bb3:2d2d with SMTP id
- 956f58d0204a3-63e16115b38mr22224007d50.22.1761489004073; Sun, 26 Oct 2025
- 07:30:04 -0700 (PDT)
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bfoyaV7fTySChzd8P59MrJSB//MaEELP8QuOboq49AI=;
+        b=EV2j4hwvP+VsRCOVErniF1ldVq9K3F9leJCZR7oqRswwYMOsnKbKOQ+Bx6Q3dteDHB
+         ryix435YthwTaDV1Q3ZGpSlAij1xBb941qnjxW2DkgH1tX+k/o+JI6pxr6DjEPQfQBSU
+         og3pQUYDbq1EOy9drYDxh6Z4vzwIORS9pNhHz1c2TonrCK5ilaJwwJnQ3hUHBfWr2eWV
+         bzs1Ty4AwWjpaiT5S2KopVxA38byDdcJLRk34po8fo2k3LPXp5QYnySiPnSXhORqTx1J
+         gSox3iqkcMfvtBeiaPzISyS9BuPZjSvUhLmkuyj2JtmVOfJtRG3g6JMrTXsNjJQ1Az8V
+         bHBw==
+X-Gm-Message-State: AOJu0Yzt3C87GThutEhQnmVeSxiYi11RvR2RpuT8DSug6Op+fR3EeGRY
+	xTYnf/xLvVabCJaIuiXE5eWlxhw5Wr27zCDXJpLLiICvf7uETJnhycOChTUQvMJiNPYAZTQjQUQ
+	0MSOW/mm3FULM5KyJarsFBw82JgQOXgM=
+X-Gm-Gg: ASbGncsz9GfNz11ke0romOkOUJuKzuW/a2mEKoColzsza41Qk6K6avd0m6aQBWOSyEv
+	g8AWaKwuHu5PHDpbnOZWbBlFwK4eguaOe/EMKm+RCsad8voXazC5i1C4bQPranEO6uckPZhz2ox
+	JX4Hxzgk4v2y1yfdp1XjbWrkBCy4nBlIGFXfC4cMII7tlwjWqac9qB4BcqVrVzD/AVGOCNiAX5v
+	51Ezg76VVMWqS8HTvGiQfnjMXpv/E1i2w96lHKwZbnpOc+NlfOwAkrGwSXQt+i0E8bD23Aefn2e
+	g1Nbixtn8PIZsjFc0h9wEjtESlWKo5UBurckvgrcgN/MYCfxxEETBWRk+0hbEVX4dXc/NSPJsfE
+	seKh8O/qJPRBq1w==
+X-Google-Smtp-Source: AGHT+IFVxex/Hvf1Hd/vAwZCict2EGUF2vy+UiYI/sA1gePu0MO4UxHEviapG32w53ALhrtBy1cpvP25qhGoJgOjZGs=
+X-Received: by 2002:a17:902:cec2:b0:261:500a:5742 with SMTP id
+ d9443c01a7336-292d3fd9a38mr154422155ad.10.1761489384860; Sun, 26 Oct 2025
+ 07:36:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Alex Gaynor <alex.gaynor@gmail.com>
-Date: Sun, 26 Oct 2025 10:29:52 -0400
-X-Gm-Features: AWmQ_blrLx6Rk-HNpIneEOmsfH242FhjzwfZJDKkuP91hm5_-oofSVpP1XgVjFE
-Message-ID: <CAFRnB2U1uvg1vyZe1kDi7L3P4kTFowfOo6Hfo9WJED4qve4ZZw@mail.gmail.com>
-Subject: [PATCH] MAINTAINERS: Remove Alex Gaynor as Rust maintainer
-To: rust-for-linux <rust-for-linux@vger.kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>
+References: <CAFRnB2U1uvg1vyZe1kDi7L3P4kTFowfOo6Hfo9WJED4qve4ZZw@mail.gmail.com>
+In-Reply-To: <CAFRnB2U1uvg1vyZe1kDi7L3P4kTFowfOo6Hfo9WJED4qve4ZZw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 26 Oct 2025 15:36:12 +0100
+X-Gm-Features: AWmQ_bnxMU6b-D2cZjIfU_QUJYdxOKaC3c8ozScS8fUS1p7ym5Bwb9UakSfUcCA
+Message-ID: <CANiq72=t=oLcpR6ML63Nofs-f5NFn9b38SDgKoKDwkGS-USK0w@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Remove Alex Gaynor as Rust maintainer
+To: Alex Gaynor <alex.gaynor@gmail.com>
+Cc: rust-for-linux <rust-for-linux@vger.kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-I've long since stopped having the time to contribute code or reviews, this
-acknowledges that.
+On Sun, Oct 26, 2025 at 3:30=E2=80=AFPM Alex Gaynor <alex.gaynor@gmail.com>=
+ wrote:
+>
+> I've long since stopped having the time to contribute code or reviews, th=
+is
+> acknowledges that.
+>
+> Geoffrey Thomas and I created the "linux-kernel-module-rust" project at P=
+yCon
+> in 2018, as an experiment to see if we could make it possible to write ke=
+rnel
+> modules in Rust. The Rust for Linux effort has far exceeded anything we c=
+ould
+> have expected at the time.
+>
+> I want to thank all the Rust for Linux contributors, past and present, wh=
+o have
+> helped make this a reality -- and in particularly Miguel, who really
+> transformed this project from an interesting demo to something that could
+> really land in mainline.
+>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
 
-Geoffrey Thomas and I created the "linux-kernel-module-rust" project at PyC=
-on
-in 2018, as an experiment to see if we could make it possible to write kern=
-el
-modules in Rust. The Rust for Linux effort has far exceeded anything we cou=
-ld
-have expected at the time.
+Thanks Alex for the kind words, it has been a pleasure!
 
-I want to thank all the Rust for Linux contributors, past and present, who =
-have
-helped make this a reality -- and in particularly Miguel, who really
-transformed this project from an interesting demo to something that could
-really land in mainline.
-
-Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
----
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3da2c26a796b..355fee6a382b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -22498,7 +22498,6 @@ F: tools/verification/
-
- RUST
- M: Miguel Ojeda <ojeda@kernel.org>
--M: Alex Gaynor <alex.gaynor@gmail.com>
- R: Boqun Feng <boqun.feng@gmail.com>
- R: Gary Guo <gary@garyguo.net>
- R: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
---=20
-2.34.1
+Cheers,
+Miguel
