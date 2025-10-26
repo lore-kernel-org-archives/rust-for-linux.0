@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B634027713;
-	Sun, 26 Oct 2025 15:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EF7222575;
+	Sun, 26 Oct 2025 15:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761492958; cv=none; b=DeJBAbmboIKv6hSurkPDqxFft2/1gvdk+njwjMC1+l0M4anbJDgOsgazErmFLHxGVGvgkLyU7Y2+hmCRp29Itq9d80mUSLqqCw2qyyczSJ1U5s/PQL1ZftUbbaVw8Mev2L9zrkX4YzQvOqWOp0jNRMQFYtlYrbbl0qndPjKTZGM=
+	t=1761493229; cv=none; b=s3aEdlNgWMHoyk9ZbEG6gqeljxdcoL9HDH3NTr/R9dRZFShqVZfu1P/Aulg1H7meqsFX2jvpTKtqvORwQBZqmAzE5d+0QzSbBrlup8AGw8BJWerY1qNw4vXxQFpqTqSPdjcLlOB0beGJ+KsGg2KbxafqSHYkd4u5R49ykoNa1dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761492958; c=relaxed/simple;
-	bh=AlOh53yJfnPi5Z4IY9Rxr3C4zzHqodJBp4pikEkDgfg=;
+	s=arc-20240116; t=1761493229; c=relaxed/simple;
+	bh=Uoe39sFfetOX6jVITj8hHI6x03aa5uDVa6LdEIv4+uU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DWSGNCaeaoQKv/vojxsuOpPYSCTfjoa/q5gUkA6uIRoGv1xxhLuKRlXvaI6KOFM/GPjrN8x6NbkMwwrimn34VIa2qNgHOdTC4eNN5haFyFSTF8Ys1xbhpnD19kd51j61vfqisYfxPucOj5zbA1Es9j7nuMuFIzhiZopYhtyyFvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hztc6NOP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=K3z93SbafdgPLyVKG6DvpHFKR4LaRRBtElCQFS6AafY+KIJd6ylBmogkVAsQDAWr4IVDD9bZocasMgpY2JnWBPN+rP9EsgWVz8JbPuKlR7Lbtp4Tv6lSHsnBhNJkXJVhO4JRe0KlmJAzGcUgaxje8zpmkJKN2QRdGNMd4wK8vjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+VQTDqk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hztc6NOP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F55BC4CEE7;
-	Sun, 26 Oct 2025 15:35:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+VQTDqk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CACC4CEE7;
+	Sun, 26 Oct 2025 15:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761492958;
-	bh=AlOh53yJfnPi5Z4IY9Rxr3C4zzHqodJBp4pikEkDgfg=;
+	s=k20201202; t=1761493228;
+	bh=Uoe39sFfetOX6jVITj8hHI6x03aa5uDVa6LdEIv4+uU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hztc6NOPIvrXOMobE+TKWvpHF18TDMgl3L9rIvJYwzEQ0Ef1RMYg6YNJEuKQiqR9B
-	 0ryDixfkrxUCOfP53a20hx/ZmUboNuozZK96DI5NSv3fxgmGNGHegi7LnlZM/9YNw9
-	 NYCr08SvtXhUdDjuUE6JHbkT5u+rmTLzLZJjGJxV1+xhHjfa2sj16BiTcRk569OKQW
-	 d59v+d1ZtKCAIHFEABZ3sC5Pvatd/DBiUU8fZGMV0yOGQe3VZUglT/uXI/jlpthyOd
-	 fp5nZ42rHDjADsHfob6AYGvD64l34/eJj7n7KilN+47d1tfn+pbd7t+Ylp/ycRzn9+
-	 K054+H2ufX4xg==
-Message-ID: <c64447d9-3e9f-40d4-944c-327f3f7e26ba@kernel.org>
-Date: Sun, 26 Oct 2025 16:35:52 +0100
+	b=U+VQTDqkZ3hzOceFaBFu0AwHhUCsIQnvsZn+DSmOXxUCUhy6qZ1P+7DjoD7Kg62ek
+	 oEQaEyUO3EhLSmcT96kuaP3PWUc94qhoOvs8LV1DwWJGMS8BBoVtokSNRXVoowT0uN
+	 tvtuuvjyr7N6uRXfsiuxjpHoBjsIsNOjXvOYQqUxztB4J+af1sT/9BO8k669ynyDas
+	 GTEUeefeqmzyu764mVNdUZIuWP6d3UWlWoEa6W1R0fGQlTbr2t7L5inp40vWOioeFM
+	 qIzZwydw7s+SmgyYxLS0l8lymycdQcnflZJvZpoJEF+co392rFRFBWRmN2qiEbAkFU
+	 7R2uVYEZD1dIA==
+Message-ID: <cb1026f8-5bf3-418d-bbd5-50c0b63de0db@kernel.org>
+Date: Sun, 26 Oct 2025 16:40:23 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] gpu: nova-core: remove use of `as` for integer
- conversions
+Subject: Re: [PATCH 5/7] gpu: nova-core: add extra conversion functions and
+ traits
 To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
  Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
@@ -50,44 +50,35 @@ Cc: Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
  dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
 References: <20251026-nova-as-v1-0-60c78726462d@nvidia.com>
+ <20251026-nova-as-v1-5-60c78726462d@nvidia.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251026-nova-as-v1-0-60c78726462d@nvidia.com>
+In-Reply-To: <20251026-nova-as-v1-5-60c78726462d@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/26/25 3:39 PM, Alexandre Courbot wrote:
-> This patchset tries to eradicate the use of `as` in nova-core, by using
-> existing means and introducing new ones.
+> +#[cfg(CONFIG_32BIT)]
+> +/// Infallibly converts a `usize` to `u32` on 32-bit platforms.
+> +///
+> +/// This conversion is always lossless on 32-bit platforms, where a `usize` is the same size as a
+> +/// `u32`.
+> +///
+> +/// Prefer this over the `as` keyword to ensure no lossy conversions are performed.
+> +///
+> +/// This is for use from a `const` context. For non `const` use, prefer the [`FromAs`] and
+> +/// [`IntoAs`] traits.
+> +pub(crate) const fn usize_as_u32(value: usize) -> u32 {
+> +    kernel::static_assert!(size_of::<u32>() >= size_of::<usize>());
+> +
+> +    value as u32
+> +}
 
-Thanks a lot for working on this cleanup!
-> The first 4 patches use the already-available `From` and `TryFrom` trait
-> where it is possible or advisable.
-> 
-> The fifth patch introduces a new module that proposes conversion
-> functions for those that are infallible under the current build target.
-> This is done through a set of const functions, and the `FromAs` and
-> `IntoAs` extension traits which, as their names lightly suggest, offer
-> conversion for those types on which the `as` operator can be used
-> losslessly.
-> 
-> This new module is put to use in the sixth patch.
-> 
-> The idea was first suggested by Danilo, and I hope I captured it
-> properly. :)
+Given that nova-core depends on CONFIG_64BIT, I assume you added this predicting
+that we'll move this to the kernel crate.
 
-Yes, this is what I thought of.
-> As Danilo suggested, this could eventually find its place in the kernel
-> crate if the implementation is deemed to be fit, but for now let's
-> review and let it mature in nova-core.
+For core code (and maybe other drivers) I think we also want the same thing for
+signed types, but I think it's also fine to add them when moving things into the
+kernel crate.
 
-Yeah, I think this approach makes sense. Though, I think we want to move this to
-the kernel crate sooner than later, it's definitely something we want for core
-code and other drivers as well.
 
-Depending on the initial feedback, it might even make sense to do it right away.
-
-I won't have time for a thorough review, but at a first glance the patches all
-look good!
-
-Acked-by: Danilo Krummrich <dakr@kernel.org>
