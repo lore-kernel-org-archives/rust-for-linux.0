@@ -1,100 +1,93 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40F21527B4
-	for <rust-for-linux@vger.kernel.org>; Sun, 26 Oct 2025 14:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B634027713;
+	Sun, 26 Oct 2025 15:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761490171; cv=none; b=mJTSoDJsx9M93bNnVBmxOGqkdpwJHBPNw7rzXRTkcV2aOocQ3NyEGVod+7lbBk6mM0Oogy8FhkbwlhsrDGr0cQtH64KIP4rZC/87KDM0PhIVdqDTuhUEguV0VluLQfZqcz1GQ+E+5MYrQEkSwcaYDwI+kzkCDXZ4zfEzXTT/qkE=
+	t=1761492958; cv=none; b=DeJBAbmboIKv6hSurkPDqxFft2/1gvdk+njwjMC1+l0M4anbJDgOsgazErmFLHxGVGvgkLyU7Y2+hmCRp29Itq9d80mUSLqqCw2qyyczSJ1U5s/PQL1ZftUbbaVw8Mev2L9zrkX4YzQvOqWOp0jNRMQFYtlYrbbl0qndPjKTZGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761490171; c=relaxed/simple;
-	bh=acZ4e+1KY6LceXz3Koq9xdo6+VSQuOj1Oijaluceq6U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M0QD3nfjiXF4rRWb39lL6rkiKRlFQibZ4noXnzHACic15hNtI9dyOmJ9PdWWq0FE8D1MHqyUo1zj4KrCYwjht4nIfBJ1krBhzFK85CCHRMHyToYdIs9rYZWh1NiJgBdTd3pHjGroM+ea5SXApAs+Hjszi/vCk/HxHweKRH5d0cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RQK1HyZB; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761492958; c=relaxed/simple;
+	bh=AlOh53yJfnPi5Z4IY9Rxr3C4zzHqodJBp4pikEkDgfg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DWSGNCaeaoQKv/vojxsuOpPYSCTfjoa/q5gUkA6uIRoGv1xxhLuKRlXvaI6KOFM/GPjrN8x6NbkMwwrimn34VIa2qNgHOdTC4eNN5haFyFSTF8Ys1xbhpnD19kd51j61vfqisYfxPucOj5zbA1Es9j7nuMuFIzhiZopYhtyyFvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hztc6NOP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RQK1HyZB"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-26987b80720so6589965ad.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 26 Oct 2025 07:49:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761490169; x=1762094969; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lb6ES41tqXu+5foRoOY9F6w8rssbd1JAOpMDC5HrpGE=;
-        b=RQK1HyZBMKWXja4erMaepxLlwIggQ1qE2zekGkybl/ApYejLYfC+yOFfiSS7LeobMj
-         7Xazwy20lIfV1CDZez+wH64HaeOhRT1vlupGADVHzZNLAPk22aegvVDXJJVN1VFrALB0
-         Bq7ZIlh3FcZE9jmt5Qz9NilV640S5FF9dXfY2EvnkhgwlMZIfTXw/wF4Nm+r1fjY6gTe
-         jWkOIDmh7Hf34IQPnqerLdwkF/cpIsLqWFR5fDSPShpoqAthG7Gl8YUOpw2ICMaXEkZ+
-         ursGZVOewBHqBWkP+KbDBieJ45yGHc2GMLUrhqxSIL4wI4tNK4kZu9dg8Ixs2ThNZF+a
-         +g1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761490169; x=1762094969;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lb6ES41tqXu+5foRoOY9F6w8rssbd1JAOpMDC5HrpGE=;
-        b=mpQ+tssCoKabCyMuu9EG8yrQN5r5K2p7kNE7Yck81eN+uh0LusBdv1dJufk0kAeaqa
-         kc0CCi4r6cCY0cdnVoqZKUJInQ8j85jcHDbOwkv4hhWDbUPv/KEx/qoBQgzPU1Ah+mA8
-         WcL/q5NaNZuc2jsnhXwdutW+9kH9oq5GhJneipncEwf9ZaS6OyolmbEjy3g8izn8o1PC
-         5+dYLYWQIY1lMQdU18QVfqdv/CtA2mGrCy0NAK0GTu/3hh0Jwd8xeFmQA5CiH2s72zA5
-         JciN7S5Cyz2tKSw8pRv+RRO5/W6j7V0tCnhh6GxYDZ1sc74qO6NOBqitrY2gRP7h+cLu
-         mXng==
-X-Forwarded-Encrypted: i=1; AJvYcCUbHJTGq71eIKKhq2rYfSPr2/M6Yk55AxRpokGOZJ2PffWZN1rNKp9UEETAKmn7b9veWBPst6Tv93SsslR9Rw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMeTJTsGXdSjPp9LuQJ8ILlhCk256/MoVsXlqsem6WqopQD2XM
-	bk4oUFITxu8BSFvvPGRYd6pCb8YaL9s8qKL46c1d5Uh2UGCT/76H2sKFXwcqIZDZTTPR5nPyQJ7
-	pFIFvtu3G1jYiHME/c0M9nDOmFE2ERyQ=
-X-Gm-Gg: ASbGncu4x60+V+uPe3rGsEuJryvi55lp09cwZnJnDPSxW/c7d5N8L/u4tb08tMblUn1
-	SYs6OGN+v7J7duUEqrdO73HCPBg3Y5tCW73DSpm1juNOoFSO4bgaytHYjhpiGJn+yo/ii1yCQo1
-	gNrnGi9ayaNC+IPYQUhHefHdBFNok+d4BkaQsqcFw5zu7HNildoSBdB1iKzPs6zdMZhiAb4r7Rj
-	NJ0rPnTaRuO/m0Cm+aAL0sFwGI0tOatO4P30Ff6WnKjRVHaZiJ5QzWIxbnSDRs75NA7o/GW+u18
-	OiCeRnHd2j/fm+jCKCRpYxXdWwU5Jtmg65SPdACVP/k2VDQvJBGmJUybyr0zcnGXlgWjcHQK/WM
-	j9nSV3Sr51IP4JA==
-X-Google-Smtp-Source: AGHT+IEbq1idU6mFUHaEkLHxYClYVOJgW4+NCUJadAvg7TkFzSAWnge1vJm7GcM3ks9O9zyxp995r9uERHVQy8bNrcs=
-X-Received: by 2002:a17:903:120b:b0:28e:aacb:e6f7 with SMTP id
- d9443c01a7336-292d3e61e60mr119561235ad.3.1761490168926; Sun, 26 Oct 2025
- 07:49:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hztc6NOP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F55BC4CEE7;
+	Sun, 26 Oct 2025 15:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761492958;
+	bh=AlOh53yJfnPi5Z4IY9Rxr3C4zzHqodJBp4pikEkDgfg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hztc6NOPIvrXOMobE+TKWvpHF18TDMgl3L9rIvJYwzEQ0Ef1RMYg6YNJEuKQiqR9B
+	 0ryDixfkrxUCOfP53a20hx/ZmUboNuozZK96DI5NSv3fxgmGNGHegi7LnlZM/9YNw9
+	 NYCr08SvtXhUdDjuUE6JHbkT5u+rmTLzLZJjGJxV1+xhHjfa2sj16BiTcRk569OKQW
+	 d59v+d1ZtKCAIHFEABZ3sC5Pvatd/DBiUU8fZGMV0yOGQe3VZUglT/uXI/jlpthyOd
+	 fp5nZ42rHDjADsHfob6AYGvD64l34/eJj7n7KilN+47d1tfn+pbd7t+Ylp/ycRzn9+
+	 K054+H2ufX4xg==
+Message-ID: <c64447d9-3e9f-40d4-944c-327f3f7e26ba@kernel.org>
+Date: Sun, 26 Oct 2025 16:35:52 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <877bwkhfrr.fsf@t14s.mail-host-address-is-not-set>
- <aPtGgNajcXKWpji0@google.com> <CANiq72=wkL_tfmStR1HYOBsyV5_o41YXTtUsCM5t+i80+urxxw@mail.gmail.com>
- <20251026.221126.278291666422815679.fujita.tomonori@gmail.com>
-In-Reply-To: <20251026.221126.278291666422815679.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 26 Oct 2025 15:49:16 +0100
-X-Gm-Features: AWmQ_bk1MM-IWjmjcUhQCFzYQ8EoO_-8B_XmoPKX-aSUCiL4ZygZDVzwkcDRXBs
-Message-ID: <CANiq72nVz64-8W4rYK=oyexMugW9YD7+eMGhcbf9W61kW7Y5tQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: add udelay() function
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, a.hindborg@kernel.org, dakr@kernel.org, 
-	daniel.almeida@collabora.com, alex.gaynor@gmail.com, ojeda@kernel.org, 
-	anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	tmgross@umich.edu, gregkh@linuxfoundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] gpu: nova-core: remove use of `as` for integer
+ conversions
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20251026-nova-as-v1-0-60c78726462d@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251026-nova-as-v1-0-60c78726462d@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 26, 2025 at 2:11=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> I've sent v3 with debug_assert! added.
->
-> Is anyone currently working on pr_*_once? If I remember correctly,
-> there were a few proposals in the past, but they didn=E2=80=99t reach a
-> conclusion on how to implement it and never got merged.
+On 10/26/25 3:39 PM, Alexandre Courbot wrote:
+> This patchset tries to eradicate the use of `as` in nova-core, by using
+> existing means and introducing new ones.
 
-Thanks Tomo -- I think the latest was:
+Thanks a lot for working on this cleanup!
+> The first 4 patches use the already-available `From` and `TryFrom` trait
+> where it is possible or advisable.
+> 
+> The fifth patch introduces a new module that proposes conversion
+> functions for those that are infallible under the current build target.
+> This is done through a set of const functions, and the `FromAs` and
+> `IntoAs` extension traits which, as their names lightly suggest, offer
+> conversion for those types on which the `as` operator can be used
+> losslessly.
+> 
+> This new module is put to use in the sixth patch.
+> 
+> The idea was first suggested by Danilo, and I hope I captured it
+> properly. :)
 
-    https://lore.kernel.org/rust-for-linux/20241126-pr_once_macros-v4-0-410=
-b8ca9643e@tuta.io/
+Yes, this is what I thought of.
+> As Danilo suggested, this could eventually find its place in the kernel
+> crate if the implementation is deemed to be fit, but for now let's
+> review and let it mature in nova-core.
 
-Cheers,
-Miguel
+Yeah, I think this approach makes sense. Though, I think we want to move this to
+the kernel crate sooner than later, it's definitely something we want for core
+code and other drivers as well.
+
+Depending on the initial feedback, it might even make sense to do it right away.
+
+I won't have time for a thorough review, but at a first glance the patches all
+look good!
+
+Acked-by: Danilo Krummrich <dakr@kernel.org>
