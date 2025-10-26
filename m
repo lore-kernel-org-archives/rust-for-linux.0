@@ -1,113 +1,391 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2A935B15F;
-	Sun, 26 Oct 2025 11:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CED2110
+	for <rust-for-linux@vger.kernel.org>; Sun, 26 Oct 2025 12:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761477329; cv=none; b=lmddgVrvhsVGrTODM6TYTsiBFaRORxRIql59/8ClPsj2jI+PlWTyB6uFFboAOfUu10oKPgU7gO4xICZEG0ETXGYKsXDA+0X3+Rrv5Kcp6gqHDoF1HBPswa+9nRvv5mSWLZs+jBR9rJNg9IjFIyiZmXAk2odQI2elRxUI3Xa4uzA=
+	t=1761481004; cv=none; b=In14dCTY6R/EQjk5ylTtlv4PUsQD5ugPFeYeeZqKOWh29wEY8H+y184eil+p14u2tqDu9YtK5S60MZqjQk6aV9nyvEAQOmoCMtxnDXuc5UzhX97204IiWkg3/6SPm5NaxulOYvzdnvrB5ik0uMAzmbi7105OZz1xzdlsr0ezM/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761477329; c=relaxed/simple;
-	bh=HTruYLUWVQCfi6SQXupL+CrOSj/QbB/ZlLpAIxMdvc0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z9j9jsjJPdl54+jrvKTH0bGY2tDuyLK47QEweI/dwlhcivXj7cj1CfE+ZPGSMmts42pWyUP743U7vJAKI50jIjxOCgmfQMCXRgendRoq5cD4C9vI1dBHAx6knfuWBSwH/jkmcd+7eJgOhy6G8A0lkfvM2CkNrORg02u8JlDev1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V73ECIo6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761481004; c=relaxed/simple;
+	bh=asvHSs16qRYWY3AyvN6c22LQmv0m5CFcbjhFgSLErzk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EVksgsKm7i5e//Ke4CnrR7fUlhNetKeMECh/EKKButWy6jAW+06ZxK+A+PU6/GVRe0XTRgNtUODiWqJHGq5k3P2xUvSj+eV+q85BDa4njvhhfwtVVsvkHCaiukyEgljAIYoaf+i5wHrx+5Uz+tQ3HYZcsM2+8whya0BMCGzlhpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfBJR55R; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V73ECIo6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85FEC4CEE7;
-	Sun, 26 Oct 2025 11:15:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761477328;
-	bh=HTruYLUWVQCfi6SQXupL+CrOSj/QbB/ZlLpAIxMdvc0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V73ECIo6/qSjkcuLQGkEL6W2kesEMvM5bq9FRp1XGZVv8NiaM51qu6ldc7Qa7vdvc
-	 QJVQt9rj0VGjJ3Gy3dSKM/SEQYNY2ZVaFbdLfK5gSkqtH/e31tfIa2Rts5siCzxzY2
-	 ++KB+9gshe03RFO46IUNzIOpfNKG0z9tBnh15KrhE15ArshgIv8VfX2wL6hfdn1agY
-	 kmtYZdQIUfFd0OlrGuGHovyiPNsn4FBP+UVcqgaB78lsKFzT5RHt7KeltqIFW5L/w5
-	 d4NJwYQAuy/80sybUdG1hW3Tkm1eeo6/OMK4nyehaVTtqfQnPdokN35ICwjgd2KVLs
-	 Dwqb+gBXVPLBA==
-Date: Sun, 26 Oct 2025 04:14:50 -0700
-From: Drew Fustini <fustini@kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
-Cc: Michal Wilczynski <m.wilczynski@samsung.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, Elle Rhumsaa <elle@weathered-steel.dev>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v16 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-Message-ID: <aP4CqqOL7xEyFZ0w@gen8>
-References: <CGME20251016133814eucas1p199cb62658c016e84e34d525e7c87f16e@eucas1p1.samsung.com>
- <20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com>
- <47ut33rck4xoh3d7d6t3d7twqag3u7eusbruc2i2veqf2umpga@ipamilvshysw>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfBJR55R"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7a2738daea2so3062948b3a.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Oct 2025 05:16:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761481002; x=1762085802; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MaAGqYii/RVQjpg+Bcl6+sMv72xnIH7MMiaPPCxNY/E=;
+        b=kfBJR55RlJUV5cU32AuuYvYRAuFNX4VqUp59Lc3YNrI9l5G+gVuxtxWWPYd0ExSdvT
+         o+tjOMR4yEbgnv/lJGvpwn0PoPbBv9PR0zrXYCnbVE1jsue7XSt6Rq+4k3D1BXdY7wD4
+         DUW1NRNuoy5ZIRv0HmAyZ1TBtwbpXoXFTZa7jekEdqcCKfDM6iOMP79PfzRwpRCltKxL
+         huS/dvGrsQeBo8a9PxmEihMRmrW8+Jq4PTzooKQR8Fkqq2NaJRzamEmXf2WiF5tPAMHi
+         /gqPzb293O2jndxJl7RNfNTyIaERbyQWFeV2z4izltQY7gsYUkhfuT0B2S1RocgZ3CEU
+         u1Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761481002; x=1762085802;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MaAGqYii/RVQjpg+Bcl6+sMv72xnIH7MMiaPPCxNY/E=;
+        b=kM5aDBoowNdmTyhQbxpL/oiOewQRxRhFwAwZ8WRtjZgy6zRVHg/eb1nOlsdHIG3jMK
+         IaTAX6MlwgUa9/H6Y/GXJqG5eR6A2wxZxuNB8CiaZxkct8xKg0BDnlhJBb+vL64SunHZ
+         FEFjIK5IqFdpPpLcbABhYn7bfVGG3pK3Spalmyrgy1Gw52uUd2DhMrBPgZf8p4jGOOrO
+         qzD3NBjUAiL061gsfcfW/rJB8iKOv65UU13iqa1grYs0wK1LGHckGRtD73P2uraLp9ei
+         WY7yBqNg6ZWVJm6RE1nsNcqRWREmq2UFO3c44PqWyMxFYq7X0jLz8j2S7bQ0A4g+cGnp
+         tXOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsrzwn7c4zsqKoDH8vJFN7MDz1/zuL99yX7FE7+O+NGS/MeUkMtwqA7Mv1b4JrWgMi985MbeH4PKrAajYOAQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOmdJyGTyQbe+sW35vTWJtfXJoUbFXwcaGi0IW4OmLSWObtyhp
+	gQtbooJpCc1iResILkVF62VDnLvGae8vuj3+Nu/gOjTZV1HYhEInGjjV
+X-Gm-Gg: ASbGncu6l5Ex56p9UM/u0re9l+vsRohCU9nV2+I3Z3s/1zPMjIFfHaejReMPzpyRFE3
+	D1MAJmJfZI1A3+kl0bLg+hXFf+7oVDFGZlSLIuNIzGwJ4n8jQj9qX+bKHWP2O1I8e9K+xpfAQBJ
+	IFUCES83KMVZzxIRgL3hA4WDtbu2loP8USPn8Msy4NYl0GKu4GQ/69DZj0U6my/rISmHJGYdUER
+	E51o5UwkxzV20Dtoag3l+fz2sIFaGvk5NN19qcCD5mTvs1/hrm8ozh/z++Z68qvSEhJ1aGnC/V3
+	dL6riLX5qcmhGjdYcnXiPMaSMAPjSj4mQpUpERTT0uvIU08ljMLH+6WOKLrZx0f6ieRPS7bpNfz
+	NwXTwIdoLEIoLa+MRlP8ilYuhZO7SY16MA4LVEfxp4HQ5iuJtJD6GRUAWkhxI64US218mNqAwL4
+	9oLVgZPO4=
+X-Google-Smtp-Source: AGHT+IFmHuylR7Ui6hsy1odnbRX2+lABszBxXIycdwPxbfbofwKJPRVZapxqclulIWt/Z5OK+YneXA==
+X-Received: by 2002:a05:6a20:7344:b0:2b4:41d9:b068 with SMTP id adf61e73a8af0-334a85ef540mr41378632637.37.1761481002281;
+        Sun, 26 Oct 2025 05:16:42 -0700 (PDT)
+Received: from fedora.local ([2804:d57:4e50:a700:f33d:65d1:e22e:109b])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b7127a0a2f9sm4535238a12.9.2025.10.26.05.16.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Oct 2025 05:16:41 -0700 (PDT)
+From: Filipe Xavier <felipeaggger@gmail.com>
+Date: Sun, 26 Oct 2025 09:16:15 -0300
+Subject: [PATCH v4] rust: add new macro for common bitmap operations
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Hu0VeUTprsM8C7Nl"
-Content-Disposition: inline
-In-Reply-To: <47ut33rck4xoh3d7d6t3d7twqag3u7eusbruc2i2veqf2umpga@ipamilvshysw>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251026-feat-add-bitmask-macro-v4-1-e1b59b4762bc@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAA4R/mgC/4XOwQ6CMAwG4FchOzuzdQPUk+9hPHRbgUUBsxGiI
+ by7g4vExJie/ib/104sUvAU2SmbWKDRR993KehdxmyDXU3cu5QZCMiFEppXhANH57jxQ4vxxlu
+ 0oeeFBm2kVbIkYKn8CFT55wpfrik3Pg59eK13Rrls/5Kj5GksODDW6LIw57pFf9/bvmULOcKGg
+ fwnA4lxyhAah+4oqm9GfRgt5U9GLd8cSuMUaRSKtsw8z2+l+GsYSgEAAA==
+X-Change-ID: 20250304-feat-add-bitmask-macro-6424b1c317e2
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org, 
+ felipe_life@live.com, linux-kernel@vger.kernel.org, 
+ Filipe Xavier <felipeaggger@gmail.com>, Lyude Paul <lyude@redhat.com>
+X-Mailer: b4 0.14.2
 
+We have seen a proliferation of mod_whatever::foo::Flags
+being defined with essentially the same implementation
+for BitAnd, BitOr, contains and etc.
 
---Hu0VeUTprsM8C7Nl
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This macro aims to bring a solution for this,
+allowing to generate these methods for user-defined structs.
+With some use cases in KMS and upcoming GPU drivers.
 
-On Sat, Oct 25, 2025 at 02:26:31PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
->=20
-> On Thu, Oct 16, 2025 at 03:38:00PM +0200, Michal Wilczynski wrote:
-> > Michal Wilczynski (7):
-> >       pwm: Export `pwmchip_release` for external use
-> >       rust: pwm: Add Kconfig and basic data structures
-> >       rust: pwm: Add complete abstraction layer
-> >       pwm: Add Rust driver for T-HEAD TH1520 SoC
-> >       dt-bindings: pwm: thead: Add T-HEAD TH1520 PWM controller
-> >       riscv: dts: thead: Add PWM controller node
-> >       riscv: dts: thead: Add PWM fan and thermal control
->=20
-> I applied patches #1-#5 to
->=20
-> 	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/f=
-or-next
->=20
-> . If I should take the riscv dts changes, too, please tell me.
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/We.20really.20need.20a.20common.20.60Flags.60.20type
+Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Suggested-by: Lyude Paul <lyude@redhat.com>
+---
+Changes in v4:
+- Use enum: changed flag type from struct to enum.
+- Minor fix: airect casting (flag as $ty) instead of field access (.0).
+- Link to v3: https://lore.kernel.org/r/20250411-feat-add-bitmask-macro-v3-1-187bd3e4a03e@gmail.com
 
-I can take them through my thead-dt-for-next branch.
+Changes in v3:
+- New Feat: added support to declare flags inside macro use.
+- Minor fixes: used absolute paths to refer to items, fix rustdoc and fix example cases.
+- Link to v2: https://lore.kernel.org/r/20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f@gmail.com
 
-Thanks,
-Drew
+Changes in v2:
+- rename: change macro and file name to impl_flags.
+- negation sign: change char for negation to `!`. 
+- transpose docs: add support to transpose user provided docs.
+- visibility: add support to use user defined visibility.
+- operations: add new operations for flag, 
+to support use between bit and bitmap, eg: flag & flags.
+- code style: small fixes to remove warnings.
+- Link to v1: https://lore.kernel.org/r/20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com
+---
+ rust/kernel/impl_flags.rs | 227 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/prelude.rs    |   1 +
+ 3 files changed, 229 insertions(+)
 
---Hu0VeUTprsM8C7Nl
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..15c8fc82e76254f927b7487379d8f0a2776a4010
+--- /dev/null
++++ b/rust/kernel/impl_flags.rs
+@@ -0,0 +1,227 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/// Declares a impl_flags type with its corresponding flag type.
++///
++/// This macro generates:
++/// - Implementations of common bitmap op. ([`::core::ops::BitOr`], [`::core::ops::BitAnd`], etc.).
++/// - Utility methods such as `.contains()` to check flags.
++///
++/// # Examples
++///
++/// Defining and using impl_flags:
++///
++/// ```
++/// use kernel::impl_flags;
++///
++/// impl_flags!(
++///     /// Represents multiple permissions.
++///     #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
++///     pub struct Permissions(u32);
++///     /// Represents a single permission.
++///     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
++///     pub enum Permission {
++///         Read    = 1 << 0,
++///         Write   = 1 << 1,
++///         Execute = 1 << 2,
++///     }
++/// );
++///
++/// // Combine multiple permissions using operation OR (`|`).
++/// let read_write: Permissions = Permission::Read | Permission::Write;
++///
++/// assert!(read_write.contains(Permission::Read));
++/// assert!(read_write.contains(Permission::Write));
++/// assert!(!read_write.contains(Permission::Execute));
++///
++/// // Removing a permission with operation AND (`&`).
++/// let read_only: Permissions = read_write & Permission::Read;
++/// assert!(read_only.contains(Permission::Read));
++/// assert!(!read_only.contains(Permission::Write));
++///
++/// // Toggling permissions with XOR (`^`).
++/// let toggled: Permissions = read_only ^ Permission::Read;
++/// assert!(!toggled.contains(Permission::Read));
++///
++/// // Inverting permissions with negation (`!`).
++/// let negated = !read_only;
++/// assert!(negated.contains(Permission::Write));
++/// ```
++#[macro_export]
++macro_rules! impl_flags {
++    (
++        $(#[$outer_flags:meta])*
++        $vis_flags:vis struct $flags:ident($ty:ty);
++
++        $(#[$outer_flag:meta])*
++        $vis_flag:vis enum $flag:ident {
++            $(
++                $(#[$inner_flag:meta])*
++                $name:ident = $value:expr
++            ),+ $( , )?
++        }
++    ) => {
++        $(#[$outer_flags])*
++        #[repr(transparent)]
++        $vis_flags struct $flags($ty);
++
++        $(#[$outer_flag])*
++        #[repr($ty)]
++        $vis_flag enum $flag {
++            $(
++                $(#[$inner_flag])*
++                $name = $value
++            ),+
++        }
++
++        impl ::core::convert::From<$flag> for $flags {
++            #[inline]
++            fn from(value: $flag) -> Self {
++                Self(value as $ty)
++            }
++        }
++
++        impl ::core::convert::From<$flags> for $ty {
++            #[inline]
++            fn from(value: $flags) -> Self {
++                value.0
++            }
++        }
++
++        impl ::core::ops::BitOr for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitor(self, rhs: Self) -> Self::Output {
++                Self(self.0 | rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitOrAssign for $flags {
++            #[inline]
++            fn bitor_assign(&mut self, rhs: Self) {
++                *self = *self | rhs;
++            }
++        }
++
++        impl ::core::ops::BitAnd for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitand(self, rhs: Self) -> Self::Output {
++                Self(self.0 & rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitAndAssign for $flags {
++            #[inline]
++            fn bitand_assign(&mut self, rhs: Self) {
++                *self = *self & rhs;
++            }
++        }
++
++        impl ::core::ops::BitOr<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitor(self, rhs: $flag) -> Self::Output {
++                self | Self::from(rhs)
++            }
++        }
++
++        impl ::core::ops::BitOrAssign<$flag> for $flags {
++            #[inline]
++            fn bitor_assign(&mut self, rhs: $flag) {
++                *self = *self | rhs;
++            }
++        }
++
++        impl ::core::ops::BitAnd<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitand(self, rhs: $flag) -> Self::Output {
++                self & Self::from(rhs)
++            }
++        }
++
++        impl ::core::ops::BitAndAssign<$flag> for $flags {
++            #[inline]
++            fn bitand_assign(&mut self, rhs: $flag) {
++                *self = *self & rhs;
++            }
++        }
++
++        impl ::core::ops::BitXor for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitxor(self, rhs: Self) -> Self::Output {
++                Self(self.0 ^ rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitXorAssign for $flags {
++            #[inline]
++            fn bitxor_assign(&mut self, rhs: Self) {
++                *self = *self ^ rhs;
++            }
++        }
++
++        impl ::core::ops::Not for $flags {
++            type Output = Self;
++            #[inline]
++            fn not(self) -> Self::Output {
++                Self(!self.0)
++            }
++        }
++
++        impl ::core::ops::BitOr for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitor(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty | rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::BitAnd for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitand(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty & rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::BitXor for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitxor(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty ^ rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::Not for $flag {
++            type Output = $flags;
++            #[inline]
++            fn not(self) -> Self::Output {
++                $flags(!(self as $ty))
++            }
++        }
++
++        impl ::core::ops::BitXor<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitxor(self, rhs: $flag) -> Self::Output {
++                self ^ Self::from(rhs)
++            }
++        }
++
++        impl $flags {
++            /// Returns an empty instance of `type` where no flags are set.
++            #[inline]
++            pub const fn empty() -> Self {
++                Self(0)
++            }
++
++            /// Checks if a specific flag is set.
++            #[inline]
++            pub fn contains(self, flag: $flag) -> bool {
++                (self.0 & flag as $ty) == flag as $ty
++            }
++        }
++    };
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 28007be98fbad0e875d7e5345e164e2af2c5da32..a315607629c321db377343ca678c9845ae69bb14 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -67,6 +67,7 @@
+ #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+ pub mod firmware;
+ pub mod fs;
++pub mod impl_flags;
+ pub mod init;
+ pub mod io;
+ pub mod ioctl;
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index baa774a351ceeb995a2a647f78a27b408d9f3834..085f23502544c80c2202eacd18ba190186a74f30 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -27,6 +27,7 @@
+ #[doc(no_inline)]
+ pub use super::dbg;
+ pub use super::fmt;
++pub use super::impl_flags;
+ pub use super::{dev_alert, dev_crit, dev_dbg, dev_emerg, dev_err, dev_info, dev_notice, dev_warn};
+ pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
+ 
 
------BEGIN PGP SIGNATURE-----
+---
+base-commit: edc5e6e019c99b529b3d1f2801d5cce9924ae79b
+change-id: 20250304-feat-add-bitmask-macro-6424b1c317e2
 
-iHUEABYKAB0WIQSy8G7QpEpV9aCf6Lbb7CzD2SixDAUCaP4CpAAKCRDb7CzD2Six
-DFmwAP0XV04YlT43vkUJmO2Q22KkuSgNzqJMOqSjgRNYzlZG8AEA3UwESVtDL40X
-5JE1LibqO78mAkoeDlA3Gy1lXXPr8AE=
-=4yF3
------END PGP SIGNATURE-----
+Best regards,
+-- 
+Filipe Xavier <felipeaggger@gmail.com>
 
---Hu0VeUTprsM8C7Nl--
