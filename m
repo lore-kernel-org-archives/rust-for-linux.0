@@ -1,75 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B16320A02;
-	Mon, 27 Oct 2025 19:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B973329C5D
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Oct 2025 19:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593292; cv=none; b=FwcHmv+use/H/Mg0a/Iq4qkmWhEDEhVQE2nXtNv59g0mMPW4GHmbVAKuvGHxm2oKg5V5GYJpeutYFGgta3YDNVK4dFEiwUoKhNxge6PNcF7krXKgBP4syzI6XNA9wR6iu5MTNr6pgZldetTRCemMqSg5v6U0VxGY4iXmBK9InfU=
+	t=1761593445; cv=none; b=gq01fQX8vjKbUryoIba7DI3XR63jdQfmPwKXdkY1TggWhXJEFlUAAE94dGPNLuBZZ+jlfxoZFhBRkAIdgd3MQ0dIO+H97qaXTH3f9v9cito1IzGUwSmA5A2hCdlOvsZ2Hy7x5P33GII851uLq+H8xYESeXTIZ8vEwX/UOLWaKCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593292; c=relaxed/simple;
-	bh=mEn8TJATXk1tz9tGLRPYHPHeXgwksh2Kb5KZxPPolWk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=MaTfoEqhzEDpj3DQPb1lWMVujjI03qVlDYcA86RPdU4C+G7tYkqKRVx3izcQwwn1w2vwVarTQvRPmNh+JznGL883TK0mBjVZ+/Su/mZgXoLNKi3Npn2ZkqEf+hQxWF/Sa/hVqvfNzOwzcHa6YpdXy7efVsdFExsRDXSEpwTah+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tw6IvwQz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761593445; c=relaxed/simple;
+	bh=4zGSu5O6665+Z4KvgAMrt4U4QKGAGcwfeem+WdVASmg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DDTJguxjO0l3t0gr3zNUva/EOAkMwempi2jSNlopqZXs8R5bxwYYb6CbyOSvh2tV8qlqBrj24wQu0/rIsFfqS6eoZSE/xywr9Z8VNQZIwJsds7sxnt6y5I3gmeY3AMZdUc2Z7jW+CsY9qCXTCSbGZAmoi+V5u6cNS7Vc4JNBAmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aTzKTfGJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tw6IvwQz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC92DC4CEF1;
-	Mon, 27 Oct 2025 19:28:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aTzKTfGJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173D9C4CEFD
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Oct 2025 19:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761593291;
-	bh=mEn8TJATXk1tz9tGLRPYHPHeXgwksh2Kb5KZxPPolWk=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=tw6IvwQzmD6dYwYnVSFb/aYd1E87zUZ5c1HSqHGuVhjyX94xKCZ4BeLSAXYr7SZW9
-	 zc9gJur4jQ46Dy9Ml1fHpklJ6vjZNSBG1wziev3FvZPUACkLcHgsuDDnrDrQfiEF7G
-	 9CI7y6R2YryeCqsvaFCJOmUTn0qnoXQNshG47ilhWRd9bXV7Qm0gBwnf8ZEODH0wp6
-	 HDm8hjNoSEKY9O9GkHfbBq7q7qOS4UZbF1prymxsTsEvDeo6Y3677FYVSOwRPw+rIN
-	 RKtTon5ikS7MfjgKfP8Gq9RW3gbzZVYseq8rbIYnxaBFUo9uLxl8djumfmseBXXmNW
-	 Lw+Ubom2a0vug==
-Message-ID: <4ec735c2-d0cc-43ad-8184-b30359c8d570@kernel.org>
-Date: Mon, 27 Oct 2025 20:28:06 +0100
+	s=k20201202; t=1761593445;
+	bh=4zGSu5O6665+Z4KvgAMrt4U4QKGAGcwfeem+WdVASmg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aTzKTfGJakTqr3v3kSWj8RLSA9H2yew7+VKtZvvEUXIHUbEA13sjUbVUZBg0wYWvR
+	 bcMutlRsozqTpVbEEYnsIR5Kze+MACu+PvmG3t0uSeGW12ErGBCgGoQNWzanYPEGEt
+	 fILppd7pTyhgPQRQd6c9Jz+7KKamSNs1h42Gjc5lIBg8exL2BIBTwspzxCR3tsrRnL
+	 mhRrarSyppOIG499Wxz99J68BD76nTZb43Fe8uj9jr3ITvpqCyYYBYxrgv+ZkIJaOv
+	 3OlAz1NTQKscDxf52VHduXNi5eVhd54ovOxnNNxchNj/938BhOwFsALry2rMBNXseW
+	 x5sFpuOw8mZag==
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7c0e357ab51so4763370a34.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Oct 2025 12:30:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXiOyPRDBRpkyf8PYlbJKD55bcyKd6CfUY2JiOcKg9VQIJfUjLxkXG87BVuuOvDK+MNtGxLSorqv7Ia1yfYVw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCHUGmYvEDyceU88DqZ+knd7Dvyj37eWzUZxlTrbAsiL51JGtM
+	cQmB4F17ZWn3DvKXvYEVc8lHdjqVySLtnFMIgE7cjrrvF8J5YUc6FgkKGap04Kynn/fQTmuxpLo
+	rg3jSegaKoDBFc4Kw/22YOoiWHg8DjnY=
+X-Google-Smtp-Source: AGHT+IH+SDtSfHYobBAwmnI5xMhbgRP83tYXzqRiZ/eznt6J+jvQLL5SZ2qwcctw+mVlJPZFeZjWkIVgRjpTj6WqJBM=
+X-Received: by 2002:a05:6808:1822:b0:44d:a337:6ca3 with SMTP id
+ 5614622812f47-44f6b910a71mr484015b6e.11.1761593444372; Mon, 27 Oct 2025
+ 12:30:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/7] gpu: nova-core: add extra integer conversion
- functions and traits
-From: Danilo Krummrich <dakr@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl
- <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20251027-nova-as-v2-0-a26bd1d067a4@nvidia.com>
- <20251027-nova-as-v2-5-a26bd1d067a4@nvidia.com>
- <c94dd17e-0e81-47cc-9482-e8743d3bc68f@nvidia.com>
- <10945c03-8642-4c19-b0ed-ffb20c075291@kernel.org>
-Content-Language: en-US
-In-Reply-To: <10945c03-8642-4c19-b0ed-ffb20c075291@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251020031204.78917-1-huangsiyuan@kylinos.cn> <CANiq72=9=W_j_o=oT+AdghQbEFbEmqT+Gx6q8oK8-yVwcrnDXQ@mail.gmail.com>
+In-Reply-To: <CANiq72=9=W_j_o=oT+AdghQbEFbEmqT+Gx6q8oK8-yVwcrnDXQ@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 27 Oct 2025 20:30:33 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gHK5_z25z0EdHVmkbpvMQqWdWObxUCFQt_S0bHV5LAQw@mail.gmail.com>
+X-Gm-Features: AWmQ_bmjn_oJV5HZo3zUwTZ4uBkBxwOm4WB484q2m9iIJ1-7zSp2MTe_3LbLgeQ
+Message-ID: <CAJZ5v0gHK5_z25z0EdHVmkbpvMQqWdWObxUCFQt_S0bHV5LAQw@mail.gmail.com>
+Subject: Re: [PATCH] rust: acpi: replace `core::mem::zeroed` with `pin_init::zeroed`
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Siyuan Huang <huangsiyuan@kylinos.cn>
+Cc: Len Brown <lenb@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, linux-acpi@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/27/25 8:23 PM, Danilo Krummrich wrote:
-> On 10/27/25 8:09 PM, Joel Fernandes wrote:
->> Why not just implement `From` and `Into` for the types missing it then, with
->> adequate comments about why such conversions are Ok for the kernel, instead of
->> introducing a new trait? This is exactly what `From`/`Into` is for right?
-> 
-> https://doc.rust-lang.org/reference/items/implementations.html#r-items.impl.trait.orphan-rule.intro
+On Mon, Oct 20, 2025 at 1:26=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Mon, Oct 20, 2025 at 5:12=E2=80=AFAM Siyuan Huang <huangsiyuan@kylinos=
+.cn> wrote:
+> >
+> > All types in `bindings` implement `Zeroable` if they can, so use
+> > `pin_init::zeroed` instead of relying on `unsafe` code.
+> >
+> > If this ends up not compiling in the future, something in bindgen or on
+> > the C side changed and is most likely incorrect.
+> >
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1189
+> > Suggested-by: Benno Lossin <lossin@kernel.org>
+> > Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
+>
+> Rafael: I guess you will take this; otherwise, please let me know -- than=
+ks!
 
-(Sorry, I didn't mean to send the link without additional comment.)
-
-We can't do this due to the orphan rule, but even if we could I think a separate
-trait indicating the reason for the conversions to be valid is a good thing.
-
-- Danilo
+Applied as 6.19 material, thanks!
