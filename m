@@ -1,193 +1,196 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011007.outbound.protection.outlook.com [52.101.52.7])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147351BC5C;
-	Mon, 27 Oct 2025 19:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593850; cv=fail; b=p5EP1gyyvynrilUqVw2psP3f5THvbJ3z1P5PIhQ7pGMvAbK7dsfWs8jEEfEnzjWltBKdqAho/5M1J9+cQ/xfXvjkuQmCRwXvOJzbDGscSUXL8WxosrSo4wMQbhJfTXp8tkBlXrNGB6bUnjsjM/AG7d1za9z0R6FCtOVWiBm2U/4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593850; c=relaxed/simple;
-	bh=nD13QhoKwMksp0bJp3V6JF7v+7y9IevUphELlUYatDk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kcisXlWxpLkK1eU60u6cfPGBe3Ti2jMf7u+o8Ta4MfzD1qd3RpVC6JSZWwjKwz//56jRWUgouMMWqBDhNh6EHEGOXx8h/cgurked/QzeSJCP3im3lvKRu1B5cPYzYVHql4KX780FOXfg2BE8L4vE6+PuaoNCM0oZQyEpC6z3484=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=di9viXEs; arc=fail smtp.client-ip=52.101.52.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BA731D75B
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Oct 2025 20:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761595571; cv=none; b=jyDZBidm2U419sxEoRs7PinW9a8DmlcAk+g1PLJyek3gu1LawLyrmA6kOv7A7y9jE0w/v3896+sPS9dnzMTBszgK90p963APv21Nq53jmXD8N2hraKJjinPPaV/2AdbeDID4PvLlWBzex+6AGGja3EgDsM+m+p2D/LmI5rhIeT4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761595571; c=relaxed/simple;
+	bh=wSBf5Xy4Aslo7SOGQU/mF5ZHvq4mmV3sP1znVcDJV8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LoFwowgKaz0A6eDCcCizz94iOYS0KRfh0YvZFaS0UGAZnIwxmRUjiVPA1gmacWzhNsRKJCDvx97uFW0QM1ZT216la/Xoonf2mdDsH/CSWiR9/3pB78p2X2A0J8+6IN2XL+mXqJEs3FUHqg/YekzT3FpMEuoC7vniowHkFyITY3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=eJ/3B5AE; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="di9viXEs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Mz6IVNtOa4gJ3TxvBKguUtBWFX3yd9sR1Gy6gVJQ01UMopGtqAETUcqEm067h18ltFxHcgAeG4jGWOfT7W8mvyF5UKpfB2ibr/tyo1J0dcC7vQ3Q8+BZ0gdA+pn5EYgs2m2vM0b8tApCHT3EiX3VHHge81I+4ipLsBl0hByxxDE+sLmIdJ4+4iEbnI8k6c1NAhfX0dyCHz6MG+sQboy/DgO4Jn+k/nUnswFJ03wvFRoiGMiwiGjvKCK/p8awS5To785aoyfMcC7URuvM+Tf/EiyePPqO2Ed9Wi0H9586OwltYunVWKs0mcyRJXkp5bdxP7ZAUkVkF56wDucf0OX+Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1yF7S1x4c3lkd+AVt2AaNP0rSknPUPDQKlVdGas8l24=;
- b=nlCIZW3aiQIoRXQix89BgvlugT/DB0oGsNloGJ8NOFiC7SZwZNNGLE2QYRO+U7VnyzuX+/av6EpJq7Nb+eLaRs8hTE+j6DzL7sK1PCkFUKmOGw5OYgKjLYATMFRpPEV0CU6oc5nLeLgQ1hgd82cHwsNDsAI0zv0vPnTTX83DolIFPLl8lK65ZoJLavZ2MomsCJva3O7h8Kx3aBGlZRfp9M4aXbGU4IjvVURer6UBdt6FW/DCzOf62dYKGn+8gUEPruoalZZJX7efwVhkYWHJ9vrVaCpB5ySOF4PxQELXCCChLwZGXg+kGnA/H8vYXBpjAIPFTOQTtUX2y6byvubqTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1yF7S1x4c3lkd+AVt2AaNP0rSknPUPDQKlVdGas8l24=;
- b=di9viXEsmTe+Z8+6UEDYQD7Ab26jK6xToMP8+u5+PnKYN0K7jZn1iI6oO0QPr+oQLaW34cZf8mO7TawHMdbXafhEnO+H+7edd4q5eRFAGf0QsETX9eQnaT3LzpyUazMUo4E6IvndIx1ptqZmtZdBlrD/C4j4WDm6+4zW/fCGlyDPQojdbOYRTE3yezElvVdZV4V8T0EWih0z7pjU/1gXIJ5xK9LfS/vMO5JcgV77zol5CZx7UunjKyWg1KGhs0I7FuspnCej/HCkxoq+/9fqsulFNWlyovM7BfIB+nzgFfPuDOu+mE1nkwN8DMiEIUkvmj6VxDyI3lruicJjRhVfgw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by SA1PR12MB8947.namprd12.prod.outlook.com (2603:10b6:806:386::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Mon, 27 Oct
- 2025 19:37:22 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9228.015; Mon, 27 Oct 2025
- 19:37:22 +0000
-Message-ID: <080c5b19-818c-4f18-81ac-93eabc8fe65b@nvidia.com>
-Date: Mon, 27 Oct 2025 15:37:19 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/7] gpu: nova-core: add extra integer conversion
- functions and traits
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl
- <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20251027-nova-as-v2-0-a26bd1d067a4@nvidia.com>
- <20251027-nova-as-v2-5-a26bd1d067a4@nvidia.com>
- <c94dd17e-0e81-47cc-9482-e8743d3bc68f@nvidia.com>
- <10945c03-8642-4c19-b0ed-ffb20c075291@kernel.org>
- <4ec735c2-d0cc-43ad-8184-b30359c8d570@kernel.org>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <4ec735c2-d0cc-43ad-8184-b30359c8d570@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN0PR05CA0025.namprd05.prod.outlook.com
- (2603:10b6:208:52c::13) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="eJ/3B5AE"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 43332240104
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Oct 2025 21:06:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1761595562; bh=O37ZSH19ALLogD4cYR4ZnjINIQhJoZZcAsSu5q2wlf8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Autocrypt:OpenPGP:From;
+	b=eJ/3B5AEFrWv6iu5CE+FzcpVWc0yiGU9nnGMOwKEcX0iKXc9nvA+tQsK83fVPh3nT
+	 7fhtibKsReArXIq8oExS0dJAZrbMm39ASUvlIgTCjCx/Wy8H+ZJ9jj6OpyoUQvFoHe
+	 NurvvnaA6fervtroqgVmDIMpHp8EmfRodKH9FLuwGOIDreildB4q+iCkLj/jy+Ug7G
+	 dnMQrHGg8vIYPkBLIl2s/9RoGpqYt4YpQnVujzlM1+0RmqckGSNIXRXhwo2OgjQNy6
+	 xFONqbwQT8mk6pOBL+5Al9BaGN/mqSvr1qBLZdBRScCG0d8Qt9C2hEQode/3woqF6f
+	 T9srXx1dgkrfQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4cwPdf42dxz9rxB;
+	Mon, 27 Oct 2025 21:05:58 +0100 (CET)
+From: Markus Probst <markus.probst@posteo.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>
+Cc: Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Markus Probst <markus.probst@posteo.de>,
+	rust-for-linux@vger.kernel.org,
+	linux-leds@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/2] rust: leds: add led classdev abstractions
+Date: Mon, 27 Oct 2025 20:06:01 +0000
+Message-ID: <20251027200547.1038967-1-markus.probst@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|SA1PR12MB8947:EE_
-X-MS-Office365-Filtering-Correlation-Id: d551866b-131c-4469-74a3-08de15903f86
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?djV4YUxzRllTZTkwRlo3S1I0SVJrL01lL1BYZTdHOE55NEl5cHR0c0M0Y1Y1?=
- =?utf-8?B?ZEU5bXllRFRsN0JYckkxbUVac0lZM2Rvd0ZqaGtnSm1SY1R6ZE1Gcyt5RDNJ?=
- =?utf-8?B?WW51U3JaanFEV1ZaekJrejdxQ3NoNzI3aXI3ekVPM3I2WWJVSExZTk1mdFBa?=
- =?utf-8?B?S09Ua2dKd1JBUGpqcDlCNm5FdE1sL0hSUmRkYkt3UUJMeUMwVjF0M3pNenNp?=
- =?utf-8?B?aTgzcDlTclNRYmlsYzk3MXJzL1lKL0lTL3YrZ0RCTXJXb1VSK1BOeEozUlRZ?=
- =?utf-8?B?RklVZ2JKYkR6VHB0cmwrdXk5eE4zNTdxbEppdFZOR081U1dXSmY0OFVCTklF?=
- =?utf-8?B?VjljL20yZVNHN2xCTlR0TlcxL0pHbzhTc0ZuMnJWMUpNUlNNSGlSVXNTS0tJ?=
- =?utf-8?B?TTFsdXJiaDFTaDh4UmxRZk1sOUlydCtiTVlvYlI1UFllWGlxYk9Tc0JINU5w?=
- =?utf-8?B?RXczVkJxSmo1bExuZGtnMzZFQytGVlQvQ1U2RDZkOE5QcEJxVnRRMnY0MEs4?=
- =?utf-8?B?WmZDZVVrWms1RDhzdUhKcnJpRnZtRTVIZHQrWVFXL1RjZFZGWjRFK0VwZmhI?=
- =?utf-8?B?RUQxSXpJeEw4SE04NEtXS0l0NVBiTHVaU2l5TFZHVWlwYWdKU0krK1hHTUxx?=
- =?utf-8?B?Wlp1T0RVNE8xbzVnVVcrVHZUbWRPZ0xSOW1tMlhYWnFSS0w4ZVo3UkJXSW9D?=
- =?utf-8?B?WUppS3MxZmJ3Nmt6cW5wNGJFTEJFbGNWMUJjS2c0d21McFNIVjBuUTVoSDBx?=
- =?utf-8?B?cFNra0RYUHFoZmZPMnA1TTExYkY3bGR5OFBMQWtNcU8yTkMwQkU1NFc5UW4v?=
- =?utf-8?B?MExKelo4eHNyOTZhYTJVNFlaMEtsdlVsZjRvOTFGUGdxYy9ncE03Ym5jbWZQ?=
- =?utf-8?B?a3I2RXFTSUdSTmhseS9TMzhEYnRrMHVmQmtaNUZFT0dFaUlBL2R3TWQzSUUr?=
- =?utf-8?B?b1d2eHM2aXBGZjVzbEo5NUNQT2FrRXQvV3QyZjlUczlBeUtaME1Za1h1OEVC?=
- =?utf-8?B?UXlSSmFFdjVLSXh1WlVXbnBRQUJQM3RJVzd6THlJYlJnSm5rQlg4TVM2cDhU?=
- =?utf-8?B?ZG5LVWpuQStPVUxQOTlhQlpYV2FtYnUvczh6QlF5OG43L1lJZkkrM2s1SFIz?=
- =?utf-8?B?aHZhZ3YwN0hFOGxlekZnNm4vZ3o5SWk4N0dDK1JPZm5lclNid3ptdExLWCsr?=
- =?utf-8?B?U2hBYWpPTCtWdzhpcDFzNllBM2FJQmtsbzBVWE9USzV5VndVNnpKbHN0a290?=
- =?utf-8?B?NjUrV2ZMeVFQcGNRNFkrcTl6ZTJnRjhMVzNtOXhsZWRnR3hSS3dsOG5aTmRJ?=
- =?utf-8?B?V0E0cmZkMHJMYXlNZklMaFV5bER6cDVZMW1QT251bFBqeTZUNTVlR2xwYVoz?=
- =?utf-8?B?WmY5enppZlBWOTZINTgwcy9iSXVBRSttSHFOby9CMDF4K3FJUm02Nk9ERDRR?=
- =?utf-8?B?WDhtcHZPT2lZTm5XR3ZJTGNMajNJYjh1TzBwbUd2MVRVNTg1c1UxOU9INTkx?=
- =?utf-8?B?MEZMN2FoV2xJTUNySUg1WmR6VlZXNHlhcXB4NTloeEozY05pY01zcEJtRVBo?=
- =?utf-8?B?QnN6V3FoZ25KbjY4d2RwVUtwNW5iK3RSWW9wUVpwQlNHU1lzVXNJM0R5K1dH?=
- =?utf-8?B?aVVjalVXZGZvdi8vdUwvWjUvNkU2eTk5SUljV21MME5LcjJCeWJXMW1IUnFr?=
- =?utf-8?B?R2luTE5ISFVhUW5EQWZDOFhyNFNlMmxVdU1GMGU5Q3ZjMzBHUEI2SjY1ZzVG?=
- =?utf-8?B?UXZjTkF4L0dVdloyeU95SVByTlhZZTBqYm9lS0JZVHJCazJaNURmbWhaN2Uy?=
- =?utf-8?B?LzkvSldCS3hrbHhMSTVkMzIrTHZMV25majlHSkViK1ZVR3NYWHdmTkhzcHJw?=
- =?utf-8?B?dVY4bExHMDJpUFMrdXdUbnFGdXR6cHRBdFJsZitScGlUQ2ludGxpWGN3WUI2?=
- =?utf-8?B?M1BzN2hkMnVSR3hnTmJDaHI1aURJQzcvcElZaFhkQ2E1aXhqYmF3eDNxTTJO?=
- =?utf-8?B?ekxNZ3VrQ0tBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aFlxOVRNU0FCRTc2dFh2UmRzRURDS3lra3dvTW9FTGp3TGErYndRRGNFMm5W?=
- =?utf-8?B?QklOemdranFEQ0ZvaXZGQnY3K2NwZ0wreVIyeXpUZkhZd3FQQ1FEVDZNZUpL?=
- =?utf-8?B?Z2YzNU9EWVcwZ1VBMG1zMVpVTTJOWG9EbE9QaVFiZUEzVnN1SU5zK3lWZ3FR?=
- =?utf-8?B?SjdIKzJ2T21xVjVQa3pPSzJhS0doQ3N4VXRneFo0amhZMWZjbkJtUklEbmVi?=
- =?utf-8?B?a3RoRmlRNW81eUo2YnRJM3dtZjRtQUZGaDlJcmJmYWNPVS9XN3J5U21lTytH?=
- =?utf-8?B?SFd2S2ZEN0NaeXBMUk5XbUszaGRmejRJMkxIQUNVeWV1cVVCdHB6S0JycGwz?=
- =?utf-8?B?OFJWSzMrblNic1UyUi8wdDlUQnlYOVhmWVBvK2xGdWxkTFVTTlNsVGlqclBN?=
- =?utf-8?B?TzZHQUJNUWE2S3FxeGZuN2p6VGI4YWhvMDRaTUZlTTNzbGFHVmpDSlZWcmcy?=
- =?utf-8?B?Qk9xR1lRcU9ocmNFQnJSdCtqeTVWTzFQYm53cU1Cc0I2bTgwNENOL0hiZ2Qr?=
- =?utf-8?B?OHhEYzR5NmV3S1pHQjNzemRXMllyR1BpVjhkMW9MT0lpTUNoVWJ4a2lYRWxU?=
- =?utf-8?B?bmc3a29iS3VXbVZHSkRrNVJjMHBGaEpmNHQ0ZTZBTi9ITVB5bU9kVXdqUmJY?=
- =?utf-8?B?a2xIUVViVFd1OXdyNjlJUWlQdnMyL3A2cWRDWm14d0psdmhZSUFtMjJRRHhS?=
- =?utf-8?B?VnZ3NXpiaW41ek0vbjBjTzJoL1JvclRhV1B3aDRTa1FLSENqNUczOEEzUGpn?=
- =?utf-8?B?cldwODdZMld6N1BIZ29CZzBBRDduWEhLZm5tQjZnSWUzRVpzRjNhV3QxWWxh?=
- =?utf-8?B?QVBrZGptTFJvVWlycDI3VG1vb0F6OHdUckpmL3hIOVVaWW02NEw0a21ueXhB?=
- =?utf-8?B?OURpS0pzTXhQUlU3ekxHM0VZbVg1RlhQTm04M0FwcDJ0cmx3NjNzZGp6U3V0?=
- =?utf-8?B?VHhNZzZTQzFjN1hDOUp4N0dhVXpkTnQyOElPK01WaEV3Vks2bXVrYTdjOUlp?=
- =?utf-8?B?WEdldnBkYmt3Sk82K1NqeDJVMW5Xa1ZweFU5eDVyWXJCQnBmam5RcTIrUGx1?=
- =?utf-8?B?SW1MUkV4N01NV1pRYXc0bUVOWTJON2U3TFgrTzQwWWlPeVl2SDAyLzloQVFx?=
- =?utf-8?B?TjdPQnlpMHlNZGdjYzJOYWFQRjMvbWhpZzY1SGVDVHVoL0wwVUFwVktRT0Zy?=
- =?utf-8?B?L1dqbEhlS2xJZVBBOXNDWDZlODFzZ0ZUWjV1MFUrYzNLWEpjQjJRdzBsd2Vw?=
- =?utf-8?B?dDdsTWo2U0ZESnZvQitnY0hVSGZ5cE5aUXNFY3Nmc0dUOFFiRytlUVpZTytz?=
- =?utf-8?B?bTVaZ1N6THNQRkJjZTRReHRLUlNiL044U0E1RkJoZms3NWdaL3Z3eTFIV3Qy?=
- =?utf-8?B?VWVaQXZvN1NMYTdrRzhnRnl4ZUs2TWFWdFQxTFJIOFRUL3RUNEU3TmF4ZmZW?=
- =?utf-8?B?VFp3V3pScVorcXlFRlpMeTQ4aWp5eWhKWXZKRTlwMGh4ZVA2b2RmTHdaenNx?=
- =?utf-8?B?QmZoWnJyV0UweXBzMUloS2NhaEFDbFp6R0NiMHlIejE4eUViU3lWYXZSR3NT?=
- =?utf-8?B?SXE3VVRPTnRkajhrcW9ldFUrNmcxd0Q4RGpKTWdkckljVGJKOENYdUtTQ095?=
- =?utf-8?B?Nmk3QTFGN3piaGNVY1V3QWdnZjU5eFpuVVhjV2xzRldkVEU5MWt3WFRhaXJu?=
- =?utf-8?B?ZVBmT0pGMTRLMzZVY2IxdU5vV0JCY0JoczV4RWdqekNYZnNaa1hlREFxYVB4?=
- =?utf-8?B?MlJtU2VJMTk4enVETUx4WDE2YVVMeWFxMjBlQXJYSGx3VDNlUTRoN3V2ZWR3?=
- =?utf-8?B?TTRKMzFTWEszcXp3L2p3cmo5S0I3ZWxCeitvWnYvZ0pUNDQ2dmdjWnRJb2ZM?=
- =?utf-8?B?aUhEVUxFaGEzOXBxZndYTUxYRlhyRERBNjFuRlhDYnJMVW05RlhKMjV3dnJm?=
- =?utf-8?B?T3hOL3lkRkxHaGUwNXowTWYrUGZWRDRZa2VOT29mKzZodnlKajJVTmlxRFlK?=
- =?utf-8?B?VnVCVU1ibzQvckRsMmRXUU1ma09taGpFUjRQYXVGMFVmZVJIU0ZpdUkxSXZ0?=
- =?utf-8?B?TVFyaWFOdTJPbWkrWGZXd2FxazRyZUdiYm1uYXlreHU1dkh6N3dhaklWVHE4?=
- =?utf-8?Q?0Ql2eVx5IINFL+A7rETO1YhZk?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d551866b-131c-4469-74a3-08de15903f86
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 19:37:22.0319
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XZCiYkFiKmOv/2NqBsfTy/CofFcnZp5bM037HX7my6GLM/W2o0LDSYM+pL4Sk8LFdnV4riVKTnvRWs0aIxnEWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8947
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2881; i=markus.probst@posteo.de; h=from:subject; bh=wSBf5Xy4Aslo7SOGQU/mF5ZHvq4mmV3sP1znVcDJV8o=; b=owEBbQKS/ZANAwAIATR2H/jnrUPSAcsmYgBo/9B4JsuuiA0OKSWEXg+sojaOajOX0n2M15kxE tnRYnT9YaSJAjMEAAEIAB0WIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaP/QeAAKCRA0dh/4561D 0tSpD/9Iagsy9UUpit6BzNhdkBEz0eYFQjCT3IUhC/LWIKycXyHU8ym65yBb2slilc2lLiZir8h BSJ/9308hnZ1u+D6wMGlZqihcxzYJrCzJdxmyDAhJnRhuC16wY+uytbBSj05CBp5Hx0FPWbLs/8 0TVmtmF8zT6VTQjCs0eNtMG9rkLIdZaso8rkp3Fl6P76ncE4CYgMe4qCx0UpcKQa+yR59pU8wxN f2L6IaB3KK68NONPrH5Gxts4Q69d+USYxuxdDeI2JEUgHL9IQInzpAP/hr1WI7d8QBhzIgp5xcQ o5eWDKVpyZz6lSv1O9tUfwqL8IqYLIH6YAL/it6VDsRwMwOhU3lWPLBk+E1WzkYW+eYAFmdxrkL jLNCpa6OB9jJcjzUY/p7INoH9edPpwcQoSh6Jv6twSkbm88a66unNJYNfrr6Uj5z1GAKVMfxzkY viLVsHVzhEwxluARsz3eNaXvMtw9pDAZ8v1tHsRSjhprJAubUlbj2/8lX5iojVQyaEXrW6IEPdY X34aaQINLSlVOVNqbHYccc9Ii5jUoEuTHaxZnfWarqAgVQUXbPLwyE27YvduqYAQe9MntNcWR0D CmIjDJmwrUAcj+MHS5ZWlfcQGEXl3KsaMVRQ3HQzOErdBdNc78rBHAYLk1exAawuWTsJE43q4yz Q05ey4gbWQ+iTEQ=
+ =
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp; fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On 10/27/2025 3:28 PM, Danilo Krummrich wrote:
-> On 10/27/25 8:23 PM, Danilo Krummrich wrote:
->> On 10/27/25 8:09 PM, Joel Fernandes wrote:
->>> Why not just implement `From` and `Into` for the types missing it then, with
->>> adequate comments about why such conversions are Ok for the kernel, instead of
->>> introducing a new trait? This is exactly what `From`/`Into` is for right?
->>
->> https://doc.rust-lang.org/reference/items/implementations.html#r-items.impl.trait.orphan-rule.intro
-> 
-> (Sorry, I didn't mean to send the link without additional comment.)
-> 
-> We can't do this due to the orphan rule, but even if we could I think a separate
-> trait indicating the reason for the conversions to be valid is a good thing.
-> 
+This patch series has previously been contained in
+https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
+which added a rust written led driver for a microcontroller via i2c.
 
-Thanks for clarifying, yeah its not ideal then as the user of the conversion
-needs to remember when to use from vs from_as. I don't think its terrible, just
-a bit confusing.
+As the reading and writing to the i2c client via the register!
+macro has not been implemented yet [1], the patch series will only
+contain the additional abstractions required.
 
-Thanks.
+[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
+
+The following changes were made:
+* add abstraction to convert a device reference to a bus device
+  reference for use in class device callbacks
+
+* add basic led classdev abstractions to register and unregister leds
+
+Changes since v6:
+* fixed typos
+* improved documentation
+
+Changes since v5:
+* rename `IntoBusDevice` trait into `AsBusDevice`
+* fix documentation about `LedOps::BLOCKING`
+* removed dependency on i2c bindings
+* added `AsBusDevice` implementation for `platform::Device`
+* removed `device::Device` fallback implementation
+* document that `AsBusDevice` must not be used by drivers and is
+  intended for bus and class device abstractions only.
+
+Changes since v4:
+* add abstraction to convert a device reference to a bus device
+  reference
+* require the bus device as parent device and provide it in class device
+  callbacks
+* remove Pin<Vec<_>> abstraction (as not relevant for the led
+  abstractions)
+* fixed formatting in `led::Device::new`
+* fixed `LedOps::BLOCKING` did the inverse effect
+
+Changes since v3:
+* fixed kunit tests failing because of example in documentation
+
+Changes since v2:
+* return `Devres` on `led::Device` creation
+* replace KBox<T> with T in struct definition
+* increment and decrement reference-count of fwnode
+* make a device parent mandatory for led classdev creation
+* rename `led::Handler` to `led::LedOps`
+* add optional `brightness_get` function to `led::LedOps`
+* use `#[vtable]` instead of `const BLINK: bool`
+* use `Opaque::cast_from` instead of casting a pointer
+* improve documentation
+* improve support for older rust versions
+* use `&Device<Bound>` for parent
+
+Changes since v1:
+* fixed typos noticed by Onur Özkan
+
+Markus Probst (2):
+  rust: Add trait to convert a device reference to a bus device
+    reference
+  rust: leds: add basic led classdev abstractions
+
+Markus Probst (2):
+  rust: Add trait to convert a device reference to a bus device
+    reference
+  rust: leds: add basic led classdev abstractions
+
+ rust/kernel/auxiliary.rs |   7 +
+ rust/kernel/device.rs    |  33 ++++
+ rust/kernel/led.rs       | 375 +++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs       |   1 +
+ rust/kernel/pci.rs       |   7 +
+ rust/kernel/platform.rs  |   7 +
+ rust/kernel/usb.rs       |   6 +
+ 7 files changed, 436 insertions(+)
+ create mode 100644 rust/kernel/led.rs
+
+-- 
+2.51.0
+
