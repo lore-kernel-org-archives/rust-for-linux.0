@@ -1,95 +1,108 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D243081CD
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Oct 2025 15:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8F830ACF7;
+	Mon, 27 Oct 2025 15:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761577433; cv=none; b=B8kQ+Xx1L8fNXlPfGTclMCErqcgoDoe6RwW3mwg1rmIhL6cax11mZMe/lN91QTJ+b3ydfEH/ZQODH5RKpWmKYirta9S89okFtKFs2WUyxVEpBX06hgRMx5zkTthRTp/FyWHzJc9GezoXCOpbs05u0FZlSGWCbfNTzoJF68fw4Ss=
+	t=1761577519; cv=none; b=EYf99PLrM8qUbTpYucH3ich/On5saTeHImtZ54B1Ytf5O40aZLQ54m50Y5GoAXgwm3pML0QP2UWKTosiH9toQ22udRJbP4etquBEfiViSnY7UCGA7oOVZuvjjHW9Yi2ENx9Fc2/dx2EEUwBC9/Z/dXt5oa+bB2LiNEmSADIoW14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761577433; c=relaxed/simple;
-	bh=DApS4hcsGD3zyYGWIsdcOdWVaOZg+1nVqfikxiXnXSk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ke8ASJ2BMiq9AGcm15dYMgBx0x5mxrt7QARM0prE36a7ubkhA2mdq0snnJv0n8u/zu0ymrpfN0cY9Lv1aZdmmWLl52M+CvOwfeEg3gPoq3hAJyT457cPf9g1VGU0Kk7rr+jfcbU8v8wHOHYV9FU3+0G1huW3QpP2b20rT7wnRBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wx+VCM2R; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wx+VCM2R"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b63e5da0fdeso446585a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Oct 2025 08:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761577431; x=1762182231; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DApS4hcsGD3zyYGWIsdcOdWVaOZg+1nVqfikxiXnXSk=;
-        b=Wx+VCM2R0fsKVqU9b59kYe+stTvAcTu/QgA+Ri+sT7Gwfp8avWcfVp5u7UE3RFIolj
-         KECsraq5ZrAsP7xv3453oaPG3CFfFP/AM7qEUvuFWqx5f3K2sd8+jfmwnHkSugkeNxKK
-         5mw0HhlmmsgGhmaeyLA023YxVsqyBUCiaRy0QXPT752dj98VjOtkvwFwUTUcEY6JB/Mt
-         7bHqaxEddQhWy2bgyaiWLR9YQx6Jst0Ff5HL1pyp6WnYH2shWE2WFb8xiqzhngjd1jSm
-         jk55Z0CN9uQArwUieaJina6bcaR/w4WxesygZowXhPaCnV5w4DFeEU+YLdS2DQdf6Uw1
-         xaew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761577431; x=1762182231;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DApS4hcsGD3zyYGWIsdcOdWVaOZg+1nVqfikxiXnXSk=;
-        b=kVQGt6LBfhEWPLfyAK5LiFNUebHzGNsVAqzukrYGuRJvq2B5s7MkYS2ModqBIRH78z
-         o3ZBwLpgmJkpP4xIzrYJBTz9NLDedW1oeqgy9HuJ4P68FsYBSRDjfxJrgNMgeDbRqqZq
-         5kQ2PbcKqm6mGhu0nLunp5SA/4csXoGi+66klP2ETyPTZ//+UtWEst6OHICJYfdCvtjC
-         v0sJqakCGHXeynLncAKQNfh3Jibta3+sZIJ6MC5nTIeNXRvzqobRo6PJthqFDf8OdEnq
-         WqWM0njOIN2aSKqyXJWzC3kNk1ix1sq3xQOEIKRzDQToorWyeCQTR12uPKtrZqanSXuM
-         g2wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUaegFNTsKIR0IJv544ZzRaBMR4lC78Guxnf3Fe6bNz1VM4gOD/UnmuZcB6aStFFYf4ZaNcWlLo/O4boQheNw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxc0ykTZBw8CkgVjW1gYDbS8LLzArVJlJVKCB7AsACxtQgIdt/g
-	KXGzTDeHHZI8ARp1clCFhDV8eEUK7/1EJcZvVUReeJ8IaWOFdqShKcSSPxEtKMRL4SAd9LlPi1h
-	z4mkNQHpAAxphnaN0oUNv+XIOCKPpNAM=
-X-Gm-Gg: ASbGncsRPPqlFPZ9uZI6SyCNtO7CxtrUK4HvdcpIION5u/voMF6WJwxsR2NDg7Hcd0f
-	6uYbK5F2+o2wMbelo96BtFM388uiKcnj04PGxw5rTYnHm/V4/IuBNJiAwI/QoqwQKHQ8zFYHGIg
-	v1b1ApBRR9WPc0kDKyzTJlrisRO6foednBYqYzyjGmagEpyKV+1TjwkZSx1aY6hApXKCay/6TKX
-	8IuXt3Eak+nMS+FdWqE6Sw/pMxMZGXdaQ0fNnMfWMqUi8RlnsmqRlPtSlgf583KETiv9CuK9cfb
-	K9jCGtAefejORh33XVgIhPEaPONiiRi59KiOBLohxB8R3QQmrLimWM2vXy+ukekkNIjR1I0nRMz
-	yIUE=
-X-Google-Smtp-Source: AGHT+IHZ0l03J1yw11Ees0ZvURyj2fdVG9g7KrsSHbaLFL6bHoHKGgLcoCtIOomRh9t9yoDHMruQdA66vlTUVakQCeM=
-X-Received: by 2002:a17:903:15c7:b0:272:2bf1:6a1f with SMTP id
- d9443c01a7336-294cb38dad8mr1426145ad.4.1761577430243; Mon, 27 Oct 2025
- 08:03:50 -0700 (PDT)
+	s=arc-20240116; t=1761577519; c=relaxed/simple;
+	bh=qlFfCeJO7AgCTAJEtq159KB9Z/a0pPH6R77OpxI4pnU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s7hf5UUxcD7vV3IGtYgrqgT5n5r8I0L3TYWCz0jauljYj0XmXdSeGQKLVaabA/B4JFhLx0D0elRAcB8mqdx0FNHrZdstaf10BH6PJ3lTmkKnph29gIu0nAFKicRHX75QdnZdRADDRuDuY10cE9bNpIiN0nad2dlkKVyGyTb8hLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18DB4169E;
+	Mon, 27 Oct 2025 08:05:09 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 31C583F673;
+	Mon, 27 Oct 2025 08:05:11 -0700 (PDT)
+Date: Mon, 27 Oct 2025 16:05:11 +0100
+From: Beata Michalska <beata.michalska@arm.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	"joel@joelfernandes.org" <joel@joelfernandes.org>,
+	Elle Rhumsaa <elle@weathered-steel.dev>,
+	Yury Norov <yury.norov@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>
+Subject: Re: [PATCH v6 4/5] rust: Move register and bitfield macros out of
+ Nova
+Message-ID: <aP-KJ0bGAWO7AVO_@arm.com>
+References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
+ <20251003154748.1687160-5-joelagnelf@nvidia.com>
+ <aPklNydcTdOeXtdU@arm.com>
+ <ACAA327A-AE2B-4D21-B8C5-C66BB5E09B7C@nvidia.com>
+ <aPozw8TGp85YdmNU@arm.com>
+ <47d6ab72-1526-457d-990a-928088ba7022@nvidia.com>
+ <aP82DHvLC7zAEojN@arm.com>
+ <DDT0JTP91GO3.1EHF6L8MX4I3T@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251016231350.1418501-1-ojeda@kernel.org> <2025101758-mystified-prideful-8016@gregkh>
- <CANiq72nXw4+HesrgNqJjTy6Ji=pVqUMzx7GDO+6U9VYWezTt6Q@mail.gmail.com>
-In-Reply-To: <CANiq72nXw4+HesrgNqJjTy6Ji=pVqUMzx7GDO+6U9VYWezTt6Q@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 27 Oct 2025 16:03:37 +0100
-X-Gm-Features: AWmQ_bn7EsgCH1WfjYQWlmM5ETWJvrKP7qcsX_xSwmLv67g4Qr7Fxq14134xbNs
-Message-ID: <CANiq72kn9HZy2kYaGHM9yj2nR+SAQ=J=Oh8k2doPFMDCRy1wBA@mail.gmail.com>
-Subject: Re: [PATCH] rust: usb: fix formatting
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, linux-usb@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DDT0JTP91GO3.1EHF6L8MX4I3T@kernel.org>
 
-On Sun, Oct 19, 2025 at 8:59=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> They landed in mainline, so Linus' tree is again `rustfmt`-clean.
+On Mon, Oct 27, 2025 at 10:56:41AM +0100, Danilo Krummrich wrote:
+> On Mon Oct 27, 2025 at 10:06 AM CET, Beata Michalska wrote:
+> > It's more theoretical at this point, but there are drivers that do rely on
+> > information from either DT or ACPI tables for the base address and size of the
+> > MMIO region: anything that uses devm_platform_ioremap_resource() or
+> > devm_platform_ioremap_resource_byname() I guess.
+> 
+> Don't get confused, those are two different things: The size of the MMIO region
+> (or a PCI BAR) and the const SIZE generic in Io<SIZE> are two different things.
+> 
+> The former is the actual size of an MMIO region, whereas the latter is the
+> minimum size requested by a driver for proper operation.
+> 
+> For instance, let's assume your driver requests ten contiguous 32-bit registers
+> starting at offset zero of an MMIO region.
+> 
+> In this case you can call req.iomap_sized<0x28>(), because you know that your
+> driver is not able to properly work without an MMIO region with at least a width
+> of 0x28 bytes.
+> 
+> The actual size of the MMIO region returned by req.iomap_sized<0x28>() may
+> indeed be smaller or larger than that, depending on what is defined in the DT,
+> ACPI or PCI BAR.
+> 
+> If smaller than the const SIZE generic, the call to req.iomap_sized<0x28>() will
+> fail, otherwise it will be successful. The actual size of the MMIO region is not
+> influenced by the const SIZE generic.
+I appreciate the explanation.
+I think my confusion here comes from the fact that I was assuming there is an
+intent to accommodate different MMIO regions sizes for various device revisions,
+and not expecting all drivers to explicitly call the iomap_sized in all cases.
+My bad then.
+Again, thanks for clarifying that.
 
-Pinging about this one so that it is not forgotten. It is the only
-missing thing so that linux-next is clean again like Linus'.
 
-Thanks!
+---
+Best Regards
+Beata
 
-Cheers,
-Miguel
+
