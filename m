@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F125630F526;
-	Mon, 27 Oct 2025 19:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B16320A02;
+	Mon, 27 Oct 2025 19:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592992; cv=none; b=foikL2zMxOvfVy+GpzUmxxmJCWhhLDl3tOz0dKWF2GzqcHjL64uYll6DO3sdtuPkUc+cB8MzbP3xY+uuhJTICyx3M38yzvalSK2Hi2ECEL/6ISqs1h+D11dtzEk1ShlWv/J9fR7er+M8nIvfITHRMEIgbJdlZOs6dqSyuJlGGTI=
+	t=1761593292; cv=none; b=FwcHmv+use/H/Mg0a/Iq4qkmWhEDEhVQE2nXtNv59g0mMPW4GHmbVAKuvGHxm2oKg5V5GYJpeutYFGgta3YDNVK4dFEiwUoKhNxge6PNcF7krXKgBP4syzI6XNA9wR6iu5MTNr6pgZldetTRCemMqSg5v6U0VxGY4iXmBK9InfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592992; c=relaxed/simple;
-	bh=uTrTMXHYa+MgSvqmFyrlRj8NJs2QdjeXyKWclcED2Jk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ra3p/BWtRMye0NoyBrCu26q0A4EaHg1aSSl3kXntNqj3o+31UPTuhsS/8+o7qGp9cy6V9YRk7yZLXNXkqLnkUBiyEbziUE09g7BT+92yIm6ugxxngi2Wtg3Ua/0sEe1l3VqyZFJN/nDMzI9NGArH6j6eTBOU9Fls5vzaoJDWREs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPKiTO1A; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761593292; c=relaxed/simple;
+	bh=mEn8TJATXk1tz9tGLRPYHPHeXgwksh2Kb5KZxPPolWk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=MaTfoEqhzEDpj3DQPb1lWMVujjI03qVlDYcA86RPdU4C+G7tYkqKRVx3izcQwwn1w2vwVarTQvRPmNh+JznGL883TK0mBjVZ+/Su/mZgXoLNKi3Npn2ZkqEf+hQxWF/Sa/hVqvfNzOwzcHa6YpdXy7efVsdFExsRDXSEpwTah+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tw6IvwQz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPKiTO1A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D93C4CEFD;
-	Mon, 27 Oct 2025 19:23:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tw6IvwQz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC92DC4CEF1;
+	Mon, 27 Oct 2025 19:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761592991;
-	bh=uTrTMXHYa+MgSvqmFyrlRj8NJs2QdjeXyKWclcED2Jk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gPKiTO1ACxs53vukMNDQBgl5Tpn58gtc7ZA/bo7QiutJ9EJ1KdJDmYZNzHP5Jje1f
-	 FvmbqPdOQIqPlxjgPg9DthVjs2cWm9w/DFxYC/q5ExXXESZPE8RHkqxTSpnbWiTldi
-	 tJynXMecooAAP6UEX2seGq4S4YmUQ1k99QqgqxRhAXnonv61mmdtLEaajKU9c2D/vK
-	 fuLCH0jZDmtNcxn0SoYecODCR50z7QONE59ii/Bt4wwpr/ffReJV2IMeRPIm0y8Ce/
-	 CorwtOEyXKF6Wiy6qagSF89e9oV9uAJuosnoAIA+IMYBQy6JF3gMbRSB0KRUwJ6B7U
-	 lkfJDU892oOcw==
-Message-ID: <10945c03-8642-4c19-b0ed-ffb20c075291@kernel.org>
-Date: Mon, 27 Oct 2025 20:23:05 +0100
+	s=k20201202; t=1761593291;
+	bh=mEn8TJATXk1tz9tGLRPYHPHeXgwksh2Kb5KZxPPolWk=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=tw6IvwQzmD6dYwYnVSFb/aYd1E87zUZ5c1HSqHGuVhjyX94xKCZ4BeLSAXYr7SZW9
+	 zc9gJur4jQ46Dy9Ml1fHpklJ6vjZNSBG1wziev3FvZPUACkLcHgsuDDnrDrQfiEF7G
+	 9CI7y6R2YryeCqsvaFCJOmUTn0qnoXQNshG47ilhWRd9bXV7Qm0gBwnf8ZEODH0wp6
+	 HDm8hjNoSEKY9O9GkHfbBq7q7qOS4UZbF1prymxsTsEvDeo6Y3677FYVSOwRPw+rIN
+	 RKtTon5ikS7MfjgKfP8Gq9RW3gbzZVYseq8rbIYnxaBFUo9uLxl8djumfmseBXXmNW
+	 Lw+Ubom2a0vug==
+Message-ID: <4ec735c2-d0cc-43ad-8184-b30359c8d570@kernel.org>
+Date: Mon, 27 Oct 2025 20:28:06 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,6 +37,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 5/7] gpu: nova-core: add extra integer conversion
  functions and traits
+From: Danilo Krummrich <dakr@kernel.org>
 To: Joel Fernandes <joelagnelf@nvidia.com>
 Cc: Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl
  <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
@@ -52,15 +53,23 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl
 References: <20251027-nova-as-v2-0-a26bd1d067a4@nvidia.com>
  <20251027-nova-as-v2-5-a26bd1d067a4@nvidia.com>
  <c94dd17e-0e81-47cc-9482-e8743d3bc68f@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
+ <10945c03-8642-4c19-b0ed-ffb20c075291@kernel.org>
 Content-Language: en-US
-In-Reply-To: <c94dd17e-0e81-47cc-9482-e8743d3bc68f@nvidia.com>
+In-Reply-To: <10945c03-8642-4c19-b0ed-ffb20c075291@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/27/25 8:09 PM, Joel Fernandes wrote:
-> Why not just implement `From` and `Into` for the types missing it then, with
-> adequate comments about why such conversions are Ok for the kernel, instead of
-> introducing a new trait? This is exactly what `From`/`Into` is for right?
+On 10/27/25 8:23 PM, Danilo Krummrich wrote:
+> On 10/27/25 8:09 PM, Joel Fernandes wrote:
+>> Why not just implement `From` and `Into` for the types missing it then, with
+>> adequate comments about why such conversions are Ok for the kernel, instead of
+>> introducing a new trait? This is exactly what `From`/`Into` is for right?
+> 
+> https://doc.rust-lang.org/reference/items/implementations.html#r-items.impl.trait.orphan-rule.intro
 
-https://doc.rust-lang.org/reference/items/implementations.html#r-items.impl.trait.orphan-rule.intro
+(Sorry, I didn't mean to send the link without additional comment.)
+
+We can't do this due to the orphan rule, but even if we could I think a separate
+trait indicating the reason for the conversions to be valid is a good thing.
+
+- Danilo
