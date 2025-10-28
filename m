@@ -1,86 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB25202963;
-	Tue, 28 Oct 2025 10:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CD82E8E10
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 10:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761646181; cv=none; b=Turkksq/QV9wKsm8ylxNwC1NhlOJZ9ZC+HL4MomXgBNPeAvbN/pHCS9jLd6U+J35ljbkyLSWy1AdXmnJaZz3UzPkT+Z0AW2fkjAO/eGvFKSeOi2Lvts8/4YMU4zd9XurViygq3qfRWVLcbtqQJ3MqIGGxUkaK3V9X53rtIlce18=
+	t=1761648282; cv=none; b=Db3TyTe8T7Hw4/wXlKTjlaFZzt+Wiv8rW1kJNeEzXpK2+avrkzB8l7Tag0L0QXC9jpXpzk1m6mtRsAJkmqfBc7EatTuz0lNssu6CtteKmvAPxlLCZPTMELTU6JMdjl+JWOZheQu4fKhzK1lqDkqi0a292LaUEo93FW+QwIb0Chw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761646181; c=relaxed/simple;
-	bh=Q7g2gyuPLSJChCHcvMFGH4HAyWjvBka1p5B2EDIKhmY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wx+lqYrfnNY5DW7WdUEkHzbDY4YjBiwiggwTpU27hqqC/dKGMDrYqm+zBrTyHtwap3Zpo9F6oOVIP3DpXu7IHi+xQFJQ4Np3bd9lHKJIJr5Goxtb2Iekm7HwwZPz9d1XUciwjKfIdmgMNdTimsGxUlqH/+WEIvf8HIidrS//3Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixeRD/jn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761648282; c=relaxed/simple;
+	bh=Vew93ZOaF3PEzyOv7+dX4417p2dogo24fKYnwZRv6+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kIYyVb1hAzLMjB8WuiF7Mm/JcMR9yByYy45PpYrR7zqwepJmuBouKyTb1JDo5g7ixP4/aAUSJvrs3k31wxCcnz/lpZ6UVGzMRzLkoveyXMAEzEynPpL6Slr9BTvDLsz/YyLKTwgqThGz/vxOIYNzjZW9APb+icRkabIN/GoaDbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqIuLxKn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixeRD/jn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07486C4CEE7;
-	Tue, 28 Oct 2025 10:09:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqIuLxKn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1953FC4CEE7;
+	Tue, 28 Oct 2025 10:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761646180;
-	bh=Q7g2gyuPLSJChCHcvMFGH4HAyWjvBka1p5B2EDIKhmY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ixeRD/jnRPrSmS9fJPaZK6MChs5+lg18GLQo/GSADRXbs35ugkCYatWhwZ9WazBWy
-	 xYl0WCOzrR+CH7qFbug6hZsjm+J8QzcIndDUMmlvcIsi8Dx44OzyYM3vWa1QRyPT/N
-	 Z3Lb+8jCwz77IGFIJSD7cFxXH70jygxBS2VwkYmSbFVzAxvFPc/p6m+yHhG0gYdHXR
-	 JLfd1SOPTqBCr7/jVk6P0SX6QwYDy3QAg0mXjbcbNjSTk4o/lcoveRovbQDdMZT5bZ
-	 2AfmkMub8lm+wvEbdx7ZyXOZXfaSvnVce96RXJaG6i3EBAIHPhqMpuDWyQeC5H93t8
-	 M+RlOYpZLnI3Q==
-Date: Tue, 28 Oct 2025 10:09:31 +0000
-From: Drew Fustini <fustini@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, Elle Rhumsaa <elle@weathered-steel.dev>
-Subject: Re: [PATCH v16 7/7] riscv: dts: thead: Add PWM fan and thermal
- control
-Message-ID: <aQCWWxWxN9sD3Dep@gen8>
-References: <20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com>
- <CGME20251016133824eucas1p29ff4403869bcf49efe1c982d42a01f52@eucas1p2.samsung.com>
- <20251016-rust-next-pwm-working-fan-for-sending-v16-7-a5df2405d2bd@samsung.com>
+	s=k20201202; t=1761648282;
+	bh=Vew93ZOaF3PEzyOv7+dX4417p2dogo24fKYnwZRv6+8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oqIuLxKnhhcjGXGZEvyNq/d/3wegF7fARjdw+1ObY65Uesgs/DS2yOzquYCgiO2UY
+	 TxyclsCosQFA23byll/sdh5opMa2F66FJXFAsVX9M/UfC0MnRoFXVJfUFsgBuCVWUi
+	 mFS+Cq2NJ7VA7jwMdgzxYs7eufAYuBRXQNkK/LmIWkQKdaRaAl2KbYMwoVle1Fj81I
+	 97RUqwSCpAg7tk43x1toyzdNMhnFHm6XIxAmWDODE9hCvc7WxNcDUycfLi0rSnU+Q6
+	 K0CDHbF7jDwrLRZxHo4Z9MEAyd3cgMxxROSGbQenKOKatMsY6g2vtK/Sik4HXVr/KR
+	 7x6TJSgSAMuyw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: aliceryhl@google.com
+Cc: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH] MAINTAINERS: add Tyr to DRM DRIVERS AND COMMON INFRASTRUCTURE [RUST]
+Date: Tue, 28 Oct 2025 11:44:27 +0100
+Message-ID: <20251028104433.334886-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251016-rust-next-pwm-working-fan-for-sending-v16-7-a5df2405d2bd@samsung.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 16, 2025 at 03:38:07PM +0200, Michal Wilczynski wrote:
-> Add Device Tree nodes to enable a PWM controlled fan and it's associated
-> thermal management for the Lichee Pi 4A board.
-> 
-> This enables temperature-controlled active cooling for the Lichee Pi 4A
-> board based on SoC temperature.
-> 
-> Reviewed-by: Drew Fustini <fustini@kernel.org>
-> Tested-by: Drew Fustini <fustini@kernel.org>
-> Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
-> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> ---
->  arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts | 67 +++++++++++++++++++++++
->  1 file changed, 67 insertions(+)
+Commit cf4fd52e3236 ("rust: drm: Introduce the Tyr driver for Arm Mali
+GPUs") introduced the Tyr driver for ARM Mali GPUs, which is maintained
+through the drm-rust tree, hence add it to the corresponding entry in
+MAINTAINERS.
 
-Applied to thead-dt-for-next, thanks!
+Cc: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
--Drew
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 545a4776795e..952aed4619c2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8247,6 +8247,7 @@ S:	Supported
+ W:	https://drm.pages.freedesktop.org/maintainer-tools/drm-rust.html
+ T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git
+ F:	drivers/gpu/drm/nova/
++F:	drivers/gpu/drm/tyr/
+ F:	drivers/gpu/nova-core/
+ F:	rust/kernel/drm/
+ 
+-- 
+2.51.0
+
