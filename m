@@ -1,98 +1,152 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5C232E139
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 12:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE572D7D47;
+	Tue, 28 Oct 2025 12:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761654203; cv=none; b=ofA0Tice/AKtBApwACtjUG4Kp3JBVpVT/1IpjpHhMlkGsB/OxtN4ejDmoSeauhIGqUPRPxhc+Ew/ybF5rLuv9AUaemyVDl3tF8pxe1aSQJ0jAucFkR+e1fIqMGVGXLRyaEKXuIUAV+FZm1HtXfFcofgXwYHHrRLwnIYnvfYwSPI=
+	t=1761654336; cv=none; b=Ysga3/FQNaSteOXsxz5pQ++yGR3u4VbsqgUUxFw1sfLIEGWEka/JGR5Wsr+5vQHxrINfruaiNXerM9Pxl3o7aEWMieVkqBkMLGtlbbBMlpvMoEnvgHIWh2I7TYLYgdhBcMeBSowA3lkug5vNpn9BuzEgdi0SdjWcRnnvws2Pii0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761654203; c=relaxed/simple;
-	bh=yhgJHAx9fPc8H/lCyHycOlGU2mO1WZaQYsqIZeybbiw=;
-	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
-	 Content-Type:References; b=U8wIajh41LuQ1eU3q5ngH9dTD5VX7DyRTESLAqbKIJe5ZQvMVMra2mcXvmbinqcmMnf83RiHAdm3O3JGbBHrK4bdsdiMcSwPt63bqNZzh8Wyg8Z8hIfYdN7GLSIoUiBTTnrkml9e9yjxHzAd7h6Gp6BHQx5FnbL0XSetUyjgL+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=BnIeIH5j; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1761654336; c=relaxed/simple;
+	bh=O3rrBgUppSWO5V6RBh3WFUXiqJ2WOAiNVe9eUEytpLs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=jiXkhfK3EK0JOxUCiQu4uOyAjahGXYcjrrDFCW6+je/KpPpR6sSqik/zZZIY3xgtyQQIYRBp47xd4XdBR+BilGkbxbQa4Wc+X6VbpCQhOmd0Yj5+QhtsCRKKlUB5M9Dg7CQKjndj6iVvEn3QzVFL7EtOpgKeNcVnXFfqE7YttvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkCkaKgU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="BnIeIH5j"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251028122319euoutp0181bcfdb8ac9bfebd1ebc3f88b7d4b3ab~ypyk7kg7R0540605406euoutp01Z
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 12:23:19 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251028122319euoutp0181bcfdb8ac9bfebd1ebc3f88b7d4b3ab~ypyk7kg7R0540605406euoutp01Z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1761654199;
-	bh=Lm82DRGUZZTV1/beTKsFXySMTVqtnJxLBKgmXs1gVko=;
-	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
-	b=BnIeIH5jEm0VOKgBrzpMbb1uakOkoeayhb74hp0j9RjEqIYQ9EVWNhalDlmIwitFP
-	 jS/H83dsM39aXBHimHfxdD23J7JTzy4buroRirlXUeUAUlf6q/vqiqP1EPc/KOWpaR
-	 NpGDcXgj3sSnsomxoIMhIeOy5C8FJPrNfZFHVpd0=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20251028122318eucas1p1863a8b44efe27c28a1bcf427d2855c00~ypykGd4I41056510565eucas1p1H;
-	Tue, 28 Oct 2025 12:23:18 +0000 (GMT)
-Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
-	[106.210.136.40]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20251028122318eusmtip2cb42586905d3b5fd524bea75b0831884~ypyjWQEit0671406714eusmtip20;
-	Tue, 28 Oct 2025 12:23:18 +0000 (GMT)
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Tue, 28 Oct 2025 13:22:35 +0100
-Subject: [PATCH 4/4] pwm: th1520: Fix clippy warning for redundant struct
- field init
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkCkaKgU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D242C4CEE7;
+	Tue, 28 Oct 2025 12:25:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761654336;
+	bh=O3rrBgUppSWO5V6RBh3WFUXiqJ2WOAiNVe9eUEytpLs=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=nkCkaKgUtJmi0jENBGtAEa7GZdUeq8CF1abVMc663PiYN+cAyRA/JvQKcIlZ5F+wb
+	 E6FfvhpsuHBryNfWCH1P0bMxVDRYeX+BFhH4fGTD56fJTplRK61O3Mf9gkUjqaKKsd
+	 0qXX8YDk/R28atBJEPF3I887qTNTqvLDugOkbCDSX/Xc+mOLeal8dx3nGg46FXQc/T
+	 lY0LxHgRHO0usuNdOOi21sZaBILsS49bNEhOOYvaeE2r7JftuSV4aC5w9Wklcn8LCJ
+	 SnjXF8AoetwDCUGiWaOYmHH4OJ8/p4HyygyUoQ3PfkqA4T/qvmC6I/NTcuLkdBTIqf
+	 1rVnVf9aVXnnA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251028-pwm_fixes-v1-4-25a532d31998@samsung.com>
-In-Reply-To: <20251028-pwm_fixes-v1-0-25a532d31998@samsung.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Benno Lossin
-	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,  Danilo Krummrich
-	<dakr@kernel.org>,  Michal Wilczynski <m.wilczynski@samsung.com>,  Drew
-	Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,  Fu Wei
-	<wefu@redhat.com>,  =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org
-X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20251028122318eucas1p1863a8b44efe27c28a1bcf427d2855c00
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251028122318eucas1p1863a8b44efe27c28a1bcf427d2855c00
-X-EPHeader: CA
-X-CMS-RootMailID: 20251028122318eucas1p1863a8b44efe27c28a1bcf427d2855c00
-References: <20251028-pwm_fixes-v1-0-25a532d31998@samsung.com>
-	<CGME20251028122318eucas1p1863a8b44efe27c28a1bcf427d2855c00@eucas1p1.samsung.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Oct 2025 13:25:30 +0100
+Message-Id: <DDTYCAZWUZL5.36Y1LKLB8EUD6@kernel.org>
+Subject: Re: [PATCH v2 1/2] gpu: nova-core: merge the Revision type into the
+ Spec type
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251028023937.1313108-1-jhubbard@nvidia.com>
+ <20251028023937.1313108-2-jhubbard@nvidia.com>
+In-Reply-To: <20251028023937.1313108-2-jhubbard@nvidia.com>
 
-Clippy warns about redundant struct field initialization when the field
-name and the variable name are the same (e.g., `status: status`).
+On Tue Oct 28, 2025 at 3:39 AM CET, John Hubbard wrote:
+> -pub(crate) struct Revision {
+> -    major: u8,
+> -    minor: u8,
+> -}
+> -
+> -impl Revision {
+> -    fn from_boot0(boot0: regs::NV_PMC_BOOT_0) -> Self {
+> -        Self {
+> -            major: boot0.major_revision(),
+> -            minor: boot0.minor_revision(),
+> -        }
+> -    }
+> -}
+> -
+> -impl fmt::Display for Revision {
+> -    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> -        write!(f, "{:x}.{:x}", self.major, self.minor)
+> -    }
+> -}
+> -
+> -/// Structure holding the metadata of the GPU.
+> +/// Structure holding a basic description of the GPU: Architecture, Chip=
+set and Revision.
+>  pub(crate) struct Spec {
+>      chipset: Chipset,
+> -    /// The revision of the chipset.
+> -    revision: Revision,
+> +    major_revision: u8,
+> +    minor_revision: u8,
+>  }
 
-No functional change.
+Why not keep the Revision type and its Display impl as well?
 
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
----
- drivers/pwm/pwm_th1520.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> =20
+>  impl Spec {
+> @@ -162,11 +142,25 @@ fn new(bar: &Bar0) -> Result<Spec> {
+> =20
+>          Ok(Self {
+>              chipset: boot0.chipset()?,
+> -            revision: Revision::from_boot0(boot0),
+> +            major_revision: boot0.major_revision(),
+> +            minor_revision: boot0.minor_revision(),
+>          })
+>      }
+>  }
+> =20
+> +impl fmt::Display for Spec {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        write!(
+> +            f,
+> +            "Chipset: {}, Architecture: {:?}, Revision: {:x}.{:x}",
+> +            self.chipset,
+> +            self.chipset.arch(),
+> +            self.major_revision,
+> +            self.minor_revision
+> +        )
 
-diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-index 5fb123f5e9c6dc3a8ee9a7a47fa778c23213e957..95a809af48eb16fe13125d4d9f4ee5de20555e77 100644
---- a/drivers/pwm/pwm_th1520.rs
-+++ b/drivers/pwm/pwm_th1520.rs
-@@ -185,7 +185,7 @@ fn round_waveform_tohw(
-         );
- 
-         Ok(pwm::RoundedWaveform {
--            status: status,
-+            status,
-             hardware_waveform: wfhw,
-         })
-     }
+This could just be:
 
--- 
-2.34.1
+	write!(
+	    f,
+	    "Chipset: {}, Architecture: {:?}, Revision: {}",
+	    self.chipset,
+	    self.chipset.arch(),
+	    self.revision,
+	)
+
+> +    }
+> +}
+> +
+>  /// Structure holding the resources required to operate the GPU.
+>  #[pin_data]
+>  pub(crate) struct Gpu {
+> @@ -193,13 +187,7 @@ pub(crate) fn new<'a>(
+>      ) -> impl PinInit<Self, Error> + 'a {
+>          try_pin_init!(Self {
+>              spec: Spec::new(bar).inspect(|spec| {
+> -                dev_info!(
+> -                    pdev.as_ref(),
+> -                    "NVIDIA (Chipset: {}, Architecture: {:?}, Revision: =
+{})\n",
+> -                    spec.chipset,
+> -                    spec.chipset.arch(),
+> -                    spec.revision
+> -                );
+> +                dev_info!(pdev.as_ref(),"NVIDIA ({})\n", spec);
+>              })?,
+> =20
+>              // We must wait for GFW_BOOT completion before doing any sig=
+nificant setup on the GPU.
+> --=20
+> 2.51.1
 
