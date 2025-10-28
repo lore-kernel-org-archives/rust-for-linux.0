@@ -1,54 +1,53 @@
 Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010012.outbound.protection.outlook.com [52.101.61.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA79F36CA93;
-	Tue, 28 Oct 2025 23:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332EC36CDE0;
+	Tue, 28 Oct 2025 23:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761693162; cv=fail; b=WRdaRrYMXVlyDPTHRJ9huo73xg7MBGu4wrhygRCnr9QgStA7EpFCR5AlWlD2ohtgVMIwmVr0wiEYptiCTk4Gp1822XcseiartnphjPU9fNstvDOHN1DyHsWdixWkl70h/mHM1Qr3l2Y8KDpX5+1fySibXgPrhX3xI1fbEoCMfFU=
+	t=1761693164; cv=fail; b=tgb3C49PCR9lJLwKFwzefiNjXZ6xCw68Gn0YkZPLWpdL8QXubtRdabqS/lF+VLndWMZIcRkboxzqObRnVz+Jt+EmsgaXp7Ute8X8yWP7LOW4EEQ5FgK1kua2FpoRVhAoIRu5ILvFS0SDYNYLJO08W3LJeZDVTplKfalpxwEAcOs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761693162; c=relaxed/simple;
-	bh=YU25QTqQ54SGmFbu0lqdmIbCeCkgjUluGhbCrbDJfhE=;
+	s=arc-20240116; t=1761693164; c=relaxed/simple;
+	bh=NRKmT0wRq91tda92Ud1TFo/RbHAaSjYFBKVSlERFVPE=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=GCHQZW5iu1qGzECaUx+6LTpNLfcDGBoZLTmJvcJ/P6kzFGKkJXnJSEiLYCxQ9ZAmLzkNlfyWPVL9gB10vdE48i4yj/kzs5W1gtwD8NqR3Errus9JgMlOn70AJpRRliel4+VdhyUrd0j1di7qfZBVDFZdsHmGdwMki6Y+k4/YD9k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RA2XVPpf; arc=fail smtp.client-ip=52.101.61.12
+	 To:Cc:MIME-Version; b=hLeiEFvBaybMFw5CDV8rbHGJoXO+xXyotFI88V8Q5EArck0BmbmeWsLKGiw6nmDl+fbaL//WIb2yDQ0nyag5keHY7rOFgamghKLGbTpJPLCkHOZ595BtU7yeHtlKOvglt3pkI1ifVfrdE5Q8nn1aYh3Py6LZ3OQ4onyabSiz+2M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lizxXMgs; arc=fail smtp.client-ip=52.101.61.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RA2XVPpf"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lizxXMgs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R+Itu8PYtkMmEnRqyfHR/jxujD07LCPPyCxt0HOAfvqg7GwqlJFr0Drt3khwKZzvEv3retsMd8hhIBYex82Hl1a9dExuauXgvxoYahSG8kA/QZJzggF5C0aMU1w93Jzp3Pwz8rPwOQxmylZCFyHf4/nhUPcqF1Fu2LbmHhSLlX6OgsTGVjd7MQCA1EU0psOEWb7Zx4ZWzGM/Y7MX4dTOcz9XEZO+njpOQCKg4nqnO+1HCoHYoBD8a3GwRbFl/pWhE90mFKCQXCl6dPFeObBJc6BHEIlYzRQUy4AK1i+lNsQn7x0yMgFmCs125SntF1xTfVibT918rnSf2+XmSQFFbg==
+ b=GA7ozUwCzHMmMo8qQ3M7YNW4ySzIuIGxhsaFn95hla3/NwLW78tKoE11JiyFQeyWMLgW6VStazWboMr7xz80+XFl1bjWsqDuuzakaW1HricdWuhygZbhaJKp2RUeWtHWaRNfnbSxz9wPcQWwWtxPpMaDOHiY9vfxIipPR+1FUAi5U1WhkBEBUHu1fFKmUS/ObQUlkmifhGK+Q+iUyX8524jrv7JUKprCuNwBJBAY/ME5FoP/ElLNN4ZWv5phncxcXfbR8CL8o3PQOKn3A7qVAVkD4EbmBoAMJ5715++P0i/GCaJmXgj+VPIRQpOiHnhZYi8HhOT7RCGDLKgBNLDyTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=baZUy3IL1p+29CMMkQ8aeBGCbTZaAvBjgdWiJv+aiZ0=;
- b=ee5HiEclay87xfA+oBdnMLi+JQqOcN54rpSSks2qPjPv29Pgf5ilBGcM50RkgzvJ+LJwY4/p3SmWbk28rXqOeA/DRJB7gXBxGt8HERavETMAUX+k7qeqkfFrUy8V7Y84d+spdfDDVLrGy2sRaab1/Tl4tsDjsu0FS03YtuA8LpMnBET4E9OC0ld+61iEULdf8UPc0sBLdiHpphWlN4YaVMGRi3rLBIE4N15Fg09jegFgYK0sMMVeU4NyBzRoB9XxpA+fsBCViGb7ReGAdjQQNs4fh80j0i6HlnXuKnbmbotrSItuua3+ehYFo9pgCgF4u/OErjffGHQ2B0o6jg+1kw==
+ bh=ukMbq45DXcrHt9DQmQp3NVnN98CLlfEHEHQFp+ZOrUc=;
+ b=uEs3vgTh+JzK7DJl3l7K8As3effDpxfVqSaAAkGNYJEFQVp8uOCkzNeZf88jnacFO3bm235alqeOawn3Lz7wICQU8Azd3HwY6eHZsmlhKhwA+D5HLNx9uXPFC0kGH6WSlGvgBG6t6/Lb6KJROZE2NwpcVwWEWysBx8sOnTQ5MQzLuL1yeejtaRbAD6rQs0GqDw51bonHZurXdvFW6Wda5sCwei2IUgqdmAPlWXyNuSCl+H+dngjKawWaCToLqYopNOKwSPEP8CAoSOxA4Nr3IOsFtTEmsMbLZgHJEpvKIowLbTWv173EY5RstsLcI60qT98NUmTHOWRIMklE1ZgYkQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=baZUy3IL1p+29CMMkQ8aeBGCbTZaAvBjgdWiJv+aiZ0=;
- b=RA2XVPpfhB11W7SUhWw/ORzNSajBQOXT+ZnIre9N75HUqh4s4wHKY+Xrpaa7VXl9Jm6LVFVNPy39Gpa7j9M/594s9iNv1GRo/21h9UP45zhdSUT12Gi9ddHl03Sn7K29QMT9kIb0vUCVe9O/zefR5did/0RZ4XmuWPBkqXahvgvEcCye5Lf6AV38mwxGmWSEgtB9a70S0qDByGk7rhSeaAfEeU8SbWHKAIKHtTUNZN0A9U4c6lJ5XsCUxjhLE4MbiVbDGUiaWzFxIwUvi+oymkK6C67BEG9ncZlF6ioUSWrJJhxs+sDnzRL1pl6XplIZezNJaxHjAZs+Sc0IlCb8Aw==
+ bh=ukMbq45DXcrHt9DQmQp3NVnN98CLlfEHEHQFp+ZOrUc=;
+ b=lizxXMgspL6lRcz55I8BHZojztsFIKYy9J4782YCo+Q92ShQjYjhsKEWjrWeWJy/GSBA/S8UL0HfaPsSERmhGmuSXs6eyPU9Gp+USOTZSOLL9v3QyXhgJmme/+7xDKIDW14OyrSgUZs95VzbMlR7iOEoao5TI0pvPypxkhF+Fg2/DeUnpxLGGrF3CjwErNqB+uBiih5RUqiRPKIGQZQaQVoqZhDiixBwMohWLXDjj62/F6A4LBfcTQnV0jvBdjR8KP/8QdNEMdCJNUGWc0gwtRivMfnWMyTOKYX5kbj+NJtAVL96OoRJSHi+NKrE2lAe9Vau7P4V1UPHRcbS3BWz0w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
  by CH1PR12MB9646.namprd12.prod.outlook.com (2603:10b6:610:2af::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.15; Tue, 28 Oct
- 2025 23:12:28 +0000
+ 2025 23:12:35 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9253.017; Tue, 28 Oct 2025
- 23:12:28 +0000
+ 23:12:35 +0000
 From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Wed, 29 Oct 2025 08:12:12 +0900
-Subject: [PATCH v3 4/6] gpu: nova-core: add functions and traits for
- lossless integer conversions
+Date: Wed, 29 Oct 2025 08:12:14 +0900
+Subject: [PATCH v3 6/6] gpu: nova-core: justify remaining uses of `as`
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-nova-as-v3-4-6a30c7333ad9@nvidia.com>
+Message-Id: <20251029-nova-as-v3-6-6a30c7333ad9@nvidia.com>
 References: <20251029-nova-as-v3-0-6a30c7333ad9@nvidia.com>
 In-Reply-To: <20251029-nova-as-v3-0-6a30c7333ad9@nvidia.com>
 To: Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
@@ -66,8 +65,8 @@ Cc: John Hubbard <jhubbard@nvidia.com>,
  rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
  Alexandre Courbot <acourbot@nvidia.com>
 X-Mailer: b4 0.14.3
-X-ClientProxiedBy: TY4PR01CA0069.jpnprd01.prod.outlook.com
- (2603:1096:405:370::12) To CH2PR12MB3990.namprd12.prod.outlook.com
+X-ClientProxiedBy: TY4PR01CA0114.jpnprd01.prod.outlook.com
+ (2603:1096:405:379::11) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -77,308 +76,168 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH1PR12MB9646:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ee19037-c6f2-44ef-6a86-08de167776a0
+X-MS-Office365-Filtering-Correlation-Id: 25cf631e-111d-46ca-8186-08de16777acb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|10070799003|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Sm00RFI4Y2lBQ0xCSEVaZGtGWnh6eFF4d1lQdFJyQjBaaGt6UFZOL3BZQ3NI?=
- =?utf-8?B?MUUyUjdGTTltY0pJRVpnNENoVUNGQUcvYUNjWjdjSzJzWlkwK0FLdnFSd0d5?=
- =?utf-8?B?Y1VWM0tla1lFVC8wa3JQUUFaTGQ5UUxRcFErS2tHZFl4SWxOOHVJeEdxaVVI?=
- =?utf-8?B?R2tRK2Q2Q0pIQUFURE1CaTdrZ3BOdURRSVU5T2FZNHcrbXVHU2wxUzhXUkd1?=
- =?utf-8?B?dmxOYk8yaXN2N2t5d2FzYkREQzBLUTRNREhuZXMvdEg5eWUrV29KV2tzbzlw?=
- =?utf-8?B?WUV5V3g0Vkw4d2VpUXRGWHJVeGJyN0FtemJUK0k0c0tUWm83Q2FtSEs3MGtG?=
- =?utf-8?B?Skhkc3RTWVgzdjEwR2Z3MUlWNFZXbkVXQUtOOWtHM0lHcWZiRFJtZldRVVlX?=
- =?utf-8?B?OUk1NmZLSm9kZk9Rc3JJaFdoTSs1N09qYitjWTFBTy9nVWtlT0RiaWpONGVv?=
- =?utf-8?B?MEZFS1hVV1krcWlRN0VjUWtzOHI0SmZJakNBS0FSNVl2YmtXU2xqY2VQSmpj?=
- =?utf-8?B?ZElQSzYrakFOV2NOQ1BYTnVkcVZaalNPdDA1MHZ3ZTdONDhRRlBXVFJUZzdS?=
- =?utf-8?B?WUhoMEZjYk9rZHc0REFqSG1ic1F3YzFXQnlIWXhxS3ZWYVlRcE13bHZQRnNH?=
- =?utf-8?B?OC9xK1owczByOVEzNVVJdzBwdlNlOXlMT1l2and3RjNWSWFkcm9rYk1OdmpW?=
- =?utf-8?B?NnJpdERGMzZlMC80ajVRcjJhUGR5bStvWFVSLy9SR2k3TnhXcDhDbEVoYU9K?=
- =?utf-8?B?ajNoMU1jTVBrNDFhWjJKZjFIVDdkQUtRNHV0WWE3Q0lyNzJKVGVQeW5ZMHkv?=
- =?utf-8?B?L0Q2TlRpSGtDV0pveXFodVVjaTZYQkhxMjVqeXE3aEpXNFo2UFZmbUhOSDdJ?=
- =?utf-8?B?Y2dxRGtWUW9INGgwMXVEVE9mSUgrUEV4RXpWazcrS2ZDRXFrUEpkM1huNERR?=
- =?utf-8?B?c1hPMkEvckRJbStDWkROWWJMdlgrSDRNRkZOeDVYWGp4SVNhTnNsOWUwRzRr?=
- =?utf-8?B?OUNQTkRlOW1saUtSaXNCVmROUHNSdkRsZk5NMm91Mkl2WHV5a1R5YzdOVkVv?=
- =?utf-8?B?L2xoUnk4T2ViNTBJQjFNRFZ4THdKSGtnUDlPTGJiZlBlUlBLUFZ4REI0TmZC?=
- =?utf-8?B?Z1FTVjFLb2JFcjc2UW9XV3VrZ3RldFdKRzV1NklHcjZHemh6OFBEbHpaSDJK?=
- =?utf-8?B?S2tFM2k3ZFF4SGh4d0xOblQzRnRIRWtBeHFNQjU0MXRQVzV1R1oyL3BuQ2FN?=
- =?utf-8?B?cWFyWnV3Q0lXNGVHM2ZBclNLRnowaW1tU3ZraUdHRHFGZ05mMkxrVUUwWnBJ?=
- =?utf-8?B?SERnbVZ0dDZsclZoSWF5cXdGYUJ0eENqeFNOY2wrVUVOT0MzNVRaRjl3cjc0?=
- =?utf-8?B?L0RiaDZXUldpVUcyZkRHZm9VY25LcXg5NVlOSHBRUFEwd3RzaTBoaDRTQnQ5?=
- =?utf-8?B?UVlTWjI0Z2RlT240TXJjSmhPd3hTdzA3MDVNYzhhVGxDejBoWGZmbTAwNHRz?=
- =?utf-8?B?Lzk3cFoybUh4NjlTazI2RnFPUXBLVjVpTk81LzI1RHJITHY1cWdtb1ZFdW5j?=
- =?utf-8?B?b2RwTnZ1UW1SSGtEbnVhZU1MMGNNRVVoSDBPWkM1UHpuRG5rVlB3YXVqSFVn?=
- =?utf-8?B?M043bGFUdGM0ODRWa3JkZDNCRkdjd0x4QVphOTRhRHNYM2RDMTBzMDRvS2g0?=
- =?utf-8?B?bmlkZ0oyQUFjdUcvQlBuMkY2Y0M2Z1NjUC9ONTlSOGcyMXhqSjQvbUVNL1ls?=
- =?utf-8?B?d0NnakJLaEJqZ1NoQ3BSaUkzb0c2VjNyZUErWU5tZitrUmNKOTJKNVRsNE1J?=
- =?utf-8?B?MHkxeHYyZ1Rnd1pFVVBFdzEvRE11VytvWE5vSm1tbEJDek5FRG1rbXNGTktZ?=
- =?utf-8?B?c0dQOUt2MEJ6SVU1RWdSZFI4NFBFK2tVRW1QOFVmbUFUK29ON011R2dFQytY?=
- =?utf-8?B?Sy9BUEI5TWZndjNKZUZ3YXVGT2w5R21HcmxlVGtaTXhxbDVoN2FoaG4yME5N?=
- =?utf-8?B?R2lWN1d0OC9OWW1xNjF1RCtqcXJaeC81c3Ywdld2NElScFIwc1pqRGtodDFV?=
- =?utf-8?Q?bcLESv?=
+	=?utf-8?B?SVQ2QVM1K3MrdjdFQm1JZXVkYmpIalgxNS8zU1Q4KzJ6bmtCTTNGUmxJVDNW?=
+ =?utf-8?B?K0YyU21PNWtzb05KU3lOd3Z1N0w0a2lHVmJoZndBR2o0Y2hOUG14ZXBTQjZB?=
+ =?utf-8?B?SklUbUwvMTV6ZThFSjFKMU5CaDFsZWN4UERiQjdxbktST0g3YmMrRnNQQjhx?=
+ =?utf-8?B?ZUlHQlplNDRvK0VHeXNJZmZ3Rnd4bkpVT1JtemppZGxkS2VDWVR6aUVsV3ZH?=
+ =?utf-8?B?Rk5OdFVRbEd1N3diaTk5SzN6Nk53M01Iai8zdlJCT2tqeGl1aFp4NEhIRFl3?=
+ =?utf-8?B?c1l6ZmJ5SVdEZTVTdnBGUUF2RkxMOVA0ZERPdEgvcE9ORDF2WlA0amIrODRU?=
+ =?utf-8?B?cHBoc0ZMZlUzS2hlaE50VlRuTWg1bGZPcTQ5Y3U0OHdBVTlrSDZoWFJuM00y?=
+ =?utf-8?B?aG92R2xpZUxaNDNVREQzb3ZmVjUzSzkzeEJveDY0RzNiZDdpSndrNTgzZklL?=
+ =?utf-8?B?dmhSSVV3ZzgwUllpeDVkcGlvQkFhQWhJMlJPM2Q2NXhoektRbUhRWjAyZ3pi?=
+ =?utf-8?B?c2hZL0dJcEZDWTFEVUZ2Rk13U0l1Z2VwRHcyb1NBZkN6OUlDc2NZQk9UUVI0?=
+ =?utf-8?B?TzZmUGJZYmwvRGJ6MlcwNDBLbjhZNFg3MVR6MzF4N1FSTWNJa290NTZIWlhj?=
+ =?utf-8?B?aWdMNW1aVS9nS2VFQXdZRjEyemFCaGRwRUtsRTNleFVUU3dGZTBXeDJJclpK?=
+ =?utf-8?B?U0YvYUJZK3RVa0Q4YUtzMW1mVnR2TjBmdXh5SncvcSs5amdMWmpYUVNaeEkr?=
+ =?utf-8?B?S2VjQTZaV2hUbXN6enJ0b0JwMGxmOVRwSFJUSkpZUm9Kc2ZJcU9UNVBXam1M?=
+ =?utf-8?B?V29sU2xvNHNmZHh5VHJIY3M2UTQrOWFpV2xMaXhYUVdIMnBneENCVnFUYW9H?=
+ =?utf-8?B?M2F6ZXVHbnFhTkQwZy9xVzJJYmt5QlZKVVdhV2ZxQXp6VnZ5bzAvUWV3aXhR?=
+ =?utf-8?B?bWdhMDNEZjR4T2ZuOXBoQ1pJYlc0a280V0FRYUxkUE4zQk5SYXRKTFZkWGla?=
+ =?utf-8?B?akRxckFZY3djOENuakZjTzM0ODViTFNYVldSRER0THErYTFDVitvV09BRXhw?=
+ =?utf-8?B?UTEyQ01GYWNrLzdabnNlN3NPN1Nkd3htNjF6QWxZZjBVR2tNSVB5ejVXYUJ5?=
+ =?utf-8?B?MHRYbmNQeE9kZFU0YUgvUHBYN1pRbTlzRnVSNEtKS0Y1Q2d3RFUwclFpbzFE?=
+ =?utf-8?B?Uk1pd3BHaWE4N1o1VGZVeUgxQWdyOU40QnM1U0tLRFJDZ2d2NjF4MlUweVN0?=
+ =?utf-8?B?a2dHNG1nZXFhM1pocGk4TmpFZXhqczBQSWt2eCtSYk9uVnVua3BqUGV6anNY?=
+ =?utf-8?B?ek84bTBPS1pJeHNYU1ZmSGZaUWlyMU84RW1zVHNYcTN3eVhSMytnVExFYmJo?=
+ =?utf-8?B?QlBWQUhnaFRjL1hWc25SMXVwNi94TEdUME90N1A0Z2FWd2VqK1pWUW9SV2Qz?=
+ =?utf-8?B?WmsvS0N3bDZWWDduay9ZK2NsV1J5ZGRsejhmUHJtdWFMd01Sdkh0QWQ3LzhV?=
+ =?utf-8?B?dkZpVU1iQy9HVlkzZkxMYUR1eHQ3MDNnVmRRRmRFQ3MyOFF3cUh0RWNIeHRM?=
+ =?utf-8?B?MklXQSt6QzFPVk5KaFFUelJpWkVGVytwVUpYWVFTVWs0UVRQOXRidW5vaEtq?=
+ =?utf-8?B?TVhlSVlJTG9LdlFBdVZNcldza1YwUFFrM0xhKzMwT3lVNDVNWkdqRmFpditw?=
+ =?utf-8?B?RHRUUzRCQTN2TEFNTDRIOHFvUTlmZXlLSnluZ0t5MVgybXZXVjhVVHIrTk12?=
+ =?utf-8?B?eTVaL1p0bDNmZ2FETUpPbHR6eStreHl6ZnhCVmpYY3VkYncyL1hZSmdRUzZr?=
+ =?utf-8?B?QkYycHIvcll3b3Evb0JyL0EzN1JyVDFnenRWYXFSYWd3SmhlL1l0Um1Vdmk2?=
+ =?utf-8?B?M3d1cy9hSXMvNlFHcGM2NmVJYWhkWm1aUDc0RUpRbWFGRkZmamhrVlBuSkRt?=
+ =?utf-8?B?Vm9WbGhQUDJwbk1LUnVzSlNFc2ZvOGlkTVE3bi9rZHZneGxkakFxenFSWjMv?=
+ =?utf-8?Q?wHjDliKqe2hrkCOzJCzFQ6s00AK/us=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(10070799003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?andaN1dMaXZKQUx0VmtXYkU4V0JLUS9xTTkrNUlDRm52RVk2YW9qMmRNaDkw?=
- =?utf-8?B?OXpCeGp3clA2NEQ2bkxva0hDdUJNT2pjTm9za1lyOW1aQTltWVhjUzdlOFFS?=
- =?utf-8?B?Yk9WNUV1YkpNd2wxenUzNU1EZHEyWE1aNFUxTnl5MEl4NnQxNmhmZGk5Zm5h?=
- =?utf-8?B?RVhpekZ6UndQam1BU1hzZW8ya0F4ekJ0blRGSGdPZzFWRnd5Zll0aW9pc1Qv?=
- =?utf-8?B?V3RMblhJcDBoRXNTZU93Zll1MVgrWEZZMTdUUXdvSXpqdUFuSEhZRjVweE5I?=
- =?utf-8?B?T2VjaEM2eEQvUHl4MldMRGk5NDlwTE9JY3JsejJYRk4ySUh0OVVsdHkxb3gz?=
- =?utf-8?B?N0hKWkN6aTN1NlArK01iR2wxeWUvc2YzVTVpUnRtLzRuajZrV3N5Z3NIcGVC?=
- =?utf-8?B?TEtpZ3Y4ektRRDdDK1VnWDkxLzR3dlhKaGhhR3pqMDRUK01RUTFnc2JCSXlx?=
- =?utf-8?B?NXZyeVNsNTBaN01Jejdnc1RhM2d4QnNhRDZJTExYdDR6eWxiQ2JEb1lXTS9y?=
- =?utf-8?B?cGZpUjQ2c2hUc095Y2t4dlMwbkJPWDhuazdWYnJuUXU4cW5HVXc4TkhMRGJ5?=
- =?utf-8?B?dE5WQktHZytvUVVqa05UTng3Y0tPZWlzMWdnUDZyQ3krbWJHbzFlNHEyaUpS?=
- =?utf-8?B?UHdOckx5bGFUU0t4MFpibXZMR1pqVnpnY1RldXJLeUNXbVQ3Y3FBekd6aGJl?=
- =?utf-8?B?RmYzTytDOEZaWGFibU5IMURlZSt6K0NJWEZuTFNoK09Gelg1WTNBSGdCeGhy?=
- =?utf-8?B?MXJ4UUN4L0xoMVJGYVhlVzZkN0lFMDRWK0Y0ekJ0V29GOFpYUW9NQlZXYnA2?=
- =?utf-8?B?Wm5GaUdCM1FkMG4xMzBXNFZuWVZCMGM4SVJPcEVEZUw1MWJUQWJCdjNaMXNm?=
- =?utf-8?B?Z1p4MFFHVEw3SkoreXlWek96bUw5QjFZYThuV1lZdDdoUEFNZlMvWDhBR1R1?=
- =?utf-8?B?THdZdWNwL3Z4Y3ZKb2RldTBMRTBLbDdXYmlLMTNQeVoyZ2hJREw2dDRQMGJ6?=
- =?utf-8?B?cVFEZ3VpYjVwV1NHME12RTNrZ0ovK1I5VklPdmRMKytucEdTNko1K1lVN2xv?=
- =?utf-8?B?YUdVNkVheDZ6azljeGhveHdzMXNtdjU3WTNpRHlxZlNsWVNaNUlkVVFhR1hv?=
- =?utf-8?B?bmo4UXFMZUVFVkxsZUxoTEZyc2JuM2xQRjF3MG94L0tUajFtODQ0REsxZnp1?=
- =?utf-8?B?bVFVWWQ5MlZSZFFHd3BaWHJTSjhheG54V3BIRnpGaERJcm5oNmd0czF4RXk4?=
- =?utf-8?B?SlgyZGFRQVlrc1lZb21iT043V2l4SDR4WXhiZG4ySGVmYjJoMHYzZEFZdjdW?=
- =?utf-8?B?QVdTcTVBWStBQ0xDcW5pWDNySlU3c0Jmbzhqb1JJU1U5dmo5UWRkSGFSeXMv?=
- =?utf-8?B?Y1Y3cGlybGdMQTZuWG41d1RlZEQ0a3RrRXAvdnArS3A3c2YwTGtyNStWeHZo?=
- =?utf-8?B?c0FOVFBHZExBcWEwbUdxU3R4c051VUwvbGFBQzczVVVOcXo1aWc5V0lmdDVu?=
- =?utf-8?B?czhDK0ZqTURTdmdpczUydGdEc21GVTdSNFZPdU1tS1BaWlprN3lCK1FybldY?=
- =?utf-8?B?RjJLdUxERlh1QUJGNkJ2RXkwcFVUa2hwM1VzbEhYSGVRRUdJdUpoL2pOckZs?=
- =?utf-8?B?VnFqQ1lhZzNPOTVLSHdjRGljQkZzQTBFK2xqMklxT1ZQZUY2OHNLb1lQWHVZ?=
- =?utf-8?B?NzhFcndHOS9UdGtOM3BpUmlLQkNLVDd3RnI3M21mMXUyWUdyV2Y3L3RrSTlh?=
- =?utf-8?B?cm4rYTNZWGRibXZpamNxR0xJZEtUdVBvTVhzVXd3VEEvbWtOOGc2Q2FYcGZT?=
- =?utf-8?B?S2I0d2dvaS9wbUVicjlSQW53T1drNjVVeFBYMGJabGorZ2Q2cVJ5NzZlYk95?=
- =?utf-8?B?NU81dHNZNnhBWjVTUnJUTG9oeGphaDZ4Wm9jMEVJaTBKRTl6eTBDbXY1djFI?=
- =?utf-8?B?eHJGSGVsaWtXb0k2OUZ4dmgrNXpacjdyQmk2RkdVcFR2K2FwR2tlR2VJTjFV?=
- =?utf-8?B?SXdueHNLdjR3MDJXMnRiMnl6bEFJQXNEUEZQU01aYjNCaWtKOENJbnA2cTA4?=
- =?utf-8?B?bzNJeEM5WCtkK3YxOHc4NVZSQVN3TjBzanBjcUVEUktaR3RTWndnZEFZNDh6?=
- =?utf-8?B?L2VKMFg0cVJHc3pwdWVxQUt2Zkt2THhXTDd5T1B1bmtWL1dhZWZLR0tsMEZo?=
- =?utf-8?Q?rj9gpLl3KzrLMGWnQJa2hSg0LvpZWiTXjMdbrzGAokye?=
+	=?utf-8?B?Y3p3all1Y1Rad1pDeVdBeG5TdTRpc1kyK1NXVVlibDZrWWE5UDM4RlZaWXF1?=
+ =?utf-8?B?Y1pUczI4VjREdWlUcGM4NTZLVElCRVkybFVyUnk5dGdBOVA2dUR1bkZReWUz?=
+ =?utf-8?B?T3ZCU214U3Qxc0s1VlE5NmFROU5qeWFWRjFMWFZUb2JkalNncE83V2hKeUVK?=
+ =?utf-8?B?S25jZlErUi9SYlEzcnNBOXlyY0FFeFZ3VnJKV01EbUpKMnJaNkt6dnk5dW9h?=
+ =?utf-8?B?QlRoK3NlbjBsbHRzYVBFdlhHd3RjL3QvVWFZQ0FlZDJmVFRJZVdHc0tlbDQx?=
+ =?utf-8?B?emFYUmlSL0VqUTZHWTk4MkV3aDN2UE85TDFWUkVlU2MwVkYwWmtEdjY4b3Bh?=
+ =?utf-8?B?Zy90OTlrbVNkSmpKeDJsNEtXWkRnNlJuVW84aVp0WkpNMHFUcmx5MHhjckto?=
+ =?utf-8?B?RlNMWElaQlBCRUtWRy96Q0VxMDhuNkZadnZEVXUxTkxCcUhpMGw1NlpYVlJ4?=
+ =?utf-8?B?dHY0VW1BRUtIUWxFZTVTbll2RENHMHNDdkNRcFB1VkNxa0s3YkZXdGh1dkM2?=
+ =?utf-8?B?czdRdS9UaFpsck04T2xZb21WWFZDUmV4cnR5U1ZDL1pESEhSS1dGZjBFZ0ZM?=
+ =?utf-8?B?UGZlNUZnckxFYlRpeVZIYy9hQzdWalZ1QTZJb0U0M1dzckQ1Mkt2Z01TeGkx?=
+ =?utf-8?B?MXNSaTlGcTNSZWNpTklSR2kyUGtNUXd6UjFhdVdPcTJYSWhlV0k3a1JXeWVW?=
+ =?utf-8?B?QWZnL21Galo5Y3FHdWRuK3piUWl5Z0ZXTzBWUVNRNU9ZWnpCendhNkcrckpO?=
+ =?utf-8?B?dW50OFZRRnhBaXEvcE1EL05wby84Y0VqWU1WYkVqS1FYU3dmQTgxWWxLOWJH?=
+ =?utf-8?B?MHVtTjdHS3pmdnpySGs0MjFzdFpHUmVaZ2pUTVNEcEJoTzRwQ2RJOCt6Yng4?=
+ =?utf-8?B?WnJENDU0QStzc24vajVzOEJwY3oxdDY3anZFa2NURDJidndQWTJqdXpZRjBI?=
+ =?utf-8?B?b0sxOWg0aVgzM255NFRVTzU3L3lUTHQwa0g1Wi9OdzI0cmRZeXVvclFtaDJw?=
+ =?utf-8?B?UDAxYWQ3cG1JSlkwN3FVRTdaZklFZ2xkWWNXSExKaVhvaFhkWXpxWmJlTTc5?=
+ =?utf-8?B?QS9aYmtwenNrakcxb2pwL0ZBZklvV3NldTVKVDd3YkVKK2ZaZUplWE9mQkR2?=
+ =?utf-8?B?YUtPUWEreE1xWXpOdmNaUk1WWjZ1V3RxUVFtVU1WTDVGQjQ3ZjJnbGF6N1pH?=
+ =?utf-8?B?RVR0dk56di9LbHZRQ0hQeXptblBpQTQyVW9IVUJsU2N2OXdRQ1NOTjB5UzE2?=
+ =?utf-8?B?Rlh5YWJ2Rkw2RnRQOHRqc0dvdEJoQndRUVc0SHRYL3Y1dUNoOE43TlF6bmp2?=
+ =?utf-8?B?MlR5a2RCcVQwZ3hmRGJwUmFTM2gzRUw4LzI1NVJkcXZvTHRBbTM3bGtSd3lY?=
+ =?utf-8?B?VlFDNlh4VjNPNU9Nd21vcndQUFcwY1Iyc0I1WG55RHB2Mk1iWjB3VWF1bm5r?=
+ =?utf-8?B?dHgzU3BOMklwYkdiTWtiSWhpMGhYMVRUV0NhVE9BYnRBNkpjWWdWS1lrY2V6?=
+ =?utf-8?B?OFR4ZlYyV3NWeXdkN1RLTVY5Y3pJa1pWaEg4MFdnRG9KUkpZVnZuVnZteDEx?=
+ =?utf-8?B?V2U1WlNtVmRRWXVNSGNzSlNNUU96b2g4N2hpbnc2RGhPTE5BQnpwZnRFaC9F?=
+ =?utf-8?B?U2FKTU1CSm51QW1OUEtyL2FwcGF2RCtNN3kwdnlncmExdk8xK2sydkl2QTFs?=
+ =?utf-8?B?clNNcTM5T3RnWU00TmhFWE5jcWZORUU1UjAyL3Bhdit6WFliSi9kSG1VSFdq?=
+ =?utf-8?B?bVczT2FtaHBQZ294djhyYTV5QkNmQlMrOGM3SnZRVExnZ1UvSERnMDVNT0tr?=
+ =?utf-8?B?eVZFNnN2eWpENkJrM2dsQUM5K2NQdW8yZU84RVNkczlURCt4MU9JcloxTTlU?=
+ =?utf-8?B?ZEoxQlB2clVvL1VXdDlZQ3RuRkVmcWxLYkdIeU1yTU9HRzR4QktuaWx5N1lp?=
+ =?utf-8?B?MHM1V1pQdHlrU2NVM09IN1FHM0o0UTdCQmRidlhoUU0zRExMK3Y2dFAxWTRh?=
+ =?utf-8?B?Z3ZValk4Y0hmUzdHVFlpQjdIMjl5ellwNVc1TE1iaEdXWGExa3NWOFNYeXFr?=
+ =?utf-8?B?TXhyNlIvUVhLMERBb2lMMXMwTW52MGxySHFHcCtvSzczeVphVlk0RDRoaDFU?=
+ =?utf-8?B?WW9mYTRxSnM3SmJSdXVKWEtMSDROWm1wWnNxbTZSby9LRCtsTy9pdmR1MXVy?=
+ =?utf-8?Q?Y17HfVhEH3eMqnXkucRVppPeYc8wj3cOAmpFAC33V5VM?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ee19037-c6f2-44ef-6a86-08de167776a0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25cf631e-111d-46ca-8186-08de16777acb
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 23:12:28.1931
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 23:12:35.2415
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RfJ18f8m2aWX8ygO0h+oXZnIkVNQqm/U6hcwJ+o5jQGU+FkYpTU1LF6LfCCsi/6T0SnxRjiT2Cl8HhNmCZbiUQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FTMzJ0rambAnC8HwH5Hpml10kQuYmE7M+xGRz35VfFehFZWN+czef2qBwwvLKuZRCUrnP1OuUsY4sebxLRPcOw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9646
 
-The core library's `From` implementations do not cover conversions
-that are not portable or future-proof. For instance, even though it is
-safe today, `From<usize>` is not implemented for `u64` because of the
-possibility to support larger-than-64bit architectures in the future.
+There are a few remaining cases where we *do* want to use `as`,
+because we specifically want to strip the data that does not fit into
+the destination type. Comment these uses to clear confusion about the
+intent.
 
-However, the kernel supports a narrower set of architectures, and in the
-case of Nova we only support 64-bit. This makes it helpful and desirable
-to provide more infallible conversions, lest we need to rely on the `as`
-keyword and carry the risk of silently losing data.
-
-Thus, introduce a new module `num` that provides safe const functions
-performing more conversions allowed by the build target, as well as
-`FromSafeCast` and `IntoSafeCast` traits that are just extensions of
-`From` and `Into` to conversions that are known to be lossless.
-
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-Link:
-https://lore.kernel.org/rust-for-linux/DDK4KADWJHMG.1FUPL3SDR26XF@kernel.org/
 Acked-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
- drivers/gpu/nova-core/nova_core.rs |   1 +
- drivers/gpu/nova-core/num.rs       | 165 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 166 insertions(+)
+ drivers/gpu/nova-core/falcon.rs         | 4 ++++
+ drivers/gpu/nova-core/fb/hal/ga100.rs   | 4 ++++
+ drivers/gpu/nova-core/firmware/fwsec.rs | 2 ++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-index e130166c1086..9180ec9c27ef 100644
---- a/drivers/gpu/nova-core/nova_core.rs
-+++ b/drivers/gpu/nova-core/nova_core.rs
-@@ -13,6 +13,7 @@
- mod gfw;
- mod gpu;
- mod gsp;
-+mod num;
- mod regs;
- mod vbios;
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+index a0ae197a1489..9b5269843af5 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -479,9 +479,13 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
+         // Set up the base source DMA address.
  
-diff --git a/drivers/gpu/nova-core/num.rs b/drivers/gpu/nova-core/num.rs
-new file mode 100644
-index 000000000000..3f7daaedee0b
---- /dev/null
-+++ b/drivers/gpu/nova-core/num.rs
-@@ -0,0 +1,165 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Numerical helpers functions and traits.
-+//!
-+//! This is essentially a staging module for code to mature until it can be moved to the `kernel`
-+//! crate.
-+
-+use kernel::macros::paste;
-+use kernel::prelude::*;
-+
-+/// Implements safe `as` conversion functions from a given type into a series of target types.
-+///
-+/// These functions can be used in place of `as`, with the guarantee that they will be lossless.
-+macro_rules! impl_safe_as {
-+    ($from:ty as { $($into:ty),* }) => {
-+        $(
-+        paste! {
-+            #[doc = ::core::concat!(
-+                "Losslessly converts a [`",
-+                ::core::stringify!($from),
-+                "`] into a [`",
-+                ::core::stringify!($into),
-+                "`].")]
-+            ///
-+            /// This conversion is allowed as it is always lossless. Prefer this over the `as`
-+            /// keyword to ensure no lossy casts are performed.
-+            ///
-+            /// This is for use from a `const` context. For non `const` use, prefer the
-+            /// [`FromSafeCast`] and [`IntoSafeCast`] traits.
-+            ///
-+            /// # Examples
-+            ///
-+            /// ```
-+            /// use crate::num;
-+            ///
-+            #[doc = ::core::concat!(
-+                "assert_eq!(num::",
-+                ::core::stringify!($from),
-+                "_as_",
-+                ::core::stringify!($into),
-+                "(1",
-+                ::core::stringify!($from),
-+                "), 1",
-+                ::core::stringify!($into),
-+                ");")]
-+            /// ```
-+            #[allow(unused)]
-+            #[inline(always)]
-+            pub(crate) const fn [<$from _as_ $into>](value: $from) -> $into {
-+                kernel::static_assert!(size_of::<$into>() >= size_of::<$from>());
-+
-+                value as $into
-+            }
-+        }
-+        )*
-+    };
-+}
-+
-+impl_safe_as!(u8 as { u16, u32, u64, usize });
-+impl_safe_as!(u16 as { u32, u64, usize });
-+impl_safe_as!(u32 as { u64, usize } );
-+// `u64` and `usize` have the same size on 64-bit platforms.
-+#[cfg(CONFIG_64BIT)]
-+impl_safe_as!(u64 as { usize } );
-+
-+// A `usize` fits into a `u64` on 32 and 64-bit platforms.
-+#[cfg(any(CONFIG_32BIT, CONFIG_64BIT))]
-+impl_safe_as!(usize as { u64 });
-+
-+// A `usize` fits into a `u32` on 32-bit platforms.
-+#[cfg(CONFIG_32BIT)]
-+impl_safe_as!(usize as { u32 });
-+
-+/// Extension trait providing guaranteed lossless cast to `Self` from `T`.
-+///
-+/// The standard library's `From` implementations do not cover conversions that are not portable or
-+/// future-proof. For instance, even though it is safe today, `From<usize>` is not implemented for
-+/// [`u64`] because of the possibility to support larger-than-64bit architectures in the future.
-+///
-+/// The workaround is to either deal with the error handling of [`TryFrom`] for an operation that
-+/// technically cannot fail, or to use the `as` keyword, which can silently strip data if the
-+/// destination type is smaller than the source.
-+///
-+/// Both options are hardly acceptable for the kernel. It is also a much more architecture
-+/// dependent environment, supporting only 32 and 64 bit architectures, with some modules
-+/// explicitly depending on a specific bus width that could greatly benefit from infallible
-+/// conversion operations.
-+///
-+/// Thus this extension trait that provides, for the architecture the kernel is built for, safe
-+/// conversion between types for which such cast is lossless.
-+///
-+/// In other words, this trait is implemented if, for the current build target and with `t: T`, the
-+/// `t as Self` operation is completely lossless.
-+///
-+/// Prefer this over the `as` keyword to ensure no lossy casts are performed.
-+///
-+/// If you need to perform a conversion in `const` context, use [`u64_as_usize`], [`u32_as_usize`],
-+/// [`usize_as_u64`], etc.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use crate::num::FromSafeCast;
-+///
-+/// assert_eq!(usize::from_safe_cast(0xf00u32), 0xf00u32 as usize);
-+/// ```
-+#[expect(unused)]
-+pub(crate) trait FromSafeCast<T> {
-+    /// Create a `Self` from `value`. This operation is guaranteed to be lossless.
-+    fn from_safe_cast(value: T) -> Self;
-+}
-+
-+impl FromSafeCast<usize> for u64 {
-+    fn from_safe_cast(value: usize) -> Self {
-+        usize_as_u64(value)
-+    }
-+}
-+
-+#[cfg(CONFIG_32BIT)]
-+impl FromSafeCast<usize> for u32 {
-+    fn from_safe_cast(value: usize) -> Self {
-+        usize_as_u32(value)
-+    }
-+}
-+
-+impl FromSafeCast<u32> for usize {
-+    fn from_safe_cast(value: u32) -> Self {
-+        u32_as_usize(value)
-+    }
-+}
-+
-+#[cfg(CONFIG_64BIT)]
-+impl FromSafeCast<u64> for usize {
-+    fn from_safe_cast(value: u64) -> Self {
-+        u64_as_usize(value)
-+    }
-+}
-+
-+/// Counterpart to the [`FromSafeCast`] trait, i.e. this trait is to [`FromSafeCast`] what [`Into`]
-+/// is to [`From`].
-+///
-+/// See the documentation of [`FromSafeCast`] for the motivation.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use crate::num::IntoSafeCast;
-+///
-+/// assert_eq!(0xf00u32.into_safe_cast(), 0xf00u32 as usize);
-+/// ```
-+#[expect(unused)]
-+pub(crate) trait IntoSafeCast<T> {
-+    /// Convert `self` into a `T`. This operation is guaranteed to be lossless.
-+    fn into_safe_cast(self) -> T;
-+}
-+
-+/// Reverse operation for types implementing [`FromSafeCast`].
-+impl<S, T> IntoSafeCast<T> for S
-+where
-+    T: FromSafeCast<S>,
-+{
-+    fn into_safe_cast(self) -> T {
-+        T::from_safe_cast(self)
-+    }
-+}
+         regs::NV_PFALCON_FALCON_DMATRFBASE::default()
++            // CAST: `as u32` is used on purpose since we do want to strip the upper bits, which
++            // will be written to `NV_PFALCON_FALCON_DMATRFBASE1`.
+             .set_base((dma_start >> 8) as u32)
+             .write(bar, &E::ID);
+         regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
++            // CAST: `as u16` is used on purpose since the remaining bits are guaranteed to fit
++            // within a `u16`.
+             .set_base((dma_start >> 40) as u16)
+             .write(bar, &E::ID);
+ 
+diff --git a/drivers/gpu/nova-core/fb/hal/ga100.rs b/drivers/gpu/nova-core/fb/hal/ga100.rs
+index 871c42bf033a..b9389fa382e5 100644
+--- a/drivers/gpu/nova-core/fb/hal/ga100.rs
++++ b/drivers/gpu/nova-core/fb/hal/ga100.rs
+@@ -18,9 +18,13 @@ pub(super) fn read_sysmem_flush_page_ga100(bar: &Bar0) -> u64 {
+ 
+ pub(super) fn write_sysmem_flush_page_ga100(bar: &Bar0, addr: u64) {
+     regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::default()
++        // CAST: `as u32` is used on purpose since the remaining bits are guaranteed to fit within
++        // a `u32`.
+         .set_adr_63_40((addr >> FLUSH_SYSMEM_ADDR_SHIFT_HI) as u32)
+         .write(bar);
+     regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
++        // CAST: `as u32` is used on purpose since we want to strip the upper bits that have been
++        // written to `NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI`.
+         .set_adr_39_08((addr >> FLUSH_SYSMEM_ADDR_SHIFT) as u32)
+         .write(bar);
+ }
+diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
+index 96bedada91bc..90b372850062 100644
+--- a/drivers/gpu/nova-core/firmware/fwsec.rs
++++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+@@ -161,6 +161,7 @@ unsafe fn transmute<'a, 'b, T: Sized + FromBytes>(
+     if offset + size_of::<T>() > fw.size() {
+         return Err(EINVAL);
+     }
++    // CAST: `usize` has the same size as pointers.
+     if (fw.start_ptr() as usize + offset) % align_of::<T>() != 0 {
+         return Err(EINVAL);
+     }
+@@ -184,6 +185,7 @@ unsafe fn transmute_mut<'a, 'b, T: Sized + FromBytes>(
+     if offset + size_of::<T>() > fw.size() {
+         return Err(EINVAL);
+     }
++    // CAST: `usize` has the same size as pointers.
+     if (fw.start_ptr_mut() as usize + offset) % align_of::<T>() != 0 {
+         return Err(EINVAL);
+     }
 
 -- 
 2.51.0
