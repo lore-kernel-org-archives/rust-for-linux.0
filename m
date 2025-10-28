@@ -1,170 +1,131 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010062.outbound.protection.outlook.com [52.101.56.62])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D423081CE
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 11:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761651783; cv=fail; b=VxowJPsUZV6AHLLDrrzrqgnoeH4kqo2lNZauVngT1/bY/bQtZozGv7o6hrpZyGMkWHlu1UmMcfN1dubhyFUXnz28v/XOzgU4RWo4Bpe0WHt+IuyMrdMy7+rHdM1uIddX+gdLd4mB2nC6SIFbFbeJAeFtc05wlFHi3tbZeIcgN/o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761651783; c=relaxed/simple;
-	bh=fj8cF77kCFzYN9FB5bnj3n2JWZ0DU7jV4gab6q3FYW8=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=bujjnBIIaZR7T+KUqdg0srXgsbclId+dOAf5hy0fiMYAQXr148rLTs9FhDxWGiTzQfVvj1zFjkBIRLEW1958qdJXQVGyf8K7efp8C1JEgIc1BDpz2QgWJJa8wSyg8bwprw14c79u45q1GMPyRyLjSyrxe0P6PKMbkslrQ4sF0B8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pXVrDHCB; arc=fail smtp.client-ip=52.101.56.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC0D30C614
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 12:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761654200; cv=none; b=AOYAmR7c5jp+48larxfC9DhB+3m1HTe6k8pZEsJ3bKUkSNP2otRt9QBqhSZ8CDYSbiE/o0TMmP7PJJm341RKIn/FzO4MJUmTv3wMVzrrtdobVLMmwI1uybg8dABqXc7H+rzvnZ1lNtVWRIJUHZ6hePXdeR02Rzsq07DNlNLqDrE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761654200; c=relaxed/simple;
+	bh=8Xqwyli/NjSoeTHuFfY0OyFe14DIb0UjzfhJgHde4Tk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type:
+	 References; b=guofzfeYs9NfT65leXyvSov37GB5Kl12HhvVqpxT0+WE6KfYKP7oE5eVvzhnvogZ80Y3Oy7RmTQajYJfnv/3s/D7JH8eRYRFnfRIJzSkudLUzISErxx4ZsAwfmga4G/uaTXKCcVaSPGuTfYFsFKsBrSvJ00Kd8Glai2/W18kTxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ePtLi+yZ; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pXVrDHCB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fcyazG8uCx57fRprOWm5JZWMblY3WMuPMqPNN1J/kdczIPMlYvP5tM5z9xn8zv3XhPONea/oowyt5lQvhcPTtiC+y0iYCV5ankYp4PZmqN0qZvq3NWWqCytRx0+ljBOteFLMK5ygYEfAeeL+t9C4qydzd3w59sS4xXcwsfehmk0k4geip6yl9epWKMA4/sPgB0/xFafq+KWIvIiTxtCoqLPiFVaqR5yMvzpVAulm5j8v/dofdteeDkTAt/sAc4n8xJ1jjUUV41ocVm0fZWNQ4IyTRZDlFEgupyXJIkQtG2a0+HOqvJebVl/PgfFB4BFQptxOPD811H68Ck2K0fugHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fj8cF77kCFzYN9FB5bnj3n2JWZ0DU7jV4gab6q3FYW8=;
- b=yNGNueA0ACxqICTNikPVcGnL602XvWbSIa1G/tmGFSlgnSQepGEVQnJB4vpgX1RC96IaCoh3A+eBO5N/YgWAaJEV/7NVP8jKxfzu9bDPkN2mVJUwzrFcvRWNbX9pmuQx4+xIfI2YpO7/7jdU6ngbpTL4R8l1gbX7sGhWcKtdo6epXs0nqMrd0IR0Gi48Eto7NQy0FQo3JsSil3HuMyujyKtwM4ZZy90RlDWhtrrTRc2ynxu2xMYXVkAa56Tch/iQSP/xzrdYZ/7nRTpfPOkSLyfreAcjaJWV3XYP4f5Tk8JYpI1eSWF0yzVxictTt2DVI5CGHW1EE0194o6qVdmhIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fj8cF77kCFzYN9FB5bnj3n2JWZ0DU7jV4gab6q3FYW8=;
- b=pXVrDHCBVxTx80g2zY+PtXB1fZyVMhiCRO9iki2VtN2D1fG24fJMBSS43aVpsopdtlqP65rMDKUZaTJgwQlua03Rva1B5kfQSrxRI3nE8FSybSuzXuVRx9r0Z9hqahQSkpP0slkCGDThyryXXt6bIE3bQsEJJZKIu0zqH4Fxcl9qP1I4lwHlvD8BnIVuFunbdK6LxXcuDf+0IEEVUMtzLYleYlN8jTKqY/TaqYWcAJI0/OwyMKtVeOzqRe0ybp0OZ0u+HWC1+8eJWMuk9eOu3wKPwUpQHCHvT9vYLioJ+0weq0wEGndb0g57kAVTtwPXiCxGqn7LI8qOgGEQgmwcIQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MW3PR12MB4459.namprd12.prod.outlook.com (2603:10b6:303:56::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Tue, 28 Oct
- 2025 11:42:58 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9253.017; Tue, 28 Oct 2025
- 11:42:58 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Oct 2025 20:42:54 +0900
-Message-Id: <DDTXFOUXB38J.1EGUX4U5V0TQL@nvidia.com>
-Cc: <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, "Nouveau"
- <nouveau-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH 2/2] drm: nova: select NOVA_CORE
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, <aliceryhl@google.com>,
- <acourbot@nvidia.com>, <jhubbard@nvidia.com>
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251028110058.340320-1-dakr@kernel.org>
- <20251028110058.340320-2-dakr@kernel.org>
-In-Reply-To: <20251028110058.340320-2-dakr@kernel.org>
-X-ClientProxiedBy: TYCP286CA0369.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:79::13) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ePtLi+yZ"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251028122316euoutp016eb02fd49ce10d91c21da7aa6dd3851b~ypyhecw5u0540805408euoutp01X
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 12:23:16 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251028122316euoutp016eb02fd49ce10d91c21da7aa6dd3851b~ypyhecw5u0540805408euoutp01X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1761654196;
+	bh=Jf/xisGgKKrfoTZqLlk9KCwMEgqafBF+UVNf9SDfM/0=;
+	h=From:Subject:Date:To:Cc:References:From;
+	b=ePtLi+yZBa45Z6llcrrDe1LA4v3KT3cBAih1OMsFuudiNnlhC0UF2y823h09oCQeE
+	 qq0adg0b8qf79v1m2JSS4qOLA2/3CjrR9msei/CwIXYnAtHANgym+qgnS+XPeXSfey
+	 rThellpIR8YWq5p1NXv9ufRZHqv/uZkqwQlSSaZY=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5~ypyg5Mq3g0079300793eucas1p1o;
+	Tue, 28 Oct 2025 12:23:15 +0000 (GMT)
+Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
+	[106.210.136.40]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251028122314eusmtip2b41c21bf57cd2df99166eb249c16d3ee~ypygBMKKr0665606656eusmtip24;
+	Tue, 28 Oct 2025 12:23:14 +0000 (GMT)
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+Subject: [PATCH 0/4] Introduce import_ns support for Rust
+Date: Tue, 28 Oct 2025 13:22:31 +0100
+Message-Id: <20251028-pwm_fixes-v1-0-25a532d31998@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW3PR12MB4459:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47ec0ccb-557b-44da-a028-08de1617241b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eUlLWmRaYjN6WWJKZ3ZEb0tSOGllcTE1UTEvazY2cmlub2U1UlAyYmxqZitu?=
- =?utf-8?B?TnkrV090emdHWmRkdFp4enJwMWM2ZmJ3L0NpK3JVNjJZYUV4Y3hPY1NJK2tE?=
- =?utf-8?B?NkR3WWUxSFR4RGhmSURtSGVmU1Bwc0pJeVFEdGtIU0x2RW5ZTlluMEZWdHRD?=
- =?utf-8?B?SDZ4bzVldTV3dFdTb3kwN0M1YnV0T2NnaC9oMXd3NUVld1dCUDFPVHNoWlQ5?=
- =?utf-8?B?cU9teWM3ODBmcFQveHg3SzdjU0p6ZU4rV2JxM3NOOXAvaG9BL2oyd3dFMlgv?=
- =?utf-8?B?bm9xUmYwL0w3Q1UxUW1PZDJhMGdtZ1Jia1lXUnlUSGdvOVF4OTdsZno2L2dr?=
- =?utf-8?B?dGxvenF6NUgwelkrZnZhZVZtU1Z6MkJPYU9PKzJ4d2N6SjdjNGlKeDNYZjJi?=
- =?utf-8?B?dU9PUTE1VDVKTlg2TldiNi8zRE04TVE3ZG1KMEFzYklVcE9KU2ozSW9YK0lZ?=
- =?utf-8?B?eWxtc0IvZThOejB2dGdhUE1Ca05TRUpZejVxbzJIK3R3YWFqdXViRkdMeGx0?=
- =?utf-8?B?NDROQW0vTUZiTWx0bmZ0YkN2OE85bFJGKzZ2Y1BlN0lxUkZaeWx2SkVYVkxE?=
- =?utf-8?B?TVdYekFvZmZmREJYYWswMERFRENsS2wxYjBQbXd1bm91dnFCRGs3djNCdmJJ?=
- =?utf-8?B?dStEWkZ0SE5uL1M0eUdWbmI0M1RCT2ZqVThmR2lEVExqQmUwd2oxbWlwdnVy?=
- =?utf-8?B?WWlqL00zK2xvTS9YNkY4bnRFVTN2Q3Q5QmI4UWhhZTFncTA2NStFbWduK2Qz?=
- =?utf-8?B?STZKTjNaTm1nbjZ6bDZvWG5zbnZGalN1M0d5c2NNTXJ0bGdLeFA4ZzA4aDZY?=
- =?utf-8?B?ZmV2M3JpTTZSbllQbU5zeWtLTWJ0RHYxRVRQaW9KSjczd1ZBdVE5RmJKbDA0?=
- =?utf-8?B?U2R2Z2ZaQUY1NzhJNmZMOXVRS0RoQlB6N3VGMXp4My81NGZiRTkyOEhLVzlT?=
- =?utf-8?B?MlZTVis3R1dHUnRkTTJ5UC9vcld0Ym1wY1kzM3FLaHNmUlZyZGl5Yk1TUFcy?=
- =?utf-8?B?ZThVTDErbHFybGhwaG1zdW1RTllKQWVkRkhsZ3JNUHQ4QWRzRWJQRVZpWGEz?=
- =?utf-8?B?SVc3eVpyUm4ycDAvV2JtUmJsN0J4UEFVdWE4UEFUMDBCa3pyQ1ZXNEl5TWNF?=
- =?utf-8?B?dFdCRmFSa0k2Sy9taVIzVU56YU92VDJiZUVpdnNwbGQ3YjZ2ZzAwc3JHMU9o?=
- =?utf-8?B?RlE4c1lHSWovL2s1R3J6VGJ5ZExGVzB4OFRRUngxQmtLM0tiWk9BL0pNNWJE?=
- =?utf-8?B?V3NISFV3YjN6d3R6ZjFsMDlYd0xndm5TMUN6Y2JWblhOUDkxUjZzS3FsZk9C?=
- =?utf-8?B?Z3hLc3hveldYQ2oxT3c3ZTc1MlNZdUVnRmVCNk1EK2ZWQ3c1b3Y2Rys4aWt0?=
- =?utf-8?B?N2pvRUJrbjc2eFl5Z3VrbCtvVEE4RkgyZndDall3bjZTT0tzdmVuSGdXOGE2?=
- =?utf-8?B?VENYdnFxRm8veEtEdnZpOTBtVDNtYWRNK0J4dzA4bk9iZkNNbnpZK09UZW16?=
- =?utf-8?B?VVBTSXBZQnNhRTR6NndXSS9BQktPSXZkY0Ntc3NpclNIaEdHTzlZOCtlbDZm?=
- =?utf-8?B?Skg3TmQzYzdwTXcwYnd4VXZFdWhQaWRUd2NONzlMOGJBM1MzUXBaQ1dhbHZK?=
- =?utf-8?B?djJ3MU92TEphaWVWYys2REw5eWJSU1ZHdFFLWkZ3eDVoMHJ2LzYrREJ0cEY4?=
- =?utf-8?B?WkwxTHRiK1Buamp2Y3M1NXVkcmsza0RoNEdVWHR1ZzRPUXpqUFdiLytmSFlv?=
- =?utf-8?B?UlowV2RGT2pIY0FIWHVuc3R4dFk3VUM3aVM3YlpGY2o0TzM0MjVGQlpPZklU?=
- =?utf-8?B?YUtlbC92MmxNM0ZMcm1tU3lGanB0UWtvcWNNOHZsR2RpTFB1YkhyTEk4TW94?=
- =?utf-8?B?bTJOMVZRbFp3MExpTDVPcVpHbDIreWc1MFNYaWwxOXNPTFdWWnZDVnc2VVdz?=
- =?utf-8?Q?MxYDe9YXXYlDJOXfNI+QfYxg68MRrMn1?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WDJMQzlwM3lPOC9WNEl0eHgzRjlwT0M3UXVKelN0SDI0SHlkQWlvRHUrbXZN?=
- =?utf-8?B?cWtoVTFXTmx2T0xTNW9KUnpETWM5MU1HQ2IxcFJhQ1JEY0luRnNkc2ZUM29x?=
- =?utf-8?B?YjRUbFRqbCtxR0dLb0NacFZQYjBxZ09WNFNRRTVPc2NuVkVEd0YvQVA0b25w?=
- =?utf-8?B?WGpuaHNON1JSVXJSQkFqQWk4M2swLzJJbzdWWnRyajJCWDNUSTNOTHUwZTZH?=
- =?utf-8?B?OGhCY0pmOHMyWXVMMDUrSzExNmJZb1JmRllLZTlZRXZUUWZzdkRpblVnSWUy?=
- =?utf-8?B?elJzTG5ScWlYdTR4OXQyTjZoRldhNUpjSWlNa1FHb3ArUkkvS3Q3ZDhmK1dN?=
- =?utf-8?B?SjdXejEzbVRqQng0VG1ZYTRWYnVoa2xITGkyZHc4T3pzSzJKVnZzRTNWZFJL?=
- =?utf-8?B?cUZ1TWlmS0FwbE5Sd1phN25IMVg0bWFubHJOM2plb1Z3TjkwbE1hRitsTlR3?=
- =?utf-8?B?aFMzeUJrcXhEQ3p1ejRiR01JOFd4dU1wMVNTSmNIRHZUckFtRjNTZU1LQldY?=
- =?utf-8?B?NFhPell5Y1FNRGRJU2pZeTZ5TTBDYlF3MFhjR1d6S3BuOWRMUm5GTmRpTFcz?=
- =?utf-8?B?TXovbkZEZVg5U1ZKRDRnY1NxTFRuOER5dmk0OUY1WXhnVDkyRTNISVVZQzMz?=
- =?utf-8?B?YktldmM3dEpqa01NU0Q1NGZNeUlvNm1XYzRRMGxFa2Y3eFhhWlcxeW8xYWkw?=
- =?utf-8?B?MHZiQ1ptR0V3UGlyMWUxSDFZUS9nS2dLcFVMeC9zbm9oRUptOUp2SThsUGhm?=
- =?utf-8?B?THMvY2huUG1CQWthNGg0Qk9hdk5aM0lOTkFxamRlSHJBNmtDU3BlNDZqcHNo?=
- =?utf-8?B?bi8rZjh3Tzc5QVhZQkVXUktaR05FaEhWcDgySEhKUmRpK1dpYWYyWFh6RG9j?=
- =?utf-8?B?b3phNTFUY2IydTlueG41RENMdjA0bXF1dnRmUEpTb0VhWVRSUmlyWXVqdSs1?=
- =?utf-8?B?S2Z2SjUyYWh3YXVQSDBZUm51aUN4VlY0QTRGSy9FUEh5MGZnWmhDNEVKOHZK?=
- =?utf-8?B?eFNJdlhpdTlFTkRVdmN2SThtaFlEVjQycTRONzJvendoMWtHN0hFK3NvT3FM?=
- =?utf-8?B?ZnNkUHJQWGlTTUgxdGgzWmxFVTd3N0hoRVRkRHBhMENjTlNNanRzL3FYSExL?=
- =?utf-8?B?UGthZHQwUzFleFRNWWFtb2lqMmV0SnRhTHdpdnp2di9Ea0xkVW8wakFGZzA4?=
- =?utf-8?B?YmcvNnJpRUZrRko1UGJYYXdRb05URWl4ZUJJYTFIODVrVmdtMDB1L2pib0JE?=
- =?utf-8?B?RVhDOHFheSt0WkZ6dGl5SURJUk5VTDR4VDJEQkQ3NmIrTW8xTGRFOEhBN0Jy?=
- =?utf-8?B?eUVnMXlPejhvaXhHY1ViVUJtTjJWWnVpaDVaMzAvQ2lmTml2bUcrOVMxYnJn?=
- =?utf-8?B?Z3VRYXdRWWZzVVZkKzJhZjRRZjcvSERRcitDQXpmQXdQVUhXOWplRjBubVhJ?=
- =?utf-8?B?b3ZDTUdHaVNiWkswM2loR1RpMjdoV21Dcy9hZjM2amF3UVkyZVd4S1p2ODNW?=
- =?utf-8?B?eWNZRk1zeEhVKzFlNHBVSUQzeDFNZWdybVpyRzdsQjRMbUFmNkhUK01HLzFr?=
- =?utf-8?B?UXh3UHhKcW1HeHRTWkxnMlBmOUZ5akdobitueUg0YVdsMVM2aURxdG1HbzhG?=
- =?utf-8?B?aHFXYnkrNW1EOC9aM29xZVBEUlo4cDZwRGUrRVdNaHdTbGgvUUhoYURwNHZj?=
- =?utf-8?B?SHYwU3RmT3l1UVpqRGFwNDVhWFN4R0xEZE5nNEI3aEFic0ZzTTJkTDBvYWxp?=
- =?utf-8?B?Sk5mYnFrREF4Y09ZQlBDQi8ycDJEd25aYVZLdnJ6eWVqcnpKb3Q5MWVxL2Ja?=
- =?utf-8?B?QitKdUZSZ1lMMmVzZnZNbnF1NHZrdkRnMHhWUTJDMUFGcmJ3YXJyd2cyVlJF?=
- =?utf-8?B?NC9SRDhIVlZ3dWUvZHkxb1ZKYkpZSnRxY2RlL3BnaXBlVGZTWEVSUmp6ZGw5?=
- =?utf-8?B?dE1KMGoyUi9VRTZpY1IvQXBUUWV6dksyZithZUJnMjUxcnRTR0FOQ2xJVk5Q?=
- =?utf-8?B?R1BqK3M4S1FjanZwVFVRYzBDREdKR1VWRUIreWFHRVI0N0RDV1BwRkpBMlBN?=
- =?utf-8?B?a3B6MGI1UHBpOWNVQktlSExoeWVRR1NMeGZrTlhzSHdFMEc5NVY3UHEza0Zh?=
- =?utf-8?B?RXVqaGJhRVVCNWxrNTVoQzQ3M2tVMjFhaU9FNi9TTTlibnVGVVV0VFNSRHQ4?=
- =?utf-8?Q?hkNGJujk4bvhkKnIpUaQchW/F2r1awMJ4BnN53itkVAr?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47ec0ccb-557b-44da-a028-08de1617241b
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 11:42:58.0299
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i4a1+AV0UtJFCTKGoQk+LIAUpq3HnMUBoOEIm1Nei5BjDNL8D9AFo3D5oAgrKCJP4S5G7yg5ApjnxTZqfMjRxg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4459
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIe1AGkC/yWN2w6DIAxAf8XwvBoh6pxP+4/FLAjVkQVw1Fti/
+	PehvvW0J6cbIwwGidXJxgLOhox3EfgtYeojXY9gdGQmMlHwTFQwLPbdmRUJlJIP3YrynhcVi/4
+	Q8DxE/dVcHPA3xeR4LZlFInkm6+QK8hLCRCM4XMcjDYsPX+N66KSDzgcgdPrgOZoZyEJ3Is8KL
+	Vr9JGlpcn2qvD3et5IQ4mzNWCdzmfIKguKs2fc/Gj/itOUAAAA=
+X-Change-ID: 20251028-pwm_fixes-cca9db267458
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Benno Lossin
+	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
+	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,  Danilo Krummrich
+	<dakr@kernel.org>,  Michal Wilczynski <m.wilczynski@samsung.com>,  Drew
+	Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,  Fu Wei
+	<wefu@redhat.com>,  =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org
+X-Mailer: b4 0.15-dev
+X-CMS-MailID: 20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5
+X-EPHeader: CA
+X-CMS-RootMailID: 20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5
+References: <CGME20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5@eucas1p1.samsung.com>
 
-On Tue Oct 28, 2025 at 8:00 PM JST, Danilo Krummrich wrote:
-> The nova-drm driver does not provide any value without nova-core being
-> selected as well, hence select NOVA_CORE.
->
-> Fixes: cdeaeb9dd762 ("drm: nova-drm: add initial driver skeleton")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+This series addresses build warnings reported by `modpost` for the Rust
+PWM driver (`pwm_th1520`) in linux-next:
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+WARNING: modpost: module pwm_th1520 uses symbol pwmchip_release from
+namespace PWM, but does not import it.
+
+These warnings occur because Rust modules, like C modules, need to
+declare their dependencies on C symbols exported to specific namespaces
+(using `EXPORT_SYMBOL_NS` in C). This is done by embedding
+"import_ns=<NAMESPACE>" tags into the module's `.modinfo` section, which
+`modpost` verifies.  The C macro `MODULE_IMPORT_NS()` handles this, but
+the Rust `module!` macro lacked equivalent functionality.
+
+This series introduces the necessary support:
+
+Patch 1 extends the core `module!` macro in `rust/macros/module.rs`
+to parse an optional `imports_ns: [...]` field and generate the required
+`import_ns` tags in the `.modinfo` section.
+
+Patch 2 adds a convenience macro `module_pwm_platform_driver!` to
+`rust/kernel/pwm.rs`. This macro wraps the standard
+`module_platform_driver!` and automatically adds `imports_ns: ["PWM"]`,
+simplifying module declaration for PWM driver authors.
+
+Patch 3 updates the `pwm_th1520` driver to use the new helper macro,
+fixing the build warnings.
+
+Patch 4 includes a minor clippy style fix for the `pwm_th1520` driver.
+
+Thanks to Stephen Rothwell for reporting the build warnings.
+
+---
+Michal Wilczynski (4):
+      rust: macros: Add support for 'imports_ns' to module!
+      rust: pwm: Add module_pwm_platform_driver! macro
+      pwm: th1520: Use module_pwm_platform_driver! macro
+      pwm: th1520: Fix clippy warning for redundant struct field init
+
+ drivers/pwm/pwm_th1520.rs |  4 ++--
+ rust/kernel/pwm.rs        | 23 +++++++++++++++++++++++
+ rust/macros/module.rs     |  8 ++++++++
+ 3 files changed, 33 insertions(+), 2 deletions(-)
+---
+base-commit: cb6649f6217c0331b885cf787f1d175963e2a1d2
+change-id: 20251028-pwm_fixes-cca9db267458
+prerequisite-message-id: 20251016-rust-next-pwm-working-fan-for-sending-v16-0-a5df2405d2bd@samsung.com
+prerequisite-patch-id: bddf445f74431c647c134eabb3eb029374455a2e
+prerequisite-patch-id: 6fbf1d04b8ca1c72362d7f3a4e420be8f95a44a8
+prerequisite-patch-id: d4adae5b56cd13089bfa070bc4bd3bbc6f50b097
+prerequisite-patch-id: c1a631eb7a5d8f1d8dfdae847e8b32e8d5ea95d8
+prerequisite-patch-id: 6c2a0d316d9d0aa99346cb12afe4b9dc5ac217db
+prerequisite-patch-id: 4a05412207606f8df51db0068c4f57785b02a271
+prerequisite-patch-id: e0a0d54562e883b07cbe9c5b3721687de5b4ea55
+
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
+
