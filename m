@@ -1,152 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE572D7D47;
-	Tue, 28 Oct 2025 12:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC4E1FE45A
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 13:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761654336; cv=none; b=Ysga3/FQNaSteOXsxz5pQ++yGR3u4VbsqgUUxFw1sfLIEGWEka/JGR5Wsr+5vQHxrINfruaiNXerM9Pxl3o7aEWMieVkqBkMLGtlbbBMlpvMoEnvgHIWh2I7TYLYgdhBcMeBSowA3lkug5vNpn9BuzEgdi0SdjWcRnnvws2Pii0=
+	t=1761659249; cv=none; b=WYarNg3FuThS0NALtiWZOH01FGjbk4d4DC1utx0ywz5EQ1uLGMhZczh4KwIrywnLAgCnn0xziLRS3X1RcEuJPzwsq7WcOXaffBHl2VTSjvMlFi1e4qXtVHVfM/qqwx48zA3BQZcTOlZEVfwWCJ4e2yCmi7LQejOFvNKdkLb4748=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761654336; c=relaxed/simple;
-	bh=O3rrBgUppSWO5V6RBh3WFUXiqJ2WOAiNVe9eUEytpLs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=jiXkhfK3EK0JOxUCiQu4uOyAjahGXYcjrrDFCW6+je/KpPpR6sSqik/zZZIY3xgtyQQIYRBp47xd4XdBR+BilGkbxbQa4Wc+X6VbpCQhOmd0Yj5+QhtsCRKKlUB5M9Dg7CQKjndj6iVvEn3QzVFL7EtOpgKeNcVnXFfqE7YttvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkCkaKgU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761659249; c=relaxed/simple;
+	bh=zawK76MtmH8ufrxR4rfg/Ht+VnEdIN5K5P/OxQhqD1Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KqL1n1rnBbLYFQC1wvxFfG5nJwDVcbWRac5NeFxWJ9Rc5vhZNEItO+aofyxPUePPwuB8/SXqfy0bPsXQLQwGigf5DV8Ed/aoIfaU6wIyplASPiXz/BNQ+UYJwX1pf+Z+yFDDSw8PfIkB5EC7h8oevybdN6MIpSLmsRi7sEjphto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KmNNPfWz; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkCkaKgU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D242C4CEE7;
-	Tue, 28 Oct 2025 12:25:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761654336;
-	bh=O3rrBgUppSWO5V6RBh3WFUXiqJ2WOAiNVe9eUEytpLs=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=nkCkaKgUtJmi0jENBGtAEa7GZdUeq8CF1abVMc663PiYN+cAyRA/JvQKcIlZ5F+wb
-	 E6FfvhpsuHBryNfWCH1P0bMxVDRYeX+BFhH4fGTD56fJTplRK61O3Mf9gkUjqaKKsd
-	 0qXX8YDk/R28atBJEPF3I887qTNTqvLDugOkbCDSX/Xc+mOLeal8dx3nGg46FXQc/T
-	 lY0LxHgRHO0usuNdOOi21sZaBILsS49bNEhOOYvaeE2r7JftuSV4aC5w9Wklcn8LCJ
-	 SnjXF8AoetwDCUGiWaOYmHH4OJ8/p4HyygyUoQ3PfkqA4T/qvmC6I/NTcuLkdBTIqf
-	 1rVnVf9aVXnnA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KmNNPfWz"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-290af0e154fso7413855ad.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 06:47:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761659247; x=1762264047; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lck/qUF3K17/QD681a6Qx1V7al1MyFus+/Obtk7sHTc=;
+        b=KmNNPfWzC511RqEJz0m9q2LzoZkyd1bSlK0vzRAVWE9z4HA3FSf5E/aqgOsN+8IkDd
+         txRYdkgDX+L1C/r1c7VW0CaFcXf/2C1qXGfuQQ0qFcb8+eMavq7iF8DocJcPoAFMPd2M
+         deMW5RVAPvJXrIj60fvQQ+HFzeqCCWam9mhitxsxdnY73wlLNG9ft1I2vM0TdBFaCBQE
+         jXjBgs01ddWuch6q7rUoOBUADpguZhfi+NUPUSLp35vLnrVd5Fr++nU2ek71C64TxwvX
+         KDTyRUrgJB73Om3XpoBms5n5azVhAGTGFbTzMO1Ty4EW8NDO06Qp8sPDl5wuViBTdsjC
+         qm5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761659247; x=1762264047;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lck/qUF3K17/QD681a6Qx1V7al1MyFus+/Obtk7sHTc=;
+        b=Q8fwEih0s3V3gmvXuJ+46gFmzIHw6Cxq3KPG+gTZ41KwfYF2yaZ++OWzZyIvZeps1C
+         iHVXY3UHow2l/AOlOK0YeprjfAf5VrK/oCqZWbQKeZUfuGY7b7E2UK9+NqVuNHAfdCQ+
+         in1Sv1SzYL4m4egJzhpujqpmDjS0V1weA/1gq6Uif2NDw39FokE4H8vK5/puw52B04hp
+         x85ZmDN2s4kv40xEFgMARraWLcNqtAjVqpfn5LqWvmbg4Tw23vCcyex/CNDXVVm5GJs2
+         lTpHxonspOeiAIyOWHRy+z7sHsfruiM6s5LZ4mawkJzlUUcBjeVw6t4KE+6RzasPShkQ
+         J7xw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxrBmCXuagO/0662ztnWmDL3IQYTUhN0qydkTy4Nunl/9KLcnH+MGVj2vyjDqbhLLi2yBCZi20FQRJKDKymw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuw8Ogc27MP/yeX/KAnyqb5MmqQ646lV5SnCLIZCwn8qKp8M0D
+	qoqi0V/Xo5br/5/D9pxBAnVQL1SqtXA8V9pLERx5LfMJ/eQ41USBaJkS7ljtO8f/FPR46XvBeJj
+	28/YlU1pc4CwXOLTewQfVlNSSV8UZ1m0=
+X-Gm-Gg: ASbGncthsgTIro6kAqiLolUUgP5mnvfxtCLuuBWnlPbx/zxxe0kKPp6Ht+IlBVaMhuN
+	CMdvc8GErFv1EAbnLl9gBRcHMLBxWpT+sXqXEU89KlmPixYBAoR/H4RSXx5ElX7DprdG0ob8ae4
+	GBXmXJSwkDFBG41v9VP5RYQiyT33V4iCUIStuv33CysaA/FU6cpAtWtJcPk00HAWmmHYIpG67zs
+	EbIrcZYyJsjym+ky2OcNZPWztJJ2Y2mkobZjz4dgkGAgDJh+8vkv6OfoI3oPrpKhQo9FvOt/SHN
+	5qlrYxODG5oU+0gKMEt6G0AbeGKpUZavm9RvalcCPQMORcGGEfbDdQyMAZdm0qnYRWZseiEvvQV
+	g2vw=
+X-Google-Smtp-Source: AGHT+IESXoECX6lb+KHpmsbAfcJAT0GbZQiS04Og6y3R0qXxL+rFcZNSFEWU136JZUGwifFE09Yqi8TDGf+dQjOFZ4U=
+X-Received: by 2002:a17:902:db11:b0:25c:9a33:95fb with SMTP id
+ d9443c01a7336-294cb502797mr22038715ad.8.1761659247125; Tue, 28 Oct 2025
+ 06:47:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251022143158.64475-1-dakr@kernel.org>
+In-Reply-To: <20251022143158.64475-1-dakr@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 28 Oct 2025 14:47:13 +0100
+X-Gm-Features: AWmQ_bludoF7dxQQKoaDhrz1B9YQeI7e37qaHz0Oa7sW-yAdS1QG2o8R7Wm1Nqs
+Message-ID: <CANiq72kjuGDAkwhYOM0BTn_WRruYn88C_MmYqytpJW=UMELV_w@mail.gmail.com>
+Subject: Re: [PATCH v3 00/10] Binary Large Objects for Rust DebugFS
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, mmaurer@google.com, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Oct 2025 13:25:30 +0100
-Message-Id: <DDTYCAZWUZL5.36Y1LKLB8EUD6@kernel.org>
-Subject: Re: [PATCH v2 1/2] gpu: nova-core: merge the Revision type into the
- Spec type
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>
-To: "John Hubbard" <jhubbard@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251028023937.1313108-1-jhubbard@nvidia.com>
- <20251028023937.1313108-2-jhubbard@nvidia.com>
-In-Reply-To: <20251028023937.1313108-2-jhubbard@nvidia.com>
 
-On Tue Oct 28, 2025 at 3:39 AM CET, John Hubbard wrote:
-> -pub(crate) struct Revision {
-> -    major: u8,
-> -    minor: u8,
-> -}
-> -
-> -impl Revision {
-> -    fn from_boot0(boot0: regs::NV_PMC_BOOT_0) -> Self {
-> -        Self {
-> -            major: boot0.major_revision(),
-> -            minor: boot0.minor_revision(),
-> -        }
-> -    }
-> -}
-> -
-> -impl fmt::Display for Revision {
-> -    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> -        write!(f, "{:x}.{:x}", self.major, self.minor)
-> -    }
-> -}
-> -
-> -/// Structure holding the metadata of the GPU.
-> +/// Structure holding a basic description of the GPU: Architecture, Chip=
-set and Revision.
->  pub(crate) struct Spec {
->      chipset: Chipset,
-> -    /// The revision of the chipset.
-> -    revision: Revision,
-> +    major_revision: u8,
-> +    minor_revision: u8,
->  }
+On Wed, Oct 22, 2025 at 4:32=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+>   rust: uaccess: add UserSliceReader::read_slice_partial()
+>   rust: uaccess: add UserSliceReader::read_slice_file()
+>   rust: uaccess: add UserSliceWriter::write_slice_partial()
+>   rust: uaccess: add UserSliceWriter::write_slice_file()
 
-Why not keep the Revision type and its Display impl as well?
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-> =20
->  impl Spec {
-> @@ -162,11 +142,25 @@ fn new(bar: &Bar0) -> Result<Spec> {
-> =20
->          Ok(Self {
->              chipset: boot0.chipset()?,
-> -            revision: Revision::from_boot0(boot0),
-> +            major_revision: boot0.major_revision(),
-> +            minor_revision: boot0.minor_revision(),
->          })
->      }
->  }
-> =20
-> +impl fmt::Display for Spec {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        write!(
-> +            f,
-> +            "Chipset: {}, Architecture: {:?}, Revision: {:x}.{:x}",
-> +            self.chipset,
-> +            self.chipset.arch(),
-> +            self.major_revision,
-> +            self.minor_revision
-> +        )
-
-This could just be:
-
-	write!(
-	    f,
-	    "Chipset: {}, Architecture: {:?}, Revision: {}",
-	    self.chipset,
-	    self.chipset.arch(),
-	    self.revision,
-	)
-
-> +    }
-> +}
-> +
->  /// Structure holding the resources required to operate the GPU.
->  #[pin_data]
->  pub(crate) struct Gpu {
-> @@ -193,13 +187,7 @@ pub(crate) fn new<'a>(
->      ) -> impl PinInit<Self, Error> + 'a {
->          try_pin_init!(Self {
->              spec: Spec::new(bar).inspect(|spec| {
-> -                dev_info!(
-> -                    pdev.as_ref(),
-> -                    "NVIDIA (Chipset: {}, Architecture: {:?}, Revision: =
-{})\n",
-> -                    spec.chipset,
-> -                    spec.chipset.arch(),
-> -                    spec.revision
-> -                );
-> +                dev_info!(pdev.as_ref(),"NVIDIA ({})\n", spec);
->              })?,
-> =20
->              // We must wait for GFW_BOOT completion before doing any sig=
-nificant setup on the GPU.
-> --=20
-> 2.51.1
-
+Cheers,
+Miguel
