@@ -1,43 +1,43 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F17032D0F2
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 12:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BF132E129
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 12:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761654201; cv=none; b=THuIJqwTkjm/OI4va87hMlOzfC1/TiyMTI0YauXYIYQOrS507zpj7fuA+D5SZu9mydMnvisQ+Jc+0ldfhb6Zx7ZL6t6rnZrX3eMfiu56L+6vjQuf3YFOdvC1GAuao/LgWVAoZNkVBxoBA1nSjlQqPRHFrI4EOkNCqfdmiWFoWCc=
+	t=1761654203; cv=none; b=ptev6Zm0UVjND8rHw+AoMXFl/FpV5Cmcb+5YbCkVozapDGIbO+Vukcd4P+EzqxUCIfqrW0n8IgZtZ30/QfAUnk8C2A4JF+GQrWY0ALJgZ7lNN2l4VQKpsXau+vqbBRWTukgD6Qk60wrXc/Nu0nsNd/UwmrOF/b8fPTMpxeAUdIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761654201; c=relaxed/simple;
-	bh=CcfjXkudmcRMkM5k4FnFQVn2Pj1DpNZz1VwIHs0i84c=;
+	s=arc-20240116; t=1761654203; c=relaxed/simple;
+	bh=IEvI35ov+XAqEtHcG8sOgZroRPI+evTW3+Prd+Jl19E=;
 	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
-	 Content-Type:References; b=rmaSTlEyp4P1SSgbG+fImmIq0qpYigXhpH6qrw4pj+jGfi1RxW6vomK2iQiuhLblO2ubLGmlzfEvqf/1yPvTXoWl2hjU602qjDtCGFHP0+k5QhtbZ9T0KTCppooJ6x9I93g4fD4VwklmHgYHwLQYF6doPaFID5hrvMPqbuDEK6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=LkN5orKn; arc=none smtp.client-ip=210.118.77.11
+	 Content-Type:References; b=QoPtYGkYdc/VPM3HAnxndHVbHHcW6ypBjriYpODgo79h0TzPYaJDvsGySYQOdWdWvNQMhwROTCOgm0plEje8RY/wJzV6D8W+jXQ6TwwrXNcFeFut04bj2iuMKYtBTlwgTPCtqwTd4II37XDGThCJvL+gkwdeA66sEtPnWKyRj/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=O4TEa0ov; arc=none smtp.client-ip=210.118.77.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="LkN5orKn"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251028122318euoutp01f25d408c4bc333f3e3883d8fcfefc0d1~ypyj2D_ZJ0496004960euoutp01i
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="O4TEa0ov"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20251028122318euoutp02dcf00f9ed46b9d44c26594835953e855~ypyjgR8hU0277002770euoutp02a
 	for <rust-for-linux@vger.kernel.org>; Tue, 28 Oct 2025 12:23:18 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251028122318euoutp01f25d408c4bc333f3e3883d8fcfefc0d1~ypyj2D_ZJ0496004960euoutp01i
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20251028122318euoutp02dcf00f9ed46b9d44c26594835953e855~ypyjgR8hU0277002770euoutp02a
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
 	s=mail20170921; t=1761654198;
-	bh=uWMsqhhcsDbSWAzMcyI6QgsDz6D9C7w2POWICu7CupQ=;
+	bh=jGjkU3U0JLre9e/0ro7TQvedWMp8tpNdUoBxZXg3c10=;
 	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
-	b=LkN5orKn9XHXubVcNTl/1nuQvVq/uHBE3gmWBWr+njVfDGe1qwKGccWy7Qxfxhm73
-	 49AfQbivz9L/BefYPWUM7iENdKJsXJn+iYMhWgpqv5OdVk9PjyvmIJ89YOoRJsA+UY
-	 s/oYE8G8ywiXZMSqRTFvuNEigb0hGQsnDHVhhI6c=
+	b=O4TEa0ovaGQfOSHEhlZb7p626KKV02YzVfksnIiEeGHcvJ6l4dpa+TCS8NYK2BXhe
+	 5vEx6KyJ/dzsgLbX6C6dDUvcFj0JA2osFsYgPWoT5CLbxbUKvtsiTVkW2TzgG/ccZ1
+	 bl6rc2jiMWdvb2ot7Hc4vriSkKbJOkmnDgB3R4JU=
 Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
 	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20251028122318eucas1p17161f0e1f2281c868688e8a4cc3d8f68~ypyjVyJo80564105641eucas1p1P;
-	Tue, 28 Oct 2025 12:23:18 +0000 (GMT)
+	20251028122317eucas1p1e7c925502a83dd3324478c0209de08c3~ypyidlIXm1056510565eucas1p1E;
+	Tue, 28 Oct 2025 12:23:17 +0000 (GMT)
 Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
 	[106.210.136.40]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20251028122317eusmtip2563abe71fe7499c4e71a7162653a7e76~ypyih3a7n2998829988eusmtip2H;
-	Tue, 28 Oct 2025 12:23:17 +0000 (GMT)
+	20251028122316eusmtip2a58bac4a211ef65df4d1d0fd332e1469~ypyhsC2tI3027130271eusmtip2Y;
+	Tue, 28 Oct 2025 12:23:16 +0000 (GMT)
 From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Tue, 28 Oct 2025 13:22:34 +0100
-Subject: [PATCH 3/4] pwm: th1520: Use module_pwm_platform_driver! macro
+Date: Tue, 28 Oct 2025 13:22:33 +0100
+Subject: [PATCH 2/4] rust: pwm: Add module_pwm_platform_driver! macro
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251028-pwm_fixes-v1-3-25a532d31998@samsung.com>
+Message-Id: <20251028-pwm_fixes-v1-2-25a532d31998@samsung.com>
 In-Reply-To: <20251028-pwm_fixes-v1-0-25a532d31998@samsung.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -59,43 +59,70 @@ Cc: Stephen Rothwell <sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
 	linux-riscv@lists.infradead.org
 X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20251028122318eucas1p17161f0e1f2281c868688e8a4cc3d8f68
+X-CMS-MailID: 20251028122317eucas1p1e7c925502a83dd3324478c0209de08c3
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251028122318eucas1p17161f0e1f2281c868688e8a4cc3d8f68
+X-RootMTR: 20251028122317eucas1p1e7c925502a83dd3324478c0209de08c3
 X-EPHeader: CA
-X-CMS-RootMailID: 20251028122318eucas1p17161f0e1f2281c868688e8a4cc3d8f68
+X-CMS-RootMailID: 20251028122317eucas1p1e7c925502a83dd3324478c0209de08c3
 References: <20251028-pwm_fixes-v1-0-25a532d31998@samsung.com>
-	<CGME20251028122318eucas1p17161f0e1f2281c868688e8a4cc3d8f68@eucas1p1.samsung.com>
+	<CGME20251028122317eucas1p1e7c925502a83dd3324478c0209de08c3@eucas1p1.samsung.com>
 
-The `pwm_th1520` Rust driver calls C functions from the `PWM` namespace,
-triggering `modpost` warnings due to missing namespace import
-declarations in its `.modinfo` section.
+Rust PWM drivers using the abstractions in `kernel/pwm.rs` typically
+call C functions (like `pwmchip_alloc`, `__pwmchip_add`, etc.) that are
+exported to the `PWM` C symbol namespace.
 
-Fix these warnings and simplify the module declaration by switching from
-the generic `kernel::module_platform_driver!` macro to the newly
-introduced PWM-specific `kernel::module_pwm_platform_driver!` macro.
-The new macro automatically handles the required `imports_ns: ["PWM"]`
-declaration.
+With the introduction of `imports_ns` support in the `module!` macro,
+every PWM driver would need to manually include `imports_ns: ["PWM"]` in
+its module declaration.
+
+To simplify this for driver authors and ensure consistency, introduce a
+new helper macro `module_pwm_platform_driver!` in `pwm.rs`. This macro
+wraps the standard `module_platform_driver!`, forwards all user provided
+arguments using the `($($user_args:tt)*)` pattern, and automatically
+injects the `imports_ns: ["PWM"]` declaration.
+
+This follows the pattern used in other subsystems (e.g.,
+`module_pci_driver!`) to provide specialized module registration
+helpers. It makes writing PWM drivers slightly simpler and less error
+prone regarding namespace imports.
 
 Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
 ---
- drivers/pwm/pwm_th1520.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/pwm.rs | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-index 0ad38b78be854ab3c10268fb20763d9962f59c0f..5fb123f5e9c6dc3a8ee9a7a47fa778c23213e957 100644
---- a/drivers/pwm/pwm_th1520.rs
-+++ b/drivers/pwm/pwm_th1520.rs
-@@ -369,7 +369,7 @@ fn probe(
+diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+index 79fbb13cd47f75681283648ddc4fffb7889be930..6f2f78c687d5b924739f59052e9b3393c922540d 100644
+--- a/rust/kernel/pwm.rs
++++ b/rust/kernel/pwm.rs
+@@ -760,3 +760,26 @@ fn drop(&mut self) {
+         unsafe { bindings::pwmchip_remove(chip_raw); }
      }
  }
- 
--kernel::module_platform_driver! {
-+kernel::module_pwm_platform_driver! {
-     type: Th1520PwmPlatformDriver,
-     name: "pwm-th1520",
-     authors: ["Michal Wilczynski <m.wilczynski@samsung.com>"],
++
++/// Declares a kernel module that exposes a single PWM driver.
++///
++/// # Examples
++///
++///```ignore
++/// kernel::module_pwm_platform_driver! {
++///     type: MyDriver,
++///     name: "Module name",
++///     authors: ["Author name"],
++///     description: "Description",
++///     license: "GPL v2",
++/// }
++///```
++#[macro_export]
++macro_rules! module_pwm_platform_driver {
++    ($($user_args:tt)*) => {
++        $crate::module_platform_driver! {
++            $($user_args)*
++            imports_ns: ["PWM"],
++        }
++    };
++}
 
 -- 
 2.34.1
