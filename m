@@ -1,61 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EB932F777;
-	Wed, 29 Oct 2025 11:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CC133769D
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 11:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761737973; cv=none; b=NphbFO2xpLzRioLndofvlQ9ZKwVVtpUuNc/gPM+51Ix5OZYibTGE7TEYXVMu6HKb+MiCyf7eivITH/yPOagwvnw84KWlriVLXinYCWJdK3lO8ueFcnN5pVKSBCHJdlRSfqcj/4xeTat3uJBPkgoOr8IY2ZH55h0LFX2eIaxbYy0=
+	t=1761738674; cv=none; b=fkTVoV+QPisksVrODtqf+uV1Lu5HNetUDWiBuBXcQ9F8L7fAQt3mkC7EpleJRMqMu0TeNpZj6YGF/2OBbdq2HoLm+wdijI7iTLOfrl4mLLHQAeMcWxDF75I5Rv6xugXO2xfg2gtIxrL+mfuiHmxhZT5C/tl7JR2KoYcfXEENHfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761737973; c=relaxed/simple;
-	bh=6C8y/bWWAanzKHpDtdX8MPRYbKkBqoosD3tQWkhEzOM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=TQOUbPzSw5aHyh2Z/qmtnqAYVvPVZFUleEpB4H6Zv58bmVGfu98nC46qYuUTOTsNyh+fT+TWegI4RDCy2FBN7ClCrMqUHqUVoP5rtvbMwVCchUhYMwe9To7DIqxiHtdV/WVfKx2EPrrU79/y3p0qrwAgyUyORxMuO19RMIGYiB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XtLvVY4N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761738674; c=relaxed/simple;
+	bh=B8ftc5m+Zx4NqRnN3ISF7R2X5LgtjQfowgPyiLC8Mv4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=S/xzjQsUcYUcDwFPulbepeVbSKpzRCBtDZni8Xyp6BSGDoWhGpZmZt3i+iTJZBE7fFsmEOoG3bqW84kxnTy2X3DZPxcpn/9y97ZJRF9ZpqSQFGENnZE1gL5KBEiEyjHv9igo9YIXvpIoZeJ4zZuBkFEWpaRnBrvjkS+1+QEFgks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u35cEB6K; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XtLvVY4N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB2BC4CEF7;
-	Wed, 29 Oct 2025 11:39:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761737972;
-	bh=6C8y/bWWAanzKHpDtdX8MPRYbKkBqoosD3tQWkhEzOM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=XtLvVY4NrO4Snv5JasMT2k+z/PdaOcXUjcoUmWrTxmdrDpWofIKPDwwtynyjWQgzX
-	 bR8hF8vD7adXlDXCaVX4wljrP55Bu4etdRZOf6+F6Z4vHtnYfK+xKO2F/pL6vCjfm6
-	 Nsl/vVxIFzZ/2Id1k3l7NSyRTO3ufWqbKc0heVyDBqZGcPDvYQ9ZCRcCr84H6+pm1J
-	 SnUbsH6IXUzPw8hBIMiK3y359DL+7gtgqzqu0rlzyYtrLtDwmJ3K6pbtyRbIt1ihJi
-	 hE8P3MxWRC6mehCXd9GFzzGDY09+7nJW+Z+mNWpIf/yJwUq6OaKClKEUllYvDQvb1l
-	 3IyLmon3hZR6Q==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u35cEB6K"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-475de1afec6so2343735e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 04:51:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761738670; x=1762343470; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zJBte9qL2F5esy8PjX1qFQqZ0U8KWh6KuSrYtDXvXAk=;
+        b=u35cEB6KH1ByQYznvOmFuFM1wWxG4RkDHI69ARWelb5r5GSzUHc935pSQWmz0X/nc2
+         rqrwByGt1R6Avth0jooVk2znrewC2qNQbP+vePEsVJeRGNmMf984sEnZklj/5ujtXMZv
+         pf5zFBb7YLuepMUNFDEXPhkFecUJggzjBO0djcKkvYEFOGQTuA0KBzPj3RYqYGObKfjj
+         Om60cNTaplUcYRKkrNqa0GtZUlMZQ/fCu2lvg56arSFEu1Whr7pkStNLm4ayktQUt9T3
+         YIzpiOtRa0OgGOP0G56a60TJIHm4hTRgMT3jP3to/Kb6bPVNWu5uvG1OtfY+L6b+UzEy
+         fHDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761738670; x=1762343470;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zJBte9qL2F5esy8PjX1qFQqZ0U8KWh6KuSrYtDXvXAk=;
+        b=CJvSQjcZtSj1GFrpTeXErV7UDXwBlsF5dEaeDguRpsGc2yKf1mJBQlXNH8F1bmgvrp
+         QQJvTNIEc6A9lLy+1mFzY6e8w2vhx2MOE7leN0B1BvgvwNkYBdGu7ho7ezzwYNUte4PW
+         uiJpMeAWoGigscJViQKaiCCNNTFsqpyhX+lVW/4GvPDhcWRrobu6eCLFu0bH0ejpItMN
+         okTIOvLsT8icjYyzwDyY/WFNI8gR+fMoMEWXjem1uCaoTx+QgcfFnc73AVkIiI3dSqMQ
+         oZXOOSi8LpmqKYBAbDnQVGZfbkhkil252mStPvVzkh4Btyp6cGhKU5tzTkrTWSIKJj25
+         1e+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXyEm+VD0hq/zufxc/7pRgQAqcTn+UK7Ell1E07EG0TdBo2ImepojIj54efG/X1ohUeTY4CTfX5V/TfrUX04w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxK11mSDqGxriJQDqm/Gn7nTTr9iS3pD/ZQegtPyf/UAH4aEZFV
+	1nDVLhEevAxIdqzUFy2t0HBrC1zzFZWPBa7scgOA1jNfPwPBrt8FyrXcl897VcTkukhFcC1zpa4
+	xc9NV3gStBPVCK462XQ==
+X-Google-Smtp-Source: AGHT+IEzf5DD/ZRDP11ls1+sFcSAz2cd265PwvZLISiIYrx/8qfvp7AvDnt2fHl6SuXE/oHiYPwAdnca/cPmAbM=
+X-Received: from wmdv22.prod.google.com ([2002:a05:600c:12d6:b0:477:d88:1a31])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e4c:b0:46f:a8fd:c0dc with SMTP id 5b1f17b1804b1-4771e5db04emr26052395e9.3.1761738669830;
+ Wed, 29 Oct 2025 04:51:09 -0700 (PDT)
+Date: Wed, 29 Oct 2025 11:50:58 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Oct 2025 12:39:27 +0100
-Message-Id: <DDURZLGB2VRJ.28Y4AP92FNFPS@kernel.org>
-Subject: Re: [PATCH] rust: devres: fix private intra-doc link
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <patches@lists.linux.dev>, <stable@vger.kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251029071406.324511-1-ojeda@kernel.org>
-In-Reply-To: <20251029071406.324511-1-ojeda@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAKH/AWkC/x3MQQqDMBBG4avIrDuQTFGpV5EumvjHzibKpBVBv
+ LvB5Vt876ACUxQamoMMmxZdcg3/aCh+P3kG61SbxEnrnbw4aJ5gHGIyIPwTL+uvGn620ndO+gj vqerVkHS/z+P7PC9hgd1JaQAAAA==
+X-Change-Id: 20251029-binder-bcfreebuf-option-35276027ce11
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2821; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=B8ftc5m+Zx4NqRnN3ISF7R2X5LgtjQfowgPyiLC8Mv4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpAf+j/0TpHWgX3C0dn1iRCIlDpudV75Wgg54qQ
+ A7LO685EO+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQH/owAKCRAEWL7uWMY5
+ RpSeD/4i9RElIid/eJ+RJvAgLnEgcdvR/dRGlPZLzTbgS3GKXRW5FPl8MDpliRncatVYADLLnAT
+ qUc7fjegkgAl6hWBK4iTHve4ErgA+PVcURZbccW7a1Y3+EPGik1keGcRAB4cMuYqrP3wfZdE3M+
+ 0Sp4gyaD8zVa2oSqSeNknec7qX5Z/9RhlVCs8U1h8GhA2PLRC6nKr5HXwfKrPxFWXTn7KWZo9Tu
+ 6+3rn4O0T7qb6acCrxdD2P0kFInGYIHMISV2HFYOQdj8bWiTX4jNciTxZdInCwwqt925I4KUol9
+ xtsUPku+Ss84vgZu5j+HcEkmfaqwvvuMIa+yYclFByrpF7gD4f+ZYIKmyDOTvGJJe7iTrZAfqcv
+ v7kQRL0za3UH0Rczkwt6Z3soaVeTC9HnuARaZgJbBnyn+mZO/UxAsh+L/sEah1SPFV5LgoTnZbg
+ c7/2ET3eK9+1Llof/mIQBEHu2KJ0/xJSRd6AWrM+s0ynXsZx22iKJWHg1xRDfMPLIQqE2X6vfQd
+ 0w4dCq2tLP+v76HIuenbN8xay1TrozIZiDShI55X0lSKypc24qXop/zcapcpsC/Ai69fOP3peYj
+ WDGsPrIZfHsBdGuqCLb9BH1gAt+6/0hCX2a6x8sMT4F3zQMtMdJX+PzlTd9tZS1jFGnbjWSlS9x K59UrCoZSzaW7mA==
+X-Mailer: b4 0.14.2
+Message-ID: <20251029-binder-bcfreebuf-option-v1-1-4d282be0439f@google.com>
+Subject: [PATCH] rust_binder: move BC_FREE_BUFFER drop inside if statement
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Christian Brauner <brauner@kernel.org>, Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed Oct 29, 2025 at 8:14 AM CET, Miguel Ojeda wrote:
-> The future move of pin-init to `syn` uncovers the following private
-> intra-doc link:
+When looking at flamegraphs, there is a pretty large entry for the
+function call drop_in_place::<Option<Allocation>> which in turn calls
+drop_in_place::<Allocation>. Combined with the looper_need_return
+condition, this means that the generated code looks like this:
 
-Given that, do you want to take this one through your tree? If so, please d=
-o,
-otherwise please let me know.
+	if let Some(buffer) = buffer {
+	    if buffer.looper_need_return_on_free() {
+	        self.inner.lock().looper_need_return = true;
+	    }
+	}
+	drop_in_place::<Option<Allocation>>() { // not inlined
+	    if let Some(buffer) = buffer {
+	    	drop_in_place::<Allocation>(buffer);
+	    }
+	}
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+This kind of situation where you check X and then check X again is
+normally optimized into a single condition, but in this case due to the
+non-inlined function call to drop_in_place::<Option<Allocation>>, that
+optimization does not happen.
+
+Furthermore, the drop_in_place::<Allocation> call is only two-thirds of
+the drop_in_place::<Option<Allocation>> call in the flamegraph. This
+indicates that this double condition is not performing well. Also, last
+time I looked at Binder perf, I remember finding that the destructor of
+Allocation was involved with many branch mispredictions.
+
+Thus, change this code to look like this:
+
+	if let Some(buffer) = buffer {
+	    if buffer.looper_need_return_on_free() {
+	        self.inner.lock().looper_need_return = true;
+	    }
+	    drop_in_place::<Allocation>(buffer);
+	}
+
+by dropping the Allocation directly. Flamegraphs confirm that the
+drop_in_place::<Option<Allocation>> call disappears from this change.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ drivers/android/binder/thread.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 7e34ccd394f8049bab88562ffb4601739aea670a..1a8e6fdc0dc42369ee078e720aa02b2554fb7332 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -1323,12 +1323,12 @@ fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
+                 }
+                 BC_FREE_BUFFER => {
+                     let buffer = self.process.buffer_get(reader.read()?);
+-                    if let Some(buffer) = &buffer {
++                    if let Some(buffer) = buffer {
+                         if buffer.looper_need_return_on_free() {
+                             self.inner.lock().looper_need_return = true;
+                         }
++                        drop(buffer);
+                     }
+-                    drop(buffer);
+                 }
+                 BC_INCREFS => {
+                     self.process
+
+---
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+change-id: 20251029-binder-bcfreebuf-option-35276027ce11
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
