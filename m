@@ -1,74 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0F30F804;
-	Wed, 29 Oct 2025 18:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81793009E3
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 18:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761761434; cv=none; b=Uy4HwYdeSfY4mnjlAbnwHD7Ws2HHeFtJzEDOnjf7wSzwLqr4UMgJG77EuUkYkQaR/juX5Bub4oOSxMuEvN5NwHqrZK+HBlGSZcKzcGvigqzH3YIqytlFLFhKl3///VKuZ6AWEFxesAU36xWoII22gBGHXCyvHg4lXrGK9z/wezM=
+	t=1761761934; cv=none; b=iI19lAWnXCwQ0wiBl17aCPsDWcqtlj9nPp+gElSNsXcO2RtDlmuwKCawG+9KqLnxzhcvpJIJ8+t1ZmGqw8zqrsTgc4sda5IFF99US5WHShI1Ck7ItjdDTk1uMzfdJgV0gaJsCJl2Sk5RQ/ROiusuYtKMSNavdMpGIKa63UyyUUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761761434; c=relaxed/simple;
-	bh=74+OE1xL32AvuQq0dCzthnLOebJGx9aO7I8+OqhTme8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=SHci+uf1LdHZI9mIewMNgU0phuzxkuut1oyHSw3TFXSTw3vFsx+AfH8W8eGU8wjceioFt5jHeeniavSEJ5s9n8O2XfLbA5QxmV5AQSMam5pQJqDJ5ZjJsFR+YLxZ9kzBaxGkJ3VxqvFi5w7q6ecI5oQ3MIKYagECvNzE6xeiIF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0pR2af2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761761934; c=relaxed/simple;
+	bh=P60WA2IekOhXcaoabZ29P77AB+IQvR9LQbwR2bw+CmU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sIMfZInX807JLLqaja2AMZPHkU6fm+k0nYJNJxA5bq5fwh6hByEJLmfMp1nftU5P95eOGVSC23CosvMQzohVw4XZpnVJpXxTC0uUaMqvJwTSLSY7PONUm2JVFoYdTEuFVA1mpyNSD6buSp9efAEBuBp1f9CdVcxb2bnwSJTmv80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kAFJf5qQ; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0pR2af2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC30EC4CEF7;
-	Wed, 29 Oct 2025 18:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761761433;
-	bh=74+OE1xL32AvuQq0dCzthnLOebJGx9aO7I8+OqhTme8=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=l0pR2af2+eTNjUNeK/+V70j4UcNIyzTxBB6UzatnxTQxP3m5FLTvcRUwFT7Ctg9Fu
-	 CwWeH1YHUai8aC6GF76VT1dC1l3ZiY1FC7C5dXvcUjivP4xkb7GiCyRRDjRGyVkpEk
-	 4IGn8beCrZuxOoCoQI2zVR8+QvGqQrcM753kMIEwgyEJ12pECqu9QK/r6+JyPrGQhb
-	 U6xGVGE3PVLYoh/SaJHTT+CLU7opohH4jvtoUR0vU5+PNcoZpLF/AEQAMrqzqKjuc3
-	 nRa//LA4UsHIWZFwgx2iprmGnuUZfItHocV5Lse9k+ioEJRj/wXy7LglfgBLdSbMnf
-	 Moieps/F1a+cw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kAFJf5qQ"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b6d08015f42so3238a12.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 11:18:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761761932; x=1762366732; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qGHEJFApFyOFo7pmpc4STS/EO5YU8lCBDcbtrWvNjWI=;
+        b=kAFJf5qQ9N8bj9qZPJ0oD1LZuAiZP4KNXsrDyLaemTocyfNeFeiiwHTMBwC43xDzSP
+         THvqcijF97GKepMiXmAVOaR4ReD8Rijxueb4wudo1Zkk5fNE5SWIv7jD2mXRsfaF4qA1
+         5/JyfJK11UONsuHdQEraHR6bVl+tc7WcjYWW94euCBDQjV8Ooy1AauU9e0BlCUIz2S+Q
+         UC4dNMP6/wfS5BdU0qyNWWPG4Xq53b5PoCOvXcGF584FNaIBCTL4hPiC8c7tbo/5vsMF
+         chdBHQHpgzwOgIQd20E8O9humhBMCJSh1CANi8sqLtDWfEkPMu32nZqte7xzBuTPLctl
+         JeNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761761932; x=1762366732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qGHEJFApFyOFo7pmpc4STS/EO5YU8lCBDcbtrWvNjWI=;
+        b=vEm/5mHbLo4as5oUKjc2Fg0zUE2Bvrl/eSIgN3+gGwQ1wPjD98B8NFtrsULLzS3Vqk
+         zu1e1Z/wfXOxe6rp2aSjmMmAretIQ/xVexGDXFQOSy9WKMNojsd/ylhlV84W0Vx8A5GR
+         0x28k1CJVoZeo9pO3GymCvHAQjj3OnB9lya6YKsEXurGqUe2XEUjeHTJbcS4k4MNngGw
+         u+jX1UVHoxs7N1CWSnp74sKAKb0W2rgoFot6xnhq0IXI+H54LK7NACAkhmon/t2gVLPg
+         Z1rHAXQpfvMJiKdJTfHC/7a0i4SsLAiMXKp4hS2DkUHkburHG3O9kDRYOKyz4DhBoXAa
+         lPng==
+X-Forwarded-Encrypted: i=1; AJvYcCXf1grS5NBcoqHXgFufoVqhPd8chD0J8vPn55MsHzPuOqdZDvVEvnLVDVa3cLFfAKs1eQ/helvR5BZ3jfffBw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXHVUKL9wp4AunN9gdiu4+DFRzRVWvulwLEpuYAdUsaqNr5BtY
+	ne8+ZK24g/qeLUyaIkhhxP8Og+VTwlWIm9t6KUeGnJLTD76s27XiZrVXmssuTKCIesstuZa+iI2
+	PIMh82kNAqZ3FLnRj7z271YwB5Bu4Nj4=
+X-Gm-Gg: ASbGncvnIYYQUUqxBYyJFelRrwPGYLjm+vJ4STvVDeN9mCSdvoeLeqXaOxdRmFAE7UL
+	PtkaslTuqXa1dIjEwBl7JXG12xbbRoOdJow5Czz1DjtBIl3Qgbg9wxK6uKjHvXbKoQ+r5gELyAt
+	+r4k7Ls2MSc8EelkoAwF7Cwq0lRakU3BhOXNY5aUAJZE823zxwUiFmhLTDKHG2NvaNsj+stqPRc
+	vhp09BMDVwGvgep5K4t1rOvlaAMQPWHAPMyu2oOlP0TfC/liROcMOWnUHteFyxVS1t2WTi4SAjp
+	Xle75C7Lhy2BhOLME1yFFvBxOtTbWgEBdrf0aSyrcOt3AhUyrrcahnrb0eZPHy/BIHigmxLwygh
+	RUSh+Abn0ODbmZA==
+X-Google-Smtp-Source: AGHT+IEUmxwJv4cATlvHI24p6sTswb9GOB92tay5pdawn1K9j7QGYDSkyOSrQLmeFPpDeZNCF+IzUDuiQtDiWnxBse8=
+X-Received: by 2002:a17:902:ea05:b0:290:af0d:9381 with SMTP id
+ d9443c01a7336-294deec2ed0mr25872405ad.7.1761761931934; Wed, 29 Oct 2025
+ 11:18:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <CGME20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5@eucas1p1.samsung.com>
+ <20251028-pwm_fixes-v1-0-25a532d31998@samsung.com> <2dedlnknikkrwg5f6ocuvjrogdjuqyg4sg6zkkao4w4yyvvsje@dkt7rco3fen3>
+In-Reply-To: <2dedlnknikkrwg5f6ocuvjrogdjuqyg4sg6zkkao4w4yyvvsje@dkt7rco3fen3>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 29 Oct 2025 19:18:39 +0100
+X-Gm-Features: AWmQ_bloR4yaxCgQSRgH9rsP_79aHVebA5y_V5RdiMta-mOKTPlfL_2N2hFhhSs
+Message-ID: <CANiq72n8QvygNsdHjaMgYrXiErT82BkWm1XMkc3eUZB1Xy_uAQ@mail.gmail.com>
+Subject: Re: [PATCH 0/4] Introduce import_ns support for Rust
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Michal Wilczynski <m.wilczynski@samsung.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Stephen Rothwell <sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Oct 2025 19:10:27 +0100
-Message-Id: <DDV0AYWXTCL5.2QDTJI55Q87CJ@kernel.org>
-Subject: Re: [PATCH 0/8] Device::drvdata() and driver/driver interaction
- (auxiliary)
-Cc: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <acourbot@nvidia.com>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <pcolberg@redhat.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251020223516.241050-1-dakr@kernel.org>
-In-Reply-To: <20251020223516.241050-1-dakr@kernel.org>
 
-On Tue Oct 21, 2025 at 12:34 AM CEST, Danilo Krummrich wrote:
+On Wed, Oct 29, 2025 at 11:04=E2=80=AFAM Uwe Kleine-K=C3=B6nig <ukleinek@ke=
+rnel.org> wrote:
+>
+> If you could mention the command that makes this warning visible, I'd be
+> glad to add that to my repertoire of build checks.
 
-Applied to driver-core-testing, thanks!
+Yeah, please do!
 
-> Danilo Krummrich (8):
->   rust: device: narrow the generic of drvdata_obtain()
->   rust: device: introduce Device::drvdata()
+I do my best to keep even linux-next and stable kernels Clippy clean
+as much as possible, so it would be nice to have that Clippy fix added
+to -next soon.
 
-    [ * Remove unnecessary `const _: ()` block,
-      * rename type_id_{store,match}() to {set,match}_type_id(),
-      * assert size_of::<bindings::driver_type>() >=3D size_of::<TypeId>(),
-      * add missing check in case Device::drvdata() is called from probe().
+I have other steps that maintainers/contributors should run here:
 
-      - Danilo ]
+    https://rust-for-linux.com/contributing#submit-checklist-addendum
 
->   rust: auxiliary: consider auxiliary devices always have a parent
->   rust: auxiliary: unregister on parent device unbind
->   rust: auxiliary: move parent() to impl Device
->   rust: auxiliary: implement parent() for Device<Bound>
->   samples: rust: auxiliary: misc cleanup of ParentDriver::connect()
->   samples: rust: auxiliary: illustrate driver interaction
+Essentially / most importantly: `rustfmt`, `rustdoc` and `CLIPPY=3D1`.
+
+I am sending a couple fixes for those.
+
+Thanks!
+
+Cheers,
+Miguel
