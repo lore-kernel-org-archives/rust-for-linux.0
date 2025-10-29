@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC24F29DB65;
-	Wed, 29 Oct 2025 15:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51942DF13B;
+	Wed, 29 Oct 2025 15:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761752005; cv=none; b=KW8UyvehA6IOL9FJ7lhbFO8fuBcl2kw3l4c6yobMWMAirkOP1R79pRxLVPhBJ35zLyBSu10N5Xn8xdgHIT/7iwldPgu5OSxrd2GfItocOgE4iOosQFD7n8KS+kgMC6GAY3proJa0XKO71LK1rNAGF6gJV1ZnMtP+mtM3TALIOAI=
+	t=1761752621; cv=none; b=ifaMXGnR0Z8gDn9CGGjvDuSsvOeH0bemuK4DcdGDFHOuwrtgcL1/iEZDmgoaqEyX1frZWWzXtZEnM7AYyN8PWydZCG6HBV8PyPFHrQ8h8QHXwPicuKvcizMHsKGHdY7d9EJQJwu37RcZw/XEzIfkbFwubp03HDzMa5WtSUkJw8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761752005; c=relaxed/simple;
-	bh=YkjLzcWzu5npTsZdcICWCghQ3/qLgL8lA0vFu7y9i0k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=qBL8kUFHcqQXnxbDzy+ujMsQWAh/uYMBsBwKE1604u0+mSZBJ+KKwawqWIbuxoKYgaob+spHcJiTHQmW4HLZ2Na3CK89u1ZvNa3ivE+ZzaO9Q2fs72Bej3LraxITWhHw3TUwj+O6y3furweSRqa8Acb7wyN+i/sz6/OJaL1R2Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OtcHDpte; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761752621; c=relaxed/simple;
+	bh=Mac34jN3xSgbU/HpUoUOGaIlA/dO/3VH1nbx6I1T5kk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=KPiAFxi8ip1akLCCtJJnt7KjddE2oiGOlZmnTAXHQWzJTjKpDsSWtvwfeHPKB4nANx/GGX9XzwAkmB1eEN6l4YJOMU+N98uD4cAqNYL600nWcsEkpLBY9YknXDgOieuPz2HhhmvJjfmhi5TZDmSnAmAI4IiSTlGc/VAC0Swcbns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b0R0rVrL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OtcHDpte"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564A6C4CEFF;
-	Wed, 29 Oct 2025 15:33:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b0R0rVrL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87608C4CEF7;
+	Wed, 29 Oct 2025 15:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761752005;
-	bh=YkjLzcWzu5npTsZdcICWCghQ3/qLgL8lA0vFu7y9i0k=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=OtcHDpteJ1TPbr24tR7zT2T58Naxe5x/irqXJn+5UtA4jmPHKQGbxJkzXm6YgegOM
-	 HYCrlOfD2WHYBXpgaaymGsN1J33dv3Iyg1E2zoswD+kx47v7b8iGFV7tzGy26ELZ4z
-	 Fl/jnuQTRUH1B2qwm6z99CUrWsdMCe+uFjpcEvLOl2H1HriDEtUD0sUqmUrADkECwM
-	 l/DMUlTcyhvOfWEx3TYnhgqij5ECCya4d/9/XO14mOX/laXPjWP1+3YkNeto0v6QIA
-	 UgonmDzY1vdb2VpkirZPFWEOefvso1ift1Jrl23B5/faHrU9boOsu0ihcSxSpSZTZa
-	 okFsu9ZBPQ7lQ==
+	s=k20201202; t=1761752621;
+	bh=Mac34jN3xSgbU/HpUoUOGaIlA/dO/3VH1nbx6I1T5kk=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=b0R0rVrLWksvZBAWwzNs4Xnt6Zrent63NG3Cy8CXDn/7TlvNdGQTlRuVsLK1wa4NB
+	 yWLTWRKpGR0uNnhZ4rBmgGe/iinWHH4g5VfVazhq6DZoJhzIJH62aumNaPPZD98rLp
+	 WqT7jK20I4SyhA/XhE6f24KuS5/wH3XOflgho56vNDHn1N87RwJfOt8SXPgJmWFMYw
+	 OyNNdAEjpOKp50Mdidmqmx6s982Ryqx36HODeqNWkQ5OZUtmJtbsjutNUt6tbsFU9B
+	 6gOhZxzZa+lf4cD0m9QQTDZB/vbeou8IXRcIL7K6UVSVHXEG8/dSzoAbOXQq1EqIdr
+	 kUwlvrrTqQ2oQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Oct 2025 16:33:19 +0100
-Message-Id: <DDUWYNJTZ7RT.3ML0O9UNX5LON@kernel.org>
+Date: Wed, 29 Oct 2025 16:43:35 +0100
+Message-Id: <DDUX6IP1JMI2.3EFTY8PNDJW4V@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
 Subject: Re: [PATCH 0/8] Device::drvdata() and driver/driver interaction
  (auxiliary)
 Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
@@ -46,17 +48,20 @@ Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
  <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
  <pcolberg@redhat.com>, <rust-for-linux@vger.kernel.org>,
  <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20251020223516.241050-1-dakr@kernel.org>
- <aQIQl8lMhztucZhK@google.com>
-In-Reply-To: <aQIQl8lMhztucZhK@google.com>
+ <aQIQl8lMhztucZhK@google.com> <DDUWYNJTZ7RT.3ML0O9UNX5LON@kernel.org>
+In-Reply-To: <DDUWYNJTZ7RT.3ML0O9UNX5LON@kernel.org>
 
-On Wed Oct 29, 2025 at 2:03 PM CET, Alice Ryhl wrote:
-> It looks like there are some patches that add code that doesn't pass
-> rustfmt, which are then fixed in follow-up commits. You might want to do
-> a pass of rustfmt after each commit.
+On Wed Oct 29, 2025 at 4:33 PM CET, Danilo Krummrich wrote:
+> On Wed Oct 29, 2025 at 2:03 PM CET, Alice Ryhl wrote:
+>> It looks like there are some patches that add code that doesn't pass
+>> rustfmt, which are then fixed in follow-up commits. You might want to do
+>> a pass of rustfmt after each commit.
+>
+> Oops, thanks for catching this -- my apply scripts will do exactly that. =
+:)
 
-Oops, thanks for catching this -- my apply scripts will do exactly that. :)
+Actually, all patches do pass rustfmt on my end.
 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I assume you did not run rustfmt yourself, but spotted something that looks=
+ odd?
