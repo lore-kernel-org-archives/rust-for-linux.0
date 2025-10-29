@@ -1,189 +1,110 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DABC3563DF
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 18:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAAB3570CF
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 18:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761762960; cv=none; b=hzbUSvInvP17D3J+jptliwia2HkXEywjPMVJ7jM0ttaeVENpWH5Un3MMyu2gPaDCBGUKjmuGpvpxZnCWDa1dOtW/t/Ly8O4dMGruHtkwxRyrmAFz8ko65oD632K1ZleU1EvCdf36hJrdMpUPVg6oA/hwHcngOExtU5YZTPNdp1I=
+	t=1761763921; cv=none; b=XcgjVGneUfYoss8BDPaZ7nRzckShthvsPSnVExhTpQhgn9NX/UH9kPG1jiaaQQW42zpSL8b/+zk6d+8VbaGO09a3ipbXY0LxM8RkRwoHtqjCcQRohfpPTH3w4DFvn+9kPSRv2jzb0FHW0/slT7tmd8G3r6zNM/nnQJtX75O50W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761762960; c=relaxed/simple;
-	bh=udIh2bGtuLNE6rEEqLIOSosK6IG9nhYY4jrIrv0IDZQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lxPxaV4GFo6fsOheY50u0IiX0zU+UpJ/TYHVFkEy2XMxPW41zrsHFnq3vLKBvCphUlkr+ZM1SVx0rmcHFlqwBJ3PIX81FQb5XATzALgOxSuy3aI/MypLMDM3dCMTOFhDCz2ybfrgvETDmJaLfQ0D2k0a4A6NCl5xepP8pYYJlmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TWM7+EOs; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761763921; c=relaxed/simple;
+	bh=6i5LK+KHZzajbekQNpRqxZg1AvqmhETrZZtaa2laC10=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=jItOk+gkxlld8CUdG2mr7KapqMpGgcEEvVt+d0oS/FVovhmthYYQWG1EnZNLknXMXYM8Ha4iLVEg5uyVnZKP+8hxR9RKPDE+9FNUcGb+Y+1o23iy6ybl0sX/idyGkrPYb8sRLzeiRJh4wQ61lX00hJpuvZ25tu98d3mRWgaeh5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YFumTbjG; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TWM7+EOs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761762956;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8f1g362cqWO6k2T0sE2qqCCKSx99lIgktzJDMD+ggRc=;
-	b=TWM7+EOsy7IvWghD+68cYmHg9QEJw7rT5M6W0Pq732OxsBfNumG4AFq0sA1i/9X+vjqWB3
-	+ayApwCh6LhRti1Imb64B3OHZMRRgZBHBk4Gar5D1xpHpyMTrkg/bQ9/VFwpgQMOYMKndO
-	y4/R7aG3Vq5zTfs+Jn0F+Ugbzhzh69U=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-G76yMnHtP6GMvUjdf2GQhw-1; Wed,
- 29 Oct 2025 14:35:52 -0400
-X-MC-Unique: G76yMnHtP6GMvUjdf2GQhw-1
-X-Mimecast-MFC-AGG-ID: G76yMnHtP6GMvUjdf2GQhw_1761762950
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7353C1800D86;
-	Wed, 29 Oct 2025 18:35:50 +0000 (UTC)
-Received: from chopper.lan (unknown [10.22.88.8])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A41121800353;
-	Wed, 29 Oct 2025 18:35:46 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Benno Lossin <lossin@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Waiman Long <longman@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v4] rust: lock: Export Guard::do_unlocked()
-Date: Wed, 29 Oct 2025 14:35:38 -0400
-Message-ID: <20251029183538.226257-1-lyude@redhat.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YFumTbjG"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251029185152euoutp01a459ea69bcd54c2ecd358370d9c51b77~zCvGj9Ae50900109001euoutp01G
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 18:51:52 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251029185152euoutp01a459ea69bcd54c2ecd358370d9c51b77~zCvGj9Ae50900109001euoutp01G
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1761763912;
+	bh=bQNGVhOQyRYDAT6f5LbiqaQukE8P3fTErRwmbu+uxa0=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=YFumTbjG41C6tu1h2AUDSfornvKlbUCc8GAUJqm8oid7casxs71+RYNRvPHlNqyv6
+	 1mtSDA459GHvBRsbZsN5QcKz+KUPGDzvN2lPaObSEeQLGe0E5p404Gsb9mFBbZopkR
+	 Hf8AvMOgG6UVxHkmQu/Fh4s4oeHx3Avqn4wgy+C0=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251029185151eucas1p1d0537f2fc24d4dbc400c773168f20bb8~zCvFn56t52969429694eucas1p1m;
+	Wed, 29 Oct 2025 18:51:51 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251029185150eusmtip13980126f40913ce41b484d6f44f45dde~zCvE0SljI2995129951eusmtip1b;
+	Wed, 29 Oct 2025 18:51:50 +0000 (GMT)
+Message-ID: <1287f917-dc25-4c80-8b09-3d0a7bc8eb6b@samsung.com>
+Date: Wed, 29 Oct 2025 19:51:50 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] Introduce import_ns support for Rust
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+	<dakr@kernel.org>, Drew Fustini <fustini@kernel.org>, Guo Ren
+	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Stephen Rothwell
+	<sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <CANiq72n8QvygNsdHjaMgYrXiErT82BkWm1XMkc3eUZB1Xy_uAQ@mail.gmail.com>
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-CMS-MailID: 20251029185151eucas1p1d0537f2fc24d4dbc400c773168f20bb8
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5
+X-EPHeader: CA
+X-CMS-RootMailID: 20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5
+References: <CGME20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5@eucas1p1.samsung.com>
+	<20251028-pwm_fixes-v1-0-25a532d31998@samsung.com>
+	<2dedlnknikkrwg5f6ocuvjrogdjuqyg4sg6zkkao4w4yyvvsje@dkt7rco3fen3>
+	<CANiq72n8QvygNsdHjaMgYrXiErT82BkWm1XMkc3eUZB1Xy_uAQ@mail.gmail.com>
 
-In RVKMS, I discovered a silly issue where as a result of our HrTimer for
-vblank emulation and our vblank enable/disable callbacks sharing a
-spinlock, it was possible to deadlock while trying to disable the vblank
-timer.
 
-The solution for this ended up being simple: keep track of when the HrTimer
-could potentially acquire the shared spinlock, and simply drop the spinlock
-temporarily from our vblank enable/disable callbacks when stopping the
-timer. And do_unlocked() ended up being perfect for this.
 
-Since this seems like it's useful, let's export this for use by the rest of
-the world and write short documentation for it.
+On 10/29/25 19:18, Miguel Ojeda wrote:
+> On Wed, Oct 29, 2025 at 11:04 AM Uwe Kleine-König <ukleinek@kernel.org> wrote:
+>>
+>> If you could mention the command that makes this warning visible, I'd be
+>> glad to add that to my repertoire of build checks.
+> 
+> Yeah, please do!
+> 
+> I do my best to keep even linux-next and stable kernels Clippy clean
+> as much as possible, so it would be nice to have that Clippy fix added
+> to -next soon.
+> 
+> I have other steps that maintainers/contributors should run here:
+> 
+>     https://protect2.fireeye.com/v1/url?k=0d35e0d3-6dd77d8e-0d346b9c-000babd9f1ba-e5d27bbbccd997ca&q=1&e=d4a64c99-aab6-4741-9747-63f10e63aed4&u=https%3A%2F%2Frust-for-linux.com%2Fcontributing%23submit-checklist-addendum
+> 
+> Essentially / most importantly: `rustfmt`, `rustdoc` and `CLIPPY=1`.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+Oh yeah I think I remembered to run 'rustfmt' couple months ago, but
+over time when sending revisions forgot about that, sorry. I guess it
+would be great to extend 'b4 prep --check' for those checks as well.
 
----
-V2:
-* Fix documentation for do_unlocked
-* Add an example
-V3:
-* Documentation changes from Miguel
-V4:
-* Improve the example to actually demonstrate a situation where
-  do_unlocked() would be useful.
-* Remove unneeded sentence above example in do_unlocked()
+> 
+> I am sending a couple fixes for those.
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel
+> 
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/sync/lock.rs | 71 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 70 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 5d7991e6d3736..c5f049a115d09 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -230,7 +230,76 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
-         self.lock
-     }
- 
--    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-+    /// Releases this [`Guard`]'s lock temporarily, executes `cb` and then re-acquires it.
-+    ///
-+    /// This can be useful for situations where you may need to do a temporary unlock dance to avoid
-+    /// issues like circular locking dependencies.
-+    ///
-+    /// It returns the value returned by the closure.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{
-+    /// #     new_mutex,
-+    /// #     sync::{lock::{Backend, Guard, Lock}, Arc, Mutex, Completion},
-+    /// #     workqueue::{self, impl_has_work, new_work, Work, WorkItem},
-+    /// # };
-+    /// #[pin_data]
-+    /// struct ExampleWork {
-+    ///     #[pin]
-+    ///     work: Work<Self>,
-+    ///
-+    ///     #[pin]
-+    ///     lock: Mutex<i32>,
-+    ///
-+    ///     #[pin]
-+    ///     done: Completion,
-+    /// }
-+    ///
-+    /// impl_has_work! {
-+    ///     impl HasWork<Self> for ExampleWork { self.work }
-+    /// }
-+    ///
-+    /// impl WorkItem for ExampleWork {
-+    ///     type Pointer = Arc<ExampleWork>;
-+    ///
-+    ///     fn run(this: Arc<ExampleWork>) {
-+    ///         let mut g = this.lock.lock();
-+    ///
-+    ///         assert_eq!(*g, 41);
-+    ///         *g += 1;
-+    ///
-+    ///         this.done.complete_all();
-+    ///     }
-+    /// }
-+    ///
-+    /// impl ExampleWork {
-+    ///     pub(crate) fn new() -> Result<Arc<Self>> {
-+    ///         Arc::pin_init(pin_init!(Self {
-+    ///             work <- new_work!(),
-+    ///             lock <- new_mutex!(41),
-+    ///             done <- Completion::new(),
-+    ///         }), GFP_KERNEL)
-+    ///     }
-+    /// }
-+    ///
-+    /// let work = ExampleWork::new().unwrap();
-+    /// let mut g = work.lock.lock();
-+    ///
-+    /// let _ = workqueue::system().enqueue(work.clone());
-+    ///
-+    /// // This would deadlock:
-+    /// //
-+    /// //     work.done.wait_for_completion()
-+    /// //
-+    /// // Since we hold work.lock, which work will also try to acquire in WorkItem::run. Dropping
-+    /// // the lock temporarily while we wait for completion works around this.
-+    /// g.do_unlocked(|| work.done.wait_for_completion());
-+    ///
-+    /// assert_eq!(*g, 42);
-+    /// ```
-+    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
- 
-
-base-commit: 3b83f5d5e78ac5cddd811a5e431af73959864390
+Best regards,
 -- 
-2.51.0
-
+Michal Wilczynski <m.wilczynski@samsung.com>
