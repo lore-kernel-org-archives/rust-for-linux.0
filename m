@@ -1,213 +1,94 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201C4275112
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 13:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761743005; cv=none; b=MrKS2jszsNYtB2UejojhSn9CS78oHnApC+5PiNYI0b8brCg/7BtCiQjbfQQxtaHbVJug9Hc0uJuLojyT65klM4/95snz/aV3SuNB8Co1OWUTKDZ1dwt6F12m7FWjQh/jvPZg6UjC22bBausrMDAj6YV0HxBohS8IXGgePK5/jz4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761743005; c=relaxed/simple;
-	bh=pi5yuhKxOE0klx8JCfsVD+GqZGX1kT6HdPKMNpthFto=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZWhXj0RHokz9ZFGJxJ8FNJ+FHNF4bhlSQvjomG7nUW2sq89DCNWYvhbBp+ersEipkgJPOngXjxPyYmF4fucGtJLe7JD2pAEOXfotLP0r+qch9TXQu62q5GTWX3l7H2ZbDzFIF/Tf/au1LdajI3bUalFP9+leH+srK7Vl54IQejQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sjGAoRmS; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177FB2C0291
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 13:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761743175; cv=pass; b=UCxu3f7Uok2/NsFp0mGCxWewZQrnIxgA74h9BjLdzpkYC7vMJvsg55mCqD30nQdui763tOOYgf7nMYihUGemCPYo40UFJBlKA6DlfUAVdnPRFD5qS8IGPv45G80n9P1n54KEby3kVxMkK+qqulmWguKbqtuepqUNWa7NSV0b69Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761743175; c=relaxed/simple;
+	bh=/rPAM83fDtUY25tcdvmO4Vi857sVIODrXovqIa/r6EM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=L+S6AMVBKx1/dQl3t/K4+p+irbc3M6Hbj3uLSnLjxnhvkQIa/+lORhk44WZWw3UjcgjPDfkPwxbA7iS2BB9m5uimpRI73PU+Rfn5YCK6TD091sKA8RXQNYu/9gi92xtFyEPP1YHIBWqfWlB0V40q2VDRF9Ak9kb52eTQ5W+Kxsg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WaUrwil8; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sjGAoRmS"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3ee888281c3so5195788f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 06:03:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761743000; x=1762347800; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Udy7SqhBXKYC8gHDKeSCQJFDpbdKzPFYXaEf65zBeu4=;
-        b=sjGAoRmSWjF5qBw7a+8Zh3RcSGPUExLIbTwok0B0F5NrgzWUmC7sCgbSC33Ua58Odz
-         4ACsw7BYKI2crv3xjOh61dhmf+BChAXoV3o3KBsT7Z6WEAI6AdFL4CfJB0zsyYZ2r4W/
-         Ent6fV/syZmAh2lzhhsRYdSb0PnwzXsNtD9IO1PfB6mFKk22Gi0LbjdfAMZPJEdj9oIG
-         kTKVDHnd4jpNXIQqAPQVDuxGd2VDhrWm82e8WuV0jQ2JSIXgF3xIgmRAjoVlDtm8OA3E
-         r7rF97e4QSCWKcNgwT92zBlmxBLKYjIy54IuE3VQnicL7iGSrOK3Cjqn8ZyDez1US/50
-         ugXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761743000; x=1762347800;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Udy7SqhBXKYC8gHDKeSCQJFDpbdKzPFYXaEf65zBeu4=;
-        b=j0KU/D6ieSAOWv4uAgKLcYbfAQRcQb6TpiR8aLZR4FXugC5oCP9oC+lUs1wq02dUM7
-         YpqBrRP3KWH+is4YalLwPZWihDz1rvWgGPt0vZGUdBuDFrCWKz3M8+X3Ne72nmZEZqr+
-         He8iZxf5ubnfqsHeHDuDvkNQzUeeCotCqDO91Bx6I0nBpYLXKHM31H3YGjvuJr5KyzUW
-         DU3fnAtXc1IsjyvKy9jMOuobh8iFDgGTnffFXYd0QJZZSr1Xxb/6iBPkI/8LIEH96cwl
-         w0rgJ9UooMeVVkthjqwXyJHQ/k4ePR3GejWltVGs/wtiVOqVI8Cp7kftYSbwAN7gnK7t
-         B25A==
-X-Forwarded-Encrypted: i=1; AJvYcCU0vW/E2azCnMbwhx+KR7PTGe3AB3VenBvl5h60ykFBLxOOQrkGuqTpDeS5cJg+chgRlvlZrTU0QFrHxgXHmg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqbtjEgHUgLMmN7Qmr/LJ0wKshhwGvREqbB5XqmQGN2P/fqhf1
-	MKk+blw5Yw6VJ5jP9QWMm4kd/8kd9GDO/e6QfRRbhIh4xkFrql7NjWbkVkcL3CH3RtAzkxQgcLp
-	G3rJG+InL+Jx0rI7PoQ==
-X-Google-Smtp-Source: AGHT+IENECAAoljYNXJnRu1Y9gGPhJkJ3Bue+J1Hc+807eNndTdTYUWDuu128dSwta2oivz2LOgodjnqaCtDDIo=
-X-Received: from wrhm10.prod.google.com ([2002:a05:6000:180a:b0:427:60a:e74c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:18a5:b0:429:8b44:57bc with SMTP id ffacd0b85a97d-429af002335mr2543993f8f.60.1761743000569;
- Wed, 29 Oct 2025 06:03:20 -0700 (PDT)
-Date: Wed, 29 Oct 2025 13:03:19 +0000
-In-Reply-To: <20251020223516.241050-1-dakr@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WaUrwil8"
+ARC-Seal: i=1; a=rsa-sha256; t=1761743168; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=cnc+1LvEzl3svyQtm7ATuDF6Wud9sdaIugygDC1G+OV5mAEIwiw6hxzeXIAt+DTuauxiyZCsILN48ObxjExR0jtmhZ3wuThKP6LOc4c6HcE2H9jW9a4Yn6pWaz4REqmbpjZefGIfHApxdI2cTN4p9Z/FzO51ZJRiTvE2DLsOYXk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1761743168; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=kdqKVP7iV3NUUFnjDlnqa4kgFFug+Pmq6CenXn9MfKU=; 
+	b=JeB1mRfo83yep8q7FOWcj04kVOhtn6eoZ5SnGR7+sm+reS8kMLKfZJmkJv7ORnqlbU+w3bBWaFCC9U6W36m04/rar8HLzVKPlBW4kehYDOb1OXv+7H+E74xIiPuzBXDAQZe0gbC0cAtgnwxMZWuBDYT5mtsrGMe3C8coBXhdM+0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761743168;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=kdqKVP7iV3NUUFnjDlnqa4kgFFug+Pmq6CenXn9MfKU=;
+	b=WaUrwil8Wz55era0EsTDbBHb2oEyKgFdVGSF1RVM4FoYIIfOcT+89awIMEJC1+f/
+	LPYifhmZLEuqX3N2FEK18oHsyUt6gIn8xYPldHeTxA0Oy2KsAoaSQTv0DCAtsooouce
+	lwdCgn0OPEN6+o504HTt9upOv29b5TiQALEKyYzg=
+Received: by mx.zohomail.com with SMTPS id 1761743166713719.2330861108525;
+	Wed, 29 Oct 2025 06:06:06 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251020223516.241050-1-dakr@kernel.org>
-Message-ID: <aQIQl8lMhztucZhK@google.com>
-Subject: Re: [PATCH 0/8] Device::drvdata() and driver/driver interaction (auxiliary)
-From: Alice Ryhl <aliceryhl@google.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] MAINTAINERS: add Tyr to DRM DRIVERS AND COMMON
+ INFRASTRUCTURE [RUST]
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20251028104433.334886-1-dakr@kernel.org>
+Date: Wed, 29 Oct 2025 10:05:49 -0300
+Cc: aliceryhl@google.com,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <B9B25D51-DF56-4AB0-8002-1E39AA32766D@collabora.com>
+References: <20251028104433.334886-1-dakr@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
-	kwilczynski@kernel.org, david.m.ertman@intel.com, ira.weiny@intel.com, 
-	leon@kernel.org, acourbot@nvidia.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	pcolberg@redhat.com, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Oct 21, 2025 at 12:34:22AM +0200, Danilo Krummrich wrote:
-> tl;dr:
-> 
-> Implement a safe Device<Bound>::drvdata() accessor (used for driver to
-> driver interactions) based on the auxiliary bus.
-> 
-> This provides a way to derive a driver's device private data when
-> serving as a parent in a driver hierarchy, such as a driver utilizing
-> the auxiliary bus.
-> 
-> Please have a look at patch 8 ("samples: rust: auxiliary: illustrate
-> driver interaction") to see how it turns out.
-> 
-> --
-> 
-> Full cover letter:
-> 
-> In C dev_get_drvdata() has specific requirements under which it is valid
-> to access the returned pointer. That is, drivers have to ensure that
-> 
->   (1) for the duration the returned pointer is accessed the driver is
->       bound and remains to be bound to the corresponding device,
-> 
->   (2) the returned void * is treated according to the driver's private
->       data type, i.e. according to what has been passed to
->       dev_set_drvdata().
-> 
-> In Rust, (1) can be ensured by simply requiring the Bound device
-> context, i.e. provide the drvdata() method for Device<Bound> only.
-> 
-> For (2) we would usually make the device type generic over the driver
-> type, e.g. Device<T: Driver>, where <T as Driver>::Data is the type of
-> the driver's private data.
-> 
-> However, a device does not have a driver type known at compile time and
-> may be bound to multiple drivers throughout its lifetime.
-> 
-> Hence, in order to be able to provide a safe accessor for the driver's
-> device private data, we have to do the type check on runtime.
-> 
-> This is achieved by letting a driver assert the expected type, which is
-> then compared to a type hash stored in struct device_private when
-> dev_set_drvdata() is called [2].
-> 
-> Example:
-> 
->         // `dev` is a `&Device<Bound>`.
->         let data = dev.drvdata::<SampleDriver>()?;
-> 
-> There are two aspects to note:
-> 
->   (1) Technically, the same check could be achieved by comparing the
->       struct device_driver pointer of struct device with the struct
->       device_driver pointer of the driver struct (e.g. struct
->       pci_driver).
-> 
->       However, this would - in addition the pointer comparison - require
->       to tie back the private driver data type to the struct
->       device_driver pointer of the driver struct to prove correctness.
-> 
->       Besides that, accessing the driver struct (stored in the module
->       structure) isn't trivial and would result into horrible code and
->       API ergonomics.
-> 
->   (2) Having a direct accessor to the driver's private data is not
->       commonly required (at least in Rust): Bus callback methods already
->       provide access to the driver's device private data through a &self
->       argument, while other driver entry points such as IRQs,
->       workqueues, timers, IOCTLs, etc. have their own private data with
->       separate ownership and lifetime.
-> 
->       In other words, a driver's device private data is only relevant
->       for driver model contexts (such a file private is only relevant
->       for file contexts).
-> 
-> Having that said, the motivation for accessing the driver's device
-> private data with Device<Bound>::drvdata() are interactions between
-> drivers. For instance, when an auxiliary driver calls back into its
-> parent, the parent has to be capable to derive its private data from the
-> corresponding device (i.e. the parent of the auxiliary device).
-> 
-> Therefore this patch series also contains the corresponding patches for
-> the auxiliary bus abstraction, i.e. guarantee that the auxiliary
-> device's parent is guaranteed to be bound when the auxiliary device
-> itself is guaranteed to be bound, plus the corresponding
-> Device<Bound>::parent() method.
-> 
-> Finally, illustrate how things turn out by updating the auxiliary sample
-> driver.
-> 
-> Similarly, the same thing can be done for PCI virtual function drivers
-> calling back into the corresponding physical function driver or MFD.
-> 
-> The former (PCI PF/VF interaction) will be addressed by a separate patch
-> series. Both, auxiliary and PCI PF/VF is required by the Nova project.
-> 
-> A branch containing the series can be found in [1].
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=drvdata
-> [2] Type hash (TypeId) stored in struct device_private:
-> 
->         The Rust type stored in struct device_private could be replaced
->         by a dedicated (and transparent) private pointer (e.g.
->         struct device_private::rust).
-> 
->         While I'm not overly concerned about the extra allocation (not a
->         hot path at all), I still wanted to try to store it directly in
->         struct device_private, see how it turns out and gather opinions.
-> 
->         Additionally, I don't expect any additional Rust specific
->         private data to be required. But even if, changing things up to
->         use a separate transparent allocation in the future is trivial.
-> 
-> Danilo Krummrich (8):
->   rust: device: narrow the generic of drvdata_obtain()
->   rust: device: introduce Device::drvdata()
->   rust: auxiliary: consider auxiliary devices always have a parent
->   rust: auxiliary: unregister on parent device unbind
->   rust: auxiliary: move parent() to impl Device
->   rust: auxiliary: implement parent() for Device<Bound>
->   samples: rust: auxiliary: misc cleanup of ParentDriver::connect()
->   samples: rust: auxiliary: illustrate driver interaction
-> 
->  drivers/base/base.h                   |  16 ++++
->  drivers/gpu/drm/nova/file.rs          |   2 +-
->  drivers/gpu/nova-core/driver.rs       |   8 +-
->  rust/bindings/bindings_helper.h       |   6 ++
->  rust/kernel/auxiliary.rs              | 108 ++++++++++++++++----------
->  rust/kernel/device.rs                 |  83 ++++++++++++++++++--
->  rust/kernel/pci.rs                    |   2 +-
->  rust/kernel/platform.rs               |   2 +-
->  rust/kernel/usb.rs                    |   4 +-
->  samples/rust/rust_driver_auxiliary.rs |  44 +++++++----
->  10 files changed, 207 insertions(+), 68 deletions(-)
 
-It looks like there are some patches that add code that doesn't pass
-rustfmt, which are then fixed in follow-up commits. You might want to do
-a pass of rustfmt after each commit.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> On 28 Oct 2025, at 07:44, Danilo Krummrich <dakr@kernel.org> wrote:
+> 
+> Commit cf4fd52e3236 ("rust: drm: Introduce the Tyr driver for Arm Mali
+> GPUs") introduced the Tyr driver for ARM Mali GPUs, which is maintained
+> through the drm-rust tree, hence add it to the corresponding entry in
+> MAINTAINERS.
+> 
+> Cc: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+> MAINTAINERS | 1 +
+> 1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 545a4776795e..952aed4619c2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8247,6 +8247,7 @@ S: Supported
+> W: https://drm.pages.freedesktop.org/maintainer-tools/drm-rust.html
+> T: git https://gitlab.freedesktop.org/drm/rust/kernel.git
+> F: drivers/gpu/drm/nova/
+> +F: drivers/gpu/drm/tyr/
+> F: drivers/gpu/nova-core/
+> F: rust/kernel/drm/
+> 
+> -- 
+> 2.51.0
+> 
+
+
+Acked-by: Daniel Almeida <daniel.almeida@collabora.com>
