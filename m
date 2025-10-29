@@ -1,110 +1,194 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010014.outbound.protection.outlook.com [52.101.201.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAAB3570CF
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 18:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761763921; cv=none; b=XcgjVGneUfYoss8BDPaZ7nRzckShthvsPSnVExhTpQhgn9NX/UH9kPG1jiaaQQW42zpSL8b/+zk6d+8VbaGO09a3ipbXY0LxM8RkRwoHtqjCcQRohfpPTH3w4DFvn+9kPSRv2jzb0FHW0/slT7tmd8G3r6zNM/nnQJtX75O50W0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761763921; c=relaxed/simple;
-	bh=6i5LK+KHZzajbekQNpRqxZg1AvqmhETrZZtaa2laC10=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=jItOk+gkxlld8CUdG2mr7KapqMpGgcEEvVt+d0oS/FVovhmthYYQWG1EnZNLknXMXYM8Ha4iLVEg5uyVnZKP+8hxR9RKPDE+9FNUcGb+Y+1o23iy6ybl0sX/idyGkrPYb8sRLzeiRJh4wQ61lX00hJpuvZ25tu98d3mRWgaeh5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YFumTbjG; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EF02236E1;
+	Wed, 29 Oct 2025 23:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761779719; cv=fail; b=txZUaSeqfJzadAUxAcjkXP23n0jEDWRONrZbcBfD5zHz4zhTTQBJpyliR6cErJWM2IZB/cjKFe7PlRjQst/TnJDJQfSipCyl7rBDSVCq2jm6//PvCgOimra3LZVmRYR3ZqHGITzMrQkr/PIm6cZOSwfclr+N+kdePI33d/ACWMI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761779719; c=relaxed/simple;
+	bh=0Fw2kTBm9fSEzQk3AYficQbXS+mxAY3Dezd53jvgumY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=TQcWfEx7aRS0cCNJzzQT/n2MS5o2V4EIs8CMonsVrfRQcNPPoCxJX1OEVOQOklMgtY9FsSbAJenX05cuZ7q6nw48AtNadutbPevdtnjvwhhmmuQkW8Fpxa2xFKRD+eqlc2CZtOuKaxt+e18aWhVcCzf+Mcjoy8M3eQ+jOlKAe44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CldskZRs; arc=fail smtp.client-ip=52.101.201.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YFumTbjG"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251029185152euoutp01a459ea69bcd54c2ecd358370d9c51b77~zCvGj9Ae50900109001euoutp01G
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Oct 2025 18:51:52 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251029185152euoutp01a459ea69bcd54c2ecd358370d9c51b77~zCvGj9Ae50900109001euoutp01G
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1761763912;
-	bh=bQNGVhOQyRYDAT6f5LbiqaQukE8P3fTErRwmbu+uxa0=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=YFumTbjG41C6tu1h2AUDSfornvKlbUCc8GAUJqm8oid7casxs71+RYNRvPHlNqyv6
-	 1mtSDA459GHvBRsbZsN5QcKz+KUPGDzvN2lPaObSEeQLGe0E5p404Gsb9mFBbZopkR
-	 Hf8AvMOgG6UVxHkmQu/Fh4s4oeHx3Avqn4wgy+C0=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20251029185151eucas1p1d0537f2fc24d4dbc400c773168f20bb8~zCvFn56t52969429694eucas1p1m;
-	Wed, 29 Oct 2025 18:51:51 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251029185150eusmtip13980126f40913ce41b484d6f44f45dde~zCvE0SljI2995129951eusmtip1b;
-	Wed, 29 Oct 2025 18:51:50 +0000 (GMT)
-Message-ID: <1287f917-dc25-4c80-8b09-3d0a7bc8eb6b@samsung.com>
-Date: Wed, 29 Oct 2025 19:51:50 +0100
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CldskZRs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SZs2nn131G9kNWxOnL27CMJENFCh+OGjbjDxBBluPTn+mA87BH/HHabGFMI9Ffim4Ii+FbcMfA+XDgeO4+3V3AJOPMDwqGkAfAhei/mDAdzn+rHHPgjQXbeNW55SJPg6oEsZYW/U0lCdBxuX3t1qUmqP6KdsUZKxWxtz/LvHwjzamff/H33T8iAGqBknMgFw49XvKiZXDVPug7ZtiMyE6jiYj11ioz91rTacvmoir2G8cZlWjwvuM6aCVOBlNv7pN61+6x2QTe3hMeeTB4+1q1HtQZLsU8nbOoQvgJZWqEW1v+GA8LLesmPZd6GSpB2uYEbO5gG6OIrv/e+UOAMBaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DuTgA7wVPORPgkgkwC/Mjuf9WRSHjnFdjtAzjcyG8xw=;
+ b=i6Uzl7MmyP8Y2XoEs80RilwtsWcAbUp60/DTVS4niC0YE88yasu+UR/Zfs5h13xXlD8IAjaXUJSw35G3RBitRwyYxoCuVkEeGIuhzG6S/Ukhp8WNY4hcQKIYSxJMZIanykhItnCWjDl/rQohbgGXkTUkelWQJ/whUkYg/4EBqapy0atiAbavkN+oLB1e1uGVswJBuQqGf32uR+meudG6wZeJaNtqu3qJcjrUZG9srlyAV0zc3SfHiLOU+tvRTDnxhpPXJzUWaCoMn84fhoPmtpwwiUpR50tiseiOT3xFIvp2TSjN9lrsWTJ90dpv/TwHo3UxYwZbYKXfdCXv2FQ0lA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DuTgA7wVPORPgkgkwC/Mjuf9WRSHjnFdjtAzjcyG8xw=;
+ b=CldskZRsirFXi1806zUOZAmU0zkOTkvi88T4VpaOMobgyhCAgch33RmMeNQywl9on7UKJ24zcpuc5CM/X8whFUZ1P2gjPiubowTHFLNJTzuRAAfzy54dnw/D5fFXcyJQFU7zaYA2JqqGFfEGygnXwWpJ0fX6pQulbJa6refcG1PLK4NmI2CeNuKuxRDayaqpnq6a62qR+rl+fQeOOHJoATzrSoqa+qy6g2bwi9DIqagMAf4dvpUguhptLmnIPUEh1tdSL6b3WWZkUZR97x9QIgDLMv0dD9QAnTngRUms9n1JXLtJpjTLWpWqyBBVeQN4gABSKOV+8VnDetPJrzFHYQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by CYYPR12MB8890.namprd12.prod.outlook.com (2603:10b6:930:c7::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.12; Wed, 29 Oct
+ 2025 23:15:08 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9275.011; Wed, 29 Oct 2025
+ 23:15:07 +0000
+Message-ID: <f2301249-1a92-489a-b1ad-2e174980297c@nvidia.com>
+Date: Wed, 29 Oct 2025 16:15:01 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] gpu: nova-core: add boot42 support for next-gen
+ GPUs
+To: Timur Tabi <ttabi@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ "lossin@kernel.org" <lossin@kernel.org>,
+ "a.hindborg@kernel.org" <a.hindborg@kernel.org>,
+ "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+ "aliceryhl@google.com" <aliceryhl@google.com>, Zhi Wang <zhiw@nvidia.com>,
+ "simona@ffwll.ch" <simona@ffwll.ch>,
+ "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
+ "ojeda@kernel.org" <ojeda@kernel.org>, "tmgross@umich.edu"
+ <tmgross@umich.edu>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
+ Edwin Peer <epeer@nvidia.com>, "airlied@gmail.com" <airlied@gmail.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "gary@garyguo.net" <gary@garyguo.net>, Alistair Popple <apopple@nvidia.com>
+References: <20251029030332.514358-1-jhubbard@nvidia.com>
+ <20251029030332.514358-3-jhubbard@nvidia.com>
+ <38c110253990a02066d59a4979070f5110f6eb7e.camel@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <38c110253990a02066d59a4979070f5110f6eb7e.camel@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR05CA0020.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::33) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] Introduce import_ns support for Rust
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
-	<dakr@kernel.org>, Drew Fustini <fustini@kernel.org>, Guo Ren
-	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Stephen Rothwell
-	<sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <CANiq72n8QvygNsdHjaMgYrXiErT82BkWm1XMkc3eUZB1Xy_uAQ@mail.gmail.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251029185151eucas1p1d0537f2fc24d4dbc400c773168f20bb8
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5
-X-EPHeader: CA
-X-CMS-RootMailID: 20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5
-References: <CGME20251028122315eucas1p159b65037cf6f3f710c1917e2464399b5@eucas1p1.samsung.com>
-	<20251028-pwm_fixes-v1-0-25a532d31998@samsung.com>
-	<2dedlnknikkrwg5f6ocuvjrogdjuqyg4sg6zkkao4w4yyvvsje@dkt7rco3fen3>
-	<CANiq72n8QvygNsdHjaMgYrXiErT82BkWm1XMkc3eUZB1Xy_uAQ@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|CYYPR12MB8890:EE_
+X-MS-Office365-Filtering-Correlation-Id: 691df5a5-2842-4187-7d8b-08de1740ffe0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZGx2MmpodzJLQkZGVVNaODBLSzNLREk5UHlxT3VKaDlETnRMY202V2pIVUo1?=
+ =?utf-8?B?a0MrWmZvRDNFVzBMNVFmRUZ6SEthRlpaeHJ3VE53Wm0xd2hoWmxtSFArMnpR?=
+ =?utf-8?B?WCtpZE10RTdpY0wwemp4bkJWRVhLbHBxMDhnTEcvSk1nL3JSZ1NhTVJEbHF2?=
+ =?utf-8?B?OTZMZlhabjdqbndFTTFUT2VoRzBpWldmWElqNk5pRTg2YTZrQ2VkRUl4ZGdh?=
+ =?utf-8?B?a0lTbFF3ZTBaZnlUMXdSYkdVbURGaFJTWW9BNVJCVk5qeWduSThGUmhnVEVl?=
+ =?utf-8?B?blFEdGNEWDJ5U3VmTzB2VE5ISHM1NmJCK1I2bThoK3NIOVlVUHR4OElDY09x?=
+ =?utf-8?B?L2Y3T1dFK0IzSXVpWG1TYnNvaGNUeE5SaWs0aGVxbUsybkR1ZHhjWFNJb3ps?=
+ =?utf-8?B?M29Kdyt2cTRCelB3VzVId3p1R0lTZWQ1RG0vRzgwTzZ0bFJJWGVyVERYMVZt?=
+ =?utf-8?B?QXd2dENuaHIrdlcxamVlVzhDbUdvc1ZyNzhLOHprMS9SRjlBRks0UDgvSnVT?=
+ =?utf-8?B?U3VReUZhaDYwWVNtUzNyWjhkQytmQzEzUHRjVXBwM1NzU0d3cDVuN1U0YUFh?=
+ =?utf-8?B?bnI3bDd0MlRWbVltNEFsY3I3bzR0Um9SS3g4Zk1ZUzQwemhKcjlUam96Ry9h?=
+ =?utf-8?B?dnAycGlsN2lsc2FXSEdaZjdiVVkvM09XblE0Z0pQTllXSFlpWmUwNVVJM0hp?=
+ =?utf-8?B?MVFEWDlramZWbXNmQU1KRUNSbjlsRXVLcnVNTWJEMXFJY29QNU1renJOTGZq?=
+ =?utf-8?B?TG9JNEhRRzJnYUoxcUdQMzJQVndlMk1qS3QyRk9mekhucFlGTmtUNTdiZjJs?=
+ =?utf-8?B?ZVhmZkdoclRtWjZHNUR5SXNvRjMva3c4QXNJTFJUdGhSYkNDRUYwVytwNDNs?=
+ =?utf-8?B?QjczZmNPRnprL0xrcUtpNDdQRnRtK2hWMmV6UUxOYlNjVjUrb1NJT1hacHNs?=
+ =?utf-8?B?LzRYNmYyZWNqREMxSEFSbkNZbnN6a0dwR3pWTWNZeHA4bkt4Smx5T3lDSkow?=
+ =?utf-8?B?dmpTSEN5M0dGU2VPK1NpN0JGNytJTHNNeHBDeFFjM3lzZkdjQzZkRzlTa1V5?=
+ =?utf-8?B?aEFWdTJlVERBN1UvOTErSnFBU2gwZE0zcnBMZG9RSEhLZUxnMGFXeC90eEZO?=
+ =?utf-8?B?emxPRjhUWCtiRmZzbWRycitNaWtsZWlhWnZ2U1FvQzVuRFgwMHJCSkhEVjNp?=
+ =?utf-8?B?a1kzUVp5UnVDeUEzRTkrTktMMitHSWZ3VE5pQm0wOEovZ29SdW9ZVXd0OUNC?=
+ =?utf-8?B?b3p3ZnBoeFJ5QStDQXdlUGMwQ25pcXVyMFZZNzlSUlliY2kvdE5hOERVUnNs?=
+ =?utf-8?B?RjJyK2lDYjk2eTFVWlAwSDh3ZFNxVUh5dlo2RVJUemlibHp6NlgxUUFvS0ov?=
+ =?utf-8?B?engzR1pEM2xtRCswVC9DVm5NUGxYRVNlNEpJY1cxQktySTFoZWJhT3k3RjF3?=
+ =?utf-8?B?NUV0VE5jL000Tlk4QVMyNzZFSlZHQ01EYmNScWUxeGlZUTRmQmhnR2RFdTVY?=
+ =?utf-8?B?RWpRc0RkOHlYVithYjM1T2IxSmZsMkZIT0VuUlo0VzhYOUp1eG5IVlB4aDZo?=
+ =?utf-8?B?WjRhd2QvVG5oSGJjVEkxNUdPUGhIZXlmS3p2TWNvS296bStSNnZ0Yzc1ejg5?=
+ =?utf-8?B?R3ZkWlhwNE5LUUZ1T1YrazJiZmRsY2hYaGVTZHdWaGFSRjFuUHhTOE5RNjR3?=
+ =?utf-8?B?ZFZrVUhpa1AwSjhLVVdJMlBwZ1dXcGk0WGxxcVN3UG9XbXRYcjFlc0FpaWNv?=
+ =?utf-8?B?d0tETDlQOGh1QmU0TGdLb2dMTWxHdWNxN0hTRkkrMEx6V0ZyOGppdWpTK3hx?=
+ =?utf-8?B?R3VpMXFzSE5lWTlaM3hFYnd6all2bUhqejFKRlV0dzdsVWo2UVJpY0Z1UVJ1?=
+ =?utf-8?B?K0svNmtlRzFONjZqbVF5ZTZDclUvVEl6TjZFL2lvd0J5MFFLTlkxQzdUWlk0?=
+ =?utf-8?Q?E0YComFw9ADtLddlTCw/Fp/b9Y9uuj1q?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?anc2eE1uM0pFOGxaU1dabC9kOFZaMFFGem12SjdGelc3VzZtK2NGN1dmUnR6?=
+ =?utf-8?B?OTVEamJSTWVsa0ZFbjdkWGhUWVNramsxRUtzL1VCOENYdWhQWStmWG4rK21q?=
+ =?utf-8?B?Q3FsbWhrMm5xKytxRDcralBnSGZRT0lCa2ltUnZxTGNaQW5sdUUwRGxoeXh0?=
+ =?utf-8?B?Q3pDVlVyUERCblpmbmVCVzJ6RVJTYTFqdHExV05RNk94WjBOZ2dyL1ZSOElD?=
+ =?utf-8?B?RGZQT0Z5dWxoYTFwdExXWU95NmxuYU92RktiU0xqdnN3SGlKbDNnaTdUTGUr?=
+ =?utf-8?B?R28rQ0ZPZ05zU0xTS2NQVjhGTXpGa21EL3JzbzJLZUpsN1kyZTF5dTRYbHRT?=
+ =?utf-8?B?clBiS0VsQmNWT3pNcEpNR2phZC9jWmxpVVVNVi8vOWx1YWplU3psSTJzTGw1?=
+ =?utf-8?B?TmhNajFaNkhMUWpqK2FyZlIvZUdiMkJuZFBaWHpVYW0vZktnN1poSFlwRWZW?=
+ =?utf-8?B?OTgvYXB1aWVSZnR0Y2Q2c0hGdUQ2QnlWejZwaEQ5djY3SzRJaXVvVDdPTExN?=
+ =?utf-8?B?Um8rQktiOWhhWm9kNjZNbDVnSzUxVGwxL21PdW14RE5lRHp3aFU0K1VyUVBY?=
+ =?utf-8?B?c2NjNDJnMHdqTU9FdmRlSzRpSEd2TXh1V1hOdDlQWFIzdG1WNlZqNTFUYUlq?=
+ =?utf-8?B?aW40M29OdTcxTnJoL053a2Zyb0ZvVUkydUtBd1d0T2hBR3JscElhVU8zKzVs?=
+ =?utf-8?B?dDdPUVM1dDR4RUJtdHlSMkpIVlBhY3V1c0paK0VxaUo3ZUJzR0JHbGZBOEIv?=
+ =?utf-8?B?cWZ0NkFWVk05QUtXMGc5RDJ4ZVI2Y2tTcXJ3NmErdlRVWEJtM2llQUwrWDlr?=
+ =?utf-8?B?NHNlMWRUUy80QW8yalQ4RlI2MURmUW1KakVXTFlIN01meVJPY3M0a0pwaWNX?=
+ =?utf-8?B?SEpjTkZzRVlKdGFMMTh1VW9EdENjai9PMTdNY20zcytuY0ZyQkI3a1pOUXhw?=
+ =?utf-8?B?MzA1WVE5Q3FqWEdhUytHZERERHBiempLRlFFTWlDRXJTcGNuMnF6ckJ3Nkhr?=
+ =?utf-8?B?eTU0OWUvT0lRN1hhL2MwMUhiQk44a2wxenNlUHNaVFBOV2ZtdEZzSWRuTUpl?=
+ =?utf-8?B?aVoxMnViUitNU09Qay83bFdmZU0rWTZVWjdIKzQ3VGhubjk0RDRhdDBkT0lE?=
+ =?utf-8?B?R1NJNFRBWHhxSFFIV2U0ZUtHTzR3b2NlbXRSUUxVcE1haTdCYU9LS25hQXcy?=
+ =?utf-8?B?NTBiUEdjVjhKcWtRemxrU081eDZPdFV1Qzg0V1E2SWo3ejRRSHgrWEQyQ29o?=
+ =?utf-8?B?RWVoK0Voa3daeTVoTlRrR0cyUGZBaHhvOENncGh6MHVUZnJBN3JwSGl5ekVW?=
+ =?utf-8?B?M1E4VGxsMFMxdDlxTXNmZnZRWHo3ZEs5YmZCSGRzR1RnZDlMUWdUNy9mR0JB?=
+ =?utf-8?B?YnU3aU5TalpSdE5rZkZSbnk2TkNTWUVqSjJMV1duQkdyTzV5T2w1NHBUUDRL?=
+ =?utf-8?B?dkd4cmNVOGlYZDBrc2V0U0huUlFXbCtxZG0vZFB4K3RiaUF0cGNQT1YwK283?=
+ =?utf-8?B?SGREeUVjUHJGTnA4a2pUZklyNWJITGJGc0t6TWVPeG1LbWZRQ3JYK0FjYyta?=
+ =?utf-8?B?bFF2QVBLUHRjUFFzKzMrZ3E3cFhCSkhsYmZSYS9FNzM4N0phdEY4VEV2TGlU?=
+ =?utf-8?B?cFFKRlpUR3JEYW1EUFovdVpJa0kvS29YSWlSUE5oRTdQU0JaSU5iTkl0MWwv?=
+ =?utf-8?B?SXB3VklickYxdHpjcGhPVk1BKy85cFloRTFOcEdxSkJoU25mdkFtK3NYTlkv?=
+ =?utf-8?B?NXAzZnRvamMvbWpaa29PelVyZC9Vb05FaGx6ZndmL0w2VTMzTDVuNGJtdmNC?=
+ =?utf-8?B?QXBYb0xKTGtkRmVuQUhYd0ZhSUpoY1hUZmFCQjJMYU1jdE5DZS9sNDBYSXRj?=
+ =?utf-8?B?VUt2dTJwa3JKS3JYQzhrcXkwVlRNdDBodFYwY09zcE51WXhOT080dlN0bEJ6?=
+ =?utf-8?B?NW9OSGVuS1lNS0hzb2ZyajRBRWlTVFhoRUllSnFqRjFWL1FHWFZDczJRZE53?=
+ =?utf-8?B?VVpDT3U5STlBMmlmTmdNZGRhQkhWcnhwT3dSamZkVC9nRVBxRFZZTnBUSlUy?=
+ =?utf-8?B?TVZ2eVNtcHNkNWRsSHNnWWh2WmJSTWtnNjdPVjFodkFUZHl1RmlkSlE1UHVW?=
+ =?utf-8?Q?ZUsguLfygdiRDLfp2Kro1s6OY?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 691df5a5-2842-4187-7d8b-08de1740ffe0
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2025 23:15:07.3530
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ruNWq2g9AsNyiBATU8CG9D1qAmdTOxWpqgSwbs/HKKRVlJNQWjnHwElQ/v8/+ALsfx9NmHx79OxwlApSGtSfRg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8890
+
+On 10/29/25 8:02 AM, Timur Tabi wrote:
+> On Tue, 2025-10-28 at 20:03 -0700, John Hubbard wrote:
+>> NVIDIA GPUs are moving away from using NV_PMC_BOOT_0 to contain
+>> architecture and revision details, and will instead use NV_PMC_BOOT_42
+>> in the future. NV_PMC_BOOT_0 will be zeroed out.
+> 
+> I don't think this is correct.  ARCH_1 in PMC_BOOT_0 will be set to 1 in future GPUs.
+
+ah right, thanks Timur! I can change it to:
+
+NV_PMC_BOOT's ARCH_0 (bits 28:24) will be zeroed out, and ARCH_1 (bit 8:8)
+will be set to 1, which means, "refer to NV_PMC_BOOT_42".
 
 
-
-On 10/29/25 19:18, Miguel Ojeda wrote:
-> On Wed, Oct 29, 2025 at 11:04 AM Uwe Kleine-König <ukleinek@kernel.org> wrote:
->>
->> If you could mention the command that makes this warning visible, I'd be
->> glad to add that to my repertoire of build checks.
-> 
-> Yeah, please do!
-> 
-> I do my best to keep even linux-next and stable kernels Clippy clean
-> as much as possible, so it would be nice to have that Clippy fix added
-> to -next soon.
-> 
-> I have other steps that maintainers/contributors should run here:
-> 
->     https://protect2.fireeye.com/v1/url?k=0d35e0d3-6dd77d8e-0d346b9c-000babd9f1ba-e5d27bbbccd997ca&q=1&e=d4a64c99-aab6-4741-9747-63f10e63aed4&u=https%3A%2F%2Frust-for-linux.com%2Fcontributing%23submit-checklist-addendum
-> 
-> Essentially / most importantly: `rustfmt`, `rustdoc` and `CLIPPY=1`.
-
-Oh yeah I think I remembered to run 'rustfmt' couple months ago, but
-over time when sending revisions forgot about that, sorry. I guess it
-would be great to extend 'b4 prep --check' for those checks as well.
-
-> 
-> I am sending a couple fixes for those.
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
-> 
-
-Best regards,
+thanks,
 -- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+John Hubbard
+
