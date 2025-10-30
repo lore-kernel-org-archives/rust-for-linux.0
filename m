@@ -1,97 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBE130AD05;
-	Thu, 30 Oct 2025 21:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4067C2F5A23;
+	Thu, 30 Oct 2025 22:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761859673; cv=none; b=JxQ6F4LwxpWEg3an/uaJdimEd3FzDxRbPnlUksJP2p+jIFh+s4zq7mdiMrJ7fwYlQrJGxHGNdUjuCHwl8tTFu25XlzgxyX0HNCX6H22y2qlKkZmQLb6JPvEf7Pp0Wij8dQPIz7PPZdBsa25uO39/6VKSywIbVblEOS6XZkd3Voo=
+	t=1761861915; cv=none; b=RrtcebrLyc8zgNcIWvAdFVQjWnVVvYPmhMJ8yOhye1M1a9Y4LlRIqUQcYLKX+fs+AJif3eWr+AJ0tjKXF92DWz4WySWzgb9R8yjwkD4/YhldogcPp8k/qa9r/3D/fQUBB7f4ONmaMkKsUWdEeNyWFRlEGHHhYyDjlqBSpGObGCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761859673; c=relaxed/simple;
-	bh=SVxofZBodQMq2edTAlTFELOdmGnbu0QYSQXYY2Xxvj4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=BYTUrEY14kS8ElBj/qYaCxWLx+D7I+3qUO0zdcbJe5gxgokJ4q3WbxqBdpZOxmJFLQqcoLZrl1tcJNu73Q4V0JfzqkT6dfjCOO8B52IJU4Jn8+cd1KkoFV5FZ77ZwA5J9GybWq8f8bCcsxvn/le5QDizRT8O6jjIt3a5nsX4Ng4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gj21ihIp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761861915; c=relaxed/simple;
+	bh=hGsR/Bnd3mOKXtUfbzp7EAHPu03Q3W/5Ygz618c3ElQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H7Xy75nj3TpxPR3eICqye59vz9j8duYbyynb+luBouvFktvD3Gj7HZ69nOmmAGUhpAK65dCM+giKibfYnEe6BaIqx54P5h/Hmas2v1D/OBASW03fhC1iG+uyaYujgdCWP41zkqeocDZQQ7aBEyukuf9ZA7O2AIc65S902AE1hsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUZwFQ8j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gj21ihIp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99C9C4CEF1;
-	Thu, 30 Oct 2025 21:27:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUZwFQ8j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E70C4CEF1;
+	Thu, 30 Oct 2025 22:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761859672;
-	bh=SVxofZBodQMq2edTAlTFELOdmGnbu0QYSQXYY2Xxvj4=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=gj21ihIpi0Frx5U2DXHXyw0i1BL8GIMyFNGu7SLPiUEQ6giI8X/bCxKhW1d9XjijV
-	 us2VQd/o1fhWhogEQdaPAxl0q7Y3G3TkaRGx9H0GwbAlWQ+UFBXxkmbQMfBxdyG66m
-	 vQJsQBcqwLjQACSBzNWK3dDxEZ1SNeU9PeaEb6d0udOzREGhhUdHEoN7Shi1sp53LF
-	 Ob0Aw/hQxa9GZSfrnpnUSUZIbEv3Q7jIyFFqwrt33vyapJaSJqiU8jE54EvTS0GHUQ
-	 hgKKXTrJH5Rt+tY6g2bkpT+boKLByo1R+pokToyeQ7RfbDPwI38X86n48Nu9Hz+Kqv
-	 w/Fb3sbEMq61Q==
+	s=k20201202; t=1761861914;
+	bh=hGsR/Bnd3mOKXtUfbzp7EAHPu03Q3W/5Ygz618c3ElQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TUZwFQ8jSNkVT08Pf3tnwI4rsFxKGf4Wk73qhas/2kGpPCwR4PV537euKdBKNQt5U
+	 sCEcPMUSO/cFUTM1TvhEEn7ETkgXLe3533+YdOqyjbrhrYKzE7bIDINzV9ouZz0Ttp
+	 Ekn5v5e0W87uIAzS5K0Iw9xIhDs9jpY6ouvPjHgQ7EFy6ijOgYq2AK2iXv3IJFamlK
+	 AUHmr5EUSmEWfJgkd7ey0N5UA0bmSADl8JU7jgnAlgDq2jNDrN9fle5bRQkNE6AKZy
+	 wc1NrPDhCToOXWWgJ8k3/s6SiuFKpIEqi4vIcqqUJY4vTmGhu1os12+45Sozoecu3M
+	 8kTBDoSc0O88A==
+Date: Thu, 30 Oct 2025 23:05:07 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 4/4] pwm: th1520: Fix clippy warning for redundant struct
+ field init
+Message-ID: <ch7ys43hapks5pmbnr4tq5ygycngy4oncsecaefarxjuucpvue@qtofn5rzq46m>
+References: <20251028-pwm_fixes-v1-0-25a532d31998@samsung.com>
+ <CGME20251028122318eucas1p1863a8b44efe27c28a1bcf427d2855c00@eucas1p1.samsung.com>
+ <20251028-pwm_fixes-v1-4-25a532d31998@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6lyb3gh27aqsig22"
+Content-Disposition: inline
+In-Reply-To: <20251028-pwm_fixes-v1-4-25a532d31998@samsung.com>
+
+
+--6lyb3gh27aqsig22
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Oct 2025 22:27:46 +0100
-Message-Id: <DDVZ4L08QMIR.GFMG544BYQEO@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH RFC 3/4] rust: drm: Add DRM buddy allocator bindings
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, "David Airlie" <airlied@gmail.com>,
- <acourbot@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
- Hubbard" <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Andrea Righi"
- <arighi@nvidia.com>, "Philipp Stanner" <phasta@kernel.org>,
- <nouveau@lists.freedesktop.org>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
-References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
- <20251030190613.1224287-4-joelagnelf@nvidia.com>
-In-Reply-To: <20251030190613.1224287-4-joelagnelf@nvidia.com>
+Subject: Re: [PATCH 4/4] pwm: th1520: Fix clippy warning for redundant struct
+ field init
+MIME-Version: 1.0
 
-On Thu Oct 30, 2025 at 8:06 PM CET, Joel Fernandes wrote:
-> +    ///
-> +    /// Returns an [`AllocatedBlocks`] structure that owns the allocated=
- blocks and automatically
-> +    /// frees them when dropped. Allocation of `list_head` uses the `gfp=
-` flags passed.
-> +    pub fn alloc_blocks(
-> +        &self,
-> +        start: usize,
-> +        end: usize,
-> +        size: usize,
-> +        min_block_size: usize,
-> +        flags: BuddyFlags,
-> +        gfp: Flags,
-> +    ) -> Result<AllocatedBlocks<'_>> {
-> +        // Allocate list_head on the heap.
-> +        let mut list_head =3D KBox::new(bindings::list_head::default(), =
-gfp)?;
-> +
-> +        // SAFETY: list_head is valid and heap-allocated.
-> +        unsafe {
-> +            bindings::INIT_LIST_HEAD(&mut *list_head as *mut _);
-> +        }
+Hello,
 
-Not a full review, but a quick drive-by comment:
+On Tue, Oct 28, 2025 at 01:22:35PM +0100, Michal Wilczynski wrote:
+> Clippy warns about redundant struct field initialization when the field
+> name and the variable name are the same (e.g., `status: status`).
+>=20
+> No functional change.
+>=20
+> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
 
-bindings::list_head has to be pinned in memory it should be
+applied this patch only (for now) to
+https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for-=
+next
+=2E
 
-	let list_head =3D KBox::pin_init(Opaque::ffi_init(|slot: *mut bindings::li=
-st_head| {
-	    // SAFETY: `slot` is a valid pointer to uninitialized memory.
-	    unsafe { bindings::INIT_LIST_HEAD(slot) };
-	}), gfp)?;
+Best regards
+Uwe
 
-if you're doing it by hand, but as mentioned in a previous patch, I think i=
-t
-would be nice to have a transparent wrapper type, CListHead, for this.
+--6lyb3gh27aqsig22
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmkD4REACgkQj4D7WH0S
+/k6vXwf/XwD/aC75mmgEhgwLegHCDLc8YAWadtXPwkYBVbyfpIVTujQtNNa6IbNc
+TBTyepfIq1hGhoF3xnQg8+E6QsNsUsNeFb6DPVQ0/P59IiazUtvJ7MEyH1BPa2HI
+9bwa7hPqViVIhZK/GALE1F8Ivf2xMGBRFJuSw2sjb8lYd6YTh5xWgVn+PUJ91iGT
+OecPfhHged4zRochSwnc4mQ4IdMHg30dDAy1iYFeXYJrQcSVDKhZcThSfnq22OAg
+w1kdhMBkqxkY+FDIUb6Fl+Tmkb9VlQrJ5Q2jACq10bSlWidKluZ6eUbPV76MkNV+
+DklMBwxJMyiE3IkckG9X+wpR8Fxp0A==
+=Lof5
+-----END PGP SIGNATURE-----
+
+--6lyb3gh27aqsig22--
